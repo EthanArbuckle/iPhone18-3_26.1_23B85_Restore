@@ -1,37 +1,37 @@
 @interface HKCodedQuantity
-+ (HKCodedQuantity)codedQuantityWithValue:(id)a3 comparatorCoding:(id)a4 unitCoding:(id)a5;
-+ (HKCodedQuantity)codedQuantityWithValue:(id)a3 unitCoding:(id)a4;
++ (HKCodedQuantity)codedQuantityWithValue:(id)value comparatorCoding:(id)coding unitCoding:(id)unitCoding;
++ (HKCodedQuantity)codedQuantityWithValue:(id)value unitCoding:(id)coding;
 + (id)_numberFormatter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKCodedQuantity)init;
-- (HKCodedQuantity)initWithCoder:(id)a3;
-- (HKCodedQuantity)initWithRawValue:(id)a3 comparatorCoding:(id)a4 unitCoding:(id)a5;
+- (HKCodedQuantity)initWithCoder:(id)coder;
+- (HKCodedQuantity)initWithRawValue:(id)value comparatorCoding:(id)coding unitCoding:(id)unitCoding;
 - (NSNumber)numberValue;
 - (NSString)localizedValue;
 - (double)doubleValue;
 - (id)description;
-- (id)quantityRepresentationWithUCUMConverter:(id)a3 error:(id *)a4;
+- (id)quantityRepresentationWithUCUMConverter:(id)converter error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCodedQuantity
 
-+ (HKCodedQuantity)codedQuantityWithValue:(id)a3 comparatorCoding:(id)a4 unitCoding:(id)a5
++ (HKCodedQuantity)codedQuantityWithValue:(id)value comparatorCoding:(id)coding unitCoding:(id)unitCoding
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithRawValue:v10 comparatorCoding:v9 unitCoding:v8];
+  unitCodingCopy = unitCoding;
+  codingCopy = coding;
+  valueCopy = value;
+  v11 = [[self alloc] initWithRawValue:valueCopy comparatorCoding:codingCopy unitCoding:unitCodingCopy];
 
   return v11;
 }
 
-+ (HKCodedQuantity)codedQuantityWithValue:(id)a3 unitCoding:(id)a4
++ (HKCodedQuantity)codedQuantityWithValue:(id)value unitCoding:(id)coding
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRawValue:v7 comparatorCoding:0 unitCoding:v6];
+  codingCopy = coding;
+  valueCopy = value;
+  v8 = [[self alloc] initWithRawValue:valueCopy comparatorCoding:0 unitCoding:codingCopy];
 
   return v8;
 }
@@ -46,12 +46,12 @@
   return 0;
 }
 
-- (HKCodedQuantity)initWithRawValue:(id)a3 comparatorCoding:(id)a4 unitCoding:(id)a5
+- (HKCodedQuantity)initWithRawValue:(id)value comparatorCoding:(id)coding unitCoding:(id)unitCoding
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  valueCopy = value;
+  codingCopy = coding;
+  unitCodingCopy = unitCoding;
+  if (!valueCopy)
   {
     [HKCodedQuantity initWithRawValue:a2 comparatorCoding:self unitCoding:?];
   }
@@ -61,15 +61,15 @@
   v12 = [(HKCodedQuantity *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [valueCopy copy];
     rawValue = v12->_rawValue;
     v12->_rawValue = v13;
 
-    v15 = [v10 copy];
+    v15 = [codingCopy copy];
     comparatorCoding = v12->_comparatorCoding;
     v12->_comparatorCoding = v15;
 
-    v17 = [v11 copy];
+    v17 = [unitCodingCopy copy];
     unitCoding = v12->_unitCoding;
     v12->_unitCoding = v17;
   }
@@ -79,8 +79,8 @@
 
 - (double)doubleValue
 {
-  v2 = [(HKCodedQuantity *)self rawValue];
-  [v2 doubleValue];
+  rawValue = [(HKCodedQuantity *)self rawValue];
+  [rawValue doubleValue];
   v4 = v3;
 
   return v4;
@@ -88,26 +88,26 @@
 
 - (NSString)localizedValue
 {
-  v3 = [(HKCodedQuantity *)self numberValue];
-  if (v3)
+  numberValue = [(HKCodedQuantity *)self numberValue];
+  if (numberValue)
   {
-    v4 = [objc_opt_class() _numberFormatter];
-    v5 = [v4 stringFromNumber:v3];
+    _numberFormatter = [objc_opt_class() _numberFormatter];
+    rawValue = [_numberFormatter stringFromNumber:numberValue];
   }
 
   else
   {
-    v5 = [(HKCodedQuantity *)self rawValue];
+    rawValue = [(HKCodedQuantity *)self rawValue];
   }
 
-  return v5;
+  return rawValue;
 }
 
 - (NSNumber)numberValue
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(HKCodedQuantity *)self rawValue];
-  v4 = [v3 dataUsingEncoding:4];
+  rawValue = [(HKCodedQuantity *)self rawValue];
+  v4 = [rawValue dataUsingEncoding:4];
   v5 = [v2 JSONObjectWithData:v4 options:4 error:0];
 
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -152,21 +152,21 @@ uint64_t __35__HKCodedQuantity__numberFormatter__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKCodedQuantity *)self rawValue];
-  v7 = [(HKCodedQuantity *)self comparatorCoding];
-  v8 = [(HKCodedQuantity *)self unitCoding];
-  v9 = [v3 stringWithFormat:@"<%@:%p value = %@, comparatorCoding = %@, unitCoding = %@>", v5, self, v6, v7, v8];
+  rawValue = [(HKCodedQuantity *)self rawValue];
+  comparatorCoding = [(HKCodedQuantity *)self comparatorCoding];
+  unitCoding = [(HKCodedQuantity *)self unitCoding];
+  v9 = [v3 stringWithFormat:@"<%@:%p value = %@, comparatorCoding = %@, unitCoding = %@>", v5, self, rawValue, comparatorCoding, unitCoding];
 
   return v9;
 }
 
-- (id)quantityRepresentationWithUCUMConverter:(id)a3 error:(id *)a4
+- (id)quantityRepresentationWithUCUMConverter:(id)converter error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  converterCopy = converter;
   if (self->_comparatorCoding)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Unable to create HKQuantity from a coded quantity that has a comparator: %@", self}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Unable to create HKQuantity from a coded quantity that has a comparator: %@", self}];
     v7 = 0;
     goto LABEL_23;
   }
@@ -181,22 +181,22 @@ uint64_t __35__HKCodedQuantity__numberFormatter__block_invoke()
     goto LABEL_23;
   }
 
-  v9 = [(HKMedicalCoding *)unitCoding displayString];
-  v10 = [(HKMedicalCoding *)self->_unitCoding code];
-  if (v10)
+  displayString = [(HKMedicalCoding *)unitCoding displayString];
+  code = [(HKMedicalCoding *)self->_unitCoding code];
+  if (code)
   {
-    v11 = [(HKMedicalCoding *)self->_unitCoding codingSystem];
+    codingSystem = [(HKMedicalCoding *)self->_unitCoding codingSystem];
     v12 = +[HKMedicalCodingSystem UCUMSystem];
-    v13 = [v11 isEqual:v12];
+    v13 = [codingSystem isEqual:v12];
 
     if (v13)
     {
-      if (v6)
+      if (converterCopy)
       {
-        v14 = [(HKMedicalCoding *)self->_unitCoding code];
-        v15 = [v6 hkUnitNameForUCUMUnitCode:v14];
+        code2 = [(HKMedicalCoding *)self->_unitCoding code];
+        v15 = [converterCopy hkUnitNameForUCUMUnitCode:code2];
 
-        v9 = v15;
+        displayString = v15;
         if (v15)
         {
           goto LABEL_20;
@@ -208,25 +208,25 @@ uint64_t __35__HKCodedQuantity__numberFormatter__block_invoke()
         {
           v17 = self->_unitCoding;
           v18 = v16;
-          v19 = [(HKMedicalCoding *)v17 code];
+          code3 = [(HKMedicalCoding *)v17 code];
           *buf = 138543362;
-          v29 = v19;
+          v29 = code3;
           _os_log_impl(&dword_19197B000, v18, OS_LOG_TYPE_INFO, "Got a UCUM unit code the UCUM converter doesn't know: %{public}@", buf, 0xCu);
         }
 
-        v20 = [(HKMedicalCoding *)self->_unitCoding displayString];
-        v21 = v20;
-        if (v20)
+        displayString2 = [(HKMedicalCoding *)self->_unitCoding displayString];
+        v21 = displayString2;
+        if (displayString2)
         {
-          v22 = v20;
+          code4 = displayString2;
         }
 
         else
         {
-          v22 = [(HKMedicalCoding *)self->_unitCoding code];
+          code4 = [(HKMedicalCoding *)self->_unitCoding code];
         }
 
-        v9 = v22;
+        displayString = code4;
       }
 
       else
@@ -239,24 +239,24 @@ uint64_t __35__HKCodedQuantity__numberFormatter__block_invoke()
           _os_log_impl(&dword_19197B000, v24, OS_LOG_TYPE_INFO, "Got a UCUM unit code but you didn't provide a UCUM code converter. Will prefer unitCoding.displayString to unitCoding.code.", buf, 2u);
         }
 
-        if (v9)
+        if (displayString)
         {
           goto LABEL_20;
         }
 
-        v9 = [(HKMedicalCoding *)self->_unitCoding code];
+        displayString = [(HKMedicalCoding *)self->_unitCoding code];
       }
     }
   }
 
-  if (!v9)
+  if (!displayString)
   {
     v7 = 0;
     goto LABEL_22;
   }
 
 LABEL_20:
-  v25 = [HKUnit unitFromString:v9];
+  v25 = [HKUnit unitFromString:displayString];
   [(HKCodedQuantity *)self doubleValue];
   v7 = [HKQuantity quantityWithUnit:v25 doubleValue:?];
 
@@ -268,23 +268,23 @@ LABEL_23:
   return v7;
 }
 
-- (HKCodedQuantity)initWithCoder:(id)a3
+- (HKCodedQuantity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKCodedQuantity;
   v5 = [(HKCodedQuantity *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     rawValue = v5->_rawValue;
     v5->_rawValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ComparatorCoding"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ComparatorCoding"];
     comparatorCoding = v5->_comparatorCoding;
     v5->_comparatorCoding = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnitCoding"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnitCoding"];
     unitCoding = v5->_unitCoding;
     v5->_unitCoding = v10;
   }
@@ -292,13 +292,13 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rawValue = self->_rawValue;
-  v5 = a3;
-  [v5 encodeObject:rawValue forKey:@"Value"];
-  [v5 encodeObject:self->_comparatorCoding forKey:@"ComparatorCoding"];
-  [v5 encodeObject:self->_unitCoding forKey:@"UnitCoding"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rawValue forKey:@"Value"];
+  [coderCopy encodeObject:self->_comparatorCoding forKey:@"ComparatorCoding"];
+  [coderCopy encodeObject:self->_unitCoding forKey:@"UnitCoding"];
 }
 
 - (unint64_t)hash
@@ -308,10 +308,10 @@ LABEL_23:
   return v4 ^ [(HKMedicalCoding *)self->_unitCoding hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -321,26 +321,26 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       rawValue = self->_rawValue;
-      v7 = [(HKCodedQuantity *)v5 rawValue];
-      v8 = v7;
-      if (rawValue == v7)
+      rawValue = [(HKCodedQuantity *)v5 rawValue];
+      v8 = rawValue;
+      if (rawValue == rawValue)
       {
       }
 
       else
       {
-        v9 = [(HKCodedQuantity *)v5 rawValue];
-        if (!v9)
+        rawValue2 = [(HKCodedQuantity *)v5 rawValue];
+        if (!rawValue2)
         {
           goto LABEL_19;
         }
 
-        v10 = v9;
+        v10 = rawValue2;
         v11 = self->_rawValue;
-        v12 = [(HKCodedQuantity *)v5 rawValue];
-        LODWORD(v11) = [(NSString *)v11 isEqualToString:v12];
+        rawValue3 = [(HKCodedQuantity *)v5 rawValue];
+        LODWORD(v11) = [(NSString *)v11 isEqualToString:rawValue3];
 
         if (!v11)
         {
@@ -349,24 +349,24 @@ LABEL_23:
       }
 
       comparatorCoding = self->_comparatorCoding;
-      v15 = [(HKCodedQuantity *)v5 comparatorCoding];
-      v8 = v15;
-      if (comparatorCoding == v15)
+      comparatorCoding = [(HKCodedQuantity *)v5 comparatorCoding];
+      v8 = comparatorCoding;
+      if (comparatorCoding == comparatorCoding)
       {
       }
 
       else
       {
-        v16 = [(HKCodedQuantity *)v5 comparatorCoding];
-        if (!v16)
+        comparatorCoding2 = [(HKCodedQuantity *)v5 comparatorCoding];
+        if (!comparatorCoding2)
         {
           goto LABEL_19;
         }
 
-        v17 = v16;
+        v17 = comparatorCoding2;
         v18 = self->_comparatorCoding;
-        v19 = [(HKCodedQuantity *)v5 comparatorCoding];
-        LODWORD(v18) = [(HKMedicalCoding *)v18 isEqual:v19];
+        comparatorCoding3 = [(HKCodedQuantity *)v5 comparatorCoding];
+        LODWORD(v18) = [(HKMedicalCoding *)v18 isEqual:comparatorCoding3];
 
         if (!v18)
         {
@@ -375,9 +375,9 @@ LABEL_23:
       }
 
       unitCoding = self->_unitCoding;
-      v21 = [(HKCodedQuantity *)v5 unitCoding];
-      v8 = v21;
-      if (unitCoding == v21)
+      unitCoding = [(HKCodedQuantity *)v5 unitCoding];
+      v8 = unitCoding;
+      if (unitCoding == unitCoding)
       {
 
 LABEL_24:
@@ -385,13 +385,13 @@ LABEL_24:
         goto LABEL_21;
       }
 
-      v22 = [(HKCodedQuantity *)v5 unitCoding];
-      if (v22)
+      unitCoding2 = [(HKCodedQuantity *)v5 unitCoding];
+      if (unitCoding2)
       {
-        v23 = v22;
+        v23 = unitCoding2;
         v24 = self->_unitCoding;
-        v25 = [(HKCodedQuantity *)v5 unitCoding];
-        LOBYTE(v24) = [(HKMedicalCoding *)v24 isEqual:v25];
+        unitCoding3 = [(HKCodedQuantity *)v5 unitCoding];
+        LOBYTE(v24) = [(HKMedicalCoding *)v24 isEqual:unitCoding3];
 
         if (v24)
         {

@@ -1,44 +1,44 @@
 @interface CUIKTimeTextProvider
-+ (BOOL)_use24HourFormatForLocale:(id)a3;
-+ (id)_applyFont:(id)a3 toString:(id)a4 allowSmallCaps:(BOOL)a5 otherAttributes:(id)a6;
-+ (id)_dateFormatterWithCalendar:(id)a3 dropDesignator:(BOOL)a4 designatorRequiresWhitespace:(BOOL)a5 retainZeroMinutes:(BOOL)a6 dateHasZeroMinutes:(BOOL)a7 addDate:(BOOL)a8;
-+ (id)_timeAttributedTextWithDate:(id)a3 calendar:(id)a4 droppingDesignator:(BOOL)a5 designatorRequiresWhitespace:(BOOL)a6 smallCapsAllowed:(BOOL)a7 retainZeroMinutes:(BOOL)a8 addDate:(BOOL)a9;
-+ (id)timeAttributedTextWithDate:(id)a3 calendar:(id)a4 font:(id)a5 options:(int64_t)a6;
-+ (id)timeAttributedTextWithDate:(id)a3 inTimeZone:(id)a4 calendar:(id)a5 font:(id)a6 options:(int64_t)a7;
-+ (void)force24HourFormatForUnitTests:(BOOL)a3 withLocale:(id)a4;
++ (BOOL)_use24HourFormatForLocale:(id)locale;
++ (id)_applyFont:(id)font toString:(id)string allowSmallCaps:(BOOL)caps otherAttributes:(id)attributes;
++ (id)_dateFormatterWithCalendar:(id)calendar dropDesignator:(BOOL)designator designatorRequiresWhitespace:(BOOL)whitespace retainZeroMinutes:(BOOL)minutes dateHasZeroMinutes:(BOOL)zeroMinutes addDate:(BOOL)date;
++ (id)_timeAttributedTextWithDate:(id)date calendar:(id)calendar droppingDesignator:(BOOL)designator designatorRequiresWhitespace:(BOOL)whitespace smallCapsAllowed:(BOOL)allowed retainZeroMinutes:(BOOL)minutes addDate:(BOOL)addDate;
++ (id)timeAttributedTextWithDate:(id)date calendar:(id)calendar font:(id)font options:(int64_t)options;
++ (id)timeAttributedTextWithDate:(id)date inTimeZone:(id)zone calendar:(id)calendar font:(id)font options:(int64_t)options;
++ (void)force24HourFormatForUnitTests:(BOOL)tests withLocale:(id)locale;
 + (void)resetForce24HourFormatForUnitTests;
 @end
 
 @implementation CUIKTimeTextProvider
 
-+ (id)timeAttributedTextWithDate:(id)a3 inTimeZone:(id)a4 calendar:(id)a5 font:(id)a6 options:(int64_t)a7
++ (id)timeAttributedTextWithDate:(id)date inTimeZone:(id)zone calendar:(id)calendar font:(id)font options:(int64_t)options
 {
-  v12 = a5;
+  calendarCopy = calendar;
   v13 = MEMORY[0x1E695DF58];
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v13 currentLocale];
-  [v12 setLocale:v17];
+  fontCopy = font;
+  zoneCopy = zone;
+  dateCopy = date;
+  currentLocale = [v13 currentLocale];
+  [calendarCopy setLocale:currentLocale];
 
-  [v12 setTimeZone:v15];
-  v18 = [a1 timeAttributedTextWithDate:v16 calendar:v12 font:v14 options:a7];
+  [calendarCopy setTimeZone:zoneCopy];
+  v18 = [self timeAttributedTextWithDate:dateCopy calendar:calendarCopy font:fontCopy options:options];
 
   return v18;
 }
 
-+ (id)timeAttributedTextWithDate:(id)a3 calendar:(id)a4 font:(id)a5 options:(int64_t)a6
++ (id)timeAttributedTextWithDate:(id)date calendar:(id)calendar font:(id)font options:(int64_t)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((a6 & 2) != 0)
+  dateCopy = date;
+  calendarCopy = calendar;
+  fontCopy = font;
+  if ((options & 2) != 0)
   {
     v13 = 1;
-    if ((a6 & 4) != 0)
+    if ((options & 4) != 0)
     {
 LABEL_6:
-      v14 = (a6 & 8) == 0;
+      v14 = (options & 8) == 0;
       goto LABEL_8;
     }
   }
@@ -46,7 +46,7 @@ LABEL_6:
   else
   {
     v13 = +[CUIKTextProviderUtils designatorRequiresWhitespace];
-    if ((a6 & 4) != 0)
+    if ((options & 4) != 0)
     {
       goto LABEL_6;
     }
@@ -59,12 +59,12 @@ LABEL_6:
 
   v14 = 0;
 LABEL_8:
-  LOBYTE(v20) = (a6 & 0x20) != 0;
-  v15 = [a1 _timeAttributedTextWithDate:v10 calendar:v11 droppingDesignator:a6 & 1 designatorRequiresWhitespace:v13 smallCapsAllowed:v14 retainZeroMinutes:(a6 >> 4) & 1 addDate:v20];
+  LOBYTE(v20) = (options & 0x20) != 0;
+  v15 = [self _timeAttributedTextWithDate:dateCopy calendar:calendarCopy droppingDesignator:options & 1 designatorRequiresWhitespace:v13 smallCapsAllowed:v14 retainZeroMinutes:(options >> 4) & 1 addDate:v20];
   v16 = v15;
-  if (v12)
+  if (fontCopy)
   {
-    v17 = [a1 _applyFont:v12 toString:v15 allowSmallCaps:v14 otherAttributes:MEMORY[0x1E695E0F8]];
+    v17 = [self _applyFont:fontCopy toString:v15 allowSmallCaps:v14 otherAttributes:MEMORY[0x1E695E0F8]];
   }
 
   else
@@ -77,33 +77,33 @@ LABEL_8:
   return v18;
 }
 
-+ (id)_applyFont:(id)a3 toString:(id)a4 allowSmallCaps:(BOOL)a5 otherAttributes:(id)a6
++ (id)_applyFont:(id)font toString:(id)string allowSmallCaps:(BOOL)caps otherAttributes:(id)attributes
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  fontCopy = font;
+  attributesCopy = attributes;
   v28 = *MEMORY[0x1E69DB648];
-  v29[0] = v9;
+  v29[0] = fontCopy;
   v11 = MEMORY[0x1E695DF20];
-  v12 = a4;
+  stringCopy = string;
   v13 = [v11 dictionaryWithObjects:v29 forKeys:&v28 count:1];
   v14 = objc_alloc(MEMORY[0x1E696AD40]);
-  v15 = [v12 string];
-  v16 = [v14 initWithString:v15 attributes:v13];
+  string = [stringCopy string];
+  v16 = [v14 initWithString:string attributes:v13];
 
-  v17 = [v12 length];
+  v17 = [stringCopy length];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __75__CUIKTimeTextProvider__applyFont_toString_allowSmallCaps_otherAttributes___block_invoke;
   v23[3] = &unk_1E839AA08;
-  v27 = a5;
-  v24 = v9;
-  v25 = v10;
+  capsCopy = caps;
+  v24 = fontCopy;
+  v25 = attributesCopy;
   v26 = v16;
   v18 = v16;
-  v19 = v10;
-  v20 = v9;
-  [v12 enumerateAttributesInRange:0 options:v17 usingBlock:{0, v23}];
+  v19 = attributesCopy;
+  v20 = fontCopy;
+  [stringCopy enumerateAttributesInRange:0 options:v17 usingBlock:{0, v23}];
 
   v21 = [v18 copy];
 
@@ -124,20 +124,20 @@ void __75__CUIKTimeTextProvider__applyFont_toString_allowSmallCaps_otherAttribut
   }
 }
 
-+ (id)_timeAttributedTextWithDate:(id)a3 calendar:(id)a4 droppingDesignator:(BOOL)a5 designatorRequiresWhitespace:(BOOL)a6 smallCapsAllowed:(BOOL)a7 retainZeroMinutes:(BOOL)a8 addDate:(BOOL)a9
++ (id)_timeAttributedTextWithDate:(id)date calendar:(id)calendar droppingDesignator:(BOOL)designator designatorRequiresWhitespace:(BOOL)whitespace smallCapsAllowed:(BOOL)allowed retainZeroMinutes:(BOOL)minutes addDate:(BOOL)addDate
 {
-  v9 = a8;
-  v11 = a6;
-  v12 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [a1 _dateFormatterWithCalendar:v15 dropDesignator:v12 designatorRequiresWhitespace:v11 retainZeroMinutes:v9 dateHasZeroMinutes:objc_msgSend(v15 addDate:{"component:fromDate:", 64, v16) == 0, a9}];
+  minutesCopy = minutes;
+  whitespaceCopy = whitespace;
+  designatorCopy = designator;
+  calendarCopy = calendar;
+  dateCopy = date;
+  v17 = [self _dateFormatterWithCalendar:calendarCopy dropDesignator:designatorCopy designatorRequiresWhitespace:whitespaceCopy retainZeroMinutes:minutesCopy dateHasZeroMinutes:objc_msgSend(calendarCopy addDate:{"component:fromDate:", 64, dateCopy) == 0, addDate}];
 
-  v18 = [v17 _attributedStringWithFieldsFromDate:v16];
+  v18 = [v17 _attributedStringWithFieldsFromDate:dateCopy];
 
   v19 = objc_alloc(MEMORY[0x1E696AD40]);
-  v20 = [v18 string];
-  v21 = [v19 initWithString:v20];
+  string = [v18 string];
+  v21 = [v19 initWithString:string];
 
   v22 = [v18 length];
   v25[0] = MEMORY[0x1E69E9820];
@@ -146,7 +146,7 @@ void __75__CUIKTimeTextProvider__applyFont_toString_allowSmallCaps_otherAttribut
   v25[3] = &unk_1E839AA30;
   v23 = v21;
   v26 = v23;
-  v27 = a7;
+  allowedCopy = allowed;
   [v18 enumerateAttributesInRange:0 options:v22 usingBlock:{0, v25}];
 
   return v23;
@@ -163,10 +163,10 @@ void __152__CUIKTimeTextProvider__timeAttributedTextWithDate_calendar_droppingDe
   }
 }
 
-+ (void)force24HourFormatForUnitTests:(BOOL)a3 withLocale:(id)a4
++ (void)force24HourFormatForUnitTests:(BOOL)tests withLocale:(id)locale
 {
-  v4 = a3;
-  v5 = a4;
+  testsCopy = tests;
+  localeCopy = locale;
   os_unfair_lock_lock(&force24HourFormatRegistryLock_0);
   if (!force24HourFormatRegistry_0)
   {
@@ -175,11 +175,11 @@ void __152__CUIKTimeTextProvider__timeAttributedTextWithDate_calendar_droppingDe
     force24HourFormatRegistry_0 = v6;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:testsCopy];
   v9 = force24HourFormatRegistry_0;
-  v10 = [v5 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  [v9 setObject:v8 forKeyedSubscript:localeIdentifier];
 
   os_unfair_lock_unlock(&force24HourFormatRegistryLock_0);
 }
@@ -193,46 +193,46 @@ void __152__CUIKTimeTextProvider__timeAttributedTextWithDate_calendar_droppingDe
   os_unfair_lock_unlock(&force24HourFormatRegistryLock_0);
 }
 
-+ (BOOL)_use24HourFormatForLocale:(id)a3
++ (BOOL)_use24HourFormatForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   os_unfair_lock_lock(&force24HourFormatRegistryLock_0);
   v4 = force24HourFormatRegistry_0;
-  v5 = [v3 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [v4 objectForKeyedSubscript:localeIdentifier];
 
   os_unfair_lock_unlock(&force24HourFormatRegistryLock_0);
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = CUIKShow24Hours();
+    bOOLValue = CUIKShow24Hours();
   }
 
-  v8 = v7;
+  v8 = bOOLValue;
 
   return v8;
 }
 
-+ (id)_dateFormatterWithCalendar:(id)a3 dropDesignator:(BOOL)a4 designatorRequiresWhitespace:(BOOL)a5 retainZeroMinutes:(BOOL)a6 dateHasZeroMinutes:(BOOL)a7 addDate:(BOOL)a8
++ (id)_dateFormatterWithCalendar:(id)calendar dropDesignator:(BOOL)designator designatorRequiresWhitespace:(BOOL)whitespace retainZeroMinutes:(BOOL)minutes dateHasZeroMinutes:(BOOL)zeroMinutes addDate:(BOOL)date
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
+  dateCopy = date;
+  zeroMinutesCopy = zeroMinutes;
+  minutesCopy = minutes;
+  whitespaceCopy = whitespace;
+  designatorCopy = designator;
+  calendarCopy = calendar;
   if (_dateFormatterWithCalendar_dropDesignator_designatorRequiresWhitespace_retainZeroMinutes_dateHasZeroMinutes_addDate__onceToken != -1)
   {
     +[CUIKTimeTextProvider _dateFormatterWithCalendar:dropDesignator:designatorRequiresWhitespace:retainZeroMinutes:dateHasZeroMinutes:addDate:];
   }
 
-  v15 = [v14 locale];
-  v16 = [a1 _use24HourFormatForLocale:v15];
+  locale = [calendarCopy locale];
+  v16 = [self _use24HourFormatForLocale:locale];
 
   if (v16)
   {
@@ -241,23 +241,23 @@ void __152__CUIKTimeTextProvider__timeAttributedTextWithDate_calendar_droppingDe
 
   else
   {
-    v17 = v9 & ~v10;
+    v17 = zeroMinutesCopy & ~minutesCopy;
   }
 
-  v18 = [v14 copy];
-  v19 = [[CUIKDateFormatterCacheKey alloc] initWithCalendar:v18 is24HourFormat:v16 dropDesignator:v12 canDropMinutes:v17 designatorRequiresWhitespace:v11 addDate:v8];
+  v18 = [calendarCopy copy];
+  v19 = [[CUIKDateFormatterCacheKey alloc] initWithCalendar:v18 is24HourFormat:v16 dropDesignator:designatorCopy canDropMinutes:v17 designatorRequiresWhitespace:whitespaceCopy addDate:dateCopy];
   v20 = [_dateFormatterWithCalendar_dropDesignator_designatorRequiresWhitespace_retainZeroMinutes_dateHasZeroMinutes_addDate__cache objectForKey:v19];
   if (!v20)
   {
     v20 = objc_opt_new();
     [v20 setCalendar:v18];
-    v21 = [v18 timeZone];
-    [v20 setTimeZone:v21];
+    timeZone = [v18 timeZone];
+    [v20 setTimeZone:timeZone];
 
-    v22 = [v18 locale];
-    [v20 setLocale:v22];
+    locale2 = [v18 locale];
+    [v20 setLocale:locale2];
 
-    if (v8)
+    if (dateCopy)
     {
       [v20 setDateStyle:1];
       [v20 setTimeStyle:1];
@@ -266,7 +266,7 @@ void __152__CUIKTimeTextProvider__timeAttributedTextWithDate_calendar_droppingDe
     else
     {
       v23 = @"j";
-      if (v12)
+      if (designatorCopy)
       {
         v23 = @"J";
       }
@@ -285,10 +285,10 @@ void __152__CUIKTimeTextProvider__timeAttributedTextWithDate_calendar_droppingDe
 
       v27 = v26;
       v28 = MEMORY[0x1E696AB78];
-      v29 = [v18 locale];
-      v30 = [v28 dateFormatFromTemplate:v27 options:0 locale:v29];
+      locale3 = [v18 locale];
+      v30 = [v28 dateFormatFromTemplate:v27 options:0 locale:locale3];
 
-      v31 = [CUIKTextProviderUtils timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v30 designatorRequiresWhitespace:v11];
+      v31 = [CUIKTextProviderUtils timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v30 designatorRequiresWhitespace:whitespaceCopy];
 
       [v20 setDateFormat:v31];
     }

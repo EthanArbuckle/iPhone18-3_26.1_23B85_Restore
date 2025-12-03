@@ -1,16 +1,16 @@
 @interface SFSectionDisclosureButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SFSectionDisclosureButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFSectionDisclosureButton" hasInstanceVariable:@"_labelWhenCollapsed" withType:"UILabel"];
-  [v3 validateClass:@"SFSectionDisclosureButton" hasInstanceVariable:@"_labelWhenExpanded" withType:"UILabel"];
-  [v3 validateClass:@"SFSectionDisclosureButton" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFSectionDisclosureButton" hasInstanceVariable:@"_labelWhenCollapsed" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFSectionDisclosureButton" hasInstanceVariable:@"_labelWhenExpanded" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFSectionDisclosureButton" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -26,9 +26,9 @@
   }
 
   v4 = [(SFSectionDisclosureButtonAccessibility *)self safeValueForKey:v3];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

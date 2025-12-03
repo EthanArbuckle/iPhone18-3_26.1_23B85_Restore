@@ -15,40 +15,40 @@
   v6 = completion;
   v7 = impression;
   v8 = objc_opt_new();
-  v9 = [(SKAdImpression *)v7 sourceAppStoreItemIdentifier];
-  [v8 setObject:v9 forKeyedSubscript:0x1F29BE0A0];
+  sourceAppStoreItemIdentifier = [(SKAdImpression *)v7 sourceAppStoreItemIdentifier];
+  [v8 setObject:sourceAppStoreItemIdentifier forKeyedSubscript:0x1F29BE0A0];
 
-  v10 = [(SKAdImpression *)v7 advertisedAppStoreItemIdentifier];
-  [v8 setObject:v10 forKeyedSubscript:0x1F29BE0C0];
+  advertisedAppStoreItemIdentifier = [(SKAdImpression *)v7 advertisedAppStoreItemIdentifier];
+  [v8 setObject:advertisedAppStoreItemIdentifier forKeyedSubscript:0x1F29BE0C0];
 
-  v11 = [(SKAdImpression *)v7 adNetworkIdentifier];
-  [v8 setObject:v11 forKeyedSubscript:0x1F29BE0E0];
+  adNetworkIdentifier = [(SKAdImpression *)v7 adNetworkIdentifier];
+  [v8 setObject:adNetworkIdentifier forKeyedSubscript:0x1F29BE0E0];
 
-  v12 = [(SKAdImpression *)v7 adCampaignIdentifier];
-  [v8 setObject:v12 forKeyedSubscript:0x1F29BE100];
+  adCampaignIdentifier = [(SKAdImpression *)v7 adCampaignIdentifier];
+  [v8 setObject:adCampaignIdentifier forKeyedSubscript:0x1F29BE100];
 
-  v13 = [(SKAdImpression *)v7 sourceIdentifier];
-  [v8 setObject:v13 forKeyedSubscript:0x1F29BE120];
+  sourceIdentifier = [(SKAdImpression *)v7 sourceIdentifier];
+  [v8 setObject:sourceIdentifier forKeyedSubscript:0x1F29BE120];
 
-  v14 = [(SKAdImpression *)v7 adImpressionIdentifier];
-  [v8 setObject:v14 forKeyedSubscript:0x1F29BE140];
+  adImpressionIdentifier = [(SKAdImpression *)v7 adImpressionIdentifier];
+  [v8 setObject:adImpressionIdentifier forKeyedSubscript:0x1F29BE140];
 
-  v15 = [(SKAdImpression *)v7 signature];
-  [v8 setObject:v15 forKeyedSubscript:0x1F29BE160];
+  signature = [(SKAdImpression *)v7 signature];
+  [v8 setObject:signature forKeyedSubscript:0x1F29BE160];
 
-  v16 = [(SKAdImpression *)v7 version];
-  [v8 setObject:v16 forKeyedSubscript:0x1F29BE180];
+  version = [(SKAdImpression *)v7 version];
+  [v8 setObject:version forKeyedSubscript:0x1F29BE180];
 
-  v17 = [(SKAdImpression *)v7 timestamp];
+  timestamp = [(SKAdImpression *)v7 timestamp];
 
-  [v8 setObject:v17 forKeyedSubscript:0x1F29BE1A0];
+  [v8 setObject:timestamp forKeyedSubscript:0x1F29BE1A0];
   [v8 setObject:&unk_1F29D51E0 forKeyedSubscript:0x1F29BE1C0];
   v18 = +[SKServiceBroker defaultBroker];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __49__SKAdNetwork_startImpression_completionHandler___block_invoke;
   v29[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v29[4] = a1;
+  v29[4] = self;
   v19 = [v18 storeKitSynchronousServiceWithErrorHandler:v29];
 
   v20 = _SKAdNetworkGetImpressionQueue();
@@ -59,7 +59,7 @@
   v25 = v19;
   v26 = v8;
   v27 = v6;
-  v28 = a1;
+  selfCopy = self;
   v21 = v6;
   v22 = v8;
   v23 = v19;
@@ -120,40 +120,40 @@ void __49__SKAdNetwork_startImpression_completionHandler___block_invoke_2(uint64
   v6 = completion;
   v7 = impression;
   v8 = objc_opt_new();
-  v9 = [(SKAdImpression *)v7 sourceAppStoreItemIdentifier];
-  [v8 setObject:v9 forKeyedSubscript:0x1F29BE0A0];
+  sourceAppStoreItemIdentifier = [(SKAdImpression *)v7 sourceAppStoreItemIdentifier];
+  [v8 setObject:sourceAppStoreItemIdentifier forKeyedSubscript:0x1F29BE0A0];
 
-  v10 = [(SKAdImpression *)v7 advertisedAppStoreItemIdentifier];
-  [v8 setObject:v10 forKeyedSubscript:0x1F29BE0C0];
+  advertisedAppStoreItemIdentifier = [(SKAdImpression *)v7 advertisedAppStoreItemIdentifier];
+  [v8 setObject:advertisedAppStoreItemIdentifier forKeyedSubscript:0x1F29BE0C0];
 
-  v11 = [(SKAdImpression *)v7 adNetworkIdentifier];
-  [v8 setObject:v11 forKeyedSubscript:0x1F29BE0E0];
+  adNetworkIdentifier = [(SKAdImpression *)v7 adNetworkIdentifier];
+  [v8 setObject:adNetworkIdentifier forKeyedSubscript:0x1F29BE0E0];
 
-  v12 = [(SKAdImpression *)v7 adCampaignIdentifier];
-  [v8 setObject:v12 forKeyedSubscript:0x1F29BE100];
+  adCampaignIdentifier = [(SKAdImpression *)v7 adCampaignIdentifier];
+  [v8 setObject:adCampaignIdentifier forKeyedSubscript:0x1F29BE100];
 
-  v13 = [(SKAdImpression *)v7 sourceIdentifier];
-  [v8 setObject:v13 forKeyedSubscript:0x1F29BE120];
+  sourceIdentifier = [(SKAdImpression *)v7 sourceIdentifier];
+  [v8 setObject:sourceIdentifier forKeyedSubscript:0x1F29BE120];
 
-  v14 = [(SKAdImpression *)v7 adImpressionIdentifier];
-  [v8 setObject:v14 forKeyedSubscript:0x1F29BE140];
+  adImpressionIdentifier = [(SKAdImpression *)v7 adImpressionIdentifier];
+  [v8 setObject:adImpressionIdentifier forKeyedSubscript:0x1F29BE140];
 
-  v15 = [(SKAdImpression *)v7 signature];
-  [v8 setObject:v15 forKeyedSubscript:0x1F29BE160];
+  signature = [(SKAdImpression *)v7 signature];
+  [v8 setObject:signature forKeyedSubscript:0x1F29BE160];
 
-  v16 = [(SKAdImpression *)v7 version];
-  [v8 setObject:v16 forKeyedSubscript:0x1F29BE180];
+  version = [(SKAdImpression *)v7 version];
+  [v8 setObject:version forKeyedSubscript:0x1F29BE180];
 
-  v17 = [(SKAdImpression *)v7 timestamp];
+  timestamp = [(SKAdImpression *)v7 timestamp];
 
-  [v8 setObject:v17 forKeyedSubscript:0x1F29BE1A0];
+  [v8 setObject:timestamp forKeyedSubscript:0x1F29BE1A0];
   [v8 setObject:&unk_1F29D51E0 forKeyedSubscript:0x1F29BE1C0];
   v18 = +[SKServiceBroker defaultBroker];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __47__SKAdNetwork_endImpression_completionHandler___block_invoke;
   v29[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v29[4] = a1;
+  v29[4] = self;
   v19 = [v18 storeKitSynchronousServiceWithErrorHandler:v29];
 
   v20 = _SKAdNetworkGetImpressionQueue();
@@ -164,7 +164,7 @@ void __49__SKAdNetwork_startImpression_completionHandler___block_invoke_2(uint64
   v25 = v19;
   v26 = v8;
   v27 = v6;
-  v28 = a1;
+  selfCopy = self;
   v21 = v6;
   v22 = v8;
   v23 = v19;
@@ -226,7 +226,7 @@ void __47__SKAdNetwork_endImpression_completionHandler___block_invoke_2(uint64_t
   block[1] = 3221225472;
   block[2] = __49__SKAdNetwork_registerAppForAdNetworkAttribution__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registerAppForAdNetworkAttribution_onceToken != -1)
   {
     dispatch_once(&registerAppForAdNetworkAttribution_onceToken, block);
@@ -261,7 +261,7 @@ void __49__SKAdNetwork_registerAppForAdNetworkAttribution__block_invoke_2()
   v8[1] = 3221225472;
   v8[2] = __37__SKAdNetwork_updateConversionValue___block_invoke;
   v8[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v8[4] = a1;
+  v8[4] = self;
   v6 = [v5 storeKitServiceWithErrorHandler:v8];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:conversionValue];
@@ -284,7 +284,7 @@ void __37__SKAdNetwork_updateConversionValue___block_invoke()
   v17[1] = 3221225472;
   v17[2] = __63__SKAdNetwork_updatePostbackConversionValue_completionHandler___block_invoke;
   v17[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v17[4] = a1;
+  v17[4] = self;
   v8 = [v7 storeKitSynchronousServiceWithErrorHandler:v17];
 
   v9 = _SKAdNetworkGetImpressionQueue();
@@ -293,7 +293,7 @@ void __37__SKAdNetwork_updateConversionValue___block_invoke()
   block[2] = __63__SKAdNetwork_updatePostbackConversionValue_completionHandler___block_invoke_39;
   block[3] = &unk_1E7B28000;
   v15 = conversionValue;
-  v16 = a1;
+  selfCopy = self;
   v13 = v8;
   v14 = v6;
   v10 = v6;
@@ -346,7 +346,7 @@ void __63__SKAdNetwork_updatePostbackConversionValue_completionHandler___block_i
   v22[1] = 3221225472;
   v22[2] = __75__SKAdNetwork_updatePostbackConversionValue_coarseValue_completionHandler___block_invoke;
   v22[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v22[4] = a1;
+  v22[4] = self;
   v11 = [v10 storeKitSynchronousServiceWithErrorHandler:v22];
 
   v12 = _SKAdNetworkGetImpressionQueue();
@@ -357,7 +357,7 @@ void __63__SKAdNetwork_updatePostbackConversionValue_completionHandler___block_i
   v17 = v11;
   v18 = v8;
   v20 = fineValue;
-  v21 = a1;
+  selfCopy = self;
   v19 = v9;
   v13 = v9;
   v14 = v8;
@@ -411,7 +411,7 @@ void __75__SKAdNetwork_updatePostbackConversionValue_coarseValue_completionHandl
   v25[1] = 3221225472;
   v25[2] = __86__SKAdNetwork_updatePostbackConversionValue_coarseValue_lockWindow_completionHandler___block_invoke;
   v25[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v25[4] = a1;
+  v25[4] = self;
   v13 = [v12 storeKitSynchronousServiceWithErrorHandler:v25];
 
   v14 = _SKAdNetworkGetImpressionQueue();
@@ -423,7 +423,7 @@ void __75__SKAdNetwork_updatePostbackConversionValue_coarseValue_completionHandl
   v20 = v10;
   v24 = lockWindow;
   v22 = fineValue;
-  v23 = a1;
+  selfCopy = self;
   v21 = v11;
   v15 = v11;
   v16 = v10;

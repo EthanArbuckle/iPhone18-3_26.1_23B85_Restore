@@ -1,23 +1,23 @@
 @interface MFSendLaterHeaderCollectionViewHelper
-- (BOOL)updateLayoutMarginsIfNeeded:(UIEdgeInsets)a3;
-- (BOOL)updateWidthIfNeeded:(double)a3;
+- (BOOL)updateLayoutMarginsIfNeeded:(UIEdgeInsets)needed;
+- (BOOL)updateWidthIfNeeded:(double)needed;
 - (BOOL)willContentTruncate;
-- (MFSendLaterHeaderCollectionViewHelper)initWithWidth:(double)a3 layoutMargins:(UIEdgeInsets)a4 viewScale:(double)a5;
+- (MFSendLaterHeaderCollectionViewHelper)initWithWidth:(double)width layoutMargins:(UIEdgeInsets)margins viewScale:(double)scale;
 - (UIEdgeInsets)layoutMargins;
-- (double)_widthOfString:(void *)a1;
-- (id)_convertDateToString:(uint64_t)a1;
-- (id)_convertTimeToString:(uint64_t)a1;
-- (void)precalculateWidthsWithDescription:(id)a3;
+- (double)_widthOfString:(void *)string;
+- (id)_convertDateToString:(uint64_t)string;
+- (id)_convertTimeToString:(uint64_t)string;
+- (void)precalculateWidthsWithDescription:(id)description;
 @end
 
 @implementation MFSendLaterHeaderCollectionViewHelper
 
-- (MFSendLaterHeaderCollectionViewHelper)initWithWidth:(double)a3 layoutMargins:(UIEdgeInsets)a4 viewScale:(double)a5
+- (MFSendLaterHeaderCollectionViewHelper)initWithWidth:(double)width layoutMargins:(UIEdgeInsets)margins viewScale:(double)scale
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   v12.receiver = self;
   v12.super_class = MFSendLaterHeaderCollectionViewHelper;
   result = [(MFSendLaterHeaderCollectionViewHelper *)&v12 init];
@@ -27,17 +27,17 @@
     result->_layoutMargins.left = left;
     result->_layoutMargins.bottom = bottom;
     result->_layoutMargins.right = right;
-    result->_width = a3;
-    result->_viewScale = a5;
+    result->_width = width;
+    result->_viewScale = scale;
   }
 
   return result;
 }
 
-- (void)precalculateWidthsWithDescription:(id)a3
+- (void)precalculateWidthsWithDescription:(id)description
 {
-  v10 = a3;
-  [(MFSendLaterHeaderCollectionViewHelper *)self setSendLaterLabelWidth:[(MFSendLaterHeaderCollectionViewHelper *)self _widthOfString:v10]];
+  descriptionCopy = description;
+  [(MFSendLaterHeaderCollectionViewHelper *)self setSendLaterLabelWidth:[(MFSendLaterHeaderCollectionViewHelper *)self _widthOfString:descriptionCopy]];
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v4 setDay:30];
   [v4 setYear:2888];
@@ -61,11 +61,11 @@
   [(MFSendLaterHeaderCollectionViewHelper *)self setLongestTimeWidth:[(MFSendLaterHeaderCollectionViewHelper *)self _widthOfString:v9]];
 }
 
-- (double)_widthOfString:(void *)a1
+- (double)_widthOfString:(void *)string
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (string)
   {
     v10 = *MEMORY[0x1E69DB648];
     v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -74,7 +74,7 @@
 
     v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3 attributes:v5];
     [v6 size];
-    [a1 viewScale];
+    [string viewScale];
     UIRoundToScale();
     v8 = v7;
   }
@@ -87,13 +87,13 @@
   return v8;
 }
 
-- (id)_convertDateToString:(uint64_t)a1
+- (id)_convertDateToString:(uint64_t)string
 {
   v3 = a2;
-  if (a1)
+  if (string)
   {
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v5 = [v4 dateFromComponents:v3];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v5 = [currentCalendar dateFromComponents:v3];
     v6 = [MEMORY[0x1E696AB78] localizedStringFromDate:v5 dateStyle:2 timeStyle:0];
   }
 
@@ -105,13 +105,13 @@
   return v6;
 }
 
-- (id)_convertTimeToString:(uint64_t)a1
+- (id)_convertTimeToString:(uint64_t)string
 {
   v3 = a2;
-  if (a1)
+  if (string)
   {
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v5 = [v4 dateFromComponents:v3];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v5 = [currentCalendar dateFromComponents:v3];
     v6 = [MEMORY[0x1E696AB78] localizedStringFromDate:v5 dateStyle:0 timeStyle:1];
   }
 
@@ -139,12 +139,12 @@
   return v12 >= v13;
 }
 
-- (BOOL)updateLayoutMarginsIfNeeded:(UIEdgeInsets)a3
+- (BOOL)updateLayoutMarginsIfNeeded:(UIEdgeInsets)needed
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = needed.right;
+  bottom = needed.bottom;
+  left = needed.left;
+  top = needed.top;
   [(MFSendLaterHeaderCollectionViewHelper *)self layoutMargins];
   v9 = left - v8;
   v10 = -(left - v8);
@@ -172,10 +172,10 @@
   return 1;
 }
 
-- (BOOL)updateWidthIfNeeded:(double)a3
+- (BOOL)updateWidthIfNeeded:(double)needed
 {
   [(MFSendLaterHeaderCollectionViewHelper *)self width];
-  v6 = v5 - a3;
+  v6 = v5 - needed;
   if (v6 >= 0.0)
   {
     v7 = v6;
@@ -188,7 +188,7 @@
 
   if (v7 >= 2.22044605e-16)
   {
-    [(MFSendLaterHeaderCollectionViewHelper *)self setWidth:a3];
+    [(MFSendLaterHeaderCollectionViewHelper *)self setWidth:needed];
   }
 
   return v7 >= 2.22044605e-16;

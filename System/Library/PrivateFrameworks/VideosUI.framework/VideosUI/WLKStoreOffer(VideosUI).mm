@@ -8,8 +8,8 @@
 
 - (id)vui_subscriptionOfferButtonText
 {
-  v2 = [a1 dictionary];
-  v3 = [v2 vui_stringForKey:@"ctaCopy"];
+  dictionary = [self dictionary];
+  v3 = [dictionary vui_stringForKey:@"ctaCopy"];
 
   if ([v3 length])
   {
@@ -17,30 +17,30 @@
     goto LABEL_24;
   }
 
-  if ([a1 offerType] != 4)
+  if ([self offerType] != 4)
   {
     v4 = 0;
     goto LABEL_24;
   }
 
-  v5 = [a1 title];
+  title = [self title];
   v6 = +[VUILocalizationManager sharedInstance];
   v7 = [v6 localizedStringForKey:@"TV.Button.SubscribeChannel"];
 
-  v4 = [a1 _localize:v7 token:@"channelName" value:v5];
-  v8 = [a1 subscriptionType];
-  if (v8 == 3)
+  v4 = [self _localize:v7 token:@"channelName" value:title];
+  subscriptionType = [self subscriptionType];
+  if (subscriptionType == 3)
   {
-    v12 = [a1 introOfferPeriod];
-    v10 = v12;
-    if (v12)
+    introOfferPeriod = [self introOfferPeriod];
+    v10 = introOfferPeriod;
+    if (introOfferPeriod)
     {
-      v13 = [v12 type];
+      type = [introOfferPeriod type];
       v14 = *MEMORY[0x1E69E1738];
-      if ([v13 isEqual:*MEMORY[0x1E69E1738]])
+      if ([type isEqual:*MEMORY[0x1E69E1738]])
       {
-        v15 = [v10 duration];
-        v16 = [v15 isEqualToNumber:&unk_1F5E5D788];
+        duration = [v10 duration];
+        v16 = [duration isEqualToNumber:&unk_1F5E5D788];
       }
 
       else
@@ -48,11 +48,11 @@
         v16 = 0;
       }
 
-      v17 = [v10 duration];
-      v18 = [v17 integerValue];
+      duration2 = [v10 duration];
+      integerValue = [duration2 integerValue];
 
-      v19 = [v10 type];
-      v20 = [v19 isEqual:*MEMORY[0x1E69E1740]];
+      type2 = [v10 type];
+      v20 = [type2 isEqual:*MEMORY[0x1E69E1740]];
 
       if ((v20 & 1) != 0 || v16)
       {
@@ -66,22 +66,22 @@
 
         else
         {
-          v26 = v18;
+          v26 = integerValue;
         }
 
         [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%d" error:0, v26];
         goto LABEL_20;
       }
 
-      v21 = [v10 type];
-      v22 = [v21 isEqual:v14];
+      type3 = [v10 type];
+      v22 = [type3 isEqual:v14];
 
       if (v22)
       {
         v23 = +[VUILocalizationManager sharedInstance];
         v24 = [v23 localizedStringForKey:@"TV.Button.FreeMonths"];
 
-        [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%d" error:0, v18];
+        [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%d" error:0, integerValue];
         v11 = LABEL_20:;
 
         v4 = v24;
@@ -94,12 +94,12 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v8 == 2)
+  if (subscriptionType == 2)
   {
     v9 = +[VUILocalizationManager sharedInstance];
     v10 = [v9 localizedStringForKey:@"TV.Button.SubscribeChannelFree"];
 
-    v11 = [a1 _localize:v10 token:@"channelName" value:v5];
+    v11 = [self _localize:v10 token:@"channelName" value:title];
 LABEL_21:
 
     v4 = v11;
@@ -115,8 +115,8 @@ LABEL_24:
 
 - (id)vui_subscriptionOfferDisclaimerText
 {
-  v2 = [a1 dictionary];
-  v3 = [v2 vui_stringForKey:@"legalLine"];
+  dictionary = [self dictionary];
+  v3 = [dictionary vui_stringForKey:@"legalLine"];
 
   if ([v3 length])
   {
@@ -124,42 +124,42 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  v5 = [a1 renewalPeriod];
-  if ([a1 specialOfferEligible])
+  renewalPeriod = [self renewalPeriod];
+  if ([self specialOfferEligible])
   {
-    v6 = [a1 freeTrialPeriod];
-    v7 = v6;
-    if (v6)
+    freeTrialPeriod = [self freeTrialPeriod];
+    v7 = freeTrialPeriod;
+    if (freeTrialPeriod)
     {
-      v8 = v6;
+      introOfferPeriod = freeTrialPeriod;
     }
 
     else
     {
-      v8 = [a1 introOfferPeriod];
+      introOfferPeriod = [self introOfferPeriod];
     }
 
-    v9 = v8;
+    v9 = introOfferPeriod;
 
-    v10 = [v9 type];
-    v11 = [v5 type];
-    v12 = v11;
+    type = [v9 type];
+    type2 = [renewalPeriod type];
+    v12 = type2;
     v4 = 0;
-    if (v10 && v11)
+    if (type && type2)
     {
-      v13 = [v9 duration];
-      v14 = [v13 integerValue];
+      duration = [v9 duration];
+      integerValue = [duration integerValue];
 
-      v15 = [v9 type];
-      v16 = [v15 isEqual:*MEMORY[0x1E69E1740]];
+      type3 = [v9 type];
+      v16 = [type3 isEqual:*MEMORY[0x1E69E1740]];
 
       if (v16)
       {
-        v17 = [v9 duration];
-        v14 = 12 * [v17 integerValue];
+        duration2 = [v9 duration];
+        integerValue = 12 * [duration2 integerValue];
 
         v18 = *MEMORY[0x1E69E1738];
-        v10 = v18;
+        type = v18;
       }
 
       if (_FreeTrialLocMap_onceToken != -1)
@@ -170,7 +170,7 @@ LABEL_24:
       v19 = MEMORY[0x1E696AEC0];
       v20 = _FreeTrialLocMap___freeMap;
       v33 = v12;
-      v21 = [v19 stringWithFormat:@"%@_%@", v10, v12];
+      v21 = [v19 stringWithFormat:@"%@_%@", type, v12];
       v22 = [v20 objectForKey:v21];
 
       if (v22)
@@ -178,9 +178,9 @@ LABEL_24:
         v23 = +[VUILocalizationManager sharedInstance];
         v24 = [v23 localizedStringForKey:v22];
 
-        v25 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%d" error:0, v14];
-        v26 = [a1 formattedPrice];
-        v4 = [a1 _localize:v25 token:@"price" value:v26];
+        v25 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%d" error:0, integerValue];
+        formattedPrice = [self formattedPrice];
+        v4 = [self _localize:v25 token:@"price" value:formattedPrice];
       }
 
       else
@@ -202,22 +202,22 @@ LABEL_24:
     v4 = 0;
   }
 
-  if (v5)
+  if (renewalPeriod)
   {
-    v27 = [v5 type];
+    type4 = [renewalPeriod type];
     if (_PaidSubscriptionLocMap_onceToken != -1)
     {
       [WLKStoreOffer(VideosUI) vui_subscriptionOfferDisclaimerText];
     }
 
-    v28 = [_PaidSubscriptionLocMap___paidMap objectForKey:v27];
+    v28 = [_PaidSubscriptionLocMap___paidMap objectForKey:type4];
     if (v28)
     {
       v29 = +[VUILocalizationManager sharedInstance];
       v30 = [v29 localizedStringForKey:v28];
 
-      v31 = [a1 formattedPrice];
-      v4 = [a1 _localize:v30 token:@"price" value:v31];
+      formattedPrice2 = [self formattedPrice];
+      v4 = [self _localize:v30 token:@"price" value:formattedPrice2];
     }
 
     else

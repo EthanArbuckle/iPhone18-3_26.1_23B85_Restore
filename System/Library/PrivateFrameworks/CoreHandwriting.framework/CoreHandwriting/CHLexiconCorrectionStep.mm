@@ -1,28 +1,28 @@
 @interface CHLexiconCorrectionStep
-+ (id)validatedTokenForCorrectedToken:(id)a3 rawToken:(id)a4 autoCapitalizationMode:(int)a5;
-- (CHLexiconCorrectionStep)initWithAutoCapitalizationMode:(int)a3 shouldAutoCorrect:(BOOL)a4 shouldAutoCapitalize:(BOOL)a5 shouldCreatePseudoTokens:(BOOL)a6 locale:(id)a7 staticLexicon:(_LXLexicon *)a8 customLexicon:(_LXLexicon *)cf phraseLexicon:(_LXLexicon *)a10 customPhraseLexicon:(_LXLexicon *)a11 spellChecker:(id)a12 lmVocabulary:(void *)a13 ovsStringChecker:(id)a14 textReplacements:(id)a15;
++ (id)validatedTokenForCorrectedToken:(id)token rawToken:(id)rawToken autoCapitalizationMode:(int)mode;
+- (CHLexiconCorrectionStep)initWithAutoCapitalizationMode:(int)mode shouldAutoCorrect:(BOOL)correct shouldAutoCapitalize:(BOOL)capitalize shouldCreatePseudoTokens:(BOOL)tokens locale:(id)locale staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)cf phraseLexicon:(_LXLexicon *)self0 customPhraseLexicon:(_LXLexicon *)self1 spellChecker:(id)self2 lmVocabulary:(void *)self3 ovsStringChecker:(id)self4 textReplacements:(id)self5;
 - (ObjectRef<const)staticLexicon;
 - (id).cxx_construct;
-- (id)process:(id)a3 options:(id)a4;
-- (void)setStaticLexicon:(ObjectRef<const _LXLexicon *>)a3;
+- (id)process:(id)process options:(id)options;
+- (void)setStaticLexicon:(ObjectRef<const _LXLexicon *>)lexicon;
 @end
 
 @implementation CHLexiconCorrectionStep
 
-+ (id)validatedTokenForCorrectedToken:(id)a3 rawToken:(id)a4 autoCapitalizationMode:(int)a5
++ (id)validatedTokenForCorrectedToken:(id)token rawToken:(id)rawToken autoCapitalizationMode:(int)mode
 {
-  v7 = a3;
-  v219 = a4;
+  tokenCopy = token;
+  rawTokenCopy = rawToken;
   if (qword_1EA84DBF8 != -1)
   {
     dispatch_once(&qword_1EA84DBF8, &unk_1EF1BFA78);
   }
 
-  v13 = objc_msgSend_string(v7, v8, v9, v10, v11, v12);
-  v19 = objc_msgSend_string(v219, v14, v15, v16, v17, v18);
+  v13 = objc_msgSend_string(tokenCopy, v8, v9, v10, v11, v12);
+  v19 = objc_msgSend_string(rawTokenCopy, v14, v15, v16, v17, v18);
   isEqualToString = objc_msgSend_isEqualToString_(v13, v20, v19, v21, v22, v23);
 
-  v25 = v7;
+  v25 = tokenCopy;
   v31 = v25;
   v32 = v25;
   if (isEqualToString)
@@ -30,9 +30,9 @@
     goto LABEL_42;
   }
 
-  v218 = a5;
+  modeCopy = mode;
   v33 = objc_msgSend_string(v25, v26, v27, v28, v29, v30);
-  v39 = objc_msgSend_string(v219, v34, v35, v36, v37, v38);
+  v39 = objc_msgSend_string(rawTokenCopy, v34, v35, v36, v37, v38);
   v44 = objc_msgSend_caseInsensitiveCompare_(v33, v40, v39, v41, v42, v43);
 
   v50 = v31;
@@ -54,8 +54,8 @@
   objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v56, v70, 0, v68, 2, v222);
 
   v76 = objc_msgSend_array(MEMORY[0x1E695DF70], v71, v72, v73, v74, v75);
-  v82 = objc_msgSend_string(v219, v77, v78, v79, v80, v81);
-  v88 = objc_msgSend_string(v219, v83, v84, v85, v86, v87);
+  v82 = objc_msgSend_string(rawTokenCopy, v77, v78, v79, v80, v81);
+  v88 = objc_msgSend_string(rawTokenCopy, v83, v84, v85, v86, v87);
   v94 = objc_msgSend_length(v88, v89, v90, v91, v92, v93);
   v220[0] = MEMORY[0x1E69E9820];
   v220[1] = 3221225472;
@@ -134,7 +134,7 @@ LABEL_9:
 
   if ((v113 & 1) == 0)
   {
-    v50 = v219;
+    v50 = rawTokenCopy;
 
     goto LABEL_25;
   }
@@ -145,7 +145,7 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-  v134 = objc_msgSend_string(v219, v45, v46, v47, v48, v49);
+  v134 = objc_msgSend_string(rawTokenCopy, v45, v46, v47, v48, v49);
   v138 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v134, v135, @".", &stru_1EF1C0318, v136, v137);
   v144 = objc_msgSend_string(v31, v139, v140, v141, v142, v143);
   v148 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v144, v145, @".", &stru_1EF1C0318, v146, v147);
@@ -153,33 +153,33 @@ LABEL_27:
 
   if (!v153)
   {
-    v159 = objc_msgSend_string(v219, v154, v155, v156, v157, v158);
+    v159 = objc_msgSend_string(rawTokenCopy, v154, v155, v156, v157, v158);
     isAbbreviation = objc_msgSend_isAbbreviation(v159, v160, v161, v162, v163, v164);
 
-    v166 = v219;
+    v166 = rawTokenCopy;
     if (isAbbreviation)
     {
       goto LABEL_41;
     }
   }
 
-  if (v218 == 5)
+  if (modeCopy == 5)
   {
     goto LABEL_40;
   }
 
-  v167 = objc_msgSend_string(v219, v154, v155, v156, v157, v158);
+  v167 = objc_msgSend_string(rawTokenCopy, v154, v155, v156, v157, v158);
   if (objc_msgSend_countSubstringsWithOptions_(v167, v168, 2, v169, v170, v171) <= 4)
   {
-    v177 = objc_msgSend_string(v219, v172, v173, v174, v175, v176);
+    v177 = objc_msgSend_string(rawTokenCopy, v172, v173, v174, v175, v176);
     if (objc_msgSend_isAllUppercase(v177, v178, v179, v180, v181, v182))
     {
-      v188 = objc_msgSend_properties(v219, v183, v184, v185, v186, v187);
+      v188 = objc_msgSend_properties(rawTokenCopy, v183, v184, v185, v186, v187);
 
-      v166 = v219;
+      v166 = rawTokenCopy;
       if ((v188 & 4) != 0)
       {
-        if (v218 != 6)
+        if (modeCopy != 6)
         {
           goto LABEL_40;
         }
@@ -191,13 +191,13 @@ LABEL_27:
     }
   }
 
-  if (v218 != 6)
+  if (modeCopy != 6)
   {
     goto LABEL_40;
   }
 
 LABEL_37:
-  v194 = objc_msgSend_string(v219, v189, v190, v191, v192, v193);
+  v194 = objc_msgSend_string(rawTokenCopy, v189, v190, v191, v192, v193);
   v200 = objc_msgSend_string(v31, v195, v196, v197, v198, v199);
   if (objc_msgSend_caseInsensitiveCompare_(v194, v201, v200, v202, v203, v204) || (objc_msgSend_inputSources(v31, v205, v206, v207, v208, v209) & 0x100) == 0)
   {
@@ -207,7 +207,7 @@ LABEL_37:
 
   v216 = objc_msgSend_properties(v31, v210, v211, v212, v213, v214);
 
-  v166 = v219;
+  v166 = rawTokenCopy;
   if ((v216 & 0x200) != 0)
   {
 LABEL_40:
@@ -222,12 +222,12 @@ LABEL_42:
   return v32;
 }
 
-- (CHLexiconCorrectionStep)initWithAutoCapitalizationMode:(int)a3 shouldAutoCorrect:(BOOL)a4 shouldAutoCapitalize:(BOOL)a5 shouldCreatePseudoTokens:(BOOL)a6 locale:(id)a7 staticLexicon:(_LXLexicon *)a8 customLexicon:(_LXLexicon *)cf phraseLexicon:(_LXLexicon *)a10 customPhraseLexicon:(_LXLexicon *)a11 spellChecker:(id)a12 lmVocabulary:(void *)a13 ovsStringChecker:(id)a14 textReplacements:(id)a15
+- (CHLexiconCorrectionStep)initWithAutoCapitalizationMode:(int)mode shouldAutoCorrect:(BOOL)correct shouldAutoCapitalize:(BOOL)capitalize shouldCreatePseudoTokens:(BOOL)tokens locale:(id)locale staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)cf phraseLexicon:(_LXLexicon *)self0 customPhraseLexicon:(_LXLexicon *)self1 spellChecker:(id)self2 lmVocabulary:(void *)self3 ovsStringChecker:(id)self4 textReplacements:(id)self5
 {
-  v51 = a7;
-  v50 = a12;
-  v49 = a14;
-  v48 = a15;
+  localeCopy = locale;
+  checkerCopy = checker;
+  stringCheckerCopy = stringChecker;
+  replacementsCopy = replacements;
   v52.receiver = self;
   v52.super_class = CHLexiconCorrectionStep;
   v22 = [(CHLexiconCorrectionStep *)&v52 init];
@@ -235,16 +235,16 @@ LABEL_42:
   v24 = v22;
   if (v22)
   {
-    v22->_autoCapitalizationMode = a3;
-    v22->_shouldAutoCorrect = a4;
-    v22->_shouldAutoCapitalize = a5;
-    v22->_shouldCreatePseudoTokens = a6;
-    objc_storeStrong(&v22->_locale, a7);
-    if (a8)
+    v22->_autoCapitalizationMode = mode;
+    v22->_shouldAutoCorrect = correct;
+    v22->_shouldAutoCapitalize = capitalize;
+    v22->_shouldCreatePseudoTokens = tokens;
+    objc_storeStrong(&v22->_locale, locale);
+    if (lexicon)
     {
-      CFRetain(a8);
+      CFRetain(lexicon);
       mCFObject = v24->_staticLexicon.mCFObject;
-      v24->_staticLexicon.mCFObject = a8;
+      v24->_staticLexicon.mCFObject = lexicon;
       if (mCFObject)
       {
         CFRelease(mCFObject);
@@ -262,36 +262,36 @@ LABEL_42:
       }
     }
 
-    if (a10)
+    if (phraseLexicon)
     {
-      CFRetain(a10);
+      CFRetain(phraseLexicon);
       v27 = v24->_phraseLexicon.mCFObject;
-      v24->_phraseLexicon.mCFObject = a10;
+      v24->_phraseLexicon.mCFObject = phraseLexicon;
       if (v27)
       {
         CFRelease(v27);
       }
     }
 
-    if (a11)
+    if (customPhraseLexicon)
     {
-      CFRetain(a11);
+      CFRetain(customPhraseLexicon);
       v28 = v24->_customPhraseLexicon.mCFObject;
-      v24->_customPhraseLexicon.mCFObject = a11;
+      v24->_customPhraseLexicon.mCFObject = customPhraseLexicon;
       if (v28)
       {
         CFRelease(v28);
       }
     }
 
-    v24->_lmVocabulary = a13;
-    objc_storeStrong(p_isa + 7, a14);
-    objc_storeStrong(p_isa + 8, a12);
+    v24->_lmVocabulary = vocabulary;
+    objc_storeStrong(p_isa + 7, stringChecker);
+    objc_storeStrong(p_isa + 8, checker);
     v33 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x1E696AB08], v29, @"'.-", v30, v31, v32);
     consumableStrokesCharSet = v24->_consumableStrokesCharSet;
     v24->_consumableStrokesCharSet = v33;
 
-    objc_storeStrong(p_isa + 9, a15);
+    objc_storeStrong(p_isa + 9, replacements);
     v39 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x1E696AB08], v35, @"．！？；：。", v36, v37, v38);
     fullWidthPunctuationThatExpectsUppercaseAfter = v24->_fullWidthPunctuationThatExpectsUppercaseAfter;
     v24->_fullWidthPunctuationThatExpectsUppercaseAfter = v39;
@@ -304,13 +304,13 @@ LABEL_42:
   return v24;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v941 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v827 = a4;
-  v857 = v5;
-  v11 = objc_msgSend_leftContext(v5, v6, v7, v8, v9, v10);
+  processCopy = process;
+  optionsCopy = options;
+  v857 = processCopy;
+  v11 = objc_msgSend_leftContext(processCopy, v6, v7, v8, v9, v10);
   v837 = v11;
   if (v11 && objc_msgSend_length(v11, v12, v13, v14, v15, v16))
   {
@@ -990,11 +990,11 @@ LABEL_102:
   return self;
 }
 
-- (void)setStaticLexicon:(ObjectRef<const _LXLexicon *>)a3
+- (void)setStaticLexicon:(ObjectRef<const _LXLexicon *>)lexicon
 {
   mCFObject = self->_staticLexicon.mCFObject;
-  v5 = *a3.mCFObject;
-  self->_staticLexicon.mCFObject = *a3.mCFObject;
+  v5 = *lexicon.mCFObject;
+  self->_staticLexicon.mCFObject = *lexicon.mCFObject;
   if (v5)
   {
     CFRetain(v5);

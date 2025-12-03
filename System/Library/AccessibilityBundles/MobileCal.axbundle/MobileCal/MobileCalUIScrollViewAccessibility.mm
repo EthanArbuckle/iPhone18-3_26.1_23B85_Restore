@@ -1,17 +1,17 @@
 @interface MobileCalUIScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityDrawsFocusRingWhenChildrenFocused;
 - (UIEdgeInsets)_accessibilityVisibleContentInset;
-- (id)_accessibilityFirstContainedElementForTechnology:(id)a3 honoringGroups:(BOOL)a4 shouldAlwaysScroll:(BOOL)a5;
+- (id)_accessibilityFirstContainedElementForTechnology:(id)technology honoringGroups:(BOOL)groups shouldAlwaysScroll:(BOOL)scroll;
 @end
 
 @implementation MobileCalUIScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"InfiniteScrollViewController"];
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"firstViewOnScreen" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"InfiniteScrollViewController"];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"firstViewOnScreen" withFullSignature:{"@", 0}];
 }
 
 - (UIEdgeInsets)_accessibilityVisibleContentInset
@@ -23,8 +23,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MobileCalUIScrollViewAccessibility *)self accessibilityIdentifier];
-  v12 = [v11 isEqualToString:@"_AXWeekViewScrollViewIdentifier"];
+  accessibilityIdentifier = [(MobileCalUIScrollViewAccessibility *)self accessibilityIdentifier];
+  v12 = [accessibilityIdentifier isEqualToString:@"_AXWeekViewScrollViewIdentifier"];
 
   if (v12)
   {
@@ -62,23 +62,23 @@
 
 - (BOOL)_accessibilityDrawsFocusRingWhenChildrenFocused
 {
-  v3 = [(MobileCalUIScrollViewAccessibility *)self _accessibilityIsFKARunningForFocusItem];
-  if (v3)
+  _accessibilityIsFKARunningForFocusItem = [(MobileCalUIScrollViewAccessibility *)self _accessibilityIsFKARunningForFocusItem];
+  if (_accessibilityIsFKARunningForFocusItem)
   {
-    v4 = [(MobileCalUIScrollViewAccessibility *)self accessibilityIdentification];
-    v5 = [v4 isEqualToString:@"_AXWeekScrollViewIdentifier"];
+    accessibilityIdentification = [(MobileCalUIScrollViewAccessibility *)self accessibilityIdentification];
+    v5 = [accessibilityIdentification isEqualToString:@"_AXWeekScrollViewIdentifier"];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_accessibilityIsFKARunningForFocusItem) = v5;
   }
 
-  return v3;
+  return _accessibilityIsFKARunningForFocusItem;
 }
 
-- (id)_accessibilityFirstContainedElementForTechnology:(id)a3 honoringGroups:(BOOL)a4 shouldAlwaysScroll:(BOOL)a5
+- (id)_accessibilityFirstContainedElementForTechnology:(id)technology honoringGroups:(BOOL)groups shouldAlwaysScroll:(BOOL)scroll
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  scrollCopy = scroll;
+  groupsCopy = groups;
+  technologyCopy = technology;
   v9 = [(MobileCalUIScrollViewAccessibility *)self safeValueForKey:@"delegate"];
   NSClassFromString(&cfstr_Infinitescroll_0.isa);
   isKindOfClass = objc_opt_isKindOfClass();
@@ -86,14 +86,14 @@
   if (isKindOfClass)
   {
     v11 = [(MobileCalUIScrollViewAccessibility *)self safeValueForKeyPath:@"delegate.firstViewOnScreen"];
-    v12 = [v11 _accessibilityFirstContainedElementForTechnology:v8 honoringGroups:v6 shouldAlwaysScroll:v5];
+    v12 = [v11 _accessibilityFirstContainedElementForTechnology:technologyCopy honoringGroups:groupsCopy shouldAlwaysScroll:scrollCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = MobileCalUIScrollViewAccessibility;
-    v12 = [(MobileCalUIScrollViewAccessibility *)&v14 _accessibilityFirstContainedElementForTechnology:v8 honoringGroups:v6 shouldAlwaysScroll:v5];
+    v12 = [(MobileCalUIScrollViewAccessibility *)&v14 _accessibilityFirstContainedElementForTechnology:technologyCopy honoringGroups:groupsCopy shouldAlwaysScroll:scrollCopy];
   }
 
   return v12;

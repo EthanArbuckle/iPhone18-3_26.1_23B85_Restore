@@ -1,21 +1,21 @@
 @interface NameAndPhotoUtilities
 - (void)handleIdsStatusChanged;
-- (void)handlePersonalNicknameChanged:(id)a3;
+- (void)handlePersonalNicknameChanged:(id)changed;
 @end
 
 @implementation NameAndPhotoUtilities
 
 - (void)handleIdsStatusChanged
 {
-  v2 = self;
+  selfCopy = self;
   NameAndPhotoUtilities.handleIdsStatusChanged()();
 }
 
-- (void)handlePersonalNicknameChanged:(id)a3
+- (void)handlePersonalNicknameChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  NameAndPhotoUtilities.handlePersonalNicknameChanged(_:)(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  NameAndPhotoUtilities.handlePersonalNicknameChanged(_:)(changedCopy);
 }
 
 @end

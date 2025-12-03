@@ -1,17 +1,17 @@
 @interface TextWithIconCell
-- (_TtC15HealthRecordsUI16TextWithIconCell)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUI16TextWithIconCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15HealthRecordsUI16TextWithIconCell)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUI16TextWithIconCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation TextWithIconCell
 
-- (_TtC15HealthRecordsUI16TextWithIconCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15HealthRecordsUI16TextWithIconCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D139016C();
+    identifier = sub_1D139016C();
     v6 = v5;
   }
 
@@ -20,10 +20,10 @@
     v6 = 0;
   }
 
-  return sub_1D121A528(a3, a4, v6);
+  return sub_1D121A528(style, identifier, v6);
 }
 
-- (_TtC15HealthRecordsUI16TextWithIconCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI16TextWithIconCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI16TextWithIconCell____lazy_storage___iconView) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI16TextWithIconCell____lazy_storage___titleLabel) = 0;

@@ -1,8 +1,8 @@
 @interface TRITempDirScopeGuard
-+ (BOOL)ifUnreferencedCleanupPath:(id)a3;
++ (BOOL)ifUnreferencedCleanupPath:(id)path;
 + (id)refCountsLock;
 - (BOOL)dispose;
-- (TRITempDirScopeGuard)initWithPath:(id)a3;
+- (TRITempDirScopeGuard)initWithPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -32,17 +32,17 @@ void __37__TRITempDirScopeGuard_refCountsLock__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (TRITempDirScopeGuard)initWithPath:(id)a3
+- (TRITempDirScopeGuard)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = TRITempDirScopeGuard;
   v6 = [(TRITempDirScopeGuard *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
-    v8 = [objc_opt_class() refCountsLock];
+    objc_storeStrong(&v6->_path, path);
+    refCountsLock = [objc_opt_class() refCountsLock];
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
@@ -51,11 +51,11 @@ void __37__TRITempDirScopeGuard_refCountsLock__block_invoke()
     v12[1] = 3221225472;
     v12[2] = __37__TRITempDirScopeGuard_initWithPath___block_invoke;
     v12[3] = &unk_279DE5668;
-    v13 = v5;
+    v13 = pathCopy;
     v15 = &v16;
     v9 = v7;
     v14 = v9;
-    [v8 runWithLockAcquired:v12];
+    [refCountsLock runWithLockAcquired:v12];
     if ((v17[3] & 1) == 0)
     {
       v9->_isDisposed = 1;
@@ -150,7 +150,7 @@ LABEL_13:
 
 - (BOOL)dispose
 {
-  v4 = [objc_opt_class() refCountsLock];
+  refCountsLock = [objc_opt_class() refCountsLock];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -162,7 +162,7 @@ LABEL_13:
   v6[5] = &v7;
   v6[6] = a2;
   v6[4] = self;
-  [v4 runWithLockAcquired:v6];
+  [refCountsLock runWithLockAcquired:v6];
   LOBYTE(a2) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -244,22 +244,22 @@ void __31__TRITempDirScopeGuard_dispose__block_invoke(uint64_t a1, void *a2)
   [(TRITempDirScopeGuard *)&v3 dealloc];
 }
 
-+ (BOOL)ifUnreferencedCleanupPath:(id)a3
++ (BOOL)ifUnreferencedCleanupPath:(id)path
 {
-  v3 = a3;
-  v4 = [[TRITempDirScopeGuard alloc] initWithPath:v3];
+  pathCopy = path;
+  v4 = [[TRITempDirScopeGuard alloc] initWithPath:pathCopy];
 
   if (v4)
   {
-    v5 = [(TRITempDirScopeGuard *)v4 dispose];
+    dispose = [(TRITempDirScopeGuard *)v4 dispose];
   }
 
   else
   {
-    v5 = 0;
+    dispose = 0;
   }
 
-  return v5;
+  return dispose;
 }
 
 @end

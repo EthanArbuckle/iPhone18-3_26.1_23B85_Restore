@@ -1,10 +1,10 @@
 @interface VCPPetsPoseImageRequest
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
 - (VCPPetsPoseImageRequest)init;
-- (VCPPetsPoseImageRequest)initWithOptions:(id)a3;
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5;
-- (int)parseResults:(id)a3 observations:(id)a4;
+- (VCPPetsPoseImageRequest)initWithOptions:(id)options;
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error;
+- (int)parseResults:(id)results observations:(id)observations;
 @end
 
 @implementation VCPPetsPoseImageRequest
@@ -20,12 +20,12 @@
   return 0;
 }
 
-- (VCPPetsPoseImageRequest)initWithOptions:(id)a3
+- (VCPPetsPoseImageRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = VCPPetsPoseImageRequest;
-  v5 = [(VCPRequest *)&v14 initWithOptions:v4];
+  v5 = [(VCPRequest *)&v14 initWithOptions:optionsCopy];
   v6 = v5;
   if (v5)
   {
@@ -62,19 +62,19 @@
   return v12;
 }
 
-- (int)parseResults:(id)a3 observations:(id)a4
+- (int)parseResults:(id)results observations:(id)observations
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v33 = v5;
-  v34 = a4;
-  if (v34)
+  resultsCopy = results;
+  v33 = resultsCopy;
+  observationsCopy = observations;
+  if (observationsCopy)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = v5;
+    obj = resultsCopy;
     v6 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v6)
     {
@@ -102,7 +102,7 @@ LABEL_21:
           }
 
           v36 = objc_alloc_init(VCPPetsObservation);
-          v8 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v39 = 0u;
           v40 = 0u;
           v37 = 0u;
@@ -140,7 +140,7 @@ LABEL_21:
                 [v20 floatValue];
                 [(VCPKeypoint *)v14 setConfidence:?];
 
-                [v8 addObject:v14];
+                [array addObject:v14];
               }
 
               v10 = [v9 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -153,7 +153,7 @@ LABEL_21:
             }
           }
 
-          [(VCPPetsObservation *)v36 setKeypoints:v8];
+          [(VCPPetsObservation *)v36 setKeypoints:array];
           v21 = [v30 objectForKeyedSubscript:@"attributes"];
           v22 = [v21 objectForKeyedSubscript:@"petsBounds"];
           v48 = NSRectFromString(v22);
@@ -161,11 +161,11 @@ LABEL_21:
 
           v23 = [v30 objectForKeyedSubscript:@"attributes"];
           v24 = [v23 objectForKeyedSubscript:@"petsType"];
-          v25 = [v24 intValue];
+          intValue = [v24 intValue];
 
-          [(VCPPetsObservation *)v36 setPetsType:v25 != 0];
+          [(VCPPetsObservation *)v36 setPetsType:intValue != 0];
           [(VCPPetsObservation *)v36 setRevision:1];
-          [v34 addObject:v36];
+          [observationsCopy addObject:v36];
         }
 
         v26 = 0;
@@ -195,24 +195,24 @@ LABEL_23:
   return v26;
 }
 
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error
 {
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0;
   analyzer = self->_analyzer;
   if (analyzer)
   {
     v17 = 0;
-    v10 = [(VCPImagePetsKeypointsAnalyzer *)analyzer analyzePixelBuffer:a3 flags:&v18 results:&v17 cancel:&__block_literal_global_75];
+    v10 = [(VCPImagePetsKeypointsAnalyzer *)analyzer analyzePixelBuffer:image flags:&v18 results:&v17 cancel:&__block_literal_global_75];
     v11 = v17;
     v12 = v11;
     if (!v10)
     {
       v13 = [v11 objectForKeyedSubscript:@"PetsKeypointsResults"];
 
-      if (!v13 || ([v12 objectForKeyedSubscript:@"PetsKeypointsResults"], v14 = objc_claimAutoreleasedReturnValue(), v10 = -[VCPPetsPoseImageRequest parseResults:observations:](self, "parseResults:observations:", v14, v8), v14, !v10))
+      if (!v13 || ([v12 objectForKeyedSubscript:@"PetsKeypointsResults"], v14 = objc_claimAutoreleasedReturnValue(), v10 = -[VCPPetsPoseImageRequest parseResults:observations:](self, "parseResults:observations:", v14, array), v14, !v10))
       {
-        v15 = v8;
+        v15 = array;
         goto LABEL_10;
       }
     }
@@ -224,10 +224,10 @@ LABEL_23:
     v10 = -18;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:0];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -240,7 +240,7 @@ LABEL_10:
   return v15;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
   analyzer = self->_analyzer;
   if (analyzer)
@@ -255,7 +255,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
   analyzer = self->_analyzer;
   self->_analyzer = 0;

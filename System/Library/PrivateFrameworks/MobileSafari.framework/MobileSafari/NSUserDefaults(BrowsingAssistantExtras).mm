@@ -8,15 +8,15 @@
 
 - (id)browsingAssistant_favoritedMenuActions
 {
-  v2 = [a1 objectForKey:@"SFFavoritedMenuActions"];
+  v2 = [self objectForKey:@"SFFavoritedMenuActions"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ![v2 safari_containsObjectPassingTest:&__block_literal_global_111])
   {
-    if (([a1 BOOLForKey:@"SFDidMigrateAutoFillFeedbackOutOfFavoritedMenuActions"] & 1) == 0)
+    if (([self BOOLForKey:@"SFDidMigrateAutoFillFeedbackOutOfFavoritedMenuActions"] & 1) == 0)
     {
       v4 = [v2 safari_arrayByRemovingObject:@"PageMenuActionReportAutoFillIssue"];
-      [a1 setObject:v4 forKey:@"SFFavoritedMenuActions"];
-      [a1 setBool:1 forKey:@"SFDidMigrateAutoFillFeedbackOutOfFavoritedMenuActions"];
+      [self setObject:v4 forKey:@"SFFavoritedMenuActions"];
+      [self setBool:1 forKey:@"SFDidMigrateAutoFillFeedbackOutOfFavoritedMenuActions"];
 
       v2 = v4;
     }
@@ -27,7 +27,7 @@
 
   else
   {
-    [a1 setObject:0 forKey:@"SFFavoritedMenuActions"];
+    [self setObject:0 forKey:@"SFFavoritedMenuActions"];
     v3 = MEMORY[0x1E695E0F0];
   }
 
@@ -39,8 +39,8 @@
   v4 = a3;
   if (SFIsMenuActionConfigurable(v4))
   {
-    v5 = [a1 browsingAssistant_favoritedMenuActions];
-    v6 = [v5 containsObject:v4];
+    browsingAssistant_favoritedMenuActions = [self browsingAssistant_favoritedMenuActions];
+    v6 = [browsingAssistant_favoritedMenuActions containsObject:v4];
   }
 
   else
@@ -56,20 +56,20 @@
   v8 = a3;
   if (SFIsMenuActionConfigurable(v8))
   {
-    v6 = [a1 browsingAssistant_favoritedMenuActions];
-    if ([v6 containsObject:v8] != a4)
+    browsingAssistant_favoritedMenuActions = [self browsingAssistant_favoritedMenuActions];
+    if ([browsingAssistant_favoritedMenuActions containsObject:v8] != a4)
     {
       if (a4)
       {
-        [v6 arrayByAddingObject:v8];
+        [browsingAssistant_favoritedMenuActions arrayByAddingObject:v8];
       }
 
       else
       {
-        [v6 safari_arrayByRemovingObject:v8];
+        [browsingAssistant_favoritedMenuActions safari_arrayByRemovingObject:v8];
       }
       v7 = ;
-      [a1 setObject:v7 forKey:@"SFFavoritedMenuActions"];
+      [self setObject:v7 forKey:@"SFFavoritedMenuActions"];
     }
   }
 }

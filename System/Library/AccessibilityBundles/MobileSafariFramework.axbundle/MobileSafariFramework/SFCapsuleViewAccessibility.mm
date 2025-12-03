@@ -1,16 +1,16 @@
 @interface SFCapsuleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 @end
 
 @implementation SFCapsuleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFCapsuleCollectionView" hasInstanceVariable:@"_items" withType:"NSArray"];
-  [v3 validateClass:@"SFCapsuleCollectionView" hasInstanceVariable:@"_selectedItemIndex" withType:"q"];
-  [v3 validateClass:@"SFCapsuleCollectionViewItem" hasInstanceMethod:@"capsuleView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFCapsuleCollectionView" hasInstanceVariable:@"_items" withType:"NSArray"];
+  [validationsCopy validateClass:@"SFCapsuleCollectionView" hasInstanceVariable:@"_selectedItemIndex" withType:"q"];
+  [validationsCopy validateClass:@"SFCapsuleCollectionViewItem" hasInstanceMethod:@"capsuleView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityElementsHidden

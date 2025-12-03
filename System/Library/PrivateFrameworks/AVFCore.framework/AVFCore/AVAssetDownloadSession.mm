@@ -1,21 +1,21 @@
 @interface AVAssetDownloadSession
-+ (id)assetDownloadSessionWithAsset:(id)a3 destinationURL:(id)a4 options:(id)a5;
-+ (id)assetDownloadSessionWithAsset:(id)a3 mediaSelections:(id)a4 destinationURL:(id)a5 options:(id)a6;
-+ (id)assetDownloadSessionWithDownloadToken:(unint64_t)a3;
-+ (id)assetDownloadSessionWithURL:(id)a3 destinationURL:(id)a4 options:(id)a5;
-+ (void)registerDownloadLocation:(id)a3 forURLAsset:(id)a4;
++ (id)assetDownloadSessionWithAsset:(id)asset destinationURL:(id)l options:(id)options;
++ (id)assetDownloadSessionWithAsset:(id)asset mediaSelections:(id)selections destinationURL:(id)l options:(id)options;
++ (id)assetDownloadSessionWithDownloadToken:(unint64_t)token;
++ (id)assetDownloadSessionWithURL:(id)l destinationURL:(id)rL options:(id)options;
++ (void)registerDownloadLocation:(id)location forURLAsset:(id)asset;
 - (AVAssetDownloadSession)init;
-- (AVAssetDownloadSession)initWithAsset:(id)a3 mediaSelections:(id)a4 destinationURL:(id)a5 options:(id)a6;
-- (AVAssetDownloadSession)initWithDownloadToken:(unint64_t)a3;
-- (AVAssetDownloadSession)initWithURL:(id)a3 destinationURL:(id)a4 options:(id)a5;
-- (BOOL)ensureProgressTimerIsRunningOnQueueWithError:(id *)a3;
+- (AVAssetDownloadSession)initWithAsset:(id)asset mediaSelections:(id)selections destinationURL:(id)l options:(id)options;
+- (AVAssetDownloadSession)initWithDownloadToken:(unint64_t)token;
+- (AVAssetDownloadSession)initWithURL:(id)l destinationURL:(id)rL options:(id)options;
+- (BOOL)ensureProgressTimerIsRunningOnQueueWithError:(id *)error;
 - (NSError)error;
-- (OpaqueFigAsset)_createDuplicateFigAssetFromAVAsset:(id)a3 options:(id)a4;
+- (OpaqueFigAsset)_createDuplicateFigAssetFromAVAsset:(id)asset options:(id)options;
 - (id)_common_init;
-- (id)_errorForFigNotificationPayload:(__CFDictionary *)a3 key:(__CFString *)a4;
-- (id)_errorFromAssetNotificationPayload:(id)a3;
-- (id)_setupFigClientObjectForFileDownload:(id)a3;
-- (id)_setupFigClientObjectForStreaming:(id)a3;
+- (id)_errorForFigNotificationPayload:(__CFDictionary *)payload key:(__CFString *)key;
+- (id)_errorFromAssetNotificationPayload:(id)payload;
+- (id)_setupFigClientObjectForFileDownload:(id)download;
+- (id)_setupFigClientObjectForStreaming:(id)streaming;
 - (id)_startOnQueue;
 - (id)_startOnQueueFirstTime;
 - (id)_verifyDownloadConfigurationForAssetType;
@@ -31,17 +31,17 @@
 - (void)_primeCacheOnDispatchQueue;
 - (void)_removeFigAssetListeners;
 - (void)_removeFigPlaybackItemListeners;
-- (void)_sendDidFinishDownloadForMediaSelectionWithMediaSelection:(id)a3;
-- (void)_sendDidReceiveMetricEvent:(id)a3;
-- (void)_sendDidResolveMediaSelectionWithMediaSelection:(id)a3;
-- (void)_sendDownloadFailureToDelegateWithError:(id)a3;
+- (void)_sendDidFinishDownloadForMediaSelectionWithMediaSelection:(id)selection;
+- (void)_sendDidReceiveMetricEvent:(id)event;
+- (void)_sendDidResolveMediaSelectionWithMediaSelection:(id)selection;
+- (void)_sendDownloadFailureToDelegateWithError:(id)error;
 - (void)_sendDownloadSuccessToDelegate;
-- (void)_sendLoadedTimeRangesChangedToDelegateWithNewlyLoadedTimeRange:(id)a3 currentLoadedTimeRanges:(id)a4 timeRangeExpectedToLoad:(id)a5 selectedMediaArray:(id)a6;
-- (void)_sendProgessUpdateWithExpectedBytesToDownload:(unint64_t)a3 bytesDownloaded:(unint64_t)a4;
-- (void)_sendWillDownloadVariants:(id)a3;
-- (void)_setupFigClientObjectAsync:(id)a3;
+- (void)_sendLoadedTimeRangesChangedToDelegateWithNewlyLoadedTimeRange:(id)range currentLoadedTimeRanges:(id)ranges timeRangeExpectedToLoad:(id)load selectedMediaArray:(id)array;
+- (void)_sendProgessUpdateWithExpectedBytesToDownload:(unint64_t)download bytesDownloaded:(unint64_t)downloaded;
+- (void)_sendWillDownloadVariants:(id)variants;
+- (void)_setupFigClientObjectAsync:(id)async;
 - (void)_startLoadingMetadataOnQueue;
-- (void)_transitionToTerminalStatus:(int64_t)a3 error:(id)a4;
+- (void)_transitionToTerminalStatus:(int64_t)status error:(id)error;
 - (void)cancelAndReleaseProgressTimerOnQueue;
 - (void)dealloc;
 - (void)pause;
@@ -90,7 +90,7 @@
   return result;
 }
 
-- (AVAssetDownloadSession)initWithURL:(id)a3 destinationURL:(id)a4 options:(id)a5
+- (AVAssetDownloadSession)initWithURL:(id)l destinationURL:(id)rL options:(id)options
 {
   v71 = *MEMORY[0x1E69E9840];
   v69.receiver = self;
@@ -98,61 +98,61 @@
   v9 = [(AVAssetDownloadSession *)&v69 init];
   if (v9)
   {
-    v10 = [(AVAssetDownloadSession *)v9 _common_init];
-    if (a3)
+    _common_init = [(AVAssetDownloadSession *)v9 _common_init];
+    if (l)
     {
       goto LABEL_3;
     }
 
 LABEL_55:
-    v47 = v10;
+    v47 = _common_init;
     v53 = MEMORY[0x1E695DF30];
     v54 = *MEMORY[0x1E695D940];
     v55 = "URL != nil";
 LABEL_57:
     v62 = v55;
     v57 = @"invalid parameter not satisfying: %s";
-    v58 = v10;
+    v58 = _common_init;
     v59 = a2;
     goto LABEL_58;
   }
 
-  v10 = 0;
-  if (!a3)
+  _common_init = 0;
+  if (!l)
   {
     goto LABEL_55;
   }
 
 LABEL_3:
-  if (([a4 isFileURL] & 1) == 0)
+  if (([rL isFileURL] & 1) == 0)
   {
-    v56 = v10;
+    v56 = _common_init;
     v53 = MEMORY[0x1E695DF30];
     v54 = *MEMORY[0x1E695D940];
     v55 = "[destinationURL isFileURL]";
     goto LABEL_57;
   }
 
-  if (!v10)
+  if (!_common_init)
   {
-    return v10;
+    return _common_init;
   }
 
   v63 = a2;
   v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
   figAssetCreationFlagsForAssetReferenceRestrictions(2);
-  v10->_internal->URL = [a3 copy];
-  v10->_internal->destinationURL = [a4 copy];
-  v12 = [a5 objectForKey:@"AVAssetDownloadSessionPriorityKey"];
+  _common_init->_internal->URL = [l copy];
+  _common_init->_internal->destinationURL = [rL copy];
+  v12 = [options objectForKey:@"AVAssetDownloadSessionPriorityKey"];
   if (v12)
   {
-    v10->_internal->priority = [v12 intValue];
+    _common_init->_internal->priority = [v12 intValue];
   }
 
-  v10->_internal->cachePrimingDownloadTokenNum = [objc_msgSend(a5 objectForKey:{@"AVAssetDownloadSessionCachePrimingDownloadTokenKey", "copy"}];
-  v13 = [a5 objectForKey:@"AVAssetDownloadSessionProtectedContentSupportStorageURLKey"];
-  v14 = [a5 objectForKey:@"AVAssetDownloadSessionPurchaseBundleKey"];
-  v15 = [a5 objectForKey:@"AVAssetDownloadSessionAirPlayAuthorizationInfoKey"];
+  _common_init->_internal->cachePrimingDownloadTokenNum = [objc_msgSend(options objectForKey:{@"AVAssetDownloadSessionCachePrimingDownloadTokenKey", "copy"}];
+  v13 = [options objectForKey:@"AVAssetDownloadSessionProtectedContentSupportStorageURLKey"];
+  v14 = [options objectForKey:@"AVAssetDownloadSessionPurchaseBundleKey"];
+  v15 = [options objectForKey:@"AVAssetDownloadSessionAirPlayAuthorizationInfoKey"];
   v16 = v15;
   if (v13 || v14 || v15)
   {
@@ -176,7 +176,7 @@ LABEL_3:
     [v11 setObject:v18 forKey:*MEMORY[0x1E6970F60]];
   }
 
-  v19 = [a5 objectForKey:@"AVAssetDownloadSessionHTTPCookiesKey"];
+  v19 = [options objectForKey:@"AVAssetDownloadSessionHTTPCookiesKey"];
   if ([v19 count])
   {
     v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
@@ -198,10 +198,10 @@ LABEL_3:
             objc_enumerationMutation(v19);
           }
 
-          v25 = [*(*(&v65 + 1) + 8 * i) properties];
-          if (v25)
+          properties = [*(*(&v65 + 1) + 8 * i) properties];
+          if (properties)
           {
-            [v20 addObject:v25];
+            [v20 addObject:properties];
           }
         }
 
@@ -214,32 +214,32 @@ LABEL_3:
     [v11 setObject:v20 forKey:*MEMORY[0x1E6970ED8]];
   }
 
-  v26 = [a5 objectForKey:@"AVAssetDownloadSessionClientAuditTokenKey"];
+  v26 = [options objectForKey:@"AVAssetDownloadSessionClientAuditTokenKey"];
   if (v26)
   {
     [v11 setObject:v26 forKey:*MEMORY[0x1E6970F48]];
   }
 
-  v27 = [a5 objectForKey:@"AVAssetDownloadSessionClientBundleIdentifierKey"];
+  v27 = [options objectForKey:@"AVAssetDownloadSessionClientBundleIdentifierKey"];
   if (v27)
   {
     [v11 setObject:v27 forKey:*MEMORY[0x1E6970F50]];
   }
 
-  [v11 setObject:v10->_internal->destinationURL forKey:*MEMORY[0x1E6970FB0]];
-  if (v10->_internal->priority == -1)
+  [v11 setObject:_common_init->_internal->destinationURL forKey:*MEMORY[0x1E6970FB0]];
+  if (_common_init->_internal->priority == -1)
   {
     [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970FB8]];
   }
 
-  v28 = [a5 objectForKey:@"AVAssetDownloadSessioniTunesStoreContentInfoKey"];
+  v28 = [options objectForKey:@"AVAssetDownloadSessioniTunesStoreContentInfoKey"];
   if (v28)
   {
     v29 = v28;
     v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
     v31 = [v29 objectForKey:@"AVAssetDownloadSessioniTunesStoreContentIDKey"];
     v32 = [v29 objectForKey:@"AVAssetDownloadSessioniTunesStoreContentTypeKey"];
-    v33 = v10;
+    v33 = _common_init;
     v34 = v11;
     v35 = [v29 objectForKey:@"AVAssetDownloadSessioniTunesStoreContentUserAgentKey"];
     v36 = [v29 objectForKey:@"AVAssetDownloadSessioniTunesStoreContentDownloadParametersKey"];
@@ -250,7 +250,7 @@ LABEL_3:
     [v30 setValue:v32 forKey:*MEMORY[0x1E6971618]];
     v39 = v35;
     v11 = v34;
-    v10 = v33;
+    _common_init = v33;
     [v30 setValue:v39 forKey:*MEMORY[0x1E6971620]];
     [v30 setValue:v36 forKey:*MEMORY[0x1E69715F0]];
     [v30 setValue:v37 forKey:*MEMORY[0x1E69715E8]];
@@ -259,20 +259,20 @@ LABEL_3:
     [v11 setObject:v30 forKey:*MEMORY[0x1E6971128]];
   }
 
-  v40 = [a5 objectForKey:@"AVAssetDownloadSessionHTTPHeaderFieldsKey"];
+  v40 = [options objectForKey:@"AVAssetDownloadSessionHTTPHeaderFieldsKey"];
   if (v40)
   {
     [v11 setObject:v40 forKey:*MEMORY[0x1E6970FE8]];
   }
 
-  v41 = [a5 objectForKey:@"AVAssetDownloadSessionMaxSizeAllowedForCellularAccessKey"];
-  v42 = [a5 objectForKey:@"AVAssetDownloadSessionAllowsCellularAccessKey"];
+  v41 = [options objectForKey:@"AVAssetDownloadSessionMaxSizeAllowedForCellularAccessKey"];
+  v42 = [options objectForKey:@"AVAssetDownloadSessionAllowsCellularAccessKey"];
   if (v42)
   {
-    v43 = [v42 BOOLValue];
-    if (!v41 || ((v43 ^ ([v41 longLongValue] == 0)) & 1) != 0)
+    bOOLValue = [v42 BOOLValue];
+    if (!v41 || ((bOOLValue ^ ([v41 longLongValue] == 0)) & 1) != 0)
     {
-      if ((v43 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v41 = [MEMORY[0x1E696AD98] numberWithInt:0];
       }
@@ -280,11 +280,11 @@ LABEL_3:
       goto LABEL_43;
     }
 
-    v61 = v10;
+    v61 = _common_init;
     v53 = MEMORY[0x1E695DF30];
     v54 = *MEMORY[0x1E695D940];
     v57 = @"AVAssetDownloadSessionMaxSizeAllowedForCellularAccessKey and AVAssetDownloadSessionAllowsCellularAccessKey options are incompatible";
-    v58 = v10;
+    v58 = _common_init;
     v59 = v63;
 LABEL_58:
     v60 = [v53 exceptionWithName:v54 reason:AVMethodExceptionReasonWithObjectAndSelector(v58 userInfo:{v59, v57, v48, v49, v50, v51, v52, v62), 0}];
@@ -297,7 +297,7 @@ LABEL_43:
     [v11 setObject:v41 forKey:*MEMORY[0x1E6971018]];
   }
 
-  if ([objc_msgSend(a5 objectForKey:{@"AVAssetDownloadSessionOptimizeAccessForLinearMoviePlaybackKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVAssetDownloadSessionOptimizeAccessForLinearMoviePlaybackKey", "BOOLValue"}])
   {
     v44 = *MEMORY[0x1E695E4D0];
     [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971010]];
@@ -307,28 +307,28 @@ LABEL_43:
     [v11 setObject:v44 forKey:*MEMORY[0x1E6970F90]];
   }
 
-  v45 = [a5 objectForKey:@"AVAssetDownloadSessionAlternativeConfigurationOptionsKey"];
+  v45 = [options objectForKey:@"AVAssetDownloadSessionAlternativeConfigurationOptionsKey"];
   if (v45)
   {
     [v11 setObject:v45 forKey:*MEMORY[0x1E6970F10]];
   }
 
-  if (!v10->_internal->figAsset)
+  if (!_common_init->_internal->figAsset)
   {
     FigAssetRemoteCreateWithURL();
 
-    v10 = 0;
+    _common_init = 0;
     if ([0 _setFileFigAsset:? options:?])
     {
 
-      v10 = 0;
+      _common_init = 0;
     }
   }
 
-  return v10;
+  return _common_init;
 }
 
-- (AVAssetDownloadSession)initWithDownloadToken:(unint64_t)a3
+- (AVAssetDownloadSession)initWithDownloadToken:(unint64_t)token
 {
   v16.receiver = self;
   v16.super_class = AVAssetDownloadSession;
@@ -336,7 +336,7 @@ LABEL_43:
   if (!v5)
   {
     v7 = 0;
-    if (a3)
+    if (token)
     {
       return v7;
     }
@@ -347,16 +347,16 @@ LABEL_7:
     objc_exception_throw(v15);
   }
 
-  v6 = [(AVAssetDownloadSession *)v5 _common_init];
-  v7 = v6;
-  if (!a3)
+  _common_init = [(AVAssetDownloadSession *)v5 _common_init];
+  v7 = _common_init;
+  if (!token)
   {
     goto LABEL_7;
   }
 
-  if (v6)
+  if (_common_init)
   {
-    *(*(v6 + 8) + 120) = a3;
+    *(*(_common_init + 8) + 120) = token;
     FigAssetRemoteCopyAssetWithDownloadToken();
 
     return 0;
@@ -365,15 +365,15 @@ LABEL_7:
   return v7;
 }
 
-- (AVAssetDownloadSession)initWithAsset:(id)a3 mediaSelections:(id)a4 destinationURL:(id)a5 options:(id)a6
+- (AVAssetDownloadSession)initWithAsset:(id)asset mediaSelections:(id)selections destinationURL:(id)l options:(id)options
 {
   v27.receiver = self;
   v27.super_class = AVAssetDownloadSession;
   v11 = [(AVAssetDownloadSession *)&v27 init];
   if (v11)
   {
-    v12 = [(AVAssetDownloadSession *)v11 _common_init];
-    if (a3)
+    _common_init = [(AVAssetDownloadSession *)v11 _common_init];
+    if (asset)
     {
       goto LABEL_3;
     }
@@ -381,14 +381,14 @@ LABEL_7:
 
   else
   {
-    v12 = 0;
-    if (a3)
+    _common_init = 0;
+    if (asset)
     {
 LABEL_3:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = v12;
+        v13 = _common_init;
         v19 = MEMORY[0x1E695DF30];
         v20 = *MEMORY[0x1E695D940];
         v21 = "(asset != nil && [asset isKindOfClass:[AVURLAsset class]]) || asset == nil";
@@ -399,24 +399,24 @@ LABEL_3:
     }
   }
 
-  if (![a6 objectForKeyedSubscript:@"AVAssetDownloadTaskDownloadConfigurationKey"])
+  if (![options objectForKeyedSubscript:@"AVAssetDownloadTaskDownloadConfigurationKey"])
   {
-    v25 = v12;
+    v25 = _common_init;
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
     v21 = "asset != nil || options[AVAssetDownloadTaskDownloadConfigurationKey] != nil";
 LABEL_17:
-    v26 = [v19 exceptionWithName:v20 reason:AVMethodExceptionReasonWithObjectAndSelector(v12 userInfo:{a2, @"invalid parameter not satisfying: %s", v14, v15, v16, v17, v18, v21), 0}];
+    v26 = [v19 exceptionWithName:v20 reason:AVMethodExceptionReasonWithObjectAndSelector(_common_init userInfo:{a2, @"invalid parameter not satisfying: %s", v14, v15, v16, v17, v18, v21), 0}];
     objc_exception_throw(v26);
   }
 
 LABEL_7:
-  if (a4)
+  if (selections)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v24 = v12;
+      v24 = _common_init;
       v19 = MEMORY[0x1E695DF30];
       v20 = *MEMORY[0x1E695D940];
       v21 = "mediaSelections == nil || [mediaSelections isKindOfClass:[NSArray class]]";
@@ -424,27 +424,27 @@ LABEL_7:
     }
   }
 
-  if (v12)
+  if (_common_init)
   {
-    if (a3)
+    if (asset)
     {
-      v22 = a3;
+      assetCopy = asset;
     }
 
     else
     {
-      v22 = [objc_msgSend(a6 objectForKeyedSubscript:{@"AVAssetDownloadTaskDownloadConfigurationKey", "_asset"}];
+      assetCopy = [objc_msgSend(options objectForKeyedSubscript:{@"AVAssetDownloadTaskDownloadConfigurationKey", "_asset"}];
     }
 
-    v12->_internal->asset = v22;
-    v12->_internal->URL = [objc_msgSend(a3 "URL")];
-    v12->_internal->destinationURL = [a5 copy];
-    v12->_internal->downloadToken = [(AVURLAsset *)v12->_internal->asset downloadToken];
-    v12->_internal->mediaSelections = [a4 copy];
-    [(AVAssetDownloadSession *)v12 _setupFigClientObjectAsync:a6];
+    _common_init->_internal->asset = assetCopy;
+    _common_init->_internal->URL = [objc_msgSend(asset "URL")];
+    _common_init->_internal->destinationURL = [l copy];
+    _common_init->_internal->downloadToken = [(AVURLAsset *)_common_init->_internal->asset downloadToken];
+    _common_init->_internal->mediaSelections = [selections copy];
+    [(AVAssetDownloadSession *)_common_init _setupFigClientObjectAsync:options];
   }
 
-  return v12;
+  return _common_init;
 }
 
 - (void)dealloc
@@ -526,37 +526,37 @@ LABEL_7:
   [(AVAssetDownloadSession *)&v15 dealloc];
 }
 
-+ (id)assetDownloadSessionWithURL:(id)a3 destinationURL:(id)a4 options:(id)a5
++ (id)assetDownloadSessionWithURL:(id)l destinationURL:(id)rL options:(id)options
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithURL:a3 destinationURL:a4 options:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithURL:l destinationURL:rL options:options];
 
   return v5;
 }
 
-+ (id)assetDownloadSessionWithDownloadToken:(unint64_t)a3
++ (id)assetDownloadSessionWithDownloadToken:(unint64_t)token
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithDownloadToken:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithDownloadToken:token];
 
   return v3;
 }
 
-+ (id)assetDownloadSessionWithAsset:(id)a3 destinationURL:(id)a4 options:(id)a5
++ (id)assetDownloadSessionWithAsset:(id)asset destinationURL:(id)l options:(id)options
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithAsset:a3 mediaSelections:0 destinationURL:a4 options:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithAsset:asset mediaSelections:0 destinationURL:l options:options];
 
   return v5;
 }
 
-+ (void)registerDownloadLocation:(id)a3 forURLAsset:(id)a4
++ (void)registerDownloadLocation:(id)location forURLAsset:(id)asset
 {
-  v5 = [a4 _figAsset];
+  _figAsset = [asset _figAsset];
 
-  MEMORY[0x1EEDCD0D8](v5, a3);
+  MEMORY[0x1EEDCD0D8](_figAsset, location);
 }
 
-+ (id)assetDownloadSessionWithAsset:(id)a3 mediaSelections:(id)a4 destinationURL:(id)a5 options:(id)a6
++ (id)assetDownloadSessionWithAsset:(id)asset mediaSelections:(id)selections destinationURL:(id)l options:(id)options
 {
-  v6 = [objc_alloc(objc_opt_class()) initWithAsset:a3 mediaSelections:a4 destinationURL:a5 options:a6];
+  v6 = [objc_alloc(objc_opt_class()) initWithAsset:asset mediaSelections:selections destinationURL:l options:options];
 
   return v6;
 }
@@ -933,7 +933,7 @@ uint64_t __96__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___s
   return result;
 }
 
-- (void)_sendDownloadFailureToDelegateWithError:(id)a3
+- (void)_sendDownloadFailureToDelegateWithError:(id)error
 {
   delegateStorage = self->_internal->delegateStorage;
   v4[0] = MEMORY[0x1E69E9820];
@@ -941,7 +941,7 @@ uint64_t __96__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___s
   v4[2] = __106__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___sendDownloadFailureToDelegateWithError___block_invoke;
   v4[3] = &unk_1E7465620;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = error;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v4];
 }
 
@@ -963,24 +963,24 @@ uint64_t __106__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   return result;
 }
 
-- (void)_sendLoadedTimeRangesChangedToDelegateWithNewlyLoadedTimeRange:(id)a3 currentLoadedTimeRanges:(id)a4 timeRangeExpectedToLoad:(id)a5 selectedMediaArray:(id)a6
+- (void)_sendLoadedTimeRangesChangedToDelegateWithNewlyLoadedTimeRange:(id)range currentLoadedTimeRanges:(id)ranges timeRangeExpectedToLoad:(id)load selectedMediaArray:(id)array
 {
   v31 = *MEMORY[0x1E69E9840];
   memset(&v29, 0, sizeof(v29));
   memset(&v28, 0, sizeof(v28));
-  v10 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (range)
   {
-    CMTimeRangeMakeFromDictionary(&v29, a3);
+    CMTimeRangeMakeFromDictionary(&v29, range);
   }
 
-  if (a4)
+  if (ranges)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [a4 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    v11 = [ranges countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v11)
     {
       v12 = v11;
@@ -992,31 +992,31 @@ uint64_t __106__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(ranges);
           }
 
           v15 = *(*(&v24 + 1) + 8 * v14);
           memset(&v23, 0, sizeof(v23));
           CMTimeRangeMakeFromDictionary(&v23, v15);
           v22 = v23;
-          [v10 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCMTimeRange:", &v22)}];
+          [array addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCMTimeRange:", &v22)}];
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [a4 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v12 = [ranges countByEnumeratingWithState:&v24 objects:v30 count:16];
       }
 
       while (v12);
     }
   }
 
-  if (a5)
+  if (load)
   {
-    CMTimeRangeMakeFromDictionary(&v28, a5);
+    CMTimeRangeMakeFromDictionary(&v28, load);
   }
 
-  v16 = [[AVMediaSelection alloc] _initWithAsset:self->_internal->asset selectedMediaArray:a6];
+  v16 = [[AVMediaSelection alloc] _initWithAsset:self->_internal->asset selectedMediaArray:array];
   delegateStorage = self->_internal->delegateStorage;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -1025,7 +1025,7 @@ uint64_t __106__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   v19[2] = __196__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___sendLoadedTimeRangesChangedToDelegateWithNewlyLoadedTimeRange_currentLoadedTimeRanges_timeRangeExpectedToLoad_selectedMediaArray___block_invoke;
   v19[3] = &unk_1E7465648;
   v19[4] = self;
-  v19[5] = v10;
+  v19[5] = array;
   v19[6] = v16;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v19];
 }
@@ -1056,9 +1056,9 @@ uint64_t __196__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   return result;
 }
 
-- (void)_sendDidResolveMediaSelectionWithMediaSelection:(id)a3
+- (void)_sendDidResolveMediaSelectionWithMediaSelection:(id)selection
 {
-  v4 = [[AVMediaSelection alloc] _initWithAsset:self->_internal->asset selectedMediaArray:a3];
+  v4 = [[AVMediaSelection alloc] _initWithAsset:self->_internal->asset selectedMediaArray:selection];
   delegateStorage = self->_internal->delegateStorage;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1087,9 +1087,9 @@ uint64_t __114__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   return result;
 }
 
-- (void)_sendDidFinishDownloadForMediaSelectionWithMediaSelection:(id)a3
+- (void)_sendDidFinishDownloadForMediaSelectionWithMediaSelection:(id)selection
 {
-  v4 = [[AVMediaSelection alloc] _initWithAsset:self->_internal->asset selectedMediaArray:a3];
+  v4 = [[AVMediaSelection alloc] _initWithAsset:self->_internal->asset selectedMediaArray:selection];
   delegateStorage = self->_internal->delegateStorage;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1118,7 +1118,7 @@ uint64_t __124__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   return result;
 }
 
-- (void)_sendProgessUpdateWithExpectedBytesToDownload:(unint64_t)a3 bytesDownloaded:(unint64_t)a4
+- (void)_sendProgessUpdateWithExpectedBytesToDownload:(unint64_t)download bytesDownloaded:(unint64_t)downloaded
 {
   delegateStorage = self->_internal->delegateStorage;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1126,8 +1126,8 @@ uint64_t __124__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   v5[2] = __128__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___sendProgessUpdateWithExpectedBytesToDownload_bytesDownloaded___block_invoke;
   v5[3] = &unk_1E7465670;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = download;
+  v5[6] = downloaded;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v5];
 }
 
@@ -1150,7 +1150,7 @@ uint64_t __128__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   return result;
 }
 
-- (void)_sendWillDownloadVariants:(id)a3
+- (void)_sendWillDownloadVariants:(id)variants
 {
   delegateStorage = self->_internal->delegateStorage;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1158,7 +1158,7 @@ uint64_t __128__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___
   v4[2] = __92__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___sendWillDownloadVariants___block_invoke;
   v4[3] = &unk_1E7465620;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = variants;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v4];
 }
 
@@ -1180,7 +1180,7 @@ uint64_t __92__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___s
   return result;
 }
 
-- (void)_sendDidReceiveMetricEvent:(id)a3
+- (void)_sendDidReceiveMetricEvent:(id)event
 {
   delegateStorage = self->_internal->delegateStorage;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1188,7 +1188,7 @@ uint64_t __92__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___s
   v4[2] = __93__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___sendDidReceiveMetricEvent___block_invoke;
   v4[3] = &unk_1E7465620;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v4];
 }
 
@@ -1210,7 +1210,7 @@ uint64_t __93__AVAssetDownloadSession_AVAssetDownloadSession_DelegateSupport___s
   return result;
 }
 
-- (BOOL)ensureProgressTimerIsRunningOnQueueWithError:(id *)a3
+- (BOOL)ensureProgressTimerIsRunningOnQueueWithError:(id *)error
 {
   internal = self->_internal;
   if (!internal->fileDownloadProgressTimer)
@@ -1262,11 +1262,11 @@ uint64_t __101__AVAssetDownloadSession_AVAssetDownloadSession_Local__ensureProgr
   }
 }
 
-- (id)_setupFigClientObjectForFileDownload:(id)a3
+- (id)_setupFigClientObjectForFileDownload:(id)download
 {
-  v5 = [(AVAssetDownloadSession *)self _createDuplicateFigAssetFromAVAsset:self->_internal->asset options:a3];
+  v5 = [(AVAssetDownloadSession *)self _createDuplicateFigAssetFromAVAsset:self->_internal->asset options:download];
   self->_internal->cachePrimingDownloadTokenNum = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AVURLAsset downloadToken](self->_internal->asset, "downloadToken")}];
-  v6 = [(AVAssetDownloadSession *)self _setFileFigAsset:v5 options:a3];
+  v6 = [(AVAssetDownloadSession *)self _setFileFigAsset:v5 options:download];
   if (!v6)
   {
     v10 = 0;
@@ -1300,7 +1300,7 @@ LABEL_8:
   return v10;
 }
 
-- (id)_setupFigClientObjectForStreaming:(id)a3
+- (id)_setupFigClientObjectForStreaming:(id)streaming
 {
   v66 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1317,26 +1317,26 @@ LABEL_8:
   v63[9] = 0;
   v63[10] = 0;
   v63[11] = avad_didReceiveMetricEvent;
-  v7 = [(AVAsset *)self->_internal->asset _figAsset];
-  if (v7)
+  _figAsset = [(AVAsset *)self->_internal->asset _figAsset];
+  if (_figAsset)
   {
-    v7 = CFRetain(v7);
+    _figAsset = CFRetain(_figAsset);
   }
 
-  self->_internal->figAsset = v7;
-  v8 = [a3 objectForKey:@"AVMediaCharacteristicAudible"];
+  self->_internal->figAsset = _figAsset;
+  v8 = [streaming objectForKey:@"AVMediaCharacteristicAudible"];
   if (v8)
   {
     [v5 setObject:objc_msgSend(v8 forKey:{"figDictionary"), AVTranslateAVMediaCharacteristicToFigMediaCharacteristic(@"AVMediaCharacteristicAudible")}];
   }
 
-  v9 = [a3 objectForKey:@"AVMediaCharacteristicLegible"];
+  v9 = [streaming objectForKey:@"AVMediaCharacteristicLegible"];
   if (v9)
   {
     [v5 setObject:objc_msgSend(v9 forKey:{"figDictionary"), AVTranslateAVMediaCharacteristicToFigMediaCharacteristic(@"AVMediaCharacteristicLegible")}];
   }
 
-  v10 = [a3 objectForKey:@"AVMediaCharacteristicVisual"];
+  v10 = [streaming objectForKey:@"AVMediaCharacteristicVisual"];
   if (v10)
   {
     [v5 setObject:objc_msgSend(v10 forKey:{"figDictionary"), AVTranslateAVMediaCharacteristicToFigMediaCharacteristic(@"AVMediaCharacteristicVisual")}];
@@ -1347,25 +1347,25 @@ LABEL_8:
     [v6 setObject:v5 forKey:*MEMORY[0x1E6970C80]];
   }
 
-  v11 = [objc_msgSend(a3 objectForKey:{@"AVAssetDownloadSessionDeleteDownloadWhenAssetFinalizesKey", "BOOLValue"}];
+  v11 = [objc_msgSend(streaming objectForKey:{@"AVAssetDownloadSessionDeleteDownloadWhenAssetFinalizesKey", "BOOLValue"}];
   v12 = MEMORY[0x1E695E4D0];
   if (v11)
   {
     [v6 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970C50]];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"AVAssetDownloadSessionLinkAssetURLToDestinationURLKey", "BOOLValue"}])
+  if ([objc_msgSend(streaming objectForKey:{@"AVAssetDownloadSessionLinkAssetURLToDestinationURLKey", "BOOLValue"}])
   {
     [v6 setObject:*v12 forKey:*MEMORY[0x1E6970C70]];
   }
 
-  v13 = [a3 objectForKey:@"AVAssetDownloadSessionMinimumRequiredMediaBitrateKey"];
-  if (v13 || (v13 = [a3 objectForKey:@"AVAssetDownloadTaskMinimumRequiredMediaBitrateKey"]) != 0)
+  v13 = [streaming objectForKey:@"AVAssetDownloadSessionMinimumRequiredMediaBitrateKey"];
+  if (v13 || (v13 = [streaming objectForKey:@"AVAssetDownloadTaskMinimumRequiredMediaBitrateKey"]) != 0)
   {
     [v6 setObject:v13 forKey:*MEMORY[0x1E6970C88]];
   }
 
-  v14 = [a3 objectForKey:@"AVAssetDownloadTaskMinimumRequiredPresentationSizeKey"];
+  v14 = [streaming objectForKey:@"AVAssetDownloadTaskMinimumRequiredPresentationSizeKey"];
   if (v14)
   {
     v62 = *MEMORY[0x1E695F060];
@@ -1376,42 +1376,42 @@ LABEL_8:
     }
   }
 
-  if (([objc_msgSend(a3 objectForKey:{@"AVAssetDownloadSessionShouldStoreEligibleContentKeysKey", "BOOLValue"}] & 1) != 0 || objc_msgSend(objc_msgSend(a3, "objectForKey:", @"AVAssetDownloadTaskShouldStoreEligibleContentKeysKey"), "BOOLValue"))
+  if (([objc_msgSend(streaming objectForKey:{@"AVAssetDownloadSessionShouldStoreEligibleContentKeysKey", "BOOLValue"}] & 1) != 0 || objc_msgSend(objc_msgSend(streaming, "objectForKey:", @"AVAssetDownloadTaskShouldStoreEligibleContentKeysKey"), "BOOLValue"))
   {
     [v6 setObject:*v12 forKey:*MEMORY[0x1E6970CC8]];
   }
 
-  v16 = [a3 objectForKey:@"AVAssetDownloadSessionClientBundleIdentifierKey"];
+  v16 = [streaming objectForKey:@"AVAssetDownloadSessionClientBundleIdentifierKey"];
   if (v16)
   {
     [v6 setObject:v16 forKey:*MEMORY[0x1E6970C38]];
   }
 
-  v17 = [a3 objectForKey:@"AVAssetDownloadSessionAssetNameKey"];
+  v17 = [streaming objectForKey:@"AVAssetDownloadSessionAssetNameKey"];
   if (v17)
   {
     [v6 setObject:v17 forKey:*MEMORY[0x1E6970C30]];
   }
 
-  v18 = [a3 objectForKey:@"AVAssetDownloadSessionAssetImageDataKey"];
+  v18 = [streaming objectForKey:@"AVAssetDownloadSessionAssetImageDataKey"];
   if (v18)
   {
     [v6 setObject:v18 forKey:*MEMORY[0x1E6970C28]];
   }
 
-  v19 = [a3 objectForKey:@"AVAssetDownloadTaskClientIsCatalyst"];
+  v19 = [streaming objectForKey:@"AVAssetDownloadTaskClientIsCatalyst"];
   if (v19)
   {
     [v6 setObject:v19 forKey:*MEMORY[0x1E6970C40]];
   }
 
-  v20 = [a3 objectForKey:@"AVAssetDownloadTaskPrefersHDRKey"];
-  if (v20 || (v20 = [a3 objectForKey:@"AVAssetDownloadTaskAllowHighDynamicRangeKey"]) != 0)
+  v20 = [streaming objectForKey:@"AVAssetDownloadTaskPrefersHDRKey"];
+  if (v20 || (v20 = [streaming objectForKey:@"AVAssetDownloadTaskAllowHighDynamicRangeKey"]) != 0)
   {
     [v6 setObject:v20 forKey:*MEMORY[0x1E6970C20]];
   }
 
-  v21 = [a3 objectForKey:@"AVAssetDownloadTaskMediaSelectionPrefersMultichannelOnlyKey"];
+  v21 = [streaming objectForKey:@"AVAssetDownloadTaskMediaSelectionPrefersMultichannelOnlyKey"];
   if (v21)
   {
     v22 = v21;
@@ -1421,8 +1421,8 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v24 = [a3 objectForKey:@"AVAssetDownloadSessionMediaSelectionPrefersMultichannelKey"];
-  if (v24 || (v24 = [a3 objectForKey:@"AVAssetDownloadTaskMediaSelectionPrefersMultichannelKey"]) != 0)
+  v24 = [streaming objectForKey:@"AVAssetDownloadSessionMediaSelectionPrefersMultichannelKey"];
+  if (v24 || (v24 = [streaming objectForKey:@"AVAssetDownloadTaskMediaSelectionPrefersMultichannelKey"]) != 0)
   {
     v22 = v24;
     v23 = MEMORY[0x1E6970CB0];
@@ -1430,54 +1430,54 @@ LABEL_40:
   }
 
 LABEL_41:
-  v25 = [a3 objectForKey:@"AVAssetDownloadTaskPrefersLosslessAudioKey"];
+  v25 = [streaming objectForKey:@"AVAssetDownloadTaskPrefersLosslessAudioKey"];
   if (v25)
   {
     [v6 setObject:v25 forKey:*MEMORY[0x1E6970CA0]];
   }
 
-  v26 = [a3 objectForKey:@"AVAssetDownloadTaskMaximumAudioSampleRateKey"];
+  v26 = [streaming objectForKey:@"AVAssetDownloadTaskMaximumAudioSampleRateKey"];
   if (v26)
   {
     [v6 setObject:v26 forKey:*MEMORY[0x1E6970C78]];
   }
 
-  v27 = [a3 objectForKey:@"AVAssetDownloadSessionAllowsExpensiveNetworkAccessKey"];
+  v27 = [streaming objectForKey:@"AVAssetDownloadSessionAllowsExpensiveNetworkAccessKey"];
   if (v27 && ([v27 BOOLValue] & 1) == 0)
   {
     [v6 setObject:*v12 forKey:*MEMORY[0x1E6970C60]];
   }
 
-  v28 = [a3 objectForKey:@"AVAssetDownloadSessionAllowsConstrainedNetworkAccessKey"];
+  v28 = [streaming objectForKey:@"AVAssetDownloadSessionAllowsConstrainedNetworkAccessKey"];
   if (v28 && ([v28 BOOLValue] & 1) == 0)
   {
     [v6 setObject:*v12 forKey:*MEMORY[0x1E6970C58]];
   }
 
-  v29 = [a3 objectForKey:@"AVAssetDownloadSessionDebugIdentifierKey"];
+  v29 = [streaming objectForKey:@"AVAssetDownloadSessionDebugIdentifierKey"];
   if (v29)
   {
     [v6 setObject:v29 forKey:*MEMORY[0x1E6970C48]];
   }
 
-  if ([a3 objectForKey:@"AVAssetDownloadSessionDownloadInterstitials"])
+  if ([streaming objectForKey:@"AVAssetDownloadSessionDownloadInterstitials"])
   {
     [v6 setObject:*v12 forKey:*MEMORY[0x1E6970C68]];
   }
 
-  v30 = [a3 objectForKey:@"AVAssetDownloadSessionRetryErrorKey"];
+  v30 = [streaming objectForKey:@"AVAssetDownloadSessionRetryErrorKey"];
   if (v30)
   {
     [v6 setObject:v30 forKey:*MEMORY[0x1E6970CC0]];
   }
 
-  v31 = [a3 objectForKey:@"AVAssetDownloadTaskMinimumRequiredMediaBitrateForHEVCKey"];
+  v31 = [streaming objectForKey:@"AVAssetDownloadTaskMinimumRequiredMediaBitrateForHEVCKey"];
   if (v31)
   {
     [v6 setObject:v31 forKey:*MEMORY[0x1E6970C90]];
   }
 
-  v32 = [a3 objectForKey:@"AVAssetDownloadTaskPrefersMostCompatibleRenditionKey"];
+  v32 = [streaming objectForKey:@"AVAssetDownloadTaskPrefersMostCompatibleRenditionKey"];
   if (v32)
   {
     [v6 setObject:v32 forKey:*MEMORY[0x1E6970CA8]];
@@ -1489,11 +1489,11 @@ LABEL_41:
     v6 = 0;
   }
 
-  v33 = [MEMORY[0x1E695DF70] array];
-  v34 = [a3 objectForKey:@"AVAssetDownloadSessionMediaSelectionKey"];
+  array = [MEMORY[0x1E695DF70] array];
+  v34 = [streaming objectForKey:@"AVAssetDownloadSessionMediaSelectionKey"];
   if (v34)
   {
-    [v33 addObject:{objc_msgSend(v34, "_selectedMediaArray")}];
+    [array addObject:{objc_msgSend(v34, "_selectedMediaArray")}];
   }
 
   v60 = 0u;
@@ -1515,7 +1515,7 @@ LABEL_41:
           objc_enumerationMutation(mediaSelections);
         }
 
-        [v33 addObject:{objc_msgSend(*(*(&v58 + 1) + 8 * i), "_selectedMediaArray")}];
+        [array addObject:{objc_msgSend(*(*(&v58 + 1) + 8 * i), "_selectedMediaArray")}];
       }
 
       v37 = [(NSArray *)mediaSelections countByEnumeratingWithState:&v58 objects:v65 count:16];
@@ -1524,11 +1524,11 @@ LABEL_41:
     while (v37);
   }
 
-  v40 = [a3 objectForKey:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
+  v40 = [streaming objectForKey:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
   if (v40)
   {
     v41 = v40;
-    v42 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
@@ -1547,7 +1547,7 @@ LABEL_41:
             objc_enumerationMutation(v41);
           }
 
-          [v42 addObject:{objc_msgSend(*(*(&v54 + 1) + 8 * j), "_selectedMediaArray")}];
+          [array2 addObject:{objc_msgSend(*(*(&v54 + 1) + 8 * j), "_selectedMediaArray")}];
         }
 
         v44 = [v41 countByEnumeratingWithState:&v54 objects:v64 count:16];
@@ -1557,7 +1557,7 @@ LABEL_41:
     }
   }
 
-  v47 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVAssetDownloadTaskDownloadConfigurationKey", "_copyFigDownloadConfig"}];
+  v47 = [objc_msgSend(streaming objectForKeyedSubscript:{@"AVAssetDownloadTaskDownloadConfigurationKey", "_copyFigDownloadConfig"}];
   internal = self->_internal;
   p_assetDownloader = &internal->assetDownloader;
   stateQueue = internal->stateQueue;
@@ -1582,7 +1582,7 @@ LABEL_41:
   return v50;
 }
 
-- (void)_setupFigClientObjectAsync:(id)a3
+- (void)_setupFigClientObjectAsync:(id)async
 {
   asset = self->_internal->asset;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1590,7 +1590,7 @@ LABEL_41:
   v4[2] = __83__AVAssetDownloadSession_AVAssetDownloadSession_Local___setupFigClientObjectAsync___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = async;
   [(AVAsset *)asset loadValuesAsynchronouslyForKeys:&unk_1F0AD3838 completionHandler:v4];
 }
 
@@ -1699,9 +1699,9 @@ LABEL_10:
   v11 = *(*(CMBaseObjectGetVTable() + 16) + 24);
   if (v11)
   {
-    v12 = v11(figAsset, *MEMORY[0x1E6971180], &v23);
-    valuePtr = v12;
-    if (v12)
+    _readyForInspection = v11(figAsset, *MEMORY[0x1E6971180], &v23);
+    valuePtr = _readyForInspection;
+    if (_readyForInspection)
     {
       goto LABEL_44;
     }
@@ -1739,19 +1739,19 @@ LABEL_42:
         goto LABEL_7;
       }
 
-      v12 = v19(playbackItem, 0, &v22);
-      valuePtr = v12;
-      if (!v12)
+      _readyForInspection = v19(playbackItem, 0, &v22);
+      valuePtr = _readyForInspection;
+      if (!_readyForInspection)
       {
         if (!v22)
         {
           goto LABEL_36;
         }
 
-        v12 = [(AVAssetDownloadSession *)self _readyForInspection];
+        _readyForInspection = [(AVAssetDownloadSession *)self _readyForInspection];
 LABEL_35:
-        valuePtr = v12;
-        if (!v12)
+        valuePtr = _readyForInspection;
+        if (!_readyForInspection)
         {
 LABEL_36:
           CMBaseObject = FigAssetGetCMBaseObject();
@@ -1777,7 +1777,7 @@ LABEL_36:
       }
 
 LABEL_44:
-      v6 = v12;
+      v6 = _readyForInspection;
       goto LABEL_42;
     }
 
@@ -1785,16 +1785,16 @@ LABEL_44:
     v15 = *(*(CMBaseObjectGetVTable() + 16) + 24);
     if (v15)
     {
-      v12 = v15(v14, *MEMORY[0x1E69711D0], &v23);
-      valuePtr = v12;
-      if (!v12)
+      _readyForInspection = v15(v14, *MEMORY[0x1E69711D0], &v23);
+      valuePtr = _readyForInspection;
+      if (!_readyForInspection)
       {
         if (!v23)
         {
           goto LABEL_36;
         }
 
-        v12 = [(AVAssetDownloadSession *)self _primeCache];
+        _readyForInspection = [(AVAssetDownloadSession *)self _primeCache];
         goto LABEL_35;
       }
 
@@ -1902,7 +1902,7 @@ LABEL_9:
   return result;
 }
 
-- (void)_transitionToTerminalStatus:(int64_t)a3 error:(id)a4
+- (void)_transitionToTerminalStatus:(int64_t)status error:(id)error
 {
   v6[0] = 0;
   v6[1] = v6;
@@ -1914,9 +1914,9 @@ LABEL_9:
   v5[2] = __90__AVAssetDownloadSession_AVAssetDownloadSession_Local___transitionToTerminalStatus_error___block_invoke;
   v5[3] = &unk_1E7465698;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = error;
   v5[6] = v6;
-  v5[7] = a3;
+  v5[7] = status;
   dispatch_async(stateQueue, v5);
   _Block_object_dispose(v6, 8);
 }
@@ -1996,20 +1996,20 @@ uint64_t __90__AVAssetDownloadSession_AVAssetDownloadSession_Local___transitionT
   return [v2 postNotification:v3];
 }
 
-- (id)_errorForFigNotificationPayload:(__CFDictionary *)a3 key:(__CFString *)a4
+- (id)_errorForFigNotificationPayload:(__CFDictionary *)payload key:(__CFString *)key
 {
-  if (!a3)
+  if (!payload)
   {
     return 0;
   }
 
-  v6 = CFGetTypeID(a3);
+  v6 = CFGetTypeID(payload);
   if (v6 != CFDictionaryGetTypeID())
   {
     return 0;
   }
 
-  Value = CFDictionaryGetValue(a3, a4);
+  Value = CFDictionaryGetValue(payload, key);
   valuePtr = 0;
   if (!Value)
   {
@@ -2149,14 +2149,14 @@ LABEL_9:
   return v6;
 }
 
-- (OpaqueFigAsset)_createDuplicateFigAssetFromAVAsset:(id)a3 options:(id)a4
+- (OpaqueFigAsset)_createDuplicateFigAssetFromAVAsset:(id)asset options:(id)options
 {
-  v6 = [a3 _figAsset];
+  _figAsset = [asset _figAsset];
   v14 = 0;
   v15 = 0;
   figAssetCreationFlagsForAssetReferenceRestrictions(2);
   v7 = MEMORY[0x1E695E480];
-  if (v6 && (CMBaseObject = FigAssetGetCMBaseObject(), (v9 = *(*(CMBaseObjectGetVTable() + 8) + 48)) != 0) && (v9(CMBaseObject, *MEMORY[0x1E69711F0], *v7, &v14), v14))
+  if (_figAsset && (CMBaseObject = FigAssetGetCMBaseObject(), (v9 = *(*(CMBaseObjectGetVTable() + 8) + 48)) != 0) && (v9(CMBaseObject, *MEMORY[0x1E69711F0], *v7, &v14), v14))
   {
     v10 = [v14 mutableCopy];
   }
@@ -2168,7 +2168,7 @@ LABEL_9:
 
   v11 = v10;
   [v10 setObject:self->_internal->destinationURL forKey:{*MEMORY[0x1E6970FB0], v14}];
-  v12 = [a4 objectForKey:@"AVAssetDownloadSessionClientBundleIdentifierKey"];
+  v12 = [options objectForKey:@"AVAssetDownloadSessionClientBundleIdentifierKey"];
   if (v12)
   {
     [v11 setObject:v12 forKey:*MEMORY[0x1E6970F50]];
@@ -2179,22 +2179,22 @@ LABEL_9:
   return v15;
 }
 
-- (id)_errorFromAssetNotificationPayload:(id)a3
+- (id)_errorFromAssetNotificationPayload:(id)payload
 {
-  v5 = [a3 objectForKey:*MEMORY[0x1E6971138]];
+  v5 = [payload objectForKey:*MEMORY[0x1E6971138]];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 code];
+    code = [v5 code];
 
-    return AVErrorWithNSErrorAndOSStatus(v6, v7, 0);
+    return AVErrorWithNSErrorAndOSStatus(v6, code, 0);
   }
 
   else
   {
     v9 = *MEMORY[0x1E6971168];
 
-    return [(AVAssetDownloadSession *)self _errorForFigNotificationPayload:a3 key:v9];
+    return [(AVAssetDownloadSession *)self _errorForFigNotificationPayload:payload key:v9];
   }
 }
 
@@ -2204,14 +2204,14 @@ LABEL_9:
   if ([(AVAssetDownloadSession *)self _figAsset])
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetDownloadSession *)self _weakReference];
-    CFRetain(v4);
+    _weakReference = [(AVAssetDownloadSession *)self _weakReference];
+    CFRetain(_weakReference);
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AVAssetDownloadSession *)self _figAssetNotificationNames];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _figAssetNotificationNames = [(AVAssetDownloadSession *)self _figAssetNotificationNames];
+    v6 = [_figAssetNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2223,14 +2223,14 @@ LABEL_9:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_figAssetNotificationNames);
           }
 
-          [v3 addListenerWithWeakReference:v4 callback:avAssetDownloadSession_figAssetNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:-[AVAssetDownloadSession _figAsset](self flags:{"_figAsset"), 0}];
+          [v3 addListenerWithWeakReference:_weakReference callback:avAssetDownloadSession_figAssetNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:-[AVAssetDownloadSession _figAsset](self flags:{"_figAsset"), 0}];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_figAssetNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -2244,13 +2244,13 @@ LABEL_9:
   if ([(AVAssetDownloadSession *)self _figAsset])
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetDownloadSession *)self _weakReference];
+    _weakReference = [(AVAssetDownloadSession *)self _weakReference];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AVAssetDownloadSession *)self _figAssetNotificationNames];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _figAssetNotificationNames = [(AVAssetDownloadSession *)self _figAssetNotificationNames];
+    v6 = [_figAssetNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2262,20 +2262,20 @@ LABEL_9:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_figAssetNotificationNames);
           }
 
-          [v3 removeListenerWithWeakReference:v4 callback:avAssetDownloadSession_figAssetNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:{-[AVAssetDownloadSession _figAsset](self, "_figAsset")}];
+          [v3 removeListenerWithWeakReference:_weakReference callback:avAssetDownloadSession_figAssetNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:{-[AVAssetDownloadSession _figAsset](self, "_figAsset")}];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_figAssetNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
     }
 
-    CFRelease(v4);
+    CFRelease(_weakReference);
   }
 }
 
@@ -2285,14 +2285,14 @@ LABEL_9:
   if (self->_internal->playbackItem)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetDownloadSession *)self _weakReference];
-    CFRetain(v4);
+    _weakReference = [(AVAssetDownloadSession *)self _weakReference];
+    CFRetain(_weakReference);
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AVAssetDownloadSession *)self _figPlaybackItemNotificationNames];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _figPlaybackItemNotificationNames = [(AVAssetDownloadSession *)self _figPlaybackItemNotificationNames];
+    v6 = [_figPlaybackItemNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2304,14 +2304,14 @@ LABEL_9:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_figPlaybackItemNotificationNames);
           }
 
-          [v3 addListenerWithWeakReference:v4 callback:avAssetDownloadSession_figPlaybackItemNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:self->_internal->playbackItem flags:0];
+          [v3 addListenerWithWeakReference:_weakReference callback:avAssetDownloadSession_figPlaybackItemNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:self->_internal->playbackItem flags:0];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_figPlaybackItemNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -2325,13 +2325,13 @@ LABEL_9:
   if (self->_internal->playbackItem)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetDownloadSession *)self _weakReference];
+    _weakReference = [(AVAssetDownloadSession *)self _weakReference];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AVAssetDownloadSession *)self _figPlaybackItemNotificationNames];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _figPlaybackItemNotificationNames = [(AVAssetDownloadSession *)self _figPlaybackItemNotificationNames];
+    v6 = [_figPlaybackItemNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2343,20 +2343,20 @@ LABEL_9:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_figPlaybackItemNotificationNames);
           }
 
-          [v3 removeListenerWithWeakReference:v4 callback:avAssetDownloadSession_figPlaybackItemNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:self->_internal->playbackItem];
+          [v3 removeListenerWithWeakReference:_weakReference callback:avAssetDownloadSession_figPlaybackItemNotificationCallback name:*(*(&v10 + 1) + 8 * v9++) object:self->_internal->playbackItem];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_figPlaybackItemNotificationNames countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
     }
 
-    CFRelease(v4);
+    CFRelease(_weakReference);
   }
 }
 

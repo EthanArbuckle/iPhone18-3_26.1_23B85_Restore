@@ -1,10 +1,10 @@
 @interface WFConfiguredSystemContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFConfiguredSystemContextualAction)initWithCoder:(id)a3;
-- (WFConfiguredSystemContextualAction)initWithContextualAction:(id)a3 appShortcutIdentifier:(id)a4 shortcutsMetadata:(id)a5 colorScheme:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (WFConfiguredSystemContextualAction)initWithCoder:(id)coder;
+- (WFConfiguredSystemContextualAction)initWithContextualAction:(id)action appShortcutIdentifier:(id)identifier shortcutsMetadata:(id)metadata colorScheme:(id)scheme;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFConfiguredSystemContextualAction
@@ -15,28 +15,28 @@
   v11.receiver = self;
   v11.super_class = WFConfiguredSystemContextualAction;
   v4 = [v3 combineInteger:{-[WFConfiguredStaccatoAction hash](&v11, sel_hash)}];
-  v5 = [(WFConfiguredSystemContextualAction *)self contextualAction];
-  v6 = [v3 combine:v5];
+  contextualAction = [(WFConfiguredSystemContextualAction *)self contextualAction];
+  v6 = [v3 combine:contextualAction];
 
-  v7 = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
-  v8 = [v3 combine:v7];
+  appShortcutIdentifier = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
+  v8 = [v3 combine:appShortcutIdentifier];
 
   v9 = [v3 finalize];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -46,10 +46,10 @@
         if ([(WFConfiguredStaccatoAction *)&v19 isEqual:v5])
         {
           v6 = v5;
-          v7 = [(WFConfiguredSystemContextualAction *)self contextualAction];
-          v8 = [(WFConfiguredSystemContextualAction *)v6 contextualAction];
-          v9 = v7;
-          v10 = v8;
+          contextualAction = [(WFConfiguredSystemContextualAction *)self contextualAction];
+          contextualAction2 = [(WFConfiguredSystemContextualAction *)v6 contextualAction];
+          v9 = contextualAction;
+          v10 = contextualAction2;
           v11 = v10;
           if (v9 == v10)
           {
@@ -76,10 +76,10 @@ LABEL_20:
             }
           }
 
-          v15 = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
-          v16 = [(WFConfiguredSystemContextualAction *)v6 appShortcutIdentifier];
-          v14 = v15;
-          v17 = v16;
+          appShortcutIdentifier = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
+          appShortcutIdentifier2 = [(WFConfiguredSystemContextualAction *)v6 appShortcutIdentifier];
+          v14 = appShortcutIdentifier;
+          v17 = appShortcutIdentifier2;
           v13 = v17;
           if (v14 == v17)
           {
@@ -112,85 +112,85 @@ LABEL_21:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WFConfiguredStaccatoAction *)self identifier];
-  v6 = [(WFConfiguredStaccatoAction *)self name];
-  v7 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v8 = [(WFConfiguredSystemContextualAction *)self contextualAction];
-  v9 = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, bundle: %@, action: %@, app shortcut identifier: %@>", v4, self, v5, v6, v7, v8, v9];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  name = [(WFConfiguredStaccatoAction *)self name];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  contextualAction = [(WFConfiguredSystemContextualAction *)self contextualAction];
+  appShortcutIdentifier = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, bundle: %@, action: %@, app shortcut identifier: %@>", v4, self, identifier, name, associatedBundleIdentifier, contextualAction, appShortcutIdentifier];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFConfiguredSystemContextualAction;
-  v4 = a3;
-  [(WFConfiguredStaccatoAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFConfiguredStaccatoAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFConfiguredSystemContextualAction *)self contextualAction:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"contextualAction"];
+  [coderCopy encodeObject:v5 forKey:@"contextualAction"];
 
-  v6 = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
-  [v4 encodeObject:v6 forKey:@"appShortcutIdentifier"];
+  appShortcutIdentifier = [(WFConfiguredSystemContextualAction *)self appShortcutIdentifier];
+  [coderCopy encodeObject:appShortcutIdentifier forKey:@"appShortcutIdentifier"];
 }
 
-- (WFConfiguredSystemContextualAction)initWithCoder:(id)a3
+- (WFConfiguredSystemContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextualAction"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appShortcutIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcutsMetadata"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextualAction"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appShortcutIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcutsMetadata"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
 
   if (v5)
   {
     self = [(WFConfiguredSystemContextualAction *)self initWithContextualAction:v5 appShortcutIdentifier:v6 shortcutsMetadata:v7 colorScheme:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (WFConfiguredSystemContextualAction)initWithContextualAction:(id)a3 appShortcutIdentifier:(id)a4 shortcutsMetadata:(id)a5 colorScheme:(id)a6
+- (WFConfiguredSystemContextualAction)initWithContextualAction:(id)action appShortcutIdentifier:(id)identifier shortcutsMetadata:(id)metadata colorScheme:(id)scheme
 {
-  v12 = a3;
-  obj = a4;
-  v28 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12)
+  actionCopy = action;
+  obj = identifier;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  schemeCopy = scheme;
+  if (!actionCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemContextualAction.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemContextualAction.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
-  v15 = [v12 associatedAppBundleIdentifier];
-  v16 = v15;
+  associatedAppBundleIdentifier = [actionCopy associatedAppBundleIdentifier];
+  v16 = associatedAppBundleIdentifier;
   v17 = @"com.apple.shortcuts";
-  if (v15)
+  if (associatedAppBundleIdentifier)
   {
-    v17 = v15;
+    v17 = associatedAppBundleIdentifier;
   }
 
   v18 = v17;
 
-  v19 = [v12 uniqueIdentifier];
-  v20 = [v12 displayString];
-  v21 = [v12 icon];
-  v22 = [v21 wfIcon];
+  uniqueIdentifier = [actionCopy uniqueIdentifier];
+  displayString = [actionCopy displayString];
+  icon = [actionCopy icon];
+  wfIcon = [icon wfIcon];
   v29.receiver = self;
   v29.super_class = WFConfiguredSystemContextualAction;
-  v23 = [(WFConfiguredStaccatoAction *)&v29 initWithIdentifier:v19 associatedBundleIdentifier:v18 name:v20 previewIcon:v22 shortcutsMetadata:v13 colorScheme:v14];
+  v23 = [(WFConfiguredStaccatoAction *)&v29 initWithIdentifier:uniqueIdentifier associatedBundleIdentifier:v18 name:displayString previewIcon:wfIcon shortcutsMetadata:metadataCopy colorScheme:schemeCopy];
 
   if (v23)
   {
-    objc_storeStrong(&v23->_contextualAction, a3);
+    objc_storeStrong(&v23->_contextualAction, action);
     objc_storeStrong(&v23->_appShortcutIdentifier, obj);
     v24 = v23;
   }

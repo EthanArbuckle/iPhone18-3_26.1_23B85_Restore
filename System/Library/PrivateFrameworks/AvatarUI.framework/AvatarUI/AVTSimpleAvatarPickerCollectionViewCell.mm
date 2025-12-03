@@ -1,37 +1,37 @@
 @interface AVTSimpleAvatarPickerCollectionViewCell
-+ (CGPath)selectionPathInBounds:(CGRect)a3;
-+ (double)imageInsetForInsetSize:(unint64_t)a3;
-- (AVTSimpleAvatarPickerCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGPath)selectionPathInBounds:(CGRect)bounds;
++ (double)imageInsetForInsetSize:(unint64_t)size;
+- (AVTSimpleAvatarPickerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (BOOL)shouldShowSelectionLayer;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageInsetSize:(unint64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateHighlightedState:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateSelectionLayerOpacityAnimated:(BOOL)a3;
-- (void)updateWithImage:(id)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageInsetSize:(unint64_t)size;
+- (void)setSelected:(BOOL)selected;
+- (void)updateHighlightedState:(BOOL)state animated:(BOOL)animated;
+- (void)updateSelectionLayerOpacityAnimated:(BOOL)animated;
+- (void)updateWithImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation AVTSimpleAvatarPickerCollectionViewCell
 
-+ (CGPath)selectionPathInBounds:(CGRect)a3
++ (CGPath)selectionPathInBounds:(CGRect)bounds
 {
-  v3 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:a3.origin.x cornerRadius:{a3.origin.y, a3.size.width, a3.size.height, 12.0}];
-  v4 = [v3 CGPath];
+  v3 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:bounds.origin.x cornerRadius:{bounds.origin.y, bounds.size.width, bounds.size.height, 12.0}];
+  cGPath = [v3 CGPath];
 
-  return v4;
+  return cGPath;
 }
 
-+ (double)imageInsetForInsetSize:(unint64_t)a3
++ (double)imageInsetForInsetSize:(unint64_t)size
 {
   result = 0.0;
-  if (a3 == 2)
+  if (size == 2)
   {
     result = 6.0;
   }
 
-  if (a3 == 1)
+  if (size == 1)
   {
     return 4.0;
   }
@@ -39,54 +39,54 @@
   return result;
 }
 
-- (AVTSimpleAvatarPickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (AVTSimpleAvatarPickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = AVTSimpleAvatarPickerCollectionViewCell;
-  v3 = [(AVTSimpleAvatarPickerCollectionViewCell *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTSimpleAvatarPickerCollectionViewCell *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
-    v5 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
-    [v5 bounds];
+    contentView = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
+    [contentView bounds];
     v6 = [v4 initWithFrame:?];
 
     v7 = *MEMORY[0x1E69796E8];
-    v8 = [(UIView *)v6 layer];
-    [v8 setCornerCurve:v7];
+    layer = [(UIView *)v6 layer];
+    [layer setCornerCurve:v7];
 
-    v9 = [(UIView *)v6 layer];
-    [v9 setCornerRadius:12.0];
+    layer2 = [(UIView *)v6 layer];
+    [layer2 setCornerRadius:12.0];
 
     v10 = +[AVTUIColorRepository simplePickerSelectedBackground];
     [(UIView *)v6 setBackgroundColor:v10];
 
     [(UIView *)v6 setAutoresizingMask:18];
     [(UIView *)v6 setAlpha:0.0];
-    v11 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
-    [v11 addSubview:v6];
+    contentView2 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v6];
 
     selectionLayer = v3->_selectionLayer;
     v3->_selectionLayer = v6;
     v13 = v6;
 
     v14 = [AVTUIAnimatingImageView alloc];
-    v15 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
-    [v15 bounds];
+    contentView3 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
+    [contentView3 bounds];
     v16 = [(AVTUIAnimatingImageView *)v14 initWithFrame:?];
 
     [(AVTUIAnimatingImageView *)v16 setContentMode:1];
-    v17 = [(AVTUIAnimatingImageView *)v16 layer];
-    [v17 setCornerCurve:v7];
+    layer3 = [(AVTUIAnimatingImageView *)v16 layer];
+    [layer3 setCornerCurve:v7];
 
-    v18 = [(AVTUIAnimatingImageView *)v16 layer];
-    [v18 setCornerRadius:10.0];
+    layer4 = [(AVTUIAnimatingImageView *)v16 layer];
+    [layer4 setCornerRadius:10.0];
 
-    v19 = [(AVTUIAnimatingImageView *)v16 layer];
-    [v19 setMasksToBounds:1];
+    layer5 = [(AVTUIAnimatingImageView *)v16 layer];
+    [layer5 setMasksToBounds:1];
 
-    v20 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
-    [v20 addSubview:v16];
+    contentView4 = [(AVTSimpleAvatarPickerCollectionViewCell *)v3 contentView];
+    [contentView4 addSubview:v16];
 
     imageView = v3->_imageView;
     v3->_imageView = v16;
@@ -103,45 +103,45 @@
   [(AVTSimpleAvatarPickerCollectionViewCell *)self updateSelectionLayerOpacityAnimated:1];
   [objc_opt_class() imageInsetForInsetSize:{-[AVTSimpleAvatarPickerCollectionViewCell imageInsetSize](self, "imageInsetSize")}];
   v4 = v3;
-  v5 = [(AVTSimpleAvatarPickerCollectionViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(AVTSimpleAvatarPickerCollectionViewCell *)self contentView];
+  [contentView bounds];
   v13 = CGRectInset(v12, v4, v4);
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
   height = v13.size.height;
 
-  v10 = [(AVTSimpleAvatarPickerCollectionViewCell *)self imageView];
-  [v10 setFrame:{x, y, width, height}];
+  imageView = [(AVTSimpleAvatarPickerCollectionViewCell *)self imageView];
+  [imageView setFrame:{x, y, width, height}];
 }
 
 - (BOOL)shouldShowSelectionLayer
 {
-  v3 = [(AVTSimpleAvatarPickerCollectionViewCell *)self showSelectedState];
-  if (v3)
+  showSelectedState = [(AVTSimpleAvatarPickerCollectionViewCell *)self showSelectedState];
+  if (showSelectedState)
   {
     if (([(AVTSimpleAvatarPickerCollectionViewCell *)self isSelected]& 1) != 0)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(showSelectedState) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(AVTSimpleAvatarPickerCollectionViewCell *)self isHighlighted];
+      LOBYTE(showSelectedState) = [(AVTSimpleAvatarPickerCollectionViewCell *)self isHighlighted];
     }
   }
 
-  return v3;
+  return showSelectedState;
 }
 
-- (void)updateSelectionLayerOpacityAnimated:(BOOL)a3
+- (void)updateSelectionLayerOpacityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTSimpleAvatarPickerCollectionViewCell *)self shouldShowSelectionLayer];
+  animatedCopy = animated;
+  shouldShowSelectionLayer = [(AVTSimpleAvatarPickerCollectionViewCell *)self shouldShowSelectionLayer];
   v6 = 0.0;
   v7 = 1.0;
-  if (!v5)
+  if (!shouldShowSelectionLayer)
   {
     v7 = 0.0;
   }
@@ -150,7 +150,7 @@
   v8[0] = MEMORY[0x1E69E9820];
   v8[2] = __79__AVTSimpleAvatarPickerCollectionViewCell_updateSelectionLayerOpacityAnimated___block_invoke;
   v8[3] = &unk_1E7F3C300;
-  if (v3)
+  if (animatedCopy)
   {
     v6 = 0.3;
   }
@@ -167,37 +167,37 @@ void __79__AVTSimpleAvatarPickerCollectionViewCell_updateSelectionLayerOpacityAn
   [v2 setAlpha:v1];
 }
 
-- (void)updateWithImage:(id)a3 animated:(BOOL)a4
+- (void)updateWithImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AVTSimpleAvatarPickerCollectionViewCell *)self imageView];
-  [v7 setImage:v6 animated:v4];
+  animatedCopy = animated;
+  imageCopy = image;
+  imageView = [(AVTSimpleAvatarPickerCollectionViewCell *)self imageView];
+  [imageView setImage:imageCopy animated:animatedCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v5.receiver = self;
   v5.super_class = AVTSimpleAvatarPickerCollectionViewCell;
-  [(AVTSimpleAvatarPickerCollectionViewCell *)&v5 setSelected:a3];
+  [(AVTSimpleAvatarPickerCollectionViewCell *)&v5 setSelected:selected];
   [MEMORY[0x1E69DD250] inheritedAnimationDuration];
   [(AVTSimpleAvatarPickerCollectionViewCell *)self updateSelectionLayerOpacityAnimated:v4 > 0.0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = AVTSimpleAvatarPickerCollectionViewCell;
   [(AVTSimpleAvatarPickerCollectionViewCell *)&v5 setHighlighted:?];
-  [(AVTSimpleAvatarPickerCollectionViewCell *)self updateHighlightedState:v3 animated:1];
+  [(AVTSimpleAvatarPickerCollectionViewCell *)self updateHighlightedState:highlightedCopy animated:1];
 }
 
-- (void)setImageInsetSize:(unint64_t)a3
+- (void)setImageInsetSize:(unint64_t)size
 {
-  if (self->_imageInsetSize != a3)
+  if (self->_imageInsetSize != size)
   {
-    self->_imageInsetSize = a3;
+    self->_imageInsetSize = size;
     [(AVTSimpleAvatarPickerCollectionViewCell *)self setNeedsLayout];
   }
 }
@@ -207,27 +207,27 @@ void __79__AVTSimpleAvatarPickerCollectionViewCell_updateSelectionLayerOpacityAn
   v4.receiver = self;
   v4.super_class = AVTSimpleAvatarPickerCollectionViewCell;
   [(AVTSimpleAvatarPickerCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(AVTSimpleAvatarPickerCollectionViewCell *)self imageView];
-  [v3 setImage:0];
+  imageView = [(AVTSimpleAvatarPickerCollectionViewCell *)self imageView];
+  [imageView setImage:0];
 
   [(AVTSimpleAvatarPickerCollectionViewCell *)self setImageInsetSize:0];
   [(AVTSimpleAvatarPickerCollectionViewCell *)self updateHighlightedState:0 animated:0];
   [(AVTSimpleAvatarPickerCollectionViewCell *)self updateSelectionLayerOpacityAnimated:0];
 }
 
-- (void)updateHighlightedState:(BOOL)a3 animated:(BOOL)a4
+- (void)updateHighlightedState:(BOOL)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  stateCopy = state;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__AVTSimpleAvatarPickerCollectionViewCell_updateHighlightedState_animated___block_invoke;
   block[3] = &unk_1E7F3B910;
   block[4] = self;
-  v16 = a4;
+  animatedCopy2 = animated;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   memset(&v14, 0, sizeof(v14));
-  if (v5)
+  if (stateCopy)
   {
     CGAffineTransformMakeScale(&v14, 0.93, 0.93);
     memset(&v13, 0, sizeof(v13));
@@ -249,7 +249,7 @@ void __79__AVTSimpleAvatarPickerCollectionViewCell_updateSelectionLayerOpacityAn
   v9 = 0.3;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
-  if (!v4)
+  if (!animatedCopy)
   {
     v9 = 0.0;
   }

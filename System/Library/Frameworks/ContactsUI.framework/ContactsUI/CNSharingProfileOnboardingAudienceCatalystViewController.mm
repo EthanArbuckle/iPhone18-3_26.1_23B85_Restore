@@ -1,8 +1,8 @@
 @interface CNSharingProfileOnboardingAudienceCatalystViewController
 + (id)descriptorForRequiredKeys;
 + (id)headerText;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CNSharingProfileOnboardingAudienceCatalystViewController)initWithContact:(id)a3 selectedSharingAudience:(unint64_t)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CNSharingProfileOnboardingAudienceCatalystViewController)initWithContact:(id)contact selectedSharingAudience:(unint64_t)audience;
 - (CNSharingProfileOnboardingAudienceControllerDelegate)delegate;
 - (id)confirmButtonTitle;
 - (void)createAudienceDescriptionLabel;
@@ -13,14 +13,14 @@
 - (void)createNameLabel;
 - (void)createNameTextFields;
 - (void)dealloc;
-- (void)didSelectSharingAudience:(unint64_t)a3;
-- (void)familyNameDidChange:(id)a3;
-- (void)givenNameDidChange:(id)a3;
-- (void)handleBackTapped:(id)a3;
-- (void)handleConfirmButtonTapped:(id)a3;
-- (void)handleSetupLaterTapped:(id)a3;
+- (void)didSelectSharingAudience:(unint64_t)audience;
+- (void)familyNameDidChange:(id)change;
+- (void)givenNameDidChange:(id)change;
+- (void)handleBackTapped:(id)tapped;
+- (void)handleConfirmButtonTapped:(id)tapped;
+- (void)handleSetupLaterTapped:(id)tapped;
 - (void)layoutContentView;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updateConfirmButtonEnabledState;
 - (void)updateMenuForAudiencePicker;
 - (void)viewDidLoad;
@@ -35,21 +35,21 @@
   return WeakRetained;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [(UITextField *)self->_givenNameField text];
-  [(CNMutableContact *)self->_contact setGivenName:v4];
+  text = [(UITextField *)self->_givenNameField text];
+  [(CNMutableContact *)self->_contact setGivenName:text];
 
-  v5 = [(UITextField *)self->_familyNameField text];
-  [(CNMutableContact *)self->_contact setFamilyName:v5];
+  text2 = [(UITextField *)self->_familyNameField text];
+  [(CNMutableContact *)self->_contact setFamilyName:text2];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = v4;
+  returnCopy = return;
+  v5 = returnCopy;
   nameOrder = self->_nameOrder;
-  if ((nameOrder != 2 || self->_familyNameField == v4) && self->_givenNameField == v4)
+  if ((nameOrder != 2 || self->_familyNameField == returnCopy) && self->_givenNameField == returnCopy)
   {
     if (nameOrder == 2)
     {
@@ -66,33 +66,33 @@
 
   else
   {
-    [(UITextField *)v4 resignFirstResponder];
+    [(UITextField *)returnCopy resignFirstResponder];
   }
 
   return 0;
 }
 
-- (void)handleConfirmButtonTapped:(id)a3
+- (void)handleConfirmButtonTapped:(id)tapped
 {
-  v4 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
-  [v4 audienceController:self didFinishWithContact:self->_contact sharingAudience:{-[CNSharingProfileAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
+  delegate = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
+  [delegate audienceController:self didFinishWithContact:self->_contact sharingAudience:{-[CNSharingProfileAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
 }
 
-- (void)handleBackTapped:(id)a3
+- (void)handleBackTapped:(id)tapped
 {
-  v4 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
-  [v4 audienceController:self didFinishWithContact:0 sharingAudience:{-[CNSharingProfileAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
+  delegate = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
+  [delegate audienceController:self didFinishWithContact:0 sharingAudience:{-[CNSharingProfileAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
 }
 
-- (void)handleSetupLaterTapped:(id)a3
+- (void)handleSetupLaterTapped:(id)tapped
 {
-  v4 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
+  delegate = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
-    [v6 audienceControllerDidTapSetupLater:self];
+    delegate2 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self delegate];
+    [delegate2 audienceControllerDidTapSetupLater:self];
   }
 }
 
@@ -107,11 +107,11 @@
 - (void)updateConfirmButtonEnabledState
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNMutableContact *)self->_contact givenName];
-  if ((*(v3 + 16))(v3, v4))
+  givenName = [(CNMutableContact *)self->_contact givenName];
+  if ((*(v3 + 16))(v3, givenName))
   {
-    v5 = [(CNMutableContact *)self->_contact familyName];
-    v6 = (*(v3 + 16))(v3, v5) ^ 1;
+    familyName = [(CNMutableContact *)self->_contact familyName];
+    v6 = (*(v3 + 16))(v3, familyName) ^ 1;
   }
 
   else
@@ -124,42 +124,42 @@
   [(OBBoldTrayButton *)confirmButton setEnabled:v6];
 }
 
-- (void)familyNameDidChange:(id)a3
+- (void)familyNameDidChange:(id)change
 {
-  v4 = [a3 text];
-  [(CNMutableContact *)self->_contact setFamilyName:v4];
+  text = [change text];
+  [(CNMutableContact *)self->_contact setFamilyName:text];
 
   [(CNSharingProfileOnboardingAudienceCatalystViewController *)self updateConfirmButtonEnabledState];
 }
 
-- (void)givenNameDidChange:(id)a3
+- (void)givenNameDidChange:(id)change
 {
-  v4 = [a3 text];
-  [(CNMutableContact *)self->_contact setGivenName:v4];
+  text = [change text];
+  [(CNMutableContact *)self->_contact setGivenName:text];
 
   [(CNSharingProfileOnboardingAudienceCatalystViewController *)self updateConfirmButtonEnabledState];
 }
 
-- (void)didSelectSharingAudience:(unint64_t)a3
+- (void)didSelectSharingAudience:(unint64_t)audience
 {
-  [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource setSelectedSharingAudience:a3];
+  [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource setSelectedSharingAudience:audience];
   [(CNSharingProfileOnboardingAudienceCatalystViewController *)self updateMenuForAudiencePicker];
-  v4 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionFooterLabel];
-  [(UILabel *)self->_audienceDescriptionLabel setText:v4];
+  sectionFooterLabel = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionFooterLabel];
+  [(UILabel *)self->_audienceDescriptionLabel setText:sectionFooterLabel];
 }
 
 - (void)layoutContentView
 {
   v103[28] = *MEMORY[0x1E69E9840];
-  v3 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self customContentView];
-  [v3 addSubview:self->_avatarImageView];
-  [v3 addSubview:self->_nameLabel];
-  [v3 addSubview:self->_givenNameField];
-  [v3 addSubview:self->_familyNameField];
-  [v3 addSubview:self->_audienceLabel];
-  [v3 addSubview:self->_audiencePickerButton];
-  v4 = v3;
-  [v3 addSubview:self->_audienceDescriptionLabel];
+  customContentView = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self customContentView];
+  [customContentView addSubview:self->_avatarImageView];
+  [customContentView addSubview:self->_nameLabel];
+  [customContentView addSubview:self->_givenNameField];
+  [customContentView addSubview:self->_familyNameField];
+  [customContentView addSubview:self->_audienceLabel];
+  [customContentView addSubview:self->_audiencePickerButton];
+  v4 = customContentView;
+  [customContentView addSubview:self->_audienceDescriptionLabel];
   nameOrder = self->_nameOrder;
   v6 = nameOrder == 2;
   if (nameOrder == 2)
@@ -188,121 +188,121 @@
   v11 = v8;
   v12 = objc_alloc_init(v10);
   [v4 addLayoutGuide:?];
-  v100 = [v4 widthAnchor];
-  v101 = [v4 superview];
-  v99 = [v101 widthAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99];
+  widthAnchor = [v4 widthAnchor];
+  superview = [v4 superview];
+  widthAnchor2 = [superview widthAnchor];
+  v98 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v103[0] = v98;
-  v97 = [(UIImageView *)self->_avatarImageView topAnchor];
-  v96 = [v4 topAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  topAnchor = [(UIImageView *)self->_avatarImageView topAnchor];
+  topAnchor2 = [v4 topAnchor];
+  v95 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v103[1] = v95;
-  v94 = [(UIImageView *)self->_avatarImageView widthAnchor];
-  v93 = [v94 constraintEqualToConstant:150.0];
+  widthAnchor3 = [(UIImageView *)self->_avatarImageView widthAnchor];
+  v93 = [widthAnchor3 constraintEqualToConstant:150.0];
   v103[2] = v93;
-  v92 = [(UIImageView *)self->_avatarImageView heightAnchor];
-  v91 = [(UIImageView *)self->_avatarImageView widthAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91];
+  heightAnchor = [(UIImageView *)self->_avatarImageView heightAnchor];
+  widthAnchor4 = [(UIImageView *)self->_avatarImageView widthAnchor];
+  v90 = [heightAnchor constraintEqualToAnchor:widthAnchor4];
   v103[3] = v90;
-  v89 = [(UIImageView *)self->_avatarImageView centerXAnchor];
-  v88 = [v4 centerXAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88];
+  centerXAnchor = [(UIImageView *)self->_avatarImageView centerXAnchor];
+  centerXAnchor2 = [v4 centerXAnchor];
+  v87 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v103[4] = v87;
-  v86 = [v12 leadingAnchor];
-  v85 = [(UILabel *)self->_nameLabel trailingAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85 constant:10.0];
+  leadingAnchor = [v12 leadingAnchor];
+  trailingAnchor = [(UILabel *)self->_nameLabel trailingAnchor];
+  v84 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:10.0];
   v103[5] = v84;
-  v83 = [v12 trailingAnchor];
-  v82 = [v4 trailingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  trailingAnchor2 = [v12 trailingAnchor];
+  trailingAnchor3 = [v4 trailingAnchor];
+  v81 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v103[6] = v81;
-  v80 = [(UILabel *)self->_nameLabel leadingAnchor];
-  v79 = [v4 leadingAnchor];
-  v78 = [v80 constraintEqualToAnchor:v79];
+  leadingAnchor2 = [(UILabel *)self->_nameLabel leadingAnchor];
+  leadingAnchor3 = [v4 leadingAnchor];
+  v78 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v103[7] = v78;
-  v77 = [(UILabel *)self->_nameLabel trailingAnchor];
-  v76 = [v12 leadingAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76 constant:-10.0];
+  trailingAnchor4 = [(UILabel *)self->_nameLabel trailingAnchor];
+  leadingAnchor4 = [v12 leadingAnchor];
+  v75 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor4 constant:-10.0];
   v103[8] = v75;
-  v74 = [v12 widthAnchor];
-  v72 = [v4 widthAnchor];
-  v71 = [v74 constraintEqualToAnchor:v72 multiplier:0.6];
+  widthAnchor5 = [v12 widthAnchor];
+  widthAnchor6 = [v4 widthAnchor];
+  v71 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:0.6];
   v103[9] = v71;
-  v70 = [v11 leadingAnchor];
-  v69 = [v12 leadingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  leadingAnchor5 = [v11 leadingAnchor];
+  leadingAnchor6 = [v12 leadingAnchor];
+  v68 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v103[10] = v68;
-  v67 = [v11 trailingAnchor];
-  v66 = [v102 leadingAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66 constant:-10.0];
+  trailingAnchor5 = [v11 trailingAnchor];
+  leadingAnchor7 = [v102 leadingAnchor];
+  v65 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor7 constant:-10.0];
   v103[11] = v65;
-  v64 = [v11 centerYAnchor];
-  v63 = [(UILabel *)self->_nameLabel centerYAnchor];
-  v61 = [v64 constraintEqualToAnchor:v63];
+  centerYAnchor = [v11 centerYAnchor];
+  centerYAnchor2 = [(UILabel *)self->_nameLabel centerYAnchor];
+  v61 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v103[12] = v61;
-  v59 = [v11 topAnchor];
-  v58 = [(UIImageView *)self->_avatarImageView bottomAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:36.0];
+  topAnchor3 = [v11 topAnchor];
+  bottomAnchor = [(UIImageView *)self->_avatarImageView bottomAnchor];
+  v57 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:36.0];
   v103[13] = v57;
-  v56 = [v11 widthAnchor];
-  v55 = [v12 widthAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55 multiplier:0.5 constant:-5.0];
+  widthAnchor7 = [v11 widthAnchor];
+  widthAnchor8 = [v12 widthAnchor];
+  v54 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:0.5 constant:-5.0];
   v103[14] = v54;
-  v53 = [v102 widthAnchor];
+  widthAnchor9 = [v102 widthAnchor];
   v73 = v12;
-  v52 = [v12 widthAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52 multiplier:0.5 constant:-5.0];
+  widthAnchor10 = [v12 widthAnchor];
+  v51 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10 multiplier:0.5 constant:-5.0];
   v103[15] = v51;
-  v49 = [v102 trailingAnchor];
-  v48 = [v12 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  trailingAnchor6 = [v102 trailingAnchor];
+  trailingAnchor7 = [v12 trailingAnchor];
+  v47 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v103[16] = v47;
-  v46 = [v102 centerYAnchor];
+  centerYAnchor3 = [v102 centerYAnchor];
   v60 = v11;
-  v45 = [v11 centerYAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  centerYAnchor4 = [v11 centerYAnchor];
+  v44 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v103[17] = v44;
-  v43 = [(UILabel *)self->_audienceLabel leadingAnchor];
-  v42 = [v4 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  leadingAnchor8 = [(UILabel *)self->_audienceLabel leadingAnchor];
+  leadingAnchor9 = [v4 leadingAnchor];
+  v41 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v103[18] = v41;
-  v40 = [(UILabel *)self->_audienceLabel trailingAnchor];
-  v39 = [(UIButton *)self->_audiencePickerButton leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:-10.0];
+  trailingAnchor8 = [(UILabel *)self->_audienceLabel trailingAnchor];
+  leadingAnchor10 = [(UIButton *)self->_audiencePickerButton leadingAnchor];
+  v38 = [trailingAnchor8 constraintEqualToAnchor:leadingAnchor10 constant:-10.0];
   v103[19] = v38;
-  v37 = [(UILabel *)self->_audienceLabel centerYAnchor];
-  v36 = [(UIButton *)self->_audiencePickerButton centerYAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  centerYAnchor5 = [(UILabel *)self->_audienceLabel centerYAnchor];
+  centerYAnchor6 = [(UIButton *)self->_audiencePickerButton centerYAnchor];
+  v35 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v103[20] = v35;
-  v34 = [(UILabel *)self->_audienceLabel trailingAnchor];
-  v33 = [(UILabel *)self->_nameLabel trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor9 = [(UILabel *)self->_audienceLabel trailingAnchor];
+  trailingAnchor10 = [(UILabel *)self->_nameLabel trailingAnchor];
+  v32 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v103[21] = v32;
-  v31 = [(UILabel *)self->_audienceLabel topAnchor];
-  v30 = [v11 bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:10.0];
+  topAnchor4 = [(UILabel *)self->_audienceLabel topAnchor];
+  bottomAnchor2 = [v11 bottomAnchor];
+  v29 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:10.0];
   v103[22] = v29;
-  v28 = [(UIButton *)self->_audiencePickerButton trailingAnchor];
+  trailingAnchor11 = [(UIButton *)self->_audiencePickerButton trailingAnchor];
   v13 = v4;
   v50 = v4;
-  v27 = [v4 trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  trailingAnchor12 = [v4 trailingAnchor];
+  v26 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v103[23] = v26;
-  v25 = [(UILabel *)self->_audienceDescriptionLabel leadingAnchor];
-  v24 = [(UIButton *)self->_audiencePickerButton leadingAnchor];
-  v14 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor11 = [(UILabel *)self->_audienceDescriptionLabel leadingAnchor];
+  leadingAnchor12 = [(UIButton *)self->_audiencePickerButton leadingAnchor];
+  v14 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v103[24] = v14;
-  v15 = [(UILabel *)self->_audienceDescriptionLabel widthAnchor];
-  v16 = [(UIButton *)self->_audiencePickerButton widthAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  widthAnchor11 = [(UILabel *)self->_audienceDescriptionLabel widthAnchor];
+  widthAnchor12 = [(UIButton *)self->_audiencePickerButton widthAnchor];
+  v17 = [widthAnchor11 constraintEqualToAnchor:widthAnchor12];
   v103[25] = v17;
-  v18 = [(UILabel *)self->_audienceDescriptionLabel topAnchor];
-  v19 = [(UIButton *)self->_audiencePickerButton bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:6.0];
+  topAnchor5 = [(UILabel *)self->_audienceDescriptionLabel topAnchor];
+  bottomAnchor3 = [(UIButton *)self->_audiencePickerButton bottomAnchor];
+  v20 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:6.0];
   v103[26] = v20;
-  v21 = [(UILabel *)self->_audienceDescriptionLabel bottomAnchor];
-  v22 = [v13 bottomAnchor];
-  v23 = [v21 constraintLessThanOrEqualToAnchor:v22 constant:-10.0];
+  bottomAnchor4 = [(UILabel *)self->_audienceDescriptionLabel bottomAnchor];
+  bottomAnchor5 = [v13 bottomAnchor];
+  v23 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:-10.0];
   v103[27] = v23;
   v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:28];
 
@@ -312,8 +312,8 @@
 - (void)createContentView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self view];
-  [v4 bounds];
+  view = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
 
   [(OBWelcomeFullCenterContentController *)self setCenteredContentView:v5];
@@ -334,13 +334,13 @@
   [(UILabel *)self->_audienceDescriptionLabel setFont:v6];
 
   [(UILabel *)self->_audienceDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionFooterLabel];
-  [(UILabel *)self->_audienceDescriptionLabel setText:v7];
+  sectionFooterLabel = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionFooterLabel];
+  [(UILabel *)self->_audienceDescriptionLabel setText:sectionFooterLabel];
 }
 
 - (void)updateMenuForAudiencePicker
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource numberOfItems])
   {
     v4 = 0;
@@ -348,8 +348,8 @@
     {
       v5 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource itemForIndex:v4];
       v6 = MEMORY[0x1E69DC628];
-      v7 = [v5 label];
-      v8 = [v5 label];
+      label = [v5 label];
+      label2 = [v5 label];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMenuForAudiencePicker__block_invoke;
@@ -357,14 +357,14 @@
       v12[4] = self;
       v9 = v5;
       v13 = v9;
-      v10 = [v6 actionWithTitle:v7 image:0 identifier:v8 handler:v12];
+      v10 = [v6 actionWithTitle:label image:0 identifier:label2 handler:v12];
 
       if ([v9 isSelected])
       {
         [v10 setState:1];
       }
 
-      [v3 addObject:v10];
+      [array addObject:v10];
 
       ++v4;
     }
@@ -372,7 +372,7 @@
     while (v4 < [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource numberOfItems]);
   }
 
-  v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F0CE7398 children:v3];
+  v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F0CE7398 children:array];
   [(UIButton *)self->_audiencePickerButton setMenu:v11];
 }
 
@@ -414,8 +414,8 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   [(UILabel *)self->_audienceLabel setText:v9];
 
   [(UILabel *)self->_audienceLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self traitCollection];
-  -[UILabel setTextAlignment:](self->_audienceLabel, "setTextAlignment:", 2 * ([v10 layoutDirection] == 0));
+  traitCollection = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self traitCollection];
+  -[UILabel setTextAlignment:](self->_audienceLabel, "setTextAlignment:", 2 * ([traitCollection layoutDirection] == 0));
 }
 
 - (void)createNameTextFields
@@ -430,8 +430,8 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   self->_givenNameField = v8;
 
   [(UITextField *)self->_givenNameField setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(CNMutableContact *)self->_contact givenName];
-  [(UITextField *)self->_givenNameField setText:v10];
+  givenName = [(CNMutableContact *)self->_contact givenName];
+  [(UITextField *)self->_givenNameField setText:givenName];
 
   v11 = +[CNUIFontRepository catalystNameTextFieldsFont];
   [(UITextField *)self->_givenNameField setFont:v11];
@@ -450,8 +450,8 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   self->_familyNameField = v14;
 
   [(UITextField *)self->_familyNameField setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(CNMutableContact *)self->_contact familyName];
-  [(UITextField *)self->_familyNameField setText:v16];
+  familyName = [(CNMutableContact *)self->_contact familyName];
+  [(UITextField *)self->_familyNameField setText:familyName];
 
   v17 = +[CNUIFontRepository catalystNameTextFieldsFont];
   [(UITextField *)self->_familyNameField setFont:v17];
@@ -482,8 +482,8 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   LODWORD(v7) = 1144766464;
   [(UILabel *)self->_nameLabel setContentCompressionResistancePriority:0 forAxis:v7];
   [(UILabel *)self->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self traitCollection];
-  -[UILabel setTextAlignment:](self->_nameLabel, "setTextAlignment:", 2 * ([v8 layoutDirection] == 0));
+  traitCollection = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self traitCollection];
+  -[UILabel setTextAlignment:](self->_nameLabel, "setTextAlignment:", 2 * ([traitCollection layoutDirection] == 0));
 
   v10 = CNContactsUIBundle();
   v9 = [v10 localizedStringForKey:@"SHARING_NAME_LABEL" value:&stru_1F0CE7398 table:@"Localized"];
@@ -499,20 +499,20 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
 
   [(UIImageView *)self->_avatarImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = objc_alloc(MEMORY[0x1E69DCAB8]);
-  v7 = [(CNMutableContact *)self->_contact thumbnailImageData];
-  v9 = [v6 initWithData:v7];
+  thumbnailImageData = [(CNMutableContact *)self->_contact thumbnailImageData];
+  v9 = [v6 initWithData:thumbnailImageData];
 
   [(UIImageView *)self->_avatarImageView setImage:v9];
   [(UIImageView *)self->_avatarImageView setClipsToBounds:1];
-  v8 = [(UIImageView *)self->_avatarImageView layer];
-  [v8 setCornerRadius:75.0];
+  layer = [(UIImageView *)self->_avatarImageView layer];
+  [layer setCornerRadius:75.0];
 }
 
 - (void)viewDidLoad
 {
-  v3 = [MEMORY[0x1E69B7D30] linkButton];
+  linkButton = [MEMORY[0x1E69B7D30] linkButton];
   setupLaterButton = self->_setupLaterButton;
-  self->_setupLaterButton = v3;
+  self->_setupLaterButton = linkButton;
 
   v5 = self->_setupLaterButton;
   v6 = CNContactsUIBundle();
@@ -520,13 +520,13 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   [(OBLinkTrayButton *)v5 setTitle:v7 forState:0];
 
   [(OBLinkTrayButton *)self->_setupLaterButton addTarget:self action:sel_handleSetupLaterTapped_ forControlEvents:64];
-  v8 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self buttonTray];
-  [v8 addButton:self->_setupLaterButton];
+  buttonTray = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self buttonTray];
+  [buttonTray addButton:self->_setupLaterButton];
 
   v9 = objc_alloc_init(CNOnboardingBoldButtonProvider);
-  v10 = [(CNOnboardingBoldButtonProvider *)v9 boldAlternateButton];
+  boldAlternateButton = [(CNOnboardingBoldButtonProvider *)v9 boldAlternateButton];
   backButton = self->_backButton;
-  self->_backButton = v10;
+  self->_backButton = boldAlternateButton;
 
   v12 = self->_backButton;
   v13 = CNContactsUIBundle();
@@ -534,24 +534,24 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   [(OBBoldTrayButton *)v12 setTitle:v14 forState:0];
 
   [(OBBoldTrayButton *)self->_backButton addTarget:self action:sel_handleBackTapped_ forControlEvents:64];
-  v15 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self buttonTray];
-  [v15 addButton:self->_backButton];
+  buttonTray2 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_backButton];
 
-  v16 = [(CNOnboardingBoldButtonProvider *)v9 boldButton];
+  boldButton = [(CNOnboardingBoldButtonProvider *)v9 boldButton];
   confirmButton = self->_confirmButton;
-  self->_confirmButton = v16;
+  self->_confirmButton = boldButton;
 
   v18 = self->_confirmButton;
-  v19 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self confirmButtonTitle];
-  [(OBBoldTrayButton *)v18 setTitle:v19 forState:0];
+  confirmButtonTitle = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self confirmButtonTitle];
+  [(OBBoldTrayButton *)v18 setTitle:confirmButtonTitle forState:0];
 
   [(OBBoldTrayButton *)self->_confirmButton addTarget:self action:sel_handleConfirmButtonTapped_ forControlEvents:64];
   [(CNSharingProfileOnboardingAudienceCatalystViewController *)self updateConfirmButtonEnabledState];
-  v20 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self buttonTray];
-  [v20 addButton:self->_confirmButton];
+  buttonTray3 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)self buttonTray];
+  [buttonTray3 addButton:self->_confirmButton];
 
-  v21 = [(CNMutableContact *)self->_contact givenName];
-  if (v21 && (v22 = v21, [(CNMutableContact *)self->_contact familyName], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
+  givenName = [(CNMutableContact *)self->_contact givenName];
+  if (givenName && (v22 = givenName, [(CNMutableContact *)self->_contact familyName], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
   {
     v24 = 0;
   }
@@ -559,11 +559,11 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
   else
   {
     v24 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v25 = [(CNMutableContact *)self->_contact givenName];
-    [v24 setGivenName:v25];
+    givenName2 = [(CNMutableContact *)self->_contact givenName];
+    [v24 setGivenName:givenName2];
 
-    v26 = [(CNMutableContact *)self->_contact familyName];
-    [v24 setFamilyName:v26];
+    familyName = [(CNMutableContact *)self->_contact familyName];
+    [v24 setFamilyName:familyName];
   }
 
   self->_nameOrder = [MEMORY[0x1E696ADF8] _nameOrderWithOverridesForComponents:v24 options:0];
@@ -583,29 +583,29 @@ uint64_t __87__CNSharingProfileOnboardingAudienceCatalystViewController_updateMe
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNSharingProfileOnboardingAudienceCatalystViewController;
   [(CNSharingProfileOnboardingAudienceCatalystViewController *)&v4 dealloc];
 }
 
-- (CNSharingProfileOnboardingAudienceCatalystViewController)initWithContact:(id)a3 selectedSharingAudience:(unint64_t)a4
+- (CNSharingProfileOnboardingAudienceCatalystViewController)initWithContact:(id)contact selectedSharingAudience:(unint64_t)audience
 {
-  v6 = a3;
-  v7 = [objc_opt_class() headerText];
+  contactCopy = contact;
+  headerText = [objc_opt_class() headerText];
   v15.receiver = self;
   v15.super_class = CNSharingProfileOnboardingAudienceCatalystViewController;
-  v8 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)&v15 initWithTitle:v7 detailText:0 icon:0];
+  v8 = [(CNSharingProfileOnboardingAudienceCatalystViewController *)&v15 initWithTitle:headerText detailText:0 icon:0];
 
   if (v8)
   {
-    v9 = [[CNSharingProfileAudienceDataSource alloc] initWithSelectedSharingAudience:a4];
+    v9 = [[CNSharingProfileAudienceDataSource alloc] initWithSelectedSharingAudience:audience];
     sharingAudienceDataSource = v8->_sharingAudienceDataSource;
     v8->_sharingAudienceDataSource = v9;
 
-    v11 = [v6 mutableCopy];
+    v11 = [contactCopy mutableCopy];
     contact = v8->_contact;
     v8->_contact = v11;
 

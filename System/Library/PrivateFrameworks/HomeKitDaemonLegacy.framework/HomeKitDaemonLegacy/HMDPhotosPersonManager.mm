@@ -1,15 +1,15 @@
 @interface HMDPhotosPersonManager
 + (id)logCategory;
-+ (id)zoneNameForZoneUUID:(id)a3;
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4;
++ (id)zoneNameForZoneUUID:(id)d;
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user;
 - (BOOL)sharesFaceClassifications;
-- (BOOL)zoneManager:(id)a3 shouldRequestShareInvitationFromUser:(id)a4;
-- (HMDPhotosPersonManager)initWithUUID:(id)a3 zoneManager:(id)a4 dataInterfaces:(id)a5 workQueue:(id)a6 featuresDataSource:(id)a7 user:(id)a8;
-- (HMDPhotosPersonManager)initWithUser:(id)a3 zoneUUID:(id)a4 workQueue:(id)a5;
+- (BOOL)zoneManager:(id)manager shouldRequestShareInvitationFromUser:(id)user;
+- (HMDPhotosPersonManager)initWithUUID:(id)d zoneManager:(id)manager dataInterfaces:(id)interfaces workQueue:(id)queue featuresDataSource:(id)source user:(id)user;
+- (HMDPhotosPersonManager)initWithUser:(id)user zoneUUID:(id)d workQueue:(id)queue;
 - (HMDUser)user;
 - (HMIExternalPersonManager)hmiPersonManager;
 - (HMPhotosPersonManagerSettings)settings;
-- (void)handleUpdatedSettings:(id)a3;
+- (void)handleUpdatedSettings:(id)settings;
 @end
 
 @implementation HMDPhotosPersonManager
@@ -21,37 +21,37 @@
   return WeakRetained;
 }
 
-- (BOOL)zoneManager:(id)a3 shouldRequestShareInvitationFromUser:(id)a4
+- (BOOL)zoneManager:(id)manager shouldRequestShareInvitationFromUser:(id)user
 {
-  v5 = [(HMDPersonManager *)self workQueue:a3];
+  v5 = [(HMDPersonManager *)self workQueue:manager];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(HMDPersonManager *)self zoneManager];
-  v7 = [v6 home];
-  v8 = [v7 isOwnerUser];
+  zoneManager = [(HMDPersonManager *)self zoneManager];
+  home = [zoneManager home];
+  isOwnerUser = [home isOwnerUser];
 
-  return v8;
+  return isOwnerUser;
 }
 
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(v6) = [v5 isOwner];
-  return v6;
+  LOBYTE(workQueue) = [userCopy isOwner];
+  return workQueue;
 }
 
-- (void)handleUpdatedSettings:(id)a3
+- (void)handleUpdatedSettings:(id)settings
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  settingsCopy = settings;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -59,18 +59,18 @@
     *buf = 138543618;
     v23 = v9;
     v24 = 2112;
-    v25 = v4;
+    v25 = settingsCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Photos person manager settings changed: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDPersonManager *)v7 _createOrRemoveZonesForSettings:v4];
+  [(HMDPersonManager *)selfCopy _createOrRemoveZonesForSettings:settingsCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(HMDPersonManager *)v7 dataInterfaces];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  dataInterfaces = [(HMDPersonManager *)selfCopy dataInterfaces];
+  v11 = [dataInterfaces countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -82,20 +82,20 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v15 = *(*(&v17 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 handleUpdatedSettings:v4 mirrorOutputFuture:0];
+          [v15 handleUpdatedSettings:settingsCopy mirrorOutputFuture:0];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [dataInterfaces countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -106,19 +106,19 @@
 
 - (HMPhotosPersonManagerSettings)settings
 {
-  v2 = [(HMDPhotosPersonManager *)self user];
-  v3 = [v2 photosPersonManagerSettings];
+  user = [(HMDPhotosPersonManager *)self user];
+  photosPersonManagerSettings = [user photosPersonManagerSettings];
 
-  return v3;
+  return photosPersonManagerSettings;
 }
 
 - (HMIExternalPersonManager)hmiPersonManager
 {
-  v2 = [(HMDPersonManager *)self dataInterfaces];
-  v3 = [v2 na_map:&__block_literal_global_11685];
-  v4 = [v3 anyObject];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v3 = [dataInterfaces na_map:&__block_literal_global_11685];
+  anyObject = [v3 anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 id __42__HMDPhotosPersonManager_hmiPersonManager__block_invoke(uint64_t a1, void *a2)
@@ -139,19 +139,19 @@ id __42__HMDPhotosPersonManager_hmiPersonManager__block_invoke(uint64_t a1, void
 
 - (BOOL)sharesFaceClassifications
 {
-  v2 = [(HMDPhotosPersonManager *)self settings];
-  v3 = [v2 isSharingFaceClassificationsEnabled];
+  settings = [(HMDPhotosPersonManager *)self settings];
+  isSharingFaceClassificationsEnabled = [settings isSharingFaceClassificationsEnabled];
 
-  return v3;
+  return isSharingFaceClassificationsEnabled;
 }
 
-- (HMDPhotosPersonManager)initWithUUID:(id)a3 zoneManager:(id)a4 dataInterfaces:(id)a5 workQueue:(id)a6 featuresDataSource:(id)a7 user:(id)a8
+- (HMDPhotosPersonManager)initWithUUID:(id)d zoneManager:(id)manager dataInterfaces:(id)interfaces workQueue:(id)queue featuresDataSource:(id)source user:(id)user
 {
   v18.receiver = self;
   v18.super_class = HMDPhotosPersonManager;
-  v13 = a8;
-  v14 = [(HMDPersonManager *)&v18 initWithUUID:a3 zoneManager:a4 dataInterfaces:a5 workQueue:a6 featuresDataSource:a7];
-  objc_storeWeak(&v14->_user, v13);
+  userCopy = user;
+  v14 = [(HMDPersonManager *)&v18 initWithUUID:d zoneManager:manager dataInterfaces:interfaces workQueue:queue featuresDataSource:source];
+  objc_storeWeak(&v14->_user, userCopy);
 
   v15 = objc_alloc_init(MEMORY[0x277CD1D00]);
   dataUnavailableExternalSettings = v14->_dataUnavailableExternalSettings;
@@ -160,53 +160,53 @@ id __42__HMDPhotosPersonManager_hmiPersonManager__block_invoke(uint64_t a1, void
   return v14;
 }
 
-- (HMDPhotosPersonManager)initWithUser:(id)a3 zoneUUID:(id)a4 workQueue:(id)a5
+- (HMDPhotosPersonManager)initWithUser:(id)user zoneUUID:(id)d workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  userCopy = user;
+  queueCopy = queue;
   v10 = MEMORY[0x277CD1CF8];
-  v11 = a4;
-  v12 = [v8 uuid];
-  v13 = [v10 personManagerUUIDFromUserUUID:v12];
+  dCopy = d;
+  uuid = [userCopy uuid];
+  v13 = [v10 personManagerUUIDFromUserUUID:uuid];
 
-  v14 = [v8 home];
+  home = [userCopy home];
   v15 = [MEMORY[0x277CBEB58] set];
   v16 = +[HMDDeviceCapabilities deviceCapabilities];
-  v17 = [v16 supportsFaceClassification];
+  supportsFaceClassification = [v16 supportsFaceClassification];
 
-  if (v17)
+  if (supportsFaceClassification)
   {
     v18 = [HMDHomeAIPhotosPersonDataInterface alloc];
-    v19 = [v14 uuid];
-    v20 = [(HMDHomeAIPhotosPersonDataInterface *)v18 initWithPersonManagerUUID:v13 homeUUID:v19 workQueue:v9];
+    uuid2 = [home uuid];
+    v20 = [(HMDHomeAIPhotosPersonDataInterface *)v18 initWithPersonManagerUUID:v13 homeUUID:uuid2 workQueue:queueCopy];
 
     [v15 addObject:v20];
   }
 
-  if ([v8 isCurrentUser])
+  if ([userCopy isCurrentUser])
   {
     v21 = [[HMDPhotoLibraryPersonImporter alloc] initWithUUID:v13];
     [v15 addObject:v21];
   }
 
   v22 = [HMDHomeKitPersonDataInterface alloc];
-  v23 = [v14 msgDispatcher];
-  v24 = [(HMDHomeKitPersonDataInterface *)v22 initWithUUID:v13 messageDispatcher:v23 workQueue:v9];
+  msgDispatcher = [home msgDispatcher];
+  v24 = [(HMDHomeKitPersonDataInterface *)v22 initWithUUID:v13 messageDispatcher:msgDispatcher workQueue:queueCopy];
   [v15 addObject:v24];
 
-  v25 = [[HMDRemotePersonDataMessenger alloc] initWithUUID:v13 home:v14 workQueue:v9];
+  v25 = [[HMDRemotePersonDataMessenger alloc] initWithUUID:v13 home:home workQueue:queueCopy];
   [v15 addObject:v25];
 
-  v26 = [HMDPhotosPersonManager zoneNameForZoneUUID:v11];
+  v26 = [HMDPhotosPersonManager zoneNameForZoneUUID:dCopy];
 
   v27 = [HMDDatabaseZoneManager alloc];
   v28 = +[HMDDatabase cameraClipsDatabase];
-  v29 = [(HMDDatabaseZoneManager *)v27 initWithDatabase:v28 zoneName:v26 home:v14 messageTargetUUID:v13 workQueue:v9];
+  v29 = [(HMDDatabaseZoneManager *)v27 initWithDatabase:v28 zoneName:v26 home:home messageTargetUUID:v13 workQueue:queueCopy];
 
-  v30 = [(HMDDatabaseZoneManager *)v29 defaultConfiguration];
-  v31 = [v30 mutableCopy];
+  defaultConfiguration = [(HMDDatabaseZoneManager *)v29 defaultConfiguration];
+  v31 = [defaultConfiguration mutableCopy];
 
-  [v31 setZoneOwner:{objc_msgSend(v8, "isCurrentUser")}];
+  [v31 setZoneOwner:{objc_msgSend(userCopy, "isCurrentUser")}];
   v32 = +[HMDHomeKitVersion version7];
   [v31 setMinimumHomeKitVersion:v32];
 
@@ -215,7 +215,7 @@ id __42__HMDPhotosPersonManager_hmiPersonManager__block_invoke(uint64_t a1, void
 
   [(HMDDatabaseZoneManager *)v29 setDefaultConfiguration:v31];
   v34 = +[HMDFeaturesDataSource defaultDataSource];
-  v35 = [(HMDPhotosPersonManager *)self initWithUUID:v13 zoneManager:v29 dataInterfaces:v15 workQueue:v9 featuresDataSource:v34 user:v8];
+  v35 = [(HMDPhotosPersonManager *)self initWithUUID:v13 zoneManager:v29 dataInterfaces:v15 workQueue:queueCopy featuresDataSource:v34 user:userCopy];
 
   return v35;
 }
@@ -240,11 +240,11 @@ uint64_t __37__HMDPhotosPersonManager_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)zoneNameForZoneUUID:(id)a3
++ (id)zoneNameForZoneUUID:(id)d
 {
   v3 = *MEMORY[0x277CD0C30];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringByAppendingString:v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringByAppendingString:uUIDString];
 
   return v5;
 }

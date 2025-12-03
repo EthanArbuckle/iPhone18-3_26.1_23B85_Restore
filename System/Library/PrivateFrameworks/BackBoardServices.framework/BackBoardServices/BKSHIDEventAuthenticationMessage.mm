@@ -2,20 +2,20 @@
 + (BKSHIDEventAuthenticationMessage)new;
 + (id)protobufSchema;
 - (BKSHIDEventAuthenticationMessage)init;
-- (BKSHIDEventAuthenticationMessage)initWithBSXPCCoder:(id)a3;
-- (BKSHIDEventAuthenticationMessage)initWithCoder:(id)a3;
-- (BKSHIDEventAuthenticationMessage)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventAuthenticationMessage)initWithBSXPCCoder:(id)coder;
+- (BKSHIDEventAuthenticationMessage)initWithCoder:(id)coder;
+- (BKSHIDEventAuthenticationMessage)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_calculateSignatureWithHMACContext:(uint64_t)a1;
+- (id)_calculateSignatureWithHMACContext:(uint64_t)context;
 - (id)_dataProtobufEncoded;
 - (id)_init;
-- (id)_protobufDecodedMessageFromData:(uint64_t)a1;
+- (id)_protobufDecodedMessageFromData:(uint64_t)data;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BKSHIDEventAuthenticationMessage
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __50__BKSHIDEventAuthenticationMessage_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_9349 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_9349, block);
@@ -123,7 +123,7 @@ void __50__BKSHIDEventAuthenticationMessage_protobufSchema__block_invoke_2(uint6
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventAuthenticationMessage.m";
     v17 = 1024;
@@ -139,20 +139,20 @@ void __50__BKSHIDEventAuthenticationMessage_protobufSchema__block_invoke_2(uint6
   return result;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BKSHIDEventAuthenticationMessage *)self _dataProtobufEncoded];
-  [v4 encodeObject:v5 forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  _dataProtobufEncoded = [(BKSHIDEventAuthenticationMessage *)self _dataProtobufEncoded];
+  [coderCopy encodeObject:_dataProtobufEncoded forKey:@"backboarddSelfData"];
 }
 
 - (id)_dataProtobufEncoded
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v11 = 0;
-    v2 = [MEMORY[0x1E698E750] encodeObject:a1 error:&v11];
+    v2 = [MEMORY[0x1E698E750] encodeObject:self error:&v11];
     v3 = v11;
     v4 = [v2 copy];
 
@@ -169,7 +169,7 @@ void __50__BKSHIDEventAuthenticationMessage_protobufSchema__block_invoke_2(uint6
         v14 = 2114;
         v15 = v10;
         v16 = 2048;
-        v17 = a1;
+        selfCopy = self;
         v18 = 2114;
         v19 = @"BKSHIDEventAuthenticationMessage.m";
         v20 = 1024;
@@ -196,22 +196,22 @@ void __50__BKSHIDEventAuthenticationMessage_protobufSchema__block_invoke_2(uint6
   return v4;
 }
 
-- (BKSHIDEventAuthenticationMessage)initWithBSXPCCoder:(id)a3
+- (BKSHIDEventAuthenticationMessage)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
 
   v6 = [(BKSHIDEventAuthenticationMessage *)self _protobufDecodedMessageFromData:v5];
 
   return v6;
 }
 
-- (id)_protobufDecodedMessageFromData:(uint64_t)a1
+- (id)_protobufDecodedMessageFromData:(uint64_t)data
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (data)
   {
     if (v3)
     {
@@ -256,14 +256,14 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(BKSHIDEventAuthenticationMessage *)self _dataProtobufEncoded];
+  dictionaryCopy = dictionary;
+  _dataProtobufEncoded = [(BKSHIDEventAuthenticationMessage *)self _dataProtobufEncoded];
   BSSerializeDataToXPCDictionaryWithKey();
 }
 
-- (BKSHIDEventAuthenticationMessage)initWithXPCDictionary:(id)a3
+- (BKSHIDEventAuthenticationMessage)initWithXPCDictionary:(id)dictionary
 {
   v4 = BSDeserializeDataFromXPCDictionaryWithKey();
   v5 = [(BKSHIDEventAuthenticationMessage *)self _protobufDecodedMessageFromData:v4];
@@ -271,63 +271,63 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BKSHIDEventAuthenticationMessage *)self _dataProtobufEncoded];
-  [v4 encodeObject:v5 forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  _dataProtobufEncoded = [(BKSHIDEventAuthenticationMessage *)self _dataProtobufEncoded];
+  [coderCopy encodeObject:_dataProtobufEncoded forKey:@"backboarddSelfData"];
 }
 
-- (BKSHIDEventAuthenticationMessage)initWithCoder:(id)a3
+- (BKSHIDEventAuthenticationMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
 
   v6 = [(BKSHIDEventAuthenticationMessage *)self _protobufDecodedMessageFromData:v5];
 
   return v6;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v18 = a3;
+  formatterCopy = formatter;
   originIdentifier = self->_originIdentifier;
   if (originIdentifier == 0xC181BADB23D8497BLL)
   {
     v5 = @"originIdentifier (backboardd)";
-    v6 = v18;
+    v6 = formatterCopy;
     originIdentifier = 0xC181BADB23D8497BLL;
   }
 
   else
   {
     v5 = @"originIdentifier";
-    v6 = v18;
+    v6 = formatterCopy;
   }
 
   v7 = [v6 appendUInt64:originIdentifier withName:v5 format:1];
-  v8 = [v18 appendUInt64:self->_context withName:@"context" format:1];
+  v8 = [formatterCopy appendUInt64:self->_context withName:@"context" format:1];
   versionedPID = self->_versionedPID;
   v10 = NSStringFromBSVersionedPID();
-  [v18 appendString:v10 withName:@"pid"];
+  [formatterCopy appendString:v10 withName:@"pid"];
 
   v11 = NSStringFromBKSHIDEventSecureNameStatus(self->_secureNameStatus);
-  [v18 appendString:v11 withName:@"secureNameStatus"];
+  [formatterCopy appendString:v11 withName:@"secureNameStatus"];
 
-  v12 = [v18 appendBool:self->_registrantEntitled withName:@"registrantEntitled"];
+  v12 = [formatterCopy appendBool:self->_registrantEntitled withName:@"registrantEntitled"];
   eventType = self->_eventType;
-  [v18 appendString:IOHIDEventTypeGetName() withName:@"eventType"];
-  v14 = [v18 appendUInt64:self->_targetSlotID withName:@"targetSlotID" format:1];
-  v15 = [v18 appendUInt64:self->_targetContextID withName:@"targetContextID" format:1];
-  v16 = [v18 appendObject:self->_hitTestInformationFromStartEvent withName:@"hitTestInformationFromStartEvent" skipIfNil:1];
-  v17 = [v18 appendObject:self->_hitTestInformationFromEndEvent withName:@"hitTestInformationFromEndEvent" skipIfNil:1];
+  [formatterCopy appendString:IOHIDEventTypeGetName() withName:@"eventType"];
+  v14 = [formatterCopy appendUInt64:self->_targetSlotID withName:@"targetSlotID" format:1];
+  v15 = [formatterCopy appendUInt64:self->_targetContextID withName:@"targetContextID" format:1];
+  v16 = [formatterCopy appendObject:self->_hitTestInformationFromStartEvent withName:@"hitTestInformationFromStartEvent" skipIfNil:1];
+  v17 = [formatterCopy appendObject:self->_hitTestInformationFromEndEvent withName:@"hitTestInformationFromEndEvent" skipIfNil:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v9 = (objc_opt_isKindOfClass() & 1) != 0 && self->_eventType == v4[4] && self->_targetSlotID == v4[5] && self->_targetContextID == v4[6] && (hitTestInformationFromStartEvent = self->_hitTestInformationFromStartEvent, v6 = *(v4 + 4), BSEqualObjects()) && (hitTestInformationFromEndEvent = self->_hitTestInformationFromEndEvent, v8 = *(v4 + 5), BSEqualObjects()) && self->_timestamp == *(v4 + 6) && self->_context == *(v4 + 8) && self->_secureNameStatus == *(v4 + 9) && self->_registrantEntitled == *(v4 + 80) && self->_versionedPID == *(v4 + 1) && self->_originIdentifier == *(v4 + 7);
+  v9 = (objc_opt_isKindOfClass() & 1) != 0 && self->_eventType == equalCopy[4] && self->_targetSlotID == equalCopy[5] && self->_targetContextID == equalCopy[6] && (hitTestInformationFromStartEvent = self->_hitTestInformationFromStartEvent, v6 = *(equalCopy + 4), BSEqualObjects()) && (hitTestInformationFromEndEvent = self->_hitTestInformationFromEndEvent, v8 = *(equalCopy + 5), BSEqualObjects()) && self->_timestamp == *(equalCopy + 6) && self->_context == *(equalCopy + 8) && self->_secureNameStatus == *(equalCopy + 9) && self->_registrantEntitled == *(equalCopy + 80) && self->_versionedPID == *(equalCopy + 1) && self->_originIdentifier == *(equalCopy + 7);
 
   return v9;
 }
@@ -347,7 +347,7 @@ LABEL_11:
   v8 = 3221225472;
   v9 = __47__BKSHIDEventAuthenticationMessage_description__block_invoke;
   v10 = &unk_1E6F47C78;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -369,7 +369,7 @@ LABEL_11:
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"BKSHIDEventAuthenticationMessage.m";
     v16 = 1024;
@@ -385,29 +385,29 @@ LABEL_11:
   JUMPOUT(0x1863974ACLL);
 }
 
-- (id)_calculateSignatureWithHMACContext:(uint64_t)a1
+- (id)_calculateSignatureWithHMACContext:(uint64_t)context
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (context)
   {
-    v3 = a1;
-    CCHmacUpdate(ctx, (a1 + 48), 8uLL);
-    CCHmacUpdate(ctx, v3 + 8, 8uLL);
-    CCHmacUpdate(ctx, v3 + 2, 4uLL);
-    CCHmacUpdate(ctx, v3 + 20, 4uLL);
-    CCHmacUpdate(ctx, v3 + 3, 4uLL);
-    [v3[4] _updateCCHmacContext:ctx];
-    [v3[5] _updateCCHmacContext:ctx];
-    CCHmacUpdate(ctx, v3 + 1, 8uLL);
-    CCHmacUpdate(ctx, v3 + 9, 8uLL);
-    CCHmacUpdate(ctx, v3 + 10, 1uLL);
+    contextCopy = context;
+    CCHmacUpdate(ctx, (context + 48), 8uLL);
+    CCHmacUpdate(ctx, contextCopy + 8, 8uLL);
+    CCHmacUpdate(ctx, contextCopy + 2, 4uLL);
+    CCHmacUpdate(ctx, contextCopy + 20, 4uLL);
+    CCHmacUpdate(ctx, contextCopy + 3, 4uLL);
+    [contextCopy[4] _updateCCHmacContext:ctx];
+    [contextCopy[5] _updateCCHmacContext:ctx];
+    CCHmacUpdate(ctx, contextCopy + 1, 8uLL);
+    CCHmacUpdate(ctx, contextCopy + 9, 8uLL);
+    CCHmacUpdate(ctx, contextCopy + 10, 1uLL);
     CCHmacFinal(ctx, macOut);
-    a1 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:32];
+    context = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:32];
   }
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return context;
 }
 
 @end

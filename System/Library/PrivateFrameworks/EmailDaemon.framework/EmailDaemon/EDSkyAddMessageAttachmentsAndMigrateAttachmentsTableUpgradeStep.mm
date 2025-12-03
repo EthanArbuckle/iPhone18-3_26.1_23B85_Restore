@@ -1,13 +1,13 @@
 @interface EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep
-+ (BOOL)createMessageAttachmentsTableWithConnection:(id)a3;
-+ (BOOL)createNewAttachmentTableWithConnection:(id)a3;
-+ (BOOL)createNewSearchableAttachmentsTable:(id)a3;
-+ (BOOL)deleteAttachmentsTableWithConnection:(id)a3;
-+ (BOOL)deleteMessageAttachmentsTableWithConnection:(id)a3;
-+ (BOOL)insertAttachmentIntoAttachmentTableWithAttachmentMetadata:(id)a3 connection:(id)a4;
-+ (BOOL)insertIntoMessageAttachmentTableGlobalMessageID:(id)a3 attachmentMetadata:(id)a4 attachmentID:(int64_t)a5 connection:(id)a6;
++ (BOOL)createMessageAttachmentsTableWithConnection:(id)connection;
++ (BOOL)createNewAttachmentTableWithConnection:(id)connection;
++ (BOOL)createNewSearchableAttachmentsTable:(id)table;
++ (BOOL)deleteAttachmentsTableWithConnection:(id)connection;
++ (BOOL)deleteMessageAttachmentsTableWithConnection:(id)connection;
++ (BOOL)insertAttachmentIntoAttachmentTableWithAttachmentMetadata:(id)metadata connection:(id)connection;
++ (BOOL)insertIntoMessageAttachmentTableGlobalMessageID:(id)d attachmentMetadata:(id)metadata attachmentID:(int64_t)iD connection:(id)connection;
 + (OS_os_log)log;
-+ (int)runWithConnection:(id)a3 dataProvider:(id)a4;
++ (int)runWithConnection:(id)connection dataProvider:(id)provider;
 @end
 
 @implementation EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_98 != -1)
   {
     dispatch_once(&log_onceToken_98, block);
@@ -37,13 +37,13 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
   log_log_98 = v1;
 }
 
-+ (int)runWithConnection:(id)a3 dataProvider:(id)a4
++ (int)runWithConnection:(id)connection dataProvider:(id)provider
 {
-  v5 = a3;
-  [a1 deleteAttachmentsTableWithConnection:v5];
-  if ([a1 deleteMessageAttachmentsTableWithConnection:v5] && objc_msgSend(a1, "createMessageAttachmentsTableWithConnection:", v5) && objc_msgSend(a1, "createNewAttachmentTableWithConnection:", v5) && objc_msgSend(v5, "executeStatementString:errorMessage:", @"DROP TABLE searchable_attachments", @"Removing searchable_attachments table"))
+  connectionCopy = connection;
+  [self deleteAttachmentsTableWithConnection:connectionCopy];
+  if ([self deleteMessageAttachmentsTableWithConnection:connectionCopy] && objc_msgSend(self, "createMessageAttachmentsTableWithConnection:", connectionCopy) && objc_msgSend(self, "createNewAttachmentTableWithConnection:", connectionCopy) && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DROP TABLE searchable_attachments", @"Removing searchable_attachments table"))
   {
-    v6 = [a1 createNewSearchableAttachmentsTable:v5];
+    v6 = [self createNewSearchableAttachmentsTable:connectionCopy];
   }
 
   else
@@ -51,15 +51,15 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
     v6 = 0;
   }
 
-  [v5 executeStatementString:@"INSERT INTO properties  (key errorMessage:{value) VALUES (NeedToMigrateAttachments, 1)", @"Setting need to upgrade property"}];
+  [connectionCopy executeStatementString:@"INSERT INTO properties  (key errorMessage:{value) VALUES (NeedToMigrateAttachments, 1)", @"Setting need to upgrade property"}];
 
   return v6 ^ 1;
 }
 
-+ (BOOL)createNewAttachmentTableWithConnection:(id)a3
++ (BOOL)createNewAttachmentTableWithConnection:(id)connection
 {
   v24[7] = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  connectionCopy = connection;
   v3 = objc_alloc(MEMORY[0x1E699B958]);
   v4 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"size" nullable:0 defaultValue:&unk_1F45E6AC0];
   v24[0] = v4;
@@ -89,36 +89,36 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
 
   v17 = [v16 definitionWithDatabaseName:0];
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to create %@", @"attachments"];
-  LOBYTE(v5) = [v21 executeStatementString:v17 errorMessage:v18];
+  LOBYTE(v5) = [connectionCopy executeStatementString:v17 errorMessage:v18];
 
   v19 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-+ (BOOL)deleteAttachmentsTableWithConnection:(id)a3
++ (BOOL)deleteAttachmentsTableWithConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", @"attachments"];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to delete table %@", @"attachments"];
-  v6 = [v3 executeStatementString:v4 errorMessage:v5];
+  v6 = [connectionCopy executeStatementString:v4 errorMessage:v5];
 
   return v6;
 }
 
-+ (BOOL)deleteMessageAttachmentsTableWithConnection:(id)a3
++ (BOOL)deleteMessageAttachmentsTableWithConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", @"message_attachments"];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to delete table %@", @"message_attachments"];
-  v6 = [v3 executeStatementString:v4 errorMessage:v5];
+  v6 = [connectionCopy executeStatementString:v4 errorMessage:v5];
 
   return v6;
 }
 
-+ (BOOL)createMessageAttachmentsTableWithConnection:(id)a3
++ (BOOL)createMessageAttachmentsTableWithConnection:(id)connection
 {
   v51[5] = *MEMORY[0x1E69E9840];
-  v41 = a3;
+  connectionCopy = connection;
   v44 = [MEMORY[0x1E699B8D0] textColumnWithName:@"mime_part_number" collation:1 nullable:1];
   v43 = [MEMORY[0x1E699B8D0] textColumnWithName:@"remote_url" collation:1 nullable:1];
   v3 = objc_alloc(MEMORY[0x1E699B958]);
@@ -144,22 +144,22 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
   [v8 addUniquenessConstraintForColumns:v10 conflictResolution:1];
 
   v11 = objc_alloc(MEMORY[0x1E699B898]);
-  v12 = [v44 columnExpression];
-  v13 = [v12 isNotNull];
-  v48[0] = v13;
-  v14 = [v43 columnExpression];
-  v15 = [v14 isNull];
-  v48[1] = v15;
+  columnExpression = [v44 columnExpression];
+  isNotNull = [columnExpression isNotNull];
+  v48[0] = isNotNull;
+  columnExpression2 = [v43 columnExpression];
+  isNull = [columnExpression2 isNull];
+  v48[1] = isNull;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
   v42 = [v11 initWithExpressions:v16];
 
   v17 = objc_alloc(MEMORY[0x1E699B898]);
-  v18 = [v44 columnExpression];
-  v19 = [v18 isNull];
-  v47[0] = v19;
-  v20 = [v43 columnExpression];
-  v21 = [v20 isNotNull];
-  v47[1] = v21;
+  columnExpression3 = [v44 columnExpression];
+  isNull2 = [columnExpression3 isNull];
+  v47[0] = isNull2;
+  columnExpression4 = [v43 columnExpression];
+  isNotNull2 = [columnExpression4 isNotNull];
+  v47[1] = isNotNull2;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
   v23 = [v17 initWithExpressions:v22];
 
@@ -189,16 +189,16 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
 
   v37 = [v36 definitionWithDatabaseName:0];
   v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to create %@", @"attachments"];
-  LOBYTE(v22) = [v41 executeStatementString:v37 errorMessage:v38];
+  LOBYTE(v22) = [connectionCopy executeStatementString:v37 errorMessage:v38];
 
   v39 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-+ (BOOL)createNewSearchableAttachmentsTable:(id)a3
++ (BOOL)createNewSearchableAttachmentsTable:(id)table
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tableCopy = table;
   v4 = objc_alloc(MEMORY[0x1E699B958]);
   v5 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"attachment" nullable:1];
   v24[0] = v5;
@@ -226,41 +226,41 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
 
   v17 = [v16 definitionWithDatabaseName:0];
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to create %@", @"searchable_attachments"];
-  v19 = [v3 executeStatementString:v17 errorMessage:v18];
+  v19 = [tableCopy executeStatementString:v17 errorMessage:v18];
 
   v20 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-+ (BOOL)insertIntoMessageAttachmentTableGlobalMessageID:(id)a3 attachmentMetadata:(id)a4 attachmentID:(int64_t)a5 connection:(id)a6
++ (BOOL)insertIntoMessageAttachmentTableGlobalMessageID:(id)d attachmentMetadata:(id)metadata attachmentID:(int64_t)iD connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  metadataCopy = metadata;
+  connectionCopy = connection;
   v12 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"message_attachments" conflictResolution:4];
-  [v12 setObject:v9 forKeyedSubscript:@"global_message_id"];
-  v13 = [v10 name];
-  [v12 setObject:v13 forKeyedSubscript:@"name"];
+  [v12 setObject:dCopy forKeyedSubscript:@"global_message_id"];
+  name = [metadataCopy name];
+  [v12 setObject:name forKeyedSubscript:@"name"];
 
-  v14 = [v10 mimePartNumber];
-  [v12 setObject:v14 forKeyedSubscript:@"mime_part_number"];
+  mimePartNumber = [metadataCopy mimePartNumber];
+  [v12 setObject:mimePartNumber forKeyedSubscript:@"mime_part_number"];
 
-  if (*MEMORY[0x1E699A728] != a5)
+  if (*MEMORY[0x1E699A728] != iD)
   {
-    v15 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v15 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
     [v12 setObject:v15 forKeyedSubscript:@"attachment"];
   }
 
-  v16 = [v10 remoteURL];
-  v17 = v16;
-  if (v16)
+  remoteURL = [metadataCopy remoteURL];
+  v17 = remoteURL;
+  if (remoteURL)
   {
-    v18 = [v16 absoluteString];
-    [v12 setObject:v18 forKeyedSubscript:@"remote_url"];
+    absoluteString = [remoteURL absoluteString];
+    [v12 setObject:absoluteString forKeyedSubscript:@"remote_url"];
   }
 
   v24 = 0;
-  v19 = [v11 executeInsertStatement:v12 error:&v24];
+  v19 = [connectionCopy executeInsertStatement:v12 error:&v24];
   v20 = v24;
   if (v20)
   {
@@ -274,48 +274,48 @@ void __70__EDSkyAddMessageAttachmentsAndMigrateAttachmentsTableUpgradeStep_log__
 
   if ((v21 & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to insert messageID %@ into message_attachments table", v9];
-    [v11 handleError:v20 message:v22];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to insert messageID %@ into message_attachments table", dCopy];
+    [connectionCopy handleError:v20 message:dCopy];
   }
 
   return v19;
 }
 
-+ (BOOL)insertAttachmentIntoAttachmentTableWithAttachmentMetadata:(id)a3 connection:(id)a4
++ (BOOL)insertAttachmentIntoAttachmentTableWithAttachmentMetadata:(id)metadata connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  connectionCopy = connection;
   v7 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"attachments" conflictResolution:3];
-  v8 = [v5 size];
+  v8 = [metadataCopy size];
   [v7 setObject:v8 forKeyedSubscript:@"size"];
 
-  v9 = [v5 attachmentHash];
-  [v7 setObject:v9 forKeyedSubscript:@"hash"];
+  attachmentHash = [metadataCopy attachmentHash];
+  [v7 setObject:attachmentHash forKeyedSubscript:@"hash"];
 
-  v10 = [v5 nameOnDisk];
-  [v7 setObject:v10 forKeyedSubscript:@"file_name_on_file_system"];
+  nameOnDisk = [metadataCopy nameOnDisk];
+  [v7 setObject:nameOnDisk forKeyedSubscript:@"file_name_on_file_system"];
 
-  v11 = [v5 downloadDate];
-  v12 = v11;
-  if (!v11)
+  downloadDate = [metadataCopy downloadDate];
+  date = downloadDate;
+  if (!downloadDate)
   {
-    v12 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  [v7 setObject:v12 forKeyedSubscript:@"date_last_downloaded"];
-  if (!v11)
+  [v7 setObject:date forKeyedSubscript:@"date_last_downloaded"];
+  if (!downloadDate)
   {
   }
 
   v19 = 0;
-  v13 = [v6 executeInsertStatement:v7 error:&v19];
+  v13 = [connectionCopy executeInsertStatement:v7 error:&v19];
   v14 = v19;
   if ((v13 & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v5 attachmentHash];
-    v17 = [v15 stringWithFormat:@"Unable to insert attachment hash %@ into attachments table", v16];
-    [v6 handleError:v14 message:v17];
+    attachmentHash2 = [metadataCopy attachmentHash];
+    v17 = [v15 stringWithFormat:@"Unable to insert attachment hash %@ into attachments table", attachmentHash2];
+    [connectionCopy handleError:v14 message:v17];
   }
 
   return v13;

@@ -2,14 +2,14 @@
 - (BOOL)lastNotifiedSuppressionState;
 - (BOOL)notificationsSuppressed;
 - (FCCNotificationSuppressionStore)init;
-- (FCCNotificationSuppressionStore)initWithDateProvider:(id)a3;
+- (FCCNotificationSuppressionStore)initWithDateProvider:(id)provider;
 - (id)_requestsMap;
 - (id)_userDefaults;
 - (id)allRequests;
 - (void)_requestsMap;
-- (void)_updateStoredRequests:(id)a3;
-- (void)addNotificationSuppressionRequest:(id)a3;
-- (void)removeNotificationSuppressionRequest:(id)a3;
+- (void)_updateStoredRequests:(id)requests;
+- (void)addNotificationSuppressionRequest:(id)request;
+- (void)removeNotificationSuppressionRequest:(id)request;
 @end
 
 @implementation FCCNotificationSuppressionStore
@@ -17,13 +17,13 @@
 - (BOOL)notificationsSuppressed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(FCCNotificationSuppressionStore *)self allRequests];
-  v4 = [(FCCDateProvider *)self->_dateProvider coachingDate];
+  allRequests = [(FCCNotificationSuppressionStore *)self allRequests];
+  coachingDate = [(FCCDateProvider *)self->_dateProvider coachingDate];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = allRequests;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -37,8 +37,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) expirationDate];
-        v10 = [v9 hk_isAfterDate:v4];
+        expirationDate = [*(*(&v13 + 1) + 8 * i) expirationDate];
+        v10 = [expirationDate hk_isAfterDate:coachingDate];
 
         if (v10)
         {
@@ -65,26 +65,26 @@ LABEL_11:
 
 - (id)allRequests
 {
-  v2 = [(FCCNotificationSuppressionStore *)self _requestsMap];
-  v3 = v2;
-  if (v2)
+  _requestsMap = [(FCCNotificationSuppressionStore *)self _requestsMap];
+  v3 = _requestsMap;
+  if (_requestsMap)
   {
-    v4 = [v2 allValues];
+    allValues = [_requestsMap allValues];
   }
 
   else
   {
-    v4 = 0;
+    allValues = 0;
   }
 
-  return v4;
+  return allValues;
 }
 
 - (id)_requestsMap
 {
   os_unfair_lock_lock(&self->_unfairLock);
-  v3 = [(FCCNotificationSuppressionStore *)self _userDefaults];
-  v4 = [v3 dictionaryForKey:@"NotificationSuppressionRequests"];
+  _userDefaults = [(FCCNotificationSuppressionStore *)self _userDefaults];
+  v4 = [_userDefaults dictionaryForKey:@"NotificationSuppressionRequests"];
   os_unfair_lock_unlock(&self->_unfairLock);
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -121,27 +121,27 @@ LABEL_11:
   return v4;
 }
 
-- (FCCNotificationSuppressionStore)initWithDateProvider:(id)a3
+- (FCCNotificationSuppressionStore)initWithDateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = FCCNotificationSuppressionStore;
   v6 = [(FCCNotificationSuppressionStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dateProvider, a3);
+    objc_storeStrong(&v6->_dateProvider, provider);
     v7->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-- (void)addNotificationSuppressionRequest:(id)a3
+- (void)addNotificationSuppressionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(FCCNotificationSuppressionStore *)self _requestsMap];
-  v6 = [v5 mutableCopy];
+  requestCopy = request;
+  _requestsMap = [(FCCNotificationSuppressionStore *)self _requestsMap];
+  v6 = [_requestsMap mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -155,18 +155,18 @@ LABEL_11:
 
   v11 = v8;
 
-  v9 = [v4 identifier];
-  [v11 setObject:v4 forKeyedSubscript:v9];
+  identifier = [requestCopy identifier];
+  [v11 setObject:requestCopy forKeyedSubscript:identifier];
 
   v10 = [v11 copy];
   [(FCCNotificationSuppressionStore *)self _updateStoredRequests:v10];
 }
 
-- (void)removeNotificationSuppressionRequest:(id)a3
+- (void)removeNotificationSuppressionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(FCCNotificationSuppressionStore *)self _requestsMap];
-  v6 = [v5 mutableCopy];
+  requestCopy = request;
+  _requestsMap = [(FCCNotificationSuppressionStore *)self _requestsMap];
+  v6 = [_requestsMap mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -180,9 +180,9 @@ LABEL_11:
 
   v11 = v8;
 
-  v9 = [v4 identifier];
+  identifier = [requestCopy identifier];
 
-  [v11 removeObjectForKey:v9];
+  [v11 removeObjectForKey:identifier];
   v10 = [v11 copy];
   [(FCCNotificationSuppressionStore *)self _updateStoredRequests:v10];
 }
@@ -190,8 +190,8 @@ LABEL_11:
 - (BOOL)lastNotifiedSuppressionState
 {
   os_unfair_lock_lock(&self->_unfairLock);
-  v3 = [(FCCNotificationSuppressionStore *)self _userDefaults];
-  v4 = [v3 BOOLForKey:@"NotificationSuppressionLastNotifiedState"];
+  _userDefaults = [(FCCNotificationSuppressionStore *)self _userDefaults];
+  v4 = [_userDefaults BOOLForKey:@"NotificationSuppressionLastNotifiedState"];
   os_unfair_lock_unlock(&self->_unfairLock);
 
   return v4;
@@ -210,13 +210,13 @@ void __47__FCCNotificationSuppressionStore__requestsMap__block_invoke(uint64_t a
   }
 }
 
-- (void)_updateStoredRequests:(id)a3
+- (void)_updateStoredRequests:(id)requests
 {
-  v4 = a3;
-  v6 = [(FCCNotificationSuppressionStore *)self _userDefaults];
-  v5 = [v4 hk_map:&__block_literal_global_298];
+  requestsCopy = requests;
+  _userDefaults = [(FCCNotificationSuppressionStore *)self _userDefaults];
+  v5 = [requestsCopy hk_map:&__block_literal_global_298];
 
-  [v6 setObject:v5 forKey:@"NotificationSuppressionRequests"];
+  [_userDefaults setObject:v5 forKey:@"NotificationSuppressionRequests"];
 }
 
 void __57__FCCNotificationSuppressionStore__updateStoredRequests___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -244,12 +244,12 @@ void __57__FCCNotificationSuppressionStore__updateStoredRequests___block_invoke(
 - (void)_requestsMap
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v5 = 138412290;
   v6 = v3;
-  _os_log_error_impl(&dword_24B53B000, v1, OS_LOG_TYPE_ERROR, "Loaded suppression requests object is not a dictionary %@", &v5, 0xCu);
+  _os_log_error_impl(&dword_24B53B000, selfCopy, OS_LOG_TYPE_ERROR, "Loaded suppression requests object is not a dictionary %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }

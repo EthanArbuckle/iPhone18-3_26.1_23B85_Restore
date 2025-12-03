@@ -1,13 +1,13 @@
 @interface VUIMediaCategory
-+ (id)mediaCatgeoryForType:(unint64_t)a3;
++ (id)mediaCatgeoryForType:(unint64_t)type;
 - (VUIMediaCategory)init;
-- (id)_initWithType:(unint64_t)a3;
+- (id)_initWithType:(unint64_t)type;
 - (id)description;
 @end
 
 @implementation VUIMediaCategory
 
-+ (id)mediaCatgeoryForType:(unint64_t)a3
++ (id)mediaCatgeoryForType:(unint64_t)type
 {
   if (mediaCatgeoryForType____onceToken != -1)
   {
@@ -15,14 +15,14 @@
   }
 
   v4 = mediaCatgeoryForType____mediaCategoriesByMediaCategoryType;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v6 = [v4 objectForKey:v5];
 
   if (!v6)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = VUIMediaCategoryTypeLogString(a3);
+    v9 = VUIMediaCategoryTypeLogString(type);
     [v7 raise:v8 format:{@"Unexpected mediaCategoryType parameter: %@", v9}];
   }
 
@@ -62,7 +62,7 @@ void __41__VUIMediaCategory_mediaCatgeoryForType___block_invoke()
   return 0;
 }
 
-- (id)_initWithType:(unint64_t)a3
+- (id)_initWithType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = VUIMediaCategory;
@@ -70,7 +70,7 @@ void __41__VUIMediaCategory_mediaCatgeoryForType___block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = [MEMORY[0x1E695DFD8] set];
     supportedMediaCollectionTypes = v5->_supportedMediaCollectionTypes;
     v5->_supportedMediaCollectionTypes = v6;
@@ -96,21 +96,21 @@ void __41__VUIMediaCategory_mediaCatgeoryForType___block_invoke()
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaCategory *)self supportedMediaCollectionTypes];
-  v10 = [v9 allObjects];
-  v11 = VUIMediaCollectionTypesLogString(v10);
+  supportedMediaCollectionTypes = [(VUIMediaCategory *)self supportedMediaCollectionTypes];
+  allObjects = [supportedMediaCollectionTypes allObjects];
+  v11 = VUIMediaCollectionTypesLogString(allObjects);
   v12 = [v8 stringWithFormat:@"%@=%@", @"supportedMediaCollectionTypes", v11];
   [v3 addObject:v12];
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v14 = [(VUIMediaCategory *)self supportedChildMediaCollectionTypes];
+  supportedChildMediaCollectionTypes = [(VUIMediaCategory *)self supportedChildMediaCollectionTypes];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __31__VUIMediaCategory_description__block_invoke;
   v21[3] = &unk_1E87309E8;
   v22 = v13;
   v15 = v13;
-  [v14 enumerateKeysAndObjectsUsingBlock:v21];
+  [supportedChildMediaCollectionTypes enumerateKeysAndObjectsUsingBlock:v21];
 
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@", @"supportedChildMediaCollectionTypes", v15];
   [v3 addObject:v16];

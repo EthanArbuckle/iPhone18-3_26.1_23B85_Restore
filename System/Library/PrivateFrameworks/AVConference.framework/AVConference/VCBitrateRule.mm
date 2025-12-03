@@ -1,12 +1,12 @@
 @interface VCBitrateRule
-- (VCBitrateRule)initWithBitrate:(unsigned int)a3 connectionType:(int)a4 limitingRule:(id)a5;
-- (int64_t)compare:(id)a3;
+- (VCBitrateRule)initWithBitrate:(unsigned int)bitrate connectionType:(int)type limitingRule:(id)rule;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 @end
 
 @implementation VCBitrateRule
 
-- (VCBitrateRule)initWithBitrate:(unsigned int)a3 connectionType:(int)a4 limitingRule:(id)a5
+- (VCBitrateRule)initWithBitrate:(unsigned int)bitrate connectionType:(int)type limitingRule:(id)rule
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -15,18 +15,18 @@
   v9 = v8;
   if (v8)
   {
-    v8->_bitrate = a3;
-    v8->_connectionType = a4;
-    v8->limitingRule = a5;
+    v8->_bitrate = bitrate;
+    v8->_connectionType = type;
+    v8->limitingRule = rule;
   }
 
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [(VCBitrateRule *)self bitrate];
-  if (v4 > [a3 bitrate])
+  bitrate = [(VCBitrateRule *)self bitrate];
+  if (bitrate > [compare bitrate])
   {
     return 1;
   }

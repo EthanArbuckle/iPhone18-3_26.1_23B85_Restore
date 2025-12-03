@@ -1,8 +1,8 @@
 @interface PKAsyncUnaryOperationEvaluator
 - (BOOL)_performOperation;
 - (BOOL)isCanceled;
-- (id)_initWithOperations:(id)a3 input:(id)a4;
-- (id)evaluateWithCompletion:(id)a3;
+- (id)_initWithOperations:(id)operations input:(id)input;
+- (id)evaluateWithCompletion:(id)completion;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -16,10 +16,10 @@
   v5 = MEMORY[0x1E695D930];
   v49 = *v3;
   v50 = 0;
-  v48 = self;
+  selfCopy = self;
   v36 = v49;
   v37 = v3;
-  *v3 = &v48;
+  *v3 = &selfCopy;
   v6 = *v5;
   v7 = 1;
   do
@@ -40,15 +40,15 @@
     {
       if ([(NSMutableArray *)self->_operations count])
       {
-        v10 = [(NSMutableArray *)self->_operations lastObject];
-        if (v10)
+        lastObject = [(NSMutableArray *)self->_operations lastObject];
+        if (lastObject)
         {
           [(NSMutableArray *)self->_operations removeLastObject];
-          v11 = [[PKAsyncOperationState alloc] _init];
+          _init = [[PKAsyncOperationState alloc] _init];
           runningOperationState = self->_runningOperationState;
-          self->_runningOperationState = v11;
+          self->_runningOperationState = _init;
 
-          v13 = v11;
+          v13 = _init;
           if (v13)
           {
             v14 = v13;
@@ -81,7 +81,7 @@
             v40 = v21;
             v22 = v18;
             v41 = v22;
-            (v10)[2](v10, v14, v19, v39);
+            (lastObject)[2](lastObject, v14, v19, v39);
 
             v23 = 0;
             v24 = 0;
@@ -147,13 +147,13 @@ LABEL_11:
     os_unfair_lock_unlock(&self->_lock);
     if (v29)
     {
-      v34 = self;
-      v29[2](v29, escaped, v28, v34);
+      selfCopy2 = self;
+      v29[2](v29, escaped, v28, selfCopy2);
     }
 
     else
     {
-      v34 = 0;
+      selfCopy2 = 0;
     }
 
     objc_autoreleasePoolPop(v27);
@@ -161,7 +161,7 @@ LABEL_11:
 
   else
   {
-    v34 = 0;
+    selfCopy2 = 0;
   }
 
   return v7 & 1;
@@ -282,11 +282,11 @@ LABEL_20:
   return canceled;
 }
 
-- (id)_initWithOperations:(id)a3 input:(id)a4
+- (id)_initWithOperations:(id)operations input:(id)input
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  inputCopy = input;
   v25.receiver = self;
   v25.super_class = PKAsyncUnaryOperationEvaluator;
   v8 = [(PKAsyncUnaryOperationEvaluator *)&v25 init];
@@ -294,7 +294,7 @@ LABEL_20:
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v6 count];
+    v10 = [operationsCopy count];
     if (v10)
     {
       v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
@@ -305,8 +305,8 @@ LABEL_20:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v13 = [v6 reverseObjectEnumerator];
-      v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      reverseObjectEnumerator = [operationsCopy reverseObjectEnumerator];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v14)
       {
         v15 = v14;
@@ -318,7 +318,7 @@ LABEL_20:
           {
             if (*v22 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v18 = v9->_operations;
@@ -329,22 +329,22 @@ LABEL_20:
           }
 
           while (v15 != v17);
-          v15 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v26 count:16];
         }
 
         while (v15);
       }
     }
 
-    objc_storeStrong(&v9->_value, a4);
+    objc_storeStrong(&v9->_value, input);
   }
 
   return v9;
 }
 
-- (id)evaluateWithCompletion:(id)a3
+- (id)evaluateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if (self->_started)
   {
@@ -352,20 +352,20 @@ LABEL_20:
   }
 
   self->_started = 1;
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(completionCopy);
   completion = self->_completion;
   self->_completion = v5;
 
   os_unfair_lock_unlock(&self->_lock);
-  v7 = self;
-  if ([(PKAsyncUnaryOperationEvaluator *)v7 _performOperation])
+  selfCopy = self;
+  if ([(PKAsyncUnaryOperationEvaluator *)selfCopy _performOperation])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v7;
+    v8 = selfCopy;
   }
 
   v9 = v8;

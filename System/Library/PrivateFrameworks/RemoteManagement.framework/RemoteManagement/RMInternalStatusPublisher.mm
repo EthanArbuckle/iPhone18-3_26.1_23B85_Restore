@@ -3,17 +3,17 @@
 + (RMInternalStatusPublisher)sharedPublisher;
 + (id)restrictedKeyPaths;
 + (void)start;
-- (BOOL)persistentHistoryNotifier:(id)a3 isChangeInteresting:(id)a4 stop:(BOOL *)a5;
+- (BOOL)persistentHistoryNotifier:(id)notifier isChangeInteresting:(id)interesting stop:(BOOL *)stop;
 - (NSSet)supportedKeyPaths;
-- (RMInternalStatusPublisher)initWithInternalDeviceStatusByKeyPath:(id)a3 subscribedStatusKeyPathUpdater:(id)a4 persistentHistoryNotifier:(id)a5 context:(id)a6;
+- (RMInternalStatusPublisher)initWithInternalDeviceStatusByKeyPath:(id)path subscribedStatusKeyPathUpdater:(id)updater persistentHistoryNotifier:(id)notifier context:(id)context;
 - (RMInternalStatusPublisherDelegate)delegate;
-- (id)_queryForStatusWithKeyPaths:(id)a3 onBehalfOfManagementSource:(id)a4;
-- (id)queryForDeclarationStatusWithManagementSourceIdentifier:(id)a3 error:(id *)a4;
-- (id)queryForStatusWithKeyPaths:(id)a3 onBehalfOfManagementChannel:(id)a4 error:(id *)a5;
+- (id)_queryForStatusWithKeyPaths:(id)paths onBehalfOfManagementSource:(id)source;
+- (id)queryForDeclarationStatusWithManagementSourceIdentifier:(id)identifier error:(id *)error;
+- (id)queryForStatusWithKeyPaths:(id)paths onBehalfOfManagementChannel:(id)channel error:(id *)error;
 - (void)_notifyInternalDeviceStatusChangesIfNeeded;
 - (void)_start;
 - (void)_stop;
-- (void)persistentHistoryNotifier:(id)a3 hasChanges:(id)a4;
+- (void)persistentHistoryNotifier:(id)notifier hasChanges:(id)changes;
 @end
 
 @implementation RMInternalStatusPublisher
@@ -30,21 +30,21 @@
   return v3;
 }
 
-- (RMInternalStatusPublisher)initWithInternalDeviceStatusByKeyPath:(id)a3 subscribedStatusKeyPathUpdater:(id)a4 persistentHistoryNotifier:(id)a5 context:(id)a6
+- (RMInternalStatusPublisher)initWithInternalDeviceStatusByKeyPath:(id)path subscribedStatusKeyPathUpdater:(id)updater persistentHistoryNotifier:(id)notifier context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  updaterCopy = updater;
+  notifierCopy = notifier;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = RMInternalStatusPublisher;
   v14 = [(RMInternalStatusPublisher *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    if (v10)
+    if (pathCopy)
     {
-      v16 = v10;
+      v16 = pathCopy;
     }
 
     else
@@ -53,9 +53,9 @@
     }
 
     objc_storeStrong(&v14->_internalDeviceStatusByKeyPath, v16);
-    objc_storeStrong(&v15->_subscribedStatusKeyPathUpdater, a4);
-    objc_storeStrong(&v15->_persistentHistoryNotifier, a5);
-    objc_storeStrong(&v15->_context, a6);
+    objc_storeStrong(&v15->_subscribedStatusKeyPathUpdater, updater);
+    objc_storeStrong(&v15->_persistentHistoryNotifier, notifier);
+    objc_storeStrong(&v15->_context, context);
     v17 = objc_opt_new();
     internalDeviceStatusByKeyPathLock = v15->_internalDeviceStatusByKeyPathLock;
     v15->_internalDeviceStatusByKeyPathLock = v17;
@@ -74,7 +74,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003F064;
   block[3] = &unk_1000D12D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E68E0 != -1)
   {
     dispatch_once(&qword_1000E68E0, block);
@@ -93,9 +93,9 @@
     sub_100048B54(v4);
   }
 
-  v5 = [(RMInternalStatusPublisher *)self persistentHistoryNotifier];
-  [v5 setDelegate:self];
-  [v5 start];
+  persistentHistoryNotifier = [(RMInternalStatusPublisher *)self persistentHistoryNotifier];
+  [persistentHistoryNotifier setDelegate:self];
+  [persistentHistoryNotifier start];
   v6 = +[RMLog internalStatusPublisher];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -109,8 +109,8 @@
 - (void)_stop
 {
   [(RMInternalStatusPublisher *)self setSubscribedStatusKeyPathUpdater:0];
-  v3 = [(RMInternalStatusPublisher *)self persistentHistoryNotifier];
-  [v3 setDelegate:0];
+  persistentHistoryNotifier = [(RMInternalStatusPublisher *)self persistentHistoryNotifier];
+  [persistentHistoryNotifier setDelegate:0];
 }
 
 - (void)_notifyInternalDeviceStatusChangesIfNeeded
@@ -120,46 +120,46 @@
   v36 = objc_opt_new();
   obj = self->_internalDeviceStatusByKeyPathLock;
   objc_sync_enter(obj);
-  v27 = self;
+  selfCopy = self;
   location = &self->_internalDeviceStatusByKeyPath;
   v3 = self->_internalDeviceStatusByKeyPath;
   v4 = +[RMDevice currentDevice];
   v45[0] = RMModelStatusItemDeviceModelFamily;
-  v35 = [v4 modelFamily];
-  *buf = v35;
+  modelFamily = [v4 modelFamily];
+  *buf = modelFamily;
   v45[1] = RMModelStatusItemDeviceModelIdentifier;
-  v34 = [v4 modelIdentifier];
-  *&buf[8] = v34;
+  modelIdentifier = [v4 modelIdentifier];
+  *&buf[8] = modelIdentifier;
   v45[2] = RMModelStatusItemDeviceModelMarketingName;
-  v33 = [v4 modelMarketingName];
-  *&buf[16] = v33;
+  modelMarketingName = [v4 modelMarketingName];
+  *&buf[16] = modelMarketingName;
   v45[3] = RMModelStatusItemDeviceModelNumber;
-  v32 = [v4 modelNumber];
-  v47 = v32;
+  modelNumber = [v4 modelNumber];
+  v47 = modelNumber;
   v45[4] = RMModelStatusItemDeviceOperatingSystemBuildVersion;
-  v31 = [v4 operatingSystemBuildVersion];
-  v48 = v31;
+  operatingSystemBuildVersion = [v4 operatingSystemBuildVersion];
+  v48 = operatingSystemBuildVersion;
   v45[5] = RMModelStatusItemDeviceOperatingSystemFamily;
-  v30 = [v4 operatingSystem];
-  v49 = v30;
+  operatingSystem = [v4 operatingSystem];
+  v49 = operatingSystem;
   v45[6] = RMModelStatusItemDeviceOperatingSystemMarketingName;
-  v5 = [v4 operatingSystemMarketingName];
-  v50 = v5;
+  operatingSystemMarketingName = [v4 operatingSystemMarketingName];
+  v50 = operatingSystemMarketingName;
   v45[7] = RMModelStatusItemDeviceOperatingSystemSupplementalBuildVersion;
-  v6 = [v4 operatingSystemSupplementalBuildVersion];
-  v51 = v6;
+  operatingSystemSupplementalBuildVersion = [v4 operatingSystemSupplementalBuildVersion];
+  v51 = operatingSystemSupplementalBuildVersion;
   v45[8] = RMModelStatusItemDeviceOperatingSystemSupplementalExtraVersion;
-  v7 = [v4 operatingSystemSupplementalExtraVersion];
-  v52 = v7;
+  operatingSystemSupplementalExtraVersion = [v4 operatingSystemSupplementalExtraVersion];
+  v52 = operatingSystemSupplementalExtraVersion;
   v45[9] = RMModelStatusItemDeviceOperatingSystemVersion;
-  v8 = [v4 operatingSystemVersion];
-  v53 = v8;
+  operatingSystemVersion = [v4 operatingSystemVersion];
+  v53 = operatingSystemVersion;
   v45[10] = RMModelStatusItemDeviceSerialNumber;
-  v9 = [v4 serialNumber];
-  v54 = v9;
+  serialNumber = [v4 serialNumber];
+  v54 = serialNumber;
   v45[11] = RMModelStatusItemDeviceUDID;
-  v10 = [v4 UDID];
-  v55 = v10;
+  uDID = [v4 UDID];
+  v55 = uDID;
   v11 = [NSDictionary dictionaryWithObjects:buf forKeys:v45 count:12];
 
   if ([v11 isEqual:v3])
@@ -172,11 +172,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v13 = [(NSDictionary *)v3 allKeys];
-  v14 = [NSMutableSet setWithArray:v13];
+  allKeys = [(NSDictionary *)v3 allKeys];
+  v14 = [NSMutableSet setWithArray:allKeys];
 
-  v15 = [v11 allKeys];
-  [v14 addObjectsFromArray:v15];
+  allKeys2 = [v11 allKeys];
+  [v14 addObjectsFromArray:allKeys2];
 
   v42 = 0u;
   v43 = 0u;
@@ -228,17 +228,17 @@ LABEL_17:
 
   if ([v36 count])
   {
-    v24 = [(RMInternalStatusPublisher *)v27 subscribedStatusKeyPathUpdater];
-    [v24 notifyStatusDidChangeForKeyPaths:v36];
+    subscribedStatusKeyPathUpdater = [(RMInternalStatusPublisher *)selfCopy subscribedStatusKeyPathUpdater];
+    [subscribedStatusKeyPathUpdater notifyStatusDidChangeForKeyPaths:v36];
 
-    v25 = [(RMInternalStatusPublisher *)v27 context];
+    context = [(RMInternalStatusPublisher *)selfCopy context];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10003F81C;
     v37[3] = &unk_1000D1B58;
-    v37[4] = v27;
+    v37[4] = selfCopy;
     v38 = v11;
-    v39 = v25;
+    v39 = context;
     v12 = v39;
     [v39 performBlockAndWait:v37];
 
@@ -288,10 +288,10 @@ LABEL_18:
   return v3;
 }
 
-- (id)queryForStatusWithKeyPaths:(id)a3 onBehalfOfManagementChannel:(id)a4 error:(id *)a5
+- (id)queryForStatusWithKeyPaths:(id)paths onBehalfOfManagementChannel:(id)channel error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathsCopy = paths;
+  channelCopy = channel;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -304,28 +304,28 @@ LABEL_18:
   v27 = sub_10003FD10;
   v28 = sub_10003FD20;
   v29 = 0;
-  v10 = [(RMInternalStatusPublisher *)self context];
+  context = [(RMInternalStatusPublisher *)self context];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10003FD28;
   v17[3] = &unk_1000D21A0;
-  v11 = v9;
+  v11 = channelCopy;
   v22 = &v30;
   v23 = &v24;
   v18 = v11;
-  v19 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = pathsCopy;
   v20 = v12;
-  v13 = v10;
+  v13 = context;
   v21 = v13;
   [v13 performBlockAndWait:v17];
   v14 = v31[5];
   if (v14)
   {
     v15 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -340,9 +340,9 @@ LABEL_18:
   return v15;
 }
 
-- (id)queryForDeclarationStatusWithManagementSourceIdentifier:(id)a3 error:(id *)a4
+- (id)queryForDeclarationStatusWithManagementSourceIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -355,25 +355,25 @@ LABEL_18:
   v21 = sub_10003FD10;
   v22 = sub_10003FD20;
   v23 = 0;
-  v7 = [(RMInternalStatusPublisher *)self context];
+  context = [(RMInternalStatusPublisher *)self context];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100040098;
   v13[3] = &unk_1000D21C8;
-  v8 = v6;
+  v8 = identifierCopy;
   v14 = v8;
   v16 = &v24;
   v17 = &v18;
-  v9 = v7;
+  v9 = context;
   v15 = v9;
   [v9 performBlockAndWait:v13];
   v10 = v25[5];
   if (v10)
   {
     v11 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -388,27 +388,27 @@ LABEL_18:
   return v11;
 }
 
-- (id)_queryForStatusWithKeyPaths:(id)a3 onBehalfOfManagementSource:(id)a4
+- (id)_queryForStatusWithKeyPaths:(id)paths onBehalfOfManagementSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
+  pathsCopy = paths;
+  sourceCopy = source;
   v483 = objc_opt_new();
   v409 = RMModelStatusItemManagementDeclarations;
-  v410 = v5;
-  v411 = v6;
-  if (![v5 containsObject:?])
+  v410 = pathsCopy;
+  v411 = sourceCopy;
+  if (![pathsCopy containsObject:?])
   {
     goto LABEL_421;
   }
 
-  v406 = v6;
-  v7 = [v406 activations];
+  v406 = sourceCopy;
+  activations = [v406 activations];
   v431 = objc_opt_new();
   v533 = 0u;
   v534 = 0u;
   v535 = 0u;
   v536 = 0u;
-  obj = v7;
+  obj = activations;
   v439 = [obj countByEnumeratingWithState:&v533 objects:v538 count:16];
   if (v439)
   {
@@ -453,11 +453,11 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v14 = [v13 managementSource];
-          v15 = [v14 identifier];
-          v16 = [v13 identifier];
-          v17 = [v13 serverToken];
-          v451 = [RMConfigurationStatusArchiver statusForStoreIdentifier:v15 declarationIdentifier:v16 serverToken:v17];
+          managementSource = [v13 managementSource];
+          identifier = [managementSource identifier];
+          identifier2 = [v13 identifier];
+          serverToken = [v13 serverToken];
+          v451 = [RMConfigurationStatusArchiver statusForStoreIdentifier:identifier declarationIdentifier:identifier2 serverToken:serverToken];
         }
 
         else
@@ -470,9 +470,9 @@ LABEL_18:
         if (v451)
         {
           v18 = [v451 objectForKeyedSubscript:@"valid"];
-          v19 = [v18 BOOLValue];
+          bOOLValue = [v18 BOOLValue];
           v20 = v421;
-          if (!v19)
+          if (!bOOLValue)
           {
             v20 = v424;
           }
@@ -493,16 +493,16 @@ LABEL_18:
         if (objc_opt_isKindOfClass())
         {
           v23 = v443;
-          v24 = [v23 state];
-          v25 = v24;
-          if (v24)
+          state = [v23 state];
+          v25 = state;
+          if (state)
           {
-            v26 = [v24 inactiveReasons];
-            v27 = v26;
+            inactiveReasons = [state inactiveReasons];
+            v27 = inactiveReasons;
             v28 = &__NSArray0__struct;
-            if (v26)
+            if (inactiveReasons)
             {
-              v28 = v26;
+              v28 = inactiveReasons;
             }
 
             v29 = v28;
@@ -524,21 +524,21 @@ LABEL_18:
         if (objc_opt_isKindOfClass())
         {
           v511 = v443;
-          v30 = [v511 state];
-          v502 = v30;
-          if (v30)
+          state2 = [v511 state];
+          v502 = state2;
+          if (state2)
           {
             v31 = &__NSArray0__struct;
-            if (([v30 active] & 1) == 0)
+            if (([state2 active] & 1) == 0)
             {
               v520 = objc_opt_new();
-              v32 = [v511 configurationReferences];
-              v33 = [v32 allObjects];
+              configurationReferences = [v511 configurationReferences];
+              allObjects = [configurationReferences allObjects];
 
               v493 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
               *&v547 = v493;
               v34 = [NSArray arrayWithObjects:&v547 count:1];
-              v35 = [v33 sortedArrayUsingDescriptors:v34];
+              v35 = [allObjects sortedArrayUsingDescriptors:v34];
 
               v541 = 0u;
               v542 = 0u;
@@ -559,20 +559,20 @@ LABEL_18:
                     }
 
                     v40 = *(*(&v539 + 1) + 8 * i);
-                    v41 = [v40 activation];
-                    if (v41)
+                    activation = [v40 activation];
+                    if (activation)
                     {
-                      v42 = [v40 activation];
-                      v43 = [v42 state];
-                      v44 = v43;
-                      if (v43)
+                      activation2 = [v40 activation];
+                      state3 = [activation2 state];
+                      v44 = state3;
+                      if (state3)
                       {
-                        v45 = [v43 inactiveReasons];
-                        v46 = v45;
+                        inactiveReasons2 = [state3 inactiveReasons];
+                        v46 = inactiveReasons2;
                         v47 = &__NSArray0__struct;
-                        if (v45)
+                        if (inactiveReasons2)
                         {
-                          v47 = v45;
+                          v47 = inactiveReasons2;
                         }
 
                         v48 = v47;
@@ -580,7 +580,7 @@ LABEL_18:
 
                       else
                       {
-                        v46 = [RMModelStatusReason missingStateForDeclaration:v42];
+                        v46 = [RMModelStatusReason missingStateForDeclaration:activation2];
                         *&v564 = v46;
                         v48 = [NSArray arrayWithObjects:&v564 count:1];
                       }
@@ -589,8 +589,8 @@ LABEL_18:
 
                       if ([v49 count])
                       {
-                        v50 = [v40 activation];
-                        v51 = [RMModelStatusReason activationFailed:v50];
+                        activation3 = [v40 activation];
+                        v51 = [RMModelStatusReason activationFailed:activation3];
                         [v520 addObject:v51];
                       }
                     }
@@ -604,8 +604,8 @@ LABEL_18:
 
               if ([v511 loadState] == 4)
               {
-                v52 = [v511 declarationType];
-                v53 = [RMModelStatusReason failedWithUnknownDeclarationType:v52];
+                declarationType = [v511 declarationType];
+                v53 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType];
                 [v520 addObject:v53];
 
                 goto LABEL_92;
@@ -613,8 +613,8 @@ LABEL_18:
 
               if (![v36 count])
               {
-                v52 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v511];
-                [v520 addObject:v52];
+                declarationType = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v511];
+                [v520 addObject:declarationType];
 LABEL_92:
               }
 
@@ -642,13 +642,13 @@ LABEL_94:
 
         v415 = v443;
         v467 = objc_opt_new();
-        v54 = [v415 assetReferences];
-        v55 = [v54 allObjects];
+        assetReferences = [v415 assetReferences];
+        allObjects2 = [assetReferences allObjects];
 
         v412 = [NSSortDescriptor sortDescriptorWithKey:@"configuration.identifier" ascending:1];
         v551 = v412;
         v56 = [NSArray arrayWithObjects:&v551 count:1];
-        v57 = [v55 sortedArrayUsingDescriptors:v56];
+        v57 = [allObjects2 sortedArrayUsingDescriptors:v56];
 
         v549 = 0u;
         v550 = 0u;
@@ -671,27 +671,27 @@ LABEL_94:
               objc_enumerationMutation(v471);
             }
 
-            v58 = [*(*(&v547 + 1) + 8 * j) configuration];
-            v503 = v58;
-            v59 = v58;
-            if (v58)
+            configuration = [*(*(&v547 + 1) + 8 * j) configuration];
+            v503 = configuration;
+            v59 = configuration;
+            if (configuration)
             {
-              v494 = v58;
-              v60 = [v494 state];
-              v488 = v60;
-              if (v60)
+              v494 = configuration;
+              state4 = [v494 state];
+              v488 = state4;
+              if (state4)
               {
                 v61 = &__NSArray0__struct;
-                if (([v60 active] & 1) == 0)
+                if (([state4 active] & 1) == 0)
                 {
                   v521 = objc_opt_new();
-                  v62 = [v494 configurationReferences];
-                  v63 = [v62 allObjects];
+                  configurationReferences2 = [v494 configurationReferences];
+                  allObjects3 = [configurationReferences2 allObjects];
 
                   v475 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
                   v568 = v475;
                   v64 = [NSArray arrayWithObjects:&v568 count:1];
-                  v65 = [v63 sortedArrayUsingDescriptors:v64];
+                  v65 = [allObjects3 sortedArrayUsingDescriptors:v64];
 
                   v566 = 0u;
                   v567 = 0u;
@@ -712,20 +712,20 @@ LABEL_94:
                         }
 
                         v70 = *(*(&v564 + 1) + 8 * k);
-                        v71 = [v70 activation];
-                        if (v71)
+                        activation4 = [v70 activation];
+                        if (activation4)
                         {
-                          v72 = [v70 activation];
-                          v73 = [v72 state];
-                          v74 = v73;
-                          if (v73)
+                          activation5 = [v70 activation];
+                          state5 = [activation5 state];
+                          v74 = state5;
+                          if (state5)
                           {
-                            v75 = [v73 inactiveReasons];
-                            v76 = v75;
+                            inactiveReasons3 = [state5 inactiveReasons];
+                            v76 = inactiveReasons3;
                             v77 = &__NSArray0__struct;
-                            if (v75)
+                            if (inactiveReasons3)
                             {
-                              v77 = v75;
+                              v77 = inactiveReasons3;
                             }
 
                             v78 = v77;
@@ -733,7 +733,7 @@ LABEL_94:
 
                           else
                           {
-                            v76 = [RMModelStatusReason missingStateForDeclaration:v72];
+                            v76 = [RMModelStatusReason missingStateForDeclaration:activation5];
                             v569 = v76;
                             v78 = [NSArray arrayWithObjects:&v569 count:1];
                           }
@@ -742,8 +742,8 @@ LABEL_94:
 
                           if ([v79 count])
                           {
-                            v80 = [v70 activation];
-                            v81 = [RMModelStatusReason activationFailed:v80];
+                            activation6 = [v70 activation];
+                            v81 = [RMModelStatusReason activationFailed:activation6];
                             [v521 addObject:v81];
                           }
                         }
@@ -757,8 +757,8 @@ LABEL_94:
 
                   if ([v494 loadState] == 4)
                   {
-                    v82 = [v494 declarationType];
-                    v83 = [RMModelStatusReason failedWithUnknownDeclarationType:v82];
+                    declarationType2 = [v494 declarationType];
+                    v83 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType2];
                     [v521 addObject:v83];
 
                     goto LABEL_76;
@@ -766,8 +766,8 @@ LABEL_94:
 
                   if (![v66 count])
                   {
-                    v82 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v494];
-                    [v521 addObject:v82];
+                    declarationType2 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v494];
+                    [v521 addObject:declarationType2];
 LABEL_76:
                   }
 
@@ -821,28 +821,28 @@ LABEL_96:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v89 = [v88 assetReferences];
+          assetReferences2 = [v88 assetReferences];
           v552 = _NSConcreteStackBlock;
           v553 = 3221225472;
           v554 = sub_100048AB4;
           v555 = &unk_1000D21F0;
           v556 = &v539;
-          [v89 enumerateObjectsUsingBlock:&v552];
+          [assetReferences2 enumerateObjectsUsingBlock:&v552];
         }
 
         else
         {
-          v89 = [v88 state];
-          v90 = [v89 active];
-          *(*(&v539 + 1) + 24) = v90;
+          assetReferences2 = [v88 state];
+          active = [assetReferences2 active];
+          *(*(&v539 + 1) + 24) = active;
         }
 
         v12 = *(*(&v539 + 1) + 24);
         _Block_object_dispose(&v539, 8);
 
 LABEL_100:
-        v91 = [v463 identifier];
-        v92 = [v463 serverToken];
+        identifier3 = [v463 identifier];
+        serverToken2 = [v463 serverToken];
         v93 = [NSNumber numberWithBool:v12 & 1];
         if ([v459 count])
         {
@@ -854,7 +854,7 @@ LABEL_100:
           v94 = 0;
         }
 
-        v95 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:v91 serverToken:v92 active:v93 valid:v455 reasons:v94];
+        v95 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:identifier3 serverToken:serverToken2 active:v93 valid:v455 reasons:v94];
 
         [v431 addObject:v95];
 LABEL_104:
@@ -875,13 +875,13 @@ LABEL_104:
   v98 = [NSArray arrayWithObjects:&v552 count:2];
   v403 = [v431 sortedArrayUsingDescriptors:v98];
 
-  v99 = [v406 configurations];
+  configurations = [v406 configurations];
   v432 = objc_opt_new();
   v535 = 0u;
   v536 = 0u;
   v533 = 0u;
   v534 = 0u;
-  v425 = v99;
+  v425 = configurations;
   v440 = [v425 countByEnumeratingWithState:&v533 objects:v538 count:16];
   if (!v440)
   {
@@ -929,11 +929,11 @@ LABEL_104:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v106 = [v105 managementSource];
-        v107 = [v106 identifier];
-        v108 = [v105 identifier];
-        v109 = [v105 serverToken];
-        v452 = [RMConfigurationStatusArchiver statusForStoreIdentifier:v107 declarationIdentifier:v108 serverToken:v109];
+        managementSource2 = [v105 managementSource];
+        identifier4 = [managementSource2 identifier];
+        identifier5 = [v105 identifier];
+        serverToken3 = [v105 serverToken];
+        v452 = [RMConfigurationStatusArchiver statusForStoreIdentifier:identifier4 declarationIdentifier:identifier5 serverToken:serverToken3];
       }
 
       else
@@ -946,9 +946,9 @@ LABEL_104:
       if (v452)
       {
         v110 = [v452 objectForKeyedSubscript:@"valid"];
-        v111 = [v110 BOOLValue];
+        bOOLValue2 = [v110 BOOLValue];
         v112 = v418;
-        if (!v111)
+        if (!bOOLValue2)
         {
           v112 = v422;
         }
@@ -969,16 +969,16 @@ LABEL_104:
       if (objc_opt_isKindOfClass())
       {
         v115 = v444;
-        v116 = [v115 state];
-        v117 = v116;
-        if (v116)
+        state6 = [v115 state];
+        v117 = state6;
+        if (state6)
         {
-          v118 = [v116 inactiveReasons];
-          v119 = v118;
+          inactiveReasons4 = [state6 inactiveReasons];
+          v119 = inactiveReasons4;
           v120 = &__NSArray0__struct;
-          if (v118)
+          if (inactiveReasons4)
           {
-            v120 = v118;
+            v120 = inactiveReasons4;
           }
 
           v121 = v120;
@@ -1000,21 +1000,21 @@ LABEL_104:
       if (objc_opt_isKindOfClass())
       {
         v513 = v444;
-        v122 = [v513 state];
-        v504 = v122;
-        if (v122)
+        state7 = [v513 state];
+        v504 = state7;
+        if (state7)
         {
           v123 = &__NSArray0__struct;
-          if (([v122 active] & 1) == 0)
+          if (([state7 active] & 1) == 0)
           {
             v522 = objc_opt_new();
-            v124 = [v513 configurationReferences];
-            v125 = [v124 allObjects];
+            configurationReferences3 = [v513 configurationReferences];
+            allObjects4 = [configurationReferences3 allObjects];
 
             v495 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
             *&v547 = v495;
             v126 = [NSArray arrayWithObjects:&v547 count:1];
-            v127 = [v125 sortedArrayUsingDescriptors:v126];
+            v127 = [allObjects4 sortedArrayUsingDescriptors:v126];
 
             v541 = 0u;
             v542 = 0u;
@@ -1035,20 +1035,20 @@ LABEL_104:
                   }
 
                   v132 = *(*(&v539 + 1) + 8 * m);
-                  v133 = [v132 activation];
-                  if (v133)
+                  activation7 = [v132 activation];
+                  if (activation7)
                   {
-                    v134 = [v132 activation];
-                    v135 = [v134 state];
-                    v136 = v135;
-                    if (v135)
+                    activation8 = [v132 activation];
+                    state8 = [activation8 state];
+                    v136 = state8;
+                    if (state8)
                     {
-                      v137 = [v135 inactiveReasons];
-                      v138 = v137;
+                      inactiveReasons5 = [state8 inactiveReasons];
+                      v138 = inactiveReasons5;
                       v139 = &__NSArray0__struct;
-                      if (v137)
+                      if (inactiveReasons5)
                       {
-                        v139 = v137;
+                        v139 = inactiveReasons5;
                       }
 
                       v140 = v139;
@@ -1056,7 +1056,7 @@ LABEL_104:
 
                     else
                     {
-                      v138 = [RMModelStatusReason missingStateForDeclaration:v134];
+                      v138 = [RMModelStatusReason missingStateForDeclaration:activation8];
                       *&v564 = v138;
                       v140 = [NSArray arrayWithObjects:&v564 count:1];
                     }
@@ -1065,8 +1065,8 @@ LABEL_104:
 
                     if ([v141 count])
                     {
-                      v142 = [v132 activation];
-                      v143 = [RMModelStatusReason activationFailed:v142];
+                      activation9 = [v132 activation];
+                      v143 = [RMModelStatusReason activationFailed:activation9];
                       [v522 addObject:v143];
                     }
                   }
@@ -1080,8 +1080,8 @@ LABEL_104:
 
             if ([v513 loadState] == 4)
             {
-              v144 = [v513 declarationType];
-              v145 = [RMModelStatusReason failedWithUnknownDeclarationType:v144];
+              declarationType3 = [v513 declarationType];
+              v145 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType3];
               [v522 addObject:v145];
 
               goto LABEL_196;
@@ -1089,8 +1089,8 @@ LABEL_104:
 
             if (![v128 count])
             {
-              v144 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v513];
-              [v522 addObject:v144];
+              declarationType3 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v513];
+              [v522 addObject:declarationType3];
 LABEL_196:
             }
 
@@ -1118,13 +1118,13 @@ LABEL_198:
 
       v413 = v444;
       v468 = objc_opt_new();
-      v146 = [v413 assetReferences];
-      v147 = [v146 allObjects];
+      assetReferences3 = [v413 assetReferences];
+      allObjects5 = [assetReferences3 allObjects];
 
       v407 = [NSSortDescriptor sortDescriptorWithKey:@"configuration.identifier" ascending:1];
       v551 = v407;
       v148 = [NSArray arrayWithObjects:&v551 count:1];
-      v149 = [v147 sortedArrayUsingDescriptors:v148];
+      v149 = [allObjects5 sortedArrayUsingDescriptors:v148];
 
       v549 = 0u;
       v550 = 0u;
@@ -1147,27 +1147,27 @@ LABEL_198:
             objc_enumerationMutation(v472);
           }
 
-          v150 = [*(*(&v547 + 1) + 8 * n) configuration];
-          v505 = v150;
-          v151 = v150;
-          if (v150)
+          configuration2 = [*(*(&v547 + 1) + 8 * n) configuration];
+          v505 = configuration2;
+          v151 = configuration2;
+          if (configuration2)
           {
-            v496 = v150;
-            v152 = [v496 state];
-            v489 = v152;
-            if (v152)
+            v496 = configuration2;
+            state9 = [v496 state];
+            v489 = state9;
+            if (state9)
             {
               v153 = &__NSArray0__struct;
-              if (([v152 active] & 1) == 0)
+              if (([state9 active] & 1) == 0)
               {
                 v523 = objc_opt_new();
-                v154 = [v496 configurationReferences];
-                v155 = [v154 allObjects];
+                configurationReferences4 = [v496 configurationReferences];
+                allObjects6 = [configurationReferences4 allObjects];
 
                 v476 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
                 v568 = v476;
                 v156 = [NSArray arrayWithObjects:&v568 count:1];
-                v157 = [v155 sortedArrayUsingDescriptors:v156];
+                v157 = [allObjects6 sortedArrayUsingDescriptors:v156];
 
                 v566 = 0u;
                 v567 = 0u;
@@ -1188,20 +1188,20 @@ LABEL_198:
                       }
 
                       v162 = *(*(&v564 + 1) + 8 * ii);
-                      v163 = [v162 activation];
-                      if (v163)
+                      activation10 = [v162 activation];
+                      if (activation10)
                       {
-                        v164 = [v162 activation];
-                        v165 = [v164 state];
-                        v166 = v165;
-                        if (v165)
+                        activation11 = [v162 activation];
+                        state10 = [activation11 state];
+                        v166 = state10;
+                        if (state10)
                         {
-                          v167 = [v165 inactiveReasons];
-                          v168 = v167;
+                          inactiveReasons6 = [state10 inactiveReasons];
+                          v168 = inactiveReasons6;
                           v169 = &__NSArray0__struct;
-                          if (v167)
+                          if (inactiveReasons6)
                           {
-                            v169 = v167;
+                            v169 = inactiveReasons6;
                           }
 
                           v170 = v169;
@@ -1209,7 +1209,7 @@ LABEL_198:
 
                         else
                         {
-                          v168 = [RMModelStatusReason missingStateForDeclaration:v164];
+                          v168 = [RMModelStatusReason missingStateForDeclaration:activation11];
                           v569 = v168;
                           v170 = [NSArray arrayWithObjects:&v569 count:1];
                         }
@@ -1218,8 +1218,8 @@ LABEL_198:
 
                         if ([v171 count])
                         {
-                          v172 = [v162 activation];
-                          v173 = [RMModelStatusReason activationFailed:v172];
+                          activation12 = [v162 activation];
+                          v173 = [RMModelStatusReason activationFailed:activation12];
                           [v523 addObject:v173];
                         }
                       }
@@ -1233,8 +1233,8 @@ LABEL_198:
 
                 if ([v496 loadState] == 4)
                 {
-                  v174 = [v496 declarationType];
-                  v175 = [RMModelStatusReason failedWithUnknownDeclarationType:v174];
+                  declarationType4 = [v496 declarationType];
+                  v175 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType4];
                   [v523 addObject:v175];
 
                   goto LABEL_180;
@@ -1242,8 +1242,8 @@ LABEL_198:
 
                 if (![v158 count])
                 {
-                  v174 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v496];
-                  [v523 addObject:v174];
+                  declarationType4 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v496];
+                  [v523 addObject:declarationType4];
 LABEL_180:
                 }
 
@@ -1297,28 +1297,28 @@ LABEL_200:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v181 = [v180 assetReferences];
+        assetReferences4 = [v180 assetReferences];
         v552 = _NSConcreteStackBlock;
         v553 = 3221225472;
         v554 = sub_100048AB4;
         v555 = &unk_1000D21F0;
         v556 = &v539;
-        [v181 enumerateObjectsUsingBlock:&v552];
+        [assetReferences4 enumerateObjectsUsingBlock:&v552];
       }
 
       else
       {
-        v181 = [v180 state];
-        v182 = [v181 active];
-        *(*(&v539 + 1) + 24) = v182;
+        assetReferences4 = [v180 state];
+        active2 = [assetReferences4 active];
+        *(*(&v539 + 1) + 24) = active2;
       }
 
       v104 = *(*(&v539 + 1) + 24);
       _Block_object_dispose(&v539, 8);
 
 LABEL_204:
-      v183 = [v464 identifier];
-      v184 = [v464 serverToken];
+      identifier6 = [v464 identifier];
+      serverToken4 = [v464 serverToken];
       v185 = [NSNumber numberWithBool:v104 & 1];
       if ([v460 count])
       {
@@ -1330,7 +1330,7 @@ LABEL_204:
         v186 = 0;
       }
 
-      v187 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:v183 serverToken:v184 active:v185 valid:v456 reasons:v186];
+      v187 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:identifier6 serverToken:serverToken4 active:v185 valid:v456 reasons:v186];
 
       [v432 addObject:v187];
 LABEL_208:
@@ -1351,13 +1351,13 @@ LABEL_210:
   v190 = [NSArray arrayWithObjects:&v552 count:2];
   v401 = [v432 sortedArrayUsingDescriptors:v190];
 
-  v191 = [v406 assets];
+  assets = [v406 assets];
   v433 = objc_opt_new();
   v535 = 0u;
   v536 = 0u;
   v533 = 0u;
   v534 = 0u;
-  v423 = v191;
+  v423 = assets;
   v441 = [v423 countByEnumeratingWithState:&v533 objects:v538 count:16];
   if (!v441)
   {
@@ -1405,11 +1405,11 @@ LABEL_210:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v198 = [v197 managementSource];
-        v199 = [v198 identifier];
-        v200 = [v197 identifier];
-        v201 = [v197 serverToken];
-        v453 = [RMConfigurationStatusArchiver statusForStoreIdentifier:v199 declarationIdentifier:v200 serverToken:v201];
+        managementSource3 = [v197 managementSource];
+        identifier7 = [managementSource3 identifier];
+        identifier8 = [v197 identifier];
+        serverToken5 = [v197 serverToken];
+        v453 = [RMConfigurationStatusArchiver statusForStoreIdentifier:identifier7 declarationIdentifier:identifier8 serverToken:serverToken5];
       }
 
       else
@@ -1422,9 +1422,9 @@ LABEL_210:
       if (v453)
       {
         v202 = [v453 objectForKeyedSubscript:@"valid"];
-        v203 = [v202 BOOLValue];
+        bOOLValue3 = [v202 BOOLValue];
         v204 = v416;
-        if (!v203)
+        if (!bOOLValue3)
         {
           v204 = v419;
         }
@@ -1445,16 +1445,16 @@ LABEL_210:
       if (objc_opt_isKindOfClass())
       {
         v207 = v445;
-        v208 = [v207 state];
-        v209 = v208;
-        if (v208)
+        state11 = [v207 state];
+        v209 = state11;
+        if (state11)
         {
-          v210 = [v208 inactiveReasons];
-          v211 = v210;
+          inactiveReasons7 = [state11 inactiveReasons];
+          v211 = inactiveReasons7;
           v212 = &__NSArray0__struct;
-          if (v210)
+          if (inactiveReasons7)
           {
-            v212 = v210;
+            v212 = inactiveReasons7;
           }
 
           v213 = v212;
@@ -1476,21 +1476,21 @@ LABEL_210:
       if (objc_opt_isKindOfClass())
       {
         v515 = v445;
-        v214 = [v515 state];
-        v506 = v214;
-        if (v214)
+        state12 = [v515 state];
+        v506 = state12;
+        if (state12)
         {
           v215 = &__NSArray0__struct;
-          if (([v214 active] & 1) == 0)
+          if (([state12 active] & 1) == 0)
           {
             v524 = objc_opt_new();
-            v216 = [v515 configurationReferences];
-            v217 = [v216 allObjects];
+            configurationReferences5 = [v515 configurationReferences];
+            allObjects7 = [configurationReferences5 allObjects];
 
             v497 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
             *&v547 = v497;
             v218 = [NSArray arrayWithObjects:&v547 count:1];
-            v219 = [v217 sortedArrayUsingDescriptors:v218];
+            v219 = [allObjects7 sortedArrayUsingDescriptors:v218];
 
             v541 = 0u;
             v542 = 0u;
@@ -1511,20 +1511,20 @@ LABEL_210:
                   }
 
                   v224 = *(*(&v539 + 1) + 8 * jj);
-                  v225 = [v224 activation];
-                  if (v225)
+                  activation13 = [v224 activation];
+                  if (activation13)
                   {
-                    v226 = [v224 activation];
-                    v227 = [v226 state];
-                    v228 = v227;
-                    if (v227)
+                    activation14 = [v224 activation];
+                    state13 = [activation14 state];
+                    v228 = state13;
+                    if (state13)
                     {
-                      v229 = [v227 inactiveReasons];
-                      v230 = v229;
+                      inactiveReasons8 = [state13 inactiveReasons];
+                      v230 = inactiveReasons8;
                       v231 = &__NSArray0__struct;
-                      if (v229)
+                      if (inactiveReasons8)
                       {
-                        v231 = v229;
+                        v231 = inactiveReasons8;
                       }
 
                       v232 = v231;
@@ -1532,7 +1532,7 @@ LABEL_210:
 
                     else
                     {
-                      v230 = [RMModelStatusReason missingStateForDeclaration:v226];
+                      v230 = [RMModelStatusReason missingStateForDeclaration:activation14];
                       *&v564 = v230;
                       v232 = [NSArray arrayWithObjects:&v564 count:1];
                     }
@@ -1541,8 +1541,8 @@ LABEL_210:
 
                     if ([v233 count])
                     {
-                      v234 = [v224 activation];
-                      v235 = [RMModelStatusReason activationFailed:v234];
+                      activation15 = [v224 activation];
+                      v235 = [RMModelStatusReason activationFailed:activation15];
                       [v524 addObject:v235];
                     }
                   }
@@ -1556,8 +1556,8 @@ LABEL_210:
 
             if ([v515 loadState] == 4)
             {
-              v236 = [v515 declarationType];
-              v237 = [RMModelStatusReason failedWithUnknownDeclarationType:v236];
+              declarationType5 = [v515 declarationType];
+              v237 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType5];
               [v524 addObject:v237];
 
               goto LABEL_300;
@@ -1565,8 +1565,8 @@ LABEL_210:
 
             if (![v220 count])
             {
-              v236 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v515];
-              [v524 addObject:v236];
+              declarationType5 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v515];
+              [v524 addObject:declarationType5];
 LABEL_300:
             }
 
@@ -1594,13 +1594,13 @@ LABEL_302:
 
       v408 = v445;
       v469 = objc_opt_new();
-      v238 = [v408 assetReferences];
-      v239 = [v238 allObjects];
+      assetReferences5 = [v408 assetReferences];
+      allObjects8 = [assetReferences5 allObjects];
 
       v404 = [NSSortDescriptor sortDescriptorWithKey:@"configuration.identifier" ascending:1];
       v551 = v404;
       v240 = [NSArray arrayWithObjects:&v551 count:1];
-      v241 = [v239 sortedArrayUsingDescriptors:v240];
+      v241 = [allObjects8 sortedArrayUsingDescriptors:v240];
 
       v549 = 0u;
       v550 = 0u;
@@ -1624,15 +1624,15 @@ LABEL_302:
             objc_enumerationMutation(v473);
           }
 
-          v242 = [*(*(&v547 + 1) + 8 * v516) configuration];
-          v507 = v242;
-          v243 = v242;
-          if (v242)
+          configuration3 = [*(*(&v547 + 1) + 8 * v516) configuration];
+          v507 = configuration3;
+          v243 = configuration3;
+          if (configuration3)
           {
-            v498 = v242;
-            v244 = [v498 state];
-            v490 = v244;
-            if (!v244)
+            v498 = configuration3;
+            state14 = [v498 state];
+            v490 = state14;
+            if (!state14)
             {
               v268 = [RMModelStatusReason missingStateForDeclaration:v498];
               v552 = v268;
@@ -1641,16 +1641,16 @@ LABEL_302:
             }
 
             v245 = &__NSArray0__struct;
-            if (([v244 active] & 1) == 0)
+            if (([state14 active] & 1) == 0)
             {
               v525 = objc_opt_new();
-              v246 = [v498 configurationReferences];
-              v247 = [v246 allObjects];
+              configurationReferences6 = [v498 configurationReferences];
+              allObjects9 = [configurationReferences6 allObjects];
 
               v477 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
               v568 = v477;
               v248 = [NSArray arrayWithObjects:&v568 count:1];
-              v249 = [v247 sortedArrayUsingDescriptors:v248];
+              v249 = [allObjects9 sortedArrayUsingDescriptors:v248];
 
               v566 = 0u;
               v567 = 0u;
@@ -1671,20 +1671,20 @@ LABEL_302:
                     }
 
                     v254 = *(*(&v564 + 1) + 8 * kk);
-                    v255 = [v254 activation];
-                    if (v255)
+                    activation16 = [v254 activation];
+                    if (activation16)
                     {
-                      v256 = [v254 activation];
-                      v257 = [v256 state];
-                      v258 = v257;
-                      if (v257)
+                      activation17 = [v254 activation];
+                      state15 = [activation17 state];
+                      v258 = state15;
+                      if (state15)
                       {
-                        v259 = [v257 inactiveReasons];
-                        v260 = v259;
+                        inactiveReasons9 = [state15 inactiveReasons];
+                        v260 = inactiveReasons9;
                         v261 = &__NSArray0__struct;
-                        if (v259)
+                        if (inactiveReasons9)
                         {
-                          v261 = v259;
+                          v261 = inactiveReasons9;
                         }
 
                         v262 = v261;
@@ -1692,7 +1692,7 @@ LABEL_302:
 
                       else
                       {
-                        v260 = [RMModelStatusReason missingStateForDeclaration:v256];
+                        v260 = [RMModelStatusReason missingStateForDeclaration:activation17];
                         v569 = v260;
                         v262 = [NSArray arrayWithObjects:&v569 count:1];
                       }
@@ -1701,8 +1701,8 @@ LABEL_302:
 
                       if ([v263 count])
                       {
-                        v264 = [v254 activation];
-                        v265 = [RMModelStatusReason activationFailed:v264];
+                        activation18 = [v254 activation];
+                        v265 = [RMModelStatusReason activationFailed:activation18];
                         [v525 addObject:v265];
                       }
                     }
@@ -1716,8 +1716,8 @@ LABEL_302:
 
               if ([v498 loadState] == 4)
               {
-                v266 = [v498 declarationType];
-                v267 = [RMModelStatusReason failedWithUnknownDeclarationType:v266];
+                declarationType6 = [v498 declarationType];
+                v267 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType6];
                 [v525 addObject:v267];
 
                 goto LABEL_284;
@@ -1725,8 +1725,8 @@ LABEL_302:
 
               if (![v250 count])
               {
-                v266 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v498];
-                [v525 addObject:v266];
+                declarationType6 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v498];
+                [v525 addObject:declarationType6];
 LABEL_284:
               }
 
@@ -1783,28 +1783,28 @@ LABEL_304:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v273 = [v272 assetReferences];
+        assetReferences6 = [v272 assetReferences];
         v552 = _NSConcreteStackBlock;
         v553 = 3221225472;
         v554 = sub_100048AB4;
         v555 = &unk_1000D21F0;
         v556 = &v539;
-        [v273 enumerateObjectsUsingBlock:&v552];
+        [assetReferences6 enumerateObjectsUsingBlock:&v552];
       }
 
       else
       {
-        v273 = [v272 state];
-        v274 = [v273 active];
-        *(*(&v539 + 1) + 24) = v274;
+        assetReferences6 = [v272 state];
+        active3 = [assetReferences6 active];
+        *(*(&v539 + 1) + 24) = active3;
       }
 
       v196 = *(*(&v539 + 1) + 24);
       _Block_object_dispose(&v539, 8);
 
 LABEL_308:
-      v275 = [v465 identifier];
-      v276 = [v465 serverToken];
+      identifier9 = [v465 identifier];
+      serverToken6 = [v465 serverToken];
       v277 = [NSNumber numberWithBool:v196 & 1];
       if ([v461 count])
       {
@@ -1816,7 +1816,7 @@ LABEL_308:
         v278 = 0;
       }
 
-      v279 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:v275 serverToken:v276 active:v277 valid:v457 reasons:v278];
+      v279 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:identifier9 serverToken:serverToken6 active:v277 valid:v457 reasons:v278];
 
       [v433 addObject:v279];
 LABEL_312:
@@ -1847,13 +1847,13 @@ LABEL_314:
   v282 = [NSArray arrayWithObjects:&v552 count:2];
   v400 = [v433 sortedArrayUsingDescriptors:v282];
 
-  v283 = [v406 management];
+  management = [v406 management];
   v434 = objc_opt_new();
   v535 = 0u;
   v536 = 0u;
   v533 = 0u;
   v534 = 0u;
-  v420 = v283;
+  v420 = management;
   v442 = [v420 countByEnumeratingWithState:&v533 objects:v538 count:16];
   if (!v442)
   {
@@ -1901,11 +1901,11 @@ LABEL_314:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v290 = [v289 managementSource];
-        v291 = [v290 identifier];
-        v292 = [v289 identifier];
-        v293 = [v289 serverToken];
-        v454 = [RMConfigurationStatusArchiver statusForStoreIdentifier:v291 declarationIdentifier:v292 serverToken:v293];
+        managementSource4 = [v289 managementSource];
+        identifier10 = [managementSource4 identifier];
+        identifier11 = [v289 identifier];
+        serverToken7 = [v289 serverToken];
+        v454 = [RMConfigurationStatusArchiver statusForStoreIdentifier:identifier10 declarationIdentifier:identifier11 serverToken:serverToken7];
       }
 
       else
@@ -1918,9 +1918,9 @@ LABEL_314:
       if (v454)
       {
         v294 = [v454 objectForKeyedSubscript:@"valid"];
-        v295 = [v294 BOOLValue];
+        bOOLValue4 = [v294 BOOLValue];
         v296 = v414;
-        if (!v295)
+        if (!bOOLValue4)
         {
           v296 = v417;
         }
@@ -1941,16 +1941,16 @@ LABEL_314:
       if (objc_opt_isKindOfClass())
       {
         v299 = v446;
-        v300 = [v299 state];
-        v301 = v300;
-        if (v300)
+        state16 = [v299 state];
+        v301 = state16;
+        if (state16)
         {
-          v302 = [v300 inactiveReasons];
-          v303 = v302;
+          inactiveReasons10 = [state16 inactiveReasons];
+          v303 = inactiveReasons10;
           v304 = &__NSArray0__struct;
-          if (v302)
+          if (inactiveReasons10)
           {
-            v304 = v302;
+            v304 = inactiveReasons10;
           }
 
           v305 = v304;
@@ -1972,21 +1972,21 @@ LABEL_314:
       if (objc_opt_isKindOfClass())
       {
         v517 = v446;
-        v306 = [v517 state];
-        v508 = v306;
-        if (v306)
+        state17 = [v517 state];
+        v508 = state17;
+        if (state17)
         {
           v307 = &__NSArray0__struct;
-          if (([v306 active] & 1) == 0)
+          if (([state17 active] & 1) == 0)
           {
             v526 = objc_opt_new();
-            v308 = [v517 configurationReferences];
-            v309 = [v308 allObjects];
+            configurationReferences7 = [v517 configurationReferences];
+            allObjects10 = [configurationReferences7 allObjects];
 
             v499 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
             *&v547 = v499;
             v310 = [NSArray arrayWithObjects:&v547 count:1];
-            v311 = [v309 sortedArrayUsingDescriptors:v310];
+            v311 = [allObjects10 sortedArrayUsingDescriptors:v310];
 
             v541 = 0u;
             v542 = 0u;
@@ -2007,20 +2007,20 @@ LABEL_314:
                   }
 
                   v316 = *(*(&v539 + 1) + 8 * mm);
-                  v317 = [v316 activation];
-                  if (v317)
+                  activation19 = [v316 activation];
+                  if (activation19)
                   {
-                    v318 = [v316 activation];
-                    v319 = [v318 state];
-                    v320 = v319;
-                    if (v319)
+                    activation20 = [v316 activation];
+                    state18 = [activation20 state];
+                    v320 = state18;
+                    if (state18)
                     {
-                      v321 = [v319 inactiveReasons];
-                      v322 = v321;
+                      inactiveReasons11 = [state18 inactiveReasons];
+                      v322 = inactiveReasons11;
                       v323 = &__NSArray0__struct;
-                      if (v321)
+                      if (inactiveReasons11)
                       {
-                        v323 = v321;
+                        v323 = inactiveReasons11;
                       }
 
                       v324 = v323;
@@ -2028,7 +2028,7 @@ LABEL_314:
 
                     else
                     {
-                      v322 = [RMModelStatusReason missingStateForDeclaration:v318];
+                      v322 = [RMModelStatusReason missingStateForDeclaration:activation20];
                       *&v564 = v322;
                       v324 = [NSArray arrayWithObjects:&v564 count:1];
                     }
@@ -2037,8 +2037,8 @@ LABEL_314:
 
                     if ([v325 count])
                     {
-                      v326 = [v316 activation];
-                      v327 = [RMModelStatusReason activationFailed:v326];
+                      activation21 = [v316 activation];
+                      v327 = [RMModelStatusReason activationFailed:activation21];
                       [v526 addObject:v327];
                     }
                   }
@@ -2052,8 +2052,8 @@ LABEL_314:
 
             if ([v517 loadState] == 4)
             {
-              v328 = [v517 declarationType];
-              v329 = [RMModelStatusReason failedWithUnknownDeclarationType:v328];
+              declarationType7 = [v517 declarationType];
+              v329 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType7];
               [v526 addObject:v329];
 
               goto LABEL_404;
@@ -2061,8 +2061,8 @@ LABEL_314:
 
             if (![v312 count])
             {
-              v328 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v517];
-              [v526 addObject:v328];
+              declarationType7 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v517];
+              [v526 addObject:declarationType7];
 LABEL_404:
             }
 
@@ -2090,13 +2090,13 @@ LABEL_406:
 
       v405 = v446;
       v470 = objc_opt_new();
-      v330 = [v405 assetReferences];
-      v331 = [v330 allObjects];
+      assetReferences7 = [v405 assetReferences];
+      allObjects11 = [assetReferences7 allObjects];
 
       v402 = [NSSortDescriptor sortDescriptorWithKey:@"configuration.identifier" ascending:1];
       v551 = v402;
       v332 = [NSArray arrayWithObjects:&v551 count:1];
-      v333 = [v331 sortedArrayUsingDescriptors:v332];
+      v333 = [allObjects11 sortedArrayUsingDescriptors:v332];
 
       v549 = 0u;
       v550 = 0u;
@@ -2120,15 +2120,15 @@ LABEL_406:
             objc_enumerationMutation(v474);
           }
 
-          v334 = [*(*(&v547 + 1) + 8 * v518) configuration];
-          v509 = v334;
-          v335 = v334;
-          if (v334)
+          configuration4 = [*(*(&v547 + 1) + 8 * v518) configuration];
+          v509 = configuration4;
+          v335 = configuration4;
+          if (configuration4)
           {
-            v500 = v334;
-            v336 = [v500 state];
-            v491 = v336;
-            if (!v336)
+            v500 = configuration4;
+            state19 = [v500 state];
+            v491 = state19;
+            if (!state19)
             {
               v360 = [RMModelStatusReason missingStateForDeclaration:v500];
               v552 = v360;
@@ -2137,16 +2137,16 @@ LABEL_406:
             }
 
             v337 = &__NSArray0__struct;
-            if (([v336 active] & 1) == 0)
+            if (([state19 active] & 1) == 0)
             {
               v527 = objc_opt_new();
-              v338 = [v500 configurationReferences];
-              v339 = [v338 allObjects];
+              configurationReferences8 = [v500 configurationReferences];
+              allObjects12 = [configurationReferences8 allObjects];
 
               v478 = [NSSortDescriptor sortDescriptorWithKey:@"activation.identifier" ascending:1];
               v568 = v478;
               v340 = [NSArray arrayWithObjects:&v568 count:1];
-              v341 = [v339 sortedArrayUsingDescriptors:v340];
+              v341 = [allObjects12 sortedArrayUsingDescriptors:v340];
 
               v566 = 0u;
               v567 = 0u;
@@ -2167,20 +2167,20 @@ LABEL_406:
                     }
 
                     v346 = *(*(&v564 + 1) + 8 * nn);
-                    v347 = [v346 activation];
-                    if (v347)
+                    activation22 = [v346 activation];
+                    if (activation22)
                     {
-                      v348 = [v346 activation];
-                      v349 = [v348 state];
-                      v350 = v349;
-                      if (v349)
+                      activation23 = [v346 activation];
+                      state20 = [activation23 state];
+                      v350 = state20;
+                      if (state20)
                       {
-                        v351 = [v349 inactiveReasons];
-                        v352 = v351;
+                        inactiveReasons12 = [state20 inactiveReasons];
+                        v352 = inactiveReasons12;
                         v353 = &__NSArray0__struct;
-                        if (v351)
+                        if (inactiveReasons12)
                         {
-                          v353 = v351;
+                          v353 = inactiveReasons12;
                         }
 
                         v354 = v353;
@@ -2188,7 +2188,7 @@ LABEL_406:
 
                       else
                       {
-                        v352 = [RMModelStatusReason missingStateForDeclaration:v348];
+                        v352 = [RMModelStatusReason missingStateForDeclaration:activation23];
                         v569 = v352;
                         v354 = [NSArray arrayWithObjects:&v569 count:1];
                       }
@@ -2197,8 +2197,8 @@ LABEL_406:
 
                       if ([v355 count])
                       {
-                        v356 = [v346 activation];
-                        v357 = [RMModelStatusReason activationFailed:v356];
+                        activation24 = [v346 activation];
+                        v357 = [RMModelStatusReason activationFailed:activation24];
                         [v527 addObject:v357];
                       }
                     }
@@ -2212,8 +2212,8 @@ LABEL_406:
 
               if ([v500 loadState] == 4)
               {
-                v358 = [v500 declarationType];
-                v359 = [RMModelStatusReason failedWithUnknownDeclarationType:v358];
+                declarationType8 = [v500 declarationType];
+                v359 = [RMModelStatusReason failedWithUnknownDeclarationType:declarationType8];
                 [v527 addObject:v359];
 
                 goto LABEL_388;
@@ -2221,8 +2221,8 @@ LABEL_406:
 
               if (![v342 count])
               {
-                v358 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v500];
-                [v527 addObject:v358];
+                declarationType8 = [RMModelStatusReason configurationIsNotReferencedByAnActivation:v500];
+                [v527 addObject:declarationType8];
 LABEL_388:
               }
 
@@ -2279,28 +2279,28 @@ LABEL_408:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v365 = [v364 assetReferences];
+        assetReferences8 = [v364 assetReferences];
         v552 = _NSConcreteStackBlock;
         v553 = 3221225472;
         v554 = sub_100048AB4;
         v555 = &unk_1000D21F0;
         v556 = &v539;
-        [v365 enumerateObjectsUsingBlock:&v552];
+        [assetReferences8 enumerateObjectsUsingBlock:&v552];
       }
 
       else
       {
-        v365 = [v364 state];
-        v366 = [v365 active];
-        *(*(&v539 + 1) + 24) = v366;
+        assetReferences8 = [v364 state];
+        active4 = [assetReferences8 active];
+        *(*(&v539 + 1) + 24) = active4;
       }
 
       v288 = *(*(&v539 + 1) + 24);
       _Block_object_dispose(&v539, 8);
 
 LABEL_412:
-      v367 = [v466 identifier];
-      v368 = [v466 serverToken];
+      identifier12 = [v466 identifier];
+      serverToken8 = [v466 serverToken];
       v369 = [NSNumber numberWithBool:v288 & 1];
       if ([v462 count])
       {
@@ -2312,7 +2312,7 @@ LABEL_412:
         v370 = 0;
       }
 
-      v371 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:v367 serverToken:v368 active:v369 valid:v458 reasons:v370];
+      v371 = [RMModelStatusManagementDeclarations_Declaration buildWithIdentifier:identifier12 serverToken:serverToken8 active:v369 valid:v458 reasons:v370];
 
       [v434 addObject:v371];
 LABEL_416:
@@ -2352,11 +2352,11 @@ LABEL_418:
     [v483 setObject:v377 forKeyedSubscript:v409];
   }
 
-  v6 = v411;
+  sourceCopy = v411;
 LABEL_421:
-  v378 = [v6 conduitConfig];
-  v379 = [v378 state];
-  if (v379)
+  conduitConfig = [sourceCopy conduitConfig];
+  state21 = [conduitConfig state];
+  if (state21)
   {
     v380 = [v411 enrollmentType] == 0;
   }
@@ -2368,41 +2368,41 @@ LABEL_421:
 
   v381 = +[RMDevice currentDevice];
   *&v539 = RMModelStatusItemDeviceModelFamily;
-  v528 = [v381 modelFamily];
-  v552 = v528;
+  modelFamily = [v381 modelFamily];
+  v552 = modelFamily;
   *(&v539 + 1) = RMModelStatusItemDeviceModelIdentifier;
-  v519 = [v381 modelIdentifier];
-  v553 = v519;
+  modelIdentifier = [v381 modelIdentifier];
+  v553 = modelIdentifier;
   *&v540 = RMModelStatusItemDeviceModelMarketingName;
-  v510 = [v381 modelMarketingName];
-  v554 = v510;
+  modelMarketingName = [v381 modelMarketingName];
+  v554 = modelMarketingName;
   *(&v540 + 1) = RMModelStatusItemDeviceModelNumber;
-  v501 = [v381 modelNumber];
-  v555 = v501;
+  modelNumber = [v381 modelNumber];
+  v555 = modelNumber;
   *&v541 = RMModelStatusItemDeviceOperatingSystemBuildVersion;
-  v492 = [v381 operatingSystemBuildVersion];
-  v556 = v492;
+  operatingSystemBuildVersion = [v381 operatingSystemBuildVersion];
+  v556 = operatingSystemBuildVersion;
   *(&v541 + 1) = RMModelStatusItemDeviceOperatingSystemFamily;
-  v382 = [v381 operatingSystem];
-  v557 = v382;
+  operatingSystem = [v381 operatingSystem];
+  v557 = operatingSystem;
   *&v542 = RMModelStatusItemDeviceOperatingSystemMarketingName;
-  v383 = [v381 operatingSystemMarketingName];
-  v558 = v383;
+  operatingSystemMarketingName = [v381 operatingSystemMarketingName];
+  v558 = operatingSystemMarketingName;
   *(&v542 + 1) = RMModelStatusItemDeviceOperatingSystemSupplementalBuildVersion;
-  v384 = [v381 operatingSystemSupplementalBuildVersion];
-  v559 = v384;
+  operatingSystemSupplementalBuildVersion = [v381 operatingSystemSupplementalBuildVersion];
+  v559 = operatingSystemSupplementalBuildVersion;
   v543 = RMModelStatusItemDeviceOperatingSystemSupplementalExtraVersion;
-  v385 = [v381 operatingSystemSupplementalExtraVersion];
-  v560 = v385;
+  operatingSystemSupplementalExtraVersion = [v381 operatingSystemSupplementalExtraVersion];
+  v560 = operatingSystemSupplementalExtraVersion;
   v544 = RMModelStatusItemDeviceOperatingSystemVersion;
-  v386 = [v381 operatingSystemVersion];
-  v561 = v386;
+  operatingSystemVersion = [v381 operatingSystemVersion];
+  v561 = operatingSystemVersion;
   v545 = RMModelStatusItemDeviceSerialNumber;
-  v387 = [v381 serialNumber];
-  v562 = v387;
+  serialNumber = [v381 serialNumber];
+  v562 = serialNumber;
   v546 = RMModelStatusItemDeviceUDID;
-  v388 = [v381 UDID];
-  v563 = v388;
+  uDID = [v381 UDID];
+  v563 = uDID;
   v389 = [NSDictionary dictionaryWithObjects:&v552 forKeys:&v539 count:12];
 
   v529 = 0u;
@@ -2450,23 +2450,23 @@ LABEL_421:
   return v483;
 }
 
-- (BOOL)persistentHistoryNotifier:(id)a3 isChangeInteresting:(id)a4 stop:(BOOL *)a5
+- (BOOL)persistentHistoryNotifier:(id)notifier isChangeInteresting:(id)interesting stop:(BOOL *)stop
 {
-  v5 = a4;
-  v6 = [v5 updatedProperties];
-  v7 = [v6 valueForKey:@"name"];
+  interestingCopy = interesting;
+  updatedProperties = [interestingCopy updatedProperties];
+  v7 = [updatedProperties valueForKey:@"name"];
 
-  v8 = [v5 changedObjectID];
-  v9 = [v5 changeType];
-  v10 = v8;
+  changedObjectID = [interestingCopy changedObjectID];
+  changeType = [interestingCopy changeType];
+  v10 = changedObjectID;
   v11 = v7;
-  if (v9 != 2)
+  if (changeType != 2)
   {
     v12 = objc_opt_new();
-    v13 = [v10 entity];
+    entity = [v10 entity];
     v14 = +[RMActivationPayload entity];
-    v15 = [v13 isKindOfEntity:v14];
-    if (v9 == 1)
+    v15 = [entity isKindOfEntity:v14];
+    if (changeType == 1)
     {
       if (v15 && [(RMDeclarationPayload *)RMActivationPayload isSignificantChange:v11])
       {
@@ -2474,28 +2474,28 @@ LABEL_421:
       }
 
       v16 = +[RMActivationPayloadState entity];
-      if ([v13 isKindOfEntity:v16])
+      if ([entity isKindOfEntity:v16])
       {
         goto LABEL_21;
       }
 
       v17 = +[RMAssetPayload entity];
-      if ([v13 isKindOfEntity:v17] && +[RMDeclarationPayload isSignificantChange:](RMAssetPayload, "isSignificantChange:", v11))
+      if ([entity isKindOfEntity:v17] && +[RMDeclarationPayload isSignificantChange:](RMAssetPayload, "isSignificantChange:", v11))
       {
         goto LABEL_20;
       }
 
       v18 = +[RMAssetPayloadState entity];
-      if ([v13 isKindOfEntity:v18])
+      if ([entity isKindOfEntity:v18])
       {
         goto LABEL_19;
       }
 
       v24 = +[RMConfigurationPayload entity];
-      if (![v13 isKindOfEntity:?] || !+[RMConfigurationPayload isSignificantChange:](RMConfigurationPayload, "isSignificantChange:", v11))
+      if (![entity isKindOfEntity:?] || !+[RMConfigurationPayload isSignificantChange:](RMConfigurationPayload, "isSignificantChange:", v11))
       {
         v22 = +[RMConfigurationPayloadState entity];
-        LODWORD(v23) = [v13 isKindOfEntity:v22];
+        LODWORD(v23) = [entity isKindOfEntity:v22];
 
         if ((v23 & 1) == 0)
         {
@@ -2522,7 +2522,7 @@ LABEL_24:
       }
 
       v16 = +[RMActivationPayloadState entity];
-      if ([v13 isKindOfEntity:v16])
+      if ([entity isKindOfEntity:v16])
       {
 LABEL_21:
 
@@ -2530,7 +2530,7 @@ LABEL_21:
       }
 
       v17 = +[RMAssetPayload entity];
-      if ([v13 isKindOfEntity:v17])
+      if ([entity isKindOfEntity:v17])
       {
 LABEL_20:
 
@@ -2538,7 +2538,7 @@ LABEL_20:
       }
 
       v18 = +[RMAssetPayloadState entity];
-      if ([v13 isKindOfEntity:v18])
+      if ([entity isKindOfEntity:v18])
       {
 LABEL_19:
 
@@ -2546,10 +2546,10 @@ LABEL_19:
       }
 
       v19 = +[RMConfigurationPayload entity];
-      if (([v13 isKindOfEntity:v19] & 1) == 0)
+      if (([entity isKindOfEntity:v19] & 1) == 0)
       {
         v23 = +[RMConfigurationPayloadState entity];
-        v25 = [v13 isKindOfEntity:v23];
+        v25 = [entity isKindOfEntity:v23];
 
         if ((v25 & 1) == 0)
         {
@@ -2570,13 +2570,13 @@ LABEL_25:
   return v20;
 }
 
-- (void)persistentHistoryNotifier:(id)a3 hasChanges:(id)a4
+- (void)persistentHistoryNotifier:(id)notifier hasChanges:(id)changes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 persistentHistoryToken];
-  v9 = [v7 persistentHistoryToken];
-  v10 = [RMPersistentHistoryNotifierChanges isExistingPersistentHistoryToken:v8 fromSameStoreAsUpdatedToken:v9];
+  notifierCopy = notifier;
+  changesCopy = changes;
+  persistentHistoryToken = [notifierCopy persistentHistoryToken];
+  persistentHistoryToken2 = [changesCopy persistentHistoryToken];
+  v10 = [RMPersistentHistoryNotifierChanges isExistingPersistentHistoryToken:persistentHistoryToken fromSameStoreAsUpdatedToken:persistentHistoryToken2];
 
   if (v10)
   {
@@ -2593,12 +2593,12 @@ LABEL_25:
     v17[3] = &unk_1000D12F8;
     v11 = v20 = &v21;
     v18 = v11;
-    v19 = v7;
+    v19 = changesCopy;
     [v11 performBlockAndWait:v17];
     if ([v22[5] count])
     {
-      v12 = [(RMInternalStatusPublisher *)self subscribedStatusKeyPathUpdater];
-      [v12 notifyStatusDidChangeForKeyPathsByManagementSourceObjectID:v22[5]];
+      subscribedStatusKeyPathUpdater = [(RMInternalStatusPublisher *)self subscribedStatusKeyPathUpdater];
+      [subscribedStatusKeyPathUpdater notifyStatusDidChangeForKeyPathsByManagementSourceObjectID:v22[5]];
     }
 
     _Block_object_dispose(&v21, 8);
@@ -2606,14 +2606,14 @@ LABEL_25:
 
   else
   {
-    v13 = [(RMInternalStatusPublisher *)self subscribedStatusKeyPathUpdater];
+    subscribedStatusKeyPathUpdater2 = [(RMInternalStatusPublisher *)self subscribedStatusKeyPathUpdater];
     v14 = +[RMInternalStatusPublisher supportedKeyPaths];
-    [v13 notifyStatusDidChangeForKeyPaths:v14];
+    [subscribedStatusKeyPathUpdater2 notifyStatusDidChangeForKeyPaths:v14];
   }
 
-  v15 = [(RMInternalStatusPublisher *)self delegate];
-  v16 = [v7 persistentHistoryToken];
-  [v15 internalStatusPublisher:self didChangeCommandAndDeclarationsPersistentHistoryToken:v16];
+  delegate = [(RMInternalStatusPublisher *)self delegate];
+  persistentHistoryToken3 = [changesCopy persistentHistoryToken];
+  [delegate internalStatusPublisher:self didChangeCommandAndDeclarationsPersistentHistoryToken:persistentHistoryToken3];
 }
 
 - (RMInternalStatusPublisherDelegate)delegate

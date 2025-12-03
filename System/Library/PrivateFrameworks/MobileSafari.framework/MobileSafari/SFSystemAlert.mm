@@ -1,96 +1,96 @@
 @interface SFSystemAlert
-+ (id)_displayNameForBundleID:(id)a3;
-+ (id)readingListAlertForDomain:(id)a3 appBundleID:(id)a4;
++ (id)_displayNameForBundleID:(id)d;
++ (id)readingListAlertForDomain:(id)domain appBundleID:(id)d;
 + (id)searchEngineSettingAlert;
 + (id)sharedTabGroupsManateeAlert;
-+ (id)webAuthenticationAlertForDomain:(id)a3 appBundleID:(id)a4;
-- (SFSystemAlert)initWithTitle:(id)a3 message:(id)a4 affirmativeButtonTitle:(id)a5 negativeButtonTitle:(id)a6 alternateButtonTitle:(id)a7;
++ (id)webAuthenticationAlertForDomain:(id)domain appBundleID:(id)d;
+- (SFSystemAlert)initWithTitle:(id)title message:(id)message affirmativeButtonTitle:(id)buttonTitle negativeButtonTitle:(id)negativeButtonTitle alternateButtonTitle:(id)alternateButtonTitle;
 - (void)cancel;
 - (void)dealloc;
-- (void)scheduleWithCompletionBlock:(id)a3;
+- (void)scheduleWithCompletionBlock:(id)block;
 @end
 
 @implementation SFSystemAlert
 
-- (SFSystemAlert)initWithTitle:(id)a3 message:(id)a4 affirmativeButtonTitle:(id)a5 negativeButtonTitle:(id)a6 alternateButtonTitle:(id)a7
+- (SFSystemAlert)initWithTitle:(id)title message:(id)message affirmativeButtonTitle:(id)buttonTitle negativeButtonTitle:(id)negativeButtonTitle alternateButtonTitle:(id)alternateButtonTitle
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  negativeButtonTitleCopy = negativeButtonTitle;
+  alternateButtonTitleCopy = alternateButtonTitle;
   v22.receiver = self;
   v22.super_class = SFSystemAlert;
   v17 = [(SFSystemAlert *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    objc_storeStrong(&v18->_message, a4);
-    objc_storeStrong(&v18->_affirmativeButtonTitle, a5);
-    objc_storeStrong(&v18->_negativeButtonTitle, a6);
-    objc_storeStrong(&v18->_alternateButtonTitle, a7);
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v18->_affirmativeButtonTitle, buttonTitle);
+    objc_storeStrong(&v18->_negativeButtonTitle, negativeButtonTitle);
+    objc_storeStrong(&v18->_alternateButtonTitle, alternateButtonTitle);
     v19 = v18;
   }
 
   return v18;
 }
 
-+ (id)_displayNameForBundleID:(id)a3
++ (id)_displayNameForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:v3];
-  v5 = [v4 containingBundle];
+  dCopy = d;
+  v4 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:dCopy];
+  containingBundle = [v4 containingBundle];
 
   v6 = MEMORY[0x1E69635E0];
-  v7 = [v5 bundleIdentifier];
-  v8 = [v6 applicationProxyForIdentifier:v7];
+  bundleIdentifier = [containingBundle bundleIdentifier];
+  v8 = [v6 applicationProxyForIdentifier:bundleIdentifier];
 
-  v9 = [v8 localizedShortName];
-  if ([v9 length])
+  localizedShortName = [v8 localizedShortName];
+  if ([localizedShortName length])
   {
-    v10 = [v8 localizedShortName];
+    localizedShortName2 = [v8 localizedShortName];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v3];
-    v10 = [v11 localizedShortName];
+    v11 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:dCopy];
+    localizedShortName2 = [v11 localizedShortName];
   }
 
-  return v10;
+  return localizedShortName2;
 }
 
-+ (id)webAuthenticationAlertForDomain:(id)a3 appBundleID:(id)a4
++ (id)webAuthenticationAlertForDomain:(id)domain appBundleID:(id)d
 {
-  v5 = a3;
-  v6 = [SFSystemAlert _displayNameForBundleID:a4];
+  domainCopy = domain;
+  v6 = [SFSystemAlert _displayNameForBundleID:d];
   v7 = [SFSystemAlert alloc];
   v8 = MEMORY[0x1E696AEC0];
   v9 = _WBSLocalizedString();
-  v10 = [v8 stringWithFormat:v9, v6, v5];
+  domainCopy = [v8 stringWithFormat:v9, v6, domainCopy];
 
   v11 = _WBSLocalizedString();
   v12 = _WBSLocalizedString();
   v13 = _WBSLocalizedString();
-  v14 = [(SFSystemAlert *)v7 initWithTitle:v10 message:v11 affirmativeButtonTitle:v12 negativeButtonTitle:v13];
+  v14 = [(SFSystemAlert *)v7 initWithTitle:domainCopy message:v11 affirmativeButtonTitle:v12 negativeButtonTitle:v13];
 
   return v14;
 }
 
-+ (id)readingListAlertForDomain:(id)a3 appBundleID:(id)a4
++ (id)readingListAlertForDomain:(id)domain appBundleID:(id)d
 {
-  v5 = a3;
-  v6 = [SFSystemAlert _displayNameForBundleID:a4];
-  v7 = [v5 safari_bestURLForUserTypedString];
+  domainCopy = domain;
+  v6 = [SFSystemAlert _displayNameForBundleID:d];
+  safari_bestURLForUserTypedString = [domainCopy safari_bestURLForUserTypedString];
 
-  v8 = [v7 host];
-  v9 = [v8 safari_highLevelDomainFromHost];
+  host = [safari_bestURLForUserTypedString host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
   v10 = [SFSystemAlert alloc];
   v11 = MEMORY[0x1E696AEC0];
   v12 = _WBSLocalizedStringWithCurrentUserLocale();
-  v13 = [v11 stringWithFormat:v12, v9];
+  v13 = [v11 stringWithFormat:v12, safari_highLevelDomainFromHost];
   v14 = MEMORY[0x1E696AEC0];
   v15 = _WBSLocalizedStringWithCurrentUserLocale();
   v16 = [v14 stringWithFormat:v15, v6];
@@ -158,35 +158,35 @@
   }
 }
 
-- (void)scheduleWithCompletionBlock:(id)a3
+- (void)scheduleWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (activeNotification)
   {
-    (*(v4 + 2))(v4, 2);
+    (*(blockCopy + 2))(blockCopy, 2);
   }
 
   else
   {
     v6 = *MEMORY[0x1E695EE98];
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     p_title = &self->_title;
-    [v7 setObject:self->_title forKeyedSubscript:*MEMORY[0x1E695EE58]];
+    [dictionary setObject:self->_title forKeyedSubscript:*MEMORY[0x1E695EE58]];
     if ([(NSString *)self->_message length])
     {
-      [v7 setObject:self->_message forKeyedSubscript:*MEMORY[0x1E695EE60]];
+      [dictionary setObject:self->_message forKeyedSubscript:*MEMORY[0x1E695EE60]];
     }
 
-    [v7 setObject:self->_negativeButtonTitle forKeyedSubscript:*MEMORY[0x1E695EE70]];
-    [v7 setObject:self->_affirmativeButtonTitle forKeyedSubscript:v6];
+    [dictionary setObject:self->_negativeButtonTitle forKeyedSubscript:*MEMORY[0x1E695EE70]];
+    [dictionary setObject:self->_affirmativeButtonTitle forKeyedSubscript:v6];
     if ([(NSString *)self->_alternateButtonTitle length])
     {
-      [v7 setObject:self->_alternateButtonTitle forKeyedSubscript:*MEMORY[0x1E695EE78]];
+      [dictionary setObject:self->_alternateButtonTitle forKeyedSubscript:*MEMORY[0x1E695EE78]];
     }
 
     error = 0;
-    v9 = CFUserNotificationCreate(0, 0.0, 0x23uLL, &error, v7);
+    v9 = CFUserNotificationCreate(0, 0.0, 0x23uLL, &error, dictionary);
     self->_cfNotification = v9;
     if (v9)
     {

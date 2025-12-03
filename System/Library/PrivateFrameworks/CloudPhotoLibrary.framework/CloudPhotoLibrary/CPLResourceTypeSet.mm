@@ -1,12 +1,12 @@
 @interface CPLResourceTypeSet
-- (BOOL)containsResourceType:(unint64_t)a3;
+- (BOOL)containsResourceType:(unint64_t)type;
 - (id)description;
-- (id)intersectionWithSet:(id)a3;
-- (id)unionSet:(id)a3;
+- (id)intersectionWithSet:(id)set;
+- (id)unionSet:(id)set;
 - (unint64_t)count;
-- (void)addResourceType:(unint64_t)a3;
-- (void)enumerateResourceTypesWithBlock:(id)a3;
-- (void)removeResourceType:(unint64_t)a3;
+- (void)addResourceType:(unint64_t)type;
+- (void)enumerateResourceTypesWithBlock:(id)block;
+- (void)removeResourceType:(unint64_t)type;
 @end
 
 @implementation CPLResourceTypeSet
@@ -43,35 +43,35 @@ void __33__CPLResourceTypeSet_description__block_invoke(uint64_t a1, uint64_t a2
   [v2 addObject:v3];
 }
 
-- (id)unionSet:(id)a3
+- (id)unionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = objc_alloc_init(CPLResourceTypeSet);
-  v5->_baseTypesBits = v4[1] | self->_baseTypesBits;
+  v5->_baseTypesBits = setCopy[1] | self->_baseTypesBits;
   extraTypeBits = self->_extraTypeBits;
-  v7 = v4[2];
+  v7 = setCopy[2];
 
   v5->_extraTypeBits = v7 | extraTypeBits;
 
   return v5;
 }
 
-- (id)intersectionWithSet:(id)a3
+- (id)intersectionWithSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = objc_alloc_init(CPLResourceTypeSet);
-  v5->_baseTypesBits = v4[1] & self->_baseTypesBits;
+  v5->_baseTypesBits = setCopy[1] & self->_baseTypesBits;
   extraTypeBits = self->_extraTypeBits;
-  v7 = v4[2];
+  v7 = setCopy[2];
 
   v5->_extraTypeBits = v7 & extraTypeBits;
 
   return v5;
 }
 
-- (void)enumerateResourceTypesWithBlock:(id)a3
+- (void)enumerateResourceTypesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -80,7 +80,7 @@ void __33__CPLResourceTypeSet_description__block_invoke(uint64_t a1, uint64_t a2
   v7[1] = 3221225472;
   v7[2] = __54__CPLResourceTypeSet_enumerateResourceTypesWithBlock___block_invoke;
   v7[3] = &unk_1E861DA30;
-  v5 = v4;
+  v5 = blockCopy;
   v8 = v5;
   v9 = &v10;
   v6 = MEMORY[0x1E128EBA0](v7);
@@ -122,15 +122,15 @@ uint64_t __54__CPLResourceTypeSet_enumerateResourceTypesWithBlock___block_invoke
   return result;
 }
 
-- (BOOL)containsResourceType:(unint64_t)a3
+- (BOOL)containsResourceType:(unint64_t)type
 {
-  if (a3 > 0x1C)
+  if (type > 0x1C)
   {
-    if (a3 != 1000)
+    if (type != 1000)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResource.m"];
-      [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:755 description:{@"Invalid resource type %ld", a3}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:755 description:{@"Invalid resource type %ld", type}];
 
       abort();
     }
@@ -140,21 +140,21 @@ uint64_t __54__CPLResourceTypeSet_enumerateResourceTypesWithBlock___block_invoke
 
   else
   {
-    v3 = self->_baseTypesBits & (1 << a3);
+    v3 = self->_baseTypesBits & (1 << type);
   }
 
   return v3 != 0;
 }
 
-- (void)removeResourceType:(unint64_t)a3
+- (void)removeResourceType:(unint64_t)type
 {
-  if (a3 > 0x1C)
+  if (type > 0x1C)
   {
-    if (a3 != 1000)
+    if (type != 1000)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResource.m"];
-      [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:745 description:{@"Invalid resource type %ld", a3}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:745 description:{@"Invalid resource type %ld", type}];
 
       abort();
     }
@@ -165,22 +165,22 @@ uint64_t __54__CPLResourceTypeSet_enumerateResourceTypesWithBlock___block_invoke
 
   else
   {
-    v3 = ~(1 << a3);
+    v3 = ~(1 << type);
     v4 = 8;
   }
 
   *(&self->super.isa + v4) = (*(&self->super.isa + v4) & v3);
 }
 
-- (void)addResourceType:(unint64_t)a3
+- (void)addResourceType:(unint64_t)type
 {
-  if (a3 > 0x1C)
+  if (type > 0x1C)
   {
-    if (a3 != 1000)
+    if (type != 1000)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResource.m"];
-      [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:735 description:{@"Invalid resource type %ld", a3}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:735 description:{@"Invalid resource type %ld", type}];
 
       abort();
     }
@@ -191,7 +191,7 @@ uint64_t __54__CPLResourceTypeSet_enumerateResourceTypesWithBlock___block_invoke
 
   else
   {
-    v3 = (1 << a3);
+    v3 = (1 << type);
     v4 = 8;
   }
 

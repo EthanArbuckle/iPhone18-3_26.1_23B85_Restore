@@ -1,18 +1,18 @@
 @interface ShowMetadataViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)ratingFormatter;
 @end
 
 @implementation ShowMetadataViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"label" withSwiftType:"UILabel"];
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"rating" withSwiftType:"Float"];
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"numberFormatter" withSwiftType:"NSNumberFormatter"];
-  [v3 validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"explicit" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"label" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"rating" withSwiftType:"Float"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"numberFormatter" withSwiftType:"NSNumberFormatter"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ShowMetadataView" hasSwiftField:@"explicit" withSwiftType:"Bool"];
 }
 
 - (id)accessibilityLabel
@@ -21,7 +21,7 @@
   v3 = [(ShowMetadataViewAccessibility *)self safeSwiftValueForKey:@"label"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
   [(ShowMetadataViewAccessibility *)self safeSwiftFloatForKey:@"rating"];
   v7 = v6;
   v8 = MEMORY[0x29EDBA0F8];
@@ -49,7 +49,7 @@
   v15 = accessibilityLocalizedString(@"ratings.count");
   v16 = [v14 stringWithFormat:v15, v13];
 
-  v17 = [v5 componentsSeparatedByString:@"·"];
+  v17 = [text componentsSeparatedByString:@"·"];
   v18 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithObjects:{v10, v16, 0}];
   if ([v17 count])
   {

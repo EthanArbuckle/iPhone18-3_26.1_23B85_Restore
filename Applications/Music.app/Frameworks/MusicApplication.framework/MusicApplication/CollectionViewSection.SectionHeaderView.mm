@@ -1,19 +1,19 @@
 @interface CollectionViewSection.SectionHeaderView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithCoder:(id)a3;
-- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithCoder:(id)coder;
+- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CollectionViewSection.SectionHeaderView
 
-- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithFrame:(CGRect)a3
+- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   sub_E31CC(self + OBJC_IVAR____TtCV16MusicApplication21CollectionViewSection17SectionHeaderView_contentConfiguration);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtCV16MusicApplication21CollectionViewSection17SectionHeaderView_artworkCachingReference) = 0;
@@ -22,14 +22,14 @@
   v9[1] = 0;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v10 = [(CollectionViewSection.SectionHeaderView *)&v13 initWithFrame:x, y, width, height];
+  height = [(CollectionViewSection.SectionHeaderView *)&v13 initWithFrame:x, y, width, height];
   v11 = sub_E34F8();
-  [(CollectionViewSection.SectionHeaderView *)v10 addSubview:v11];
+  [(CollectionViewSection.SectionHeaderView *)height addSubview:v11];
 
-  return v10;
+  return height;
 }
 
-- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithCoder:(id)a3
+- (_TtCV16MusicApplication21CollectionViewSection17SectionHeaderView)initWithCoder:(id)coder
 {
   sub_E31CC(self + OBJC_IVAR____TtCV16MusicApplication21CollectionViewSection17SectionHeaderView_contentConfiguration);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtCV16MusicApplication21CollectionViewSection17SectionHeaderView_artworkCachingReference) = 0;
@@ -52,11 +52,11 @@
   [v3 setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_E34F8();
   [v6 sizeThatFits:{width, height}];
   v8 = v7;
@@ -71,7 +71,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_E34F8();
   [v3 intrinsicContentSize];
   v5 = v4;

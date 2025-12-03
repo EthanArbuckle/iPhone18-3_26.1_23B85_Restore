@@ -1,21 +1,21 @@
 @interface PRRenderingServiceMotionEvent
-- (BOOL)isEqual:(id)a3;
-- (PRRenderingServiceMotionEvent)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRRenderingServiceMotionEvent)initWithCoder:(id)coder;
 - (__n128)rotation;
-- (__n128)setRotation:(uint64_t)a3;
+- (__n128)setRotation:(uint64_t)rotation;
 @end
 
 @implementation PRRenderingServiceMotionEvent
 
-- (PRRenderingServiceMotionEvent)initWithCoder:(id)a3
+- (PRRenderingServiceMotionEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PRRenderingServiceMotionEvent;
   v5 = [(PRRenderingServiceMotionEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeBytesForKey:@"rotation" returnedLength:0];
+    v6 = [coderCopy decodeBytesForKey:@"rotation" returnedLength:0];
     v7 = v6[1];
     v5[1] = *v6;
     v5[2] = v7;
@@ -24,10 +24,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5)
       {
@@ -75,19 +75,19 @@
 
 - (__n128)rotation
 {
-  result = *(a1 + 16);
-  v3 = *(a1 + 32);
+  result = *(self + 16);
+  v3 = *(self + 32);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;
 }
 
-- (__n128)setRotation:(uint64_t)a3
+- (__n128)setRotation:(uint64_t)rotation
 {
-  result = *a3;
-  v4 = *(a3 + 16);
-  *(a1 + 16) = *a3;
-  *(a1 + 32) = v4;
+  result = *rotation;
+  v4 = *(rotation + 16);
+  *(self + 16) = *rotation;
+  *(self + 32) = v4;
   return result;
 }
 

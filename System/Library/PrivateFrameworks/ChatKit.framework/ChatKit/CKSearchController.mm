@@ -2,123 +2,123 @@
 + (id)supportedCellClasses;
 - (BOOL)hasMoreResults;
 - (BOOL)wantsHeaderSection;
-- (CKSearchController)initWithQueryController:(id)a3;
+- (CKSearchController)initWithQueryController:(id)controller;
 - (CKSearchControllerDelegate)delegate;
 - (NSArray)results;
 - (NSDirectionalEdgeInsets)additionalGroupInsets;
-- (id)_additionalMenuElementsForResult:(id)a3;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)itemProviderForSearchResult:(id)a3;
-- (id)menuElementsForResult:(id)a3 atIndexPath:(id)a4 sourceRect:(CGRect)a5;
-- (id)navigationBarTitleSummaryForSearchText:(id)a3;
-- (id)queryController:(id)a3 conversationForChatGUID:(id)a4;
-- (id)queryController:(id)a3 conversationsForExistingChatsWithGUIDs:(id)a4;
-- (id)queryControllerChatGUIDsForDetailsSearch:(id)a3;
-- (id)searchTokenFiltersForQueryController:(id)a3;
-- (id)sectionIdentifierForQueryController:(id)a3;
+- (id)_additionalMenuElementsForResult:(id)result;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)itemProviderForSearchResult:(id)result;
+- (id)menuElementsForResult:(id)result atIndexPath:(id)path sourceRect:(CGRect)rect;
+- (id)navigationBarTitleSummaryForSearchText:(id)text;
+- (id)queryController:(id)controller conversationForChatGUID:(id)d;
+- (id)queryController:(id)controller conversationsForExistingChatsWithGUIDs:(id)ds;
+- (id)queryControllerChatGUIDsForDetailsSearch:(id)search;
+- (id)searchTokenFiltersForQueryController:(id)controller;
+- (id)sectionIdentifierForQueryController:(id)controller;
 - (unint64_t)layoutWidth;
 - (unint64_t)queriedResultsCount;
 - (void)cancelCurrentSearch;
-- (void)didSelectResult:(id)a3 visibleResults:(id)a4;
-- (void)removeResult:(id)a3;
+- (void)didSelectResult:(id)result visibleResults:(id)results;
+- (void)removeResult:(id)result;
 - (void)searchEnded;
-- (void)searchQueryResultsDidChange:(id)a3;
-- (void)searchWithText:(id)a3 mode:(unint64_t)a4;
-- (void)setMode:(unint64_t)a3;
+- (void)searchQueryResultsDidChange:(id)change;
+- (void)searchWithText:(id)text mode:(unint64_t)mode;
+- (void)setMode:(unint64_t)mode;
 @end
 
 @implementation CKSearchController
 
-- (CKSearchController)initWithQueryController:(id)a3
+- (CKSearchController)initWithQueryController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CKSearchController;
   v5 = [(CKSearchController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CKSearchController *)v5 setQueryController:v4];
-    v7 = [(CKSearchController *)v6 queryController];
-    [v7 setDelegate:v6];
+    [(CKSearchController *)v5 setQueryController:controllerCopy];
+    queryController = [(CKSearchController *)v6 queryController];
+    [queryController setDelegate:v6];
   }
 
   return v6;
 }
 
-- (void)searchWithText:(id)a3 mode:(unint64_t)a4
+- (void)searchWithText:(id)text mode:(unint64_t)mode
 {
-  v6 = a3;
-  [(CKSearchController *)self setMode:a4];
-  [(CKSearchController *)self setCurrentSearchText:v6];
-  v7 = [(CKSearchController *)self queryController];
-  [v7 searchWithText:v6];
+  textCopy = text;
+  [(CKSearchController *)self setMode:mode];
+  [(CKSearchController *)self setCurrentSearchText:textCopy];
+  queryController = [(CKSearchController *)self queryController];
+  [queryController searchWithText:textCopy];
 }
 
 - (NSArray)results
 {
-  v2 = [(CKSearchController *)self queryController];
-  v3 = [v2 results];
+  queryController = [(CKSearchController *)self queryController];
+  results = [queryController results];
 
-  return v3;
+  return results;
 }
 
 - (BOOL)hasMoreResults
 {
-  v2 = [(CKSearchController *)self queryController];
-  v3 = [v2 hasMoreResults];
+  queryController = [(CKSearchController *)self queryController];
+  hasMoreResults = [queryController hasMoreResults];
 
-  return v3;
+  return hasMoreResults;
 }
 
 - (unint64_t)queriedResultsCount
 {
-  v2 = [(CKSearchController *)self queryController];
-  v3 = [v2 queriedResultsCount];
+  queryController = [(CKSearchController *)self queryController];
+  queriedResultsCount = [queryController queriedResultsCount];
 
-  return v3;
+  return queriedResultsCount;
 }
 
-- (void)searchQueryResultsDidChange:(id)a3
+- (void)searchQueryResultsDidChange:(id)change
 {
-  v4 = [(CKSearchController *)self delegate];
-  [v4 searchControllerContentsDidChange:self];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate searchControllerContentsDidChange:self];
 }
 
-- (id)queryController:(id)a3 conversationForChatGUID:(id)a4
+- (id)queryController:(id)controller conversationForChatGUID:(id)d
 {
-  v5 = a4;
-  v6 = [(CKSearchController *)self delegate];
-  v7 = [v6 searchController:self conversationForChatGUID:v5];
+  dCopy = d;
+  delegate = [(CKSearchController *)self delegate];
+  v7 = [delegate searchController:self conversationForChatGUID:dCopy];
 
   return v7;
 }
 
-- (id)queryController:(id)a3 conversationsForExistingChatsWithGUIDs:(id)a4
+- (id)queryController:(id)controller conversationsForExistingChatsWithGUIDs:(id)ds
 {
-  v5 = a4;
-  v6 = [(CKSearchController *)self delegate];
-  v7 = [v6 searchController:self conversationsForExistingChatsWithGUIDs:v5];
+  dsCopy = ds;
+  delegate = [(CKSearchController *)self delegate];
+  v7 = [delegate searchController:self conversationsForExistingChatsWithGUIDs:dsCopy];
 
   return v7;
 }
 
-- (id)sectionIdentifierForQueryController:(id)a3
+- (id)sectionIdentifierForQueryController:(id)controller
 {
   v3 = objc_opt_class();
 
   return [v3 sectionIdentifier];
 }
 
-- (id)queryControllerChatGUIDsForDetailsSearch:(id)a3
+- (id)queryControllerChatGUIDsForDetailsSearch:(id)search
 {
-  v4 = [(CKSearchController *)self delegate];
+  delegate = [(CKSearchController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKSearchController *)self delegate];
-    v7 = [v6 searchControllerChatGUIDsForDetailsSearch:self];
+    delegate2 = [(CKSearchController *)self delegate];
+    v7 = [delegate2 searchControllerChatGUIDsForDetailsSearch:self];
   }
 
   else
@@ -129,51 +129,51 @@
   return v7;
 }
 
-- (id)searchTokenFiltersForQueryController:(id)a3
+- (id)searchTokenFiltersForQueryController:(id)controller
 {
-  v4 = [(CKSearchController *)self delegate];
-  v5 = [v4 searchTokenFiltersForSearchController:self];
+  delegate = [(CKSearchController *)self delegate];
+  v5 = [delegate searchTokenFiltersForSearchController:self];
 
   return v5;
 }
 
 - (void)cancelCurrentSearch
 {
-  v2 = [(CKSearchController *)self queryController];
-  [v2 cancelCurrentSearch];
+  queryController = [(CKSearchController *)self queryController];
+  [queryController cancelCurrentSearch];
 }
 
 - (void)searchEnded
 {
-  v2 = [(CKSearchController *)self queryController];
-  [v2 searchEnded];
+  queryController = [(CKSearchController *)self queryController];
+  [queryController searchEnded];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    v5 = [(CKSearchController *)self queryController];
-    [v5 setMode:self->_mode];
+    self->_mode = mode;
+    queryController = [(CKSearchController *)self queryController];
+    [queryController setMode:self->_mode];
   }
 }
 
-- (id)navigationBarTitleSummaryForSearchText:(id)a3
+- (id)navigationBarTitleSummaryForSearchText:(id)text
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sectionTitle];
-  if ([v3 length])
+  textCopy = text;
+  sectionTitle = [objc_opt_class() sectionTitle];
+  if ([textCopy length])
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = CKFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"SEARCH_RESULTS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
-    v8 = [v5 stringWithFormat:v7, v3, v4];
+    v8 = [v5 stringWithFormat:v7, textCopy, sectionTitle];
 
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v11 = @"\u200F";
     }
@@ -188,7 +188,7 @@
 
   else
   {
-    v12 = v4;
+    v12 = sectionTitle;
   }
 
   return v12;
@@ -197,7 +197,7 @@
 + (id)supportedCellClasses
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 cellClassForMode:0];
+  v2 = [self cellClassForMode:0];
   if (v2)
   {
     v4[0] = v2;
@@ -232,17 +232,17 @@
     v3 = [(CKSearchController *)self mode]!= 2 && [(CKSearchController *)self mode]!= 4;
   }
 
-  v4 = [(CKSearchController *)self results];
-  v5 = [v4 count];
+  results = [(CKSearchController *)self results];
+  v5 = [results count];
 
   return v5 && v3;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 row];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [pathCopy row];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -255,10 +255,10 @@
   }
 
   v11 = v10;
-  v12 = [v8 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v7];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
-  v13 = [(CKSearchController *)self results];
-  v14 = [v13 count];
+  results = [(CKSearchController *)self results];
+  v14 = [results count];
 
   if (v9 >= v14)
   {
@@ -267,20 +267,20 @@
 
   else
   {
-    v15 = [(CKSearchController *)self results];
-    v16 = [v15 objectAtIndex:v9];
+    results2 = [(CKSearchController *)self results];
+    v16 = [results2 objectAtIndex:v9];
   }
 
-  v17 = [(CKSearchController *)self currentSearchText];
-  [v12 configureWithQueryResult:v16 searchText:v17 mode:{-[CKSearchController mode](self, "mode")}];
+  currentSearchText = [(CKSearchController *)self currentSearchText];
+  [v12 configureWithQueryResult:v16 searchText:currentSearchText mode:{-[CKSearchController mode](self, "mode")}];
 
   return v12;
 }
 
 - (unint64_t)layoutWidth
 {
-  v3 = [(CKSearchController *)self delegate];
-  [v3 containerWidthForController:self];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate containerWidthForController:self];
   v5 = v4;
 
   v6 = +[CKUIBehavior sharedBehaviors];
@@ -303,10 +303,10 @@
   else
   {
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [v10 isAccessibilityPreferredContentSizeCategory];
 
     result = 0;
-    if ((v11 & 1) == 0)
+    if ((isAccessibilityPreferredContentSizeCategory & 1) == 0)
     {
       v12 = (v5 / v8);
       if (v12 >= 2)
@@ -327,16 +327,16 @@
   return result;
 }
 
-- (id)menuElementsForResult:(id)a3 atIndexPath:(id)a4 sourceRect:(CGRect)a5
+- (id)menuElementsForResult:(id)result atIndexPath:(id)path sourceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v44 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = [(CKSearchController *)self _overridingMenuElementsForResult:v11];
+  resultCopy = result;
+  pathCopy = path;
+  v13 = [(CKSearchController *)self _overridingMenuElementsForResult:resultCopy];
   if ([v13 count])
   {
     v14 = v13;
@@ -355,7 +355,7 @@
     v39[2] = __67__CKSearchController_menuElementsForResult_atIndexPath_sourceRect___block_invoke;
     v39[3] = &unk_1E72EFBD8;
     v39[4] = self;
-    v18 = v11;
+    v18 = resultCopy;
     v40 = v18;
     v34 = [v15 actionWithTitle:v17 image:v35 identifier:0 handler:v39];
 
@@ -389,9 +389,9 @@
         v25 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [v18 identifier];
+          identifier = [v18 identifier];
           *buf = 138412290;
-          v43 = v26;
+          v43 = identifier;
           _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "Unable to generate share content for result: %@", buf, 0xCu);
         }
       }
@@ -406,21 +406,21 @@
       [v27 addObject:v24];
     }
 
-    v29 = [(CKSearchController *)self _additionalMenuElementsForResult:v18];
-    if (!v29)
+    array = [(CKSearchController *)self _additionalMenuElementsForResult:v18];
+    if (!array)
     {
-      v29 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     if (CKIsRunningInMacCatalyst())
     {
       v30 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v28];
-      v14 = [v29 arrayByAddingObject:v30];
+      v14 = [array arrayByAddingObject:v30];
     }
 
     else
     {
-      v14 = [v29 arrayByAddingObjectsFromArray:v28];
+      v14 = [array arrayByAddingObjectsFromArray:v28];
     }
 
     objc_destroyWeak(&location);
@@ -456,25 +456,25 @@ void __67__CKSearchController_menuElementsForResult_atIndexPath_sourceRect___blo
   [v6 searchController:v7 requestsPresentationOfShareController:v4 atRect:{*(a1 + 48), *(a1 + 56), *(a1 + 64), *(a1 + 72)}];
 }
 
-- (id)_additionalMenuElementsForResult:(id)a3
+- (id)_additionalMenuElementsForResult:(id)result
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [v4 item];
+  resultCopy = result;
+  array = [v3 array];
+  item = [resultCopy item];
 
-  v7 = [v6 attributeSet];
+  attributeSet = [item attributeSet];
 
-  v8 = [v7 contentURL];
-  v9 = [v5 copy];
+  contentURL = [attributeSet contentURL];
+  v9 = [array copy];
 
   return v9;
 }
 
-- (id)itemProviderForSearchResult:(id)a3
+- (id)itemProviderForSearchResult:(id)result
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -491,39 +491,39 @@ void __67__CKSearchController_menuElementsForResult_atIndexPath_sourceRect___blo
   return 0;
 }
 
-- (void)didSelectResult:(id)a3 visibleResults:(id)a4
+- (void)didSelectResult:(id)result visibleResults:(id)results
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isSemanticSearchEnabled];
+  resultCopy = result;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSemanticSearchEnabled = [mEMORY[0x1E69A8070] isSemanticSearchEnabled];
 
-  if (v7)
+  if (isSemanticSearchEnabled)
   {
-    v8 = [(CKSearchController *)self queryController];
-    v9 = [v8 query];
-    if (v9)
+    queryController = [(CKSearchController *)self queryController];
+    query = [queryController query];
+    if (query)
     {
-      v10 = v9;
-      v11 = [(CKSearchController *)self results];
-      v12 = [v11 containsObject:v5];
+      v10 = query;
+      results = [(CKSearchController *)self results];
+      v12 = [results containsObject:resultCopy];
 
       if (v12)
       {
-        v13 = [v5 item];
-        v14 = [(CKSearchController *)self queryController];
-        v15 = [v14 query];
+        item = [resultCopy item];
+        queryController2 = [(CKSearchController *)self queryController];
+        query2 = [queryController2 query];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v17 = [(CKSearchController *)self queryController];
-          v18 = [v17 query];
+          queryController3 = [(CKSearchController *)self queryController];
+          query3 = [queryController3 query];
 
-          v19 = [(CKSearchController *)self results];
-          v20 = [v19 arrayByApplyingSelector:sel_item];
+          results2 = [(CKSearchController *)self results];
+          v20 = [results2 arrayByApplyingSelector:sel_item];
 
-          [v18 userEngagedWithItem:v13 visibleItems:v20 userInteractionType:0];
+          [query3 userEngagedWithItem:item visibleItems:v20 userInteractionType:0];
         }
 
 LABEL_9:
@@ -536,10 +536,10 @@ LABEL_9:
     {
     }
 
-    v13 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    item = IMLogHandleForCategory();
+    if (os_log_type_enabled(item, OS_LOG_TYPE_FAULT))
     {
-      [CKSearchController didSelectResult:v13 visibleResults:?];
+      [CKSearchController didSelectResult:item visibleResults:?];
     }
 
     goto LABEL_9;
@@ -548,15 +548,15 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)removeResult:(id)a3
+- (void)removeResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CKSearchController *)self results];
-  v7 = [v5 mutableCopy];
+  resultCopy = result;
+  results = [(CKSearchController *)self results];
+  v7 = [results mutableCopy];
 
-  [v7 removeObject:v4];
-  v6 = [(CKSearchController *)self queryController];
-  [v6 setResults:v7];
+  [v7 removeObject:resultCopy];
+  queryController = [(CKSearchController *)self queryController];
+  [queryController setResults:v7];
 }
 
 - (CKSearchControllerDelegate)delegate

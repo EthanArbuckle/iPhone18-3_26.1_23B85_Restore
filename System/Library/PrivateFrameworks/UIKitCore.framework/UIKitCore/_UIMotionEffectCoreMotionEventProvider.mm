@@ -3,7 +3,7 @@
 - (double)slowUpdateIntervalForLogs;
 - (id)currentEvent;
 - (void)dealloc;
-- (void)setSlowUpdatesEnabled:(BOOL)a3;
+- (void)setSlowUpdatesEnabled:(BOOL)enabled;
 - (void)startGeneratingEvents;
 - (void)stopGeneratingEvents;
 @end
@@ -40,9 +40,9 @@
 
     v6 = v5;
     _Block_object_dispose(&v12, 8);
-    v7 = [[v5 alloc] initUsingGyroOnlySensorFusion];
+    initUsingGyroOnlySensorFusion = [[v5 alloc] initUsingGyroOnlySensorFusion];
     motionManager = v2->_motionManager;
-    v2->_motionManager = v7;
+    v2->_motionManager = initUsingGyroOnlySensorFusion;
 
     [(CMMotionManager *)v2->_motionManager setPowerConservationMode:1];
     [(CMMotionManager *)v2->_motionManager setDeviceMotionUpdateInterval:1.0 / _UIGetUIMotionEffectMotionUpdateFrequency()];
@@ -53,14 +53,14 @@
 
 - (id)currentEvent
 {
-  v2 = [(CMMotionManager *)self->_motionManager deviceMotion];
-  if (v2)
+  deviceMotion = [(CMMotionManager *)self->_motionManager deviceMotion];
+  if (deviceMotion)
   {
     v3 = [_UIMotionEffectAttitudeEvent alloc];
-    [v2 timestamp];
+    [deviceMotion timestamp];
     v5 = v4;
-    v6 = [v2 attitude];
-    [v6 quaternion];
+    attitude = [deviceMotion attitude];
+    [attitude quaternion];
     v11 = [(_UIMotionEffectAttitudeEvent *)v3 initWithTimestamp:v5 attitude:v7, v8, v9, v10];
   }
 
@@ -109,9 +109,9 @@
   [(_UIMotionEffectCoreMotionEventProvider *)&v3 dealloc];
 }
 
-- (void)setSlowUpdatesEnabled:(BOOL)a3
+- (void)setSlowUpdatesEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_UIMotionEffectMotionUpdateSlowFrequency, @"UIMotionEffectMotionUpdateSlowFrequency");
     updated = *&qword_1EA95E5B0;

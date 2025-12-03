@@ -1,25 +1,25 @@
 @interface RingsPropertyRecordJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
 - (_TtC25FitnessIntelligencePlugin31RingsPropertyRecordJournalEntry)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RingsPropertyRecordJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   sub_7688(0, &qword_8EF18, HDJournalEntry_ptr);
   v5 = sub_75688();
   swift_getObjCClassMetadata();
-  v6 = a4;
-  sub_6218(v5, v6);
+  profileCopy = profile;
+  sub_6218(v5, profileCopy);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_7318(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_7318(coderCopy);
 }
 
 - (_TtC25FitnessIntelligencePlugin31RingsPropertyRecordJournalEntry)init

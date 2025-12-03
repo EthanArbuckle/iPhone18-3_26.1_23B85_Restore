@@ -1,7 +1,7 @@
 @interface DBSDeviceAppearanceOptionViewInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
 - (void)_configureView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBSDeviceAppearanceOptionViewInvertColorsAccessibility
@@ -12,11 +12,11 @@
   [v2 setAccessibilityIgnoresInvertColors:1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = DBSDeviceAppearanceOptionViewInvertColorsAccessibility;
-  [(DBSDeviceAppearanceOptionViewInvertColorsAccessibility *)&v4 traitCollectionDidChange:a3];
+  [(DBSDeviceAppearanceOptionViewInvertColorsAccessibility *)&v4 traitCollectionDidChange:change];
   [(DBSDeviceAppearanceOptionViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

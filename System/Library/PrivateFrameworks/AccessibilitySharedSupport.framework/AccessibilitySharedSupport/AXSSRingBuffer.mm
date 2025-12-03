@@ -1,15 +1,15 @@
 @interface AXSSRingBuffer
-- (AXSSRingBuffer)initWithSize:(int64_t)a3;
+- (AXSSRingBuffer)initWithSize:(int64_t)size;
 - (id)description;
-- (id)objectAtIndex:(int64_t)a3;
-- (int64_t)addObject:(id)a3;
+- (id)objectAtIndex:(int64_t)index;
+- (int64_t)addObject:(id)object;
 - (int64_t)currentFilledSize;
 - (void)clear;
 @end
 
 @implementation AXSSRingBuffer
 
-- (AXSSRingBuffer)initWithSize:(int64_t)a3
+- (AXSSRingBuffer)initWithSize:(int64_t)size
 {
   v11.receiver = self;
   v11.super_class = AXSSRingBuffer;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_size = a3;
+    v4->_size = size;
     v6 = objc_opt_new();
     storage = v5->_storage;
     v5->_storage = v6;
@@ -31,18 +31,18 @@
   return v5;
 }
 
-- (int64_t)addObject:(id)a3
+- (int64_t)addObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = [(AXSSRingBuffer *)self lock];
-    [v5 lock];
+    lock = [(AXSSRingBuffer *)self lock];
+    [lock lock];
 
-    v6 = [(AXSSRingBuffer *)self lastEntryIndex];
-    if (v6 + 1 < [(AXSSRingBuffer *)self size])
+    lastEntryIndex = [(AXSSRingBuffer *)self lastEntryIndex];
+    if (lastEntryIndex + 1 < [(AXSSRingBuffer *)self size])
     {
-      v7 = v6 + 1;
+      v7 = lastEntryIndex + 1;
     }
 
     else
@@ -50,32 +50,32 @@
       v7 = 0;
     }
 
-    v8 = [(AXSSRingBuffer *)self storage];
-    v9 = [v8 count];
+    storage = [(AXSSRingBuffer *)self storage];
+    v9 = [storage count];
 
-    v10 = [(AXSSRingBuffer *)self storage];
-    v11 = v10;
+    storage2 = [(AXSSRingBuffer *)self storage];
+    storage3 = storage2;
     if (v7 == v9)
     {
-      [v10 addObject:v4];
+      [storage2 addObject:objectCopy];
     }
 
     else
     {
-      v12 = [v10 count];
+      v12 = [storage2 count];
 
       if (v7 >= v12)
       {
 LABEL_11:
         [(AXSSRingBuffer *)self setLastEntryIndex:v7];
-        v13 = [(AXSSRingBuffer *)self lock];
-        [v13 unlock];
+        lock2 = [(AXSSRingBuffer *)self lock];
+        [lock2 unlock];
 
         goto LABEL_12;
       }
 
-      v11 = [(AXSSRingBuffer *)self storage];
-      [v11 replaceObjectAtIndex:v7 withObject:v4];
+      storage3 = [(AXSSRingBuffer *)self storage];
+      [storage3 replaceObjectAtIndex:v7 withObject:objectCopy];
     }
 
     goto LABEL_11;
@@ -87,53 +87,53 @@ LABEL_12:
   return v7;
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
-  v5 = [(AXSSRingBuffer *)self lock];
-  [v5 lock];
+  lock = [(AXSSRingBuffer *)self lock];
+  [lock lock];
 
-  if (a3 < 0 || (-[AXSSRingBuffer storage](self, "storage"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 <= a3))
+  if (index < 0 || (-[AXSSRingBuffer storage](self, "storage"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 <= index))
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(AXSSRingBuffer *)self storage];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    storage = [(AXSSRingBuffer *)self storage];
+    v9 = [storage objectAtIndexedSubscript:index];
   }
 
-  v10 = [(AXSSRingBuffer *)self lock];
-  [v10 unlock];
+  lock2 = [(AXSSRingBuffer *)self lock];
+  [lock2 unlock];
 
   return v9;
 }
 
 - (int64_t)currentFilledSize
 {
-  v3 = [(AXSSRingBuffer *)self lock];
-  [v3 lock];
+  lock = [(AXSSRingBuffer *)self lock];
+  [lock lock];
 
-  v4 = [(AXSSRingBuffer *)self storage];
-  v5 = [v4 count];
+  storage = [(AXSSRingBuffer *)self storage];
+  v5 = [storage count];
 
-  v6 = [(AXSSRingBuffer *)self lock];
-  [v6 unlock];
+  lock2 = [(AXSSRingBuffer *)self lock];
+  [lock2 unlock];
 
   return v5;
 }
 
 - (void)clear
 {
-  v3 = [(AXSSRingBuffer *)self lock];
-  [v3 lock];
+  lock = [(AXSSRingBuffer *)self lock];
+  [lock lock];
 
   v4 = objc_opt_new();
   [(AXSSRingBuffer *)self setStorage:v4];
 
   [(AXSSRingBuffer *)self setLastEntryIndex:-1];
-  v5 = [(AXSSRingBuffer *)self lock];
-  [v5 unlock];
+  lock2 = [(AXSSRingBuffer *)self lock];
+  [lock2 unlock];
 }
 
 - (id)description
@@ -143,18 +143,18 @@ LABEL_12:
   v3 = [(AXSSRingBuffer *)&v13 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AXSSRingBuffer *)self lock];
-  [v5 lock];
+  lock = [(AXSSRingBuffer *)self lock];
+  [lock lock];
 
   v6 = [(AXSSRingBuffer *)self size];
-  v7 = [(AXSSRingBuffer *)self storage];
-  v8 = [v7 count];
-  v9 = [(AXSSRingBuffer *)self lastEntryIndex];
-  v10 = [(AXSSRingBuffer *)self storage];
-  [v4 appendFormat:@"Size:%li filledSize:%li, latestEntry:%li, contents: %@", v6, v8, v9, v10];
+  storage = [(AXSSRingBuffer *)self storage];
+  v8 = [storage count];
+  lastEntryIndex = [(AXSSRingBuffer *)self lastEntryIndex];
+  storage2 = [(AXSSRingBuffer *)self storage];
+  [v4 appendFormat:@"Size:%li filledSize:%li, latestEntry:%li, contents: %@", v6, v8, lastEntryIndex, storage2];
 
-  v11 = [(AXSSRingBuffer *)self lock];
-  [v11 unlock];
+  lock2 = [(AXSSRingBuffer *)self lock];
+  [lock2 unlock];
 
   return v4;
 }

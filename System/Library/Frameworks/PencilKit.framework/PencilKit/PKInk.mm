@@ -1,25 +1,25 @@
 @interface PKInk
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4;
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 variant:(id)a5;
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6;
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 weight:(double)a5;
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 weight:(double)a5 azimuth:(double)a6;
-+ (PKInk)inkWithIdentifier:(id)a3 properties:(id)a4;
-+ (PKInk)inkWithIdentifier:(id)a3 properties:(id)a4 inkVersion:(int64_t)a5;
-+ (PKInk)inkWithType:(id)a3 color:(id)a4 weight:(double)a5;
-+ (PKInk)inkWithType:(id)a3 color:(id)a4 weight:(double)a5 azimuth:(double)a6;
-+ (double)defaultAzimuthForIdentifier:(id)a3;
-+ (double)defaultOpacityForIdentifier:(id)a3;
-+ (double)defaultWeightForIdentifier:(id)a3;
-+ (id)decodeColorFrom:(id)a3 propertyKey:(id)a4 inkOpacity:(double)a5;
-+ (id)identifierForCommandType:(unsigned int)a3 wantsObjectErase:(BOOL)a4;
-+ (id)inkFromDictionary:(id)a3 color:(id)a4 identifier:(id)a5;
-+ (id)inkFromInk:(id)a3 azimuth:(double)a4;
-+ (id)inkFromInk:(id)a3 color:(id)a4;
-+ (id)inkFromInk:(id)a3 color:(id)a4 hdrColor:(id)a5 hdrHeadroom:(double)a6;
-+ (id)inkFromInk:(id)a3 weight:(double)a4;
-+ (id)sdrInkFromInk:(id)a3;
-+ (int64_t)currentInkVersionForInkIdentifier:(id)a3;
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color;
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color variant:(id)variant;
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant;
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color weight:(double)weight;
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color weight:(double)weight azimuth:(double)azimuth;
++ (PKInk)inkWithIdentifier:(id)identifier properties:(id)properties;
++ (PKInk)inkWithIdentifier:(id)identifier properties:(id)properties inkVersion:(int64_t)version;
++ (PKInk)inkWithType:(id)type color:(id)color weight:(double)weight;
++ (PKInk)inkWithType:(id)type color:(id)color weight:(double)weight azimuth:(double)azimuth;
++ (double)defaultAzimuthForIdentifier:(id)identifier;
++ (double)defaultOpacityForIdentifier:(id)identifier;
++ (double)defaultWeightForIdentifier:(id)identifier;
++ (id)decodeColorFrom:(id)from propertyKey:(id)key inkOpacity:(double)opacity;
++ (id)identifierForCommandType:(unsigned int)type wantsObjectErase:(BOOL)erase;
++ (id)inkFromDictionary:(id)dictionary color:(id)color identifier:(id)identifier;
++ (id)inkFromInk:(id)ink azimuth:(double)azimuth;
++ (id)inkFromInk:(id)ink color:(id)color;
++ (id)inkFromInk:(id)ink color:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom;
++ (id)inkFromInk:(id)ink weight:(double)weight;
++ (id)sdrInkFromInk:(id)ink;
++ (int64_t)currentInkVersionForInkIdentifier:(id)identifier;
 - (BOOL)_isCrayonInk;
 - (BOOL)_isCustomInk;
 - (BOOL)_isEraserInk;
@@ -40,23 +40,23 @@
 - (BOOL)_shouldSaveSixChannelAddColor;
 - (BOOL)_shouldSaveSixChannelMultiplyColor;
 - (BOOL)_supportsCombiningStrokes;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualInk:(id)a3;
-- (BOOL)isEqualUnweightedInk:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualInk:(id)ink;
+- (BOOL)isEqualUnweightedInk:(id)ink;
 - (NSData)rawValue;
 - (PKContentVersion)requiredContentVersion;
 - (PKInk)init;
-- (PKInk)initWithArchive:(const void *)a3;
-- (PKInk)initWithBehavior:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6 weight:(double)a7 azimuth:(double)a8;
-- (PKInk)initWithCoder:(id)a3;
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 hdrColor:(id)a5 hdrHeadroom:(double)a6 version:(unint64_t)a7 variant:(id)a8 weight:(double)a9 azimuth:(double)a10 behavior:(id)a11;
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6;
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6 weight:(double)a7;
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6 weight:(double)a7 azimuth:(double)a8;
+- (PKInk)initWithArchive:(const void *)archive;
+- (PKInk)initWithBehavior:(id)behavior color:(id)color version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)azimuth;
+- (PKInk)initWithCoder:(id)coder;
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)self0 behavior:(id)self1;
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant;
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant weight:(double)weight;
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)azimuth;
 - (PKInk)initWithInkType:(PKInkType)type color:(UIColor *)color;
-- (PKInk)initWithRawValue:(id)a3;
-- (PKInk)initWithUncheckedIdentifier:(id)a3 color:(id)a4 hdrColor:(id)a5 hdrHeadroom:(double)a6 version:(unint64_t)a7 variant:(id)a8 weight:(double)a9 azimuth:(double)a10;
-- (PKInk)initWithV1Archive:(const void *)a3 serializationVersion:(unint64_t)a4;
+- (PKInk)initWithRawValue:(id)value;
+- (PKInk)initWithUncheckedIdentifier:(id)identifier color:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)self0;
+- (PKInk)initWithV1Archive:(const void *)archive serializationVersion:(unint64_t)version;
 - (UIColor)color;
 - (float32x2_t)_defaultHDRAddColor;
 - (float32x2_t)_defaultHDRMultiplyColor;
@@ -64,11 +64,11 @@
 - (float32x2_t)_defaultSixChannelMultiplyColor;
 - (id).cxx_construct;
 - (id)_copyWithOriginalRequiredContentVersion;
-- (id)_copyWithVariant:(id)a3;
+- (id)_copyWithVariant:(id)variant;
 - (id)_dataInUnknownFields;
 - (id)_shadowModel;
 - (id)_sixChannelVersion;
-- (id)colorForUIAllowHDR:(BOOL)a3;
+- (id)colorForUIAllowHDR:(BOOL)r;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)identifierForArchiving;
@@ -78,16 +78,16 @@
 - (int64_t)_requiredContentVersion;
 - (int64_t)inkFormatVersion;
 - (unint64_t)hash;
-- (unint64_t)hashValueForFloat:(double)a3;
+- (unint64_t)hashValueForFloat:(double)float;
 - (unint64_t)particleRotation;
-- (void)_initColor:(id)a3 hdrColor:(id)a4 hdrHeadroom:(double)a5;
+- (void)_initColor:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom;
 - (void)_setupCustomizedSixChannelColors;
 - (void)_setupDefaultSixChannelAddAndMultiplyColors;
 - (void)_setupRequiredContentVersion;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)saveToV1Archive:(void *)a3;
-- (void)setWeight:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveToArchive:(void *)archive;
+- (void)saveToV1Archive:(void *)archive;
+- (void)setWeight:(double)weight;
 @end
 
 @implementation PKInk
@@ -105,9 +105,9 @@
   *self->_sixChannelAddColor = v3;
   [(PKInk *)self _defaultSixChannelMultiplyColor];
   *self->_sixChannelMultiplyColor = v4;
-  v5 = [(PKInk *)self hdrColor];
+  hdrColor = [(PKInk *)self hdrColor];
 
-  if (v5)
+  if (hdrColor)
   {
     [(PKInk *)self _defaultHDRAddColor];
     *self->_hdrAddColor = v6;
@@ -119,17 +119,17 @@
 - (float32x2_t)_defaultSixChannelAddColor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [a1 behavior];
-  v3 = [v2 renderingDescriptor];
-  v4 = [v3 blendMode];
+  behavior = [self behavior];
+  renderingDescriptor = [behavior renderingDescriptor];
+  blendMode = [renderingDescriptor blendMode];
 
   result = 0;
-  if (v4 <= 4 && ((1 << v4) & 0x15) != 0)
+  if (blendMode <= 4 && ((1 << blendMode) & 0x15) != 0)
   {
-    v6 = [a1[6] CGColor];
+    cGColor = [self[6] CGColor];
     v7[0] = __const_DKUColorGetVectorFloat3_rgba;
     v7[1] = unk_1C801E8B0;
-    DKUColorGetRGBAComponents(v6, v7);
+    DKUColorGetRGBAComponents(cGColor, v7);
     return vcvt_f32_f64(v7[0]);
   }
 
@@ -139,16 +139,16 @@
 - (float32x2_t)_defaultSixChannelMultiplyColor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [a1 behavior];
-  v3 = [v2 renderingDescriptor];
-  v4 = [v3 blendMode];
+  behavior = [self behavior];
+  renderingDescriptor = [behavior renderingDescriptor];
+  blendMode = [renderingDescriptor blendMode];
 
-  if ((v4 | 2) == 3)
+  if ((blendMode | 2) == 3)
   {
-    v5 = [a1[6] CGColor];
+    cGColor = [self[6] CGColor];
     v7[0] = __const_DKUColorGetVectorFloat3_rgba;
     v7[1] = unk_1C801E8B0;
-    DKUColorGetRGBAComponents(v5, v7);
+    DKUColorGetRGBAComponents(cGColor, v7);
     return vcvt_f32_f64(v7[0]);
   }
 
@@ -162,8 +162,8 @@
 {
   if ([(PKInk *)self _isFountainPenInk]&& (+[PKContentVersionUtility sharedUtility], v3 = objc_claimAutoreleasedReturnValue(), v4 = [(PKContentVersionUtility *)v3 programLinkedOnOrAfterDawnburstE], v3, v4))
   {
-    v5 = self;
-    v6 = 3;
+    selfCopy2 = self;
+    _requiredContentVersion = 3;
   }
 
   else
@@ -173,31 +173,31 @@
       return;
     }
 
-    v6 = [(PKInk *)self _requiredContentVersion];
-    v5 = self;
+    _requiredContentVersion = [(PKInk *)self _requiredContentVersion];
+    selfCopy2 = self;
   }
 
-  [(PKInk *)v5 set_requiredContentVersionOverride:v6];
+  [(PKInk *)selfCopy2 set_requiredContentVersionOverride:_requiredContentVersion];
 }
 
 - (BOOL)_isFountainPenInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.fountainpen"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.fountainpen"];
 
   return v3;
 }
 
 - (int64_t)_requiredContentVersion
 {
-  v3 = [(PKInk *)self identifier];
-  if ([v3 isEqualToString:@"com.apple.ink.pen"])
+  identifier = [(PKInk *)self identifier];
+  if ([identifier isEqualToString:@"com.apple.ink.pen"])
   {
     goto LABEL_8;
   }
 
-  v4 = [(PKInk *)self identifier];
-  if ([v4 isEqualToString:@"com.apple.ink.pencil"])
+  identifier2 = [(PKInk *)self identifier];
+  if ([identifier2 isEqualToString:@"com.apple.ink.pencil"])
   {
 LABEL_7:
 
@@ -205,37 +205,37 @@ LABEL_8:
     return 1;
   }
 
-  v5 = [(PKInk *)self identifier];
-  if ([v5 isEqualToString:@"com.apple.ink.marker"])
+  identifier3 = [(PKInk *)self identifier];
+  if ([identifier3 isEqualToString:@"com.apple.ink.marker"])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v6 = [(PKInk *)self identifier];
-  if ([v6 isEqualToString:@"com.apple.ink.eraser"])
+  identifier4 = [(PKInk *)self identifier];
+  if ([identifier4 isEqualToString:@"com.apple.ink.eraser"])
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(PKInk *)self identifier];
-  v9 = [v8 isEqualToString:@"com.apple.ink.lasso"];
+  identifier5 = [(PKInk *)self identifier];
+  v9 = [identifier5 isEqualToString:@"com.apple.ink.lasso"];
 
   if (v9)
   {
     return 1;
   }
 
-  v10 = [(PKInk *)self identifier];
-  if ([v10 isEqualToString:@"com.apple.ink.fountainpen"])
+  identifier6 = [(PKInk *)self identifier];
+  if ([identifier6 isEqualToString:@"com.apple.ink.fountainpen"])
   {
     goto LABEL_16;
   }
 
-  v11 = [(PKInk *)self identifier];
-  if ([v11 isEqualToString:@"com.apple.ink.watercolor"])
+  identifier7 = [(PKInk *)self identifier];
+  if ([identifier7 isEqualToString:@"com.apple.ink.watercolor"])
   {
 LABEL_15:
 
@@ -243,23 +243,23 @@ LABEL_16:
     return 2;
   }
 
-  v12 = [(PKInk *)self identifier];
-  if ([v12 isEqualToString:@"com.apple.ink.crayon"])
+  identifier8 = [(PKInk *)self identifier];
+  if ([identifier8 isEqualToString:@"com.apple.ink.crayon"])
   {
 
     goto LABEL_15;
   }
 
-  v13 = [(PKInk *)self identifier];
-  v14 = [v13 isEqualToString:@"com.apple.ink.monoline"];
+  identifier9 = [(PKInk *)self identifier];
+  v14 = [identifier9 isEqualToString:@"com.apple.ink.monoline"];
 
   if (v14)
   {
     return 2;
   }
 
-  v15 = [(PKInk *)self identifier];
-  v16 = [v15 isEqualToString:@"com.apple.ink.reedcalligraphy"];
+  identifier10 = [(PKInk *)self identifier];
+  v16 = [identifier10 isEqualToString:@"com.apple.ink.reedcalligraphy"];
 
   if (v16)
   {
@@ -274,35 +274,35 @@ LABEL_16:
 
 - (UIColor)color
 {
-  v3 = [(PKInk *)self hdrColor];
-  v4 = v3;
-  if (v3)
+  hdrColor = [(PKInk *)self hdrColor];
+  v4 = hdrColor;
+  if (hdrColor)
   {
-    v5 = v3;
+    sdrColor = hdrColor;
   }
 
   else
   {
-    v5 = [(PKInk *)self sdrColor];
+    sdrColor = [(PKInk *)self sdrColor];
   }
 
-  v6 = v5;
+  v6 = sdrColor;
 
   return v6;
 }
 
 - (BOOL)_isEraserInk
 {
-  v3 = [(PKInk *)self identifier];
-  if ([v3 isEqualToString:@"com.apple.ink.eraser"])
+  identifier = [(PKInk *)self identifier];
+  if ([identifier isEqualToString:@"com.apple.ink.eraser"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PKInk *)self identifier];
-    v4 = [v5 isEqualToString:@"com.apple.ink.objectEraser"];
+    identifier2 = [(PKInk *)self identifier];
+    v4 = [identifier2 isEqualToString:@"com.apple.ink.objectEraser"];
   }
 
   return v4;
@@ -310,39 +310,39 @@ LABEL_16:
 
 - (BOOL)_isPencilInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.pencil"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.pencil"];
 
   return v3;
 }
 
 - (BOOL)_isMarkerInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.marker"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.marker"];
 
   return v3;
 }
 
 - (BOOL)_isMonolineInk
 {
-  v4 = [(PKInk *)self identifier];
-  v5 = [v4 isEqualToString:@"com.apple.ink.pen"];
+  identifier = [(PKInk *)self identifier];
+  v5 = [identifier isEqualToString:@"com.apple.ink.pen"];
   if (v5)
   {
-    v2 = [(PKInk *)self variant];
-    if ([v2 isEqualToString:@"fixed-width"])
+    variant = [(PKInk *)self variant];
+    if ([variant isEqualToString:@"fixed-width"])
     {
       v6 = 1;
       goto LABEL_6;
     }
   }
 
-  v7 = [(PKInk *)self identifier];
-  if (([v7 isEqualToString:@"com.apple.ink.monoline"] & 1) == 0)
+  identifier2 = [(PKInk *)self identifier];
+  if (([identifier2 isEqualToString:@"com.apple.ink.monoline"] & 1) == 0)
   {
-    v9 = [(PKInk *)self identifier];
-    v6 = [v9 isEqualToString:@"com.apple.ink.micronpen"];
+    identifier3 = [(PKInk *)self identifier];
+    v6 = [identifier3 isEqualToString:@"com.apple.ink.micronpen"];
 
     if ((v5 & 1) == 0)
     {
@@ -365,8 +365,8 @@ LABEL_7:
 
 - (BOOL)_isPenInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.pen"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.pen"];
 
   return v3;
 }
@@ -375,8 +375,8 @@ LABEL_7:
 {
   [PKInk defaultWeightForIdentifier:@"com.apple.ink.pen"];
   v4 = v3;
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  v6 = [(PKInk *)self initWithIdentifier:@"com.apple.ink.pen" color:v5 version:[PKInk currentInkVersionForInkIdentifier:?], 0, v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v6 = [(PKInk *)self initWithIdentifier:@"com.apple.ink.pen" color:blackColor version:[PKInk currentInkVersionForInkIdentifier:?], 0, v4];
 
   return v6;
 }
@@ -384,17 +384,17 @@ LABEL_7:
 - (id)_sixChannelVersion
 {
   v3 = [PKInk alloc];
-  v4 = [(PKInk *)self identifier];
-  v5 = [(PKInk *)self sdrColor];
-  v6 = [(PKInk *)self hdrColor];
+  identifier = [(PKInk *)self identifier];
+  sdrColor = [(PKInk *)self sdrColor];
+  hdrColor = [(PKInk *)self hdrColor];
   [(PKInk *)self hdrHeadroom];
   v8 = v7;
-  v9 = [(PKInk *)self version];
-  v10 = [(PKInk *)self variant];
+  version = [(PKInk *)self version];
+  variant = [(PKInk *)self variant];
   [(PKInk *)self weight];
   v12 = v11;
   [(PKInk *)self _azimuth];
-  v14 = [(PKInk *)v3 initWithUncheckedIdentifier:v4 color:v5 hdrColor:v6 hdrHeadroom:v9 version:v10 variant:v8 weight:v12 azimuth:v13];
+  v14 = [(PKInk *)v3 initWithUncheckedIdentifier:identifier color:sdrColor hdrColor:hdrColor hdrHeadroom:version version:variant variant:v8 weight:v12 azimuth:v13];
 
   [(PKInk *)v14 _setupCustomizedSixChannelColors];
   [(PKInk *)v14 set_weightIsUndefined:[(PKInk *)self _weightIsUndefined]];
@@ -405,10 +405,10 @@ LABEL_7:
 - (void)_setupCustomizedSixChannelColors
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(UIColor *)self->_sdrColor CGColor];
+  cGColor = [(UIColor *)self->_sdrColor CGColor];
   v29 = __const_DKUColorGetVectorFloat4_rgba;
   v30 = unk_1C801E8D0;
-  DKUColorGetRGBAComponents(v3, &v29);
+  DKUColorGetRGBAComponents(cGColor, &v29);
   *v4.f32 = vcvt_f32_f64(v29);
   *&v5 = *&v30;
   v23 = v5;
@@ -420,10 +420,10 @@ LABEL_7:
   v28 = v6;
   if (hdrColor)
   {
-    v8 = [(UIColor *)hdrColor CGColor];
+    cGColor2 = [(UIColor *)hdrColor CGColor];
     v29 = __const_DKUColorGetVectorFloat3_rgba;
     v30 = unk_1C801E8B0;
-    DKUColorGetRGBAComponents(v8, &v29);
+    DKUColorGetRGBAComponents(cGColor2, &v29);
     *v9.f32 = vcvt_f32_f64(v29);
     v10 = *&v30;
     v9.f32[2] = v10;
@@ -431,12 +431,12 @@ LABEL_7:
   }
 
   v11 = [(PKInk *)self behavior:v23];
-  v12 = [v11 renderingDescriptor];
-  v13 = [v12 blendMode];
+  renderingDescriptor = [v11 renderingDescriptor];
+  blendMode = [renderingDescriptor blendMode];
 
   v14.i64[0] = 0;
   v14.i32[2] = 0;
-  if (v13 > 4)
+  if (blendMode > 4)
   {
     v15.i64[0] = 0;
     v15.i32[2] = 0;
@@ -446,7 +446,7 @@ LABEL_7:
     v16.i32[2] = 0;
   }
 
-  else if (((1 << v13) & 0x15) != 0)
+  else if (((1 << blendMode) & 0x15) != 0)
   {
     v16 = v27;
     v15 = v28;
@@ -492,8 +492,8 @@ LABEL_7:
 
 - (BOOL)_isLassoInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.lasso"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.lasso"];
 
   return v3;
 }
@@ -502,11 +502,11 @@ LABEL_7:
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = @"identifier";
-  v3 = [(PKInk *)self identifier];
-  v8[0] = v3;
+  identifier = [(PKInk *)self identifier];
+  v8[0] = identifier;
   v7[1] = @"properties";
-  v4 = [(PKInk *)self properties];
-  v8[1] = v4;
+  properties = [(PKInk *)self properties];
+  v8[1] = properties;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -515,12 +515,12 @@ LABEL_7:
 - (id)properties
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [(PKInk *)self sdrColor];
-  v4 = [v3 CGColor];
+  sdrColor = [(PKInk *)self sdrColor];
+  cGColor = [sdrColor CGColor];
 
   v43 = xmmword_1C801F520;
   v44 = unk_1C801F530;
-  if (DKUColorGetRGBAComponents(v4, &v43))
+  if (DKUColorGetRGBAComponents(cGColor, &v43))
   {
     v5 = v43;
     v6 = v44;
@@ -553,20 +553,20 @@ LABEL_7:
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PKInk version](self, "version")}];
     v42[4] = v14;
     v41[5] = @"PKInkVariantProperty";
-    v15 = [(PKInk *)self variant];
-    v42[5] = v15;
+    variant = [(PKInk *)self variant];
+    v42[5] = variant;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:6];
 
     if (v16)
     {
-      v17 = [(PKInk *)self hdrColor];
-      v18 = v17 == 0;
+      hdrColor = [(PKInk *)self hdrColor];
+      v18 = hdrColor == 0;
 
       if (!v18)
       {
-        v19 = [(PKInk *)self hdrColor];
-        v20 = v19;
-        v21 = DKUColorGetRGBAComponents([v19 CGColor], &v43) == 0;
+        hdrColor2 = [(PKInk *)self hdrColor];
+        v20 = hdrColor2;
+        v21 = DKUColorGetRGBAComponents([hdrColor2 CGColor], &v43) == 0;
 
         if (!v21)
         {
@@ -615,15 +615,15 @@ LABEL_7:
 
 - (BOOL)_isHandwritingInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.handwriting"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.handwriting"];
 
   return v3;
 }
 
-- (PKInk)initWithArchive:(const void *)a3
+- (PKInk)initWithArchive:(const void *)archive
 {
-  v5 = *(a3 + 2);
+  v5 = *(archive + 2);
   if (v5)
   {
     v6 = v5[5];
@@ -641,9 +641,9 @@ LABEL_7:
   }
 
   RGBA = PK_CGColorMakeRGBA(v6, v7, v8, v9, 0.0);
-  if ((*(a3 + 112) & 2) != 0)
+  if ((*(archive + 112) & 2) != 0)
   {
-    v11 = *(a3 + 5);
+    v11 = *(archive + 5);
   }
 
   else
@@ -651,7 +651,7 @@ LABEL_7:
     v11 = 0.0;
   }
 
-  v12 = *(a3 + 4);
+  v12 = *(archive + 4);
   if (v12)
   {
     v13 = v11;
@@ -663,7 +663,7 @@ LABEL_7:
     v14 = 0;
   }
 
-  v15 = *(a3 + 7);
+  v15 = *(archive + 7);
   if (*(v15 + 23) < 0)
   {
     v15 = *v15;
@@ -671,9 +671,9 @@ LABEL_7:
 
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v15];
   v17 = v16;
-  if ((*(a3 + 112) & 8) != 0)
+  if ((*(archive + 112) & 8) != 0)
   {
-    v18 = *(a3 + 12);
+    v18 = *(archive + 12);
     if (v18 == 3)
     {
       if ([(__CFString *)v16 isEqualToString:@"com.apple.ink.calligraphy"])
@@ -697,7 +697,7 @@ LABEL_7:
   }
 
   v20 = @"default";
-  v21 = *(a3 + 11);
+  v21 = *(archive + 11);
   if (v21)
   {
     if (*(v21 + 23) < 0)
@@ -714,9 +714,9 @@ LABEL_7:
   v24 = [v23 supportedInkIdentifierFromIdentifier:v17];
 
   [PKInk defaultWeightForIdentifier:v24];
-  if ((*(a3 + 112) & 0x10) != 0)
+  if ((*(archive + 112) & 0x10) != 0)
   {
-    v26 = *(a3 + 13);
+    v26 = *(archive + 13);
   }
 
   else
@@ -724,9 +724,9 @@ LABEL_7:
     v26 = v25;
   }
 
-  if (*(a3 + 112))
+  if (*(archive + 112))
   {
-    v27 = *(a3 + 1);
+    v27 = *(archive + 1);
   }
 
   else
@@ -750,46 +750,46 @@ LABEL_7:
   {
   }
 
-  if ((*(a3 + 112) & 0x10) == 0)
+  if ((*(archive + 112) & 0x10) == 0)
   {
     [(PKInk *)v30 set_weightIsUndefined:1];
   }
 
-  v31 = *(a3 + 9);
+  v31 = *(archive + 9);
   if (v31)
   {
     v32 = vrev64q_s32(*(v31 + 8));
     [(PKInk *)v30 set_sixChannelAddColor:*vextq_s8(v32, v32, 8uLL).i64];
   }
 
-  v33 = *(a3 + 10);
+  v33 = *(archive + 10);
   if (v33)
   {
     v34 = vrev64q_s32(*(v33 + 8));
     [(PKInk *)v30 set_sixChannelMultiplyColor:*vextq_s8(v34, v34, 8uLL).i64];
   }
 
-  v35 = *(a3 + 3);
+  v35 = *(archive + 3);
   if (v35)
   {
     v36 = vrev64q_s32(*(v35 + 8));
     [(PKInk *)v30 set_hdrAddColor:*vextq_s8(v36, v36, 8uLL).i64];
   }
 
-  v37 = *(a3 + 6);
+  v37 = *(archive + 6);
   if (v37)
   {
     v38 = vrev64q_s32(*(v37 + 8));
     [(PKInk *)v30 set_hdrMultiplyColor:*vextq_s8(v38, v38, 8uLL).i64];
   }
 
-  if ((*(a3 + 112) & 4) == 0 && v30)
+  if ((*(archive + 112) & 4) == 0 && v30)
   {
     [(PKInk *)v30 set_requiredContentVersionOverride:[(PKInk *)v30 _requiredContentVersion]];
   }
 
-  v40 = *(a3 + 15);
-  v39 = *(a3 + 16);
+  v40 = *(archive + 15);
+  v39 = *(archive + 16);
   if (v39)
   {
     atomic_fetch_add_explicit((v39 + 8), 1uLL, memory_order_relaxed);
@@ -806,58 +806,58 @@ LABEL_7:
   return v30;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v75 = *MEMORY[0x1E69E9840];
-  v5 = [(PKInk *)self sdrColor];
-  v6 = [v5 CGColor];
+  sdrColor = [(PKInk *)self sdrColor];
+  cGColor = [sdrColor CGColor];
 
   v73 = xmmword_1C801CAE0;
   *v74 = unk_1C801CAF0;
-  if (DKUColorGetRGBAComponents(v6, &v73))
+  if (DKUColorGetRGBAComponents(cGColor, &v73))
   {
-    drawing::Ink::makeColor(a3);
-    v7 = *(a3 + 2);
+    drawing::Ink::makeColor(archive);
+    v7 = *(archive + 2);
     v8 = *(&v73 + 1);
     v9 = *&v73;
     *(v7 + 20) = v9;
     *(v7 + 24) |= 8u;
-    v10 = *(a3 + 2);
+    v10 = *(archive + 2);
     v11 = v8;
     *(v10 + 24) |= 4u;
     *(v10 + 16) = v11;
-    v12 = *(a3 + 2);
+    v12 = *(archive + 2);
     v13 = v74[0];
     *(v12 + 24) |= 2u;
     *(v12 + 12) = v13;
-    v14 = *(a3 + 2);
-    Alpha = CGColorGetAlpha(v6);
+    v14 = *(archive + 2);
+    Alpha = CGColorGetAlpha(cGColor);
     *(v14 + 24) |= 1u;
     *(v14 + 8) = Alpha;
   }
 
-  v16 = [(PKInk *)self hdrColor];
-  v17 = v16;
-  v18 = [v16 CGColor];
+  hdrColor = [(PKInk *)self hdrColor];
+  v17 = hdrColor;
+  cGColor2 = [hdrColor CGColor];
 
-  if (v18 && DKUColorGetRGBAComponents(v18, &v73))
+  if (cGColor2 && DKUColorGetRGBAComponents(cGColor2, &v73))
   {
-    drawing::Ink::makeHdrColor(a3);
-    v19 = *(a3 + 4);
+    drawing::Ink::makeHdrColor(archive);
+    v19 = *(archive + 4);
     v20 = *(&v73 + 1);
     v21 = *&v73;
     *(v19 + 20) = v21;
     *(v19 + 24) |= 8u;
-    v22 = *(a3 + 4);
+    v22 = *(archive + 4);
     v23 = v20;
     *(v22 + 24) |= 4u;
     *(v22 + 16) = v23;
-    v24 = *(a3 + 4);
+    v24 = *(archive + 4);
     v25 = v74[0];
     *(v24 + 24) |= 2u;
     *(v24 + 12) = v25;
-    v26 = *(a3 + 4);
-    v27 = CGColorGetAlpha(v18);
+    v26 = *(archive + 4);
+    v27 = CGColorGetAlpha(cGColor2);
     *(v26 + 24) |= 1u;
     *(v26 + 8) = v27;
   }
@@ -865,14 +865,14 @@ LABEL_7:
   [(PKInk *)self hdrHeadroom];
   if (v28 > 0.0)
   {
-    *(a3 + 112) |= 2u;
-    *(a3 + 5) = v28;
+    *(archive + 112) |= 2u;
+    *(archive + 5) = v28;
   }
 
-  v29 = [(PKInk *)self identifierForArchiving];
-  v30 = v29;
-  std::string::basic_string[abi:ne200100]<0>(&v71, [v29 UTF8String]);
-  v31 = *(a3 + 7);
+  identifierForArchiving = [(PKInk *)self identifierForArchiving];
+  v30 = identifierForArchiving;
+  std::string::basic_string[abi:ne200100]<0>(&v71, [identifierForArchiving UTF8String]);
+  v31 = *(archive + 7);
   if (!v31)
   {
     operator new();
@@ -889,18 +889,18 @@ LABEL_7:
   HIBYTE(v72) = 0;
   LOBYTE(v71) = 0;
 
-  v33 = [(PKInk *)self version];
-  *(a3 + 112) |= 8u;
-  *(a3 + 12) = v33;
-  v34 = [(PKInk *)self variantForArchiving];
-  v35 = v34 == 0;
+  version = [(PKInk *)self version];
+  *(archive + 112) |= 8u;
+  *(archive + 12) = version;
+  variantForArchiving = [(PKInk *)self variantForArchiving];
+  v35 = variantForArchiving == 0;
 
   if (!v35)
   {
-    v36 = [(PKInk *)self variantForArchiving];
-    v37 = v36;
-    std::string::basic_string[abi:ne200100]<0>(&v71, [v36 UTF8String]);
-    v38 = *(a3 + 11);
+    variantForArchiving2 = [(PKInk *)self variantForArchiving];
+    v37 = variantForArchiving2;
+    std::string::basic_string[abi:ne200100]<0>(&v71, [variantForArchiving2 UTF8String]);
+    v38 = *(archive + 11);
     if (!v38)
     {
       operator new();
@@ -921,33 +921,33 @@ LABEL_7:
   if (![(PKInk *)self _weightIsUndefined])
   {
     [(PKInk *)self _weight];
-    *(a3 + 112) |= 0x10u;
-    *(a3 + 13) = v40;
+    *(archive + 112) |= 0x10u;
+    *(archive + 13) = v40;
   }
 
   [(PKInk *)self _azimuth];
   if (v41 != 0.0)
   {
     [(PKInk *)self _azimuth];
-    *(a3 + 112) |= 1u;
-    *(a3 + 1) = v42;
+    *(archive + 112) |= 1u;
+    *(archive + 1) = v42;
   }
 
   if ([(PKInk *)self _shouldSaveSixChannelAddColor])
   {
     [(PKInk *)self _sixChannelAddColor];
     v67 = v43;
-    drawing::Ink::makeSixChannelAddColor(a3);
-    v44 = *(a3 + 9);
+    drawing::Ink::makeSixChannelAddColor(archive);
+    v44 = *(archive + 9);
     *(v44 + 24) |= 8u;
     *(v44 + 20) = v67;
-    v45 = *(a3 + 9);
+    v45 = *(archive + 9);
     *(v45 + 24) |= 4u;
     *(v45 + 16) = DWORD1(v67);
-    v46 = *(a3 + 9);
+    v46 = *(archive + 9);
     *(v46 + 24) |= 2u;
     *(v46 + 12) = DWORD2(v67);
-    v47 = *(a3 + 9);
+    v47 = *(archive + 9);
     *(v47 + 24) |= 1u;
     *(v47 + 8) = HIDWORD(v67);
   }
@@ -956,17 +956,17 @@ LABEL_7:
   {
     [(PKInk *)self _sixChannelMultiplyColor];
     v68 = v48;
-    drawing::Ink::makeSixChannelMultiplyColor(a3);
-    v49 = *(a3 + 10);
+    drawing::Ink::makeSixChannelMultiplyColor(archive);
+    v49 = *(archive + 10);
     *(v49 + 24) |= 8u;
     *(v49 + 20) = v68;
-    v50 = *(a3 + 10);
+    v50 = *(archive + 10);
     *(v50 + 24) |= 4u;
     *(v50 + 16) = DWORD1(v68);
-    v51 = *(a3 + 10);
+    v51 = *(archive + 10);
     *(v51 + 24) |= 2u;
     *(v51 + 12) = DWORD2(v68);
-    v52 = *(a3 + 10);
+    v52 = *(archive + 10);
     *(v52 + 24) |= 1u;
     *(v52 + 8) = HIDWORD(v68);
   }
@@ -975,17 +975,17 @@ LABEL_7:
   {
     [(PKInk *)self _hdrAddColor];
     v69 = v53;
-    drawing::Ink::makeHdrAddColor(a3);
-    v54 = *(a3 + 3);
+    drawing::Ink::makeHdrAddColor(archive);
+    v54 = *(archive + 3);
     *(v54 + 24) |= 8u;
     *(v54 + 20) = v69;
-    v55 = *(a3 + 3);
+    v55 = *(archive + 3);
     *(v55 + 24) |= 4u;
     *(v55 + 16) = DWORD1(v69);
-    v56 = *(a3 + 3);
+    v56 = *(archive + 3);
     *(v56 + 24) |= 2u;
     *(v56 + 12) = DWORD2(v69);
-    v57 = *(a3 + 3);
+    v57 = *(archive + 3);
     *(v57 + 24) |= 1u;
     *(v57 + 8) = HIDWORD(v69);
   }
@@ -994,26 +994,26 @@ LABEL_7:
   {
     [(PKInk *)self _hdrMultiplyColor];
     v70 = v58;
-    drawing::Ink::makeHdrMultiplyColor(a3);
-    v59 = *(a3 + 6);
+    drawing::Ink::makeHdrMultiplyColor(archive);
+    v59 = *(archive + 6);
     *(v59 + 24) |= 8u;
     *(v59 + 20) = v70;
-    v60 = *(a3 + 6);
+    v60 = *(archive + 6);
     *(v60 + 24) |= 4u;
     *(v60 + 16) = DWORD1(v70);
-    v61 = *(a3 + 6);
+    v61 = *(archive + 6);
     *(v61 + 24) |= 2u;
     *(v61 + 12) = DWORD2(v70);
-    v62 = *(a3 + 6);
+    v62 = *(archive + 6);
     *(v62 + 24) |= 1u;
     *(v62 + 8) = HIDWORD(v70);
   }
 
   if ([(PKInk *)self _shouldSaveRequiredContentVersionOverride])
   {
-    v63 = [(PKInk *)self _requiredContentVersionOverride];
-    *(a3 + 112) |= 4u;
-    *(a3 + 8) = v63;
+    _requiredContentVersionOverride = [(PKInk *)self _requiredContentVersionOverride];
+    *(archive + 112) |= 4u;
+    *(archive + 8) = _requiredContentVersionOverride;
   }
 
   ptr = self->_unknownFields.__ptr_;
@@ -1023,18 +1023,18 @@ LABEL_7:
     atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
   }
 
-  v66 = *(a3 + 16);
-  *(a3 + 15) = ptr;
-  *(a3 + 16) = cntrl;
+  v66 = *(archive + 16);
+  *(archive + 15) = ptr;
+  *(archive + 16) = cntrl;
   if (v66)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v66);
   }
 }
 
-- (PKInk)initWithV1Archive:(const void *)a3 serializationVersion:(unint64_t)a4
+- (PKInk)initWithV1Archive:(const void *)archive serializationVersion:(unint64_t)version
 {
-  v6 = *(a3 + 1);
+  v6 = *(archive + 1);
   if (v6)
   {
     v7 = v6[5];
@@ -1052,14 +1052,14 @@ LABEL_7:
   }
 
   RGBA = PK_CGColorMakeRGBA(v7, v8, v9, v10, 0.0);
-  v12 = *(a3 + 2);
+  v12 = *(archive + 2);
   if (*(v12 + 23) < 0)
   {
     v12 = *v12;
   }
 
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
-  if ((*(a3 + 32) & 1) == 0)
+  if ((*(archive + 32) & 1) == 0)
   {
     v14 = @"default";
     v15 = v14;
@@ -1071,7 +1071,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = *(a3 + 3);
+  v16 = *(archive + 3);
   v17 = @"default";
   v14 = v17;
   if ((v16 | 2) == 2)
@@ -1092,40 +1092,40 @@ LABEL_12:
   return v20;
 }
 
-- (void)saveToV1Archive:(void *)a3
+- (void)saveToV1Archive:(void *)archive
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(PKInk *)self sdrColor];
-  v6 = [v5 CGColor];
+  sdrColor = [(PKInk *)self sdrColor];
+  cGColor = [sdrColor CGColor];
 
   v23 = xmmword_1C801CAE0;
   *v24 = unk_1C801CAF0;
-  if (DKUColorGetRGBAComponents(v6, &v23))
+  if (DKUColorGetRGBAComponents(cGColor, &v23))
   {
-    drawingV1::Ink::makeColor(a3);
-    v7 = *(a3 + 1);
+    drawingV1::Ink::makeColor(archive);
+    v7 = *(archive + 1);
     v8 = *(&v23 + 1);
     v9 = *&v23;
     *(v7 + 20) = v9;
     *(v7 + 24) |= 8u;
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     v11 = v8;
     *(v10 + 24) |= 4u;
     *(v10 + 16) = v11;
-    v12 = *(a3 + 1);
+    v12 = *(archive + 1);
     v13 = v24[0];
     *(v12 + 24) |= 2u;
     *(v12 + 12) = v13;
-    v14 = *(a3 + 1);
-    Alpha = CGColorGetAlpha(v6);
+    v14 = *(archive + 1);
+    Alpha = CGColorGetAlpha(cGColor);
     *(v14 + 24) |= 1u;
     *(v14 + 8) = Alpha;
   }
 
-  v16 = [(PKInk *)self identifier];
-  v17 = v16;
-  std::string::basic_string[abi:ne200100]<0>(&v21, [v16 UTF8String]);
-  v18 = *(a3 + 2);
+  identifier = [(PKInk *)self identifier];
+  v17 = identifier;
+  std::string::basic_string[abi:ne200100]<0>(&v21, [identifier UTF8String]);
+  v18 = *(archive + 2);
   if (!v18)
   {
     operator new();
@@ -1142,14 +1142,14 @@ LABEL_12:
   HIBYTE(v22) = 0;
   LOBYTE(v21) = 0;
 
-  v20 = [(PKInk *)self version];
-  *(a3 + 32) |= 1u;
-  *(a3 + 3) = v20;
+  version = [(PKInk *)self version];
+  *(archive + 32) |= 1u;
+  *(archive + 3) = version;
 }
 
-- (PKInk)initWithRawValue:(id)a3
+- (PKInk)initWithRawValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v11 = 0;
   v12 = 0;
   v10 = 0;
@@ -1158,23 +1158,23 @@ LABEL_12:
   v9[6] = 0;
   v9[7] = 0;
   memset(&v9[9], 0, 24);
-  v5 = [v4 bytes];
-  [v4 length];
-  PB::Reader::Reader(v8, v5);
+  bytes = [valueCopy bytes];
+  [valueCopy length];
+  PB::Reader::Reader(v8, bytes);
   if (drawing::Ink::readFrom(v9, v8))
   {
     self = [(PKInk *)self initWithArchive:v9];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   drawing::Ink::~Ink(v9);
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSData)rawValue
@@ -1197,24 +1197,24 @@ LABEL_12:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKInk *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"representation"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(PKInk *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"representation"];
 }
 
-- (PKInk)initWithCoder:(id)a3
+- (PKInk)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v14 = objc_opt_class();
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:3];
   v7 = [v4 setWithArray:{v6, v14, v15}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"representation"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"representation"];
 
   if (v8)
   {
@@ -1223,64 +1223,64 @@ LABEL_12:
     v11 = [PKInk inkWithIdentifier:v9 properties:v10];
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (PKInk)inkWithType:(id)a3 color:(id)a4 weight:(double)a5
++ (PKInk)inkWithType:(id)type color:(id)color weight:(double)weight
 {
-  v5 = [PKInk inkWithType:a3 color:a4 weight:a5 azimuth:0.0];
+  v5 = [PKInk inkWithType:type color:color weight:weight azimuth:0.0];
 
   return v5;
 }
 
-+ (PKInk)inkWithType:(id)a3 color:(id)a4 weight:(double)a5 azimuth:(double)a6
++ (PKInk)inkWithType:(id)type color:(id)color weight:(double)weight azimuth:(double)azimuth
 {
-  v9 = a4;
-  v10 = [PKInk identifierForInkType:a3];
-  v11 = [PKInk inkWithIdentifier:v10 color:v9 weight:a5 azimuth:a6];
+  colorCopy = color;
+  v10 = [PKInk identifierForInkType:type];
+  v11 = [PKInk inkWithIdentifier:v10 color:colorCopy weight:weight azimuth:azimuth];
 
   return v11;
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 weight:(double)a5
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color weight:(double)weight
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[PKInk alloc] initWithIdentifier:v7 color:v8 version:[PKInk currentInkVersionForInkIdentifier:?]azimuth:0, a5, 0.0];
+  identifierCopy = identifier;
+  colorCopy = color;
+  v9 = [[PKInk alloc] initWithIdentifier:identifierCopy color:colorCopy version:[PKInk currentInkVersionForInkIdentifier:?]azimuth:0, weight, 0.0];
 
   return v9;
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 weight:(double)a5 azimuth:(double)a6
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color weight:(double)weight azimuth:(double)azimuth
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [[PKInk alloc] initWithIdentifier:v9 color:v10 version:[PKInk currentInkVersionForInkIdentifier:?]azimuth:0, a5, a6];
+  identifierCopy = identifier;
+  colorCopy = color;
+  azimuth = [[PKInk alloc] initWithIdentifier:identifierCopy color:colorCopy version:[PKInk currentInkVersionForInkIdentifier:?]azimuth:0, weight, azimuth];
 
-  return v11;
+  return azimuth;
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 properties:(id)a4
++ (PKInk)inkWithIdentifier:(id)identifier properties:(id)properties
 {
-  v4 = [a1 inkWithIdentifier:a3 properties:a4 inkVersion:-1];
+  v4 = [self inkWithIdentifier:identifier properties:properties inkVersion:-1];
 
   return v4;
 }
 
-+ (id)decodeColorFrom:(id)a3 propertyKey:(id)a4 inkOpacity:(double)a5
++ (id)decodeColorFrom:(id)from propertyKey:(id)key inkOpacity:(double)opacity
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:v8];
+  fromCopy = from;
+  keyCopy = key;
+  v9 = [fromCopy objectForKeyedSubscript:keyCopy];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
@@ -1303,7 +1303,7 @@ LABEL_12:
     }
 
     while (v10 != 24);
-    v13 = [MEMORY[0x1E69DC888] colorWithRed:v18 green:v19 blue:v20 alpha:a5];
+    v13 = [MEMORY[0x1E69DC888] colorWithRed:v18 green:v19 blue:v20 alpha:opacity];
     for (i = 16; i != -8; i -= 8)
     {
     }
@@ -1317,26 +1317,26 @@ LABEL_12:
   return v13;
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 properties:(id)a4 inkVersion:(int64_t)a5
++ (PKInk)inkWithIdentifier:(id)identifier properties:(id)properties inkVersion:(int64_t)version
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5 < 0)
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  if (version < 0)
   {
-    a5 = [a1 currentInkVersionForInkIdentifier:v9];
+    version = [self currentInkVersionForInkIdentifier:identifierCopy];
   }
 
-  v11 = [v10 objectForKeyedSubscript:@"PKInkWeightProperty"];
-  if (v11 && ([v10 objectForKeyedSubscript:@"PKInkWeightProperty"], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  v11 = [propertiesCopy objectForKeyedSubscript:@"PKInkWeightProperty"];
+  if (v11 && ([propertiesCopy objectForKeyedSubscript:@"PKInkWeightProperty"], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = [v10 objectForKeyedSubscript:@"PKInkWeightProperty"];
+    v12 = [propertiesCopy objectForKeyedSubscript:@"PKInkWeightProperty"];
     [v12 floatValue];
     v14 = v13;
   }
 
   else
   {
-    [PKInk defaultWeightForIdentifier:v9];
+    [PKInk defaultWeightForIdentifier:identifierCopy];
     v14 = v15;
     if (!v11)
     {
@@ -1345,28 +1345,28 @@ LABEL_12:
   }
 
 LABEL_8:
-  if ([v9 isEqualToString:@"com.apple.ink.eraser"])
+  if ([identifierCopy isEqualToString:@"com.apple.ink.eraser"])
   {
-    v16 = [v10 objectForKeyedSubscript:@"PKInkVersionProperty"];
+    v16 = [propertiesCopy objectForKeyedSubscript:@"PKInkVersionProperty"];
     if (v16)
     {
     }
 
     else if (fabs(v14 + -1.0) < 0.00999999978)
     {
-      [a1 defaultWeightForIdentifier:v9];
+      [self defaultWeightForIdentifier:identifierCopy];
       v14 = v17;
     }
   }
 
-  v18 = [v10 objectForKeyedSubscript:@"PKInkAzimuthProperty"];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"PKInkAzimuthProperty"];
   if (v18)
   {
-    v5 = [v10 objectForKeyedSubscript:@"PKInkAzimuthProperty"];
+    v5 = [propertiesCopy objectForKeyedSubscript:@"PKInkAzimuthProperty"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v10 objectForKeyedSubscript:@"PKInkAzimuthProperty"];
+      v19 = [propertiesCopy objectForKeyedSubscript:@"PKInkAzimuthProperty"];
       [v19 floatValue];
       v21 = v20;
 
@@ -1375,7 +1375,7 @@ LABEL_17:
     }
   }
 
-  [PKInk defaultAzimuthForIdentifier:v9];
+  [PKInk defaultAzimuthForIdentifier:identifierCopy];
   v21 = v22;
   if (v18)
   {
@@ -1384,17 +1384,17 @@ LABEL_17:
 
 LABEL_18:
 
-  v23 = [v10 objectForKeyedSubscript:@"PKInkOpacityProperty"];
-  if (v23 && ([v10 objectForKeyedSubscript:@"PKInkOpacityProperty"], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  v23 = [propertiesCopy objectForKeyedSubscript:@"PKInkOpacityProperty"];
+  if (v23 && ([propertiesCopy objectForKeyedSubscript:@"PKInkOpacityProperty"], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v24 = [v10 objectForKeyedSubscript:@"PKInkOpacityProperty"];
+    v24 = [propertiesCopy objectForKeyedSubscript:@"PKInkOpacityProperty"];
     [v24 floatValue];
     v26 = v25;
   }
 
   else
   {
-    [PKInk defaultOpacityForIdentifier:v9];
+    [PKInk defaultOpacityForIdentifier:identifierCopy];
     v26 = v27;
     if (!v23)
     {
@@ -1403,14 +1403,14 @@ LABEL_18:
   }
 
 LABEL_23:
-  v28 = [a1 decodeColorFrom:v10 propertyKey:@"PKInkColorProperty" inkOpacity:v26];
+  v28 = [self decodeColorFrom:propertiesCopy propertyKey:@"PKInkColorProperty" inkOpacity:v26];
   if (!v28)
   {
     v28 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:v26];
   }
 
-  v29 = [a1 decodeColorFrom:v10 propertyKey:@"PKInkHDRColorProperty" inkOpacity:v26];
-  v30 = [v10 objectForKeyedSubscript:@"PKInkHDRHeadroomProperty"];
+  v29 = [self decodeColorFrom:propertiesCopy propertyKey:@"PKInkHDRColorProperty" inkOpacity:v26];
+  v30 = [propertiesCopy objectForKeyedSubscript:@"PKInkHDRHeadroomProperty"];
   v31 = 0.0;
   if (v30)
   {
@@ -1422,7 +1422,7 @@ LABEL_23:
     }
   }
 
-  v33 = [v10 objectForKeyedSubscript:@"PKInkVariantProperty"];
+  v33 = [propertiesCopy objectForKeyedSubscript:@"PKInkVariantProperty"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1430,7 +1430,7 @@ LABEL_23:
     v33 = 0;
   }
 
-  v34 = [[PKInk alloc] initWithUncheckedIdentifier:v9 color:v28 hdrColor:v29 hdrHeadroom:a5 version:v33 variant:v31 weight:v14 azimuth:v21];
+  v34 = [[PKInk alloc] initWithUncheckedIdentifier:identifierCopy color:v28 hdrColor:v29 hdrHeadroom:version version:v33 variant:v31 weight:v14 azimuth:v21];
 
   return v34;
 }
@@ -1444,15 +1444,15 @@ LABEL_23:
   return v8;
 }
 
-+ (int64_t)currentInkVersionForInkIdentifier:(id)a3
++ (int64_t)currentInkVersionForInkIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.ink.eraser"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.ink.eraser"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.ink.objectEraser"])
+  else if ([identifierCopy isEqualToString:@"com.apple.ink.objectEraser"])
   {
     v4 = 4;
   }
@@ -1465,20 +1465,20 @@ LABEL_23:
   return v4;
 }
 
-- (id)_copyWithVariant:(id)a3
+- (id)_copyWithVariant:(id)variant
 {
-  v4 = a3;
+  variantCopy = variant;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PKInk *)self identifier];
-  v7 = [(PKInk *)self sdrColor];
-  v8 = [(PKInk *)self hdrColor];
+  identifier = [(PKInk *)self identifier];
+  sdrColor = [(PKInk *)self sdrColor];
+  hdrColor = [(PKInk *)self hdrColor];
   [(PKInk *)self hdrHeadroom];
   v10 = v9;
-  v11 = [(PKInk *)self version];
+  version = [(PKInk *)self version];
   [(PKInk *)self weight];
   v13 = v12;
   [(PKInk *)self _azimuth];
-  v15 = [v5 initWithUncheckedIdentifier:v6 color:v7 hdrColor:v8 hdrHeadroom:v11 version:v4 variant:v10 weight:v13 azimuth:v14];
+  v15 = [v5 initWithUncheckedIdentifier:identifier color:sdrColor hdrColor:hdrColor hdrHeadroom:version version:variantCopy variant:v10 weight:v13 azimuth:v14];
 
   [v15 set_weightIsUndefined:{-[PKInk _weightIsUndefined](self, "_weightIsUndefined")}];
   return v15;
@@ -1486,103 +1486,103 @@ LABEL_23:
 
 - (id)_copyWithOriginalRequiredContentVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedInkWithOriginalRequiredContentVersion = v2->_cachedInkWithOriginalRequiredContentVersion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedInkWithOriginalRequiredContentVersion = selfCopy->_cachedInkWithOriginalRequiredContentVersion;
   if (!cachedInkWithOriginalRequiredContentVersion)
   {
     v4 = objc_alloc(objc_opt_class());
-    v5 = [(PKInk *)v2 identifier];
-    v6 = [(PKInk *)v2 sdrColor];
-    v7 = [(PKInk *)v2 hdrColor];
-    [(PKInk *)v2 hdrHeadroom];
+    identifier = [(PKInk *)selfCopy identifier];
+    sdrColor = [(PKInk *)selfCopy sdrColor];
+    hdrColor = [(PKInk *)selfCopy hdrColor];
+    [(PKInk *)selfCopy hdrHeadroom];
     v9 = v8;
-    v10 = [(PKInk *)v2 version];
-    v11 = [(PKInk *)v2 variant];
-    [(PKInk *)v2 weight];
+    version = [(PKInk *)selfCopy version];
+    variant = [(PKInk *)selfCopy variant];
+    [(PKInk *)selfCopy weight];
     v13 = v12;
-    [(PKInk *)v2 _azimuth];
-    v15 = [v4 initWithUncheckedIdentifier:v5 color:v6 hdrColor:v7 hdrHeadroom:v10 version:v11 variant:v9 weight:v13 azimuth:v14];
+    [(PKInk *)selfCopy _azimuth];
+    v15 = [v4 initWithUncheckedIdentifier:identifier color:sdrColor hdrColor:hdrColor hdrHeadroom:version version:variant variant:v9 weight:v13 azimuth:v14];
 
     if (v15)
     {
       [(PKInk *)v15 set_requiredContentVersionOverride:[(PKInk *)v15 _requiredContentVersion]];
     }
 
-    [(PKInk *)v15 set_weightIsUndefined:[(PKInk *)v2 _weightIsUndefined]];
-    v16 = v2->_cachedInkWithOriginalRequiredContentVersion;
-    v2->_cachedInkWithOriginalRequiredContentVersion = v15;
+    [(PKInk *)v15 set_weightIsUndefined:[(PKInk *)selfCopy _weightIsUndefined]];
+    v16 = selfCopy->_cachedInkWithOriginalRequiredContentVersion;
+    selfCopy->_cachedInkWithOriginalRequiredContentVersion = v15;
 
-    cachedInkWithOriginalRequiredContentVersion = v2->_cachedInkWithOriginalRequiredContentVersion;
+    cachedInkWithOriginalRequiredContentVersion = selfCopy->_cachedInkWithOriginalRequiredContentVersion;
   }
 
   v17 = cachedInkWithOriginalRequiredContentVersion;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v17;
 }
 
 - (BOOL)_isFountainPenInkV2
 {
-  v3 = [(PKInk *)self _isFountainPenInk];
-  if (v3)
+  _isFountainPenInk = [(PKInk *)self _isFountainPenInk];
+  if (_isFountainPenInk)
   {
-    LOBYTE(v3) = [(PKInk *)self requiredContentVersion]> PKContentVersion2;
+    LOBYTE(_isFountainPenInk) = [(PKInk *)self requiredContentVersion]> PKContentVersion2;
   }
 
-  return v3;
+  return _isFountainPenInk;
 }
 
 - (BOOL)_isWatercolorInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.watercolor"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.watercolor"];
 
   return v3;
 }
 
 - (BOOL)_isCrayonInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.crayon"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.crayon"];
 
   return v3;
 }
 
 - (BOOL)_isReedCalligraphyInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.reedcalligraphy"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.reedcalligraphy"];
 
   return v3;
 }
 
 - (BOOL)_isGenerationTool
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.generationtool"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.generationtool"];
 
   return v3;
 }
 
 - (BOOL)_isCustomInk
 {
-  v2 = [(PKInk *)self identifier];
-  v3 = [v2 isEqualToString:@"com.apple.ink.custom"];
+  identifier = [(PKInk *)self identifier];
+  v3 = [identifier isEqualToString:@"com.apple.ink.custom"];
 
   return v3;
 }
 
 - (int64_t)inkFormatVersion
 {
-  v3 = [(PKInk *)self identifier];
-  if ([v3 isEqualToString:@"com.apple.ink.pen"])
+  identifier = [(PKInk *)self identifier];
+  if ([identifier isEqualToString:@"com.apple.ink.pen"])
   {
     goto LABEL_8;
   }
 
-  v4 = [(PKInk *)self identifier];
-  if ([v4 isEqualToString:@"com.apple.ink.pencil"])
+  identifier2 = [(PKInk *)self identifier];
+  if ([identifier2 isEqualToString:@"com.apple.ink.pencil"])
   {
 LABEL_7:
 
@@ -1590,61 +1590,61 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(PKInk *)self identifier];
-  if ([v5 isEqualToString:@"com.apple.ink.marker"])
+  identifier3 = [(PKInk *)self identifier];
+  if ([identifier3 isEqualToString:@"com.apple.ink.marker"])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v6 = [(PKInk *)self identifier];
-  if ([v6 isEqualToString:@"com.apple.ink.eraser"])
+  identifier4 = [(PKInk *)self identifier];
+  if ([identifier4 isEqualToString:@"com.apple.ink.eraser"])
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(PKInk *)self identifier];
-  v9 = [v8 isEqualToString:@"com.apple.ink.lasso"];
+  identifier5 = [(PKInk *)self identifier];
+  v9 = [identifier5 isEqualToString:@"com.apple.ink.lasso"];
 
   if (v9)
   {
     return 0;
   }
 
-  v10 = [(PKInk *)self identifier];
-  if ([v10 isEqualToString:@"com.apple.ink.fountainpen"])
+  identifier6 = [(PKInk *)self identifier];
+  if ([identifier6 isEqualToString:@"com.apple.ink.fountainpen"])
   {
     goto LABEL_14;
   }
 
-  v11 = [(PKInk *)self identifier];
-  if ([v11 isEqualToString:@"com.apple.ink.watercolor"])
+  identifier7 = [(PKInk *)self identifier];
+  if ([identifier7 isEqualToString:@"com.apple.ink.watercolor"])
   {
 
 LABEL_14:
     return 1;
   }
 
-  v12 = [(PKInk *)self identifier];
-  v13 = [v12 isEqualToString:@"com.apple.ink.monoline"];
+  identifier8 = [(PKInk *)self identifier];
+  v13 = [identifier8 isEqualToString:@"com.apple.ink.monoline"];
 
   if (v13)
   {
     return 1;
   }
 
-  v14 = [(PKInk *)self identifier];
-  v15 = [v14 isEqualToString:@"com.apple.ink.crayon"];
+  identifier9 = [(PKInk *)self identifier];
+  v15 = [identifier9 isEqualToString:@"com.apple.ink.crayon"];
 
   if (v15)
   {
     return 2;
   }
 
-  v16 = [(PKInk *)self identifier];
-  v17 = [v16 isEqualToString:@"com.apple.ink.reedcalligraphy"];
+  identifier10 = [(PKInk *)self identifier];
+  v17 = [identifier10 isEqualToString:@"com.apple.ink.reedcalligraphy"];
 
   if (v17)
   {
@@ -1659,11 +1659,11 @@ LABEL_14:
 
 - (PKContentVersion)requiredContentVersion
 {
-  v3 = [(PKInk *)self _requiredContentVersionOverride];
+  _requiredContentVersionOverride = [(PKInk *)self _requiredContentVersionOverride];
   result = [(PKInk *)self _requiredContentVersion];
-  if (v3 > result)
+  if (_requiredContentVersionOverride > result)
   {
-    return v3;
+    return _requiredContentVersionOverride;
   }
 
   return result;
@@ -1671,68 +1671,68 @@ LABEL_14:
 
 - (id)identifierForArchiving
 {
-  v3 = [(PKInk *)self identifier];
-  v4 = [v3 isEqualToString:@"com.apple.ink.monoline"];
+  identifier = [(PKInk *)self identifier];
+  v4 = [identifier isEqualToString:@"com.apple.ink.monoline"];
 
   if (v4)
   {
-    v5 = @"com.apple.ink.pen";
+    identifier2 = @"com.apple.ink.pen";
   }
 
   else
   {
-    v5 = [(PKInk *)self identifier];
+    identifier2 = [(PKInk *)self identifier];
   }
 
-  return v5;
+  return identifier2;
 }
 
 - (id)variantForArchiving
 {
-  v3 = [(PKInk *)self identifier];
-  v4 = [v3 isEqualToString:@"com.apple.ink.monoline"];
+  identifier = [(PKInk *)self identifier];
+  v4 = [identifier isEqualToString:@"com.apple.ink.monoline"];
 
   if (v4)
   {
-    v5 = @"fixed-width";
+    variant2 = @"fixed-width";
   }
 
   else
   {
-    v6 = [(PKInk *)self variant];
-    v7 = [v6 isEqualToString:@"default"];
+    variant = [(PKInk *)self variant];
+    v7 = [variant isEqualToString:@"default"];
 
     if (v7)
     {
-      v5 = 0;
+      variant2 = 0;
     }
 
     else
     {
-      v5 = [(PKInk *)self variant];
+      variant2 = [(PKInk *)self variant];
     }
   }
 
-  return v5;
+  return variant2;
 }
 
 - (BOOL)_supportsCombiningStrokes
 {
-  v2 = [(PKInk *)self behavior];
-  v3 = [v2 supportsCombiningStrokes];
+  behavior = [(PKInk *)self behavior];
+  supportsCombiningStrokes = [behavior supportsCombiningStrokes];
 
-  return v3;
+  return supportsCombiningStrokes;
 }
 
-- (void)_initColor:(id)a3 hdrColor:(id)a4 hdrHeadroom:(double)a5
+- (void)_initColor:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && !v9)
+  colorCopy = color;
+  hdrColorCopy = hdrColor;
+  v10 = hdrColorCopy;
+  if (colorCopy && !hdrColorCopy)
   {
-    v11 = DKUHeadroomFromColor([v8 CGColor]);
+    v11 = DKUHeadroomFromColor([colorCopy CGColor]);
     if (v11 <= 1.0)
     {
       v10 = 0;
@@ -1740,21 +1740,21 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    a5 = v11;
-    v10 = v8;
-    v8 = 0;
+    headroom = v11;
+    v10 = colorCopy;
+    colorCopy = 0;
   }
 
   v12 = v10 != 0;
-  if (v10 && !v8)
+  if (v10 && !colorCopy)
   {
-    v8 = [MEMORY[0x1E69DC888] colorWithCGColor:{DKUSDRColorFromColor(objc_msgSend(v10, "CGColor"))}];
+    colorCopy = [MEMORY[0x1E69DC888] colorWithCGColor:{DKUSDRColorFromColor(objc_msgSend(v10, "CGColor"))}];
   }
 
-  if (v8)
+  if (colorCopy)
   {
 LABEL_14:
-    ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([v8 CGColor]);
+    ConvertedToSRGB = DKUCGColorCreateConvertedToSRGB([colorCopy CGColor]);
     v18 = [MEMORY[0x1E69DC888] colorWithCGColor:ConvertedToSRGB];
     sdrColor = self->_sdrColor;
     self->_sdrColor = v18;
@@ -1776,11 +1776,11 @@ LABEL_14:
     _os_log_fault_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_FAULT, "Ink must not be initialized with a nil color", &buf, 2u);
   }
 
-  v14 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v15 = self->_sdrColor;
-  self->_sdrColor = v14;
+  self->_sdrColor = blackColor;
 
-  v8 = 0;
+  colorCopy = 0;
   v16 = 0;
   if (v10)
   {
@@ -1795,7 +1795,7 @@ LABEL_15:
       hdrColor = self->_hdrColor;
       self->_hdrColor = v22;
 
-      self->_hdrHeadroom = a5;
+      self->_hdrHeadroom = headroom;
       CGColorRelease(v21);
     }
 
@@ -1815,78 +1815,78 @@ LABEL_15:
 LABEL_21:
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  [PKInk defaultWeightForIdentifier:v5];
-  v8 = [[PKInk alloc] initWithIdentifier:v5 color:v6 version:[PKInk currentInkVersionForInkIdentifier:?], 0, v7];
+  identifierCopy = identifier;
+  colorCopy = color;
+  [PKInk defaultWeightForIdentifier:identifierCopy];
+  v8 = [[PKInk alloc] initWithIdentifier:identifierCopy color:colorCopy version:[PKInk currentInkVersionForInkIdentifier:?], 0, v7];
 
   return v8;
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  [PKInk defaultWeightForIdentifier:v9];
-  v13 = [[PKInk alloc] initWithIdentifier:v9 color:v10 version:a5 variant:v11 weight:v12];
+  identifierCopy = identifier;
+  colorCopy = color;
+  variantCopy = variant;
+  [PKInk defaultWeightForIdentifier:identifierCopy];
+  v13 = [[PKInk alloc] initWithIdentifier:identifierCopy color:colorCopy version:version variant:variantCopy weight:v12];
 
   return v13;
 }
 
-+ (PKInk)inkWithIdentifier:(id)a3 color:(id)a4 variant:(id)a5
++ (PKInk)inkWithIdentifier:(id)identifier color:(id)color variant:(id)variant
 {
-  v6 = a3;
-  v7 = a4;
-  [PKInk defaultWeightForIdentifier:v6];
-  v9 = [[PKInk alloc] initWithIdentifier:v6 color:v7 version:1 variant:0 weight:v8];
+  identifierCopy = identifier;
+  colorCopy = color;
+  [PKInk defaultWeightForIdentifier:identifierCopy];
+  v9 = [[PKInk alloc] initWithIdentifier:identifierCopy color:colorCopy version:1 variant:0 weight:v8];
 
   return v9;
 }
 
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [PKInk defaultWeightForIdentifier:v10];
-  v13 = [(PKInk *)self initWithIdentifier:v10 color:v11 version:a5 variant:v12 weight:?];
+  identifierCopy = identifier;
+  colorCopy = color;
+  variantCopy = variant;
+  [PKInk defaultWeightForIdentifier:identifierCopy];
+  v13 = [(PKInk *)self initWithIdentifier:identifierCopy color:colorCopy version:version variant:variantCopy weight:?];
 
   return v13;
 }
 
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6 weight:(double)a7
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant weight:(double)weight
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  identifierCopy = identifier;
+  colorCopy = color;
+  variantCopy = variant;
   v15 = +[PKInkManager defaultInkManager];
-  v16 = [v15 supportedInkIdentifierFromIdentifier:v12];
+  v16 = [v15 supportedInkIdentifierFromIdentifier:identifierCopy];
 
-  v17 = [(PKInk *)self initWithUncheckedIdentifier:v16 color:v13 version:a5 variant:v14 weight:a7];
+  v17 = [(PKInk *)self initWithUncheckedIdentifier:v16 color:colorCopy version:version variant:variantCopy weight:weight];
   return v17;
 }
 
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6 weight:(double)a7 azimuth:(double)a8
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)azimuth
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  identifierCopy = identifier;
+  colorCopy = color;
+  variantCopy = variant;
   v17 = +[PKInkManager defaultInkManager];
-  v18 = [v17 supportedInkIdentifierFromIdentifier:v14];
+  v18 = [v17 supportedInkIdentifierFromIdentifier:identifierCopy];
 
-  v19 = [(PKInk *)self initWithUncheckedIdentifier:v18 color:v15 hdrColor:0 hdrHeadroom:a5 version:v16 variant:0.0 weight:a7 azimuth:a8];
+  v19 = [(PKInk *)self initWithUncheckedIdentifier:v18 color:colorCopy hdrColor:0 hdrHeadroom:version version:variantCopy variant:0.0 weight:weight azimuth:azimuth];
   return v19;
 }
 
-- (PKInk)initWithUncheckedIdentifier:(id)a3 color:(id)a4 hdrColor:(id)a5 hdrHeadroom:(double)a6 version:(unint64_t)a7 variant:(id)a8 weight:(double)a9 azimuth:(double)a10
+- (PKInk)initWithUncheckedIdentifier:(id)identifier color:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)self0
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a8;
+  identifierCopy = identifier;
+  colorCopy = color;
+  hdrColorCopy = hdrColor;
+  variantCopy = variant;
   v33.receiver = self;
   v33.super_class = PKInk;
   v23 = [(PKInk *)&v33 init];
@@ -1894,12 +1894,12 @@ LABEL_21:
   v25 = v23;
   if (v23)
   {
-    [(PKInk *)v23 _initColor:v20 hdrColor:v21 hdrHeadroom:a6];
-    objc_storeStrong(&v24->_identifier, a3);
-    v25->_version = a7;
-    if (v22)
+    [(PKInk *)v23 _initColor:colorCopy hdrColor:hdrColorCopy hdrHeadroom:headroom];
+    objc_storeStrong(&v24->_identifier, identifier);
+    v25->_version = version;
+    if (variantCopy)
     {
-      v26 = [v22 copy];
+      v26 = [variantCopy copy];
     }
 
     else
@@ -1911,18 +1911,18 @@ LABEL_21:
     v25->_variant = &v26->isa;
 
     v28 = +[PKInkManager defaultInkManager];
-    v29 = [v28 inkBehaviorForIdentifier:v19 version:a7 variant:v22];
+    v29 = [v28 inkBehaviorForIdentifier:identifierCopy version:version variant:variantCopy];
     behavior = v25->_behavior;
     v25->_behavior = v29;
 
-    if ((*&a9 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
+    if ((*&weight & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
     {
-      [PKInk defaultWeightForIdentifier:v19];
-      a9 = v31;
+      [PKInk defaultWeightForIdentifier:identifierCopy];
+      weight = v31;
     }
 
-    [(PKInk *)v25 setWeight:a9];
-    v25->_azimuth = a10;
+    [(PKInk *)v25 setWeight:weight];
+    v25->_azimuth = azimuth;
     [(PKInk *)v25 _setupDefaultSixChannelAddAndMultiplyColors];
     [(PKInk *)v25 _setupRequiredContentVersion];
   }
@@ -1930,202 +1930,202 @@ LABEL_21:
   return v25;
 }
 
-- (PKInk)initWithBehavior:(id)a3 color:(id)a4 version:(unint64_t)a5 variant:(id)a6 weight:(double)a7 azimuth:(double)a8
+- (PKInk)initWithBehavior:(id)behavior color:(id)color version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)azimuth
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  behaviorCopy = behavior;
+  colorCopy = color;
+  variantCopy = variant;
   v17 = +[PKInkManager defaultInkManager];
-  v18 = [v14 identifier];
-  [v17 addInkBehavior:v14 forIdentifier:v18];
+  identifier = [behaviorCopy identifier];
+  [v17 addInkBehavior:behaviorCopy forIdentifier:identifier];
 
-  v19 = [v14 identifier];
-  v20 = [(PKInk *)self initWithUncheckedIdentifier:v19 color:v15 hdrColor:0 hdrHeadroom:a5 version:v16 variant:0.0 weight:a7 azimuth:a8];
+  identifier2 = [behaviorCopy identifier];
+  v20 = [(PKInk *)self initWithUncheckedIdentifier:identifier2 color:colorCopy hdrColor:0 hdrHeadroom:version version:variantCopy variant:0.0 weight:weight azimuth:azimuth];
 
   return v20;
 }
 
-+ (id)inkFromDictionary:(id)a3 color:(id)a4 identifier:(id)a5
++ (id)inkFromDictionary:(id)dictionary color:(id)color identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PKInk currentInkVersionForInkIdentifier:v9];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu", v9, v10];
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu.%@", v9, v10, @"default"];
-  v13 = [PKInkParser inkBehaviorFromDictionary:v7 identifier:v11 version:v10 variant:v12];
-  v14 = [[PKInk alloc] initWithIdentifier:v9 color:v8 hdrColor:0 hdrHeadroom:v10 version:@"default" variant:v13 weight:0.0 azimuth:-1.0 behavior:0.0];
+  dictionaryCopy = dictionary;
+  colorCopy = color;
+  identifierCopy = identifier;
+  v10 = [PKInk currentInkVersionForInkIdentifier:identifierCopy];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu", identifierCopy, v10];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu.%@", identifierCopy, v10, @"default"];
+  v13 = [PKInkParser inkBehaviorFromDictionary:dictionaryCopy identifier:v11 version:v10 variant:v12];
+  v14 = [[PKInk alloc] initWithIdentifier:identifierCopy color:colorCopy hdrColor:0 hdrHeadroom:v10 version:@"default" variant:v13 weight:0.0 azimuth:-1.0 behavior:0.0];
   [(PKInk *)v14 _setupRequiredContentVersion];
 
   return v14;
 }
 
-+ (id)sdrInkFromInk:(id)a3
++ (id)sdrInkFromInk:(id)ink
 {
-  v3 = a3;
-  v4 = [v3 hdrColor];
-  if (v4)
+  inkCopy = ink;
+  hdrColor = [inkCopy hdrColor];
+  if (hdrColor)
   {
-    [v3 hdrHeadroom];
+    [inkCopy hdrHeadroom];
     v6 = v5;
 
     if (v6 > 1.0)
     {
       v7 = [PKInk alloc];
-      v8 = [v3 identifier];
-      v9 = [v3 sdrColor];
-      v10 = [v3 version];
-      v11 = [v3 variant];
-      [v3 weight];
+      identifier = [inkCopy identifier];
+      sdrColor = [inkCopy sdrColor];
+      version = [inkCopy version];
+      variant = [inkCopy variant];
+      [inkCopy weight];
       v13 = v12;
-      [v3 _azimuth];
+      [inkCopy _azimuth];
       v15 = v14;
-      v16 = [v3 behavior];
-      v17 = [(PKInk *)v7 initWithIdentifier:v8 color:v9 hdrColor:0 hdrHeadroom:v10 version:v11 variant:v16 weight:0.0 azimuth:v13 behavior:v15];
+      behavior = [inkCopy behavior];
+      v17 = [(PKInk *)v7 initWithIdentifier:identifier color:sdrColor hdrColor:0 hdrHeadroom:version version:variant variant:behavior weight:0.0 azimuth:v13 behavior:v15];
 
-      v3 = v17;
+      inkCopy = v17;
     }
   }
 
-  return v3;
+  return inkCopy;
 }
 
-+ (id)inkFromInk:(id)a3 color:(id)a4
++ (id)inkFromInk:(id)ink color:(id)color
 {
-  v5 = a3;
-  v6 = a4;
+  inkCopy = ink;
+  colorCopy = color;
   v7 = [PKInk alloc];
-  v8 = [v5 identifier];
-  v9 = [v5 version];
-  v10 = [v5 variant];
-  [v5 weight];
+  identifier = [inkCopy identifier];
+  version = [inkCopy version];
+  variant = [inkCopy variant];
+  [inkCopy weight];
   v12 = v11;
-  [v5 _azimuth];
+  [inkCopy _azimuth];
   v14 = v13;
-  v15 = [v5 behavior];
-  v16 = [(PKInk *)v7 initWithIdentifier:v8 color:v6 hdrColor:0 hdrHeadroom:v9 version:v10 variant:v15 weight:0.0 azimuth:v12 behavior:v14];
+  behavior = [inkCopy behavior];
+  v16 = [(PKInk *)v7 initWithIdentifier:identifier color:colorCopy hdrColor:0 hdrHeadroom:version version:variant variant:behavior weight:0.0 azimuth:v12 behavior:v14];
 
-  if ([v5 _shouldSaveRequiredContentVersionOverride])
+  if ([inkCopy _shouldSaveRequiredContentVersionOverride])
   {
-    -[PKInk set_requiredContentVersionOverride:](v16, "set_requiredContentVersionOverride:", [v5 _requiredContentVersionOverride]);
+    -[PKInk set_requiredContentVersionOverride:](v16, "set_requiredContentVersionOverride:", [inkCopy _requiredContentVersionOverride]);
   }
 
-  if (([v5 _shouldSaveSixChannelAddColor] & 1) != 0 || objc_msgSend(v5, "_shouldSaveSixChannelMultiplyColor"))
+  if (([inkCopy _shouldSaveSixChannelAddColor] & 1) != 0 || objc_msgSend(inkCopy, "_shouldSaveSixChannelMultiplyColor"))
   {
     [(PKInk *)v16 _setupCustomizedSixChannelColors];
   }
 
-  -[PKInk set_weightIsUndefined:](v16, "set_weightIsUndefined:", [v5 _weightIsUndefined]);
+  -[PKInk set_weightIsUndefined:](v16, "set_weightIsUndefined:", [inkCopy _weightIsUndefined]);
 
   return v16;
 }
 
-+ (id)inkFromInk:(id)a3 color:(id)a4 hdrColor:(id)a5 hdrHeadroom:(double)a6
++ (id)inkFromInk:(id)ink color:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  inkCopy = ink;
+  colorCopy = color;
+  hdrColorCopy = hdrColor;
   v12 = [PKInk alloc];
-  v13 = [v9 identifier];
-  v14 = [v9 version];
-  v15 = [v9 variant];
-  [v9 weight];
+  identifier = [inkCopy identifier];
+  version = [inkCopy version];
+  variant = [inkCopy variant];
+  [inkCopy weight];
   v17 = v16;
-  [v9 _azimuth];
+  [inkCopy _azimuth];
   v19 = v18;
-  v20 = [v9 behavior];
-  v21 = [(PKInk *)v12 initWithIdentifier:v13 color:v10 hdrColor:v11 hdrHeadroom:v14 version:v15 variant:v20 weight:a6 azimuth:v17 behavior:v19];
+  behavior = [inkCopy behavior];
+  v21 = [(PKInk *)v12 initWithIdentifier:identifier color:colorCopy hdrColor:hdrColorCopy hdrHeadroom:version version:variant variant:behavior weight:headroom azimuth:v17 behavior:v19];
 
-  if ([v9 _shouldSaveRequiredContentVersionOverride])
+  if ([inkCopy _shouldSaveRequiredContentVersionOverride])
   {
-    -[PKInk set_requiredContentVersionOverride:](v21, "set_requiredContentVersionOverride:", [v9 _requiredContentVersionOverride]);
+    -[PKInk set_requiredContentVersionOverride:](v21, "set_requiredContentVersionOverride:", [inkCopy _requiredContentVersionOverride]);
   }
 
-  if (([v9 _shouldSaveSixChannelAddColor] & 1) != 0 || objc_msgSend(v9, "_shouldSaveSixChannelMultiplyColor"))
+  if (([inkCopy _shouldSaveSixChannelAddColor] & 1) != 0 || objc_msgSend(inkCopy, "_shouldSaveSixChannelMultiplyColor"))
   {
     [(PKInk *)v21 _setupCustomizedSixChannelColors];
   }
 
-  -[PKInk set_weightIsUndefined:](v21, "set_weightIsUndefined:", [v9 _weightIsUndefined]);
+  -[PKInk set_weightIsUndefined:](v21, "set_weightIsUndefined:", [inkCopy _weightIsUndefined]);
 
   return v21;
 }
 
-+ (id)inkFromInk:(id)a3 weight:(double)a4
++ (id)inkFromInk:(id)ink weight:(double)weight
 {
-  v5 = a3;
+  inkCopy = ink;
   v6 = [PKInk alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 sdrColor];
-  v9 = [v5 hdrColor];
-  [v5 hdrHeadroom];
+  identifier = [inkCopy identifier];
+  sdrColor = [inkCopy sdrColor];
+  hdrColor = [inkCopy hdrColor];
+  [inkCopy hdrHeadroom];
   v11 = v10;
-  v12 = [v5 version];
-  v13 = [v5 variant];
-  [v5 _azimuth];
+  version = [inkCopy version];
+  variant = [inkCopy variant];
+  [inkCopy _azimuth];
   v15 = v14;
-  v16 = [v5 behavior];
-  v17 = [(PKInk *)v6 initWithIdentifier:v7 color:v8 hdrColor:v9 hdrHeadroom:v12 version:v13 variant:v16 weight:v11 azimuth:a4 behavior:v15];
+  behavior = [inkCopy behavior];
+  v17 = [(PKInk *)v6 initWithIdentifier:identifier color:sdrColor hdrColor:hdrColor hdrHeadroom:version version:variant variant:behavior weight:v11 azimuth:weight behavior:v15];
 
-  if ([v5 _shouldSaveRequiredContentVersionOverride])
+  if ([inkCopy _shouldSaveRequiredContentVersionOverride])
   {
-    -[PKInk set_requiredContentVersionOverride:](v17, "set_requiredContentVersionOverride:", [v5 _requiredContentVersionOverride]);
+    -[PKInk set_requiredContentVersionOverride:](v17, "set_requiredContentVersionOverride:", [inkCopy _requiredContentVersionOverride]);
   }
 
-  -[PKInk set_weightIsUndefined:](v17, "set_weightIsUndefined:", [v5 _weightIsUndefined]);
+  -[PKInk set_weightIsUndefined:](v17, "set_weightIsUndefined:", [inkCopy _weightIsUndefined]);
 
   return v17;
 }
 
-+ (id)inkFromInk:(id)a3 azimuth:(double)a4
++ (id)inkFromInk:(id)ink azimuth:(double)azimuth
 {
-  v5 = a3;
+  inkCopy = ink;
   v6 = [PKInk alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 sdrColor];
-  v9 = [v5 hdrColor];
-  [v5 hdrHeadroom];
+  identifier = [inkCopy identifier];
+  sdrColor = [inkCopy sdrColor];
+  hdrColor = [inkCopy hdrColor];
+  [inkCopy hdrHeadroom];
   v11 = v10;
-  v12 = [v5 version];
-  v13 = [v5 variant];
-  [v5 weight];
+  version = [inkCopy version];
+  variant = [inkCopy variant];
+  [inkCopy weight];
   v15 = v14;
-  v16 = [v5 behavior];
-  v17 = [(PKInk *)v6 initWithIdentifier:v7 color:v8 hdrColor:v9 hdrHeadroom:v12 version:v13 variant:v16 weight:v11 azimuth:v15 behavior:a4];
+  behavior = [inkCopy behavior];
+  v17 = [(PKInk *)v6 initWithIdentifier:identifier color:sdrColor hdrColor:hdrColor hdrHeadroom:version version:variant variant:behavior weight:v11 azimuth:v15 behavior:azimuth];
 
-  if ([v5 _shouldSaveRequiredContentVersionOverride])
+  if ([inkCopy _shouldSaveRequiredContentVersionOverride])
   {
-    -[PKInk set_requiredContentVersionOverride:](v17, "set_requiredContentVersionOverride:", [v5 _requiredContentVersionOverride]);
+    -[PKInk set_requiredContentVersionOverride:](v17, "set_requiredContentVersionOverride:", [inkCopy _requiredContentVersionOverride]);
   }
 
-  -[PKInk set_weightIsUndefined:](v17, "set_weightIsUndefined:", [v5 _weightIsUndefined]);
+  -[PKInk set_weightIsUndefined:](v17, "set_weightIsUndefined:", [inkCopy _weightIsUndefined]);
 
   return v17;
 }
 
-- (PKInk)initWithIdentifier:(id)a3 color:(id)a4 hdrColor:(id)a5 hdrHeadroom:(double)a6 version:(unint64_t)a7 variant:(id)a8 weight:(double)a9 azimuth:(double)a10 behavior:(id)a11
+- (PKInk)initWithIdentifier:(id)identifier color:(id)color hdrColor:(id)hdrColor hdrHeadroom:(double)headroom version:(unint64_t)version variant:(id)variant weight:(double)weight azimuth:(double)self0 behavior:(id)self1
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a8;
-  v25 = a11;
+  identifierCopy = identifier;
+  colorCopy = color;
+  hdrColorCopy = hdrColor;
+  variantCopy = variant;
+  behaviorCopy = behavior;
   v31.receiver = self;
   v31.super_class = PKInk;
   v26 = [(PKInk *)&v31 init];
   v27 = v26;
   if (v26)
   {
-    [(PKInk *)v26 _initColor:v22 hdrColor:v23 hdrHeadroom:a6];
-    objc_storeStrong(&v27->_identifier, a3);
-    v27->_version = a7;
-    v28 = [v24 copy];
+    [(PKInk *)v26 _initColor:colorCopy hdrColor:hdrColorCopy hdrHeadroom:headroom];
+    objc_storeStrong(&v27->_identifier, identifier);
+    v27->_version = version;
+    v28 = [variantCopy copy];
     variant = v27->_variant;
     v27->_variant = v28;
 
-    objc_storeStrong(&v27->_behavior, a11);
-    v27->_weight = a9;
-    v27->_azimuth = a10;
+    objc_storeStrong(&v27->_behavior, behavior);
+    v27->_weight = weight;
+    v27->_azimuth = azimuth;
     [(PKInk *)v27 _setupDefaultSixChannelAddAndMultiplyColors];
     [(PKInk *)v27 set_requiredContentVersionOverride:[(PKInk *)v27 _requiredContentVersion]];
   }
@@ -2133,35 +2133,35 @@ LABEL_21:
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKInk *)self isEqualInk:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKInk *)self isEqualInk:equalCopy];
 
   return v5;
 }
 
-- (unint64_t)hashValueForFloat:(double)a3
+- (unint64_t)hashValueForFloat:(double)float
 {
-  v3 = vcvtmd_u64_f64(a3 * 1000.0);
+  v3 = vcvtmd_u64_f64(float * 1000.0);
   v4 = 0x94D049BB133111EBLL * ((0xBF58476D1CE4E5B9 * (v3 ^ (v3 >> 30))) ^ ((0xBF58476D1CE4E5B9 * (v3 ^ (v3 >> 30))) >> 27));
   return v4 ^ (v4 >> 31);
 }
 
-- (BOOL)isEqualInk:(id)a3
+- (BOOL)isEqualInk:(id)ink
 {
-  v4 = a3;
-  if (self == v4)
+  inkCopy = ink;
+  if (self == inkCopy)
   {
     v11 = 1;
   }
 
-  else if ([(PKInk *)self isEqualUnweightedInk:v4]&& ([(PKInk *)self weight], v6 = v5, [(PKInk *)v4 weight], floor(v6 * 1000.0) == floor(v7 * 1000.0)))
+  else if ([(PKInk *)self isEqualUnweightedInk:inkCopy]&& ([(PKInk *)self weight], v6 = v5, [(PKInk *)inkCopy weight], floor(v6 * 1000.0) == floor(v7 * 1000.0)))
   {
     [(PKInk *)self _azimuth];
     v9 = v8;
-    [(PKInk *)v4 _azimuth];
+    [(PKInk *)inkCopy _azimuth];
     v11 = v9 == v10;
   }
 
@@ -2173,78 +2173,78 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)isEqualUnweightedInk:(id)a3
+- (BOOL)isEqualUnweightedInk:(id)ink
 {
-  v4 = a3;
-  if (self == v4)
+  inkCopy = ink;
+  if (self == inkCopy)
   {
     goto LABEL_31;
   }
 
-  v5 = [(PKInk *)self identifier];
-  v6 = [(PKInk *)v4 identifier];
-  if ([v5 isEqualToString:v6])
+  identifier = [(PKInk *)self identifier];
+  identifier2 = [(PKInk *)inkCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(PKInk *)self sdrColor];
-    v8 = [v7 CGColor];
-    v9 = [(PKInk *)v4 sdrColor];
-    if (DKUColorIsEqualToColorIgnoringOpacityWithTolerance(v8, [v9 CGColor], 0, 0.000000999999997))
+    sdrColor = [(PKInk *)self sdrColor];
+    cGColor = [sdrColor CGColor];
+    sdrColor2 = [(PKInk *)inkCopy sdrColor];
+    if (DKUColorIsEqualToColorIgnoringOpacityWithTolerance(cGColor, [sdrColor2 CGColor], 0, 0.000000999999997))
     {
-      v10 = [(PKInk *)self hdrColor];
-      v11 = [v10 CGColor];
-      v12 = [(PKInk *)v4 hdrColor];
-      v13 = [v12 CGColor];
-      if (v11 == v13 || !v11 || !v13 || DKUColorIsEqualToColorIgnoringOpacityWithTolerance(v11, v13, 0, 0.000000999999997))
+      hdrColor = [(PKInk *)self hdrColor];
+      cGColor2 = [hdrColor CGColor];
+      hdrColor2 = [(PKInk *)inkCopy hdrColor];
+      cGColor3 = [hdrColor2 CGColor];
+      if (cGColor2 == cGColor3 || !cGColor2 || !cGColor3 || DKUColorIsEqualToColorIgnoringOpacityWithTolerance(cGColor2, cGColor3, 0, 0.000000999999997))
       {
-        v14 = [(PKInk *)self version];
-        if (v14 == [(PKInk *)v4 version])
+        version = [(PKInk *)self version];
+        if (version == [(PKInk *)inkCopy version])
         {
           [(PKInk *)self _sixChannelAddColor];
           v36 = v15;
-          [(PKInk *)v4 _sixChannelAddColor];
+          [(PKInk *)inkCopy _sixChannelAddColor];
           v17 = vsubq_f32(v36, v16);
           if (fabsf(v17.f32[0]) < 0.01 && fabsf(v17.f32[1]) < 0.01 && fabsf(v17.f32[2]) < 0.01 && fabsf(v17.f32[3]) < 0.01)
           {
             [(PKInk *)self _sixChannelMultiplyColor];
             v37 = v18;
-            [(PKInk *)v4 _sixChannelMultiplyColor];
+            [(PKInk *)inkCopy _sixChannelMultiplyColor];
             if (DKDNearlyEqualVectorFloat4(v37, v19))
             {
               [(PKInk *)self _hdrAddColor];
               v38 = v20;
-              [(PKInk *)v4 _hdrAddColor];
+              [(PKInk *)inkCopy _hdrAddColor];
               if (DKDNearlyEqualVectorFloat4(v38, v21))
               {
                 [(PKInk *)self _hdrMultiplyColor];
                 v39 = v22;
-                [(PKInk *)v4 _hdrMultiplyColor];
+                [(PKInk *)inkCopy _hdrMultiplyColor];
                 if (DKDNearlyEqualVectorFloat4(v39, v23))
                 {
                   [(PKInk *)self hdrHeadroom];
                   v25 = v24;
-                  [(PKInk *)v4 hdrHeadroom];
+                  [(PKInk *)inkCopy hdrHeadroom];
                   if (vabdd_f64(v25, v26) < 0.00999999978)
                   {
-                    v27 = [(PKInk *)self _requiredContentVersionOverride];
-                    v28 = [(PKInk *)v4 _requiredContentVersionOverride];
+                    _requiredContentVersionOverride = [(PKInk *)self _requiredContentVersionOverride];
+                    _requiredContentVersionOverride2 = [(PKInk *)inkCopy _requiredContentVersionOverride];
 
-                    if (v27 != v28)
+                    if (_requiredContentVersionOverride != _requiredContentVersionOverride2)
                     {
                       v30 = 0;
                       goto LABEL_32;
                     }
 
-                    v29 = [(PKInk *)self variant];
-                    if (v29)
+                    variant = [(PKInk *)self variant];
+                    if (variant)
                     {
 
 LABEL_27:
-                      v32 = [(PKInk *)self variant];
-                      v33 = [(PKInk *)v4 variant];
-                      v7 = v32;
-                      v34 = v33;
-                      v9 = v34;
-                      if (v7 == v34)
+                      variant2 = [(PKInk *)self variant];
+                      variant3 = [(PKInk *)inkCopy variant];
+                      sdrColor = variant2;
+                      v34 = variant3;
+                      sdrColor2 = v34;
+                      if (sdrColor == v34)
                       {
                         v30 = 1;
                       }
@@ -2252,20 +2252,20 @@ LABEL_27:
                       else
                       {
                         v30 = 0;
-                        if (v7 && v34)
+                        if (sdrColor && v34)
                         {
-                          v30 = [v7 isEqualToString:v34];
+                          v30 = [sdrColor isEqualToString:v34];
                         }
                       }
 
-                      v6 = v9;
-                      v5 = v7;
+                      identifier2 = sdrColor2;
+                      identifier = sdrColor;
                       goto LABEL_23;
                     }
 
-                    v31 = [(PKInk *)v4 variant];
+                    variant4 = [(PKInk *)inkCopy variant];
 
-                    if (v31)
+                    if (variant4)
                     {
                       goto LABEL_27;
                     }
@@ -2297,16 +2297,16 @@ LABEL_32:
 
 - (unint64_t)hash
 {
-  v3 = [(PKInk *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(PKInk *)self sdrColor];
-  v6 = [v5 hash];
-  v7 = [(PKInk *)self version];
-  v8 = [(PKInk *)self variant];
-  v9 = [v8 hash];
+  identifier = [(PKInk *)self identifier];
+  v4 = [identifier hash];
+  sdrColor = [(PKInk *)self sdrColor];
+  v6 = [sdrColor hash];
+  version = [(PKInk *)self version];
+  variant = [(PKInk *)self variant];
+  v9 = [variant hash];
   [(PKInk *)self weight];
   v11 = [(PKInk *)self hashValueForFloat:v10 + 1.0];
-  v12 = v6 ^ v4 ^ v7 ^ v9 ^ [(PKInk *)self _requiredContentVersionOverride];
+  v12 = v6 ^ v4 ^ version ^ v9 ^ [(PKInk *)self _requiredContentVersionOverride];
 
   return v12 ^ v11;
 }
@@ -2316,30 +2316,30 @@ LABEL_32:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PKInk *)self identifier];
-  v7 = [(PKInk *)self sdrColor];
-  v8 = [(PKInk *)self variant];
-  v9 = [v3 stringWithFormat:@"<%@ %p %@ %@ %@ %lu>", v5, self, v6, v7, v8, -[PKInk version](self, "version")];
+  identifier = [(PKInk *)self identifier];
+  sdrColor = [(PKInk *)self sdrColor];
+  variant = [(PKInk *)self variant];
+  v9 = [v3 stringWithFormat:@"<%@ %p %@ %@ %@ %lu>", v5, self, identifier, sdrColor, variant, -[PKInk version](self, "version")];
 
   return v9;
 }
 
-+ (double)defaultWeightForIdentifier:(id)a3
++ (double)defaultWeightForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = -0.5;
-  if (([v3 isEqual:@"com.apple.ink.marker"] & 1) == 0)
+  if (([identifierCopy isEqual:@"com.apple.ink.marker"] & 1) == 0)
   {
-    if ([v3 isEqual:@"com.apple.ink.pencil"])
+    if ([identifierCopy isEqual:@"com.apple.ink.pencil"])
     {
       v4 = -1.0;
     }
 
-    else if (([v3 isEqual:@"com.apple.ink.pen"] & 1) == 0)
+    else if (([identifierCopy isEqual:@"com.apple.ink.pen"] & 1) == 0)
     {
-      if (([v3 isEqual:@"com.apple.ink.watercolor"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"com.apple.ink.fountainpen") & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"com.apple.ink.monoline") & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"com.apple.ink.crayon") & 1) != 0 || (v4 = -1.0, objc_msgSend(v3, "isEqual:", @"com.apple.ink.reedcalligraphy")))
+      if (([identifierCopy isEqual:@"com.apple.ink.watercolor"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqual:", @"com.apple.ink.fountainpen") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqual:", @"com.apple.ink.monoline") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqual:", @"com.apple.ink.crayon") & 1) != 0 || (v4 = -1.0, objc_msgSend(identifierCopy, "isEqual:", @"com.apple.ink.reedcalligraphy")))
       {
-        [PKInkingTool defaultWidthForInkType:v3];
+        [PKInkingTool defaultWidthForInkType:identifierCopy];
         v4 = v5;
       }
     }
@@ -2348,16 +2348,16 @@ LABEL_32:
   return v4;
 }
 
-+ (double)defaultOpacityForIdentifier:(id)a3
++ (double)defaultOpacityForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = 0.5;
-  if (([v3 isEqual:@"com.apple.ink.pencil"] & 1) == 0)
+  if (([identifierCopy isEqual:@"com.apple.ink.pencil"] & 1) == 0)
   {
     v4 = 1.0;
-    if (([v3 isEqual:@"com.apple.ink.pen"] & 1) == 0)
+    if (([identifierCopy isEqual:@"com.apple.ink.pen"] & 1) == 0)
     {
-      if ([v3 isEqual:@"com.apple.ink.marker"])
+      if ([identifierCopy isEqual:@"com.apple.ink.marker"])
       {
         v4 = 0.8;
       }
@@ -2372,11 +2372,11 @@ LABEL_32:
   return v4;
 }
 
-+ (double)defaultAzimuthForIdentifier:(id)a3
++ (double)defaultAzimuthForIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = 0.0;
-  if (![a3 isEqualToString:@"com.apple.ink.reedcalligraphy"])
+  if (![identifier isEqualToString:@"com.apple.ink.reedcalligraphy"])
   {
     return v3;
   }
@@ -2456,17 +2456,17 @@ LABEL_24:
 - (float32x2_t)_defaultHDRAddColor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [a1 behavior];
-  v3 = [v2 renderingDescriptor];
-  v4 = [v3 blendMode];
+  behavior = [self behavior];
+  renderingDescriptor = [behavior renderingDescriptor];
+  blendMode = [renderingDescriptor blendMode];
 
   result = 0;
-  if (v4 <= 4 && ((1 << v4) & 0x15) != 0)
+  if (blendMode <= 4 && ((1 << blendMode) & 0x15) != 0)
   {
-    v6 = [a1[12] CGColor];
+    cGColor = [self[12] CGColor];
     v7[0] = __const_DKUColorGetVectorFloat3_rgba;
     v7[1] = unk_1C801E8B0;
-    DKUColorGetRGBAComponents(v6, v7);
+    DKUColorGetRGBAComponents(cGColor, v7);
     return vcvt_f32_f64(v7[0]);
   }
 
@@ -2476,16 +2476,16 @@ LABEL_24:
 - (float32x2_t)_defaultHDRMultiplyColor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [a1 behavior];
-  v3 = [v2 renderingDescriptor];
-  v4 = [v3 blendMode];
+  behavior = [self behavior];
+  renderingDescriptor = [behavior renderingDescriptor];
+  blendMode = [renderingDescriptor blendMode];
 
-  if ((v4 | 2) == 3)
+  if ((blendMode | 2) == 3)
   {
-    v5 = [a1[12] CGColor];
+    cGColor = [self[12] CGColor];
     v7[0] = __const_DKUColorGetVectorFloat3_rgba;
     v7[1] = unk_1C801E8B0;
-    DKUColorGetRGBAComponents(v5, v7);
+    DKUColorGetRGBAComponents(cGColor, v7);
     return vcvt_f32_f64(v7[0]);
   }
 
@@ -2505,8 +2505,8 @@ LABEL_24:
 
 - (BOOL)_shouldSaveHDRAddColor
 {
-  v3 = [(PKInk *)self hdrColor];
-  if (v3)
+  hdrColor = [(PKInk *)self hdrColor];
+  if (hdrColor)
   {
     v8 = *self->_hdrAddColor;
     [(PKInk *)self _defaultHDRAddColor];
@@ -2524,8 +2524,8 @@ LABEL_24:
 
 - (BOOL)_shouldSaveHDRMultiplyColor
 {
-  v3 = [(PKInk *)self hdrColor];
-  if (v3)
+  hdrColor = [(PKInk *)self hdrColor];
+  if (hdrColor)
   {
     v8 = *self->_hdrMultiplyColor;
     [(PKInk *)self _defaultHDRMultiplyColor];
@@ -2551,10 +2551,10 @@ LABEL_24:
 
 - (int64_t)_numPaintFramebuffers
 {
-  v2 = [(PKInk *)self behavior];
-  v3 = [v2 secondaryParticleDescriptor];
+  behavior = [(PKInk *)self behavior];
+  secondaryParticleDescriptor = [behavior secondaryParticleDescriptor];
 
-  if (v3)
+  if (secondaryParticleDescriptor)
   {
     return 2;
   }
@@ -2567,23 +2567,23 @@ LABEL_24:
 
 - (unint64_t)particleRotation
 {
-  v3 = [(PKInk *)self behavior];
-  v4 = [v3 particleDescriptor];
+  behavior = [(PKInk *)self behavior];
+  particleDescriptor = [behavior particleDescriptor];
 
-  if (!v4)
+  if (!particleDescriptor)
   {
     return self && [(PKInk *)self _isFountainPenInkV2];
   }
 
-  v5 = [v4 particleRotation];
+  particleRotation = [particleDescriptor particleRotation];
 
-  return v5;
+  return particleRotation;
 }
 
-- (void)setWeight:(double)a3
+- (void)setWeight:(double)weight
 {
-  v3 = a3;
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  weightCopy = weight;
+  if ((*&weight & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     v5 = os_log_create("com.apple.pencilkit", "");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2592,29 +2592,29 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_ERROR, "Weight must be a finite number", buf, 2u);
     }
 
-    v6 = [(PKInk *)self identifier];
-    [PKInk defaultWeightForIdentifier:v6];
-    v3 = v7;
+    identifier = [(PKInk *)self identifier];
+    [PKInk defaultWeightForIdentifier:identifier];
+    weightCopy = v7;
   }
 
-  v8 = [(PKInk *)self identifier];
-  if ([v8 isEqualToString:@"com.apple.ink.custom"])
+  identifier2 = [(PKInk *)self identifier];
+  if ([identifier2 isEqualToString:@"com.apple.ink.custom"])
   {
 
 LABEL_8:
-    v11 = v3;
+    v11 = weightCopy;
     goto LABEL_9;
   }
 
-  v9 = [(PKInk *)self behavior];
-  v10 = [v9 useUnclampedWeight];
+  behavior = [(PKInk *)self behavior];
+  useUnclampedWeight = [behavior useUnclampedWeight];
 
-  if (v10)
+  if (useUnclampedWeight)
   {
     goto LABEL_8;
   }
 
-  if (fabs(v3) > 1.0)
+  if (fabs(weightCopy) > 1.0)
   {
     v12 = os_log_create("com.apple.pencilkit", "");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2625,10 +2625,10 @@ LABEL_8:
   }
 
   v11 = -1.0;
-  if (v3 >= -1.0)
+  if (weightCopy >= -1.0)
   {
-    v11 = v3;
-    if (v3 > 1.0)
+    v11 = weightCopy;
+    if (weightCopy > 1.0)
     {
       v11 = 1.0;
     }
@@ -2640,15 +2640,15 @@ LABEL_9:
 
 - (BOOL)_isStrokeGeneratingInk
 {
-  v2 = [(PKInk *)self identifier];
-  if ([v2 isEqualToString:@"com.apple.ink.lasso"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"com.apple.ink.eraser") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"com.apple.ink.objectEraser"))
+  identifier = [(PKInk *)self identifier];
+  if ([identifier isEqualToString:@"com.apple.ink.lasso"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"com.apple.ink.eraser") & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"com.apple.ink.objectEraser"))
   {
     LOBYTE(v3) = 0;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"com.apple.ink.generationtool"] ^ 1;
+    v3 = [identifier isEqualToString:@"com.apple.ink.generationtool"] ^ 1;
   }
 
   return v3;
@@ -2659,51 +2659,51 @@ LABEL_9:
   ptr = self->_unknownFields.__ptr_;
   if (ptr && (v3 = *ptr) != 0 && *v3 != v3[1])
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:? length:?];
+    data = [MEMORY[0x1E695DEF0] dataWithBytes:? length:?];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  return v4;
+  return data;
 }
 
-- (id)colorForUIAllowHDR:(BOOL)a3
+- (id)colorForUIAllowHDR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
-    v4 = [(PKInk *)self hdrColor];
-    v5 = v4;
-    if (v4)
+    hdrColor = [(PKInk *)self hdrColor];
+    v5 = hdrColor;
+    if (hdrColor)
     {
-      v6 = v4;
+      sdrColor = hdrColor;
     }
 
     else
     {
-      v6 = [(PKInk *)self sdrColor];
+      sdrColor = [(PKInk *)self sdrColor];
     }
 
-    v7 = v6;
+    sdrColor2 = sdrColor;
   }
 
   else
   {
-    v7 = [(PKInk *)self sdrColor];
+    sdrColor2 = [(PKInk *)self sdrColor];
   }
 
-  return v7;
+  return sdrColor2;
 }
 
-+ (id)identifierForCommandType:(unsigned int)a3 wantsObjectErase:(BOOL)a4
++ (id)identifierForCommandType:(unsigned int)type wantsObjectErase:(BOOL)erase
 {
   v11[5] = *MEMORY[0x1E69E9840];
-  if (a3 == 3)
+  if (type == 3)
   {
     v4 = @"com.apple.ink.eraser";
-    if (a4)
+    if (erase)
     {
       v4 = @"com.apple.ink.objectEraser";
     }
@@ -2711,13 +2711,13 @@ LABEL_9:
     v5 = v4;
   }
 
-  else if (a3 > 4)
+  else if (type > 4)
   {
     v8 = os_log_create("com.apple.pencilkit", "");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10[0] = 67109120;
-      v10[1] = a3;
+      v10[1] = type;
       _os_log_error_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_ERROR, "Unknown command type for ink: %d", v10, 8u);
     }
 
@@ -2732,7 +2732,7 @@ LABEL_9:
     v11[3] = @"com.apple.ink.eraser";
     v11[4] = @"com.apple.ink.lasso";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:5];
-    v5 = [v7 objectAtIndexedSubscript:a3];
+    v5 = [v7 objectAtIndexedSubscript:type];
   }
 
   return v5;
@@ -2753,8 +2753,8 @@ LABEL_9:
     }
 
     v4 = _MergedGlobals_177;
-    v5 = [(PKInk *)self identifier];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    identifier = [(PKInk *)self identifier];
+    v6 = [v4 objectForKeyedSubscript:identifier];
 
     v7 = @"BallpointPen3";
     if (v6)

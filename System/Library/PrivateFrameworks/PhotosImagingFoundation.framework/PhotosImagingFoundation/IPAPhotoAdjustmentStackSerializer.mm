@@ -1,14 +1,14 @@
 @interface IPAPhotoAdjustmentStackSerializer
-- (id)_dataFromAdjustmentStack:(id)a3 error:(id *)a4;
-- (id)dataFromPhotoAdjustmentStack:(id)a3 error:(id *)a4;
-- (id)photoAdjustmentStackFromData:(id)a3 error:(id *)a4;
+- (id)_dataFromAdjustmentStack:(id)stack error:(id *)error;
+- (id)dataFromPhotoAdjustmentStack:(id)stack error:(id *)error;
+- (id)photoAdjustmentStackFromData:(id)data error:(id *)error;
 @end
 
 @implementation IPAPhotoAdjustmentStackSerializer
 
-- (id)photoAdjustmentStackFromData:(id)a3 error:(id *)a4
+- (id)photoAdjustmentStackFromData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_class();
   NSStringFromClass(v5);
   objc_claimAutoreleasedReturnValue();
@@ -16,9 +16,9 @@
   return [(IPAPhotoAdjustmentStackSerializer *)v6 dataFromPhotoAdjustmentStack:v7 error:v8, v9];
 }
 
-- (id)dataFromPhotoAdjustmentStack:(id)a3 error:(id *)a4
+- (id)dataFromPhotoAdjustmentStack:(id)stack error:(id *)error
 {
-  v4 = a3;
+  stackCopy = stack;
   v5 = objc_opt_class();
   NSStringFromClass(v5);
   objc_claimAutoreleasedReturnValue();
@@ -26,13 +26,13 @@
   return [(IPAPhotoAdjustmentStackSerializer *)v6 _adjustmentStackFromData:v7 error:v8, v9];
 }
 
-- (id)_dataFromAdjustmentStack:(id)a3 error:(id *)a4
+- (id)_dataFromAdjustmentStack:(id)stack error:(id *)error
 {
-  v6 = a3;
+  stackCopy = stack;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(IPAPhotoAdjustmentStackSerializer *)self dataFromPhotoAdjustmentStack:v6 error:a4];
+    v7 = [(IPAPhotoAdjustmentStackSerializer *)self dataFromPhotoAdjustmentStack:stackCopy error:error];
 
     return v7;
   }

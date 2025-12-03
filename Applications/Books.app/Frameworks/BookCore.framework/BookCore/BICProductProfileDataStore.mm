@@ -1,17 +1,17 @@
 @interface BICProductProfileDataStore
-- (BICProductProfileDataStore)initWithCachePath:(id)a3;
-- (BOOL)canStoreDescribedImage:(id)a3;
-- (void)_clean:(id)a3;
-- (void)_inventoryLevel:(signed __int16)a3 addLevelID:(BOOL)a4 completion:(id)a5;
-- (void)afterAllStoreOperationsCompletedPerformBlock:(id)a3;
-- (void)deleteRemovedEntries:(id)a3 deletingCompletedHandler:(id)a4;
-- (void)fetchImagesForEntry:(id)a3 forRequest:(id)a4 completion:(id)a5;
-- (void)storeAddedEntries:(id)a3 forRequest:(id)a4 storingCompletedHandler:(id)a5;
+- (BICProductProfileDataStore)initWithCachePath:(id)path;
+- (BOOL)canStoreDescribedImage:(id)image;
+- (void)_clean:(id)_clean;
+- (void)_inventoryLevel:(signed __int16)level addLevelID:(BOOL)d completion:(id)completion;
+- (void)afterAllStoreOperationsCompletedPerformBlock:(id)block;
+- (void)deleteRemovedEntries:(id)entries deletingCompletedHandler:(id)handler;
+- (void)fetchImagesForEntry:(id)entry forRequest:(id)request completion:(id)completion;
+- (void)storeAddedEntries:(id)entries forRequest:(id)request storingCompletedHandler:(id)handler;
 @end
 
 @implementation BICProductProfileDataStore
 
-- (BICProductProfileDataStore)initWithCachePath:(id)a3
+- (BICProductProfileDataStore)initWithCachePath:(id)path
 {
   v17.receiver = self;
   v17.super_class = BICProductProfileDataStore;
@@ -43,14 +43,14 @@
   return v3;
 }
 
-- (BOOL)canStoreDescribedImage:(id)a3
+- (BOOL)canStoreDescribedImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 adamID];
-  if (v4)
+  imageCopy = image;
+  adamID = [imageCopy adamID];
+  if (adamID)
   {
-    v5 = [v3 adamID];
-    v6 = [v5 integerValue] != 0;
+    adamID2 = [imageCopy adamID];
+    v6 = [adamID2 integerValue] != 0;
   }
 
   else
@@ -61,56 +61,56 @@
   return v6;
 }
 
-- (void)deleteRemovedEntries:(id)a3 deletingCompletedHandler:(id)a4
+- (void)deleteRemovedEntries:(id)entries deletingCompletedHandler:(id)handler
 {
-  v7 = a3;
-  v5 = objc_retainBlock(a4);
+  entriesCopy = entries;
+  v5 = objc_retainBlock(handler);
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(v5 + 2))(v5, entriesCopy);
   }
 }
 
-- (void)afterAllStoreOperationsCompletedPerformBlock:(id)a3
+- (void)afterAllStoreOperationsCompletedPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [BICDescribedImage describedImageWithPriority:3];
   objc_initWeak(&location, self);
-  v6 = [(BICProductProfileDataStore *)self workQueue];
+  workQueue = [(BICProductProfileDataStore *)self workQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_117DC8;
   v8[3] = &unk_2CC5E0;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
-  [v6 addWorkItemWithPriority:v5 description:@"ProfileDataStore after all ops" block:v8];
+  [workQueue addWorkItemWithPriority:v5 description:@"ProfileDataStore after all ops" block:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchImagesForEntry:(id)a3 forRequest:(id)a4 completion:(id)a5
+- (void)fetchImagesForEntry:(id)entry forRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dataStoreInformation];
-  if (v11)
+  entryCopy = entry;
+  requestCopy = request;
+  completionCopy = completion;
+  dataStoreInformation = [entryCopy dataStoreInformation];
+  if (dataStoreInformation)
   {
     objc_initWeak(&location, self);
-    [BICCacheStats logOperation:BICCacheStatsOperationProfileDownloadQueueStart[0] forRequest:v9];
-    v12 = [(BICProductProfileDataStore *)self workQueue];
+    [BICCacheStats logOperation:BICCacheStatsOperationProfileDownloadQueueStart[0] forRequest:requestCopy];
+    workQueue = [(BICProductProfileDataStore *)self workQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_118044;
     v15[3] = &unk_2CD5A8;
     objc_copyWeak(&v19, &location);
-    v16 = v9;
-    v17 = v11;
-    v18 = v10;
-    [v12 addWorkItemWithPriority:v16 description:@"ProfileDataStore read" block:v15];
+    v16 = requestCopy;
+    v17 = dataStoreInformation;
+    v18 = completionCopy;
+    [workQueue addWorkItemWithPriority:v16 description:@"ProfileDataStore read" block:v15];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -118,7 +118,7 @@
 
   else
   {
-    v13 = objc_retainBlock(v10);
+    v13 = objc_retainBlock(completionCopy);
     v14 = v13;
     if (v13)
     {
@@ -127,15 +127,15 @@
   }
 }
 
-- (void)storeAddedEntries:(id)a3 forRequest:(id)a4 storingCompletedHandler:(id)a5
+- (void)storeAddedEntries:(id)entries forRequest:(id)request storingCompletedHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  entriesCopy = entries;
+  handlerCopy = handler;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [entriesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -146,27 +146,27 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 imageDescription];
-        v14 = [v13 adamID];
-        [v12 setStoredData:v14];
+        imageDescription = [v12 imageDescription];
+        adamID = [imageDescription adamID];
+        [v12 setStoredData:adamID];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [entriesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 
-  v7[2](v7, v6, &__NSArray0__struct);
+  handlerCopy[2](handlerCopy, entriesCopy, &__NSArray0__struct);
 }
 
-- (void)_inventoryLevel:(signed __int16)a3 addLevelID:(BOOL)a4 completion:(id)a5
+- (void)_inventoryLevel:(signed __int16)level addLevelID:(BOOL)d completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)_clean:(id)a3
+- (void)_clean:(id)_clean
 {
-  v3 = objc_retainBlock(a3);
+  v3 = objc_retainBlock(_clean);
   if (v3)
   {
     v4 = v3;

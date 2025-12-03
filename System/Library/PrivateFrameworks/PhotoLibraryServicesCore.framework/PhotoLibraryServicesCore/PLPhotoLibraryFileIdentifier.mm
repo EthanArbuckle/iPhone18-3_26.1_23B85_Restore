@@ -1,10 +1,10 @@
 @interface PLPhotoLibraryFileIdentifier
-+ (BOOL)isValidFileIdentifierParametersForUUID:(id)a3 utiString:(id)a4 originalFilename:(id)a5;
-+ (BOOL)isValidOriginalURL:(id)a3;
-+ (id)fileIdentifierForValidOriginalURL:(id)a3 originalsDirectoryName:(id)a4;
-+ (id)uuidFromURL:(id)a3;
++ (BOOL)isValidFileIdentifierParametersForUUID:(id)d utiString:(id)string originalFilename:(id)filename;
++ (BOOL)isValidOriginalURL:(id)l;
++ (id)fileIdentifierForValidOriginalURL:(id)l originalsDirectoryName:(id)name;
++ (id)uuidFromURL:(id)l;
 - (PLPhotoLibraryFileIdentifier)init;
-- (PLPhotoLibraryFileIdentifier)initWithAssetUuid:(id)a3 bundleScope:(unsigned __int16)a4 uti:(id)a5 resourceVersion:(unsigned int)a6 resourceType:(unsigned int)a7 recipeID:(unsigned int)a8 originalFilename:(id)a9 customSuffix:(id)a10;
+- (PLPhotoLibraryFileIdentifier)initWithAssetUuid:(id)uuid bundleScope:(unsigned __int16)scope uti:(id)uti resourceVersion:(unsigned int)version resourceType:(unsigned int)type recipeID:(unsigned int)d originalFilename:(id)filename customSuffix:(id)self0;
 - (id)description;
 - (id)extension;
 @end
@@ -37,19 +37,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [(PLPhotoLibraryFileIdentifier *)self originalFilename];
-  v8 = [v7 pathExtension];
-  v9 = [v8 lowercaseString];
+  originalFilename = [(PLPhotoLibraryFileIdentifier *)self originalFilename];
+  pathExtension = [originalFilename pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  v10 = [v9 rangeOfString:&stru_1F1F77B60];
+  v10 = [lowercaseString rangeOfString:&stru_1F1F77B60];
   v6 = 0;
-  if (v9 && v10 == 0x7FFFFFFFFFFFFFFFLL)
+  if (lowercaseString && v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v9];
+    v11 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:lowercaseString];
     v6 = [MEMORY[0x1E69C08F0] preferredOrFallbackFilenameExtensionForType:v11 fallbackIdentifier:0];
     if (!v6)
     {
-      v6 = v9;
+      v6 = lowercaseString;
     }
   }
 
@@ -63,35 +63,35 @@ LABEL_14:
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PLPhotoLibraryFileIdentifier *)self uuid];
-  v6 = [(PLPhotoLibraryFileIdentifier *)self bundleScope];
+  uuid = [(PLPhotoLibraryFileIdentifier *)self uuid];
+  bundleScope = [(PLPhotoLibraryFileIdentifier *)self bundleScope];
   uti = self->_uti;
-  v8 = [(PLPhotoLibraryFileIdentifier *)self resourceVersion];
-  v9 = [(PLPhotoLibraryFileIdentifier *)self resourceType];
+  resourceVersion = [(PLPhotoLibraryFileIdentifier *)self resourceVersion];
+  resourceType = [(PLPhotoLibraryFileIdentifier *)self resourceType];
   v10 = [(PLPhotoLibraryFileIdentifier *)self recipeId]>> 16;
   v11 = [(PLPhotoLibraryFileIdentifier *)self recipeId]>> 1;
-  v12 = [(PLPhotoLibraryFileIdentifier *)self originalFilename];
-  v13 = [v15 stringWithFormat:@"%@ (%p), uuid=%@, bundleScope=%d uti=%@, resourceVersion=%d, resourceType=%d, recipeClassID=%d, recipeVarationID=%d originalFilename=%@", v4, self, v5, v6, uti, v8, v9, v10, v11, v12];
+  originalFilename = [(PLPhotoLibraryFileIdentifier *)self originalFilename];
+  v13 = [v15 stringWithFormat:@"%@ (%p), uuid=%@, bundleScope=%d uti=%@, resourceVersion=%d, resourceType=%d, recipeClassID=%d, recipeVarationID=%d originalFilename=%@", v4, self, uuid, bundleScope, uti, resourceVersion, resourceType, v10, v11, originalFilename];
 
   return v13;
 }
 
-- (PLPhotoLibraryFileIdentifier)initWithAssetUuid:(id)a3 bundleScope:(unsigned __int16)a4 uti:(id)a5 resourceVersion:(unsigned int)a6 resourceType:(unsigned int)a7 recipeID:(unsigned int)a8 originalFilename:(id)a9 customSuffix:(id)a10
+- (PLPhotoLibraryFileIdentifier)initWithAssetUuid:(id)uuid bundleScope:(unsigned __int16)scope uti:(id)uti resourceVersion:(unsigned int)version resourceType:(unsigned int)type recipeID:(unsigned int)d originalFilename:(id)filename customSuffix:(id)self0
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a9;
-  v17 = a10;
-  if (!v14)
+  uuidCopy = uuid;
+  utiCopy = uti;
+  filenameCopy = filename;
+  suffixCopy = suffix;
+  if (!uuidCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryFileIdentifier.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryFileIdentifier.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
   }
 
-  if (!(v15 | v16))
+  if (!(utiCopy | filenameCopy))
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryFileIdentifier.m" lineNumber:47 description:@"Either UTI or originalFilename must be non-nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryFileIdentifier.m" lineNumber:47 description:@"Either UTI or originalFilename must be non-nil"];
   }
 
   v28.receiver = self;
@@ -99,23 +99,23 @@ LABEL_14:
   v18 = [(PLPhotoLibraryFileIdentifier *)&v28 init];
   if (v18)
   {
-    v19 = [v14 uppercaseString];
+    uppercaseString = [uuidCopy uppercaseString];
     uuid = v18->_uuid;
-    v18->_uuid = v19;
+    v18->_uuid = uppercaseString;
 
-    v18->_bundleScope = a4;
-    objc_storeStrong(&v18->_uti, a5);
-    v18->_resourceType = a7;
-    v18->_resourceVersion = a6;
-    v18->_recipeId = a8;
-    objc_storeStrong(&v18->_originalFilename, a9);
-    if (v15)
+    v18->_bundleScope = scope;
+    objc_storeStrong(&v18->_uti, uti);
+    v18->_resourceType = type;
+    v18->_resourceVersion = version;
+    v18->_recipeId = d;
+    objc_storeStrong(&v18->_originalFilename, filename);
+    if (utiCopy)
     {
-      v21 = [MEMORY[0x1E6982C40] typeWithIdentifier:v15];
+      v21 = [MEMORY[0x1E6982C40] typeWithIdentifier:utiCopy];
       v18->_isData = [v21 conformsToType:*MEMORY[0x1E6982D60]];
     }
 
-    objc_storeStrong(&v18->_customSuffix, a10);
+    objc_storeStrong(&v18->_customSuffix, suffix);
   }
 
   return v18;
@@ -128,15 +128,15 @@ LABEL_14:
   return 0;
 }
 
-+ (id)fileIdentifierForValidOriginalURL:(id)a3 originalsDirectoryName:(id)a4
++ (id)fileIdentifierForValidOriginalURL:(id)l originalsDirectoryName:(id)name
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  lCopy = l;
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibraryFileIdentifier.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"originalsDirectoryName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryFileIdentifier.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"originalsDirectoryName"}];
   }
 
   v20 = 0;
@@ -145,7 +145,7 @@ LABEL_14:
   v23 = __Block_byref_object_copy__1545;
   v24 = __Block_byref_object_dispose__1546;
   v25 = 0;
-  v9 = [a1 uuidFromURL:v7];
+  v9 = [self uuidFromURL:lCopy];
   if (v9)
   {
     v10 = PLAllowedResourceTypesForOriginalResources();
@@ -154,8 +154,8 @@ LABEL_14:
     v15[2] = __89__PLPhotoLibraryFileIdentifier_fileIdentifierForValidOriginalURL_originalsDirectoryName___block_invoke;
     v15[3] = &unk_1E792FC38;
     v16 = v9;
-    v17 = v7;
-    v18 = v8;
+    v17 = lCopy;
+    v18 = nameCopy;
     v19 = &v20;
     [v10 enumerateObjectsUsingBlock:v15];
 
@@ -168,7 +168,7 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v7;
+      v27 = lCopy;
       _os_log_impl(&dword_1AA9BD000, v11, OS_LOG_TYPE_DEFAULT, "FileIdentifier - filenameUUID is nil for url: %@", buf, 0xCu);
     }
   }
@@ -213,25 +213,25 @@ void __89__PLPhotoLibraryFileIdentifier_fileIdentifierForValidOriginalURL_origin
   }
 }
 
-+ (BOOL)isValidOriginalURL:(id)a3
++ (BOOL)isValidOriginalURL:(id)l
 {
-  v3 = [a1 fileIdentifierForValidOriginalURL:a3];
+  v3 = [self fileIdentifierForValidOriginalURL:l];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (id)uuidFromURL:(id)a3
++ (id)uuidFromURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  if ([v3 length] < 0x24)
+  lastPathComponent = [l lastPathComponent];
+  if ([lastPathComponent length] < 0x24)
   {
     v9 = 0;
   }
 
   else
   {
-    v4 = [v3 substringToIndex:36];
+    v4 = [lastPathComponent substringToIndex:36];
     v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
     v6 = v5;
     if (v5 && ([v5 UUIDString], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", v4), v7, v8))
@@ -248,14 +248,14 @@ void __89__PLPhotoLibraryFileIdentifier_fileIdentifierForValidOriginalURL_origin
   return v9;
 }
 
-+ (BOOL)isValidFileIdentifierParametersForUUID:(id)a3 utiString:(id)a4 originalFilename:(id)a5
++ (BOOL)isValidFileIdentifierParametersForUUID:(id)d utiString:(id)string originalFilename:(id)filename
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
-  v11 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v8];
+  dCopy = d;
+  stringCopy = string;
+  filenameCopy = filename;
+  v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:dCopy];
+  v11 = [MEMORY[0x1E69C08F0] typeWithIdentifier:stringCopy];
   v12 = v11;
   if (v11)
   {
@@ -275,11 +275,11 @@ LABEL_7:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
         {
           v21 = 138543874;
-          v22 = v7;
+          v22 = dCopy;
           v23 = 2114;
-          v24 = v8;
+          v24 = stringCopy;
           v25 = 2112;
-          v26 = v9;
+          v26 = filenameCopy;
           v17 = v16;
           v18 = OS_LOG_TYPE_FAULT;
           goto LABEL_15;
@@ -292,11 +292,11 @@ LABEL_7:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v21 = 138543874;
-          v22 = v7;
+          v22 = dCopy;
           v23 = 2114;
-          v24 = v8;
+          v24 = stringCopy;
           v25 = 2112;
-          v26 = v9;
+          v26 = filenameCopy;
           v17 = v16;
           v18 = OS_LOG_TYPE_ERROR;
 LABEL_15:
@@ -323,8 +323,8 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v14 = [v9 pathExtension];
-  v15 = [v14 length];
+  pathExtension = [filenameCopy pathExtension];
+  v15 = [pathExtension length];
 
   if (!v15)
   {

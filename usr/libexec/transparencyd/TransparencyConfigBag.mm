@@ -1,33 +1,33 @@
 @interface TransparencyConfigBag
 - (BOOL)configurationExpired;
-- (BOOL)configureFromNetworkBagData:(id)a3 error:(id *)a4;
-- (BOOL)configureWithDisk:(id *)a3;
-- (BOOL)processConfigBagData:(id)a3 error:(id *)a4;
+- (BOOL)configureFromNetworkBagData:(id)data error:(id *)error;
+- (BOOL)configureWithDisk:(id *)disk;
+- (BOOL)processConfigBagData:(id)data error:(id *)error;
 - (BOOL)shouldSetInternalHeader;
 - (BOOL)tapToRadarEnabled;
-- (BOOL)validateConfigBagCertificates:(id)a3 error:(id *)a4;
-- (BOOL)validateConfigBagEntries:(id)a3 error:(id *)a4;
-- (BOOL)validateConfigBagSignature:(id)a3 error:(id *)a4;
-- (BOOL)validateConfigEntries:(id)a3 error:(id *)a4;
-- (BOOL)writeConfigToDisk:(id)a3 error:(id *)a4;
+- (BOOL)validateConfigBagCertificates:(id)certificates error:(id *)error;
+- (BOOL)validateConfigBagEntries:(id)entries error:(id *)error;
+- (BOOL)validateConfigBagSignature:(id)signature error:(id *)error;
+- (BOOL)validateConfigEntries:(id)entries error:(id *)error;
+- (BOOL)writeConfigToDisk:(id)disk error:(id *)error;
 - (NSString)swtCFUDetailsURL;
-- (TransparencyConfigBag)initWithRequiredKeys:(id)a3 settings:(id)a4 directory:(id)a5 configApp:(unint64_t)a6 swtSettings:(id)a7;
-- (double)doubleForKey:(id)a3;
-- (id)checkBagKeyClass:(id)a3 keys:(id)a4;
-- (id)checkMissingBagKeys:(id)a3 keys:(id)a4;
+- (TransparencyConfigBag)initWithRequiredKeys:(id)keys settings:(id)settings directory:(id)directory configApp:(unint64_t)app swtSettings:(id)swtSettings;
+- (double)doubleForKey:(id)key;
+- (id)checkBagKeyClass:(id)class keys:(id)keys;
+- (id)checkMissingBagKeys:(id)keys keys:(id)a4;
 - (id)configBagFileName;
 - (id)configBagRequest;
 - (id)configBagURL;
-- (id)copyConfigurationBag:(id *)a3;
-- (id)readConfigFromDisk:(id *)a3;
-- (id)stringForKey:(id)a3;
-- (id)urlForKey:(id)a3;
+- (id)copyConfigurationBag:(id *)bag;
+- (id)readConfigFromDisk:(id *)disk;
+- (id)stringForKey:(id)key;
+- (id)urlForKey:(id)key;
 - (unint64_t)getConfigBagEnvironment;
-- (unint64_t)percentageForKey:(id)a3;
-- (unint64_t)uintegerForKey:(id)a3;
-- (void)clearState:(id *)a3;
-- (void)configureFromNetworkWithFetcher:(id)a3 networkTimeout:(double)a4 completionHandler:(id)a5;
-- (void)configureWithFetcher:(id)a3 networkTimeout:(double)a4 completionHandler:(id)a5;
+- (unint64_t)percentageForKey:(id)key;
+- (unint64_t)uintegerForKey:(id)key;
+- (void)clearState:(id *)state;
+- (void)configureFromNetworkWithFetcher:(id)fetcher networkTimeout:(double)timeout completionHandler:(id)handler;
+- (void)configureWithFetcher:(id)fetcher networkTimeout:(double)timeout completionHandler:(id)handler;
 - (void)getSettings;
 @end
 
@@ -38,26 +38,26 @@
   result = [(TransparencyConfigBag *)self configApp];
   if (result == 2)
   {
-    v6 = [(TransparencyConfigBag *)self swtSettings];
-    v7 = [v6 atEnvironment];
+    swtSettings = [(TransparencyConfigBag *)self swtSettings];
+    atEnvironment = [swtSettings atEnvironment];
 
-    if (v7 > 9)
+    if (atEnvironment > 9)
     {
       return 1;
     }
 
     else
     {
-      return qword_1002DF6F8[v7];
+      return qword_1002DF6F8[atEnvironment];
     }
   }
 
   else if (result == 1)
   {
-    v4 = [(TransparencyConfigBag *)self settings];
-    v5 = [v4 getEnvironment];
+    settings = [(TransparencyConfigBag *)self settings];
+    getEnvironment = [settings getEnvironment];
 
-    return v5;
+    return getEnvironment;
   }
 
   return result;
@@ -66,8 +66,8 @@
 - (id)configBagURL
 {
   v3 = [[NSURLComponents alloc] initWithString:@"https://init-kt.apple.com/init/getBag"];
-  v4 = [(TransparencyConfigBag *)self currentEnvironment];
-  if (v4 == 2)
+  currentEnvironment = [(TransparencyConfigBag *)self currentEnvironment];
+  if (currentEnvironment == 2)
   {
     if (qword_10039CCC8 != -1)
     {
@@ -86,7 +86,7 @@
 
   else
   {
-    if (v4 != 1)
+    if (currentEnvironment != 1)
     {
       goto LABEL_14;
     }
@@ -109,10 +109,10 @@
   [v3 setHost:v6];
 LABEL_14:
   v8 = [[NSURLQueryItem alloc] initWithName:@"ix" value:@"3"];
-  v9 = [(TransparencyConfigBag *)self settings];
-  v10 = [v9 devicePlatform];
+  settings = [(TransparencyConfigBag *)self settings];
+  devicePlatform = [settings devicePlatform];
 
-  v11 = [[NSURLQueryItem alloc] initWithName:@"p" value:v10];
+  v11 = [[NSURLQueryItem alloc] initWithName:@"p" value:devicePlatform];
   v16[0] = v8;
   v16[1] = v11;
   v12 = [NSArray arrayWithObjects:v16 count:2];
@@ -125,8 +125,8 @@ LABEL_14:
 
 - (id)configBagFileName
 {
-  v2 = [(TransparencyConfigBag *)self currentEnvironment];
-  if (v2 == 2)
+  currentEnvironment = [(TransparencyConfigBag *)self currentEnvironment];
+  if (currentEnvironment == 2)
   {
     if (qword_10039CCC8 != -1)
     {
@@ -143,7 +143,7 @@ LABEL_14:
     return @"KTConfig-qa2.plist";
   }
 
-  else if (v2 == 1)
+  else if (currentEnvironment == 1)
   {
     if (qword_10039CCC8 != -1)
     {
@@ -168,15 +168,15 @@ LABEL_14:
 
 - (id)configBagRequest
 {
-  v3 = [(TransparencyConfigBag *)self configBagURL];
-  v4 = [(TransparencyConfigBag *)self settings];
-  [v4 defaultNetworkTimeout];
-  v5 = [NSMutableURLRequest requestWithURL:v3 cachePolicy:0 timeoutInterval:?];
+  configBagURL = [(TransparencyConfigBag *)self configBagURL];
+  settings = [(TransparencyConfigBag *)self settings];
+  [settings defaultNetworkTimeout];
+  v5 = [NSMutableURLRequest requestWithURL:configBagURL cachePolicy:0 timeoutInterval:?];
 
-  v6 = [(TransparencyConfigBag *)self settings];
-  LODWORD(v4) = [v6 getBool:kTransparencyFlagUseTestConfig];
+  settings2 = [(TransparencyConfigBag *)self settings];
+  LODWORD(settings) = [settings2 getBool:kTransparencyFlagUseTestConfig];
 
-  if (v4)
+  if (settings)
   {
     [v5 setValue:@"true" forHTTPHeaderField:@"X-Apple-Test-Application"];
     if (qword_10039CCC8 != -1)
@@ -213,16 +213,16 @@ LABEL_11:
     }
   }
 
-  v10 = [(TransparencyConfigBag *)self settings];
-  v11 = [v10 transparencyVersionStr];
-  [v5 setValue:v11 forHTTPHeaderField:off_10038B9F8];
+  settings3 = [(TransparencyConfigBag *)self settings];
+  transparencyVersionStr = [settings3 transparencyVersionStr];
+  [v5 setValue:transparencyVersionStr forHTTPHeaderField:off_10038B9F8];
 
-  v12 = [(TransparencyConfigBag *)self settings];
-  v13 = [v12 automatedDeviceGroup];
+  settings4 = [(TransparencyConfigBag *)self settings];
+  automatedDeviceGroup = [settings4 automatedDeviceGroup];
 
-  if (v13)
+  if (automatedDeviceGroup)
   {
-    [v5 setValue:v13 forHTTPHeaderField:off_10038B9F0];
+    [v5 setValue:automatedDeviceGroup forHTTPHeaderField:off_10038B9F0];
   }
 
   if ([(TransparencyConfigBag *)self configApp]== 2 && ![(TransparencyConfigBag *)self currentEnvironment])
@@ -246,10 +246,10 @@ LABEL_11:
 
 - (BOOL)shouldSetInternalHeader
 {
-  v3 = [(TransparencyConfigBag *)self settings];
-  v4 = [v3 allowsInternalSecurityPolicies];
+  settings = [(TransparencyConfigBag *)self settings];
+  allowsInternalSecurityPolicies = [settings allowsInternalSecurityPolicies];
 
-  if (!v4)
+  if (!allowsInternalSecurityPolicies)
   {
     return 0;
   }
@@ -259,8 +259,8 @@ LABEL_11:
     return 1;
   }
 
-  v5 = [(TransparencyConfigBag *)self swtSettings];
-  v6 = [v5 atEnvironment] != 7;
+  swtSettings = [(TransparencyConfigBag *)self swtSettings];
+  v6 = [swtSettings atEnvironment] != 7;
 
   return v6;
 }
@@ -271,10 +271,10 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntegerValue];
-    if (v4 <= 0x64)
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
+    if (unsignedIntegerValue <= 0x64)
     {
-      v5 = v4;
+      v5 = unsignedIntegerValue;
       if (qword_10039CCC8 != -1)
       {
         sub_10025EABC();
@@ -294,12 +294,12 @@ LABEL_11:
   }
 }
 
-- (TransparencyConfigBag)initWithRequiredKeys:(id)a3 settings:(id)a4 directory:(id)a5 configApp:(unint64_t)a6 swtSettings:(id)a7
+- (TransparencyConfigBag)initWithRequiredKeys:(id)keys settings:(id)settings directory:(id)directory configApp:(unint64_t)app swtSettings:(id)swtSettings
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  keysCopy = keys;
+  settingsCopy = settings;
+  directoryCopy = directory;
+  swtSettingsCopy = swtSettings;
   v21.receiver = self;
   v21.super_class = TransparencyConfigBag;
   v16 = [(TransparencyConfigBag *)&v21 init];
@@ -310,16 +310,16 @@ LABEL_11:
   }
 
   [(TransparencyConfigBag *)v16 getSettings];
-  [(TransparencyConfigBag *)v17 setSettings:v13];
-  [(TransparencyConfigBag *)v17 setConfigApp:a6];
-  if (a6 != 2 || v15)
+  [(TransparencyConfigBag *)v17 setSettings:settingsCopy];
+  [(TransparencyConfigBag *)v17 setConfigApp:app];
+  if (app != 2 || swtSettingsCopy)
   {
-    [(TransparencyConfigBag *)v17 setSwtSettings:v15];
+    [(TransparencyConfigBag *)v17 setSwtSettings:swtSettingsCopy];
     [(TransparencyConfigBag *)v17 setCurrentEnvironment:[(TransparencyConfigBag *)v17 getConfigBagEnvironment]];
-    v19 = [NSMutableDictionary dictionaryWithDictionary:v12];
+    v19 = [NSMutableDictionary dictionaryWithDictionary:keysCopy];
     [v19 setObject:objc_opt_class() forKeyedSubscript:@"bag-expiry-timestamp"];
     [(TransparencyConfigBag *)v17 setRequiredKeys:v19];
-    [(TransparencyConfigBag *)v17 setDirectory:v14];
+    [(TransparencyConfigBag *)v17 setDirectory:directoryCopy];
 
 LABEL_6:
     v18 = v17;
@@ -332,9 +332,9 @@ LABEL_7:
   return v18;
 }
 
-- (unint64_t)percentageForKey:(id)a3
+- (unint64_t)percentageForKey:(id)key
 {
-  result = [(TransparencyConfigBag *)self uintegerForKey:a3];
+  result = [(TransparencyConfigBag *)self uintegerForKey:key];
   if (result >= 0x64)
   {
     return 100;
@@ -343,31 +343,31 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)uintegerForKey:(id)a3
+- (unint64_t)uintegerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TransparencyConfigBag *)self config];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  config = [(TransparencyConfigBag *)self config];
+  v6 = [config objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 integerValue] & 0x8000000000000000) != 0)
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
   else
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TransparencyConfigBag *)self config];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  config = [(TransparencyConfigBag *)self config];
+  v6 = [config objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -383,9 +383,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)urlForKey:(id)a3
+- (id)urlForKey:(id)key
 {
-  v3 = [(TransparencyConfigBag *)self stringForKey:a3];
+  v3 = [(TransparencyConfigBag *)self stringForKey:key];
   if (v3)
   {
     v4 = [NSURL URLWithString:v3];
@@ -399,11 +399,11 @@ LABEL_7:
   return v4;
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TransparencyConfigBag *)self config];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  config = [(TransparencyConfigBag *)self config];
+  v6 = [config objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   v7 = 0.0;
@@ -416,9 +416,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)checkMissingBagKeys:(id)a3 keys:(id)a4
+- (id)checkMissingBagKeys:(id)keys keys:(id)a4
 {
-  v5 = a3;
+  keysCopy = keys;
   v6 = a4;
   v7 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
@@ -441,7 +441,7 @@ LABEL_7:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v5 objectForKeyedSubscript:{v13, v16}];
+        v14 = [keysCopy objectForKeyedSubscript:{v13, v16}];
 
         if (!v14)
         {
@@ -458,16 +458,16 @@ LABEL_7:
   return v7;
 }
 
-- (id)checkBagKeyClass:(id)a3 keys:(id)a4
+- (id)checkBagKeyClass:(id)class keys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
+  classCopy = class;
+  keysCopy = keys;
   v7 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -483,7 +483,7 @@ LABEL_7:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v5 objectForKeyedSubscript:{v13, v17}];
+        v14 = [classCopy objectForKeyedSubscript:{v13, v17}];
         [v8 objectForKeyedSubscript:v13];
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -502,17 +502,17 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)validateConfigEntries:(id)a3 error:(id *)a4
+- (BOOL)validateConfigEntries:(id)entries error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TransparencyConfigBag *)self requiredKeys];
-  v8 = [(TransparencyConfigBag *)self checkMissingBagKeys:v6 keys:v7];
+  entriesCopy = entries;
+  requiredKeys = [(TransparencyConfigBag *)self requiredKeys];
+  v8 = [(TransparencyConfigBag *)self checkMissingBagKeys:entriesCopy keys:requiredKeys];
 
   if ([v8 count])
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"Missing required field in config bag data"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"Missing required field in config bag data"];
     }
 
     if (qword_10039CCC8 != -1)
@@ -535,16 +535,16 @@ LABEL_7:
 
   else
   {
-    v13 = [(TransparencyConfigBag *)self requiredKeys];
-    v14 = [(TransparencyConfigBag *)self checkBagKeyClass:v6 keys:v13];
+    requiredKeys2 = [(TransparencyConfigBag *)self requiredKeys];
+    v14 = [(TransparencyConfigBag *)self checkBagKeyClass:entriesCopy keys:requiredKeys2];
 
     v15 = [v14 count];
     v12 = v15 == 0;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-115 description:@"Required field has unexpected class"];
+        *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-115 description:@"Required field has unexpected class"];
       }
 
       if (qword_10039CCC8 != -1)
@@ -567,10 +567,10 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)processConfigBagData:(id)a3 error:(id *)a4
+- (BOOL)processConfigBagData:(id)data error:(id *)error
 {
-  v6 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:0 error:a4];
-  if (v6 && [(TransparencyConfigBag *)self validateConfigEntries:v6 error:a4])
+  v6 = [NSPropertyListSerialization propertyListWithData:data options:0 format:0 error:error];
+  if (v6 && [(TransparencyConfigBag *)self validateConfigEntries:v6 error:error])
   {
     v7 = 1;
     [(TransparencyConfigBag *)self setConfigured:1];
@@ -589,14 +589,14 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)validateConfigBagCertificates:(id)a3 error:(id *)a4
+- (BOOL)validateConfigBagCertificates:(id)certificates error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TransparencyConfigBag *)self settings];
-  if ([v7 allowsInternalSecurityPolicies])
+  certificatesCopy = certificates;
+  settings = [(TransparencyConfigBag *)self settings];
+  if ([settings allowsInternalSecurityPolicies])
   {
-    v8 = [(TransparencyConfigBag *)self settings];
-    v9 = [v8 getBool:kTransparencyFlagDisableVerifyBagCertificate];
+    settings2 = [(TransparencyConfigBag *)self settings];
+    v9 = [settings2 getBool:kTransparencyFlagDisableVerifyBagCertificate];
 
     if (v9)
     {
@@ -609,20 +609,20 @@ LABEL_7:
   {
   }
 
-  if ([v6 count])
+  if ([certificatesCopy count])
   {
     [(TransparencyConfigBag *)self currentEnvironment];
     AppleIDSService = SecPolicyCreateAppleIDSService();
-    v12 = [v6 objectAtIndexedSubscript:0];
+    v12 = [certificatesCopy objectAtIndexedSubscript:0];
     v20 = v12;
     v13 = [NSArray arrayWithObjects:&v20 count:1];
-    v10 = [TransparencyCertificateHelper verifyCertificates:v13 intermediates:v6 policy:AppleIDSService error:a4];
+    v10 = [TransparencyCertificateHelper verifyCertificates:v13 intermediates:certificatesCopy policy:AppleIDSService error:error];
 
     if (!v10)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-28 underlyingError:*a4 description:@"bag certificates failed trust evaluation"];
+        *error = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-28 underlyingError:*error description:@"bag certificates failed trust evaluation"];
       }
 
       if (qword_10039CCC8 != -1)
@@ -633,9 +633,9 @@ LABEL_7:
       v14 = qword_10039CCD0;
       if (os_log_type_enabled(qword_10039CCD0, OS_LOG_TYPE_ERROR))
       {
-        if (a4)
+        if (error)
         {
-          v15 = *a4;
+          v15 = *error;
         }
 
         else
@@ -657,9 +657,9 @@ LABEL_7:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-113 description:@"Config bag missing certificates"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-113 description:@"Config bag missing certificates"];
     }
 
     if (qword_10039CCC8 != -1)
@@ -682,14 +682,14 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)validateConfigBagSignature:(id)a3 error:(id *)a4
+- (BOOL)validateConfigBagSignature:(id)signature error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TransparencyConfigBag *)self settings];
-  if ([v7 allowsInternalSecurityPolicies])
+  signatureCopy = signature;
+  settings = [(TransparencyConfigBag *)self settings];
+  if ([settings allowsInternalSecurityPolicies])
   {
-    v8 = [(TransparencyConfigBag *)self settings];
-    v9 = [v8 getBool:kTransparencyFlagDisableVerifyBagSignature];
+    settings2 = [(TransparencyConfigBag *)self settings];
+    v9 = [settings2 getBool:kTransparencyFlagDisableVerifyBagSignature];
 
     if (v9)
     {
@@ -702,21 +702,21 @@ LABEL_25:
   {
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"bag"];
-  v12 = [v6 objectForKeyedSubscript:@"signature"];
-  v13 = [v6 objectForKeyedSubscript:@"certs"];
+  v11 = [signatureCopy objectForKeyedSubscript:@"bag"];
+  v12 = [signatureCopy objectForKeyedSubscript:@"signature"];
+  v13 = [signatureCopy objectForKeyedSubscript:@"certs"];
   v14 = [v13 objectAtIndexedSubscript:0];
-  v15 = [TransparencyCertificateHelper certificateFromData:v14 error:a4];
+  v15 = [TransparencyCertificateHelper certificateFromData:v14 error:error];
 
   if (v15)
   {
     v16 = SecCertificateCopySubjectPublicKeyInfoSHA256Digest();
     if (v16)
     {
-      v17 = [TransparencyCertificateHelper copyTrustedKeysFromDataArray:v13 error:a4];
+      v17 = [TransparencyCertificateHelper copyTrustedKeysFromDataArray:v13 error:error];
       if (v17)
       {
-        v10 = [TransparencySignatureVerifier verifyMessage:v11 signature:v12 spkiHash:v16 trustedKeys:v17 algorithm:kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256 error:a4];
+        v10 = [TransparencySignatureVerifier verifyMessage:v11 signature:v12 spkiHash:v16 trustedKeys:v17 algorithm:kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256 error:error];
         if (!v10)
         {
           if (qword_10039CCC8 != -1)
@@ -727,9 +727,9 @@ LABEL_25:
           v18 = qword_10039CCD0;
           if (os_log_type_enabled(qword_10039CCD0, OS_LOG_TYPE_ERROR))
           {
-            if (a4)
+            if (error)
             {
-              v19 = *a4;
+              v19 = *error;
             }
 
             else
@@ -746,9 +746,9 @@ LABEL_25:
 
       else
       {
-        if (a4)
+        if (error)
         {
-          *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-7 description:@"Failed to decode certs in bag"];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-7 description:@"Failed to decode certs in bag"];
         }
 
         if (qword_10039CCC8 != -1)
@@ -771,9 +771,9 @@ LABEL_25:
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-30 description:@"Failed to get SPKI hash from cert"];
+        *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-30 description:@"Failed to get SPKI hash from cert"];
       }
 
       if (qword_10039CCC8 != -1)
@@ -814,14 +814,14 @@ LABEL_38:
   return v10;
 }
 
-- (BOOL)validateConfigBagEntries:(id)a3 error:(id *)a4
+- (BOOL)validateConfigBagEntries:(id)entries error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bag"];
+  entriesCopy = entries;
+  v7 = [entriesCopy objectForKeyedSubscript:@"bag"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:@"certs"];
+    v8 = [entriesCopy objectForKeyedSubscript:@"certs"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 count])
     {
@@ -849,9 +849,9 @@ LABEL_38:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
-                *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"cert wrong type"];
+                *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"cert wrong type"];
               }
 
               v8 = v30;
@@ -884,16 +884,16 @@ LABEL_38:
         }
       }
 
-      v15 = [v6 objectForKeyedSubscript:@"signature"];
+      v15 = [entriesCopy objectForKeyedSubscript:@"signature"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v6 objectForKeyedSubscript:@"certs"];
-        v17 = [(TransparencyConfigBag *)self validateConfigBagCertificates:v16 error:a4];
+        v16 = [entriesCopy objectForKeyedSubscript:@"certs"];
+        v17 = [(TransparencyConfigBag *)self validateConfigBagCertificates:v16 error:error];
 
         if (v17)
         {
-          v18 = [(TransparencyConfigBag *)self validateConfigBagSignature:v6 error:a4];
+          v18 = [(TransparencyConfigBag *)self validateConfigBagSignature:entriesCopy error:error];
         }
 
         else
@@ -906,9 +906,9 @@ LABEL_38:
 
       else
       {
-        if (a4)
+        if (error)
         {
-          *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"sigature missing required field or type"];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"sigature missing required field or type"];
         }
 
         if (qword_10039CCC8 != -1)
@@ -933,9 +933,9 @@ LABEL_38:
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"certs missing required field or type"];
+        *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"certs missing required field or type"];
       }
 
       if (qword_10039CCC8 != -1)
@@ -959,9 +959,9 @@ LABEL_35:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"bag missing required field or type"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-114 description:@"bag missing required field or type"];
     }
 
     if (qword_10039CCC8 != -1)
@@ -984,21 +984,21 @@ LABEL_35:
   return v18;
 }
 
-- (BOOL)configureFromNetworkBagData:(id)a3 error:(id *)a4
+- (BOOL)configureFromNetworkBagData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSPropertyListSerialization propertyListWithData:v6 options:0 format:0 error:a4];
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v7 && [(TransparencyConfigBag *)v8 validateConfigBagEntries:v7 error:a4])
+  dataCopy = data;
+  v7 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:error];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (v7 && [(TransparencyConfigBag *)selfCopy validateConfigBagEntries:v7 error:error])
   {
     v9 = [v7 objectForKeyedSubscript:@"bag"];
-    v10 = [(TransparencyConfigBag *)v8 processConfigBagData:v9 error:a4];
+    v10 = [(TransparencyConfigBag *)selfCopy processConfigBagData:v9 error:error];
 
     if (v10)
     {
       v15 = 0;
-      v11 = [(TransparencyConfigBag *)v8 writeConfigToDisk:v7 error:&v15];
+      v11 = [(TransparencyConfigBag *)selfCopy writeConfigToDisk:v7 error:&v15];
       v12 = v15;
       if ((v11 & 1) == 0)
       {
@@ -1017,12 +1017,12 @@ LABEL_35:
       }
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     LOBYTE(v10) = 0;
   }
@@ -1059,12 +1059,12 @@ LABEL_35:
   return v4 > v6;
 }
 
-- (id)readConfigFromDisk:(id *)a3
+- (id)readConfigFromDisk:(id *)disk
 {
-  v5 = [(TransparencyConfigBag *)self configBagFileName];
-  v6 = [(TransparencyConfigBag *)self directory];
+  configBagFileName = [(TransparencyConfigBag *)self configBagFileName];
+  directory = [(TransparencyConfigBag *)self directory];
   v13 = 0;
-  v7 = [TransparencyFileSupport readDictionaryFromFile:v5 inDirectory:v6 error:&v13];
+  v7 = [TransparencyFileSupport readDictionaryFromFile:configBagFileName inDirectory:directory error:&v13];
   v8 = v13;
 
   if (v7)
@@ -1074,35 +1074,35 @@ LABEL_35:
 
   else
   {
-    v9 = a3 == 0;
+    v9 = disk == 0;
   }
 
   if (!v9 && v8 != 0)
   {
     v12 = v8;
-    *a3 = v8;
+    *disk = v8;
   }
 
   return v7;
 }
 
-- (BOOL)writeConfigToDisk:(id)a3 error:(id *)a4
+- (BOOL)writeConfigToDisk:(id)disk error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TransparencyConfigBag *)self configBagFileName];
-  v8 = [(TransparencyConfigBag *)self directory];
-  LOBYTE(a4) = [TransparencyFileSupport writeDictionaryToFile:v6 fileName:v7 inDirectory:v8 error:a4];
+  diskCopy = disk;
+  configBagFileName = [(TransparencyConfigBag *)self configBagFileName];
+  directory = [(TransparencyConfigBag *)self directory];
+  LOBYTE(error) = [TransparencyFileSupport writeDictionaryToFile:diskCopy fileName:configBagFileName inDirectory:directory error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)configureWithDisk:(id *)a3
+- (BOOL)configureWithDisk:(id *)disk
 {
   v5 = [(TransparencyConfigBag *)self readConfigFromDisk:?];
-  if (v5 && [(TransparencyConfigBag *)self validateConfigBagEntries:v5 error:a3])
+  if (v5 && [(TransparencyConfigBag *)self validateConfigBagEntries:v5 error:disk])
   {
     v6 = [v5 objectForKeyedSubscript:@"bag"];
-    v7 = [(TransparencyConfigBag *)self processConfigBagData:v6 error:a3];
+    v7 = [(TransparencyConfigBag *)self processConfigBagData:v6 error:disk];
   }
 
   else
@@ -1113,27 +1113,27 @@ LABEL_35:
   return v7;
 }
 
-- (void)configureFromNetworkWithFetcher:(id)a3 networkTimeout:(double)a4 completionHandler:(id)a5
+- (void)configureFromNetworkWithFetcher:(id)fetcher networkTimeout:(double)timeout completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(TransparencyConfigBag *)self configBagRequest];
+  handlerCopy = handler;
+  fetcherCopy = fetcher;
+  configBagRequest = [(TransparencyConfigBag *)self configBagRequest];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10021923C;
   v11[3] = &unk_10031D5D0;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v8 fetchConfigBag:v9 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [fetcherCopy fetchConfigBag:configBagRequest completionHandler:v11];
 }
 
-- (void)configureWithFetcher:(id)a3 networkTimeout:(double)a4 completionHandler:(id)a5
+- (void)configureWithFetcher:(id)fetcher networkTimeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(TransparencyConfigBag *)self getConfigBagEnvironment];
-  if ([(TransparencyConfigBag *)self configured]&& [(TransparencyConfigBag *)self currentEnvironment]== v10 && (v8 || ![(TransparencyConfigBag *)self configurationExpired]))
+  fetcherCopy = fetcher;
+  handlerCopy = handler;
+  getConfigBagEnvironment = [(TransparencyConfigBag *)self getConfigBagEnvironment];
+  if ([(TransparencyConfigBag *)self configured]&& [(TransparencyConfigBag *)self currentEnvironment]== getConfigBagEnvironment && (fetcherCopy || ![(TransparencyConfigBag *)self configurationExpired]))
   {
     if ([(TransparencyConfigBag *)self configurationExpired])
     {
@@ -1149,25 +1149,25 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Configuration already loaded, but need to kick off config bag fetch because configuration expired", buf, 2u);
       }
 
-      [v8 triggerConfigBagFetch:0.0];
+      [fetcherCopy triggerConfigBagFetch:0.0];
     }
 
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v11 = self;
-    objc_sync_enter(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v18 = 0;
-    v12 = [(TransparencyConfigBag *)v11 configureWithDisk:&v18];
+    v12 = [(TransparencyConfigBag *)selfCopy configureWithDisk:&v18];
     v13 = v18;
     if (!v12)
     {
       goto LABEL_13;
     }
 
-    if ([(TransparencyConfigBag *)v11 configurationExpired])
+    if ([(TransparencyConfigBag *)selfCopy configurationExpired])
     {
       if (qword_10039CCC8 != -1)
       {
@@ -1181,7 +1181,7 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Configuration loaded from disk, but need to kick off config bag fetch because configuration expired", buf, 2u);
       }
 
-      [v8 triggerConfigBagFetch:0.0];
+      [fetcherCopy triggerConfigBagFetch:0.0];
     }
 
     if (!v13)
@@ -1198,15 +1198,15 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Loaded configuration bag from disk", buf, 2u);
       }
 
-      v9[2](v9, 0);
-      objc_sync_exit(v11);
+      handlerCopy[2](handlerCopy, 0);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
 LABEL_13:
 
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy);
       if (qword_10039CCC8 != -1)
       {
         sub_10025EC74();
@@ -1219,15 +1219,15 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Updating configuration from network", buf, 2u);
       }
 
-      [(TransparencyConfigBag *)v11 configureFromNetworkWithFetcher:v8 networkTimeout:v9 completionHandler:a4];
+      [(TransparencyConfigBag *)selfCopy configureFromNetworkWithFetcher:fetcherCopy networkTimeout:handlerCopy completionHandler:timeout];
     }
   }
 }
 
-- (id)copyConfigurationBag:(id *)a3
+- (id)copyConfigurationBag:(id *)bag
 {
   v5 = [(TransparencyConfigBag *)self readConfigFromDisk:?];
-  if (v5 && [(TransparencyConfigBag *)self validateConfigBagEntries:v5 error:a3])
+  if (v5 && [(TransparencyConfigBag *)self validateConfigBagEntries:v5 error:bag])
   {
     v6 = v5;
   }
@@ -1240,19 +1240,19 @@ LABEL_13:
   return v6;
 }
 
-- (void)clearState:(id *)a3
+- (void)clearState:(id *)state
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(TransparencyConfigBag *)v4 configBagFileName];
-  v6 = [(TransparencyConfigBag *)v4 directory];
-  v7 = [TransparencyFileSupport deleteFile:v5 inDirectory:v6 error:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configBagFileName = [(TransparencyConfigBag *)selfCopy configBagFileName];
+  directory = [(TransparencyConfigBag *)selfCopy directory];
+  v7 = [TransparencyFileSupport deleteFile:configBagFileName inDirectory:directory error:state];
 
   if (v7)
   {
-    [(TransparencyConfigBag *)v4 setConfigured:0];
-    [(TransparencyConfigBag *)v4 setExpirationTime:0.0];
-    [(TransparencyConfigBag *)v4 setConfig:0];
+    [(TransparencyConfigBag *)selfCopy setConfigured:0];
+    [(TransparencyConfigBag *)selfCopy setExpirationTime:0.0];
+    [(TransparencyConfigBag *)selfCopy setConfig:0];
   }
 
   else
@@ -1265,9 +1265,9 @@ LABEL_13:
     v8 = qword_10039CCD0;
     if (os_log_type_enabled(qword_10039CCD0, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (state)
       {
-        v9 = *a3;
+        v9 = *state;
       }
 
       else
@@ -1281,32 +1281,32 @@ LABEL_13:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)tapToRadarEnabled
 {
-  v2 = [(TransparencyConfigBag *)self config];
-  v3 = [v2 objectForKeyedSubscript:@"ttr-enabled"];
+  config = [(TransparencyConfigBag *)self config];
+  v3 = [config objectForKeyedSubscript:@"ttr-enabled"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)swtCFUDetailsURL
 {
-  v2 = [(TransparencyConfigBag *)self config];
-  v3 = [v2 objectForKeyedSubscript:@"swt-cfu-url"];
+  config = [(TransparencyConfigBag *)self config];
+  v3 = [config objectForKeyedSubscript:@"swt-cfu-url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

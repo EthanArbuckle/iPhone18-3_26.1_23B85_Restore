@@ -1,19 +1,19 @@
 @interface SIResult
 - (_TtC22SearchIntrospectionKit8SIResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC22SearchIntrospectionKit8SIResult_resultText);
   v5 = *&self->resultText[OBJC_IVAR____TtC22SearchIntrospectionKit8SIResult_resultText];
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_264E899B4();
   v8 = sub_264E899B4();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 - (_TtC22SearchIntrospectionKit8SIResult)init

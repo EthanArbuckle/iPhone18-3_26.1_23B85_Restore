@@ -1,12 +1,12 @@
 @interface BKUIOrientationStateHandler
-+ (unint64_t)bkui_getState:(int)a3;
++ (unint64_t)bkui_getState:(int)state;
 - (BKUIOrientationStateHandler)init;
 - (BOOL)rotationLockStatusIsLocked;
 - (int64_t)rawDeviceOrientationIgnoringOrientationLocks;
-- (void)_invalidateTokenIfNeeded:(int)a3;
+- (void)_invalidateTokenIfNeeded:(int)needed;
 - (void)dealloc;
-- (void)registerRotationLockObserver:(id)a3;
-- (void)registerRotationObserver:(id)a3;
+- (void)registerRotationLockObserver:(id)observer;
+- (void)registerRotationObserver:(id)observer;
 @end
 
 @implementation BKUIOrientationStateHandler
@@ -71,9 +71,9 @@
   return v5 != 0;
 }
 
-- (void)registerRotationObserver:(id)a3
+- (void)registerRotationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = _BKUILoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -93,7 +93,7 @@
     v9[2] = __56__BKUIOrientationStateHandler_registerRotationObserver___block_invoke;
     v9[3] = &unk_278D098D8;
     objc_copyWeak(&v11, &buf);
-    v10 = v4;
+    v10 = observerCopy;
     notify_register_dispatch(v6, &out_token, v7, v9);
 
     self->_orientationNotificationToken = out_token;
@@ -130,10 +130,10 @@ void __56__BKUIOrientationStateHandler_registerRotationObserver___block_invoke(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerRotationLockObserver:(id)a3
+- (void)registerRotationLockObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
+  observerCopy = observer;
+  v5 = observerCopy;
   if (self->_rotationLockNotificationToken == -1)
   {
     out_token = 0;
@@ -142,7 +142,7 @@ void __56__BKUIOrientationStateHandler_registerRotationObserver___block_invoke(u
     v7[1] = 3221225472;
     v7[2] = __60__BKUIOrientationStateHandler_registerRotationLockObserver___block_invoke;
     v7[3] = &unk_278D09900;
-    v8 = v4;
+    v8 = observerCopy;
     notify_register_dispatch(v6, &out_token, MEMORY[0x277D85CD0], v7);
     self->_rotationLockNotificationToken = out_token;
   }
@@ -162,10 +162,10 @@ uint64_t __60__BKUIOrientationStateHandler_registerRotationLockObserver___block_
   return result;
 }
 
-+ (unint64_t)bkui_getState:(int)a3
++ (unint64_t)bkui_getState:(int)state
 {
   state64 = 0;
-  notify_get_state(a3, &state64);
+  notify_get_state(state, &state64);
   return state64;
 }
 
@@ -180,12 +180,12 @@ uint64_t __60__BKUIOrientationStateHandler_registerRotationLockObserver___block_
   [(BKUIOrientationStateHandler *)&v3 dealloc];
 }
 
-- (void)_invalidateTokenIfNeeded:(int)a3
+- (void)_invalidateTokenIfNeeded:(int)needed
 {
-  if (notify_is_valid_token(a3))
+  if (notify_is_valid_token(needed))
   {
 
-    notify_cancel(a3);
+    notify_cancel(needed);
   }
 }
 

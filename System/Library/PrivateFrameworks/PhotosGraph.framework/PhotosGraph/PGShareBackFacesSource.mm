@@ -1,23 +1,23 @@
 @interface PGShareBackFacesSource
-- (BOOL)prepareSourceWithGraph:(id)a3;
-- (PGShareBackFacesSource)initWithLoggingConnection:(id)a3 photoLibrary:(id)a4;
-- (PGShareBackFacesSource)initWithLoggingConnection:(id)a3 photoLibrary:(id)a4 faceIdentification:(id)a5;
-- (id)suggesterResultsForInputs:(id)a3 momentNodes:(id)a4 inGraph:(id)a5 error:(id *)a6;
+- (BOOL)prepareSourceWithGraph:(id)graph;
+- (PGShareBackFacesSource)initWithLoggingConnection:(id)connection photoLibrary:(id)library;
+- (PGShareBackFacesSource)initWithLoggingConnection:(id)connection photoLibrary:(id)library faceIdentification:(id)identification;
+- (id)suggesterResultsForInputs:(id)inputs momentNodes:(id)nodes inGraph:(id)graph error:(id *)error;
 @end
 
 @implementation PGShareBackFacesSource
 
-- (id)suggesterResultsForInputs:(id)a3 momentNodes:(id)a4 inGraph:(id)a5 error:(id *)a6
+- (id)suggesterResultsForInputs:(id)inputs momentNodes:(id)nodes inGraph:(id)graph error:(id *)error
 {
   v141 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  inputsCopy = inputs;
+  nodesCopy = nodes;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v12 = v9;
+  v12 = inputsCopy;
   v13 = [v12 countByEnumeratingWithState:&v127 objects:v140 count:16];
   if (v13)
   {
@@ -32,10 +32,10 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v127 + 1) + 8 * i) localIdentifier];
-        if (v17)
+        localIdentifier = [*(*(&v127 + 1) + 8 * i) localIdentifier];
+        if (localIdentifier)
         {
-          [v11 addObject:v17];
+          [v11 addObject:localIdentifier];
         }
       }
 
@@ -47,20 +47,20 @@
 
   if ([v11 count])
   {
-    v18 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v139 = *MEMORY[0x277CD9AA8];
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v139 count:1];
-    [v18 setFetchPropertySets:v19];
+    [librarySpecificFetchOptions setFetchPropertySets:v19];
 
     v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != nil", @"faceAdjustmentVersion"];
-    [v18 setInternalPredicate:v20];
+    [librarySpecificFetchOptions setInternalPredicate:v20];
 
-    v21 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v11 options:v18];
+    v21 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v11 options:librarySpecificFetchOptions];
     if ([v21 count])
     {
-      v99 = self;
+      selfCopy = self;
       v96 = v21;
-      v97 = v18;
+      v97 = librarySpecificFetchOptions;
       v22 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:v21 options:0];
       v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v123 = 0u;
@@ -68,8 +68,8 @@
       v125 = 0u;
       v126 = 0u;
       v98 = v22;
-      v24 = [v22 allValues];
-      v25 = [v24 countByEnumeratingWithState:&v123 objects:v136 count:16];
+      allValues = [v22 allValues];
+      v25 = [allValues countByEnumeratingWithState:&v123 objects:v136 count:16];
       if (v25)
       {
         v26 = v25;
@@ -80,14 +80,14 @@
           {
             if (*v124 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(allValues);
             }
 
-            v29 = [*(*(&v123 + 1) + 8 * j) fetchedObjects];
-            [v23 addObjectsFromArray:v29];
+            fetchedObjects = [*(*(&v123 + 1) + 8 * j) fetchedObjects];
+            [v23 addObjectsFromArray:fetchedObjects];
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v123 objects:v136 count:16];
+          v26 = [allValues countByEnumeratingWithState:&v123 objects:v136 count:16];
         }
 
         while (v26);
@@ -95,26 +95,26 @@
 
       if ([v23 count])
       {
-        p_isa = &v99->super.super.isa;
-        faceIdentification = v99->_faceIdentification;
+        p_isa = &selfCopy->super.super.isa;
+        faceIdentification = selfCopy->_faceIdentification;
         v122 = 0;
         v32 = [(CLSFaceIdentificationProtocol *)faceIdentification requestIdentificationOfFaces:v23 error:&v122];
         v33 = v122;
-        v34 = v33;
+        loggingConnection4 = v33;
         if (v33)
         {
-          if (a6)
+          if (error)
           {
             v35 = v33;
-            *a6 = v34;
+            *error = loggingConnection4;
           }
 
-          v36 = [(PGShareBackSource *)v99 loggingConnection];
-          if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+          loggingConnection = [(PGShareBackSource *)selfCopy loggingConnection];
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v138 = v34;
-            _os_log_error_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_ERROR, "[PGShareBackFacesSource] Error while getting classification results for faces: %@", buf, 0xCu);
+            v138 = loggingConnection4;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGShareBackFacesSource] Error while getting classification results for faces: %@", buf, 0xCu);
           }
 
           v37 = 0;
@@ -122,17 +122,17 @@
 
         else if ([v32 count])
         {
-          v36 = objc_alloc_init(MEMORY[0x277CBEB58]);
-          v94 = v10;
+          loggingConnection = objc_alloc_init(MEMORY[0x277CBEB58]);
+          v94 = nodesCopy;
           v95 = v32;
-          if ([v10 count])
+          if ([nodesCopy count])
           {
-            v39 = v36;
+            v39 = loggingConnection;
             v120 = 0u;
             v121 = 0u;
             v118 = 0u;
             v119 = 0u;
-            obj = v10;
+            obj = nodesCopy;
             v40 = [obj countByEnumeratingWithState:&v118 objects:v135 count:16];
             if (v40)
             {
@@ -147,10 +147,10 @@
                     objc_enumerationMutation(obj);
                   }
 
-                  v44 = [*(*(&v118 + 1) + 8 * k) collection];
-                  v45 = [v44 personNodes];
-                  v46 = [v45 localIdentifiers];
-                  [v39 unionSet:v46];
+                  collection = [*(*(&v118 + 1) + 8 * k) collection];
+                  personNodes = [collection personNodes];
+                  localIdentifiers = [personNodes localIdentifiers];
+                  [v39 unionSet:localIdentifiers];
                 }
 
                 v41 = [obj countByEnumeratingWithState:&v118 objects:v135 count:16];
@@ -159,38 +159,38 @@
               while (v41);
             }
 
-            p_isa = &v99->super.super.isa;
-            v47 = [(PGShareBackSource *)v99 loggingConnection];
-            v36 = v39;
-            if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+            p_isa = &selfCopy->super.super.isa;
+            loggingConnection2 = [(PGShareBackSource *)selfCopy loggingConnection];
+            loggingConnection = v39;
+            if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
               v138 = v39;
-              _os_log_impl(&dword_22F0FC000, v47, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] Persons to match: %@", buf, 0xCu);
+              _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] Persons to match: %@", buf, 0xCu);
             }
 
-            v10 = v94;
+            nodesCopy = v94;
             v32 = v95;
-            v34 = 0;
+            loggingConnection4 = 0;
           }
 
           v48 = [p_isa[3] length];
-          if ([v36 count]| v48)
+          if ([loggingConnection count]| v48)
           {
             v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
             v114 = 0u;
             v115 = 0u;
             v116 = 0u;
             v117 = 0u;
-            v49 = v12;
-            v50 = [v49 countByEnumeratingWithState:&v114 objects:v134 count:16];
+            loggingConnection3 = v12;
+            v50 = [loggingConnection3 countByEnumeratingWithState:&v114 objects:v134 count:16];
             if (!v50)
             {
               goto LABEL_100;
             }
 
             v51 = *v115;
-            v91 = v49;
+            v91 = loggingConnection3;
             v85 = v48;
             v87 = *v115;
             while (1)
@@ -202,7 +202,7 @@
                 if (*v115 != v51)
                 {
                   v53 = v52;
-                  objc_enumerationMutation(v49);
+                  objc_enumerationMutation(loggingConnection3);
                   v52 = v53;
                 }
 
@@ -212,8 +212,8 @@
                 v111 = 0u;
                 v112 = 0u;
                 v113 = 0u;
-                v55 = [v54 localIdentifier];
-                v56 = [v98 objectForKeyedSubscript:v55];
+                localIdentifier2 = [v54 localIdentifier];
+                v56 = [v98 objectForKeyedSubscript:localIdentifier2];
 
                 v57 = v56;
                 v58 = [v56 countByEnumeratingWithState:&v110 objects:v133 count:16];
@@ -225,7 +225,7 @@
 
                 v59 = 0;
                 v60 = *v111;
-                v93 = v36;
+                v93 = loggingConnection;
                 v90 = v57;
                 v84 = *v111;
                 while (2)
@@ -243,8 +243,8 @@
                     }
 
                     v88 = v61;
-                    v63 = [*(*(&v110 + 1) + 8 * v61) localIdentifier];
-                    v64 = [v32 objectForKeyedSubscript:v63];
+                    localIdentifier3 = [*(*(&v110 + 1) + 8 * v61) localIdentifier];
+                    v64 = [v32 objectForKeyedSubscript:localIdentifier3];
 
                     v108 = 0u;
                     v109 = 0u;
@@ -288,27 +288,27 @@
                     {
 LABEL_97:
                       LOWORD(v59) = 64;
-                      v10 = v94;
+                      nodesCopy = v94;
 LABEL_98:
 
                       v32 = v95;
-                      v34 = 0;
-                      v36 = v93;
+                      loggingConnection4 = 0;
+                      loggingConnection = v93;
 LABEL_99:
                       v78 = [PGShareBackSuggesterResult alloc];
                       v79 = v59;
-                      v49 = v91;
-                      v80 = [(PGShareBackSuggesterResult *)v78 initWithInputs:v91 processingValue:v79 momentNodes:v10];
+                      loggingConnection3 = v91;
+                      v80 = [(PGShareBackSuggesterResult *)v78 initWithInputs:v91 processingValue:v79 momentNodes:nodesCopy];
                       [v37 addObject:v80];
 
                       goto LABEL_100;
                     }
 
-                    v10 = v94;
+                    nodesCopy = v94;
                     if (v85)
                     {
-                      v71 = v99;
-                      v72 = [v64 objectForKeyedSubscript:v99->_meLocalIdentifier];
+                      v71 = selfCopy;
+                      v72 = [v64 objectForKeyedSubscript:selfCopy->_meLocalIdentifier];
 
                       LOWORD(v59) = 32;
                       if (v72 || v92 == 32)
@@ -319,7 +319,7 @@ LABEL_99:
 
                     else
                     {
-                      v71 = v99;
+                      v71 = selfCopy;
                       if (v92 == 32)
                       {
                         LOWORD(v59) = 32;
@@ -371,8 +371,8 @@ LABEL_82:
                     v61 = v88 + 1;
                     v60 = v84;
                     v32 = v95;
-                    v34 = 0;
-                    v36 = v93;
+                    loggingConnection4 = 0;
+                    loggingConnection = v93;
                     v57 = v90;
                   }
 
@@ -395,7 +395,7 @@ LABEL_82:
 LABEL_87:
                 v52 = v89 + 1;
                 v51 = v87;
-                v49 = v91;
+                loggingConnection3 = v91;
               }
 
               while (v89 + 1 != v86);
@@ -408,11 +408,11 @@ LABEL_87:
             }
           }
 
-          v49 = [p_isa loggingConnection];
-          if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
+          loggingConnection3 = [p_isa loggingConnection];
+          if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
-            _os_log_impl(&dword_22F0FC000, v49, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No persons to match", buf, 2u);
+            _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No persons to match", buf, 2u);
           }
 
           v37 = MEMORY[0x277CBEBF8];
@@ -421,11 +421,11 @@ LABEL_100:
 
         else
         {
-          v36 = [(PGShareBackSource *)v99 loggingConnection];
-          if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+          loggingConnection = [(PGShareBackSource *)selfCopy loggingConnection];
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
-            _os_log_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No classification results for faces", buf, 2u);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No classification results for faces", buf, 2u);
           }
 
           v37 = MEMORY[0x277CBEBF8];
@@ -434,29 +434,29 @@ LABEL_100:
 
       else
       {
-        v34 = [(PGShareBackSource *)v99 loggingConnection];
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+        loggingConnection4 = [(PGShareBackSource *)selfCopy loggingConnection];
+        if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No faces for assets", buf, 2u);
+          _os_log_impl(&dword_22F0FC000, loggingConnection4, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No faces for assets", buf, 2u);
         }
 
         v37 = MEMORY[0x277CBEBF8];
       }
 
       v21 = v96;
-      v18 = v97;
-      v38 = v98;
+      librarySpecificFetchOptions = v97;
+      loggingConnection5 = v98;
     }
 
     else
     {
-      v38 = [(PGShareBackSource *)self loggingConnection];
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
+      loggingConnection5 = [(PGShareBackSource *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection5, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v138 = v11;
-        _os_log_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No assets with faces processed for asset local identifiers: %@", buf, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection5, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No assets with faces processed for asset local identifiers: %@", buf, 0xCu);
       }
 
       v37 = MEMORY[0x277CBEBF8];
@@ -465,11 +465,11 @@ LABEL_100:
 
   else
   {
-    v18 = [(PGShareBackSource *)self loggingConnection];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    librarySpecificFetchOptions = [(PGShareBackSource *)self loggingConnection];
+    if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No assets to process", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, librarySpecificFetchOptions, OS_LOG_TYPE_INFO, "[PGShareBackFacesSource] No assets to process", buf, 2u);
     }
 
     v37 = MEMORY[0x277CBEBF8];
@@ -480,58 +480,58 @@ LABEL_100:
   return v37;
 }
 
-- (BOOL)prepareSourceWithGraph:(id)a3
+- (BOOL)prepareSourceWithGraph:(id)graph
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [a3 meNodeWithFallbackInferredMeNode];
-  v5 = v4;
-  if (v4)
+  meNodeWithFallbackInferredMeNode = [graph meNodeWithFallbackInferredMeNode];
+  v5 = meNodeWithFallbackInferredMeNode;
+  if (meNodeWithFallbackInferredMeNode)
   {
-    if (([v4 isMeNode] & 1) == 0)
+    if (([meNodeWithFallbackInferredMeNode isMeNode] & 1) == 0)
     {
-      v6 = [(PGShareBackSource *)self loggingConnection];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      loggingConnection = [(PGShareBackSource *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
         v23 = v5;
-        _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "[PGShareBackFacesSource] No meNode set, using inferred meNode %@", &v22, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PGShareBackFacesSource] No meNode set, using inferred meNode %@", &v22, 0xCu);
       }
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v8 = [v5 localIdentifier];
+    localIdentifier = [v5 localIdentifier];
     meLocalIdentifier = self->_meLocalIdentifier;
-    self->_meLocalIdentifier = v8;
+    self->_meLocalIdentifier = localIdentifier;
 
-    v10 = [v5 collection];
-    v11 = [v10 childPersonNodes];
-    v12 = [v11 localIdentifiers];
-    [v7 unionSet:v12];
+    collection = [v5 collection];
+    childPersonNodes = [collection childPersonNodes];
+    localIdentifiers = [childPersonNodes localIdentifiers];
+    [v7 unionSet:localIdentifiers];
 
-    v13 = [v10 inferredChildPersonNodes];
-    v14 = [v13 localIdentifiers];
-    [v7 unionSet:v14];
+    inferredChildPersonNodes = [collection inferredChildPersonNodes];
+    localIdentifiers2 = [inferredChildPersonNodes localIdentifiers];
+    [v7 unionSet:localIdentifiers2];
 
     if ([v7 count])
     {
-      v15 = [(PGShareBackSource *)self loggingConnection];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      loggingConnection2 = [(PGShareBackSource *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_DEFAULT))
       {
         v16 = [v7 debugDescription];
         v22 = 138412290;
         v23 = v16;
-        _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_DEFAULT, "[PGShareBackFacesSource] Child persons to check %@", &v22, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_DEFAULT, "[PGShareBackFacesSource] Child persons to check %@", &v22, 0xCu);
       }
     }
   }
 
   else
   {
-    v17 = [(PGShareBackSource *)self loggingConnection];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    loggingConnection3 = [(PGShareBackSource *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v22) = 0;
-      _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_DEFAULT, "[PGShareBackFacesSource] Couldn't infer device owner", &v22, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_DEFAULT, "[PGShareBackFacesSource] Couldn't infer device owner", &v22, 2u);
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -545,30 +545,30 @@ LABEL_100:
   return 1;
 }
 
-- (PGShareBackFacesSource)initWithLoggingConnection:(id)a3 photoLibrary:(id)a4 faceIdentification:(id)a5
+- (PGShareBackFacesSource)initWithLoggingConnection:(id)connection photoLibrary:(id)library faceIdentification:(id)identification
 {
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  identificationCopy = identification;
   v14.receiver = self;
   v14.super_class = PGShareBackFacesSource;
-  v11 = [(PGShareBackSource *)&v14 initWithLoggingConnection:a3];
+  v11 = [(PGShareBackSource *)&v14 initWithLoggingConnection:connection];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_photoLibrary, a4);
-    objc_storeStrong(&v12->_faceIdentification, a5);
+    objc_storeStrong(&v11->_photoLibrary, library);
+    objc_storeStrong(&v12->_faceIdentification, identification);
   }
 
   return v12;
 }
 
-- (PGShareBackFacesSource)initWithLoggingConnection:(id)a3 photoLibrary:(id)a4
+- (PGShareBackFacesSource)initWithLoggingConnection:(id)connection photoLibrary:(id)library
 {
   v6 = MEMORY[0x277D276B0];
-  v7 = a4;
-  v8 = a3;
+  libraryCopy = library;
+  connectionCopy = connection;
   v9 = objc_alloc_init(v6);
-  v10 = [(PGShareBackFacesSource *)self initWithLoggingConnection:v8 photoLibrary:v7 faceIdentification:v9];
+  v10 = [(PGShareBackFacesSource *)self initWithLoggingConnection:connectionCopy photoLibrary:libraryCopy faceIdentification:v9];
 
   return v10;
 }

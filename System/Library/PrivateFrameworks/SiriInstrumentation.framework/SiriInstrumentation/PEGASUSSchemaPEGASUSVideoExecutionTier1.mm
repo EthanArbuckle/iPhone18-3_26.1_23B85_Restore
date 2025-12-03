@@ -1,28 +1,28 @@
 @interface PEGASUSSchemaPEGASUSVideoExecutionTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addResultEntityIds:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResultEntityIds:(id)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSVideoExecutionTier1
 
-- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PEGASUSSchemaPEGASUSVideoExecutionTier1;
   v5 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"resultEntityIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"resultEntityIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"videoTitle", v19}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"videoTitle", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)v5 setVideoTitle:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isNlsResult"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isNlsResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSVideoExecutionTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,30 +122,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_isNlsResult + 1))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSVideoExecutionTier1 isNlsResult](self, "isNlsResult")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isNlsResult"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isNlsResult"];
   }
 
   if (self->_resultEntityIds)
   {
-    v5 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"resultEntityIds"];
+    resultEntityIds = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
+    v6 = [resultEntityIds copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"resultEntityIds"];
   }
 
   if (self->_videoTitle)
   {
-    v7 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"videoTitle"];
+    videoTitle = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
+    v8 = [videoTitle copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"videoTitle"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,28 +165,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
-  v6 = [v4 resultEntityIds];
-  if ((v5 != 0) == (v6 == 0))
+  resultEntityIds = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
+  resultEntityIds2 = [equalCopy resultEntityIds];
+  if ((resultEntityIds != 0) == (resultEntityIds2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
-  if (v7)
+  resultEntityIds3 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
+  if (resultEntityIds3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
-    v10 = [v4 resultEntityIds];
-    v11 = [v9 isEqual:v10];
+    v8 = resultEntityIds3;
+    resultEntityIds4 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self resultEntityIds];
+    resultEntityIds5 = [equalCopy resultEntityIds];
+    v11 = [resultEntityIds4 isEqual:resultEntityIds5];
 
     if (!v11)
     {
@@ -198,22 +198,22 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
-  v6 = [v4 videoTitle];
-  if ((v5 != 0) == (v6 == 0))
+  resultEntityIds = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
+  resultEntityIds2 = [equalCopy videoTitle];
+  if ((resultEntityIds != 0) == (resultEntityIds2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
-  if (v12)
+  videoTitle = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
+  if (videoTitle)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
-    v15 = [v4 videoTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = videoTitle;
+    videoTitle2 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
+    videoTitle3 = [equalCopy videoTitle];
+    v16 = [videoTitle2 isEqual:videoTitle3];
 
     if (!v16)
     {
@@ -225,9 +225,9 @@ LABEL_11:
   {
   }
 
-  if (*(&self->_isNlsResult + 1) == (v4[25] & 1))
+  if (*(&self->_isNlsResult + 1) == (equalCopy[25] & 1))
   {
-    if (!*(&self->_isNlsResult + 1) || (isNlsResult = self->_isNlsResult, isNlsResult == [v4 isNlsResult]))
+    if (!*(&self->_isNlsResult + 1) || (isNlsResult = self->_isNlsResult, isNlsResult == [equalCopy isNlsResult]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -241,10 +241,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -276,9 +276,9 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
+  videoTitle = [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self videoTitle];
 
-  if (v10)
+  if (videoTitle)
   {
     PBDataWriterWriteStringField();
   }
@@ -289,59 +289,59 @@ LABEL_13:
   }
 }
 
-- (void)addResultEntityIds:(id)a3
+- (void)addResultEntityIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   resultEntityIds = self->_resultEntityIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!resultEntityIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_resultEntityIds;
-    self->_resultEntityIds = v6;
+    self->_resultEntityIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     resultEntityIds = self->_resultEntityIds;
   }
 
-  [(NSArray *)resultEntityIds addObject:v4];
+  [(NSArray *)resultEntityIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSVideoExecutionTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteResultEntityIds];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteVideoTitle];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteIsNlsResult];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteResultEntityIds];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteVideoTitle];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteIsNlsResult];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteResultEntityIds];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteVideoTitle];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteIsNlsResult];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteResultEntityIds];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteVideoTitle];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteIsNlsResult];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteResultEntityIds];
     [(PEGASUSSchemaPEGASUSVideoExecutionTier1 *)self deleteVideoTitle];

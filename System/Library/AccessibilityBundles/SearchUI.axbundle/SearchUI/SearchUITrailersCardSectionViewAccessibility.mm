@@ -1,17 +1,17 @@
 @interface SearchUITrailersCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUITrailersCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKLabel"];
-  [v3 validateClass:@"TLKLabel" hasProperty:@"multilineText" withType:"@"];
-  [v3 validateClass:@"TLKMultilineText"];
-  [v3 validateClass:@"TLKMultilineText" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKLabel"];
+  [validationsCopy validateClass:@"TLKLabel" hasProperty:@"multilineText" withType:"@"];
+  [validationsCopy validateClass:@"TLKMultilineText"];
+  [validationsCopy validateClass:@"TLKMultilineText" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 uint64_t __86__SearchUITrailersCardSectionViewAccessibility__accessibilitySupplementaryFooterViews__block_invoke(uint64_t a1, void *a2)

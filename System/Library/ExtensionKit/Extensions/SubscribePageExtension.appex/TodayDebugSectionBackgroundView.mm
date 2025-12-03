@@ -1,12 +1,12 @@
 @interface TodayDebugSectionBackgroundView
-- (_TtC22SubscribePageExtension31TodayDebugSectionBackgroundView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension31TodayDebugSectionBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation TodayDebugSectionBackgroundView
 
-- (_TtC22SubscribePageExtension31TodayDebugSectionBackgroundView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension31TodayDebugSectionBackgroundView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC22SubscribePageExtension31TodayDebugSectionBackgroundView_sectionTypeIndicator;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(UIView) init];
@@ -37,8 +37,8 @@
   v2 = v5.receiver;
   [(TodayDebugSectionBackgroundView *)&v5 prepareForReuse];
   v3 = *&v2[OBJC_IVAR____TtC22SubscribePageExtension31TodayDebugSectionBackgroundView_sectionTypeIndicator];
-  v4 = [objc_opt_self() clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [objc_opt_self() clearColor];
+  [v3 setBackgroundColor:clearColor];
 }
 
 @end

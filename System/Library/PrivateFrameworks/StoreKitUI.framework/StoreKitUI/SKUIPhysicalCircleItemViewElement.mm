@@ -1,15 +1,15 @@
 @interface SKUIPhysicalCircleItemViewElement
-- (SKUIPhysicalCircleItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIPhysicalCircleItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIPhysicalCircleItemViewElement
 
-- (SKUIPhysicalCircleItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIPhysicalCircleItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPhysicalCircleItemViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,13 +17,13 @@
 
   v16.receiver = self;
   v16.super_class = SKUIPhysicalCircleItemViewElement;
-  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"size"];
+    v12 = [elementCopy getAttribute:@"size"];
     v11->_circleSize = [v12 integerValue];
 
-    v13 = [v8 getAttribute:@"data-content-id"];
+    v13 = [elementCopy getAttribute:@"data-content-id"];
     itemIdentifier = v11->_itemIdentifier;
     v11->_itemIdentifier = v13;
   }
@@ -31,19 +31,19 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIPhysicalCircleItemViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_circleSize = [(SKUIPhysicalCircleItemViewElement *)v4 circleSize];
-    v7 = [(SKUIPhysicalCircleItemViewElement *)v4 itemIdentifier];
+    self->_circleSize = [(SKUIPhysicalCircleItemViewElement *)elementCopy circleSize];
+    itemIdentifier = [(SKUIPhysicalCircleItemViewElement *)elementCopy itemIdentifier];
     itemIdentifier = self->_itemIdentifier;
-    self->_itemIdentifier = v7;
+    self->_itemIdentifier = itemIdentifier;
   }
 
   return v6;

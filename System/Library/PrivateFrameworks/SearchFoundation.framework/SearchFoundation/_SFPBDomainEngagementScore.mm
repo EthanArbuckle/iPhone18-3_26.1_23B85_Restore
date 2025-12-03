@@ -1,50 +1,50 @@
 @interface _SFPBDomainEngagementScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBDomainEngagementScore)initWithDictionary:(id)a3;
-- (_SFPBDomainEngagementScore)initWithFacade:(id)a3;
-- (_SFPBDomainEngagementScore)initWithJSON:(id)a3;
+- (_SFPBDomainEngagementScore)initWithDictionary:(id)dictionary;
+- (_SFPBDomainEngagementScore)initWithFacade:(id)facade;
+- (_SFPBDomainEngagementScore)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBDomainEngagementScore
 
-- (_SFPBDomainEngagementScore)initWithFacade:(id)a3
+- (_SFPBDomainEngagementScore)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBDomainEngagementScore *)self init];
   if (v5)
   {
-    if ([v4 hasDomain])
+    if ([facadeCopy hasDomain])
     {
-      -[_SFPBDomainEngagementScore setDomain:](v5, "setDomain:", [v4 domain]);
+      -[_SFPBDomainEngagementScore setDomain:](v5, "setDomain:", [facadeCopy domain]);
     }
 
-    v6 = [v4 scoreConfidence];
+    scoreConfidence = [facadeCopy scoreConfidence];
 
-    if (v6)
+    if (scoreConfidence)
     {
-      v7 = [v4 scoreConfidence];
-      -[_SFPBDomainEngagementScore setScoreConfidence:](v5, "setScoreConfidence:", [v7 intValue]);
+      scoreConfidence2 = [facadeCopy scoreConfidence];
+      -[_SFPBDomainEngagementScore setScoreConfidence:](v5, "setScoreConfidence:", [scoreConfidence2 intValue]);
     }
 
-    v8 = [v4 score];
+    score = [facadeCopy score];
 
-    if (v8)
+    if (score)
     {
-      v9 = [v4 score];
-      [v9 floatValue];
+      score2 = [facadeCopy score];
+      [score2 floatValue];
       [(_SFPBDomainEngagementScore *)v5 setScore:?];
     }
 
-    v10 = [v4 iFunScore];
+    iFunScore = [facadeCopy iFunScore];
 
-    if (v10)
+    if (iFunScore)
     {
-      v11 = [v4 iFunScore];
-      [v11 floatValue];
+      iFunScore2 = [facadeCopy iFunScore];
+      [iFunScore2 floatValue];
       [(_SFPBDomainEngagementScore *)v5 setIFunScore:?];
     }
 
@@ -54,29 +54,29 @@
   return v5;
 }
 
-- (_SFPBDomainEngagementScore)initWithDictionary:(id)a3
+- (_SFPBDomainEngagementScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBDomainEngagementScore;
   v5 = [(_SFPBDomainEngagementScore *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"domain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBDomainEngagementScore setDomain:](v5, "setDomain:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"scoreConfidence"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"scoreConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBDomainEngagementScore setScoreConfidence:](v5, "setScoreConfidence:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"score"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
       [(_SFPBDomainEngagementScore *)v5 setScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"iFunScore"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"iFunScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (_SFPBDomainEngagementScore)initWithJSON:(id)a3
+- (_SFPBDomainEngagementScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBDomainEngagementScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBDomainEngagementScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBDomainEngagementScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,21 +134,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_domain)
   {
-    v4 = [(_SFPBDomainEngagementScore *)self domain];
-    if (v4 >= 0x58)
+    domain = [(_SFPBDomainEngagementScore *)self domain];
+    if (domain >= 0x58)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", domain];
     }
 
     else
     {
-      v5 = off_1E7ACDDA0[v4];
+      v5 = off_1E7ACDDA0[domain];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"domain"];
+    [dictionary setObject:v5 forKeyedSubscript:@"domain"];
   }
 
   if (self->_iFunScore != 0.0)
@@ -156,7 +156,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBDomainEngagementScore *)self iFunScore];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"iFunScore"];
+    [dictionary setObject:v7 forKeyedSubscript:@"iFunScore"];
   }
 
   if (self->_score != 0.0)
@@ -164,16 +164,16 @@
     v8 = MEMORY[0x1E696AD98];
     [(_SFPBDomainEngagementScore *)self score];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"score"];
+    [dictionary setObject:v9 forKeyedSubscript:@"score"];
   }
 
   if (self->_scoreConfidence)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBDomainEngagementScore scoreConfidence](self, "scoreConfidence")}];
-    [v3 setObject:v10 forKeyedSubscript:@"scoreConfidence"];
+    [dictionary setObject:v10 forKeyedSubscript:@"scoreConfidence"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -252,13 +252,13 @@
   return (2654435761 * self->_scoreConfidence) ^ (2654435761 * self->_domain) ^ v9 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (domain = self->_domain, domain == objc_msgSend(v4, "domain")) && (scoreConfidence = self->_scoreConfidence, scoreConfidence == objc_msgSend(v4, "scoreConfidence")) && (score = self->_score, objc_msgSend(v4, "score"), score == v8))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (domain = self->_domain, domain == objc_msgSend(equalCopy, "domain")) && (scoreConfidence = self->_scoreConfidence, scoreConfidence == objc_msgSend(equalCopy, "scoreConfidence")) && (score = self->_score, objc_msgSend(equalCopy, "score"), score == v8))
   {
     iFunScore = self->_iFunScore;
-    [v4 iFunScore];
+    [equalCopy iFunScore];
     v9 = iFunScore == v12;
   }
 
@@ -270,9 +270,9 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_SFPBDomainEngagementScore *)self domain])
   {
     PBDataWriterWriteInt32Field();
@@ -290,11 +290,11 @@
   }
 
   [(_SFPBDomainEngagementScore *)self iFunScore];
-  v5 = v7;
+  v5 = toCopy;
   if (v6 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 

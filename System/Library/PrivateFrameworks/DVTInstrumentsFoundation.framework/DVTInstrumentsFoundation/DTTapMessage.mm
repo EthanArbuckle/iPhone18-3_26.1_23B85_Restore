@@ -1,7 +1,7 @@
 @interface DTTapMessage
 + (void)initialize;
 - (DTTapMessage)init;
-- (DTTapMessage)initWithCoder:(id)a3;
+- (DTTapMessage)initWithCoder:(id)coder;
 - (int)kind;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x277CBEB98];
     v3 = objc_opt_class();
@@ -39,18 +39,18 @@
   return v2;
 }
 
-- (DTTapMessage)initWithCoder:(id)a3
+- (DTTapMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = DTTapMessage;
   v5 = [(DTTapMessage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClasses:qword_27EE842D8 forKey:@"DTTapMessagePlist"];
+    v6 = [coderCopy decodeObjectOfClasses:qword_27EE842D8 forKey:@"DTTapMessagePlist"];
     if (!v6)
     {
-      v6 = [v4 decodeObjectOfClasses:qword_27EE842D8 forKey:@"$$0"];
+      v6 = [coderCopy decodeObjectOfClasses:qword_27EE842D8 forKey:@"$$0"];
     }
 
     v7 = [v6 mutableCopy];
@@ -63,11 +63,11 @@
 
 - (int)kind
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"k"];
-  v4 = [v3 intValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"k"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 @end

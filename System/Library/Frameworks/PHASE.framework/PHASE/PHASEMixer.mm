@@ -1,8 +1,8 @@
 @interface PHASEMixer
 - (PHASEMixer)init;
-- (PHASEMixer)initWithIdentifier:(id)a3;
+- (PHASEMixer)initWithIdentifier:(id)identifier;
 - (id).cxx_construct;
-- (void)setWeakActionTreeObject:(weak_ptr<Phase::ActionTreeObject>)a3;
+- (void)setWeakActionTreeObject:(weak_ptr<Phase::ActionTreeObject>)object;
 - (weak_ptr<Phase::ActionTreeObject>)weakActionTreeObject;
 @end
 
@@ -15,9 +15,9 @@
   return 0;
 }
 
-- (PHASEMixer)initWithIdentifier:(id)a3
+- (PHASEMixer)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PHASEMixer;
   v6 = [(PHASEMixer *)&v11 init];
@@ -28,7 +28,7 @@
     v6->_gain = 1.0;
     v6->_gainMetaParameter = 0;
 
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
     v9 = v7;
   }
 
@@ -50,10 +50,10 @@
   return result;
 }
 
-- (void)setWeakActionTreeObject:(weak_ptr<Phase::ActionTreeObject>)a3
+- (void)setWeakActionTreeObject:(weak_ptr<Phase::ActionTreeObject>)object
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *object.__ptr_;
+  v3 = *(object.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 16), 1uLL, memory_order_relaxed);

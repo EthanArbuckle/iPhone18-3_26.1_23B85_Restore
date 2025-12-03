@@ -1,22 +1,22 @@
 @interface _UIDebuggingOverlayPresentingViewControllerDetail
-- (void)_updateForInspectedViewController:(id)a3;
+- (void)_updateForInspectedViewController:(id)controller;
 @end
 
 @implementation _UIDebuggingOverlayPresentingViewControllerDetail
 
-- (void)_updateForInspectedViewController:(id)a3
+- (void)_updateForInspectedViewController:(id)controller
 {
-  v10 = a3;
-  v4 = [v10 presentingViewController];
+  controllerCopy = controller;
+  presentingViewController = [controllerCopy presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
     v5 = objc_alloc_init(UIDebuggingInformationVCDetailViewController);
-    v6 = [v10 presentingViewController];
-    [(UIDebuggingInformationVCDetailViewController *)v5 inspectVC:v6];
+    presentingViewController2 = [controllerCopy presentingViewController];
+    [(UIDebuggingInformationVCDetailViewController *)v5 inspectVC:presentingViewController2];
 
     [(_UIDebuggingOverlayViewControllerDetail *)self setViewController:v5];
-    v7 = [v10 presentingViewController];
+    presentingViewController3 = [controllerCopy presentingViewController];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     [(_UIDebuggingOverlayDetail *)self setDetail:v9];

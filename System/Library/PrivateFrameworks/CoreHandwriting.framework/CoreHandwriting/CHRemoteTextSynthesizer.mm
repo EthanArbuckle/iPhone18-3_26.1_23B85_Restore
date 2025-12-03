@@ -1,44 +1,44 @@
 @interface CHRemoteTextSynthesizer
-- (BOOL)awaitInventoryIdleWithTimeout:(double)a3;
-- (BOOL)isInventoryContainingSampleWithStrokeIdentifiers:(id)a3;
-- (BOOL)populateStyleInventoryWithTokenizedResult:(id)a3 drawing:(id)a4 strokeIdentifiers:(id)a5 error:(id *)a6;
-- (BOOL)resetStyleInventory:(id *)a3;
-- (BOOL)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)a3 error:(id *)a4;
-- (CHRemoteTextSynthesizer)initWithShouldSkipInventoryLookup:(BOOL)a3 shouldSaveStyleSample:(BOOL)a4 shouldForceInventoryDefaultStyle:(BOOL)a5;
+- (BOOL)awaitInventoryIdleWithTimeout:(double)timeout;
+- (BOOL)isInventoryContainingSampleWithStrokeIdentifiers:(id)identifiers;
+- (BOOL)populateStyleInventoryWithTokenizedResult:(id)result drawing:(id)drawing strokeIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)resetStyleInventory:(id *)inventory;
+- (BOOL)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)identifiers error:(id *)error;
+- (CHRemoteTextSynthesizer)initWithShouldSkipInventoryLookup:(BOOL)lookup shouldSaveStyleSample:(BOOL)sample shouldForceInventoryDefaultStyle:(BOOL)style;
 - (id)cachedStyleInventoryStatus;
-- (id)chunkedDataForString:(id)a3 allowedSynthesizers:(id)a4;
-- (id)chunkedDataForStringRefine:(id)a3 allowedSynthesizers:(id)a4;
-- (id)planForReplacingText:(id)a3 withText:(id)a4;
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7;
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8;
-- (id)styleInventoryStatusWithTimeout:(double)a3;
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4;
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6;
+- (id)chunkedDataForString:(id)string allowedSynthesizers:(id)synthesizers;
+- (id)chunkedDataForStringRefine:(id)refine allowedSynthesizers:(id)synthesizers;
+- (id)planForReplacingText:(id)text withText:(id)withText;
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)styleInventoryStatusWithTimeout:(double)timeout;
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options;
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CHRemoteTextSynthesizer
 
-- (CHRemoteTextSynthesizer)initWithShouldSkipInventoryLookup:(BOOL)a3 shouldSaveStyleSample:(BOOL)a4 shouldForceInventoryDefaultStyle:(BOOL)a5
+- (CHRemoteTextSynthesizer)initWithShouldSkipInventoryLookup:(BOOL)lookup shouldSaveStyleSample:(BOOL)sample shouldForceInventoryDefaultStyle:(BOOL)style
 {
   v9.receiver = self;
   v9.super_class = CHRemoteTextSynthesizer;
   result = [(CHRemoteTextSynthesizer *)&v9 init];
   if (result)
   {
-    result->_shouldSkipStyleInventoryLookup = a3;
-    result->_shouldSaveStyleSample = a4;
-    result->_shouldForceInventoryDefaultStyle = a5;
+    result->_shouldSkipStyleInventoryLookup = lookup;
+    result->_shouldSaveStyleSample = sample;
+    result->_shouldForceInventoryDefaultStyle = style;
   }
 
   return result;
 }
 
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  stringCopy = string;
+  optionsCopy = options;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -51,10 +51,10 @@
     _os_log_impl(&dword_18366B000, v13, OS_LOG_TYPE_DEFAULT, "Remote Synthesis Request for synthesize drawing", buf, 2u);
   }
 
-  v14 = sub_18396B96C(self, v11);
+  v14 = sub_18396B96C(self, optionsCopy);
   v15 = [CHRemoteSynthesisRequest alloc];
-  v17 = objc_msgSend_initWithString_drawing_options_requestType_(v15, v16, v10, 0, v14, 0);
-  if (v12 && (v12[2](v12) & 1) != 0)
+  v17 = objc_msgSend_initWithString_drawing_options_requestType_(v15, v16, stringCopy, 0, v14, 0);
+  if (cancelCopy && (cancelCopy[2](cancelCopy) & 1) != 0)
   {
     v18 = 0;
   }
@@ -64,22 +64,22 @@
     v21 = 0;
     v18 = sub_18396BC20(self, v17, &v21);
     v19 = v21;
-    if (a6)
+    if (error)
     {
       v19 = v19;
-      *a6 = v19;
+      *error = v19;
     }
   }
 
   return v18;
 }
 
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  drawingCopy = drawing;
+  transcriptionCopy = transcription;
+  optionsCopy = options;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -92,10 +92,10 @@
     _os_log_impl(&dword_18366B000, v16, OS_LOG_TYPE_DEFAULT, "Remote Synthesis Request for refine drawing", buf, 2u);
   }
 
-  v17 = sub_18396B96C(self, v14);
+  v17 = sub_18396B96C(self, optionsCopy);
   v18 = [CHRemoteSynthesisRequest alloc];
-  v20 = objc_msgSend_initWithString_drawing_options_requestType_(v18, v19, v13, v12, v17, 1);
-  if (v15 && (v15[2](v15) & 1) != 0)
+  v20 = objc_msgSend_initWithString_drawing_options_requestType_(v18, v19, transcriptionCopy, drawingCopy, v17, 1);
+  if (cancelCopy && (cancelCopy[2](cancelCopy) & 1) != 0)
   {
     v21 = 0;
   }
@@ -105,24 +105,24 @@
     v24 = 0;
     v21 = sub_18396BC20(self, v20, &v24);
     v22 = v24;
-    if (a7)
+    if (error)
     {
       v22 = v22;
-      *a7 = v22;
+      *error = v22;
     }
   }
 
   return v21;
 }
 
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  drawingCopy = drawing;
+  transcriptionCopy = transcription;
+  replacementTranscriptionCopy = replacementTranscription;
+  optionsCopy = options;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -135,10 +135,10 @@
     _os_log_impl(&dword_18366B000, v19, OS_LOG_TYPE_DEFAULT, "Remote Synthesis Request for replace drawing", buf, 2u);
   }
 
-  v24 = sub_18396B96C(self, v17);
-  if (v14)
+  v24 = sub_18396B96C(self, optionsCopy);
+  if (drawingCopy)
   {
-    v48[0] = v14;
+    v48[0] = drawingCopy;
     v25 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v20, v48, 1, v22, v23);
     objc_msgSend_setStyleDrawings_(v24, v26, v25, v27, v28, v29);
   }
@@ -149,13 +149,13 @@
     objc_msgSend_setStyleDrawings_(v24, v20, 0, v21, v22, v23);
   }
 
-  if (v14)
+  if (drawingCopy)
   {
   }
 
-  if (v15)
+  if (transcriptionCopy)
   {
-    v47 = v15;
+    v47 = transcriptionCopy;
     v34 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v30, &v47, 1, v32, v33);
     objc_msgSend_setStyleContents_(v24, v35, v34, v36, v37, v38);
   }
@@ -166,13 +166,13 @@
     objc_msgSend_setStyleContents_(v24, v30, 0, v31, v32, v33);
   }
 
-  if (v15)
+  if (transcriptionCopy)
   {
   }
 
   v39 = [CHRemoteSynthesisRequest alloc];
-  v41 = objc_msgSend_initWithString_drawing_options_requestType_(v39, v40, v16, v14, v24, 2);
-  if (v18 && (v18[2](v18) & 1) != 0)
+  v41 = objc_msgSend_initWithString_drawing_options_requestType_(v39, v40, replacementTranscriptionCopy, drawingCopy, v24, 2);
+  if (cancelCopy && (cancelCopy[2](cancelCopy) & 1) != 0)
   {
     v42 = 0;
   }
@@ -182,27 +182,27 @@
     v45 = 0;
     v42 = sub_18396BC20(self, v41, &v45);
     v43 = v45;
-    if (a8)
+    if (error)
     {
       v43 = v43;
-      *a8 = v43;
+      *error = v43;
     }
   }
 
   return v42;
 }
 
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options
 {
   v141 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stringCopy = string;
   v11 = objc_msgSend_indexSet(MEMORY[0x1E696AD50], v6, v7, v8, v9, v10);
   v17 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v12, v13, v14, v15, v16);
-  v22 = objc_msgSend_indexesOfCharacters_(v5, v18, v17, v19, v20, v21);
+  v22 = objc_msgSend_indexesOfCharacters_(stringCopy, v18, v17, v19, v20, v21);
 
   objc_msgSend_addIndexes_(v11, v23, v22, v24, v25, v26);
   v32 = objc_msgSend_count(v11, v27, v28, v29, v30, v31);
-  if (v32 == objc_msgSend_length(v5, v33, v34, v35, v36, v37))
+  if (v32 == objc_msgSend_length(stringCopy, v33, v34, v35, v36, v37))
   {
     v43 = v11;
   }
@@ -250,7 +250,7 @@
 
     if (objc_msgSend_count(v44, v63, v64, v65, v66, v67))
     {
-      v73 = objc_msgSend_chunkedDataForString_allowedSynthesizers_(self, v68, v5, v44, v71, v72);
+      v73 = objc_msgSend_chunkedDataForString_allowedSynthesizers_(self, v68, stringCopy, v44, v71, v72);
       v79 = v73;
       if (v73 && (objc_msgSend_dataChunks(v73, v74, v75, v76, v77, v78), v80 = objc_claimAutoreleasedReturnValue(), v86 = objc_msgSend_count(v80, v81, v82, v83, v84, v85), v80, v86))
       {
@@ -303,9 +303,9 @@
         if (os_log_type_enabled(v122, OS_LOG_TYPE_ERROR))
         {
           *buf = 138740483;
-          v136 = v5;
+          v136 = stringCopy;
           v137 = 2048;
-          v138 = objc_msgSend_length(v5, v123, v124, v125, v126, v127);
+          v138 = objc_msgSend_length(stringCopy, v123, v124, v125, v126, v127);
           v139 = 2112;
           v140 = v44;
           _os_log_impl(&dword_18366B000, v122, OS_LOG_TYPE_ERROR, "CHRemoteTextSynthesizer: chunking failed for input string %{sensitive}@ of length %lu with allowedSynthesizers=%@", buf, 0x20u);
@@ -334,56 +334,56 @@
   [(CHRemoteTextSynthesizer *)&v3 dealloc];
 }
 
-- (BOOL)populateStyleInventoryWithTokenizedResult:(id)a3 drawing:(id)a4 strokeIdentifiers:(id)a5 error:(id *)a6
+- (BOOL)populateStyleInventoryWithTokenizedResult:(id)result drawing:(id)drawing strokeIdentifiers:(id)identifiers error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resultCopy = result;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
   v13 = [CHRemoteInventoryRequest alloc];
-  v16 = objc_msgSend_initWithTokenizedResult_drawing_strokeIdentifiers_(v13, v14, v10, v11, v12, v15);
+  v16 = objc_msgSend_initWithTokenizedResult_drawing_strokeIdentifiers_(v13, v14, resultCopy, drawingCopy, identifiersCopy, v15);
   v20 = 0;
   v17 = sub_18396E30C(self, v16, &v20);
   v18 = v20;
-  if (a6)
+  if (error)
   {
     v18 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
   return v17;
 }
 
-- (BOOL)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = [CHRemoteInventoryRequest alloc];
-  v12 = objc_msgSend_initWithRemovedStrokeIdentifiers_(v7, v8, v6, v9, v10, v11);
+  v12 = objc_msgSend_initWithRemovedStrokeIdentifiers_(v7, v8, identifiersCopy, v9, v10, v11);
   v16 = 0;
   v13 = sub_18396E30C(self, v12, &v16);
   v14 = v16;
-  if (a4)
+  if (error)
   {
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (BOOL)isInventoryContainingSampleWithStrokeIdentifiers:(id)a3
+- (BOOL)isInventoryContainingSampleWithStrokeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (os_variant_has_internal_diagnostics())
   {
     v5 = [CHRemoteInventoryContentCheckRequest alloc];
-    v10 = objc_msgSend_initWithStrokeIdentifiers_(v5, v6, v4, v7, v8, v9);
+    v10 = objc_msgSend_initWithStrokeIdentifiers_(v5, v6, identifiersCopy, v7, v8, v9);
     if (self)
     {
       sub_18396CC08(self);
-      v11 = self;
-      objc_sync_enter(v11);
-      connection = v11->__connection;
-      objc_sync_exit(v11);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      connection = selfCopy->__connection;
+      objc_sync_exit(selfCopy);
 
       if (!connection)
       {
@@ -400,9 +400,9 @@
         }
       }
 
-      v14 = v11;
+      v14 = selfCopy;
       objc_sync_enter(v14);
-      v15 = v11->__connection;
+      v15 = selfCopy->__connection;
       objc_sync_exit(v14);
 
       if (!v15)
@@ -428,7 +428,7 @@
       v50 = 0;
       v17 = v14;
       objc_sync_enter(v17);
-      v18 = v11->__connection;
+      v18 = selfCopy->__connection;
       objc_sync_exit(v17);
 
       v48[0] = MEMORY[0x1E69E9820];
@@ -497,23 +497,23 @@
   return v28 & 1;
 }
 
-- (BOOL)resetStyleInventory:(id *)a3
+- (BOOL)resetStyleInventory:(id *)inventory
 {
   v5 = [CHRemoteInventoryRequest alloc];
   inited = objc_msgSend_initResetInventoryRequest(v5, v6, v7, v8, v9, v10);
   v15 = 0;
   v12 = sub_18396E30C(self, inited, &v15);
   v13 = v15;
-  if (a3)
+  if (inventory)
   {
     v13 = v13;
-    *a3 = v13;
+    *inventory = v13;
   }
 
   return v12;
 }
 
-- (id)styleInventoryStatusWithTimeout:(double)a3
+- (id)styleInventoryStatusWithTimeout:(double)timeout
 {
   if (qword_1EA84DC48 != -1)
   {
@@ -527,7 +527,7 @@
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "Remote Inventory Status Request", v8, 2u);
   }
 
-  v6 = sub_18396F264(&self->super.isa, a3);
+  v6 = sub_18396F264(&self->super.isa, timeout);
 
   return v6;
 }
@@ -551,7 +551,7 @@
   return v4;
 }
 
-- (BOOL)awaitInventoryIdleWithTimeout:(double)a3
+- (BOOL)awaitInventoryIdleWithTimeout:(double)timeout
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   if (has_internal_diagnostics)
@@ -582,7 +582,7 @@
       v8[3] = &unk_1E6DE06E0;
       v8[4] = self;
       v8[5] = buf;
-      LOBYTE(self) = sub_18396F434(self, @"Await inventory idle request", v8, a3);
+      LOBYTE(self) = sub_18396F434(self, @"Await inventory idle request", v8, timeout);
       _Block_object_dispose(buf, 8);
     }
 
@@ -592,38 +592,38 @@
   return has_internal_diagnostics;
 }
 
-- (id)chunkedDataForString:(id)a3 allowedSynthesizers:(id)a4
+- (id)chunkedDataForString:(id)string allowedSynthesizers:(id)synthesizers
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  synthesizersCopy = synthesizers;
   v8 = [CHRemoteSynthesisStringChunkingRequest alloc];
-  v12 = objc_msgSend_initWithString_allowedSynthesizers_(v8, v9, v6, v7, v10, v11);
+  v12 = objc_msgSend_initWithString_allowedSynthesizers_(v8, v9, stringCopy, synthesizersCopy, v10, v11);
   v13 = sub_18397046C(self, v12);
 
   return v13;
 }
 
-- (id)chunkedDataForStringRefine:(id)a3 allowedSynthesizers:(id)a4
+- (id)chunkedDataForStringRefine:(id)refine allowedSynthesizers:(id)synthesizers
 {
-  v6 = a3;
-  v7 = a4;
+  refineCopy = refine;
+  synthesizersCopy = synthesizers;
   v8 = [CHRemoteSynthesisStringChunkingRequest alloc];
-  v11 = objc_msgSend_initWithString_allowedSynthesizers_mode_(v8, v9, v6, v7, &unk_1EF1EDBA0, v10);
+  v11 = objc_msgSend_initWithString_allowedSynthesizers_mode_(v8, v9, refineCopy, synthesizersCopy, &unk_1EF1EDBA0, v10);
   v12 = sub_18397046C(self, v11);
 
   return v12;
 }
 
-- (id)planForReplacingText:(id)a3 withText:(id)a4
+- (id)planForReplacingText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_chunkedDataForString_allowedSynthesizers_(self, v8, v6, &unk_1EF1EC880, v9, v10);
+  textCopy = text;
+  withTextCopy = withText;
+  v11 = objc_msgSend_chunkedDataForString_allowedSynthesizers_(self, v8, textCopy, &unk_1EF1EC880, v9, v10);
   v17 = v11;
   if (v11)
   {
     v22 = objc_msgSend_chunkForOneShotReplace(v11, v12, v13, v14, v15, v16);
-    if (v22 && ((objc_msgSend_isEqualToString_(v7, v18, v6, v19, v20, v21) & 1) != 0 || (objc_msgSend_chunkedDataForString_allowedSynthesizers_(self, v23, v7, &unk_1EF1EC880, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), v17, (v17 = v28) != 0)))
+    if (v22 && ((objc_msgSend_isEqualToString_(withTextCopy, v18, textCopy, v19, v20, v21) & 1) != 0 || (objc_msgSend_chunkedDataForString_allowedSynthesizers_(self, v23, withTextCopy, &unk_1EF1EC880, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), v17, (v17 = v28) != 0)))
     {
       v29 = objc_msgSend_chunkForOneShotReplace(v17, v23, v24, v25, v26, v27);
       if (v29)

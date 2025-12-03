@@ -1,19 +1,19 @@
 @interface FHInsightsSpendingTrends
 + (id)_defaultQueue;
-- (FHInsightsSpendingTrends)initWithWeeklyThreshold:(double)a3 monthlyThreshold:(double)a4 merchantCounts:(id)a5;
-- (FHInsightsSpendingTrends)trendsWithCompletion:(id)a3;
-- (double)_fillFactorWithStartOfPeriodForMostRecentEntryDate:(id)a3 mostRecentEntryDate:(id)a4 endOfPeriodForMostRecentEntryDate:(id)a5 numberOfDaysSinceFirstTransaction:(unint64_t)a6 transactionCount:(unint64_t)a7 transactionCountForMostRecentPeriod:(unint64_t)a8 transactionAmountSums:(double)a9 transactionAmountSumsForMostRecentPeriod:(double)a10;
-- (id)_kendallCoefficientWithIndexedAmountSums:(id)a3;
-- (id)_orderedTimeStampAndAmountPair:(id)a3;
-- (void)_computeAndStoreTrend:(id)a3 indexedAmountSums:(id)a4 insightFeatureName:(id)a5 insightType:(id)a6 trendWindow:(int64_t)a7;
+- (FHInsightsSpendingTrends)initWithWeeklyThreshold:(double)threshold monthlyThreshold:(double)monthlyThreshold merchantCounts:(id)counts;
+- (FHInsightsSpendingTrends)trendsWithCompletion:(id)completion;
+- (double)_fillFactorWithStartOfPeriodForMostRecentEntryDate:(id)date mostRecentEntryDate:(id)entryDate endOfPeriodForMostRecentEntryDate:(id)recentEntryDate numberOfDaysSinceFirstTransaction:(unint64_t)transaction transactionCount:(unint64_t)count transactionCountForMostRecentPeriod:(unint64_t)period transactionAmountSums:(double)sums transactionAmountSumsForMostRecentPeriod:(double)self0;
+- (id)_kendallCoefficientWithIndexedAmountSums:(id)sums;
+- (id)_orderedTimeStampAndAmountPair:(id)pair;
+- (void)_computeAndStoreTrend:(id)trend indexedAmountSums:(id)sums insightFeatureName:(id)name insightType:(id)type trendWindow:(int64_t)window;
 - (void)_computeCategoryAndMerchantTrends;
 @end
 
 @implementation FHInsightsSpendingTrends
 
-- (FHInsightsSpendingTrends)initWithWeeklyThreshold:(double)a3 monthlyThreshold:(double)a4 merchantCounts:(id)a5
+- (FHInsightsSpendingTrends)initWithWeeklyThreshold:(double)threshold monthlyThreshold:(double)monthlyThreshold merchantCounts:(id)counts
 {
-  v9 = a5;
+  countsCopy = counts;
   v23.receiver = self;
   v23.super_class = FHInsightsSpendingTrends;
   v10 = [(FHInsightsSpendingTrends *)&v23 init];
@@ -30,41 +30,41 @@
     insightsDestinationEntity = v10->_insightsDestinationEntity;
     v10->_insightsDestinationEntity = v16;
 
-    v18 = [objc_opt_class() _defaultQueue];
+    _defaultQueue = [objc_opt_class() _defaultQueue];
     insightsProcessingQueue = v10->_insightsProcessingQueue;
-    v10->_insightsProcessingQueue = v18;
+    v10->_insightsProcessingQueue = _defaultQueue;
 
-    objc_storeStrong(&v10->_merchantCounts, a5);
-    if (fabs(a3) <= 1.0)
+    objc_storeStrong(&v10->_merchantCounts, counts);
+    if (fabs(threshold) <= 1.0)
     {
-      v20 = a3;
+      thresholdCopy = threshold;
     }
 
     else
     {
-      v20 = *&defaultWeeklyThreshold;
+      thresholdCopy = *&defaultWeeklyThreshold;
     }
 
-    if (fabs(a4) <= 1.0)
+    if (fabs(monthlyThreshold) <= 1.0)
     {
-      v21 = a4;
+      monthlyThresholdCopy = monthlyThreshold;
     }
 
     else
     {
-      v21 = *&defaultMonthlyThreshold;
+      monthlyThresholdCopy = *&defaultMonthlyThreshold;
     }
 
-    v10->_weeklyThreshold = v20;
-    v10->_monthlyThreshold = v21;
+    v10->_weeklyThreshold = thresholdCopy;
+    v10->_monthlyThreshold = monthlyThresholdCopy;
   }
 
   return v10;
 }
 
-- (FHInsightsSpendingTrends)trendsWithCompletion:(id)a3
+- (FHInsightsSpendingTrends)trendsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   insightsProcessingQueue = self->_insightsProcessingQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -73,8 +73,8 @@
   v8[3] = &unk_278FFBF40;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(insightsProcessingQueue, v8);
 
   objc_destroyWeak(&v10);
@@ -186,32 +186,32 @@ void __49__FHInsightsSpendingTrends_trendsWithCompletion___block_invoke(uint64_t
   v73[0] = 0;
   v73[1] = v73;
   v73[2] = 0x2020000000;
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  [v3 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v5 = v4;
 
   v73[3] = v5;
   v72[0] = 0;
   v72[1] = v72;
   v72[2] = 0x2020000000;
-  v6 = [MEMORY[0x277CBEAA8] distantPast];
-  [v6 timeIntervalSinceReferenceDate];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast2 timeIntervalSinceReferenceDate];
   v8 = v7;
 
   v72[3] = v8;
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
-  [v9 timeIntervalSinceReferenceDate];
+  distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast3 timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v71 = v11;
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
-  v12 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v12 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v14 = v13;
 
   v67 = v14;
@@ -331,9 +331,9 @@ LABEL_21:
     v34 = [v105[5] copy];
     v35 = [(FHInsightsSpendingTrends *)self _orderedTimeStampAndAmountPair:v34];
 
-    v36 = [v35 firstObject];
-    v37 = [v35 lastObject];
-    [(FHInsightsSpendingTrends *)self _computeAndStoreTrend:v36 indexedAmountSums:v37 insightFeatureName:@"Overall Spend" insightType:@"FHInsightTypeOverallSpend" trendWindow:1];
+    firstObject = [v35 firstObject];
+    lastObject = [v35 lastObject];
+    [(FHInsightsSpendingTrends *)self _computeAndStoreTrend:firstObject indexedAmountSums:lastObject insightFeatureName:@"Overall Spend" insightType:@"FHInsightTypeOverallSpend" trendWindow:1];
 
     v38 = v141[5];
     v58[0] = MEMORY[0x277D85DD0];
@@ -371,9 +371,9 @@ LABEL_22:
     v42 = [v99[5] copy];
     v43 = [(FHInsightsSpendingTrends *)self _orderedTimeStampAndAmountPair:v42];
 
-    v44 = [v43 firstObject];
-    v45 = [v43 lastObject];
-    [(FHInsightsSpendingTrends *)self _computeAndStoreTrend:v44 indexedAmountSums:v45 insightFeatureName:@"Overall Spend" insightType:@"FHInsightTypeOverallSpend" trendWindow:2];
+    firstObject2 = [v43 firstObject];
+    lastObject2 = [v43 lastObject];
+    [(FHInsightsSpendingTrends *)self _computeAndStoreTrend:firstObject2 indexedAmountSums:lastObject2 insightFeatureName:@"Overall Spend" insightType:@"FHInsightTypeOverallSpend" trendWindow:2];
 
     v46 = v117[5];
     v54[0] = MEMORY[0x277D85DD0];
@@ -871,16 +871,16 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
   [v8 _computeAndStoreTrend:v9 indexedAmountSums:v10 insightFeatureName:v6 insightType:@"FHInsightTypeCompoundTag" trendWindow:2];
 }
 
-- (double)_fillFactorWithStartOfPeriodForMostRecentEntryDate:(id)a3 mostRecentEntryDate:(id)a4 endOfPeriodForMostRecentEntryDate:(id)a5 numberOfDaysSinceFirstTransaction:(unint64_t)a6 transactionCount:(unint64_t)a7 transactionCountForMostRecentPeriod:(unint64_t)a8 transactionAmountSums:(double)a9 transactionAmountSumsForMostRecentPeriod:(double)a10
+- (double)_fillFactorWithStartOfPeriodForMostRecentEntryDate:(id)date mostRecentEntryDate:(id)entryDate endOfPeriodForMostRecentEntryDate:(id)recentEntryDate numberOfDaysSinceFirstTransaction:(unint64_t)transaction transactionCount:(unint64_t)count transactionCountForMostRecentPeriod:(unint64_t)period transactionAmountSums:(double)sums transactionAmountSumsForMostRecentPeriod:(double)self0
 {
   v27 = *MEMORY[0x277D85DE8];
-  v16 = a5;
-  v17 = a3;
+  recentEntryDateCopy = recentEntryDate;
+  dateCopy = date;
   v18 = FHNumberOfDaysBetweenDates();
   v19 = FHNumberOfDaysBetweenDates();
 
   v20 = *MEMORY[0x277D087C0];
-  v21 = (a10 / v18 / ((a9 - a10) / (a6 - v18)) + v18 / v19 + a8 / v18 / ((a7 - a8) / (a6 - v18))) / 3.0;
+  v21 = (recentPeriod / v18 / ((sums - recentPeriod) / (transaction - v18)) + v18 / v19 + period / v18 / ((count - period) / (transaction - v18))) / 3.0;
   v22 = FinHealthLogObject();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
@@ -893,16 +893,16 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
   return v21;
 }
 
-- (id)_orderedTimeStampAndAmountPair:(id)a3
+- (id)_orderedTimeStampAndAmountPair:(id)pair
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pairCopy = pair;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3 && [v3 count])
+  if (pairCopy && [pairCopy count])
   {
-    v6 = [v3 allKeys];
-    v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_135];
+    allKeys = [pairCopy allKeys];
+    v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_135];
 
     if (v7 && [v7 count])
     {
@@ -927,7 +927,7 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
 
             v13 = *(*(&v21 + 1) + 8 * i);
             [v4 addObject:v13];
-            v14 = [v3 objectForKey:v13];
+            v14 = [pairCopy objectForKey:v13];
             [v5 addObject:v14];
           }
 
@@ -949,21 +949,21 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
   return v18;
 }
 
-- (void)_computeAndStoreTrend:(id)a3 indexedAmountSums:(id)a4 insightFeatureName:(id)a5 insightType:(id)a6 trendWindow:(int64_t)a7
+- (void)_computeAndStoreTrend:(id)trend indexedAmountSums:(id)sums insightFeatureName:(id)name insightType:(id)type trendWindow:(int64_t)window
 {
   v60 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v47 = a4;
-  v45 = a5;
-  v43 = a7;
-  v44 = a6;
+  trendCopy = trend;
+  sumsCopy = sums;
+  nameCopy = name;
+  windowCopy = window;
+  typeCopy = type;
   v12 = 48;
-  if (a7 == 1)
+  if (window == 1)
   {
     v12 = 40;
   }
 
-  v42 = self;
+  selfCopy = self;
   v13 = *(&self->super.isa + v12);
   v40 = *MEMORY[0x277D087C0];
   v14 = FinHealthLogObject();
@@ -975,13 +975,13 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
   }
 
   v15 = MEMORY[0x277D08718];
-  if (a7 != 1)
+  if (window != 1)
   {
     v15 = MEMORY[0x277D08708];
   }
 
   v16 = *v15;
-  v17 = [v47 count];
+  v17 = [sumsCopy count];
   v18 = v17 - v16;
   if (v17 >= v16)
   {
@@ -990,8 +990,8 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
     v41 = v16;
     do
     {
-      v22 = [v47 subarrayWithRange:{v18, v16}];
-      v23 = [v46 objectAtIndex:--v20];
+      v22 = [sumsCopy subarrayWithRange:{v18, v16}];
+      v23 = [trendCopy objectAtIndex:--v20];
       [v23 doubleValue];
       v25 = v24;
 
@@ -1015,9 +1015,9 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v57 = *&v45;
+            v57 = *&nameCopy;
             v58 = 2112;
-            v59 = v44;
+            v59 = typeCopy;
             _os_log_impl(&dword_24ABED000, v32, OS_LOG_TYPE_DEBUG, "No trend detected for %@: %@", buf, 0x16u);
           }
 
@@ -1030,7 +1030,7 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:{v22, 0}];
       v33 = [MEMORY[0x277CCA9C0] expressionWithFormat:@"average(%@)" argumentArray:v32];
       v34 = [v33 expressionValueWithObject:0 context:0];
-      v35 = [v22 lastObject];
+      lastObject = [v22 lastObject];
       v36 = MEMORY[0x277D087F0];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
@@ -1038,15 +1038,15 @@ void __61__FHInsightsSpendingTrends__computeCategoryAndMerchantTrends__block_inv
       v48[3] = &unk_278FFBFF8;
       v53 = v25;
       v54 = v29;
-      v49 = v45;
-      v50 = v44;
+      v49 = nameCopy;
+      v50 = typeCopy;
       v51 = v34;
-      v55 = v43;
-      v52 = v35;
-      v37 = v35;
+      v55 = windowCopy;
+      v52 = lastObject;
+      v37 = lastObject;
       v38 = v34;
       v39 = [v36 initWithBuilder:v48];
-      [(FHDatabaseEntity *)v42->_insightsDestinationEntity insertOrUpdate:v39 upsert:0];
+      [(FHDatabaseEntity *)selfCopy->_insightsDestinationEntity insertOrUpdate:v39 upsert:0];
 
       v16 = v41;
       v21 = 0x277CCA000;
@@ -1088,11 +1088,11 @@ void __111__FHInsightsSpendingTrends__computeAndStoreTrend_indexedAmountSums_ins
   [v4 addStringValueForField:@"features_insight_trends.trend_readable_description" fieldValue:v7];
 }
 
-- (id)_kendallCoefficientWithIndexedAmountSums:(id)a3
+- (id)_kendallCoefficientWithIndexedAmountSums:(id)sums
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || [v3 count] < 2)
+  sumsCopy = sums;
+  v4 = sumsCopy;
+  if (!sumsCopy || [sumsCopy count] < 2)
   {
     goto LABEL_14;
   }

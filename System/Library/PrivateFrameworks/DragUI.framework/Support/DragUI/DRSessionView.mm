@@ -1,17 +1,17 @@
 @interface DRSessionView
-- (DRSessionView)initWithFrame:(CGRect)a3;
+- (DRSessionView)initWithFrame:(CGRect)frame;
 - (DRSessionViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation DRSessionView
 
-- (DRSessionView)initWithFrame:(CGRect)a3
+- (DRSessionView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = DRSessionView;
-  v3 = [(DRSessionView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DRSessionView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -26,15 +26,15 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(DRSessionView *)self delegate];
-  [v3 sessionViewWillLayoutSubviews:self];
+  delegate = [(DRSessionView *)self delegate];
+  [delegate sessionViewWillLayoutSubviews:self];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = DRSessionView;
-  v5 = [(DRSessionView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(DRSessionView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self->_flockContainer)
   {
 

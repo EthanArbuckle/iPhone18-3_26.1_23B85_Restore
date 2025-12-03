@@ -1,42 +1,42 @@
 @interface _OSLogEventSerializationMetadata
 - (_OSLogEventSerializationMetadata)init;
-- (_OSLogEventSerializationMetadata)initWithDataRepresentation:(id)a3;
+- (_OSLogEventSerializationMetadata)initWithDataRepresentation:(id)representation;
 - (id)dataRepresentation;
-- (id)indexForString:(id)a3;
-- (id)stringForIndex:(id)a3;
+- (id)indexForString:(id)string;
+- (id)stringForIndex:(id)index;
 @end
 
 @implementation _OSLogEventSerializationMetadata
 
-- (id)stringForIndex:(id)a3
+- (id)stringForIndex:(id)index
 {
-  v5 = a3;
-  v6 = [(_OSLogEventSerializationMetadata *)self indexToStringMapping];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  indexCopy = index;
+  indexToStringMapping = [(_OSLogEventSerializationMetadata *)self indexToStringMapping];
+  v7 = [indexToStringMapping objectForKeyedSubscript:indexCopy];
 
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:178 description:@"Invalid index-to-string mapping"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:178 description:@"Invalid index-to-string mapping"];
   }
 
   return v7;
 }
 
-- (id)indexForString:(id)a3
+- (id)indexForString:(id)string
 {
-  v4 = a3;
-  v5 = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  stringCopy = string;
+  stringToIndexMapping = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
+  v6 = [stringToIndexMapping objectForKeyedSubscript:stringCopy];
 
   if (!v6)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
-    v6 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    stringToIndexMapping2 = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
+    v6 = [v7 numberWithUnsignedInteger:{objc_msgSend(stringToIndexMapping2, "count")}];
 
-    v9 = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
-    [v9 setObject:v6 forKeyedSubscript:v4];
+    stringToIndexMapping3 = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
+    [stringToIndexMapping3 setObject:v6 forKeyedSubscript:stringCopy];
   }
 
   return v6;
@@ -48,25 +48,25 @@
   v25[0] = @"Version";
   v25[1] = @"StringIndex";
   v26[0] = &unk_2841B9228;
-  v3 = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
-  v26[1] = v3;
+  stringToIndexMapping = [(_OSLogEventSerializationMetadata *)self stringToIndexMapping];
+  v26[1] = stringToIndexMapping;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
   v5 = [v4 mutableCopy];
 
-  v6 = [(_OSLogEventSerializationMetadata *)self firstDate];
+  firstDate = [(_OSLogEventSerializationMetadata *)self firstDate];
 
-  if (v6)
+  if (firstDate)
   {
-    v7 = [(_OSLogEventSerializationMetadata *)self firstDate];
-    [v5 setObject:v7 forKeyedSubscript:@"FirstDate"];
+    firstDate2 = [(_OSLogEventSerializationMetadata *)self firstDate];
+    [v5 setObject:firstDate2 forKeyedSubscript:@"FirstDate"];
   }
 
-  v8 = [(_OSLogEventSerializationMetadata *)self lastDate];
+  lastDate = [(_OSLogEventSerializationMetadata *)self lastDate];
 
-  if (v8)
+  if (lastDate)
   {
-    v9 = [(_OSLogEventSerializationMetadata *)self lastDate];
-    [v5 setObject:v9 forKeyedSubscript:@"LastDate"];
+    lastDate2 = [(_OSLogEventSerializationMetadata *)self lastDate];
+    [v5 setObject:lastDate2 forKeyedSubscript:@"LastDate"];
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[_OSLogEventSerializationMetadata flags](self, "flags")}];
@@ -78,12 +78,12 @@
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[_OSLogEventSerializationMetadata serializedEventCount](self, "serializedEventCount")}];
   [v5 setObject:v12 forKeyedSubscript:@"SerializedEventCount"];
 
-  v13 = [(_OSLogEventSerializationMetadata *)self filterPredicateDescription];
+  filterPredicateDescription = [(_OSLogEventSerializationMetadata *)self filterPredicateDescription];
 
-  if (v13)
+  if (filterPredicateDescription)
   {
-    v14 = [(_OSLogEventSerializationMetadata *)self filterPredicateDescription];
-    [v5 setObject:v14 forKeyedSubscript:@"FilterPredicateDescription"];
+    filterPredicateDescription2 = [(_OSLogEventSerializationMetadata *)self filterPredicateDescription];
+    [v5 setObject:filterPredicateDescription2 forKeyedSubscript:@"FilterPredicateDescription"];
   }
 
   v22 = 0;
@@ -101,9 +101,9 @@
     {
       if (v18)
       {
-        v19 = [v16 localizedDescription];
+        localizedDescription = [v16 localizedDescription];
         *buf = 138412290;
-        v24 = v19;
+        v24 = localizedDescription;
         _os_log_error_impl(&dword_22E01A000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Serializing metadata failed with an error: %@", buf, 0xCu);
       }
     }
@@ -120,16 +120,16 @@
   return v15;
 }
 
-- (_OSLogEventSerializationMetadata)initWithDataRepresentation:(id)a3
+- (_OSLogEventSerializationMetadata)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v33.receiver = self;
   v33.super_class = _OSLogEventSerializationMetadata;
   v5 = [(_OSLogEventSerializationMetadata *)&v33 init];
   if (v5)
   {
     v32 = 0;
-    v6 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:&v32];
+    v6 = [MEMORY[0x277CCAC58] propertyListWithData:representationCopy options:0 format:0 error:&v32];
     v7 = v32;
     v8 = v7;
     if (v6)
@@ -202,19 +202,19 @@
               v29 = &v28;
               v30 = 0x2020000000;
               v31 = 0;
-              v19 = [MEMORY[0x277CBEB38] dictionary];
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
               v25[0] = MEMORY[0x277D85DD0];
               v25[1] = 3221225472;
               v25[2] = __63___OSLogEventSerializationMetadata_initWithDataRepresentation___block_invoke;
               v25[3] = &unk_2787AEDB0;
               v27 = &v28;
-              v20 = v19;
+              v20 = dictionary;
               v26 = v20;
               [v18 enumerateKeysAndObjectsUsingBlock:v25];
               v21 = *(v29 + 24);
               if ((v21 & 1) == 0)
               {
-                objc_storeStrong(&v5->_indexToStringMapping, v19);
+                objc_storeStrong(&v5->_indexToStringMapping, dictionary);
               }
 
               _Block_object_dispose(&v28, 8);
@@ -251,9 +251,9 @@ LABEL_29:
   v2 = [(_OSLogEventSerializationMetadata *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     stringToIndexMapping = v2->_stringToIndexMapping;
-    v2->_stringToIndexMapping = v3;
+    v2->_stringToIndexMapping = dictionary;
   }
 
   return v2;

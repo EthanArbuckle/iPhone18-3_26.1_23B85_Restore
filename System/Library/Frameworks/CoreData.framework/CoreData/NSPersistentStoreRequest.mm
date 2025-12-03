@@ -1,7 +1,7 @@
 @interface NSPersistentStoreRequest
 - (NSArray)affectedStores;
 - (NSPersistentStoreRequestType)requestType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 - (void)setAffectedStores:(NSArray *)affectedStores;
 @end
@@ -81,9 +81,9 @@
   [(NSPersistentStoreRequest *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v4[1] = [(NSArray *)self->_affectedStores copy];

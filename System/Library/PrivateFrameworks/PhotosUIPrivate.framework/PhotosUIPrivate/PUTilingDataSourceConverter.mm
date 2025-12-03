@@ -1,14 +1,14 @@
 @interface PUTilingDataSourceConverter
-- (BOOL)convertIndexPath:(id *)a3 tileKind:(id *)a4 fromDataSource:(id)a5 toDataSource:(id)a6;
+- (BOOL)convertIndexPath:(id *)path tileKind:(id *)kind fromDataSource:(id)source toDataSource:(id)dataSource;
 @end
 
 @implementation PUTilingDataSourceConverter
 
-- (BOOL)convertIndexPath:(id *)a3 tileKind:(id *)a4 fromDataSource:(id)a5 toDataSource:(id)a6
+- (BOOL)convertIndexPath:(id *)path tileKind:(id *)kind fromDataSource:(id)source toDataSource:(id)dataSource
 {
-  v6 = *a3;
-  v7 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-  LOBYTE(v6) = [v6 isEqual:v7];
+  v6 = *path;
+  pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+  LOBYTE(v6) = [v6 isEqual:pu_rootIndexPath];
 
   return v6;
 }

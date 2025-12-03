@@ -1,16 +1,16 @@
 @interface HKFavoritesTableViewCell
 - (BOOL)isFavorited;
-- (HKFavoritesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setFavorited:(BOOL)a3;
+- (HKFavoritesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setFavorited:(BOOL)favorited;
 @end
 
 @implementation HKFavoritesTableViewCell
 
-- (HKFavoritesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKFavoritesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v23.receiver = self;
   v23.super_class = HKFavoritesTableViewCell;
-  v4 = [(HKFavoritesTableViewCell *)&v23 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKFavoritesTableViewCell *)&v23 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -27,8 +27,8 @@
     [(UIImageView *)v4->_pin setImage:v11];
 
     [(UIImageView *)v4->_pin setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
-    v12 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(UIImageView *)v4->_pin setTintColor:v12];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(UIImageView *)v4->_pin setTintColor:systemYellowColor];
 
     v13 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     unpin = v4->_unpin;
@@ -43,13 +43,13 @@
     [(UIImageView *)v4->_unpin setImage:v18];
 
     [(UIImageView *)v4->_unpin setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
-    v19 = [MEMORY[0x1E69DC888] systemGray3Color];
-    [(UIImageView *)v4->_unpin setTintColor:v19];
+    systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
+    [(UIImageView *)v4->_unpin setTintColor:systemGray3Color];
 
     [(HKFavoritesTableViewCell *)v4 setSelectionStyle:0];
     v20 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:v8];
-    v21 = [(HKFavoritesTableViewCell *)v4 textLabel];
-    [v21 setFont:v20];
+    textLabel = [(HKFavoritesTableViewCell *)v4 textLabel];
+    [textLabel setFont:v20];
 
     [(HKFavoritesTableViewCell *)v4 setAccessoryView:v4->_pin];
   }
@@ -59,17 +59,17 @@
 
 - (BOOL)isFavorited
 {
-  v2 = self;
-  v3 = [(HKFavoritesTableViewCell *)self accessoryView];
-  LOBYTE(v2) = v3 == v2->_unpin;
+  selfCopy = self;
+  accessoryView = [(HKFavoritesTableViewCell *)self accessoryView];
+  LOBYTE(selfCopy) = accessoryView == selfCopy->_unpin;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setFavorited:(BOOL)a3
+- (void)setFavorited:(BOOL)favorited
 {
   v4 = &OBJC_IVAR___HKFavoritesTableViewCell__pin;
-  if (a3)
+  if (favorited)
   {
     v4 = &OBJC_IVAR___HKFavoritesTableViewCell__unpin;
     v5 = @"UNPIN_FROM_BROWSE";
@@ -80,7 +80,7 @@
     v5 = @"PIN_TO_BROWSE";
   }
 
-  if (a3)
+  if (favorited)
   {
     v6 = @"UNPIN_FROM_SUMMARY";
   }
@@ -91,13 +91,13 @@
   }
 
   [(HKFavoritesTableViewCell *)self setAccessoryView:*(&self->super.super.super.super.isa + *v4)];
-  v7 = [MEMORY[0x1E696C608] sharedBehavior];
-  v8 = [v7 features];
-  v9 = [v8 isPinnedInBrowse];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  isPinnedInBrowse = [features isPinnedInBrowse];
 
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v14 = v10;
-  if (v9)
+  if (isPinnedInBrowse)
   {
     v11 = v5;
   }
@@ -108,8 +108,8 @@
   }
 
   v12 = [v10 localizedStringForKey:v11 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v13 = [(HKFavoritesTableViewCell *)self textLabel];
-  [v13 setText:v12];
+  textLabel = [(HKFavoritesTableViewCell *)self textLabel];
+  [textLabel setText:v12];
 }
 
 @end

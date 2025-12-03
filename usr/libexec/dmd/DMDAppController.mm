@@ -1,83 +1,83 @@
 @interface DMDAppController
 + (DMDAppController)sharedController;
 + (void)_sendAppStatusChangeNotification;
-+ (void)_setTapToPayAttribute:(id)a3 forBundleIdentifier:(id)a4;
-- (BOOL)_isManagedBundleIdentifier:(id)a3;
-- (BOOL)_setMetadata:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_updateMetadataSettingKey:(id)a3 toValue:(id)a4 forBundleIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)removePersonaMappingForBundleID:(id)a3 error:(id *)a4;
-- (BOOL)setAllowUserToHide:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setAllowUserToLock:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setAssociatedDomains:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setAssociatedDomainsEnableDirectDownloads:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setCellularSliceUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setConfiguration:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setContentFilterUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setDNSProxyUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setFeedback:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setManagementInformation:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setRelayUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setSourceIdentifier:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setState:(unint64_t)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setVPNUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)writeManagementInformationToDiskWithError:(id *)a3;
++ (void)_setTapToPayAttribute:(id)attribute forBundleIdentifier:(id)identifier;
+- (BOOL)_isManagedBundleIdentifier:(id)identifier;
+- (BOOL)_setMetadata:(id)metadata forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_updateMetadataSettingKey:(id)key toValue:(id)value forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removePersonaMappingForBundleID:(id)d error:(id *)error;
+- (BOOL)setAllowUserToHide:(id)hide forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setAllowUserToLock:(id)lock forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setAssociatedDomains:(id)domains forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setAssociatedDomainsEnableDirectDownloads:(id)downloads forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setCellularSliceUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setConfiguration:(id)configuration forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setContentFilterUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setDNSProxyUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setFeedback:(id)feedback forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setManagementInformation:(id)information forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setRelayUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setSourceIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (BOOL)setState:(unint64_t)state forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setVPNUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)writeManagementInformationToDiskWithError:(id *)error;
 - (NSArray)managedBundleIdentifiers;
 - (NSString)description;
-- (id)DNSProxyUUIDStringForBundleIdentifier:(id)a3;
-- (id)VPNUUIDStringForBundleIdentifier:(id)a3;
+- (id)DNSProxyUUIDStringForBundleIdentifier:(id)identifier;
+- (id)VPNUUIDStringForBundleIdentifier:(id)identifier;
 - (id)_metadataByBundleIdentifier;
-- (id)_metadataForBundleIdentifier:(id)a3;
+- (id)_metadataForBundleIdentifier:(id)identifier;
 - (id)_newMetadataDictionary;
 - (id)allManagementInformation;
-- (id)allowUserToHideForBundleIdentifier:(id)a3;
-- (id)allowUserToLockForBundleIdentifier:(id)a3;
-- (id)associatedDomainsEnableDirectDownloadsForBundleIdentifier:(id)a3;
-- (id)associatedDomainsForBundleIdentifier:(id)a3;
-- (id)cellularSliceUUIDStringForBundleIdentifier:(id)a3;
-- (id)configurationForBundleIdentifier:(id)a3;
-- (id)contentFilterUUIDStringForBundleIdentifier:(id)a3;
-- (id)feedbackForBundleIdentifier:(id)a3;
+- (id)allowUserToHideForBundleIdentifier:(id)identifier;
+- (id)allowUserToLockForBundleIdentifier:(id)identifier;
+- (id)associatedDomainsEnableDirectDownloadsForBundleIdentifier:(id)identifier;
+- (id)associatedDomainsForBundleIdentifier:(id)identifier;
+- (id)cellularSliceUUIDStringForBundleIdentifier:(id)identifier;
+- (id)configurationForBundleIdentifier:(id)identifier;
+- (id)contentFilterUUIDStringForBundleIdentifier:(id)identifier;
+- (id)feedbackForBundleIdentifier:(id)identifier;
 - (id)initPrivate;
-- (id)managementInformationForBundleIdentifier:(id)a3;
-- (id)relayUUIDStringForBundleIdentifier:(id)a3;
-- (id)removabilityForBundleIdentifier:(id)a3;
-- (id)sourceIdentifierForBundleIdentifier:(id)a3;
-- (id)tapToPayScreenLockForBundleIdentifier:(id)a3;
-- (unint64_t)stateForBundleIdentifier:(id)a3;
-- (void)_applyChangeInLifeCycle:(id)a3 stateMap:(id)a4;
+- (id)managementInformationForBundleIdentifier:(id)identifier;
+- (id)relayUUIDStringForBundleIdentifier:(id)identifier;
+- (id)removabilityForBundleIdentifier:(id)identifier;
+- (id)sourceIdentifierForBundleIdentifier:(id)identifier;
+- (id)tapToPayScreenLockForBundleIdentifier:(id)identifier;
+- (unint64_t)stateForBundleIdentifier:(id)identifier;
+- (void)_applyChangeInLifeCycle:(id)cycle stateMap:(id)map;
 - (void)_cleanUpStaleManagementStatesAndStartObservingApps;
-- (void)_getEnterpriseAppMetadataForManifestURL:(id)a3 completion:(id)a4;
-- (void)_getEnterpriseAppMetadataFromData:(id)a3 completion:(id)a4;
-- (void)_resetStateForChangeInLifeCycle:(id)a3 newState:(unint64_t)a4;
-- (void)_stopObservingLifeCycle:(id)a3;
+- (void)_getEnterpriseAppMetadataForManifestURL:(id)l completion:(id)completion;
+- (void)_getEnterpriseAppMetadataFromData:(id)data completion:(id)completion;
+- (void)_resetStateForChangeInLifeCycle:(id)cycle newState:(unint64_t)state;
+- (void)_stopObservingLifeCycle:(id)cycle;
 - (void)advanceTransientStates;
-- (void)cancelAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)cancelAppUpdateWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)didFailInstallingForLifeCycle:(id)a3;
-- (void)didFinishInstallingForLifeCycle:(id)a3;
-- (void)didFinishUninstallingForLifeCycle:(id)a3;
-- (void)didFinishUpdatingForLifeCycle:(id)a3;
-- (void)didResetStateForLifeCycle:(id)a3 state:(unint64_t)a4;
-- (void)didStartInstallingForLifeCycle:(id)a3;
-- (void)didStartUpdatingForLifeCycle:(id)a3;
-- (void)getBundleIdentifierForAppRequest:(id)a3 completion:(id)a4;
-- (void)getBundleIdentifierForManifestURL:(id)a3 completion:(id)a4;
-- (void)getBundleIdentifierForStoreItemIdentifier:(id)a3 personaIdentifier:(id)a4 completion:(id)a5;
-- (void)getMetadataForAppRequest:(id)a3 completion:(id)a4;
-- (void)getMetadataForNonEnterpriseAppRequest:(id)a3 completion:(id)a4;
-- (void)handleFetchRequest:(id)a3 completion:(id)a4;
-- (void)resumeAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)resumeAppUpdateWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)cancelAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)cancelAppUpdateWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)didFailInstallingForLifeCycle:(id)cycle;
+- (void)didFinishInstallingForLifeCycle:(id)cycle;
+- (void)didFinishUninstallingForLifeCycle:(id)cycle;
+- (void)didFinishUpdatingForLifeCycle:(id)cycle;
+- (void)didResetStateForLifeCycle:(id)cycle state:(unint64_t)state;
+- (void)didStartInstallingForLifeCycle:(id)cycle;
+- (void)didStartUpdatingForLifeCycle:(id)cycle;
+- (void)getBundleIdentifierForAppRequest:(id)request completion:(id)completion;
+- (void)getBundleIdentifierForManifestURL:(id)l completion:(id)completion;
+- (void)getBundleIdentifierForStoreItemIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completion:(id)completion;
+- (void)getMetadataForAppRequest:(id)request completion:(id)completion;
+- (void)getMetadataForNonEnterpriseAppRequest:(id)request completion:(id)completion;
+- (void)handleFetchRequest:(id)request completion:(id)completion;
+- (void)resumeAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)resumeAppUpdateWithBundleIdentifier:(id)identifier completion:(id)completion;
 - (void)sendManagedAppsChangedNotification;
-- (void)setRemovability:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)setTapToPayScreenLock:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)setVPNUUIDString:(id)a3 cellularSliceUUIDString:(id)a4 contentFilterUUIDString:(id)a5 DNSProxyUUIDString:(id)a6 relayUUIDString:(id)a7 associatedDomains:(id)a8 enableDirectDownloads:(id)a9 allowUserToHide:(id)a10 allowUserToLock:(id)a11 configuration:(id)a12 options:(unint64_t)a13 sourceIdentifier:(id)a14 forBundleIdentifier:(id)a15;
-- (void)startInstallingEnterpriseAppWithManifestURL:(id)a3 completion:(id)a4;
-- (void)startInstallingNonEnterpriseAppForRequest:(id)a3 completion:(id)a4;
-- (void)startRedeemingAppWithCode:(id)a3 completion:(id)a4;
-- (void)startUninstallingAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)startUpdatingAppForRequest:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)updateBundleIDPersonaIDMappingForPersonaID:(id)a3 addingBundleID:(id)a4 completionHandler:(id)a5;
+- (void)setRemovability:(id)removability forBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setTapToPayScreenLock:(id)lock forBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setVPNUUIDString:(id)string cellularSliceUUIDString:(id)dString contentFilterUUIDString:(id)iDString DNSProxyUUIDString:(id)uIDString relayUUIDString:(id)uUIDString associatedDomains:(id)domains enableDirectDownloads:(id)downloads allowUserToHide:(id)self0 allowUserToLock:(id)self1 configuration:(id)self2 options:(unint64_t)self3 sourceIdentifier:(id)self4 forBundleIdentifier:(id)self5;
+- (void)startInstallingEnterpriseAppWithManifestURL:(id)l completion:(id)completion;
+- (void)startInstallingNonEnterpriseAppForRequest:(id)request completion:(id)completion;
+- (void)startRedeemingAppWithCode:(id)code completion:(id)completion;
+- (void)startUninstallingAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)startUpdatingAppForRequest:(id)request metadata:(id)metadata completion:(id)completion;
+- (void)updateBundleIDPersonaIDMappingForPersonaID:(id)d addingBundleID:(id)iD completionHandler:(id)handler;
 @end
 
 @implementation DMDAppController
@@ -107,18 +107,18 @@
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [objc_opt_class() metadataPath];
+    metadataPath = [objc_opt_class() metadataPath];
     v8 = +[NSFileManager defaultManager];
-    v9 = [v8 fileExistsAtPath:v7];
+    v9 = [v8 fileExistsAtPath:metadataPath];
 
     if (v9)
     {
       v34 = 0;
-      v10 = [NSData dataWithContentsOfFile:v7 options:0 error:&v34];
+      v10 = [NSData dataWithContentsOfFile:metadataPath options:0 error:&v34];
       v11 = v34;
       if (!v10)
       {
-        v26 = [NSString stringWithFormat:@"Could not read app management plist at path: %@, error: %@", v7, v11];
+        v26 = [NSString stringWithFormat:@"Could not read app management plist at path: %@, error: %@", metadataPath, v11];
         v38 = @"error";
         v39 = v11;
         v27 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
@@ -184,20 +184,20 @@ LABEL_10:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(DMDAppController *)self _metadataByBundleIdentifier];
-  v5 = [NSString stringWithFormat:@"<%@: %p Apps: %@>", v3, self, v4];;
+  _metadataByBundleIdentifier = [(DMDAppController *)self _metadataByBundleIdentifier];
+  v5 = [NSString stringWithFormat:@"<%@: %p Apps: %@>", v3, self, _metadataByBundleIdentifier];;
 
   return v5;
 }
 
-- (void)getBundleIdentifierForManifestURL:(id)a3 completion:(id)a4
+- (void)getBundleIdentifierForManifestURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -217,9 +217,9 @@ LABEL_3:
   v9 = DMFAppLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 host];
+    host = [lCopy host];
     *buf = 138543362;
-    v15 = v10;
+    v15 = host;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Get bundle identifier for manifest URL from: %{public}@", buf, 0xCu);
   }
 
@@ -229,17 +229,17 @@ LABEL_3:
   v12[3] = &unk_1000CDE10;
   v13 = v8;
   v11 = v8;
-  [(DMDAppController *)self _getEnterpriseAppMetadataForManifestURL:v6 completion:v12];
+  [(DMDAppController *)self _getEnterpriseAppMetadataForManifestURL:lCopy completion:v12];
 }
 
-- (void)getBundleIdentifierForAppRequest:(id)a3 completion:(id)a4
+- (void)getBundleIdentifierForAppRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -260,50 +260,50 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v6;
+    v16 = requestCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Get bundle identifier for request: %{public}@", &v15, 0xCu);
   }
 
-  v10 = [v6 bundleIdentifier];
-  if (v10)
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
-    (v8)[2](v8, v10, 0);
+    (v8)[2](v8, bundleIdentifier, 0);
   }
 
   else
   {
-    v11 = [v6 storeItemIdentifier];
-    if (v11)
+    storeItemIdentifier = [requestCopy storeItemIdentifier];
+    if (storeItemIdentifier)
     {
       v12 = DMFAppLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543362;
-        v16 = v11;
+        v16 = storeItemIdentifier;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Get bundle identifier for store item identifier: %{public}@", &v15, 0xCu);
       }
 
-      v13 = [v6 storeItemIdentifier];
-      v14 = [v6 personaIdentifier];
-      [(DMDAppController *)self getBundleIdentifierForStoreItemIdentifier:v13 personaIdentifier:v14 completion:v8];
+      storeItemIdentifier2 = [requestCopy storeItemIdentifier];
+      personaIdentifier = [requestCopy personaIdentifier];
+      [(DMDAppController *)self getBundleIdentifierForStoreItemIdentifier:storeItemIdentifier2 personaIdentifier:personaIdentifier completion:v8];
     }
 
     else
     {
-      v13 = [v6 manifestURL];
-      [(DMDAppController *)self getBundleIdentifierForManifestURL:v13 completion:v8];
+      storeItemIdentifier2 = [requestCopy manifestURL];
+      [(DMDAppController *)self getBundleIdentifierForManifestURL:storeItemIdentifier2 completion:v8];
     }
   }
 }
 
-- (void)getMetadataForAppRequest:(id)a3 completion:(id)a4
+- (void)getMetadataForAppRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -320,12 +320,12 @@ LABEL_3:
 
   sub_10007C978();
 LABEL_3:
-  v9 = [v6 manifestURL];
+  manifestURL = [requestCopy manifestURL];
 
-  if (v9)
+  if (manifestURL)
   {
-    v10 = [v6 manifestURL];
-    [(DMDAppController *)self _getEnterpriseAppMetadataForManifestURL:v10 completion:v8];
+    manifestURL2 = [requestCopy manifestURL];
+    [(DMDAppController *)self _getEnterpriseAppMetadataForManifestURL:manifestURL2 completion:v8];
   }
 
   else
@@ -334,23 +334,23 @@ LABEL_3:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = requestCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Get metadata for non-enterprise app request: %{public}@", &v12, 0xCu);
     }
 
-    [(DMDAppController *)self getMetadataForNonEnterpriseAppRequest:v6 completion:v8];
+    [(DMDAppController *)self getMetadataForNonEnterpriseAppRequest:requestCopy completion:v8];
   }
 }
 
-- (id)managementInformationForBundleIdentifier:(id)a3
+- (id)managementInformationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     sub_10007C9EC();
   }
 
-  v5 = [(DMDAppController *)self _metadataForBundleIdentifier:v4];
+  v5 = [(DMDAppController *)self _metadataForBundleIdentifier:identifierCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -375,62 +375,62 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)setManagementInformation:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setManagementInformation:(id)information forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  informationCopy = information;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     sub_10007CA60();
-    if (v8)
+    if (informationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v10 = 0;
+    _newMetadataDictionary = 0;
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!informationCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  v10 = [(DMDAppController *)self _metadataForBundleIdentifier:v9];
-  if (!v10)
+  _newMetadataDictionary = [(DMDAppController *)self _metadataForBundleIdentifier:identifierCopy];
+  if (!_newMetadataDictionary)
   {
-    v10 = [(DMDAppController *)self _newMetadataDictionary];
+    _newMetadataDictionary = [(DMDAppController *)self _newMetadataDictionary];
   }
 
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 state]);
-  [v10 setObject:v11 forKeyedSubscript:@"state"];
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [informationCopy state]);
+  [_newMetadataDictionary setObject:v11 forKeyedSubscript:@"state"];
 
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 options]);
-  [v10 setObject:v12 forKeyedSubscript:@"flags"];
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [informationCopy options]);
+  [_newMetadataDictionary setObject:v12 forKeyedSubscript:@"flags"];
 
-  v13 = [v8 redemptionCode];
-  [v10 setObject:v13 forKeyedSubscript:@"RedemptionCode"];
+  redemptionCode = [informationCopy redemptionCode];
+  [_newMetadataDictionary setObject:redemptionCode forKeyedSubscript:@"RedemptionCode"];
 
-  v14 = [v8 unusedRedemptionCode];
-  [v10 setObject:v14 forKeyedSubscript:@"UnusedRedemptionCode"];
+  unusedRedemptionCode = [informationCopy unusedRedemptionCode];
+  [_newMetadataDictionary setObject:unusedRedemptionCode forKeyedSubscript:@"UnusedRedemptionCode"];
 
 LABEL_8:
-  v15 = [(DMDAppController *)self _setMetadata:v10 forBundleIdentifier:v9 error:a5];
+  v15 = [(DMDAppController *)self _setMetadata:_newMetadataDictionary forBundleIdentifier:identifierCopy error:error];
 
   return v15;
 }
 
-- (BOOL)writeManagementInformationToDiskWithError:(id *)a3
+- (BOOL)writeManagementInformationToDiskWithError:(id *)error
 {
-  v4 = [(DMDAppController *)self manifest];
-  v5 = [NSPropertyListSerialization dataWithPropertyList:v4 format:200 options:0 error:a3];
+  manifest = [(DMDAppController *)self manifest];
+  v5 = [NSPropertyListSerialization dataWithPropertyList:manifest format:200 options:0 error:error];
 
   if (v5)
   {
-    v6 = [objc_opt_class() metadataPath];
-    v7 = [NSURL fileURLWithPath:v6 isDirectory:0];
+    metadataPath = [objc_opt_class() metadataPath];
+    v7 = [NSURL fileURLWithPath:metadataPath isDirectory:0];
 
     v15 = 0;
     v8 = [v5 dm_atomicWriteToURL:v7 error:&v15];
@@ -446,7 +446,7 @@ LABEL_8:
           sub_10007CAD4(v9, v10);
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_14;
         }
@@ -455,7 +455,7 @@ LABEL_8:
         v17 = v9;
         v12 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
         v13 = DMFErrorWithCodeAndUserInfo();
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -465,13 +465,13 @@ LABEL_8:
           sub_10007CB4C(v10);
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_14;
         }
 
         v12 = DMFErrorWithCodeAndUserInfo();
-        *a3 = v12;
+        *error = v12;
       }
     }
 
@@ -495,14 +495,14 @@ LABEL_15:
   v13 = sub_100010E44;
   v14 = 0;
   objc_initWeak(&location, self);
-  v3 = [(DMDAppController *)self queue];
+  queue = [(DMDAppController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010E4C;
   block[3] = &unk_1000CDE38;
   block[4] = &v9;
   objc_copyWeak(&v7, &location);
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   v4 = v10[5];
   objc_destroyWeak(&v7);
@@ -512,19 +512,19 @@ LABEL_15:
   return v4;
 }
 
-- (void)updateBundleIDPersonaIDMappingForPersonaID:(id)a3 addingBundleID:(id)a4 completionHandler:(id)a5
+- (void)updateBundleIDPersonaIDMappingForPersonaID:(id)d addingBundleID:(id)iD completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (dCopy)
   {
-    v12 = [(DMDAppController *)self managedBundleIdentifiers];
-    v13 = v12;
-    if (v9)
+    managedBundleIdentifiers = [(DMDAppController *)self managedBundleIdentifiers];
+    v13 = managedBundleIdentifiers;
+    if (iDCopy)
     {
-      v14 = [v12 arrayByAddingObject:v9];
+      v14 = [managedBundleIdentifiers arrayByAddingObject:iDCopy];
 
       v13 = v14;
     }
@@ -535,22 +535,22 @@ LABEL_15:
     v17[2] = sub_10001103C;
     v17[3] = &unk_1000CDE60;
     v18 = v13;
-    v19 = v8;
+    v19 = dCopy;
     v20 = v11;
     v16 = v13;
     [v15 setBundlesIdentifiers:v16 forPersonaWithPersonaUniqueString:v19 completionHandler:v17];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (BOOL)removePersonaMappingForBundleID:(id)a3 error:(id *)a4
+- (BOOL)removePersonaMappingForBundleID:(id)d error:(id *)error
 {
-  v18 = a4;
-  v5 = a3;
+  errorCopy = error;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -577,27 +577,27 @@ LABEL_15:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 userPersonaBundleIDList];
-        v13 = [v12 containsObject:v5];
+        userPersonaBundleIDList = [v11 userPersonaBundleIDList];
+        v13 = [userPersonaBundleIDList containsObject:dCopy];
 
         if (v13)
         {
-          v15 = [v11 userPersonaUniqueString];
+          userPersonaUniqueString = [v11 userPersonaUniqueString];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_100011350;
           v19[3] = &unk_1000CDE88;
           v19[4] = &v24;
-          [(DMDAppController *)self updateBundleIDPersonaIDMappingForPersonaID:v15 addingBundleID:0 completionHandler:v19];
+          [(DMDAppController *)self updateBundleIDPersonaIDMappingForPersonaID:userPersonaUniqueString addingBundleID:0 completionHandler:v19];
 
           v16 = v25[5];
           if (v16)
           {
             LOBYTE(v8) = 0;
             v14 = 0;
-            if (v18)
+            if (errorCopy)
             {
-              *v18 = v16;
+              *errorCopy = v16;
             }
           }
 
@@ -628,273 +628,273 @@ LABEL_14:
   return (v8 | v14) & 1;
 }
 
-- (id)VPNUUIDStringForBundleIdentifier:(id)a3
+- (id)VPNUUIDStringForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"VPNUUID"];
 
   return v5;
 }
 
-- (BOOL)setVPNUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setVPNUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = stringCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set VPN UUID for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"VPNUUID" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"VPNUUID" toValue:stringCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)cellularSliceUUIDStringForBundleIdentifier:(id)a3
+- (id)cellularSliceUUIDStringForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"CellularSliceUUID"];
 
   return v5;
 }
 
-- (BOOL)setCellularSliceUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setCellularSliceUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = stringCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set cellular slice UUID for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"CellularSliceUUID" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"CellularSliceUUID" toValue:stringCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)contentFilterUUIDStringForBundleIdentifier:(id)a3
+- (id)contentFilterUUIDStringForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"ContentFilterUUID"];
 
   return v5;
 }
 
-- (BOOL)setContentFilterUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setContentFilterUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = stringCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set content filter UUID for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"ContentFilterUUID" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"ContentFilterUUID" toValue:stringCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)DNSProxyUUIDStringForBundleIdentifier:(id)a3
+- (id)DNSProxyUUIDStringForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"DNSProxyUUID"];
 
   return v5;
 }
 
-- (BOOL)setDNSProxyUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setDNSProxyUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = stringCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set DNS proxy UUID for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"DNSProxyUUID" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"DNSProxyUUID" toValue:stringCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)relayUUIDStringForBundleIdentifier:(id)a3
+- (id)relayUUIDStringForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"RelayUUID"];
 
   return v5;
 }
 
-- (BOOL)setRelayUUIDString:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setRelayUUIDString:(id)string forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = stringCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set relay UUID for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"RelayUUID" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"RelayUUID" toValue:stringCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)associatedDomainsForBundleIdentifier:(id)a3
+- (id)associatedDomainsForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"AssociatedDomains"];
 
   return v5;
 }
 
-- (BOOL)setAssociatedDomains:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setAssociatedDomains:(id)domains forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  domainsCopy = domains;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 debugDescription];
+    v11 = [domainsCopy debugDescription];
     *buf = 138543618;
-    v17 = v9;
+    v17 = identifierCopy;
     v18 = 2114;
     v19 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set associated domains for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v15 = 0;
-  v12 = [(DMDAppController *)self _updateMetadataSettingKey:@"AssociatedDomains" toValue:v8 forBundleIdentifier:v9 error:&v15];
+  v12 = [(DMDAppController *)self _updateMetadataSettingKey:@"AssociatedDomains" toValue:domainsCopy forBundleIdentifier:identifierCopy error:&v15];
   v13 = v15;
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v13 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v12;
 }
 
-- (id)associatedDomainsEnableDirectDownloadsForBundleIdentifier:(id)a3
+- (id)associatedDomainsEnableDirectDownloadsForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"AssociatedDomainsEnableDirectDownloads"];
 
   return v5;
 }
 
-- (BOOL)setAssociatedDomainsEnableDirectDownloads:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setAssociatedDomainsEnableDirectDownloads:(id)downloads forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  downloadsCopy = downloads;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v9;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = downloadsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set associated domains enable direct downloads for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"AssociatedDomainsEnableDirectDownloads" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"AssociatedDomainsEnableDirectDownloads" toValue:downloadsCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)removabilityForBundleIdentifier:(id)a3
+- (id)removabilityForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"Removable"];
 
   return v5;
 }
 
-- (void)setRemovability:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)setRemovability:(id)removability forBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  removabilityCopy = removability;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = DMFAppLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v29 = v9;
+    v29 = identifierCopy;
     v30 = 2114;
-    v31 = v8;
+    v31 = removabilityCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Set removability for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -903,16 +903,16 @@ LABEL_14:
   v25[2] = sub_10001217C;
   v25[3] = &unk_1000CDEB0;
   v25[4] = self;
-  v12 = v9;
+  v12 = identifierCopy;
   v26 = v12;
-  v27 = v10;
-  v13 = v10;
+  v27 = completionCopy;
+  v13 = completionCopy;
   v14 = objc_retainBlock(v25);
-  if (v8)
+  if (removabilityCopy)
   {
-    v15 = [v8 BOOLValue];
+    bOOLValue = [removabilityCopy BOOLValue];
     v16 = 1;
-    if (!v15)
+    if (!bOOLValue)
     {
       v16 = 2;
     }
@@ -930,36 +930,36 @@ LABEL_14:
   v23 = v14;
   v24 = v16;
   v21 = v12;
-  v22 = v8;
-  v17 = v8;
+  v22 = removabilityCopy;
+  v17 = removabilityCopy;
   v18 = v14;
   v19 = v12;
   [IXAppInstallCoordinator removabilityForAppWithBundleID:v19 completion:v20];
 }
 
-- (id)tapToPayScreenLockForBundleIdentifier:(id)a3
+- (id)tapToPayScreenLockForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"TapToPayScreenLock"];
 
   return v5;
 }
 
-+ (void)_setTapToPayAttribute:(id)a3 forBundleIdentifier:(id)a4
++ (void)_setTapToPayAttribute:(id)attribute forBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  attributeCopy = attribute;
+  identifierCopy = identifier;
   v7 = DMFAppLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (attributeCopy)
   {
     if (v8)
     {
-      sub_10007CD08(v5, v7);
+      sub_10007CD08(attributeCopy, v7);
     }
 
-    [sub_10001262C() setMDMAppAttribute:0 withValue:objc_msgSend(v5 forBundleID:{"BOOLValue"), v6}];
+    [sub_10001262C() setMDMAppAttribute:0 withValue:objc_msgSend(attributeCopy forBundleID:{"BOOLValue"), identifierCopy}];
   }
 
   else
@@ -969,127 +969,127 @@ LABEL_14:
       sub_10007CD80(v7);
     }
 
-    [sub_10001262C() removeMDMAppAttribute:0 forBundleID:v6];
+    [sub_10001262C() removeMDMAppAttribute:0 forBundleID:identifierCopy];
   }
 }
 
-- (void)setTapToPayScreenLock:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)setTapToPayScreenLock:(id)lock forBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lockCopy = lock;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = DMFAppLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v9;
+    v15 = identifierCopy;
     v16 = 2114;
-    v17 = v8;
+    v17 = lockCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "setTapToPayScreenLock for bundle identifier %{public}@: %{public}@", buf, 0x16u);
   }
 
-  [objc_opt_class() _setTapToPayAttribute:v8 forBundleIdentifier:v9];
+  [objc_opt_class() _setTapToPayAttribute:lockCopy forBundleIdentifier:identifierCopy];
   v13 = 0;
-  [(DMDAppController *)self _updateMetadataSettingKey:@"TapToPayScreenLock" toValue:v8 forBundleIdentifier:v9 error:&v13];
+  [(DMDAppController *)self _updateMetadataSettingKey:@"TapToPayScreenLock" toValue:lockCopy forBundleIdentifier:identifierCopy error:&v13];
   v12 = v13;
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v12);
+    completionCopy[2](completionCopy, v12);
   }
 }
 
-- (id)allowUserToHideForBundleIdentifier:(id)a3
+- (id)allowUserToHideForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"AllowUserToHide"];
 
   return v5;
 }
 
-- (BOOL)setAllowUserToHide:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setAllowUserToHide:(id)hide forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  hideCopy = hide;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v8;
+    v16 = hideCopy;
     v17 = 2114;
-    v18 = v9;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set allow user to hide (%@) for bundle identifier: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"AllowUserToHide" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"AllowUserToHide" toValue:hideCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)allowUserToLockForBundleIdentifier:(id)a3
+- (id)allowUserToLockForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"Attributes"];
   v5 = [v4 objectForKeyedSubscript:@"AllowUserToLock"];
 
   return v5;
 }
 
-- (BOOL)setAllowUserToLock:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setAllowUserToLock:(id)lock forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lockCopy = lock;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v8;
+    v16 = lockCopy;
     v17 = 2114;
-    v18 = v9;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set allow user to lock (%@) for bundle identifier: %{public}@", buf, 0x16u);
   }
 
   v14 = 0;
-  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"AllowUserToLock" toValue:v8 forBundleIdentifier:v9 error:&v14];
+  v11 = [(DMDAppController *)self _updateMetadataSettingKey:@"AllowUserToLock" toValue:lockCopy forBundleIdentifier:identifierCopy error:&v14];
   v12 = v14;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (BOOL)_updateMetadataSettingKey:(id)a3 toValue:(id)a4 forBundleIdentifier:(id)a5 error:(id *)a6
+- (BOOL)_updateMetadataSettingKey:(id)key toValue:(id)value forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(DMDAppController *)self _metadataForBundleIdentifier:v12];
-  if (!v13)
+  keyCopy = key;
+  valueCopy = value;
+  identifierCopy = identifier;
+  _newMetadataDictionary = [(DMDAppController *)self _metadataForBundleIdentifier:identifierCopy];
+  if (!_newMetadataDictionary)
   {
-    if (!v11)
+    if (!valueCopy)
     {
       v15 = 1;
       goto LABEL_10;
     }
 
-    v13 = [(DMDAppController *)self _newMetadataDictionary];
+    _newMetadataDictionary = [(DMDAppController *)self _newMetadataDictionary];
   }
 
-  v14 = [v13 objectForKeyedSubscript:@"Attributes"];
-  [v14 setObject:v11 forKeyedSubscript:v10];
+  v14 = [_newMetadataDictionary objectForKeyedSubscript:@"Attributes"];
+  [v14 setObject:valueCopy forKeyedSubscript:keyCopy];
 
   v18 = 0;
-  v15 = [(DMDAppController *)self _setMetadata:v13 forBundleIdentifier:v12 error:&v18];
+  v15 = [(DMDAppController *)self _setMetadata:_newMetadataDictionary forBundleIdentifier:identifierCopy error:&v18];
   v16 = v18;
   if (!v15)
   {
@@ -1098,10 +1098,10 @@ LABEL_14:
       v16 = DMFErrorWithCodeAndUserInfo();
     }
 
-    if (a6)
+    if (error)
     {
       v16 = v16;
-      *a6 = v16;
+      *error = v16;
     }
   }
 
@@ -1109,7 +1109,7 @@ LABEL_10:
   return v15;
 }
 
-- (id)configurationForBundleIdentifier:(id)a3
+- (id)configurationForBundleIdentifier:(id)identifier
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = objc_opt_class();
@@ -1119,9 +1119,9 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)setConfiguration:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setConfiguration:(id)configuration forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = [NSAssertionHandler currentHandler:a3];
+  v7 = [NSAssertionHandler currentHandler:configuration];
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(a2);
   [v7 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:644 description:{@"%@ must implement %@", v8, v9}];
@@ -1129,7 +1129,7 @@ LABEL_10:
   return 0;
 }
 
-- (id)feedbackForBundleIdentifier:(id)a3
+- (id)feedbackForBundleIdentifier:(id)identifier
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = objc_opt_class();
@@ -1139,9 +1139,9 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)setFeedback:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setFeedback:(id)feedback forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = [NSAssertionHandler currentHandler:a3];
+  v7 = [NSAssertionHandler currentHandler:feedback];
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(a2);
   [v7 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:654 description:{@"%@ must implement %@", v8, v9}];
@@ -1149,151 +1149,151 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)setSourceIdentifier:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setSourceIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v8;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v9;
+    v20 = bundleIdentifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set source ID %@ for bundle identifier: %{public}@", &v17, 0x16u);
   }
 
-  v11 = [(DMDAppController *)self _metadataForBundleIdentifier:v9];
+  v11 = [(DMDAppController *)self _metadataForBundleIdentifier:bundleIdentifierCopy];
   if (v11)
   {
-    v12 = v11;
+    _newMetadataDictionary = v11;
     v13 = [v11 objectForKeyedSubscript:@"source"];
   }
 
   else
   {
-    if (!v8)
+    if (!identifierCopy)
     {
       v15 = 1;
       goto LABEL_12;
     }
 
-    v12 = [(DMDAppController *)self _newMetadataDictionary];
-    v13 = v8;
+    _newMetadataDictionary = [(DMDAppController *)self _newMetadataDictionary];
+    v13 = identifierCopy;
   }
 
   v14 = v13;
-  [v12 setObject:v8 forKeyedSubscript:@"source"];
-  if ((v8 == 0) != (v14 == 0) || v14 && ([v8 isEqualToString:v14] & 1) == 0)
+  [_newMetadataDictionary setObject:identifierCopy forKeyedSubscript:@"source"];
+  if ((identifierCopy == 0) != (v14 == 0) || v14 && ([identifierCopy isEqualToString:v14] & 1) == 0)
   {
     [objc_opt_class() _sendAppStatusChangeNotification];
   }
 
-  v15 = [(DMDAppController *)self _setMetadata:v12 forBundleIdentifier:v9 error:a5];
+  v15 = [(DMDAppController *)self _setMetadata:_newMetadataDictionary forBundleIdentifier:bundleIdentifierCopy error:error];
 
 LABEL_12:
   return v15;
 }
 
-- (id)sourceIdentifierForBundleIdentifier:(id)a3
+- (id)sourceIdentifierForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"source"];
 
   return v4;
 }
 
-- (void)getBundleIdentifierForStoreItemIdentifier:(id)a3 personaIdentifier:(id)a4 completion:(id)a5
+- (void)getBundleIdentifierForStoreItemIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completion:(id)completion
 {
-  v9 = [NSAssertionHandler currentHandler:a3];
+  v9 = [NSAssertionHandler currentHandler:identifier];
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(a2);
   [v9 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:707 description:{@"%@ must implement %@", v7, v8}];
 }
 
-- (void)getMetadataForNonEnterpriseAppRequest:(id)a3 completion:(id)a4
+- (void)getMetadataForNonEnterpriseAppRequest:(id)request completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:request];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:712 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)handleFetchRequest:(id)a3 completion:(id)a4
+- (void)handleFetchRequest:(id)request completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:request];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:717 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)startInstallingEnterpriseAppWithManifestURL:(id)a3 completion:(id)a4
+- (void)startInstallingEnterpriseAppWithManifestURL:(id)l completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:l];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:722 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)startInstallingNonEnterpriseAppForRequest:(id)a3 completion:(id)a4
+- (void)startInstallingNonEnterpriseAppForRequest:(id)request completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:request];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:727 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)startRedeemingAppWithCode:(id)a3 completion:(id)a4
+- (void)startRedeemingAppWithCode:(id)code completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:code];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:732 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)cancelAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)cancelAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:identifier];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:737 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)resumeAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)resumeAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:identifier];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:742 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)startUpdatingAppForRequest:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)startUpdatingAppForRequest:(id)request metadata:(id)metadata completion:(id)completion
 {
-  v9 = [NSAssertionHandler currentHandler:a3];
+  v9 = [NSAssertionHandler currentHandler:request];
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(a2);
   [v9 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:748 description:{@"%@ must implement %@", v7, v8}];
 }
 
-- (void)cancelAppUpdateWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)cancelAppUpdateWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:identifier];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:753 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)resumeAppUpdateWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)resumeAppUpdateWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:identifier];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:758 description:{@"%@ must implement %@", v6, v7}];
 }
 
-- (void)startUninstallingAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)startUninstallingAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:identifier];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:763 description:{@"%@ must implement %@", v6, v7}];
@@ -1307,7 +1307,7 @@ LABEL_12:
   [v6 handleFailureInMethod:a2 object:self file:@"DMDAppController.m" lineNumber:767 description:{@"%@ must implement %@", v4, v5}];
 }
 
-- (void)didStartInstallingForLifeCycle:(id)a3
+- (void)didStartInstallingForLifeCycle:(id)cycle
 {
   v6[0] = &off_1000D77D8;
   v6[1] = &off_1000D7808;
@@ -1315,71 +1315,71 @@ LABEL_12:
   v7[1] = &off_1000D77F0;
   v6[2] = &off_1000D7820;
   v7[2] = &off_1000D7838;
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:3];
-  [(DMDAppController *)self _applyChangeInLifeCycle:v4 stateMap:v5];
+  [(DMDAppController *)self _applyChangeInLifeCycle:cycleCopy stateMap:v5];
 }
 
-- (void)didFailInstallingForLifeCycle:(id)a3
+- (void)didFailInstallingForLifeCycle:(id)cycle
 {
   v6 = &off_1000D77F0;
   v7 = &off_1000D7850;
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [(DMDAppController *)self _applyChangeInLifeCycle:v4 stateMap:v5];
+  [(DMDAppController *)self _applyChangeInLifeCycle:cycleCopy stateMap:v5];
 }
 
-- (void)didFinishInstallingForLifeCycle:(id)a3
+- (void)didFinishInstallingForLifeCycle:(id)cycle
 {
   v6[0] = &off_1000D77F0;
   v6[1] = &off_1000D77D8;
   v7[0] = &off_1000D7868;
   v7[1] = &off_1000D7868;
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
-  [(DMDAppController *)self _applyChangeInLifeCycle:v4 stateMap:v5];
+  [(DMDAppController *)self _applyChangeInLifeCycle:cycleCopy stateMap:v5];
 }
 
-- (void)didStartUpdatingForLifeCycle:(id)a3
+- (void)didStartUpdatingForLifeCycle:(id)cycle
 {
   v6 = &off_1000D7868;
   v7 = &off_1000D7880;
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [(DMDAppController *)self _applyChangeInLifeCycle:v4 stateMap:v5];
+  [(DMDAppController *)self _applyChangeInLifeCycle:cycleCopy stateMap:v5];
 }
 
-- (void)didFinishUpdatingForLifeCycle:(id)a3
+- (void)didFinishUpdatingForLifeCycle:(id)cycle
 {
   v6 = &off_1000D7880;
   v7 = &off_1000D7868;
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [(DMDAppController *)self _applyChangeInLifeCycle:v4 stateMap:v5];
+  [(DMDAppController *)self _applyChangeInLifeCycle:cycleCopy stateMap:v5];
 }
 
-- (void)didFinishUninstallingForLifeCycle:(id)a3
+- (void)didFinishUninstallingForLifeCycle:(id)cycle
 {
   v6 = &off_1000D7868;
   v7 = &off_1000D77D8;
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [(DMDAppController *)self _applyChangeInLifeCycle:v4 stateMap:v5];
+  [(DMDAppController *)self _applyChangeInLifeCycle:cycleCopy stateMap:v5];
 }
 
-- (void)didResetStateForLifeCycle:(id)a3 state:(unint64_t)a4
+- (void)didResetStateForLifeCycle:(id)cycle state:(unint64_t)state
 {
-  v6 = a3;
+  cycleCopy = cycle;
   v7 = DMFAppLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [cycleCopy bundleIdentifier];
     v9 = 138543362;
-    v10 = v8;
+    v10 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "DMDAppController::didResetStateForLifeCycle(%{public}@)", &v9, 0xCu);
   }
 
-  [(DMDAppController *)self _resetStateForChangeInLifeCycle:v6 newState:a4];
+  [(DMDAppController *)self _resetStateForChangeInLifeCycle:cycleCopy newState:state];
 }
 
 - (NSArray)managedBundleIdentifiers
@@ -1391,14 +1391,14 @@ LABEL_12:
   v13 = sub_100010E44;
   v14 = 0;
   objc_initWeak(&location, self);
-  v3 = [(DMDAppController *)self queue];
+  queue = [(DMDAppController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014018;
   block[3] = &unk_1000CDE38;
   block[4] = &v9;
   objc_copyWeak(&v7, &location);
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   v4 = v10[5];
   objc_destroyWeak(&v7);
@@ -1408,33 +1408,33 @@ LABEL_12:
   return v4;
 }
 
-- (void)setVPNUUIDString:(id)a3 cellularSliceUUIDString:(id)a4 contentFilterUUIDString:(id)a5 DNSProxyUUIDString:(id)a6 relayUUIDString:(id)a7 associatedDomains:(id)a8 enableDirectDownloads:(id)a9 allowUserToHide:(id)a10 allowUserToLock:(id)a11 configuration:(id)a12 options:(unint64_t)a13 sourceIdentifier:(id)a14 forBundleIdentifier:(id)a15
+- (void)setVPNUUIDString:(id)string cellularSliceUUIDString:(id)dString contentFilterUUIDString:(id)iDString DNSProxyUUIDString:(id)uIDString relayUUIDString:(id)uUIDString associatedDomains:(id)domains enableDirectDownloads:(id)downloads allowUserToHide:(id)self0 allowUserToLock:(id)self1 configuration:(id)self2 options:(unint64_t)self3 sourceIdentifier:(id)self4 forBundleIdentifier:(id)self5
 {
-  v66 = a4;
-  v67 = a5;
-  v19 = a6;
-  v71 = a7;
-  v70 = a8;
-  v69 = a9;
-  v68 = a10;
-  v20 = a11;
-  v21 = a12;
-  v72 = a14;
-  v22 = a15;
-  v23 = a3;
+  dStringCopy = dString;
+  iDStringCopy = iDString;
+  uIDStringCopy = uIDString;
+  uUIDStringCopy = uUIDString;
+  domainsCopy = domains;
+  downloadsCopy = downloads;
+  hideCopy = hide;
+  lockCopy = lock;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  stringCopy = string;
   v24 = DMFAppLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v87 = v22;
+    v87 = bundleIdentifierCopy;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Bulk set app attributes, configuration, source ID, and management information for bundle identifier: %{public}@", buf, 0xCu);
   }
 
   v85 = 0;
-  v25 = [(DMDAppController *)self setVPNUUIDString:v23 forBundleIdentifier:v22 error:&v85];
+  v25 = [(DMDAppController *)self setVPNUUIDString:stringCopy forBundleIdentifier:bundleIdentifierCopy error:&v85];
 
   v26 = v85;
-  v27 = v19;
+  v27 = uIDStringCopy;
   if ((v25 & 1) == 0)
   {
     v28 = DMFAppLog();
@@ -1445,7 +1445,7 @@ LABEL_12:
   }
 
   v84 = v26;
-  v29 = [(DMDAppController *)self setCellularSliceUUIDString:v66 forBundleIdentifier:v22 error:&v84];
+  v29 = [(DMDAppController *)self setCellularSliceUUIDString:dStringCopy forBundleIdentifier:bundleIdentifierCopy error:&v84];
   v30 = v84;
 
   if ((v29 & 1) == 0)
@@ -1458,7 +1458,7 @@ LABEL_12:
   }
 
   v83 = v30;
-  v32 = [(DMDAppController *)self setContentFilterUUIDString:v67 forBundleIdentifier:v22 error:&v83];
+  v32 = [(DMDAppController *)self setContentFilterUUIDString:iDStringCopy forBundleIdentifier:bundleIdentifierCopy error:&v83];
   v33 = v83;
 
   if ((v32 & 1) == 0)
@@ -1471,7 +1471,7 @@ LABEL_12:
   }
 
   v82 = v33;
-  v35 = [(DMDAppController *)self setDNSProxyUUIDString:v19 forBundleIdentifier:v22 error:&v82];
+  v35 = [(DMDAppController *)self setDNSProxyUUIDString:uIDStringCopy forBundleIdentifier:bundleIdentifierCopy error:&v82];
   v36 = v82;
 
   if ((v35 & 1) == 0)
@@ -1484,7 +1484,7 @@ LABEL_12:
   }
 
   v81 = v36;
-  v38 = [(DMDAppController *)self setRelayUUIDString:v71 forBundleIdentifier:v22 error:&v81];
+  v38 = [(DMDAppController *)self setRelayUUIDString:uUIDStringCopy forBundleIdentifier:bundleIdentifierCopy error:&v81];
   v39 = v81;
 
   if ((v38 & 1) == 0)
@@ -1497,7 +1497,7 @@ LABEL_12:
   }
 
   v80 = v39;
-  v41 = [(DMDAppController *)self setAssociatedDomains:v70 forBundleIdentifier:v22 error:&v80];
+  v41 = [(DMDAppController *)self setAssociatedDomains:domainsCopy forBundleIdentifier:bundleIdentifierCopy error:&v80];
   v42 = v80;
 
   if ((v41 & 1) == 0)
@@ -1510,7 +1510,7 @@ LABEL_12:
   }
 
   v79 = v42;
-  v44 = [(DMDAppController *)self setAssociatedDomainsEnableDirectDownloads:v69 forBundleIdentifier:v22 error:&v79];
+  v44 = [(DMDAppController *)self setAssociatedDomainsEnableDirectDownloads:downloadsCopy forBundleIdentifier:bundleIdentifierCopy error:&v79];
   v45 = v79;
 
   if ((v44 & 1) == 0)
@@ -1523,7 +1523,7 @@ LABEL_12:
   }
 
   v78 = v45;
-  v47 = [(DMDAppController *)self setAllowUserToHide:v68 forBundleIdentifier:v22 error:&v78];
+  v47 = [(DMDAppController *)self setAllowUserToHide:hideCopy forBundleIdentifier:bundleIdentifierCopy error:&v78];
   v48 = v78;
 
   if ((v47 & 1) == 0)
@@ -1536,7 +1536,7 @@ LABEL_12:
   }
 
   v77 = v48;
-  v50 = [(DMDAppController *)self setAllowUserToLock:v20 forBundleIdentifier:v22 error:&v77];
+  v50 = [(DMDAppController *)self setAllowUserToLock:lockCopy forBundleIdentifier:bundleIdentifierCopy error:&v77];
   v51 = v77;
 
   if ((v50 & 1) == 0)
@@ -1548,23 +1548,23 @@ LABEL_12:
     }
   }
 
-  if ([v72 isEqualToString:DMFAppSourceDeclarativeManagement])
+  if ([identifierCopy isEqualToString:DMFAppSourceDeclarativeManagement])
   {
-    v53 = v66;
-    v54 = v67;
+    v53 = dStringCopy;
+    v54 = iDStringCopy;
     v55 = v51;
   }
 
   else
   {
     v76 = v51;
-    v56 = [(DMDAppController *)self setConfiguration:v21 forBundleIdentifier:v22 error:&v76];
+    v56 = [(DMDAppController *)self setConfiguration:configurationCopy forBundleIdentifier:bundleIdentifierCopy error:&v76];
     v55 = v76;
 
-    v53 = v66;
+    v53 = dStringCopy;
     if (v56)
     {
-      v54 = v67;
+      v54 = iDStringCopy;
     }
 
     else
@@ -1575,12 +1575,12 @@ LABEL_12:
         sub_10007D1B4();
       }
 
-      v54 = v67;
+      v54 = iDStringCopy;
     }
   }
 
   v75 = v55;
-  v58 = [(DMDAppController *)self setSourceIdentifier:v72 forBundleIdentifier:v22 error:&v75];
+  v58 = [(DMDAppController *)self setSourceIdentifier:identifierCopy forBundleIdentifier:bundleIdentifierCopy error:&v75];
   v59 = v75;
 
   if ((v58 & 1) == 0)
@@ -1592,15 +1592,15 @@ LABEL_12:
     }
   }
 
-  v61 = [(DMDAppController *)self managementInformationForBundleIdentifier:v22];
+  v61 = [(DMDAppController *)self managementInformationForBundleIdentifier:bundleIdentifierCopy];
   if (!v61)
   {
     v61 = objc_opt_new();
   }
 
-  [v61 setOptions:a13];
+  [v61 setOptions:options];
   v74 = v59;
-  v62 = [(DMDAppController *)self setManagementInformation:v61 forBundleIdentifier:v22 error:&v74];
+  v62 = [(DMDAppController *)self setManagementInformation:v61 forBundleIdentifier:bundleIdentifierCopy error:&v74];
   v63 = v74;
 
   if ((v62 & 1) == 0)
@@ -1613,61 +1613,61 @@ LABEL_12:
   }
 }
 
-- (unint64_t)stateForBundleIdentifier:(id)a3
+- (unint64_t)stateForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:a3];
+  v3 = [(DMDAppController *)self _metadataForBundleIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"state"];
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 19;
+    unsignedIntegerValue = 19;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)setState:(unint64_t)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setState:(unint64_t)state forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = DMFAppLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [DMFAppManagementInformation stringForState:a3];
+    v10 = [DMFAppManagementInformation stringForState:state];
     v18 = 138543618;
     v19 = v10;
     v20 = 2114;
-    v21 = v8;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Set state: %{public}@, for bundle identifier: %{public}@", &v18, 0x16u);
   }
 
-  v11 = [(DMDAppController *)self _metadataForBundleIdentifier:v8];
-  if (!v11)
+  _newMetadataDictionary = [(DMDAppController *)self _metadataForBundleIdentifier:identifierCopy];
+  if (!_newMetadataDictionary)
   {
-    v11 = [(DMDAppController *)self _newMetadataDictionary];
+    _newMetadataDictionary = [(DMDAppController *)self _newMetadataDictionary];
   }
 
-  v12 = [v11 objectForKeyedSubscript:@"state"];
+  v12 = [_newMetadataDictionary objectForKeyedSubscript:@"state"];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
   }
 
   else
   {
-    v14 = 19;
+    unsignedIntegerValue = 19;
   }
 
-  v15 = [NSNumber numberWithUnsignedInteger:a3];
-  [v11 setObject:v15 forKeyedSubscript:@"state"];
+  v15 = [NSNumber numberWithUnsignedInteger:state];
+  [_newMetadataDictionary setObject:v15 forKeyedSubscript:@"state"];
 
-  v16 = [(DMDAppController *)self _setMetadata:v11 forBundleIdentifier:v8 error:a5];
-  if (v14 != a3)
+  v16 = [(DMDAppController *)self _setMetadata:_newMetadataDictionary forBundleIdentifier:identifierCopy error:error];
+  if (unsignedIntegerValue != state)
   {
     [(DMDAppController *)self sendManagedAppsChangedNotification];
   }
@@ -1711,15 +1711,15 @@ LABEL_12:
         v9 = *(*(&v33 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
         v11 = [(DMDAppController *)self managementInformationForBundleIdentifier:v9];
-        v12 = [v11 state];
-        if ((v12 - 9) >= 3)
+        state = [v11 state];
+        if ((state - 9) >= 3)
         {
-          if (v12 == 15)
+          if (state == 15)
           {
             v16 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:v9];
-            v17 = [v16 currentState];
+            currentState = [v16 currentState];
 
-            if (v17)
+            if (currentState)
             {
               v18 = 7;
             }
@@ -1752,16 +1752,16 @@ LABEL_12:
             goto LABEL_22;
           }
 
-          if (v12 != 18)
+          if (state != 18)
           {
             v20 = v7;
 LABEL_22:
-            v15 = [v11 unusedRedemptionCode];
-            if (v15)
+            unusedRedemptionCode = [v11 unusedRedemptionCode];
+            if (unusedRedemptionCode)
             {
               [v11 setUnusedRedemptionCode:0];
-              v22 = [v11 redemptionCode];
-              v23 = [v22 isEqualToString:v15];
+              redemptionCode = [v11 redemptionCode];
+              v23 = [redemptionCode isEqualToString:unusedRedemptionCode];
 
               if (v23)
               {
@@ -1804,14 +1804,14 @@ LABEL_22:
           goto LABEL_31;
         }
 
-        v15 = DMFAppLog();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        unusedRedemptionCode = DMFAppLog();
+        if (os_log_type_enabled(unusedRedemptionCode, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
           v38 = v9;
           v39 = 2114;
           v40 = v14;
-          _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Could not remove management information for bundle identifier: %{public}@, error: %{public}@", buf, 0x16u);
+          _os_log_error_impl(&_mh_execute_header, unusedRedemptionCode, OS_LOG_TYPE_ERROR, "Could not remove management information for bundle identifier: %{public}@, error: %{public}@", buf, 0x16u);
         }
 
 LABEL_30:
@@ -1859,7 +1859,7 @@ LABEL_35:
     v24 = 0;
     v22 = *v27;
     v4 = DMFFetchCertificatesResultObject_ptr;
-    v21 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v23; i = i + 1)
@@ -1885,9 +1885,9 @@ LABEL_35:
 
           if (v14)
           {
-            v15 = [v14 unsignedIntegerValue];
+            unsignedIntegerValue = [v14 unsignedIntegerValue];
             v25 = v24;
-            v16 = [(DMDAppController *)self setState:v15 forBundleIdentifier:v6 error:&v25];
+            v16 = [(DMDAppController *)self setState:unsignedIntegerValue forBundleIdentifier:v6 error:&v25];
             v17 = v25;
 
             if ((v16 & 1) == 0)
@@ -1895,7 +1895,7 @@ LABEL_35:
               v18 = DMFAppLog();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
-                v19 = [DMFAppManagementInformation stringForState:v15];
+                v19 = [DMFAppManagementInformation stringForState:unsignedIntegerValue];
                 *buf = 138543874;
                 v31 = v19;
                 v32 = 2114;
@@ -1913,7 +1913,7 @@ LABEL_35:
           }
 
           v24 = v17;
-          self = v21;
+          self = selfCopy;
           v4 = DMFFetchCertificatesResultObject_ptr;
         }
 
@@ -1932,51 +1932,51 @@ LABEL_35:
   }
 }
 
-- (void)_applyChangeInLifeCycle:(id)a3 stateMap:(id)a4
+- (void)_applyChangeInLifeCycle:(id)cycle stateMap:(id)map
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 bundleIdentifier];
-  v9 = [(DMDAppController *)self _isManagedBundleIdentifier:v8];
+  mapCopy = map;
+  cycleCopy = cycle;
+  bundleIdentifier = [cycleCopy bundleIdentifier];
+  v9 = [(DMDAppController *)self _isManagedBundleIdentifier:bundleIdentifier];
 
   if (v9)
   {
-    v10 = [v7 bundleIdentifier];
+    bundleIdentifier2 = [cycleCopy bundleIdentifier];
 
-    v11 = [(DMDAppController *)self stateForBundleIdentifier:v10];
+    v11 = [(DMDAppController *)self stateForBundleIdentifier:bundleIdentifier2];
     v12 = [NSNumber numberWithUnsignedInteger:v11];
-    v13 = [v6 objectForKeyedSubscript:v12];
+    v13 = [mapCopy objectForKeyedSubscript:v12];
 
     if (v13)
     {
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
       v15 = DMFAppLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = [DMFAppManagementInformation stringForState:v11];
-        v17 = [DMFAppManagementInformation stringForState:v14];
+        v17 = [DMFAppManagementInformation stringForState:unsignedIntegerValue];
         *buf = 138543874;
         v26 = v16;
         v27 = 2114;
         v28 = v17;
         v29 = 2114;
-        v30 = v10;
+        v30 = bundleIdentifier2;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Observed change in life cycle from old state: %{public}@ to new state: %{public}@ for bundle identifier: %{public}@", buf, 0x20u);
       }
 
       v24 = 0;
-      v18 = [(DMDAppController *)self setState:v14 forBundleIdentifier:v10 error:&v24];
+      v18 = [(DMDAppController *)self setState:unsignedIntegerValue forBundleIdentifier:bundleIdentifier2 error:&v24];
       v19 = v24;
       if ((v18 & 1) == 0)
       {
         v20 = DMFAppLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v23 = [DMFAppManagementInformation stringForState:v14];
+          v23 = [DMFAppManagementInformation stringForState:unsignedIntegerValue];
           *buf = 138543874;
           v26 = v23;
           v27 = 2114;
-          v28 = v10;
+          v28 = bundleIdentifier2;
           v29 = 2114;
           v30 = v19;
           _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Could not set new state: %{public}@, for bundle identifier: %{public}@, error: %{public}@", buf, 0x20u);
@@ -1995,7 +1995,7 @@ LABEL_35:
         *buf = 138543618;
         v26 = v22;
         v27 = 2114;
-        v28 = v10;
+        v28 = bundleIdentifier2;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Observed change in life cycle from old state: %{public}@ to missing new state for bundle identifier: %{public}@", buf, 0x16u);
       }
 
@@ -2005,20 +2005,20 @@ LABEL_35:
 
   else
   {
-    [(DMDAppController *)self _stopObservingLifeCycle:v7];
-    v10 = v7;
+    [(DMDAppController *)self _stopObservingLifeCycle:cycleCopy];
+    bundleIdentifier2 = cycleCopy;
   }
 }
 
-- (void)_resetStateForChangeInLifeCycle:(id)a3 newState:(unint64_t)a4
+- (void)_resetStateForChangeInLifeCycle:(id)cycle newState:(unint64_t)state
 {
-  v6 = a3;
+  cycleCopy = cycle;
   v7 = DMFAppLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [cycleCopy bundleIdentifier];
     *buf = 138543362;
-    v27 = v8;
+    v27 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "DMDAppController::_resetStateForChangeInLifeCycle(%{public}@)", buf, 0xCu);
   }
 
@@ -2027,47 +2027,47 @@ LABEL_35:
     sub_10007D32C();
   }
 
-  v9 = [v6 bundleIdentifier];
-  v10 = [(DMDAppController *)self _isManagedBundleIdentifier:v9];
+  bundleIdentifier2 = [cycleCopy bundleIdentifier];
+  v10 = [(DMDAppController *)self _isManagedBundleIdentifier:bundleIdentifier2];
 
   if (v10)
   {
-    v11 = [v6 bundleIdentifier];
-    v12 = [(DMDAppController *)self stateForBundleIdentifier:v11];
+    bundleIdentifier3 = [cycleCopy bundleIdentifier];
+    v12 = [(DMDAppController *)self stateForBundleIdentifier:bundleIdentifier3];
     if ([objc_opt_class() _stateCanBeResetSafely:v12])
     {
       v13 = qword_1000FEF50;
-      v14 = [NSNumber numberWithUnsignedInteger:a4];
+      v14 = [NSNumber numberWithUnsignedInteger:state];
       v15 = [v13 objectForKeyedSubscript:v14];
-      v16 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
       v17 = DMFAppLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = [DMFAppManagementInformation stringForState:v12];
-        v19 = [DMFAppManagementInformation stringForState:v16];
+        v19 = [DMFAppManagementInformation stringForState:unsignedIntegerValue];
         *buf = 138543874;
         v27 = v18;
         v28 = 2114;
         v29 = v19;
         v30 = 2114;
-        v31 = v11;
+        v31 = bundleIdentifier3;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Reset state due to change in life cycle, old state: %{public}@ to new state: %{public}@ for bundle identifier: %{public}@", buf, 0x20u);
       }
 
       v25 = 0;
-      v20 = [(DMDAppController *)self setState:v16 forBundleIdentifier:v11 error:&v25];
+      v20 = [(DMDAppController *)self setState:unsignedIntegerValue forBundleIdentifier:bundleIdentifier3 error:&v25];
       v21 = v25;
       if ((v20 & 1) == 0)
       {
         v22 = DMFAppLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v24 = [DMFAppManagementInformation stringForState:v16];
+          v24 = [DMFAppManagementInformation stringForState:unsignedIntegerValue];
           *buf = 138543874;
           v27 = v24;
           v28 = 2114;
-          v29 = v11;
+          v29 = bundleIdentifier3;
           v30 = 2114;
           v31 = v21;
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Could not set new state: %{public}@, for bundle identifier: %{public}@, error: %{public}@", buf, 0x20u);
@@ -2084,7 +2084,7 @@ LABEL_35:
         *buf = 138543618;
         v27 = v23;
         v28 = 2114;
-        v29 = v11;
+        v29 = bundleIdentifier3;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Reset state due to change in life cycle, old state preserved: %{public}@, for bundle identifier: %{public}@", buf, 0x16u);
       }
     }
@@ -2094,49 +2094,49 @@ LABEL_35:
 
   else
   {
-    [(DMDAppController *)self _stopObservingLifeCycle:v6];
+    [(DMDAppController *)self _stopObservingLifeCycle:cycleCopy];
   }
 }
 
-- (BOOL)_isManagedBundleIdentifier:(id)a3
+- (BOOL)_isManagedBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DMDAppController *)self managedBundleIdentifiers];
-  v6 = [NSPredicate predicateWithFormat:@"self == %@", v4];
+  identifierCopy = identifier;
+  managedBundleIdentifiers = [(DMDAppController *)self managedBundleIdentifiers];
+  identifierCopy = [NSPredicate predicateWithFormat:@"self == %@", identifierCopy];
 
-  v7 = [v5 filteredArrayUsingPredicate:v6];
-  v8 = [v7 firstObject];
-  v9 = v8 != 0;
+  v7 = [managedBundleIdentifiers filteredArrayUsingPredicate:identifierCopy];
+  firstObject = [v7 firstObject];
+  v9 = firstObject != 0;
 
   return v9;
 }
 
-- (void)_stopObservingLifeCycle:(id)a3
+- (void)_stopObservingLifeCycle:(id)cycle
 {
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [cycleCopy bundleIdentifier];
     v7 = 138543362;
-    v8 = v6;
+    v8 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing lifecycle observer for an app that is no longer managed: %{public}@", &v7, 0xCu);
   }
 
-  [v4 removeObserver:self];
+  [cycleCopy removeObserver:self];
   [objc_opt_class() _sendAppStatusChangeNotification];
 }
 
 + (void)_sendAppStatusChangeNotification
 {
-  v2 = [DMFAppStatusDidChangeNotificationName UTF8String];
+  uTF8String = [DMFAppStatusDidChangeNotificationName UTF8String];
 
-  notify_post(v2);
+  notify_post(uTF8String);
 }
 
-- (id)_metadataForBundleIdentifier:(id)a3
+- (id)_metadataForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2144,16 +2144,16 @@ LABEL_35:
   v18 = sub_100010E44;
   v19 = 0;
   objc_initWeak(&location, self);
-  v5 = [(DMDAppController *)self queue];
+  queue = [(DMDAppController *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100015E14;
   v9[3] = &unk_1000CDF68;
   v11 = &v14;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v9);
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v9);
 
   v7 = v15[5];
   objc_destroyWeak(&v12);
@@ -2163,15 +2163,15 @@ LABEL_35:
   return v7;
 }
 
-- (BOOL)_setMetadata:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_setMetadata:(id)metadata forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set metadata for bundle identifier: %{public}@", &buf, 0xCu);
   }
 
@@ -2186,23 +2186,23 @@ LABEL_35:
   v30 = sub_100010E44;
   v31 = 0;
   objc_initWeak(&location, self);
-  v11 = [(DMDAppController *)self queue];
+  queue = [(DMDAppController *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000160E8;
   v16[3] = &unk_1000CDF90;
   objc_copyWeak(&v21, &location);
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = metadataCopy;
   v18 = v13;
   v19 = &v23;
   p_buf = &buf;
-  dispatch_sync(v11, v16);
+  dispatch_sync(queue, v16);
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v14 = *(v24 + 24);
@@ -2217,8 +2217,8 @@ LABEL_35:
 
 - (id)_metadataByBundleIdentifier
 {
-  v2 = [(DMDAppController *)self manifest];
-  v3 = [v2 objectForKeyedSubscript:@"metadataByBundleID"];
+  manifest = [(DMDAppController *)self manifest];
+  v3 = [manifest objectForKeyedSubscript:@"metadataByBundleID"];
 
   return v3;
 }
@@ -2232,14 +2232,14 @@ LABEL_35:
   return v2;
 }
 
-- (void)_getEnterpriseAppMetadataForManifestURL:(id)a3 completion:(id)a4
+- (void)_getEnterpriseAppMetadataForManifestURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -2259,13 +2259,13 @@ LABEL_3:
   v9 = DMFAppLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 host];
+    host = [lCopy host];
     *buf = 138543362;
-    v23 = v10;
+    v23 = host;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Get metadata for manifest URL from: %{public}@", buf, 0xCu);
   }
 
-  v11 = [NSURLRequest requestWithURL:v6];
+  v11 = [NSURLRequest requestWithURL:lCopy];
   v12 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v13 = [NSURLSession sessionWithConfiguration:v12];
 
@@ -2273,18 +2273,18 @@ LABEL_3:
   v17 = 3221225472;
   v18 = sub_100016468;
   v19 = &unk_1000CDFB8;
-  v20 = self;
+  selfCopy = self;
   v21 = v8;
   v14 = v8;
   v15 = [v13 dataTaskWithRequest:v11 completionHandler:&v16];
   [v15 resume];
 }
 
-- (void)_getEnterpriseAppMetadataFromData:(id)a3 completion:(id)a4
+- (void)_getEnterpriseAppMetadataFromData:(id)data completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v14 = 0;
-  v6 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:0 error:&v14];
+  v6 = [NSPropertyListSerialization propertyListWithData:data options:0 format:0 error:&v14];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2292,11 +2292,11 @@ LABEL_3:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count] && objc_msgSend(v7, "count") < 2)
     {
-      v8 = [v7 firstObject];
+      firstObject = [v7 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 objectForKeyedSubscript:@"metadata"];
+        v9 = [firstObject objectForKeyedSubscript:@"metadata"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2319,55 +2319,55 @@ LABEL_3:
                 [v13 setIsStoreApp:0];
                 [v13 setIsFree:0];
                 [v13 setIsUserLicensed:0];
-                v5[2](v5, v13, 0);
+                completionCopy[2](completionCopy, v13, 0);
               }
 
               else
               {
                 v13 = DMFErrorWithCodeAndUserInfo();
-                (v5)[2](v5, 0, v13);
+                (completionCopy)[2](completionCopy, 0, v13);
               }
             }
 
             else
             {
               v12 = DMFErrorWithCodeAndUserInfo();
-              (v5)[2](v5, 0, v12);
+              (completionCopy)[2](completionCopy, 0, v12);
             }
           }
 
           else
           {
             v11 = DMFErrorWithCodeAndUserInfo();
-            (v5)[2](v5, 0, v11);
+            (completionCopy)[2](completionCopy, 0, v11);
           }
         }
 
         else
         {
           v10 = DMFErrorWithCodeAndUserInfo();
-          (v5)[2](v5, 0, v10);
+          (completionCopy)[2](completionCopy, 0, v10);
         }
       }
 
       else
       {
         v9 = DMFErrorWithCodeAndUserInfo();
-        (v5)[2](v5, 0, v9);
+        (completionCopy)[2](completionCopy, 0, v9);
       }
     }
 
     else
     {
-      v8 = DMFErrorWithCodeAndUserInfo();
-      (v5)[2](v5, 0, v8);
+      firstObject = DMFErrorWithCodeAndUserInfo();
+      (completionCopy)[2](completionCopy, 0, firstObject);
     }
   }
 
   else
   {
     v7 = DMFErrorWithCodeAndUserInfo();
-    (v5)[2](v5, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 

@@ -1,49 +1,49 @@
 @interface VCPMovieAssetWriter
-+ (VCPMovieAssetWriter)assetWriterWithURL:(id)a3 andTrack:(id)a4 andBitrate:(int64_t)a5 withOutputSize:(CGSize)a6 enableAudio:(BOOL)a7;
-+ (VCPMovieAssetWriter)assetWriterWithURL:(id)a3 andTrack:(id)a4 andBitrate:(int64_t)a5 withOutputSize:(CGSize)a6 enableAudio:(BOOL)a7 enableStyle:(BOOL)a8 hasStyleApplied:(BOOL)a9;
-- (VCPMovieAssetWriter)initWithURL:(id)a3 andTrack:(id)a4 andBitrate:(int64_t)a5 withOutputSize:(CGSize)a6 enableAudio:(BOOL)a7 enableStyle:(BOOL)a8 hasStyleApplied:(BOOL)a9;
++ (VCPMovieAssetWriter)assetWriterWithURL:(id)l andTrack:(id)track andBitrate:(int64_t)bitrate withOutputSize:(CGSize)size enableAudio:(BOOL)audio;
++ (VCPMovieAssetWriter)assetWriterWithURL:(id)l andTrack:(id)track andBitrate:(int64_t)bitrate withOutputSize:(CGSize)size enableAudio:(BOOL)audio enableStyle:(BOOL)style hasStyleApplied:(BOOL)applied;
+- (VCPMovieAssetWriter)initWithURL:(id)l andTrack:(id)track andBitrate:(int64_t)bitrate withOutputSize:(CGSize)size enableAudio:(BOOL)audio enableStyle:(BOOL)style hasStyleApplied:(BOOL)applied;
 - (id).cxx_construct;
-- (int)addAdditionalAuxTracks:(opaqueCMSampleBuffer *)a3 toTrack:(id)a4;
-- (int)addAuxPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4 withAttachment:(id)a5;
-- (int)addLivePhotoInfoBuffer:(opaqueCMSampleBuffer *)a3;
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4 withAttachment:(id)a5;
-- (int)addStyleInfoData:(id)a3 timerange:(id *)a4;
+- (int)addAdditionalAuxTracks:(opaqueCMSampleBuffer *)tracks toTrack:(id)track;
+- (int)addAuxPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time withAttachment:(id)attachment;
+- (int)addLivePhotoInfoBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time withAttachment:(id)attachment;
+- (int)addStyleInfoData:(id)data timerange:(id *)timerange;
 - (int)appendMetadataTrack;
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4;
-- (int)copyPixelBufferForDelta:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4;
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)copyPixelBufferForDelta:(__CVBuffer *)delta toPixelBuffer:(__CVBuffer *)buffer;
 - (int)dispatchEncoding;
 - (int)finish;
-- (int)passthroughAuxTrackFrom:(id)a3 to:(id)a4;
-- (int)passthroughMetadataTrackFrom:(id)a3 to:(id)a4;
+- (int)passthroughAuxTrackFrom:(id)from to:(id)to;
+- (int)passthroughMetadataTrackFrom:(id)from to:(id)to;
 - (int)processLivePhotoInfoMetadataTrack;
 - (int)processStillImageMetadataTrack;
 - (int)setupAdditionalAuxTrack;
 - (int)setupAudioTrack;
-- (int)setupAuxTrack:(int64_t)a3 withOutputSize:(CGSize)a4;
+- (int)setupAuxTrack:(int64_t)track withOutputSize:(CGSize)size;
 - (int)setupMetadataTrack;
-- (int)setupVideoTrack:(int64_t)a3 withOutputSize:(CGSize)a4;
+- (int)setupVideoTrack:(int64_t)track withOutputSize:(CGSize)size;
 - (opaqueCMSampleBuffer)popAuxSample;
 - (opaqueCMSampleBuffer)popLivePhotoInfoSample;
 - (opaqueCMSampleBuffer)popSample;
 - (void)cancel;
 - (void)dealloc;
-- (void)pushAuxSample:(opaqueCMSampleBuffer *)a3;
-- (void)pushLivePhotoInfoSample:(opaqueCMSampleBuffer *)a3;
-- (void)pushSample:(opaqueCMSampleBuffer *)a3;
-- (void)updateStillPTS:(id *)a3;
+- (void)pushAuxSample:(opaqueCMSampleBuffer *)sample;
+- (void)pushLivePhotoInfoSample:(opaqueCMSampleBuffer *)sample;
+- (void)pushSample:(opaqueCMSampleBuffer *)sample;
+- (void)updateStillPTS:(id *)s;
 @end
 
 @implementation VCPMovieAssetWriter
 
-- (VCPMovieAssetWriter)initWithURL:(id)a3 andTrack:(id)a4 andBitrate:(int64_t)a5 withOutputSize:(CGSize)a6 enableAudio:(BOOL)a7 enableStyle:(BOOL)a8 hasStyleApplied:(BOOL)a9
+- (VCPMovieAssetWriter)initWithURL:(id)l andTrack:(id)track andBitrate:(int64_t)bitrate withOutputSize:(CGSize)size enableAudio:(BOOL)audio enableStyle:(BOOL)style hasStyleApplied:(BOOL)applied
 {
-  v9 = a9;
-  v11 = a7;
-  height = a6.height;
-  width = a6.width;
+  appliedCopy = applied;
+  audioCopy = audio;
+  height = size.height;
+  width = size.width;
   v87 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v79 = a4;
+  lCopy = l;
+  trackCopy = track;
   v82.receiver = self;
   v82.super_class = VCPMovieAssetWriter;
   v18 = [(VCPMovieAssetWriter *)&v82 init];
@@ -52,34 +52,34 @@
     goto LABEL_32;
   }
 
-  v78 = a5;
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = [v17 path];
-  v21 = [v19 fileExistsAtPath:v20];
+  bitrateCopy = bitrate;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v21 = [defaultManager fileExistsAtPath:path];
 
   if (v21)
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v17 path];
+      path2 = [lCopy path];
       *buf = 138412290;
-      v84 = v22;
+      v84 = path2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Removing existing file at path %@", buf, 0xCu);
     }
 
-    v23 = [v17 path];
+    path3 = [lCopy path];
     v81 = 0;
-    v24 = [v19 removeItemAtPath:v23 error:&v81];
+    v24 = [defaultManager removeItemAtPath:path3 error:&v81];
     v25 = v81;
 
     if ((v24 & 1) == 0)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v26 = [v17 path];
+        path4 = [lCopy path];
         v27 = [v25 description];
         *buf = 138412546;
-        v84 = v26;
+        v84 = path4;
         v85 = 2112;
         v86 = v27;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to remove existing file at path %@ (%@)", buf, 0x16u);
@@ -97,14 +97,14 @@ LABEL_37:
     v25 = 0;
   }
 
-  objc_storeStrong(&v18->_track, a4);
-  v28 = [(AVAssetTrack *)v18->_track asset];
+  objc_storeStrong(&v18->_track, track);
+  asset = [(AVAssetTrack *)v18->_track asset];
   asset = v18->_asset;
-  v18->_asset = v28;
+  v18->_asset = asset;
 
   v30 = *MEMORY[0x1E69874C0];
   v80 = v25;
-  v31 = [MEMORY[0x1E6987ED8] assetWriterWithURL:v17 fileType:v30 error:&v80];
+  v31 = [MEMORY[0x1E6987ED8] assetWriterWithURL:lCopy fileType:v30 error:&v80];
   v32 = v80;
 
   writer = v18->_writer;
@@ -124,7 +124,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (v11)
+  if (audioCopy)
   {
     v34 = [(AVAsset *)v18->_asset vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E69875A0]];
     audioTrack = v18->_audioTrack;
@@ -142,13 +142,13 @@ LABEL_37:
     }
   }
 
-  v36 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   sampleQueue = v18->_sampleQueue;
-  v18->_sampleQueue = v36;
+  v18->_sampleQueue = array;
 
-  v38 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   livePhotoInfoQueue = v18->_livePhotoInfoQueue;
-  v18->_livePhotoInfoQueue = v38;
+  v18->_livePhotoInfoQueue = array2;
 
   v40 = dispatch_semaphore_create(5);
   enqueueSemaphore = v18->_enqueueSemaphore;
@@ -174,7 +174,7 @@ LABEL_37:
   v18->_status = 1;
   *&v18->_stillPTS.value = *v50;
   v18->_stillPTS.epoch = *(v50 + 16);
-  v18->_enableAudio = v11;
+  v18->_enableAudio = audioCopy;
   v51 = dispatch_queue_create("com.apple.mediaanalysisd.movieassetwriter.status", 0);
   statusOperationQueue = v18->_statusOperationQueue;
   v18->_statusOperationQueue = v51;
@@ -194,17 +194,17 @@ LABEL_37:
   metadataQueue = v18->_metadataQueue;
   v18->_metadataQueue = v57;
 
-  v59 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   inputToOutputMap = v18->_inputToOutputMap;
-  v18->_inputToOutputMap = v59;
+  v18->_inputToOutputMap = strongToStrongObjectsMapTable;
 
-  v18->_enableStyle = a8;
-  v18->_hasStyleApplied = v9;
-  if (v9)
+  v18->_enableStyle = style;
+  v18->_hasStyleApplied = appliedCopy;
+  if (appliedCopy)
   {
-    v61 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     auxsampleQueue = v18->_auxsampleQueue;
-    v18->_auxsampleQueue = v61;
+    v18->_auxsampleQueue = array3;
 
     v63 = dispatch_semaphore_create(5);
     auxEnqueueSemaphore = v18->_auxEnqueueSemaphore;
@@ -219,23 +219,23 @@ LABEL_37:
     v18->_auxQueue = v67;
   }
 
-  v69 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   auxInputToOutputMap = v18->_auxInputToOutputMap;
-  v18->_auxInputToOutputMap = v69;
+  v18->_auxInputToOutputMap = strongToStrongObjectsMapTable2;
 
   v71 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v18->_asset error:0];
   assetReader = v18->_assetReader;
   v18->_assetReader = v71;
 
-  if ([(VCPMovieAssetWriter *)v18 setupVideoTrack:v78 withOutputSize:width, height]|| v18->_enableAudio && [(VCPMovieAssetWriter *)v18 setupAudioTrack]|| v18->_enableStyle && (v18->_hasStyleApplied && [(VCPMovieAssetWriter *)v18 setupAuxTrack:v78 withOutputSize:width, height]|| [(VCPMovieAssetWriter *)v18 setupAdditionalAuxTrack]) || [(VCPMovieAssetWriter *)v18 setupMetadataTrack])
+  if ([(VCPMovieAssetWriter *)v18 setupVideoTrack:bitrateCopy withOutputSize:width, height]|| v18->_enableAudio && [(VCPMovieAssetWriter *)v18 setupAudioTrack]|| v18->_enableStyle && (v18->_hasStyleApplied && [(VCPMovieAssetWriter *)v18 setupAuxTrack:bitrateCopy withOutputSize:width, height]|| [(VCPMovieAssetWriter *)v18 setupAdditionalAuxTrack]) || [(VCPMovieAssetWriter *)v18 setupMetadataTrack])
   {
   }
 
   else
   {
-    v75 = [(AVAssetReader *)v18->_assetReader startReading];
+    startReading = [(AVAssetReader *)v18->_assetReader startReading];
 
-    if (v75)
+    if (startReading)
     {
 LABEL_32:
       v73 = v18;
@@ -251,28 +251,28 @@ LABEL_38:
   return v76;
 }
 
-+ (VCPMovieAssetWriter)assetWriterWithURL:(id)a3 andTrack:(id)a4 andBitrate:(int64_t)a5 withOutputSize:(CGSize)a6 enableAudio:(BOOL)a7
++ (VCPMovieAssetWriter)assetWriterWithURL:(id)l andTrack:(id)track andBitrate:(int64_t)bitrate withOutputSize:(CGSize)size enableAudio:(BOOL)audio
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = [objc_alloc(objc_opt_class()) initWithURL:v12 andTrack:v13 andBitrate:a5 withOutputSize:v7 enableAudio:0 enableStyle:0 hasStyleApplied:{width, height}];
+  audioCopy = audio;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  trackCopy = track;
+  v14 = [objc_alloc(objc_opt_class()) initWithURL:lCopy andTrack:trackCopy andBitrate:bitrate withOutputSize:audioCopy enableAudio:0 enableStyle:0 hasStyleApplied:{width, height}];
 
   return v14;
 }
 
-+ (VCPMovieAssetWriter)assetWriterWithURL:(id)a3 andTrack:(id)a4 andBitrate:(int64_t)a5 withOutputSize:(CGSize)a6 enableAudio:(BOOL)a7 enableStyle:(BOOL)a8 hasStyleApplied:(BOOL)a9
++ (VCPMovieAssetWriter)assetWriterWithURL:(id)l andTrack:(id)track andBitrate:(int64_t)bitrate withOutputSize:(CGSize)size enableAudio:(BOOL)audio enableStyle:(BOOL)style hasStyleApplied:(BOOL)applied
 {
-  v9 = a9;
-  v10 = a8;
-  v11 = a7;
-  height = a6.height;
-  width = a6.width;
-  v16 = a3;
-  v17 = a4;
-  v18 = [objc_alloc(objc_opt_class()) initWithURL:v16 andTrack:v17 andBitrate:a5 withOutputSize:v11 enableAudio:v10 enableStyle:v9 hasStyleApplied:{width, height}];
+  appliedCopy = applied;
+  styleCopy = style;
+  audioCopy = audio;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  trackCopy = track;
+  v18 = [objc_alloc(objc_opt_class()) initWithURL:lCopy andTrack:trackCopy andBitrate:bitrate withOutputSize:audioCopy enableAudio:styleCopy enableStyle:appliedCopy hasStyleApplied:{width, height}];
 
   return v18;
 }
@@ -316,14 +316,14 @@ LABEL_38:
   [(VCPMovieAssetWriter *)&v3 dealloc];
 }
 
-- (void)pushSample:(opaqueCMSampleBuffer *)a3
+- (void)pushSample:(opaqueCMSampleBuffer *)sample
 {
   dispatch_semaphore_wait(self->_enqueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (sample)
   {
     v5 = self->_sampleQueue;
     objc_sync_enter(v5);
-    [(NSMutableArray *)self->_sampleQueue addObject:a3];
+    [(NSMutableArray *)self->_sampleQueue addObject:sample];
     objc_sync_exit(v5);
   }
 
@@ -355,14 +355,14 @@ LABEL_38:
   return v4;
 }
 
-- (void)pushAuxSample:(opaqueCMSampleBuffer *)a3
+- (void)pushAuxSample:(opaqueCMSampleBuffer *)sample
 {
   dispatch_semaphore_wait(self->_auxEnqueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (sample)
   {
     v5 = self->_auxsampleQueue;
     objc_sync_enter(v5);
-    [(NSMutableArray *)self->_auxsampleQueue addObject:a3];
+    [(NSMutableArray *)self->_auxsampleQueue addObject:sample];
     objc_sync_exit(v5);
   }
 
@@ -394,14 +394,14 @@ LABEL_38:
   return v4;
 }
 
-- (void)pushLivePhotoInfoSample:(opaqueCMSampleBuffer *)a3
+- (void)pushLivePhotoInfoSample:(opaqueCMSampleBuffer *)sample
 {
   dispatch_semaphore_wait(self->_livePhotoInfoEnqueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (sample)
   {
     v5 = self->_livePhotoInfoQueue;
     objc_sync_enter(v5);
-    [(NSMutableArray *)self->_livePhotoInfoQueue addObject:a3];
+    [(NSMutableArray *)self->_livePhotoInfoQueue addObject:sample];
     objc_sync_exit(v5);
   }
 
@@ -839,7 +839,7 @@ LABEL_17:
   dispatch_group_leave(*(*(a1 + 32) + 144));
 }
 
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v16[4] = *MEMORY[0x1E69E9840];
   p_pixelBufferPool = &self->_pixelBufferPool;
@@ -855,13 +855,13 @@ LABEL_17:
   }
 
   v15[0] = *MEMORY[0x1E6966130];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(a3)];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(buffer)];
   v16[0] = v9;
   v15[1] = *MEMORY[0x1E6966208];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(a3)];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(buffer)];
   v16[1] = v10;
   v15[2] = *MEMORY[0x1E69660B8];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(a3)];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(buffer)];
   v15[3] = *MEMORY[0x1E69660D8];
   v16[2] = v11;
   v16[3] = MEMORY[0x1E695E0F8];
@@ -880,10 +880,10 @@ LABEL_17:
 LABEL_16:
     if (self->_transferSession.value_ || (PixelBuffer = VTPixelTransferSessionCreate(0, &self->_transferSession.value_)) == 0)
     {
-      PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, a4);
+      PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, pixelBuffer);
       if (!PixelBuffer)
       {
-        return VTPixelTransferSessionTransferImage(self->_transferSession.value_, a3, *a4);
+        return VTPixelTransferSessionTransferImage(self->_transferSession.value_, buffer, *pixelBuffer);
       }
     }
   }
@@ -891,7 +891,7 @@ LABEL_16:
   return PixelBuffer;
 }
 
-- (int)copyPixelBufferForDelta:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (int)copyPixelBufferForDelta:(__CVBuffer *)delta toPixelBuffer:(__CVBuffer *)buffer
 {
   v16[4] = *MEMORY[0x1E69E9840];
   p_pixelBufferPool = &self->_pixelBufferPool;
@@ -907,13 +907,13 @@ LABEL_16:
   }
 
   v15[0] = *MEMORY[0x1E6966130];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(a3)];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(delta)];
   v16[0] = v9;
   v15[1] = *MEMORY[0x1E6966208];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(a3)];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(delta)];
   v16[1] = v10;
   v15[2] = *MEMORY[0x1E69660B8];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(a3)];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(delta)];
   v15[3] = *MEMORY[0x1E69660D8];
   v16[2] = v11;
   v16[3] = MEMORY[0x1E695E0F8];
@@ -932,10 +932,10 @@ LABEL_16:
 LABEL_16:
     if (self->_transferSessionDelta.value_ || (PixelBuffer = VTPixelTransferSessionCreate(0, &self->_transferSessionDelta.value_)) == 0)
     {
-      PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, a4);
+      PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, buffer);
       if (!PixelBuffer)
       {
-        return VTPixelTransferSessionTransferImage(self->_transferSessionDelta.value_, a3, *a4);
+        return VTPixelTransferSessionTransferImage(self->_transferSessionDelta.value_, delta, *buffer);
       }
     }
   }
@@ -943,15 +943,15 @@ LABEL_16:
   return PixelBuffer;
 }
 
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4 withAttachment:(id)a5
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time withAttachment:(id)attachment
 {
-  v8 = a5;
-  if (a3)
+  attachmentCopy = attachment;
+  if (buffer)
   {
     if (self->_status == 1)
     {
       formatDescriptionOut = 0;
-      v9 = CMVideoFormatDescriptionCreateForImageBuffer(0, a3, &formatDescriptionOut);
+      v9 = CMVideoFormatDescriptionCreateForImageBuffer(0, buffer, &formatDescriptionOut);
       if (v9)
       {
 LABEL_22:
@@ -961,19 +961,19 @@ LABEL_22:
 
       *&sampleTiming.duration.value = *MEMORY[0x1E6960C70];
       sampleTiming.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-      sampleTiming.presentationTimeStamp = *a4;
+      sampleTiming.presentationTimeStamp = *time;
       sampleTiming.decodeTimeStamp = sampleTiming.duration;
       cf = 0;
-      if (CVPixelBufferGetIOSurface(a3))
+      if (CVPixelBufferGetIOSurface(buffer))
       {
         target = 0;
-        cf = CFRetain(a3);
+        cf = CFRetain(buffer);
         CF<__CVBuffer *>::~CF(&target);
       }
 
       else
       {
-        v9 = [(VCPMovieAssetWriter *)self copyPixelBuffer:a3 toPixelBuffer:&cf];
+        v9 = [(VCPMovieAssetWriter *)self copyPixelBuffer:buffer toPixelBuffer:&cf];
         if (v9)
         {
 LABEL_21:
@@ -987,16 +987,16 @@ LABEL_21:
       if (!v9)
       {
         v10 = *MEMORY[0x1E69604E0];
-        v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69604E0]];
+        v11 = [attachmentCopy objectForKeyedSubscript:*MEMORY[0x1E69604E0]];
 
         v12 = MEMORY[0x1E695E4D0];
-        if (v11 || (v10 = *MEMORY[0x1E6960508], [v8 objectForKeyedSubscript:*MEMORY[0x1E6960508]], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+        if (v11 || (v10 = *MEMORY[0x1E6960508], [attachmentCopy objectForKeyedSubscript:*MEMORY[0x1E6960508]], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
         {
           CMSetAttachment(target, v10, *v12, 1u);
         }
 
         v14 = *MEMORY[0x1E69604D8];
-        v15 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69604D8]];
+        v15 = [attachmentCopy objectForKeyedSubscript:*MEMORY[0x1E69604D8]];
 
         if (v15)
         {
@@ -1033,15 +1033,15 @@ LABEL_23:
   return v9;
 }
 
-- (int)addAuxPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4 withAttachment:(id)a5
+- (int)addAuxPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time withAttachment:(id)attachment
 {
-  v8 = a5;
-  if (a3)
+  attachmentCopy = attachment;
+  if (buffer)
   {
     if (self->_status == 1)
     {
       formatDescriptionOut = 0;
-      v9 = CMVideoFormatDescriptionCreateForImageBuffer(0, a3, &formatDescriptionOut);
+      v9 = CMVideoFormatDescriptionCreateForImageBuffer(0, buffer, &formatDescriptionOut);
       if (v9)
       {
 LABEL_22:
@@ -1051,19 +1051,19 @@ LABEL_22:
 
       *&sampleTiming.duration.value = *MEMORY[0x1E6960C70];
       sampleTiming.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-      sampleTiming.presentationTimeStamp = *a4;
+      sampleTiming.presentationTimeStamp = *time;
       sampleTiming.decodeTimeStamp = sampleTiming.duration;
       cf = 0;
-      if (CVPixelBufferGetIOSurface(a3))
+      if (CVPixelBufferGetIOSurface(buffer))
       {
         target = 0;
-        cf = CFRetain(a3);
+        cf = CFRetain(buffer);
         CF<__CVBuffer *>::~CF(&target);
       }
 
       else
       {
-        v9 = [(VCPMovieAssetWriter *)self copyPixelBufferForDelta:a3 toPixelBuffer:&cf];
+        v9 = [(VCPMovieAssetWriter *)self copyPixelBufferForDelta:buffer toPixelBuffer:&cf];
         if (v9)
         {
 LABEL_21:
@@ -1077,16 +1077,16 @@ LABEL_21:
       if (!v9)
       {
         v10 = *MEMORY[0x1E69604E0];
-        v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69604E0]];
+        v11 = [attachmentCopy objectForKeyedSubscript:*MEMORY[0x1E69604E0]];
 
         v12 = MEMORY[0x1E695E4D0];
-        if (v11 || (v10 = *MEMORY[0x1E6960508], [v8 objectForKeyedSubscript:*MEMORY[0x1E6960508]], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+        if (v11 || (v10 = *MEMORY[0x1E6960508], [attachmentCopy objectForKeyedSubscript:*MEMORY[0x1E6960508]], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
         {
           CMSetAttachment(target, v10, *v12, 1u);
         }
 
         v14 = *MEMORY[0x1E69604D8];
-        v15 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69604D8]];
+        v15 = [attachmentCopy objectForKeyedSubscript:*MEMORY[0x1E69604D8]];
 
         if (v15)
         {
@@ -1123,9 +1123,9 @@ LABEL_23:
   return v9;
 }
 
-- (int)addLivePhotoInfoBuffer:(opaqueCMSampleBuffer *)a3
+- (int)addLivePhotoInfoBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return -50;
   }
@@ -1139,22 +1139,22 @@ LABEL_23:
   return 0;
 }
 
-- (void)updateStillPTS:(id *)a3
+- (void)updateStillPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  self->_stillPTS.epoch = a3->var3;
+  v3 = *&s->var0;
+  self->_stillPTS.epoch = s->var3;
   *&self->_stillPTS.value = v3;
 }
 
 - (int)setupMetadataTrack
 {
   v47 = *MEMORY[0x1E69E9840];
-  v36 = [(AVAssetTrack *)self->_track asset];
-  v3 = [v36 metadata];
-  [(AVAssetWriter *)self->_writer setMetadata:v3];
+  asset = [(AVAssetTrack *)self->_track asset];
+  metadata = [asset metadata];
+  [(AVAssetWriter *)self->_writer setMetadata:metadata];
 
   v4 = *MEMORY[0x1E69875D0];
-  [v36 vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
+  [asset vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
@@ -1183,20 +1183,20 @@ LABEL_23:
       }
 
       v9 = *(*(&v40 + 1) + 8 * v8);
-      v10 = [v9 formatDescriptions];
-      v11 = [v10 firstObject];
+      formatDescriptions = [v9 formatDescriptions];
+      firstObject = [formatDescriptions firstObject];
 
-      if (v11)
+      if (firstObject)
       {
-        v12 = CMMetadataFormatDescriptionGetIdentifiers(v11);
-        v13 = [v9 formatDescriptions];
-        if ([v13 count] != 1)
+        v12 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
+        formatDescriptions2 = [v9 formatDescriptions];
+        if ([formatDescriptions2 count] != 1)
         {
           goto LABEL_37;
         }
 
         v14 = objc_alloc(MEMORY[0x1E6987EE0]);
-        v15 = [v13 objectAtIndexedSubscript:0];
+        v15 = [formatDescriptions2 objectAtIndexedSubscript:0];
         v16 = [v14 initWithMediaType:v4 outputSettings:0 sourceFormatHint:v15];
 
         if ([v12 containsObject:v38])
@@ -1268,8 +1268,8 @@ LABEL_18:
             self->_styleInfoAdaptor = v25;
 
             writer = self->_writer;
-            v28 = [(AVAssetWriterInputMetadataAdaptor *)self->_styleInfoAdaptor assetWriterInput];
-            LOBYTE(writer) = [(AVAssetWriter *)writer canAddInput:v28];
+            assetWriterInput = [(AVAssetWriterInputMetadataAdaptor *)self->_styleInfoAdaptor assetWriterInput];
+            LOBYTE(writer) = [(AVAssetWriter *)writer canAddInput:assetWriterInput];
 
             if ((writer & 1) == 0)
             {
@@ -1277,8 +1277,8 @@ LABEL_18:
             }
 
             v29 = self->_writer;
-            v30 = [(AVAssetWriterInputMetadataAdaptor *)self->_styleInfoAdaptor assetWriterInput];
-            [(AVAssetWriter *)v29 addInput:v30];
+            assetWriterInput2 = [(AVAssetWriterInputMetadataAdaptor *)self->_styleInfoAdaptor assetWriterInput];
+            [(AVAssetWriter *)v29 addInput:assetWriterInput2];
           }
 
           else
@@ -1290,8 +1290,8 @@ LABEL_18:
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Unknown metadata with identifiers: %@", buf, 0xCu);
             }
 
-            v30 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v9 outputSettings:0];
-            if (![(AVAssetReader *)self->_assetReader canAddOutput:v30]|| ([(AVAssetReader *)self->_assetReader addOutput:v30], ![(AVAssetWriter *)self->_writer canAddInput:v16]))
+            assetWriterInput2 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v9 outputSettings:0];
+            if (![(AVAssetReader *)self->_assetReader canAddOutput:assetWriterInput2]|| ([(AVAssetReader *)self->_assetReader addOutput:assetWriterInput2], ![(AVAssetWriter *)self->_writer canAddInput:v16]))
             {
 
 LABEL_36:
@@ -1302,7 +1302,7 @@ LABEL_37:
             }
 
             [(AVAssetWriter *)self->_writer addInput:v16];
-            [(NSMapTable *)self->_inputToOutputMap setObject:v30 forKey:v16];
+            [(NSMapTable *)self->_inputToOutputMap setObject:assetWriterInput2 forKey:v16];
           }
         }
       }
@@ -1325,13 +1325,13 @@ LABEL_38:
 - (int)setupAdditionalAuxTrack
 {
   v51 = *MEMORY[0x1E69E9840];
-  v27 = [(AVAssetTrack *)self->_track asset];
-  v3 = [v27 metadata];
-  [(AVAssetWriter *)self->_writer setMetadata:v3];
+  asset = [(AVAssetTrack *)self->_track asset];
+  metadata = [asset metadata];
+  [(AVAssetWriter *)self->_writer setMetadata:metadata];
 
-  v4 = [(AVAssetTrack *)self->_track asset];
+  asset2 = [(AVAssetTrack *)self->_track asset];
   v29 = *MEMORY[0x1E69875B0];
-  v5 = [v4 tracksWithMediaType:?];
+  v5 = [asset2 tracksWithMediaType:?];
 
   v44 = 0u;
   v45 = 0u;
@@ -1355,10 +1355,10 @@ LABEL_38:
         }
 
         v6 = *(*(&v42 + 1) + 8 * i);
-        v7 = [v6 formatDescriptions];
-        v8 = [v7 firstObject];
+        formatDescriptions = [v6 formatDescriptions];
+        firstObject = [formatDescriptions firstObject];
 
-        if (v8)
+        if (firstObject)
         {
           v33 = [v6 metadataForFormat:v28];
           v9 = [objc_alloc(MEMORY[0x1E6987EE0]) initWithMediaType:v29 outputSettings:0 sourceFormatHint:0];
@@ -1388,16 +1388,16 @@ LABEL_38:
 
                     v15 = *(*(&v38 + 1) + 8 * j);
                     [v9 setMarksOutputTrackAsEnabled:{objc_msgSend(v6, "isEnabled")}];
-                    v16 = [v15 stringValue];
-                    v17 = [v16 isEqualToString:@"com.apple.quicktime.video-map.smart-style-delta-map"];
+                    stringValue = [v15 stringValue];
+                    v17 = [stringValue isEqualToString:@"com.apple.quicktime.video-map.smart-style-delta-map"];
 
                     if ((v17 & 1) == 0)
                     {
                       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                       {
-                        v18 = [v15 stringValue];
+                        stringValue2 = [v15 stringValue];
                         *buf = 138412290;
-                        *&buf[4] = v18;
+                        *&buf[4] = stringValue2;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Setting up aux track with name: %@", buf, 0xCu);
                       }
 
@@ -1417,8 +1417,8 @@ LABEL_38:
                       v47 = v36;
                       v48 = v37;
                       [v9 setTransform:buf];
-                      v19 = [v6 metadata];
-                      [v9 setMetadata:v19];
+                      metadata2 = [v6 metadata];
+                      [v9 setMetadata:metadata2];
 
                       if (![(AVAssetWriter *)self->_writer canAddInput:v9])
                       {
@@ -1429,8 +1429,8 @@ LABEL_38:
 
                       [(AVAssetWriter *)self->_writer addInput:v9];
                       auxInputToOutputMap = self->_auxInputToOutputMap;
-                      v21 = [v15 stringValue];
-                      [(NSMapTable *)auxInputToOutputMap setObject:v9 forKey:v21];
+                      stringValue3 = [v15 stringValue];
+                      [(NSMapTable *)auxInputToOutputMap setObject:v9 forKey:stringValue3];
                     }
                   }
 
@@ -1480,11 +1480,11 @@ LABEL_33:
   if ([(AVAssetReader *)self->_assetReader canAddOutput:self->_audioOutput])
   {
     [(AVAssetReader *)self->_assetReader addOutput:self->_audioOutput];
-    v6 = [(AVAssetTrack *)self->_audioTrack formatDescriptions];
-    if ([v6 count] == 1)
+    formatDescriptions = [(AVAssetTrack *)self->_audioTrack formatDescriptions];
+    if ([formatDescriptions count] == 1)
     {
       v7 = MEMORY[0x1E6987EE0];
-      v8 = [v6 objectAtIndexedSubscript:0];
+      v8 = [formatDescriptions objectAtIndexedSubscript:0];
       v9 = [v7 assetWriterInputWithMediaType:*MEMORY[0x1E69875A0] outputSettings:0 sourceFormatHint:v8];
       audioInput = self->_audioInput;
       self->_audioInput = v9;
@@ -1515,15 +1515,15 @@ LABEL_11:
   return v11;
 }
 
-- (int)setupVideoTrack:(int64_t)a3 withOutputSize:(CGSize)a4
+- (int)setupVideoTrack:(int64_t)track withOutputSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v37[6] = *MEMORY[0x1E69E9840];
-  v8 = [(AVAssetTrack *)self->_track formatDescriptions];
-  if ([v8 count] == 1)
+  formatDescriptions = [(AVAssetTrack *)self->_track formatDescriptions];
+  if ([formatDescriptions count] == 1)
   {
-    v9 = [v8 objectAtIndexedSubscript:0];
+    v9 = [formatDescriptions objectAtIndexedSubscript:0];
 
     MediaSubType = CMFormatDescriptionGetMediaSubType(v9);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1535,7 +1535,7 @@ LABEL_11:
       v35[0] = MEMORY[0x1E695E118];
       v35[1] = &unk_1F49BD8E8;
       v34[2] = *MEMORY[0x1E6983558];
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:track];
       v34[3] = *MEMORY[0x1E6983518];
       v35[2] = v21;
       v35[3] = MEMORY[0x1E695E110];
@@ -1582,7 +1582,7 @@ LABEL_11:
       v37[2] = &unk_1F49BD8B8;
       v37[3] = &unk_1F49BD8D0;
       v36[4] = *MEMORY[0x1E6983558];
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:track];
       v36[5] = *MEMORY[0x1E6983780];
       v37[4] = v15;
       v37[5] = v12;
@@ -1618,8 +1618,8 @@ LABEL_12:
           v30[1] = v32;
           v30[2] = v33;
           [(AVAssetWriterInput *)v25 setTransform:v30];
-          v28 = [(AVAssetTrack *)self->_track metadata];
-          [(AVAssetWriterInput *)self->_input setMetadata:v28];
+          metadata = [(AVAssetTrack *)self->_track metadata];
+          [(AVAssetWriterInput *)self->_input setMetadata:metadata];
 
           [(AVAssetWriter *)self->_writer addInput:self->_input];
           v19 = 0;
@@ -1659,10 +1659,10 @@ LABEL_26:
   return v19;
 }
 
-- (int)setupAuxTrack:(int64_t)a3 withOutputSize:(CGSize)a4
+- (int)setupAuxTrack:(int64_t)track withOutputSize:(CGSize)size
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = [(AVAssetTrack *)self->_track asset:a4.width];
+  v4 = [(AVAssetTrack *)self->_track asset:size.width];
   v5 = *MEMORY[0x1E69875B0];
   v6 = [v4 tracksWithMediaType:*MEMORY[0x1E69875B0]];
 
@@ -1717,8 +1717,8 @@ LABEL_26:
                     objc_enumerationMutation(v13);
                   }
 
-                  v17 = [*(*(&v79 + 1) + 8 * j) stringValue];
-                  v18 = [v17 isEqualToString:@"com.apple.quicktime.video-map.smart-style-delta-map"];
+                  stringValue = [*(*(&v79 + 1) + 8 * j) stringValue];
+                  v18 = [stringValue isEqualToString:@"com.apple.quicktime.video-map.smart-style-delta-map"];
 
                   if (v18)
                   {
@@ -1743,10 +1743,10 @@ LABEL_26:
     while (v7);
   }
 
-  v20 = [v8 formatDescriptions];
-  if ([v20 count] == 1)
+  formatDescriptions = [v8 formatDescriptions];
+  if ([formatDescriptions count] == 1)
   {
-    v21 = [v20 objectAtIndexedSubscript:0];
+    v21 = [formatDescriptions objectAtIndexedSubscript:0];
 
     PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions(v21, 0, 1u);
     v23 = CMVideoFormatDescriptionGetPresentationDimensions(v21, 0, 0);
@@ -1782,7 +1782,7 @@ LABEL_26:
     v35 = *MEMORY[0x1E6983558];
     v87[4] = v34;
     v87[5] = v35;
-    v36 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v36 = [MEMORY[0x1E696AD98] numberWithInteger:track];
     v37 = *MEMORY[0x1E6983780];
     v88[5] = v36;
     v88[6] = v30;
@@ -1864,8 +1864,8 @@ LABEL_26:
       v74 = v77;
       v75 = v78;
       [(AVAssetWriterInput *)v58 setTransform:buf];
-      v60 = [v8 metadata];
-      [(AVAssetWriterInput *)self->_auxInput setMetadata:v60];
+      metadata = [v8 metadata];
+      [(AVAssetWriterInput *)self->_auxInput setMetadata:metadata];
 
       -[AVAssetWriterInput setMarksOutputTrackAsEnabled:](self->_auxInput, "setMarksOutputTrackAsEnabled:", [v8 isEnabled]);
       [(AVAssetWriter *)self->_writer addInput:self->_auxInput];
@@ -1894,33 +1894,33 @@ LABEL_26:
 
 - (int)appendMetadataTrack
 {
-  v3 = [(VCPMovieAssetWriter *)self processStillImageMetadataTrack];
-  if (v3)
+  processStillImageMetadataTrack = [(VCPMovieAssetWriter *)self processStillImageMetadataTrack];
+  if (processStillImageMetadataTrack)
   {
-    return v3;
+    return processStillImageMetadataTrack;
   }
 
-  v3 = [(VCPMovieAssetWriter *)self passthroughMetadataTrackFrom:self->_videoOrientationOutput to:self->_videoOrientationInput];
-  if (v3)
+  processStillImageMetadataTrack = [(VCPMovieAssetWriter *)self passthroughMetadataTrackFrom:self->_videoOrientationOutput to:self->_videoOrientationInput];
+  if (processStillImageMetadataTrack)
   {
-    return v3;
+    return processStillImageMetadataTrack;
   }
 
-  v6 = [(NSMapTable *)self->_inputToOutputMap keyEnumerator];
+  keyEnumerator = [(NSMapTable *)self->_inputToOutputMap keyEnumerator];
   v7 = 0;
   while (1)
   {
-    v8 = [v6 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v9 = [(NSMapTable *)self->_inputToOutputMap objectForKey:v8];
-    v4 = [(VCPMovieAssetWriter *)self passthroughMetadataTrackFrom:v9 to:v8];
+    v9 = [(NSMapTable *)self->_inputToOutputMap objectForKey:nextObject];
+    v4 = [(VCPMovieAssetWriter *)self passthroughMetadataTrackFrom:v9 to:nextObject];
 
-    v7 = v8;
+    v7 = nextObject;
     if (v4)
     {
       goto LABEL_10;
@@ -1933,9 +1933,9 @@ LABEL_10:
   return v4;
 }
 
-- (int)addAdditionalAuxTracks:(opaqueCMSampleBuffer *)a3 toTrack:(id)a4
+- (int)addAdditionalAuxTracks:(opaqueCMSampleBuffer *)tracks toTrack:(id)track
 {
-  v6 = [(NSMapTable *)self->_auxInputToOutputMap objectForKey:a4];
+  v6 = [(NSMapTable *)self->_auxInputToOutputMap objectForKey:track];
   if (![v6 isReadyForMoreMediaData])
   {
 LABEL_6:
@@ -1944,17 +1944,17 @@ LABEL_6:
   }
 
   v7 = 0;
-  if (a3 && self->_status == 1)
+  if (tracks && self->_status == 1)
   {
-    if (([v6 appendSampleBuffer:a3] & 1) == 0)
+    if (([v6 appendSampleBuffer:tracks] & 1) == 0)
     {
-      CFRelease(a3);
+      CFRelease(tracks);
       self->_status = 3;
       v7 = -18;
       goto LABEL_7;
     }
 
-    CFRelease(a3);
+    CFRelease(tracks);
     goto LABEL_6;
   }
 
@@ -1963,17 +1963,17 @@ LABEL_7:
   return v7;
 }
 
-- (int)addStyleInfoData:(id)a3 timerange:(id *)a4
+- (int)addStyleInfoData:(id)data timerange:(id *)timerange
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_alloc(MEMORY[0x1E6988160]);
-  v13[0] = v6;
+  v13[0] = dataCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v9 = *&a4->var0.var3;
-  v12[0] = *&a4->var0.var0;
+  v9 = *&timerange->var0.var3;
+  v12[0] = *&timerange->var0.var0;
   v12[1] = v9;
-  v12[2] = *&a4->var1.var1;
+  v12[2] = *&timerange->var1.var1;
   v10 = [v7 initWithItems:v8 timeRange:v12];
 
   [(AVAssetWriterInputMetadataAdaptor *)self->_styleInfoAdaptor appendTimedMetadataGroup:v10];
@@ -2247,21 +2247,21 @@ LABEL_17:
   dispatch_group_leave(*(*(a1 + 32) + 144));
 }
 
-- (int)passthroughMetadataTrackFrom:(id)a3 to:(id)a4
+- (int)passthroughMetadataTrackFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   dispatch_group_enter(self->_encodingGroup);
   metadataQueue = self->_metadataQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__VCPMovieAssetWriter_passthroughMetadataTrackFrom_to___block_invoke;
   v12[3] = &unk_1E834D020;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = toCopy;
+  selfCopy = self;
+  v15 = fromCopy;
+  v9 = fromCopy;
+  v10 = toCopy;
   [v10 requestMediaDataWhenReadyOnQueue:metadataQueue usingBlock:v12];
 
   return 0;
@@ -2388,21 +2388,21 @@ LABEL_20:
   dispatch_group_leave(*(*(a1 + 32) + 144));
 }
 
-- (int)passthroughAuxTrackFrom:(id)a3 to:(id)a4
+- (int)passthroughAuxTrackFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   dispatch_group_enter(self->_encodingGroup);
   metadataQueue = self->_metadataQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__VCPMovieAssetWriter_passthroughAuxTrackFrom_to___block_invoke;
   v12[3] = &unk_1E834D020;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = toCopy;
+  selfCopy = self;
+  v15 = fromCopy;
+  v9 = fromCopy;
+  v10 = toCopy;
   [v10 requestMediaDataWhenReadyOnQueue:metadataQueue usingBlock:v12];
 
   return 0;
@@ -2546,7 +2546,7 @@ LABEL_17:
   v11 = 3221225472;
   v12 = __29__VCPMovieAssetWriter_finish__block_invoke;
   v13 = &unk_1E834D238;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
   [(AVAssetWriter *)writer finishWritingWithCompletionHandler:&v10];
@@ -2563,9 +2563,9 @@ LABEL_17:
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v8 = [(AVAssetWriter *)self->_writer error];
+      error = [(AVAssetWriter *)self->_writer error];
       *buf = 138412290;
-      v17 = v8;
+      v17 = error;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Asset writer failed to complete with error %@", buf, 0xCu);
     }
 

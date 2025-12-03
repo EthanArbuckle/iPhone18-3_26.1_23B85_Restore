@@ -1,25 +1,25 @@
 @interface SUUICounterViewElement
-- (SUUICounterViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUICounterViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)currentNumberValue;
 @end
 
 @implementation SUUICounterViewElement
 
-- (SUUICounterViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUICounterViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v26.receiver = self;
   v26.super_class = SUUICounterViewElement;
-  v9 = [(SUUIViewElement *)&v26 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v26 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (!v9)
   {
     goto LABEL_15;
   }
 
-  v10 = [v8 getAttribute:@"type"];
+  v10 = [elementCopy getAttribute:@"type"];
   v9->_counterType = [v10 isEqualToString:@"timer"] ^ 1;
-  v11 = [v8 getAttribute:@"dateFormat"];
+  v11 = [elementCopy getAttribute:@"dateFormat"];
 
   if ([v11 isEqualToString:@"hm"])
   {
@@ -43,7 +43,7 @@ LABEL_9:
 
   v9->_dateFormatType = 0;
 LABEL_10:
-  v13 = [v8 getAttribute:@"endDate"];
+  v13 = [elementCopy getAttribute:@"endDate"];
 
   if ([v13 length])
   {
@@ -52,7 +52,7 @@ LABEL_10:
     v9->_endDate = v14;
   }
 
-  v16 = [v8 getAttribute:@"timestamp"];
+  v16 = [elementCopy getAttribute:@"timestamp"];
 
   if ([v16 length])
   {
@@ -61,18 +61,18 @@ LABEL_10:
     v9->_startValueDate = v17;
   }
 
-  v19 = [v8 getAttribute:@"rate"];
+  v19 = [elementCopy getAttribute:@"rate"];
   [v19 doubleValue];
   v9->_changeRatePerSecond = v20;
 
-  v21 = [v8 getAttribute:@"numberFormat"];
+  v21 = [elementCopy getAttribute:@"numberFormat"];
   numberFormat = v9->_numberFormat;
   v9->_numberFormat = v21;
 
-  v23 = [v8 getAttribute:@"value"];
+  v23 = [elementCopy getAttribute:@"value"];
   v9->_startValue = [v23 longLongValue];
 
-  v24 = [v8 getAttribute:@"endValue"];
+  v24 = [elementCopy getAttribute:@"endValue"];
   v9->_stopValue = [v24 longLongValue];
 
 LABEL_15:
@@ -81,79 +81,79 @@ LABEL_15:
 
 - (int64_t)currentNumberValue
 {
-  v3 = [(SUUICounterViewElement *)self stopValue];
-  v4 = [(SUUICounterViewElement *)self startValueDate];
-  if (v4)
+  stopValue = [(SUUICounterViewElement *)self stopValue];
+  startValueDate = [(SUUICounterViewElement *)self startValueDate];
+  if (startValueDate)
   {
     [(SUUICounterViewElement *)self changeRatePerSecond];
     v6 = v5;
-    v7 = [(SUUICounterViewElement *)self startValue];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [(SUUICounterViewElement *)self startValueDate];
-    [v8 timeIntervalSinceDate:v9];
-    v11 = (v7 + v10 * v6);
+    startValue = [(SUUICounterViewElement *)self startValue];
+    date = [MEMORY[0x277CBEAA8] date];
+    startValueDate2 = [(SUUICounterViewElement *)self startValueDate];
+    [date timeIntervalSinceDate:startValueDate2];
+    v11 = (startValue + v10 * v6);
 
-    if (v3 >= v11)
+    if (stopValue >= v11)
     {
       v12 = v11;
     }
 
     else
     {
-      v12 = v3;
+      v12 = stopValue;
     }
 
-    if (v3 <= v11)
+    if (stopValue <= v11)
     {
       v13 = v11;
     }
 
     else
     {
-      v13 = v3;
+      v13 = stopValue;
     }
 
     if (v6 >= 0.0)
     {
-      v3 = v12;
+      stopValue = v12;
     }
 
     else
     {
-      v3 = v13;
+      stopValue = v13;
     }
   }
 
-  return v3;
+  return stopValue;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUICounterViewElement;
-  v5 = [(SUUIViewElement *)&v15 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v15 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    [(SUUICounterViewElement *)v4 changeRatePerSecond];
+    [(SUUICounterViewElement *)elementCopy changeRatePerSecond];
     self->_changeRatePerSecond = v7;
-    self->_counterType = [(SUUICounterViewElement *)v4 counterType];
-    self->_dateFormatType = [(SUUICounterViewElement *)v4 dateFormatType];
-    v8 = [(SUUICounterViewElement *)v4 endDate];
+    self->_counterType = [(SUUICounterViewElement *)elementCopy counterType];
+    self->_dateFormatType = [(SUUICounterViewElement *)elementCopy dateFormatType];
+    endDate = [(SUUICounterViewElement *)elementCopy endDate];
     endDate = self->_endDate;
-    self->_endDate = v8;
+    self->_endDate = endDate;
 
-    v10 = [(SUUICounterViewElement *)v4 numberFormat];
+    numberFormat = [(SUUICounterViewElement *)elementCopy numberFormat];
     numberFormat = self->_numberFormat;
-    self->_numberFormat = v10;
+    self->_numberFormat = numberFormat;
 
-    self->_startValue = [(SUUICounterViewElement *)v4 startValue];
-    v12 = [(SUUICounterViewElement *)v4 startValueDate];
+    self->_startValue = [(SUUICounterViewElement *)elementCopy startValue];
+    startValueDate = [(SUUICounterViewElement *)elementCopy startValueDate];
     startValueDate = self->_startValueDate;
-    self->_startValueDate = v12;
+    self->_startValueDate = startValueDate;
 
-    self->_stopValue = [(SUUICounterViewElement *)v4 stopValue];
+    self->_stopValue = [(SUUICounterViewElement *)elementCopy stopValue];
   }
 
   return v6;

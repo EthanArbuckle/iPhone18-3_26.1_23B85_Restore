@@ -1,7 +1,7 @@
 @interface APNSManager
 + (_TtC15icloudmailagent11APNSManager)sharedInstance;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
 - (void)start;
 @end
@@ -22,49 +22,49 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   APNSManager.start()();
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   APNSManager.stop()();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(APNSManager *)&v5 dealloc];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a4;
-  if (a4)
+  tokenCopy = token;
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = v4;
-    v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    connectionCopy = connection;
+    selfCopy = self;
+    v8 = tokenCopy;
+    tokenCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
   else
   {
-    v11 = a3;
-    v12 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v10 = 0xF000000000000000;
   }
 
-  specialized APNSManager.connection(_:didReceivePublicToken:)(v4, v10);
-  outlined consume of Data?(v4, v10);
+  specialized APNSManager.connection(_:didReceivePublicToken:)(tokenCopy, v10);
+  outlined consume of Data?(tokenCopy, v10);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized APNSManager.connection(_:didReceive:)(a4);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  specialized APNSManager.connection(_:didReceive:)(message);
 }
 
 @end

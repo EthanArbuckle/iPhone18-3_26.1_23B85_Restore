@@ -1,6 +1,6 @@
 @interface ICCalculateGraphExpressionUIModel
-- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)a3;
-- (id)attributedStringWithSurroundingAttributes:(id)a3 formatter:(id)a4;
+- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)range;
+- (id)attributedStringWithSurroundingAttributes:(id)attributes formatter:(id)formatter;
 - (id)labelColor;
 @end
 
@@ -8,38 +8,38 @@
 
 - (id)labelColor
 {
-  v3 = [(ICInlineAttachmentUIModel *)self attachment];
-  if ([v3 isValidCalculateAttachment])
+  attachment = [(ICInlineAttachmentUIModel *)self attachment];
+  if ([attachment isValidCalculateAttachment])
   {
-    v4 = [MEMORY[0x1E69DC888] ICControlAccentColor];
+    iCControlAccentColor = [MEMORY[0x1E69DC888] ICControlAccentColor];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICCalculateGraphExpressionUIModel;
-    v4 = [(ICInlineAttachmentUIModel *)&v7 labelColor];
+    iCControlAccentColor = [(ICInlineAttachmentUIModel *)&v7 labelColor];
   }
 
-  v5 = v4;
+  v5 = iCControlAccentColor;
 
   return v5;
 }
 
-- (id)attributedStringWithSurroundingAttributes:(id)a3 formatter:(id)a4
+- (id)attributedStringWithSurroundingAttributes:(id)attributes formatter:(id)formatter
 {
   v34[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_opt_class() filteredStyleAttributes:v5];
+  attributesCopy = attributes;
+  v6 = [objc_opt_class() filteredStyleAttributes:attributesCopy];
 
   v7 = objc_alloc(MEMORY[0x1E696AD40]);
-  v8 = [(ICInlineAttachmentUIModel *)self attachment];
-  v9 = [v8 displayText];
-  v10 = [v7 initWithString:v9 attributes:v6];
+  attachment = [(ICInlineAttachmentUIModel *)self attachment];
+  displayText = [attachment displayText];
+  v10 = [v7 initWithString:displayText attributes:v6];
 
-  v11 = [v10 string];
-  v12 = [MEMORY[0x1E696AEC0] ic_calculateEqualsSignString];
-  v13 = [v11 rangeOfString:v12];
+  string = [v10 string];
+  ic_calculateEqualsSignString = [MEMORY[0x1E696AEC0] ic_calculateEqualsSignString];
+  v13 = [string rangeOfString:ic_calculateEqualsSignString];
   v15 = v14;
 
   v16 = [v10 length];
@@ -53,14 +53,14 @@
     v18 = v16 - v15;
     v33[0] = *MEMORY[0x1E69DB650];
     v19 = v33[0];
-    v20 = [(ICCalculateGraphExpressionUIModel *)self labelColor];
-    v34[0] = v20;
+    labelColor = [(ICCalculateGraphExpressionUIModel *)self labelColor];
+    v34[0] = labelColor;
     v33[1] = *MEMORY[0x1E69B7960];
-    v21 = [(ICCalculateGraphExpressionUIModel *)self labelColor];
-    v34[1] = v21;
+    labelColor2 = [(ICCalculateGraphExpressionUIModel *)self labelColor];
+    v34[1] = labelColor2;
     v33[2] = *MEMORY[0x1E69B75F0];
-    v22 = [(ICCalculateGraphExpressionUIModel *)self labelColor];
-    v34[2] = [v22 CGColor];
+    labelColor3 = [(ICCalculateGraphExpressionUIModel *)self labelColor];
+    v34[2] = [labelColor3 CGColor];
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
 
     [v10 addAttributes:v23 range:{0, v18}];
@@ -68,15 +68,15 @@
     v25 = v24;
     if (v24)
     {
-      v26 = v24;
+      preferredDefaultFontColor = v24;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E69DC888] preferredDefaultFontColor];
+      preferredDefaultFontColor = [MEMORY[0x1E69DC888] preferredDefaultFontColor];
     }
 
-    v27 = v26;
+    v27 = preferredDefaultFontColor;
 
     v28 = *MEMORY[0x1E69B7960];
     v31[0] = v19;
@@ -93,39 +93,39 @@
   return v17;
 }
 
-- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)a3
+- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)range
 {
   length = 4;
-  v4 = a3.length + 3;
-  if (a3.length != 2)
+  v4 = range.length + 3;
+  if (range.length != 2)
   {
-    length = a3.length + 3;
+    length = range.length + 3;
   }
 
-  if (a3.length <= 1)
+  if (range.length <= 1)
   {
-    length = a3.length;
+    length = range.length;
   }
 
-  v5 = a3.location + 3;
+  v5 = range.location + 3;
   v6 = 4;
-  if (a3.length != 2)
+  if (range.length != 2)
   {
-    v6 = a3.length + 3;
+    v6 = range.length + 3;
   }
 
-  if (a3.length <= 1)
+  if (range.length <= 1)
   {
-    v6 = a3.length;
+    v6 = range.length;
   }
 
-  if (!a3.location)
+  if (!range.location)
   {
     v5 = 1;
     v4 = v6;
   }
 
-  if (a3.location == 1)
+  if (range.location == 1)
   {
     v7 = 3;
   }
@@ -135,7 +135,7 @@
     v7 = v5;
   }
 
-  if (a3.location == 1)
+  if (range.location == 1)
   {
     v8 = length;
   }

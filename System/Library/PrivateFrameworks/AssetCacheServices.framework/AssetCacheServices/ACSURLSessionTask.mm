@@ -1,6 +1,6 @@
 @interface ACSURLSessionTask
 - (ACSURLSession)_weakSession;
-- (ACSURLSessionTask)initWithNSURLTaskCreator:(id)a3 initialRequest:(id)a4 forSession:(id)a5;
+- (ACSURLSessionTask)initWithNSURLTaskCreator:(id)creator initialRequest:(id)request forSession:(id)session;
 - (BOOL)_isUpload;
 - (NSError)error;
 - (NSProgress)progress;
@@ -10,7 +10,7 @@
 - (NSURLRequest)originalRequest;
 - (NSURLResponse)response;
 - (float)priority;
-- (id)_nsurlTaskForRequest:(id)a3;
+- (id)_nsurlTaskForRequest:(id)request;
 - (int64_t)countOfBytesClientExpectsToReceive;
 - (int64_t)countOfBytesClientExpectsToSend;
 - (int64_t)countOfBytesExpectedToReceive;
@@ -21,10 +21,10 @@
 - (unint64_t)taskIdentifier;
 - (void)cancel;
 - (void)resume;
-- (void)setCountOfBytesClientExpectsToReceive:(int64_t)a3;
-- (void)setCountOfBytesClientExpectsToSend:(int64_t)a3;
-- (void)setPriority:(float)a3;
-- (void)setTaskDescription:(id)a3;
+- (void)setCountOfBytesClientExpectsToReceive:(int64_t)receive;
+- (void)setCountOfBytesClientExpectsToSend:(int64_t)send;
+- (void)setPriority:(float)priority;
+- (void)setTaskDescription:(id)description;
 - (void)suspend;
 @end
 
@@ -32,218 +32,218 @@
 
 - (unint64_t)taskIdentifier
 {
-  v2 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  v3 = [v2 taskIdentifier];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  taskIdentifier = [_nsurlTaskToOrigin taskIdentifier];
 
-  return v3;
+  return taskIdentifier;
 }
 
 - (NSURLRequest)originalRequest
 {
-  v2 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  v3 = [v2 originalRequest];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  originalRequest = [_nsurlTaskToOrigin originalRequest];
 
-  return v3;
+  return originalRequest;
 }
 
 - (NSURLRequest)currentRequest
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 currentRequest];
+    currentRequest = [_nsurlTaskToCachingServer currentRequest];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 currentRequest];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    currentRequest = [_nsurlTaskToOrigin currentRequest];
   }
 
-  return v4;
+  return currentRequest;
 }
 
 - (NSURLResponse)response
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 response];
+    response = [_nsurlTaskToCachingServer response];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 response];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    response = [_nsurlTaskToOrigin response];
   }
 
-  return v4;
+  return response;
 }
 
 - (NSProgress)progress
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 progress];
+    progress = [_nsurlTaskToCachingServer progress];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 progress];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    progress = [_nsurlTaskToOrigin progress];
   }
 
-  return v4;
+  return progress;
 }
 
 - (int64_t)countOfBytesClientExpectsToSend
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 countOfBytesClientExpectsToSend];
+    countOfBytesClientExpectsToSend = [_nsurlTaskToCachingServer countOfBytesClientExpectsToSend];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 countOfBytesClientExpectsToSend];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    countOfBytesClientExpectsToSend = [_nsurlTaskToOrigin countOfBytesClientExpectsToSend];
   }
 
-  return v4;
+  return countOfBytesClientExpectsToSend;
 }
 
-- (void)setCountOfBytesClientExpectsToSend:(int64_t)a3
+- (void)setCountOfBytesClientExpectsToSend:(int64_t)send
 {
-  v6 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v6)
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer)
   {
-    [v6 setCountOfBytesClientExpectsToSend:a3];
+    [_nsurlTaskToCachingServer setCountOfBytesClientExpectsToSend:send];
   }
 
-  v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  [v5 setCountOfBytesClientExpectsToSend:a3];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  [_nsurlTaskToOrigin setCountOfBytesClientExpectsToSend:send];
 }
 
 - (int64_t)countOfBytesClientExpectsToReceive
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 countOfBytesClientExpectsToReceive];
+    countOfBytesClientExpectsToReceive = [_nsurlTaskToCachingServer countOfBytesClientExpectsToReceive];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 countOfBytesClientExpectsToReceive];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    countOfBytesClientExpectsToReceive = [_nsurlTaskToOrigin countOfBytesClientExpectsToReceive];
   }
 
-  return v4;
+  return countOfBytesClientExpectsToReceive;
 }
 
-- (void)setCountOfBytesClientExpectsToReceive:(int64_t)a3
+- (void)setCountOfBytesClientExpectsToReceive:(int64_t)receive
 {
-  v6 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v6)
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer)
   {
-    [v6 setCountOfBytesClientExpectsToReceive:a3];
+    [_nsurlTaskToCachingServer setCountOfBytesClientExpectsToReceive:receive];
   }
 
-  v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  [v5 setCountOfBytesClientExpectsToReceive:a3];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  [_nsurlTaskToOrigin setCountOfBytesClientExpectsToReceive:receive];
 }
 
 - (int64_t)countOfBytesReceived
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 countOfBytesReceived];
+    countOfBytesReceived = [_nsurlTaskToCachingServer countOfBytesReceived];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 countOfBytesReceived];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    countOfBytesReceived = [_nsurlTaskToOrigin countOfBytesReceived];
   }
 
-  return v4;
+  return countOfBytesReceived;
 }
 
 - (int64_t)countOfBytesSent
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 countOfBytesSent];
+    countOfBytesSent = [_nsurlTaskToCachingServer countOfBytesSent];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 countOfBytesSent];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    countOfBytesSent = [_nsurlTaskToOrigin countOfBytesSent];
   }
 
-  return v4;
+  return countOfBytesSent;
 }
 
 - (int64_t)countOfBytesExpectedToSend
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 countOfBytesExpectedToSend];
+    countOfBytesExpectedToSend = [_nsurlTaskToCachingServer countOfBytesExpectedToSend];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 countOfBytesExpectedToSend];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    countOfBytesExpectedToSend = [_nsurlTaskToOrigin countOfBytesExpectedToSend];
   }
 
-  return v4;
+  return countOfBytesExpectedToSend;
 }
 
 - (int64_t)countOfBytesExpectedToReceive
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 countOfBytesExpectedToReceive];
+    countOfBytesExpectedToReceive = [_nsurlTaskToCachingServer countOfBytesExpectedToReceive];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 countOfBytesExpectedToReceive];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    countOfBytesExpectedToReceive = [_nsurlTaskToOrigin countOfBytesExpectedToReceive];
   }
 
-  return v4;
+  return countOfBytesExpectedToReceive;
 }
 
 - (NSString)taskDescription
 {
-  v2 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  v3 = [v2 taskDescription];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  taskDescription = [_nsurlTaskToOrigin taskDescription];
 
-  return v3;
+  return taskDescription;
 }
 
-- (void)setTaskDescription:(id)a3
+- (void)setTaskDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  [v5 setTaskDescription:v4];
+  descriptionCopy = description;
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  [_nsurlTaskToOrigin setTaskDescription:descriptionCopy];
 }
 
 - (void)cancel
 {
   if ([(ACSURLSessionTask *)self _internalState]!= 2)
   {
-    v3 = [(ACSURLSessionTask *)self _weakSession];
-    [v3 _cancelTask:self];
+    _weakSession = [(ACSURLSessionTask *)self _weakSession];
+    [_weakSession _cancelTask:self];
   }
 }
 
@@ -254,39 +254,39 @@
     return 3;
   }
 
-  v4 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v4 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v3 = [v4 state];
+    state = [_nsurlTaskToCachingServer state];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v3 = [v5 state];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    state = [_nsurlTaskToOrigin state];
   }
 
-  return v3;
+  return state;
 }
 
 - (NSError)error
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    v4 = [v3 error];
+    error = [_nsurlTaskToCachingServer error];
   }
 
   else
   {
-    v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    v4 = [v5 error];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    error = [_nsurlTaskToOrigin error];
   }
 
-  v6 = [(ACSURLSessionTask *)self _weakSession];
-  v7 = [(ACSURLSessionTask *)self originalRequest];
-  v8 = [(ACSURLSessionTask *)self currentRequest];
-  v9 = [v6 _errorWithResumeDataFromError:v4 originalRequest:v7 currentRequest:v8];
+  _weakSession = [(ACSURLSessionTask *)self _weakSession];
+  originalRequest = [(ACSURLSessionTask *)self originalRequest];
+  currentRequest = [(ACSURLSessionTask *)self currentRequest];
+  v9 = [_weakSession _errorWithResumeDataFromError:error originalRequest:originalRequest currentRequest:currentRequest];
 
   return v9;
 }
@@ -295,67 +295,67 @@
 {
   if ([(ACSURLSessionTask *)self _internalState]!= 2)
   {
-    v3 = [(ACSURLSessionTask *)self _weakSession];
-    [v3 _suspendTask:self];
+    _weakSession = [(ACSURLSessionTask *)self _weakSession];
+    [_weakSession _suspendTask:self];
   }
 }
 
 - (void)resume
 {
-  v3 = [(ACSURLSessionTask *)self _weakSession];
-  [v3 _resumeTask:self];
+  _weakSession = [(ACSURLSessionTask *)self _weakSession];
+  [_weakSession _resumeTask:self];
 }
 
 - (float)priority
 {
-  v3 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v3 && [(ACSURLSessionTask *)self _tryCachingServer])
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer && [(ACSURLSessionTask *)self _tryCachingServer])
   {
-    [v3 priority];
+    [_nsurlTaskToCachingServer priority];
     v5 = v4;
   }
 
   else
   {
-    v6 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-    [v6 priority];
+    _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+    [_nsurlTaskToOrigin priority];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
-  v8 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  if (v8)
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  if (_nsurlTaskToCachingServer)
   {
-    *&v5 = a3;
-    [v8 setPriority:v5];
+    *&v5 = priority;
+    [_nsurlTaskToCachingServer setPriority:v5];
   }
 
-  v6 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  *&v7 = a3;
-  [v6 setPriority:v7];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  *&v7 = priority;
+  [_nsurlTaskToOrigin setPriority:v7];
 }
 
-- (ACSURLSessionTask)initWithNSURLTaskCreator:(id)a3 initialRequest:(id)a4 forSession:(id)a5
+- (ACSURLSessionTask)initWithNSURLTaskCreator:(id)creator initialRequest:(id)request forSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  creatorCopy = creator;
+  requestCopy = request;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = ACSURLSessionTask;
   v11 = [(ACSURLSessionTask *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(ACSURLSessionTask *)v11 set_nsurlTaskCreator:v8];
-    v13 = v8[2](v8, v9);
+    [(ACSURLSessionTask *)v11 set_nsurlTaskCreator:creatorCopy];
+    v13 = creatorCopy[2](creatorCopy, requestCopy);
     [(ACSURLSessionTask *)v12 set_nsurlTaskToOrigin:v13];
 
-    [(ACSURLSessionTask *)v12 set_weakSession:v10];
-    -[ACSURLSessionTask set_tryCachingServer:](v12, "set_tryCachingServer:", [v10 canUseCachingServer]);
+    [(ACSURLSessionTask *)v12 set_weakSession:sessionCopy];
+    -[ACSURLSessionTask set_tryCachingServer:](v12, "set_tryCachingServer:", [sessionCopy canUseCachingServer]);
     [(ACSURLSessionTask *)v12 set_failBackToOrigin:1];
     [(ACSURLSessionTask *)v12 set_internalState:0];
   }
@@ -369,11 +369,11 @@
   v11.receiver = self;
   v11.super_class = ACSURLSessionTask;
   v4 = [(ACSURLSessionTask *)&v11 description];
-  v5 = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
-  v6 = [v5 descriptionWithAddress];
-  v7 = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
-  v8 = [v7 descriptionWithAddress];
-  v9 = [v3 stringWithFormat:@"%@ { taskToOrigin: %@, taskToCachingServer: %@, tryCachingServer: %d, failBackToOrigin: %d, suspended: %d }", v4, v6, v8, -[ACSURLSessionTask _tryCachingServer](self, "_tryCachingServer"), -[ACSURLSessionTask _failBackToOrigin](self, "_failBackToOrigin"), -[ACSURLSessionTask _suspended](self, "_suspended")];
+  _nsurlTaskToOrigin = [(ACSURLSessionTask *)self _nsurlTaskToOrigin];
+  descriptionWithAddress = [_nsurlTaskToOrigin descriptionWithAddress];
+  _nsurlTaskToCachingServer = [(ACSURLSessionTask *)self _nsurlTaskToCachingServer];
+  descriptionWithAddress2 = [_nsurlTaskToCachingServer descriptionWithAddress];
+  v9 = [v3 stringWithFormat:@"%@ { taskToOrigin: %@, taskToCachingServer: %@, tryCachingServer: %d, failBackToOrigin: %d, suspended: %d }", v4, descriptionWithAddress, descriptionWithAddress2, -[ACSURLSessionTask _tryCachingServer](self, "_tryCachingServer"), -[ACSURLSessionTask _failBackToOrigin](self, "_failBackToOrigin"), -[ACSURLSessionTask _suspended](self, "_suspended")];
 
   return v9;
 }
@@ -393,15 +393,15 @@
   objc_exception_throw(v10);
 }
 
-- (id)_nsurlTaskForRequest:(id)a3
+- (id)_nsurlTaskForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ACSURLSessionTask *)self _nsurlTaskCreator];
+  requestCopy = request;
+  _nsurlTaskCreator = [(ACSURLSessionTask *)self _nsurlTaskCreator];
 
-  if (v5)
+  if (_nsurlTaskCreator)
   {
-    v6 = [(ACSURLSessionTask *)self _nsurlTaskCreator];
-    v7 = (v6)[2](v6, v4);
+    _nsurlTaskCreator2 = [(ACSURLSessionTask *)self _nsurlTaskCreator];
+    v7 = (_nsurlTaskCreator2)[2](_nsurlTaskCreator2, requestCopy);
   }
 
   else

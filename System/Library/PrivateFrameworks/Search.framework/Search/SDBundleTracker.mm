@@ -1,8 +1,8 @@
 @interface SDBundleTracker
 + (id)sharedBundleTracker;
 - (SDBundleTracker)init;
-- (id)_infoForKey:(id)a3;
-- (void)_saveInfoForBundleWithKey:(id)a3;
+- (id)_infoForKey:(id)key;
+- (void)_saveInfoForBundleWithKey:(id)key;
 @end
 
 @implementation SDBundleTracker
@@ -30,22 +30,22 @@
   return v2;
 }
 
-- (id)_infoForKey:(id)a3
+- (id)_infoForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_trackingInfos objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_trackingInfos objectForKey:keyCopy];
   if (!v5)
   {
-    v5 = [[SDBundleTrackingInfo alloc] initWithCompositeIdentifier:v4];
-    [(NSMutableDictionary *)self->_trackingInfos setObject:v5 forKey:v4];
+    v5 = [[SDBundleTrackingInfo alloc] initWithCompositeIdentifier:keyCopy];
+    [(NSMutableDictionary *)self->_trackingInfos setObject:v5 forKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)_saveInfoForBundleWithKey:(id)a3
+- (void)_saveInfoForBundleWithKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_trackingInfos objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_trackingInfos objectForKey:key];
   [v3 save];
 }
 

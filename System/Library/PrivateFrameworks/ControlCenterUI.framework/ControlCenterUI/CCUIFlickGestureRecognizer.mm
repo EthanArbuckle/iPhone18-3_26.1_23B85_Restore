@@ -1,20 +1,20 @@
 @interface CCUIFlickGestureRecognizer
-- (BOOL)_validateFlickWithTouch:(id)a3;
-- (CCUIFlickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_beginFlickWithTouch:(id)a3;
+- (BOOL)_validateFlickWithTouch:(id)touch;
+- (CCUIFlickGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_beginFlickWithTouch:(id)touch;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CCUIFlickGestureRecognizer
 
-- (CCUIFlickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CCUIFlickGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = CCUIFlickGestureRecognizer;
-  result = [(CCUIFlickGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(CCUIFlickGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_maximumFlickTime = 0.1;
@@ -37,19 +37,19 @@
   self->_latched = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v18.receiver = self;
   v18.super_class = CCUIFlickGestureRecognizer;
-  [(CCUIFlickGestureRecognizer *)&v18 touchesBegan:v6 withEvent:v7];
+  [(CCUIFlickGestureRecognizer *)&v18 touchesBegan:beganCopy withEvent:eventCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = beganCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v9)
   {
@@ -87,11 +87,11 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = CCUIFlickGestureRecognizer;
-  [(CCUIFlickGestureRecognizer *)&v5 touchesMoved:a3 withEvent:a4];
+  [(CCUIFlickGestureRecognizer *)&v5 touchesMoved:moved withEvent:event];
   if (self->_latched || [(CCUIFlickGestureRecognizer *)self _validateFlickWithTouch:self->_touch])
   {
     self->_latched = 1;
@@ -103,11 +103,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = CCUIFlickGestureRecognizer;
-  [(CCUIFlickGestureRecognizer *)&v6 touchesEnded:a3 withEvent:a4];
+  [(CCUIFlickGestureRecognizer *)&v6 touchesEnded:ended withEvent:event];
   if (self->_latched)
   {
     v5 = 3;
@@ -126,13 +126,13 @@
   [(CCUIFlickGestureRecognizer *)self setState:v5];
 }
 
-- (void)_beginFlickWithTouch:(id)a3
+- (void)_beginFlickWithTouch:(id)touch
 {
-  v4 = a3;
-  [v4 timestamp];
+  touchCopy = touch;
+  [touchCopy timestamp];
   self->_initialTouchTimestamp = v5;
-  v6 = [(CCUIFlickGestureRecognizer *)self view];
-  [v4 locationInView:v6];
+  view = [(CCUIFlickGestureRecognizer *)self view];
+  [touchCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
@@ -146,13 +146,13 @@
   self->_timeoutTimer = v12;
 }
 
-- (BOOL)_validateFlickWithTouch:(id)a3
+- (BOOL)_validateFlickWithTouch:(id)touch
 {
-  v4 = a3;
-  [v4 timestamp];
+  touchCopy = touch;
+  [touchCopy timestamp];
   v6 = v5 - self->_initialTouchTimestamp;
-  v7 = [(CCUIFlickGestureRecognizer *)self view];
-  [v4 locationInView:v7];
+  view = [(CCUIFlickGestureRecognizer *)self view];
+  [touchCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 

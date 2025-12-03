@@ -1,18 +1,18 @@
 @interface CDPCAReporter
-- (CDPCAReporter)initWithEvent:(id)a3;
+- (CDPCAReporter)initWithEvent:(id)event;
 - (void)_sendEvent;
-- (void)populateUnderlyingErrorsStartingWithRootError:(id)a3 maxDepth:(unsigned int)a4 topLevelErrorCodeKey:(id)a5 topLevelErrorDomainKey:(id)a6 errorCodePrefix:(id)a7 errorDomainPrefix:(id)a8 domainAllowlist:(id)a9;
+- (void)populateUnderlyingErrorsStartingWithRootError:(id)error maxDepth:(unsigned int)depth topLevelErrorCodeKey:(id)key topLevelErrorDomainKey:(id)domainKey errorCodePrefix:(id)prefix errorDomainPrefix:(id)domainPrefix domainAllowlist:(id)allowlist;
 - (void)sendReport;
 @end
 
 @implementation CDPCAReporter
 
-- (CDPCAReporter)initWithEvent:(id)a3
+- (CDPCAReporter)initWithEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   if (getenv("__OSINSTALL_ENVIRONMENT") || getenv("__AKSYNCBUBBLE"))
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -23,26 +23,26 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_eventName, a3);
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      objc_storeStrong(&v8->_eventName, event);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       reportData = v9->_reportData;
-      v9->_reportData = v10;
+      v9->_reportData = dictionary;
 
       mach_timebase_info(&v9->_clock_timebase);
       v9->_initTime = mach_absolute_time();
     }
 
     self = v9;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)sendReport
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_1DED99000, a2, OS_LOG_TYPE_DEBUG, "Already sent CDPCA event %@", &v4, 0xCu);
@@ -59,29 +59,29 @@
   }
 }
 
-- (void)populateUnderlyingErrorsStartingWithRootError:(id)a3 maxDepth:(unsigned int)a4 topLevelErrorCodeKey:(id)a5 topLevelErrorDomainKey:(id)a6 errorCodePrefix:(id)a7 errorDomainPrefix:(id)a8 domainAllowlist:(id)a9
+- (void)populateUnderlyingErrorsStartingWithRootError:(id)error maxDepth:(unsigned int)depth topLevelErrorCodeKey:(id)key topLevelErrorDomainKey:(id)domainKey errorCodePrefix:(id)prefix errorDomainPrefix:(id)domainPrefix domainAllowlist:(id)allowlist
 {
-  v37 = a3;
-  v15 = a5;
-  v16 = a6;
-  v39 = a7;
-  v38 = a8;
-  v17 = a9;
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v37, "code")}];
-  v36 = v15;
-  [(CDPCAReporter *)self setObject:v18 forKeyedSubscript:v15];
+  errorCopy = error;
+  keyCopy = key;
+  domainKeyCopy = domainKey;
+  prefixCopy = prefix;
+  domainPrefixCopy = domainPrefix;
+  allowlistCopy = allowlist;
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+  v36 = keyCopy;
+  [(CDPCAReporter *)self setObject:v18 forKeyedSubscript:keyCopy];
 
-  v19 = [v37 domain];
-  v35 = v16;
-  [(CDPCAReporter *)self setObject:v19 forKeyedSubscript:v16];
+  domain = [errorCopy domain];
+  v35 = domainKeyCopy;
+  [(CDPCAReporter *)self setObject:domain forKeyedSubscript:domainKeyCopy];
 
-  v20 = [v37 userInfo];
+  userInfo = [errorCopy userInfo];
   v21 = *MEMORY[0x1E696AA08];
-  v22 = [v20 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  v22 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   if (v22)
   {
-    v23 = a4 == 0;
+    v23 = depth == 0;
   }
 
   else
@@ -94,42 +94,42 @@
     v25 = 2;
     while (1)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", v39, v25 - 1];
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", v38, v25 - 1];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", prefixCopy, v25 - 1];
+      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", domainPrefixCopy, v25 - 1];
       v28 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v22, "code")}];
       [(CDPCAReporter *)self setObject:v28 forKeyedSubscript:v26];
 
-      v29 = [v22 domain];
-      if (v17)
+      domain2 = [v22 domain];
+      if (allowlistCopy)
       {
-        if ([v17 containsObject:v29])
+        if ([allowlistCopy containsObject:domain2])
         {
-          v30 = [v22 domain];
-          [(CDPCAReporter *)self setObject:v30 forKeyedSubscript:v27];
+          domain3 = [v22 domain];
+          [(CDPCAReporter *)self setObject:domain3 forKeyedSubscript:v27];
 
           goto LABEL_13;
         }
 
-        v31 = self;
+        selfCopy2 = self;
         v32 = @"errorDomainNotInAllowlist";
       }
 
       else
       {
-        v31 = self;
-        v32 = v29;
+        selfCopy2 = self;
+        v32 = domain2;
       }
 
-      [(CDPCAReporter *)v31 setObject:v32 forKeyedSubscript:v27];
+      [(CDPCAReporter *)selfCopy2 setObject:v32 forKeyedSubscript:v27];
 LABEL_13:
 
-      v33 = [v22 userInfo];
-      v24 = [v33 objectForKeyedSubscript:v21];
+      userInfo2 = [v22 userInfo];
+      v24 = [userInfo2 objectForKeyedSubscript:v21];
 
       if (v24)
       {
         v22 = v24;
-        if (v25++ <= a4)
+        if (v25++ <= depth)
         {
           continue;
         }

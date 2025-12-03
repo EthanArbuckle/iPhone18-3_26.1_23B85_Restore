@@ -7,10 +7,10 @@
 
 - (id)hd_associatedObjects
 {
-  v1 = [a1 objects];
-  v2 = [v1 allObjects];
+  objects = [self objects];
+  allObjects = [objects allObjects];
 
-  return v2;
+  return allObjects;
 }
 
 - (id)hd_associatedSampleTypes
@@ -21,8 +21,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a1 hd_associatedObjects];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  hd_associatedObjects = [self hd_associatedObjects];
+  v4 = [hd_associatedObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -33,27 +33,27 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(hd_associatedObjects);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 hd_sampleType];
+        hd_sampleType = [v8 hd_sampleType];
 
-        if (v9)
+        if (hd_sampleType)
         {
-          v10 = [v8 hd_sampleType];
-          [v2 addObject:v10];
+          hd_sampleType2 = [v8 hd_sampleType];
+          [v2 addObject:hd_sampleType2];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [hd_associatedObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 
-  v11 = [a1 sampleType];
-  [v2 addObject:v11];
+  sampleType = [self sampleType];
+  [v2 addObject:sampleType];
 
   v12 = [MEMORY[0x277CBEB98] setWithSet:v2];
 

@@ -1,8 +1,8 @@
 @interface AXMADSREnvelope
 + (id)defaultEnvelope;
-- (AXMADSREnvelope)initWithAttackDuration:(double)a3 attackLevel:(double)a4 decayDuration:(double)a5 sustainDuration:(double)a6 sustainLevel:(double)a7 releaseDuration:(double)a8;
+- (AXMADSREnvelope)initWithAttackDuration:(double)duration attackLevel:(double)level decayDuration:(double)decayDuration sustainDuration:(double)sustainDuration sustainLevel:(double)sustainLevel releaseDuration:(double)releaseDuration;
 - (double)lengthMS;
-- (double)levelForTime:(double)a3;
+- (double)levelForTime:(double)time;
 - (id)copy;
 @end
 
@@ -15,19 +15,19 @@
   return v2;
 }
 
-- (AXMADSREnvelope)initWithAttackDuration:(double)a3 attackLevel:(double)a4 decayDuration:(double)a5 sustainDuration:(double)a6 sustainLevel:(double)a7 releaseDuration:(double)a8
+- (AXMADSREnvelope)initWithAttackDuration:(double)duration attackLevel:(double)level decayDuration:(double)decayDuration sustainDuration:(double)sustainDuration sustainLevel:(double)sustainLevel releaseDuration:(double)releaseDuration
 {
   v15.receiver = self;
   v15.super_class = AXMADSREnvelope;
   result = [(AXMADSREnvelope *)&v15 init];
   if (result)
   {
-    result->_attackMS = a3;
-    result->_attackLevel = a4;
-    result->_decayMS = a5;
-    result->_sustainMS = a6;
-    result->_sustainLevel = a7;
-    result->_releaseMS = a8;
+    result->_attackMS = duration;
+    result->_attackLevel = level;
+    result->_decayMS = decayDuration;
+    result->_sustainMS = sustainDuration;
+    result->_sustainLevel = sustainLevel;
+    result->_releaseMS = releaseDuration;
   }
 
   return result;
@@ -58,25 +58,25 @@
   return v8 + v9;
 }
 
-- (double)levelForTime:(double)a3
+- (double)levelForTime:(double)time
 {
   [(AXMADSREnvelope *)self attackMS];
   v6 = v5;
   [(AXMADSREnvelope *)self attackMS];
   v8 = v7;
-  if (v6 > a3)
+  if (v6 > time)
   {
     [(AXMADSREnvelope *)self attackLevel];
-    return a3 / v8 * v9;
+    return time / v8 * v9;
   }
 
   [(AXMADSREnvelope *)self decayMS];
   v12 = v8 + v11;
   [(AXMADSREnvelope *)self attackMS];
   v14 = v13;
-  if (v12 > a3)
+  if (v12 > time)
   {
-    v15 = a3 - v13;
+    v15 = time - v13;
     [(AXMADSREnvelope *)self decayMS];
     v17 = v16;
     [(AXMADSREnvelope *)self attackLevel];
@@ -92,10 +92,10 @@
   [(AXMADSREnvelope *)self decayMS];
   v26 = v14 + v25;
   [(AXMADSREnvelope *)self sustainMS];
-  if (v26 + v27 <= a3)
+  if (v26 + v27 <= time)
   {
     [(AXMADSREnvelope *)self attackMS];
-    v29 = a3 - v28;
+    v29 = time - v28;
     [(AXMADSREnvelope *)self decayMS];
     v31 = v29 - v30;
     [(AXMADSREnvelope *)self sustainMS];

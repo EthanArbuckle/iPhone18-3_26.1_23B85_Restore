@@ -1,17 +1,17 @@
 @interface RBSymbolDrawingLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation RBSymbolDrawingLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = [(RBSymbolDrawingLayer *)self delegate];
-  if (v4)
+  delegate = [(RBSymbolDrawingLayer *)self delegate];
+  if (delegate)
   {
-    [(RBSymbolLayer *)v4 drawingContents];
+    [(RBSymbolLayer *)delegate drawingContents];
     v5 = v6;
-    [v6 renderInContext:a3 options:0];
+    [v6 renderInContext:context options:0];
   }
 }
 

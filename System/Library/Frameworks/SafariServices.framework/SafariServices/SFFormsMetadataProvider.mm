@@ -1,23 +1,23 @@
 @interface SFFormsMetadataProvider
-- (SFFormsMetadataProvider)initWithFrameHandleToFormsDictionary:(id)a3;
+- (SFFormsMetadataProvider)initWithFrameHandleToFormsDictionary:(id)dictionary;
 - (unint64_t)formCount;
-- (void)enumerateFormsAndFrameHandlesUsingBlock:(id)a3;
-- (void)enumerateFormsAndFramesUsingBlock:(id)a3;
-- (void)enumerateFormsUsingBlock:(id)a3;
-- (void)replaceFormsMetadataUsingBlock:(id)a3;
+- (void)enumerateFormsAndFrameHandlesUsingBlock:(id)block;
+- (void)enumerateFormsAndFramesUsingBlock:(id)block;
+- (void)enumerateFormsUsingBlock:(id)block;
+- (void)replaceFormsMetadataUsingBlock:(id)block;
 @end
 
 @implementation SFFormsMetadataProvider
 
-- (SFFormsMetadataProvider)initWithFrameHandleToFormsDictionary:(id)a3
+- (SFFormsMetadataProvider)initWithFrameHandleToFormsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SFFormsMetadataProvider;
   v5 = [(SFFormsMetadataProvider *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     frameHandleToForms = v5->_frameHandleToForms;
     v5->_frameHandleToForms = v6;
 
@@ -34,8 +34,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSDictionary *)self->_frameHandleToForms allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSDictionary *)self->_frameHandleToForms allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -47,13 +47,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -67,16 +67,16 @@
   return v5;
 }
 
-- (void)enumerateFormsUsingBlock:(id)a3
+- (void)enumerateFormsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   frameHandleToForms = self->_frameHandleToForms;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__SFFormsMetadataProvider_enumerateFormsUsingBlock___block_invoke;
   v7[3] = &unk_1E848F918;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)frameHandleToForms enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -123,16 +123,16 @@ LABEL_3:
   }
 }
 
-- (void)replaceFormsMetadataUsingBlock:(id)a3
+- (void)replaceFormsMetadataUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   frameHandleToForms = self->_frameHandleToForms;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SFFormsMetadataProvider_replaceFormsMetadataUsingBlock___block_invoke;
   v9[3] = &unk_1E848F968;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = [(NSDictionary *)frameHandleToForms safari_mapAndFilterKeysAndObjectsUsingBlock:v9];
   v8 = self->_frameHandleToForms;
   self->_frameHandleToForms = v7;
@@ -172,16 +172,16 @@ void *__58__SFFormsMetadataProvider_replaceFormsMetadataUsingBlock___block_invok
   return v7;
 }
 
-- (void)enumerateFormsAndFramesUsingBlock:(id)a3
+- (void)enumerateFormsAndFramesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   frameHandleToForms = self->_frameHandleToForms;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SFFormsMetadataProvider_enumerateFormsAndFramesUsingBlock___block_invoke;
   v7[3] = &unk_1E848F918;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)frameHandleToForms enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -232,16 +232,16 @@ LABEL_3:
   }
 }
 
-- (void)enumerateFormsAndFrameHandlesUsingBlock:(id)a3
+- (void)enumerateFormsAndFrameHandlesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   frameHandleToForms = self->_frameHandleToForms;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__SFFormsMetadataProvider_enumerateFormsAndFrameHandlesUsingBlock___block_invoke;
   v7[3] = &unk_1E848F918;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)frameHandleToForms enumerateKeysAndObjectsUsingBlock:v7];
 }
 

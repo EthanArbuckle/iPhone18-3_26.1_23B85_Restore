@@ -1,37 +1,37 @@
 @interface HDWorkoutBuilderDataSourceEntity
-+ (BOOL)enumerateDataSourcesForWorkoutBuilder:(id)a3 transaction:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)removeDataSourceWithIdentifier:(id)a3 fromWorkoutBuilder:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)storeDataSourceWithIdentifier:(id)a3 archivedState:(id)a4 workoutBuilder:(id)a5 transaction:(id)a6 error:(id *)a7;
++ (BOOL)enumerateDataSourcesForWorkoutBuilder:(id)builder transaction:(id)transaction error:(id *)error block:(id)block;
++ (BOOL)removeDataSourceWithIdentifier:(id)identifier fromWorkoutBuilder:(id)builder transaction:(id)transaction error:(id *)error;
++ (BOOL)storeDataSourceWithIdentifier:(id)identifier archivedState:(id)state workoutBuilder:(id)builder transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
 @end
 
 @implementation HDWorkoutBuilderDataSourceEntity
 
-+ (BOOL)storeDataSourceWithIdentifier:(id)a3 archivedState:(id)a4 workoutBuilder:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)storeDataSourceWithIdentifier:(id)identifier archivedState:(id)state workoutBuilder:(id)builder transaction:(id)transaction error:(id *)error
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  identifierCopy = identifier;
+  stateCopy = state;
+  builderCopy = builder;
   v29[0] = @"workout_builder_id";
   v29[1] = @"recovery_identifier";
   v29[2] = @"archived_state";
   v15 = MEMORY[0x277CBEA60];
-  v16 = a6;
+  transactionCopy = transaction;
   v17 = [v15 arrayWithObjects:v29 count:3];
-  v18 = [v16 databaseForEntityClass:a1];
+  v18 = [transactionCopy databaseForEntityClass:self];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __113__HDWorkoutBuilderDataSourceEntity_storeDataSourceWithIdentifier_archivedState_workoutBuilder_transaction_error___block_invoke;
   v25[3] = &unk_278624170;
-  v26 = v14;
-  v27 = v12;
-  v28 = v13;
-  v19 = v13;
-  v20 = v12;
-  v21 = v14;
-  v22 = [a1 insertOrReplaceEntity:1 database:v18 properties:v17 error:a7 bindingHandler:v25];
+  v26 = builderCopy;
+  v27 = identifierCopy;
+  v28 = stateCopy;
+  v19 = stateCopy;
+  v20 = identifierCopy;
+  v21 = builderCopy;
+  v22 = [self insertOrReplaceEntity:1 database:v18 properties:v17 error:error bindingHandler:v25];
 
   v23 = *MEMORY[0x277D85DE8];
   return v22 != 0;
@@ -46,18 +46,18 @@ void __113__HDWorkoutBuilderDataSourceEntity_storeDataSourceWithIdentifier_archi
   JUMPOUT(0x22AAC6B40);
 }
 
-+ (BOOL)removeDataSourceWithIdentifier:(id)a3 fromWorkoutBuilder:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)removeDataSourceWithIdentifier:(id)identifier fromWorkoutBuilder:(id)builder transaction:(id)transaction error:(id *)error
 {
   v25[2] = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277D10B18];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 predicateWithProperty:@"recovery_identifier" equalToValue:a3];
+  transactionCopy = transaction;
+  builderCopy = builder;
+  v13 = [v10 predicateWithProperty:@"recovery_identifier" equalToValue:identifier];
   v14 = MEMORY[0x277D10B18];
   v15 = MEMORY[0x277CCABB0];
-  v16 = [v12 persistentID];
+  persistentID = [builderCopy persistentID];
 
-  v17 = [v15 numberWithLongLong:v16];
+  v17 = [v15 numberWithLongLong:persistentID];
   v18 = [v14 predicateWithProperty:@"workout_builder_id" equalToValue:v17];
 
   v19 = MEMORY[0x277D10B20];
@@ -66,26 +66,26 @@ void __113__HDWorkoutBuilderDataSourceEntity_storeDataSourceWithIdentifier_archi
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   v21 = [v19 predicateMatchingAllPredicates:v20];
 
-  v22 = [v11 databaseForEntityClass:a1];
+  v22 = [transactionCopy databaseForEntityClass:self];
 
-  LOBYTE(a6) = [a1 deleteEntitiesInDatabase:v22 predicate:v21 error:a6];
+  LOBYTE(error) = [self deleteEntitiesInDatabase:v22 predicate:v21 error:error];
   v23 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
-+ (BOOL)enumerateDataSourcesForWorkoutBuilder:(id)a3 transaction:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateDataSourcesForWorkoutBuilder:(id)builder transaction:(id)transaction error:(id *)error block:(id)block
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  blockCopy = block;
   v11 = MEMORY[0x277D10B18];
   v12 = MEMORY[0x277CCABB0];
-  v13 = a4;
-  v14 = [v12 numberWithLongLong:{objc_msgSend(a3, "persistentID")}];
+  transactionCopy = transaction;
+  v14 = [v12 numberWithLongLong:{objc_msgSend(builder, "persistentID")}];
   v15 = [v11 predicateWithProperty:@"workout_builder_id" equalToValue:v14];
 
-  v16 = [v13 databaseForEntityClass:a1];
+  v16 = [transactionCopy databaseForEntityClass:self];
 
-  v17 = [a1 queryWithDatabase:v16 predicate:v15];
+  v17 = [self queryWithDatabase:v16 predicate:v15];
 
   v24[0] = @"recovery_identifier";
   v24[1] = @"archived_state";
@@ -94,12 +94,12 @@ void __113__HDWorkoutBuilderDataSourceEntity_storeDataSourceWithIdentifier_archi
   v22[1] = 3221225472;
   v22[2] = __98__HDWorkoutBuilderDataSourceEntity_enumerateDataSourcesForWorkoutBuilder_transaction_error_block___block_invoke;
   v22[3] = &unk_2786145A8;
-  v23 = v10;
-  v19 = v10;
-  LOBYTE(a5) = [v17 enumerateProperties:v18 error:a5 enumerationHandler:v22];
+  v23 = blockCopy;
+  v19 = blockCopy;
+  LOBYTE(error) = [v17 enumerateProperties:v18 error:error enumerationHandler:v22];
 
   v20 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 uint64_t __98__HDWorkoutBuilderDataSourceEntity_enumerateDataSourcesForWorkoutBuilder_transaction_error_block___block_invoke(uint64_t a1)

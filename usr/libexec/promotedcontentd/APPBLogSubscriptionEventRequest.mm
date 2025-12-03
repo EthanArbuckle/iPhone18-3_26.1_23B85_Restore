@@ -1,18 +1,18 @@
 @interface APPBLogSubscriptionEventRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eventAsString:(int)a3;
-- (int)StringAsEvent:(id)a3;
+- (id)eventAsString:(int)string;
+- (int)StringAsEvent:(id)event;
 - (int)event;
 - (unint64_t)hash;
-- (void)addInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEvent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEvent:(BOOL)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogSubscriptionEventRequest
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setHasEvent:(BOOL)a3
+- (void)setHasEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 2;
   }
@@ -57,45 +57,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)eventAsString:(int)a3
+- (id)eventAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047E138 + a3);
+    v4 = *(&off_10047E138 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsEvent:(id)a3
+- (int)StringAsEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AlreadySubscribed"])
+  else if ([eventCopy isEqualToString:@"AlreadySubscribed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PurchasedSubscription"])
+  else if ([eventCopy isEqualToString:@"PurchasedSubscription"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AlreadySubscribedViaNativeAd"])
+  else if ([eventCopy isEqualToString:@"AlreadySubscribedViaNativeAd"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PurchasedSubscriptionViaNativeAd"])
+  else if ([eventCopy isEqualToString:@"PurchasedSubscriptionViaNativeAd"])
   {
     v4 = 4;
   }
@@ -108,22 +108,22 @@
   return v4;
 }
 
-- (void)addInfo:(id)a3
+- (void)addInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   infos = self->_infos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!infos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_infos;
     self->_infos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     infos = self->_infos;
   }
 
-  [(NSMutableArray *)infos addObject:v4];
+  [(NSMutableArray *)infos addObject:infoCopy];
 }
 
 - (id)description
@@ -131,8 +131,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogSubscriptionEventRequest;
   v3 = [(APPBLogSubscriptionEventRequest *)&v7 description];
-  v4 = [(APPBLogSubscriptionEventRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogSubscriptionEventRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -218,8 +218,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -234,9 +234,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
@@ -303,61 +303,61 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_iAdID)
   {
-    [v4 setIAdID:?];
-    v4 = v10;
+    [toCopy setIAdID:?];
+    toCopy = v10;
   }
 
   if (self->_anonymousDemandiAdID)
   {
     [v10 setAnonymousDemandiAdID:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_contentiAdID)
   {
     [v10 setContentiAdID:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_subscriptionSourceID)
   {
     [v10 setSubscriptionSourceID:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_qToken)
   {
     [v10 setQToken:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_event;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 8) = self->_event;
+    *(toCopy + 72) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_eventTime;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = *&self->_eventTime;
+    *(toCopy + 72) |= 1u;
   }
 
   if ([(APPBLogSubscriptionEventRequest *)self infosCount])
   {
     [v10 clearInfos];
-    v6 = [(APPBLogSubscriptionEventRequest *)self infosCount];
-    if (v6)
+    infosCount = [(APPBLogSubscriptionEventRequest *)self infosCount];
+    if (infosCount)
     {
-      v7 = v6;
+      v7 = infosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(APPBLogSubscriptionEventRequest *)self infoAtIndex:i];
@@ -367,26 +367,26 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iAdID copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:a3];
+  v8 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSData *)self->_contentiAdID copyWithZone:a3];
+  v10 = [(NSData *)self->_contentiAdID copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_subscriptionSourceID copyWithZone:a3];
+  v12 = [(NSString *)self->_subscriptionSourceID copyWithZone:zone];
   v13 = v5[8];
   v5[8] = v12;
 
-  v14 = [(NSString *)self->_qToken copyWithZone:a3];
+  v14 = [(NSString *)self->_qToken copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
@@ -423,7 +423,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{a3, v24}];
+        v22 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{zone, v24}];
         [v5 addInfo:v22];
       }
 
@@ -436,16 +436,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 5))
+  if (iAdID | *(equalCopy + 5))
   {
     if (![(NSData *)iAdID isEqual:?])
     {
@@ -454,7 +454,7 @@
   }
 
   anonymousDemandiAdID = self->_anonymousDemandiAdID;
-  if (anonymousDemandiAdID | *(v4 + 2))
+  if (anonymousDemandiAdID | *(equalCopy + 2))
   {
     if (![(NSData *)anonymousDemandiAdID isEqual:?])
     {
@@ -463,7 +463,7 @@
   }
 
   contentiAdID = self->_contentiAdID;
-  if (contentiAdID | *(v4 + 3))
+  if (contentiAdID | *(equalCopy + 3))
   {
     if (![(NSData *)contentiAdID isEqual:?])
     {
@@ -472,7 +472,7 @@
   }
 
   subscriptionSourceID = self->_subscriptionSourceID;
-  if (subscriptionSourceID | *(v4 + 8))
+  if (subscriptionSourceID | *(equalCopy + 8))
   {
     if (![(NSString *)subscriptionSourceID isEqual:?])
     {
@@ -481,7 +481,7 @@
   }
 
   qToken = self->_qToken;
-  if (qToken | *(v4 + 7))
+  if (qToken | *(equalCopy + 7))
   {
     if (![(NSString *)qToken isEqual:?])
     {
@@ -491,13 +491,13 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_event != *(v4 + 8))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_event != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
 LABEL_24:
     v11 = 0;
@@ -506,19 +506,19 @@ LABEL_24:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_eventTime != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_eventTime != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_24;
   }
 
   infos = self->_infos;
-  if (infos | *(v4 + 6))
+  if (infos | *(equalCopy + 6))
   {
     v11 = [(NSMutableArray *)infos isEqual:?];
   }
@@ -588,45 +588,45 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ v14 ^ [(NSMutableArray *)self->_infos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(APPBLogSubscriptionEventRequest *)self setIAdID:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBLogSubscriptionEventRequest *)self setAnonymousDemandiAdID:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(APPBLogSubscriptionEventRequest *)self setContentiAdID:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(APPBLogSubscriptionEventRequest *)self setSubscriptionSourceID:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBLogSubscriptionEventRequest *)self setQToken:?];
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if ((v5 & 2) != 0)
   {
-    self->_event = *(v4 + 8);
+    self->_event = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
   }
 
   if (v5)
   {
-    self->_eventTime = *(v4 + 1);
+    self->_eventTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -634,7 +634,7 @@ LABEL_3:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

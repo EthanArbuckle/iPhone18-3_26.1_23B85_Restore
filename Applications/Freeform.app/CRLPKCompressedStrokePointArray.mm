@@ -1,23 +1,23 @@
 @interface CRLPKCompressedStrokePointArray
-- (CRLPKCompressedStrokePointArray)initWithStroke:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (CRLPKCompressedStrokePointArray)initWithStroke:(id)stroke;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)addObject:(id)object;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation CRLPKCompressedStrokePointArray
 
-- (CRLPKCompressedStrokePointArray)initWithStroke:(id)a3
+- (CRLPKCompressedStrokePointArray)initWithStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v7.receiver = self;
   v7.super_class = CRLPKCompressedStrokePointArray;
   v5 = [(CRLPKCompressedStrokePointArray *)&v7 init];
-  objc_storeWeak(&v5->_stroke, v4);
+  objc_storeWeak(&v5->_stroke, strokeCopy);
 
   return v5;
 }
@@ -25,17 +25,17 @@
 - (unint64_t)count
 {
   WeakRetained = objc_loadWeakRetained(&self->_stroke);
-  v3 = [WeakRetained _pointsCount];
+  _pointsCount = [WeakRetained _pointsCount];
 
-  return v3;
+  return _pointsCount;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_stroke);
-  v6 = [WeakRetained _pointsCount];
+  _pointsCount = [WeakRetained _pointsCount];
 
-  if (v6 <= a3)
+  if (_pointsCount <= index)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -57,7 +57,7 @@
       v28 = 2080;
       v29 = "[CRLPKCompressedStrokePointArray objectAtIndex:]";
       v30 = 2048;
-      v31 = a3;
+      indexCopy = index;
       v32 = 2048;
       v33 = [(CRLPKCompressedStrokePointArray *)self count];
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d *** %s: index %lu beyond bounds [0 .. %lu]", buf, 0x40u);
@@ -78,26 +78,26 @@
 
     v10 = [NSString stringWithUTF8String:"[CRLPKCompressedStrokePointArray objectAtIndex:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/PencilKit/CRLPKStroke.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:553 isFatal:0 description:"*** %s: index %lu beyond bounds [0 .. %lu]", "[CRLPKCompressedStrokePointArray objectAtIndex:]", a3, [(CRLPKCompressedStrokePointArray *)self count]];
+    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:553 isFatal:0 description:"*** %s: index %lu beyond bounds [0 .. %lu]", "[CRLPKCompressedStrokePointArray objectAtIndex:]", index, [(CRLPKCompressedStrokePointArray *)self count]];
   }
 
   v12 = objc_loadWeakRetained(&self->_stroke);
-  v13 = [v12 _strokePointAtIndex:a3];
+  v13 = [v12 _strokePointAtIndex:index];
 
   v14 = objc_loadWeakRetained(&self->_stroke);
-  v15 = [v14 _inflight];
+  _inflight = [v14 _inflight];
 
   v16 = [CRLPKStrokePoint alloc];
   v17 = objc_loadWeakRetained(&self->_stroke);
-  v18 = [(CRLPKStrokePoint *)v16 initWithStroke:v17 strokePoint:v13 inflight:v15];
+  v18 = [(CRLPKStrokePoint *)v16 initWithStroke:v17 strokePoint:v13 inflight:_inflight];
 
   return v18;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (([v6 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  objectCopy = object;
+  if (([objectCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -129,19 +129,19 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_stroke);
-  [WeakRetained _insertStrokePoint:objc_msgSend(v6 atIndex:{"_strokePoint"), a4}];
+  [WeakRetained _insertStrokePoint:objc_msgSend(objectCopy atIndex:{"_strokePoint"), index}];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_stroke);
-  [WeakRetained _removeStrokePointAtIndex:a3];
+  [WeakRetained _removeStrokePointAtIndex:index];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  if (([v4 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  objectCopy = object;
+  if (([objectCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -173,7 +173,7 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_stroke);
-  [WeakRetained _addStrokePoint:{objc_msgSend(v4, "_strokePoint")}];
+  [WeakRetained _addStrokePoint:{objc_msgSend(objectCopy, "_strokePoint")}];
 }
 
 - (void)removeLastObject
@@ -182,10 +182,10 @@
   [WeakRetained _removeLastStrokePoint];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  if (([v6 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  objectCopy = object;
+  if (([objectCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -217,7 +217,7 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_stroke);
-  [WeakRetained _replaceStrokePointAtIndex:a3 withStrokePoint:{objc_msgSend(v6, "_strokePoint")}];
+  [WeakRetained _replaceStrokePointAtIndex:index withStrokePoint:{objc_msgSend(objectCopy, "_strokePoint")}];
 }
 
 @end

@@ -1,92 +1,92 @@
 @interface SecureBackup
-+ (BOOL)moveToFederationAllowed:(id)a3 altDSID:(id)a4 error:(id *)a5;
++ (BOOL)moveToFederationAllowed:(id)allowed altDSID:(id)d error:(id *)error;
 + (id)_ClassCreateSecureBackupConcurrentConnection;
-+ (id)_getAcceptedTermsForAltDSID:(id)a3 withError:(id *)a4;
-+ (id)getAcceptedTermsForAltDSID:(id)a3 withError:(id *)a4;
-+ (id)knownICDPFederations:(id *)a3;
-+ (unsigned)daemonPasscodeRequestOpinion:(id *)a3;
-+ (unsigned)needPasscodeForHSA2EscrowRecordUpdate:(id *)a3;
++ (id)_getAcceptedTermsForAltDSID:(id)d withError:(id *)error;
++ (id)getAcceptedTermsForAltDSID:(id)d withError:(id *)error;
++ (id)knownICDPFederations:(id *)federations;
++ (unsigned)daemonPasscodeRequestOpinion:(id *)opinion;
++ (unsigned)needPasscodeForHSA2EscrowRecordUpdate:(id *)update;
 + (void)asyncRequestEscrowRecordUpdate;
-+ (void)getAcceptedTermsForAltDSID:(id)a3 reply:(id)a4;
-+ (void)saveTermsAcceptance:(id)a3 reply:(id)a4;
-- (BOOL)changeSMSTargetWithError:(id *)a3;
-- (BOOL)disableWithError:(id *)a3;
-- (BOOL)enableWithError:(id *)a3;
-- (BOOL)isRecoveryKeySet:(id *)a3;
-- (BOOL)removeRecoveryKeyFromBackup:(id *)a3;
++ (void)getAcceptedTermsForAltDSID:(id)d reply:(id)reply;
++ (void)saveTermsAcceptance:(id)acceptance reply:(id)reply;
+- (BOOL)changeSMSTargetWithError:(id *)error;
+- (BOOL)disableWithError:(id *)error;
+- (BOOL)enableWithError:(id *)error;
+- (BOOL)isRecoveryKeySet:(id *)set;
+- (BOOL)removeRecoveryKeyFromBackup:(id *)backup;
 - (BOOL)requiresDoubleEnrollment;
-- (BOOL)restoreKeychainWithBackupPassword:(id)a3 error:(id *)a4;
-- (BOOL)updateMetadataWithError:(id *)a3;
-- (BOOL)verifyRecoveryKey:(id)a3 error:(id *)a4;
-- (SecureBackup)backupWithInfo:(id)a3;
-- (SecureBackup)backupWithInfo:(id)a3 completionBlock:(id)a4;
-- (SecureBackup)initWithCoder:(id)a3;
-- (SecureBackup)initWithUserActivityLabel:(id)a3;
+- (BOOL)restoreKeychainWithBackupPassword:(id)password error:(id *)error;
+- (BOOL)updateMetadataWithError:(id *)error;
+- (BOOL)verifyRecoveryKey:(id)key error:(id *)error;
+- (SecureBackup)backupWithInfo:(id)info;
+- (SecureBackup)backupWithInfo:(id)info completionBlock:(id)block;
+- (SecureBackup)initWithCoder:(id)coder;
+- (SecureBackup)initWithUserActivityLabel:(id)label;
 - (id)_CreateSecureBackupConnection;
-- (id)backupForRecoveryKeyWithInfo:(id)a3;
-- (id)beginHSA2PasscodeRequest:(BOOL)a3 uuid:(id)a4 reason:(id)a5 error:(id *)a6;
-- (id)cachePassphraseWithInfo:(id)a3;
-- (id)changeSMSTargetWithInfo:(id)a3;
-- (id)disableWithInfo:(id)a3;
-- (id)enableWithInfo:(id)a3;
-- (id)getAccountInfoWithError:(id *)a3;
-- (id)getAccountInfoWithInfo:(id)a3 results:(id *)a4;
-- (id)recoverSilentWithCDPContext:(id)a3 allRecords:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8;
-- (id)recoverSilentWithCDPContext:(id)a3 allRecords:(id)a4 error:(id *)a5;
-- (id)recoverWithCDPContext:(id)a3 escrowRecord:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8;
-- (id)recoverWithCDPContext:(id)a3 escrowRecord:(id)a4 error:(id *)a5;
-- (id)recoverWithError:(id *)a3;
-- (id)recoverWithInfo:(id)a3 results:(id *)a4;
+- (id)backupForRecoveryKeyWithInfo:(id)info;
+- (id)beginHSA2PasscodeRequest:(BOOL)request uuid:(id)uuid reason:(id)reason error:(id *)error;
+- (id)cachePassphraseWithInfo:(id)info;
+- (id)changeSMSTargetWithInfo:(id)info;
+- (id)disableWithInfo:(id)info;
+- (id)enableWithInfo:(id)info;
+- (id)getAccountInfoWithError:(id *)error;
+- (id)getAccountInfoWithInfo:(id)info results:(id *)results;
+- (id)recoverSilentWithCDPContext:(id)context allRecords:(id)records altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error;
+- (id)recoverSilentWithCDPContext:(id)context allRecords:(id)records error:(id *)error;
+- (id)recoverWithCDPContext:(id)context escrowRecord:(id)record altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error;
+- (id)recoverWithCDPContext:(id)context escrowRecord:(id)record error:(id *)error;
+- (id)recoverWithError:(id *)error;
+- (id)recoverWithInfo:(id)info results:(id *)results;
 - (id)srpInitNonce;
-- (id)srpRecoveryBlobFromSRPInitResponse:(id)a3 error:(id *)a4;
-- (id)startSMSChallengeWithError:(id *)a3;
-- (id)startSMSChallengeWithInfo:(id)a3 results:(id *)a4;
-- (id)uncachePassphraseWithInfo:(id)a3;
-- (id)updateMetadataWithInfo:(id)a3;
-- (void)backOffDateWithCompletionBlock:(id)a3;
-- (void)backOffDateWithInfo:(id)a3 completionBlock:(id)a4;
+- (id)srpRecoveryBlobFromSRPInitResponse:(id)response error:(id *)error;
+- (id)startSMSChallengeWithError:(id *)error;
+- (id)startSMSChallengeWithInfo:(id)info results:(id *)results;
+- (id)uncachePassphraseWithInfo:(id)info;
+- (id)updateMetadataWithInfo:(id)info;
+- (void)backOffDateWithCompletionBlock:(id)block;
+- (void)backOffDateWithInfo:(id)info completionBlock:(id)block;
 - (void)cachePassphrase;
-- (void)cachePassphraseWithCompletionBlock:(id)a3;
-- (void)cachePassphraseWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)cacheRecoveryKeyWithCompletionBlock:(id)a3;
-- (void)changeSMSTargetWithCompletionBlock:(id)a3;
-- (void)changeSMSTargetWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)createICDPRecordWithContents:(id)a3 reply:(id)a4;
-- (void)disableWithCompletionBlock:(id)a3;
-- (void)disableWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)enableWithCompletionBlock:(id)a3;
-- (void)enableWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchStingrayAccountStatus:(id)a3;
-- (void)getAccountInfoWithInfo:(id)a3 completionBlockWithResults:(id)a4;
-- (void)getAccountInfoWithResults:(id)a3;
-- (void)getCertificates:(id)a3;
-- (void)getCountrySMSCodesWithInfo:(id)a3 completionBlockWithResults:(id)a4;
-- (void)getCountrySMSCodesWithResults:(id)a3;
-- (void)notificationInfo:(id)a3;
-- (void)populateWithInfo:(id)a3;
-- (void)prepareHSA2EscrowRecordContents:(BOOL)a3 reply:(id)a4;
-- (void)recoverRecordContents:(id)a3;
-- (void)recoverWithInfo:(id)a3 completionBlockWithResults:(id)a4;
-- (void)recoverWithResults:(id)a3;
-- (void)restoreKeychainAsyncWithPassword:(id)a3 keybagDigest:(id)a4 haveBottledPeer:(BOOL)a5 viewsNotToBeRestored:(id)a6 error:(id *)a7;
-- (void)setBackOffDateWithCompletionBlock:(id)a3;
-- (void)setBackOffDateWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)setICloudPassword:(id)a3;
-- (void)setRawPassword:(id)a3;
-- (void)srpRecoveryUpdateDSID:(id)a3 recoveryPassphrase:(id)a4;
-- (void)startSMSChallengeWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)startSMSChallengeWithInfo:(id)a3 completionBlockWithResults:(id)a4;
-- (void)startSMSChallengeWithResults:(id)a3;
-- (void)stashRecoveryDataWithCompletionBlock:(id)a3;
-- (void)stashRecoveryDataWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)stateCaptureWithCompletionBlock:(id)a3;
+- (void)cachePassphraseWithCompletionBlock:(id)block;
+- (void)cachePassphraseWithInfo:(id)info completionBlock:(id)block;
+- (void)cacheRecoveryKeyWithCompletionBlock:(id)block;
+- (void)changeSMSTargetWithCompletionBlock:(id)block;
+- (void)changeSMSTargetWithInfo:(id)info completionBlock:(id)block;
+- (void)createICDPRecordWithContents:(id)contents reply:(id)reply;
+- (void)disableWithCompletionBlock:(id)block;
+- (void)disableWithInfo:(id)info completionBlock:(id)block;
+- (void)enableWithCompletionBlock:(id)block;
+- (void)enableWithInfo:(id)info completionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchStingrayAccountStatus:(id)status;
+- (void)getAccountInfoWithInfo:(id)info completionBlockWithResults:(id)results;
+- (void)getAccountInfoWithResults:(id)results;
+- (void)getCertificates:(id)certificates;
+- (void)getCountrySMSCodesWithInfo:(id)info completionBlockWithResults:(id)results;
+- (void)getCountrySMSCodesWithResults:(id)results;
+- (void)notificationInfo:(id)info;
+- (void)populateWithInfo:(id)info;
+- (void)prepareHSA2EscrowRecordContents:(BOOL)contents reply:(id)reply;
+- (void)recoverRecordContents:(id)contents;
+- (void)recoverWithInfo:(id)info completionBlockWithResults:(id)results;
+- (void)recoverWithResults:(id)results;
+- (void)restoreKeychainAsyncWithPassword:(id)password keybagDigest:(id)digest haveBottledPeer:(BOOL)peer viewsNotToBeRestored:(id)restored error:(id *)error;
+- (void)setBackOffDateWithCompletionBlock:(id)block;
+- (void)setBackOffDateWithInfo:(id)info completionBlock:(id)block;
+- (void)setICloudPassword:(id)password;
+- (void)setRawPassword:(id)password;
+- (void)srpRecoveryUpdateDSID:(id)d recoveryPassphrase:(id)passphrase;
+- (void)startSMSChallengeWithInfo:(id)info completionBlock:(id)block;
+- (void)startSMSChallengeWithInfo:(id)info completionBlockWithResults:(id)results;
+- (void)startSMSChallengeWithResults:(id)results;
+- (void)stashRecoveryDataWithCompletionBlock:(id)block;
+- (void)stashRecoveryDataWithInfo:(id)info completionBlock:(id)block;
+- (void)stateCaptureWithCompletionBlock:(id)block;
 - (void)uncachePassphrase;
-- (void)uncachePassphraseWithCompletionBlock:(id)a3;
-- (void)uncachePassphraseWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)uncacheRecoveryKeyWithCompletionBlock:(id)a3;
-- (void)updateMetadataWithCompletionBlock:(id)a3;
-- (void)updateMetadataWithInfo:(id)a3 completionBlock:(id)a4;
+- (void)uncachePassphraseWithCompletionBlock:(id)block;
+- (void)uncachePassphraseWithInfo:(id)info completionBlock:(id)block;
+- (void)uncacheRecoveryKeyWithCompletionBlock:(id)block;
+- (void)updateMetadataWithCompletionBlock:(id)block;
+- (void)updateMetadataWithInfo:(id)info completionBlock:(id)block;
 @end
 
 @implementation SecureBackup
@@ -155,10 +155,10 @@
   return v8;
 }
 
-- (SecureBackup)initWithUserActivityLabel:(id)a3
+- (SecureBackup)initWithUserActivityLabel:(id)label
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v22.receiver = self;
   v22.super_class = SecureBackup;
   v5 = [(SecureBackup *)&v22 init];
@@ -171,7 +171,7 @@
     }
 
     v7 = qword_280B5F9A0;
-    v9 = objc_msgSend_initWithFormat_(v6, v8, @"%@: %@", v7, v4);
+    v9 = objc_msgSend_initWithFormat_(v6, v8, @"%@: %@", v7, labelCopy);
     activityLabel = v5->_activityLabel;
     v5->_activityLabel = v9;
 
@@ -196,325 +196,325 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_msgSend_appleID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v7, @"SecureBackupAuthenticationAppleID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"SecureBackupAuthenticationAppleID");
 
   v11 = objc_msgSend_authToken(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v11, @"SecureBackupAuthenticationAuthToken");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"SecureBackupAuthenticationAuthToken");
 
   v15 = objc_msgSend_backOffDate(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v4, v16, v15, @"SecureBackupBackOffDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"SecureBackupBackOffDate");
 
   v19 = objc_msgSend_countryDialCode(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v4, v20, v19, @"countryDialCode");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"countryDialCode");
 
   v23 = objc_msgSend_countryCode(self, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v4, v24, v23, @"countryISOCode");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"countryISOCode");
 
   v27 = objc_msgSend_deleteAll(self, v25, v26);
-  objc_msgSend_encodeBool_forKey_(v4, v28, v27, @"SecureBackupiCloudDataProtectionDeleteAllRecords");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v28, v27, @"SecureBackupiCloudDataProtectionDeleteAllRecords");
   v31 = objc_msgSend_dsid(self, v29, v30);
-  objc_msgSend_encodeObject_forKey_(v4, v32, v31, @"SecureBackupAuthenticationDSID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, v31, @"SecureBackupAuthenticationDSID");
 
   v35 = objc_msgSend_emcsCred(self, v33, v34);
-  objc_msgSend_encodeObject_forKey_(v4, v36, v35, @"SecureBackupEMCSManagedCredential");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v36, v35, @"SecureBackupEMCSManagedCredential");
 
   v39 = objc_msgSend_emcsDict(self, v37, v38);
-  objc_msgSend_encodeObject_forKey_(v4, v40, v39, @"SecureBackupEMCSIDMSDict");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v40, v39, @"SecureBackupEMCSIDMSDict");
 
   v43 = objc_msgSend_emcsMode(self, v41, v42);
-  objc_msgSend_encodeBool_forKey_(v4, v44, v43, @"SecureBackupContainsEMCSData");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v44, v43, @"SecureBackupContainsEMCSData");
   v47 = objc_msgSend_escrowProxyURL(self, v45, v46);
-  objc_msgSend_encodeObject_forKey_(v4, v48, v47, @"SecureBackupAuthenticationEscrowProxyURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v48, v47, @"SecureBackupAuthenticationEscrowProxyURL");
 
   v51 = objc_msgSend_excludeiCDPRecords(self, v49, v50);
-  objc_msgSend_encodeBool_forKey_(v4, v52, v51, @"SecureBackupExcludeiCDPRecords");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v52, v51, @"SecureBackupExcludeiCDPRecords");
   v55 = objc_msgSend_fmipRecovery(self, v53, v54);
-  objc_msgSend_encodeBool_forKey_(v4, v56, v55, @"SecureBackupFMiPRecoveryKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v56, v55, @"SecureBackupFMiPRecoveryKey");
   v59 = objc_msgSend_fmipUUID(self, v57, v58);
-  objc_msgSend_encodeObject_forKey_(v4, v60, v59, @"SecureBackupFMiPUUIDKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v60, v59, @"SecureBackupFMiPUUIDKey");
 
   ClientMetadata = objc_msgSend_generateClientMetadata(self, v61, v62);
-  objc_msgSend_encodeBool_forKey_(v4, v64, ClientMetadata, @"SecureBackupGenerateClientMetadataKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v64, ClientMetadata, @"SecureBackupGenerateClientMetadataKey");
   v67 = objc_msgSend_icdp(self, v65, v66);
-  objc_msgSend_encodeBool_forKey_(v4, v68, v67, @"SecureBackupContainsiCDPData");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v68, v67, @"SecureBackupContainsiCDPData");
   v71 = objc_msgSend_iCloudEnv(self, v69, v70);
-  objc_msgSend_encodeObject_forKey_(v4, v72, v71, @"SecureBackupAuthenticationiCloudEnvironment");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v72, v71, @"SecureBackupAuthenticationiCloudEnvironment");
 
   v75 = objc_msgSend_iCloudIdentityData(self, v73, v74);
-  objc_msgSend_encodeObject_forKey_(v4, v76, v75, @"SecureBackupiCloudIdentityData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v76, v75, @"SecureBackupiCloudIdentityData");
 
   v79 = objc_msgSend_iCloudPassword(self, v77, v78);
-  objc_msgSend_encodeObject_forKey_(v4, v80, v79, @"SecureBackupAuthenticationPassword");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v80, v79, @"SecureBackupAuthenticationPassword");
 
   v83 = objc_msgSend_rawPassword(self, v81, v82);
-  objc_msgSend_encodeObject_forKey_(v4, v84, v83, @"SecureBackupAuthenticationRawPassword");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v84, v83, @"SecureBackupAuthenticationRawPassword");
 
   v87 = objc_msgSend_idmsData(self, v85, v86);
-  objc_msgSend_encodeObject_forKey_(v4, v88, v87, @"SecureBackupIDMSData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v88, v87, @"SecureBackupIDMSData");
 
   v91 = objc_msgSend_idmsRecovery(self, v89, v90);
-  objc_msgSend_encodeBool_forKey_(v4, v92, v91, @"SecureBackupIDMSRecovery");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v92, v91, @"SecureBackupIDMSRecovery");
   v95 = objc_msgSend_metadata(self, v93, v94);
-  objc_msgSend_encodeObject_forKey_(v4, v96, v95, @"SecureBackupMetadata");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v96, v95, @"SecureBackupMetadata");
 
   v99 = objc_msgSend_metadataHash(self, v97, v98);
-  objc_msgSend_encodeObject_forKey_(v4, v100, v99, @"SecureBackupStingrayMetadataHash");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v100, v99, @"SecureBackupStingrayMetadataHash");
 
   v103 = objc_msgSend_oldEMCSCred(self, v101, v102);
-  objc_msgSend_encodeObject_forKey_(v4, v104, v103, @"SecureBackupEMCSOldManagedCredential");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v104, v103, @"SecureBackupEMCSOldManagedCredential");
 
   v107 = objc_msgSend_passcodeStashSecret(self, v105, v106);
-  objc_msgSend_encodeObject_forKey_(v4, v108, v107, @"SecureBackupPasscodeStashSecret");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v108, v107, @"SecureBackupPasscodeStashSecret");
 
   v111 = objc_msgSend_passphrase(self, v109, v110);
-  objc_msgSend_encodeObject_forKey_(v4, v112, v111, @"SecureBackupPassphrase");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v112, v111, @"SecureBackupPassphrase");
 
   v115 = objc_msgSend_recordID(self, v113, v114);
-  objc_msgSend_encodeObject_forKey_(v4, v116, v115, @"recordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v116, v115, @"recordID");
 
   v119 = objc_msgSend_recoveryKey(self, v117, v118);
-  objc_msgSend_encodeObject_forKey_(v4, v120, v119, @"SecureBackupRecoveryKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v120, v119, @"SecureBackupRecoveryKey");
 
   v123 = objc_msgSend_smsTarget(self, v121, v122);
-  objc_msgSend_encodeObject_forKey_(v4, v124, v123, @"phoneNumber");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v124, v123, @"phoneNumber");
 
   v127 = objc_msgSend_silent(self, v125, v126);
-  objc_msgSend_encodeBool_forKey_(v4, v128, v127, @"SecureBackupSilentRecoveryAttempt");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v128, v127, @"SecureBackupSilentRecoveryAttempt");
   v131 = objc_msgSend_specifiedFederation(self, v129, v130);
-  objc_msgSend_encodeObject_forKey_(v4, v132, v131, @"SecureBackupSpecifiedFederation");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v132, v131, @"SecureBackupSpecifiedFederation");
 
   v135 = objc_msgSend_stingray(self, v133, v134);
-  objc_msgSend_encodeBool_forKey_(v4, v136, v135, @"SecureBackupContainsiCloudIdentity");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v136, v135, @"SecureBackupContainsiCloudIdentity");
   v139 = objc_msgSend_synchronize(self, v137, v138);
-  objc_msgSend_encodeBool_forKey_(v4, v140, v139, @"SecureBackupSynchronize");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v140, v139, @"SecureBackupSynchronize");
   v143 = objc_msgSend_useCachedPassphrase(self, v141, v142);
-  objc_msgSend_encodeBool_forKey_(v4, v144, v143, @"SecureBackupUseCachedPassphrase");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v144, v143, @"SecureBackupUseCachedPassphrase");
   v147 = objc_msgSend_hsa2CachedPrerecordUUID(self, v145, v146);
-  objc_msgSend_encodeObject_forKey_(v4, v148, v147, @"SecureBackupHSA2CachedPrerecordUUID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v148, v147, @"SecureBackupHSA2CachedPrerecordUUID");
 
   v151 = objc_msgSend_useRecoveryPET(self, v149, v150);
-  objc_msgSend_encodeBool_forKey_(v4, v152, v151, @"SecureBackupIDMSRecovery");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v152, v151, @"SecureBackupIDMSRecovery");
   v155 = objc_msgSend_usesMultipleiCSC(self, v153, v154);
-  objc_msgSend_encodeBool_forKey_(v4, v156, v155, @"SecureBackupUsesMultipleiCSCs");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v156, v155, @"SecureBackupUsesMultipleiCSCs");
   v159 = objc_msgSend_usesRandomPassphrase(self, v157, v158);
-  objc_msgSend_encodeBool_forKey_(v4, v160, v159, @"SecureBackupUsesRandomPassphrase");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v160, v159, @"SecureBackupUsesRandomPassphrase");
   v163 = objc_msgSend_usesRecoveryKey(self, v161, v162);
-  objc_msgSend_encodeBool_forKey_(v4, v164, v163, @"SecureBackupUsesRecoveryKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v164, v163, @"SecureBackupUsesRecoveryKey");
   v167 = objc_msgSend_verificationToken(self, v165, v166);
-  objc_msgSend_encodeObject_forKey_(v4, v168, v167, @"SecureBackupVerifcationToken");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v168, v167, @"SecureBackupVerifcationToken");
 
   v171 = objc_msgSend_activityLabel(self, v169, v170);
-  objc_msgSend_encodeObject_forKey_(v4, v172, v171, @"activityLabel");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v172, v171, @"activityLabel");
 
   v175 = objc_msgSend_activityUUID(self, v173, v174);
-  objc_msgSend_encodeObject_forKey_(v4, v176, v175, @"activityUUID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v176, v175, @"activityUUID");
 
   v179 = objc_msgSend_suppressServerFiltering(self, v177, v178);
-  objc_msgSend_encodeBool_forKey_(v4, v180, v179, @"SecureBackupSuppressServerFiltering");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v180, v179, @"SecureBackupSuppressServerFiltering");
   v183 = objc_msgSend_silentDoubleRecovery(self, v181, v182);
-  objc_msgSend_encodeBool_forKey_(v4, v184, v183, @"SecureBackupSilentDoubleRecovery");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v184, v183, @"SecureBackupSilentDoubleRecovery");
   v187 = objc_msgSend_deleteDoubleOnly(self, v185, v186);
-  objc_msgSend_encodeBool_forKey_(v4, v188, v187, @"SecureBackupDeleteDoubleOnly");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v188, v187, @"SecureBackupDeleteDoubleOnly");
   v191 = objc_msgSend_nonViableRepair(self, v189, v190);
-  objc_msgSend_encodeBool_forKey_(v4, v192, v191, @"SecureBackupNonViableRepairKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v192, v191, @"SecureBackupNonViableRepairKey");
   v195 = objc_msgSend_sosCompatibleEscrowSorting(self, v193, v194);
-  objc_msgSend_encodeBool_forKey_(v4, v196, v195, @"SecureBackupSOSCompatibleEscrowSorting");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v196, v195, @"SecureBackupSOSCompatibleEscrowSorting");
   v199 = objc_msgSend_deviceSessionID(self, v197, v198);
-  objc_msgSend_encodeObject_forKey_(v4, v200, v199, @"SecureBackupDeviceSessionIDKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v200, v199, @"SecureBackupDeviceSessionIDKey");
 
   v203 = objc_msgSend_flowID(self, v201, v202);
-  objc_msgSend_encodeObject_forKey_(v4, v204, v203, @"SecureBackupFlowIDKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v204, v203, @"SecureBackupFlowIDKey");
 
   v207 = objc_msgSend_guitarfish(self, v205, v206);
-  objc_msgSend_encodeBool_forKey_(v4, v208, v207, @"SecureBackupGuitarfishKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v208, v207, @"SecureBackupGuitarfishKey");
   v211 = objc_msgSend_guitarfishToken(self, v209, v210);
-  objc_msgSend_encodeBool_forKey_(v4, v212, v211, @"SecureBackupGuitarfishTokenKey");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v212, v211, @"SecureBackupGuitarfishTokenKey");
   v216 = objc_msgSend_appleIDPasswordMetadata(self, v213, v214);
-  objc_msgSend_encodeObject_forKey_(v4, v215, v216, @"SecureBackupAppleIDPasswordMetadataKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v215, v216, @"SecureBackupAppleIDPasswordMetadataKey");
 }
 
-- (SecureBackup)initWithCoder:(id)a3
+- (SecureBackup)initWithCoder:(id)coder
 {
   v161 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v156.receiver = self;
   v156.super_class = SecureBackup;
   v5 = [(SecureBackup *)&v156 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"SecureBackupAuthenticationAppleID");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"SecureBackupAuthenticationAppleID");
     appleID = v5->_appleID;
     v5->_appleID = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"SecureBackupAuthenticationAuthToken");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"SecureBackupAuthenticationAuthToken");
     authToken = v5->_authToken;
     v5->_authToken = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"SecureBackupBackOffDate");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"SecureBackupBackOffDate");
     backOffDate = v5->_backOffDate;
     v5->_backOffDate = v16;
 
     v18 = objc_opt_class();
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"countryDialCode");
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"countryDialCode");
     countryDialCode = v5->_countryDialCode;
     v5->_countryDialCode = v20;
 
     v22 = objc_opt_class();
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v22, @"countryISOCode");
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v22, @"countryISOCode");
     countryCode = v5->_countryCode;
     v5->_countryCode = v24;
 
-    v5->_deleteAll = objc_msgSend_decodeBoolForKey_(v4, v26, @"SecureBackupiCloudDataProtectionDeleteAllRecords");
+    v5->_deleteAll = objc_msgSend_decodeBoolForKey_(coderCopy, v26, @"SecureBackupiCloudDataProtectionDeleteAllRecords");
     v27 = objc_opt_class();
-    v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v27, @"SecureBackupAuthenticationDSID");
+    v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v27, @"SecureBackupAuthenticationDSID");
     dsid = v5->_dsid;
     v5->_dsid = v29;
 
     v31 = objc_opt_class();
-    v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v31, @"SecureBackupEMCSManagedCredential");
+    v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v31, @"SecureBackupEMCSManagedCredential");
     emcsCred = v5->_emcsCred;
     v5->_emcsCred = v33;
 
-    v36 = objc_msgSend_decodePropertyListForKey_(v4, v35, @"SecureBackupEMCSIDMSDict");
+    v36 = objc_msgSend_decodePropertyListForKey_(coderCopy, v35, @"SecureBackupEMCSIDMSDict");
     emcsDict = v5->_emcsDict;
     v5->_emcsDict = v36;
 
-    v5->_emcsMode = objc_msgSend_decodeBoolForKey_(v4, v38, @"SecureBackupContainsEMCSData");
+    v5->_emcsMode = objc_msgSend_decodeBoolForKey_(coderCopy, v38, @"SecureBackupContainsEMCSData");
     v39 = objc_opt_class();
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v39, @"SecureBackupAuthenticationEscrowProxyURL");
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v39, @"SecureBackupAuthenticationEscrowProxyURL");
     escrowProxyURL = v5->_escrowProxyURL;
     v5->_escrowProxyURL = v41;
 
-    v5->_excludeiCDPRecords = objc_msgSend_decodeBoolForKey_(v4, v43, @"SecureBackupExcludeiCDPRecords");
-    v5->_fmipRecovery = objc_msgSend_decodeBoolForKey_(v4, v44, @"SecureBackupFMiPRecoveryKey");
+    v5->_excludeiCDPRecords = objc_msgSend_decodeBoolForKey_(coderCopy, v43, @"SecureBackupExcludeiCDPRecords");
+    v5->_fmipRecovery = objc_msgSend_decodeBoolForKey_(coderCopy, v44, @"SecureBackupFMiPRecoveryKey");
     v45 = objc_opt_class();
-    v47 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v46, v45, @"SecureBackupFMiPUUIDKey");
+    v47 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v46, v45, @"SecureBackupFMiPUUIDKey");
     fmipUUID = v5->_fmipUUID;
     v5->_fmipUUID = v47;
 
-    v5->_generateClientMetadata = objc_msgSend_decodeBoolForKey_(v4, v49, @"SecureBackupGenerateClientMetadataKey");
-    v5->_icdp = objc_msgSend_decodeBoolForKey_(v4, v50, @"SecureBackupContainsiCDPData");
+    v5->_generateClientMetadata = objc_msgSend_decodeBoolForKey_(coderCopy, v49, @"SecureBackupGenerateClientMetadataKey");
+    v5->_icdp = objc_msgSend_decodeBoolForKey_(coderCopy, v50, @"SecureBackupContainsiCDPData");
     v51 = objc_opt_class();
-    v53 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v52, v51, @"SecureBackupAuthenticationiCloudEnvironment");
+    v53 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v52, v51, @"SecureBackupAuthenticationiCloudEnvironment");
     iCloudEnv = v5->_iCloudEnv;
     v5->_iCloudEnv = v53;
 
     v55 = objc_opt_class();
-    v57 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v56, v55, @"SecureBackupiCloudIdentityData");
+    v57 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v56, v55, @"SecureBackupiCloudIdentityData");
     iCloudIdentityData = v5->_iCloudIdentityData;
     v5->_iCloudIdentityData = v57;
 
     v59 = objc_opt_class();
-    v61 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v60, v59, @"SecureBackupAuthenticationPassword");
+    v61 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v60, v59, @"SecureBackupAuthenticationPassword");
     objc_msgSend_setICloudPassword_(v5, v62, v61);
 
     v63 = objc_opt_class();
-    v65 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v64, v63, @"SecureBackupAuthenticationRawPassword");
+    v65 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v64, v63, @"SecureBackupAuthenticationRawPassword");
     objc_msgSend_setRawPassword_(v5, v66, v65);
 
     v67 = objc_opt_class();
-    v69 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v68, v67, @"SecureBackupIDMSData");
+    v69 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v68, v67, @"SecureBackupIDMSData");
     idmsData = v5->_idmsData;
     v5->_idmsData = v69;
 
-    v5->_idmsRecovery = objc_msgSend_decodeBoolForKey_(v4, v71, @"SecureBackupIDMSRecovery");
-    v73 = objc_msgSend_decodePropertyListForKey_(v4, v72, @"SecureBackupMetadata");
+    v5->_idmsRecovery = objc_msgSend_decodeBoolForKey_(coderCopy, v71, @"SecureBackupIDMSRecovery");
+    v73 = objc_msgSend_decodePropertyListForKey_(coderCopy, v72, @"SecureBackupMetadata");
     metadata = v5->_metadata;
     v5->_metadata = v73;
 
-    v76 = objc_msgSend_decodePropertyListForKey_(v4, v75, @"SecureBackupStingrayMetadataHash");
+    v76 = objc_msgSend_decodePropertyListForKey_(coderCopy, v75, @"SecureBackupStingrayMetadataHash");
     metadataHash = v5->_metadataHash;
     v5->_metadataHash = v76;
 
     v78 = objc_opt_class();
-    v80 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v79, v78, @"SecureBackupEMCSOldManagedCredential");
+    v80 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v79, v78, @"SecureBackupEMCSOldManagedCredential");
     oldEMCSCred = v5->_oldEMCSCred;
     v5->_oldEMCSCred = v80;
 
     v82 = objc_opt_class();
-    v84 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v83, v82, @"SecureBackupPasscodeStashSecret");
+    v84 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v83, v82, @"SecureBackupPasscodeStashSecret");
     passcodeStashSecret = v5->_passcodeStashSecret;
     v5->_passcodeStashSecret = v84;
 
     v86 = objc_opt_class();
-    v88 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v87, v86, @"SecureBackupPassphrase");
+    v88 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v87, v86, @"SecureBackupPassphrase");
     passphrase = v5->_passphrase;
     v5->_passphrase = v88;
 
     v90 = objc_opt_class();
-    v92 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v91, v90, @"recordID");
+    v92 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v91, v90, @"recordID");
     recordID = v5->_recordID;
     v5->_recordID = v92;
 
     v94 = objc_opt_class();
-    v96 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v95, v94, @"SecureBackupRecoveryKey");
+    v96 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v95, v94, @"SecureBackupRecoveryKey");
     recoveryKey = v5->_recoveryKey;
     v5->_recoveryKey = v96;
 
     v98 = objc_opt_class();
-    v100 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v99, v98, @"phoneNumber");
+    v100 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v99, v98, @"phoneNumber");
     smsTarget = v5->_smsTarget;
     v5->_smsTarget = v100;
 
-    v5->_silent = objc_msgSend_decodeBoolForKey_(v4, v102, @"SecureBackupSilentRecoveryAttempt");
+    v5->_silent = objc_msgSend_decodeBoolForKey_(coderCopy, v102, @"SecureBackupSilentRecoveryAttempt");
     v103 = objc_opt_class();
-    v105 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v104, v103, @"SecureBackupSpecifiedFederation");
+    v105 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v104, v103, @"SecureBackupSpecifiedFederation");
     specifiedFederation = v5->_specifiedFederation;
     v5->_specifiedFederation = v105;
 
-    v5->_stingray = objc_msgSend_decodeBoolForKey_(v4, v107, @"SecureBackupContainsiCloudIdentity");
-    v5->_synchronize = objc_msgSend_decodeBoolForKey_(v4, v108, @"SecureBackupSynchronize");
-    v5->_useCachedPassphrase = objc_msgSend_decodeBoolForKey_(v4, v109, @"SecureBackupUseCachedPassphrase");
+    v5->_stingray = objc_msgSend_decodeBoolForKey_(coderCopy, v107, @"SecureBackupContainsiCloudIdentity");
+    v5->_synchronize = objc_msgSend_decodeBoolForKey_(coderCopy, v108, @"SecureBackupSynchronize");
+    v5->_useCachedPassphrase = objc_msgSend_decodeBoolForKey_(coderCopy, v109, @"SecureBackupUseCachedPassphrase");
     v110 = objc_opt_class();
-    v112 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v111, v110, @"SecureBackupHSA2CachedPrerecordUUID");
+    v112 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v111, v110, @"SecureBackupHSA2CachedPrerecordUUID");
     hsa2CachedPrerecordUUID = v5->_hsa2CachedPrerecordUUID;
     v5->_hsa2CachedPrerecordUUID = v112;
 
-    v5->_useRecoveryPET = objc_msgSend_decodeBoolForKey_(v4, v114, @"SecureBackupIDMSRecovery");
-    v5->_usesMultipleiCSC = objc_msgSend_decodeBoolForKey_(v4, v115, @"SecureBackupUsesMultipleiCSCs");
-    v5->_usesRandomPassphrase = objc_msgSend_decodeBoolForKey_(v4, v116, @"SecureBackupUsesRandomPassphrase");
-    v5->_usesRecoveryKey = objc_msgSend_decodeBoolForKey_(v4, v117, @"SecureBackupUsesRecoveryKey");
+    v5->_useRecoveryPET = objc_msgSend_decodeBoolForKey_(coderCopy, v114, @"SecureBackupIDMSRecovery");
+    v5->_usesMultipleiCSC = objc_msgSend_decodeBoolForKey_(coderCopy, v115, @"SecureBackupUsesMultipleiCSCs");
+    v5->_usesRandomPassphrase = objc_msgSend_decodeBoolForKey_(coderCopy, v116, @"SecureBackupUsesRandomPassphrase");
+    v5->_usesRecoveryKey = objc_msgSend_decodeBoolForKey_(coderCopy, v117, @"SecureBackupUsesRecoveryKey");
     v118 = objc_opt_class();
-    v120 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v119, v118, @"SecureBackupVerifcationToken");
+    v120 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v119, v118, @"SecureBackupVerifcationToken");
     verificationToken = v5->_verificationToken;
     v5->_verificationToken = v120;
 
     v122 = objc_opt_class();
-    v124 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v123, v122, @"activityLabel");
+    v124 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v123, v122, @"activityLabel");
     activityLabel = v5->_activityLabel;
     v5->_activityLabel = v124;
 
     v126 = objc_opt_class();
-    v128 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v127, v126, @"activityUUID");
+    v128 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v127, v126, @"activityUUID");
     activityUUID = v5->_activityUUID;
     v5->_activityUUID = v128;
 
-    v5->_suppressServerFiltering = objc_msgSend_decodeBoolForKey_(v4, v130, @"SecureBackupSuppressServerFiltering");
-    v5->_silentDoubleRecovery = objc_msgSend_decodeBoolForKey_(v4, v131, @"SecureBackupSilentDoubleRecovery");
-    v5->_deleteDoubleOnly = objc_msgSend_decodeBoolForKey_(v4, v132, @"SecureBackupDeleteDoubleOnly");
-    v5->_nonViableRepair = objc_msgSend_decodeBoolForKey_(v4, v133, @"SecureBackupNonViableRepairKey");
-    v5->_sosCompatibleEscrowSorting = objc_msgSend_decodeBoolForKey_(v4, v134, @"SecureBackupSOSCompatibleEscrowSorting");
+    v5->_suppressServerFiltering = objc_msgSend_decodeBoolForKey_(coderCopy, v130, @"SecureBackupSuppressServerFiltering");
+    v5->_silentDoubleRecovery = objc_msgSend_decodeBoolForKey_(coderCopy, v131, @"SecureBackupSilentDoubleRecovery");
+    v5->_deleteDoubleOnly = objc_msgSend_decodeBoolForKey_(coderCopy, v132, @"SecureBackupDeleteDoubleOnly");
+    v5->_nonViableRepair = objc_msgSend_decodeBoolForKey_(coderCopy, v133, @"SecureBackupNonViableRepairKey");
+    v5->_sosCompatibleEscrowSorting = objc_msgSend_decodeBoolForKey_(coderCopy, v134, @"SecureBackupSOSCompatibleEscrowSorting");
     v135 = objc_opt_class();
-    v137 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v136, v135, @"SecureBackupDeviceSessionIDKey");
+    v137 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v136, v135, @"SecureBackupDeviceSessionIDKey");
     deviceSessionID = v5->_deviceSessionID;
     v5->_deviceSessionID = v137;
 
     v139 = objc_opt_class();
-    v141 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v140, v139, @"SecureBackupFlowIDKey");
+    v141 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v140, v139, @"SecureBackupFlowIDKey");
     flowID = v5->_flowID;
     v5->_flowID = v141;
 
-    v5->_guitarfish = objc_msgSend_decodeBoolForKey_(v4, v143, @"SecureBackupGuitarfishKey");
-    v5->_guitarfishToken = objc_msgSend_decodeBoolForKey_(v4, v144, @"SecureBackupGuitarfishTokenKey");
+    v5->_guitarfish = objc_msgSend_decodeBoolForKey_(coderCopy, v143, @"SecureBackupGuitarfishKey");
+    v5->_guitarfishToken = objc_msgSend_decodeBoolForKey_(coderCopy, v144, @"SecureBackupGuitarfishTokenKey");
     v145 = objc_opt_class();
-    v147 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v146, v145, @"SecureBackupAppleIDPasswordMetadataKey");
+    v147 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v146, v145, @"SecureBackupAppleIDPasswordMetadataKey");
     appleIDPasswordMetadata = v5->_appleIDPasswordMetadata;
     v5->_appleIDPasswordMetadata = v147;
 
@@ -535,200 +535,200 @@
   return v5;
 }
 
-- (void)populateWithInfo:(id)a3
+- (void)populateWithInfo:(id)info
 {
-  v208 = a3;
-  v5 = objc_msgSend_objectForKeyedSubscript_(v208, v4, @"SecureBackupAuthenticationAppleID");
+  infoCopy = info;
+  v5 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v4, @"SecureBackupAuthenticationAppleID");
   objc_msgSend_setAppleID_(self, v6, v5);
 
-  v8 = objc_msgSend_objectForKeyedSubscript_(v208, v7, @"SecureBackupAuthenticationAuthToken");
+  v8 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v7, @"SecureBackupAuthenticationAuthToken");
   objc_msgSend_setAuthToken_(self, v9, v8);
 
-  v11 = objc_msgSend_objectForKeyedSubscript_(v208, v10, @"SecureBackupBackOffDate");
+  v11 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v10, @"SecureBackupBackOffDate");
   objc_msgSend_setBackOffDate_(self, v12, v11);
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v208, v13, @"countryDialCode");
+  v14 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v13, @"countryDialCode");
   objc_msgSend_setCountryDialCode_(self, v15, v14);
 
-  v17 = objc_msgSend_objectForKeyedSubscript_(v208, v16, @"countryISOCode");
+  v17 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v16, @"countryISOCode");
   objc_msgSend_setCountryCode_(self, v18, v17);
 
-  v20 = objc_msgSend_objectForKeyedSubscript_(v208, v19, @"SecureBackupiCloudDataProtectionDeleteAllRecords");
+  v20 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v19, @"SecureBackupiCloudDataProtectionDeleteAllRecords");
   v21 = MEMORY[0x277CBEC38];
   isEqualToNumber = objc_msgSend_isEqualToNumber_(v20, v22, MEMORY[0x277CBEC38]);
   objc_msgSend_setDeleteAll_(self, v24, isEqualToNumber);
 
-  v26 = objc_msgSend_objectForKeyedSubscript_(v208, v25, @"SecureBackupAuthenticationDSID");
+  v26 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v25, @"SecureBackupAuthenticationDSID");
   objc_msgSend_setDsid_(self, v27, v26);
 
-  v29 = objc_msgSend_objectForKeyedSubscript_(v208, v28, @"SecureBackupEMCSManagedCredential");
+  v29 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v28, @"SecureBackupEMCSManagedCredential");
   objc_msgSend_setEmcsCred_(self, v30, v29);
 
-  v32 = objc_msgSend_objectForKeyedSubscript_(v208, v31, @"SecureBackupEMCSIDMSDict");
+  v32 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v31, @"SecureBackupEMCSIDMSDict");
   objc_msgSend_setEmcsDict_(self, v33, v32);
 
-  v35 = objc_msgSend_objectForKeyedSubscript_(v208, v34, @"SecureBackupContainsEMCSData");
+  v35 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v34, @"SecureBackupContainsEMCSData");
   v37 = objc_msgSend_isEqualToNumber_(v35, v36, v21);
   objc_msgSend_setEmcsMode_(self, v38, v37);
 
-  v40 = objc_msgSend_objectForKeyedSubscript_(v208, v39, @"SecureBackupAuthenticationEscrowProxyURL");
+  v40 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v39, @"SecureBackupAuthenticationEscrowProxyURL");
   objc_msgSend_setEscrowProxyURL_(self, v41, v40);
 
-  v43 = objc_msgSend_objectForKeyedSubscript_(v208, v42, @"SecureBackupExcludeiCDPRecords");
+  v43 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v42, @"SecureBackupExcludeiCDPRecords");
   v45 = objc_msgSend_isEqualToNumber_(v43, v44, v21);
   objc_msgSend_setExcludeiCDPRecords_(self, v46, v45);
 
-  v48 = objc_msgSend_objectForKeyedSubscript_(v208, v47, @"SecureBackupFMiPRecoveryKey");
+  v48 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v47, @"SecureBackupFMiPRecoveryKey");
   v50 = objc_msgSend_isEqualToNumber_(v48, v49, v21);
   objc_msgSend_setFmipRecovery_(self, v51, v50);
 
-  v53 = objc_msgSend_objectForKeyedSubscript_(v208, v52, @"SecureBackupFMiPUUIDKey");
+  v53 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v52, @"SecureBackupFMiPUUIDKey");
   objc_msgSend_setFmipUUID_(self, v54, v53);
 
-  v56 = objc_msgSend_objectForKeyedSubscript_(v208, v55, @"SecureBackupGenerateClientMetadataKey");
+  v56 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v55, @"SecureBackupGenerateClientMetadataKey");
   v58 = objc_msgSend_isEqualToNumber_(v56, v57, v21);
   objc_msgSend_setGenerateClientMetadata_(self, v59, v58);
 
-  v61 = objc_msgSend_objectForKeyedSubscript_(v208, v60, @"SecureBackupContainsiCDPData");
+  v61 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v60, @"SecureBackupContainsiCDPData");
   v63 = objc_msgSend_isEqualToNumber_(v61, v62, v21);
   objc_msgSend_setIcdp_(self, v64, v63);
 
-  v66 = objc_msgSend_objectForKeyedSubscript_(v208, v65, @"SecureBackupAuthenticationiCloudEnvironment");
+  v66 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v65, @"SecureBackupAuthenticationiCloudEnvironment");
   objc_msgSend_setICloudEnv_(self, v67, v66);
 
-  v69 = objc_msgSend_objectForKeyedSubscript_(v208, v68, @"SecureBackupiCloudIdentityData");
+  v69 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v68, @"SecureBackupiCloudIdentityData");
   objc_msgSend_setICloudIdentityData_(self, v70, v69);
 
-  v72 = objc_msgSend_objectForKeyedSubscript_(v208, v71, @"SecureBackupAuthenticationPassword");
+  v72 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v71, @"SecureBackupAuthenticationPassword");
   objc_msgSend_setICloudPassword_(self, v73, v72);
 
-  v75 = objc_msgSend_objectForKeyedSubscript_(v208, v74, @"SecureBackupAuthenticationRawPassword");
+  v75 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v74, @"SecureBackupAuthenticationRawPassword");
   objc_msgSend_setRawPassword_(self, v76, v75);
 
-  v78 = objc_msgSend_objectForKeyedSubscript_(v208, v77, @"SecureBackupIDMSData");
+  v78 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v77, @"SecureBackupIDMSData");
   objc_msgSend_setIdmsData_(self, v79, v78);
 
-  v81 = objc_msgSend_objectForKeyedSubscript_(v208, v80, @"SecureBackupIDMSRecovery");
+  v81 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v80, @"SecureBackupIDMSRecovery");
   v83 = objc_msgSend_isEqualToNumber_(v81, v82, v21);
   objc_msgSend_setIdmsRecovery_(self, v84, v83);
 
-  v86 = objc_msgSend_objectForKeyedSubscript_(v208, v85, @"SecureBackupMetadata");
+  v86 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v85, @"SecureBackupMetadata");
   objc_msgSend_setMetadata_(self, v87, v86);
 
-  v89 = objc_msgSend_objectForKeyedSubscript_(v208, v88, @"SecureBackupStingrayMetadataHash");
+  v89 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v88, @"SecureBackupStingrayMetadataHash");
   objc_msgSend_setMetadataHash_(self, v90, v89);
 
-  v92 = objc_msgSend_objectForKeyedSubscript_(v208, v91, @"SecureBackupEMCSOldManagedCredential");
+  v92 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v91, @"SecureBackupEMCSOldManagedCredential");
   objc_msgSend_setOldEMCSCred_(self, v93, v92);
 
-  v95 = objc_msgSend_objectForKeyedSubscript_(v208, v94, @"SecureBackupPasscodeStashSecret");
+  v95 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v94, @"SecureBackupPasscodeStashSecret");
   objc_msgSend_setPasscodeStashSecret_(self, v96, v95);
 
-  v98 = objc_msgSend_objectForKeyedSubscript_(v208, v97, @"SecureBackupPassphrase");
+  v98 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v97, @"SecureBackupPassphrase");
   objc_msgSend_setPassphrase_(self, v99, v98);
 
-  v101 = objc_msgSend_objectForKeyedSubscript_(v208, v100, @"recordID");
+  v101 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v100, @"recordID");
   objc_msgSend_setRecordID_(self, v102, v101);
 
-  v104 = objc_msgSend_objectForKeyedSubscript_(v208, v103, @"SecureBackupRecoveryKey");
+  v104 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v103, @"SecureBackupRecoveryKey");
   objc_msgSend_setRecoveryKey_(self, v105, v104);
 
-  v107 = objc_msgSend_objectForKeyedSubscript_(v208, v106, @"phoneNumber");
+  v107 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v106, @"phoneNumber");
   objc_msgSend_setSmsTarget_(self, v108, v107);
 
   v111 = objc_msgSend_smsTarget(self, v109, v110);
 
   if (!v111)
   {
-    v113 = objc_msgSend_objectForKeyedSubscript_(v208, v112, @"SecureBackupSMSTarget");
+    v113 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v112, @"SecureBackupSMSTarget");
     objc_msgSend_setSmsTarget_(self, v114, v113);
   }
 
-  v115 = objc_msgSend_objectForKeyedSubscript_(v208, v112, @"SecureBackupSilentRecoveryAttempt");
+  v115 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v112, @"SecureBackupSilentRecoveryAttempt");
   v116 = MEMORY[0x277CBEC38];
   v118 = objc_msgSend_isEqualToNumber_(v115, v117, MEMORY[0x277CBEC38]);
   objc_msgSend_setSilent_(self, v119, v118);
 
-  v121 = objc_msgSend_objectForKeyedSubscript_(v208, v120, @"SecureBackupSpecifiedFederation");
+  v121 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v120, @"SecureBackupSpecifiedFederation");
   objc_msgSend_setSpecifiedFederation_(self, v122, v121);
 
-  v124 = objc_msgSend_objectForKeyedSubscript_(v208, v123, @"SecureBackupContainsiCloudIdentity");
+  v124 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v123, @"SecureBackupContainsiCloudIdentity");
   v126 = objc_msgSend_isEqualToNumber_(v124, v125, v116);
   objc_msgSend_setStingray_(self, v127, v126);
 
-  v129 = objc_msgSend_objectForKeyedSubscript_(v208, v128, @"SecureBackupSynchronize");
+  v129 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v128, @"SecureBackupSynchronize");
   v131 = objc_msgSend_isEqualToNumber_(v129, v130, v116);
   objc_msgSend_setSynchronize_(self, v132, v131);
 
-  v134 = objc_msgSend_objectForKeyedSubscript_(v208, v133, @"SecureBackupUseCachedPassphrase");
+  v134 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v133, @"SecureBackupUseCachedPassphrase");
   v136 = objc_msgSend_isEqualToNumber_(v134, v135, v116);
   objc_msgSend_setUseCachedPassphrase_(self, v137, v136);
 
-  v139 = objc_msgSend_objectForKeyedSubscript_(v208, v138, @"SecureBackupHSA2CachedPrerecordUUID");
+  v139 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v138, @"SecureBackupHSA2CachedPrerecordUUID");
   objc_msgSend_setHsa2CachedPrerecordUUID_(self, v140, v139);
 
-  v142 = objc_msgSend_objectForKeyedSubscript_(v208, v141, @"SecureBackupIDMSRecovery");
+  v142 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v141, @"SecureBackupIDMSRecovery");
   v144 = objc_msgSend_isEqualToNumber_(v142, v143, v116);
   objc_msgSend_setUseRecoveryPET_(self, v145, v144);
 
-  v147 = objc_msgSend_objectForKeyedSubscript_(v208, v146, @"SecureBackupUsesMultipleiCSCs");
+  v147 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v146, @"SecureBackupUsesMultipleiCSCs");
   v149 = objc_msgSend_isEqualToNumber_(v147, v148, v116);
   objc_msgSend_setUsesMultipleiCSC_(self, v150, v149);
 
-  v152 = objc_msgSend_objectForKeyedSubscript_(v208, v151, @"SecureBackupUsesRandomPassphrase");
+  v152 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v151, @"SecureBackupUsesRandomPassphrase");
   v154 = objc_msgSend_isEqualToNumber_(v152, v153, v116);
   objc_msgSend_setUsesRandomPassphrase_(self, v155, v154);
 
-  v157 = objc_msgSend_objectForKeyedSubscript_(v208, v156, @"SecureBackupUsesRecoveryKey");
+  v157 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v156, @"SecureBackupUsesRecoveryKey");
   v159 = objc_msgSend_isEqualToNumber_(v157, v158, v116);
   objc_msgSend_setUsesRecoveryKey_(self, v160, v159);
 
-  v162 = objc_msgSend_objectForKeyedSubscript_(v208, v161, @"SecureBackupVerifcationToken");
+  v162 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v161, @"SecureBackupVerifcationToken");
   objc_msgSend_setVerificationToken_(self, v163, v162);
 
-  v165 = objc_msgSend_objectForKeyedSubscript_(v208, v164, @"SecureBackupSuppressServerFiltering");
+  v165 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v164, @"SecureBackupSuppressServerFiltering");
   v167 = objc_msgSend_isEqualToNumber_(v165, v166, v116);
   objc_msgSend_setSuppressServerFiltering_(self, v168, v167);
 
-  v170 = objc_msgSend_objectForKeyedSubscript_(v208, v169, @"SecureBackupSilentDoubleRecovery");
+  v170 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v169, @"SecureBackupSilentDoubleRecovery");
   v172 = objc_msgSend_isEqualToNumber_(v170, v171, v116);
   objc_msgSend_setSilentDoubleRecovery_(self, v173, v172);
 
-  v175 = objc_msgSend_objectForKeyedSubscript_(v208, v174, @"SecureBackupDeleteDoubleOnly");
+  v175 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v174, @"SecureBackupDeleteDoubleOnly");
   v177 = objc_msgSend_isEqualToNumber_(v175, v176, v116);
   objc_msgSend_setDeleteDoubleOnly_(self, v178, v177);
 
-  v180 = objc_msgSend_objectForKeyedSubscript_(v208, v179, @"SecureBackupNonViableRepairKey");
+  v180 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v179, @"SecureBackupNonViableRepairKey");
   v182 = objc_msgSend_isEqualToNumber_(v180, v181, v116);
   objc_msgSend_setNonViableRepair_(self, v183, v182);
 
-  v185 = objc_msgSend_objectForKeyedSubscript_(v208, v184, @"SecureBackupSOSCompatibleEscrowSorting");
+  v185 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v184, @"SecureBackupSOSCompatibleEscrowSorting");
   v187 = objc_msgSend_isEqualToNumber_(v185, v186, v116);
   objc_msgSend_setSosCompatibleEscrowSorting_(self, v188, v187);
 
-  v190 = objc_msgSend_objectForKeyedSubscript_(v208, v189, @"SecureBackupDeviceSessionIDKey");
+  v190 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v189, @"SecureBackupDeviceSessionIDKey");
   objc_msgSend_setDeviceSessionID_(self, v191, v190);
 
-  v193 = objc_msgSend_objectForKeyedSubscript_(v208, v192, @"SecureBackupFlowIDKey");
+  v193 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v192, @"SecureBackupFlowIDKey");
   objc_msgSend_setFlowID_(self, v194, v193);
 
-  v196 = objc_msgSend_objectForKeyedSubscript_(v208, v195, @"SecureBackupGuitarfishKey");
+  v196 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v195, @"SecureBackupGuitarfishKey");
   v198 = objc_msgSend_isEqualToNumber_(v196, v197, v116);
   objc_msgSend_setGuitarfish_(self, v199, v198);
 
-  v201 = objc_msgSend_objectForKeyedSubscript_(v208, v200, @"SecureBackupGuitarfishTokenKey");
+  v201 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v200, @"SecureBackupGuitarfishTokenKey");
   v203 = objc_msgSend_isEqualToNumber_(v201, v202, v116);
   objc_msgSend_setGuitarfishToken_(self, v204, v203);
 
-  v206 = objc_msgSend_objectForKeyedSubscript_(v208, v205, @"SecureBackupAppleIDPasswordMetadataKey");
+  v206 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v205, @"SecureBackupAppleIDPasswordMetadataKey");
   objc_msgSend_setAppleIDPasswordMetadata_(self, v207, v206);
 }
 
-- (void)setICloudPassword:(id)a3
+- (void)setICloudPassword:(id)password
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && (objc_msgSend_isPasswordEquivalentToken(v4, v5, v6) & 1) == 0)
+  passwordCopy = password;
+  v7 = passwordCopy;
+  if (passwordCopy && (objc_msgSend_isPasswordEquivalentToken(passwordCopy, v5, v6) & 1) == 0)
   {
     v8 = CloudServicesLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -741,11 +741,11 @@
   self->_iCloudPassword = v7;
 }
 
-- (void)setRawPassword:(id)a3
+- (void)setRawPassword:(id)password
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && objc_msgSend_isPasswordEquivalentToken(v4, v5, v6))
+  passwordCopy = password;
+  v7 = passwordCopy;
+  if (passwordCopy && objc_msgSend_isPasswordEquivalentToken(passwordCopy, v5, v6))
   {
     v8 = CloudServicesLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -758,15 +758,15 @@
   self->_rawPassword = v7;
 }
 
-- (void)getAccountInfoWithResults:(id)a3
+- (void)getAccountInfoWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CDAB0;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = resultsCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -774,7 +774,7 @@
   activity_block[2] = sub_22E9CDB28;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -783,15 +783,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling getAccountInfoWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)fetchStingrayAccountStatus:(id)a3
+- (void)fetchStingrayAccountStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CDE28;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = statusCopy;
   v20 = v8;
   v10 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -799,7 +799,7 @@
   activity_block[2] = sub_22E9CDEA0;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -808,16 +808,16 @@
   _os_activity_initiate(&dword_22E9CA000, "calling fetchStingrayAccountStatus in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)enableWithCompletionBlock:(id)a3
+- (void)enableWithCompletionBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = sub_22E9CE2A8;
   v29[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v30 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v29);
   v11 = _CloudServicesSignpostLogSystem();
@@ -845,7 +845,7 @@
   activity_block[2] = sub_22E9CE31C;
   activity_block[3] = &unk_2788596F0;
   v23 = v10;
-  v24 = self;
+  selfCopy = self;
   v27 = v12;
   v28 = v14;
   v25 = v7;
@@ -858,15 +858,15 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recoverWithResults:(id)a3
+- (void)recoverWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CE718;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = resultsCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -874,7 +874,7 @@
   activity_block[2] = sub_22E9CE790;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -883,15 +883,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling recoverWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)recoverRecordContents:(id)a3
+- (void)recoverRecordContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CEA90;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = contentsCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -899,7 +899,7 @@
   activity_block[2] = sub_22E9CEB08;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -908,16 +908,16 @@
   _os_activity_initiate(&dword_22E9CA000, "calling recoverRecordContents in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)createICDPRecordWithContents:(id)a3 reply:(id)a4
+- (void)createICDPRecordWithContents:(id)contents reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  replyCopy = reply;
   v10 = objc_msgSend__CreateSecureBackupConnection(self, v8, v9);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_22E9CEE34;
   v24[3] = &unk_278859628;
-  v11 = v7;
+  v11 = replyCopy;
   v25 = v11;
   v13 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v10, v12, v24);
   v18[0] = MEMORY[0x277D85DD0];
@@ -925,26 +925,26 @@
   v18[2] = sub_22E9CEEA8;
   v18[3] = &unk_278859740;
   v19 = v13;
-  v20 = self;
-  v21 = v6;
+  selfCopy = self;
+  v21 = contentsCopy;
   v22 = v10;
   v23 = v11;
   v14 = v11;
   v15 = v10;
-  v16 = v6;
+  v16 = contentsCopy;
   v17 = v13;
   _os_activity_initiate(&dword_22E9CA000, "calling createICDPRecord in daemon", OS_ACTIVITY_FLAG_DEFAULT, v18);
 }
 
-- (void)disableWithCompletionBlock:(id)a3
+- (void)disableWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CF198;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -952,7 +952,7 @@
   activity_block[2] = sub_22E9CF20C;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -961,15 +961,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling disableWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)stashRecoveryDataWithCompletionBlock:(id)a3
+- (void)stashRecoveryDataWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CF4F8;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -977,7 +977,7 @@
   activity_block[2] = sub_22E9CF56C;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -986,15 +986,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling stashRecoveryDataWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)updateMetadataWithCompletionBlock:(id)a3
+- (void)updateMetadataWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CF858;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1002,7 +1002,7 @@
   activity_block[2] = sub_22E9CF8CC;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1027,22 +1027,22 @@
   activity_block[2] = sub_22E9CFC08;
   activity_block[3] = &unk_278859790;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v10 = v9;
   _os_activity_initiate(&dword_22E9CA000, "calling cachePassphraseWithRequestAsync in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_msgSend_addBarrierBlock_(v5, v11, v6);
 }
 
-- (void)cachePassphraseWithCompletionBlock:(id)a3
+- (void)cachePassphraseWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9CFD6C;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1050,7 +1050,7 @@
   activity_block[2] = sub_22E9CFDE0;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1059,15 +1059,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling cachePassphraseWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)uncachePassphraseWithCompletionBlock:(id)a3
+- (void)uncachePassphraseWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D004C;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1075,7 +1075,7 @@
   activity_block[2] = sub_22E9D00C0;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1084,15 +1084,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling uncachePassphraseWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)cacheRecoveryKeyWithCompletionBlock:(id)a3
+- (void)cacheRecoveryKeyWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D032C;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1100,7 +1100,7 @@
   activity_block[2] = sub_22E9D03A0;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1109,15 +1109,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling cacheRecoveryKeyWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)uncacheRecoveryKeyWithCompletionBlock:(id)a3
+- (void)uncacheRecoveryKeyWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D060C;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1125,7 +1125,7 @@
   activity_block[2] = sub_22E9D0680;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1150,22 +1150,22 @@
   activity_block[2] = sub_22E9D093C;
   activity_block[3] = &unk_278859790;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v10 = v9;
   _os_activity_initiate(&dword_22E9CA000, "calling uncachePassphraseWithRequestAsync in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_msgSend_addBarrierBlock_(v5, v11, v6);
 }
 
-- (void)startSMSChallengeWithResults:(id)a3
+- (void)startSMSChallengeWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D0AA0;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = resultsCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1173,7 +1173,7 @@
   activity_block[2] = sub_22E9D0B18;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1182,15 +1182,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling startSMSChallengeWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)getCountrySMSCodesWithResults:(id)a3
+- (void)getCountrySMSCodesWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D0E18;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = resultsCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1198,7 +1198,7 @@
   activity_block[2] = sub_22E9D0E90;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1207,15 +1207,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling getCountrySMSCodesWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)changeSMSTargetWithCompletionBlock:(id)a3
+- (void)changeSMSTargetWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D1190;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1223,7 +1223,7 @@
   activity_block[2] = sub_22E9D1204;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1232,16 +1232,16 @@
   _os_activity_initiate(&dword_22E9CA000, "calling changeSMSTargetWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (SecureBackup)backupWithInfo:(id)a3 completionBlock:(id)a4
+- (SecureBackup)backupWithInfo:(id)info completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  blockCopy = block;
   v10 = objc_msgSend__CreateSecureBackupConnection(self, v8, v9);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_22E9D1510;
   v24[3] = &unk_278859628;
-  v11 = v7;
+  v11 = blockCopy;
   v25 = v11;
   v13 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v10, v12, v24);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1249,27 +1249,27 @@
   activity_block[2] = sub_22E9D1584;
   activity_block[3] = &unk_278859678;
   v20 = v13;
-  v21 = v6;
+  v21 = infoCopy;
   v22 = v10;
   v23 = v11;
   v14 = v11;
   v15 = v10;
-  v16 = v6;
+  v16 = infoCopy;
   v17 = v13;
   _os_activity_initiate(&dword_22E9CA000, "calling backupWithInfo in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   return result;
 }
 
-- (void)backOffDateWithCompletionBlock:(id)a3
+- (void)backOffDateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D1870;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1277,7 +1277,7 @@
   activity_block[2] = sub_22E9D18E8;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1286,15 +1286,15 @@
   _os_activity_initiate(&dword_22E9CA000, "calling backOffDateWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)setBackOffDateWithCompletionBlock:(id)a3
+- (void)setBackOffDateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D1BE8;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = blockCopy;
   v20 = v8;
   v10 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -1302,7 +1302,7 @@
   activity_block[2] = sub_22E9D1C5C;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -1311,9 +1311,9 @@
   _os_activity_initiate(&dword_22E9CA000, "calling setBackOffDateWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)notificationInfo:(id)a3
+- (void)notificationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1326,7 +1326,7 @@
   v19[1] = 3221225472;
   v19[2] = sub_22E9D1F8C;
   v19[3] = &unk_278859628;
-  v9 = v4;
+  v9 = infoCopy;
   v20 = v9;
   v11 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v10, v19);
   v15[0] = MEMORY[0x277D85DD0];
@@ -1342,9 +1342,9 @@
   _os_activity_initiate(&dword_22E9CA000, "calling notificationInfo in daemon", OS_ACTIVITY_FLAG_DEFAULT, v15);
 }
 
-- (void)stateCaptureWithCompletionBlock:(id)a3
+- (void)stateCaptureWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1357,7 +1357,7 @@
   v19[1] = 3221225472;
   v19[2] = sub_22E9D2338;
   v19[3] = &unk_278859628;
-  v9 = v4;
+  v9 = blockCopy;
   v20 = v9;
   v11 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v10, v19);
   v15[0] = MEMORY[0x277D85DD0];
@@ -1373,7 +1373,7 @@
   _os_activity_initiate(&dword_22E9CA000, "calling stateCapture in daemon", OS_ACTIVITY_FLAG_DEFAULT, v15);
 }
 
-- (id)getAccountInfoWithError:(id *)a3
+- (id)getAccountInfoWithError:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -1387,7 +1387,7 @@
   v30 = sub_22E9D27B0;
   v31 = sub_22E9D27C0;
   v32 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = sub_22E9D27C8;
@@ -1408,7 +1408,7 @@
   v20[2] = sub_22E9D2838;
   v20[3] = &unk_278859830;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v24 = &v33;
   v25 = &v27;
   v23 = v5;
@@ -1416,9 +1416,9 @@
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling getAccountInfoWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, v20);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v34[5];
+    *error = v34[5];
   }
 
   v18 = v28[5];
@@ -1429,29 +1429,29 @@
   return v18;
 }
 
-- (id)getAccountInfoWithInfo:(id)a3 results:(id *)a4
+- (id)getAccountInfoWithInfo:(id)info results:(id *)results
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v11 = 0;
   v7 = objc_msgSend_getAccountInfoWithError_(self, v6, &v11);
   v8 = v11;
-  if (a4)
+  if (results)
   {
     v9 = v7;
-    *a4 = v7;
+    *results = v7;
   }
 
   return v8;
 }
 
-- (void)getAccountInfoWithInfo:(id)a3 completionBlockWithResults:(id)a4
+- (void)getAccountInfoWithInfo:(id)info completionBlockWithResults:(id)results
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_getAccountInfoWithResults_(self, v7, v8);
+  resultsCopy = results;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_getAccountInfoWithResults_(self, v7, resultsCopy);
 }
 
-- (BOOL)updateMetadataWithError:(id *)a3
+- (BOOL)updateMetadataWithError:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -1459,7 +1459,7 @@
   v29 = sub_22E9D27B0;
   v30 = sub_22E9D27C0;
   v31 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_22E9D2CCC;
@@ -1480,16 +1480,16 @@
   activity_block[2] = sub_22E9D2D3C;
   activity_block[3] = &unk_278859880;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v23 = v5;
   v24 = &v26;
   v16 = v5;
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling updateMetadataWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v27[5];
+    *error = v27[5];
   }
 
   v18 = v27[5];
@@ -1498,9 +1498,9 @@
   return v18 == 0;
 }
 
-- (id)updateMetadataWithInfo:(id)a3
+- (id)updateMetadataWithInfo:(id)info
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v10 = 0;
   updated = objc_msgSend_updateMetadataWithError_(self, v4, &v10);
   v6 = v10;
@@ -1514,14 +1514,14 @@
   return v8;
 }
 
-- (void)updateMetadataWithInfo:(id)a3 completionBlock:(id)a4
+- (void)updateMetadataWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_updateMetadataWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_updateMetadataWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (BOOL)enableWithError:(id *)a3
+- (BOOL)enableWithError:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -1529,7 +1529,7 @@
   v29 = sub_22E9D27B0;
   v30 = sub_22E9D27C0;
   v31 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_22E9D319C;
@@ -1550,16 +1550,16 @@
   activity_block[2] = sub_22E9D320C;
   activity_block[3] = &unk_278859880;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v23 = v5;
   v24 = &v26;
   v16 = v5;
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling enableWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v27[5];
+    *error = v27[5];
   }
 
   v18 = v27[5];
@@ -1568,9 +1568,9 @@
   return v18 == 0;
 }
 
-- (id)enableWithInfo:(id)a3
+- (id)enableWithInfo:(id)info
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v10 = 0;
   v5 = objc_msgSend_enableWithError_(self, v4, &v10);
   v6 = v10;
@@ -1584,14 +1584,14 @@
   return v8;
 }
 
-- (void)enableWithInfo:(id)a3 completionBlock:(id)a4
+- (void)enableWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_enableWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_enableWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (id)recoverWithError:(id *)a3
+- (id)recoverWithError:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -1605,7 +1605,7 @@
   v30 = sub_22E9D27B0;
   v31 = sub_22E9D27C0;
   v32 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = sub_22E9D36D8;
@@ -1626,7 +1626,7 @@
   v20[2] = sub_22E9D3748;
   v20[3] = &unk_278859830;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v24 = &v33;
   v25 = &v27;
   v23 = v5;
@@ -1634,9 +1634,9 @@
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling recoverWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, v20);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v34[5];
+    *error = v34[5];
   }
 
   v18 = v28[5];
@@ -1647,11 +1647,11 @@
   return v18;
 }
 
-- (id)recoverWithCDPContext:(id)a3 escrowRecord:(id)a4 error:(id *)a5
+- (id)recoverWithCDPContext:(id)context escrowRecord:(id)record error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  recordCopy = record;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1669,7 +1669,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v52 = v9;
+    v52 = recordCopy;
     _os_log_impl(&dword_22E9CA000, v13, OS_LOG_TYPE_DEFAULT, "recoverWithCDPContext: invoked escrow recovery with escrowRecord: %@", buf, 0xCu);
   }
 
@@ -1693,9 +1693,9 @@
   activity_block[2] = sub_22E9D3CA8;
   activity_block[3] = &unk_2788598A8;
   v32 = v15;
-  v24 = v8;
+  v24 = contextCopy;
   v33 = v24;
-  v25 = v9;
+  v25 = recordCopy;
   v36 = &v45;
   v37 = &v39;
   v34 = v25;
@@ -1704,9 +1704,9 @@
   v27 = v15;
   _os_activity_initiate(&dword_22E9CA000, "calling recoverWithCDPContextInDaemon in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v46[5];
+    *error = v46[5];
   }
 
   v28 = v40[5];
@@ -1719,14 +1719,14 @@
   return v28;
 }
 
-- (id)recoverWithCDPContext:(id)a3 escrowRecord:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8
+- (id)recoverWithCDPContext:(id)context escrowRecord:(id)record altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  contextCopy = context;
+  recordCopy = record;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
@@ -1744,7 +1744,7 @@
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v67 = v15;
+    v67 = recordCopy;
     _os_log_impl(&dword_22E9CA000, v22, OS_LOG_TYPE_DEFAULT, "recoverWithCDPContext: invoked escrow recovery with escrowRecord: %@", buf, 0xCu);
   }
 
@@ -1768,15 +1768,15 @@
   v43[2] = sub_22E9D428C;
   v43[3] = &unk_2788598D0;
   v44 = v24;
-  v33 = v14;
+  v33 = contextCopy;
   v45 = v33;
-  v34 = v15;
+  v34 = recordCopy;
   v46 = v34;
-  v35 = v16;
+  v35 = dCopy;
   v47 = v35;
-  v36 = v17;
+  v36 = iDCopy;
   v48 = v36;
-  v37 = v18;
+  v37 = sessionIDCopy;
   v51 = &v60;
   v52 = &v54;
   v49 = v37;
@@ -1785,9 +1785,9 @@
   v39 = v24;
   _os_activity_initiate(&dword_22E9CA000, "calling recoverWithCDPContextInDaemon in daemon", OS_ACTIVITY_FLAG_DEFAULT, v43);
 
-  if (a8)
+  if (error)
   {
-    *a8 = v61[5];
+    *error = v61[5];
   }
 
   v40 = v55[5];
@@ -1800,11 +1800,11 @@
   return v40;
 }
 
-- (id)recoverSilentWithCDPContext:(id)a3 allRecords:(id)a4 error:(id *)a5
+- (id)recoverSilentWithCDPContext:(id)context allRecords:(id)records error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  recordsCopy = records;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1822,7 +1822,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v52 = v9;
+    v52 = recordsCopy;
     _os_log_impl(&dword_22E9CA000, v13, OS_LOG_TYPE_DEFAULT, "recoverSilentWithCDPContext: invoked silent escrow recovery with records: %@", buf, 0xCu);
   }
 
@@ -1846,9 +1846,9 @@
   activity_block[2] = sub_22E9D4814;
   activity_block[3] = &unk_2788598A8;
   v32 = v15;
-  v24 = v8;
+  v24 = contextCopy;
   v33 = v24;
-  v25 = v9;
+  v25 = recordsCopy;
   v36 = &v45;
   v37 = &v39;
   v34 = v25;
@@ -1857,9 +1857,9 @@
   v27 = v15;
   _os_activity_initiate(&dword_22E9CA000, "calling recoverSilentWithCDPContextInDaemon in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v46[5];
+    *error = v46[5];
   }
 
   v28 = v40[5];
@@ -1872,14 +1872,14 @@
   return v28;
 }
 
-- (id)recoverSilentWithCDPContext:(id)a3 allRecords:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8
+- (id)recoverSilentWithCDPContext:(id)context allRecords:(id)records altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  contextCopy = context;
+  recordsCopy = records;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
@@ -1897,7 +1897,7 @@
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v67 = v15;
+    v67 = recordsCopy;
     _os_log_impl(&dword_22E9CA000, v22, OS_LOG_TYPE_DEFAULT, "recoverSilentWithCDPContext: invoked silent escrow recovery with records: %@", buf, 0xCu);
   }
 
@@ -1921,15 +1921,15 @@
   v43[2] = sub_22E9D4DF8;
   v43[3] = &unk_2788598D0;
   v44 = v24;
-  v33 = v14;
+  v33 = contextCopy;
   v45 = v33;
-  v34 = v15;
+  v34 = recordsCopy;
   v46 = v34;
-  v35 = v16;
+  v35 = dCopy;
   v47 = v35;
-  v36 = v17;
+  v36 = iDCopy;
   v48 = v36;
-  v37 = v18;
+  v37 = sessionIDCopy;
   v51 = &v60;
   v52 = &v54;
   v49 = v37;
@@ -1938,9 +1938,9 @@
   v39 = v24;
   _os_activity_initiate(&dword_22E9CA000, "calling recoverSilentWithCDPContextInDaemon in daemon", OS_ACTIVITY_FLAG_DEFAULT, v43);
 
-  if (a8)
+  if (error)
   {
-    *a8 = v61[5];
+    *error = v61[5];
   }
 
   v40 = v55[5];
@@ -1953,7 +1953,7 @@
   return v40;
 }
 
-- (BOOL)isRecoveryKeySet:(id *)a3
+- (BOOL)isRecoveryKeySet:(id *)set
 {
   v31 = 0;
   v32 = &v31;
@@ -1965,7 +1965,7 @@
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v4 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v4 = objc_msgSend__CreateSecureBackupConnection(self, a2, set);
   v5 = CloudServicesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2000,9 +2000,9 @@
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling isRecoveryKeySetInDaemon in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (set)
   {
-    *a3 = v32[5];
+    *set = v32[5];
   }
 
   v18 = *(v28 + 24);
@@ -2013,11 +2013,11 @@
   return v18;
 }
 
-- (void)restoreKeychainAsyncWithPassword:(id)a3 keybagDigest:(id)a4 haveBottledPeer:(BOOL)a5 viewsNotToBeRestored:(id)a6 error:(id *)a7
+- (void)restoreKeychainAsyncWithPassword:(id)password keybagDigest:(id)digest haveBottledPeer:(BOOL)peer viewsNotToBeRestored:(id)restored error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  passwordCopy = password;
+  digestCopy = digest;
+  restoredCopy = restored;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -2053,29 +2053,29 @@
   v34[3] = &unk_278859948;
   v29 = v20;
   v35 = v29;
-  v30 = v12;
+  v30 = passwordCopy;
   v36 = v30;
-  v31 = v13;
+  v31 = digestCopy;
   v37 = v31;
-  v41 = a5;
-  v32 = v14;
+  peerCopy = peer;
+  v32 = restoredCopy;
   v38 = v32;
   v40 = &v44;
   v33 = v17;
   v39 = v33;
   _os_activity_initiate(&dword_22E9CA000, "calling restoreKeychainAsyncWithPassword in daemon", OS_ACTIVITY_FLAG_DEFAULT, v34);
 
-  if (a7)
+  if (error)
   {
-    *a7 = v45[5];
+    *error = v45[5];
   }
 
   _Block_object_dispose(&v44, 8);
 }
 
-- (BOOL)restoreKeychainWithBackupPassword:(id)a3 error:(id *)a4
+- (BOOL)restoreKeychainWithBackupPassword:(id)password error:(id *)error
 {
-  v6 = a3;
+  passwordCopy = password;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -2114,7 +2114,7 @@
   v26[2] = sub_22E9D5C44;
   v26[3] = &unk_278859830;
   v27 = v12;
-  v21 = v6;
+  v21 = passwordCopy;
   v30 = &v38;
   v31 = &v34;
   v28 = v21;
@@ -2123,9 +2123,9 @@
   v23 = v12;
   _os_activity_initiate(&dword_22E9CA000, "calling restoreKeychainWithBackupPassword in daemon", OS_ACTIVITY_FLAG_DEFAULT, v26);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v39[5];
+    *error = v39[5];
   }
 
   v24 = *(v35 + 24);
@@ -2136,9 +2136,9 @@
   return v24;
 }
 
-- (BOOL)verifyRecoveryKey:(id)a3 error:(id *)a4
+- (BOOL)verifyRecoveryKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -2177,7 +2177,7 @@
   v26[2] = sub_22E9D60FC;
   v26[3] = &unk_278859830;
   v27 = v12;
-  v21 = v6;
+  v21 = keyCopy;
   v30 = &v38;
   v31 = &v34;
   v28 = v21;
@@ -2186,9 +2186,9 @@
   v23 = v12;
   _os_activity_initiate(&dword_22E9CA000, "calling verifyRecoveryKey in daemon", OS_ACTIVITY_FLAG_DEFAULT, v26);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v39[5];
+    *error = v39[5];
   }
 
   v24 = *(v35 + 24);
@@ -2199,7 +2199,7 @@
   return v24;
 }
 
-- (BOOL)removeRecoveryKeyFromBackup:(id *)a3
+- (BOOL)removeRecoveryKeyFromBackup:(id *)backup
 {
   v31 = 0;
   v32 = &v31;
@@ -2211,7 +2211,7 @@
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v4 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v4 = objc_msgSend__CreateSecureBackupConnection(self, a2, backup);
   v5 = CloudServicesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2246,9 +2246,9 @@
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling removeRecoveryKeyFromBackup in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (backup)
   {
-    *a3 = v32[5];
+    *backup = v32[5];
   }
 
   v18 = *(v28 + 24);
@@ -2259,38 +2259,38 @@
   return v18;
 }
 
-- (id)recoverWithInfo:(id)a3 results:(id *)a4
+- (id)recoverWithInfo:(id)info results:(id *)results
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v11 = 0;
   v7 = objc_msgSend_recoverWithError_(self, v6, &v11);
   v8 = v11;
-  if (a4)
+  if (results)
   {
     v9 = v7;
-    *a4 = v7;
+    *results = v7;
   }
 
   return v8;
 }
 
-- (void)recoverWithInfo:(id)a3 completionBlockWithResults:(id)a4
+- (void)recoverWithInfo:(id)info completionBlockWithResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
+  resultsCopy = results;
+  infoCopy = info;
   kdebug_trace();
-  objc_msgSend_populateWithInfo_(self, v8, v7);
+  objc_msgSend_populateWithInfo_(self, v8, infoCopy);
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22E9D6890;
   v11[3] = &unk_278859970;
-  v12 = v6;
-  v9 = v6;
+  v12 = resultsCopy;
+  v9 = resultsCopy;
   objc_msgSend_recoverWithResults_(self, v10, v11);
 }
 
-- (BOOL)disableWithError:(id *)a3
+- (BOOL)disableWithError:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -2298,7 +2298,7 @@
   v29 = sub_22E9D27B0;
   v30 = sub_22E9D27C0;
   v31 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_22E9D6B20;
@@ -2319,16 +2319,16 @@
   activity_block[2] = sub_22E9D6B90;
   activity_block[3] = &unk_278859880;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v23 = v5;
   v24 = &v26;
   v16 = v5;
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling disableWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v27[5];
+    *error = v27[5];
   }
 
   v18 = v27[5];
@@ -2337,9 +2337,9 @@
   return v18 == 0;
 }
 
-- (id)disableWithInfo:(id)a3
+- (id)disableWithInfo:(id)info
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v10 = 0;
   v5 = objc_msgSend_disableWithError_(self, v4, &v10);
   v6 = v10;
@@ -2353,58 +2353,58 @@
   return v8;
 }
 
-- (void)disableWithInfo:(id)a3 completionBlock:(id)a4
+- (void)disableWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_disableWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_disableWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (void)stashRecoveryDataWithInfo:(id)a3 completionBlock:(id)a4
+- (void)stashRecoveryDataWithInfo:(id)info completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  infoCopy = info;
   kdebug_trace();
-  objc_msgSend_populateWithInfo_(self, v8, v7);
+  objc_msgSend_populateWithInfo_(self, v8, infoCopy);
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22E9D6ECC;
   v11[3] = &unk_278859628;
-  v12 = v6;
-  v9 = v6;
+  v12 = blockCopy;
+  v9 = blockCopy;
   objc_msgSend_stashRecoveryDataWithCompletionBlock_(self, v10, v11);
 }
 
-- (id)cachePassphraseWithInfo:(id)a3
+- (id)cachePassphraseWithInfo:(id)info
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   objc_msgSend_cachePassphrase(self, v4, v5);
   return 0;
 }
 
-- (void)cachePassphraseWithInfo:(id)a3 completionBlock:(id)a4
+- (void)cachePassphraseWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_cachePassphraseWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_cachePassphraseWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (id)uncachePassphraseWithInfo:(id)a3
+- (id)uncachePassphraseWithInfo:(id)info
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   objc_msgSend_uncachePassphrase(self, v4, v5);
   return 0;
 }
 
-- (void)uncachePassphraseWithInfo:(id)a3 completionBlock:(id)a4
+- (void)uncachePassphraseWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_uncachePassphraseWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_uncachePassphraseWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (id)startSMSChallengeWithError:(id *)a3
+- (id)startSMSChallengeWithError:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -2418,7 +2418,7 @@
   v30 = sub_22E9D27B0;
   v31 = sub_22E9D27C0;
   v32 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = sub_22E9D72C8;
@@ -2439,7 +2439,7 @@
   v20[2] = sub_22E9D7338;
   v20[3] = &unk_278859830;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v24 = &v33;
   v25 = &v27;
   v23 = v5;
@@ -2447,9 +2447,9 @@
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling startSMSChallengeWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, v20);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v34[5];
+    *error = v34[5];
   }
 
   v18 = v28[5];
@@ -2460,48 +2460,48 @@
   return v18;
 }
 
-- (id)startSMSChallengeWithInfo:(id)a3 results:(id *)a4
+- (id)startSMSChallengeWithInfo:(id)info results:(id *)results
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v11 = 0;
   v7 = objc_msgSend_startSMSChallengeWithError_(self, v6, &v11);
   v8 = v11;
-  if (a4)
+  if (results)
   {
     v9 = v7;
-    *a4 = v7;
+    *results = v7;
   }
 
   return v8;
 }
 
-- (void)startSMSChallengeWithInfo:(id)a3 completionBlockWithResults:(id)a4
+- (void)startSMSChallengeWithInfo:(id)info completionBlockWithResults:(id)results
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_startSMSChallengeWithResults_(self, v7, v8);
+  resultsCopy = results;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_startSMSChallengeWithResults_(self, v7, resultsCopy);
 }
 
-- (void)startSMSChallengeWithInfo:(id)a3 completionBlock:(id)a4
+- (void)startSMSChallengeWithInfo:(id)info completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22E9D7670;
   v9[3] = &unk_278859970;
-  v10 = v6;
-  v7 = v6;
-  objc_msgSend_startSMSChallengeWithInfo_completionBlockWithResults_(self, v8, a3, v9);
+  v10 = blockCopy;
+  v7 = blockCopy;
+  objc_msgSend_startSMSChallengeWithInfo_completionBlockWithResults_(self, v8, info, v9);
 }
 
-- (void)getCountrySMSCodesWithInfo:(id)a3 completionBlockWithResults:(id)a4
+- (void)getCountrySMSCodesWithInfo:(id)info completionBlockWithResults:(id)results
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_getCountrySMSCodesWithResults_(self, v7, v8);
+  resultsCopy = results;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_getCountrySMSCodesWithResults_(self, v7, resultsCopy);
 }
 
-- (BOOL)changeSMSTargetWithError:(id *)a3
+- (BOOL)changeSMSTargetWithError:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -2509,7 +2509,7 @@
   v29 = sub_22E9D27B0;
   v30 = sub_22E9D27C0;
   v31 = 0;
-  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, a3);
+  v5 = objc_msgSend__CreateSecureBackupConnection(self, a2, error);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_22E9D78E0;
@@ -2530,16 +2530,16 @@
   activity_block[2] = sub_22E9D7950;
   activity_block[3] = &unk_278859880;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v23 = v5;
   v24 = &v26;
   v16 = v5;
   v17 = v7;
   _os_activity_initiate(&dword_22E9CA000, "calling changeSMSTargetWithRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v27[5];
+    *error = v27[5];
   }
 
   v18 = v27[5];
@@ -2548,9 +2548,9 @@
   return v18 == 0;
 }
 
-- (id)changeSMSTargetWithInfo:(id)a3
+- (id)changeSMSTargetWithInfo:(id)info
 {
-  objc_msgSend_populateWithInfo_(self, a2, a3);
+  objc_msgSend_populateWithInfo_(self, a2, info);
   v10 = 0;
   v5 = objc_msgSend_changeSMSTargetWithError_(self, v4, &v10);
   v6 = v10;
@@ -2564,16 +2564,16 @@
   return v8;
 }
 
-- (void)changeSMSTargetWithInfo:(id)a3 completionBlock:(id)a4
+- (void)changeSMSTargetWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_changeSMSTargetWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_changeSMSTargetWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (id)backupForRecoveryKeyWithInfo:(id)a3
+- (id)backupForRecoveryKeyWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2601,11 +2601,11 @@
   activity_block[2] = sub_22E9D7E30;
   activity_block[3] = &unk_278859880;
   v24 = v9;
-  v25 = v4;
+  v25 = infoCopy;
   v26 = v7;
   v27 = &v29;
   v18 = v7;
-  v19 = v4;
+  v19 = infoCopy;
   v20 = v9;
   _os_activity_initiate(&dword_22E9CA000, "calling backupForRecoveryKeyWithInfoInDaemon in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
@@ -2615,9 +2615,9 @@
   return v21;
 }
 
-- (SecureBackup)backupWithInfo:(id)a3
+- (SecureBackup)backupWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2645,11 +2645,11 @@
   activity_block[2] = sub_22E9D8234;
   activity_block[3] = &unk_278859880;
   v24 = v9;
-  v25 = v4;
+  v25 = infoCopy;
   v26 = v7;
   v27 = &v29;
   v18 = v7;
-  v19 = v4;
+  v19 = infoCopy;
   v20 = v9;
   _os_activity_initiate(&dword_22E9CA000, "calling backupWithInfo in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
@@ -2659,18 +2659,18 @@
   return v21;
 }
 
-- (void)backOffDateWithInfo:(id)a3 completionBlock:(id)a4
+- (void)backOffDateWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_backOffDateWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_backOffDateWithCompletionBlock_(self, v7, blockCopy);
 }
 
-- (void)setBackOffDateWithInfo:(id)a3 completionBlock:(id)a4
+- (void)setBackOffDateWithInfo:(id)info completionBlock:(id)block
 {
-  v8 = a4;
-  objc_msgSend_populateWithInfo_(self, v6, a3);
-  objc_msgSend_setBackOffDateWithCompletionBlock_(self, v7, v8);
+  blockCopy = block;
+  objc_msgSend_populateWithInfo_(self, v6, info);
+  objc_msgSend_setBackOffDateWithCompletionBlock_(self, v7, blockCopy);
 }
 
 - (id)srpInitNonce
@@ -2687,34 +2687,34 @@
   return v15;
 }
 
-- (void)srpRecoveryUpdateDSID:(id)a3 recoveryPassphrase:(id)a4
+- (void)srpRecoveryUpdateDSID:(id)d recoveryPassphrase:(id)passphrase
 {
-  v6 = a4;
-  v7 = a3;
+  passphraseCopy = passphrase;
+  dCopy = d;
   v11 = objc_msgSend_ses(self, v8, v9);
-  objc_msgSend_srpRecoveryUpdateDSID_recoveryPassphrase_(v11, v10, v7, v6);
+  objc_msgSend_srpRecoveryUpdateDSID_recoveryPassphrase_(v11, v10, dCopy, passphraseCopy);
 }
 
-- (id)srpRecoveryBlobFromSRPInitResponse:(id)a3 error:(id *)a4
+- (id)srpRecoveryBlobFromSRPInitResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v9 = objc_msgSend_ses(self, v7, v8);
-  v11 = objc_msgSend_srpRecoveryBlobFromData_error_(v9, v10, v6, a4);
+  v11 = objc_msgSend_srpRecoveryBlobFromData_error_(v9, v10, responseCopy, error);
 
   objc_msgSend_setSes_(self, v12, 0);
 
   return v11;
 }
 
-- (void)prepareHSA2EscrowRecordContents:(BOOL)a3 reply:(id)a4
+- (void)prepareHSA2EscrowRecordContents:(BOOL)contents reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v9 = objc_msgSend__CreateSecureBackupConnection(self, v7, v8);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = sub_22E9D87BC;
   v30[3] = &unk_278859628;
-  v10 = v6;
+  v10 = replyCopy;
   v31 = v10;
   v12 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v9, v11, v30);
   if (pthread_main_np())
@@ -2731,8 +2731,8 @@
   v24[2] = sub_22E9D8830;
   v24[3] = &unk_278859998;
   v25 = v12;
-  v26 = self;
-  v29 = a3;
+  selfCopy = self;
+  contentsCopy = contents;
   v27 = v9;
   v28 = v10;
   v21 = v10;
@@ -2750,12 +2750,12 @@
     block[1] = 3221225472;
     block[2] = sub_22E9D8A74;
     block[3] = &unk_2788599B8;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v3, block);
   }
 }
 
-+ (unsigned)needPasscodeForHSA2EscrowRecordUpdate:(id *)a3
++ (unsigned)needPasscodeForHSA2EscrowRecordUpdate:(id *)update
 {
   v43 = *MEMORY[0x277D85DE8];
   if (qword_280B5F9C0 != -1)
@@ -2812,14 +2812,14 @@ LABEL_9:
       _os_log_impl(&dword_22E9CA000, v25, OS_LOG_TYPE_DEFAULT, "do initial state fetch in the background", buf, 2u);
     }
 
-    objc_msgSend_asyncRequestEscrowRecordUpdate(a1, v26, v27);
+    objc_msgSend_asyncRequestEscrowRecordUpdate(self, v26, v27);
     goto LABEL_11;
   }
 
   if ((state64 & 4) == 0)
   {
     v39 = 0;
-    v14 = objc_msgSend_daemonPasscodeRequestOpinion_(a1, v5, &v39);
+    v14 = objc_msgSend_daemonPasscodeRequestOpinion_(self, v5, &v39);
     v15 = v39;
     v18 = v15;
     if (v15)
@@ -2942,7 +2942,7 @@ LABEL_12:
   return v11;
 }
 
-+ (unsigned)daemonPasscodeRequestOpinion:(id *)a3
++ (unsigned)daemonPasscodeRequestOpinion:(id *)opinion
 {
   v30 = 0;
   v31 = &v30;
@@ -2954,7 +2954,7 @@ LABEL_12:
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v4 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(a1, a2, a3);
+  v4 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(self, a2, opinion);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_22E9D9244;
@@ -2982,12 +2982,12 @@ LABEL_12:
   v16 = v6;
   _os_activity_initiate(&dword_22E9CA000, "calling daemonPasscodeRequestOpinion in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (opinion)
   {
     v17 = v31[5];
     if (v17)
     {
-      *a3 = v17;
+      *opinion = v17;
     }
   }
 
@@ -2999,10 +2999,10 @@ LABEL_12:
   return v18;
 }
 
-- (id)beginHSA2PasscodeRequest:(BOOL)a3 uuid:(id)a4 reason:(id)a5 error:(id *)a6
+- (id)beginHSA2PasscodeRequest:(BOOL)request uuid:(id)uuid reason:(id)reason error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  uuidCopy = uuid;
+  reasonCopy = reason;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -3036,11 +3036,11 @@ LABEL_12:
   activity_block[2] = sub_22E9D9830;
   activity_block[3] = &unk_278859A30;
   v33 = v16;
-  v34 = self;
-  v40 = a3;
-  v25 = v10;
+  selfCopy = self;
+  requestCopy = request;
+  v25 = uuidCopy;
   v35 = v25;
-  v26 = v11;
+  v26 = reasonCopy;
   v38 = &v48;
   v39 = &v42;
   v36 = v26;
@@ -3049,12 +3049,12 @@ LABEL_12:
   v28 = v16;
   _os_activity_initiate(&dword_22E9CA000, "calling beginHSA2PasscodeRequest in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a6)
+  if (error)
   {
     v29 = v49[5];
     if (v29)
     {
-      *a6 = v29;
+      *error = v29;
     }
   }
 
@@ -3066,15 +3066,15 @@ LABEL_12:
   return v30;
 }
 
-- (void)getCertificates:(id)a3
+- (void)getCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   v7 = objc_msgSend__CreateSecureBackupConnection(self, v5, v6);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_22E9D9B6C;
   v19[3] = &unk_278859628;
-  v8 = v4;
+  v8 = certificatesCopy;
   v20 = v8;
   v10 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v7, v9, v19);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -3082,7 +3082,7 @@ LABEL_12:
   activity_block[2] = sub_22E9D9BEC;
   activity_block[3] = &unk_278859678;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
   v18 = v8;
   v11 = v8;
@@ -3119,16 +3119,16 @@ LABEL_12:
   return v7;
 }
 
-+ (void)saveTermsAcceptance:(id)a3 reply:(id)a4
++ (void)saveTermsAcceptance:(id)acceptance reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(a1, v8, v9);
+  acceptanceCopy = acceptance;
+  replyCopy = reply;
+  v10 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(self, v8, v9);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_22E9D9F64;
   v23[3] = &unk_278859628;
-  v11 = v7;
+  v11 = replyCopy;
   v24 = v11;
   v13 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v10, v12, v23);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -3136,26 +3136,26 @@ LABEL_12:
   activity_block[2] = sub_22E9D9FD8;
   activity_block[3] = &unk_278859678;
   v19 = v13;
-  v20 = v6;
+  v20 = acceptanceCopy;
   v21 = v10;
   v22 = v11;
   v14 = v11;
   v15 = v10;
-  v16 = v6;
+  v16 = acceptanceCopy;
   v17 = v13;
   _os_activity_initiate(&dword_22E9CA000, "calling saveTermsAcceptance in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-+ (void)getAcceptedTermsForAltDSID:(id)a3 reply:(id)a4
++ (void)getAcceptedTermsForAltDSID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(a1, v8, v9);
+  dCopy = d;
+  replyCopy = reply;
+  v10 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(self, v8, v9);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_22E9DA2E4;
   v23[3] = &unk_278859628;
-  v11 = v7;
+  v11 = replyCopy;
   v24 = v11;
   v13 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v10, v12, v23);
   activity_block[0] = MEMORY[0x277D85DD0];
@@ -3163,19 +3163,19 @@ LABEL_12:
   activity_block[2] = sub_22E9DA35C;
   activity_block[3] = &unk_278859678;
   v19 = v13;
-  v20 = v6;
+  v20 = dCopy;
   v21 = v10;
   v22 = v11;
   v14 = v11;
   v15 = v10;
-  v16 = v6;
+  v16 = dCopy;
   v17 = v13;
   _os_activity_initiate(&dword_22E9CA000, "calling getAcceptedTermsForAltDSID in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-+ (id)_getAcceptedTermsForAltDSID:(id)a3 withError:(id *)a4
++ (id)_getAcceptedTermsForAltDSID:(id)d withError:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -3188,7 +3188,7 @@ LABEL_12:
   v28 = sub_22E9D27B0;
   v29 = sub_22E9D27C0;
   v30 = 0;
-  v9 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(a1, v7, v8);
+  v9 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(self, v7, v8);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_22E9DA7A4;
@@ -3200,7 +3200,7 @@ LABEL_12:
   v18[2] = sub_22E9DA814;
   v18[3] = &unk_278859830;
   v19 = v11;
-  v12 = v6;
+  v12 = dCopy;
   v22 = &v31;
   v23 = &v25;
   v20 = v12;
@@ -3209,12 +3209,12 @@ LABEL_12:
   v14 = v11;
   _os_activity_initiate(&dword_22E9CA000, "calling getAcceptedTermsForAltDSID in daemon", OS_ACTIVITY_FLAG_DEFAULT, v18);
 
-  if (a4)
+  if (error)
   {
     v15 = v32[5];
     if (v15)
     {
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -3226,9 +3226,9 @@ LABEL_12:
   return v16;
 }
 
-+ (id)getAcceptedTermsForAltDSID:(id)a3 withError:(id *)a4
++ (id)getAcceptedTermsForAltDSID:(id)d withError:(id *)error
 {
-  v4 = objc_msgSend__getAcceptedTermsForAltDSID_withError_(a1, a2, a3, a4);
+  v4 = objc_msgSend__getAcceptedTermsForAltDSID_withError_(self, a2, d, error);
   if (objc_msgSend_count(v4, v5, v6))
   {
     v8 = objc_msgSend_objectAtIndexedSubscript_(v4, v7, 0);
@@ -3242,10 +3242,10 @@ LABEL_12:
   return v8;
 }
 
-+ (BOOL)moveToFederationAllowed:(id)a3 altDSID:(id)a4 error:(id *)a5
++ (BOOL)moveToFederationAllowed:(id)allowed altDSID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  allowedCopy = allowed;
+  dCopy = d;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -3256,7 +3256,7 @@ LABEL_12:
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v12 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(a1, v10, v11);
+  v12 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(self, v10, v11);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = sub_22E9DAC84;
@@ -3268,9 +3268,9 @@ LABEL_12:
   activity_block[2] = sub_22E9DACF4;
   activity_block[3] = &unk_2788598A8;
   v23 = v14;
-  v15 = v8;
+  v15 = allowedCopy;
   v24 = v15;
-  v16 = v9;
+  v16 = dCopy;
   v27 = &v30;
   v28 = &v34;
   v25 = v16;
@@ -3279,12 +3279,12 @@ LABEL_12:
   v18 = v14;
   _os_activity_initiate(&dword_22E9CA000, "calling moveToFederationAllowed in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a5)
+  if (error)
   {
     v19 = v35[5];
     if (v19)
     {
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -3296,7 +3296,7 @@ LABEL_12:
   return v20;
 }
 
-+ (id)knownICDPFederations:(id *)a3
++ (id)knownICDPFederations:(id *)federations
 {
   v24 = 0;
   v25 = &v24;
@@ -3310,7 +3310,7 @@ LABEL_12:
   v21 = sub_22E9D27B0;
   v22 = sub_22E9D27C0;
   v23 = 0;
-  v4 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(a1, a2, a3);
+  v4 = objc_msgSend__ClassCreateSecureBackupConcurrentConnection(self, a2, federations);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_22E9DB0D4;
@@ -3329,12 +3329,12 @@ LABEL_12:
   v8 = v6;
   _os_activity_initiate(&dword_22E9CA000, "calling knownICDPFederations in daemon", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a3)
+  if (federations)
   {
     v9 = v25[5];
     if (v9)
     {
-      *a3 = v9;
+      *federations = v9;
     }
   }
 

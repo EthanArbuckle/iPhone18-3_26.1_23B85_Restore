@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_DeleteInvalidStateSharedStreamShareParticipants
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeleteInvalidStateSharedStreamShareParticipants
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLShareParticipant entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
@@ -21,8 +21,8 @@
   v12 = [v8 andPredicateWithSubpredicates:v11];
   [v7 setPredicate:v12];
 
-  v13 = [v34 executeFetchRequest:v7 error:a4];
-  v14 = [v13 firstObject];
+  v13 = [contextCopy executeFetchRequest:v7 error:error];
+  firstObject = [v13 firstObject];
 
   v15 = MEMORY[0x1E695D5E0];
   v16 = +[PLShareParticipant entityName];
@@ -31,8 +31,8 @@
   [v17 setFetchBatchSize:100];
   v18 = MEMORY[0x1E696AB28];
   v19 = MEMORY[0x1E696AE18];
-  v20 = [v14 hashedPersonID];
-  v21 = [v19 predicateWithFormat:@"%K == %@", @"hashedPersonID", v20];
+  hashedPersonID = [firstObject hashedPersonID];
+  v21 = [v19 predicateWithFormat:@"%K == %@", @"hashedPersonID", hashedPersonID];
   v40[0] = v21;
   v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"acceptanceStatus", 3];
   v40[1] = v22;
@@ -49,17 +49,17 @@
   v37[1] = 3221225472;
   v37[2] = __118__PLModelMigrationAction_DeleteInvalidStateSharedStreamShareParticipants_performActionWithManagedObjectContext_error___block_invoke;
   v37[3] = &unk_1E75680B0;
-  v27 = v34;
+  v27 = contextCopy;
   v38 = v27;
   v28 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v27 fetchRequest:v17 pendingParentUnitCount:0 error:&v39 processingBlock:v37];
   v29 = v39;
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v30 = v29;
   v31 = v30;
-  if (v28 != 1 && a4)
+  if (v28 != 1 && error)
   {
     v32 = v30;
-    *a4 = v31;
+    *error = v31;
   }
 
   return v28;

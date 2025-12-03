@@ -7,29 +7,29 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)applyConfirmedOptinAndCheckMaxDeviceCount:(BOOL)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)applyConfirmedOptinAndCheckMaxDeviceCount:(BOOL)count;
 - (void)didEstablishHold;
 - (void)discoveryOperationComplete;
-- (void)dismissSetupFlow:(id)a3;
-- (void)preflightPairingFlowAgainstDeviceTakeoverProtection:(BOOL)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)dismissSetupFlow:(id)flow;
+- (void)preflightPairingFlowAgainstDeviceTakeoverProtection:(BOOL)protection;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)updateHeroImageWithAnimation;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSPairingTypeSelectionViewController
 
 + (BOOL)controllerNeedsToRun
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 resumePairingController];
-  v4 = [v3 isResumingPairing];
+  setupController = [UIApp setupController];
+  resumePairingController = [setupController resumePairingController];
+  isResumingPairing = [resumePairingController isResumingPairing];
 
-  return v4 ^ 1;
+  return isResumingPairing ^ 1;
 }
 
 - (COSPairingTypeSelectionViewController)init
@@ -69,36 +69,36 @@
 
 - (void)didEstablishHold
 {
-  v3 = [UIApp setupController];
+  setupController = [UIApp setupController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000C92E4;
   v4[3] = &unk_1002682F0;
   v4[4] = self;
-  [v3 updateStagedMDMEnrollmentDataForPairingWatchWithCompletion:v4];
+  [setupController updateStagedMDMEnrollmentDataForPairingWatchWithCompletion:v4];
 }
 
 - (BOOL)offerYorktown
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 offerYorktownForCurrentPairing];
+  setupController = [UIApp setupController];
+  offerYorktownForCurrentPairing = [setupController offerYorktownForCurrentPairing];
 
-  return v3;
+  return offerYorktownForCurrentPairing;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = COSPairingTypeSelectionViewController;
-  [(COSPairingTypeSelectionViewController *)&v9 viewWillAppear:a3];
+  [(COSPairingTypeSelectionViewController *)&v9 viewWillAppear:appear];
   [(COSBuddyWatchDiscoveryMonitor *)self->_buddyWatchDiscoveryMonitor startDiscoveryCoordinator];
-  v4 = [(COSPairingTypeSelectionViewController *)self navigationItem];
+  navigationItem = [(COSPairingTypeSelectionViewController *)self navigationItem];
   v5 = [UIBarButtonItem alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"CANCEL_SETUP_FLOW" value:&stru_10026E598 table:@"Localizable"];
   v8 = [v5 initWithTitle:v7 style:0 target:self action:"dismissSetupFlow:"];
 
-  [v4 setRightBarButtonItem:v8 animated:0];
+  [navigationItem setRightBarButtonItem:v8 animated:0];
 }
 
 - (void)viewDidLoad
@@ -106,92 +106,92 @@
   v45.receiver = self;
   v45.super_class = COSPairingTypeSelectionViewController;
   [(COSPairingTypeSelectionViewController *)&v45 viewDidLoad];
-  v3 = [(COSPairingTypeSelectionViewController *)self desiredImageName];
-  v4 = [UIImage imageNamed:v3];
+  desiredImageName = [(COSPairingTypeSelectionViewController *)self desiredImageName];
+  v4 = [UIImage imageNamed:desiredImageName];
 
   if (!v4)
   {
-    v5 = [(COSPairingTypeSelectionViewController *)self fallbackImageName];
-    v4 = [UIImage imageNamed:v5];
+    fallbackImageName = [(COSPairingTypeSelectionViewController *)self fallbackImageName];
+    v4 = [UIImage imageNamed:fallbackImageName];
   }
 
   v6 = [[UIImageView alloc] initWithImage:v4];
   [(COSPairingTypeSelectionViewController *)self setMarketingBannerImage:v6];
 
-  v7 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  v8 = [v7 layer];
-  [v8 setMinificationFilter:kCAFilterTrilinear];
+  marketingBannerImage = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  layer = [marketingBannerImage layer];
+  [layer setMinificationFilter:kCAFilterTrilinear];
 
-  v9 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  [v9 setContentMode:1];
+  marketingBannerImage2 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  [marketingBannerImage2 setContentMode:1];
 
-  v10 = [(COSPairingTypeSelectionViewController *)self contentView];
-  v11 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  [v10 addSubview:v11];
+  contentView = [(COSPairingTypeSelectionViewController *)self contentView];
+  marketingBannerImage3 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  [contentView addSubview:marketingBannerImage3];
 
-  v12 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  marketingBannerImage4 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  [marketingBannerImage4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  v14 = [v13 topAnchor];
-  v15 = [(COSPairingTypeSelectionViewController *)self contentView];
-  v16 = [v15 topAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  marketingBannerImage5 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  topAnchor = [marketingBannerImage5 topAnchor];
+  contentView2 = [(COSPairingTypeSelectionViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v17 setActive:1];
 
-  v18 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  v19 = [v18 bottomAnchor];
-  v20 = [(COSPairingTypeSelectionViewController *)self contentView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  marketingBannerImage6 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  bottomAnchor = [marketingBannerImage6 bottomAnchor];
+  contentView3 = [(COSPairingTypeSelectionViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v22 setActive:1];
 
-  v23 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  v24 = [v23 leftAnchor];
-  v25 = [(COSPairingTypeSelectionViewController *)self contentView];
-  v26 = [v25 leftAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  marketingBannerImage7 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  leftAnchor = [marketingBannerImage7 leftAnchor];
+  contentView4 = [(COSPairingTypeSelectionViewController *)self contentView];
+  leftAnchor2 = [contentView4 leftAnchor];
+  v27 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v27 setActive:1];
 
-  v28 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
-  v29 = [v28 rightAnchor];
-  v30 = [(COSPairingTypeSelectionViewController *)self contentView];
-  v31 = [v30 rightAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  marketingBannerImage8 = [(COSPairingTypeSelectionViewController *)self marketingBannerImage];
+  rightAnchor = [marketingBannerImage8 rightAnchor];
+  contentView5 = [(COSPairingTypeSelectionViewController *)self contentView];
+  rightAnchor2 = [contentView5 rightAnchor];
+  v32 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v32 setActive:1];
 
   if (self->_spinner)
   {
-    v33 = [(COSPairingTypeSelectionViewController *)self buttonTray];
-    [v33 addSubview:self->_spinner];
+    buttonTray = [(COSPairingTypeSelectionViewController *)self buttonTray];
+    [buttonTray addSubview:self->_spinner];
 
     [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    v34 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-    v35 = [(COSPairingTypeSelectionViewController *)self buttonTray];
-    v36 = [v35 topAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:-16.0];
+    bottomAnchor3 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+    buttonTray2 = [(COSPairingTypeSelectionViewController *)self buttonTray];
+    topAnchor3 = [buttonTray2 topAnchor];
+    v37 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:-16.0];
     [v37 setActive:1];
 
-    v38 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-    v39 = [(COSPairingTypeSelectionViewController *)self buttonTray];
-    v40 = [v39 centerXAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+    buttonTray3 = [(COSPairingTypeSelectionViewController *)self buttonTray];
+    centerXAnchor2 = [buttonTray3 centerXAnchor];
+    v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v41 setActive:1];
   }
 
-  v42 = [(COSPairingTypeSelectionViewController *)self navigationItem];
-  v43 = [(COSPairingTypeSelectionViewController *)self titleString];
-  [v42 setBackButtonTitle:v43];
+  navigationItem = [(COSPairingTypeSelectionViewController *)self navigationItem];
+  titleString = [(COSPairingTypeSelectionViewController *)self titleString];
+  [navigationItem setBackButtonTitle:titleString];
 
-  v44 = [(COSPairingTypeSelectionViewController *)self navigationItem];
-  [v44 setBackButtonDisplayMode:1];
+  navigationItem2 = [(COSPairingTypeSelectionViewController *)self navigationItem];
+  [navigationItem2 setBackButtonDisplayMode:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = COSPairingTypeSelectionViewController;
-  [(COSPairingTypeSelectionViewController *)&v5 viewDidDisappear:a3];
+  [(COSPairingTypeSelectionViewController *)&v5 viewDidDisappear:disappear];
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,7 +227,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dismissSetupFlow:(id)a3
+- (void)dismissSetupFlow:(id)flow
 {
   [PBBridgeCAReporter incrementSuccessType:17];
   v3 = UIApp;
@@ -281,7 +281,7 @@
   return v2;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   if (self->_handledButtonAction)
   {
@@ -302,7 +302,7 @@
   }
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   if (self->_handledButtonAction)
   {
@@ -323,20 +323,20 @@
   }
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  v3 = a3;
-  v5 = [UIApp automationFlowPressed];
-  if (v3)
+  optinCopy = optin;
+  automationFlowPressed = [UIApp automationFlowPressed];
+  if (optinCopy)
   {
-    v6 = v5;
-    v7 = [UIApp bridgeController];
-    [v7 setTinkerPairing:0];
+    v6 = automationFlowPressed;
+    bridgeController = [UIApp bridgeController];
+    [bridgeController setTinkerPairing:0];
 
     if ([(COSPairingTypeSelectionViewController *)self offerYorktown]|| !_os_feature_enabled_impl())
     {
-      v11 = [(COSPairingTypeSelectionViewController *)self delegate];
-      [v11 buddyControllerDone:self];
+      delegate = [(COSPairingTypeSelectionViewController *)self delegate];
+      [delegate buddyControllerDone:self];
     }
 
     else
@@ -354,20 +354,20 @@
   else
   {
     [(UIActivityIndicatorView *)self->_spinner startAnimating];
-    v8 = [(COSPairingTypeSelectionViewController *)self suggestedChoiceButton];
-    [v8 setEnabled:0];
+    suggestedChoiceButton = [(COSPairingTypeSelectionViewController *)self suggestedChoiceButton];
+    [suggestedChoiceButton setEnabled:0];
 
-    v9 = [(COSPairingTypeSelectionViewController *)self alternateChoiceButton];
-    [v9 setEnabled:0];
+    alternateChoiceButton = [(COSPairingTypeSelectionViewController *)self alternateChoiceButton];
+    [alternateChoiceButton setEnabled:0];
 
     objc_initWeak(&location, self);
-    v10 = [(COSPairingTypeSelectionViewController *)self satellitePairingHelper];
+    satellitePairingHelper = [(COSPairingTypeSelectionViewController *)self satellitePairingHelper];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000CA3A0;
     v13[3] = &unk_100268260;
     objc_copyWeak(&v14, &location);
-    [v10 checkPairingPreconditionsWithCompletion:v13];
+    [satellitePairingHelper checkPairingPreconditionsWithCompletion:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -398,9 +398,9 @@
   return v2;
 }
 
-- (void)preflightPairingFlowAgainstDeviceTakeoverProtection:(BOOL)a3
+- (void)preflightPairingFlowAgainstDeviceTakeoverProtection:(BOOL)protection
 {
-  v3 = a3;
+  protectionCopy = protection;
   if (_os_feature_enabled_impl())
   {
     v5 = objc_alloc_init(LAContext);
@@ -426,37 +426,37 @@
     v10[2] = sub_1000CA818;
     v10[3] = &unk_10026B2C0;
     v10[4] = self;
-    v11 = v3;
+    v11 = protectionCopy;
     [v5 evaluatePolicy:1025 options:v9 reply:v10];
   }
 
   else
   {
 
-    [(COSPairingTypeSelectionViewController *)self applyConfirmedOptinAndCheckMaxDeviceCount:v3];
+    [(COSPairingTypeSelectionViewController *)self applyConfirmedOptinAndCheckMaxDeviceCount:protectionCopy];
   }
 }
 
-- (void)applyConfirmedOptinAndCheckMaxDeviceCount:(BOOL)a3
+- (void)applyConfirmedOptinAndCheckMaxDeviceCount:(BOOL)count
 {
-  v3 = a3;
-  v5 = [NSNumber numberWithInt:!a3];
+  countCopy = count;
+  v5 = [NSNumber numberWithInt:!count];
   v33 = 0;
   v6 = sub_100005808(v5, &v33);
   v7 = v33;
 
   if (v6)
   {
-    [(COSPairingTypeSelectionViewController *)self applyConfirmedOptin:v3];
+    [(COSPairingTypeSelectionViewController *)self applyConfirmedOptin:countCopy];
     goto LABEL_19;
   }
 
-  v8 = [(__CFString *)v7 code];
-  if (v8 <= 3)
+  code = [(__CFString *)v7 code];
+  if (code <= 3)
   {
-    v9 = v8;
-    v10 = [(__CFString *)v7 domain];
-    v11 = [v10 isEqualToString:@"com.apple.Bridge-QuickSwitchPairing"];
+    v9 = code;
+    domain = [(__CFString *)v7 domain];
+    v11 = [domain isEqualToString:@"com.apple.Bridge-QuickSwitchPairing"];
 
     if (v11)
     {
@@ -509,8 +509,8 @@ LABEL_13:
       if (v15 && v23)
       {
         v24 = [UIAlertController alertControllerWithTitle:v15 message:v23 preferredStyle:1];
-        v25 = [v13[501] mainBundle];
-        v26 = [v25 localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
+        mainBundle = [v13[501] mainBundle];
+        v26 = [mainBundle localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
         v27 = [UIAlertAction actionWithTitle:v26 style:1 handler:&stru_10026B2E0];
         [v24 addAction:v27];
 
@@ -531,8 +531,8 @@ LABEL_19:
 
 - (void)discoveryOperationComplete
 {
-  v3 = [(COSPairingTypeSelectionViewController *)self delegate];
-  [v3 buddyControllerDone:self];
+  delegate = [(COSPairingTypeSelectionViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

@@ -1,82 +1,82 @@
 @interface RMClient
-+ (id)_makeConduitWithManagementSourceObjectID:(id)a3 inContext:(id)a4;
++ (id)_makeConduitWithManagementSourceObjectID:(id)d inContext:(id)context;
 - (BOOL)_haltSyncing;
-- (RMClient)initWithConduit:(id)a3 activationEngine:(id)a4 statusEngine:(id)a5 managementSourceIdentifier:(id)a6;
-- (RMClient)initWithManagementSourceObjectID:(id)a3 managementSourceIdentifier:(id)a4 statusQuerier:(id)a5 persistentContainer:(id)a6;
+- (RMClient)initWithConduit:(id)conduit activationEngine:(id)engine statusEngine:(id)statusEngine managementSourceIdentifier:(id)identifier;
+- (RMClient)initWithManagementSourceObjectID:(id)d managementSourceIdentifier:(id)identifier statusQuerier:(id)querier persistentContainer:(id)container;
 - (RMClientDelegate)delegate;
-- (id)queryForStatusSubscriptionsWithIdentifiers:(id)a3;
+- (id)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers;
 - (void)_handleConduitError;
-- (void)_processConduitErrorState:(signed __int16)a3;
-- (void)_setNeedsSyncing:(BOOL)a3;
+- (void)_processConduitErrorState:(signed __int16)state;
+- (void)_setNeedsSyncing:(BOOL)syncing;
 - (void)_syncIfNeeded;
-- (void)_syncOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4;
-- (void)applyNowWithCompletionHandler:(id)a3;
-- (void)conduitNeedsToSendStatusForKeyPaths:(id)a3;
-- (void)conduitNeedsToSync:(id)a3;
-- (void)enrollWithCompletionHandler:(id)a3;
-- (void)reenrollWithCompletionHandler:(id)a3;
-- (void)sendStatusData:(id)a3 completionHandler:(id)a4;
-- (void)sendStatusForSubscriptionsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)statusEngineHasUnacknowledgedSubscription:(id)a3;
-- (void)syncIfNeededWithCompletionHandler:(id)a3;
-- (void)syncWithCompletionHandler:(id)a3;
-- (void)unenrollWithCompletionHandler:(id)a3;
-- (void)updateWithPushMessage:(id)a3 completionHandler:(id)a4;
-- (void)updateWithTokensResponse:(id)a3 completionHandler:(id)a4;
+- (void)_syncOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler;
+- (void)applyNowWithCompletionHandler:(id)handler;
+- (void)conduitNeedsToSendStatusForKeyPaths:(id)paths;
+- (void)conduitNeedsToSync:(id)sync;
+- (void)enrollWithCompletionHandler:(id)handler;
+- (void)reenrollWithCompletionHandler:(id)handler;
+- (void)sendStatusData:(id)data completionHandler:(id)handler;
+- (void)sendStatusForSubscriptionsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)statusEngineHasUnacknowledgedSubscription:(id)subscription;
+- (void)syncIfNeededWithCompletionHandler:(id)handler;
+- (void)syncWithCompletionHandler:(id)handler;
+- (void)unenrollWithCompletionHandler:(id)handler;
+- (void)updateWithPushMessage:(id)message completionHandler:(id)handler;
+- (void)updateWithTokensResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation RMClient
 
-- (RMClient)initWithManagementSourceObjectID:(id)a3 managementSourceIdentifier:(id)a4 statusQuerier:(id)a5 persistentContainer:(id)a6
+- (RMClient)initWithManagementSourceObjectID:(id)d managementSourceIdentifier:(id)identifier statusQuerier:(id)querier persistentContainer:(id)container
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v11 newBackgroundContext];
-  [v14 setAutomaticallyMergesChangesFromParent:1];
-  v15 = [NSString stringWithFormat:@"%@/%@", @"conduit", v10];
-  [v14 setTransactionAuthor:v15];
+  identifierCopy = identifier;
+  containerCopy = container;
+  querierCopy = querier;
+  dCopy = d;
+  newBackgroundContext = [containerCopy newBackgroundContext];
+  [newBackgroundContext setAutomaticallyMergesChangesFromParent:1];
+  identifierCopy = [NSString stringWithFormat:@"%@/%@", @"conduit", identifierCopy];
+  [newBackgroundContext setTransactionAuthor:identifierCopy];
 
-  v16 = v10;
-  v17 = [v11 newBackgroundContext];
-  [v17 setAutomaticallyMergesChangesFromParent:1];
+  v16 = identifierCopy;
+  newBackgroundContext2 = [containerCopy newBackgroundContext];
+  [newBackgroundContext2 setAutomaticallyMergesChangesFromParent:1];
   v18 = [NSString stringWithFormat:@"%@/%@", @"engine", v16];
 
-  [v17 setTransactionAuthor:v18];
-  v19 = [objc_opt_class() _makeConduitWithManagementSourceObjectID:v13 inContext:v14];
-  v20 = [[RMActivationEngine alloc] initWithManagementSourceObjectID:v13 context:v17];
-  v21 = [[RMStatusEngine alloc] initWithManagementSourceObjectID:v13 statusQuerier:v12 inContext:v14];
+  [newBackgroundContext2 setTransactionAuthor:v18];
+  v19 = [objc_opt_class() _makeConduitWithManagementSourceObjectID:dCopy inContext:newBackgroundContext];
+  v20 = [[RMActivationEngine alloc] initWithManagementSourceObjectID:dCopy context:newBackgroundContext2];
+  v21 = [[RMStatusEngine alloc] initWithManagementSourceObjectID:dCopy statusQuerier:querierCopy inContext:newBackgroundContext];
 
   v22 = [(RMClient *)self initWithConduit:v19 activationEngine:v20 statusEngine:v21 managementSourceIdentifier:v16];
   return v22;
 }
 
-- (RMClient)initWithConduit:(id)a3 activationEngine:(id)a4 statusEngine:(id)a5 managementSourceIdentifier:(id)a6
+- (RMClient)initWithConduit:(id)conduit activationEngine:(id)engine statusEngine:(id)statusEngine managementSourceIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  conduitCopy = conduit;
+  engineCopy = engine;
+  statusEngineCopy = statusEngine;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = RMClient;
   v15 = [(RMClient *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_conduit, a3);
-    [v11 setDelegate:v16];
-    objc_storeStrong(&v16->_activationEngine, a4);
-    objc_storeStrong(&v16->_statusEngine, a5);
-    objc_storeStrong(&v16->_managementSourceIdentifier, a6);
+    objc_storeStrong(&v15->_conduit, conduit);
+    [conduitCopy setDelegate:v16];
+    objc_storeStrong(&v16->_activationEngine, engine);
+    objc_storeStrong(&v16->_statusEngine, statusEngine);
+    objc_storeStrong(&v16->_managementSourceIdentifier, identifier);
     v17 = objc_opt_new();
     needsSyncingLock = v16->_needsSyncingLock;
     v16->_needsSyncingLock = v17;
 
     v16->_needsSyncing = 1;
-    v19 = [NSString stringWithFormat:@"RMClient-%@", v14];
-    v20 = [RMSharedLock newSharedLockWithDescription:v19];
+    identifierCopy = [NSString stringWithFormat:@"RMClient-%@", identifierCopy];
+    v20 = [RMSharedLock newSharedLockWithDescription:identifierCopy];
     syncLock = v16->_syncLock;
     v16->_syncLock = v20;
 
@@ -93,9 +93,9 @@
   return v16;
 }
 
-+ (id)_makeConduitWithManagementSourceObjectID:(id)a3 inContext:(id)a4
++ (id)_makeConduitWithManagementSourceObjectID:(id)d inContext:(id)context
 {
-  v5 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -106,12 +106,12 @@
   v10[1] = 3221225472;
   v10[2] = sub_10000CF38;
   v10[3] = &unk_1000D0E38;
-  v6 = a4;
-  v11 = v6;
-  v7 = v5;
+  contextCopy = context;
+  v11 = contextCopy;
+  v7 = dCopy;
   v12 = v7;
   v13 = &v14;
-  [v6 performBlockAndWait:v10];
+  [contextCopy performBlockAndWait:v10];
   v8 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -119,9 +119,9 @@
   return v8;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "Client: Starting", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -133,25 +133,25 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Starting client...", buf, 2u);
   }
 
-  v7 = [(RMClient *)self statusEngine];
-  [v7 setDelegate:self];
-  [v7 start];
-  v8 = [(RMClient *)self conduit];
+  statusEngine = [(RMClient *)self statusEngine];
+  [statusEngine setDelegate:self];
+  [statusEngine start];
+  conduit = [(RMClient *)self conduit];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000D1B4;
   v10[3] = &unk_1000D10D8;
   v10[4] = self;
-  v9 = v4;
+  v9 = handlerCopy;
   v11 = v9;
-  [v8 startWithCompletionHandler:v10];
+  [conduit startWithCompletionHandler:v10];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)enrollWithCompletionHandler:(id)a3
+- (void)enrollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "Client: Enrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -163,36 +163,36 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Enrolling...", buf, 2u);
   }
 
-  v7 = [(RMClient *)self statusEngine];
-  [v7 clearAllLastAcknowledgedDate];
-  v8 = [(RMClient *)self conduit];
-  v9 = [v8 statusItemsToImplicitlySubscribeTo];
-  [v7 implicitlySubscribeToStatusKeyPaths:v9];
+  statusEngine = [(RMClient *)self statusEngine];
+  [statusEngine clearAllLastAcknowledgedDate];
+  conduit = [(RMClient *)self conduit];
+  statusItemsToImplicitlySubscribeTo = [conduit statusItemsToImplicitlySubscribeTo];
+  [statusEngine implicitlySubscribeToStatusKeyPaths:statusItemsToImplicitlySubscribeTo];
 
-  v10 = [(RMClient *)self conduit];
-  v11 = [v10 statusItemsToSendDuringEnrollment];
+  conduit2 = [(RMClient *)self conduit];
+  statusItemsToSendDuringEnrollment = [conduit2 statusItemsToSendDuringEnrollment];
 
-  v12 = [v7 queryForStatusWithKeyPaths:v11];
-  v13 = [(RMClient *)self conduit];
-  v14 = [v12 statusByKeyPath];
+  v12 = [statusEngine queryForStatusWithKeyPaths:statusItemsToSendDuringEnrollment];
+  conduit3 = [(RMClient *)self conduit];
+  statusByKeyPath = [v12 statusByKeyPath];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000D570;
   v18[3] = &unk_1000D1100;
-  v15 = v7;
+  v15 = statusEngine;
   v19 = v15;
   v16 = v12;
   v20 = v16;
-  v17 = v4;
+  v17 = handlerCopy;
   v21 = v17;
-  [v13 enrollWithStatusItems:v14 completionHandler:v18];
+  [conduit3 enrollWithStatusItems:statusByKeyPath completionHandler:v18];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)reenrollWithCompletionHandler:(id)a3
+- (void)reenrollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "Client: Re-enrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -204,39 +204,39 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "re-enrolling...", buf, 2u);
   }
 
-  v7 = [(RMClient *)self statusEngine];
-  [v7 clearAllLastAcknowledgedDate];
+  statusEngine = [(RMClient *)self statusEngine];
+  [statusEngine clearAllLastAcknowledgedDate];
   v24[0] = RMModelStatusItemManagementClientCapabilities;
   v24[1] = RMModelStatusItemManagementDeclarations;
   v24[2] = RMModelStatusItemManagementPushToken;
   v8 = [NSArray arrayWithObjects:v24 count:3];
   v9 = [NSSet setWithArray:v8];
-  [v7 implicitlySubscribeToStatusKeyPaths:v9];
+  [statusEngine implicitlySubscribeToStatusKeyPaths:v9];
 
-  v10 = [(RMClient *)self conduit];
-  v11 = [v10 statusItemsToSendDuringEnrollment];
+  conduit = [(RMClient *)self conduit];
+  statusItemsToSendDuringEnrollment = [conduit statusItemsToSendDuringEnrollment];
 
-  v12 = [v7 queryForStatusWithKeyPaths:v11];
-  v13 = [(RMClient *)self conduit];
-  v14 = [v12 statusByKeyPath];
+  v12 = [statusEngine queryForStatusWithKeyPaths:statusItemsToSendDuringEnrollment];
+  conduit2 = [(RMClient *)self conduit];
+  statusByKeyPath = [v12 statusByKeyPath];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000D8C8;
   v18[3] = &unk_1000D1100;
-  v15 = v7;
+  v15 = statusEngine;
   v19 = v15;
   v16 = v12;
   v20 = v16;
-  v17 = v4;
+  v17 = handlerCopy;
   v21 = v17;
-  [v13 enrollWithStatusItems:v14 completionHandler:v18];
+  [conduit2 enrollWithStatusItems:statusByKeyPath completionHandler:v18];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)unenrollWithCompletionHandler:(id)a3
+- (void)unenrollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "Client: Unenrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -248,45 +248,45 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Unenrolling...", buf, 2u);
   }
 
-  v7 = [(RMClient *)self conduit];
+  conduit = [(RMClient *)self conduit];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000DA90;
   v9[3] = &unk_1000D1128;
   v9[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
-  [v7 unenrollWithCompletionHandler:v9];
+  [conduit unenrollWithCompletionHandler:v9];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)syncWithCompletionHandler:(id)a3
+- (void)syncWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "Client: Syncing", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v6.opaque[0] = 0;
   v6.opaque[1] = 0;
   os_activity_scope_enter(v5, &v6);
-  [(RMClient *)self _syncOnlyIfNeeded:0 completionHandler:v4];
+  [(RMClient *)self _syncOnlyIfNeeded:0 completionHandler:handlerCopy];
   os_activity_scope_leave(&v6);
 }
 
-- (void)syncIfNeededWithCompletionHandler:(id)a3
+- (void)syncIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "Client: Syncing if needed", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v6.opaque[0] = 0;
   v6.opaque[1] = 0;
   os_activity_scope_enter(v5, &v6);
-  [(RMClient *)self _syncOnlyIfNeeded:1 completionHandler:v4];
+  [(RMClient *)self _syncOnlyIfNeeded:1 completionHandler:handlerCopy];
   os_activity_scope_leave(&v6);
 }
 
-- (void)_syncOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)_syncOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  neededCopy = needed;
+  handlerCopy = handler;
   v7 = self->_needsSyncingLock;
   objc_sync_enter(v7);
   self->_needsSyncing = 0;
@@ -297,7 +297,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = &stru_1000D3680;
-    if (v4)
+    if (neededCopy)
     {
       v9 = @" only if needed";
     }
@@ -308,16 +308,16 @@
   }
 
   v10 = objc_opt_new();
-  v11 = [(RMClient *)self statusEngine];
-  v12 = v11;
-  if (v4)
+  statusEngine = [(RMClient *)self statusEngine];
+  v12 = statusEngine;
+  if (neededCopy)
   {
-    [v11 queryForUnacknowledgedStatusSubscriptions];
+    [statusEngine queryForUnacknowledgedStatusSubscriptions];
   }
 
   else
   {
-    [v11 queryForStatusSubscriptions];
+    [statusEngine queryForStatusSubscriptions];
   }
 
   v16[0] = _NSConcreteStackBlock;
@@ -325,26 +325,26 @@
   v16[2] = sub_10000DE70;
   v16[3] = &unk_1000D11A0;
   v17 = v10;
-  v18 = self;
-  v19 = v21 = v4;
-  v20 = v6;
+  selfCopy = self;
+  v19 = v21 = neededCopy;
+  v20 = handlerCopy;
   v13 = v19;
-  v14 = v6;
+  v14 = handlerCopy;
   v15 = v10;
-  [(RMClient *)self _sendStatusQueryResultIfNeeded:v13 fullReport:!v4 completionHandler:v16];
+  [(RMClient *)self _sendStatusQueryResultIfNeeded:v13 fullReport:!neededCopy completionHandler:v16];
 }
 
-- (void)applyNowWithCompletionHandler:(id)a3
+- (void)applyNowWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMClient *)self activationEngine];
-  [v5 syncWithCompletionHandler:v4];
+  handlerCopy = handler;
+  activationEngine = [(RMClient *)self activationEngine];
+  [activationEngine syncWithCompletionHandler:handlerCopy];
 }
 
-- (void)updateWithPushMessage:(id)a3 completionHandler:(id)a4
+- (void)updateWithPushMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "Client: Updating via push message", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -357,23 +357,23 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Updating via push message...", buf, 2u);
   }
 
-  v10 = [(RMClient *)self conduit];
+  conduit = [(RMClient *)self conduit];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000E96C;
   v12[3] = &unk_1000D10B0;
   v12[4] = self;
-  v11 = v7;
+  v11 = handlerCopy;
   v13 = v11;
-  [v10 updateWithPushMessage:v6 completionHandler:v12];
+  [conduit updateWithPushMessage:messageCopy completionHandler:v12];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)updateWithTokensResponse:(id)a3 completionHandler:(id)a4
+- (void)updateWithTokensResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "Client: Updating via sync tokens", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -386,31 +386,31 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Updating via sync tokens...", buf, 2u);
   }
 
-  v10 = [(RMClient *)self conduit];
+  conduit = [(RMClient *)self conduit];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000EBA0;
   v12[3] = &unk_1000D10B0;
   v12[4] = self;
-  v11 = v7;
+  v11 = handlerCopy;
   v13 = v11;
-  [v10 updateWithTokensResponse:v6 completionHandler:v12];
+  [conduit updateWithTokensResponse:responseCopy completionHandler:v12];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)sendStatusData:(id)a3 completionHandler:(id)a4
+- (void)sendStatusData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "Client: Sending arbitrary status", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v9 = [(RMClient *)self conduit];
-  v10 = [v9 isSyncAllowed];
+  conduit = [(RMClient *)self conduit];
+  isSyncAllowed = [conduit isSyncAllowed];
 
-  if ((v10 & 1) == 0)
+  if ((isSyncAllowed & 1) == 0)
   {
     v11 = +[RMLog client];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -432,7 +432,7 @@
 LABEL_8:
 
     v12 = +[RMErrorUtilities createStatePreventsSyncingError];
-    v7[2](v7, v12);
+    handlerCopy[2](handlerCopy, v12);
 
     goto LABEL_12;
   }
@@ -444,22 +444,22 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Sending arbitrary status...", buf, 2u);
   }
 
-  v14 = [(RMClient *)self conduit];
+  conduit2 = [(RMClient *)self conduit];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000EEB4;
   v15[3] = &unk_1000D10B0;
   v15[4] = self;
-  v16 = v7;
-  [v14 sendStatusData:v6 completionHandler:v15];
+  v16 = handlerCopy;
+  [conduit2 sendStatusData:dataCopy completionHandler:v15];
 
 LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (id)queryForStatusSubscriptionsWithIdentifiers:(id)a3
+- (id)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = _os_activity_create(&_mh_execute_header, "Client: querying for status subscriptions", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v23.opaque[0] = 0;
   v23.opaque[1] = 0;
@@ -467,8 +467,8 @@ LABEL_12:
   v6 = +[RMLog client];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects = [identifiersCopy allObjects];
+    v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v9 = [v8 componentsJoinedByString:{@", "}];
 
     *buf = 138543362;
@@ -476,14 +476,14 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Querying for status subscriptions with identifiers %{public}@...", buf, 0xCu);
   }
 
-  v10 = [(RMClient *)self statusEngine];
-  v11 = [v10 queryForStatusSubscriptionsWithIdentifiers:v4];
+  statusEngine = [(RMClient *)self statusEngine];
+  v11 = [statusEngine queryForStatusSubscriptionsWithIdentifiers:identifiersCopy];
 
   v12 = +[RMLog client];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v4 allObjects];
-    v21 = [v20 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects2 = [identifiersCopy allObjects];
+    v21 = [allObjects2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v22 = [v21 componentsJoinedByString:{@", "}];
 
     *buf = 138543362;
@@ -492,8 +492,8 @@ LABEL_12:
   }
 
   v13 = v11;
-  v14 = [v13 statusByKeyPath];
-  if ([v14 count])
+  statusByKeyPath = [v13 statusByKeyPath];
+  if ([statusByKeyPath count])
   {
 
 LABEL_8:
@@ -503,8 +503,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [v13 errorByKeyPath];
-  v16 = [v15 count] == 0;
+  errorByKeyPath = [v13 errorByKeyPath];
+  v16 = [errorByKeyPath count] == 0;
 
   if (!v16)
   {
@@ -519,10 +519,10 @@ LABEL_9:
   return v18;
 }
 
-- (void)sendStatusForSubscriptionsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)sendStatusForSubscriptionsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "Client: sending status for subscriptions", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v19.opaque[0] = 0;
   v19.opaque[1] = 0;
@@ -530,8 +530,8 @@ LABEL_9:
   v9 = +[RMLog client];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v6 allObjects];
-    v11 = [v10 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects = [identifiersCopy allObjects];
+    v11 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v12 = [v11 componentsJoinedByString:{@", "}];
 
     *buf = 138543362;
@@ -539,14 +539,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Querying for status subscriptions with identifiers %{public}@ then sending status...", buf, 0xCu);
   }
 
-  v13 = [(RMClient *)self statusEngine];
-  v14 = [v13 queryForStatusSubscriptionsWithIdentifiers:v6];
+  statusEngine = [(RMClient *)self statusEngine];
+  v14 = [statusEngine queryForStatusSubscriptionsWithIdentifiers:identifiersCopy];
 
   v15 = +[RMLog client];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v6 allObjects];
-    v17 = [v16 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects2 = [identifiersCopy allObjects];
+    v17 = [allObjects2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v18 = [v17 componentsJoinedByString:{@", "}];
 
     *buf = 138543362;
@@ -554,58 +554,58 @@ LABEL_9:
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Found status from status subscriptions with identifiers %{public}@", buf, 0xCu);
   }
 
-  [(RMClient *)self _sendStatusQueryResultIfNeeded:v14 fullReport:0 completionHandler:v7];
+  [(RMClient *)self _sendStatusQueryResultIfNeeded:v14 fullReport:0 completionHandler:handlerCopy];
   os_activity_scope_leave(&v19);
 }
 
 - (BOOL)_haltSyncing
 {
-  v2 = [(RMClient *)self conduit];
-  v3 = [v2 errorState];
+  conduit = [(RMClient *)self conduit];
+  errorState = [conduit errorState];
 
-  return (v3 & 0xFFFFFFFE) == 4;
+  return (errorState & 0xFFFFFFFE) == 4;
 }
 
 - (void)_handleConduitError
 {
-  v3 = [(RMClient *)self conduit];
-  v4 = [v3 errorState];
+  conduit = [(RMClient *)self conduit];
+  errorState = [conduit errorState];
 
   v5 = +[RMLog client];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100010298(v4, v5);
+    sub_100010298(errorState, v5);
   }
 
-  [(RMClient *)self _processConduitErrorState:v4];
+  [(RMClient *)self _processConduitErrorState:errorState];
 }
 
-- (void)_processConduitErrorState:(signed __int16)a3
+- (void)_processConduitErrorState:(signed __int16)state
 {
-  if (a3 >= 4)
+  if (state >= 4)
   {
-    if (a3 == 5)
+    if (state == 5)
     {
-      v5 = [(RMClient *)self delegate];
-      v4 = [(RMClient *)self managementSourceIdentifier];
-      [v5 clientNeedsToReenrollWithManagementSourceIdentifier:v4];
+      delegate = [(RMClient *)self delegate];
+      managementSourceIdentifier = [(RMClient *)self managementSourceIdentifier];
+      [delegate clientNeedsToReenrollWithManagementSourceIdentifier:managementSourceIdentifier];
     }
 
     else
     {
-      if (a3 != 4)
+      if (state != 4)
       {
         return;
       }
 
-      v5 = [(RMClient *)self delegate];
-      v4 = [(RMClient *)self managementSourceIdentifier];
-      [v5 clientNeedsToUnenrollWithManagementSourceIdentifier:v4];
+      delegate = [(RMClient *)self delegate];
+      managementSourceIdentifier = [(RMClient *)self managementSourceIdentifier];
+      [delegate clientNeedsToUnenrollWithManagementSourceIdentifier:managementSourceIdentifier];
     }
   }
 }
 
-- (void)conduitNeedsToSync:(id)a3
+- (void)conduitNeedsToSync:(id)sync
 {
   v4 = +[RMLog client];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -616,22 +616,22 @@ LABEL_9:
   [(RMClient *)self _setNeedsSyncing:1];
 }
 
-- (void)conduitNeedsToSendStatusForKeyPaths:(id)a3
+- (void)conduitNeedsToSendStatusForKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = +[RMLog client];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100010348(v4, v5);
+    sub_100010348(pathsCopy, v5);
   }
 
-  v6 = [(RMClient *)self statusEngine];
-  [v6 subscribeToStatusKeyPathsThenStopAfterAcknowledged:v4];
+  statusEngine = [(RMClient *)self statusEngine];
+  [statusEngine subscribeToStatusKeyPathsThenStopAfterAcknowledged:pathsCopy];
 
   [(RMClient *)self _setNeedsSyncing:1];
 }
 
-- (void)statusEngineHasUnacknowledgedSubscription:(id)a3
+- (void)statusEngineHasUnacknowledgedSubscription:(id)subscription
 {
   v4 = +[RMLog client];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -642,9 +642,9 @@ LABEL_9:
   [(RMClient *)self _setNeedsSyncing:1];
 }
 
-- (void)_setNeedsSyncing:(BOOL)a3
+- (void)_setNeedsSyncing:(BOOL)syncing
 {
-  if (a3)
+  if (syncing)
   {
     v4 = self->_needsSyncingLock;
     objc_sync_enter(v4);
@@ -668,7 +668,7 @@ LABEL_9:
 
       v7 = os_transaction_create();
       objc_initWeak(&location, self);
-      v8 = [(RMClient *)self operationQueue];
+      operationQueue = [(RMClient *)self operationQueue];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10000FB44;
@@ -676,7 +676,7 @@ LABEL_9:
       objc_copyWeak(&v11, &location);
       v5 = v7;
       v10 = v5;
-      [v8 addOperationWithBlock:v9];
+      [operationQueue addOperationWithBlock:v9];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);

@@ -1,41 +1,41 @@
 @interface MTUIAnalogClockView
-+ (BOOL)isClockRegistered:(id)a3;
-+ (CGPoint)handRotationalCenterForHand:(int64_t)a3;
-+ (CGPoint)shadowRotationalCenterForHand:(int64_t)a3;
++ (BOOL)isClockRegistered:(id)registered;
++ (CGPoint)handRotationalCenterForHand:(int64_t)hand;
++ (CGPoint)shadowRotationalCenterForHand:(int64_t)hand;
 + (CGSize)clockSize;
-+ (CGSize)sizeForStyle:(int64_t)a3;
-+ (Class)classForStyle:(int64_t)a3;
-+ (UIEdgeInsets)insetsForStyle:(int64_t)a3;
++ (CGSize)sizeForStyle:(int64_t)style;
++ (Class)classForStyle:(int64_t)style;
++ (UIEdgeInsets)insetsForStyle:(int64_t)style;
 + (UIEdgeInsets)shadowInsets;
 + (double)hourHandWidth;
 + (double)minuteHandWidth;
 + (double)secondHandLength;
 + (double)secondHandWidth;
-+ (id)analogClockWithStyle:(int64_t)a3;
++ (id)analogClockWithStyle:(int64_t)style;
 + (id)cacheTopLevelPath;
 + (id)cacheVersionHash;
 + (id)cacheVersionedPath;
-+ (id)clockFaceForDaytime:(BOOL)a3 ignoreCache:(BOOL)a4;
-+ (id)clockHand:(int64_t)a3 daytime:(BOOL)a4;
-+ (id)imageCacheNameForType:(int)a3 daytime:(BOOL)a4;
-+ (id)imageForType:(int)a3 dayTime:(BOOL)a4 generation:(id)a5 ignoreCache:(BOOL)a6;
-+ (id)imageInBundleForName:(id)a3;
-+ (id)makeClockFaceForDaytime:(BOOL)a3;
-+ (id)makeClockHand:(int64_t)a3 daytime:(BOOL)a4;
-+ (id)makeDotImageSize:(double)a3 color:(id)a4;
++ (id)clockFaceForDaytime:(BOOL)daytime ignoreCache:(BOOL)cache;
++ (id)clockHand:(int64_t)hand daytime:(BOOL)daytime;
++ (id)imageCacheNameForType:(int)type daytime:(BOOL)daytime;
++ (id)imageForType:(int)type dayTime:(BOOL)time generation:(id)generation ignoreCache:(BOOL)cache;
++ (id)imageInBundleForName:(id)name;
++ (id)makeClockFaceForDaytime:(BOOL)daytime;
++ (id)makeClockHand:(int64_t)hand daytime:(BOOL)daytime;
++ (id)makeDotImageSize:(double)size color:(id)color;
 + (id)makeOverSecondHandDotImage;
 + (id)numeralFont;
-+ (id)overHourHandDotForDayTime:(BOOL)a3;
-+ (id)overHourHandDotImageForDaytime:(BOOL)a3;
++ (id)overHourHandDotForDayTime:(BOOL)time;
++ (id)overHourHandDotImageForDaytime:(BOOL)daytime;
 + (id)overSecondHandDotImage;
-+ (id)shadowInfoAtIndex:(unint64_t)a3;
++ (id)shadowInfoAtIndex:(unint64_t)index;
 + (void)initialize;
-+ (void)registerClock:(id)a3;
-+ (void)registerSweepingClock:(id)a3;
-+ (void)registerTickingClock:(id)a3;
-+ (void)unregisterClock:(id)a3;
-+ (void)unregisterSweepingClock:(id)a3;
-+ (void)unregisterTickingClock:(id)a3;
++ (void)registerClock:(id)clock;
++ (void)registerSweepingClock:(id)clock;
++ (void)registerTickingClock:(id)clock;
++ (void)unregisterClock:(id)clock;
++ (void)unregisterSweepingClock:(id)clock;
++ (void)unregisterTickingClock:(id)clock;
 + (void)updateFlutterForAllTicking;
 + (void)updateTimeForAllSweeping;
 + (void)updateTimeForAllTicking;
@@ -46,23 +46,23 @@
 - (int64_t)style;
 - (void)handleLocaleChange;
 - (void)redrawSecondHand;
-- (void)setFrame:(CGRect)a3;
-- (void)setHandAngle:(double)a3 forHandIndex:(int64_t)a4;
-- (void)setHandTransformForHandIndex:(int64_t)a3;
-- (void)setNighttime:(BOOL)a3;
-- (void)setTime:(id)a3 animated:(BOOL)a4;
-- (void)setTimeZone:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHandAngle:(double)angle forHandIndex:(int64_t)index;
+- (void)setHandTransformForHandIndex:(int64_t)index;
+- (void)setNighttime:(BOOL)nighttime;
+- (void)setTime:(id)time animated:(BOOL)animated;
+- (void)setTimeZone:(id)zone;
 - (void)start;
 - (void)updateFlutter;
-- (void)updateTimeAnimated:(BOOL)a3;
+- (void)updateTimeAnimated:(BOOL)animated;
 @end
 
 @implementation MTUIAnalogClockView
 
-+ (Class)classForStyle:(int64_t)a3
++ (Class)classForStyle:(int64_t)style
 {
   v3 = __classMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v5 = [v3 objectForKeyedSubscript:v4];
 
   return v5;
@@ -71,7 +71,7 @@
 + (void)initialize
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     *(&xmmword_280BD22D8 + 8) = 0u;
     *(&xmmword_280BD22F8 + 8) = 0u;
@@ -91,12 +91,12 @@
     __classMap = v3;
 
     [__classMap setObject:objc_opt_class() forKeyedSubscript:&unk_286BC8BC8];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [a1 cacheTopLevelPath];
-    if ([v6 length])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    cacheTopLevelPath = [self cacheTopLevelPath];
+    if ([cacheTopLevelPath length])
     {
-      v7 = [v5 contentsOfDirectoryAtPath:v6 error:0];
-      v8 = [a1 cacheVersionHash];
+      v7 = [defaultManager contentsOfDirectoryAtPath:cacheTopLevelPath error:0];
+      cacheVersionHash = [self cacheVersionHash];
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
@@ -119,10 +119,10 @@
             v14 = *(*(&v16 + 1) + 8 * i);
             if ([v14 length])
             {
-              if (([v14 isEqualToString:v8] & 1) == 0)
+              if (([v14 isEqualToString:cacheVersionHash] & 1) == 0)
               {
-                v15 = [v6 stringByAppendingPathComponent:v14];
-                [v5 removeItemAtPath:v15 error:0];
+                v15 = [cacheTopLevelPath stringByAppendingPathComponent:v14];
+                [defaultManager removeItemAtPath:v15 error:0];
               }
             }
           }
@@ -139,19 +139,19 @@
 + (id)cacheTopLevelPath
 {
   v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [*MEMORY[0x277D76620] userLibraryDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"Caches"];
-  v5 = [v2 bundleIdentifier];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  userLibraryDirectory = [*MEMORY[0x277D76620] userLibraryDirectory];
+  v4 = [userLibraryDirectory stringByAppendingPathComponent:@"Caches"];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v6 = [v4 stringByAppendingPathComponent:bundleIdentifier];
 
   return v6;
 }
 
 + (id)cacheVersionedPath
 {
-  v3 = [a1 cacheTopLevelPath];
-  v4 = [a1 cacheVersionHash];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  cacheTopLevelPath = [self cacheTopLevelPath];
+  cacheVersionHash = [self cacheVersionHash];
+  v5 = [cacheTopLevelPath stringByAppendingPathComponent:cacheVersionHash];
 
   return v5;
 }
@@ -204,11 +204,11 @@
     v6 = __flutterTimer;
     __flutterTimer = v5;
 
-    v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v7 addTimer:__flutterTimer forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:__flutterTimer forMode:*MEMORY[0x277CBE640]];
 
-    v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v8 addTimer:__flutterTimer forMode:*MEMORY[0x277D77228]];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop2 addTimer:__flutterTimer forMode:*MEMORY[0x277D77228]];
   }
 
   objc_autoreleasePoolPop(v2);
@@ -239,14 +239,14 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   [v2 timeIntervalSinceDate:__lastCoarseSweepUpdateTime];
   if (v3 > 0.0 && v3 < *&__sweepCoarseUpdateInterval)
   {
-    v10 = [MEMORY[0x277CBEA80] currentCalendar];
-    v11 = [v10 components:192 fromDate:v2];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v11 = [currentCalendar components:192 fromDate:v2];
 
-    v12 = [v11 second];
-    v13 = [v11 minute];
+    second = [v11 second];
+    minute = [v11 minute];
     [v2 timeIntervalSinceReferenceDate];
     v15 = modf(v14, &__y);
-    v16 = fmod((v15 + v12) * 0.104719755, 6.28318531);
+    v16 = fmod((v15 + second) * 0.104719755, 6.28318531);
     v17 = __sincosf_stret(v16);
     *&__transformCache = v17.__cosval;
     *(&__transformCache + 1) = v17.__sinval;
@@ -272,7 +272,7 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
             objc_enumerationMutation(v18);
           }
 
-          [*(*(&v27 + 1) + 8 * v22++) updateTimeContinuously:v13];
+          [*(*(&v27 + 1) + 8 * v22++) updateTimeContinuously:minute];
         }
 
         while (v20 != v22);
@@ -319,46 +319,46 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   }
 }
 
-+ (BOOL)isClockRegistered:(id)a3
++ (BOOL)isClockRegistered:(id)registered
 {
-  v3 = a3;
-  v4 = [v3 runMode];
-  if (v4 > 2)
+  registeredCopy = registered;
+  runMode = [registeredCopy runMode];
+  if (runMode > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [*off_279917BB8[v4] containsObject:v3];
+    v5 = [*off_279917BB8[runMode] containsObject:registeredCopy];
   }
 
   return v5;
 }
 
-+ (void)registerClock:(id)a3
++ (void)registerClock:(id)clock
 {
-  v5 = a3;
-  v4 = [v5 runMode];
-  if (v4 >= 2)
+  clockCopy = clock;
+  runMode = [clockCopy runMode];
+  if (runMode >= 2)
   {
-    if (v4 == 2)
+    if (runMode == 2)
     {
-      [a1 registerSweepingClock:v5];
+      [self registerSweepingClock:clockCopy];
     }
   }
 
   else
   {
-    [a1 registerTickingClock:v5];
+    [self registerTickingClock:clockCopy];
   }
 }
 
-+ (void)registerTickingClock:(id)a3
++ (void)registerTickingClock:(id)clock
 {
-  v3 = a3;
+  clockCopy = clock;
   v4 = __tickingClocks;
-  v15 = v3;
+  v15 = clockCopy;
   if (!__tickingClocks)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -369,11 +369,11 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
     v8 = __flutterClocks;
     __flutterClocks = v7;
 
-    v3 = v15;
+    clockCopy = v15;
     v4 = __tickingClocks;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:clockCopy];
   if (!__tickTimer)
   {
     v9 = objc_alloc(MEMORY[0x277CBEBB8]);
@@ -382,19 +382,19 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
     v12 = __tickTimer;
     __tickTimer = v11;
 
-    v13 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v13 addTimer:__tickTimer forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:__tickTimer forMode:*MEMORY[0x277CBE640]];
 
-    v14 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v14 addTimer:__tickTimer forMode:*MEMORY[0x277D77228]];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop2 addTimer:__tickTimer forMode:*MEMORY[0x277D77228]];
   }
 }
 
-+ (void)registerSweepingClock:(id)a3
++ (void)registerSweepingClock:(id)clock
 {
-  v3 = a3;
-  v4 = v3;
-  v25 = v3;
+  clockCopy = clock;
+  v4 = clockCopy;
+  v25 = clockCopy;
   if (!__sweepingClocks)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -403,7 +403,7 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
 
     [v25 updateInterval];
     __sweepUpdateInterval = v7;
-    v3 = [v25 coarseUpdateInterval];
+    clockCopy = [v25 coarseUpdateInterval];
     v4 = v25;
     __sweepCoarseUpdateInterval = v8;
   }
@@ -424,11 +424,11 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
       __sweepUpdateInterval = v13;
     }
 
-    v3 = [v25 coarseUpdateInterval];
+    clockCopy = [v25 coarseUpdateInterval];
     v4 = v25;
     if (v14 < *&__sweepCoarseUpdateInterval)
     {
-      v3 = [v25 coarseUpdateInterval];
+      clockCopy = [v25 coarseUpdateInterval];
       v4 = v25;
       __sweepCoarseUpdateInterval = v15;
     }
@@ -436,50 +436,50 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
 
   if (!__sweepTimer)
   {
-    v16 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v17 = __lastCoarseSweepUpdateTime;
-    __lastCoarseSweepUpdateTime = v16;
+    __lastCoarseSweepUpdateTime = distantPast;
 
     v18 = objc_alloc(MEMORY[0x277CBEBB8]);
-    v19 = [MEMORY[0x277CBEAA8] date];
-    v20 = [v19 dateByAddingTimeInterval:*&__sweepUpdateInterval];
+    date = [MEMORY[0x277CBEAA8] date];
+    v20 = [date dateByAddingTimeInterval:*&__sweepUpdateInterval];
     v21 = [v18 initWithFireDate:v20 interval:objc_opt_class() target:sel_updateTimeForAllSweeping selector:0 userInfo:1 repeats:*&__sweepUpdateInterval];
     v22 = __sweepTimer;
     __sweepTimer = v21;
 
-    v23 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v23 addTimer:__sweepTimer forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:__sweepTimer forMode:*MEMORY[0x277CBE640]];
 
-    v24 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v24 addTimer:__sweepTimer forMode:*MEMORY[0x277D77228]];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop2 addTimer:__sweepTimer forMode:*MEMORY[0x277D77228]];
 
     v4 = v25;
   }
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](clockCopy, v4);
 }
 
-+ (void)unregisterClock:(id)a3
++ (void)unregisterClock:(id)clock
 {
-  v5 = a3;
-  v4 = [v5 runMode];
-  if (v4 >= 2)
+  clockCopy = clock;
+  runMode = [clockCopy runMode];
+  if (runMode >= 2)
   {
-    if (v4 == 2)
+    if (runMode == 2)
     {
-      [a1 unregisterSweepingClock:v5];
+      [self unregisterSweepingClock:clockCopy];
     }
   }
 
   else
   {
-    [a1 unregisterTickingClock:v5];
+    [self unregisterTickingClock:clockCopy];
   }
 }
 
-+ (void)unregisterTickingClock:(id)a3
++ (void)unregisterTickingClock:(id)clock
 {
-  [__tickingClocks removeObject:a3];
+  [__tickingClocks removeObject:clock];
   if (![__tickingClocks count])
   {
     if (!__sweepingClocks)
@@ -503,10 +503,10 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   }
 }
 
-+ (void)unregisterSweepingClock:(id)a3
++ (void)unregisterSweepingClock:(id)clock
 {
   v25 = *MEMORY[0x277D85DE8];
-  [__sweepingClocks removeObject:a3];
+  [__sweepingClocks removeObject:clock];
   if ([__sweepingClocks count])
   {
     v22 = 0u;
@@ -585,9 +585,9 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   }
 }
 
-+ (CGSize)sizeForStyle:(int64_t)a3
++ (CGSize)sizeForStyle:(int64_t)style
 {
-  v3 = [a1 classForStyle:a3];
+  v3 = [self classForStyle:style];
 
   [v3 clockSize];
   result.height = v5;
@@ -595,9 +595,9 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   return result;
 }
 
-+ (UIEdgeInsets)insetsForStyle:(int64_t)a3
++ (UIEdgeInsets)insetsForStyle:(int64_t)style
 {
-  v3 = [a1 classForStyle:a3];
+  v3 = [self classForStyle:style];
 
   [v3 shadowInsets];
   result.right = v7;
@@ -607,49 +607,49 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   return result;
 }
 
-+ (id)analogClockWithStyle:(int64_t)a3
++ (id)analogClockWithStyle:(int64_t)style
 {
-  v3 = objc_alloc_init([a1 classForStyle:a3]);
+  v3 = objc_alloc_init([self classForStyle:style]);
 
   return v3;
 }
 
 + (double)secondHandLength
 {
-  [a1 secondHandMainLength];
+  [self secondHandMainLength];
   v4 = v3;
-  [a1 secondHandOverhangLength];
+  [self secondHandOverhangLength];
   return v4 + v5;
 }
 
 + (double)secondHandWidth
 {
-  [a1 faceRadius];
+  [self faceRadius];
   v4 = v3 * 0.01;
-  [a1 antialiasPaddingRatio];
+  [self antialiasPaddingRatio];
   return v4 * (1.0 / v5);
 }
 
 + (double)minuteHandWidth
 {
-  [a1 faceRadius];
+  [self faceRadius];
   v4 = v3 * 0.036;
-  [a1 antialiasPaddingRatio];
+  [self antialiasPaddingRatio];
   return v4 * (1.0 / v5);
 }
 
 + (double)hourHandWidth
 {
-  [a1 faceRadius];
+  [self faceRadius];
   v4 = v3 * 0.036;
-  [a1 antialiasPaddingRatio];
+  [self antialiasPaddingRatio];
   return v4 * (1.0 / v5);
 }
 
 + (id)numeralFont
 {
   v2 = MEMORY[0x277D74300];
-  [a1 faceRadius];
+  [self faceRadius];
   v4 = v3 * 0.25;
 
   return [v2 _lightSystemFontOfSize:v4];
@@ -670,7 +670,7 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
 
 + (CGSize)clockSize
 {
-  [a1 faceRadius];
+  [self faceRadius];
   v3 = v2 + v2;
   v4 = v3;
   result.height = v4;
@@ -678,7 +678,7 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   return result;
 }
 
-+ (id)shadowInfoAtIndex:(unint64_t)a3
++ (id)shadowInfoAtIndex:(unint64_t)index
 {
   v3 = [MTUIShadowInfo alloc];
   v4 = [(MTUIShadowInfo *)v3 initWithColor:0 radius:0.0 offset:*MEMORY[0x277CBF3A8] scale:*(MEMORY[0x277CBF3A8] + 8), 0.0];
@@ -686,39 +686,39 @@ void __46__MTUIAnalogClockView_updateTimeForAllTicking__block_invoke(uint64_t a1
   return v4;
 }
 
-+ (CGPoint)handRotationalCenterForHand:(int64_t)a3
++ (CGPoint)handRotationalCenterForHand:(int64_t)hand
 {
-  if (a3 == 2)
+  if (hand == 2)
   {
-    [a1 secondHandOverhangLength];
+    [self secondHandOverhangLength];
     v5 = v9;
-    [a1 secondHandOverhangLength];
+    [self secondHandOverhangLength];
     v11 = v10;
-    [a1 secondHandMainLength];
+    [self secondHandMainLength];
     v8 = v11 + v12;
   }
 
   else
   {
-    if (a3 == 1)
+    if (hand == 1)
     {
-      [a1 minuteHandWidth];
+      [self minuteHandWidth];
       v5 = v7;
-      [a1 minuteHandLength];
+      [self minuteHandLength];
     }
 
     else
     {
-      if (a3)
+      if (hand)
       {
         v14 = *MEMORY[0x277CBF348];
         v13 = *(MEMORY[0x277CBF348] + 8);
         goto LABEL_10;
       }
 
-      [a1 hourHandWidth];
+      [self hourHandWidth];
       v5 = v4;
-      [a1 hourHandLength];
+      [self hourHandLength];
     }
 
     v8 = v6 + v6;
@@ -732,7 +732,7 @@ LABEL_10:
   return result;
 }
 
-+ (CGPoint)shadowRotationalCenterForHand:(int64_t)a3
++ (CGPoint)shadowRotationalCenterForHand:(int64_t)hand
 {
   v3 = *MEMORY[0x277CBF348];
   v4 = *(MEMORY[0x277CBF348] + 8);
@@ -741,14 +741,14 @@ LABEL_10:
   return result;
 }
 
-+ (id)imageCacheNameForType:(int)a3 daytime:(BOOL)a4
++ (id)imageCacheNameForType:(int)type daytime:(BOOL)daytime
 {
   v4 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_27;
       }
@@ -770,7 +770,7 @@ LABEL_10:
     v11 = @"middledot-nighttime";
     v12 = @"middledot-daytime";
 LABEL_19:
-    if (a4)
+    if (daytime)
     {
       v13 = v12;
     }
@@ -796,10 +796,10 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v5 = a3 - 1;
-  if ((a3 - 1) < 3)
+  v5 = type - 1;
+  if ((type - 1) < 3)
   {
-    if (a4)
+    if (daytime)
     {
       v6 = @"-daytime";
     }
@@ -825,7 +825,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!a3)
+  if (!type)
   {
     v11 = @"face-nighttime";
     v12 = @"face-daytime";
@@ -837,25 +837,25 @@ LABEL_27:
   return v4;
 }
 
-+ (id)imageForType:(int)a3 dayTime:(BOOL)a4 generation:(id)a5 ignoreCache:(BOOL)a6
++ (id)imageForType:(int)type dayTime:(BOOL)time generation:(id)generation ignoreCache:(BOOL)cache
 {
-  v6 = a6;
-  v7 = a4;
-  v8 = *&a3;
-  v10 = a5;
-  v11 = [a1 style];
+  cacheCopy = cache;
+  timeCopy = time;
+  v8 = *&type;
+  generationCopy = generation;
+  style = [self style];
   v12 = 100;
-  if (!v7)
+  if (!timeCopy)
   {
     v12 = 0;
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + v8 + 1000 * v11];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + v8 + 1000 * style];
   v14 = MTImageCache();
   v15 = [v14 objectForKey:v13];
   if (v15)
   {
-    v16 = !v6;
+    v16 = !cacheCopy;
   }
 
   else
@@ -865,9 +865,9 @@ LABEL_27:
 
   if (!v16)
   {
-    if (![a1 shouldCacheImageOnDiskForType:v8 dayTime:v7])
+    if (![self shouldCacheImageOnDiskForType:v8 dayTime:timeCopy])
     {
-      v28 = v10[2](v10);
+      v28 = generationCopy[2](generationCopy);
 
       v15 = v28;
       if (!v28)
@@ -878,24 +878,24 @@ LABEL_27:
       goto LABEL_17;
     }
 
-    v30 = v6;
-    v17 = [a1 cacheVersionedPath];
-    v18 = [a1 resourcePath];
-    v19 = [v17 stringByAppendingPathComponent:v18];
+    v30 = cacheCopy;
+    cacheVersionedPath = [self cacheVersionedPath];
+    resourcePath = [self resourcePath];
+    v19 = [cacheVersionedPath stringByAppendingPathComponent:resourcePath];
 
-    v20 = a1;
+    selfCopy = self;
     v21 = v19;
-    v22 = [v20 imageCacheNameForType:v8 daytime:v7];
+    v22 = [selfCopy imageCacheNameForType:v8 daytime:timeCopy];
     v23 = [v19 stringByAppendingPathComponent:v22];
 
     v24 = [MEMORY[0x277D755B8] imageWithContentsOfFile:v23];
 
-    if (v10)
+    if (generationCopy)
     {
-      LOBYTE(v6) = v30;
+      LOBYTE(cacheCopy) = v30;
       if (!v24)
       {
-        v25 = v10[2](v10);
+        v25 = generationCopy[2](generationCopy);
         if (v25)
         {
           v26 = v25;
@@ -920,14 +920,14 @@ LABEL_27:
 
     else
     {
-      LOBYTE(v6) = v30;
+      LOBYTE(cacheCopy) = v30;
     }
 
     v15 = v24;
     if (v24)
     {
 LABEL_17:
-      if (!v6)
+      if (!cacheCopy)
       {
         [v14 setObject:v15 forKey:v13];
       }
@@ -948,32 +948,32 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
   [v3 writeToFile:*(a1 + 48) atomically:1];
 }
 
-+ (id)makeClockFaceForDaytime:(BOOL)a3
++ (id)makeClockFaceForDaytime:(BOOL)daytime
 {
   v83[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (daytime)
   {
-    v4 = [a1 dayTimeFaceColor];
-    [a1 dayTimeTextColor];
+    dayTimeFaceColor = [self dayTimeFaceColor];
+    [self dayTimeTextColor];
   }
 
   else
   {
-    v4 = [a1 nightTimeFaceColor];
-    [a1 nightTimeTextColor];
+    dayTimeFaceColor = [self nightTimeFaceColor];
+    [self nightTimeTextColor];
   }
   v5 = ;
-  [a1 shadowInsets];
+  [self shadowInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [a1 clockSize];
+  [self clockSize];
   v15 = v14;
   v17 = v16;
   v18 = *MEMORY[0x277CBF348];
   v19 = *(MEMORY[0x277CBF348] + 8);
-  v20 = [a1 doesFaceHaveShadow];
+  doesFaceHaveShadow = [self doesFaceHaveShadow];
   v21 = MTUIMainScreenScale();
   v85.width = v15;
   v85.height = v17;
@@ -990,12 +990,12 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
   UIRectGetCenter();
   v75 = v31;
   v76 = v30;
-  if (v20)
+  if (doesFaceHaveShadow)
   {
     v78 = v11 + v29 + v80 + 1.0;
     for (i = 4; i != -1; --i)
     {
-      v33 = [a1 shadowInfoAtIndex:i];
+      v33 = [self shadowInfoAtIndex:i];
       v34 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v26, v80, v28, v29}];
       CGAffineTransformMakeTranslation(&v81, 0.0, -v78);
       [v34 applyTransform:&v81];
@@ -1019,8 +1019,8 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
       [v33 radius];
       v49 = v28;
       v51 = v50;
-      v52 = [v33 color];
-      v53 = [v52 CGColor];
+      color = [v33 color];
+      cGColor = [color CGColor];
       v86.width = v44;
       v27 = v37;
       v26 = v36;
@@ -1028,7 +1028,7 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
       v23 = v45;
       v54 = v51;
       v28 = v49;
-      CGContextSetShadowWithColor(CurrentContext, v86, v54, v53);
+      CGContextSetShadowWithColor(CurrentContext, v86, v54, cGColor);
 
       [v34 fill];
     }
@@ -1037,15 +1037,15 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
   v55 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v26, v80, v28, v29}];
   v56 = UIGraphicsGetCurrentContext();
   CGContextSetShadowWithColor(v56, *MEMORY[0x277CBF3A8], 0.0, 0);
-  v79 = v4;
-  [v4 setFill];
+  v79 = dayTimeFaceColor;
+  [dayTimeFaceColor setFill];
   ty = v55;
   [v55 fill];
-  [a1 faceRadius];
+  [self faceRadius];
   v58 = v57;
-  [a1 numeralInset];
+  [self numeralInset];
   v60 = v58 - v59;
-  v61 = [a1 numeralFont];
+  numeralFont = [self numeralFont];
   v62 = *MEMORY[0x277D740A8];
   v63 = *MEMORY[0x277D740C0];
   v64 = -1.04719755;
@@ -1053,21 +1053,21 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
   {
     v66 = objc_alloc(MEMORY[0x277CCA898]);
     v67 = [MEMORY[0x277CCABB0] numberWithInteger:j];
-    v68 = [v67 stringValue];
+    stringValue = [v67 stringValue];
     v82[0] = v62;
     v82[1] = v63;
-    v83[0] = v61;
+    v83[0] = numeralFont;
     v83[1] = v5;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:2];
     v70 = v69 = v5;
-    v71 = [v66 initWithString:v68 attributes:v70];
+    v71 = [v66 initWithString:stringValue attributes:v70];
 
     v5 = v69;
     [v71 size];
     v72 = __sincos_stret(v64);
     v81.a = v76 + v60 * v72.__cosval;
     v81.b = v75 + v60 * v72.__sinval;
-    [a1 adjustNumberalCenter:&v81 forNumeralIndex:j];
+    [self adjustNumberalCenter:&v81 forNumeralIndex:j];
     UIRectCenteredAboutPointScale();
     [v71 drawInRect:?];
     v64 = v64 + 0.523598776;
@@ -1079,91 +1079,91 @@ void __67__MTUIAnalogClockView_imageForType_dayTime_generation_ignoreCache___blo
   return v73;
 }
 
-+ (id)clockFaceForDaytime:(BOOL)a3 ignoreCache:(BOOL)a4
++ (id)clockFaceForDaytime:(BOOL)daytime ignoreCache:(BOOL)cache
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__MTUIAnalogClockView_clockFaceForDaytime_ignoreCache___block_invoke;
   v6[3] = &__block_descriptor_41_e14___UIImage_8__0l;
-  v6[4] = a1;
-  v7 = a3;
-  v4 = [a1 imageForType:0 dayTime:a3 generation:v6 ignoreCache:a4];
+  v6[4] = self;
+  daytimeCopy = daytime;
+  v4 = [self imageForType:0 dayTime:daytime generation:v6 ignoreCache:cache];
 
   return v4;
 }
 
-+ (id)makeClockHand:(int64_t)a3 daytime:(BOOL)a4
++ (id)makeClockHand:(int64_t)hand daytime:(BOOL)daytime
 {
   v6 = 0;
   v7 = 0.0;
-  if (a3 <= 0)
+  if (hand <= 0)
   {
-    if (a3 == -1)
+    if (hand == -1)
     {
       goto LABEL_10;
     }
 
     v8 = 0.0;
-    if (a3)
+    if (hand)
     {
       goto LABEL_25;
     }
 
-    if (a4)
+    if (daytime)
     {
-      [a1 dayTimeHourHandColor];
+      [self dayTimeHourHandColor];
     }
 
     else
     {
-      [a1 nightTimeHourHandColor];
+      [self nightTimeHourHandColor];
     }
     v6 = ;
-    [a1 hourHandLength];
+    [self hourHandLength];
     v8 = v13;
-    [a1 hourHandWidth];
+    [self hourHandWidth];
   }
 
   else
   {
-    switch(a3)
+    switch(hand)
     {
       case 1:
-        if (a4)
+        if (daytime)
         {
-          [a1 dayTimeMinuteHandColor];
+          [self dayTimeMinuteHandColor];
         }
 
         else
         {
-          [a1 nightTimeMinuteHandColor];
+          [self nightTimeMinuteHandColor];
         }
         v6 = ;
-        [a1 minuteHandLength];
+        [self minuteHandLength];
         v8 = v10;
-        [a1 minuteHandWidth];
+        [self minuteHandWidth];
         break;
       case 2:
-        if (a4)
+        if (daytime)
         {
-          [a1 dayTimeSecondHandColor];
+          [self dayTimeSecondHandColor];
         }
 
         else
         {
-          [a1 nightTimeSecondHandColor];
+          [self nightTimeSecondHandColor];
         }
         v6 = ;
-        [a1 secondHandLength];
+        [self secondHandLength];
         v8 = v12;
-        [a1 secondHandWidth];
+        [self secondHandWidth];
         break;
       case 3:
 LABEL_10:
         v9 = MTLogForCategory();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          [MTUIAnalogClockView makeClockHand:a3 daytime:v9];
+          [MTUIAnalogClockView makeClockHand:hand daytime:v9];
         }
 
         v6 = 0;
@@ -1180,9 +1180,9 @@ LABEL_25:
   v21.width = v7;
   v21.height = v8;
   UIGraphicsBeginImageContextWithOptions(v21, 0, 0.0);
-  v14 = [MEMORY[0x277D75208] bezierPath];
-  v15 = v14;
-  if (a3 == 2)
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  v15 = bezierPath;
+  if (hand == 2)
   {
     v16 = 2;
   }
@@ -1192,8 +1192,8 @@ LABEL_25:
     v16 = 1;
   }
 
-  [v14 setLineCapStyle:v16];
-  [a1 antialiasPaddingRatio];
+  [bezierPath setLineCapStyle:v16];
+  [self antialiasPaddingRatio];
   [v15 setLineWidth:v7 * v17];
   [v15 moveToPoint:{v7 * 0.5, v7}];
   [v15 addLineToPoint:{v7 * 0.5, v8 - v7}];
@@ -1205,49 +1205,49 @@ LABEL_25:
   return v18;
 }
 
-+ (id)clockHand:(int64_t)a3 daytime:(BOOL)a4
++ (id)clockHand:(int64_t)hand daytime:(BOOL)daytime
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__MTUIAnalogClockView_clockHand_daytime___block_invoke;
   v6[3] = &__block_descriptor_49_e14___UIImage_8__0l;
-  v6[4] = a1;
-  v6[5] = a3;
-  v7 = a4;
-  v4 = [a1 imageForType:(a3 + 1) dayTime:a4 generation:v6];
+  v6[4] = self;
+  v6[5] = hand;
+  daytimeCopy = daytime;
+  v4 = [self imageForType:(hand + 1) dayTime:daytime generation:v6];
 
   return v4;
 }
 
-+ (id)makeDotImageSize:(double)a3 color:(id)a4
++ (id)makeDotImageSize:(double)size color:(id)color
 {
-  v6 = a3;
-  v7 = roundf(v6);
-  v8 = (v7 - a3) * 0.5;
-  v9 = a4;
+  sizeCopy = size;
+  v7 = roundf(sizeCopy);
+  v8 = (v7 - size) * 0.5;
+  colorCopy = color;
   v17.width = v7;
   v17.height = v7;
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
   v18.origin.x = v8;
   v18.origin.y = v8;
-  v18.size.width = a3;
-  v18.size.height = a3;
+  v18.size.width = size;
+  v18.size.height = size;
   MidX = CGRectGetMidX(v18);
   v19.origin.x = v8;
   v19.origin.y = v8;
-  v19.size.width = a3;
-  v19.size.height = a3;
+  v19.size.width = size;
+  v19.size.height = size;
   MidY = CGRectGetMidY(v19);
   v12 = objc_alloc_init(MEMORY[0x277D75208]);
   v20.origin.x = v8;
   v20.origin.y = v8;
-  v20.size.width = a3;
-  v20.size.height = a3;
+  v20.size.width = size;
+  v20.size.height = size;
   [v12 moveToPoint:{CGRectGetMidX(v20), 0.0}];
-  [a1 antialiasPaddingRatio];
-  [v12 addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v13 * a3 * 0.5 clockwise:{4.71238898, 10.9955743}];
+  [self antialiasPaddingRatio];
+  [v12 addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v13 * size * 0.5 clockwise:{4.71238898, 10.9955743}];
   [v12 closePath];
-  [v9 setFill];
+  [colorCopy setFill];
 
   [v12 fill];
   v14 = UIGraphicsGetImageFromCurrentImageContext();
@@ -1256,44 +1256,44 @@ LABEL_25:
   return v14;
 }
 
-+ (id)overHourHandDotImageForDaytime:(BOOL)a3
++ (id)overHourHandDotImageForDaytime:(BOOL)daytime
 {
-  [a1 overHourHandDotSize];
+  [self overHourHandDotSize];
   v6 = v5;
-  if (a3)
+  if (daytime)
   {
-    [a1 dayTimeOverHourHandDotColor];
+    [self dayTimeOverHourHandDotColor];
   }
 
   else
   {
-    [a1 nightTimeOverHourHandDotColor];
+    [self nightTimeOverHourHandDotColor];
   }
   v7 = ;
-  v8 = [a1 makeDotImageSize:v7 color:v6];
+  v8 = [self makeDotImageSize:v7 color:v6];
 
   return v8;
 }
 
-+ (id)overHourHandDotForDayTime:(BOOL)a3
++ (id)overHourHandDotForDayTime:(BOOL)time
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__MTUIAnalogClockView_overHourHandDotForDayTime___block_invoke;
   v5[3] = &__block_descriptor_41_e14___UIImage_8__0l;
-  v5[4] = a1;
-  v6 = a3;
-  v3 = [a1 imageForType:4 dayTime:a3 generation:v5];
+  v5[4] = self;
+  timeCopy = time;
+  v3 = [self imageForType:4 dayTime:time generation:v5];
 
   return v3;
 }
 
 + (id)makeOverSecondHandDotImage
 {
-  [a1 overSecondHandDotSize];
+  [self overSecondHandDotSize];
   v4 = v3;
-  v5 = [a1 overSecondHandDotColor];
-  v6 = [a1 makeDotImageSize:v5 color:v4];
+  overSecondHandDotColor = [self overSecondHandDotColor];
+  v6 = [self makeDotImageSize:overSecondHandDotColor color:v4];
 
   return v6;
 }
@@ -1304,26 +1304,26 @@ LABEL_25:
   v4[1] = 3221225472;
   v4[2] = __45__MTUIAnalogClockView_overSecondHandDotImage__block_invoke;
   v4[3] = &__block_descriptor_40_e14___UIImage_8__0l;
-  v4[4] = a1;
-  v2 = [a1 imageForType:5 dayTime:0 generation:v4];
+  v4[4] = self;
+  v2 = [self imageForType:5 dayTime:0 generation:v4];
 
   return v2;
 }
 
-+ (id)imageInBundleForName:(id)a3
++ (id)imageInBundleForName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:v5];
+  v6 = [MEMORY[0x277D755B8] imageNamed:nameCopy inBundle:v5];
 
   return v6;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [objc_opt_class() clockSize];
   v8.receiver = self;
   v8.super_class = MTUIAnalogClockView;
@@ -1337,8 +1337,8 @@ LABEL_25:
   v2 = [(MTUIAnalogClockView *)&v39 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_handleLocaleChange name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleLocaleChange name:*MEMORY[0x277CBE620] object:0];
 
     v2->_runMode = -1;
     v4 = objc_alloc(MEMORY[0x277CBEA80]);
@@ -1361,9 +1361,9 @@ LABEL_25:
     v2->_faceView = v12;
 
     [(MTUIAnalogClockView *)v2 addSubview:v2->_faceView];
-    v14 = [v7 doesFaceHaveShadow];
+    doesFaceHaveShadow = [v7 doesFaceHaveShadow];
     [v7 clockSize];
-    if (v14)
+    if (doesFaceHaveShadow)
     {
       [v7 shadowInsets];
     }
@@ -1422,8 +1422,8 @@ LABEL_25:
 
     if ([v7 hasOverSecondHandDot])
     {
-      v34 = [v7 overSecondHandDotImage];
-      v35 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v34];
+      overSecondHandDotImage = [v7 overSecondHandDotImage];
+      v35 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:overSecondHandDotImage];
       middleRedDot = v2->_middleRedDot;
       v2->_middleRedDot = v35;
 
@@ -1454,7 +1454,7 @@ LABEL_25:
   return result;
 }
 
-- (void)setHandTransformForHandIndex:(int64_t)a3
+- (void)setHandTransformForHandIndex:(int64_t)index
 {
   v19 = xmmword_280BD22F8;
   v20 = *&qword_280BD2308;
@@ -1464,8 +1464,8 @@ LABEL_25:
   v16 = unk_280BD22C8;
   v17 = xmmword_280BD22D8;
   v18 = unk_280BD22E8;
-  v5 = [(UIView *)self->_dayHands[a3] layer];
-  [v5 setTransform:&v15];
+  layer = [(UIView *)self->_dayHands[index] layer];
+  [layer setTransform:&v15];
 
   v11 = xmmword_280BD22F8;
   v12 = *&qword_280BD2308;
@@ -1475,7 +1475,7 @@ LABEL_25:
   v8 = unk_280BD22C8;
   v9 = xmmword_280BD22D8;
   v10 = unk_280BD22E8;
-  v6 = [(UIView *)self->_nightHands[a3] layer];
+  layer2 = [(UIView *)self->_nightHands[index] layer];
   v19 = v11;
   v20 = v12;
   v21 = v13;
@@ -1484,19 +1484,19 @@ LABEL_25:
   v16 = v8;
   v17 = v9;
   v18 = v10;
-  [v6 setTransform:&v15];
+  [layer2 setTransform:&v15];
 }
 
-- (void)setHandAngle:(double)a3 forHandIndex:(int64_t)a4
+- (void)setHandAngle:(double)angle forHandIndex:(int64_t)index
 {
-  v6 = fmod(a3, 6.28318531);
+  v6 = fmod(angle, 6.28318531);
   v7 = __sincosf_stret(v6);
   *&__transformCache = v7.__cosval;
   *(&__transformCache + 1) = v7.__sinval;
   *&xmmword_280BD22D8 = -v7.__sinval;
   *(&xmmword_280BD22D8 + 1) = v7.__cosval;
 
-  [(MTUIAnalogClockView *)self setHandTransformForHandIndex:a4];
+  [(MTUIAnalogClockView *)self setHandTransformForHandIndex:index];
 }
 
 - (void)updateFlutter
@@ -1519,14 +1519,14 @@ LABEL_25:
   }
 }
 
-- (void)setNighttime:(BOOL)a3
+- (void)setNighttime:(BOOL)nighttime
 {
-  if (self->_nighttime != a3)
+  if (self->_nighttime != nighttime)
   {
-    self->_nighttime = a3;
+    self->_nighttime = nighttime;
     faceView = self->_faceView;
     v5 = &OBJC_IVAR___MTUIAnalogClockView__faceDayImage;
-    if (a3)
+    if (nighttime)
     {
       v5 = &OBJC_IVAR___MTUIAnalogClockView__faceNightImage;
     }
@@ -1548,36 +1548,36 @@ LABEL_25:
     while (v6 != 3);
     [(UIImageView *)self->_middleDotDay setHidden:self->_nighttime];
     [(UIImageView *)self->_middleDotNight setHidden:!self->_nighttime];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"AnalogClockDidChangeNighttimeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"AnalogClockDidChangeNighttimeNotification" object:self];
   }
 }
 
-- (void)updateTimeAnimated:(BOOL)a3
+- (void)updateTimeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v15 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   v5 = self->_time;
-  [(MTUIAnalogClockView *)self setTime:v15 animated:v3];
+  [(MTUIAnalogClockView *)self setTime:v15 animated:animatedCopy];
   if (v5)
   {
     [(NSDate *)self->_time timeIntervalSinceDate:v5];
     if (v6 > 0.0 && v6 < 300.0)
     {
       v7 = [(NSCalendar *)self->_calendar components:32 fromDate:v5];
-      v8 = [v7 hour];
+      hour = [v7 hour];
 
       v9 = [(NSCalendar *)self->_calendar components:32 fromDate:v15];
-      v10 = [v9 hour];
+      hour2 = [v9 hour];
 
-      if (v10)
+      if (hour2)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = v8 == 23;
+        v11 = hour == 23;
       }
 
       if (v11)
@@ -1587,7 +1587,7 @@ LABEL_25:
 
       else
       {
-        if (v10 != 12 || v8 != 11)
+        if (hour2 != 12 || hour != 11)
         {
           goto LABEL_16;
         }
@@ -1595,8 +1595,8 @@ LABEL_25:
         v13 = @"AnalogClockDidCrossNoonNotification";
       }
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 postNotificationName:v13 object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:v13 object:self];
     }
   }
 
@@ -1606,70 +1606,70 @@ LABEL_16:
 - (int64_t)hour
 {
   v2 = [(NSCalendar *)self->_calendar components:32 fromDate:self->_time];
-  v3 = [v2 hour];
+  hour = [v2 hour];
 
-  return v3;
+  return hour;
 }
 
 - (int64_t)minute
 {
   v2 = [(NSCalendar *)self->_calendar components:64 fromDate:self->_time];
-  v3 = [v2 minute];
+  minute = [v2 minute];
 
-  return v3;
+  return minute;
 }
 
-- (void)setTime:(id)a3 animated:(BOOL)a4
+- (void)setTime:(id)time animated:(BOOL)animated
 {
-  v22 = a3;
-  v7 = [(NSDate *)self->_time isEqualToDate:v22];
-  v8 = v22;
+  timeCopy = time;
+  v7 = [(NSDate *)self->_time isEqualToDate:timeCopy];
+  v8 = timeCopy;
   if (!v7)
   {
     time = self->_time;
-    if (time != v22)
+    if (time != timeCopy)
     {
-      objc_storeStrong(&self->_time, a3);
+      objc_storeStrong(&self->_time, time);
       time = self->_time;
     }
 
     v10 = [(NSCalendar *)self->_calendar components:224 fromDate:time];
-    v11 = [v10 hour];
-    v12 = [v10 minute];
-    v13 = [v10 second];
+    hour = [v10 hour];
+    minute = [v10 minute];
+    second = [v10 second];
     runMode = self->_runMode;
     if (runMode != 2)
     {
       if (runMode == 1)
       {
-        v13 = v13 + 0.15;
-        self->_seconds = v13;
+        second = second + 0.15;
+        self->_seconds = second;
       }
 
       self->_flutterIndex = 0;
       goto LABEL_8;
     }
 
-    if (a4)
+    if (animated)
     {
       [(NSDate *)self->_time timeIntervalSinceReferenceDate];
       v19 = modf(v18, &__y);
       v20 = self->_runMode;
-      v13 = v19 + v13;
+      second = v19 + second;
       self->_flutterIndex = 0;
       if (v20 != 2)
       {
 LABEL_8:
-        v15 = v13 * 0.104719755;
-        v16 = v12 * 0.104719755;
-        v17 = v16 / 12.0 + v11 * 0.523598776;
+        v15 = second * 0.104719755;
+        v16 = minute * 0.104719755;
+        v17 = v16 / 12.0 + hour * 0.523598776;
 LABEL_14:
         [(MTUIAnalogClockView *)self setHandAngle:2 forHandIndex:v15];
         [(MTUIAnalogClockView *)self setHandAngle:1 forHandIndex:v16];
         [(MTUIAnalogClockView *)self setHandAngle:0 forHandIndex:v17];
-        [(MTUIAnalogClockView *)self setNighttime:(v11 - 18) < 0xFFFFFFFFFFFFFFF4];
+        [(MTUIAnalogClockView *)self setNighttime:(hour - 18) < 0xFFFFFFFFFFFFFFF4];
 
-        v8 = v22;
+        v8 = timeCopy;
         goto LABEL_15;
       }
     }
@@ -1679,10 +1679,10 @@ LABEL_14:
       self->_flutterIndex = 0;
     }
 
-    v21 = v13 / 60.0 + v12;
-    v15 = v13 * 0.104719755;
+    v21 = second / 60.0 + minute;
+    v15 = second * 0.104719755;
     v16 = v21 * 0.104719755;
-    v17 = (v21 / 60.0 + v11) * 0.523598776;
+    v17 = (v21 / 60.0 + hour) * 0.523598776;
     goto LABEL_14;
   }
 
@@ -1691,15 +1691,15 @@ LABEL_15:
   MEMORY[0x2821F96F8](v7, v8);
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(NSCalendar *)self->_calendar timeZone];
-  v5 = [v4 isEqualToTimeZone:v6];
+  zoneCopy = zone;
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v5 = [timeZone isEqualToTimeZone:zoneCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(NSCalendar *)self->_calendar setTimeZone:v6];
+    [(NSCalendar *)self->_calendar setTimeZone:zoneCopy];
     if (self->_runMode != -1)
     {
       if (self->_time)
@@ -1766,15 +1766,15 @@ LABEL_15:
   v29 = v5;
   [v6 removeObjectForKey:v5];
 
-  v7 = [v3 cacheVersionedPath];
-  v8 = [v3 resourcePath];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  cacheVersionedPath = [v3 cacheVersionedPath];
+  resourcePath = [v3 resourcePath];
+  v9 = [cacheVersionedPath stringByAppendingPathComponent:resourcePath];
 
   v28 = [v3 imageCacheNameForType:3 daytime:1];
   v10 = [v9 stringByAppendingPathComponent:?];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v27 = v10;
-  [v11 _web_removeFileOnlyAtPath:v10];
+  [defaultManager _web_removeFileOnlyAtPath:v10];
 
   v12 = self->_dayHands[2];
   [(UIView *)v12 removeFromSuperview];
@@ -1812,13 +1812,13 @@ LABEL_15:
 
     v19 = [v3 imageCacheNameForType:5 daytime:0];
     v20 = [v9 stringByAppendingPathComponent:v19];
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
-    [v21 _web_removeFileOnlyAtPath:v20];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 _web_removeFileOnlyAtPath:v20];
 
     v22 = self->_middleRedDot;
     [(UIImageView *)v22 removeFromSuperview];
-    v23 = [v3 overSecondHandDotImage];
-    v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v23];
+    overSecondHandDotImage = [v3 overSecondHandDotImage];
+    v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:overSecondHandDotImage];
     middleRedDot = self->_middleRedDot;
     self->_middleRedDot = v24;
 

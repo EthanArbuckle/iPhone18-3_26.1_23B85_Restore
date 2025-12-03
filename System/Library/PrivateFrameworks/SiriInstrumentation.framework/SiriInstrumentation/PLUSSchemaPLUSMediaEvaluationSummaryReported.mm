@@ -1,28 +1,28 @@
 @interface PLUSSchemaPLUSMediaEvaluationSummaryReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addGroundTruthSummaries:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addGroundTruthSummaries:(id)summaries;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSMediaEvaluationSummaryReported
 
-- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = PLUSSchemaPLUSMediaEvaluationSummaryReported;
   v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)v5 setOriginalRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,14 +38,14 @@
       [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"playUserFeedback"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"playUserFeedback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSMediaEvaluationSummaryReported setPlayUserFeedback:](v5, "setPlayUserFeedback:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"suggestionEvaluation"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"suggestionEvaluation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)v5 setSuggestionEvaluation:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"groundTruthSummaries"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"groundTruthSummaries"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       v11 = v25;
     }
 
-    v21 = [v4 objectForKeyedSubscript:{@"configuredState", v25, v26, v27, v28, v29}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"configuredState", v25, v26, v27, v28, v29}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithJSON:(id)a3
+- (PLUSSchemaPLUSMediaEvaluationSummaryReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -151,26 +151,26 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_configuredState)
   {
-    v4 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    configuredState = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+    dictionaryRepresentation = [configuredState dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"configuredState"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"configuredState"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"configuredState"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"configuredState"];
     }
   }
 
   if ([(NSArray *)self->_groundTruthSummaries count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -190,16 +190,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -209,22 +209,22 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"groundTruthSummaries"];
+    [dictionary setObject:array forKeyedSubscript:@"groundTruthSummaries"];
   }
 
   if (self->_originalRequestId)
   {
-    v15 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+    dictionaryRepresentation3 = [originalRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"originalRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"originalRequestId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"originalRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"originalRequestId"];
     }
   }
 
@@ -241,35 +241,35 @@
       v19 = off_1E78E0790[v18];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:{@"playUserFeedback", v26}];
+    [dictionary setObject:v19 forKeyedSubscript:{@"playUserFeedback", v26}];
   }
 
   if (self->_resultCandidateId)
   {
-    v20 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
+    v21 = [resultCandidateId copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_suggestionEvaluation)
   {
-    v22 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    suggestionEvaluation = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+    dictionaryRepresentation4 = [suggestionEvaluation dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"suggestionEvaluation"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"suggestionEvaluation"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"suggestionEvaluation"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"suggestionEvaluation"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -291,28 +291,28 @@
   return v6 ^ v7 ^ [(PLUSSchemaPLUSMediaConfiguredState *)self->_configuredState hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
-  v6 = [v4 originalRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+  originalRequestId2 = [equalCopy originalRequestId];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
-  if (v7)
+  originalRequestId3 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+  if (originalRequestId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
-    v10 = [v4 originalRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalRequestId3;
+    originalRequestId4 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+    originalRequestId5 = [equalCopy originalRequestId];
+    v11 = [originalRequestId4 isEqual:originalRequestId5];
 
     if (!v11)
     {
@@ -324,20 +324,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
+  originalRequestId2 = [equalCopy resultCandidateId];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -349,7 +349,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_30;
   }
@@ -357,26 +357,26 @@
   if (*&self->_has)
   {
     playUserFeedback = self->_playUserFeedback;
-    if (playUserFeedback != [v4 playUserFeedback])
+    if (playUserFeedback != [equalCopy playUserFeedback])
     {
       goto LABEL_30;
     }
   }
 
-  v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
-  v6 = [v4 suggestionEvaluation];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+  originalRequestId2 = [equalCopy suggestionEvaluation];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v18 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
-  if (v18)
+  suggestionEvaluation = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+  if (suggestionEvaluation)
   {
-    v19 = v18;
-    v20 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
-    v21 = [v4 suggestionEvaluation];
-    v22 = [v20 isEqual:v21];
+    v19 = suggestionEvaluation;
+    suggestionEvaluation2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+    suggestionEvaluation3 = [equalCopy suggestionEvaluation];
+    v22 = [suggestionEvaluation2 isEqual:suggestionEvaluation3];
 
     if (!v22)
     {
@@ -388,20 +388,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
-  v6 = [v4 groundTruthSummaries];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
+  originalRequestId2 = [equalCopy groundTruthSummaries];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v23 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
-  if (v23)
+  groundTruthSummaries = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
+  if (groundTruthSummaries)
   {
-    v24 = v23;
-    v25 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
-    v26 = [v4 groundTruthSummaries];
-    v27 = [v25 isEqual:v26];
+    v24 = groundTruthSummaries;
+    groundTruthSummaries2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
+    groundTruthSummaries3 = [equalCopy groundTruthSummaries];
+    v27 = [groundTruthSummaries2 isEqual:groundTruthSummaries3];
 
     if (!v27)
     {
@@ -413,12 +413,12 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
-  v6 = [v4 configuredState];
-  if ((v5 != 0) != (v6 == 0))
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+  originalRequestId2 = [equalCopy configuredState];
+  if ((originalRequestId != 0) != (originalRequestId2 == 0))
   {
-    v28 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
-    if (!v28)
+    configuredState = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+    if (!configuredState)
     {
 
 LABEL_33:
@@ -426,10 +426,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v29 = v28;
-    v30 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
-    v31 = [v4 configuredState];
-    v32 = [v30 isEqual:v31];
+    v29 = configuredState;
+    configuredState2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+    configuredState3 = [equalCopy configuredState];
+    v32 = [configuredState2 isEqual:configuredState3];
 
     if (v32)
     {
@@ -449,21 +449,21 @@ LABEL_31:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+  toCopy = to;
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
 
-  if (v5)
+  if (originalRequestId)
   {
-    v6 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+    originalRequestId2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
+  resultCandidateId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self resultCandidateId];
 
-  if (v7)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
@@ -473,11 +473,11 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+  suggestionEvaluation = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
 
-  if (v8)
+  if (suggestionEvaluation)
   {
-    v9 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+    suggestionEvaluation2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
     PBDataWriterWriteSubmessage();
   }
 
@@ -512,66 +512,66 @@ LABEL_31:
     while (v12);
   }
 
-  v15 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+  configuredState = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
 
-  if (v15)
+  if (configuredState)
   {
-    v16 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+    configuredState2 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addGroundTruthSummaries:(id)a3
+- (void)addGroundTruthSummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   groundTruthSummaries = self->_groundTruthSummaries;
-  v8 = v4;
+  v8 = summariesCopy;
   if (!groundTruthSummaries)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_groundTruthSummaries;
-    self->_groundTruthSummaries = v6;
+    self->_groundTruthSummaries = array;
 
-    v4 = v8;
+    summariesCopy = v8;
     groundTruthSummaries = self->_groundTruthSummaries;
   }
 
-  [(NSArray *)groundTruthSummaries addObject:v4];
+  [(NSArray *)groundTruthSummaries addObject:summariesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = PLUSSchemaPLUSMediaEvaluationSummaryReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  originalRequestId = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self originalRequestId];
+  v7 = [originalRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self deleteOriginalRequestId];
   }
 
-  v9 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  suggestionEvaluation = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self suggestionEvaluation];
+  v10 = [suggestionEvaluation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self deleteSuggestionEvaluation];
   }
 
-  v12 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  groundTruthSummaries = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self groundTruthSummaries];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:groundTruthSummaries underConditions:policyCopy];
   [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self setGroundTruthSummaries:v13];
 
-  v14 = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  configuredState = [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self configuredState];
+  v15 = [configuredState applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(PLUSSchemaPLUSMediaEvaluationSummaryReported *)self deleteConfiguredState];
   }

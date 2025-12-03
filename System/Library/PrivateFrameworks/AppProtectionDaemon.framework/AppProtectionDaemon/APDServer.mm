@@ -1,10 +1,10 @@
 @interface APDServer
-- (void)runWithArguments:(id)a3;
+- (void)runWithArguments:(id)arguments;
 @end
 
 @implementation APDServer
 
-- (void)runWithArguments:(id)a3
+- (void)runWithArguments:(id)arguments
 {
   sub_240069A04();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC19AppProtectionDaemon9APDServer_serviceQueue);
@@ -12,7 +12,7 @@
   sub_2400695FC();
   v8 = swift_allocObject();
   sub_240069650(self + v5, v8 + 16);
-  v6 = self;
+  selfCopy = self;
   v7 = v4;
   sub_2400699F4();
   sub_2400699E4();

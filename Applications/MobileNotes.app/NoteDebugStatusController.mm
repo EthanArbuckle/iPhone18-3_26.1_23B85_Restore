@@ -1,7 +1,7 @@
 @interface NoteDebugStatusController
 + (_TtC11MobileNotes25NoteDebugStatusController)sharedController;
 - (ICNote)currentNote;
-- (void)setCurrentNote:(id)a3;
+- (void)setCurrentNote:(id)note;
 @end
 
 @implementation NoteDebugStatusController
@@ -22,18 +22,18 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setCurrentNote:(id)a3
+- (void)setCurrentNote:(id)note
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  noteCopy = note;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 

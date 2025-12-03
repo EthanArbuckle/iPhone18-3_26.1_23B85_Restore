@@ -2,22 +2,22 @@
 + (id)sharedService;
 - (id)_CreateMKBServerConnection;
 - (id)copySytemSecretBlob;
-- (id)getBackupkeyForVolume:(id)a3 andCryptoID:(unint64_t)a4 withError:(id *)a5;
-- (id)getFileHandleForData:(id)a3;
-- (int)ChangeSystemSecretWithEscrow:(id)a3 FromOldPasscode:(id)a4 ToNew:(id)a5 withOpaqueDats:(id)a6 withKeepState:(int)a7 withACM:(BOOL)a8;
-- (int)SetSystemSecretBlob:(id)a3;
-- (int)backupUUIDForVolume:(id)a3 bagUUID:(id *)a4;
-- (int)disableBackupForVolume:(id)a3;
+- (id)getBackupkeyForVolume:(id)volume andCryptoID:(unint64_t)d withError:(id *)error;
+- (id)getFileHandleForData:(id)data;
+- (int)ChangeSystemSecretWithEscrow:(id)escrow FromOldPasscode:(id)passcode ToNew:(id)new withOpaqueDats:(id)dats withKeepState:(int)state withACM:(BOOL)m;
+- (int)SetSystemSecretBlob:(id)blob;
+- (int)backupUUIDForVolume:(id)volume bagUUID:(id *)d;
+- (int)disableBackupForVolume:(id)volume;
 - (int)forgottenPasscodeEvent;
-- (int)isKeyRollingWithKeyStatus:(int *)a3;
+- (int)isKeyRollingWithKeyStatus:(int *)status;
 - (int)migrateFS;
 - (int)passcodeUnlockFailed;
 - (int)passcodeUnlockStart;
 - (int)passcodeUnlockSuccess;
-- (int)setVolumeToPersona:(id)a3 withPersonaString:(id)a4;
-- (int)startBackupSessionForVolume:(id)a3;
+- (int)setVolumeToPersona:(id)persona withPersonaString:(id)string;
+- (int)startBackupSessionForVolume:(id)volume;
 - (int)stashDestroy;
-- (int)stopBackupSessionForVolume:(id)a3;
+- (int)stopBackupSessionForVolume:(id)volume;
 @end
 
 @implementation MKBKeyStoreDevice
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __34__MKBKeyStoreDevice_sharedService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedService_onceToken != -1)
   {
     dispatch_once(&sharedService_onceToken, block);
@@ -59,7 +59,7 @@
   if (v2)
   {
     xpc_user_sessions_get_foreground_uid();
-    v7 = [v6 _xpcConnection];
+    _xpcConnection = [v6 _xpcConnection];
     xpc_connection_set_target_user_session_uid();
   }
 
@@ -77,14 +77,14 @@ uint64_t __34__MKBKeyStoreDevice_sharedService__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)getFileHandleForData:(id)a3
+- (id)getFileHandleForData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
-    v5 = [v3 length];
+    v5 = [dataCopy length];
     if (!v5)
     {
       goto LABEL_9;
@@ -185,14 +185,14 @@ uint64_t __90__MKBKeyStoreDevice_changeClassKeysGenerationWithSecret_withGenerat
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__MKBKeyStoreDevice_copySytemSecretBlob__block_invoke_2;
   v7[3] = &unk_1E831D648;
   v9 = &v10;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 getPasscodeBlobWithReply:v7];
   v5 = v11[5];
@@ -218,9 +218,9 @@ void __40__MKBKeyStoreDevice_copySytemSecretBlob__block_invoke_2(uint64_t a1, vo
   [*(a1 + 32) invalidate];
 }
 
-- (id)getBackupkeyForVolume:(id)a3 andCryptoID:(unint64_t)a4 withError:(id *)a5
+- (id)getBackupkeyForVolume:(id)volume andCryptoID:(unint64_t)d withError:(id *)error
 {
-  v8 = a3;
+  volumeCopy = volume;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -233,20 +233,20 @@ void __40__MKBKeyStoreDevice_copySytemSecretBlob__block_invoke_2(uint64_t a1, vo
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
-  v9 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
-  v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_205];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  v10 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_205];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__MKBKeyStoreDevice_getBackupkeyForVolume_andCryptoID_withError___block_invoke_2;
   v14[3] = &unk_1E831D670;
   v16 = &v18;
   v17 = &v24;
-  v11 = v9;
+  v11 = _CreateMKBServerConnection;
   v15 = v11;
-  [v10 getBackupkeyForVolume:v8 andCryptoID:a4 withReply:v14];
-  if (a5)
+  [v10 getBackupkeyForVolume:volumeCopy andCryptoID:d withReply:v14];
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v12 = v25[5];
@@ -276,21 +276,21 @@ void __65__MKBKeyStoreDevice_getBackupkeyForVolume_andCryptoID_withError___block
   [*(a1 + 32) invalidate];
 }
 
-- (int)ChangeSystemSecretWithEscrow:(id)a3 FromOldPasscode:(id)a4 ToNew:(id)a5 withOpaqueDats:(id)a6 withKeepState:(int)a7 withACM:(BOOL)a8
+- (int)ChangeSystemSecretWithEscrow:(id)escrow FromOldPasscode:(id)passcode ToNew:(id)new withOpaqueDats:(id)dats withKeepState:(int)state withACM:(BOOL)m
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  escrowCopy = escrow;
+  passcodeCopy = passcode;
+  newCopy = new;
+  datsCopy = dats;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = -1;
-  v18 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
-  if (v15 && [v15 length])
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  if (passcodeCopy && [passcodeCopy length])
   {
-    v19 = [(MKBKeyStoreDevice *)self getFileHandleForData:v15];
-    v20 = [v15 length];
+    v19 = [(MKBKeyStoreDevice *)self getFileHandleForData:passcodeCopy];
+    v20 = [passcodeCopy length];
   }
 
   else
@@ -299,19 +299,19 @@ void __65__MKBKeyStoreDevice_getBackupkeyForVolume_andCryptoID_withError___block
     v19 = 0;
   }
 
-  v31 = v15;
-  v33 = a8;
+  v31 = passcodeCopy;
+  mCopy = m;
   v32 = v20;
-  if (v16 && [v16 length])
+  if (newCopy && [newCopy length])
   {
-    v21 = [(MKBKeyStoreDevice *)self getFileHandleForData:v16];
-    v30 = [v16 length];
-    v22 = a7;
+    v21 = [(MKBKeyStoreDevice *)self getFileHandleForData:newCopy];
+    v30 = [newCopy length];
+    stateCopy2 = state;
   }
 
   else
   {
-    v22 = a7;
+    stateCopy2 = state;
     v30 = 0;
     v21 = 0;
   }
@@ -321,19 +321,19 @@ void __65__MKBKeyStoreDevice_getBackupkeyForVolume_andCryptoID_withError___block
   v37[2] = __109__MKBKeyStoreDevice_ChangeSystemSecretWithEscrow_FromOldPasscode_ToNew_withOpaqueDats_withKeepState_withACM___block_invoke;
   v37[3] = &unk_1E831D5D8;
   v37[4] = &v38;
-  v23 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v37];
-  v24 = v17;
+  v23 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v37];
+  v24 = datsCopy;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __109__MKBKeyStoreDevice_ChangeSystemSecretWithEscrow_FromOldPasscode_ToNew_withOpaqueDats_withKeepState_withACM___block_invoke_2;
   v34[3] = &unk_1E831D600;
   v36 = &v38;
-  v25 = v18;
+  v25 = _CreateMKBServerConnection;
   v35 = v25;
-  v26 = v14;
-  BYTE1(v29) = v33;
-  LOBYTE(v29) = v22 != 0;
-  [v23 changeSystemSecretWithEscrow:v14 fromOldSecret:v19 oldSize:v32 toNewSecret:v21 newSize:v30 opaqueData:v24 keepstate:v29 withACM:v34 reply:?];
+  v26 = escrowCopy;
+  BYTE1(v29) = mCopy;
+  LOBYTE(v29) = stateCopy2 != 0;
+  [v23 changeSystemSecretWithEscrow:escrowCopy fromOldSecret:v19 oldSize:v32 toNewSecret:v21 newSize:v30 opaqueData:v24 keepstate:v29 withACM:v34 reply:?];
   v27 = *(v39 + 6);
 
   _Block_object_dispose(&v38, 8);
@@ -358,28 +358,28 @@ uint64_t __109__MKBKeyStoreDevice_ChangeSystemSecretWithEscrow_FromOldPasscode_T
   return [v4 invalidate];
 }
 
-- (int)SetSystemSecretBlob:(id)a3
+- (int)SetSystemSecretBlob:(id)blob
 {
-  v4 = a3;
+  blobCopy = blob;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -1;
-  v5 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __41__MKBKeyStoreDevice_SetSystemSecretBlob___block_invoke;
   v13[3] = &unk_1E831D5D8;
   v13[4] = &v14;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v6 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__MKBKeyStoreDevice_SetSystemSecretBlob___block_invoke_2;
   v10[3] = &unk_1E831D600;
   v12 = &v14;
-  v7 = v5;
+  v7 = _CreateMKBServerConnection;
   v11 = v7;
-  [v6 setSystemSecretBlob:v4 reply:v10];
+  [v6 setSystemSecretBlob:blobCopy reply:v10];
   v8 = *(v15 + 6);
 
   _Block_object_dispose(&v14, 8);
@@ -442,28 +442,28 @@ uint64_t __62__MKBKeyStoreDevice_registerOTABackup_withSecret_secretIsACM___bloc
   return [v11 invalidate];
 }
 
-- (int)startBackupSessionForVolume:(id)a3
+- (int)startBackupSessionForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -1;
-  v5 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__MKBKeyStoreDevice_startBackupSessionForVolume___block_invoke;
   v13[3] = &unk_1E831D5D8;
   v13[4] = &v14;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v6 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__MKBKeyStoreDevice_startBackupSessionForVolume___block_invoke_2;
   v10[3] = &unk_1E831D600;
   v12 = &v14;
-  v7 = v5;
+  v7 = _CreateMKBServerConnection;
   v11 = v7;
-  [v6 startBackupSessionForVolume:v4 withReply:v10];
+  [v6 startBackupSessionForVolume:volumeCopy withReply:v10];
   v8 = *(v15 + 6);
 
   _Block_object_dispose(&v14, 8);
@@ -498,28 +498,28 @@ uint64_t __49__MKBKeyStoreDevice_startBackupSessionForVolume___block_invoke_2(ui
   return [v11 invalidate];
 }
 
-- (int)stopBackupSessionForVolume:(id)a3
+- (int)stopBackupSessionForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -1;
-  v5 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __48__MKBKeyStoreDevice_stopBackupSessionForVolume___block_invoke;
   v13[3] = &unk_1E831D5D8;
   v13[4] = &v14;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v6 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__MKBKeyStoreDevice_stopBackupSessionForVolume___block_invoke_2;
   v10[3] = &unk_1E831D600;
   v12 = &v14;
-  v7 = v5;
+  v7 = _CreateMKBServerConnection;
   v11 = v7;
-  [v6 stopBackupSessionForVolume:v4 withReply:v10];
+  [v6 stopBackupSessionForVolume:volumeCopy withReply:v10];
   v8 = *(v15 + 6);
 
   _Block_object_dispose(&v14, 8);
@@ -582,28 +582,28 @@ void __74__MKBKeyStoreDevice_enableBackupForVolume_withSecret_secretIsACM_bagDat
   [*(a1 + 32) invalidate];
 }
 
-- (int)disableBackupForVolume:(id)a3
+- (int)disableBackupForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -1;
-  v5 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__MKBKeyStoreDevice_disableBackupForVolume___block_invoke;
   v13[3] = &unk_1E831D5D8;
   v13[4] = &v14;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v6 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__MKBKeyStoreDevice_disableBackupForVolume___block_invoke_2;
   v10[3] = &unk_1E831D600;
   v12 = &v14;
-  v7 = v5;
+  v7 = _CreateMKBServerConnection;
   v11 = v7;
-  [v6 disableBackupForVolume:v4 reply:v10];
+  [v6 disableBackupForVolume:volumeCopy reply:v10];
   v8 = *(v15 + 6);
 
   _Block_object_dispose(&v14, 8);
@@ -638,28 +638,28 @@ uint64_t __44__MKBKeyStoreDevice_disableBackupForVolume___block_invoke_2(uint64_
   return [v11 invalidate];
 }
 
-- (int)backupUUIDForVolume:(id)a3 bagUUID:(id *)a4
+- (int)backupUUIDForVolume:(id)volume bagUUID:(id *)d
 {
-  v5 = a3;
+  volumeCopy = volume;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = -1;
-  v6 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __49__MKBKeyStoreDevice_backupUUIDForVolume_bagUUID___block_invoke;
   v14[3] = &unk_1E831D5D8;
   v14[4] = &v15;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v7 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__MKBKeyStoreDevice_backupUUIDForVolume_bagUUID___block_invoke_2;
   v11[3] = &unk_1E831D648;
   v13 = &v15;
-  v8 = v6;
+  v8 = _CreateMKBServerConnection;
   v12 = v8;
-  [v7 backupUUIDForVolume:v5 reply:v11];
+  [v7 backupUUIDForVolume:volumeCopy reply:v11];
   v9 = *(v16 + 6);
 
   _Block_object_dispose(&v15, 8);
@@ -700,19 +700,19 @@ uint64_t __49__MKBKeyStoreDevice_backupUUIDForVolume_bagUUID___block_invoke_2(ui
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__MKBKeyStoreDevice_passcodeUnlockStart__block_invoke;
   v10[3] = &unk_1E831D5D8;
   v10[4] = &v11;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__MKBKeyStoreDevice_passcodeUnlockStart__block_invoke_2;
   v7[3] = &unk_1E831D600;
   v9 = &v11;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 passcodeUnlockStartWithReply:v7];
   v5 = *(v12 + 6);
@@ -755,19 +755,19 @@ uint64_t __40__MKBKeyStoreDevice_passcodeUnlockStart__block_invoke_2(uint64_t a1
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__MKBKeyStoreDevice_passcodeUnlockSuccess__block_invoke;
   v10[3] = &unk_1E831D5D8;
   v10[4] = &v11;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__MKBKeyStoreDevice_passcodeUnlockSuccess__block_invoke_2;
   v7[3] = &unk_1E831D600;
   v9 = &v11;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 passcodeUnlockSuccessWithReply:v7];
   v5 = *(v12 + 6);
@@ -810,19 +810,19 @@ uint64_t __42__MKBKeyStoreDevice_passcodeUnlockSuccess__block_invoke_2(uint64_t 
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__MKBKeyStoreDevice_passcodeUnlockFailed__block_invoke;
   v10[3] = &unk_1E831D5D8;
   v10[4] = &v11;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__MKBKeyStoreDevice_passcodeUnlockFailed__block_invoke_2;
   v7[3] = &unk_1E831D600;
   v9 = &v11;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 passcodeUnlockFailedWithReply:v7];
   v5 = *(v12 + 6);
@@ -969,19 +969,19 @@ uint64_t __43__MKBKeyStoreDevice_stashCommit_WithFlags___block_invoke_2(uint64_t
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__MKBKeyStoreDevice_stashDestroy__block_invoke;
   v10[3] = &unk_1E831D5D8;
   v10[4] = &v11;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__MKBKeyStoreDevice_stashDestroy__block_invoke_2;
   v7[3] = &unk_1E831D600;
   v9 = &v11;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 stashDestroywithReply:v7];
   v5 = *(v12 + 6);
@@ -1047,7 +1047,7 @@ uint64_t __63__MKBKeyStoreDevice_stashVerifywithValidity_WithUID_WithFlags___blo
   return [v12 invalidate];
 }
 
-- (int)isKeyRollingWithKeyStatus:(int *)a3
+- (int)isKeyRollingWithKeyStatus:(int *)status
 {
   v18 = 0;
   v19 = &v18;
@@ -1057,25 +1057,25 @@ uint64_t __63__MKBKeyStoreDevice_stashVerifywithValidity_WithUID_WithFlags___blo
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v4 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__MKBKeyStoreDevice_isKeyRollingWithKeyStatus___block_invoke;
   v13[3] = &unk_1E831D5D8;
   v13[4] = &v18;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v5 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__MKBKeyStoreDevice_isKeyRollingWithKeyStatus___block_invoke_2;
   v9[3] = &unk_1E831D6E8;
   v11 = &v18;
   v12 = &v14;
-  v6 = v4;
+  v6 = _CreateMKBServerConnection;
   v10 = v6;
   [v5 isKeyRollingInProgresswithreply:v9];
-  if (a3)
+  if (status)
   {
-    *a3 = *(v15 + 6);
+    *status = *(v15 + 6);
   }
 
   v7 = *(v19 + 6);
@@ -1120,19 +1120,19 @@ uint64_t __47__MKBKeyStoreDevice_isKeyRollingWithKeyStatus___block_invoke_2(void
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __30__MKBKeyStoreDevice_migrateFS__block_invoke;
   v10[3] = &unk_1E831D5D8;
   v10[4] = &v11;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__MKBKeyStoreDevice_migrateFS__block_invoke_2;
   v7[3] = &unk_1E831D600;
   v9 = &v11;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 migrationWithReply:v7];
   v5 = *(v12 + 6);
@@ -1175,19 +1175,19 @@ uint64_t __30__MKBKeyStoreDevice_migrateFS__block_invoke_2(uint64_t a1, void *a2
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  v2 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43__MKBKeyStoreDevice_forgottenPasscodeEvent__block_invoke;
   v10[3] = &unk_1E831D5D8;
   v10[4] = &v11;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v3 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__MKBKeyStoreDevice_forgottenPasscodeEvent__block_invoke_2;
   v7[3] = &unk_1E831D600;
   v9 = &v11;
-  v4 = v2;
+  v4 = _CreateMKBServerConnection;
   v8 = v4;
   [v3 forgottenPasscodeEventWithReply:v7];
   v5 = *(v12 + 6);
@@ -1439,29 +1439,29 @@ uint64_t __48__MKBKeyStoreDevice_deleteKeybagForUserSession___block_invoke_2(uin
   return [v4 invalidate];
 }
 
-- (int)setVolumeToPersona:(id)a3 withPersonaString:(id)a4
+- (int)setVolumeToPersona:(id)persona withPersonaString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  personaCopy = persona;
+  stringCopy = string;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 5;
-  v8 = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
+  _CreateMKBServerConnection = [(MKBKeyStoreDevice *)self _CreateMKBServerConnection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__MKBKeyStoreDevice_setVolumeToPersona_withPersonaString___block_invoke;
   v16[3] = &unk_1E831D5D8;
   v16[4] = &v17;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v9 = [_CreateMKBServerConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__MKBKeyStoreDevice_setVolumeToPersona_withPersonaString___block_invoke_2;
   v13[3] = &unk_1E831D600;
   v15 = &v17;
-  v10 = v8;
+  v10 = _CreateMKBServerConnection;
   v14 = v10;
-  [v9 setVolumeToPersona:v6 withPersonaString:v7 withReply:v13];
+  [v9 setVolumeToPersona:personaCopy withPersonaString:stringCopy withReply:v13];
   v11 = *(v18 + 6);
 
   _Block_object_dispose(&v17, 8);

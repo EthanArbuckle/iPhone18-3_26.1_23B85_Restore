@@ -1,20 +1,20 @@
 @interface GTRejectedConnectionReport
-- (GTRejectedConnectionReport)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTRejectedConnectionReport)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTRejectedConnectionReport
 
-- (GTRejectedConnectionReport)initWithCoder:(id)a3
+- (GTRejectedConnectionReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = GTRejectedConnectionReport;
   v5 = [(GTRejectedConnectionReport *)&v18 init];
   if (v5)
   {
     v17 = 0;
-    v6 = [v4 decodeTopLevelObjectOfClass:objc_opt_class() forKey:@"timestamp" error:&v17];
+    v6 = [coderCopy decodeTopLevelObjectOfClass:objc_opt_class() forKey:@"timestamp" error:&v17];
     v7 = v17;
     timestamp = v5->_timestamp;
     v5->_timestamp = v6;
@@ -23,10 +23,10 @@
     {
       if (GTCoreLogUseOsLog())
       {
-        v9 = gt_tagged_log(0x10u);
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        localizedDescription = gt_tagged_log(0x10u);
+        if (os_log_type_enabled(localizedDescription, OS_LOG_TYPE_ERROR))
         {
-          [(GTRejectedConnectionReport *)v7 initWithCoder:v9];
+          [(GTRejectedConnectionReport *)v7 initWithCoder:localizedDescription];
         }
       }
 
@@ -34,14 +34,14 @@
       {
         v10 = *MEMORY[0x277D85DF8];
         v11 = MEMORY[0x277CCACA8];
-        v9 = [v7 localizedDescription];
-        v12 = [v11 stringWithFormat:@"Failure whilst decoding timestamp for GTRejectedConnectionReport, %@", v9];
+        localizedDescription = [v7 localizedDescription];
+        v12 = [v11 stringWithFormat:@"Failure whilst decoding timestamp for GTRejectedConnectionReport, %@", localizedDescription];
         fprintf(v10, "%s\n", [v12 UTF8String]);
       }
     }
 
-    v5->_pid = [v4 decodeInt64ForKey:@"pid"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_pid = [coderCopy decodeInt64ForKey:@"pid"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v13;
 
@@ -51,13 +51,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeObject:timestamp forKey:@"timestamp"];
-  [v5 encodeInt64:self->_pid forKey:@"pid"];
-  [v5 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
+  [coderCopy encodeInt64:self->_pid forKey:@"pid"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
 }
 
 - (void)initWithCoder:(void *)a1 .cold.1(void *a1, NSObject *a2)

@@ -1,8 +1,8 @@
 @interface FigMetadataObjectCaptureConnectionConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)metadataRectOfInterest;
-- (FigMetadataObjectCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FigMetadataObjectCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 - (void)dealloc;
@@ -25,8 +25,8 @@
 
 - (id)description
 {
-  v3 = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
-  if (v3 == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
+  underlyingDeviceType = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
+  if (underlyingDeviceType == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
   {
     v41 = &stru_1F216A3D0;
   }
@@ -36,9 +36,9 @@
     v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (SUB-DEVICE:%@)", +[FigCaptureSourceConfiguration stringForSourceDeviceType:](FigCaptureSourceConfiguration, "stringForSourceDeviceType:", -[FigCaptureConnectionConfiguration underlyingDeviceType](self, "underlyingDeviceType"))];
   }
 
-  v4 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
+  metadataIdentifiers = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
   v5 = *MEMORY[0x1E6960388];
-  if ([(NSArray *)v4 containsObject:*MEMORY[0x1E6960388]])
+  if ([(NSArray *)metadataIdentifiers containsObject:*MEMORY[0x1E6960388]])
   {
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@", attention:%d", self->_attentionDetectionEnabled];
   }
@@ -48,9 +48,9 @@
     v40 = &stru_1F216A3D0;
   }
 
-  v6 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
+  metadataIdentifiers2 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
   v7 = *off_1E798D130;
-  if ([(NSArray *)v6 containsObject:*off_1E798D130])
+  if ([(NSArray *)metadataIdentifiers2 containsObject:*off_1E798D130])
   {
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@", periocular:%d, attention:%d", self->_periocularForFaceIDReadinessEnabled, self->_attentionForFaceIDReadinessRequired];
   }
@@ -70,22 +70,22 @@
     v38 = &stru_1F216A3D0;
   }
 
-  v8 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v10 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
+  metadataIdentifiers3 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
   v11 = *off_1E798D140;
   v37 = v9;
-  if ([(NSArray *)v10 containsObject:*off_1E798D140]&& (motionToWakeTargetFrameRate = self->_motionToWakeTargetFrameRate, motionToWakeTargetFrameRate > 0.0))
+  if ([(NSArray *)metadataIdentifiers3 containsObject:*off_1E798D140]&& (motionToWakeTargetFrameRate = self->_motionToWakeTargetFrameRate, motionToWakeTargetFrameRate > 0.0))
   {
-    v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@", motionToWakeTargetFrameRate:%.2f", motionToWakeTargetFrameRate];
+    motionToWakeTargetFrameRate = [MEMORY[0x1E696AEC0] stringWithFormat:@", motionToWakeTargetFrameRate:%.2f", motionToWakeTargetFrameRate];
   }
 
   else
   {
-    v36 = &stru_1F216A3D0;
+    motionToWakeTargetFrameRate = &stru_1F216A3D0;
   }
 
-  v35 = [MEMORY[0x1E696AD60] string];
+  string2 = [MEMORY[0x1E696AD60] string];
   v13 = *off_1E798D0E0;
   v47[0] = v5;
   v47[1] = v13;
@@ -127,8 +127,8 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v22 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
-  v23 = [(NSArray *)v22 countByEnumeratingWithState:&v43 objects:v42 count:16];
+  metadataIdentifiers4 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
+  v23 = [(NSArray *)metadataIdentifiers4 countByEnumeratingWithState:&v43 objects:v42 count:16];
   if (v23)
   {
     v24 = v23;
@@ -139,7 +139,7 @@
       {
         if (*v44 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(metadataIdentifiers4);
         }
 
         v27 = *(*(&v43 + 1) + 8 * i);
@@ -160,7 +160,7 @@
         }
       }
 
-      v24 = [(NSArray *)v22 countByEnumeratingWithState:&v43 objects:v42 count:16];
+      v24 = [(NSArray *)metadataIdentifiers4 countByEnumeratingWithState:&v43 objects:v42 count:16];
     }
 
     while (v24);
@@ -212,37 +212,37 @@
     v33 = &stru_1F216A3D0;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"MOC %p: <%@>%@ -> <%@> E:%d MetadataIdentifiers:{%@}%@%@%@%@%@%@%@%@%@%@%@%@", self, -[FigCaptureConnectionConfiguration sourceConfiguration](self, "sourceConfiguration"), v41, -[FigCaptureConnectionConfiguration sinkConfiguration](self, "sinkConfiguration"), -[FigCaptureConnectionConfiguration enabled](self, "enabled"), v21, v30, v31, v32, v40, v39, v38, &stru_1F216A3D0, v37, v33, v36, v35, v8];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"MOC %p: <%@>%@ -> <%@> E:%d MetadataIdentifiers:{%@}%@%@%@%@%@%@%@%@%@%@%@%@", self, -[FigCaptureConnectionConfiguration sourceConfiguration](self, "sourceConfiguration"), v41, -[FigCaptureConnectionConfiguration sinkConfiguration](self, "sinkConfiguration"), -[FigCaptureConnectionConfiguration enabled](self, "enabled"), v21, v30, v31, v32, v40, v39, v38, &stru_1F216A3D0, v37, v33, motionToWakeTargetFrameRate, string2, string];
 }
 
 - (id)copyXPCEncoding
 {
   v6.receiver = self;
   v6.super_class = FigMetadataObjectCaptureConnectionConfiguration;
-  v3 = [(FigCaptureConnectionConfiguration *)&v6 copyXPCEncoding];
+  copyXPCEncoding = [(FigCaptureConnectionConfiguration *)&v6 copyXPCEncoding];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(self->_metadataRectOfInterest);
   FigXPCMessageSetCFArray();
   FigXPCMessageSetCFDictionary();
-  xpc_dictionary_set_int64(v3, "faceTrackingMaxFaces", self->_faceTrackingMaxFaces);
-  xpc_dictionary_set_BOOL(v3, "faceTrackingUsesFaceRecognition", self->_faceTrackingUsesFaceRecognition);
-  xpc_dictionary_set_BOOL(v3, "faceTrackingPlusEnabled", self->_faceTrackingPlusEnabled);
-  xpc_dictionary_set_BOOL(v3, "faceTrackingSuspended", self->_faceTrackingSuspended);
-  xpc_dictionary_set_double(v3, "faceTrackingNetworkFailureThresholdMultiplier", self->_faceTrackingNetworkFailureThresholdMultiplier);
-  xpc_dictionary_set_double(v3, "faceTrackingFailureFieldOfViewModifier", self->_faceTrackingFailureFieldOfViewModifier);
-  xpc_dictionary_set_BOOL(v3, "attentionDetectionEnabled", self->_attentionDetectionEnabled);
-  xpc_dictionary_set_BOOL(v3, "periocularForFaceIDReadinessEnabled", self->_periocularForFaceIDReadinessEnabled);
-  xpc_dictionary_set_BOOL(v3, "attentionForFaceIDReadinessRequired", self->_attentionForFaceIDReadinessRequired);
-  xpc_dictionary_set_BOOL(v3, "faceOcclusionDetectionEnabled", self->_faceOcclusionDetectionEnabled);
-  xpc_dictionary_set_double(v3, "motionToWakeTargetFrameRate", self->_motionToWakeTargetFrameRate);
-  xpc_dictionary_set_double(v3, "objectDetectionTargetFrameRate", self->_objectDetectionTargetFrameRate);
-  xpc_dictionary_set_BOOL(v3, "attachMetadataToVideoBuffers", [(FigMetadataObjectCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers]);
-  xpc_dictionary_set_BOOL(v3, "emitsEmptyObjectDetectionMetadata", [(FigMetadataObjectCaptureConnectionConfiguration *)self emitsEmptyObjectDetectionMetadata]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "faceTrackingMaxFaces", self->_faceTrackingMaxFaces);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "faceTrackingUsesFaceRecognition", self->_faceTrackingUsesFaceRecognition);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "faceTrackingPlusEnabled", self->_faceTrackingPlusEnabled);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "faceTrackingSuspended", self->_faceTrackingSuspended);
+  xpc_dictionary_set_double(copyXPCEncoding, "faceTrackingNetworkFailureThresholdMultiplier", self->_faceTrackingNetworkFailureThresholdMultiplier);
+  xpc_dictionary_set_double(copyXPCEncoding, "faceTrackingFailureFieldOfViewModifier", self->_faceTrackingFailureFieldOfViewModifier);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "attentionDetectionEnabled", self->_attentionDetectionEnabled);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "periocularForFaceIDReadinessEnabled", self->_periocularForFaceIDReadinessEnabled);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "attentionForFaceIDReadinessRequired", self->_attentionForFaceIDReadinessRequired);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "faceOcclusionDetectionEnabled", self->_faceOcclusionDetectionEnabled);
+  xpc_dictionary_set_double(copyXPCEncoding, "motionToWakeTargetFrameRate", self->_motionToWakeTargetFrameRate);
+  xpc_dictionary_set_double(copyXPCEncoding, "objectDetectionTargetFrameRate", self->_objectDetectionTargetFrameRate);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "attachMetadataToVideoBuffers", [(FigMetadataObjectCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "emitsEmptyObjectDetectionMetadata", [(FigMetadataObjectCaptureConnectionConfiguration *)self emitsEmptyObjectDetectionMetadata]);
   if (DictionaryRepresentation)
   {
     CFRelease(DictionaryRepresentation);
   }
 
-  return v3;
+  return copyXPCEncoding;
 }
 
 - (void)dealloc
@@ -252,9 +252,9 @@
   [(FigCaptureConnectionConfiguration *)&v3 dealloc];
 }
 
-- (FigMetadataObjectCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3
+- (FigMetadataObjectCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (a3)
+  if (encoding)
   {
     v10.receiver = self;
     v10.super_class = FigMetadataObjectCaptureConnectionConfiguration;
@@ -264,24 +264,24 @@
       FigXPCMessageCopyCFArray();
       FigXPCMessageCopyCFDictionary();
       CGRectMakeWithDictionaryRepresentation(0, &v4->_metadataRectOfInterest);
-      v4->_faceTrackingMaxFaces = xpc_dictionary_get_int64(a3, "faceTrackingMaxFaces");
-      v4->_faceTrackingUsesFaceRecognition = xpc_dictionary_get_BOOL(a3, "faceTrackingUsesFaceRecognition");
-      v4->_faceTrackingPlusEnabled = xpc_dictionary_get_BOOL(a3, "faceTrackingPlusEnabled");
-      v4->_faceTrackingSuspended = xpc_dictionary_get_BOOL(a3, "faceTrackingSuspended");
-      v5 = xpc_dictionary_get_double(a3, "faceTrackingNetworkFailureThresholdMultiplier");
+      v4->_faceTrackingMaxFaces = xpc_dictionary_get_int64(encoding, "faceTrackingMaxFaces");
+      v4->_faceTrackingUsesFaceRecognition = xpc_dictionary_get_BOOL(encoding, "faceTrackingUsesFaceRecognition");
+      v4->_faceTrackingPlusEnabled = xpc_dictionary_get_BOOL(encoding, "faceTrackingPlusEnabled");
+      v4->_faceTrackingSuspended = xpc_dictionary_get_BOOL(encoding, "faceTrackingSuspended");
+      v5 = xpc_dictionary_get_double(encoding, "faceTrackingNetworkFailureThresholdMultiplier");
       v4->_faceTrackingNetworkFailureThresholdMultiplier = v5;
-      v6 = xpc_dictionary_get_double(a3, "faceTrackingFailureFieldOfViewModifier");
+      v6 = xpc_dictionary_get_double(encoding, "faceTrackingFailureFieldOfViewModifier");
       v4->_faceTrackingFailureFieldOfViewModifier = v6;
-      v4->_attentionDetectionEnabled = xpc_dictionary_get_BOOL(a3, "attentionDetectionEnabled");
-      v4->_periocularForFaceIDReadinessEnabled = xpc_dictionary_get_BOOL(a3, "periocularForFaceIDReadinessEnabled");
-      v4->_attentionForFaceIDReadinessRequired = xpc_dictionary_get_BOOL(a3, "attentionForFaceIDReadinessRequired");
-      v4->_faceOcclusionDetectionEnabled = xpc_dictionary_get_BOOL(a3, "faceOcclusionDetectionEnabled");
-      v7 = xpc_dictionary_get_double(a3, "motionToWakeTargetFrameRate");
+      v4->_attentionDetectionEnabled = xpc_dictionary_get_BOOL(encoding, "attentionDetectionEnabled");
+      v4->_periocularForFaceIDReadinessEnabled = xpc_dictionary_get_BOOL(encoding, "periocularForFaceIDReadinessEnabled");
+      v4->_attentionForFaceIDReadinessRequired = xpc_dictionary_get_BOOL(encoding, "attentionForFaceIDReadinessRequired");
+      v4->_faceOcclusionDetectionEnabled = xpc_dictionary_get_BOOL(encoding, "faceOcclusionDetectionEnabled");
+      v7 = xpc_dictionary_get_double(encoding, "motionToWakeTargetFrameRate");
       v4->_motionToWakeTargetFrameRate = v7;
-      v8 = xpc_dictionary_get_double(a3, "objectDetectionTargetFrameRate");
+      v8 = xpc_dictionary_get_double(encoding, "objectDetectionTargetFrameRate");
       v4->_objectDetectionTargetFrameRate = v8;
-      v4->_attachMetadataToVideoBuffers = xpc_dictionary_get_BOOL(a3, "attachMetadataToVideoBuffers");
-      v4->_emitsEmptyObjectDetectionMetadata = xpc_dictionary_get_BOOL(a3, "emitsEmptyObjectDetectionMetadata");
+      v4->_attachMetadataToVideoBuffers = xpc_dictionary_get_BOOL(encoding, "attachMetadataToVideoBuffers");
+      v4->_emitsEmptyObjectDetectionMetadata = xpc_dictionary_get_BOOL(encoding, "emitsEmptyObjectDetectionMetadata");
     }
   }
 
@@ -294,11 +294,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigMetadataObjectCaptureConnectionConfiguration;
-  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:zone];
   [v4 setMetadataIdentifiers:{-[FigMetadataObjectCaptureConnectionConfiguration metadataIdentifiers](self, "metadataIdentifiers")}];
   [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataRectOfInterest];
   [v4 setMetadataRectOfInterest:?];
@@ -323,7 +323,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v42.receiver = self;
   v42.super_class = FigMetadataObjectCaptureConnectionConfiguration;
@@ -338,15 +338,15 @@ LABEL_19:
       return v5;
     }
 
-    v6 = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
-    if (v6 == [a3 metadataIdentifiers] || (v5 = -[NSArray isEqual:](-[FigMetadataObjectCaptureConnectionConfiguration metadataIdentifiers](self, "metadataIdentifiers"), "isEqual:", objc_msgSend(a3, "metadataIdentifiers"))) != 0)
+    metadataIdentifiers = [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataIdentifiers];
+    if (metadataIdentifiers == [equal metadataIdentifiers] || (v5 = -[NSArray isEqual:](-[FigMetadataObjectCaptureConnectionConfiguration metadataIdentifiers](self, "metadataIdentifiers"), "isEqual:", objc_msgSend(equal, "metadataIdentifiers"))) != 0)
     {
       [(FigMetadataObjectCaptureConnectionConfiguration *)self metadataRectOfInterest];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      [a3 metadataRectOfInterest];
+      [equal metadataRectOfInterest];
       v44.origin.x = v15;
       v44.origin.y = v16;
       v44.size.width = v17;
@@ -358,33 +358,33 @@ LABEL_19:
       v5 = CGRectEqualToRect(v43, v44);
       if (v5)
       {
-        v19 = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingMaxFaces];
-        if (v19 != [a3 faceTrackingMaxFaces])
+        faceTrackingMaxFaces = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingMaxFaces];
+        if (faceTrackingMaxFaces != [equal faceTrackingMaxFaces])
         {
           goto LABEL_19;
         }
 
-        v20 = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingUsesFaceRecognition];
-        if (v20 != [a3 faceTrackingUsesFaceRecognition])
+        faceTrackingUsesFaceRecognition = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingUsesFaceRecognition];
+        if (faceTrackingUsesFaceRecognition != [equal faceTrackingUsesFaceRecognition])
         {
           goto LABEL_19;
         }
 
-        v21 = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingPlusEnabled];
-        if (v21 != [a3 faceTrackingPlusEnabled])
+        faceTrackingPlusEnabled = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingPlusEnabled];
+        if (faceTrackingPlusEnabled != [equal faceTrackingPlusEnabled])
         {
           goto LABEL_19;
         }
 
-        v22 = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingSuspended];
-        if (v22 != [a3 faceTrackingSuspended])
+        faceTrackingSuspended = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingSuspended];
+        if (faceTrackingSuspended != [equal faceTrackingSuspended])
         {
           goto LABEL_19;
         }
 
         [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingNetworkFailureThresholdMultiplier];
         v24 = v23;
-        [a3 faceTrackingNetworkFailureThresholdMultiplier];
+        [equal faceTrackingNetworkFailureThresholdMultiplier];
         if (v24 != v25)
         {
           goto LABEL_19;
@@ -392,39 +392,39 @@ LABEL_19:
 
         [(FigMetadataObjectCaptureConnectionConfiguration *)self faceTrackingFailureFieldOfViewModifier];
         v27 = v26;
-        [a3 faceTrackingFailureFieldOfViewModifier];
+        [equal faceTrackingFailureFieldOfViewModifier];
         if (v27 != v28)
         {
           goto LABEL_19;
         }
 
-        v29 = [(FigMetadataObjectCaptureConnectionConfiguration *)self attentionDetectionEnabled];
-        if (v29 != [a3 attentionDetectionEnabled])
+        attentionDetectionEnabled = [(FigMetadataObjectCaptureConnectionConfiguration *)self attentionDetectionEnabled];
+        if (attentionDetectionEnabled != [equal attentionDetectionEnabled])
         {
           goto LABEL_19;
         }
 
-        v30 = [(FigMetadataObjectCaptureConnectionConfiguration *)self periocularForFaceIDReadinessEnabled];
-        if (v30 != [a3 periocularForFaceIDReadinessEnabled])
+        periocularForFaceIDReadinessEnabled = [(FigMetadataObjectCaptureConnectionConfiguration *)self periocularForFaceIDReadinessEnabled];
+        if (periocularForFaceIDReadinessEnabled != [equal periocularForFaceIDReadinessEnabled])
         {
           goto LABEL_19;
         }
 
-        v31 = [(FigMetadataObjectCaptureConnectionConfiguration *)self attentionForFaceIDReadinessRequired];
-        if (v31 != [a3 attentionForFaceIDReadinessRequired])
+        attentionForFaceIDReadinessRequired = [(FigMetadataObjectCaptureConnectionConfiguration *)self attentionForFaceIDReadinessRequired];
+        if (attentionForFaceIDReadinessRequired != [equal attentionForFaceIDReadinessRequired])
         {
           goto LABEL_19;
         }
 
-        v32 = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceOcclusionDetectionEnabled];
-        if (v32 != [a3 faceOcclusionDetectionEnabled])
+        faceOcclusionDetectionEnabled = [(FigMetadataObjectCaptureConnectionConfiguration *)self faceOcclusionDetectionEnabled];
+        if (faceOcclusionDetectionEnabled != [equal faceOcclusionDetectionEnabled])
         {
           goto LABEL_19;
         }
 
         [(FigMetadataObjectCaptureConnectionConfiguration *)self motionToWakeTargetFrameRate];
         v34 = v33;
-        [a3 motionToWakeTargetFrameRate];
+        [equal motionToWakeTargetFrameRate];
         if (v34 != v35)
         {
           goto LABEL_19;
@@ -432,20 +432,20 @@ LABEL_19:
 
         [(FigMetadataObjectCaptureConnectionConfiguration *)self objectDetectionTargetFrameRate];
         v37 = v36;
-        [a3 objectDetectionTargetFrameRate];
+        [equal objectDetectionTargetFrameRate];
         if (v37 != v38)
         {
           goto LABEL_19;
         }
 
-        v39 = [(FigMetadataObjectCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers];
-        if (v39 != [a3 attachMetadataToVideoBuffers])
+        attachMetadataToVideoBuffers = [(FigMetadataObjectCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers];
+        if (attachMetadataToVideoBuffers != [equal attachMetadataToVideoBuffers])
         {
           goto LABEL_19;
         }
 
-        v40 = [(FigMetadataObjectCaptureConnectionConfiguration *)self emitsEmptyObjectDetectionMetadata];
-        LOBYTE(v5) = v40 ^ [a3 emitsEmptyObjectDetectionMetadata] ^ 1;
+        emitsEmptyObjectDetectionMetadata = [(FigMetadataObjectCaptureConnectionConfiguration *)self emitsEmptyObjectDetectionMetadata];
+        LOBYTE(v5) = emitsEmptyObjectDetectionMetadata ^ [equal emitsEmptyObjectDetectionMetadata] ^ 1;
       }
     }
   }

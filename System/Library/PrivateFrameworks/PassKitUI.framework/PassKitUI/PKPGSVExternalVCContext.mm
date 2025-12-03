@@ -1,20 +1,20 @@
 @interface PKPGSVExternalVCContext
-+ (PKPGSVExternalVCContext)createForTransitionCoordinator:(void *)a3 withParentViewController:(void *)a4 dashboardPassGroupViewController:;
-- (double)_destinationViewFrameWithSize:(uint64_t)a3@<X2> inViewControllerFrame:(uint64_t)a4@<X8>;
++ (PKPGSVExternalVCContext)createForTransitionCoordinator:(void *)coordinator withParentViewController:(void *)controller dashboardPassGroupViewController:;
+- (double)_destinationViewFrameWithSize:(uint64_t)size@<X2> inViewControllerFrame:(uint64_t)frame@<X8>;
 - (id)_animatingView;
 - (id)_containedView;
 - (uint64_t)_didDisappear;
 - (uint64_t)_invert;
-- (uint64_t)_updateForViewControllerFrame:(int)a3 usingPassAnchorPoint:(void *)a4 withSpringConfiguration:(int)a5 preferModalSpringFactories:;
+- (uint64_t)_updateForViewControllerFrame:(int)frame usingPassAnchorPoint:(void *)point withSpringConfiguration:(int)configuration preferModalSpringFactories:;
 - (uint64_t)_willDisappear;
 - (void)_destinationViewControllerFrame;
 - (void)_didAppear;
 - (void)_interruptTransferedGroupView;
 - (void)_referenceView;
-- (void)_setTransition:(uint64_t)a1;
-- (void)_setTransitionState:(uint64_t)a1;
+- (void)_setTransition:(uint64_t)transition;
+- (void)_setTransitionState:(uint64_t)state;
 - (void)_terminate;
-- (void)_willAppearInContainerView:(uint64_t)a1;
+- (void)_willAppearInContainerView:(uint64_t)view;
 - (void)_willLoanGroupView;
 - (void)_willTransferGroupView;
 - (void)viewControllerLayoutProvider;
@@ -22,16 +22,16 @@
 
 @implementation PKPGSVExternalVCContext
 
-+ (PKPGSVExternalVCContext)createForTransitionCoordinator:(void *)a3 withParentViewController:(void *)a4 dashboardPassGroupViewController:
++ (PKPGSVExternalVCContext)createForTransitionCoordinator:(void *)coordinator withParentViewController:(void *)controller dashboardPassGroupViewController:
 {
-  v7 = a4;
-  v8 = a3;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   v9 = a2;
   objc_opt_self();
   v10 = [PKPGSVExternalVCContext alloc];
   v11 = v9;
-  v12 = v8;
-  result = v7;
+  v12 = coordinatorCopy;
+  result = controllerCopy;
   v14 = result;
   if (!v10)
   {
@@ -48,8 +48,8 @@
     {
       objc_storeStrong(&v15->_transitionCoordinator, a2);
       objc_storeWeak(&v10->_parentViewController, v12);
-      objc_storeStrong(&v10->_viewController, a4);
-      objc_storeStrong(&v10->_dashboardPassGroupViewController, a4);
+      objc_storeStrong(&v10->_viewController, controller);
+      objc_storeStrong(&v10->_dashboardPassGroupViewController, controller);
       v10->_sending = 1;
       v10->_visibility = 0;
     }
@@ -83,63 +83,63 @@ LABEL_7:
 
 - (id)_containedView
 {
-  if (!a1)
+  if (!self)
   {
 LABEL_4:
 
-    return a1;
+    return self;
   }
 
-  if (*(a1 + 24))
+  if (*(self + 24))
   {
-    a1 = a1[4];
+    self = self[4];
     v1 = vars8;
     goto LABEL_4;
   }
 
-  a1 = 0;
+  self = 0;
 
-  return a1;
+  return self;
 }
 
-- (void)_willAppearInContainerView:(uint64_t)a1
+- (void)_willAppearInContainerView:(uint64_t)view
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!view)
   {
 LABEL_26:
 
     return;
   }
 
-  if (v3 && (*(a1 + 8) & 1) == 0 && !*(a1 + 24))
+  if (v3 && (*(view + 8) & 1) == 0 && !*(view + 24))
   {
-    *(a1 + 24) = 1;
+    *(view + 24) = 1;
     v5 = objc_autoreleasePoolPush();
     [v4 bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = *(a1 + 32);
+    v14 = *(view + 32);
     if (v14)
     {
-      v15 = [v14 superview];
-      v16 = v15;
-      v17 = v15 != v4;
-      if (v15 != v4 && v15)
+      superview = [v14 superview];
+      v16 = superview;
+      v17 = superview != v4;
+      if (superview != v4 && superview)
       {
-        [*(a1 + 32) removeFromSuperview];
+        [*(view + 32) removeFromSuperview];
       }
 
-      [*(a1 + 32) setFrame:{v7, v9, v11, v13}];
+      [*(view + 32) setFrame:{v7, v9, v11, v13}];
       if (v16 != v4)
       {
-        [v4 addSubview:*(a1 + 32)];
+        [v4 addSubview:*(view + 32)];
       }
 
-      v18 = *(a1 + 32);
+      v18 = *(view + 32);
       if (v18)
       {
         *(v18 + 600) = 1;
@@ -149,8 +149,8 @@ LABEL_26:
     else
     {
       v19 = [PKPGSVExternalVCContextContainerView alloc];
-      v20 = [*(a1 + 56) view];
-      v21 = v20;
+      view = [*(view + 56) view];
+      v21 = view;
       v22 = v21;
       if (v19)
       {
@@ -170,7 +170,7 @@ LABEL_26:
 
           v25 = *MEMORY[0x1E695EFF8];
           v26 = *(MEMORY[0x1E695EFF8] + 8);
-          objc_storeStrong(&v19->_view, v20);
+          objc_storeStrong(&v19->_view, view);
           v64 = v26;
           v65 = v25;
           [v22 setFrame:{v25, v26, v11, v13}];
@@ -221,39 +221,39 @@ LABEL_26:
 
           [(PKBlurView *)v19->_portalContainer setHitTestEnabled:0];
           [(PKPGSVExternalVCContextContainerView *)v19 addSubview:v19->_portalContainer];
-          v49 = [MEMORY[0x1E6979408] layer];
+          layer = [MEMORY[0x1E6979408] layer];
           portalLayer = v19->_portalLayer;
-          v19->_portalLayer = v49;
+          v19->_portalLayer = layer;
 
           [(CAPortalLayer *)v19->_portalLayer setDelegate:v19->_actionRemover];
           [(CAPortalLayer *)v19->_portalLayer setFrame:v65, v64, v11, v13];
           [(CAPortalLayer *)v19->_portalLayer setHidesSourceLayer:1];
           v51 = v19->_portalLayer;
-          v52 = [v22 layer];
-          [(CAPortalLayer *)v51 setSourceLayer:v52];
+          layer2 = [v22 layer];
+          [(CAPortalLayer *)v51 setSourceLayer:layer2];
 
-          v53 = [(PKBlurView *)v19->_portalContainer layer];
-          [v53 addSublayer:v19->_portalLayer];
+          layer3 = [(PKBlurView *)v19->_portalContainer layer];
+          [layer3 addSublayer:v19->_portalLayer];
 
           v19->_hitTestEnabled = 1;
           v19->_state = 0;
         }
       }
 
-      v54 = *(a1 + 32);
-      *(a1 + 32) = v19;
+      v54 = *(view + 32);
+      *(view + 32) = v19;
 
-      [v4 addSubview:*(a1 + 32)];
+      [v4 addSubview:*(view + 32)];
       v17 = 1;
     }
 
-    if (*(a1 + 32))
+    if (*(view + 32))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      WeakRetained = objc_loadWeakRetained((view + 16));
       v56 = WeakRetained;
       if (WeakRetained)
       {
-        [WeakRetained addChildViewController:*(a1 + 56)];
+        [WeakRetained addChildViewController:*(view + 56)];
       }
 
       if (v17)
@@ -264,11 +264,11 @@ LABEL_26:
         v66[2] = __54__PKPGSVExternalVCContext__willAppearInContainerView___block_invoke;
         v66[3] = &unk_1E8010A10;
         v67 = v56;
-        v68 = a1;
+        viewCopy = view;
         [v57 performWithoutAnimation:v66];
       }
 
-      *(a1 + 32);
+      *(view + 32);
 
       objc_autoreleasePoolPop(v5);
       goto LABEL_26;
@@ -298,21 +298,21 @@ void __54__PKPGSVExternalVCContext__willAppearInContainerView___block_invoke(uin
 
 - (void)_didAppear
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 8) & 1) != 0 || *(a1 + 24) != 1)
+    if ((*(self + 8) & 1) != 0 || *(self + 24) != 1)
     {
       __break(1u);
     }
 
     else
     {
-      *(a1 + 24) = 2;
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      *(self + 24) = 2;
+      WeakRetained = objc_loadWeakRetained((self + 16));
       if (WeakRetained)
       {
         v3 = WeakRetained;
-        [*(a1 + 56) didMoveToParentViewController:WeakRetained];
+        [*(self + 56) didMoveToParentViewController:WeakRetained];
         WeakRetained = v3;
       }
     }
@@ -369,40 +369,40 @@ void __54__PKPGSVExternalVCContext__willAppearInContainerView___block_invoke(uin
 
 - (void)_terminate
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 8) != 1)
+    if (*(self + 8) != 1)
     {
-      v2 = *(a1 + 24);
+      v2 = *(self + 24);
       if ((v2 - 1) <= 1)
       {
-        [(PKPGSVExternalVCContext *)a1 _willDisappear];
-        v2 = *(a1 + 24);
+        [(PKPGSVExternalVCContext *)self _willDisappear];
+        v2 = *(self + 24);
       }
 
       if (v2 == 3)
       {
-        if (*(a1 + 8) == 1)
+        if (*(self + 8) == 1)
         {
           goto LABEL_12;
         }
 
-        *(a1 + 24) = 0;
-        [*(a1 + 56) removeFromParentViewController];
-        [*(a1 + 32) removeFromSuperview];
-        v2 = *(a1 + 24);
+        *(self + 24) = 0;
+        [*(self + 56) removeFromParentViewController];
+        [*(self + 32) removeFromSuperview];
+        v2 = *(self + 24);
       }
 
       if (!v2)
       {
-        v3 = [*(a1 + 32) superview];
+        superview = [*(self + 32) superview];
 
-        if (!v3)
+        if (!superview)
         {
-          v4 = *(a1 + 32);
-          *(a1 + 32) = 0;
+          v4 = *(self + 32);
+          *(self + 32) = 0;
 
-          *(a1 + 8) = 1;
+          *(self + 8) = 1;
           return;
         }
       }
@@ -415,18 +415,18 @@ LABEL_12:
 
 - (void)_willLoanGroupView
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   if (!v1)
   {
     goto LABEL_11;
   }
 
-  v2 = *(a1 + 48);
+  v2 = *(self + 48);
   if (!v2)
   {
 LABEL_13:
@@ -457,18 +457,18 @@ LABEL_8:
 
 - (void)_interruptTransferedGroupView
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   if (!v1)
   {
     goto LABEL_11;
   }
 
-  v2 = *(a1 + 48);
+  v2 = *(self + 48);
   if (!v2)
   {
 LABEL_13:
@@ -499,10 +499,10 @@ LABEL_8:
 
 - (void)_willTransferGroupView
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
-    if (!v2 || (v3 = *(a1 + 48)) != 0 && ((*(v3 + 98) & 1) != 0 || *(v3 + 99) == 1))
+    v2 = *(self + 32);
+    if (!v2 || (v3 = *(self + 48)) != 0 && ((*(v3 + 98) & 1) != 0 || *(v3 + 99) == 1))
     {
       __break(1u);
     }
@@ -514,12 +514,12 @@ LABEL_8:
   }
 }
 
-- (uint64_t)_updateForViewControllerFrame:(int)a3 usingPassAnchorPoint:(void *)a4 withSpringConfiguration:(int)a5 preferModalSpringFactories:
+- (uint64_t)_updateForViewControllerFrame:(int)frame usingPassAnchorPoint:(void *)point withSpringConfiguration:(int)configuration preferModalSpringFactories:
 {
-  v9 = a4;
-  if (a1)
+  pointCopy = point;
+  if (self)
   {
-    v10 = *(a1 + 32);
+    v10 = *(self + 32);
     if (!v10)
     {
       __break(1u);
@@ -539,7 +539,7 @@ LABEL_8:
     v14 = *(a2 + 16);
     v16[0] = *a2;
     v16[1] = v14;
-    [(PKPGSVExternalVCContextContainerView *)v10 _updateForViewControllerFrame:v16 usingPassAnchorPoint:a3 withSpringConfiguration:v9 preferModalSpringFactories:a5];
+    [(PKPGSVExternalVCContextContainerView *)v10 _updateForViewControllerFrame:v16 usingPassAnchorPoint:frame withSpringConfiguration:pointCopy preferModalSpringFactories:configuration];
   }
 
   return MEMORY[0x1EEE66C30]();
@@ -583,23 +583,23 @@ LABEL_8:
 
 - (id)_animatingView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(PKPGSVExternalVCContextContainerView *)a1[4] _animatingView];
+    self = [(PKPGSVExternalVCContextContainerView *)self[4] _animatingView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_destinationViewControllerFrame
 {
-  if (a1)
+  if (self)
   {
-    v3 = [*(a1 + 56) view];
-    if (v3)
+    view = [*(self + 56) view];
+    if (view)
     {
-      v20 = v3;
+      v20 = view;
       [v20 bounds];
       *a2 = v4;
       *(a2 + 8) = v5;
@@ -646,12 +646,12 @@ LABEL_8:
   }
 }
 
-- (double)_destinationViewFrameWithSize:(uint64_t)a3@<X2> inViewControllerFrame:(uint64_t)a4@<X8>
+- (double)_destinationViewFrameWithSize:(uint64_t)size@<X2> inViewControllerFrame:(uint64_t)frame@<X8>
 {
-  if (a1)
+  if (self)
   {
-    v8 = [(PKPGSVExternalVCContext *)a1 viewControllerLayoutProvider];
-    v9 = v8;
+    viewControllerLayoutProvider = [(PKPGSVExternalVCContext *)self viewControllerLayoutProvider];
+    v9 = viewControllerLayoutProvider;
     v10 = 0uLL;
     v41 = 0u;
     memset(v42, 0, 24);
@@ -661,7 +661,7 @@ LABEL_8:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    if (v8)
+    if (viewControllerLayoutProvider)
     {
       v11 = *(a2 + 80);
       v33[4] = *(a2 + 64);
@@ -674,20 +674,20 @@ LABEL_8:
       v13 = *(a2 + 48);
       v33[2] = *(a2 + 32);
       v33[3] = v13;
-      v14 = *(a3 + 112);
-      v31[6] = *(a3 + 96);
+      v14 = *(size + 112);
+      v31[6] = *(size + 96);
       v31[7] = v14;
-      v32 = *(a3 + 128);
-      v15 = *(a3 + 48);
-      v31[2] = *(a3 + 32);
+      v32 = *(size + 128);
+      v15 = *(size + 48);
+      v31[2] = *(size + 32);
       v31[3] = v15;
-      v16 = *(a3 + 80);
-      v31[4] = *(a3 + 64);
+      v16 = *(size + 80);
+      v31[4] = *(size + 64);
       v31[5] = v16;
-      v17 = *(a3 + 16);
-      v31[0] = *a3;
+      v17 = *(size + 16);
+      v31[0] = *size;
       v31[1] = v17;
-      [v8 externalVCContext:a1 destinationFrameForViewWithSize:v33 inViewControllerFrame:v31];
+      [viewControllerLayoutProvider externalVCContext:self destinationFrameForViewWithSize:v33 inViewControllerFrame:v31];
       v10 = v37;
     }
 
@@ -696,72 +696,72 @@ LABEL_8:
     if (v19.i32[0] & v19.i32[1])
     {
       v20 = v42[0];
-      *(a4 + 96) = v41;
-      *(a4 + 112) = v20;
-      *(a4 + 128) = *&v42[1];
+      *(frame + 96) = v41;
+      *(frame + 112) = v20;
+      *(frame + 128) = *&v42[1];
       v21 = v38;
-      *(a4 + 32) = v37;
-      *(a4 + 48) = v21;
+      *(frame + 32) = v37;
+      *(frame + 48) = v21;
       v22 = v40;
-      *(a4 + 64) = v39;
-      *(a4 + 80) = v22;
+      *(frame + 64) = v39;
+      *(frame + 80) = v22;
       v23 = v36;
-      *a4 = v35;
-      *(a4 + 16) = v23;
+      *frame = v35;
+      *(frame + 16) = v23;
     }
 
     else
     {
       v24 = *(a2 + 80);
-      *(a4 + 64) = *(a2 + 64);
-      *(a4 + 80) = v24;
-      *(a4 + 96) = *(a2 + 96);
-      *(a4 + 112) = *(a2 + 112);
+      *(frame + 64) = *(a2 + 64);
+      *(frame + 80) = v24;
+      *(frame + 96) = *(a2 + 96);
+      *(frame + 112) = *(a2 + 112);
       v25 = *(a2 + 16);
-      *a4 = *a2;
-      *(a4 + 16) = v25;
+      *frame = *a2;
+      *(frame + 16) = v25;
       v26 = *(a2 + 48);
-      *(a4 + 32) = *(a2 + 32);
-      *(a4 + 48) = v26;
+      *(frame + 32) = *(a2 + 32);
+      *(frame + 48) = v26;
       v27 = vdup_n_s32(*v42 == 1.0);
       v28.i64[0] = v27.u32[0];
       v28.i64[1] = v27.u32[1];
       v29 = vbslq_s8(vcltzq_s64(vshlq_n_s64(v28, 0x3FuLL)), v36, vmulq_n_f64(v36, *v42));
-      *(a4 + 120) = vmlaq_f64(vmlsq_f64(*(v42 + 8), v29, v10), v29, v18);
+      *(frame + 120) = vmlaq_f64(vmlsq_f64(*(v42 + 8), v29, v10), v29, v18);
     }
   }
 
   else
   {
-    *(a4 + 128) = 0;
+    *(frame + 128) = 0;
     result = 0.0;
-    *(a4 + 96) = 0u;
-    *(a4 + 112) = 0u;
-    *(a4 + 64) = 0u;
-    *(a4 + 80) = 0u;
-    *(a4 + 32) = 0u;
-    *(a4 + 48) = 0u;
-    *a4 = 0u;
-    *(a4 + 16) = 0u;
+    *(frame + 96) = 0u;
+    *(frame + 112) = 0u;
+    *(frame + 64) = 0u;
+    *(frame + 80) = 0u;
+    *(frame + 32) = 0u;
+    *(frame + 48) = 0u;
+    *frame = 0u;
+    *(frame + 16) = 0u;
   }
 
   return result;
 }
 
-- (void)_setTransition:(uint64_t)a1
+- (void)_setTransition:(uint64_t)transition
 {
   v4 = a2;
-  if (a1)
+  if (transition)
   {
-    if (*(a1 + 72) != v4)
+    if (*(transition + 72) != v4)
     {
       v6 = v4;
-      objc_storeStrong((a1 + 72), a2);
+      objc_storeStrong((transition + 72), a2);
       v4 = v6;
       if (!v6)
       {
-        v5 = *(a1 + 80);
-        *(a1 + 80) = 0;
+        v5 = *(transition + 80);
+        *(transition + 80) = 0;
 
         v4 = 0;
       }
@@ -769,19 +769,19 @@ LABEL_8:
   }
 }
 
-- (void)_setTransitionState:(uint64_t)a1
+- (void)_setTransitionState:(uint64_t)state
 {
   v4 = a2;
-  if (a1 && *(a1 + 80) != v4)
+  if (state && *(state + 80) != v4)
   {
     v5 = v4;
-    if (v4 && !*(a1 + 72))
+    if (v4 && !*(state + 72))
     {
       __break(1u);
       return;
     }
 
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((state + 80), a2);
     v4 = v5;
   }
 }

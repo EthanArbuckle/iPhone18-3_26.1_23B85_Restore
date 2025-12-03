@@ -1,12 +1,12 @@
 @interface _DKEventStatsCollection
-+ (id)collectionWithName:(uint64_t)a1;
-+ (id)counterWithClass:(void *)a3 collectionName:(void *)a4 eventName:(void *)a5 eventType:(void *)a6 eventTypePossibleValues:(char)a7 hasResult:(int)a8 scalar:;
-- (void)initWithName:(void *)a1;
++ (id)collectionWithName:(uint64_t)name;
++ (id)counterWithClass:(void *)class collectionName:(void *)name eventName:(void *)eventName eventType:(void *)type eventTypePossibleValues:(char)values hasResult:(int)result scalar:;
+- (void)initWithName:(void *)name;
 @end
 
 @implementation _DKEventStatsCollection
 
-+ (id)collectionWithName:(uint64_t)a1
++ (id)collectionWithName:(uint64_t)name
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -30,26 +30,26 @@
   return v6;
 }
 
-+ (id)counterWithClass:(void *)a3 collectionName:(void *)a4 eventName:(void *)a5 eventType:(void *)a6 eventTypePossibleValues:(char)a7 hasResult:(int)a8 scalar:
++ (id)counterWithClass:(void *)class collectionName:(void *)name eventName:(void *)eventName eventType:(void *)type eventTypePossibleValues:(char)values hasResult:(int)result scalar:
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  classCopy = class;
+  nameCopy = name;
+  eventNameCopy = eventName;
+  typeCopy = type;
   v17 = objc_opt_self();
-  v18 = [(_DKEventStatsCollection *)v17 collectionWithName:v13];
+  v18 = [(_DKEventStatsCollection *)v17 collectionWithName:classCopy];
   objc_sync_enter(v18);
-  if (v15)
+  if (eventNameCopy)
   {
-    v25[0] = v14;
-    v25[1] = v15;
+    v25[0] = nameCopy;
+    v25[1] = eventNameCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
   }
 
   else
   {
-    v19 = v14;
+    v19 = nameCopy;
   }
 
   v20 = v19;
@@ -57,7 +57,7 @@
   if (!v21)
   {
     v21 = objc_opt_new();
-    v22 = [[_DKEventStatsCounterInternal alloc] initWithCollectionName:v13 eventName:v14 eventType:v15 eventTypePossibleValues:v16 hasResult:a7 scalar:a8];
+    v22 = [[_DKEventStatsCounterInternal alloc] initWithCollectionName:classCopy eventName:nameCopy eventType:eventNameCopy eventTypePossibleValues:typeCopy hasResult:values scalar:result];
     [v21 setInternal:v22];
     if (v18)
     {
@@ -71,25 +71,25 @@
   return v21;
 }
 
-- (void)initWithName:(void *)a1
+- (void)initWithName:(void *)name
 {
   v4 = a2;
-  if (a1)
+  if (name)
   {
-    v9.receiver = a1;
+    v9.receiver = name;
     v9.super_class = _DKEventStatsCollection;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    name = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
       v6 = objc_opt_new();
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = name[1];
+      name[1] = v6;
     }
   }
 
-  return a1;
+  return name;
 }
 
 @end

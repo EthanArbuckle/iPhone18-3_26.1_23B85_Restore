@@ -1,15 +1,15 @@
 @interface SectionHeaderOutlineCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SectionHeaderOutlineCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SectionHeaderOutlineCell" hasInstanceVariable:@"_cellModel" withType:"<SectionHeaderOutlineCellModel>"];
-  [v3 validateProtocol:@"SectionHeaderOutlineCellModel" hasRequiredInstanceMethod:@"title"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SectionHeaderOutlineCell" hasInstanceVariable:@"_cellModel" withType:"<SectionHeaderOutlineCellModel>"];
+  [validationsCopy validateProtocol:@"SectionHeaderOutlineCellModel" hasRequiredInstanceMethod:@"title"];
 }
 
 - (id)accessibilityLabel

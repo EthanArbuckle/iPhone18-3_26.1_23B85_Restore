@@ -1,15 +1,15 @@
 @interface ARImageRotationTechnique
-- (ARImageRotationTechnique)initWithRotation:(int64_t)a3 mirror:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
+- (ARImageRotationTechnique)initWithRotation:(int64_t)rotation mirror:(int64_t)mirror;
+- (BOOL)isEqual:(id)equal;
 - (id)_fullDescription;
-- (id)processData:(id)a3;
-- (int)_rotateAccelerate:(__CVBuffer *)a3 pOutputBuffer:(__CVBuffer *)a4;
+- (id)processData:(id)data;
+- (int)_rotateAccelerate:(__CVBuffer *)accelerate pOutputBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
 @implementation ARImageRotationTechnique
 
-- (ARImageRotationTechnique)initWithRotation:(int64_t)a3 mirror:(int64_t)a4
+- (ARImageRotationTechnique)initWithRotation:(int64_t)rotation mirror:(int64_t)mirror
 {
   v40 = *MEMORY[0x1E69E9840];
   v33.receiver = self;
@@ -22,8 +22,8 @@
   }
 
   v6->_vtPixelRotationSession = 0;
-  v6->_rotationAngle = a3;
-  v6->_mirrorMode = a4;
+  v6->_rotationAngle = rotation;
+  v6->_mirrorMode = mirror;
   v8 = VTPixelRotationSessionCreate(0, &v6->_vtPixelRotationSession);
   if (v8)
   {
@@ -35,7 +35,7 @@
 
     v10 = ARShouldUseLogTypeError_internalOSVersion_9;
     v11 = _ARLogTechnique_4();
-    v12 = v11;
+    dictionary = v11;
     if (v10 == 1)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -49,7 +49,7 @@
         v38 = 1024;
         v39 = v9;
         v15 = "%{public}@ <%p>: Creation of VTPixelRotationSession failed with error %d";
-        v16 = v12;
+        v16 = dictionary;
         v17 = OS_LOG_TYPE_ERROR;
 LABEL_13:
         _os_log_impl(&dword_1C241C000, v16, v17, v15, buf, 0x1Cu);
@@ -67,7 +67,7 @@ LABEL_13:
       v38 = 1024;
       v39 = v9;
       v15 = "Error: %{public}@ <%p>: Creation of VTPixelRotationSession failed with error %d";
-      v16 = v12;
+      v16 = dictionary;
       v17 = OS_LOG_TYPE_INFO;
       goto LABEL_13;
     }
@@ -78,22 +78,22 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  [v12 setObject:kVTRotationFromARRotationAngle(a3) forKeyedSubscript:*MEMORY[0x1E6983D98]];
-  if (a4 == 1)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:kVTRotationFromARRotationAngle(rotation) forKeyedSubscript:*MEMORY[0x1E6983D98]];
+  if (mirror == 1)
   {
     v18 = MEMORY[0x1E6983D78];
     goto LABEL_15;
   }
 
-  if (a4 == 2)
+  if (mirror == 2)
   {
     v18 = MEMORY[0x1E6983D80];
 LABEL_15:
-    [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*v18];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*v18];
   }
 
-  v20 = VTSessionSetProperties(p_isa[7], v12);
+  v20 = VTSessionSetProperties(p_isa[7], dictionary);
   if (v20)
   {
     v21 = v20;
@@ -173,10 +173,10 @@ LABEL_29:
   [(ARImageRotationTechnique *)&v5 dealloc];
 }
 
-- (int)_rotateAccelerate:(__CVBuffer *)a3 pOutputBuffer:(__CVBuffer *)a4
+- (int)_rotateAccelerate:(__CVBuffer *)accelerate pOutputBuffer:(__CVBuffer *)buffer
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!accelerate || !buffer)
   {
     if (ARShouldUseLogTypeError_onceToken_9 != -1)
     {
@@ -222,7 +222,7 @@ LABEL_41:
     return -1;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(accelerate);
   v8 = PixelFormatType;
   v9 = 1;
   if (PixelFormatType <= 1278226533)
@@ -318,8 +318,8 @@ LABEL_17:
   }
 
 LABEL_25:
-  v19 = CVPixelBufferGetPixelFormatType(a3);
-  if (v19 != CVPixelBufferGetPixelFormatType(*a4))
+  v19 = CVPixelBufferGetPixelFormatType(accelerate);
+  if (v19 != CVPixelBufferGetPixelFormatType(*buffer))
   {
     if (ARShouldUseLogTypeError_onceToken_9 != -1)
     {
@@ -359,14 +359,14 @@ LABEL_25:
     goto LABEL_41;
   }
 
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(*a4, 0);
+  CVPixelBufferLockBaseAddress(accelerate, 0);
+  CVPixelBufferLockBaseAddress(*buffer, 0);
   memset(&buf, 0, sizeof(buf));
-  ARWrapCVPixelBufferVImage(a3, &buf.data);
+  ARWrapCVPixelBufferVImage(accelerate, &buf.data);
   memset(&v35, 0, sizeof(v35));
-  ARWrapCVPixelBufferVImage(*a4, &v35.data);
-  v20 = [(ARImageRotationTechnique *)self rotationAngle];
-  if (v20 == 180)
+  ARWrapCVPixelBufferVImage(*buffer, &v35.data);
+  rotationAngle = [(ARImageRotationTechnique *)self rotationAngle];
+  if (rotationAngle == 180)
   {
     v21 = 2;
     if (!v9)
@@ -377,9 +377,9 @@ LABEL_25:
     goto LABEL_45;
   }
 
-  if (v20 != 90)
+  if (rotationAngle != 90)
   {
-    if (v20 == -90)
+    if (rotationAngle == -90)
     {
       v21 = 1;
       if (!v9)
@@ -442,8 +442,8 @@ LABEL_59:
   }
 
 LABEL_64:
-  CVPixelBufferUnlockBaseAddress(*a4, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(*buffer, 0);
+  CVPixelBufferUnlockBaseAddress(accelerate, 0);
   if (v30)
   {
     return -1;
@@ -455,14 +455,14 @@ LABEL_64:
   }
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (*&self->_rotationAngle == 0)
   {
-    v22 = v4;
+    v22 = dataCopy;
     goto LABEL_80;
   }
 
@@ -508,7 +508,7 @@ LABEL_64:
     bufferPool = self->_bufferPool;
     if (bufferPool)
     {
-      v15 = self;
+      selfCopy = self;
       v85 = v22;
       v83 = v5;
       v16 = CVPixelBufferPoolGetPixelBufferAttributes(bufferPool);
@@ -526,8 +526,8 @@ LABEL_64:
         v20 = 1;
       }
 
-      self = v15;
-      v21 = v15->_bufferPool;
+      self = selfCopy;
+      v21 = selfCopy->_bufferPool;
       if ((v20 & 1) == 0 && v21)
       {
         v13 = v19;
@@ -541,8 +541,8 @@ LABEL_64:
       v22 = v85;
       if (v21)
       {
-        CVPixelBufferPoolRelease(v15->_bufferPool);
-        v15->_bufferPool = 0;
+        CVPixelBufferPoolRelease(selfCopy->_bufferPool);
+        selfCopy->_bufferPool = 0;
       }
     }
 
@@ -568,7 +568,7 @@ LABEL_64:
           *buf = 138543874;
           v89 = v30;
           v90 = 2048;
-          v91 = self;
+          selfCopy9 = self;
           v92 = 1024;
           v93 = v25;
           v31 = "%{public}@ <%p>: Creation of CVPixelBufferPool failed with error %d";
@@ -581,9 +581,9 @@ LABEL_45:
 
 LABEL_46:
 
-        v44 = [(ARTechnique *)self delegate];
+        delegate = [(ARTechnique *)self delegate];
         v45 = ARErrorWithCodeAndUserInfo(151, 0);
-        [v44 technique:self didFailWithError:v45];
+        [delegate technique:self didFailWithError:v45];
 
         v46 = v22;
 LABEL_79:
@@ -602,7 +602,7 @@ LABEL_79:
       *buf = 138543874;
       v89 = v30;
       v90 = 2048;
-      v91 = self;
+      selfCopy9 = self;
       v92 = 1024;
       v93 = v25;
       v31 = "Error: %{public}@ <%p>: Creation of CVPixelBufferPool failed with error %d";
@@ -636,7 +636,7 @@ LABEL_30:
           *buf = 138543874;
           v89 = v30;
           v90 = 2048;
-          v91 = self;
+          selfCopy9 = self;
           v92 = 1024;
           v93 = v33;
           v31 = "%{public}@ <%p>: Could not create pixel buffer for rotation. (%i)";
@@ -656,7 +656,7 @@ LABEL_30:
       *buf = 138543874;
       v89 = v30;
       v90 = 2048;
-      v91 = self;
+      selfCopy9 = self;
       v92 = 1024;
       v93 = v33;
       v31 = "Error: %{public}@ <%p>: Could not create pixel buffer for rotation. (%i)";
@@ -710,7 +710,7 @@ LABEL_30:
 
       if (v41 != v77)
       {
-        v48 = self;
+        selfCopy7 = self;
         vtPixelRotationSession = self->_vtPixelRotationSession;
         goto LABEL_53;
       }
@@ -721,13 +721,13 @@ LABEL_51:
         goto LABEL_59;
       }
 
-      v48 = self;
+      selfCopy7 = self;
       vtPixelRotationSession = self->_vtPixelRotationSession;
       v50 = v22;
 LABEL_53:
-      v51 = [v50 pixelBuffer];
-      v52 = VTPixelRotationSessionRotateImage(vtPixelRotationSession, v51, pixelBufferOut);
-      self = v48;
+      pixelBuffer = [v50 pixelBuffer];
+      v52 = VTPixelRotationSessionRotateImage(vtPixelRotationSession, pixelBuffer, pixelBufferOut);
+      self = selfCopy7;
       if (v52)
       {
         v53 = v13;
@@ -750,7 +750,7 @@ LABEL_53:
             *buf = 138544642;
             v89 = v59;
             v90 = 2048;
-            v91 = v48;
+            selfCopy9 = selfCopy7;
             v92 = 1024;
             v93 = v11;
             v94 = 1024;
@@ -776,7 +776,7 @@ LABEL_71:
           *buf = 138544642;
           v89 = v59;
           v90 = 2048;
-          v91 = v48;
+          selfCopy9 = selfCopy7;
           v92 = 1024;
           v93 = v11;
           v94 = 1024;
@@ -791,9 +791,9 @@ LABEL_71:
           goto LABEL_71;
         }
 
-        v65 = [(ARTechnique *)v48 delegate];
-        v68 = ARErrorWithCodeAndUserInfo(151, 0);
-        [v65 technique:v48 didFailWithError:v68];
+        delegate2 = [(ARTechnique *)selfCopy7 delegate];
+        delegate3 = ARErrorWithCodeAndUserInfo(151, 0);
+        [delegate2 technique:selfCopy7 didFailWithError:delegate3];
 LABEL_77:
         v46 = v22;
         goto LABEL_78;
@@ -801,7 +801,7 @@ LABEL_77:
 
 LABEL_59:
       v64 = [[ARModifiedImageData alloc] initWithImageData:v22];
-      v65 = v64;
+      delegate2 = v64;
       if (v64)
       {
         [(ARImageData *)v64 setPixelBuffer:pixelBufferOut];
@@ -810,13 +810,13 @@ LABEL_59:
         v86 = v66;
         [v22 imageResolution];
         ARAdjustIntrincisForOrientation(self->_rotationAngle, v86, v84);
-        [v65 imageResolution];
+        [delegate2 imageResolution];
         ARAdjustIntrincisForMirroring();
-        [v65 setCameraIntrinsics:?];
-        [v65 setMirrored:self->_mirrorMode != 0];
-        v65 = v65;
-        v68 = v22;
-        v46 = v65;
+        [delegate2 setCameraIntrinsics:?];
+        [delegate2 setMirrored:self->_mirrorMode != 0];
+        delegate2 = delegate2;
+        delegate3 = v22;
+        v46 = delegate2;
 LABEL_78:
 
         CVPixelBufferRelease(pixelBufferOut);
@@ -840,7 +840,7 @@ LABEL_78:
           *buf = 138543618;
           v89 = v73;
           v90 = 2048;
-          v91 = self;
+          selfCopy9 = self;
           v74 = "%{public}@ <%p>: Could not allocated image.";
           v75 = v71;
           v76 = OS_LOG_TYPE_ERROR;
@@ -856,16 +856,16 @@ LABEL_75:
         *buf = 138543618;
         v89 = v73;
         v90 = 2048;
-        v91 = self;
+        selfCopy9 = self;
         v74 = "Error: %{public}@ <%p>: Could not allocated image.";
         v75 = v71;
         v76 = OS_LOG_TYPE_INFO;
         goto LABEL_75;
       }
 
-      v68 = [(ARTechnique *)self delegate];
+      delegate3 = [(ARTechnique *)self delegate];
       v81 = ARErrorWithCodeAndUserInfo(151, 0);
-      [v68 technique:self didFailWithError:v81];
+      [delegate3 technique:self didFailWithError:v81];
 
       goto LABEL_77;
     }
@@ -880,11 +880,11 @@ LABEL_80:
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[10] == self->_mirrorMode && v4[9] == self->_rotationAngle;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[10] == self->_mirrorMode && equalCopy[9] == self->_rotationAngle;
 
   return v5;
 }
@@ -894,8 +894,8 @@ LABEL_80:
   v3 = MEMORY[0x1E696AD60];
   v8.receiver = self;
   v8.super_class = ARImageRotationTechnique;
-  v4 = [(ARTechnique *)&v8 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARTechnique *)&v8 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   [v5 appendFormat:@"Rotation (%li)\n", self->_rotationAngle];
   [v5 appendFormat:@"Mirror (%ld)\n", self->_mirrorMode];

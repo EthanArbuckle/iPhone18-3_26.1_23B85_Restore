@@ -1,12 +1,12 @@
 @interface FBSObjectProxy
-+ (FBSObjectProxy)proxyForClass:(uint64_t)a1;
++ (FBSObjectProxy)proxyForClass:(uint64_t)class;
 - (id)bs_secureEncoded;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FBSObjectProxy
 
-+ (FBSObjectProxy)proxyForClass:(uint64_t)a1
++ (FBSObjectProxy)proxyForClass:(uint64_t)class
 {
   objc_opt_self();
   v3 = [FBSObjectProxy alloc];
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    [(FBSObjectProxy *)a3 forwardInvocation:?];
+    [(FBSObjectProxy *)invocation forwardInvocation:?];
   }
 }
 

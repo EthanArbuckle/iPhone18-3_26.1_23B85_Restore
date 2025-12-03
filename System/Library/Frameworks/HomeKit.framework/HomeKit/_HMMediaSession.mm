@@ -1,12 +1,12 @@
 @interface _HMMediaSession
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFromNewObject:(id)object;
 - (NSString)mediaUniqueIdentifier;
 - (NSString)routeUID;
 - (NSUUID)messageTargetUUID;
 - (NSUUID)uniqueIdentifier;
 - (_HMContext)context;
-- (_HMMediaSession)initWithUUID:(id)a3 routeUID:(id)a4 playbackState:(int64_t)a5 shuffleState:(int64_t)a6 repeatState:(int64_t)a7 audioControl:(id)a8 mediaUniqueIdentifier:(id)a9 sleepWakeState:(unint64_t)a10;
+- (_HMMediaSession)initWithUUID:(id)d routeUID:(id)iD playbackState:(int64_t)state shuffleState:(int64_t)shuffleState repeatState:(int64_t)repeatState audioControl:(id)control mediaUniqueIdentifier:(id)identifier sleepWakeState:(unint64_t)self0;
 - (_HMMediaSessionDelegate)delegate;
 - (id)messageDestination;
 - (int64_t)playbackState;
@@ -14,26 +14,26 @@
 - (int64_t)shuffleState;
 - (unint64_t)hash;
 - (unint64_t)sleepWakeState;
-- (void)_handleSessionPlaybackUpdated:(id)a3;
-- (void)_handleSessionRouteUIDUpdated:(id)a3;
+- (void)_handleSessionPlaybackUpdated:(id)updated;
+- (void)_handleSessionRouteUIDUpdated:(id)updated;
 - (void)_notifyDelegateOfUpdatedMediaState;
-- (void)_notifyDelegateOfUpdatedPlaybackState:(int64_t)a3;
-- (void)_notifyDelegateOfUpdatedRouteUID:(id)a3;
+- (void)_notifyDelegateOfUpdatedPlaybackState:(int64_t)state;
+- (void)_notifyDelegateOfUpdatedRouteUID:(id)d;
 - (void)_registerNotificationHandlers;
-- (void)_updateMediaState:(id)a3 completion:(id)a4;
-- (void)refreshPlaybackStateWithCompletionHandler:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setMediaUniqueIdentifier:(id)a3;
-- (void)setMessageTargetUUID:(id)a3;
-- (void)setPlaybackState:(int64_t)a3;
-- (void)setPlaybackState:(int64_t)a3 completionHandler:(id)a4;
-- (void)setRepeatState:(int64_t)a3;
-- (void)setRouteUID:(id)a3;
-- (void)setShuffleState:(int64_t)a3;
-- (void)setSleepWakeState:(unint64_t)a3;
-- (void)setUuid:(id)a3;
-- (void)updateMediaState:(id)a3;
-- (void)updatePlaybackState:(id)a3;
+- (void)_updateMediaState:(id)state completion:(id)completion;
+- (void)refreshPlaybackStateWithCompletionHandler:(id)handler;
+- (void)setContext:(id)context;
+- (void)setMediaUniqueIdentifier:(id)identifier;
+- (void)setMessageTargetUUID:(id)d;
+- (void)setPlaybackState:(int64_t)state;
+- (void)setPlaybackState:(int64_t)state completionHandler:(id)handler;
+- (void)setRepeatState:(int64_t)state;
+- (void)setRouteUID:(id)d;
+- (void)setShuffleState:(int64_t)state;
+- (void)setSleepWakeState:(unint64_t)state;
+- (void)setUuid:(id)uuid;
+- (void)updateMediaState:(id)state;
+- (void)updatePlaybackState:(id)state;
 @end
 
 @implementation _HMMediaSession
@@ -45,13 +45,13 @@
   return WeakRetained;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -62,71 +62,71 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(_HMMediaSession *)self routeUID];
-    v8 = [v6 routeUID];
+    routeUID = [(_HMMediaSession *)self routeUID];
+    routeUID2 = [v6 routeUID];
     v9 = HMFEqualObjects();
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v6 routeUID];
-      [(_HMMediaSession *)self setRouteUID:v10];
+      routeUID3 = [v6 routeUID];
+      [(_HMMediaSession *)self setRouteUID:routeUID3];
 
-      v11 = [(_HMMediaSession *)self context];
-      v12 = [v11 queue];
+      context = [(_HMMediaSession *)self context];
+      queue = [context queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __38___HMMediaSession_mergeFromNewObject___block_invoke;
       block[3] = &unk_1E754E5C0;
       block[4] = self;
       v34 = v6;
-      dispatch_async(v12, block);
+      dispatch_async(queue, block);
     }
 
-    v13 = [(_HMMediaSession *)self playbackState];
-    v14 = [v6 playbackState];
-    v15 = v13 != v14;
-    if (v13 != v14)
+    playbackState = [(_HMMediaSession *)self playbackState];
+    playbackState2 = [v6 playbackState];
+    v15 = playbackState != playbackState2;
+    if (playbackState != playbackState2)
     {
       -[_HMMediaSession setPlaybackState:](self, "setPlaybackState:", [v6 playbackState]);
-      v16 = [(_HMMediaSession *)self context];
-      v17 = [v16 queue];
+      context2 = [(_HMMediaSession *)self context];
+      queue2 = [context2 queue];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __38___HMMediaSession_mergeFromNewObject___block_invoke_2;
       v32[3] = &unk_1E754E2A8;
       v32[4] = self;
-      dispatch_async(v17, v32);
+      dispatch_async(queue2, v32);
     }
 
-    v18 = [(_HMMediaSession *)self shuffleState];
-    if (v18 != [v6 shuffleState])
+    shuffleState = [(_HMMediaSession *)self shuffleState];
+    if (shuffleState != [v6 shuffleState])
     {
       -[_HMMediaSession setShuffleState:](self, "setShuffleState:", [v6 shuffleState]);
       v15 = 1;
     }
 
-    v19 = [(_HMMediaSession *)self repeatState];
-    if (v19 != [v6 repeatState])
+    repeatState = [(_HMMediaSession *)self repeatState];
+    if (repeatState != [v6 repeatState])
     {
       -[_HMMediaSession setRepeatState:](self, "setRepeatState:", [v6 repeatState]);
       v15 = 1;
     }
 
-    v20 = [(_HMMediaSession *)self mediaUniqueIdentifier];
-    v21 = [v6 mediaUniqueIdentifier];
+    mediaUniqueIdentifier = [(_HMMediaSession *)self mediaUniqueIdentifier];
+    mediaUniqueIdentifier2 = [v6 mediaUniqueIdentifier];
     v22 = HMFEqualObjects();
 
     if ((v22 & 1) == 0)
     {
-      v23 = [v6 mediaUniqueIdentifier];
-      [(_HMMediaSession *)self setMediaUniqueIdentifier:v23];
+      mediaUniqueIdentifier3 = [v6 mediaUniqueIdentifier];
+      [(_HMMediaSession *)self setMediaUniqueIdentifier:mediaUniqueIdentifier3];
 
       v15 = 1;
     }
 
     v24 = v9 ^ 1;
-    v25 = [(_HMMediaSession *)self sleepWakeState];
-    if (v25 == [v6 sleepWakeState])
+    sleepWakeState = [(_HMMediaSession *)self sleepWakeState];
+    if (sleepWakeState == [v6 sleepWakeState])
     {
       if (!v15)
       {
@@ -142,14 +142,14 @@ LABEL_21:
       -[_HMMediaSession setSleepWakeState:](self, "setSleepWakeState:", [v6 sleepWakeState]);
     }
 
-    v28 = [(_HMMediaSession *)self context];
-    v29 = [v28 queue];
+    context3 = [(_HMMediaSession *)self context];
+    queue3 = [context3 queue];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __38___HMMediaSession_mergeFromNewObject___block_invoke_3;
     v31[3] = &unk_1E754E2A8;
     v31[4] = self;
-    dispatch_async(v29, v31);
+    dispatch_async(queue3, v31);
 
     v26 = 1;
     goto LABEL_21;
@@ -161,10 +161,10 @@ LABEL_22:
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -174,7 +174,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -185,9 +185,9 @@ LABEL_22:
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMMediaSession *)self uuid];
-      v8 = [(_HMMediaSession *)v6 uuid];
-      v9 = [v7 isEqual:v8];
+      uuid = [(_HMMediaSession *)self uuid];
+      uuid2 = [(_HMMediaSession *)v6 uuid];
+      v9 = [uuid isEqual:uuid2];
     }
 
     else
@@ -201,16 +201,16 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v2 = [(_HMMediaSession *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(_HMMediaSession *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (void)_handleSessionRouteUIDUpdated:(id)a3
+- (void)_handleSessionRouteUIDUpdated:(id)updated
 {
-  v5 = [a3 stringForKey:@"route-uid"];
-  v4 = [(_HMMediaSession *)self routeUID];
+  v5 = [updated stringForKey:@"route-uid"];
+  routeUID = [(_HMMediaSession *)self routeUID];
   if ((HMFEqualObjects() & 1) == 0)
   {
     [(_HMMediaSession *)self setRouteUID:v5];
@@ -218,51 +218,51 @@ LABEL_22:
   }
 }
 
-- (void)_notifyDelegateOfUpdatedRouteUID:(id)a3
+- (void)_notifyDelegateOfUpdatedRouteUID:(id)d
 {
-  v4 = a3;
-  v5 = [(_HMMediaSession *)self delegate];
+  dCopy = d;
+  delegate = [(_HMMediaSession *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_HMMediaSession *)self delegate];
-    v8 = [(_HMMediaSession *)self context];
-    v9 = [v8 delegateCaller];
+    delegate2 = [(_HMMediaSession *)self delegate];
+    context = [(_HMMediaSession *)self context];
+    delegateCaller = [context delegateCaller];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52___HMMediaSession__notifyDelegateOfUpdatedRouteUID___block_invoke;
     v11[3] = &unk_1E754E5E8;
-    v12 = v7;
-    v13 = self;
-    v14 = v4;
-    v10 = v7;
-    [v9 invokeBlock:v11];
+    v12 = delegate2;
+    selfCopy = self;
+    v14 = dCopy;
+    v10 = delegate2;
+    [delegateCaller invokeBlock:v11];
   }
 }
 
-- (void)updateMediaState:(id)a3
+- (void)updateMediaState:(id)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMMediaSession *)self context];
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  context = [(_HMMediaSession *)self context];
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __36___HMMediaSession_updateMediaState___block_invoke;
     v13[3] = &unk_1E754E5C0;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v7, v13);
+    v14 = stateCopy;
+    dispatch_async(queue, v13);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -280,28 +280,28 @@ LABEL_22:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePlaybackState:(id)a3
+- (void)updatePlaybackState:(id)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMMediaSession *)self context];
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  context = [(_HMMediaSession *)self context];
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __39___HMMediaSession_updatePlaybackState___block_invoke;
     v13[3] = &unk_1E754E5C0;
-    v14 = v4;
-    v15 = self;
-    dispatch_async(v7, v13);
+    v14 = stateCopy;
+    selfCopy = self;
+    dispatch_async(queue, v13);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -319,18 +319,18 @@ LABEL_22:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateMediaState:(id)a3 completion:(id)a4
+- (void)_updateMediaState:(id)state completion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v57 = a4;
-  v7 = [v6 hmf_numberForKey:@"pb-state"];
+  stateCopy = state;
+  completionCopy = completion;
+  v7 = [stateCopy hmf_numberForKey:@"pb-state"];
   v56 = v7;
   if (v7 && (v8 = v7, v9 = -[_HMMediaSession playbackState](self, "playbackState"), v10 = [v8 unsignedIntegerValue], v9 != v10))
   {
     v12 = v10;
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -345,8 +345,8 @@ LABEL_22:
     }
 
     objc_autoreleasePoolPop(v13);
-    [(_HMMediaSession *)v14 setPlaybackState:v12];
-    [(_HMMediaSession *)v14 _notifyDelegateOfUpdatedPlaybackState:v12];
+    [(_HMMediaSession *)selfCopy setPlaybackState:v12];
+    [(_HMMediaSession *)selfCopy _notifyDelegateOfUpdatedPlaybackState:v12];
     v11 = 1;
   }
 
@@ -355,53 +355,53 @@ LABEL_22:
     v11 = 0;
   }
 
-  v17 = [v6 hmf_numberForKey:@"ms-shuffle"];
+  v17 = [stateCopy hmf_numberForKey:@"ms-shuffle"];
   if (v17)
   {
-    v18 = [(_HMMediaSession *)self shuffleState];
-    v19 = [v17 unsignedIntegerValue];
-    if (v18 != v19)
+    shuffleState = [(_HMMediaSession *)self shuffleState];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
+    if (shuffleState != unsignedIntegerValue)
     {
-      [(_HMMediaSession *)self setShuffleState:v19];
+      [(_HMMediaSession *)self setShuffleState:unsignedIntegerValue];
       v11 = 1;
     }
   }
 
-  v20 = [v6 hmf_numberForKey:@"ms-repeat"];
+  v20 = [stateCopy hmf_numberForKey:@"ms-repeat"];
   if (v20)
   {
-    v21 = [(_HMMediaSession *)self repeatState];
-    v22 = [v20 unsignedIntegerValue];
-    if (v21 != v22)
+    repeatState = [(_HMMediaSession *)self repeatState];
+    unsignedIntegerValue2 = [v20 unsignedIntegerValue];
+    if (repeatState != unsignedIntegerValue2)
     {
-      [(_HMMediaSession *)self setRepeatState:v22];
+      [(_HMMediaSession *)self setRepeatState:unsignedIntegerValue2];
       v11 = 1;
     }
   }
 
-  v23 = [v6 hmf_numberForKey:@"ms-volume"];
+  v23 = [stateCopy hmf_numberForKey:@"ms-volume"];
   if (v23)
   {
-    v24 = [(_HMMediaSession *)self audioControl];
-    [v24 volume];
+    audioControl = [(_HMMediaSession *)self audioControl];
+    [audioControl volume];
     v26 = v25;
 
     [v23 floatValue];
     if (vabds_f32(v26, v27) > 0.0001)
     {
-      v28 = [(_HMMediaSession *)self audioControl];
+      audioControl2 = [(_HMMediaSession *)self audioControl];
       [v23 floatValue];
-      [v28 setVolume:?];
+      [audioControl2 setVolume:?];
 
       v11 = 1;
     }
   }
 
-  v29 = [v6 hmf_stringForKey:@"ms-mediaid"];
+  v29 = [stateCopy hmf_stringForKey:@"ms-mediaid"];
   if (v29)
   {
-    v30 = [(_HMMediaSession *)self mediaUniqueIdentifier];
-    if (([v30 isEqualToString:v29] & 1) == 0)
+    mediaUniqueIdentifier = [(_HMMediaSession *)self mediaUniqueIdentifier];
+    if (([mediaUniqueIdentifier isEqualToString:v29] & 1) == 0)
     {
       [(_HMMediaSession *)self setMediaUniqueIdentifier:v29];
       v11 = 1;
@@ -409,16 +409,16 @@ LABEL_22:
   }
 
   v55 = v17;
-  v31 = [v6 hmf_numberForKey:@"ms-muted"];
+  v31 = [stateCopy hmf_numberForKey:@"ms-muted"];
   if (v31)
   {
-    v32 = [(_HMMediaSession *)self audioControl];
-    v33 = [v32 isMuted];
+    audioControl3 = [(_HMMediaSession *)self audioControl];
+    isMuted = [audioControl3 isMuted];
 
-    if (v33 != [v31 BOOLValue])
+    if (isMuted != [v31 BOOLValue])
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy2 = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
@@ -441,27 +441,27 @@ LABEL_22:
       }
 
       objc_autoreleasePoolPop(v34);
-      v40 = [(_HMMediaSession *)v35 audioControl];
-      [v40 setMuted:{objc_msgSend(v31, "BOOLValue")}];
+      audioControl4 = [(_HMMediaSession *)selfCopy2 audioControl];
+      [audioControl4 setMuted:{objc_msgSend(v31, "BOOLValue")}];
 
-      v41 = [(_HMMediaSession *)v35 audioControl];
-      v42 = [v31 BOOLValue];
+      audioControl5 = [(_HMMediaSession *)selfCopy2 audioControl];
+      bOOLValue = [v31 BOOLValue];
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
       v58[2] = __48___HMMediaSession__updateMediaState_completion___block_invoke;
       v58[3] = &unk_1E754E148;
-      v58[4] = v35;
-      [v41 updateMuted:v42 completionHandler:v58];
+      v58[4] = selfCopy2;
+      [audioControl5 updateMuted:bOOLValue completionHandler:v58];
 
       v11 = 1;
     }
   }
 
-  v43 = [v6 hmf_numberForKey:{@"HMMediaSessionSleepWakeStateMessageKey", v53}];
+  v43 = [stateCopy hmf_numberForKey:{@"HMMediaSessionSleepWakeStateMessageKey", v53}];
   if (v43 && (v44 = -[_HMMediaSession sleepWakeState](self, "sleepWakeState"), v45 = [v43 unsignedIntegerValue], v44 != v45))
   {
     [(_HMMediaSession *)self setSleepWakeState:v45];
-    if (!v57)
+    if (!completionCopy)
     {
 LABEL_34:
       [(_HMMediaSession *)self _notifyDelegateOfUpdatedMediaState];
@@ -469,7 +469,7 @@ LABEL_34:
     }
   }
 
-  else if (!v57)
+  else if (!completionCopy)
   {
     if (!v11)
     {
@@ -480,7 +480,7 @@ LABEL_34:
   }
 
   v46 = objc_autoreleasePoolPush();
-  v47 = self;
+  selfCopy3 = self;
   v48 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
   {
@@ -493,67 +493,67 @@ LABEL_34:
   }
 
   objc_autoreleasePoolPop(v46);
-  v50 = [(_HMMediaSession *)v47 context];
-  v51 = [v50 delegateCaller];
-  [v51 callCompletion:v57 error:0];
+  context = [(_HMMediaSession *)selfCopy3 context];
+  delegateCaller = [context delegateCaller];
+  [delegateCaller callCompletion:completionCopy error:0];
 
 LABEL_35:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionPlaybackUpdated:(id)a3
+- (void)_handleSessionPlaybackUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(_HMMediaSession *)self context];
-  v9 = [v5 pendingRequests];
+  updatedCopy = updated;
+  context = [(_HMMediaSession *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v6 = [v4 identifier];
-  v7 = [v9 removeCompletionBlockForIdentifier:v6];
+  identifier = [updatedCopy identifier];
+  v7 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
-  v8 = [v4 messagePayload];
+  messagePayload = [updatedCopy messagePayload];
 
-  [(_HMMediaSession *)self _updateMediaState:v8 completion:v7];
+  [(_HMMediaSession *)self _updateMediaState:messagePayload completion:v7];
 }
 
 - (void)_notifyDelegateOfUpdatedMediaState
 {
-  v3 = [(_HMMediaSession *)self delegate];
+  delegate = [(_HMMediaSession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_HMMediaSession *)self delegate];
-    v6 = [(_HMMediaSession *)self context];
-    v7 = [v6 delegateCaller];
+    delegate2 = [(_HMMediaSession *)self delegate];
+    context = [(_HMMediaSession *)self context];
+    delegateCaller = [context delegateCaller];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53___HMMediaSession__notifyDelegateOfUpdatedMediaState__block_invoke;
     v9[3] = &unk_1E754E5C0;
     v9[4] = self;
-    v10 = v5;
-    v8 = v5;
-    [v7 invokeBlock:v9];
+    v10 = delegate2;
+    v8 = delegate2;
+    [delegateCaller invokeBlock:v9];
   }
 }
 
-- (void)_notifyDelegateOfUpdatedPlaybackState:(int64_t)a3
+- (void)_notifyDelegateOfUpdatedPlaybackState:(int64_t)state
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [(_HMMediaSession *)self delegate];
+  delegate = [(_HMMediaSession *)self delegate];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    if ((a3 - 1) > 5)
+    if ((state - 1) > 5)
     {
       v10 = @"Unknown";
     }
 
     else
     {
-      v10 = off_1E75484F8[a3 - 1];
+      v10 = off_1E75484F8[state - 1];
     }
 
     v11 = v10;
@@ -562,14 +562,14 @@ LABEL_35:
     v25 = 2112;
     v26 = v11;
     v27 = 2112;
-    v28 = v5;
+    v28 = delegate;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Notify client of did update playback state: %@ delegate: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v12 = [(_HMMediaSession *)v7 context];
-  v13 = [(__CFString *)v12 delegateCaller];
-  if (v13)
+  context = [(_HMMediaSession *)selfCopy context];
+  delegateCaller = [(__CFString *)context delegateCaller];
+  if (delegateCaller)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -577,17 +577,17 @@ LABEL_35:
       v19[1] = 3221225472;
       v19[2] = __57___HMMediaSession__notifyDelegateOfUpdatedPlaybackState___block_invoke;
       v19[3] = &unk_1E754E120;
-      v20 = v5;
-      v21 = v7;
-      v22 = a3;
-      [v13 invokeBlock:v19];
+      v20 = delegate;
+      v21 = selfCopy;
+      stateCopy = state;
+      [delegateCaller invokeBlock:v19];
     }
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v7;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -595,7 +595,7 @@ LABEL_35:
       *buf = 138543618;
       v24 = v17;
       v25 = 2112;
-      v26 = v12;
+      v26 = context;
       _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify client of did update playback state due to no delegate caller from context: %@", buf, 0x16u);
     }
 
@@ -605,16 +605,16 @@ LABEL_35:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshPlaybackStateWithCompletionHandler:(id)a3
+- (void)refreshPlaybackStateWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMMediaSession *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(_HMMediaSession *)self context];
+  if (!handlerCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMMediaSession refreshPlaybackStateWithCompletionHandler:]", @"completionHandler"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -631,24 +631,24 @@ LABEL_35:
     objc_exception_throw(v19);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61___HMMediaSession_refreshPlaybackStateWithCompletionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v22 = v4;
+    v22 = handlerCopy;
     v21 = v6;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -662,22 +662,22 @@ LABEL_35:
 
     objc_autoreleasePoolPop(v8);
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPlaybackState:(int64_t)a3 completionHandler:(id)a4
+- (void)setPlaybackState:(int64_t)state completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(_HMMediaSession *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(_HMMediaSession *)self context];
+  if (!handlerCopy)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMMediaSession setPlaybackState:completionHandler:]", @"completionHandler"];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -694,25 +694,25 @@ LABEL_35:
     objc_exception_throw(v21);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
-    v9 = [v7 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54___HMMediaSession_setPlaybackState_completionHandler___block_invoke;
     block[3] = &unk_1E754E0D0;
-    v25 = a3;
+    stateCopy = state;
     block[4] = self;
-    v24 = v6;
+    v24 = handlerCopy;
     v23 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -726,7 +726,7 @@ LABEL_35:
 
     objc_autoreleasePoolPop(v10);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -735,8 +735,8 @@ LABEL_35:
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(_HMMediaSession *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(_HMMediaSession *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
@@ -750,10 +750,10 @@ LABEL_35:
   return v3;
 }
 
-- (void)setSleepWakeState:(unint64_t)a3
+- (void)setSleepWakeState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_sleepWakeState = a3;
+  self->_sleepWakeState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -785,12 +785,12 @@ LABEL_35:
   return v6;
 }
 
-- (void)setRouteUID:(id)a3
+- (void)setRouteUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   routeUID = self->_routeUID;
-  self->_routeUID = v4;
+  self->_routeUID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -804,12 +804,12 @@ LABEL_35:
   return v3;
 }
 
-- (void)setMediaUniqueIdentifier:(id)a3
+- (void)setMediaUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   mediaUniqueIdentifier = self->_mediaUniqueIdentifier;
-  self->_mediaUniqueIdentifier = v4;
+  self->_mediaUniqueIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -823,10 +823,10 @@ LABEL_35:
   return v3;
 }
 
-- (void)setRepeatState:(int64_t)a3
+- (void)setRepeatState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_repeatState = a3;
+  self->_repeatState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -839,10 +839,10 @@ LABEL_35:
   return repeatState;
 }
 
-- (void)setShuffleState:(int64_t)a3
+- (void)setShuffleState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_shuffleState = a3;
+  self->_shuffleState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -855,10 +855,10 @@ LABEL_35:
   return shuffleState;
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_playbackState = a3;
+  self->_playbackState = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -871,22 +871,22 @@ LABEL_35:
   return playbackState;
 }
 
-- (void)setMessageTargetUUID:(id)a3
+- (void)setMessageTargetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   messageTargetUUID = self->_messageTargetUUID;
-  self->_messageTargetUUID = v4;
+  self->_messageTargetUUID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -902,47 +902,47 @@ LABEL_35:
   return v3;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = a3;
+  uuidCopy = uuid;
   os_unfair_lock_lock_with_options();
   uuid = self->_uuid;
-  self->_uuid = v4;
+  self->_uuid = uuidCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)_registerNotificationHandlers
 {
-  v3 = [(_HMMediaSession *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 registerForMessage:@"HMMS.up" receiver:self selector:sel__handleSessionPlaybackUpdated_];
+  context = [(_HMMediaSession *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMMS.up" receiver:self selector:sel__handleSessionPlaybackUpdated_];
 
-  v6 = [(_HMMediaSession *)self context];
-  v5 = [v6 messageDispatcher];
-  [v5 registerForMessage:@"HMMS.ur" receiver:self selector:sel__handleSessionRouteUIDUpdated_];
+  context2 = [(_HMMediaSession *)self context];
+  messageDispatcher2 = [context2 messageDispatcher];
+  [messageDispatcher2 registerForMessage:@"HMMS.ur" receiver:self selector:sel__handleSessionRouteUIDUpdated_];
 }
 
-- (_HMMediaSession)initWithUUID:(id)a3 routeUID:(id)a4 playbackState:(int64_t)a5 shuffleState:(int64_t)a6 repeatState:(int64_t)a7 audioControl:(id)a8 mediaUniqueIdentifier:(id)a9 sleepWakeState:(unint64_t)a10
+- (_HMMediaSession)initWithUUID:(id)d routeUID:(id)iD playbackState:(int64_t)state shuffleState:(int64_t)shuffleState repeatState:(int64_t)repeatState audioControl:(id)control mediaUniqueIdentifier:(id)identifier sleepWakeState:(unint64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v23 = a8;
-  v18 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  controlCopy = control;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = _HMMediaSession;
   v19 = [(_HMMediaSession *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_uuid, a3);
-    objc_storeStrong(&v20->_routeUID, a4);
-    v20->_playbackState = a5;
-    v20->_shuffleState = a6;
-    v20->_repeatState = a7;
-    objc_storeStrong(&v20->_audioControl, a8);
-    objc_storeStrong(&v20->_mediaUniqueIdentifier, a9);
-    v20->_sleepWakeState = a10;
+    objc_storeStrong(&v19->_uuid, d);
+    objc_storeStrong(&v20->_routeUID, iD);
+    v20->_playbackState = state;
+    v20->_shuffleState = shuffleState;
+    v20->_repeatState = repeatState;
+    objc_storeStrong(&v20->_audioControl, control);
+    objc_storeStrong(&v20->_mediaUniqueIdentifier, identifier);
+    v20->_sleepWakeState = wakeState;
   }
 
   return v20;

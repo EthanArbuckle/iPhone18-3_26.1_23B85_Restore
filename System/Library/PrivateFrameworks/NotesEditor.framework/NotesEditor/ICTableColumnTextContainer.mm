@@ -1,37 +1,37 @@
 @interface ICTableColumnTextContainer
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 atIndex:(unint64_t)a4 writingDirection:(int64_t)a5 remainingRect:(CGRect *)a6;
-- (void)setSize:(CGSize)a3;
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect atIndex:(unint64_t)index writingDirection:(int64_t)direction remainingRect:(CGRect *)remainingRect;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation ICTableColumnTextContainer
 
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 atIndex:(unint64_t)a4 writingDirection:(int64_t)a5 remainingRect:(CGRect *)a6
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect atIndex:(unint64_t)index writingDirection:(int64_t)direction remainingRect:(CGRect *)remainingRect
 {
   v31.receiver = self;
   v31.super_class = ICTableColumnTextContainer;
-  [(ICTextContainer *)&v31 lineFragmentRectForProposedRect:a4 atIndex:a5 writingDirection:a6 remainingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICTextContainer *)&v31 lineFragmentRectForProposedRect:index atIndex:direction writingDirection:remainingRect remainingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   objc_opt_class();
-  v16 = [(ICTableColumnTextContainer *)self layoutManager];
+  layoutManager = [(ICTableColumnTextContainer *)self layoutManager];
   v17 = ICDynamicCast();
 
-  v18 = [v17 columnTextStorage];
-  v19 = [v17 tableLayoutManager];
+  columnTextStorage = [v17 columnTextStorage];
+  tableLayoutManager = [v17 tableLayoutManager];
   v30[0] = 0;
   v30[1] = 0;
-  v20 = [v18 rowAtIndex:a4 rowRange:v30];
-  if (v30[0] == a4)
+  v20 = [columnTextStorage rowAtIndex:index rowRange:v30];
+  if (v30[0] == index)
   {
-    v21 = [v19 rowPositions];
-    v22 = [v21 objectForKey:v20];
+    rowPositions = [tableLayoutManager rowPositions];
+    v22 = [rowPositions objectForKey:v20];
 
     if (v22)
     {
-      v23 = [v19 rowPositions];
-      v24 = [v23 objectForKey:v20];
+      rowPositions2 = [tableLayoutManager rowPositions];
+      v24 = [rowPositions2 objectForKey:v20];
       [v24 doubleValue];
       v11 = v25;
     }
@@ -48,10 +48,10 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  width = a3.width;
-  [(ICTableColumnTextContainer *)self size:a3.width];
+  width = size.width;
+  [(ICTableColumnTextContainer *)self size:size.width];
   if (width != v6 || v5 != 1.79769313e308)
   {
     v8.receiver = self;

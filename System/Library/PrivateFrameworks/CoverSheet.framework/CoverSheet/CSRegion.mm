@@ -1,20 +1,20 @@
 @interface CSRegion
-+ (id)regionForCoordinateSpace:(id)a3;
-+ (id)regionForCoordinateSpace:(id)a3 withExtent:(CGRect)a4;
-- (BOOL)intersectsCoordinateSpace:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
++ (id)regionForCoordinateSpace:(id)space;
++ (id)regionForCoordinateSpace:(id)space withExtent:(CGRect)extent;
+- (BOOL)intersectsCoordinateSpace:(id)space;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
 - (CGRect)extent;
-- (CSRegion)initWithCoordinateSpace:(id)a3 withExtent:(CGRect)a4 role:(int64_t)a5;
+- (CSRegion)initWithCoordinateSpace:(id)space withExtent:(CGRect)extent role:(int64_t)role;
 - (NSString)description;
 - (UICoordinateSpace)coordinateSpace;
 - (UICoordinateSpace)identity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)provider;
-- (id)regionForCoordinateSpace:(id)a3;
+- (id)regionForCoordinateSpace:(id)space;
 @end
 
 @implementation CSRegion
@@ -53,14 +53,14 @@
   return result;
 }
 
-+ (id)regionForCoordinateSpace:(id)a3
++ (id)regionForCoordinateSpace:(id)space
 {
-  if (a3)
+  if (space)
   {
-    v4 = a3;
-    v5 = [a1 alloc];
-    [v4 bounds];
-    v6 = [v5 initWithCoordinateSpace:v4 withExtent:0 role:?];
+    spaceCopy = space;
+    v5 = [self alloc];
+    [spaceCopy bounds];
+    v6 = [v5 initWithCoordinateSpace:spaceCopy withExtent:0 role:?];
   }
 
   else
@@ -71,16 +71,16 @@
   return v6;
 }
 
-+ (id)regionForCoordinateSpace:(id)a3 withExtent:(CGRect)a4
++ (id)regionForCoordinateSpace:(id)space withExtent:(CGRect)extent
 {
-  if (a3)
+  if (space)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v9 = a3;
-    v10 = [[a1 alloc] initWithCoordinateSpace:v9 withExtent:0 role:{x, y, width, height}];
+    height = extent.size.height;
+    width = extent.size.width;
+    y = extent.origin.y;
+    x = extent.origin.x;
+    spaceCopy = space;
+    v10 = [[self alloc] initWithCoordinateSpace:spaceCopy withExtent:0 role:{x, y, width, height}];
   }
 
   else
@@ -91,21 +91,21 @@
   return v10;
 }
 
-- (CSRegion)initWithCoordinateSpace:(id)a3 withExtent:(CGRect)a4 role:(int64_t)a5
+- (CSRegion)initWithCoordinateSpace:(id)space withExtent:(CGRect)extent role:(int64_t)role
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
+  spaceCopy = space;
   v19.receiver = self;
   v19.super_class = CSRegion;
   v12 = [(CSRegion *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_role = a5;
-    v14 = objc_storeWeak(&v12->_identity, v11);
+    v12->_role = role;
+    v14 = objc_storeWeak(&v12->_identity, spaceCopy);
     objc_storeWeak(&v13->_coordinateSpace, v14);
     v20.origin.x = x;
     v20.origin.y = y;
@@ -126,7 +126,7 @@
       v13->_extent.size.height = height;
     }
 
-    v16 = [MEMORY[0x277CF0C00] descriptionForObject:v11];
+    v16 = [MEMORY[0x277CF0C00] descriptionForObject:spaceCopy];
     identifier = v13->_identifier;
     v13->_identifier = v16;
   }
@@ -134,61 +134,61 @@
   return v13;
 }
 
-- (id)regionForCoordinateSpace:(id)a3
+- (id)regionForCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(CSRegion *)self coordinateSpace];
+  spaceCopy = space;
+  coordinateSpace = [(CSRegion *)self coordinateSpace];
 
-  if (v5 == v4)
+  if (coordinateSpace == spaceCopy)
   {
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
     [(CSRegion *)self extent];
-    [(CSRegion *)self convertRect:v4 toCoordinateSpace:?];
+    [(CSRegion *)self convertRect:spaceCopy toCoordinateSpace:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CSRegion *)self identifier];
-    v15 = [(CSRegion *)self identity];
-    v16 = [(CSRegion *)self provider];
-    v17 = [(CSRegion *)self isReservedForHorizontalScrolling];
-    v18 = [(CSRegion *)self role];
-    v19 = [CSRegion regionForCoordinateSpace:v4 withExtent:v7, v9, v11, v13];
-    [(CSRegion *)v19 setRole:v18];
-    [(CSRegion *)v19 setIdentifier:v14];
-    [(CSRegion *)v19 setIdentity:v15];
-    [(CSRegion *)v19 setProvider:v16];
-    [(CSRegion *)v19 setReservedForHorizontalScrolling:v17];
+    identifier = [(CSRegion *)self identifier];
+    identity = [(CSRegion *)self identity];
+    provider = [(CSRegion *)self provider];
+    isReservedForHorizontalScrolling = [(CSRegion *)self isReservedForHorizontalScrolling];
+    role = [(CSRegion *)self role];
+    selfCopy = [CSRegion regionForCoordinateSpace:spaceCopy withExtent:v7, v9, v11, v13];
+    [(CSRegion *)selfCopy setRole:role];
+    [(CSRegion *)selfCopy setIdentifier:identifier];
+    [(CSRegion *)selfCopy setIdentity:identity];
+    [(CSRegion *)selfCopy setProvider:provider];
+    [(CSRegion *)selfCopy setReservedForHorizontalScrolling:isReservedForHorizontalScrolling];
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (BOOL)intersectsCoordinateSpace:(id)a3
+- (BOOL)intersectsCoordinateSpace:(id)space
 {
-  v4 = a3;
-  if ([(CSRegion *)self isHidden]|| ([(CSRegion *)self identity], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 == v4) || CGRectIsNull(self->_extent))
+  spaceCopy = space;
+  if ([(CSRegion *)self isHidden]|| ([(CSRegion *)self identity], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 == spaceCopy) || CGRectIsNull(self->_extent))
   {
     v6 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    v9 = [v8 fixedCoordinateSpace];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
 
-    [v4 bounds];
-    [v9 convertRect:v4 fromCoordinateSpace:?];
+    [spaceCopy bounds];
+    [fixedCoordinateSpace convertRect:spaceCopy fromCoordinateSpace:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
     WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-    [v9 convertRect:WeakRetained fromCoordinateSpace:{self->_extent.origin.x, self->_extent.origin.y, self->_extent.size.width, self->_extent.size.height}];
+    [fixedCoordinateSpace convertRect:WeakRetained fromCoordinateSpace:{self->_extent.origin.x, self->_extent.origin.y, self->_extent.size.width, self->_extent.size.height}];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -208,36 +208,36 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CSRegion alloc];
-  v5 = [(CSRegion *)self coordinateSpace];
+  coordinateSpace = [(CSRegion *)self coordinateSpace];
   [(CSRegion *)self extent];
-  v10 = [(CSRegion *)v4 initWithCoordinateSpace:v5 withExtent:[(CSRegion *)self role] role:v6, v7, v8, v9];
+  v10 = [(CSRegion *)v4 initWithCoordinateSpace:coordinateSpace withExtent:[(CSRegion *)self role] role:v6, v7, v8, v9];
 
-  v11 = [(CSRegion *)self identifier];
-  [(CSRegion *)v10 setIdentifier:v11];
+  identifier = [(CSRegion *)self identifier];
+  [(CSRegion *)v10 setIdentifier:identifier];
 
-  v12 = [(CSRegion *)self identity];
-  [(CSRegion *)v10 setIdentity:v12];
+  identity = [(CSRegion *)self identity];
+  [(CSRegion *)v10 setIdentity:identity];
 
   [(CSRegion *)v10 setReservedForHorizontalScrolling:[(CSRegion *)self isReservedForHorizontalScrolling]];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
 
-  else if (-[CSRegion isMemberOfClass:](v4, "isMemberOfClass:", objc_opt_class()) && (role = self->_role, role == -[CSRegion role](v4, "role")) && (hidden = self->_hidden, hidden == -[CSRegion isHidden](v4, "isHidden")) && (-[CSRegion extent](v4, "extent"), BSRectEqualToRect()) && (reservedForHorizontalScrolling = self->_reservedForHorizontalScrolling, reservedForHorizontalScrolling == -[CSRegion isReservedForHorizontalScrolling](v4, "isReservedForHorizontalScrolling")) && (identifier = self->_identifier, -[CSRegion identifier](v4, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), LODWORD(identifier) = -[NSString isEqualToString:](identifier, "isEqualToString:", v9), v9, identifier) && (v10 = objc_loadWeakRetained(&self->_coordinateSpace), -[CSRegion coordinateSpace](v4, "coordinateSpace"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, v10, v12))
+  else if (-[CSRegion isMemberOfClass:](equalCopy, "isMemberOfClass:", objc_opt_class()) && (role = self->_role, role == -[CSRegion role](equalCopy, "role")) && (hidden = self->_hidden, hidden == -[CSRegion isHidden](equalCopy, "isHidden")) && (-[CSRegion extent](equalCopy, "extent"), BSRectEqualToRect()) && (reservedForHorizontalScrolling = self->_reservedForHorizontalScrolling, reservedForHorizontalScrolling == -[CSRegion isReservedForHorizontalScrolling](equalCopy, "isReservedForHorizontalScrolling")) && (identifier = self->_identifier, -[CSRegion identifier](equalCopy, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), LODWORD(identifier) = -[NSString isEqualToString:](identifier, "isEqualToString:", v9), v9, identifier) && (v10 = objc_loadWeakRetained(&self->_coordinateSpace), -[CSRegion coordinateSpace](equalCopy, "coordinateSpace"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, v10, v12))
   {
     WeakRetained = objc_loadWeakRetained(&self->_identity);
-    v14 = [(CSRegion *)v4 identity];
-    v15 = [WeakRetained isEqual:v14];
+    identity = [(CSRegion *)equalCopy identity];
+    v15 = [WeakRetained isEqual:identity];
   }
 
   else
@@ -272,18 +272,18 @@
 
   v10 = [v4 appendBool:-[CSRegion isReservedForHorizontalScrolling](self withName:"isReservedForHorizontalScrolling") ifEqualTo:{@"reservedForHorizontalScrolling", 1}];
   v11 = [v4 appendObject:self->_identifier withName:@"identifier" skipIfNil:1];
-  v12 = [v4 build];
+  build = [v4 build];
 
-  return v12;
+  return build;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertPoint:v7 toCoordinateSpace:{x, y}];
+  [WeakRetained convertPoint:spaceCopy toCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -294,13 +294,13 @@
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertPoint:v7 fromCoordinateSpace:{x, y}];
+  [WeakRetained convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -311,15 +311,15 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertRect:v9 toCoordinateSpace:{x, y, width, height}];
+  [WeakRetained convertRect:spaceCopy toCoordinateSpace:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -336,15 +336,15 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertRect:v9 fromCoordinateSpace:{x, y, width, height}];
+  [WeakRetained convertRect:spaceCopy fromCoordinateSpace:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;

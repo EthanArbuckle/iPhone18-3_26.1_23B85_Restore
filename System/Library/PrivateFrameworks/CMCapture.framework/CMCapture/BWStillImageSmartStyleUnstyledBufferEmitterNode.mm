@@ -1,6 +1,6 @@
 @interface BWStillImageSmartStyleUnstyledBufferEmitterNode
 - (BWStillImageSmartStyleUnstyledBufferEmitterNode)init;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageSmartStyleUnstyledBufferEmitterNode
@@ -29,24 +29,24 @@
   return v2;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   destination = 0;
-  if ((BWStillImageProcessingFlagsForSampleBuffer(a3) & 0x200000) != 0)
+  if ((BWStillImageProcessingFlagsForSampleBuffer(buffer) & 0x200000) != 0)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAF90);
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAF90);
     if (AttachedMedia)
     {
       CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(AttachedMedia, &destination);
       if (CopyIncludingMetadata)
       {
-        v8 = [BWNodeError newError:CopyIncludingMetadata sourceNode:self stillImageSettings:CMGetAttachment(a3 metadata:@"StillSettings", 0), 0];
+        v8 = [BWNodeError newError:CopyIncludingMetadata sourceNode:self stillImageSettings:CMGetAttachment(buffer metadata:@"StillSettings", 0), 0];
         [(BWNodeOutput *)self->super._output emitNodeError:v8];
       }
 
       else
       {
-        CMPropagateAttachments(a3, destination);
+        CMPropagateAttachments(buffer, destination);
         BWSampleBufferRemoveAttachedMedia(destination, 0x1F21AAF90);
         BWSampleBufferRemoveAttachedMedia(destination, 0x1F21AAF50);
         BWStillImageUnsetProcessingFlagsForSampleBuffer(destination, 0x200000);
@@ -61,7 +61,7 @@
     }
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 @end

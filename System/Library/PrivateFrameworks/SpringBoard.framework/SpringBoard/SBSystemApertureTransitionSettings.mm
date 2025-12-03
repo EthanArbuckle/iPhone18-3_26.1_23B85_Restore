@@ -1,18 +1,18 @@
 @interface SBSystemApertureTransitionSettings
-+ (id)_moduleWithSectionTitle:(id)a3;
-+ (id)_rowForKeyPath:(id)a3 title:(id)a4;
++ (id)_moduleWithSectionTitle:(id)title;
++ (id)_rowForKeyPath:(id)path title:(id)title;
 - (id)_childSettings;
-- (void)_setDefaultValuesForBehaviorSettings:(id)a3;
-- (void)setChildBehaviorSettingsNamePrefix:(id)a3;
+- (void)_setDefaultValuesForBehaviorSettings:(id)settings;
+- (void)setChildBehaviorSettingsNamePrefix:(id)prefix;
 - (void)setDefaultValues;
 @end
 
 @implementation SBSystemApertureTransitionSettings
 
-+ (id)_moduleWithSectionTitle:(id)a3
++ (id)_moduleWithSectionTitle:(id)title
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  titleCopy = title;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = MEMORY[0x277D431B0];
   v6 = [MEMORY[0x277D43240] actionWithSettingsKeyPath:0];
@@ -24,8 +24,8 @@
   v10 = [v8 sectionWithRows:v9];
   [v4 addObject:v10];
 
-  v11 = [a1 _childSettingsKeyPathsToTitles];
-  v12 = [v11 keysSortedByValueUsingComparator:&__block_literal_global_281];
+  _childSettingsKeyPathsToTitles = [self _childSettingsKeyPathsToTitles];
+  v12 = [_childSettingsKeyPathsToTitles keysSortedByValueUsingComparator:&__block_literal_global_281];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -45,8 +45,8 @@
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v11 objectForKey:v17];
-        v19 = [a1 _rowForKeyPath:v17 title:v18];
+        v18 = [_childSettingsKeyPathsToTitles objectForKey:v17];
+        v19 = [self _rowForKeyPath:v17 title:v18];
 
         if (v19)
         {
@@ -60,21 +60,21 @@
     while (v14);
   }
 
-  v20 = [MEMORY[0x277D43210] moduleWithTitle:v22 contents:v4];
+  v20 = [MEMORY[0x277D43210] moduleWithTitle:titleCopy contents:v4];
 
   return v20;
 }
 
 - (id)_childSettings
 {
-  v3 = [objc_opt_class() _childSettingsKeyPathsToTitles];
-  v4 = [v3 allKeys];
+  _childSettingsKeyPathsToTitles = [objc_opt_class() _childSettingsKeyPathsToTitles];
+  allKeys = [_childSettingsKeyPathsToTitles allKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SBSystemApertureTransitionSettings__childSettings__block_invoke;
   v7[3] = &unk_2783BD920;
   v7[4] = self;
-  v5 = [v4 bs_mapNoNulls:v7];
+  v5 = [allKeys bs_mapNoNulls:v7];
 
   return v5;
 }
@@ -89,8 +89,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(SBSystemApertureTransitionSettings *)self _childSettings];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  _childSettings = [(SBSystemApertureTransitionSettings *)self _childSettings];
+  v4 = [_childSettings countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -102,7 +102,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_childSettings);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -137,23 +137,23 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v5 = [_childSettings countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setChildBehaviorSettingsNamePrefix:(id)a3
+- (void)setChildBehaviorSettingsNamePrefix:(id)prefix
 {
   v24 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v4 = [objc_opt_class() _childSettingsKeyPathsToTitles];
+  prefixCopy = prefix;
+  _childSettingsKeyPathsToTitles = [objc_opt_class() _childSettingsKeyPathsToTitles];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [v4 allKeys];
+  obj = [_childSettingsKeyPathsToTitles allKeys];
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -194,8 +194,8 @@
 
         if (v14)
         {
-          v15 = [v4 objectForKey:v9];
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - (%@)", v18, v15];
+          v15 = [_childSettingsKeyPathsToTitles objectForKey:v9];
+          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - (%@)", prefixCopy, v15];
           [v14 setName:v16];
 
           [(SBSystemApertureTransitionSettings *)self _setDefaultValuesForBehaviorSettings:v14];
@@ -209,15 +209,15 @@
   }
 }
 
-+ (id)_rowForKeyPath:(id)a3 title:(id)a4
++ (id)_rowForKeyPath:(id)path title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasSuffix:@"BehaviorSettings"])
+  pathCopy = path;
+  titleCopy = title;
+  if ([pathCopy hasSuffix:@"BehaviorSettings"])
   {
     v7 = MEMORY[0x277D43210];
-    v8 = [MEMORY[0x277D65E60] _moduleWithSectionTitle:v6];
-    v9 = [v7 submoduleWithModule:v8 childSettingsKeyPath:v5];
+    v8 = [MEMORY[0x277D65E60] _moduleWithSectionTitle:titleCopy];
+    v9 = [v7 submoduleWithModule:v8 childSettingsKeyPath:pathCopy];
   }
 
   else
@@ -228,19 +228,19 @@
   return v9;
 }
 
-- (void)_setDefaultValuesForBehaviorSettings:(id)a3
+- (void)_setDefaultValuesForBehaviorSettings:(id)settings
 {
-  v3 = a3;
-  [v3 setDefaultValues];
-  [v3 setBehaviorType:2];
-  [v3 setDampingRatio:0.816];
-  [v3 setResponse:0.512];
-  [v3 setRetargetImpulse:0.008];
-  [v3 setTrackingDampingRatio:0.456];
-  [v3 setTrackingResponse:0.35];
-  [v3 setTrackingRetargetImpulse:0.016];
+  settingsCopy = settings;
+  [settingsCopy setDefaultValues];
+  [settingsCopy setBehaviorType:2];
+  [settingsCopy setDampingRatio:0.816];
+  [settingsCopy setResponse:0.512];
+  [settingsCopy setRetargetImpulse:0.008];
+  [settingsCopy setTrackingDampingRatio:0.456];
+  [settingsCopy setTrackingResponse:0.35];
+  [settingsCopy setTrackingRetargetImpulse:0.016];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v3 setFrameRateRange:1114137 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [settingsCopy setFrameRateRange:1114137 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 }
 
 @end

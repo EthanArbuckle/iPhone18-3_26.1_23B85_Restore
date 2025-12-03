@@ -29,28 +29,28 @@
     v13 = 1;
   }
 
-  if ([a1 activityMoveMode] == 2)
+  if ([self activityMoveMode] == 2)
   {
-    v14 = [MEMORY[0x277CCDAB0] minuteUnit];
+    minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
   }
 
   else
   {
-    v14 = v12;
+    minuteUnit = v12;
   }
 
-  v15 = v14;
-  if ([a1 activityMoveMode] == 2)
+  v15 = minuteUnit;
+  if ([self activityMoveMode] == 2)
   {
-    [a1 appleMoveTime];
+    [self appleMoveTime];
   }
 
   else
   {
-    [a1 activeEnergyBurned];
+    [self activeEnergyBurned];
   }
   v16 = ;
-  if ([a1 activityMoveMode] == 2)
+  if ([self activityMoveMode] == 2)
   {
     [v10 appleMoveTime];
   }
@@ -86,13 +86,13 @@ LABEL_19:
 
   v22 = 0;
 LABEL_21:
-  v23 = [MEMORY[0x277CCDAB0] minuteUnit];
-  v24 = [a1 appleExerciseTime];
-  [v24 doubleValueForUnit:v23];
+  minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+  appleExerciseTime = [self appleExerciseTime];
+  [appleExerciseTime doubleValueForUnit:minuteUnit2];
   v26 = v25;
 
-  v27 = [v10 appleExerciseTime];
-  [v27 doubleValueForUnit:v23];
+  appleExerciseTime2 = [v10 appleExerciseTime];
+  [appleExerciseTime2 doubleValueForUnit:minuteUnit2];
   v29 = v28;
 
   v30 = v26;
@@ -107,13 +107,13 @@ LABEL_21:
   if (v22)
   {
 LABEL_24:
-    v32 = [MEMORY[0x277CCDAB0] countUnit];
-    v33 = [a1 appleStandHours];
-    [v33 doubleValueForUnit:v32];
+    countUnit = [MEMORY[0x277CCDAB0] countUnit];
+    appleStandHours = [self appleStandHours];
+    [appleStandHours doubleValueForUnit:countUnit];
     v35 = v34;
 
-    v36 = [v10 appleStandHours];
-    [v36 doubleValueForUnit:v32];
+    appleStandHours2 = [v10 appleStandHours];
+    [appleStandHours2 doubleValueForUnit:countUnit];
     v38 = v37;
 
     v39 = v35;

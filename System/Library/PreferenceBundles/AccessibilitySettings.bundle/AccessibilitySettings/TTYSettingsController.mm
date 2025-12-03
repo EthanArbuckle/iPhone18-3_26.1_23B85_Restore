@@ -1,29 +1,29 @@
 @interface TTYSettingsController
 - (TTYSettingsController)init;
-- (id)answerRTTCallsAsMuted:(id)a3;
-- (id)hardwareTTYEnabledSwitch:(id)a3;
-- (id)incomingCallsTTY:(id)a3;
-- (id)realtimeEnabled:(id)a3;
-- (id)relayNumber:(id)a3;
-- (id)rttLiveTranscriptionsEnabled:(id)a3;
-- (id)showsRTTNotifications:(id)a3;
+- (id)answerRTTCallsAsMuted:(id)muted;
+- (id)hardwareTTYEnabledSwitch:(id)switch;
+- (id)incomingCallsTTY:(id)y;
+- (id)realtimeEnabled:(id)enabled;
+- (id)relayNumber:(id)number;
+- (id)rttLiveTranscriptionsEnabled:(id)enabled;
+- (id)showsRTTNotifications:(id)notifications;
 - (id)softwareTTYAndHardwareTTYSpecificSpecifiers;
-- (id)softwareTTYEnabledSwitch:(id)a3;
+- (id)softwareTTYEnabledSwitch:(id)switch;
 - (id)softwareTTYSettingsSpecifiers;
 - (id)specifiers;
 - (id)telephonyContext;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)confirmationViewCancelledForSpecifier:(id)a3;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)confirmationViewCancelledForSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)setAnswerRTTCallsAsMuted:(id)a3 specifier:(id)a4;
-- (void)setHardwareTTYEnabledSwitch:(id)a3 specifier:(id)a4;
-- (void)setIncomingCallsTTY:(id)a3 specifier:(id)a4;
-- (void)setRTTLiveTranscriptionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setRealtimeEnabled:(id)a3 specifier:(id)a4;
-- (void)setRelayNumber:(id)a3 specifier:(id)a4;
-- (void)setShowsRTTNotifications:(id)a3 specifier:(id)a4;
-- (void)setSoftwareTTYEnabledSwitch:(id)a3 specifier:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setAnswerRTTCallsAsMuted:(id)muted specifier:(id)specifier;
+- (void)setHardwareTTYEnabledSwitch:(id)switch specifier:(id)specifier;
+- (void)setIncomingCallsTTY:(id)y specifier:(id)specifier;
+- (void)setRTTLiveTranscriptionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRealtimeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRelayNumber:(id)number specifier:(id)specifier;
+- (void)setShowsRTTNotifications:(id)notifications specifier:(id)specifier;
+- (void)setSoftwareTTYEnabledSwitch:(id)switch specifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -56,19 +56,19 @@
 - (id)telephonyContext
 {
   objc_opt_class();
-  v3 = [(TTYSettingsController *)self specifier];
-  v4 = [v3 propertyForKey:PSSubscriptionContextKey];
+  specifier = [(TTYSettingsController *)self specifier];
+  v4 = [specifier propertyForKey:PSSubscriptionContextKey];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 context];
+  context = [v5 context];
 
-  if (!v6)
+  if (!context)
   {
     v7 = +[RTTTelephonyUtilities sharedUtilityProvider];
-    v6 = [v7 defaultVoiceContext];
+    context = [v7 defaultVoiceContext];
   }
 
-  return v6;
+  return context;
 }
 
 void __53__TTYSettingsController_updateSpecifiersForCallState__block_invoke(uint64_t a1)
@@ -97,12 +97,12 @@ void __53__TTYSettingsController_updateSpecifiersForCallState__block_invoke_2(ui
 - (id)softwareTTYSettingsSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(TTYSettingsController *)self telephonyContext];
-  if ([RTTTelephonyUtilities softwareTTYIsSupportedForContext:v4])
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  if ([RTTTelephonyUtilities softwareTTYIsSupportedForContext:telephonyContext])
   {
     v5 = +[RTTSettings sharedInstance];
-    v6 = [(TTYSettingsController *)self telephonyContext];
-    v7 = [v5 TTYSoftwareEnabledForContext:v6];
+    telephonyContext2 = [(TTYSettingsController *)self telephonyContext];
+    v7 = [v5 TTYSoftwareEnabledForContext:telephonyContext2];
 
     if (!v7)
     {
@@ -127,8 +127,8 @@ void __53__TTYSettingsController_updateSpecifiersForCallState__block_invoke_2(ui
 
     [v15 setProperty:@"TTY_REALTIME" forKey:v11];
     [v3 addObject:v15];
-    v16 = [(TTYSettingsController *)self telephonyContext];
-    LODWORD(v14) = [RTTTelephonyUtilities isRTTSupportedForContext:v16];
+    telephonyContext3 = [(TTYSettingsController *)self telephonyContext];
+    LODWORD(v14) = [RTTTelephonyUtilities isRTTSupportedForContext:telephonyContext3];
 
     v38 = v10;
     if (v14)
@@ -183,23 +183,23 @@ void __53__TTYSettingsController_updateSpecifiersForCallState__block_invoke_2(ui
       v19 = PSListController_ptr;
     }
 
-    v29 = [(TTYSettingsController *)self telephonyContext];
+    telephonyContext4 = [(TTYSettingsController *)self telephonyContext];
     v30 = @"TTY_RTT_CALL_ANSWER";
-    if ((+[RTTTelephonyUtilities softwareTTYIsSupportedForContext:](RTTTelephonyUtilities, "softwareTTYIsSupportedForContext:", v29) & 1) == 0 && !+[RTTTelephonyUtilities isRelayRTTSupported])
+    if ((+[RTTTelephonyUtilities softwareTTYIsSupportedForContext:](RTTTelephonyUtilities, "softwareTTYIsSupportedForContext:", telephonyContext4) & 1) == 0 && !+[RTTTelephonyUtilities isRelayRTTSupported])
     {
       v30 = @"TTY_CALL_ANSWER";
     }
 
-    v31 = [(TTYSettingsController *)self telephonyContext];
-    v32 = [RTTTelephonyUtilities hardwareTTYIsSupportedForContext:v31];
+    telephonyContext5 = [(TTYSettingsController *)self telephonyContext];
+    v32 = [RTTTelephonyUtilities hardwareTTYIsSupportedForContext:telephonyContext5];
 
-    v4 = [v19[5] emptyGroupSpecifier];
+    telephonyContext = [v19[5] emptyGroupSpecifier];
 
-    [v4 setProperty:@"TTY_SETTINGS_GROUP" forKey:v11];
+    [telephonyContext setProperty:@"TTY_SETTINGS_GROUP" forKey:v11];
     if (v32)
     {
       v33 = settingsLocString(@"TTY_CALL_ANSWER_FOOTER", @"Accessibility");
-      [v4 setProperty:v33 forKey:v38];
+      [telephonyContext setProperty:v33 forKey:v38];
     }
 
     else
@@ -207,7 +207,7 @@ void __53__TTYSettingsController_updateSpecifiersForCallState__block_invoke_2(ui
       v30 = @"RTT_CALL_ANSWER";
     }
 
-    [v3 addObject:v4];
+    [v3 addObject:telephonyContext];
     v34 = v19[5];
     v35 = settingsLocString(v30, @"Accessibility");
     v36 = [v34 preferenceSpecifierNamed:v35 target:self set:"setIncomingCallsTTY:specifier:" get:"incomingCallsTTY:" detail:0 cell:6 edit:0];
@@ -250,8 +250,8 @@ LABEL_17:
   }
 
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(TTYSettingsController *)self telephonyContext];
-  if (([RTTTelephonyUtilities softwareTTYIsSupportedForContext:v6]& 1) != 0)
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  if (([RTTTelephonyUtilities softwareTTYIsSupportedForContext:telephonyContext]& 1) != 0)
   {
     v7 = 1;
   }
@@ -261,30 +261,30 @@ LABEL_17:
     v7 = +[RTTTelephonyUtilities isRelayRTTSupported];
   }
 
-  v8 = [RTTTelephonyUtilities hardwareTTYIsSupportedForContext:v6];
+  v8 = [RTTTelephonyUtilities hardwareTTYIsSupportedForContext:telephonyContext];
   v9 = @"RTT_SOFTWARE_FOOTER_PHONE";
-  if ((+[RTTTelephonyUtilities isEmergencyRTTSupportedForContext:](RTTTelephonyUtilities, "isEmergencyRTTSupportedForContext:", v6) & 1) == 0 && !+[RTTTelephonyUtilities isEmergencyRelayRTTSupported])
+  if ((+[RTTTelephonyUtilities isEmergencyRTTSupportedForContext:](RTTTelephonyUtilities, "isEmergencyRTTSupportedForContext:", telephonyContext) & 1) == 0 && !+[RTTTelephonyUtilities isEmergencyRelayRTTSupported])
   {
     v9 = @"RTT_SOFTWARE_NO_EMERGENCY_FOOTER_PHONE";
   }
 
   v10 = +[RTTSettings sharedInstance];
-  v28 = [v10 TTYSoftwareEnabledForContext:v6];
+  v28 = [v10 TTYSoftwareEnabledForContext:telephonyContext];
 
   v11 = +[RTTSettings sharedInstance];
-  v12 = [v11 TTYHardwareEnabledForContext:v6];
+  v12 = [v11 TTYHardwareEnabledForContext:telephonyContext];
 
   if (v7)
   {
     v13 = +[PSSpecifier emptyGroupSpecifier];
-    if ((+[RTTTelephonyUtilities isOnlyRTTSupportedForContext:](RTTTelephonyUtilities, "isOnlyRTTSupportedForContext:", v6) & 1) != 0 || (+[RTTTelephonyUtilities isRelayRTTSupported]& 1) != 0)
+    if ((+[RTTTelephonyUtilities isOnlyRTTSupportedForContext:](RTTTelephonyUtilities, "isOnlyRTTSupportedForContext:", telephonyContext) & 1) != 0 || (+[RTTTelephonyUtilities isRelayRTTSupported]& 1) != 0)
     {
       v14 = @"RTT_SOFTWARE";
     }
 
     else
     {
-      v23 = [RTTTelephonyUtilities isRTTSupportedForContext:v6];
+      v23 = [RTTTelephonyUtilities isRTTSupportedForContext:telephonyContext];
       if (v23)
       {
         v9 = @"TTY_RTT_SOFTWARE_FOOTER_PHONE";
@@ -315,8 +315,8 @@ LABEL_17:
 
     [v26 setProperty:@"SW_TTY" forKey:PSIDKey];
     [v5 addObject:v26];
-    v27 = [(TTYSettingsController *)self softwareTTYSettingsSpecifiers];
-    [v5 addObjectsFromArray:v27];
+    softwareTTYSettingsSpecifiers = [(TTYSettingsController *)self softwareTTYSettingsSpecifiers];
+    [v5 addObjectsFromArray:softwareTTYSettingsSpecifiers];
 
     if (((v28 | v8 & v12) & 1) == 0)
     {
@@ -329,8 +329,8 @@ LABEL_17:
   if ((v8 & v12) == 1)
   {
 LABEL_13:
-    v15 = [(TTYSettingsController *)self softwareTTYAndHardwareTTYSpecificSpecifiers];
-    [v5 addObjectsFromArray:v15];
+    softwareTTYAndHardwareTTYSpecificSpecifiers = [(TTYSettingsController *)self softwareTTYAndHardwareTTYSpecificSpecifiers];
+    [v5 addObjectsFromArray:softwareTTYAndHardwareTTYSpecificSpecifiers];
   }
 
 LABEL_14:
@@ -338,7 +338,7 @@ LABEL_14:
   {
     v16 = +[PSSpecifier emptyGroupSpecifier];
     [v5 addObject:v16];
-    if ([RTTTelephonyUtilities isRTTSupportedForContext:v6])
+    if ([RTTTelephonyUtilities isRTTSupportedForContext:telephonyContext])
     {
       v17 = @"TTY_RTT_HARDWARE_FOOTER";
     }
@@ -367,11 +367,11 @@ LABEL_20:
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TTYSettingsController;
-  [(TTYSettingsController *)&v4 viewWillAppear:a3];
+  [(TTYSettingsController *)&v4 viewWillAppear:appear];
   [(TTYSettingsController *)self reloadSpecifierID:@"TTY_RELAY"];
   [(TTYSettingsController *)self updateSpecifiersForCallState];
 }
@@ -384,23 +384,23 @@ LABEL_20:
   [(TTYSettingsController *)self updateSpecifiersForCallState];
 }
 
-- (void)setSoftwareTTYEnabledSwitch:(id)a3 specifier:(id)a4
+- (void)setSoftwareTTYEnabledSwitch:(id)switch specifier:(id)specifier
 {
-  v21 = a3;
-  v6 = a4;
+  switchCopy = switch;
+  specifierCopy = specifier;
   v7 = +[RTTSettings sharedInstance];
-  v8 = [v21 BOOLValue];
-  v9 = [(TTYSettingsController *)self telephonyContext];
-  [v7 setTTYSoftwareEnabled:v8 forContext:v9];
+  bOOLValue = [switchCopy BOOLValue];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v7 setTTYSoftwareEnabled:bOOLValue forContext:telephonyContext];
 
-  v10 = [(TTYSettingsController *)self telephonyContext];
-  if ([RTTTelephonyUtilities hardwareTTYIsSupportedForContext:v10])
+  telephonyContext2 = [(TTYSettingsController *)self telephonyContext];
+  if ([RTTTelephonyUtilities hardwareTTYIsSupportedForContext:telephonyContext2])
   {
     v11 = +[RTTSettings sharedInstance];
-    v12 = [(TTYSettingsController *)self telephonyContext];
-    v13 = [v11 TTYHardwareEnabledForContext:v12];
+    telephonyContext3 = [(TTYSettingsController *)self telephonyContext];
+    v13 = [v11 TTYHardwareEnabledForContext:telephonyContext3];
 
-    if ([v21 BOOLValue])
+    if ([switchCopy BOOLValue])
     {
       if (v13)
       {
@@ -414,26 +414,26 @@ LABEL_20:
   else
   {
 
-    if ([v21 BOOLValue])
+    if ([switchCopy BOOLValue])
     {
 LABEL_6:
-      v14 = [(TTYSettingsController *)self softwareTTYAndHardwareTTYSpecificSpecifiers];
-      [(TTYSettingsController *)self insertContiguousSpecifiers:v14 afterSpecifier:v6 animated:1];
+      softwareTTYAndHardwareTTYSpecificSpecifiers = [(TTYSettingsController *)self softwareTTYAndHardwareTTYSpecificSpecifiers];
+      [(TTYSettingsController *)self insertContiguousSpecifiers:softwareTTYAndHardwareTTYSpecificSpecifiers afterSpecifier:specifierCopy animated:1];
 
 LABEL_7:
-      v15 = [(TTYSettingsController *)self softwareTTYSettingsSpecifiers];
-      [(TTYSettingsController *)self insertContiguousSpecifiers:v15 afterSpecifier:v6 animated:1];
+      softwareTTYSettingsSpecifiers = [(TTYSettingsController *)self softwareTTYSettingsSpecifiers];
+      [(TTYSettingsController *)self insertContiguousSpecifiers:softwareTTYSettingsSpecifiers afterSpecifier:specifierCopy animated:1];
       goto LABEL_12;
     }
 
     v13 = 0;
   }
 
-  v15 = [NSMutableArray arrayWithObjects:@"TTY_SW_SETTINGS_GROUP", @"TTY_RELAY", @"TTY_REALTIME", 0];
-  [v15 addObjectsFromArray:&off_27CAA0];
-  [v15 addObjectsFromArray:&off_27CAB8];
-  [v15 addObjectsFromArray:&off_27CAD0];
-  v16 = [(TTYSettingsController *)self specifiersForIDs:v15];
+  softwareTTYSettingsSpecifiers = [NSMutableArray arrayWithObjects:@"TTY_SW_SETTINGS_GROUP", @"TTY_RELAY", @"TTY_REALTIME", 0];
+  [softwareTTYSettingsSpecifiers addObjectsFromArray:&off_27CAA0];
+  [softwareTTYSettingsSpecifiers addObjectsFromArray:&off_27CAB8];
+  [softwareTTYSettingsSpecifiers addObjectsFromArray:&off_27CAD0];
+  v16 = [(TTYSettingsController *)self specifiersForIDs:softwareTTYSettingsSpecifiers];
   [(TTYSettingsController *)self removeContiguousSpecifiers:v16 animated:1];
 
   if ((v13 & 1) == 0)
@@ -443,47 +443,47 @@ LABEL_7:
   }
 
   v18 = +[RTTSettings sharedInstance];
-  v19 = [(TTYSettingsController *)self telephonyContext];
-  [v18 setIncomingCallsTTY:0 forContext:v19];
+  telephonyContext4 = [(TTYSettingsController *)self telephonyContext];
+  [v18 setIncomingCallsTTY:0 forContext:telephonyContext4];
 
 LABEL_12:
   v20 = +[HUUtilities sharedUtilities];
   [v20 updateHearingFeatureUsage];
 }
 
-- (void)setHardwareTTYEnabledSwitch:(id)a3 specifier:(id)a4
+- (void)setHardwareTTYEnabledSwitch:(id)switch specifier:(id)specifier
 {
-  v16 = a3;
-  v6 = a4;
+  switchCopy = switch;
+  specifierCopy = specifier;
   v7 = +[RTTSettings sharedInstance];
-  v8 = [v16 BOOLValue];
-  v9 = [(TTYSettingsController *)self telephonyContext];
-  [v7 setTTYHardwareEnabled:v8 forContext:v9];
+  bOOLValue = [switchCopy BOOLValue];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v7 setTTYHardwareEnabled:bOOLValue forContext:telephonyContext];
 
-  v10 = [(TTYSettingsController *)self telephonyContext];
-  if ((+[RTTTelephonyUtilities softwareTTYIsSupportedForContext:](RTTTelephonyUtilities, "softwareTTYIsSupportedForContext:", v10) & 1) == 0 && (+[RTTTelephonyUtilities isRelayRTTSupported]& 1) == 0)
+  telephonyContext2 = [(TTYSettingsController *)self telephonyContext];
+  if ((+[RTTTelephonyUtilities softwareTTYIsSupportedForContext:](RTTTelephonyUtilities, "softwareTTYIsSupportedForContext:", telephonyContext2) & 1) == 0 && (+[RTTTelephonyUtilities isRelayRTTSupported]& 1) == 0)
   {
 
     goto LABEL_6;
   }
 
   v11 = +[RTTSettings sharedInstance];
-  v12 = [(TTYSettingsController *)self telephonyContext];
-  v13 = [v11 TTYSoftwareEnabledForContext:v12];
+  telephonyContext3 = [(TTYSettingsController *)self telephonyContext];
+  v13 = [v11 TTYSoftwareEnabledForContext:telephonyContext3];
 
   if ((v13 & 1) == 0)
   {
 LABEL_6:
-    if ([v16 BOOLValue])
+    if ([switchCopy BOOLValue])
     {
-      v14 = [(TTYSettingsController *)self softwareTTYAndHardwareTTYSpecificSpecifiers];
-      [(TTYSettingsController *)self insertContiguousSpecifiers:v14 afterSpecifier:v6 animated:1];
+      softwareTTYAndHardwareTTYSpecificSpecifiers = [(TTYSettingsController *)self softwareTTYAndHardwareTTYSpecificSpecifiers];
+      [(TTYSettingsController *)self insertContiguousSpecifiers:softwareTTYAndHardwareTTYSpecificSpecifiers afterSpecifier:specifierCopy animated:1];
     }
 
     else
     {
-      v14 = [(TTYSettingsController *)self specifiersForIDs:&off_27CB00];
-      [(TTYSettingsController *)self removeContiguousSpecifiers:v14 animated:1];
+      softwareTTYAndHardwareTTYSpecificSpecifiers = [(TTYSettingsController *)self specifiersForIDs:&off_27CB00];
+      [(TTYSettingsController *)self removeContiguousSpecifiers:softwareTTYAndHardwareTTYSpecificSpecifiers animated:1];
     }
   }
 
@@ -491,52 +491,52 @@ LABEL_6:
   [v15 updateHearingFeatureUsage];
 }
 
-- (id)softwareTTYEnabledSwitch:(id)a3
+- (id)softwareTTYEnabledSwitch:(id)switch
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 TTYSoftwareEnabledForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 TTYSoftwareEnabledForContext:telephonyContext]);
 
   return v6;
 }
 
-- (id)hardwareTTYEnabledSwitch:(id)a3
+- (id)hardwareTTYEnabledSwitch:(id)switch
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 TTYHardwareEnabledForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 TTYHardwareEnabledForContext:telephonyContext]);
 
   return v6;
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
   v5 = +[RTTSettings sharedInstance];
-  v4 = [(TTYSettingsController *)self telephonyContext];
-  [v5 setIncomingCallsTTY:1 forContext:v4];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v5 setIncomingCallsTTY:1 forContext:telephonyContext];
 }
 
-- (void)confirmationViewCancelledForSpecifier:(id)a3
+- (void)confirmationViewCancelledForSpecifier:(id)specifier
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  [v4 setIncomingCallsTTY:0 forContext:v5];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v4 setIncomingCallsTTY:0 forContext:telephonyContext];
 
   [(TTYSettingsController *)self reloadSpecifierID:@"TTY_CALL_ANSWER" animated:1];
 }
 
-- (void)setIncomingCallsTTY:(id)a3 specifier:(id)a4
+- (void)setIncomingCallsTTY:(id)y specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([y BOOLValue])
   {
-    v5 = [(TTYSettingsController *)self telephonyContext];
-    v6 = [RTTTelephonyUtilities isOnlyRTTSupportedForContext:v5];
+    telephonyContext = [(TTYSettingsController *)self telephonyContext];
+    v6 = [RTTTelephonyUtilities isOnlyRTTSupportedForContext:telephonyContext];
 
     if (!v6)
     {
       v16 = objc_alloc_init(PSConfirmationSpecifier);
-      v10 = [(TTYSettingsController *)self telephonyContext];
-      if ([RTTTelephonyUtilities isRTTSupportedForContext:v10])
+      telephonyContext2 = [(TTYSettingsController *)self telephonyContext];
+      if ([RTTTelephonyUtilities isRTTSupportedForContext:telephonyContext2])
       {
         v11 = @"TTY_RTT_CALL_ANSWER";
       }
@@ -563,7 +563,7 @@ LABEL_6:
     }
 
     v16 = +[RTTSettings sharedInstance];
-    v7 = [(TTYSettingsController *)self telephonyContext];
+    telephonyContext3 = [(TTYSettingsController *)self telephonyContext];
     v8 = v16;
     v9 = 1;
   }
@@ -571,116 +571,116 @@ LABEL_6:
   else
   {
     v16 = +[RTTSettings sharedInstance];
-    v7 = [(TTYSettingsController *)self telephonyContext];
+    telephonyContext3 = [(TTYSettingsController *)self telephonyContext];
     v8 = v16;
     v9 = 0;
   }
 
-  [v8 setIncomingCallsTTY:v9 forContext:v7];
+  [v8 setIncomingCallsTTY:v9 forContext:telephonyContext3];
 
 LABEL_10:
 }
 
-- (id)incomingCallsTTY:(id)a3
+- (id)incomingCallsTTY:(id)y
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 incomingCallsTTYForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 incomingCallsTTYForContext:telephonyContext]);
 
   return v6;
 }
 
-- (void)setRelayNumber:(id)a3 specifier:(id)a4
+- (void)setRelayNumber:(id)number specifier:(id)specifier
 {
-  v5 = a3;
+  numberCopy = number;
   v8 = +[RTTSettings sharedInstance];
-  v6 = [RTTUIUtilities phoneNumberStringFromString:v5];
+  v6 = [RTTUIUtilities phoneNumberStringFromString:numberCopy];
 
-  v7 = [(TTYSettingsController *)self telephonyContext];
-  [v8 setPreferredRelayNumber:v6 forContext:v7];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v8 setPreferredRelayNumber:v6 forContext:telephonyContext];
 }
 
-- (id)relayNumber:(id)a3
+- (id)relayNumber:(id)number
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = [v4 preferredRelayNumberForContext:v5];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = [v4 preferredRelayNumberForContext:telephonyContext];
 
   if (v6)
   {
     v7 = [CNPhoneNumber phoneNumberWithStringValue:v6];
-    v8 = [v7 formattedStringValue];
+    formattedStringValue = [v7 formattedStringValue];
   }
 
   else
   {
-    v8 = 0;
+    formattedStringValue = 0;
   }
 
-  return v8;
+  return formattedStringValue;
 }
 
-- (void)setRealtimeEnabled:(id)a3 specifier:(id)a4
+- (void)setRealtimeEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v8 = +[RTTSettings sharedInstance];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [(TTYSettingsController *)self telephonyContext];
-  [v8 setTTYShouldBeRealtime:v6 forContext:v7];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v8 setTTYShouldBeRealtime:bOOLValue forContext:telephonyContext];
 }
 
-- (id)realtimeEnabled:(id)a3
+- (id)realtimeEnabled:(id)enabled
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 ttyShouldBeRealtimeForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 ttyShouldBeRealtimeForContext:telephonyContext]);
 
   return v6;
 }
 
-- (void)setAnswerRTTCallsAsMuted:(id)a3 specifier:(id)a4
+- (void)setAnswerRTTCallsAsMuted:(id)muted specifier:(id)specifier
 {
-  v5 = a3;
+  mutedCopy = muted;
   v8 = +[RTTSettings sharedInstance];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [mutedCopy BOOLValue];
 
-  v7 = [(TTYSettingsController *)self telephonyContext];
-  [v8 setAnswerRTTCallsAsMuted:v6 forContext:v7];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v8 setAnswerRTTCallsAsMuted:bOOLValue forContext:telephonyContext];
 }
 
-- (id)answerRTTCallsAsMuted:(id)a3
+- (id)answerRTTCallsAsMuted:(id)muted
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 answerRTTCallsAsMutedForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 answerRTTCallsAsMutedForContext:telephonyContext]);
 
   return v6;
 }
 
-- (void)setShowsRTTNotifications:(id)a3 specifier:(id)a4
+- (void)setShowsRTTNotifications:(id)notifications specifier:(id)specifier
 {
-  v5 = a3;
+  notificationsCopy = notifications;
   v8 = +[RTTSettings sharedInstance];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [notificationsCopy BOOLValue];
 
-  v7 = [(TTYSettingsController *)self telephonyContext];
-  [v8 setShowsRTTNotifications:v6 forContext:v7];
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  [v8 setShowsRTTNotifications:bOOLValue forContext:telephonyContext];
 }
 
-- (id)showsRTTNotifications:(id)a3
+- (id)showsRTTNotifications:(id)notifications
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 showsRTTNotificationsForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 showsRTTNotificationsForContext:telephonyContext]);
 
   return v6;
 }
 
-- (void)setRTTLiveTranscriptionsEnabled:(id)a3 specifier:(id)a4
+- (void)setRTTLiveTranscriptionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a4;
-  if ([a3 BOOLValue])
+  specifierCopy = specifier;
+  if ([enabled BOOLValue])
   {
     v7 = +[AXSpringBoardServer server];
     v10[0] = _NSConcreteStackBlock;
@@ -689,15 +689,15 @@ LABEL_10:
     v10[3] = &unk_2566F0;
     v12 = 1;
     v10[4] = self;
-    v11 = v6;
+    v11 = specifierCopy;
     [v7 showAlert:25 withHandler:v10];
   }
 
   else
   {
     v8 = +[RTTSettings sharedInstance];
-    v9 = [(TTYSettingsController *)self telephonyContext];
-    [v8 setRTTLiveTranscriptionsEnabled:0 forContext:v9];
+    telephonyContext = [(TTYSettingsController *)self telephonyContext];
+    [v8 setRTTLiveTranscriptionsEnabled:0 forContext:telephonyContext];
   }
 }
 
@@ -720,11 +720,11 @@ void __67__TTYSettingsController_setRTTLiveTranscriptionsEnabled_specifier___blo
   }
 }
 
-- (id)rttLiveTranscriptionsEnabled:(id)a3
+- (id)rttLiveTranscriptionsEnabled:(id)enabled
 {
   v4 = +[RTTSettings sharedInstance];
-  v5 = [(TTYSettingsController *)self telephonyContext];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 rttLiveTranscriptionsEnabledForContext:v5]);
+  telephonyContext = [(TTYSettingsController *)self telephonyContext];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 rttLiveTranscriptionsEnabledForContext:telephonyContext]);
 
   return v6;
 }

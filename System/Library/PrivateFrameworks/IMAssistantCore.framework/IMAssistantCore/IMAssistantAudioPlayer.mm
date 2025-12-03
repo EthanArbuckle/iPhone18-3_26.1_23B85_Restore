@@ -1,25 +1,25 @@
 @interface IMAssistantAudioPlayer
 - (BOOL)setupAudioSession;
-- (BOOL)startPlayingAudioURL:(id)a3;
-- (IMAssistantAudioPlayer)initWithDelegate:(id)a3 identifier:(id)a4;
+- (BOOL)startPlayingAudioURL:(id)l;
+- (IMAssistantAudioPlayer)initWithDelegate:(id)delegate identifier:(id)identifier;
 - (int64_t)playerState;
 - (void)cleanupAudioSession;
 @end
 
 @implementation IMAssistantAudioPlayer
 
-- (IMAssistantAudioPlayer)initWithDelegate:(id)a3 identifier:(id)a4
+- (IMAssistantAudioPlayer)initWithDelegate:(id)delegate identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = IMAssistantAudioPlayer;
   v8 = [(IMAssistantAudioPlayer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
   }
@@ -27,10 +27,10 @@
   return v9;
 }
 
-- (BOOL)startPlayingAudioURL:(id)a3
+- (BOOL)startPlayingAudioURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   player = self->_player;
   if (player)
   {
@@ -45,7 +45,7 @@
   }
 
   v16 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CB83D0]) initWithContentsOfURL:v4 error:&v16];
+  v7 = [objc_alloc(MEMORY[0x277CB83D0]) initWithContentsOfURL:lCopy error:&v16];
   v8 = v16;
   v9 = self->_player;
   self->_player = v7;
@@ -72,9 +72,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [(AVAudioPlayer *)self->_player play];
+  play = [(AVAudioPlayer *)self->_player play];
 
-  if (!v11)
+  if (!play)
   {
 LABEL_12:
     [(IMAssistantAudioPlayer *)self cleanupAudioSession];
@@ -105,17 +105,17 @@ LABEL_13:
 - (BOOL)setupAudioSession
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CB83F8] sharedInstance];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   v3 = *MEMORY[0x277CB8030];
   v13 = 0;
-  v4 = [v2 setCategory:v3 withOptions:19 error:&v13];
+  v4 = [mEMORY[0x277CB83F8] setCategory:v3 withOptions:19 error:&v13];
   v5 = v13;
 
   if (v4)
   {
-    v6 = [MEMORY[0x277CB83F8] sharedInstance];
+    mEMORY[0x277CB83F8]2 = [MEMORY[0x277CB83F8] sharedInstance];
     v12 = 0;
-    v7 = [v6 setActive:1 error:&v12];
+    v7 = [mEMORY[0x277CB83F8]2 setActive:1 error:&v12];
     v8 = v12;
 
     if ((v7 & 1) == 0)
@@ -149,8 +149,8 @@ LABEL_13:
 
 - (void)cleanupAudioSession
 {
-  v2 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v2 setActive:0 error:0];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setActive:0 error:0];
 }
 
 @end

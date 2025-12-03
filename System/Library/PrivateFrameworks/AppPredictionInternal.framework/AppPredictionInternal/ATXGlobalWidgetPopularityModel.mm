@@ -1,7 +1,7 @@
 @interface ATXGlobalWidgetPopularityModel
 + (ATXGlobalWidgetPopularityModel)modelWithAllAvailableWidgets;
-- (ATXGlobalWidgetPopularityModel)initWithBundleIdAndKinds:(id)a3;
-- (double)scoreForBundleIdAndKind:(id)a3 scalingFactor:(double)a4;
+- (ATXGlobalWidgetPopularityModel)initWithBundleIdAndKinds:(id)kinds;
+- (double)scoreForBundleIdAndKind:(id)kind scalingFactor:(double)factor;
 - (id)_computePriors;
 - (void)dealloc;
 - (void)unloadGlobalPriorsAsset;
@@ -13,8 +13,8 @@
 {
   v2 = objc_alloc(MEMORY[0x277CBEB58]);
   v3 = +[ATXWidgetModeModel fetchAvailableWidgets];
-  v4 = [v3 allValues];
-  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_34];
+  allValues = [v3 allValues];
+  v5 = [allValues _pas_mappedArrayWithTransform:&__block_literal_global_34];
   v6 = [v2 initWithArray:v5];
 
   v7 = [objc_alloc(objc_opt_class()) initWithBundleIdAndKinds:v6];
@@ -35,15 +35,15 @@ id __62__ATXGlobalWidgetPopularityModel_modelWithAllAvailableWidgets__block_invo
   return v7;
 }
 
-- (ATXGlobalWidgetPopularityModel)initWithBundleIdAndKinds:(id)a3
+- (ATXGlobalWidgetPopularityModel)initWithBundleIdAndKinds:(id)kinds
 {
-  v4 = a3;
+  kindsCopy = kinds;
   v15.receiver = self;
   v15.super_class = ATXGlobalWidgetPopularityModel;
   v5 = [(ATXGlobalWidgetPopularityModel *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [kindsCopy copy];
     bundleIdAndKinds = v5->_bundleIdAndKinds;
     v5->_bundleIdAndKinds = v6;
 
@@ -51,13 +51,13 @@ id __62__ATXGlobalWidgetPopularityModel_modelWithAllAvailableWidgets__block_invo
     priorsTrie = v5->_priorsTrie;
     v5->_priorsTrie = v8;
 
-    v10 = [(ATXGlobalWidgetPopularityModel *)v5 _computePriors];
+    _computePriors = [(ATXGlobalWidgetPopularityModel *)v5 _computePriors];
     priors = v5->_priors;
-    v5->_priors = v10;
+    v5->_priors = _computePriors;
 
-    v12 = [MEMORY[0x277CEBC88] sharedInstance];
+    mEMORY[0x277CEBC88] = [MEMORY[0x277CEBC88] sharedInstance];
     memoryPressureMonitor = v5->_memoryPressureMonitor;
-    v5->_memoryPressureMonitor = v12;
+    v5->_memoryPressureMonitor = mEMORY[0x277CEBC88];
 
     [(ATXMemoryPressureMonitor *)v5->_memoryPressureMonitor registerObserver:v5];
   }
@@ -138,15 +138,15 @@ id __62__ATXGlobalWidgetPopularityModel_modelWithAllAvailableWidgets__block_invo
   objc_sync_exit(obj);
 }
 
-- (double)scoreForBundleIdAndKind:(id)a3 scalingFactor:(double)a4
+- (double)scoreForBundleIdAndKind:(id)kind scalingFactor:(double)factor
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  priors = v7->_priors;
+  kindCopy = kind;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  priors = selfCopy->_priors;
   if (!priors)
   {
-    if (v7->_assetOffloadedDueToMemoryPressure)
+    if (selfCopy->_assetOffloadedDueToMemoryPressure)
     {
       v9 = __atxlog_handle_modes();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -155,12 +155,12 @@ id __62__ATXGlobalWidgetPopularityModel_modelWithAllAvailableWidgets__block_invo
         _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_INFO, "ATXGlobalWidgetPopularityModel: loading global priors after it was previously offloaded due to memory pressure.", v16, 2u);
       }
 
-      v10 = [(ATXGlobalWidgetPopularityModel *)v7 _computePriors];
-      v11 = v7->_priors;
-      v7->_priors = v10;
+      _computePriors = [(ATXGlobalWidgetPopularityModel *)selfCopy _computePriors];
+      v11 = selfCopy->_priors;
+      selfCopy->_priors = _computePriors;
 
-      v7->_assetOffloadedDueToMemoryPressure = 0;
-      priors = v7->_priors;
+      selfCopy->_assetOffloadedDueToMemoryPressure = 0;
+      priors = selfCopy->_priors;
     }
 
     else
@@ -169,11 +169,11 @@ id __62__ATXGlobalWidgetPopularityModel_modelWithAllAvailableWidgets__block_invo
     }
   }
 
-  v12 = [(NSDictionary *)priors objectForKeyedSubscript:v6];
+  v12 = [(NSDictionary *)priors objectForKeyedSubscript:kindCopy];
   [v12 doubleValue];
-  v14 = v13 * a4;
+  v14 = v13 * factor;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   return v14;
 }
 

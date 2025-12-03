@@ -1,10 +1,10 @@
 @interface PXApplicationInstallationStateProvider
-+ (BOOL)isAppInstalled:(int64_t)a3;
++ (BOOL)isAppInstalled:(int64_t)installed;
 + (id)shared;
 - (PXApplicationInstallationStateProvider)init;
-- (int64_t)_isAppInstalled_cached:(int64_t)a3;
+- (int64_t)_isAppInstalled_cached:(int64_t)installed_cached;
 - (void)_registerForNotifications;
-- (void)_updateCachedInstallationState:(id)a3 value:(int64_t)a4;
+- (void)_updateCachedInstallationState:(id)state value:(int64_t)value;
 @end
 
 @implementation PXApplicationInstallationStateProvider
@@ -18,24 +18,24 @@
   CFNotificationCenterAddObserver(v4, self, PXApplicationInstallationStateProviderApplicationCallback, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)_updateCachedInstallationState:(id)a3 value:(int64_t)a4
+- (void)_updateCachedInstallationState:(id)state value:(int64_t)value
 {
-  v7 = a3;
-  if (([v7 isEqualToString:@"com.apple.mobileslideshow"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"com.apple.camera"))
+  stateCopy = state;
+  if (([stateCopy isEqualToString:@"com.apple.mobileslideshow"] & 1) != 0 || objc_msgSend(stateCopy, "isEqualToString:", @"com.apple.camera"))
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    [(NSMutableDictionary *)self->_installationCache setObject:v6 forKeyedSubscript:v7];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+    [(NSMutableDictionary *)self->_installationCache setObject:v6 forKeyedSubscript:stateCopy];
   }
 }
 
-- (int64_t)_isAppInstalled_cached:(int64_t)a3
+- (int64_t)_isAppInstalled_cached:(int64_t)installed_cached
 {
   v4 = &stru_1F1741150;
-  if (a3)
+  if (installed_cached)
   {
-    if (a3 != 2)
+    if (installed_cached != 2)
     {
-      if (a3 == 1)
+      if (installed_cached == 1)
       {
         v4 = @"com.apple.mobileslideshow";
       }
@@ -53,8 +53,8 @@
   }
 
 LABEL_9:
-  v5 = [(PXApplicationInstallationStateProvider *)self installationCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  installationCache = [(PXApplicationInstallationStateProvider *)self installationCache];
+  v6 = [installationCache objectForKeyedSubscript:v4];
 
   if (v6)
   {
@@ -96,35 +96,35 @@ LABEL_9:
   return v3;
 }
 
-+ (BOOL)isAppInstalled:(int64_t)a3
++ (BOOL)isAppInstalled:(int64_t)installed
 {
   v4 = +[PXApplicationInstallationStateProvider shared];
-  v5 = [v4 _isAppInstalled_cached:a3];
+  v5 = [v4 _isAppInstalled_cached:installed];
 
   if (!v5)
   {
-    if (a3)
+    if (installed)
     {
-      if (a3 != 2)
+      if (installed != 2)
       {
-        if (a3 == 1)
+        if (installed == 1)
         {
-          a3 = @"com.apple.mobileslideshow";
+          installed = @"com.apple.mobileslideshow";
         }
 
         else
         {
-          a3 = 0;
+          installed = 0;
         }
 
 LABEL_11:
-        v7 = [MEMORY[0x1E6963608] defaultWorkspace];
-        v6 = [v7 applicationIsInstalled:a3];
+        defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+        v6 = [defaultWorkspace applicationIsInstalled:installed];
 
         return v6;
       }
 
-      a3 = @"com.apple.camera";
+      installed = @"com.apple.camera";
     }
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -145,7 +145,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __48__PXApplicationInstallationStateProvider_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);

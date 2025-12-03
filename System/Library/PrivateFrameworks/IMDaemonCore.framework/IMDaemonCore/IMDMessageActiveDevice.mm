@@ -1,22 +1,22 @@
 @interface IMDMessageActiveDevice
 - (BOOL)_hasReceivedReadReceiptRecently;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldDisplayAttachmentDownloadFailure;
 - (BOOL)shouldDisplayRemoteDecryptionFailure;
 - (BOOL)shouldSendTypingIndicator;
-- (IMDMessageActiveDevice)initWithIDSDestination:(id)a3 latestDate:(id)a4 latestReadReceiptDate:(id)a5 hasReceivedReadReceipt:(BOOL)a6;
+- (IMDMessageActiveDevice)initWithIDSDestination:(id)destination latestDate:(id)date latestReadReceiptDate:(id)receiptDate hasReceivedReadReceipt:(BOOL)receipt;
 - (id)description;
 @end
 
 @implementation IMDMessageActiveDevice
 
-- (IMDMessageActiveDevice)initWithIDSDestination:(id)a3 latestDate:(id)a4 latestReadReceiptDate:(id)a5 hasReceivedReadReceipt:(BOOL)a6
+- (IMDMessageActiveDevice)initWithIDSDestination:(id)destination latestDate:(id)date latestReadReceiptDate:(id)receiptDate hasReceivedReadReceipt:(BOOL)receipt
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = 0;
-  if (v11 && v12)
+  destinationCopy = destination;
+  dateCopy = date;
+  receiptDateCopy = receiptDate;
+  selfCopy = 0;
+  if (destinationCopy && dateCopy)
   {
     v18.receiver = self;
     v18.super_class = IMDMessageActiveDevice;
@@ -24,26 +24,26 @@
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_idsDestination, a3);
-      objc_storeStrong(&v16->_latestActiveDate, a4);
-      v16->_hasReceivedReadReceipt = a6;
-      objc_storeStrong(&v16->_latestReadReceipt, a5);
+      objc_storeStrong(&v15->_idsDestination, destination);
+      objc_storeStrong(&v16->_latestActiveDate, date);
+      v16->_hasReceivedReadReceipt = receipt;
+      objc_storeStrong(&v16->_latestReadReceipt, receiptDate);
     }
 
     self = v16;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v7 = 1;
     }
@@ -51,8 +51,8 @@
     else
     {
       idsDestination = self->_idsDestination;
-      v6 = [(IMDMessageActiveDevice *)v4 idsDestination];
-      v7 = [(NSString *)idsDestination isEqualToString:v6];
+      idsDestination = [(IMDMessageActiveDevice *)equalCopy idsDestination];
+      v7 = [(NSString *)idsDestination isEqualToString:idsDestination];
     }
   }
 
@@ -68,8 +68,8 @@
 {
   if (self->_hasReceivedReadReceipt)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:self->_latestReadReceipt];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_latestReadReceipt];
     v5 = v4;
 
     return v5 <= 86400.0 && self->_hasReceivedReadReceipt;
@@ -88,8 +88,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_latestActiveDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_latestActiveDate];
   v5 = v4 <= 300.0;
 
   return v5;
@@ -97,8 +97,8 @@
 
 - (BOOL)shouldDisplayAttachmentDownloadFailure
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_latestActiveDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_latestActiveDate];
   LOBYTE(self) = v4 <= 86400.0;
 
   return self;
@@ -106,8 +106,8 @@
 
 - (BOOL)shouldDisplayRemoteDecryptionFailure
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_latestActiveDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_latestActiveDate];
   LOBYTE(self) = v4 <= 600.0;
 
   return self;

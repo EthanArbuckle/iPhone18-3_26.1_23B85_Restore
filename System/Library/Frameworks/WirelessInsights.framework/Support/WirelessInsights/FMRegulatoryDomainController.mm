@@ -1,6 +1,6 @@
 @interface FMRegulatoryDomainController
 - (FMModel)fmModel;
-- (FMRegulatoryDomainController)initWithFMModel:(id)a3;
+- (FMRegulatoryDomainController)initWithFMModel:(id)model;
 - (id)getCurrentEstimates;
 - (void)dealloc;
 - (void)notifyClient;
@@ -8,9 +8,9 @@
 
 @implementation FMRegulatoryDomainController
 
-- (FMRegulatoryDomainController)initWithFMModel:(id)a3
+- (FMRegulatoryDomainController)initWithFMModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = FMRegulatoryDomainController;
   v5 = [(FMRegulatoryDomainController *)&v15 init];
@@ -25,7 +25,7 @@
     goto LABEL_9;
   }
 
-  [(FMRegulatoryDomainController *)v5 setFmModel:v4];
+  [(FMRegulatoryDomainController *)v5 setFmModel:modelCopy];
   [(FMRegulatoryDomainController *)v6 setQueue:dispatch_queue_create("com.apple.wirelessinsightsd.FederatedMobility.RegulatoryDomainController", 0)];
   if (![(FMRegulatoryDomainController *)v6 queue])
   {
@@ -36,14 +36,14 @@ LABEL_9:
 
   out_token = -1;
   objc_initWeak(&location, v6);
-  v7 = [kRegulatoryDomainUpdateNotification UTF8String];
-  v8 = [(FMRegulatoryDomainController *)v6 queue];
+  uTF8String = [kRegulatoryDomainUpdateNotification UTF8String];
+  queue = [(FMRegulatoryDomainController *)v6 queue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100029B2C;
   handler[3] = &unk_1002AB2D8;
   objc_copyWeak(&v12, &location);
-  if (notify_register_dispatch(v7, &out_token, v8, handler))
+  if (notify_register_dispatch(uTF8String, &out_token, queue, handler))
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -95,9 +95,9 @@ LABEL_14:
 
 - (void)notifyClient
 {
-  v4 = [(FMRegulatoryDomainController *)self fmModel];
-  v3 = [(FMRegulatoryDomainController *)self getCurrentEstimates];
-  [v4 handleRegulatoryDomainEstimateUpdate:v3];
+  fmModel = [(FMRegulatoryDomainController *)self fmModel];
+  getCurrentEstimates = [(FMRegulatoryDomainController *)self getCurrentEstimates];
+  [fmModel handleRegulatoryDomainEstimateUpdate:getCurrentEstimates];
 }
 
 - (id)getCurrentEstimates
@@ -124,8 +124,8 @@ LABEL_14:
             objc_enumerationMutation(v4);
           }
 
-          v8 = [*(*(&v12 + 1) + 8 * i) countryCode];
-          [v3 addObject:v8];
+          countryCode = [*(*(&v12 + 1) + 8 * i) countryCode];
+          [v3 addObject:countryCode];
         }
 
         v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];

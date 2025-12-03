@@ -8,14 +8,14 @@
 - (NSString)storefrontLanguageCode
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 standardUserDefaults];
+  selfCopy = self;
+  standardUserDefaults = [v3 standardUserDefaults];
   sub_227669D40();
   v6 = sub_22766BFD0();
 
-  v7 = [v5 stringForKey_];
+  stringForKey_ = [standardUserDefaults stringForKey_];
 
-  if (v7)
+  if (stringForKey_)
   {
     sub_22766C000();
 

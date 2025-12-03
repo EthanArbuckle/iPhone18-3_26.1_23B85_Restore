@@ -1,25 +1,25 @@
 @interface PKUpcomingPassInformationDetailsHeaderCell
-- (CGRect)topLabelWithRespectTo:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKUpcomingPassInformationDetailsHeaderCell)initWithFrame:(CGRect)a3;
+- (CGRect)topLabelWithRespectTo:(id)to;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKUpcomingPassInformationDetailsHeaderCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setOverlayAlpha:(double)a3;
-- (void)setOverlayEffect:(id)a3;
-- (void)setShadowColor:(id)a3;
+- (void)setOverlayAlpha:(double)alpha;
+- (void)setOverlayEffect:(id)effect;
+- (void)setShadowColor:(id)color;
 @end
 
 @implementation PKUpcomingPassInformationDetailsHeaderCell
 
-- (PKUpcomingPassInformationDetailsHeaderCell)initWithFrame:(CGRect)a3
+- (PKUpcomingPassInformationDetailsHeaderCell)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = PKUpcomingPassInformationDetailsHeaderCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PKDashboardCollectionViewCell *)v3 setWantsCustomAppearance:1];
-    v5 = [(PKUpcomingPassInformationDetailsHeaderCell *)v4 contentView];
+    contentView = [(PKUpcomingPassInformationDetailsHeaderCell *)v4 contentView];
     v6 = [PKSplashImageHeaderView alloc];
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -30,21 +30,21 @@
     v4->_headerView = v11;
 
     [(PKSplashImageHeaderView *)v4->_headerView setHidesIconImage:1];
-    [v5 addSubview:v4->_headerView];
+    [contentView addSubview:v4->_headerView];
     v13 = [objc_alloc(MEMORY[0x1E69DD298]) initWithFrame:{v7, v8, v9, v10}];
     overlayEffectView = v4->_overlayEffectView;
     v4->_overlayEffectView = v13;
 
     [(UIVisualEffectView *)v4->_overlayEffectView setHidden:1];
     [(UIVisualEffectView *)v4->_overlayEffectView setAlpha:0.0];
-    [v5 addSubview:v4->_overlayEffectView];
+    [contentView addSubview:v4->_overlayEffectView];
     v15 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v8, v9, v10}];
     shadowView = v4->_shadowView;
     v4->_shadowView = v15;
 
     [(UIView *)v4->_shadowView setHidden:1];
     [(UIView *)v4->_shadowView setAlpha:0.0];
-    [v5 addSubview:v4->_shadowView];
+    [contentView addSubview:v4->_shadowView];
     [(PKUpcomingPassInformationDetailsHeaderCell *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
   }
 
@@ -56,8 +56,8 @@
   v15.receiver = self;
   v15.super_class = PKUpcomingPassInformationDetailsHeaderCell;
   [(PKDashboardCollectionViewCell *)&v15 layoutSubviews];
-  v3 = [(PKUpcomingPassInformationDetailsHeaderCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKUpcomingPassInformationDetailsHeaderCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -76,17 +76,17 @@
   [(UIVisualEffectView *)self->_overlayEffectView setFrame:*&v13.origin, *&v13.size];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKSplashImageHeaderView *)self->_headerView sizeThatFits:a3.width, a3.height];
+  [(PKSplashImageHeaderView *)self->_headerView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGRect)topLabelWithRespectTo:(id)a3
+- (CGRect)topLabelWithRespectTo:(id)to
 {
-  [(PKSplashImageHeaderView *)self->_headerView topLabelWithRespectTo:a3];
+  [(PKSplashImageHeaderView *)self->_headerView topLabelWithRespectTo:to];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -94,37 +94,37 @@
   return result;
 }
 
-- (void)setOverlayEffect:(id)a3
+- (void)setOverlayEffect:(id)effect
 {
-  v5 = a3;
-  if (self->_overlayEffect != v5)
+  effectCopy = effect;
+  if (self->_overlayEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overlayEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_overlayEffect, effect);
     [(UIVisualEffectView *)self->_overlayEffectView setEffect:self->_overlayEffect];
     [(UIVisualEffectView *)self->_overlayEffectView setHidden:self->_overlayEffect == 0];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  if (self->_shadowColor != v5)
+  colorCopy = color;
+  if (self->_shadowColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_shadowColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_shadowColor, color);
     [(UIView *)self->_shadowView setBackgroundColor:self->_shadowColor];
     [(UIView *)self->_shadowView setHidden:self->_shadowColor == 0];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setOverlayAlpha:(double)a3
+- (void)setOverlayAlpha:(double)alpha
 {
-  if (self->_overlayAlpha != a3)
+  if (self->_overlayAlpha != alpha)
   {
-    self->_overlayAlpha = a3;
+    self->_overlayAlpha = alpha;
     [(UIVisualEffectView *)self->_overlayEffectView setAlpha:?];
     shadowView = self->_shadowView;
     overlayAlpha = self->_overlayAlpha;

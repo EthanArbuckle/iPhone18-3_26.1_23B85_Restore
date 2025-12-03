@@ -1,15 +1,15 @@
 @interface UPContextualizer
-- (UPContextualizer)initWithPrebuiltIntentThreshold:(double)a3;
-- (id)_contextualizeByDialogActTypeUsingContextualizerInput:(id)a3;
-- (id)resultWithContextualizerInput:(id)a3;
+- (UPContextualizer)initWithPrebuiltIntentThreshold:(double)threshold;
+- (id)_contextualizeByDialogActTypeUsingContextualizerInput:(id)input;
+- (id)resultWithContextualizerInput:(id)input;
 @end
 
 @implementation UPContextualizer
 
-- (id)_contextualizeByDialogActTypeUsingContextualizerInput:(id)a3
+- (id)_contextualizeByDialogActTypeUsingContextualizerInput:(id)input
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v22[0] = objc_opt_class();
   v23[0] = self->_offerContextualizerStrategy;
   v22[1] = objc_opt_class();
@@ -17,16 +17,16 @@
   v22[2] = objc_opt_class();
   v23[2] = self->_promptContextualizerStrategy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
-  v6 = [v4 dialogAct];
-  v7 = [v4 coreResult];
-  v8 = [UPContextualizerUtilities createConfirmOrRejectedDialogActsFor:v7 reference:0];
+  dialogAct = [inputCopy dialogAct];
+  coreResult = [inputCopy coreResult];
+  v8 = [UPContextualizerUtilities createConfirmOrRejectedDialogActsFor:coreResult reference:0];
 
   v9 = [UPContextualizerInput alloc];
-  v10 = [v4 domainResult];
-  v11 = [v4 modelIdentifier];
-  v12 = [v4 query];
+  domainResult = [inputCopy domainResult];
+  modelIdentifier = [inputCopy modelIdentifier];
+  query = [inputCopy query];
 
-  v13 = [(UPContextualizerInput *)v9 initWithDomainResult:v10 coreResult:v8 modelIdentifier:v11 query:v12 dialogAct:v6];
+  v13 = [(UPContextualizerInput *)v9 initWithDomainResult:domainResult coreResult:v8 modelIdentifier:modelIdentifier query:query dialogAct:dialogAct];
   v14 = [v5 objectForKey:objc_opt_class()];
   v15 = v14;
   if (v14)
@@ -40,7 +40,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v20 = 138739971;
-      v21 = v6;
+      v21 = dialogAct;
       _os_log_impl(&dword_22284A000, v17, OS_LOG_TYPE_ERROR, "Could not find contextualizer strategy for dialog act: %{sensitive}@", &v20, 0xCu);
     }
 
@@ -52,23 +52,23 @@
   return v16;
 }
 
-- (id)resultWithContextualizerInput:(id)a3
+- (id)resultWithContextualizerInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 coreResult];
-  v6 = [v5 candidateCount];
+  inputCopy = input;
+  coreResult = [inputCopy coreResult];
+  candidateCount = [coreResult candidateCount];
 
-  if (!v6 || ([(UPContextualizerStrategyCancel *)self->_cancelContextualizerStrategy resultUsingContextualizerInput:v4], (v7 = objc_claimAutoreleasedReturnValue()) == 0) && ([(UPContextualizer *)self _contextualizeByDialogActTypeUsingContextualizerInput:v4], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!candidateCount || ([(UPContextualizerStrategyCancel *)self->_cancelContextualizerStrategy resultUsingContextualizerInput:inputCopy], (domainResult = objc_claimAutoreleasedReturnValue()) == 0) && ([(UPContextualizer *)self _contextualizeByDialogActTypeUsingContextualizerInput:inputCopy], (domainResult = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [v4 domainResult];
+    domainResult = [inputCopy domainResult];
   }
 
-  v8 = v7;
+  v8 = domainResult;
 
   return v8;
 }
 
-- (UPContextualizer)initWithPrebuiltIntentThreshold:(double)a3
+- (UPContextualizer)initWithPrebuiltIntentThreshold:(double)threshold
 {
   v15.receiver = self;
   v15.super_class = UPContextualizer;
@@ -76,7 +76,7 @@
   if (v4)
   {
     v5 = objc_alloc_init(UPUsoSerializer);
-    v4->_prebuiltIntentThreshold = a3;
+    v4->_prebuiltIntentThreshold = threshold;
     v6 = [[UPContextualizerStrategyCancel alloc] initWithPrebuiltIntentThreshold:v4->_prebuiltIntentThreshold];
     cancelContextualizerStrategy = v4->_cancelContextualizerStrategy;
     v4->_cancelContextualizerStrategy = v6;

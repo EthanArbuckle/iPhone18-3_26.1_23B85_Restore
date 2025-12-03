@@ -1,15 +1,15 @@
 @interface ADAudioSessionCoordinationMessageBeginAudioSessionRequest
-+ (id)newWithBuilder:(id)a3;
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithBuilder:(id)a3;
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithCoder:(id)a3;
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithDictionaryRepresentation:(id)a3;
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithEffectiveDate:(id)a3 expirationDuration:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithBuilder:(id)builder;
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithCoder:(id)coder;
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithDictionaryRepresentation:(id)representation;
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithEffectiveDate:(id)date expirationDuration:(double)duration;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADAudioSessionCoordinationMessageBeginAudioSessionRequest
@@ -32,12 +32,12 @@
   return v7;
 }
 
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithDictionaryRepresentation:(id)a3
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"effectiveDate"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"effectiveDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
       v6 = 0;
     }
 
-    v8 = [v4 objectForKey:@"expirationDuration"];
+    v8 = [representationCopy objectForKey:@"expirationDuration"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -66,31 +66,31 @@
     v11 = v10;
 
     self = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)self initWithEffectiveDate:v6 expirationDuration:v11];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   effectiveDate = self->_effectiveDate;
-  v5 = a3;
-  [v5 encodeObject:effectiveDate forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::effectiveDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:effectiveDate forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::effectiveDate"];
   v6 = [NSNumber numberWithDouble:self->_expirationDuration];
-  [v5 encodeObject:v6 forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::expirationDuration"];
+  [coderCopy encodeObject:v6 forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::expirationDuration"];
 }
 
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithCoder:(id)a3
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::effectiveDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::expirationDuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::effectiveDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADAudioSessionCoordinationMessageBeginAudioSessionRequest::expirationDuration"];
 
   [v6 doubleValue];
   v8 = v7;
@@ -99,10 +99,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -112,14 +112,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       expirationDuration = self->_expirationDuration;
       [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)v5 expirationDuration];
       if (expirationDuration == v7)
       {
-        v9 = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)v5 effectiveDate];
+        effectiveDate = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)v5 effectiveDate];
         effectiveDate = self->_effectiveDate;
-        v8 = effectiveDate == v9 || [(NSDate *)effectiveDate isEqual:v9];
+        v8 = effectiveDate == effectiveDate || [(NSDate *)effectiveDate isEqual:effectiveDate];
       }
 
       else
@@ -146,7 +146,7 @@
   return v5 ^ v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -157,35 +157,35 @@
   return v6;
 }
 
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithEffectiveDate:(id)a3 expirationDuration:(double)a4
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithEffectiveDate:(id)date expirationDuration:(double)duration
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100245008;
   v9[3] = &unk_100517860;
-  v10 = a3;
-  v11 = a4;
-  v6 = v10;
+  dateCopy = date;
+  durationCopy = duration;
+  v6 = dateCopy;
   v7 = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)self initWithBuilder:v9];
 
   return v7;
 }
 
-- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithBuilder:(id)a3
+- (ADAudioSessionCoordinationMessageBeginAudioSessionRequest)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v13.receiver = self;
   v13.super_class = ADAudioSessionCoordinationMessageBeginAudioSessionRequest;
   v5 = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)&v13 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation *)v7 isDirty])
     {
-      v8 = [(_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation *)v7 getEffectiveDate];
-      v9 = [v8 copy];
+      getEffectiveDate = [(_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation *)v7 getEffectiveDate];
+      v9 = [getEffectiveDate copy];
       effectiveDate = v6->_effectiveDate;
       v6->_effectiveDate = v9;
 
@@ -197,26 +197,26 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADAudioSessionCoordinationMessageBeginAudioSessionRequest);
-      v7 = [(_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation *)v5 getEffectiveDate];
-      v8 = [v7 copy];
+      getEffectiveDate = [(_ADAudioSessionCoordinationMessageBeginAudioSessionRequestMutation *)v5 getEffectiveDate];
+      v8 = [getEffectiveDate copy];
       effectiveDate = v6->_effectiveDate;
       v6->_effectiveDate = v8;
 

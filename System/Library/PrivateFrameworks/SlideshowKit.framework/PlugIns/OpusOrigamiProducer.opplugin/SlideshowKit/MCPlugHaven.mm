@@ -1,20 +1,20 @@
 @interface MCPlugHaven
-- (MCPlugHaven)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCPlugHaven)initWithImprint:(id)imprint andMontage:(id)montage;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCPlugHaven
 
-- (MCPlugHaven)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCPlugHaven)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v7.receiver = self;
   v7.super_class = MCPlugHaven;
-  v5 = [(MCPlug *)&v7 initWithImprint:a3 andMontage:a4];
+  v5 = [(MCPlug *)&v7 initWithImprint:imprint andMontage:montage];
   if (v5)
   {
-    v5->mIDInSupercontainer = [a3 objectForKey:@"idInSupercontainer"];
+    v5->mIDInSupercontainer = [imprint objectForKey:@"idInSupercontainer"];
   }
 
   return v5;
@@ -33,12 +33,12 @@
 {
   v5.receiver = self;
   v5.super_class = MCPlugHaven;
-  v3 = [(MCPlug *)&v5 imprint];
-  [v3 setObject:self->mIDInSupercontainer forKey:@"idInSupercontainer"];
-  return v3;
+  imprint = [(MCPlug *)&v5 imprint];
+  [imprint setObject:self->mIDInSupercontainer forKey:@"idInSupercontainer"];
+  return imprint;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCPlugHaven;
@@ -46,7 +46,7 @@
   mIDInSupercontainer = self->mIDInSupercontainer;
   if (mIDInSupercontainer)
   {
-    *(a3 + 11) = [(NSString *)mIDInSupercontainer copy];
+    *(snapshot + 11) = [(NSString *)mIDInSupercontainer copy];
   }
 }
 

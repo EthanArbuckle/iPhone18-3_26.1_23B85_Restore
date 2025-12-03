@@ -1,36 +1,36 @@
 @interface CalDAVCalendarServerResourceChangeDeletedElement
 - (id)copyParseRules;
-- (void)setDeletedDetails:(id)a3;
+- (void)setDeletedDetails:(id)details;
 @end
 
 @implementation CalDAVCalendarServerResourceChangeDeletedElement
 
-- (void)setDeletedDetails:(id)a3
+- (void)setDeletedDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 componentType];
-  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setComponentType:v5];
+  detailsCopy = details;
+  componentType = [detailsCopy componentType];
+  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setComponentType:componentType];
 
-  v6 = [v4 summary];
-  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setSummary:v6];
+  summary = [detailsCopy summary];
+  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setSummary:summary];
 
-  v7 = [v4 displayName];
-  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setDisplayName:v7];
+  displayName = [detailsCopy displayName];
+  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setDisplayName:displayName];
 
-  v8 = [v4 nextInstance];
-  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setNextInstance:v8];
+  nextInstance = [detailsCopy nextInstance];
+  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setNextInstance:nextInstance];
 
-  v9 = [v4 hadMoreInstances];
+  hadMoreInstances = [detailsCopy hadMoreInstances];
 
-  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setHadMoreInstances:v9];
+  [(CalDAVCalendarServerResourceChangeDeletedElement *)self setHadMoreInstances:hadMoreInstances];
 }
 
 - (id)copyParseRules
 {
   v10.receiver = self;
   v10.super_class = CalDAVCalendarServerResourceChangeDeletedElement;
-  v2 = [(CalDAVCalendarServerResourceChangeElement *)&v10 copyParseRules];
-  v3 = [v2 mutableCopy];
+  copyParseRules = [(CalDAVCalendarServerResourceChangeElement *)&v10 copyParseRules];
+  v3 = [copyParseRules mutableCopy];
   v4 = objc_alloc(MEMORY[0x277CBEAC0]);
   v5 = *MEMORY[0x277CFDE90];
   v6 = [MEMORY[0x277CFDC50] ruleWithMinimumNumber:0 maximumNumber:1 nameSpace:*MEMORY[0x277CFDE90] elementName:@"deleted-details" objectClass:objc_opt_class() setterMethod:sel_setDeletedDetails_];

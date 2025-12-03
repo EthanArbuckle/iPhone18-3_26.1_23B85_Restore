@@ -1,16 +1,16 @@
 @interface CARDashboardSuggestionsSpecifier
 - (BOOL)smartWidgetHidden;
-- (CARDashboardSuggestionsSpecifier)initWithTraitCollection:(id)a3;
-- (void)_performAction:(id)a3;
+- (CARDashboardSuggestionsSpecifier)initWithTraitCollection:(id)collection;
+- (void)_performAction:(id)action;
 - (void)dealloc;
-- (void)setSmartWidgetHidden:(BOOL)a3;
+- (void)setSmartWidgetHidden:(BOOL)hidden;
 @end
 
 @implementation CARDashboardSuggestionsSpecifier
 
-- (CARDashboardSuggestionsSpecifier)initWithTraitCollection:(id)a3
+- (CARDashboardSuggestionsSpecifier)initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = sub_10001C80C(@"SUGGESTIONS_TITLE");
   v16.receiver = self;
   v16.super_class = CARDashboardSuggestionsSpecifier;
@@ -46,20 +46,20 @@
   [(CARDashboardSuggestionsSpecifier *)&v4 dealloc];
 }
 
-- (void)_performAction:(id)a3
+- (void)_performAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [a3 BOOLValue];
+    bOOLValue = [action BOOLValue];
   }
 
   else
   {
-    v4 = [(CARDashboardSuggestionsSpecifier *)self smartWidgetHidden];
+    bOOLValue = [(CARDashboardSuggestionsSpecifier *)self smartWidgetHidden];
   }
 
-  v5 = v4;
-  [(CARDashboardSuggestionsSpecifier *)self setSmartWidgetHidden:v4 ^ 1];
+  v5 = bOOLValue;
+  [(CARDashboardSuggestionsSpecifier *)self setSmartWidgetHidden:bOOLValue ^ 1];
   v6 = [NSNumber numberWithBool:v5];
   [(CARSettingsCellSpecifier *)self setCellValue:v6];
 }
@@ -68,14 +68,14 @@
 {
   CFPreferencesAppSynchronize(@"com.apple.CarPlay");
   v2 = CFPreferencesCopyAppValue(@"CARSmartWidgetHidden", @"com.apple.CarPlayApp");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSmartWidgetHidden:(BOOL)a3
+- (void)setSmartWidgetHidden:(BOOL)hidden
 {
-  CFPreferencesSetAppValue(@"CARSmartWidgetHidden", [NSNumber numberWithBool:a3], @"com.apple.CarPlayApp");
+  CFPreferencesSetAppValue(@"CARSmartWidgetHidden", [NSNumber numberWithBool:hidden], @"com.apple.CarPlayApp");
   CFPreferencesAppSynchronize(@"com.apple.CarPlay");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 

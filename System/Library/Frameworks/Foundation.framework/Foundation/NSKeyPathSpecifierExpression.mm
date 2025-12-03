@@ -1,14 +1,14 @@
 @interface NSKeyPathSpecifierExpression
-- (BOOL)isEqual:(id)a3;
-- (NSKeyPathSpecifierExpression)initWithCoder:(id)a3;
-- (NSKeyPathSpecifierExpression)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSKeyPathSpecifierExpression)initWithCoder:(id)coder;
+- (NSKeyPathSpecifierExpression)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)predicateFormat;
 - (unint64_t)hash;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSKeyPathSpecifierExpression
@@ -73,34 +73,34 @@
   return v4;
 }
 
-- (NSKeyPathSpecifierExpression)initWithObject:(id)a3
+- (NSKeyPathSpecifierExpression)initWithObject:(id)object
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSKeyPathSpecifierExpression;
   v4 = [(NSExpression *)&v6 initWithExpressionType:10];
-  v4->_value = a3;
+  v4->_value = object;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSKeyPathSpecifierExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:self->_value forKey:@"NSKeyPath"];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:self->_value forKey:@"NSKeyPath"];
 }
 
-- (NSKeyPathSpecifierExpression)initWithCoder:(id)a3
+- (NSKeyPathSpecifierExpression)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -108,16 +108,16 @@
 
   v7.receiver = self;
   v7.super_class = NSKeyPathSpecifierExpression;
-  v5 = [(NSExpression *)&v7 initWithCoder:a3];
+  v5 = [(NSExpression *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_value = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSKeyPath"];
+    v5->_value = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSKeyPath"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   value = self->_value;
@@ -125,16 +125,16 @@
   return [v4 initWithObject:value];
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v20 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (flags)
   {
-    [a3 visitPredicateExpression:self];
+    [visitor visitPredicateExpression:self];
   }
 
-  if (v4 & 0x10) != 0 && (objc_opt_respondsToSelector())
+  if (flagsCopy & 0x10) != 0 && (objc_opt_respondsToSelector())
   {
     v7 = objc_autoreleasePoolPush();
     v8 = [-[NSKeyPathSpecifierExpression keyPath](self "keyPath")];
@@ -158,7 +158,7 @@
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          [a3 visitPredicateExpression:self keyPathScope:v12 key:v14];
+          [visitor visitPredicateExpression:self keyPathScope:v12 key:v14];
           if ([(__CFString *)v12 length])
           {
             v12 = [(__CFString *)v12 stringByAppendingString:@"."];
@@ -177,9 +177,9 @@
   }
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
-  if (![(NSExpression *)self _allowsEvaluation:a3])
+  if (![(NSExpression *)self _allowsEvaluation:object])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"This expression has evaluation disabled" userInfo:0]);
   }
@@ -187,24 +187,24 @@
   return self->_value;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [a3 keyPath];
-  v6 = [(NSKeyPathSpecifierExpression *)self keyPath];
+  keyPath = [equal keyPath];
+  keyPath2 = [(NSKeyPathSpecifierExpression *)self keyPath];
 
-  return [v5 isEqual:v6];
+  return [keyPath isEqual:keyPath2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NSKeyPathSpecifierExpression *)self keyPath];
+  keyPath = [(NSKeyPathSpecifierExpression *)self keyPath];
 
-  return [v2 hash];
+  return [keyPath hash];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CSConnectionListener
 + (id)createSmartSiriVolumeListener;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CSConnectionListener)initWithMachService:(id)a3 withServiceInterface:(id)a4 withServiceObject:(id)a5 withDelegateInterface:(id)a6 queue:(id)a7;
-- (CSConnectionListener)initWithXpcListener:(id)a3 withMachService:(id)a4 withServiceInterface:(id)a5 withServiceObject:(id)a6 withDelegateInterface:(id)a7 queue:(id)a8;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CSConnectionListener)initWithMachService:(id)service withServiceInterface:(id)interface withServiceObject:(id)object withDelegateInterface:(id)delegateInterface queue:(id)queue;
+- (CSConnectionListener)initWithXpcListener:(id)listener withMachService:(id)service withServiceInterface:(id)interface withServiceObject:(id)object withDelegateInterface:(id)delegateInterface queue:(id)queue;
 - (void)dealloc;
-- (void)notifyClientsWithBlock:(id)a3;
+- (void)notifyClientsWithBlock:(id)block;
 - (void)resumeConnection;
 @end
 
@@ -60,9 +60,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)notifyClientsWithBlock:(id)a3
+- (void)notifyClientsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -70,18 +70,18 @@
   block[2] = sub_100145BA0;
   block[3] = &unk_100252B50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_queue);
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -94,7 +94,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Got connection on service %{public}@", buf, 0x16u);
   }
 
-  if (self->_listener != v6)
+  if (self->_listener != listenerCopy)
   {
     v10 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -105,7 +105,7 @@
       v29 = 2114;
       v30 = v11;
       v31 = 2114;
-      v32 = v6;
+      v32 = listenerCopy;
       v12 = "%s [Service:%{public}@] Invalid listener - %{public}@";
       v13 = v10;
       v14 = 32;
@@ -117,9 +117,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([CSUtils xpcConnection:v7 hasEntitlement:@"corespeech.corespeechd.xpc"]& 1) == 0)
+  if (([CSUtils xpcConnection:connectionCopy hasEntitlement:@"corespeech.corespeechd.xpc"]& 1) == 0)
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
     v17 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -139,29 +139,29 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v7 setExportedInterface:self->_exportedInterface];
-  [v7 setExportedObject:self->_proxyObject];
-  [v7 setRemoteObjectInterface:self->_remoteInterface];
+  [connectionCopy setExportedInterface:self->_exportedInterface];
+  [connectionCopy setExportedObject:self->_proxyObject];
+  [connectionCopy setRemoteObjectInterface:self->_remoteInterface];
   objc_initWeak(buf, self);
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, connectionCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100146254;
   v23[3] = &unk_100252B28;
   objc_copyWeak(&v24, buf);
   objc_copyWeak(&v25, &location);
-  [v7 setInterruptionHandler:v23];
+  [connectionCopy setInterruptionHandler:v23];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1001463FC;
   v20[3] = &unk_100252B28;
   objc_copyWeak(&v21, buf);
   objc_copyWeak(&v22, &location);
-  [v7 setInvalidationHandler:v20];
-  v15 = [(CSConnectionListener *)self clientConnections];
-  [v15 addObject:v7];
+  [connectionCopy setInvalidationHandler:v20];
+  clientConnections = [(CSConnectionListener *)self clientConnections];
+  [clientConnections addObject:connectionCopy];
 
-  [v7 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v25);
@@ -185,7 +185,7 @@ LABEL_12:
     v8 = 2114;
     v9 = machServiceName;
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s Service %{public}@ dealloced - %{public}@", buf, 0x20u);
   }
 
@@ -194,27 +194,27 @@ LABEL_12:
   [(CSConnectionListener *)&v5 dealloc];
 }
 
-- (CSConnectionListener)initWithMachService:(id)a3 withServiceInterface:(id)a4 withServiceObject:(id)a5 withDelegateInterface:(id)a6 queue:(id)a7
+- (CSConnectionListener)initWithMachService:(id)service withServiceInterface:(id)interface withServiceObject:(id)object withDelegateInterface:(id)delegateInterface queue:(id)queue
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[NSXPCListener alloc] initWithMachServiceName:v16];
-  v18 = [(CSConnectionListener *)self initWithXpcListener:v17 withMachService:v16 withServiceInterface:v15 withServiceObject:v14 withDelegateInterface:v13 queue:v12];
+  queueCopy = queue;
+  delegateInterfaceCopy = delegateInterface;
+  objectCopy = object;
+  interfaceCopy = interface;
+  serviceCopy = service;
+  v17 = [[NSXPCListener alloc] initWithMachServiceName:serviceCopy];
+  v18 = [(CSConnectionListener *)self initWithXpcListener:v17 withMachService:serviceCopy withServiceInterface:interfaceCopy withServiceObject:objectCopy withDelegateInterface:delegateInterfaceCopy queue:queueCopy];
 
   return v18;
 }
 
-- (CSConnectionListener)initWithXpcListener:(id)a3 withMachService:(id)a4 withServiceInterface:(id)a5 withServiceObject:(id)a6 withDelegateInterface:(id)a7 queue:(id)a8
+- (CSConnectionListener)initWithXpcListener:(id)listener withMachService:(id)service withServiceInterface:(id)interface withServiceObject:(id)object withDelegateInterface:(id)delegateInterface queue:(id)queue
 {
-  v15 = a3;
-  v16 = a4;
-  v33 = a5;
-  v17 = a6;
-  v31 = a7;
-  v32 = a8;
+  listenerCopy = listener;
+  serviceCopy = service;
+  interfaceCopy = interface;
+  objectCopy = object;
+  delegateInterfaceCopy = delegateInterface;
+  queueCopy = queue;
   v34.receiver = self;
   v34.super_class = CSConnectionListener;
   v18 = [(CSConnectionListener *)&v34 init];
@@ -226,7 +226,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v15)
+  if (!listenerCopy)
   {
     v21 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -242,7 +242,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v16)
+  if (!serviceCopy)
   {
     v21 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -256,7 +256,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v17)
+  if (!objectCopy)
   {
     v21 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -270,24 +270,24 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v33)
+  if (interfaceCopy)
   {
-    objc_storeStrong(&v18->_listener, a3);
+    objc_storeStrong(&v18->_listener, listener);
     [(NSXPCListener *)v19->_listener setDelegate:v19];
-    objc_storeStrong(&v19->_machServiceName, a4);
-    objc_storeStrong(&v19->_exportedInterface, a5);
-    objc_storeStrong(&v19->_proxyObject, a6);
-    objc_storeStrong(&v19->_remoteInterface, a7);
-    if (v32)
+    objc_storeStrong(&v19->_machServiceName, service);
+    objc_storeStrong(&v19->_exportedInterface, interface);
+    objc_storeStrong(&v19->_proxyObject, object);
+    objc_storeStrong(&v19->_remoteInterface, delegateInterface);
+    if (queueCopy)
     {
-      objc_storeStrong(&v19->_queue, a8);
+      objc_storeStrong(&v19->_queue, queue);
       v20 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v36 = "[CSConnectionListener initWithXpcListener:withMachService:withServiceInterface:withServiceObject:withDelegateInterface:queue:]";
         v37 = 2112;
-        v38 = v16;
+        v38 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s Set up queue for %@", buf, 0x16u);
       }
     }

@@ -1,30 +1,30 @@
 @interface MCMotionTriggerExpression
-+ (id)motionTriggerForTargetPlugObjectID:(id)a3 withKey:(id)a4 duration:(double)a5 andExpression:(id)a6;
-- (MCMotionTriggerExpression)initWithImprint:(id)a3;
++ (id)motionTriggerForTargetPlugObjectID:(id)d withKey:(id)key duration:(double)duration andExpression:(id)expression;
+- (MCMotionTriggerExpression)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCMotionTriggerExpression
 
-+ (id)motionTriggerForTargetPlugObjectID:(id)a3 withKey:(id)a4 duration:(double)a5 andExpression:(id)a6
++ (id)motionTriggerForTargetPlugObjectID:(id)d withKey:(id)key duration:(double)duration andExpression:(id)expression
 {
-  v7 = [MCMotionTriggerExpression motionTriggerForTargetPlugObjectID:a3 withKey:a4 andDuration:a5];
-  [v7 setExpression:a6];
+  v7 = [MCMotionTriggerExpression motionTriggerForTargetPlugObjectID:d withKey:key andDuration:duration];
+  [v7 setExpression:expression];
   return v7;
 }
 
-- (MCMotionTriggerExpression)initWithImprint:(id)a3
+- (MCMotionTriggerExpression)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCMotionTriggerExpression;
   v4 = [(MCMotionTrigger *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_expression = [a3 objectForKey:@"expression"];
-    v4->_attributes = [a3 objectForKey:@"attributes"];
+    v4->_expression = [imprint objectForKey:@"expression"];
+    v4->_attributes = [imprint objectForKey:@"attributes"];
   }
 
   return v4;
@@ -44,12 +44,12 @@
 {
   v8.receiver = self;
   v8.super_class = MCMotionTriggerExpression;
-  v3 = [(MCMotionTrigger *)&v8 imprint];
-  v4 = v3;
+  imprint = [(MCMotionTrigger *)&v8 imprint];
+  v4 = imprint;
   expression = self->_expression;
   if (expression)
   {
-    [v3 setObject:expression forKey:@"expression"];
+    [imprint setObject:expression forKey:@"expression"];
   }
 
   attributes = self->_attributes;
@@ -61,7 +61,7 @@
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v7.receiver = self;
   v7.super_class = MCMotionTriggerExpression;
@@ -69,13 +69,13 @@
   expression = self->_expression;
   if (expression)
   {
-    *(a3 + 7) = [(NSString *)expression copy];
+    *(snapshot + 7) = [(NSString *)expression copy];
   }
 
   attributes = self->_attributes;
   if (attributes)
   {
-    *(a3 + 8) = [(NSDictionary *)attributes copy];
+    *(snapshot + 8) = [(NSDictionary *)attributes copy];
   }
 }
 

@@ -1,36 +1,36 @@
 @interface _UIViewServiceHostAppearanceAction
-+ (id)actionForAppearanceActionType:(int64_t)a3;
-- (void)executeActionForViewController:(id)a3;
++ (id)actionForAppearanceActionType:(int64_t)type;
+- (void)executeActionForViewController:(id)controller;
 @end
 
 @implementation _UIViewServiceHostAppearanceAction
 
-+ (id)actionForAppearanceActionType:(int64_t)a3
++ (id)actionForAppearanceActionType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v5 setObject:v6 forSetting:0];
 
-  v7 = [[a1 alloc] initWithInfo:v5 responder:0];
+  v7 = [[self alloc] initWithInfo:v5 responder:0];
 
   return v7;
 }
 
-- (void)executeActionForViewController:(id)a3
+- (void)executeActionForViewController:(id)controller
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIViewServiceHostAppearanceAction *)self info];
-  v6 = [v5 objectForSetting:0];
-  v7 = [v6 unsignedIntegerValue];
+  controllerCopy = controller;
+  info = [(_UIViewServiceHostAppearanceAction *)self info];
+  v6 = [info objectForSetting:0];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7 > 2)
+  if (unsignedIntegerValue > 2)
   {
-    if (v7 != 3)
+    if (unsignedIntegerValue != 3)
     {
-      if (v7 != 4)
+      if (unsignedIntegerValue != 4)
       {
-        if (v7 != 5)
+        if (unsignedIntegerValue != 5)
         {
           goto LABEL_18;
         }
@@ -38,12 +38,12 @@
         goto LABEL_10;
       }
 
-      v8 = v4;
+      v8 = controllerCopy;
       v9 = 0;
       goto LABEL_16;
     }
 
-    v8 = v4;
+    v8 = controllerCopy;
     v9 = 0;
 LABEL_13:
     v10 = 1;
@@ -52,57 +52,57 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v7)
+  if (!unsignedIntegerValue)
   {
-    v8 = v4;
+    v8 = controllerCopy;
     v9 = 1;
     goto LABEL_13;
   }
 
-  if (v7 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    v8 = v4;
+    v8 = controllerCopy;
     v9 = 1;
 LABEL_16:
     v10 = 0;
     goto LABEL_17;
   }
 
-  if (v7 == 2 && [v4 _appearState] == 1)
+  if (unsignedIntegerValue == 2 && [controllerCopy _appearState] == 1)
   {
 LABEL_10:
-    [v4 endAppearanceTransition];
+    [controllerCopy endAppearanceTransition];
   }
 
 LABEL_18:
-  if ([v4 _appearState] == 1)
+  if ([controllerCopy _appearState] == 1)
   {
-    [v4 _updateContentOverlayInsetsFromParentIfNecessary];
+    [controllerCopy _updateContentOverlayInsetsFromParentIfNecessary];
   }
 
   v11 = *(__UILogGetCategoryCachedImpl("ViewServices", &executeActionForViewController____s_category) + 8);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    if (v7 > 5)
+    if (unsignedIntegerValue > 5)
     {
       v13 = @"<unknown>";
     }
 
     else
     {
-      v13 = off_1E7126450[v7];
+      v13 = off_1E7126450[unsignedIntegerValue];
     }
 
     v14 = v13;
-    v15 = [v4 _window];
-    v16 = [v15 windowScene];
-    v17 = [v16 _FBSScene];
-    v18 = [v17 identityToken];
+    _window = [controllerCopy _window];
+    windowScene = [_window windowScene];
+    _FBSScene = [windowScene _FBSScene];
+    identityToken = [_FBSScene identityToken];
     v19 = 138543618;
     v20 = v14;
     v21 = 2114;
-    v22 = v18;
+    v22 = identityToken;
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "Appearance transition %{public}@ for %{public}@", &v19, 0x16u);
   }
 }

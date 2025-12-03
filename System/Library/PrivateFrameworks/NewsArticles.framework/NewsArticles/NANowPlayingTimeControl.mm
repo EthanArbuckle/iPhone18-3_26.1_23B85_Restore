@@ -7,12 +7,12 @@
 - (void)accessibilityIncrement;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)displayLinkFired:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setCurrentTime:(double)a3 duration:(double)a4 rate:(double)a5 isWaiting:(BOOL)a6 animated:(BOOL)a7;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setTimeDidChangeHandler:(id)a3;
+- (void)displayLinkFired:(id)fired;
+- (void)setAlpha:(double)alpha;
+- (void)setCurrentTime:(double)time duration:(double)duration rate:(double)rate isWaiting:(BOOL)waiting animated:(BOOL)animated;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHidden:(BOOL)hidden;
+- (void)setTimeDidChangeHandler:(id)handler;
 - (void)tintColorDidChange;
 - (void)updateFonts;
 @end
@@ -23,7 +23,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(self + OBJC_IVAR___NANowPlayingTimeControl_displayLink);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 invalidate];
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)setTimeDidChangeHandler:(id)a3
+- (void)setTimeDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -76,22 +76,22 @@
   v8 = *(self + OBJC_IVAR___NANowPlayingTimeControl_timeDidChangeHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1D79AD740(v8);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   ObjectType = swift_getObjectType();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = self;
-  v7 = [(NANowPlayingTimeControl *)&v9 isHidden];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHidden = [(NANowPlayingTimeControl *)&v9 isHidden];
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
-  [(NANowPlayingTimeControl *)&v8 setHidden:v3];
-  sub_1D79F1ED0(v7);
+  [(NANowPlayingTimeControl *)&v8 setHidden:hiddenCopy];
+  sub_1D79F1ED0(isHidden);
 }
 
 - (double)alpha
@@ -102,23 +102,23 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   ObjectType = swift_getObjectType();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v6 = self;
+  selfCopy = self;
   [(NANowPlayingTimeControl *)&v10 alpha];
   v8 = v7;
-  v9.receiver = v6;
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
-  [(NANowPlayingTimeControl *)&v9 setAlpha:a3];
+  [(NANowPlayingTimeControl *)&v9 setAlpha:alpha];
   sub_1D79F2120(v8);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79F22AC();
 }
 
@@ -131,27 +131,27 @@
   sub_1D79F1D0C();
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   ObjectType = swift_getObjectType();
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v6 = self;
-  [(NANowPlayingTimeControl *)&v12 setEnabled:v3];
-  v7 = *(v6 + OBJC_IVAR___NANowPlayingTimeControl_slider);
-  v11.receiver = v6;
+  selfCopy = self;
+  [(NANowPlayingTimeControl *)&v12 setEnabled:enabledCopy];
+  v7 = *(selfCopy + OBJC_IVAR___NANowPlayingTimeControl_slider);
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
-  v8 = [(NANowPlayingTimeControl *)&v11 isEnabled];
+  isEnabled = [(NANowPlayingTimeControl *)&v11 isEnabled];
   v9 = OBJC_IVAR____TtC12NewsArticles10SliderView_isEnabled;
-  *(v7 + OBJC_IVAR____TtC12NewsArticles10SliderView_isEnabled) = v8;
+  *(v7 + OBJC_IVAR____TtC12NewsArticles10SliderView_isEnabled) = isEnabled;
   v10 = sub_1D7D2499C();
   [v10 setEnabled_];
 }
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79F25E4();
   v4 = v3;
 
@@ -172,7 +172,7 @@
 {
   v2 = *(self + OBJC_IVAR___NANowPlayingTimeControl_slider);
   v3 = *&v2[OBJC_IVAR____TtC12NewsArticles10SliderView_elapsedTrack];
-  v4 = self;
+  selfCopy = self;
   [v3 accessibilityFrame];
   MaxX = CGRectGetMaxX(v10);
   [v2 accessibilityFrame];
@@ -187,33 +187,33 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79F2864();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79F29D4();
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v4 = a3;
-  v5 = self;
+  firedCopy = fired;
+  selfCopy = self;
   sub_1D79F34CC();
 }
 
-- (void)setCurrentTime:(double)a3 duration:(double)a4 rate:(double)a5 isWaiting:(BOOL)a6 animated:(BOOL)a7
+- (void)setCurrentTime:(double)time duration:(double)duration rate:(double)rate isWaiting:(BOOL)waiting animated:(BOOL)animated
 {
-  v7 = a6;
-  v11 = self;
-  sub_1D79F3604(v7, a3, a4, a5);
+  waitingCopy = waiting;
+  selfCopy = self;
+  sub_1D79F3604(waitingCopy, time, duration, rate);
 }
 
 - (void)updateFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79F15D8();
 }
 

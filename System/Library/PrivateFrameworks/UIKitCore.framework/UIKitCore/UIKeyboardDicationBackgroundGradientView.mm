@@ -1,19 +1,19 @@
 @interface UIKeyboardDicationBackgroundGradientView
 - (CGRect)_backgroundFillFrame;
-- (UIKeyboardDicationBackgroundGradientView)initWithFrame:(CGRect)a3;
+- (UIKeyboardDicationBackgroundGradientView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setRenderConfig:(id)a3;
+- (void)setRenderConfig:(id)config;
 - (void)startColorTransitionIn;
 - (void)startColorTransitionOut;
 @end
 
 @implementation UIKeyboardDicationBackgroundGradientView
 
-- (UIKeyboardDicationBackgroundGradientView)initWithFrame:(CGRect)a3
+- (UIKeyboardDicationBackgroundGradientView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIKeyboardDicationBackgroundGradientView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -27,26 +27,26 @@
 
 - (void)startColorTransitionIn
 {
-  v3 = [(UIKeyboardDicationBackgroundGradientView *)self renderConfig];
-  v4 = [v3 lightKeyboard];
+  renderConfig = [(UIKeyboardDicationBackgroundGradientView *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
 
-  if (v4)
+  if (lightKeyboard)
   {
     v5 = UIKBGetNamedColor(@"UIKBColorLightBackdropTint");
-    v6 = [(UIView *)self layer];
-    [v6 setBackgroundColor:v5];
+    layer = [(UIView *)self layer];
+    [layer setBackgroundColor:v5];
   }
 
   else
   {
-    v6 = +[UIColor clearColor];
-    v7 = [v6 CGColor];
-    v8 = [(UIView *)self layer];
-    [v8 setBackgroundColor:v7];
+    layer = +[UIColor clearColor];
+    cGColor = [layer CGColor];
+    layer2 = [(UIView *)self layer];
+    [layer2 setBackgroundColor:cGColor];
   }
 
-  v9 = [(UIView *)self layer];
-  [v9 setNeedsDisplay];
+  layer3 = [(UIView *)self layer];
+  [layer3 setNeedsDisplay];
 
   v10 = +[UIDictationLandingViewSettings sharedInstance];
   [v10 colorTransitionInDuration];
@@ -68,24 +68,24 @@ void __66__UIKeyboardDicationBackgroundGradientView_startColorTransitionIn__bloc
 - (void)startColorTransitionOut
 {
   v3 = UIKBGetNamedColor(@"UIKBColoriPhoneDictationBackboard");
-  v4 = [(UIView *)self layer];
-  [v4 setBackgroundColor:v3];
+  layer = [(UIView *)self layer];
+  [layer setBackgroundColor:v3];
 
-  v5 = [(UIView *)self layer];
-  [v5 setNeedsDisplay];
+  layer2 = [(UIView *)self layer];
+  [layer2 setNeedsDisplay];
 
-  v6 = [(UIKeyboardDicationBackgroundGradientView *)self renderConfig];
-  LODWORD(v4) = [v6 lightKeyboard];
+  renderConfig = [(UIKeyboardDicationBackgroundGradientView *)self renderConfig];
+  LODWORD(layer) = [renderConfig lightKeyboard];
 
-  if (v4)
+  if (layer)
   {
-    v7 = UIKBGetNamedColor(@"UIKBColorLightBackdropTint");
+    cGColor = UIKBGetNamedColor(@"UIKBColorLightBackdropTint");
   }
 
   else
   {
     v8 = +[UIColor clearColor];
-    v7 = [v8 CGColor];
+    cGColor = [v8 CGColor];
   }
 
   v9 = +[UIKeyboardInputMode dictationInputMode];
@@ -98,7 +98,7 @@ void __66__UIKeyboardDicationBackgroundGradientView_startColorTransitionIn__bloc
   v14[2] = __67__UIKeyboardDicationBackgroundGradientView_startColorTransitionOut__block_invoke;
   v14[3] = &unk_1E70F32F0;
   v14[4] = self;
-  v14[5] = v7;
+  v14[5] = cGColor;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__UIKeyboardDicationBackgroundGradientView_startColorTransitionOut__block_invoke_2;
@@ -148,22 +148,22 @@ void __67__UIKeyboardDicationBackgroundGradientView_startColorTransitionOut__blo
   v4.receiver = self;
   v4.super_class = UIKeyboardDicationBackgroundGradientView;
   [(UIView *)&v4 layoutSubviews];
-  v3 = [(UIView *)self superview];
-  [v3 bounds];
+  superview = [(UIView *)self superview];
+  [superview bounds];
   [(UIView *)self setBounds:?];
 
   [(UIView *)self setNeedsDisplay];
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v5 = a3;
-  if (self->_renderConfig != v5)
+  configCopy = config;
+  if (self->_renderConfig != configCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_renderConfig, a3);
+    v6 = configCopy;
+    objc_storeStrong(&self->_renderConfig, config);
     [(UIView *)self setNeedsLayout];
-    v5 = v6;
+    configCopy = v6;
   }
 }
 

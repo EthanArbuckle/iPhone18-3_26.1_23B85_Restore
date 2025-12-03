@@ -1,59 +1,59 @@
 @interface _NFBuiltinSession
-+ (id)createSession:(id)a3 workQueue:(id)a4 routing:(id)a5 sessionQueuer:(id)a6 didStartWork:(id)a7;
-+ (void)createSession:(id)a3 workQueue:(id)a4 routing:(id)a5 sessionQueuer:(id)a6 didStartWork:(id)a7 failedToStart:(id)a8;
++ (id)createSession:(id)session workQueue:(id)queue routing:(id)routing sessionQueuer:(id)queuer didStartWork:(id)work;
++ (void)createSession:(id)session workQueue:(id)queue routing:(id)routing sessionQueuer:(id)queuer didStartWork:(id)work failedToStart:(id)start;
 - (BOOL)isSessionSEOnly;
-- (_NFBuiltinSession)initWithName:(id)a3 workQueue:(id)a4 routing:(id)a5 sessionQueuer:(id)a6 didStartWork:(id)a7 failedToStart:(id)a8;
-- (void)didStartSession:(id)a3;
+- (_NFBuiltinSession)initWithName:(id)name workQueue:(id)queue routing:(id)routing sessionQueuer:(id)queuer didStartWork:(id)work failedToStart:(id)start;
+- (void)didStartSession:(id)session;
 @end
 
 @implementation _NFBuiltinSession
 
-- (_NFBuiltinSession)initWithName:(id)a3 workQueue:(id)a4 routing:(id)a5 sessionQueuer:(id)a6 didStartWork:(id)a7 failedToStart:(id)a8
+- (_NFBuiltinSession)initWithName:(id)name workQueue:(id)queue routing:(id)routing sessionQueuer:(id)queuer didStartWork:(id)work failedToStart:(id)start
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  routingCopy = routing;
+  queuerCopy = queuer;
+  workCopy = work;
+  startCopy = start;
   v28.receiver = self;
   v28.super_class = _NFBuiltinSession;
-  v19 = [(_NFSession *)&v28 initWithWorkQueue:a4 allowsBackgroundMode:1];
+  v19 = [(_NFSession *)&v28 initWithWorkQueue:queue allowsBackgroundMode:1];
   v20 = v19;
   if (v19)
   {
     v27.receiver = v19;
     v27.super_class = _NFBuiltinSession;
-    [(_NFSession *)&v27 setQueue:v16];
-    objc_storeStrong(&v20->_initialRoute, a5);
-    v21 = objc_retainBlock(v17);
+    [(_NFSession *)&v27 setQueue:queuerCopy];
+    objc_storeStrong(&v20->_initialRoute, routing);
+    v21 = objc_retainBlock(workCopy);
     workBlock = v20->_workBlock;
     v20->_workBlock = v21;
 
-    v23 = objc_retainBlock(v18);
+    v23 = objc_retainBlock(startCopy);
     failureWorkBlock = v20->_failureWorkBlock;
     v20->_failureWorkBlock = v23;
 
     v26.receiver = v20;
     v26.super_class = _NFBuiltinSession;
-    [(_NFSession *)&v26 setCustomSessionName:v14];
+    [(_NFSession *)&v26 setCustomSessionName:nameCopy];
     v20->_endAfterWorkBlock = 1;
   }
 
   return v20;
 }
 
-+ (id)createSession:(id)a3 workQueue:(id)a4 routing:(id)a5 sessionQueuer:(id)a6 didStartWork:(id)a7
++ (id)createSession:(id)session workQueue:(id)queue routing:(id)routing sessionQueuer:(id)queuer didStartWork:(id)work
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[_NFBuiltinSession alloc] initWithName:v16 workQueue:v15 routing:v14 sessionQueuer:v12 didStartWork:v13 failedToStart:0];
+  queuerCopy = queuer;
+  workCopy = work;
+  routingCopy = routing;
+  queueCopy = queue;
+  sessionCopy = session;
+  v17 = [[_NFBuiltinSession alloc] initWithName:sessionCopy workQueue:queueCopy routing:routingCopy sessionQueuer:queuerCopy didStartWork:workCopy failedToStart:0];
 
   if (v17)
   {
-    [v12 queueSession:v17];
+    [queuerCopy queueSession:v17];
     v18 = 0;
   }
 
@@ -79,19 +79,19 @@
   return v18;
 }
 
-+ (void)createSession:(id)a3 workQueue:(id)a4 routing:(id)a5 sessionQueuer:(id)a6 didStartWork:(id)a7 failedToStart:(id)a8
++ (void)createSession:(id)session workQueue:(id)queue routing:(id)routing sessionQueuer:(id)queuer didStartWork:(id)work failedToStart:(id)start
 {
-  v14 = a6;
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[_NFBuiltinSession alloc] initWithName:v19 workQueue:v18 routing:v17 sessionQueuer:v14 didStartWork:v16 failedToStart:v15];
+  queuerCopy = queuer;
+  startCopy = start;
+  workCopy = work;
+  routingCopy = routing;
+  queueCopy = queue;
+  sessionCopy = session;
+  v20 = [[_NFBuiltinSession alloc] initWithName:sessionCopy workQueue:queueCopy routing:routingCopy sessionQueuer:queuerCopy didStartWork:workCopy failedToStart:startCopy];
 
   if (v20)
   {
-    [v14 queueSession:v20];
+    [queuerCopy queueSession:v20];
   }
 
   else
@@ -111,31 +111,31 @@
     v29[3] = v25;
     v26 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:4];
     v27 = [v21 initWithDomain:v22 code:6 userInfo:v26];
-    v15[2](v15, v27);
+    startCopy[2](startCopy, v27);
   }
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v10.receiver = self;
   v10.super_class = _NFBuiltinSession;
   if ([(_NFSession *)&v10 didStart]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = sessionCopy;
     _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "Session already started with error %@ ??", buf, 0xCu);
   }
 
   v9.receiver = self;
   v9.super_class = _NFBuiltinSession;
-  [(_NFSession *)&v9 didStartSession:v4];
-  if (v4)
+  [(_NFSession *)&v9 didStartSession:sessionCopy];
+  if (sessionCopy)
   {
     failureWorkBlock = self->_failureWorkBlock;
     if (failureWorkBlock)
     {
-      failureWorkBlock[2](failureWorkBlock, v4);
+      failureWorkBlock[2](failureWorkBlock, sessionCopy);
     }
   }
 
@@ -143,13 +143,13 @@
   {
     v8.receiver = self;
     v8.super_class = _NFBuiltinSession;
-    v6 = [(_NFSession *)&v8 workQueue];
+    workQueue = [(_NFSession *)&v8 workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000A659C;
     block[3] = &unk_100315F30;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 }
 

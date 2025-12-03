@@ -1,6 +1,6 @@
 @interface WFModelContentLocation
 + (NSString)prefix;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
 - (NSString)localizedTitle;
 @end
 
@@ -16,7 +16,7 @@
 
 - (NSString)localizedTitle
 {
-  v2 = self;
+  selfCopy = self;
   WFModelContentLocation.localizedTitle.getter();
   v4 = v3;
 
@@ -33,7 +33,7 @@
   return v5;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
   v3 = sub_21E343740();
   swift_getObjCClassMetadata();

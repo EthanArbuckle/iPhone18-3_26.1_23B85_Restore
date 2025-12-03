@@ -2,9 +2,9 @@
 - (HKGradient)gradient;
 - (NSString)title;
 - (UIImage)image;
-- (void)setGradient:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setGradient:(id)gradient;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 - (void)setupSubviews;
 @end
 
@@ -16,69 +16,69 @@
   v13.super_class = WDMedicalRecordCategorySectionHeaderCell;
   [(WDMedicalRecordGroupableCell *)&v13 setupSubviews];
   v3 = objc_alloc(MEMORY[0x1E69A4490]);
-  v4 = [MEMORY[0x1E69A4398] defaultGradient];
-  v5 = [v3 initWithGradient:v4];
+  defaultGradient = [MEMORY[0x1E69A4398] defaultGradient];
+  v5 = [v3 initWithGradient:defaultGradient];
   [(WDMedicalRecordCategorySectionHeaderCell *)self setHeaderView:v5];
 
-  v6 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v7 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  [v7 setTextColor:v6];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  [headerView setTextColor:systemWhiteColor];
 
-  v8 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView2 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  [headerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(WDMedicalRecordCategorySectionHeaderCell *)self contentView];
-  v10 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  [v9 addSubview:v10];
+  contentView = [(WDMedicalRecordCategorySectionHeaderCell *)self contentView];
+  headerView3 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  [contentView addSubview:headerView3];
 
-  v11 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  v12 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  [v11 hk_alignConstraintsWithView:v12];
+  headerView4 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  [headerView4 hk_alignConstraintsWithView:pillBackgroundView];
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  [v5 setGradient:v4];
+  gradientCopy = gradient;
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  [headerView setGradient:gradientCopy];
 }
 
 - (HKGradient)gradient
 {
-  v2 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  v3 = [v2 gradient];
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  gradient = [headerView gradient];
 
-  return v3;
+  return gradient;
 }
 
 - (UIImage)image
 {
-  v2 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  v3 = [v2 image];
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  image = [headerView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  [headerView setImage:imageCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  v3 = [v2 text];
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  text = [headerView text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
-  [v5 setText:v4];
+  titleCopy = title;
+  headerView = [(WDMedicalRecordCategorySectionHeaderCell *)self headerView];
+  [headerView setText:titleCopy];
 }
 
 @end

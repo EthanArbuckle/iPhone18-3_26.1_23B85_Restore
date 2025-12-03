@@ -1,23 +1,23 @@
 @interface BrowserSceneDelegateRouter
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation BrowserSceneDelegateRouter
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  objc_initWeak(&location, v7);
-  objc_initWeak(&from, v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  objc_initWeak(&location, sceneCopy);
+  objc_initWeak(&from, sessionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__BrowserSceneDelegateRouter_scene_willConnectToSession_options___block_invoke;
   aBlock[3] = &unk_2781DC658;
   objc_copyWeak(&v14, &location);
   objc_copyWeak(&v15, &from);
-  v10 = v9;
+  v10 = optionsCopy;
   v13 = v10;
   v11 = _Block_copy(aBlock);
   v11[2]();

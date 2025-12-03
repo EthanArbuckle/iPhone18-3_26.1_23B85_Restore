@@ -10,9 +10,9 @@
 - (AVCaptionPosition)endPosition;
 - (AVCaptionPosition)position;
 - (AVCaptionRegion)init;
-- (AVCaptionRegion)initWithCoder:(id)a3;
-- (AVCaptionRegion)initWithFigCaptionRegion:(OpaqueFigCaptionRegion *)a3;
-- (AVCaptionRegion)initWithIdentifier:(id)a3;
+- (AVCaptionRegion)initWithCoder:(id)coder;
+- (AVCaptionRegion)initWithFigCaptionRegion:(OpaqueFigCaptionRegion *)region;
+- (AVCaptionRegion)initWithIdentifier:(id)identifier;
 - (AVCaptionRegionDisplayAlignment)displayAlignment;
 - (AVCaptionRegionScroll)scroll;
 - (AVCaptionRegionWritingMode)writingMode;
@@ -24,16 +24,16 @@
 - (id)_endPosition;
 - (id)_position;
 - (id)mutableCopyWithZone:(NSZone *)zone;
-- (int)_updateExtentPropertiesOfFigCaptionRegionWithPosition:(id)a3 endPosition:(id)a4;
+- (int)_updateExtentPropertiesOfFigCaptionRegionWithPosition:(id)position endPosition:(id)endPosition;
 - (int)_updateFigCaptionRegion;
-- (int)_updatePositionPropertyOfFigCaptionRegionWithPosition:(id)a3;
+- (int)_updatePositionPropertyOfFigCaptionRegionWithPosition:(id)position;
 - (uint64_t)_endPosition;
-- (void)_setDisplayAlignment:(int64_t)a3;
-- (void)_setHeight:(id)a3;
-- (void)_setOrigin:(AVCaptionPoint *)a3;
-- (void)_setScroll:(int64_t)a3;
-- (void)_setSize:(AVCaptionSize *)a3;
-- (void)_setWritingMode:(int64_t)a3;
+- (void)_setDisplayAlignment:(int64_t)alignment;
+- (void)_setHeight:(id)height;
+- (void)_setOrigin:(AVCaptionPoint *)origin;
+- (void)_setScroll:(int64_t)scroll;
+- (void)_setSize:(AVCaptionSize *)size;
+- (void)_setWritingMode:(int64_t)mode;
 - (void)dealloc;
 - (void)encodeWithCoder:(NSCoder *)encoder;
 @end
@@ -50,11 +50,11 @@
   return 0;
 }
 
-- (AVCaptionRegion)initWithFigCaptionRegion:(OpaqueFigCaptionRegion *)a3
+- (AVCaptionRegion)initWithFigCaptionRegion:(OpaqueFigCaptionRegion *)region
 {
-  if (!a3)
+  if (!region)
   {
-    v9 = self;
+    selfCopy = self;
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v10, v11, v12, v13, v14, "figCaptionRegion != NULL"), 0}];
     objc_exception_throw(v15);
   }
@@ -68,7 +68,7 @@
     v5->_internal = v6;
     if (v6)
     {
-      v5->_internal->figCaptionRegion = CFRetain(a3);
+      v5->_internal->figCaptionRegion = CFRetain(region);
       v5->_internal->position = 0;
       v5->_internal->endPosition = 0;
       v5->_internal->_overridePositionShouldBeNil = 0;
@@ -84,28 +84,28 @@
   return v5;
 }
 
-- (AVCaptionRegion)initWithIdentifier:(id)a3
+- (AVCaptionRegion)initWithIdentifier:(id)identifier
 {
-  v3 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!identifier)
   {
-    v28 = self;
-    v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v3 userInfo:{a2, @"invalid parameter not satisfying: %s", v29, v30, v31, v32, v33, "identifier != NULL"), 0}];
+    selfCopy2 = self;
+    v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy userInfo:{a2, @"invalid parameter not satisfying: %s", v29, v30, v31, v32, v33, "identifier != NULL"), 0}];
     objc_exception_throw(v34);
   }
 
   if (FigCaptionRegionCreateMutable())
   {
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
   CMBaseObject = FigCaptionRegionGetCMBaseObject();
   v6 = *(*(CMBaseObjectGetVTable() + 8) + 56);
-  if (!v6 || v6(CMBaseObject, *MEMORY[0x1E6961338], a3))
+  if (!v6 || v6(CMBaseObject, *MEMORY[0x1E6961338], identifier))
   {
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
   v7 = FigCaptionRegionGetCMBaseObject();
@@ -113,11 +113,11 @@
   if (!v8 || v8(v7, *MEMORY[0x1E6961318], *MEMORY[0x1E695E4D0]))
   {
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  v9 = [(objc_class *)v3 initWithFigCaptionRegion:0];
-  if ([a3 isEqual:*MEMORY[0x1E6961358]])
+  v9 = [(objc_class *)selfCopy initWithFigCaptionRegion:0];
+  if ([identifier isEqual:*MEMORY[0x1E6961358]])
   {
     [(AVCaptionRegion *)v9 _setPosition:[[AVCaptionPosition alloc] initWithRelativeToEnclosingRegionX:0.0 andY:0.0]];
     v10 = [AVCaptionPosition alloc];
@@ -134,7 +134,7 @@ LABEL_19:
     return v9;
   }
 
-  if ([a3 isEqual:*MEMORY[0x1E6961340]])
+  if ([identifier isEqual:*MEMORY[0x1E6961340]])
   {
     v16 = [AVCaptionPosition alloc];
     LODWORD(v17) = 1062836634;
@@ -148,7 +148,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ([a3 isEqual:*MEMORY[0x1E6961348]])
+  if ([identifier isEqual:*MEMORY[0x1E6961348]])
   {
     [(AVCaptionRegion *)v9 _setPosition:[[AVCaptionPosition alloc] initWithRelativeToEnclosingRegionX:0.0 andY:0.0]];
     v21 = [AVCaptionPosition alloc];
@@ -161,7 +161,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([a3 isEqual:*MEMORY[0x1E6961350]])
+  if ([identifier isEqual:*MEMORY[0x1E6961350]])
   {
     v24 = [AVCaptionPosition alloc];
     LODWORD(v25) = 1062836634;
@@ -174,9 +174,9 @@ LABEL_18:
   return v9;
 }
 
-- (AVCaptionRegion)initWithCoder:(id)a3
+- (AVCaptionRegion)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyIdentifier"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyIdentifier"];
   if (v5)
   {
     return [(AVCaptionRegion *)self initWithIdentifier:v5];
@@ -191,27 +191,27 @@ LABEL_18:
   else
   {
     v6 = [(AVCaptionRegion *)self initWithFigCaptionRegion:0];
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyPosition"];
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyPosition"];
     if (v7)
     {
       [(AVCaptionRegion *)v6 _setPosition:v7];
     }
 
-    v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyEndPosition"];
+    v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyEndPosition"];
     if (v8)
     {
       [(AVCaptionRegion *)v6 _setEndPosition:v8];
     }
 
-    v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyHeight"];
+    v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRegionArchiveKeyHeight"];
     if (v9)
     {
       [(AVCaptionRegion *)v6 _setHeight:v9];
     }
 
-    -[AVCaptionRegion _setScroll:](v6, "_setScroll:", [a3 decodeIntegerForKey:@"AVCaptionRegionArchiveKeyScroll"]);
-    -[AVCaptionRegion _setDisplayAlignment:](v6, "_setDisplayAlignment:", [a3 decodeIntegerForKey:@"AVCaptionRegionArchiveKeyDisplayAlignment"]);
-    -[AVCaptionRegion _setWritingMode:](v6, "_setWritingMode:", [a3 decodeIntegerForKey:@"AVCaptionRegionArchiveKeyWritingMode"]);
+    -[AVCaptionRegion _setScroll:](v6, "_setScroll:", [coder decodeIntegerForKey:@"AVCaptionRegionArchiveKeyScroll"]);
+    -[AVCaptionRegion _setDisplayAlignment:](v6, "_setDisplayAlignment:", [coder decodeIntegerForKey:@"AVCaptionRegionArchiveKeyDisplayAlignment"]);
+    -[AVCaptionRegion _setWritingMode:](v6, "_setWritingMode:", [coder decodeIntegerForKey:@"AVCaptionRegionArchiveKeyWritingMode"]);
   }
 
   return v6;
@@ -231,16 +231,16 @@ LABEL_18:
 
   else
   {
-    v7 = [(AVCaptionRegion *)self _position];
-    if (v7)
+    _position = [(AVCaptionRegion *)self _position];
+    if (_position)
     {
-      [(NSCoder *)encoder encodeObject:v7 forKey:@"AVCaptionRegionArchiveKeyPosition"];
+      [(NSCoder *)encoder encodeObject:_position forKey:@"AVCaptionRegionArchiveKeyPosition"];
     }
 
-    v8 = [(AVCaptionRegion *)self height];
-    if (v8)
+    height = [(AVCaptionRegion *)self height];
+    if (height)
     {
-      [(NSCoder *)encoder encodeObject:v8 forKey:@"AVCaptionRegionArchiveKeyHeight"];
+      [(NSCoder *)encoder encodeObject:height forKey:@"AVCaptionRegionArchiveKeyHeight"];
     }
 
     [(NSCoder *)encoder encodeInteger:[(AVCaptionRegion *)self scroll] forKey:@"AVCaptionRegionArchiveKeyScroll"];
@@ -340,15 +340,15 @@ LABEL_18:
     return 0;
   }
 
-  v2 = [(AVCaptionRegion *)self identifier];
-  if (([(NSString *)v2 isEqual:*MEMORY[0x1E6961358]]& 1) != 0 || ([(NSString *)v2 isEqual:*MEMORY[0x1E6961340]]& 1) != 0 || ([(NSString *)v2 isEqual:*MEMORY[0x1E6961348]]& 1) != 0 || ([(NSString *)v2 isEqual:*MEMORY[0x1E6961350]]& 1) != 0)
+  identifier = [(AVCaptionRegion *)self identifier];
+  if (([(NSString *)identifier isEqual:*MEMORY[0x1E6961358]]& 1) != 0 || ([(NSString *)identifier isEqual:*MEMORY[0x1E6961340]]& 1) != 0 || ([(NSString *)identifier isEqual:*MEMORY[0x1E6961348]]& 1) != 0 || ([(NSString *)identifier isEqual:*MEMORY[0x1E6961350]]& 1) != 0)
   {
     return 1;
   }
 
   v4 = *MEMORY[0x1E6961360];
 
-  return [(NSString *)v2 isEqual:v4];
+  return [(NSString *)identifier isEqual:v4];
 }
 
 - (AVCaptionPosition)position
@@ -472,15 +472,15 @@ LABEL_20:
   result = [(AVCaptionRegion *)self _predefinedRegionPositionShouldBeNil];
   if ((result & 1) == 0)
   {
-    v6 = [(AVCaptionRegion *)self _position];
-    result = [v6 unitType];
+    _position = [(AVCaptionRegion *)self _position];
+    result = [_position unitType];
     if (result == 1)
     {
-      [v6 relativeToEnclosingRegionX];
+      [_position relativeToEnclosingRegionX];
       retstr->x.value = v9 * 100.0;
       v7 = AVCaptionUnitsTypePercent;
       retstr->x.units = AVCaptionUnitsTypePercent;
-      result = [v6 relativeToEnclosingRegionY];
+      result = [_position relativeToEnclosingRegionY];
       v8 = v10 * 100.0;
     }
 
@@ -491,10 +491,10 @@ LABEL_20:
         return result;
       }
 
-      retstr->x.value = [v6 cellX];
+      retstr->x.value = [_position cellX];
       v7 = AVCaptionUnitsTypeCells;
       retstr->x.units = AVCaptionUnitsTypeCells;
-      result = [v6 cellY];
+      result = [_position cellY];
       v8 = result;
     }
 
@@ -512,20 +512,20 @@ LABEL_20:
   result = [(AVCaptionRegion *)self _predefinedRegionPositionShouldBeNil];
   if ((result & 1) == 0)
   {
-    v6 = [(AVCaptionRegion *)self position];
-    v7 = [(AVCaptionRegion *)self endPosition];
-    result = [(AVCaptionPosition *)v6 unitType];
+    position = [(AVCaptionRegion *)self position];
+    endPosition = [(AVCaptionRegion *)self endPosition];
+    result = [(AVCaptionPosition *)position unitType];
     if (result == 1)
     {
-      [(AVCaptionPosition *)v7 relativeToEnclosingRegionX];
+      [(AVCaptionPosition *)endPosition relativeToEnclosingRegionX];
       v13 = v12;
-      [(AVCaptionPosition *)v6 relativeToEnclosingRegionX];
+      [(AVCaptionPosition *)position relativeToEnclosingRegionX];
       retstr->width.value = (v13 - v14) * 100.0;
       v11 = AVCaptionUnitsTypePercent;
       retstr->width.units = AVCaptionUnitsTypePercent;
-      [(AVCaptionPosition *)v7 relativeToEnclosingRegionY];
+      [(AVCaptionPosition *)endPosition relativeToEnclosingRegionY];
       v16 = v15;
-      result = [(AVCaptionPosition *)v6 relativeToEnclosingRegionY];
+      result = [(AVCaptionPosition *)position relativeToEnclosingRegionY];
       v10 = (v16 - v17) * 100.0;
     }
 
@@ -536,12 +536,12 @@ LABEL_20:
         return result;
       }
 
-      v8 = [(AVCaptionPosition *)v7 cellX];
-      retstr->width.value = (v8 - [(AVCaptionPosition *)v6 cellX]);
+      cellX = [(AVCaptionPosition *)endPosition cellX];
+      retstr->width.value = (cellX - [(AVCaptionPosition *)position cellX]);
       retstr->width.units = AVCaptionUnitsTypeUnspecified;
-      v9 = [(AVCaptionPosition *)v7 cellY];
-      result = [(AVCaptionPosition *)v6 cellY];
-      v10 = (v9 - result);
+      cellY = [(AVCaptionPosition *)endPosition cellY];
+      result = [(AVCaptionPosition *)position cellY];
+      v10 = (cellY - result);
       v11 = AVCaptionUnitsTypeCells;
     }
 
@@ -639,26 +639,26 @@ LABEL_5:
   return v7;
 }
 
-- (int)_updatePositionPropertyOfFigCaptionRegionWithPosition:(id)a3
+- (int)_updatePositionPropertyOfFigCaptionRegionWithPosition:(id)position
 {
-  if ([a3 unitType] == 1)
+  if ([position unitType] == 1)
   {
-    [a3 relativeToEnclosingRegionX];
+    [position relativeToEnclosingRegionX];
     FigGeometryDimensionMake();
-    [a3 relativeToEnclosingRegionY];
+    [position relativeToEnclosingRegionY];
   }
 
   else
   {
-    if ([a3 unitType])
+    if ([position unitType])
     {
       v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"position uses an unrecognizable unit.", v6, v7, v8, v9, v10, v17), 0}];
       objc_exception_throw(v16);
     }
 
-    [a3 cellX];
+    [position cellX];
     FigGeometryDimensionMake();
-    [a3 cellY];
+    [position cellY];
   }
 
   FigGeometryDimensionMake();
@@ -688,16 +688,16 @@ LABEL_9:
   return v14;
 }
 
-- (int)_updateExtentPropertiesOfFigCaptionRegionWithPosition:(id)a3 endPosition:(id)a4
+- (int)_updateExtentPropertiesOfFigCaptionRegionWithPosition:(id)position endPosition:(id)endPosition
 {
-  if ([a3 unitType] == 1)
+  if ([position unitType] == 1)
   {
     [AVCaptionRegion _updateExtentPropertiesOfFigCaptionRegionWithPosition:endPosition:];
   }
 
   else
   {
-    if ([a3 unitType])
+    if ([position unitType])
     {
       v21 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"endPosition uses an unrecognizable unit.", v7, v8, v9, v10, v11, v22), 0}];
       objc_exception_throw(v21);
@@ -815,11 +815,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_setHeight:(id)a3
+- (void)_setHeight:(id)height
 {
-  if (a3)
+  if (height)
   {
-    [a3 numberOfCells];
+    [height numberOfCells];
     v3 = FigCaptionGeometryCopyCellBasedDimensionAsDictionary();
     FigCaptionDynamicStyleCreate();
   }
@@ -842,12 +842,12 @@ LABEL_7:
   }
 }
 
-- (void)_setOrigin:(AVCaptionPoint *)a3
+- (void)_setOrigin:(AVCaptionPoint *)origin
 {
   self->_internal->position = 0;
   self->_internal->endPosition = 0;
-  _convertFigGeometryDimensionToAVCaptionDimension(*&a3->x.value, a3->x.units);
-  _convertFigGeometryDimensionToAVCaptionDimension(*&a3->y.value, a3->y.units);
+  _convertFigGeometryDimensionToAVCaptionDimension(*&origin->x.value, origin->x.units);
+  _convertFigGeometryDimensionToAVCaptionDimension(*&origin->y.value, origin->y.units);
   FigGeometryPointMake();
   v5 = FigGeometryPointCopyAsDictionary();
   FigCaptionDynamicStyleCreate();
@@ -864,16 +864,16 @@ LABEL_7:
   }
 }
 
-- (void)_setScroll:(int64_t)a3
+- (void)_setScroll:(int64_t)scroll
 {
-  if (a3 == 1)
+  if (scroll == 1)
   {
     v8 = MEMORY[0x1E6961288];
   }
 
   else
   {
-    if (a3)
+    if (scroll)
     {
       v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"scroll must be one of the values defined in AVCaptionRegionScroll.", v3, v4, v5, v6, v7, v13), 0}];
       objc_exception_throw(v12);
@@ -897,24 +897,24 @@ LABEL_7:
   }
 }
 
-- (void)_setDisplayAlignment:(int64_t)a3
+- (void)_setDisplayAlignment:(int64_t)alignment
 {
   v10 = 0;
-  if (a3 >= 3)
+  if (alignment >= 3)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"displayAlignment is invalid.", v3, v4, v5, v6, v7, v9), 0}];
     objc_exception_throw(v8);
   }
 
-  [(AVCaptionRegion *)a3 _setDisplayAlignment:?];
+  [(AVCaptionRegion *)alignment _setDisplayAlignment:?];
 }
 
-- (void)_setWritingMode:(int64_t)a3
+- (void)_setWritingMode:(int64_t)mode
 {
   v11 = 0;
-  if (a3)
+  if (mode)
   {
-    if (a3 != 2)
+    if (mode != 2)
     {
       v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"writingMode is invalid.", v3, v4, v5, v6, v7, v10), 0}];
       objc_exception_throw(v9);
@@ -1163,14 +1163,14 @@ LABEL_9:
   }
 }
 
-- (void)_setSize:(AVCaptionSize *)a3
+- (void)_setSize:(AVCaptionSize *)size
 {
   self->_internal->position = 0;
   self->_internal->endPosition = 0;
-  units = a3->width.units;
+  units = size->width.units;
   if (units)
   {
-    _convertFigGeometryDimensionToAVCaptionDimension(*&a3->width.value, units);
+    _convertFigGeometryDimensionToAVCaptionDimension(*&size->width.value, units);
     v6 = FigGeometryDimensionCopyAsDictionary();
     FigCaptionDynamicStyleCreate();
     if (v6)
@@ -1179,10 +1179,10 @@ LABEL_9:
     }
   }
 
-  v7 = a3->height.units;
+  v7 = size->height.units;
   if (v7)
   {
-    _convertFigGeometryDimensionToAVCaptionDimension(*&a3->height.value, v7);
+    _convertFigGeometryDimensionToAVCaptionDimension(*&size->height.value, v7);
     v8 = FigGeometryDimensionCopyAsDictionary();
     FigCaptionDynamicStyleCreate();
     if (v8)

@@ -1,6 +1,6 @@
 @interface _UILightBoxView
-- (_TtC5UIKit15_UILightBoxView)initWithCoder:(id)a3;
-- (void)didAddSubview:(id)a3;
+- (_TtC5UIKit15_UILightBoxView)initWithCoder:(id)coder;
+- (void)didAddSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
@@ -18,17 +18,17 @@
   [v3 setFrame_];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for _UILightBoxView();
-  v4 = a3;
+  subviewCopy = subview;
   v5 = v6.receiver;
-  [(UIView *)&v6 didAddSubview:v4];
+  [(UIView *)&v6 didAddSubview:subviewCopy];
   [v5 bringSubviewToFront_];
 }
 
-- (_TtC5UIKit15_UILightBoxView)initWithCoder:(id)a3
+- (_TtC5UIKit15_UILightBoxView)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);

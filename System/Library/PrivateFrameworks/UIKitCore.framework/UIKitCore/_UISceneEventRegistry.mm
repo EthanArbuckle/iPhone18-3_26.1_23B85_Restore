@@ -1,14 +1,14 @@
 @interface _UISceneEventRegistry
-- (id)eventForType:(uint64_t)a1;
+- (id)eventForType:(uint64_t)type;
 @end
 
 @implementation _UISceneEventRegistry
 
-- (id)eventForType:(uint64_t)a1
+- (id)eventForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    v2 = *(a1 + 8);
+    v2 = *(type + 8);
     v3 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
     v4 = [v2 objectForKey:v3];
   }

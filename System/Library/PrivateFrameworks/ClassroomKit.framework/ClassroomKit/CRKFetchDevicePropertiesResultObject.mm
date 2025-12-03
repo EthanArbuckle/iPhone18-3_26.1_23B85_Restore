@@ -1,20 +1,20 @@
 @interface CRKFetchDevicePropertiesResultObject
-- (CRKFetchDevicePropertiesResultObject)initWithCoder:(id)a3;
+- (CRKFetchDevicePropertiesResultObject)initWithCoder:(id)coder;
 - (id)description;
-- (id)valueForPropertyKey:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)valueForPropertyKey:(id)key error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKFetchDevicePropertiesResultObject
 
-- (id)valueForPropertyKey:(id)a3 error:(id *)a4
+- (id)valueForPropertyKey:(id)key error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [(CRKFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
-    v8 = [v7 valueForKey:v6];
+    valuesByPropertyKey = [(CRKFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
+    v8 = [valuesByPropertyKey valueForKey:keyCopy];
 
     if (v8)
     {
@@ -23,8 +23,8 @@
 
     else
     {
-      v10 = [(CRKFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-      v11 = [v10 objectForKeyedSubscript:v6];
+      errorsByPropertyKey = [(CRKFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+      v11 = [errorsByPropertyKey objectForKeyedSubscript:keyCopy];
       v12 = v11;
       if (v11)
       {
@@ -34,23 +34,23 @@
       else
       {
         v17 = @"kCRKPropertyNameErrorKey";
-        v18[0] = v6;
+        v18[0] = keyCopy;
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
         v13 = CRKErrorWithCodeAndUserInfo(37, v14);
       }
 
-      if (a4)
+      if (error)
       {
         v15 = v13;
-        *a4 = v13;
+        *error = v13;
       }
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     CRKErrorWithCodeAndUserInfo(2, &unk_285672478);
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -61,12 +61,12 @@
   return v8;
 }
 
-- (CRKFetchDevicePropertiesResultObject)initWithCoder:(id)a3
+- (CRKFetchDevicePropertiesResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = CRKFetchDevicePropertiesResultObject;
-  v5 = [(CATTaskResultObject *)&v35 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v35 initWithCoder:coderCopy];
   if (v5)
   {
     v33 = MEMORY[0x277CBEB98];
@@ -81,7 +81,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v33 setWithObjects:{v31, v29, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"valuesByPropertyKey"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"valuesByPropertyKey"];
     valuesByPropertyKey = v5->_valuesByPropertyKey;
     v5->_valuesByPropertyKey = v15;
 
@@ -97,7 +97,7 @@
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v34 setWithObjects:{v32, v30, v17, v18, v19, v20, v21, v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"errorsByPropertyKey"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"errorsByPropertyKey"];
     errorsByPropertyKey = v5->_errorsByPropertyKey;
     v5->_errorsByPropertyKey = v26;
   }
@@ -105,27 +105,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CRKFetchDevicePropertiesResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CRKFetchDevicePropertiesResultObject *)self valuesByPropertyKey:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"valuesByPropertyKey"];
+  [coderCopy encodeObject:v5 forKey:@"valuesByPropertyKey"];
 
-  v6 = [(CRKFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-  [v4 encodeObject:v6 forKey:@"errorsByPropertyKey"];
+  errorsByPropertyKey = [(CRKFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+  [coderCopy encodeObject:errorsByPropertyKey forKey:@"errorsByPropertyKey"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(CRKFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  errorsByPropertyKey = [(CRKFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+  v5 = [v3 dictionaryWithDictionary:errorsByPropertyKey];
 
-  v6 = [(CRKFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
-  [v5 addEntriesFromDictionary:v6];
+  valuesByPropertyKey = [(CRKFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
+  [v5 addEntriesFromDictionary:valuesByPropertyKey];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p %@>", objc_opt_class(), self, v5];
 

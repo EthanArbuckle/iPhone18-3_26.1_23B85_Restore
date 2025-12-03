@@ -1,16 +1,16 @@
 @interface SDAirDropReceiveCompressionAdapter
 - (_TtC16DaemoniOSLibrary34SDAirDropReceiveCompressionAdapter)init;
-- (void)fileZipper:(id)a3 event:(int64_t)a4 withProperty:(id)a5;
+- (void)fileZipper:(id)zipper event:(int64_t)event withProperty:(id)property;
 @end
 
 @implementation SDAirDropReceiveCompressionAdapter
 
-- (void)fileZipper:(id)a3 event:(int64_t)a4 withProperty:(id)a5
+- (void)fileZipper:(id)zipper event:(int64_t)event withProperty:(id)property
 {
-  v7 = a3;
+  zipperCopy = zipper;
   swift_unknownObjectRetain();
 
-  sub_1002A5990(a4, a5);
+  sub_1002A5990(event, property);
 
   swift_unknownObjectRelease();
 }

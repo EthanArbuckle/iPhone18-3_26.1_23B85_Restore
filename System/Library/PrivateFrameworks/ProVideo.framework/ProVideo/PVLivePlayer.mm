@@ -2,47 +2,47 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)renderTime;
 - (BOOL)_dropFrameForFullQueue;
 - (BOOL)_dropFrameForSaturatedPrimaryPlayer;
-- (BOOL)testOutOfOrderCompletion:(HGRef<PVRenderLinkJob>)a3;
+- (BOOL)testOutOfOrderCompletion:(HGRef<PVRenderLinkJob>)completion;
 - (BOOL)throttledBypassRenderLink;
 - (PVColorSpace)outputColorSpace;
-- (PVLivePlayer)initWithOptions:(id)a3 delegate:(id)a4;
+- (PVLivePlayer)initWithOptions:(id)options delegate:(id)delegate;
 - (id).cxx_construct;
 - (id)getTaskToken;
 - (id)playerSources;
-- (id)readSourceFrameSets:(double)a3;
+- (id)readSourceFrameSets:(double)sets;
 - (unsigned)_throttledQueueSize_NoLock;
-- (void)_notifyDelegateOfDroppedFrame:(int)a3;
-- (void)_renderLinkSignal:(id *)a3;
+- (void)_notifyDelegateOfDroppedFrame:(int)frame;
+- (void)_renderLinkSignal:(id *)signal;
 - (void)_statsLogCheck;
-- (void)addStats:(const void *)a3;
-- (void)bypassRenderLink:(HGRef<PVRenderLinkJob>)a3;
+- (void)addStats:(const void *)stats;
+- (void)bypassRenderLink:(HGRef<PVRenderLinkJob>)link;
 - (void)dealloc;
 - (void)flush;
-- (void)handleRenderLinkJob:(HGRef<PVRenderLinkJob>)a3;
-- (void)printAndClearStats:(BOOL)a3;
-- (void)renderLinkJobFinished:(HGRef<PVRenderLinkJob>)a3;
-- (void)renderLinkSignal:(id *)a3;
+- (void)handleRenderLinkJob:(HGRef<PVRenderLinkJob>)job;
+- (void)printAndClearStats:(BOOL)stats;
+- (void)renderLinkJobFinished:(HGRef<PVRenderLinkJob>)finished;
+- (void)renderLinkSignal:(id *)signal;
 - (void)renderLinkSignalDropped;
 - (void)renderLinkSignalSkipped;
 - (void)resetRenderTime;
-- (void)setName:(id)a3;
-- (void)setParentCode:(unsigned int)a3;
-- (void)setPrimaryPlayer:(id)a3;
-- (void)setRenderLink:(id)a3;
-- (void)setSource:(id)a3 inputID:(unsigned int)a4;
+- (void)setName:(id)name;
+- (void)setParentCode:(unsigned int)code;
+- (void)setPrimaryPlayer:(id)player;
+- (void)setRenderLink:(id)link;
+- (void)setSource:(id)source inputID:(unsigned int)d;
 - (void)shutdown;
 - (void)start;
 - (void)stop;
-- (void)trackStats:(BOOL)a3;
+- (void)trackStats:(BOOL)stats;
 - (void)updateRenderQueueUnits;
 @end
 
 @implementation PVLivePlayer
 
-- (PVLivePlayer)initWithOptions:(id)a3 delegate:(id)a4
+- (PVLivePlayer)initWithOptions:(id)options delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = PVLivePlayer;
   if ([(PVLivePlayer *)&v9 init])
@@ -67,19 +67,19 @@
   [(PVLivePlayer *)&v3 dealloc];
 }
 
-- (void)setSource:(id)a3 inputID:(unsigned int)a4
+- (void)setSource:(id)source inputID:(unsigned int)d
 {
-  v6 = a3;
+  sourceCopy = source;
   ptr = self->_lock.__ptr_;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = *"";
   block[2] = __34__PVLivePlayer_setSource_inputID___block_invoke;
   block[3] = &unk_279AA7C10;
-  v11 = v6;
-  v12 = self;
-  v13 = a4;
+  v11 = sourceCopy;
+  selfCopy = self;
+  dCopy = d;
   v8 = *ptr;
-  v9 = v6;
+  v9 = sourceCopy;
   dispatch_sync(v8, block);
 }
 
@@ -171,36 +171,36 @@ void __29__PVLivePlayer_playerSources__block_invoke(uint64_t a1)
 
 - (BOOL)throttledBypassRenderLink
 {
-  v3 = [(PVLivePlayer *)self thermalThrottlingPolicy];
+  thermalThrottlingPolicy = [(PVLivePlayer *)self thermalThrottlingPolicy];
 
-  if (!v3)
+  if (!thermalThrottlingPolicy)
   {
-    v5 = 0;
+    populatedControlParametersForCurrentThermalLevel = 0;
 LABEL_6:
-    v8 = [(PVLivePlayer *)self bypassRenderLink];
+    bypassRenderLink = [(PVLivePlayer *)self bypassRenderLink];
     goto LABEL_7;
   }
 
-  v4 = [(PVLivePlayer *)self thermalThrottlingPolicy];
-  v5 = [v4 populatedControlParametersForCurrentThermalLevel];
+  thermalThrottlingPolicy2 = [(PVLivePlayer *)self thermalThrottlingPolicy];
+  populatedControlParametersForCurrentThermalLevel = [thermalThrottlingPolicy2 populatedControlParametersForCurrentThermalLevel];
 
-  if (!v5)
+  if (!populatedControlParametersForCurrentThermalLevel)
   {
     goto LABEL_6;
   }
 
-  v6 = [v5 playerBypassRenderLink];
+  playerBypassRenderLink = [populatedControlParametersForCurrentThermalLevel playerBypassRenderLink];
 
-  if (!v6)
+  if (!playerBypassRenderLink)
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 playerBypassRenderLink];
-  v8 = [v7 BOOLValue];
+  playerBypassRenderLink2 = [populatedControlParametersForCurrentThermalLevel playerBypassRenderLink];
+  bypassRenderLink = [playerBypassRenderLink2 BOOLValue];
 
 LABEL_7:
-  return v8;
+  return bypassRenderLink;
 }
 
 - (void)updateRenderQueueUnits
@@ -229,24 +229,24 @@ uint64_t __38__PVLivePlayer_updateRenderQueueUnits__block_invoke(uint64_t a1)
 
 - (unsigned)_throttledQueueSize_NoLock
 {
-  v3 = [(PVLivePlayer *)self queueSize];
-  v4 = [(PVLivePlayer *)self thermalThrottlingPolicy];
+  queueSize = [(PVLivePlayer *)self queueSize];
+  thermalThrottlingPolicy = [(PVLivePlayer *)self thermalThrottlingPolicy];
 
-  if (v4)
+  if (thermalThrottlingPolicy)
   {
-    v5 = [(PVLivePlayer *)self thermalThrottlingPolicy];
-    v6 = [v5 populatedControlParametersForCurrentThermalLevel];
+    thermalThrottlingPolicy2 = [(PVLivePlayer *)self thermalThrottlingPolicy];
+    populatedControlParametersForCurrentThermalLevel = [thermalThrottlingPolicy2 populatedControlParametersForCurrentThermalLevel];
 
-    v7 = [v6 playerQueueSize];
+    playerQueueSize = [populatedControlParametersForCurrentThermalLevel playerQueueSize];
 
-    if (v7)
+    if (playerQueueSize)
     {
-      v8 = [v6 playerQueueSize];
-      v3 = [v8 unsignedIntegerValue];
+      playerQueueSize2 = [populatedControlParametersForCurrentThermalLevel playerQueueSize];
+      queueSize = [playerQueueSize2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return queueSize;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)renderTime
@@ -355,31 +355,31 @@ __n128 __31__PVLivePlayer_resetRenderTime__block_invoke(uint64_t a1)
 
 - (PVColorSpace)outputColorSpace
 {
-  v2 = [(PVRendererBase *)self->_renderer compositingContext];
-  v3 = [v2 outputColorSpace];
+  compositingContext = [(PVRendererBase *)self->_renderer compositingContext];
+  outputColorSpace = [compositingContext outputColorSpace];
 
-  return v3;
+  return outputColorSpace;
 }
 
-- (void)setPrimaryPlayer:(id)a3
+- (void)setPrimaryPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   ptr = self->_lock.__ptr_;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __33__PVLivePlayer_setPrimaryPlayer___block_invoke;
   v8[3] = &unk_279AA4E00;
   v8[4] = self;
-  v9 = v4;
+  v9 = playerCopy;
   v6 = *ptr;
-  v7 = v4;
+  v7 = playerCopy;
   dispatch_sync(v6, v8);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  nameCopy = name;
+  v5 = [nameCopy copy];
   name = self->_name;
   self->_name = v5;
 
@@ -395,7 +395,7 @@ __n128 __31__PVLivePlayer_resetRenderTime__block_invoke(uint64_t a1)
   dispatch_sync(*ptr, block);
 }
 
-- (void)setParentCode:(unsigned int)a3
+- (void)setParentCode:(unsigned int)code
 {
   ptr = self->_lock.__ptr_;
   v4[0] = MEMORY[0x277D85DD0];
@@ -403,7 +403,7 @@ __n128 __31__PVLivePlayer_resetRenderTime__block_invoke(uint64_t a1)
   v4[2] = __30__PVLivePlayer_setParentCode___block_invoke;
   v4[3] = &unk_279AA7C38;
   v4[4] = self;
-  v5 = a3;
+  codeCopy = code;
   dispatch_sync(*ptr, v4);
 }
 
@@ -448,18 +448,18 @@ void __28__PVLivePlayer_getTaskToken__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setRenderLink:(id)a3
+- (void)setRenderLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   ptr = self->_lock.__ptr_;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __30__PVLivePlayer_setRenderLink___block_invoke;
   v8[3] = &unk_279AA4E00;
   v8[4] = self;
-  v9 = v4;
+  v9 = linkCopy;
   v6 = *ptr;
-  v7 = v4;
+  v7 = linkCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -502,7 +502,7 @@ uint64_t __30__PVLivePlayer_setRenderLink___block_invoke(uint64_t a1)
   }
 }
 
-- (void)renderLinkSignal:(id *)a3
+- (void)renderLinkSignal:(id *)signal
 {
   if ([(PVLivePlayer *)self status])
   {
@@ -523,8 +523,8 @@ uint64_t __30__PVLivePlayer_setRenderLink___block_invoke(uint64_t a1)
     block[1] = *"";
     block[2] = __33__PVLivePlayer_renderLinkSignal___block_invoke;
     block[3] = &unk_279AA7C60;
-    v10 = *&a3->var0;
-    var3 = a3->var3;
+    v10 = *&signal->var0;
+    var3 = signal->var3;
     block[4] = self;
     block[5] = &v12;
     dispatch_sync(*ptr, block);
@@ -571,15 +571,15 @@ __n128 __33__PVLivePlayer_renderLinkSignal___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_renderLinkSignal:(id *)a3
+- (void)_renderLinkSignal:(id *)signal
 {
   if ([(PVLivePlayer *)self status]!= 3 && ![(PVLivePlayer *)self _dropFrameForSaturatedPrimaryPlayer]&& ![(PVLivePlayer *)self _dropFrameForFullQueue])
   {
-    v5 = [(PVLivePlayer *)self getTaskToken];
+    getTaskToken = [(PVLivePlayer *)self getTaskToken];
     v6 = CACurrentMediaTime();
     v7 = HGObject::operator new(0xD0uLL);
-    v10 = *a3;
-    PVRenderLinkJob::PVRenderLinkJob(v7, self, &v10, v6, v5);
+    v10 = *signal;
+    PVRenderLinkJob::PVRenderLinkJob(v7, self, &v10, v6, getTaskToken);
     FrameStatsDescription = PVPerfStats::GetFrameStatsDescription(self->_perfStats.__ptr_);
     v9 = (**FrameStatsDescription)(FrameStatsDescription);
     PVPerfStats::FrameStats::Init((v7 + 120), v9, atomic_fetch_add(&self->_frameCount, 1u));
@@ -701,9 +701,9 @@ uint64_t __38__PVLivePlayer__dropFrameForFullQueue__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_notifyDelegateOfDroppedFrame:(int)a3
+- (void)_notifyDelegateOfDroppedFrame:(int)frame
 {
-  v3 = *&a3;
+  v3 = *&frame;
   WeakRetained = objc_loadWeakRetained(&self->_weakDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -713,7 +713,7 @@ uint64_t __38__PVLivePlayer__dropFrameForFullQueue__block_invoke(uint64_t a1)
   }
 }
 
-- (id)readSourceFrameSets:(double)a3
+- (id)readSourceFrameSets:(double)sets
 {
   v9 = 0;
   v10 = &v9;
@@ -728,7 +728,7 @@ uint64_t __38__PVLivePlayer__dropFrameForFullQueue__block_invoke(uint64_t a1)
   block[3] = &unk_279AA7C88;
   block[4] = self;
   block[5] = &v9;
-  *&block[6] = a3;
+  *&block[6] = sets;
   dispatch_sync(*ptr, block);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -782,11 +782,11 @@ void __36__PVLivePlayer_readSourceFrameSets___block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleRenderLinkJob:(HGRef<PVRenderLinkJob>)a3
+- (void)handleRenderLinkJob:(HGRef<PVRenderLinkJob>)job
 {
-  if (HGGLBlendingInfo::GetRGBOperation(*a3.var0) == 4)
+  if (HGGLBlendingInfo::GetRGBOperation(*job.var0) == 4)
   {
-    v31 = *a3.var0;
+    v31 = *job.var0;
     if (v31)
     {
       (*(*v31 + 16))(v31);
@@ -802,14 +802,14 @@ void __36__PVLivePlayer_readSourceFrameSets___block_invoke(uint64_t a1)
   else
   {
     PerfTimer::PerfTimer(&v30);
-    v5 = -[PVLivePlayer getPackedFamilyCode:](self, "getPackedFamilyCode:", [*(*a3.var0 + 112) tokenId]);
+    v5 = -[PVLivePlayer getPackedFamilyCode:](self, "getPackedFamilyCode:", [*(*job.var0 + 112) tokenId]);
     if (HGLogger::getLevel("PVSignPost", v6) >= 1)
     {
       kdebug_trace();
     }
 
-    v7 = [(PVLivePlayer *)self readSourceFrameSets:*(*a3.var0 + 104)];
-    v8 = *a3.var0;
+    v7 = [(PVLivePlayer *)self readSourceFrameSets:*(*job.var0 + 104)];
+    v8 = *job.var0;
     v9 = PerfTimer::End(&v30);
     PVPerfStats::FrameStats::SetValueForIndex(v8 + 120, 0, v9);
     WeakRetained = objc_loadWeakRetained(&self->_weakDelegate);
@@ -821,8 +821,8 @@ void __36__PVLivePlayer_readSourceFrameSets___block_invoke(uint64_t a1)
         kdebug_trace();
       }
 
-      v12 = *a3.var0;
-      v22 = *(*a3.var0 + 80);
+      v12 = *job.var0;
+      v22 = *(*job.var0 + 80);
       v23 = *(v12 + 96);
       v13 = [WeakRetained buildRenderRequest:v7 time:&v22];
       if ([(PVLivePlayer *)self lowerGCDPriority])
@@ -842,7 +842,7 @@ void __36__PVLivePlayer_readSourceFrameSets___block_invoke(uint64_t a1)
         kdebug_trace();
       }
 
-      v15 = *a3.var0;
+      v15 = *job.var0;
       v16 = PerfTimer::End(&v28);
       PVPerfStats::FrameStats::SetValueForIndex(v15 + 120, 1u, v16);
       *&v22 = 0;
@@ -862,7 +862,7 @@ void __36__PVLivePlayer_readSourceFrameSets___block_invoke(uint64_t a1)
       v20[1] = 3321888768;
       v20[2] = __36__PVLivePlayer_handleRenderLinkJob___block_invoke;
       v20[3] = &unk_2871CF058;
-      v19 = *a3.var0;
+      v19 = *job.var0;
       v20[6] = v5;
       v21 = v19;
       if (v19)
@@ -883,7 +883,7 @@ void __36__PVLivePlayer_readSourceFrameSets___block_invoke(uint64_t a1)
 
     else
     {
-      v29 = *a3.var0;
+      v29 = *job.var0;
       if (v29)
       {
         (*(*v29 + 16))(v29);
@@ -1024,7 +1024,7 @@ void __36__PVLivePlayer_handleRenderLinkJob___block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)testOutOfOrderCompletion:(HGRef<PVRenderLinkJob>)a3
+- (BOOL)testOutOfOrderCompletion:(HGRef<PVRenderLinkJob>)completion
 {
   v10 = 0;
   v11 = &v10;
@@ -1035,7 +1035,7 @@ void __36__PVLivePlayer_handleRenderLinkJob___block_invoke_2(uint64_t a1)
   block[1] = 3321888768;
   block[2] = __41__PVLivePlayer_testOutOfOrderCompletion___block_invoke;
   block[3] = &unk_2871CF090;
-  v5 = *a3.var0;
+  v5 = *completion.var0;
   v9 = v5;
   if (v5)
   {
@@ -1063,14 +1063,14 @@ void *__41__PVLivePlayer_testOutOfOrderCompletion___block_invoke(void *result)
   return result;
 }
 
-- (void)renderLinkJobFinished:(HGRef<PVRenderLinkJob>)a3
+- (void)renderLinkJobFinished:(HGRef<PVRenderLinkJob>)finished
 {
   ptr = self->_lock.__ptr_;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3321888768;
   v6[2] = __38__PVLivePlayer_renderLinkJobFinished___block_invoke;
   v6[3] = &unk_2871CF0C8;
-  v5 = *a3.var0;
+  v5 = *finished.var0;
   v6[4] = self;
   v7 = v5;
   if (v5)
@@ -1099,7 +1099,7 @@ uint64_t __38__PVLivePlayer_renderLinkJobFinished___block_invoke(uint64_t a1)
   return [v2 returnToken:v3];
 }
 
-- (void)bypassRenderLink:(HGRef<PVRenderLinkJob>)a3
+- (void)bypassRenderLink:(HGRef<PVRenderLinkJob>)link
 {
   if ([(PVLivePlayer *)self throttledBypassRenderLink])
   {
@@ -1108,7 +1108,7 @@ uint64_t __38__PVLivePlayer_renderLinkJobFinished___block_invoke(uint64_t a1)
       memset(&v8, 0, sizeof(v8));
       [(PVLivePlayer *)self renderTime];
       time1 = v8;
-      v6 = *(*a3.var0 + 80);
+      v6 = *(*link.var0 + 80);
       if (CMTimeCompare(&time1, &v6) >= 1)
       {
         if (HGLogger::getLevel("PVSignPost", v5) >= 1)
@@ -1124,7 +1124,7 @@ uint64_t __38__PVLivePlayer_renderLinkJobFinished___block_invoke(uint64_t a1)
   }
 }
 
-- (void)trackStats:(BOOL)a3
+- (void)trackStats:(BOOL)stats
 {
   ptr = self->_perfStatsLock.__ptr_;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1132,13 +1132,13 @@ uint64_t __38__PVLivePlayer_renderLinkJobFinished___block_invoke(uint64_t a1)
   v4[2] = __27__PVLivePlayer_trackStats___block_invoke;
   v4[3] = &unk_279AA56D8;
   v4[4] = self;
-  v5 = a3;
+  statsCopy = stats;
   dispatch_sync(*ptr, v4);
 }
 
-- (void)addStats:(const void *)a3
+- (void)addStats:(const void *)stats
 {
-  if (PVPerfStats::FrameStats::GetSize(a3))
+  if (PVPerfStats::FrameStats::GetSize(stats))
   {
     ptr = self->_perfStatsLock.__ptr_;
     v6[0] = MEMORY[0x277D85DD0];
@@ -1146,7 +1146,7 @@ uint64_t __38__PVLivePlayer_renderLinkJobFinished___block_invoke(uint64_t a1)
     v6[2] = __25__PVLivePlayer_addStats___block_invoke;
     v6[3] = &unk_279AA7CB0;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = stats;
     dispatch_sync(*ptr, v6);
   }
 }
@@ -1160,7 +1160,7 @@ void __25__PVLivePlayer_addStats___block_invoke(uint64_t a1)
   }
 }
 
-- (void)printAndClearStats:(BOOL)a3
+- (void)printAndClearStats:(BOOL)stats
 {
   if ((atomic_load_explicit(&qword_280C5CCE8, memory_order_acquire) & 1) == 0)
   {
@@ -1177,7 +1177,7 @@ void __25__PVLivePlayer_addStats___block_invoke(uint64_t a1)
   v5[2] = __35__PVLivePlayer_printAndClearStats___block_invoke_2;
   v5[3] = &unk_279AA56D8;
   v5[4] = self;
-  v6 = a3;
+  statsCopy = stats;
   dispatch_sync(*_MergedGlobals_7, v5);
   PerfTimer::Start(self->_statLogTimer.__ptr_);
 }

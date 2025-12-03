@@ -1,39 +1,39 @@
 @interface SCWRecordFieldSchema
-- (BOOL)isValidRecord:(id)a3;
-- (SCWRecordFieldSchema)initWithName:(id)a3 valueClass:(Class)a4 required:(BOOL)a5 encrypted:(BOOL)a6;
+- (BOOL)isValidRecord:(id)record;
+- (SCWRecordFieldSchema)initWithName:(id)name valueClass:(Class)class required:(BOOL)required encrypted:(BOOL)encrypted;
 @end
 
 @implementation SCWRecordFieldSchema
 
-- (SCWRecordFieldSchema)initWithName:(id)a3 valueClass:(Class)a4 required:(BOOL)a5 encrypted:(BOOL)a6
+- (SCWRecordFieldSchema)initWithName:(id)name valueClass:(Class)class required:(BOOL)required encrypted:(BOOL)encrypted
 {
-  v11 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = SCWRecordFieldSchema;
   v12 = [(SCWRecordFieldSchema *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_valueClass, a4);
-    v13->_required = a5;
-    v13->_encrypted = a6;
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_valueClass, class);
+    v13->_required = required;
+    v13->_encrypted = encrypted;
   }
 
   return v13;
 }
 
-- (BOOL)isValidRecord:(id)a3
+- (BOOL)isValidRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 valuesByKey];
-  v6 = [(SCWRecordFieldSchema *)self name];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  recordCopy = record;
+  valuesByKey = [recordCopy valuesByKey];
+  name = [(SCWRecordFieldSchema *)self name];
+  v7 = [valuesByKey objectForKeyedSubscript:name];
 
-  v8 = [v4 encryptedValues];
+  encryptedValues = [recordCopy encryptedValues];
 
-  v9 = [(SCWRecordFieldSchema *)self name];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  name2 = [(SCWRecordFieldSchema *)self name];
+  v10 = [encryptedValues objectForKeyedSubscript:name2];
 
   if (v7 | v10)
   {

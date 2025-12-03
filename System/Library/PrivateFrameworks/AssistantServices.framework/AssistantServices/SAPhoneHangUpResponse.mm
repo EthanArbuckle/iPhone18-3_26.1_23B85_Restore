@@ -8,22 +8,22 @@
 {
   if (([(SAPhoneHangUpResponse *)self activeCallRemaining]& 1) == 0)
   {
-    v4 = [(SAPhoneHangUpResponse *)self phoneHangUpCallType];
-    if ([v4 isEqualToString:SAPhoneHangUpCallTypeACTIVEValue])
+    phoneHangUpCallType = [(SAPhoneHangUpResponse *)self phoneHangUpCallType];
+    if ([phoneHangUpCallType isEqualToString:SAPhoneHangUpCallTypeACTIVEValue])
     {
       v5 = &SAPhoneActiveCallHungUpErrorCode;
     }
 
-    else if ([v4 isEqualToString:SAPhoneHangUpCallTypeINCOMINGValue])
+    else if ([phoneHangUpCallType isEqualToString:SAPhoneHangUpCallTypeINCOMINGValue])
     {
       v5 = &SAPhoneIncomingCallDeclinedErrorCode;
     }
 
     else
     {
-      if (![v4 isEqualToString:SAPhoneHangUpCallTypeOUTGOINGValue])
+      if (![phoneHangUpCallType isEqualToString:SAPhoneHangUpCallTypeOUTGOINGValue])
       {
-        if ([v4 isEqualToString:SAPhoneHangUpCallTypeHELDValue])
+        if ([phoneHangUpCallType isEqualToString:SAPhoneHangUpCallTypeHELDValue])
         {
           v3 = SAPhoneHeldCallHungUpErrorCode;
         }

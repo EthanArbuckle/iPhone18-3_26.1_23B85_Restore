@@ -1,11 +1,11 @@
 @interface COObserverSet
 - (COObserverSet)init;
 - (NSOperationQueue)queue;
-- (id)addObserverForName:(id)a3 observable:(id)a4 queue:(id)a5 usingBlock:(id)a6;
+- (id)addObserverForName:(id)name observable:(id)observable queue:(id)queue usingBlock:(id)block;
 - (id)registeredNames;
-- (void)_withLock:(id)a3;
-- (void)postNotification:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)postNotification:(id)notification;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation COObserverSet
@@ -64,32 +64,32 @@ void __22__COObserverSet_queue__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)addObserverForName:(id)a3 observable:(id)a4 queue:(id)a5 usingBlock:(id)a6
+- (id)addObserverForName:(id)name observable:(id)observable queue:(id)queue usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  observableCopy = observable;
+  queueCopy = queue;
+  blockCopy = block;
   v14 = [COObserver alloc];
   v15 = v14;
-  if (v12)
+  if (queueCopy)
   {
-    v16 = [(COObserver *)v14 initForName:v10 onObservable:v11 handler:v13 queue:v12];
+    v16 = [(COObserver *)v14 initForName:nameCopy onObservable:observableCopy handler:blockCopy queue:queueCopy];
   }
 
   else
   {
-    v17 = [(COObserverSet *)self queue];
-    v16 = [(COObserver *)v15 initForName:v10 onObservable:v11 handler:v13 queue:v17];
+    queue = [(COObserverSet *)self queue];
+    v16 = [(COObserver *)v15 initForName:nameCopy onObservable:observableCopy handler:blockCopy queue:queue];
   }
 
   v22[0] = MEMORY[0x277D85DD0];
@@ -112,9 +112,9 @@ void __64__COObserverSet_addObserverForName_observable_queue_usingBlock___block_
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -123,7 +123,7 @@ void __64__COObserverSet_addObserverForName_observable_queue_usingBlock___block_
     v5[2] = __32__COObserverSet_removeObserver___block_invoke;
     v5[3] = &unk_278E12368;
     v5[4] = self;
-    v6 = v4;
+    v6 = observerCopy;
     [(COObserverSet *)self _withLock:v5];
   }
 }
@@ -134,19 +134,19 @@ void __32__COObserverSet_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__COObserverSet_postNotification___block_invoke;
   v8[3] = &unk_278E12738;
   v8[4] = self;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = name;
+  v10 = notificationCopy;
+  v6 = notificationCopy;
+  v7 = name;
   [(COObserverSet *)self _withLock:v8];
 }
 

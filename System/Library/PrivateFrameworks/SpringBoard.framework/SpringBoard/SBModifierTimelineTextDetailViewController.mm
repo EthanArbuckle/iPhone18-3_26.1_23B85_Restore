@@ -1,8 +1,8 @@
 @interface SBModifierTimelineTextDetailViewController
 - (void)_copyText;
 - (void)prepareForReuse;
-- (void)setAttributedText:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setText:(id)text;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -24,40 +24,40 @@
   [(UITextView *)v6 setFont:v7];
 
   [(UITextView *)self->_textView setEditable:0];
-  v8 = [(SBModifierTimelineTextDetailViewController *)self view];
-  [v8 addSubview:self->_textView];
+  view = [(SBModifierTimelineTextDetailViewController *)self view];
+  [view addSubview:self->_textView];
 
-  v9 = [(SBModifierTimelineTextDetailViewController *)self navigationItem];
+  navigationItem = [(SBModifierTimelineTextDetailViewController *)self navigationItem];
   v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:@"Copy text" style:0 target:self action:sel__copyText];
-  [v9 setRightBarButtonItem:v10];
+  [navigationItem setRightBarButtonItem:v10];
 }
 
 - (void)_copyText
 {
-  v3 = [MEMORY[0x277D75810] generalPasteboard];
-  [v3 setString:self->_text];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  [generalPasteboard setString:self->_text];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  objc_storeStrong(&self->_text, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_text, text);
+  textCopy = text;
   [(SBModifierTimelineTextDetailViewController *)self loadViewIfNeeded];
-  [(UITextView *)self->_textView setText:v5];
+  [(UITextView *)self->_textView setText:textCopy];
 
-  v6 = [(SBModifierTimelineTextDetailViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(SBModifierTimelineTextDetailViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  objc_storeStrong(&self->_attributedText, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_attributedText, text);
+  textCopy = text;
   [(SBModifierTimelineTextDetailViewController *)self loadViewIfNeeded];
-  [(UITextView *)self->_textView setAttributedText:v5];
+  [(UITextView *)self->_textView setAttributedText:textCopy];
 
-  v6 = [(SBModifierTimelineTextDetailViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(SBModifierTimelineTextDetailViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)prepareForReuse
@@ -73,8 +73,8 @@
   v5.super_class = SBModifierTimelineTextDetailViewController;
   [(SBModifierTimelineTextDetailViewController *)&v5 viewWillLayoutSubviews];
   textView = self->_textView;
-  v4 = [(SBModifierTimelineTextDetailViewController *)self view];
-  [v4 bounds];
+  view = [(SBModifierTimelineTextDetailViewController *)self view];
+  [view bounds];
   [(UITextView *)textView setFrame:?];
 }
 

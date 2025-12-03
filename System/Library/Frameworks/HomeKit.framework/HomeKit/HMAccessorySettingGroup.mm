@@ -1,31 +1,31 @@
 @interface HMAccessorySettingGroup
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isReflectedEqual:(id)a3;
-- (HMAccessorySettingGroup)accessorySettingGroupWithKeyPath:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isReflectedEqual:(id)equal;
+- (HMAccessorySettingGroup)accessorySettingGroupWithKeyPath:(id)path;
 - (HMAccessorySettingGroup)group;
 - (HMAccessorySettingGroup)init;
-- (HMAccessorySettingGroup)initWithInternal:(id)a3;
-- (HMAccessorySettingGroup)initWithKeyPath:(id)a3;
+- (HMAccessorySettingGroup)initWithInternal:(id)internal;
+- (HMAccessorySettingGroup)initWithKeyPath:(id)path;
 - (NSArray)groups;
 - (NSArray)settings;
 - (NSString)localizedTitle;
-- (id)accessorySettingWithKeyPath:(id)a3;
+- (id)accessorySettingWithKeyPath:(id)path;
 - (id)keyPath;
 - (unint64_t)hash;
-- (void)_notifyClientOfAddedGroup:(id)a3;
-- (void)_notifyClientOfAddedSetting:(id)a3;
-- (void)_notifyClientOfRemovedGroup:(id)a3;
-- (void)_notifyClientOfRemovedSetting:(id)a3;
-- (void)_settingGroup:(id)a3 didAddSetting:(id)a4;
-- (void)_settingGroup:(id)a3 didAddSettingGroup:(id)a4;
-- (void)_settingGroup:(id)a3 didRemoveSetting:(id)a4;
-- (void)_settingGroup:(id)a3 didRemoveSettingGroup:(id)a4;
-- (void)addGroup:(id)a3;
-- (void)addSetting:(id)a3;
-- (void)mergeReflected:(id)a3;
-- (void)removeGroup:(id)a3;
-- (void)removeSetting:(id)a3;
+- (void)_notifyClientOfAddedGroup:(id)group;
+- (void)_notifyClientOfAddedSetting:(id)setting;
+- (void)_notifyClientOfRemovedGroup:(id)group;
+- (void)_notifyClientOfRemovedSetting:(id)setting;
+- (void)_settingGroup:(id)group didAddSetting:(id)setting;
+- (void)_settingGroup:(id)group didAddSettingGroup:(id)settingGroup;
+- (void)_settingGroup:(id)group didRemoveSetting:(id)setting;
+- (void)_settingGroup:(id)group didRemoveSettingGroup:(id)settingGroup;
+- (void)addGroup:(id)group;
+- (void)addSetting:(id)setting;
+- (void)mergeReflected:(id)reflected;
+- (void)removeGroup:(id)group;
+- (void)removeSetting:(id)setting;
 @end
 
 @implementation HMAccessorySettingGroup
@@ -75,17 +75,17 @@ uint64_t __39___HMAccessorySettingGroup_logCategory__block_invoke()
   return WeakRetained;
 }
 
-- (id)accessorySettingWithKeyPath:(id)a3
+- (id)accessorySettingWithKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HMAccessorySettingGroup *)self settings];
+  pathCopy = path;
+  settings = [(HMAccessorySettingGroup *)self settings];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__HMAccessorySettingGroup_accessorySettingWithKeyPath___block_invoke;
   v9[3] = &unk_1E754B680;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = pathCopy;
+  v6 = pathCopy;
+  v7 = [settings na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -99,17 +99,17 @@ uint64_t __55__HMAccessorySettingGroup_accessorySettingWithKeyPath___block_invok
   return v4;
 }
 
-- (HMAccessorySettingGroup)accessorySettingGroupWithKeyPath:(id)a3
+- (HMAccessorySettingGroup)accessorySettingGroupWithKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HMAccessorySettingGroup *)self groups];
+  pathCopy = path;
+  groups = [(HMAccessorySettingGroup *)self groups];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__HMAccessorySettingGroup_accessorySettingGroupWithKeyPath___block_invoke;
   v9[3] = &unk_1E754B658;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = pathCopy;
+  v6 = pathCopy;
+  v7 = [groups na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -123,16 +123,16 @@ uint64_t __60__HMAccessorySettingGroup_accessorySettingGroupWithKeyPath___block_
   return v4;
 }
 
-- (void)_settingGroup:(id)a3 didRemoveSettingGroup:(id)a4
+- (void)_settingGroup:(id)group didRemoveSettingGroup:(id)settingGroup
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  settingGroupCopy = settingGroup;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HMAccessorySettingGroup *)self groups];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  groups = [(HMAccessorySettingGroup *)self groups];
+  v7 = [groups countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -143,12 +143,12 @@ uint64_t __60__HMAccessorySettingGroup_accessorySettingGroupWithKeyPath___block_
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(groups);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 internal];
-        v13 = [v12 isEqual:v5];
+        internal = [v11 internal];
+        v13 = [internal isEqual:settingGroupCopy];
 
         if (v13)
         {
@@ -157,7 +157,7 @@ uint64_t __60__HMAccessorySettingGroup_accessorySettingGroupWithKeyPath___block_
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [groups countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -172,24 +172,24 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_settingGroup:(id)a3 didAddSettingGroup:(id)a4
+- (void)_settingGroup:(id)group didAddSettingGroup:(id)settingGroup
 {
-  v5 = a4;
-  v6 = [[HMAccessorySettingGroup alloc] initWithInternal:v5];
+  settingGroupCopy = settingGroup;
+  v6 = [[HMAccessorySettingGroup alloc] initWithInternal:settingGroupCopy];
 
   [(HMAccessorySettingGroup *)self addGroup:v6];
 }
 
-- (void)_settingGroup:(id)a3 didRemoveSetting:(id)a4
+- (void)_settingGroup:(id)group didRemoveSetting:(id)setting
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  settingCopy = setting;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HMAccessorySettingGroup *)self settings];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  settings = [(HMAccessorySettingGroup *)self settings];
+  v7 = [settings countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -200,12 +200,12 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(settings);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 internal];
-        v13 = [v12 isEqual:v5];
+        internal = [v11 internal];
+        v13 = [internal isEqual:settingCopy];
 
         if (v13)
         {
@@ -214,7 +214,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [settings countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -229,9 +229,9 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_settingGroup:(id)a3 didAddSetting:(id)a4
+- (void)_settingGroup:(id)group didAddSetting:(id)setting
 {
-  v5 = [HMAccessorySetting settingForInternal:a4];
+  v5 = [HMAccessorySetting settingForInternal:setting];
   v6 = v5;
   if (v5)
   {
@@ -243,20 +243,20 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)_notifyClientOfRemovedGroup:(id)a3
+- (void)_notifyClientOfRemovedGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(HMAccessorySettingGroup *)self internal];
-  v6 = [v5 context];
-  v7 = [v6 delegateCaller];
+  groupCopy = group;
+  internal = [(HMAccessorySettingGroup *)self internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__HMAccessorySettingGroup__notifyClientOfRemovedGroup___block_invoke;
   v9[3] = &unk_1E754E5C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 invokeBlock:v9];
+  v10 = groupCopy;
+  v8 = groupCopy;
+  [delegateCaller invokeBlock:v9];
 }
 
 void __55__HMAccessorySettingGroup__notifyClientOfRemovedGroup___block_invoke(uint64_t a1)
@@ -288,12 +288,12 @@ void __55__HMAccessorySettingGroup__notifyClientOfRemovedGroup___block_invoke(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeGroup:(id)a3
+- (void)removeGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
-    v5 = v4;
+    v5 = groupCopy;
     os_unfair_lock_lock_with_options();
     if ([(NSMutableSet *)self->_groups containsObject:v5])
     {
@@ -308,24 +308,24 @@ void __55__HMAccessorySettingGroup__notifyClientOfRemovedGroup___block_invoke(ui
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    v4 = v5;
+    groupCopy = v5;
   }
 }
 
-- (void)_notifyClientOfAddedGroup:(id)a3
+- (void)_notifyClientOfAddedGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(HMAccessorySettingGroup *)self internal];
-  v6 = [v5 context];
-  v7 = [v6 delegateCaller];
+  groupCopy = group;
+  internal = [(HMAccessorySettingGroup *)self internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__HMAccessorySettingGroup__notifyClientOfAddedGroup___block_invoke;
   v9[3] = &unk_1E754E5C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 invokeBlock:v9];
+  v10 = groupCopy;
+  v8 = groupCopy;
+  [delegateCaller invokeBlock:v9];
 }
 
 void __53__HMAccessorySettingGroup__notifyClientOfAddedGroup___block_invoke(uint64_t a1)
@@ -357,12 +357,12 @@ void __53__HMAccessorySettingGroup__notifyClientOfAddedGroup___block_invoke(uint
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addGroup:(id)a3
+- (void)addGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
-    v5 = v4;
+    v5 = groupCopy;
     os_unfair_lock_lock_with_options();
     if (([(NSMutableSet *)self->_groups containsObject:v5]& 1) != 0)
     {
@@ -377,33 +377,33 @@ void __53__HMAccessorySettingGroup__notifyClientOfAddedGroup___block_invoke(uint
       [(HMAccessorySettingGroup *)self _notifyClientOfAddedGroup:v5];
     }
 
-    v4 = v5;
+    groupCopy = v5;
   }
 }
 
 - (NSArray)groups
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableSet *)self->_groups allObjects];
+  allObjects = [(NSMutableSet *)self->_groups allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)_notifyClientOfRemovedSetting:(id)a3
+- (void)_notifyClientOfRemovedSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [(HMAccessorySettingGroup *)self internal];
-  v6 = [v5 context];
-  v7 = [v6 delegateCaller];
+  settingCopy = setting;
+  internal = [(HMAccessorySettingGroup *)self internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__HMAccessorySettingGroup__notifyClientOfRemovedSetting___block_invoke;
   v9[3] = &unk_1E754E5C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 invokeBlock:v9];
+  v10 = settingCopy;
+  v8 = settingCopy;
+  [delegateCaller invokeBlock:v9];
 }
 
 void __57__HMAccessorySettingGroup__notifyClientOfRemovedSetting___block_invoke(uint64_t a1)
@@ -435,12 +435,12 @@ void __57__HMAccessorySettingGroup__notifyClientOfRemovedSetting___block_invoke(
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSetting:(id)a3
+- (void)removeSetting:(id)setting
 {
-  v4 = a3;
-  if (v4)
+  settingCopy = setting;
+  if (settingCopy)
   {
-    v5 = v4;
+    v5 = settingCopy;
     os_unfair_lock_lock_with_options();
     if ([(NSMutableSet *)self->_settings containsObject:v5])
     {
@@ -455,24 +455,24 @@ void __57__HMAccessorySettingGroup__notifyClientOfRemovedSetting___block_invoke(
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    v4 = v5;
+    settingCopy = v5;
   }
 }
 
-- (void)_notifyClientOfAddedSetting:(id)a3
+- (void)_notifyClientOfAddedSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [(HMAccessorySettingGroup *)self internal];
-  v6 = [v5 context];
-  v7 = [v6 delegateCaller];
+  settingCopy = setting;
+  internal = [(HMAccessorySettingGroup *)self internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke;
   v9[3] = &unk_1E754E5C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 invokeBlock:v9];
+  v10 = settingCopy;
+  v8 = settingCopy;
+  [delegateCaller invokeBlock:v9];
 }
 
 void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(uint64_t a1)
@@ -504,12 +504,12 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSetting:(id)a3
+- (void)addSetting:(id)setting
 {
-  v4 = a3;
-  if (v4)
+  settingCopy = setting;
+  if (settingCopy)
   {
-    v5 = v4;
+    v5 = settingCopy;
     os_unfair_lock_lock_with_options();
     if (([(NSMutableSet *)self->_settings containsObject:v5]& 1) != 0)
     {
@@ -524,36 +524,36 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
       [(HMAccessorySettingGroup *)self _notifyClientOfAddedSetting:v5];
     }
 
-    v4 = v5;
+    settingCopy = v5;
   }
 }
 
 - (NSArray)settings
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableSet *)self->_settings allObjects];
+  allObjects = [(NSMutableSet *)self->_settings allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (id)keyPath
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(HMAccessorySettingGroup *)self group];
-  v5 = [v4 keyPath];
+  group = [(HMAccessorySettingGroup *)self group];
+  keyPath = [group keyPath];
 
-  v6 = [(HMAccessorySettingGroup *)self internal];
-  v7 = [v6 name];
-  v8 = v7;
-  if (v5)
+  internal = [(HMAccessorySettingGroup *)self internal];
+  name = [internal name];
+  v8 = name;
+  if (keyPath)
   {
-    v9 = [v5 stringByAppendingFormat:@".%@", v7];
+    v9 = [keyPath stringByAppendingFormat:@".%@", name];
   }
 
   else
   {
-    v9 = [v7 copy];
+    v9 = [name copy];
   }
 
   v10 = v9;
@@ -563,17 +563,17 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
   return v10;
 }
 
-- (void)mergeReflected:(id)a3
+- (void)mergeReflected:(id)reflected
 {
   v35 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v4 = [v24 groups];
+  reflectedCopy = reflected;
+  groups = [reflectedCopy groups];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(HMAccessorySettingGroup *)self groups];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  groups2 = [(HMAccessorySettingGroup *)self groups];
+  v6 = [groups2 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
     v7 = v6;
@@ -584,12 +584,12 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groups2);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
-        v11 = [v10 keyPath];
-        v12 = [v4 hmf_firstObjectWithValue:v11 forKeyPath:@"keyPath"];
+        keyPath = [v10 keyPath];
+        v12 = [groups hmf_firstObjectWithValue:keyPath forKeyPath:@"keyPath"];
 
         if (v12)
         {
@@ -597,19 +597,19 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v7 = [groups2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v7);
   }
 
-  v13 = [v24 settings];
+  settings = [reflectedCopy settings];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = [(HMAccessorySettingGroup *)self settings];
-  v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  settings2 = [(HMAccessorySettingGroup *)self settings];
+  v15 = [settings2 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v15)
   {
     v16 = v15;
@@ -620,24 +620,24 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
       {
         if (*v26 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(settings2);
         }
 
         v19 = *(*(&v25 + 1) + 8 * j);
-        v20 = [v19 keyPath];
-        v21 = [v13 hmf_firstObjectWithValue:v20 forKeyPath:@"keyPath"];
+        keyPath2 = [v19 keyPath];
+        v21 = [settings hmf_firstObjectWithValue:keyPath2 forKeyPath:@"keyPath"];
 
         if (v21)
         {
-          v22 = [v19 isReflected];
-          if (v22 != [v21 isReflected])
+          isReflected = [v19 isReflected];
+          if (isReflected != [v21 isReflected])
           {
             [v19 updateReflected:{objc_msgSend(v21, "isReflected")}];
           }
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v16 = [settings2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v16);
@@ -646,19 +646,19 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isReflectedEqual:(id)a3
+- (BOOL)isReflectedEqual:(id)equal
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   context = objc_autoreleasePoolPush();
-  v26 = v4;
-  v5 = [v4 groups];
+  v26 = equalCopy;
+  groups = [equalCopy groups];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(HMAccessorySettingGroup *)self groups];
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  groups2 = [(HMAccessorySettingGroup *)self groups];
+  v7 = [groups2 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -669,14 +669,14 @@ void __55__HMAccessorySettingGroup__notifyClientOfAddedSetting___block_invoke(ui
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(groups2);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v11 keyPath];
-        v13 = [v5 hmf_firstObjectWithValue:v12 forKeyPath:@"keyPath"];
+        keyPath = [v11 keyPath];
+        settings = [groups hmf_firstObjectWithValue:keyPath forKeyPath:@"keyPath"];
 
-        if (v13 && ![v11 isReflectedEqual:v13])
+        if (settings && ![v11 isReflectedEqual:settings])
         {
 LABEL_21:
           v22 = 0;
@@ -684,7 +684,7 @@ LABEL_21:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [groups2 countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v8)
       {
         continue;
@@ -694,13 +694,13 @@ LABEL_21:
     }
   }
 
-  v6 = [v26 settings];
+  groups2 = [v26 settings];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = [(HMAccessorySettingGroup *)self settings];
-  v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  settings = [(HMAccessorySettingGroup *)self settings];
+  v14 = [settings countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v14)
   {
     v15 = v14;
@@ -711,17 +711,17 @@ LABEL_21:
       {
         if (*v28 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(settings);
         }
 
         v18 = *(*(&v27 + 1) + 8 * j);
-        v19 = [v18 keyPath];
-        v20 = [v6 hmf_firstObjectWithValue:v19 forKeyPath:@"keyPath"];
+        keyPath2 = [v18 keyPath];
+        v20 = [groups2 hmf_firstObjectWithValue:keyPath2 forKeyPath:@"keyPath"];
 
         if (v20)
         {
-          v21 = [v18 isReflected];
-          if (v21 != [v20 isReflected])
+          isReflected = [v18 isReflected];
+          if (isReflected != [v20 isReflected])
           {
 
             goto LABEL_21;
@@ -729,7 +729,7 @@ LABEL_21:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v15 = [settings countByEnumeratingWithState:&v27 objects:v35 count:16];
       v22 = 1;
       if (v15)
       {
@@ -752,10 +752,10 @@ LABEL_22:
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -765,7 +765,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -779,24 +779,24 @@ LABEL_22:
       goto LABEL_9;
     }
 
-    v7 = [(HMAccessorySettingGroup *)self keyPath];
-    v8 = [(HMAccessorySettingGroup *)v6 keyPath];
-    v9 = [v7 isEqualToString:v8];
+    keyPath = [(HMAccessorySettingGroup *)self keyPath];
+    keyPath2 = [(HMAccessorySettingGroup *)v6 keyPath];
+    v9 = [keyPath isEqualToString:keyPath2];
 
     if (!v9)
     {
       goto LABEL_9;
     }
 
-    v10 = [(HMAccessorySettingGroup *)self groups];
-    v11 = [(HMAccessorySettingGroup *)v6 groups];
-    v12 = [v10 isEqualToArray:v11];
+    groups = [(HMAccessorySettingGroup *)self groups];
+    groups2 = [(HMAccessorySettingGroup *)v6 groups];
+    v12 = [groups isEqualToArray:groups2];
 
     if (v12)
     {
-      v13 = [(HMAccessorySettingGroup *)self settings];
-      v14 = [(HMAccessorySettingGroup *)v6 settings];
-      v15 = [v13 isEqualToArray:v14];
+      settings = [(HMAccessorySettingGroup *)self settings];
+      settings2 = [(HMAccessorySettingGroup *)v6 settings];
+      v15 = [settings isEqualToArray:settings2];
     }
 
     else
@@ -811,17 +811,17 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessorySettingGroup *)self internal];
-  v3 = [v2 name];
-  v4 = [v3 hash];
+  internal = [(HMAccessorySettingGroup *)self internal];
+  name = [internal name];
+  v4 = [name hash];
 
   return v4;
 }
 
 - (NSString)localizedTitle
 {
-  v2 = [(HMAccessorySettingGroup *)self keyPath];
-  v3 = [HMAccessorySettings localizationKeyForKeyPath:v2];
+  keyPath = [(HMAccessorySettingGroup *)self keyPath];
+  v3 = [HMAccessorySettings localizationKeyForKeyPath:keyPath];
 
   v4 = +[HMLocalization sharedManager];
   v5 = [v4 getLocalizedString:v3];
@@ -829,11 +829,11 @@ LABEL_9:
   return v5;
 }
 
-- (HMAccessorySettingGroup)initWithInternal:(id)a3
+- (HMAccessorySettingGroup)initWithInternal:(id)internal
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  internalCopy = internal;
+  if (internalCopy)
   {
     v40.receiver = self;
     v40.super_class = HMAccessorySettingGroup;
@@ -841,8 +841,8 @@ LABEL_9:
     p_isa = &v6->super.super.isa;
     if (v6)
     {
-      objc_storeStrong(&v6->_internal, a3);
-      [v5 setDelegate:p_isa];
+      objc_storeStrong(&v6->_internal, internal);
+      [internalCopy setDelegate:p_isa];
       v8 = [MEMORY[0x1E695DFA8] set];
       v9 = p_isa[8];
       p_isa[8] = v8;
@@ -851,8 +851,8 @@ LABEL_9:
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v10 = [v5 settings];
-      v11 = [v10 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      settings = [internalCopy settings];
+      v11 = [settings countByEnumeratingWithState:&v36 objects:v42 count:16];
       if (v11)
       {
         v12 = v11;
@@ -863,7 +863,7 @@ LABEL_9:
           {
             if (*v37 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(settings);
             }
 
             v15 = [HMAccessorySetting settingForInternal:*(*(&v36 + 1) + 8 * i)];
@@ -875,7 +875,7 @@ LABEL_9:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v36 objects:v42 count:16];
+          v12 = [settings countByEnumeratingWithState:&v36 objects:v42 count:16];
         }
 
         while (v12);
@@ -889,8 +889,8 @@ LABEL_9:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v19 = [v5 groups];
-      v20 = [v19 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      groups = [internalCopy groups];
+      v20 = [groups countByEnumeratingWithState:&v32 objects:v41 count:16];
       if (v20)
       {
         v21 = v20;
@@ -901,7 +901,7 @@ LABEL_9:
           {
             if (*v33 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(groups);
             }
 
             v24 = [[HMAccessorySettingGroup alloc] initWithInternal:*(*(&v32 + 1) + 8 * j)];
@@ -913,7 +913,7 @@ LABEL_9:
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          v21 = [groups countByEnumeratingWithState:&v32 objects:v41 count:16];
         }
 
         while (v21);
@@ -921,7 +921,7 @@ LABEL_9:
     }
 
     self = p_isa;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
@@ -937,17 +937,17 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v27);
-    v26 = 0;
+    selfCopy = 0;
   }
 
   v30 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy;
 }
 
-- (HMAccessorySettingGroup)initWithKeyPath:(id)a3
+- (HMAccessorySettingGroup)initWithKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [[_HMAccessorySettingGroup alloc] initWithName:v4];
+  pathCopy = path;
+  v5 = [[_HMAccessorySettingGroup alloc] initWithName:pathCopy];
 
   v6 = [(HMAccessorySettingGroup *)self initWithInternal:v5];
   return v6;

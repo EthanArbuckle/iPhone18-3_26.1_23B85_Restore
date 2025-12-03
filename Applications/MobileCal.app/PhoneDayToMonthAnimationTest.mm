@@ -7,31 +7,31 @@
 
 - (void)setUp
 {
-  v3 = [(ApplicationTest *)self extractInitialDateOption];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
   initialDate = self->_initialDate;
-  self->_initialDate = v3;
+  self->_initialDate = extractInitialDateOption;
 
   v5 = self->_initialDate;
-  v6 = [(ApplicationTest *)self model];
-  [v6 setSelectedDate:v5];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:v5];
 
-  v7 = [(ApplicationTest *)self application];
-  v14 = [v7 rootNavigationController];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
 
-  v8 = [v14 resetToMonthView];
+  resetToMonthView = [rootNavigationController resetToMonthView];
   monthViewController = self->_monthViewController;
-  self->_monthViewController = v8;
+  self->_monthViewController = resetToMonthView;
 
   v10 = self->_monthViewController;
-  v11 = [(ApplicationTest *)self model];
-  v12 = [v11 selectedDate];
-  v13 = [(MonthViewController *)v10 pushedDayViewControllerWithDate:v12 animated:0];
+  model2 = [(ApplicationTest *)self model];
+  selectedDate = [model2 selectedDate];
+  v13 = [(MonthViewController *)v10 pushedDayViewControllerWithDate:selectedDate animated:0];
 }
 
 - (void)kickOffAnimation
 {
-  v3 = [(MonthViewController *)self->_monthViewController navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(MonthViewController *)self->_monthViewController navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 @end

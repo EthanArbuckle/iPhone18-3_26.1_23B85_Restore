@@ -8,17 +8,17 @@
 - (CGSize)contentSize;
 - (CGSize)imageSize;
 - (CGSize)minContentSize;
-- (CGSize)p_answersSizeForWidth:(double)a3;
-- (CGSize)p_maxSizeWithImageSize:(CGSize)a3;
-- (THWReviewTextMultipleChoiceLayout)initWithQuestion:(id)a3 index:(unint64_t)a4 delegate:(id)a5;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
-- (double)p_binSearchAnswersWidth:(double)a3 maxWidth:(double)a4 naturalWidth:(double)a5 height:(double)a6;
-- (double)stackedControlContainerMinHeight:(id)a3;
+- (CGSize)p_answersSizeForWidth:(double)width;
+- (CGSize)p_maxSizeWithImageSize:(CGSize)size;
+- (THWReviewTextMultipleChoiceLayout)initWithQuestion:(id)question index:(unint64_t)index delegate:(id)delegate;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
+- (double)p_binSearchAnswersWidth:(double)width maxWidth:(double)maxWidth naturalWidth:(double)naturalWidth height:(double)height;
+- (double)stackedControlContainerMinHeight:(id)height;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (id)layoutForChoiceIndex:(unint64_t)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutForChoiceIndex:(unint64_t)index;
+- (id)layoutGeometryForLayout:(id)layout;
 - (int)p_imagePlacement;
 - (void)dealloc;
 - (void)invalidateSize;
@@ -28,7 +28,7 @@
 
 @implementation THWReviewTextMultipleChoiceLayout
 
-- (THWReviewTextMultipleChoiceLayout)initWithQuestion:(id)a3 index:(unint64_t)a4 delegate:(id)a5
+- (THWReviewTextMultipleChoiceLayout)initWithQuestion:(id)question index:(unint64_t)index delegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = THWReviewTextMultipleChoiceLayout;
@@ -37,10 +37,10 @@
   if (v8)
   {
     [(THWReviewTextMultipleChoiceLayout *)v8 p_invalidateCachedGeometry];
-    v9->_questionIndex = a4;
-    v9->_question = a3;
+    v9->_questionIndex = index;
+    v9->_question = question;
     v9->_answerStack = [[THWStackedControlContainer alloc] initWithDelegate:v9];
-    v9->_delegate = a5;
+    v9->_delegate = delegate;
     [(THWReviewTextMultipleChoiceLayout *)v9 p_setupAnswerLayouts];
   }
 
@@ -88,7 +88,7 @@
 
 - (int)p_imagePlacement
 {
-  v3 = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imagePlacement];
+  imagePlacement = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imagePlacement];
   v4 = [(THWReviewQuestionLayoutDelegate *)self->_delegate questionLayoutMode:self];
   if (v4 == &dword_0 + 2)
   {
@@ -100,21 +100,21 @@
     return 1;
   }
 
-  return v3;
+  return imagePlacement;
 }
 
 - (BOOL)imageIsAtSide
 {
-  v3 = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
-  v4 = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageInfo];
-  v6 = v3 == 2 || v3 == 4;
-  return v4 && v6;
+  p_imagePlacement = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
+  imageInfo = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageInfo];
+  v6 = p_imagePlacement == 2 || p_imagePlacement == 4;
+  return imageInfo && v6;
 }
 
-- (CGSize)p_answersSizeForWidth:(double)a3
+- (CGSize)p_answersSizeForWidth:(double)width
 {
   v4 = [[THWReviewTextMultipleChoiceLayoutHelper alloc] initWithQuestion:[(THWReviewTextMultipleChoiceLayout *)self question]];
-  [(THWReviewTextMultipleChoiceLayoutHelper *)v4 answerStackSizeForWidth:a3];
+  [(THWReviewTextMultipleChoiceLayoutHelper *)v4 answerStackSizeForWidth:width];
   v6 = v5;
   v8 = v7;
 
@@ -125,34 +125,34 @@
   return result;
 }
 
-- (double)p_binSearchAnswersWidth:(double)a3 maxWidth:(double)a4 naturalWidth:(double)a5 height:(double)a6
+- (double)p_binSearchAnswersWidth:(double)width maxWidth:(double)maxWidth naturalWidth:(double)naturalWidth height:(double)height
 {
-  if (a4 - a3 < 1.0)
+  if (maxWidth - width < 1.0)
   {
-    return a4;
+    return maxWidth;
   }
 
-  [(THWReviewTextMultipleChoiceLayout *)self p_answersSizeForWidth:(a3 + a4) * 0.5];
-  if (v13 > a6 && v12 < a5)
+  [(THWReviewTextMultipleChoiceLayout *)self p_answersSizeForWidth:(width + maxWidth) * 0.5];
+  if (v13 > height && v12 < naturalWidth)
   {
-    v15 = (a3 + a4) * 0.5;
-    v16 = a4;
+    widthCopy = (width + maxWidth) * 0.5;
+    maxWidthCopy = maxWidth;
   }
 
   else
   {
-    v15 = a3;
-    v16 = (a3 + a4) * 0.5;
+    widthCopy = width;
+    maxWidthCopy = (width + maxWidth) * 0.5;
   }
 
-  [(THWReviewTextMultipleChoiceLayout *)self p_binSearchAnswersWidth:v15 maxWidth:v16 naturalWidth:a5 height:a6];
+  [(THWReviewTextMultipleChoiceLayout *)self p_binSearchAnswersWidth:widthCopy maxWidth:maxWidthCopy naturalWidth:naturalWidth height:height];
   return result;
 }
 
-- (CGSize)p_maxSizeWithImageSize:(CGSize)a3
+- (CGSize)p_maxSizeWithImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THWReviewTextMultipleChoiceLayout *)self minContentSize];
   v6 = v5 * 0.5;
   if (width <= v6)
@@ -195,12 +195,12 @@
     v10 = v9;
     [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageSize];
     v12 = v11;
-    v13 = [(THWReviewTextMultipleChoiceLayout *)self p_contentIsScrollable];
-    v14 = [(THWReviewTextMultipleChoiceLayout *)self imageIsAtSide];
+    p_contentIsScrollable = [(THWReviewTextMultipleChoiceLayout *)self p_contentIsScrollable];
+    imageIsAtSide = [(THWReviewTextMultipleChoiceLayout *)self imageIsAtSide];
     v15 = v8;
-    if (v13)
+    if (p_contentIsScrollable)
     {
-      if (v14)
+      if (imageIsAtSide)
       {
         v15 = v8 - v12 + -15.0 >= 150.0 ? v8 - v12 + -15.0 : 150.0;
         [(THWReviewTextMultipleChoiceLayout *)self p_answersSizeForWidth:1.79769313e308];
@@ -226,7 +226,7 @@
       }
     }
 
-    else if (v14)
+    else if (imageIsAtSide)
     {
       v15 = v8 - v12 + -15.0;
       if ([(THWReviewQuestionLayoutDelegate *)self->_delegate isExpanded])
@@ -388,12 +388,12 @@
     v9 = v8;
     [(THWReviewTextMultipleChoiceLayout *)self answersSize];
     v11 = v10;
-    v12 = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
-    if (v12 > 2)
+    p_imagePlacement = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
+    if (p_imagePlacement > 2)
     {
-      if (v12 != 3)
+      if (p_imagePlacement != 3)
       {
-        if (v12 != 4)
+        if (p_imagePlacement != 4)
         {
           goto LABEL_9;
         }
@@ -421,9 +421,9 @@ LABEL_19:
       }
     }
 
-    else if (v12 != 1)
+    else if (p_imagePlacement != 1)
     {
-      if (v12 != 2)
+      if (p_imagePlacement != 2)
       {
 LABEL_9:
         height = p_contentSize->height;
@@ -458,19 +458,19 @@ LABEL_20:
     origin = CGRectZero.origin;
     p_imageFrame->origin = CGRectZero.origin;
     p_imageFrame->size = size;
-    v4 = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageInfo];
+    imageInfo = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageInfo];
     [(THWReviewTextMultipleChoiceLayout *)self imageSize];
     v6 = v5;
     v8 = v7;
     [(THWReviewTextMultipleChoiceLayout *)self answersSize];
-    if (!v4 || v6 <= 0.0 || v8 <= 0.0)
+    if (!imageInfo || v6 <= 0.0 || v8 <= 0.0)
     {
       goto LABEL_20;
     }
 
     v11 = v9;
     v12 = v10;
-    v13 = [(THWReviewTextMultipleChoiceLayout *)self delegate];
+    delegate = [(THWReviewTextMultipleChoiceLayout *)self delegate];
     TSDRectWithSize();
     p_imageFrame->origin.x = v14;
     p_imageFrame->origin.y = v15;
@@ -496,10 +496,10 @@ LABEL_20:
     [(THWReviewTextMultipleChoiceLayout *)self contentSize];
     v23 = v22;
     v25 = v24;
-    v26 = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
-    if (v26 > 2)
+    p_imagePlacement = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
+    if (p_imagePlacement > 2)
     {
-      if ((v26 - 3) >= 2)
+      if ((p_imagePlacement - 3) >= 2)
       {
 LABEL_20:
         TSDRoundedRect();
@@ -511,12 +511,12 @@ LABEL_20:
       }
     }
 
-    else if (v26)
+    else if (p_imagePlacement)
     {
-      if (v26 == 1)
+      if (p_imagePlacement == 1)
       {
         p_imageFrame->origin.y = 0.0;
-        if ([(THWReviewQuestionLayoutDelegate *)v13 isExpanded])
+        if ([(THWReviewQuestionLayoutDelegate *)delegate isExpanded])
         {
           v32 = v25 - v8 - v12 + -6.0;
           if (v32 < 0.0)
@@ -528,10 +528,10 @@ LABEL_20:
         }
       }
 
-      else if (v26 == 2)
+      else if (p_imagePlacement == 2)
       {
         p_imageFrame->origin.x = v23 - p_imageFrame->size.width;
-        if ([(THWReviewQuestionLayoutDelegate *)v13 isExpanded])
+        if ([(THWReviewQuestionLayoutDelegate *)delegate isExpanded])
         {
           v27 = v23 - v6 - v11 + -15.0;
           if (v27 < 0.0)
@@ -608,10 +608,10 @@ LABEL_25:
     [(THWReviewTextMultipleChoiceLayout *)self contentSize];
     v25 = v24;
     v27 = v26;
-    v28 = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
-    if (v28 > 2)
+    p_imagePlacement = [(THWReviewTextMultipleChoiceLayout *)self p_imagePlacement];
+    if (p_imagePlacement > 2)
     {
-      if ((v28 - 3) >= 2)
+      if ((p_imagePlacement - 3) >= 2)
       {
 LABEL_20:
         TSDRoundedRect();
@@ -623,9 +623,9 @@ LABEL_20:
       }
     }
 
-    else if (v28)
+    else if (p_imagePlacement)
     {
-      if (v28 == 1)
+      if (p_imagePlacement == 1)
       {
         v36.origin.x = v15;
         v36.origin.y = v17;
@@ -647,7 +647,7 @@ LABEL_20:
         p_answersFrame->origin.y = v35;
       }
 
-      else if (v28 == 2)
+      else if (p_imagePlacement == 2)
       {
         v29 = v25 - v5 - v23 + -15.0;
         if (v29 < 0.0)
@@ -725,10 +725,10 @@ LABEL_21:
 - (id)childInfosForLayout
 {
   v3 = [NSMutableArray arrayWithObject:self->_answerStack];
-  v4 = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageInfo];
-  if (v4)
+  imageInfo = [(THWReviewQuestion *)[(THWReviewTextMultipleChoiceLayout *)self question] imageInfo];
+  if (imageInfo)
   {
-    [(NSMutableArray *)v3 addObject:v4];
+    [(NSMutableArray *)v3 addObject:imageInfo];
   }
 
   return v3;
@@ -759,7 +759,7 @@ LABEL_21:
   return v3;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   objc_opt_class();
   result = TSUDynamicCast();
@@ -774,7 +774,7 @@ LABEL_21:
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -787,7 +787,7 @@ LABEL_21:
   return result;
 }
 
-- (double)stackedControlContainerMinHeight:(id)a3
+- (double)stackedControlContainerMinHeight:(id)height
 {
   [(THWReviewTextMultipleChoiceLayout *)self answersSize];
   v5 = v4;
@@ -803,29 +803,29 @@ LABEL_21:
   }
 }
 
-- (id)layoutForChoiceIndex:(unint64_t)a3
+- (id)layoutForChoiceIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_answerLayouts count]<= a3)
+  if ([(NSArray *)self->_answerLayouts count]<= index)
   {
     return 0;
   }
 
   answerLayouts = self->_answerLayouts;
 
-  return [(NSArray *)answerLayouts objectAtIndex:a3];
+  return [(NSArray *)answerLayouts objectAtIndex:index];
 }
 
 - (void)p_setupAnswerLayouts
 {
   if (!self->_answerLayouts)
   {
-    v3 = [(THWReviewQuestion *)self->_question choices];
-    v4 = [NSMutableArray arrayWithCapacity:[(NSArray *)v3 count]];
+    choices = [(THWReviewQuestion *)self->_question choices];
+    v4 = [NSMutableArray arrayWithCapacity:[(NSArray *)choices count]];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [(NSArray *)choices countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -838,7 +838,7 @@ LABEL_21:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(choices);
           }
 
           v10 = [[THWReviewTextAnswerLayout alloc] initWithChoice:*(*(&v11 + 1) + 8 * v9) index:v7 delegate:self];
@@ -849,7 +849,7 @@ LABEL_21:
         }
 
         while (v6 != v9);
-        v6 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [(NSArray *)choices countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);

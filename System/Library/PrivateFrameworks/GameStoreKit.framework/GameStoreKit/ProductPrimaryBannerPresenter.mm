@@ -1,10 +1,10 @@
 @interface ProductPrimaryBannerPresenter
-- (void)bannerHideCriteriaDidChange:(id)a3;
+- (void)bannerHideCriteriaDidChange:(id)change;
 @end
 
 @implementation ProductPrimaryBannerPresenter
 
-- (void)bannerHideCriteriaDidChange:(id)a3
+- (void)bannerHideCriteriaDidChange:(id)change
 {
   v3 = sub_24F91EB58();
   v4 = *(v3 - 8);

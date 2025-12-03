@@ -1,7 +1,7 @@
 @interface TRAPreferencesTree
-+ (TRAPreferencesTree)treeWithNodesSpecifications:(id)a3 traversalType:(int64_t)a4 debugName:(id)a5;
-- (id)_initWithRootChildren:(id)a3 traversalType:(int64_t)a4 debugName:(id)a5;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (TRAPreferencesTree)treeWithNodesSpecifications:(id)specifications traversalType:(int64_t)type debugName:(id)name;
+- (id)_initWithRootChildren:(id)children traversalType:(int64_t)type debugName:(id)name;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)participantsTopologicalSort;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
@@ -13,13 +13,13 @@
 - (id)participantsTopologicalSort
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(TRAPreferencesTree *)self topologicalSort];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  topologicalSort = [(TRAPreferencesTree *)self topologicalSort];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(topologicalSort, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = topologicalSort;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -34,8 +34,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) participant];
-        [v3 addObject:v9];
+        participant = [*(*(&v12 + 1) + 8 * i) participant];
+        [v3 addObject:participant];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -65,21 +65,21 @@
   return v3;
 }
 
-- (id)_initWithRootChildren:(id)a3 traversalType:(int64_t)a4 debugName:(id)a5
+- (id)_initWithRootChildren:(id)children traversalType:(int64_t)type debugName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  childrenCopy = children;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = TRAPreferencesTree;
   v10 = [(TRAPreferencesTree *)&v14 init];
   if (v10)
   {
-    v11 = [v8 sortedArrayUsingComparator:&__block_literal_global_136];
+    v11 = [childrenCopy sortedArrayUsingComparator:&__block_literal_global_136];
     rootChildren = v10->_rootChildren;
     v10->_rootChildren = v11;
 
-    v10->_traversalType = a4;
-    objc_storeStrong(&v10->_debugName, a5);
+    v10->_traversalType = type;
+    objc_storeStrong(&v10->_debugName, name);
   }
 
   return v10;
@@ -101,15 +101,15 @@ uint64_t __68__TRAPreferencesTree__initWithRootChildren_traversalType_debugName_
   return v11;
 }
 
-+ (TRAPreferencesTree)treeWithNodesSpecifications:(id)a3 traversalType:(int64_t)a4 debugName:(id)a5
++ (TRAPreferencesTree)treeWithNodesSpecifications:(id)specifications traversalType:(int64_t)type debugName:(id)name
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  specificationsCopy = specifications;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (specificationsCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -127,14 +127,14 @@ uint64_t __68__TRAPreferencesTree__initWithRootChildren_traversalType_debugName_
   +[TRAPreferencesTree treeWithNodesSpecifications:traversalType:debugName:];
 LABEL_3:
   v43 = v9;
-  v52 = [MEMORY[0x277CBEB58] setWithArray:v7];
-  v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  v45 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  v52 = [MEMORY[0x277CBEB58] setWithArray:specificationsCopy];
+  v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(specificationsCopy, "count")}];
+  v45 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(specificationsCopy, "count")}];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v7;
+  obj = specificationsCopy;
   v10 = [obj countByEnumeratingWithState:&v62 objects:v68 count:16];
   if (v10)
   {
@@ -151,9 +151,9 @@ LABEL_3:
         }
 
         v15 = *(*(&v62 + 1) + 8 * i);
-        v16 = [v15 parentParticipant];
+        parentParticipant = [v15 parentParticipant];
 
-        if (v16)
+        if (parentParticipant)
         {
           v13 = 0;
         }
@@ -161,15 +161,15 @@ LABEL_3:
         else
         {
           v17 = [TRAPreferencesTreeNode alloc];
-          v18 = [v15 participant];
-          v19 = [(TRAPreferencesTreeNode *)v17 initWithParticipant:v18];
+          participant = [v15 participant];
+          v19 = [(TRAPreferencesTreeNode *)v17 initWithParticipant:participant];
 
           [v15 order];
           [(TRAPreferencesTreeNode *)v19 setOrder:?];
           [v46 addObject:v19];
           [v52 removeObject:v15];
-          v20 = [(TRAPreferencesTreeNode *)v19 uniqueIdentifier];
-          [v45 setObject:v19 forKey:v20];
+          uniqueIdentifier = [(TRAPreferencesTreeNode *)v19 uniqueIdentifier];
+          [v45 setObject:v19 forKey:uniqueIdentifier];
         }
       }
 
@@ -185,7 +185,7 @@ LABEL_3:
   }
 
   v21 = v43;
-  v22 = [[TRAPreferencesTree alloc] _initWithRootChildren:v46 traversalType:a4 debugName:v43];
+  v22 = [[TRAPreferencesTree alloc] _initWithRootChildren:v46 traversalType:type debugName:v43];
   if ((v13 & 1) == 0 && [v46 count])
   {
     v42 = v22;
@@ -237,14 +237,14 @@ LABEL_3:
                   }
 
                   v33 = *(*(&v54 + 1) + 8 * j);
-                  v34 = [v33 parentParticipant];
-                  v35 = [v27 participant];
+                  parentParticipant2 = [v33 parentParticipant];
+                  participant2 = [v27 participant];
 
-                  if (v34 == v35)
+                  if (parentParticipant2 == participant2)
                   {
                     v36 = [TRAPreferencesTreeNode alloc];
-                    v37 = [v33 participant];
-                    v38 = [(TRAPreferencesTreeNode *)v36 initWithParticipant:v37];
+                    participant3 = [v33 participant];
+                    v38 = [(TRAPreferencesTreeNode *)v36 initWithParticipant:participant3];
 
                     [v33 order];
                     [(TRAPreferencesTreeNode *)v38 setOrder:?];
@@ -296,10 +296,10 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(TRAPreferencesTree *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAPreferencesTree *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -310,12 +310,12 @@ LABEL_3:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAPreferencesTree *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAPreferencesTree *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 + (void)treeWithNodesSpecifications:traversalType:debugName:.cold.1()

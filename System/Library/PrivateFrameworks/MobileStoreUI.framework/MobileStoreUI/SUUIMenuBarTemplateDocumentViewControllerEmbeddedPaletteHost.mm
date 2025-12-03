@@ -1,32 +1,32 @@
 @interface SUUIMenuBarTemplateDocumentViewControllerEmbeddedPaletteHost
 - (void)layoutSubviews;
-- (void)setTitleView:(id)a3;
+- (void)setTitleView:(id)view;
 @end
 
 @implementation SUUIMenuBarTemplateDocumentViewControllerEmbeddedPaletteHost
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   titleView = self->_titleView;
-  v8 = v5;
+  v8 = viewCopy;
   if (titleView)
   {
     [(UIView *)titleView removeFromSuperview];
     v7 = self->_titleView;
     self->_titleView = 0;
 
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  if (v5)
+  if (viewCopy)
   {
     [(SUUIMenuBarTemplateDocumentViewControllerEmbeddedPaletteHost *)self addSubview:v8];
-    objc_storeStrong(&self->_titleView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_titleView, view);
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](titleView, v5);
+  MEMORY[0x2821F96F8](titleView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -77,13 +77,13 @@
     v16 = CGRectGetHeight(v28);
   }
 
-  v17 = [(SUUIMenuBarTemplateDocumentViewControllerEmbeddedPaletteHost *)self traitCollection];
-  [v17 displayScale];
+  traitCollection = [(SUUIMenuBarTemplateDocumentViewControllerEmbeddedPaletteHost *)self traitCollection];
+  [traitCollection displayScale];
   v19 = v18;
   if (v18 < 0.00000011920929)
   {
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v19 = v21;
   }
 

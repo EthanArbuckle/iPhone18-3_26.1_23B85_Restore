@@ -1,34 +1,34 @@
 @interface ICAttachmentWebModelIcon
 - (CGSize)size;
-- (ICAttachmentWebModelIcon)initWithFallbackURL:(id)a3 withSize:(CGSize)a4;
-- (ICAttachmentWebModelIcon)initWithImageURL:(id)a3;
-- (ICAttachmentWebModelIcon)initWithURL:(id)a3 withSize:(CGSize)a4;
+- (ICAttachmentWebModelIcon)initWithFallbackURL:(id)l withSize:(CGSize)size;
+- (ICAttachmentWebModelIcon)initWithImageURL:(id)l;
+- (ICAttachmentWebModelIcon)initWithURL:(id)l withSize:(CGSize)size;
 - (id)description;
 @end
 
 @implementation ICAttachmentWebModelIcon
 
-- (ICAttachmentWebModelIcon)initWithURL:(id)a3 withSize:(CGSize)a4
+- (ICAttachmentWebModelIcon)initWithURL:(id)l withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = ICAttachmentWebModelIcon;
   v8 = [(ICAttachmentWebModelIcon *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ICAttachmentWebModelIcon *)v8 setUrl:v7];
+    [(ICAttachmentWebModelIcon *)v8 setUrl:lCopy];
     [(ICAttachmentWebModelIcon *)v9 setSize:width, height];
   }
 
   return v9;
 }
 
-- (ICAttachmentWebModelIcon)initWithImageURL:(id)a3
+- (ICAttachmentWebModelIcon)initWithImageURL:(id)l
 {
-  v3 = [(ICAttachmentWebModelIcon *)self initWithURL:a3 withSize:0.0, 0.0];
+  v3 = [(ICAttachmentWebModelIcon *)self initWithURL:l withSize:0.0, 0.0];
   v4 = v3;
   if (v3)
   {
@@ -38,19 +38,19 @@
   return v4;
 }
 
-- (ICAttachmentWebModelIcon)initWithFallbackURL:(id)a3 withSize:(CGSize)a4
+- (ICAttachmentWebModelIcon)initWithFallbackURL:(id)l withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  if (lCopy)
   {
     v16.receiver = self;
     v16.super_class = ICAttachmentWebModelIcon;
     v8 = [(ICAttachmentWebModelIcon *)&v16 init];
     if (v8)
     {
-      v9 = [MEMORY[0x1E696AF20] componentsWithURL:v7 resolvingAgainstBaseURL:1];
+      v9 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
       v10 = v9;
       if (width == 60.0 && height == 60.0)
       {
@@ -70,7 +70,7 @@
     }
 
     self = v8;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -81,10 +81,10 @@
       [ICAttachmentWebModelIcon initWithFallbackURL:v11 withSize:?];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)description

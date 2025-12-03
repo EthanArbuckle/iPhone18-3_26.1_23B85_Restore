@@ -61,20 +61,20 @@
 - (id)outputImage
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PIPhotoGrain *)self inputLevel];
-  [v3 floatValue];
+  inputLevel = [(PIPhotoGrain *)self inputLevel];
+  [inputLevel floatValue];
   v5 = v4;
 
   v6 = exp2f((v5 * 10.0) + -3.0) * 100.0;
-  v7 = [(PIPhotoGrain *)self inputAmount];
-  [v7 floatValue];
+  inputAmount = [(PIPhotoGrain *)self inputAmount];
+  [inputAmount floatValue];
   v9 = v8;
 
-  v10 = [(PIPhotoGrain *)self inputPhase];
-  [v10 floatValue];
+  inputPhase = [(PIPhotoGrain *)self inputPhase];
+  [inputPhase floatValue];
   v12 = v11;
 
-  v13 = [(PIPhotoGrain *)self inputImage];
+  inputImage = [(PIPhotoGrain *)self inputImage];
   v23[0] = @"inputISO";
   *&v14 = v6;
   v15 = [MEMORY[0x1E696AD98] numberWithFloat:v14];
@@ -88,7 +88,7 @@
   v19 = [MEMORY[0x1E696AD98] numberWithFloat:v18];
   v24[2] = v19;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
-  v21 = [v13 imageByApplyingFilter:@"CIPhotoGrain" withInputParameters:v20];
+  v21 = [inputImage imageByApplyingFilter:@"CIPhotoGrain" withInputParameters:v20];
 
   return v21;
 }

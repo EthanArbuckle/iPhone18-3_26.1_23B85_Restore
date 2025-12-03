@@ -1,49 +1,49 @@
 @interface ContextMenuInteractionDelegate
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 @end
 
 @implementation ContextMenuInteractionDelegate
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v9 = sub_220E9E468();
 
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  v9 = sub_220E9E9BC(v7, x, y);
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
+  v9 = sub_220E9E9BC(interactionCopy, x, y);
 
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_220E9FA84(v6, v7);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_220E9FA84(interactionCopy, configurationCopy);
 
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_220E9FA84(v6, v7);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_220E9FA84(interactionCopy, configurationCopy);
 
   return v9;
 }

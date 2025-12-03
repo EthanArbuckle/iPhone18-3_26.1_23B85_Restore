@@ -12,19 +12,19 @@
     v5 = _AXSAutomationEnabled();
     if (v5 && (-[UIViewAccessibility__MessageUI__UIKit accessibilityIdentifier](self, "accessibilityIdentifier"), v2 = objc_claimAutoreleasedReturnValue(), ([v2 isEqualToString:@"RecipientAtomContainerView"] & 1) != 0))
     {
-      v4 = 1;
+      _accessibilityOverridesInvisibility = 1;
     }
 
     else
     {
       v7.receiver = self;
       v7.super_class = UIViewAccessibility__MessageUI__UIKit;
-      v4 = [(UIViewAccessibility__MessageUI__UIKit *)&v7 _accessibilityOverridesInvisibility];
+      _accessibilityOverridesInvisibility = [(UIViewAccessibility__MessageUI__UIKit *)&v7 _accessibilityOverridesInvisibility];
       if (!v5)
       {
 LABEL_8:
         [(UIViewAccessibility__MessageUI__UIKit *)self _axSetIsCheckingWhetherOverridesInvisibility:0];
-        return v4;
+        return _accessibilityOverridesInvisibility;
       }
     }
 

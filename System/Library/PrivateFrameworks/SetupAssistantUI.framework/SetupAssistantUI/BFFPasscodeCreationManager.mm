@@ -5,10 +5,10 @@
 - (BOOL)isSimplePasscodeEntry;
 - (NSString)constraintInstructions;
 - (void)_applyPasscode;
-- (void)acceptWeakPasscode:(BOOL)a3;
+- (void)acceptWeakPasscode:(BOOL)passcode;
 - (void)reset;
-- (void)setPasscodeState:(unint64_t)a3;
-- (void)transitionToNextPasscodeStateForInput:(id)a3;
+- (void)setPasscodeState:(unint64_t)state;
+- (void)transitionToNextPasscodeStateForInput:(id)input;
 @end
 
 @implementation BFFPasscodeCreationManager
@@ -45,42 +45,42 @@
 
 - (NSString)constraintInstructions
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 isPasscodeRequired];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeRequired = [mEMORY[0x277D262A0] isPasscodeRequired];
 
-  if (v4)
+  if (isPasscodeRequired)
   {
-    v5 = [(BFFPasscodeCreationManager *)self constraintFailedInstructions];
+    constraintFailedInstructions = [(BFFPasscodeCreationManager *)self constraintFailedInstructions];
 
-    if (v5)
+    if (constraintFailedInstructions)
     {
-      v6 = [(BFFPasscodeCreationManager *)self constraintFailedInstructions];
+      constraintFailedInstructions2 = [(BFFPasscodeCreationManager *)self constraintFailedInstructions];
     }
 
     else
     {
-      v7 = [MEMORY[0x277D262A0] sharedConnection];
-      v6 = [v7 localizedDescriptionOfCurrentPasscodeConstraints];
+      mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+      constraintFailedInstructions2 = [mEMORY[0x277D262A0]2 localizedDescriptionOfCurrentPasscodeConstraints];
     }
   }
 
   else
   {
-    v6 = 0;
+    constraintFailedInstructions2 = 0;
   }
 
-  return v6;
+  return constraintFailedInstructions2;
 }
 
 - (BOOL)isSimplePasscodeEntry
 {
-  v3 = [(BFFPasscodeCreationManager *)self isNumericPasscodeEntry];
-  if (v3)
+  isNumericPasscodeEntry = [(BFFPasscodeCreationManager *)self isNumericPasscodeEntry];
+  if (isNumericPasscodeEntry)
   {
-    LOBYTE(v3) = [(BFFPasscodeCreationManager *)self simplePasscodeEntryLength]> 0;
+    LOBYTE(isNumericPasscodeEntry) = [(BFFPasscodeCreationManager *)self simplePasscodeEntryLength]> 0;
   }
 
-  return v3;
+  return isNumericPasscodeEntry;
 }
 
 - (void)_applyPasscode
@@ -194,35 +194,35 @@ uint64_t __44__BFFPasscodeCreationManager__applyPasscode__block_invoke_5(uint64_
   return [*(a1 + 32) setPasscodeState:4];
 }
 
-- (void)setPasscodeState:(unint64_t)a3
+- (void)setPasscodeState:(unint64_t)state
 {
-  v5 = [(BFFPasscodeCreationManager *)self passcodeState];
-  self->_passcodeState = a3;
-  v6 = [(BFFPasscodeCreationManager *)self delegate];
-  if (v6)
+  passcodeState = [(BFFPasscodeCreationManager *)self passcodeState];
+  self->_passcodeState = state;
+  delegate = [(BFFPasscodeCreationManager *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(BFFPasscodeCreationManager *)self delegate];
+    v7 = delegate;
+    delegate2 = [(BFFPasscodeCreationManager *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(BFFPasscodeCreationManager *)self delegate];
-      [v10 passcodeManager:self didTransitionFromState:v5 toState:a3];
+      delegate3 = [(BFFPasscodeCreationManager *)self delegate];
+      [delegate3 passcodeManager:self didTransitionFromState:passcodeState toState:state];
     }
   }
 }
 
-- (void)transitionToNextPasscodeStateForInput:(id)a3
+- (void)transitionToNextPasscodeStateForInput:(id)input
 {
-  v4 = a3;
-  v5 = [(BFFPasscodeCreationManager *)self passcodeState];
-  v6 = v5;
-  if (v5 <= 1)
+  inputCopy = input;
+  passcodeState = [(BFFPasscodeCreationManager *)self passcodeState];
+  v6 = passcodeState;
+  if (passcodeState <= 1)
   {
-    if (v5)
+    if (passcodeState)
     {
-      if (v5 != 1)
+      if (passcodeState != 1)
       {
         v6 = 0;
       }
@@ -233,16 +233,16 @@ uint64_t __44__BFFPasscodeCreationManager__applyPasscode__block_invoke_5(uint64_
     goto LABEL_10;
   }
 
-  if (v5 != 2)
+  if (passcodeState != 2)
   {
-    if (v5 == 4)
+    if (passcodeState == 4)
     {
 LABEL_28:
       [(BFFPasscodeCreationManager *)self setPasscodeState:v6];
       goto LABEL_29;
     }
 
-    if (v5 != 3)
+    if (passcodeState != 3)
     {
 LABEL_26:
       v6 = 0;
@@ -250,16 +250,16 @@ LABEL_26:
     }
 
 LABEL_10:
-    if ([v4 length])
+    if ([inputCopy length])
     {
-      v7 = [MEMORY[0x277D262A0] sharedConnection];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
       v19 = 0;
-      v8 = [v7 passcode:v4 meetsCurrentConstraintsOutError:&v19];
+      v8 = [mEMORY[0x277D262A0] passcode:inputCopy meetsCurrentConstraintsOutError:&v19];
       v9 = v19;
 
       if (v8)
       {
-        [(BFFPasscodeCreationManager *)self setPasscode:v4];
+        [(BFFPasscodeCreationManager *)self setPasscode:inputCopy];
         [(BFFPasscodeCreationManager *)self isSimplePasscodeEntry];
         [(BFFPasscodeCreationManager *)self passcode];
         if (SecPasswordIsPasswordWeak2())
@@ -277,13 +277,13 @@ LABEL_10:
 
       if (v9)
       {
-        v15 = [v9 domain];
-        v16 = [v15 isEqualToString:*MEMORY[0x277D26140]];
+        domain = [v9 domain];
+        v16 = [domain isEqualToString:*MEMORY[0x277D26140]];
 
         if (v16)
         {
-          v17 = [v9 localizedDescription];
-          [(BFFPasscodeCreationManager *)self setConstraintFailedInstructions:v17];
+          localizedDescription = [v9 localizedDescription];
+          [(BFFPasscodeCreationManager *)self setConstraintFailedInstructions:localizedDescription];
 LABEL_25:
 
           goto LABEL_26;
@@ -296,15 +296,15 @@ LABEL_25:
       v9 = 0;
     }
 
-    v17 = [MEMORY[0x277D262A0] sharedConnection];
-    v18 = [v17 localizedDescriptionOfCurrentPasscodeConstraints];
-    [(BFFPasscodeCreationManager *)self setConstraintFailedInstructions:v18];
+    localizedDescription = [MEMORY[0x277D262A0] sharedConnection];
+    localizedDescriptionOfCurrentPasscodeConstraints = [localizedDescription localizedDescriptionOfCurrentPasscodeConstraints];
+    [(BFFPasscodeCreationManager *)self setConstraintFailedInstructions:localizedDescriptionOfCurrentPasscodeConstraints];
 
     goto LABEL_25;
   }
 
-  v10 = [(BFFPasscodeCreationManager *)self passcode];
-  v11 = [v10 isEqualToString:v4];
+  passcode = [(BFFPasscodeCreationManager *)self passcode];
+  v11 = [passcode isEqualToString:inputCopy];
 
   if (!v11)
   {
@@ -312,23 +312,23 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v12 = [(BFFPasscodeCreationManager *)self delegate];
+  delegate = [(BFFPasscodeCreationManager *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(BFFPasscodeCreationManager *)self delegate];
-    [v14 passcodeManagerWillSetPasscode:self];
+    delegate2 = [(BFFPasscodeCreationManager *)self delegate];
+    [delegate2 passcodeManagerWillSetPasscode:self];
   }
 
   [(BFFPasscodeCreationManager *)self _applyPasscode];
 LABEL_29:
 }
 
-- (void)acceptWeakPasscode:(BOOL)a3
+- (void)acceptWeakPasscode:(BOOL)passcode
 {
-  v3 = a3;
-  if (a3)
+  passcodeCopy = passcode;
+  if (passcode)
   {
     v5 = 2;
   }
@@ -341,7 +341,7 @@ LABEL_29:
 
   [(BFFPasscodeCreationManager *)self setPasscodeState:v5];
 
-  [(BFFPasscodeCreationManager *)self setAcceptedWeakPasscode:v3];
+  [(BFFPasscodeCreationManager *)self setAcceptedWeakPasscode:passcodeCopy];
 }
 
 - (void)reset

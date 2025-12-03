@@ -3,11 +3,11 @@
 - (BOOL)isContentProtectionEnabled;
 - (BOOL)isDeviceClassCUnlocked;
 - (ICSecurityInfo)init;
-- (void)_getContentProtectionEnabled:(BOOL *)a3 isDeviceClassCUnlocked:(BOOL *)a4;
-- (void)_loadContentProtectionEnabled:(BOOL)a3 isDeviceClassCUnlocked:(BOOL)a4;
+- (void)_getContentProtectionEnabled:(BOOL *)enabled isDeviceClassCUnlocked:(BOOL *)unlocked;
+- (void)_loadContentProtectionEnabled:(BOOL)enabled isDeviceClassCUnlocked:(BOOL)unlocked;
 - (void)_processFirstUnlockNotification;
 - (void)dealloc;
-- (void)performBlockAfterFirstUnlock:(id)a3;
+- (void)performBlockAfterFirstUnlock:(id)unlock;
 @end
 
 @implementation ICSecurityInfo
@@ -54,9 +54,9 @@ uint64_t __36__ICSecurityInfo_sharedSecurityInfo__block_invoke()
   if (v2)
   {
     v2->_firstUnlockNotificationToken = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingFirstUnlockBlocks = v3->_pendingFirstUnlockBlocks;
-    v3->_pendingFirstUnlockBlocks = v4;
+    v3->_pendingFirstUnlockBlocks = array;
 
     v6 = MEMORY[0x1E69E96A8];
     v7 = dispatch_queue_create("com.apple.itunescloud.ICSecurityInfo.accessQueue", MEMORY[0x1E69E96A8]);
@@ -135,12 +135,12 @@ void __49__ICSecurityInfo__processFirstUnlockNotification__block_invoke_2(uint64
   [v2 postNotificationName:@"ICSecurityInfoFirstUnlockNotification" object:*(a1 + 32)];
 }
 
-- (void)_loadContentProtectionEnabled:(BOOL)a3 isDeviceClassCUnlocked:(BOOL)a4
+- (void)_loadContentProtectionEnabled:(BOOL)enabled isDeviceClassCUnlocked:(BOOL)unlocked
 {
-  v4 = a4;
-  v5 = a3;
+  unlockedCopy = unlocked;
+  enabledCopy = enabled;
   dispatch_assert_queue_barrier(self->_accessQueue);
-  if (v5 && !self->_hasLoadedContentProtectionEnabled)
+  if (enabledCopy && !self->_hasLoadedContentProtectionEnabled)
   {
     v7 = MKBDeviceFormattedForContentProtection();
     if ((v7 & 0x80000000) == 0)
@@ -150,7 +150,7 @@ void __49__ICSecurityInfo__processFirstUnlockNotification__block_invoke_2(uint64
     }
   }
 
-  if (v4 && !self->_hasLoadedDeviceClassCUnlocked)
+  if (unlockedCopy && !self->_hasLoadedDeviceClassCUnlocked)
   {
     v8 = MKBDeviceUnlockedSinceBoot();
     if (v8 < 0)
@@ -234,7 +234,7 @@ uint64_t __71__ICSecurityInfo__loadContentProtectionEnabled_isDeviceClassCUnlock
   return [*(a1 + 32) _processFirstUnlockNotification];
 }
 
-- (void)_getContentProtectionEnabled:(BOOL *)a3 isDeviceClassCUnlocked:(BOOL *)a4
+- (void)_getContentProtectionEnabled:(BOOL *)enabled isDeviceClassCUnlocked:(BOOL *)unlocked
 {
   dispatch_assert_queue_not_V2(self->_accessQueue);
   v23 = 0;
@@ -264,29 +264,29 @@ uint64_t __71__ICSecurityInfo__loadContentProtectionEnabled_isDeviceClassCUnlock
   block[7] = &v15;
   block[8] = &v11;
   dispatch_sync(accessQueue, block);
-  if (a3 && (v24[3] & 1) == 0 || a4 && (v16[3] & 1) == 0)
+  if (enabled && (v24[3] & 1) == 0 || unlocked && (v16[3] & 1) == 0)
   {
     v8 = self->_accessQueue;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __70__ICSecurityInfo__getContentProtectionEnabled_isDeviceClassCUnlocked___block_invoke_2;
     v9[3] = &unk_1E7BF8D30;
-    v9[7] = a3;
-    v9[8] = a4;
+    v9[7] = enabled;
+    v9[8] = unlocked;
     v9[4] = self;
     v9[5] = &v19;
     v9[6] = &v11;
     dispatch_barrier_sync(v8, v9);
   }
 
-  if (a3)
+  if (enabled)
   {
-    *a3 = *(v20 + 24);
+    *enabled = *(v20 + 24);
   }
 
-  if (a4)
+  if (unlocked)
   {
-    *a4 = *(v12 + 24);
+    *unlocked = *(v12 + 24);
   }
 
   _Block_object_dispose(&v11, 8);
@@ -312,9 +312,9 @@ uint64_t __70__ICSecurityInfo__getContentProtectionEnabled_isDeviceClassCUnlocke
   return result;
 }
 
-- (void)performBlockAfterFirstUnlock:(id)a3
+- (void)performBlockAfterFirstUnlock:(id)unlock
 {
-  v4 = a3;
+  unlockCopy = unlock;
   v8 = 0;
   [(ICSecurityInfo *)self _getContentProtectionEnabled:&v8 + 1 isDeviceClassCUnlocked:&v8];
   if (HIBYTE(v8) == 1 && (v8 & 1) == 0)
@@ -325,13 +325,13 @@ uint64_t __70__ICSecurityInfo__getContentProtectionEnabled_isDeviceClassCUnlocke
     block[2] = __47__ICSecurityInfo_performBlockAfterFirstUnlock___block_invoke;
     block[3] = &unk_1E7BF9EC8;
     block[4] = self;
-    v7 = v4;
+    v7 = unlockCopy;
     dispatch_barrier_async(accessQueue, block);
   }
 
   else
   {
-    v4[2](v4);
+    unlockCopy[2](unlockCopy);
   }
 }
 

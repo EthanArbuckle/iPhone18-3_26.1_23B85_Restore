@@ -1,30 +1,30 @@
 @interface RideBookingRideOptionState
-+ (RideBookingRideOptionState)stateWithRideOptionStatusMap:(id)a3 appStoreSuggestions:(id)a4 installedSuggestions:(id)a5;
++ (RideBookingRideOptionState)stateWithRideOptionStatusMap:(id)map appStoreSuggestions:(id)suggestions installedSuggestions:(id)installedSuggestions;
 @end
 
 @implementation RideBookingRideOptionState
 
-+ (RideBookingRideOptionState)stateWithRideOptionStatusMap:(id)a3 appStoreSuggestions:(id)a4 installedSuggestions:(id)a5
++ (RideBookingRideOptionState)stateWithRideOptionStatusMap:(id)map appStoreSuggestions:(id)suggestions installedSuggestions:(id)installedSuggestions
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  v12 = [v10 copy];
+  installedSuggestionsCopy = installedSuggestions;
+  suggestionsCopy = suggestions;
+  mapCopy = map;
+  v11 = objc_alloc_init(self);
+  v12 = [mapCopy copy];
 
   [v11 setRideOptionStatusMap:v12];
-  [v11 setAppStoreSuggestions:v9];
+  [v11 setAppStoreSuggestions:suggestionsCopy];
 
-  [v11 setInstalledSuggestions:v8];
-  v13 = [v11 appStoreSuggestions];
+  [v11 setInstalledSuggestions:installedSuggestionsCopy];
+  appStoreSuggestions = [v11 appStoreSuggestions];
 
-  if (!v13)
+  if (!appStoreSuggestions)
   {
     [v11 setLoadingAppStoreSuggestions:1];
   }
 
-  v14 = [v11 appStoreSuggestions];
-  if ([v14 count])
+  appStoreSuggestions2 = [v11 appStoreSuggestions];
+  if ([appStoreSuggestions2 count])
   {
     v15 = 0;
   }
@@ -36,9 +36,9 @@
 
   [v11 setNoAppStoreSuggestionsAvailable:v15];
 
-  v16 = [v11 rideOptionStatusMap];
-  v17 = [v16 allValues];
-  [v11 setNoRideOptionsAvailable:{objc_msgSend(v17, "count") == 0}];
+  rideOptionStatusMap = [v11 rideOptionStatusMap];
+  allValues = [rideOptionStatusMap allValues];
+  [v11 setNoRideOptionsAvailable:{objc_msgSend(allValues, "count") == 0}];
 
   return v11;
 }

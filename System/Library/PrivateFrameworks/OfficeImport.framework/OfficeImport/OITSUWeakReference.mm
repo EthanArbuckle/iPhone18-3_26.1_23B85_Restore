@@ -1,22 +1,22 @@
 @interface OITSUWeakReference
-+ (id)weakReferenceWithObject:(id)a3;
++ (id)weakReferenceWithObject:(id)object;
 - (OITSUWeakReference)init;
-- (OITSUWeakReference)initWithObject:(id)a3;
+- (OITSUWeakReference)initWithObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation OITSUWeakReference
 
-+ (id)weakReferenceWithObject:(id)a3
++ (id)weakReferenceWithObject:(id)object
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithObject:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithObject:object];
 
   return v3;
 }
 
-- (OITSUWeakReference)initWithObject:(id)a3
+- (OITSUWeakReference)initWithObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     v7.receiver = self;
     v7.super_class = OITSUWeakReference;
@@ -24,7 +24,7 @@
     v5 = v4;
     if (v4)
     {
-      objc_storeWeak(&v4->mObject, a3);
+      objc_storeWeak(&v4->mObject, object);
     }
   }
 

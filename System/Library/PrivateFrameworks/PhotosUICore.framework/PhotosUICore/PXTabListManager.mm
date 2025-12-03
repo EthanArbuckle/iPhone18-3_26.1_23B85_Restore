@@ -1,16 +1,16 @@
 @interface PXTabListManager
 - (NSArray)childTabs;
-- (PXTabListManager)initWithChildTabManagers:(id)a3;
+- (PXTabListManager)initWithChildTabManagers:(id)managers;
 - (void)_invalidateChildTabs;
-- (void)_registerAsChangeObserverForTabManager:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)_registerAsChangeObserverForTabManager:(id)manager;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXTabListManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXChildTabManagerObserverContext == a5)
+  if ((change & 1) != 0 && PXChildTabManagerObserverContext == context)
   {
     v7[5] = v5;
     v7[6] = v6;
@@ -63,15 +63,15 @@ id __29__PXTabListManager_childTabs__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_registerAsChangeObserverForTabManager:(id)a3
+- (void)_registerAsChangeObserverForTabManager:(id)manager
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [managerCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -83,29 +83,29 @@ id __29__PXTabListManager_childTabs__block_invoke(uint64_t a1, void *a2)
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(managerCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) registerChangeObserver:self context:PXChildTabManagerObserverContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [managerCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (PXTabListManager)initWithChildTabManagers:(id)a3
+- (PXTabListManager)initWithChildTabManagers:(id)managers
 {
-  v4 = a3;
+  managersCopy = managers;
   v9.receiver = self;
   v9.super_class = PXTabListManager;
   v5 = [(PXTabListManager *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [managersCopy copy];
     childTabManagers = v5->_childTabManagers;
     v5->_childTabManagers = v6;
 

@@ -1,62 +1,62 @@
 @interface _DASActivityGroup
-+ (id)groupWithName:(id)a3 maxConcurrent:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (_DASActivityGroup)initWithCoder:(id)a3;
-- (_DASActivityGroup)initWithName:(id)a3 maxConcurrent:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)groupWithName:(id)name maxConcurrent:(unint64_t)concurrent;
+- (BOOL)isEqual:(id)equal;
+- (_DASActivityGroup)initWithCoder:(id)coder;
+- (_DASActivityGroup)initWithName:(id)name maxConcurrent:(unint64_t)concurrent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASActivityGroup
 
-- (_DASActivityGroup)initWithName:(id)a3 maxConcurrent:(unint64_t)a4
+- (_DASActivityGroup)initWithName:(id)name maxConcurrent:(unint64_t)concurrent
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = _DASActivityGroup;
   v8 = [(_DASActivityGroup *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_maxConcurrent = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_maxConcurrent = concurrent;
   }
 
   return v9;
 }
 
-+ (id)groupWithName:(id)a3 maxConcurrent:(unint64_t)a4
++ (id)groupWithName:(id)name maxConcurrent:(unint64_t)concurrent
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithName:v5 maxConcurrent:a4];
+  nameCopy = name;
+  v6 = [objc_alloc(objc_opt_class()) initWithName:nameCopy maxConcurrent:concurrent];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(_DASActivityGroup *)self name];
-  v6 = [v4 initWithName:v5 maxConcurrent:{-[_DASActivityGroup maxConcurrent](self, "maxConcurrent")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  name = [(_DASActivityGroup *)self name];
+  v6 = [v4 initWithName:name maxConcurrent:{-[_DASActivityGroup maxConcurrent](self, "maxConcurrent")}];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_maxConcurrent];
-  [v5 encodeObject:v6 forKey:@"max"];
+  [coderCopy encodeObject:v6 forKey:@"max"];
 }
 
-- (_DASActivityGroup)initWithCoder:(id)a3
+- (_DASActivityGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"max"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"max"];
 
   if (v5)
   {
@@ -91,10 +91,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -105,8 +105,8 @@
     if (objc_opt_isKindOfClass())
     {
       name = self->_name;
-      v6 = [(_DASActivityGroup *)v4 name];
-      v7 = [(NSString *)name isEqualToString:v6];
+      name = [(_DASActivityGroup *)equalCopy name];
+      v7 = [(NSString *)name isEqualToString:name];
     }
 
     else

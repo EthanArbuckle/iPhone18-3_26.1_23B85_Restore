@@ -1,12 +1,12 @@
 @interface RPAWDLBonjourTransportServiceMetadata
-- (RPAWDLBonjourTransportServiceMetadata)initWithDictionary:(id)a3;
-- (RPAWDLBonjourTransportServiceMetadata)initWithSingleBandModeRequired:(BOOL)a3;
+- (RPAWDLBonjourTransportServiceMetadata)initWithDictionary:(id)dictionary;
+- (RPAWDLBonjourTransportServiceMetadata)initWithSingleBandModeRequired:(BOOL)required;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation RPAWDLBonjourTransportServiceMetadata
 
-- (RPAWDLBonjourTransportServiceMetadata)initWithSingleBandModeRequired:(BOOL)a3
+- (RPAWDLBonjourTransportServiceMetadata)initWithSingleBandModeRequired:(BOOL)required
 {
   v8.receiver = self;
   v8.super_class = RPAWDLBonjourTransportServiceMetadata;
@@ -14,16 +14,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isSingleBandModeRequired = a3;
+    v4->_isSingleBandModeRequired = required;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (RPAWDLBonjourTransportServiceMetadata)initWithDictionary:(id)a3
+- (RPAWDLBonjourTransportServiceMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   CFStringGetTypeID();
   v5 = CFDictionaryGetTypedValue();
   v6 = v5;
@@ -34,31 +34,31 @@
     Int64 = CFDictionaryGetInt64();
     v11.receiver = self;
     v11.super_class = RPAWDLBonjourTransportServiceMetadata;
-    v8 = [(RPTransportServiceMetadata *)&v11 initWithDictionary:v4];
+    v8 = [(RPTransportServiceMetadata *)&v11 initWithDictionary:dictionaryCopy];
     if (v8)
     {
       v8->_isSingleBandModeRequired = Int64 != 0;
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v7.receiver = self;
   v7.super_class = RPAWDLBonjourTransportServiceMetadata;
-  v3 = [(RPTransportServiceMetadata *)&v7 dictionaryRepresentation];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  dictionaryRepresentation = [(RPTransportServiceMetadata *)&v7 dictionaryRepresentation];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:dictionaryRepresentation];
 
   if (self->_isSingleBandModeRequired)
   {

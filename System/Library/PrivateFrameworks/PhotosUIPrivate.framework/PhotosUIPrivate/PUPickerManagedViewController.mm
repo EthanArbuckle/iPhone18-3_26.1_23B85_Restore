@@ -1,5 +1,5 @@
 @interface PUPickerManagedViewController
-- (PUPickerManagedViewController)initWithConfiguration:(id)a3 contentViewController:(id)a4;
+- (PUPickerManagedViewController)initWithConfiguration:(id)configuration contentViewController:(id)controller;
 - (PUPickerOnboardingView)onboardingOverlayView;
 - (void)_forceContentToMatchContainerFrame;
 - (void)_updateBackgroundColor;
@@ -9,16 +9,16 @@
 - (void)_updatePreferredContentSize;
 - (void)_updatePreferredDisplayMode;
 - (void)_updateSupportsInteractiveBarTransition;
-- (void)assetPickerOnboardingViewDidDismissBadge:(id)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)splitViewControllerDidCollapse:(id)a3;
-- (void)splitViewControllerDidExpand:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)assetPickerOnboardingViewDidDismissBadge:(id)badge;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)splitViewControllerDidCollapse:(id)collapse;
+- (void)splitViewControllerDidExpand:(id)expand;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -26,70 +26,70 @@
 
 @implementation PUPickerManagedViewController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v10 = a3;
-  if (PUPickerConfigurationObservationContext_89103 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PUPickerConfigurationObservationContext_89103 != context)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPickerManagedViewController.m" lineNumber:482 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerManagedViewController.m" lineNumber:482 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x25) != 0)
+  if ((changeCopy & 0x25) != 0)
   {
     [(PUPickerManagedViewController *)self _updateOnboardingOverlayView];
   }
 
-  if (v6)
+  if (changeCopy)
   {
     [(PUPickerManagedViewController *)self _updateSupportsInteractiveBarTransition];
   }
 
-  if ((v6 & 0xE0) != 0)
+  if ((changeCopy & 0xE0) != 0)
   {
     [(PUPickerManagedViewController *)self _forceContentToMatchContainerFrame];
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
-  v7 = [(PUPickerManagedViewController *)self contentViewController];
+  viewControllerCopy = viewController;
+  contentViewController = [(PUPickerManagedViewController *)self contentViewController];
 
-  if (v7 == v6)
+  if (contentViewController == viewControllerCopy)
   {
 
     [(PUPickerManagedViewController *)self _updateOnboardingOverlayBadgeContainer];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v9 = a4;
-  v6 = [(PUPickerManagedViewController *)self configuration];
-  v7 = [v6 isPeopleOrPetsPicker];
+  viewControllerCopy = viewController;
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  isPeopleOrPetsPicker = [configuration isPeopleOrPetsPicker];
 
-  if ((v7 & 1) == 0)
+  if ((isPeopleOrPetsPicker & 1) == 0)
   {
-    v8 = [(PUPickerManagedViewController *)self contentViewController];
-    [v8 navigationWillPresentViewController:v9];
+    contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+    [contentViewController navigationWillPresentViewController:viewControllerCopy];
   }
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v6 = a3;
+  controllerCopy = controller;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__PUPickerManagedViewController_splitViewController_willChangeToDisplayMode___block_invoke;
   block[3] = &unk_1E7B7F350;
-  v10 = self;
-  v11 = a4;
-  v9 = v6;
-  v7 = v6;
+  selfCopy = self;
+  modeCopy = mode;
+  v9 = controllerCopy;
+  v7 = controllerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -119,41 +119,41 @@ uint64_t __77__PUPickerManagedViewController_splitViewController_willChangeToDis
   return [v5 _updateSupportsInteractiveBarTransition];
 }
 
-- (void)splitViewControllerDidCollapse:(id)a3
+- (void)splitViewControllerDidCollapse:(id)collapse
 {
-  v4 = [(PUPickerManagedViewController *)self contentViewController];
-  [v4 setSidebarViewController:0];
+  contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+  [contentViewController setSidebarViewController:0];
 
   [(PUPickerManagedViewController *)self _updateSupportsInteractiveBarTransition];
 }
 
-- (void)splitViewControllerDidExpand:(id)a3
+- (void)splitViewControllerDidExpand:(id)expand
 {
-  v4 = [a3 displayMode];
-  if (v4 == 1)
+  displayMode = [expand displayMode];
+  if (displayMode == 1)
   {
-    v5 = 0;
+    sidebarViewController = 0;
   }
 
   else
   {
-    v5 = [(PUPickerManagedViewController *)self sidebarViewController];
+    sidebarViewController = [(PUPickerManagedViewController *)self sidebarViewController];
   }
 
-  v6 = [(PUPickerManagedViewController *)self contentViewController];
-  [v6 setSidebarViewController:v5];
+  contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+  [contentViewController setSidebarViewController:sidebarViewController];
 
-  if (v4 != 1)
+  if (displayMode != 1)
   {
   }
 
   [(PUPickerManagedViewController *)self _updateSupportsInteractiveBarTransition];
 }
 
-- (void)assetPickerOnboardingViewDidDismissBadge:(id)a3
+- (void)assetPickerOnboardingViewDidDismissBadge:(id)badge
 {
-  v3 = [(PUPickerManagedViewController *)self configuration];
-  [v3 performChanges:&__block_literal_global_230_89111];
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  [configuration performChanges:&__block_literal_global_230_89111];
 }
 
 void __74__PUPickerManagedViewController_assetPickerOnboardingViewDidDismissBadge___block_invoke(uint64_t a1, void *a2)
@@ -166,35 +166,35 @@ void __74__PUPickerManagedViewController_assetPickerOnboardingViewDidDismissBadg
 - (void)_forceContentToMatchContainerFrame
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerManagedViewController *)self configuration];
-  v4 = [v3 supportsInteractiveBarTransition];
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  supportsInteractiveBarTransition = [configuration supportsInteractiveBarTransition];
 
-  if (!v4)
+  if (!supportsInteractiveBarTransition)
   {
     return;
   }
 
-  v5 = [(PUPickerManagedViewController *)self view];
-  v6 = [v5 window];
-  [v6 bounds];
+  view = [(PUPickerManagedViewController *)self view];
+  window = [view window];
+  [window bounds];
   v8 = v7;
 
-  v9 = [(PUPickerManagedViewController *)self view];
-  v10 = [v9 window];
-  v11 = [v10 _rootSheetPresentationController];
+  view2 = [(PUPickerManagedViewController *)self view];
+  window2 = [view2 window];
+  _rootSheetPresentationController = [window2 _rootSheetPresentationController];
 
-  v12 = [v11 _detentValues];
-  if ([v12 count] == 2)
+  _detentValues = [_rootSheetPresentationController _detentValues];
+  if ([_detentValues count] == 2)
   {
-    v13 = [v12 firstObject];
-    [v13 doubleValue];
+    firstObject = [_detentValues firstObject];
+    [firstObject doubleValue];
     v15 = v14;
-    v16 = [v12 lastObject];
-    [v16 doubleValue];
+    lastObject = [_detentValues lastObject];
+    [lastObject doubleValue];
     v18 = fmax(v15, v17);
 
-    v19 = [v11 containerView];
-    [v19 safeAreaInsets];
+    containerView = [_rootSheetPresentationController containerView];
+    [containerView safeAreaInsets];
     v21 = v20;
 
     v22 = v18 + v21;
@@ -237,8 +237,8 @@ LABEL_10:
   v22 = v8 + -54.0;
 
 LABEL_12:
-  v26 = [(PUPickerManagedViewController *)self childViewControllers];
-  v27 = [v26 count];
+  childViewControllers = [(PUPickerManagedViewController *)self childViewControllers];
+  v27 = [childViewControllers count];
 
   if (v27 != 1)
   {
@@ -250,26 +250,26 @@ LABEL_12:
     }
   }
 
-  v29 = [(PUPickerManagedViewController *)self childViewControllers];
-  v30 = [v29 firstObject];
-  v31 = [v30 view];
+  childViewControllers2 = [(PUPickerManagedViewController *)self childViewControllers];
+  firstObject2 = [childViewControllers2 firstObject];
+  view3 = [firstObject2 view];
 
-  [v31 frame];
+  [view3 frame];
   v33 = v32;
   v35 = v34;
-  v36 = [(PUPickerManagedViewController *)self view];
-  [v36 bounds];
+  view4 = [(PUPickerManagedViewController *)self view];
+  [view4 bounds];
   v38 = v37;
 
-  [v31 setFrame:{v33, v35, v38, v22}];
-  v39 = [(PUPickerManagedViewController *)self view];
-  [v39 bounds];
+  [view3 setFrame:{v33, v35, v38, v22}];
+  view5 = [(PUPickerManagedViewController *)self view];
+  [view5 bounds];
   MidX = CGRectGetMidX(v51);
-  v41 = [(PUPickerManagedViewController *)self view];
-  [v41 bounds];
+  view6 = [(PUPickerManagedViewController *)self view];
+  [view6 bounds];
   v42 = v22 * 0.5 + CGRectGetMinY(v52);
 
-  [v31 setCenter:{MidX, v42}];
+  [view3 setCenter:{MidX, v42}];
   v43 = PLPickerGetLog();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
@@ -292,43 +292,43 @@ LABEL_12:
 - (void)_updateInteractiveBarTransitionFractionExpandedAndWindowHeight
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerManagedViewController *)self view];
-  v4 = [v3 window];
-  [v4 bounds];
+  view = [(PUPickerManagedViewController *)self view];
+  window = [view window];
+  [window bounds];
   v6 = v5;
 
-  v7 = [(PUPickerManagedViewController *)self view];
-  v8 = [v7 window];
-  v9 = [v8 _rootSheetPresentationController];
-  v10 = [v9 _detentValues];
+  view2 = [(PUPickerManagedViewController *)self view];
+  window2 = [view2 window];
+  _rootSheetPresentationController = [window2 _rootSheetPresentationController];
+  _detentValues = [_rootSheetPresentationController _detentValues];
 
   v11 = 1.0;
-  if ([v10 count] == 2)
+  if ([_detentValues count] == 2)
   {
-    v12 = [(PUPickerManagedViewController *)self view];
-    [v12 bounds];
+    view3 = [(PUPickerManagedViewController *)self view];
+    [view3 bounds];
     v14 = v13;
-    v15 = [(PUPickerManagedViewController *)self view];
-    [v15 safeAreaInsets];
+    view4 = [(PUPickerManagedViewController *)self view];
+    [view4 safeAreaInsets];
     v17 = v16;
 
-    v18 = [v10 firstObject];
+    firstObject = [_detentValues firstObject];
     v19 = 0.0;
     v20 = 0.0;
-    if ([v18 integerValue] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([firstObject integerValue] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v21 = [v10 firstObject];
-      [v21 doubleValue];
+      firstObject2 = [_detentValues firstObject];
+      [firstObject2 doubleValue];
       v20 = v22;
     }
 
     v23 = v14 - v17;
 
-    v24 = [v10 lastObject];
-    if ([v24 integerValue] != 0x7FFFFFFFFFFFFFFFLL)
+    lastObject = [_detentValues lastObject];
+    if ([lastObject integerValue] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v25 = [v10 lastObject];
-      [v25 doubleValue];
+      lastObject2 = [_detentValues lastObject];
+      [lastObject2 doubleValue];
       v19 = v26;
     }
 
@@ -346,14 +346,14 @@ LABEL_12:
     _os_log_impl(&dword_1B36F3000, v28, OS_LOG_TYPE_DEBUG, "Interactive navigation bar transition will update with window height: %f, fraction expanded: %f", buf, 0x16u);
   }
 
-  v29 = [(PUPickerManagedViewController *)self configuration];
+  configuration = [(PUPickerManagedViewController *)self configuration];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __95__PUPickerManagedViewController__updateInteractiveBarTransitionFractionExpandedAndWindowHeight__block_invoke;
   v30[3] = &__block_descriptor_48_e40_v16__0___PUMutablePickerConfiguration__8l;
   *&v30[4] = v11;
   v30[5] = v6;
-  [v29 performChanges:v30];
+  [configuration performChanges:v30];
 }
 
 void __95__PUPickerManagedViewController__updateInteractiveBarTransitionFractionExpandedAndWindowHeight__block_invoke(uint64_t a1, void *a2)
@@ -366,10 +366,10 @@ void __95__PUPickerManagedViewController__updateInteractiveBarTransitionFraction
 
 - (void)_updateSupportsInteractiveBarTransition
 {
-  v3 = [(PUPickerManagedViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(PUPickerManagedViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = PLPickerGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -384,17 +384,17 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v7 = [(PUPickerManagedViewController *)self splitViewController];
-  if ([v7 displayMode] == 1)
+  splitViewController = [(PUPickerManagedViewController *)self splitViewController];
+  if ([splitViewController displayMode] == 1)
   {
   }
 
   else
   {
-    v8 = [(PUPickerManagedViewController *)self splitViewController];
-    v9 = [v8 isCollapsed];
+    splitViewController2 = [(PUPickerManagedViewController *)self splitViewController];
+    isCollapsed = [splitViewController2 isCollapsed];
 
-    if ((v9 & 1) == 0)
+    if ((isCollapsed & 1) == 0)
     {
       v5 = PLPickerGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -408,8 +408,8 @@ LABEL_21:
     }
   }
 
-  v10 = [(PUPickerManagedViewController *)self configuration];
-  v11 = [v10 edgesWithoutContentMargins] & 5;
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  v11 = [configuration edgesWithoutContentMargins] & 5;
 
   if (v11)
   {
@@ -426,10 +426,10 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v12 = [(PUPickerManagedViewController *)self view];
-  v13 = [v12 window];
-  v14 = [v13 windowScene];
-  v15 = [v14 interfaceOrientation] - 3;
+  view = [(PUPickerManagedViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v15 = [windowScene interfaceOrientation] - 3;
 
   if (v15 <= 1)
   {
@@ -444,11 +444,11 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v16 = [(PUPickerManagedViewController *)self view];
-  v17 = [v16 window];
-  v18 = [v17 _rootSheetPresentationController];
-  v19 = [v18 _detentValues];
-  v20 = [v19 count];
+  view2 = [(PUPickerManagedViewController *)self view];
+  window2 = [view2 window];
+  _rootSheetPresentationController = [window2 _rootSheetPresentationController];
+  _detentValues = [_rootSheetPresentationController _detentValues];
+  v20 = [_detentValues count];
 
   v5 = PLPickerGetLog();
   v21 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -473,24 +473,24 @@ LABEL_22:
   v22 = 1;
 LABEL_23:
 
-  v23 = [(PUPickerManagedViewController *)self configuration];
+  configuration2 = [(PUPickerManagedViewController *)self configuration];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __72__PUPickerManagedViewController__updateSupportsInteractiveBarTransition__block_invoke;
   v24[3] = &__block_descriptor_33_e40_v16__0___PUMutablePickerConfiguration__8l;
   v25 = v22;
-  [v23 performChanges:v24];
+  [configuration2 performChanges:v24];
 }
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(PUPickerManagedViewController *)self contentViewController];
-  v4 = [v3 sidebarViewController];
+  contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+  sidebarViewController = [contentViewController sidebarViewController];
 
-  if (!v4)
+  if (!sidebarViewController)
   {
-    v5 = [(PUPickerManagedViewController *)self view];
-    [v5 px_enumerateDescendantSubviewsPassingTest:&__block_literal_global_220_89128 usingBlock:&__block_literal_global_226];
+    view = [(PUPickerManagedViewController *)self view];
+    [view px_enumerateDescendantSubviewsPassingTest:&__block_literal_global_220_89128 usingBlock:&__block_literal_global_226];
   }
 }
 
@@ -514,12 +514,12 @@ uint64_t __55__PUPickerManagedViewController__updateBackgroundColor__block_invok
 
 - (void)_updatePreferredDisplayMode
 {
-  v3 = [(PUPickerManagedViewController *)self sheetPresentationController];
-  v4 = [v3 detents];
-  if ([v4 count])
+  sheetPresentationController = [(PUPickerManagedViewController *)self sheetPresentationController];
+  detents = [sheetPresentationController detents];
+  if ([detents count])
   {
-    v5 = [(PUPickerManagedViewController *)self sheetPresentationController];
-    v6 = [v5 detents];
+    sheetPresentationController2 = [(PUPickerManagedViewController *)self sheetPresentationController];
+    detents2 = [sheetPresentationController2 detents];
     v7 = PXExists() ^ 1;
   }
 
@@ -528,22 +528,22 @@ uint64_t __55__PUPickerManagedViewController__updateBackgroundColor__block_invok
     v7 = 1;
   }
 
-  v8 = [(PUPickerManagedViewController *)self view];
-  [v8 bounds];
+  view = [(PUPickerManagedViewController *)self view];
+  [view bounds];
   v10 = v9;
 
-  v11 = [(PUPickerManagedViewController *)self configuration];
-  if ([v11 allowsSidebar])
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  if ([configuration allowsSidebar])
   {
-    v12 = [(PUPickerManagedViewController *)self contentViewController];
-    v13 = [v12 hasContent];
+    contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+    hasContent = [contentViewController hasContent];
     v14 = 2;
     if (v10 < 525.0)
     {
       v14 = 1;
     }
 
-    if ((v13 & v7) != 0)
+    if ((hasContent & v7) != 0)
     {
       v15 = v14;
     }
@@ -559,13 +559,13 @@ uint64_t __55__PUPickerManagedViewController__updateBackgroundColor__block_invok
     v15 = 1;
   }
 
-  v16 = [(PUPickerManagedViewController *)self splitViewController];
-  v17 = [v16 preferredDisplayMode];
+  splitViewController = [(PUPickerManagedViewController *)self splitViewController];
+  preferredDisplayMode = [splitViewController preferredDisplayMode];
 
-  if (v17 != v15)
+  if (preferredDisplayMode != v15)
   {
-    v18 = [(PUPickerManagedViewController *)self splitViewController];
-    [v18 setPreferredDisplayMode:v15];
+    splitViewController2 = [(PUPickerManagedViewController *)self splitViewController];
+    [splitViewController2 setPreferredDisplayMode:v15];
   }
 }
 
@@ -579,15 +579,15 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
 
 - (void)_updatePreferredContentSize
 {
-  v3 = [(PUPickerManagedViewController *)self configuration];
-  v4 = [v3 disableAutoPreferredContentSize];
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  disableAutoPreferredContentSize = [configuration disableAutoPreferredContentSize];
 
-  v5 = [(PUPickerManagedViewController *)self splitViewController];
-  [v5 preferredContentSize];
+  splitViewController = [(PUPickerManagedViewController *)self splitViewController];
+  [splitViewController preferredContentSize];
   v7 = v6;
   v9 = v8;
 
-  if ((v4 & 1) == 0)
+  if ((disableAutoPreferredContentSize & 1) == 0)
   {
     [(PUPickerManagedViewController *)self preferredContentSize];
     if (v11 != v7 || v10 != v9)
@@ -600,22 +600,22 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
 
 - (void)_updateOnboardingOverlayBadgeContainer
 {
-  v3 = [(PUPickerManagedViewController *)self configuration];
-  if ([v3 supportsInteractiveBarTransition])
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  if ([configuration supportsInteractiveBarTransition])
   {
-    v8 = [(PUPickerManagedViewController *)self viewIfLoaded];
+    viewIfLoaded = [(PUPickerManagedViewController *)self viewIfLoaded];
   }
 
   else
   {
-    v4 = [(PUPickerManagedViewController *)self contentViewController];
-    v8 = [v4 viewIfLoaded];
+    contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+    viewIfLoaded = [contentViewController viewIfLoaded];
   }
 
-  v5 = [v8 window];
-  if (v5)
+  window = [viewIfLoaded window];
+  if (window)
   {
-    v6 = v8;
+    v6 = viewIfLoaded;
   }
 
   else
@@ -623,49 +623,49 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
     v6 = 0;
   }
 
-  v7 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-  [v7 setBadgeContainerView:v6];
+  onboardingOverlayView = [(PUPickerManagedViewController *)self onboardingOverlayView];
+  [onboardingOverlayView setBadgeContainerView:v6];
 }
 
 - (void)_updateOnboardingOverlayView
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerManagedViewController *)self configuration];
-  v4 = [v3 shouldShowOnboardingOverlayView];
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  shouldShowOnboardingOverlayView = [configuration shouldShowOnboardingOverlayView];
 
-  v5 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-  [v5 removeFromSuperview];
+  onboardingOverlayView = [(PUPickerManagedViewController *)self onboardingOverlayView];
+  [onboardingOverlayView removeFromSuperview];
 
-  if (v4)
+  if (shouldShowOnboardingOverlayView)
   {
-    v6 = [(PUPickerManagedViewController *)self view];
-    v7 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-    [v6 addSubview:v7];
+    view = [(PUPickerManagedViewController *)self view];
+    onboardingOverlayView2 = [(PUPickerManagedViewController *)self onboardingOverlayView];
+    [view addSubview:onboardingOverlayView2];
 
     v20 = MEMORY[0x1E696ACD8];
-    v29 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-    v27 = [v29 topAnchor];
-    v28 = [(PUPickerManagedViewController *)self view];
-    v26 = [v28 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    onboardingOverlayView3 = [(PUPickerManagedViewController *)self onboardingOverlayView];
+    topAnchor = [onboardingOverlayView3 topAnchor];
+    view2 = [(PUPickerManagedViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v25;
-    v24 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-    v22 = [v24 bottomAnchor];
-    v23 = [(PUPickerManagedViewController *)self view];
-    v21 = [v23 bottomAnchor];
-    v19 = [v22 constraintEqualToAnchor:v21];
+    onboardingOverlayView4 = [(PUPickerManagedViewController *)self onboardingOverlayView];
+    bottomAnchor = [onboardingOverlayView4 bottomAnchor];
+    view3 = [(PUPickerManagedViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[1] = v19;
-    v18 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-    v8 = [v18 leadingAnchor];
-    v9 = [(PUPickerManagedViewController *)self view];
-    v10 = [v9 leadingAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    onboardingOverlayView5 = [(PUPickerManagedViewController *)self onboardingOverlayView];
+    leadingAnchor = [onboardingOverlayView5 leadingAnchor];
+    view4 = [(PUPickerManagedViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[2] = v11;
-    v12 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-    v13 = [v12 trailingAnchor];
-    v14 = [(PUPickerManagedViewController *)self view];
-    v15 = [v14 trailingAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    onboardingOverlayView6 = [(PUPickerManagedViewController *)self onboardingOverlayView];
+    trailingAnchor = [onboardingOverlayView6 trailingAnchor];
+    view5 = [(PUPickerManagedViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
     [v20 activateConstraints:v17];
@@ -682,15 +682,15 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
 {
   if (!self->_onboardingOverlayView)
   {
-    v3 = [(PUPickerManagedViewController *)self configuration];
-    v4 = [v3 shouldShowOnboardingOverlayView];
+    configuration = [(PUPickerManagedViewController *)self configuration];
+    shouldShowOnboardingOverlayView = [configuration shouldShowOnboardingOverlayView];
 
-    if (v4)
+    if (shouldShowOnboardingOverlayView)
     {
       v5 = [PUPickerOnboardingView alloc];
-      v6 = [(PUPickerManagedViewController *)self configuration];
-      v7 = [v6 pickerClientDisplayName];
-      v8 = [(PUPickerOnboardingView *)v5 initWithClientDisplayName:v7];
+      configuration2 = [(PUPickerManagedViewController *)self configuration];
+      pickerClientDisplayName = [configuration2 pickerClientDisplayName];
+      v8 = [(PUPickerOnboardingView *)v5 initWithClientDisplayName:pickerClientDisplayName];
 
       [(PUPickerOnboardingView *)v8 setDelegate:self];
       [(PUPickerOnboardingView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -713,10 +713,10 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
   [(PUPickerManagedViewController *)self _updatePreferredDisplayMode];
   [(PUPickerManagedViewController *)self _updateBackgroundColor];
   [(PUPickerManagedViewController *)self _updateOnboardingOverlayBadgeContainer];
-  v3 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-  v4 = [v3 superview];
-  v5 = [(PUPickerManagedViewController *)self onboardingOverlayView];
-  [v4 bringSubviewToFront:v5];
+  onboardingOverlayView = [(PUPickerManagedViewController *)self onboardingOverlayView];
+  superview = [onboardingOverlayView superview];
+  onboardingOverlayView2 = [(PUPickerManagedViewController *)self onboardingOverlayView];
+  [superview bringSubviewToFront:onboardingOverlayView2];
 }
 
 - (void)viewWillLayoutSubviews
@@ -727,27 +727,27 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
   [(PUPickerManagedViewController *)self _updateSupportsInteractiveBarTransition];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = PUPickerManagedViewController;
-  [(PUPickerManagedViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(PUPickerManagedViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(PUPickerManagedViewController *)self _updatePreferredContentSize];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = PUPickerManagedViewController;
-  [(PUPickerManagedViewController *)&v4 didRotateFromInterfaceOrientation:a3];
+  [(PUPickerManagedViewController *)&v4 didRotateFromInterfaceOrientation:orientation];
   [(PUPickerManagedViewController *)self _updateSupportsInteractiveBarTransition];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUPickerManagedViewController;
-  [(PUPickerManagedViewController *)&v4 traitCollectionDidChange:a3];
+  [(PUPickerManagedViewController *)&v4 traitCollectionDidChange:change];
   [(PUPickerManagedViewController *)self _updateSupportsInteractiveBarTransition];
 }
 
@@ -756,22 +756,22 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
   v18.receiver = self;
   v18.super_class = PUPickerManagedViewController;
   [(PUPickerManagedViewController *)&v18 viewDidLoad];
-  v3 = [(PUPickerManagedViewController *)self configuration];
-  [v3 registerChangeObserver:self context:PUPickerConfigurationObservationContext_89103];
+  configuration = [(PUPickerManagedViewController *)self configuration];
+  [configuration registerChangeObserver:self context:PUPickerConfigurationObservationContext_89103];
 
-  v4 = [(PUPickerManagedViewController *)self contentNavigationController];
-  [v4 setDelegate:self];
+  contentNavigationController = [(PUPickerManagedViewController *)self contentNavigationController];
+  [contentNavigationController setDelegate:self];
 
-  v5 = [(PUPickerManagedViewController *)self splitViewController];
-  [v5 setDelegate:self];
+  splitViewController = [(PUPickerManagedViewController *)self splitViewController];
+  [splitViewController setDelegate:self];
 
-  v6 = [(PUPickerManagedViewController *)self configuration];
-  v7 = [v6 hasClearBackgroundColor];
+  configuration2 = [(PUPickerManagedViewController *)self configuration];
+  hasClearBackgroundColor = [configuration2 hasClearBackgroundColor];
 
-  if ((v7 & 1) == 0)
+  if ((hasClearBackgroundColor & 1) == 0)
   {
-    v8 = [(PUPickerManagedViewController *)self configuration];
-    if ([v8 hasClearBackgroundColor])
+    configuration3 = [(PUPickerManagedViewController *)self configuration];
+    if ([configuration3 hasClearBackgroundColor])
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -781,38 +781,38 @@ uint64_t __60__PUPickerManagedViewController__updatePreferredDisplayMode__block_
       [MEMORY[0x1E69DC888] systemBackgroundColor];
     }
     v9 = ;
-    v10 = [(PUPickerManagedViewController *)self view];
-    [v10 setBackgroundColor:v9];
+    view = [(PUPickerManagedViewController *)self view];
+    [view setBackgroundColor:v9];
   }
 
   [(PUPickerManagedViewController *)self _updatePreferredDisplayMode];
-  v11 = [(PUPickerManagedViewController *)self splitViewController];
-  [(PUPickerManagedViewController *)self px_addOrReplaceChildViewController:v11 activateConstraints:1];
+  splitViewController2 = [(PUPickerManagedViewController *)self splitViewController];
+  [(PUPickerManagedViewController *)self px_addOrReplaceChildViewController:splitViewController2 activateConstraints:1];
 
   [(PUPickerManagedViewController *)self _updatePreferredContentSize];
-  v12 = [(PUPickerManagedViewController *)self splitViewController];
-  if ([v12 displayMode] == 1)
+  splitViewController3 = [(PUPickerManagedViewController *)self splitViewController];
+  if ([splitViewController3 displayMode] == 1)
   {
 
 LABEL_9:
     v15 = 0;
-    v16 = 0;
+    sidebarViewController = 0;
     goto LABEL_11;
   }
 
-  v13 = [(PUPickerManagedViewController *)self splitViewController];
-  v14 = [v13 isCollapsed];
+  splitViewController4 = [(PUPickerManagedViewController *)self splitViewController];
+  isCollapsed = [splitViewController4 isCollapsed];
 
-  if (v14)
+  if (isCollapsed)
   {
     goto LABEL_9;
   }
 
-  v16 = [(PUPickerManagedViewController *)self sidebarViewController];
+  sidebarViewController = [(PUPickerManagedViewController *)self sidebarViewController];
   v15 = 1;
 LABEL_11:
-  v17 = [(PUPickerManagedViewController *)self contentViewController];
-  [v17 setSidebarViewController:v16];
+  contentViewController = [(PUPickerManagedViewController *)self contentViewController];
+  [contentViewController setSidebarViewController:sidebarViewController];
 
   if (v15)
   {
@@ -821,11 +821,11 @@ LABEL_11:
   [(PUPickerManagedViewController *)self _updateOnboardingOverlayView];
 }
 
-- (PUPickerManagedViewController)initWithConfiguration:(id)a3 contentViewController:(id)a4
+- (PUPickerManagedViewController)initWithConfiguration:(id)configuration contentViewController:(id)controller
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v43.receiver = self;
   v43.super_class = PUPickerManagedViewController;
   v9 = [(PUPickerManagedViewController *)&v43 initWithNibName:0 bundle:0];
@@ -833,8 +833,8 @@ LABEL_11:
   {
     [MEMORY[0x1E697B670] prefetchSensitiveContentPolicy:&__block_literal_global_89152];
     v10 = [PUNavigationController alloc];
-    obj = a3;
-    v40 = a4;
+    obj = configuration;
+    controllerCopy2 = controller;
     if (MEMORY[0x1B8C6D660]())
     {
       v11 = 0;
@@ -846,16 +846,16 @@ LABEL_11:
     }
 
     v12 = [(PUNavigationController *)v10 initWithNavigationBarClass:v11 toolbarClass:0];
-    v45[0] = v8;
+    v45[0] = controllerCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
     [(PUNavigationController *)v12 setViewControllers:v13];
 
-    v14 = [(PUNavigationController *)v12 interactivePopGestureRecognizer];
-    [v14 setEnabled:{objc_msgSend(v7, "allowsInteractivePopGesture")}];
+    interactivePopGestureRecognizer = [(PUNavigationController *)v12 interactivePopGestureRecognizer];
+    [interactivePopGestureRecognizer setEnabled:{objc_msgSend(configurationCopy, "allowsInteractivePopGesture")}];
 
-    -[PUNavigationController pu_setDisablePushPopAnimation:](v12, "pu_setDisablePushPopAnimation:", [v7 allowsNavigationPushPopAnimation] ^ 1);
-    [v7 photoLibrary];
-    v15 = v42 = v7;
+    -[PUNavigationController pu_setDisablePushPopAnimation:](v12, "pu_setDisablePushPopAnimation:", [configurationCopy allowsNavigationPushPopAnimation] ^ 1);
+    [configurationCopy photoLibrary];
+    v15 = v42 = configurationCopy;
     v37 = [MEMORY[0x1E69C3A08] sharedLibraryStatusProviderWithPhotoLibrary:?];
     v16 = [objc_alloc(MEMORY[0x1E69C3660]) initWithSharedLibraryStatusProvider:v37];
     if ([v42 excludesHiddenAlbum])
@@ -879,11 +879,11 @@ LABEL_11:
     }
 
     v19 = [PUSidebarViewController alloc];
-    v20 = [v42 generatedFilter];
-    v21 = [v20 assetPredicate];
-    v22 = [v42 allPhotosVirtualCollection];
-    v41 = v8;
-    v23 = [(PUSidebarViewController *)v19 initWithNavigationRoot:v8 photoLibrary:v15 libraryFilterState:v16 options:v18 additionalAssetsFilterPredicate:v21 pickerAllPhotosVirtualCollection:v22];
+    generatedFilter = [v42 generatedFilter];
+    assetPredicate = [generatedFilter assetPredicate];
+    allPhotosVirtualCollection = [v42 allPhotosVirtualCollection];
+    v41 = controllerCopy;
+    v23 = [(PUSidebarViewController *)v19 initWithNavigationRoot:controllerCopy photoLibrary:v15 libraryFilterState:v16 options:v18 additionalAssetsFilterPredicate:assetPredicate pickerAllPhotosVirtualCollection:allPhotosVirtualCollection];
 
     v24 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v23];
     v25 = [objc_alloc(MEMORY[0x1E69DCF78]) initWithStyle:1];
@@ -900,7 +900,7 @@ LABEL_11:
     v27 = [(UISplitViewController *)v25 registerForTraitChanges:v26 withTarget:v9 action:sel__splitViewControllerDidChangeTraitPresentationSemanticContext_];
 
     objc_storeStrong(&v9->_configuration, obj);
-    objc_storeStrong(&v9->_contentViewController, v40);
+    objc_storeStrong(&v9->_contentViewController, controllerCopy2);
     contentNavigationController = v9->_contentNavigationController;
     v9->_contentNavigationController = &v12->super;
     v29 = v12;
@@ -908,7 +908,7 @@ LABEL_11:
     sidebarViewController = v9->_sidebarViewController;
     v9->_sidebarViewController = v23;
     v31 = v23;
-    v8 = v41;
+    controllerCopy = v41;
     v32 = v31;
 
     sidebarNavigationController = v9->_sidebarNavigationController;
@@ -918,7 +918,7 @@ LABEL_11:
     splitViewController = v9->_splitViewController;
     v9->_splitViewController = v25;
 
-    v7 = v42;
+    configurationCopy = v42;
   }
 
   return v9;

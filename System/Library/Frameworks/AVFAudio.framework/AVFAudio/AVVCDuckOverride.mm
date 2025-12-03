@@ -1,6 +1,6 @@
 @interface AVVCDuckOverride
 - (AVVCDuckOverride)init;
-- (AVVCDuckOverride)initWithDuckOthers:(id)a3 duckToLevel:(id)a4 mixWithOthers:(id)a5;
+- (AVVCDuckOverride)initWithDuckOthers:(id)others duckToLevel:(id)level mixWithOthers:(id)withOthers;
 @end
 
 @implementation AVVCDuckOverride
@@ -28,21 +28,21 @@
   return v3;
 }
 
-- (AVVCDuckOverride)initWithDuckOthers:(id)a3 duckToLevel:(id)a4 mixWithOthers:(id)a5
+- (AVVCDuckOverride)initWithDuckOthers:(id)others duckToLevel:(id)level mixWithOthers:(id)withOthers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  othersCopy = others;
+  levelCopy = level;
+  withOthersCopy = withOthers;
   v15.receiver = self;
   v15.super_class = AVVCDuckOverride;
   v12 = [(AVVCDuckOverride *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_duckOthers, a3);
-    objc_storeStrong(&v13->_duckToLevel, a4);
+    objc_storeStrong(&v12->_duckOthers, others);
+    objc_storeStrong(&v13->_duckToLevel, level);
     v13->_isBlur = 0;
-    objc_storeStrong(&v13->_mixWithOthers, a5);
+    objc_storeStrong(&v13->_mixWithOthers, withOthers);
   }
 
   return v13;

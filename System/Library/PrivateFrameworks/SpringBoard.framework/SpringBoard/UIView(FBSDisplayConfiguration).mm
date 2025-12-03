@@ -7,18 +7,18 @@
 
 - (id)_fbsDisplayConfiguration
 {
-  v1 = [a1 _screen];
-  v2 = [v1 displayConfiguration];
+  _screen = [self _screen];
+  displayConfiguration = [_screen displayConfiguration];
 
-  return v2;
+  return displayConfiguration;
 }
 
 - (id)_fbsDisplayIdentity
 {
-  v1 = [a1 _screen];
-  v2 = [v1 displayIdentity];
+  _screen = [self _screen];
+  displayIdentity = [_screen displayIdentity];
 
-  return v2;
+  return displayIdentity;
 }
 
 @end

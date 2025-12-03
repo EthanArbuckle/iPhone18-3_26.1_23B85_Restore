@@ -1,56 +1,56 @@
 @interface MADCaptionResult
-- (MADCaptionResult)initWithCaption:(id)a3 score:(float)a4 containsUnsafeContent:(BOOL)a5 isLowConfidence:(BOOL)a6 classificationIdentifiers:(id)a7;
-- (MADCaptionResult)initWithCoder:(id)a3;
+- (MADCaptionResult)initWithCaption:(id)caption score:(float)score containsUnsafeContent:(BOOL)content isLowConfidence:(BOOL)confidence classificationIdentifiers:(id)identifiers;
+- (MADCaptionResult)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADCaptionResult
 
-- (MADCaptionResult)initWithCaption:(id)a3 score:(float)a4 containsUnsafeContent:(BOOL)a5 isLowConfidence:(BOOL)a6 classificationIdentifiers:(id)a7
+- (MADCaptionResult)initWithCaption:(id)caption score:(float)score containsUnsafeContent:(BOOL)content isLowConfidence:(BOOL)confidence classificationIdentifiers:(id)identifiers
 {
-  v13 = a3;
-  v14 = a7;
+  captionCopy = caption;
+  identifiersCopy = identifiers;
   v18.receiver = self;
   v18.super_class = MADCaptionResult;
   v15 = [(MADResult *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_caption, a3);
-    v16->_score = a4;
-    v16->_containsUnsafeContent = a5;
-    v16->_isLowConfidence = a6;
-    objc_storeStrong(&v16->_classificationIdentifiers, a7);
+    objc_storeStrong(&v15->_caption, caption);
+    v16->_score = score;
+    v16->_containsUnsafeContent = content;
+    v16->_isLowConfidence = confidence;
+    objc_storeStrong(&v16->_classificationIdentifiers, identifiers);
   }
 
   return v16;
 }
 
-- (MADCaptionResult)initWithCoder:(id)a3
+- (MADCaptionResult)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MADCaptionResult;
-  v5 = [(MADResult *)&v15 initWithCoder:v4];
+  v5 = [(MADResult *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Caption"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Caption"];
     caption = v5->_caption;
     v5->_caption = v6;
 
-    [v4 decodeFloatForKey:@"Score"];
+    [coderCopy decodeFloatForKey:@"Score"];
     v5->_score = v8;
-    v5->_containsUnsafeContent = [v4 decodeBoolForKey:@"ContainsUnsafeContent"];
-    v5->_isLowConfidence = [v4 decodeBoolForKey:@"IsLowConfidence"];
+    v5->_containsUnsafeContent = [coderCopy decodeBoolForKey:@"ContainsUnsafeContent"];
+    v5->_isLowConfidence = [coderCopy decodeBoolForKey:@"IsLowConfidence"];
     v9 = MEMORY[0x1E695DFD8];
     v16[0] = objc_opt_class();
     v16[1] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v11 = [v9 setWithArray:v10];
 
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"ClassificationIdentifiers"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"ClassificationIdentifiers"];
     classificationIdentifiers = v5->_classificationIdentifiers;
     v5->_classificationIdentifiers = v12;
   }
@@ -58,29 +58,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MADCaptionResult;
-  v4 = a3;
-  [(MADResult *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_caption forKey:{@"Caption", v6.receiver, v6.super_class}];
+  coderCopy = coder;
+  [(MADResult *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_caption forKey:{@"Caption", v6.receiver, v6.super_class}];
   *&v5 = self->_score;
-  [v4 encodeFloat:@"Score" forKey:v5];
-  [v4 encodeBool:self->_containsUnsafeContent forKey:@"ContainsUnsafeContent"];
-  [v4 encodeBool:self->_isLowConfidence forKey:@"IsLowConfidence"];
-  [v4 encodeObject:self->_classificationIdentifiers forKey:@"ClassificationIdentifiers"];
+  [coderCopy encodeFloat:@"Score" forKey:v5];
+  [coderCopy encodeBool:self->_containsUnsafeContent forKey:@"ContainsUnsafeContent"];
+  [coderCopy encodeBool:self->_isLowConfidence forKey:@"IsLowConfidence"];
+  [coderCopy encodeObject:self->_classificationIdentifiers forKey:@"ClassificationIdentifiers"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"Caption: %@>", self->_caption];
-  [v3 appendFormat:@"Score: %f>", self->_score];
+  [string appendFormat:@"Caption: %@>", self->_caption];
+  [string appendFormat:@"Score: %f>", self->_score];
   if (self->_containsUnsafeContent)
   {
     v6 = @"YES";
@@ -91,7 +91,7 @@
     v6 = @"NO";
   }
 
-  [v3 appendFormat:@"ContainsUnsafeContent: %@>", v6];
+  [string appendFormat:@"ContainsUnsafeContent: %@>", v6];
   if (self->_isLowConfidence)
   {
     v7 = @"YES";
@@ -102,10 +102,10 @@
     v7 = @"NO";
   }
 
-  [v3 appendFormat:@"IsLowConfidence: %@>", v7];
-  [v3 appendFormat:@"ClassificationIdentifiers: %@>", self->_classificationIdentifiers];
+  [string appendFormat:@"IsLowConfidence: %@>", v7];
+  [string appendFormat:@"ClassificationIdentifiers: %@>", self->_classificationIdentifiers];
 
-  return v3;
+  return string;
 }
 
 @end

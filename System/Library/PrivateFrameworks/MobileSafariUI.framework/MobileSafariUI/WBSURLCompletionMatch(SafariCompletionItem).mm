@@ -21,14 +21,14 @@
 
 - (id)searchFieldIconForCompletionList:()SafariCompletionItem
 {
-  v4 = [a3 faviconCache];
-  v5 = [a1 originalURLString];
-  v6 = [v4 objectForKey:v5];
+  faviconCache = [a3 faviconCache];
+  originalURLString = [self originalURLString];
+  v6 = [faviconCache objectForKey:originalURLString];
 
-  v7 = [a1 isTopHit];
+  isTopHit = [self isTopHit];
   if (v6)
   {
-    v8 = v7;
+    v8 = isTopHit;
   }
 
   else
@@ -39,7 +39,7 @@
   if ((v8 & 1) == 0)
   {
     v9 = MEMORY[0x277D755B8];
-    v10 = systemImageNameForCompletionIcon([a1 _completionIcon]);
+    v10 = systemImageNameForCompletionIcon([self _completionIcon]);
     v11 = [v9 systemImageNamed:v10];
 
     v6 = v11;
@@ -65,33 +65,33 @@
   v26[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [v7 rewrittenQuery];
-  v9 = v8;
-  if (v8)
+  rewrittenQuery = [v7 rewrittenQuery];
+  v9 = rewrittenQuery;
+  if (rewrittenQuery)
   {
-    v10 = v8;
+    query = rewrittenQuery;
   }
 
   else
   {
-    v10 = [v7 query];
+    query = [v7 query];
   }
 
-  v11 = v10;
+  v11 = query;
 
-  v12 = [a1 title];
-  v13 = [a1 _addressString];
-  v14 = [a1 _promptString];
-  [v6 setTitle:v12 address:v13 prompt:v14 withQuery:v11];
+  title = [self title];
+  _addressString = [self _addressString];
+  _promptString = [self _promptString];
+  [v6 setTitle:title address:_addressString prompt:_promptString withQuery:v11];
 
-  v15 = [v7 faviconCache];
-  v16 = [a1 originalURLString];
-  v17 = [v15 objectForKey:v16];
+  faviconCache = [v7 faviconCache];
+  originalURLString = [self originalURLString];
+  v17 = [faviconCache objectForKey:originalURLString];
 
-  v18 = [a1 isTopHit];
+  isTopHit = [self isTopHit];
   if (v17)
   {
-    v19 = v18;
+    v19 = isTopHit;
   }
 
   else
@@ -101,24 +101,24 @@
 
   if (v19 == 1)
   {
-    v20 = [v6 imageView];
-    [v20 setImage:v17];
+    imageView = [v6 imageView];
+    [imageView setImage:v17];
   }
 
   else
   {
-    -[UITableViewCell safari_setCompletionIcon:](v6, [a1 _completionIcon]);
+    -[UITableViewCell safari_setCompletionIcon:](v6, [self _completionIcon]);
   }
 
-  if (([a1 onlyContainsCloudTab] & 1) == 0)
+  if (([self onlyContainsCloudTab] & 1) == 0)
   {
-    [a1 containsBookmark];
+    [self containsBookmark];
   }
 
   v25 = @"isTopHit";
-  v21 = [a1 isTopHit];
+  isTopHit2 = [self isTopHit];
   v22 = @"false";
-  if (v21)
+  if (isTopHit2)
   {
     v22 = @"true";
   }
@@ -131,11 +131,11 @@
 
 - (id)_addressString
 {
-  v2 = [a1 isTopHit];
+  isTopHit = [self isTopHit];
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [a1 userVisibleURLString];
-  v5 = [v3 safari_URLWithUserTypedString:v4];
-  if (v2)
+  userVisibleURLString = [self userVisibleURLString];
+  v5 = [v3 safari_URLWithUserTypedString:userVisibleURLString];
+  if (isTopHit)
   {
     v6 = 0;
   }
@@ -153,21 +153,21 @@
 - (__CFString)_promptString
 {
   v22 = *MEMORY[0x277D85DE8];
-  if ([a1 isTopHit] & 1) != 0 || (objc_msgSend(a1, "containsBookmark"))
+  if ([self isTopHit] & 1) != 0 || (objc_msgSend(self, "containsBookmark"))
   {
     goto LABEL_3;
   }
 
-  if ([a1 onlyContainsCloudTab])
+  if ([self onlyContainsCloudTab])
   {
-    v4 = [a1 cloudTabDeviceName];
+    cloudTabDeviceName = [self cloudTabDeviceName];
 
-    if (v4)
+    if (cloudTabDeviceName)
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = _WBSLocalizedString();
-      v7 = [a1 cloudTabDeviceName];
-      v2 = [v5 stringWithFormat:v6, v7];
+      cloudTabDeviceName2 = [self cloudTabDeviceName];
+      v2 = [v5 stringWithFormat:v6, cloudTabDeviceName2];
 
       goto LABEL_4;
     }
@@ -175,8 +175,8 @@
     v18 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v20 = [a1 userVisibleURLString];
-      [(WBSURLCompletionMatch(SafariCompletionItem) *)v20 _promptString];
+      userVisibleURLString = [self userVisibleURLString];
+      [(WBSURLCompletionMatch(SafariCompletionItem) *)userVisibleURLString _promptString];
     }
 
 LABEL_15:
@@ -188,23 +188,23 @@ LABEL_3:
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v9 = v8;
-  [a1 lastVisitTimeInterval];
+  [self lastVisitTimeInterval];
   v11 = v10;
-  [a1 lastVisitTimeInterval];
+  [self lastVisitTimeInterval];
   if (v12 == 0.0 || (v13 = v9 - v11, v13 < 0.0))
   {
     v18 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [a1 userVisibleURLString];
-      [(WBSURLCompletionMatch(SafariCompletionItem) *)v19 _promptString];
+      userVisibleURLString2 = [self userVisibleURLString];
+      [(WBSURLCompletionMatch(SafariCompletionItem) *)userVisibleURLString2 _promptString];
     }
 
     goto LABEL_15;
   }
 
-  v14 = [MEMORY[0x277D4A0B0] _relativeDateTimeFormatter];
-  v15 = [v14 localizedStringFromTimeInterval:-v13];
+  _relativeDateTimeFormatter = [MEMORY[0x277D4A0B0] _relativeDateTimeFormatter];
+  v15 = [_relativeDateTimeFormatter localizedStringFromTimeInterval:-v13];
 
   v16 = MEMORY[0x277CCACA8];
   v17 = _WBSLocalizedString();
@@ -217,22 +217,22 @@ LABEL_4:
 
 - (uint64_t)_completionIcon
 {
-  if ([a1 isTopHit])
+  if ([self isTopHit])
   {
     return 7;
   }
 
-  if ([a1 containsReadingListItem])
+  if ([self containsReadingListItem])
   {
     return 2;
   }
 
-  if ([a1 containsBookmark])
+  if ([self containsBookmark])
   {
     return 0;
   }
 
-  if ([a1 onlyContainsCloudTab])
+  if ([self onlyContainsCloudTab])
   {
     return 1;
   }
@@ -243,22 +243,22 @@ LABEL_4:
 - (void)acceptCompletionWithActionHandler:()SafariCompletionItem
 {
   v5 = a3;
-  v4 = [a1 userVisibleURLString];
-  [v5 goToURLString:v4];
+  userVisibleURLString = [self userVisibleURLString];
+  [v5 goToURLString:userVisibleURLString];
 }
 
 - (PageTitleAndAddressTableViewCell)completionTableViewCellForCompletionList:()SafariCompletionItem
 {
   v2 = [PageTitleAndAddressTableViewCell alloc];
-  v3 = [a1 completionTableViewCellReuseIdentifier];
-  v4 = [(PageTitleAndAddressTableViewCell *)v2 initWithStyle:3 reuseIdentifier:v3];
+  completionTableViewCellReuseIdentifier = [self completionTableViewCellReuseIdentifier];
+  v4 = [(PageTitleAndAddressTableViewCell *)v2 initWithStyle:3 reuseIdentifier:completionTableViewCellReuseIdentifier];
 
   return v4;
 }
 
 - (void)auditAcceptedCompletionWithRank:()SafariCompletionItem
 {
-  if ([a1 isTopHit])
+  if ([self isTopHit])
   {
     v4 = 9;
   }
@@ -268,21 +268,21 @@ LABEL_4:
     v4 = 0;
   }
 
-  v5 = [MEMORY[0x277D499B8] sharedLogger];
-  [v5 didAcceptCompletionItemOfType:v4 atRank:a3];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didAcceptCompletionItemOfType:v4 atRank:a3];
 }
 
 - (id)reflectedStringForUserTypedString:()SafariCompletionItem
 {
-  v1 = [a1 matchingStringWithUserTypedPrefix:?];
+  v1 = [self matchingStringWithUserTypedPrefix:?];
 
   return v1;
 }
 
 - (id)subtextForHistoryServiceCompletionList
 {
-  v1 = [a1 _promptString];
-  v2 = [@" · " stringByAppendingString:v1];
+  _promptString = [self _promptString];
+  v2 = [@" · " stringByAppendingString:_promptString];
 
   return v2;
 }
@@ -294,14 +294,14 @@ LABEL_4:
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [a1 title];
-    v7 = [v5 title];
+    title = [self title];
+    title2 = [v5 title];
     v8 = WBSIsEqual();
 
     if (v8)
     {
-      v9 = [a1 userVisibleURLString];
-      v10 = [v5 userVisibleURLString];
+      userVisibleURLString = [self userVisibleURLString];
+      userVisibleURLString2 = [v5 userVisibleURLString];
       v11 = WBSIsEqual();
     }
 
@@ -321,27 +321,27 @@ LABEL_4:
 
 - (id)tableItemEqualityInfo
 {
-  v2 = [a1 cloudTabDeviceName];
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "containsBookmark")}];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "onlyContainsCloudTab")}];
-  v5 = [a1 title];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isTopHit")}];
-  v16 = [a1 userVisibleURLString];
-  v14 = CompletionListTableItemEqualityInfo(6, v7, v8, v9, v10, v11, v12, v13, v2);
+  cloudTabDeviceName = [self cloudTabDeviceName];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "containsBookmark")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "onlyContainsCloudTab")}];
+  title = [self title];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isTopHit")}];
+  userVisibleURLString = [self userVisibleURLString];
+  v14 = CompletionListTableItemEqualityInfo(6, v7, v8, v9, v10, v11, v12, v13, cloudTabDeviceName);
 
   return v14;
 }
 
 - (id)matchedTextForInputAnalytics
 {
-  if ([a1 matchLocationIsInURL])
+  if ([self matchLocationIsInURL])
   {
-    [a1 userVisibleURLString];
+    [self userVisibleURLString];
   }
 
   else
   {
-    [a1 title];
+    [self title];
   }
   v2 = ;
 
@@ -350,7 +350,7 @@ LABEL_4:
 
 - (uint64_t)matchTypeForInputAnalytics
 {
-  if ([a1 matchLocationIsInURL])
+  if ([self matchLocationIsInURL])
   {
     return 1;
   }
@@ -364,7 +364,7 @@ LABEL_4:
 - (void)_promptString
 {
   *buf = 138739971;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_215819000, log, OS_LOG_TYPE_ERROR, "Missing device name for cloud tab: %{sensitive}@", buf, 0xCu);
 }
 

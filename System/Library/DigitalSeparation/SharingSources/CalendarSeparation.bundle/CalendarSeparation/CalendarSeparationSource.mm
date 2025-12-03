@@ -1,11 +1,11 @@
 @interface CalendarSeparationSource
 - (CalendarSeparationSource)init;
-- (CalendarSeparationSource)initWithEventStore:(id)a3;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
-- (void)updateVisibilityTo:(int64_t)a3 onResource:(id)a4 withCompletion:(id)a5;
+- (CalendarSeparationSource)initWithEventStore:(id)store;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
+- (void)updateVisibilityTo:(int64_t)to onResource:(id)resource withCompletion:(id)completion;
 @end
 
 @implementation CalendarSeparationSource
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (CalendarSeparationSource)initWithEventStore:(id)a3
+- (CalendarSeparationSource)initWithEventStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = CalendarSeparationSource;
   v6 = [(CalendarSeparationSource *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventStore, a3);
+    objc_storeStrong(&v6->_eventStore, store);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INITIATED, 0);
 
@@ -47,9 +47,9 @@
   return v7;
 }
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_workQueue;
   v6 = self->_fetchGroup;
   v20[0] = 0;
@@ -75,9 +75,9 @@
   v10[2] = sub_2B0C;
   v10[3] = &unk_8308;
   objc_copyWeak(&v13, &location);
-  v11 = v4;
+  v11 = completionCopy;
   v12 = v20;
-  v9 = v4;
+  v9 = completionCopy;
   dispatch_group_notify(v8, v7, v10);
 
   objc_destroyWeak(&v13);
@@ -86,14 +86,14 @@
   _Block_object_dispose(v20, 8);
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  sharingCopy = sharing;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 stopSharingWithCompletion:v6];
+    [sharingCopy stopSharingWithCompletion:completionCopy];
   }
 
   else
@@ -102,32 +102,32 @@
     v10 = @"Unrecognized resource";
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = [NSError errorWithDomain:@"CalendarSeparationErrorDomain" code:0 userInfo:v7];
-    v6[2](v6, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  completionCopy = completion;
   v8 = self->_workQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_2DB4;
   v12[3] = &unk_8358;
   v12[4] = self;
-  v13 = v6;
+  v13 = participantCopy;
   v14 = v8;
-  v15 = v7;
-  v9 = v7;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v10 = v8;
-  v11 = v6;
+  v11 = participantCopy;
   dispatch_async(v10, v12);
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -135,17 +135,17 @@
   block[3] = &unk_8380;
   block[4] = self;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = v5;
   dispatch_async(v7, block);
 }
 
-- (void)updateVisibilityTo:(int64_t)a3 onResource:(id)a4 withCompletion:(id)a5
+- (void)updateVisibilityTo:(int64_t)to onResource:(id)resource withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 != 1)
+  resourceCopy = resource;
+  completionCopy = completion;
+  if (to != 1)
   {
     v15 = NSLocalizedDescriptionKey;
     v16 = @"Only supports making calendars private";
@@ -154,7 +154,7 @@
 LABEL_6:
     v11 = [NSDictionary dictionaryWithObjects:v9 forKeys:v10 count:1];
     v12 = [NSError errorWithDomain:@"CalendarSeparationErrorDomain" code:0 userInfo:v11];
-    v8[2](v8, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
 
     goto LABEL_7;
   }
@@ -169,7 +169,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [v7 makePrivateWithCompletion:v8];
+  [resourceCopy makePrivateWithCompletion:completionCopy];
 LABEL_7:
 }
 

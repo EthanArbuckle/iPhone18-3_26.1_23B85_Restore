@@ -1,15 +1,15 @@
 @interface APSProcessModeTokenStorage
-- (APSProcessModeTokenStorage)initWithUser:(id)a3;
-- (id)_tokenStoreForEnvironment:(id)a3;
-- (id)tokenInfoForEnvironment:(id)a3;
-- (void)setTokenInfo:(id)a3 forEnvironment:(id)a4;
+- (APSProcessModeTokenStorage)initWithUser:(id)user;
+- (id)_tokenStoreForEnvironment:(id)environment;
+- (id)tokenInfoForEnvironment:(id)environment;
+- (void)setTokenInfo:(id)info forEnvironment:(id)environment;
 @end
 
 @implementation APSProcessModeTokenStorage
 
-- (APSProcessModeTokenStorage)initWithUser:(id)a3
+- (APSProcessModeTokenStorage)initWithUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v9.receiver = self;
   v9.super_class = APSProcessModeTokenStorage;
   v5 = [(APSProcessModeTokenStorage *)&v9 init];
@@ -19,43 +19,43 @@
     tokenStoreByEnvironmentDomain = v5->_tokenStoreByEnvironmentDomain;
     v5->_tokenStoreByEnvironmentDomain = v6;
 
-    v5->_user = v4;
+    v5->_user = userCopy;
   }
 
   return v5;
 }
 
-- (id)_tokenStoreForEnvironment:(id)a3
+- (id)_tokenStoreForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   tokenStoreByEnvironmentDomain = self->_tokenStoreByEnvironmentDomain;
-  v6 = [v4 domain];
-  v7 = [(NSMutableDictionary *)tokenStoreByEnvironmentDomain objectForKey:v6];
+  domain = [environmentCopy domain];
+  v7 = [(NSMutableDictionary *)tokenStoreByEnvironmentDomain objectForKey:domain];
 
   if (!v7)
   {
-    v7 = [[APSTokenStore alloc] initWithEnvironment:v4 allowInMemoryCache:0];
+    v7 = [[APSTokenStore alloc] initWithEnvironment:environmentCopy allowInMemoryCache:0];
     v8 = self->_tokenStoreByEnvironmentDomain;
-    v9 = [v4 domain];
-    [(NSMutableDictionary *)v8 setObject:v7 forKey:v9];
+    domain2 = [environmentCopy domain];
+    [(NSMutableDictionary *)v8 setObject:v7 forKey:domain2];
   }
 
   return v7;
 }
 
-- (id)tokenInfoForEnvironment:(id)a3
+- (id)tokenInfoForEnvironment:(id)environment
 {
-  v4 = [(APSProcessModeTokenStorage *)self _tokenStoreForEnvironment:a3];
+  v4 = [(APSProcessModeTokenStorage *)self _tokenStoreForEnvironment:environment];
   v5 = [v4 systemTokenInfoForUser:self->_user];
 
   return v5;
 }
 
-- (void)setTokenInfo:(id)a3 forEnvironment:(id)a4
+- (void)setTokenInfo:(id)info forEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = [(APSProcessModeTokenStorage *)self _tokenStoreForEnvironment:a4];
-  [v7 setSystemTokenInfo:v6 forUser:self->_user];
+  infoCopy = info;
+  v7 = [(APSProcessModeTokenStorage *)self _tokenStoreForEnvironment:environment];
+  [v7 setSystemTokenInfo:infoCopy forUser:self->_user];
 }
 
 @end

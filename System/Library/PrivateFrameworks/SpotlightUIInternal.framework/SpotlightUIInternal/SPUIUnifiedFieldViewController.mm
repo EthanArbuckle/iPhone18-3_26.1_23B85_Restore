@@ -1,9 +1,9 @@
 @interface SPUIUnifiedFieldViewController
-+ (double)insetMarginsForSearchField:(id)a3;
++ (double)insetMarginsForSearchField:(id)field;
 - (BOOL)isUnifiedFieldDocked;
 - (CGSize)dockedUnifiedFieldSize;
 - (CGSize)unifiedFieldSize;
-- (SPUIUnifiedFieldViewController)initWithNavigationController:(id)a3;
+- (SPUIUnifiedFieldViewController)initWithNavigationController:(id)controller;
 - (SPUIUnifiedFieldViewControllerDelegate)delegate;
 - (double)keyboardProtectorHeight;
 - (double)unifiedFieldCornerRadius;
@@ -13,11 +13,11 @@
 - (void)dealloc;
 - (void)dismissSingleLevelViewController;
 - (void)doALayoutPass;
-- (void)keyboardFrameChanged:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardFrameChanged:(id)changed;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)processStateForeground;
-- (void)resetSearchFieldContentWithSearchToken:(id)a3 text:(id)a4 wantsBackButton:(BOOL)a5 transitionCoordinator:(id)a6;
+- (void)resetSearchFieldContentWithSearchToken:(id)token text:(id)text wantsBackButton:(BOOL)button transitionCoordinator:(id)coordinator;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -50,27 +50,27 @@
 
 - (BOOL)isUnifiedFieldDocked
 {
-  v3 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  v4 = [v3 searchField];
-  if ([v4 isFirstResponder])
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  searchField = [searchHeader searchField];
+  if ([searchField isFirstResponder])
   {
-    v5 = [(SPUIUnifiedFieldViewController *)self keyboardVisualEffectView];
-    v6 = [v5 hideVisualEffectView];
+    keyboardVisualEffectView = [(SPUIUnifiedFieldViewController *)self keyboardVisualEffectView];
+    hideVisualEffectView = [keyboardVisualEffectView hideVisualEffectView];
   }
 
   else
   {
-    v6 = 1;
+    hideVisualEffectView = 1;
   }
 
-  return v6;
+  return hideVisualEffectView;
 }
 
 - (CGSize)unifiedFieldSize
 {
-  v2 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  v3 = [v2 searchField];
-  [v3 intrinsicContentSize];
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  searchField = [searchHeader searchField];
+  [searchField intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -84,9 +84,9 @@
 - (CGSize)dockedUnifiedFieldSize
 {
   v3 = MEMORY[0x277D65D88];
-  v4 = [(SPUIUnifiedFieldViewController *)self view];
-  v5 = [v4 window];
-  LOBYTE(v3) = [v3 isSWKeyboardHiddenForWindow:v5];
+  view = [(SPUIUnifiedFieldViewController *)self view];
+  window = [view window];
+  LOBYTE(v3) = [v3 isSWKeyboardHiddenForWindow:window];
 
   [(SPUIUnifiedFieldViewController *)self unifiedFieldSize];
   v8 = v7;
@@ -97,17 +97,17 @@
 
   else
   {
-    v10 = [(SPUIUnifiedFieldViewController *)self view];
-    [v10 bounds];
+    view2 = [(SPUIUnifiedFieldViewController *)self view];
+    [view2 bounds];
     v12 = v11;
 
     v13 = objc_opt_class();
-    v14 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-    [v13 insetMarginsForSearchField:v14];
+    searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+    [v13 insetMarginsForSearchField:searchHeader];
     v16 = v12 + v15 * -2.0;
 
-    v17 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-    [v17 sizeThatFits:{v16, v8}];
+    searchHeader2 = [(SPUIUnifiedFieldViewController *)self searchHeader];
+    [searchHeader2 sizeThatFits:{v16, v8}];
     v9 = v18;
   }
 
@@ -120,9 +120,9 @@
 
 - (double)unifiedFieldCornerRadius
 {
-  v2 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  v3 = [v2 searchField];
-  [v3 backgroundCornerRadius];
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  searchField = [searchHeader searchField];
+  [searchField backgroundCornerRadius];
   v5 = v4;
 
   return v5;
@@ -130,15 +130,15 @@
 
 - (double)keyboardProtectorHeight
 {
-  v3 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  v4 = [v3 searchField];
-  [v4 intrinsicContentSize];
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  searchField = [searchHeader searchField];
+  [searchField intrinsicContentSize];
   v6 = v5;
-  v7 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  [v7 bottomPadding];
+  searchHeader2 = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  [searchHeader2 bottomPadding];
   v9 = v6 + v8;
-  v10 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  [v10 topPadding];
+  searchHeader3 = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  [searchHeader3 topPadding];
   v12 = v9 + v11;
 
   return v12;
@@ -162,61 +162,61 @@
   [(SPUIUnifiedFieldViewController *)&v38 viewDidLayoutSubviews];
   [(SPUIUnifiedFieldViewController *)self keyboardProtectorHeight];
   v4 = v3;
-  v5 = [(SPUIUnifiedFieldViewController *)self keyboardVisualEffectView];
-  [v5 setSearchFieldHeight:v4];
+  keyboardVisualEffectView = [(SPUIUnifiedFieldViewController *)self keyboardVisualEffectView];
+  [keyboardVisualEffectView setSearchFieldHeight:v4];
 
-  v6 = [(SPUIUnifiedFieldViewController *)self view];
-  [v6 bounds];
+  view = [(SPUIUnifiedFieldViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  [v11 frame];
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  [searchHeader frame];
   MinY = CGRectGetMinY(v39);
 
-  v13 = [(SPUIUnifiedFieldViewController *)self view];
-  [v13 bounds];
+  view2 = [(SPUIUnifiedFieldViewController *)self view];
+  [view2 bounds];
   v14 = CGRectGetHeight(v40) - MinY;
 
-  v15 = [(SPUIUnifiedFieldViewController *)self keyboardVisualEffectView];
-  [v15 setFrame:{v8, MinY, v10, v14}];
+  keyboardVisualEffectView2 = [(SPUIUnifiedFieldViewController *)self keyboardVisualEffectView];
+  [keyboardVisualEffectView2 setFrame:{v8, MinY, v10, v14}];
 
-  v16 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  [v16 frame];
+  searchHeader2 = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  [searchHeader2 frame];
   v18 = v17;
-  v19 = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
-  [v19 setAdditionalSafeAreaInsets:{0.0, 0.0, v18, 0.0}];
+  searchNavigationController = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
+  [searchNavigationController setAdditionalSafeAreaInsets:{0.0, 0.0, v18, 0.0}];
 
-  v20 = [(SPUIUnifiedFieldViewController *)self view];
-  [v20 bounds];
+  view3 = [(SPUIUnifiedFieldViewController *)self view];
+  [view3 bounds];
   v22 = v21;
-  v23 = [(SPUIUnifiedFieldViewController *)self view];
-  v24 = [v23 window];
-  v25 = [v24 windowScene];
-  v26 = [v25 statusBarManager];
-  [v26 statusBarFrame];
+  view4 = [(SPUIUnifiedFieldViewController *)self view];
+  window = [view4 window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v28 = v27;
-  v29 = [(SPUIUnifiedFieldViewController *)self topPocketView];
-  [v29 setFrame:{0.0, 0.0, v22, v28}];
+  topPocketView = [(SPUIUnifiedFieldViewController *)self topPocketView];
+  [topPocketView setFrame:{0.0, 0.0, v22, v28}];
 
-  v30 = [(SPUIUnifiedFieldViewController *)self delegate];
-  [v30 unifiedFieldViewControllerDidLayoutUnifiedField:self dueToKeyboardLayout:{-[SPUIUnifiedFieldViewController handlingKeyboardFrameChange](self, "handlingKeyboardFrameChange")}];
+  delegate = [(SPUIUnifiedFieldViewController *)self delegate];
+  [delegate unifiedFieldViewControllerDidLayoutUnifiedField:self dueToKeyboardLayout:{-[SPUIUnifiedFieldViewController handlingKeyboardFrameChange](self, "handlingKeyboardFrameChange")}];
 
-  v31 = [(SPUIUnifiedFieldViewController *)self view];
-  v32 = [v31 keyboardLayoutGuide];
-  [v32 layoutFrame];
+  view5 = [(SPUIUnifiedFieldViewController *)self view];
+  keyboardLayoutGuide = [view5 keyboardLayoutGuide];
+  [keyboardLayoutGuide layoutFrame];
   v34 = v33;
-  v35 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  [v35 frame];
+  searchHeader3 = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  [searchHeader3 frame];
   if (v34 <= v36)
   {
   }
 
   else
   {
-    v37 = [(SPUIUnifiedFieldViewController *)self tryToLayoutForBadFrame];
+    tryToLayoutForBadFrame = [(SPUIUnifiedFieldViewController *)self tryToLayoutForBadFrame];
 
-    if (!v37)
+    if (!tryToLayoutForBadFrame)
     {
       [(SPUIUnifiedFieldViewController *)self setTryToLayoutForBadFrame:1];
       [(SPUIUnifiedFieldViewController *)self doALayoutPass];
@@ -234,79 +234,79 @@
 
 - (void)doALayoutPass
 {
-  v3 = [(SPUIUnifiedFieldViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(SPUIUnifiedFieldViewController *)self view];
+  [view setNeedsLayout];
 
-  v4 = [(SPUIUnifiedFieldViewController *)self view];
-  [v4 layoutIfNeeded];
+  view2 = [(SPUIUnifiedFieldViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
-- (SPUIUnifiedFieldViewController)initWithNavigationController:(id)a3
+- (SPUIUnifiedFieldViewController)initWithNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v81.receiver = self;
   v81.super_class = SPUIUnifiedFieldViewController;
   v6 = [(SPUIUnifiedFieldViewController *)&v81 init];
   v7 = v6;
   if (v6)
   {
-    v8 = [(SPUIUnifiedFieldViewController *)v6 view];
-    [v8 _setOverrideVibrancyTrait:1];
+    view = [(SPUIUnifiedFieldViewController *)v6 view];
+    [view _setOverrideVibrancyTrait:1];
 
-    objc_storeStrong(&v7->_searchNavigationController, a3);
-    v9 = [v5 searchViewController];
-    v10 = [v9 headerView];
+    objc_storeStrong(&v7->_searchNavigationController, controller);
+    searchViewController = [controllerCopy searchViewController];
+    headerView = [searchViewController headerView];
     searchHeader = v7->_searchHeader;
-    v7->_searchHeader = v10;
+    v7->_searchHeader = headerView;
 
-    [v5 setNavigationBarHidden:1];
-    [v5 setUnifiedFieldDelegate:v7];
-    [(SPUIUnifiedFieldViewController *)v7 addChildViewController:v5];
-    v12 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v13 = [v5 view];
-    [v12 addSubview:v13];
+    [controllerCopy setNavigationBarHidden:1];
+    [controllerCopy setUnifiedFieldDelegate:v7];
+    [(SPUIUnifiedFieldViewController *)v7 addChildViewController:controllerCopy];
+    view2 = [(SPUIUnifiedFieldViewController *)v7 view];
+    view3 = [controllerCopy view];
+    [view2 addSubview:view3];
 
     v14 = MEMORY[0x277D4C828];
-    v15 = [v5 view];
-    [v14 fillContainerWithView:v15];
+    view4 = [controllerCopy view];
+    [v14 fillContainerWithView:view4];
 
     v16 = [[SPUINavigationSwipeRecognizerDelegate alloc] initWithNavigationController:v7->_searchNavigationController];
     [(SPUIUnifiedFieldViewController *)v7 setSwipeRecognizer:v16];
 
-    v17 = [(SPUIUnifiedFieldViewController *)v7 swipeRecognizer];
-    v18 = [v5 interactivePopGestureRecognizer];
-    [v18 setDelegate:v17];
+    swipeRecognizer = [(SPUIUnifiedFieldViewController *)v7 swipeRecognizer];
+    interactivePopGestureRecognizer = [controllerCopy interactivePopGestureRecognizer];
+    [interactivePopGestureRecognizer setDelegate:swipeRecognizer];
 
     v19 = objc_opt_new();
     [(SPUIUnifiedFieldViewController *)v7 setKeyboardVisualEffectView:v19];
-    v20 = [(SPUIUnifiedFieldViewController *)v7 keyboardVisualEffectView];
-    v21 = [v20 layer];
+    keyboardVisualEffectView = [(SPUIUnifiedFieldViewController *)v7 keyboardVisualEffectView];
+    layer = [keyboardVisualEffectView layer];
     searchProtectorLayer = v7->_searchProtectorLayer;
-    v7->_searchProtectorLayer = v21;
+    v7->_searchProtectorLayer = layer;
 
-    v23 = [(SPUIUnifiedFieldViewController *)v7 view];
-    [v23 addSubview:v19];
+    view5 = [(SPUIUnifiedFieldViewController *)v7 view];
+    [view5 addSubview:v19];
 
     if (_UISolariumEnabled())
     {
-      v24 = [(SPUIUnifiedFieldViewController *)v7 keyboardVisualEffectView];
-      [v24 setHidden:1];
+      keyboardVisualEffectView2 = [(SPUIUnifiedFieldViewController *)v7 keyboardVisualEffectView];
+      [keyboardVisualEffectView2 setHidden:1];
     }
 
-    v25 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v26 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-    [v25 addSubview:v26];
+    view6 = [(SPUIUnifiedFieldViewController *)v7 view];
+    searchHeader = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+    [view6 addSubview:searchHeader];
 
-    v27 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    searchHeader2 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+    [searchHeader2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-    v29 = [v28 bottomAnchor];
-    v30 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v31 = [v30 keyboardLayoutGuide];
-    v32 = [v31 topAnchor];
+    searchHeader3 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+    bottomAnchor = [searchHeader3 bottomAnchor];
+    view7 = [(SPUIUnifiedFieldViewController *)v7 view];
+    keyboardLayoutGuide = [view7 keyboardLayoutGuide];
+    topAnchor = [keyboardLayoutGuide topAnchor];
     [(SPUIUnifiedFieldViewController *)v7 unifiedFieldVerticalSpacing];
-    v34 = [v29 constraintEqualToAnchor:v32 constant:-v33];
+    v34 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-v33];
 
     LODWORD(v35) = 1148829696;
     [v34 setPriority:v35];
@@ -316,93 +316,93 @@
     if (_UISolariumEnabled())
     {
       v37 = objc_opt_class();
-      v38 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-      [v37 insetMarginsForSearchField:v38];
+      searchHeader4 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+      [v37 insetMarginsForSearchField:searchHeader4];
       v40 = v39;
       [MEMORY[0x277D65D28] bottomPaddingToKeyboard];
       v36 = v40 - v41;
     }
 
-    v42 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v43 = [v42 bottomAnchor];
-    v44 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-    v45 = [v44 backgroundBlurView];
-    v46 = [v45 bottomAnchor];
-    v47 = [v43 constraintEqualToAnchor:v46 constant:v36];
+    view8 = [(SPUIUnifiedFieldViewController *)v7 view];
+    bottomAnchor2 = [view8 bottomAnchor];
+    searchHeader5 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+    backgroundBlurView = [searchHeader5 backgroundBlurView];
+    bottomAnchor3 = [backgroundBlurView bottomAnchor];
+    v47 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:v36];
 
     [v47 setActive:0];
     [(SPUIUnifiedFieldViewController *)v7 setBottomConstraint:v47];
-    v48 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-    v49 = [v48 leadingAnchor];
-    v50 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v51 = [v50 leadingAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
+    searchHeader6 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+    leadingAnchor = [searchHeader6 leadingAnchor];
+    view9 = [(SPUIUnifiedFieldViewController *)v7 view];
+    leadingAnchor2 = [view9 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(SPUIUnifiedFieldViewController *)v7 setLeadingConstraint:v52];
 
-    v53 = [(SPUIUnifiedFieldViewController *)v7 leadingConstraint];
-    [v53 setActive:1];
+    leadingConstraint = [(SPUIUnifiedFieldViewController *)v7 leadingConstraint];
+    [leadingConstraint setActive:1];
 
-    v54 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
-    v55 = [v54 trailingAnchor];
-    v56 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v57 = [v56 trailingAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    searchHeader7 = [(SPUIUnifiedFieldViewController *)v7 searchHeader];
+    trailingAnchor = [searchHeader7 trailingAnchor];
+    view10 = [(SPUIUnifiedFieldViewController *)v7 view];
+    trailingAnchor2 = [view10 trailingAnchor];
+    v58 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(SPUIUnifiedFieldViewController *)v7 setTrailingConstraint:v58];
 
-    v59 = [(SPUIUnifiedFieldViewController *)v7 trailingConstraint];
-    [v59 setActive:1];
+    trailingConstraint = [(SPUIUnifiedFieldViewController *)v7 trailingConstraint];
+    [trailingConstraint setActive:1];
 
     v60 = objc_opt_new();
     [(SPUIUnifiedFieldViewController *)v7 setTopPocketView:v60];
 
-    v61 = [(SPUIUnifiedFieldViewController *)v7 view];
-    v62 = [(SPUIUnifiedFieldViewController *)v7 topPocketView];
-    [v61 addSubview:v62];
+    view11 = [(SPUIUnifiedFieldViewController *)v7 view];
+    topPocketView = [(SPUIUnifiedFieldViewController *)v7 topPocketView];
+    [view11 addSubview:topPocketView];
 
-    v63 = [(SPUIUnifiedFieldViewController *)v7 topPocketView];
-    v64 = [v5 searchViewController];
-    [v64 setTopPocketView:v63];
+    topPocketView2 = [(SPUIUnifiedFieldViewController *)v7 topPocketView];
+    searchViewController2 = [controllerCopy searchViewController];
+    [searchViewController2 setTopPocketView:topPocketView2];
 
     v65 = objc_opt_new();
     [(SPUIUnifiedFieldViewController *)v7 setFakeTextField:v65];
 
-    v66 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
-    [v66 setUserInteractionEnabled:0];
+    fakeTextField = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
+    [fakeTextField setUserInteractionEnabled:0];
 
-    v67 = [MEMORY[0x277D75348] clearColor];
-    v68 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
-    [v68 setTokenBackgroundColor:v67];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    fakeTextField2 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
+    [fakeTextField2 setTokenBackgroundColor:clearColor];
 
-    v69 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
-    [v69 setSymbolAnimationEnabled:0];
+    fakeTextField3 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
+    [fakeTextField3 setSymbolAnimationEnabled:0];
 
-    v70 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
-    [v70 setCanAcquireFieldEditor:0];
+    fakeTextField4 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
+    [fakeTextField4 setCanAcquireFieldEditor:0];
 
-    v71 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
-    [v71 setTextAlignment:1];
+    fakeTextField5 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
+    [fakeTextField5 setTextAlignment:1];
 
-    v72 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
-    v73 = [v72 leftView];
-    [(SPUIUnifiedFieldViewController *)v7 setFakeOriginalLeftView:v73];
+    fakeTextField6 = [(SPUIUnifiedFieldViewController *)v7 fakeTextField];
+    leftView = [fakeTextField6 leftView];
+    [(SPUIUnifiedFieldViewController *)v7 setFakeOriginalLeftView:leftView];
 
-    v74 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v74 addObserver:v7 selector:sel_keyboardFrameChanged_ name:*MEMORY[0x277D76C48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_keyboardFrameChanged_ name:*MEMORY[0x277D76C48] object:0];
 
-    v75 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v75 addObserver:v7 selector:sel_keyboardFrameChanged_ name:*MEMORY[0x277D76B98] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_keyboardFrameChanged_ name:*MEMORY[0x277D76B98] object:0];
 
-    v76 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v76 addObserver:v7 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-    v77 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v77 addObserver:v7 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v7 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
-    v78 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v78 addObserver:v7 selector:sel_processStateForeground name:*MEMORY[0x277D76E48] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v7 selector:sel_processStateForeground name:*MEMORY[0x277D76E48] object:0];
 
-    v79 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v79 addObserver:v7 selector:sel_doALayoutPass name:@"SPUILayoutPass" object:0];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter6 addObserver:v7 selector:sel_doALayoutPass name:@"SPUILayoutPass" object:0];
   }
 
   return v7;
@@ -410,46 +410,46 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SPUIUnifiedFieldViewController;
   [(SPUIUnifiedFieldViewController *)&v4 dealloc];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [(SPUIUnifiedFieldViewController *)self backButton];
+  backButton = [(SPUIUnifiedFieldViewController *)self backButton];
 
-  if (v4)
+  if (backButton)
   {
-    v5 = [(SPUIUnifiedFieldViewController *)self originalLeftView];
-    [v5 setAlpha:1.0];
+    originalLeftView = [(SPUIUnifiedFieldViewController *)self originalLeftView];
+    [originalLeftView setAlpha:1.0];
 
-    v8 = [(SPUIUnifiedFieldViewController *)self originalLeftView];
-    v6 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-    v7 = [v6 searchField];
-    [v7 setLeftView:v8];
+    originalLeftView2 = [(SPUIUnifiedFieldViewController *)self originalLeftView];
+    searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+    searchField = [searchHeader searchField];
+    [searchField setLeftView:originalLeftView2];
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 count];
+  searchNavigationController = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
+  viewControllers = [searchNavigationController viewControllers];
+  v6 = [viewControllers count];
 
   if (v6 > 1)
   {
-    v7 = [(SPUIUnifiedFieldViewController *)self backButton];
+    backButton = [(SPUIUnifiedFieldViewController *)self backButton];
 
-    if (v7)
+    if (backButton)
     {
-      v10 = [(SPUIUnifiedFieldViewController *)self backButton];
-      v8 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-      v9 = [v8 searchField];
-      [v9 setLeftView:v10];
+      backButton2 = [(SPUIUnifiedFieldViewController *)self backButton];
+      searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+      searchField = [searchHeader searchField];
+      [searchField setLeftView:backButton2];
     }
   }
 
@@ -460,36 +460,36 @@
   }
 }
 
-- (void)keyboardFrameChanged:(id)a3
+- (void)keyboardFrameChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(SPUIUnifiedFieldViewController *)self setHandlingKeyboardFrameChange:1];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D76B78]];
+  v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D76B78]];
   [v16 floatValue];
   v37 = v17;
 
-  v18 = [(SPUIUnifiedFieldViewController *)self view];
-  v19 = [v18 tlks_screen];
-  [v19 bounds];
+  view = [(SPUIUnifiedFieldViewController *)self view];
+  tlks_screen = [view tlks_screen];
+  [tlks_screen bounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
   v28 = MEMORY[0x277D65D88];
-  v29 = [(SPUIUnifiedFieldViewController *)self view];
-  v30 = [v29 window];
-  LOBYTE(v28) = [v28 isSWKeyboardHiddenForWindow:v30];
+  view2 = [(SPUIUnifiedFieldViewController *)self view];
+  window = [view2 window];
+  LOBYTE(v28) = [v28 isSWKeyboardHiddenForWindow:window];
 
   v40.origin.x = v8;
   v40.origin.y = v10;
@@ -510,15 +510,15 @@
   v39 = v28;
   [MEMORY[0x277D75D18] animateWithDuration:196608 delay:v38 options:0 animations:v37 completion:0.0];
   [(SPUIUnifiedFieldViewController *)self setHandlingKeyboardFrameChange:0];
-  v32 = [(SPUIUnifiedFieldViewController *)self view];
-  v33 = [v32 window];
-  v34 = [v33 windowScene];
-  v35 = [v34 activationState];
+  view3 = [(SPUIUnifiedFieldViewController *)self view];
+  window2 = [view3 window];
+  windowScene = [window2 windowScene];
+  activationState = [windowScene activationState];
 
-  if (!v35)
+  if (!activationState)
   {
-    v36 = [(SPUIUnifiedFieldViewController *)self delegate];
-    [v36 unifiedFieldViewControllerDidLayoutForKeyboardFrameChange:self];
+    delegate = [(SPUIUnifiedFieldViewController *)self delegate];
+    [delegate unifiedFieldViewControllerDidLayoutForKeyboardFrameChange:self];
   }
 }
 
@@ -595,16 +595,16 @@ void __55__SPUIUnifiedFieldViewController_keyboardFrameChanged___block_invoke(ui
   [v26 layoutIfNeeded];
 }
 
-+ (double)insetMarginsForSearchField:(id)a3
++ (double)insetMarginsForSearchField:(id)field
 {
-  v3 = a3;
+  fieldCopy = field;
   if (_UISolariumEnabled())
   {
-    v4 = [v3 traitCollection];
-    [v4 displayCornerRadius];
+    traitCollection = [fieldCopy traitCollection];
+    [traitCollection displayCornerRadius];
     v6 = v5;
-    v7 = [v3 backgroundBlurView];
-    [v7 _continuousCornerRadius];
+    backgroundBlurView = [fieldCopy backgroundBlurView];
+    [backgroundBlurView _continuousCornerRadius];
     v9 = v6 - v8;
 
     v10 = fmax(v9, 8.0);
@@ -619,86 +619,86 @@ void __55__SPUIUnifiedFieldViewController_keyboardFrameChanged___block_invoke(ui
   return v10;
 }
 
-- (void)resetSearchFieldContentWithSearchToken:(id)a3 text:(id)a4 wantsBackButton:(BOOL)a5 transitionCoordinator:(id)a6
+- (void)resetSearchFieldContentWithSearchToken:(id)token text:(id)text wantsBackButton:(BOOL)button transitionCoordinator:(id)coordinator
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  v14 = [v13 searchField];
+  buttonCopy = button;
+  tokenCopy = token;
+  textCopy = text;
+  coordinatorCopy = coordinator;
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  searchField = [searchHeader searchField];
 
-  v15 = [v14 _fieldEditor];
+  _fieldEditor = [searchField _fieldEditor];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __116__SPUIUnifiedFieldViewController_resetSearchFieldContentWithSearchToken_text_wantsBackButton_transitionCoordinator___block_invoke;
   v67[3] = &unk_279D06C78;
-  v16 = v14;
+  v16 = searchField;
   v68 = v16;
-  [v15 _performWhileSuppressingDelegateNotifications:v67];
+  [_fieldEditor _performWhileSuppressingDelegateNotifications:v67];
 
-  v17 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  [v16 addSubview:v17];
+  fakeTextField = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  [v16 addSubview:fakeTextField];
 
-  v18 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  fakeTextField2 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
   v19 = [MEMORY[0x277D6F1A0] bestAppearanceForView:v16];
-  [v18 updateWithAppearance:v19 isOnDarkBackground:{objc_msgSend(v16, "isOnDarkBackground")}];
+  [fakeTextField2 updateWithAppearance:v19 isOnDarkBackground:{objc_msgSend(v16, "isOnDarkBackground")}];
 
   v20 = MEMORY[0x277D4C828];
-  v21 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  [v20 fillContainerWithView:v21];
+  fakeTextField3 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  [v20 fillContainerWithView:fakeTextField3];
 
-  v22 = [MEMORY[0x277D75348] clearColor];
-  v23 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  [v23 setTokenBackgroundColor:v22];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  fakeTextField4 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  [fakeTextField4 setTokenBackgroundColor:clearColor];
 
-  v24 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  v25 = [v24 canvasView];
-  [v25 setAlpha:0.0];
+  fakeTextField5 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  canvasView = [fakeTextField5 canvasView];
+  [canvasView setAlpha:0.0];
 
-  if (v7)
+  if (buttonCopy)
   {
-    v26 = [v16 _placeholderLabel];
-    [v26 setHidden:1];
+    _placeholderLabel = [v16 _placeholderLabel];
+    [_placeholderLabel setHidden:1];
 
-    v27 = [(SPUIUnifiedFieldViewController *)self generateBackButton];
-    v28 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-    [v28 setLeftView:v27];
+    generateBackButton = [(SPUIUnifiedFieldViewController *)self generateBackButton];
+    fakeTextField6 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+    [fakeTextField6 setLeftView:generateBackButton];
 
-    v29 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-    [v29 unfocusSearchFieldWithReason:5 afterCommit:0];
+    searchHeader2 = [(SPUIUnifiedFieldViewController *)self searchHeader];
+    [searchHeader2 unfocusSearchFieldWithReason:5 afterCommit:0];
   }
 
   else
   {
-    v29 = [(SPUIUnifiedFieldViewController *)self fakeOriginalLeftView];
-    v30 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-    [v30 setLeftView:v29];
+    searchHeader2 = [(SPUIUnifiedFieldViewController *)self fakeOriginalLeftView];
+    fakeTextField7 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+    [fakeTextField7 setLeftView:searchHeader2];
   }
 
-  v31 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  v32 = [v31 leftView];
+  fakeTextField8 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  leftView = [fakeTextField8 leftView];
   v33 = 0.0;
-  [v32 setAlpha:0.0];
+  [leftView setAlpha:0.0];
 
-  v34 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  v35 = [v34 rightView];
-  [v35 setAlpha:0.0];
+  fakeTextField9 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  rightView = [fakeTextField9 rightView];
+  [rightView setAlpha:0.0];
 
-  v36 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  __116__SPUIUnifiedFieldViewController_resetSearchFieldContentWithSearchToken_text_wantsBackButton_transitionCoordinator___block_invoke_2(v36, v36, v11, v10);
+  fakeTextField10 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  __116__SPUIUnifiedFieldViewController_resetSearchFieldContentWithSearchToken_text_wantsBackButton_transitionCoordinator___block_invoke_2(fakeTextField10, fakeTextField10, textCopy, tokenCopy);
 
   if ([v16 hasContent])
   {
     v33 = 1.0;
   }
 
-  v37 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  v38 = [v37 _clearButton];
-  [v38 setAlpha:v33];
+  fakeTextField11 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  _clearButton = [fakeTextField11 _clearButton];
+  [_clearButton setAlpha:v33];
 
-  v39 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
-  [v39 layoutBelowIfNeeded];
+  fakeTextField12 = [(SPUIUnifiedFieldViewController *)self fakeTextField];
+  [fakeTextField12 layoutBelowIfNeeded];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -708,11 +708,11 @@ void __55__SPUIUnifiedFieldViewController_keyboardFrameChanged___block_invoke(ui
   v40 = v16;
   v62 = v40;
   v65 = &__block_literal_global_6;
-  v41 = v11;
+  v41 = textCopy;
   v63 = v41;
-  v42 = v10;
+  v42 = tokenCopy;
   v64 = v42;
-  v66 = v7;
+  v66 = buttonCopy;
   v43 = _Block_copy(aBlock);
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
@@ -723,7 +723,7 @@ void __55__SPUIUnifiedFieldViewController_keyboardFrameChanged___block_invoke(ui
   v60 = v44;
   v45 = _Block_copy(v59);
   v46 = v45;
-  if (v12)
+  if (coordinatorCopy)
   {
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
@@ -738,7 +738,7 @@ void __55__SPUIUnifiedFieldViewController_keyboardFrameChanged___block_invoke(ui
     v48 = &v56;
     v56 = v43;
     v49 = v46;
-    [v12 animateAlongsideTransition:v57 completion:v55];
+    [coordinatorCopy animateAlongsideTransition:v57 completion:v55];
   }
 
   else
@@ -899,23 +899,23 @@ uint64_t __116__SPUIUnifiedFieldViewController_resetSearchFieldContentWithSearch
 
 - (id)generateBackButton
 {
-  v3 = [MEMORY[0x277D75230] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
   v4 = MEMORY[0x277D4C890];
-  v5 = [(SPUIUnifiedFieldViewController *)self searchHeader];
-  v6 = [v5 searchField];
-  v7 = [v6 font];
-  v8 = [v4 uiImageWithSymbolName:@"chevron.backward" font:v7 scale:-1];
-  [v3 setImage:v8];
+  searchHeader = [(SPUIUnifiedFieldViewController *)self searchHeader];
+  searchField = [searchHeader searchField];
+  font = [searchField font];
+  v8 = [v4 uiImageWithSymbolName:@"chevron.backward" font:font scale:-1];
+  [plainButtonConfiguration setImage:v8];
 
-  [v3 setImagePlacement:2];
+  [plainButtonConfiguration setImagePlacement:2];
   v9 = MEMORY[0x277D6F1B8];
-  v10 = [(SPUIUnifiedFieldViewController *)self view];
-  [v9 deviceScaledRoundedValue:v10 forView:3.5];
+  view = [(SPUIUnifiedFieldViewController *)self view];
+  [v9 deviceScaledRoundedValue:view forView:3.5];
   v12 = v11;
 
-  [v3 setContentInsets:{0.0, 6.0, 0.0, v12}];
+  [plainButtonConfiguration setContentInsets:{0.0, 6.0, 0.0, v12}];
   v13 = objc_opt_new();
-  [v13 setConfiguration:v3];
+  [v13 setConfiguration:plainButtonConfiguration];
   [v13 setRole:1];
   [v13 addTarget:self action:sel_dismissSingleLevelViewController forControlEvents:64];
 
@@ -924,12 +924,12 @@ uint64_t __116__SPUIUnifiedFieldViewController_resetSearchFieldContentWithSearch
 
 - (void)dismissSingleLevelViewController
 {
-  v3 = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
-  v4 = [v3 popViewControllerAnimated:1];
+  searchNavigationController = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
+  v4 = [searchNavigationController popViewControllerAnimated:1];
 
-  v5 = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 count];
+  searchNavigationController2 = [(SPUIUnifiedFieldViewController *)self searchNavigationController];
+  viewControllers = [searchNavigationController2 viewControllers];
+  v7 = [viewControllers count];
 
   if (v7 <= 1)
   {

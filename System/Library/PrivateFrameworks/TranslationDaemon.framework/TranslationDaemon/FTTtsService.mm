@@ -1,23 +1,23 @@
 @interface FTTtsService
-- (id)performTextToSpeechStreamingWithDelegate:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performTextToSpeech:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
-- (void)performTextToSpeechSpeechFeature:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
+- (id)performTextToSpeechStreamingWithDelegate:(id)delegate requestBuilder:(id)builder completion:(id)completion;
+- (void)performTextToSpeech:(id)speech requestBuilder:(id)builder completion:(id)completion;
+- (void)performTextToSpeechSpeechFeature:(id)feature requestBuilder:(id)builder completion:(id)completion;
 @end
 
 @implementation FTTtsService
 
-- (void)performTextToSpeech:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performTextToSpeech:(id)speech requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [speech flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__FTTtsService_performTextToSpeech_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeech" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeech" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __62__FTTtsService_performTextToSpeech_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -45,23 +45,23 @@ void __62__FTTtsService_performTextToSpeech_requestBuilder_completion___block_in
   }
 }
 
-- (id)performTextToSpeechStreamingWithDelegate:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (id)performTextToSpeechStreamingWithDelegate:(id)delegate requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__FTTtsService_performTextToSpeechStreamingWithDelegate_requestBuilder_completion___block_invoke;
   v21[3] = &unk_2789B7AA0;
-  v10 = v8;
+  v10 = delegateCopy;
   v22 = v10;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __83__FTTtsService_performTextToSpeechStreamingWithDelegate_requestBuilder_completion___block_invoke_2;
   v19 = &unk_2789B9130;
-  v11 = v9;
+  v11 = completionCopy;
   v20 = v11;
-  v12 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeechStreaming" requestBuilder:a4 streamingResponseHandler:v21 completion:&v16];
+  v12 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeechStreaming" requestBuilder:builder streamingResponseHandler:v21 completion:&v16];
   v13 = [FTTextToSpeechStreamingStreamingContext alloc];
   v14 = [(FTTextToSpeechStreamingStreamingContext *)v13 initWithGRPCStreamingCallContext:v12, v16, v17, v18, v19];
 
@@ -88,18 +88,18 @@ void __83__FTTtsService_performTextToSpeechStreamingWithDelegate_requestBuilder_
   }
 }
 
-- (void)performTextToSpeechSpeechFeature:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performTextToSpeechSpeechFeature:(id)feature requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [feature flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__FTTtsService_performTextToSpeechSpeechFeature_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeechSpeechFeature" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeechSpeechFeature" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __75__FTTtsService_performTextToSpeechSpeechFeature_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)

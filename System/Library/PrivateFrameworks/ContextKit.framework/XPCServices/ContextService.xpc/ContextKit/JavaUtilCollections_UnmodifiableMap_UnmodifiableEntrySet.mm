@@ -1,7 +1,7 @@
 @interface JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 @end
 
 @implementation JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet
@@ -30,15 +30,15 @@
 
   v4 = [(JavaUtilCollection *)c size];
   v5 = [IOSObjectArray arrayWithLength:v4 type:NSObject_class_()];
-  v6 = [(JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet *)self iterator];
+  iterator = [(JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet *)self iterator];
   v7 = (v4 - 1);
   if (v7 < 0)
   {
     return v5;
   }
 
-  v8 = v6;
-  if (!v6)
+  v8 = iterator;
+  if (!iterator)
   {
 LABEL_6:
     JreThrowNullPointerException();
@@ -53,7 +53,7 @@ LABEL_6:
   return v5;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   c = self->super.super.c_;
   if (!c)
@@ -62,18 +62,18 @@ LABEL_6:
   }
 
   v6 = [(JavaUtilCollection *)c size];
-  v7 = [(JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet *)self iterator];
-  if (!a3)
+  iterator = [(JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet *)self iterator];
+  if (!array)
   {
     goto LABEL_15;
   }
 
-  v8 = v7;
-  if (v6 > *(a3 + 2))
+  v8 = iterator;
+  if (v6 > *(array + 2))
   {
-    a3 = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(a3 "getClass")], v6);
+    array = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(array "getClass")], v6);
     objc_opt_class();
-    if (!a3)
+    if (!array)
     {
       goto LABEL_15;
     }
@@ -100,12 +100,12 @@ LABEL_15:
   }
 
 LABEL_12:
-  if (v6 < *(a3 + 2))
+  if (v6 < *(array + 2))
   {
-    IOSObjectArray_Set(a3, v6, 0);
+    IOSObjectArray_Set(array, v6, 0);
   }
 
-  return a3;
+  return array;
 }
 
 @end

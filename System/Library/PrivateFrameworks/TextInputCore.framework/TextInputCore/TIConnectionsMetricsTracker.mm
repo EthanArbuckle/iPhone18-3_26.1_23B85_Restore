@@ -1,9 +1,9 @@
 @interface TIConnectionsMetricsTracker
 + (id)sharedInstance;
-- (BOOL)isIgnoredTrigger:(id)a3;
+- (BOOL)isIgnoredTrigger:(id)trigger;
 - (TIConnectionsMetricsTracker)init;
-- (void)trackPredictionEngagmentWithConversion:(BOOL)a3 age:(unint64_t)a4 fieldType:(id)a5 resultType:(id)a6 fromBundleId:(id)a7 targetApp:(id)a8 linguistic:(BOOL)a9 semantic:(BOOL)a10;
-- (void)trackTextFieldEntryWithEmpty:(BOOL)a3 fieldType:(id)a4 linguistic:(BOOL)a5 semantic:(BOOL)a6 requestType:(id)a7;
+- (void)trackPredictionEngagmentWithConversion:(BOOL)conversion age:(unint64_t)age fieldType:(id)type resultType:(id)resultType fromBundleId:(id)id targetApp:(id)app linguistic:(BOOL)linguistic semantic:(BOOL)self0;
+- (void)trackTextFieldEntryWithEmpty:(BOOL)empty fieldType:(id)type linguistic:(BOOL)linguistic semantic:(BOOL)semantic requestType:(id)requestType;
 @end
 
 @implementation TIConnectionsMetricsTracker
@@ -20,21 +20,21 @@
   return v3;
 }
 
-- (void)trackPredictionEngagmentWithConversion:(BOOL)a3 age:(unint64_t)a4 fieldType:(id)a5 resultType:(id)a6 fromBundleId:(id)a7 targetApp:(id)a8 linguistic:(BOOL)a9 semantic:(BOOL)a10
+- (void)trackPredictionEngagmentWithConversion:(BOOL)conversion age:(unint64_t)age fieldType:(id)type resultType:(id)resultType fromBundleId:(id)id targetApp:(id)app linguistic:(BOOL)linguistic semantic:(BOOL)self0
 {
-  v14 = a3;
+  conversionCopy = conversion;
   v31[6] = *MEMORY[0x277D85DE8];
   v16 = MEMORY[0x277CCABB0];
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = [v16 numberWithUnsignedInteger:a4];
+  appCopy = app;
+  idCopy = id;
+  resultTypeCopy = resultType;
+  typeCopy = type;
+  v21 = [v16 numberWithUnsignedInteger:age];
   v22 = v21;
   v23 = @"null";
-  if (v20)
+  if (typeCopy)
   {
-    v24 = v20;
+    v24 = typeCopy;
   }
 
   else
@@ -44,9 +44,9 @@
 
   v31[0] = v21;
   v31[1] = v24;
-  if (v19)
+  if (resultTypeCopy)
   {
-    v25 = v19;
+    v25 = resultTypeCopy;
   }
 
   else
@@ -54,9 +54,9 @@
     v25 = @"null";
   }
 
-  if (v18)
+  if (idCopy)
   {
-    v26 = v18;
+    v26 = idCopy;
   }
 
   else
@@ -66,9 +66,9 @@
 
   v31[2] = v25;
   v31[3] = v26;
-  if (v17)
+  if (appCopy)
   {
-    v27 = v17;
+    v27 = appCopy;
   }
 
   else
@@ -76,12 +76,12 @@
     v27 = @"null";
   }
 
-  if (a10)
+  if (semantic)
   {
     v23 = @"semantic";
   }
 
-  if (a9)
+  if (linguistic)
   {
     v23 = @"linguistic";
   }
@@ -91,7 +91,7 @@
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:6];
 
   predictionEngagementTracker = self->_predictionEngagementTracker;
-  if (v14)
+  if (conversionCopy)
   {
     [(PETGoalConversionEventTracker *)predictionEngagementTracker trackGoalConversionEventWithPropertyValues:v28];
   }
@@ -104,67 +104,67 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trackTextFieldEntryWithEmpty:(BOOL)a3 fieldType:(id)a4 linguistic:(BOOL)a5 semantic:(BOOL)a6 requestType:(id)a7
+- (void)trackTextFieldEntryWithEmpty:(BOOL)empty fieldType:(id)type linguistic:(BOOL)linguistic semantic:(BOOL)semantic requestType:(id)requestType
 {
   v18[4] = *MEMORY[0x277D85DE8];
   textFieldEntryTracker = self->_textFieldEntryTracker;
   v9 = @"0";
-  if (a3)
+  if (empty)
   {
     v9 = @"1";
   }
 
-  v10 = @"null";
-  if (a4)
+  requestTypeCopy = @"null";
+  if (type)
   {
-    v11 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v11 = @"null";
+    typeCopy = @"null";
   }
 
   v18[0] = v9;
-  v18[1] = v11;
+  v18[1] = typeCopy;
   v12 = @"semantic";
-  if (!a6)
+  if (!semantic)
   {
     v12 = @"null";
   }
 
-  if (a5)
+  if (linguistic)
   {
     v12 = @"linguistic";
   }
 
-  if (a7)
+  if (requestType)
   {
-    v10 = a7;
+    requestTypeCopy = requestType;
   }
 
   v18[2] = v12;
-  v18[3] = v10;
+  v18[3] = requestTypeCopy;
   v13 = MEMORY[0x277CBEA60];
-  v14 = a7;
-  v15 = a4;
+  requestTypeCopy2 = requestType;
+  typeCopy2 = type;
   v16 = [v13 arrayWithObjects:v18 count:4];
   [(PETScalarEventTracker *)textFieldEntryTracker trackEventWithPropertyValues:v16];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isIgnoredTrigger:(id)a3
+- (BOOL)isIgnoredTrigger:(id)trigger
 {
-  if (!a3)
+  if (!trigger)
   {
     return 0;
   }
 
-  v3 = [a3 attributes];
-  v4 = [v3 objectForKey:*MEMORY[0x277D22F30]];
-  v5 = [MEMORY[0x277CBEB68] null];
-  v6 = [v4 isEqual:v5];
+  attributes = [trigger attributes];
+  v4 = [attributes objectForKey:*MEMORY[0x277D22F30]];
+  null = [MEMORY[0x277CBEB68] null];
+  v6 = [v4 isEqual:null];
 
   return v6;
 }

@@ -1,18 +1,18 @@
 @interface MPAnalyticsLogger
-- (void)logEvent:(id)a3;
-- (void)logEvent:(id)a3 withCoreAnalyticsDictionary:(id)a4;
+- (void)logEvent:(id)event;
+- (void)logEvent:(id)event withCoreAnalyticsDictionary:(id)dictionary;
 @end
 
 @implementation MPAnalyticsLogger
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315138;
-    v6 = [v3 UTF8String];
+    uTF8String = [eventCopy UTF8String];
     _os_log_impl(&dword_25E4EC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "MPAnalyticsLogger: logging core analytics view %s", &v5, 0xCu);
   }
 
@@ -21,22 +21,22 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEvent:(id)a3 withCoreAnalyticsDictionary:(id)a4
+- (void)logEvent:(id)event withCoreAnalyticsDictionary:(id)dictionary
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  dictionaryCopy = dictionary;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
-    v11 = [v5 UTF8String];
+    uTF8String = [eventCopy UTF8String];
     v12 = 2112;
-    v13 = v6;
+    v13 = dictionaryCopy;
     _os_log_impl(&dword_25E4EC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "MPAnalyticsLogger: logging core analytics view %s with dictionary %@", buf, 0x16u);
   }
 
-  v9 = v6;
-  v7 = v6;
+  v9 = dictionaryCopy;
+  v7 = dictionaryCopy;
   AnalyticsSendEventLazy();
 
   v8 = *MEMORY[0x277D85DE8];

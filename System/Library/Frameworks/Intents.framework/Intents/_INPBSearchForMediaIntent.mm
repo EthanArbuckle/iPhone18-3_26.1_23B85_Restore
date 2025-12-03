@@ -1,13 +1,13 @@
 @interface _INPBSearchForMediaIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForMediaIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForMediaIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMediaItems:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMediaItems:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMediaItems:(id)items;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMediaItems:(id)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForMediaIntent
@@ -15,14 +15,14 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSearchForMediaIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBSearchForMediaIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if ([(NSArray *)self->_mediaItems count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -42,8 +42,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -52,20 +52,20 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"mediaItems"];
+    [dictionary setObject:array forKeyedSubscript:@"mediaItems"];
   }
 
-  v13 = [(_INPBSearchForMediaIntent *)self mediaSearch];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"mediaSearch"];
+  mediaSearch = [(_INPBSearchForMediaIntent *)self mediaSearch];
+  dictionaryRepresentation3 = [mediaSearch dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"mediaSearch"];
 
-  v15 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"privateSearchForMediaIntentData"];
+  privateSearchForMediaIntentData = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
+  dictionaryRepresentation4 = [privateSearchForMediaIntentData dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"privateSearchForMediaIntentData"];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -76,28 +76,28 @@
   return v4 ^ v5 ^ [(_INPBPrivateSearchForMediaIntentData *)self->_privateSearchForMediaIntentData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBSearchForMediaIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSearchForMediaIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBSearchForMediaIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBSearchForMediaIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForMediaIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBSearchForMediaIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -109,20 +109,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMediaIntent *)self mediaItems];
-  v6 = [v4 mediaItems];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSearchForMediaIntent *)self mediaItems];
+  intentMetadata2 = [equalCopy mediaItems];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBSearchForMediaIntent *)self mediaItems];
-  if (v12)
+  mediaItems = [(_INPBSearchForMediaIntent *)self mediaItems];
+  if (mediaItems)
   {
-    v13 = v12;
-    v14 = [(_INPBSearchForMediaIntent *)self mediaItems];
-    v15 = [v4 mediaItems];
-    v16 = [v14 isEqual:v15];
+    v13 = mediaItems;
+    mediaItems2 = [(_INPBSearchForMediaIntent *)self mediaItems];
+    mediaItems3 = [equalCopy mediaItems];
+    v16 = [mediaItems2 isEqual:mediaItems3];
 
     if (!v16)
     {
@@ -134,20 +134,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMediaIntent *)self mediaSearch];
-  v6 = [v4 mediaSearch];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSearchForMediaIntent *)self mediaSearch];
+  intentMetadata2 = [equalCopy mediaSearch];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBSearchForMediaIntent *)self mediaSearch];
-  if (v17)
+  mediaSearch = [(_INPBSearchForMediaIntent *)self mediaSearch];
+  if (mediaSearch)
   {
-    v18 = v17;
-    v19 = [(_INPBSearchForMediaIntent *)self mediaSearch];
-    v20 = [v4 mediaSearch];
-    v21 = [v19 isEqual:v20];
+    v18 = mediaSearch;
+    mediaSearch2 = [(_INPBSearchForMediaIntent *)self mediaSearch];
+    mediaSearch3 = [equalCopy mediaSearch];
+    v21 = [mediaSearch2 isEqual:mediaSearch3];
 
     if (!v21)
     {
@@ -159,12 +159,12 @@
   {
   }
 
-  v5 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
-  v6 = [v4 privateSearchForMediaIntentData];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
+  intentMetadata2 = [equalCopy privateSearchForMediaIntentData];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v22 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
-    if (!v22)
+    privateSearchForMediaIntentData = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
+    if (!privateSearchForMediaIntentData)
     {
 
 LABEL_25:
@@ -172,10 +172,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
-    v25 = [v4 privateSearchForMediaIntentData];
-    v26 = [v24 isEqual:v25];
+    v23 = privateSearchForMediaIntentData;
+    privateSearchForMediaIntentData2 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
+    privateSearchForMediaIntentData3 = [equalCopy privateSearchForMediaIntentData];
+    v26 = [privateSearchForMediaIntentData2 isEqual:privateSearchForMediaIntentData3];
 
     if (v26)
     {
@@ -195,57 +195,57 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForMediaIntent allocWithZone:](_INPBSearchForMediaIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchForMediaIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(NSArray *)self->_mediaItems copyWithZone:a3];
+  v7 = [(NSArray *)self->_mediaItems copyWithZone:zone];
   [(_INPBSearchForMediaIntent *)v5 setMediaItems:v7];
 
-  v8 = [(_INPBMediaSearch *)self->_mediaSearch copyWithZone:a3];
+  v8 = [(_INPBMediaSearch *)self->_mediaSearch copyWithZone:zone];
   [(_INPBSearchForMediaIntent *)v5 setMediaSearch:v8];
 
-  v9 = [(_INPBPrivateSearchForMediaIntentData *)self->_privateSearchForMediaIntentData copyWithZone:a3];
+  v9 = [(_INPBPrivateSearchForMediaIntentData *)self->_privateSearchForMediaIntentData copyWithZone:zone];
   [(_INPBSearchForMediaIntent *)v5 setPrivateSearchForMediaIntentData:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForMediaIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForMediaIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForMediaIntent)initWithCoder:(id)a3
+- (_INPBSearchForMediaIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForMediaIntent *)self initWithData:v6];
+    self = [(_INPBSearchForMediaIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBSearchForMediaIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBSearchForMediaIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBSearchForMediaIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchForMediaIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -281,46 +281,46 @@ LABEL_23:
     while (v9);
   }
 
-  v13 = [(_INPBSearchForMediaIntent *)self mediaSearch];
+  mediaSearch = [(_INPBSearchForMediaIntent *)self mediaSearch];
 
-  if (v13)
+  if (mediaSearch)
   {
-    v14 = [(_INPBSearchForMediaIntent *)self mediaSearch];
+    mediaSearch2 = [(_INPBSearchForMediaIntent *)self mediaSearch];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
+  privateSearchForMediaIntentData = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
 
-  if (v15)
+  if (privateSearchForMediaIntentData)
   {
-    v16 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
+    privateSearchForMediaIntentData2 = [(_INPBSearchForMediaIntent *)self privateSearchForMediaIntentData];
     PBDataWriterWriteSubmessage();
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addMediaItems:(id)a3
+- (void)addMediaItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   mediaItems = self->_mediaItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!mediaItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_mediaItems;
-    self->_mediaItems = v6;
+    self->_mediaItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     mediaItems = self->_mediaItems;
   }
 
-  [(NSArray *)mediaItems addObject:v4];
+  [(NSArray *)mediaItems addObject:itemsCopy];
 }
 
-- (void)setMediaItems:(id)a3
+- (void)setMediaItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   mediaItems = self->_mediaItems;
   self->_mediaItems = v4;
 

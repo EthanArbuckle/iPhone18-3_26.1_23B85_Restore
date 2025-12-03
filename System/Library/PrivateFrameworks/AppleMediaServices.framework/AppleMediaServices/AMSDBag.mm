@@ -1,14 +1,14 @@
 @interface AMSDBag
-+ (id)bagForMediaType:(id)a3;
++ (id)bagForMediaType:(id)type;
 @end
 
 @implementation AMSDBag
 
-+ (id)bagForMediaType:(id)a3
++ (id)bagForMediaType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[AMSProcessInfo currentProcess];
-  [v4 setAccountMediaType:v3];
+  [v4 setAccountMediaType:typeCopy];
 
   v5 = [AMSBag bagForProfile:@"Accounts" profileVersion:@"1" processInfo:v4];
 

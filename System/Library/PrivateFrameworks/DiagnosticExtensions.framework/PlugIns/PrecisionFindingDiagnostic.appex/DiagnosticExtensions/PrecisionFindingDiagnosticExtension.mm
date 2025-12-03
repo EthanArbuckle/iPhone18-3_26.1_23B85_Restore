@@ -1,10 +1,10 @@
 @interface PrecisionFindingDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation PrecisionFindingDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = os_log_create("com.apple.CoreMotionAlgorithms", "DiagnosticExtension");
   v4 = [NSURL URLWithString:@"/private/var/mobile/Library/Caches/com.apple.CoreMotionAlgorithms/"];
@@ -32,9 +32,9 @@
     v10 = +[NSMutableArray array];
     if ([v9 count])
     {
-      v11 = [v9 firstObject];
-      v12 = [v11 path];
-      v13 = [DEAttachmentItem attachmentWithPath:v12];
+      firstObject = [v9 firstObject];
+      path = [firstObject path];
+      v13 = [DEAttachmentItem attachmentWithPath:path];
       [v10 addObject:v13];
     }
   }

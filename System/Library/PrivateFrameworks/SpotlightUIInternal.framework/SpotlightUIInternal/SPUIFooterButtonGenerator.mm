@@ -1,21 +1,21 @@
 @interface SPUIFooterButtonGenerator
-- (SPUIFooterButtonGenerator)initWithReuseIdentifier:(id)a3 buttonGenerator:(id)a4;
+- (SPUIFooterButtonGenerator)initWithReuseIdentifier:(id)identifier buttonGenerator:(id)generator;
 @end
 
 @implementation SPUIFooterButtonGenerator
 
-- (SPUIFooterButtonGenerator)initWithReuseIdentifier:(id)a3 buttonGenerator:(id)a4
+- (SPUIFooterButtonGenerator)initWithReuseIdentifier:(id)identifier buttonGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  generatorCopy = generator;
   v11.receiver = self;
   v11.super_class = SPUIFooterButtonGenerator;
   v8 = [(SPUIFooterButtonGenerator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(SPUIFooterButtonGenerator *)v8 setButtonGenerator:v7];
-    [(SPUIFooterButtonGenerator *)v9 setReuseIdentifier:v6];
+    [(SPUIFooterButtonGenerator *)v8 setButtonGenerator:generatorCopy];
+    [(SPUIFooterButtonGenerator *)v9 setReuseIdentifier:identifierCopy];
   }
 
   return v9;

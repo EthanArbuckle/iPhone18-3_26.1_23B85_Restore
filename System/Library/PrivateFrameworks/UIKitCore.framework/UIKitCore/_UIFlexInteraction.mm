@@ -1,5 +1,5 @@
 @interface _UIFlexInteraction
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)initialTouchLocation;
 - (CGPoint)internalTranslation;
 - (CGPoint)translation;
@@ -8,47 +8,47 @@
 - (_UIFlexInteractionDelegate)delegate;
 - (_UIFlexInteractionPanGestureRecognizer)panGesture;
 - (unint64_t)resolvedActivationMode;
-- (void)_outermostLayerDidChange:(id)a3;
-- (void)_willMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (void)_outermostLayerDidChange:(id)change;
+- (void)_willMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)activateIfPermitted;
 - (void)deactivate;
-- (void)didMoveToView:(id)a3;
-- (void)handlePan:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)handlePan:(id)pan;
 - (void)hideGlow;
-- (void)moveGlowTo:(CGPoint)a3 shouldDissipate:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setPanGesture:(id)a3;
-- (void)setPreferredActivationMode:(unint64_t)a3;
-- (void)setUpdateLink:(id)a3;
-- (void)showGlowAt:(CGPoint)a3;
+- (void)moveGlowTo:(CGPoint)to shouldDissipate:(BOOL)dissipate;
+- (void)setDelegate:(id)delegate;
+- (void)setPanGesture:(id)gesture;
+- (void)setPreferredActivationMode:(unint64_t)mode;
+- (void)setUpdateLink:(id)link;
+- (void)showGlowAt:(CGPoint)at;
 - (void)updateFlex;
 - (void)updateWithInteractionPulse;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIFlexInteraction
 
 - (unint64_t)resolvedActivationMode
 {
-  v2 = self;
-  if ([(_UIFlexInteraction *)v2 preferredActivationMode])
+  selfCopy = self;
+  if ([(_UIFlexInteraction *)selfCopy preferredActivationMode])
   {
-    v3 = [(_UIFlexInteraction *)v2 preferredActivationMode];
+    preferredActivationMode = [(_UIFlexInteraction *)selfCopy preferredActivationMode];
   }
 
   else
   {
-    v3 = 2;
+    preferredActivationMode = 2;
   }
 
-  return v3;
+  return preferredActivationMode;
 }
 
 - (UIView)view
 {
-  v2 = [(_UIFlexInteraction *)self _view];
+  _view = [(_UIFlexInteraction *)self _view];
 
-  return v2;
+  return _view;
 }
 
 - (UIView)_view
@@ -60,58 +60,58 @@
 
 - (_UIFlexInteractionPanGestureRecognizer)panGesture
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188B0F6F8();
 
   return v3;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B0F7E8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188B0F7E8(view);
 }
 
-- (void)setUpdateLink:(id)a3
+- (void)setUpdateLink:(id)link
 {
   v4 = *(self + OBJC_IVAR____UIFlexInteraction_updateLink);
-  *(self + OBJC_IVAR____UIFlexInteraction_updateLink) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIFlexInteraction_updateLink) = link;
+  linkCopy = link;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B0FBB8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188B0FBB8(view);
 }
 
-- (void)_willMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_willMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_188B74F6C(a3, a4);
+  windowCopy = window;
+  toWindowCopy = toWindow;
+  selfCopy = self;
+  sub_188B74F6C(window, toWindow);
 }
 
-- (void)setPreferredActivationMode:(unint64_t)a3
+- (void)setPreferredActivationMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_188B753F4(a3);
+  selfCopy = self;
+  sub_188B753F4(mode);
 }
 
 - (void)deactivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_188EA73B4();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4 = *(self + OBJC_IVAR____UIFlexInteraction_animationContext);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 12);
   sub_188EA9B00();
   os_unfair_lock_unlock(v4 + 12);
@@ -131,7 +131,7 @@
 - (_UIFlexInteractionDelegate)delegate
 {
   v2 = *(self + OBJC_IVAR____UIFlexInteraction_animationContext);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 12);
   Strong = swift_unknownObjectWeakLoadStrong();
   os_unfair_lock_unlock(v2 + 12);
@@ -141,40 +141,40 @@
 
 - (void)activateIfPermitted
 {
-  v2 = self;
+  selfCopy = self;
   sub_188EA71E4();
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_188D76558(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_188D76558(beginCopy);
 
   return self & 1;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_188D7F46C(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_188D7F46C(panCopy);
 }
 
-- (void)showGlowAt:(CGPoint)a3
+- (void)showGlowAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = at.y;
+  x = at.x;
+  selfCopy = self;
   sub_188D768F0(x, y);
 }
 
-- (void)moveGlowTo:(CGPoint)a3 shouldDissipate:(BOOL)a4
+- (void)moveGlowTo:(CGPoint)to shouldDissipate:(BOOL)dissipate
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  sub_188D76F28(a4, x, y);
+  y = to.y;
+  x = to.x;
+  selfCopy = self;
+  sub_188D76F28(dissipate, x, y);
 }
 
 - (CGPoint)initialTouchLocation
@@ -188,15 +188,15 @@
 
 - (void)hideGlow
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D8002C();
 }
 
-- (void)setPanGesture:(id)a3
+- (void)setPanGesture:(id)gesture
 {
   v4 = *(self + OBJC_IVAR____UIFlexInteraction____lazy_storage___panGesture);
-  *(self + OBJC_IVAR____UIFlexInteraction____lazy_storage___panGesture) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIFlexInteraction____lazy_storage___panGesture) = gesture;
+  gestureCopy = gesture;
 }
 
 - (CGPoint)internalTranslation
@@ -210,22 +210,22 @@
 
 - (void)updateFlex
 {
-  v2 = self;
+  selfCopy = self;
   sub_188EA7518();
 }
 
 - (void)updateWithInteractionPulse
 {
-  v2 = self;
+  selfCopy = self;
   sub_188EA827C();
 }
 
-- (void)_outermostLayerDidChange:(id)a3
+- (void)_outermostLayerDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 _outermostLayer];
-  v7 = *(v5 + OBJC_IVAR____UIFlexInteraction_animationContext);
+  changeCopy = change;
+  selfCopy = self;
+  _outermostLayer = [changeCopy _outermostLayer];
+  v7 = *(selfCopy + OBJC_IVAR____UIFlexInteraction_animationContext);
   os_unfair_lock_lock(v7 + 12);
   sub_188EA97A8(&v7[4]);
   os_unfair_lock_unlock(v7 + 12);

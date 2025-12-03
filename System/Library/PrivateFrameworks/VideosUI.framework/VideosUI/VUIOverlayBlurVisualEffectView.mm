@@ -1,5 +1,5 @@
 @interface VUIOverlayBlurVisualEffectView
-+ (id)blurViewWithEffect:(int64_t)a3;
++ (id)blurViewWithEffect:(int64_t)effect;
 + (id)overlayVisualEffect;
 @end
 
@@ -14,10 +14,10 @@
   return v4;
 }
 
-+ (id)blurViewWithEffect:(int64_t)a3
++ (id)blurViewWithEffect:(int64_t)effect
 {
   v4 = objc_alloc(MEMORY[0x1E69DD298]);
-  v5 = [_VUIBlurEffect effectWithStyle:a3];
+  v5 = [_VUIBlurEffect effectWithStyle:effect];
   v6 = [v4 initWithEffect:v5];
 
   return v6;

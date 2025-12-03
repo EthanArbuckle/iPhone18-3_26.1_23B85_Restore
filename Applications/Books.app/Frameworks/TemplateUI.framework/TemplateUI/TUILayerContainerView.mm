@@ -1,20 +1,20 @@
 @interface TUILayerContainerView
-+ (id)renderModelWithLayerModel:(id)a3 identifier:(id)a4;
-- (TUILayerContainerView)initWithFrame:(CGRect)a3;
++ (id)renderModelWithLayerModel:(id)model identifier:(id)identifier;
+- (TUILayerContainerView)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)configureWithModel:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)configureWithModel:(id)model;
 - (void)prepareForReuse;
 - (void)viewDidEndDisplay;
 @end
 
 @implementation TUILayerContainerView
 
-- (TUILayerContainerView)initWithFrame:(CGRect)a3
+- (TUILayerContainerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUILayerContainerView;
-  v3 = [(TUILayerContainerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUILayerContainerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
   return v4;
 }
 
-+ (id)renderModelWithLayerModel:(id)a3 identifier:(id)a4
++ (id)renderModelWithLayerModel:(id)model identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIIdentifierLayerContainerView" identifier:v5 submodel:v6];
+  identifierCopy = identifier;
+  modelCopy = model;
+  v7 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIIdentifierLayerContainerView" identifier:identifierCopy submodel:modelCopy];
 
   return v7;
 }
@@ -53,21 +53,21 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = TUILayerContainerView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(TUILayerContainerView *)self configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(TUILayerContainerView *)self configureWithModel:submodel];
 }
 
-- (void)configureWithModel:(id)a3
+- (void)configureWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (!self->_builder)
   {
     v5 = objc_alloc_init(TUIRenderModelLayerBuilder);
@@ -78,73 +78,73 @@
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   v7 = +[_TUIAnimationState currentState];
-  v8 = [(TUIRenderModelLayerBuilder *)self->_builder model];
-  v9 = v8;
+  model = [(TUIRenderModelLayerBuilder *)self->_builder model];
+  v9 = model;
   v10 = 0;
-  if (v4 && v8)
+  if (modelCopy && model)
   {
-    v11 = [(TUIRenderModelLayerBuilder *)self->_builder model];
-    v12 = [v11 identifier];
-    v13 = [v4 identifier];
-    v10 = [v12 isEqual:v13];
+    model2 = [(TUIRenderModelLayerBuilder *)self->_builder model];
+    identifier = [model2 identifier];
+    identifier2 = [modelCopy identifier];
+    v10 = [identifier isEqual:identifier2];
   }
 
-  v14 = [v7 shouldCaptureCALayerAnimations];
-  v15 = [v4 config];
+  shouldCaptureCALayerAnimations = [v7 shouldCaptureCALayerAnimations];
+  config = [modelCopy config];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 clipContainerForCrossfade];
+    clipContainerForCrossfade = [config clipContainerForCrossfade];
   }
 
   else
   {
-    v16 = 0;
+    clipContainerForCrossfade = 0;
   }
 
   [v7 duration];
   v18 = v17;
-  v55 = v15;
+  v55 = config;
   v56 = v7;
   if (v10)
   {
-    v19 = [v7 shouldCaptureCALayerAnimations];
+    shouldCaptureCALayerAnimations2 = [v7 shouldCaptureCALayerAnimations];
   }
 
   else
   {
-    v19 = 0;
+    shouldCaptureCALayerAnimations2 = 0;
   }
 
   containerClipLayer = self->_containerClipLayer;
-  if (((containerClipLayer == 0) & v16) == 1)
+  if (((containerClipLayer == 0) & clipContainerForCrossfade) == 1)
   {
     v21 = +[CALayer layer];
     v22 = self->_containerClipLayer;
     self->_containerClipLayer = v21;
 
     [(CALayer *)self->_containerClipLayer setDelegate:self->_builder];
-    v23 = [(TUILayerContainerView *)self layer];
-    [v23 addSublayer:self->_containerClipLayer];
+    layer = [(TUILayerContainerView *)self layer];
+    [layer addSublayer:self->_containerClipLayer];
   }
 
   else
   {
-    if ((containerClipLayer == 0) | v16 & 1)
+    if ((containerClipLayer == 0) | clipContainerForCrossfade & 1)
     {
       goto LABEL_17;
     }
 
     [(CALayer *)containerClipLayer removeFromSuperlayer];
-    v23 = self->_containerClipLayer;
+    layer = self->_containerClipLayer;
     self->_containerClipLayer = 0;
   }
 
 LABEL_17:
-  if ((v16 & 1) == 0)
+  if ((clipContainerForCrossfade & 1) == 0)
   {
-    v24 = [(TUILayerContainerView *)self layer];
-    v57 = 0;
-    if (!v14)
+    layer2 = [(TUILayerContainerView *)self layer];
+    layer3 = 0;
+    if (!shouldCaptureCALayerAnimations)
     {
       goto LABEL_22;
     }
@@ -152,9 +152,9 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  v24 = self->_containerClipLayer;
-  v57 = [(TUILayerContainerView *)self layer];
-  if (v14)
+  layer2 = self->_containerClipLayer;
+  layer3 = [(TUILayerContainerView *)self layer];
+  if (shouldCaptureCALayerAnimations)
   {
 LABEL_21:
     +[CATransaction begin];
@@ -162,13 +162,13 @@ LABEL_21:
   }
 
 LABEL_22:
-  [(TUIRenderModelLayerBuilder *)self->_builder setModel:v4];
-  v25 = [(TUIRenderModelLayerBuilder *)self->_builder layer];
+  [(TUIRenderModelLayerBuilder *)self->_builder setModel:modelCopy];
+  layer4 = [(TUIRenderModelLayerBuilder *)self->_builder layer];
   [(TUILayerContainerView *)self bounds];
-  [(CALayer *)v25 setPosition:v26 * 0.5, v27 * 0.5];
+  [(CALayer *)layer4 setPosition:v26 * 0.5, v27 * 0.5];
   if (self->_containerClipLayer)
   {
-    [(CALayer *)v25 frame];
+    [(CALayer *)layer4 frame];
     v29 = v28;
     v31 = v30;
     [(CALayer *)self->_containerClipLayer setFrame:?];
@@ -178,29 +178,29 @@ LABEL_22:
     [(CALayer *)v32 setSublayerTransform:&v58];
   }
 
-  if (v14)
+  if (shouldCaptureCALayerAnimations)
   {
     +[CATransaction commit];
   }
 
   contentLayer = self->_contentLayer;
-  if (contentLayer == v25)
+  if (contentLayer == layer4)
   {
-    if (v25)
+    if (layer4)
     {
-      v39 = [(CALayer *)contentLayer superlayer];
+      superlayer = [(CALayer *)contentLayer superlayer];
 
-      if (v39 != v24)
+      if (superlayer != layer2)
       {
         [(CALayer *)self->_contentLayer removeFromSuperlayer];
-        [(CALayer *)v24 addSublayer:self->_contentLayer];
+        [(CALayer *)layer2 addSublayer:self->_contentLayer];
       }
     }
   }
 
   else
   {
-    if (v19)
+    if (shouldCaptureCALayerAnimations2)
     {
       v34 = +[CATransition animation];
       [v34 setDuration:v18];
@@ -208,19 +208,19 @@ LABEL_22:
       [v34 setTimingFunction:v35];
 
       [v34 setRemovedOnCompletion:1];
-      if (v16)
+      if (clipContainerForCrossfade)
       {
         WeakRetained = objc_loadWeakRetained(&self->_containerClip);
         if (!WeakRetained)
         {
-          WeakRetained = [[_TUILayerContainerClip alloc] initWithLayer:v24];
+          WeakRetained = [[_TUILayerContainerClip alloc] initWithLayer:layer2];
           objc_storeWeak(&self->_containerClip, WeakRetained);
         }
 
         [(_TUILayerContainerClip *)WeakRetained addAnimation:v34];
       }
 
-      [(CALayer *)v24 addAnimation:v34 forKey:@"crossfade"];
+      [(CALayer *)layer2 addAnimation:v34 forKey:@"crossfade"];
     }
 
     if (objc_opt_respondsToSelector())
@@ -228,8 +228,8 @@ LABEL_22:
       v37 = self->_contentLayer;
       if (v37)
       {
-        v38 = [(TUIReusableBaseView *)self feedControllerHost];
-        [(CALayer *)v37 willRemoveLayerWithFeedControllerHost:v38];
+        feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+        [(CALayer *)v37 willRemoveLayerWithFeedControllerHost:feedControllerHost];
       }
     }
 
@@ -239,13 +239,13 @@ LABEL_22:
     }
 
     [(CALayer *)self->_contentLayer removeFromSuperlayer];
-    if (v25)
+    if (layer4)
     {
-      [(CALayer *)v24 addSublayer:v25];
+      [(CALayer *)layer2 addSublayer:layer4];
       v40 = objc_opt_respondsToSelector();
       if (v40)
       {
-        v41 = v25;
+        v41 = layer4;
       }
 
       else
@@ -256,33 +256,33 @@ LABEL_22:
       v42 = v41;
       if (v40)
       {
-        v43 = [(TUIReusableBaseView *)self feedControllerHost];
-        [(CALayer *)v25 didAddLayerWithFeedControllerHost:v43];
+        feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+        [(CALayer *)layer4 didAddLayerWithFeedControllerHost:feedControllerHost2];
       }
 
-      [(CALayer *)v25 bounds];
+      [(CALayer *)layer4 bounds];
       if (v45 > 8192.0 || v44 > 8192.0)
       {
-        v46 = [(TUIReusableBaseView *)self feedControllerHost];
-        [v46 reportLargeLayer:v25 renderModel:v4];
+        feedControllerHost3 = [(TUIReusableBaseView *)self feedControllerHost];
+        [feedControllerHost3 reportLargeLayer:layer4 renderModel:modelCopy];
       }
     }
 
-    objc_storeStrong(&self->_contentLayer, v25);
+    objc_storeStrong(&self->_contentLayer, layer4);
   }
 
-  v47 = [(CALayer *)self->_contentLayer compositingFilter];
-  v48 = TUILayerCompositingFilterNeedsBackdropLayer(v47);
-  [(CALayer *)v24 setAllowsGroupBlending:(v47 == 0) | (v48 & 1)];
-  [v57 setAllowsGroupBlending:1];
+  compositingFilter = [(CALayer *)self->_contentLayer compositingFilter];
+  v48 = TUILayerCompositingFilterNeedsBackdropLayer(compositingFilter);
+  [(CALayer *)layer2 setAllowsGroupBlending:(compositingFilter == 0) | (v48 & 1)];
+  [layer3 setAllowsGroupBlending:1];
   backdropLayer = self->_backdropLayer;
   if (v48)
   {
     if (backdropLayer)
     {
-      v50 = [(CABackdropLayer *)backdropLayer superlayer];
+      superlayer2 = [(CABackdropLayer *)backdropLayer superlayer];
 
-      if (v50 == v24)
+      if (superlayer2 == layer2)
       {
         goto LABEL_59;
       }
@@ -299,7 +299,7 @@ LABEL_22:
       [(CABackdropLayer *)self->_backdropLayer setDelegate:self->_builder];
     }
 
-    [(CALayer *)v24 insertSublayer:self->_backdropLayer atIndex:0];
+    [(CALayer *)layer2 insertSublayer:self->_backdropLayer atIndex:0];
   }
 
   else if (backdropLayer)
@@ -311,7 +311,7 @@ LABEL_22:
 
 LABEL_59:
   v54 = self->_backdropLayer;
-  if (((v54 != 0) & v14) == 1)
+  if (((v54 != 0) & shouldCaptureCALayerAnimations) == 1)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:0];
@@ -339,8 +339,8 @@ LABEL_59:
     v3 = self->_contentLayer;
     if (v3)
     {
-      v4 = [(TUIReusableBaseView *)self feedControllerHost];
-      [(CALayer *)v3 willRemoveLayerWithFeedControllerHost:v4];
+      feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+      [(CALayer *)v3 willRemoveLayerWithFeedControllerHost:feedControllerHost];
     }
   }
 
@@ -364,8 +364,8 @@ LABEL_59:
   containerClipLayer = self->_containerClipLayer;
   self->_containerClipLayer = 0;
 
-  v9 = [(TUILayerContainerView *)self layer];
-  [v9 setAllowsGroupBlending:1];
+  layer = [(TUILayerContainerView *)self layer];
+  [layer setAllowsGroupBlending:1];
 }
 
 - (void)prepareForReuse
@@ -378,8 +378,8 @@ LABEL_59:
     v3 = self->_contentLayer;
     if (v3)
     {
-      v4 = [(TUIReusableBaseView *)self feedControllerHost];
-      [(CALayer *)v3 willRemoveLayerWithFeedControllerHost:v4];
+      feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+      [(CALayer *)v3 willRemoveLayerWithFeedControllerHost:feedControllerHost];
     }
   }
 
@@ -403,8 +403,8 @@ LABEL_59:
   containerClipLayer = self->_containerClipLayer;
   self->_containerClipLayer = 0;
 
-  v9 = [(TUILayerContainerView *)self layer];
-  [v9 setAllowsGroupBlending:1];
+  layer = [(TUILayerContainerView *)self layer];
+  [layer setAllowsGroupBlending:1];
 }
 
 @end

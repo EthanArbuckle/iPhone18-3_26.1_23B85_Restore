@@ -1,16 +1,16 @@
 @interface LCFELFeatureImportanceEvent
-- (id)init:(id)a3 targetLabelFeatureName:(id)a4 results:(id)a5 succeeded:(id)a6 analysisError:(id)a7;
+- (id)init:(id)init targetLabelFeatureName:(id)name results:(id)results succeeded:(id)succeeded analysisError:(id)error;
 @end
 
 @implementation LCFELFeatureImportanceEvent
 
-- (id)init:(id)a3 targetLabelFeatureName:(id)a4 results:(id)a5 succeeded:(id)a6 analysisError:(id)a7
+- (id)init:(id)init targetLabelFeatureName:(id)name results:(id)results succeeded:(id)succeeded analysisError:(id)error
 {
-  v23 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  initCopy = init;
+  nameCopy = name;
+  resultsCopy = results;
+  succeededCopy = succeeded;
+  errorCopy = error;
   v24.receiver = self;
   v24.super_class = LCFELFeatureImportanceEvent;
   v17 = [(LCFELFeatureImportanceEvent *)&v24 init];
@@ -20,15 +20,15 @@
     contextId = v17->_contextId;
     v17->_contextId = v18;
 
-    v20 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     eventId = v17->_eventId;
-    v17->_eventId = v20;
+    v17->_eventId = uUID;
 
-    objc_storeStrong(&v17->_inputBachProviderInfo, a3);
-    objc_storeStrong(&v17->_targetLabelFeatureName, a4);
-    objc_storeStrong(&v17->_results, a5);
-    objc_storeStrong(&v17->_succeeded, a6);
-    objc_storeStrong(&v17->_analysisError, a7);
+    objc_storeStrong(&v17->_inputBachProviderInfo, init);
+    objc_storeStrong(&v17->_targetLabelFeatureName, name);
+    objc_storeStrong(&v17->_results, results);
+    objc_storeStrong(&v17->_succeeded, succeeded);
+    objc_storeStrong(&v17->_analysisError, error);
   }
 
   return v17;

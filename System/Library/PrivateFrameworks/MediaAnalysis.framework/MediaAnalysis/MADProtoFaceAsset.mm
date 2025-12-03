@@ -1,61 +1,61 @@
 @interface MADProtoFaceAsset
-+ (id)protoFromPhotosAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoFromPhotosAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDetectedFaces:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)persistToPhotosAsset:(id)a3;
-- (void)setHasAlgorithmVersion:(BOOL)a3;
-- (void)setHasAssetAdjustmentTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDetectedFaces:(id)faces;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)persistToPhotosAsset:(id)asset;
+- (void)setHasAlgorithmVersion:(BOOL)version;
+- (void)setHasAssetAdjustmentTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MADProtoFaceAsset
 
-+ (id)protoFromPhotosAsset:(id)a3
++ (id)protoFromPhotosAsset:(id)asset
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(MADProtoFaceAsset);
-  v5 = [v3 localIdentifier];
-  [(MADProtoFaceAsset *)v4 setAssetLocalIdentifier:v5];
+  localIdentifier = [assetCopy localIdentifier];
+  [(MADProtoFaceAsset *)v4 setAssetLocalIdentifier:localIdentifier];
 
-  v6 = [v3 photoLibrary];
-  v7 = [v3 localIdentifier];
+  photoLibrary = [assetCopy photoLibrary];
+  localIdentifier2 = [assetCopy localIdentifier];
   v29 = 0;
-  v8 = [v6 mad_cloudIdentifierForLocalIdentifier:v7 error:&v29];
+  v8 = [photoLibrary mad_cloudIdentifierForLocalIdentifier:localIdentifier2 error:&v29];
   v9 = v29;
   [(MADProtoFaceAsset *)v4 setAssetCloudIdentifier:v8];
 
-  v10 = [(MADProtoFaceAsset *)v4 assetCloudIdentifier];
+  assetCloudIdentifier = [(MADProtoFaceAsset *)v4 assetCloudIdentifier];
 
-  if (v10)
+  if (assetCloudIdentifier)
   {
-    v11 = [v3 adjustmentTimestamp];
-    [v11 timeIntervalSinceReferenceDate];
+    adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+    [adjustmentTimestamp timeIntervalSinceReferenceDate];
     [(MADProtoFaceAsset *)v4 setAssetAdjustmentTimestamp:?];
 
-    -[MADProtoFaceAsset setAlgorithmVersion:](v4, "setAlgorithmVersion:", [v3 faceAnalysisVersion]);
-    v12 = [v3 faceAdjustmentVersion];
-    [v12 timeIntervalSinceReferenceDate];
+    -[MADProtoFaceAsset setAlgorithmVersion:](v4, "setAlgorithmVersion:", [assetCopy faceAnalysisVersion]);
+    faceAdjustmentVersion = [assetCopy faceAdjustmentVersion];
+    [faceAdjustmentVersion timeIntervalSinceReferenceDate];
     [(MADProtoFaceAsset *)v4 setAdjustmentVersion:?];
 
-    v13 = [v3 photoLibrary];
-    v14 = [v13 mad_allFacesFetchOptions];
+    photoLibrary2 = [assetCopy photoLibrary];
+    mad_allFacesFetchOptions = [photoLibrary2 mad_allFacesFetchOptions];
 
     v15 = *MEMORY[0x1E6978D70];
     v30[0] = *MEMORY[0x1E6978D80];
     v30[1] = v15;
     v30[2] = *MEMORY[0x1E6978D68];
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
-    [v14 setFetchPropertySets:v16];
+    [mad_allFacesFetchOptions setFetchPropertySets:v16];
 
-    v17 = [MEMORY[0x1E69787D0] fetchFacesInAsset:v3 options:v14];
-    v18 = [MEMORY[0x1E695DF70] array];
+    v17 = [MEMORY[0x1E69787D0] fetchFacesInAsset:assetCopy options:mad_allFacesFetchOptions];
+    array = [MEMORY[0x1E695DF70] array];
     if ([v17 count])
     {
       v19 = 0;
@@ -64,7 +64,7 @@
         v20 = objc_autoreleasePoolPush();
         v21 = [v17 objectAtIndexedSubscript:v19];
         v22 = [MADProtoDetectedFace protoFromPhotosFace:v21];
-        [v18 addObject:v22];
+        [array addObject:v22];
 
         objc_autoreleasePoolPop(v20);
         ++v19;
@@ -73,14 +73,14 @@
       while (v19 < [v17 count]);
     }
 
-    [(MADProtoFaceAsset *)v4 setValue:v18 forKey:@"detectedFaces"];
+    [(MADProtoFaceAsset *)v4 setValue:array forKey:@"detectedFaces"];
     if (MediaAnalysisLogLevel() > 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v3 localIdentifier];
-      v24 = [(MADProtoFaceAsset *)v4 detectedFaces];
-      v25 = [v24 count];
+      localIdentifier3 = [assetCopy localIdentifier];
+      detectedFaces = [(MADProtoFaceAsset *)v4 detectedFaces];
+      v25 = [detectedFaces count];
       *buf = 138412546;
-      v32 = v23;
+      v32 = localIdentifier3;
       v33 = 1024;
       LODWORD(v34) = v25;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Backed up %d faces", buf, 0x12u);
@@ -93,9 +93,9 @@
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v27 = [v3 localIdentifier];
+      localIdentifier4 = [assetCopy localIdentifier];
       *buf = 138412546;
-      v32 = v27;
+      v32 = localIdentifier4;
       v33 = 2112;
       v34 = v9;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to fetch asset cloud identifier: %@", buf, 0x16u);
@@ -107,24 +107,24 @@
   return v26;
 }
 
-- (void)persistToPhotosAsset:(id)a3
+- (void)persistToPhotosAsset:(id)asset
 {
   v93[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v81 = [MEMORY[0x1E6978640] changeRequestForAsset:v4];
+  assetCopy = asset;
+  v81 = [MEMORY[0x1E6978640] changeRequestForAsset:assetCopy];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v5 = [v4 localIdentifier];
-    v6 = [(MADProtoFaceAsset *)self detectedFaces];
+    localIdentifier = [assetCopy localIdentifier];
+    detectedFaces = [(MADProtoFaceAsset *)self detectedFaces];
     *buf = 138412546;
-    v90 = v5;
+    v90 = localIdentifier;
     v91 = 1024;
-    *v92 = [v6 count];
+    *v92 = [detectedFaces count];
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Restoring %d faces", buf, 0x12u);
   }
 
-  v7 = [(MADProtoFaceAsset *)self detectedFaces];
-  v8 = [v7 count];
+  detectedFaces2 = [(MADProtoFaceAsset *)self detectedFaces];
+  v8 = [detectedFaces2 count];
 
   if (!v8)
   {
@@ -136,17 +136,17 @@ LABEL_54:
     [v81 setFaceAdjustmentVersion:v62];
 
     [v81 setFaceAnalysisVersion:{-[MADProtoFaceAsset algorithmVersion](self, "algorithmVersion")}];
-    if ([v4 mad_isEligibleForComputeSync])
+    if ([assetCopy mad_isEligibleForComputeSync])
     {
-      v64 = [v81 faceAnalysisVersion];
-      v65 = [v4 photoLibrary];
-      v66 = [v65 mad_faceProcessingInternalVersion];
+      faceAnalysisVersion = [v81 faceAnalysisVersion];
+      photoLibrary = [assetCopy photoLibrary];
+      mad_faceProcessingInternalVersion = [photoLibrary mad_faceProcessingInternalVersion];
 
-      if (v66 == v64)
+      if (mad_faceProcessingInternalVersion == faceAnalysisVersion)
       {
-        v67 = [v4 mad_analysisStageAfterCompletingAnalysis:3];
+        v67 = [assetCopy mad_analysisStageAfterCompletingAnalysis:3];
         [v81 setLocalAnalysisStage:v67];
-        v68 = [MADComputeSyncPayloadResults payloadDataForAsset:v4 targetStage:v67 embeddingResults:0 fullAnalysisResults:0];
+        v68 = [MADComputeSyncPayloadResults payloadDataForAsset:assetCopy targetStage:v67 embeddingResults:0 fullAnalysisResults:0];
         if (v68)
         {
           [v81 setComputeSyncMediaAnalysisPayload:v68];
@@ -154,15 +154,15 @@ LABEL_54:
 
         else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
-          v70 = [v4 localIdentifier];
-          v71 = [v4 mediaAnalysisProperties];
-          v72 = [v71 localAnalysisStage];
+          localIdentifier2 = [assetCopy localIdentifier];
+          mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+          localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
           *buf = 138412802;
-          v90 = v70;
+          v90 = localIdentifier2;
           v91 = 1024;
           *v92 = v67;
           *&v92[4] = 1024;
-          *&v92[6] = v72;
+          *&v92[6] = localAnalysisStage;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] No compute sync payload generated for target stage %d (current stage %d)", buf, 0x18u);
         }
       }
@@ -176,25 +176,25 @@ LABEL_54:
   v80 = *MEMORY[0x1E6978D80];
   v79 = *MEMORY[0x1E6978D70];
   v78 = *MEMORY[0x1E6978D68];
-  v83 = v4;
-  v77 = self;
+  v83 = assetCopy;
+  selfCopy = self;
   while (1)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = [(MADProtoFaceAsset *)self detectedFaces];
-    v13 = [v12 objectAtIndexedSubscript:v9];
-    v14 = [v13 vcpPhotosFace];
+    detectedFaces3 = [(MADProtoFaceAsset *)self detectedFaces];
+    v13 = [detectedFaces3 objectAtIndexedSubscript:v9];
+    vcpPhotosFace = [v13 vcpPhotosFace];
 
-    v15 = [v4 photoLibrary];
-    v16 = [v15 mad_allFacesFetchOptions];
+    photoLibrary2 = [assetCopy photoLibrary];
+    mad_allFacesFetchOptions = [photoLibrary2 mad_allFacesFetchOptions];
 
     v93[0] = v80;
     v93[1] = v79;
     v93[2] = v78;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:3];
-    [v16 setFetchPropertySets:v17];
+    [mad_allFacesFetchOptions setFetchPropertySets:v17];
 
-    v18 = [MEMORY[0x1E69787D0] fetchFacesInAsset:v4 options:v16];
+    v18 = [MEMORY[0x1E69787D0] fetchFacesInAsset:assetCopy options:mad_allFacesFetchOptions];
     v84 = v18;
     if (![v18 count])
     {
@@ -202,18 +202,18 @@ LABEL_54:
     }
 
     v19 = [VCPPhotosFace facesFromPHFetchResult:v18 copyOption:1];
-    [v14 size];
+    [vcpPhotosFace size];
     v21 = v20;
     v22 = MediaAnalysisLogLevel();
     if (v21 == 0.0)
     {
       if (v22 >= 7 && os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v4 localIdentifier];
-        [v14 gist];
+        localIdentifier3 = [assetCopy localIdentifier];
+        [vcpPhotosFace gist];
         v35 = v34 = v19;
         *buf = 138412546;
-        v90 = v33;
+        v90 = localIdentifier3;
         v91 = 2112;
         *v92 = v35;
         _os_log_impl(&dword_1C9B70000, v10, OS_LOG_TYPE_DEBUG, "[%@] Face not present in restored face (%@), finding matching torso", buf, 0x16u);
@@ -223,18 +223,18 @@ LABEL_54:
 
       v85 = 0;
       v26 = &v85;
-      v27 = [MEMORY[0x1E69C07E0] sortedViableMergeCandidateTorsosFor:v14 from:v19 ignoreSourceAssetDimensions:0 matchScores:&v85];
+      v27 = [MEMORY[0x1E69C07E0] sortedViableMergeCandidateTorsosFor:vcpPhotosFace from:v19 ignoreSourceAssetDimensions:0 matchScores:&v85];
     }
 
     else
     {
       if (v22 >= 7 && os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v23 = [v4 localIdentifier];
-        [v14 gist];
+        localIdentifier4 = [assetCopy localIdentifier];
+        [vcpPhotosFace gist];
         v25 = v24 = v19;
         *buf = 138412546;
-        v90 = v23;
+        v90 = localIdentifier4;
         v91 = 2112;
         *v92 = v25;
         _os_log_impl(&dword_1C9B70000, v10, OS_LOG_TYPE_DEBUG, "[%@] Face present in restored face (%@), finding matching face", buf, 0x16u);
@@ -244,7 +244,7 @@ LABEL_54:
 
       v86 = 0;
       v26 = &v86;
-      v27 = [MEMORY[0x1E69C07E0] sortedViableMergeCandidateFacesFor:v14 from:v19 ignoreSourceAssetDimensions:0 matchScores:&v86];
+      v27 = [MEMORY[0x1E69C07E0] sortedViableMergeCandidateFacesFor:vcpPhotosFace from:v19 ignoreSourceAssetDimensions:0 matchScores:&v86];
     }
 
     v36 = v27;
@@ -259,25 +259,25 @@ LABEL_54:
         while (1)
         {
           v38 = [v36 objectAtIndexedSubscript:v37];
-          v39 = [v14 detectionType];
-          v40 = [v38 detectionType];
+          detectionType = [vcpPhotosFace detectionType];
+          detectionType2 = [v38 detectionType];
           v41 = MediaAnalysisLogLevel();
-          if (v39 == v40)
+          if (detectionType == detectionType2)
           {
             break;
           }
 
           if (v41 >= 6 && os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
           {
-            v42 = [v83 localIdentifier];
-            v43 = [v14 gist];
-            v44 = [v38 gist];
+            localIdentifier5 = [v83 localIdentifier];
+            gist = [vcpPhotosFace gist];
+            gist2 = [v38 gist];
             *buf = 138412802;
-            v90 = v42;
+            v90 = localIdentifier5;
             v91 = 2112;
-            *v92 = v43;
+            *v92 = gist;
             *&v92[8] = 2112;
-            *&v92[10] = v44;
+            *&v92[10] = gist2;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, " [%@] Mismatching detection type for detected face (%@) and existing face (%@), skip merging", buf, 0x20u);
 
             v10 = MEMORY[0x1E69E9C10];
@@ -286,25 +286,25 @@ LABEL_54:
           if (++v37 >= [v36 count])
           {
             v38 = 0;
-            v4 = v83;
+            assetCopy = v83;
             goto LABEL_38;
           }
         }
 
-        v4 = v83;
+        assetCopy = v83;
         if (v41 >= 6 && os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v74 = [v83 localIdentifier];
+          localIdentifier6 = [v83 localIdentifier];
           v73 = [v36 count];
-          v47 = [v38 gist];
+          gist3 = [v38 gist];
           v48 = [v82 objectAtIndexedSubscript:v37];
           *buf = 138413058;
-          v90 = v74;
+          v90 = localIdentifier6;
           v91 = 1024;
           *v92 = v73;
-          v4 = v83;
+          assetCopy = v83;
           *&v92[4] = 2112;
-          *&v92[6] = v47;
+          *&v92[6] = gist3;
           *&v92[14] = 2112;
           *&v92[16] = v48;
           _os_log_impl(&dword_1C9B70000, v10, OS_LOG_TYPE_INFO, "[%@] %d viable merge candidates, merging with the most matching one (%@, distanceScore: %@)", buf, 0x26u);
@@ -317,50 +317,50 @@ LABEL_54:
       }
 
 LABEL_38:
-      v32 = [VCPFaceUtils phFaceFromVCPPhotosFace:v38 withFetchOptions:v16];
+      v32 = [VCPFaceUtils phFaceFromVCPPhotosFace:v38 withFetchOptions:mad_allFacesFetchOptions];
       v46 = v32 == 0;
       v49 = MediaAnalysisLogLevel();
       if (v32)
       {
         if (v49 >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v50 = [v4 localIdentifier];
-          v75 = [v14 gist];
-          v51 = [v38 gist];
+          localIdentifier7 = [assetCopy localIdentifier];
+          gist4 = [vcpPhotosFace gist];
+          gist5 = [v38 gist];
           *buf = 138412802;
-          v90 = v50;
+          v90 = localIdentifier7;
           v91 = 2112;
-          *v92 = v75;
+          *v92 = gist4;
           *&v92[8] = 2112;
-          *&v92[10] = v51;
-          v52 = v51;
+          *&v92[10] = gist5;
+          v52 = gist5;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Merging restored face (%@) with existing face (%@)", buf, 0x20u);
 
-          v4 = v83;
+          assetCopy = v83;
         }
 
-        v53 = [MEMORY[0x1E69787E0] changeRequestForFace:v32];
+        creationRequestForFace = [MEMORY[0x1E69787E0] changeRequestForFace:v32];
       }
 
       else
       {
         if (v49 >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v54 = [v4 localIdentifier];
-          v55 = [v38 gist];
+          localIdentifier8 = [assetCopy localIdentifier];
+          gist6 = [v38 gist];
           *buf = 138412546;
-          v90 = v54;
+          v90 = localIdentifier8;
           v91 = 2112;
-          *v92 = v55;
+          *v92 = gist6;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to find matching PHFace (%@), creating new face for restored face", buf, 0x16u);
 
-          v4 = v83;
+          assetCopy = v83;
         }
 
-        v53 = [MEMORY[0x1E69787E0] creationRequestForFace];
+        creationRequestForFace = [MEMORY[0x1E69787E0] creationRequestForFace];
       }
 
-      v31 = v53;
+      creationRequestForFace2 = creationRequestForFace;
 
       v19 = v76;
     }
@@ -370,47 +370,47 @@ LABEL_38:
       v29 = v11;
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v45 = [v4 localIdentifier];
+        localIdentifier9 = [assetCopy localIdentifier];
         *buf = 138412290;
-        v90 = v45;
+        v90 = localIdentifier9;
         _os_log_impl(&dword_1C9B70000, v10, OS_LOG_TYPE_ERROR, "[%@] No viable merge candidate, creating new face for restored face", buf, 0xCu);
       }
 
-      v31 = [MEMORY[0x1E69787E0] creationRequestForFace];
+      creationRequestForFace2 = [MEMORY[0x1E69787E0] creationRequestForFace];
       v32 = 0;
       v46 = 1;
     }
 
-    if (!v31)
+    if (!creationRequestForFace2)
     {
       goto LABEL_59;
     }
 
-    [VCPFaceUtils assignPropertiesOfVCPPhotosFace:v14 toPHFaceChangeRequest:v31];
+    [VCPFaceUtils assignPropertiesOfVCPPhotosFace:vcpPhotosFace toPHFaceChangeRequest:creationRequestForFace2];
     if (!v46)
     {
       v87 = v32;
       v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
       [v81 addFaces:v58];
 
-      [v31 setVuObservationID:0];
+      [creationRequestForFace2 setVuObservationID:0];
       v10 = MEMORY[0x1E69E9C10];
       goto LABEL_53;
     }
 
     v10 = MEMORY[0x1E69E9C10];
 LABEL_51:
-    v56 = [v31 placeholderForCreatedFace];
-    v88 = v56;
+    placeholderForCreatedFace = [creationRequestForFace2 placeholderForCreatedFace];
+    v88 = placeholderForCreatedFace;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
     [v81 addFaces:v57];
 
 LABEL_53:
     objc_autoreleasePoolPop(v29);
     ++v9;
-    self = v77;
-    v59 = [(MADProtoFaceAsset *)v77 detectedFaces];
-    v60 = [v59 count];
+    self = selfCopy;
+    detectedFaces4 = [(MADProtoFaceAsset *)selfCopy detectedFaces];
+    v60 = [detectedFaces4 count];
 
     if (v9 >= v60)
     {
@@ -420,18 +420,18 @@ LABEL_53:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [v4 localIdentifier];
+    localIdentifier10 = [assetCopy localIdentifier];
     *buf = 138412290;
-    v90 = v28;
+    v90 = localIdentifier10;
     _os_log_impl(&dword_1C9B70000, v10, OS_LOG_TYPE_DEBUG, "[%@] No existing face, creating new face for restored face", buf, 0xCu);
   }
 
   v29 = v11;
-  v30 = [MEMORY[0x1E69787E0] creationRequestForFace];
-  if (v30)
+  creationRequestForFace3 = [MEMORY[0x1E69787E0] creationRequestForFace];
+  if (creationRequestForFace3)
   {
-    v31 = v30;
-    [VCPFaceUtils assignPropertiesOfVCPPhotosFace:v14 toPHFaceChangeRequest:v30];
+    creationRequestForFace2 = creationRequestForFace3;
+    [VCPFaceUtils assignPropertiesOfVCPPhotosFace:vcpPhotosFace toPHFaceChangeRequest:creationRequestForFace3];
     v32 = 0;
     goto LABEL_51;
   }
@@ -440,9 +440,9 @@ LABEL_53:
 LABEL_59:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v69 = [v4 localIdentifier];
+    localIdentifier11 = [assetCopy localIdentifier];
     *buf = 138412290;
-    v90 = v69;
+    v90 = localIdentifier11;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to create PHFaceChangeRequest; skipping", buf, 0xCu);
   }
 
@@ -451,9 +451,9 @@ LABEL_59:
 LABEL_67:
 }
 
-- (void)setHasAssetAdjustmentTimestamp:(BOOL)a3
+- (void)setHasAssetAdjustmentTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -466,9 +466,9 @@ LABEL_67:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasAlgorithmVersion:(BOOL)a3
+- (void)setHasAlgorithmVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -481,22 +481,22 @@ LABEL_67:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addDetectedFaces:(id)a3
+- (void)addDetectedFaces:(id)faces
 {
-  v4 = a3;
+  facesCopy = faces;
   detectedFaces = self->_detectedFaces;
-  v8 = v4;
+  v8 = facesCopy;
   if (!detectedFaces)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_detectedFaces;
     self->_detectedFaces = v6;
 
-    v4 = v8;
+    facesCopy = v8;
     detectedFaces = self->_detectedFaces;
   }
 
-  [(NSMutableArray *)detectedFaces addObject:v4];
+  [(NSMutableArray *)detectedFaces addObject:facesCopy];
 }
 
 - (id)description
@@ -505,8 +505,8 @@ LABEL_67:
   v8.receiver = self;
   v8.super_class = MADProtoFaceAsset;
   v4 = [(MADProtoFaceAsset *)&v8 description];
-  v5 = [(MADProtoFaceAsset *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MADProtoFaceAsset *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -514,12 +514,12 @@ LABEL_67:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   assetLocalIdentifier = self->_assetLocalIdentifier;
   if (assetLocalIdentifier)
   {
-    [v3 setObject:assetLocalIdentifier forKey:@"assetLocalIdentifier"];
+    [dictionary setObject:assetLocalIdentifier forKey:@"assetLocalIdentifier"];
   }
 
   assetCloudIdentifier = self->_assetCloudIdentifier;
@@ -585,8 +585,8 @@ LABEL_9:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -601,10 +601,10 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_assetLocalIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -674,20 +674,20 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_assetLocalIdentifier)
   {
-    [v4 setAssetLocalIdentifier:?];
-    v4 = v10;
+    [toCopy setAssetLocalIdentifier:?];
+    toCopy = v10;
   }
 
   if (self->_assetCloudIdentifier)
   {
     [v10 setAssetCloudIdentifier:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -699,8 +699,8 @@ LABEL_9:
     }
 
 LABEL_17:
-    *(v4 + 6) = self->_algorithmVersion;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 6) = self->_algorithmVersion;
+    *(toCopy + 56) |= 4u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_9;
@@ -709,8 +709,8 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  *(v4 + 2) = *&self->_assetAdjustmentTimestamp;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 2) = *&self->_assetAdjustmentTimestamp;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -721,18 +721,18 @@ LABEL_7:
   if (has)
   {
 LABEL_8:
-    *(v4 + 1) = *&self->_adjustmentVersion;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_adjustmentVersion;
+    *(toCopy + 56) |= 1u;
   }
 
 LABEL_9:
   if ([(MADProtoFaceAsset *)self detectedFacesCount])
   {
     [v10 clearDetectedFaces];
-    v6 = [(MADProtoFaceAsset *)self detectedFacesCount];
-    if (v6)
+    detectedFacesCount = [(MADProtoFaceAsset *)self detectedFacesCount];
+    if (detectedFacesCount)
     {
-      v7 = v6;
+      v7 = detectedFacesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(MADProtoFaceAsset *)self detectedFacesAtIndex:i];
@@ -742,15 +742,15 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_assetLocalIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_assetLocalIdentifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_assetCloudIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_assetCloudIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -806,7 +806,7 @@ LABEL_5:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v16 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v5 addDetectedFaces:v16];
       }
 
@@ -819,16 +819,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   assetLocalIdentifier = self->_assetLocalIdentifier;
-  if (assetLocalIdentifier | *(v4 + 5))
+  if (assetLocalIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)assetLocalIdentifier isEqual:?])
     {
@@ -837,7 +837,7 @@ LABEL_5:
   }
 
   assetCloudIdentifier = self->_assetCloudIdentifier;
-  if (assetCloudIdentifier | *(v4 + 4))
+  if (assetCloudIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)assetCloudIdentifier isEqual:?])
     {
@@ -847,13 +847,13 @@ LABEL_5:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_assetAdjustmentTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_assetAdjustmentTimestamp != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_23:
     v8 = 0;
@@ -862,32 +862,32 @@ LABEL_23:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_algorithmVersion != *(v4 + 6))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_algorithmVersion != *(equalCopy + 6))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_adjustmentVersion != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_adjustmentVersion != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_23;
   }
 
   detectedFaces = self->_detectedFaces;
-  if (detectedFaces | *(v4 + 6))
+  if (detectedFaces | *(equalCopy + 6))
   {
     v8 = [(NSMutableArray *)detectedFaces isEqual:?];
   }
@@ -988,26 +988,26 @@ LABEL_11:
   return v4 ^ v3 ^ v7 ^ v11 ^ v15 ^ [(NSMutableArray *)self->_detectedFaces hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(MADProtoFaceAsset *)self setAssetLocalIdentifier:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(MADProtoFaceAsset *)self setAssetCloudIdentifier:?];
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) != 0)
   {
-    self->_assetAdjustmentTimestamp = *(v4 + 2);
+    self->_assetAdjustmentTimestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -1020,17 +1020,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 56) & 4) == 0)
+  else if ((*(fromCopy + 56) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_algorithmVersion = *(v4 + 6);
+  self->_algorithmVersion = *(fromCopy + 6);
   *&self->_has |= 4u;
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
 LABEL_8:
-    self->_adjustmentVersion = *(v4 + 1);
+    self->_adjustmentVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -1039,7 +1039,7 @@ LABEL_9:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

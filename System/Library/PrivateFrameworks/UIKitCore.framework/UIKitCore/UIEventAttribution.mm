@@ -1,8 +1,8 @@
 @interface UIEventAttribution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIEventAttribution)initWithSourceIdentifier:(uint8_t)sourceIdentifier destinationURL:(NSURL *)destinationURL sourceDescription:(NSString *)sourceDescription purchaser:(NSString *)purchaser;
-- (UIEventAttribution)initWithSourceIdentifier:(unsigned __int8)a3 destinationURL:(id)a4 reportEndpoint:(id)a5 sourceDescription:(id)a6 purchaser:(id)a7;
-- (UIEventAttribution)initWithUISClickAttribution:(id)a3;
+- (UIEventAttribution)initWithSourceIdentifier:(unsigned __int8)identifier destinationURL:(id)l reportEndpoint:(id)endpoint sourceDescription:(id)description purchaser:(id)purchaser;
+- (UIEventAttribution)initWithUISClickAttribution:(id)attribution;
 - (id)toUISClickAttribution;
 - (unint64_t)hash;
 @end
@@ -26,48 +26,48 @@
   return v14;
 }
 
-- (UIEventAttribution)initWithSourceIdentifier:(unsigned __int8)a3 destinationURL:(id)a4 reportEndpoint:(id)a5 sourceDescription:(id)a6 purchaser:(id)a7
+- (UIEventAttribution)initWithSourceIdentifier:(unsigned __int8)identifier destinationURL:(id)l reportEndpoint:(id)endpoint sourceDescription:(id)description purchaser:(id)purchaser
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  endpointCopy = endpoint;
+  descriptionCopy = description;
+  purchaserCopy = purchaser;
   v27.receiver = self;
   v27.super_class = UIEventAttribution;
   v16 = [(UIEventAttribution *)&v27 init];
   v17 = v16;
   if (v16)
   {
-    v16->_sourceIdentifier = a3;
-    v18 = [v12 copy];
+    v16->_sourceIdentifier = identifier;
+    v18 = [lCopy copy];
     destinationURL = v17->_destinationURL;
     v17->_destinationURL = v18;
 
-    v20 = [v13 copy];
+    v20 = [endpointCopy copy];
     reportEndpoint = v17->_reportEndpoint;
     v17->_reportEndpoint = v20;
 
-    if ([v14 length] > 0x64)
+    if ([descriptionCopy length] > 0x64)
     {
-      v22 = [v14 substringToIndex:100];
+      v22 = [descriptionCopy substringToIndex:100];
     }
 
     else
     {
-      v22 = [v14 copy];
+      v22 = [descriptionCopy copy];
     }
 
     sourceDescription = v17->_sourceDescription;
     v17->_sourceDescription = v22;
 
-    if ([v15 length] > 0x64)
+    if ([purchaserCopy length] > 0x64)
     {
-      v24 = [v15 substringToIndex:100];
+      v24 = [purchaserCopy substringToIndex:100];
     }
 
     else
     {
-      v24 = [v15 copy];
+      v24 = [purchaserCopy copy];
     }
 
     purchaser = v17->_purchaser;
@@ -77,47 +77,47 @@
   return v17;
 }
 
-- (UIEventAttribution)initWithUISClickAttribution:(id)a3
+- (UIEventAttribution)initWithUISClickAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [v4 sourceIdentifier];
-    v6 = [v4 destinationURL];
-    v7 = [v4 reportEndpoint];
-    v8 = [v4 sourceDescription];
-    v9 = [v4 purchaser];
+    attributionCopy = attribution;
+    sourceIdentifier = [attributionCopy sourceIdentifier];
+    destinationURL = [attributionCopy destinationURL];
+    reportEndpoint = [attributionCopy reportEndpoint];
+    sourceDescription = [attributionCopy sourceDescription];
+    purchaser = [attributionCopy purchaser];
 
-    self = [(UIEventAttribution *)self initWithSourceIdentifier:v5 destinationURL:v6 reportEndpoint:v7 sourceDescription:v8 purchaser:v9];
-    v10 = self;
+    self = [(UIEventAttribution *)self initWithSourceIdentifier:sourceIdentifier destinationURL:destinationURL reportEndpoint:reportEndpoint sourceDescription:sourceDescription purchaser:purchaser];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)toUISClickAttribution
 {
   v3 = +[UIEventAttributionView lastEventMessage];
   v4 = objc_alloc(MEMORY[0x1E69DEBD0]);
-  v5 = [(UIEventAttribution *)self sourceIdentifier];
-  v6 = [(UIEventAttribution *)self destinationURL];
-  v7 = [(UIEventAttribution *)self reportEndpoint];
-  v8 = [(UIEventAttribution *)self sourceDescription];
-  v9 = [(UIEventAttribution *)self purchaser];
-  v10 = [v4 initWithSourceIdentifier:v5 destinationURL:v6 reportEndpoint:v7 sourceDescription:v8 purchaser:v9 eventMessage:v3];
+  sourceIdentifier = [(UIEventAttribution *)self sourceIdentifier];
+  destinationURL = [(UIEventAttribution *)self destinationURL];
+  reportEndpoint = [(UIEventAttribution *)self reportEndpoint];
+  sourceDescription = [(UIEventAttribution *)self sourceDescription];
+  purchaser = [(UIEventAttribution *)self purchaser];
+  v10 = [v4 initWithSourceIdentifier:sourceIdentifier destinationURL:destinationURL reportEndpoint:reportEndpoint sourceDescription:sourceDescription purchaser:purchaser eventMessage:v3];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -129,7 +129,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       sourceIdentifier = self->_sourceIdentifier;
       if (sourceIdentifier != [(UIEventAttribution *)v7 sourceIdentifier])
       {
@@ -140,9 +140,9 @@ LABEL_39:
       }
 
       destinationURL = self->_destinationURL;
-      v10 = [(UIEventAttribution *)v7 destinationURL];
+      destinationURL = [(UIEventAttribution *)v7 destinationURL];
       v11 = destinationURL;
-      v12 = v10;
+      v12 = destinationURL;
       v13 = v12;
       if (v11 == v12)
       {
@@ -172,9 +172,9 @@ LABEL_38:
       }
 
       reportEndpoint = self->_reportEndpoint;
-      v17 = [(UIEventAttribution *)v7 reportEndpoint];
+      reportEndpoint = [(UIEventAttribution *)v7 reportEndpoint];
       v18 = reportEndpoint;
-      v19 = v17;
+      v19 = reportEndpoint;
       v11 = v19;
       if (v18 == v19)
       {
@@ -200,9 +200,9 @@ LABEL_35:
       }
 
       sourceDescription = self->_sourceDescription;
-      v21 = [(UIEventAttribution *)v7 sourceDescription];
+      sourceDescription = [(UIEventAttribution *)v7 sourceDescription];
       p_isa = sourceDescription;
-      v23 = v21;
+      v23 = sourceDescription;
       v18 = v23;
       if (p_isa == v23)
       {
@@ -228,9 +228,9 @@ LABEL_34:
       }
 
       purchaser = self->_purchaser;
-      v25 = [(UIEventAttribution *)v7 purchaser];
+      purchaser = [(UIEventAttribution *)v7 purchaser];
       v26 = purchaser;
-      v27 = v25;
+      v27 = purchaser;
       p_isa = v27;
       if (v26 == v27)
       {
@@ -251,7 +251,7 @@ LABEL_34:
 
     v29.receiver = self;
     v29.super_class = UIEventAttribution;
-    LOBYTE(v14) = [(UIEventAttribution *)&v29 isEqual:v4];
+    LOBYTE(v14) = [(UIEventAttribution *)&v29 isEqual:equalCopy];
   }
 
 LABEL_40:

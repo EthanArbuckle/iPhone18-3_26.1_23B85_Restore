@@ -10,7 +10,7 @@
 
 - (id)propertyForKey:()HIDFramework
 {
-  v3 = IOHIDServiceClientCopyProperty(a1, key);
+  v3 = IOHIDServiceClientCopyProperty(self, key);
 
   return v3;
 }
@@ -32,7 +32,7 @@
 - (void)setRemovalHandler:()HIDFramework
 {
   aBlock = a3;
-  v4 = a1 + *MEMORY[0x277CD2878];
+  v4 = self + *MEMORY[0x277CD2878];
   os_unfair_recursive_lock_lock_with_options();
   if (*(v4 + 112))
   {
@@ -46,19 +46,19 @@
 
 - (uint64_t)serviceID
 {
-  v1 = IOHIDServiceClientGetRegistryID(a1);
+  v1 = IOHIDServiceClientGetRegistryID(self);
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedLongLongValue];
+    unsignedLongLongValue = [v1 unsignedLongLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 @end

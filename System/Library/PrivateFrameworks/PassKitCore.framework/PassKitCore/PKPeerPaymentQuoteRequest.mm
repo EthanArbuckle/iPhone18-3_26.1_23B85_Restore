@@ -1,42 +1,42 @@
 @interface PKPeerPaymentQuoteRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeerPaymentQuoteRequest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeerPaymentQuoteRequest:(id)request;
 - (PKPeerPaymentQuoteRequest)init;
-- (PKPeerPaymentQuoteRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8;
+- (PKPeerPaymentQuoteRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithPaymentPass:(id)a3 externalFundingSource:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithPaymentPass:(id)pass externalFundingSource:(unint64_t)source;
 @end
 
 @implementation PKPeerPaymentQuoteRequest
 
-- (void)updateWithPaymentPass:(id)a3 externalFundingSource:(unint64_t)a4
+- (void)updateWithPaymentPass:(id)pass externalFundingSource:(unint64_t)source
 {
-  v14 = a3;
-  if (v14)
+  passCopy = pass;
+  if (passCopy)
   {
-    v6 = [v14 devicePrimaryInAppPaymentApplication];
-    v7 = [v6 dpanIdentifier];
-    [(PKPeerPaymentQuoteRequest *)self setDPANIdentifier:v7];
+    devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
+    dpanIdentifier = [devicePrimaryInAppPaymentApplication dpanIdentifier];
+    [(PKPeerPaymentQuoteRequest *)self setDPANIdentifier:dpanIdentifier];
 
-    v8 = [v14 primaryAccountIdentifier];
-    [(PKPeerPaymentQuoteRequest *)self setFPANIdentifier:v8];
+    primaryAccountIdentifier = [passCopy primaryAccountIdentifier];
+    [(PKPeerPaymentQuoteRequest *)self setFPANIdentifier:primaryAccountIdentifier];
 
     if (self->_dpanIdentifier)
     {
-      self->_externalFundingSource = a4;
-      v9 = [v14 devicePrimaryInAppPaymentApplication];
-      self->_paymentNetwork = [v9 paymentNetworkIdentifier];
-      self->_paymentMethodType = [v9 paymentType];
-      v10 = [v14 localizedDescription];
+      self->_externalFundingSource = source;
+      devicePrimaryInAppPaymentApplication2 = [passCopy devicePrimaryInAppPaymentApplication];
+      self->_paymentNetwork = [devicePrimaryInAppPaymentApplication2 paymentNetworkIdentifier];
+      self->_paymentMethodType = [devicePrimaryInAppPaymentApplication2 paymentType];
+      localizedDescription = [passCopy localizedDescription];
       paymentMethodDescription = self->_paymentMethodDescription;
-      self->_paymentMethodDescription = v10;
+      self->_paymentMethodDescription = localizedDescription;
 
-      v12 = [v14 primaryAccountNumberSuffix];
+      primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
       paymentMethodSuffix = self->_paymentMethodSuffix;
-      self->_paymentMethodSuffix = v12;
+      self->_paymentMethodSuffix = primaryAccountNumberSuffix;
     }
   }
 }
@@ -48,26 +48,26 @@
   v2 = [(PKOverlayableWebServiceRequest *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     orderIdentifier = v2->_orderIdentifier;
-    v2->_orderIdentifier = v4;
+    v2->_orderIdentifier = uUIDString;
   }
 
   return v2;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata
 {
   v124 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v14)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  assessmentCopy = assessment;
+  metadataCopy = metadata;
+  v20 = metadataCopy;
+  if (!lCopy)
   {
     v22 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -86,7 +86,7 @@ LABEL_146:
     goto LABEL_147;
   }
 
-  if (!v15)
+  if (!informationCopy)
   {
     v22 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -103,7 +103,7 @@ LABEL_146:
     goto LABEL_146;
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
     v22 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -120,7 +120,7 @@ LABEL_146:
     goto LABEL_146;
   }
 
-  if (!v19)
+  if (!metadataCopy)
   {
     v22 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -283,39 +283,39 @@ LABEL_145:
     }
   }
 
-  v113 = v18;
-  v22 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:&unk_1F23B4748 queryParameters:0 appleAccountInformation:v15];
+  v113 = assessmentCopy;
+  v22 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4748 queryParameters:0 appleAccountInformation:informationCopy];
   [v22 setHTTPMethod:@"POST"];
   [v22 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v31 = [MEMORY[0x1E695DF90] dictionary];
-  v112 = v17;
-  if (v17)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v112 = scoreCopy;
+  if (scoreCopy)
   {
-    v32 = [v17 hexEncoding];
-    [v31 setObject:v32 forKey:@"deviceScore"];
+    hexEncoding = [scoreCopy hexEncoding];
+    [dictionary setObject:hexEncoding forKey:@"deviceScore"];
   }
 
   if (v113)
   {
-    [v31 setObject:v113 forKey:@"odiAssessment"];
+    [dictionary setObject:v113 forKey:@"odiAssessment"];
   }
 
-  v33 = [v20 dictionaryRepresentation];
-  [v31 setObject:v33 forKey:@"deviceMetadata"];
+  dictionaryRepresentation = [v20 dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
 
-  [v31 setObject:v16 forKey:@"deviceIdentifier"];
-  [v31 setObject:self->_orderIdentifier forKey:@"orderIdentifier"];
+  [dictionary setObject:identifierCopy forKey:@"deviceIdentifier"];
+  [dictionary setObject:self->_orderIdentifier forKey:@"orderIdentifier"];
   amount = self->_amount;
   if (amount)
   {
-    v35 = [(NSDecimalNumber *)amount stringValue];
-    [v31 setObject:v35 forKey:@"amount"];
+    stringValue = [(NSDecimalNumber *)amount stringValue];
+    [dictionary setObject:stringValue forKey:@"amount"];
   }
 
   currency = self->_currency;
   if (currency)
   {
-    [v31 setObject:currency forKey:@"currency"];
+    [dictionary setObject:currency forKey:@"currency"];
   }
 
   if (self->_externalFundingSource == 1)
@@ -329,7 +329,7 @@ LABEL_145:
   }
 
   v38 = v37;
-  [v31 setObject:v38 forKey:@"externalFundingSource"];
+  [dictionary setObject:v38 forKey:@"externalFundingSource"];
 
   v39 = self->_source - 1;
   if (v39 > 2)
@@ -342,7 +342,7 @@ LABEL_145:
     v40 = off_1E79E2EE0[v39];
   }
 
-  [v31 setObject:v40 forKey:@"source"];
+  [dictionary setObject:v40 forKey:@"source"];
   if (!self->_preserveCurrentBalance)
   {
     goto LABEL_63;
@@ -382,13 +382,13 @@ LABEL_63:
   v41 = 0;
 LABEL_64:
   v48 = [MEMORY[0x1E696AD98] numberWithBool:v41];
-  [v31 setObject:v48 forKey:@"preserveCurrentBalance"];
+  [dictionary setObject:v48 forKey:@"preserveCurrentBalance"];
 
   v49 = self->_destination;
   if (v49)
   {
     v50 = PKPeerPaymentQuoteRequestDestinationTypeToString(v49);
-    [v31 setObject:v50 forKey:@"destination"];
+    [dictionary setObject:v50 forKey:@"destination"];
   }
 
   v51 = self->_source - 1;
@@ -402,12 +402,12 @@ LABEL_64:
     v52 = off_1E79E2EE0[v51];
   }
 
-  [v31 setObject:v52 forKey:@"source"];
+  [dictionary setObject:v52 forKey:@"source"];
   requestToken = self->_requestToken;
   if (requestToken && ![(PKPeerPaymentRequestToken *)requestToken isInformalRequestToken])
   {
-    v54 = [(PKPeerPaymentRequestToken *)self->_requestToken requestToken];
-    [v31 setObject:v54 forKey:@"requestToken"];
+    requestToken = [(PKPeerPaymentRequestToken *)self->_requestToken requestToken];
+    [dictionary setObject:requestToken forKey:@"requestToken"];
   }
 
   context = self->_context;
@@ -436,7 +436,7 @@ LABEL_79:
     {
       v56 = @"user";
 LABEL_85:
-      [v31 setObject:v56 forKey:@"context"];
+      [dictionary setObject:v56 forKey:@"context"];
       goto LABEL_86;
     }
 
@@ -446,9 +446,9 @@ LABEL_85:
   v57 = self->_requestToken;
   if (v57)
   {
-    v58 = [(PKPeerPaymentRequestToken *)v57 isInformalRequestToken];
+    isInformalRequestToken = [(PKPeerPaymentRequestToken *)v57 isInformalRequestToken];
     v59 = @"formalRequest";
-    if (v58)
+    if (isInformalRequestToken)
     {
       v59 = @"informalRequest";
     }
@@ -460,7 +460,7 @@ LABEL_85:
   }
 
   v106 = v59;
-  [v31 setObject:v106 forKey:@"context"];
+  [dictionary setObject:v106 forKey:@"context"];
 
 LABEL_86:
   if (self->_externalFundingSource == 1 || self->_destination == 4)
@@ -468,62 +468,62 @@ LABEL_86:
     dpanIdentifier = self->_dpanIdentifier;
     if (dpanIdentifier)
     {
-      [v31 setObject:dpanIdentifier forKey:@"dpanIdentifier"];
+      [dictionary setObject:dpanIdentifier forKey:@"dpanIdentifier"];
     }
 
     fpanIdentifier = self->_fpanIdentifier;
     if (fpanIdentifier)
     {
-      [v31 setObject:fpanIdentifier forKey:@"fpanIdentifier"];
+      [dictionary setObject:fpanIdentifier forKey:@"fpanIdentifier"];
     }
 
     paymentNetwork = self->_paymentNetwork;
     if (paymentNetwork)
     {
       v63 = PKPaymentNetworkNameForPaymentCredentialType(paymentNetwork);
-      [v31 setObject:v63 forKey:@"paymentNetwork"];
+      [dictionary setObject:v63 forKey:@"paymentNetwork"];
     }
 
     paymentMethodType = self->_paymentMethodType;
     if (paymentMethodType)
     {
       v65 = PKPaymentMethodTypeToString(paymentMethodType);
-      [v31 setObject:v65 forKey:@"paymentMethodType"];
+      [dictionary setObject:v65 forKey:@"paymentMethodType"];
     }
 
     paymentMethodDescription = self->_paymentMethodDescription;
     if (paymentMethodDescription)
     {
-      [v31 setObject:paymentMethodDescription forKey:@"paymentMethodDescription"];
+      [dictionary setObject:paymentMethodDescription forKey:@"paymentMethodDescription"];
     }
 
     paymentMethodSuffix = self->_paymentMethodSuffix;
     if (paymentMethodSuffix)
     {
-      [v31 setObject:paymentMethodSuffix forKey:@"paymentMethodSuffix"];
+      [dictionary setObject:paymentMethodSuffix forKey:@"paymentMethodSuffix"];
     }
   }
 
   v68 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasUpdatedPaymentMethod];
-  [v31 setObject:v68 forKey:@"hasUpdatedPaymentMethod"];
+  [dictionary setObject:v68 forKey:@"hasUpdatedPaymentMethod"];
 
   paymentMode = self->_paymentMode;
   if (paymentMode)
   {
     v70 = PKPeerPaymentPaymentModeToString(paymentMode);
-    [v31 setObject:v70 forKey:@"paymentMode"];
+    [dictionary setObject:v70 forKey:@"paymentMode"];
   }
 
   v71 = self->_destination;
   if (v71 > 2)
   {
-    v17 = v112;
+    scoreCopy = v112;
     if (v71 == 3)
     {
       threshold = self->_threshold;
       if (threshold)
       {
-        [v31 setObject:threshold forKey:@"threshold"];
+        [dictionary setObject:threshold forKey:@"threshold"];
       }
 
       recurringPaymentIdentifier = self->_recurringPaymentIdentifier;
@@ -561,18 +561,18 @@ LABEL_86:
       v90 = @"deviceTapFlow";
     }
 
-    [v31 setObject:recurringPaymentIdentifier forKey:v90];
+    [dictionary setObject:recurringPaymentIdentifier forKey:v90];
   }
 
   else
   {
-    v17 = v112;
+    scoreCopy = v112;
     if (v71 == 1)
     {
       recipientIdentifier = self->_recipientIdentifier;
       if (recipientIdentifier)
       {
-        [v31 setObject:recipientIdentifier forKey:@"recipientIdentifier"];
+        [dictionary setObject:recipientIdentifier forKey:@"recipientIdentifier"];
       }
 
       senderAddress = self->_senderAddress;
@@ -581,40 +581,40 @@ LABEL_86:
         v93 = PKIDSNormalizedAddress(senderAddress);
         if (v93)
         {
-          [v31 setObject:v93 forKey:@"senderAddress"];
+          [dictionary setObject:v93 forKey:@"senderAddress"];
         }
       }
 
       v94 = self->_recurringPaymentIdentifier;
       if (v94)
       {
-        [v31 setObject:v94 forKey:@"recurringPaymentIdentifier"];
+        [dictionary setObject:v94 forKey:@"recurringPaymentIdentifier"];
       }
 
       frequency = self->_frequency;
       if (frequency)
       {
         v96 = PKPeerPaymentRecurringPaymentFrequencyToString(frequency);
-        [v31 setObject:v96 forKey:@"frequency"];
+        [dictionary setObject:v96 forKey:@"frequency"];
       }
 
       startDate = self->_startDate;
       if (startDate)
       {
-        v98 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v99 = [v98 timeZone];
-        v100 = PKPaymentDateStringFromDateWithTimeZone(startDate, v99);
-        [v31 setObject:v100 forKey:@"startDate"];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+        timeZone = [currentCalendar timeZone];
+        v100 = PKPaymentDateStringFromDateWithTimeZone(startDate, timeZone);
+        [dictionary setObject:v100 forKey:@"startDate"];
       }
 
-      v17 = v112;
+      scoreCopy = v112;
       if (self->_recurringPaymentIdentifier)
       {
         goto LABEL_164;
       }
 
       v101 = [MEMORY[0x1E696AD98] numberWithBool:self->_sendImmediately];
-      [v31 setObject:v101 forKey:@"sendImmediately"];
+      [dictionary setObject:v101 forKey:@"sendImmediately"];
       goto LABEL_158;
     }
 
@@ -623,17 +623,17 @@ LABEL_86:
       quoteCertificatesResponse = self->_quoteCertificatesResponse;
       if (quoteCertificatesResponse)
       {
-        v73 = [(PKPeerPaymentQuoteCertificatesResponse *)quoteCertificatesResponse encryptionVersion];
-        v115 = [v73 isEqualToString:@"EV_ECC_v1-ASN.1"];
+        encryptionVersion = [(PKPeerPaymentQuoteCertificatesResponse *)quoteCertificatesResponse encryptionVersion];
+        v115 = [encryptionVersion isEqualToString:@"EV_ECC_v1-ASN.1"];
 
         if (v115)
         {
-          v74 = [MEMORY[0x1E695DF90] dictionary];
-          v75 = v74;
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          v75 = dictionary2;
           bankName = self->_bankName;
           if (bankName)
           {
-            [v74 setObject:bankName forKey:@"bankName"];
+            [dictionary2 setObject:bankName forKey:@"bankName"];
           }
 
           routingNumber = self->_routingNumber;
@@ -642,7 +642,7 @@ LABEL_86:
             [v75 setObject:routingNumber forKey:@"routingNumber"];
           }
 
-          v111 = v31;
+          v111 = dictionary;
           accountNumber = self->_accountNumber;
           if (accountNumber)
           {
@@ -653,8 +653,8 @@ LABEL_86:
           if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
           {
             v116 = MEMORY[0x1E696AEC0];
-            v80 = [v75 allKeys];
-            v117 = [v116 stringWithFormat:@"Encrypted Account Number keys: %@", v80];
+            allKeys = [v75 allKeys];
+            v117 = [v116 stringWithFormat:@"Encrypted Account Number keys: %@", allKeys];
             *buf = 138477827;
             v121 = v117;
             _os_log_impl(&dword_1AD337000, v79, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
@@ -663,22 +663,22 @@ LABEL_86:
           v81 = v79;
           v114 = v75;
           v82 = [objc_opt_class() _HTTPBodyWithDictionary:v75];
-          v83 = [(PKPeerPaymentQuoteCertificatesResponse *)self->_quoteCertificatesResponse encryptionCertificates];
+          encryptionCertificates = [(PKPeerPaymentQuoteCertificatesResponse *)self->_quoteCertificatesResponse encryptionCertificates];
           v119 = 0;
           v84 = v82;
-          v85 = PKPeerPaymentEncryptDataWithCertChain(v82, v83, &v119);
+          v85 = PKPeerPaymentEncryptDataWithCertChain(v82, encryptionCertificates, &v119);
           v118 = v119;
 
           if (v85)
           {
             v86 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v85 encoding:4];
-            v31 = v111;
+            dictionary = v111;
             [v111 setObject:v86 forKey:@"encryptedAccountNumbers"];
             [v111 setObject:@"EV_ECC_v1-ASN.1" forKey:@"encryptionVersion"];
-            v87 = [v118 hexEncoding];
-            [v111 setObject:v87 forKey:@"publicKeyHash"];
+            hexEncoding2 = [v118 hexEncoding];
+            [v111 setObject:hexEncoding2 forKey:@"publicKeyHash"];
 
-            v17 = v112;
+            scoreCopy = v112;
           }
 
           else
@@ -690,8 +690,8 @@ LABEL_86:
             }
 
             v86 = v81;
-            v31 = v111;
-            v17 = v112;
+            dictionary = v111;
+            scoreCopy = v112;
           }
 
           goto LABEL_164;
@@ -703,9 +703,9 @@ LABEL_86:
           v108 = PKLogFacilityTypeGetObject(0xCuLL);
           if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
           {
-            v109 = [(PKPeerPaymentQuoteCertificatesResponse *)v107 encryptionVersion];
+            encryptionVersion2 = [(PKPeerPaymentQuoteCertificatesResponse *)v107 encryptionVersion];
             *buf = 138543362;
-            v121 = v109;
+            v121 = encryptionVersion2;
             _os_log_impl(&dword_1AD337000, v108, OS_LOG_TYPE_DEFAULT, "Error: Failed to generate encrypted account numbers structure. Unknown encryption version: %{public}@", buf, 0xCu);
           }
 
@@ -723,166 +723,166 @@ LABEL_86:
 LABEL_158:
 
 LABEL_159:
-      v17 = v112;
+      scoreCopy = v112;
     }
   }
 
 LABEL_164:
-  v110 = [objc_opt_class() _HTTPBodyWithDictionary:v31];
+  v110 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v22 setHTTPBody:v110];
 
   v104 = [v22 copy];
-  v18 = v113;
+  assessmentCopy = v113;
 LABEL_147:
 
   return v104;
 }
 
-- (PKPeerPaymentQuoteRequest)initWithCoder:(id)a3
+- (PKPeerPaymentQuoteRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = PKPeerPaymentQuoteRequest;
   v5 = [(PKOverlayableWebServiceRequest *)&v46 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
     orderIdentifier = v5->_orderIdentifier;
     v5->_orderIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
     currency = v5->_currency;
     v5->_currency = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalFundingSource"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalFundingSource"];
     v5->_externalFundingSource = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
     v5->_destination = [v13 unsignedIntegerValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     v5->_context = [v14 unsignedIntegerValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     v5->_source = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
     requestToken = v5->_requestToken;
     v5->_requestToken = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
     dpanIdentifier = v5->_dpanIdentifier;
     v5->_dpanIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentNetwork"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentNetwork"];
     v5->_paymentNetwork = [v20 integerValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodType"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodType"];
     v5->_paymentMethodType = [v21 unsignedIntegerValue];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodDescription"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodDescription"];
     paymentMethodDescription = v5->_paymentMethodDescription;
     v5->_paymentMethodDescription = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodSuffix"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodSuffix"];
     paymentMethodSuffix = v5->_paymentMethodSuffix;
     v5->_paymentMethodSuffix = v24;
 
-    v5->_hasUpdatedPaymentMethod = [v4 decodeBoolForKey:@"hasUpdatedPaymentMethod"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientIdentifier"];
+    v5->_hasUpdatedPaymentMethod = [coderCopy decodeBoolForKey:@"hasUpdatedPaymentMethod"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientIdentifier"];
     recipientIdentifier = v5->_recipientIdentifier;
     v5->_recipientIdentifier = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
     senderAddress = v5->_senderAddress;
     v5->_senderAddress = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientAddress"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientAddress"];
     recipientAddress = v5->_recipientAddress;
     v5->_recipientAddress = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
     routingNumber = v5->_routingNumber;
     v5->_routingNumber = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
     accountNumber = v5->_accountNumber;
     v5->_accountNumber = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quoteCertificatesResponse"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quoteCertificatesResponse"];
     quoteCertificatesResponse = v5->_quoteCertificatesResponse;
     v5->_quoteCertificatesResponse = v36;
 
-    v5->_preserveCurrentBalance = [v4 decodeBoolForKey:@"preserveCurrentBalance"];
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentIdentifier"];
+    v5->_preserveCurrentBalance = [coderCopy decodeBoolForKey:@"preserveCurrentBalance"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentIdentifier"];
     recurringPaymentIdentifier = v5->_recurringPaymentIdentifier;
     v5->_recurringPaymentIdentifier = v38;
 
-    v5->_frequency = [v4 decodeIntegerForKey:@"frequency"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_frequency = [coderCopy decodeIntegerForKey:@"frequency"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threshold"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threshold"];
     threshold = v5->_threshold;
     v5->_threshold = v42;
 
-    v5->_sendImmediately = [v4 decodeBoolForKey:@"sendImmediately"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMode"];
+    v5->_sendImmediately = [coderCopy decodeBoolForKey:@"sendImmediately"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMode"];
     v5->_paymentMode = [v44 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   orderIdentifier = self->_orderIdentifier;
-  v5 = a3;
-  [v5 encodeObject:orderIdentifier forKey:@"orderIdentifier"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_currency forKey:@"currency"];
+  coderCopy = coder;
+  [coderCopy encodeObject:orderIdentifier forKey:@"orderIdentifier"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currency forKey:@"currency"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_externalFundingSource];
-  [v5 encodeObject:v6 forKey:@"externalFundingSource"];
+  [coderCopy encodeObject:v6 forKey:@"externalFundingSource"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_destination];
-  [v5 encodeObject:v7 forKey:@"destination"];
+  [coderCopy encodeObject:v7 forKey:@"destination"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_context];
-  [v5 encodeObject:v8 forKey:@"context"];
+  [coderCopy encodeObject:v8 forKey:@"context"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_source];
-  [v5 encodeObject:v9 forKey:@"source"];
+  [coderCopy encodeObject:v9 forKey:@"source"];
 
-  [v5 encodeObject:self->_requestToken forKey:@"requestToken"];
-  [v5 encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
+  [coderCopy encodeObject:self->_requestToken forKey:@"requestToken"];
+  [coderCopy encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:self->_paymentNetwork];
-  [v5 encodeObject:v10 forKey:@"paymentNetwork"];
+  [coderCopy encodeObject:v10 forKey:@"paymentNetwork"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_paymentMethodType];
-  [v5 encodeObject:v11 forKey:@"paymentMethodType"];
+  [coderCopy encodeObject:v11 forKey:@"paymentMethodType"];
 
-  [v5 encodeObject:self->_paymentMethodDescription forKey:@"paymentMethodDescription"];
-  [v5 encodeObject:self->_paymentMethodSuffix forKey:@"paymentMethodSuffix"];
-  [v5 encodeBool:self->_hasUpdatedPaymentMethod forKey:@"hasUpdatedPaymentMethod"];
-  [v5 encodeObject:self->_recipientIdentifier forKey:@"recipientIdentifier"];
-  [v5 encodeObject:self->_senderAddress forKey:@"senderAddress"];
-  [v5 encodeObject:self->_recipientAddress forKey:@"recipientAddress"];
-  [v5 encodeObject:self->_routingNumber forKey:@"routingNumber"];
-  [v5 encodeObject:self->_accountNumber forKey:@"accountNumber"];
-  [v5 encodeObject:self->_quoteCertificatesResponse forKey:@"quoteCertificatesResponse"];
-  [v5 encodeBool:self->_preserveCurrentBalance forKey:@"preserveCurrentBalance"];
-  [v5 encodeObject:self->_recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
-  [v5 encodeInteger:self->_frequency forKey:@"frequency"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_threshold forKey:@"threshold"];
-  [v5 encodeBool:self->_sendImmediately forKey:@"sendImmediately"];
+  [coderCopy encodeObject:self->_paymentMethodDescription forKey:@"paymentMethodDescription"];
+  [coderCopy encodeObject:self->_paymentMethodSuffix forKey:@"paymentMethodSuffix"];
+  [coderCopy encodeBool:self->_hasUpdatedPaymentMethod forKey:@"hasUpdatedPaymentMethod"];
+  [coderCopy encodeObject:self->_recipientIdentifier forKey:@"recipientIdentifier"];
+  [coderCopy encodeObject:self->_senderAddress forKey:@"senderAddress"];
+  [coderCopy encodeObject:self->_recipientAddress forKey:@"recipientAddress"];
+  [coderCopy encodeObject:self->_routingNumber forKey:@"routingNumber"];
+  [coderCopy encodeObject:self->_accountNumber forKey:@"accountNumber"];
+  [coderCopy encodeObject:self->_quoteCertificatesResponse forKey:@"quoteCertificatesResponse"];
+  [coderCopy encodeBool:self->_preserveCurrentBalance forKey:@"preserveCurrentBalance"];
+  [coderCopy encodeObject:self->_recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
+  [coderCopy encodeInteger:self->_frequency forKey:@"frequency"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_threshold forKey:@"threshold"];
+  [coderCopy encodeBool:self->_sendImmediately forKey:@"sendImmediately"];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_paymentMode];
-  [v5 encodeObject:v12 forKey:@"paymentMode"];
+  [coderCopy encodeObject:v12 forKey:@"paymentMode"];
 }
 
 - (id)description
@@ -949,11 +949,11 @@ LABEL_147:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_orderIdentifier)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_amount)
@@ -1047,28 +1047,28 @@ LABEL_147:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentQuoteRequest *)self isEqualToPeerPaymentQuoteRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentQuoteRequest *)self isEqualToPeerPaymentQuoteRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPeerPaymentQuoteRequest:(id)a3
+- (BOOL)isEqualToPeerPaymentQuoteRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   orderIdentifier = self->_orderIdentifier;
-  v6 = v4[12];
+  v6 = requestCopy[12];
   if (orderIdentifier)
   {
     v7 = v6 == 0;
@@ -1093,7 +1093,7 @@ LABEL_147:
   }
 
   amount = self->_amount;
-  v9 = v4[13];
+  v9 = requestCopy[13];
   if (amount)
   {
     v10 = v9 == 0;
@@ -1118,7 +1118,7 @@ LABEL_147:
   }
 
   currency = self->_currency;
-  v12 = v4[14];
+  v12 = requestCopy[14];
   if (currency)
   {
     v13 = v12 == 0;
@@ -1142,13 +1142,13 @@ LABEL_147:
     goto LABEL_101;
   }
 
-  if (self->_externalFundingSource != v4[15] || self->_destination != v4[16] || self->_context != v4[17] || self->_source != v4[18])
+  if (self->_externalFundingSource != requestCopy[15] || self->_destination != requestCopy[16] || self->_context != requestCopy[17] || self->_source != requestCopy[18])
   {
     goto LABEL_101;
   }
 
   requestToken = self->_requestToken;
-  v15 = v4[19];
+  v15 = requestCopy[19];
   if (requestToken && v15)
   {
     if (![(PKPeerPaymentRequestToken *)requestToken isEqual:?])
@@ -1163,7 +1163,7 @@ LABEL_147:
   }
 
   dpanIdentifier = self->_dpanIdentifier;
-  v17 = v4[20];
+  v17 = requestCopy[20];
   if (dpanIdentifier && v17)
   {
     if (([(NSString *)dpanIdentifier isEqual:?]& 1) == 0)
@@ -1177,13 +1177,13 @@ LABEL_147:
     goto LABEL_101;
   }
 
-  if (self->_paymentNetwork != v4[22] || self->_paymentMethodType != v4[23])
+  if (self->_paymentNetwork != requestCopy[22] || self->_paymentMethodType != requestCopy[23])
   {
     goto LABEL_101;
   }
 
   paymentMethodDescription = self->_paymentMethodDescription;
-  v19 = v4[24];
+  v19 = requestCopy[24];
   if (paymentMethodDescription && v19)
   {
     if (([(NSString *)paymentMethodDescription isEqual:?]& 1) == 0)
@@ -1198,7 +1198,7 @@ LABEL_147:
   }
 
   paymentMethodSuffix = self->_paymentMethodSuffix;
-  v21 = v4[25];
+  v21 = requestCopy[25];
   if (paymentMethodSuffix && v21)
   {
     if (([(NSString *)paymentMethodSuffix isEqual:?]& 1) == 0)
@@ -1212,13 +1212,13 @@ LABEL_147:
     goto LABEL_101;
   }
 
-  if (self->_hasUpdatedPaymentMethod != *(v4 + 89))
+  if (self->_hasUpdatedPaymentMethod != *(requestCopy + 89))
   {
     goto LABEL_101;
   }
 
   recipientIdentifier = self->_recipientIdentifier;
-  v23 = v4[26];
+  v23 = requestCopy[26];
   if (recipientIdentifier && v23)
   {
     if (([(NSString *)recipientIdentifier isEqual:?]& 1) == 0)
@@ -1233,7 +1233,7 @@ LABEL_147:
   }
 
   senderAddress = self->_senderAddress;
-  v25 = v4[27];
+  v25 = requestCopy[27];
   if (senderAddress && v25)
   {
     if (([(NSString *)senderAddress isEqual:?]& 1) == 0)
@@ -1248,7 +1248,7 @@ LABEL_147:
   }
 
   recipientAddress = self->_recipientAddress;
-  v27 = v4[30];
+  v27 = requestCopy[30];
   if (recipientAddress && v27)
   {
     if (([(NSString *)recipientAddress isEqual:?]& 1) == 0)
@@ -1263,7 +1263,7 @@ LABEL_147:
   }
 
   routingNumber = self->_routingNumber;
-  v29 = v4[33];
+  v29 = requestCopy[33];
   if (routingNumber && v29)
   {
     if (([(NSString *)routingNumber isEqual:?]& 1) == 0)
@@ -1278,7 +1278,7 @@ LABEL_147:
   }
 
   accountNumber = self->_accountNumber;
-  v31 = v4[34];
+  v31 = requestCopy[34];
   if (accountNumber && v31)
   {
     if (([(NSString *)accountNumber isEqual:?]& 1) == 0)
@@ -1293,7 +1293,7 @@ LABEL_147:
   }
 
   quoteCertificatesResponse = self->_quoteCertificatesResponse;
-  v33 = v4[35];
+  v33 = requestCopy[35];
   if (quoteCertificatesResponse && v33)
   {
     if (([(PKPeerPaymentQuoteCertificatesResponse *)quoteCertificatesResponse isEqual:?]& 1) == 0)
@@ -1308,7 +1308,7 @@ LABEL_147:
   }
 
   recurringPaymentIdentifier = self->_recurringPaymentIdentifier;
-  v35 = v4[36];
+  v35 = requestCopy[36];
   if (recurringPaymentIdentifier && v35)
   {
     if (([(NSString *)recurringPaymentIdentifier isEqual:?]& 1) == 0)
@@ -1323,7 +1323,7 @@ LABEL_147:
   }
 
   startDate = self->_startDate;
-  v37 = v4[38];
+  v37 = requestCopy[38];
   if (startDate && v37)
   {
     if (([(NSDate *)startDate isEqual:?]& 1) == 0)
@@ -1338,7 +1338,7 @@ LABEL_147:
   }
 
   threshold = self->_threshold;
-  v39 = v4[39];
+  v39 = requestCopy[39];
   if (!threshold || !v39)
   {
     if (threshold == v39)
@@ -1357,12 +1357,12 @@ LABEL_101:
   }
 
 LABEL_97:
-  if (self->_frequency != v4[37] || self->_sendImmediately != *(v4 + 90) || self->_paymentMode != v4[28])
+  if (self->_frequency != requestCopy[37] || self->_sendImmediately != *(requestCopy + 90) || self->_paymentMode != requestCopy[28])
   {
     goto LABEL_101;
   }
 
-  v40 = self->_preserveCurrentBalance == *(v4 + 88);
+  v40 = self->_preserveCurrentBalance == *(requestCopy + 88);
 LABEL_102:
 
   return v40;

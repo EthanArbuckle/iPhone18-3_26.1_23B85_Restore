@@ -1,16 +1,16 @@
 @interface CalDAVModifySharedCalendarShareeListTaskGroup
-- (CalDAVModifySharedCalendarShareeListTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4;
+- (CalDAVModifySharedCalendarShareeListTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager;
 - (id)generateModificationMessageBody;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVModifySharedCalendarShareeListTaskGroup
 
-- (CalDAVModifySharedCalendarShareeListTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4
+- (CalDAVModifySharedCalendarShareeListTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  managerCopy = manager;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Initializing this class instance with an inherited initializer not allowed." userInfo:0];
   objc_exception_throw(v7);
 }
@@ -18,16 +18,16 @@
 - (void)startTaskGroup
 {
   v3 = [CalDAVModifySharedCalendarShareeListPostTask alloc];
-  v4 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self generateModificationMessageBody];
-  v5 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self calendarURL];
-  v8 = [(CoreDAVPostTask *)v3 initWithDataPayload:v4 dataContentType:@"text/xml" atURL:v5 previousETag:0];
+  generateModificationMessageBody = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self generateModificationMessageBody];
+  calendarURL = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self calendarURL];
+  v8 = [(CoreDAVPostTask *)v3 initWithDataPayload:generateModificationMessageBody dataContentType:@"text/xml" atURL:calendarURL previousETag:0];
 
-  v6 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [(CalDAVModifySharedCalendarShareeListPostTask *)v8 setAccountInfoProvider:v6];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [(CalDAVModifySharedCalendarShareeListPostTask *)v8 setAccountInfoProvider:accountInfoProvider];
 
   [(CalDAVModifySharedCalendarShareeListPostTask *)v8 setDelegate:self];
-  v7 = [(CoreDAVTaskGroup *)self taskManager];
-  [v7 submitQueuedCoreDAVTask:v8];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v8];
 }
 
 - (id)generateModificationMessageBody
@@ -40,7 +40,7 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v41 = self;
+  selfCopy = self;
   obj = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self shareesToSet];
   v5 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v5)
@@ -60,27 +60,27 @@
 
         v8 = *(*(&v46 + 1) + 8 * i);
         [v3 startElement:@"set" inNamespace:v4 withAttributeNamesAndValues:0];
-        v9 = [v8 href];
-        v10 = [v9 payloadAsString];
-        [v3 appendElement:v37 inNamespace:v35 withStringContent:v10 withAttributeNamesAndValues:0];
+        href = [v8 href];
+        payloadAsString = [href payloadAsString];
+        [v3 appendElement:v37 inNamespace:v35 withStringContent:payloadAsString withAttributeNamesAndValues:0];
 
-        v11 = [v8 commonName];
-        v12 = [v11 payloadAsString];
-        [v3 appendElement:@"common-name" inNamespace:v4 withStringContent:v12 withAttributeNamesAndValues:0];
+        commonName = [v8 commonName];
+        payloadAsString2 = [commonName payloadAsString];
+        [v3 appendElement:@"common-name" inNamespace:v4 withStringContent:payloadAsString2 withAttributeNamesAndValues:0];
 
-        v13 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)v41 summary];
-        [v3 appendElement:@"summary" inNamespace:v4 withStringContent:v13 withAttributeNamesAndValues:0];
+        summary = [(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy summary];
+        [v3 appendElement:@"summary" inNamespace:v4 withStringContent:summary withAttributeNamesAndValues:0];
 
-        v14 = [v8 access];
-        v15 = [v14 accessLevel];
+        access = [v8 access];
+        accessLevel = [access accessLevel];
 
-        v16 = [v15 name];
+        name = [accessLevel name];
 
-        if (v16)
+        if (name)
         {
-          v17 = [v15 name];
-          v18 = [v15 nameSpace];
-          [v3 appendElement:v17 inNamespace:v18 withStringContent:0 withAttributeNamesAndValues:0];
+          name2 = [accessLevel name];
+          nameSpace = [accessLevel nameSpace];
+          [v3 appendElement:name2 inNamespace:nameSpace withStringContent:0 withAttributeNamesAndValues:0];
         }
 
         [v3 endElement:@"set" inNamespace:v4];
@@ -96,8 +96,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v36 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)v41 shareesToRemove];
-  v19 = [v36 countByEnumeratingWithState:&v42 objects:v50 count:16];
+  shareesToRemove = [(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy shareesToRemove];
+  v19 = [shareesToRemove countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v19)
   {
     v20 = v19;
@@ -112,22 +112,22 @@
       {
         if (*v43 != v21)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(shareesToRemove);
         }
 
         v23 = *(*(&v42 + 1) + 8 * j);
-        v24 = [v23 href];
-        v25 = [v24 payloadAsString];
-        v26 = [v25 length];
+        href2 = [v23 href];
+        payloadAsString3 = [href2 payloadAsString];
+        v26 = [payloadAsString3 length];
 
         if (v26)
         {
           [v3 startElement:@"remove" inNamespace:v4 withAttributeNamesAndValues:0];
-          v27 = [v23 href];
-          v28 = [v27 payloadAsString];
-          [v3 appendElement:v40 inNamespace:v38 withStringContent:v28 withAttributeNamesAndValues:0];
+          href3 = [v23 href];
+          payloadAsString4 = [href3 payloadAsString];
+          [v3 appendElement:v40 inNamespace:v38 withStringContent:payloadAsString4 withAttributeNamesAndValues:0];
 
-          if ([(CalDAVModifySharedCalendarShareeListTaskGroup *)v41 muteNotifications])
+          if ([(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy muteNotifications])
           {
             [v3 appendElement:obja inNamespace:v32 withStringContent:0 withAttributeNamesAndValues:0];
           }
@@ -136,34 +136,34 @@
         }
       }
 
-      v20 = [v36 countByEnumeratingWithState:&v42 objects:v50 count:16];
+      v20 = [shareesToRemove countByEnumeratingWithState:&v42 objects:v50 count:16];
     }
 
     while (v20);
   }
 
   [v3 endElement:@"share" inNamespace:v4];
-  v29 = [v3 data];
+  data = [v3 data];
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return data;
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  taskCopy = task;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    if ([v6 responseStatusCode] == 207)
+    if ([taskCopy responseStatusCode] == 207)
     {
-      v55 = self;
+      selfCopy = self;
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v51 = v6;
-      v50 = [v6 responseBodyParser];
-      [v50 rootElement];
+      v51 = taskCopy;
+      responseBodyParser = [taskCopy responseBodyParser];
+      [responseBodyParser rootElement];
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
@@ -187,9 +187,9 @@
             }
 
             v13 = *(*(&v65 + 1) + 8 * v12);
-            v14 = [v13 status];
-            v15 = [v14 payloadAsString];
-            v16 = [v15 CDVIsHTTPStatusLineWithStatusCode:403];
+            status = [v13 status];
+            payloadAsString = [status payloadAsString];
+            v16 = [payloadAsString CDVIsHTTPStatusLineWithStatusCode:403];
 
             if (v16)
             {
@@ -198,8 +198,8 @@
               v64 = 0u;
               v61 = 0u;
               v62 = 0u;
-              v17 = [v13 hrefs];
-              v18 = [v17 countByEnumeratingWithState:&v61 objects:v72 count:16];
+              hrefs = [v13 hrefs];
+              v18 = [hrefs countByEnumeratingWithState:&v61 objects:v72 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -210,22 +210,22 @@
                   {
                     if (*v62 != v20)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(hrefs);
                     }
 
                     v22 = *(*(&v61 + 1) + 8 * i);
-                    v23 = [v22 payloadAsFullURL];
-                    v24 = [v23 absoluteString];
+                    payloadAsFullURL = [v22 payloadAsFullURL];
+                    absoluteString = [payloadAsFullURL absoluteString];
 
-                    if (v24)
+                    if (absoluteString)
                     {
-                      [v8 addObject:v24];
+                      [v8 addObject:absoluteString];
                     }
 
                     else
                     {
-                      v25 = [MEMORY[0x277CFDC18] sharedLogging];
-                      v26 = [v25 logHandleForAccountInfoProvider:0];
+                      mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+                      v26 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
                       v27 = v26;
                       if (v26 && os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
                       {
@@ -236,7 +236,7 @@
                     }
                   }
 
-                  v19 = [v17 countByEnumeratingWithState:&v61 objects:v72 count:16];
+                  v19 = [hrefs countByEnumeratingWithState:&v61 objects:v72 count:16];
                 }
 
                 while (v19);
@@ -263,9 +263,9 @@
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        self = v55;
-        v28 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)v55 shareesToSet];
-        v29 = [v28 countByEnumeratingWithState:&v57 objects:v69 count:16];
+        self = selfCopy;
+        shareesToSet = [(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy shareesToSet];
+        v29 = [shareesToSet countByEnumeratingWithState:&v57 objects:v69 count:16];
         if (v29)
         {
           v30 = v29;
@@ -276,61 +276,61 @@
             {
               if (*v58 != v31)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(shareesToSet);
               }
 
               v33 = *(*(&v57 + 1) + 8 * j);
-              v34 = [v33 href];
-              v35 = [v34 payloadAsFullURL];
-              v36 = [v35 absoluteString];
-              v37 = [v8 containsObject:v36];
+              href = [v33 href];
+              payloadAsFullURL2 = [href payloadAsFullURL];
+              absoluteString2 = [payloadAsFullURL2 absoluteString];
+              v37 = [v8 containsObject:absoluteString2];
 
-              self = v55;
+              self = selfCopy;
               if (v37)
               {
-                v38 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)v55 invalidSharees];
+                invalidSharees = [(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy invalidSharees];
 
-                if (!v38)
+                if (!invalidSharees)
                 {
                   v39 = objc_alloc_init(MEMORY[0x277CBEB58]);
-                  [(CalDAVModifySharedCalendarShareeListTaskGroup *)v55 setInvalidSharees:v39];
+                  [(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy setInvalidSharees:v39];
                 }
 
-                v40 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)v55 invalidSharees];
-                [v40 addObject:v33];
+                invalidSharees2 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)selfCopy invalidSharees];
+                [invalidSharees2 addObject:v33];
               }
             }
 
-            v30 = [v28 countByEnumeratingWithState:&v57 objects:v69 count:16];
+            v30 = [shareesToSet countByEnumeratingWithState:&v57 objects:v69 count:16];
           }
 
           while (v30);
         }
 
-        v41 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self invalidSharees];
-        v42 = [v41 count];
+        invalidSharees3 = [(CalDAVModifySharedCalendarShareeListTaskGroup *)self invalidSharees];
+        v42 = [invalidSharees3 count];
 
         v43 = v49;
         if (v42)
         {
-          v7 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"CalDAVErrorDomain" code:0 userInfo:0];
+          errorCopy = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"CalDAVErrorDomain" code:0 userInfo:0];
         }
 
         else
         {
-          v7 = 0;
+          errorCopy = 0;
         }
 
-        v47 = v50;
-        v6 = v51;
+        v47 = responseBodyParser;
+        taskCopy = v51;
       }
 
       else
       {
-        v44 = [MEMORY[0x277CFDC18] sharedLogging];
-        v45 = [v44 logHandleForAccountInfoProvider:0];
+        mEMORY[0x277CFDC18]2 = [MEMORY[0x277CFDC18] sharedLogging];
+        v45 = [mEMORY[0x277CFDC18]2 logHandleForAccountInfoProvider:0];
         v46 = v45;
-        self = v55;
+        self = selfCopy;
         if (v45 && os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
@@ -338,20 +338,20 @@
           _os_log_impl(&dword_242742000, v46, OS_LOG_TYPE_DEFAULT, "No invalid sharees found but status was %d", buf, 8u);
         }
 
-        v7 = 0;
-        v47 = v50;
-        v6 = v51;
+        errorCopy = 0;
+        v47 = responseBodyParser;
+        taskCopy = v51;
         v43 = v49;
       }
     }
 
     else
     {
-      v7 = 0;
+      errorCopy = 0;
     }
   }
 
-  [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v7 delegateCallbackBlock:0];
+  [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:errorCopy delegateCallbackBlock:0];
 
   v48 = *MEMORY[0x277D85DE8];
 }

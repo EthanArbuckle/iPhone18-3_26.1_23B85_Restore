@@ -1,38 +1,38 @@
 @interface PBRemotePasteboardItemProviderInputStream
-+ (id)inputStreamWithFileHandle:(id)a3;
-- (PBRemotePasteboardItemProviderInputStream)initWithFileHandle:(id)a3;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
++ (id)inputStreamWithFileHandle:(id)handle;
+- (PBRemotePasteboardItemProviderInputStream)initWithFileHandle:(id)handle;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 @end
 
 @implementation PBRemotePasteboardItemProviderInputStream
 
-+ (id)inputStreamWithFileHandle:(id)a3
++ (id)inputStreamWithFileHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFileHandle:v4];
+  handleCopy = handle;
+  v5 = [[self alloc] initWithFileHandle:handleCopy];
 
   return v5;
 }
 
-- (PBRemotePasteboardItemProviderInputStream)initWithFileHandle:(id)a3
+- (PBRemotePasteboardItemProviderInputStream)initWithFileHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = PBRemotePasteboardItemProviderInputStream;
   v6 = [(PBRemotePasteboardItemProviderInputStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileHandle, a3);
-    v7->_fd = [v5 fileDescriptor];
+    objc_storeStrong(&v6->_fileHandle, handle);
+    v7->_fd = [handleCopy fileDescriptor];
   }
 
   return v7;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  result = read(self->_fd, a3, a4);
+  result = read(self->_fd, read, length);
   if (result < 0)
   {
     v5 = _PBLog();

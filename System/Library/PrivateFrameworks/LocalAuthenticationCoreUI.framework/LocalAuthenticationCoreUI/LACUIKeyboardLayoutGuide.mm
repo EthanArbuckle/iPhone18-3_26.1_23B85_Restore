@@ -1,39 +1,39 @@
 @interface LACUIKeyboardLayoutGuide
-- (LACUIKeyboardLayoutGuide)initWithView:(id)a3;
+- (LACUIKeyboardLayoutGuide)initWithView:(id)view;
 - (double)_defaultHeightConstant;
-- (void)_handleKeyboardFrameChange:(id)a3;
+- (void)_handleKeyboardFrameChange:(id)change;
 - (void)_setupKeyboardObservers;
-- (void)_updateKeyboardLayoutGuide:(id)a3 animated:(BOOL)a4;
+- (void)_updateKeyboardLayoutGuide:(id)guide animated:(BOOL)animated;
 @end
 
 @implementation LACUIKeyboardLayoutGuide
 
-- (LACUIKeyboardLayoutGuide)initWithView:(id)a3
+- (LACUIKeyboardLayoutGuide)initWithView:(id)view
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v21.receiver = self;
   v21.super_class = LACUIKeyboardLayoutGuide;
   v5 = [(LACUIKeyboardLayoutGuide *)&v21 init];
   if (v5)
   {
-    [v4 addLayoutGuide:v5];
-    v6 = [(LACUIKeyboardLayoutGuide *)v5 heightAnchor];
+    [viewCopy addLayoutGuide:v5];
+    heightAnchor = [(LACUIKeyboardLayoutGuide *)v5 heightAnchor];
     [(LACUIKeyboardLayoutGuide *)v5 _defaultHeightConstant];
-    obj = [v6 constraintEqualToConstant:?];
+    obj = [heightAnchor constraintEqualToConstant:?];
 
     v18 = MEMORY[0x277CCAAD0];
-    v20 = [(LACUIKeyboardLayoutGuide *)v5 bottomAnchor];
-    v19 = [v4 bottomAnchor];
-    v7 = [v20 constraintEqualToAnchor:v19];
+    bottomAnchor = [(LACUIKeyboardLayoutGuide *)v5 bottomAnchor];
+    bottomAnchor2 = [viewCopy bottomAnchor];
+    v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v22[0] = v7;
-    v8 = [(LACUIKeyboardLayoutGuide *)v5 leadingAnchor];
-    v9 = [v4 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(LACUIKeyboardLayoutGuide *)v5 leadingAnchor];
+    leadingAnchor2 = [viewCopy leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[1] = v10;
-    v11 = [(LACUIKeyboardLayoutGuide *)v5 trailingAnchor];
-    v12 = [v4 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(LACUIKeyboardLayoutGuide *)v5 trailingAnchor];
+    trailingAnchor2 = [viewCopy trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[2] = v13;
     v22[3] = obj;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
@@ -49,25 +49,25 @@
 
 - (void)_setupKeyboardObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleKeyboardFrameChange_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleKeyboardFrameChange_ name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__handleKeyboardFrameChange_ name:*MEMORY[0x277D76BA8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleKeyboardFrameChange_ name:*MEMORY[0x277D76BA8] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__handleKeyboardFrameChange_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleKeyboardFrameChange_ name:*MEMORY[0x277D76C50] object:0];
 }
 
-- (void)_handleKeyboardFrameChange:(id)a3
+- (void)_handleKeyboardFrameChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = LACLogKeyboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = changeCopy;
     _os_log_impl(&dword_256063000, v5, OS_LOG_TYPE_DEFAULT, "Did receive keyboard notification: %{public}@", buf, 0xCu);
   }
 
@@ -77,8 +77,8 @@
   v9[2] = __55__LACUIKeyboardLayoutGuide__handleKeyboardFrameChange___block_invoke;
   v9[3] = &unk_27981E870;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = changeCopy;
+  v7 = changeCopy;
   dispatch_after(v6, MEMORY[0x277D85CD0], v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -91,17 +91,17 @@ void __55__LACUIKeyboardLayoutGuide__handleKeyboardFrameChange___block_invoke(ui
   [v1 _updateKeyboardLayoutGuide:v2 animated:1];
 }
 
-- (void)_updateKeyboardLayoutGuide:(id)a3 animated:(BOOL)a4
+- (void)_updateKeyboardLayoutGuide:(id)guide animated:(BOOL)animated
 {
-  v6 = a3;
+  guideCopy = guide;
   WeakRetained = objc_loadWeakRetained(&self->_keyboardLayoutHeightLC);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __64__LACUIKeyboardLayoutGuide__updateKeyboardLayoutGuide_animated___block_invoke;
   v18[3] = &unk_27981E898;
-  v8 = v6;
+  v8 = guideCopy;
   v19 = v8;
-  v20 = self;
+  selfCopy = self;
   __64__LACUIKeyboardLayoutGuide__updateKeyboardLayoutGuide_animated___block_invoke(v18);
   [WeakRetained setConstant:?];
 
@@ -114,7 +114,7 @@ void __55__LACUIKeyboardLayoutGuide__handleKeyboardFrameChange___block_invoke(ui
   v15[2] = __64__LACUIKeyboardLayoutGuide__updateKeyboardLayoutGuide_animated___block_invoke_2;
   v15[3] = &unk_27981E8C0;
   v16 = v8;
-  v17 = a4;
+  animatedCopy = animated;
   v12 = v8;
   v13 = __64__LACUIKeyboardLayoutGuide__updateKeyboardLayoutGuide_animated___block_invoke_2(v15);
   v14[0] = MEMORY[0x277D85DD0];
@@ -205,8 +205,8 @@ void __64__LACUIKeyboardLayoutGuide__updateKeyboardLayoutGuide_animated___block_
 
 - (double)_defaultHeightConstant
 {
-  v2 = [(LACUIKeyboardLayoutGuide *)self owningView];
-  [v2 safeAreaInsets];
+  owningView = [(LACUIKeyboardLayoutGuide *)self owningView];
+  [owningView safeAreaInsets];
   v4 = v3;
 
   return v4;

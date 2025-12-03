@@ -1,26 +1,26 @@
 @interface DSArchiveServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation DSArchiveServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.ArchiveService.XPC"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.ArchiveService.XPC"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
     v7 = DSArchiveServiceXPCInterface();
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = DSArchiveServiceStreamingXPCInterface();
-    [v4 setRemoteObjectInterface:v8];
+    [connectionCopy setRemoteObjectInterface:v8];
 
     v9 = objc_opt_new();
-    [v4 setExportedObject:v9];
-    [v4 resume];
+    [connectionCopy setExportedObject:v9];
+    [connectionCopy resume];
   }
 
   else
@@ -29,7 +29,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 67109120;
-      LODWORD(v14) = [v4 processIdentifier];
+      LODWORD(v14) = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Connection without entitlement from PID: %d", &v13, 8u);
     }
 

@@ -1,10 +1,10 @@
 @interface CNUICoreContactRefetcher
-+ (id)contactsByReplacingContacts:(id)a3 withContactsHavingMatchingIdentifier:(id)a4;
-+ (id)contactsFoundAndNotFoundByPartioningContacts:(id)a3 usingFoundContacts:(id)a4;
-+ (id)refetchedContacts:(id)a3 fromStore:(id)a4 keysToFetch:(id)a5;
++ (id)contactsByReplacingContacts:(id)contacts withContactsHavingMatchingIdentifier:(id)identifier;
++ (id)contactsFoundAndNotFoundByPartioningContacts:(id)contacts usingFoundContacts:(id)foundContacts;
++ (id)refetchedContacts:(id)contacts fromStore:(id)store keysToFetch:(id)fetch;
 - (CNUICoreContactRefetcher)init;
-- (CNUICoreContactRefetcher)initWithContactStore:(id)a3 contactsToRefetch:(id)a4;
-- (CNUICoreContactRefetcher)initWithContactStore:(id)a3 contactsToRefetch:(id)a4 keysToFetch:(id)a5;
+- (CNUICoreContactRefetcher)initWithContactStore:(id)store contactsToRefetch:(id)refetch;
+- (CNUICoreContactRefetcher)initWithContactStore:(id)store contactsToRefetch:(id)refetch keysToFetch:(id)fetch;
 - (id)allContacts;
 - (id)contactsFoundAndNotFound;
 - (id)foundContacts;
@@ -14,31 +14,31 @@
 
 - (CNUICoreContactRefetcher)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreContactRefetcher)initWithContactStore:(id)a3 contactsToRefetch:(id)a4
+- (CNUICoreContactRefetcher)initWithContactStore:(id)store contactsToRefetch:(id)refetch
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695CDB8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 keyVectorWithAllKeys];
-  v13[0] = v9;
+  refetchCopy = refetch;
+  storeCopy = store;
+  keyVectorWithAllKeys = [v6 keyVectorWithAllKeys];
+  v13[0] = keyVectorWithAllKeys;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v11 = [(CNUICoreContactRefetcher *)self initWithContactStore:v8 contactsToRefetch:v7 keysToFetch:v10];
+  v11 = [(CNUICoreContactRefetcher *)self initWithContactStore:storeCopy contactsToRefetch:refetchCopy keysToFetch:v10];
 
   return v11;
 }
 
-- (CNUICoreContactRefetcher)initWithContactStore:(id)a3 contactsToRefetch:(id)a4 keysToFetch:(id)a5
+- (CNUICoreContactRefetcher)initWithContactStore:(id)store contactsToRefetch:(id)refetch keysToFetch:(id)fetch
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  storeCopy = store;
+  refetchCopy = refetch;
+  fetchCopy = fetch;
+  if (storeCopy)
   {
     goto LABEL_5;
   }
@@ -52,7 +52,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_0, OS_LOG_TYPE_FAULT))
   {
     [(CNUICoreContactRefetcher *)v12 initWithContactStore:v13 contactsToRefetch:v14 keysToFetch:v15, v16, v17, v18, v19];
-    if (v10)
+    if (refetchCopy)
     {
       goto LABEL_10;
     }
@@ -61,7 +61,7 @@
   else
   {
 LABEL_5:
-    if (v10)
+    if (refetchCopy)
     {
       goto LABEL_10;
     }
@@ -79,7 +79,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (!v11)
+  if (!fetchCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_0 != -1)
     {
@@ -105,9 +105,9 @@ LABEL_10:
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->_contactStore, a3);
-    objc_storeStrong(&v37->_contactsToRefetch, a4);
-    objc_storeStrong(&v37->_keysToFetch, a5);
+    objc_storeStrong(&v36->_contactStore, store);
+    objc_storeStrong(&v37->_contactsToRefetch, refetch);
+    objc_storeStrong(&v37->_keysToFetch, fetch);
     v38 = v37;
   }
 
@@ -116,13 +116,13 @@ LABEL_10:
 
 - (id)allContacts
 {
-  v3 = [(CNUICoreContactRefetcher *)self foundContacts];
+  foundContacts = [(CNUICoreContactRefetcher *)self foundContacts];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__CNUICoreContactRefetcher_allContacts__block_invoke;
   v6[3] = &unk_1E76E8128;
   v6[4] = self;
-  v4 = [v3 map:v6];
+  v4 = [foundContacts map:v6];
 
   return v4;
 }
@@ -139,8 +139,8 @@ id __39__CNUICoreContactRefetcher_allContacts__block_invoke(uint64_t a1, void *a
 
 - (id)foundContacts
 {
-  v2 = [(CNUICoreContactRefetcher *)self contactsFoundAndNotFound];
-  v3 = [v2 map:&__block_literal_global_9];
+  contactsFoundAndNotFound = [(CNUICoreContactRefetcher *)self contactsFoundAndNotFound];
+  v3 = [contactsFoundAndNotFound map:&__block_literal_global_9];
 
   return v3;
 }
@@ -148,10 +148,10 @@ id __39__CNUICoreContactRefetcher_allContacts__block_invoke(uint64_t a1, void *a
 - (id)contactsFoundAndNotFound
 {
   v3 = objc_opt_class();
-  v4 = [(CNUICoreContactRefetcher *)self contactsToRefetch];
-  v5 = [(CNUICoreContactRefetcher *)self contactStore];
-  v6 = [(CNUICoreContactRefetcher *)self keysToFetch];
-  v7 = [v3 refetchedContacts:v4 fromStore:v5 keysToFetch:v6];
+  contactsToRefetch = [(CNUICoreContactRefetcher *)self contactsToRefetch];
+  contactStore = [(CNUICoreContactRefetcher *)self contactStore];
+  keysToFetch = [(CNUICoreContactRefetcher *)self keysToFetch];
+  v7 = [v3 refetchedContacts:contactsToRefetch fromStore:contactStore keysToFetch:keysToFetch];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -177,37 +177,37 @@ id __52__CNUICoreContactRefetcher_contactsFoundAndNotFound__block_invoke(uint64_
   return v9;
 }
 
-+ (id)refetchedContacts:(id)a3 fromStore:(id)a4 keysToFetch:(id)a5
++ (id)refetchedContacts:(id)contacts fromStore:(id)store keysToFetch:(id)fetch
 {
   v7 = MEMORY[0x1E695CD78];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithKeysToFetch:v8];
+  fetchCopy = fetch;
+  storeCopy = store;
+  contactsCopy = contacts;
+  v11 = [[v7 alloc] initWithKeysToFetch:fetchCopy];
 
   v12 = MEMORY[0x1E695CD58];
-  v13 = [v10 _cn_map:&__block_literal_global_25];
+  v13 = [contactsCopy _cn_map:&__block_literal_global_25];
 
   v14 = [v12 predicateForContactsWithIdentifiers:v13];
   [v11 setPredicate:v14];
 
   [v11 setUnifyResults:0];
-  v15 = [CNUICoreContactFetchRequestAccumulator resultOfFetchRequest:v11 fromStore:v9];
+  v15 = [CNUICoreContactFetchRequestAccumulator resultOfFetchRequest:v11 fromStore:storeCopy];
 
   return v15;
 }
 
-+ (id)contactsByReplacingContacts:(id)a3 withContactsHavingMatchingIdentifier:(id)a4
++ (id)contactsByReplacingContacts:(id)contacts withContactsHavingMatchingIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [a4 _cn_indexBy:&__block_literal_global_25];
+  contactsCopy = contacts;
+  v6 = [identifier _cn_indexBy:&__block_literal_global_25];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__CNUICoreContactRefetcher_contactsByReplacingContacts_withContactsHavingMatchingIdentifier___block_invoke;
   v10[3] = &unk_1E76E8198;
   v11 = v6;
   v7 = v6;
-  v8 = [v5 _cn_map:v10];
+  v8 = [contactsCopy _cn_map:v10];
 
   return v8;
 }
@@ -234,17 +234,17 @@ void *__93__CNUICoreContactRefetcher_contactsByReplacingContacts_withContactsHav
   return v6;
 }
 
-+ (id)contactsFoundAndNotFoundByPartioningContacts:(id)a3 usingFoundContacts:(id)a4
++ (id)contactsFoundAndNotFoundByPartioningContacts:(id)contacts usingFoundContacts:(id)foundContacts
 {
-  v5 = a3;
-  v6 = [a4 _cn_indexBy:&__block_literal_global_25];
+  contactsCopy = contacts;
+  v6 = [foundContacts _cn_indexBy:&__block_literal_global_25];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__CNUICoreContactRefetcher_contactsFoundAndNotFoundByPartioningContacts_usingFoundContacts___block_invoke;
   v10[3] = &unk_1E76E81C0;
   v11 = v6;
   v7 = v6;
-  v8 = [v5 _cn_partition:v10];
+  v8 = [contactsCopy _cn_partition:v10];
 
   return v8;
 }

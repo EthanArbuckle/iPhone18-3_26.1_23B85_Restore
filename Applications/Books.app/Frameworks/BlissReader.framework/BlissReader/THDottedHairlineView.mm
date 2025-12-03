@@ -1,17 +1,17 @@
 @interface THDottedHairlineView
-- (THDottedHairlineView)initWithFrame:(CGRect)a3;
+- (THDottedHairlineView)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation THDottedHairlineView
 
-- (THDottedHairlineView)initWithFrame:(CGRect)a3
+- (THDottedHairlineView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = THDottedHairlineView;
-  v3 = [(THDottedHairlineView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(THDottedHairlineView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,7 +37,7 @@
   [(THDottedHairlineView *)self p_initCommon];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);

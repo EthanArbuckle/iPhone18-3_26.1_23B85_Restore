@@ -1,31 +1,31 @@
 @interface CNPhotoPickerActionButton
-+ (CNPhotoPickerActionButton)buttonWithTitle:(id)a3 actionBlock:(id)a4;
-+ (id)defaultButtonWithTitle:(id)a3 actionBlock:(id)a4;
-+ (id)destructiveButtonWithTitle:(id)a3 actionBlock:(id)a4;
-- (CNPhotoPickerActionButton)initWithFrame:(CGRect)a3;
++ (CNPhotoPickerActionButton)buttonWithTitle:(id)title actionBlock:(id)block;
++ (id)defaultButtonWithTitle:(id)title actionBlock:(id)block;
++ (id)destructiveButtonWithTitle:(id)title actionBlock:(id)block;
+- (CNPhotoPickerActionButton)initWithFrame:(CGRect)frame;
 - (void)performActionBlock;
-- (void)setIsDestructive:(BOOL)a3;
+- (void)setIsDestructive:(BOOL)destructive;
 @end
 
 @implementation CNPhotoPickerActionButton
 
 - (void)performActionBlock
 {
-  v3 = [(CNPhotoPickerActionButton *)self blockHandler];
+  blockHandler = [(CNPhotoPickerActionButton *)self blockHandler];
 
-  if (v3)
+  if (blockHandler)
   {
-    v4 = [(CNPhotoPickerActionButton *)self blockHandler];
-    [v4 performAction];
+    blockHandler2 = [(CNPhotoPickerActionButton *)self blockHandler];
+    [blockHandler2 performAction];
   }
 }
 
-- (void)setIsDestructive:(BOOL)a3
+- (void)setIsDestructive:(BOOL)destructive
 {
-  if (self->_isDestructive != a3)
+  if (self->_isDestructive != destructive)
   {
-    self->_isDestructive = a3;
-    if (a3)
+    self->_isDestructive = destructive;
+    if (destructive)
     {
       +[CNUIColorRepository photoPickerActionButtonDestructiveTextColor];
     }
@@ -39,11 +39,11 @@
   }
 }
 
-- (CNPhotoPickerActionButton)initWithFrame:(CGRect)a3
+- (CNPhotoPickerActionButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CNPhotoPickerActionButton;
-  v3 = [(CNPhotoPickerActionButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNPhotoPickerActionButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CNUIColorRepository photoPickerActionButtonBackgroundColor];
@@ -58,38 +58,38 @@
   return v3;
 }
 
-+ (id)destructiveButtonWithTitle:(id)a3 actionBlock:(id)a4
++ (id)destructiveButtonWithTitle:(id)title actionBlock:(id)block
 {
-  v4 = [CNPhotoPickerActionButton buttonWithTitle:a3 actionBlock:a4];
+  v4 = [CNPhotoPickerActionButton buttonWithTitle:title actionBlock:block];
   v5 = +[CNUIFontRepository contactCardPhotoPickerActionButtonFont];
-  v6 = [v4 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v5];
 
   [v4 setIsDestructive:1];
 
   return v4;
 }
 
-+ (id)defaultButtonWithTitle:(id)a3 actionBlock:(id)a4
++ (id)defaultButtonWithTitle:(id)title actionBlock:(id)block
 {
-  v4 = [CNPhotoPickerActionButton buttonWithTitle:a3 actionBlock:a4];
+  v4 = [CNPhotoPickerActionButton buttonWithTitle:title actionBlock:block];
   v5 = +[CNUIFontRepository contactCardPhotoPickerActionButtonFont];
-  v6 = [v4 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v5];
 
   return v4;
 }
 
-+ (CNPhotoPickerActionButton)buttonWithTitle:(id)a3 actionBlock:(id)a4
++ (CNPhotoPickerActionButton)buttonWithTitle:(id)title actionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  titleCopy = title;
   v7 = [CNPhotoPickerActionButton buttonWithType:1];
-  [v7 setTitle:v6 forState:0];
+  [v7 setTitle:titleCopy forState:0];
 
-  if (v5)
+  if (blockCopy)
   {
-    v8 = [[CNPhotoPickerActionButtonBlockHandler alloc] initWithActionBlock:v5];
+    v8 = [[CNPhotoPickerActionButtonBlockHandler alloc] initWithActionBlock:blockCopy];
     [v7 setBlockHandler:v8];
     [v7 addTarget:v8 action:sel_performAction forControlEvents:64];
   }

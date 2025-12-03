@@ -10,8 +10,8 @@
   if (self->_hintContext)
   {
     v3 = objc_alloc(MEMORY[0x277CBEA60]);
-    v4 = [(SADeviceCarDNDHintContext *)self->_hintContext dictionary];
-    v5 = [v3 initWithObjects:{v4, 0}];
+    dictionary = [(SADeviceCarDNDHintContext *)self->_hintContext dictionary];
+    v5 = [v3 initWithObjects:{dictionary, 0}];
   }
 
   else

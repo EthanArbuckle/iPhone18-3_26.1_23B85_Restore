@@ -1,10 +1,10 @@
 @interface _UIGameControllerEvent
-- (BOOL)_determineInputTypeAndProcess:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5;
-- (BOOL)_processDPad:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5;
-- (BOOL)_processLeftStick:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5;
-- (BOOL)_processRightStick:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5;
-- (BOOL)_processShoulder:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5;
-- (BOOL)_processStandardButtons:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5;
+- (BOOL)_determineInputTypeAndProcess:(id *)process pressesEvent:(id)event timestamp:(double)timestamp;
+- (BOOL)_processDPad:(id *)pad pressesEvent:(id)event timestamp:(double)timestamp;
+- (BOOL)_processLeftStick:(id *)stick pressesEvent:(id)event timestamp:(double)timestamp;
+- (BOOL)_processRightStick:(id *)stick pressesEvent:(id)event timestamp:(double)timestamp;
+- (BOOL)_processShoulder:(id *)shoulder pressesEvent:(id)event timestamp:(double)timestamp;
+- (BOOL)_processStandardButtons:(id *)buttons pressesEvent:(id)event timestamp:(double)timestamp;
 - (CGPoint)_leftStickPosition;
 - (void)_maybeConvertAndSendAsPressesEvent;
 - (void)_reset;
@@ -35,7 +35,7 @@
 - (void)_maybeConvertAndSendAsPressesEvent
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(UIEvent *)self _hidEvent];
+  _hidEvent = [(UIEvent *)self _hidEvent];
   TimeStamp = IOHIDEventGetTimeStamp();
   v5 = _UIMediaTimeForMachTime(TimeStamp);
   v37 = xmmword_18A682588;
@@ -64,10 +64,10 @@
   if (v23 == self->_previousState.senderID || !self->_activeComponent)
   {
     v6 = _UIEventHIDUIWindowForHIDEvent();
-    v7 = [v6 _focusBehavior];
-    v8 = [v7 supportsGameControllers];
+    _focusBehavior = [v6 _focusBehavior];
+    supportsGameControllers = [_focusBehavior supportsGameControllers];
 
-    if (!v8)
+    if (!supportsGameControllers)
     {
       goto LABEL_17;
     }
@@ -76,7 +76,7 @@
     v10 = _UIEventHIDUIWindowForHIDEvent();
     v11 = [v9 _pressesEventForWindow:v10];
 
-    [v11 _setHIDEvent:v3];
+    [v11 _setHIDEvent:_hidEvent];
     [v11 _setGSEvent:{-[UIEvent _gsEvent](self, "_gsEvent")}];
     v12 = [(_UIGameControllerEvent *)self _processStandardButtons:&v23 pressesEvent:v11 timestamp:v5];
     v13 = v12;
@@ -165,11 +165,11 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)_determineInputTypeAndProcess:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5
+- (BOOL)_determineInputTypeAndProcess:(id *)process pressesEvent:(id)event timestamp:(double)timestamp
 {
-  v8 = a4;
+  eventCopy = event;
   v15 = 0;
-  _UIAppGameControllerProcessDPad(&self->_previousState.senderID, &a3->var0, v8, &v15, 0, a5);
+  _UIAppGameControllerProcessDPad(&self->_previousState.senderID, &process->var0, eventCopy, &v15, 0, timestamp);
   if (v15 == 1)
   {
     v9 = 1;
@@ -178,7 +178,7 @@ LABEL_17:
   }
 
   v14 = 0;
-  _UIAppGameControllerProcessGenericStick(2, self->_previousState.normalizedLeftStickState, a3->var2, v8, &v14, 0, a5);
+  _UIAppGameControllerProcessGenericStick(2, self->_previousState.normalizedLeftStickState, process->var2, eventCopy, &v14, 0, timestamp);
   if (v14 == 1)
   {
     v10 = 2;
@@ -189,7 +189,7 @@ LABEL_7:
   }
 
   v13 = 0;
-  _UIAppGameControllerProcessGenericStick(3, self->_previousState.normalizedRightStickState, a3->var3, v8, &v13, 0, a5);
+  _UIAppGameControllerProcessGenericStick(3, self->_previousState.normalizedRightStickState, process->var3, eventCopy, &v13, 0, timestamp);
   if (v13 == 1)
   {
     v10 = 3;
@@ -197,7 +197,7 @@ LABEL_7:
   }
 
   v12 = 0;
-  _UIAppGameControllerProcessShoulders(&self->_previousState.senderID, &a3->var0, v8, &v12, 0, a5);
+  _UIAppGameControllerProcessShoulders(&self->_previousState.senderID, &process->var0, eventCopy, &v12, 0, timestamp);
   v9 = v12;
   if (v12)
   {
@@ -209,39 +209,39 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)_processStandardButtons:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5
+- (BOOL)_processStandardButtons:(id *)buttons pressesEvent:(id)event timestamp:(double)timestamp
 {
-  v8 = a4;
-  [v8 _hidEvent];
+  eventCopy = event;
+  [eventCopy _hidEvent];
   v9 = BKSHIDEventGetBaseAttributes();
-  v10 = [v9 contextID];
+  contextID = [v9 contextID];
 
   p_previousState = &self->_previousState;
-  v12 = _UIAppGameControllerPressInfoForState(4, 4, v10, self->_previousState.controllerState[4], a3->var1[4], a5);
-  v13 = _UIAppGameControllerPressInfoForState(5, 4, v10, p_previousState->controllerState[5], a3->var1[5], a5);
-  v14 = _UIAppGameControllerPressInfoForState(6, 4, v10, p_previousState->controllerState[6], a3->var1[6], a5);
+  v12 = _UIAppGameControllerPressInfoForState(4, 4, contextID, self->_previousState.controllerState[4], buttons->var1[4], timestamp);
+  v13 = _UIAppGameControllerPressInfoForState(5, 4, contextID, p_previousState->controllerState[5], buttons->var1[5], timestamp);
+  v14 = _UIAppGameControllerPressInfoForState(6, 4, contextID, p_previousState->controllerState[6], buttons->var1[6], timestamp);
   if (v12)
   {
-    [UIApp _prepareButtonEvent:v8 withPressInfo:v12];
+    [UIApp _prepareButtonEvent:eventCopy withPressInfo:v12];
   }
 
   if (v13)
   {
-    [UIApp _prepareButtonEvent:v8 withPressInfo:v13];
+    [UIApp _prepareButtonEvent:eventCopy withPressInfo:v13];
   }
 
   if (v14)
   {
-    [UIApp _prepareButtonEvent:v8 withPressInfo:v14];
+    [UIApp _prepareButtonEvent:eventCopy withPressInfo:v14];
   }
 
   return (v12 | v13 | v14) != 0;
 }
 
-- (BOOL)_processDPad:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5
+- (BOOL)_processDPad:(id *)pad pressesEvent:(id)event timestamp:(double)timestamp
 {
   v7 = 0;
-  _UIAppGameControllerProcessDPad(&self->_previousState.senderID, &a3->var0, a4, &v7 + 1, &v7, a5);
+  _UIAppGameControllerProcessDPad(&self->_previousState.senderID, &pad->var0, event, &v7 + 1, &v7, timestamp);
   if (v7 == 1)
   {
     self->_activeComponent = 0;
@@ -250,10 +250,10 @@ LABEL_8:
   return HIBYTE(v7);
 }
 
-- (BOOL)_processLeftStick:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5
+- (BOOL)_processLeftStick:(id *)stick pressesEvent:(id)event timestamp:(double)timestamp
 {
   v7 = 0;
-  _UIAppGameControllerProcessGenericStick(2, self->_previousState.normalizedLeftStickState, a3->var2, a4, &v7 + 1, &v7, a5);
+  _UIAppGameControllerProcessGenericStick(2, self->_previousState.normalizedLeftStickState, stick->var2, event, &v7 + 1, &v7, timestamp);
   if (v7 == 1)
   {
     self->_activeComponent = 0;
@@ -262,10 +262,10 @@ LABEL_8:
   return HIBYTE(v7);
 }
 
-- (BOOL)_processRightStick:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5
+- (BOOL)_processRightStick:(id *)stick pressesEvent:(id)event timestamp:(double)timestamp
 {
   v7 = 0;
-  _UIAppGameControllerProcessGenericStick(3, self->_previousState.normalizedRightStickState, a3->var3, a4, &v7 + 1, &v7, a5);
+  _UIAppGameControllerProcessGenericStick(3, self->_previousState.normalizedRightStickState, stick->var3, event, &v7 + 1, &v7, timestamp);
   if (v7 == 1)
   {
     self->_activeComponent = 0;
@@ -274,10 +274,10 @@ LABEL_8:
   return HIBYTE(v7);
 }
 
-- (BOOL)_processShoulder:(id *)a3 pressesEvent:(id)a4 timestamp:(double)a5
+- (BOOL)_processShoulder:(id *)shoulder pressesEvent:(id)event timestamp:(double)timestamp
 {
   v7 = 0;
-  _UIAppGameControllerProcessShoulders(&self->_previousState.senderID, &a3->var0, a4, &v7 + 1, &v7, a5);
+  _UIAppGameControllerProcessShoulders(&self->_previousState.senderID, &shoulder->var0, event, &v7 + 1, &v7, timestamp);
   if (v7 == 1)
   {
     self->_activeComponent = 0;

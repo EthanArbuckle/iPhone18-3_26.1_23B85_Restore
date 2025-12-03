@@ -9,18 +9,18 @@
 
 - (uint64_t)loadKeyphraser
 {
-  v2 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v3 = [v2 currentPreferredLocaleIdentifiers];
-  loadLanguageModels(v3);
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  currentPreferredLocaleIdentifiers = [mEMORY[0x277D657A8] currentPreferredLocaleIdentifiers];
+  loadLanguageModels(currentPreferredLocaleIdentifiers);
 
-  v4 = [MEMORY[0x277D657A0] sharedContext];
-  if ([v4 enableExtractions])
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  if ([mEMORY[0x277D657A0] enableExtractions])
   {
 
 LABEL_4:
-    v6 = [a1 forceEntityExtraction];
+    forceEntityExtraction = [self forceEntityExtraction];
     v7 = +[SKGDataDetector sharedDetector];
-    [v7 setForceDataDetection:v6];
+    [v7 setForceDataDetection:forceEntityExtraction];
 
     v8 = +[SKGDataDetector sharedDetector];
     [v8 loadDetector];
@@ -28,9 +28,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v5 = [a1 forceEntityExtraction];
+  forceEntityExtraction2 = [self forceEntityExtraction];
 
-  if (v5)
+  if (forceEntityExtraction2)
   {
     goto LABEL_4;
   }
@@ -42,10 +42,10 @@ LABEL_5:
 
 - (id)availableLanguages
 {
-  v0 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v1 = [v0 currentPreferredLanguages];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  currentPreferredLanguages = [mEMORY[0x277D657A8] currentPreferredLanguages];
 
-  return v1;
+  return currentPreferredLanguages;
 }
 
 - (uint64_t)generateKeyphrasesForRecord:()Keyphraser processedItem:processorFlags:cancelBlock:
@@ -59,38 +59,38 @@ LABEL_5:
   v185 = 0x2020000000;
   v186 = 1;
   context = objc_autoreleasePoolPush();
-  v10 = [v151 textContentLanguage];
+  textContentLanguage = [v151 textContentLanguage];
 
-  if ([a1 recordContainsValue:v9 key:@"kMDItemTextContent"] & 1) != 0 || (objc_msgSend(a1, "recordContainsValue:key:", v9, @"_kMDItemSnippet"))
+  if ([self recordContainsValue:v9 key:@"kMDItemTextContent"] & 1) != 0 || (objc_msgSend(self, "recordContainsValue:key:", v9, @"_kMDItemSnippet"))
   {
-    v149 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v11 = [a1 copyNumberValueFromRecord:v9 key:@"_kMDItemTextContentIndexExists"];
-    v149 = [v11 BOOLValue];
+    v11 = [self copyNumberValueFromRecord:v9 key:@"_kMDItemTextContentIndexExists"];
+    bOOLValue = [v11 BOOLValue];
   }
 
-  if (v10)
+  if (textContentLanguage)
   {
     v12 = MEMORY[0x277CBEAF8];
-    v13 = [v151 textContentLanguage];
-    v14 = [v12 localeWithLocaleIdentifier:v13];
+    textContentLanguage2 = [v151 textContentLanguage];
+    currentLocale = [v12 localeWithLocaleIdentifier:textContentLanguage2];
   }
 
   else
   {
-    v14 = 0;
+    currentLocale = 0;
   }
 
-  if (!((v14 != 0) | v149 & 1))
+  if (!((currentLocale != 0) | bOOLValue & 1))
   {
-    v15 = [MEMORY[0x277D657A8] sharedProcessorListener];
-    v14 = [v15 currentLocale];
+    mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+    currentLocale = [mEMORY[0x277D657A8] currentLocale];
   }
 
-  if (!v14)
+  if (!currentLocale)
   {
     v126 = 0;
     goto LABEL_174;
@@ -99,62 +99,62 @@ LABEL_5:
   LanguageID = SILanguagesGetLanguageID();
   Language = SILanguagesGetLanguage();
   v126 = LanguageID - 2 < 0x39;
-  v147 = v14;
+  v147 = currentLocale;
   if (LanguageID - 2 >= 0x39)
   {
-    v131 = [MEMORY[0x277D657A0] sharedContext];
-    [v151 setDidProcessKeyphrases:{objc_msgSend(v131, "enableKeyphrases")}];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    [v151 setDidProcessKeyphrases:{objc_msgSend(mEMORY[0x277D657A0], "enableKeyphrases")}];
     goto LABEL_173;
   }
 
   v17 = Language;
-  v18 = [a1 availableLanguages];
-  v19 = [v18 containsObject:v17];
+  availableLanguages = [self availableLanguages];
+  v19 = [availableLanguages containsObject:v17];
 
-  v131 = [a1 referenceDateForRecord:v9];
-  if (v131)
+  mEMORY[0x277D657A0] = [self referenceDateForRecord:v9];
+  if (mEMORY[0x277D657A0])
   {
-    v20 = [MEMORY[0x277D657A8] sharedProcessorListener];
-    v119 = [v20 currentTimezone];
+    mEMORY[0x277D657A8]2 = [MEMORY[0x277D657A8] sharedProcessorListener];
+    currentTimezone = [mEMORY[0x277D657A8]2 currentTimezone];
   }
 
   else
   {
-    v119 = 0;
+    currentTimezone = 0;
   }
 
-  if ((v19 & (v10 != 0)) != 0)
+  if ((v19 & (textContentLanguage != 0)) != 0)
   {
     v213[0] = v17;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v213 count:1];
     loadLanguageModels(v21);
   }
 
-  if (([a1 recordContainsValue:v9 key:@"_kMDItemTextContentIsTranscribed"] & 1) != 0 || (objc_msgSend(v151, "bundleIdentifier"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", @"com.apple.mobilephone"), v22, v23))
+  if (([self recordContainsValue:v9 key:@"_kMDItemTextContentIsTranscribed"] & 1) != 0 || (objc_msgSend(v151, "bundleIdentifier"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", @"com.apple.mobilephone"), v22, v23))
   {
     [v151 setIsTranscribedText:1];
   }
 
-  v24 = [MEMORY[0x277D657A0] sharedContext];
-  v25 = [v24 keyphraseExcludeBundles];
-  v26 = [v151 bundleIdentifier];
-  v27 = [v25 containsObject:v26];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  keyphraseExcludeBundles = [mEMORY[0x277D657A0]2 keyphraseExcludeBundles];
+  bundleIdentifier = [v151 bundleIdentifier];
+  v27 = [keyphraseExcludeBundles containsObject:bundleIdentifier];
 
-  v28 = [v151 bundleIdentifier];
-  if (v28)
+  bundleIdentifier2 = [v151 bundleIdentifier];
+  if (bundleIdentifier2)
   {
-    v29 = [MEMORY[0x277D657A0] sharedContext];
-    v30 = [v29 keyphraseIncludeBundles];
-    v31 = [v151 bundleIdentifier];
-    if ([v30 containsObject:v31])
+    mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+    keyphraseIncludeBundles = [mEMORY[0x277D657A0]3 keyphraseIncludeBundles];
+    bundleIdentifier3 = [v151 bundleIdentifier];
+    if ([keyphraseIncludeBundles containsObject:bundleIdentifier3])
     {
       v32 = 0;
     }
 
     else
     {
-      v33 = [v151 bundleIdentifier];
-      v32 = [v33 hasPrefix:@"com.apple."];
+      bundleIdentifier4 = [v151 bundleIdentifier];
+      v32 = [bundleIdentifier4 hasPrefix:@"com.apple."];
     }
   }
 
@@ -163,8 +163,8 @@ LABEL_5:
     v32 = 0;
   }
 
-  v34 = [MEMORY[0x277D657A0] sharedContext];
-  if (v27 & 1 | (([v34 enableKeyphrases] & 1) == 0) | v32 & 1)
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  if (v27 & 1 | (([mEMORY[0x277D657A0]4 enableKeyphrases] & 1) == 0) | v32 & 1)
   {
     v140 = 0;
   }
@@ -174,52 +174,52 @@ LABEL_5:
     v140 = [v151 isTranscribedText] ^ 1;
   }
 
-  v35 = [MEMORY[0x277D657A0] sharedContext];
-  v36 = [v35 enableExtractions];
+  mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+  enableExtractions = [mEMORY[0x277D657A0]5 enableExtractions];
 
-  v37 = v36 & (v27 ^ 1);
+  v37 = enableExtractions & (v27 ^ 1);
   if (!(v37 & 1 | ((v140 & 1) == 0)))
   {
-    v38 = [v151 protectionClass];
-    if (v38)
+    protectionClass = [v151 protectionClass];
+    if (protectionClass)
     {
-      v39 = [v151 protectionClass];
-      if ([v39 isEqualToString:*MEMORY[0x277CCA190]])
+      protectionClass2 = [v151 protectionClass];
+      if ([protectionClass2 isEqualToString:*MEMORY[0x277CCA190]])
       {
         v140 = 0;
       }
 
       else
       {
-        v40 = [v151 protectionClass];
-        v41 = [v40 isEqualToString:*MEMORY[0x277CCA198]];
+        protectionClass3 = [v151 protectionClass];
+        v41 = [protectionClass3 isEqualToString:*MEMORY[0x277CCA198]];
 
         v140 &= v41 ^ 1;
       }
     }
   }
 
-  v138 = [a1 forceEntityExtraction];
-  v123 = [a1 copyTextContentFromRecord:v9];
+  forceEntityExtraction = [self forceEntityExtraction];
+  v123 = [self copyTextContentFromRecord:v9];
   v118 = v123;
   if (!v123)
   {
-    v123 = [a1 copySnippetFromRecord:v9];
+    v123 = [self copySnippetFromRecord:v9];
   }
 
-  v42 = [v151 bundleIdentifier];
-  v128 = [v42 isEqualToString:@"com.apple.mobilecal"];
+  bundleIdentifier5 = [v151 bundleIdentifier];
+  v128 = [bundleIdentifier5 isEqualToString:@"com.apple.mobilecal"];
 
   v181 = 0u;
   v182 = 0u;
   v180 = 0u;
-  v142 = (a5 >> 9) & 1 & (v138 | v37);
+  v142 = (a5 >> 9) & 1 & (forceEntityExtraction | v37);
   if (v142)
   {
-    if ([a1 recordContainsValue:v9 key:@"kMDItemLatitude"] && objc_msgSend(a1, "recordContainsValue:key:", v9, @"kMDItemLongitude"))
+    if ([self recordContainsValue:v9 key:@"kMDItemLatitude"] && objc_msgSend(self, "recordContainsValue:key:", v9, @"kMDItemLongitude"))
     {
-      v43 = [a1 copyDoubleValueFromRecord:v9 key:@"kMDItemLatitude"];
-      v44 = [a1 copyDoubleValueFromRecord:v9 key:@"kMDItemLongitude"];
+      v43 = [self copyDoubleValueFromRecord:v9 key:@"kMDItemLatitude"];
+      v44 = [self copyDoubleValueFromRecord:v9 key:@"kMDItemLongitude"];
       [v43 doubleValue];
       *&v180 = v45;
       [v44 doubleValue];
@@ -230,11 +230,11 @@ LABEL_5:
     v179 = 0u;
     v176 = 0u;
     v177 = 0u;
-    v47 = [MEMORY[0x277D657A0] sharedContext];
-    v48 = [v47 keyphraseOptionalExtractionAttributes];
+    mEMORY[0x277D657A0]6 = [MEMORY[0x277D657A0] sharedContext];
+    keyphraseOptionalExtractionAttributes = [mEMORY[0x277D657A0]6 keyphraseOptionalExtractionAttributes];
 
     v49 = 0;
-    v50 = [v48 countByEnumeratingWithState:&v176 objects:v212 count:16];
+    v50 = [keyphraseOptionalExtractionAttributes countByEnumeratingWithState:&v176 objects:v212 count:16];
     if (v50)
     {
       v51 = *v177;
@@ -244,17 +244,17 @@ LABEL_5:
         {
           if (*v177 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(keyphraseOptionalExtractionAttributes);
           }
 
           v53 = *(*(&v176 + 1) + 8 * i);
-          v54 = [MEMORY[0x277D65798] sharedProcessor];
-          v55 = [v54 recordContainsValue:v9 key:v53];
+          mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+          v55 = [mEMORY[0x277D65798] recordContainsValue:v9 key:v53];
 
           if (v55)
           {
-            v56 = [MEMORY[0x277D65798] sharedProcessor];
-            v57 = [v56 copyStringValueFromRecord:v9 key:v53];
+            mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+            v57 = [mEMORY[0x277D65798]2 copyStringValueFromRecord:v9 key:v53];
 
             if (v57)
             {
@@ -268,7 +268,7 @@ LABEL_5:
           }
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v176 objects:v212 count:16];
+        v50 = [keyphraseOptionalExtractionAttributes countByEnumeratingWithState:&v176 objects:v212 count:16];
       }
 
       while (v50);
@@ -314,7 +314,7 @@ LABEL_5:
     v143 = 0;
   }
 
-  if ((v138 | v140) & v149)
+  if ((forceEntityExtraction | v140) & bOOLValue)
   {
     v160[0] = MEMORY[0x277D85DD0];
     v160[1] = 3221225472;
@@ -336,8 +336,8 @@ LABEL_5:
   v58 = *(v184 + 24);
   if (v58 == 1 && v143 && v123)
   {
-    v59 = enumerateEntityInfo(v131, v119, v147, v123, 0, &v180, v143, v134);
-    if ((v128 & 1) != 0 || (v60 = v59, [a1 forceEntityExtraction]))
+    v59 = enumerateEntityInfo(mEMORY[0x277D657A0], currentTimezone, v147, v123, 0, &v180, v143, v134);
+    if ((v128 & 1) != 0 || (v60 = v59, [self forceEntityExtraction]))
     {
       v60 = enumerateAirportCodes(v123, v143);
     }
@@ -392,8 +392,8 @@ LABEL_5:
   {
     v145 = v66;
     v135 = [v63 objectAtIndexedSubscript:v116];
-    v67 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v150 = [v135 stringByTrimmingCharactersInSet:v67];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v150 = [v135 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v146 = v145 + 1;
     if (![v150 length])
@@ -431,7 +431,7 @@ LABEL_5:
     v204 = v141;
     v136 = v70;
     v205 = v136;
-    if (([v125 enumerateDetectedDataInString:v150 locale:v147 referenceDate:v131 referenceTimezone:v119 entityBlock:0 rangeBlock:v203] & 1) == 0)
+    if (([v125 enumerateDetectedDataInString:v150 locale:v147 referenceDate:mEMORY[0x277D657A0] referenceTimezone:currentTimezone entityBlock:0 rangeBlock:v203] & 1) == 0)
     {
       *(v207 + 24) = 0;
     }
@@ -442,18 +442,18 @@ LABEL_5:
       goto LABEL_121;
     }
 
-    v73 = [v141 firstObject];
+    firstObject = [v141 firstObject];
     v74 = 0;
     v201[0] = 0;
     v201[1] = v201;
     v201[2] = 0x3010000000;
     v201[3] = &unk_231C4157F;
     v202 = v116;
-    while (v73)
+    while (firstObject)
     {
-      v75 = [v73 rangeValue];
+      rangeValue = [firstObject rangeValue];
       v77 = v76;
-      if (v75 != v74)
+      if (rangeValue != v74)
       {
         goto LABEL_104;
       }
@@ -470,7 +470,7 @@ LABEL_5:
       }
 
       v74 += v77;
-      v73 = v78;
+      firstObject = v78;
 LABEL_115:
       if (v74 >= v139)
       {
@@ -479,11 +479,11 @@ LABEL_115:
     }
 
     v77 = 0;
-    v75 = v139;
+    rangeValue = v139;
     if (v139 != v74)
     {
 LABEL_104:
-      v79 = [v150 substringWithRange:{v74, v75 - v74}];
+      v79 = [v150 substringWithRange:{v74, rangeValue - v74}];
       v187 = MEMORY[0x277D85DD0];
       v188 = 3221225472;
       v189 = __enumerateKeyphraseInfo_block_invoke_2_0;
@@ -506,22 +506,22 @@ LABEL_104:
       {
         if (!(*v121)(v80))
         {
-          if (v73)
+          if (firstObject)
           {
             [v141 removeObjectAtIndex:0];
-            v74 = v77 + v75;
+            v74 = v77 + rangeValue;
             if ([v141 count])
             {
               v84 = [v141 objectAtIndexedSubscript:0];
 
               v83 = 1;
-              v73 = v84;
+              firstObject = v84;
             }
 
             else
             {
 
-              v73 = 0;
+              firstObject = 0;
               v83 = 1;
             }
           }
@@ -529,7 +529,7 @@ LABEL_104:
           else
           {
             v83 = 1;
-            v74 = v75;
+            v74 = rangeValue;
           }
 
 LABEL_108:
@@ -550,7 +550,7 @@ LABEL_108:
       goto LABEL_108;
     }
 
-    v73 = 0;
+    firstObject = 0;
 LABEL_120:
     v85 = *(v207 + 24);
     _Block_object_dispose(v201, 8);
@@ -615,7 +615,7 @@ LABEL_136:
 
         v92 = *(*(&v156 + 1) + 8 * v91);
         v93 = enumerateEntityInfo(0, 0, v147, v92, 1, &v180, v143, v134);
-        if ((v128 & 1) != 0 || (v94 = v93, [a1 forceEntityExtraction]))
+        if ((v128 & 1) != 0 || (v94 = v93, [self forceEntityExtraction]))
         {
           v94 = enumerateAirportCodes(v92, v143);
         }
@@ -655,7 +655,7 @@ LABEL_136:
 
   if (*(v184 + 24) == 1)
   {
-    v99 = [a1 copyStringValueFromRecord:v9 key:@"_SKGTestLocation"];
+    v99 = [self copyStringValueFromRecord:v9 key:@"_SKGTestLocation"];
     v100 = v99;
     if (v99)
     {
@@ -720,12 +720,12 @@ LABEL_136:
 LABEL_170:
   if (*(v184 + 24) == 1)
   {
-    v112 = [MEMORY[0x277D657A0] sharedContext];
-    [v151 setDidProcessKeyphrases:{objc_msgSend(v112, "enableKeyphrases")}];
+    mEMORY[0x277D657A0]7 = [MEMORY[0x277D657A0] sharedContext];
+    [v151 setDidProcessKeyphrases:{objc_msgSend(mEMORY[0x277D657A0]7, "enableKeyphrases")}];
   }
 
 LABEL_173:
-  v14 = v147;
+  currentLocale = v147;
 LABEL_174:
 
   objc_autoreleasePoolPop(context);

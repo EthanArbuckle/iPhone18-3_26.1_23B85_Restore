@@ -1,24 +1,24 @@
 @interface HFServiceGroupItemProvider
 - (HFCharacteristicValueSource)valueSource;
 - (HFServiceGroupItemProvider)init;
-- (HFServiceGroupItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFServiceGroupItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFServiceGroupItemProvider
 
-- (HFServiceGroupItemProvider)initWithHome:(id)a3
+- (HFServiceGroupItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFServiceGroupItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     serviceGroupItems = v7->_serviceGroupItems;
     v7->_serviceGroupItems = v8;
@@ -29,18 +29,18 @@
 
 - (HFServiceGroupItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceGroupItemProvider.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFServiceGroupItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceGroupItemProvider.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFServiceGroupItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFServiceGroupItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFServiceGroupItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -54,10 +54,10 @@
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v13, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFServiceGroupItemProvider *)self home];
-  v5 = [v4 serviceGroups];
-  v6 = [(HFServiceGroupItemProvider *)self filter];
-  v7 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:v6 itemMap:v3];
+  home = [(HFServiceGroupItemProvider *)self home];
+  serviceGroups = [home serviceGroups];
+  filter = [(HFServiceGroupItemProvider *)self filter];
+  v7 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:serviceGroups filter:filter itemMap:v3];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__HFServiceGroupItemProvider_reloadItems__block_invoke_2;
@@ -104,28 +104,28 @@ id __41__HFServiceGroupItemProvider_reloadItems__block_invoke_2(uint64_t a1, voi
 {
   v5.receiver = self;
   v5.super_class = HFServiceGroupItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"serviceGroup"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"serviceGroup"];
 
   return v3;
 }
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v3 = [(HFServiceGroupItemProvider *)self overrideValueSource];
+  overrideValueSource = [(HFServiceGroupItemProvider *)self overrideValueSource];
 
-  if (v3)
+  if (overrideValueSource)
   {
-    v4 = [(HFServiceGroupItemProvider *)self overrideValueSource];
+    overrideValueSource2 = [(HFServiceGroupItemProvider *)self overrideValueSource];
   }
 
   else
   {
-    v5 = [(HFServiceGroupItemProvider *)self home];
-    v4 = [v5 hf_characteristicValueManager];
+    home = [(HFServiceGroupItemProvider *)self home];
+    overrideValueSource2 = [home hf_characteristicValueManager];
   }
 
-  return v4;
+  return overrideValueSource2;
 }
 
 @end

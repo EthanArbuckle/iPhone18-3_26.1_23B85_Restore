@@ -1,11 +1,11 @@
 @interface PXStoryRecipeAssetEdits
 - ($A35046FF140701A0BC97C4369CFAD28C)overallDurationInfo;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXStoryRecipeAssetEdits)init;
-- (PXStoryRecipeAssetEdits)initWithKeyAsset:(id)a3 overallDurationInfo:(id *)a4 userCuratedAssets:(id)a5 customUserAssetsEdit:(id)a6;
-- (id)copyWithCustomUserAssets:(id)a3;
-- (id)copyWithKeyAsset:(id)a3;
-- (id)copyWithOverallDurationInfo:(id *)a3 userCuratedAssets:(id)a4;
+- (PXStoryRecipeAssetEdits)initWithKeyAsset:(id)asset overallDurationInfo:(id *)info userCuratedAssets:(id)assets customUserAssetsEdit:(id)edit;
+- (id)copyWithCustomUserAssets:(id)assets;
+- (id)copyWithKeyAsset:(id)asset;
+- (id)copyWithOverallDurationInfo:(id *)info userCuratedAssets:(id)assets;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -24,46 +24,46 @@
   return self;
 }
 
-- (id)copyWithCustomUserAssets:(id)a3
+- (id)copyWithCustomUserAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [[PXMemoryCustomUserAssetsEdit alloc] initWithAssets:v4];
+  assetsCopy = assets;
+  v5 = [[PXMemoryCustomUserAssetsEdit alloc] initWithAssets:assetsCopy];
 
   v6 = [PXStoryRecipeAssetEdits alloc];
-  v7 = [(PXStoryRecipeAssetEdits *)self keyAsset];
+  keyAsset = [(PXStoryRecipeAssetEdits *)self keyAsset];
   [(PXStoryRecipeAssetEdits *)self overallDurationInfo];
-  v8 = [(PXStoryRecipeAssetEdits *)self userCuratedAssets];
-  v9 = [(PXStoryRecipeAssetEdits *)v6 initWithKeyAsset:v7 overallDurationInfo:&v11 userCuratedAssets:v8 customUserAssetsEdit:v5];
+  userCuratedAssets = [(PXStoryRecipeAssetEdits *)self userCuratedAssets];
+  v9 = [(PXStoryRecipeAssetEdits *)v6 initWithKeyAsset:keyAsset overallDurationInfo:&v11 userCuratedAssets:userCuratedAssets customUserAssetsEdit:v5];
 
   return v9;
 }
 
-- (id)copyWithOverallDurationInfo:(id *)a3 userCuratedAssets:(id)a4
+- (id)copyWithOverallDurationInfo:(id *)info userCuratedAssets:(id)assets
 {
-  v6 = a4;
+  assetsCopy = assets;
   v7 = [PXStoryRecipeAssetEdits alloc];
-  v8 = [(PXStoryRecipeAssetEdits *)self keyAsset];
-  v9 = [(PXStoryRecipeAssetEdits *)self customUserAssetsEdit];
-  v10 = *&a3->var1.var1.var3;
-  v14[2] = *&a3->var1.var1.var0;
+  keyAsset = [(PXStoryRecipeAssetEdits *)self keyAsset];
+  customUserAssetsEdit = [(PXStoryRecipeAssetEdits *)self customUserAssetsEdit];
+  v10 = *&info->var1.var1.var3;
+  v14[2] = *&info->var1.var1.var0;
   v14[3] = v10;
-  v14[4] = *&a3->var1.var2.var1;
-  v11 = *&a3->var1.var0.var1;
-  v14[0] = *&a3->var0;
+  v14[4] = *&info->var1.var2.var1;
+  v11 = *&info->var1.var0.var1;
+  v14[0] = *&info->var0;
   v14[1] = v11;
-  v12 = [(PXStoryRecipeAssetEdits *)v7 initWithKeyAsset:v8 overallDurationInfo:v14 userCuratedAssets:v6 customUserAssetsEdit:v9];
+  v12 = [(PXStoryRecipeAssetEdits *)v7 initWithKeyAsset:keyAsset overallDurationInfo:v14 userCuratedAssets:assetsCopy customUserAssetsEdit:customUserAssetsEdit];
 
   return v12;
 }
 
-- (id)copyWithKeyAsset:(id)a3
+- (id)copyWithKeyAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [PXStoryRecipeAssetEdits alloc];
   [(PXStoryRecipeAssetEdits *)self overallDurationInfo];
-  v6 = [(PXStoryRecipeAssetEdits *)self userCuratedAssets];
-  v7 = [(PXStoryRecipeAssetEdits *)self customUserAssetsEdit];
-  v8 = [(PXStoryRecipeAssetEdits *)v5 initWithKeyAsset:v4 overallDurationInfo:&v10 userCuratedAssets:v6 customUserAssetsEdit:v7];
+  userCuratedAssets = [(PXStoryRecipeAssetEdits *)self userCuratedAssets];
+  customUserAssetsEdit = [(PXStoryRecipeAssetEdits *)self customUserAssetsEdit];
+  v8 = [(PXStoryRecipeAssetEdits *)v5 initWithKeyAsset:assetCopy overallDurationInfo:&v10 userCuratedAssets:userCuratedAssets customUserAssetsEdit:customUserAssetsEdit];
 
   return v8;
 }
@@ -73,23 +73,23 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryRecipeAssetEdits *)self keyAsset];
-  v7 = [v6 uuid];
+  keyAsset = [(PXStoryRecipeAssetEdits *)self keyAsset];
+  uuid = [keyAsset uuid];
   [(PXStoryRecipeAssetEdits *)self overallDurationInfo];
   v8 = PFStoryOverallDurationInfoDescription();
-  v9 = [(PXStoryRecipeAssetEdits *)self userCuratedAssets];
-  v10 = [v9 count];
-  v11 = [(PXStoryRecipeAssetEdits *)self customUserAssetsEdit];
-  v12 = [v11 assets];
-  v13 = [v3 stringWithFormat:@"<%@:%p keyAsset:%@, overallDurationInfo:%@, userCuratedAssets:%ld, customUserAssets:%ld>", v5, self, v7, v8, v10, objc_msgSend(v12, "count")];;
+  userCuratedAssets = [(PXStoryRecipeAssetEdits *)self userCuratedAssets];
+  v10 = [userCuratedAssets count];
+  customUserAssetsEdit = [(PXStoryRecipeAssetEdits *)self customUserAssetsEdit];
+  assets = [customUserAssetsEdit assets];
+  v13 = [v3 stringWithFormat:@"<%@:%p keyAsset:%@, overallDurationInfo:%@, userCuratedAssets:%ld, customUserAssets:%ld>", v5, self, uuid, v8, v10, objc_msgSend(assets, "count")];;
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -99,11 +99,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       keyAsset = self->_keyAsset;
-      v7 = [(PXStoryRecipeAssetEdits *)v5 keyAsset];
-      v8 = v7;
-      if (keyAsset == v7)
+      keyAsset = [(PXStoryRecipeAssetEdits *)v5 keyAsset];
+      v8 = keyAsset;
+      if (keyAsset == keyAsset)
       {
 
         if (v5)
@@ -117,7 +117,7 @@ LABEL_6:
 
       else
       {
-        v9 = [(PXDisplayAsset *)keyAsset isEqual:v7];
+        v9 = [(PXDisplayAsset *)keyAsset isEqual:keyAsset];
 
         if (!v9)
         {
@@ -167,29 +167,29 @@ LABEL_11:
       }
 
       userCuratedAssets = self->_userCuratedAssets;
-      v14 = [(PXStoryRecipeAssetEdits *)v5 userCuratedAssets];
-      v15 = v14;
-      if (userCuratedAssets == v14)
+      userCuratedAssets = [(PXStoryRecipeAssetEdits *)v5 userCuratedAssets];
+      v15 = userCuratedAssets;
+      if (userCuratedAssets == userCuratedAssets)
       {
 
 LABEL_22:
-        v17 = [(PXMemoryCustomUserAssetsEdit *)self->_customUserAssetsEdit assets];
-        v18 = [(PXStoryRecipeAssetEdits *)v5 customUserAssetsEdit];
-        v19 = [v18 assets];
-        if (v17 == v19)
+        assets = [(PXMemoryCustomUserAssetsEdit *)self->_customUserAssetsEdit assets];
+        customUserAssetsEdit = [(PXStoryRecipeAssetEdits *)v5 customUserAssetsEdit];
+        assets2 = [customUserAssetsEdit assets];
+        if (assets == assets2)
         {
           v11 = 1;
         }
 
         else
         {
-          v11 = [v17 isEqual:v19];
+          v11 = [assets isEqual:assets2];
         }
 
         goto LABEL_16;
       }
 
-      v16 = [(PXDisplayAssetFetchResult *)userCuratedAssets isEqual:v14];
+      v16 = [(PXDisplayAssetFetchResult *)userCuratedAssets isEqual:userCuratedAssets];
 
       if (v16)
       {
@@ -213,34 +213,34 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(PXStoryRecipeAssetEdits *)self keyAsset];
-  v3 = [v2 hash];
+  keyAsset = [(PXStoryRecipeAssetEdits *)self keyAsset];
+  v3 = [keyAsset hash];
 
   return v3;
 }
 
-- (PXStoryRecipeAssetEdits)initWithKeyAsset:(id)a3 overallDurationInfo:(id *)a4 userCuratedAssets:(id)a5 customUserAssetsEdit:(id)a6
+- (PXStoryRecipeAssetEdits)initWithKeyAsset:(id)asset overallDurationInfo:(id *)info userCuratedAssets:(id)assets customUserAssetsEdit:(id)edit
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  assetsCopy = assets;
+  editCopy = edit;
   v20.receiver = self;
   v20.super_class = PXStoryRecipeAssetEdits;
   v14 = [(PXStoryRecipeAssetEdits *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_keyAsset, a3);
-    *&v15->_overallDurationInfo.kind = *&a4->var0;
-    v16 = *&a4->var1.var0.var1;
-    v17 = *&a4->var1.var1.var0;
-    v18 = *&a4->var1.var2.var1;
-    *&v15->_overallDurationInfo.specificDurationInfo.preferredDuration.epoch = *&a4->var1.var1.var3;
+    objc_storeStrong(&v14->_keyAsset, asset);
+    *&v15->_overallDurationInfo.kind = *&info->var0;
+    v16 = *&info->var1.var0.var1;
+    v17 = *&info->var1.var1.var0;
+    v18 = *&info->var1.var2.var1;
+    *&v15->_overallDurationInfo.specificDurationInfo.preferredDuration.epoch = *&info->var1.var1.var3;
     *&v15->_overallDurationInfo.specificDurationInfo.maximumDuration.timescale = v18;
     *&v15->_overallDurationInfo.specificDurationInfo.minimumDuration.timescale = v16;
     *&v15->_overallDurationInfo.specificDurationInfo.preferredDuration.value = v17;
-    objc_storeStrong(&v15->_userCuratedAssets, a5);
-    objc_storeStrong(&v15->_customUserAssetsEdit, a6);
+    objc_storeStrong(&v15->_userCuratedAssets, assets);
+    objc_storeStrong(&v15->_customUserAssetsEdit, edit);
   }
 
   return v15;

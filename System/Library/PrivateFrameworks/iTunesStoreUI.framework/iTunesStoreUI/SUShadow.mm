@@ -1,26 +1,26 @@
 @interface SUShadow
 - (CGSize)offset;
-- (SUShadow)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyToLayer:(id)a3;
+- (SUShadow)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyToLayer:(id)layer;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUShadow
 
-- (SUShadow)initWithCoder:(id)a3
+- (SUShadow)initWithCoder:(id)coder
 {
   v4 = [(SUShadow *)self init];
   if (v4)
   {
-    v4->_color = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
-    [a3 decodeCGSizeForKey:@"offset"];
+    v4->_color = [coder decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    [coder decodeCGSizeForKey:@"offset"];
     v4->_offset.width = v5;
     v4->_offset.height = v6;
-    [a3 decodeFloatForKey:@"opacity"];
+    [coder decodeFloatForKey:@"opacity"];
     v4->_opacity = v7;
-    [a3 decodeFloatForKey:@"radius"];
+    [coder decodeFloatForKey:@"radius"];
     v4->_radius = v8;
   }
 
@@ -35,9 +35,9 @@
   [(SUShadow *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_color;
   *(v4 + 16) = self->_offset;
   *(v4 + 32) = self->_opacity;
@@ -45,33 +45,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [(SUShadow *)a2 encodeWithCoder:?];
   }
 
-  [a3 encodeObject:self->_color forKey:@"color"];
-  [a3 encodeCGSize:@"offset" forKey:{self->_offset.width, self->_offset.height}];
+  [coder encodeObject:self->_color forKey:@"color"];
+  [coder encodeCGSize:@"offset" forKey:{self->_offset.width, self->_offset.height}];
   opacity = self->_opacity;
   *&opacity = opacity;
-  [a3 encodeFloat:@"opacity" forKey:opacity];
+  [coder encodeFloat:@"opacity" forKey:opacity];
   radius = self->_radius;
   *&radius = radius;
 
-  [a3 encodeFloat:@"radius" forKey:radius];
+  [coder encodeFloat:@"radius" forKey:radius];
 }
 
-- (void)applyToLayer:(id)a3
+- (void)applyToLayer:(id)layer
 {
   color = self->_color;
   if (color)
   {
-    [a3 setShadowColor:{-[UIColor CGColor](color, "CGColor")}];
+    [layer setShadowColor:{-[UIColor CGColor](color, "CGColor")}];
   }
 
-  [a3 setShadowOffset:{self->_offset.width, self->_offset.height}];
+  [layer setShadowOffset:{self->_offset.width, self->_offset.height}];
   v6 = fmax(self->_opacity, 0.0);
   if (v6 > 1.0)
   {
@@ -79,10 +79,10 @@
   }
 
   *&v6 = v6;
-  [a3 setShadowOpacity:v6];
+  [layer setShadowOpacity:v6];
   v7 = fabs(self->_radius);
 
-  [a3 setShadowRadius:v7];
+  [layer setShadowRadius:v7];
 }
 
 - (CGSize)offset

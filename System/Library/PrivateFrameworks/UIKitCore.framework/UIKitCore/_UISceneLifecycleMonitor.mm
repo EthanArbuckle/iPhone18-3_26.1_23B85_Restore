@@ -1,11 +1,11 @@
 @interface _UISceneLifecycleMonitor
 - (UIScene)_scene;
-- (_UISceneLifecycleMonitor)initWithScene:(id)a3;
+- (_UISceneLifecycleMonitor)initWithScene:(id)scene;
 - (void)didBecomeActive;
 - (void)didConnect;
 - (void)didEnterBackground;
 - (void)didResignActive;
-- (void)transitionToTargetState:(id)a3 fromState:(id)a4 withTransitionContext:(id)a5 preparations:(id)a6;
+- (void)transitionToTargetState:(id)state fromState:(id)fromState withTransitionContext:(id)context preparations:(id)preparations;
 - (void)willEnterForeground;
 - (void)willResignActive;
 @end
@@ -36,17 +36,17 @@
     {
       kdebug_trace();
       v5 = objc_loadWeakRetained(&self->__scene);
-      v6 = [v5 delegate];
+      delegate = [v5 delegate];
       v7 = objc_loadWeakRetained(&self->__scene);
-      [v6 sceneWillEnterForeground:v7];
+      [delegate sceneWillEnterForeground:v7];
 
       kdebug_trace();
     }
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = objc_loadWeakRetained(&self->__scene);
-  [v9 postNotificationName:@"UISceneWillEnterForegroundNotification" object:v8];
+  [defaultCenter postNotificationName:@"UISceneWillEnterForegroundNotification" object:v8];
 }
 
 - (void)didBecomeActive
@@ -60,25 +60,25 @@
     {
       kdebug_trace();
       v5 = objc_loadWeakRetained(&self->__scene);
-      v6 = [v5 delegate];
+      delegate = [v5 delegate];
       v7 = objc_loadWeakRetained(&self->__scene);
-      [v6 sceneDidBecomeActive:v7];
+      [delegate sceneDidBecomeActive:v7];
 
       kdebug_trace();
     }
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = objc_loadWeakRetained(&self->__scene);
-  [v9 postNotificationName:@"UISceneDidActivateNotification" object:v8];
+  [defaultCenter postNotificationName:@"UISceneDidActivateNotification" object:v8];
 }
 
 - (void)didResignActive
 {
   WeakRetained = objc_loadWeakRetained(&self->__scene);
-  v4 = [WeakRetained _allowsEventUIWindowRouting];
+  _allowsEventUIWindowRouting = [WeakRetained _allowsEventUIWindowRouting];
 
-  if (v4)
+  if (_allowsEventUIWindowRouting)
   {
     v5 = objc_loadWeakRetained(&self->__scene);
     [UIApp _cancelAllEventsOfType:11 onEventRoutingScene:v5];
@@ -97,17 +97,17 @@
     {
       kdebug_trace();
       v5 = objc_loadWeakRetained(&self->__scene);
-      v6 = [v5 delegate];
+      delegate = [v5 delegate];
       v7 = objc_loadWeakRetained(&self->__scene);
-      [v6 sceneWillResignActive:v7];
+      [delegate sceneWillResignActive:v7];
 
       kdebug_trace();
     }
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = objc_loadWeakRetained(&self->__scene);
-  [v9 postNotificationName:@"UISceneWillDeactivateNotification" object:v8];
+  [defaultCenter postNotificationName:@"UISceneWillDeactivateNotification" object:v8];
 }
 
 - (void)didEnterBackground
@@ -121,48 +121,48 @@
     {
       kdebug_trace();
       v5 = objc_loadWeakRetained(&self->__scene);
-      v6 = [v5 delegate];
+      delegate = [v5 delegate];
       v7 = objc_loadWeakRetained(&self->__scene);
-      [v6 sceneDidEnterBackground:v7];
+      [delegate sceneDidEnterBackground:v7];
 
       kdebug_trace();
     }
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9 = objc_loadWeakRetained(&self->__scene);
-  [v8 postNotificationName:@"UISceneDidEnterBackgroundNotification" object:v9];
+  [defaultCenter postNotificationName:@"UISceneDidEnterBackgroundNotification" object:v9];
 
   v10 = objc_loadWeakRetained(&self->__scene);
-  v11 = [v10 _allowsEventUIWindowRouting];
+  _allowsEventUIWindowRouting = [v10 _allowsEventUIWindowRouting];
 
-  if (v11)
+  if (_allowsEventUIWindowRouting)
   {
     v12 = objc_loadWeakRetained(&self->__scene);
     [UIApp _cancelAllInputsOnEventRoutingScene:v12];
   }
 }
 
-- (_UISceneLifecycleMonitor)initWithScene:(id)a3
+- (_UISceneLifecycleMonitor)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UISceneLifecycleMonitor;
   v5 = [(_UISceneLifecycleMonitor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->__scene, v4);
+    objc_storeWeak(&v5->__scene, sceneCopy);
   }
 
   return v6;
 }
 
-- (void)transitionToTargetState:(id)a3 fromState:(id)a4 withTransitionContext:(id)a5 preparations:(id)a6
+- (void)transitionToTargetState:(id)state fromState:(id)fromState withTransitionContext:(id)context preparations:(id)preparations
 {
-  if (a6)
+  if (preparations)
   {
-    (*(a6 + 2))(a6, &__block_literal_global_87);
+    (*(preparations + 2))(preparations, &__block_literal_global_87);
   }
 }
 

@@ -1,34 +1,34 @@
 @interface MPSNDArrayMathTernarySecondaryGradient
-- (MPSNDArrayMathTernarySecondaryGradient)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayMathTernarySecondaryGradient)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayMathTernarySecondaryGradient)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayMathTernarySecondaryGradient)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayMathTernarySecondaryGradient
 
-- (MPSNDArrayMathTernarySecondaryGradient)initWithDevice:(id)a3
+- (MPSNDArrayMathTernarySecondaryGradient)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayMathTernarySecondaryGradient;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v4 initWithDevice:a3 sourceCount:3 sourceGradientIndex:1];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v4 initWithDevice:device sourceCount:3 sourceGradientIndex:1];
   result->super.super._encodeGradient = EncodeArrayMathTernaryGradient;
   result->super.super._encodeData = result;
   result->_opType = 0;
   return result;
 }
 
-- (MPSNDArrayMathTernarySecondaryGradient)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayMathTernarySecondaryGradient)initWithCoder:(id)coder device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayMathTernarySecondaryGradient;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v8 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v8 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encodeGradient = EncodeArrayMathTernaryGradient;
     result->super.super._encodeData = result;
     v6 = result;
-    v7 = [a3 decodeInt32ForKey:@"MPSNDArrayMath.opType"];
+    v7 = [coder decodeInt32ForKey:@"MPSNDArrayMath.opType"];
     result = v6;
     v6->_opType = v7;
   }
@@ -36,19 +36,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayMathTernarySecondaryGradient;
   [(MPSNDArrayMultiaryGradientKernel *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:self->_opType forKey:@"MPSNDArrayMath.opType"];
+  [coder encodeInt32:self->_opType forKey:@"MPSNDArrayMath.opType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayMathTernarySecondaryGradient;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     self->super.super._encodeGradient = EncodeArrayMathTernaryGradient;

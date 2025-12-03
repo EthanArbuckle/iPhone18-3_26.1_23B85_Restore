@@ -6,8 +6,8 @@
 
 - (id)_intents_stringRepresentation
 {
-  v2 = [MEMORY[0x1E696B080] kelvin];
-  v3 = [a1 isEqual:v2];
+  kelvin = [MEMORY[0x1E696B080] kelvin];
+  v3 = [self isEqual:kelvin];
 
   if (v3)
   {
@@ -16,8 +16,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696B080] celsius];
-    v6 = [a1 isEqual:v5];
+    celsius = [MEMORY[0x1E696B080] celsius];
+    v6 = [self isEqual:celsius];
 
     if (v6)
     {
@@ -26,14 +26,14 @@
 
     else
     {
-      v7 = [MEMORY[0x1E696B080] fahrenheit];
-      v8 = [a1 isEqual:v7];
+      fahrenheit = [MEMORY[0x1E696B080] fahrenheit];
+      v8 = [self isEqual:fahrenheit];
 
       if ((v8 & 1) == 0)
       {
         v11 = MEMORY[0x1E695DF30];
         v12 = *MEMORY[0x1E695D930];
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", a1];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", self];
         v14 = [v11 exceptionWithName:v12 reason:v13 userInfo:0];
         v15 = v14;
 
@@ -44,9 +44,9 @@
     }
   }
 
-  v9 = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
+  if_ASCIIStringByUppercasingFirstCharacter = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
 
-  return v9;
+  return if_ASCIIStringByUppercasingFirstCharacter;
 }
 
 @end

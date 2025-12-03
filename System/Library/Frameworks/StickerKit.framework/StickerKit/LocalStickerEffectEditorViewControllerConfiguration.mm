@@ -1,10 +1,10 @@
 @interface LocalStickerEffectEditorViewControllerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSUUID)stickerIdentifier;
 - (_TtC10StickerKit51LocalStickerEffectEditorViewControllerConfiguration)init;
-- (_TtC10StickerKit51LocalStickerEffectEditorViewControllerConfiguration)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)setStickerIdentifier:(id)a3;
+- (_TtC10StickerKit51LocalStickerEffectEditorViewControllerConfiguration)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)setStickerIdentifier:(id)identifier;
 @end
 
 @implementation LocalStickerEffectEditorViewControllerConfiguration
@@ -31,12 +31,12 @@
   return v10;
 }
 
-- (void)setStickerIdentifier:(id)a3
+- (void)setStickerIdentifier:(id)identifier
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFCD800);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (identifier)
   {
     sub_19A7A8F44();
     v8 = sub_19A7A8F64();
@@ -51,7 +51,7 @@
 
   v10 = OBJC_IVAR____TtC10StickerKit51LocalStickerEffectEditorViewControllerConfiguration_stickerIdentifier;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_19A6264EC(v7, self + v10);
   swift_endAccess();
 }
@@ -67,27 +67,27 @@
   return [(LocalStickerEffectEditorViewControllerConfiguration *)&v7 init];
 }
 
-- (_TtC10StickerKit51LocalStickerEffectEditorViewControllerConfiguration)initWithBSXPCCoder:(id)a3
+- (_TtC10StickerKit51LocalStickerEffectEditorViewControllerConfiguration)initWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v4 = sub_19A745B74(a3);
+  v4 = sub_19A745B74(coder);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_19A741528(a3);
+  selfCopy = self;
+  sub_19A741528(coder);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19A7ABB44();
     swift_unknownObjectRelease();
@@ -96,7 +96,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_19A74172C(v8);

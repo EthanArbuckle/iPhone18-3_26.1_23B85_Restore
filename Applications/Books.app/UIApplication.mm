@@ -8,7 +8,7 @@
 
 - (void)observeExtendedLaunchTestCompletion
 {
-  v2 = self;
+  selfCopy = self;
   UIApplication.observeExtendedLaunchTestCompletion()();
 }
 
@@ -29,7 +29,7 @@
 
 - (void)onExtendedLaunchCompleted
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003F47E0();
 }
 

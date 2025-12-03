@@ -1,5 +1,5 @@
 @interface SBSplashBoardController
-- (id)_splashBoardApplicationForBundleID:(id)a3;
+- (id)_splashBoardApplicationForBundleID:(id)d;
 - (void)_checkForChangedLocale;
 - (void)_handleLocaleDidChangeNotification;
 - (void)_observeLocaleChanges;
@@ -25,9 +25,9 @@
 {
   [(SBSplashBoardController *)self _observeLocaleChanges];
   v3 = +[SBSetupManager sharedInstance];
-  v4 = [v3 isInSetupMode];
+  isInSetupMode = [v3 isInSetupMode];
 
-  if (v4)
+  if (isInSetupMode)
   {
     v5 = XBLogFileManifest();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -47,7 +47,7 @@
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_debug_impl(&dword_21ED4E000, log, OS_LOG_TYPE_DEBUG, "checking if locale has changed: %{public}@ to %{public}@", &v3, 0x16u);
@@ -56,27 +56,27 @@
 - (void)_handleLocaleDidChangeNotification
 {
   v3 = +[SBSetupManager sharedInstance];
-  v4 = [v3 isInSetupMode];
+  isInSetupMode = [v3 isInSetupMode];
 
-  if (v4)
+  if (isInSetupMode)
   {
 
     [(SBSplashBoardController *)self _checkForChangedLocale];
   }
 }
 
-- (id)_splashBoardApplicationForBundleID:(id)a3
+- (id)_splashBoardApplicationForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(XBApplicationController *)self applicationProvider];
-  v6 = [v5 allSplashBoardApplications];
+  dCopy = d;
+  applicationProvider = [(XBApplicationController *)self applicationProvider];
+  allSplashBoardApplications = [applicationProvider allSplashBoardApplications];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__SBSplashBoardController__splashBoardApplicationForBundleID___block_invoke;
   v10[3] = &unk_2783B6EF0;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 bs_firstObjectPassingTest:v10];
+  v11 = dCopy;
+  v7 = dCopy;
+  v8 = [allSplashBoardApplications bs_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -91,8 +91,8 @@ uint64_t __62__SBSplashBoardController__splashBoardApplicationForBundleID___bloc
 
 - (void)_observeLocaleChanges
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSplashBoardController.m" lineNumber:86 description:@"configureForLocaleChanges can only be called once"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSplashBoardController.m" lineNumber:86 description:@"configureForLocaleChanges can only be called once"];
 }
 
 void __48__SBSplashBoardController__observeLocaleChanges__block_invoke(uint64_t a1, void *a2)

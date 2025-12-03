@@ -1,13 +1,13 @@
 @interface HKAxisLabelDimensionMinuteSecond
-- (HKAxisLabelDimensionMinuteSecond)initWithStartDate:(id)a3;
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (HKAxisLabelDimensionMinuteSecond)initWithStartDate:(id)date;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation HKAxisLabelDimensionMinuteSecond
 
-- (HKAxisLabelDimensionMinuteSecond)initWithStartDate:(id)a3
+- (HKAxisLabelDimensionMinuteSecond)initWithStartDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = HKAxisLabelDimensionMinuteSecond;
   v6 = [(HKAxisLabelDimensionMinuteSecond *)&v10 init];
@@ -18,15 +18,15 @@
     v6->_dateFormatter = v7;
 
     [(NSDateFormatter *)v6->_dateFormatter setDateFormat:@":ss"];
-    objc_storeStrong(&v6->_startDate, a3);
+    objc_storeStrong(&v6->_startDate, date);
   }
 
   return v6;
 }
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  [a3 doubleValue];
+  [location doubleValue];
   v6 = v5;
   startDate = self->_startDate;
   if (startDate)

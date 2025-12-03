@@ -12,21 +12,21 @@
 {
   v9.receiver = self;
   v9.super_class = PSControlTableCellAccessibility;
-  v3 = [(PSControlTableCellAccessibility *)&v9 accessibilityLabel];
-  if ([v3 length])
+  accessibilityLabel = [(PSControlTableCellAccessibility *)&v9 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v4 = v3;
-    v5 = v4;
+    accessibilityLabel2 = accessibilityLabel;
+    v5 = accessibilityLabel2;
   }
 
   else
   {
-    v6 = [(PSControlTableCellAccessibility *)self specifier];
-    v4 = [v6 accessibilityLabel];
+    specifier = [(PSControlTableCellAccessibility *)self specifier];
+    accessibilityLabel2 = [specifier accessibilityLabel];
 
-    if ([v4 length])
+    if ([accessibilityLabel2 length])
     {
-      v7 = v4;
+      v7 = accessibilityLabel2;
     }
 
     else
@@ -45,28 +45,28 @@
   if ([(PSControlTableCellAccessibility *)self type]== 5)
   {
     v3 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"control"];
-    v4 = [v3 accessibilityTraits];
+    accessibilityTraits = [v3 accessibilityTraits];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = PSControlTableCellAccessibility;
-    v4 = [(PSControlTableCellAccessibility *)&v11 accessibilityTraits];
+    accessibilityTraits = [(PSControlTableCellAccessibility *)&v11 accessibilityTraits];
   }
 
   v5 = *MEMORY[0x29EDC7F70];
-  if ((*MEMORY[0x29EDC7F70] & v4) == 0)
+  if ((*MEMORY[0x29EDC7F70] & accessibilityTraits) == 0)
   {
     v5 = 0;
   }
 
-  v6 = v5 ^ v4;
+  v6 = v5 ^ accessibilityTraits;
   v7 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"isUserInteractionEnabled"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = *MEMORY[0x29EDC7FA8];
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 0;
   }
@@ -77,17 +77,17 @@
 - (id)_accessibilityAbsoluteValue
 {
   v2 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"_control"];
-  v3 = [v2 _accessibilityAbsoluteValue];
+  _accessibilityAbsoluteValue = [v2 _accessibilityAbsoluteValue];
 
-  return v3;
+  return _accessibilityAbsoluteValue;
 }
 
 - (void)accessibilityIncrement
 {
   v3 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"isUserInteractionEnabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"_control"];
     [v5 accessibilityIncrement];
@@ -97,9 +97,9 @@
 - (void)accessibilityDecrement
 {
   v3 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"isUserInteractionEnabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = [(PSControlTableCellAccessibility *)self safeValueForKey:@"_control"];
     [v5 accessibilityDecrement];

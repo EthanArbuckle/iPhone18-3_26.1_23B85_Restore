@@ -1,6 +1,6 @@
 @interface CRLiOSBoardView
-- (_TtC8Freeform15CRLiOSBoardView)initWithCoder:(id)a3;
-- (_TtC8Freeform15CRLiOSBoardView)initWithFrame:(CGRect)a3;
+- (_TtC8Freeform15CRLiOSBoardView)initWithCoder:(id)coder;
+- (_TtC8Freeform15CRLiOSBoardView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
@@ -14,19 +14,19 @@
   [(CRLiOSBoardView *)&v4 didMoveToWindow];
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = [v2 window];
-    sub_1010530A8(v3);
+    window = [v2 window];
+    sub_1010530A8(window);
 
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC8Freeform15CRLiOSBoardView)initWithFrame:(CGRect)a3
+- (_TtC8Freeform15CRLiOSBoardView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *&self->delegate[OBJC_IVAR____TtC8Freeform15CRLiOSBoardView_delegate] = 0;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -34,14 +34,14 @@
   return [(CRLiOSBoardView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8Freeform15CRLiOSBoardView)initWithCoder:(id)a3
+- (_TtC8Freeform15CRLiOSBoardView)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC8Freeform15CRLiOSBoardView_delegate] = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for CRLiOSBoardView();
-  v5 = a3;
-  v6 = [(CRLiOSBoardView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CRLiOSBoardView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

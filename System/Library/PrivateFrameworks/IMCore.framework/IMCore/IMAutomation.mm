@@ -1,16 +1,16 @@
 @interface IMAutomation
-- (BOOL)checkArgumentValidity:(id)a3 forExpectedNumberOfArguments:(int)a4;
-- (id)IMCoreAutomationPerformOperationWithDictionary:(id)a3;
-- (id)callIMCoreMethodWithDictionary:(id)a3;
-- (id)startConversationFrom:(id)a3 andReceiveAt:(id)a4;
+- (BOOL)checkArgumentValidity:(id)validity forExpectedNumberOfArguments:(int)arguments;
+- (id)IMCoreAutomationPerformOperationWithDictionary:(id)dictionary;
+- (id)callIMCoreMethodWithDictionary:(id)dictionary;
+- (id)startConversationFrom:(id)from andReceiveAt:(id)at;
 @end
 
 @implementation IMAutomation
 
-- (BOOL)checkArgumentValidity:(id)a3 forExpectedNumberOfArguments:(int)a4
+- (BOOL)checkArgumentValidity:(id)validity forExpectedNumberOfArguments:(int)arguments
 {
-  v6 = a3;
-  if (a4 < 1)
+  validityCopy = validity;
+  if (arguments < 1)
   {
     v16 = 1;
   }
@@ -18,7 +18,7 @@
   else
   {
     v7 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v5, @"arg%d", 1);
-    v9 = objc_msgSend_objectForKey_(v6, v8, v7);
+    v9 = objc_msgSend_objectForKey_(validityCopy, v8, v7);
 
     if (v9)
     {
@@ -26,18 +26,18 @@
       do
       {
         v12 = v11;
-        if (a4 == v11)
+        if (arguments == v11)
         {
           break;
         }
 
         ++v11;
         v13 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v10, @"arg%d", (v12 + 1));
-        v15 = objc_msgSend_objectForKey_(v6, v14, v13);
+        v15 = objc_msgSend_objectForKey_(validityCopy, v14, v13);
       }
 
       while (v15);
-      v16 = v12 >= a4;
+      v16 = v12 >= arguments;
     }
 
     else
@@ -49,17 +49,17 @@
   return v16;
 }
 
-- (id)callIMCoreMethodWithDictionary:(id)a3
+- (id)callIMCoreMethodWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v13 = 0;
     goto LABEL_34;
   }
 
-  v7 = objc_msgSend_objectForKey_(v4, v5, @"methodName");
+  v7 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"methodName");
   v9 = v7;
   if (v7 && !objc_msgSend_isEqualToString_(v7, v8, &stru_1F1B76F98))
   {
@@ -166,9 +166,9 @@ LABEL_34:
   return v13;
 }
 
-- (id)IMCoreAutomationPerformOperationWithDictionary:(id)a3
+- (id)IMCoreAutomationPerformOperationWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -187,7 +187,7 @@ LABEL_34:
       }
     }
 
-    v9 = objc_msgSend_callIMCoreMethodWithDictionary_(self, v7, v4);
+    v9 = objc_msgSend_callIMCoreMethodWithDictionary_(self, v7, dictionaryCopy);
     v10 = v18[5];
     v18[5] = v9;
   }
@@ -200,7 +200,7 @@ LABEL_34:
     block[3] = &unk_1E7810CE0;
     v15 = &v17;
     block[4] = self;
-    v14 = v4;
+    v14 = dictionaryCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 
@@ -210,14 +210,14 @@ LABEL_34:
   return v11;
 }
 
-- (id)startConversationFrom:(id)a3 andReceiveAt:(id)a4
+- (id)startConversationFrom:(id)from andReceiveAt:(id)at
 {
   v151 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  atCopy = at;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = objc_msgSend_length(v5, v8, v9);
-  if (!v6 || !v10)
+  v10 = objc_msgSend_length(fromCopy, v8, v9);
+  if (!atCopy || !v10)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v7, v11, @"Did not pass in a valid set of arguments", @"error");
     v35 = v7;
@@ -225,7 +225,7 @@ LABEL_34:
   }
 
   v135 = v7;
-  v136 = v6;
+  v136 = atCopy;
   v13 = objc_msgSend_sharedInstance(IMAccountController, v11, v12);
   v16 = objc_msgSend_iMessageService(IMServiceImpl, v14, v15);
   v18 = objc_msgSend_accountsForService_(v13, v17, v16);
@@ -294,7 +294,7 @@ LABEL_17:
   }
 
   v37 = v25;
-  v41 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v38, @"P:%@", v5);
+  v41 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v38, @"P:%@", fromCopy);
   if (v25 || (v42 = v26) == 0)
   {
     if (!v37 || (v42 = v37, v26))
@@ -409,7 +409,7 @@ LABEL_41:
 
 LABEL_48:
 
-  if (v134 == v140 && (objc_msgSend_aliases(v140, v78, v79), v80 = objc_claimAutoreleasedReturnValue(), v82 = objc_msgSend_containsObject_(v80, v81, v5), v80, (v82 & 1) == 0))
+  if (v134 == v140 && (objc_msgSend_aliases(v140, v78, v79), v80 = objc_claimAutoreleasedReturnValue(), v82 = objc_msgSend_containsObject_(v80, v81, fromCopy), v80, (v82 & 1) == 0))
   {
     v7 = v135;
     objc_msgSend_setObject_forKeyedSubscript_(v135, v78, @"Cannot set apple id caller id if this alias is not in alias list", @"error");
@@ -423,12 +423,12 @@ LABEL_46:
   else
   {
     v83 = objc_msgSend_vettedAliases(v134, v78, v79);
-    v85 = objc_msgSend_containsObject_(v83, v84, v5);
+    v85 = objc_msgSend_containsObject_(v83, v84, fromCopy);
 
     v7 = v135;
     if ((v85 & 1) == 0)
     {
-      if (objc_msgSend_validateAlias_(v134, v86, v5) && (objc_msgSend_vettedAliases(v134, v86, v88), v89 = objc_claimAutoreleasedReturnValue(), v91 = objc_msgSend_containsObject_(v89, v90, v5), v89, (v91 & 1) != 0))
+      if (objc_msgSend_validateAlias_(v134, v86, fromCopy) && (objc_msgSend_vettedAliases(v134, v86, v88), v89 = objc_claimAutoreleasedReturnValue(), v91 = objc_msgSend_containsObject_(v89, v90, fromCopy), v89, (v91 & 1) != 0))
       {
         v51 = 1;
       }
@@ -474,7 +474,7 @@ LABEL_46:
 
 LABEL_59:
       v99 = objc_msgSend_displayName(v134, v95, v96);
-      v101 = objc_msgSend_isEqualToString_(v99, v100, v5);
+      v101 = objc_msgSend_isEqualToString_(v99, v100, fromCopy);
 
       if (v101)
       {
@@ -487,9 +487,9 @@ LABEL_59:
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.ft.CallerID.changed", 0, 0, 1u);
-      objc_msgSend_setDisplayName_(v134, v105, v5);
+      objc_msgSend_setDisplayName_(v134, v105, fromCopy);
       v108 = objc_msgSend_displayName(v134, v106, v107);
-      v110 = objc_msgSend_isEqualToString_(v108, v109, v5);
+      v110 = objc_msgSend_isEqualToString_(v108, v109, fromCopy);
 
       v76 = v139;
       v75 = v140;
@@ -521,7 +521,7 @@ LABEL_59:
   }
 
 LABEL_69:
-  v6 = v136;
+  atCopy = v136;
 LABEL_70:
 
   v131 = *MEMORY[0x1E69E9840];

@@ -6,20 +6,20 @@
 - (EKEventEditViewDelegateAllOutOfProcess)editViewDelegate;
 - (EKEventStore)eventStore;
 - (UIColor)editorBackgroundColor;
-- (_TtC10EventKitUI32EKEventEditViewControllerOOPImpl)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setDefaultCalendar:(id)a3;
-- (void)setEditViewDelegate:(id)a3;
-- (void)setEditorBackgroundColor:(id)a3;
-- (void)setEvent:(id)a3;
-- (void)setEventStore:(id)a3;
+- (_TtC10EventKitUI32EKEventEditViewControllerOOPImpl)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setDefaultCalendar:(id)calendar;
+- (void)setEditViewDelegate:(id)delegate;
+- (void)setEditorBackgroundColor:(id)color;
+- (void)setEvent:(id)event;
+- (void)setEventStore:(id)store;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventEditViewControllerOOPImpl
 
-- (_TtC10EventKitUI32EKEventEditViewControllerOOPImpl)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10EventKitUI32EKEventEditViewControllerOOPImpl)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1D35DF384();
     v7 = v6;
@@ -31,13 +31,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1D35BD93C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1D35BD93C(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D35BDB2C();
 }
 
@@ -59,11 +59,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35C1314(a3, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_eventStore, sub_1D35C4D40);
+  storeCopy = store;
+  selfCopy = self;
+  sub_1D35C1314(store, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_eventStore, sub_1D35C4D40);
 }
 
 - (EKEvent)event
@@ -73,11 +73,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35C1314(a3, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_event, sub_1D35C4DD0);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D35C1314(event, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_event, sub_1D35C4DD0);
 }
 
 - (EKEventEditViewDelegateAllOutOfProcess)editViewDelegate
@@ -88,11 +88,11 @@
   return v2;
 }
 
-- (void)setEditViewDelegate:(id)a3
+- (void)setEditViewDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_editViewDelegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -104,11 +104,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setDefaultCalendar:(id)a3
+- (void)setDefaultCalendar:(id)calendar
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35C1314(a3, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_defaultCalendar, sub_1D35C5140);
+  calendarCopy = calendar;
+  selfCopy = self;
+  sub_1D35C1314(calendar, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_defaultCalendar, sub_1D35C5140);
 }
 
 - (UIColor)editorBackgroundColor
@@ -118,11 +118,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setEditorBackgroundColor:(id)a3
+- (void)setEditorBackgroundColor:(id)color
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35C1314(a3, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_editorBackgroundColor, sub_1D35C5374);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D35C1314(color, &OBJC_IVAR____TtC10EventKitUI32EKEventEditViewControllerOOPImpl_editorBackgroundColor, sub_1D35C5374);
 }
 
 - (BOOL)hasUnsavedChanges
@@ -153,7 +153,7 @@
     v9 = *(v3 + 3);
     v18 = *(v3 + 4);
     v17 = v9;
-    v10 = self;
+    selfCopy = self;
     sub_1D35C1944(v22, v13);
     v11 = sub_1D35C53B0();
 

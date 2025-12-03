@@ -1,13 +1,13 @@
 @interface CKDApplicationID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKDApplicationID)init;
-- (CKDApplicationID)initWithApplicationBundleIdentifier:(id)a3 applicationBundleIdentifierOverrideForContainerAccess:(id)a4 applicationBundleIdentifierOverrideForNetworkAttribution:(id)a5 applicationBundleIdentifierOverrideForPushTopicGeneration:(id)a6 applicationBundleIdentifierOverrideForTCC:(id)a7;
-- (CKDApplicationID)initWithCoder:(id)a3;
-- (CKDApplicationID)initWithSqliteRepresentation:(id)a3;
+- (CKDApplicationID)initWithApplicationBundleIdentifier:(id)identifier applicationBundleIdentifierOverrideForContainerAccess:(id)access applicationBundleIdentifierOverrideForNetworkAttribution:(id)attribution applicationBundleIdentifierOverrideForPushTopicGeneration:(id)generation applicationBundleIdentifierOverrideForTCC:(id)c;
+- (CKDApplicationID)initWithCoder:(id)coder;
+- (CKDApplicationID)initWithSqliteRepresentation:(id)representation;
 - (id)sqliteRepresentation;
 - (unint64_t)hash;
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDApplicationID
@@ -135,13 +135,13 @@
   objc_exception_throw(v7);
 }
 
-- (CKDApplicationID)initWithApplicationBundleIdentifier:(id)a3 applicationBundleIdentifierOverrideForContainerAccess:(id)a4 applicationBundleIdentifierOverrideForNetworkAttribution:(id)a5 applicationBundleIdentifierOverrideForPushTopicGeneration:(id)a6 applicationBundleIdentifierOverrideForTCC:(id)a7
+- (CKDApplicationID)initWithApplicationBundleIdentifier:(id)identifier applicationBundleIdentifierOverrideForContainerAccess:(id)access applicationBundleIdentifierOverrideForNetworkAttribution:(id)attribution applicationBundleIdentifierOverrideForPushTopicGeneration:(id)generation applicationBundleIdentifierOverrideForTCC:(id)c
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  accessCopy = access;
+  attributionCopy = attribution;
+  generationCopy = generation;
+  cCopy = c;
   v53 = 0;
   v17 = _CKCheckArgument();
   v18 = 0;
@@ -162,23 +162,23 @@
   v21 = [(CKDApplicationID *)&v52 init];
   if (v21)
   {
-    v22 = objc_msgSend_copy(v12, v19, v20);
+    v22 = objc_msgSend_copy(identifierCopy, v19, v20);
     applicationBundleIdentifier = v21->_applicationBundleIdentifier;
     v21->_applicationBundleIdentifier = v22;
 
-    v26 = objc_msgSend_copy(v13, v24, v25);
+    v26 = objc_msgSend_copy(accessCopy, v24, v25);
     applicationBundleIdentifierOverrideForContainerAccess = v21->_applicationBundleIdentifierOverrideForContainerAccess;
     v21->_applicationBundleIdentifierOverrideForContainerAccess = v26;
 
-    v30 = objc_msgSend_copy(v14, v28, v29);
+    v30 = objc_msgSend_copy(attributionCopy, v28, v29);
     applicationBundleIdentifierOverrideForNetworkAttribution = v21->_applicationBundleIdentifierOverrideForNetworkAttribution;
     v21->_applicationBundleIdentifierOverrideForNetworkAttribution = v30;
 
-    v34 = objc_msgSend_copy(v15, v32, v33);
+    v34 = objc_msgSend_copy(generationCopy, v32, v33);
     applicationBundleIdentifierOverrideForPushTopicGeneration = v21->_applicationBundleIdentifierOverrideForPushTopicGeneration;
     v21->_applicationBundleIdentifierOverrideForPushTopicGeneration = v34;
 
-    v38 = objc_msgSend_copy(v16, v36, v37);
+    v38 = objc_msgSend_copy(cCopy, v36, v37);
     applicationBundleIdentifierOverrideForTCC = v21->_applicationBundleIdentifierOverrideForTCC;
     v21->_applicationBundleIdentifierOverrideForTCC = v38;
   }
@@ -186,10 +186,10 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v40 = 1;
   }
@@ -203,7 +203,7 @@
     }
 
     v7 = objc_msgSend_applicationBundleIdentifier(self, v5, v6);
-    v10 = objc_msgSend_applicationBundleIdentifier(v4, v8, v9);
+    v10 = objc_msgSend_applicationBundleIdentifier(equalCopy, v8, v9);
     isEqualToString = objc_msgSend_isEqualToString_(v7, v11, v10);
 
     if (!isEqualToString)
@@ -212,7 +212,7 @@
     }
 
     v15 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(self, v13, v14);
-    v18 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(v4, v16, v17);
+    v18 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(equalCopy, v16, v17);
     v19 = CKObjectsAreBothNilOrEqual();
 
     if (!v19)
@@ -221,7 +221,7 @@
     }
 
     v22 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(self, v20, v21);
-    v25 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(v4, v23, v24);
+    v25 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(equalCopy, v23, v24);
     v26 = CKObjectsAreBothNilOrEqual();
 
     if (!v26)
@@ -230,13 +230,13 @@
     }
 
     v29 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(self, v27, v28);
-    v32 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(v4, v30, v31);
+    v32 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(equalCopy, v30, v31);
     v33 = CKObjectsAreBothNilOrEqual();
 
     if (v33)
     {
       v36 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(self, v34, v35);
-      v39 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(v4, v37, v38);
+      v39 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(equalCopy, v37, v38);
       v40 = CKObjectsAreBothNilOrEqual();
     }
 
@@ -250,9 +250,9 @@ LABEL_8:
   return v40;
 }
 
-- (CKDApplicationID)initWithCoder:(id)a3
+- (CKDApplicationID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = CKDApplicationID;
   v5 = [(CKDApplicationID *)&v32 init];
@@ -260,31 +260,31 @@ LABEL_8:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_applicationBundleIdentifier);
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
     applicationBundleIdentifier = v5->_applicationBundleIdentifier;
     v5->_applicationBundleIdentifier = v9;
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForContainerAccess);
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v11, v12);
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v11, v12);
     applicationBundleIdentifierOverrideForContainerAccess = v5->_applicationBundleIdentifierOverrideForContainerAccess;
     v5->_applicationBundleIdentifierOverrideForContainerAccess = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForNetworkAttribution);
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v16, v17);
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v16, v17);
     applicationBundleIdentifierOverrideForNetworkAttribution = v5->_applicationBundleIdentifierOverrideForNetworkAttribution;
     v5->_applicationBundleIdentifierOverrideForNetworkAttribution = v19;
 
     v21 = objc_opt_class();
     v22 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForPushTopicGeneration);
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v21, v22);
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v21, v22);
     applicationBundleIdentifierOverrideForPushTopicGeneration = v5->_applicationBundleIdentifierOverrideForPushTopicGeneration;
     v5->_applicationBundleIdentifierOverrideForPushTopicGeneration = v24;
 
     v26 = objc_opt_class();
     v27 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForTCC);
-    v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v26, v27);
+    v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v26, v27);
     applicationBundleIdentifierOverrideForTCC = v5->_applicationBundleIdentifierOverrideForTCC;
     v5->_applicationBundleIdentifierOverrideForTCC = v29;
   }
@@ -292,12 +292,12 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v36 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_applicationBundleIdentifier(self, v4, v5);
   v7 = NSStringFromSelector(sel_applicationBundleIdentifier);
-  objc_msgSend_encodeObject_forKey_(v36, v8, v6, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v6, v7);
 
   v11 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(self, v9, v10);
 
@@ -305,7 +305,7 @@ LABEL_8:
   {
     v14 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(self, v12, v13);
     v15 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForContainerAccess);
-    objc_msgSend_encodeObject_forKey_(v36, v16, v14, v15);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v16, v14, v15);
   }
 
   v17 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(self, v12, v13);
@@ -314,7 +314,7 @@ LABEL_8:
   {
     v20 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(self, v18, v19);
     v21 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForNetworkAttribution);
-    objc_msgSend_encodeObject_forKey_(v36, v22, v20, v21);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v22, v20, v21);
   }
 
   v23 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(self, v18, v19);
@@ -323,29 +323,29 @@ LABEL_8:
   {
     v26 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(self, v24, v25);
     v27 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForPushTopicGeneration);
-    objc_msgSend_encodeObject_forKey_(v36, v28, v26, v27);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v28, v26, v27);
   }
 
   v29 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(self, v24, v25);
 
-  v32 = v36;
+  v32 = coderCopy;
   if (v29)
   {
     v33 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(self, v30, v31);
     v34 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForTCC);
-    objc_msgSend_encodeObject_forKey_(v36, v35, v33, v34);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v35, v33, v34);
 
-    v32 = v36;
+    v32 = coderCopy;
   }
 }
 
-- (CKDApplicationID)initWithSqliteRepresentation:(id)a3
+- (CKDApplicationID)initWithSqliteRepresentation:(id)representation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  representationCopy = representation;
+  if (objc_msgSend_length(representationCopy, v5, v6))
   {
-    v8 = objc_msgSend_dataUsingEncoding_(v4, v7, 4);
+    v8 = objc_msgSend_dataUsingEncoding_(representationCopy, v7, 4);
     v32 = 0;
     v10 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x277CCAAA0], v9, v8, 0, &v32);
     v11 = v32;
@@ -364,7 +364,7 @@ LABEL_8:
         _os_log_error_impl(&dword_22506F000, v28, OS_LOG_TYPE_ERROR, "Error converting JSON data to CKDApplicationID: %@", buf, 0xCu);
       }
 
-      v27 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -385,24 +385,24 @@ LABEL_8:
       v25 = objc_msgSend_objectForKeyedSubscript_(v10, v24, v23);
 
       self = objc_msgSend_initWithApplicationBundleIdentifier_applicationBundleIdentifierOverrideForContainerAccess_applicationBundleIdentifierOverrideForNetworkAttribution_applicationBundleIdentifierOverrideForPushTopicGeneration_applicationBundleIdentifierOverrideForTCC_(self, v26, v31, v16, v19, v22, v25);
-      v27 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
   v29 = *MEMORY[0x277D85DE8];
-  return v27;
+  return selfCopy;
 }
 
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index
 {
-  v6 = a3;
+  statementCopy = statement;
   v10 = objc_msgSend_sqliteRepresentation(self, v7, v8);
-  objc_msgSend_bindText_atIndex_(v6, v9, v10, a4);
+  objc_msgSend_bindText_atIndex_(statementCopy, v9, v10, index);
 }
 
 @end

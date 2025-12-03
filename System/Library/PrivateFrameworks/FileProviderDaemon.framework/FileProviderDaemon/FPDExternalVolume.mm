@@ -1,18 +1,18 @@
 @interface FPDExternalVolume
-- (BOOL)_storeDomainProperties:(id)a3 atURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BOOL)writeDomainsProperties:(id)a3 underDirectoryAtURL:(id)a4 error:(id *)a5;
-- (id)_loadDomainPropertiesAtURL:(id)a3 error:(id *)a4;
-- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)a3 error:(id *)a4;
+- (BOOL)_storeDomainProperties:(id)properties atURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BOOL)writeDomainsProperties:(id)properties underDirectoryAtURL:(id)l error:(id *)error;
+- (id)_loadDomainPropertiesAtURL:(id)l error:(id *)error;
+- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)l error:(id *)error;
 - (void)removeBrokenEbihilLinksFromRoot;
 @end
 
 @implementation FPDExternalVolume
 
-- (id)_loadDomainPropertiesAtURL:(id)a3 error:(id *)a4
+- (id)_loadDomainPropertiesAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v15 = 0;
-  v6 = [MEMORY[0x1E695DEF0] fp_dataWithContentsOfURL:v5 enforceSignatureCheck:1 shouldUpdateXattr:&v15 error:a4];
+  v6 = [MEMORY[0x1E695DEF0] fp_dataWithContentsOfURL:lCopy enforceSignatureCheck:1 shouldUpdateXattr:&v15 error:error];
   if (v6)
   {
     if (v15 == 1)
@@ -25,7 +25,7 @@
       }
 
       v13 = 0;
-      v8 = [v6 fp_writeToURL:v5 withSignature:1 options:1 error:&v13];
+      v8 = [v6 fp_writeToURL:lCopy withSignature:1 options:1 error:&v13];
       v9 = v13;
       if ((v8 & 1) == 0)
       {
@@ -37,7 +37,7 @@
       }
     }
 
-    v11 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:a4];
+    v11 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:error];
   }
 
   else
@@ -48,14 +48,14 @@
   return v11;
 }
 
-- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)a3 error:(id *)a4
+- (id)readDomainsPropertiesUnderDirectoryAtURL:(id)l error:(id *)error
 {
   v70[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v38 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
-  v5 = [@"Domains.plist" stringByDeletingPathExtension];
-  v6 = [@"Domains.plist" pathExtension];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingPathExtension = [@"Domains.plist" stringByDeletingPathExtension];
+  pathExtension = [@"Domains.plist" pathExtension];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = *MEMORY[0x1E695DBB8];
   v41 = *MEMORY[0x1E695DC30];
   v70[0] = *MEMORY[0x1E695DC30];
@@ -66,9 +66,9 @@
   v60 = 3221225472;
   v61 = __68__FPDExternalVolume_readDomainsPropertiesUnderDirectoryAtURL_error___block_invoke;
   v62 = &unk_1E83BEDB8;
-  v63 = v4;
+  v63 = lCopy;
   v35 = v63;
-  v10 = [v7 enumeratorAtURL:? includingPropertiesForKeys:? options:? errorHandler:?];
+  v10 = [defaultManager enumeratorAtURL:? includingPropertiesForKeys:? options:? errorHandler:?];
 
   v57 = 0u;
   v58 = 0u;
@@ -82,8 +82,8 @@
     v45 = *v56;
     *&v11 = 138412546;
     v34 = v11;
-    v36 = v6;
-    v37 = v5;
+    v36 = pathExtension;
+    v37 = stringByDeletingPathExtension;
     do
     {
       v12 = 0;
@@ -106,7 +106,7 @@
           v18 = [v13 getResourceValue:&v53 forKey:v41 error:0];
           v19 = v53;
           v20 = v19;
-          if (v18 && [v19 hasPrefix:v5] && (objc_msgSend(v20, "pathExtension"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v6), v21, v22))
+          if (v18 && [v19 hasPrefix:stringByDeletingPathExtension] && (objc_msgSend(v20, "pathExtension"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", pathExtension), v21, v22))
           {
             v52 = v43;
             v40 = [(FPDExternalVolume *)self _loadDomainPropertiesAtURL:v13 error:&v52];
@@ -115,8 +115,8 @@
             if (v40)
             {
               [v38 addEntriesFromDictionary:?];
-              v23 = self;
-              objc_sync_enter(v23);
+              selfCopy = self;
+              objc_sync_enter(selfCopy);
               v48 = 0u;
               v49 = 0u;
               v50 = 0u;
@@ -135,7 +135,7 @@
                       objc_enumerationMutation(v24);
                     }
 
-                    [(NSMutableDictionary *)v23->_domainPlistNames setObject:v20 forKey:*(*(&v48 + 1) + 8 * i), v34];
+                    [(NSMutableDictionary *)selfCopy->_domainPlistNames setObject:v20 forKey:*(*(&v48 + 1) + 8 * i), v34];
                   }
 
                   v25 = [v24 countByEnumeratingWithState:&v48 objects:v64 count:16];
@@ -144,23 +144,23 @@
                 while (v25);
               }
 
-              v6 = v36;
-              v5 = v37;
-              objc_sync_exit(v23);
+              pathExtension = v36;
+              stringByDeletingPathExtension = v37;
+              objc_sync_exit(selfCopy);
             }
 
             else
             {
-              v23 = fp_current_or_default_log();
-              if (os_log_type_enabled(&v23->super.super, OS_LOG_TYPE_ERROR))
+              selfCopy = fp_current_or_default_log();
+              if (os_log_type_enabled(&selfCopy->super.super, OS_LOG_TYPE_ERROR))
               {
-                v28 = [v13 fp_shortDescription];
-                v29 = [v42 fp_prettyDescription];
+                fp_shortDescription = [v13 fp_shortDescription];
+                fp_prettyDescription = [v42 fp_prettyDescription];
                 *buf = v34;
-                v66 = v28;
+                v66 = fp_shortDescription;
                 v67 = 2112;
-                v68 = v29;
-                _os_log_error_impl(&dword_1CEFC7000, &v23->super.super, OS_LOG_TYPE_ERROR, "[ERROR] Unable to load domain properties from plist at '%@': %@", buf, 0x16u);
+                v68 = fp_prettyDescription;
+                _os_log_error_impl(&dword_1CEFC7000, &selfCopy->super.super, OS_LOG_TYPE_ERROR, "[ERROR] Unable to load domain properties from plist at '%@': %@", buf, 0x16u);
               }
             }
           }
@@ -221,14 +221,14 @@ uint64_t __68__FPDExternalVolume_readDomainsPropertiesUnderDirectoryAtURL_error_
   return 1;
 }
 
-- (BOOL)_storeDomainProperties:(id)a3 atURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)_storeDomainProperties:(id)properties atURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:a6];
+  lCopy = l;
+  v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:properties format:200 options:0 error:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 fp_writeToURL:v9 withSignature:1 options:a5 error:a6];
+    v12 = [v10 fp_writeToURL:lCopy withSignature:1 options:options error:error];
   }
 
   else
@@ -239,18 +239,18 @@ uint64_t __68__FPDExternalVolume_readDomainsPropertiesUnderDirectoryAtURL_error_
   return v12;
 }
 
-- (BOOL)writeDomainsProperties:(id)a3 underDirectoryAtURL:(id)a4 error:(id *)a5
+- (BOOL)writeDomainsProperties:(id)properties underDirectoryAtURL:(id)l error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v38 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  propertiesCopy = properties;
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = v7;
+  v9 = propertiesCopy;
   v10 = [v9 countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v10)
   {
@@ -271,14 +271,14 @@ uint64_t __68__FPDExternalVolume_readDomainsPropertiesUnderDirectoryAtURL_error_
         v49 = v13;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
 
-        v15 = [(NSMutableDictionary *)v8->_domainPlistNames objectForKey:v12];
+        v15 = [(NSMutableDictionary *)selfCopy->_domainPlistNames objectForKey:v12];
 
         if (v15)
         {
-          v16 = [(NSMutableDictionary *)v8->_domainPlistNames objectForKeyedSubscript:v12];
-          v17 = [v38 URLByAppendingPathComponent:v16];
+          v16 = [(NSMutableDictionary *)selfCopy->_domainPlistNames objectForKeyedSubscript:v12];
+          v17 = [lCopy URLByAppendingPathComponent:v16];
 
-          LOBYTE(v16) = [(FPDExternalVolume *)v8 _storeDomainProperties:v14 atURL:v17 options:1 error:a5];
+          LOBYTE(v16) = [(FPDExternalVolume *)selfCopy _storeDomainProperties:v14 atURL:v17 options:1 error:error];
           if ((v16 & 1) == 0)
           {
             goto LABEL_24;
@@ -287,20 +287,20 @@ uint64_t __68__FPDExternalVolume_readDomainsPropertiesUnderDirectoryAtURL_error_
 
         else
         {
-          v18 = [@"Domains.plist" stringByDeletingPathExtension];
-          v19 = [@"Domains.plist" pathExtension];
-          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@.%@", v18, v12, v19];
-          v21 = [v38 URLByAppendingPathComponent:v20 isDirectory:1];
-          if (![(FPDExternalVolume *)v8 _storeDomainProperties:v14 atURL:v21 options:1 error:a5])
+          stringByDeletingPathExtension = [@"Domains.plist" stringByDeletingPathExtension];
+          pathExtension = [@"Domains.plist" pathExtension];
+          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@.%@", stringByDeletingPathExtension, v12, pathExtension];
+          v21 = [lCopy URLByAppendingPathComponent:v20 isDirectory:1];
+          if (![(FPDExternalVolume *)selfCopy _storeDomainProperties:v14 atURL:v21 options:1 error:error])
           {
 
 LABEL_24:
-            objc_sync_exit(v8);
+            objc_sync_exit(selfCopy);
             v32 = 0;
             goto LABEL_25;
           }
 
-          [(NSMutableDictionary *)v8->_domainPlistNames setObject:v20 forKey:v12];
+          [(NSMutableDictionary *)selfCopy->_domainPlistNames setObject:v20 forKey:v12];
         }
       }
 
@@ -318,8 +318,8 @@ LABEL_24:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v22 = [(NSMutableDictionary *)v8->_domainPlistNames allKeys];
-  v23 = [v22 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  allKeys = [(NSMutableDictionary *)selfCopy->_domainPlistNames allKeys];
+  v23 = [allKeys countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v23)
   {
     v24 = *v40;
@@ -329,7 +329,7 @@ LABEL_24:
       {
         if (*v40 != v24)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allKeys);
         }
 
         v26 = *(*(&v39 + 1) + 8 * j);
@@ -338,23 +338,23 @@ LABEL_24:
 
         if (v28)
         {
-          v29 = [(NSMutableDictionary *)v8->_domainPlistNames objectForKeyedSubscript:v26];
-          v30 = [v38 URLByAppendingPathComponent:v29];
+          v29 = [(NSMutableDictionary *)selfCopy->_domainPlistNames objectForKeyedSubscript:v26];
+          v30 = [lCopy URLByAppendingPathComponent:v29];
 
-          v31 = [MEMORY[0x1E696AC08] defaultManager];
-          [v31 removeItemAtURL:v30 error:0];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager removeItemAtURL:v30 error:0];
 
-          [(NSMutableDictionary *)v8->_domainPlistNames removeObjectForKey:v26];
+          [(NSMutableDictionary *)selfCopy->_domainPlistNames removeObjectForKey:v26];
         }
       }
 
-      v23 = [v22 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v39 objects:v47 count:16];
     }
 
     while (v23);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v32 = 1;
 LABEL_25:
 

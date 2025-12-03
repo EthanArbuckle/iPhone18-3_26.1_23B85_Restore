@@ -1,20 +1,20 @@
 @interface AADeviceProvisioningSession
-- (AADeviceProvisioningSession)initWithAccount:(id)a3;
-- (AADeviceProvisioningSession)initWithDSID:(id)a3;
+- (AADeviceProvisioningSession)initWithAccount:(id)account;
+- (AADeviceProvisioningSession)initWithDSID:(id)d;
 - (id)deviceProvisioningInfo;
 - (int)eraseProvisioning;
-- (int)provisionDeviceWithData:(id)a3;
-- (int)synchronizeProvisioningWithData:(id)a3;
-- (void)addProvisioningInfoToAARequest:(id)a3 withFallback:(BOOL)a4;
-- (void)addProvisioningInfoToURLRequest:(id)a3 sendEmptyValues:(BOOL)a4;
+- (int)provisionDeviceWithData:(id)data;
+- (int)synchronizeProvisioningWithData:(id)data;
+- (void)addProvisioningInfoToAARequest:(id)request withFallback:(BOOL)fallback;
+- (void)addProvisioningInfoToURLRequest:(id)request sendEmptyValues:(BOOL)values;
 @end
 
 @implementation AADeviceProvisioningSession
 
-- (AADeviceProvisioningSession)initWithDSID:(id)a3
+- (AADeviceProvisioningSession)initWithDSID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = _AALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -30,10 +30,10 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dsid, a3);
-    v9 = [v5 longLongValue];
-    v8->_dsidNumber = v9;
-    if (!v9)
+    objc_storeStrong(&v7->_dsid, d);
+    longLongValue = [dCopy longLongValue];
+    v8->_dsidNumber = longLongValue;
+    if (!longLongValue)
     {
       v10 = _AALogSystem();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -47,60 +47,60 @@
   return v8;
 }
 
-- (AADeviceProvisioningSession)initWithAccount:(id)a3
+- (AADeviceProvisioningSession)initWithAccount:(id)account
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     [(AADeviceProvisioningSession *)a2 initWithAccount:?];
   }
 
-  v6 = [v5 aa_personID];
-  v7 = [(AADeviceProvisioningSession *)self initWithDSID:v6];
+  aa_personID = [accountCopy aa_personID];
+  v7 = [(AADeviceProvisioningSession *)self initWithDSID:aa_personID];
 
   return v7;
 }
 
-- (void)addProvisioningInfoToAARequest:(id)a3 withFallback:(BOOL)a4
+- (void)addProvisioningInfoToAARequest:(id)request withFallback:(BOOL)fallback
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(AADeviceProvisioningSession *)self deviceProvisioningInfo];
-  v7 = v6;
-  if (v6)
+  fallbackCopy = fallback;
+  requestCopy = request;
+  deviceProvisioningInfo = [(AADeviceProvisioningSession *)self deviceProvisioningInfo];
+  v7 = deviceProvisioningInfo;
+  if (deviceProvisioningInfo)
   {
-    v8 = [v6 objectForKeyedSubscript:@"mid_data"];
-    [v10 setDeviceProvisioningMachineId:v8];
+    v8 = [deviceProvisioningInfo objectForKeyedSubscript:@"mid_data"];
+    [requestCopy setDeviceProvisioningMachineId:v8];
 
     v9 = [v7 objectForKeyedSubscript:@"otp_data"];
-    [v10 setDeviceProvisioningOneTimePassword:v9];
+    [requestCopy setDeviceProvisioningOneTimePassword:v9];
   }
 
-  else if (v4)
+  else if (fallbackCopy)
   {
-    [v10 setDeviceProvisioningOneTimePassword:&stru_1F2EF6280];
-    [v10 setDeviceProvisioningMachineId:&stru_1F2EF6280];
+    [requestCopy setDeviceProvisioningOneTimePassword:&stru_1F2EF6280];
+    [requestCopy setDeviceProvisioningMachineId:&stru_1F2EF6280];
   }
 }
 
-- (void)addProvisioningInfoToURLRequest:(id)a3 sendEmptyValues:(BOOL)a4
+- (void)addProvisioningInfoToURLRequest:(id)request sendEmptyValues:(BOOL)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(AADeviceProvisioningSession *)self deviceProvisioningInfo];
+  requestCopy = request;
+  deviceProvisioningInfo = [(AADeviceProvisioningSession *)self deviceProvisioningInfo];
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67109120;
-    v13[1] = v4;
+    v13[1] = valuesCopy;
     _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Adding HSA info to request. sendEmptyValues = %d", v13, 8u);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"mid_data"];
-  v10 = [v7 objectForKeyedSubscript:@"otp_data"];
+  v9 = [deviceProvisioningInfo objectForKeyedSubscript:@"mid_data"];
+  v10 = [deviceProvisioningInfo objectForKeyedSubscript:@"otp_data"];
   v11 = v10;
-  if (v4)
+  if (valuesCopy)
   {
     if (!v9)
     {
@@ -118,11 +118,11 @@
     goto LABEL_11;
   }
 
-  [v6 setValue:v9 forHTTPHeaderField:@"X-Apple-MD-M"];
+  [requestCopy setValue:v9 forHTTPHeaderField:@"X-Apple-MD-M"];
 LABEL_11:
   if (v11)
   {
-    [v6 setValue:v11 forHTTPHeaderField:@"X-Apple-MD"];
+    [requestCopy setValue:v11 forHTTPHeaderField:@"X-Apple-MD"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -222,10 +222,10 @@ LABEL_21:
   return v10;
 }
 
-- (int)provisionDeviceWithData:(id)a3
+- (int)provisionDeviceWithData:(id)data
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -236,8 +236,8 @@ LABEL_21:
   v47 = 0;
   v48 = 0;
   dsidNumber = self->_dsidNumber;
-  v7 = v4;
-  rsegvyrt87(dsidNumber, [v4 bytes], objc_msgSend(v4, "length"), &v48, &v47 + 4, &v47);
+  v7 = dataCopy;
+  rsegvyrt87(dsidNumber, [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v48, &v47 + 4, &v47);
   v9 = v8;
   v10 = v8 == 0;
   v11 = _AALogSystem();
@@ -252,9 +252,9 @@ LABEL_21:
 
     v11 = [MEMORY[0x1E695DEF0] dataWithBytes:v48 length:HIDWORD(v47)];
     v13 = +[AAURLConfiguration urlConfiguration];
-    v14 = [v13 finishProvisioningURL];
+    finishProvisioningURL = [v13 finishProvisioningURL];
 
-    v15 = [[AADeviceProvisioningRequest alloc] initWithDSID:self->_dsid URLString:v14 requestData:v11];
+    v15 = [[AADeviceProvisioningRequest alloc] initWithDSID:self->_dsid URLString:finishProvisioningURL requestData:v11];
     v16 = v15;
     if (self->_cookieStorageRef)
     {
@@ -468,10 +468,10 @@ void __55__AADeviceProvisioningSession_provisionDeviceWithData___block_invoke(ui
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (int)synchronizeProvisioningWithData:(id)a3
+- (int)synchronizeProvisioningWithData:(id)data
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -483,10 +483,10 @@ void __55__AADeviceProvisioningSession_provisionDeviceWithData___block_invoke(ui
   *buf = 0;
   v24 = 0;
   dsidNumber = self->_dsidNumber;
-  v7 = [v4 bytes];
-  v8 = [v4 length];
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
 
-  tn46gtiuhw(dsidNumber, v7, v8, buf, &v24 + 4, &v25, &v24);
+  tn46gtiuhw(dsidNumber, bytes, v8, buf, &v24 + 4, &v25, &v24);
   v10 = v9;
   v11 = _AALogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -512,9 +512,9 @@ void __55__AADeviceProvisioningSession_provisionDeviceWithData___block_invoke(ui
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
     v14 = [v13 initWithBytes:*buf length:HIDWORD(v24) encoding:0];
     v15 = +[AAURLConfiguration urlConfiguration];
-    v16 = [v15 syncMachineURL];
+    syncMachineURL = [v15 syncMachineURL];
 
-    v17 = [[AADeviceProvisioningRequest alloc] initWithDSID:self->_dsid URLString:v16 requestData:v11];
+    v17 = [[AADeviceProvisioningRequest alloc] initWithDSID:self->_dsid URLString:syncMachineURL requestData:v11];
     [(AARequest *)v17 setDeviceProvisioningMachineId:v14];
     if (self->_cookieStorageRef)
     {

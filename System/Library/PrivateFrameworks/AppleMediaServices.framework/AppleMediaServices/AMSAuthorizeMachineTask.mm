@@ -1,36 +1,36 @@
 @interface AMSAuthorizeMachineTask
 + (AMSBagKeySet)bagKeySet;
 + (id)createBagForSubProfile;
-- (AMSAuthorizeMachineTask)initWithAccount:(id)a3 authorizeReason:(unint64_t)a4 bag:(id)a5;
-- (AMSAuthorizeMachineTask)initWithUsername:(id)a3 authorizeReason:(unint64_t)a4 bag:(id)a5 presentationDelegate:(id)a6;
+- (AMSAuthorizeMachineTask)initWithAccount:(id)account authorizeReason:(unint64_t)reason bag:(id)bag;
+- (AMSAuthorizeMachineTask)initWithUsername:(id)username authorizeReason:(unint64_t)reason bag:(id)bag presentationDelegate:(id)delegate;
 - (AMSRequestPresentationDelegate)presentationDelegate;
 - (id)_authenticate;
 - (id)_buildRequest;
-- (id)_buildRequestParametersWithError:(id *)a3;
+- (id)_buildRequestParametersWithError:(id *)error;
 - (id)_buildRequestTask;
 - (id)_checkRequestThrottle;
-- (id)_keybagSyncStringForAccount:(id)a3 withTransactionType:(unsigned int)a4 error:(id *)a5;
+- (id)_keybagSyncStringForAccount:(id)account withTransactionType:(unsigned int)type error:(id *)error;
 - (id)_performAuthorization;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSAuthorizeMachineTask
 
-- (AMSAuthorizeMachineTask)initWithAccount:(id)a3 authorizeReason:(unint64_t)a4 bag:(id)a5
+- (AMSAuthorizeMachineTask)initWithAccount:(id)account authorizeReason:(unint64_t)reason bag:(id)bag
 {
-  v9 = a3;
-  v10 = a5;
+  accountCopy = account;
+  bagCopy = bag;
   v16.receiver = self;
   v16.super_class = AMSAuthorizeMachineTask;
   v11 = [(AMSTask *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_validAccount, a3);
-    v12->_authorizeReason = a4;
-    objc_storeStrong(&v12->_bag, a5);
+    objc_storeStrong(&v11->_validAccount, account);
+    v12->_authorizeReason = reason;
+    objc_storeStrong(&v12->_bag, bag);
     v13 = AMSGenerateLogCorrelationKey();
     logKey = v12->_logKey;
     v12->_logKey = v13;
@@ -39,11 +39,11 @@
   return v12;
 }
 
-- (AMSAuthorizeMachineTask)initWithUsername:(id)a3 authorizeReason:(unint64_t)a4 bag:(id)a5 presentationDelegate:(id)a6
+- (AMSAuthorizeMachineTask)initWithUsername:(id)username authorizeReason:(unint64_t)reason bag:(id)bag presentationDelegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(AMSAuthorizeMachineTask *)self initWithAccount:0 authorizeReason:a4 bag:a5];
+  usernameCopy = username;
+  delegateCopy = delegate;
+  v12 = [(AMSAuthorizeMachineTask *)self initWithAccount:0 authorizeReason:reason bag:bag];
   if (v12)
   {
     v13 = objc_alloc_init(AMSAuthenticateOptions);
@@ -51,14 +51,14 @@
     [(AMSAuthenticateOptions *)v13 setCanMakeAccountActive:0];
     [(AMSAuthenticateOptions *)v13 setCredentialSource:2];
     [(AMSAuthenticateOptions *)v13 setDebugReason:@"Apple ID authentication for machine task authorization"];
-    v14 = [[AMSAuthenticateRequest alloc] initWithDSID:0 altDSID:0 username:v10 options:v13];
-    v15 = [(AMSAuthorizeMachineTask *)v12 logKey];
-    [(AMSAuthenticateRequest *)v14 setLogKey:v15];
+    v14 = [[AMSAuthenticateRequest alloc] initWithDSID:0 altDSID:0 username:usernameCopy options:v13];
+    logKey = [(AMSAuthorizeMachineTask *)v12 logKey];
+    [(AMSAuthenticateRequest *)v14 setLogKey:logKey];
 
     authenticateRequest = v12->_authenticateRequest;
     v12->_authenticateRequest = v14;
 
-    objc_storeWeak(&v12->_presentationDelegate, v11);
+    objc_storeWeak(&v12->_presentationDelegate, delegateCopy);
   }
 
   return v12;
@@ -66,16 +66,16 @@
 
 - (id)_performAuthorization
 {
-  v3 = [(AMSAuthorizeMachineTask *)self _checkRequestThrottle];
+  _checkRequestThrottle = [(AMSAuthorizeMachineTask *)self _checkRequestThrottle];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__AMSAuthorizeMachineTask__performAuthorization__block_invoke;
   v7[3] = &unk_1E73B3F70;
   v7[4] = self;
-  v4 = [v3 thenWithBlock:v7];
-  v5 = [v4 binaryPromiseAdapter];
+  v4 = [_checkRequestThrottle thenWithBlock:v7];
+  binaryPromiseAdapter = [v4 binaryPromiseAdapter];
 
-  return v5;
+  return binaryPromiseAdapter;
 }
 
 id __48__AMSAuthorizeMachineTask__performAuthorization__block_invoke(uint64_t a1)
@@ -163,36 +163,36 @@ LABEL_14:
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(AMSAuthorizeMachineTask *)self presentationDelegate];
-  [v10 handleAuthenticateRequest:v9 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  presentationDelegate = [(AMSAuthorizeMachineTask *)self presentationDelegate];
+  [presentationDelegate handleAuthenticateRequest:requestCopy completion:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(AMSAuthorizeMachineTask *)self presentationDelegate];
-  [v10 handleDialogRequest:v9 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  presentationDelegate = [(AMSAuthorizeMachineTask *)self presentationDelegate];
+  [presentationDelegate handleDialogRequest:requestCopy completion:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    v6 = a6;
+    completionCopy = completion;
     v7 = AMSError(12, @"Engagement request not supported", @"Engagement request not supported on authorize machine calls.", 0);
-    v6[2](v6, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 }
 
@@ -207,17 +207,17 @@ LABEL_14:
     v6 = [(AMSAuthorizeMachineTask *)self bag];
     v7 = [(AMSURLRequestEncoder *)v5 initWithBag:v6];
 
-    v8 = [(AMSAuthorizeMachineTask *)self validAccount];
-    [(AMSURLRequestEncoder *)v7 setAccount:v8];
+    validAccount = [(AMSAuthorizeMachineTask *)self validAccount];
+    [(AMSURLRequestEncoder *)v7 setAccount:validAccount];
 
-    v9 = [(AMSAuthorizeMachineTask *)self clientInfo];
-    [(AMSURLRequestEncoder *)v7 setClientInfo:v9];
+    clientInfo = [(AMSAuthorizeMachineTask *)self clientInfo];
+    [(AMSURLRequestEncoder *)v7 setClientInfo:clientInfo];
 
     [(AMSURLRequestEncoder *)v7 setAnisetteType:1];
     v10 = [(AMSAuthorizeMachineTask *)self bag];
-    v11 = [(AMSAuthorizeMachineTask *)self isDeauthorize];
+    isDeauthorize = [(AMSAuthorizeMachineTask *)self isDeauthorize];
     v12 = AMSBagKeyDeauthorizeMachineURL;
-    if (!v11)
+    if (!isDeauthorize)
     {
       v12 = AMSBagKeyAuthorizeMachineURL;
     }
@@ -263,7 +263,7 @@ id __40__AMSAuthorizeMachineTask__buildRequest__block_invoke(uint64_t a1, void *
   return v7;
 }
 
-- (id)_buildRequestParametersWithError:(id *)a3
+- (id)_buildRequestParametersWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([(AMSAuthorizeMachineTask *)self authorizeReason]== 2)
@@ -276,25 +276,25 @@ id __40__AMSAuthorizeMachineTask__buildRequest__block_invoke(uint64_t a1, void *
     v6 = 1;
   }
 
-  v7 = [(AMSAuthorizeMachineTask *)self validAccount];
-  v8 = [(AMSAuthorizeMachineTask *)self _keybagSyncStringForAccount:v7 withTransactionType:v6 error:a3];
+  validAccount = [(AMSAuthorizeMachineTask *)self validAccount];
+  v8 = [(AMSAuthorizeMachineTask *)self _keybagSyncStringForAccount:validAccount withTransactionType:v6 error:error];
 
   if (v8)
   {
     [v5 setObject:v8 forKeyedSubscript:@"kbsync"];
     v9 = +[AMSDevice deviceGUID];
-    v10 = [v9 uppercaseString];
-    [v5 setObject:v10 forKeyedSubscript:@"guid"];
+    uppercaseString = [v9 uppercaseString];
+    [v5 setObject:uppercaseString forKeyedSubscript:@"guid"];
 
     v11 = +[AMSDevice deviceName];
     [v5 setObject:v11 forKeyedSubscript:@"machineName"];
 
-    v12 = [(AMSAuthorizeMachineTask *)self validAccount];
-    v13 = [v12 ams_DSID];
-    [v5 setObject:v13 forKeyedSubscript:@"ownerDsid"];
+    validAccount2 = [(AMSAuthorizeMachineTask *)self validAccount];
+    ams_DSID = [validAccount2 ams_DSID];
+    [v5 setObject:ams_DSID forKeyedSubscript:@"ownerDsid"];
 
-    v14 = [(AMSAuthorizeMachineTask *)self authorizeReason];
-    if (v14 == 1)
+    authorizeReason = [(AMSAuthorizeMachineTask *)self authorizeReason];
+    if (authorizeReason == 1)
     {
       v15 = @"family";
     }
@@ -304,7 +304,7 @@ id __40__AMSAuthorizeMachineTask__buildRequest__block_invoke(uint64_t a1, void *
       v15 = 0;
     }
 
-    if (v14 == 2)
+    if (authorizeReason == 2)
     {
       v15 = @"refetch";
     }
@@ -312,8 +312,8 @@ id __40__AMSAuthorizeMachineTask__buildRequest__block_invoke(uint64_t a1, void *
     if (v15)
     {
       v16 = v15;
-      v17 = [(AMSAuthorizeMachineTask *)self authorizeReason];
-      if (v17 == 1)
+      authorizeReason2 = [(AMSAuthorizeMachineTask *)self authorizeReason];
+      if (authorizeReason2 == 1)
       {
         v18 = @"family";
       }
@@ -323,7 +323,7 @@ id __40__AMSAuthorizeMachineTask__buildRequest__block_invoke(uint64_t a1, void *
         v18 = 0;
       }
 
-      if (v17 == 2)
+      if (authorizeReason2 == 2)
       {
         v19 = @"refetch";
       }
@@ -349,14 +349,14 @@ id __40__AMSAuthorizeMachineTask__buildRequest__block_invoke(uint64_t a1, void *
 
 - (id)_authenticate
 {
-  v3 = [(AMSAuthorizeMachineTask *)self presentationDelegate];
-  if (v3 && (v4 = v3, [(AMSAuthorizeMachineTask *)self authenticateRequest], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  presentationDelegate = [(AMSAuthorizeMachineTask *)self presentationDelegate];
+  if (presentationDelegate && (v4 = presentationDelegate, [(AMSAuthorizeMachineTask *)self authenticateRequest], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_alloc_init(AMSPromise);
-    v7 = [(AMSAuthorizeMachineTask *)self presentationDelegate];
-    v8 = [(AMSAuthorizeMachineTask *)self authenticateRequest];
-    v9 = [(AMSPromise *)v6 completionHandlerAdapter];
-    [v7 handleAuthenticateRequest:v8 completion:v9];
+    presentationDelegate2 = [(AMSAuthorizeMachineTask *)self presentationDelegate];
+    authenticateRequest = [(AMSAuthorizeMachineTask *)self authenticateRequest];
+    completionHandlerAdapter = [(AMSPromise *)v6 completionHandlerAdapter];
+    [presentationDelegate2 handleAuthenticateRequest:authenticateRequest completion:completionHandlerAdapter];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -412,22 +412,22 @@ LABEL_9:
 
 - (id)_buildRequestTask
 {
-  v3 = [(AMSAuthorizeMachineTask *)self authenticateRequest];
+  authenticateRequest = [(AMSAuthorizeMachineTask *)self authenticateRequest];
 
-  if (v3)
+  if (authenticateRequest)
   {
-    v4 = [(AMSAuthorizeMachineTask *)self _authenticate];
+    _authenticate = [(AMSAuthorizeMachineTask *)self _authenticate];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__AMSAuthorizeMachineTask__buildRequestTask__block_invoke;
     v9[3] = &unk_1E73B3F98;
     v9[4] = self;
-    v5 = [v4 thenWithBlock:v9];
+    _buildRequest = [_authenticate thenWithBlock:v9];
   }
 
   else
   {
-    v5 = [(AMSAuthorizeMachineTask *)self _buildRequest];
+    _buildRequest = [(AMSAuthorizeMachineTask *)self _buildRequest];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -435,7 +435,7 @@ LABEL_9:
   v8[2] = __44__AMSAuthorizeMachineTask__buildRequestTask__block_invoke_2;
   v8[3] = &unk_1E73B3510;
   v8[4] = self;
-  v6 = [v5 thenWithBlock:v8];
+  v6 = [_buildRequest thenWithBlock:v8];
 
   return v6;
 }
@@ -559,9 +559,9 @@ void __44__AMSAuthorizeMachineTask__buildRequestTask__block_invoke_3(uint64_t a1
   else
   {
     v4 = [(AMSBagProtocol *)self->_bag integerForKey:@"min-keybag-repair-interval-seconds"];
-    v5 = [v4 valuePromise];
+    valuePromise = [v4 valuePromise];
 
-    v3 = [v5 thenWithBlock:&__block_literal_global_13];
+    v3 = [valuePromise thenWithBlock:&__block_literal_global_13];
   }
 
   return v3;
@@ -595,17 +595,17 @@ id __48__AMSAuthorizeMachineTask__checkRequestThrottle__block_invoke(uint64_t a1
   return v9;
 }
 
-- (id)_keybagSyncStringForAccount:(id)a3 withTransactionType:(unsigned int)a4 error:(id *)a5
+- (id)_keybagSyncStringForAccount:(id)account withTransactionType:(unsigned int)type error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&type;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  accountCopy = account;
   v8 = +[AMSKeybag sharedInstance];
-  v9 = [v7 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  if (v9)
+  if (ams_DSID)
   {
-    v10 = v9;
+    v10 = ams_DSID;
   }
 
   else
@@ -625,8 +625,8 @@ id __48__AMSAuthorizeMachineTask__checkRequestThrottle__block_invoke(uint64_t a1
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       v16 = AMSLogKey();
@@ -636,13 +636,13 @@ id __48__AMSAuthorizeMachineTask__checkRequestThrottle__block_invoke(uint64_t a1
       v24 = v16;
       v25 = 2114;
       v26 = v12;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain keybag data for account error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain keybag data for account error: %{public}@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 

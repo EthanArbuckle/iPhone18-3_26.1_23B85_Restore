@@ -1,18 +1,18 @@
 @interface RAPSearchResultIncorrectQuestion
-+ (id)localizedTitleForResultCount:(unint64_t)a3;
-- (RAPSearchResultIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 searchResultsCount:(unint64_t)a5;
++ (id)localizedTitleForResultCount:(unint64_t)count;
+- (RAPSearchResultIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question searchResultsCount:(unint64_t)count;
 @end
 
 @implementation RAPSearchResultIncorrectQuestion
 
-- (RAPSearchResultIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 searchResultsCount:(unint64_t)a5
+- (RAPSearchResultIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question searchResultsCount:(unint64_t)count
 {
   v13.receiver = self;
   v13.super_class = RAPSearchResultIncorrectQuestion;
-  v6 = [(RAPCommentQuestion *)&v13 initWithReport:a3 parentQuestion:a4];
+  v6 = [(RAPCommentQuestion *)&v13 initWithReport:report parentQuestion:question];
   if (v6)
   {
-    v7 = [objc_opt_class() localizedTitleForResultCount:a5];
+    v7 = [objc_opt_class() localizedTitleForResultCount:count];
     localizedTitle = v6->_localizedTitle;
     v6->_localizedTitle = v7;
 
@@ -25,11 +25,11 @@
   return v6;
 }
 
-+ (id)localizedTitleForResultCount:(unint64_t)a3
++ (id)localizedTitleForResultCount:(unint64_t)count
 {
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (a3 == 1)
+  if (count == 1)
   {
     v6 = @"Unexpected Result [Report a Problem category]";
   }

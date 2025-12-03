@@ -1,14 +1,14 @@
 @interface DebugFormatConsolePaneViewController
-- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DebugFormatConsolePaneViewController
 
-- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed36DebugFormatConsolePaneViewController_styler;
   type metadata accessor for DebugFormatStyler();
@@ -24,31 +24,31 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6EE36F8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(DebugFormatConsolePaneViewController *)&v7 viewWillAppear:v3];
-  v5 = [*&v4[OBJC_IVAR____TtC8NewsFeed36DebugFormatConsolePaneViewController_logViewController] toolbar];
-  sub_1D71CD8F4(v5);
+  [(DebugFormatConsolePaneViewController *)&v7 viewWillAppear:appearCopy];
+  toolbar = [*&v4[OBJC_IVAR____TtC8NewsFeed36DebugFormatConsolePaneViewController_logViewController] toolbar];
+  sub_1D71CD8F4(toolbar);
 
-  v6 = [*&v4[OBJC_IVAR____TtC8NewsFeed36DebugFormatConsolePaneViewController_debuggerPaneViewController] toolbar];
-  sub_1D71CD8F4(v6);
+  toolbar2 = [*&v4[OBJC_IVAR____TtC8NewsFeed36DebugFormatConsolePaneViewController_debuggerPaneViewController] toolbar];
+  sub_1D71CD8F4(toolbar2);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6EE3BF0();
 }
 
-- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed36DebugFormatConsolePaneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

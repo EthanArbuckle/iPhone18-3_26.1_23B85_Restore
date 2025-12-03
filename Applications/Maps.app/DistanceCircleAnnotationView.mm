@@ -1,6 +1,6 @@
 @interface DistanceCircleAnnotationView
 - (void)_updateFromMap;
-- (void)setDistanceRadius:(double)a3;
+- (void)setDistanceRadius:(double)radius;
 @end
 
 @implementation DistanceCircleAnnotationView
@@ -14,9 +14,9 @@
   [(DistanceCircleAnnotationView *)&v3 _updateFromMap];
 }
 
-- (void)setDistanceRadius:(double)a3
+- (void)setDistanceRadius:(double)radius
 {
-  self->_distanceRadius = a3;
+  self->_distanceRadius = radius;
   [(DistanceCircleAnnotationView *)self _pointsForDistance:?];
 
   [(CircleAnnotationView *)self setRadius:?];

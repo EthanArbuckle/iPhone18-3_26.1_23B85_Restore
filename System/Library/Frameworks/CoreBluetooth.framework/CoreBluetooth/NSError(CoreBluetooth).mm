@@ -9,19 +9,19 @@
   v3 = a3;
   v4 = [v3 objectForKeyedSubscript:@"kCBMsgArgResult"];
   v5 = @"CBErrorDomain";
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [v4 integerValue];
-  if (v7 > 901)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  integerValue = [v4 integerValue];
+  if (integerValue > 901)
   {
-    if (v7 > 1699)
+    if (integerValue > 1699)
     {
-      if (v7 <= 1899)
+      if (integerValue <= 1899)
       {
-        if (v7 > 1801)
+        if (integerValue > 1801)
         {
-          if (v7 <= 1804)
+          if (integerValue <= 1804)
           {
-            if (v7 == 1802)
+            if (integerValue == 1802)
             {
               v60 = @"CBInternalErrorDomain";
 
@@ -32,7 +32,7 @@
 
             else
             {
-              if (v7 == 1803)
+              if (integerValue == 1803)
               {
                 v15 = @"CBInternalErrorDomain";
 
@@ -54,7 +54,7 @@
             goto LABEL_165;
           }
 
-          switch(v7)
+          switch(integerValue)
           {
             case 1805:
               v62 = @"CBInternalErrorDomain";
@@ -82,9 +82,9 @@
 
         else
         {
-          if (v7 <= 1702)
+          if (integerValue <= 1702)
           {
-            if (v7 == 1700)
+            if (integerValue == 1700)
             {
               v59 = @"CBInternalErrorDomain";
 
@@ -95,7 +95,7 @@
 
             else
             {
-              if (v7 == 1701)
+              if (integerValue == 1701)
               {
                 v13 = @"CBInternalErrorDomain";
 
@@ -117,7 +117,7 @@
             goto LABEL_165;
           }
 
-          switch(v7)
+          switch(integerValue)
           {
             case 1703:
               v61 = @"CBInternalErrorDomain";
@@ -144,11 +144,11 @@
         }
       }
 
-      else if (v7 <= 2499)
+      else if (integerValue <= 2499)
       {
-        if (v7 <= 1902)
+        if (integerValue <= 1902)
         {
-          if (v7 == 1900)
+          if (integerValue == 1900)
           {
             v57 = @"CBInternalErrorDomain";
 
@@ -159,7 +159,7 @@
 
           else
           {
-            if (v7 == 1901)
+            if (integerValue == 1901)
             {
               v14 = @"CBInternalErrorDomain";
 
@@ -181,7 +181,7 @@
           goto LABEL_165;
         }
 
-        switch(v7)
+        switch(integerValue)
         {
           case 1903:
             v58 = @"CBInternalErrorDomain";
@@ -210,9 +210,9 @@ LABEL_146:
 
       else
       {
-        if (v7 <= 2502)
+        if (integerValue <= 2502)
         {
-          if (v7 == 2500)
+          if (integerValue == 2500)
           {
             v64 = @"CBInternalErrorDomain";
 
@@ -223,7 +223,7 @@ LABEL_146:
 
           else
           {
-            if (v7 == 2501)
+            if (integerValue == 2501)
             {
               v20 = @"CBInternalErrorDomain";
 
@@ -245,9 +245,9 @@ LABEL_146:
           goto LABEL_165;
         }
 
-        if (v7 <= 2504)
+        if (integerValue <= 2504)
         {
-          if (v7 == 2503)
+          if (integerValue == 2503)
           {
             v12 = @"CBInternalErrorDomain";
 
@@ -267,7 +267,7 @@ LABEL_146:
           goto LABEL_165;
         }
 
-        if (v7 == 2505)
+        if (integerValue == 2505)
         {
           v63 = @"CBInternalErrorDomain";
 
@@ -277,7 +277,7 @@ LABEL_146:
           goto LABEL_165;
         }
 
-        if (v7 == 2506)
+        if (integerValue == 2506)
         {
           v21 = @"CBInternalErrorDomain";
 
@@ -291,9 +291,9 @@ LABEL_146:
 
     else
     {
-      if (v7 <= 1499)
+      if (integerValue <= 1499)
       {
-        switch(v7)
+        switch(integerValue)
         {
           case 902:
           case 905:
@@ -414,7 +414,7 @@ LABEL_114:
         goto LABEL_165;
       }
 
-      switch(v7)
+      switch(integerValue)
       {
         case 1500:
           v68 = @"CBInternalErrorDomain";
@@ -474,7 +474,7 @@ LABEL_164:
   v10 = 0;
   v8 = @"One or more parameters were invalid.";
   v9 = 1;
-  switch(v7)
+  switch(integerValue)
   {
     case 0:
       goto LABEL_166;
@@ -608,7 +608,7 @@ LABEL_104:
       v27 = @"CBInternalErrorDomain";
 
       v28 = [v3 objectForKeyedSubscript:@"kCBMsgArgDeviceOriginalUUID"];
-      [v6 setObject:v28 forKeyedSubscript:@"CBOriginalPeerIdentifierErrorKey"];
+      [dictionary setObject:v28 forKeyedSubscript:@"CBOriginalPeerIdentifierErrorKey"];
 
       v8 = @"Pairing failed as this device is already paired.";
 LABEL_133:
@@ -717,10 +717,10 @@ LABEL_108:
       v49 = @"CBInternalErrorDomain";
 
       v50 = [v3 objectForKeyedSubscript:@"kCBMsgArgNumberOfConnectedDevicesForUseCase"];
-      [v6 setObject:v50 forKeyedSubscript:@"CBNumberOfConnectionsForUseCase"];
+      [dictionary setObject:v50 forKeyedSubscript:@"CBNumberOfConnectionsForUseCase"];
 
       v51 = [v3 objectForKeyedSubscript:@"kCBMsgArgUseCase"];
-      [v6 setObject:v51 forKeyedSubscript:@"CBConnectionUseCase"];
+      [dictionary setObject:v51 forKeyedSubscript:@"CBConnectionUseCase"];
 
       v8 = @"The system has reached the maximum number of connections for this use case";
 LABEL_130:
@@ -788,8 +788,8 @@ LABEL_130:
   }
 
 LABEL_165:
-  [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v5 code:v9 userInfo:v6];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:v5 code:v9 userInfo:dictionary];
 LABEL_166:
 
   return v10;

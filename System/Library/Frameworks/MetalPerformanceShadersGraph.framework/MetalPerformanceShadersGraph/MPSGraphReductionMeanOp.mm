@@ -1,23 +1,23 @@
 @interface MPSGraphReductionMeanOp
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphReductionMeanOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphReductionMeanOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphReductionOps.mm", v28);
-  v11 = v10;
+  v11 = nameCopy;
   v35 = 260;
   v34[0] = v28;
-  StringAttr = mlir::Builder::getStringAttr(a3, v34);
+  StringAttr = mlir::Builder::getStringAttr(builder, v34);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x11Au, 0);
   if (v11)
   {
-    v15 = [v11 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v11 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -32,7 +32,7 @@
     v33[5] = v16;
     if (v16)
     {
-      memmove(&__dst, v15, v16);
+      memmove(&__dst, uTF8String, v16);
     }
 
     v18 = &__dst + v17;
@@ -47,7 +47,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -63,7 +63,7 @@
   }
 
   LOBYTE(v35) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v34);
+  v21 = mlir::Builder::getStringAttr(builder, v34);
   v22 = mlir::NameLoc::get(v21, v14);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -79,9 +79,9 @@ LABEL_16:
 
 LABEL_21:
       operator delete(v28[0]);
-      v23 = *a5;
-      v24 = *(a5 + 1);
-      if (v24 - *a5 >= 9)
+      v23 = *values;
+      v24 = *(values + 1);
+      if (v24 - *values >= 9)
       {
         goto LABEL_18;
       }
@@ -103,9 +103,9 @@ LABEL_21:
   }
 
 LABEL_17:
-  v23 = *a5;
-  v24 = *(a5 + 1);
-  if (v24 - *a5 >= 9)
+  v23 = *values;
+  v24 = *(values + 1);
+  if (v24 - *values >= 9)
   {
 LABEL_18:
     v25 = v23[1];
@@ -122,27 +122,27 @@ LABEL_23:
   }
 
   __p.__r_.__value_.__s.__data_[0] = 1;
-  *&__dst = mlir::OpBuilder::create<mlir::mps::ReductionMeanOp,mlir::Value &,mlir::Value &,BOOL>(a3, v22, v23, v34, &__p) - 16;
+  *&__dst = mlir::OpBuilder::create<mlir::mps::ReductionMeanOp,mlir::Value &,mlir::Value &,BOOL>(builder, v22, v23, v34, &__p) - 16;
   DefiningOp = mlir::Value::getDefiningOp(&__dst);
 
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
   v12 = objc_loadWeakRetained(&self->super.super._graph);
-  v31 = v9;
-  v13 = [v12 shapeOfTensor:v9 name:@"ShapeForReductionGrad"];
-  v32 = [v12 broadcastTensor:v10 toShapeTensor:v13 name:@"Broadcast to input shape"];
+  v31 = tensorCopy;
+  v13 = [v12 shapeOfTensor:tensorCopy name:@"ShapeForReductionGrad"];
+  v32 = [v12 broadcastTensor:gradientCopy toShapeTensor:v13 name:@"Broadcast to input shape"];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._graph);
   axes = self->super._axes;
-  if (v11)
+  if (nameCopy)
   {
-    v16 = [v11 stringByAppendingFormat:@"/dimSize"];
+    v16 = [nameCopy stringByAppendingFormat:@"/dimSize"];
   }
 
   else
@@ -150,12 +150,12 @@ LABEL_23:
     v16 = @"meanGrad/dimSize";
   }
 
-  v17 = [WeakRetained dimensionSizeOfTensor:v9 axes:axes name:v16];
-  if (v11)
+  v17 = [WeakRetained dimensionSizeOfTensor:tensorCopy axes:axes name:v16];
+  if (nameCopy)
   {
 
     v18 = objc_loadWeakRetained(&self->super.super._graph);
-    v19 = [v11 stringByAppendingFormat:@"/reductionProduct"];
+    v19 = [nameCopy stringByAppendingFormat:@"/reductionProduct"];
   }
 
   else
@@ -166,15 +166,15 @@ LABEL_23:
   }
 
   v20 = [v18 reductionProductWithTensor:v17 axis:0 name:v19];
-  if (v11)
+  if (nameCopy)
   {
   }
 
   v21 = objc_loadWeakRetained(&self->super.super._graph);
-  v22 = [v10 dataType];
-  if (v11)
+  dataType = [gradientCopy dataType];
+  if (nameCopy)
   {
-    v23 = [v11 stringByAppendingFormat:@"/cast"];
+    v23 = [nameCopy stringByAppendingFormat:@"/cast"];
   }
 
   else
@@ -182,12 +182,12 @@ LABEL_23:
     v23 = @"meanGrad/cast";
   }
 
-  v24 = [v21 castTensor:v20 toType:v22 name:v23];
-  if (v11)
+  v24 = [v21 castTensor:v20 toType:dataType name:v23];
+  if (nameCopy)
   {
 
     v25 = objc_loadWeakRetained(&self->super.super._graph);
-    v26 = [v11 stringByAppendingString:@"/reciprocal"];
+    v26 = [nameCopy stringByAppendingString:@"/reciprocal"];
   }
 
   else
@@ -198,12 +198,12 @@ LABEL_23:
   }
 
   v27 = [v25 reciprocalWithTensor:v24 name:v26];
-  if (v11)
+  if (nameCopy)
   {
   }
 
   v28 = objc_loadWeakRetained(&self->super.super._graph);
-  v29 = [v28 multiplicationWithPrimaryTensor:v32 secondaryTensor:v27 name:v11];
+  v29 = [v28 multiplicationWithPrimaryTensor:v32 secondaryTensor:v27 name:nameCopy];
 
   return v29;
 }

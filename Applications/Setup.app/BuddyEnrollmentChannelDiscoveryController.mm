@@ -1,6 +1,6 @@
 @interface BuddyEnrollmentChannelDiscoveryController
 + (BOOL)controllerNeedsToRun;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyEnrollmentChannelDiscoveryController
@@ -8,18 +8,18 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = +[BuddyCloudConfigManager sharedManager];
-  v3 = [v2 hasCloudConfiguration];
+  hasCloudConfiguration = [v2 hasCloudConfiguration];
   v10 = 0;
   v8 = 0;
   v6 = 0;
   v4 = 0;
-  if (v3)
+  if (hasCloudConfiguration)
   {
     v11 = +[BuddyCloudConfigManager sharedManager];
     v10 = 1;
-    v9 = [v11 cloudConfigurationDetails];
+    cloudConfigurationDetails = [v11 cloudConfigurationDetails];
     v8 = 1;
-    v7 = [v9 objectForKeyedSubscript:kCCEnrollmentServerKey];
+    v7 = [cloudConfigurationDetails objectForKeyedSubscript:kCCEnrollmentServerKey];
     v6 = 1;
     v4 = v7 != 0;
   }
@@ -40,16 +40,16 @@
   return v12;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyEnrollmentChannelDiscoveryController *)v33 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isMDMEnrollmentFlowControllerAdoptionEnabled];
+  objc_storeStrong(location, completion);
+  featureFlags = [(BuddyEnrollmentChannelDiscoveryController *)selfCopy featureFlags];
+  isMDMEnrollmentFlowControllerAdoptionEnabled = [(BuddyFeatureFlags *)featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled];
 
-  if (v4)
+  if (isMDMEnrollmentFlowControllerAdoptionEnabled)
   {
     (*(location[0] + 2))(location[0], 0);
     v31 = 1;
@@ -57,10 +57,10 @@
 
   else
   {
-    v5 = [(BuddyEnrollmentChannelDiscoveryController *)v33 enrollmentCoordinator];
-    v6 = [(BuddyEnrollmentCoordinator *)v5 mdmEnrollmentChannel];
+    enrollmentCoordinator = [(BuddyEnrollmentChannelDiscoveryController *)selfCopy enrollmentCoordinator];
+    mdmEnrollmentChannel = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator mdmEnrollmentChannel];
 
-    if (v6)
+    if (mdmEnrollmentChannel)
     {
       oslog = _BYLoggingFacility();
       v29 = OS_LOG_TYPE_DEFAULT;
@@ -80,16 +80,16 @@
     else
     {
       v9 = +[BuddyCloudConfigManager sharedManager];
-      v27 = [v9 cloudConfigurationDetails];
+      cloudConfigurationDetails = [v9 cloudConfigurationDetails];
 
-      v10 = [v27 objectForKeyedSubscript:kCCEnrollmentServerKey];
+      v10 = [cloudConfigurationDetails objectForKeyedSubscript:kCCEnrollmentServerKey];
       v11 = [v10 objectForKeyedSubscript:kCCEnrollmentURLKey];
       v26 = [NSURL URLWithString:v11];
 
       if (v26)
       {
-        v14 = [(BuddyEnrollmentChannelDiscoveryController *)v33 enrollmentCoordinator];
-        v15 = [v27 objectForKeyedSubscript:kCCEnrollmentServerKey];
+        enrollmentCoordinator2 = [(BuddyEnrollmentChannelDiscoveryController *)selfCopy enrollmentCoordinator];
+        v15 = [cloudConfigurationDetails objectForKeyedSubscript:kCCEnrollmentServerKey];
         v16 = [v15 objectForKeyedSubscript:kCCEnrollmentAnchorCertificatesKey];
         v17 = _NSConcreteStackBlock;
         v18 = -1073741824;
@@ -97,7 +97,7 @@
         v20 = sub_10018248C;
         v21 = &unk_10032B120;
         v22 = location[0];
-        [(BuddyEnrollmentCoordinator *)v14 discoverAndStoreEnrollmentChannelWithEnrollmentURL:v26 certificateDatas:v16 completionHandler:&v17];
+        [(BuddyEnrollmentCoordinator *)enrollmentCoordinator2 discoverAndStoreEnrollmentChannelWithEnrollmentURL:v26 certificateDatas:v16 completionHandler:&v17];
 
         objc_storeStrong(&v22, 0);
         v31 = 0;
@@ -121,7 +121,7 @@
       }
 
       objc_storeStrong(&v26, 0);
-      objc_storeStrong(&v27, 0);
+      objc_storeStrong(&cloudConfigurationDetails, 0);
     }
   }
 

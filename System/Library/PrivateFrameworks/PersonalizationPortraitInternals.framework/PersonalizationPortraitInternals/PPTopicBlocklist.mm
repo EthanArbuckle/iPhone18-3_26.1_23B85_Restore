@@ -1,22 +1,22 @@
 @interface PPTopicBlocklist
 + (id)sharedInstance;
-- (PPTopicBlocklist)initWithTrialWrapper:(id)a3;
-- (id)indicesOfBlockedTopicsInRecordArray:(id)a3;
-- (id)indicesOfBlockedTopicsInScoredTopicArray:(id)a3;
+- (PPTopicBlocklist)initWithTrialWrapper:(id)wrapper;
+- (id)indicesOfBlockedTopicsInRecordArray:(id)array;
+- (id)indicesOfBlockedTopicsInScoredTopicArray:(id)array;
 - (void)_loadAssetData;
 - (void)dealloc;
 @end
 
 @implementation PPTopicBlocklist
 
-- (id)indicesOfBlockedTopicsInScoredTopicArray:(id)a3
+- (id)indicesOfBlockedTopicsInScoredTopicArray:(id)array
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__PPTopicBlocklist_indicesOfBlockedTopicsInScoredTopicArray___block_invoke;
   v5[3] = &unk_278976998;
   v5[4] = self;
-  v3 = [a3 indexesOfObjectsPassingTest:v5];
+  v3 = [array indexesOfObjectsPassingTest:v5];
 
   return v3;
 }
@@ -32,14 +32,14 @@ uint64_t __61__PPTopicBlocklist_indicesOfBlockedTopicsInScoredTopicArray___block
   return v6;
 }
 
-- (id)indicesOfBlockedTopicsInRecordArray:(id)a3
+- (id)indicesOfBlockedTopicsInRecordArray:(id)array
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__PPTopicBlocklist_indicesOfBlockedTopicsInRecordArray___block_invoke;
   v5[3] = &unk_278976970;
   v5[4] = self;
-  v3 = [a3 indexesOfObjectsPassingTest:v5];
+  v3 = [array indexesOfObjectsPassingTest:v5];
 
   return v3;
 }
@@ -62,16 +62,16 @@ uint64_t __56__PPTopicBlocklist_indicesOfBlockedTopicsInRecordArray___block_invo
   [(PPTopicBlocklist *)&v3 dealloc];
 }
 
-- (PPTopicBlocklist)initWithTrialWrapper:(id)a3
+- (PPTopicBlocklist)initWithTrialWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v15.receiver = self;
   v15.super_class = PPTopicBlocklist;
   v6 = [(PPTopicBlocklist *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trialWrapper, a3);
+    objc_storeStrong(&v6->_trialWrapper, wrapper);
     [(PPTopicBlocklist *)v7 _loadAssetData];
     objc_initWeak(&location, v7);
     trialWrapper = v7->_trialWrapper;
@@ -94,7 +94,7 @@ uint64_t __56__PPTopicBlocklist_indicesOfBlockedTopicsInRecordArray___block_invo
 - (void)_loadAssetData
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [*(a1 + 16) filepathForFactor:@"topicBlocklist.trie" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
+  v2 = [*(self + 16) filepathForFactor:@"topicBlocklist.trie" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
   v3 = pp_topics_log_handle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
@@ -121,10 +121,10 @@ LABEL_8:
   }
 
   v4 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:v2];
-  v5 = *(a1 + 8);
-  *(a1 + 8) = v4;
+  v5 = *(self + 8);
+  *(self + 8) = v4;
 
-  if (!*(a1 + 8))
+  if (!*(self + 8))
   {
     v6 = pp_default_log_handle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))

@@ -1,9 +1,9 @@
 @interface TSWPURLDataDetector
-+ (_NSRange)calculateScanRangeForString:(id)a3 changedRange:(_NSRange)a4;
-+ (_NSRange)expandValidRange:(_NSRange)a3 inString:(id)a4;
-+ (id)newArrayByScanningString:(id)a3 scanRange:(_NSRange)a4;
-+ (id)newURLFromString:(id)a3;
-+ (id)scanString:(id)a3 scanRange:(_NSRange)a4;
++ (_NSRange)calculateScanRangeForString:(id)string changedRange:(_NSRange)range;
++ (_NSRange)expandValidRange:(_NSRange)range inString:(id)string;
++ (id)newArrayByScanningString:(id)string scanRange:(_NSRange)range;
++ (id)newURLFromString:(id)string;
++ (id)scanString:(id)string scanRange:(_NSRange)range;
 + (void)initURLCharacterSets;
 @end
 
@@ -24,12 +24,12 @@
   }
 }
 
-+ (_NSRange)expandValidRange:(_NSRange)a3 inString:(id)a4
++ (_NSRange)expandValidRange:(_NSRange)range inString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [objc_opt_class() initURLCharacterSets];
-  v7.location = [a4 rangeOfCharacterFromSet:sInvalidURLCharacters options:6 range:{0, location}];
+  v7.location = [string rangeOfCharacterFromSet:sInvalidURLCharacters options:6 range:{0, location}];
   if (v7.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7.location = 0;
@@ -47,19 +47,19 @@
   return result;
 }
 
-+ (_NSRange)calculateScanRangeForString:(id)a3 changedRange:(_NSRange)a4
++ (_NSRange)calculateScanRangeForString:(id)string changedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if ([a3 length] >= 3)
+  length = range.length;
+  location = range.location;
+  if ([string length] >= 3)
   {
-    location = [objc_opt_class() expandValidRange:location inString:{length, a3}];
+    location = [objc_opt_class() expandValidRange:location inString:{length, string}];
     length = v7;
   }
 
   for (; length; --length)
   {
-    v8 = [a3 characterAtIndex:location];
+    v8 = [string characterAtIndex:location];
     if (([objc_msgSend(MEMORY[0x277CCA900] "whitespaceAndNewlineCharacterSet")] & 1) == 0 && (IsParagraphBreakingCharacter(v8) & 1) == 0 && !IsSpecialCharacter(v8))
     {
       break;
@@ -75,19 +75,19 @@
   return result;
 }
 
-+ (id)scanString:(id)a3 scanRange:(_NSRange)a4
++ (id)scanString:(id)string scanRange:(_NSRange)range
 {
-  v4 = [a1 newArrayByScanningString:a3 scanRange:{a4.location, a4.length}];
+  v4 = [self newArrayByScanningString:string scanRange:{range.location, range.length}];
 
   return v4;
 }
 
-+ (id)newArrayByScanningString:(id)a3 scanRange:(_NSRange)a4
++ (id)newArrayByScanningString:(id)string scanRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v43 = *MEMORY[0x277D85DE8];
-  v7 = [a3 length];
+  v7 = [string length];
   v8 = 0;
   if (v7 >= 3 && length >= 3)
   {
@@ -100,7 +100,7 @@
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = [objc_msgSend(MEMORY[0x277CCA948] dataDetectorWithTypes:32 error:{&v39), "matchesInString:options:range:", a3, 0, NSIntersectionRange(v44, v46).location, v44.length}];
+    obj = [objc_msgSend(MEMORY[0x277CCA948] dataDetectorWithTypes:32 error:{&v39), "matchesInString:options:range:", string, 0, NSIntersectionRange(v44, v46).location, v44.length}];
     v9 = [obj countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v9)
     {
@@ -122,12 +122,12 @@
           }
 
           v15 = *(*(&v35 + 1) + 8 * v14);
-          v16 = [v15 range];
+          range = [v15 range];
           v18 = v17;
           v19 = [v15 URL];
           if (v19)
           {
-            if (v12 > v16 || v12 + v11 < v16 + v18)
+            if (v12 > range || v12 + v11 < range + v18)
             {
               v21 = v19;
               v22 = [v8 count];
@@ -141,7 +141,7 @@
                   v26 = [v8 objectAtIndexedSubscript:v24];
                   v45.location = [objc_msgSend(v26 objectForKeyedSubscript:{kTSWPDataDetectorRangeKey), "rangeValue"}];
                   v27 = v45.length;
-                  v47.location = v16;
+                  v47.location = range;
                   v47.length = v18;
                   if (NSIntersectionRange(v45, v47).length)
                   {
@@ -159,7 +159,7 @@
                 {
 LABEL_26:
                   v11 = v18;
-                  v12 = v16;
+                  v12 = range;
                   v13 = v32;
                   v10 = v33;
                   goto LABEL_27;
@@ -186,7 +186,7 @@ LABEL_20:
                 }
 
                 v40[0] = kTSWPDataDetectorRangeKey;
-                v41[0] = [MEMORY[0x277CCAE60] valueWithRange:{v16, v18}];
+                v41[0] = [MEMORY[0x277CCAE60] valueWithRange:{range, v18}];
                 v41[1] = v30;
                 v40[1] = kTSWPDataDetectorValueKey;
                 v40[2] = kTSWPDataDetectorTypeKey;
@@ -195,7 +195,7 @@ LABEL_20:
               }
 
               v11 = v18;
-              v12 = v16;
+              v12 = range;
             }
           }
 
@@ -220,16 +220,16 @@ LABEL_31:
   return v8;
 }
 
-+ (id)newURLFromString:(id)a3
++ (id)newURLFromString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  if (![a3 compare:@"file://" options:1 range:{0, objc_msgSend(@"file://", "length")}])
+  if (![string compare:@"file://" options:1 range:{0, objc_msgSend(@"file://", "length")}])
   {
-    v12 = [a3 substringFromIndex:{objc_msgSend(@"file://", "length")}];
+    v12 = [string substringFromIndex:{objc_msgSend(@"file://", "length")}];
     if (v12)
     {
       v13 = v12;
@@ -239,9 +239,9 @@ LABEL_31:
         if (v14)
         {
           v15 = v14;
-          v16 = [(__CFString *)v14 stringByExpandingTildeInPath];
+          stringByExpandingTildeInPath = [(__CFString *)v14 stringByExpandingTildeInPath];
           CFRelease(v15);
-          if (!v16)
+          if (!stringByExpandingTildeInPath)
           {
             goto LABEL_21;
           }
@@ -249,14 +249,14 @@ LABEL_31:
 
         else
         {
-          v16 = [(__CFString *)v13 stringByExpandingTildeInPath];
-          if (!v16)
+          stringByExpandingTildeInPath = [(__CFString *)v13 stringByExpandingTildeInPath];
+          if (!stringByExpandingTildeInPath)
           {
             goto LABEL_21;
           }
         }
 
-        [v16 length];
+        [stringByExpandingTildeInPath length];
       }
     }
 
@@ -265,33 +265,33 @@ LABEL_21:
     JUMPOUT(0x26D6A7D20);
   }
 
-  v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:a3];
+  v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:string];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 scheme];
-    if (v6)
+    scheme = [v4 scheme];
+    if (scheme)
     {
-      v7 = v6;
-      v8 = [v6 lowercaseString];
-      if ([v7 isEqual:v8])
+      v7 = scheme;
+      lowercaseString = [scheme lowercaseString];
+      if ([v7 isEqual:lowercaseString])
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = v8;
+        v9 = lowercaseString;
       }
 
-      if ([(__CFString *)v8 isEqualToString:@"feed"])
+      if ([(__CFString *)lowercaseString isEqualToString:@"feed"])
       {
         v9 = @"http";
       }
 
       if (v9)
       {
-        v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@", v9, objc_msgSend(a3, "substringFromIndex:", objc_msgSend(v7, "length"))];
+        v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@", v9, objc_msgSend(string, "substringFromIndex:", objc_msgSend(v7, "length"))];
 
         v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v10];
       }

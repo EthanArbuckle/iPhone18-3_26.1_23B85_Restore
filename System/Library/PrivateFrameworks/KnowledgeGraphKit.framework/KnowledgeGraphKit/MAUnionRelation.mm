@@ -1,12 +1,12 @@
 @interface MAUnionRelation
-+ (id)scanRelationWithScanner:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MAUnionRelation)initWithRelations:(id)a3;
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4;
++ (id)scanRelationWithScanner:(id)scanner;
+- (BOOL)isEqual:(id)equal;
+- (MAUnionRelation)initWithRelations:(id)relations;
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph;
 - (id)inverse;
 - (id)visualString;
 - (unint64_t)hash;
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5;
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph;
 @end
 
 @implementation MAUnionRelation
@@ -52,10 +52,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -66,8 +66,8 @@
     if (objc_opt_isKindOfClass())
     {
       relations = self->_relations;
-      v6 = [(MAUnionRelation *)v4 relations];
-      v7 = [(NSArray *)relations isEqual:v6];
+      relations = [(MAUnionRelation *)equalCopy relations];
+      v7 = [(NSArray *)relations isEqual:relations];
     }
 
     else
@@ -109,8 +109,8 @@
           [v3 appendString:{@", ", v14}];
         }
 
-        v11 = [v10 visualString];
-        [v3 appendString:v11];
+        visualString = [v10 visualString];
+        [v3 appendString:visualString];
 
         v8 = 0;
       }
@@ -128,11 +128,11 @@
   return v3;
 }
 
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
   v8 = objc_alloc_init(KGMutableDirectedBinaryAdjacency);
   v17 = 0u;
   v18 = 0u;
@@ -153,7 +153,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) adjacencyWithStartNodeIdentifiers:v6 graph:{v7, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * i) adjacencyWithStartNodeIdentifiers:identifiersCopy graph:{graphCopy, v17}];
         [(KGMutableDirectedBinaryAdjacency *)v8 formUnionWith:v14];
       }
 
@@ -168,18 +168,18 @@
   return v8;
 }
 
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  nodeIdentifiersCopy = nodeIdentifiers;
+  graphCopy = graph;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(MAUnionRelation *)self relations];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  relations = [(MAUnionRelation *)self relations];
+  v12 = [relations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -191,14 +191,14 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(relations);
         }
 
-        [*(*(&v17 + 1) + 8 * v15++) unionAdjacencySetFromSourceNodeIdentifiers:v8 toTargetNodeIdentifiers:v9 graph:v10];
+        [*(*(&v17 + 1) + 8 * v15++) unionAdjacencySetFromSourceNodeIdentifiers:identifiersCopy toTargetNodeIdentifiers:nodeIdentifiersCopy graph:graphCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [relations countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -230,8 +230,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) inverse];
-        [v3 addObject:v9];
+        inverse = [*(*(&v13 + 1) + 8 * i) inverse];
+        [v3 addObject:inverse];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -246,46 +246,46 @@
   return v10;
 }
 
-- (MAUnionRelation)initWithRelations:(id)a3
+- (MAUnionRelation)initWithRelations:(id)relations
 {
-  v5 = a3;
+  relationsCopy = relations;
   v9.receiver = self;
   v9.super_class = MAUnionRelation;
-  v6 = [(MARelation *)&v9 initForSubclassing];
-  v7 = v6;
-  if (v6)
+  initForSubclassing = [(MARelation *)&v9 initForSubclassing];
+  v7 = initForSubclassing;
+  if (initForSubclassing)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(initForSubclassing + 1, relations);
   }
 
   return v7;
 }
 
-+ (id)scanRelationWithScanner:(id)a3
++ (id)scanRelationWithScanner:(id)scanner
 {
-  v3 = a3;
-  v4 = [v3 scanLocation];
-  if (([v3 scanString:@"-{" intoString:0] & 1) == 0)
+  scannerCopy = scanner;
+  scanLocation = [scannerCopy scanLocation];
+  if (([scannerCopy scanString:@"-{" intoString:0] & 1) == 0)
   {
-    [v3 setScanLocation:v4];
+    [scannerCopy setScanLocation:scanLocation];
     v9 = 0;
     goto LABEL_13;
   }
 
-  v5 = [MARelation scanRelationWithScanner:v3];
+  v5 = [MARelation scanRelationWithScanner:scannerCopy];
   if (!v5)
   {
-    [v3 setScanLocation:v4];
+    [scannerCopy setScanLocation:scanLocation];
     v9 = 0;
     goto LABEL_12;
   }
 
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v5, 0}];
-  if ([v3 scanString:@" intoString:{", 0}])
+  if ([scannerCopy scanString:@" intoString:{", 0}])
   {
     do
     {
-      v7 = [MARelation scanRelationWithScanner:v3];
+      v7 = [MARelation scanRelationWithScanner:scannerCopy];
       if (!v7)
       {
         goto LABEL_9;
@@ -295,13 +295,13 @@
       [v6 addObject:v7];
     }
 
-    while (([v3 scanString:@" intoString:{", 0}] & 1) != 0);
+    while (([scannerCopy scanString:@" intoString:{", 0}] & 1) != 0);
   }
 
-  if (([v3 scanString:@"}" intoString:0] & 1) == 0)
+  if (([scannerCopy scanString:@"}" intoString:0] & 1) == 0)
   {
 LABEL_9:
-    [v3 setScanLocation:v4];
+    [scannerCopy setScanLocation:scanLocation];
     v9 = 0;
     goto LABEL_10;
   }

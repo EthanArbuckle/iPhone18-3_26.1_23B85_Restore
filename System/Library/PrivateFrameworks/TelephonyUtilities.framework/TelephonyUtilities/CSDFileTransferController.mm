@@ -1,19 +1,19 @@
 @interface CSDFileTransferController
-+ (id)copyFileAtURL:(id)a3 toTemporaryFileWithName:(id)a4;
-+ (id)renameResourceAtURL:(id)a3 toResourceWithName:(id)a4;
-+ (id)renamedResourceURL:(id)a3 withName:(id)a4;
-+ (void)deleteContentsAtURL:(id)a3;
++ (id)copyFileAtURL:(id)l toTemporaryFileWithName:(id)name;
++ (id)renameResourceAtURL:(id)l toResourceWithName:(id)name;
++ (id)renamedResourceURL:(id)l withName:(id)name;
++ (void)deleteContentsAtURL:(id)l;
 - (CSDFileTransferController)init;
-- (CSDFileTransferController)initWithService:(id)a3;
+- (CSDFileTransferController)initWithService:(id)service;
 - (CSDFileTransferringDelegate)delegate;
-- (void)cleanUpTemporaryFileIfExistsForClientFileURL:(id)a3;
-- (void)performFileCopierOperation:(unint64_t)a3 onInputURL:(id)a4 outputURL:(id)a5 completion:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)transferFileAtSandboxExtendedURL:(id)a3 toDestinations:(id)a4 withMetadata:(id)a5 fromMember:(id)a6;
-- (void)transferFileAtTemporaryURL:(id)a3 toDestinations:(id)a4 withMetadata:(id)a5 fromMember:(id)a6;
-- (void)transferFileAtURL:(id)a3 toDestinations:(id)a4 withMetadata:(id)a5;
-- (void)unzipArchiveAtURL:(id)a3 completion:(id)a4;
-- (void)zipDirectoryAtURL:(id)a3 completion:(id)a4;
+- (void)cleanUpTemporaryFileIfExistsForClientFileURL:(id)l;
+- (void)performFileCopierOperation:(unint64_t)operation onInputURL:(id)l outputURL:(id)rL completion:(id)completion;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)transferFileAtSandboxExtendedURL:(id)l toDestinations:(id)destinations withMetadata:(id)metadata fromMember:(id)member;
+- (void)transferFileAtTemporaryURL:(id)l toDestinations:(id)destinations withMetadata:(id)metadata fromMember:(id)member;
+- (void)transferFileAtURL:(id)l toDestinations:(id)destinations withMetadata:(id)metadata;
+- (void)unzipArchiveAtURL:(id)l completion:(id)completion;
+- (void)zipDirectoryAtURL:(id)l completion:(id)completion;
 @end
 
 @implementation CSDFileTransferController
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (CSDFileTransferController)initWithService:(id)a3
+- (CSDFileTransferController)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = CSDFileTransferController;
   v6 = [(CSDFileTransferController *)&v14 init];
@@ -42,7 +42,7 @@
     temporaryFileURLByClientFileURL = v6->_temporaryFileURLByClientFileURL;
     v6->_temporaryFileURLByClientFileURL = v9;
 
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
     v11 = dispatch_queue_create("com.apple.telephonyutilities.callservicesd.csdfiletransfercontroller", 0);
     queue = v6->_queue;
     v6->_queue = v11;
@@ -53,110 +53,110 @@
   return v6;
 }
 
-- (void)transferFileAtURL:(id)a3 toDestinations:(id)a4 withMetadata:(id)a5
+- (void)transferFileAtURL:(id)l toDestinations:(id)destinations withMetadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  destinationsCopy = destinations;
+  metadataCopy = metadata;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v8;
+    v21 = lCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = destinationsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "transferFileAtURL: %@, destinations: %@", buf, 0x16u);
   }
 
-  v12 = [(CSDFileTransferController *)self queue];
+  queue = [(CSDFileTransferController *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10010866C;
   v16[3] = &unk_10061A450;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = lCopy;
+  v18 = destinationsCopy;
+  v19 = metadataCopy;
+  v13 = metadataCopy;
+  v14 = destinationsCopy;
+  v15 = lCopy;
+  dispatch_async(queue, v16);
 }
 
-- (void)transferFileAtSandboxExtendedURL:(id)a3 toDestinations:(id)a4 withMetadata:(id)a5 fromMember:(id)a6
+- (void)transferFileAtSandboxExtendedURL:(id)l toDestinations:(id)destinations withMetadata:(id)metadata fromMember:(id)member
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CSDFileTransferController *)self queue];
+  lCopy = l;
+  destinationsCopy = destinations;
+  metadataCopy = metadata;
+  memberCopy = member;
+  queue = [(CSDFileTransferController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001087A4;
   block[3] = &unk_10061A428;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = lCopy;
+  v21 = destinationsCopy;
+  v22 = metadataCopy;
+  v23 = memberCopy;
+  v15 = memberCopy;
+  v16 = metadataCopy;
+  v17 = destinationsCopy;
+  v18 = lCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)unzipArchiveAtURL:(id)a3 completion:(id)a4
+- (void)unzipArchiveAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URLByDeletingLastPathComponent];
+  lCopy = l;
+  completionCopy = completion;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = uRLByDeletingLastPathComponent;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "placing unzip results into folder %@", buf, 0xCu);
   }
 
-  v10 = [(CSDFileTransferController *)self queue];
+  queue = [(CSDFileTransferController *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100108984;
   v14[3] = &unk_10061AF98;
   v14[4] = self;
-  v15 = v6;
-  v16 = v8;
-  v17 = v7;
-  v11 = v7;
-  v12 = v8;
-  v13 = v6;
-  dispatch_async(v10, v14);
+  v15 = lCopy;
+  v16 = uRLByDeletingLastPathComponent;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = uRLByDeletingLastPathComponent;
+  v13 = lCopy;
+  dispatch_async(queue, v14);
 }
 
-- (void)transferFileAtTemporaryURL:(id)a3 toDestinations:(id)a4 withMetadata:(id)a5 fromMember:(id)a6
+- (void)transferFileAtTemporaryURL:(id)l toDestinations:(id)destinations withMetadata:(id)metadata fromMember:(id)member
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CSDFileTransferController *)self queue];
-  dispatch_assert_queue_V2(v14);
+  lCopy = l;
+  destinationsCopy = destinations;
+  metadataCopy = metadata;
+  memberCopy = member;
+  queue = [(CSDFileTransferController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v15 = sub_100004778();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v10;
+    v35 = lCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = destinationsCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "temporaryClientFileURL: %@, destinations: %@", buf, 0x16u);
   }
 
   buf[0] = 0;
   v16 = +[NSFileManager defaultManager];
-  v17 = [v10 path];
-  v18 = [v16 fileExistsAtPath:v17 isDirectory:buf];
+  path = [lCopy path];
+  v18 = [v16 fileExistsAtPath:path isDirectory:buf];
 
   if (v18)
   {
@@ -164,17 +164,17 @@
     v20 = [NSNumber numberWithBool:buf[0]];
     [v19 setObject:v20 forKeyedSubscript:@"CSDFileTransferringMetadataKeyIsDirectory"];
 
-    [v19 setObject:v12 forKeyedSubscript:@"CSDFileTransferringMetadataKeyUserData"];
+    [v19 setObject:metadataCopy forKeyedSubscript:@"CSDFileTransferringMetadataKeyUserData"];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100108FCC;
     v28[3] = &unk_10061BBA0;
-    v29 = v11;
+    v29 = destinationsCopy;
     v21 = v19;
     v30 = v21;
-    v31 = v13;
-    v32 = self;
-    v22 = v10;
+    v31 = memberCopy;
+    selfCopy = self;
+    v22 = lCopy;
     v33 = v22;
     v23 = objc_retainBlock(v28);
     v24 = v23;
@@ -206,34 +206,34 @@
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(CSDFileTransferController *)self queue];
-  dispatch_assert_queue_V2(v14);
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  queue = [(CSDFileTransferController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v15 = sub_100004778();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412802;
-    v26 = v11;
+    v26 = lCopy;
     v27 = 2112;
-    v28 = v12;
+    v28 = metadataCopy;
     v29 = 2112;
-    v30 = v13;
+    v30 = dCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "incomingResourceURL: %@ metadata: %@ fromID: %@", &v25, 0x20u);
   }
 
-  v16 = [v12 objectForKeyedSubscript:@"CSDFileTransferringMetadataKeyIsDirectory"];
-  v17 = [v16 BOOLValue];
+  v16 = [metadataCopy objectForKeyedSubscript:@"CSDFileTransferringMetadataKeyIsDirectory"];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [v12 objectForKeyedSubscript:@"CSDFileTransferringMetadataKeyUserData"];
+  v18 = [metadataCopy objectForKeyedSubscript:@"CSDFileTransferringMetadataKeyUserData"];
   v19 = objc_opt_class();
   v20 = +[NSUUID UUID];
-  v21 = [v20 UUIDString];
-  v22 = [v19 copyFileAtURL:v11 toTemporaryFileWithName:v21];
+  uUIDString = [v20 UUIDString];
+  v22 = [v19 copyFileAtURL:lCopy toTemporaryFileWithName:uUIDString];
 
   if (v22)
   {
@@ -245,19 +245,19 @@
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Copied resource to temporary URL: %@", &v25, 0xCu);
     }
 
-    v24 = [(CSDFileTransferController *)self delegate];
-    [v24 fileTransferer:self didReceiveResourcesAtURL:v22 withMetadata:v18 isZipped:v17 fromIDSDestination:v13];
+    delegate = [(CSDFileTransferController *)self delegate];
+    [delegate fileTransferer:self didReceiveResourcesAtURL:v22 withMetadata:v18 isZipped:bOOLValue fromIDSDestination:dCopy];
   }
 }
 
-+ (id)copyFileAtURL:(id)a3 toTemporaryFileWithName:(id)a4
++ (id)copyFileAtURL:(id)l toTemporaryFileWithName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  nameCopy = name;
   v7 = NSTemporaryDirectory();
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 stringByAppendingPathComponent:v9];
+  uUIDString = [v8 UUIDString];
+  v10 = [v7 stringByAppendingPathComponent:uUIDString];
   v11 = [NSURL fileURLWithPath:v10];
 
   v12 = +[NSFileManager defaultManager];
@@ -278,10 +278,10 @@
     goto LABEL_9;
   }
 
-  v14 = [v11 URLByAppendingPathComponent:v6];
+  v14 = [v11 URLByAppendingPathComponent:nameCopy];
   v15 = +[NSFileManager defaultManager];
   v22 = v13;
-  v16 = [v15 copyItemAtURL:v5 toURL:v14 error:&v22];
+  v16 = [v15 copyItemAtURL:lCopy toURL:v14 error:&v22];
   v17 = v22;
 
   if ((v16 & 1) == 0)
@@ -290,7 +290,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v25 = v5;
+      v25 = lCopy;
       v26 = 2112;
       v27 = v14;
       v28 = 2112;
@@ -312,13 +312,13 @@ LABEL_10:
   return v20;
 }
 
-+ (id)renameResourceAtURL:(id)a3 toResourceWithName:(id)a4
++ (id)renameResourceAtURL:(id)l toResourceWithName:(id)name
 {
-  v6 = a3;
-  v7 = [a1 renamedResourceURL:v6 withName:a4];
+  lCopy = l;
+  v7 = [self renamedResourceURL:lCopy withName:name];
   v8 = +[NSFileManager defaultManager];
   v13 = 0;
-  v9 = [v8 moveItemAtURL:v6 toURL:v7 error:&v13];
+  v9 = [v8 moveItemAtURL:lCopy toURL:v7 error:&v13];
   v10 = v13;
 
   if ((v9 & 1) == 0)
@@ -327,7 +327,7 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v15 = v6;
+      v15 = lCopy;
       v16 = 2112;
       v17 = v7;
       v18 = 2112;
@@ -341,26 +341,26 @@ LABEL_10:
   return v7;
 }
 
-+ (id)renamedResourceURL:(id)a3 withName:(id)a4
++ (id)renamedResourceURL:(id)l withName:(id)name
 {
-  v5 = a4;
-  v6 = [a3 pathComponents];
-  v7 = [v6 mutableCopy];
+  nameCopy = name;
+  pathComponents = [l pathComponents];
+  v7 = [pathComponents mutableCopy];
 
   [v7 removeLastObject];
-  [v7 addObject:v5];
+  [v7 addObject:nameCopy];
 
   v8 = [NSURL fileURLWithPathComponents:v7];
 
   return v8;
 }
 
-+ (void)deleteContentsAtURL:(id)a3
++ (void)deleteContentsAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v9];
+  v5 = [v4 removeItemAtURL:lCopy error:&v9];
   v6 = v9;
 
   v7 = sub_100004778();
@@ -370,7 +370,7 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v3;
+      v11 = lCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Deleted contents at URL: %@", buf, 0xCu);
     }
   }
@@ -381,17 +381,17 @@ LABEL_10:
   }
 }
 
-- (void)zipDirectoryAtURL:(id)a3 completion:(id)a4
+- (void)zipDirectoryAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDFileTransferController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  lCopy = l;
+  completionCopy = completion;
+  queue = [(CSDFileTransferController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = NSTemporaryDirectory();
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 stringByAppendingPathComponent:v11];
+  uUIDString = [v10 UUIDString];
+  v12 = [v9 stringByAppendingPathComponent:uUIDString];
   v13 = [v12 stringByAppendingPathExtension:@"zip"];
 
   v14 = [NSURL fileURLWithPath:v13];
@@ -399,7 +399,7 @@ LABEL_10:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = lCopy;
     v25 = 2112;
     v26 = v14;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Zipping directory at URL: %@, output to: %@", buf, 0x16u);
@@ -409,57 +409,57 @@ LABEL_10:
   v19[1] = 3221225472;
   v19[2] = sub_100109E9C;
   v19[3] = &unk_10061A768;
-  v20 = v6;
+  v20 = lCopy;
   v21 = v14;
-  v22 = v7;
-  v16 = v7;
+  v22 = completionCopy;
+  v16 = completionCopy;
   v17 = v14;
-  v18 = v6;
+  v18 = lCopy;
   [(CSDFileTransferController *)self performFileCopierOperation:0 onInputURL:v18 outputURL:v17 completion:v19];
 }
 
-- (void)performFileCopierOperation:(unint64_t)a3 onInputURL:(id)a4 outputURL:(id)a5 completion:(id)a6
+- (void)performFileCopierOperation:(unint64_t)operation onInputURL:(id)l outputURL:(id)rL completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(CSDFileTransferController *)self queue];
-  dispatch_assert_queue_V2(v13);
+  lCopy = l;
+  rLCopy = rL;
+  completionCopy = completion;
+  queue = [(CSDFileTransferController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v14 = sub_100004778();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v27 = a3;
+    operationCopy = operation;
     v28 = 2112;
-    v29 = v10;
+    v29 = lCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = rLCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "operation: %ld, inputURL: %@, outputURL: %@", buf, 0x20u);
   }
 
   v15 = [IMFileCopier alloc];
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = a3;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v22 = lCopy;
+  v23 = rLCopy;
+  v24 = completionCopy;
+  operationCopy2 = operation;
+  v16 = completionCopy;
+  v17 = rLCopy;
+  v18 = lCopy;
   v19 = [(CSDFileTransferController *)self queue:_NSConcreteStackBlock];
-  v20 = [v15 initWithInputURL:v18 outputURL:v17 identifier:0 operation:a3 completionBlock:&v21 queue:v19];
+  v20 = [v15 initWithInputURL:v18 outputURL:v17 identifier:0 operation:operation completionBlock:&v21 queue:v19];
 
   [v20 start];
 }
 
-- (void)cleanUpTemporaryFileIfExistsForClientFileURL:(id)a3
+- (void)cleanUpTemporaryFileIfExistsForClientFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CSDFileTransferController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  lCopy = l;
+  queue = [(CSDFileTransferController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDFileTransferController *)self temporaryFileURLByClientFileURL];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  temporaryFileURLByClientFileURL = [(CSDFileTransferController *)self temporaryFileURLByClientFileURL];
+  v7 = [temporaryFileURLByClientFileURL objectForKeyedSubscript:lCopy];
 
   if (v7)
   {
@@ -472,8 +472,8 @@ LABEL_10:
     }
 
     [objc_opt_class() deleteContentsAtURL:v7];
-    v9 = [(CSDFileTransferController *)self temporaryFileURLByClientFileURL];
-    [v9 setObject:0 forKeyedSubscript:v4];
+    temporaryFileURLByClientFileURL2 = [(CSDFileTransferController *)self temporaryFileURLByClientFileURL];
+    [temporaryFileURLByClientFileURL2 setObject:0 forKeyedSubscript:lCopy];
   }
 }
 

@@ -1,111 +1,111 @@
 @interface _UIViewAnimationAttributes
 - (CAFrameRateRange)_preferredFrameRateRange;
-- (_UIViewAnimationAttributes)initWithBSXPCCoder:(id)a3;
-- (_UIViewAnimationAttributes)initWithCoder:(id)a3;
+- (_UIViewAnimationAttributes)initWithBSXPCCoder:(id)coder;
+- (_UIViewAnimationAttributes)initWithCoder:(id)coder;
 - (double)_frameInterval;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIViewAnimationAttributes
 
-- (_UIViewAnimationAttributes)initWithCoder:(id)a3
+- (_UIViewAnimationAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _UIViewAnimationAttributes;
   v5 = [(_UIViewAnimationAttributes *)&v18 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"duration"];
+    [coderCopy decodeFloatForKey:@"duration"];
     v5->_duration = v6;
-    [v4 decodeFloatForKey:@"delay"];
+    [coderCopy decodeFloatForKey:@"delay"];
     v5->_delay = v7;
-    v8 = [v4 decodeBoolForKey:@"hasSpringAttributes"];
+    v8 = [coderCopy decodeBoolForKey:@"hasSpringAttributes"];
     v5->_hasSpringAttributes = v8;
     if (v8)
     {
-      [v4 decodeFloatForKey:@"springDamping"];
+      [coderCopy decodeFloatForKey:@"springDamping"];
       v5->_springDamping = v9;
-      [v4 decodeFloatForKey:@"springVelocity"];
+      [coderCopy decodeFloatForKey:@"springVelocity"];
       v5->_springVelocity = v10;
-      [v4 decodeFloatForKey:@"springMass"];
+      [coderCopy decodeFloatForKey:@"springMass"];
       v5->_springMass = v11;
-      [v4 decodeFloatForKey:@"springStiffness"];
+      [coderCopy decodeFloatForKey:@"springStiffness"];
       v5->_springStiffness = v12;
     }
 
-    v5->_options = [v4 decodeIntegerForKey:@"options"];
-    [v4 _ui_decodeCAFrameRateRangeForKey:@"preferredFrameRateRange"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"options"];
+    [coderCopy _ui_decodeCAFrameRateRangeForKey:@"preferredFrameRateRange"];
     v5->_preferredFrameRateRange.minimum = v13;
     v5->_preferredFrameRateRange.maximum = v14;
     v5->_preferredFrameRateRange.preferred = v15;
-    v5->_updateReason = [v4 decodeInt32ForKey:@"updateReason"];
+    v5->_updateReason = [coderCopy decodeInt32ForKey:@"updateReason"];
     v16 = v5;
   }
 
   return v5;
 }
 
-- (_UIViewAnimationAttributes)initWithBSXPCCoder:(id)a3
+- (_UIViewAnimationAttributes)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _UIViewAnimationAttributes;
   v5 = [(_UIViewAnimationAttributes *)&v17 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"duration"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v5->_duration = v6;
-    [v4 decodeDoubleForKey:@"delay"];
+    [coderCopy decodeDoubleForKey:@"delay"];
     v5->_delay = v7;
-    v8 = [v4 decodeBoolForKey:@"hasSpringAttributes"];
+    v8 = [coderCopy decodeBoolForKey:@"hasSpringAttributes"];
     v5->_hasSpringAttributes = v8;
     if (v8)
     {
-      [v4 decodeDoubleForKey:@"springDamping"];
+      [coderCopy decodeDoubleForKey:@"springDamping"];
       v5->_springDamping = v9;
-      [v4 decodeDoubleForKey:@"springVelocity"];
+      [coderCopy decodeDoubleForKey:@"springVelocity"];
       v5->_springVelocity = v10;
-      [v4 decodeDoubleForKey:@"springMass"];
+      [coderCopy decodeDoubleForKey:@"springMass"];
       v5->_springMass = v11;
-      [v4 decodeDoubleForKey:@"springStiffness"];
+      [coderCopy decodeDoubleForKey:@"springStiffness"];
       v5->_springStiffness = v12;
     }
 
-    v5->_options = [v4 decodeInt64ForKey:@"options"];
-    v13 = [v4 decodeStringForKey:@"preferredFrameRateRange"];
+    v5->_options = [coderCopy decodeInt64ForKey:@"options"];
+    v13 = [coderCopy decodeStringForKey:@"preferredFrameRateRange"];
     v5->_preferredFrameRateRange.minimum = _CAFrameRateRangeFromString(v13);
     v5->_preferredFrameRateRange.maximum = v14;
     v5->_preferredFrameRateRange.preferred = v15;
 
-    v5->_updateReason = [v4 decodeInt64ForKey:@"updateReason"];
+    v5->_updateReason = [coderCopy decodeInt64ForKey:@"updateReason"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   duration = self->_duration;
   if (duration != 0.0)
   {
     *&duration = duration;
-    [v15 encodeFloat:@"duration" forKey:duration];
+    [coderCopy encodeFloat:@"duration" forKey:duration];
   }
 
   delay = self->_delay;
   if (delay != 0.0)
   {
     *&delay = delay;
-    [v15 encodeFloat:@"delay" forKey:delay];
+    [coderCopy encodeFloat:@"delay" forKey:delay];
   }
 
   options = self->_options;
   if (options)
   {
-    [v15 encodeInteger:options forKey:@"options"];
+    [coderCopy encodeInteger:options forKey:@"options"];
   }
 
   if (!CAFrameRateRangeIsEqualToRange(self->_preferredFrameRateRange, *MEMORY[0x1E69792B8]))
@@ -113,104 +113,104 @@
     *&v7 = self->_preferredFrameRateRange.minimum;
     *&v8 = self->_preferredFrameRateRange.maximum;
     *&v9 = self->_preferredFrameRateRange.preferred;
-    [v15 _ui_encodeCAFrameRateRange:@"preferredFrameRateRange" forKey:{v7, v8, v9}];
-    [v15 encodeInt32:self->_updateReason forKey:@"updateReason"];
+    [coderCopy _ui_encodeCAFrameRateRange:@"preferredFrameRateRange" forKey:{v7, v8, v9}];
+    [coderCopy encodeInt32:self->_updateReason forKey:@"updateReason"];
   }
 
   if (self->_hasSpringAttributes)
   {
-    [v15 encodeBool:1 forKey:@"hasSpringAttributes"];
+    [coderCopy encodeBool:1 forKey:@"hasSpringAttributes"];
   }
 
   springDamping = self->_springDamping;
-  v11 = v15;
+  v11 = coderCopy;
   if (springDamping != 0.0)
   {
     *&springDamping = springDamping;
-    [v15 encodeFloat:@"springDamping" forKey:springDamping];
-    v11 = v15;
+    [coderCopy encodeFloat:@"springDamping" forKey:springDamping];
+    v11 = coderCopy;
   }
 
   springVelocity = self->_springVelocity;
   if (springVelocity != 0.0)
   {
     *&springVelocity = springVelocity;
-    [v15 encodeFloat:@"springVelocity" forKey:springVelocity];
-    v11 = v15;
+    [coderCopy encodeFloat:@"springVelocity" forKey:springVelocity];
+    v11 = coderCopy;
   }
 
   springMass = self->_springMass;
   if (springMass != 0.0)
   {
     *&springMass = springMass;
-    [v15 encodeFloat:@"springMass" forKey:springMass];
-    v11 = v15;
+    [coderCopy encodeFloat:@"springMass" forKey:springMass];
+    v11 = coderCopy;
   }
 
   springStiffness = self->_springStiffness;
   if (springStiffness != 0.0)
   {
     *&springStiffness = springStiffness;
-    [v15 encodeFloat:@"springStiffness" forKey:springStiffness];
-    v11 = v15;
+    [coderCopy encodeFloat:@"springStiffness" forKey:springStiffness];
+    v11 = coderCopy;
   }
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   if (self->_duration != 0.0)
   {
-    [v7 encodeDouble:@"duration" forKey:?];
+    [coderCopy encodeDouble:@"duration" forKey:?];
   }
 
   if (self->_delay != 0.0)
   {
-    [v7 encodeDouble:@"delay" forKey:?];
+    [coderCopy encodeDouble:@"delay" forKey:?];
   }
 
   options = self->_options;
   if (options)
   {
-    [v7 encodeInt64:options forKey:@"options"];
+    [coderCopy encodeInt64:options forKey:@"options"];
   }
 
   if (!CAFrameRateRangeIsEqualToRange(self->_preferredFrameRateRange, *MEMORY[0x1E69792B8]))
   {
     v5 = _NSStringFromCAFrameRateRange(self->_preferredFrameRateRange.minimum, self->_preferredFrameRateRange.maximum, self->_preferredFrameRateRange.preferred);
-    [v7 encodeObject:v5 forKey:@"preferredFrameRateRange"];
+    [coderCopy encodeObject:v5 forKey:@"preferredFrameRateRange"];
 
-    [v7 encodeInt64:self->_updateReason forKey:@"updateReason"];
+    [coderCopy encodeInt64:self->_updateReason forKey:@"updateReason"];
   }
 
   if (self->_hasSpringAttributes)
   {
-    [v7 encodeBool:1 forKey:@"hasSpringAttributes"];
+    [coderCopy encodeBool:1 forKey:@"hasSpringAttributes"];
   }
 
-  v6 = v7;
+  v6 = coderCopy;
   if (self->_springDamping != 0.0)
   {
-    [v7 encodeDouble:@"springDamping" forKey:?];
-    v6 = v7;
+    [coderCopy encodeDouble:@"springDamping" forKey:?];
+    v6 = coderCopy;
   }
 
   if (self->_springVelocity != 0.0)
   {
-    [v7 encodeDouble:@"springVelocity" forKey:?];
-    v6 = v7;
+    [coderCopy encodeDouble:@"springVelocity" forKey:?];
+    v6 = coderCopy;
   }
 
   if (self->_springMass != 0.0)
   {
-    [v7 encodeDouble:@"springMass" forKey:?];
-    v6 = v7;
+    [coderCopy encodeDouble:@"springMass" forKey:?];
+    v6 = coderCopy;
   }
 
   if (self->_springStiffness != 0.0)
   {
-    [v7 encodeDouble:@"springStiffness" forKey:?];
-    v6 = v7;
+    [coderCopy encodeDouble:@"springStiffness" forKey:?];
+    v6 = coderCopy;
   }
 }
 

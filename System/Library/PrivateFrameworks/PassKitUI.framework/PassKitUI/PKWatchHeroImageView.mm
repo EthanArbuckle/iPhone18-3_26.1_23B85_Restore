@@ -5,24 +5,24 @@
 - (CGRect)cardFrame;
 - (CGRect)spaceBelowCardFrame;
 - (CGRect)watchScreenFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKWatchHeroImageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKWatchHeroImageView)initWithFrame:(CGRect)frame;
 - (void)_layoutIfNeededForSizingCalculations;
 - (void)_updatedAccessibilityLabel;
 - (void)layoutSubviews;
-- (void)setCardImage:(id)a3;
-- (void)setHideDoneLabel:(BOOL)a3;
-- (void)setSize:(unint64_t)a3;
-- (void)setWallpaperImage:(id)a3 contentMode:(int64_t)a4;
+- (void)setCardImage:(id)image;
+- (void)setHideDoneLabel:(BOOL)label;
+- (void)setSize:(unint64_t)size;
+- (void)setWallpaperImage:(id)image contentMode:(int64_t)mode;
 @end
 
 @implementation PKWatchHeroImageView
 
-- (PKWatchHeroImageView)initWithFrame:(CGRect)a3
+- (PKWatchHeroImageView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = PKWatchHeroImageView;
-  v3 = [(PKWatchHeroImageView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKWatchHeroImageView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,8 +39,8 @@
     [(PKWatchHeroImageView *)v4 addSubview:v4->_watchView];
     v12 = objc_alloc(MEMORY[0x1E69DCC10]);
     v13 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v14 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [(UILabel *)v13 setTextColor:v14];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [(UILabel *)v13 setTextColor:systemWhiteColor];
     v15 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD08], *MEMORY[0x1E69DDC58]);
     [(UILabel *)v13 setFont:v15];
     v16 = objc_alloc(MEMORY[0x1E696AD40]);
@@ -53,7 +53,7 @@
     v20 = [objc_alloc(MEMORY[0x1E69DB7F0]) initWithData:0 ofType:0];
     v21 = [MEMORY[0x1E69DCAD8] configurationWithFont:v15 scale:1];
     v22 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill" withConfiguration:v21];
-    v23 = [v22 imageWithTintColor:v14];
+    v23 = [v22 imageWithTintColor:systemWhiteColor];
     [v20 setImage:v23];
 
     v24 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v20];
@@ -68,9 +68,9 @@
 
     [(PKWatchHeroImageView *)v4 addSubview:v4->_doneLabel];
     [(PKWatchHeroImageView *)v4 setClipsToBounds:1];
-    v28 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 
-    [(PKWatchHeroImageView *)v4 setBackgroundColor:v28];
+    [(PKWatchHeroImageView *)v4 setBackgroundColor:clearColor];
     [(PKWatchHeroImageView *)v4 setAccessibilityTraits:*MEMORY[0x1E69DDA18]];
     [(PKWatchHeroImageView *)v4 setIsAccessibilityElement:1];
     [(PKWatchHeroImageView *)v4 _updatedAccessibilityLabel];
@@ -266,9 +266,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [PKWatchHeroImageView heroWatchImageSize:a3.width];
+  [PKWatchHeroImageView heroWatchImageSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -284,12 +284,12 @@
   return result;
 }
 
-- (void)setSize:(unint64_t)a3
+- (void)setSize:(unint64_t)size
 {
-  if (self->_size != a3)
+  if (self->_size != size)
   {
-    self->_size = a3;
-    [(BPSIllustratedWatchView *)self->_watchView setAllowScaling:a3 == 0];
+    self->_size = size;
+    [(BPSIllustratedWatchView *)self->_watchView setAllowScaling:size == 0];
 
     [(PKWatchHeroImageView *)self setNeedsLayout];
   }
@@ -313,12 +313,12 @@
   }
 }
 
-- (void)setHideDoneLabel:(BOOL)a3
+- (void)setHideDoneLabel:(BOOL)label
 {
-  if (self->_hideDoneLabel != a3)
+  if (self->_hideDoneLabel != label)
   {
-    self->_hideDoneLabel = a3;
-    if (a3)
+    self->_hideDoneLabel = label;
+    if (label)
     {
       [(UILabel *)self->_doneLabel removeFromSuperview];
     }
@@ -332,27 +332,27 @@
   }
 }
 
-- (void)setWallpaperImage:(id)a3 contentMode:(int64_t)a4
+- (void)setWallpaperImage:(id)image contentMode:(int64_t)mode
 {
-  v6 = a3;
+  imageCopy = image;
   wallpaperImageView = self->_wallpaperImageView;
-  v11 = v6;
-  if (v6)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!wallpaperImageView)
     {
-      v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
+      v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
       v9 = self->_wallpaperImageView;
       self->_wallpaperImageView = v8;
 
-      [(UIImageView *)self->_wallpaperImageView setContentMode:a4];
+      [(UIImageView *)self->_wallpaperImageView setContentMode:mode];
       [(UIImageView *)self->_wallpaperImageView setClipsToBounds:1];
       [(BPSIllustratedWatchView *)self->_watchView addSubview:self->_wallpaperImageView];
-      v6 = v11;
+      imageCopy = v11;
       wallpaperImageView = self->_wallpaperImageView;
     }
 
-    [(UIImageView *)wallpaperImageView setImage:v6];
+    [(UIImageView *)wallpaperImageView setImage:imageCopy];
   }
 
   else
@@ -365,33 +365,33 @@
   [(PKWatchHeroImageView *)self setNeedsLayout];
 }
 
-- (void)setCardImage:(id)a3
+- (void)setCardImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   cardArtImageView = self->_cardArtImageView;
-  v11 = v4;
-  if (v4)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!cardArtImageView)
     {
-      v6 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+      v6 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
       v7 = self->_cardArtImageView;
       self->_cardArtImageView = v6;
 
       [(UIImageView *)self->_cardArtImageView setContentMode:1];
       [(BPSIllustratedWatchView *)self->_watchView addSubview:self->_cardArtImageView];
-      v8 = [(UIImageView *)self->_cardArtImageView layer];
+      layer = [(UIImageView *)self->_cardArtImageView layer];
       [(PKWatchHeroImageView *)self cardFrame];
       +[PKTransactionDataOverlayCardFaceView borderWidth];
       v9 = +[PKTransactionDataOverlayCardFaceView borderColor];
       [v9 CGColor];
       PKPaymentStyleApplyCorners();
 
-      v4 = v11;
+      imageCopy = v11;
       cardArtImageView = self->_cardArtImageView;
     }
 
-    [(UIImageView *)cardArtImageView setImage:v4];
+    [(UIImageView *)cardArtImageView setImage:imageCopy];
   }
 
   else

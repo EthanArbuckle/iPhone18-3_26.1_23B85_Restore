@@ -1,34 +1,34 @@
 @interface HKOverlayRoomViewControllerQuantityContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKOverlayRoomViewControllerIntegratedContextDelegate)optionalDelegate;
-- (HKOverlayRoomViewControllerQuantityContext)initWithQuantityIdentifier:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 optionalDelegate:(id)a6 seriesOptions:(int64_t)a7 mode:(int64_t)a8 optionalBaseDisplayType:(id)a9;
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6 isUnitIncludedInValue:(BOOL)a7;
-- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)a3;
+- (HKOverlayRoomViewControllerQuantityContext)initWithQuantityIdentifier:(id)identifier overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate seriesOptions:(int64_t)options mode:(int64_t)mode optionalBaseDisplayType:(id)type;
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope isUnitIncludedInValue:(BOOL)inValue;
+- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)scope;
 - (id)representativeDisplayType;
-- (id)unitString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5;
-- (id)valueContextString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5;
-- (id)valueString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5 isUnitIncludedInValue:(BOOL *)a6;
-- (void)fetchCachedDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 dateInterval:(id)a5 completion:(id)a6;
-- (void)prepareContextForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6;
+- (id)unitString:(id)string applicationItems:(id)items representativeDisplayType:(id)type;
+- (id)valueContextString:(id)string applicationItems:(id)items representativeDisplayType:(id)type;
+- (id)valueString:(id)string applicationItems:(id)items representativeDisplayType:(id)type isUnitIncludedInValue:(BOOL *)value;
+- (void)fetchCachedDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution dateInterval:(id)interval completion:(id)completion;
+- (void)prepareContextForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution;
 @end
 
 @implementation HKOverlayRoomViewControllerQuantityContext
 
-- (HKOverlayRoomViewControllerQuantityContext)initWithQuantityIdentifier:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 optionalDelegate:(id)a6 seriesOptions:(int64_t)a7 mode:(int64_t)a8 optionalBaseDisplayType:(id)a9
+- (HKOverlayRoomViewControllerQuantityContext)initWithQuantityIdentifier:(id)identifier overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate seriesOptions:(int64_t)options mode:(int64_t)mode optionalBaseDisplayType:(id)type
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a9;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = HKOverlayRoomViewControllerQuantityContext;
-  v19 = [(HKOverlayRoomViewControllerIntegratedContext *)&v22 initWithOverlayChartController:a4 applicationItems:a5 mode:a8];
+  v19 = [(HKOverlayRoomViewControllerIntegratedContext *)&v22 initWithOverlayChartController:controller applicationItems:items mode:mode];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_quantityTypeIdentifier, a3);
-    objc_storeWeak(&v20->_optionalDelegate, v17);
-    v20->_options = a7;
-    objc_storeStrong(&v20->_optionalBaseDisplayType, a9);
+    objc_storeStrong(&v19->_quantityTypeIdentifier, identifier);
+    objc_storeWeak(&v20->_optionalDelegate, delegateCopy);
+    v20->_options = options;
+    objc_storeStrong(&v20->_optionalBaseDisplayType, type);
   }
 
   return v20;
@@ -37,88 +37,88 @@
 - (id)representativeDisplayType
 {
   v3 = MEMORY[0x1E696C370];
-  v4 = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
-  v5 = [v3 quantityTypeForIdentifier:v4];
+  quantityTypeIdentifier = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
+  v5 = [v3 quantityTypeForIdentifier:quantityTypeIdentifier];
 
-  v6 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-  v7 = [v6 displayTypeController];
-  v8 = [v7 displayTypeForObjectType:v5];
+  applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+  displayTypeController = [applicationItems displayTypeController];
+  v8 = [displayTypeController displayTypeForObjectType:v5];
 
   return v8;
 }
 
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6 isUnitIncludedInValue:(BOOL)a7
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope isUnitIncludedInValue:(BOOL)inValue
 {
-  v34 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(HKOverlayRoomViewControllerQuantityContext *)self representativeDisplayType];
+  inValueCopy = inValue;
+  unitCopy = unit;
+  contextCopy = context;
+  valueCopy = value;
+  representativeDisplayType = [(HKOverlayRoomViewControllerQuantityContext *)self representativeDisplayType];
   v15 = objc_alloc_init(HKDisplayTypeContextItem);
-  v16 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-  if (v16 && (v17 = v16, -[HKOverlayRoomViewControllerQuantityContext optionalDelegate](self, "optionalDelegate"), v18 = objc_claimAutoreleasedReturnValue(), [v18 cacheDataSource], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, v19))
+  optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  if (optionalDelegate && (v17 = optionalDelegate, -[HKOverlayRoomViewControllerQuantityContext optionalDelegate](self, "optionalDelegate"), v18 = objc_claimAutoreleasedReturnValue(), [v18 cacheDataSource], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, v19))
   {
-    v20 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-    v21 = [v20 cacheDataSource];
-    v22 = [v21 contextTitleForTimeScope];
-    v23 = v22[2](v22, a6);
+    optionalDelegate2 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+    cacheDataSource = [optionalDelegate2 cacheDataSource];
+    contextTitleForTimeScope = [cacheDataSource contextTitleForTimeScope];
+    shortenedDisplayName = contextTitleForTimeScope[2](contextTitleForTimeScope, scope);
 
-    v24 = [MEMORY[0x1E696AEC0] hk_chartOverlayAccessibilityIdentifier:v23];
-    [(HKDisplayTypeContextItem *)v15 setAccessibilityIdentifier:v24];
+    displayTypeIdentifierString = [MEMORY[0x1E696AEC0] hk_chartOverlayAccessibilityIdentifier:shortenedDisplayName];
+    [(HKDisplayTypeContextItem *)v15 setAccessibilityIdentifier:displayTypeIdentifierString];
   }
 
   else
   {
-    v25 = [v14 localization];
-    v23 = [v25 shortenedDisplayName];
+    localization = [representativeDisplayType localization];
+    shortenedDisplayName = [localization shortenedDisplayName];
 
     v26 = MEMORY[0x1E696AEC0];
-    v24 = [v14 displayTypeIdentifierString];
-    v27 = [v26 hk_chartOverlayAccessibilityIdentifier:v24];
+    displayTypeIdentifierString = [representativeDisplayType displayTypeIdentifierString];
+    v27 = [v26 hk_chartOverlayAccessibilityIdentifier:displayTypeIdentifierString];
     [(HKDisplayTypeContextItem *)v15 setAccessibilityIdentifier:v27];
   }
 
-  [(HKDisplayTypeContextItem *)v15 setTitle:v23];
+  [(HKDisplayTypeContextItem *)v15 setTitle:shortenedDisplayName];
   [(HKDisplayTypeContextItem *)v15 setInfoHidden:1];
-  [(HKDisplayTypeContextItem *)v15 setValue:v13];
+  [(HKDisplayTypeContextItem *)v15 setValue:valueCopy];
 
-  [(HKDisplayTypeContextItem *)v15 setValueContext:v12];
-  if (v11)
+  [(HKDisplayTypeContextItem *)v15 setValueContext:contextCopy];
+  if (unitCopy)
   {
-    [(HKDisplayTypeContextItem *)v15 setUnit:v11];
+    [(HKDisplayTypeContextItem *)v15 setUnit:unitCopy];
   }
 
   else
   {
-    v28 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-    v29 = [v28 unitController];
-    v30 = [v29 localizedDisplayNameForDisplayType:v14];
+    applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+    unitController = [applicationItems unitController];
+    v30 = [unitController localizedDisplayNameForDisplayType:representativeDisplayType];
     [(HKDisplayTypeContextItem *)v15 setUnit:v30];
   }
 
-  -[HKDisplayTypeContextItem setUseTightSpacingBetweenValueAndUnit:](v15, "setUseTightSpacingBetweenValueAndUnit:", [v14 contextItemShouldUseTightSpacingBetweenValueAndUnit]);
-  [(HKDisplayTypeContextItem *)v15 setIsUnitIncludedInValue:v34];
+  -[HKDisplayTypeContextItem setUseTightSpacingBetweenValueAndUnit:](v15, "setUseTightSpacingBetweenValueAndUnit:", [representativeDisplayType contextItemShouldUseTightSpacingBetweenValueAndUnit]);
+  [(HKDisplayTypeContextItem *)v15 setIsUnitIncludedInValue:inValueCopy];
   v31 = [HKOverlayContextUtilities defaultMetricColorsForOverlayMode:[(HKOverlayRoomViewControllerIntegratedContext *)self overlayMode]];
   [(HKDisplayTypeContextItem *)v15 setMetricColors:v31];
 
-  v32 = +[HKOverlayContextUtilities selectedMetricColorsForCategory:](HKOverlayContextUtilities, "selectedMetricColorsForCategory:", [v14 categoryIdentifier]);
+  v32 = +[HKOverlayContextUtilities selectedMetricColorsForCategory:](HKOverlayContextUtilities, "selectedMetricColorsForCategory:", [representativeDisplayType categoryIdentifier]);
   [(HKDisplayTypeContextItem *)v15 setSelectedMetricColors:v32];
 
   return v15;
 }
 
-- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)a3
+- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)scope
 {
-  v21 = [(HKOverlayRoomViewControllerQuantityContext *)self representativeDisplayType];
-  v20 = [v21 color];
-  v5 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  representativeDisplayType = [(HKOverlayRoomViewControllerQuantityContext *)self representativeDisplayType];
+  color = [representativeDisplayType color];
+  optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
   v6 = objc_opt_respondsToSelector();
 
-  v17 = a3;
+  scopeCopy = scope;
   if (v6)
   {
-    v7 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-    v19 = [v7 formatterForTimescope:a3];
+    optionalDelegate2 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+    v19 = [optionalDelegate2 formatterForTimescope:scope];
   }
 
   else
@@ -126,139 +126,139 @@
     v19 = 0;
   }
 
-  v8 = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
-  v9 = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
-  v10 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-  v11 = [v10 displayTypeController];
-  v12 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-  v13 = [v12 cacheDataSource];
-  v14 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-  v15 = [v14 alternateLineSeries];
-  v18 = [v8 displayTypeForQuantityIdentifier:v9 timeScope:v17 displayTypeController:v11 overlayColor:v20 cacheDataSource:v13 alternateLineSeries:v15 alternateFormatter:v19 seriesOptions:self->_options];
+  overlayChartController = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
+  quantityTypeIdentifier = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
+  applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+  displayTypeController = [applicationItems displayTypeController];
+  optionalDelegate3 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  cacheDataSource = [optionalDelegate3 cacheDataSource];
+  optionalDelegate4 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  alternateLineSeries = [optionalDelegate4 alternateLineSeries];
+  v18 = [overlayChartController displayTypeForQuantityIdentifier:quantityTypeIdentifier timeScope:scopeCopy displayTypeController:displayTypeController overlayColor:color cacheDataSource:cacheDataSource alternateLineSeries:alternateLineSeries alternateFormatter:v19 seriesOptions:self->_options];
 
   return v18;
 }
 
-- (void)fetchCachedDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 dateInterval:(id)a5 completion:(id)a6
+- (void)fetchCachedDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution dateInterval:(id)interval completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
-  v12 = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
-  v13 = [v10 startDate];
-  v14 = [v10 endDate];
+  completionCopy = completion;
+  intervalCopy = interval;
+  overlayChartController = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
+  quantityTypeIdentifier = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v15 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-  v16 = [v15 cacheDataSource];
+  optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  cacheDataSource = [optionalDelegate cacheDataSource];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __109__HKOverlayRoomViewControllerQuantityContext_fetchCachedDataForTimeScope_resolution_dateInterval_completion___block_invoke;
   v18[3] = &unk_1E81B5F58;
-  v19 = v9;
-  v17 = v9;
-  [v11 cachedDataForQuantityIdentifier:v12 timeScope:a3 resolution:0 startDate:v13 endDate:v14 cacheDataSource:v16 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [overlayChartController cachedDataForQuantityIdentifier:quantityTypeIdentifier timeScope:scope resolution:0 startDate:startDate endDate:endDate cacheDataSource:cacheDataSource completion:v18];
 }
 
-- (id)valueString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5 isUnitIncludedInValue:(BOOL *)a6
+- (id)valueString:(id)string applicationItems:(id)items representativeDisplayType:(id)type isUnitIncludedInValue:(BOOL *)value
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  stringCopy = string;
+  itemsCopy = items;
+  typeCopy = type;
+  optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-    v16 = [v15 valueString:v10 applicationItems:v11 representativeDisplayType:v12];
+    optionalDelegate2 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+    v16 = [optionalDelegate2 valueString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = HKOverlayRoomViewControllerQuantityContext;
-    v16 = [(HKOverlayRoomViewControllerIntegratedContext *)&v18 valueString:v10 applicationItems:v11 representativeDisplayType:v12 isUnitIncludedInValue:a6];
+    v16 = [(HKOverlayRoomViewControllerIntegratedContext *)&v18 valueString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy isUnitIncludedInValue:value];
   }
 
   return v16;
 }
 
-- (id)unitString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5
+- (id)unitString:(id)string applicationItems:(id)items representativeDisplayType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  stringCopy = string;
+  itemsCopy = items;
+  typeCopy = type;
+  optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-    v14 = [v13 unitString:v8 applicationItems:v9 representativeDisplayType:v10];
+    optionalDelegate2 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+    v14 = [optionalDelegate2 unitString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = HKOverlayRoomViewControllerQuantityContext;
-    v14 = [(HKOverlayRoomViewControllerIntegratedContext *)&v16 unitString:v8 applicationItems:v9 representativeDisplayType:v10];
+    v14 = [(HKOverlayRoomViewControllerIntegratedContext *)&v16 unitString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   return v14;
 }
 
-- (id)valueContextString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5
+- (id)valueContextString:(id)string applicationItems:(id)items representativeDisplayType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+  stringCopy = string;
+  itemsCopy = items;
+  typeCopy = type;
+  optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-    v14 = [v13 valueContextString:v8 applicationItems:v9 representativeDisplayType:v10];
+    optionalDelegate2 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+    v14 = [optionalDelegate2 valueContextString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = HKOverlayRoomViewControllerQuantityContext;
-    v14 = [(HKOverlayRoomViewControllerIntegratedContext *)&v16 valueContextString:v8 applicationItems:v9 representativeDisplayType:v10];
+    v14 = [(HKOverlayRoomViewControllerIntegratedContext *)&v16 valueContextString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   return v14;
 }
 
-- (void)prepareContextForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6
+- (void)prepareContextForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution
 {
-  v18 = a3;
-  v9 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalBaseDisplayType];
-  if (v9)
+  intervalCopy = interval;
+  optionalBaseDisplayType = [(HKOverlayRoomViewControllerQuantityContext *)self optionalBaseDisplayType];
+  if (optionalBaseDisplayType)
   {
-    v10 = v9;
-    v11 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalBaseDisplayType];
+    v10 = optionalBaseDisplayType;
+    optionalBaseDisplayType2 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalBaseDisplayType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalBaseDisplayType];
-      v14 = [v13 graphSeriesForTimeScope:a5];
-      v15 = [v18 startDate];
-      v16 = [v18 endDate];
-      v17 = [HKValueRange valueRangeWithMinValue:v15 maxValue:v16];
+      optionalBaseDisplayType3 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalBaseDisplayType];
+      v14 = [optionalBaseDisplayType3 graphSeriesForTimeScope:scope];
+      startDate = [intervalCopy startDate];
+      endDate = [intervalCopy endDate];
+      v17 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
-      [v14 hasAnyDataLoadedInXAxisRange:v17 dateZoom:a5 resolution:a6];
+      [v14 hasAnyDataLoadedInXAxisRange:v17 dateZoom:scope resolution:resolution];
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -268,19 +268,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
-      v7 = [(HKOverlayRoomViewControllerQuantityContext *)v5 quantityTypeIdentifier];
+      v5 = equalCopy;
+      quantityTypeIdentifier = [(HKOverlayRoomViewControllerQuantityContext *)self quantityTypeIdentifier];
+      quantityTypeIdentifier2 = [(HKOverlayRoomViewControllerQuantityContext *)v5 quantityTypeIdentifier];
 
-      if (v6 == v7 && (v8 = [(HKOverlayRoomViewControllerQuantityContext *)self options], v8 == [(HKOverlayRoomViewControllerQuantityContext *)v5 options]))
+      if (quantityTypeIdentifier == quantityTypeIdentifier2 && (v8 = [(HKOverlayRoomViewControllerQuantityContext *)self options], v8 == [(HKOverlayRoomViewControllerQuantityContext *)v5 options]))
       {
-        v9 = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
-        v10 = [v9 cacheDataSource];
-        v11 = [v10 name];
-        v12 = [(HKOverlayRoomViewControllerQuantityContext *)v5 optionalDelegate];
-        v13 = [v12 cacheDataSource];
-        v14 = [v13 name];
-        v15 = v11 == v14;
+        optionalDelegate = [(HKOverlayRoomViewControllerQuantityContext *)self optionalDelegate];
+        cacheDataSource = [optionalDelegate cacheDataSource];
+        name = [cacheDataSource name];
+        optionalDelegate2 = [(HKOverlayRoomViewControllerQuantityContext *)v5 optionalDelegate];
+        cacheDataSource2 = [optionalDelegate2 cacheDataSource];
+        name2 = [cacheDataSource2 name];
+        v15 = name == name2;
       }
 
       else

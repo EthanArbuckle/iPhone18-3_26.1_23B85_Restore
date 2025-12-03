@@ -1,27 +1,27 @@
 @interface DAButtonSegment
-- (DAButtonSegment)initWithDictionary:(id)a3;
+- (DAButtonSegment)initWithDictionary:(id)dictionary;
 @end
 
 @implementation DAButtonSegment
 
-- (DAButtonSegment)initWithDictionary:(id)a3
+- (DAButtonSegment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14 = 0;
   v13.receiver = self;
   v13.super_class = DAButtonSegment;
-  v5 = [(DASpecification *)&v13 initWithDictionary:v4];
+  v5 = [(DASpecification *)&v13 initWithDictionary:dictionaryCopy];
   v6 = v5;
-  if (v4 && v5)
+  if (dictionaryCopy && v5)
   {
-    v7 = [v4 dk_stringFromRequiredKey:@"location" maxLength:100 failed:&v14];
+    v7 = [dictionaryCopy dk_stringFromRequiredKey:@"location" maxLength:100 failed:&v14];
     location = v6->_location;
     v6->_location = v7;
 
-    v9 = [v4 dk_numberFromRequiredKey:@"numberOfActions" lowerBound:&off_100011110 upperBound:&off_100011128 failed:&v14];
+    v9 = [dictionaryCopy dk_numberFromRequiredKey:@"numberOfActions" lowerBound:&off_100011110 upperBound:&off_100011128 failed:&v14];
     v6->_numberOfActions = [v9 intValue];
 
-    v10 = [[DAStateRange alloc] initWithDictionary:v4];
+    v10 = [[DAStateRange alloc] initWithDictionary:dictionaryCopy];
     range = v6->_range;
     v6->_range = v10;
   }

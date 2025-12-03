@@ -1,15 +1,15 @@
 @interface TransitPreferences
-+ (BOOL)isModeDisabled:(unint64_t)a3 inUserDefaults:(id)a4;
-+ (unint64_t)disabledModesByTogglingMode:(unint64_t)a3 inModes:(unint64_t)a4;
-+ (void)toggleMode:(unint64_t)a3 inUserDefaults:(id)a4;
-- (BOOL)isModeDisabled:(unint64_t)a3;
-- (TransitPreferences)initWithCopy:(id)a3;
-- (TransitPreferences)initWithTransitOptions:(id)a3 defaults:(id)a4;
++ (BOOL)isModeDisabled:(unint64_t)disabled inUserDefaults:(id)defaults;
++ (unint64_t)disabledModesByTogglingMode:(unint64_t)mode inModes:(unint64_t)modes;
++ (void)toggleMode:(unint64_t)mode inUserDefaults:(id)defaults;
+- (BOOL)isModeDisabled:(unint64_t)disabled;
+- (TransitPreferences)initWithCopy:(id)copy;
+- (TransitPreferences)initWithTransitOptions:(id)options defaults:(id)defaults;
 - (id)_values;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)transitOptions;
-- (id)transitPreferencesByOverridingPropertiesWithUserInfo:(id)a3;
-- (void)_copyPropertiesTo:(id)a3;
+- (id)transitPreferencesByOverridingPropertiesWithUserInfo:(id)info;
+- (void)_copyPropertiesTo:(id)to;
 - (void)loadValuesFromDefaults;
 @end
 
@@ -17,47 +17,47 @@
 
 - (void)loadValuesFromDefaults
 {
-  v3 = [(WatchSyncedPreferences *)self defaults];
-  -[TransitPreferences setDisabledModes:](self, "setDisabledModes:", [v3 integerForKey:@"DefaultDisabledTransitModesKey"] & 0xF);
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  -[TransitPreferences setDisabledModes:](self, "setDisabledModes:", [defaults integerForKey:@"DefaultDisabledTransitModesKey"] & 0xF);
 
-  v4 = [(WatchSyncedPreferences *)self defaults];
-  -[TransitPreferences setSortOption:](self, "setSortOption:", [v4 integerForKey:@"MapsTransitSortOption"]);
+  defaults2 = [(WatchSyncedPreferences *)self defaults];
+  -[TransitPreferences setSortOption:](self, "setSortOption:", [defaults2 integerForKey:@"MapsTransitSortOption"]);
 
-  v5 = [(WatchSyncedPreferences *)self defaults];
-  v6 = [v5 objectForKey:@"MapsTransitSurchargeOption"];
+  defaults3 = [(WatchSyncedPreferences *)self defaults];
+  v6 = [defaults3 objectForKey:@"MapsTransitSurchargeOption"];
   [(TransitPreferences *)self setSurchargeOption:v6];
 
-  v7 = [(WatchSyncedPreferences *)self defaults];
-  v9 = [v7 objectForKey:@"MapsTransitShowICFaresKey"];
+  defaults4 = [(WatchSyncedPreferences *)self defaults];
+  v9 = [defaults4 objectForKey:@"MapsTransitShowICFaresKey"];
 
   if (v9)
   {
-    v8 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  [(TransitPreferences *)self setShowICFares:v8];
+  [(TransitPreferences *)self setShowICFares:bOOLValue];
 }
 
 - (id)transitOptions
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     v3 = objc_alloc_init(GEOTransitOptions);
-    [v3 setPrioritization:{-[TransitPreferences sortOption](v2, "sortOption")}];
+    [v3 setPrioritization:{-[TransitPreferences sortOption](selfCopy, "sortOption")}];
     v4 = objc_alloc_init(GEOFareOptions);
-    [v4 setPaymentType:{-[TransitPreferences showICFares](v2, "showICFares")}];
-    v5 = [(TransitPreferences *)v2 surchargeOption];
+    [v4 setPaymentType:{-[TransitPreferences showICFares](selfCopy, "showICFares")}];
+    surchargeOption = [(TransitPreferences *)selfCopy surchargeOption];
 
-    if (v5)
+    if (surchargeOption)
     {
-      v6 = [(TransitPreferences *)v2 surchargeOption];
-      [v4 setPreferredSurchargeType:{objc_msgSend(v6, "integerValue")}];
+      surchargeOption2 = [(TransitPreferences *)selfCopy surchargeOption];
+      [v4 setPreferredSurchargeType:{objc_msgSend(surchargeOption2, "integerValue")}];
     }
 
     [v3 setFareOptions:v4];
@@ -65,13 +65,13 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(TransitPreferences *)v2 disabledModes];
+    disabledModes = [(TransitPreferences *)selfCopy disabledModes];
     v8 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v26 = v2;
+    v26 = selfCopy;
     if (qword_10195EA50 != -1)
     {
       dispatch_once(&qword_10195EA50, &stru_10164D218);
@@ -93,10 +93,10 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v31 + 1) + 8 * i) integerValue];
-          if ((v14 & v7) != 0)
+          integerValue = [*(*(&v31 + 1) + 8 * i) integerValue];
+          if ((integerValue & disabledModes) != 0)
           {
-            v15 = v14;
+            v15 = integerValue;
             v16 = objc_opt_new();
             v17 = v16;
             if (v15 > 3)
@@ -178,7 +178,7 @@ LABEL_21:
       [v3 setRoutingBehavior:1];
     }
 
-    v2 = v26;
+    selfCopy = v26;
   }
 
   else
@@ -189,10 +189,10 @@ LABEL_21:
   return v3;
 }
 
-- (id)transitPreferencesByOverridingPropertiesWithUserInfo:(id)a3
+- (id)transitPreferencesByOverridingPropertiesWithUserInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -222,27 +222,27 @@ LABEL_21:
   }
 
   v5 = [(TransitPreferences *)self mutableCopy];
-  v6 = [v4 objectForKeyedSubscript:@"DirectionsAvoidedTransitModesKey"];
+  v6 = [infoCopy objectForKeyedSubscript:@"DirectionsAvoidedTransitModesKey"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"DirectionsAvoidedTransitModesKey"];
+    v7 = [infoCopy objectForKeyedSubscript:@"DirectionsAvoidedTransitModesKey"];
     [v5 setDisabledModes:{objc_msgSend(v7, "integerValue") & 0xF}];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"DirectionsSortOptionKey"];
+  v8 = [infoCopy objectForKeyedSubscript:@"DirectionsSortOptionKey"];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"DirectionsSortOptionKey"];
+    v9 = [infoCopy objectForKeyedSubscript:@"DirectionsSortOptionKey"];
     [v5 setSortOption:{objc_msgSend(v9, "integerValue")}];
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"DirectionsTransitSurchargeOptionKey"];
+  v10 = [infoCopy objectForKeyedSubscript:@"DirectionsTransitSurchargeOptionKey"];
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:@"DirectionsTransitSurchargeOptionKey"];
+    v11 = [infoCopy objectForKeyedSubscript:@"DirectionsTransitSurchargeOptionKey"];
     [v5 setSurchargeOption:v11];
   }
 
@@ -251,62 +251,62 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)isModeDisabled:(unint64_t)a3
+- (BOOL)isModeDisabled:(unint64_t)disabled
 {
   v5 = objc_opt_class();
-  v6 = [(TransitPreferences *)self disabledModes];
+  disabledModes = [(TransitPreferences *)self disabledModes];
 
-  return [v5 isModeDisabled:a3 inModes:v6];
+  return [v5 isModeDisabled:disabled inModes:disabledModes];
 }
 
-- (void)_copyPropertiesTo:(id)a3
+- (void)_copyPropertiesTo:(id)to
 {
-  v5 = a3;
-  [v5 setDisabledModes:{-[TransitPreferences disabledModes](self, "disabledModes")}];
-  [v5 setSortOption:{-[TransitPreferences sortOption](self, "sortOption")}];
-  v4 = [(TransitPreferences *)self surchargeOption];
-  [v5 setSurchargeOption:v4];
+  toCopy = to;
+  [toCopy setDisabledModes:{-[TransitPreferences disabledModes](self, "disabledModes")}];
+  [toCopy setSortOption:{-[TransitPreferences sortOption](self, "sortOption")}];
+  surchargeOption = [(TransitPreferences *)self surchargeOption];
+  [toCopy setSurchargeOption:surchargeOption];
 
-  [v5 setShowICFares:{-[TransitPreferences showICFares](self, "showICFares")}];
+  [toCopy setShowICFares:{-[TransitPreferences showICFares](self, "showICFares")}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TransitMutablePreferences allocWithZone:a3];
-  v5 = [(WatchSyncedPreferences *)self defaults];
-  v6 = [(WatchSyncedPreferences *)v4 initWithDefaults:v5];
+  v4 = [TransitMutablePreferences allocWithZone:zone];
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v6 = [(WatchSyncedPreferences *)v4 initWithDefaults:defaults];
 
   [(TransitPreferences *)self _copyPropertiesTo:v6];
   return v6;
 }
 
-+ (void)toggleMode:(unint64_t)a3 inUserDefaults:(id)a4
++ (void)toggleMode:(unint64_t)mode inUserDefaults:(id)defaults
 {
-  v6 = a4;
-  v7 = [a1 disabledModesByTogglingMode:a3 inModes:{objc_msgSend(v6, "integerForKey:", @"DefaultDisabledTransitModesKey"}];
-  [v6 setInteger:v7 forKey:@"DefaultDisabledTransitModesKey"];
+  defaultsCopy = defaults;
+  v7 = [self disabledModesByTogglingMode:mode inModes:{objc_msgSend(defaultsCopy, "integerForKey:", @"DefaultDisabledTransitModesKey"}];
+  [defaultsCopy setInteger:v7 forKey:@"DefaultDisabledTransitModesKey"];
 
   v8 = +[NSUserDefaults __maps_groupUserDefaults];
   [v8 setInteger:v7 forKey:@"DefaultDisabledTransitModesKey"];
 }
 
-+ (BOOL)isModeDisabled:(unint64_t)a3 inUserDefaults:(id)a4
++ (BOOL)isModeDisabled:(unint64_t)disabled inUserDefaults:(id)defaults
 {
-  v6 = [a4 integerForKey:@"DefaultDisabledTransitModesKey"] & 0xF;
+  v6 = [defaults integerForKey:@"DefaultDisabledTransitModesKey"] & 0xF;
 
-  return [a1 isModeDisabled:a3 inModes:v6];
+  return [self isModeDisabled:disabled inModes:v6];
 }
 
-+ (unint64_t)disabledModesByTogglingMode:(unint64_t)a3 inModes:(unint64_t)a4
++ (unint64_t)disabledModesByTogglingMode:(unint64_t)mode inModes:(unint64_t)modes
 {
-  if ((a4 & a3) != 0)
+  if ((modes & mode) != 0)
   {
-    return a4 & ~a3;
+    return modes & ~mode;
   }
 
   else
   {
-    return a4 | a3;
+    return modes | mode;
   }
 }
 
@@ -316,9 +316,9 @@ LABEL_21:
   v10[0] = v3;
   v4 = [NSNumber numberWithInt:[(TransitPreferences *)self sortOption]];
   v10[1] = v4;
-  v5 = [(TransitPreferences *)self surchargeOption];
-  v6 = v5;
-  if (!v5)
+  surchargeOption = [(TransitPreferences *)self surchargeOption];
+  v6 = surchargeOption;
+  if (!surchargeOption)
   {
     v6 = +[NSNull null];
   }
@@ -328,28 +328,28 @@ LABEL_21:
   v10[3] = v7;
   v8 = [NSArray arrayWithObjects:v10 count:4];
 
-  if (!v5)
+  if (!surchargeOption)
   {
   }
 
   return v8;
 }
 
-- (TransitPreferences)initWithCopy:(id)a3
+- (TransitPreferences)initWithCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v8.receiver = self;
   v8.super_class = TransitPreferences;
-  v5 = [(WatchSyncedPreferences *)&v8 initWithCopy:v4];
+  v5 = [(WatchSyncedPreferences *)&v8 initWithCopy:copyCopy];
   if (v5)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (copyCopy)
     {
       if (isKindOfClass)
       {
-        [v4 _copyPropertiesTo:v5];
+        [copyCopy _copyPropertiesTo:v5];
       }
     }
   }
@@ -357,18 +357,18 @@ LABEL_21:
   return v5;
 }
 
-- (TransitPreferences)initWithTransitOptions:(id)a3 defaults:(id)a4
+- (TransitPreferences)initWithTransitOptions:(id)options defaults:(id)defaults
 {
-  v6 = a3;
-  v7 = [(WatchSyncedPreferences *)self initWithDefaults:a4];
+  optionsCopy = options;
+  v7 = [(WatchSyncedPreferences *)self initWithDefaults:defaults];
   if (v7)
   {
-    -[TransitPreferences setSortOption:](v7, "setSortOption:", [v6 prioritization]);
-    v8 = [v6 fareOptions];
-    v9 = v8;
-    if (v8)
+    -[TransitPreferences setSortOption:](v7, "setSortOption:", [optionsCopy prioritization]);
+    fareOptions = [optionsCopy fareOptions];
+    v9 = fareOptions;
+    if (fareOptions)
     {
-      -[TransitPreferences setShowICFares:](v7, "setShowICFares:", [v8 paymentType] == 1);
+      -[TransitPreferences setShowICFares:](v7, "setShowICFares:", [fareOptions paymentType] == 1);
       if ([v9 hasPreferredSurchargeType])
       {
         v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v9 preferredSurchargeType]);
@@ -376,13 +376,13 @@ LABEL_21:
       }
     }
 
-    if ([v6 avoidedModesCount])
+    if ([optionsCopy avoidedModesCount])
     {
       v11 = 0;
       v12 = 0;
       while (1)
       {
-        v13 = [v6 avoidedModeAtIndex:v11];
+        v13 = [optionsCopy avoidedModeAtIndex:v11];
         if (v13 <= 2)
         {
           if (v13 != 1)
@@ -419,7 +419,7 @@ LABEL_21:
 
         v12 |= 2uLL;
 LABEL_19:
-        if (++v11 >= [v6 avoidedModesCount])
+        if (++v11 >= [optionsCopy avoidedModesCount])
         {
           goto LABEL_22;
         }

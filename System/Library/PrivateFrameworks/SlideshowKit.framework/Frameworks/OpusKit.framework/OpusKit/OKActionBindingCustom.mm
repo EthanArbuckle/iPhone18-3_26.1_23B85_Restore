@@ -1,10 +1,10 @@
 @interface OKActionBindingCustom
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingCustom)init;
-- (OKActionBindingCustom)initWithSettings:(id)a3;
+- (OKActionBindingCustom)initWithSettings:(id)settings;
 - (void)dealloc;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -23,14 +23,14 @@
   return result;
 }
 
-- (OKActionBindingCustom)initWithSettings:(id)a3
+- (OKActionBindingCustom)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingCustom;
   v4 = [(OKActionBinding *)&v7 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"name"];
+    v5 = [settings objectForKey:@"name"];
     if (v5)
     {
       v4->_name = [v5 copy];
@@ -57,7 +57,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingCustom;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"name";
@@ -70,11 +70,11 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v4.receiver = self;
   v4.super_class = OKActionBindingCustom;
-  [(OKActionBindingProxy *)&v4 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v4 loadForResponder:responder scope:scope];
 }
 
 - (void)unload
@@ -84,10 +84,10 @@
   [(OKActionBindingProxy *)&v2 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v6 = [(OKActionBindingProxy *)self scope:a3];
-  if (([a3 scope] & v6) == 0)
+  v6 = [(OKActionBindingProxy *)self scope:action];
+  if (([action scope] & v6) == 0)
   {
     return 0;
   }
@@ -98,10 +98,10 @@
     return 0;
   }
 
-  v7 = [a3 name];
+  name = [action name];
   name = self->_name;
 
-  return [v7 isEqualToString:name];
+  return [name isEqualToString:name];
 }
 
 @end

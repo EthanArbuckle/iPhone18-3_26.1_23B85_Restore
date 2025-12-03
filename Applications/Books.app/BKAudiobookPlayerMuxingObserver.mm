@@ -1,8 +1,8 @@
 @interface BKAudiobookPlayerMuxingObserver
 + (id)sharedInstance;
 - (BKAudiobookPlayerMuxingObserver)init;
-- (void)audioPlaybackWillStart:(id)a3;
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
+- (void)audioPlaybackWillStart:(id)start;
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to;
 @end
 
 @implementation BKAudiobookPlayerMuxingObserver
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001880E0;
   block[3] = &unk_100A03560;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100AF77A8 != -1)
   {
     dispatch_once(&qword_100AF77A8, block);
@@ -41,19 +41,19 @@
   return v2;
 }
 
-- (void)audioPlaybackWillStart:(id)a3
+- (void)audioPlaybackWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = +[BKAudiobookNowPlayingAdaptor sharedInstance];
-  [v5 setAudiobookPlayerActiveOutput:v4 == self];
+  [v5 setAudiobookPlayerActiveOutput:startCopy == self];
 
-  if (v4 != self)
+  if (startCopy != self)
   {
     v6 = BCAudiobooksAppLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = startCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Pausing audiobook playback because another object is going to start playing: %{public}@", &v8, 0xCu);
     }
 
@@ -62,11 +62,11 @@
   }
 }
 
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if (a5 == 2)
+  if (to == 2)
   {
-    v7 = [BCAudioMuxingCoordinator sharedInstance:a3];
+    v7 = [BCAudioMuxingCoordinator sharedInstance:player];
     [v7 notifyPlaybackWillStart:self];
   }
 }

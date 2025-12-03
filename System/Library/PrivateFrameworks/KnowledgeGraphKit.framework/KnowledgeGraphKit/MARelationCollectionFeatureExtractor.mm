@@ -1,25 +1,25 @@
 @interface MARelationCollectionFeatureExtractor
-- (MARelationCollectionFeatureExtractor)initWithName:(id)a3 featureNames:(id)a4 relation:(id)a5 labelForEmptyRelation:(id)a6 labelForTargetBlock:(id)a7;
-- (MARelationCollectionFeatureExtractor)initWithName:(id)a3 featureNames:(id)a4 relation:(id)a5 labelForTargetBlock:(id)a6;
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (MARelationCollectionFeatureExtractor)initWithName:(id)name featureNames:(id)names relation:(id)relation labelForEmptyRelation:(id)emptyRelation labelForTargetBlock:(id)block;
+- (MARelationCollectionFeatureExtractor)initWithName:(id)name featureNames:(id)names relation:(id)relation labelForTargetBlock:(id)block;
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation MARelationCollectionFeatureExtractor
 
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v37 = a4;
-  v35 = v8;
-  if (![v37 isCancelledWithProgress:0.0])
+  entitiesCopy = entities;
+  reporterCopy = reporter;
+  v35 = entitiesCopy;
+  if (![reporterCopy isCancelledWithProgress:0.0])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v11 = v8;
+    v11 = entitiesCopy;
     v12 = [v11 countByEnumeratingWithState:&v52 objects:v64 count:16];
     if (v12)
     {
@@ -43,14 +43,14 @@
     }
 
     v40 = [v10 count];
-    v15 = [(MARelationCollectionFeatureExtractor *)self featureNames];
-    v38 = [v15 count];
+    featureNames = [(MARelationCollectionFeatureExtractor *)self featureNames];
+    v38 = [featureNames count];
 
     v16 = [(MAFloatMatrix *)MAMutableFloatMatrix zerosWithRows:v40 columns:v38];
-    v17 = [v10 firstObject];
-    v34 = [v17 graph];
+    firstObject = [v10 firstObject];
+    graph = [firstObject graph];
 
-    if (!v34)
+    if (!graph)
     {
       v16 = v16;
       v9 = v16;
@@ -94,12 +94,12 @@ LABEL_15:
         v43[3] = &unk_2797FDDC8;
         v43[4] = self;
         v45 = buf;
-        v46 = a5;
+        errorCopy = error;
         v16 = v16;
         v44 = v16;
         v47 = v20;
         [v23 enumerateNodesUsingBlock:v43];
-        if (*a5)
+        if (*error)
         {
           v24 = [(MAFloatMatrix *)MAMutableFloatMatrix zerosWithRows:v40 columns:v38];
 
@@ -114,8 +114,8 @@ LABEL_15:
           {
             if (self->_labelForEmptyRelation)
             {
-              v28 = [(MARelationCollectionFeatureExtractor *)self featureNameIndexCache];
-              v29 = [v28 indexOfLabel:self->_labelForEmptyRelation];
+              featureNameIndexCache = [(MARelationCollectionFeatureExtractor *)self featureNameIndexCache];
+              v29 = [featureNameIndexCache indexOfLabel:self->_labelForEmptyRelation];
               *(v62 + 24) = v29;
 
               v21 = MEMORY[0x277D86220];
@@ -128,7 +128,7 @@ LABEL_15:
           }
 
           ++v20;
-          if ((v39 & 1) != 0 || [v37 isCancelledWithProgress:v20 / v40])
+          if ((v39 & 1) != 0 || [reporterCopy isCancelledWithProgress:v20 / v40])
           {
             v27 = v21;
             v26 = 1;
@@ -188,7 +188,7 @@ LABEL_36:
     {
 
 LABEL_40:
-      if (![v37 isCancelledWithProgress:1.0])
+      if (![reporterCopy isCancelledWithProgress:1.0])
       {
         v16 = v16;
         v9 = v16;
@@ -262,38 +262,38 @@ LABEL_3:
 LABEL_4:
 }
 
-- (MARelationCollectionFeatureExtractor)initWithName:(id)a3 featureNames:(id)a4 relation:(id)a5 labelForEmptyRelation:(id)a6 labelForTargetBlock:(id)a7
+- (MARelationCollectionFeatureExtractor)initWithName:(id)name featureNames:(id)names relation:(id)relation labelForEmptyRelation:(id)emptyRelation labelForTargetBlock:(id)block
 {
-  v13 = a6;
-  v14 = [(MARelationCollectionFeatureExtractor *)self initWithName:a3 featureNames:a4 relation:a5 labelForTargetBlock:a7];
+  emptyRelationCopy = emptyRelation;
+  v14 = [(MARelationCollectionFeatureExtractor *)self initWithName:name featureNames:names relation:relation labelForTargetBlock:block];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_labelForEmptyRelation, a6);
+    objc_storeStrong(&v14->_labelForEmptyRelation, emptyRelation);
   }
 
   return v15;
 }
 
-- (MARelationCollectionFeatureExtractor)initWithName:(id)a3 featureNames:(id)a4 relation:(id)a5 labelForTargetBlock:(id)a6
+- (MARelationCollectionFeatureExtractor)initWithName:(id)name featureNames:(id)names relation:(id)relation labelForTargetBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  namesCopy = names;
+  relationCopy = relation;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = MARelationCollectionFeatureExtractor;
   v15 = [(MARelationCollectionFeatureExtractor *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    v17 = [[MAIndexCache alloc] initWithLabels:v12];
+    objc_storeStrong(&v15->_name, name);
+    v17 = [[MAIndexCache alloc] initWithLabels:namesCopy];
     featureNameIndexCache = v16->_featureNameIndexCache;
     v16->_featureNameIndexCache = v17;
 
-    objc_storeStrong(&v16->_relation, a5);
-    v19 = _Block_copy(v14);
+    objc_storeStrong(&v16->_relation, relation);
+    v19 = _Block_copy(blockCopy);
     labelForTargetBlock = v16->_labelForTargetBlock;
     v16->_labelForTargetBlock = v19;
 

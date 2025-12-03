@@ -8,13 +8,13 @@
 {
   if (a4)
   {
-    [a1 setBadgeValue:0];
+    [self setBadgeValue:0];
   }
 
-  [a1 setAnimatedBadge:a4];
-  [a1 setBadgeValue:a3];
+  [self setAnimatedBadge:a4];
+  [self setBadgeValue:a3];
 
-  return [a1 setAnimatedBadge:a5];
+  return [self setAnimatedBadge:a5];
 }
 
 @end

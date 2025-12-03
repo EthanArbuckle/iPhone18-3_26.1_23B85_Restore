@@ -1,5 +1,5 @@
 @interface NFAssertDontReset
-- (BOOL)isEntitled:(id)a3;
+- (BOOL)isEntitled:(id)entitled;
 - (BOOL)isSupported;
 - (id)onAssert;
 - (id)onDeassert;
@@ -7,43 +7,43 @@
 
 @implementation NFAssertDontReset
 
-- (BOOL)isEntitled:(id)a3
+- (BOOL)isEntitled:(id)entitled
 {
-  v3 = [a3 NF_whitelistChecker];
-  v4 = [v3 dontResetAssertion];
+  nF_whitelistChecker = [entitled NF_whitelistChecker];
+  dontResetAssertion = [nF_whitelistChecker dontResetAssertion];
 
-  return v4;
+  return dontResetAssertion;
 }
 
 - (BOOL)isSupported
 {
   v2 = +[_NFHardwareManager sharedHardwareManager];
-  v3 = [v2 controllerInfo];
-  if ([v3 siliconName] == 14)
+  controllerInfo = [v2 controllerInfo];
+  if ([controllerInfo siliconName] == 14)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v2 controllerInfo];
-    if ([v5 siliconName] == 15)
+    controllerInfo2 = [v2 controllerInfo];
+    if ([controllerInfo2 siliconName] == 15)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [v2 controllerInfo];
-      if ([v6 siliconName] == 16)
+      controllerInfo3 = [v2 controllerInfo];
+      if ([controllerInfo3 siliconName] == 16)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [v2 controllerInfo];
-        v4 = [v7 siliconName] == 17;
+        controllerInfo4 = [v2 controllerInfo];
+        v4 = [controllerInfo4 siliconName] == 17;
       }
     }
   }
@@ -55,8 +55,8 @@
 {
   [(NFAsserter *)self setState:2];
   v4 = +[_NFHardwareManager sharedHardwareManager];
-  v5 = [(NFAsserter *)self remoteAssertion];
-  v6 = sub_10017C8A0(v4, v5);
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  v6 = sub_10017C8A0(v4, remoteAssertion);
 
   if (v6)
   {
@@ -110,8 +110,8 @@
     goto LABEL_21;
   }
 
-  v16 = [v4 driverWrapper];
-  v6 = sub_1002248A4(v16, 1);
+  driverWrapper = [v4 driverWrapper];
+  v6 = sub_1002248A4(driverWrapper, 1);
 
   if (!v6)
   {
@@ -178,11 +178,11 @@ LABEL_23:
 {
   [(NFAsserter *)self setState:4];
   v3 = +[_NFHardwareManager sharedHardwareManager];
-  v4 = [v3 driverWrapper];
-  v5 = sub_1002248A4(v4, 0);
+  driverWrapper = [v3 driverWrapper];
+  v5 = sub_1002248A4(driverWrapper, 0);
 
-  v6 = [(NFAsserter *)self remoteAssertion];
-  sub_10017D8F4(v3, v6);
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  sub_10017D8F4(v3, remoteAssertion);
 
   return 0;
 }

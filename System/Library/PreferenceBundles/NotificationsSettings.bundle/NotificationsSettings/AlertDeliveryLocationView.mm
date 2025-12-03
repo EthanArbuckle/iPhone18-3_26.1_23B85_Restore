@@ -1,25 +1,25 @@
 @interface AlertDeliveryLocationView
-+ (double)preferredHeightInWidth:(double)a3;
-- (AlertDeliveryLocationView)initWithFrame:(CGRect)a3;
++ (double)preferredHeightInWidth:(double)width;
+- (AlertDeliveryLocationView)initWithFrame:(CGRect)frame;
 - (CGRect)_usedRect;
-- (id)_alertDeliveryLocationImageForType:(unint64_t)a3;
-- (id)_typeImageViewTintColorSelected:(BOOL)a3;
+- (id)_alertDeliveryLocationImageForType:(unint64_t)type;
+- (id)_typeImageViewTintColorSelected:(BOOL)selected;
 - (void)_animateStateChange;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setType:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setType:(unint64_t)type;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateForUserInterfaceStyleChange;
 @end
 
 @implementation AlertDeliveryLocationView
 
-- (AlertDeliveryLocationView)initWithFrame:(CGRect)a3
+- (AlertDeliveryLocationView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = AlertDeliveryLocationView;
-  v3 = [(AlertDeliveryLocationView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AlertDeliveryLocationView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(UIImageView);
   typeImageView = v3->_typeImageView;
   v3->_typeImageView = v4;
@@ -73,41 +73,41 @@
   return v3;
 }
 
-- (id)_alertDeliveryLocationImageForType:(unint64_t)a3
+- (id)_alertDeliveryLocationImageForType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_4D888[a3];
+    v5 = off_4D888[type];
   }
 
   v6 = NCDeviceTypePrefix();
   v7 = [NSString stringWithFormat:@"%@-%@", v6, v5];
 
   v8 = +[UIScreen mainScreen];
-  v9 = [v8 traitCollection];
-  v10 = [v9 userInterfaceIdiom];
+  traitCollection = [v8 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v10 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v11 = +[BSPlatform sharedInstance];
-    v12 = [v11 homeButtonType];
+    homeButtonType = [v11 homeButtonType];
 
-    if (v12 != &dword_0 + 2)
+    if (homeButtonType != &dword_0 + 2)
     {
       v13 = [NSString stringWithFormat:@"%@-legacy", v7];
 
       v7 = v13;
     }
 
-    v14 = [(AlertDeliveryLocationView *)self traitCollection];
-    v15 = [v14 userInterfaceStyle];
+    traitCollection2 = [(AlertDeliveryLocationView *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-    if (v15 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
       v16 = [NSString stringWithFormat:@"%@-dark", v7];
 
@@ -118,7 +118,7 @@
   v17 = [NSBundle bundleForClass:objc_opt_class()];
   v18 = [UIImage imageNamed:v7 inBundle:v17];
   v19 = v18;
-  if (!a3)
+  if (!type)
   {
     v20 = NCDeviceImageWithDefaultSystemClock(v18);
 
@@ -132,9 +132,9 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(AlertDeliveryLocationView *)self highlighted];
+  highlighted = [(AlertDeliveryLocationView *)self highlighted];
   v4 = 0.5056;
-  if (!v3)
+  if (!highlighted)
   {
     v4 = 1.0;
   }
@@ -143,8 +143,8 @@
   [(AlertDeliveryLocationView *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(UIImageView *)self->_typeImageView image];
-  [v9 size];
+  image = [(UIImageView *)self->_typeImageView image];
+  [image size];
 
   UIRectCenteredXInRect();
   v11 = v10;
@@ -156,8 +156,8 @@
   v16 = v8;
   UIRectCenteredXInRect();
   [(UILabel *)self->_typeLabel setFrame:?];
-  v17 = [(UILabel *)self->_typeLabel font];
-  [v17 _scaledValueForValue:18.0];
+  font = [(UILabel *)self->_typeLabel font];
+  [font _scaledValueForValue:18.0];
   v19 = v18;
 
   v46.origin.x = v11;
@@ -165,8 +165,8 @@
   v46.size.height = v42;
   v46.size.width = v43;
   [(UILabel *)self->_typeLabel _setFirstLineBaselineFrameOriginY:v19 + CGRectGetMaxY(v46)];
-  v20 = [(UILabel *)self->_typeLabel font];
-  [v20 _scaledValueForValue:14.0];
+  font2 = [(UILabel *)self->_typeLabel font];
+  [font2 _scaledValueForValue:14.0];
 
   [(UIImageView *)self->_checkedView intrinsicContentSize];
   if (v21 >= v22)
@@ -259,23 +259,23 @@
   [(UIImageView *)uncheckedView setAlpha:v41];
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
-  self->_type = a3;
-  if (a3 > 2)
+  self->_type = type;
+  if (type > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v5 = off_4D8A0[a3];
+    v5 = off_4D8A0[type];
     v6 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v8 = [v6 localizedStringForKey:v5 value:&stru_4E3F0 table:@"NotificationsSettings"];
   }
 
   [(UILabel *)self->_typeLabel setText:v8];
-  v7 = [(AlertDeliveryLocationView *)self _alertDeliveryLocationImageForType:a3];
+  v7 = [(AlertDeliveryLocationView *)self _alertDeliveryLocationImageForType:type];
   [(UIImageView *)self->_typeImageView setImage:v7];
   [(AlertDeliveryLocationView *)self setNeedsLayout];
 }
@@ -298,18 +298,18 @@
   [UIView _animateUsingDefaultTimingWithOptions:2054 animations:v3 completion:0];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(AlertDeliveryLocationView *)self selected]!= a3)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  if ([(AlertDeliveryLocationView *)self selected]!= selected)
   {
-    self->_selected = v5;
+    self->_selected = selectedCopy;
     typeImageView = self->_typeImageView;
-    v8 = [(AlertDeliveryLocationView *)self _typeImageViewTintColorSelected:v5];
+    v8 = [(AlertDeliveryLocationView *)self _typeImageViewTintColorSelected:selectedCopy];
     [(UIImageView *)typeImageView setTintColor:v8];
 
-    if (v4)
+    if (animatedCopy)
     {
 
       [(AlertDeliveryLocationView *)self _animateStateChange];
@@ -317,11 +317,11 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if ([(AlertDeliveryLocationView *)self highlighted]!= a3)
+  if ([(AlertDeliveryLocationView *)self highlighted]!= highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
 
     [(AlertDeliveryLocationView *)self setNeedsLayout];
   }
@@ -375,7 +375,7 @@
   return CGRectUnion(*&v35, *&v28);
 }
 
-+ (double)preferredHeightInWidth:(double)a3
++ (double)preferredHeightInWidth:(double)width
 {
   v3 = 0;
   x = CGRectNull.origin.x;
@@ -384,7 +384,7 @@
   height = CGRectNull.size.height;
   do
   {
-    v8 = [[AlertDeliveryLocationView alloc] initWithFrame:0.0, 0.0, a3, 1000.0];
+    v8 = [[AlertDeliveryLocationView alloc] initWithFrame:0.0, 0.0, width, 1000.0];
     [(AlertDeliveryLocationView *)v8 _setIsTemplateViewForSizing:1];
     [(AlertDeliveryLocationView *)v8 setType:v3];
     [(AlertDeliveryLocationView *)v8 layoutIfNeeded];
@@ -429,9 +429,9 @@
   return height;
 }
 
-- (id)_typeImageViewTintColorSelected:(BOOL)a3
+- (id)_typeImageViewTintColorSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     +[UIColor systemBlueColor];
   }
@@ -445,18 +445,18 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = AlertDeliveryLocationView;
-  v4 = a3;
-  [(AlertDeliveryLocationView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(AlertDeliveryLocationView *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(AlertDeliveryLocationView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(AlertDeliveryLocationView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(AlertDeliveryLocationView *)self updateForUserInterfaceStyleChange];
   }

@@ -1,15 +1,15 @@
 @interface PGTitleSpec
-+ (id)specWithFormat:(id)a3 titleCategory:(int64_t)a4;
-+ (int64_t)_weekdayForWeekdayCriteria:(unint64_t)a3;
-- (BOOL)_canFulfillWeekdayCriteriaWithMomentNodes:(id)a3;
-- (BOOL)_resolveRequiredInputForArgument:(id)a3;
-- (PGTitleSpec)initWithFormat:(id)a3 titleCategory:(int64_t)a4;
++ (id)specWithFormat:(id)format titleCategory:(int64_t)category;
++ (int64_t)_weekdayForWeekdayCriteria:(unint64_t)criteria;
+- (BOOL)_canFulfillWeekdayCriteriaWithMomentNodes:(id)nodes;
+- (BOOL)_resolveRequiredInputForArgument:(id)argument;
+- (PGTitleSpec)initWithFormat:(id)format titleCategory:(int64_t)category;
 - (PGTitleSpecDelegate)delegate;
-- (id)_appendArguments:(id)a3 toFormatString:(id)a4;
-- (id)_titleWithResolvedArguments:(id)a3;
+- (id)_appendArguments:(id)arguments toFormatString:(id)string;
+- (id)_titleWithResolvedArguments:(id)arguments;
 - (id)description;
-- (id)titleWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4;
-- (id)titleWithMomentNodes:(id)a3 features:(id)a4 argumentEvaluationContext:(id)a5;
+- (id)titleWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context;
+- (id)titleWithMomentNodes:(id)nodes features:(id)features argumentEvaluationContext:(id)context;
 @end
 
 @implementation PGTitleSpec
@@ -32,19 +32,19 @@
   return v5;
 }
 
-- (BOOL)_canFulfillWeekdayCriteriaWithMomentNodes:(id)a3
+- (BOOL)_canFulfillWeekdayCriteriaWithMomentNodes:(id)nodes
 {
   if (!self->_weekdayCriteria)
   {
     return 1;
   }
 
-  v4 = [PGTimeTitleUtility significantDateNodesFromMomentNodes:a3 dateFormatterType:5];
+  v4 = [PGTimeTitleUtility significantDateNodesFromMomentNodes:nodes dateFormatterType:5];
   if ([v4 count] == 1)
   {
-    v5 = [v4 anyObject];
-    v6 = [v5 localDate];
-    v7 = [MEMORY[0x277D27690] dayOfWeekFromDate:v6];
+    anyObject = [v4 anyObject];
+    localDate = [anyObject localDate];
+    v7 = [MEMORY[0x277D27690] dayOfWeekFromDate:localDate];
     v8 = v7 == [objc_opt_class() _weekdayForWeekdayCriteria:self->_weekdayCriteria];
   }
 
@@ -56,18 +56,18 @@
   return v8;
 }
 
-- (id)_appendArguments:(id)a3 toFormatString:(id)a4
+- (id)_appendArguments:(id)arguments toFormatString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  argumentsCopy = arguments;
+  stringCopy = string;
+  v7 = [argumentsCopy count];
   if (v7 > 1)
   {
     if (v7 == 2)
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
-      v10 = [v5 objectAtIndexedSubscript:1];
+      v8 = [argumentsCopy objectAtIndexedSubscript:0];
+      v10 = [argumentsCopy objectAtIndexedSubscript:1];
       v9 = PFLocalizedStringWithValidatedFormat();
     }
 
@@ -78,9 +78,9 @@
         goto LABEL_8;
       }
 
-      v8 = [v5 objectAtIndexedSubscript:0];
-      v10 = [v5 objectAtIndexedSubscript:1];
-      v15 = [v5 objectAtIndexedSubscript:2];
+      v8 = [argumentsCopy objectAtIndexedSubscript:0];
+      v10 = [argumentsCopy objectAtIndexedSubscript:1];
+      v15 = [argumentsCopy objectAtIndexedSubscript:2];
       v9 = PFLocalizedStringWithValidatedFormat();
     }
 
@@ -89,13 +89,13 @@
 
   if (!v7)
   {
-    v9 = v6;
+    v9 = stringCopy;
     goto LABEL_15;
   }
 
   if (v7 == 1)
   {
-    v8 = [v5 objectAtIndexedSubscript:0];
+    v8 = [argumentsCopy objectAtIndexedSubscript:0];
     v9 = PFLocalizedStringWithValidatedFormat();
 LABEL_14:
 
@@ -104,13 +104,13 @@ LABEL_14:
 
 LABEL_8:
   v11 = +[PGLogging sharedLogging];
-  v12 = [v11 loggingConnection];
+  loggingConnection = [v11 loggingConnection];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
     v17 = 3;
-    _os_log_error_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_ERROR, "Not able to resolve a string with more than %lu arguments. Please file a radar agains Photos Media Mining.", buf, 0xCu);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Not able to resolve a string with more than %lu arguments. Please file a radar agains Photos Media Mining.", buf, 0xCu);
   }
 
   v9 = 0;
@@ -121,12 +121,12 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_resolveRequiredInputForArgument:(id)a3
+- (BOOL)_resolveRequiredInputForArgument:(id)argument
 {
-  v4 = a3;
-  v5 = [v4 inputVariable];
+  argumentCopy = argument;
+  inputVariable = [argumentCopy inputVariable];
 
-  if (v5)
+  if (inputVariable)
   {
     v6 = 1;
   }
@@ -134,19 +134,19 @@ LABEL_15:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained titleSpec:self inputForArgument:v4];
+    v8 = [WeakRetained titleSpec:self inputForArgument:argumentCopy];
 
     v6 = v8 != 0;
-    [v4 setInputVariable:v8];
+    [argumentCopy setInputVariable:v8];
   }
 
   return v6;
 }
 
-- (id)_titleWithResolvedArguments:(id)a3
+- (id)_titleWithResolvedArguments:(id)arguments
 {
-  v4 = a3;
-  v5 = [(PGTitleSpec *)self _appendArguments:v4 toFormatString:self->_format];
+  argumentsCopy = arguments;
+  v5 = [(PGTitleSpec *)self _appendArguments:argumentsCopy toFormatString:self->_format];
   if (!v5)
   {
     v9 = 0;
@@ -160,7 +160,7 @@ LABEL_15:
     {
       v7 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
 
-      v8 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v7 andUsedNames:v4];
+      v8 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v7 andUsedNames:argumentsCopy];
       v6 = v7;
 LABEL_8:
 
@@ -170,7 +170,7 @@ LABEL_8:
 
     if (!self->_hasLineBreak)
     {
-      v8 = [PGCommonTitleUtility titleWithLineBreakForTitle:v5 andUsedNames:v4];
+      v8 = [PGCommonTitleUtility titleWithLineBreakForTitle:v5 andUsedNames:argumentsCopy];
       goto LABEL_8;
     }
   }
@@ -183,13 +183,13 @@ LABEL_10:
   return v9;
 }
 
-- (id)titleWithMomentNodes:(id)a3 features:(id)a4 argumentEvaluationContext:(id)a5
+- (id)titleWithMomentNodes:(id)nodes features:(id)features argumentEvaluationContext:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(PGTitleSpec *)self _canFulfillWeekdayCriteriaWithMomentNodes:v8])
+  nodesCopy = nodes;
+  featuresCopy = features;
+  contextCopy = context;
+  if ([(PGTitleSpec *)self _canFulfillWeekdayCriteriaWithMomentNodes:nodesCopy])
   {
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](self->_arguments, "count")}];
     v22 = 0u;
@@ -217,7 +217,7 @@ LABEL_10:
             goto LABEL_15;
           }
 
-          v18 = [v17 _resolvedStringWithMomentNodes:v8 features:v9 argumentEvaluationContext:v10];
+          v18 = [v17 _resolvedStringWithMomentNodes:nodesCopy features:featuresCopy argumentEvaluationContext:contextCopy];
           if (![v18 length])
           {
 
@@ -253,12 +253,12 @@ LABEL_16:
   return v19;
 }
 
-- (id)titleWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4
+- (id)titleWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(PGTitleSpec *)self _canFulfillWeekdayCriteriaWithMomentNodes:v6])
+  nodesCopy = nodes;
+  contextCopy = context;
+  if ([(PGTitleSpec *)self _canFulfillWeekdayCriteriaWithMomentNodes:nodesCopy])
   {
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](self->_arguments, "count")}];
     v19 = 0u;
@@ -286,7 +286,7 @@ LABEL_16:
             goto LABEL_15;
           }
 
-          v15 = [v14 _resolvedStringWithMomentNodes:v6 argumentEvaluationContext:v7];
+          v15 = [v14 _resolvedStringWithMomentNodes:nodesCopy argumentEvaluationContext:contextCopy];
           if (![v15 length])
           {
 
@@ -322,17 +322,17 @@ LABEL_16:
   return v16;
 }
 
-- (PGTitleSpec)initWithFormat:(id)a3 titleCategory:(int64_t)a4
+- (PGTitleSpec)initWithFormat:(id)format titleCategory:(int64_t)category
 {
-  v7 = a3;
+  formatCopy = format;
   v12.receiver = self;
   v12.super_class = PGTitleSpec;
   v8 = [(PGTitleSpec *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_format, a3);
-    v9->_titleCategory = a4;
+    objc_storeStrong(&v8->_format, format);
+    v9->_titleCategory = category;
     arguments = v9->_arguments;
     v9->_arguments = MEMORY[0x277CBEBF8];
 
@@ -342,23 +342,23 @@ LABEL_16:
   return v9;
 }
 
-+ (int64_t)_weekdayForWeekdayCriteria:(unint64_t)a3
++ (int64_t)_weekdayForWeekdayCriteria:(unint64_t)criteria
 {
-  if (a3 - 1 > 2)
+  if (criteria - 1 > 2)
   {
     return -1;
   }
 
   else
   {
-    return qword_22F78C390[a3 - 1];
+    return qword_22F78C390[criteria - 1];
   }
 }
 
-+ (id)specWithFormat:(id)a3 titleCategory:(int64_t)a4
++ (id)specWithFormat:(id)format titleCategory:(int64_t)category
 {
-  v5 = a3;
-  v6 = [[PGTitleSpec alloc] initWithFormat:v5 titleCategory:a4];
+  formatCopy = format;
+  v6 = [[PGTitleSpec alloc] initWithFormat:formatCopy titleCategory:category];
 
   return v6;
 }

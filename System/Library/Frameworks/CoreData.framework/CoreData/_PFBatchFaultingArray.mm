@@ -1,46 +1,46 @@
 @interface _PFBatchFaultingArray
 + (void)initialize;
-- (BOOL)isEqualToArray:(id)a3;
+- (BOOL)isEqualToArray:(id)array;
 - (NSString)description;
-- (_PFBatchFaultingArray)initWithPFArray:(id)a3 andRequest:(id)a4 andContext:(id)a5;
+- (_PFBatchFaultingArray)initWithPFArray:(id)array andRequest:(id)request andContext:(id)context;
 - (id)arrayFromObjectIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)filteredArrayUsingPredicate:(id)a3;
-- (id)indexesOfObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (id)indexesOfObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (id)managedObjectIDAtIndex:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)filteredArrayUsingPredicate:(id)predicate;
+- (id)indexesOfObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
+- (id)indexesOfObjectsWithOptions:(unint64_t)options passingTest:(id)test;
+- (id)managedObjectIDAtIndex:(unint64_t)index;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newArrayFromObjectIDs;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
-- (id)retainedObjectAtIndex:(uint64_t)a1;
-- (id)sortedArrayUsingComparator:(id)a3;
-- (id)sortedArrayUsingDescriptors:(id)a3;
-- (id)sortedArrayUsingFunction:(void *)a3 context:(void *)a4;
-- (id)sortedArrayUsingFunction:(void *)a3 context:(void *)a4 hint:(id)a5;
-- (id)sortedArrayUsingSelector:(SEL)a3;
-- (id)sortedArrayWithOptions:(unint64_t)a3 usingComparator:(id)a4;
-- (id)subarrayWithRange:(_NSRange)a3;
-- (id)valueForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (uint64_t)_newSubArrayInRange:(unint64_t)a3 asMutable:(int)a4;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (id)objectsAtIndexes:(id)indexes;
+- (id)retainedObjectAtIndex:(uint64_t)index;
+- (id)sortedArrayUsingComparator:(id)comparator;
+- (id)sortedArrayUsingDescriptors:(id)descriptors;
+- (id)sortedArrayUsingFunction:(void *)function context:(void *)context;
+- (id)sortedArrayUsingFunction:(void *)function context:(void *)context hint:(id)hint;
+- (id)sortedArrayUsingSelector:(SEL)selector;
+- (id)sortedArrayWithOptions:(unint64_t)options usingComparator:(id)comparator;
+- (id)subarrayWithRange:(_NSRange)range;
+- (id)valueForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
+- (uint64_t)_newSubArrayInRange:(unint64_t)range asMutable:(int)mutable;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfManagedObjectForObjectID:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4;
-- (unint64_t)indexOfObjectAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3;
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4;
-- (unint64_t)indexOfObjectWithOptions:(unint64_t)a3 passingTest:(id)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfManagedObjectForObjectID:(id)d;
+- (unint64_t)indexOfObject:(id)object;
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range;
+- (unint64_t)indexOfObjectAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
+- (unint64_t)indexOfObjectIdenticalTo:(id)to;
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range;
+- (unint64_t)indexOfObjectWithOptions:(unint64_t)options passingTest:(id)test;
 - (void)_turnAllBatchesIntoFaults;
 - (void)_turnAllBatchesIntoObjects;
 - (void)dealloc;
-- (void)enumerateObjectsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)enumerateObjectsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation _PFBatchFaultingArray
@@ -109,9 +109,9 @@
 
 - (id)arrayFromObjectIDs
 {
-  v2 = [(_PFBatchFaultingArray *)self newArrayFromObjectIDs];
+  newArrayFromObjectIDs = [(_PFBatchFaultingArray *)self newArrayFromObjectIDs];
 
-  return v2;
+  return newArrayFromObjectIDs;
 }
 
 - (id)newArrayFromObjectIDs
@@ -122,9 +122,9 @@
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  v3 = [(_PFArray *)self->_array _objectsPointer];
+  _objectsPointer = [(_PFArray *)self->_array _objectsPointer];
   count = self->_count;
-  MEMORY[0x1EEE9AC00](v3);
+  MEMORY[0x1EEE9AC00](_objectsPointer);
   v7 = &v26[-v6];
   v27 = count;
   if (count > 0x200)
@@ -170,7 +170,7 @@
       if (v14 > v9)
       {
         v16 = &v7[8 * v9];
-        v17 = &v3[v9];
+        v17 = &_objectsPointer[v9];
         do
         {
           v18 = *v17++;
@@ -186,7 +186,7 @@
     {
       v19 = v14 - v9;
       v20 = &v7[8 * v9];
-      v21 = &v3[v9];
+      v21 = &_objectsPointer[v9];
       do
       {
         v22 = *v21++;
@@ -213,7 +213,7 @@ LABEL_20:
   return v23;
 }
 
-- (_PFBatchFaultingArray)initWithPFArray:(id)a3 andRequest:(id)a4 andContext:(id)a5
+- (_PFBatchFaultingArray)initWithPFArray:(id)array andRequest:(id)request andContext:(id)context
 {
   v26.receiver = self;
   v26.super_class = _PFBatchFaultingArray;
@@ -223,7 +223,7 @@ LABEL_20:
     return v8;
   }
 
-  v8->_count = [a3 count];
+  v8->_count = [array count];
   v9 = objc_alloc_init(NSCachingFetchRequest);
   v8->_request = v9;
   if (byte_1EA8C7A0C == 1)
@@ -231,24 +231,24 @@ LABEL_20:
     [(NSCachingFetchRequest *)v9 _disableSQLStatementCaching];
   }
 
-  [a4 _resolveEntityWithContext:a5];
-  -[NSFetchRequest setEntity:](v8->_request, "setEntity:", [a4 entity]);
+  [request _resolveEntityWithContext:context];
+  -[NSFetchRequest setEntity:](v8->_request, "setEntity:", [request entity]);
   [(NSFetchRequest *)v8->_request setFetchBatchSize:0];
   [(NSFetchRequest *)v8->_request setIncludesPendingChanges:0];
   [(NSFetchRequest *)v8->_request setSortDescriptors:0];
   [(NSFetchRequest *)v8->_request setFetchOffset:0];
   [(NSFetchRequest *)v8->_request setHavingPredicate:0];
   [(NSFetchRequest *)v8->_request setPropertiesToGroupBy:0];
-  -[NSFetchRequest setAffectedStores:](v8->_request, "setAffectedStores:", [a4 affectedStores]);
-  -[NSFetchRequest setResultType:](v8->_request, "setResultType:", [a4 resultType]);
-  -[NSFetchRequest setIncludesSubentities:](v8->_request, "setIncludesSubentities:", [a4 includesSubentities]);
-  -[NSFetchRequest setIncludesPropertyValues:](v8->_request, "setIncludesPropertyValues:", [a4 includesPropertyValues]);
-  -[NSFetchRequest setReturnsObjectsAsFaults:](v8->_request, "setReturnsObjectsAsFaults:", [a4 returnsObjectsAsFaults]);
-  -[NSFetchRequest setRelationshipKeyPathsForPrefetching:](v8->_request, "setRelationshipKeyPathsForPrefetching:", [a4 relationshipKeyPathsForPrefetching]);
-  -[NSFetchRequest setReturnsDistinctResults:](v8->_request, "setReturnsDistinctResults:", [a4 returnsDistinctResults]);
-  -[NSFetchRequest setPropertiesToFetch:](v8->_request, "setPropertiesToFetch:", [a4 propertiesToFetch]);
-  -[NSFetchRequest setShouldRefreshRefetchedObjects:](v8->_request, "setShouldRefreshRefetchedObjects:", [a4 shouldRefreshRefetchedObjects]);
-  if ([a4 _disablePersistentStoreResultCaching])
+  -[NSFetchRequest setAffectedStores:](v8->_request, "setAffectedStores:", [request affectedStores]);
+  -[NSFetchRequest setResultType:](v8->_request, "setResultType:", [request resultType]);
+  -[NSFetchRequest setIncludesSubentities:](v8->_request, "setIncludesSubentities:", [request includesSubentities]);
+  -[NSFetchRequest setIncludesPropertyValues:](v8->_request, "setIncludesPropertyValues:", [request includesPropertyValues]);
+  -[NSFetchRequest setReturnsObjectsAsFaults:](v8->_request, "setReturnsObjectsAsFaults:", [request returnsObjectsAsFaults]);
+  -[NSFetchRequest setRelationshipKeyPathsForPrefetching:](v8->_request, "setRelationshipKeyPathsForPrefetching:", [request relationshipKeyPathsForPrefetching]);
+  -[NSFetchRequest setReturnsDistinctResults:](v8->_request, "setReturnsDistinctResults:", [request returnsDistinctResults]);
+  -[NSFetchRequest setPropertiesToFetch:](v8->_request, "setPropertiesToFetch:", [request propertiesToFetch]);
+  -[NSFetchRequest setShouldRefreshRefetchedObjects:](v8->_request, "setShouldRefreshRefetchedObjects:", [request shouldRefreshRefetchedObjects]);
+  if ([request _disablePersistentStoreResultCaching])
   {
     [(NSFetchRequest *)v8->_request _setDisablePersistentStoreResultCaching:1];
   }
@@ -258,12 +258,12 @@ LABEL_20:
   v12 = [v11 initWithLeftExpression:objc_msgSend(MEMORY[0x1E696ABC8] rightExpression:"expressionForEvaluatedObject") modifier:v10 type:0 options:{10, 0}];
   [(NSFetchRequest *)v8->_request setPredicate:v12];
 
-  v8->_moc = a5;
-  v13 = a3;
-  v8->_array = v13;
-  if (v13)
+  v8->_moc = context;
+  arrayCopy = array;
+  v8->_array = arrayCopy;
+  if (arrayCopy)
   {
-    v13->_flags = (*&v13->_flags & 0xFFFFFFFFFFFFFFF9 | 2);
+    arrayCopy->_flags = (*&arrayCopy->_flags & 0xFFFFFFFFFFFFFFF9 | 2);
     array = v8->_array;
     if (array)
     {
@@ -271,11 +271,11 @@ LABEL_20:
     }
   }
 
-  v8->_batchSize = [a4 fetchBatchSize];
-  v15 = [a4 _fetchBatchLRUEntriesLimit];
-  if (v15)
+  v8->_batchSize = [request fetchBatchSize];
+  _fetchBatchLRUEntriesLimit = [request _fetchBatchLRUEntriesLimit];
+  if (_fetchBatchLRUEntriesLimit)
   {
-    v16 = v15;
+    v16 = _fetchBatchLRUEntriesLimit;
   }
 
   else
@@ -343,19 +343,19 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)isEqualToArray:(id)a3
+- (BOOL)isEqualToArray:(id)array
 {
   v59 = *MEMORY[0x1E69E9840];
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
-    if (!a3)
+    if (!array)
     {
       goto LABEL_50;
     }
   }
 
-  else if (!a3)
+  else if (!array)
   {
 LABEL_50:
     v33 = 0;
@@ -363,18 +363,18 @@ LABEL_50:
   }
 
   count = self->_count;
-  if ([a3 count] != count)
+  if ([array count] != count)
   {
     goto LABEL_50;
   }
 
-  v48 = [(_PFArray *)self->_array _objectsPointer];
+  _objectsPointer = [(_PFArray *)self->_array _objectsPointer];
   self->_count;
-  MEMORY[0x1EEE9AC00](v48);
-  v8 = &v45 - v7;
+  MEMORY[0x1EEE9AC00](_objectsPointer);
+  v8 = &arrayCopy - v7;
   v47 = v9;
   v46 = v10;
-  v45 = a3;
+  arrayCopy = array;
   if (v10 > 0x200)
   {
     v8 = NSAllocateScannedUncollectable();
@@ -382,7 +382,7 @@ LABEL_50:
 
   else
   {
-    bzero(&v45 - v7, 8 * v6);
+    bzero(&arrayCopy - v7, 8 * v6);
   }
 
   v11 = self->_count;
@@ -411,7 +411,7 @@ LABEL_50:
         if (v17 > v12)
         {
           v19 = &v8[8 * v12];
-          v20 = &v48[v12];
+          v20 = &_objectsPointer[v12];
           do
           {
             v21 = *v20++;
@@ -428,7 +428,7 @@ LABEL_50:
       {
         v22 = v17 - v12;
         v23 = &v8[8 * v12];
-        v24 = &v48[v12];
+        v24 = &_objectsPointer[v12];
         do
         {
           v25 = *v24++;
@@ -447,15 +447,15 @@ LABEL_50:
     while (v17 < v11);
   }
 
-  v26 = v45;
+  v26 = arrayCopy;
   if (objc_opt_respondsToSelector())
   {
-    v27 = [v26 newArrayFromObjectIDs];
+    newArrayFromObjectIDs = [v26 newArrayFromObjectIDs];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v28 = [v27 countByEnumeratingWithState:&v53 objects:v58 count:16];
+    v28 = [newArrayFromObjectIDs countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v28)
     {
       v29 = v28;
@@ -467,10 +467,10 @@ LABEL_50:
         {
           if (*v54 != v31)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(newArrayFromObjectIDs);
           }
 
-          if (![*(*(&v53 + 1) + 8 * i) isEqual:{*&v8[8 * v30], v45}])
+          if (![*(*(&v53 + 1) + 8 * i) isEqual:{*&v8[8 * v30], arrayCopy}])
           {
             v33 = 0;
             goto LABEL_43;
@@ -479,7 +479,7 @@ LABEL_50:
           ++v30;
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v53 objects:v58 count:16];
+        v29 = [newArrayFromObjectIDs countByEnumeratingWithState:&v53 objects:v58 count:16];
         if (v29)
         {
           continue;
@@ -519,7 +519,7 @@ LABEL_43:
 
           v41 = *(*(&v49 + 1) + 8 * v39);
           v42 = *&v8[8 * v36];
-          if (([v41 isEqual:{v42, v45}] & 1) == 0 && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(v42, "isEqual:", objc_msgSend(v41, "objectID"))))
+          if (([v41 isEqual:{v42, arrayCopy}] & 1) == 0 && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(v42, "isEqual:", objc_msgSend(v41, "objectID"))))
           {
             v33 = 0;
             goto LABEL_46;
@@ -559,42 +559,42 @@ LABEL_51:
   return v33;
 }
 
-- (uint64_t)_newSubArrayInRange:(unint64_t)a3 asMutable:(int)a4
+- (uint64_t)_newSubArrayInRange:(unint64_t)range asMutable:(int)mutable
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v7 = a1;
+    selfCopy = self;
     if (_PF_Threading_Debugging_level)
     {
-      a1 = _PFAssertSafeMultiThreadedAccess_impl(*(a1 + 32), sel__newSubArrayInRange_asMutable_);
+      self = _PFAssertSafeMultiThreadedAccess_impl(*(self + 32), sel__newSubArrayInRange_asMutable_);
     }
 
-    v8 = a2 + a3;
+    v8 = a2 + range;
     v9 = a2;
     while (v9 < v8)
     {
-      v10 = *(v7 + 48);
+      v10 = *(selfCopy + 48);
       v11 = v9 / v10;
       v12 = ~(v9 / v10);
       v9 += v10;
       if (v9 >= v8)
       {
-        v9 = a2 + a3;
+        v9 = a2 + range;
       }
 
-      if (((*(*(v7 + 24) + 4 * (v11 >> 5)) >> v12) & 1) == 0)
+      if (((*(*(selfCopy + 24) + 4 * (v11 >> 5)) >> v12) & 1) == 0)
       {
         v13 = [_PFMutableProxyArray alloc];
         v14 = *MEMORY[0x1E69E9840];
 
-        return [(_PFMutableProxyArray *)v13 initWithPFArray:v7 inRange:a2, a3];
+        return [(_PFMutableProxyArray *)v13 initWithPFArray:selfCopy inRange:a2, range];
       }
     }
 
-    MEMORY[0x1EEE9AC00](a1);
+    MEMORY[0x1EEE9AC00](self);
     v18 = v22 - v17;
-    if (a3 > 0x200)
+    if (range > 0x200)
     {
       v18 = NSAllocateScannedUncollectable();
     }
@@ -604,19 +604,19 @@ LABEL_51:
       bzero(v22 - v17, 8 * v16);
     }
 
-    [v7 getObjects:v18 range:{a2, a3}];
-    if (a4)
+    [selfCopy getObjects:v18 range:{a2, range}];
+    if (mutable)
     {
-      v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:v18 count:a3];
+      v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:v18 count:range];
     }
 
     else
     {
-      v19 = [[_PFArray alloc] initWithObjects:v18 count:a3 andFlags:59];
+      v19 = [[_PFArray alloc] initWithObjects:v18 count:range andFlags:59];
     }
 
     v20 = v19;
-    if (a3 >= 0x201)
+    if (range >= 0x201)
     {
       NSZoneFree(0, v18);
     }
@@ -631,19 +631,19 @@ LABEL_51:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (_PF_Threading_Debugging_level)
   {
-    v5 = self;
+    selfCopy = self;
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
-    self = v5;
+    self = selfCopy;
   }
 
   return self;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -657,15 +657,15 @@ LABEL_51:
 
 - (void)_turnAllBatchesIntoFaults
 {
-  if (a1)
+  if (self)
   {
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(*(a1 + 32), sel__turnAllBatchesIntoFaults);
+      _PFAssertSafeMultiThreadedAccess_impl(*(self + 32), sel__turnAllBatchesIntoFaults);
     }
 
-    v2 = *(a1 + 12);
-    v3 = *(a1 + 48);
+    v2 = *(self + 12);
+    v3 = *(self + 48);
     if (v2 % v3)
     {
       v4 = v2 / v3 + 1;
@@ -680,11 +680,11 @@ LABEL_51:
     {
       for (i = 0; i < v4; ++i)
       {
-        _releaseStaleBatch(a1, i);
+        _releaseStaleBatch(self, i);
       }
     }
 
-    v6 = *(a1 + 32);
+    v6 = *(self + 32);
 
     [(NSManagedObjectContext *)v6 _processReferenceQueue:?];
   }
@@ -692,25 +692,25 @@ LABEL_51:
 
 - (void)_turnAllBatchesIntoObjects
 {
-  if (a1)
+  if (self)
   {
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(*(a1 + 32), sel__turnAllBatchesIntoObjects);
+      _PFAssertSafeMultiThreadedAccess_impl(*(self + 32), sel__turnAllBatchesIntoObjects);
     }
 
-    v2 = *(a1 + 12);
+    v2 = *(self + 12);
     if (v2)
     {
       for (i = 0; i != v2; ++i)
       {
-        _faultBatchAtIndex(a1, i, 0);
+        _faultBatchAtIndex(self, i, 0);
       }
     }
   }
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -719,13 +719,13 @@ LABEL_51:
 
   count = self->_count;
 
-  [(_PFBatchFaultingArray *)self getObjects:a3 range:0, count];
+  [(_PFBatchFaultingArray *)self getObjects:objects range:0, count];
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
@@ -763,28 +763,28 @@ LABEL_51:
 
     v12 = [(_PFArray *)self->_array _objectsPointer]+ 8 * location;
 
-    memmove(a3, v12, 8 * length);
+    memmove(objects, v12, 8 * length);
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var2 = &self->_count;
+    state->var2 = &self->_count;
   }
 
-  a3->var1 = a4;
+  state->var1 = objects;
   count = self->_count;
-  v10 = [(_PFArray *)self->_array _objectsPointer];
+  _objectsPointer = [(_PFArray *)self->_array _objectsPointer];
   result = 0;
-  var0 = a3->var0;
-  if (a5 && var0 < count)
+  var0 = state->var0;
+  if (count && var0 < count)
   {
     result = 0;
     do
@@ -792,19 +792,19 @@ LABEL_51:
       v13 = result;
       _faultBatchAtIndex(self, var0, 1);
       result = v13 + 1;
-      a4[v13] = v10[var0++];
+      objects[v13] = _objectsPointer[var0++];
     }
 
-    while (var0 < count && result < a5);
+    while (var0 < count && result < count);
   }
 
-  a3->var0 = var0;
+  state->var0 = var0;
   return result;
 }
 
-- (void)enumerateObjectsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateObjectsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  optionsCopy = options;
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
@@ -812,13 +812,13 @@ LABEL_51:
 
   v23 = 0;
   v9 = [(_PFBatchFaultingArray *)self count];
-  v10 = [a3 rangeCount];
+  rangeCount = [indexes rangeCount];
   if (v9)
   {
-    v11 = v10;
-    if (v10)
+    v11 = rangeCount;
+    if (rangeCount)
     {
-      if ((v6 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
         do
         {
@@ -827,12 +827,12 @@ LABEL_51:
             break;
           }
 
-          v19 = [a3 rangeAtIndex:--v11];
+          v19 = [indexes rangeAtIndex:--v11];
           v21 = v19 + v20;
           while (v21 <= v9 && v21 > v19)
           {
             v22 = [(_PFBatchFaultingArray *)self retainedObjectAtIndex:?];
-            (*(a5 + 2))(a5, v22, v21, &v23);
+            (*(block + 2))(block, v22, v21, &v23);
 
             if (v23)
             {
@@ -849,7 +849,7 @@ LABEL_51:
         v12 = 0;
         do
         {
-          v13 = [a3 rangeAtIndex:v12];
+          v13 = [indexes rangeAtIndex:v12];
           v15 = v13;
           if (v9 >= v13 + v14)
           {
@@ -871,7 +871,7 @@ LABEL_51:
             do
             {
               v17 = [(_PFBatchFaultingArray *)self retainedObjectAtIndex:v15];
-              (*(a5 + 2))(a5, v17, v15, &v23);
+              (*(block + 2))(block, v17, v15, &v23);
 
               v18 = v23;
               if (v23)
@@ -899,31 +899,31 @@ LABEL_51:
   }
 }
 
-- (id)retainedObjectAtIndex:(uint64_t)a1
+- (id)retainedObjectAtIndex:(uint64_t)index
 {
-  if (!a1)
+  if (!index)
   {
     return 0;
   }
 
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(*(a1 + 32), sel_retainedObjectAtIndex_);
+    _PFAssertSafeMultiThreadedAccess_impl(*(index + 32), sel_retainedObjectAtIndex_);
   }
 
-  if (*(a1 + 12) <= a2)
+  if (*(index + 12) <= a2)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%u)", _NSMethodExceptionProem(), a2, *(a1 + 12)}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%u)", _NSMethodExceptionProem(), a2, *(index + 12)}];
     return 0;
   }
 
-  _faultBatchAtIndex(a1, a2, 1);
-  v4 = *([*(a1 + 16) _objectsPointer] + 8 * a2);
+  _faultBatchAtIndex(index, a2, 1);
+  v4 = *([*(index + 16) _objectsPointer] + 8 * a2);
 
   return v4;
 }
 
-- (unint64_t)indexOfObjectAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (unint64_t)indexOfObjectAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -934,15 +934,15 @@ LABEL_51:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  if (-[_PFBatchFaultingArray count](self, "count") && [a3 count])
+  if (-[_PFBatchFaultingArray count](self, "count") && [indexes count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68___PFBatchFaultingArray_indexOfObjectAtIndexes_options_passingTest___block_invoke;
     v11[3] = &unk_1E6EC1C18;
-    v11[4] = a5;
+    v11[4] = test;
     v11[5] = &v12;
-    [(_PFBatchFaultingArray *)self enumerateObjectsAtIndexes:a3 options:a4 usingBlock:v11];
+    [(_PFBatchFaultingArray *)self enumerateObjectsAtIndexes:indexes options:options usingBlock:v11];
   }
 
   v9 = v13[3];
@@ -950,7 +950,7 @@ LABEL_51:
   return v9;
 }
 
-- (id)indexesOfObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (id)indexesOfObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -963,28 +963,28 @@ LABEL_51:
   v15 = __Block_byref_object_copy__8;
   v16 = __Block_byref_object_dispose__8;
   v17 = 0;
-  if (-[_PFBatchFaultingArray count](self, "count") && [a3 count])
+  if (-[_PFBatchFaultingArray count](self, "count") && [indexes count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __71___PFBatchFaultingArray_indexesOfObjectsAtIndexes_options_passingTest___block_invoke;
     v11[3] = &unk_1E6EC1C18;
-    v11[4] = a5;
+    v11[4] = test;
     v11[5] = &v12;
-    [(_PFBatchFaultingArray *)self enumerateObjectsAtIndexes:a3 options:a4 usingBlock:v11];
+    [(_PFBatchFaultingArray *)self enumerateObjectsAtIndexes:indexes options:options usingBlock:v11];
   }
 
-  v9 = v13[5];
-  if (!v9)
+  indexSet = v13[5];
+  if (!indexSet)
   {
-    v9 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
   _Block_object_dispose(&v12, 8);
-  return v9;
+  return indexSet;
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -992,10 +992,10 @@ LABEL_51:
   }
 
   v7 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, -[_PFBatchFaultingArray count](self, "count")}];
-  [(_PFBatchFaultingArray *)self enumerateObjectsAtIndexes:v7 options:a3 usingBlock:a4];
+  [(_PFBatchFaultingArray *)self enumerateObjectsAtIndexes:v7 options:options usingBlock:block];
 }
 
-- (unint64_t)indexOfObjectWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (unint64_t)indexOfObjectWithOptions:(unint64_t)options passingTest:(id)test
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1003,12 +1003,12 @@ LABEL_51:
   }
 
   v7 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, -[_PFBatchFaultingArray count](self, "count")}];
-  v8 = [(_PFBatchFaultingArray *)self indexOfObjectAtIndexes:v7 options:a3 passingTest:a4];
+  v8 = [(_PFBatchFaultingArray *)self indexOfObjectAtIndexes:v7 options:options passingTest:test];
 
   return v8;
 }
 
-- (id)indexesOfObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (id)indexesOfObjectsWithOptions:(unint64_t)options passingTest:(id)test
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1016,12 +1016,12 @@ LABEL_51:
   }
 
   v7 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, -[_PFBatchFaultingArray count](self, "count")}];
-  v8 = [(_PFBatchFaultingArray *)self indexesOfObjectsAtIndexes:v7 options:a3 passingTest:a4];
+  v8 = [(_PFBatchFaultingArray *)self indexesOfObjectsAtIndexes:v7 options:options passingTest:test];
 
   return v8;
 }
 
-- (id)sortedArrayUsingFunction:(void *)a3 context:(void *)a4
+- (id)sortedArrayUsingFunction:(void *)function context:(void *)context
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1031,10 +1031,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v8.receiver = self;
   v8.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v8 sortedArrayUsingFunction:a3 context:a4];
+  return [(_PFBatchFaultingArray *)&v8 sortedArrayUsingFunction:function context:context];
 }
 
-- (id)sortedArrayUsingFunction:(void *)a3 context:(void *)a4 hint:(id)a5
+- (id)sortedArrayUsingFunction:(void *)function context:(void *)context hint:(id)hint
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1044,10 +1044,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v10.receiver = self;
   v10.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v10 sortedArrayUsingFunction:a3 context:a4 hint:a5];
+  return [(_PFBatchFaultingArray *)&v10 sortedArrayUsingFunction:function context:context hint:hint];
 }
 
-- (id)sortedArrayUsingSelector:(SEL)a3
+- (id)sortedArrayUsingSelector:(SEL)selector
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1057,10 +1057,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v6.receiver = self;
   v6.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v6 sortedArrayUsingSelector:a3];
+  return [(_PFBatchFaultingArray *)&v6 sortedArrayUsingSelector:selector];
 }
 
-- (id)sortedArrayUsingComparator:(id)a3
+- (id)sortedArrayUsingComparator:(id)comparator
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1070,10 +1070,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v6.receiver = self;
   v6.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v6 sortedArrayUsingComparator:a3];
+  return [(_PFBatchFaultingArray *)&v6 sortedArrayUsingComparator:comparator];
 }
 
-- (id)sortedArrayWithOptions:(unint64_t)a3 usingComparator:(id)a4
+- (id)sortedArrayWithOptions:(unint64_t)options usingComparator:(id)comparator
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1083,10 +1083,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v8.receiver = self;
   v8.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v8 sortedArrayWithOptions:a3 usingComparator:a4];
+  return [(_PFBatchFaultingArray *)&v8 sortedArrayWithOptions:options usingComparator:comparator];
 }
 
-- (id)filteredArrayUsingPredicate:(id)a3
+- (id)filteredArrayUsingPredicate:(id)predicate
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1096,10 +1096,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v6.receiver = self;
   v6.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v6 filteredArrayUsingPredicate:a3];
+  return [(_PFBatchFaultingArray *)&v6 filteredArrayUsingPredicate:predicate];
 }
 
-- (id)sortedArrayUsingDescriptors:(id)a3
+- (id)sortedArrayUsingDescriptors:(id)descriptors
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1109,28 +1109,28 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v6.receiver = self;
   v6.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v6 sortedArrayUsingDescriptors:a3];
+  return [(_PFBatchFaultingArray *)&v6 sortedArrayUsingDescriptors:descriptors];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  if (![a3 isEqual:@"objectID"] || -[NSFetchRequest resultType](self->_request, "resultType") || (v5 = -[_PFBatchFaultingArray arrayFromObjectIDs](self, "arrayFromObjectIDs"), objc_msgSend(v5, "count") != self->_count))
+  if (![key isEqual:@"objectID"] || -[NSFetchRequest resultType](self->_request, "resultType") || (v5 = -[_PFBatchFaultingArray arrayFromObjectIDs](self, "arrayFromObjectIDs"), objc_msgSend(v5, "count") != self->_count))
   {
     [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
     v7.receiver = self;
     v7.super_class = _PFBatchFaultingArray;
-    return [(_PFBatchFaultingArray *)&v7 valueForKey:a3];
+    return [(_PFBatchFaultingArray *)&v7 valueForKey:key];
   }
 
   return v5;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1140,10 +1140,10 @@ LABEL_51:
   [(_PFBatchFaultingArray *)self _turnAllBatchesIntoObjects];
   v6.receiver = self;
   v6.super_class = _PFBatchFaultingArray;
-  return [(_PFBatchFaultingArray *)&v6 valueForKeyPath:a3];
+  return [(_PFBatchFaultingArray *)&v6 valueForKeyPath:path];
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v19[1] = *MEMORY[0x1E69E9840];
   if (_PF_Threading_Debugging_level)
@@ -1151,7 +1151,7 @@ LABEL_51:
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  v5 = [a3 count];
+  v5 = [indexes count];
   if (self->_count)
   {
     v6 = v5 == 0;
@@ -1192,20 +1192,20 @@ LABEL_51:
       bzero(v19 - v10, 8 * v5);
     }
 
-    if ([a3 rangeCount])
+    if ([indexes rangeCount])
     {
       v12 = 0;
       v13 = 0;
       do
       {
-        v14 = [a3 rangeAtIndex:v12];
+        v14 = [indexes rangeAtIndex:v12];
         v16 = v15;
         [(_PFBatchFaultingArray *)self getObjects:&v11[8 * v13] range:v14, v15];
         v13 += v16;
         ++v12;
       }
 
-      while (v12 < [a3 rangeCount]);
+      while (v12 < [indexes rangeCount]);
     }
 
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:v8];
@@ -1229,29 +1229,29 @@ LABEL_51:
   return result;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  if (self->_count <= a3)
+  if (self->_count <= subscript)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%u)", _NSMethodExceptionProem(), a3, self->_count}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%u)", _NSMethodExceptionProem(), subscript, self->_count}];
     return 0;
   }
 
   else
   {
-    _faultBatchAtIndex(self, a3, 1);
-    v5 = [(_PFArray *)self->_array _objectsPointer][8 * a3];
+    _faultBatchAtIndex(self, subscript, 1);
+    subscript = [(_PFArray *)self->_array _objectsPointer][8 * subscript];
 
-    return v5;
+    return subscript;
   }
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1260,10 +1260,10 @@ LABEL_51:
 
   count = self->_count;
 
-  return [(_PFBatchFaultingArray *)self indexOfObjectIdenticalTo:a3 inRange:0, count];
+  return [(_PFBatchFaultingArray *)self indexOfObjectIdenticalTo:object inRange:0, count];
 }
 
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1272,10 +1272,10 @@ LABEL_51:
 
   count = self->_count;
 
-  return [(_PFBatchFaultingArray *)self indexOfObjectIdenticalTo:a3 inRange:0, count];
+  return [(_PFBatchFaultingArray *)self indexOfObjectIdenticalTo:object inRange:0, count];
 }
 
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3
+- (unint64_t)indexOfObjectIdenticalTo:(id)to
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1284,14 +1284,14 @@ LABEL_51:
 
   count = self->_count;
 
-  return [(_PFBatchFaultingArray *)self indexOfObjectIdenticalTo:a3 inRange:0, count];
+  return [(_PFBatchFaultingArray *)self indexOfObjectIdenticalTo:to inRange:0, count];
 }
 
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
@@ -1302,24 +1302,24 @@ LABEL_51:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = [a3 objectID];
-  v9 = [v8 methodForSelector:sel_isEqual_];
-  v10 = [(_PFArray *)v7->_array _objectsPointer];
+  objectID = [to objectID];
+  v9 = [objectID methodForSelector:sel_isEqual_];
+  _objectsPointer = [(_PFArray *)selfCopy->_array _objectsPointer];
   v11 = location + length;
   if (location + length <= location)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = v10;
-  v23 = v7;
+  v12 = _objectsPointer;
+  v23 = selfCopy;
   while (1)
   {
-    batchSize = v7->_batchSize;
+    batchSize = selfCopy->_batchSize;
     v14 = location / batchSize;
     v15 = ~(location / batchSize);
     v16 = batchSize + location;
-    v17 = v7;
+    v17 = selfCopy;
     v18 = v16 >= v11 ? v11 : v16;
     if (((v17->_entryFlags[v14 >> 5] >> v15) & 1) == 0)
     {
@@ -1332,8 +1332,8 @@ LABEL_51:
       do
       {
         v20 = *(v12 + 8 * v19);
-        v21 = v20 == a3 || v8 == v20[5];
-        if (v21 || (v9(v8, sel_isEqual_) & 1) != 0)
+        v21 = v20 == to || objectID == v20[5];
+        if (v21 || (v9(objectID, sel_isEqual_) & 1) != 0)
         {
           return v19;
         }
@@ -1345,7 +1345,7 @@ LABEL_51:
 LABEL_24:
     v19 = 0x7FFFFFFFFFFFFFFFLL;
     location = v18;
-    v7 = v23;
+    selfCopy = v23;
     if (v16 >= v11)
     {
       return v19;
@@ -1358,7 +1358,7 @@ LABEL_24:
   }
 
   v19 = location;
-  while (v8 != *(v12 + 8 * v19) && (v9(v8, sel_isEqual_) & 1) == 0)
+  while (objectID != *(v12 + 8 * v19) && (v9(objectID, sel_isEqual_) & 1) == 0)
   {
     if (v18 == ++v19)
     {
@@ -1369,31 +1369,31 @@ LABEL_24:
   return v19;
 }
 
-- (unint64_t)indexOfManagedObjectForObjectID:(id)a3
+- (unint64_t)indexOfManagedObjectForObjectID:(id)d
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
-    if (!a3)
+    if (!d)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  else if (!a3)
+  else if (!d)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [a3 methodForSelector:sel_isEqual_];
-  v6 = [(_PFArray *)self->_array _objectsPointer];
+  v5 = [d methodForSelector:sel_isEqual_];
+  _objectsPointer = [(_PFArray *)self->_array _objectsPointer];
   count = self->_count;
   if (!count)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = v6;
+  v8 = _objectsPointer;
   v9 = 0;
   v10 = 24;
   while (1)
@@ -1410,7 +1410,7 @@ LABEL_24:
     if (v9 < v13)
     {
       v15 = v9;
-      while (*(v8[v15] + 5) != a3 && (v5(a3, sel_isEqual_) & 1) == 0)
+      while (*(v8[v15] + 5) != d && (v5(d, sel_isEqual_) & 1) == 0)
       {
         if (v13 == ++v15)
         {
@@ -1436,7 +1436,7 @@ LABEL_20:
   }
 
   v15 = v9;
-  while (v8[v15] != a3 && (v5(a3, sel_isEqual_) & 1) == 0)
+  while (v8[v15] != d && (v5(d, sel_isEqual_) & 1) == 0)
   {
     if (v13 == ++v15)
     {
@@ -1447,15 +1447,15 @@ LABEL_20:
   return v15;
 }
 
-- (id)managedObjectIDAtIndex:(unint64_t)a3
+- (id)managedObjectIDAtIndex:(unint64_t)index
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  result = [(_PFArray *)self->_array _objectsPointer][8 * a3];
-  if ((self->_entryFlags[(a3 / self->_batchSize) >> 5] >> ~(a3 / self->_batchSize)))
+  result = [(_PFArray *)self->_array _objectsPointer][8 * index];
+  if ((self->_entryFlags[(index / self->_batchSize) >> 5] >> ~(index / self->_batchSize)))
   {
     return *(result + 5);
   }
@@ -1463,10 +1463,10 @@ LABEL_20:
   return result;
 }
 
-- (id)subarrayWithRange:(_NSRange)a3
+- (id)subarrayWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
@@ -1476,22 +1476,22 @@ LABEL_20:
     }
   }
 
-  else if (a3.location)
+  else if (range.location)
   {
     goto LABEL_6;
   }
 
   if (length == self->_count)
   {
-    v6 = self;
+    selfCopy = self;
     goto LABEL_7;
   }
 
 LABEL_6:
-  v6 = [(_PFBatchFaultingArray *)self _newSubArrayInRange:length asMutable:0];
+  selfCopy = [(_PFBatchFaultingArray *)self _newSubArrayInRange:length asMutable:0];
 LABEL_7:
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -1505,14 +1505,14 @@ LABEL_7:
   return v6;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self->_moc, a2);
   }
 
-  v5 = [(_PFBatchFaultingArray *)self retainedObjectAtIndex:a3];
+  v5 = [(_PFBatchFaultingArray *)self retainedObjectAtIndex:index];
 
   return v5;
 }

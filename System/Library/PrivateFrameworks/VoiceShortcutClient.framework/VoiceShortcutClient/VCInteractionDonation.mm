@@ -1,6 +1,6 @@
 @interface VCInteractionDonation
 + (id)timestampDateFormatter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INShortcut)shortcut;
 - (NSDate)date;
 - (NSString)fullDescription;
@@ -8,8 +8,8 @@
 - (NSString)sourceAppIdentifierForLaunching;
 - (NSString)subtitle;
 - (NSString)suggestedPhrase;
-- (VCInteractionDonation)initWithEvent:(id)a3;
-- (VCInteractionDonation)initWithIdentifier:(id)a3 sourceAppIdentifier:(id)a4 interaction:(id)a5;
+- (VCInteractionDonation)initWithEvent:(id)event;
+- (VCInteractionDonation)initWithIdentifier:(id)identifier sourceAppIdentifier:(id)appIdentifier interaction:(id)interaction;
 - (id)uniqueProperty;
 @end
 
@@ -17,8 +17,8 @@
 
 - (id)uniqueProperty
 {
-  v3 = [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
-  if (v3)
+  sourceAppIdentifierForDisplay = [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
+  if (sourceAppIdentifierForDisplay)
   {
     [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
   }
@@ -30,46 +30,46 @@
   v4 = ;
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VCInteractionDonation *)self title];
-  v7 = [(VCInteractionDonation *)self subtitle];
-  v8 = [v5 stringWithFormat:@"%@-%@-%@", v4, v6, v7];
+  title = [(VCInteractionDonation *)self title];
+  subtitle = [(VCInteractionDonation *)self subtitle];
+  v8 = [v5 stringWithFormat:@"%@-%@-%@", v4, title, subtitle];
 
   return v8;
 }
 
 - (NSString)suggestedPhrase
 {
-  v2 = [(VCInteractionDonation *)self interaction];
-  v3 = [v2 intent];
-  v4 = [v3 suggestedInvocationPhrase];
+  interaction = [(VCInteractionDonation *)self interaction];
+  intent = [interaction intent];
+  suggestedInvocationPhrase = [intent suggestedInvocationPhrase];
 
-  return v4;
+  return suggestedInvocationPhrase;
 }
 
 - (INShortcut)shortcut
 {
   v3 = objc_alloc(MEMORY[0x1E696EA38]);
-  v4 = [(VCInteractionDonation *)self interaction];
-  v5 = [v4 intent];
-  v6 = [v3 initWithIntent:v5];
+  interaction = [(VCInteractionDonation *)self interaction];
+  intent = [interaction intent];
+  v6 = [v3 initWithIntent:intent];
 
   return v6;
 }
 
 - (NSString)fullDescription
 {
-  v3 = [objc_opt_class() timestampDateFormatter];
-  v4 = [(VCInteractionDonation *)self date];
-  v38 = [v3 stringFromDate:v4];
+  timestampDateFormatter = [objc_opt_class() timestampDateFormatter];
+  date = [(VCInteractionDonation *)self date];
+  v38 = [timestampDateFormatter stringFromDate:date];
 
-  v5 = [(VCInteractionDonation *)self interaction];
-  v6 = [v5 intent];
-  v7 = [v6 backingStore];
-  v8 = [v7 formattedText];
-  v9 = v8;
-  if (v8)
+  interaction = [(VCInteractionDonation *)self interaction];
+  intent = [interaction intent];
+  backingStore = [intent backingStore];
+  formattedText = [backingStore formattedText];
+  v9 = formattedText;
+  if (formattedText)
   {
-    v10 = v8;
+    v10 = formattedText;
   }
 
   else
@@ -79,14 +79,14 @@
 
   v37 = v10;
 
-  v11 = [(VCInteractionDonation *)self interaction];
-  v12 = [v11 intentResponse];
-  v13 = [v12 backingStore];
-  v14 = [v13 formattedText];
-  v15 = v14;
-  if (v14)
+  interaction2 = [(VCInteractionDonation *)self interaction];
+  intentResponse = [interaction2 intentResponse];
+  backingStore2 = [intentResponse backingStore];
+  formattedText2 = [backingStore2 formattedText];
+  v15 = formattedText2;
+  if (formattedText2)
   {
-    v16 = v14;
+    v16 = formattedText2;
   }
 
   else
@@ -97,31 +97,31 @@
   v33 = v16;
 
   v30 = MEMORY[0x1E696AEC0];
-  v29 = [(VCInteractionDonation *)self title];
-  v36 = [(VCInteractionDonation *)self subtitle];
-  v35 = [(VCInteractionDonation *)self interaction];
-  v34 = [v35 intent];
-  v17 = [v34 _className];
-  v26 = [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
-  v18 = [(VCInteractionDonation *)self sourceAppIdentifierForLaunching];
-  v32 = [(VCInteractionDonation *)self interaction];
-  v28 = [v32 intent];
-  v19 = [v28 launchId];
-  v27 = [(VCInteractionDonation *)self interaction];
-  v20 = [v27 intent];
-  v21 = [v20 _nanoLaunchId];
-  v22 = [(VCInteractionDonation *)self interaction];
-  v23 = [v22 intent];
-  v24 = [v23 extensionBundleId];
-  v31 = [v30 stringWithFormat:@"Title: %@\nSubtitle: %@\nType: %@\nBundle Identifier for Display: %@\nBundle Identifier for Launch: %@\nDate: %@\nlaunchId: %@\nnanoLaunchId: %@\nExtension Bundle ID: %@\nIntent:\n%@\nResponse:\n%@", v29, v36, v17, v26, v18, v38, v19, v21, v24, v37, v33];
+  title = [(VCInteractionDonation *)self title];
+  subtitle = [(VCInteractionDonation *)self subtitle];
+  interaction3 = [(VCInteractionDonation *)self interaction];
+  intent2 = [interaction3 intent];
+  _className = [intent2 _className];
+  sourceAppIdentifierForDisplay = [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
+  sourceAppIdentifierForLaunching = [(VCInteractionDonation *)self sourceAppIdentifierForLaunching];
+  interaction4 = [(VCInteractionDonation *)self interaction];
+  intent3 = [interaction4 intent];
+  launchId = [intent3 launchId];
+  interaction5 = [(VCInteractionDonation *)self interaction];
+  intent4 = [interaction5 intent];
+  _nanoLaunchId = [intent4 _nanoLaunchId];
+  interaction6 = [(VCInteractionDonation *)self interaction];
+  intent5 = [interaction6 intent];
+  extensionBundleId = [intent5 extensionBundleId];
+  v31 = [v30 stringWithFormat:@"Title: %@\nSubtitle: %@\nType: %@\nBundle Identifier for Display: %@\nBundle Identifier for Launch: %@\nDate: %@\nlaunchId: %@\nnanoLaunchId: %@\nExtension Bundle ID: %@\nIntent:\n%@\nResponse:\n%@", title, subtitle, _className, sourceAppIdentifierForDisplay, sourceAppIdentifierForLaunching, v38, launchId, _nanoLaunchId, extensionBundleId, v37, v33];
 
   return v31;
 }
 
 - (NSString)subtitle
 {
-  v3 = [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
-  v4 = [v3 isEqualToString:@"com.apple.mobilenotes"];
+  sourceAppIdentifierForDisplay = [(VCInteractionDonation *)self sourceAppIdentifierForDisplay];
+  v4 = [sourceAppIdentifierForDisplay isEqualToString:@"com.apple.mobilenotes"];
 
   if (v4)
   {
@@ -138,35 +138,35 @@
 
 - (NSDate)date
 {
-  v2 = [(VCInteractionDonation *)self interaction];
-  v3 = [v2 dateInterval];
-  v4 = [v3 startDate];
+  interaction = [(VCInteractionDonation *)self interaction];
+  dateInterval = [interaction dateInterval];
+  startDate = [dateInterval startDate];
 
-  return v4;
+  return startDate;
 }
 
 - (NSString)sourceAppIdentifierForLaunching
 {
-  v2 = [(VCInteractionDonation *)self interaction];
-  v3 = [v2 intent];
-  v4 = [v3 _intents_bundleIdForLaunching];
+  interaction = [(VCInteractionDonation *)self interaction];
+  intent = [interaction intent];
+  _intents_bundleIdForLaunching = [intent _intents_bundleIdForLaunching];
 
-  return v4;
+  return _intents_bundleIdForLaunching;
 }
 
 - (NSString)sourceAppIdentifierForDisplay
 {
-  v2 = [(VCInteractionDonation *)self interaction];
-  v3 = [v2 intent];
-  v4 = [v3 _intents_bundleIdForDisplay];
+  interaction = [(VCInteractionDonation *)self interaction];
+  intent = [interaction intent];
+  _intents_bundleIdForDisplay = [intent _intents_bundleIdForDisplay];
 
-  return v4;
+  return _intents_bundleIdForDisplay;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -174,19 +174,19 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:v4->_identifier];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:equalCopy->_identifier];
   }
 
   return v5;
 }
 
-- (VCInteractionDonation)initWithEvent:(id)a3
+- (VCInteractionDonation)initWithEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = [MEMORY[0x1E6997990] serializedInteraction];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  eventCopy = event;
+  metadata = [eventCopy metadata];
+  serializedInteraction = [MEMORY[0x1E6997990] serializedInteraction];
+  v7 = [metadata objectForKeyedSubscript:serializedInteraction];
 
   if (v7)
   {
@@ -195,30 +195,30 @@
     v9 = v18;
     if (v8)
     {
-      v10 = [v4 UUID];
-      v11 = [v10 UUIDString];
-      v12 = [v4 source];
-      v13 = [v12 bundleID];
-      self = [(VCInteractionDonation *)self initWithIdentifier:v11 sourceAppIdentifier:v13 interaction:v8];
+      uUID = [eventCopy UUID];
+      uUIDString = [uUID UUIDString];
+      source = [eventCopy source];
+      bundleID = [source bundleID];
+      self = [(VCInteractionDonation *)self initWithIdentifier:uUIDString sourceAppIdentifier:bundleID interaction:v8];
 
-      v14 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = getWFVoiceShortcutClientLogObject();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      uUID = getWFVoiceShortcutClientLogObject();
+      if (os_log_type_enabled(uUID, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
         v20 = "[VCInteractionDonation initWithEvent:]";
         v21 = 2112;
-        v22 = v4;
+        v22 = eventCopy;
         v23 = 2112;
         v24 = v9;
-        _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEFAULT, "%s Failed to unarchive interaction data for event: %@, error: %@", buf, 0x20u);
+        _os_log_impl(&dword_1B1DE3000, uUID, OS_LOG_TYPE_DEFAULT, "%s Failed to unarchive interaction data for event: %@, error: %@", buf, 0x20u);
       }
 
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -227,105 +227,105 @@
     v9 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 metadata];
+      metadata2 = [eventCopy metadata];
       *buf = 136315394;
       v20 = "[VCInteractionDonation initWithEvent:]";
       v21 = 2112;
-      v22 = v15;
+      v22 = metadata2;
       _os_log_impl(&dword_1B1DE3000, v9, OS_LOG_TYPE_DEFAULT, "%s Missing interaction data from event.metadata=%@", buf, 0x16u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (VCInteractionDonation)initWithIdentifier:(id)a3 sourceAppIdentifier:(id)a4 interaction:(id)a5
+- (VCInteractionDonation)initWithIdentifier:(id)identifier sourceAppIdentifier:(id)appIdentifier interaction:(id)interaction
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  appIdentifierCopy = appIdentifier;
+  interactionCopy = interaction;
+  if (identifierCopy)
   {
-    if (v10)
+    if (appIdentifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"VCInteractionDonation.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"sourceAppIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCInteractionDonation.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"sourceAppIdentifier"}];
 
-    if (v11)
+    if (interactionCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"VCInteractionDonation.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCInteractionDonation.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
 
     goto LABEL_11;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"VCInteractionDonation.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"VCInteractionDonation.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v10)
+  if (!appIdentifierCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!interactionCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  v12 = 0;
-  if (v9 && v10)
+  selfCopy = 0;
+  if (identifierCopy && appIdentifierCopy)
   {
     v28.receiver = self;
     v28.super_class = VCInteractionDonation;
     self = [(VCInteractionDonation *)&v28 init];
     if (self)
     {
-      v13 = [v9 copy];
+      v13 = [identifierCopy copy];
       identifier = self->_identifier;
       self->_identifier = v13;
 
-      v15 = [v10 copy];
+      v15 = [appIdentifierCopy copy];
       sourceAppIdentifier = self->_sourceAppIdentifier;
       self->_sourceAppIdentifier = v15;
 
-      v17 = [v11 copy];
+      v17 = [interactionCopy copy];
       interaction = self->_interaction;
       self->_interaction = v17;
 
-      v19 = [(INInteraction *)self->_interaction intent];
-      v20 = [v19 _title];
+      intent = [(INInteraction *)self->_interaction intent];
+      _title = [intent _title];
       title = self->_title;
-      self->_title = v20;
+      self->_title = _title;
 
-      v22 = [v19 _subtitle];
+      _subtitle = [intent _subtitle];
       subtitle = self->_subtitle;
-      self->_subtitle = v22;
+      self->_subtitle = _subtitle;
 
       self = self;
-      v12 = self;
+      selfCopy = self;
       goto LABEL_12;
     }
 
 LABEL_11:
-    v12 = 0;
+    selfCopy = 0;
   }
 
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
 + (id)timestampDateFormatter

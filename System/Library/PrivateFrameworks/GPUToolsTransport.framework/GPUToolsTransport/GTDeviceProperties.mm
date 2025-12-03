@@ -1,10 +1,10 @@
 @interface GTDeviceProperties
 + (id)hardwareUUID;
 + (id)uniqueDeviceID;
-- (GTDeviceProperties)initWithCoder:(id)a3;
-- (GTDeviceProperties)initWithXPCObject:(id)a3;
+- (GTDeviceProperties)initWithCoder:(id)coder;
+- (GTDeviceProperties)initWithXPCObject:(id)object;
 - (id)initForEmbeddedSystem;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTDeviceProperties
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (GTDeviceProperties)initWithXPCObject:(id)a3
+- (GTDeviceProperties)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v62.receiver = self;
   v62.super_class = GTDeviceProperties;
   v5 = [(GTDeviceProperties *)&v62 init];
   if (v5)
   {
-    v5->_LocationID = xpc_dictionary_get_uint64(v4, "LocationID");
+    v5->_LocationID = xpc_dictionary_get_uint64(objectCopy, "LocationID");
     v6 = MEMORY[0x277CCACA8];
-    string = xpc_dictionary_get_string(v4, "OSVersion");
+    string = xpc_dictionary_get_string(objectCopy, "OSVersion");
     if (string)
     {
       v8 = string;
@@ -60,7 +60,7 @@
     v5->_OSVersion = v9;
 
     v11 = MEMORY[0x277CCACA8];
-    v12 = xpc_dictionary_get_string(v4, "BuildVersion");
+    v12 = xpc_dictionary_get_string(objectCopy, "BuildVersion");
     if (v12)
     {
       v13 = v12;
@@ -76,7 +76,7 @@
     v5->_BuildVersion = v14;
 
     v16 = MEMORY[0x277CCACA8];
-    v17 = xpc_dictionary_get_string(v4, "ProductType");
+    v17 = xpc_dictionary_get_string(objectCopy, "ProductType");
     if (v17)
     {
       v18 = v17;
@@ -92,7 +92,7 @@
     v5->_ProductType = v19;
 
     v21 = MEMORY[0x277CCACA8];
-    v22 = xpc_dictionary_get_string(v4, "HWModel");
+    v22 = xpc_dictionary_get_string(objectCopy, "HWModel");
     if (v22)
     {
       v23 = v22;
@@ -108,7 +108,7 @@
     v5->_HWModelStr = v24;
 
     v26 = MEMORY[0x277CCACA8];
-    v27 = xpc_dictionary_get_string(v4, "UniqueDeviceID");
+    v27 = xpc_dictionary_get_string(objectCopy, "UniqueDeviceID");
     if (v27)
     {
       v28 = v27;
@@ -124,7 +124,7 @@
     v5->_UniqueDeviceID = v29;
 
     v31 = MEMORY[0x277CCACA8];
-    v32 = xpc_dictionary_get_string(v4, "Reality");
+    v32 = xpc_dictionary_get_string(objectCopy, "Reality");
     if (v32)
     {
       v33 = v32;
@@ -139,9 +139,9 @@
     Reality = v5->_Reality;
     v5->_Reality = v34;
 
-    v5->_RemoteXPCVersionFlags = xpc_dictionary_get_uint64(v4, "RemoteXPCVersionFlags");
+    v5->_RemoteXPCVersionFlags = xpc_dictionary_get_uint64(objectCopy, "RemoteXPCVersionFlags");
     v36 = MEMORY[0x277CCACA8];
-    v37 = xpc_dictionary_get_string(v4, "CPUArchitecture");
+    v37 = xpc_dictionary_get_string(objectCopy, "CPUArchitecture");
     if (v37)
     {
       v38 = v37;
@@ -157,7 +157,7 @@
     v5->_CPUArchitecture = v39;
 
     v41 = MEMORY[0x277CCACA8];
-    v42 = xpc_dictionary_get_string(v4, "DeviceClass");
+    v42 = xpc_dictionary_get_string(objectCopy, "DeviceClass");
     if (v42)
     {
       v43 = v42;
@@ -173,7 +173,7 @@
     v5->_DeviceClass = v44;
 
     v46 = MEMORY[0x277CCACA8];
-    v47 = xpc_dictionary_get_string(v4, "MobileDeviceMinimumVersion");
+    v47 = xpc_dictionary_get_string(objectCopy, "MobileDeviceMinimumVersion");
     if (v47)
     {
       v48 = v47;
@@ -189,7 +189,7 @@
     v5->_MobileDeviceMinimumVersion = v49;
 
     v51 = MEMORY[0x277CCACA8];
-    v52 = xpc_dictionary_get_string(v4, "ProductName");
+    v52 = xpc_dictionary_get_string(objectCopy, "ProductName");
     if (v52)
     {
       v53 = v52;
@@ -205,7 +205,7 @@
     v5->_ProductName = v54;
 
     v56 = MEMORY[0x277CCACA8];
-    v57 = xpc_dictionary_get_string(v4, "ReleaseType");
+    v57 = xpc_dictionary_get_string(objectCopy, "ReleaseType");
     if (v57)
     {
       v58 = v57;
@@ -220,77 +220,77 @@
     ReleaseType = v5->_ReleaseType;
     v5->_ReleaseType = v59;
 
-    v5->_AppleInternal = xpc_dictionary_get_BOOL(v4, "AppleInternal");
-    v5->_DeviceSupportsLockdown = xpc_dictionary_get_BOOL(v4, "DeviceSupportsLockdown");
-    v5->_EffectiveProductionStatusAp = xpc_dictionary_get_BOOL(v4, "EffectiveProductionStatusAp");
-    v5->_IsUIBuild = xpc_dictionary_get_BOOL(v4, "IsUIBuild");
-    v5->_OSInstallEnvironment = xpc_dictionary_get_BOOL(v4, "OSInstallEnvironment");
-    v5->_StoreDemoMode = xpc_dictionary_get_BOOL(v4, "StoreDemoMode");
+    v5->_AppleInternal = xpc_dictionary_get_BOOL(objectCopy, "AppleInternal");
+    v5->_DeviceSupportsLockdown = xpc_dictionary_get_BOOL(objectCopy, "DeviceSupportsLockdown");
+    v5->_EffectiveProductionStatusAp = xpc_dictionary_get_BOOL(objectCopy, "EffectiveProductionStatusAp");
+    v5->_IsUIBuild = xpc_dictionary_get_BOOL(objectCopy, "IsUIBuild");
+    v5->_OSInstallEnvironment = xpc_dictionary_get_BOOL(objectCopy, "OSInstallEnvironment");
+    v5->_StoreDemoMode = xpc_dictionary_get_BOOL(objectCopy, "StoreDemoMode");
   }
 
   return v5;
 }
 
-- (GTDeviceProperties)initWithCoder:(id)a3
+- (GTDeviceProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = GTDeviceProperties;
   v5 = [(GTDeviceProperties *)&v29 init];
   if (v5)
   {
-    v5->_LocationID = [v4 decodeIntegerForKey:@"LocationID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BuildVersion"];
+    v5->_LocationID = [coderCopy decodeIntegerForKey:@"LocationID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BuildVersion"];
     BuildVersion = v5->_BuildVersion;
     v5->_BuildVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HWModel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HWModel"];
     HWModelStr = v5->_HWModelStr;
     v5->_HWModelStr = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OSVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OSVersion"];
     OSVersion = v5->_OSVersion;
     v5->_OSVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
     ProductType = v5->_ProductType;
     v5->_ProductType = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UniqueDeviceID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UniqueDeviceID"];
     UniqueDeviceID = v5->_UniqueDeviceID;
     v5->_UniqueDeviceID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Reality"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Reality"];
     Reality = v5->_Reality;
     v5->_Reality = v16;
 
-    v5->_RemoteXPCVersionFlags = [v4 decodeIntegerForKey:@"RemoteXPCVersionFlags"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPUArchitecture"];
+    v5->_RemoteXPCVersionFlags = [coderCopy decodeIntegerForKey:@"RemoteXPCVersionFlags"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPUArchitecture"];
     CPUArchitecture = v5->_CPUArchitecture;
     v5->_CPUArchitecture = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceClass"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceClass"];
     DeviceClass = v5->_DeviceClass;
     v5->_DeviceClass = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MobileDeviceMinimumVersion"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MobileDeviceMinimumVersion"];
     MobileDeviceMinimumVersion = v5->_MobileDeviceMinimumVersion;
     v5->_MobileDeviceMinimumVersion = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductName"];
     ProductName = v5->_ProductName;
     v5->_ProductName = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReleaseType"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReleaseType"];
     ReleaseType = v5->_ReleaseType;
     v5->_ReleaseType = v26;
 
-    v5->_AppleInternal = [v4 decodeBoolForKey:@"AppleInternal"];
-    v5->_DeviceSupportsLockdown = [v4 decodeBoolForKey:@"DeviceSupportsLockdown"];
-    v5->_EffectiveProductionStatusAp = [v4 decodeBoolForKey:@"EffectiveProductionStatusAp"];
-    v5->_IsUIBuild = [v4 decodeBoolForKey:@"IsUIBuild"];
-    v5->_OSInstallEnvironment = [v4 decodeBoolForKey:@"OSInstallEnvironment"];
-    v5->_StoreDemoMode = [v4 decodeBoolForKey:@"StoreDemoMode"];
+    v5->_AppleInternal = [coderCopy decodeBoolForKey:@"AppleInternal"];
+    v5->_DeviceSupportsLockdown = [coderCopy decodeBoolForKey:@"DeviceSupportsLockdown"];
+    v5->_EffectiveProductionStatusAp = [coderCopy decodeBoolForKey:@"EffectiveProductionStatusAp"];
+    v5->_IsUIBuild = [coderCopy decodeBoolForKey:@"IsUIBuild"];
+    v5->_OSInstallEnvironment = [coderCopy decodeBoolForKey:@"OSInstallEnvironment"];
+    v5->_StoreDemoMode = [coderCopy decodeBoolForKey:@"StoreDemoMode"];
   }
 
   return v5;
@@ -417,29 +417,29 @@ LABEL_20:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   LocationID = self->_LocationID;
-  v5 = a3;
-  [v5 encodeInteger:LocationID forKey:@"LocationID"];
-  [v5 encodeObject:self->_BuildVersion forKey:@"BuildVersion"];
-  [v5 encodeObject:self->_HWModelStr forKey:@"HWModel"];
-  [v5 encodeObject:self->_OSVersion forKey:@"OSVersion"];
-  [v5 encodeObject:self->_ProductType forKey:@"ProductType"];
-  [v5 encodeObject:self->_UniqueDeviceID forKey:@"UniqueDeviceID"];
-  [v5 encodeObject:self->_Reality forKey:@"Reality"];
-  [v5 encodeInteger:self->_RemoteXPCVersionFlags forKey:@"RemoteXPCVersionFlags"];
-  [v5 encodeObject:self->_CPUArchitecture forKey:@"CPUArchitecture"];
-  [v5 encodeObject:self->_DeviceClass forKey:@"DeviceClass"];
-  [v5 encodeObject:self->_MobileDeviceMinimumVersion forKey:@"MobileDeviceMinimumVersion"];
-  [v5 encodeObject:self->_ProductName forKey:@"ProductName"];
-  [v5 encodeObject:self->_ReleaseType forKey:@"ReleaseType"];
-  [v5 encodeBool:self->_AppleInternal forKey:@"AppleInternal"];
-  [v5 encodeBool:self->_DeviceSupportsLockdown forKey:@"DeviceSupportsLockdown"];
-  [v5 encodeBool:self->_EffectiveProductionStatusAp forKey:@"EffectiveProductionStatusAp"];
-  [v5 encodeBool:self->_IsUIBuild forKey:@"IsUIBuild"];
-  [v5 encodeBool:self->_OSInstallEnvironment forKey:@"OSInstallEnvironment"];
-  [v5 encodeBool:self->_StoreDemoMode forKey:@"StoreDemoMode"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:LocationID forKey:@"LocationID"];
+  [coderCopy encodeObject:self->_BuildVersion forKey:@"BuildVersion"];
+  [coderCopy encodeObject:self->_HWModelStr forKey:@"HWModel"];
+  [coderCopy encodeObject:self->_OSVersion forKey:@"OSVersion"];
+  [coderCopy encodeObject:self->_ProductType forKey:@"ProductType"];
+  [coderCopy encodeObject:self->_UniqueDeviceID forKey:@"UniqueDeviceID"];
+  [coderCopy encodeObject:self->_Reality forKey:@"Reality"];
+  [coderCopy encodeInteger:self->_RemoteXPCVersionFlags forKey:@"RemoteXPCVersionFlags"];
+  [coderCopy encodeObject:self->_CPUArchitecture forKey:@"CPUArchitecture"];
+  [coderCopy encodeObject:self->_DeviceClass forKey:@"DeviceClass"];
+  [coderCopy encodeObject:self->_MobileDeviceMinimumVersion forKey:@"MobileDeviceMinimumVersion"];
+  [coderCopy encodeObject:self->_ProductName forKey:@"ProductName"];
+  [coderCopy encodeObject:self->_ReleaseType forKey:@"ReleaseType"];
+  [coderCopy encodeBool:self->_AppleInternal forKey:@"AppleInternal"];
+  [coderCopy encodeBool:self->_DeviceSupportsLockdown forKey:@"DeviceSupportsLockdown"];
+  [coderCopy encodeBool:self->_EffectiveProductionStatusAp forKey:@"EffectiveProductionStatusAp"];
+  [coderCopy encodeBool:self->_IsUIBuild forKey:@"IsUIBuild"];
+  [coderCopy encodeBool:self->_OSInstallEnvironment forKey:@"OSInstallEnvironment"];
+  [coderCopy encodeBool:self->_StoreDemoMode forKey:@"StoreDemoMode"];
 }
 
 @end

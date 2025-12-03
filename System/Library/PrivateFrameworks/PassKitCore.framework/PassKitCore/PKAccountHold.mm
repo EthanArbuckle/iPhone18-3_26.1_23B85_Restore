@@ -1,18 +1,18 @@
 @interface PKAccountHold
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKAccountHold)initWithCoder:(id)a3;
-- (PKAccountHold)initWithRecord:(id)a3;
+- (PKAccountHold)initWithCoder:(id)coder;
+- (PKAccountHold)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountHold
 
-- (PKAccountHold)initWithRecord:(id)a3
+- (PKAccountHold)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v48.receiver = self;
   v48.super_class = PKAccountHold;
   v5 = [(PKAccountHold *)&v48 init];
@@ -21,11 +21,11 @@
     goto LABEL_40;
   }
 
-  v6 = [v4 pk_encryptedStringForKey:@"holdIdentifier"];
+  v6 = [recordCopy pk_encryptedStringForKey:@"holdIdentifier"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [v4 pk_encryptedStringForKey:@"type"];
+  v8 = [recordCopy pk_encryptedStringForKey:@"type"];
   v9 = v8;
   if (v8 == @"floatHold")
   {
@@ -103,7 +103,7 @@ LABEL_27:
 LABEL_28:
 
   v5->_type = v11;
-  v33 = [v4 pk_encryptedStringForKey:@"state"];
+  v33 = [recordCopy pk_encryptedStringForKey:@"state"];
   v34 = v33;
   if (v33 == @"placed")
   {
@@ -139,8 +139,8 @@ LABEL_35:
 LABEL_36:
 
   v5->_state = v36;
-  v40 = [v4 pk_encryptedStringForKey:@"amount"];
-  v41 = [v4 pk_encryptedStringForKey:@"currencyCode"];
+  v40 = [recordCopy pk_encryptedStringForKey:@"amount"];
+  v41 = [recordCopy pk_encryptedStringForKey:@"currencyCode"];
   v42 = v41;
   if (v40 && v41)
   {
@@ -155,14 +155,14 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v11 = [a3 encryptedValues];
+  encryptedValues = [record encryptedValues];
   if (PKApplePayContainerEnvironment() == 2)
   {
-    [v11 setObject:self->_identifier forKey:@"holdIdentifier"];
+    [encryptedValues setObject:self->_identifier forKey:@"holdIdentifier"];
     v4 = PKAccountHoldTypeToString(self->_type);
-    [v11 setObject:v4 forKey:@"type"];
+    [encryptedValues setObject:v4 forKey:@"type"];
 
     state = self->_state;
     v6 = @"placed";
@@ -181,32 +181,32 @@ LABEL_40:
       v7 = @"unknown";
     }
 
-    [v11 setObject:v7 forKey:@"state"];
-    v8 = [(PKCurrencyAmount *)self->_currencyAmount amount];
-    v9 = [v8 stringValue];
-    [v11 setObject:v9 forKey:@"amount"];
+    [encryptedValues setObject:v7 forKey:@"state"];
+    amount = [(PKCurrencyAmount *)self->_currencyAmount amount];
+    stringValue = [amount stringValue];
+    [encryptedValues setObject:stringValue forKey:@"amount"];
 
-    v10 = [(PKCurrencyAmount *)self->_currencyAmount currency];
-    [v11 setObject:v10 forKey:@"currencyCode"];
+    currency = [(PKCurrencyAmount *)self->_currencyAmount currency];
+    [encryptedValues setObject:currency forKey:@"currencyCode"];
   }
 }
 
-- (PKAccountHold)initWithCoder:(id)a3
+- (PKAccountHold)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAccountHold;
   v5 = [(PKAccountHold *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"holdIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"holdIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     v10 = PKCurrencyAmountCreate(v8, v9, 0);
     currencyAmount = v5->_currencyAmount;
     v5->_currencyAmount = v10;
@@ -215,23 +215,23 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"holdIdentifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  v6 = [(PKCurrencyAmount *)self->_currencyAmount amount];
-  [v5 encodeObject:v6 forKey:@"amount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"holdIdentifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  amount = [(PKCurrencyAmount *)self->_currencyAmount amount];
+  [coderCopy encodeObject:amount forKey:@"amount"];
 
-  v7 = [(PKCurrencyAmount *)self->_currencyAmount currency];
-  [v5 encodeObject:v7 forKey:@"currencyCode"];
+  currency = [(PKCurrencyAmount *)self->_currencyAmount currency];
+  [coderCopy encodeObject:currency forKey:@"currencyCode"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -239,7 +239,7 @@ LABEL_40:
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -254,7 +254,7 @@ LABEL_40:
   }
 
   currencyAmount = self->_currencyAmount;
-  v8 = v4[4];
+  v8 = equalCopy[4];
   if (!currencyAmount || !v8)
   {
     if (currencyAmount == v8)
@@ -273,12 +273,12 @@ LABEL_14:
   }
 
 LABEL_12:
-  if (self->_type != v4[2])
+  if (self->_type != equalCopy[2])
   {
     goto LABEL_14;
   }
 
-  v9 = self->_state == v4[3];
+  v9 = self->_state == equalCopy[3];
 LABEL_15:
 
   return v9;
@@ -286,10 +286,10 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_currencyAmount];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_currencyAmount];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
   v6 = self->_state - v5 + 32 * v5;
 

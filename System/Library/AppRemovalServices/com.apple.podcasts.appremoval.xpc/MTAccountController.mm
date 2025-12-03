@@ -1,5 +1,5 @@
 @interface MTAccountController
-+ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)a3;
++ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)notification;
 - (BOOL)activeAccountIsManagedAppleID;
 - (BOOL)isPrimaryUserActiveAccount;
 - (BOOL)isUserLoggedIn;
@@ -12,9 +12,9 @@
 - (id)activeStorefront;
 - (void)_updateActiveAccount;
 - (void)dealloc;
-- (void)didChangeStoreAccount:(id)a3;
-- (void)fetchActiveAccountWithCompletion:(id)a3;
-- (void)setActiveAccount:(id)a3;
+- (void)didChangeStoreAccount:(id)account;
+- (void)fetchActiveAccountWithCompletion:(id)completion;
+- (void)setActiveAccount:(id)account;
 @end
 
 @implementation MTAccountController
@@ -82,28 +82,28 @@
   return v3;
 }
 
-- (void)setActiveAccount:(id)a3
+- (void)setActiveAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   accountQueue = self->_accountQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000164C;
   v7[3] = &unk_10000C440;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = accountCopy;
+  selfCopy = self;
+  v6 = accountCopy;
   dispatch_async(accountQueue, v7);
 }
 
 - (BOOL)isPrimaryUserActiveAccount
 {
-  v3 = [(ACAccount *)self->__activeAccount ams_DSID];
-  if (v3)
+  ams_DSID = [(ACAccount *)self->__activeAccount ams_DSID];
+  if (ams_DSID)
   {
-    v4 = [(MTAccountController *)self activeDsid];
-    v5 = [(ACAccount *)self->__activeAccount ams_DSID];
-    v6 = [v4 isEqualToNumber:v5];
+    activeDsid = [(MTAccountController *)self activeDsid];
+    ams_DSID2 = [(ACAccount *)self->__activeAccount ams_DSID];
+    v6 = [activeDsid isEqualToNumber:ams_DSID2];
   }
 
   else
@@ -114,72 +114,72 @@
   return v6;
 }
 
-- (void)fetchActiveAccountWithCompletion:(id)a3
+- (void)fetchActiveAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountQueue = self->_accountQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001838;
   v7[3] = &unk_10000C490;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accountQueue, v7);
 }
 
 - (id)activeDsid
 {
-  v2 = [(MTAccountController *)self activeAccount];
-  v3 = [v2 ams_DSID];
+  activeAccount = [(MTAccountController *)self activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  return v3;
+  return ams_DSID;
 }
 
 - (id)activeStorefront
 {
-  v2 = [(MTAccountController *)self activeAccount];
-  v3 = [v2 ams_storefront];
+  activeAccount = [(MTAccountController *)self activeAccount];
+  ams_storefront = [activeAccount ams_storefront];
 
-  return v3;
+  return ams_storefront;
 }
 
 - (id)activeEmail
 {
-  v2 = [(MTAccountController *)self activeAccount];
-  v3 = [v2 username];
+  activeAccount = [(MTAccountController *)self activeAccount];
+  username = [activeAccount username];
 
-  return v3;
+  return username;
 }
 
 - (id)activeFullName
 {
-  v2 = [(MTAccountController *)self activeAccount];
-  v3 = [v2 ams_fullName];
+  activeAccount = [(MTAccountController *)self activeAccount];
+  ams_fullName = [activeAccount ams_fullName];
 
-  return v3;
+  return ams_fullName;
 }
 
 - (BOOL)isUserLoggedIn
 {
-  v2 = [(MTAccountController *)self activeAccount];
-  v3 = [v2 ams_DSID];
-  v4 = v3 != 0;
+  activeAccount = [(MTAccountController *)self activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
+  v4 = ams_DSID != 0;
 
   return v4;
 }
 
 - (BOOL)activeAccountIsManagedAppleID
 {
-  v2 = [(MTAccountController *)self activeAccount];
-  v3 = [v2 ams_isManagedAppleID];
+  activeAccount = [(MTAccountController *)self activeAccount];
+  ams_isManagedAppleID = [activeAccount ams_isManagedAppleID];
 
-  return v3;
+  return ams_isManagedAppleID;
 }
 
-- (void)didChangeStoreAccount:(id)a3
+- (void)didChangeStoreAccount:(id)account
 {
-  if ([MTAccountController iTunesAccountDidChangeForACAccountNotification:a3])
+  if ([MTAccountController iTunesAccountDidChangeForACAccountNotification:account])
   {
     [(MTAccountController *)self _updateActiveAccount];
     if ([(MTAccountController *)self isUserLoggedIn])
@@ -193,15 +193,15 @@
 - (id)_activeAccountBlocking
 {
   v2 = +[ACAccountStore ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 - (void)_updateActiveAccount
 {
-  v3 = [(MTAccountController *)self activeDsid];
-  v4 = [v3 stringValue];
+  activeDsid = [(MTAccountController *)self activeDsid];
+  stringValue = [activeDsid stringValue];
 
   accountQueue = self->_accountQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -209,21 +209,21 @@
   v7[2] = sub_100001C50;
   v7[3] = &unk_10000C440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stringValue;
+  v6 = stringValue;
   dispatch_async(accountQueue, v7);
 }
 
-+ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)a3
++ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v5 = ACAccountTypeIdentifierKey;
-  v6 = [v4 objectForKeyedSubscript:ACAccountTypeIdentifierKey];
+  v6 = [userInfo objectForKeyedSubscript:ACAccountTypeIdentifierKey];
   if (v6)
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    userInfo2 = [notificationCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:v5];
     v9 = [v8 isEqualToString:ACAccountTypeIdentifieriTunesStore];
   }
 

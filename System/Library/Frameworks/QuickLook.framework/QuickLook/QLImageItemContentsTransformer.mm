@@ -1,7 +1,7 @@
 @interface QLImageItemContentsTransformer
 + (id)allowedOutputClasses;
-- (id)transformedContentsFromData:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5;
+- (id)transformedContentsFromData:(id)data context:(id)context error:(id *)error;
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error;
 @end
 
 @implementation QLImageItemContentsTransformer
@@ -14,16 +14,16 @@
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = QLImageItemContentsTransformer;
-  v9 = [(QLImageItemTransformer *)&v13 transformedContentsFromURL:v8 context:a4 error:a5];
+  v9 = [(QLImageItemTransformer *)&v13 transformedContentsFromURL:lCopy context:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [MEMORY[0x277D43F50] imageItemContentsWithImage:v9 imageURL:v8];
+    v10 = [MEMORY[0x277D43F50] imageItemContentsWithImage:v9 imageURL:lCopy];
   }
 
   else
@@ -36,16 +36,16 @@
   return v11;
 }
 
-- (id)transformedContentsFromData:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromData:(id)data context:(id)context error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = QLImageItemContentsTransformer;
-  v9 = [(QLImageItemTransformer *)&v13 transformedContentsFromData:v8 context:a4 error:a5];
+  v9 = [(QLImageItemTransformer *)&v13 transformedContentsFromData:dataCopy context:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [MEMORY[0x277D43F48] imageItemContentsWithImage:v9 imageData:v8];
+    v10 = [MEMORY[0x277D43F48] imageItemContentsWithImage:v9 imageData:dataCopy];
   }
 
   else

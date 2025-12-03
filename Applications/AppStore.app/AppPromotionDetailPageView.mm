@@ -1,6 +1,6 @@
 @interface AppPromotionDetailPageView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC8AppStore26AppPromotionDetailPageView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC8AppStore26AppPromotionDetailPageView)initWithFrame:(CGRect)frame;
 - (_TtC8AppStore9VideoView)accessibilityVideoView;
 - (void)didTapCloseButton;
 - (void)dismissTapGestureRecognized;
@@ -11,13 +11,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100405B34();
 }
 
 - (void)didTapCloseButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C17B4();
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -28,7 +28,7 @@
 
 - (void)dismissTapGestureRecognized
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C17B4();
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -38,12 +38,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100408654(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_100408654(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }
@@ -55,7 +55,7 @@
   return Strong;
 }
 
-- (_TtC8AppStore26AppPromotionDetailPageView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore26AppPromotionDetailPageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

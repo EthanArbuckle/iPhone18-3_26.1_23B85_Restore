@@ -1,16 +1,16 @@
 @interface CHSHCKContainerUserDefaults
 - (CHSHCKContainerUserDefaults)init;
-- (CHSHCKContainerUserDefaults)initWithContainerIdentifier:(id)a3;
+- (CHSHCKContainerUserDefaults)initWithContainerIdentifier:(id)identifier;
 - (NSData)previousServerChangeTokenData;
 - (NSDate)transactionRecordZoneCreationDate;
 - (NSDate)transactionRecordZoneFetchDate;
 - (NSDate)transactionRecordZoneSubscriptionCreationDate;
-- (id)containerUserDefaultsObjectForKey:(id)a3;
-- (void)setContainerUserDefaultsObject:(id)a3 forKey:(id)a4;
-- (void)setPreviousServerChangeTokenData:(id)a3;
-- (void)setTransactionRecordZoneCreationDate:(id)a3;
-- (void)setTransactionRecordZoneFetchDate:(id)a3;
-- (void)setTransactionRecordZoneSubscriptionCreationDate:(id)a3;
+- (id)containerUserDefaultsObjectForKey:(id)key;
+- (void)setContainerUserDefaultsObject:(id)object forKey:(id)key;
+- (void)setPreviousServerChangeTokenData:(id)data;
+- (void)setTransactionRecordZoneCreationDate:(id)date;
+- (void)setTransactionRecordZoneFetchDate:(id)date;
+- (void)setTransactionRecordZoneSubscriptionCreationDate:(id)date;
 @end
 
 @implementation CHSHCKContainerUserDefaults
@@ -22,15 +22,15 @@
   return 0;
 }
 
-- (CHSHCKContainerUserDefaults)initWithContainerIdentifier:(id)a3
+- (CHSHCKContainerUserDefaults)initWithContainerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CHSHCKContainerUserDefaults;
   v5 = [(CHSHCKContainerUserDefaults *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v6;
   }
@@ -38,16 +38,16 @@
   return v5;
 }
 
-- (id)containerUserDefaultsObjectForKey:(id)a3
+- (id)containerUserDefaultsObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CHSHCKContainerUserDefaults *)self containerIdentifier];
-  if (v5)
+  keyCopy = key;
+  containerIdentifier = [(CHSHCKContainerUserDefaults *)self containerIdentifier];
+  if (containerIdentifier)
   {
     v6 = +[NSUserDefaults standardUserDefaults];
-    v7 = [v6 dictionaryForKey:v5];
+    v7 = [v6 dictionaryForKey:containerIdentifier];
 
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v8 = [v7 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -58,15 +58,15 @@
   return v8;
 }
 
-- (void)setContainerUserDefaultsObject:(id)a3 forKey:(id)a4
+- (void)setContainerUserDefaultsObject:(id)object forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CHSHCKContainerUserDefaults *)self containerIdentifier];
-  if (v7)
+  objectCopy = object;
+  keyCopy = key;
+  containerIdentifier = [(CHSHCKContainerUserDefaults *)self containerIdentifier];
+  if (containerIdentifier)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
-    v9 = [v8 dictionaryForKey:v7];
+    v9 = [v8 dictionaryForKey:containerIdentifier];
     v10 = [v9 mutableCopy];
 
     if (!v10)
@@ -74,9 +74,9 @@
       v10 = +[NSMutableDictionary dictionary];
     }
 
-    [v10 setObject:v12 forKeyedSubscript:v6];
+    [v10 setObject:objectCopy forKeyedSubscript:keyCopy];
     v11 = +[NSUserDefaults standardUserDefaults];
-    [v11 setObject:v10 forKey:v7];
+    [v11 setObject:v10 forKey:containerIdentifier];
   }
 }
 
@@ -99,11 +99,11 @@
   return v5;
 }
 
-- (void)setPreviousServerChangeTokenData:(id)a3
+- (void)setPreviousServerChangeTokenData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = NSStringFromSelector("previousServerChangeTokenData");
-  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:v4 forKey:v5];
+  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:dataCopy forKey:v5];
 }
 
 - (NSDate)transactionRecordZoneCreationDate
@@ -125,11 +125,11 @@
   return v5;
 }
 
-- (void)setTransactionRecordZoneCreationDate:(id)a3
+- (void)setTransactionRecordZoneCreationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = NSStringFromSelector("transactionRecordZoneCreationDate");
-  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:v4 forKey:v5];
+  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:dateCopy forKey:v5];
 }
 
 - (NSDate)transactionRecordZoneFetchDate
@@ -151,11 +151,11 @@
   return v5;
 }
 
-- (void)setTransactionRecordZoneFetchDate:(id)a3
+- (void)setTransactionRecordZoneFetchDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = NSStringFromSelector("transactionRecordZoneFetchDate");
-  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:v4 forKey:v5];
+  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:dateCopy forKey:v5];
 }
 
 - (NSDate)transactionRecordZoneSubscriptionCreationDate
@@ -177,11 +177,11 @@
   return v5;
 }
 
-- (void)setTransactionRecordZoneSubscriptionCreationDate:(id)a3
+- (void)setTransactionRecordZoneSubscriptionCreationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = NSStringFromSelector("transactionRecordZoneSubscriptionCreationDate");
-  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:v4 forKey:v5];
+  [(CHSHCKContainerUserDefaults *)self setContainerUserDefaultsObject:dateCopy forKey:v5];
 }
 
 @end

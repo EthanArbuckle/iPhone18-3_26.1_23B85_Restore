@@ -1,8 +1,8 @@
 @interface ICPaperDocumentTextAttachmentViewProvider
 + (void)registerIfNecessary;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6;
-- (ICPaperDocumentTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index;
+- (ICPaperDocumentTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location;
 - (NSTextLocation)location;
 - (NSTextLocation)updatedLocationForRecycledViewProvider;
 - (void)loadView;
@@ -20,13 +20,13 @@
   [v2 registerTextAttachmentViewProviderClass:ObjCClassFromMetadata forFileType:v4];
 }
 
-- (ICPaperDocumentTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6
+- (ICPaperDocumentTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  attachmentCopy = attachment;
+  viewCopy = view;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  return sub_21536C5E4(v9, a4, a5, a6);
+  return sub_21536C5E4(attachmentCopy, view, manager, location);
 }
 
 - (NSTextLocation)location
@@ -35,19 +35,19 @@
   swift_beginAccess();
   if (*(&self->super.super.isa + v3))
   {
-    v4 = *(&self->super.super.isa + v3);
+    location = *(&self->super.super.isa + v3);
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = type metadata accessor for PaperDocumentTextAttachmentViewProvider();
-    v4 = [(NSTextAttachmentViewProvider *)&v6 location];
+    location = [(NSTextAttachmentViewProvider *)&v6 location];
   }
 
   swift_unknownObjectRetain();
 
-  return v4;
+  return location;
 }
 
 - (NSTextLocation)updatedLocationForRecycledViewProvider
@@ -60,19 +60,19 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_21536CA40();
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = self;
-  sub_21536DD74(a3, x, y, width, height);
+  height = fragment.size.height;
+  width = fragment.size.width;
+  y = fragment.origin.y;
+  x = fragment.origin.x;
+  containerCopy = container;
+  selfCopy = self;
+  sub_21536DD74(container, x, y, width, height);
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -89,15 +89,15 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a5;
-  v14 = self;
-  sub_21536DD74(a5, x, y, width, height);
+  height = fragment.size.height;
+  width = fragment.size.width;
+  y = fragment.origin.y;
+  x = fragment.origin.x;
+  containerCopy = container;
+  selfCopy = self;
+  sub_21536DD74(container, x, y, width, height);
   v16 = v15;
   v18 = v17;
   v20 = v19;

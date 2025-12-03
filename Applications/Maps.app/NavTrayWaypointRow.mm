@@ -1,7 +1,7 @@
 @interface NavTrayWaypointRow
-+ (id)waypointRowsFromNavigationService:(id)a3 withWaypoints:(id)a4;
++ (id)waypointRowsFromNavigationService:(id)service withWaypoints:(id)waypoints;
 - (NSString)etaString;
-- (void)setEtaInfo:(id)a3;
+- (void)setEtaInfo:(id)info;
 @end
 
 @implementation NavTrayWaypointRow
@@ -32,11 +32,11 @@
   return v6;
 }
 
-- (void)setEtaInfo:(id)a3
+- (void)setEtaInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = self->_etaInfo;
-  v7 = v5;
+  v7 = infoCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -45,26 +45,26 @@
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_etaInfo, a3);
+      objc_storeStrong(&self->_etaInfo, info);
       v7 = v9;
       self->_hasSetETA = 0;
     }
   }
 }
 
-+ (id)waypointRowsFromNavigationService:(id)a3 withWaypoints:(id)a4
++ (id)waypointRowsFromNavigationService:(id)service withWaypoints:(id)waypoints
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  serviceCopy = service;
+  waypointsCopy = waypoints;
+  if ([waypointsCopy count])
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100C9220C;
     v9[3] = &unk_10164FCA8;
-    v11 = [v5 targetLegIndex];
-    v10 = v5;
-    v7 = sub_100021DB0(v6, v9);
+    targetLegIndex = [serviceCopy targetLegIndex];
+    v10 = serviceCopy;
+    v7 = sub_100021DB0(waypointsCopy, v9);
   }
 
   else

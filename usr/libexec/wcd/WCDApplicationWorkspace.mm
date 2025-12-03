@@ -8,14 +8,14 @@
 - (NSSet)validApplications;
 - (WCDApplicationWorkspace)init;
 - (WCDApplicationWorkspaceDelegate)delegate;
-- (id)_lock_applicationInfoForBundleIdentifier:(id)a3 type:(unint64_t)a4;
-- (id)applicationInfoForBundleIdentifier:(id)a3 type:(unint64_t)a4 allowPlaceholder:(BOOL)a5;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_lock_applicationInfoForBundleIdentifier:(id)identifier type:(unint64_t)type;
+- (id)applicationInfoForBundleIdentifier:(id)identifier type:(unint64_t)type allowPlaceholder:(BOOL)placeholder;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setValidApplications:(id)a3;
+- (void)setValidApplications:(id)applications;
 @end
 
 @implementation WCDApplicationWorkspace
@@ -41,26 +41,26 @@
   return v3;
 }
 
-- (id)applicationInfoForBundleIdentifier:(id)a3 type:(unint64_t)a4 allowPlaceholder:(BOOL)a5
+- (id)applicationInfoForBundleIdentifier:(id)identifier type:(unint64_t)type allowPlaceholder:(BOOL)placeholder
 {
-  v5 = a5;
-  v8 = a3;
+  placeholderCopy = placeholder;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(WCDApplicationWorkspace *)self _lock_applicationInfoForBundleIdentifier:v8 type:a4];
-  if (!v9 && v5)
+  v9 = [(WCDApplicationWorkspace *)self _lock_applicationInfoForBundleIdentifier:identifierCopy type:type];
+  if (!v9 && placeholderCopy)
   {
-    if (a4)
+    if (type)
     {
-      v9 = [(NSMutableDictionary *)self->_placeholderApplications objectForKeyedSubscript:v8];
+      v9 = [(NSMutableDictionary *)self->_placeholderApplications objectForKeyedSubscript:identifierCopy];
       if (!v9)
       {
-        v9 = [[WCDApplicationInfo alloc] initWithCompanionBundleIdentifier:v8];
-        [(NSMutableDictionary *)self->_placeholderApplications setObject:v9 forKeyedSubscript:v8];
+        v9 = [[WCDApplicationInfo alloc] initWithCompanionBundleIdentifier:identifierCopy];
+        [(NSMutableDictionary *)self->_placeholderApplications setObject:v9 forKeyedSubscript:identifierCopy];
         v10 = wc_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = v8;
+          v13 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding placeholder for %@", &v12, 0xCu);
         }
       }
@@ -77,10 +77,10 @@
   return v9;
 }
 
-- (id)_lock_applicationInfoForBundleIdentifier:(id)a3 type:(unint64_t)a4
+- (id)_lock_applicationInfoForBundleIdentifier:(id)identifier type:(unint64_t)type
 {
-  v6 = a4;
-  v8 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
   v21 = 0u;
   v22 = 0u;
@@ -106,28 +106,28 @@
       }
 
       v13 = *(*(&v19 + 1) + 8 * i);
-      if ((v6 & 2) != 0)
+      if ((typeCopy & 2) != 0)
       {
-        v4 = [*(*(&v19 + 1) + 8 * i) watchAppBundleIdentifier];
-        if ([v4 isEqualToString:v8])
+        watchAppBundleIdentifier = [*(*(&v19 + 1) + 8 * i) watchAppBundleIdentifier];
+        if ([watchAppBundleIdentifier isEqualToString:identifierCopy])
         {
           goto LABEL_25;
         }
       }
 
-      if ((v6 & 4) == 0)
+      if ((typeCopy & 4) == 0)
       {
-        if ((v6 & 1) == 0)
+        if ((typeCopy & 1) == 0)
         {
           v14 = 0;
           goto LABEL_16;
         }
 
 LABEL_14:
-        v15 = [v13 companionAppBundleIdentifier];
-        v14 = [v15 isEqualToString:v8];
+        companionAppBundleIdentifier = [v13 companionAppBundleIdentifier];
+        v14 = [companionAppBundleIdentifier isEqualToString:identifierCopy];
 
-        if ((v6 & 4) == 0)
+        if ((typeCopy & 4) == 0)
         {
           goto LABEL_16;
         }
@@ -135,11 +135,11 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v5 = [v13 watchExtensionBundleIdentifier];
-      if ([v5 isEqualToString:v8])
+      watchExtensionBundleIdentifier = [v13 watchExtensionBundleIdentifier];
+      if ([watchExtensionBundleIdentifier isEqualToString:identifierCopy])
       {
 
-        if ((v6 & 2) != 0)
+        if ((typeCopy & 2) != 0)
         {
 LABEL_25:
         }
@@ -149,7 +149,7 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      if (v6)
+      if (typeCopy)
       {
         goto LABEL_14;
       }
@@ -158,7 +158,7 @@ LABEL_26:
 LABEL_15:
 
 LABEL_16:
-      if ((v6 & 2) != 0)
+      if ((typeCopy & 2) != 0)
       {
 
         if (v14)
@@ -188,9 +188,9 @@ LABEL_27:
   return v16;
 }
 
-- (void)setValidApplications:(id)a3
+- (void)setValidApplications:(id)applications
 {
-  v49 = a3;
+  applicationsCopy = applications;
   os_unfair_lock_lock(&self->_lock);
   v4 = +[NSMutableSet set];
   v5 = +[NSMutableSet set];
@@ -199,7 +199,7 @@ LABEL_27:
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v53 = self;
+  selfCopy = self;
   v7 = self->_validApplications;
   v8 = [(NSSet *)v7 countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v8)
@@ -218,20 +218,20 @@ LABEL_27:
         v12 = *(*(&v61 + 1) + 8 * i);
         if ([v12 isStandaloneWatchApp])
         {
-          v13 = [v12 watchAppBundleIdentifier];
-          [v4 addObject:v13];
+          watchAppBundleIdentifier = [v12 watchAppBundleIdentifier];
+          [v4 addObject:watchAppBundleIdentifier];
         }
 
         if ([v12 isRunningIndependently])
         {
-          v14 = [v12 watchAppBundleIdentifier];
-          [v5 addObject:v14];
+          watchAppBundleIdentifier2 = [v12 watchAppBundleIdentifier];
+          [v5 addObject:watchAppBundleIdentifier2];
         }
 
         if ([v12 isCompanionAppInstalled])
         {
-          v15 = [v12 watchAppBundleIdentifier];
-          [v6 addObject:v15];
+          watchAppBundleIdentifier3 = [v12 watchAppBundleIdentifier];
+          [v6 addObject:watchAppBundleIdentifier3];
         }
       }
 
@@ -245,13 +245,13 @@ LABEL_27:
   v55 = v5;
   v56 = v4;
 
-  [(NSMutableDictionary *)v53->_placeholderApplications removeAllObjects];
-  v16 = [v49 copy];
-  validApplications = v53->_validApplications;
-  v53->_validApplications = v16;
+  [(NSMutableDictionary *)selfCopy->_placeholderApplications removeAllObjects];
+  v16 = [applicationsCopy copy];
+  validApplications = selfCopy->_validApplications;
+  selfCopy->_validApplications = v16;
 
-  v52 = v53->_iOSApplicationsWithWatchAppInstalled;
-  v51 = v53->_iOSApplicationsContainingComplications;
+  v52 = selfCopy->_iOSApplicationsWithWatchAppInstalled;
+  v51 = selfCopy->_iOSApplicationsContainingComplications;
   v18 = +[NSMutableSet set];
   v19 = +[NSMutableSet set];
   v20 = +[NSMutableSet set];
@@ -261,7 +261,7 @@ LABEL_27:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v23 = v49;
+  v23 = applicationsCopy;
   v24 = [v23 countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v24)
   {
@@ -310,14 +310,14 @@ LABEL_27:
   }
 
   v29 = [v21 copy];
-  iOSApplicationsWithWatchAppInstalled = v53->_iOSApplicationsWithWatchAppInstalled;
-  v53->_iOSApplicationsWithWatchAppInstalled = v29;
+  iOSApplicationsWithWatchAppInstalled = selfCopy->_iOSApplicationsWithWatchAppInstalled;
+  selfCopy->_iOSApplicationsWithWatchAppInstalled = v29;
 
   v31 = [v22 copy];
-  iOSApplicationsContainingComplications = v53->_iOSApplicationsContainingComplications;
-  v53->_iOSApplicationsContainingComplications = v31;
+  iOSApplicationsContainingComplications = selfCopy->_iOSApplicationsContainingComplications;
+  selfCopy->_iOSApplicationsContainingComplications = v31;
 
-  os_unfair_lock_unlock(&v53->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v33 = [v18 valueForKey:@"watchAppBundleIdentifier"];
   v50 = [v33 isEqual:v56];
 
@@ -337,32 +337,32 @@ LABEL_27:
 
   if ((v47 & 1) == 0)
   {
-    v41 = [(WCDApplicationWorkspace *)v53 delegate];
-    [v41 applicationWorkspace:v53 didUpdateiOSApplicationsContainingWatchApp:v20];
+    delegate = [(WCDApplicationWorkspace *)selfCopy delegate];
+    [delegate applicationWorkspace:selfCopy didUpdateiOSApplicationsContainingWatchApp:v20];
   }
 
   if ((v46 & 1) == 0)
   {
-    v42 = [(WCDApplicationWorkspace *)v53 delegate];
-    [v42 applicationWorkspace:v53 didUpdateiOSApplicationsWithWatchAppInstalled:v21];
+    delegate2 = [(WCDApplicationWorkspace *)selfCopy delegate];
+    [delegate2 applicationWorkspace:selfCopy didUpdateiOSApplicationsWithWatchAppInstalled:v21];
   }
 
   if ((v40 & 1) == 0)
   {
-    v43 = [(WCDApplicationWorkspace *)v53 delegate];
-    [v43 applicationWorkspace:v53 didUpdateiOSApplicationsContainingComplications:v22];
+    delegate3 = [(WCDApplicationWorkspace *)selfCopy delegate];
+    [delegate3 applicationWorkspace:selfCopy didUpdateiOSApplicationsContainingComplications:v22];
   }
 
   if ((v48 & 1) == 0)
   {
-    v44 = [(WCDApplicationWorkspace *)v53 delegate];
-    [v44 applicationWorkspace:v53 didUpdateRunningIndependentlyWatchApps:v19];
+    delegate4 = [(WCDApplicationWorkspace *)selfCopy delegate];
+    [delegate4 applicationWorkspace:selfCopy didUpdateRunningIndependentlyWatchApps:v19];
   }
 
   if ((v50 & 1) == 0)
   {
-    v45 = [(WCDApplicationWorkspace *)v53 delegate];
-    [v45 applicationWorkspace:v53 didUpdateStandaloneWatchApps:v18];
+    delegate5 = [(WCDApplicationWorkspace *)selfCopy delegate];
+    [delegate5 applicationWorkspace:selfCopy didUpdateStandaloneWatchApps:v18];
   }
 }
 
@@ -379,8 +379,8 @@ LABEL_27:
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSSet *)self->_validApplications mutableCopy];
-  v4 = [(NSMutableDictionary *)self->_placeholderApplications allValues];
-  [v3 addObjectsFromArray:v4];
+  allValues = [(NSMutableDictionary *)self->_placeholderApplications allValues];
+  [v3 addObjectsFromArray:allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -531,49 +531,49 @@ LABEL_27:
 - (id)succinctDescriptionBuilder
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(WCDApplicationWorkspace *)self allApplications];
-  v5 = [v3 appendUnsignedInteger:objc_msgSend(v4 withName:{"count"), @"allApplications.count"}];
+  allApplications = [(WCDApplicationWorkspace *)self allApplications];
+  v5 = [v3 appendUnsignedInteger:objc_msgSend(allApplications withName:{"count"), @"allApplications.count"}];
 
   return v3;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(WCDApplicationWorkspace *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(WCDApplicationWorkspace *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [BSDescriptionBuilder builderWithObject:self];
-  v6 = [(WCDApplicationWorkspace *)self validApplications];
-  v7 = [v6 allObjects];
-  [v5 appendArraySection:v7 withName:@"validApplications" multilinePrefix:v4 skipIfEmpty:0];
+  validApplications = [(WCDApplicationWorkspace *)self validApplications];
+  allObjects = [validApplications allObjects];
+  [v5 appendArraySection:allObjects withName:@"validApplications" multilinePrefix:prefixCopy skipIfEmpty:0];
 
-  v8 = [(NSMutableDictionary *)self->_placeholderApplications allValues];
-  [v5 appendArraySection:v8 withName:@"placeholderApplications" skipIfEmpty:1];
+  allValues = [(NSMutableDictionary *)self->_placeholderApplications allValues];
+  [v5 appendArraySection:allValues withName:@"placeholderApplications" skipIfEmpty:1];
 
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(WCDApplicationWorkspace *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(WCDApplicationWorkspace *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(WCDApplicationWorkspace *)self descriptionBuilderWithMultilinePrefix:a3];
+  v3 = [(WCDApplicationWorkspace *)self descriptionBuilderWithMultilinePrefix:prefix];
   [v3 setUseDebugDescription:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (WCDApplicationWorkspaceDelegate)delegate

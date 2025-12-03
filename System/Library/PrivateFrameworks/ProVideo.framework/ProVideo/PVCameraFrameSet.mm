@@ -3,20 +3,20 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)presentationTimeStamp;
 - (CGAffineTransform)colorTransform;
 - (CGAffineTransform)depthTransform;
-- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)a3 depthData:(id)a4 metadata:(id)a5;
-- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)a3 metadata:(id)a4;
+- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)buffer depthData:(id)data metadata:(id)metadata;
+- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)buffer metadata:(id)metadata;
 - (PVImageBuffer)colorImageBuffer;
-- (void)_sharedInitColorBuffer:(opaqueCMSampleBuffer *)a3 colorTransform:(CGAffineTransform *)a4 depthData:(id)a5 depthTransform:(CGAffineTransform *)a6 metadata:(id)a7;
+- (void)_sharedInitColorBuffer:(opaqueCMSampleBuffer *)buffer colorTransform:(CGAffineTransform *)transform depthData:(id)data depthTransform:(CGAffineTransform *)depthTransform metadata:(id)metadata;
 - (void)dealloc;
-- (void)setColorTransform:(CGAffineTransform *)a3;
-- (void)setDepthTransform:(CGAffineTransform *)a3;
+- (void)setColorTransform:(CGAffineTransform *)transform;
+- (void)setDepthTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PVCameraFrameSet
 
-- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)a3 metadata:(id)a4
+- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)buffer metadata:(id)metadata
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = PVCameraFrameSet;
   v7 = [(PVCameraFrameSet *)&v14 init];
@@ -30,16 +30,16 @@
     v11[0] = v12[0];
     v11[1] = v9;
     v11[2] = v13;
-    [(PVCameraFrameSet *)v7 _sharedInitColorBuffer:a3 colorTransform:v12 depthData:0 depthTransform:v11 metadata:v6];
+    [(PVCameraFrameSet *)v7 _sharedInitColorBuffer:buffer colorTransform:v12 depthData:0 depthTransform:v11 metadata:metadataCopy];
   }
 
   return v8;
 }
 
-- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)a3 depthData:(id)a4 metadata:(id)a5
+- (PVCameraFrameSet)initWithColorBuffer:(opaqueCMSampleBuffer *)buffer depthData:(id)data metadata:(id)metadata
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  metadataCopy = metadata;
   v17.receiver = self;
   v17.super_class = PVCameraFrameSet;
   v10 = [(PVCameraFrameSet *)&v17 init];
@@ -53,41 +53,41 @@
     v14[0] = v15[0];
     v14[1] = v12;
     v14[2] = v16;
-    [(PVCameraFrameSet *)v10 _sharedInitColorBuffer:a3 colorTransform:v15 depthData:v8 depthTransform:v14 metadata:v9];
+    [(PVCameraFrameSet *)v10 _sharedInitColorBuffer:buffer colorTransform:v15 depthData:dataCopy depthTransform:v14 metadata:metadataCopy];
   }
 
   return v11;
 }
 
-- (void)_sharedInitColorBuffer:(opaqueCMSampleBuffer *)a3 colorTransform:(CGAffineTransform *)a4 depthData:(id)a5 depthTransform:(CGAffineTransform *)a6 metadata:(id)a7
+- (void)_sharedInitColorBuffer:(opaqueCMSampleBuffer *)buffer colorTransform:(CGAffineTransform *)transform depthData:(id)data depthTransform:(CGAffineTransform *)depthTransform metadata:(id)metadata
 {
-  v12 = a5;
-  v13 = a7;
-  self->_colorSampleBuffer = a3;
-  if (a3)
+  dataCopy = data;
+  metadataCopy = metadata;
+  self->_colorSampleBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
-  v14 = *&a4->a;
-  v15 = *&a4->tx;
-  *&self->_colorTransform.c = *&a4->c;
+  v14 = *&transform->a;
+  v15 = *&transform->tx;
+  *&self->_colorTransform.c = *&transform->c;
   *&self->_colorTransform.tx = v15;
   *&self->_colorTransform.a = v14;
   depthData = self->_depthData;
-  self->_depthData = v12;
-  v21 = v12;
+  self->_depthData = dataCopy;
+  v21 = dataCopy;
 
-  v17 = *&a6->a;
-  v18 = *&a6->tx;
-  *&self->_depthTransform.c = *&a6->c;
+  v17 = *&depthTransform->a;
+  v18 = *&depthTransform->tx;
+  *&self->_depthTransform.c = *&depthTransform->c;
   *&self->_depthTransform.tx = v18;
   *&self->_depthTransform.a = v17;
   alphaMaskImageBuffer = self->_alphaMaskImageBuffer;
   self->_alphaMaskImageBuffer = 0;
 
   metadata = self->_metadata;
-  self->_metadata = v13;
+  self->_metadata = metadataCopy;
 }
 
 - (void)dealloc
@@ -153,11 +153,11 @@
   return self;
 }
 
-- (void)setColorTransform:(CGAffineTransform *)a3
+- (void)setColorTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_colorTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_colorTransform.c = *&transform->c;
   *&self->_colorTransform.tx = v4;
   *&self->_colorTransform.a = v3;
 }
@@ -171,11 +171,11 @@
   return self;
 }
 
-- (void)setDepthTransform:(CGAffineTransform *)a3
+- (void)setDepthTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_depthTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_depthTransform.c = *&transform->c;
   *&self->_depthTransform.tx = v4;
   *&self->_depthTransform.a = v3;
 }

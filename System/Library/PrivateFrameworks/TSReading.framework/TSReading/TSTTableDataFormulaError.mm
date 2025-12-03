@@ -1,20 +1,20 @@
 @interface TSTTableDataFormulaError
-- (BOOL)isEqual:(id)a3;
-- (id)initObjectWithFormulaError:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)initObjectWithFormulaError:(id)error;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation TSTTableDataFormulaError
 
-- (id)initObjectWithFormulaError:(id)a3
+- (id)initObjectWithFormulaError:(id)error
 {
   v6.receiver = self;
   v6.super_class = TSTTableDataFormulaError;
   v4 = [(TSTTableDataFormulaError *)&v6 init];
   if (v4)
   {
-    v4->mFormulaError = a3;
+    v4->mFormulaError = error;
     v4->super.mRefCount = 1;
   }
 
@@ -23,9 +23,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TSWPStorage *)self->mFormulaError canBeStoredInAStringValueCell];
+  canBeStoredInAStringValueCell = [(TSWPStorage *)self->mFormulaError canBeStoredInAStringValueCell];
   mFormulaError = self->mFormulaError;
-  if (v3)
+  if (canBeStoredInAStringValueCell)
   {
     mFormulaError = [(TSWPStorage *)mFormulaError string];
   }
@@ -33,9 +33,9 @@
   return [(TSWPStorage *)mFormulaError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -47,7 +47,7 @@
   }
 
   mFormulaError = self->mFormulaError;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(TSWPStorage *)mFormulaError isEqual:v6];
 }

@@ -1,15 +1,15 @@
 @interface CRLRemoteURLMetadataProvider
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation CRLRemoteURLMetadataProvider
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100FC9588(a4);
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
+  sub_100FC9588(navigation);
 }
 
 @end

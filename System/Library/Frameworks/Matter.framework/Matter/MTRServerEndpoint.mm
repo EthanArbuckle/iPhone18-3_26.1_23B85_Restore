@@ -1,31 +1,31 @@
 @interface MTRServerEndpoint
 + (id)rootNodeEndpoint;
-- (BOOL)addServerCluster:(id)a3;
-- (BOOL)associateWithController:(id)a3;
-- (MTRServerEndpoint)initWithEndpointID:(id)a3 deviceTypes:(id)a4;
+- (BOOL)addServerCluster:(id)cluster;
+- (BOOL)associateWithController:(id)controller;
+- (MTRServerEndpoint)initWithEndpointID:(id)d deviceTypes:(id)types;
 - (NSArray)accessGrants;
 - (NSArray)matterAccessGrants;
 - (NSArray)serverClusters;
 - (id).cxx_construct;
 - (id)description;
-- (id)matterAccessGrantsForCluster:(id)a3;
-- (void)addAccessGrant:(id)a3;
+- (id)matterAccessGrantsForCluster:(id)cluster;
+- (void)addAccessGrant:(id)grant;
 - (void)invalidate;
 - (void)registerMatterEndpoint;
-- (void)removeAccessGrant:(id)a3;
+- (void)removeAccessGrant:(id)grant;
 - (void)unregisterMatterEndpoint;
 @end
 
 @implementation MTRServerEndpoint
 
-- (MTRServerEndpoint)initWithEndpointID:(id)a3 deviceTypes:(id)a4
+- (MTRServerEndpoint)initWithEndpointID:(id)d deviceTypes:(id)types
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 unsignedLongLongValue];
-  v9 = v8;
-  if (v8 >= 0x10000)
+  dCopy = d;
+  typesCopy = types;
+  unsignedLongLongValue = [dCopy unsignedLongLongValue];
+  v9 = unsignedLongLongValue;
+  if (unsignedLongLongValue >= 0x10000)
   {
     v11 = sub_2393D9044(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!unsignedLongLongValue)
   {
     v12 = sub_2393D9044(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -61,7 +61,7 @@
     goto LABEL_15;
   }
 
-  if (v8 == 0xFFFF)
+  if (unsignedLongLongValue == 0xFFFF)
   {
     v10 = sub_2393D9044(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -79,12 +79,12 @@
     goto LABEL_15;
   }
 
-  if ([v7 count])
+  if ([typesCopy count])
   {
     v16 = [MEMORY[0x277CBEB98] set];
-    self = sub_2393AE1F0(self, v6, v7, v16, MEMORY[0x277CBEBF8]);
+    self = sub_2393AE1F0(self, dCopy, typesCopy, v16, MEMORY[0x277CBEBF8]);
 
-    v13 = self;
+    selfCopy = self;
     goto LABEL_17;
   }
 
@@ -102,11 +102,11 @@ LABEL_15:
   }
 
 LABEL_16:
-  v13 = 0;
+  selfCopy = 0;
 LABEL_17:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
 + (id)rootNodeEndpoint
@@ -118,20 +118,20 @@ LABEL_17:
   return v4;
 }
 
-- (void)addAccessGrant:(id)a3
+- (void)addAccessGrant:(id)grant
 {
-  v4 = a3;
+  grantCopy = grant;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_accessGrants addObject:v4];
+  [(NSMutableSet *)self->_accessGrants addObject:grantCopy];
   sub_2393AE58C(self);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeAccessGrant:(id)a3
+- (void)removeAccessGrant:(id)grant
 {
-  v4 = a3;
+  grantCopy = grant;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_accessGrants removeObject:v4];
+  [(NSMutableSet *)self->_accessGrants removeObject:grantCopy];
   sub_2393AE58C(self);
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -139,16 +139,16 @@ LABEL_17:
 - (NSArray)matterAccessGrants
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSSet *)self->_matterAccessGrants allObjects];
+  allObjects = [(NSSet *)self->_matterAccessGrants allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (BOOL)addServerCluster:(id)a3
+- (BOOL)addServerCluster:(id)cluster
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clusterCopy = cluster;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_deviceController);
   if (WeakRetained)
@@ -156,9 +156,9 @@ LABEL_17:
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(NSNumber *)self->_endpointID unsignedLongLongValue];
+      unsignedLongLongValue = [(NSNumber *)self->_endpointID unsignedLongLongValue];
       *buf = 134217984;
-      *v31 = v7;
+      *v31 = unsignedLongLongValue;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_ERROR, "Cannot add cluster on endpoint %llu which is already in use", buf, 0xCu);
     }
 
@@ -191,35 +191,35 @@ LABEL_21:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v26 + 1) + 8 * i) clusterID];
-        v13 = [v4 clusterID];
-        v14 = [v12 isEqual:v13];
+        clusterID = [*(*(&v26 + 1) + 8 * i) clusterID];
+        clusterID2 = [clusterCopy clusterID];
+        v14 = [clusterID isEqual:clusterID2];
 
         if (v14)
         {
           v16 = sub_2393D9044(0);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v17 = [v4 clusterID];
-            v18 = [v17 unsignedLongLongValue] >> 16;
-            v19 = [v4 clusterID];
-            v20 = [v19 unsignedLongLongValue];
-            v21 = [(NSNumber *)self->_endpointID unsignedLongLongValue];
+            clusterID3 = [clusterCopy clusterID];
+            v18 = [clusterID3 unsignedLongLongValue] >> 16;
+            clusterID4 = [clusterCopy clusterID];
+            unsignedLongLongValue2 = [clusterID4 unsignedLongLongValue];
+            unsignedLongLongValue3 = [(NSNumber *)self->_endpointID unsignedLongLongValue];
             *buf = 67109632;
             *v31 = v18;
             *&v31[4] = 1024;
-            *&v31[6] = v20;
+            *&v31[6] = unsignedLongLongValue2;
             v32 = 2048;
-            v33 = v21;
+            v33 = unsignedLongLongValue3;
             _os_log_impl(&dword_238DAE000, v16, OS_LOG_TYPE_ERROR, "Cannot add second cluster with ID 0x%04X_%04X on endpoint %llu", buf, 0x18u);
           }
 
           if (sub_2393D5398(1u))
           {
-            v22 = [v4 clusterID];
-            [v22 unsignedLongLongValue];
-            v23 = [v4 clusterID];
-            [v23 unsignedLongLongValue];
+            clusterID5 = [clusterCopy clusterID];
+            [clusterID5 unsignedLongLongValue];
+            clusterID6 = [clusterCopy clusterID];
+            [clusterID6 unsignedLongLongValue];
             [(NSNumber *)self->_endpointID unsignedLongLongValue];
             sub_2393D5320(0, 1);
           }
@@ -238,12 +238,12 @@ LABEL_21:
     }
   }
 
-  if (([v4 addToEndpoint:{-[NSNumber unsignedLongLongValue](self->_endpointID, "unsignedLongLongValue")}] & 1) == 0)
+  if (([clusterCopy addToEndpoint:{-[NSNumber unsignedLongLongValue](self->_endpointID, "unsignedLongLongValue")}] & 1) == 0)
   {
     goto LABEL_21;
   }
 
-  [(NSMutableArray *)self->_serverClusters addObject:v4];
+  [(NSMutableArray *)self->_serverClusters addObject:clusterCopy];
   v15 = 1;
 LABEL_22:
 
@@ -252,10 +252,10 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)associateWithController:(id)a3
+- (BOOL)associateWithController:(id)controller
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_deviceController);
   if (WeakRetained)
@@ -263,26 +263,26 @@ LABEL_22:
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 uniqueIdentifier];
-      v8 = [WeakRetained uniqueIdentifier];
+      uniqueIdentifier = [controllerCopy uniqueIdentifier];
+      uniqueIdentifier2 = [WeakRetained uniqueIdentifier];
       *buf = 138412546;
-      v15 = v7;
+      v15 = uniqueIdentifier;
       v16 = 2112;
-      v17 = v8;
+      v17 = uniqueIdentifier2;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_ERROR, "Cannot associate MTRServerEndpoint with controller %@; already associated with controller %@", buf, 0x16u);
     }
 
     if (sub_2393D5398(1u))
     {
-      v9 = [v4 uniqueIdentifier];
-      v13 = [WeakRetained uniqueIdentifier];
+      uniqueIdentifier3 = [controllerCopy uniqueIdentifier];
+      uniqueIdentifier4 = [WeakRetained uniqueIdentifier];
       sub_2393D5320(0, 1);
     }
 
     goto LABEL_9;
   }
 
-  if ((sub_2393AED8C(self, v4) & 1) == 0)
+  if ((sub_2393AED8C(self, controllerCopy) & 1) == 0)
   {
     sub_2393AF400(self);
 LABEL_9:
@@ -330,11 +330,11 @@ LABEL_10:
     }
   }
 
-  v6 = [(NSNumber *)self->_endpointID unsignedLongLongValue];
+  unsignedLongLongValue = [(NSNumber *)self->_endpointID unsignedLongLongValue];
   sub_2393AFD64(buf, self->_matterDataVersions.__ptr_, self->_matterEndpointMetadata.clusterCount);
   sub_2393AFD64(v18, self->_matterDeviceTypes.__ptr_, [(NSArray *)self->_deviceTypes count]);
   sub_238DB9BD8(v19, v18[0], v18[1]);
-  if (sub_238F3FA54(v3, v6, &self->_matterEndpointMetadata, buf, v19[0], v19[1], 0xFFFFLL, v7))
+  if (sub_238F3FA54(v3, unsignedLongLongValue, &self->_matterEndpointMetadata, buf, v19[0], v19[1], 0xFFFFLL, v7))
   {
     v8 = sub_2393D9044(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -435,13 +435,13 @@ LABEL_21:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)matterAccessGrantsForCluster:(id)a3
+- (id)matterAccessGrantsForCluster:(id)cluster
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clusterCopy = cluster;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/ServerEndpoint/MTRServerEndpoint.mm", 435);
-  v5 = [(NSSet *)self->_matterAccessGrants allObjects];
-  v6 = [v5 mutableCopy];
+  allObjects = [(NSSet *)self->_matterAccessGrants allObjects];
+  v6 = [allObjects mutableCopy];
 
   v20 = 0u;
   v21 = 0u;
@@ -462,13 +462,13 @@ LABEL_21:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 clusterID];
-        v13 = [v12 isEqual:v4];
+        clusterID = [v11 clusterID];
+        v13 = [clusterID isEqual:clusterCopy];
 
         if (v13)
         {
-          v14 = [v11 matterAccessGrants];
-          [v6 addObjectsFromArray:v14];
+          matterAccessGrants = [v11 matterAccessGrants];
+          [v6 addObjectsFromArray:matterAccessGrants];
         }
       }
 
@@ -487,10 +487,10 @@ LABEL_21:
 - (NSArray)accessGrants
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableSet *)self->_accessGrants allObjects];
+  allObjects = [(NSMutableSet *)self->_accessGrants allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)serverClusters

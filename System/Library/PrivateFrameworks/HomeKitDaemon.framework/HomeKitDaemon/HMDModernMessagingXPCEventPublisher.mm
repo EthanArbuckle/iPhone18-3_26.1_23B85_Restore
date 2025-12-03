@@ -1,27 +1,27 @@
 @interface HMDModernMessagingXPCEventPublisher
 + (id)shared;
-- (BOOL)hmmmIsBundleIDValidForLaunchOnDemand:(id)a3;
-- (HMDModernMessagingXPCEventPublisher)initWithLaunchOnDemandClientIdentifiersByMessageName:(id)a3;
-- (HMDModernMessagingXPCEventPublisher)initWithTestClientsByMessageName:(id)a3;
-- (void)_addXPCSubscriberWithToken:(unint64_t)a3 xpcEvent:(id)a4;
-- (void)_publishLaunchEventForBundleID:(id)a3;
-- (void)_removeXPCSubscriberWithToken:(unint64_t)a3;
-- (void)publishLaunchEventForBundleID:(id)a3;
+- (BOOL)hmmmIsBundleIDValidForLaunchOnDemand:(id)demand;
+- (HMDModernMessagingXPCEventPublisher)initWithLaunchOnDemandClientIdentifiersByMessageName:(id)name;
+- (HMDModernMessagingXPCEventPublisher)initWithTestClientsByMessageName:(id)name;
+- (void)_addXPCSubscriberWithToken:(unint64_t)token xpcEvent:(id)event;
+- (void)_publishLaunchEventForBundleID:(id)d;
+- (void)_removeXPCSubscriberWithToken:(unint64_t)token;
+- (void)publishLaunchEventForBundleID:(id)d;
 @end
 
 @implementation HMDModernMessagingXPCEventPublisher
 
-- (void)_addXPCSubscriberWithToken:(unint64_t)a3 xpcEvent:(id)a4
+- (void)_addXPCSubscriberWithToken:(unint64_t)token xpcEvent:(id)event
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  string = xpc_dictionary_get_string(v6, "bundleID");
+  eventCopy = event;
+  string = xpc_dictionary_get_string(eventCopy, "bundleID");
   if (string)
   {
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:string];
     v9 = [(HMDModernMessagingXPCEventPublisher *)self hmmmIsBundleIDValidForLaunchOnDemand:v8];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     v13 = v12;
     if (v9)
@@ -32,16 +32,16 @@
         v23 = 138543874;
         v24 = v14;
         v25 = 2048;
-        v26 = a3;
+        tokenCopy2 = token;
         v27 = 2112;
         v28 = v8;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Received HMMM subscriber request for token: %llu, bundle id: %@", &v23, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:a3];
-      v16 = [(HMDModernMessagingXPCEventPublisher *)v11 tokensByClientBundleID];
-      [v16 setObject:v15 forKeyedSubscript:v8];
+      v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:token];
+      tokensByClientBundleID = [(HMDModernMessagingXPCEventPublisher *)selfCopy tokensByClientBundleID];
+      [tokensByClientBundleID setObject:v15 forKeyedSubscript:v8];
     }
 
     else
@@ -52,7 +52,7 @@
         v23 = 138543618;
         v24 = v21;
         v25 = 2112;
-        v26 = v8;
+        tokenCopy2 = v8;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Ignoring HMMM subscriber request from unknown bundle id: %@", &v23, 0x16u);
       }
 
@@ -63,7 +63,7 @@
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -71,7 +71,7 @@
       v23 = 138543618;
       v24 = v20;
       v25 = 2048;
-      v26 = a3;
+      tokenCopy2 = token;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Ignoring HMMM subscriber request from token %llu without bundleID", &v23, 0x16u);
     }
 
@@ -81,7 +81,7 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeXPCSubscriberWithToken:(unint64_t)a3
+- (void)_removeXPCSubscriberWithToken:(unint64_t)token
 {
   v30 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -90,18 +90,18 @@
   v21 = __Block_byref_object_copy__164294;
   v22 = __Block_byref_object_dispose__164295;
   v23 = 0;
-  v5 = [(HMDModernMessagingXPCEventPublisher *)self tokensByClientBundleID];
+  tokensByClientBundleID = [(HMDModernMessagingXPCEventPublisher *)self tokensByClientBundleID];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__HMDModernMessagingXPCEventPublisher__removeXPCSubscriberWithToken___block_invoke;
   v17[3] = &unk_27867C5E0;
   v17[4] = &v18;
-  v17[5] = a3;
-  v6 = [v5 na_firstKeyPassingTest:v17];
+  v17[5] = token;
+  v6 = [tokensByClientBundleID na_firstKeyPassingTest:v17];
 
   v7 = v19[5] == 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   if (v7)
   {
     v14 = HMFGetOSLogHandle();
@@ -111,7 +111,7 @@
       *buf = 138543618;
       v25 = v15;
       v26 = 2048;
-      v27 = a3;
+      tokenCopy2 = token;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Discarding remove XPC subscriber request, no subscriber associated with token: %llu", buf, 0x16u);
     }
 
@@ -128,15 +128,15 @@
       *buf = 138543874;
       v25 = v11;
       v26 = 2048;
-      v27 = a3;
+      tokenCopy2 = token;
       v28 = 2112;
       v29 = v12;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Removing XPC Subscriber with token: %llu, bundleID: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMDModernMessagingXPCEventPublisher *)v9 tokensByClientBundleID];
-    [v13 setObject:0 forKeyedSubscript:v19[5]];
+    tokensByClientBundleID2 = [(HMDModernMessagingXPCEventPublisher *)selfCopy tokensByClientBundleID];
+    [tokensByClientBundleID2 setObject:0 forKeyedSubscript:v19[5]];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -157,32 +157,32 @@ BOOL __69__HMDModernMessagingXPCEventPublisher__removeXPCSubscriberWithToken___b
   return v7 == v8;
 }
 
-- (void)publishLaunchEventForBundleID:(id)a3
+- (void)publishLaunchEventForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDModernMessagingXPCEventPublisher *)self workQueue];
+  dCopy = d;
+  workQueue = [(HMDModernMessagingXPCEventPublisher *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HMDModernMessagingXPCEventPublisher_publishLaunchEventForBundleID___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_publishLaunchEventForBundleID:(id)a3
+- (void)_publishLaunchEventForBundleID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDModernMessagingXPCEventPublisher *)self tokensByClientBundleID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  tokensByClientBundleID = [(HMDModernMessagingXPCEventPublisher *)self tokensByClientBundleID];
+  v6 = [tokensByClientBundleID objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -190,21 +190,21 @@ BOOL __69__HMDModernMessagingXPCEventPublisher__removeXPCSubscriberWithToken___b
       v18 = 138543874;
       v19 = v11;
       v20 = 2048;
-      v21 = v7;
+      v21 = unsignedLongLongValue;
       v22 = 2112;
-      v23 = v4;
+      v23 = dCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Firing HMMM launch-on-demand event for token %llu with bundleID: %@", &v18, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
-    xpcEventPublisher = v9->_xpcEventPublisher;
+    xpcEventPublisher = selfCopy->_xpcEventPublisher;
     xpc_event_publisher_fire();
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -212,7 +212,7 @@ BOOL __69__HMDModernMessagingXPCEventPublisher__removeXPCSubscriberWithToken___b
       v18 = 138543618;
       v19 = v16;
       v20 = 2112;
-      v21 = v4;
+      v21 = dCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Received launch on demand event for unsubscribed client with bundle ID: %@", &v18, 0x16u);
     }
 
@@ -222,36 +222,36 @@ BOOL __69__HMDModernMessagingXPCEventPublisher__removeXPCSubscriberWithToken___b
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hmmmIsBundleIDValidForLaunchOnDemand:(id)a3
+- (BOOL)hmmmIsBundleIDValidForLaunchOnDemand:(id)demand
 {
-  v4 = a3;
-  v5 = [(HMDModernMessagingXPCEventPublisher *)self launchOnDemandClientIdentifiersByMessageName];
+  demandCopy = demand;
+  launchOnDemandClientIdentifiersByMessageName = [(HMDModernMessagingXPCEventPublisher *)self launchOnDemandClientIdentifiersByMessageName];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__HMDModernMessagingXPCEventPublisher_hmmmIsBundleIDValidForLaunchOnDemand___block_invoke;
   v9[3] = &unk_27867E960;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = demandCopy;
+  v6 = demandCopy;
+  v7 = [launchOnDemandClientIdentifiersByMessageName na_any:v9];
 
   return v7;
 }
 
-- (HMDModernMessagingXPCEventPublisher)initWithLaunchOnDemandClientIdentifiersByMessageName:(id)a3
+- (HMDModernMessagingXPCEventPublisher)initWithLaunchOnDemandClientIdentifiersByMessageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = HMDModernMessagingXPCEventPublisher;
   v5 = [(HMDModernMessagingXPCEventPublisher *)&v22 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     launchOnDemandClientIdentifiersByMessageName = v5->_launchOnDemandClientIdentifiersByMessageName;
     v5->_launchOnDemandClientIdentifiersByMessageName = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tokensByClientBundleID = v5->_tokensByClientBundleID;
-    v5->_tokensByClientBundleID = v8;
+    v5->_tokensByClientBundleID = dictionary;
 
     v10 = HMDispatchQueueNameString();
     v11 = dispatch_queue_create([v10 UTF8String], 0);
@@ -259,7 +259,7 @@ BOOL __69__HMDModernMessagingXPCEventPublisher__removeXPCSubscriberWithToken___b
     v5->_workQueue = v11;
 
     [@"com.apple.HMModernMessaging.launch" cString];
-    v13 = [(HMDModernMessagingXPCEventPublisher *)v5 workQueue];
+    workQueue = [(HMDModernMessagingXPCEventPublisher *)v5 workQueue];
     v14 = xpc_event_publisher_create();
     xpcEventPublisher = v5->_xpcEventPublisher;
     v5->_xpcEventPublisher = v14;
@@ -321,21 +321,21 @@ void __92__HMDModernMessagingXPCEventPublisher_initWithLaunchOnDemandClientIdent
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDModernMessagingXPCEventPublisher)initWithTestClientsByMessageName:(id)a3
+- (HMDModernMessagingXPCEventPublisher)initWithTestClientsByMessageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = HMDModernMessagingXPCEventPublisher;
   v5 = [(HMDModernMessagingXPCEventPublisher *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     launchOnDemandClientIdentifiersByMessageName = v5->_launchOnDemandClientIdentifiersByMessageName;
     v5->_launchOnDemandClientIdentifiersByMessageName = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tokensByClientBundleID = v5->_tokensByClientBundleID;
-    v5->_tokensByClientBundleID = v8;
+    v5->_tokensByClientBundleID = dictionary;
 
     v10 = HMDispatchQueueNameString();
     v11 = dispatch_queue_create([v10 UTF8String], 0);

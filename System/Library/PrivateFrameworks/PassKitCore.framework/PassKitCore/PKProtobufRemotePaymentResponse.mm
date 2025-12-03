@@ -1,11 +1,11 @@
 @interface PKProtobufRemotePaymentResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufRemotePaymentResponse
@@ -16,86 +16,86 @@
   v8.receiver = self;
   v8.super_class = PKProtobufRemotePaymentResponse;
   v4 = [(PKProtobufRemotePaymentResponse *)&v8 description];
-  v5 = [(PKProtobufRemotePaymentResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufRemotePaymentResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   payment = self->_payment;
   if (payment)
   {
-    v5 = [(PKProtobufPayment *)payment dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"payment"];
+    dictionaryRepresentation = [(PKProtobufPayment *)payment dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"payment"];
   }
 
   remotePaymentRequestIdentifier = self->_remotePaymentRequestIdentifier;
   if (remotePaymentRequestIdentifier)
   {
-    [v3 setObject:remotePaymentRequestIdentifier forKey:@"remotePaymentRequestIdentifier"];
+    [dictionary setObject:remotePaymentRequestIdentifier forKey:@"remotePaymentRequestIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_payment)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_remotePaymentRequestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_payment)
   {
-    [v4 setPayment:?];
-    v4 = v5;
+    [toCopy setPayment:?];
+    toCopy = v5;
   }
 
   if (self->_remotePaymentRequestIdentifier)
   {
     [v5 setRemotePaymentRequestIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKProtobufPayment *)self->_payment copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKProtobufPayment *)self->_payment copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_remotePaymentRequestIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_remotePaymentRequestIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((payment = self->_payment, !(payment | v4[1])) || -[PKProtobufPayment isEqual:](payment, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((payment = self->_payment, !(payment | equalCopy[1])) || -[PKProtobufPayment isEqual:](payment, "isEqual:")))
   {
     remotePaymentRequestIdentifier = self->_remotePaymentRequestIdentifier;
-    if (remotePaymentRequestIdentifier | v4[2])
+    if (remotePaymentRequestIdentifier | equalCopy[2])
     {
       v7 = [(NSString *)remotePaymentRequestIdentifier isEqual:?];
     }
@@ -114,12 +114,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   payment = self->_payment;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (payment)
   {
     if (!v6)
@@ -140,12 +140,12 @@
     [(PKProtobufRemotePaymentResponse *)self setPayment:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PKProtobufRemotePaymentResponse *)self setRemotePaymentRequestIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

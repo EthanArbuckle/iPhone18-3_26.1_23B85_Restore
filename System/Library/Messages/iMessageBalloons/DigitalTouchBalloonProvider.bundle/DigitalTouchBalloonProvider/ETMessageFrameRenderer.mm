@@ -1,32 +1,32 @@
 @interface ETMessageFrameRenderer
-- (CGImage)_createSceneImageForTime:(double)a3;
-- (CGImage)_createSketchImageForTime:(double)a3;
-- (CGImage)createImageForTime:(double)a3;
-- (ETMessageFrameRenderer)initWithMessage:(id)a3 videoFrame:(CGRect)a4;
-- (void)messageDidStopPlaying:(id)a3;
+- (CGImage)_createSceneImageForTime:(double)time;
+- (CGImage)_createSketchImageForTime:(double)time;
+- (CGImage)createImageForTime:(double)time;
+- (ETMessageFrameRenderer)initWithMessage:(id)message videoFrame:(CGRect)frame;
+- (void)messageDidStopPlaying:(id)playing;
 @end
 
 @implementation ETMessageFrameRenderer
 
-- (ETMessageFrameRenderer)initWithMessage:(id)a3 videoFrame:(CGRect)a4
+- (ETMessageFrameRenderer)initWithMessage:(id)message videoFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  messageCopy = message;
   v16.receiver = self;
   v16.super_class = ETMessageFrameRenderer;
   v11 = [(ETMessageFrameRenderer *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_message, a3);
+    objc_storeStrong(&v11->_message, message);
     v12->_videoFrame.origin.x = x;
     v12->_videoFrame.origin.y = y;
     v12->_videoFrame.size.width = width;
     v12->_videoFrame.size.height = height;
-    [v10 startDelay];
+    [messageCopy startDelay];
     v12->_startTime = v13;
     v14 = v12;
   }
@@ -34,7 +34,7 @@
   return v12;
 }
 
-- (CGImage)createImageForTime:(double)a3
+- (CGImage)createImageForTime:(double)time
 {
   v9 = 0;
   v10 = &v9;
@@ -46,12 +46,12 @@
   v8[3] = &unk_24D00;
   v8[4] = self;
   v8[5] = &v9;
-  *&v8[6] = a3;
+  *&v8[6] = time;
   v3 = objc_retainBlock(v8);
   v4 = +[NSThread currentThread];
-  v5 = [v4 isMainThread];
+  isMainThread = [v4 isMainThread];
 
-  if (v5)
+  if (isMainThread)
   {
     (v3[2])(v3);
   }
@@ -67,9 +67,9 @@
   return v6;
 }
 
-- (CGImage)_createSketchImageForTime:(double)a3
+- (CGImage)_createSketchImageForTime:(double)time
 {
-  if (self->_startTime > a3 || self->_finishedRendering)
+  if (self->_startTime > time || self->_finishedRendering)
   {
     return 0;
   }
@@ -86,12 +86,12 @@
     sketchView = self->_sketchView;
   }
 
-  return [(ETGLSketchView *)sketchView createImageForTime:a3];
+  return [(ETGLSketchView *)sketchView createImageForTime:time];
 }
 
-- (CGImage)_createSceneImageForTime:(double)a3
+- (CGImage)_createSceneImageForTime:(double)time
 {
-  if (self->_startTime > a3 || self->_finishedRendering)
+  if (self->_startTime > time || self->_finishedRendering)
   {
     return 0;
   }
@@ -101,7 +101,7 @@
   {
     [(SKScene *)scene setPaused:0];
     v7 = self->_scene;
-    v8 = a3 - self->_startTime;
+    v8 = time - self->_startTime;
   }
 
   else
@@ -114,8 +114,8 @@
     {
       v11 = self->_scene;
       v12 = +[UIColor clearColor];
-      v13 = [v12 colorSpaceConvertedColor];
-      [(SKScene *)v11 setBackgroundColor:v13];
+      colorSpaceConvertedColor = [v12 colorSpaceConvertedColor];
+      [(SKScene *)v11 setBackgroundColor:colorSpaceConvertedColor];
     }
 
     [(SKScene *)self->_scene setAnchorPoint:0.5, 0.5];
@@ -135,12 +135,12 @@
   [(SKScene *)v7 _update:v8];
   [(SKScene *)self->_scene setPaused:1];
   v16 = [(SKView *)self->_sceneView textureFromNode:self->_scene];
-  v17 = [v16 _createCGImage];
+  _createCGImage = [v16 _createCGImage];
 
-  return v17;
+  return _createCGImage;
 }
 
-- (void)messageDidStopPlaying:(id)a3
+- (void)messageDidStopPlaying:(id)playing
 {
   [(SKView *)self->_sceneView presentScene:0];
   sceneView = self->_sceneView;

@@ -1,6 +1,6 @@
 @interface CLKUICurvedLayoutManager
 - (CLKUICurvedLayoutManager)init;
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9;
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context;
 @end
 
 @implementation CLKUICurvedLayoutManager
@@ -12,18 +12,18 @@
   return [(CLKUICurvedLayoutManager *)&v3 init];
 }
 
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context
 {
-  v15 = a8;
-  v16 = a6;
-  CGContextSetShouldSubpixelQuantizeFonts(a9, 0);
+  attributesCopy = attributes;
+  fontCopy = font;
+  CGContextSetShouldSubpixelQuantizeFonts(context, 0);
   v19.receiver = self;
   v19.super_class = CLKUICurvedLayoutManager;
-  v17 = *&a7->c;
-  v18[0] = *&a7->a;
+  v17 = *&matrix->c;
+  v18[0] = *&matrix->a;
   v18[1] = v17;
-  v18[2] = *&a7->tx;
-  [(CLKUICurvedLayoutManager *)&v19 showCGGlyphs:a3 positions:a4 count:a5 font:v16 textMatrix:v18 attributes:v15 inContext:a9];
+  v18[2] = *&matrix->tx;
+  [(CLKUICurvedLayoutManager *)&v19 showCGGlyphs:glyphs positions:positions count:count font:fontCopy textMatrix:v18 attributes:attributesCopy inContext:context];
 }
 
 @end

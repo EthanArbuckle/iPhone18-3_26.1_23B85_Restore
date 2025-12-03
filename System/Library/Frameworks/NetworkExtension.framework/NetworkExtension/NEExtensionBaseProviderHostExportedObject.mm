@@ -1,17 +1,17 @@
 @interface NEExtensionBaseProviderHostExportedObject
 - (_TtC16NetworkExtension41NEExtensionBaseProviderHostExportedObject)init;
-- (void)cancelWithErrorWithError:(id)a3 reply:(id)a4;
+- (void)cancelWithErrorWithError:(id)error reply:(id)reply;
 @end
 
 @implementation NEExtensionBaseProviderHostExportedObject
 
-- (void)cancelWithErrorWithError:(id)a3 reply:(id)a4
+- (void)cancelWithErrorWithError:(id)error reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v8 = a3;
-  v7 = self;
-  sub_1BA85B6C0(v8, v7, v6);
+  errorCopy = error;
+  selfCopy = self;
+  sub_1BA85B6C0(errorCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

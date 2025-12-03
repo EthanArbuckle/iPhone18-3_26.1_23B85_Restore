@@ -1,85 +1,85 @@
 @interface MRContext
-- ($85CD2974BE96D4886BB301820D1C36C2)clippedSizeWithSize:(CGSize)a3;
+- ($85CD2974BE96D4886BB301820D1C36C2)clippedSizeWithSize:(CGSize)size;
 - (BOOL)commitShaderChange;
 - (CGColorSpace)colorSpace;
 - (CGColorSpace)monochromaticColorSpace;
 - (CGPoint)pixelOffset;
 - (CGSize)pixelSize;
 - (CGSize)size;
-- (MRContext)initWithEAGLContext:(id)a3 andAssetManager:(id)a4;
+- (MRContext)initWithEAGLContext:(id)context andAssetManager:(id)manager;
 - (float)aspectRatio;
-- (id)beginLocalContextWithSize:(CGSize)a3 backgroundColor:(const float *)a4 state:(id *)a5;
-- (id)imageSetOnTextureUnit:(unint64_t)a3;
-- (id)initLocalWithContext:(id)a3 glContext:(id)a4 andSize:(CGSize)a5;
-- (id)initLocalWithContext:(id)a3 texture:(id)a4 andSize:(CGSize)a5;
-- (id)retainedByUserImageByEndingLocalContext:(id)a3 andRestoreState:(id *)a4;
-- (unsigned)bindBuffer:(unsigned int)a3;
+- (id)beginLocalContextWithSize:(CGSize)size backgroundColor:(const float *)color state:(id *)state;
+- (id)imageSetOnTextureUnit:(unint64_t)unit;
+- (id)initLocalWithContext:(id)context glContext:(id)glContext andSize:(CGSize)size;
+- (id)initLocalWithContext:(id)context texture:(id)texture andSize:(CGSize)size;
+- (id)retainedByUserImageByEndingLocalContext:(id)context andRestoreState:(id *)state;
+- (unsigned)bindBuffer:(unsigned int)buffer;
 - (unsigned)createVBO;
 - (unsigned)maxDimension;
 - (void)_commitOuterToInner;
 - (void)_computeProjectionMatrixWithOrientationCorrection;
-- (void)_updateTextureOnUnit:(unint64_t)a3;
-- (void)blend:(int)a3;
+- (void)_updateTextureOnUnit:(unint64_t)unit;
+- (void)blend:(int)blend;
 - (void)cleanup;
-- (void)clear:(int)a3;
-- (void)composeForeColor:(const float *)a3 saveTo:(float *)a4;
-- (void)composeForeColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6 saveTo:(float *)a7;
-- (void)composeModelViewMatrix:(float)a3[16] saveTo:(float *)a4;
-- (void)cull:(int)a3;
+- (void)clear:(int)clear;
+- (void)composeForeColor:(const float *)color saveTo:(float *)to;
+- (void)composeForeColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha saveTo:(float *)to;
+- (void)composeModelViewMatrix:(float)matrix[16] saveTo:(float *)to;
+- (void)cull:(int)cull;
 - (void)dealloc;
-- (void)deleteVBO:(unsigned int)a3;
-- (void)drawIndexedTriangleStrip:(const unsigned __int16 *)a3 count:(unint64_t)a4;
-- (void)drawLinesFromOffset:(unint64_t)a3 count:(unint64_t)a4;
-- (void)drawTriangleFanFromOffset:(unint64_t)a3 count:(unint64_t)a4;
-- (void)drawTriangleStripFromOffset:(unint64_t)a3 count:(unint64_t)a4;
-- (void)drawTrianglesFromOffset:(unint64_t)a3 count:(unint64_t)a4;
+- (void)deleteVBO:(unsigned int)o;
+- (void)drawIndexedTriangleStrip:(const unsigned __int16 *)strip count:(unint64_t)count;
+- (void)drawLinesFromOffset:(unint64_t)offset count:(unint64_t)count;
+- (void)drawTriangleFanFromOffset:(unint64_t)offset count:(unint64_t)count;
+- (void)drawTriangleStripFromOffset:(unint64_t)offset count:(unint64_t)count;
+- (void)drawTrianglesFromOffset:(unint64_t)offset count:(unint64_t)count;
 - (void)flush;
-- (void)setBackColor:(const float *)a3 saveTo:(float *)a4;
-- (void)setBackColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6 saveTo:(float *)a7;
-- (void)setDimensionalMode:(int)a3;
-- (void)setForeColor:(const float *)a3 saveTo:(float *)a4;
-- (void)setForeColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6 saveTo:(float *)a7;
-- (void)setImage:(id)a3 onTextureUnit:(unint64_t)a4 withReferenceAspectRatio:(float)a5 state:(id *)a6;
-- (void)setIsFlipped:(BOOL)a3;
-- (void)setModelViewMatrix:(float)a3[16] saveTo:(float *)a4;
-- (void)setNormal:(float)a3 :(float)a4 :(float)a5;
-- (void)setScissorRect:(const int *)a3 saveTo:(int *)a4;
-- (void)setShader:(id)a3;
-- (void)setShaderUniformFloat:(float)a3 forKey:(id)a4;
-- (void)setShaderUniformInt:(int)a3 forKey:(id)a4;
-- (void)setShaderUniformMat3:(float)a3[16] forKey:(id)a4;
-- (void)setShaderUniformMat4:(float)a3[16] forKey:(id)a4;
-- (void)setShaderUniformVec2:(float)a3 :(float)a4 forKey:(id)a5;
-- (void)setShaderUniformVec3:(float)a3 :(float)a4 :(float)a5 forKey:(id)a6;
-- (void)setShaderUniformVec4:(float)a3 :(float)a4 :(float)a5 :(float)a6 forKey:(id)a7;
-- (void)setTextureMatrix:(float)a3[16] onTextureUnit:(unint64_t)a4;
-- (void)setVertex2DPointer:(const float *)a3;
-- (void)setVertex3DPointer:(const float *)a3;
-- (void)setVertexAttributePointer:(const float *)a3 ofSize:(unint64_t)a4 forKey:(id)a5;
-- (void)setVertexBuffer2D:(unsigned int)a3 withFeatures:(unint64_t)a4;
-- (void)setVertexBuffer2D:(unsigned int)a3 withStride:(unint64_t)a4 inSpriteCoordinatesOffset:(unint64_t)a5 texture0CoordinatesOffset:(unint64_t)a6;
-- (void)setVertexPointer:(float *)a3 flags:(unsigned __int16)a4;
-- (void)snapshotWithTextureName:(int)a3 offset:(CGPoint)a4 size:(CGSize)a5;
-- (void)translateModelViewMatrixByX:(float)a3 Y:(float)a4 Z:(float)a5 saveTo:(float *)a6;
-- (void)unsetImage:(id)a3 onTextureUnit:(unint64_t)a4 state:(id *)a5;
+- (void)setBackColor:(const float *)color saveTo:(float *)to;
+- (void)setBackColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha saveTo:(float *)to;
+- (void)setDimensionalMode:(int)mode;
+- (void)setForeColor:(const float *)color saveTo:(float *)to;
+- (void)setForeColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha saveTo:(float *)to;
+- (void)setImage:(id)image onTextureUnit:(unint64_t)unit withReferenceAspectRatio:(float)ratio state:(id *)state;
+- (void)setIsFlipped:(BOOL)flipped;
+- (void)setModelViewMatrix:(float)matrix[16] saveTo:(float *)to;
+- (void)setNormal:(float)normal :(float)a4 :(float)a5;
+- (void)setScissorRect:(const int *)rect saveTo:(int *)to;
+- (void)setShader:(id)shader;
+- (void)setShaderUniformFloat:(float)float forKey:(id)key;
+- (void)setShaderUniformInt:(int)int forKey:(id)key;
+- (void)setShaderUniformMat3:(float)mat3[16] forKey:(id)key;
+- (void)setShaderUniformMat4:(float)mat4[16] forKey:(id)key;
+- (void)setShaderUniformVec2:(float)vec2 :(float)a4 forKey:(id)key;
+- (void)setShaderUniformVec3:(float)vec3 :(float)a4 :(float)a5 forKey:(id)key;
+- (void)setShaderUniformVec4:(float)vec4 :(float)a4 :(float)a5 :(float)a6 forKey:(id)key;
+- (void)setTextureMatrix:(float)matrix[16] onTextureUnit:(unint64_t)unit;
+- (void)setVertex2DPointer:(const float *)pointer;
+- (void)setVertex3DPointer:(const float *)pointer;
+- (void)setVertexAttributePointer:(const float *)pointer ofSize:(unint64_t)size forKey:(id)key;
+- (void)setVertexBuffer2D:(unsigned int)d withFeatures:(unint64_t)features;
+- (void)setVertexBuffer2D:(unsigned int)d withStride:(unint64_t)stride inSpriteCoordinatesOffset:(unint64_t)offset texture0CoordinatesOffset:(unint64_t)coordinatesOffset;
+- (void)setVertexPointer:(float *)pointer flags:(unsigned __int16)flags;
+- (void)snapshotWithTextureName:(int)name offset:(CGPoint)offset size:(CGSize)size;
+- (void)translateModelViewMatrixByX:(float)x Y:(float)y Z:(float)z saveTo:(float *)to;
+- (void)unsetImage:(id)image onTextureUnit:(unint64_t)unit state:(id *)state;
 - (void)unsetShader;
 - (void)unsetVertexPointer;
 - (void)updateGeometry;
-- (void)uploadBuffer:(void *)a3 withSize:(int)a4 toVertexBuffer2D:(unsigned int)a5 usage:(unsigned int)a6;
+- (void)uploadBuffer:(void *)buffer withSize:(int)size toVertexBuffer2D:(unsigned int)d usage:(unsigned int)usage;
 @end
 
 @implementation MRContext
 
-- (MRContext)initWithEAGLContext:(id)a3 andAssetManager:(id)a4
+- (MRContext)initWithEAGLContext:(id)context andAssetManager:(id)manager
 {
   v6 = [(MRContext *)self init];
   v7 = v6;
   if (v6)
   {
     v6->mBaseContext = v6;
-    v6->mGLContext = a3;
+    v6->mGLContext = context;
     v7->mRenderBuffer = -1;
-    v7->mAssetManager = a4;
+    v7->mAssetManager = manager;
     v7->mImageManager = [[MRImageManager alloc] initWithBaseContext:v7];
     v7->mOuterState = objc_alloc_init(MRContextState);
     v7->mInnerState = objc_alloc_init(MRContextState);
@@ -128,22 +128,22 @@
   return v7;
 }
 
-- (id)initLocalWithContext:(id)a3 glContext:(id)a4 andSize:(CGSize)a5
+- (id)initLocalWithContext:(id)context glContext:(id)glContext andSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v9 = [(MRContext *)self init];
   if (v9)
   {
-    v9->mBaseContext = [a3 baseContext];
-    v9->mGLContext = a4;
-    v9->mAssetManager = *(a3 + 26);
-    v9->mImageManager = *(a3 + 27);
+    v9->mBaseContext = [context baseContext];
+    v9->mGLContext = glContext;
+    v9->mAssetManager = *(context + 26);
+    v9->mImageManager = *(context + 27);
     v9->mVRAM = [(MRContext *)v9->mBaseContext vram];
     v9->mMaxTextureSize = v9->mBaseContext->mMaxTextureSize;
     *&v9->mIsLocalContext = 257;
-    v10 = width * *(a3 + 17);
-    [a3 pixelSize];
+    v10 = width * *(context + 17);
+    [context pixelSize];
     *&v11 = v10 / v11;
     v9->mFieldOfViewFactor = *&v11;
     v9->mPixelSize.width = width;
@@ -152,38 +152,38 @@
     v9->mOuterState = objc_alloc_init(MRContextState);
     v9->mInnerState = objc_alloc_init(MRContextState);
     [(MRContext *)v9 updateGeometry];
-    v9->mBlackImage = [a3 retainedByUserBlackImage];
+    v9->mBlackImage = [context retainedByUserBlackImage];
     v9->mActiveTextureUnit = -1;
   }
 
   return v9;
 }
 
-- (id)initLocalWithContext:(id)a3 texture:(id)a4 andSize:(CGSize)a5
+- (id)initLocalWithContext:(id)context texture:(id)texture andSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v9 = [(MRContext *)self init];
   if (v9)
   {
-    v9->mBaseContext = [a3 baseContext];
-    v9->mGLContext = [a4 glContext];
-    v9->mAssetManager = *(a3 + 26);
-    v9->mImageManager = *(a3 + 27);
+    v9->mBaseContext = [context baseContext];
+    v9->mGLContext = [texture glContext];
+    v9->mAssetManager = *(context + 26);
+    v9->mImageManager = *(context + 27);
     v9->mVRAM = [(MRContext *)v9->mBaseContext vram];
     v9->mMaxTextureSize = v9->mBaseContext->mMaxTextureSize;
     *&v9->mIsLocalContext = 257;
-    v10 = width * *(a3 + 17);
-    [a3 pixelSize];
+    v10 = width * *(context + 17);
+    [context pixelSize];
     *&v11 = v10 / v11;
     v9->mFieldOfViewFactor = *&v11;
     v9->mPixelSize.width = width;
     v9->mPixelSize.height = height;
     v9->mOrientation = 4;
     v9->mOuterState = objc_alloc_init(MRContextState);
-    v9->mInnerState = [a4 innerState];
+    v9->mInnerState = [texture innerState];
     [(MRContext *)v9 updateGeometry];
-    v9->mBlackImage = [a3 retainedByUserBlackImage];
+    v9->mBlackImage = [context retainedByUserBlackImage];
     v9->mActiveTextureUnit = -1;
   }
 
@@ -367,9 +367,9 @@
   }
 }
 
-- (void)setDimensionalMode:(int)a3
+- (void)setDimensionalMode:(int)mode
 {
-  if (self->_dimensionalMode == a3)
+  if (self->_dimensionalMode == mode)
   {
     return;
   }
@@ -385,9 +385,9 @@
   *v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  if (a3 <= 1)
+  if (mode <= 1)
   {
-    if (!a3)
+    if (!mode)
     {
       [(MRContext *)self setPixelSize:self->mPixelSize.width, self->mPixelSize.height, v14, v15, v16];
       glViewport(0, 0, self->mPixelSize.width, self->mPixelSize.height);
@@ -396,7 +396,7 @@
       goto LABEL_16;
     }
 
-    if (a3 != 1)
+    if (mode != 1)
     {
       goto LABEL_18;
     }
@@ -414,7 +414,7 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  switch(a3)
+  switch(mode)
   {
     case 2:
       [(MRContext *)self setPixelSize:self->mPixelSize.width, self->mPixelSize.height, v14, v15, v16];
@@ -522,13 +522,13 @@ LABEL_18:
   }
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)clippedSizeWithSize:(CGSize)a3
+- ($85CD2974BE96D4886BB301820D1C36C2)clippedSizeWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.width;
-  v7 = a3.height;
-  v8 = [(MRContext *)self maxDimension];
+  height = size.height;
+  width = size.width;
+  v6 = size.width;
+  v7 = size.height;
+  maxDimension = [(MRContext *)self maxDimension];
   if (v6)
   {
     v9 = v7 == 0;
@@ -552,9 +552,9 @@ LABEL_18:
 
     else
     {
-      if (v8 < v6)
+      if (maxDimension < v6)
       {
-        v6 = v8;
+        v6 = maxDimension;
       }
 
       if (width / height <= 0.5)
@@ -573,14 +573,14 @@ LABEL_18:
       }
     }
 
-    if (v8 >= v7)
+    if (maxDimension >= v7)
     {
       v7 = v7;
     }
 
     else
     {
-      v7 = v8;
+      v7 = maxDimension;
     }
   }
 
@@ -624,14 +624,14 @@ LABEL_18:
   _objc_release_x1(v5, v6);
 }
 
-- (id)beginLocalContextWithSize:(CGSize)a3 backgroundColor:(const float *)a4 state:(id *)a5
+- (id)beginLocalContextWithSize:(CGSize)size backgroundColor:(const float *)color state:(id *)state
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = [(MRImageManager *)self->mImageManager retainedByUserImageWithSize:0 andColor:?];
-  a5->var0 = v10;
+  state->var0 = v10;
   [v10 setLabel:@"Marimba Local Context"];
-  v11 = -[MRContext initLocalWithContext:texture:andSize:]([MRContext alloc], "initLocalWithContext:texture:andSize:", self, [a5->var0 texture], width, height);
+  v11 = -[MRContext initLocalWithContext:texture:andSize:]([MRContext alloc], "initLocalWithContext:texture:andSize:", self, [state->var0 texture], width, height);
   v12 = +[EAGLContext currentContext];
   v13 = v12;
   if (v12 != [v11 glContext])
@@ -639,9 +639,9 @@ LABEL_18:
     +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [v11 glContext]);
   }
 
-  if (a4)
+  if (color)
   {
-    [v11 setBackColor:a4 saveTo:0];
+    [v11 setBackColor:color saveTo:0];
     [v11 clear:1];
   }
 
@@ -653,45 +653,45 @@ LABEL_18:
   return v11;
 }
 
-- (id)retainedByUserImageByEndingLocalContext:(id)a3 andRestoreState:(id *)a4
+- (id)retainedByUserImageByEndingLocalContext:(id)context andRestoreState:(id *)state
 {
   v6 = +[EAGLContext currentContext];
   v7 = v6;
-  if (v6 != [a3 glContext])
+  if (v6 != [context glContext])
   {
-    +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [a3 glContext]);
+    +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [context glContext]);
   }
 
   glFlush();
-  [a3 cleanup];
+  [context cleanup];
   if (+[EAGLContext currentContext]!= v6)
   {
     [EAGLContext setCurrentContext:v6];
   }
 
-  [objc_msgSend(a4->var0 "texture")];
-  return a4->var0;
+  [objc_msgSend(state->var0 "texture")];
+  return state->var0;
 }
 
-- (void)setIsFlipped:(BOOL)a3
+- (void)setIsFlipped:(BOOL)flipped
 {
-  if (self->mIsFlipped != a3)
+  if (self->mIsFlipped != flipped)
   {
-    self->mIsFlipped = a3;
+    self->mIsFlipped = flipped;
     self->mProjectionMatrix[5] = -self->mProjectionMatrix[5];
     [(MRContext *)self _computeProjectionMatrixWithOrientationCorrection];
   }
 }
 
-- (void)blend:(int)a3
+- (void)blend:(int)blend
 {
   mOuterState = self->mOuterState;
-  if (a3)
+  if (blend)
   {
     mOuterState->blendingIsEnabled = 1;
-    if (a3 != 1)
+    if (blend != 1)
     {
-      self->mOuterState->blendingType = a3;
+      self->mOuterState->blendingType = blend;
     }
   }
 
@@ -701,13 +701,13 @@ LABEL_18:
   }
 }
 
-- (void)cull:(int)a3
+- (void)cull:(int)cull
 {
   mOuterState = self->mOuterState;
-  if (a3)
+  if (cull)
   {
     mOuterState->cullingIsEnabled = 1;
-    self->mOuterState->cullFrontfacing = a3 == 2;
+    self->mOuterState->cullFrontfacing = cull == 2;
   }
 
   else
@@ -716,9 +716,9 @@ LABEL_18:
   }
 }
 
-- (void)clear:(int)a3
+- (void)clear:(int)clear
 {
-  v3 = a3;
+  clearCopy = clear;
   mOuterState = self->mOuterState;
   mInnerState = self->mInnerState;
   v7 = mOuterState->backColor[0];
@@ -729,14 +729,14 @@ LABEL_18:
     *self->mInnerState->backColor = *self->mOuterState->backColor;
   }
 
-  if ((v3 & 2) != 0)
+  if ((clearCopy & 2) != 0)
   {
     if (!self->mInnerState->depthTestIsEnabled)
     {
       glDepthMask(1u);
     }
 
-    glClear(((v3 & 1) << 14) | 0x100);
+    glClear(((clearCopy & 1) << 14) | 0x100);
     if (!self->mInnerState->depthTestIsEnabled)
     {
 
@@ -747,20 +747,20 @@ LABEL_18:
   else
   {
 
-    glClear((v3 & 1) << 14);
+    glClear((clearCopy & 1) << 14);
   }
 }
 
-- (void)setScissorRect:(const int *)a3 saveTo:(int *)a4
+- (void)setScissorRect:(const int *)rect saveTo:(int *)to
 {
-  if (a4)
+  if (to)
   {
     x = self->mPixelOffset.x;
     y = self->mPixelOffset.y;
-    *a4 = (self->mScissorRect[0] - x);
-    a4[1] = (self->mScissorRect[1] - y);
-    a4[2] = self->mScissorRect[2];
-    a4[3] = self->mScissorRect[3];
+    *to = (self->mScissorRect[0] - x);
+    to[1] = (self->mScissorRect[1] - y);
+    to[2] = self->mScissorRect[2];
+    to[3] = self->mScissorRect[3];
   }
 
   else
@@ -768,11 +768,11 @@ LABEL_18:
     x = self->mPixelOffset.x;
   }
 
-  v7 = x + *a3;
+  v7 = x + *rect;
   if (v7 == self->mScissorRect[0])
   {
     v8 = self->mPixelOffset.y;
-    if (v8 + a3[1] == self->mScissorRect[1] && self->mScissorRect[2] == a3[2] && self->mScissorRect[3] == a3[3])
+    if (v8 + rect[1] == self->mScissorRect[1] && self->mScissorRect[2] == rect[2] && self->mScissorRect[3] == rect[3])
     {
       return;
     }
@@ -784,11 +784,11 @@ LABEL_18:
   }
 
   self->mScissorRect[0] = v7;
-  v9 = (v8 + a3[1]);
+  v9 = (v8 + rect[1]);
   self->mScissorRect[1] = v9;
-  v10 = a3[2];
+  v10 = rect[2];
   self->mScissorRect[2] = v10;
-  v11 = a3[3];
+  v11 = rect[3];
   self->mScissorRect[3] = v11;
   v12 = v7 <= 0 && v9 <= 0;
   if (v12 && self->mPixelSize.width <= (v10 + v7) && self->mPixelSize.height <= (v11 + v9))
@@ -820,118 +820,118 @@ LABEL_18:
   }
 }
 
-- (void)setForeColor:(const float *)a3 saveTo:(float *)a4
+- (void)setForeColor:(const float *)color saveTo:(float *)to
 {
-  if (a4)
+  if (to)
   {
-    *a4 = *self->mOuterState->foreColor;
+    *to = *self->mOuterState->foreColor;
   }
 
-  *self->mOuterState->foreColor = *a3;
+  *self->mOuterState->foreColor = *color;
 }
 
-- (void)setForeColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6 saveTo:(float *)a7
+- (void)setForeColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha saveTo:(float *)to
 {
-  if (a7)
+  if (to)
   {
-    *a7 = *self->mOuterState->foreColor;
+    *to = *self->mOuterState->foreColor;
   }
 
-  self->mOuterState->foreColor[0] = a3;
-  self->mOuterState->foreColor[1] = a4;
-  self->mOuterState->foreColor[2] = a5;
-  self->mOuterState->foreColor[3] = a6;
+  self->mOuterState->foreColor[0] = red;
+  self->mOuterState->foreColor[1] = green;
+  self->mOuterState->foreColor[2] = blue;
+  self->mOuterState->foreColor[3] = alpha;
 }
 
-- (void)composeForeColor:(const float *)a3 saveTo:(float *)a4
+- (void)composeForeColor:(const float *)color saveTo:(float *)to
 {
-  if (a4)
+  if (to)
   {
-    *a4 = *self->mOuterState->foreColor;
+    *to = *self->mOuterState->foreColor;
   }
 
-  self->mOuterState->foreColor[0] = *a3 * self->mOuterState->foreColor[0];
-  self->mOuterState->foreColor[1] = a3[1] * self->mOuterState->foreColor[1];
-  self->mOuterState->foreColor[2] = a3[2] * self->mOuterState->foreColor[2];
-  self->mOuterState->foreColor[3] = a3[3] * self->mOuterState->foreColor[3];
+  self->mOuterState->foreColor[0] = *color * self->mOuterState->foreColor[0];
+  self->mOuterState->foreColor[1] = color[1] * self->mOuterState->foreColor[1];
+  self->mOuterState->foreColor[2] = color[2] * self->mOuterState->foreColor[2];
+  self->mOuterState->foreColor[3] = color[3] * self->mOuterState->foreColor[3];
 }
 
-- (void)composeForeColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6 saveTo:(float *)a7
+- (void)composeForeColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha saveTo:(float *)to
 {
-  if (a7)
+  if (to)
   {
-    *a7 = *self->mOuterState->foreColor;
+    *to = *self->mOuterState->foreColor;
   }
 
-  self->mOuterState->foreColor[0] = self->mOuterState->foreColor[0] * a3;
-  self->mOuterState->foreColor[1] = self->mOuterState->foreColor[1] * a4;
-  self->mOuterState->foreColor[2] = self->mOuterState->foreColor[2] * a5;
-  self->mOuterState->foreColor[3] = self->mOuterState->foreColor[3] * a6;
+  self->mOuterState->foreColor[0] = self->mOuterState->foreColor[0] * red;
+  self->mOuterState->foreColor[1] = self->mOuterState->foreColor[1] * green;
+  self->mOuterState->foreColor[2] = self->mOuterState->foreColor[2] * blue;
+  self->mOuterState->foreColor[3] = self->mOuterState->foreColor[3] * alpha;
 }
 
-- (void)setBackColor:(const float *)a3 saveTo:(float *)a4
+- (void)setBackColor:(const float *)color saveTo:(float *)to
 {
-  if (a4)
+  if (to)
   {
-    *a4 = *self->mOuterState->backColor;
+    *to = *self->mOuterState->backColor;
   }
 
-  *self->mOuterState->backColor = *a3;
+  *self->mOuterState->backColor = *color;
 }
 
-- (void)setBackColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6 saveTo:(float *)a7
+- (void)setBackColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha saveTo:(float *)to
 {
-  if (a7)
+  if (to)
   {
-    *a7 = *self->mOuterState->backColor;
+    *to = *self->mOuterState->backColor;
   }
 
-  self->mOuterState->backColor[0] = a3;
-  self->mOuterState->backColor[1] = a4;
-  self->mOuterState->backColor[2] = a5;
-  self->mOuterState->backColor[3] = a6;
+  self->mOuterState->backColor[0] = red;
+  self->mOuterState->backColor[1] = green;
+  self->mOuterState->backColor[2] = blue;
+  self->mOuterState->backColor[3] = alpha;
 }
 
-- (void)setImage:(id)a3 onTextureUnit:(unint64_t)a4 withReferenceAspectRatio:(float)a5 state:(id *)a6
+- (void)setImage:(id)image onTextureUnit:(unint64_t)unit withReferenceAspectRatio:(float)ratio state:(id *)state
 {
-  v10 = [a3 texture];
-  v11 = [v10 textureName];
-  v12 = [v10 textureTarget];
-  if (v10 && v11 && v12)
+  texture = [image texture];
+  textureName = [texture textureName];
+  textureTarget = [texture textureTarget];
+  if (texture && textureName && textureTarget)
   {
-    self->mOuterState->textureTargetOnUnit[a4] = v12;
-    self->mOuterState->textureNameOnUnit[a4] = v11;
-    [v10 timestamp];
-    self->mOuterState->textureTimestampOnUnit[a4] = v13;
+    self->mOuterState->textureTargetOnUnit[unit] = textureTarget;
+    self->mOuterState->textureNameOnUnit[unit] = textureName;
+    [texture timestamp];
+    self->mOuterState->textureTimestampOnUnit[unit] = v13;
     memset(v15, 0, sizeof(v15));
-    [a3 getMatrix:v15 forReferenceAspectRatio:COERCE_DOUBLE(LODWORD(a5))];
-    [(MRContext *)self setTextureMatrix:v15 onTextureUnit:a4];
-    v14 = [a3 filterID];
-    if (v14 != [(MRImage *)self->mTextureUnitImages[a4] filterID])
+    [image getMatrix:v15 forReferenceAspectRatio:COERCE_DOUBLE(LODWORD(ratio))];
+    [(MRContext *)self setTextureMatrix:v15 onTextureUnit:unit];
+    filterID = [image filterID];
+    if (filterID != [(MRImage *)self->mTextureUnitImages[unit] filterID])
     {
       self->mForceShaderUpdate = 1;
     }
 
-    self->mTextureUnitImages[a4] = [a3 retainByUser];
+    self->mTextureUnitImages[unit] = [image retainByUser];
   }
 }
 
-- (void)unsetImage:(id)a3 onTextureUnit:(unint64_t)a4 state:(id *)a5
+- (void)unsetImage:(id)image onTextureUnit:(unint64_t)unit state:(id *)state
 {
-  v7 = (&self->super.isa + a4);
+  v7 = (&self->super.isa + unit);
   [v7[36] releaseByUser];
   v7[36] = 0;
-  self->mOuterState->textureNameOnUnit[a4] = 0;
+  self->mOuterState->textureNameOnUnit[unit] = 0;
 }
 
-- (id)imageSetOnTextureUnit:(unint64_t)a3
+- (id)imageSetOnTextureUnit:(unint64_t)unit
 {
-  if (a3 > 3)
+  if (unit > 3)
   {
     return 0;
   }
 
-  v3 = self->mTextureUnitImages[a3];
+  v3 = self->mTextureUnitImages[unit];
   if (v3)
   {
     v4 = v3;
@@ -940,22 +940,22 @@ LABEL_18:
   return v3;
 }
 
-- (void)_updateTextureOnUnit:(unint64_t)a3
+- (void)_updateTextureOnUnit:(unint64_t)unit
 {
-  v3 = &self->super.isa + a3;
+  v3 = &self->super.isa + unit;
   v4 = v3[36];
   if (!v4)
   {
     return;
   }
 
-  v7 = [(objc_class *)v3[36] texture];
-  if (!v7)
+  texture = [(objc_class *)v3[36] texture];
+  if (!texture)
   {
     return;
   }
 
-  v8 = v7;
+  v8 = texture;
   v38 = 0;
   v39 = 0;
   if ([(objc_class *)v4 clampMode]== 1)
@@ -966,10 +966,10 @@ LABEL_18:
     v12 = 0.0;
     if ([(objc_class *)v4 usesBackgroundColorAsBorderColor])
     {
-      v13 = [v8 isPremultiplied];
+      isPremultiplied = [v8 isPremultiplied];
       mOuterState = self->mOuterState;
       v12 = mOuterState->backColor[0];
-      if (v13)
+      if (isPremultiplied)
       {
         v9 = mOuterState->backColor[3];
         v12 = v12 * v9;
@@ -992,14 +992,14 @@ LABEL_18:
       *(&v39 + 1) = v9;
     }
 
-    v16 = [v8 borderColor];
+    borderColor = [v8 borderColor];
     *&v17 = v12;
     *&v18 = v11;
     *&v19 = v10;
     *&v20 = v9;
     [(MRShader *)self->mCurrentShader setUniformVec4:@"uTexture0BorderColor" forKey:v17];
-    LODWORD(v21) = *v16;
-    if (*v16 != v12 || (LODWORD(v21) = v16[1], *&v21 != v11) || (LODWORD(v21) = v16[2], *&v21 != v10) || (LODWORD(v21) = v16[3], *&v21 != v9))
+    LODWORD(v21) = *borderColor;
+    if (*borderColor != v12 || (LODWORD(v21) = borderColor[1], *&v21 != v11) || (LODWORD(v21) = borderColor[2], *&v21 != v10) || (LODWORD(v21) = borderColor[3], *&v21 != v9))
     {
       [v8 setBorderColor:{&v38, v21}];
     }
@@ -1037,18 +1037,18 @@ LABEL_18:
 
   v15 = 33071;
 LABEL_25:
-  v22 = [(objc_class *)v4 filtersNearest];
-  v23 = [(objc_class *)v4 usesMipmap];
-  v24 = [(objc_class *)v4 mipmapFiltersNearest];
-  if (v23)
+  filtersNearest = [(objc_class *)v4 filtersNearest];
+  usesMipmap = [(objc_class *)v4 usesMipmap];
+  mipmapFiltersNearest = [(objc_class *)v4 mipmapFiltersNearest];
+  if (usesMipmap)
   {
-    v25 = v24;
+    v25 = mipmapFiltersNearest;
     if (([v8 hasMipmap] & 1) == 0)
     {
       NSLog(@"Using mipmapping on a texture that doesn't have mipmaps");
     }
 
-    v26 = v22 == 0;
+    v26 = filtersNearest == 0;
     if (v25)
     {
       v27 = 9984;
@@ -1062,7 +1062,7 @@ LABEL_25:
 
   else
   {
-    v26 = v22 == 0;
+    v26 = filtersNearest == 0;
     v27 = 9728;
   }
 
@@ -1076,7 +1076,7 @@ LABEL_25:
     v28 = v27;
   }
 
-  if (v22)
+  if (filtersNearest)
   {
     v29 = 9728;
   }
@@ -1086,35 +1086,35 @@ LABEL_25:
     v29 = 9729;
   }
 
-  v30 = [v8 wrapS];
-  v31 = [v8 wrapT];
-  v32 = [v8 minFilter];
-  v33 = [v8 magFilter];
-  v34 = v33;
-  if (v15 != v30 || v15 != v31 || v28 != v32 || v29 != v33)
+  wrapS = [v8 wrapS];
+  wrapT = [v8 wrapT];
+  minFilter = [v8 minFilter];
+  magFilter = [v8 magFilter];
+  v34 = magFilter;
+  if (v15 != wrapS || v15 != wrapT || v28 != minFilter || v29 != magFilter)
   {
-    v35 = [v8 textureTarget];
-    v36 = a3;
-    v37 = v35;
-    if (self->mActiveTextureUnit != v36)
+    textureTarget = [v8 textureTarget];
+    unitCopy = unit;
+    v37 = textureTarget;
+    if (self->mActiveTextureUnit != unitCopy)
     {
-      self->mActiveTextureUnit = v36;
-      glActiveTexture(v36 + 33984);
+      self->mActiveTextureUnit = unitCopy;
+      glActiveTexture(unitCopy + 33984);
     }
 
-    if (v15 != v30)
+    if (v15 != wrapS)
     {
       glTexParameteri(v37, 0x2802u, v15);
       [v8 setWrapS:v15];
     }
 
-    if (v15 != v31)
+    if (v15 != wrapT)
     {
       glTexParameteri(v37, 0x2803u, v15);
       [v8 setWrapT:v15];
     }
 
-    if (v28 != v32)
+    if (v28 != minFilter)
     {
       glTexParameteri(v37, 0x2801u, v28);
       [v8 setMinFilter:v28];
@@ -1128,20 +1128,20 @@ LABEL_25:
   }
 }
 
-- (void)snapshotWithTextureName:(int)a3 offset:(CGPoint)a4 size:(CGSize)a5
+- (void)snapshotWithTextureName:(int)name offset:(CGPoint)offset size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = size.height;
+  width = size.width;
+  y = offset.y;
+  x = offset.x;
   if (self->mActiveTextureUnit)
   {
     self->mActiveTextureUnit = 0;
     glActiveTexture(0x84C0u);
   }
 
-  self->mInnerState->textureNameOnUnit[0] = a3;
-  glBindTexture(0xDE1u, a3);
+  self->mInnerState->textureNameOnUnit[0] = name;
+  glBindTexture(0xDE1u, name);
 
   glCopyTexSubImage2D(0xDE1u, 0, 0, 0, x, y, width, height);
 }
@@ -1153,10 +1153,10 @@ LABEL_25:
     goto LABEL_2;
   }
 
-  v4 = [(MRImage *)self->mTextureUnitImages[0] filterID];
-  v5 = [(MRImage *)self->mTextureUnitImages[0] shader];
-  v6 = [(NSDictionary *)v5 objectForKey:@"id"];
-  if (v4)
+  filterID = [(MRImage *)self->mTextureUnitImages[0] filterID];
+  shader = [(MRImage *)self->mTextureUnitImages[0] shader];
+  v6 = [(NSDictionary *)shader objectForKey:@"id"];
+  if (filterID)
   {
     v7 = v6 == 0;
   }
@@ -1189,7 +1189,7 @@ LABEL_2:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(NSDictionary *)v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v9 = [(NSDictionary *)shader countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v9)
   {
     goto LABEL_33;
@@ -1204,7 +1204,7 @@ LABEL_2:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(shader);
       }
 
       v13 = *(*(&v24 + 1) + 8 * v12);
@@ -1212,13 +1212,13 @@ LABEL_2:
       {
         if ([v13 characterAtIndex:0] == 95)
         {
-          -[MRContext setShaderUniformInt:forKey:](self, "setShaderUniformInt:forKey:", [-[NSDictionary objectForKey:](v5 objectForKey:{v13), "intValue"}], v13);
+          -[MRContext setShaderUniformInt:forKey:](self, "setShaderUniformInt:forKey:", [-[NSDictionary objectForKey:](shader objectForKey:{v13), "intValue"}], v13);
           goto LABEL_23;
         }
 
         if (NSStringHasSuffix(v13, "enter") || NSStringHasSuffix(v13, "oint"))
         {
-          [-[NSDictionary objectForKey:](v5 objectForKey:{v13), "CGPointValue"}];
+          [-[NSDictionary objectForKey:](shader objectForKey:{v13), "CGPointValue"}];
 LABEL_22:
           *&v14 = v14;
           *&v15 = v15;
@@ -1228,12 +1228,12 @@ LABEL_22:
 
         if (NSStringHasSuffix(v13, "ize") || NSStringHasSuffix(v13, "invRadii"))
         {
-          [-[NSDictionary objectForKey:](v5 objectForKey:{v13), "CGSizeValue"}];
+          [-[NSDictionary objectForKey:](shader objectForKey:{v13), "CGSizeValue"}];
           goto LABEL_22;
         }
 
         HasSuffix = NSStringHasSuffix(v13, "olor");
-        v17 = [(NSDictionary *)v5 objectForKey:v13];
+        v17 = [(NSDictionary *)shader objectForKey:v13];
         if (HasSuffix)
         {
           Components = CGColorGetComponents(v17);
@@ -1260,7 +1260,7 @@ LABEL_23:
     }
 
     while (v10 != v12);
-    v23 = [(NSDictionary *)v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v23 = [(NSDictionary *)shader countByEnumeratingWithState:&v24 objects:v28 count:16];
     v10 = v23;
   }
 
@@ -1273,13 +1273,13 @@ LABEL_33:
 
 - (void)_commitOuterToInner
 {
-  v3 = [(MRContextState *)self->mInnerState shaderArguments];
-  v4 = [(MRShaderArguments *)v3 filter0];
-  if (v4 == [(MRImage *)self->mTextureUnitImages[0] filterID]&& (v5 = [(MRShaderArguments *)v3 filter1], v5 == [(MRImage *)self->mTextureUnitImages[1] filterID]) && (v6 = [(MRShaderArguments *)v3 filter2], v6 == [(MRImage *)self->mTextureUnitImages[2] filterID]))
+  shaderArguments = [(MRContextState *)self->mInnerState shaderArguments];
+  filter0 = [(MRShaderArguments *)shaderArguments filter0];
+  if (filter0 == [(MRImage *)self->mTextureUnitImages[0] filterID]&& (v5 = [(MRShaderArguments *)shaderArguments filter1], v5 == [(MRImage *)self->mTextureUnitImages[1] filterID]) && (v6 = [(MRShaderArguments *)shaderArguments filter2], v6 == [(MRImage *)self->mTextureUnitImages[2] filterID]))
   {
     v7 = &self->mTextureUnitImages[1];
-    v37 = [(MRShaderArguments *)v3 filter3];
-    v38 = [(MRImage *)self->mTextureUnitImages[3] filterID];
+    filter3 = [(MRShaderArguments *)shaderArguments filter3];
+    filterID = [(MRImage *)self->mTextureUnitImages[3] filterID];
     v39 = self->mTextureUnitImages[0];
     if (v39)
     {
@@ -1288,21 +1288,21 @@ LABEL_33:
 
     else
     {
-      v40 = v37 == v38;
+      v40 = filter3 == filterID;
     }
 
     LOBYTE(v41) = !v40;
-    if (v39 && v37 == v38)
+    if (v39 && filter3 == filterID)
     {
       v42 = [(MRImage *)v39 clampMode]== 1;
-      v41 = v42 ^ [(MRShaderArguments *)v3 texture0ClampsToBorder];
+      v41 = v42 ^ [(MRShaderArguments *)shaderArguments texture0ClampsToBorder];
     }
 
     LOBYTE(v8) = (*v7 != 0) | v41;
     if (*v7 && (v41 & 1) == 0)
     {
       v43 = [*v7 clampMode] == 1;
-      v8 = v43 ^ [(MRShaderArguments *)v3 texture1ClampsToBorder];
+      v8 = v43 ^ [(MRShaderArguments *)shaderArguments texture1ClampsToBorder];
     }
   }
 
@@ -1313,15 +1313,15 @@ LABEL_33:
   }
 
   v9 = +[MRShaderManager sharedManager];
-  v10 = [(MRContextState *)self->mOuterState shaderID];
-  v11 = [(MRContextState *)self->mInnerState shaderID];
+  shaderID = [(MRContextState *)self->mOuterState shaderID];
+  shaderID2 = [(MRContextState *)self->mInnerState shaderID];
   if (!self->mForceShaderUpdate)
   {
-    v12 = v11;
+    v12 = shaderID2;
     mCurrentShader = self->mCurrentShader;
     if (mCurrentShader)
     {
-      if (v10 == v12)
+      if (shaderID == v12)
       {
         if ((v8 & 1) == 0)
         {
@@ -1336,7 +1336,7 @@ LABEL_28:
         }
       }
 
-      else if (!(v8 & 1 | ![(NSString *)v10 isEqualToString:?]))
+      else if (!(v8 & 1 | ![(NSString *)shaderID isEqualToString:?]))
       {
         mCurrentShader = self->mCurrentShader;
         goto LABEL_28;
@@ -1345,17 +1345,17 @@ LABEL_28:
   }
 
   self->mForceShaderUpdate = 0;
-  [(MRContextState *)self->mInnerState setShaderID:v10];
-  if (!v3)
+  [(MRContextState *)self->mInnerState setShaderID:shaderID];
+  if (!shaderArguments)
   {
-    v3 = objc_alloc_init(MRShaderArguments);
-    [(MRContextState *)self->mInnerState setShaderArguments:v3];
+    shaderArguments = objc_alloc_init(MRShaderArguments);
+    [(MRContextState *)self->mInnerState setShaderArguments:shaderArguments];
   }
 
-  [(MRShaderArguments *)v3 setFilter0:[(MRImage *)self->mTextureUnitImages[0] filterID]];
-  [(MRShaderArguments *)v3 setFilter1:[(MRImage *)self->mTextureUnitImages[1] filterID]];
-  [(MRShaderArguments *)v3 setFilter2:[(MRImage *)self->mTextureUnitImages[2] filterID]];
-  [(MRShaderArguments *)v3 setFilter3:[(MRImage *)self->mTextureUnitImages[3] filterID]];
+  [(MRShaderArguments *)shaderArguments setFilter0:[(MRImage *)self->mTextureUnitImages[0] filterID]];
+  [(MRShaderArguments *)shaderArguments setFilter1:[(MRImage *)self->mTextureUnitImages[1] filterID]];
+  [(MRShaderArguments *)shaderArguments setFilter2:[(MRImage *)self->mTextureUnitImages[2] filterID]];
+  [(MRShaderArguments *)shaderArguments setFilter3:[(MRImage *)self->mTextureUnitImages[3] filterID]];
   v14 = self->mTextureUnitImages[0];
   if (v14)
   {
@@ -1367,7 +1367,7 @@ LABEL_28:
     v15 = 0;
   }
 
-  [(MRShaderArguments *)v3 setTexture0ClampsToBorder:v15];
+  [(MRShaderArguments *)shaderArguments setTexture0ClampsToBorder:v15];
   if (*v7)
   {
     v16 = [*v7 clampMode] == 1;
@@ -1378,13 +1378,13 @@ LABEL_28:
     v16 = 0;
   }
 
-  [(MRShaderArguments *)v3 setTexture1ClampsToBorder:v16];
+  [(MRShaderArguments *)shaderArguments setTexture1ClampsToBorder:v16];
   v17 = self->mCurrentShader;
   if (v17)
   {
   }
 
-  v18 = [v9 shaderForShaderID:v10 inContext:self withArguments:v3];
+  v18 = [v9 shaderForShaderID:shaderID inContext:self withArguments:shaderArguments];
   self->mCurrentShader = v18;
   if (!v18)
   {
@@ -1393,8 +1393,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v19 = [(MRShader *)v18 program];
-  glUseProgram(v19);
+  program = [(MRShader *)v18 program];
+  glUseProgram(program);
   if ([(MRShader *)self->mCurrentShader textureUnitsAreBound])
   {
 LABEL_30:
@@ -1404,7 +1404,7 @@ LABEL_30:
 
   for (i = 0; i != 4; ++i)
   {
-    UniformLocation = glGetUniformLocation(v19, off_1AB6A8[i]);
+    UniformLocation = glGetUniformLocation(program, off_1AB6A8[i]);
     if ((UniformLocation & 0x80000000) == 0)
     {
       glUniform1i(UniformLocation, i);
@@ -1699,8 +1699,8 @@ LABEL_118:
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v82 = [(MRContextState *)self->mOuterState temporaryUniforms];
-  v83 = [(NSMutableDictionary *)v82 countByEnumeratingWithState:&v141 objects:v148 count:16];
+  temporaryUniforms = [(MRContextState *)self->mOuterState temporaryUniforms];
+  v83 = [(NSMutableDictionary *)temporaryUniforms countByEnumeratingWithState:&v141 objects:v148 count:16];
   if (v83)
   {
     v84 = v83;
@@ -1711,13 +1711,13 @@ LABEL_118:
       {
         if (*v142 != v85)
         {
-          objc_enumerationMutation(v82);
+          objc_enumerationMutation(temporaryUniforms);
         }
 
         [(MRShader *)self->mCurrentShader setUniform:[(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] objectForKey:*(*(&v141 + 1) + 8 * k)] forKey:*(*(&v141 + 1) + 8 * k)];
       }
 
-      v84 = [(NSMutableDictionary *)v82 countByEnumeratingWithState:&v141 objects:v148 count:16];
+      v84 = [(NSMutableDictionary *)temporaryUniforms countByEnumeratingWithState:&v141 objects:v148 count:16];
     }
 
     while (v84);
@@ -1955,8 +1955,8 @@ LABEL_208:
             v136 = 0u;
             v133 = 0u;
             v134 = 0u;
-            v113 = [(MRContextState *)self->mInnerState vertexAttributes];
-            v114 = [(NSMutableDictionary *)v113 countByEnumeratingWithState:&v133 objects:v146 count:16];
+            vertexAttributes = [(MRContextState *)self->mInnerState vertexAttributes];
+            v114 = [(NSMutableDictionary *)vertexAttributes countByEnumeratingWithState:&v133 objects:v146 count:16];
             if (v114)
             {
               v115 = v114;
@@ -1967,7 +1967,7 @@ LABEL_208:
                 {
                   if (*v134 != v116)
                   {
-                    objc_enumerationMutation(v113);
+                    objc_enumerationMutation(vertexAttributes);
                   }
 
                   v118 = *(*(&v133 + 1) + 8 * n);
@@ -1983,7 +1983,7 @@ LABEL_208:
                   }
                 }
 
-                v115 = [(NSMutableDictionary *)v113 countByEnumeratingWithState:&v133 objects:v146 count:16];
+                v115 = [(NSMutableDictionary *)vertexAttributes countByEnumeratingWithState:&v133 objects:v146 count:16];
               }
 
               while (v115);
@@ -1993,8 +1993,8 @@ LABEL_208:
             v132 = 0u;
             v129 = 0u;
             v130 = 0u;
-            v121 = [(MRContextState *)self->mOuterState vertexAttributes];
-            v122 = [(NSMutableDictionary *)v121 countByEnumeratingWithState:&v129 objects:v145 count:16];
+            vertexAttributes2 = [(MRContextState *)self->mOuterState vertexAttributes];
+            v122 = [(NSMutableDictionary *)vertexAttributes2 countByEnumeratingWithState:&v129 objects:v145 count:16];
             if (v122)
             {
               v123 = v122;
@@ -2005,7 +2005,7 @@ LABEL_208:
                 {
                   if (*v130 != v124)
                   {
-                    objc_enumerationMutation(v121);
+                    objc_enumerationMutation(vertexAttributes2);
                   }
 
                   v126 = *(*(&v129 + 1) + 8 * ii);
@@ -2031,7 +2031,7 @@ LABEL_208:
                   }
                 }
 
-                v123 = [(NSMutableDictionary *)v121 countByEnumeratingWithState:&v129 objects:v145 count:16];
+                v123 = [(NSMutableDictionary *)vertexAttributes2 countByEnumeratingWithState:&v129 objects:v145 count:16];
               }
 
               while (v123);
@@ -2077,7 +2077,7 @@ LABEL_246:
   self->mCurrentVBOWasUpdated = 0;
 }
 
-- (void)setShader:(id)a3
+- (void)setShader:(id)shader
 {
   if ([(MRContextState *)self->mOuterState shaderID])
   {
@@ -2088,13 +2088,13 @@ LABEL_246:
 
     else
     {
-      NSLog(@"Trying to set shader %@ on context but shader %@ is already set", a3, [(MRContextState *)self->mOuterState shaderID]);
+      NSLog(@"Trying to set shader %@ on context but shader %@ is already set", shader, [(MRContextState *)self->mOuterState shaderID]);
     }
   }
 
   mOuterState = self->mOuterState;
 
-  [(MRContextState *)mOuterState setShaderID:a3];
+  [(MRContextState *)mOuterState setShaderID:shader];
 }
 
 - (void)unsetShader
@@ -2105,144 +2105,144 @@ LABEL_246:
   [(MRContextState *)mOuterState setShaderID:0];
 }
 
-- (void)setShaderUniformInt:(int)a3 forKey:(id)a4
+- (void)setShaderUniformInt:(int)int forKey:(id)key
 {
-  v6 = [[MRUniform alloc] initWithI:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:a4];
+  v6 = [[MRUniform alloc] initWithI:int];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:key];
 }
 
-- (void)setShaderUniformFloat:(float)a3 forKey:(id)a4
+- (void)setShaderUniformFloat:(float)float forKey:(id)key
 {
-  v6 = [[MRUniform alloc] initWithFloat:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:a4];
+  v6 = [[MRUniform alloc] initWithFloat:float];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:key];
 }
 
-- (void)setShaderUniformVec2:(float)a3 :(float)a4 forKey:(id)a5
+- (void)setShaderUniformVec2:(float)vec2 :(float)a4 forKey:(id)key
 {
-  v7 = [[MRUniform alloc] initWithVec2:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v7 forKey:a5];
+  v7 = [[MRUniform alloc] initWithVec2:vec2];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v7 forKey:key];
 }
 
-- (void)setShaderUniformVec3:(float)a3 :(float)a4 :(float)a5 forKey:(id)a6
+- (void)setShaderUniformVec3:(float)vec3 :(float)a4 :(float)a5 forKey:(id)key
 {
-  v8 = [[MRUniform alloc] initWithVec3:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v8 forKey:a6];
+  v8 = [[MRUniform alloc] initWithVec3:vec3];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v8 forKey:key];
 }
 
-- (void)setShaderUniformVec4:(float)a3 :(float)a4 :(float)a5 :(float)a6 forKey:(id)a7
+- (void)setShaderUniformVec4:(float)vec4 :(float)a4 :(float)a5 :(float)a6 forKey:(id)key
 {
-  v9 = [[MRUniform alloc] initWithVec4:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v9 forKey:a7];
+  v9 = [[MRUniform alloc] initWithVec4:vec4];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v9 forKey:key];
 }
 
-- (void)setShaderUniformMat3:(float)a3[16] forKey:(id)a4
+- (void)setShaderUniformMat3:(float)mat3[16] forKey:(id)key
 {
-  v6 = [[MRUniform alloc] initWithMat4ForMat3:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:a4];
+  v6 = [[MRUniform alloc] initWithMat4ForMat3:mat3];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:key];
 }
 
-- (void)setShaderUniformMat4:(float)a3[16] forKey:(id)a4
+- (void)setShaderUniformMat4:(float)mat4[16] forKey:(id)key
 {
-  v6 = [[MRUniform alloc] initWithMat4:a3];
-  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:a4];
+  v6 = [[MRUniform alloc] initWithMat4:mat4];
+  [(NSMutableDictionary *)[(MRContextState *)self->mOuterState temporaryUniforms] setObject:v6 forKey:key];
 }
 
-- (void)setModelViewMatrix:(float)a3[16] saveTo:(float *)a4
+- (void)setModelViewMatrix:(float)matrix[16] saveTo:(float *)to
 {
-  if (a4)
+  if (to)
   {
     mOuterState = self->mOuterState;
     v5 = *mOuterState->modelViewMatrix;
     v6 = *&mOuterState->modelViewMatrix[4];
     v7 = *&mOuterState->modelViewMatrix[12];
-    *(a4 + 2) = *&mOuterState->modelViewMatrix[8];
-    *(a4 + 3) = v7;
-    *a4 = v5;
-    *(a4 + 1) = v6;
+    *(to + 2) = *&mOuterState->modelViewMatrix[8];
+    *(to + 3) = v7;
+    *to = v5;
+    *(to + 1) = v6;
   }
 
   modelViewMatrix = self->mOuterState->modelViewMatrix;
-  if (modelViewMatrix != a3)
+  if (modelViewMatrix != matrix)
   {
-    v9 = *a3;
-    v10 = *(a3 + 1);
-    v11 = *(a3 + 3);
-    *&self->mOuterState->modelViewMatrix[8] = *(a3 + 2);
+    v9 = *matrix;
+    v10 = *(matrix + 1);
+    v11 = *(matrix + 3);
+    *&self->mOuterState->modelViewMatrix[8] = *(matrix + 2);
     *(modelViewMatrix + 3) = v11;
     *modelViewMatrix = v9;
     *(modelViewMatrix + 1) = v10;
   }
 }
 
-- (void)composeModelViewMatrix:(float)a3[16] saveTo:(float *)a4
+- (void)composeModelViewMatrix:(float)matrix[16] saveTo:(float *)to
 {
   memset(v7, 0, sizeof(v7));
-  *&v6 = MRMatrix_MultiplyWithMatrix(a3, self->mOuterState->modelViewMatrix, v7);
-  [(MRContext *)self setModelViewMatrix:v7 saveTo:a4, v6];
+  *&v6 = MRMatrix_MultiplyWithMatrix(matrix, self->mOuterState->modelViewMatrix, v7);
+  [(MRContext *)self setModelViewMatrix:v7 saveTo:to, v6];
 }
 
-- (void)translateModelViewMatrixByX:(float)a3 Y:(float)a4 Z:(float)a5 saveTo:(float *)a6
+- (void)translateModelViewMatrixByX:(float)x Y:(float)y Z:(float)z saveTo:(float *)to
 {
-  if (a6)
+  if (to)
   {
     mOuterState = self->mOuterState;
     v7 = *mOuterState->modelViewMatrix;
     v8 = *&mOuterState->modelViewMatrix[4];
     v9 = *&mOuterState->modelViewMatrix[12];
-    *(a6 + 2) = *&mOuterState->modelViewMatrix[8];
-    *(a6 + 3) = v9;
-    *a6 = v7;
-    *(a6 + 1) = v8;
+    *(to + 2) = *&mOuterState->modelViewMatrix[8];
+    *(to + 3) = v9;
+    *to = v7;
+    *(to + 1) = v8;
   }
 
-  self->mOuterState->modelViewMatrix[12] = self->mOuterState->modelViewMatrix[12] + a3;
-  self->mOuterState->modelViewMatrix[13] = self->mOuterState->modelViewMatrix[13] + a4;
-  self->mOuterState->modelViewMatrix[14] = self->mOuterState->modelViewMatrix[14] + a5;
+  self->mOuterState->modelViewMatrix[12] = self->mOuterState->modelViewMatrix[12] + x;
+  self->mOuterState->modelViewMatrix[13] = self->mOuterState->modelViewMatrix[13] + y;
+  self->mOuterState->modelViewMatrix[14] = self->mOuterState->modelViewMatrix[14] + z;
 }
 
-- (void)setNormal:(float)a3 :(float)a4 :(float)a5
+- (void)setNormal:(float)normal :(float)a4 :(float)a5
 {
-  self->mOuterState->normal[0] = a3;
+  self->mOuterState->normal[0] = normal;
   self->mOuterState->normal[1] = a4;
   self->mOuterState->normal[2] = a5;
 }
 
-- (void)setTextureMatrix:(float)a3[16] onTextureUnit:(unint64_t)a4
+- (void)setTextureMatrix:(float)matrix[16] onTextureUnit:(unint64_t)unit
 {
-  v4 = self->mOuterState->textureMatrix[a4];
-  if (v4 != a3)
+  v4 = self->mOuterState->textureMatrix[unit];
+  if (v4 != matrix)
   {
-    v5 = *a3;
-    v6 = *(a3 + 1);
-    v7 = *(a3 + 3);
-    *&self->mOuterState->textureMatrix[a4][8] = *(a3 + 2);
+    v5 = *matrix;
+    v6 = *(matrix + 1);
+    v7 = *(matrix + 3);
+    *&self->mOuterState->textureMatrix[unit][8] = *(matrix + 2);
     *(v4 + 3) = v7;
     *v4 = v5;
     *(v4 + 1) = v6;
   }
 }
 
-- (void)setVertexBuffer2D:(unsigned int)a3 withStride:(unint64_t)a4 inSpriteCoordinatesOffset:(unint64_t)a5 texture0CoordinatesOffset:(unint64_t)a6
+- (void)setVertexBuffer2D:(unsigned int)d withStride:(unint64_t)stride inSpriteCoordinatesOffset:(unint64_t)offset texture0CoordinatesOffset:(unint64_t)coordinatesOffset
 {
-  self->mOuterState->vbo = a3;
+  self->mOuterState->vbo = d;
   self->mOuterState->vertexFlags = 0;
-  self->mOuterState->vertexStride = 4 * a4;
+  self->mOuterState->vertexStride = 4 * stride;
   self->mOuterState->vertexPointer = 0;
   self->mOuterState->vertexArrayIsEnabled = 1;
-  self->mOuterState->inSpriteCoordinatesArrayIsEnabled = a5 != 0x7FFFFFFFFFFFFFFFLL;
+  self->mOuterState->inSpriteCoordinatesArrayIsEnabled = offset != 0x7FFFFFFFFFFFFFFFLL;
   mOuterState = self->mOuterState;
   if (mOuterState->inSpriteCoordinatesArrayIsEnabled)
   {
-    mOuterState->inSpriteCoordinatesPointer = (4 * a5);
+    mOuterState->inSpriteCoordinatesPointer = (4 * offset);
     self->mOuterState->vertexFlags |= 0x40u;
     mOuterState = self->mOuterState;
   }
 
-  mOuterState->textureCoordinatesArrayIsEnabled[0] = a6 != 0x7FFFFFFFFFFFFFFFLL;
+  mOuterState->textureCoordinatesArrayIsEnabled[0] = coordinatesOffset != 0x7FFFFFFFFFFFFFFFLL;
   v7 = self->mOuterState;
   if (v7->textureCoordinatesArrayIsEnabled[0])
   {
-    v7->textureCoordinatesPointer[0] = (4 * a6);
+    v7->textureCoordinatesPointer[0] = (4 * coordinatesOffset);
     self->mOuterState->vertexFlags |= 4u;
     v7 = self->mOuterState;
   }
@@ -2252,14 +2252,14 @@ LABEL_246:
   self->mOuterState->textureCoordinatesArrayIsEnabled[3] = 0;
 }
 
-- (void)setVertexBuffer2D:(unsigned int)a3 withFeatures:(unint64_t)a4
+- (void)setVertexBuffer2D:(unsigned int)d withFeatures:(unint64_t)features
 {
-  self->mOuterState->vbo = a3;
+  self->mOuterState->vbo = d;
   self->mOuterState->vertexFlags = 0;
   self->mOuterState->vertexStride = 32;
   self->mOuterState->vertexPointer = 0;
   self->mOuterState->vertexArrayIsEnabled = 1;
-  self->mOuterState->inSpriteCoordinatesArrayIsEnabled = a4 & 1;
+  self->mOuterState->inSpriteCoordinatesArrayIsEnabled = features & 1;
   mOuterState = self->mOuterState;
   if (mOuterState->inSpriteCoordinatesArrayIsEnabled)
   {
@@ -2269,50 +2269,50 @@ LABEL_246:
 
   for (i = 0; i != 4; ++i)
   {
-    self->mOuterState->textureCoordinatesArrayIsEnabled[i] = ((1 << (i + 1)) & a4) != 0;
+    self->mOuterState->textureCoordinatesArrayIsEnabled[i] = ((1 << (i + 1)) & features) != 0;
     self->mOuterState->textureCoordinatesPointer[i] = 0;
   }
 }
 
-- (void)setVertexPointer:(float *)a3 flags:(unsigned __int16)a4
+- (void)setVertexPointer:(float *)pointer flags:(unsigned __int16)flags
 {
-  self->mOuterState->vertexPointer = a3;
+  self->mOuterState->vertexPointer = pointer;
   self->mOuterState->vbo = 0;
-  self->mOuterState->vertexFlags = a4;
+  self->mOuterState->vertexFlags = flags;
   self->mOuterState->vertexArrayIsEnabled = 1;
   v4 = 2;
-  if (a4)
+  if (flags)
   {
     v4 = 3;
   }
 
-  if ((a4 & 2) != 0)
+  if ((flags & 2) != 0)
   {
-    self->mOuterState->normalsPointer = &a3[v4];
+    self->mOuterState->normalsPointer = &pointer[v4];
     self->mOuterState->normalArrayIsEnabled = 1;
     v4 += 3;
   }
 
   for (i = 0; i != 4; ++i)
   {
-    if (((a4 >> i) & 4) != 0)
+    if (((flags >> i) & 4) != 0)
     {
-      self->mOuterState->textureCoordinatesPointer[i] = &a3[v4];
+      self->mOuterState->textureCoordinatesPointer[i] = &pointer[v4];
       self->mOuterState->textureCoordinatesArrayIsEnabled[i] = 1;
       v4 += 2;
     }
   }
 
-  if ((a4 & 0x40) != 0)
+  if ((flags & 0x40) != 0)
   {
-    self->mOuterState->inSpriteCoordinatesPointer = &a3[v4];
+    self->mOuterState->inSpriteCoordinatesPointer = &pointer[v4];
     self->mOuterState->inSpriteCoordinatesArrayIsEnabled = 1;
     v4 += 2;
   }
 
-  if ((a4 & 0x80) != 0)
+  if ((flags & 0x80) != 0)
   {
-    self->mOuterState->colorsPointer = &a3[v4];
+    self->mOuterState->colorsPointer = &pointer[v4];
     self->mOuterState->foreColorArrayIsEnabled = 1;
     LODWORD(v4) = v4 + 4;
   }
@@ -2320,25 +2320,25 @@ LABEL_246:
   self->mOuterState->vertexStride = 4 * v4;
 }
 
-- (void)setVertex2DPointer:(const float *)a3
+- (void)setVertex2DPointer:(const float *)pointer
 {
-  self->mOuterState->vertexPointer = a3;
+  self->mOuterState->vertexPointer = pointer;
   self->mOuterState->vbo = 0;
   self->mOuterState->vertexFlags = 0;
   self->mOuterState->vertexStride = 0;
   self->mOuterState->vertexArrayIsEnabled = 1;
 }
 
-- (void)setVertex3DPointer:(const float *)a3
+- (void)setVertex3DPointer:(const float *)pointer
 {
-  self->mOuterState->vertexPointer = a3;
+  self->mOuterState->vertexPointer = pointer;
   self->mOuterState->vbo = 0;
   self->mOuterState->vertexFlags = 1;
   self->mOuterState->vertexStride = 0;
   self->mOuterState->vertexArrayIsEnabled = 1;
 }
 
-- (void)setVertexAttributePointer:(const float *)a3 ofSize:(unint64_t)a4 forKey:(id)a5
+- (void)setVertexAttributePointer:(const float *)pointer ofSize:(unint64_t)size forKey:(id)key
 {
   mVertexAttributes = self->mVertexAttributes;
   if (!mVertexAttributes)
@@ -2346,20 +2346,20 @@ LABEL_246:
     self->mVertexAttributes = objc_alloc_init(NSMutableDictionary);
 LABEL_5:
     v10 = objc_alloc_init(MRContextVertexAttributes);
-    [(NSMutableDictionary *)self->mVertexAttributes setObject:v10 forKey:a5];
+    [(NSMutableDictionary *)self->mVertexAttributes setObject:v10 forKey:key];
 
     goto LABEL_6;
   }
 
-  v10 = [(NSMutableDictionary *)mVertexAttributes objectForKey:a5];
+  v10 = [(NSMutableDictionary *)mVertexAttributes objectForKey:key];
   if (!v10)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v10->pointer = a3;
-  v10->size = a4;
+  v10->pointer = pointer;
+  v10->size = size;
 }
 
 - (void)unsetVertexPointer
@@ -2403,9 +2403,9 @@ LABEL_6:
   return buffers;
 }
 
-- (void)deleteVBO:(unsigned int)a3
+- (void)deleteVBO:(unsigned int)o
 {
-  buffers = a3;
+  buffers = o;
   glDeleteBuffers(1, &buffers);
   if (self->mInnerState->vbo == buffers)
   {
@@ -2414,16 +2414,16 @@ LABEL_6:
   }
 }
 
-- (void)uploadBuffer:(void *)a3 withSize:(int)a4 toVertexBuffer2D:(unsigned int)a5 usage:(unsigned int)a6
+- (void)uploadBuffer:(void *)buffer withSize:(int)size toVertexBuffer2D:(unsigned int)d usage:(unsigned int)usage
 {
-  if (self->mInnerState->vbo != a5)
+  if (self->mInnerState->vbo != d)
   {
-    glBindBuffer(0x8892u, a5);
+    glBindBuffer(0x8892u, d);
   }
 
-  glBufferData(0x8892u, a4, a3, a6);
+  glBufferData(0x8892u, size, buffer, usage);
   vbo = self->mInnerState->vbo;
-  if (vbo != a5)
+  if (vbo != d)
   {
     glBindBuffer(0x8892u, vbo);
   }
@@ -2431,76 +2431,76 @@ LABEL_6:
   self->mCurrentVBOWasUpdated = 1;
 }
 
-- (unsigned)bindBuffer:(unsigned int)a3
+- (unsigned)bindBuffer:(unsigned int)buffer
 {
   vbo = self->mInnerState->vbo;
-  if (vbo != a3)
+  if (vbo != buffer)
   {
-    glBindBuffer(0x8892u, a3);
-    self->mInnerState->vbo = a3;
+    glBindBuffer(0x8892u, buffer);
+    self->mInnerState->vbo = buffer;
   }
 
   return vbo;
 }
 
-- (void)drawTriangleStripFromOffset:(unint64_t)a3 count:(unint64_t)a4
+- (void)drawTriangleStripFromOffset:(unint64_t)offset count:(unint64_t)count
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MRContext *)self commitShaderChange];
-  glDrawArrays(5u, v5, v4);
-  if (v7)
+  countCopy = count;
+  offsetCopy = offset;
+  commitShaderChange = [(MRContext *)self commitShaderChange];
+  glDrawArrays(5u, offsetCopy, countCopy);
+  if (commitShaderChange)
   {
 
     [(MRContext *)self unsetShader];
   }
 }
 
-- (void)drawIndexedTriangleStrip:(const unsigned __int16 *)a3 count:(unint64_t)a4
+- (void)drawIndexedTriangleStrip:(const unsigned __int16 *)strip count:(unint64_t)count
 {
-  v4 = a4;
-  v7 = [(MRContext *)self commitShaderChange];
-  glDrawElements(5u, v4, 0x1403u, a3);
-  if (v7)
+  countCopy = count;
+  commitShaderChange = [(MRContext *)self commitShaderChange];
+  glDrawElements(5u, countCopy, 0x1403u, strip);
+  if (commitShaderChange)
   {
 
     [(MRContext *)self unsetShader];
   }
 }
 
-- (void)drawTriangleFanFromOffset:(unint64_t)a3 count:(unint64_t)a4
+- (void)drawTriangleFanFromOffset:(unint64_t)offset count:(unint64_t)count
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MRContext *)self commitShaderChange];
-  glDrawArrays(6u, v5, v4);
-  if (v7)
+  countCopy = count;
+  offsetCopy = offset;
+  commitShaderChange = [(MRContext *)self commitShaderChange];
+  glDrawArrays(6u, offsetCopy, countCopy);
+  if (commitShaderChange)
   {
 
     [(MRContext *)self unsetShader];
   }
 }
 
-- (void)drawTrianglesFromOffset:(unint64_t)a3 count:(unint64_t)a4
+- (void)drawTrianglesFromOffset:(unint64_t)offset count:(unint64_t)count
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MRContext *)self commitShaderChange];
-  glDrawArrays(4u, v5, v4);
-  if (v7)
+  countCopy = count;
+  offsetCopy = offset;
+  commitShaderChange = [(MRContext *)self commitShaderChange];
+  glDrawArrays(4u, offsetCopy, countCopy);
+  if (commitShaderChange)
   {
 
     [(MRContext *)self unsetShader];
   }
 }
 
-- (void)drawLinesFromOffset:(unint64_t)a3 count:(unint64_t)a4
+- (void)drawLinesFromOffset:(unint64_t)offset count:(unint64_t)count
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MRContext *)self commitShaderChange];
-  glDrawArrays(2u, v5, v4);
-  if (v7)
+  countCopy = count;
+  offsetCopy = offset;
+  commitShaderChange = [(MRContext *)self commitShaderChange];
+  glDrawArrays(2u, offsetCopy, countCopy);
+  if (commitShaderChange)
   {
 
     [(MRContext *)self unsetShader];

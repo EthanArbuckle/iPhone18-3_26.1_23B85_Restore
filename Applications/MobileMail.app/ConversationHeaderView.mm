@@ -1,43 +1,43 @@
 @interface ConversationHeaderView
-- (CGAffineTransform)_transformForLocation:(SEL)a3;
+- (CGAffineTransform)_transformForLocation:(SEL)location;
 - (CGPoint)previousScrollViewContentOffset;
-- (ConversationHeaderView)initWithFrame:(CGRect)a3;
+- (ConversationHeaderView)initWithFrame:(CGRect)frame;
 - (ConversationHeaderViewDelegate)delegate;
 - (MFMessageDisplayMetrics)displayMetrics;
 - (UIScrollView)hostScrollView;
-- (void)_displayLinkDidFire:(id)a3;
-- (void)_fontMetricCacheDidInvalidate:(id)a3;
-- (void)_layoutLabelsForProgress:(double)a3;
-- (void)_processProgressUpdatesWithTargetTimestamp:(double)a3;
-- (void)_updateContentWidthIfNecessaryWithBounds:(CGRect)a3;
+- (void)_displayLinkDidFire:(id)fire;
+- (void)_fontMetricCacheDidInvalidate:(id)invalidate;
+- (void)_layoutLabelsForProgress:(double)progress;
+- (void)_processProgressUpdatesWithTargetTimestamp:(double)timestamp;
+- (void)_updateContentWidthIfNecessaryWithBounds:(CGRect)bounds;
 - (void)contentDidChange;
 - (void)dealloc;
-- (void)hostScrollViewWillBeginDragging:(id)a3;
-- (void)hostScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)hostScrollViewWillBeginDragging:(id)dragging;
+- (void)hostScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)performTransition:(int64_t)a3 willBeDisplayed:(BOOL)a4;
+- (void)performTransition:(int64_t)transition willBeDisplayed:(BOOL)displayed;
 - (void)resetStateBasedOnCurrentStickySubjectPosition;
 - (void)safeAreaInsetsDidChange;
-- (void)setBounds:(CGRect)a3;
-- (void)setCollapsed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSuperTitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transitionCompleted:(int64_t)a3 willBeDisplayed:(BOOL)a4;
-- (void)transitionWillBegin:(int64_t)a3 willBeDisplayed:(BOOL)a4;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCollapsed:(BOOL)collapsed animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setSuperTitle:(id)title;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transitionCompleted:(int64_t)completed willBeDisplayed:(BOOL)displayed;
+- (void)transitionWillBegin:(int64_t)begin willBeDisplayed:(BOOL)displayed;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation ConversationHeaderView
 
-- (ConversationHeaderView)initWithFrame:(CGRect)a3
+- (ConversationHeaderView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = ConversationHeaderView;
-  v3 = [(ConversationHeaderView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ConversationHeaderView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -67,27 +67,27 @@
   [(ConversationHeaderView *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeWeak(&self->_delegate, v5);
-  v4 = [v5 hostScrollViewForConversationHeaderView:self];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v4 = [delegateCopy hostScrollViewForConversationHeaderView:self];
   [(ConversationHeaderView *)self setHostScrollView:v4];
 }
 
-- (void)_fontMetricCacheDidInvalidate:(id)a3
+- (void)_fontMetricCacheDidInvalidate:(id)invalidate
 {
   sub_100050E9C(self);
 
   [(ConversationHeaderView *)self setNeedsLayout];
 }
 
-- (void)setSuperTitle:(id)a3
+- (void)setSuperTitle:(id)title
 {
-  v10 = a3;
-  if (([v10 isEqualToString:self->_superTitle] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_superTitle] & 1) == 0)
   {
-    v4 = [v10 copy];
+    v4 = [titleCopy copy];
     superTitle = self->_superTitle;
     self->_superTitle = v4;
 
@@ -96,37 +96,37 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = ConversationHeaderView;
   [(ConversationHeaderView *)&v8 setBounds:?];
   [(ConversationHeaderView *)self _updateContentWidthIfNecessaryWithBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v6.receiver = self;
   v6.super_class = ConversationHeaderView;
-  [(ConversationHeaderView *)&v6 setFrame:a3.origin.x, a3.origin.y];
+  [(ConversationHeaderView *)&v6 setFrame:frame.origin.x, frame.origin.y];
   [(ConversationHeaderView *)self _updateContentWidthIfNecessaryWithBounds:0.0, 0.0, width, height];
 }
 
-- (void)_updateContentWidthIfNecessaryWithBounds:(CGRect)a3
+- (void)_updateContentWidthIfNecessaryWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
-  v9 = [(ConversationHeaderView *)self contentView];
-  [v9 bounds];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = CGRectGetWidth(bounds);
+  contentView = [(ConversationHeaderView *)self contentView];
+  [contentView bounds];
   v10 = v8 - CGRectGetWidth(v15);
   if (v10 >= 0.0)
   {
@@ -140,11 +140,11 @@
 
   if (v11 >= 2.22044605e-16)
   {
-    v12 = [(ConversationHeaderView *)self contentView];
-    [v12 setContentWidth:v8];
+    contentView2 = [(ConversationHeaderView *)self contentView];
+    [contentView2 setContentWidth:v8];
 
-    v13 = [(ConversationHeaderView *)self contentView];
-    [v13 invalidateIntrinsicContentSize];
+    contentView3 = [(ConversationHeaderView *)self contentView];
+    [contentView3 invalidateIntrinsicContentSize];
 
     sub_1000513A4(self, x, y, width, height);
   }
@@ -160,16 +160,16 @@
   [(ConversationHeaderView *)self _layoutLabelsForProgress:?];
 }
 
-- (void)_layoutLabelsForProgress:(double)a3
+- (void)_layoutLabelsForProgress:(double)progress
 {
-  v5 = [(ConversationHeaderView *)self contentView];
-  [v5 setAlpha:a3];
+  contentView = [(ConversationHeaderView *)self contentView];
+  [contentView setAlpha:progress];
 
-  v6 = [(ConversationHeaderView *)self contentView];
-  [v6 topToFirstBaseline];
+  contentView2 = [(ConversationHeaderView *)self contentView];
+  [contentView2 topToFirstBaseline];
   v8 = v7;
   [(ConversationHeaderView *)self contentViewTopToFirstBaseline];
-  v9 = 1.0 - a3;
+  v9 = 1.0 - progress;
   v11 = v8 - v10;
 
   *&v12 = -1;
@@ -186,13 +186,13 @@
   v34 = v35;
   CGAffineTransformScale(&v33, &v34, v9 * -0.0 + 1.0, v9 * -0.0 + 1.0);
   v32 = v33;
-  v14 = [(ConversationHeaderView *)self contentView];
+  contentView3 = [(ConversationHeaderView *)self contentView];
   v35 = v32;
-  [v14 setTransform:&v35];
+  [contentView3 setTransform:&v35];
 
   v15 = +[UIApplication sharedApplication];
-  v16 = [v15 preferredContentSizeCategory];
-  v17 = UIContentSizeCategoryCompareToCategory(v16, UIContentSizeCategoryLarge);
+  preferredContentSizeCategory = [v15 preferredContentSizeCategory];
+  v17 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryLarge);
 
   if (v17 == NSOrderedDescending)
   {
@@ -214,43 +214,43 @@
     v19 = 17.0;
   }
 
-  v20 = [(ConversationHeaderView *)self displayMetrics];
-  [v20 conversationHeaderViewCollapsedSuperTitleTopToFirstBaseline];
+  displayMetrics = [(ConversationHeaderView *)self displayMetrics];
+  [displayMetrics conversationHeaderViewCollapsedSuperTitleTopToFirstBaseline];
   v22 = v21;
-  [v20 conversationHeaderViewCollapsedTitleTopToFirstBaseline];
+  [displayMetrics conversationHeaderViewCollapsedTitleTopToFirstBaseline];
   *&v24 = -1;
   *(&v24 + 1) = -1;
   *&v35.c = v24;
   *&v35.tx = v24;
   *&v35.a = v24;
-  CGAffineTransformMakeTranslation(&v35, 0.0, (v22 - v23 + 3.0) * a3);
+  CGAffineTransformMakeTranslation(&v35, 0.0, (v22 - v23 + 3.0) * progress);
   v34 = v35;
-  CGAffineTransformScale(&v31, &v34, 1.0 - (1.0 - v18 / v19) * a3, 1.0 - (1.0 - v18 / v19) * a3);
-  v25 = [(ConversationHeaderView *)self superTitleLabel];
+  CGAffineTransformScale(&v31, &v34, 1.0 - (1.0 - v18 / v19) * progress, 1.0 - (1.0 - v18 / v19) * progress);
+  superTitleLabel = [(ConversationHeaderView *)self superTitleLabel];
   v34 = v31;
-  [v25 setTransform:&v34];
+  [superTitleLabel setTransform:&v34];
 
   v26 = +[UIColor labelColor];
   v27 = +[UIColor secondaryLabelColor];
-  *&v28 = a3;
+  *&v28 = progress;
   v29 = [UIColor mf_colorFromColor:v26 toColor:v27 progress:v28];
-  v30 = [(ConversationHeaderView *)self superTitleLabel];
-  [v30 setColor:v29];
+  superTitleLabel2 = [(ConversationHeaderView *)self superTitleLabel];
+  [superTitleLabel2 setColor:v29];
 }
 
-- (void)setCollapsed:(BOOL)a3 animated:(BOOL)a4
+- (void)setCollapsed:(BOOL)collapsed animated:(BOOL)animated
 {
-  v5 = a3;
+  collapsedCopy = collapsed;
   kdebug_trace();
   v7 = 0.0;
-  if (v5)
+  if (collapsedCopy)
   {
     v7 = 1.0;
   }
 
   [(ConversationHeaderView *)self setTargetProgress:v7];
-  [(ConversationHeaderView *)self setCollapsed:v5];
-  if (!a4)
+  [(ConversationHeaderView *)self setCollapsed:collapsedCopy];
+  if (!animated)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -263,8 +263,8 @@
 
 - (void)resetStateBasedOnCurrentStickySubjectPosition
 {
-  v3 = [(ConversationHeaderView *)self delegate];
-  v7 = [v3 hostScrollViewForConversationHeaderView:self];
+  delegate = [(ConversationHeaderView *)self delegate];
+  v7 = [delegate hostScrollViewForConversationHeaderView:self];
 
   [v7 contentOffset];
   v5 = v4;
@@ -272,10 +272,10 @@
   [(ConversationHeaderView *)self setCollapsed:v6 animated:1];
 }
 
-- (void)hostScrollViewWillBeginDragging:(id)a3
+- (void)hostScrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
-  [v7 contentOffset];
+  draggingCopy = dragging;
+  [draggingCopy contentOffset];
   [(ConversationHeaderView *)self setInitialScrollPosition:v4];
   [(ConversationHeaderView *)self targetProgress];
   v6 = v5;
@@ -283,18 +283,18 @@
   [(ConversationHeaderView *)self setPreviousProgress:v6];
 }
 
-- (void)hostScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)hostScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v15 = a3;
-  v7 = sub_1000525A0(self, v15);
+  draggingCopy = dragging;
+  v7 = sub_1000525A0(self, draggingCopy);
   v8 = sub_100052308(self);
-  y = a5->y;
+  y = offset->y;
   v10 = sub_100052654(self);
   [(ConversationHeaderView *)self isCollapsed];
   v11 = v7 + y;
   if (v7 + y < 0.0 || v11 > v8)
   {
-    if (v11 >= 0.0 || a5->y < v10)
+    if (v11 >= 0.0 || offset->y < v10)
     {
       goto LABEL_11;
     }
@@ -304,10 +304,10 @@
 
   else
   {
-    a5->x = 0.0;
+    offset->x = 0.0;
     if (v11 / v8 > 0.5)
     {
-      a5->y = v8 - v7;
+      offset->y = v8 - v7;
 LABEL_11:
       v14 = 1.0;
       v13 = 1;
@@ -315,7 +315,7 @@ LABEL_11:
     }
 
     v13 = 0;
-    a5->y = -v7;
+    offset->y = -v7;
   }
 
   v14 = 0.0;
@@ -325,14 +325,14 @@ LABEL_14:
   [(ConversationHeaderView *)self setCollapsed:v13];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v19.receiver = self;
   v19.super_class = ConversationHeaderView;
-  [(ConversationHeaderView *)&v19 willMoveToSuperview:v4];
-  v5 = [(ConversationHeaderView *)self displayLink];
-  [v5 invalidate];
+  [(ConversationHeaderView *)&v19 willMoveToSuperview:superviewCopy];
+  displayLink = [(ConversationHeaderView *)self displayLink];
+  [displayLink invalidate];
 
   [(ConversationHeaderView *)self setDisplayLink:0];
   if (_UIUpdateCycleEnabled() && self->_updateSequenceItem)
@@ -341,7 +341,7 @@ LABEL_14:
     self->_updateSequenceItem = 0;
   }
 
-  if (v4)
+  if (superviewCopy)
   {
     [(ConversationHeaderView *)self setLastUpdateTimeInterval:CACurrentMediaTime()];
     v6 = [CADisplayLink displayLinkWithTarget:self selector:"_displayLinkDidFire:"];
@@ -351,18 +351,18 @@ LABEL_14:
     minimum = v20.minimum;
     maximum = v20.maximum;
     preferred = v20.preferred;
-    v10 = [(ConversationHeaderView *)self displayLink];
+    displayLink2 = [(ConversationHeaderView *)self displayLink];
     *&v11 = minimum;
     *&v12 = maximum;
     *&v13 = preferred;
-    [v10 setPreferredFrameRateRange:{v11, v12, v13}];
+    [displayLink2 setPreferredFrameRateRange:{v11, v12, v13}];
 
-    v14 = [(ConversationHeaderView *)self displayLink];
-    [v14 setHighFrameRateReason:1245185];
+    displayLink3 = [(ConversationHeaderView *)self displayLink];
+    [displayLink3 setHighFrameRateReason:1245185];
 
-    v15 = [(ConversationHeaderView *)self displayLink];
+    displayLink4 = [(ConversationHeaderView *)self displayLink];
     v16 = +[NSRunLoop mainRunLoop];
-    [v15 addToRunLoop:v16 forMode:NSRunLoopCommonModes];
+    [displayLink4 addToRunLoop:v16 forMode:NSRunLoopCommonModes];
 
     if (_UIUpdateCycleEnabled())
     {
@@ -375,34 +375,34 @@ LABEL_14:
   }
 }
 
-- (void)_displayLinkDidFire:(id)a3
+- (void)_displayLinkDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   if ((_UIUpdateCycleEnabled() & 1) == 0)
   {
-    [v4 targetTimestamp];
+    [fireCopy targetTimestamp];
     [(ConversationHeaderView *)self _processProgressUpdatesWithTargetTimestamp:?];
   }
 }
 
-- (void)_processProgressUpdatesWithTargetTimestamp:(double)a3
+- (void)_processProgressUpdatesWithTargetTimestamp:(double)timestamp
 {
   v5 = sub_100052308(self);
-  v45 = [(ConversationHeaderView *)self hostScrollView];
+  hostScrollView = [(ConversationHeaderView *)self hostScrollView];
   [(ConversationHeaderView *)self targetProgress];
   v7 = v6;
   [(ConversationHeaderView *)self currentProgress];
   v9 = v8;
   [(ConversationHeaderView *)self previousProgress];
   v44 = v10;
-  v11 = [v45 isTracking];
-  [v45 contentOffset];
+  isTracking = [hostScrollView isTracking];
+  [hostScrollView contentOffset];
   v13 = v12;
   v15 = v14;
   [(ConversationHeaderView *)self previousScrollViewContentOffset];
   v17 = v16;
   v19 = v18;
-  v20 = [v45 isDecelerating];
+  isDecelerating = [hostScrollView isDecelerating];
   v21 = v15 != v19 || v13 != v17;
   if (v9 - v7 >= 0.0)
   {
@@ -416,8 +416,8 @@ LABEL_14:
 
   [(ConversationHeaderView *)self lastUpdateTimeInterval];
   v24 = v23;
-  [(ConversationHeaderView *)self setLastUpdateTimeInterval:a3];
-  v25 = (v11 | ~v20) & v21;
+  [(ConversationHeaderView *)self setLastUpdateTimeInterval:timestamp];
+  v25 = (isTracking | ~isDecelerating) & v21;
   if (v5 <= 0.00000011920929)
   {
     v25 = 0;
@@ -434,10 +434,10 @@ LABEL_14:
     goto LABEL_35;
   }
 
-  [v45 contentOffset];
+  [hostScrollView contentOffset];
   [(ConversationHeaderView *)self setPreviousScrollViewContentOffset:?];
-  [v45 contentOffset];
-  v27 = v26 + sub_1000525A0(self, v45);
+  [hostScrollView contentOffset];
+  v27 = v26 + sub_1000525A0(self, hostScrollView);
   if (v27 >= v5)
   {
     v28 = v7;
@@ -446,7 +446,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    [v45 contentOffset];
+    [hostScrollView contentOffset];
     v30 = v29;
     [(ConversationHeaderView *)self initialScrollPosition];
     v27 = v30 - v31;
@@ -454,9 +454,9 @@ LABEL_14:
 
   v28 = fmax(fmin(v27 / v5, 1.0), 0.0);
 LABEL_14:
-  if (v11)
+  if (isTracking)
   {
-    [v45 _verticalVelocity];
+    [hostScrollView _verticalVelocity];
     if (v7 >= v28)
     {
       v33 = v7;
@@ -512,7 +512,7 @@ LABEL_14:
   if (v37 >= 2.22044605e-16 || v22 >= 2.22044605e-16)
   {
 LABEL_35:
-    v39 = (a3 - v24) * ((v44 - v9) / (a3 - v24) + ((v44 - v9) / (a3 - v24) * (1.0 / (a3 - v24) * -0.833333313) + 1.0 / (a3 - v24) * 15.0 * v35) * (a3 - v24));
+    v39 = (timestamp - v24) * ((v44 - v9) / (timestamp - v24) + ((v44 - v9) / (timestamp - v24) * (1.0 / (timestamp - v24) * -0.833333313) + 1.0 / (timestamp - v24) * 15.0 * v35) * (timestamp - v24));
     v40 = -v39;
     if (v39 >= 0.0)
     {
@@ -522,7 +522,7 @@ LABEL_35:
     v41 = v7;
     if (v40 >= 0.00000011920929)
     {
-      if (![v45 isTracking])
+      if (![hostScrollView isTracking])
       {
         goto LABEL_42;
       }
@@ -552,17 +552,17 @@ LABEL_42:
 LABEL_44:
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_title] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_title] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
-    v6 = [(ConversationHeaderView *)self contentView];
-    [v6 setText:self->_title];
+    contentView = [(ConversationHeaderView *)self contentView];
+    [contentView setText:self->_title];
   }
 }
 
@@ -579,9 +579,9 @@ LABEL_44:
   v4.receiver = self;
   v4.super_class = ConversationHeaderView;
   [(ConversationHeaderView *)&v4 contentDidChange];
-  v3 = [(ConversationHeaderView *)self window];
+  window = [(ConversationHeaderView *)self window];
 
-  if (v3)
+  if (window)
   {
     sub_100051E28(self);
   }
@@ -596,12 +596,12 @@ LABEL_44:
   sub_100050E9C(self);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = ConversationHeaderView;
-  [(ConversationHeaderView *)&v6 traitCollectionDidChange:v4];
+  [(ConversationHeaderView *)&v6 traitCollectionDidChange:changeCopy];
   [(ConversationHeaderView *)self setDisplayMetrics:0];
   v5 = +[MFFontMetricCache sharedFontMetricCache];
   [v5 ensureCacheIsValid];
@@ -614,7 +614,7 @@ LABEL_44:
   displayMetrics = self->_displayMetrics;
   if (!displayMetrics)
   {
-    v4 = [(ConversationHeaderView *)self traitCollection];
+    traitCollection = [(ConversationHeaderView *)self traitCollection];
     [(ConversationHeaderView *)self layoutMargins];
     v6 = v5;
     v8 = v7;
@@ -625,9 +625,9 @@ LABEL_44:
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(ConversationHeaderView *)self window];
-    v22 = [v21 windowScene];
-    v23 = +[MFMessageDisplayMetrics displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:](MFMessageDisplayMetrics, "displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:", v4, [v22 interfaceOrientation], v6, v8, v10, v12, v14, v16, v18, v20);
+    window = [(ConversationHeaderView *)self window];
+    windowScene = [window windowScene];
+    v23 = +[MFMessageDisplayMetrics displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:](MFMessageDisplayMetrics, "displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:", traitCollection, [windowScene interfaceOrientation], v6, v8, v10, v12, v14, v16, v18, v20);
     v24 = self->_displayMetrics;
     self->_displayMetrics = v23;
 
@@ -637,22 +637,22 @@ LABEL_44:
   return displayMetrics;
 }
 
-- (void)transitionWillBegin:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)transitionWillBegin:(int64_t)begin willBeDisplayed:(BOOL)displayed
 {
   v5 = 1.0;
   v6 = 1;
   v7 = 2;
-  if (a3)
+  if (begin)
   {
     v7 = 0;
   }
 
-  if (a3 != 1)
+  if (begin != 1)
   {
     v6 = v7;
   }
 
-  if (a4)
+  if (displayed)
   {
     v5 = 0.0;
     v8 = v6;
@@ -671,16 +671,16 @@ LABEL_44:
   [(ConversationHeaderView *)self setTransform:v9];
 }
 
-- (void)performTransition:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)performTransition:(int64_t)transition willBeDisplayed:(BOOL)displayed
 {
   v5 = 1.0;
   v6 = 2;
-  if (a3 != 1)
+  if (transition != 1)
   {
-    v6 = a3 == 0;
+    v6 = transition == 0;
   }
 
-  if (a4)
+  if (displayed)
   {
     v7 = 0;
   }
@@ -699,17 +699,17 @@ LABEL_44:
   [(ConversationHeaderView *)self setTransform:v8];
 }
 
-- (void)transitionCompleted:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)transitionCompleted:(int64_t)completed willBeDisplayed:(BOOL)displayed
 {
   v5 = *&CGAffineTransformIdentity.c;
   v6[0] = *&CGAffineTransformIdentity.a;
   v6[1] = v5;
   v6[2] = *&CGAffineTransformIdentity.tx;
-  [(ConversationHeaderView *)self setTransform:v6, a4];
+  [(ConversationHeaderView *)self setTransform:v6, displayed];
   [(ConversationHeaderView *)self setAlpha:1.0];
 }
 
-- (CGAffineTransform)_transformForLocation:(SEL)a3
+- (CGAffineTransform)_transformForLocation:(SEL)location
 {
   if (a4 == 2)
   {
@@ -719,16 +719,16 @@ LABEL_44:
       Width = CGRectGetWidth(v23);
       [(ConversationHeaderView *)self layoutMargins];
       v9 = v16;
-      v10 = [(ConversationHeaderView *)self superTitleLabel];
-      [v10 frame];
+      superTitleLabel = [(ConversationHeaderView *)self superTitleLabel];
+      [superTitleLabel frame];
       MinX = CGRectGetMinX(v24);
       goto LABEL_10;
     }
 
     [(ConversationHeaderView *)self layoutMargins];
     v13 = v12;
-    v10 = [(ConversationHeaderView *)self superTitleLabel];
-    [v10 frame];
+    superTitleLabel = [(ConversationHeaderView *)self superTitleLabel];
+    [superTitleLabel frame];
     MaxX = CGRectGetMaxX(v21);
   }
 
@@ -746,8 +746,8 @@ LABEL_44:
       Width = CGRectGetWidth(v19);
       [(ConversationHeaderView *)self layoutMargins];
       v9 = v8;
-      v10 = [(ConversationHeaderView *)self superTitleLabel];
-      [v10 frame];
+      superTitleLabel = [(ConversationHeaderView *)self superTitleLabel];
+      [superTitleLabel frame];
       MinX = CGRectGetMaxX(v20);
 LABEL_10:
       v6 = Width - v9 - MinX;
@@ -756,8 +756,8 @@ LABEL_10:
 
     [(ConversationHeaderView *)self layoutMargins];
     v13 = v15;
-    v10 = [(ConversationHeaderView *)self superTitleLabel];
-    [v10 frame];
+    superTitleLabel = [(ConversationHeaderView *)self superTitleLabel];
+    [superTitleLabel frame];
     MaxX = CGRectGetMinX(v22);
   }
 

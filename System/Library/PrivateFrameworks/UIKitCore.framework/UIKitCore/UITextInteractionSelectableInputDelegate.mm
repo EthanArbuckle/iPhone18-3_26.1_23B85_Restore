@@ -1,61 +1,61 @@
 @interface UITextInteractionSelectableInputDelegate
-+ (UITextInteractionSelectableInputDelegate)selectableInputDelegateWithTextInput:(id)a3;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (id)_moveDown:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfDocument:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfLine:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfParagraph:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToEndOfWord:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfDocument:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfLine:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfParagraph:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveToStartOfWord:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveUp:(BOOL)a3 withHistory:(id)a4;
-- (void)_deleteBackwardAndNotify:(BOOL)a3;
-- (void)_deleteForwardAndNotify:(BOOL)a3;
-- (void)_moveCurrentSelection:(int)a3;
-- (void)_setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
++ (UITextInteractionSelectableInputDelegate)selectableInputDelegateWithTextInput:(id)input;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
+- (id)_moveDown:(BOOL)down withHistory:(id)history;
+- (id)_moveLeft:(BOOL)left withHistory:(id)history;
+- (id)_moveRight:(BOOL)right withHistory:(id)history;
+- (id)_moveToEndOfDocument:(BOOL)document withHistory:(id)history;
+- (id)_moveToEndOfLine:(BOOL)line withHistory:(id)history;
+- (id)_moveToEndOfParagraph:(BOOL)paragraph withHistory:(id)history;
+- (id)_moveToEndOfWord:(BOOL)word withHistory:(id)history;
+- (id)_moveToStartOfDocument:(BOOL)document withHistory:(id)history;
+- (id)_moveToStartOfLine:(BOOL)line withHistory:(id)history;
+- (id)_moveToStartOfParagraph:(BOOL)paragraph withHistory:(id)history;
+- (id)_moveToStartOfWord:(BOOL)word withHistory:(id)history;
+- (id)_moveUp:(BOOL)up withHistory:(id)history;
+- (void)_deleteBackwardAndNotify:(BOOL)notify;
+- (void)_deleteForwardAndNotify:(BOOL)notify;
+- (void)_moveCurrentSelection:(int)selection;
+- (void)_setMarkedText:(id)text selectedRange:(_NSRange)range;
 - (void)_unmarkText;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setSelectedTextRange:(id)a3;
+- (void)insertText:(id)text;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setSelectedTextRange:(id)range;
 - (void)unmarkText;
 - (void)updateSelectionRects;
 @end
 
 @implementation UITextInteractionSelectableInputDelegate
 
-+ (UITextInteractionSelectableInputDelegate)selectableInputDelegateWithTextInput:(id)a3
++ (UITextInteractionSelectableInputDelegate)selectableInputDelegateWithTextInput:(id)input
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  inputCopy = input;
+  v5 = objc_alloc_init(self);
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = inputCopy;
 
   return v5;
 }
 
 - (void)updateSelectionRects
 {
-  v2 = [(UITextInput *)self->_textInput interactionAssistant];
-  if (v2)
+  interactionAssistant = [(UITextInput *)self->_textInput interactionAssistant];
+  if (interactionAssistant)
   {
-    v3 = v2;
-    [v2 selectionChanged];
+    v3 = interactionAssistant;
+    [interactionAssistant selectionChanged];
     [v3 setNeedsSelectionDisplayUpdate];
-    v2 = v3;
+    interactionAssistant = v3;
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  [(UITextInput *)self->_textInput insertText:a3];
+  [(UITextInput *)self->_textInput insertText:text];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
@@ -67,23 +67,23 @@
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
-  [(UITextInput *)self->_textInput replaceRange:a3 withText:a4];
+  [(UITextInput *)self->_textInput replaceRange:range withText:text];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
-  [(UITextInput *)self->_textInput setSelectedTextRange:a3];
+  [(UITextInput *)self->_textInput setSelectedTextRange:range];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  [(UITextInput *)self->_textInput setMarkedText:a3 selectedRange:a4.location, a4.length];
+  [(UITextInput *)self->_textInput setMarkedText:text selectedRange:range.location, range.length];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
@@ -95,16 +95,16 @@
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range
 {
-  [(UITextInput *)self->_textInput setBaseWritingDirection:a3 forRange:a4];
+  [(UITextInput *)self->_textInput setBaseWritingDirection:direction forRange:range];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  [(UITextInput *)self->_textInput firstRectForRange:a3];
+  [(UITextInput *)self->_textInput firstRectForRange:range];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -112,9 +112,9 @@
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  [(UITextInput *)self->_textInput caretRectForPosition:a3];
+  [(UITextInput *)self->_textInput caretRectForPosition:position];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -122,30 +122,30 @@
   return result;
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3
+- (void)_deleteBackwardAndNotify:(BOOL)notify
 {
-  [(UITextInput *)self->_textInput _deleteBackwardAndNotify:a3];
+  [(UITextInput *)self->_textInput _deleteBackwardAndNotify:notify];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)_deleteForwardAndNotify:(BOOL)a3
+- (void)_deleteForwardAndNotify:(BOOL)notify
 {
-  [(UITextInput *)self->_textInput _deleteForwardAndNotify:a3];
+  [(UITextInput *)self->_textInput _deleteForwardAndNotify:notify];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)_moveCurrentSelection:(int)a3
+- (void)_moveCurrentSelection:(int)selection
 {
-  [(UITextInput *)self->_textInput _moveCurrentSelection:*&a3];
+  [(UITextInput *)self->_textInput _moveCurrentSelection:*&selection];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (void)_setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)_setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  [(UITextInput *)self->_textInput _setMarkedText:a3 selectedRange:a4.location, a4.length];
+  [(UITextInput *)self->_textInput _setMarkedText:text selectedRange:range.location, range.length];
 
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
@@ -157,194 +157,194 @@
   [(UITextInteractionSelectableInputDelegate *)self updateSelectionRects];
 }
 
-- (id)_moveUp:(BOOL)a3 withHistory:(id)a4
+- (id)_moveUp:(BOOL)up withHistory:(id)history
 {
-  v4 = a3;
+  upCopy = up;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveUp:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveUp:upCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveDown:(BOOL)a3 withHistory:(id)a4
+- (id)_moveDown:(BOOL)down withHistory:(id)history
 {
-  v4 = a3;
+  downCopy = down;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveDown:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveDown:downCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4
+- (id)_moveLeft:(BOOL)left withHistory:(id)history
 {
-  v4 = a3;
+  leftCopy = left;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveLeft:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveLeft:leftCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4
+- (id)_moveRight:(BOOL)right withHistory:(id)history
 {
-  v4 = a3;
+  rightCopy = right;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveRight:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveRight:rightCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToStartOfWord:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfWord:(BOOL)word withHistory:(id)history
 {
-  v4 = a3;
+  wordCopy = word;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToStartOfWord:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToStartOfWord:wordCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToStartOfParagraph:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfParagraph:(BOOL)paragraph withHistory:(id)history
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToStartOfParagraph:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToStartOfParagraph:paragraphCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToStartOfLine:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfLine:(BOOL)line withHistory:(id)history
 {
-  v4 = a3;
+  lineCopy = line;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToStartOfLine:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToStartOfLine:lineCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToStartOfDocument:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToStartOfDocument:(BOOL)document withHistory:(id)history
 {
-  v4 = a3;
+  documentCopy = document;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToStartOfDocument:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToStartOfDocument:documentCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToEndOfWord:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfWord:(BOOL)word withHistory:(id)history
 {
-  v4 = a3;
+  wordCopy = word;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToEndOfWord:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToEndOfWord:wordCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToEndOfParagraph:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfParagraph:(BOOL)paragraph withHistory:(id)history
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToEndOfParagraph:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToEndOfParagraph:paragraphCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToEndOfLine:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfLine:(BOOL)line withHistory:(id)history
 {
-  v4 = a3;
+  lineCopy = line;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToEndOfLine:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToEndOfLine:lineCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }
 
-- (id)_moveToEndOfDocument:(BOOL)a3 withHistory:(id)a4
+- (id)_moveToEndOfDocument:(BOOL)document withHistory:(id)history
 {
-  v4 = a3;
+  documentCopy = document;
   textInput = self->_textInput;
-  v7 = a4;
-  v8 = [(UITextInput *)textInput inputDelegate];
-  [v8 selectionWillChange:self->_textInput];
+  historyCopy = history;
+  inputDelegate = [(UITextInput *)textInput inputDelegate];
+  [inputDelegate selectionWillChange:self->_textInput];
 
-  v9 = [(UITextInput *)self->_textInput _moveToEndOfDocument:v4 withHistory:v7];
+  v9 = [(UITextInput *)self->_textInput _moveToEndOfDocument:documentCopy withHistory:historyCopy];
 
-  v10 = [(UITextInput *)self->_textInput inputDelegate];
-  [v10 selectionDidChange:self->_textInput];
+  inputDelegate2 = [(UITextInput *)self->_textInput inputDelegate];
+  [inputDelegate2 selectionDidChange:self->_textInput];
 
   return v9;
 }

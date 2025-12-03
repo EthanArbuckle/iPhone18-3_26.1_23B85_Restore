@@ -17,12 +17,12 @@
     if (([(TouchIDSensorCalibrationDataCheckController *)self isCancelled]& 1) == 0)
     {
       v4 = [v8 objectForKeyedSubscript:@"data"];
-      v5 = [(TouchIDSensorCalibrationDataCheckController *)self result];
-      [v5 setData:v4];
+      result = [(TouchIDSensorCalibrationDataCheckController *)self result];
+      [result setData:v4];
 
       v6 = [v8 objectForKeyedSubscript:@"testStatus"];
-      v7 = [(TouchIDSensorCalibrationDataCheckController *)self result];
-      [v7 setStatusCode:v6];
+      result2 = [(TouchIDSensorCalibrationDataCheckController *)self result];
+      [result2 setStatusCode:v6];
     }
   }
 

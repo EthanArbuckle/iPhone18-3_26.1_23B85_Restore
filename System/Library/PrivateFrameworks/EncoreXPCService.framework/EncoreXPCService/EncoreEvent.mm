@@ -1,14 +1,14 @@
 @interface EncoreEvent
 - (EncoreEvent)init;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EncoreEvent
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A03AC54();
 
   v3 = sub_24A046380();
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A03B0D0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24A03B0D0(coderCopy);
 }
 
 - (EncoreEvent)init

@@ -1,28 +1,28 @@
 @interface SUICKPCATExecutor
-- (void)responseProtoFromCATModel:(id)a3 completion:(id)a4;
+- (void)responseProtoFromCATModel:(id)model completion:(id)completion;
 @end
 
 @implementation SUICKPCATExecutor
 
-- (void)responseProtoFromCATModel:(id)a3 completion:(id)a4
+- (void)responseProtoFromCATModel:(id)model completion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v25 = @"locale";
   v6 = MEMORY[0x277CBEAF8];
-  v7 = a3;
-  v8 = [v6 currentLocale];
-  v9 = [v8 languageCode];
-  v26[0] = v9;
+  modelCopy = model;
+  currentLocale = [v6 currentLocale];
+  languageCode = [currentLocale languageCode];
+  v26[0] = languageCode;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-  v11 = [v7 catIdentifier];
-  v12 = [v7 bundleIdentifier];
-  v13 = v12;
+  catIdentifier = [modelCopy catIdentifier];
+  bundleIdentifier = [modelCopy bundleIdentifier];
+  v13 = bundleIdentifier;
   v14 = @"com.apple.siri.DialogEngine";
-  if (v12)
+  if (bundleIdentifier)
   {
-    v14 = v12;
+    v14 = bundleIdentifier;
   }
 
   v15 = v14;
@@ -30,10 +30,10 @@
   v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:v15];
 
   v17 = MEMORY[0x277CCAAA0];
-  v18 = [v7 params];
+  params = [modelCopy params];
 
   v24 = 0;
-  v19 = [v17 JSONObjectWithData:v18 options:0 error:&v24];
+  v19 = [v17 JSONObjectWithData:params options:0 error:&v24];
   v20 = v24;
 
   if (v20)
@@ -45,12 +45,12 @@
     }
 
     v22 = objc_alloc_init(MEMORY[0x277D05278]);
-    v5[2](v5, v22, v20);
+    completionCopy[2](completionCopy, v22, v20);
   }
 
   else
   {
-    [MEMORY[0x277D05260] execute:v16 catId:v11 parameters:v19 globals:v10 callback:0 options:*MEMORY[0x277D05258] completion:v5];
+    [MEMORY[0x277D05260] execute:v16 catId:catIdentifier parameters:v19 globals:v10 callback:0 options:*MEMORY[0x277D05258] completion:completionCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];

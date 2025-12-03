@@ -1,14 +1,14 @@
 @interface CarFocusableProgressRoundedButton
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (void)_insertFillViewIfNecessary;
 - (void)_updateColors;
 - (void)_updateProgressConstraint;
 - (void)didMoveToWindow;
-- (void)focusDidChange:(BOOL)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressFillColor:(id)a3;
-- (void)setProgressFillFocusedColor:(id)a3;
-- (void)setProgressionHidden:(BOOL)a3;
+- (void)focusDidChange:(BOOL)change;
+- (void)setProgress:(double)progress;
+- (void)setProgressFillColor:(id)color;
+- (void)setProgressFillFocusedColor:(id)color;
+- (void)setProgressionHidden:(BOOL)hidden;
 @end
 
 @implementation CarFocusableProgressRoundedButton
@@ -30,19 +30,19 @@
     v6 = [NSString stringWithFormat:@"%@%.2f", @"FillView.Progress=", *&self->_progress];
     [(UIView *)self->_fillView setAccessibilityIdentifier:v6];
 
-    v7 = [(UIView *)self->_fillView layer];
-    [v7 removeAnimationForKey:@"backgroundColor"];
+    layer = [(UIView *)self->_fillView layer];
+    [layer removeAnimationForKey:@"backgroundColor"];
 
-    v8 = [(CarFocusableProgressRoundedButton *)self layer];
-    [v8 removeAnimationForKey:@"backgroundColor"];
+    layer2 = [(CarFocusableProgressRoundedButton *)self layer];
+    [layer2 removeAnimationForKey:@"backgroundColor"];
 
-    v9 = [(CarFocusableProgressRoundedButton *)self titleLabel];
-    v10 = [v9 layer];
-    [v10 removeAnimationForKey:@"backgroundColor"];
+    titleLabel = [(CarFocusableProgressRoundedButton *)self titleLabel];
+    layer3 = [titleLabel layer];
+    [layer3 removeAnimationForKey:@"backgroundColor"];
 
-    v12 = [(CarFocusableProgressRoundedButton *)self titleLabel];
-    v11 = [v12 layer];
-    [v11 removeAnimationForKey:@"contents"];
+    titleLabel2 = [(CarFocusableProgressRoundedButton *)self titleLabel];
+    layer4 = [titleLabel2 layer];
+    [layer4 removeAnimationForKey:@"contents"];
   }
 }
 
@@ -67,55 +67,55 @@
   [(UIView *)self->_fillView setBackgroundColor:v5];
 }
 
-- (void)focusDidChange:(BOOL)a3
+- (void)focusDidChange:(BOOL)change
 {
   v4.receiver = self;
   v4.super_class = CarFocusableProgressRoundedButton;
-  [(CarFocusableButton *)&v4 focusDidChange:a3];
+  [(CarFocusableButton *)&v4 focusDidChange:change];
   [(CarFocusableProgressRoundedButton *)self _updateColors];
   [(CarFocusableProgressRoundedButton *)self _updateProgressConstraint];
 }
 
-- (void)setProgressionHidden:(BOOL)a3
+- (void)setProgressionHidden:(BOOL)hidden
 {
-  if (self->_progressionHidden != a3)
+  if (self->_progressionHidden != hidden)
   {
-    v4 = a3;
-    self->_progressionHidden = a3;
+    hiddenCopy = hidden;
+    self->_progressionHidden = hidden;
     [(UIView *)self->_fillView setHidden:?];
-    [(UIView *)self->_barView setHidden:v4];
+    [(UIView *)self->_barView setHidden:hiddenCopy];
     [(CarFocusableProgressRoundedButton *)self setNeedsLayout];
 
     [(CarFocusableProgressRoundedButton *)self layoutIfNeeded];
   }
 }
 
-- (void)setProgressFillFocusedColor:(id)a3
+- (void)setProgressFillFocusedColor:(id)color
 {
-  objc_storeStrong(&self->_progressFillFocusedColor, a3);
+  objc_storeStrong(&self->_progressFillFocusedColor, color);
 
   [(CarFocusableProgressRoundedButton *)self _updateColors];
 }
 
-- (void)setProgressFillColor:(id)a3
+- (void)setProgressFillColor:(id)color
 {
-  objc_storeStrong(&self->_progressFillColor, a3);
+  objc_storeStrong(&self->_progressFillColor, color);
 
   [(CarFocusableProgressRoundedButton *)self _updateColors];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
     v9 = v3;
-    v8 = fmin(fmax(a3, 0.0), 1.0);
-    if (a3 < 0.0 || a3 > 1.0)
+    v8 = fmin(fmax(progress, 0.0), 1.0);
+    if (progress < 0.0 || progress > 1.0)
     {
-      a3 = v8;
+      progress = v8;
     }
 
-    self->_progress = a3;
+    self->_progress = progress;
     [(CarFocusableProgressRoundedButton *)self _updateProgressConstraint:v4];
 
     [(CarFocusableProgressRoundedButton *)self layoutIfNeeded];
@@ -140,11 +140,11 @@
     [(UIView *)self->_barView setBackgroundColor:v9];
 
     [(UIView *)self->_barView setAccessibilityIdentifier:@"BarView"];
-    v10 = [(UIView *)self->_barView layer];
-    [v10 setCornerRadius:2.0];
+    layer = [(UIView *)self->_barView layer];
+    [layer setCornerRadius:2.0];
 
-    v11 = [(UIView *)self->_barView layer];
-    [v11 setMasksToBounds:1];
+    layer2 = [(UIView *)self->_barView layer];
+    [layer2 setMasksToBounds:1];
 
     [(UIView *)self->_barView setHidden:self->_progressionHidden];
     [(CarFocusableProgressRoundedButton *)self addSubview:self->_barView];
@@ -155,52 +155,52 @@
     [(UIView *)self->_fillView setAccessibilityIdentifier:@"FillView"];
     [(UIView *)self->_fillView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_fillView setUserInteractionEnabled:0];
-    v14 = [(CarFocusableProgressRoundedButton *)self progressFillColor];
-    [(UIView *)self->_fillView setBackgroundColor:v14];
+    progressFillColor = [(CarFocusableProgressRoundedButton *)self progressFillColor];
+    [(UIView *)self->_fillView setBackgroundColor:progressFillColor];
 
-    v15 = [(UIView *)self->_fillView layer];
-    [v15 setCornerRadius:2.0];
+    layer3 = [(UIView *)self->_fillView layer];
+    [layer3 setCornerRadius:2.0];
 
-    v16 = [(UIView *)self->_fillView layer];
-    [v16 setMasksToBounds:1];
+    layer4 = [(UIView *)self->_fillView layer];
+    [layer4 setMasksToBounds:1];
 
     [(UIView *)self->_fillView setHidden:self->_progressionHidden];
     [(UIView *)self->_barView addSubview:self->_fillView];
-    v17 = [(CarFocusableProgressRoundedButton *)self titleLabel];
-    [(CarFocusableProgressRoundedButton *)self bringSubviewToFront:v17];
+    titleLabel = [(CarFocusableProgressRoundedButton *)self titleLabel];
+    [(CarFocusableProgressRoundedButton *)self bringSubviewToFront:titleLabel];
 
-    v18 = [(UIView *)self->_fillView trailingAnchor];
-    v19 = [(UIView *)self->_barView leadingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    trailingAnchor = [(UIView *)self->_fillView trailingAnchor];
+    leadingAnchor = [(UIView *)self->_barView leadingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:leadingAnchor];
     horizontalConstraint = self->_horizontalConstraint;
     self->_horizontalConstraint = v20;
 
-    v43 = [(UIView *)self->_barView bottomAnchor];
-    v42 = [(CarFocusableProgressRoundedButton *)self bottomAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42 constant:-5.0];
+    bottomAnchor = [(UIView *)self->_barView bottomAnchor];
+    bottomAnchor2 = [(CarFocusableProgressRoundedButton *)self bottomAnchor];
+    v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     v44[0] = v41;
-    v40 = [(UIView *)self->_barView leadingAnchor];
-    v39 = [(CarFocusableProgressRoundedButton *)self leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:8.0];
+    leadingAnchor2 = [(UIView *)self->_barView leadingAnchor];
+    leadingAnchor3 = [(CarFocusableProgressRoundedButton *)self leadingAnchor];
+    v38 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:8.0];
     v44[1] = v38;
-    v37 = [(UIView *)self->_barView trailingAnchor];
-    v36 = [(CarFocusableProgressRoundedButton *)self trailingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:-8.0];
+    trailingAnchor2 = [(UIView *)self->_barView trailingAnchor];
+    trailingAnchor3 = [(CarFocusableProgressRoundedButton *)self trailingAnchor];
+    v35 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-8.0];
     v44[2] = v35;
-    v34 = [(UIView *)self->_barView heightAnchor];
-    v33 = [v34 constraintEqualToConstant:4.0];
+    heightAnchor = [(UIView *)self->_barView heightAnchor];
+    v33 = [heightAnchor constraintEqualToConstant:4.0];
     v44[3] = v33;
-    v32 = [(UIView *)self->_fillView topAnchor];
-    v22 = [(UIView *)self->_barView topAnchor];
-    v23 = [v32 constraintEqualToAnchor:v22];
+    topAnchor = [(UIView *)self->_fillView topAnchor];
+    topAnchor2 = [(UIView *)self->_barView topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v44[4] = v23;
-    v24 = [(UIView *)self->_fillView bottomAnchor];
-    v25 = [(UIView *)self->_barView bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    bottomAnchor3 = [(UIView *)self->_fillView bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_barView bottomAnchor];
+    v26 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v44[5] = v26;
-    v27 = [(UIView *)self->_fillView leadingAnchor];
-    v28 = [(UIView *)self->_barView leadingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    leadingAnchor4 = [(UIView *)self->_fillView leadingAnchor];
+    leadingAnchor5 = [(UIView *)self->_barView leadingAnchor];
+    v29 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v30 = self->_horizontalConstraint;
     v44[6] = v29;
     v44[7] = v30;
@@ -209,11 +209,11 @@
   }
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
   v8.receiver = self;
   v8.super_class = CarFocusableProgressRoundedButton;
-  [(CarCardRoundedButton *)&v8 titleRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CarCardRoundedButton *)&v8 titleRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (!self->_progressionHidden)
   {
     v5 = v5 + -4.0;

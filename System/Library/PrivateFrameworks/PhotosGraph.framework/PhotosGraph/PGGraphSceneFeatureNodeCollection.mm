@@ -1,6 +1,6 @@
 @interface PGGraphSceneFeatureNodeCollection
-+ (id)sceneFeatureNodesForSceneName:(id)a3 inGraph:(id)a4;
-+ (id)sceneFeatureNodesForSceneNames:(id)a3 inGraph:(id)a4;
++ (id)sceneFeatureNodesForSceneName:(id)name inGraph:(id)graph;
++ (id)sceneFeatureNodesForSceneNames:(id)names inGraph:(id)graph;
 - (PGGraphMomentNodeCollection)momentNodes;
 @end
 
@@ -14,20 +14,20 @@
   return v4;
 }
 
-+ (id)sceneFeatureNodesForSceneNames:(id)a3 inGraph:(id)a4
++ (id)sceneFeatureNodesForSceneNames:(id)names inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphSceneFeatureNode filterForSceneNames:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphSceneFeatureNode filterForSceneNames:names];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)sceneFeatureNodesForSceneName:(id)a3 inGraph:(id)a4
++ (id)sceneFeatureNodesForSceneName:(id)name inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphSceneFeatureNode filterForSceneName:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphSceneFeatureNode filterForSceneName:name];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

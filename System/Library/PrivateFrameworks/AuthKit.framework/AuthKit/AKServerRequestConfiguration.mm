@@ -1,103 +1,103 @@
 @interface AKServerRequestConfiguration
-- (AKServerRequestConfiguration)initWithCoder:(id)a3;
-- (AKServerRequestConfiguration)initWithRequest:(id)a3 requestType:(unint64_t)a4;
+- (AKServerRequestConfiguration)initWithCoder:(id)coder;
+- (AKServerRequestConfiguration)initWithRequest:(id)request requestType:(unint64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKServerRequestConfiguration
 
-- (AKServerRequestConfiguration)initWithCoder:(id)a3
+- (AKServerRequestConfiguration)initWithCoder:(id)coder
 {
-  v25 = &v28;
-  v28 = self;
+  v25 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v28;
-  v28 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v26.receiver = v3;
   v26.super_class = AKServerRequestConfiguration;
-  v28 = [(AKServerRequestConfiguration *)&v26 init];
-  objc_storeStrong(&v28, v28);
-  if (v28)
+  selfCopy = [(AKServerRequestConfiguration *)&v26 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v18 = location[0];
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_request"];
-    request = v28->_request;
-    v28->_request = v4;
+    request = selfCopy->_request;
+    selfCopy->_request = v4;
     MEMORY[0x1E69E5920](request);
     v19 = location[0];
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_resourceLoadDelegate"];
-    resourceLoadDelegate = v28->_resourceLoadDelegate;
-    v28->_resourceLoadDelegate = v6;
+    resourceLoadDelegate = selfCopy->_resourceLoadDelegate;
+    selfCopy->_resourceLoadDelegate = v6;
     MEMORY[0x1E69E5920](resourceLoadDelegate);
     v8 = [location[0] decodeIntegerForKey:@"_requestType"];
-    v28->_requestType = v8;
+    selfCopy->_requestType = v8;
     v9 = [location[0] decodeIntegerForKey:@"_presentationType"];
-    v28->_presentationType = v9;
+    selfCopy->_presentationType = v9;
     v20 = location[0];
     v10 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_urlConfiguration"];
-    urlConfiguration = v28->_urlConfiguration;
-    v28->_urlConfiguration = v10;
+    urlConfiguration = selfCopy->_urlConfiguration;
+    selfCopy->_urlConfiguration = v10;
     MEMORY[0x1E69E5920](urlConfiguration);
     v23 = location[0];
     v22 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v24 = [v22 setWithObjects:{v21, objc_opt_class(), 0}];
     v12 = [v23 decodeObjectOfClasses:? forKey:?];
-    whitelistedPathURLs = v28->_whitelistedPathURLs;
-    v28->_whitelistedPathURLs = v12;
+    whitelistedPathURLs = selfCopy->_whitelistedPathURLs;
+    selfCopy->_whitelistedPathURLs = v12;
     MEMORY[0x1E69E5920](whitelistedPathURLs);
     MEMORY[0x1E69E5920](v24);
   }
 
-  v15 = &v28;
-  v17 = MEMORY[0x1E69E5928](v28);
+  v15 = &selfCopy;
+  v17 = MEMORY[0x1E69E5928](selfCopy);
   obj = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v15, obj);
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_request forKey:@"_request"];
-  [location[0] encodeObject:v4->_resourceLoadDelegate forKey:@"_resourceLoadDelegate"];
-  [location[0] encodeInteger:v4->_requestType forKey:@"_requestType"];
-  [location[0] encodeInteger:v4->_presentationType forKey:@"_presentationType"];
-  [location[0] encodeObject:v4->_urlConfiguration forKey:@"_urlConfiguration"];
-  [location[0] encodeObject:v4->_whitelistedPathURLs forKey:@"_whitelistedRedirectURLs"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_request forKey:@"_request"];
+  [location[0] encodeObject:selfCopy->_resourceLoadDelegate forKey:@"_resourceLoadDelegate"];
+  [location[0] encodeInteger:selfCopy->_requestType forKey:@"_requestType"];
+  [location[0] encodeInteger:selfCopy->_presentationType forKey:@"_presentationType"];
+  [location[0] encodeObject:selfCopy->_urlConfiguration forKey:@"_urlConfiguration"];
+  [location[0] encodeObject:selfCopy->_whitelistedPathURLs forKey:@"_whitelistedRedirectURLs"];
   objc_storeStrong(location, 0);
 }
 
-- (AKServerRequestConfiguration)initWithRequest:(id)a3 requestType:(unint64_t)a4
+- (AKServerRequestConfiguration)initWithRequest:(id)request requestType:(unint64_t)type
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(location, request);
+  typeCopy = type;
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKServerRequestConfiguration;
   v8 = [(AKServerRequestConfiguration *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    v12->_requestType = v10;
-    objc_storeStrong(&v12->_request, location[0]);
+    selfCopy->_requestType = typeCopy;
+    objc_storeStrong(&selfCopy->_request, location[0]);
   }
 
-  v6 = MEMORY[0x1E69E5928](v12);
+  v6 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 

@@ -20,8 +20,8 @@
     [(SKUIOverlayContainerViewAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"Backstop"];
   }
 
-  v6 = [(SKUIOverlayContainerViewAccessibility *)self subviews];
-  v7 = [v6 arrayByAddingObject:v3];
+  subviews = [(SKUIOverlayContainerViewAccessibility *)self subviews];
+  v7 = [subviews arrayByAddingObject:v3];
 
   return v7;
 }
@@ -29,23 +29,23 @@
 - (id)_accessibilityObscuredScreenAllowedViews
 {
   v26 = *MEMORY[0x29EDCA608];
-  v3 = [(SKUIOverlayContainerViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"OverlayCaptureView"];
+  accessibilityIdentifier = [(SKUIOverlayContainerViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"OverlayCaptureView"];
 
   if (v4)
   {
     v24 = 0;
     objc_opt_class();
     v5 = __UIAccessibilityCastAsClass();
-    v6 = [v5 superview];
-    v7 = [v6 subviews];
+    superview = [v5 superview];
+    subviews = [superview subviews];
 
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v7;
+    v9 = subviews;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
@@ -61,12 +61,12 @@
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 accessibilityIdentifier];
-          v16 = [v15 isEqualToString:@"FloatingPreview"];
+          accessibilityIdentifier2 = [v14 accessibilityIdentifier];
+          v16 = [accessibilityIdentifier2 isEqualToString:@"FloatingPreview"];
 
           if (v16)
           {
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
         }
 
@@ -76,7 +76,7 @@
       while (v11);
     }
 
-    if ([v8 count])
+    if ([array count])
     {
 
       goto LABEL_15;
@@ -85,11 +85,11 @@
 
   v19.receiver = self;
   v19.super_class = SKUIOverlayContainerViewAccessibility;
-  v8 = [(SKUIOverlayContainerViewAccessibility *)&v19 _accessibilityObscuredScreenAllowedViews];
+  array = [(SKUIOverlayContainerViewAccessibility *)&v19 _accessibilityObscuredScreenAllowedViews];
 LABEL_15:
   v17 = *MEMORY[0x29EDCA608];
 
-  return v8;
+  return array;
 }
 
 @end

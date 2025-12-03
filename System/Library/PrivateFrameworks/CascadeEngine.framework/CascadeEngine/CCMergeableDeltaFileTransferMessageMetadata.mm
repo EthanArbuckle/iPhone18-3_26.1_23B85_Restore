@@ -1,62 +1,62 @@
 @interface CCMergeableDeltaFileTransferMessageMetadata
-+ (id)mergeableDeltaFileTransferMessageMetadataFromPeerToPeerMessage:(id)a3 set:(id)a4 mergeableDeltaMetadataVectors:(id)a5 fileFormatVersion:(unint64_t)a6 deviceSite:(id)a7 relayedDeviceSites:(id)a8;
++ (id)mergeableDeltaFileTransferMessageMetadataFromPeerToPeerMessage:(id)message set:(id)set mergeableDeltaMetadataVectors:(id)vectors fileFormatVersion:(unint64_t)version deviceSite:(id)site relayedDeviceSites:(id)sites;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation CCMergeableDeltaFileTransferMessageMetadata
 
-+ (id)mergeableDeltaFileTransferMessageMetadataFromPeerToPeerMessage:(id)a3 set:(id)a4 mergeableDeltaMetadataVectors:(id)a5 fileFormatVersion:(unint64_t)a6 deviceSite:(id)a7 relayedDeviceSites:(id)a8
++ (id)mergeableDeltaFileTransferMessageMetadataFromPeerToPeerMessage:(id)message set:(id)set mergeableDeltaMetadataVectors:(id)vectors fileFormatVersion:(unint64_t)version deviceSite:(id)site relayedDeviceSites:(id)sites
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  sitesCopy = sites;
+  siteCopy = site;
+  vectorsCopy = vectors;
+  setCopy = set;
+  messageCopy = message;
   v18 = [CCMergeableDeltaFileTransferMessageMetadata alloc];
-  v19 = [v17 syncReason];
-  v20 = [v17 senderDeviceUUID];
-  v21 = [v17 protocolVersion];
-  [v17 walltime];
+  syncReason = [messageCopy syncReason];
+  senderDeviceUUID = [messageCopy senderDeviceUUID];
+  protocolVersion = [messageCopy protocolVersion];
+  [messageCopy walltime];
   v23 = v22;
 
-  v24 = [(CCPeerToPeerMessage *)v18 initWithSyncReason:v19 senderDeviceUUID:v20 protocolVersion:v21 wallTime:v23];
-  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setSet:v16];
+  v24 = [(CCPeerToPeerMessage *)v18 initWithSyncReason:syncReason senderDeviceUUID:senderDeviceUUID protocolVersion:protocolVersion wallTime:v23];
+  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setSet:setCopy];
 
-  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setMergeableDeltaMetadataVectors:v15];
-  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setFileFormatVersion:a6];
-  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setDeviceSite:v14];
+  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setMergeableDeltaMetadataVectors:vectorsCopy];
+  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setFileFormatVersion:version];
+  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setDeviceSite:siteCopy];
 
-  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setRelayedDeviceSites:v13];
+  [(CCMergeableDeltaFileTransferMessageMetadata *)v24 setRelayedDeviceSites:sitesCopy];
 
   return v24;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = CCMergeableDeltaFileTransferMessageMetadata;
-  v5 = [(CCPeerToPeerMessage *)&v35 initFromDictionary:v4];
+  v5 = [(CCPeerToPeerMessage *)&v35 initFromDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69939E0]);
-    v7 = [v4 objectForKeyedSubscript:@"deviceSite"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceSite"];
     v8 = [v6 initFromDictionary:v7];
     v9 = v5[8];
     v5[8] = v8;
 
     v10 = objc_alloc(MEMORY[0x1E6993A50]);
-    v11 = [v4 objectForKeyedSubscript:@"set"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"set"];
     v12 = [v10 initFromDictionary:v11];
     v13 = v5[5];
     v5[5] = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"fileFormatVersion"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"fileFormatVersion"];
     v5[6] = [v14 unsignedIntegerValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"mergeableDeltaMetadataVectors"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"mergeableDeltaMetadataVectors"];
     v16 = v5[7];
     v29 = v5;
     v5[7] = v15;
@@ -66,8 +66,8 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v30 = v4;
-    v18 = [v4 objectForKeyedSubscript:@"relayedDeviceSites"];
+    v30 = dictionaryCopy;
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"relayedDeviceSites"];
     v19 = [v18 countByEnumeratingWithState:&v31 objects:v38 count:16];
     if (v19)
     {
@@ -115,7 +115,7 @@
     v26 = v29[9];
     v29[9] = v17;
 
-    v4 = v30;
+    dictionaryCopy = v30;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -145,8 +145,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -164,18 +164,18 @@
   v24[2] = @"relayedDeviceSites";
   v25[2] = v3;
   v24[3] = @"set";
-  v12 = [(CCSet *)self->_set dictionaryRepresentation];
-  v25[3] = v12;
+  dictionaryRepresentation2 = [(CCSet *)self->_set dictionaryRepresentation];
+  v25[3] = dictionaryRepresentation2;
   v24[4] = @"deviceSite";
-  v13 = [(CCDeviceSite *)self->_deviceSite dictionaryRepresentation];
-  v25[4] = v13;
+  dictionaryRepresentation3 = [(CCDeviceSite *)self->_deviceSite dictionaryRepresentation];
+  v25[4] = dictionaryRepresentation3;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:5];
   v15 = [v14 mutableCopy];
 
   v19.receiver = self;
   v19.super_class = CCMergeableDeltaFileTransferMessageMetadata;
-  v16 = [(CCPeerToPeerMessage *)&v19 dictionaryRepresentation];
-  [v15 addEntriesFromDictionary:v16];
+  dictionaryRepresentation4 = [(CCPeerToPeerMessage *)&v19 dictionaryRepresentation];
+  [v15 addEntriesFromDictionary:dictionaryRepresentation4];
 
   v17 = *MEMORY[0x1E69E9840];
 

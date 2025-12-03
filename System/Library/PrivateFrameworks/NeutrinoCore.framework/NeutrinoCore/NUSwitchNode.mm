@@ -1,34 +1,34 @@
 @interface NUSwitchNode
-- (NUSwitchNode)initWithInputs:(id)a3 mainInput:(id)a4 selector:(id)a5;
-- (NUSwitchNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (NUSwitchNode)initWithInputs:(id)inputs mainInput:(id)input selector:(id)selector;
+- (NUSwitchNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (id)uniqueInputNode;
 @end
 
 @implementation NUSwitchNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NURenderNode *)self settings];
-  v11 = [v10 nu_evaluateWithPipelineState:v9 error:a5];
+  cacheCopy = cache;
+  stateCopy = state;
+  settings = [(NURenderNode *)self settings];
+  v11 = [settings nu_evaluateWithPipelineState:stateCopy error:error];
 
   if (v11)
   {
     v12 = [v11 objectForKeyedSubscript:@"selector"];
-    v13 = [(NURenderNode *)self inputs];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    inputs = [(NURenderNode *)self inputs];
+    v14 = [inputs objectForKeyedSubscript:v12];
 
     if (v14)
     {
-      v15 = [v14 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+      v15 = [v14 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
     }
 
     else
     {
       [NUError missingError:@"Missing input for selector" object:v12];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
   }
 
@@ -42,19 +42,19 @@
 
 - (id)uniqueInputNode
 {
-  v3 = [(NURenderNode *)self dominantInputKey];
-  v4 = [(NURenderNode *)self inputForKey:v3];
+  dominantInputKey = [(NURenderNode *)self dominantInputKey];
+  v4 = [(NURenderNode *)self inputForKey:dominantInputKey];
 
   return v4;
 }
 
-- (NUSwitchNode)initWithInputs:(id)a3 mainInput:(id)a4 selector:(id)a5
+- (NUSwitchNode)initWithInputs:(id)inputs mainInput:(id)input selector:(id)selector
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 count])
+  inputsCopy = inputs;
+  inputCopy = input;
+  selectorCopy = selector;
+  if (![inputsCopy count])
   {
     v14 = NUAssertLogger_1149();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v35;
         v67 = 2114;
@@ -87,8 +87,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -97,7 +97,7 @@
     _NUAssertFailHandler("[NUSwitchNode initWithInputs:mainInput:selector:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUSwitchNode.m", 21, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "inputs.count != 0");
   }
 
-  if (!v10)
+  if (!selectorCopy)
   {
     v21 = NUAssertLogger_1149();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -118,8 +118,8 @@
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v45 callStackSymbols];
+        v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v44;
         v67 = 2114;
@@ -130,8 +130,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -140,7 +140,7 @@
     _NUAssertFailHandler("[NUSwitchNode initWithInputs:mainInput:selector:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUSwitchNode.m", 22, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "selector != nil");
   }
 
-  if (!v9)
+  if (!inputCopy)
   {
     v28 = NUAssertLogger_1149();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -161,8 +161,8 @@
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v54 callStackSymbols];
+        v57 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v53;
         v67 = 2114;
@@ -173,8 +173,8 @@
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -185,21 +185,21 @@
 
   v63[0] = @"selector";
   v63[1] = @"__dominantInputSettingsKey";
-  v64[0] = v10;
-  v64[1] = v9;
+  v64[0] = selectorCopy;
+  v64[1] = inputCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:2];
   v62.receiver = self;
   v62.super_class = NUSwitchNode;
-  v12 = [(NURenderNode *)&v62 initWithSettings:v11 inputs:v8];
+  v12 = [(NURenderNode *)&v62 initWithSettings:v11 inputs:inputsCopy];
 
   return v12;
 }
 
-- (NUSwitchNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUSwitchNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1177);
@@ -243,8 +243,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -260,8 +260,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

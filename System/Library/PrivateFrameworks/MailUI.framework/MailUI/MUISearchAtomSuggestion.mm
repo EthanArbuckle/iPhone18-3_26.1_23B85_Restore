@@ -1,11 +1,11 @@
 @interface MUISearchAtomSuggestion
 + (id)log;
-+ (id)suggestionFromSpotlightSuggestion:(id)a3 shouldShowAvaters:(BOOL)a4;
++ (id)suggestionFromSpotlightSuggestion:(id)suggestion shouldShowAvaters:(BOOL)avaters;
 - (UIImage)atomImage;
 - (UIImage)image;
 - (id)debugDescription;
 - (id)ef_publicDescription;
-- (id)predicateWithSelectedScope:(id)a3;
+- (id)predicateWithSelectedScope:(id)scope;
 @end
 
 @implementation MUISearchAtomSuggestion
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __30__MUISearchAtomSuggestion_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_19 != -1)
   {
     dispatch_once(&log_onceToken_19, block);
@@ -41,13 +41,13 @@ void __30__MUISearchAtomSuggestion_log__block_invoke(uint64_t a1)
   v10.receiver = self;
   v10.super_class = MUISearchAtomSuggestion;
   v3 = [(MUISearchAtomSuggestion *)&v10 debugDescription];
-  v4 = [(MUISearchAtomSuggestion *)self title];
-  v5 = [(MUISearchAtomSuggestion *)self subtitle];
+  title = [(MUISearchAtomSuggestion *)self title];
+  subtitle = [(MUISearchAtomSuggestion *)self subtitle];
   v6 = @" - ";
   v7 = &stru_2826EE5B8;
-  if (v5)
+  if (subtitle)
   {
-    v7 = v5;
+    v7 = subtitle;
   }
 
   else
@@ -55,7 +55,7 @@ void __30__MUISearchAtomSuggestion_log__block_invoke(uint64_t a1)
     v6 = &stru_2826EE5B8;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@%@%@", v3, v4, v6, v7];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@%@%@", v3, title, v6, v7];
 
   return v8;
 }
@@ -64,14 +64,14 @@ void __30__MUISearchAtomSuggestion_log__block_invoke(uint64_t a1)
 {
   v14.receiver = self;
   v14.super_class = MUISearchAtomSuggestion;
-  v3 = [(MUISearchSuggestion *)&v14 ef_publicDescription];
+  ef_publicDescription = [(MUISearchSuggestion *)&v14 ef_publicDescription];
   v4 = MEMORY[0x277D07198];
-  v5 = [(MUISearchAtomSuggestion *)self title];
-  v6 = [v4 partiallyRedactedStringForString:v5];
+  title = [(MUISearchAtomSuggestion *)self title];
+  v6 = [v4 partiallyRedactedStringForString:title];
 
   v7 = MEMORY[0x277D07198];
-  v8 = [(MUISearchAtomSuggestion *)self subtitle];
-  v9 = [v7 partiallyRedactedStringForString:v8];
+  subtitle = [(MUISearchAtomSuggestion *)self subtitle];
+  v9 = [v7 partiallyRedactedStringForString:subtitle];
 
   v10 = @" - ";
   v11 = &stru_2826EE5B8;
@@ -85,57 +85,57 @@ void __30__MUISearchAtomSuggestion_log__block_invoke(uint64_t a1)
     v10 = &stru_2826EE5B8;
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@%@%@", v3, v6, v10, v11];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@%@%@", ef_publicDescription, v6, v10, v11];
 
   return v12;
 }
 
-- (id)predicateWithSelectedScope:(id)a3
+- (id)predicateWithSelectedScope:(id)scope
 {
-  v5 = a3;
-  if (!v5)
+  scopeCopy = scope;
+  if (!scopeCopy)
   {
     [(MUISearchAtomSuggestion *)a2 predicateWithSelectedScope:?];
   }
 
-  v6 = [v5 predicateForSuggestion:self];
+  v6 = [scopeCopy predicateForSuggestion:self];
 
   return v6;
 }
 
 - (UIImage)image
 {
-  v2 = [(MUISearchSuggestion *)self category];
-  v3 = [v2 image];
+  category = [(MUISearchSuggestion *)self category];
+  image = [category image];
 
-  return v3;
+  return image;
 }
 
 - (UIImage)atomImage
 {
-  v2 = [(MUISearchSuggestion *)self category];
-  v3 = [v2 atomImage];
+  category = [(MUISearchSuggestion *)self category];
+  atomImage = [category atomImage];
 
-  return v3;
+  return atomImage;
 }
 
-+ (id)suggestionFromSpotlightSuggestion:(id)a3 shouldShowAvaters:(BOOL)a4
++ (id)suggestionFromSpotlightSuggestion:(id)suggestion shouldShowAvaters:(BOOL)avaters
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 suggestionTokens];
-  v7 = [v6 lastObject];
+  avatersCopy = avaters;
+  suggestionCopy = suggestion;
+  suggestionTokens = [suggestionCopy suggestionTokens];
+  lastObject = [suggestionTokens lastObject];
 
-  v8 = [v7 tokenKind];
-  if (v4 && v8 == 16)
+  tokenKind = [lastObject tokenKind];
+  if (avatersCopy && tokenKind == 16)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v7 displayText];
-    v11 = [v10 string];
+    displayText = [lastObject displayText];
+    string = [displayText string];
 
     v12 = objc_opt_new();
     v13 = NSSelectorFromString(&cfstr_Itemsummary.isa);
@@ -144,8 +144,8 @@ void __30__MUISearchAtomSuggestion_log__block_invoke(uint64_t a1)
     v16 = NSSelectorFromString(&cfstr_Contactidentif.isa);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v7 v13];
-      v27 = v11;
+      v17 = [lastObject v13];
+      v27 = string;
       v18 = objc_opt_class();
       __79__MUISearchAtomSuggestion_suggestionFromSpotlightSuggestion_shouldShowAvaters___block_invoke(v18, &v27, v14, v17);
       v19 = v27;
@@ -161,10 +161,10 @@ void __30__MUISearchAtomSuggestion_log__block_invoke(uint64_t a1)
       v23 = v25;
 
       v12 = v21;
-      v11 = v19;
+      string = v19;
     }
 
-    v9 = [MUIGenericSuggestion genericSuggestionWithSpotlightSuggestion:v5];
+    v9 = [MUIGenericSuggestion genericSuggestionWithSpotlightSuggestion:suggestionCopy];
   }
 
   return v9;

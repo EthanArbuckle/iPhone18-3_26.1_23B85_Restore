@@ -12,34 +12,34 @@
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
 - (NavAudioControlViewDelegate)audioControlDelegate;
-- (id)_viewForElement:(unint64_t)a3;
+- (id)_viewForElement:(unint64_t)element;
 - (unint64_t)audioControlButtonType;
 - (unint64_t)cameraToggleButtonState;
 - (void)_audioControlButtonPressed;
 - (void)_cameraToggleButtonPressed;
-- (void)_configureContainer:(id)a3 withElement:(unint64_t)a4 preferredEdgeLocation:(unint64_t)a5 priority:(float)a6;
+- (void)_configureContainer:(id)container withElement:(unint64_t)element preferredEdgeLocation:(unint64_t)location priority:(float)priority;
 - (void)_navRecenterButtonPressed;
 - (void)_reportIncidentButtonPressed;
-- (void)audioControlView:(id)a3 didSelectAudioType:(unint64_t)a4;
-- (void)audioControlView:(id)a3 willChangeSizeWithAnimation:(id)a4;
+- (void)audioControlView:(id)view didSelectAudioType:(unint64_t)type;
+- (void)audioControlView:(id)view willChangeSizeWithAnimation:(id)animation;
 - (void)dealloc;
 - (void)mode3DButtonPressed;
 - (void)panButtonPressed;
 - (void)reload;
-- (void)setAudioControlButtonType:(unint64_t)a3;
-- (void)setAudioSettings:(unint64_t)a3;
-- (void)setCameraToggleButtonState:(unint64_t)a3;
-- (void)setConfiguration:(id *)a3;
-- (void)setConfiguration:(id *)a3 withAnimation:(id)a4;
-- (void)setContentView:(id)a3 layoutGuide:(id)a4;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
-- (void)setMode3DEnabled:(BOOL)a3;
-- (void)setMode3DState:(unint64_t)a3;
-- (void)setTrackingButtonEnabled:(BOOL)a3;
-- (void)setTrackingController:(id)a3;
-- (void)setZoomInEnabled:(BOOL)a3;
-- (void)setZoomOutEnabled:(BOOL)a3;
+- (void)setAudioControlButtonType:(unint64_t)type;
+- (void)setAudioSettings:(unint64_t)settings;
+- (void)setCameraToggleButtonState:(unint64_t)state;
+- (void)setConfiguration:(id *)configuration;
+- (void)setConfiguration:(id *)configuration withAnimation:(id)animation;
+- (void)setContentView:(id)view layoutGuide:(id)guide;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
+- (void)setMode3DEnabled:(BOOL)enabled;
+- (void)setMode3DState:(unint64_t)state;
+- (void)setTrackingButtonEnabled:(BOOL)enabled;
+- (void)setTrackingController:(id)controller;
+- (void)setZoomInEnabled:(BOOL)enabled;
+- (void)setZoomOutEnabled:(BOOL)enabled;
 - (void)zoomInButtonPressed;
 - (void)zoomOutButtonPressed;
 @end
@@ -67,8 +67,8 @@
       v6 = *&self->_configuration.topElement != 0 || self->_configuration.bottomElement != 0;
     }
 
-    v8 = [(CarMapControlsOverlay *)self host];
-    [v8 setCollisionConstraintsEnabled:v6 forOverlay:self];
+    host = [(CarMapControlsOverlay *)self host];
+    [host setCollisionConstraintsEnabled:v6 forOverlay:self];
   }
 
   else
@@ -95,8 +95,8 @@
     [(CarFloatingControlsButtonView *)self->_floatingControls setDelegate:self];
     [(CarMultiButtonView *)self->_floatingControls setCombineButtons:0];
     v6 = self->_floatingControls;
-    v7 = [(CarMapControlsOverlay *)self trackingController];
-    [(CarFloatingControlsButtonView *)v6 setTrackingController:v7];
+    trackingController = [(CarMapControlsOverlay *)self trackingController];
+    [(CarFloatingControlsButtonView *)v6 setTrackingController:trackingController];
 
     [(CarFloatingControlsButtonView *)self->_floatingControls setEnableTrackingButton:[(CarMapControlsOverlay *)self trackingButtonEnabled]];
     [(CarFloatingControlsButtonView *)self->_floatingControls setEnable3DButton:[(CarMapControlsOverlay *)self mode3DEnabled]];
@@ -176,8 +176,8 @@
 
 - (NSArray)focusOrderSubItems
 {
-  v3 = [(UIStackView *)self->_mapControlsStackView arrangedSubviews];
-  v4 = [v3 count];
+  arrangedSubviews = [(UIStackView *)self->_mapControlsStackView arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   if (v4)
   {
@@ -209,10 +209,10 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [v8 arrangedSubviews];
+            arrangedSubviews2 = [v8 arrangedSubviews];
             v10 = +[NSMutableArray array];
-            v32 = v9;
-            v11 = [v9 sortedArrayUsingComparator:&stru_1016329C8];
+            v32 = arrangedSubviews2;
+            v11 = [arrangedSubviews2 sortedArrayUsingComparator:&stru_1016329C8];
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
@@ -234,8 +234,8 @@
                   v16 = *(*(&v37 + 1) + 8 * j);
                   if (objc_opt_respondsToSelector())
                   {
-                    v17 = [v16 focusOrderSubItems];
-                    [v10 addObjectsFromArray:v17];
+                    focusOrderSubItems = [v16 focusOrderSubItems];
+                    [v10 addObjectsFromArray:focusOrderSubItems];
                   }
 
                   else
@@ -253,10 +253,10 @@
 
           else
           {
-            v18 = [v8 subviews];
+            subviews = [v8 subviews];
             v10 = +[NSMutableArray array];
-            v32 = v18;
-            v11 = [v18 sortedArrayUsingComparator:&stru_1016329C8];
+            v32 = subviews;
+            v11 = [subviews sortedArrayUsingComparator:&stru_1016329C8];
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
@@ -278,8 +278,8 @@
                   v23 = *(*(&v37 + 1) + 8 * k);
                   if (objc_opt_respondsToSelector())
                   {
-                    v24 = [v23 focusOrderSubItems];
-                    [v10 addObjectsFromArray:v24];
+                    focusOrderSubItems2 = [v23 focusOrderSubItems];
+                    [v10 addObjectsFromArray:focusOrderSubItems2];
                   }
 
                   else
@@ -387,10 +387,10 @@
 
 - (unint64_t)cameraToggleButtonState
 {
-  v2 = [(CarMapControlsOverlay *)self cameraToggleButton];
-  v3 = [v2 buttonState];
+  cameraToggleButton = [(CarMapControlsOverlay *)self cameraToggleButton];
+  buttonState = [cameraToggleButton buttonState];
 
-  return v3;
+  return buttonState;
 }
 
 - (NavAudioControlViewDelegate)audioControlDelegate
@@ -409,56 +409,56 @@
 
 - (void)mode3DButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:5];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:5];
 }
 
 - (void)zoomOutButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:4];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:4];
 }
 
 - (void)zoomInButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:3];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:3];
 }
 
 - (void)panButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:2];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:2];
 }
 
 - (void)_reportIncidentButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:8];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:8];
 }
 
 - (void)_audioControlButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:7];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:7];
 }
 
 - (void)_cameraToggleButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:6];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:6];
 }
 
 - (void)_navRecenterButtonPressed
 {
-  v3 = [(CarMapControlsOverlay *)self delegate];
-  [v3 carMapControls:self didTriggerAction:1];
+  delegate = [(CarMapControlsOverlay *)self delegate];
+  [delegate carMapControls:self didTriggerAction:1];
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v3 = [(UIStackView *)self->_mapControlsStackView arrangedSubviews];
-  v4 = [v3 count];
+  arrangedSubviews = [(UIStackView *)self->_mapControlsStackView arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   if (v4)
   {
@@ -474,20 +474,20 @@
   return v5;
 }
 
-- (void)audioControlView:(id)a3 willChangeSizeWithAnimation:(id)a4
+- (void)audioControlView:(id)view willChangeSizeWithAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CarMapControlsOverlay *)self audioControlDelegate];
+  viewCopy = view;
+  animationCopy = animation;
+  audioControlDelegate = [(CarMapControlsOverlay *)self audioControlDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CarMapControlsOverlay *)self audioControlDelegate];
-    [v10 audioControlView:v6 willChangeSizeWithAnimation:v7];
+    audioControlDelegate2 = [(CarMapControlsOverlay *)self audioControlDelegate];
+    [audioControlDelegate2 audioControlView:viewCopy willChangeSizeWithAnimation:animationCopy];
   }
 
-  if ([v6 isDescendantOfView:self->_mapControlsStackView])
+  if ([viewCopy isDescendantOfView:self->_mapControlsStackView])
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -498,31 +498,31 @@
     v11[1] = 3221225472;
     v11[2] = sub_100A5D718;
     v11[3] = &unk_101661A90;
-    v12 = v6;
-    v13 = self;
-    [v7 addPreparation:v14 animations:v11 completion:0];
+    v12 = viewCopy;
+    selfCopy = self;
+    [animationCopy addPreparation:v14 animations:v11 completion:0];
   }
 }
 
-- (void)audioControlView:(id)a3 didSelectAudioType:(unint64_t)a4
+- (void)audioControlView:(id)view didSelectAudioType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(CarMapControlsOverlay *)self audioControlDelegate];
-  [v7 audioControlView:v6 didSelectAudioType:a4];
+  viewCopy = view;
+  audioControlDelegate = [(CarMapControlsOverlay *)self audioControlDelegate];
+  [audioControlDelegate audioControlView:viewCopy didSelectAudioType:type];
 }
 
-- (void)setContentView:(id)a3 layoutGuide:(id)a4
+- (void)setContentView:(id)view layoutGuide:(id)guide
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIStackView *)self->_mapControlsStackView superview];
-  if (v8 != v6)
+  viewCopy = view;
+  guideCopy = guide;
+  superview = [(UIStackView *)self->_mapControlsStackView superview];
+  if (superview != viewCopy)
   {
     [(UIStackView *)self->_mapControlsStackView removeFromSuperview];
     mapControlsStackView = self->_mapControlsStackView;
     self->_mapControlsStackView = 0;
 
-    if (v6)
+    if (viewCopy)
     {
       v10 = sub_100006E1C();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -531,7 +531,7 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Will create new map control container view", buf, 2u);
       }
 
-      v78 = v8;
+      v78 = superview;
 
       v11 = [[PassThroughStackView alloc] initWithArrangedSubviews:&__NSArray0__struct];
       v12 = self->_mapControlsStackView;
@@ -546,13 +546,13 @@
       [(UIStackView *)self->_mapControlsStackView setDirectionalLayoutMargins:4.0, 0.0, 4.0, 0.0];
       [(UIStackView *)self->_mapControlsStackView setAlpha:0.0];
       v13 = self->_mapControlsStackView;
-      v14 = [(UIStackView *)v13 heightAnchor];
+      heightAnchor = [(UIStackView *)v13 heightAnchor];
       LODWORD(v15) = 1112014848;
-      v16 = [v14 constraintEqualToConstant:0.0 priority:v15];
+      v16 = [heightAnchor constraintEqualToConstant:0.0 priority:v15];
       v86[0] = v16;
-      v17 = [(UIStackView *)self->_mapControlsStackView widthAnchor];
+      widthAnchor = [(UIStackView *)self->_mapControlsStackView widthAnchor];
       [(CarMapControlsOverlay *)self _mapControlGutterWidth];
-      v18 = [v17 constraintEqualToConstant:?];
+      v18 = [widthAnchor constraintEqualToConstant:?];
       v86[1] = v18;
       v19 = [NSArray arrayWithObjects:v86 count:2];
       [(UIStackView *)v13 addConstraints:v19];
@@ -566,29 +566,29 @@
         [(UIStackView *)self->_mapControlsStackView _maps_applyGlassGroup];
       }
 
-      [v6 addSubview:self->_mapControlsStackView];
-      v22 = [(UIStackView *)self->_mapControlsStackView topAnchor];
-      v23 = [v7 topAnchor];
+      [viewCopy addSubview:self->_mapControlsStackView];
+      topAnchor = [(UIStackView *)self->_mapControlsStackView topAnchor];
+      topAnchor2 = [guideCopy topAnchor];
       LODWORD(v24) = 1148846080;
-      v25 = [v22 constraintEqualToAnchor:v23 constant:0.0 priority:v24];
+      v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0 priority:v24];
       stackViewTopConstraint = self->_stackViewTopConstraint;
       self->_stackViewTopConstraint = v25;
 
       v85[0] = self->_stackViewTopConstraint;
-      v76 = [(UIStackView *)self->_mapControlsStackView topAnchor];
-      v27 = [v7 topAnchor];
-      v28 = [v76 constraintGreaterThanOrEqualToAnchor:v27 constant:0.0];
+      topAnchor3 = [(UIStackView *)self->_mapControlsStackView topAnchor];
+      topAnchor4 = [guideCopy topAnchor];
+      v28 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:0.0];
       v85[1] = v28;
-      v29 = [(UIStackView *)self->_mapControlsStackView bottomAnchor];
-      [v7 bottomAnchor];
-      v30 = v80 = v7;
-      v31 = [v29 constraintEqualToAnchor:v30 constant:-0.0];
+      bottomAnchor = [(UIStackView *)self->_mapControlsStackView bottomAnchor];
+      [guideCopy bottomAnchor];
+      v30 = v80 = guideCopy;
+      v31 = [bottomAnchor constraintEqualToAnchor:v30 constant:-0.0];
       v85[2] = v31;
-      v32 = [(UIStackView *)self->_mapControlsStackView _maps_rightRHDAnchor];
+      _maps_rightRHDAnchor = [(UIStackView *)self->_mapControlsStackView _maps_rightRHDAnchor];
       [v80 _maps_rightRHDAnchor];
-      v33 = v79 = v6;
+      v33 = v79 = viewCopy;
       LODWORD(v34) = 1148846080;
-      v35 = [v32 _maps_constraintWithRHDAnchor:v33 relation:0 constant:-0.0 priority:v34];
+      v35 = [_maps_rightRHDAnchor _maps_constraintWithRHDAnchor:v33 relation:0 constant:-0.0 priority:v34];
       v85[3] = v35;
       v36 = [NSArray arrayWithObjects:v85 count:4];
       [NSLayoutConstraint activateConstraints:v36];
@@ -604,26 +604,26 @@
         v38 = 8;
       }
 
-      v39 = [(CarMapControlsOverlay *)self host];
-      v77 = [v39 collisionGuideForEdge:v38];
+      host = [(CarMapControlsOverlay *)self host];
+      v77 = [host collisionGuideForEdge:v38];
 
-      v40 = [(CarMapControlsOverlay *)self host];
-      v41 = [v40 collisionGuideForEdge:4];
+      host2 = [(CarMapControlsOverlay *)self host];
+      v41 = [host2 collisionGuideForEdge:4];
 
-      v42 = [(CarMapControlsOverlay *)self host];
-      v43 = [(UIStackView *)self->_mapControlsStackView topAnchor];
-      v44 = [v77 bottomAnchor];
-      v45 = [v43 constraintGreaterThanOrEqualToAnchor:v44];
+      host3 = [(CarMapControlsOverlay *)self host];
+      topAnchor5 = [(UIStackView *)self->_mapControlsStackView topAnchor];
+      bottomAnchor2 = [v77 bottomAnchor];
+      v45 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
       v84[0] = v45;
-      v46 = [(UIStackView *)self->_mapControlsStackView _maps_leftRHDAnchor];
-      v47 = [v41 _maps_rightRHDAnchor];
+      _maps_leftRHDAnchor = [(UIStackView *)self->_mapControlsStackView _maps_leftRHDAnchor];
+      _maps_rightRHDAnchor2 = [v41 _maps_rightRHDAnchor];
       LODWORD(v48) = 1148846080;
-      v49 = [v46 _maps_constraintWithRHDAnchor:v47 relation:1 constant:0.0 priority:v48];
+      v49 = [_maps_leftRHDAnchor _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor2 relation:1 constant:0.0 priority:v48];
       v84[1] = v49;
       v50 = [NSArray arrayWithObjects:v84 count:2];
-      [v42 setCollisionConstraints:v50 forOverlay:self];
+      [host3 setCollisionConstraints:v50 forOverlay:self];
 
-      v7 = v80;
+      guideCopy = v80;
       v51 = objc_alloc_init(CarMapControlsAutohidingContainerView);
       topContainerView = self->_topContainerView;
       self->_topContainerView = v51;
@@ -651,16 +651,16 @@
       v61 = [NSArray arrayWithObjects:&v82 count:3];
       [(UIStackView *)v60 _maps_setArrangedSubviews:v61];
 
-      v62 = [(CarMapControlsAutohidingContainerView *)self->_centerContainerView centerYAnchor];
-      v63 = [v80 centerYAnchor];
+      centerYAnchor = [(CarMapControlsAutohidingContainerView *)self->_centerContainerView centerYAnchor];
+      centerYAnchor2 = [v80 centerYAnchor];
       LODWORD(v64) = 1144750080;
-      v65 = [v62 constraintEqualToAnchor:v63 constant:0.0 priority:v64];
+      v65 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0 priority:v64];
       [v65 setActive:1];
 
-      v6 = v79;
+      viewCopy = v79;
       [(CarMapControlsOverlay *)self reload];
 
-      v8 = v78;
+      superview = v78;
     }
 
     else
@@ -698,37 +698,37 @@
   }
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    objc_storeWeak(&self->_host, v4);
-    if (v4)
+    objc_storeWeak(&self->_host, hostCopy);
+    if (hostCopy)
     {
-      v6 = [v4 overlayContentView];
-      v7 = [v4 layoutGuideForOverlay:self];
-      [(CarMapControlsOverlay *)self setContentView:v6 layoutGuide:v7];
+      overlayContentView = [hostCopy overlayContentView];
+      v7 = [hostCopy layoutGuideForOverlay:self];
+      [(CarMapControlsOverlay *)self setContentView:overlayContentView layoutGuide:v7];
 
-      v8 = [(UIStackView *)self->_mapControlsStackView _maps_leftRHDAnchor];
-      v9 = [v4 mapInsetsLayoutGuide];
-      v10 = [v9 _maps_rightRHDAnchor];
+      _maps_leftRHDAnchor = [(UIStackView *)self->_mapControlsStackView _maps_leftRHDAnchor];
+      mapInsetsLayoutGuide = [hostCopy mapInsetsLayoutGuide];
+      _maps_rightRHDAnchor = [mapInsetsLayoutGuide _maps_rightRHDAnchor];
       LODWORD(v11) = 1148846080;
-      v12 = [v8 _maps_constraintWithRHDAnchor:v10 relation:1 constant:0.0 priority:v11];
+      v12 = [_maps_leftRHDAnchor _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor relation:1 constant:0.0 priority:v11];
       v21 = v12;
       v13 = [NSArray arrayWithObjects:&v21 count:1];
-      [v4 setMapInsetsConstraints:v13 forOverlay:self];
+      [hostCopy setMapInsetsConstraints:v13 forOverlay:self];
 
-      v14 = [(UIStackView *)self->_mapControlsStackView _maps_leftRHDAnchor];
-      v15 = [v4 viewportLayoutGuide];
-      v16 = [v15 _maps_rightRHDAnchor];
+      _maps_leftRHDAnchor2 = [(UIStackView *)self->_mapControlsStackView _maps_leftRHDAnchor];
+      viewportLayoutGuide = [hostCopy viewportLayoutGuide];
+      _maps_rightRHDAnchor2 = [viewportLayoutGuide _maps_rightRHDAnchor];
       LODWORD(v17) = 1148846080;
-      v18 = [v14 _maps_constraintWithRHDAnchor:v16 relation:1 constant:0.0 priority:v17];
+      v18 = [_maps_leftRHDAnchor2 _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor2 relation:1 constant:0.0 priority:v17];
       v20 = v18;
       v19 = [NSArray arrayWithObjects:&v20 count:1];
-      [v4 setViewportConstraints:v19 forOverlay:self];
+      [hostCopy setViewportConstraints:v19 forOverlay:self];
     }
 
     else
@@ -738,15 +738,15 @@
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
   if (!self->_mapControlsStackView)
   {
     return;
   }
 
-  v4 = a3;
-  if (!a4)
+  hiddenCopy = hidden;
+  if (!animated)
   {
     goto LABEL_12;
   }
@@ -763,26 +763,26 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarMapControlsOverlay *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarMapControlsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_10;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_10:
 
     *buf = 138543362;
-    v24 = v12;
+    v24 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Reduce motion enabled, running map controls update without animation", buf, 0xCu);
 
     goto LABEL_11;
@@ -790,7 +790,7 @@ LABEL_10:
 
   v13 = 1;
 LABEL_14:
-  if (v4)
+  if (hiddenCopy)
   {
     v14 = 0.0;
   }
@@ -806,7 +806,7 @@ LABEL_14:
     v16 = sub_100006E1C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      if (v4)
+      if (hiddenCopy)
       {
         v17 = "hide";
       }
@@ -816,8 +816,8 @@ LABEL_14:
         v17 = "show";
       }
 
-      v18 = [(UIStackView *)self->_mapControlsStackView arrangedSubviews];
-      v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v18 count]);
+      arrangedSubviews = [(UIStackView *)self->_mapControlsStackView arrangedSubviews];
+      v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [arrangedSubviews count]);
       *buf = 136315394;
       v24 = v17;
       v25 = 2112;
@@ -831,7 +831,7 @@ LABEL_14:
     v21[3] = &unk_101654728;
     v21[4] = self;
     *&v21[5] = v14;
-    v22 = v4;
+    v22 = hiddenCopy;
     v20 = objc_retainBlock(v21);
     if (v13)
     {
@@ -853,18 +853,18 @@ LABEL_14:
   }
 }
 
-- (void)_configureContainer:(id)a3 withElement:(unint64_t)a4 preferredEdgeLocation:(unint64_t)a5 priority:(float)a6
+- (void)_configureContainer:(id)container withElement:(unint64_t)element preferredEdgeLocation:(unint64_t)location priority:(float)priority
 {
-  v10 = a3;
-  if (a5 == 1 || a5 == 4)
+  containerCopy = container;
+  if (location == 1 || location == 4)
   {
-    v11 = [(CarMapControlsOverlay *)self _viewForElement:a4];
+    v11 = [(CarMapControlsOverlay *)self _viewForElement:element];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v12 = [v10 subviews];
-    v13 = [v12 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    subviews = [containerCopy subviews];
+    v13 = [subviews countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v13)
     {
       v14 = v13;
@@ -876,7 +876,7 @@ LABEL_14:
         {
           if (*v39 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subviews);
           }
 
           v17 = *(*(&v38 + 1) + 8 * v16);
@@ -889,55 +889,55 @@ LABEL_14:
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v14 = [subviews countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v14);
     }
 
-    [v10 invalidateIntrinsicContentSize];
+    [containerCopy invalidateIntrinsicContentSize];
     if (v11)
     {
-      v18 = [v10 subviews];
-      v19 = [v18 containsObject:v11];
+      subviews2 = [containerCopy subviews];
+      v19 = [subviews2 containsObject:v11];
 
       if ((v19 & 1) == 0)
       {
-        [v10 addSubview:v11];
+        [containerCopy addSubview:v11];
         v37 = [NSMutableArray arrayWithCapacity:4];
-        v20 = [v11 leadingAnchor];
-        v21 = [v10 leadingAnchor];
-        v22 = [v20 constraintEqualToAnchor:v21];
+        leadingAnchor = [v11 leadingAnchor];
+        leadingAnchor2 = [containerCopy leadingAnchor];
+        v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v45[0] = v22;
-        v23 = [v11 trailingAnchor];
-        v24 = [v10 trailingAnchor];
-        v25 = [v23 constraintEqualToAnchor:v24];
+        trailingAnchor = [v11 trailingAnchor];
+        trailingAnchor2 = [containerCopy trailingAnchor];
+        v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v45[1] = v25;
         v26 = [NSArray arrayWithObjects:v45 count:2];
         [NSLayoutConstraint activateConstraints:v26];
 
-        v27 = [v11 topAnchor];
-        v28 = [v10 topAnchor];
-        if (a5 == 1)
+        topAnchor = [v11 topAnchor];
+        topAnchor2 = [containerCopy topAnchor];
+        if (location == 1)
         {
-          v30 = [v27 constraintEqualToAnchor:v28];
+          v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v44[0] = v30;
-          v31 = [v11 bottomAnchor];
-          v32 = [v10 bottomAnchor];
-          *&v33 = a6;
-          v34 = [v31 constraintLessThanOrEqualToAnchor:v32 constant:0.0 priority:v33];
+          bottomAnchor = [v11 bottomAnchor];
+          bottomAnchor2 = [containerCopy bottomAnchor];
+          *&v33 = priority;
+          v34 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:0.0 priority:v33];
           v44[1] = v34;
           v35 = v44;
         }
 
         else
         {
-          *&v29 = a6;
-          v30 = [v27 constraintGreaterThanOrEqualToAnchor:v28 constant:0.0 priority:v29];
+          *&v29 = priority;
+          v30 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:0.0 priority:v29];
           v43[0] = v30;
-          v31 = [v11 bottomAnchor];
-          v32 = [v10 bottomAnchor];
-          v34 = [v31 constraintEqualToAnchor:v32];
+          bottomAnchor = [v11 bottomAnchor];
+          bottomAnchor2 = [containerCopy bottomAnchor];
+          v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v43[1] = v34;
           v35 = v43;
         }
@@ -961,49 +961,49 @@ LABEL_14:
   }
 }
 
-- (id)_viewForElement:(unint64_t)a3
+- (id)_viewForElement:(unint64_t)element
 {
   v4 = 0;
-  if (a3 > 3)
+  if (element > 3)
   {
-    if (a3 == 6)
+    if (element == 6)
     {
-      v7 = [(CarMapControlsOverlay *)self recenterButton];
+      recenterButton = [(CarMapControlsOverlay *)self recenterButton];
     }
 
     else
     {
-      if (a3 == 5)
+      if (element == 5)
       {
-        v8 = [(CarMapControlsOverlay *)self zoomControls];
-        v9 = v8;
+        zoomControls = [(CarMapControlsOverlay *)self zoomControls];
+        v9 = zoomControls;
         v10 = 1;
       }
 
       else
       {
-        if (a3 != 4)
+        if (element != 4)
         {
           goto LABEL_18;
         }
 
-        v8 = [(CarMapControlsOverlay *)self zoomControls];
-        v9 = v8;
+        zoomControls = [(CarMapControlsOverlay *)self zoomControls];
+        v9 = zoomControls;
         v10 = 0;
       }
 
-      [v8 setPanButtonVisible:v10];
+      [zoomControls setPanButtonVisible:v10];
 
-      v7 = [(CarMapControlsOverlay *)self zoomControls];
+      recenterButton = [(CarMapControlsOverlay *)self zoomControls];
     }
 
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(element)
   {
     case 1uLL:
-      v7 = [(CarMapControlsOverlay *)self floatingControls];
+      recenterButton = [(CarMapControlsOverlay *)self floatingControls];
       goto LABEL_17;
     case 2uLL:
       if (MapsFeature_IsEnabled_MoreReportTypes())
@@ -1017,8 +1017,8 @@ LABEL_14:
       }
       v12 = ;
       v13 = [CarMapControlsStackView alloc];
-      v14 = [(CarMapControlsOverlay *)self cameraToggleButton];
-      v16[0] = v14;
+      cameraToggleButton = [(CarMapControlsOverlay *)self cameraToggleButton];
+      v16[0] = cameraToggleButton;
       v16[1] = v12;
       v15 = [NSArray arrayWithObjects:v16 count:2];
       v4 = [(CarMapControlsStackView *)v13 initWithArrangedSubviews:v15];
@@ -1032,13 +1032,13 @@ LABEL_14:
       break;
     case 3uLL:
       v5 = [MapsSettings valueForConfigKey:NavigationConfig_ReportAndVerifyIncidentsWhileNavigating[0], NavigationConfig_ReportAndVerifyIncidentsWhileNavigating[1]];
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
 
-      if (v6)
+      if (bOOLValue)
       {
-        v7 = [(CarMapControlsOverlay *)self reportIncidentButton];
+        recenterButton = [(CarMapControlsOverlay *)self reportIncidentButton];
 LABEL_17:
-        v4 = v7;
+        v4 = recenterButton;
         break;
       }
 
@@ -1051,101 +1051,101 @@ LABEL_18:
   return v4;
 }
 
-- (void)setAudioSettings:(unint64_t)a3
+- (void)setAudioSettings:(unint64_t)settings
 {
-  v5 = [(CarMapControlsOverlay *)self audioControlView];
-  v6 = [v5 currentAudioType];
+  audioControlView = [(CarMapControlsOverlay *)self audioControlView];
+  currentAudioType = [audioControlView currentAudioType];
 
-  if (v6 != a3)
+  if (currentAudioType != settings)
   {
-    v7 = [(CarMapControlsOverlay *)self audioControlView];
-    [v7 setCurrentAudioType:a3];
+    audioControlView2 = [(CarMapControlsOverlay *)self audioControlView];
+    [audioControlView2 setCurrentAudioType:settings];
   }
 }
 
-- (void)setZoomOutEnabled:(BOOL)a3
+- (void)setZoomOutEnabled:(BOOL)enabled
 {
-  if (self->_zoomOutEnabled != a3)
+  if (self->_zoomOutEnabled != enabled)
   {
-    self->_zoomOutEnabled = a3;
-    v5 = [(CarMapControlsOverlay *)self zoomControls];
-    [v5 setZoomOutEnabled:self->_zoomOutEnabled];
+    self->_zoomOutEnabled = enabled;
+    zoomControls = [(CarMapControlsOverlay *)self zoomControls];
+    [zoomControls setZoomOutEnabled:self->_zoomOutEnabled];
   }
 }
 
-- (void)setZoomInEnabled:(BOOL)a3
+- (void)setZoomInEnabled:(BOOL)enabled
 {
-  if (self->_zoomInEnabled != a3)
+  if (self->_zoomInEnabled != enabled)
   {
-    self->_zoomInEnabled = a3;
-    v5 = [(CarMapControlsOverlay *)self zoomControls];
-    [v5 setZoomInEnabled:self->_zoomInEnabled];
+    self->_zoomInEnabled = enabled;
+    zoomControls = [(CarMapControlsOverlay *)self zoomControls];
+    [zoomControls setZoomInEnabled:self->_zoomInEnabled];
   }
 }
 
-- (void)setTrackingController:(id)a3
+- (void)setTrackingController:(id)controller
 {
-  v5 = a3;
-  if (self->_trackingController != v5)
+  controllerCopy = controller;
+  if (self->_trackingController != controllerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_trackingController, a3);
-    v6 = [(CarMapControlsOverlay *)self floatingControls];
-    [v6 setTrackingController:self->_trackingController];
+    v7 = controllerCopy;
+    objc_storeStrong(&self->_trackingController, controller);
+    floatingControls = [(CarMapControlsOverlay *)self floatingControls];
+    [floatingControls setTrackingController:self->_trackingController];
 
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setAudioControlButtonType:(unint64_t)a3
+- (void)setAudioControlButtonType:(unint64_t)type
 {
-  v4 = [(CarMapControlsOverlay *)self audioControlButton];
-  [v4 setButtonAudioType:a3];
+  audioControlButton = [(CarMapControlsOverlay *)self audioControlButton];
+  [audioControlButton setButtonAudioType:type];
 }
 
 - (unint64_t)audioControlButtonType
 {
-  v2 = [(CarMapControlsOverlay *)self audioControlButton];
-  v3 = [v2 buttonAudioType];
+  audioControlButton = [(CarMapControlsOverlay *)self audioControlButton];
+  buttonAudioType = [audioControlButton buttonAudioType];
 
-  return v3;
+  return buttonAudioType;
 }
 
-- (void)setCameraToggleButtonState:(unint64_t)a3
+- (void)setCameraToggleButtonState:(unint64_t)state
 {
-  v4 = [(CarMapControlsOverlay *)self cameraToggleButton];
-  [v4 setButtonState:a3];
+  cameraToggleButton = [(CarMapControlsOverlay *)self cameraToggleButton];
+  [cameraToggleButton setButtonState:state];
 }
 
-- (void)setMode3DState:(unint64_t)a3
+- (void)setMode3DState:(unint64_t)state
 {
-  if (self->_mode3DState != a3)
+  if (self->_mode3DState != state)
   {
-    self->_mode3DState = a3;
-    v5 = [(CarMapControlsOverlay *)self floatingControls];
-    [v5 set3DButtonState:a3];
+    self->_mode3DState = state;
+    floatingControls = [(CarMapControlsOverlay *)self floatingControls];
+    [floatingControls set3DButtonState:state];
   }
 }
 
-- (void)setMode3DEnabled:(BOOL)a3
+- (void)setMode3DEnabled:(BOOL)enabled
 {
-  if (self->_mode3DEnabled != a3)
+  if (self->_mode3DEnabled != enabled)
   {
-    v4 = a3;
-    self->_mode3DEnabled = a3;
-    v5 = [(CarMapControlsOverlay *)self floatingControls];
-    [v5 setEnable3DButton:v4];
+    enabledCopy = enabled;
+    self->_mode3DEnabled = enabled;
+    floatingControls = [(CarMapControlsOverlay *)self floatingControls];
+    [floatingControls setEnable3DButton:enabledCopy];
   }
 }
 
-- (void)setTrackingButtonEnabled:(BOOL)a3
+- (void)setTrackingButtonEnabled:(BOOL)enabled
 {
-  if (self->_trackingButtonEnabled != a3)
+  if (self->_trackingButtonEnabled != enabled)
   {
-    v4 = a3;
-    self->_trackingButtonEnabled = a3;
-    v5 = [(CarMapControlsOverlay *)self floatingControls];
-    [v5 setEnableTrackingButton:v4];
+    enabledCopy = enabled;
+    self->_trackingButtonEnabled = enabled;
+    floatingControls = [(CarMapControlsOverlay *)self floatingControls];
+    [floatingControls setEnableTrackingButton:enabledCopy];
   }
 }
 
@@ -1175,18 +1175,18 @@ LABEL_18:
   return recenterButton;
 }
 
-- (void)setConfiguration:(id *)a3 withAnimation:(id)a4
+- (void)setConfiguration:(id *)configuration withAnimation:(id)animation
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3->var0 != self->_configuration.topElement || a3->var1 != self->_configuration.centerElement || a3->var2 != self->_configuration.bottomElement)
+  animationCopy = animation;
+  v7 = animationCopy;
+  if (configuration->var0 != self->_configuration.topElement || configuration->var1 != self->_configuration.centerElement || configuration->var2 != self->_configuration.bottomElement)
   {
-    if ([v6 isAnimated])
+    if ([animationCopy isAnimated])
     {
       v10 = *&self->_configuration.topElement == 0 && self->_configuration.bottomElement == 0;
-      v11 = *&a3->var0 == 0 && a3->var2 == 0;
-      v12 = *&a3->var0;
-      self->_configuration.bottomElement = a3->var2;
+      v11 = *&configuration->var0 == 0 && configuration->var2 == 0;
+      v12 = *&configuration->var0;
+      self->_configuration.bottomElement = configuration->var2;
       *&self->_configuration.topElement = v12;
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -1219,19 +1219,19 @@ LABEL_18:
       v22[2] = sub_100A5F230;
       v22[3] = &unk_1016328E0;
       v22[4] = self;
-      v23 = *&a3->var0;
-      var2 = a3->var2;
+      v23 = *&configuration->var0;
+      var2 = configuration->var2;
       [v7 addPreparation:v22];
     }
   }
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  if (a3->var0 != self->_configuration.topElement || a3->var1 != self->_configuration.centerElement || a3->var2 != self->_configuration.bottomElement)
+  if (configuration->var0 != self->_configuration.topElement || configuration->var1 != self->_configuration.centerElement || configuration->var2 != self->_configuration.bottomElement)
   {
-    v5 = *&a3->var0;
-    self->_configuration.bottomElement = a3->var2;
+    v5 = *&configuration->var0;
+    self->_configuration.bottomElement = configuration->var2;
     *&self->_configuration.topElement = v5;
     [(CarMapControlsOverlay *)self reload];
   }

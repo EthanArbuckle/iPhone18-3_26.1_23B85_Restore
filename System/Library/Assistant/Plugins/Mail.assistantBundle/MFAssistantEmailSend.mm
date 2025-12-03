@@ -1,14 +1,14 @@
 @interface MFAssistantEmailSend
-- (id)_sendEmail:(id)a3;
-- (id)_validateEmail:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (id)_sendEmail:(id)email;
+- (id)_validateEmail:(id)email;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MFAssistantEmailSend
 
-- (id)_validateEmail:(id)a3
+- (id)_validateEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   if ((MSCanSendMail() & 1) == 0)
   {
     v11 = [SACommandFailed alloc];
@@ -26,22 +26,22 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v5 = [v4 recipientsTo];
-  if ([v5 count])
+  recipientsTo = [emailCopy recipientsTo];
+  if ([recipientsTo count])
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 recipientsCc];
-  if ([v6 count])
+  recipientsCc = [emailCopy recipientsCc];
+  if ([recipientsCc count])
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v19 = [v4 recipientsBcc];
-  v20 = [v19 count];
+  recipientsBcc = [emailCopy recipientsBcc];
+  v20 = [recipientsBcc count];
 
   if (!v20)
   {
@@ -51,8 +51,8 @@ LABEL_6:
   }
 
 LABEL_7:
-  v7 = [v4 recipientsTo];
-  v8 = [(MFAssistantEmailSend *)self anyRecipientIsInvalid:v7];
+  recipientsTo2 = [emailCopy recipientsTo];
+  v8 = [(MFAssistantEmailSend *)self anyRecipientIsInvalid:recipientsTo2];
 
   if (v8)
   {
@@ -63,8 +63,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = [v4 recipientsCc];
-  v16 = [(MFAssistantEmailSend *)self anyRecipientIsInvalid:v15];
+  recipientsCc2 = [emailCopy recipientsCc];
+  v16 = [(MFAssistantEmailSend *)self anyRecipientIsInvalid:recipientsCc2];
 
   if (v16)
   {
@@ -73,8 +73,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v17 = [v4 recipientsBcc];
-  v18 = [(MFAssistantEmailSend *)self anyRecipientIsInvalid:v17];
+  recipientsBcc2 = [emailCopy recipientsBcc];
+  v18 = [(MFAssistantEmailSend *)self anyRecipientIsInvalid:recipientsBcc2];
 
   if (v18)
   {
@@ -89,10 +89,10 @@ LABEL_13:
   return v13;
 }
 
-- (id)_sendEmail:(id)a3
+- (id)_sendEmail:(id)email
 {
-  v3 = a3;
-  v4 = [[MSEmailModel alloc] initWithSAEmail:v3];
+  emailCopy = email;
+  v4 = [[MSEmailModel alloc] initWithSAEmail:emailCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -126,8 +126,8 @@ LABEL_3:
   }
 
   v10 = objc_alloc_init(SADomainObjectCommitCompleted);
-  v11 = [v3 identifier];
-  [v10 setIdentifier:v11];
+  identifier = [emailCopy identifier];
+  [v10 setIdentifier:identifier];
 
 LABEL_6:
   _Block_object_dispose(&v19, 8);
@@ -135,20 +135,20 @@ LABEL_6:
   return v10;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(MFAssistantEmailSend *)self identifier];
-  v5 = [(MFAssistantEmailSend *)self _validateEmail:v4];
+  completionCopy = completion;
+  identifier = [(MFAssistantEmailSend *)self identifier];
+  v5 = [(MFAssistantEmailSend *)self _validateEmail:identifier];
 
   if (!v5)
   {
-    v6 = [(MFAssistantEmailSend *)self identifier];
-    v5 = [(MFAssistantEmailSend *)self _sendEmail:v6];
+    identifier2 = [(MFAssistantEmailSend *)self identifier];
+    v5 = [(MFAssistantEmailSend *)self _sendEmail:identifier2];
   }
 
-  v7 = [v5 dictionary];
-  v8[2](v8, v7);
+  dictionary = [v5 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

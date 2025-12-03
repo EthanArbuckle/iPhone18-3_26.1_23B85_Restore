@@ -1,6 +1,6 @@
 @interface DOCDateParser
 - (DOCDateParser)init;
-- (id)parse:(id)a3;
+- (id)parse:(id)parse;
 - (void)dealloc;
 @end
 
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (id)parse:(id)a3
+- (id)parse:(id)parse
 {
-  v4 = a3;
+  parseCopy = parse;
   searchParser = self->_searchParser;
   NLSearchParserSetString();
   v6 = self->_searchParser;
   v7 = NLSearchParserCopyParseWithOptions();
   v8 = NLSearchParseCandidateCopyAttributedInput();
   CFRelease(v7);
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = MEMORY[0x277D06310];
   v11 = *MEMORY[0x277D06310];
   if (!*MEMORY[0x277D06310])
@@ -44,10 +44,10 @@
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [(DOCDateParser *)v4 parse:v9, v11];
+    [(DOCDateParser *)parseCopy parse:firstObject, v11];
   }
 
-  return v9;
+  return firstObject;
 }
 
 - (void)dealloc

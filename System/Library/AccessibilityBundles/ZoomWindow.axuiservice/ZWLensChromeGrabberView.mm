@@ -1,46 +1,46 @@
 @interface ZWLensChromeGrabberView
 - (BOOL)isAccessibilityElement;
-- (ZWLensChromeGrabberView)initWithCoder:(id)a3;
-- (ZWLensChromeGrabberView)initWithEdge:(int64_t)a3 startExpanded:(BOOL)a4;
-- (ZWLensChromeGrabberView)initWithFrame:(CGRect)a3;
+- (ZWLensChromeGrabberView)initWithCoder:(id)coder;
+- (ZWLensChromeGrabberView)initWithEdge:(int64_t)edge startExpanded:(BOOL)expanded;
+- (ZWLensChromeGrabberView)initWithFrame:(CGRect)frame;
 - (id)_grabberEtchPathForCurrentEdge;
-- (id)_grabberPathForCurrentEdgeIncludingFlatEdge:(BOOL)a3;
+- (id)_grabberPathForCurrentEdgeIncludingFlatEdge:(BOOL)edge;
 - (id)accessibilityLabel;
-- (void)collapseGrabberAnimated:(BOOL)a3;
-- (void)expandGrabberAnimated:(BOOL)a3;
+- (void)collapseGrabberAnimated:(BOOL)animated;
+- (void)expandGrabberAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 @end
 
 @implementation ZWLensChromeGrabberView
 
-- (ZWLensChromeGrabberView)initWithFrame:(CGRect)a3
+- (ZWLensChromeGrabberView)initWithFrame:(CGRect)frame
 {
-  [NSException raise:@"NotSupported" format:@"Use initWithEdge:startExpanded:", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [NSException raise:@"NotSupported" format:@"Use initWithEdge:startExpanded:", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return [(ZWLensChromeGrabberView *)self initWithEdge:2 startExpanded:1];
 }
 
-- (ZWLensChromeGrabberView)initWithCoder:(id)a3
+- (ZWLensChromeGrabberView)initWithCoder:(id)coder
 {
   [NSException raise:@"NotSupported" format:@"Use initWithEdge:startExpanded:"];
 
   return [(ZWLensChromeGrabberView *)self initWithEdge:2 startExpanded:1];
 }
 
-- (ZWLensChromeGrabberView)initWithEdge:(int64_t)a3 startExpanded:(BOOL)a4
+- (ZWLensChromeGrabberView)initWithEdge:(int64_t)edge startExpanded:(BOOL)expanded
 {
-  v4 = a4;
+  expandedCopy = expanded;
   v26.receiver = self;
   v26.super_class = ZWLensChromeGrabberView;
   v6 = [(ZWLensChromeGrabberView *)&v26 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    [(ZWLensChromeGrabberView *)v6 setGrabberEdge:a3];
+    [(ZWLensChromeGrabberView *)v6 setGrabberEdge:edge];
     v8 = +[CAShapeLayer layer];
     [(ZWLensChromeGrabberView *)v7 setOuterBorderLayer:v8];
-    v9 = [(ZWLensChromeGrabberView *)v7 layer];
-    [v9 addSublayer:v8];
+    layer = [(ZWLensChromeGrabberView *)v7 layer];
+    [layer addSublayer:v8];
 
     v10 = +[UIColor clearColor];
     [v8 setFillColor:{objc_msgSend(v10, "CGColor")}];
@@ -52,8 +52,8 @@
     [v8 setLineWidth:v12 + v12];
     v13 = +[CAShapeLayer layer];
     [(ZWLensChromeGrabberView *)v7 setEtchLayer:v13];
-    v14 = [(ZWLensChromeGrabberView *)v7 layer];
-    [v14 addSublayer:v13];
+    layer2 = [(ZWLensChromeGrabberView *)v7 layer];
+    [layer2 addSublayer:v13];
 
     v15 = +[UIColor clearColor];
     [v13 setFillColor:{objc_msgSend(v15, "CGColor")}];
@@ -65,8 +65,8 @@
     [v13 setLineJoin:kCALineJoinBevel];
     if ([(ZWLensChromeGrabberView *)v7 grabberEdge])
     {
-      v17 = [(ZWLensChromeGrabberView *)v7 grabberEdge];
-      if (v17 == &dword_0 + 2)
+      grabberEdge = [(ZWLensChromeGrabberView *)v7 grabberEdge];
+      if (grabberEdge == &dword_0 + 2)
       {
         v18 = 7;
       }
@@ -76,7 +76,7 @@
         v18 = 8;
       }
 
-      if (v17 == &dword_0 + 2)
+      if (grabberEdge == &dword_0 + 2)
       {
         v19 = 8;
       }
@@ -103,7 +103,7 @@
     [v22 setPriority:v23];
     [(ZWLensChromeGrabberView *)v7 addConstraint:v22];
 
-    if (v4)
+    if (expandedCopy)
     {
       [(ZWLensChromeGrabberView *)v7 expandGrabberAnimated:0];
     }
@@ -130,45 +130,45 @@
   v3 = [(ZWLensChromeGrabberView *)self _grabberPathForCurrentEdgeIncludingFlatEdge:1];
   v4 = +[CAShapeLayer layer];
   [v4 setPath:{objc_msgSend(v3, "CGPath")}];
-  v5 = [(ZWLensChromeGrabberView *)self layer];
-  [v5 setMask:v4];
+  layer = [(ZWLensChromeGrabberView *)self layer];
+  [layer setMask:v4];
 
   [(ZWLensChromeGrabberView *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(ZWLensChromeGrabberView *)self outerBorderLayer];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  outerBorderLayer = [(ZWLensChromeGrabberView *)self outerBorderLayer];
+  [outerBorderLayer setFrame:{v7, v9, v11, v13}];
 
   v15 = [(ZWLensChromeGrabberView *)self _grabberPathForCurrentEdgeIncludingFlatEdge:0];
-  v16 = [v15 CGPath];
-  v17 = [(ZWLensChromeGrabberView *)self outerBorderLayer];
-  [v17 setPath:v16];
+  cGPath = [v15 CGPath];
+  outerBorderLayer2 = [(ZWLensChromeGrabberView *)self outerBorderLayer];
+  [outerBorderLayer2 setPath:cGPath];
 
   [(ZWLensChromeGrabberView *)self bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(ZWLensChromeGrabberView *)self etchLayer];
-  [v26 setFrame:{v19, v21, v23, v25}];
+  etchLayer = [(ZWLensChromeGrabberView *)self etchLayer];
+  [etchLayer setFrame:{v19, v21, v23, v25}];
 
-  v27 = [(ZWLensChromeGrabberView *)self _grabberEtchPathForCurrentEdge];
-  v28 = [v27 CGPath];
-  v29 = [(ZWLensChromeGrabberView *)self etchLayer];
-  [v29 setPath:v28];
+  _grabberEtchPathForCurrentEdge = [(ZWLensChromeGrabberView *)self _grabberEtchPathForCurrentEdge];
+  cGPath2 = [_grabberEtchPathForCurrentEdge CGPath];
+  etchLayer2 = [(ZWLensChromeGrabberView *)self etchLayer];
+  [etchLayer2 setPath:cGPath2];
 
   +[CATransaction commit];
 }
 
-- (id)_grabberPathForCurrentEdgeIncludingFlatEdge:(BOOL)a3
+- (id)_grabberPathForCurrentEdgeIncludingFlatEdge:(BOOL)edge
 {
-  v3 = a3;
+  edgeCopy = edge;
   if ([(ZWLensChromeGrabberView *)self grabberEdge])
   {
-    v5 = [(ZWLensChromeGrabberView *)self grabberEdge];
-    if (v5 == 2)
+    grabberEdge = [(ZWLensChromeGrabberView *)self grabberEdge];
+    if (grabberEdge == 2)
     {
       v6 = 20.0;
     }
@@ -178,7 +178,7 @@
       v6 = 90.0;
     }
 
-    if (v5 == 2)
+    if (grabberEdge == 2)
     {
       v7 = 90.0;
     }
@@ -232,7 +232,7 @@
   }
 
   [v12 addCurveToPoint:v13 controlPoint1:v14 controlPoint2:{v11, v15, v16, v17}];
-  if (v3)
+  if (edgeCopy)
   {
     [v10 closePath];
   }
@@ -263,8 +263,8 @@
 {
   if ([(ZWLensChromeGrabberView *)self grabberEdge])
   {
-    v3 = [(ZWLensChromeGrabberView *)self grabberEdge];
-    if (v3 == 2)
+    grabberEdge = [(ZWLensChromeGrabberView *)self grabberEdge];
+    if (grabberEdge == 2)
     {
       v4 = 20.0;
     }
@@ -274,7 +274,7 @@
       v4 = 90.0;
     }
 
-    if (v3 == 2)
+    if (grabberEdge == 2)
     {
       v5 = 90.0;
     }
@@ -345,12 +345,12 @@
   return v8;
 }
 
-- (void)expandGrabberAnimated:(BOOL)a3
+- (void)expandGrabberAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(ZWLensChromeGrabberView *)self setExpanded:1];
   v4 = 0.0;
-  if (v3)
+  if (animatedCopy)
   {
     v4 = ZWDefaultFadeAnimationDuration();
   }
@@ -358,12 +358,12 @@
   [UIView animateWithDuration:&__block_literal_global_0 animations:v4];
 }
 
-- (void)collapseGrabberAnimated:(BOOL)a3
+- (void)collapseGrabberAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(ZWLensChromeGrabberView *)self setExpanded:0];
   v5 = 0.0;
-  if (v3)
+  if (animatedCopy)
   {
     v5 = ZWDefaultFadeAnimationDuration();
   }
@@ -392,10 +392,10 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ZWLensChromeGrabberView *)self grabberEdge];
-  if (v2 <= 3)
+  grabberEdge = [(ZWLensChromeGrabberView *)self grabberEdge];
+  if (grabberEdge <= 3)
   {
-    v3 = ZWLocString(off_78D90[v2]);
+    v3 = ZWLocString(off_78D90[grabberEdge]);
   }
 
   return v3;

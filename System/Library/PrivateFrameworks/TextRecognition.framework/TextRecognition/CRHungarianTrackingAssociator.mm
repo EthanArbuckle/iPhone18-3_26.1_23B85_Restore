@@ -1,22 +1,22 @@
 @interface CRHungarianTrackingAssociator
-+ (id)performAssociationOnCandidates:(id)a3 useRegionsAtOCRDispatchTime:(BOOL)a4 existingRegions:(id)a5 fineGrainedResults:(id)a6 newRegionHandler:(id)a7 matchedRegionHandler:(id)a8;
++ (id)performAssociationOnCandidates:(id)candidates useRegionsAtOCRDispatchTime:(BOOL)time existingRegions:(id)regions fineGrainedResults:(id)results newRegionHandler:(id)handler matchedRegionHandler:(id)regionHandler;
 @end
 
 @implementation CRHungarianTrackingAssociator
 
-+ (id)performAssociationOnCandidates:(id)a3 useRegionsAtOCRDispatchTime:(BOOL)a4 existingRegions:(id)a5 fineGrainedResults:(id)a6 newRegionHandler:(id)a7 matchedRegionHandler:(id)a8
++ (id)performAssociationOnCandidates:(id)candidates useRegionsAtOCRDispatchTime:(BOOL)time existingRegions:(id)regions fineGrainedResults:(id)results newRegionHandler:(id)handler matchedRegionHandler:(id)regionHandler
 {
-  v175 = a4;
+  timeCopy = time;
   v215[16] = *MEMORY[0x1E69E9840];
-  v163 = a3;
-  v170 = a5;
-  v155 = a6;
-  v159 = a7;
-  v158 = a8;
-  v172 = [MEMORY[0x1E695DF70] array];
-  v157 = [MEMORY[0x1E695DF70] array];
-  v162 = [MEMORY[0x1E695DF70] array];
-  v171 = [MEMORY[0x1E695DF70] array];
+  candidatesCopy = candidates;
+  regionsCopy = regions;
+  resultsCopy = results;
+  handlerCopy = handler;
+  regionHandlerCopy = regionHandler;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v205 = 0;
   v206 = &v205;
   v207 = 0x2050000000;
@@ -36,26 +36,26 @@
   v13 = v12;
   _Block_object_dispose(&v205, 8);
   v156 = objc_alloc_init(v12);
-  [v170 count];
-  v14 = [v163 count];
+  [regionsCopy count];
+  v14 = [candidatesCopy count];
   v154 = &v154;
   *&v16 = MEMORY[0x1EEE9AC00](v14, v15).n128_u64[0];
   v18 = &v154 - v17;
-  if ([v163 count])
+  if ([candidatesCopy count])
   {
     v19 = 0;
     v20 = 0;
     do
     {
-      v21 = [v163 objectAtIndexedSubscript:v20];
-      if ([v170 count])
+      v21 = [candidatesCopy objectAtIndexedSubscript:v20];
+      if ([regionsCopy count])
       {
         v22 = 0;
         do
         {
-          v23 = [v170 objectAtIndexedSubscript:v22];
+          v23 = [regionsCopy objectAtIndexedSubscript:v22];
           v24 = v23;
-          if (v175)
+          if (timeCopy)
           {
             [v23 boundingQuadAtOCRDispatch];
           }
@@ -65,31 +65,31 @@
             [v23 boundingQuad];
           }
           v25 = ;
-          v26 = [v21 boundingQuad];
-          [v25 boundingBoxClippedIOUWithQuad:v26];
+          boundingQuad = [v21 boundingQuad];
+          [v25 boundingBoxClippedIOUWithQuad:boundingQuad];
           v28 = v27;
 
-          v29 = [v170 count];
+          v29 = [regionsCopy count];
           v30 = 1.0 - v28;
           *&v18[4 * v22 + v19 * v29] = v30;
 
           ++v22;
         }
 
-        while (v22 < [v170 count]);
+        while (v22 < [regionsCopy count]);
       }
 
       ++v20;
       v19 += 4;
     }
 
-    while (v20 < [v163 count]);
+    while (v20 < [candidatesCopy count]);
   }
 
-  if ([v163 count])
+  if ([candidatesCopy count])
   {
-    v31 = [v163 count];
-    v32 = [v170 count];
+    v31 = [candidatesCopy count];
+    v32 = [regionsCopy count];
     v164 = [v156 computeMatchingForCostMatrix:v18 withRowCount:v31 columnCount:v32];
   }
 
@@ -104,30 +104,30 @@
   if (v164 && [v164 count])
   {
     v34 = 0;
-    v165 = v158 + 16;
+    v165 = regionHandlerCopy + 16;
     do
     {
-      v35 = [v163 objectAtIndexedSubscript:v34];
+      v35 = [candidatesCopy objectAtIndexedSubscript:v34];
       v36 = [v164 objectAtIndexedSubscript:v34];
       v37 = [v36 isEqual:&unk_1F2BF85F0];
 
       if (v37)
       {
-        v38 = [MEMORY[0x1E696AFB0] UUID];
-        [v35 setTrackingID:v38];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        [v35 setTrackingID:uUID];
 
         LOBYTE(v204[0]) = 1;
-        v159[2](v159, v35, v204);
+        handlerCopy[2](handlerCopy, v35, v204);
         if (LOBYTE(v204[0]) == 1)
         {
-          v39 = [v35 trackingID];
-          [v171 addObject:v39];
+          trackingID = [v35 trackingID];
+          [array4 addObject:trackingID];
 
-          [v172 addObject:v35];
+          [array addObject:v35];
           [v166 addObject:v35];
-          v40 = [v35 boundingQuad];
-          v41 = [v40 denormalizedQuad];
-          [v41 area];
+          boundingQuad2 = [v35 boundingQuad];
+          denormalizedQuad = [boundingQuad2 denormalizedQuad];
+          [denormalizedQuad area];
           v43 = v42;
 
           v33 = v33 + v43;
@@ -136,28 +136,28 @@
 
       else
       {
-        v44 = [v170 count];
+        v44 = [regionsCopy count];
         v45 = [v164 objectAtIndexedSubscript:v34];
         v46 = *&v18[4 * v44 * v34 + 4 * [v45 intValue]] < 0.55;
 
         v47 = [v164 objectAtIndexedSubscript:v34];
-        v48 = [v47 intValue];
-        v174 = [v170 objectAtIndexedSubscript:v48];
+        intValue = [v47 intValue];
+        v174 = [regionsCopy objectAtIndexedSubscript:intValue];
 
         if (v46)
         {
-          v49 = [v174 trackingID];
-          [v35 setTrackingID:v49];
+          trackingID2 = [v174 trackingID];
+          [v35 setTrackingID:trackingID2];
 
           LOBYTE(v204[0]) = 1;
-          (*(v158 + 2))(v158, v174, v35, v204);
+          (*(regionHandlerCopy + 2))(regionHandlerCopy, v174, v35, v204);
           if ((v204[0] & 1) == 0)
           {
-            v50 = [v35 originalBoundingQuad];
-            [v174 setOriginalBoundingQuad:v50];
+            originalBoundingQuad = [v35 originalBoundingQuad];
+            [v174 setOriginalBoundingQuad:originalBoundingQuad];
 
-            v51 = [v35 boundingQuad];
-            [v174 setBoundingQuad:v51];
+            boundingQuad3 = [v35 boundingQuad];
+            [v174 setBoundingQuad:boundingQuad3];
 
             [v35 boundingQuadHomography];
             v53 = v52;
@@ -170,53 +170,53 @@
             [v174 setBoundingQuadHomography:*&v52];
           }
 
-          v56 = [v174 trackingID];
-          [v157 addObject:v56];
+          trackingID3 = [v174 trackingID];
+          [array2 addObject:trackingID3];
 
-          [v172 addObject:v174];
-          v57 = [v170 count];
+          [array addObject:v174];
+          v57 = [regionsCopy count];
           v58 = [v164 objectAtIndexedSubscript:v34];
           v59 = *&v18[4 * v57 * v34 + 4 * [v58 intValue]];
-          v60 = [v174 boundingQuad];
-          v61 = [v60 denormalizedQuad];
-          [v61 area];
+          boundingQuad4 = [v174 boundingQuad];
+          denormalizedQuad2 = [boundingQuad4 denormalizedQuad];
+          [denormalizedQuad2 area];
           v63 = v62;
-          v64 = [v35 boundingQuad];
-          v65 = [v64 denormalizedQuad];
-          [v65 area];
+          boundingQuad5 = [v35 boundingQuad];
+          denormalizedQuad3 = [boundingQuad5 denormalizedQuad];
+          [denormalizedQuad3 area];
           v67 = v66;
         }
 
         else
         {
-          v68 = [MEMORY[0x1E696AFB0] UUID];
-          [v35 setTrackingID:v68];
+          uUID2 = [MEMORY[0x1E696AFB0] UUID];
+          [v35 setTrackingID:uUID2];
 
           LOBYTE(v204[0]) = 1;
-          v159[2](v159, v35, v204);
+          handlerCopy[2](handlerCopy, v35, v204);
           if (LOBYTE(v204[0]) == 1)
           {
             [v166 addObject:v35];
-            v69 = [v35 trackingID];
-            [v171 addObject:v69];
+            trackingID4 = [v35 trackingID];
+            [array4 addObject:trackingID4];
 
-            [v172 addObject:v35];
+            [array addObject:v35];
           }
 
           [v167 addObject:v174];
-          v70 = [v174 trackingID];
-          [v162 addObject:v70];
+          trackingID5 = [v174 trackingID];
+          [array3 addObject:trackingID5];
 
-          v71 = [v170 count];
+          v71 = [regionsCopy count];
           v72 = [v164 objectAtIndexedSubscript:v34];
           v59 = *&v18[4 * v71 * v34 + 4 * [v72 intValue]];
-          v73 = [v174 boundingQuad];
-          v74 = [v73 denormalizedQuad];
-          [v74 area];
+          boundingQuad6 = [v174 boundingQuad];
+          denormalizedQuad4 = [boundingQuad6 denormalizedQuad];
+          [denormalizedQuad4 area];
           v63 = v75;
-          v76 = [v35 boundingQuad];
-          v77 = [v76 denormalizedQuad];
-          [v77 area];
+          boundingQuad7 = [v35 boundingQuad];
+          denormalizedQuad5 = [boundingQuad7 denormalizedQuad];
+          [denormalizedQuad5 area];
           v67 = v78;
         }
 
@@ -229,7 +229,7 @@
     while (v34 < [v164 count]);
   }
 
-  if ([v170 count])
+  if ([regionsCopy count])
   {
     v79 = 0;
     do
@@ -239,14 +239,14 @@
 
       if ((v81 & 1) == 0)
       {
-        v82 = [v170 objectAtIndexedSubscript:v79];
-        v83 = [v82 trackingID];
-        [v162 addObject:v83];
+        v82 = [regionsCopy objectAtIndexedSubscript:v79];
+        trackingID6 = [v82 trackingID];
+        [array3 addObject:trackingID6];
 
-        v84 = [v170 objectAtIndexedSubscript:v79];
-        v85 = [v84 boundingQuad];
-        v86 = [v85 denormalizedQuad];
-        [v86 area];
+        v84 = [regionsCopy objectAtIndexedSubscript:v79];
+        boundingQuad8 = [v84 boundingQuad];
+        denormalizedQuad6 = [boundingQuad8 denormalizedQuad];
+        [denormalizedQuad6 area];
         v88 = v87;
 
         v33 = v33 + v88;
@@ -255,7 +255,7 @@
       ++v79;
     }
 
-    while (v79 < [v170 count]);
+    while (v79 < [regionsCopy count]);
   }
 
   v161 = objc_opt_new();
@@ -301,7 +301,7 @@
               }
 
               v94 = *(*(&v196 + 1) + 8 * i);
-              if (v175)
+              if (timeCopy)
               {
                 [v174 boundingQuadAtOCRDispatch];
               }
@@ -311,14 +311,14 @@
                 [v174 boundingQuad];
               }
               v95 = ;
-              v96 = [v94 boundingQuad];
-              v97 = [v95 overlapsNormalizedQuad:v96];
+              boundingQuad9 = [v94 boundingQuad];
+              v97 = [v95 overlapsNormalizedQuad:boundingQuad9];
 
               if (v97)
               {
                 [v173 addObject:v94];
-                v98 = [v94 boundingQuad];
-                v99 = v98;
+                boundingQuad10 = [v94 boundingQuad];
+                v99 = boundingQuad10;
                 if (v90)
                 {
                   [v90 baselineAngle];
@@ -330,7 +330,7 @@
 
                 else
                 {
-                  v90 = v98;
+                  v90 = boundingQuad10;
                 }
               }
             }
@@ -343,15 +343,15 @@
 
         if ([v173 count] >= 2)
         {
-          v102 = [v174 boundingQuad];
-          [v102 boundingBoxClippedIOUWithQuad:v90];
+          boundingQuad11 = [v174 boundingQuad];
+          [boundingQuad11 boundingBoxClippedIOUWithQuad:v90];
           v104 = v103;
 
           if (1.0 - v104 <= 0.550000012)
           {
-            v105 = [v174 boundingQuad];
-            v106 = [v105 denormalizedQuad];
-            [v106 area];
+            boundingQuad12 = [v174 boundingQuad];
+            denormalizedQuad7 = [boundingQuad12 denormalizedQuad];
+            [denormalizedQuad7 area];
             v108 = v107;
 
             v194 = 0u;
@@ -373,9 +373,9 @@
                     objc_enumerationMutation(v109);
                   }
 
-                  v113 = [*(*(&v192 + 1) + 8 * j) boundingQuad];
-                  v114 = [v113 denormalizedQuad];
-                  [v114 area];
+                  boundingQuad13 = [*(*(&v192 + 1) + 8 * j) boundingQuad];
+                  denormalizedQuad8 = [boundingQuad13 denormalizedQuad];
+                  [denormalizedQuad8 area];
                   v116 = v115;
 
                   v33 = v33 - v116;
@@ -388,10 +388,10 @@
             }
 
             [v161 addObject:v174];
-            [v172 addObject:v174];
+            [array addObject:v174];
             [v160 addObjectsFromArray:v109];
-            v117 = [v174 trackingID];
-            [v162 removeObject:v117];
+            trackingID7 = [v174 trackingID];
+            [array3 removeObject:trackingID7];
 
             v190 = 0u;
             v191 = 0u;
@@ -412,9 +412,9 @@
                   }
 
                   v122 = *(*(&v188 + 1) + 8 * k);
-                  [v172 removeObject:v122];
-                  v123 = [v122 trackingID];
-                  [v171 removeObject:v123];
+                  [array removeObject:v122];
+                  trackingID8 = [v122 trackingID];
+                  [array4 removeObject:trackingID8];
                 }
 
                 v119 = [v118 countByEnumeratingWithState:&v188 objects:v212 count:16];
@@ -465,7 +465,7 @@
         v180 = 0u;
         v181 = 0u;
         v124 = v168;
-        v125 = 0;
+        boundingQuad15 = 0;
         v126 = [v124 countByEnumeratingWithState:&v180 objects:v210 count:16];
         if (v126)
         {
@@ -480,7 +480,7 @@
               }
 
               v129 = *(*(&v180 + 1) + 8 * m);
-              if (v175)
+              if (timeCopy)
               {
                 [*(*(&v180 + 1) + 8 * m) boundingQuadAtOCRDispatch];
               }
@@ -490,24 +490,24 @@
                 [*(*(&v180 + 1) + 8 * m) boundingQuad];
               }
               v130 = ;
-              v131 = [v174 boundingQuad];
-              v132 = [v130 overlapsNormalizedQuad:v131];
+              boundingQuad14 = [v174 boundingQuad];
+              v132 = [v130 overlapsNormalizedQuad:boundingQuad14];
 
               if (v132)
               {
                 [v173 addObject:v129];
-                if (v125)
+                if (boundingQuad15)
                 {
-                  [v125 baselineAngle];
+                  [boundingQuad15 baselineAngle];
                   *&v133 = v133;
-                  v134 = [v125 unionWithNormalizedQuad:v130 baselineAngle:v133];
+                  v134 = [boundingQuad15 unionWithNormalizedQuad:v130 baselineAngle:v133];
 
-                  v125 = v134;
+                  boundingQuad15 = v134;
                 }
 
                 else
                 {
-                  v125 = [v129 boundingQuad];
+                  boundingQuad15 = [v129 boundingQuad];
                 }
               }
             }
@@ -520,15 +520,15 @@
 
         if ([v173 count] >= 2)
         {
-          v135 = [v174 boundingQuad];
-          [v135 boundingBoxClippedIOUWithQuad:v125];
+          boundingQuad16 = [v174 boundingQuad];
+          [boundingQuad16 boundingBoxClippedIOUWithQuad:boundingQuad15];
           v137 = v136;
 
           if (1.0 - v137 <= 0.550000012)
           {
-            v138 = [v174 boundingQuad];
-            v139 = [v138 denormalizedQuad];
-            [v139 area];
+            boundingQuad17 = [v174 boundingQuad];
+            denormalizedQuad9 = [boundingQuad17 denormalizedQuad];
+            [denormalizedQuad9 area];
             v141 = v140;
 
             v178 = 0u;
@@ -550,9 +550,9 @@
                     objc_enumerationMutation(v142);
                   }
 
-                  v146 = [*(*(&v176 + 1) + 8 * n) boundingQuad];
-                  v147 = [v146 denormalizedQuad];
-                  [v147 area];
+                  boundingQuad18 = [*(*(&v176 + 1) + 8 * n) boundingQuad];
+                  denormalizedQuad10 = [boundingQuad18 denormalizedQuad];
+                  [denormalizedQuad10 area];
                   v149 = v148;
 
                   v33 = v33 - v149;
@@ -564,11 +564,11 @@
               while (v143);
             }
 
-            [v172 addObjectsFromArray:v142];
-            [v162 removeObjectsInArray:v142];
-            [v172 removeObject:v174];
-            v150 = [v174 trackingID];
-            [v171 removeObject:v150];
+            [array addObjectsFromArray:v142];
+            [array3 removeObjectsInArray:v142];
+            [array removeObject:v174];
+            trackingID9 = [v174 trackingID];
+            [array4 removeObject:trackingID9];
           }
         }
 
@@ -583,7 +583,7 @@
   }
 
   v151 = [CRTrackingAssociatorResults alloc];
-  v152 = [(CRTrackingAssociatorResults *)v151 initWithTotalError:v172 tracked:v157 updatedRegionIDs:v162 removedRegionIDs:v171 addedRegionIDs:v33];
+  v152 = [(CRTrackingAssociatorResults *)v151 initWithTotalError:array tracked:array2 updatedRegionIDs:array3 removedRegionIDs:array4 addedRegionIDs:v33];
 
   return v152;
 }

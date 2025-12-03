@@ -1,15 +1,15 @@
 @interface VGHRTFEarPCACaptureProcessor
-- (VGHRTFEarPCACaptureProcessor)initWithDebugDataPath:(id)a3 withModelsRootPath:(id)a4;
+- (VGHRTFEarPCACaptureProcessor)initWithDebugDataPath:(id)path withModelsRootPath:(id)rootPath;
 - (id)defaultUpdateData;
-- (id)processCaptureData:(id)a3 faceData:(id)a4;
+- (id)processCaptureData:(id)data faceData:(id)faceData;
 @end
 
 @implementation VGHRTFEarPCACaptureProcessor
 
-- (VGHRTFEarPCACaptureProcessor)initWithDebugDataPath:(id)a3 withModelsRootPath:(id)a4
+- (VGHRTFEarPCACaptureProcessor)initWithDebugDataPath:(id)path withModelsRootPath:(id)rootPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  rootPathCopy = rootPath;
   v19.receiver = self;
   v19.super_class = VGHRTFEarPCACaptureProcessor;
   v8 = [(VGHRTFEarPCACaptureProcessor *)&v19 init];
@@ -19,14 +19,14 @@
     earCaptureOptions = v8->_earCaptureOptions;
     v8->_earCaptureOptions = v9;
 
-    [(VGEarPCACaptureOptions *)v8->_earCaptureOptions setWriteDebugData:v6 != 0];
-    if (v6)
+    [(VGEarPCACaptureOptions *)v8->_earCaptureOptions setWriteDebugData:pathCopy != 0];
+    if (pathCopy)
     {
-      v11 = [v6 stringByAppendingPathComponent:@"EarPCACapture"];
+      v11 = [pathCopy stringByAppendingPathComponent:@"EarPCACapture"];
       [(VGEarPCACaptureOptions *)v8->_earCaptureOptions setDebugDataPath:v11];
     }
 
-    [(VGEarPCACaptureOptions *)v8->_earCaptureOptions setModelsRootPath:v7];
+    [(VGEarPCACaptureOptions *)v8->_earCaptureOptions setModelsRootPath:rootPathCopy];
     v12 = [[VGEarPCAFrameSelector alloc] initWithOptions:v8->_earCaptureOptions];
     selector = v8->_selector;
     v8->_selector = v12;
@@ -62,46 +62,46 @@ LABEL_10:
 
 - (id)defaultUpdateData
 {
-  v2 = [(VGEarPCACaptureOptions *)self->_earCaptureOptions frameCountThreshold];
+  frameCountThreshold = [(VGEarPCACaptureOptions *)self->_earCaptureOptions frameCountThreshold];
   v3 = objc_opt_new();
-  if (v2)
+  if (frameCountThreshold)
   {
-    for (i = 0; i != v2; ++i)
+    for (i = 0; i != frameCountThreshold; ++i)
     {
       v5 = [MEMORY[0x277CCABB0] numberWithDouble:i];
       [v3 setObject:0 forKeyedSubscript:v5];
     }
   }
 
-  v6 = [[VGHRTFEarCaptureUpdateData alloc] initEmpty];
-  [v6 setProgressType:0];
-  [v6 setProgress:0.0];
-  [v6 setLeftEarStatusList:v3];
-  [v6 setRightEarStatusList:v3];
-  [v6 setTrackedData:0];
-  [v6 setResult:0];
+  initEmpty = [[VGHRTFEarCaptureUpdateData alloc] initEmpty];
+  [initEmpty setProgressType:0];
+  [initEmpty setProgress:0.0];
+  [initEmpty setLeftEarStatusList:v3];
+  [initEmpty setRightEarStatusList:v3];
+  [initEmpty setTrackedData:0];
+  [initEmpty setResult:0];
 
-  return v6;
+  return initEmpty;
 }
 
-- (id)processCaptureData:(id)a3 faceData:(id)a4
+- (id)processCaptureData:(id)data faceData:(id)faceData
 {
   v99 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v63 = a4;
-  v7 = [(VGHRTFEarPCACaptureProcessor *)self defaultUpdateData];
+  dataCopy = data;
+  faceDataCopy = faceData;
+  defaultUpdateData = [(VGHRTFEarPCACaptureProcessor *)self defaultUpdateData];
   ptr = self->_rectify.__ptr_;
-  v9 = [v6 colorBuffer];
-  v10 = [v6 depthBuffer];
-  [v6 colorIntrinsics];
+  colorBuffer = [dataCopy colorBuffer];
+  depthBuffer = [dataCopy depthBuffer];
+  [dataCopy colorIntrinsics];
   v64 = v12;
   v66 = v11;
   v61 = v13;
-  v14 = [v6 depthCalibrationData];
+  depthCalibrationData = [dataCopy depthCalibrationData];
   v101.columns[1] = v64;
   v101.columns[0] = v66;
   v101.columns[2] = v61;
-  vg::hrtf::Rectify::process(ptr, v9, v10, v101, v14, v93);
+  vg::hrtf::Rectify::process(ptr, colorBuffer, depthBuffer, v101, depthCalibrationData, v93);
 
   if (v98)
   {
@@ -144,14 +144,14 @@ LABEL_10:
     }
 
     [v67 setVideoIntrinsics:{*&v93[2], *&v93[4], *&v93[6]}];
-    [v6 timestamp];
+    [dataCopy timestamp];
     CMTimeMakeWithSeconds(&v68, v17, 1000000);
     buf = *&v68.value;
     *&v83 = v68.epoch;
     [v67 setTimestamp:&buf];
     selector = self->_selector;
-    v19 = [v63 yawAngle];
-    v62 = [(VGEarPCAFrameSelector *)selector addPoseWithCaptureData:v67 faceYaw:v19];
+    yawAngle = [faceDataCopy yawAngle];
+    v62 = [(VGEarPCAFrameSelector *)selector addPoseWithCaptureData:v67 faceYaw:yawAngle];
 
     if ([v62 completed])
     {
@@ -173,18 +173,18 @@ LABEL_10:
 
     [v62 progress];
     v24 = v23;
-    [v7 setProgressType:v20];
+    [defaultUpdateData setProgressType:v20];
     LODWORD(v25) = v24;
-    [v7 setProgress:v25];
-    v26 = [(VGEarPCAFrameSelector *)self->_selector currentState];
-    v27 = detail::getEarPoseList([v26 leftFrameCount], -[VGEarPCAFrameSelector requiredPosesCount](self->_selector, "requiredPosesCount"));
-    [v7 setLeftEarStatusList:v27];
+    [defaultUpdateData setProgress:v25];
+    currentState = [(VGEarPCAFrameSelector *)self->_selector currentState];
+    v27 = detail::getEarPoseList([currentState leftFrameCount], -[VGEarPCAFrameSelector requiredPosesCount](self->_selector, "requiredPosesCount"));
+    [defaultUpdateData setLeftEarStatusList:v27];
 
-    v28 = [(VGEarPCAFrameSelector *)self->_selector currentState];
-    v29 = detail::getEarPoseList([v28 rightFrameCount], -[VGEarPCAFrameSelector requiredPosesCount](self->_selector, "requiredPosesCount"));
-    [v7 setRightEarStatusList:v29];
+    currentState2 = [(VGEarPCAFrameSelector *)self->_selector currentState];
+    v29 = detail::getEarPoseList([currentState2 rightFrameCount], -[VGEarPCAFrameSelector requiredPosesCount](self->_selector, "requiredPosesCount"));
+    [defaultUpdateData setRightEarStatusList:v29];
 
-    v65 = [[VGHRTFEarCaptureProcessedData alloc] initEmpty];
+    initEmpty = [[VGHRTFEarCaptureProcessedData alloc] initEmpty];
     v30 = v62;
     v21 = v67;
     if ([v30 detectionError])
@@ -193,7 +193,7 @@ LABEL_10:
       goto LABEL_67;
     }
 
-    v60 = [[VGHRTFEarCaptureDetectionData alloc] initEmpty];
+    initEmpty2 = [[VGHRTFEarCaptureDetectionData alloc] initEmpty];
     if (v30)
     {
       [v30 pose];
@@ -306,7 +306,7 @@ LABEL_10:
       v35 = 1;
     }
 
-    [v60 setEarSide:{v35, v57}];
+    [initEmpty2 setEarSide:{v35, v57}];
     if (v30)
     {
       [v30 pose];
@@ -329,7 +329,7 @@ LABEL_10:
       v72 = 0u;
     }
 
-    [v60 setYawAngle:v37];
+    [initEmpty2 setYawAngle:v37];
     if (*(&v80 + 1))
     {
       *&v81 = *(&v80 + 1);
@@ -364,7 +364,7 @@ LABEL_10:
       v72 = 0u;
     }
 
-    [v60 setPitchAngle:v38];
+    [initEmpty2 setPitchAngle:v38];
     v39 = vmuls_lane_f32(Height, *&v57, 1);
     if (*(&v80 + 1))
     {
@@ -379,7 +379,7 @@ LABEL_10:
       operator delete(v79);
     }
 
-    [v60 setBoundingBox:{(Width * *&v57), v40, ((*(&v57 + 2) - *&v57) * Width), ((*(&v57 + 3) - *(&v57 + 1)) * Height)}];
+    [initEmpty2 setBoundingBox:{(Width * *&v57), v40, ((*(&v57 + 2) - *&v57) * Width), ((*(&v57 + 3) - *(&v57 + 1)) * Height)}];
     v41 = objc_opt_new();
     if (v30)
     {
@@ -420,8 +420,8 @@ LABEL_10:
       operator delete(v79);
     }
 
-    [v60 setLandmarkPoints:v41];
-    v31 = v60;
+    [initEmpty2 setLandmarkPoints:v41];
+    v31 = initEmpty2;
 LABEL_62:
 
     if (*(&v91 + 1))
@@ -437,17 +437,17 @@ LABEL_62:
     }
 
 LABEL_67:
-    [v65 setDetectionData:v31];
+    [initEmpty setDetectionData:v31];
 
-    v46 = [v6 colorBuffer];
-    [v65 setRectifiedColorBuffer:v46];
+    colorBuffer2 = [dataCopy colorBuffer];
+    [initEmpty setRectifiedColorBuffer:colorBuffer2];
 
-    v47 = [v30 detectionError];
-    if (v47 <= 3)
+    detectionError = [v30 detectionError];
+    if (detectionError <= 3)
     {
-      if (v47 > 1)
+      if (detectionError > 1)
       {
-        if (v47 == 2)
+        if (detectionError == 2)
         {
           v48 = __VGLogSharedInstance();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -474,15 +474,15 @@ LABEL_67:
         goto LABEL_101;
       }
 
-      if (!v47)
+      if (!detectionError)
       {
         v49 = 8;
 LABEL_102:
-        [v65 setError:{v49, v57}];
+        [initEmpty setError:{v49, v57}];
         goto LABEL_103;
       }
 
-      if (v47 == 1)
+      if (detectionError == 1)
       {
         v48 = __VGLogSharedInstance();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -498,9 +498,9 @@ LABEL_102:
 
     else
     {
-      if (v47 <= 5)
+      if (detectionError <= 5)
       {
-        if (v47 == 4)
+        if (detectionError == 4)
         {
           v48 = __VGLogSharedInstance();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -527,7 +527,7 @@ LABEL_102:
         goto LABEL_101;
       }
 
-      switch(v47)
+      switch(detectionError)
       {
         case 6:
           v48 = __VGLogSharedInstance();
@@ -565,10 +565,10 @@ LABEL_101:
     }
 
 LABEL_103:
-    [v7 setTrackedData:{v65, v57}];
-    if ([v7 progressType] == 3)
+    [defaultUpdateData setTrackedData:{initEmpty, v57}];
+    if ([defaultUpdateData progressType] == 3)
     {
-      v50 = [[VGHRTFEarsFrameData alloc] initEmpty];
+      initEmpty3 = [[VGHRTFEarsFrameData alloc] initEmpty];
       v51 = self->_selector;
       if (v51)
       {
@@ -582,7 +582,7 @@ LABEL_103:
       }
 
       v52 = detail::getEarFrameData(&buf);
-      [v50 setLeftEarFrames:v52];
+      [initEmpty3 setLeftEarFrames:v52];
 
       *v71 = &buf;
       std::vector<EarFrame>::__destroy_vector::operator()[abi:ne200100](v71);
@@ -599,14 +599,14 @@ LABEL_103:
       }
 
       v54 = detail::getEarFrameData(&buf);
-      [v50 setRightEarFrames:v54];
+      [initEmpty3 setRightEarFrames:v54];
 
       *v71 = &buf;
       std::vector<EarFrame>::__destroy_vector::operator()[abi:ne200100](v71);
-      [v7 setResult:v50];
+      [defaultUpdateData setResult:initEmpty3];
     }
 
-    v22 = v7;
+    v22 = defaultUpdateData;
 
     v59[2](v59);
     v58[2](v58);

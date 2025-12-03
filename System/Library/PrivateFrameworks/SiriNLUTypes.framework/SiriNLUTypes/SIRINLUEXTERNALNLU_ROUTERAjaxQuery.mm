@@ -1,21 +1,21 @@
 @interface SIRINLUEXTERNALNLU_ROUTERAjaxQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERAjaxQuery
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   explicitQuery = self->_explicitQuery;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (explicitQuery)
   {
     if (!v6)
@@ -36,10 +36,10 @@
     [(SIRINLUEXTERNALNLU_ROUTERAjaxQuery *)self setExplicitQuery:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   implicitQuery = self->_implicitQuery;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (implicitQuery)
   {
     if (v8)
@@ -56,13 +56,13 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((explicitQuery = self->_explicitQuery, !(explicitQuery | v4[1])) || -[SIRINLUEXTERNALNLU_ROUTERExplicit isEqual:](explicitQuery, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((explicitQuery = self->_explicitQuery, !(explicitQuery | equalCopy[1])) || -[SIRINLUEXTERNALNLU_ROUTERExplicit isEqual:](explicitQuery, "isEqual:")))
   {
     implicitQuery = self->_implicitQuery;
-    if (implicitQuery | v4[2])
+    if (implicitQuery | equalCopy[2])
     {
       v7 = [(SIRINLUEXTERNALNLU_ROUTERImplicit *)implicitQuery isEqual:?];
     }
@@ -81,72 +81,72 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALNLU_ROUTERExplicit *)self->_explicitQuery copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALNLU_ROUTERExplicit *)self->_explicitQuery copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SIRINLUEXTERNALNLU_ROUTERImplicit *)self->_implicitQuery copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALNLU_ROUTERImplicit *)self->_implicitQuery copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_explicitQuery)
   {
-    [v4 setExplicitQuery:?];
-    v4 = v5;
+    [toCopy setExplicitQuery:?];
+    toCopy = v5;
   }
 
   if (self->_implicitQuery)
   {
     [v5 setImplicitQuery:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_explicitQuery)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_implicitQuery)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   explicitQuery = self->_explicitQuery;
   if (explicitQuery)
   {
-    v5 = [(SIRINLUEXTERNALNLU_ROUTERExplicit *)explicitQuery dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"explicit_query"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERExplicit *)explicitQuery dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"explicit_query"];
   }
 
   implicitQuery = self->_implicitQuery;
   if (implicitQuery)
   {
-    v7 = [(SIRINLUEXTERNALNLU_ROUTERImplicit *)implicitQuery dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"implicit_query"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALNLU_ROUTERImplicit *)implicitQuery dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"implicit_query"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -155,8 +155,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERAjaxQuery;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERAjaxQuery *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERAjaxQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERAjaxQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

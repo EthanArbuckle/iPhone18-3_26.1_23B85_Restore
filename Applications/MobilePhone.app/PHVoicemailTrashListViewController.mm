@@ -4,13 +4,13 @@
 - (NSString)messageCountText;
 - (id)cellDetailDestructiveActionText;
 - (id)navigationBarText;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
 - (void)clearAllTapped;
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3;
-- (void)performTableViewRestoreActionAtIndexPath:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path;
+- (void)performTableViewRestoreActionAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)willShowVoicemails:(id)a3;
+- (void)willShowVoicemails:(id)voicemails;
 @end
 
 @implementation PHVoicemailTrashListViewController
@@ -20,34 +20,34 @@
   v11.receiver = self;
   v11.super_class = PHVoicemailTrashListViewController;
   [(MPVoicemailTableViewController *)&v11 viewDidLoad];
-  v3 = [(PHVoicemailTrashListViewController *)self navigationBarText];
-  v4 = [(PHVoicemailTrashListViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationBarText = [(PHVoicemailTrashListViewController *)self navigationBarText];
+  navigationItem = [(PHVoicemailTrashListViewController *)self navigationItem];
+  [navigationItem setTitle:navigationBarText];
 
   v5 = [UIBarButtonItem alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"CLEAR_ALL" value:&stru_10028F310 table:@"Voicemail"];
   v8 = [v5 initWithTitle:v7 style:0 target:self action:"clearAllTapped"];
 
-  v9 = [(PHVoicemailTrashListViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(PHVoicemailTrashListViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
-  v10 = [(PHVoicemailTrashListViewController *)self navigationItem];
-  [v10 setLargeTitleDisplayMode:2];
+  navigationItem3 = [(PHVoicemailTrashListViewController *)self navigationItem];
+  [navigationItem3 setLargeTitleDisplayMode:2];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PHVoicemailTrashListViewController;
-  [(MPVoicemailTableViewController *)&v4 viewDidAppear:a3];
+  [(MPVoicemailTableViewController *)&v4 viewDidAppear:appear];
   [(MPVoicemailTableViewController *)self popViewControllerIfNeeded];
 }
 
 - (BOOL)hasContentToDisplay
 {
-  v2 = [(MPVoicemailTableViewController *)self voicemails];
-  v3 = [v2 count] != 0;
+  voicemails = [(MPVoicemailTableViewController *)self voicemails];
+  v3 = [voicemails count] != 0;
 
   return v3;
 }
@@ -68,19 +68,19 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v4 = [NSBundle mainBundle:a3];
+  v4 = [NSBundle mainBundle:view];
   v5 = [v4 localizedStringForKey:@"CLEAR" value:&stru_10028F310 table:@"Voicemail"];
 
   return v5;
 }
 
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path
 {
-  v8 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v8 count:1];
+  pathCopy = path;
+  pathCopy2 = path;
+  v5 = [NSArray arrayWithObjects:&pathCopy count:1];
   v6[4] = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -102,11 +102,11 @@ void __83__PHVoicemailTrashListViewController_performTableViewDestructiveActionA
   [v4 deleteMessages:v3];
 }
 
-- (void)performTableViewRestoreActionAtIndexPath:(id)a3
+- (void)performTableViewRestoreActionAtIndexPath:(id)path
 {
-  v8 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v8 count:1];
+  pathCopy = path;
+  pathCopy2 = path;
+  v5 = [NSArray arrayWithObjects:&pathCopy count:1];
   v6[4] = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -131,8 +131,8 @@ void __79__PHVoicemailTrashListViewController_performTableViewRestoreActionAtInd
 - (NSString)messageCountText
 {
   [(MPVoicemailTableViewController *)self reloadDataIfNeeded];
-  v3 = [(MPVoicemailTableViewController *)self voicemails];
-  v4 = [v3 count];
+  voicemails = [(MPVoicemailTableViewController *)self voicemails];
+  v4 = [voicemails count];
 
   if (v4 < 1)
   {
@@ -157,12 +157,12 @@ void __79__PHVoicemailTrashListViewController_performTableViewRestoreActionAtInd
   return v3;
 }
 
-- (void)willShowVoicemails:(id)a3
+- (void)willShowVoicemails:(id)voicemails
 {
-  v4 = [a3 count] != 0;
-  v6 = [(PHVoicemailTrashListViewController *)self navigationItem];
-  v5 = [v6 rightBarButtonItem];
-  [v5 setEnabled:v4];
+  v4 = [voicemails count] != 0;
+  navigationItem = [(PHVoicemailTrashListViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 }
 
 - (void)clearAllTapped

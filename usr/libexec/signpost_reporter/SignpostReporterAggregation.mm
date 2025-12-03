@@ -1,8 +1,8 @@
 @interface SignpostReporterAggregation
 - (SignpostReporterAggregation)init;
 - (id)keysInDescendingCountOrder;
-- (unint64_t)countForSubsystem:(id)a3 category:(id)a4;
-- (void)incrementSubsystem:(id)a3 category:(id)a4;
+- (unint64_t)countForSubsystem:(id)subsystem category:(id)category;
+- (void)incrementSubsystem:(id)subsystem category:(id)category;
 @end
 
 @implementation SignpostReporterAggregation
@@ -22,44 +22,44 @@
   return v2;
 }
 
-- (unint64_t)countForSubsystem:(id)a3 category:(id)a4
+- (unint64_t)countForSubsystem:(id)subsystem category:(id)category
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SignpostReporterAggregationKey alloc] initWithSubsystem:v7 category:v6];
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  v8 = [[SignpostReporterAggregationKey alloc] initWithSubsystem:subsystemCopy category:categoryCopy];
 
-  v9 = [(SignpostReporterAggregation *)self aggregationDictionary];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  aggregationDictionary = [(SignpostReporterAggregation *)self aggregationDictionary];
+  v10 = [aggregationDictionary objectForKeyedSubscript:v8];
 
   if (v10)
   {
-    v11 = [v10 unsignedLongLongValue];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
   }
 
   else
   {
-    v11 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v11;
+  return unsignedLongLongValue;
 }
 
 - (id)keysInDescendingCountOrder
 {
-  v2 = [(SignpostReporterAggregation *)self aggregationDictionary];
-  v3 = [v2 keysSortedByValueUsingComparator:&stru_100014BE0];
+  aggregationDictionary = [(SignpostReporterAggregation *)self aggregationDictionary];
+  v3 = [aggregationDictionary keysSortedByValueUsingComparator:&stru_100014BE0];
 
   return v3;
 }
 
-- (void)incrementSubsystem:(id)a3 category:(id)a4
+- (void)incrementSubsystem:(id)subsystem category:(id)category
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(SignpostReporterAggregation *)self aggregationDictionary];
-  v8 = [[SignpostReporterAggregationKey alloc] initWithSubsystem:v7 category:v6];
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  aggregationDictionary = [(SignpostReporterAggregation *)self aggregationDictionary];
+  v8 = [[SignpostReporterAggregationKey alloc] initWithSubsystem:subsystemCopy category:categoryCopy];
 
-  v9 = [v12 objectForKeyedSubscript:v8];
+  v9 = [aggregationDictionary objectForKeyedSubscript:v8];
   if (v9)
   {
     v10 = v9;
@@ -71,7 +71,7 @@
   }
 
   v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 unsignedLongLongValue] + 1);
-  [v12 setObject:v11 forKeyedSubscript:v8];
+  [aggregationDictionary setObject:v11 forKeyedSubscript:v8];
 
   ++self->_totalCount;
 }

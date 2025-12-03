@@ -1,52 +1,52 @@
 @interface CRLTilingTileLayer
-- (void)drawInContext:(CGContext *)a3;
-- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)a3;
-- (void)updateFrameWithTileSize:(CGSize)a3 tilesWide:(unint64_t)a4 tilesHigh:(unint64_t)a5;
+- (void)drawInContext:(CGContext *)context;
+- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)background;
+- (void)updateFrameWithTileSize:(CGSize)size tilesWide:(unint64_t)wide tilesHigh:(unint64_t)high;
 @end
 
 @implementation CRLTilingTileLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v5 = +[NSThread currentThread];
-  v6 = [v5 threadDictionary];
+  threadDictionary = [v5 threadDictionary];
   [(CRLTilingTileLayer *)self position];
   v7 = [NSValue valueWithCGPoint:?];
-  [v6 setValue:v7 forKey:@"CRLTilingTileLayerPositionTLSKey"];
+  [threadDictionary setValue:v7 forKey:@"CRLTilingTileLayerPositionTLSKey"];
 
-  v8 = [(CRLTilingTileLayer *)self superlayer];
-  [v8 i_drawTile:self inContext:a3];
+  superlayer = [(CRLTilingTileLayer *)self superlayer];
+  [superlayer i_drawTile:self inContext:context];
 
   v10 = +[NSThread currentThread];
-  v9 = [v10 threadDictionary];
-  [v9 removeObjectForKey:@"CRLTilingTileLayerPositionTLSKey"];
+  threadDictionary2 = [v10 threadDictionary];
+  [threadDictionary2 removeObjectForKey:@"CRLTilingTileLayerPositionTLSKey"];
 }
 
-- (void)updateFrameWithTileSize:(CGSize)a3 tilesWide:(unint64_t)a4 tilesHigh:(unint64_t)a5
+- (void)updateFrameWithTileSize:(CGSize)size tilesWide:(unint64_t)wide tilesHigh:(unint64_t)high
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(CRLTilingTileLayer *)self superlayer];
-  [v10 bounds];
+  height = size.height;
+  width = size.width;
+  superlayer = [(CRLTilingTileLayer *)self superlayer];
+  [superlayer bounds];
   v12 = v11;
   v14 = v13;
   v44 = v16;
   v45 = v15;
 
   index = self->_index;
-  v18 = index / a4;
-  v19 = index % a4;
-  v20 = v14 + height * (index / a4);
+  v18 = index / wide;
+  v19 = index % wide;
+  v20 = v14 + height * (index / wide);
   [(CRLTilingTileLayer *)self position];
-  if (v12 + width * (index % a4) != v22 || v20 != v21)
+  if (v12 + width * (index % wide) != v22 || v20 != v21)
   {
-    [(CRLTilingTileLayer *)self setPosition:v12 + width * (index % a4), v20];
+    [(CRLTilingTileLayer *)self setPosition:v12 + width * (index % wide), v20];
   }
 
-  if (v19 == a4 - 1 || (v24 = sub_10011ECB4(), v18 == a5 - 1))
+  if (v19 == wide - 1 || (v24 = sub_10011ECB4(), v18 == high - 1))
   {
-    v47.origin.x = v12 + width * (index % a4);
-    v47.origin.y = v14 + height * (index / a4);
+    v47.origin.x = v12 + width * (index % wide);
+    v47.origin.y = v14 + height * (index / wide);
     v47.size.width = width;
     v47.size.height = height;
     v50.origin.x = v12;
@@ -93,8 +93,8 @@
 
     else
     {
-      v40 = [(CRLTilingTileLayer *)self superlayer];
-      [v40 setNeedsDisplay];
+      superlayer2 = [(CRLTilingTileLayer *)self superlayer];
+      [superlayer2 setNeedsDisplay];
     }
   }
 
@@ -109,17 +109,17 @@
     v42 = 3;
   }
 
-  if (v19 == a4 - 1)
+  if (v19 == wide - 1)
   {
     v41 = v42;
   }
 
-  if (index < a4)
+  if (index < wide)
   {
     v41 |= 4u;
   }
 
-  if (v18 == a5 - 1)
+  if (v18 == high - 1)
   {
     v43 = v41 | 8;
   }
@@ -136,11 +136,11 @@
   }
 }
 
-- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)a3
+- (void)setNeedsDisplayInRectIgnoringBackground:(CGRect)background
 {
   v3.receiver = self;
   v3.super_class = CRLTilingTileLayer;
-  [(CRLTilingTileLayer *)&v3 setNeedsDisplayInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CRLTilingTileLayer *)&v3 setNeedsDisplayInRect:background.origin.x, background.origin.y, background.size.width, background.size.height];
 }
 
 @end

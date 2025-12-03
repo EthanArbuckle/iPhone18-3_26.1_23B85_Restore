@@ -9,43 +9,43 @@
 
 + (id)hprf_activeDevice
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  return v3;
+  return getActivePairedDevice;
 }
 
 + (id)hprf_activePrimaryOrSatelliteDevice
 {
-  v2 = [a1 hprf_activeSatelliteDevice];
-  v3 = v2;
-  if (v2)
+  hprf_activeSatelliteDevice = [self hprf_activeSatelliteDevice];
+  v3 = hprf_activeSatelliteDevice;
+  if (hprf_activeSatelliteDevice)
   {
-    v4 = v2;
+    getActivePairedDevice = hprf_activeSatelliteDevice;
   }
 
   else
   {
-    v5 = [objc_opt_class() sharedInstance];
-    v4 = [v5 getActivePairedDevice];
+    sharedInstance = [objc_opt_class() sharedInstance];
+    getActivePairedDevice = [sharedInstance getActivePairedDevice];
   }
 
-  return v4;
+  return getActivePairedDevice;
 }
 
 + (id)hprf_activeSatelliteDevice
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v3 = [objc_opt_class() activeDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  activeDeviceSelectorBlock = [objc_opt_class() activeDeviceSelectorBlock];
+  v4 = [sharedInstance getAllDevicesWithArchivedAltAccountDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:NRDevicePropertyIsAltAccount];
-  LODWORD(v3) = [v6 BOOLValue];
+  v6 = [firstObject valueForProperty:NRDevicePropertyIsAltAccount];
+  LODWORD(activeDeviceSelectorBlock) = [v6 BOOLValue];
 
-  if (v3)
+  if (activeDeviceSelectorBlock)
   {
-    v7 = v5;
+    v7 = firstObject;
   }
 
   else
@@ -58,11 +58,11 @@
 
 + (BOOL)hprf_activeDeviceIsSatelliteDevice
 {
-  v2 = [a1 hprf_activePrimaryOrSatelliteDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  hprf_activePrimaryOrSatelliteDevice = [self hprf_activePrimaryOrSatelliteDevice];
+  v3 = [hprf_activePrimaryOrSatelliteDevice valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

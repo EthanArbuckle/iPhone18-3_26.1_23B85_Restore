@@ -6,12 +6,12 @@
 
 - (BOOL)isPhantom
 {
-  v3 = [(REMReminder *)self list];
-  if (v3)
+  list = [(REMReminder *)self list];
+  if (list)
   {
-    v4 = [(REMReminder *)self list];
-    v5 = [v4 account];
-    v6 = v5 == 0;
+    list2 = [(REMReminder *)self list];
+    account = [list2 account];
+    v6 = account == 0;
   }
 
   else

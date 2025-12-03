@@ -1,6 +1,6 @@
 @interface MPSGraphGRUDescriptor
 + (MPSGraphGRUDescriptor)descriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphGRUDescriptor
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [MPSGraphGRUDescriptor alloc];
   *(result + 11) = self->_reverse;

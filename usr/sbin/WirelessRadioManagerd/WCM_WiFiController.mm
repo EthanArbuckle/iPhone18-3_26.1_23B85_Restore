@@ -15,43 +15,43 @@
 - (int64_t)getNumberOfSpatialStream;
 - (int64_t)getNumberOfSpatialStreamOnAccessPoint;
 - (void)dealloc;
-- (void)handleDisconnection:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)handleWiFiLinkDown:(int)a3;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleMessage:(id)message;
+- (void)handleWiFiLinkDown:(int)down;
 - (void)handleWiFiResetFlag;
-- (void)setAntennaSelectionWiFiEnh:(id)a3;
-- (void)setCoexParams:(void *)a3 withValue:(void *)a4;
-- (void)toggleWiFiLQMIfNeeded:(BOOL)a3;
-- (void)update5GHzHostAPState:(BOOL)a3;
-- (void)updateCarPlaySessionState:(BOOL)a3 reason:(int)a4;
-- (void)updateCatsState:(unsigned __int8)a3 bitmap:(unint64_t)a4;
-- (void)updateContentionFreeWiFiInfoToRC2:(unsigned int)a3 count:(unsigned int)a4;
-- (void)updatePowerState:(BOOL)a3;
-- (void)updateWeightAvgLQM:(unsigned int)a3 txRate:(unsigned int)a4;
-- (void)updateWiFiState:(int)a3 channel:(unsigned int)a4 centerFreq:(unsigned int)a5 bandwidth:(unsigned int)a6 hostAp:(BOOL)a7;
+- (void)setAntennaSelectionWiFiEnh:(id)enh;
+- (void)setCoexParams:(void *)params withValue:(void *)value;
+- (void)toggleWiFiLQMIfNeeded:(BOOL)needed;
+- (void)update5GHzHostAPState:(BOOL)state;
+- (void)updateCarPlaySessionState:(BOOL)state reason:(int)reason;
+- (void)updateCatsState:(unsigned __int8)state bitmap:(unint64_t)bitmap;
+- (void)updateContentionFreeWiFiInfoToRC2:(unsigned int)c2 count:(unsigned int)count;
+- (void)updatePowerState:(BOOL)state;
+- (void)updateWeightAvgLQM:(unsigned int)m txRate:(unsigned int)rate;
+- (void)updateWiFiState:(int)state channel:(unsigned int)channel centerFreq:(unsigned int)freq bandwidth:(unsigned int)bandwidth hostAp:(BOOL)ap;
 @end
 
 @implementation WCM_WiFiController
 
 - (int)getPhyMode
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 getPhyMode];
+  return [(WCM_WiFiService *)wifiService getPhyMode];
 }
 
 - (BOOL)didWiFiDeviceReset
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 didWiFiDeviceReset];
+  return [(WCM_WiFiService *)wifiService didWiFiDeviceReset];
 }
 
 - (void)handleWiFiResetFlag
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v2 setWiFiResetFlag];
+  [(WCM_WiFiService *)wifiService setWiFiResetFlag];
 }
 
 - (WCM_WiFiController)init
@@ -334,9 +334,9 @@ LABEL_12:
 
       else
       {
-        v5 = [(WCM_Controller *)self getProcessId];
+        getProcessId = [(WCM_Controller *)self getProcessId];
         v3 = "INVALID_PROC_ID!!!";
-        if (v5 == 42)
+        if (getProcessId == 42)
         {
           v3 = "WRMSOS";
         }
@@ -356,181 +356,181 @@ LABEL_75:
 
 - (BOOL)isAssociated
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isAssociated];
+  return [(WCM_WiFiService *)wifiService isAssociated];
 }
 
 - (BOOL)isAWDLInProgress
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isAWDLInProgress];
+  return [(WCM_WiFiService *)wifiService isAWDLInProgress];
 }
 
 - (BOOL)isSideCarInProgress
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isSideCarInProgress];
+  return [(WCM_WiFiService *)wifiService isSideCarInProgress];
 }
 
 - (BOOL)isEnsembleInProgress
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isEnsembleInProgress];
+  return [(WCM_WiFiService *)wifiService isEnsembleInProgress];
 }
 
 - (BOOL)isCarPlaySessionInProgress
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isCarPlaySessionInProgress];
+  return [(WCM_WiFiService *)wifiService isCarPlaySessionInProgress];
 }
 
 - (BOOL)isAutoUnlockRangingInProgress
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isAutoUnlockRangingInProgress];
+  return [(WCM_WiFiService *)wifiService isAutoUnlockRangingInProgress];
 }
 
 - (int)getCarPlayScanRelaxReason
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 getCarPlayScanRelaxReason];
+  return [(WCM_WiFiService *)wifiService getCarPlayScanRelaxReason];
 }
 
 - (id)getLeastCongestedWifiParam
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 getLeastCongestedWifiParam];
+  return [(WCM_WiFiService *)wifiService getLeastCongestedWifiParam];
 }
 
 - (BOOL)isCoPresenceInProgress
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 isCoPresenceInProgress];
+  return [(WCM_WiFiService *)wifiService isCoPresenceInProgress];
 }
 
 - (int64_t)getNumberOfSpatialStream
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 getNumberOfSpatialStream];
+  return [(WCM_WiFiService *)wifiService getNumberOfSpatialStream];
 }
 
 - (int64_t)getNumberOfSpatialStreamOnAccessPoint
 {
-  v2 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  return [(WCM_WiFiService *)v2 getNumberOfSpatialStreamOnAccessPoint];
+  return [(WCM_WiFiService *)wifiService getNumberOfSpatialStreamOnAccessPoint];
 }
 
-- (void)toggleWiFiLQMIfNeeded:(BOOL)a3
+- (void)toggleWiFiLQMIfNeeded:(BOOL)needed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000EA7B0;
   v3[3] = &unk_10023E008;
-  v4 = a3;
+  neededCopy = needed;
   v3[4] = self;
   dispatch_sync(&_dispatch_main_q, v3);
 }
 
-- (void)updatePowerState:(BOOL)a3
+- (void)updatePowerState:(BOOL)state
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EA918;
   block[3] = &unk_10023DCA0;
-  v4 = a3;
+  stateCopy = state;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)updateCarPlaySessionState:(BOOL)a3 reason:(int)a4
+- (void)updateCarPlaySessionState:(BOOL)state reason:(int)reason
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EA9FC;
   block[3] = &unk_100242080;
-  v6 = a3;
-  v5 = a4;
+  stateCopy = state;
+  reasonCopy = reason;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)updateContentionFreeWiFiInfoToRC2:(unsigned int)a3 count:(unsigned int)a4
+- (void)updateContentionFreeWiFiInfoToRC2:(unsigned int)c2 count:(unsigned int)count
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EAB48;
   block[3] = &unk_10023DD00;
-  v5 = a3;
-  v6 = a4;
+  c2Copy = c2;
+  countCopy = count;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)updateCatsState:(unsigned __int8)a3 bitmap:(unint64_t)a4
+- (void)updateCatsState:(unsigned __int8)state bitmap:(unint64_t)bitmap
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000EAC94;
   v4[3] = &unk_1002420A0;
-  v5 = a3;
-  v4[4] = a4;
+  stateCopy = state;
+  v4[4] = bitmap;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], v4);
 }
 
-- (void)handleWiFiLinkDown:(int)a3
+- (void)handleWiFiLinkDown:(int)down
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EAE28;
   block[3] = &unk_1002420C0;
-  v4 = a3;
+  downCopy = down;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)updateWiFiState:(int)a3 channel:(unsigned int)a4 centerFreq:(unsigned int)a5 bandwidth:(unsigned int)a6 hostAp:(BOOL)a7
+- (void)updateWiFiState:(int)state channel:(unsigned int)channel centerFreq:(unsigned int)freq bandwidth:(unsigned int)bandwidth hostAp:(BOOL)ap
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EAFB8;
   block[3] = &unk_1002420E0;
-  v8 = a3;
-  v9 = a4;
-  v12 = a7;
-  v10 = a5;
-  v11 = a6;
+  stateCopy = state;
+  channelCopy = channel;
+  apCopy = ap;
+  freqCopy = freq;
+  bandwidthCopy = bandwidth;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)update5GHzHostAPState:(BOOL)a3
+- (void)update5GHzHostAPState:(BOOL)state
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EB4C4;
   block[3] = &unk_10023DCA0;
-  v4 = a3;
+  stateCopy = state;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)updateWeightAvgLQM:(unsigned int)a3 txRate:(unsigned int)a4
+- (void)updateWeightAvgLQM:(unsigned int)m txRate:(unsigned int)rate
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EB610;
   block[3] = &unk_10023DD00;
-  v5 = a4;
-  v6 = a3;
+  rateCopy = rate;
+  mCopy = m;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
   [WCM_Logging logLevel:2 message:@"WiFiController handleDisconnection"];
   [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
@@ -540,13 +540,13 @@ LABEL_75:
   [v3 updateWiFiRadioState:0];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   [WCM_Logging logLevel:2 message:@"In WCMWIFI Controller handleMessage messageId = %lld", uint64];
   if (uint64 == 2602)
   {
-    value = xpc_dictionary_get_value(a3, "kMessageArgs");
+    value = xpc_dictionary_get_value(message, "kMessageArgs");
     string = xpc_dictionary_get_string(value, "kWCM_WLMWS_TestName");
     v13 = xpc_dictionary_get_string(value, "kWCM_WLMWS_TestKey");
     if (!strcmp(string, "antenna_selection"))
@@ -585,11 +585,11 @@ LABEL_75:
 
   else if (uint64 == 2601)
   {
-    v6 = xpc_dictionary_get_uint64(a3, "kWCMTestWiFiNetworkConfiguration_Band");
-    v7 = xpc_dictionary_get_uint64(a3, "kWCMTestWiFiNetworkConfiguration_Channel");
-    v8 = xpc_dictionary_get_uint64(a3, "kWCMTestWiFiNetworkConfiguration_CenterFrequency");
-    v9 = xpc_dictionary_get_uint64(a3, "kWCMTestWiFiNetworkConfiguration_Bandwidth");
-    v10 = xpc_dictionary_get_BOOL(a3, "kWCMTestWiFiNetworkConfiguration_Mode");
+    v6 = xpc_dictionary_get_uint64(message, "kWCMTestWiFiNetworkConfiguration_Band");
+    v7 = xpc_dictionary_get_uint64(message, "kWCMTestWiFiNetworkConfiguration_Channel");
+    v8 = xpc_dictionary_get_uint64(message, "kWCMTestWiFiNetworkConfiguration_CenterFrequency");
+    v9 = xpc_dictionary_get_uint64(message, "kWCMTestWiFiNetworkConfiguration_Bandwidth");
+    v10 = xpc_dictionary_get_BOOL(message, "kWCMTestWiFiNetworkConfiguration_Mode");
     [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
     [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
     [(WCM_WiFiController *)self updateWiFiState:v6 channel:v7 centerFreq:v8 bandwidth:v9 hostAp:v10];
@@ -602,23 +602,23 @@ LABEL_75:
   }
 }
 
-- (void)setCoexParams:(void *)a3 withValue:(void *)a4
+- (void)setCoexParams:(void *)params withValue:(void *)value
 {
   v6 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
   if (v6)
   {
 
-    [v6 setCoexParams:a3 withValue:a4];
+    [v6 setCoexParams:params withValue:value];
   }
 }
 
-- (void)setAntennaSelectionWiFiEnh:(id)a3
+- (void)setAntennaSelectionWiFiEnh:(id)enh
 {
   v4 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
   if (v4)
   {
 
-    [v4 setAntennaSelectionWiFiEnh:a3];
+    [v4 setAntennaSelectionWiFiEnh:enh];
   }
 }
 

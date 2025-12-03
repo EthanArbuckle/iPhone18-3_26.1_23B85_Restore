@@ -1,16 +1,16 @@
 @interface SKUIReportAConcernDetailsCell
 - (NSString)text;
-- (SKUIReportAConcernDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SKUIReportAConcernDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setPlaceholderText:(id)a3;
-- (void)updatePlaceholderText:(BOOL)a3;
+- (void)setPlaceholderText:(id)text;
+- (void)updatePlaceholderText:(BOOL)text;
 @end
 
 @implementation SKUIReportAConcernDetailsCell
 
-- (SKUIReportAConcernDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUIReportAConcernDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIReportAConcernDetailsCell initWithStyle:reuseIdentifier:];
@@ -18,7 +18,7 @@
 
   v15.receiver = self;
   v15.super_class = SKUIReportAConcernDetailsCell;
-  v7 = [(SKUIReportAConcernDetailsCell *)&v15 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUIReportAConcernDetailsCell *)&v15 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277D75C40]);
@@ -26,12 +26,12 @@
     textView = v7->_textView;
     v7->_textView = v9;
 
-    v11 = [(SKUIReportAConcernDetailsCell *)v7 textLabel];
-    v12 = [v11 font];
-    [(UITextView *)v7->_textView setFont:v12];
+    textLabel = [(SKUIReportAConcernDetailsCell *)v7 textLabel];
+    font = [textLabel font];
+    [(UITextView *)v7->_textView setFont:font];
 
-    v13 = [(SKUIReportAConcernDetailsCell *)v7 contentView];
-    [v13 addSubview:v7->_textView];
+    contentView = [(SKUIReportAConcernDetailsCell *)v7 contentView];
+    [contentView addSubview:v7->_textView];
   }
 
   return v7;
@@ -42,29 +42,29 @@
   v38.receiver = self;
   v38.super_class = SKUIReportAConcernDetailsCell;
   [(SKUIReportAConcernDetailsCell *)&v38 layoutSubviews];
-  v3 = [(SKUIReportAConcernDetailsCell *)self contentView];
-  v4 = [v3 readableContentGuide];
-  [v4 layoutFrame];
+  contentView = [(SKUIReportAConcernDetailsCell *)self contentView];
+  readableContentGuide = [contentView readableContentGuide];
+  [readableContentGuide layoutFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(SKUIReportAConcernDetailsCell *)self textView];
-  v14 = [v13 textContainer];
-  [v14 lineFragmentPadding];
+  textView = [(SKUIReportAConcernDetailsCell *)self textView];
+  textContainer = [textView textContainer];
+  [textContainer lineFragmentPadding];
   v37 = v15;
 
-  v16 = [(SKUIReportAConcernDetailsCell *)self contentView];
-  [v16 bounds];
+  contentView2 = [(SKUIReportAConcernDetailsCell *)self contentView];
+  [contentView2 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   rect_8 = v21;
   v24 = v23;
 
-  v25 = [(SKUIReportAConcernDetailsCell *)self textView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  textView2 = [(SKUIReportAConcernDetailsCell *)self textView];
+  [textView2 setFrame:{v18, v20, v22, v24}];
 
   v34 = v6;
   v39.origin.x = v6;
@@ -107,17 +107,17 @@
   v46.size.width = v10;
   v46.size.height = v12;
   v31 = MaxX - CGRectGetMaxX(v46) - v37;
-  v32 = [(SKUIReportAConcernDetailsCell *)self textView];
-  [v32 setTextContainerInset:{v36, v35, v29, v31}];
+  textView3 = [(SKUIReportAConcernDetailsCell *)self textView];
+  [textView3 setTextContainerInset:{v36, v35, v29, v31}];
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  objc_storeStrong(&self->_placeholderText, a3);
-  if (a3)
+  objc_storeStrong(&self->_placeholderText, text);
+  if (text)
   {
-    v5 = [(SKUIReportAConcernDetailsCell *)self textView];
-    [v5 setDelegate:self];
+    textView = [(SKUIReportAConcernDetailsCell *)self textView];
+    [textView setDelegate:self];
 
     [(SKUIReportAConcernDetailsCell *)self updatePlaceholderText:0];
   }
@@ -125,66 +125,66 @@
 
 - (NSString)text
 {
-  v3 = [(SKUIReportAConcernDetailsCell *)self textView];
-  v4 = [v3 text];
-  v5 = [(SKUIReportAConcernDetailsCell *)self placeholderText];
-  v6 = [v4 isEqualToString:v5];
+  textView = [(SKUIReportAConcernDetailsCell *)self textView];
+  text = [textView text];
+  placeholderText = [(SKUIReportAConcernDetailsCell *)self placeholderText];
+  v6 = [text isEqualToString:placeholderText];
 
   if (v6)
   {
-    v7 = 0;
+    text2 = 0;
   }
 
   else
   {
-    v8 = [(SKUIReportAConcernDetailsCell *)self textView];
-    v7 = [v8 text];
+    textView2 = [(SKUIReportAConcernDetailsCell *)self textView];
+    text2 = [textView2 text];
   }
 
-  return v7;
+  return text2;
 }
 
-- (void)updatePlaceholderText:(BOOL)a3
+- (void)updatePlaceholderText:(BOOL)text
 {
-  v3 = a3;
-  v5 = [(SKUIReportAConcernDetailsCell *)self textView];
-  v6 = [v5 text];
-  v7 = v6;
-  if (v3)
+  textCopy = text;
+  textView = [(SKUIReportAConcernDetailsCell *)self textView];
+  text = [textView text];
+  v7 = text;
+  if (textCopy)
   {
-    v8 = [(SKUIReportAConcernDetailsCell *)self placeholderText];
-    v9 = [v7 isEqualToString:v8];
+    placeholderText = [(SKUIReportAConcernDetailsCell *)self placeholderText];
+    v9 = [v7 isEqualToString:placeholderText];
 
     if (!v9)
     {
       return;
     }
 
-    v10 = [(SKUIReportAConcernDetailsCell *)self textView];
-    [v10 setText:&stru_2827FFAC8];
+    textView2 = [(SKUIReportAConcernDetailsCell *)self textView];
+    [textView2 setText:&stru_2827FFAC8];
 
-    v16 = [(SKUIReportAConcernDetailsCell *)self textLabel];
-    v11 = [v16 textColor];
-    v12 = [(SKUIReportAConcernDetailsCell *)self textView];
-    [v12 setTextColor:v11];
+    textLabel = [(SKUIReportAConcernDetailsCell *)self textLabel];
+    textColor = [textLabel textColor];
+    textView3 = [(SKUIReportAConcernDetailsCell *)self textView];
+    [textView3 setTextColor:textColor];
   }
 
   else
   {
-    v13 = [v6 length];
+    v13 = [text length];
 
     if (v13)
     {
       return;
     }
 
-    v14 = [(SKUIReportAConcernDetailsCell *)self placeholderText];
-    v15 = [(SKUIReportAConcernDetailsCell *)self textView];
-    [v15 setText:v14];
+    placeholderText2 = [(SKUIReportAConcernDetailsCell *)self placeholderText];
+    textView4 = [(SKUIReportAConcernDetailsCell *)self textView];
+    [textView4 setText:placeholderText2];
 
-    v16 = [MEMORY[0x277D75348] lightGrayColor];
-    v11 = [(SKUIReportAConcernDetailsCell *)self textView];
-    [v11 setTextColor:v16];
+    textLabel = [MEMORY[0x277D75348] lightGrayColor];
+    textColor = [(SKUIReportAConcernDetailsCell *)self textView];
+    [textColor setTextColor:textLabel];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface STKPresentationController
 - (_TtC10StickerKitP33_EA33ED8DB99C4DEC95D72ADC49E80F3125STKPresentationController)init;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation STKPresentationController
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_EA33ED8DB99C4DEC95D72ADC49E80F3125STKPresentationController_presentingWindow);
   if (v5)
   {
-    v6 = a3;
+    dismissCopy = dismiss;
     self;
     if (![v5 isHidden])
     {
@@ -21,12 +21,12 @@
 
   else
   {
-    v7 = a3;
-    v8 = self;
+    dismissCopy2 = dismiss;
+    selfCopy = self;
   }
 
-  v9 = [a3 presentedViewController];
-  sub_19A6FFA9C(v9);
+  presentedViewController = [dismiss presentedViewController];
+  sub_19A6FFA9C(presentedViewController);
 }
 
 - (_TtC10StickerKitP33_EA33ED8DB99C4DEC95D72ADC49E80F3125STKPresentationController)init
@@ -42,11 +42,11 @@
   return [(STKPresentationController *)&v6 init];
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  v6 = a3;
-  v7 = self;
-  sub_19A702774(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_19A702774(view);
 }
 
 @end

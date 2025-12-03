@@ -1,5 +1,5 @@
 @interface HSPCSiriVoiceRecognitionViewController
-- (HSPCSiriVoiceRecognitionViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSiriVoiceRecognitionViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_checkForiCloudSiriEnabledAndEnableVoiceRecognition;
 - (id)_enableVoiceRecognitionAndCommitConfiguration;
 - (id)_showVoiceRecognitionConfirmation;
@@ -8,10 +8,10 @@
 
 @implementation HSPCSiriVoiceRecognitionViewController
 
-- (HSPCSiriVoiceRecognitionViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSiriVoiceRecognitionViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = [[PRXCardContentView alloc] initWithCardStyle:0];
   v19.receiver = self;
   v19.super_class = HSPCSiriVoiceRecognitionViewController;
@@ -19,8 +19,8 @@
   v10 = v9;
   if (v9)
   {
-    [(HSPCSiriVoiceRecognitionViewController *)v9 setConfig:v7];
-    [(HSPCSiriVoiceRecognitionViewController *)v10 setCoordinator:v6];
+    [(HSPCSiriVoiceRecognitionViewController *)v9 setConfig:configCopy];
+    [(HSPCSiriVoiceRecognitionViewController *)v10 setCoordinator:coordinatorCopy];
     v11 = HULocalizedString();
     [(HSPCSiriVoiceRecognitionViewController *)v10 setTitle:v11];
 
@@ -42,12 +42,12 @@
 
 - (void)_enableVoiceRecognition
 {
-  v3 = [(HSPCSiriVoiceRecognitionViewController *)self config];
-  v4 = [v3 home];
+  config = [(HSPCSiriVoiceRecognitionViewController *)self config];
+  home = [config home];
 
   v5 = [HFUserItem alloc];
-  v6 = [v4 currentUser];
-  v7 = [v5 initWithHome:v4 user:v6 nameStyle:0];
+  currentUser = [home currentUser];
+  v7 = [v5 initWithHome:home user:currentUser nameStyle:0];
 
   v8 = [v7 setEnableIdentifyVoice:1];
   v9 = HFLogForCategory();
@@ -75,14 +75,14 @@
 
 - (id)_enableVoiceRecognitionAndCommitConfiguration
 {
-  v4 = [(HSPCSiriVoiceRecognitionViewController *)self _checkForiCloudSiriEnabledAndEnableVoiceRecognition];
+  _checkForiCloudSiriEnabledAndEnableVoiceRecognition = [(HSPCSiriVoiceRecognitionViewController *)self _checkForiCloudSiriEnabledAndEnableVoiceRecognition];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100021654;
   v7[3] = &unk_1000C5AD8;
   v7[4] = self;
   v7[5] = a2;
-  v5 = [v4 flatMap:v7];
+  v5 = [_checkForiCloudSiriEnabledAndEnableVoiceRecognition flatMap:v7];
 
   return v5;
 }

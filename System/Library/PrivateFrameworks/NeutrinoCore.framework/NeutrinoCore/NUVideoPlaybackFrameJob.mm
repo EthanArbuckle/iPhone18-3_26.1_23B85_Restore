@@ -1,10 +1,10 @@
 @interface NUVideoPlaybackFrameJob
-- (BOOL)render:(id *)a3;
+- (BOOL)render:(id *)render;
 - (BOOL)wantsRenderNodeCached;
-- (NUVideoPlaybackFrameJob)initWithRequest:(id)a3;
-- (NUVideoPlaybackFrameJob)initWithVideoFrameRequest:(id)a3;
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3;
-- (id)renderer:(id *)a3;
+- (NUVideoPlaybackFrameJob)initWithRequest:(id)request;
+- (NUVideoPlaybackFrameJob)initWithVideoFrameRequest:(id)request;
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode;
+- (id)renderer:(id *)renderer;
 - (id)result;
 - (id)scalePolicy;
 @end
@@ -14,16 +14,16 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUVideoPlaybackFrameRequestResponse);
-  v4 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-  -[_NUVideoPlaybackFrameRequestResponse setFrame:](v3, "setFrame:", [v4 destinationBuffer]);
+  frameRequest = [(NUVideoPlaybackFrameJob *)self frameRequest];
+  -[_NUVideoPlaybackFrameRequestResponse setFrame:](v3, "setFrame:", [frameRequest destinationBuffer]);
 
   return v3;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v68 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v46 = NUAssertLogger_29707();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -44,8 +44,8 @@
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v54 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf.origin.x) = 138543618;
         *(&buf.origin.x + 4) = v53;
         WORD2(buf.origin.y) = 2114;
@@ -56,8 +56,8 @@
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.origin.x) = 138543362;
       *(&buf.origin.x + 4) = v52;
       _os_log_error_impl(&dword_1C0184000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -69,26 +69,26 @@
   v5 = [(NUVideoPlaybackFrameJob *)self renderer:?];
   if (v5)
   {
-    v6 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-    v7 = [v6 colorSpace];
-    v8 = [v6 destinationBuffer];
-    if (!v8)
+    frameRequest = [(NUVideoPlaybackFrameJob *)self frameRequest];
+    colorSpace = [frameRequest colorSpace];
+    destinationBuffer = [frameRequest destinationBuffer];
+    if (!destinationBuffer)
     {
-      [NUError errorWithCode:2 reason:@"Non-existent destination buffer on request" object:v6];
-      *a3 = v36 = 0;
+      [NUError errorWithCode:2 reason:@"Non-existent destination buffer on request" object:frameRequest];
+      *render = v36 = 0;
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v9 = v8;
-    v10 = [(NURenderJob *)self prepareNode];
-    v11 = [v10 videoProperties:a3];
+    v9 = destinationBuffer;
+    prepareNode = [(NURenderJob *)self prepareNode];
+    v11 = [prepareNode videoProperties:render];
 
     if (!v11)
     {
-      v37 = [(NURenderJob *)self prepareNode];
-      *a3 = [NUError errorWithCode:1 reason:@"Failed to get video properties" object:v37 underlyingError:*a3];
+      prepareNode2 = [(NURenderJob *)self prepareNode];
+      *render = [NUError errorWithCode:1 reason:@"Failed to get video properties" object:prepareNode2 underlyingError:*render];
 
       v36 = 0;
 LABEL_28:
@@ -96,13 +96,13 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v12 = [(NURenderJob *)self prepareNode];
-    v13 = [v12 outputImageGeometry:a3];
+    prepareNode3 = [(NURenderJob *)self prepareNode];
+    v13 = [prepareNode3 outputImageGeometry:render];
 
     if (!v13)
     {
-      v38 = [(NURenderJob *)self prepareNode];
-      *a3 = [NUError errorWithCode:1 reason:@"Failed to get output image geometry" object:v38 underlyingError:*a3];
+      prepareNode4 = [(NURenderJob *)self prepareNode];
+      *render = [NUError errorWithCode:1 reason:@"Failed to get output image geometry" object:prepareNode4 underlyingError:*render];
 
       v36 = 0;
 LABEL_27:
@@ -110,18 +110,18 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v14 = [(NURenderJob *)self renderScale];
+    renderScale = [(NURenderJob *)self renderScale];
     v16 = v15;
-    v17 = [v13 renderScale];
-    v19 = NUScaleDivide(v14, v16, v17, v18);
+    renderScale2 = [v13 renderScale];
+    v19 = NUScaleDivide(renderScale, v16, renderScale2, v18);
     v21 = v20;
     memset(v65, 0, sizeof(v65));
     [v11 cleanAperture];
     NUPixelRectScaleRational(&buf, v19, v21, 1, v65);
     NUCVImageBufferSetCleanRect(v9, v65[0].i64);
-    [v7 applyAttachmentsToCVPixelBuffer:v9];
-    v22 = [(NURenderJob *)self outputImage];
-    [v22 extent];
+    [colorSpace applyAttachmentsToCVPixelBuffer:v9];
+    outputImage = [(NURenderJob *)self outputImage];
+    [outputImage extent];
     buf.origin.x = v23;
     buf.origin.y = v24;
     buf.size.width = v25;
@@ -135,8 +135,8 @@ LABEL_27:
     if (*&v64.size != __PAIR128__(Height, Width))
     {
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Obsolete video frame request - bad bounds. buffer(%ld, %ld) CIExtent(%ld, %ld) buffer:%@", Width, Height, *&v64.size, v9];
-      [NUError invalidError:v29 object:v6];
-      *a3 = v36 = 0;
+      [NUError invalidError:v29 object:frameRequest];
+      *render = v36 = 0;
 LABEL_26:
 
       goto LABEL_27;
@@ -146,9 +146,9 @@ LABEL_26:
     v63 = v13;
     v29 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:v9];
     v30 = MEMORY[0x1E696AEC0];
-    v31 = [(NURenderJob *)self request];
-    v32 = [v31 name];
-    v33 = [v30 stringWithFormat:@"%@-j%lld", v32, -[NURenderJob jobNumber](self, "jobNumber")];
+    request = [(NURenderJob *)self request];
+    name = [request name];
+    v33 = [v30 stringWithFormat:@"%@-j%lld", name, -[NURenderJob jobNumber](self, "jobNumber")];
     [v29 setLabel:v33];
 
     if ([NUColorSpace shouldTagAsDisplayP3:v9])
@@ -158,10 +158,10 @@ LABEL_26:
     }
 
     v13 = v63;
-    if (v7)
+    if (colorSpace)
     {
-      [v29 setColorSpace:{objc_msgSend(v7, "CGColorSpace")}];
-      v35 = [v7 isHDR] ^ 1;
+      [v29 setColorSpace:{objc_msgSend(colorSpace, "CGColorSpace")}];
+      v35 = [colorSpace isHDR] ^ 1;
     }
 
     else
@@ -176,13 +176,13 @@ LABEL_26:
 
     [v29 setClamped:v35];
 LABEL_19:
-    v39 = [(NURenderJob *)self outputImage];
+    outputImage2 = [(NURenderJob *)self outputImage];
     buf = v64;
-    v40 = [v5 renderImage:v39 rect:&buf toDestination:v29 atPoint:0 error:{0, a3}];
+    v40 = [v5 renderImage:outputImage2 rect:&buf toDestination:v29 atPoint:0 error:{0, render}];
 
     if (v40)
     {
-      v41 = [v40 waitUntilCompletedAndReturnError:a3];
+      v41 = [v40 waitUntilCompletedAndReturnError:render];
 
       if (v41)
       {
@@ -201,9 +201,9 @@ LABEL_25:
       v42 = @"Failed to render playback frame. Task creation failed";
     }
 
-    v43 = [(NURenderJob *)self request];
-    v44 = [v43 copy];
-    *a3 = [NUError errorWithCode:1 reason:v42 object:v44 underlyingError:*a3];
+    request2 = [(NURenderJob *)self request];
+    v44 = [request2 copy];
+    *render = [NUError errorWithCode:1 reason:v42 object:v44 underlyingError:*render];
 
     v36 = 0;
     v13 = v63;
@@ -216,39 +216,39 @@ LABEL_30:
   return v36;
 }
 
-- (id)renderer:(id *)a3
+- (id)renderer:(id *)renderer
 {
-  v5 = [(NURenderJob *)self priority];
-  v6 = [v5 isLow];
+  priority = [(NURenderJob *)self priority];
+  isLow = [priority isLow];
 
-  v7 = [(NURenderJob *)self device];
-  v8 = v7;
-  if (v6)
+  device = [(NURenderJob *)self device];
+  v8 = device;
+  if (isLow)
   {
-    [v7 lowPriorityRendererWithoutIntermediateCaching:a3];
+    [device lowPriorityRendererWithoutIntermediateCaching:renderer];
   }
 
   else
   {
-    [v7 rendererWithoutIntermediateCaching:a3];
+    [device rendererWithoutIntermediateCaching:renderer];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode
 {
   v20.receiver = self;
   v20.super_class = NUVideoPlaybackFrameJob;
   v5 = [(NURenderJob *)&v20 newRenderPipelineStateForEvaluationMode:?];
-  if (a3 == 3)
+  if (mode == 3)
   {
-    v6 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-    v7 = v6;
-    if (v6)
+    frameRequest = [(NUVideoPlaybackFrameJob *)self frameRequest];
+    v7 = frameRequest;
+    if (frameRequest)
     {
-      [v6 evaluationTime];
+      [frameRequest evaluationTime];
     }
 
     else
@@ -261,20 +261,20 @@ LABEL_30:
     v17 = v19;
     [v5 setTime:&v16];
 
-    v8 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-    v9 = [v8 videoFrames];
-    [v5 setVideoFrames:v9];
+    frameRequest2 = [(NUVideoPlaybackFrameJob *)self frameRequest];
+    videoFrames = [frameRequest2 videoFrames];
+    [v5 setVideoFrames:videoFrames];
 
-    v10 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-    v11 = [v10 videoMetadataSamples];
-    [v5 setVideoMetadataSamples:v11];
+    frameRequest3 = [(NUVideoPlaybackFrameJob *)self frameRequest];
+    videoMetadataSamples = [frameRequest3 videoMetadataSamples];
+    [v5 setVideoMetadataSamples:videoMetadataSamples];
 
-    v12 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-    v13 = [v12 videoSampleSlices];
-    [v5 setVideoSampleSlices:v13];
+    frameRequest4 = [(NUVideoPlaybackFrameJob *)self frameRequest];
+    videoSampleSlices = [frameRequest4 videoSampleSlices];
+    [v5 setVideoSampleSlices:videoSampleSlices];
 
-    v14 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-    [v5 setPlaybackDirection:{objc_msgSend(v14, "playbackDirection")}];
+    frameRequest5 = [(NUVideoPlaybackFrameJob *)self frameRequest];
+    [v5 setPlaybackDirection:{objc_msgSend(frameRequest5, "playbackDirection")}];
   }
 
   return v5;
@@ -282,9 +282,9 @@ LABEL_30:
 
 - (BOOL)wantsRenderNodeCached
 {
-  v2 = [(NUVideoPlaybackFrameJob *)self frameRequest];
-  v3 = [v2 videoSampleSlices];
-  v4 = [v3 count] != 0;
+  frameRequest = [(NUVideoPlaybackFrameJob *)self frameRequest];
+  videoSampleSlices = [frameRequest videoSampleSlices];
+  v4 = [videoSampleSlices count] != 0;
 
   return v4;
 }
@@ -292,29 +292,29 @@ LABEL_30:
 - (id)scalePolicy
 {
   v3 = [NUFixedScalePolicy alloc];
-  v4 = [(NURenderJob *)self renderScale];
-  v6 = [(NUFixedScalePolicy *)v3 initWithScale:v4, v5];
+  renderScale = [(NURenderJob *)self renderScale];
+  v6 = [(NUFixedScalePolicy *)v3 initWithScale:renderScale, v5];
 
   return v6;
 }
 
-- (NUVideoPlaybackFrameJob)initWithVideoFrameRequest:(id)a3
+- (NUVideoPlaybackFrameJob)initWithVideoFrameRequest:(id)request
 {
   v37 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = NUVideoPlaybackFrameJob;
-  v3 = a3;
-  v4 = [(NURenderJob *)&v32 initWithRequest:v3];
-  v5 = [v3 composition];
-  [(NURenderJob *)v4 setComposition:v5];
+  requestCopy = request;
+  v4 = [(NURenderJob *)&v32 initWithRequest:requestCopy];
+  composition = [requestCopy composition];
+  [(NURenderJob *)v4 setComposition:composition];
 
-  v6 = [v3 renderScale];
-  [(NURenderJob *)v4 setRenderScale:v6, v7];
-  v8 = [v3 videoRenderPrepareNode];
+  renderScale = [requestCopy renderScale];
+  [(NURenderJob *)v4 setRenderScale:renderScale, v7];
+  videoRenderPrepareNode = [requestCopy videoRenderPrepareNode];
 
-  [(NURenderJob *)v4 setPrepareNode:v8];
-  v9 = [(NURenderJob *)v4 prepareNode];
-  if (!v9)
+  [(NURenderJob *)v4 setPrepareNode:videoRenderPrepareNode];
+  prepareNode = [(NURenderJob *)v4 prepareNode];
+  if (!prepareNode)
   {
     if (_NULogOnceToken != -1)
     {
@@ -358,8 +358,8 @@ LABEL_9:
         v21 = MEMORY[0x1E696AF00];
         v22 = specific;
         v23 = v15;
-        v24 = [v21 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = specific;
         v35 = 2114;
@@ -377,8 +377,8 @@ LABEL_15:
     {
       v28 = MEMORY[0x1E696AF00];
       v29 = v26;
-      v30 = [v28 callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v28 callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v31;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -392,10 +392,10 @@ LABEL_16:
   return v4;
 }
 
-- (NUVideoPlaybackFrameJob)initWithRequest:(id)a3
+- (NUVideoPlaybackFrameJob)initWithRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_29649);
@@ -439,8 +439,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -456,8 +456,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

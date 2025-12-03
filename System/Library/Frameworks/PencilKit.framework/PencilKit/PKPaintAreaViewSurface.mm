@@ -1,42 +1,42 @@
 @interface PKPaintAreaViewSurface
-- (BOOL)eraserBeganAtLocation:(CGPoint)a3;
+- (BOOL)eraserBeganAtLocation:(CGPoint)location;
 - (CGAffineTransform)strokeTransform;
 - (CGPoint)previousPoint;
 - (CGSize)drawingSize;
 - (PKPaintAreaView)paintAreaView;
-- (PKPaintAreaViewSurface)initWithPaintSurface:(id)a3 dispatchQueue:(id)a4 device:(id)a5;
-- (id)CIImageFromTexture:(id)a3;
-- (id)nextTextureTargetForMetalRendererController:(id)a3;
-- (void)_didFinishErasingStrokes:(BOOL)a3;
+- (PKPaintAreaViewSurface)initWithPaintSurface:(id)surface dispatchQueue:(id)queue device:(id)device;
+- (id)CIImageFromTexture:(id)texture;
+- (id)nextTextureTargetForMetalRendererController:(id)controller;
+- (void)_didFinishErasingStrokes:(BOOL)strokes;
 - (void)_setupPKController;
 - (void)dealloc;
-- (void)dispatchSyncOnSurfaceQueue:(id)a3;
-- (void)drawingBegan:(id *)a3 activeInputProperties:(unint64_t)a4 inputType:(int64_t)a5;
+- (void)dispatchSyncOnSurfaceQueue:(id)queue;
+- (void)drawingBegan:(id *)began activeInputProperties:(unint64_t)properties inputType:(int64_t)type;
 - (void)drawingCancelled;
-- (void)drawingChanged:(id)a3;
-- (void)drawingEndedWithDetectedShape:(id)a3 completionBlock:(id)a4;
-- (void)eraseStrokesForPoint:(CGPoint)a3 prevPoint:(CGPoint)a4;
-- (void)eraserMovedToLocation:(CGPoint)a3;
-- (void)metalRendererController:(id)a3 didCommitRenderingIntoTexture:(id)a4;
-- (void)vsync:(double)a3;
+- (void)drawingChanged:(id)changed;
+- (void)drawingEndedWithDetectedShape:(id)shape completionBlock:(id)block;
+- (void)eraseStrokesForPoint:(CGPoint)point prevPoint:(CGPoint)prevPoint;
+- (void)eraserMovedToLocation:(CGPoint)location;
+- (void)metalRendererController:(id)controller didCommitRenderingIntoTexture:(id)texture;
+- (void)vsync:(double)vsync;
 @end
 
 @implementation PKPaintAreaViewSurface
 
-- (PKPaintAreaViewSurface)initWithPaintSurface:(id)a3 dispatchQueue:(id)a4 device:(id)a5
+- (PKPaintAreaViewSurface)initWithPaintSurface:(id)surface dispatchQueue:(id)queue device:(id)device
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  surfaceCopy = surface;
+  queueCopy = queue;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = PKPaintAreaViewSurface;
   v12 = [(PKPaintAreaViewSurface *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_surface, a3);
-    objc_storeStrong(&v13->_device, a5);
-    objc_storeStrong(&v13->_dispatchQueue, a4);
+    objc_storeStrong(&v12->_surface, surface);
+    objc_storeStrong(&v13->_device, device);
+    objc_storeStrong(&v13->_dispatchQueue, queue);
     v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
     textureSet = v13->_textureSet;
     v13->_textureSet = v14;
@@ -49,7 +49,7 @@
     v18[2] = __68__PKPaintAreaViewSurface_initWithPaintSurface_dispatchQueue_device___block_invoke;
     v18[3] = &unk_1E82D6890;
     v19 = v13;
-    v20 = v9;
+    v20 = surfaceCopy;
     [(PKPaintAreaViewSurface *)v19 dispatchSyncOnSurfaceQueue:v18];
   }
 
@@ -101,10 +101,10 @@ double __68__PKPaintAreaViewSurface_initWithPaintSurface_dispatchQueue_device___
   [(PKPaintAreaViewSurface *)&v3 dealloc];
 }
 
-- (id)CIImageFromTexture:(id)a3
+- (id)CIImageFromTexture:(id)texture
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  textureCopy = texture;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v5 = *MEMORY[0x1E695F9B8];
   v9[0] = *MEMORY[0x1E695F9A8];
@@ -113,21 +113,21 @@ double __68__PKPaintAreaViewSurface_initWithPaintSurface_dispatchQueue_device___
   v10[1] = MEMORY[0x1E695E118];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   CGColorSpaceRelease(DeviceRGB);
-  v7 = [objc_alloc(MEMORY[0x1E695F658]) initWithMTLTexture:v3 options:v6];
+  v7 = [objc_alloc(MEMORY[0x1E695F658]) initWithMTLTexture:textureCopy options:v6];
 
   return v7;
 }
 
-- (void)dispatchSyncOnSurfaceQueue:(id)a3
+- (void)dispatchSyncOnSurfaceQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   dispatchQueue = self->_dispatchQueue;
-  block = v4;
+  block = queueCopy;
   if (!dispatchQueue)
   {
-    v6 = [MEMORY[0x1E696AF00] isMainThread];
-    v4 = block;
-    if (v6)
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+    queueCopy = block;
+    if (isMainThread)
     {
       block[2](block);
       goto LABEL_6;
@@ -136,11 +136,11 @@ double __68__PKPaintAreaViewSurface_initWithPaintSurface_dispatchQueue_device___
     dispatchQueue = MEMORY[0x1E69E96A0];
   }
 
-  dispatch_sync(dispatchQueue, v4);
+  dispatch_sync(dispatchQueue, queueCopy);
 LABEL_6:
 }
 
-- (void)drawingBegan:(id *)a3 activeInputProperties:(unint64_t)a4 inputType:(int64_t)a5
+- (void)drawingBegan:(id *)began activeInputProperties:(unint64_t)properties inputType:(int64_t)type
 {
   [(PKPaintAreaViewSurface *)self setIsDrawing:1];
   if (!self->_drawingController)
@@ -206,57 +206,57 @@ LABEL_6:
     _Block_object_dispose(&t1, 8);
   }
 
-  if (![(PKPaintAreaViewSurface *)self eraserBeganAtLocation:a3->var0.var0.x, a3->var0.var0.y])
+  if (![(PKPaintAreaViewSurface *)self eraserBeganAtLocation:began->var0.var0.x, began->var0.var0.y])
   {
     [(PKPaintAreaViewSurface *)self strokeTransform];
     CGAffineTransformInvert(&v34, &t1);
     v17 = *&v34.a;
-    v18 = [(PKPaintAreaViewSurface *)self surface];
-    v19 = [v18 paintSurfaceDrawing];
-    v20 = [v19 newStroke];
+    surface = [(PKPaintAreaViewSurface *)self surface];
+    paintSurfaceDrawing = [surface paintSurfaceDrawing];
+    newStroke = [paintSurfaceDrawing newStroke];
 
-    v21 = [(PKPaintAreaViewSurface *)self paintAreaView];
-    v22 = [v21 tool];
-    v23 = [v22 ink];
-    [v20 _setInk:v23];
+    paintAreaView = [(PKPaintAreaViewSurface *)self paintAreaView];
+    tool = [paintAreaView tool];
+    v23 = [tool ink];
+    [newStroke _setInk:v23];
 
-    if (!a5)
+    if (!type)
     {
-      v24 = [(PKPaintAreaViewSurface *)self paintAreaView];
-      v25 = [v24 traitCollection];
-      v26 = [v25 forceTouchCapability];
+      paintAreaView2 = [(PKPaintAreaViewSurface *)self paintAreaView];
+      traitCollection = [paintAreaView2 traitCollection];
+      forceTouchCapability = [traitCollection forceTouchCapability];
 
-      if (v26 == 1)
+      if (forceTouchCapability == 1)
       {
-        a3->var1 = -1.0;
+        began->var1 = -1.0;
       }
     }
 
-    v27 = [(PKController *)&self->_drawingController->super.isa inputController];
+    inputController = [(PKController *)&self->_drawingController->super.isa inputController];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __71__PKPaintAreaViewSurface_drawingBegan_activeInputProperties_inputType___block_invoke_3;
     v41[3] = &unk_1E82D6890;
     v41[4] = self;
-    v28 = v20;
+    v28 = newStroke;
     v42 = v28;
-    [v27 drawingBeganWithStroke:v28 inputType:a5 activeInputProperties:a4 inputScale:v41 start:sqrt(*(&v17 + 1) * *(&v17 + 1) + *&v17 * *&v17)];
+    [inputController drawingBeganWithStroke:v28 inputType:type activeInputProperties:properties inputScale:v41 start:sqrt(*(&v17 + 1) * *(&v17 + 1) + *&v17 * *&v17)];
 
-    v29 = [(PKController *)&self->_drawingController->super.isa inputController];
-    v30 = *&a3->var13;
-    v38 = *&a3->var11;
+    inputController2 = [(PKController *)&self->_drawingController->super.isa inputController];
+    v30 = *&began->var13;
+    v38 = *&began->var11;
     v39 = v30;
-    var15 = a3->var15;
-    v31 = *&a3->var5;
-    *&v34.tx = *&a3->var3;
+    var15 = began->var15;
+    v31 = *&began->var5;
+    *&v34.tx = *&began->var3;
     v35 = v31;
-    v32 = *&a3->var9;
-    v36 = *&a3->var7;
+    v32 = *&began->var9;
+    v36 = *&began->var7;
     v37 = v32;
-    v33 = *&a3->var1;
-    *&v34.a = a3->var0;
+    v33 = *&began->var1;
+    *&v34.a = began->var0;
     *&v34.c = v33;
-    [v29 addPoint:&v34];
+    [inputController2 addPoint:&v34];
   }
 }
 
@@ -350,38 +350,38 @@ void __71__PKPaintAreaViewSurface_drawingBegan_activeInputProperties_inputType__
   }
 }
 
-- (void)drawingEndedWithDetectedShape:(id)a3 completionBlock:(id)a4
+- (void)drawingEndedWithDetectedShape:(id)shape completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaintAreaViewSurface *)self isDrawing];
+  shapeCopy = shape;
+  blockCopy = block;
+  isDrawing = [(PKPaintAreaViewSurface *)self isDrawing];
   [(PKPaintAreaViewSurface *)self setIsDrawing:0];
   if (self->_isErasingObjects)
   {
     [(PKPaintAreaViewSurface *)self eraserEnded];
-    if (v7)
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
-    if (v8)
+    if (isDrawing)
     {
       self->_waitingForStrokeToEnd = 1;
     }
 
-    v9 = [(PKController *)&self->_drawingController->super.isa inputController];
+    inputController = [(PKController *)&self->_drawingController->super.isa inputController];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __72__PKPaintAreaViewSurface_drawingEndedWithDetectedShape_completionBlock___block_invoke;
     v10[3] = &unk_1E82D8D40;
-    v11 = v6;
-    v12 = self;
-    v14 = v8;
-    v13 = v7;
-    [v9 drawingEndedEstimatesTimeout:v10 completion:0.1];
+    v11 = shapeCopy;
+    selfCopy = self;
+    v14 = isDrawing;
+    v13 = blockCopy;
+    [inputController drawingEndedEstimatesTimeout:v10 completion:0.1];
   }
 }
 
@@ -465,7 +465,7 @@ intptr_t __72__PKPaintAreaViewSurface_drawingEndedWithDetectedShape_completionBl
 
 - (void)drawingCancelled
 {
-  v3 = [(PKPaintAreaViewSurface *)self isDrawing];
+  isDrawing = [(PKPaintAreaViewSurface *)self isDrawing];
   [(PKPaintAreaViewSurface *)self setIsDrawing:0];
   if (self->_isErasingObjects)
   {
@@ -476,16 +476,16 @@ intptr_t __72__PKPaintAreaViewSurface_drawingEndedWithDetectedShape_completionBl
   else
   {
     v4 = self->_drawingController;
-    v5 = [(PKController *)v4 inputController];
+    inputController = [(PKController *)v4 inputController];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__PKPaintAreaViewSurface_drawingCancelled__block_invoke;
     v7[3] = &unk_1E82D7528;
     v7[4] = self;
-    v9 = v3;
+    v9 = isDrawing;
     v6 = v4;
     v8 = v6;
-    [v5 drawingCancelledWithCompletion:v7];
+    [inputController drawingCancelledWithCompletion:v7];
   }
 }
 
@@ -517,7 +517,7 @@ void __42__PKPaintAreaViewSurface_drawingCancelled__block_invoke(uint64_t a1)
   }
 }
 
-- (void)vsync:(double)a3
+- (void)vsync:(double)vsync
 {
   if ([(PKPaintAreaViewSurface *)self isDrawing]|| (v5 = self->_drawingController) != 0 && v5->_liveInteraction || self->_isErasingObjects)
   {
@@ -539,21 +539,21 @@ void __42__PKPaintAreaViewSurface_drawingCancelled__block_invoke(uint64_t a1)
     t1 = v14;
     [(PKMetalRendererController *)v11 setStrokeTransform:?];
     memset(&t1, 0, sizeof(t1));
-    [(PKMetalRendererController *)v11 renderWithTransform:v9 inputScale:a3 at:?];
+    [(PKMetalRendererController *)v11 renderWithTransform:v9 inputScale:vsync at:?];
   }
 }
 
-- (BOOL)eraserBeganAtLocation:(CGPoint)a3
+- (BOOL)eraserBeganAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   self->_isErasingObjects = 0;
-  v6 = [(PKPaintAreaViewSurface *)self paintAreaView];
-  v7 = [v6 tool];
-  v8 = [v7 ink];
+  paintAreaView = [(PKPaintAreaViewSurface *)self paintAreaView];
+  tool = [paintAreaView tool];
+  v8 = [tool ink];
 
-  v9 = [v8 identifier];
-  v10 = [v9 isEqual:@"com.apple.ink.objectEraser"];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqual:@"com.apple.ink.objectEraser"];
 
   if ((*&x & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
@@ -577,11 +577,11 @@ void __42__PKPaintAreaViewSurface_drawingCancelled__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)eraserMovedToLocation:(CGPoint)a3
+- (void)eraserMovedToLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  if ((*&a3.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a3.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+  y = location.y;
+  x = location.x;
+  if ((*&location.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&location.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
     v6 = self->_oldEraseLocation.x;
     v7 = self->_oldEraseLocation.y;
@@ -590,10 +590,10 @@ void __42__PKPaintAreaViewSurface_drawingCancelled__block_invoke(uint64_t a1)
       goto LABEL_11;
     }
 
-    v8 = -(a3.x - v6);
-    if (a3.x - v6 >= 0.0)
+    v8 = -(location.x - v6);
+    if (location.x - v6 >= 0.0)
     {
-      v8 = a3.x - v6;
+      v8 = location.x - v6;
     }
 
     if (v8 <= self->_drawingSize.width * 0.5)
@@ -607,7 +607,7 @@ void __42__PKPaintAreaViewSurface_drawingCancelled__block_invoke(uint64_t a1)
       if (v9 <= self->_drawingSize.height * 0.5)
       {
 LABEL_11:
-        [(PKPaintAreaViewSurface *)self eraseStrokesForPoint:a3.x prevPoint:y];
+        [(PKPaintAreaViewSurface *)self eraseStrokesForPoint:location.x prevPoint:y];
       }
     }
 
@@ -616,18 +616,18 @@ LABEL_11:
   }
 }
 
-- (void)eraseStrokesForPoint:(CGPoint)a3 prevPoint:(CGPoint)a4
+- (void)eraseStrokesForPoint:(CGPoint)point prevPoint:(CGPoint)prevPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = prevPoint.y;
+  x = prevPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   v42 = *MEMORY[0x1E69E9840];
   if (!self->_strokesToErase)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     strokesToErase = self->_strokesToErase;
-    self->_strokesToErase = v9;
+    self->_strokesToErase = array;
 
     v11 = [MEMORY[0x1E695DFA8] set];
     strokeIDsToErase = self->_strokeIDsToErase;
@@ -659,8 +659,8 @@ LABEL_11:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = [v36[5] array];
-    v15 = [PKStroke copyStrokes:v14 hidden:1];
+    array2 = [v36[5] array];
+    v15 = [PKStroke copyStrokes:array2 hidden:1];
 
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v41 count:16];
     if (v16)
@@ -677,15 +677,15 @@ LABEL_11:
 
           v19 = *(*(&v24 + 1) + 8 * i);
           v20 = self->_strokeIDsToErase;
-          v21 = [v19 _strokeUUID];
-          LOBYTE(v20) = [(NSMutableSet *)v20 containsObject:v21];
+          _strokeUUID = [v19 _strokeUUID];
+          LOBYTE(v20) = [(NSMutableSet *)v20 containsObject:_strokeUUID];
 
           if ((v20 & 1) == 0)
           {
             [(NSMutableArray *)self->_strokesToErase addObject:v19];
             v22 = self->_strokeIDsToErase;
-            v23 = [v19 _strokeUUID];
-            [(NSMutableSet *)v22 addObject:v23];
+            _strokeUUID2 = [v19 _strokeUUID];
+            [(NSMutableSet *)v22 addObject:_strokeUUID2];
           }
         }
 
@@ -714,9 +714,9 @@ void __57__PKPaintAreaViewSurface_eraseStrokesForPoint_prevPoint___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (void)_didFinishErasingStrokes:(BOOL)a3
+- (void)_didFinishErasingStrokes:(BOOL)strokes
 {
-  v3 = a3;
+  strokesCopy = strokes;
   v5 = [(NSMutableArray *)self->_strokesToErase copy];
   strokesToErase = self->_strokesToErase;
   self->_strokesToErase = 0;
@@ -728,7 +728,7 @@ void __57__PKPaintAreaViewSurface_eraseStrokesForPoint_prevPoint___block_invoke(
   {
     if ([v5 count])
     {
-      v8 = !v3;
+      v8 = !strokesCopy;
     }
 
     else
@@ -770,42 +770,42 @@ void __51__PKPaintAreaViewSurface__didFinishErasingStrokes___block_invoke(uint64
   }
 }
 
-- (id)nextTextureTargetForMetalRendererController:(id)a3
+- (id)nextTextureTargetForMetalRendererController:(id)controller
 {
-  v4 = self->_textureSet;
-  objc_sync_enter(v4);
+  delegate = self->_textureSet;
+  objc_sync_enter(delegate);
   width = self->_pixelSize.width;
   height = self->_pixelSize.height;
   if ([(NSMutableArray *)self->_textureSet count]>= 2)
   {
-    v7 = [(NSMutableArray *)self->_textureSet firstObject];
+    firstObject = [(NSMutableArray *)self->_textureSet firstObject];
     [(NSMutableArray *)self->_textureSet removeObjectAtIndex:0];
-    if (self->_pixelSize.width == [v7 width] && self->_pixelSize.height == objc_msgSend(v7, "height"))
+    if (self->_pixelSize.width == [firstObject width] && self->_pixelSize.height == objc_msgSend(firstObject, "height"))
     {
-      objc_sync_exit(v4);
+      objc_sync_exit(delegate);
       goto LABEL_12;
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(delegate);
 
-  v8 = [(PKPaintAreaViewSurface *)self paintAreaView];
-  v4 = [v8 delegate];
+  paintAreaView = [(PKPaintAreaViewSurface *)self paintAreaView];
+  delegate = [paintAreaView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(PKPaintAreaViewSurface *)self paintAreaView];
-    v10 = [(PKPaintAreaViewSurface *)self surface];
-    v11 = [(NSMutableArray *)v4 paintAreaView:v9 newTextureForSurface:v10];
+    paintAreaView2 = [(PKPaintAreaViewSurface *)self paintAreaView];
+    surface = [(PKPaintAreaViewSurface *)self surface];
+    v11 = [(NSMutableArray *)delegate paintAreaView:paintAreaView2 newTextureForSurface:surface];
   }
 
   else
   {
-    v12 = [(PKPaintAreaViewSurface *)self drawingController];
-    v13 = v12;
-    if (v12)
+    drawingController = [(PKPaintAreaViewSurface *)self drawingController];
+    v13 = drawingController;
+    if (drawingController)
     {
-      v14 = *(v12 + 64);
+      v14 = *(drawingController + 64);
     }
 
     else
@@ -814,32 +814,32 @@ void __51__PKPaintAreaViewSurface__didFinishErasingStrokes___block_invoke(uint64
     }
 
     v15 = v14;
-    v9 = [(PKMetalRendererController *)v15 device];
+    paintAreaView2 = [(PKMetalRendererController *)v15 device];
 
-    v10 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:80 width:width height:height mipmapped:-[PKPaintAreaViewSurface isMipmapped](self, "isMipmapped")];
-    [v10 setTextureType:2];
-    [v10 setSampleCount:1];
-    [v10 setUsage:5];
-    [v10 setStorageMode:2];
-    v11 = [v9 newTextureWithDescriptor:v10];
+    surface = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:80 width:width height:height mipmapped:-[PKPaintAreaViewSurface isMipmapped](self, "isMipmapped")];
+    [surface setTextureType:2];
+    [surface setSampleCount:1];
+    [surface setUsage:5];
+    [surface setStorageMode:2];
+    v11 = [paintAreaView2 newTextureWithDescriptor:surface];
   }
 
-  v7 = v11;
+  firstObject = v11;
 
 LABEL_12:
 
-  return v7;
+  return firstObject;
 }
 
-- (void)metalRendererController:(id)a3 didCommitRenderingIntoTexture:(id)a4
+- (void)metalRendererController:(id)controller didCommitRenderingIntoTexture:(id)texture
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaintAreaViewSurface *)self dispatchQueue];
-  v9 = v8;
-  if (v8)
+  controllerCopy = controller;
+  textureCopy = texture;
+  dispatchQueue = [(PKPaintAreaViewSurface *)self dispatchQueue];
+  v9 = dispatchQueue;
+  if (dispatchQueue)
   {
-    v10 = v8;
+    v10 = dispatchQueue;
   }
 
   else
@@ -852,11 +852,11 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __80__PKPaintAreaViewSurface_metalRendererController_didCommitRenderingIntoTexture___block_invoke;
   block[3] = &unk_1E82D6400;
-  v15 = v7;
-  v16 = self;
-  v17 = v6;
-  v12 = v6;
-  v13 = v7;
+  v15 = textureCopy;
+  selfCopy = self;
+  v17 = controllerCopy;
+  v12 = controllerCopy;
+  v13 = textureCopy;
   dispatch_async(v10, block);
 }
 
@@ -891,20 +891,20 @@ void __80__PKPaintAreaViewSurface_metalRendererController_didCommitRenderingInto
   [v7 setPaintSurfaceTexture:v6];
 }
 
-- (void)drawingChanged:(id)a3
+- (void)drawingChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(PKPaintAreaViewSurface *)self surface];
-  v6 = [(PKPaintAreaViewSurface *)self paintAreaView];
-  v7 = [v6 delegate];
+  changedCopy = changed;
+  surface = [(PKPaintAreaViewSurface *)self surface];
+  paintAreaView = [(PKPaintAreaViewSurface *)self paintAreaView];
+  delegate = [paintAreaView delegate];
 
-  if (v5)
+  if (surface)
   {
-    v8 = [(PKPaintAreaViewSurface *)self dispatchQueue];
-    v9 = v8;
-    if (v8)
+    dispatchQueue = [(PKPaintAreaViewSurface *)self dispatchQueue];
+    v9 = dispatchQueue;
+    if (dispatchQueue)
     {
-      v10 = v8;
+      v10 = dispatchQueue;
     }
 
     else
@@ -917,10 +917,10 @@ void __80__PKPaintAreaViewSurface_metalRendererController_didCommitRenderingInto
     v12[1] = 3221225472;
     v12[2] = __41__PKPaintAreaViewSurface_drawingChanged___block_invoke;
     v12[3] = &unk_1E82D75F0;
-    v13 = v5;
-    v14 = v4;
-    v15 = v7;
-    v16 = self;
+    v13 = surface;
+    v14 = changedCopy;
+    v15 = delegate;
+    selfCopy = self;
     dispatch_async(v10, v12);
   }
 }

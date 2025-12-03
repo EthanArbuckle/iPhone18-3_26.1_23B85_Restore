@@ -1,27 +1,27 @@
 @interface KTVerifyRevisionInclusionOperation
-- (BOOL)downloadInclusionProofChunk:(id)a3 application:(id)a4 downloadType:(unint64_t)a5 error:(id *)a6;
-- (BOOL)downloadInclusionProofsForRevisions:(id)a3 application:(id)a4 downloadType:(unint64_t)a5 error:(id *)a6;
-- (BOOL)verifyInclusion:(id)a3 error:(id *)a4;
-- (BOOL)verifySMHInclusion:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5;
-- (BOOL)verifySTHInclusion:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5;
-- (KTVerifyRevisionInclusionOperation)initWithDependencies:(id)a3 opId:(id)a4;
+- (BOOL)downloadInclusionProofChunk:(id)chunk application:(id)application downloadType:(unint64_t)type error:(id *)error;
+- (BOOL)downloadInclusionProofsForRevisions:(id)revisions application:(id)application downloadType:(unint64_t)type error:(id *)error;
+- (BOOL)verifyInclusion:(id)inclusion error:(id *)error;
+- (BOOL)verifySMHInclusion:(id)inclusion logBeginMs:(unint64_t)ms error:(id *)error;
+- (BOOL)verifySTHInclusion:(id)inclusion logBeginMs:(unint64_t)ms error:(id *)error;
+- (KTVerifyRevisionInclusionOperation)initWithDependencies:(id)dependencies opId:(id)id;
 - (void)groupStart;
 @end
 
 @implementation KTVerifyRevisionInclusionOperation
 
-- (KTVerifyRevisionInclusionOperation)initWithDependencies:(id)a3 opId:(id)a4
+- (KTVerifyRevisionInclusionOperation)initWithDependencies:(id)dependencies opId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  dependenciesCopy = dependencies;
+  idCopy = id;
   v17.receiver = self;
   v17.super_class = KTVerifyRevisionInclusionOperation;
   v9 = [(KTGroupOperation *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deps, a3);
-    [(KTVerifyRevisionInclusionOperation *)v10 setBackgroundOpId:v8];
+    objc_storeStrong(&v9->_deps, dependencies);
+    [(KTVerifyRevisionInclusionOperation *)v10 setBackgroundOpId:idCopy];
     v11 = +[NSMutableDictionary dictionary];
     [(KTVerifyRevisionInclusionOperation *)v10 setErrors:v11];
 
@@ -61,8 +61,8 @@
   v5 = objc_alloc_init(NSOperation);
   [(KTVerifyRevisionInclusionOperation *)self setFinishedOp:v5];
 
-  v6 = [(KTVerifyRevisionInclusionOperation *)self finishedOp];
-  [(KTGroupOperation *)self dependOnBeforeGroupFinished:v6];
+  finishedOp = [(KTVerifyRevisionInclusionOperation *)self finishedOp];
+  [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   v22 = 0;
   v7 = [(KTVerifyRevisionInclusionOperation *)self verifyInclusion:kKTApplicationIdentifierIDS error:&v22];
@@ -141,27 +141,27 @@
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "VerifyRevisionInclusion: waiting for fetches to finish validating", buf, 2u);
   }
 
-  v17 = [(KTVerifyRevisionInclusionOperation *)self fetchGroup];
-  v18 = [(KTVerifyRevisionInclusionOperation *)self fetchQueue];
+  fetchGroup = [(KTVerifyRevisionInclusionOperation *)self fetchGroup];
+  fetchQueue = [(KTVerifyRevisionInclusionOperation *)self fetchQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100065758;
   v19[3] = &unk_100316FE0;
   v19[4] = self;
-  dispatch_group_notify(v17, v18, v19);
+  dispatch_group_notify(fetchGroup, fetchQueue, v19);
 }
 
-- (BOOL)verifyInclusion:(id)a3 error:(id *)a4
+- (BOOL)verifyInclusion:(id)inclusion error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KTVerifyRevisionInclusionOperation *)self deps];
-  v8 = [v7 publicKeyStore];
-  v9 = [v8 applicationPublicKeyStore:v6];
+  inclusionCopy = inclusion;
+  deps = [(KTVerifyRevisionInclusionOperation *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  v9 = [publicKeyStore applicationPublicKeyStore:inclusionCopy];
 
-  v10 = [v9 patLogBeginningMs];
-  if ([(KTVerifyRevisionInclusionOperation *)self verifySMHInclusion:v6 logBeginMs:v10 error:a4])
+  patLogBeginningMs = [v9 patLogBeginningMs];
+  if ([(KTVerifyRevisionInclusionOperation *)self verifySMHInclusion:inclusionCopy logBeginMs:patLogBeginningMs error:error])
   {
-    v11 = [(KTVerifyRevisionInclusionOperation *)self verifySTHInclusion:v6 logBeginMs:v10 error:a4];
+    v11 = [(KTVerifyRevisionInclusionOperation *)self verifySTHInclusion:inclusionCopy logBeginMs:patLogBeginningMs error:error];
   }
 
   else
@@ -172,18 +172,18 @@
   return v11;
 }
 
-- (BOOL)verifySMHInclusion:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5
+- (BOOL)verifySMHInclusion:(id)inclusion logBeginMs:(unint64_t)ms error:(id *)error
 {
-  v8 = a3;
-  v9 = [(KTVerifyRevisionInclusionOperation *)self deps];
-  v10 = [v9 dataStore];
+  inclusionCopy = inclusion;
+  deps = [(KTVerifyRevisionInclusionOperation *)self deps];
+  dataStore = [deps dataStore];
   v17 = 0;
-  v11 = [v10 unverifiedRevisions:v8 isMapHead:1 inclusion:1 logBeginMs:a4 error:&v17];
+  v11 = [dataStore unverifiedRevisions:inclusionCopy isMapHead:1 inclusion:1 logBeginMs:ms error:&v17];
   v12 = v17;
 
   if (v11)
   {
-    v13 = [(KTVerifyRevisionInclusionOperation *)self downloadInclusionProofsForRevisions:v11 application:v8 downloadType:1 error:a5];
+    v13 = [(KTVerifyRevisionInclusionOperation *)self downloadInclusionProofsForRevisions:v11 application:inclusionCopy downloadType:1 error:error];
   }
 
   else if (v12)
@@ -197,17 +197,17 @@
     if (os_log_type_enabled(qword_10038BD58, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v19 = v8;
+      v19 = inclusionCopy;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "failed to get inclusion unverified SMH revisions for %{public}@: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v12;
       v13 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -224,18 +224,18 @@
   return v13;
 }
 
-- (BOOL)verifySTHInclusion:(id)a3 logBeginMs:(unint64_t)a4 error:(id *)a5
+- (BOOL)verifySTHInclusion:(id)inclusion logBeginMs:(unint64_t)ms error:(id *)error
 {
-  v8 = a3;
-  v9 = [(KTVerifyRevisionInclusionOperation *)self deps];
-  v10 = [v9 dataStore];
+  inclusionCopy = inclusion;
+  deps = [(KTVerifyRevisionInclusionOperation *)self deps];
+  dataStore = [deps dataStore];
   v17 = 0;
-  v11 = [v10 unverifiedRevisions:v8 isMapHead:0 inclusion:1 logBeginMs:a4 error:&v17];
+  v11 = [dataStore unverifiedRevisions:inclusionCopy isMapHead:0 inclusion:1 logBeginMs:ms error:&v17];
   v12 = v17;
 
   if (v11)
   {
-    v13 = [(KTVerifyRevisionInclusionOperation *)self downloadInclusionProofsForRevisions:v11 application:v8 downloadType:2 error:a5];
+    v13 = [(KTVerifyRevisionInclusionOperation *)self downloadInclusionProofsForRevisions:v11 application:inclusionCopy downloadType:2 error:error];
   }
 
   else if (v12)
@@ -249,17 +249,17 @@
     if (os_log_type_enabled(qword_10038BD58, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v19 = v8;
+      v19 = inclusionCopy;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "failed to get inclusion unverified STH revisions for %{public}@: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v12;
       v13 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -276,15 +276,15 @@
   return v13;
 }
 
-- (BOOL)downloadInclusionProofsForRevisions:(id)a3 application:(id)a4 downloadType:(unint64_t)a5 error:(id *)a6
+- (BOOL)downloadInclusionProofsForRevisions:(id)revisions application:(id)application downloadType:(unint64_t)type error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if ([v9 count])
+  revisionsCopy = revisions;
+  applicationCopy = application;
+  if ([revisionsCopy count])
   {
-    v11 = [(KTVerifyRevisionInclusionOperation *)self deps];
-    v12 = [v11 logClient];
-    v13 = +[KTContext chunkArray:chunkSize:](KTContext, "chunkArray:chunkSize:", v9, [v12 revisionLogMaxProofs]);
+    deps = [(KTVerifyRevisionInclusionOperation *)self deps];
+    logClient = [deps logClient];
+    v13 = +[KTContext chunkArray:chunkSize:](KTContext, "chunkArray:chunkSize:", revisionsCopy, [logClient revisionLogMaxProofs]);
 
     v32 = 0u;
     v33 = 0u;
@@ -295,7 +295,7 @@
     if (v14)
     {
       v15 = v14;
-      v26 = v9;
+      v26 = revisionsCopy;
       v16 = 0;
       v17 = *v31;
       v18 = 1;
@@ -311,19 +311,19 @@
 
           v21 = *(*(&v30 + 1) + 8 * i);
           v29 = v16;
-          v22 = [(KTVerifyRevisionInclusionOperation *)self downloadInclusionProofChunk:v21 application:v10 downloadType:a5 error:&v29, v26];
+          v22 = [(KTVerifyRevisionInclusionOperation *)self downloadInclusionProofChunk:v21 application:applicationCopy downloadType:type error:&v29, v26];
           v16 = v29;
 
           if ((v22 & 1) == 0)
           {
             v18 = 0;
-            if (a6)
+            if (error)
             {
               if (v16)
               {
                 v23 = v16;
                 v18 = 0;
-                *a6 = v16;
+                *error = v16;
               }
             }
           }
@@ -334,7 +334,7 @@
 
       while (v15);
 
-      v9 = v26;
+      revisionsCopy = v26;
     }
 
     else
@@ -355,9 +355,9 @@
     if (os_log_type_enabled(qword_10038BD58, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v36 = v10;
+      v36 = applicationCopy;
       v37 = 2048;
-      v38 = a5;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Skipping revision inclusion proof request -- no revisions for %@, type %lu", buf, 0x16u);
     }
   }
@@ -365,11 +365,11 @@
   return v18 & 1;
 }
 
-- (BOOL)downloadInclusionProofChunk:(id)a3 application:(id)a4 downloadType:(unint64_t)a5 error:(id *)a6
+- (BOOL)downloadInclusionProofChunk:(id)chunk application:(id)application downloadType:(unint64_t)type error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (a5 == 1)
+  chunkCopy = chunk;
+  applicationCopy = application;
+  if (type == 1)
   {
     v12 = 2;
   }
@@ -379,7 +379,7 @@
     v12 = 3;
   }
 
-  v13 = [TransparencyRPCRequestBuilder buildRevisionLogInclusionProofRequest:v11 logType:v12 revisions:v10 error:a6];
+  v13 = [TransparencyRPCRequestBuilder buildRevisionLogInclusionProofRequest:applicationCopy logType:v12 revisions:chunkCopy error:error];
   if (v13)
   {
     *buf = 0;
@@ -388,28 +388,28 @@
     v39 = sub_100066654;
     v40 = sub_100066664;
     v41 = 0;
-    v14 = [(KTVerifyRevisionInclusionOperation *)self deps];
-    v15 = [v14 dataStore];
+    deps = [(KTVerifyRevisionInclusionOperation *)self deps];
+    dataStore = [deps dataStore];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10006666C;
     v30[3] = &unk_10031C2E0;
     v30[4] = self;
-    v34 = a5;
-    v16 = v11;
+    typeCopy = type;
+    v16 = applicationCopy;
     v31 = v16;
-    v17 = v10;
-    v35 = a6;
+    v17 = chunkCopy;
+    errorCopy = error;
     v32 = v17;
     v33 = buf;
-    [v15 performBlockAndWaitWithMoc:v30];
+    [dataStore performBlockAndWaitWithMoc:v30];
 
-    v18 = [(KTVerifyRevisionInclusionOperation *)self fetchGroup];
-    dispatch_group_enter(v18);
+    fetchGroup = [(KTVerifyRevisionInclusionOperation *)self fetchGroup];
+    dispatch_group_enter(fetchGroup);
 
     objc_initWeak(&location, self);
-    v19 = [(KTVerifyRevisionInclusionOperation *)self deps];
-    v20 = [v19 logClient];
+    deps2 = [(KTVerifyRevisionInclusionOperation *)self deps];
+    logClient = [deps2 logClient];
     v21 = *(v37 + 5);
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
@@ -419,8 +419,8 @@
     v25 = v16;
     v27 = buf;
     v26 = v17;
-    v28[1] = a5;
-    [v20 fetchRevisionLogInclusionProof:v13 uuid:v21 completionHandler:v24];
+    v28[1] = type;
+    [logClient fetchRevisionLogInclusionProof:v13 uuid:v21 completionHandler:v24];
 
     objc_destroyWeak(v28);
     objc_destroyWeak(&location);

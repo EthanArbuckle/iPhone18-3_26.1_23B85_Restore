@@ -1,10 +1,10 @@
 @interface UIPDFLinkAnnotation
-- (BOOL)shouldRecognizeTapOrPress:(CGPoint)a3;
+- (BOOL)shouldRecognizeTapOrPress:(CGPoint)press;
 - (CGRect)linkRectangle;
 - (id)newBaseURL;
 - (id)url;
-- (unint64_t)getDestination:(CGPDFDictionary *)a3;
-- (unint64_t)getNamedDestination:(CGPDFDictionary *)a3;
+- (unint64_t)getDestination:(CGPDFDictionary *)destination;
+- (unint64_t)getNamedDestination:(CGPDFDictionary *)destination;
 - (unint64_t)pageNumber;
 @end
 
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (unint64_t)getDestination:(CGPDFDictionary *)a3
+- (unint64_t)getDestination:(CGPDFDictionary *)destination
 {
   value = 0;
-  if (!CGPDFDictionaryGetObject(a3, "D", &value) && !CGPDFDictionaryGetObject(a3, "Dest", &value))
+  if (!CGPDFDictionaryGetObject(destination, "D", &value) && !CGPDFDictionaryGetObject(destination, "Dest", &value))
   {
     return 0;
   }
@@ -104,8 +104,8 @@
   }
 
 LABEL_17:
-  v11 = [(UIPDFAnnotationController *)self->super.super._annotationController pageView];
-  v12 = [(UIPDFDocument *)[[(UIPDFPageView *)v11 page] document] numberOfPages];
+  pageView = [(UIPDFAnnotationController *)self->super.super._annotationController pageView];
+  numberOfPages = [(UIPDFDocument *)[[(UIPDFPageView *)pageView page] document] numberOfPages];
   result = CGPDFArrayGetCount(array);
   if (!result)
   {
@@ -115,10 +115,10 @@ LABEL_17:
   v18 = 0;
   if (CGPDFArrayGetDictionary(array, 0, &v18))
   {
-    v13 = [(UIPDFDocument *)[[(UIPDFPageView *)v11 page] document] CGDocument];
+    cGDocument = [(UIPDFDocument *)[[(UIPDFPageView *)pageView page] document] CGDocument];
     v14 = v18;
     v22 = 0;
-    Catalog = CGPDFDocumentGetCatalog(v13);
+    Catalog = CGPDFDocumentGetCatalog(cGDocument);
     CGPDFDictionaryGetDictionary(Catalog, "Pages", &v22);
     object = 0;
     result = indexOfDictionary(v22, &object, v14);
@@ -137,7 +137,7 @@ LABEL_17:
     result = v22;
   }
 
-  if (result > v12 || result < 1)
+  if (result > numberOfPages || result < 1)
   {
     return 0;
   }
@@ -145,16 +145,16 @@ LABEL_17:
   return result;
 }
 
-- (unint64_t)getNamedDestination:(CGPDFDictionary *)a3
+- (unint64_t)getNamedDestination:(CGPDFDictionary *)destination
 {
   value = 0;
-  Name = CGPDFDictionaryGetName(a3, "N", &value);
+  Name = CGPDFDictionaryGetName(destination, "N", &value);
   result = 0;
   if (Name)
   {
-    v6 = [(UIPDFAnnotationController *)self->super.super._annotationController pageView];
-    v7 = [(UIPDFDocument *)[(UIPDFPageView *)v6 document] numberOfPages];
-    v8 = [[(UIPDFPageView *)v6 page] pageNumber];
+    pageView = [(UIPDFAnnotationController *)self->super.super._annotationController pageView];
+    numberOfPages = [(UIPDFDocument *)[(UIPDFPageView *)pageView document] numberOfPages];
+    pageNumber = [[(UIPDFPageView *)pageView page] pageNumber];
     v9 = value;
     if (!strcmp(value, "NextPage"))
     {
@@ -169,7 +169,7 @@ LABEL_17:
 
           else
           {
-            v10 = v7;
+            v10 = numberOfPages;
           }
         }
 
@@ -181,16 +181,16 @@ LABEL_17:
 
       else
       {
-        v10 = v8 - 1;
+        v10 = pageNumber - 1;
       }
     }
 
     else
     {
-      v10 = v8 + 1;
+      v10 = pageNumber + 1;
     }
 
-    if (v10 > v7 || v10 < 0)
+    if (v10 > numberOfPages || v10 < 0)
     {
       return 0;
     }
@@ -216,9 +216,9 @@ LABEL_17:
     result = 0;
     if (Name)
     {
-      v6 = [(UIPDFLinkAnnotation *)self newBaseURL];
-      v7 = v6;
-      if (v6 && [v6 length])
+      newBaseURL = [(UIPDFLinkAnnotation *)self newBaseURL];
+      v7 = newBaseURL;
+      if (newBaseURL && [newBaseURL length])
       {
         v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v7 encodingInvalidCharacters:0];
       }
@@ -305,9 +305,9 @@ LABEL_17:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIPDFAnnotationController *)self->super.super._annotationController pageView];
+  pageView = [(UIPDFAnnotationController *)self->super.super._annotationController pageView];
 
-  [(UIPDFPageView *)v11 convertRectFromPDFPageSpace:v4, v6, v8, v10];
+  [(UIPDFPageView *)pageView convertRectFromPDFPageSpace:v4, v6, v8, v10];
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -315,14 +315,14 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)shouldRecognizeTapOrPress:(CGPoint)a3
+- (BOOL)shouldRecognizeTapOrPress:(CGPoint)press
 {
   v54[1] = *MEMORY[0x1E69E9840];
   dictionary = self->super.super._dictionary;
   if (dictionary)
   {
-    y = a3.y;
-    x = a3.x;
+    y = press.y;
+    x = press.x;
     value = 0;
     if (!CGPDFDictionaryGetArray(dictionary, "QuadPoints", &value) || (v7 = value, [(UIPDFAnnotation *)self Rect], ![(UIPDFLinkAnnotation *)self quadPoints:v7 within:?]) || ([(UIView *)[(UIPDFAnnotationController *)self->super.super._annotationController pageView] convertPoint:[(UIPDFAnnotation *)self annotationView] fromView:x, y], [(UIPDFPageView *)[(UIPDFAnnotationController *)self->super.super._annotationController pageView] convertPointToPDFPageSpace:v8, v9], v11 = v10, v13 = v12, Count = CGPDFArrayGetCount(value), (Count & 7) != 0))
     {

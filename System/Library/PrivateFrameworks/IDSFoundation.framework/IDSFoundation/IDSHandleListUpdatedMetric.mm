@@ -1,5 +1,5 @@
 @interface IDSHandleListUpdatedMetric
-- (IDSHandleListUpdatedMetric)initWithService:(id)a3;
+- (IDSHandleListUpdatedMetric)initWithService:(id)service;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (IDSHandleListUpdatedMetric)initWithService:(id)a3
+- (IDSHandleListUpdatedMetric)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = IDSHandleListUpdatedMetric;
   v6 = [(IDSHandleListUpdatedMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
   }
 
   return v7;

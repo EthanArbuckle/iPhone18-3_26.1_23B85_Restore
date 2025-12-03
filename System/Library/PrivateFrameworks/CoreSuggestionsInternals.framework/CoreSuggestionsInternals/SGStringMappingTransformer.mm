@@ -1,13 +1,13 @@
 @interface SGStringMappingTransformer
-+ (id)withMappings:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStringMappingTransformer:(id)a3;
-- (SGStringMappingTransformer)initWithHelperMappingType:(id)a3 andLanguage:(id)a4;
-- (SGStringMappingTransformer)initWithMappings:(id)a3;
-- (SGStringMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
-- (id)withHelperMappingType:(id)a3 andLanguage:(id)a4;
++ (id)withMappings:(id)mappings;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStringMappingTransformer:(id)transformer;
+- (SGStringMappingTransformer)initWithHelperMappingType:(id)type andLanguage:(id)language;
+- (SGStringMappingTransformer)initWithMappings:(id)mappings;
+- (SGStringMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
+- (id)withHelperMappingType:(id)type andLanguage:(id)language;
 - (unint64_t)hash;
 @end
 
@@ -15,46 +15,46 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SGStringMappingTransformer *)self mappings];
-  v3 = [v2 hash];
+  mappings = [(SGStringMappingTransformer *)self mappings];
+  v3 = [mappings hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStringMappingTransformer *)self isEqualToStringMappingTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStringMappingTransformer *)self isEqualToStringMappingTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToStringMappingTransformer:(id)a3
+- (BOOL)isEqualToStringMappingTransformer:(id)transformer
 {
-  v4 = a3;
-  if (v4)
+  transformerCopy = transformer;
+  if (transformerCopy)
   {
-    v5 = [(SGStringMappingTransformer *)self mappings];
-    v6 = [v4 mappings];
-    if (v5 == v6)
+    mappings = [(SGStringMappingTransformer *)self mappings];
+    mappings2 = [transformerCopy mappings];
+    if (mappings == mappings2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(SGStringMappingTransformer *)self mappings];
-      v8 = [v4 mappings];
-      v9 = [v7 isEqual:v8];
+      mappings3 = [(SGStringMappingTransformer *)self mappings];
+      mappings4 = [transformerCopy mappings];
+      v9 = [mappings3 isEqual:mappings4];
     }
   }
 
@@ -66,32 +66,32 @@
   return v9;
 }
 
-- (SGStringMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGStringMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"MAPPING_TYPE"];
-  if (v7 && (v8 = v7, [v6 objectForKeyedSubscript:@"MAPPING_LANGUAGE"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  plistCopy = plist;
+  v7 = [plistCopy objectForKeyedSubscript:@"MAPPING_TYPE"];
+  if (v7 && (v8 = v7, [plistCopy objectForKeyedSubscript:@"MAPPING_LANGUAGE"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [v6 objectForKeyedSubscript:@"MAPPING_TYPE"];
-    v11 = [v6 objectForKeyedSubscript:@"MAPPING_LANGUAGE"];
+    v10 = [plistCopy objectForKeyedSubscript:@"MAPPING_TYPE"];
+    v11 = [plistCopy objectForKeyedSubscript:@"MAPPING_LANGUAGE"];
     v12 = [(SGStringMappingTransformer *)self initWithHelperMappingType:v10 andLanguage:v11];
   }
 
   else
   {
-    v10 = [v6 objectForKeyedSubscript:@"MAPPINGS"];
+    v10 = [plistCopy objectForKeyedSubscript:@"MAPPINGS"];
     v12 = [(SGStringMappingTransformer *)self initWithMappings:v10];
   }
 
   return v12;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"MAPPINGS";
-  v3 = [(SGStringMappingTransformer *)self mappings];
-  v8[0] = v3;
+  mappings = [(SGStringMappingTransformer *)self mappings];
+  v8[0] = mappings;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -99,10 +99,10 @@
   return v4;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -114,7 +114,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = transformCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -130,8 +130,8 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(SGStringMappingTransformer *)self mappings];
-        v13 = [v12 objectForKey:v11];
+        mappings = [(SGStringMappingTransformer *)self mappings];
+        v13 = [mappings objectForKey:v11];
 
         if (v13)
         {
@@ -157,50 +157,50 @@
   return v5;
 }
 
-- (SGStringMappingTransformer)initWithHelperMappingType:(id)a3 andLanguage:(id)a4
+- (SGStringMappingTransformer)initWithHelperMappingType:(id)type andLanguage:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  languageCopy = language;
   v11.receiver = self;
   v11.super_class = SGStringMappingTransformer;
   v8 = [(SGStringMappingTransformer *)&v11 init];
   if (v8)
   {
-    v9 = [SGModelMappingHelper mappingsForType:v6 andLanguage:v7];
+    v9 = [SGModelMappingHelper mappingsForType:typeCopy andLanguage:languageCopy];
     [(SGStringMappingTransformer *)v8 setMappings:v9];
   }
 
   return v8;
 }
 
-- (SGStringMappingTransformer)initWithMappings:(id)a3
+- (SGStringMappingTransformer)initWithMappings:(id)mappings
 {
-  v4 = a3;
+  mappingsCopy = mappings;
   v8.receiver = self;
   v8.super_class = SGStringMappingTransformer;
   v5 = [(SGStringMappingTransformer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SGStringMappingTransformer *)v5 setMappings:v4];
+    [(SGStringMappingTransformer *)v5 setMappings:mappingsCopy];
   }
 
   return v6;
 }
 
-- (id)withHelperMappingType:(id)a3 andLanguage:(id)a4
+- (id)withHelperMappingType:(id)type andLanguage:(id)language
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SGStringMappingTransformer alloc] initWithHelperMappingType:v6 andLanguage:v5];
+  languageCopy = language;
+  typeCopy = type;
+  v7 = [[SGStringMappingTransformer alloc] initWithHelperMappingType:typeCopy andLanguage:languageCopy];
 
   return v7;
 }
 
-+ (id)withMappings:(id)a3
++ (id)withMappings:(id)mappings
 {
-  v3 = a3;
-  v4 = [[SGStringMappingTransformer alloc] initWithMappings:v3];
+  mappingsCopy = mappings;
+  v4 = [[SGStringMappingTransformer alloc] initWithMappings:mappingsCopy];
 
   return v4;
 }

@@ -4,21 +4,21 @@
 - (NSString)formattedPrice;
 - (NSString)offerType;
 - (NSString)subscriptionType;
-- (SSLookupItemOffer)initWithLookupDictionary:(id)a3;
-- (id)actionTextForType:(id)a3;
+- (SSLookupItemOffer)initWithLookupDictionary:(id)dictionary;
+- (id)actionTextForType:(id)type;
 - (void)dealloc;
 @end
 
 @implementation SSLookupItemOffer
 
-- (SSLookupItemOffer)initWithLookupDictionary:(id)a3
+- (SSLookupItemOffer)initWithLookupDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SSLookupItemOffer;
   v4 = [(SSLookupItemOffer *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 copy];
+    v4->_dictionary = [dictionary copy];
   }
 
   return v4;
@@ -31,13 +31,13 @@
   [(SSLookupItemOffer *)&v3 dealloc];
 }
 
-- (id)actionTextForType:(id)a3
+- (id)actionTextForType:(id)type
 {
   v4 = [(NSDictionary *)self->_dictionary objectForKey:@"actionText"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKey:a3];
+    v5 = [v4 objectForKey:type];
   }
 
   else

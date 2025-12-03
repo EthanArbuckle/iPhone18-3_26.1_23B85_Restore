@@ -1,6 +1,6 @@
 @interface SagaCloudSDKAddOperation
-- (SagaCloudSDKAddOperation)initWithClientIdentity:(id)a3 opaqueID:(id)a4 bundleID:(id)a5;
-- (SagaCloudSDKAddOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 opaqueID:(id)a5 bundleID:(id)a6;
+- (SagaCloudSDKAddOperation)initWithClientIdentity:(id)identity opaqueID:(id)d bundleID:(id)iD;
+- (SagaCloudSDKAddOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity opaqueID:(id)d bundleID:(id)iD;
 - (unsigned)currentDatabaseRevision;
 - (void)main;
 @end
@@ -12,15 +12,15 @@
   context = objc_autoreleasePoolPush();
   if (self->_opaqueID)
   {
-    v3 = [NSString stringWithFormat:@"%@", objc_opt_class()];
-    v4 = [[MSVXPCTransaction alloc] initWithName:v3];
-    [v4 beginTransaction];
-    v5 = [(CloudLibraryOperation *)self musicLibrary];
-    v6 = [(CloudLibraryOperation *)self clientIdentity];
-    [v5 setClientIdentity:v6];
+    updateCompletionBlock3 = [NSString stringWithFormat:@"%@", objc_opt_class()];
+    error2 = [[MSVXPCTransaction alloc] initWithName:updateCompletionBlock3];
+    [error2 beginTransaction];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
-    v53 = [(CloudLibraryOperation *)self connection];
-    v7 = -[SagaCloudSDKAddOperation requestWithDatabaseID:databaseRevision:opaqueID:bundleID:](self, "requestWithDatabaseID:databaseRevision:opaqueID:bundleID:", [v53 databaseID], -[SagaCloudSDKAddOperation currentDatabaseRevision](self, "currentDatabaseRevision"), self->_opaqueID, self->_bundleID);
+    connection = [(CloudLibraryOperation *)self connection];
+    v7 = -[SagaCloudSDKAddOperation requestWithDatabaseID:databaseRevision:opaqueID:bundleID:](self, "requestWithDatabaseID:databaseRevision:opaqueID:bundleID:", [connection databaseID], -[SagaCloudSDKAddOperation currentDatabaseRevision](self, "currentDatabaseRevision"), self->_opaqueID, self->_bundleID);
     v68 = 0;
     v69 = &v68;
     v70 = 0x3032000000;
@@ -38,14 +38,14 @@
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v7 method];
-      v12 = [v7 action];
-      v13 = v12;
+      method = [v7 method];
+      action = [v7 action];
+      v13 = action;
       opaqueID = self->_opaqueID;
       v15 = @"POST";
       *buf = 138544386;
       *&buf[4] = v10;
-      if (!v11)
+      if (!method)
       {
         v15 = @"GET";
       }
@@ -55,7 +55,7 @@
       *&buf[22] = 2114;
       v81 = v15;
       *v82 = 2114;
-      *&v82[2] = v12;
+      *&v82[2] = action;
       v83 = 2114;
       v84 = opaqueID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending add item request <%{public}@: %p method=%{public}@ action=%{public}@> for opaqueID: %{public}@", buf, 0x34u);
@@ -72,12 +72,12 @@
     v61 = &v62;
     v18 = v16;
     v59 = v18;
-    [v53 sendRequest:v17 withResponseHandler:v57];
+    [connection sendRequest:v17 withResponseHandler:v57];
     dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-    v19 = [v69[5] responseCode];
-    if (v19 > 399)
+    responseCode = [v69[5] responseCode];
+    if (responseCode > 399)
     {
-      if (v19 == 404 || v19 == 400)
+      if (responseCode == 404 || responseCode == 400)
       {
         v20 = 3;
         goto LABEL_18;
@@ -87,7 +87,7 @@
     else
     {
       v20 = 1;
-      if (v19 == 200 || v19 == 204)
+      if (responseCode == 200 || responseCode == 204)
       {
 LABEL_18:
         [(CloudLibraryOperation *)self setStatus:v20];
@@ -97,12 +97,12 @@ LABEL_18:
 LABEL_37:
           if ([(CloudLibraryOperation *)self status]== 1)
           {
-            v39 = [v69[5] updateRequired];
-            v40 = [v69[5] addedItems];
-            v41 = [(SagaCloudSDKAddOperation *)self updateCompletionBlock];
+            updateRequired = [v69[5] updateRequired];
+            addedItems = [v69[5] addedItems];
+            updateCompletionBlock = [(SagaCloudSDKAddOperation *)self updateCompletionBlock];
             v42 = os_log_create("com.apple.amp.itunescloudd", "SDK");
             v43 = os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT);
-            if (v39)
+            if (updateRequired)
             {
               if (v43)
               {
@@ -110,16 +110,16 @@ LABEL_37:
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Requesting library update because the response contained update-required flag", buf, 2u);
               }
 
-              v44 = [(CloudLibraryOperation *)self configuration];
-              v45 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:v44];
-              v46 = [(CloudLibraryOperation *)self clientIdentity];
+              configuration = [(CloudLibraryOperation *)self configuration];
+              v45 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:configuration];
+              clientIdentity2 = [(CloudLibraryOperation *)self clientIdentity];
               v54[0] = _NSConcreteStackBlock;
               v54[1] = 3221225472;
               v54[2] = sub_1000E9768;
               v54[3] = &unk_1001DFC28;
-              v56 = v41;
-              v55 = v40;
-              [v45 updateSagaLibraryWithClientIdentity:v46 forReason:8 allowNoisyAuthPrompt:0 isExplicitUserAction:0 completionHandler:v54];
+              v56 = updateCompletionBlock;
+              v55 = addedItems;
+              [v45 updateSagaLibraryWithClientIdentity:clientIdentity2 forReason:8 allowNoisyAuthPrompt:0 isExplicitUserAction:0 completionHandler:v54];
             }
 
             else
@@ -130,37 +130,37 @@ LABEL_37:
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Skipping library update because the response did not contain update-required flag", buf, 2u);
               }
 
-              if (v41)
+              if (updateCompletionBlock)
               {
-                (v41)[2](v41, v40, 0);
+                (updateCompletionBlock)[2](updateCompletionBlock, addedItems, 0);
               }
             }
           }
 
-          v47 = [(CloudLibraryOperation *)self musicLibrary];
+          musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
           v48 = MSVTCCIdentityForCurrentProcess();
-          [v47 setClientIdentity:v48];
+          [musicLibrary2 setClientIdentity:v48];
 
-          [v4 endTransaction];
+          [error2 endTransaction];
           _Block_object_dispose(&v62, 8);
 
           _Block_object_dispose(&v68, 8);
           goto LABEL_48;
         }
 
-        v24 = [v23 domain];
-        if ([v24 isEqualToString:ICCloudClientErrorDomain])
+        domain = [v23 domain];
+        if ([domain isEqualToString:ICCloudClientErrorDomain])
         {
           v25 = [v63[5] code] == 2019;
 
           if (!v25)
           {
 LABEL_26:
-            v28 = [(SagaCloudSDKAddOperation *)self updateCompletionBlock];
-            if (v28)
+            updateCompletionBlock2 = [(SagaCloudSDKAddOperation *)self updateCompletionBlock];
+            if (updateCompletionBlock2)
             {
-              v29 = [v63[5] domain];
-              v30 = [v29 isEqualToString:NSURLErrorDomain];
+              domain2 = [v63[5] domain];
+              v30 = [domain2 isEqualToString:NSURLErrorDomain];
               v31 = 3;
               if (!v30)
               {
@@ -214,17 +214,17 @@ LABEL_26:
               v37 = [NSError errorWithDomain:v35 code:v51 userInfo:v36];
               [(CloudLibraryOperation *)self setError:v37];
 
-              v38 = [(CloudLibraryOperation *)self error];
-              (v28)[2](v28, 0, v38);
+              error = [(CloudLibraryOperation *)self error];
+              (updateCompletionBlock2)[2](updateCompletionBlock2, 0, error);
             }
 
             goto LABEL_37;
           }
 
-          v26 = [v63[5] userInfo];
-          v24 = [v26 objectForKey:@"CloudLibraryConnectionRequestForbiddenAdditonalErrorCodeKey"];
+          userInfo = [v63[5] userInfo];
+          domain = [userInfo objectForKey:@"CloudLibraryConnectionRequestForbiddenAdditonalErrorCodeKey"];
 
-          if ([v24 integerValue] == 954)
+          if ([domain integerValue] == 954)
           {
             [(CloudLibraryOperation *)self setStatus:3];
             v27 = os_log_create("com.apple.amp.itunescloudd", "SDK");
@@ -257,11 +257,11 @@ LABEL_26:
   v22 = [NSError msv_errorWithDomain:ICCloudClientErrorDomain code:2003 debugDescription:@"ID cannot be nil"];
   [(CloudLibraryOperation *)self setError:v22];
 
-  v3 = [(SagaCloudSDKAddOperation *)self updateCompletionBlock];
-  if (v3)
+  updateCompletionBlock3 = [(SagaCloudSDKAddOperation *)self updateCompletionBlock];
+  if (updateCompletionBlock3)
   {
-    v4 = [(CloudLibraryOperation *)self error];
-    (v3)[2](v3, 0, v4);
+    error2 = [(CloudLibraryOperation *)self error];
+    (updateCompletionBlock3)[2](updateCompletionBlock3, 0, error2);
 LABEL_48:
   }
 
@@ -270,34 +270,34 @@ LABEL_48:
 
 - (unsigned)currentDatabaseRevision
 {
-  v2 = [(CloudLibraryOperation *)self musicLibrary];
-  v3 = [v2 sagaOnDiskDatabaseRevision];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  sagaOnDiskDatabaseRevision = [musicLibrary sagaOnDiskDatabaseRevision];
 
-  if (v3 <= 1)
+  if (sagaOnDiskDatabaseRevision <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v3;
+    return sagaOnDiskDatabaseRevision;
   }
 }
 
-- (SagaCloudSDKAddOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 opaqueID:(id)a5 bundleID:(id)a6
+- (SagaCloudSDKAddOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity opaqueID:(id)d bundleID:(id)iD
 {
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = SagaCloudSDKAddOperation;
-  v12 = [(CloudLibraryOperation *)&v18 initWithConfiguration:a3 clientIdentity:a4];
+  v12 = [(CloudLibraryOperation *)&v18 initWithConfiguration:configuration clientIdentity:identity];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dCopy copy];
     opaqueID = v12->_opaqueID;
     v12->_opaqueID = v13;
 
-    v15 = [v11 copy];
+    v15 = [iDCopy copy];
     bundleID = v12->_bundleID;
     v12->_bundleID = v15;
   }
@@ -305,13 +305,13 @@ LABEL_48:
   return v12;
 }
 
-- (SagaCloudSDKAddOperation)initWithClientIdentity:(id)a3 opaqueID:(id)a4 bundleID:(id)a5
+- (SagaCloudSDKAddOperation)initWithClientIdentity:(id)identity opaqueID:(id)d bundleID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  identityCopy = identity;
   v11 = objc_opt_new();
-  v12 = [(SagaCloudSDKAddOperation *)self initWithConfiguration:v11 clientIdentity:v10 opaqueID:v9 bundleID:v8];
+  v12 = [(SagaCloudSDKAddOperation *)self initWithConfiguration:v11 clientIdentity:identityCopy opaqueID:dCopy bundleID:iDCopy];
 
   return v12;
 }

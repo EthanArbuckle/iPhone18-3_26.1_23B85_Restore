@@ -1,9 +1,9 @@
 @interface NDAnalyticsPayloadAssembler
 - (NDAnalyticsPayloadAssembler)init;
-- (NDAnalyticsPayloadAssembler)initWithConfigProvider:(id)a3 maxPayloadSize:(unint64_t)a4;
-- (void)_fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:(id)a3;
-- (void)assemblePayloadsWithEntries:(id)a3 lastUploadDatesByContentType:(id)a4 droppedEnvelopeReasonsToUpload:(id)a5 envelopeSizeByEntry:(id)a6 completion:(id)a7;
-- (void)determinePayloadDeliveryWindowForEntries:(id)a3 withLastUploadDatesByContentType:(id)a4 completion:(id)a5;
+- (NDAnalyticsPayloadAssembler)initWithConfigProvider:(id)provider maxPayloadSize:(unint64_t)size;
+- (void)_fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:(id)completion;
+- (void)assemblePayloadsWithEntries:(id)entries lastUploadDatesByContentType:(id)type droppedEnvelopeReasonsToUpload:(id)upload envelopeSizeByEntry:(id)entry completion:(id)completion;
+- (void)determinePayloadDeliveryWindowForEntries:(id)entries withLastUploadDatesByContentType:(id)type completion:(id)completion;
 @end
 
 @implementation NDAnalyticsPayloadAssembler
@@ -34,10 +34,10 @@
   objc_exception_throw(v6);
 }
 
-- (NDAnalyticsPayloadAssembler)initWithConfigProvider:(id)a3 maxPayloadSize:(unint64_t)a4
+- (NDAnalyticsPayloadAssembler)initWithConfigProvider:(id)provider maxPayloadSize:(unint64_t)size
 {
-  v7 = a3;
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  providerCopy = provider;
+  if (!providerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler initWithConfigProvider:maxPayloadSize:];
   }
@@ -48,28 +48,28 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configProvider, a3);
-    v9->_maxPayloadSize = a4;
+    objc_storeStrong(&v8->_configProvider, provider);
+    v9->_maxPayloadSize = size;
   }
 
   return v9;
 }
 
-- (void)determinePayloadDeliveryWindowForEntries:(id)a3 withLastUploadDatesByContentType:(id)a4 completion:(id)a5
+- (void)determinePayloadDeliveryWindowForEntries:(id)entries withLastUploadDatesByContentType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  entriesCopy = entries;
+  typeCopy = type;
+  completionCopy = completion;
+  if (!entriesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler determinePayloadDeliveryWindowForEntries:withLastUploadDatesByContentType:completion:];
-    if (v9)
+    if (typeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (typeCopy)
   {
     goto LABEL_6;
   }
@@ -80,7 +80,7 @@
   }
 
 LABEL_6:
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler determinePayloadDeliveryWindowForEntries:withLastUploadDatesByContentType:completion:];
   }
@@ -89,12 +89,12 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = __116__NDAnalyticsPayloadAssembler_determinePayloadDeliveryWindowForEntries_withLastUploadDatesByContentType_completion___block_invoke;
   v14[3] = &unk_27997A980;
-  v16 = v9;
-  v17 = v10;
-  v15 = v8;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v16 = typeCopy;
+  v17 = completionCopy;
+  v15 = entriesCopy;
+  v11 = typeCopy;
+  v12 = entriesCopy;
+  v13 = completionCopy;
   [(NDAnalyticsPayloadAssembler *)self _fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:v14];
 }
 
@@ -244,23 +244,23 @@ void __116__NDAnalyticsPayloadAssembler_determinePayloadDeliveryWindowForEntries
   }
 }
 
-- (void)assemblePayloadsWithEntries:(id)a3 lastUploadDatesByContentType:(id)a4 droppedEnvelopeReasonsToUpload:(id)a5 envelopeSizeByEntry:(id)a6 completion:(id)a7
+- (void)assemblePayloadsWithEntries:(id)entries lastUploadDatesByContentType:(id)type droppedEnvelopeReasonsToUpload:(id)upload envelopeSizeByEntry:(id)entry completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  entriesCopy = entries;
+  typeCopy = type;
+  uploadCopy = upload;
+  entryCopy = entry;
+  completionCopy = completion;
+  if (!entriesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler assemblePayloadsWithEntries:lastUploadDatesByContentType:droppedEnvelopeReasonsToUpload:envelopeSizeByEntry:completion:];
-    if (v13)
+    if (typeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v13)
+  else if (typeCopy)
   {
     goto LABEL_6;
   }
@@ -271,21 +271,21 @@ void __116__NDAnalyticsPayloadAssembler_determinePayloadDeliveryWindowForEntries
   }
 
 LABEL_6:
-  if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!uploadCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler assemblePayloadsWithEntries:lastUploadDatesByContentType:droppedEnvelopeReasonsToUpload:envelopeSizeByEntry:completion:];
   }
 
-  if ([v14 containsObject:&unk_286D791F8] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([uploadCopy containsObject:&unk_286D791F8] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler assemblePayloadsWithEntries:lastUploadDatesByContentType:droppedEnvelopeReasonsToUpload:envelopeSizeByEntry:completion:];
-    if (v15)
+    if (entryCopy)
     {
       goto LABEL_14;
     }
   }
 
-  else if (v15)
+  else if (entryCopy)
   {
     goto LABEL_14;
   }
@@ -296,7 +296,7 @@ LABEL_6:
   }
 
 LABEL_14:
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler assemblePayloadsWithEntries:lastUploadDatesByContentType:droppedEnvelopeReasonsToUpload:envelopeSizeByEntry:completion:];
   }
@@ -305,17 +305,17 @@ LABEL_14:
   v22[1] = 3221225472;
   v22[2] = __150__NDAnalyticsPayloadAssembler_assemblePayloadsWithEntries_lastUploadDatesByContentType_droppedEnvelopeReasonsToUpload_envelopeSizeByEntry_completion___block_invoke;
   v22[3] = &unk_27997AB20;
-  v23 = v14;
-  v24 = v12;
-  v25 = v13;
-  v26 = self;
-  v27 = v15;
-  v28 = v16;
-  v17 = v15;
-  v18 = v13;
-  v19 = v16;
-  v20 = v12;
-  v21 = v14;
+  v23 = uploadCopy;
+  v24 = entriesCopy;
+  v25 = typeCopy;
+  selfCopy = self;
+  v27 = entryCopy;
+  v28 = completionCopy;
+  v17 = entryCopy;
+  v18 = typeCopy;
+  v19 = completionCopy;
+  v20 = entriesCopy;
+  v21 = uploadCopy;
   [(NDAnalyticsPayloadAssembler *)self _fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:v22];
 }
 
@@ -781,16 +781,16 @@ uint64_t __150__NDAnalyticsPayloadAssembler_assemblePayloadsWithEntries_lastUplo
   }
 }
 
-- (void)_fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:(id)a3
+- (void)_fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadAssembler _fetchAnalyticsEnvelopeContentTypeConfigsWithCompletion:];
   }
 
-  v5 = [(NDAnalyticsPayloadAssembler *)self configProvider];
-  [v5 fetchConfigWithCompletion:v4];
+  configProvider = [(NDAnalyticsPayloadAssembler *)self configProvider];
+  [configProvider fetchConfigWithCompletion:completionCopy];
 }
 
 - (void)initWithConfigProvider:maxPayloadSize:.cold.1()

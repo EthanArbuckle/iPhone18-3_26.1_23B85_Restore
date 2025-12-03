@@ -28,14 +28,14 @@
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if ([a1 containsObject:v9])
+        if ([self containsObject:v9])
         {
-          [a1 removeObject:v9];
+          [self removeObject:v9];
         }
 
         else
         {
-          [a1 addObject:v9];
+          [self addObject:v9];
         }
 
         ++v8;
@@ -56,10 +56,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface COSDiagnosticLogDownloadCell
-- (COSDiagnosticLogDownloadCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (COSDiagnosticLogDownloadCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)checkForFileTransferProgress;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)listenForLogTransferProgress;
-- (void)notifyDownload:(id)a3;
-- (void)updateProgress:(unint64_t)a3;
+- (void)notifyDownload:(id)download;
+- (void)updateProgress:(unint64_t)progress;
 @end
 
 @implementation COSDiagnosticLogDownloadCell
 
-- (COSDiagnosticLogDownloadCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSDiagnosticLogDownloadCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v26.receiver = self;
   v26.super_class = COSDiagnosticLogDownloadCell;
-  v9 = [(COSDiagnosticLogDownloadCell *)&v26 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(COSDiagnosticLogDownloadCell *)&v26 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 propertyForKey:@"DiagnosticLogOriginalPathKey"];
+    v10 = [specifierCopy propertyForKey:@"DiagnosticLogOriginalPathKey"];
     fileName = v9->_fileName;
     v9->_fileName = v10;
 
@@ -27,7 +27,7 @@
     v9->_enabledColor = v12;
 
     v14 = OBJC_IVAR___PSTableCell__specifier;
-    objc_storeWeak(&v9->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier], v8);
+    objc_storeWeak(&v9->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier], specifierCopy);
     v15 = [UIButton buttonWithType:1];
     downloadIconButton = v9->_downloadIconButton;
     v9->_downloadIconButton = v15;
@@ -40,8 +40,8 @@
     [(UIButton *)v9->_downloadIconButton setContentEdgeInsets:5.0, 5.0, 5.0, 5.0];
     [(UIButton *)v9->_downloadIconButton setAlpha:1.0];
     [(UIButton *)v9->_downloadIconButton addTarget:v9 action:"notifyDownload:" forEvents:64];
-    v19 = [(COSDiagnosticLogDownloadCell *)v9 contentView];
-    [v19 addSubview:v9->_downloadIconButton];
+    contentView = [(COSDiagnosticLogDownloadCell *)v9 contentView];
+    [contentView addSubview:v9->_downloadIconButton];
 
     v20 = objc_alloc_init(COSLogTransferSpinnerButton);
     logTransferSpinnerButton = v9->_logTransferSpinnerButton;
@@ -51,8 +51,8 @@
     WeakRetained = objc_loadWeakRetained(&v9->BPSLinkCell_opaque[v14]);
     [(COSLogTransferSpinnerButton *)v22 setSpecifier:WeakRetained];
 
-    v24 = [(COSDiagnosticLogDownloadCell *)v9 contentView];
-    [v24 addSubview:v9->_logTransferSpinnerButton];
+    contentView2 = [(COSDiagnosticLogDownloadCell *)v9 contentView];
+    [contentView2 addSubview:v9->_logTransferSpinnerButton];
 
     [(COSDiagnosticLogDownloadCell *)v9 listenForLogTransferProgress];
   }
@@ -60,7 +60,7 @@
   return v9;
 }
 
-- (void)notifyDownload:(id)a3
+- (void)notifyDownload:(id)download
 {
   v4 = +[NSNotificationCenter defaultCenter];
   v7 = @"Specifier";
@@ -90,24 +90,24 @@
   v78.receiver = self;
   v78.super_class = COSDiagnosticLogDownloadCell;
   [(COSDiagnosticLogDownloadCell *)&v78 layoutSubviews];
-  v3 = [(COSDiagnosticLogDownloadCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(COSDiagnosticLogDownloadCell *)self _shouldReverseLayoutDirection];
   v4 = OBJC_IVAR___PSTableCell__specifier;
   WeakRetained = objc_loadWeakRetained(&self->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v6 = [WeakRetained propertyForKey:@"DiagnosticLogDownloadingKey"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
   v9 = [v8 propertyForKey:@"FileDownloadedKey"];
-  v10 = [v9 BOOLValue];
+  bOOLValue2 = [v9 BOOLValue];
 
   [(COSDiagnosticLogDownloadCell *)self bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(COSDiagnosticLogDownloadCell *)self textLabel];
-  v20 = [(COSDiagnosticLogDownloadCell *)self detailTextLabel];
-  [v19 frame];
+  textLabel = [(COSDiagnosticLogDownloadCell *)self textLabel];
+  detailTextLabel = [(COSDiagnosticLogDownloadCell *)self detailTextLabel];
+  [textLabel frame];
   v22 = v21;
   v76 = v24;
   v77 = v23;
@@ -125,7 +125,7 @@
   v79.size.height = v18;
   v32 = (CGRectGetHeight(v79) - v29) * 0.5;
   v33 = 15.0;
-  if ((v3 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v80.origin.x = v12;
     v80.origin.y = v14;
@@ -142,7 +142,7 @@
   p_logTransferSpinnerButton = &self->_logTransferSpinnerButton;
   [(COSLogTransferSpinnerButton *)self->_logTransferSpinnerButton setCenter:?];
   [(UIButton *)*p_downloadIconButton frame];
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = CGRectGetMinX(*&v39);
   }
@@ -156,26 +156,26 @@
 
   v72 = v14;
   [(COSLogTransferSpinnerButton *)*p_logTransferSpinnerButton setFrame:MinX, v35, v37, v37];
-  v46 = [(COSDiagnosticLogDownloadCell *)self contentView];
-  [v46 addSubview:*p_logTransferSpinnerButton];
+  contentView = [(COSDiagnosticLogDownloadCell *)self contentView];
+  [contentView addSubview:*p_logTransferSpinnerButton];
 
   v47 = *p_downloadIconButton;
   v73 = v12;
   v48 = v26;
-  if (v10)
+  if (bOOLValue2)
   {
     [(UIButton *)v47 setHidden:1];
     [(COSLogTransferSpinnerButton *)*p_logTransferSpinnerButton setHidden:1];
     [(COSDiagnosticLogDownloadCell *)self setAccessoryType:0];
 LABEL_13:
-    v50 = v20;
+    v50 = detailTextLabel;
     [v50 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
     v52 = v54;
     v53 = 35.0;
     goto LABEL_14;
   }
 
-  if (v7)
+  if (bOOLValue)
   {
     v49 = &self->_logTransferSpinnerButton;
   }
@@ -185,8 +185,8 @@ LABEL_13:
     v49 = &self->_downloadIconButton;
   }
 
-  [(UIButton *)v47 setHidden:v7];
-  [(COSLogTransferSpinnerButton *)*p_logTransferSpinnerButton setHidden:v7 ^ 1];
+  [(UIButton *)v47 setHidden:bOOLValue];
+  [(COSLogTransferSpinnerButton *)*p_logTransferSpinnerButton setHidden:bOOLValue ^ 1];
   v50 = *v49;
   [(COSDiagnosticLogDownloadCell *)self setAccessoryType:0];
   if (!v50)
@@ -203,9 +203,9 @@ LABEL_14:
   v58 = v57;
   v60 = v59;
   v62 = v61;
-  v63 = [(COSDiagnosticLogDownloadCell *)self traitCollection];
-  v64 = [v63 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v64);
+  traitCollection = [(COSDiagnosticLogDownloadCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (v50)
   {
@@ -215,7 +215,7 @@ LABEL_14:
     v81.size.height = v62;
     if (CGRectGetWidth(v81) > 0.0 && !IsAccessibilityCategory)
     {
-      if (v3)
+      if (_shouldReverseLayoutDirection)
       {
         v82.origin.x = v22;
         v82.size.height = v76;
@@ -263,7 +263,7 @@ LABEL_14:
   }
 
   [v50 setFrame:{v56, v58, v60, v62}];
-  [v19 setFrame:{v22, v77, v48, v76}];
+  [textLabel setFrame:{v22, v77, v48, v76}];
 }
 
 - (void)listenForLogTransferProgress
@@ -278,9 +278,9 @@ LABEL_14:
 {
   WeakRetained = objc_loadWeakRetained(&self->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v4 = [WeakRetained propertyForKey:@"DiagnosticLogDownloadingKey"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     if (!self->_nssManager)
     {
@@ -289,42 +289,42 @@ LABEL_14:
       self->_nssManager = v6;
     }
 
-    v8 = [(COSDiagnosticLogDownloadCell *)self fileName];
-    v9 = [v8 lastPathComponent];
+    fileName = [(COSDiagnosticLogDownloadCell *)self fileName];
+    lastPathComponent = [fileName lastPathComponent];
 
     v10 = pbb_bridge_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v9;
+      v18 = lastPathComponent;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "checking transfer progress for %@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v11 = [(COSDiagnosticLogDownloadCell *)self nssManager];
+    nssManager = [(COSDiagnosticLogDownloadCell *)self nssManager];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000702FC;
     v13[3] = &unk_100269AA8;
     objc_copyWeak(&v16, buf);
-    v12 = v9;
+    v12 = lastPathComponent;
     v14 = v12;
-    v15 = self;
-    [v11 retrieveDiagnosticLogTransferProgress:v12 withProgress:v13];
+    selfCopy = self;
+    [nssManager retrieveDiagnosticLogTransferProgress:v12 withProgress:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)updateProgress:(unint64_t)a3
+- (void)updateProgress:(unint64_t)progress
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100070540;
   v3[3] = &unk_100268220;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = progress;
   dispatch_async(&_dispatch_main_q, v3);
 }
 

@@ -2,8 +2,8 @@
 - (BOOL)_runningInClockFace;
 - (BOOL)_runningInTest;
 - (BOOL)_shouldRecordMetrics;
-- (void)recordCallibrationCurveMetrics:(id)a3 forInteraction:(id)a4;
-- (void)recordTrainingMetrics:(id)a3 forInteraction:(id)a4;
+- (void)recordCallibrationCurveMetrics:(id)metrics forInteraction:(id)interaction;
+- (void)recordTrainingMetrics:(id)metrics forInteraction:(id)interaction;
 @end
 
 @implementation REClockFaceMetricsSubmitter
@@ -44,30 +44,30 @@ void __50__REClockFaceMetricsSubmitter__runningInClockFace__block_invoke()
 
 - (BOOL)_shouldRecordMetrics
 {
-  v3 = [(REClockFaceMetricsSubmitter *)self _runningInClockFace];
-  if (v3)
+  _runningInClockFace = [(REClockFaceMetricsSubmitter *)self _runningInClockFace];
+  if (_runningInClockFace)
   {
-    LOBYTE(v3) = ![(REClockFaceMetricsSubmitter *)self _runningInTest];
+    LOBYTE(_runningInClockFace) = ![(REClockFaceMetricsSubmitter *)self _runningInTest];
   }
 
-  return v3;
+  return _runningInClockFace;
 }
 
-- (void)recordTrainingMetrics:(id)a3 forInteraction:(id)a4
+- (void)recordTrainingMetrics:(id)metrics forInteraction:(id)interaction
 {
-  v7 = a3;
-  v6 = a4;
-  if (-[REClockFaceMetricsSubmitter _shouldRecordMetrics](self, "_shouldRecordMetrics") && [v6 isEqualToString:@"tap"])
+  metricsCopy = metrics;
+  interactionCopy = interaction;
+  if (-[REClockFaceMetricsSubmitter _shouldRecordMetrics](self, "_shouldRecordMetrics") && [interactionCopy isEqualToString:@"tap"])
   {
     AnalyticsSendEvent();
   }
 }
 
-- (void)recordCallibrationCurveMetrics:(id)a3 forInteraction:(id)a4
+- (void)recordCallibrationCurveMetrics:(id)metrics forInteraction:(id)interaction
 {
-  v7 = a3;
-  v6 = a4;
-  if (-[REClockFaceMetricsSubmitter _shouldRecordMetrics](self, "_shouldRecordMetrics") && [v6 isEqualToString:@"tap"])
+  metricsCopy = metrics;
+  interactionCopy = interaction;
+  if (-[REClockFaceMetricsSubmitter _shouldRecordMetrics](self, "_shouldRecordMetrics") && [interactionCopy isEqualToString:@"tap"])
   {
     AnalyticsSendEvent();
   }

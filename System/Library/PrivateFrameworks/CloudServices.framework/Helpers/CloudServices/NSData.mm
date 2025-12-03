@@ -2,13 +2,13 @@
 - (id)backupKeyDigests;
 - (id)bskb;
 - (id)hexString;
-- (id)peerIDForKeybagDigest:(id)a3;
+- (id)peerIDForKeybagDigest:(id)digest;
 - (id)peerIDs;
 - (id)peersAndBackupKeyDigests;
 - (id)recoveryKey;
 - (id)sha1Digest;
 - (id)sha256Digest;
-- (void)enumeratePeersWithBlock:(id)a3;
+- (void)enumeratePeersWithBlock:(id)block;
 @end
 
 @implementation NSData
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (void)enumeratePeersWithBlock:(id)a3
+- (void)enumeratePeersWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSData *)self bskb];
-  if (v5)
+  blockCopy = block;
+  bskb = [(NSData *)self bskb];
+  if (bskb)
   {
     v6 = SOSBSKBGetPeers();
     v11 = 0u;
@@ -55,7 +55,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * v10));
+          blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10));
           v10 = v10 + 1;
         }
 
@@ -112,14 +112,14 @@
   v3 = objc_alloc_init(NSMutableArray);
   v16 = v3;
   [(NSData *)self enumeratePeersWithBlock:&v12];
-  v4 = [(NSData *)self bskb];
-  if (v4 && SOSBSKBHasRecoveryKey())
+  bskb = [(NSData *)self bskb];
+  if (bskb && SOSBSKBHasRecoveryKey())
   {
     v5 = SOSBSKBCopyRecoveryKey();
     v6 = [NSString alloc];
-    v7 = [v5 sha1Digest];
-    v8 = [v7 hexString];
-    v9 = [v6 initWithFormat:@"recovery key (%@)", v8, v12, v13, v14, v15];
+    sha1Digest = [v5 sha1Digest];
+    hexString = [sha1Digest hexString];
+    v9 = [v6 initWithFormat:@"recovery key (%@)", hexString, v12, v13, v14, v15];
     [v3 addObject:v9];
   }
 
@@ -130,8 +130,8 @@
 
 - (id)recoveryKey
 {
-  v2 = [(NSData *)self bskb];
-  if (v2 && SOSBSKBHasRecoveryKey())
+  bskb = [(NSData *)self bskb];
+  if (bskb && SOSBSKBHasRecoveryKey())
   {
     v3 = SOSBSKBCopyRecoveryKey();
   }
@@ -170,7 +170,7 @@
   return v3;
 }
 
-- (id)peerIDForKeybagDigest:(id)a3
+- (id)peerIDForKeybagDigest:(id)digest
 {
   v16 = 0;
   v17 = &v16;
@@ -182,8 +182,8 @@
   v11 = 3221225472;
   v12 = sub_1000060B8;
   v13 = &unk_1000750C0;
-  v4 = a3;
-  v14 = v4;
+  digestCopy = digest;
+  v14 = digestCopy;
   v15 = &v16;
   [(NSData *)self enumeratePeersWithBlock:&v10];
   v5 = v17[5];
@@ -192,8 +192,8 @@
     v6 = CloudServicesLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 hexString];
-      sub_1000486D8(v7, buf, v6);
+      hexString = [digestCopy hexString];
+      sub_1000486D8(hexString, buf, v6);
     }
 
     v5 = v17[5];

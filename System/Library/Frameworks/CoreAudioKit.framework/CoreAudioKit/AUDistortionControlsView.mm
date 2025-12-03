@@ -1,6 +1,6 @@
 @interface AUDistortionControlsView
 - (UIColor)tintColor;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AUDistortionControlsView
@@ -9,16 +9,16 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AUDistortionControlsView();
-  v2 = [(AUDistortionControlsView *)&v4 tintColor];
+  tintColor = [(AUDistortionControlsView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AUDistortionControlsView();
-  [(AUDistortionControlsView *)&v4 setTintColor:a3];
+  [(AUDistortionControlsView *)&v4 setTintColor:color];
 }
 
 @end

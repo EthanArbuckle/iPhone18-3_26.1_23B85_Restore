@@ -8,9 +8,9 @@
 - (id)learnMoreButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSFMIPOptinViewController
@@ -18,14 +18,14 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = objc_alloc_init(ACAccountStore);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 isProvisionedForDataclass:kAccountDataclassDeviceLocator];
-  v5 = [UIApp setupController];
-  v6 = [v5 appleIDSignInModel];
-  v7 = [v6 hasSignedInToiCloud];
-  if (v3)
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = [aa_primaryAppleAccount isProvisionedForDataclass:kAccountDataclassDeviceLocator];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  hasSignedInToiCloud = [appleIDSignInModel hasSignedInToiCloud];
+  if (aa_primaryAppleAccount)
   {
-    v8 = v7 == 0;
+    v8 = hasSignedInToiCloud == 0;
   }
 
   else
@@ -51,7 +51,7 @@
     v14 = 138412802;
     v15 = v12;
     v16 = 1024;
-    v17 = v3 != 0;
+    v17 = aa_primaryAppleAccount != 0;
     v18 = 1024;
     v19 = v4;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "COSFMIPOptinViewController needs to run %@; hasPrimaryAccount: (%d); isProvisioned: (%d)", &v14, 0x18u);
@@ -76,7 +76,7 @@
 
 - (BOOL)supportsFindMyWatch
 {
-  v2 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
   return HasCapabilityForString;
@@ -118,7 +118,7 @@
   return v4;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   if ([(COSFMIPOptinViewController *)self supportsFindMyWatch])
   {
@@ -133,9 +133,9 @@
   [(COSFMIPOptinViewController *)self showOptinConfirmationAlert:v4 optinChoice:1];
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  if (a3)
+  if (optin)
   {
     v4 = pbb_bridge_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -148,16 +148,16 @@
     +[COSFindMyController recordShowingActivationLockDetailsForPairingDevice];
   }
 
-  v5 = [(COSFMIPOptinViewController *)self delegate];
-  [v5 buddyControllerDone:self];
+  delegate = [(COSFMIPOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle
 {
-  v2 = [(COSFMIPOptinViewController *)self supportsFindMyWatch];
+  supportsFindMyWatch = [(COSFMIPOptinViewController *)self supportsFindMyWatch];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (supportsFindMyWatch)
   {
     v5 = @"AL_ACCEPT_FMW";
   }
@@ -174,10 +174,10 @@
 
 - (id)alternateButtonTitle
 {
-  v2 = [(COSFMIPOptinViewController *)self supportsFindMyWatch];
+  supportsFindMyWatch = [(COSFMIPOptinViewController *)self supportsFindMyWatch];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (supportsFindMyWatch)
   {
     v5 = @"AL_DECLINE_FMW";
   }
@@ -202,10 +202,10 @@
 
 - (id)detailTitleString
 {
-  v2 = [(COSFMIPOptinViewController *)self supportsFindMyWatch];
+  supportsFindMyWatch = [(COSFMIPOptinViewController *)self supportsFindMyWatch];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (supportsFindMyWatch)
   {
     v5 = @"WHAT_IS_FMW";
   }
@@ -220,7 +220,7 @@
   return v6;
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v4 = objc_alloc_init(COSAboutTextViewController);
   v5 = +[NSBundle mainBundle];

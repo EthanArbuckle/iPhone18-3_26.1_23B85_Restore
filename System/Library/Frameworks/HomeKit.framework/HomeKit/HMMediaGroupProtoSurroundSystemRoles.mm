@@ -1,35 +1,35 @@
 @interface HMMediaGroupProtoSurroundSystemRoles
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMMediaGroupProtoSurroundSystemRoles
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(HMMediaGroupProtoSurroundSystemRoles *)self setFrontLeftDestinationIdentifier:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HMMediaGroupProtoSurroundSystemRoles *)self setFrontRightDestinationIdentifier:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(HMMediaGroupProtoSurroundSystemRoles *)self setRearLeftDestinationIdentifier:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(HMMediaGroupProtoSurroundSystemRoles *)self setRearRightDestinationIdentifier:?];
   }
@@ -43,13 +43,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_rearRightDestinationIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((frontLeftDestinationIdentifier = self->_frontLeftDestinationIdentifier, !(frontLeftDestinationIdentifier | v4[1])) || -[NSString isEqual:](frontLeftDestinationIdentifier, "isEqual:")) && ((frontRightDestinationIdentifier = self->_frontRightDestinationIdentifier, !(frontRightDestinationIdentifier | v4[2])) || -[NSString isEqual:](frontRightDestinationIdentifier, "isEqual:")) && ((rearLeftDestinationIdentifier = self->_rearLeftDestinationIdentifier, !(rearLeftDestinationIdentifier | v4[3])) || -[NSString isEqual:](rearLeftDestinationIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((frontLeftDestinationIdentifier = self->_frontLeftDestinationIdentifier, !(frontLeftDestinationIdentifier | equalCopy[1])) || -[NSString isEqual:](frontLeftDestinationIdentifier, "isEqual:")) && ((frontRightDestinationIdentifier = self->_frontRightDestinationIdentifier, !(frontRightDestinationIdentifier | equalCopy[2])) || -[NSString isEqual:](frontRightDestinationIdentifier, "isEqual:")) && ((rearLeftDestinationIdentifier = self->_rearLeftDestinationIdentifier, !(rearLeftDestinationIdentifier | equalCopy[3])) || -[NSString isEqual:](rearLeftDestinationIdentifier, "isEqual:")))
   {
     rearRightDestinationIdentifier = self->_rearRightDestinationIdentifier;
-    if (rearRightDestinationIdentifier | v4[4])
+    if (rearRightDestinationIdentifier | equalCopy[4])
     {
       v9 = [(NSString *)rearRightDestinationIdentifier isEqual:?];
     }
@@ -68,94 +68,94 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_frontLeftDestinationIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_frontLeftDestinationIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_frontRightDestinationIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_frontRightDestinationIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_rearLeftDestinationIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_rearLeftDestinationIdentifier copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_rearRightDestinationIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_rearRightDestinationIdentifier copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_frontLeftDestinationIdentifier)
   {
-    [v4 setFrontLeftDestinationIdentifier:?];
-    v4 = v5;
+    [toCopy setFrontLeftDestinationIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_frontRightDestinationIdentifier)
   {
     [v5 setFrontRightDestinationIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rearLeftDestinationIdentifier)
   {
     [v5 setRearLeftDestinationIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rearRightDestinationIdentifier)
   {
     [v5 setRearRightDestinationIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_frontLeftDestinationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_frontRightDestinationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rearLeftDestinationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rearRightDestinationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   frontLeftDestinationIdentifier = self->_frontLeftDestinationIdentifier;
   if (frontLeftDestinationIdentifier)
   {
-    [v3 setObject:frontLeftDestinationIdentifier forKey:@"frontLeftDestinationIdentifier"];
+    [dictionary setObject:frontLeftDestinationIdentifier forKey:@"frontLeftDestinationIdentifier"];
   }
 
   frontRightDestinationIdentifier = self->_frontRightDestinationIdentifier;
@@ -185,8 +185,8 @@
   v8.receiver = self;
   v8.super_class = HMMediaGroupProtoSurroundSystemRoles;
   v4 = [(HMMediaGroupProtoSurroundSystemRoles *)&v8 description];
-  v5 = [(HMMediaGroupProtoSurroundSystemRoles *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMMediaGroupProtoSurroundSystemRoles *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

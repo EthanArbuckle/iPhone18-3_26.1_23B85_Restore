@@ -7,25 +7,25 @@
 - (id)pps_sqlPredicateForSelect
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [a1 subpredicates];
-  v3 = [v2 count];
+  subpredicates = [self subpredicates];
+  v3 = [subpredicates count];
 
   if (v3)
   {
-    v4 = [a1 compoundPredicateType];
-    if (!v4)
+    compoundPredicateType = [self compoundPredicateType];
+    if (!compoundPredicateType)
     {
-      v14 = [a1 subpredicates];
-      v15 = [v14 objectAtIndexedSubscript:0];
-      v6 = [v15 pps_sqlPredicateForSelect];
+      subpredicates2 = [self subpredicates];
+      v15 = [subpredicates2 objectAtIndexedSubscript:0];
+      pps_sqlPredicateForSelect = [v15 pps_sqlPredicateForSelect];
 
-      if (!v6)
+      if (!pps_sqlPredicateForSelect)
       {
         v3 = 0;
         goto LABEL_19;
       }
 
-      v13 = [PPSSQLiteCompoundPredicate negatedPredicate:v6];
+      v13 = [PPSSQLiteCompoundPredicate negatedPredicate:pps_sqlPredicateForSelect];
 LABEL_18:
       v3 = v13;
 LABEL_19:
@@ -33,14 +33,14 @@ LABEL_19:
       goto LABEL_21;
     }
 
-    v5 = v4;
-    v6 = objc_opt_new();
+    v5 = compoundPredicateType;
+    pps_sqlPredicateForSelect = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [a1 subpredicates];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    subpredicates3 = [self subpredicates];
+    v8 = [subpredicates3 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -51,17 +51,17 @@ LABEL_19:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subpredicates3);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) pps_sqlPredicateForSelect];
-          if (v12)
+          pps_sqlPredicateForSelect2 = [*(*(&v18 + 1) + 8 * i) pps_sqlPredicateForSelect];
+          if (pps_sqlPredicateForSelect2)
           {
-            [v6 addObject:v12];
+            [pps_sqlPredicateForSelect addObject:pps_sqlPredicateForSelect2];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [subpredicates3 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v9);
@@ -69,13 +69,13 @@ LABEL_19:
 
     if (v5 == 2)
     {
-      v13 = [PPSSQLiteCompoundPredicate predicateMatchingAnyPredicates:v6];
+      v13 = [PPSSQLiteCompoundPredicate predicateMatchingAnyPredicates:pps_sqlPredicateForSelect];
       goto LABEL_18;
     }
 
     if (v5 == 1)
     {
-      v13 = [PPSSQLiteCompoundPredicate predicateMatchingAllPredicates:v6];
+      v13 = [PPSSQLiteCompoundPredicate predicateMatchingAllPredicates:pps_sqlPredicateForSelect];
       goto LABEL_18;
     }
 

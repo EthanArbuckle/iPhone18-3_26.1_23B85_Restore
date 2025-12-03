@@ -1,16 +1,16 @@
 @interface MKUserLocationAccessibility
-- (void)setLocation:(id)a3;
+- (void)setLocation:(id)location;
 @end
 
 @implementation MKUserLocationAccessibility
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v7.receiver = self;
   v7.super_class = MKUserLocationAccessibility;
-  [(MKUserLocationAccessibility *)&v7 setLocation:v4];
-  if (v4 && UIAccessibilityIsVoiceOverRunning())
+  [(MKUserLocationAccessibility *)&v7 setLocation:locationCopy];
+  if (locationCopy && UIAccessibilityIsVoiceOverRunning())
   {
     v5 = objc_alloc_init(MEMORY[0x29EDB9260]);
     v6[0] = MEMORY[0x29EDCA5F8];
@@ -18,7 +18,7 @@
     v6[2] = __43__MKUserLocationAccessibility_setLocation___block_invoke;
     v6[3] = &unk_29F2CB2E0;
     v6[4] = self;
-    [v5 reverseGeocodeLocation:v4 completionHandler:v6];
+    [v5 reverseGeocodeLocation:locationCopy completionHandler:v6];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface HDSPEnvironmentStateMachine
 - (BOOL)isSystemReady;
 - (BOOL)needsDataMigration;
-- (HDSPEnvironmentStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4;
+- (HDSPEnvironmentStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider;
 - (void)dataMigrationDidComplete;
 - (void)systemDidBecomeReady;
 @end
 
 @implementation HDSPEnvironmentStateMachine
 
-- (HDSPEnvironmentStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4
+- (HDSPEnvironmentStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider
 {
   v15.receiver = self;
   v15.super_class = HDSPEnvironmentStateMachine;
-  v4 = [(HKSPStateMachine *)&v15 initWithDelegate:a3 infoProvider:a4];
+  v4 = [(HKSPStateMachine *)&v15 initWithDelegate:delegate infoProvider:provider];
   if (v4)
   {
     v5 = [(HKSPStateMachineState *)[HDSPEnvironmentNotReadyState alloc] initWithStateMachine:v4];
@@ -40,30 +40,30 @@
 
 - (void)systemDidBecomeReady
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 systemDidBecomeReady];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState systemDidBecomeReady];
 }
 
 - (void)dataMigrationDidComplete
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 dataMigrationDidComplete];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState dataMigrationDidComplete];
 }
 
 - (BOOL)isSystemReady
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isSystemReady];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isSystemReady = [infoProvider isSystemReady];
 
-  return v3;
+  return isSystemReady;
 }
 
 - (BOOL)needsDataMigration
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 needsDataMigration];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  needsDataMigration = [infoProvider needsDataMigration];
 
-  return v3;
+  return needsDataMigration;
 }
 
 @end

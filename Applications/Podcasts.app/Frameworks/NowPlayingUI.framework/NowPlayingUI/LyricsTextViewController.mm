@@ -1,5 +1,5 @@
 @interface LyricsTextViewController
-- (_TtC12NowPlayingUI24LyricsTextViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NowPlayingUI24LyricsTextViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -8,7 +8,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_FF874();
 }
 
@@ -23,7 +23,7 @@
   [*&v2[v3] layoutIfNeeded];
 }
 
-- (_TtC12NowPlayingUI24LyricsTextViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NowPlayingUI24LyricsTextViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

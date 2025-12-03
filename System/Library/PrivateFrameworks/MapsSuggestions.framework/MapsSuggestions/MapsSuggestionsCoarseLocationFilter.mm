@@ -1,18 +1,18 @@
 @interface MapsSuggestionsCoarseLocationFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsCoarseLocationFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    v5 = [v3 type];
-    if (v5 > 0x19)
+    type = [entryCopy type];
+    if (type > 0x19)
     {
       v9 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -29,9 +29,9 @@
       }
     }
 
-    else if (((1 << v5) & 0x1D7FD69) == 0)
+    else if (((1 << type) & 0x1D7FD69) == 0)
     {
-      if (((1 << v5) & 0x2200290) != 0)
+      if (((1 << type) & 0x2200290) != 0)
       {
         LODWORD(v6) = MapsSuggestionsIsInCoarseLocation() ^ 1;
         goto LABEL_12;
@@ -39,8 +39,8 @@
 
       if (MapsSuggestionsIsInCoarseLocation())
       {
-        v7 = [v4 originatingSourceName];
-        LODWORD(v6) = [v7 containsString:@"RoutineSource"] ^ 1;
+        originatingSourceName = [v4 originatingSourceName];
+        LODWORD(v6) = [originatingSourceName containsString:@"RoutineSource"] ^ 1;
 
         goto LABEL_12;
       }

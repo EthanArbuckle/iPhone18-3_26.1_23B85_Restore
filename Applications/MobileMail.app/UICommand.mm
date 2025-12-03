@@ -24,9 +24,9 @@
     return 0;
   }
 
-  v4 = [(UICommand *)self propertyList];
+  propertyList = [(UICommand *)self propertyList];
   v5 = +[UICommand mail_deleteMessageCommandPropertyList];
-  v3 = [v4 isEqual:v5];
+  v3 = [propertyList isEqual:v5];
 
   return v3;
 }

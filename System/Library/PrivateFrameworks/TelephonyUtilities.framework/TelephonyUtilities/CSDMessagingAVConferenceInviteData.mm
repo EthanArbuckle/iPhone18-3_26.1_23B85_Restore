@@ -1,49 +1,49 @@
 @interface CSDMessagingAVConferenceInviteData
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingAVConferenceInviteData)initWithFaceTimeInviteDictionary:(id)a3;
-- (CSDMessagingAVConferenceInviteData)initWithRelayInviteDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingAVConferenceInviteData)initWithFaceTimeInviteDictionary:(id)dictionary;
+- (CSDMessagingAVConferenceInviteData)initWithRelayInviteDictionary:(id)dictionary;
 - (NSDictionary)faceTimeInviteDictionary;
 - (NSDictionary)relayInviteDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingAVConferenceInviteData
 
-- (CSDMessagingAVConferenceInviteData)initWithRelayInviteDictionary:(id)a3
+- (CSDMessagingAVConferenceInviteData)initWithRelayInviteDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(CSDMessagingAVConferenceInviteData *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:AVConferenceInviteDataMediaBlob];
+    v6 = [dictionaryCopy objectForKeyedSubscript:AVConferenceInviteDataMediaBlob];
     [(CSDMessagingAVConferenceInviteData *)v5 setMediaBlob:v6];
 
-    v7 = [v4 objectForKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
+    v7 = [dictionaryCopy objectForKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
     [(CSDMessagingAVConferenceInviteData *)v5 setCallInfoBlob:v7];
   }
 
   return v5;
 }
 
-- (CSDMessagingAVConferenceInviteData)initWithFaceTimeInviteDictionary:(id)a3
+- (CSDMessagingAVConferenceInviteData)initWithFaceTimeInviteDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(CSDMessagingAVConferenceInviteData *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:AVConferenceInviteDataSKEBlob];
+    v6 = [dictionaryCopy objectForKeyedSubscript:AVConferenceInviteDataSKEBlob];
     [(CSDMessagingAVConferenceInviteData *)v5 setSKEBlob:v6];
 
-    v7 = [v4 objectForKeyedSubscript:AVConferenceInviteDataMediaBlob];
+    v7 = [dictionaryCopy objectForKeyedSubscript:AVConferenceInviteDataMediaBlob];
     [(CSDMessagingAVConferenceInviteData *)v5 setMediaBlob:v7];
 
-    v8 = [v4 objectForKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
+    v8 = [dictionaryCopy objectForKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
     [(CSDMessagingAVConferenceInviteData *)v5 setCallInfoBlob:v8];
   }
 
@@ -53,11 +53,11 @@
 - (NSDictionary)relayInviteDictionary
 {
   v3 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  v4 = [(CSDMessagingAVConferenceInviteData *)self mediaBlob];
-  [v3 setObject:v4 forKeyedSubscript:AVConferenceInviteDataMediaBlob];
+  mediaBlob = [(CSDMessagingAVConferenceInviteData *)self mediaBlob];
+  [v3 setObject:mediaBlob forKeyedSubscript:AVConferenceInviteDataMediaBlob];
 
-  v5 = [(CSDMessagingAVConferenceInviteData *)self callInfoBlob];
-  [v3 setObject:v5 forKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
+  callInfoBlob = [(CSDMessagingAVConferenceInviteData *)self callInfoBlob];
+  [v3 setObject:callInfoBlob forKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
 
   return v3;
 }
@@ -65,14 +65,14 @@
 - (NSDictionary)faceTimeInviteDictionary
 {
   v3 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  v4 = [(CSDMessagingAVConferenceInviteData *)self sKEBlob];
-  [v3 setObject:v4 forKeyedSubscript:AVConferenceInviteDataSKEBlob];
+  sKEBlob = [(CSDMessagingAVConferenceInviteData *)self sKEBlob];
+  [v3 setObject:sKEBlob forKeyedSubscript:AVConferenceInviteDataSKEBlob];
 
-  v5 = [(CSDMessagingAVConferenceInviteData *)self mediaBlob];
-  [v3 setObject:v5 forKeyedSubscript:AVConferenceInviteDataMediaBlob];
+  mediaBlob = [(CSDMessagingAVConferenceInviteData *)self mediaBlob];
+  [v3 setObject:mediaBlob forKeyedSubscript:AVConferenceInviteDataMediaBlob];
 
-  v6 = [(CSDMessagingAVConferenceInviteData *)self callInfoBlob];
-  [v3 setObject:v6 forKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
+  callInfoBlob = [(CSDMessagingAVConferenceInviteData *)self callInfoBlob];
+  [v3 setObject:callInfoBlob forKeyedSubscript:AVConferenceInviteDataCallInfoBlob];
 
   return v3;
 }
@@ -82,8 +82,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingAVConferenceInviteData;
   v3 = [(CSDMessagingAVConferenceInviteData *)&v7 description];
-  v4 = [(CSDMessagingAVConferenceInviteData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingAVConferenceInviteData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -113,77 +113,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sKEBlob)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaBlob)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_callInfoBlob)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sKEBlob)
   {
-    [v4 setSKEBlob:?];
-    v4 = v5;
+    [toCopy setSKEBlob:?];
+    toCopy = v5;
   }
 
   if (self->_mediaBlob)
   {
     [v5 setMediaBlob:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_callInfoBlob)
   {
     [v5 setCallInfoBlob:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_sKEBlob copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_sKEBlob copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSData *)self->_mediaBlob copyWithZone:a3];
+  v8 = [(NSData *)self->_mediaBlob copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSData *)self->_callInfoBlob copyWithZone:a3];
+  v10 = [(NSData *)self->_callInfoBlob copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sKEBlob = self->_sKEBlob, !(sKEBlob | v4[3])) || -[NSData isEqual:](sKEBlob, "isEqual:")) && ((mediaBlob = self->_mediaBlob, !(mediaBlob | v4[2])) || -[NSData isEqual:](mediaBlob, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sKEBlob = self->_sKEBlob, !(sKEBlob | equalCopy[3])) || -[NSData isEqual:](sKEBlob, "isEqual:")) && ((mediaBlob = self->_mediaBlob, !(mediaBlob | equalCopy[2])) || -[NSData isEqual:](mediaBlob, "isEqual:")))
   {
     callInfoBlob = self->_callInfoBlob;
-    if (callInfoBlob | v4[1])
+    if (callInfoBlob | equalCopy[1])
     {
       v8 = [(NSData *)callInfoBlob isEqual:?];
     }
@@ -209,26 +209,26 @@
   return v4 ^ [(NSData *)self->_callInfoBlob hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(CSDMessagingAVConferenceInviteData *)self setSKEBlob:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(CSDMessagingAVConferenceInviteData *)self setMediaBlob:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(CSDMessagingAVConferenceInviteData *)self setCallInfoBlob:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

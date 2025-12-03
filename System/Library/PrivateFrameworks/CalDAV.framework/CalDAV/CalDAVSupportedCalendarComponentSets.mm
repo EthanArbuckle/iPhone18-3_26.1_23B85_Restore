@@ -1,10 +1,10 @@
 @interface CalDAVSupportedCalendarComponentSets
-+ (BOOL)allowedCalendars:(id)a3 contains:(id)a4;
++ (BOOL)allowedCalendars:(id)calendars contains:(id)contains;
 - (id)childrenToWrite;
 - (id)componentsAsString;
 - (id)copyParseRules;
 - (id)description;
-- (void)addCompSet:(id)a3;
+- (void)addCompSet:(id)set;
 @end
 
 @implementation CalDAVSupportedCalendarComponentSets
@@ -46,8 +46,8 @@
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) componentsAsString];
-          [v3 addObject:v9];
+          componentsAsString = [*(*(&v14 + 1) + 8 * i) componentsAsString];
+          [v3 addObject:componentsAsString];
         }
 
         v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -77,27 +77,27 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"%@ %p: ", v5, self];
 
-  v7 = [(CalDAVSupportedCalendarComponentSets *)self componentsAsString];
-  [v6 appendFormat:@"ALLOWED COMPONENTS: %@", v7];
+  componentsAsString = [(CalDAVSupportedCalendarComponentSets *)self componentsAsString];
+  [v6 appendFormat:@"ALLOWED COMPONENTS: %@", componentsAsString];
 
   return v6;
 }
 
-+ (BOOL)allowedCalendars:(id)a3 contains:(id)a4
++ (BOOL)allowedCalendars:(id)calendars contains:(id)contains
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  calendarsCopy = calendars;
+  containsCopy = contains;
+  if ([calendarsCopy length])
   {
-    if ([v5 isEqualToString:@"kCalDAVDoesNotSupportCalendarCreation"])
+    if ([calendarsCopy isEqualToString:@"kCalDAVDoesNotSupportCalendarCreation"])
     {
       v7 = 0;
     }
 
     else
     {
-      [v5 componentsSeparatedByString:{@", "}];
+      [calendarsCopy componentsSeparatedByString:{@", "}];
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
@@ -117,7 +117,7 @@
             }
 
             v13 = *(*(&v16 + 1) + 8 * i);
-            if ([v13 isEqualToString:{v6, v16}] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"*"))
+            if ([v13 isEqualToString:{containsCopy, v16}] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"*"))
             {
               v7 = 1;
               goto LABEL_17;
@@ -153,29 +153,29 @@ LABEL_17:
   return v7;
 }
 
-- (void)addCompSet:(id)a3
+- (void)addCompSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   componentSets = self->_componentSets;
-  v8 = v4;
+  v8 = setCopy;
   if (!componentSets)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_componentSets;
     self->_componentSets = v6;
 
-    v4 = v8;
+    setCopy = v8;
     componentSets = self->_componentSets;
   }
 
-  [(NSMutableSet *)componentSets addObject:v4];
+  [(NSMutableSet *)componentSets addObject:setCopy];
 }
 
 - (id)childrenToWrite
 {
-  v3 = [(NSMutableSet *)self->_componentSets allObjects];
-  v4 = [(CoreDAVItem *)self extraChildItems];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  allObjects = [(NSMutableSet *)self->_componentSets allObjects];
+  extraChildItems = [(CoreDAVItem *)self extraChildItems];
+  v5 = [allObjects arrayByAddingObjectsFromArray:extraChildItems];
 
   return v5;
 }

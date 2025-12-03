@@ -26,8 +26,8 @@
 
 - (void)_applyAlpha
 {
-  v3 = [SBApp systemApertureControllerForMainDisplay];
-  v4 = [v3 valueForKey:@"_systemApertureViewController"];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  v4 = [systemApertureControllerForMainDisplay valueForKey:@"_systemApertureViewController"];
 
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];

@@ -1,5 +1,5 @@
 @interface ANCMissedCallAlert
-- (ANCMissedCallAlert)initWithRecentCall:(id)a3 manager:(id)a4 queue:(id)a5;
+- (ANCMissedCallAlert)initWithRecentCall:(id)call manager:(id)manager queue:(id)queue;
 - (BOOL)hasPositiveAction;
 - (BOOL)performNegativeAction;
 - (BOOL)performPositiveAction;
@@ -14,20 +14,20 @@
 
 @implementation ANCMissedCallAlert
 
-- (ANCMissedCallAlert)initWithRecentCall:(id)a3 manager:(id)a4 queue:(id)a5
+- (ANCMissedCallAlert)initWithRecentCall:(id)call manager:(id)manager queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  callCopy = call;
+  managerCopy = manager;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = ANCMissedCallAlert;
   v12 = [(ANCAlert *)&v15 initWithCategoryID:2];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_recentCall, a3);
-    objc_storeStrong(&v13->_manager, a4);
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_recentCall, call);
+    objc_storeStrong(&v13->_manager, manager);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;
@@ -36,8 +36,8 @@
 - (id)appIdentifier
 {
   v3 = objc_alloc_init(TUCallProviderManager);
-  v4 = [(ANCMissedCallAlert *)self recentCall];
-  v5 = [v3 providerForRecentCall:v4];
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  v5 = [v3 providerForRecentCall:recentCall];
 
   v6 = [(ANCAlert *)self _appIdentifierForTUCallProvider:v5];
 
@@ -46,18 +46,18 @@
 
 - (id)title
 {
-  v2 = [(ANCMissedCallAlert *)self recentCall];
-  v3 = [v2 callerNameForDisplay];
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  callerNameForDisplay = [recentCall callerNameForDisplay];
 
-  return v3;
+  return callerNameForDisplay;
 }
 
 - (id)subtitle
 {
-  v2 = [(ANCMissedCallAlert *)self recentCall];
-  v3 = [v2 callerIdLabel];
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  callerIdLabel = [recentCall callerIdLabel];
 
-  return v3;
+  return callerIdLabel;
 }
 
 - (id)message
@@ -70,17 +70,17 @@
 
 - (id)date
 {
-  v2 = [(ANCMissedCallAlert *)self recentCall];
-  v3 = [v2 date];
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  date = [recentCall date];
 
-  return v3;
+  return date;
 }
 
 - (BOOL)hasPositiveAction
 {
-  v2 = [(ANCMissedCallAlert *)self recentCall];
-  v3 = [v2 callerId];
-  v4 = v3 != 0;
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  callerId = [recentCall callerId];
+  v4 = callerId != 0;
 
   return v4;
 }
@@ -103,28 +103,28 @@
 
 - (BOOL)performPositiveAction
 {
-  v3 = [(ANCMissedCallAlert *)self recentCall];
-  v4 = [v3 callerId];
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  callerId = [recentCall callerId];
 
-  if (!v4)
+  if (!callerId)
   {
     return 0;
   }
 
   v5 = objc_alloc_init(TUCallProviderManager);
-  v6 = [(ANCMissedCallAlert *)self recentCall];
-  v7 = [v5 providerForRecentCall:v6];
+  recentCall2 = [(ANCMissedCallAlert *)self recentCall];
+  v7 = [v5 providerForRecentCall:recentCall2];
 
   if (v7)
   {
     v8 = [[TUDialRequest alloc] initWithProvider:v7];
-    v9 = [(ANCMissedCallAlert *)self recentCall];
-    v10 = [v9 callerId];
-    v11 = [TUHandle handleWithDestinationID:v10];
+    recentCall3 = [(ANCMissedCallAlert *)self recentCall];
+    callerId2 = [recentCall3 callerId];
+    v11 = [TUHandle handleWithDestinationID:callerId2];
     [v8 setHandle:v11];
 
-    v12 = [(ANCMissedCallAlert *)self queue];
-    v13 = [TUCallCenter callCenterWithQueue:v12];
+    queue = [(ANCMissedCallAlert *)self queue];
+    v13 = [TUCallCenter callCenterWithQueue:queue];
     v14 = [v13 dialWithRequest:v8];
     v15 = v14 != 0;
   }
@@ -145,12 +145,12 @@
 
 - (BOOL)performNegativeAction
 {
-  v3 = [(ANCMissedCallAlert *)self recentCall];
-  v4 = [v3 uniqueId];
-  v5 = [NSPredicate predicateWithFormat:@"uniqueId == %@", v4];
+  recentCall = [(ANCMissedCallAlert *)self recentCall];
+  uniqueId = [recentCall uniqueId];
+  v5 = [NSPredicate predicateWithFormat:@"uniqueId == %@", uniqueId];
 
-  v6 = [(ANCMissedCallAlert *)self manager];
-  [v6 markAllCallsAsReadWithPredicate:v5];
+  manager = [(ANCMissedCallAlert *)self manager];
+  [manager markAllCallsAsReadWithPredicate:v5];
 
   return 1;
 }

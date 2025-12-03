@@ -1,63 +1,63 @@
 @interface UIKeyboardEmojiPopoverController
-- (BOOL)handleHardwareKeyboardEvent:(id)a3;
+- (BOOL)handleHardwareKeyboardEvent:(id)event;
 - (BOOL)isPhone;
 - (CGSize)preferredContentSize;
 - (CGSize)preferredContentSizeForPhone;
-- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)a3;
-- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)a3 hasVerticalScrolling:(BOOL)a4;
-- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)a3 taskQueue:(id)a4 scrollingDirection:(int64_t)a5 window:(id)a6 caretRect:(CGRect)a7;
-- (double)keyboardHeightAdjustmentForCaretRect:(CGRect)a3 windowSize:(CGSize)a4;
+- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)traits;
+- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)traits hasVerticalScrolling:(BOOL)scrolling;
+- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)traits taskQueue:(id)queue scrollingDirection:(int64_t)direction window:(id)window caretRect:(CGRect)rect;
+- (double)keyboardHeightAdjustmentForCaretRect:(CGRect)rect windowSize:(CGSize)size;
 - (double)preferredTextFieldHeight;
-- (id)keyboardLayout:(id)a3 willChangeRenderConfig:(id)a4;
+- (id)keyboardLayout:(id)layout willChangeRenderConfig:(id)config;
 - (void)associateEmojiSearchViewWithEmojiInputView;
-- (void)configurePopoverPresentationController:(id)a3;
+- (void)configurePopoverPresentationController:(id)controller;
 - (void)dealloc;
-- (void)keyboardLayout:(id)a3 didSwitchToKeyplane:(id)a4;
-- (void)shouldDismissNotification:(id)a3;
+- (void)keyboardLayout:(id)layout didSwitchToKeyplane:(id)keyplane;
+- (void)shouldDismissNotification:(id)notification;
 - (void)showKeyboardLayout;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation UIKeyboardEmojiPopoverController
 
-- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)a3
+- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v5 = objc_alloc_init(UIKeyboardTaskQueue);
-  v6 = [(UIKeyboardEmojiPopoverController *)self initWithTextInputTraits:v4 taskQueue:v5];
+  v6 = [(UIKeyboardEmojiPopoverController *)self initWithTextInputTraits:traitsCopy taskQueue:v5];
 
   return v6;
 }
 
-- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)a3 hasVerticalScrolling:(BOOL)a4
+- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)traits hasVerticalScrolling:(BOOL)scrolling
 {
-  v4 = a4;
-  v6 = a3;
+  scrollingCopy = scrolling;
+  traitsCopy = traits;
   v7 = objc_alloc_init(UIKeyboardTaskQueue);
-  v8 = [(UIKeyboardEmojiPopoverController *)self initWithTextInputTraits:v6 taskQueue:v7 scrollingDirection:v4];
+  v8 = [(UIKeyboardEmojiPopoverController *)self initWithTextInputTraits:traitsCopy taskQueue:v7 scrollingDirection:scrollingCopy];
 
   return v8;
 }
 
-- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)a3 taskQueue:(id)a4 scrollingDirection:(int64_t)a5 window:(id)a6 caretRect:(CGRect)a7
+- (UIKeyboardEmojiPopoverController)initWithTextInputTraits:(id)traits taskQueue:(id)queue scrollingDirection:(int64_t)direction window:(id)window caretRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  traitsCopy = traits;
+  queueCopy = queue;
+  windowCopy = window;
   v30.receiver = self;
   v30.super_class = UIKeyboardEmojiPopoverController;
   v19 = [(UIKeyboardPopoverController *)&v30 init];
   if (v19)
   {
-    v20 = [v18 traitCollection];
-    if ([v20 horizontalSizeClass] == 1)
+    traitCollection = [windowCopy traitCollection];
+    if ([traitCollection horizontalSizeClass] == 1)
     {
       v21 = 320.0;
     }
@@ -71,17 +71,17 @@
     screenTraits = v19->_screenTraits;
     v19->_screenTraits = v22;
 
-    if (a5 == 1)
+    if (direction == 1)
     {
       [(UIKBScreenTraits *)v19->_screenTraits setResizeKeyboardHeight:1];
-      [v18 bounds];
+      [windowCopy bounds];
       [(UIKeyboardEmojiPopoverController *)v19 keyboardHeightAdjustmentForCaretRect:x windowSize:y, width, height, v24, v25];
       [(UIKBScreenTraits *)v19->_screenTraits setKeyboardHeightAdjustment:?];
     }
 
-    [(UIKBScreenTraits *)v19->_screenTraits setPreferredEmojiScrollingDirection:a5];
-    objc_storeStrong(&v19->_textInputTraits, a3);
-    objc_storeStrong(&v19->_taskQueue, a4);
+    [(UIKBScreenTraits *)v19->_screenTraits setPreferredEmojiScrollingDirection:direction];
+    objc_storeStrong(&v19->_textInputTraits, traits);
+    objc_storeStrong(&v19->_taskQueue, queue);
     v26 = UIKeyboardGetKBStarName(@"emoji", v19->_screenTraits, 0, 0);
     v27 = [UIKeyboardLayoutStar keyboardWithName:v26 screenTraits:v19->_screenTraits];
     keyboard = v19->_keyboard;
@@ -125,8 +125,8 @@
   }
 
   [(UIKeyboardLayoutStar *)self->_layout setDelegate:0];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v9.receiver = self;
   v9.super_class = UIKeyboardEmojiPopoverController;
@@ -139,8 +139,8 @@
   v67.receiver = self;
   v67.super_class = UIKeyboardEmojiPopoverController;
   [(UIKeyboardPopoverController *)&v67 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_shouldDismissNotification_ name:@"UIKeyboardEmojiPopoverControllerShouldDismiss" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_shouldDismissNotification_ name:@"UIKeyboardEmojiPopoverControllerShouldDismiss" object:0];
 
   v4 = objc_alloc_init(UIKeyboardLayoutStar);
   layout = self->_layout;
@@ -155,8 +155,8 @@
     [(UIKeyboardEmojiPopoverController *)self showKeyboardLayout];
   }
 
-  v6 = [(UIViewController *)self view];
-  [v6 addSubview:self->_layout];
+  view = [(UIViewController *)self view];
+  [view addSubview:self->_layout];
 
   if ([(UIKeyboardEmojiPopoverController *)self isPhone])
   {
@@ -168,14 +168,14 @@
     v7 = 0.0;
   }
 
-  v8 = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
-  if (!v8)
+  emojiKeyManager = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
+  if (!emojiKeyManager)
   {
     goto LABEL_18;
   }
 
-  v9 = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
-  v10 = [v9 inputView];
+  emojiKeyManager2 = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
+  inputView = [emojiKeyManager2 inputView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -188,13 +188,13 @@
   if (!v11)
   {
 LABEL_18:
-    v29 = [(UIKeyboardEmojiPopoverController *)self isPhone];
+    isPhone = [(UIKeyboardEmojiPopoverController *)self isPhone];
 LABEL_19:
-    v30 = [(UIView *)self->_layout topAnchor];
-    v31 = [(UIViewController *)self view];
-    v32 = [v31 safeAreaLayoutGuide];
-    v33 = [v32 topAnchor];
-    v34 = [v30 constraintEqualToAnchor:v33];
+    topAnchor = [(UIView *)self->_layout topAnchor];
+    view2 = [(UIViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v74 = v34;
     v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
 
@@ -222,55 +222,55 @@ LABEL_10:
   _Block_object_dispose(&v69, 8);
   v14 = [[v12 alloc] initWithNibName:0 bundle:0];
   objc_storeStrong(&self->_emojiSearchInputViewController, v14);
-  v15 = [v14 view];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [v14 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(UIViewController *)self addChildViewController:v14];
-  v16 = [(UIViewController *)self view];
-  v17 = [v14 view];
-  [v16 addSubview:v17];
+  view4 = [(UIViewController *)self view];
+  view5 = [v14 view];
+  [view4 addSubview:view5];
 
-  v64 = [v14 view];
-  v58 = [v64 topAnchor];
-  v62 = [(UIViewController *)self view];
-  v60 = [v62 safeAreaLayoutGuide];
-  v56 = [v60 topAnchor];
-  v54 = [v58 constraintEqualToAnchor:v56 constant:8.0];
+  view6 = [v14 view];
+  topAnchor3 = [view6 topAnchor];
+  view7 = [(UIViewController *)self view];
+  safeAreaLayoutGuide2 = [view7 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide2 topAnchor];
+  v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
   v75[0] = v54;
-  v51 = [(UIView *)self->_layout topAnchor];
-  v52 = [v14 view];
-  v50 = [v52 bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  topAnchor5 = [(UIView *)self->_layout topAnchor];
+  view8 = [v14 view];
+  bottomAnchor = [view8 bottomAnchor];
+  v49 = [topAnchor5 constraintEqualToAnchor:bottomAnchor];
   v75[1] = v49;
-  v48 = [v14 view];
-  v47 = [v48 leadingAnchor];
-  v46 = [(UIView *)self->_layout leadingAnchor];
-  v18 = [v47 constraintEqualToAnchor:v46 constant:v7];
+  view9 = [v14 view];
+  leadingAnchor = [view9 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_layout leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v7];
   v75[2] = v18;
-  v19 = [(UIView *)self->_layout trailingAnchor];
-  v20 = [v14 view];
-  v21 = [v20 trailingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:v7];
+  trailingAnchor = [(UIView *)self->_layout trailingAnchor];
+  view10 = [v14 view];
+  trailingAnchor2 = [view10 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v7];
   v75[3] = v22;
-  v23 = [v14 view];
-  v24 = [v23 heightAnchor];
+  view11 = [v14 view];
+  heightAnchor = [view11 heightAnchor];
   [(UIKeyboardEmojiPopoverController *)self preferredTextFieldHeight];
-  v25 = [v24 constraintEqualToConstant:?];
+  v25 = [heightAnchor constraintEqualToConstant:?];
   v75[4] = v25;
   v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:5];
 
-  v26 = [v14 emojiSearchView];
-  [v26 setPredictionViewVisible:0];
-  [v26 setCollapsed:0];
-  v27 = [v26 searchTextField];
-  [v27 setKeyboardType:122];
+  emojiSearchView = [v14 emojiSearchView];
+  [emojiSearchView setPredictionViewVisible:0];
+  [emojiSearchView setCollapsed:0];
+  searchTextField = [emojiSearchView searchTextField];
+  [searchTextField setKeyboardType:122];
 
-  v28 = [v26 searchTextField];
-  [v28 setReturnKeyType:9];
+  searchTextField2 = [emojiSearchView searchTextField];
+  [searchTextField2 setReturnKeyType:9];
 
   if (objc_opt_respondsToSelector())
   {
-    [v26 setResultsViewVisible:0];
+    [emojiSearchView setResultsViewVisible:0];
   }
 
   if (!+[UIKeyboard isRemoteEmojiCollectionViewEnabled])
@@ -278,14 +278,14 @@ LABEL_10:
     [(UIKeyboardEmojiPopoverController *)self associateEmojiSearchViewWithEmojiInputView];
   }
 
-  v29 = [(UIKeyboardEmojiPopoverController *)self isPhone];
+  isPhone = [(UIKeyboardEmojiPopoverController *)self isPhone];
   if (!v66)
   {
     goto LABEL_19;
   }
 
 LABEL_20:
-  if (v29)
+  if (isPhone)
   {
     v35 = 8.0;
   }
@@ -295,23 +295,23 @@ LABEL_20:
     v35 = 0.0;
   }
 
-  v61 = [(UIView *)self->_layout leadingAnchor];
-  v65 = [(UIViewController *)self view];
-  v63 = [v65 safeAreaLayoutGuide];
-  v59 = [v63 leadingAnchor];
-  v57 = [v61 constraintEqualToAnchor:v59 constant:v35];
+  leadingAnchor3 = [(UIView *)self->_layout leadingAnchor];
+  view12 = [(UIViewController *)self view];
+  safeAreaLayoutGuide3 = [view12 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide3 leadingAnchor];
+  v57 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v35];
   v73[0] = v57;
-  v53 = [(UIView *)self->_layout trailingAnchor];
-  v55 = [(UIViewController *)self view];
-  v36 = [v55 safeAreaLayoutGuide];
-  v37 = [v36 trailingAnchor];
-  v38 = [v53 constraintEqualToAnchor:v37 constant:-v35];
+  trailingAnchor3 = [(UIView *)self->_layout trailingAnchor];
+  view13 = [(UIViewController *)self view];
+  safeAreaLayoutGuide4 = [view13 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide4 trailingAnchor];
+  v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v35];
   v73[1] = v38;
-  v39 = [(UIView *)self->_layout bottomAnchor];
-  v40 = [(UIViewController *)self view];
-  v41 = [v40 safeAreaLayoutGuide];
-  v42 = [v41 bottomAnchor];
-  v43 = [v39 constraintEqualToAnchor:v42];
+  bottomAnchor2 = [(UIView *)self->_layout bottomAnchor];
+  view14 = [(UIViewController *)self view];
+  safeAreaLayoutGuide5 = [view14 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide5 bottomAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v73[2] = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:3];
   v45 = [v66 arrayByAddingObjectsFromArray:v44];
@@ -319,21 +319,21 @@ LABEL_20:
   [MEMORY[0x1E69977A0] activateConstraints:v45];
 }
 
-- (void)shouldDismissNotification:(id)a3
+- (void)shouldDismissNotification:(id)notification
 {
-  v13 = a3;
-  v4 = [v13 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v13;
+  v6 = notificationCopy;
   if (isKindOfClass)
   {
-    v7 = [v13 object];
-    v8 = [(UIViewController *)self popoverPresentationController];
-    v9 = [v8 containerView];
-    v10 = [v7 view];
-    v11 = [(UIView *)v9 _containsView:v10];
+    object2 = [notificationCopy object];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+    containerView = [popoverPresentationController containerView];
+    view = [object2 view];
+    v11 = [(UIView *)containerView _containsView:view];
 
     if (v11)
     {
@@ -341,17 +341,17 @@ LABEL_20:
       [v12 dismissEmojiPopoverIfNecessaryWithCompletion:0];
     }
 
-    v6 = v13;
+    v6 = notificationCopy;
   }
 }
 
 - (void)showKeyboardLayout
 {
-  v3 = [(UIView *)self->_layout _inheritedRenderConfig];
-  v4 = v3;
-  if (v3)
+  _inheritedRenderConfig = [(UIView *)self->_layout _inheritedRenderConfig];
+  v4 = _inheritedRenderConfig;
+  if (_inheritedRenderConfig)
   {
-    v5 = v3;
+    v5 = _inheritedRenderConfig;
   }
 
   else
@@ -368,26 +368,26 @@ LABEL_20:
 
 - (void)associateEmojiSearchViewWithEmojiInputView
 {
-  v3 = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
-  v7 = [v3 inputView];
+  emojiKeyManager = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
+  inputView = [emojiKeyManager inputView];
 
-  if (v7)
+  if (inputView)
   {
-    [(TUIEmojiSearchInputViewController *)self->_emojiSearchInputViewController setDelegate:v7];
-    [v7 setEmojiSearchInputViewController:self->_emojiSearchInputViewController];
-    v4 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchInputViewController emojiSearchView];
-    v5 = [v4 searchTextField];
-    [v7 setEmojiSearchField:v5];
+    [(TUIEmojiSearchInputViewController *)self->_emojiSearchInputViewController setDelegate:inputView];
+    [inputView setEmojiSearchInputViewController:self->_emojiSearchInputViewController];
+    emojiSearchView = [(TUIEmojiSearchInputViewController *)self->_emojiSearchInputViewController emojiSearchView];
+    searchTextField = [emojiSearchView searchTextField];
+    [inputView setEmojiSearchField:searchTextField];
 
-    v6 = [v4 searchTextField];
-    [v6 becomeFirstResponder];
+    searchTextField2 = [emojiSearchView searchTextField];
+    [searchTextField2 becomeFirstResponder];
   }
 }
 
-- (void)configurePopoverPresentationController:(id)a3
+- (void)configurePopoverPresentationController:(id)controller
 {
-  v3 = a3;
-  [v3 setPopoverBackgroundViewClass:objc_opt_class()];
+  controllerCopy = controller;
+  [controllerCopy setPopoverBackgroundViewClass:objc_opt_class()];
 }
 
 - (double)preferredTextFieldHeight
@@ -458,44 +458,44 @@ LABEL_20:
 
 - (BOOL)isPhone
 {
-  v2 = [(UIViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  traitCollection = [(UIViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 0;
 
   return v3;
 }
 
 - (CGSize)preferredContentSizeForPhone
 {
-  v3 = [(UIKBScreenTraits *)self->_screenTraits screen];
-  [v3 bounds];
+  screen = [(UIKBScreenTraits *)self->_screenTraits screen];
+  [screen bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(UIViewController *)self viewIfLoaded];
-  v9 = [v8 window];
+  viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v10 = [(UIViewController *)self traitCollection];
-  v11 = [v10 verticalSizeClass];
+  traitCollection = [(UIViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  [v9 safeAreaInsets];
+  [window safeAreaInsets];
   v13 = v12;
   v15 = v14;
-  [v9 safeAreaInsets];
-  if (v11 == 1)
+  [window safeAreaInsets];
+  if (verticalSizeClass == 1)
   {
     v18 = (v5 - (v13 + v16)) * 0.5 + -32.0;
-    [v9 safeAreaInsets];
+    [window safeAreaInsets];
     v20 = v19;
-    [v9 safeAreaInsets];
+    [window safeAreaInsets];
     v22 = v7 - (v20 + v21);
   }
 
   else
   {
     v18 = v5 - (v15 + v17);
-    [v9 safeAreaInsets];
+    [window safeAreaInsets];
     v24 = v23;
-    [v9 safeAreaInsets];
+    [window safeAreaInsets];
     v22 = (v7 - (v24 + v25)) * 0.5 + -32.0;
   }
 
@@ -506,14 +506,14 @@ LABEL_20:
   return result;
 }
 
-- (double)keyboardHeightAdjustmentForCaretRect:(CGRect)a3 windowSize:(CGSize)a4
+- (double)keyboardHeightAdjustmentForCaretRect:(CGRect)rect windowSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsNull = CGRectIsNull(a3);
+  height = size.height;
+  v5 = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  IsNull = CGRectIsNull(rect);
   result = 100.0;
   if (!IsNull && height != 0.0)
   {
@@ -559,22 +559,22 @@ LABEL_20:
   return result;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v10.receiver = self;
   v10.super_class = UIKeyboardEmojiPopoverController;
-  [(UIViewController *)&v10 viewIsAppearing:a3];
-  v4 = [(UIViewController *)self presentationController];
-  v5 = [v4 containerView];
+  [(UIViewController *)&v10 viewIsAppearing:appearing];
+  presentationController = [(UIViewController *)self presentationController];
+  containerView = [presentationController containerView];
 
   v6 = [UIKBViewForResponderForwarding alloc];
-  [v5 bounds];
+  [containerView bounds];
   v7 = [(UIView *)v6 initWithFrame:?];
   containerForActiveKeys = self->_containerForActiveKeys;
   self->_containerForActiveKeys = v7;
 
   [(UIKBViewForResponderForwarding *)self->_containerForActiveKeys setResponderForForwarding:self->_layout];
-  [v5 addSubview:self->_containerForActiveKeys];
+  [containerView addSubview:self->_containerForActiveKeys];
   v9 = +[UIKeyboardImpl activeInstance];
   [v9 _postInputResponderCapabilitiesChangedNotificationWithOutput:0 selectionChanged:0];
 }
@@ -598,26 +598,26 @@ LABEL_9:
       }
 
       [(UIKBScreenTraits *)self->_screenTraits setResizeKeyboardHeight:0];
-      v3 = [(UIViewController *)self view];
-      [v3 bounds];
+      view = [(UIViewController *)self view];
+      [view bounds];
       v5 = v4;
       v7 = v6;
 
-      v8 = [(UIViewController *)self popoverPresentationController];
-      if ([v8 arrowDirection] == 2)
+      popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+      if ([popoverPresentationController arrowDirection] == 2)
       {
       }
 
       else
       {
-        v9 = [(UIViewController *)self popoverPresentationController];
-        v10 = [v9 arrowDirection];
+        popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+        arrowDirection = [popoverPresentationController2 arrowDirection];
 
-        if (v10 != 1)
+        if (arrowDirection != 1)
         {
 LABEL_8:
-          v11 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchInputViewController emojiSearchView];
-          [v11 bounds];
+          emojiSearchView = [(TUIEmojiSearchInputViewController *)self->_emojiSearchInputViewController emojiSearchView];
+          [emojiSearchView bounds];
           v13 = v7 - v12;
 
           [(UIKBScreenTraits *)self->_screenTraits setPreferredContentSizeInPopover:v5 + -12.0, v13];
@@ -631,20 +631,20 @@ LABEL_8:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v12.receiver = self;
   v12.super_class = UIKeyboardEmojiPopoverController;
-  [(UIViewController *)&v12 viewWillDisappear:a3];
+  [(UIViewController *)&v12 viewWillDisappear:disappear];
   v4 = +[UIKeyboard isRemoteEmojiCollectionViewEnabled];
   layout = self->_layout;
   if (v4)
   {
-    v6 = [(UIKeyboardLayoutStar *)layout keyplane];
-    v7 = [v6 firstCachedKeyWithName:@"Emoji-InputView-Key"];
+    keyplane = [(UIKeyboardLayoutStar *)layout keyplane];
+    v7 = [keyplane firstCachedKeyWithName:@"Emoji-InputView-Key"];
 
-    v8 = [(UIKeyboardLayoutStar *)self->_layout currentKeyplaneView];
-    v9 = [v8 viewForKey:v7];
+    currentKeyplaneView = [(UIKeyboardLayoutStar *)self->_layout currentKeyplaneView];
+    v9 = [currentKeyplaneView viewForKey:v7];
 
     [v9 frame];
     [v9 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
@@ -663,35 +663,35 @@ LABEL_8:
   [v11 _postInputResponderCapabilitiesChangedNotificationWithOutput:0 selectionChanged:0];
 }
 
-- (BOOL)handleHardwareKeyboardEvent:(id)a3
+- (BOOL)handleHardwareKeyboardEvent:(id)event
 {
-  v4 = a3;
-  v5 = [[UIKey alloc] initWithKeyboardEvent:v4];
+  eventCopy = event;
+  v5 = [[UIKey alloc] initWithKeyboardEvent:eventCopy];
 
-  v6 = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
-  v7 = [v6 inputView];
+  emojiKeyManager = [(UIKeyboardLayoutStar *)self->_layout emojiKeyManager];
+  inputView = [emojiKeyManager inputView];
 
-  LOBYTE(v6) = [v7 handleKeyEvent:v5];
-  return v6;
+  LOBYTE(emojiKeyManager) = [inputView handleKeyEvent:v5];
+  return emojiKeyManager;
 }
 
-- (void)keyboardLayout:(id)a3 didSwitchToKeyplane:(id)a4
+- (void)keyboardLayout:(id)layout didSwitchToKeyplane:(id)keyplane
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  keyplaneCopy = keyplane;
   if (!self->_hiddenKeys)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     hiddenKeys = self->_hiddenKeys;
-    self->_hiddenKeys = v8;
+    self->_hiddenKeys = array;
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v7 cachedKeysByKeyName:@"Emoji-International-Key"];
+  v10 = [keyplaneCopy cachedKeysByKeyName:@"Emoji-International-Key"];
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v11)
   {
@@ -721,7 +721,7 @@ LABEL_8:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = [v7 cachedKeysByKeyName:{@"Delete-Key", 0}];
+  v16 = [keyplaneCopy cachedKeysByKeyName:{@"Delete-Key", 0}];
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v17)
   {
@@ -751,18 +751,18 @@ LABEL_8:
   }
 }
 
-- (id)keyboardLayout:(id)a3 willChangeRenderConfig:(id)a4
+- (id)keyboardLayout:(id)layout willChangeRenderConfig:(id)config
 {
-  v4 = a4;
-  if (([v4 isFloating] & 1) == 0)
+  configCopy = config;
+  if (([configCopy isFloating] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [configCopy copy];
 
     [v5 setIsFloating:1];
-    v4 = v5;
+    configCopy = v5;
   }
 
-  return v4;
+  return configCopy;
 }
 
 @end

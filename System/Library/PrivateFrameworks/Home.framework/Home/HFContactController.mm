@@ -1,40 +1,40 @@
 @interface HFContactController
-+ (id)contactForAppleID:(id)a3 keyDescriptors:(id)a4;
-+ (id)contactForEmailAddress:(id)a3 keyDescriptors:(id)a4;
-+ (id)contactForPhoneNumber:(id)a3 keyDescriptors:(id)a4;
-+ (id)stringForRecipientStatus:(unint64_t)a3;
-- (BOOL)hasAdaptiveTemperatureIDSCapabilityForDestination:(id)a3;
-- (BOOL)hasRestrictedGuestIDSCapabilityForDestination:(id)a3;
++ (id)contactForAppleID:(id)d keyDescriptors:(id)descriptors;
++ (id)contactForEmailAddress:(id)address keyDescriptors:(id)descriptors;
++ (id)contactForPhoneNumber:(id)number keyDescriptors:(id)descriptors;
++ (id)stringForRecipientStatus:(unint64_t)status;
+- (BOOL)hasAdaptiveTemperatureIDSCapabilityForDestination:(id)destination;
+- (BOOL)hasRestrictedGuestIDSCapabilityForDestination:(id)destination;
 - (HFContactController)init;
-- (HFContactController)initWithKeyDescriptors:(id)a3;
+- (HFContactController)initWithKeyDescriptors:(id)descriptors;
 - (HFContactControllerDelegate)delegate;
 - (NSArray)pendingDestinations;
-- (id)_contactForFamilyMember:(id)a3;
-- (id)contactForFamilyMemberWithDsid:(id)a3;
-- (unint64_t)statusForDestination:(id)a3;
+- (id)_contactForFamilyMember:(id)member;
+- (id)contactForFamilyMemberWithDsid:(id)dsid;
+- (unint64_t)statusForDestination:(id)destination;
 - (void)_downloadFamilyMemberPhotos;
-- (void)_loadFamilyMembersWithCompletion:(id)a3;
-- (void)adaptiveTemperatureIDSCapabilityUpdated:(id)a3;
-- (void)entriesUpdated:(id)a3;
-- (void)fetchFamilyMembersWithCompletion:(id)a3;
-- (void)markDestinationsPending:(id)a3;
-- (void)restrictedGuestIDSCapabilityUpdated:(id)a3;
+- (void)_loadFamilyMembersWithCompletion:(id)completion;
+- (void)adaptiveTemperatureIDSCapabilityUpdated:(id)updated;
+- (void)entriesUpdated:(id)updated;
+- (void)fetchFamilyMembersWithCompletion:(id)completion;
+- (void)markDestinationsPending:(id)pending;
+- (void)restrictedGuestIDSCapabilityUpdated:(id)updated;
 @end
 
 @implementation HFContactController
 
 - (HFContactController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithKeyDescriptors_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFContactController.m" lineNumber:73 description:{@"%s is unavailable; use %@ instead", "-[HFContactController init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFContactController.m" lineNumber:73 description:{@"%s is unavailable; use %@ instead", "-[HFContactController init]", v5}];
 
   return 0;
 }
 
-- (HFContactController)initWithKeyDescriptors:(id)a3
+- (HFContactController)initWithKeyDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v18.receiver = self;
   v18.super_class = HFContactController;
   v6 = [(HFContactController *)&v18 init];
@@ -52,7 +52,7 @@
     recipientToAdaptiveTemperatureIDSCapability = v6->_recipientToAdaptiveTemperatureIDSCapability;
     v6->_recipientToAdaptiveTemperatureIDSCapability = v11;
 
-    objc_storeStrong(&v6->_descriptors, a3);
+    objc_storeStrong(&v6->_descriptors, descriptors);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     familyMemberCallbacks = v6->_familyMemberCallbacks;
     v6->_familyMemberCallbacks = v13;
@@ -109,68 +109,68 @@ void __46__HFContactController_initWithKeyDescriptors___block_invoke(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringForRecipientStatus:(unint64_t)a3
++ (id)stringForRecipientStatus:(unint64_t)status
 {
-  if (a3 < 5)
+  if (status < 5)
   {
-    return off_277DF9160[a3];
+    return off_277DF9160[status];
   }
 
-  NSLog(&cfstr_UnknownRecipie.isa, a2, a3);
+  NSLog(&cfstr_UnknownRecipie.isa, a2, status);
   return @"Unknown";
 }
 
-+ (id)contactForAppleID:(id)a3 keyDescriptors:(id)a4
++ (id)contactForAppleID:(id)d keyDescriptors:(id)descriptors
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 hf_isPhoneNumber];
+  descriptorsCopy = descriptors;
+  dCopy = d;
+  hf_isPhoneNumber = [dCopy hf_isPhoneNumber];
   v8 = objc_opt_class();
-  if (v7)
+  if (hf_isPhoneNumber)
   {
-    [v8 contactForPhoneNumber:v6 keyDescriptors:v5];
+    [v8 contactForPhoneNumber:dCopy keyDescriptors:descriptorsCopy];
   }
 
   else
   {
-    [v8 contactForEmailAddress:v6 keyDescriptors:v5];
+    [v8 contactForEmailAddress:dCopy keyDescriptors:descriptorsCopy];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (id)contactForEmailAddress:(id)a3 keyDescriptors:(id)a4
++ (id)contactForEmailAddress:(id)address keyDescriptors:(id)descriptors
 {
-  v5 = a4;
-  v6 = a3;
+  descriptorsCopy = descriptors;
+  addressCopy = address;
   v7 = +[HFContactStore defaultStore];
-  v8 = [v7 contactForEmailAddress:v6 withKeys:v5];
+  v8 = [v7 contactForEmailAddress:addressCopy withKeys:descriptorsCopy];
 
   return v8;
 }
 
-+ (id)contactForPhoneNumber:(id)a3 keyDescriptors:(id)a4
++ (id)contactForPhoneNumber:(id)number keyDescriptors:(id)descriptors
 {
-  v5 = a4;
-  v6 = a3;
+  descriptorsCopy = descriptors;
+  numberCopy = number;
   v7 = +[HFContactStore defaultStore];
-  v8 = [v7 contactForPhoneNumber:v6 withKeys:v5];
+  v8 = [v7 contactForPhoneNumber:numberCopy withKeys:descriptorsCopy];
 
   return v8;
 }
 
 - (NSArray)pendingDestinations
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HFContactController *)self recipientAvailabilities];
+  array = [MEMORY[0x277CBEB18] array];
+  recipientAvailabilities = [(HFContactController *)self recipientAvailabilities];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__HFContactController_pendingDestinations__block_invoke;
   v9[3] = &unk_277DF90C8;
-  v10 = v3;
-  v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = array;
+  v5 = array;
+  [recipientAvailabilities enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([(NSArray *)v5 count])
   {
@@ -196,14 +196,14 @@ void __42__HFContactController_pendingDestinations__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)entriesUpdated:(id)a3
+- (void)entriesUpdated:(id)updated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __38__HFContactController_entriesUpdated___block_invoke;
   v3[3] = &unk_277DF90C8;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [updated enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __38__HFContactController_entriesUpdated___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -225,14 +225,14 @@ void __38__HFContactController_entriesUpdated___block_invoke(uint64_t a1, void *
   [v9 setObject:v8 forKey:v5];
 }
 
-- (void)restrictedGuestIDSCapabilityUpdated:(id)a3
+- (void)restrictedGuestIDSCapabilityUpdated:(id)updated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __59__HFContactController_restrictedGuestIDSCapabilityUpdated___block_invoke;
   v3[3] = &unk_277DF90C8;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [updated enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __59__HFContactController_restrictedGuestIDSCapabilityUpdated___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -248,25 +248,25 @@ void __59__HFContactController_restrictedGuestIDSCapabilityUpdated___block_invok
   [v10 setObject:v9 forKey:v6];
 }
 
-- (BOOL)hasRestrictedGuestIDSCapabilityForDestination:(id)a3
+- (BOOL)hasRestrictedGuestIDSCapabilityForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(HFContactController *)self recipientToRestrictedGuestIDSCapability];
-  v6 = [v5 objectForKey:v4];
+  destinationCopy = destination;
+  recipientToRestrictedGuestIDSCapability = [(HFContactController *)self recipientToRestrictedGuestIDSCapability];
+  v6 = [recipientToRestrictedGuestIDSCapability objectForKey:destinationCopy];
 
-  LOBYTE(v5) = [v6 BOOLValue];
-  return v5;
+  LOBYTE(recipientToRestrictedGuestIDSCapability) = [v6 BOOLValue];
+  return recipientToRestrictedGuestIDSCapability;
 }
 
-- (void)markDestinationsPending:(id)a3
+- (void)markDestinationsPending:(id)pending
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pendingCopy = pending;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [pendingCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -278,18 +278,18 @@ void __59__HFContactController_restrictedGuestIDSCapabilityUpdated___block_invok
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pendingCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(HFContactController *)self recipientAvailabilities];
-        [v10 setObject:&unk_282523CA0 forKey:v9];
+        recipientAvailabilities = [(HFContactController *)self recipientAvailabilities];
+        [recipientAvailabilities setObject:&unk_282523CA0 forKey:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [pendingCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -298,78 +298,78 @@ void __59__HFContactController_restrictedGuestIDSCapabilityUpdated___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)statusForDestination:(id)a3
+- (unint64_t)statusForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(HFContactController *)self recipientAvailabilities];
-  v6 = [v5 objectForKey:v4];
+  destinationCopy = destination;
+  recipientAvailabilities = [(HFContactController *)self recipientAvailabilities];
+  v6 = [recipientAvailabilities objectForKey:destinationCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)fetchFamilyMembersWithCompletion:(id)a3
+- (void)fetchFamilyMembersWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
+    v7 = completionCopy;
     if ([(HFContactController *)self familyMembersState])
     {
-      v5 = [(HFContactController *)self familyMembers];
-      v7[2](v7, v5);
+      familyMembers = [(HFContactController *)self familyMembers];
+      v7[2](v7, familyMembers);
     }
 
     else
     {
-      v5 = [(HFContactController *)self familyMemberCallbacks];
+      familyMembers = [(HFContactController *)self familyMemberCallbacks];
       v6 = [v7 copy];
-      [v5 addObject:v6];
+      [familyMembers addObject:v6];
     }
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (id)contactForFamilyMemberWithDsid:(id)a3
+- (id)contactForFamilyMemberWithDsid:(id)dsid
 {
-  v4 = a3;
-  v5 = [(HFContactController *)self familyMemberDsidToContact];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dsidCopy = dsid;
+  familyMemberDsidToContact = [(HFContactController *)self familyMemberDsidToContact];
+  v6 = [familyMemberDsidToContact objectForKeyedSubscript:dsidCopy];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (id)_contactForFamilyMember:(id)a3
+- (id)_contactForFamilyMember:(id)member
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  memberCopy = member;
   v4 = objc_alloc_init(MEMORY[0x277CBDB38]);
-  v5 = [v3 firstName];
-  [v4 setGivenName:v5];
+  firstName = [memberCopy firstName];
+  [v4 setGivenName:firstName];
 
-  v6 = [v3 lastName];
-  [v4 setFamilyName:v6];
+  lastName = [memberCopy lastName];
+  [v4 setFamilyName:lastName];
 
-  v7 = [v3 appleID];
-  v8 = [v7 hf_isEmail];
+  appleID = [memberCopy appleID];
+  hf_isEmail = [appleID hf_isEmail];
 
-  if (v8)
+  if (hf_isEmail)
   {
     v9 = MEMORY[0x277CBDB20];
-    v10 = [v3 appleID];
-    v11 = [v9 labeledValueWithLabel:0 value:v10];
+    appleID2 = [memberCopy appleID];
+    v11 = [v9 labeledValueWithLabel:0 value:appleID2];
     v21[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     [v4 setEmailAddresses:v12];
@@ -377,18 +377,18 @@ void __59__HFContactController_restrictedGuestIDSCapabilityUpdated___block_invok
 
   else
   {
-    v13 = [v3 appleID];
-    v14 = [v13 hf_isPhoneNumber];
+    appleID3 = [memberCopy appleID];
+    hf_isPhoneNumber = [appleID3 hf_isPhoneNumber];
 
-    if (!v14)
+    if (!hf_isPhoneNumber)
     {
       goto LABEL_6;
     }
 
     v15 = MEMORY[0x277CBDB20];
     v16 = objc_alloc(MEMORY[0x277CBDB70]);
-    v10 = [v3 appleID];
-    v11 = [v16 initWithStringValue:v10];
+    appleID2 = [memberCopy appleID];
+    v11 = [v16 initWithStringValue:appleID2];
     v12 = [v15 labeledValueWithLabel:0 value:v11];
     v20 = v12;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
@@ -401,9 +401,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)_loadFamilyMembersWithCompletion:(id)a3
+- (void)_loadFamilyMembersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277D08288]);
   [v5 setCachePolicy:2];
   v7[0] = MEMORY[0x277D85DD0];
@@ -411,8 +411,8 @@ LABEL_6:
   v7[2] = __56__HFContactController__loadFamilyMembersWithCompletion___block_invoke;
   v7[3] = &unk_277DF9118;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 startRequestWithCompletionHandler:v7];
 }
 
@@ -525,8 +525,8 @@ void __56__HFContactController__loadFamilyMembersWithCompletion___block_invoke_3
 
         v7 = *(*(&v14 + 1) + 8 * v6);
         v8 = objc_alloc(MEMORY[0x277D08298]);
-        v9 = [v7 dsid];
-        v10 = [v8 initWithFamilyMemberDSID:v9 size:1 localFallback:1];
+        dsid = [v7 dsid];
+        v10 = [v8 initWithFamilyMemberDSID:dsid size:1 localFallback:1];
 
         [v10 setUseMonogramAsLastResort:0];
         v13[0] = MEMORY[0x277D85DD0];
@@ -577,14 +577,14 @@ void __50__HFContactController__downloadFamilyMemberPhotos__block_invoke_2(uint6
   [v4 contactController:*(a1 + 32) didFinishDownloadingFamilyMemberAvatar:*(a1 + 40)];
 }
 
-- (void)adaptiveTemperatureIDSCapabilityUpdated:(id)a3
+- (void)adaptiveTemperatureIDSCapabilityUpdated:(id)updated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __63__HFContactController_adaptiveTemperatureIDSCapabilityUpdated___block_invoke;
   v3[3] = &unk_277DF90C8;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [updated enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __63__HFContactController_adaptiveTemperatureIDSCapabilityUpdated___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -600,26 +600,26 @@ void __63__HFContactController_adaptiveTemperatureIDSCapabilityUpdated___block_i
   [v10 setObject:v9 forKey:v6];
 }
 
-- (BOOL)hasAdaptiveTemperatureIDSCapabilityForDestination:(id)a3
+- (BOOL)hasAdaptiveTemperatureIDSCapabilityForDestination:(id)destination
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFContactController *)self recipientToAdaptiveTemperatureIDSCapability];
-  v6 = [v5 objectForKey:v4];
+  destinationCopy = destination;
+  recipientToAdaptiveTemperatureIDSCapability = [(HFContactController *)self recipientToAdaptiveTemperatureIDSCapability];
+  v6 = [recipientToAdaptiveTemperatureIDSCapability objectForKey:destinationCopy];
 
   v7 = HFLogForCategory(0x2AuLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = destinationCopy;
     v13 = 1024;
-    v14 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Destination: %@ hasAdaptiveTemperatureIDSCapabilityForDestination:%{BOOL}d", &v11, 0x12u);
   }
 
-  v8 = [v6 BOOLValue];
+  bOOLValue2 = [v6 BOOLValue];
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue2;
 }
 
 - (HFContactControllerDelegate)delegate

@@ -1,17 +1,17 @@
 @interface VenueFloorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation VenueFloorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VenueFloorViewController" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VenueFloorViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"VenueFloorViewController" hasInstanceMethod:@"floorCollectionView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VenueFloorViewController" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VenueFloorViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"VenueFloorViewController" hasInstanceMethod:@"floorCollectionView" withFullSignature:{"@", 0}];
 }
 
 - (void)loadView

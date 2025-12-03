@@ -6,12 +6,12 @@
 
 - (BOOL)isUILayoutRTL
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  LOBYTE(v3) = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:v4] == 2;
-  return v3;
+  LOBYTE(preferredLocalizations) = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:firstObject] == 2;
+  return preferredLocalizations;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MUCuratedGuidesSectionController
 - (BOOL)shouldShowMoreButton;
 - (MKPlaceCollectionsDelegate)collectionsDelegate;
-- (MUCuratedGuidesSectionController)initWithDelegate:(id)a3 withPlaceCollections:(id)a4 usingSyncCoordinator:(id)a5 usingMapItem:(id)a6 usingCollectionIds:(id)a7 exploreGuides:(id)a8;
+- (MUCuratedGuidesSectionController)initWithDelegate:(id)delegate withPlaceCollections:(id)collections usingSyncCoordinator:(id)coordinator usingMapItem:(id)item usingCollectionIds:(id)ids exploreGuides:(id)guides;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
 - (id)_sectionHeaderTitle;
 - (void)_seeAllTapped;
@@ -10,7 +10,7 @@
 - (void)collectionsCarouselDidScrollBackward;
 - (void)collectionsCarouselDidScrollForward;
 - (void)exploreGuidesButtonTapped;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MUCuratedGuidesSectionController
@@ -24,12 +24,12 @@
 
 - (BOOL)shouldShowMoreButton
 {
-  v3 = [(MUCuratedGuidesSectionController *)self carouselView];
-  v4 = [v3 traitCollection];
-  if ([v4 userInterfaceIdiom] == 5)
+  carouselView = [(MUCuratedGuidesSectionController *)self carouselView];
+  traitCollection = [carouselView traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
-    v5 = [(MUCuratedGuidesSectionController *)self placeCollections];
-    v6 = [v5 count];
+    placeCollections = [(MUCuratedGuidesSectionController *)self placeCollections];
+    v6 = [placeCollections count];
 
     if (v6 > 5)
     {
@@ -41,16 +41,16 @@
   {
   }
 
-  v8 = [(MUCuratedGuidesSectionController *)self carouselView];
-  if ([v8 isShowingExploreGuides])
+  carouselView2 = [(MUCuratedGuidesSectionController *)self carouselView];
+  if ([carouselView2 isShowingExploreGuides])
   {
     v7 = 0;
   }
 
   else
   {
-    v9 = [(MUCuratedGuidesSectionController *)self placeCollections];
-    v7 = [v9 count] > 5;
+    placeCollections2 = [(MUCuratedGuidesSectionController *)self placeCollections];
+    v7 = [placeCollections2 count] > 5;
   }
 
   return v7;
@@ -58,10 +58,10 @@
 
 - (id)_sectionHeaderTitle
 {
-  v3 = [(MUPlaceSectionController *)self mapItem];
-  v4 = [v3 _isMapItemTypeSettlement];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _isMapItemTypeSettlement = [mapItem _isMapItemTypeSettlement];
 
-  if (v4)
+  if (_isMapItemTypeSettlement)
   {
     v5 = @"[Curated Collections] Guides";
   }
@@ -83,11 +83,11 @@
 
 - (void)_seeAllTapped
 {
-  v6 = [(MUCuratedGuidesSectionController *)self collectionsDelegate];
-  v3 = [(MUCuratedGuidesSectionController *)self placeCollections];
-  v4 = [(MUPlaceSectionHeaderViewModel *)self->_sectionHeaderViewModel titleString];
-  v5 = [(MUCuratedGuidesSectionController *)self collectionIds];
-  [v6 showAllCollections:v3 usingTitle:v4 usingCollectionIds:v5];
+  collectionsDelegate = [(MUCuratedGuidesSectionController *)self collectionsDelegate];
+  placeCollections = [(MUCuratedGuidesSectionController *)self placeCollections];
+  titleString = [(MUPlaceSectionHeaderViewModel *)self->_sectionHeaderViewModel titleString];
+  collectionIds = [(MUCuratedGuidesSectionController *)self collectionIds];
+  [collectionsDelegate showAllCollections:placeCollections usingTitle:titleString usingCollectionIds:collectionIds];
 }
 
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel
@@ -95,15 +95,15 @@
   sectionHeaderViewModel = self->_sectionHeaderViewModel;
   if (!sectionHeaderViewModel)
   {
-    v4 = [(MUCuratedGuidesSectionController *)self shouldShowMoreButton];
+    shouldShowMoreButton = [(MUCuratedGuidesSectionController *)self shouldShowMoreButton];
     v5 = [MUPlaceSectionHeaderViewModel alloc];
-    v6 = [(MUCuratedGuidesSectionController *)self _sectionHeaderTitle];
-    v7 = [(MUPlaceSectionHeaderViewModel *)v5 initWithTitleString:v6 showSeeMore:v4];
+    _sectionHeaderTitle = [(MUCuratedGuidesSectionController *)self _sectionHeaderTitle];
+    v7 = [(MUPlaceSectionHeaderViewModel *)v5 initWithTitleString:_sectionHeaderTitle showSeeMore:shouldShowMoreButton];
     v8 = self->_sectionHeaderViewModel;
     self->_sectionHeaderViewModel = v7;
 
     sectionHeaderViewModel = self->_sectionHeaderViewModel;
-    if (v4)
+    if (shouldShowMoreButton)
     {
       [(MUPlaceSectionHeaderViewModel *)sectionHeaderViewModel setTarget:self selector:sel__seeAllTapped];
       sectionHeaderViewModel = self->_sectionHeaderViewModel;
@@ -115,38 +115,38 @@
 
 - (void)exploreGuidesButtonTapped
 {
-  v2 = [(MUCuratedGuidesSectionController *)self analyticsManager];
-  [v2 placecardExploreGuidesButtonTapped];
+  analyticsManager = [(MUCuratedGuidesSectionController *)self analyticsManager];
+  [analyticsManager placecardExploreGuidesButtonTapped];
 }
 
 - (void)collectionsCarouselDidScrollBackward
 {
-  v2 = [(MUCuratedGuidesSectionController *)self analyticsManager];
-  [v2 placecardCollectionsScrollBackward];
+  analyticsManager = [(MUCuratedGuidesSectionController *)self analyticsManager];
+  [analyticsManager placecardCollectionsScrollBackward];
 }
 
 - (void)collectionsCarouselDidScrollForward
 {
-  v2 = [(MUCuratedGuidesSectionController *)self analyticsManager];
-  [v2 placecardCollectionsScrollForward];
+  analyticsManager = [(MUCuratedGuidesSectionController *)self analyticsManager];
+  [analyticsManager placecardCollectionsScrollForward];
 }
 
 - (void)_setupCollectionView
 {
   if (self->_active)
   {
-    v3 = [(MUCuratedGuidesSectionController *)self carouselView];
-    [v3 displayCollectionsIfNeeded];
+    carouselView = [(MUCuratedGuidesSectionController *)self carouselView];
+    [carouselView displayCollectionsIfNeeded];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     v10 = v3;
     v11 = v4;
-    self->_active = a3;
+    self->_active = active;
     v6 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v6))
     {
@@ -167,28 +167,28 @@
 - (void)_setupViews
 {
   v3 = [MUPlaceSectionView alloc];
-  v4 = [(MUCuratedGuidesSectionController *)self sectionHeaderViewModel];
-  v5 = [(MUPlaceSectionView *)v3 initWithStyle:0 sectionHeaderViewModel:v4];
+  sectionHeaderViewModel = [(MUCuratedGuidesSectionController *)self sectionHeaderViewModel];
+  v5 = [(MUPlaceSectionView *)v3 initWithStyle:0 sectionHeaderViewModel:sectionHeaderViewModel];
   sectionView = self->_sectionView;
   self->_sectionView = v5;
 
   [(MUPlaceSectionView *)self->_sectionView configureWithSectionController:self];
   [(MUPlaceSectionView *)self->_sectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = self->_sectionView;
-  v8 = [(MUCuratedGuidesSectionController *)self carouselView];
-  [(MUPlaceSectionView *)v7 attachViewToContentView:v8];
+  carouselView = [(MUCuratedGuidesSectionController *)self carouselView];
+  [(MUPlaceSectionView *)v7 attachViewToContentView:carouselView];
 }
 
-- (MUCuratedGuidesSectionController)initWithDelegate:(id)a3 withPlaceCollections:(id)a4 usingSyncCoordinator:(id)a5 usingMapItem:(id)a6 usingCollectionIds:(id)a7 exploreGuides:(id)a8
+- (MUCuratedGuidesSectionController)initWithDelegate:(id)delegate withPlaceCollections:(id)collections usingSyncCoordinator:(id)coordinator usingMapItem:(id)item usingCollectionIds:(id)ids exploreGuides:(id)guides
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  delegateCopy = delegate;
+  collectionsCopy = collections;
+  coordinatorCopy = coordinator;
+  idsCopy = ids;
+  guidesCopy = guides;
   v30.receiver = self;
   v30.super_class = MUCuratedGuidesSectionController;
-  v19 = [(MUPlaceSectionController *)&v30 initWithMapItem:a6];
+  v19 = [(MUPlaceSectionController *)&v30 initWithMapItem:item];
   if (v19)
   {
     v20 = MUGetPlaceCardLog();
@@ -202,13 +202,13 @@
     analyticsManager = v19->_analyticsManager;
     v19->_analyticsManager = v21;
 
-    v23 = [[MUCuratedGuidesSectionView alloc] initCollectionsCarouselViewWithPlaceCollections:v15 usingSyncCoordinator:v16 withRoutingDelegate:v14 withScrollViewDelegate:v19 withAnalyticsDelegate:v19 exploreGuides:v18];
+    v23 = [[MUCuratedGuidesSectionView alloc] initCollectionsCarouselViewWithPlaceCollections:collectionsCopy usingSyncCoordinator:coordinatorCopy withRoutingDelegate:delegateCopy withScrollViewDelegate:v19 withAnalyticsDelegate:v19 exploreGuides:guidesCopy];
     carouselView = v19->_carouselView;
     v19->_carouselView = v23;
 
-    objc_storeWeak(&v19->_collectionsDelegate, v14);
-    objc_storeStrong(&v19->_collectionIds, a7);
-    v25 = [v15 copy];
+    objc_storeWeak(&v19->_collectionsDelegate, delegateCopy);
+    objc_storeStrong(&v19->_collectionIds, ids);
+    v25 = [collectionsCopy copy];
     placeCollections = v19->_placeCollections;
     v19->_placeCollections = v25;
 

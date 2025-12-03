@@ -1,19 +1,19 @@
 @interface LPDomainNameIndicator
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPDomainNameIndicator)initWithHost:(id)a3 domainName:(id)a4 theme:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPDomainNameIndicator)initWithHost:(id)host domainName:(id)name theme:(id)theme;
 - (void)layoutComponentView;
 @end
 
 @implementation LPDomainNameIndicator
 
-- (LPDomainNameIndicator)initWithHost:(id)a3 domainName:(id)a4 theme:(id)a5
+- (LPDomainNameIndicator)initWithHost:(id)host domainName:(id)name theme:(id)theme
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hostCopy = host;
+  nameCopy = name;
+  themeCopy = theme;
   v37.receiver = self;
   v37.super_class = LPDomainNameIndicator;
-  v11 = [(LPComponentView *)&v37 initWithHost:v8];
+  v11 = [(LPComponentView *)&v37 initWithHost:hostCopy];
   v12 = v11;
   if (v11)
   {
@@ -37,17 +37,17 @@
 
     [(UIImageView *)v12->_glyphView setContentMode:4];
     v24 = MEMORY[0x1E69DCAD8];
-    v25 = [v10 domainNameIndicatorIconFont];
-    v26 = [v24 configurationWithFont:v25];
+    domainNameIndicatorIconFont = [themeCopy domainNameIndicatorIconFont];
+    v26 = [v24 configurationWithFont:domainNameIndicatorIconFont];
     [(UIImageView *)v12->_glyphView setPreferredSymbolConfiguration:v26];
 
     v27 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     label = v12->_label;
     v12->_label = v27;
 
-    [(UILabel *)v12->_label setText:v9];
-    v29 = [v10 domainNameIndicatorFont];
-    [(UILabel *)v12->_label setFont:v29];
+    [(UILabel *)v12->_label setText:nameCopy];
+    domainNameIndicatorFont = [themeCopy domainNameIndicatorFont];
+    [(UILabel *)v12->_label setFont:domainNameIndicatorFont];
 
     [(UILabel *)v12->_label setNumberOfLines:1];
     [(UILabel *)v12->_label setLineBreakMode:4];
@@ -57,14 +57,14 @@
     LODWORD(v31) = 1132068864;
     [(UILabel *)v12->_label setContentCompressionResistancePriority:0 forAxis:v31];
     [(LPDomainNameIndicator *)v12 addSubview:v12->_blurView];
-    v32 = [(UIVisualEffectView *)v12->_blurView contentView];
-    [v32 addSubview:v12->_vibrancyView];
+    contentView = [(UIVisualEffectView *)v12->_blurView contentView];
+    [contentView addSubview:v12->_vibrancyView];
 
-    v33 = [(UIVisualEffectView *)v12->_vibrancyView contentView];
-    [v33 addSubview:v12->_glyphView];
+    contentView2 = [(UIVisualEffectView *)v12->_vibrancyView contentView];
+    [contentView2 addSubview:v12->_glyphView];
 
-    v34 = [(UIVisualEffectView *)v12->_vibrancyView contentView];
-    [v34 addSubview:v12->_label];
+    contentView3 = [(UIVisualEffectView *)v12->_vibrancyView contentView];
+    [contentView3 addSubview:v12->_label];
 
     v35 = v12;
   }
@@ -124,10 +124,10 @@
   [(UIVisualEffectView *)blurView _lp_setCornerRadius:v23 * 0.5];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_glyphView sizeThatFits:?];
   v7 = v6;
   v9 = v8;

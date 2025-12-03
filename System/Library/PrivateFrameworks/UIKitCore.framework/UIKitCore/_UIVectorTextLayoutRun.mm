@@ -4,31 +4,31 @@
 - (CGRect)usedLineRect;
 - (CGRect)usedRunRect;
 - (_NSRange)stringRange;
-- (_UIVectorTextLayoutRun)initWithCTRun:(__CTRun *)a3 lineIndex:(unint64_t)a4 layoutInfo:(id)a5;
+- (_UIVectorTextLayoutRun)initWithCTRun:(__CTRun *)run lineIndex:(unint64_t)index layoutInfo:(id)info;
 - (id)string;
-- (void)_enumerateGlyphsUsingBlock:(id)a3;
+- (void)_enumerateGlyphsUsingBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateGlyphsUsingBlock:(id)a3;
-- (void)renderInContext:(CGContext *)a3;
+- (void)enumerateGlyphsUsingBlock:(id)block;
+- (void)renderInContext:(CGContext *)context;
 @end
 
 @implementation _UIVectorTextLayoutRun
 
-- (_UIVectorTextLayoutRun)initWithCTRun:(__CTRun *)a3 lineIndex:(unint64_t)a4 layoutInfo:(id)a5
+- (_UIVectorTextLayoutRun)initWithCTRun:(__CTRun *)run lineIndex:(unint64_t)index layoutInfo:(id)info
 {
-  v9 = a5;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = _UIVectorTextLayoutRun;
   v10 = [(_UIVectorTextLayoutRun *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_lineIndex = a4;
-    objc_storeStrong(&v10->_layoutInfo, a5);
-    if (a3)
+    v10->_lineIndex = index;
+    objc_storeStrong(&v10->_layoutInfo, info);
+    if (run)
     {
-      v11->_runRef = a3;
-      CFRetain(a3);
+      v11->_runRef = run;
+      CFRetain(run);
     }
   }
 
@@ -71,24 +71,24 @@
 
 - (id)string
 {
-  v3 = [(_UIVectorTextLayoutRun *)self stringRange];
+  stringRange = [(_UIVectorTextLayoutRun *)self stringRange];
   v5 = 0;
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (stringRange != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v4;
     if (v4)
     {
-      v7 = v3;
-      v8 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
-      v9 = [v8 attributedText];
-      v10 = [v9 string];
+      v7 = stringRange;
+      parameters = [(_UIVectorTextLayoutInfo *)self->_layoutInfo parameters];
+      attributedText = [parameters attributedText];
+      string = [attributedText string];
 
-      v15.length = [v10 length];
+      v15.length = [string length];
       v14.location = v7;
       v14.length = v6;
       v15.location = 0;
       v11 = NSIntersectionRange(v14, v15);
-      v5 = [v10 substringWithRange:{v11.location, v11.length}];
+      v5 = [string substringWithRange:{v11.location, v11.length}];
     }
   }
 
@@ -105,14 +105,14 @@
   return MEMORY[0x1EEDBF0E0]();
 }
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
   origins.x = 0.0;
   origins.y = 0.0;
-  v5 = [(_UIVectorTextLayoutInfo *)self->_layoutInfo frame];
+  frame = [(_UIVectorTextLayoutInfo *)self->_layoutInfo frame];
   v14.location = [(_UIVectorTextLayoutRun *)self lineIndex];
   v14.length = 1;
-  CTFrameGetLineOrigins(v5, v14, &origins);
+  CTFrameGetLineOrigins(frame, v14, &origins);
   memset(&v12, 0, sizeof(v12));
   layoutInfo = self->_layoutInfo;
   if (layoutInfo)
@@ -133,20 +133,20 @@
   v8 = v12;
   CGAffineTransformConcat(&transform, &t1, &v8);
   v11 = transform;
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   transform = v11;
-  CGContextConcatCTM(a3, &transform);
+  CGContextConcatCTM(context, &transform);
   CTRunGetTextMatrix(&transform, self->_runRef);
-  CGContextSetTextMatrix(a3, &transform);
+  CGContextSetTextMatrix(context, &transform);
   v15.location = 0;
   v15.length = 0;
-  CTRunDraw(self->_runRef, a3, v15);
-  CGContextRestoreGState(a3);
+  CTRunDraw(self->_runRef, context, v15);
+  CGContextRestoreGState(context);
 }
 
-- (void)enumerateGlyphsUsingBlock:(id)a3
+- (void)enumerateGlyphsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   Font = CTRunGetFont();
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeScale(&v11, 1.0, -1.0);
@@ -155,16 +155,16 @@
   v7[2] = __52___UIVectorTextLayoutRun_enumerateGlyphsUsingBlock___block_invoke;
   v7[3] = &unk_1E712A3F8;
   v10 = v11;
-  v8 = v4;
+  v8 = blockCopy;
   v9 = Font;
-  v6 = v4;
+  v6 = blockCopy;
   [(_UIVectorTextLayoutRun *)self _enumerateGlyphsUsingBlock:v7];
 }
 
-- (void)_enumerateGlyphsUsingBlock:(id)a3
+- (void)_enumerateGlyphsUsingBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   Font = CTRunGetFont();
   if (Font)
   {
@@ -229,7 +229,7 @@
         if (v29 != 1)
         {
           v25 = vaddq_f64(v33, vaddq_f64(vmulq_n_f64(v31, *&v26), vmulq_n_f64(v32, *&v27)));
-          v4[2](v4, *v12, &v29, v25, v25.n128_f64[1], x, v42.origin.y, v42.size.width, v42.size.height);
+          blockCopy[2](blockCopy, *v12, &v29, v25, v25.n128_f64[1], x, v42.origin.y, v42.size.width, v42.size.height);
         }
 
         v43.origin.x = x;

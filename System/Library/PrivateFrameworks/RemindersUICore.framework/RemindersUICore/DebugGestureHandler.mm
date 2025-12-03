@@ -1,15 +1,15 @@
 @interface DebugGestureHandler
 - (_TtC15RemindersUICoreP33_C3D5BA548D44065B85FB6ED8321D992119DebugGestureHandler)init;
-- (void)tapGestureAction:(id)a3;
+- (void)tapGestureAction:(id)action;
 @end
 
 @implementation DebugGestureHandler
 
-- (void)tapGestureAction:(id)a3
+- (void)tapGestureAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -18,7 +18,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_21D8778B0(v6);

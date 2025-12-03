@@ -1,7 +1,7 @@
 @interface NSDateComponentsFormatter
 + (NSString)localizedStringFromDateComponents:(NSDateComponents *)components unitsStyle:(NSDateComponentsFormatterUnitsStyle)unitsStyle;
-- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)a3;
-- (BOOL)_updateFormatterCacheIfNeeded_locked:(id)a3 unitsStyle:(int64_t)a4;
+- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)value;
+- (BOOL)_updateFormatterCacheIfNeeded_locked:(id)needed_locked unitsStyle:(int64_t)style;
 - (BOOL)allowsFractionalUnits;
 - (BOOL)collapsesLargestUnit;
 - (BOOL)getObjectValue:(id *)obj forString:(NSString *)string errorDescription:(NSString *)error;
@@ -11,7 +11,7 @@
 - (NSCalendarUnit)allowedUnits;
 - (NSDate)referenceDate;
 - (NSDateComponentsFormatter)init;
-- (NSDateComponentsFormatter)initWithCoder:(id)a3;
+- (NSDateComponentsFormatter)initWithCoder:(id)coder;
 - (NSDateComponentsFormatterUnitsStyle)unitsStyle;
 - (NSDateComponentsFormatterZeroFormattingBehavior)zeroFormattingBehavior;
 - (NSFormattingContext)formattingContext;
@@ -19,18 +19,18 @@
 - (NSString)stringFromDate:(NSDate *)startDate toDate:(NSDate *)endDate;
 - (NSString)stringFromDateComponents:(NSDateComponents *)components;
 - (NSString)stringFromTimeInterval:(NSTimeInterval)ti;
-- (id)_calendarFromDateComponents:(id)a3;
+- (id)_calendarFromDateComponents:(id)components;
 - (id)_calendarOrCanonicalCalendar;
-- (id)_canonicalizedDateComponents:(id)a3 withCalendar:(id)a4 usedUnits:(unint64_t *)a5 withReferenceDate:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3 withReferenceDate:(id)a4;
-- (void)_ensureUnitFormatterWithLocale:(id)a3;
-- (void)_ensureUnitFormatterWithLocale_alreadyLocked:(id)a3;
+- (id)_canonicalizedDateComponents:(id)components withCalendar:(id)calendar usedUnits:(unint64_t *)units withReferenceDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value withReferenceDate:(id)date;
+- (void)_ensureUnitFormatterWithLocale:(id)locale;
+- (void)_ensureUnitFormatterWithLocale_alreadyLocked:(id)locked;
 - (void)_flushFormatterCache_locked;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalize;
-- (void)receiveObservedValue:(id)a3;
+- (void)receiveObservedValue:(id)value;
 - (void)setAllowedUnits:(NSCalendarUnit)allowedUnits;
 - (void)setAllowsFractionalUnits:(BOOL)allowsFractionalUnits;
 - (void)setCalendar:(NSCalendar *)calendar;
@@ -139,16 +139,16 @@
   [(NSDateComponentsFormatter *)&v3 finalize];
 }
 
-- (BOOL)_updateFormatterCacheIfNeeded_locked:(id)a3 unitsStyle:(int64_t)a4
+- (BOOL)_updateFormatterCacheIfNeeded_locked:(id)needed_locked unitsStyle:(int64_t)style
 {
-  if (self->_fmt && [(NSString *)self->_fmtLocaleIdent isEqualToString:a3])
+  if (self->_fmt && [(NSString *)self->_fmtLocaleIdent isEqualToString:needed_locked])
   {
     return 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [a3 UTF8String];
-  if (a4 == 4)
+  [needed_locked UTF8String];
+  if (style == 4)
   {
     unum_open();
     os_unfair_lock_lock(&self->_lock);
@@ -160,27 +160,27 @@
   }
 
   [(NSDateComponentsFormatter *)self _flushFormatterCache_locked];
-  icuStyleFromNSStyle(a4);
+  icuStyleFromNSStyle(style);
   self->_fmt = uatmufmt_openWithNumberFormat();
-  self->_fmtLocaleIdent = [a3 copy];
+  self->_fmtLocaleIdent = [needed_locked copy];
   return 1;
 }
 
-- (id)_canonicalizedDateComponents:(id)a3 withCalendar:(id)a4 usedUnits:(unint64_t *)a5 withReferenceDate:(id)a6
+- (id)_canonicalizedDateComponents:(id)components withCalendar:(id)calendar usedUnits:(unint64_t *)units withReferenceDate:(id)date
 {
-  v8 = a4;
+  calendarCopy2 = calendar;
   v80 = *MEMORY[0x1E69E9840];
   allowedUnits = self->_allowedUnits;
   if (!allowedUnits)
   {
-    v13 = 4 * ([a3 year] != 0x7FFFFFFFFFFFFFFFLL);
-    v14 = v13 | (8 * ([a3 month] != 0x7FFFFFFFFFFFFFFFLL));
-    v15 = v14 | (([a3 weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL) << 12);
-    v16 = v15 | (16 * ([a3 day] != 0x7FFFFFFFFFFFFFFFLL));
-    v17 = v16 | (32 * ([a3 hour] != 0x7FFFFFFFFFFFFFFFLL));
-    v18 = v17 | (([a3 minute] != 0x7FFFFFFFFFFFFFFFLL) << 6);
-    allowedUnits = v18 | (([a3 second] != 0x7FFFFFFFFFFFFFFFLL) << 7);
-    v8 = a4;
+    v13 = 4 * ([components year] != 0x7FFFFFFFFFFFFFFFLL);
+    v14 = v13 | (8 * ([components month] != 0x7FFFFFFFFFFFFFFFLL));
+    v15 = v14 | (([components weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL) << 12);
+    v16 = v15 | (16 * ([components day] != 0x7FFFFFFFFFFFFFFFLL));
+    v17 = v16 | (32 * ([components hour] != 0x7FFFFFFFFFFFFFFFLL));
+    v18 = v17 | (([components minute] != 0x7FFFFFFFFFFFFFFFLL) << 6);
+    allowedUnits = v18 | (([components second] != 0x7FFFFFFFFFFFFFFFLL) << 7);
+    calendarCopy2 = calendar;
   }
 
   unitsStyle = self->_unitsStyle;
@@ -211,13 +211,13 @@
     while (unitsStyle != 56);
   }
 
-  if (!a6)
+  if (!date)
   {
-    a6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
+    date = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
   }
 
-  v22 = [v8 dateByAddingComponents:a3 toDate:a6 options:0];
-  v23 = [v8 components:allowedUnits fromDate:a6 toDate:v22 options:0];
+  v22 = [calendarCopy2 dateByAddingComponents:components toDate:date options:0];
+  v23 = [calendarCopy2 components:allowedUnits fromDate:date toDate:v22 options:0];
   v24 = v23;
   if (self->_collapsesLargestUnit || self->_maximumUnitCount >= 1)
   {
@@ -238,7 +238,7 @@
     v73[6] = v76;
     v73[7] = v78;
     forEachUnit(allowedUnits, v73);
-    v72 = self;
+    selfCopy = self;
     if (self->_collapsesLargestUnit)
     {
       v25 = 0;
@@ -261,7 +261,7 @@
 
         if (v30 == 1 && v28 == -1)
         {
-          v32 = [v8 rangeOfUnit:*v27 inUnit:? forDate:?];
+          v32 = [calendarCopy2 rangeOfUnit:*v27 inUnit:? forDate:?];
           v34 = v33 * 0.1;
           if (v34 <= (*v26 - v32) && v34 <= (v32 + v33 - *v26))
           {
@@ -271,7 +271,7 @@ LABEL_27:
           }
 
           allowedUnits &= ~*(v27 - 1);
-          v24 = [v8 components:allowedUnits fromDate:a6 toDate:v22 options:0];
+          v24 = [calendarCopy2 components:allowedUnits fromDate:date toDate:v22 options:0];
           *(v26 - 1) = 0;
           v35 = [v24 valueForComponent:*v27];
           v28 = v25 + 1;
@@ -293,8 +293,8 @@ LABEL_28:
       while (!v53);
     }
 
-    maximumUnitCount = v72->_maximumUnitCount;
-    v70 = a5;
+    maximumUnitCount = selfCopy->_maximumUnitCount;
+    unitsCopy = units;
     if (maximumUnitCount >= 1)
     {
       v37 = 0;
@@ -328,7 +328,7 @@ LABEL_37:
 LABEL_40:
       if (v40 > maximumUnitCount)
       {
-        v71 = v8;
+        v71 = calendarCopy2;
         v41 = v38 - 1;
         if (v38 >= 1)
         {
@@ -422,7 +422,7 @@ LABEL_40:
               }
             }
 
-            v58 = v72->_maximumUnitCount;
+            v58 = selfCopy->_maximumUnitCount;
             if (v58 >= v40 && v45 == 0)
             {
               goto LABEL_89;
@@ -505,10 +505,10 @@ LABEL_89:
     }
 
     _Block_object_dispose(v74, 8);
-    a5 = v70;
+    units = unitsCopy;
   }
 
-  *a5 = allowedUnits;
+  *units = allowedUnits;
   return v24;
 }
 
@@ -530,9 +530,9 @@ uint64_t __57__NSDateComponentsFormatter__calendarOrCanonicalCalendar__block_inv
   return [v1 setLocale:v2];
 }
 
-- (id)_calendarFromDateComponents:(id)a3
+- (id)_calendarFromDateComponents:(id)components
 {
-  result = [a3 calendar];
+  result = [components calendar];
   if (!result)
   {
 
@@ -568,7 +568,7 @@ LABEL_3:
     return 0;
   }
 
-  v8 = [(NSDateComponentsFormatter *)self _calendarOrCanonicalCalendar];
+  _calendarOrCanonicalCalendar = [(NSDateComponentsFormatter *)self _calendarOrCanonicalCalendar];
   if (self->_allowedUnits)
   {
     allowedUnits = self->_allowedUnits;
@@ -579,12 +579,12 @@ LABEL_3:
     allowedUnits = 4348;
   }
 
-  v10 = [v8 components:allowedUnits fromDate:startDate toDate:endDate options:0];
+  v10 = [_calendarOrCanonicalCalendar components:allowedUnits fromDate:startDate toDate:endDate options:0];
 
   return [(NSDateComponentsFormatter *)self stringForObjectValue:v10 withReferenceDate:startDate];
 }
 
-- (void)_ensureUnitFormatterWithLocale_alreadyLocked:(id)a3
+- (void)_ensureUnitFormatterWithLocale_alreadyLocked:(id)locked
 {
   unitFormatter = self->_unitFormatter;
   if (!unitFormatter)
@@ -623,20 +623,20 @@ LABEL_3:
   [(NSNumberFormatter *)self->_unitFormatter setMaximumFractionDigits:v8];
   v9 = self->_unitFormatter;
 
-  [(NSNumberFormatter *)v9 setLocale:a3];
+  [(NSNumberFormatter *)v9 setLocale:locked];
 }
 
-- (void)_ensureUnitFormatterWithLocale:(id)a3
+- (void)_ensureUnitFormatterWithLocale:(id)locale
 {
   os_unfair_lock_lock(&self->_lock);
-  [(NSDateComponentsFormatter *)self _ensureUnitFormatterWithLocale_alreadyLocked:a3];
+  [(NSDateComponentsFormatter *)self _ensureUnitFormatterWithLocale_alreadyLocked:locale];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 + (NSString)localizedStringFromDateComponents:(NSDateComponents *)components unitsStyle:(NSDateComponentsFormatterUnitsStyle)unitsStyle
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setUnitsStyle:unitsStyle];
   v7 = [v6 stringFromDateComponents:components];
 
@@ -673,30 +673,30 @@ LABEL_3:
   return [(NSDateComponentsFormatter *)self stringForObjectValue:components];
 }
 
-- (id)stringForObjectValue:(id)a3 withReferenceDate:(id)a4
+- (id)stringForObjectValue:(id)value withReferenceDate:(id)date
 {
   v140 = *MEMORY[0x1E69E9840];
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!value || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
   context = objc_autoreleasePoolPush();
-  v7 = [(NSDateComponentsFormatter *)self _calendarFromDateComponents:a3];
-  v8 = [v7 locale];
-  if (!v8)
+  v7 = [(NSDateComponentsFormatter *)self _calendarFromDateComponents:value];
+  locale = [v7 locale];
+  if (!locale)
   {
-    v8 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    locale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   }
 
-  if (![objc_msgSend(v8 "localeIdentifier")])
+  if (![objc_msgSend(locale "localeIdentifier")])
   {
-    v8 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    locale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   }
 
-  v98 = v8;
-  v99 = [v8 localeIdentifier];
-  [v99 UTF8String];
+  v98 = locale;
+  localeIdentifier = [locale localeIdentifier];
+  [localeIdentifier UTF8String];
   zeroFormattingBehavior = self->_zeroFormattingBehavior;
   if (zeroFormattingBehavior == 1)
   {
@@ -710,8 +710,8 @@ LABEL_3:
   }
 
   v110 = 0;
-  v100 = self;
-  v10 = [(NSDateComponentsFormatter *)self _canonicalizedDateComponents:a3 withCalendar:v7 usedUnits:&v110 withReferenceDate:a4];
+  selfCopy = self;
+  v10 = [(NSDateComponentsFormatter *)self _canonicalizedDateComponents:value withCalendar:v7 usedUnits:&v110 withReferenceDate:date];
   v139 = 0;
   memset(v138, 0, sizeof(v138));
   memset_pattern16(__b, &unk_1813F7BC0, 0x38uLL);
@@ -806,7 +806,7 @@ LABEL_3:
   }
 
   v21 = 0;
-  unitsStyle = v100->_unitsStyle;
+  unitsStyle = selfCopy->_unitsStyle;
   while (!*(v138 + v21))
   {
     v21 += 8;
@@ -834,7 +834,7 @@ LABEL_3:
     v102 = 0x8000000000000000;
     v103 = 0x8000000000000000;
     v101 = 0x8000000000000000;
-    v23 = v8;
+    v23 = locale;
   }
 
   else
@@ -843,7 +843,7 @@ LABEL_3:
     v101 = 0x8000000000000000;
     v102 = 0x8000000000000000;
     v103 = 0x8000000000000000;
-    v23 = v8;
+    v23 = locale;
     do
     {
       v26 = *(v138 + v25 * 8);
@@ -954,22 +954,22 @@ LABEL_111:
         v120 = 0u;
         v117 = 0u;
         v118 = 0u;
-        os_unfair_lock_lock(&v100->_lock);
-        if ([(NSDateComponentsFormatter *)v100 _updateFormatterCacheIfNeeded_locked:v99 unitsStyle:unitsStyle])
+        os_unfair_lock_lock(&selfCopy->_lock);
+        if ([(NSDateComponentsFormatter *)selfCopy _updateFormatterCacheIfNeeded_locked:localeIdentifier unitsStyle:unitsStyle])
         {
           icuUnitFromNSUnit(*(&v135[0] + 1));
           v67 = uatmufmt_format();
-          os_unfair_lock_unlock(&v100->_lock);
+          os_unfair_lock_unlock(&selfCopy->_lock);
           v91 = [(NSString *)v33 rangeOfString:@"{1}"];
           [(NSMutableString *)v33 replaceCharactersInRange:v91 withCharacters:v92 length:&v117, v67];
           v15 = v135;
-          v93 = v100;
+          v93 = selfCopy;
         }
 
         else
         {
-          v93 = v100;
-          os_unfair_lock_unlock(&v100->_lock);
+          v93 = selfCopy;
+          os_unfair_lock_unlock(&selfCopy->_lock);
           v33 = 0;
         }
 
@@ -982,17 +982,17 @@ LABEL_111:
         v117 = 0u;
         v118 = 0u;
         os_unfair_lock_lock(v93 + 22);
-        if ([(os_unfair_lock_s *)v93 _updateFormatterCacheIfNeeded_locked:v99 unitsStyle:unitsStyle])
+        if ([(os_unfair_lock_s *)v93 _updateFormatterCacheIfNeeded_locked:localeIdentifier unitsStyle:unitsStyle])
         {
           icuUnitFromNSUnit(*v15);
           v94 = uatmufmt_format();
-          os_unfair_lock_unlock(&v100->_lock);
+          os_unfair_lock_unlock(&selfCopy->_lock);
           v95 = [(NSString *)v33 rangeOfString:@"{0}"];
           [(NSMutableString *)v33 replaceCharactersInRange:v95 withCharacters:v96 length:&v117, v94];
           goto LABEL_152;
         }
 
-        os_unfair_lock_unlock(&v100->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
         goto LABEL_89;
       }
     }
@@ -1014,19 +1014,19 @@ LABEL_111:
       v111[3] = v60;
       v111[0] = v60;
       v111[1] = v60;
-      os_unfair_lock_lock(&v100->_lock);
-      if ([(NSDateComponentsFormatter *)v100 _updateFormatterCacheIfNeeded_locked:v99 unitsStyle:unitsStyle])
+      os_unfair_lock_lock(&selfCopy->_lock);
+      if ([(NSDateComponentsFormatter *)selfCopy _updateFormatterCacheIfNeeded_locked:localeIdentifier unitsStyle:unitsStyle])
       {
         icuUnitFromNSUnit(*&v135[0]);
         v62 = uatmufmt_format();
-        os_unfair_lock_unlock(&v100->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
         v63 = [(NSString *)v105 rangeOfString:@"{0}"];
         [(NSMutableString *)v105 replaceCharactersInRange:v63 withCharacters:v64 length:v111, v62];
       }
 
       else
       {
-        os_unfair_lock_unlock(&v100->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
         v105 = 0;
       }
 
@@ -1061,19 +1061,19 @@ LABEL_151:
     v120 = 0u;
     v117 = 0u;
     v118 = 0u;
-    os_unfair_lock_lock(&v100->_lock);
-    if ([(NSDateComponentsFormatter *)v100 _updateFormatterCacheIfNeeded_locked:v99 unitsStyle:unitsStyle])
+    os_unfair_lock_lock(&selfCopy->_lock);
+    if ([(NSDateComponentsFormatter *)selfCopy _updateFormatterCacheIfNeeded_locked:localeIdentifier unitsStyle:unitsStyle])
     {
       icuUnitFromNSUnit(*(v135 + v28 - 1));
       v68 = uatmufmt_format();
-      os_unfair_lock_unlock(&v100->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v71 = [(NSString *)v105 rangeOfString:@"{1}"];
       [(NSMutableString *)v105 replaceCharactersInRange:v71 withCharacters:v72 length:&v117, v68];
     }
 
     else
     {
-      os_unfair_lock_unlock(&v100->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v105 = 0;
       v61 = v28 - 1;
     }
@@ -1086,12 +1086,12 @@ LABEL_151:
     v120 = 0u;
     v117 = 0u;
     v118 = 0u;
-    os_unfair_lock_lock(&v100->_lock);
-    if ([(NSDateComponentsFormatter *)v100 _updateFormatterCacheIfNeeded_locked:v99 unitsStyle:unitsStyle])
+    os_unfair_lock_lock(&selfCopy->_lock);
+    if ([(NSDateComponentsFormatter *)selfCopy _updateFormatterCacheIfNeeded_locked:localeIdentifier unitsStyle:unitsStyle])
     {
       icuUnitFromNSUnit(*(v135 + v61));
       v73 = uatmufmt_format();
-      os_unfair_lock_unlock(&v100->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       --v61;
       v74 = [(NSString *)v105 rangeOfString:@"{0}"];
       [(NSMutableString *)v105 replaceCharactersInRange:v74 withCharacters:v75 length:&v117, v73];
@@ -1099,7 +1099,7 @@ LABEL_151:
 
     else
     {
-      os_unfair_lock_unlock(&v100->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v105 = 0;
     }
 
@@ -1140,12 +1140,12 @@ LABEL_151:
       v120 = 0u;
       v117 = 0u;
       v118 = 0u;
-      os_unfair_lock_lock(&v100->_lock);
-      if ([(NSDateComponentsFormatter *)v100 _updateFormatterCacheIfNeeded_locked:v99 unitsStyle:unitsStyle])
+      os_unfair_lock_lock(&selfCopy->_lock);
+      if ([(NSDateComponentsFormatter *)selfCopy _updateFormatterCacheIfNeeded_locked:localeIdentifier unitsStyle:unitsStyle])
       {
         icuUnitFromNSUnit(*(v135 + v61));
         v79 = uatmufmt_format();
-        os_unfair_lock_unlock(&v100->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
         --v61;
         v80 = [(NSString *)v33 rangeOfString:@"{0}"];
         [(NSMutableString *)v33 replaceCharactersInRange:v80 withCharacters:v81 length:&v117, v79];
@@ -1153,7 +1153,7 @@ LABEL_151:
 
       else
       {
-        os_unfair_lock_unlock(&v100->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
         v33 = 0;
       }
 
@@ -1168,16 +1168,16 @@ LABEL_89:
     goto LABEL_152;
   }
 
-  os_unfair_lock_lock(&v100->_lock);
-  [(NSDateComponentsFormatter *)v100 _ensureUnitFormatterWithLocale_alreadyLocked:v23];
-  v34 = [(NSNumberFormatter *)v100->_unitFormatter copy];
+  os_unfair_lock_lock(&selfCopy->_lock);
+  [(NSDateComponentsFormatter *)selfCopy _ensureUnitFormatterWithLocale_alreadyLocked:v23];
+  v34 = [(NSNumberFormatter *)selfCopy->_unitFormatter copy];
   v35 = v34;
   if ((zeroFormattingBehavior & 0x10000) != 0)
   {
     [v34 setMinimumIntegerDigits:2];
   }
 
-  os_unfair_lock_unlock(&v100->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v36 = v101 == 0x8000000000000000 || v102 == 0x8000000000000000;
   v37 = !v36;
   if (!v36 && v103 != 0x8000000000000000)
@@ -1332,7 +1332,7 @@ LABEL_108:
     goto LABEL_110;
   }
 
-  if (v100->_includesTimeRemainingPhrase || v100->_includesApproximationPhrase)
+  if (selfCopy->_includesTimeRemainingPhrase || selfCopy->_includesApproximationPhrase)
   {
     v105 = 0;
     v28 = 1;
@@ -1366,8 +1366,8 @@ LABEL_152:
   _Block_object_dispose(v108, 8);
   if ([(NSString *)v33 length])
   {
-    includesTimeRemainingPhrase = v100->_includesTimeRemainingPhrase;
-    if (v100->_includesApproximationPhrase)
+    includesTimeRemainingPhrase = selfCopy->_includesTimeRemainingPhrase;
+    if (selfCopy->_includesApproximationPhrase)
     {
       v83 = [NSString alloc];
       v84 = _NSFoundationBundle();
@@ -1384,7 +1384,7 @@ LABEL_152:
       goto LABEL_160;
     }
 
-    if (v100->_includesTimeRemainingPhrase)
+    if (selfCopy->_includesTimeRemainingPhrase)
     {
       v85 = -[NSString initWithFormat:locale:]([NSString alloc], "initWithFormat:locale:", [_NSFoundationBundle() localizedStringForKey:@"%@ remaining" value:&stru_1EEEFDF90 table:@"DurationFormatting"], v98, v33);
 LABEL_160:
@@ -1598,14 +1598,14 @@ uint64_t __68__NSDateComponentsFormatter_stringForObjectValue_withReferenceDate_
   return 0;
 }
 
-- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)a3
+- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)value
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (value && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9.receiver = self;
     v9.super_class = NSDateComponentsFormatter;
-    return [(NSFormatter *)&v9 _mayDecorateAttributedStringForObjectValue:a3];
+    return [(NSFormatter *)&v9 _mayDecorateAttributedStringForObjectValue:value];
   }
 
   else
@@ -1617,10 +1617,10 @@ uint64_t __68__NSDateComponentsFormatter_stringForObjectValue_withReferenceDate_
   }
 }
 
-- (NSDateComponentsFormatter)initWithCoder:(id)a3
+- (NSDateComponentsFormatter)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateComponentsFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -1628,29 +1628,29 @@ uint64_t __68__NSDateComponentsFormatter_stringForObjectValue_withReferenceDate_
 
   v8.receiver = self;
   v8.super_class = NSDateComponentsFormatter;
-  v5 = [(NSFormatter *)&v8 initWithCoder:a3];
+  v5 = [(NSFormatter *)&v8 initWithCoder:coder];
   v6 = v5;
   if (v5)
   {
     [(NSDateComponentsFormatter *)v5 _NSDateComponentsFormatter_commonInit];
-    v6->_allowedUnits = [a3 decodeIntegerForKey:@"NS.allowedUnits"];
-    v6->_allowsFractionalUnits = [a3 decodeBoolForKey:@"NS.allowsFractionalUnits"];
-    v6->_calendar = [objc_msgSend(a3 decodeObjectForKey:{@"NS.calendar", "copy"}];
-    v6->_collapsesLargestUnit = [a3 decodeBoolForKey:@"NS.collapsesLargestUnit"];
-    v6->_includesApproximationPhrase = [a3 decodeBoolForKey:@"NS.includesApproximationPhrase"];
-    v6->_includesTimeRemainingPhrase = [a3 decodeBoolForKey:@"NS.includesTimeRemainingPhrase"];
-    v6->_maximumUnitCount = [a3 decodeIntegerForKey:@"NS.maximumUnitCount"];
-    v6->_unitsStyle = [a3 decodeIntegerForKey:@"NS.unitsStyle"];
-    v6->_zeroFormattingBehavior = [a3 decodeInt32ForKey:@"NS.zeroFormattingBehavior"];
+    v6->_allowedUnits = [coder decodeIntegerForKey:@"NS.allowedUnits"];
+    v6->_allowsFractionalUnits = [coder decodeBoolForKey:@"NS.allowsFractionalUnits"];
+    v6->_calendar = [objc_msgSend(coder decodeObjectForKey:{@"NS.calendar", "copy"}];
+    v6->_collapsesLargestUnit = [coder decodeBoolForKey:@"NS.collapsesLargestUnit"];
+    v6->_includesApproximationPhrase = [coder decodeBoolForKey:@"NS.includesApproximationPhrase"];
+    v6->_includesTimeRemainingPhrase = [coder decodeBoolForKey:@"NS.includesTimeRemainingPhrase"];
+    v6->_maximumUnitCount = [coder decodeIntegerForKey:@"NS.maximumUnitCount"];
+    v6->_unitsStyle = [coder decodeIntegerForKey:@"NS.unitsStyle"];
+    v6->_zeroFormattingBehavior = [coder decodeInt32ForKey:@"NS.zeroFormattingBehavior"];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateComponentsFormatter cannot be encoded by non-keyed archivers" userInfo:0]);
   }
@@ -1658,49 +1658,49 @@ uint64_t __68__NSDateComponentsFormatter_stringForObjectValue_withReferenceDate_
   os_unfair_lock_lock(&self->_lock);
   v7.receiver = self;
   v7.super_class = NSDateComponentsFormatter;
-  [(NSFormatter *)&v7 encodeWithCoder:a3];
-  [a3 encodeInteger:self->_allowedUnits forKey:@"NS.allowedUnits"];
+  [(NSFormatter *)&v7 encodeWithCoder:coder];
+  [coder encodeInteger:self->_allowedUnits forKey:@"NS.allowedUnits"];
   if (self->_allowsFractionalUnits)
   {
-    [a3 encodeBool:1 forKey:@"NS.allowsFractionalUnits"];
+    [coder encodeBool:1 forKey:@"NS.allowsFractionalUnits"];
   }
 
-  [a3 encodeObject:self->_calendar forKey:@"NS.calendar"];
+  [coder encodeObject:self->_calendar forKey:@"NS.calendar"];
   if (self->_collapsesLargestUnit)
   {
-    [a3 encodeBool:1 forKey:@"NS.collapsesLargestUnit"];
+    [coder encodeBool:1 forKey:@"NS.collapsesLargestUnit"];
   }
 
   if (self->_includesApproximationPhrase)
   {
-    [a3 encodeBool:1 forKey:@"NS.includesApproximationPhrase"];
+    [coder encodeBool:1 forKey:@"NS.includesApproximationPhrase"];
   }
 
   if (self->_includesTimeRemainingPhrase)
   {
-    [a3 encodeBool:1 forKey:@"NS.includesTimeRemainingPhrase"];
+    [coder encodeBool:1 forKey:@"NS.includesTimeRemainingPhrase"];
   }
 
   maximumUnitCount = self->_maximumUnitCount;
   if (maximumUnitCount)
   {
-    [a3 encodeInteger:maximumUnitCount forKey:@"NS.maximumUnitCount"];
+    [coder encodeInteger:maximumUnitCount forKey:@"NS.maximumUnitCount"];
   }
 
-  [a3 encodeInteger:self->_unitsStyle forKey:@"NS.unitsStyle"];
+  [coder encodeInteger:self->_unitsStyle forKey:@"NS.unitsStyle"];
   zeroFormattingBehavior = self->_zeroFormattingBehavior;
   if (zeroFormattingBehavior != 1)
   {
-    [a3 encodeInt32:zeroFormattingBehavior forKey:@"NS.zeroFormattingBehavior"];
+    [coder encodeInt32:zeroFormattingBehavior forKey:@"NS.zeroFormattingBehavior"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAllowedUnits:self->_allowedUnits];
   [v5 setAllowsFractionalUnits:self->_allowsFractionalUnits];
   [v5 setCalendar:self->_calendar];
@@ -1714,10 +1714,10 @@ uint64_t __68__NSDateComponentsFormatter_stringForObjectValue_withReferenceDate_
   return v5;
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (value)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1726,7 +1726,7 @@ uint64_t __68__NSDateComponentsFormatter_stringForObjectValue_withReferenceDate_
 
     v6.receiver = self;
     v6.super_class = NSDateComponentsFormatter;
-    [(NSDateComponentsFormatter *)&v6 receiveObservedValue:[(NSDateComponentsFormatter *)self stringFromDateComponents:a3]];
+    [(NSDateComponentsFormatter *)&v6 receiveObservedValue:[(NSDateComponentsFormatter *)self stringFromDateComponents:value]];
   }
 
   else

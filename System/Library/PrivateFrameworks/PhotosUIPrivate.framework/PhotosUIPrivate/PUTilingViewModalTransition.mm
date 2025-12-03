@@ -1,67 +1,67 @@
 @interface PUTilingViewModalTransition
 - (BOOL)hasStarted;
 - (BOOL)isTransitionPaused;
-- (PUTilingViewModalTransition)initWithEndPoint:(id)a3;
-- (void)_animateTransitionWithOperation:(int64_t)a3;
+- (PUTilingViewModalTransition)initWithEndPoint:(id)point;
+- (void)_animateTransitionWithOperation:(int64_t)operation;
 - (void)pauseTransition;
-- (void)pauseTransitionWithOptions:(unint64_t)a3;
-- (void)resumeTransition:(BOOL)a3;
-- (void)updatePausedTransitionWithProgress:(double)a3 interactionProgress:(double)a4;
+- (void)pauseTransitionWithOptions:(unint64_t)options;
+- (void)resumeTransition:(BOOL)transition;
+- (void)updatePausedTransitionWithProgress:(double)progress interactionProgress:(double)interactionProgress;
 @end
 
 @implementation PUTilingViewModalTransition
 
-- (void)resumeTransition:(BOOL)a3
+- (void)resumeTransition:(BOOL)transition
 {
-  v3 = a3;
-  v4 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  [v4 resumeTransition:v3];
+  transitionCopy = transition;
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  [_tilingViewTransitionHelper resumeTransition:transitionCopy];
 }
 
-- (void)updatePausedTransitionWithProgress:(double)a3 interactionProgress:(double)a4
+- (void)updatePausedTransitionWithProgress:(double)progress interactionProgress:(double)interactionProgress
 {
-  v6 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  [v6 updatePausedTransitionWithProgress:a3 interactionProgress:a4];
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  [_tilingViewTransitionHelper updatePausedTransitionWithProgress:progress interactionProgress:interactionProgress];
 }
 
-- (void)pauseTransitionWithOptions:(unint64_t)a3
+- (void)pauseTransitionWithOptions:(unint64_t)options
 {
-  v4 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  [v4 pauseTransitionWithOptions:a3];
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  [_tilingViewTransitionHelper pauseTransitionWithOptions:options];
 }
 
 - (void)pauseTransition
 {
-  v2 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  [v2 pauseTransition];
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  [_tilingViewTransitionHelper pauseTransition];
 }
 
 - (BOOL)isTransitionPaused
 {
-  v2 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  v3 = [v2 isTransitionPaused];
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  isTransitionPaused = [_tilingViewTransitionHelper isTransitionPaused];
 
-  return v3;
+  return isTransitionPaused;
 }
 
 - (BOOL)hasStarted
 {
-  v2 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  v3 = [v2 hasStarted];
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  hasStarted = [_tilingViewTransitionHelper hasStarted];
 
-  return v3;
+  return hasStarted;
 }
 
-- (void)_animateTransitionWithOperation:(int64_t)a3
+- (void)_animateTransitionWithOperation:(int64_t)operation
 {
-  v5 = [(PUViewControllerTransition *)self startedInteractively];
-  v6 = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
-  [v6 animateTransitionWithOperation:a3 startedInteractively:v5];
+  startedInteractively = [(PUViewControllerTransition *)self startedInteractively];
+  _tilingViewTransitionHelper = [(PUTilingViewModalTransition *)self _tilingViewTransitionHelper];
+  [_tilingViewTransitionHelper animateTransitionWithOperation:operation startedInteractively:startedInteractively];
 }
 
-- (PUTilingViewModalTransition)initWithEndPoint:(id)a3
+- (PUTilingViewModalTransition)initWithEndPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = +[PUTilingViewSettings sharedInstance];
   [v5 transitionDuration];
   v7 = v6;
@@ -78,7 +78,7 @@
     [(PUViewControllerTransition *)v11 duration];
     v14 = v13;
     [(PUViewControllerTransition *)v11 duration];
-    v16 = [(PUTilingViewTransitionHelper *)v12 initWithPresentationDuration:v4 dismissalDuration:v14 endPoint:v15];
+    v16 = [(PUTilingViewTransitionHelper *)v12 initWithPresentationDuration:pointCopy dismissalDuration:v14 endPoint:v15];
     tilingViewTransitionHelper = v11->__tilingViewTransitionHelper;
     v11->__tilingViewTransitionHelper = v16;
 

@@ -1,8 +1,8 @@
 @interface QLTUbiquitousFileThumbnailRequest
-- (QLTUbiquitousFileThumbnailRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (QLTUbiquitousFileThumbnailRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLTUbiquitousFileThumbnailRequest
@@ -12,33 +12,33 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(FPItem *)self->_item providerID];
-  v7 = [(FPItem *)self->_item itemIdentifier];
-  v8 = [(FPItem *)self->_item displayName];
+  providerID = [(FPItem *)self->_item providerID];
+  itemIdentifier = [(FPItem *)self->_item itemIdentifier];
+  displayName = [(FPItem *)self->_item displayName];
   [(QLTThumbnailRequest *)self size];
   v10 = v9;
   [(QLTThumbnailRequest *)self size];
-  v12 = [v3 initWithFormat:@"<%@:%p %@/%@ (%@) {%g, %g}>", v5, self, v6, v7, v8, v10, v11];
+  v12 = [v3 initWithFormat:@"<%@:%p %@/%@ (%@) {%g, %g}>", v5, self, providerID, itemIdentifier, displayName, v10, v11];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   item = self->_item;
-  v5 = a3;
-  [v5 encodeObject:item forKey:@"it"];
+  coderCopy = coder;
+  [coderCopy encodeObject:item forKey:@"it"];
   v6.receiver = self;
   v6.super_class = QLTUbiquitousFileThumbnailRequest;
-  [(QLTThumbnailRequest *)&v6 encodeWithCoder:v5];
+  [(QLTThumbnailRequest *)&v6 encodeWithCoder:coderCopy];
 }
 
-- (QLTUbiquitousFileThumbnailRequest)initWithCoder:(id)a3
+- (QLTUbiquitousFileThumbnailRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = QLTUbiquitousFileThumbnailRequest;
-  v5 = [(QLTThumbnailRequest *)&v11 initWithCoder:v4];
+  v5 = [(QLTThumbnailRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v13 = 0;
@@ -59,7 +59,7 @@
 
     v7 = v6;
     _Block_object_dispose(&v13, 8);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:@"it"];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"it"];
     item = v5->_item;
     v5->_item = v8;
   }
@@ -67,11 +67,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = QLTUbiquitousFileThumbnailRequest;
-  v4 = [(QLTThumbnailRequest *)&v6 copyWithZone:a3];
+  v4 = [(QLTThumbnailRequest *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 12, self->_item);
   return v4;
 }

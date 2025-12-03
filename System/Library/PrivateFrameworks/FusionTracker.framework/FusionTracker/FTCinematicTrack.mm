@@ -1,11 +1,11 @@
 @interface FTCinematicTrack
-+ (id)fromTrack:(shared_ptr<ft:(BOOL)a4 :Track>)a3 isHighPriority:;
++ (id)fromTrack:(shared_ptr<ft:(BOOL)track :Track>)a3 isHighPriority:;
 - (CGRect)box;
 - (FTCinematicTrack)init;
-- (FTCinematicTrack)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLastDetectionTime:(id *)a3;
-- (void)setLastTappedTime:(id *)a3;
+- (FTCinematicTrack)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLastDetectionTime:(id *)time;
+- (void)setLastTappedTime:(id *)time;
 @end
 
 @implementation FTCinematicTrack
@@ -27,25 +27,25 @@
   return v3;
 }
 
-- (FTCinematicTrack)initWithCoder:(id)a3
+- (FTCinematicTrack)initWithCoder:(id)coder
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = FTCinematicTrack;
   v5 = [(FTCinematicTrack *)&v23 init];
   if (v5)
   {
-    *(v5 + 3) = [v4 decodeInt64ForKey:@"identifier"];
-    [v4 fusionTracker_decodeCGRectForKey:@"box"];
+    *(v5 + 3) = [coderCopy decodeInt64ForKey:@"identifier"];
+    [coderCopy fusionTracker_decodeCGRectForKey:@"box"];
     *(v5 + 13) = v6;
     *(v5 + 14) = v7;
     *(v5 + 15) = v8;
     *(v5 + 16) = v9;
-    *(v5 + 4) = [v4 decodeInt64ForKey:@"objectKind"];
-    if (v4)
+    *(v5 + 4) = [coderCopy decodeInt64ForKey:@"objectKind"];
+    if (coderCopy)
     {
-      [v4 fusionTracker_decodeCMTimeForKey:@"lastDetectionTime"];
+      [coderCopy fusionTracker_decodeCMTimeForKey:@"lastDetectionTime"];
     }
 
     else
@@ -56,13 +56,13 @@
 
     *(v5 + 56) = v19;
     *(v5 + 9) = v21;
-    [v4 decodeFloatForKey:{@"boxConfidence", v19, v21}];
+    [coderCopy decodeFloatForKey:{@"boxConfidence", v19, v21}];
     *(v5 + 3) = v10;
-    [v4 decodeFloatForKey:@"detectionConfidence"];
+    [coderCopy decodeFloatForKey:@"detectionConfidence"];
     *(v5 + 4) = v11;
-    if (v4)
+    if (coderCopy)
     {
-      [v4 fusionTracker_decodeCMTimeForKey:@"lastTappedTime"];
+      [coderCopy fusionTracker_decodeCMTimeForKey:@"lastTappedTime"];
     }
 
     else
@@ -73,9 +73,9 @@
 
     *(v5 + 5) = v20;
     *(v5 + 12) = v22;
-    v5[9] = [v4 decodeBoolForKey:{@"isHighPriority", v20, v22}];
-    *(v5 + 6) = [v4 decodeInt64ForKey:@"sourceObservationId"];
-    v5[8] = [v4 decodeBoolForKey:@"isTapSpawned"];
+    v5[9] = [coderCopy decodeBoolForKey:{@"isHighPriority", v20, v22}];
+    *(v5 + 6) = [coderCopy decodeInt64ForKey:@"sourceObservationId"];
+    v5[8] = [coderCopy decodeBoolForKey:@"isTapSpawned"];
     v12 = MEMORY[0x277CBEB98];
     v24[0] = objc_opt_class();
     v24[1] = objc_opt_class();
@@ -83,7 +83,7 @@
     v24[3] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"metadata"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"metadata"];
     v16 = *(v5 + 5);
     *(v5 + 5) = v15;
 
@@ -93,27 +93,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_identifier forKey:@"identifier"];
-  [v4 encodeInt64:self->_objectKind forKey:@"objectKind"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeInt64:self->_objectKind forKey:@"objectKind"];
   lastDetectionTime = self->_lastDetectionTime;
-  [v4 fusionTracker_encodeCMTime:&lastDetectionTime forKey:@"lastDetectionTime"];
+  [coderCopy fusionTracker_encodeCMTime:&lastDetectionTime forKey:@"lastDetectionTime"];
   *&v5 = self->_boxConfidence;
-  [v4 encodeFloat:@"boxConfidence" forKey:v5];
+  [coderCopy encodeFloat:@"boxConfidence" forKey:v5];
   *&v6 = self->_detectionConfidence;
-  [v4 encodeFloat:@"detectionConfidence" forKey:v6];
+  [coderCopy encodeFloat:@"detectionConfidence" forKey:v6];
   lastDetectionTime = self->_lastTappedTime;
-  [v4 fusionTracker_encodeCMTime:&lastDetectionTime forKey:@"lastTappedTime"];
-  [v4 encodeBool:self->_isHighPriority forKey:@"isHighPriority"];
-  [v4 encodeInt64:self->_sourceObservationId forKey:@"sourceObservationId"];
-  [v4 fusionTracker_encodeCGRect:@"box" forKey:{self->_box.origin.x, self->_box.origin.y, self->_box.size.width, self->_box.size.height}];
-  [v4 encodeBool:self->_isTapSpawned forKey:@"isTapSpawned"];
-  [v4 encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy fusionTracker_encodeCMTime:&lastDetectionTime forKey:@"lastTappedTime"];
+  [coderCopy encodeBool:self->_isHighPriority forKey:@"isHighPriority"];
+  [coderCopy encodeInt64:self->_sourceObservationId forKey:@"sourceObservationId"];
+  [coderCopy fusionTracker_encodeCGRect:@"box" forKey:{self->_box.origin.x, self->_box.origin.y, self->_box.size.width, self->_box.size.height}];
+  [coderCopy encodeBool:self->_isTapSpawned forKey:@"isTapSpawned"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
 }
 
-+ (id)fromTrack:(shared_ptr<ft:(BOOL)a4 :Track>)a3 isHighPriority:
++ (id)fromTrack:(shared_ptr<ft:(BOOL)track :Track>)a3 isHighPriority:
 {
   var1 = a3.var1;
   var0 = a3.var0;
@@ -185,17 +185,17 @@ LABEL_12:
   return result;
 }
 
-- (void)setLastDetectionTime:(id *)a3
+- (void)setLastDetectionTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastDetectionTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastDetectionTime.epoch = time->var3;
   *&self->_lastDetectionTime.value = v3;
 }
 
-- (void)setLastTappedTime:(id *)a3
+- (void)setLastTappedTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastTappedTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastTappedTime.epoch = time->var3;
   *&self->_lastTappedTime.value = v3;
 }
 

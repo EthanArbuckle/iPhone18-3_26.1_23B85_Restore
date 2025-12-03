@@ -1,17 +1,17 @@
 @interface TSDSimpleTileProvider
 - (SEL)action;
-- (void)drawTargetInLayer:(id)a3 context:(CGContext *)a4;
-- (void)setAction:(SEL)a3;
+- (void)drawTargetInLayer:(id)layer context:(CGContext *)context;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation TSDSimpleTileProvider
 
-- (void)drawTargetInLayer:(id)a3 context:(CGContext *)a4
+- (void)drawTargetInLayer:(id)layer context:(CGContext *)context
 {
   mTarget = self->super.mTarget;
-  v6 = [(TSDSimpleTileProvider *)self action];
+  action = [(TSDSimpleTileProvider *)self action];
 
-  [mTarget v6];
+  [mTarget action];
 }
 
 - (SEL)action
@@ -27,19 +27,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->mAction = v3;
+  self->mAction = actionCopy;
 }
 
 @end

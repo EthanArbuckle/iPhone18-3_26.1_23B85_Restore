@@ -1,20 +1,20 @@
 @interface SKUITableViewCell
-- (SKUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SKUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)textLabelInsets;
 - (void)_reloadBorderVisibility;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomBorderColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTopBorderColor:(id)a3;
+- (void)setBottomBorderColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setTopBorderColor:(id)color;
 @end
 
 @implementation SKUITableViewCell
 
-- (SKUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITableViewCell initWithStyle:reuseIdentifier:];
@@ -22,7 +22,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUITableViewCell;
-  v7 = [(SKUITableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUITableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -35,12 +35,12 @@
   return v8;
 }
 
-- (void)setBottomBorderColor:(id)a3
+- (void)setBottomBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   bottomBorderView = self->_bottomBorderView;
-  v9 = v4;
-  if (v4)
+  v9 = colorCopy;
+  if (colorCopy)
   {
     if (!bottomBorderView)
     {
@@ -49,11 +49,11 @@
       self->_bottomBorderView = v6;
 
       [(SKUITableViewCell *)self addSubview:self->_bottomBorderView];
-      v4 = v9;
+      colorCopy = v9;
       bottomBorderView = self->_bottomBorderView;
     }
 
-    [(SKUIBorderView *)bottomBorderView setColor:v4];
+    [(SKUIBorderView *)bottomBorderView setColor:colorCopy];
   }
 
   else
@@ -64,12 +64,12 @@
   }
 }
 
-- (void)setTopBorderColor:(id)a3
+- (void)setTopBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   topBorderView = self->_topBorderView;
-  v9 = v4;
-  if (v4)
+  v9 = colorCopy;
+  if (colorCopy)
   {
     if (!topBorderView)
     {
@@ -78,11 +78,11 @@
       self->_topBorderView = v6;
 
       [(SKUITableViewCell *)self addSubview:self->_topBorderView];
-      v4 = v9;
+      colorCopy = v9;
       topBorderView = self->_topBorderView;
     }
 
-    [(SKUIBorderView *)topBorderView setColor:v4];
+    [(SKUIBorderView *)topBorderView setColor:colorCopy];
   }
 
   else
@@ -101,19 +101,19 @@
   self->_borderPaddingLeft = 15.0;
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SKUITableViewCell;
-  [(SKUITableViewCell *)&v5 setHighlighted:a3 animated:a4];
+  [(SKUITableViewCell *)&v5 setHighlighted:highlighted animated:animated];
   [(SKUITableViewCell *)self _reloadBorderVisibility];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SKUITableViewCell;
-  [(SKUITableViewCell *)&v5 setSelected:a3 animated:a4];
+  [(SKUITableViewCell *)&v5 setSelected:selected animated:animated];
   [(SKUITableViewCell *)self _reloadBorderVisibility];
 }
 
@@ -127,22 +127,22 @@
   v6 = v5;
   bottomBorderView = self->_bottomBorderView;
   borderPaddingLeft = self->_borderPaddingLeft;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = v6 - 1.0 / v10;
   v12 = v4 - self->_borderPaddingLeft;
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [(SKUIBorderView *)bottomBorderView setFrame:borderPaddingLeft, v11, v12, 1.0 / v14];
 
   topBorderView = self->_topBorderView;
   v16 = self->_borderPaddingLeft;
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 scale];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 scale];
   [(SKUIBorderView *)topBorderView setFrame:v16, 0.0, v4 - v16, 1.0 / v18];
 
-  v19 = [(SKUITableViewCell *)self textLabel];
-  [v19 frame];
+  textLabel = [(SKUITableViewCell *)self textLabel];
+  [textLabel frame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -154,10 +154,10 @@
   v31 = v23 + top;
   v32 = v25 - (left + self->_textLabelInsets.right);
   v33 = v27 - (top + self->_textLabelInsets.bottom);
-  v34 = [(SKUITableViewCell *)self textLabel];
-  [v34 setFrame:{v30, v31, v32, v33}];
+  textLabel2 = [(SKUITableViewCell *)self textLabel];
+  [textLabel2 setFrame:{v30, v31, v32, v33}];
 
-  v35 = [(SKUITableViewCell *)self textLabel];
+  textLabel3 = [(SKUITableViewCell *)self textLabel];
   if (storeShouldReverseLayoutDirection())
   {
     v36 = 2;
@@ -168,30 +168,30 @@
     v36 = 0;
   }
 
-  [v35 setTextAlignment:v36];
+  [textLabel3 setTextAlignment:v36];
 }
 
 - (void)_reloadBorderVisibility
 {
   if (([(SKUITableViewCell *)self isEditing]& 1) != 0 || ![(SKUITableViewCell *)self selectionStyle])
   {
-    v3 = 0;
+    isSelected = 0;
   }
 
   else if (([(SKUITableViewCell *)self isHighlighted]& 1) != 0)
   {
-    v3 = 1;
+    isSelected = 1;
   }
 
   else
   {
-    v3 = [(SKUITableViewCell *)self isSelected];
+    isSelected = [(SKUITableViewCell *)self isSelected];
   }
 
-  [(SKUIBorderView *)self->_bottomBorderView setHidden:v3];
+  [(SKUIBorderView *)self->_bottomBorderView setHidden:isSelected];
   topBorderView = self->_topBorderView;
 
-  [(SKUIBorderView *)topBorderView setHidden:v3];
+  [(SKUIBorderView *)topBorderView setHidden:isSelected];
 }
 
 - (UIEdgeInsets)textLabelInsets

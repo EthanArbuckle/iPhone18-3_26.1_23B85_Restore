@@ -1,89 +1,89 @@
 @interface FBAFollowupResponseViewController
-- (BOOL)isReadyForDropSessionFromController:(id)a3 tableView:(id)a4 dropSessionDidUpdate:(id)a5 withDestinationIndexPath:(id)a6;
-- (_TtC18Feedback_Assistant33FBAFollowupResponseViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (void)attachmentsAlert:(id)a3 needsDeviceDiagnosticsController:(id)a4;
-- (void)attachmentsAlertDidSelectOption:(id)a3;
+- (BOOL)isReadyForDropSessionFromController:(id)controller tableView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (_TtC18Feedback_Assistant33FBAFollowupResponseViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (void)attachmentsAlert:(id)alert needsDeviceDiagnosticsController:(id)controller;
+- (void)attachmentsAlertDidSelectOption:(id)option;
 - (void)awakeFromNib;
 - (void)beginSubmission;
 - (void)cancelAndDismissFollowupResponseController;
 - (void)dealloc;
-- (void)deviceDiagnosticsController:(id)a3 didChangeState:(int64_t)a4;
-- (void)deviceDiagnosticsController:(id)a3 didFailToAttach:(id)a4 toDevice:(id)a5 error:(id)a6;
-- (void)deviceDiagnosticsController:(id)a3 didFailToConnectToDevice:(id)a4;
-- (void)deviceDiagnosticsController:(id)a3 didUpdateAttachment:(id)a4 onDevice:(id)a5;
-- (void)deviceDiagnosticsController:(id)a3 didUpdateDevice:(id)a4;
-- (void)deviceDiagnosticsController:(id)a3 needsSelectionFromDevices:(id)a4 completion:(id)a5;
-- (void)deviceDiagnosticsController:(void *)a1 didRemoveDevice:;
-- (void)keyboardWillHideWithNotification:(id)a3;
-- (void)keyboardWillShowWithNotification:(id)a3;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)setContentItem:(id)a3;
-- (void)setFollowup:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)deviceDiagnosticsController:(id)controller didChangeState:(int64_t)state;
+- (void)deviceDiagnosticsController:(id)controller didFailToAttach:(id)attach toDevice:(id)device error:(id)error;
+- (void)deviceDiagnosticsController:(id)controller didFailToConnectToDevice:(id)device;
+- (void)deviceDiagnosticsController:(id)controller didUpdateAttachment:(id)attachment onDevice:(id)device;
+- (void)deviceDiagnosticsController:(id)controller didUpdateDevice:(id)device;
+- (void)deviceDiagnosticsController:(id)controller needsSelectionFromDevices:(id)devices completion:(id)completion;
+- (void)deviceDiagnosticsController:(void *)controller didRemoveDevice:;
+- (void)keyboardWillHideWithNotification:(id)notification;
+- (void)keyboardWillShowWithNotification:(id)notification;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)setContentItem:(id)item;
+- (void)setFollowup:(id)followup;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)userDidCancel;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FBAFollowupResponseViewController
 
-- (void)setFollowup:(id)a3
+- (void)setFollowup:(id)followup
 {
-  v5 = a3;
-  v6 = self;
-  sub_10005D090(a3);
+  followupCopy = followup;
+  selfCopy = self;
+  sub_10005D090(followup);
 }
 
-- (void)setContentItem:(id)a3
+- (void)setContentItem:(id)item
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_contentItem);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_contentItem) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_contentItem) = item;
+  itemCopy = item;
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005D634();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005D740();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   static os_log_type_t.info.getter();
-  v3 = *(&v2->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_log);
+  v3 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_log);
   os_log(_:dso:log:_:_:)();
-  v4 = [objc_opt_self() defaultCenter];
-  [v4 removeObserver:v2];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for FBAFollowupResponseViewController();
   [(FBAFollowupResponseViewController *)&v5 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = type metadata accessor for FBAFollowupResponseViewController();
   swift_unknownObjectRetain();
   v7 = v10.receiver;
-  [(FBAFollowupResponseViewController *)&v10 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v8 = [v7 tableView];
-  if (v8)
+  [(FBAFollowupResponseViewController *)&v10 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  tableView = [v7 tableView];
+  if (tableView)
   {
-    v9 = v8;
-    [v8 setContentOffset:0 animated:{0.0, -300.0}];
+    v9 = tableView;
+    [tableView setContentOffset:0 animated:{0.0, -300.0}];
 
     swift_unknownObjectRelease();
   }
@@ -94,12 +94,12 @@
   }
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    segueCopy = segue;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -108,34 +108,34 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    segueCopy2 = segue;
+    selfCopy2 = self;
   }
 
-  sub_10005DD18(a3);
+  sub_10005DD18(segue);
 
   sub_1000454C8(v10, &unk_10010A0E0, qword_1000C3700);
 }
 
 - (void)beginSubmission
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005E0C0();
 }
 
 - (void)userDidCancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005F8DC();
 }
 
 - (void)cancelAndDismissFollowupResponseController
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005FB8C();
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -143,8 +143,8 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_100067768();
 
   (*(v7 + 8))(v10, v6);
@@ -152,7 +152,7 @@
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -160,14 +160,14 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10006787C();
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -179,12 +179,12 @@
   return UITableViewAutomaticDimension;
 }
 
-- (void)keyboardWillShowWithNotification:(id)a3
+- (void)keyboardWillShowWithNotification:(id)notification
 {
-  v4 = a3;
-  v8 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   static os_log_type_t.debug.getter();
-  v5 = *(&v8->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_log);
+  v5 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_log);
   sub_100041AA0(&unk_100109860, qword_1000C2DA0);
   v6 = swift_allocObject();
   *(v6 + 16) = xmmword_1000C29F0;
@@ -197,14 +197,14 @@
   NSNotification.keyboardAttributes.getter(v9);
   v7 = v10;
 
-  *(&v8->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_keyboardHeight) = v7;
+  *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_keyboardHeight) = v7;
 }
 
-- (void)keyboardWillHideWithNotification:(id)a3
+- (void)keyboardWillHideWithNotification:(id)notification
 {
-  v3 = self;
+  selfCopy = self;
   static os_log_type_t.debug.getter();
-  v4 = *(&v3->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_log);
+  v4 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_log);
   sub_100041AA0(&unk_100109860, qword_1000C2DA0);
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_1000C29F0;
@@ -215,9 +215,9 @@
   os_log(_:dso:log:_:_:)();
 }
 
-- (_TtC18Feedback_Assistant33FBAFollowupResponseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18Feedback_Assistant33FBAFollowupResponseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -229,75 +229,75 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100064D18(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100064D18(v5, v7, bundle);
 }
 
-- (void)deviceDiagnosticsController:(id)a3 didFailToAttach:(id)a4 toDevice:(id)a5 error:(id)a6
+- (void)deviceDiagnosticsController:(id)controller didFailToAttach:(id)attach toDevice:(id)device error:(id)error
 {
   type metadata accessor for FBAAddAttachmentsController();
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_100050218(v11, v13, v10, v12);
+  controllerCopy = controller;
+  attachCopy = attach;
+  errorCopy = error;
+  selfCopy = self;
+  sub_100050218(attachCopy, selfCopy, controllerCopy, errorCopy);
 }
 
-- (void)deviceDiagnosticsController:(id)a3 needsSelectionFromDevices:(id)a4 completion:(id)a5
+- (void)deviceDiagnosticsController:(id)controller needsSelectionFromDevices:(id)devices completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   sub_1000497E4(0, &qword_1001098C8, FBKGroupedDevice_ptr);
   sub_10005327C();
   v8 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a3;
-  v11 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1000681EC(v8, sub_1000689BC, v9);
 }
 
-- (void)deviceDiagnosticsController:(void *)a1 didRemoveDevice:
+- (void)deviceDiagnosticsController:(void *)controller didRemoveDevice:
 {
-  v1 = a1;
+  controllerCopy = controller;
   sub_10005CDE4();
   sub_10006256C(1, 0, 0, 0, 0, 0);
 }
 
-- (void)deviceDiagnosticsController:(id)a3 didFailToConnectToDevice:(id)a4
+- (void)deviceDiagnosticsController:(id)controller didFailToConnectToDevice:(id)device
 {
-  v5 = a4;
-  v6 = self;
-  sub_10004BFF0(v6);
+  deviceCopy = device;
+  selfCopy = self;
+  sub_10004BFF0(selfCopy);
 }
 
-- (void)deviceDiagnosticsController:(id)a3 didUpdateDevice:(id)a4
+- (void)deviceDiagnosticsController:(id)controller didUpdateDevice:(id)device
 {
-  v4 = self;
+  selfCopy = self;
   sub_10005CDE4();
   sub_10006256C(0, 0, 0, 0, 0, 0);
 }
 
-- (void)deviceDiagnosticsController:(id)a3 didUpdateAttachment:(id)a4 onDevice:(id)a5
+- (void)deviceDiagnosticsController:(id)controller didUpdateAttachment:(id)attachment onDevice:(id)device
 {
-  v5 = self;
+  selfCopy = self;
   sub_10005CDE4();
   sub_10006256C(0, 0, 0, 0, 0, 0);
 }
 
-- (void)deviceDiagnosticsController:(id)a3 didChangeState:(int64_t)a4
+- (void)deviceDiagnosticsController:(id)controller didChangeState:(int64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000655D8(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000655D8(controllerCopy, state);
 }
 
-- (BOOL)isReadyForDropSessionFromController:(id)a3 tableView:(id)a4 dropSessionDidUpdate:(id)a5 withDestinationIndexPath:(id)a6
+- (BOOL)isReadyForDropSessionFromController:(id)controller tableView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v8 = sub_100041AA0(&qword_100109880, &qword_1000C2C98);
   v9 = *(*(v8 - 8) + 64);
   __chkstk_darwin(v8 - 8);
   v11 = &v17 - v10;
-  if (a6)
+  if (path)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for IndexPath();
@@ -310,35 +310,35 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = self;
+  selfCopy = self;
   sub_1000454C8(v11, &qword_100109880, &qword_1000C2C98);
-  v15 = *(&v14->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_readinessState);
+  v15 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant33FBAFollowupResponseViewController_readinessState);
 
   return v15 != 5;
 }
 
-- (void)attachmentsAlert:(id)a3 needsDeviceDiagnosticsController:(id)a4
+- (void)attachmentsAlert:(id)alert needsDeviceDiagnosticsController:(id)controller
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(controller);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_100068320(v8, v6);
+  alertCopy = alert;
+  selfCopy = self;
+  sub_100068320(selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)attachmentsAlertDidSelectOption:(id)a3
+- (void)attachmentsAlertDidSelectOption:(id)option
 {
-  v4 = a3;
-  v5 = self;
+  optionCopy = option;
+  selfCopy = self;
   sub_10006874C();
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_100068824();
 }
 

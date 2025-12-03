@@ -1,16 +1,16 @@
 @interface HVSearchableUserActivity
-+ (id)uniqueIdForPersistentIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HVSearchableUserActivity)initWithUserActivity:(id)a3 searchableItem:(id)a4;
++ (id)uniqueIdForPersistentIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (HVSearchableUserActivity)initWithUserActivity:(id)activity searchableItem:(id)item;
 - (double)absoluteTimestamp;
 @end
 
 @implementation HVSearchableUserActivity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -20,14 +20,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       userActivity = self->_userActivity;
-      v7 = [(HVSearchableUserActivity *)v5 userActivity];
-      if ([(NSUserActivity *)userActivity isEqual:v7]&& [(NSString *)self->_persistentIdentifierOrFallback isEqual:v5->_persistentIdentifierOrFallback])
+      userActivity = [(HVSearchableUserActivity *)v5 userActivity];
+      if ([(NSUserActivity *)userActivity isEqual:userActivity]&& [(NSString *)self->_persistentIdentifierOrFallback isEqual:v5->_persistentIdentifierOrFallback])
       {
         searchableItem = self->_searchableItem;
-        v9 = [(HVSearchableUserActivity *)v5 searchableItem];
-        v10 = [(CSSearchableItem *)searchableItem isEqual:v9];
+        searchableItem = [(HVSearchableUserActivity *)v5 searchableItem];
+        v10 = [(CSSearchableItem *)searchableItem isEqual:searchableItem];
       }
 
       else
@@ -47,30 +47,30 @@
 
 - (double)absoluteTimestamp
 {
-  v2 = [(CSSearchableItem *)self->_searchableItem attributeSet];
-  v3 = [v2 contentCreationDate];
-  [v3 timeIntervalSinceReferenceDate];
+  attributeSet = [(CSSearchableItem *)self->_searchableItem attributeSet];
+  contentCreationDate = [attributeSet contentCreationDate];
+  [contentCreationDate timeIntervalSinceReferenceDate];
   v5 = v4;
 
   return v5;
 }
 
-- (HVSearchableUserActivity)initWithUserActivity:(id)a3 searchableItem:(id)a4
+- (HVSearchableUserActivity)initWithUserActivity:(id)activity searchableItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = HVSearchableUserActivity;
   v9 = [(HVSearchableUserActivity *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userActivity, a3);
-    objc_storeStrong(&v10->_searchableItem, a4);
-    v11 = [v7 persistentIdentifier];
+    objc_storeStrong(&v9->_userActivity, activity);
+    objc_storeStrong(&v10->_searchableItem, item);
+    persistentIdentifier = [activityCopy persistentIdentifier];
     persistentIdentifierOrFallback = v10->_persistentIdentifierOrFallback;
-    v10->_persistentIdentifierOrFallback = v11;
+    v10->_persistentIdentifierOrFallback = persistentIdentifier;
 
     v13 = v10->_persistentIdentifierOrFallback;
     if (v13)
@@ -98,11 +98,11 @@
   return v10;
 }
 
-+ (id)uniqueIdForPersistentIdentifier:(id)a3
++ (id)uniqueIdForPersistentIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_autoreleasePoolPush();
-  v5 = [@"__ProactiveHarvesting__persistentIdentifier:" stringByAppendingString:v3];
+  v5 = [@"__ProactiveHarvesting__persistentIdentifier:" stringByAppendingString:identifierCopy];
   objc_autoreleasePoolPop(v4);
 
   return v5;

@@ -1,30 +1,30 @@
 @interface CCToolKitToolTypedValueEntityValue
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolDisplayRepresentation)displayRepresentation;
 - (CCToolKitToolTypeIdentifier)type;
-- (CCToolKitToolTypedValueEntityValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValueEntityValue)initWithType:(id)a3 identifier:(id)a4 properties:(id)a5 displayRepresentation:(id)a6 hydratedAppEntity:(id)a7 siriKitEntity:(id)a8 error:(id *)a9;
+- (CCToolKitToolTypedValueEntityValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValueEntityValue)initWithType:(id)type identifier:(id)identifier properties:(id)properties displayRepresentation:(id)representation hydratedAppEntity:(id)entity siriKitEntity:(id)kitEntity error:(id *)error;
 - (NSArray)properties;
 - (NSData)hydratedAppEntity;
 - (NSData)siriKitEntity;
 - (NSString)identifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValueEntityValue
 
-- (CCToolKitToolTypedValueEntityValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValueEntityValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v56[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (v9)
     {
       v56[0] = 0;
@@ -41,8 +41,8 @@
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"identifier"];
-    v13 = [v6 objectForKeyedSubscript:@"properties"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"properties"];
     if (!v13)
     {
       v10 = 0;
@@ -59,7 +59,7 @@
     if (v15)
     {
       v43 = v16;
-      v44 = a4;
+      errorCopy = error;
       v46 = v12;
       v10 = objc_opt_new();
       v51 = 0u;
@@ -119,9 +119,9 @@
 
       v12 = v46;
       v27 = v43;
-      a4 = v44;
+      error = errorCopy;
 LABEL_24:
-      v28 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
       if (v28)
       {
         v49 = 0;
@@ -146,7 +146,7 @@ LABEL_24:
         v47 = v12;
       }
 
-      v31 = [v6 objectForKeyedSubscript:@"hydratedAppEntity"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"hydratedAppEntity"];
       if (!v31)
       {
         goto LABEL_33;
@@ -163,7 +163,7 @@ LABEL_24:
         v31 = v36;
         v27 = v35;
 LABEL_33:
-        v37 = [v6 objectForKeyedSubscript:@"siriKitEntity"];
+        v37 = [dictionaryCopy objectForKeyedSubscript:@"siriKitEntity"];
         if (v37)
         {
           objc_opt_class();
@@ -193,7 +193,7 @@ LABEL_33:
           v12 = v47;
         }
 
-        v33 = [[CCToolKitToolTypedValueEntityValue alloc] initWithType:v9 identifier:v12 properties:v10 displayRepresentation:v28 hydratedAppEntity:v31 siriKitEntity:v37 error:a4];
+        v33 = [[CCToolKitToolTypedValueEntityValue alloc] initWithType:v9 identifier:v12 properties:v10 displayRepresentation:v28 hydratedAppEntity:v31 siriKitEntity:v37 error:error];
 LABEL_41:
 
         goto LABEL_42;
@@ -232,15 +232,15 @@ LABEL_44:
   v3 = objc_opt_new();
   if (self->_type)
   {
-    v4 = [(CCToolKitToolTypedValueEntityValue *)self type];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"type"];
+    type = [(CCToolKitToolTypedValueEntityValue *)self type];
+    jsonDictionary = [type jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"type"];
   }
 
   if (self->_identifier)
   {
-    v6 = [(CCToolKitToolTypedValueEntityValue *)self identifier];
-    [v3 setObject:v6 forKeyedSubscript:@"identifier"];
+    identifier = [(CCToolKitToolTypedValueEntityValue *)self identifier];
+    [v3 setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   if (self->_properties)
@@ -250,8 +250,8 @@ LABEL_44:
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [(CCToolKitToolTypedValueEntityValue *)self properties];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    properties = [(CCToolKitToolTypedValueEntityValue *)self properties];
+    v9 = [properties countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -262,14 +262,14 @@ LABEL_44:
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(properties);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) jsonDictionary];
-          [v7 addObject:v13];
+          jsonDictionary2 = [*(*(&v23 + 1) + 8 * i) jsonDictionary];
+          [v7 addObject:jsonDictionary2];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [properties countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v10);
@@ -280,22 +280,22 @@ LABEL_44:
 
   if (self->_displayRepresentation)
   {
-    v14 = [(CCToolKitToolTypedValueEntityValue *)self displayRepresentation];
-    v15 = [v14 jsonDictionary];
-    [v3 setObject:v15 forKeyedSubscript:@"displayRepresentation"];
+    displayRepresentation = [(CCToolKitToolTypedValueEntityValue *)self displayRepresentation];
+    jsonDictionary3 = [displayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"displayRepresentation"];
   }
 
   if (self->_hydratedAppEntity)
   {
-    v16 = [(CCToolKitToolTypedValueEntityValue *)self hydratedAppEntity];
-    v17 = [v16 base64EncodedStringWithOptions:0];
+    hydratedAppEntity = [(CCToolKitToolTypedValueEntityValue *)self hydratedAppEntity];
+    v17 = [hydratedAppEntity base64EncodedStringWithOptions:0];
     [v3 setObject:v17 forKeyedSubscript:@"hydratedAppEntity"];
   }
 
   if (self->_siriKitEntity)
   {
-    v18 = [(CCToolKitToolTypedValueEntityValue *)self siriKitEntity];
-    v19 = [v18 base64EncodedStringWithOptions:0];
+    siriKitEntity = [(CCToolKitToolTypedValueEntityValue *)self siriKitEntity];
+    v19 = [siriKitEntity base64EncodedStringWithOptions:0];
     [v3 setObject:v19 forKeyedSubscript:@"siriKitEntity"];
   }
 
@@ -306,11 +306,11 @@ LABEL_44:
   return v20;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v14 = v5;
+  v14 = blockCopy;
   if (self->_type)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_type];
@@ -393,10 +393,10 @@ LABEL_44:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v46 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v46];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -596,13 +596,13 @@ LABEL_49:
   {
     CCSetError();
     v38 = 0;
-    v39 = v46;
+    v39 = dataCopy;
   }
 
   else
   {
     v40 = MEMORY[0x1E6993AA8];
-    v39 = v46;
+    v39 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v41 = objc_opt_class();
@@ -623,22 +623,22 @@ LABEL_49:
   return v38;
 }
 
-- (CCToolKitToolTypedValueEntityValue)initWithType:(id)a3 identifier:(id)a4 properties:(id)a5 displayRepresentation:(id)a6 hydratedAppEntity:(id)a7 siriKitEntity:(id)a8 error:(id *)a9
+- (CCToolKitToolTypedValueEntityValue)initWithType:(id)type identifier:(id)identifier properties:(id)properties displayRepresentation:(id)representation hydratedAppEntity:(id)entity siriKitEntity:(id)kitEntity error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  typeCopy = type;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  representationCopy = representation;
+  entityCopy = entity;
+  kitEntityCopy = kitEntity;
   v21 = objc_opt_new();
-  if (!v15)
+  if (!typeCopy)
   {
     v23 = 0;
 LABEL_5:
-    v50 = v20;
-    if (v16)
+    v50 = kitEntityCopy;
+    if (identifierCopy)
     {
       objc_opt_class();
       v56 = v23;
@@ -651,11 +651,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v17)
+      if (!propertiesCopy)
       {
 LABEL_8:
         v23 = v26;
-        if (v18)
+        if (representationCopy)
         {
           goto LABEL_9;
         }
@@ -667,7 +667,7 @@ LABEL_8:
     else
     {
       v26 = v23;
-      if (!v17)
+      if (!propertiesCopy)
       {
         goto LABEL_8;
       }
@@ -682,18 +682,18 @@ LABEL_8:
     {
 LABEL_28:
       CCSetError();
-      v29 = 0;
+      selfCopy2 = 0;
       goto LABEL_29;
     }
 
-    v47 = self;
-    v48 = v19;
-    v46 = v18;
+    selfCopy = self;
+    v48 = entityCopy;
+    v46 = representationCopy;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v31 = v17;
+    v31 = propertiesCopy;
     v32 = [v31 countByEnumeratingWithState:&v51 objects:v58 count:16];
     if (v32)
     {
@@ -708,7 +708,7 @@ LABEL_28:
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v51 + 1) + 8 * i) data];
+          data = [*(*(&v51 + 1) + 8 * i) data];
           CCPBDataWriterWriteDataField();
         }
 
@@ -718,9 +718,9 @@ LABEL_28:
       while (v33);
     }
 
-    v18 = v46;
-    self = v47;
-    v19 = v48;
+    representationCopy = v46;
+    self = selfCopy;
+    entityCopy = v48;
     if (v46)
     {
 LABEL_9:
@@ -730,24 +730,24 @@ LABEL_9:
 
       if (v27)
       {
-        v28 = [v18 data];
+        data2 = [representationCopy data];
         CCPBDataWriterWriteDataField();
 
 LABEL_24:
         v37 = 0x1E695D000uLL;
-        if (!v19)
+        if (!entityCopy)
         {
           v49 = 0;
           v23 = v26;
-          v20 = v50;
+          kitEntityCopy = v50;
           if (!v50)
           {
 LABEL_34:
-            v19 = v49;
-            v45 = [v21 immutableData];
-            self = [(CCItemMessage *)self initWithData:v45 error:a9];
+            entityCopy = v49;
+            immutableData = [v21 immutableData];
+            self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-            v29 = self;
+            selfCopy2 = self;
             goto LABEL_30;
           }
 
@@ -755,22 +755,22 @@ LABEL_32:
           v41 = *(v37 + 3824);
           objc_opt_class();
           v42 = CCValidateIsInstanceOfExpectedClass();
-          v43 = v20;
+          v43 = kitEntityCopy;
           v44 = v23;
 
           if (!v42)
           {
             CCSetError();
-            v29 = 0;
+            selfCopy2 = 0;
             v23 = v44;
-            v20 = v43;
-            v19 = v49;
+            kitEntityCopy = v43;
+            entityCopy = v49;
             goto LABEL_30;
           }
 
           CCPBDataWriterWriteDataField();
           v23 = v44;
-          v20 = v43;
+          kitEntityCopy = v43;
           goto LABEL_34;
         }
 
@@ -780,9 +780,9 @@ LABEL_32:
 
         if (v38)
         {
-          v49 = v19;
+          v49 = entityCopy;
           CCPBDataWriterWriteDataField();
-          v20 = v50;
+          kitEntityCopy = v50;
           v37 = 0x1E695D000;
           if (!v50)
           {
@@ -797,10 +797,10 @@ LABEL_32:
 
 LABEL_11:
       CCSetError();
-      v29 = 0;
+      selfCopy2 = 0;
       v23 = v26;
 LABEL_29:
-      v20 = v50;
+      kitEntityCopy = v50;
       goto LABEL_30;
     }
 
@@ -815,18 +815,18 @@ LABEL_23:
   v23 = 0;
   if (v22)
   {
-    v24 = [v15 data];
+    data3 = [typeCopy data];
     CCPBDataWriterWriteDataField();
 
     goto LABEL_5;
   }
 
   CCSetError();
-  v29 = 0;
+  selfCopy2 = 0;
 LABEL_30:
 
   v39 = *MEMORY[0x1E69E9840];
-  return v29;
+  return selfCopy2;
 }
 
 @end

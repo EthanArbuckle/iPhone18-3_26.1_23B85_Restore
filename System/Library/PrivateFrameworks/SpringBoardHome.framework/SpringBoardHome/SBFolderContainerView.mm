@@ -1,51 +1,51 @@
 @interface SBFolderContainerView
-- (SBFolderContainerView)initWithFolderView:(id)a3;
+- (SBFolderContainerView)initWithFolderView:(id)view;
 - (void)layoutSubviews;
-- (void)setChildFolderContainerView:(id)a3;
+- (void)setChildFolderContainerView:(id)view;
 @end
 
 @implementation SBFolderContainerView
 
-- (SBFolderContainerView)initWithFolderView:(id)a3
+- (SBFolderContainerView)initWithFolderView:(id)view
 {
-  v5 = a3;
-  [v5 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v9.receiver = self;
   v9.super_class = SBFolderContainerView;
   v6 = [(SBFolderContainerView *)&v9 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_folderView, a3);
-    [(SBFolderContainerView *)v7 addSubview:v5];
+    objc_storeStrong(&v6->_folderView, view);
+    [(SBFolderContainerView *)v7 addSubview:viewCopy];
   }
 
   return v7;
 }
 
-- (void)setChildFolderContainerView:(id)a3
+- (void)setChildFolderContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childFolderContainerView = self->_childFolderContainerView;
-  if (childFolderContainerView != v5)
+  if (childFolderContainerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (childFolderContainerView)
     {
       [(SBFolderContainerView *)childFolderContainerView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_childFolderContainerView, a3);
+    objc_storeStrong(&self->_childFolderContainerView, view);
     if (v7)
     {
       [(SBFolderContainerView *)self addSubview:v7];
     }
 
     childFolderContainerView = [(SBFolderContainerView *)self layoutIfNeeded];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](childFolderContainerView, v5);
+  MEMORY[0x1EEE66BB8](childFolderContainerView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -60,8 +60,8 @@
   childFolderContainerView = self->_childFolderContainerView;
   if (childFolderContainerView)
   {
-    v5 = [(SBFolderContainerView *)self->_childFolderContainerView folderView];
-    [(SBFolderContainerView *)self _frameForFolderView:v5];
+    folderView = [(SBFolderContainerView *)self->_childFolderContainerView folderView];
+    [(SBFolderContainerView *)self _frameForFolderView:folderView];
     [(SBFolderContainerView *)childFolderContainerView setFrame:?];
   }
 

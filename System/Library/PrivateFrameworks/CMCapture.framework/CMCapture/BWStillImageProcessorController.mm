@@ -1,10 +1,10 @@
 @interface BWStillImageProcessorController
 + (void)initialize;
 - (BOOL)supportsExternalMemoryResource;
-- (BWStillImageProcessorController)initWithName:(id)a3 type:(unint64_t)a4 configuration:(id)a5;
+- (BWStillImageProcessorController)initWithName:(id)name type:(unint64_t)type configuration:(id)configuration;
 - (CMIExternalMemoryDescriptor)externalMemoryDescriptor;
 - (CMIExternalMemoryResource)externalMemoryResource;
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4;
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate;
 - (void)_completeCurrentRequestAndInitiateNextRequest;
 - (void)_prepare;
 - (void)_process;
@@ -12,14 +12,14 @@
 - (void)cancelProcessing;
 - (void)dealloc;
 - (void)purgeResources;
-- (void)setExternalMemoryResource:(id)a3;
+- (void)setExternalMemoryResource:(id)resource;
 @end
 
 @implementation BWStillImageProcessorController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -28,16 +28,16 @@
   }
 }
 
-- (BWStillImageProcessorController)initWithName:(id)a3 type:(unint64_t)a4 configuration:(id)a5
+- (BWStillImageProcessorController)initWithName:(id)name type:(unint64_t)type configuration:(id)configuration
 {
   v13.receiver = self;
   v13.super_class = BWStillImageProcessorController;
   v8 = [(BWStillImageProcessorController *)&v13 init];
   if (v8)
   {
-    v8->_name = a3;
-    v8->_type = a4;
-    v8->_configuration = a5;
+    v8->_name = name;
+    v8->_type = type;
+    v8->_configuration = configuration;
     if (([objc_opt_class() usesCustomProcessingFlow] & 1) == 0)
     {
       v9 = [FigStateMachine indexForState:16];
@@ -82,9 +82,9 @@
     return 0;
   }
 
-  v3 = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
+  metalImageBufferProcessor = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
 
-  return [(MetalImageBufferProcessor *)v3 supportsExternalMemoryResource];
+  return [(MetalImageBufferProcessor *)metalImageBufferProcessor supportsExternalMemoryResource];
 }
 
 - (CMIExternalMemoryDescriptor)externalMemoryDescriptor
@@ -95,19 +95,19 @@
     return 0;
   }
 
-  v3 = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
+  metalImageBufferProcessor = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
 
-  return [(MetalImageBufferProcessor *)v3 externalMemoryDescriptorForConfiguration:0];
+  return [(MetalImageBufferProcessor *)metalImageBufferProcessor externalMemoryDescriptorForConfiguration:0];
 }
 
-- (void)setExternalMemoryResource:(id)a3
+- (void)setExternalMemoryResource:(id)resource
 {
   [(BWStillImageProcessorController *)self metalImageBufferProcessor];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
+    metalImageBufferProcessor = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
 
-    [(MetalImageBufferProcessor *)v5 setExternalMemoryResource:a3];
+    [(MetalImageBufferProcessor *)metalImageBufferProcessor setExternalMemoryResource:resource];
   }
 }
 
@@ -119,23 +119,23 @@
     return 0;
   }
 
-  v3 = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
+  metalImageBufferProcessor = [(BWStillImageProcessorController *)self metalImageBufferProcessor];
 
-  return [(MetalImageBufferProcessor *)v3 externalMemoryResource];
+  return [(MetalImageBufferProcessor *)metalImageBufferProcessor externalMemoryResource];
 }
 
 - (void)_updateStateIfNeeded
 {
   currentRequest = self->_currentRequest;
-  v4 = [(FigStateMachine *)self->_stateMachine currentState];
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
   if (currentRequest)
   {
-    if (v4 == 2)
+    if (currentState == 2)
     {
       v5 = 4;
     }
 
-    else if (v4 == 4)
+    else if (currentState == 4)
     {
       if ([(BWStillImageProcessorControllerRequest *)currentRequest readyForProcessing])
       {
@@ -169,15 +169,15 @@
 
 - (void)_completeCurrentRequestAndInitiateNextRequest
 {
-  v3 = [(BWStillImageProcessorControllerRequest *)self->_currentRequest delegate];
-  v4 = [(BWStillImageProcessorControllerRequest *)self->_currentRequest input];
+  delegate = [(BWStillImageProcessorControllerRequest *)self->_currentRequest delegate];
+  input = [(BWStillImageProcessorControllerRequest *)self->_currentRequest input];
   v5 = [(BWStillImageProcessorControllerRequest *)self->_currentRequest err];
-  v6 = [(BWStillImageProcessorControllerRequest *)self->_currentRequest outputType];
-  v7 = [(BWStillImageProcessorControllerRequest *)self->_currentRequest outputFrame];
-  if (v7)
+  outputType = [(BWStillImageProcessorControllerRequest *)self->_currentRequest outputType];
+  outputFrame = [(BWStillImageProcessorControllerRequest *)self->_currentRequest outputFrame];
+  if (outputFrame)
   {
-    v8 = CFRetain(v7);
-    if (!v6)
+    v8 = CFRetain(outputFrame);
+    if (!outputType)
     {
       goto LABEL_8;
     }
@@ -186,7 +186,7 @@
   else
   {
     v8 = 0;
-    if (!v6)
+    if (!outputType)
     {
       goto LABEL_8;
     }
@@ -207,7 +207,7 @@
 LABEL_8:
 
   self->_currentRequest = 0;
-  if (!v6)
+  if (!outputType)
   {
     if (!v8)
     {
@@ -219,7 +219,7 @@ LABEL_8:
 
 LABEL_14:
   [(BWStillImageProcessorController *)self _updateStateIfNeeded:v11];
-  [(BWStillImageProcessorControllerDelegate *)v3 processorController:self didFinishProcessingSampleBuffer:v8 type:v6 processorInput:v4 err:v5];
+  [(BWStillImageProcessorControllerDelegate *)delegate processorController:self didFinishProcessingSampleBuffer:v8 type:outputType processorInput:input err:v5];
   if (v8)
   {
 LABEL_10:
@@ -227,11 +227,11 @@ LABEL_10:
   }
 
 LABEL_11:
-  [(BWStillImageProcessorControllerDelegate *)v3 processorController:self didFinishProcessingInput:v4 err:v5];
+  [(BWStillImageProcessorControllerDelegate *)delegate processorController:self didFinishProcessingInput:input err:v5];
 
-  v10 = [(NSMutableArray *)self->_requestQueue firstObject];
-  self->_currentRequest = v10;
-  if (v10)
+  firstObject = [(NSMutableArray *)self->_requestQueue firstObject];
+  self->_currentRequest = firstObject;
+  if (firstObject)
   {
     [(NSMutableArray *)self->_requestQueue removeObjectAtIndex:0];
     [(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)self->_currentRequest input] setDelegate:self];
@@ -250,19 +250,19 @@ LABEL_11:
   }
 }
 
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate
 {
   v12 = 0;
   if (([objc_opt_class() usesCustomProcessingFlow] & 1) == 0)
   {
-    if (-[BWStillImageProcessorControllerConfiguration sensorConfigurationsByPortType](self->_configuration, "sensorConfigurationsByPortType") && !-[NSDictionary objectForKeyedSubscript:](-[BWStillImageProcessorControllerConfiguration sensorConfigurationsByPortType](self->_configuration, "sensorConfigurationsByPortType"), "objectForKeyedSubscript:", [a3 portType]))
+    if (-[BWStillImageProcessorControllerConfiguration sensorConfigurationsByPortType](self->_configuration, "sensorConfigurationsByPortType") && !-[NSDictionary objectForKeyedSubscript:](-[BWStillImageProcessorControllerConfiguration sensorConfigurationsByPortType](self->_configuration, "sensorConfigurationsByPortType"), "objectForKeyedSubscript:", [processing portType]))
     {
       v12 = -12780;
       FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
       os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
       fig_log_call_emit_and_clean_up_after_send_and_compose();
-      [a3 portType];
+      [processing portType];
       v11 = _os_log_send_and_compose_impl();
       FigCapturePleaseFileRadar(FrameworkRadarComponent, v11, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Base/BWStillImageProcessorController.m", 409, @"LastShownDate:BWStillImageProcessorController.m:409", @"LastShownBuild:BWStillImageProcessorController.m:409", 0);
       free(v11);
@@ -270,7 +270,7 @@ LABEL_11:
 
     else
     {
-      v7 = [(BWStillImageProcessorController *)self requestForInput:a3 delegate:a4 errOut:&v12];
+      v7 = [(BWStillImageProcessorController *)self requestForInput:processing delegate:delegate errOut:&v12];
       if (!v12)
       {
         [(NSMutableArray *)self->_requestQueue addObject:v7];

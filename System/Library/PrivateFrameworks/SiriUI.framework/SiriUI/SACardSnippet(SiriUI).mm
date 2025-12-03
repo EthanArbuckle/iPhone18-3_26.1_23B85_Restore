@@ -10,12 +10,12 @@
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277D4C728]);
-  v3 = [a1 siriui_card];
-  v4 = [v2 initWithFacade:v3];
+  siriui_card = [self siriui_card];
+  v4 = [v2 initWithFacade:siriui_card];
 
-  v5 = [v4 cardSections];
+  cardSections = [v4 cardSections];
   v6 = NSStringFromSelector(sel_type);
-  v7 = [v5 valueForKeyPath:v6];
+  v7 = [cardSections valueForKeyPath:v6];
 
   v14[0] = @"numberOfSections";
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v7, "count")];
@@ -38,8 +38,8 @@
 - (id)siriui_card
 {
   v1 = MEMORY[0x277CF9450];
-  v2 = [a1 cardData];
-  v3 = [v1 cardForData:v2 messageName:@"searchfoundation.Card"];
+  cardData = [self cardData];
+  v3 = [v1 cardForData:cardData messageName:@"searchfoundation.Card"];
 
   return v3;
 }
@@ -47,8 +47,8 @@
 - (id)siriui_card_compact
 {
   v1 = MEMORY[0x277CF9450];
-  v2 = [a1 compactSizeCardData];
-  v3 = [v1 cardForData:v2 messageName:@"searchfoundation.Card"];
+  compactSizeCardData = [self compactSizeCardData];
+  v3 = [v1 cardForData:compactSizeCardData messageName:@"searchfoundation.Card"];
 
   return v3;
 }

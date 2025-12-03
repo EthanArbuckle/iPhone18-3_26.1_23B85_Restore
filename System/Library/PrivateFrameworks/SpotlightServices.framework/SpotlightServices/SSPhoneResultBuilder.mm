@@ -1,5 +1,5 @@
 @interface SSPhoneResultBuilder
-- (SSPhoneResultBuilder)initWithResult:(id)a3;
+- (SSPhoneResultBuilder)initWithResult:(id)result;
 - (id)buildButtonItems;
 - (id)buildCommand;
 - (id)buildDescriptions;
@@ -12,16 +12,16 @@
 
 @implementation SSPhoneResultBuilder
 
-- (SSPhoneResultBuilder)initWithResult:(id)a3
+- (SSPhoneResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v23.receiver = self;
   v23.super_class = SSPhoneResultBuilder;
-  v5 = [(SSResultBuilder *)&v23 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v23 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E69649E8] withType:objc_opt_class()];
-    v7 = [v6 firstObject];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E69649E8] withType:objc_opt_class()];
+    firstObject = [v6 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,8 +35,8 @@
 
     [(SSPhoneResultBuilder *)v5 setRecipientContactIdentifiers:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E6963CF8] withType:objc_opt_class()];
-    v10 = [v9 firstObject];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6963CF8] withType:objc_opt_class()];
+    firstObject2 = [v9 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
 
     [(SSPhoneResultBuilder *)v5 setSenderContactIdentifiers:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x1E6964708] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x1E6964708] withType:objc_opt_class()];
     if (v12)
     {
       v13 = [MEMORY[0x1E695DFF8] URLWithString:v12];
@@ -62,26 +62,26 @@
       [(SSPhoneResultBuilder *)v5 setCallbackURL:0];
     }
 
-    v14 = [v4 valueForAttribute:*MEMORY[0x1E6964A20] withType:objc_opt_class()];
+    v14 = [resultCopy valueForAttribute:*MEMORY[0x1E6964A20] withType:objc_opt_class()];
     [(SSPhoneResultBuilder *)v5 setCallSourceApplicationBundleIdentifier:v14];
 
-    v15 = [(SSResultBuilder *)v5 result];
-    v16 = [v15 contentType];
-    -[SSPhoneResultBuilder setIsVoicemail:](v5, "setIsVoicemail:", [v16 isEqualToString:@"public.voice-audio"]);
+    result = [(SSResultBuilder *)v5 result];
+    contentType = [result contentType];
+    -[SSPhoneResultBuilder setIsVoicemail:](v5, "setIsVoicemail:", [contentType isEqualToString:@"public.voice-audio"]);
 
-    v17 = [v4 valueForAttribute:*MEMORY[0x1E6964B18] withType:objc_opt_class()];
+    v17 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B18] withType:objc_opt_class()];
     [(SSPhoneResultBuilder *)v5 setVoicemailTranscription:v17];
 
-    v18 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+    v18 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
     [(SSPhoneResultBuilder *)v5 setCallDate:v18];
 
-    v19 = [v4 valueForAttribute:*MEMORY[0x1E6964710] withType:objc_opt_class()];
+    v19 = [resultCopy valueForAttribute:*MEMORY[0x1E6964710] withType:objc_opt_class()];
     -[SSPhoneResultBuilder setIsMissedCall:](v5, "setIsMissedCall:", [v19 containsString:@"Missed"]);
     -[SSPhoneResultBuilder setIsOutgoingCall:](v5, "setIsOutgoingCall:", [v19 containsString:@"Outgoing"]);
-    v20 = [v4 valueForAttribute:*MEMORY[0x1E6964718] withType:objc_opt_class()];
+    v20 = [resultCopy valueForAttribute:*MEMORY[0x1E6964718] withType:objc_opt_class()];
     -[SSPhoneResultBuilder setIsVideoCall:](v5, "setIsVideoCall:", [v20 isEqualToString:@"Video"]);
 
-    v21 = [v4 valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
+    v21 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F28] withType:objc_opt_class()];
     [(SSPhoneResultBuilder *)v5 setCallOrigin:v21];
   }
 
@@ -91,27 +91,27 @@
 - (id)buildTitle
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSPhoneResultBuilder *)self voicemailTranscription];
-  v4 = [v3 length];
+  voicemailTranscription = [(SSPhoneResultBuilder *)self voicemailTranscription];
+  v4 = [voicemailTranscription length];
 
   if (v4)
   {
-    v5 = [(SSPhoneResultBuilder *)self voicemailTranscription];
-    v6 = [(SSResultBuilder *)self buildHighlightedTextWithString:v5 includeQuotes:1];
+    voicemailTranscription2 = [(SSPhoneResultBuilder *)self voicemailTranscription];
+    buildTitle = [(SSResultBuilder *)self buildHighlightedTextWithString:voicemailTranscription2 includeQuotes:1];
 
-    [v6 setMaxLines:2];
+    [buildTitle setMaxLines:2];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SSPhoneResultBuilder;
-    v6 = [(SSResultBuilder *)&v13 buildTitle];
+    buildTitle = [(SSResultBuilder *)&v13 buildTitle];
     if ([(SSPhoneResultBuilder *)self isMissedCall])
     {
       v7 = objc_opt_new();
-      v8 = [v6 text];
-      [v7 setText:v8];
+      text = [buildTitle text];
+      [v7 setText:text];
 
       [v7 setTextColor:1];
       v9 = objc_opt_new();
@@ -120,30 +120,30 @@
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       [v9 setFormattedTextPieces:v10];
 
-      v6 = v9;
+      buildTitle = v9;
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return buildTitle;
 }
 
 - (id)buildDescriptions
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SSPhoneResultBuilder *)self voicemailTranscription];
-  v5 = [v4 length];
+  voicemailTranscription = [(SSPhoneResultBuilder *)self voicemailTranscription];
+  v5 = [voicemailTranscription length];
 
   if (v5)
   {
     v19.receiver = self;
     v19.super_class = SSPhoneResultBuilder;
-    v6 = [(SSResultBuilder *)&v19 buildTitle];
-    v7 = [v6 text];
+    buildTitle = [(SSResultBuilder *)&v19 buildTitle];
+    text = [buildTitle text];
 
-    if (![v7 length])
+    if (![text length])
     {
       goto LABEL_7;
     }
@@ -151,27 +151,27 @@
 
   else
   {
-    v8 = [(SSPhoneResultBuilder *)self callOrigin];
-    v9 = [v8 length];
+    callOrigin = [(SSPhoneResultBuilder *)self callOrigin];
+    v9 = [callOrigin length];
 
     if (!v9)
     {
       goto LABEL_8;
     }
 
-    v7 = [(SSPhoneResultBuilder *)self callOrigin];
+    text = [(SSPhoneResultBuilder *)self callOrigin];
   }
 
-  [v3 addObject:v7];
+  [v3 addObject:text];
 LABEL_7:
 
 LABEL_8:
-  v10 = [(SSPhoneResultBuilder *)self callDate];
+  callDate = [(SSPhoneResultBuilder *)self callDate];
 
-  if (v10)
+  if (callDate)
   {
-    v11 = [(SSPhoneResultBuilder *)self callDate];
-    v12 = [SSDateFormatManager dynamicCompactStringFromDate:v11];
+    callDate2 = [(SSPhoneResultBuilder *)self callDate];
+    v12 = [SSDateFormatManager dynamicCompactStringFromDate:callDate2];
     [v3 addObject:v12];
   }
 
@@ -197,8 +197,8 @@ LABEL_8:
 - (id)buildThumbnail
 {
   v3 = objc_opt_new();
-  v4 = [(SSPhoneResultBuilder *)self contactIdentifiers];
-  [v3 setContactIdentifiers:v4];
+  contactIdentifiers = [(SSPhoneResultBuilder *)self contactIdentifiers];
+  [v3 setContactIdentifiers:contactIdentifiers];
 
   [v3 setThreeDTouchEnabled:1];
 
@@ -223,19 +223,19 @@ LABEL_8:
 
 - (id)bundleIdentifierForAppIconBadgeImage
 {
-  v2 = [(SSPhoneResultBuilder *)self callSourceApplicationBundleIdentifier];
-  v3 = v2;
-  if (v2)
+  callSourceApplicationBundleIdentifier = [(SSPhoneResultBuilder *)self callSourceApplicationBundleIdentifier];
+  v3 = callSourceApplicationBundleIdentifier;
+  if (callSourceApplicationBundleIdentifier)
   {
-    v4 = v2;
+    bundleId = callSourceApplicationBundleIdentifier;
   }
 
   else
   {
-    v4 = [objc_opt_class() bundleId];
+    bundleId = [objc_opt_class() bundleId];
   }
 
-  v5 = v4;
+  v5 = bundleId;
 
   return v5;
 }
@@ -246,9 +246,9 @@ LABEL_8:
   if ([(SSPhoneResultBuilder *)self isVoicemail])
   {
     v4 = objc_opt_new();
-    v5 = [(SSResultBuilder *)self result];
-    v6 = [v5 identifier];
-    [v4 setMediaIdentifier:v6];
+    result = [(SSResultBuilder *)self result];
+    identifier = [result identifier];
+    [v4 setMediaIdentifier:identifier];
 
     [v4 setMediaType:100];
     v7 = objc_opt_new();
@@ -256,14 +256,14 @@ LABEL_8:
     [v3 addObject:v7];
   }
 
-  v8 = [(SSPhoneResultBuilder *)self callbackURL];
+  callbackURL = [(SSPhoneResultBuilder *)self callbackURL];
 
-  if (v8)
+  if (callbackURL)
   {
     v9 = objc_opt_new();
     v10 = MEMORY[0x1E69CA320];
-    v11 = [(SSPhoneResultBuilder *)self callbackURL];
-    v12 = [v10 punchoutWithURL:v11];
+    callbackURL2 = [(SSPhoneResultBuilder *)self callbackURL];
+    v12 = [v10 punchoutWithURL:callbackURL2];
     [v9 setPunchout:v12];
 
     v13 = objc_opt_new();
@@ -303,12 +303,12 @@ LABEL_8:
 - (id)buildCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSResultBuilder *)self coreSpotlightId];
-  [v3 setCoreSpotlightIdentifier:v4];
+  coreSpotlightId = [(SSResultBuilder *)self coreSpotlightId];
+  [v3 setCoreSpotlightIdentifier:coreSpotlightId];
 
-  v5 = [(SSResultBuilder *)self result];
-  v6 = [v5 applicationBundleIdentifier];
-  [v3 setApplicationBundleIdentifier:v6];
+  result = [(SSResultBuilder *)self result];
+  applicationBundleIdentifier = [result applicationBundleIdentifier];
+  [v3 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
   return v3;
 }
@@ -316,12 +316,12 @@ LABEL_8:
 - (id)buildPreviewButtonItems
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSPhoneResultBuilder *)self contactIdentifiers];
-  if ([v3 count] && (-[SSPhoneResultBuilder voicemailTranscription](self, "voicemailTranscription"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, !v5))
+  contactIdentifiers = [(SSPhoneResultBuilder *)self contactIdentifiers];
+  if ([contactIdentifiers count] && (-[SSPhoneResultBuilder voicemailTranscription](self, "voicemailTranscription"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, !v5))
   {
     v7 = objc_opt_new();
-    v8 = [v3 firstObject];
-    [v7 setContactIdentifier:v8];
+    firstObject = [contactIdentifiers firstObject];
+    [v7 setContactIdentifier:firstObject];
 
     v9 = MEMORY[0x1E696AD98];
     if ([(SSPhoneResultBuilder *)self isVideoCall])
@@ -340,19 +340,19 @@ LABEL_8:
     [v7 setActionTypesToShow:v12];
 
     v16 = v7;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
+    buildPreviewButtonItems = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = SSPhoneResultBuilder;
-    v6 = [(SSResultBuilder *)&v15 buildPreviewButtonItems];
+    buildPreviewButtonItems = [(SSResultBuilder *)&v15 buildPreviewButtonItems];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return buildPreviewButtonItems;
 }
 
 @end

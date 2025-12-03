@@ -1,25 +1,25 @@
 @interface PXCuratedLibraryFilterTipController
-- (BOOL)_shouldShowFilterTip:(id)a3;
+- (BOOL)_shouldShowFilterTip:(id)tip;
 - (CGRect)_anchorViewRect;
-- (PXCuratedLibraryFilterTipController)initWithViewModel:(id)a3 layout:(id)a4;
+- (PXCuratedLibraryFilterTipController)initWithViewModel:(id)model layout:(id)layout;
 - (PXCuratedLibraryFilterTipControllerDelegate)delegate;
-- (id)presentationControllerForTipID:(id)a3;
-- (id)sourceItemForTipID:(id)a3;
+- (id)presentationControllerForTipID:(id)d;
+- (id)sourceItemForTipID:(id)d;
 - (void)_cancelTimerForSharedLibraryTip;
-- (void)_dismissTipViewWithCompletion:(id)a3 clientInitiated:(BOOL)a4;
+- (void)_dismissTipViewWithCompletion:(id)completion clientInitiated:(BOOL)initiated;
 - (void)_presentSharedLibraryFilterTipIfPossible;
-- (void)_presentTipViewController:(id)a3;
+- (void)_presentTipViewController:(id)controller;
 - (void)_startTimerForSharedLibraryFilterTip;
 - (void)_updateControllerForSyndicatedAssetsTip;
-- (void)didChangeFilterState:(id)a3;
+- (void)didChangeFilterState:(id)state;
 - (void)didLayoutAnchorView;
-- (void)guestAssetsTracker:(id)a3 canDisplayGuestAssets:(BOOL)a4;
-- (void)guestAssetsTracker:(id)a3 isDisplayingGuestAssets:(BOOL)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)prepareTipPopover:(id)a3 tipID:(id)a4;
-- (void)setCuratedLibraryIsVisible:(BOOL)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)tipPopoverDidDismissWithTipID:(id)a3;
+- (void)guestAssetsTracker:(id)tracker canDisplayGuestAssets:(BOOL)assets;
+- (void)guestAssetsTracker:(id)tracker isDisplayingGuestAssets:(BOOL)assets;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)prepareTipPopover:(id)popover tipID:(id)d;
+- (void)setCuratedLibraryIsVisible:(BOOL)visible;
+- (void)setTraitCollection:(id)collection;
+- (void)tipPopoverDidDismissWithTipID:(id)d;
 - (void)userDidChangeLibraryFilterState;
 @end
 
@@ -44,7 +44,7 @@
         v17 = 138543618;
         v18 = objc_opt_class();
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v13 = v18;
         _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Obtained anchor rect with size zero", &v17, 0x16u);
       }
@@ -64,7 +64,7 @@
         v17 = 138543874;
         v18 = v14;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2112;
         v22 = v16;
         _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Set new anchor rect: %@", &v17, 0x20u);
@@ -82,8 +82,8 @@
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:self->_photoLibrary];
-  v4 = [v3 showUnsavedSyndicatedContentInPhotosGrids];
-  if ([(PXCuratedLibraryFilterTipController *)self curatedLibraryIsVisible]&& v4)
+  showUnsavedSyndicatedContentInPhotosGrids = [v3 showUnsavedSyndicatedContentInPhotosGrids];
+  if ([(PXCuratedLibraryFilterTipController *)self curatedLibraryIsVisible]&& showUnsavedSyndicatedContentInPhotosGrids)
   {
     v5 = +[PXGridTipsHelper syndicatedAssetsTipID];
     [(PXCuratedLibraryFilterTipController *)self _presentTipViewController:v5];
@@ -99,8 +99,8 @@
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Start tracking guest assets.", v15, 0x16u);
     }
 
-    v8 = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
-    [v8 setIsActive:1];
+    guestAssetTracker = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
+    [guestAssetTracker setIsActive:1];
   }
 
   else
@@ -116,8 +116,8 @@
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Stop tracking guest assets.", v15, 0x16u);
     }
 
-    v11 = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
-    [v11 setIsActive:0];
+    guestAssetTracker2 = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
+    [guestAssetTracker2 setIsActive:0];
 
     if ([(PXCuratedLibraryFilterTipController *)self isPresentingTipView])
     {
@@ -136,8 +136,8 @@
       [(PXCuratedLibraryFilterTipController *)self _dismissTipViewWithCompletion:0 clientInitiated:0];
     }
 
-    v8 = [PXGridTipsHelper syndicatedAssetsTipID:*v15];
-    [PXGridTipsHelper setTip:v8 isPresentable:0];
+    guestAssetTracker = [PXGridTipsHelper syndicatedAssetsTipID:*v15];
+    [PXGridTipsHelper setTip:guestAssetTracker isPresentable:0];
   }
 }
 
@@ -163,21 +163,21 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryStatusProviderObservationContext_155120 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryStatusProviderObservationContext_155120 != context)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:333 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:333 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 3) != 0)
+  if ((changeCopy & 3) != 0)
   {
-    v14 = v9;
+    v14 = observableCopy;
     if ([(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider hasSharedLibraryOrPreview])
     {
       [(PXCuratedLibraryFilterTipController *)self _startTimerForSharedLibraryFilterTip];
@@ -198,13 +198,13 @@
       [PXGridTipsHelper setTip:v12 isPresentable:0];
     }
 
-    v9 = v14;
+    observableCopy = v14;
   }
 }
 
-- (void)guestAssetsTracker:(id)a3 isDisplayingGuestAssets:(BOOL)a4
+- (void)guestAssetsTracker:(id)tracker isDisplayingGuestAssets:(BOOL)assets
 {
-  v4 = a4;
+  assetsCopy = assets;
   v17 = *MEMORY[0x1E69E9840];
   v6 = PLCuratedLibraryGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -213,13 +213,13 @@
     v8 = @"not";
     v11 = 138543874;
     v12 = v7;
-    if (v4)
+    if (assetsCopy)
     {
       v8 = &stru_1F1741150;
     }
 
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v8;
     v9 = v7;
@@ -233,9 +233,9 @@
   }
 }
 
-- (void)guestAssetsTracker:(id)a3 canDisplayGuestAssets:(BOOL)a4
+- (void)guestAssetsTracker:(id)tracker canDisplayGuestAssets:(BOOL)assets
 {
-  v4 = a4;
+  assetsCopy = assets;
   v17 = *MEMORY[0x1E69E9840];
   v6 = PLCuratedLibraryGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -244,13 +244,13 @@
     v8 = @"not";
     v11 = 138543874;
     v12 = v7;
-    if (v4)
+    if (assetsCopy)
     {
       v8 = &stru_1F1741150;
     }
 
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v8;
     v9 = v7;
@@ -286,28 +286,28 @@
   }
 }
 
-- (BOOL)_shouldShowFilterTip:(id)a3
+- (BOOL)_shouldShowFilterTip:(id)tip
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITraitCollection *)self->_traitCollection verticalSizeClass];
-  v6 = [(PXCuratedLibraryFilterTipController *)self delegate];
-  v7 = [v6 viewControllerToPresentTipForController:self];
-  v8 = [v7 presentedViewController];
+  tipCopy = tip;
+  verticalSizeClass = [(UITraitCollection *)self->_traitCollection verticalSizeClass];
+  delegate = [(PXCuratedLibraryFilterTipController *)self delegate];
+  v7 = [delegate viewControllerToPresentTipForController:self];
+  presentedViewController = [v7 presentedViewController];
 
-  v9 = 0;
-  if ([(PXCuratedLibraryFilterTipController *)self curatedLibraryIsVisible]&& !v8 && v5 != UIUserInterfaceSizeClassCompact)
+  hasSharedLibraryOrPreview = 0;
+  if ([(PXCuratedLibraryFilterTipController *)self curatedLibraryIsVisible]&& !presentedViewController && verticalSizeClass != UIUserInterfaceSizeClassCompact)
   {
     v10 = +[PXGridTipsHelper syndicatedAssetsTipID];
-    v11 = [v4 isEqualToString:v10];
+    v11 = [tipCopy isEqualToString:v10];
 
     if (v11)
     {
-      v12 = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
-      v13 = [v12 canDisplayGuestAssets];
+      guestAssetTracker = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
+      canDisplayGuestAssets = [guestAssetTracker canDisplayGuestAssets];
 
-      v14 = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
-      v15 = [v14 isDisplayingGuestAssets];
+      guestAssetTracker2 = [(PXCuratedLibraryFilterTipController *)self guestAssetTracker];
+      isDisplayingGuestAssets = [guestAssetTracker2 isDisplayingGuestAssets];
 
       v16 = PLCuratedLibraryGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -315,45 +315,45 @@
         v26 = 138544386;
         v27 = objc_opt_class();
         v28 = 2048;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2112;
-        v31 = v4;
+        v31 = tipCopy;
         v32 = 1024;
-        *v33 = v13;
+        *v33 = canDisplayGuestAssets;
         *&v33[4] = 1024;
-        *&v33[6] = v15;
+        *&v33[6] = isDisplayingGuestAssets;
         _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> _shouldShowFilterTip %@? canDisplayGuestAssets: %d, isDisplayingGuestAssets: %d", &v26, 0x2Cu);
       }
 
-      v9 = v13 & v15;
+      hasSharedLibraryOrPreview = canDisplayGuestAssets & isDisplayingGuestAssets;
     }
 
     else
     {
       v17 = +[PXGridTipsHelper curatedLibrarySwitchTipID];
-      v18 = [v4 isEqualToString:v17];
+      v18 = [tipCopy isEqualToString:v17];
 
       if (v18)
       {
-        v9 = [(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider hasSharedLibraryOrPreview];
+        hasSharedLibraryOrPreview = [(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider hasSharedLibraryOrPreview];
         v19 = PLCuratedLibraryGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v26 = 138544130;
           v27 = objc_opt_class();
           v28 = 2048;
-          v29 = self;
+          selfCopy3 = self;
           v30 = 2112;
-          v31 = v4;
+          v31 = tipCopy;
           v32 = 1024;
-          *v33 = v9;
+          *v33 = hasSharedLibraryOrPreview;
           _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> _shouldShowFilterTip %@? hasSharedLibraryOrPreview: %d", &v26, 0x26u);
         }
       }
 
       else
       {
-        v9 = 1;
+        hasSharedLibraryOrPreview = 1;
       }
     }
   }
@@ -361,21 +361,21 @@
   v20 = PLCuratedLibraryGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = v8 != 0;
-    v22 = v5 == UIUserInterfaceSizeClassCompact;
+    v21 = presentedViewController != 0;
+    v22 = verticalSizeClass == UIUserInterfaceSizeClassCompact;
     v23 = objc_opt_class();
     v26 = 138544642;
     v24 = @"NO";
     v27 = v23;
     v28 = 2048;
-    if (v9)
+    if (hasSharedLibraryOrPreview)
     {
       v24 = @"YES";
     }
 
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2112;
-    v31 = v4;
+    v31 = tipCopy;
     v32 = 2112;
     *v33 = v24;
     *&v33[8] = 1024;
@@ -385,27 +385,27 @@
     _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> _shouldShowFilterTip %@? %@. isCompactVerticalClass: %d, isPresentingViewController: %d", &v26, 0x36u);
   }
 
-  return v9;
+  return hasSharedLibraryOrPreview;
 }
 
 - (CGRect)_anchorViewRect
 {
-  v4 = [(PXCuratedLibraryFilterTipController *)self delegate];
-  v5 = [(PXCuratedLibraryFilterTipController *)self delegate];
+  delegate = [(PXCuratedLibraryFilterTipController *)self delegate];
+  delegate2 = [(PXCuratedLibraryFilterTipController *)self delegate];
 
-  if (!v5)
+  if (!delegate2)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
   }
 
-  [v4 anchorViewRectForController:self];
+  [delegate anchorViewRectForController:self];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PXCuratedLibraryFilterTipController *)self traitCollection];
-  if ([v14 horizontalSizeClass] == 1)
+  traitCollection = [(PXCuratedLibraryFilterTipController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v15 = 16.0;
   }
@@ -426,15 +426,15 @@
   return result;
 }
 
-- (void)_dismissTipViewWithCompletion:(id)a3 clientInitiated:(BOOL)a4
+- (void)_dismissTipViewWithCompletion:(id)completion clientInitiated:(BOOL)initiated
 {
-  v4 = a4;
+  initiatedCopy = initiated;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_presentedTipID)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(completionCopy);
     tipDismissedCompletion = self->_tipDismissedCompletion;
     self->_tipDismissedCompletion = v8;
 
@@ -446,13 +446,13 @@
       v12 = @"controller signal";
       v16 = 138543874;
       v17 = v11;
-      if (v4)
+      if (initiatedCopy)
       {
         v12 = @"client";
       }
 
       v18 = 2048;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
       v21 = v12;
       v13 = v11;
@@ -468,7 +468,7 @@
       v16 = 138543618;
       v17 = objc_opt_class();
       v18 = 2048;
-      v19 = self;
+      selfCopy2 = self;
       v15 = v17;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "<%{public}@:%p> Attempted to dismiss tip view but view wasn't presented", &v16, 0x16u);
     }
@@ -480,7 +480,7 @@
   }
 }
 
-- (void)tipPopoverDidDismissWithTipID:(id)a3
+- (void)tipPopoverDidDismissWithTipID:(id)d
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didDismissTipForController:self];
@@ -497,70 +497,70 @@
   }
 }
 
-- (void)prepareTipPopover:(id)a3 tipID:(id)a4
+- (void)prepareTipPopover:(id)popover tipID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PXCuratedLibraryFilterTipController *)self delegate];
+  dCopy = d;
+  popoverCopy = popover;
+  delegate = [(PXCuratedLibraryFilterTipController *)self delegate];
 
-  if (!v10)
+  if (!delegate)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
   }
 
-  v11 = [(PXCuratedLibraryFilterTipController *)self delegate];
-  v12 = [v11 viewToPresentTipForController:self];
+  delegate2 = [(PXCuratedLibraryFilterTipController *)self delegate];
+  v12 = [delegate2 viewToPresentTipForController:self];
   if (!v12)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
-  [v9 setSourceView:v12];
+  [popoverCopy setSourceView:v12];
   [(PXCuratedLibraryFilterTipController *)self _anchorViewRect];
-  [v9 setSourceRect:?];
-  v13 = [v11 passthroughViewsForTipForController:self];
-  [v9 setPassthroughViews:v13];
+  [popoverCopy setSourceRect:?];
+  v13 = [delegate2 passthroughViewsForTipForController:self];
+  [popoverCopy setPassthroughViews:v13];
 
-  [v9 setPermittedArrowDirections:3];
-  [v11 willPresentTipForController:self];
-  objc_storeStrong(&self->_presentedTipID, a4);
+  [popoverCopy setPermittedArrowDirections:3];
+  [delegate2 willPresentTipForController:self];
+  objc_storeStrong(&self->_presentedTipID, d);
   v14 = PLCuratedLibraryGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v19 = objc_opt_class();
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v8;
+    v23 = dCopy;
     v15 = v19;
     _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Presented tip with ID %@.", buf, 0x20u);
   }
 }
 
-- (id)sourceItemForTipID:(id)a3
+- (id)sourceItemForTipID:(id)d
 {
-  v4 = [(PXCuratedLibraryFilterTipController *)self delegate];
-  v5 = [v4 viewToPresentTipForController:self];
+  delegate = [(PXCuratedLibraryFilterTipController *)self delegate];
+  v5 = [delegate viewToPresentTipForController:self];
 
   return v5;
 }
 
-- (id)presentationControllerForTipID:(id)a3
+- (id)presentationControllerForTipID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[PXGridTipsHelper syndicatedAssetsTipID];
-  if ([v5 isEqualToString:v6])
+  if ([dCopy isEqualToString:v6])
   {
   }
 
   else
   {
     v7 = +[PXGridTipsHelper curatedLibrarySwitchTipID];
-    v8 = [v5 isEqualToString:v7];
+    v8 = [dCopy isEqualToString:v7];
 
     if (!v8)
     {
@@ -569,20 +569,20 @@
     }
   }
 
-  v9 = [(PXCuratedLibraryFilterTipController *)self delegate];
+  delegate = [(PXCuratedLibraryFilterTipController *)self delegate];
 
-  if (!v9)
+  if (!delegate)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
   }
 
-  v10 = [(PXCuratedLibraryFilterTipController *)self delegate];
-  v11 = [v10 viewControllerToPresentTipForController:self];
+  delegate2 = [(PXCuratedLibraryFilterTipController *)self delegate];
+  v11 = [delegate2 viewControllerToPresentTipForController:self];
   if (!v11)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"presentationViewController"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFilterTipController.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"presentationViewController"}];
   }
 
 LABEL_10:
@@ -590,16 +590,16 @@ LABEL_10:
   return v11;
 }
 
-- (void)_presentTipViewController:(id)a3
+- (void)_presentTipViewController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[PXGridTipsHelper curatedLibrarySwitchTipID];
-  if ([v4 isEqualToString:v5])
+  if ([controllerCopy isEqualToString:v5])
   {
-    v6 = [(PXCuratedLibraryFilterTipController *)self curatedLibraryIsVisible];
+    curatedLibraryIsVisible = [(PXCuratedLibraryFilterTipController *)self curatedLibraryIsVisible];
 
-    if (!v6)
+    if (!curatedLibraryIsVisible)
     {
       v7 = PLUIGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -607,7 +607,7 @@ LABEL_10:
         v14 = 138543618;
         v15 = objc_opt_class();
         v16 = 2048;
-        v17 = self;
+        selfCopy4 = self;
         v8 = v15;
         v9 = "<%{public}@:%p> Attempted to present tip view but host view controller can't present";
 LABEL_16:
@@ -632,7 +632,7 @@ LABEL_16:
       v14 = 138543618;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy4 = self;
       v8 = v15;
       v9 = "<%{public}@:%p> Attempring to present tip view but there is one already presented";
       goto LABEL_16;
@@ -650,7 +650,7 @@ LABEL_16:
         v14 = 138543618;
         v15 = objc_opt_class();
         v16 = 2048;
-        v17 = self;
+        selfCopy4 = self;
         v8 = v15;
         v9 = "<%{public}@:%p> Obtained anchor rect with size zero.";
         goto LABEL_16;
@@ -659,9 +659,9 @@ LABEL_16:
 
     else
     {
-      if (![(PXTipsHelper *)PXGridTipsHelper isTipInvalidated:v4])
+      if (![(PXTipsHelper *)PXGridTipsHelper isTipInvalidated:controllerCopy])
       {
-        [PXGridTipsHelper setTip:v4 isPresentable:1];
+        [PXGridTipsHelper setTip:controllerCopy isPresentable:1];
         goto LABEL_19;
       }
 
@@ -671,7 +671,7 @@ LABEL_16:
         v14 = 138543618;
         v15 = objc_opt_class();
         v16 = 2048;
-        v17 = self;
+        selfCopy4 = self;
         v8 = v15;
         v9 = "<%{public}@:%p> Not presenting tip.";
         v12 = v7;
@@ -687,27 +687,27 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (self->_presentedTipID)
   {
-    v5 = [(UITraitCollection *)self->_traitCollection verticalSizeClass];
-    if (v5 != [(UITraitCollection *)v4 verticalSizeClass]&& [(UITraitCollection *)v4 verticalSizeClass]== UIUserInterfaceSizeClassCompact)
+    verticalSizeClass = [(UITraitCollection *)self->_traitCollection verticalSizeClass];
+    if (verticalSizeClass != [(UITraitCollection *)collectionCopy verticalSizeClass]&& [(UITraitCollection *)collectionCopy verticalSizeClass]== UIUserInterfaceSizeClassCompact)
     {
       [PXGridTipsHelper setTip:self->_presentedTipID isPresentable:0];
     }
   }
 
   traitCollection = self->_traitCollection;
-  self->_traitCollection = v4;
+  self->_traitCollection = collectionCopy;
 }
 
-- (void)setCuratedLibraryIsVisible:(BOOL)a3
+- (void)setCuratedLibraryIsVisible:(BOOL)visible
 {
-  if (self->_curatedLibraryIsVisible != a3)
+  if (self->_curatedLibraryIsVisible != visible)
   {
-    self->_curatedLibraryIsVisible = a3;
+    self->_curatedLibraryIsVisible = visible;
     [(PXCuratedLibraryFilterTipController *)self _updateControllerForSyndicatedAssetsTip];
     if (self->_curatedLibraryIsVisible)
     {
@@ -731,20 +731,20 @@ LABEL_19:
   [PXGridTipsHelper setTipActionPerformed:v2];
 }
 
-- (void)didChangeFilterState:(id)a3
+- (void)didChangeFilterState:(id)state
 {
-  if ([a3 includeSharedWithYou])
+  if ([state includeSharedWithYou])
   {
     v3 = +[PXGridTipsHelper syndicatedAssetsTipID];
     [PXGridTipsHelper setTipActionPerformed:v3];
   }
 }
 
-- (PXCuratedLibraryFilterTipController)initWithViewModel:(id)a3 layout:(id)a4
+- (PXCuratedLibraryFilterTipController)initWithViewModel:(id)model layout:(id)layout
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = PXCuratedLibraryFilterTipController;
   v8 = [(PXCuratedLibraryFilterTipController *)&v17 init];
@@ -762,11 +762,11 @@ LABEL_19:
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Init controller.", buf, 0x16u);
     }
 
-    v12 = [v6 photoLibrary];
+    photoLibrary = [modelCopy photoLibrary];
     photoLibrary = v8->_photoLibrary;
-    v8->_photoLibrary = v12;
+    v8->_photoLibrary = photoLibrary;
 
-    v14 = [[PXCuratedLibraryGuestAssetTracker alloc] initWithViewModel:v6 layout:v7];
+    v14 = [[PXCuratedLibraryGuestAssetTracker alloc] initWithViewModel:modelCopy layout:layoutCopy];
     guestAssetTracker = v8->_guestAssetTracker;
     v8->_guestAssetTracker = v14;
 

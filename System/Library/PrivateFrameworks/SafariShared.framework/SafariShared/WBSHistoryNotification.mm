@@ -1,26 +1,26 @@
 @interface WBSHistoryNotification
-- (WBSHistoryNotification)initWithCoder:(id)a3;
-- (WBSHistoryNotification)initWithName:(id)a3 userInfo:(id)a4;
+- (WBSHistoryNotification)initWithCoder:(id)coder;
+- (WBSHistoryNotification)initWithName:(id)name userInfo:(id)info;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryNotification
 
-- (WBSHistoryNotification)initWithName:(id)a3 userInfo:(id)a4
+- (WBSHistoryNotification)initWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = WBSHistoryNotification;
   v8 = [(WBSHistoryNotification *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [infoCopy copy];
     userInfo = v8->_userInfo;
     v8->_userInfo = v11;
 
@@ -40,22 +40,22 @@
   return v6;
 }
 
-- (WBSHistoryNotification)initWithCoder:(id)a3
+- (WBSHistoryNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodePropertyListForKey:@"userInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodePropertyListForKey:@"userInfo"];
 
   v7 = [(WBSHistoryNotification *)self initWithName:v5 userInfo:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
 }
 
 @end

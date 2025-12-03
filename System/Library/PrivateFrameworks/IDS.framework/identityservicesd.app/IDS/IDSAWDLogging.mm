@@ -1,62 +1,62 @@
 @interface IDSAWDLogging
-- (void)IDSDeviceConnectionForService:(id)a3 wasSuccessful:(BOOL)a4 clientInitTime:(id)a5 clientOpenSocketCompletionTime:(id)a6 daemonOpenSocketTime:(id)a7 daemonOpenSocketCompletionTime:(id)a8 firstPacketReceiveTime:(id)a9 connectionInitTime:(id)a10;
-- (void)IDSGenericConnectionForLink:(unint64_t)a3 connectionSetupStartTime:(id)a4 firstPacketReceiveTime:(id)a5 connectionType:(id)a6 success:(BOOL)a7 errorCode:(id)a8;
-- (void)IDSQRAllocation:(unint64_t)a3 result:(unsigned int)a4 hasRecipientAccepted:(unsigned int)a5 payloadSize:(unsigned int)a6 topic:(id)a7 service:(id)a8;
-- (void)IDSRealTimeEncryptionServiceName:(id)a3 activeParticipants:(int64_t)a4 firstReceivedPacketMKMtimeDelta:(int64_t)a5;
-- (void)IDSRealTimeEncryptionServiceName:(id)a3 activeParticipants:(int64_t)a4 membershipChangeMKMTimeDelta:(int64_t)a5;
-- (void)IDSRealTimeEncryptionServiceName:(id)a3 activeParticipants:(unint64_t)a4 missingPrekeys:(unint64_t)a5;
-- (void)OTRSessionNegotiation:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 result:(unsigned int)a6;
-- (void)_submitRegistrationAccountStatusMetric:(id)a3;
-- (void)clientProcessReceivedMessage:(id)a3 messageSize:(unint64_t)a4 deltaTime:(unint64_t)a5 priority:(unint64_t)a6;
-- (void)messageDeliveredForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 deliveryError:(unint64_t)a7 RTT:(unint64_t)a8 priority:(unint64_t)a9;
-- (void)messageReceivedForService:(id)a3 isFromDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 priority:(int64_t)a7;
-- (void)messageSentForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 priority:(unint64_t)a7;
-- (void)noteMessageReceivedForService:(id)a3 accountType:(id)a4 fromStorage:(BOOL)a5 serverTimestamp:(double)a6 localTimeDelta:(double)a7;
+- (void)IDSDeviceConnectionForService:(id)service wasSuccessful:(BOOL)successful clientInitTime:(id)time clientOpenSocketCompletionTime:(id)completionTime daemonOpenSocketTime:(id)socketTime daemonOpenSocketCompletionTime:(id)socketCompletionTime firstPacketReceiveTime:(id)receiveTime connectionInitTime:(id)self0;
+- (void)IDSGenericConnectionForLink:(unint64_t)link connectionSetupStartTime:(id)time firstPacketReceiveTime:(id)receiveTime connectionType:(id)type success:(BOOL)success errorCode:(id)code;
+- (void)IDSQRAllocation:(unint64_t)allocation result:(unsigned int)result hasRecipientAccepted:(unsigned int)accepted payloadSize:(unsigned int)size topic:(id)topic service:(id)service;
+- (void)IDSRealTimeEncryptionServiceName:(id)name activeParticipants:(int64_t)participants firstReceivedPacketMKMtimeDelta:(int64_t)delta;
+- (void)IDSRealTimeEncryptionServiceName:(id)name activeParticipants:(int64_t)participants membershipChangeMKMTimeDelta:(int64_t)delta;
+- (void)IDSRealTimeEncryptionServiceName:(id)name activeParticipants:(unint64_t)participants missingPrekeys:(unint64_t)prekeys;
+- (void)OTRSessionNegotiation:(id)negotiation priority:(unint64_t)priority duration:(unint64_t)duration result:(unsigned int)result;
+- (void)_submitRegistrationAccountStatusMetric:(id)metric;
+- (void)clientProcessReceivedMessage:(id)message messageSize:(unint64_t)size deltaTime:(unint64_t)time priority:(unint64_t)priority;
+- (void)messageDeliveredForService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type deliveryError:(unint64_t)error RTT:(unint64_t)t priority:(unint64_t)priority;
+- (void)messageReceivedForService:(id)service isFromDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type priority:(int64_t)priority;
+- (void)messageSentForService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type priority:(unint64_t)priority;
+- (void)noteMessageReceivedForService:(id)service accountType:(id)type fromStorage:(BOOL)storage serverTimestamp:(double)timestamp localTimeDelta:(double)delta;
 - (void)queryAndSubmitStatusForAccounts;
-- (void)registrationCompletedForRegistrationType:(int)a3 serviceIdentifier:(id)a4 wasSuccessful:(BOOL)a5 registrationError:(int64_t)a6;
-- (void)sessionAcceptReceivedWithAWDGUID:(id)a3;
-- (void)sessionAcceptSentWithAWDGUID:(id)a3;
-- (void)sessionCancelReceivedWithAWDGUID:(id)a3;
-- (void)sessionCancelSentWithAWDGUID:(id)a3 numberOfRecipients:(id)a4 remoteSessionEndReason:(unsigned int)a5;
-- (void)sessionCompletedWithAWDGUID:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(int64_t)a6 isQREnabled:(BOOL)a7 isUsingQRDirectly:(BOOL)a8 isInitiator:(BOOL)a9 isScreenSharingSessionType:(BOOL)a10 isWithDefaultPairedDevice:(BOOL)a11 transportType:(int64_t)a12 linkType:(unint64_t)a13 linkProtocol:(int64_t)a14 endedReason:(unsigned int)a15 destinationType:(int)a16 durationOfSession:(id)a17 durationToConnect:(id)a18 isNetworkEnabled:(BOOL)a19 isNetworkActive:(BOOL)a20 isNetworkReachable:(BOOL)a21 isWifiInterfaceDisallowed:(BOOL)a22 isCellularInterfaceDisallowed:(BOOL)a23;
-- (void)sessionConnectedWithAWDGUID:(id)a3;
-- (void)sessionDeclineReceivedWithAWDGUID:(id)a3;
-- (void)sessionDeclineSentWithAWDGUID:(id)a3;
-- (void)sessionEndedWithGuid:(id)a3 endedReason:(unsigned int)a4 genericError:(unsigned int)a5 gameKitError:(unsigned int)a6 conferenceMiscError:(unsigned int)a7 callDuration:(id)a8 isNetworkEnabled:(BOOL)a9 isNetworkActive:(BOOL)a10 isNetworkReachable:(BOOL)a11 networkCheckResult:(unsigned int)a12 dataRate:(id)a13 gksError:(id)a14 connectDuration:(id)a15 remoteNetworkConnection:(unsigned int)a16 localNetworkConnection:(unsigned int)a17 connectionType:(unsigned int)a18 usesRelay:(BOOL)a19 currentNATType:(id)a20 remoteNATType:(id)a21 relayConnectDuration:(id)a22 isInitiator:(BOOL)a23 linkQuality:(id)a24 gksReturnCode:(id)a25;
-- (void)sessionInvitationReceivedWithAWDGUID:(id)a3;
-- (void)sessionInvitationSentWithAWDGUID:(id)a3 numberOfRecipients:(id)a4;
-- (void)sessionReinitiateConnectedWithAWDGUID:(id)a3;
-- (void)sessionReinitiateRequestedWithAWDGUID:(id)a3;
-- (void)sessionReinitiateStartedWithAWDGUID:(id)a3;
-- (void)sessionStartedWithAWDGUID:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(int64_t)a6;
-- (void)socketClosedForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 closeError:(unint64_t)a5 socketError:(unint64_t)a6 bytesSent:(unint64_t)a7 packetsSent:(unint64_t)a8 bytesReceived:(unint64_t)a9 packetsReceived:(unint64_t)a10;
-- (void)socketOpenedForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 openError:(unint64_t)a5 socketError:(unint64_t)a6;
-- (void)wifiSetupAttemptType:(unint64_t)a3 duration:(unint64_t)a4 result:(unint64_t)a5 client:(id)a6;
+- (void)registrationCompletedForRegistrationType:(int)type serviceIdentifier:(id)identifier wasSuccessful:(BOOL)successful registrationError:(int64_t)error;
+- (void)sessionAcceptReceivedWithAWDGUID:(id)d;
+- (void)sessionAcceptSentWithAWDGUID:(id)d;
+- (void)sessionCancelReceivedWithAWDGUID:(id)d;
+- (void)sessionCancelSentWithAWDGUID:(id)d numberOfRecipients:(id)recipients remoteSessionEndReason:(unsigned int)reason;
+- (void)sessionCompletedWithAWDGUID:(id)d protocolVersionNumber:(id)number serviceName:(id)name clientType:(int64_t)type isQREnabled:(BOOL)enabled isUsingQRDirectly:(BOOL)directly isInitiator:(BOOL)initiator isScreenSharingSessionType:(BOOL)self0 isWithDefaultPairedDevice:(BOOL)self1 transportType:(int64_t)self2 linkType:(unint64_t)self3 linkProtocol:(int64_t)self4 endedReason:(unsigned int)self5 destinationType:(int)self6 durationOfSession:(id)self7 durationToConnect:(id)self8 isNetworkEnabled:(BOOL)self9 isNetworkActive:(BOOL)active isNetworkReachable:(BOOL)reachable isWifiInterfaceDisallowed:(BOOL)disallowed isCellularInterfaceDisallowed:(BOOL)interfaceDisallowed;
+- (void)sessionConnectedWithAWDGUID:(id)d;
+- (void)sessionDeclineReceivedWithAWDGUID:(id)d;
+- (void)sessionDeclineSentWithAWDGUID:(id)d;
+- (void)sessionEndedWithGuid:(id)guid endedReason:(unsigned int)reason genericError:(unsigned int)error gameKitError:(unsigned int)kitError conferenceMiscError:(unsigned int)miscError callDuration:(id)duration isNetworkEnabled:(BOOL)enabled isNetworkActive:(BOOL)self0 isNetworkReachable:(BOOL)self1 networkCheckResult:(unsigned int)self2 dataRate:(id)self3 gksError:(id)self4 connectDuration:(id)self5 remoteNetworkConnection:(unsigned int)self6 localNetworkConnection:(unsigned int)self7 connectionType:(unsigned int)self8 usesRelay:(BOOL)self9 currentNATType:(id)tType remoteNATType:(id)aTType relayConnectDuration:(id)relayConnectDuration isInitiator:(BOOL)initiator linkQuality:(id)quality gksReturnCode:(id)code;
+- (void)sessionInvitationReceivedWithAWDGUID:(id)d;
+- (void)sessionInvitationSentWithAWDGUID:(id)d numberOfRecipients:(id)recipients;
+- (void)sessionReinitiateConnectedWithAWDGUID:(id)d;
+- (void)sessionReinitiateRequestedWithAWDGUID:(id)d;
+- (void)sessionReinitiateStartedWithAWDGUID:(id)d;
+- (void)sessionStartedWithAWDGUID:(id)d protocolVersionNumber:(id)number serviceName:(id)name clientType:(int64_t)type;
+- (void)socketClosedForService:(id)service isToDefaultPairedDevice:(BOOL)device closeError:(unint64_t)error socketError:(unint64_t)socketError bytesSent:(unint64_t)sent packetsSent:(unint64_t)packetsSent bytesReceived:(unint64_t)received packetsReceived:(unint64_t)self0;
+- (void)socketOpenedForService:(id)service isToDefaultPairedDevice:(BOOL)device openError:(unint64_t)error socketError:(unint64_t)socketError;
+- (void)wifiSetupAttemptType:(unint64_t)type duration:(unint64_t)duration result:(unint64_t)result client:(id)client;
 @end
 
 @implementation IDSAWDLogging
 
-- (void)IDSDeviceConnectionForService:(id)a3 wasSuccessful:(BOOL)a4 clientInitTime:(id)a5 clientOpenSocketCompletionTime:(id)a6 daemonOpenSocketTime:(id)a7 daemonOpenSocketCompletionTime:(id)a8 firstPacketReceiveTime:(id)a9 connectionInitTime:(id)a10
+- (void)IDSDeviceConnectionForService:(id)service wasSuccessful:(BOOL)successful clientInitTime:(id)time clientOpenSocketCompletionTime:(id)completionTime daemonOpenSocketTime:(id)socketTime daemonOpenSocketCompletionTime:(id)socketCompletionTime firstPacketReceiveTime:(id)receiveTime connectionInitTime:(id)self0
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v27 = v17;
-  v28 = v15;
-  v29 = v16;
-  v30 = v18;
-  v31 = a10;
-  v32 = v14;
-  v20 = v14;
-  v21 = v31;
-  v22 = v18;
-  v23 = v19;
-  v24 = v16;
-  v25 = v15;
-  v26 = v17;
+  serviceCopy = service;
+  timeCopy = time;
+  completionTimeCopy = completionTime;
+  socketTimeCopy = socketTime;
+  socketCompletionTimeCopy = socketCompletionTime;
+  receiveTimeCopy = receiveTime;
+  v27 = socketTimeCopy;
+  v28 = timeCopy;
+  v29 = completionTimeCopy;
+  v30 = socketCompletionTimeCopy;
+  initTimeCopy = initTime;
+  v32 = serviceCopy;
+  v20 = serviceCopy;
+  v21 = initTimeCopy;
+  v22 = socketCompletionTimeCopy;
+  v23 = receiveTimeCopy;
+  v24 = completionTimeCopy;
+  v25 = timeCopy;
+  v26 = socketTimeCopy;
   IDSAWDSubmitBlockAsync();
 }
 
@@ -70,7 +70,7 @@
   }
 
   v5 = [v4 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v4, "count"))}];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = +[IDSDServiceController sharedInstance];
   v8 = [v7 serviceWithIdentifier:v3];
@@ -98,7 +98,7 @@
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if ([v16 accountType] == v6)
+        if ([v16 accountType] == integerValue)
         {
           v18 = [IDSDAccountMetrics registrationAccountStatusMetricForAccount:v16];
           [(IDSAWDLogging *)self _submitRegistrationAccountStatusMetric:v18];
@@ -118,336 +118,336 @@
     }
   }
 
-  v17 = [IDSDAccountMetrics registrationAccountStatusMetricForNonexistentAccountWithType:v6 serviceIdentifier:v3];
+  v17 = [IDSDAccountMetrics registrationAccountStatusMetricForNonexistentAccountWithType:integerValue serviceIdentifier:v3];
   [(IDSAWDLogging *)self _submitRegistrationAccountStatusMetric:v17];
 LABEL_13:
 }
 
-- (void)_submitRegistrationAccountStatusMetric:(id)a3
+- (void)_submitRegistrationAccountStatusMetric:(id)metric
 {
-  v4 = a3;
-  v3 = v4;
+  metricCopy = metric;
+  v3 = metricCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)registrationCompletedForRegistrationType:(int)a3 serviceIdentifier:(id)a4 wasSuccessful:(BOOL)a5 registrationError:(int64_t)a6
+- (void)registrationCompletedForRegistrationType:(int)type serviceIdentifier:(id)identifier wasSuccessful:(BOOL)successful registrationError:(int64_t)error
 {
-  v7 = a4;
-  if ([(IDSAWDLogging *)self _shouldSubmitRegistrationCompletedForServiceIdentifier:v7])
+  identifierCopy = identifier;
+  if ([(IDSAWDLogging *)self _shouldSubmitRegistrationCompletedForServiceIdentifier:identifierCopy])
   {
-    v8 = v7;
+    v8 = identifierCopy;
     IDSAWDSubmitBlockAsync();
   }
 }
 
-- (void)IDSGenericConnectionForLink:(unint64_t)a3 connectionSetupStartTime:(id)a4 firstPacketReceiveTime:(id)a5 connectionType:(id)a6 success:(BOOL)a7 errorCode:(id)a8
+- (void)IDSGenericConnectionForLink:(unint64_t)link connectionSetupStartTime:(id)time firstPacketReceiveTime:(id)receiveTime connectionType:(id)type success:(BOOL)success errorCode:(id)code
 {
-  v11 = a4;
-  v16 = a5;
-  v17 = v11;
-  v18 = a6;
-  v19 = a8;
-  v12 = v19;
-  v13 = v18;
-  v14 = v11;
-  v15 = v16;
+  timeCopy = time;
+  receiveTimeCopy = receiveTime;
+  v17 = timeCopy;
+  typeCopy = type;
+  codeCopy = code;
+  v12 = codeCopy;
+  v13 = typeCopy;
+  v14 = timeCopy;
+  v15 = receiveTimeCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionStartedWithAWDGUID:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(int64_t)a6
+- (void)sessionStartedWithAWDGUID:(id)d protocolVersionNumber:(id)number serviceName:(id)name clientType:(int64_t)type
 {
-  v8 = a3;
-  v12 = a4;
-  v13 = a5;
-  v9 = v13;
-  v10 = v12;
-  v11 = v8;
+  dCopy = d;
+  numberCopy = number;
+  nameCopy = name;
+  v9 = nameCopy;
+  v10 = numberCopy;
+  v11 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionInvitationSentWithAWDGUID:(id)a3 numberOfRecipients:(id)a4
+- (void)sessionInvitationSentWithAWDGUID:(id)d numberOfRecipients:(id)recipients
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  dCopy = d;
+  recipientsCopy = recipients;
+  v5 = recipientsCopy;
+  v6 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionInvitationReceivedWithAWDGUID:(id)a3
+- (void)sessionInvitationReceivedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionCancelSentWithAWDGUID:(id)a3 numberOfRecipients:(id)a4 remoteSessionEndReason:(unsigned int)a5
+- (void)sessionCancelSentWithAWDGUID:(id)d numberOfRecipients:(id)recipients remoteSessionEndReason:(unsigned int)reason
 {
-  v6 = a3;
-  v9 = a4;
-  v7 = v9;
-  v8 = v6;
+  dCopy = d;
+  recipientsCopy = recipients;
+  v7 = recipientsCopy;
+  v8 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionCancelReceivedWithAWDGUID:(id)a3
+- (void)sessionCancelReceivedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionDeclineSentWithAWDGUID:(id)a3
+- (void)sessionDeclineSentWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionDeclineReceivedWithAWDGUID:(id)a3
+- (void)sessionDeclineReceivedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionAcceptSentWithAWDGUID:(id)a3
+- (void)sessionAcceptSentWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionAcceptReceivedWithAWDGUID:(id)a3
+- (void)sessionAcceptReceivedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionConnectedWithAWDGUID:(id)a3
+- (void)sessionConnectedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionReinitiateRequestedWithAWDGUID:(id)a3
+- (void)sessionReinitiateRequestedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionReinitiateStartedWithAWDGUID:(id)a3
+- (void)sessionReinitiateStartedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionReinitiateConnectedWithAWDGUID:(id)a3
+- (void)sessionReinitiateConnectedWithAWDGUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionCompletedWithAWDGUID:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(int64_t)a6 isQREnabled:(BOOL)a7 isUsingQRDirectly:(BOOL)a8 isInitiator:(BOOL)a9 isScreenSharingSessionType:(BOOL)a10 isWithDefaultPairedDevice:(BOOL)a11 transportType:(int64_t)a12 linkType:(unint64_t)a13 linkProtocol:(int64_t)a14 endedReason:(unsigned int)a15 destinationType:(int)a16 durationOfSession:(id)a17 durationToConnect:(id)a18 isNetworkEnabled:(BOOL)a19 isNetworkActive:(BOOL)a20 isNetworkReachable:(BOOL)a21 isWifiInterfaceDisallowed:(BOOL)a22 isCellularInterfaceDisallowed:(BOOL)a23
+- (void)sessionCompletedWithAWDGUID:(id)d protocolVersionNumber:(id)number serviceName:(id)name clientType:(int64_t)type isQREnabled:(BOOL)enabled isUsingQRDirectly:(BOOL)directly isInitiator:(BOOL)initiator isScreenSharingSessionType:(BOOL)self0 isWithDefaultPairedDevice:(BOOL)self1 transportType:(int64_t)self2 linkType:(unint64_t)self3 linkProtocol:(int64_t)self4 endedReason:(unsigned int)self5 destinationType:(int)self6 durationOfSession:(id)self7 durationToConnect:(id)self8 isNetworkEnabled:(BOOL)self9 isNetworkActive:(BOOL)active isNetworkReachable:(BOOL)reachable isWifiInterfaceDisallowed:(BOOL)disallowed isCellularInterfaceDisallowed:(BOOL)interfaceDisallowed
 {
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v33 = a17;
-  v34 = a18;
-  v35 = v25;
-  v28 = v27;
-  v29 = v26;
-  v30 = v25;
-  v31 = v34;
-  v32 = v33;
+  dCopy = d;
+  numberCopy = number;
+  nameCopy = name;
+  sessionCopy = session;
+  connectCopy = connect;
+  v35 = dCopy;
+  v28 = nameCopy;
+  v29 = numberCopy;
+  v30 = dCopy;
+  v31 = connectCopy;
+  v32 = sessionCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)sessionEndedWithGuid:(id)a3 endedReason:(unsigned int)a4 genericError:(unsigned int)a5 gameKitError:(unsigned int)a6 conferenceMiscError:(unsigned int)a7 callDuration:(id)a8 isNetworkEnabled:(BOOL)a9 isNetworkActive:(BOOL)a10 isNetworkReachable:(BOOL)a11 networkCheckResult:(unsigned int)a12 dataRate:(id)a13 gksError:(id)a14 connectDuration:(id)a15 remoteNetworkConnection:(unsigned int)a16 localNetworkConnection:(unsigned int)a17 connectionType:(unsigned int)a18 usesRelay:(BOOL)a19 currentNATType:(id)a20 remoteNATType:(id)a21 relayConnectDuration:(id)a22 isInitiator:(BOOL)a23 linkQuality:(id)a24 gksReturnCode:(id)a25
+- (void)sessionEndedWithGuid:(id)guid endedReason:(unsigned int)reason genericError:(unsigned int)error gameKitError:(unsigned int)kitError conferenceMiscError:(unsigned int)miscError callDuration:(id)duration isNetworkEnabled:(BOOL)enabled isNetworkActive:(BOOL)self0 isNetworkReachable:(BOOL)self1 networkCheckResult:(unsigned int)self2 dataRate:(id)self3 gksError:(id)self4 connectDuration:(id)self5 remoteNetworkConnection:(unsigned int)self6 localNetworkConnection:(unsigned int)self7 connectionType:(unsigned int)self8 usesRelay:(BOOL)self9 currentNATType:(id)tType remoteNATType:(id)aTType relayConnectDuration:(id)relayConnectDuration isInitiator:(BOOL)initiator linkQuality:(id)quality gksReturnCode:(id)code
 {
-  v40 = a3;
-  v26 = a8;
-  v27 = a13;
-  v28 = a14;
-  v29 = a15;
-  v30 = a20;
-  v31 = a21;
-  v43 = v26;
-  v44 = v27;
-  v45 = v28;
-  v46 = v29;
-  v47 = a22;
-  v48 = a24;
-  v49 = a25;
-  v42 = v49;
-  v41 = v48;
-  v32 = v47;
-  v33 = v31;
-  v34 = v30;
-  v35 = v29;
-  v36 = v28;
-  v37 = v27;
-  v38 = v26;
-  v39 = v40;
+  guidCopy = guid;
+  durationCopy = duration;
+  rateCopy = rate;
+  gksErrorCopy = gksError;
+  connectDurationCopy = connectDuration;
+  tTypeCopy = tType;
+  aTTypeCopy = aTType;
+  v43 = durationCopy;
+  v44 = rateCopy;
+  v45 = gksErrorCopy;
+  v46 = connectDurationCopy;
+  relayConnectDurationCopy = relayConnectDuration;
+  qualityCopy = quality;
+  codeCopy = code;
+  v42 = codeCopy;
+  v41 = qualityCopy;
+  v32 = relayConnectDurationCopy;
+  v33 = aTTypeCopy;
+  v34 = tTypeCopy;
+  v35 = connectDurationCopy;
+  v36 = gksErrorCopy;
+  v37 = rateCopy;
+  v38 = durationCopy;
+  v39 = guidCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)IDSRealTimeEncryptionServiceName:(id)a3 activeParticipants:(unint64_t)a4 missingPrekeys:(unint64_t)a5
+- (void)IDSRealTimeEncryptionServiceName:(id)name activeParticipants:(unint64_t)participants missingPrekeys:(unint64_t)prekeys
 {
-  v6 = a3;
-  v5 = v6;
+  nameCopy = name;
+  v5 = nameCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)IDSRealTimeEncryptionServiceName:(id)a3 activeParticipants:(int64_t)a4 firstReceivedPacketMKMtimeDelta:(int64_t)a5
+- (void)IDSRealTimeEncryptionServiceName:(id)name activeParticipants:(int64_t)participants firstReceivedPacketMKMtimeDelta:(int64_t)delta
 {
-  v6 = a3;
-  v5 = v6;
+  nameCopy = name;
+  v5 = nameCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)IDSRealTimeEncryptionServiceName:(id)a3 activeParticipants:(int64_t)a4 membershipChangeMKMTimeDelta:(int64_t)a5
+- (void)IDSRealTimeEncryptionServiceName:(id)name activeParticipants:(int64_t)participants membershipChangeMKMTimeDelta:(int64_t)delta
 {
-  v6 = a3;
-  v5 = v6;
+  nameCopy = name;
+  v5 = nameCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)messageSentForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 priority:(unint64_t)a7
+- (void)messageSentForService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type priority:(unint64_t)priority
 {
-  v10 = a4;
-  v11 = a3;
-  LOBYTE(v18) = v10;
-  v16 = v11;
-  v17 = a7;
+  deviceCopy = device;
+  serviceCopy = service;
+  LOBYTE(v18) = deviceCopy;
+  v16 = serviceCopy;
+  priorityCopy = priority;
   IDSAWDSubmitBlockAsync();
-  if (v10)
+  if (deviceCopy)
   {
     v12 = objc_alloc_init(IDSWRMMetricContainer);
     v13 = v12;
     if (v12)
     {
-      [v12 setMessageSentSize:{a5, _NSConcreteStackBlock, 3221225472, sub_100608AE4, &unk_100BE2128, self, v11, a5, a6, v17, v18}];
+      [v12 setMessageSentSize:{size, _NSConcreteStackBlock, 3221225472, sub_100608AE4, &unk_100BE2128, self, serviceCopy, size, type, priorityCopy, v18}];
       v14 = +[IDSWRMExchange sharedInstance];
       [v14 submitMetric:v13];
     }
   }
 }
 
-- (void)clientProcessReceivedMessage:(id)a3 messageSize:(unint64_t)a4 deltaTime:(unint64_t)a5 priority:(unint64_t)a6
+- (void)clientProcessReceivedMessage:(id)message messageSize:(unint64_t)size deltaTime:(unint64_t)time priority:(unint64_t)priority
 {
-  v7 = a3;
-  v6 = v7;
+  messageCopy = message;
+  v6 = messageCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)messageDeliveredForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 deliveryError:(unint64_t)a7 RTT:(unint64_t)a8 priority:(unint64_t)a9
+- (void)messageDeliveredForService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type deliveryError:(unint64_t)error RTT:(unint64_t)t priority:(unint64_t)priority
 {
-  v13 = a4;
-  v14 = a3;
-  LOBYTE(v21) = v13;
-  v19 = v14;
-  v20 = a6;
+  deviceCopy = device;
+  serviceCopy = service;
+  LOBYTE(v21) = deviceCopy;
+  v19 = serviceCopy;
+  typeCopy = type;
   IDSAWDSubmitBlockAsync();
-  if (v13)
+  if (deviceCopy)
   {
     v15 = objc_alloc_init(IDSWRMMetricContainer);
     v16 = v15;
     if (v15)
     {
-      [v15 setMessageDeliveredSize:{a5, _NSConcreteStackBlock, 3221225472, sub_100608E64, &unk_100BE2178, self, v14, a5, v20, a7, a8, a9, v21}];
-      [v16 setMessageDeliveredDeliveryError:a7];
-      [v16 setMessageDeliveredRTT:a8];
+      [v15 setMessageDeliveredSize:{size, _NSConcreteStackBlock, 3221225472, sub_100608E64, &unk_100BE2178, self, serviceCopy, size, typeCopy, error, t, priority, v21}];
+      [v16 setMessageDeliveredDeliveryError:error];
+      [v16 setMessageDeliveredRTT:t];
       v17 = +[IDSWRMExchange sharedInstance];
       [v17 submitMetric:v16];
     }
   }
 }
 
-- (void)messageReceivedForService:(id)a3 isFromDefaultPairedDevice:(BOOL)a4 messageSize:(unint64_t)a5 linkType:(unint64_t)a6 priority:(int64_t)a7
+- (void)messageReceivedForService:(id)service isFromDefaultPairedDevice:(BOOL)device messageSize:(unint64_t)size linkType:(unint64_t)type priority:(int64_t)priority
 {
-  v10 = a4;
-  v11 = a3;
-  LOBYTE(v18) = v10;
-  v16 = v11;
-  v17 = a7;
+  deviceCopy = device;
+  serviceCopy = service;
+  LOBYTE(v18) = deviceCopy;
+  v16 = serviceCopy;
+  priorityCopy = priority;
   IDSAWDSubmitBlockAsync();
-  if (v10)
+  if (deviceCopy)
   {
     v12 = objc_alloc_init(IDSWRMMetricContainer);
     v13 = v12;
     if (v12)
     {
-      [v12 setMessageReceivedSize:{a5, _NSConcreteStackBlock, 3221225472, sub_100609054, &unk_100BE2128, self, v11, a5, a6, v17, v18}];
+      [v12 setMessageReceivedSize:{size, _NSConcreteStackBlock, 3221225472, sub_100609054, &unk_100BE2128, self, serviceCopy, size, type, priorityCopy, v18}];
       v14 = +[IDSWRMExchange sharedInstance];
       [v14 submitMetric:v13];
     }
   }
 }
 
-- (void)socketOpenedForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 openError:(unint64_t)a5 socketError:(unint64_t)a6
+- (void)socketOpenedForService:(id)service isToDefaultPairedDevice:(BOOL)device openError:(unint64_t)error socketError:(unint64_t)socketError
 {
-  v7 = a3;
-  v6 = v7;
+  serviceCopy = service;
+  v6 = serviceCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)socketClosedForService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 closeError:(unint64_t)a5 socketError:(unint64_t)a6 bytesSent:(unint64_t)a7 packetsSent:(unint64_t)a8 bytesReceived:(unint64_t)a9 packetsReceived:(unint64_t)a10
+- (void)socketClosedForService:(id)service isToDefaultPairedDevice:(BOOL)device closeError:(unint64_t)error socketError:(unint64_t)socketError bytesSent:(unint64_t)sent packetsSent:(unint64_t)packetsSent bytesReceived:(unint64_t)received packetsReceived:(unint64_t)self0
 {
-  v12 = a4;
-  v13 = a3;
+  deviceCopy = device;
+  serviceCopy = service;
   IDSAWDSubmitBlockAsync();
-  if (v12)
+  if (deviceCopy)
   {
     v14 = objc_alloc_init(IDSWRMMetricContainer);
     v15 = v14;
     if (v14)
     {
-      [v14 setStreamBytesSent:a7];
-      [v15 setStreamPacketsSent:a8];
-      [v15 setStreamBytesReceived:a9];
-      [v15 setStreamPacketsReceived:a10];
+      [v14 setStreamBytesSent:sent];
+      [v15 setStreamPacketsSent:packetsSent];
+      [v15 setStreamBytesReceived:received];
+      [v15 setStreamPacketsReceived:packetsReceived];
       v16 = +[IDSWRMExchange sharedInstance];
       [v16 submitMetric:v15];
     }
   }
 }
 
-- (void)wifiSetupAttemptType:(unint64_t)a3 duration:(unint64_t)a4 result:(unint64_t)a5 client:(id)a6
+- (void)wifiSetupAttemptType:(unint64_t)type duration:(unint64_t)duration result:(unint64_t)result client:(id)client
 {
-  v7 = a6;
-  v6 = v7;
+  clientCopy = client;
+  v6 = clientCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)OTRSessionNegotiation:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 result:(unsigned int)a6
+- (void)OTRSessionNegotiation:(id)negotiation priority:(unint64_t)priority duration:(unint64_t)duration result:(unsigned int)result
 {
-  v7 = a3;
-  v6 = v7;
+  negotiationCopy = negotiation;
+  v6 = negotiationCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)IDSQRAllocation:(unint64_t)a3 result:(unsigned int)a4 hasRecipientAccepted:(unsigned int)a5 payloadSize:(unsigned int)a6 topic:(id)a7 service:(id)a8
+- (void)IDSQRAllocation:(unint64_t)allocation result:(unsigned int)result hasRecipientAccepted:(unsigned int)accepted payloadSize:(unsigned int)size topic:(id)topic service:(id)service
 {
-  v9 = a7;
-  v12 = a8;
-  v10 = v12;
-  v11 = v9;
+  topicCopy = topic;
+  serviceCopy = service;
+  v10 = serviceCopy;
+  v11 = topicCopy;
   IDSAWDSubmitBlockAsync();
 }
 
-- (void)noteMessageReceivedForService:(id)a3 accountType:(id)a4 fromStorage:(BOOL)a5 serverTimestamp:(double)a6 localTimeDelta:(double)a7
+- (void)noteMessageReceivedForService:(id)service accountType:(id)type fromStorage:(BOOL)storage serverTimestamp:(double)timestamp localTimeDelta:(double)delta
 {
-  v8 = a3;
-  v11 = a4;
-  v9 = v11;
-  v10 = v8;
+  serviceCopy = service;
+  typeCopy = type;
+  v9 = typeCopy;
+  v10 = serviceCopy;
   IDSAWDSubmitBlockAsync();
 }
 

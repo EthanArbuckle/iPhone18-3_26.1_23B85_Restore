@@ -1,10 +1,10 @@
 @interface AccountTransferAuthorizationController
 - (_TtC9PassKitUI38AccountTransferAuthorizationController)init;
-- (void)accountChanged:(id)a3;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationController:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
-- (void)transactionsChanged:(id)a3;
+- (void)accountChanged:(id)changed;
+- (void)paymentAuthorizationController:(id)controller didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler;
+- (void)paymentAuthorizationController:(id)controller didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
+- (void)transactionsChanged:(id)changed;
 @end
 
 @implementation AccountTransferAuthorizationController
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -27,17 +27,17 @@
   v9[2] = sub_1BD126964;
   v9[3] = &block_descriptor_89_0;
   v6 = _Block_copy(v9);
-  v7 = a3;
-  v8 = self;
+  finishCopy = finish;
+  selfCopy = self;
 
-  [v7 dismissWithCompletion_];
+  [finishCopy dismissWithCompletion_];
 
   _Block_release(v6);
 }
 
-- (void)paymentAuthorizationController:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -50,16 +50,16 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_1BD56DC14(a4, v8, v9);
+  controllerCopy = controller;
+  methodCopy = method;
+  selfCopy = self;
+  sub_1BD56DC14(method, v8, v9);
   sub_1BD0D4744(v8);
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -72,24 +72,24 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_1BD56E334(a4, v8, v9);
+  controllerCopy = controller;
+  signatureCopy = signature;
+  selfCopy = self;
+  sub_1BD56E334(signature, v8, v9);
   sub_1BD0D4744(v8);
 }
 
-- (void)transactionsChanged:(id)a3
+- (void)transactionsChanged:(id)changed
 {
   *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI38AccountTransferAuthorizationController_hasReceivedTransaction) = 1;
-  v3 = self;
+  selfCopy = self;
   sub_1BD56D7A8();
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_1BD56E580();
 }
 

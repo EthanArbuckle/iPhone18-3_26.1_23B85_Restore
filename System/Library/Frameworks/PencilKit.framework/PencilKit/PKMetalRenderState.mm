@@ -1,63 +1,63 @@
 @interface PKMetalRenderState
 - (id)commandBufferCreateIfNecessary;
 - (id)computeCommandBufferCreateIfNecessary;
-- (id)initWithCommandQueue:(char)a3 liveRendering:(void *)a4 defaultPipelineConfig:;
+- (id)initWithCommandQueue:(char)queue liveRendering:(void *)rendering defaultPipelineConfig:;
 - (id)lastCommandBuffer;
 - (id)maskCommandBufferCreateIfNecessary;
 - (uint64_t)pipelineConfig;
-- (void)addCommandBuffer:(uint64_t)a1;
-- (void)addPurgeableFramebuffer:(uint64_t)a1;
-- (void)commitAndPurgeResourceSet:(uint64_t)a1;
+- (void)addCommandBuffer:(uint64_t)buffer;
+- (void)addPurgeableFramebuffer:(uint64_t)framebuffer;
+- (void)commitAndPurgeResourceSet:(uint64_t)set;
 - (void)dealloc;
-- (void)extendLifetimeUntilCompleted:(uint64_t)a1;
-- (void)pushDebugGroup:(uint64_t)a1;
-- (void)setComputeEncoder:(uint64_t)a1;
-- (void)setDestinationTexture:(uint64_t)a1;
-- (void)setMaskRenderEncoder:(uint64_t)a1;
-- (void)setMultiplyDestinationTexture:(uint64_t)a1;
-- (void)setRenderEncoder:(uint64_t)a1;
-- (void)setSixChannelContentTexture:(uint64_t)a1;
+- (void)extendLifetimeUntilCompleted:(uint64_t)completed;
+- (void)pushDebugGroup:(uint64_t)group;
+- (void)setComputeEncoder:(uint64_t)encoder;
+- (void)setDestinationTexture:(uint64_t)texture;
+- (void)setMaskRenderEncoder:(uint64_t)encoder;
+- (void)setMultiplyDestinationTexture:(uint64_t)texture;
+- (void)setRenderEncoder:(uint64_t)encoder;
+- (void)setSixChannelContentTexture:(uint64_t)texture;
 @end
 
 @implementation PKMetalRenderState
 
-- (id)initWithCommandQueue:(char)a3 liveRendering:(void *)a4 defaultPipelineConfig:
+- (id)initWithCommandQueue:(char)queue liveRendering:(void *)rendering defaultPipelineConfig:
 {
   v8 = a2;
-  if (a1)
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = PKMetalRenderState;
     v9 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
-      *(v9 + 40) = a3;
+      *(v9 + 40) = queue;
       objc_storeStrong(v9 + 6, a2);
-      *(a1 + 8) = xmmword_1C801CB00;
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = a1[1];
-      a1[1] = v10;
+      *(self + 8) = xmmword_1C801CB00;
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = self[1];
+      self[1] = array;
 
       v12 = [MEMORY[0x1E695DFA8] set];
-      v13 = a1[3];
-      a1[3] = v12;
+      v13 = self[3];
+      self[3] = v12;
 
       v14 = MEMORY[0x1E695EFD0];
       v15 = *(MEMORY[0x1E695EFD0] + 16);
-      *(a1 + 13) = *MEMORY[0x1E695EFD0];
-      *(a1 + 14) = v15;
-      *(a1 + 15) = *(v14 + 32);
+      *(self + 13) = *MEMORY[0x1E695EFD0];
+      *(self + 14) = v15;
+      *(self + 15) = *(v14 + 32);
       v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:8];
-      v17 = a1[2];
-      a1[2] = v16;
+      v17 = self[2];
+      self[2] = v16;
 
-      a1[21] = 1;
-      a1[4] = a4;
+      self[21] = 1;
+      self[4] = rendering;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -99,124 +99,124 @@
 
 - (id)commandBufferCreateIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[7];
+    selfCopy = self;
+    v3 = self[7];
     if (!v3)
     {
-      v4 = [a1[6] commandBuffer];
-      v5 = v2[7];
-      v2[7] = v4;
+      commandBuffer = [self[6] commandBuffer];
+      v5 = selfCopy[7];
+      selfCopy[7] = commandBuffer;
 
-      [v2[7] setLabel:@"Main render command buffer"];
-      v3 = v2[7];
+      [selfCopy[7] setLabel:@"Main render command buffer"];
+      v3 = selfCopy[7];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)computeCommandBufferCreateIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[8];
+    selfCopy = self;
+    v3 = self[8];
     if (!v3)
     {
-      v4 = [a1[6] commandBuffer];
-      v5 = v2[8];
-      v2[8] = v4;
+      commandBuffer = [self[6] commandBuffer];
+      v5 = selfCopy[8];
+      selfCopy[8] = commandBuffer;
 
-      [v2[8] setLabel:@"Compute command buffer"];
-      v3 = v2[8];
+      [selfCopy[8] setLabel:@"Compute command buffer"];
+      v3 = selfCopy[8];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)maskCommandBufferCreateIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[9];
+    selfCopy = self;
+    v3 = self[9];
     if (!v3)
     {
-      v4 = [a1[6] commandBuffer];
-      v5 = v2[9];
-      v2[9] = v4;
+      commandBuffer = [self[6] commandBuffer];
+      v5 = selfCopy[9];
+      selfCopy[9] = commandBuffer;
 
-      [v2[9] setLabel:@"Mask command buffer"];
-      v3 = v2[9];
+      [selfCopy[9] setLabel:@"Mask command buffer"];
+      v3 = selfCopy[9];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)commitAndPurgeResourceSet:(uint64_t)a1
+- (void)commitAndPurgeResourceSet:(uint64_t)set
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (set)
   {
-    [objc_opt_class() renderTargetBarrierForRenderEncoder:*(a1 + 80)];
-    v4 = *(a1 + 96);
+    [objc_opt_class() renderTargetBarrierForRenderEncoder:*(set + 80)];
+    v4 = *(set + 96);
     [v4 endEncoding];
-    v5 = *(a1 + 96);
-    *(a1 + 96) = 0;
+    v5 = *(set + 96);
+    *(set + 96) = 0;
 
-    [*(a1 + 72) enqueue];
-    [*(a1 + 72) commit];
-    v6 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    [*(set + 72) enqueue];
+    [*(set + 72) commit];
+    v6 = *(set + 72);
+    *(set + 72) = 0;
 
-    [*(a1 + 88) endEncoding];
-    v7 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    [*(set + 88) endEncoding];
+    v7 = *(set + 88);
+    *(set + 88) = 0;
 
-    [*(a1 + 64) enqueue];
-    [*(a1 + 64) commit];
-    v8 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    [*(set + 64) enqueue];
+    [*(set + 64) commit];
+    v8 = *(set + 64);
+    *(set + 64) = 0;
 
-    [*(a1 + 80) endEncoding];
-    v9 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    [*(set + 80) endEncoding];
+    v9 = *(set + 80);
+    *(set + 80) = 0;
 
-    if ([*(a1 + 8) count])
+    if ([*(set + 8) count])
     {
-      v10 = [*(a1 + 8) lastObject];
+      lastObject = [*(set + 8) lastObject];
     }
 
     else
     {
-      v10 = *(a1 + 56);
+      lastObject = *(set + 56);
     }
 
-    v11 = v10;
-    v12 = [*(a1 + 16) allObjects];
-    [*(a1 + 16) removeAllObjects];
+    v11 = lastObject;
+    allObjects = [*(set + 16) allObjects];
+    [*(set + 16) removeAllObjects];
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
     v32 = __Block_byref_object_copy__6;
     v33 = __Block_byref_object_dispose__6;
-    v34 = [*(a1 + 24) copy];
-    [*(a1 + 24) removeAllObjects];
-    if ([v3 count] || objc_msgSend(v12, "count") || objc_msgSend(v30[5], "count"))
+    v34 = [*(set + 24) copy];
+    [*(set + 24) removeAllObjects];
+    if ([v3 count] || objc_msgSend(allObjects, "count") || objc_msgSend(v30[5], "count"))
     {
       v13 = [v3 copy];
       v25[0] = MEMORY[0x1E69E9820];
@@ -224,23 +224,23 @@
       v25[2] = __48__PKMetalRenderState_commitAndPurgeResourceSet___block_invoke;
       v25[3] = &unk_1E82D8080;
       v26 = v13;
-      v27 = v12;
+      v27 = allObjects;
       v28 = &v29;
       v14 = v13;
       [v11 addCompletedHandler:v25];
     }
 
-    [*(a1 + 56) enqueue];
-    [*(a1 + 56) commit];
-    v15 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    [*(set + 56) enqueue];
+    [*(set + 56) commit];
+    v15 = *(set + 56);
+    *(set + 56) = 0;
 
-    *(a1 + 104) = 0;
+    *(set + 104) = 0;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v16 = *(a1 + 8);
+    v16 = *(set + 8);
     v17 = [v16 countByEnumeratingWithState:&v21 objects:v35 count:16];
     if (v17)
     {
@@ -265,13 +265,13 @@
       while (v17);
     }
 
-    [*(a1 + 8) removeAllObjects];
+    [*(set + 8) removeAllObjects];
     if (v4)
     {
       [v11 waitUntilScheduled];
     }
 
-    if (*(a1 + 41) == 1)
+    if (*(set + 41) == 1)
     {
       [v11 waitUntilCompleted];
     }
@@ -346,21 +346,21 @@ void __48__PKMetalRenderState_commitAndPurgeResourceSet___block_invoke(uint64_t 
   *(v10 + 40) = 0;
 }
 
-- (void)addCommandBuffer:(uint64_t)a1
+- (void)addCommandBuffer:(uint64_t)buffer
 {
   v3 = a2;
-  if (a1)
+  if (buffer)
   {
-    if (*(a1 + 56))
+    if (*(buffer + 56))
     {
-      [*(a1 + 8) addObject:v3];
+      [*(buffer + 8) addObject:v3];
     }
 
     else
     {
       [v3 enqueue];
       [v3 commit];
-      if (*(a1 + 41) == 1)
+      if (*(buffer + 41) == 1)
       {
         [v3 waitUntilCompleted];
       }
@@ -370,36 +370,36 @@ void __48__PKMetalRenderState_commitAndPurgeResourceSet___block_invoke(uint64_t 
 
 - (id)lastCommandBuffer
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1[1] count])
+    selfCopy = self;
+    if ([self[1] count])
     {
-      a1 = [v2[1] lastObject];
+      self = [selfCopy[1] lastObject];
     }
 
     else
     {
-      a1 = v2[7];
+      self = selfCopy[7];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)addPurgeableFramebuffer:(uint64_t)a1
+- (void)addPurgeableFramebuffer:(uint64_t)framebuffer
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (framebuffer)
   {
     if (v3)
     {
-      if (([*(a1 + 16) containsObject:v3] & 1) == 0)
+      if (([*(framebuffer + 16) containsObject:v3] & 1) == 0)
       {
-        [*(a1 + 16) addObject:v4];
+        [*(framebuffer + 16) addObject:v4];
         [(PKMetalFramebuffer *)v4 incrementNonPurgeableCount];
       }
     }
@@ -416,36 +416,36 @@ void __48__PKMetalRenderState_commitAndPurgeResourceSet___block_invoke(uint64_t 
   }
 }
 
-- (void)extendLifetimeUntilCompleted:(uint64_t)a1
+- (void)extendLifetimeUntilCompleted:(uint64_t)completed
 {
   v3 = a2;
-  if (a1)
+  if (completed)
   {
-    [*(a1 + 24) addObject:v3];
+    [*(completed + 24) addObject:v3];
   }
 }
 
-- (void)pushDebugGroup:(uint64_t)a1
+- (void)pushDebugGroup:(uint64_t)group
 {
   v3 = a2;
-  if (a1)
+  if (group)
   {
-    [*(a1 + 80) pushDebugGroup:v3];
+    [*(group + 80) pushDebugGroup:v3];
   }
 }
 
-- (void)setRenderEncoder:(uint64_t)a1
+- (void)setRenderEncoder:(uint64_t)encoder
 {
   v4 = a2;
-  if (a1)
+  if (encoder)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((encoder + 80), a2);
     if (v4)
     {
-      if (*(a1 + 192) && *(a1 + 200))
+      if (*(encoder + 192) && *(encoder + 200))
       {
-        v5 = *(a1 + 192);
-        v6[0] = *(a1 + 176);
+        v5 = *(encoder + 192);
+        v6[0] = *(encoder + 176);
         v6[1] = v5;
         [v4 setScissorRect:v6];
       }
@@ -455,25 +455,25 @@ void __48__PKMetalRenderState_commitAndPurgeResourceSet___block_invoke(uint64_t 
 
 - (uint64_t)pipelineConfig
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*(a1 + 45) == 1)
+  if (*(self + 45) == 1)
   {
     __b = 0;
-    v1 = 2 * *(a1 + 168);
+    v1 = 2 * *(self + 168);
     if (v1)
     {
-      memset(&__b, *(a1 + 33), v1);
+      memset(&__b, *(self + 33), v1);
     }
   }
 
   else
   {
-    v2 = *(a1 + 168);
-    v3 = *(a1 + 32);
+    v2 = *(self + 168);
+    v3 = *(self + 32);
     __b = v3;
     if (v2 == 2)
     {
@@ -485,43 +485,43 @@ void __48__PKMetalRenderState_commitAndPurgeResourceSet___block_invoke(uint64_t 
   return __b;
 }
 
-- (void)setComputeEncoder:(uint64_t)a1
+- (void)setComputeEncoder:(uint64_t)encoder
 {
-  if (a1)
+  if (encoder)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((encoder + 88), a2);
   }
 }
 
-- (void)setMaskRenderEncoder:(uint64_t)a1
+- (void)setMaskRenderEncoder:(uint64_t)encoder
 {
-  if (a1)
+  if (encoder)
   {
-    objc_storeStrong((a1 + 96), a2);
+    objc_storeStrong((encoder + 96), a2);
   }
 }
 
-- (void)setDestinationTexture:(uint64_t)a1
+- (void)setDestinationTexture:(uint64_t)texture
 {
-  if (a1)
+  if (texture)
   {
-    objc_storeStrong((a1 + 112), a2);
+    objc_storeStrong((texture + 112), a2);
   }
 }
 
-- (void)setMultiplyDestinationTexture:(uint64_t)a1
+- (void)setMultiplyDestinationTexture:(uint64_t)texture
 {
-  if (a1)
+  if (texture)
   {
-    objc_storeStrong((a1 + 120), a2);
+    objc_storeStrong((texture + 120), a2);
   }
 }
 
-- (void)setSixChannelContentTexture:(uint64_t)a1
+- (void)setSixChannelContentTexture:(uint64_t)texture
 {
-  if (a1)
+  if (texture)
   {
-    objc_storeStrong((a1 + 160), a2);
+    objc_storeStrong((texture + 160), a2);
   }
 }
 

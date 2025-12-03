@@ -1,13 +1,13 @@
 @interface PNTextEmbeddingResultWithBiasScale
-- (PNTextEmbeddingResultWithBiasScale)initWithEmbedding:(id)a3 calibrationVersion:(id)a4 bias:(id)a5 scale:(id)a6;
-- (id)calibratedScoreForImageSearchWithBaseScore:(id)a3;
+- (PNTextEmbeddingResultWithBiasScale)initWithEmbedding:(id)embedding calibrationVersion:(id)version bias:(id)bias scale:(id)scale;
+- (id)calibratedScoreForImageSearchWithBaseScore:(id)score;
 @end
 
 @implementation PNTextEmbeddingResultWithBiasScale
 
-- (id)calibratedScoreForImageSearchWithBaseScore:(id)a3
+- (id)calibratedScoreForImageSearchWithBaseScore:(id)score
 {
-  [a3 doubleValue];
+  [score doubleValue];
   v5 = v4;
   v6 = log(v4);
   v7 = v6 - log(1.0 - v5);
@@ -20,22 +20,22 @@
   return [v12 numberWithDouble:v11];
 }
 
-- (PNTextEmbeddingResultWithBiasScale)initWithEmbedding:(id)a3 calibrationVersion:(id)a4 bias:(id)a5 scale:(id)a6
+- (PNTextEmbeddingResultWithBiasScale)initWithEmbedding:(id)embedding calibrationVersion:(id)version bias:(id)bias scale:(id)scale
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  embeddingCopy = embedding;
+  versionCopy = version;
+  biasCopy = bias;
+  scaleCopy = scale;
   v18.receiver = self;
   v18.super_class = PNTextEmbeddingResultWithBiasScale;
   v15 = [(PNTextEmbeddingResultWithBiasScale *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_embedding, a3);
-    objc_storeStrong(&v16->_calibrationVersion, a4);
-    objc_storeStrong(&v16->_bias, a5);
-    objc_storeStrong(&v16->_scale, a6);
+    objc_storeStrong(&v15->_embedding, embedding);
+    objc_storeStrong(&v16->_calibrationVersion, version);
+    objc_storeStrong(&v16->_bias, bias);
+    objc_storeStrong(&v16->_scale, scale);
   }
 
   return v16;

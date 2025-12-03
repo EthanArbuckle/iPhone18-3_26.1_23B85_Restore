@@ -1,14 +1,14 @@
 @interface MPSConvolutionDataSourceWrapper
-+ (id)wrapperForDataSource:(id)a3;
-- (BOOL)appendBatchNorm:(id)a3;
-- (BOOL)appendNeuron:(const NeuronInfo *)a3;
-- (BOOL)appendNeuronDescriptor:(id)a3;
++ (id)wrapperForDataSource:(id)source;
+- (BOOL)appendBatchNorm:(id)norm;
+- (BOOL)appendNeuron:(const NeuronInfo *)neuron;
+- (BOOL)appendNeuronDescriptor:(id)descriptor;
 - (BOOL)load;
-- (MPSConvolutionDataSourceWrapper)initWithDataSource:(id)a3;
+- (MPSConvolutionDataSourceWrapper)initWithDataSource:(id)source;
 - (NSString)debugDescription;
 - (NeuronInfo)neuronInfo;
 - (float)biasTerms;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptor;
 - (void)dealloc;
 - (void)initialize;
@@ -18,10 +18,10 @@
 
 @implementation MPSConvolutionDataSourceWrapper
 
-+ (id)wrapperForDataSource:(id)a3
++ (id)wrapperForDataSource:(id)source
 {
   v4 = objc_opt_class();
-  if (objc_msgSend_conformsToProtocol_(a3, v5, &unk_284D09FA0, v6, v7, v8, v9, v10))
+  if (objc_msgSend_conformsToProtocol_(source, v5, &unk_284D09FA0, v6, v7, v8, v9, v10))
   {
     v11 = objc_opt_class();
     if (objc_msgSend_supportsSecureCoding(v11, v12, v13, v14, v15, v16, v17, v18))
@@ -31,12 +31,12 @@
   }
 
   v19 = [v4 alloc];
-  v26 = objc_msgSend_initWithDataSource_(v19, v20, a3, v21, v22, v23, v24, v25);
+  v26 = objc_msgSend_initWithDataSource_(v19, v20, source, v21, v22, v23, v24, v25);
 
   return v26;
 }
 
-- (BOOL)appendBatchNorm:(id)a3
+- (BOOL)appendBatchNorm:(id)norm
 {
   if (self->_convolution)
   {
@@ -50,7 +50,7 @@ LABEL_3:
 
   else
   {
-    objc_msgSend_initialize(self, a2, a3, v3, v4, v5, v6, v7);
+    objc_msgSend_initialize(self, a2, norm, v3, v4, v5, v6, v7);
     if (self->_batchNorm)
     {
       goto LABEL_3;
@@ -61,7 +61,7 @@ LABEL_3:
   if (neuron)
   {
     memset(v21, 0, sizeof(v21));
-    objc_msgSend_neuronInfo(neuron, a2, a3, v3, v4, v5, v6, v7);
+    objc_msgSend_neuronInfo(neuron, a2, norm, v3, v4, v5, v6, v7);
     v10 = sub_239BF0728(v21);
     if (!v10)
     {
@@ -71,7 +71,7 @@ LABEL_3:
     self->_neuron = 0;
   }
 
-  self->_batchNorm = a3;
+  self->_batchNorm = norm;
   if (objc_opt_respondsToSelector())
   {
     v18 = objc_msgSend_performSelector_(self->_batchNorm, v12, sel_fusedNeuronDescriptor, v13, v14, v15, v16, v17);
@@ -124,7 +124,7 @@ LABEL_3:
   }
 }
 
-- (MPSConvolutionDataSourceWrapper)initWithDataSource:(id)a3
+- (MPSConvolutionDataSourceWrapper)initWithDataSource:(id)source
 {
   v7.receiver = self;
   v7.super_class = MPSConvolutionDataSourceWrapper;
@@ -132,9 +132,9 @@ LABEL_3:
   if (result)
   {
     v5 = result;
-    v6 = a3;
+    sourceCopy = source;
     result = v5;
-    v5->_dataSource = v6;
+    v5->_dataSource = sourceCopy;
     v5->_convolution = 0;
     v5->_batchNorm = 0;
     v5->_neuron = 0;
@@ -144,19 +144,19 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)appendNeuron:(const NeuronInfo *)a3
+- (BOOL)appendNeuron:(const NeuronInfo *)neuron
 {
-  if (!a3 || !a3->type)
+  if (!neuron || !neuron->type)
   {
     return 1;
   }
 
-  if (a3->type != 10)
+  if (neuron->type != 10)
   {
-    *&v8 = a3->a;
-    *&v9 = a3->b;
-    *&v10 = a3->c;
-    v12 = objc_msgSend_cnnNeuronDescriptorWithType_a_b_c_(MPSNNNeuronDescriptor, a2, a3->type, v3, v4, v5, v6, v7, v8, v9, v10);
+    *&v8 = neuron->a;
+    *&v9 = neuron->b;
+    *&v10 = neuron->c;
+    v12 = objc_msgSend_cnnNeuronDescriptorWithType_a_b_c_(MPSNNNeuronDescriptor, a2, neuron->type, v3, v4, v5, v6, v7, v8, v9, v10);
     if (v12)
     {
       goto LABEL_5;
@@ -165,7 +165,7 @@ LABEL_3:
     return 0;
   }
 
-  v12 = objc_msgSend_cnnNeuronPReLUDescriptorWithData_noCopy_(MPSNNNeuronDescriptor, a2, a3->aData, 0, v4, v5, v6, v7);
+  v12 = objc_msgSend_cnnNeuronPReLUDescriptorWithData_noCopy_(MPSNNNeuronDescriptor, a2, neuron->aData, 0, v4, v5, v6, v7);
   if (!v12)
   {
     return 0;
@@ -176,21 +176,21 @@ LABEL_5:
   return MEMORY[0x2821F9670](self, sel_appendNeuronDescriptor_, v12, v13, v14, v15, v16, v17);
 }
 
-- (BOOL)appendNeuronDescriptor:(id)a3
+- (BOOL)appendNeuronDescriptor:(id)descriptor
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   if (!self->_convolution)
   {
-    objc_msgSend_initialize(self, a2, a3, v3, v4, v5, v6, v7);
+    objc_msgSend_initialize(self, a2, descriptor, v3, v4, v5, v6, v7);
     v10 = objc_autoreleasePoolPush();
     neuron = self->_neuron;
-    if (v8)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v8 = neuron;
+    descriptorCopy = neuron;
     if (!neuron)
     {
 LABEL_16:
@@ -203,7 +203,7 @@ LABEL_16:
 
   v10 = objc_autoreleasePoolPush();
   neuron = self->_neuron;
-  if (!v8)
+  if (!descriptorCopy)
   {
     goto LABEL_8;
   }
@@ -213,7 +213,7 @@ LABEL_3:
   {
 LABEL_12:
 
-    self->_neuron = v8;
+    self->_neuron = descriptorCopy;
     goto LABEL_13;
   }
 
@@ -221,10 +221,10 @@ LABEL_12:
   v43 = *&neuron->_a;
   c = neuron->_c;
   data = neuron->_data;
-  v38 = *(v8 + 8);
-  v39 = *(v8 + 12);
-  v40 = *(v8 + 20);
-  v41 = *(v8 + 24);
+  v38 = *(descriptorCopy + 8);
+  v39 = *(descriptorCopy + 12);
+  v40 = *(descriptorCopy + 20);
+  v41 = *(descriptorCopy + 24);
   if (!sub_239BF0850(&neuronType, &v38))
   {
     goto LABEL_16;
@@ -235,7 +235,7 @@ LABEL_12:
     v21 = data;
     v22 = objc_msgSend_bytes(data, v12, 10, v13, v14, v15, v16, v17);
     v30 = v22 | objc_msgSend_length(v21, v23, v24, v25, v26, v27, v28, v29);
-    v8 = objc_msgSend_cnnNeuronPReLUDescriptorWithData_noCopy_(MPSNNNeuronDescriptor, v31, v21, (*MEMORY[0x277D85F88] & v30) == 0, v32, v33, v34, v35);
+    descriptorCopy = objc_msgSend_cnnNeuronPReLUDescriptorWithData_noCopy_(MPSNNNeuronDescriptor, v31, v21, (*MEMORY[0x277D85F88] & v30) == 0, v32, v33, v34, v35);
   }
 
   else
@@ -243,18 +243,18 @@ LABEL_12:
     LODWORD(v19) = HIDWORD(v43);
     LODWORD(v18) = v43;
     *&v20 = c;
-    v8 = objc_msgSend_cnnNeuronDescriptorWithType_a_b_c_(MPSNNNeuronDescriptor, v12, neuronType, v13, v14, v15, v16, v17, v18, v19, v20);
+    descriptorCopy = objc_msgSend_cnnNeuronDescriptorWithType_a_b_c_(MPSNNNeuronDescriptor, v12, neuronType, v13, v14, v15, v16, v17, v18, v19, v20);
     v21 = data;
   }
 
-  if (!v8)
+  if (!descriptorCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_11:
   neuron = self->_neuron;
-  if (v8 != neuron)
+  if (descriptorCopy != neuron)
   {
     goto LABEL_12;
   }
@@ -491,7 +491,7 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
   v18 = objc_msgSend_initWithDataSource_(v5, v6, self->_dataSource, v7, v8, v9, v10, v11);
@@ -500,7 +500,7 @@ LABEL_7:
     convolution = self->_convolution;
     if (convolution)
     {
-      v18[2] = objc_msgSend_copyWithZone_(convolution, v12, a3, v13, v14, v15, v16, v17);
+      v18[2] = objc_msgSend_copyWithZone_(convolution, v12, zone, v13, v14, v15, v16, v17);
     }
 
     batchNorm = self->_batchNorm;
@@ -510,7 +510,7 @@ LABEL_7:
       v28 = self->_batchNorm;
       if (v27)
       {
-        v29 = objc_msgSend_copyWithZone_(v28, v21, a3, v22, v23, v24, v25, v26);
+        v29 = objc_msgSend_copyWithZone_(v28, v21, zone, v22, v23, v24, v25, v26);
       }
 
       else
@@ -524,7 +524,7 @@ LABEL_7:
     neuron = self->_neuron;
     if (neuron)
     {
-      v18[4] = objc_msgSend_copyWithZone_(neuron, v12, a3, v13, v14, v15, v16, v17);
+      v18[4] = objc_msgSend_copyWithZone_(neuron, v12, zone, v13, v14, v15, v16, v17);
     }
 
     atomic_store(0, v18 + 5);

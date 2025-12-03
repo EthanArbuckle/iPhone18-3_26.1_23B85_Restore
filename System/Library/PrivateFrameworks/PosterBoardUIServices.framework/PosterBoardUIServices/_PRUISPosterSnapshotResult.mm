@@ -3,61 +3,61 @@
 - (UIImage)compositeLayerImage;
 - (UIImage)floatingLayerImage;
 - (UIImage)foregroundLayerImage;
-- (_PRUISPosterSnapshotResult)initWithRequest:(id)a3 snapshotBundle:(id)a4 executeTime:(double)a5;
-- (_PRUISPosterSnapshotResult)initWithSnapshotBundle:(id)a3;
-- (_PRUISPosterSnapshotResult)initWithSnapshotterResult:(id)a3;
+- (_PRUISPosterSnapshotResult)initWithRequest:(id)request snapshotBundle:(id)bundle executeTime:(double)time;
+- (_PRUISPosterSnapshotResult)initWithSnapshotBundle:(id)bundle;
+- (_PRUISPosterSnapshotResult)initWithSnapshotterResult:(id)result;
 @end
 
 @implementation _PRUISPosterSnapshotResult
 
-- (_PRUISPosterSnapshotResult)initWithRequest:(id)a3 snapshotBundle:(id)a4 executeTime:(double)a5
+- (_PRUISPosterSnapshotResult)initWithRequest:(id)request snapshotBundle:(id)bundle executeTime:(double)time
 {
-  v9 = a3;
-  v10 = [(_PRUISPosterSnapshotResult *)self initWithSnapshotBundle:a4];
+  requestCopy = request;
+  v10 = [(_PRUISPosterSnapshotResult *)self initWithSnapshotBundle:bundle];
   v11 = v10;
   if (v10)
   {
-    [(_PRUISPosterSnapshotResult *)v10 setExecutionTime:a5];
-    objc_storeStrong(&v11->_request, a3);
+    [(_PRUISPosterSnapshotResult *)v10 setExecutionTime:time];
+    objc_storeStrong(&v11->_request, request);
   }
 
   return v11;
 }
 
-- (_PRUISPosterSnapshotResult)initWithSnapshotterResult:(id)a3
+- (_PRUISPosterSnapshotResult)initWithSnapshotterResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = _PRUISPosterSnapshotResult;
   v6 = [(_PRUISPosterSnapshotResult *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_snapshotterResult, a3);
-    v8 = [v5 request];
+    objc_storeStrong(&v6->_snapshotterResult, result);
+    request = [resultCopy request];
     request = v7->_request;
-    v7->_request = v8;
+    v7->_request = request;
 
-    v10 = [v5 snapshotBundle];
-    [(_PRUISPosterSnapshotResult *)v7 setSnapshotBundle:v10];
+    snapshotBundle = [resultCopy snapshotBundle];
+    [(_PRUISPosterSnapshotResult *)v7 setSnapshotBundle:snapshotBundle];
 
-    [v5 executionTime];
+    [resultCopy executionTime];
     [(_PRUISPosterSnapshotResult *)v7 setExecutionTime:?];
   }
 
   return v7;
 }
 
-- (_PRUISPosterSnapshotResult)initWithSnapshotBundle:(id)a3
+- (_PRUISPosterSnapshotResult)initWithSnapshotBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v8.receiver = self;
   v8.super_class = _PRUISPosterSnapshotResult;
   v5 = [(_PRUISPosterSnapshotResult *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_PRUISPosterSnapshotResult *)v5 setSnapshotBundle:v4];
+    [(_PRUISPosterSnapshotResult *)v5 setSnapshotBundle:bundleCopy];
   }
 
   return v6;
@@ -65,34 +65,34 @@
 
 - (UIImage)foregroundLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
-  v3 = [v2 foregroundSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
+  foregroundSnapshot = [snapshotBundle foregroundSnapshot];
 
-  return v3;
+  return foregroundSnapshot;
 }
 
 - (UIImage)backgroundLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
-  v3 = [v2 backgroundSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
+  backgroundSnapshot = [snapshotBundle backgroundSnapshot];
 
-  return v3;
+  return backgroundSnapshot;
 }
 
 - (UIImage)floatingLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
-  v3 = [v2 floatingSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
+  floatingSnapshot = [snapshotBundle floatingSnapshot];
 
-  return v3;
+  return floatingSnapshot;
 }
 
 - (UIImage)compositeLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
-  v3 = [v2 compositeSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self snapshotBundle];
+  compositeSnapshot = [snapshotBundle compositeSnapshot];
 
-  return v3;
+  return compositeSnapshot;
 }
 
 @end

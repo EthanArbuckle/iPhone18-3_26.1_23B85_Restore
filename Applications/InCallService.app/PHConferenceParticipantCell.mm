@@ -1,23 +1,23 @@
 @interface PHConferenceParticipantCell
-- (PHConferenceParticipantCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHConferenceParticipantCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (PHConferenceParticipantCellProtocol)delegate;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)makeHeld;
-- (void)setEndButtonHidden:(BOOL)a3;
-- (void)setLocalizedSenderIdentity:(id)a3;
-- (void)setPrivateButtonEnabled:(BOOL)a3;
-- (void)setPrivateButtonHidden:(BOOL)a3;
-- (void)setRepresentedCall:(id)a3;
-- (void)setRepresentedHandle:(id)a3;
+- (void)setEndButtonHidden:(BOOL)hidden;
+- (void)setLocalizedSenderIdentity:(id)identity;
+- (void)setPrivateButtonEnabled:(BOOL)enabled;
+- (void)setPrivateButtonHidden:(BOOL)hidden;
+- (void)setRepresentedCall:(id)call;
+- (void)setRepresentedHandle:(id)handle;
 @end
 
 @implementation PHConferenceParticipantCell
 
-- (PHConferenceParticipantCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHConferenceParticipantCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v124.receiver = self;
   v124.super_class = PHConferenceParticipantCell;
-  v4 = [(PHConferenceParticipantCell *)&v124 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PHConferenceParticipantCell *)&v124 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIButton buttonWithType:0];
@@ -32,17 +32,17 @@
     nameLabel = v4->_nameLabel;
     v4->_nameLabel = v9;
 
-    v11 = [(UIButton *)v4->_privateButton titleLabel];
-    [v11 setAdjustsFontSizeToFitWidth:1];
+    titleLabel = [(UIButton *)v4->_privateButton titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-    v12 = [(UIButton *)v4->_privateButton titleLabel];
-    [v12 setBaselineAdjustment:1];
+    titleLabel2 = [(UIButton *)v4->_privateButton titleLabel];
+    [titleLabel2 setBaselineAdjustment:1];
 
-    v13 = [(UIButton *)v4->_endCallButton titleLabel];
-    [v13 setAdjustsFontSizeToFitWidth:1];
+    titleLabel3 = [(UIButton *)v4->_endCallButton titleLabel];
+    [titleLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v14 = [(UIButton *)v4->_endCallButton titleLabel];
-    [v14 setBaselineAdjustment:1];
+    titleLabel4 = [(UIButton *)v4->_endCallButton titleLabel];
+    [titleLabel4 setBaselineAdjustment:1];
 
     v15 = v4->_endCallButton;
     v16 = +[UIColor systemRedColor];
@@ -80,13 +80,13 @@
     v34 = +[UIColor whiteColor];
     [(UILabel *)v33 setTextColor:v34];
 
-    v35 = [(UIButton *)v4->_endCallButton titleLabel];
+    titleLabel5 = [(UIButton *)v4->_endCallButton titleLabel];
     v36 = [UIFont systemFontOfSize:17.0];
-    [v35 setFont:v36];
+    [titleLabel5 setFont:v36];
 
-    v37 = [(UIButton *)v4->_privateButton titleLabel];
+    titleLabel6 = [(UIButton *)v4->_privateButton titleLabel];
     v38 = [UIFont systemFontOfSize:17.0];
-    [v37 setFont:v38];
+    [titleLabel6 setFont:v38];
 
     v39 = v4->_nameLabel;
     v40 = +[UIFont telephonyUIBodyShortFont];
@@ -113,22 +113,22 @@
     [(UILabel *)v4->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v4->_endCallButton addTarget:v4 action:"buttonTapped:" forControlEvents:64];
     [(UIButton *)v4->_privateButton addTarget:v4 action:"buttonTapped:" forControlEvents:64];
-    v49 = [(UIButton *)v4->_endCallButton layer];
-    [v49 setCornerRadius:5.0];
+    layer = [(UIButton *)v4->_endCallButton layer];
+    [layer setCornerRadius:5.0];
 
-    v50 = [(UIButton *)v4->_privateButton layer];
-    [v50 setCornerRadius:5.0];
+    layer2 = [(UIButton *)v4->_privateButton layer];
+    [layer2 setCornerRadius:5.0];
 
     [(UIButton *)v4->_endCallButton setClipsToBounds:1];
     [(UIButton *)v4->_privateButton setClipsToBounds:1];
-    v51 = [(PHConferenceParticipantCell *)v4 contentView];
-    [v51 addSubview:v4->_endCallButton];
+    contentView = [(PHConferenceParticipantCell *)v4 contentView];
+    [contentView addSubview:v4->_endCallButton];
 
-    v52 = [(PHConferenceParticipantCell *)v4 contentView];
-    [v52 addSubview:v4->_privateButton];
+    contentView2 = [(PHConferenceParticipantCell *)v4 contentView];
+    [contentView2 addSubview:v4->_privateButton];
 
-    v53 = [(PHConferenceParticipantCell *)v4 contentView];
-    [v53 addSubview:v4->_nameLabel];
+    contentView3 = [(PHConferenceParticipantCell *)v4 contentView];
+    [contentView3 addSubview:v4->_nameLabel];
 
     v128[0] = @"endCallButton";
     v129[0] = v4->_endCallButton;
@@ -137,9 +137,9 @@
     v128[2] = @"nameLabel";
     v129[2] = v4->_nameLabel;
     v54 = [NSDictionary dictionaryWithObjects:v129 forKeys:v128 count:3];
-    v55 = [(UILabel *)v4->_nameLabel leadingAnchor];
-    v56 = [(PHConferenceParticipantCell *)v4 leadingAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 constant:16.0];
+    leadingAnchor = [(UILabel *)v4->_nameLabel leadingAnchor];
+    leadingAnchor2 = [(PHConferenceParticipantCell *)v4 leadingAnchor];
+    v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
 
     [v57 setActive:1];
     v58 = [[TPBadgeView alloc] initWithTitle:&stru_100361FD0 theme:1];
@@ -147,20 +147,20 @@
     [v58 setHidden:1];
     [(PHConferenceParticipantCell *)v4 addSubview:v58];
     [(PHConferenceParticipantCell *)v4 setBadgeView:v58];
-    v59 = [v58 centerYAnchor];
-    v60 = [(UILabel *)v4->_nameLabel centerYAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    centerYAnchor = [v58 centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v4->_nameLabel centerYAnchor];
+    v61 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(PHConferenceParticipantCell *)v4 addConstraint:v61];
 
-    v62 = [v58 leadingAnchor];
-    v63 = [(PHConferenceParticipantCell *)v4 leadingAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63 constant:16.0];
+    leadingAnchor3 = [v58 leadingAnchor];
+    leadingAnchor4 = [(PHConferenceParticipantCell *)v4 leadingAnchor];
+    v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     [(PHConferenceParticipantCell *)v4 addConstraint:v64];
 
-    v65 = [(UILabel *)v4->_nameLabel leadingAnchor];
-    v66 = [(PHConferenceParticipantCell *)v4 badgeView];
-    v67 = [v66 trailingAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67 constant:6.0];
+    leadingAnchor5 = [(UILabel *)v4->_nameLabel leadingAnchor];
+    badgeView = [(PHConferenceParticipantCell *)v4 badgeView];
+    trailingAnchor = [badgeView trailingAnchor];
+    v68 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor constant:6.0];
 
     [v68 setActive:0];
     v118 = v57;
@@ -176,67 +176,67 @@
 
     [(PHConferenceParticipantCell *)v4 addConstraints:v4->_badgeViewHiddenLayoutConstraints];
     [(PHConferenceParticipantCell *)v4 addConstraints:v4->_badgeViewVisibleLayoutConstraints];
-    v73 = [(PHConferenceParticipantCell *)v4 contentView];
+    contentView4 = [(PHConferenceParticipantCell *)v4 contentView];
     v119 = v54;
     v74 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-16-[endCallButton]-8-[privateButton]-16-|", 16, 0, v54);
-    [v73 addConstraints:v74];
+    [contentView4 addConstraints:v74];
 
-    v75 = [(PHConferenceParticipantCell *)v4 contentView];
-    v76 = [(PHConferenceParticipantCell *)v4 endCallButton];
-    v77 = [(PHConferenceParticipantCell *)v4 privateButton];
-    v78 = [NSLayoutConstraint constraintWithItem:v76 attribute:7 relatedBy:0 toItem:v77 attribute:7 multiplier:1.0 constant:0.0];
-    [v75 addConstraint:v78];
+    contentView5 = [(PHConferenceParticipantCell *)v4 contentView];
+    endCallButton = [(PHConferenceParticipantCell *)v4 endCallButton];
+    privateButton = [(PHConferenceParticipantCell *)v4 privateButton];
+    v78 = [NSLayoutConstraint constraintWithItem:endCallButton attribute:7 relatedBy:0 toItem:privateButton attribute:7 multiplier:1.0 constant:0.0];
+    [contentView5 addConstraint:v78];
 
-    v79 = [(PHConferenceParticipantCell *)v4 nameLabel];
-    v80 = [v79 lastBaselineAnchor];
-    v81 = [(PHConferenceParticipantCell *)v4 contentView];
-    v82 = [v81 topAnchor];
+    nameLabel = [(PHConferenceParticipantCell *)v4 nameLabel];
+    lastBaselineAnchor = [nameLabel lastBaselineAnchor];
+    contentView6 = [(PHConferenceParticipantCell *)v4 contentView];
+    topAnchor = [contentView6 topAnchor];
     v83 = +[UIFont telephonyUIBodyShortFont];
     [v83 _scaledValueForValue:24.0];
-    v85 = [v80 constraintEqualToAnchor:v82 constant:ceil(v84)];
+    v85 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:ceil(v84)];
     [v85 setActive:1];
 
-    v86 = [(PHConferenceParticipantCell *)v4 endCallButton];
-    v87 = [v86 topAnchor];
-    v88 = [(PHConferenceParticipantCell *)v4 nameLabel];
-    v89 = [v88 lastBaselineAnchor];
+    endCallButton2 = [(PHConferenceParticipantCell *)v4 endCallButton];
+    topAnchor2 = [endCallButton2 topAnchor];
+    nameLabel2 = [(PHConferenceParticipantCell *)v4 nameLabel];
+    lastBaselineAnchor2 = [nameLabel2 lastBaselineAnchor];
     v90 = +[UIFont telephonyUIBodyShortFont];
     [v90 _scaledValueForValue:15.0];
-    v92 = [v87 constraintEqualToAnchor:v89 constant:ceil(v91)];
+    v92 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:ceil(v91)];
     [v92 setActive:1];
 
-    v93 = [(PHConferenceParticipantCell *)v4 privateButton];
-    v94 = [v93 topAnchor];
-    v95 = [(PHConferenceParticipantCell *)v4 endCallButton];
-    v96 = [v95 topAnchor];
-    v97 = [v94 constraintEqualToAnchor:v96];
+    privateButton2 = [(PHConferenceParticipantCell *)v4 privateButton];
+    topAnchor3 = [privateButton2 topAnchor];
+    endCallButton3 = [(PHConferenceParticipantCell *)v4 endCallButton];
+    topAnchor4 = [endCallButton3 topAnchor];
+    v97 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v97 setActive:1];
 
-    v98 = [(PHConferenceParticipantCell *)v4 endCallButton];
-    v99 = [v98 heightAnchor];
-    v100 = [v99 constraintEqualToConstant:44.0];
+    endCallButton4 = [(PHConferenceParticipantCell *)v4 endCallButton];
+    heightAnchor = [endCallButton4 heightAnchor];
+    v100 = [heightAnchor constraintEqualToConstant:44.0];
     [v100 setActive:1];
 
-    v101 = [(PHConferenceParticipantCell *)v4 privateButton];
-    v102 = [v101 heightAnchor];
-    v103 = [v102 constraintEqualToConstant:44.0];
+    privateButton3 = [(PHConferenceParticipantCell *)v4 privateButton];
+    heightAnchor2 = [privateButton3 heightAnchor];
+    v103 = [heightAnchor2 constraintEqualToConstant:44.0];
     [v103 setActive:1];
 
-    v104 = [(PHConferenceParticipantCell *)v4 contentView];
-    v105 = [v104 bottomAnchor];
-    v106 = [(PHConferenceParticipantCell *)v4 endCallButton];
-    v107 = [v106 bottomAnchor];
+    contentView7 = [(PHConferenceParticipantCell *)v4 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    endCallButton5 = [(PHConferenceParticipantCell *)v4 endCallButton];
+    bottomAnchor2 = [endCallButton5 bottomAnchor];
     v108 = +[UIFont telephonyUIBodyShortFont];
     [v108 _scaledValueForValue:12.0];
-    v110 = [v105 constraintEqualToAnchor:v107 constant:ceil(v109)];
+    v110 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:ceil(v109)];
     [v110 setActive:1];
 
     v122 = 0u;
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v111 = [(PHConferenceParticipantCell *)v4 subviews];
-    v112 = [v111 countByEnumeratingWithState:&v120 objects:v125 count:16];
+    subviews = [(PHConferenceParticipantCell *)v4 subviews];
+    v112 = [subviews countByEnumeratingWithState:&v120 objects:v125 count:16];
     if (v112)
     {
       v113 = v112;
@@ -248,7 +248,7 @@
         {
           if (*v121 != v114)
           {
-            objc_enumerationMutation(v111);
+            objc_enumerationMutation(subviews);
           }
 
           v116 = *(*(&v120 + 1) + 8 * v115);
@@ -261,7 +261,7 @@
         }
 
         while (v113 != v115);
-        v113 = [v111 countByEnumeratingWithState:&v120 objects:v125 count:16];
+        v113 = [subviews countByEnumeratingWithState:&v120 objects:v125 count:16];
       }
 
       while (v113);
@@ -271,31 +271,31 @@
   return v4;
 }
 
-- (void)setLocalizedSenderIdentity:(id)a3
+- (void)setLocalizedSenderIdentity:(id)identity
 {
-  v11 = a3;
-  v4 = [v11 length];
-  v5 = [(PHConferenceParticipantCell *)self badgeView];
-  v6 = v5;
+  identityCopy = identity;
+  v4 = [identityCopy length];
+  badgeView = [(PHConferenceParticipantCell *)self badgeView];
+  v6 = badgeView;
   if (v4)
   {
-    [v5 setHidden:0];
+    [badgeView setHidden:0];
 
-    v7 = [(PHConferenceParticipantCell *)self badgeView];
-    [v7 setTitle:v11];
+    badgeView2 = [(PHConferenceParticipantCell *)self badgeView];
+    [badgeView2 setTitle:identityCopy];
 
-    v8 = [(PHConferenceParticipantCell *)self badgeViewVisibleLayoutConstraints];
-    [NSLayoutConstraint activateConstraints:v8];
+    badgeViewVisibleLayoutConstraints = [(PHConferenceParticipantCell *)self badgeViewVisibleLayoutConstraints];
+    [NSLayoutConstraint activateConstraints:badgeViewVisibleLayoutConstraints];
 
     [(PHConferenceParticipantCell *)self badgeViewHiddenLayoutConstraints];
   }
 
   else
   {
-    [v5 setHidden:1];
+    [badgeView setHidden:1];
 
-    v9 = [(PHConferenceParticipantCell *)self badgeViewHiddenLayoutConstraints];
-    [NSLayoutConstraint activateConstraints:v9];
+    badgeViewHiddenLayoutConstraints = [(PHConferenceParticipantCell *)self badgeViewHiddenLayoutConstraints];
+    [NSLayoutConstraint activateConstraints:badgeViewHiddenLayoutConstraints];
 
     [(PHConferenceParticipantCell *)self badgeViewVisibleLayoutConstraints];
   }
@@ -303,87 +303,87 @@
   [NSLayoutConstraint deactivateConstraints:v10];
 }
 
-- (void)setRepresentedCall:(id)a3
+- (void)setRepresentedCall:(id)call
 {
-  v7 = a3;
-  v4 = [v7 displayFirstName];
-  if (![v4 length])
+  callCopy = call;
+  displayFirstName = [callCopy displayFirstName];
+  if (![displayFirstName length])
   {
-    v5 = [v7 displayName];
+    displayName = [callCopy displayName];
 
-    v4 = v5;
+    displayFirstName = displayName;
   }
 
-  v6 = [(PHConferenceParticipantCell *)self nameLabel];
-  [v6 setText:v4];
+  nameLabel = [(PHConferenceParticipantCell *)self nameLabel];
+  [nameLabel setText:displayFirstName];
 }
 
-- (void)setRepresentedHandle:(id)a3
+- (void)setRepresentedHandle:(id)handle
 {
-  v5 = [a3 value];
-  v4 = [(PHConferenceParticipantCell *)self nameLabel];
-  [v4 setText:v5];
+  value = [handle value];
+  nameLabel = [(PHConferenceParticipantCell *)self nameLabel];
+  [nameLabel setText:value];
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = tappedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ConferenceParticipantsList: button was tapped in call cell %@", &v9, 0xCu);
   }
 
-  v6 = [(PHConferenceParticipantCell *)self endCallButton];
+  endCallButton = [(PHConferenceParticipantCell *)self endCallButton];
 
-  if (v6 == v4)
+  if (endCallButton == tappedCopy)
   {
-    v8 = [(PHConferenceParticipantCell *)self delegate];
-    [v8 conferenceParticipantCellRequestedEndCall:self];
+    delegate = [(PHConferenceParticipantCell *)self delegate];
+    [delegate conferenceParticipantCellRequestedEndCall:self];
     goto LABEL_7;
   }
 
-  v7 = [(PHConferenceParticipantCell *)self privateButton];
+  privateButton = [(PHConferenceParticipantCell *)self privateButton];
 
-  if (v7 == v4)
+  if (privateButton == tappedCopy)
   {
-    v8 = [(PHConferenceParticipantCell *)self delegate];
-    [v8 conferenceParticipantCellRequestedTakeCallPrivate:self];
+    delegate = [(PHConferenceParticipantCell *)self delegate];
+    [delegate conferenceParticipantCellRequestedTakeCallPrivate:self];
 LABEL_7:
   }
 }
 
 - (void)makeHeld
 {
-  v3 = [(PHConferenceParticipantCell *)self privateButton];
+  privateButton = [(PHConferenceParticipantCell *)self privateButton];
   v4 = +[NSBundle conversationKit];
   v5 = [v4 localizedStringForKey:@"HOLD_LABEL" value:&stru_100361FD0 table:@"CallStatus"];
-  [v3 setTitle:v5 forState:0];
+  [privateButton setTitle:v5 forState:0];
 
   [(PHConferenceParticipantCell *)self setUserInteractionEnabled:0];
 }
 
-- (void)setPrivateButtonEnabled:(BOOL)a3
+- (void)setPrivateButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PHConferenceParticipantCell *)self privateButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  privateButton = [(PHConferenceParticipantCell *)self privateButton];
+  [privateButton setEnabled:enabledCopy];
 }
 
-- (void)setPrivateButtonHidden:(BOOL)a3
+- (void)setPrivateButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(PHConferenceParticipantCell *)self privateButton];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  privateButton = [(PHConferenceParticipantCell *)self privateButton];
+  [privateButton setHidden:hiddenCopy];
 }
 
-- (void)setEndButtonHidden:(BOOL)a3
+- (void)setEndButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(PHConferenceParticipantCell *)self endCallButton];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  endCallButton = [(PHConferenceParticipantCell *)self endCallButton];
+  [endCallButton setHidden:hiddenCopy];
 }
 
 - (PHConferenceParticipantCellProtocol)delegate

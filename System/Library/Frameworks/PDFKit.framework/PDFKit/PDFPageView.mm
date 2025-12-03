@@ -1,96 +1,96 @@
 @interface PDFPageView
 - (BOOL)_allowsFormFieldEntry;
-- (BOOL)_shouldReplaceStringOnAnnotation:(id)a3 withTextView:(id)a4;
+- (BOOL)_shouldReplaceStringOnAnnotation:(id)annotation withTextView:(id)view;
 - (BOOL)enablesTileUpdates;
 - (BOOL)hasBackgroundImage;
 - (BOOL)isVisible;
 - (BOOL)shouldRegisterUndo;
 - (CGAffineTransform)_rotationTransformForPageView;
 - (CGAffineTransform)layerEffectTransform;
-- (CGPoint)convertPointToPageView:(CGPoint)a3;
-- (CGRect)convertRectToPageView:(CGRect)a3;
-- (PDFPageView)initWithPage:(id)a3 geometryInterface:(id)a4 andRenderingProperties:(id)a5;
+- (CGPoint)convertPointToPageView:(CGPoint)view;
+- (CGRect)convertRectToPageView:(CGRect)view;
+- (PDFPageView)initWithPage:(id)page geometryInterface:(id)interface andRenderingProperties:(id)properties;
 - (id)activeAnnotation;
 - (id)backgroundImage;
 - (id)geometryInterface;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)page;
 - (id)pageLayer;
-- (id)pageLayerEffectForID:(id)a3;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
+- (id)pageLayerEffectForID:(id)d;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
 - (id)renderingProperties;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int)backgroundImageQuality;
 - (int64_t)displayBox;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)visibilityDelegateIndex;
-- (void)_addPDFAnnotation:(id)a3;
-- (void)_addPDFAnnotationChoiceWidget:(id)a3;
-- (void)_addPDFAnnotationSignatureWidget:(id)a3;
-- (void)_addPDFAnnotationTextWidget:(id)a3;
+- (void)_addPDFAnnotation:(id)annotation;
+- (void)_addPDFAnnotationChoiceWidget:(id)widget;
+- (void)_addPDFAnnotationSignatureWidget:(id)widget;
+- (void)_addPDFAnnotationTextWidget:(id)widget;
 - (void)_beginObservingScrollViewMagnification;
 - (void)_choiceWidgetDone;
-- (void)_formChanged:(id)a3;
-- (void)_initPageCornerRadiusForMagnification:(double)a3;
+- (void)_formChanged:(id)changed;
+- (void)_initPageCornerRadiusForMagnification:(double)magnification;
 - (void)_releaseBackgroundImage;
-- (void)_renderingPropertyUpdate:(id)a3;
+- (void)_renderingPropertyUpdate:(id)update;
 - (void)_rotateActiveAnnotation;
-- (void)_setAttributedStringForAnnotation:(id)a3 stringValue:(id)a4 textView:(id)a5;
+- (void)_setAttributedStringForAnnotation:(id)annotation stringValue:(id)value textView:(id)view;
 - (void)_setupBookmarkLayer;
 - (void)_setuppageAnnotationEffects;
-- (void)_updateAnnotationVisibility:(id)a3;
+- (void)_updateAnnotationVisibility:(id)visibility;
 - (void)_updateBackgroundColor;
-- (void)_updateWidgetControl:(id)a3 forBounds:(CGRect)a4;
+- (void)_updateWidgetControl:(id)control forBounds:(CGRect)bounds;
 - (void)_viewDidMoveToSuperviewCommon;
 - (void)addBookmark;
-- (void)addControlForAnnotation:(id)a3;
-- (void)addPageLayerEffect:(id)a3;
-- (void)addSearchSelection:(id)a3;
-- (void)applyTileLayoutScale:(double)a3;
+- (void)addControlForAnnotation:(id)annotation;
+- (void)addPageLayerEffect:(id)effect;
+- (void)addSearchSelection:(id)selection;
+- (void)applyTileLayoutScale:(double)scale;
 - (void)clearTiles;
-- (void)colorWidgetBackgrounds:(BOOL)a3;
+- (void)colorWidgetBackgrounds:(BOOL)backgrounds;
 - (void)dealloc;
-- (void)enableHighlightDetectedFormFields:(BOOL)a3;
+- (void)enableHighlightDetectedFormFields:(BOOL)fields;
 - (void)forceTileUpdate;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)populateFormFieldsWithAutoFillSuggestion:(id)a3 completionHandler:(id)a4;
-- (void)previewRotatePage:(double)a3;
-- (void)removeAnnotation:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)populateFormFieldsWithAutoFillSuggestion:(id)suggestion completionHandler:(id)handler;
+- (void)previewRotatePage:(double)page;
+- (void)removeAnnotation:(id)annotation;
 - (void)removeBookmark;
-- (void)removeControlForAnnotation:(id)a3;
-- (void)removePageLayerEffectForID:(id)a3;
+- (void)removeControlForAnnotation:(id)annotation;
+- (void)removePageLayerEffectForID:(id)d;
 - (void)restoreOriginalTileLayout;
 - (void)saveOriginalTileLayout;
-- (void)scalePageLayerEffects:(double)a3;
-- (void)setBackgroundImage:(id)a3 atBackgroundQuality:(int)a4;
-- (void)setEnableTileUpdates:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)scalePageLayerEffects:(double)effects;
+- (void)setBackgroundImage:(id)image atBackgroundQuality:(int)quality;
+- (void)setEnableTileUpdates:(BOOL)updates;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 - (void)setNeedsTilesUpdate;
-- (void)setState:(int64_t)a3 onButtonWidgetAnnotation:(id)a4;
-- (void)setStringValue:(id)a3 onChoiceWidgetAnnotation:(id)a4 withTableView:(id)a5;
-- (void)setStringValue:(id)a3 onChoiceWidgetAnnotation:(id)a4 withTextField:(id)a5;
-- (void)setStringValue:(id)a3 onTextAnnotation:(id)a4;
-- (void)setStringValue:(id)a3 onTextWidgetAnnotation:(id)a4;
-- (void)setStringValue:(id)a3 onTextWidgetAnnotation:(id)a4 withTextView:(id)a5;
-- (void)setVisibilityDelegateIndex:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateAnnotation:(id)a3;
+- (void)setState:(int64_t)state onButtonWidgetAnnotation:(id)annotation;
+- (void)setStringValue:(id)value onChoiceWidgetAnnotation:(id)annotation withTableView:(id)view;
+- (void)setStringValue:(id)value onChoiceWidgetAnnotation:(id)annotation withTextField:(id)field;
+- (void)setStringValue:(id)value onTextAnnotation:(id)annotation;
+- (void)setStringValue:(id)value onTextWidgetAnnotation:(id)annotation;
+- (void)setStringValue:(id)value onTextWidgetAnnotation:(id)annotation withTextView:(id)view;
+- (void)setVisibilityDelegateIndex:(unint64_t)index;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateAnnotation:(id)annotation;
 - (void)updateBookmark;
-- (void)updatePageLayerEffectForID:(id)a3;
+- (void)updatePageLayerEffectForID:(id)d;
 - (void)updatePageLayerEffects;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PDFPageView
 
-- (PDFPageView)initWithPage:(id)a3 geometryInterface:(id)a4 andRenderingProperties:(id)a5
+- (PDFPageView)initWithPage:(id)page geometryInterface:(id)interface andRenderingProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 boundsForBox:{objc_msgSend(v10, "displayBox")}];
+  pageCopy = page;
+  interfaceCopy = interface;
+  propertiesCopy = properties;
+  [pageCopy boundsForBox:{objc_msgSend(propertiesCopy, "displayBox")}];
   v11 = *MEMORY[0x1E695EFF8];
   v12 = *(MEMORY[0x1E695EFF8] + 8);
   v42.receiver = self;
@@ -102,20 +102,20 @@
     v15 = v13->_private;
     v13->_private = v14;
 
-    objc_storeWeak(&v13->_private->page, v8);
-    objc_storeWeak(&v13->_private->geometryInterface, v9);
-    objc_storeWeak(&v13->_private->renderingProperties, v10);
-    v16 = [[PDFPageLayer alloc] initWithPage:v8 geometryInterface:v9 andRenderingProperties:v10];
+    objc_storeWeak(&v13->_private->page, pageCopy);
+    objc_storeWeak(&v13->_private->geometryInterface, interfaceCopy);
+    objc_storeWeak(&v13->_private->renderingProperties, propertiesCopy);
+    v16 = [[PDFPageLayer alloc] initWithPage:pageCopy geometryInterface:interfaceCopy andRenderingProperties:propertiesCopy];
     objc_storeWeak(&v13->_private->pageLayer, v16);
     [(PDFPageLayer *)v16 setZPosition:-1100.0];
-    v17 = [(PDFPageView *)v13 layer];
-    [v17 addSublayer:v16];
+    layer = [(PDFPageView *)v13 layer];
+    [layer addSublayer:v16];
 
     objc_storeWeak(&v13->_private->activeAnnotation, 0);
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v19 = v13->_private;
     activeControls = v19->activeControls;
-    v19->activeControls = v18;
+    v19->activeControls = dictionary;
 
     v13->_private->isPerformingUndo = 0;
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -153,8 +153,8 @@
     [(CALayer *)v13->_private->backgroundLayer setZPosition:-900.0];
     [(CALayer *)v13->_private->backgroundLayer setMinificationFilter:*MEMORY[0x1E6979C48]];
     [(PDFPageView *)v13 _updateBackgroundColor];
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 addObserver:v13 selector:sel__renderingPropertyUpdate_ name:@"PDFRenderingPropertiesChanged" object:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__renderingPropertyUpdate_ name:@"PDFRenderingPropertiesChanged" object:propertiesCopy];
 
     v36 = [PDFPageLayerEffect createPDFSelectionLayerEffectsForSelections:0 withLayer:v16];
     v37 = v13->_private;
@@ -170,11 +170,11 @@
       [(PDFPageView *)v13 enableHighlightDetectedFormFields:1];
     }
 
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v13 selector:sel__didRotatePageNotification_ name:@"PDFPageDidRotate" object:v8];
-    [v39 addObserver:v13 selector:sel__didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:v8];
-    v40 = [v8 document];
-    [v39 addObserver:v13 selector:sel__formChanged_ name:@"PDFFormDidChangeValue" object:v40];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__didRotatePageNotification_ name:@"PDFPageDidRotate" object:pageCopy];
+    [defaultCenter2 addObserver:v13 selector:sel__didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:pageCopy];
+    document = [pageCopy document];
+    [defaultCenter2 addObserver:v13 selector:sel__formChanged_ name:@"PDFFormDidChangeValue" object:document];
   }
 
   return v13;
@@ -183,8 +183,8 @@
 - (void)dealloc
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
@@ -194,8 +194,8 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  v5 = [(PDFPageLayerEffect *)self->_private->searchLayer UUID];
-  [WeakRetained removePageLayerEffectForID:v5];
+  uUID = [(PDFPageLayerEffect *)self->_private->searchLayer UUID];
+  [WeakRetained removePageLayerEffectForID:uUID];
 
   v6 = self->_private;
   searchLayer = v6->searchLayer;
@@ -244,8 +244,8 @@
   {
     [(PDFPageView *)self removeControlForAnnotation:v15];
     v16 = objc_loadWeakRetained(&self->_private->page);
-    v17 = [v16 view];
-    [v17 setActiveAnnotation:0];
+    view = [v16 view];
+    [view setActiveAnnotation:0];
   }
 
   v29 = 0u;
@@ -295,15 +295,15 @@
   [(PDFPageView *)&v26 dealloc];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (!a3)
+  if (!superview)
   {
-    v5 = [(PDFPageView *)self undoManager];
-    [v5 removeAllActionsWithTarget:self];
+    undoManager = [(PDFPageView *)self undoManager];
+    [undoManager removeAllActionsWithTarget:self];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self->_private->scrollViewObservation];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_private->scrollViewObservation];
   }
 }
 
@@ -325,51 +325,51 @@
 - (int64_t)displayBox
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->renderingProperties);
-  v3 = [WeakRetained displayBox];
+  displayBox = [WeakRetained displayBox];
 
-  return v3;
+  return displayBox;
 }
 
 - (BOOL)isVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  v3 = [WeakRetained isVisible];
+  isVisible = [WeakRetained isVisible];
 
-  return v3;
+  return isVisible;
 }
 
-- (void)addPageLayerEffect:(id)a3
+- (void)addPageLayerEffect:(id)effect
 {
   v3 = self->_private;
-  v4 = a3;
+  effectCopy = effect;
   WeakRetained = objc_loadWeakRetained(&v3->pageLayer);
-  [WeakRetained addPageLayerEffect:v4];
+  [WeakRetained addPageLayerEffect:effectCopy];
 }
 
-- (void)removePageLayerEffectForID:(id)a3
+- (void)removePageLayerEffectForID:(id)d
 {
   v3 = self->_private;
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&v3->pageLayer);
-  [WeakRetained removePageLayerEffectForID:v4];
+  [WeakRetained removePageLayerEffectForID:dCopy];
 }
 
-- (id)pageLayerEffectForID:(id)a3
+- (id)pageLayerEffectForID:(id)d
 {
   v3 = self->_private;
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&v3->pageLayer);
-  v6 = [WeakRetained pageLayerEffectForID:v4];
+  v6 = [WeakRetained pageLayerEffectForID:dCopy];
 
   return v6;
 }
 
-- (void)updatePageLayerEffectForID:(id)a3
+- (void)updatePageLayerEffectForID:(id)d
 {
   v3 = self->_private;
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&v3->pageLayer);
-  [WeakRetained updatePageLayerEffectForID:v4];
+  [WeakRetained updatePageLayerEffectForID:dCopy];
 }
 
 - (void)updatePageLayerEffects
@@ -398,25 +398,25 @@
   return result;
 }
 
-- (void)scalePageLayerEffects:(double)a3
+- (void)scalePageLayerEffects:(double)effects
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  [WeakRetained scalePageLayerEffects:a3];
+  [WeakRetained scalePageLayerEffects:effects];
 }
 
-- (void)setEnableTileUpdates:(BOOL)a3
+- (void)setEnableTileUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  [WeakRetained setEnableTileUpdates:v3];
+  [WeakRetained setEnableTileUpdates:updatesCopy];
 }
 
 - (BOOL)enablesTileUpdates
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  v3 = [WeakRetained enablesTileUpdates];
+  enablesTileUpdates = [WeakRetained enablesTileUpdates];
 
-  return v3;
+  return enablesTileUpdates;
 }
 
 - (void)forceTileUpdate
@@ -443,24 +443,24 @@
   [WeakRetained restoreOriginalTileLayout];
 }
 
-- (void)applyTileLayoutScale:(double)a3
+- (void)applyTileLayoutScale:(double)scale
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  [WeakRetained applyTileLayoutScale:a3];
+  [WeakRetained applyTileLayoutScale:scale];
 }
 
-- (void)setVisibilityDelegateIndex:(unint64_t)a3
+- (void)setVisibilityDelegateIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  [WeakRetained setVisibilityDelegateIndex:a3];
+  [WeakRetained setVisibilityDelegateIndex:index];
 }
 
 - (unint64_t)visibilityDelegateIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  v3 = [WeakRetained visibilityDelegateIndex];
+  visibilityDelegateIndex = [WeakRetained visibilityDelegateIndex];
 
-  return v3;
+  return visibilityDelegateIndex;
 }
 
 - (void)_updateBackgroundColor
@@ -472,8 +472,8 @@
   if (([v3 isDarkMode] & 1) != 0 || !objc_msgSend(WeakRetained, "pageBackgroundColorHint"))
   {
     backgroundLayer = self->_private->backgroundLayer;
-    v5 = [v3 pageBackgroundColor];
-    -[CALayer setBackgroundColor:](backgroundLayer, "setBackgroundColor:", [v5 CGColor]);
+    pageBackgroundColor = [v3 pageBackgroundColor];
+    -[CALayer setBackgroundColor:](backgroundLayer, "setBackgroundColor:", [pageBackgroundColor CGColor]);
   }
 
   else
@@ -486,11 +486,11 @@
 
 - (void)_viewDidMoveToSuperviewCommon
 {
-  v3 = [(UIView *)self PDFKitEnclosingScrollView];
-  v7 = v3;
-  if (v3)
+  pDFKitEnclosingScrollView = [(UIView *)self PDFKitEnclosingScrollView];
+  v7 = pDFKitEnclosingScrollView;
+  if (pDFKitEnclosingScrollView)
   {
-    [v3 magnification];
+    [pDFKitEnclosingScrollView magnification];
     v5 = v4;
   }
 
@@ -506,11 +506,11 @@
   [(PDFPageView *)self _beginObservingScrollViewMagnification];
 }
 
-- (void)_initPageCornerRadiusForMagnification:(double)a3
+- (void)_initPageCornerRadiusForMagnification:(double)magnification
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->renderingProperties);
   [(PDFPageView *)self bounds];
-  [WeakRetained adjustedPageCornerRadiusForPageSize:v6 magnification:{v7, a3}];
+  [WeakRetained adjustedPageCornerRadiusForPageSize:v6 magnification:{v7, magnification}];
   v9 = v8;
 
   v10 = *MEMORY[0x1E69796E8];
@@ -528,13 +528,13 @@
 
 - (void)_beginObservingScrollViewMagnification
 {
-  v3 = [(UIView *)self PDFKitEnclosingScrollView];
-  if (v3)
+  pDFKitEnclosingScrollView = [(UIView *)self PDFKitEnclosingScrollView];
+  if (pDFKitEnclosingScrollView)
   {
     objc_copyWeak(&to, &self->_private->pageLayer);
     objc_copyWeak(&from, &self->_private->renderingProperties);
     objc_initWeak(&location, self->_private->backgroundLayer);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke;
@@ -543,7 +543,7 @@
     objc_copyWeak(&v10, &location);
     v8[4] = self;
     objc_copyWeak(&v11, &to);
-    v5 = [v4 addObserverForName:@"PDFScrollViewDidChangeZoomFactor" object:v3 queue:0 usingBlock:v8];
+    v5 = [defaultCenter addObserverForName:@"PDFScrollViewDidChangeZoomFactor" object:pDFKitEnclosingScrollView queue:0 usingBlock:v8];
     v6 = self->_private;
     scrollViewObservation = v6->scrollViewObservation;
     v6->scrollViewObservation = v5;
@@ -604,9 +604,9 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
   return WeakRetained;
 }
 
-- (void)setBackgroundImage:(id)a3 atBackgroundQuality:(int)a4
+- (void)setBackgroundImage:(id)image atBackgroundQuality:(int)quality
 {
-  v6 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_private->backgroundImageLock);
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
@@ -627,13 +627,13 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
   v13 = v12;
   [(PDFPageView *)self frame];
   [(CALayer *)v11 setFrame:0.0, 0.0, v13];
-  [(CALayer *)self->_private->backgroundLayer setContents:[(UIImage *)v6 CGImage]];
+  [(CALayer *)self->_private->backgroundLayer setContents:[(UIImage *)imageCopy CGImage]];
   v14 = self->_private;
   backgroundImage = v14->backgroundImage;
-  v14->backgroundImage = v6;
-  v16 = v6;
+  v14->backgroundImage = imageCopy;
+  v16 = imageCopy;
 
-  self->_private->backgroundQuality = a4;
+  self->_private->backgroundQuality = quality;
   [MEMORY[0x1E6979518] commit];
   os_unfair_lock_unlock(&self->_private->backgroundImageLock);
 }
@@ -651,12 +651,12 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
 
 - (BOOL)hasBackgroundImage
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_private->backgroundImageLock);
-  v3 = v2->_private;
-  LOBYTE(v2) = v3->backgroundImage != 0;
+  v3 = selfCopy->_private;
+  LOBYTE(selfCopy) = v3->backgroundImage != 0;
   os_unfair_lock_unlock(&v3->backgroundImageLock);
-  return v2;
+  return selfCopy;
 }
 
 - (id)backgroundImage
@@ -670,27 +670,27 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
 
 - (int)backgroundImageQuality
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_private->backgroundImageLock);
-  v3 = v2->_private;
-  LODWORD(v2) = v3[30];
+  v3 = selfCopy->_private;
+  LODWORD(selfCopy) = v3[30];
   os_unfair_lock_unlock(v3 + 31);
-  return v2;
+  return selfCopy;
 }
 
-- (void)addSearchSelection:(id)a3
+- (void)addSearchSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v4 = [a3 copy];
+    v4 = [selection copy];
     [v4 setIsTextSelection];
     [(PDFPageLayerEffect *)self->_private->searchLayer addSelection:v4];
   }
 }
 
-- (void)previewRotatePage:(double)a3
+- (void)previewRotatePage:(double)page
 {
-  v4 = PDFDegToRad(a3);
+  v4 = PDFDegToRad(page);
   [(PDFPageView *)self frame];
   v6 = v5;
   v8 = v7;
@@ -718,19 +718,19 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)colorWidgetBackgrounds:(BOOL)a3
+- (void)colorWidgetBackgrounds:(BOOL)backgrounds
 {
   v18 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = [WeakRetained annotations];
+    annotations = [WeakRetained annotations];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [annotations countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -741,7 +741,7 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(annotations);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -752,7 +752,7 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [annotations countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -760,10 +760,10 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
   }
 }
 
-- (void)enableHighlightDetectedFormFields:(BOOL)a3
+- (void)enableHighlightDetectedFormFields:(BOOL)fields
 {
   detectedFormFieldBoundingBoxesLayer = self->_private->detectedFormFieldBoundingBoxesLayer;
-  if (a3)
+  if (fields)
   {
     if (!detectedFormFieldBoundingBoxesLayer)
     {
@@ -775,8 +775,8 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
       v8->detectedFormFieldBoundingBoxesLayer = v7;
 
       [(PDFHighlightDetectedFormFieldsEffectLayer *)self->_private->detectedFormFieldBoundingBoxesLayer setDisplayBox:1];
-      v10 = [(PDFPageView *)self layer];
-      [v10 addSublayer:self->_private->detectedFormFieldBoundingBoxesLayer];
+      layer = [(PDFPageView *)self layer];
+      [layer addSublayer:self->_private->detectedFormFieldBoundingBoxesLayer];
 
       [(PDFHighlightDetectedFormFieldsEffectLayer *)self->_private->detectedFormFieldBoundingBoxesLayer setFrame:PDFRectToCGRect([(PDFPageView *)self bounds])];
       [(PDFHighlightDetectedFormFieldsEffectLayer *)self->_private->detectedFormFieldBoundingBoxesLayer setZPosition:0.0];
@@ -795,36 +795,36 @@ void __53__PDFPageView__beginObservingScrollViewMagnification__block_invoke(id *
   }
 }
 
-- (void)_renderingPropertyUpdate:(id)a3
+- (void)_renderingPropertyUpdate:(id)update
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKey:@"PDFRenderingPropertyKey"];
-  v5 = [v4 integerValue];
+  userInfo = [update userInfo];
+  v4 = [userInfo objectForKey:@"PDFRenderingPropertyKey"];
+  integerValue = [v4 integerValue];
 
-  if (v5 == 7)
+  if (integerValue == 7)
   {
     [(PDFPageView *)self _releaseBackgroundImage];
     [(PDFPageView *)self _updateBackgroundColor];
   }
 }
 
-- (void)updateAnnotation:(id)a3
+- (void)updateAnnotation:(id)annotation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  annotationCopy = annotation;
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v6 = objc_loadWeakRetained(&self->_private->activeAnnotation);
   if (WeakRetained)
   {
-    v7 = [v4 valueForAnnotationKey:@"/Subtype"];
+    v7 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
     if ([v7 isEqualToString:@"/Popup"] && ShouldRenderAnnotationsInPDFKit())
     {
       [WeakRetained annotations];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = v18 = 0u;
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      pdfAnnotationUUID2 = v18 = 0u;
+      v9 = [pdfAnnotationUUID2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -835,19 +835,19 @@ LABEL_6:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(pdfAnnotationUUID2);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * v12) popup];
+          popup = [*(*(&v15 + 1) + 8 * v12) popup];
 
-          if (v13 == v4)
+          if (popup == annotationCopy)
           {
             break;
           }
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+            v10 = [pdfAnnotationUUID2 countByEnumeratingWithState:&v15 objects:v19 count:16];
             if (v10)
             {
               goto LABEL_6;
@@ -858,23 +858,23 @@ LABEL_6:
         }
       }
 
-      [(PDFPageView *)self _updateAnnotationVisibility:v4];
-      v14 = [v4 pdfAnnotationUUID];
-      [(PDFPageView *)self updatePageLayerEffectForID:v14];
+      [(PDFPageView *)self _updateAnnotationVisibility:annotationCopy];
+      pdfAnnotationUUID = [annotationCopy pdfAnnotationUUID];
+      [(PDFPageView *)self updatePageLayerEffectForID:pdfAnnotationUUID];
     }
 
     else
     {
-      if (![v4 handledByPDFKit])
+      if (![annotationCopy handledByPDFKit])
       {
 LABEL_16:
 
         goto LABEL_17;
       }
 
-      [(PDFPageView *)self _updateAnnotationVisibility:v4];
-      v8 = [v4 pdfAnnotationUUID];
-      [(PDFPageView *)self updatePageLayerEffectForID:v8];
+      [(PDFPageView *)self _updateAnnotationVisibility:annotationCopy];
+      pdfAnnotationUUID2 = [annotationCopy pdfAnnotationUUID];
+      [(PDFPageView *)self updatePageLayerEffectForID:pdfAnnotationUUID2];
     }
 
     goto LABEL_16;
@@ -883,14 +883,14 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_updateAnnotationVisibility:(id)a3
+- (void)_updateAnnotationVisibility:(id)visibility
 {
-  v12 = a3;
+  visibilityCopy = visibility;
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   if (WeakRetained)
   {
-    v5 = [v12 pdfAnnotationUUID];
-    v6 = [(PDFPageView *)self pageLayerEffectForID:v5];
+    pdfAnnotationUUID = [visibilityCopy pdfAnnotationUUID];
+    v6 = [(PDFPageView *)self pageLayerEffectForID:pdfAnnotationUUID];
     if (!v6)
     {
 LABEL_15:
@@ -898,13 +898,13 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v7 = [v12 valueForAnnotationKey:@"/Subtype"];
+    v7 = [visibilityCopy valueForAnnotationKey:@"/Subtype"];
     v8 = [v7 isEqualToString:@"/Widget"];
 
-    if (v8 && ([v12 isTextWidget] & 1) == 0)
+    if (v8 && ([visibilityCopy isTextWidget] & 1) == 0)
     {
-      v10 = [v12 control];
-      v9 = v10 != 0;
+      control = [visibilityCopy control];
+      v9 = control != 0;
     }
 
     else
@@ -912,7 +912,7 @@ LABEL_15:
       v9 = 0;
     }
 
-    if ([v12 shouldDisplay])
+    if ([visibilityCopy shouldDisplay])
     {
       v11 = [WeakRetained displaysAnnotations] ^ 1 | v9;
       if ([v6 isHidden] != (v11 & 1))
@@ -943,11 +943,11 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)removeAnnotation:(id)a3
+- (void)removeAnnotation:(id)annotation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 valueForAnnotationKey:@"/Subtype"];
+  annotationCopy = annotation;
+  v5 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
   if ([v5 isEqualToString:@"/Stamp"])
   {
     v16 = 0u;
@@ -970,7 +970,7 @@ LABEL_16:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if (v11[1] == v4)
+          if (v11[1] == annotationCopy)
           {
             v13 = v11;
 
@@ -998,8 +998,8 @@ LABEL_13:
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v12 = [v4 pdfAnnotationUUID];
-    [(PDFPageView *)self removePageLayerEffectForID:v12];
+    pdfAnnotationUUID = [annotationCopy pdfAnnotationUUID];
+    [(PDFPageView *)self removePageLayerEffectForID:pdfAnnotationUUID];
 
     [MEMORY[0x1E6979518] commit];
   }
@@ -1016,37 +1016,37 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)addControlForAnnotation:(id)a3
+- (void)addControlForAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   activeControls = self->_private->activeControls;
-  v15 = v4;
-  v6 = [v4 pdfAnnotationUUID];
-  v7 = [(NSMutableDictionary *)activeControls objectForKey:v6];
+  v15 = annotationCopy;
+  pdfAnnotationUUID = [annotationCopy pdfAnnotationUUID];
+  v7 = [(NSMutableDictionary *)activeControls objectForKey:pdfAnnotationUUID];
 
   if (!v7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_private->page);
-    v9 = [WeakRetained view];
+    view = [WeakRetained view];
 
-    v10 = [v15 akAnnotation];
+    akAnnotation = [v15 akAnnotation];
 
-    if (v10)
+    if (akAnnotation)
     {
-      v11 = objc_loadWeakRetained(&self->_private->page);
-      v12 = [v11 view];
-      v13 = [v12 controller];
+      activeAnnotation = objc_loadWeakRetained(&self->_private->page);
+      view2 = [activeAnnotation view];
+      controller = [view2 controller];
 
-      [v13 activateAnnotation:v15];
+      [controller activateAnnotation:v15];
     }
 
     else
     {
-      v11 = [v9 activeAnnotation];
+      activeAnnotation = [view activeAnnotation];
       [(PDFPageViewAnnotationController *)self->_private->annotationController addControlForAnnotation:v15];
-      if (v11)
+      if (activeAnnotation)
       {
-        v14 = v11 == v15;
+        v14 = activeAnnotation == v15;
       }
 
       else
@@ -1056,7 +1056,7 @@ LABEL_13:
 
       if (!v14)
       {
-        [v9 removeControlForAnnotation:v11];
+        [view removeControlForAnnotation:activeAnnotation];
       }
     }
   }
@@ -1068,10 +1068,10 @@ LABEL_13:
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    v4 = [WeakRetained pdfAnnotationUUID];
-    if (v4)
+    pdfAnnotationUUID = [WeakRetained pdfAnnotationUUID];
+    if (pdfAnnotationUUID)
     {
-      v5 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:v4];
+      v5 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:pdfAnnotationUUID];
       if (v5)
       {
         [v6 bounds];
@@ -1083,77 +1083,77 @@ LABEL_13:
   }
 }
 
-- (void)removeControlForAnnotation:(id)a3
+- (void)removeControlForAnnotation:(id)annotation
 {
-  v8 = a3;
-  [(PDFPageViewAnnotationController *)self->_private->annotationController removeControlForAnnotation:v8];
-  v4 = v8;
-  if (v8)
+  annotationCopy = annotation;
+  [(PDFPageViewAnnotationController *)self->_private->annotationController removeControlForAnnotation:annotationCopy];
+  v4 = annotationCopy;
+  if (annotationCopy)
   {
-    v5 = [v8 pdfAnnotationUUID];
-    if (v5)
+    pdfAnnotationUUID = [annotationCopy pdfAnnotationUUID];
+    if (pdfAnnotationUUID)
     {
-      v6 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:v5];
+      v6 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:pdfAnnotationUUID];
       if (v6)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        [v8 setControl:0];
+        [annotationCopy setControl:0];
         [v6 removeFromSuperview];
         [MEMORY[0x1E6979518] commit];
         WeakRetained = objc_loadWeakRetained(&self->_private->activeAnnotation);
 
-        if (WeakRetained == v8)
+        if (WeakRetained == annotationCopy)
         {
           objc_storeWeak(&self->_private->activeAnnotation, 0);
         }
 
-        [(NSMutableDictionary *)self->_private->activeControls removeObjectForKey:v5];
+        [(NSMutableDictionary *)self->_private->activeControls removeObjectForKey:pdfAnnotationUUID];
       }
     }
 
-    v4 = v8;
+    v4 = annotationCopy;
   }
 }
 
-- (void)populateFormFieldsWithAutoFillSuggestion:(id)a3 completionHandler:(id)a4
+- (void)populateFormFieldsWithAutoFillSuggestion:(id)suggestion completionHandler:(id)handler
 {
   v98 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v49 = a4;
-  v61 = [v48 contents];
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
+  contents = [suggestionCopy contents];
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [v61 allKeys];
-  v51 = [v5 setWithArray:v6];
+  allKeys = [contents allKeys];
+  v51 = [v5 setWithArray:allKeys];
 
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v7 = objc_loadWeakRetained(&self->_private->activeAnnotation);
   v8 = v7;
   if (v7 && [v7 isTextWidget])
   {
-    v9 = v8;
-    v10 = [v8 control];
-    v59 = [v10 textView];
+    activeAnnotation = v8;
+    control = [v8 control];
+    textView = [control textView];
   }
 
   else
   {
     v11 = v8;
-    v12 = [WeakRetained view];
-    v10 = [v12 controller];
+    view = [WeakRetained view];
+    control = [view controller];
 
-    v9 = [v10 activeAnnotation];
+    activeAnnotation = [control activeAnnotation];
 
-    if ([v9 isSynthesizedFormField])
+    if ([activeAnnotation isSynthesizedFormField])
     {
-      v59 = 0;
+      textView = 0;
     }
 
     else
     {
 
-      v59 = 0;
-      v9 = 0;
+      textView = 0;
+      activeAnnotation = 0;
     }
   }
 
@@ -1173,13 +1173,13 @@ LABEL_13:
     v13 = v92[3];
   }
 
-  v62 = v9;
+  v62 = activeAnnotation;
   v14 = v13;
   _Block_object_dispose(&v91, 8);
-  v15 = [v13 preferredInsertionOrder];
-  v16 = [WeakRetained annotations];
-  v17 = v16;
-  if (v9 && (v18 = [v16 indexOfObjectIdenticalTo:?]) != 0)
+  preferredInsertionOrder = [v13 preferredInsertionOrder];
+  annotations = [WeakRetained annotations];
+  v17 = annotations;
+  if (activeAnnotation && (v18 = [annotations indexOfObjectIdenticalTo:?]) != 0)
   {
     v19 = [v17 subarrayWithRange:{v18, objc_msgSend(v17, "count") - v18}];
 
@@ -1218,7 +1218,7 @@ LABEL_13:
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v15;
+  obj = preferredInsertionOrder;
   v56 = [obj countByEnumeratingWithState:&v81 objects:v97 count:16];
   if (v56)
   {
@@ -1259,12 +1259,12 @@ LABEL_13:
               v28 = *(*(&v77 + 1) + 8 * i);
               if ([v28 isActivatableTextField])
               {
-                v29 = [v28 autoFillTextContentType];
-                v68 = v29;
-                v30 = v29;
-                if (v29)
+                autoFillTextContentType = [v28 autoFillTextContentType];
+                v68 = autoFillTextContentType;
+                v30 = autoFillTextContentType;
+                if (autoFillTextContentType)
                 {
-                  v31 = [v29 isEqualToString:v24];
+                  v31 = [autoFillTextContentType isEqualToString:v24];
                   v30 = v68;
                   if (v31)
                   {
@@ -1273,15 +1273,15 @@ LABEL_13:
                     aBlock[2] = __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandler___block_invoke_2;
                     aBlock[3] = &unk_1E81515E8;
                     v74 = v62;
-                    v75 = self;
-                    v76 = v59;
+                    selfCopy = self;
+                    v76 = textView;
                     v66 = _Block_copy(aBlock);
-                    v63 = [v28 autoFillTextContentType];
-                    v67 = [v61 objectForKeyedSubscript:v63];
+                    autoFillTextContentType2 = [v28 autoFillTextContentType];
+                    v67 = [contents objectForKeyedSubscript:autoFillTextContentType2];
                     if ([v67 length])
                     {
                       v58 = [WeakRetained formFieldGroupForAnnotation:v28];
-                      v32 = [v63 isEqualToString:v50];
+                      v32 = [autoFillTextContentType2 isEqualToString:v50];
                       if (v58)
                       {
                         v33 = v32;
@@ -1346,8 +1346,8 @@ LABEL_13:
                         (v66)[2](v66, v67, v28);
                       }
 
-                      v47 = [v28 autoFillTextContentType];
-                      [v51 removeObject:v47];
+                      autoFillTextContentType3 = [v28 autoFillTextContentType];
+                      [v51 removeObject:autoFillTextContentType3];
 
                       goto LABEL_52;
                     }
@@ -1380,9 +1380,9 @@ LABEL_52:
     while (v56);
   }
 
-  if (v49)
+  if (handlerCopy)
   {
-    v49[2](v49, v51);
+    handlerCopy[2](handlerCopy, v51);
   }
 }
 
@@ -1427,13 +1427,13 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
   [v5 setAutofillEntryType:3];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v10.receiver = self;
   v10.super_class = PDFPageView;
-  [(PDFPageView *)&v10 setFrame:a3.origin.x, a3.origin.y];
+  [(PDFPageView *)&v10 setFrame:frame.origin.x, frame.origin.y];
   if (self->_private)
   {
     [MEMORY[0x1E6979518] begin];
@@ -1449,16 +1449,16 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = PDFPageView;
   [(PDFPageView *)&v6 setHidden:?];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
-  [WeakRetained setHidden:v3];
+  [WeakRetained setHidden:hiddenCopy];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -1466,8 +1466,8 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
 - (void)_setupBookmarkLayer
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v3 = [WeakRetained view];
-  if ([v3 displaysBookmarksForPages] && objc_msgSend(WeakRetained, "isBookmarked"))
+  view = [WeakRetained view];
+  if ([view displaysBookmarksForPages] && objc_msgSend(WeakRetained, "isBookmarked"))
   {
     [(PDFPageView *)self addBookmark];
   }
@@ -1476,13 +1476,13 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
 - (void)addBookmark
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v17 = [WeakRetained document];
+  document = [WeakRetained document];
 
-  if (v17 && ([v17 allowsDocumentAssembly] & 1) == 0)
+  if (document && ([document allowsDocumentAssembly] & 1) == 0)
   {
-    v5 = [v17 permissionsStatus];
+    permissionsStatus = [document permissionsStatus];
     v6 = @"user";
-    if (v5 == 2)
+    if (permissionsStatus == 2)
     {
       v6 = @"owner";
     }
@@ -1515,8 +1515,8 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
       v13->bookmarkSize.height = v15;
       -[CALayer setContents:](self->_private->bookmarkLayer, "setContents:", [v9 CGImage]);
       [(CALayer *)self->_private->bookmarkLayer setZPosition:-700.0];
-      v16 = [(PDFPageView *)self layer];
-      [v16 addSublayer:self->_private->bookmarkLayer];
+      layer = [(PDFPageView *)self layer];
+      [layer addSublayer:self->_private->bookmarkLayer];
 
       [(PDFPageView *)self updateBookmark];
     }
@@ -1526,14 +1526,14 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
 - (void)removeBookmark
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v11 = [WeakRetained document];
+  document = [WeakRetained document];
 
-  v4 = v11;
-  if (v11 && (v5 = [v11 allowsDocumentAssembly], v4 = v11, (v5 & 1) == 0))
+  v4 = document;
+  if (document && (v5 = [document allowsDocumentAssembly], v4 = document, (v5 & 1) == 0))
   {
-    v9 = [v11 permissionsStatus];
+    permissionsStatus = [document permissionsStatus];
     v10 = @"user";
-    if (v9 == 2)
+    if (permissionsStatus == 2)
     {
       v10 = @"owner";
     }
@@ -1555,7 +1555,7 @@ void __74__PDFPageView_populateFormFieldsWithAutoFillSuggestion_completionHandle
     v7->bookmarkLayer = 0;
   }
 
-  v4 = v11;
+  v4 = document;
 LABEL_9:
 
   MEMORY[0x1EEE66BB8](bookmarkLayer, v4);
@@ -1580,13 +1580,13 @@ LABEL_9:
   {
     [WeakRetained boundsForBox:1];
     v7 = v6;
-    v8 = [WeakRetained view];
-    [v8 frame];
+    view = [WeakRetained view];
+    [view frame];
     v10 = v7 / v9;
     v11 = (COERCE__INT64(fabs(v7 / v9)) - 0x10000000000000) >> 53;
     if ((COERCE__INT64(v7 / v9) <= -1 || v11 >= 0x3FF) && (COERCE__INT64(v7 / v9) - 1) >= 0xFFFFFFFFFFFFFLL)
     {
-      [v8 frame];
+      [view frame];
       v23 = PDFRectToString(v19, v20, v21, v22);
       NSLog(&cfstr_BookmarkBeingS.isa, v23);
     }
@@ -1728,13 +1728,13 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_updateWidgetControl:(id)a3 forBounds:(CGRect)a4
+- (void)_updateWidgetControl:(id)control forBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  controlCopy = control;
   [(PDFPageView *)self convertRectToPageView:x, y, width, height];
   v11 = v10;
   v13 = v12;
@@ -1744,26 +1744,26 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
   v26 = 0u;
   v24 = 0u;
   [(PDFPageView *)self _rotationTransformForPageView];
-  v18 = [v9 layer];
+  layer = [controlCopy layer];
   v19 = *(MEMORY[0x1E695EFD0] + 16);
   v21 = *MEMORY[0x1E695EFD0];
   v22 = v19;
   v23 = *(MEMORY[0x1E695EFD0] + 32);
-  [v18 setAffineTransform:&v21];
+  [layer setAffineTransform:&v21];
 
-  [v9 setFrame:{v11, v13, v15, v17}];
-  v20 = [v9 layer];
+  [controlCopy setFrame:{v11, v13, v15, v17}];
+  layer2 = [controlCopy layer];
 
   v21 = v24;
   v22 = v25;
   v23 = v26;
-  [v20 setAffineTransform:&v21];
+  [layer2 setAffineTransform:&v21];
 }
 
-- (CGRect)convertRectToPageView:(CGRect)a3
+- (CGRect)convertRectToPageView:(CGRect)view
 {
-  width = a3.size.width;
-  CenterPoint = PDFRectGetCenterPoint(a3.origin.x, a3.origin.y, a3.size.width);
+  width = view.size.width;
+  CenterPoint = PDFRectGetCenterPoint(view.origin.x, view.origin.y, view.size.width);
   v7 = v6;
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
   v9 = WeakRetained;
@@ -1787,9 +1787,9 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
   v19 = v18;
   v21 = v20;
   v22 = objc_loadWeakRetained(&self->_private->renderingProperties);
-  v23 = [(PDFPageView *)self page];
-  [v23 boundsForBox:{objc_msgSend(v22, "displayBox")}];
-  PDFRectRotate([v23 rotation], v24, v25);
+  page = [(PDFPageView *)self page];
+  [page boundsForBox:{objc_msgSend(v22, "displayBox")}];
+  PDFRectRotate([page rotation], v24, v25);
   v27 = v26 - v21 - v17;
 
   v28 = v15;
@@ -1806,17 +1806,17 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
 - (CGAffineTransform)_rotationTransformForPageView
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v4 = [WeakRetained rotation];
+  rotation = [WeakRetained rotation];
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  v5 = PDFDegToRad(v4);
+  v5 = PDFDegToRad(rotation);
   CGAffineTransformMakeRotation(retstr, v5);
 
   return result;
 }
 
-- (CGPoint)convertPointToPageView:(CGPoint)a3
+- (CGPoint)convertPointToPageView:(CGPoint)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v5 = PDFRectToCGRect([WeakRetained boundsForBox:0]);
@@ -1861,117 +1861,117 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
   v38.size.height = v11;
   v25 = v24 + CGRectGetMinY(v38);
   [(PDFPageView *)self frame];
-  v27 = v25 + v26 - a3.y;
+  v27 = v25 + v26 - view.y;
 
-  v28 = a3.x - v22;
+  v28 = view.x - v22;
   v29 = v27;
   result.y = v29;
   result.x = v28;
   return result;
 }
 
-- (void)_addPDFAnnotationTextWidget:(id)a3
+- (void)_addPDFAnnotationTextWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v5 = [PDFKitTextView alloc];
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v7 = [WeakRetained view];
-  v10 = [(PDFKitTextView *)v5 initWithAnnotation:v4 pdfPageView:self pdfView:v7];
+  view = [WeakRetained view];
+  v10 = [(PDFKitTextView *)v5 initWithAnnotation:widgetCopy pdfPageView:self pdfView:view];
 
-  [v4 bounds];
+  [widgetCopy bounds];
   [(PDFPageView *)self _updateWidgetControl:v10 forBounds:?];
-  objc_storeWeak(&self->_private->activeAnnotation, v4);
+  objc_storeWeak(&self->_private->activeAnnotation, widgetCopy);
   activeControls = self->_private->activeControls;
-  v9 = [v4 pdfAnnotationUUID];
+  pdfAnnotationUUID = [widgetCopy pdfAnnotationUUID];
 
-  [(NSMutableDictionary *)activeControls setObject:v10 forKey:v9];
+  [(NSMutableDictionary *)activeControls setObject:v10 forKey:pdfAnnotationUUID];
 }
 
-- (void)_addPDFAnnotationSignatureWidget:(id)a3
+- (void)_addPDFAnnotationSignatureWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v5 = [PDFKitSignatureView alloc];
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v7 = [WeakRetained view];
-  v10 = [(PDFKitSignatureView *)v5 initWithAnnotation:v4 pdfPageView:self pdfView:v7];
+  view = [WeakRetained view];
+  v10 = [(PDFKitSignatureView *)v5 initWithAnnotation:widgetCopy pdfPageView:self pdfView:view];
 
-  [v4 bounds];
+  [widgetCopy bounds];
   [(PDFPageView *)self _updateWidgetControl:v10 forBounds:?];
-  objc_storeWeak(&self->_private->activeAnnotation, v4);
+  objc_storeWeak(&self->_private->activeAnnotation, widgetCopy);
   activeControls = self->_private->activeControls;
-  v9 = [v4 pdfAnnotationUUID];
+  pdfAnnotationUUID = [widgetCopy pdfAnnotationUUID];
 
-  [(NSMutableDictionary *)activeControls setObject:v10 forKey:v9];
+  [(NSMutableDictionary *)activeControls setObject:v10 forKey:pdfAnnotationUUID];
 }
 
-- (void)_addPDFAnnotationChoiceWidget:(id)a3
+- (void)_addPDFAnnotationChoiceWidget:(id)widget
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 bounds];
+  widgetCopy = widget;
+  [widgetCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 choices];
-  v14 = [v4 widgetStringValue];
-  v15 = [v4 isListChoice];
-  v16 = [v4 font];
-  [v16 pointSize];
+  choices = [widgetCopy choices];
+  widgetStringValue = [widgetCopy widgetStringValue];
+  isListChoice = [widgetCopy isListChoice];
+  font = [widgetCopy font];
+  [font pointSize];
   v18 = v17;
-  v19 = [(PDFPageView *)self _allowsFormFieldEntry];
-  v20 = [v4 pdfAnnotationUUID];
-  if (v13 | v14)
+  _allowsFormFieldEntry = [(PDFPageView *)self _allowsFormFieldEntry];
+  pdfAnnotationUUID = [widgetCopy pdfAnnotationUUID];
+  if (choices | widgetStringValue)
   {
-    if (!v13)
+    if (!choices)
     {
-      v13 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v14, 0}];
+      choices = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{widgetStringValue, 0}];
     }
 
-    v43 = v20;
-    v44 = v16;
-    if (v15)
+    v43 = pdfAnnotationUUID;
+    v44 = font;
+    if (isListChoice)
     {
       v21 = [objc_alloc(MEMORY[0x1E69DD020]) initWithFrame:{v6, v8, v10, v12}];
       [(PDFPageView *)self _updateWidgetControl:v21 forBounds:v6, v8, v10, v12];
       [v21 setDataSource:self];
       [v21 setDelegate:self];
       [v21 setScrollEnabled:1];
-      [v21 setUserInteractionEnabled:v19];
+      [v21 setUserInteractionEnabled:_allowsFormFieldEntry];
       [v21 setRowHeight:v18 + 2.0];
       [v21 setSeparatorInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-      v22 = [v21 layer];
-      [v22 setBorderWidth:1.0];
+      layer = [v21 layer];
+      [layer setBorderWidth:1.0];
 
       WeakRetained = objc_loadWeakRetained(&self->_private->page);
-      v24 = [WeakRetained view];
-      v25 = [v24 isUsingPageViewController];
+      view = [WeakRetained view];
+      isUsingPageViewController = [view isUsingPageViewController];
 
-      if ((v25 & 1) == 0)
+      if ((isUsingPageViewController & 1) == 0)
       {
-        v26 = [v21 panGestureRecognizer];
+        panGestureRecognizer = [v21 panGestureRecognizer];
         v42 = WeakRetained;
-        v27 = [WeakRetained view];
-        v28 = [v27 documentScrollView];
-        v29 = [v28 panGestureRecognizer];
+        view2 = [WeakRetained view];
+        documentScrollView = [view2 documentScrollView];
+        panGestureRecognizer2 = [documentScrollView panGestureRecognizer];
 
-        if (v26 && v29)
+        if (panGestureRecognizer && panGestureRecognizer2)
         {
-          [v29 requireGestureRecognizerToFail:v26];
+          [panGestureRecognizer2 requireGestureRecognizerToFail:panGestureRecognizer];
         }
 
         WeakRetained = v42;
       }
 
       [(PDFPageView *)self addSubview:v21];
-      v30 = [v21 layer];
-      [v30 setZPosition:-200.0];
+      layer2 = [v21 layer];
+      [layer2 setZPosition:-200.0];
 
-      objc_storeWeak(&self->_private->activeAnnotation, v4);
-      v20 = v43;
+      objc_storeWeak(&self->_private->activeAnnotation, widgetCopy);
+      pdfAnnotationUUID = v43;
       [(NSMutableDictionary *)self->_private->activeControls setObject:v21 forKey:v43];
       [v21 reloadData];
-      v31 = [v13 indexOfObject:v14];
+      v31 = [choices indexOfObject:widgetStringValue];
       v32 = [MEMORY[0x1E696AC88] indexPathForRow:v31 inSection:0];
       [v21 selectRowAtIndexPath:v32 animated:0 scrollPosition:0];
     }
@@ -1981,21 +1981,21 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
       v33 = v8 + -2.0;
       WeakRetained = [objc_alloc(MEMORY[0x1E69DD0B0]) initWithFrame:{v6, v33, v10, v12}];
       [(PDFPageView *)self _updateWidgetControl:WeakRetained forBounds:v6, v33, v10, v12];
-      [WeakRetained setFont:v16];
-      v34 = [MEMORY[0x1E69DC888] clearColor];
-      [WeakRetained setTintColor:v34];
+      [WeakRetained setFont:font];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [WeakRetained setTintColor:clearColor];
 
-      [WeakRetained setText:v14];
-      [WeakRetained setUserInteractionEnabled:v19];
+      [WeakRetained setText:widgetStringValue];
+      [WeakRetained setUserInteractionEnabled:_allowsFormFieldEntry];
       v21 = objc_alloc_init(MEMORY[0x1E69DCD78]);
       [WeakRetained setInputView:v21];
-      objc_storeWeak(&self->_private->activeAnnotation, v4);
-      [(NSMutableDictionary *)self->_private->activeControls setObject:WeakRetained forKey:v20];
+      objc_storeWeak(&self->_private->activeAnnotation, widgetCopy);
+      [(NSMutableDictionary *)self->_private->activeControls setObject:WeakRetained forKey:pdfAnnotationUUID];
       [v21 setDelegate:self];
       [v21 setDataSource:self];
       [(PDFPageView *)self addSubview:WeakRetained];
-      v35 = [WeakRetained layer];
-      [v35 setZPosition:-200.0];
+      layer3 = [WeakRetained layer];
+      [layer3 setZPosition:-200.0];
 
       v36 = objc_alloc_init(MEMORY[0x1E69DD180]);
       [v36 sizeToFit];
@@ -2012,42 +2012,42 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
       [WeakRetained setInputAccessoryView:v36];
       [WeakRetained becomeFirstResponder];
 
-      v20 = v43;
+      pdfAnnotationUUID = v43;
     }
 
-    [v4 setControl:v21];
-    v16 = v44;
+    [widgetCopy setControl:v21];
+    font = v44;
   }
 }
 
 - (void)_choiceWidgetDone
 {
   [(PDFPageView *)self endEditing:1];
-  v5 = [(PDFPageView *)self page];
-  v3 = [v5 view];
+  page = [(PDFPageView *)self page];
+  view = [page view];
   WeakRetained = objc_loadWeakRetained(&self->_private->activeAnnotation);
-  [v3 removeControlForAnnotation:WeakRetained];
+  [view removeControlForAnnotation:WeakRetained];
 }
 
-- (void)_addPDFAnnotation:(id)a3
+- (void)_addPDFAnnotation:(id)annotation
 {
-  v10 = a3;
+  annotationCopy = annotation;
   WeakRetained = objc_loadWeakRetained(&self->_private->pageLayer);
   if (WeakRetained)
   {
-    v5 = [v10 akAnnotationAdaptor];
-    v6 = [v5 akAnnotation];
+    akAnnotationAdaptor = [annotationCopy akAnnotationAdaptor];
+    akAnnotation = [akAnnotationAdaptor akAnnotation];
 
-    if (!v6)
+    if (!akAnnotation)
     {
-      if ([v10 isMarkupAnnotationSubtype] && (objc_msgSend(v10, "isRedaction") & 1) == 0)
+      if ([annotationCopy isMarkupAnnotationSubtype] && (objc_msgSend(annotationCopy, "isRedaction") & 1) == 0)
       {
-        v9 = [PDFPageLayerEffect createPDFMarkupLayerEffectsForAnnotation:v10 withLayer:WeakRetained];
+        v9 = [PDFPageLayerEffect createPDFMarkupLayerEffectsForAnnotation:annotationCopy withLayer:WeakRetained];
       }
 
       else
       {
-        v7 = [v10 valueForAnnotationKey:@"/Subtype"];
+        v7 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
         v8 = [v7 isEqualToString:@"/Popup"];
 
         if (v8)
@@ -2055,7 +2055,7 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
           goto LABEL_9;
         }
 
-        v9 = [PDFPageLayerEffect createPDFAnnotationLayerEffectForAnnotation:v10 withLayer:WeakRetained];
+        v9 = [PDFPageLayerEffect createPDFAnnotationLayerEffectForAnnotation:annotationCopy withLayer:WeakRetained];
       }
     }
   }
@@ -2063,15 +2063,15 @@ void __42__PDFPageView__setuppageAnnotationEffects__block_invoke(uint64_t a1, vo
 LABEL_9:
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activeAnnotation);
   v5 = [WeakRetained valueForAnnotationKey:@"/FT"];
   v6 = v5;
   if (WeakRetained && [v5 isEqualToString:@"/Ch"])
   {
-    v7 = [WeakRetained choices];
-    v8 = [v7 count];
+    choices = [WeakRetained choices];
+    v8 = [choices count];
   }
 
   else
@@ -2082,10 +2082,10 @@ LABEL_9:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"MyCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"MyCell"];
   WeakRetained = objc_loadWeakRetained(&self->_private->activeAnnotation);
   if (!v7)
   {
@@ -2094,27 +2094,27 @@ LABEL_9:
 
   if (WeakRetained)
   {
-    v9 = [WeakRetained choices];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+    choices = [WeakRetained choices];
+    v10 = [choices objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v11 = [WeakRetained font];
-    v12 = [v7 textLabel];
-    [v12 setText:v10];
+    font = [WeakRetained font];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v10];
 
-    if (v11)
+    if (font)
     {
-      v13 = [v7 textLabel];
-      [v13 setFont:v11];
+      textLabel2 = [v7 textLabel];
+      [textLabel2 setFont:font];
     }
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v7 = self->_private;
   if (!v7->isPerformingUndo)
   {
@@ -2123,24 +2123,24 @@ LABEL_9:
     v10 = v9;
     if (WeakRetained && [v9 isEqualToString:@"/Ch"])
     {
-      v11 = [WeakRetained choices];
-      v12 = [v11 objectAtIndex:{objc_msgSend(v6, "row")}];
-      [(PDFPageView *)self setStringValue:v12 onChoiceWidgetAnnotation:WeakRetained withTableView:v13];
+      choices = [WeakRetained choices];
+      v12 = [choices objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      [(PDFPageView *)self setStringValue:v12 onChoiceWidgetAnnotation:WeakRetained withTableView:viewCopy];
     }
   }
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activeAnnotation);
   activeControls = self->_private->activeControls;
-  v8 = [WeakRetained pdfAnnotationUUID];
-  v9 = [(NSMutableDictionary *)activeControls objectForKey:v8];
+  pdfAnnotationUUID = [WeakRetained pdfAnnotationUUID];
+  v9 = [(NSMutableDictionary *)activeControls objectForKey:pdfAnnotationUUID];
 
   if (WeakRetained)
   {
-    v10 = [WeakRetained choices];
-    v11 = [v10 objectAtIndex:a4];
+    choices = [WeakRetained choices];
+    v11 = [choices objectAtIndex:row];
 
     [WeakRetained setWidgetStringValue:v11];
     if (v9)
@@ -2150,12 +2150,12 @@ LABEL_9:
   }
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (!v10)
+  viewCopy = view;
+  reusingViewCopy = reusingView;
+  v11 = reusingViewCopy;
+  if (!reusingViewCopy)
   {
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v11 setAdjustsFontSizeToFitWidth:1];
@@ -2166,8 +2166,8 @@ LABEL_9:
   v13 = WeakRetained;
   if (WeakRetained)
   {
-    v14 = [WeakRetained choices];
-    v15 = [v14 objectAtIndex:a4];
+    choices = [WeakRetained choices];
+    v15 = [choices objectAtIndex:row];
   }
 
   else
@@ -2180,14 +2180,14 @@ LABEL_9:
   return v11;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activeAnnotation);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = [WeakRetained choices];
-    v7 = [v6 count];
+    choices = [WeakRetained choices];
+    v7 = [choices count];
   }
 
   else
@@ -2198,16 +2198,16 @@ LABEL_9:
   return v7;
 }
 
-- (void)_formChanged:(id)a3
+- (void)_formChanged:(id)changed
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"PDFFormFieldName"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"PDFFormFieldName"];
 
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v7 = [WeakRetained document];
+  document = [WeakRetained document];
   v17 = v5;
-  v8 = [v7 annotationsForFieldName:v5];
+  v8 = [document annotationsForFieldName:v5];
 
   v20 = 0u;
   v21 = 0u;
@@ -2235,8 +2235,8 @@ LABEL_9:
           [v14 removeValueForAnnotationKey:@"/AP"];
         }
 
-        v16 = [v14 pdfAnnotationUUID];
-        [(PDFPageView *)self updatePageLayerEffectForID:v16];
+        pdfAnnotationUUID = [v14 pdfAnnotationUUID];
+        [(PDFPageView *)self updatePageLayerEffectForID:pdfAnnotationUUID];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2249,44 +2249,44 @@ LABEL_9:
 - (BOOL)_allowsFormFieldEntry
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v3 = [WeakRetained document];
+  document = [WeakRetained document];
 
-  if (v3)
+  if (document)
   {
-    v4 = [v3 allowsFormFieldEntry];
+    allowsFormFieldEntry = [document allowsFormFieldEntry];
   }
 
   else
   {
-    v4 = 1;
+    allowsFormFieldEntry = 1;
   }
 
-  return v4;
+  return allowsFormFieldEntry;
 }
 
 - (BOOL)shouldRegisterUndo
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v3 = [WeakRetained view];
-  v4 = [v3 allowsUndo];
+  view = [WeakRetained view];
+  allowsUndo = [view allowsUndo];
 
-  return v4;
+  return allowsUndo;
 }
 
-- (void)setStringValue:(id)a3 onTextWidgetAnnotation:(id)a4
+- (void)setStringValue:(id)value onTextWidgetAnnotation:(id)annotation
 {
-  v19 = a3;
-  v6 = a4;
-  if (v19)
+  valueCopy = value;
+  annotationCopy = annotation;
+  if (valueCopy)
   {
-    v7 = [v6 valueForAnnotationKey:@"/FT"];
+    v7 = [annotationCopy valueForAnnotationKey:@"/FT"];
     v8 = v7;
-    if (v6 && [v7 isEqualToString:@"/Tx"])
+    if (annotationCopy && [v7 isEqualToString:@"/Tx"])
     {
-      v9 = [v6 widgetStringValue];
-      if (v9)
+      widgetStringValue = [annotationCopy widgetStringValue];
+      if (widgetStringValue)
       {
-        v10 = v9;
+        v10 = widgetStringValue;
       }
 
       else
@@ -2294,43 +2294,43 @@ LABEL_9:
         v10 = &stru_1F416DF70;
       }
 
-      [v6 setWidgetStringValue:v19];
+      [annotationCopy setWidgetStringValue:valueCopy];
       if ([(PDFPageView *)self shouldRegisterUndo])
       {
         v11 = MEMORY[0x1E696AEC0];
         v12 = PDFKitLocalizedString(@"Change of %@");
-        v13 = [v6 displayName];
-        v14 = [v11 stringWithFormat:v12, v13];
+        displayName = [annotationCopy displayName];
+        v14 = [v11 stringWithFormat:v12, displayName];
 
-        v15 = [(PDFPageView *)self undoManager];
-        v16 = [v15 prepareWithInvocationTarget:self];
-        [v16 setStringValue:v10 onTextWidgetAnnotation:v6];
+        undoManager = [(PDFPageView *)self undoManager];
+        v16 = [undoManager prepareWithInvocationTarget:self];
+        [v16 setStringValue:v10 onTextWidgetAnnotation:annotationCopy];
 
-        v17 = [(PDFPageView *)self undoManager];
+        undoManager2 = [(PDFPageView *)self undoManager];
         v18 = PDFKitLocalizedString(v14);
-        [v17 setActionName:v18];
+        [undoManager2 setActionName:v18];
       }
     }
   }
 }
 
-- (void)setStringValue:(id)a3 onTextAnnotation:(id)a4
+- (void)setStringValue:(id)value onTextAnnotation:(id)annotation
 {
-  v27 = a3;
-  v6 = a4;
-  if (v27)
+  valueCopy = value;
+  annotationCopy = annotation;
+  if (valueCopy)
   {
-    if (v6)
+    if (annotationCopy)
     {
-      v7 = [v6 valueForAnnotationKey:@"/Subtype"];
+      v7 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
       v8 = [v7 isEqualToString:@"/FreeText"];
 
       if (v8)
       {
-        v9 = [v6 widgetStringValue];
-        if (v9)
+        widgetStringValue = [annotationCopy widgetStringValue];
+        if (widgetStringValue)
         {
-          v10 = v9;
+          v10 = widgetStringValue;
         }
 
         else
@@ -2338,27 +2338,27 @@ LABEL_9:
           v10 = &stru_1F416DF70;
         }
 
-        [v6 setValue:v27 forAnnotationKey:@"/Contents"];
-        v11 = [v6 akAnnotation];
+        [annotationCopy setValue:valueCopy forAnnotationKey:@"/Contents"];
+        akAnnotation = [annotationCopy akAnnotation];
 
-        if (v11)
+        if (akAnnotation)
         {
           WeakRetained = objc_loadWeakRetained(&self->_private->page);
-          v13 = [WeakRetained document];
+          document = [WeakRetained document];
 
-          v14 = [v13 akController];
+          akController = [document akController];
           if (objc_opt_respondsToSelector())
           {
-            v15 = [v14 textEditorController];
-            v16 = [v15 annotation];
-            v17 = [v6 akAnnotation];
+            textEditorController = [akController textEditorController];
+            annotation = [textEditorController annotation];
+            akAnnotation2 = [annotationCopy akAnnotation];
 
-            if (v16 == v17)
+            if (annotation == akAnnotation2)
             {
-              v18 = [v15 textView];
-              [v18 setText:v27];
+              textView = [textEditorController textView];
+              [textView setText:valueCopy];
 
-              [v15 updateForTextAttributeChange];
+              [textEditorController updateForTextAttributeChange];
             }
           }
         }
@@ -2367,129 +2367,129 @@ LABEL_9:
         {
           v19 = MEMORY[0x1E696AEC0];
           v20 = PDFKitLocalizedString(@"Change of %@");
-          v21 = [v6 displayName];
-          v22 = [v19 stringWithFormat:v20, v21];
+          displayName = [annotationCopy displayName];
+          v22 = [v19 stringWithFormat:v20, displayName];
 
-          v23 = [(PDFPageView *)self undoManager];
-          v24 = [v23 prepareWithInvocationTarget:self];
-          [v24 setStringValue:v10 onTextAnnotation:v6];
+          undoManager = [(PDFPageView *)self undoManager];
+          v24 = [undoManager prepareWithInvocationTarget:self];
+          [v24 setStringValue:v10 onTextAnnotation:annotationCopy];
 
-          v25 = [(PDFPageView *)self undoManager];
+          undoManager2 = [(PDFPageView *)self undoManager];
           v26 = PDFKitLocalizedString(v22);
-          [v25 setActionName:v26];
+          [undoManager2 setActionName:v26];
         }
       }
     }
   }
 }
 
-- (void)_setAttributedStringForAnnotation:(id)a3 stringValue:(id)a4 textView:(id)a5
+- (void)_setAttributedStringForAnnotation:(id)annotation stringValue:(id)value textView:(id)view
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 font];
-  v11 = [v9 valueForAnnotationKey:@"/MaxLen"];
+  viewCopy = view;
+  valueCopy = value;
+  annotationCopy = annotation;
+  font = [annotationCopy font];
+  v11 = [annotationCopy valueForAnnotationKey:@"/MaxLen"];
 
-  v12 = [v11 integerValue];
-  if (!v10)
+  integerValue = [v11 integerValue];
+  if (!font)
   {
     v13 = MEMORY[0x1E69DB878];
-    [v7 frame];
-    v10 = [v13 systemFontOfSize:v14 + -2.0];
+    [viewCopy frame];
+    font = [v13 systemFontOfSize:v14 + -2.0];
   }
 
-  v15 = v12;
+  v15 = integerValue;
   v29 = *MEMORY[0x1E69DB648];
   v16 = v29;
-  v30[0] = v10;
+  v30[0] = font;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-  [v8 sizeWithAttributes:v17];
+  [valueCopy sizeWithAttributes:v17];
   v19 = v18;
 
-  v20 = [v8 length];
-  [v7 frame];
+  v20 = [valueCopy length];
+  [viewCopy frame];
   v22 = (v21 + -v19 / v20 * v15) / v15;
-  v23 = [v8 length];
-  v24 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
+  v23 = [valueCopy length];
+  v24 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:valueCopy];
 
   v25 = *MEMORY[0x1E69DB660];
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:v22];
   [v24 addAttribute:v25 value:v26 range:{0, v23}];
 
-  [v24 addAttribute:v16 value:v10 range:{0, v23}];
-  v27 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v28 = [v27 mutableCopy];
+  [v24 addAttribute:v16 value:font range:{0, v23}];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v28 = [defaultParagraphStyle mutableCopy];
 
   [v28 setLineBreakMode:2];
   [v24 addAttribute:*MEMORY[0x1E69DB688] value:v28 range:{0, v23}];
-  [v7 setAttributedText:v24];
+  [viewCopy setAttributedText:v24];
 }
 
-- (BOOL)_shouldReplaceStringOnAnnotation:(id)a3 withTextView:(id)a4
+- (BOOL)_shouldReplaceStringOnAnnotation:(id)annotation withTextView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 text];
-  v9 = [v6 replaceTextWidgetWithString:v8];
-  v10 = [v8 isEqualToString:v9];
+  annotationCopy = annotation;
+  viewCopy = view;
+  text = [viewCopy text];
+  v9 = [annotationCopy replaceTextWidgetWithString:text];
+  v10 = [text isEqualToString:v9];
   if ((v10 & 1) == 0)
   {
-    [(PDFPageView *)self _setAttributedStringForAnnotation:v6 stringValue:v9 textView:v7];
+    [(PDFPageView *)self _setAttributedStringForAnnotation:annotationCopy stringValue:v9 textView:viewCopy];
   }
 
   return v10;
 }
 
-- (void)setStringValue:(id)a3 onTextWidgetAnnotation:(id)a4 withTextView:(id)a5
+- (void)setStringValue:(id)value onTextWidgetAnnotation:(id)annotation withTextView:(id)view
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v21)
+  valueCopy = value;
+  annotationCopy = annotation;
+  viewCopy = view;
+  if (valueCopy)
   {
-    if (v8)
+    if (annotationCopy)
     {
-      v10 = [v8 valueForAnnotationKey:@"/FT"];
+      v10 = [annotationCopy valueForAnnotationKey:@"/FT"];
       v11 = [v10 isEqualToString:@"/Tx"];
 
       if (v11)
       {
-        if ([(PDFPageView *)self _shouldReplaceStringOnAnnotation:v8 withTextView:v9])
+        if ([(PDFPageView *)self _shouldReplaceStringOnAnnotation:annotationCopy withTextView:viewCopy])
         {
-          v12 = [v8 widgetStringValue];
-          [v8 setWidgetStringValue:v21];
-          if ([v8 shouldComb])
+          widgetStringValue = [annotationCopy widgetStringValue];
+          [annotationCopy setWidgetStringValue:valueCopy];
+          if ([annotationCopy shouldComb])
           {
-            [(PDFPageView *)self _setAttributedStringForAnnotation:v8 stringValue:v21 textView:v9];
+            [(PDFPageView *)self _setAttributedStringForAnnotation:annotationCopy stringValue:valueCopy textView:viewCopy];
           }
 
           else
           {
-            [v9 setText:v21];
+            [viewCopy setText:valueCopy];
           }
 
-          [v9 setNeedsDisplay];
-          if (!v12)
+          [viewCopy setNeedsDisplay];
+          if (!widgetStringValue)
           {
-            v12 = &stru_1F416DF70;
+            widgetStringValue = &stru_1F416DF70;
           }
 
           if ([(PDFPageView *)self shouldRegisterUndo])
           {
             v13 = MEMORY[0x1E696AEC0];
             v14 = PDFKitLocalizedString(@"Change of %@");
-            v15 = [v8 displayName];
-            v16 = [v13 stringWithFormat:v14, v15];
+            displayName = [annotationCopy displayName];
+            v16 = [v13 stringWithFormat:v14, displayName];
 
-            v17 = [(PDFPageView *)self undoManager];
-            v18 = [v17 prepareWithInvocationTarget:self];
-            [v18 setStringValue:v12 onTextWidgetAnnotation:v8 withTextView:v9];
+            undoManager = [(PDFPageView *)self undoManager];
+            v18 = [undoManager prepareWithInvocationTarget:self];
+            [v18 setStringValue:widgetStringValue onTextWidgetAnnotation:annotationCopy withTextView:viewCopy];
 
-            v19 = [(PDFPageView *)self undoManager];
+            undoManager2 = [(PDFPageView *)self undoManager];
             v20 = PDFKitLocalizedString(v16);
-            [v19 setActionName:v20];
+            [undoManager2 setActionName:v20];
           }
         }
       }
@@ -2497,81 +2497,81 @@ LABEL_9:
   }
 }
 
-- (void)setStringValue:(id)a3 onChoiceWidgetAnnotation:(id)a4 withTextField:(id)a5
+- (void)setStringValue:(id)value onChoiceWidgetAnnotation:(id)annotation withTextField:(id)field
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 valueForAnnotationKey:@"/FT"];
-  if (v20 && v8 && [v10 isEqualToString:@"/Ch"])
+  valueCopy = value;
+  annotationCopy = annotation;
+  fieldCopy = field;
+  v10 = [annotationCopy valueForAnnotationKey:@"/FT"];
+  if (valueCopy && annotationCopy && [v10 isEqualToString:@"/Ch"])
   {
-    v11 = [v8 widgetStringValue];
-    [v8 setWidgetStringValue:v20];
-    [v9 setText:v20];
-    [v9 setNeedsDisplay];
-    if (!v11)
+    widgetStringValue = [annotationCopy widgetStringValue];
+    [annotationCopy setWidgetStringValue:valueCopy];
+    [fieldCopy setText:valueCopy];
+    [fieldCopy setNeedsDisplay];
+    if (!widgetStringValue)
     {
-      v11 = &stru_1F416DF70;
+      widgetStringValue = &stru_1F416DF70;
     }
 
     if ([(PDFPageView *)self shouldRegisterUndo])
     {
       v12 = MEMORY[0x1E696AEC0];
       v13 = PDFKitLocalizedString(@"Change of %@");
-      v14 = [v8 displayName];
-      v15 = [v12 stringWithFormat:v13, v14];
+      displayName = [annotationCopy displayName];
+      v15 = [v12 stringWithFormat:v13, displayName];
 
-      v16 = [(PDFPageView *)self undoManager];
-      v17 = [v16 prepareWithInvocationTarget:self];
-      [v17 setStringValue:v11 onChoiceWidgetAnnotation:v8 withTextField:v9];
+      undoManager = [(PDFPageView *)self undoManager];
+      v17 = [undoManager prepareWithInvocationTarget:self];
+      [v17 setStringValue:widgetStringValue onChoiceWidgetAnnotation:annotationCopy withTextField:fieldCopy];
 
-      v18 = [(PDFPageView *)self undoManager];
+      undoManager2 = [(PDFPageView *)self undoManager];
       v19 = PDFKitLocalizedString(v15);
-      [v18 setActionName:v19];
+      [undoManager2 setActionName:v19];
     }
   }
 }
 
-- (void)setStringValue:(id)a3 onChoiceWidgetAnnotation:(id)a4 withTableView:(id)a5
+- (void)setStringValue:(id)value onChoiceWidgetAnnotation:(id)annotation withTableView:(id)view
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  annotationCopy = annotation;
+  viewCopy = view;
   self->_private->isPerformingUndo = 1;
-  v10 = [v8 valueForAnnotationKey:@"/FT"];
-  if (v24)
+  v10 = [annotationCopy valueForAnnotationKey:@"/FT"];
+  if (valueCopy)
   {
-    if (v8 && [v10 isEqualToString:@"/Ch"])
+    if (annotationCopy && [v10 isEqualToString:@"/Ch"])
     {
-      v11 = [v8 widgetStringValue];
-      [v8 setWidgetStringValue:v24];
-      v12 = [v8 choices];
-      v13 = [v12 indexOfObject:v24];
+      widgetStringValue = [annotationCopy widgetStringValue];
+      [annotationCopy setWidgetStringValue:valueCopy];
+      choices = [annotationCopy choices];
+      v13 = [choices indexOfObject:valueCopy];
       v14 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:0];
-      [v9 selectRowAtIndexPath:v14 animated:1 scrollPosition:0];
-      [(PDFPageView *)self tableView:v9 didSelectRowAtIndexPath:v14];
-      if (!v11)
+      [viewCopy selectRowAtIndexPath:v14 animated:1 scrollPosition:0];
+      [(PDFPageView *)self tableView:viewCopy didSelectRowAtIndexPath:v14];
+      if (!widgetStringValue)
       {
-        v11 = &stru_1F416DF70;
+        widgetStringValue = &stru_1F416DF70;
       }
 
       if ([(PDFPageView *)self shouldRegisterUndo])
       {
-        v23 = v12;
+        v23 = choices;
         v15 = MEMORY[0x1E696AEC0];
         v16 = PDFKitLocalizedString(@"Change of %@");
-        v17 = [v8 displayName];
-        v18 = [v15 stringWithFormat:v16, v17];
+        displayName = [annotationCopy displayName];
+        v18 = [v15 stringWithFormat:v16, displayName];
 
-        v19 = [(PDFPageView *)self undoManager];
-        v20 = [v19 prepareWithInvocationTarget:self];
-        [v20 setStringValue:v11 onChoiceWidgetAnnotation:v8 withTableView:v9];
+        undoManager = [(PDFPageView *)self undoManager];
+        v20 = [undoManager prepareWithInvocationTarget:self];
+        [v20 setStringValue:widgetStringValue onChoiceWidgetAnnotation:annotationCopy withTableView:viewCopy];
 
-        v21 = [(PDFPageView *)self undoManager];
+        undoManager2 = [(PDFPageView *)self undoManager];
         v22 = PDFKitLocalizedString(v18);
-        [v21 setActionName:v22];
+        [undoManager2 setActionName:v22];
 
-        v12 = v23;
+        choices = v23;
       }
     }
 
@@ -2579,49 +2579,49 @@ LABEL_9:
   }
 }
 
-- (void)setState:(int64_t)a3 onButtonWidgetAnnotation:(id)a4
+- (void)setState:(int64_t)state onButtonWidgetAnnotation:(id)annotation
 {
-  v16 = a4;
-  v6 = [v16 valueForAnnotationKey:@"/FT"];
-  if (v16)
+  annotationCopy = annotation;
+  v6 = [annotationCopy valueForAnnotationKey:@"/FT"];
+  if (annotationCopy)
   {
     if ([v6 isEqualToString:@"/Btn"])
     {
-      v7 = [v16 buttonWidgetState];
-      [v16 setButtonWidgetState:a3];
+      buttonWidgetState = [annotationCopy buttonWidgetState];
+      [annotationCopy setButtonWidgetState:state];
       if ([(PDFPageView *)self shouldRegisterUndo])
       {
         v8 = MEMORY[0x1E696AEC0];
         v9 = PDFKitLocalizedString(@"Change of %@");
-        v10 = [v16 displayName];
-        v11 = [v8 stringWithFormat:v9, v10];
+        displayName = [annotationCopy displayName];
+        v11 = [v8 stringWithFormat:v9, displayName];
 
-        v12 = [(PDFPageView *)self undoManager];
-        v13 = [v12 prepareWithInvocationTarget:self];
-        [v13 setState:v7 onButtonWidgetAnnotation:v16];
+        undoManager = [(PDFPageView *)self undoManager];
+        v13 = [undoManager prepareWithInvocationTarget:self];
+        [v13 setState:buttonWidgetState onButtonWidgetAnnotation:annotationCopy];
 
-        v14 = [(PDFPageView *)self undoManager];
+        undoManager2 = [(PDFPageView *)self undoManager];
         v15 = PDFKitLocalizedString(v11);
-        [v14 setActionName:v15];
+        [undoManager2 setActionName:v15];
       }
     }
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = PDFPageView;
-  v8 = [(PDFPageView *)&v16 hitTest:v7 withEvent:x, y];
+  v8 = [(PDFPageView *)&v16 hitTest:eventCopy withEvent:x, y];
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v10 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  if ([v10 isInMarkupMode] & 1) != 0 || (objc_msgSend(v10, "isFormDetectionEnabled"))
+  if ([view isInMarkupMode] & 1) != 0 || (objc_msgSend(view, "isFormDetectionEnabled"))
   {
-    v11 = [v10 hitTestForSubviewsOfView:self atLocation:v7 withEvent:{x, y}];
+    v11 = [view hitTestForSubviewsOfView:self atLocation:eventCopy withEvent:{x, y}];
     v12 = v11;
     if (v11)
     {

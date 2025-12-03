@@ -1,34 +1,34 @@
 @interface THContentLinkResolver
-+ (id)contentLinkResolverWithContentNode:(id)a3 presentationType:(id)a4;
-+ (id)navigableAnchorFromLink:(id)a3 withContentNode:(id)a4 presentationType:(id)a5;
-- (BOOL)p_linkContentNodeIsConsistentWithOurs:(id)a3;
-- (THContentLinkResolver)initWithContentNode:(id)a3 presentationType:(id)a4;
-- (id)navigableAnchorFromLink:(id)a3;
-- (id)p_contentNodeAnchorFromLink:(id)a3;
-- (id)p_pageAnchorFromLink:(id)a3;
-- (id)p_storageAnchorFromFixedAnchor:(id)a3;
-- (id)p_storageAnchorFromLink:(id)a3;
++ (id)contentLinkResolverWithContentNode:(id)node presentationType:(id)type;
++ (id)navigableAnchorFromLink:(id)link withContentNode:(id)node presentationType:(id)type;
+- (BOOL)p_linkContentNodeIsConsistentWithOurs:(id)ours;
+- (THContentLinkResolver)initWithContentNode:(id)node presentationType:(id)type;
+- (id)navigableAnchorFromLink:(id)link;
+- (id)p_contentNodeAnchorFromLink:(id)link;
+- (id)p_pageAnchorFromLink:(id)link;
+- (id)p_storageAnchorFromFixedAnchor:(id)anchor;
+- (id)p_storageAnchorFromLink:(id)link;
 - (void)dealloc;
 @end
 
 @implementation THContentLinkResolver
 
-+ (id)contentLinkResolverWithContentNode:(id)a3 presentationType:(id)a4
++ (id)contentLinkResolverWithContentNode:(id)node presentationType:(id)type
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithContentNode:a3 presentationType:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithContentNode:node presentationType:type];
 
   return v4;
 }
 
-- (THContentLinkResolver)initWithContentNode:(id)a3 presentationType:(id)a4
+- (THContentLinkResolver)initWithContentNode:(id)node presentationType:(id)type
 {
   v8.receiver = self;
   v8.super_class = THContentLinkResolver;
   v6 = [(THContentLinkResolver *)&v8 init];
   if (v6)
   {
-    v6->mPresentationType = a4;
-    v6->mContentNode = a3;
+    v6->mPresentationType = type;
+    v6->mContentNode = node;
   }
 
   return v6;
@@ -44,33 +44,33 @@
   [(THContentLinkResolver *)&v3 dealloc];
 }
 
-- (id)navigableAnchorFromLink:(id)a3
+- (id)navigableAnchorFromLink:(id)link
 {
   result = [(THContentLinkResolver *)self p_storageAnchorFromLink:?];
   if (!result)
   {
-    result = [(THContentLinkResolver *)self p_contentNodeAnchorFromLink:a3];
+    result = [(THContentLinkResolver *)self p_contentNodeAnchorFromLink:link];
     if (!result)
     {
 
-      return [(THContentLinkResolver *)self p_pageAnchorFromLink:a3];
+      return [(THContentLinkResolver *)self p_pageAnchorFromLink:link];
     }
   }
 
   return result;
 }
 
-+ (id)navigableAnchorFromLink:(id)a3 withContentNode:(id)a4 presentationType:(id)a5
++ (id)navigableAnchorFromLink:(id)link withContentNode:(id)node presentationType:(id)type
 {
-  v6 = [THContentLinkResolver contentLinkResolverWithContentNode:a4 presentationType:a5];
+  v6 = [THContentLinkResolver contentLinkResolverWithContentNode:node presentationType:type];
 
-  return [(THContentLinkResolver *)v6 navigableAnchorFromLink:a3];
+  return [(THContentLinkResolver *)v6 navigableAnchorFromLink:link];
 }
 
-- (BOOL)p_linkContentNodeIsConsistentWithOurs:(id)a3
+- (BOOL)p_linkContentNodeIsConsistentWithOurs:(id)ours
 {
-  v4 = [a3 docRelativePath];
-  if (!v4 || (v5 = [v4 isEqualToString:{-[THModelContentNode applePubRelativePath](-[THContentLinkResolver contentNode](self, "contentNode"), "applePubRelativePath")}]) != 0)
+  docRelativePath = [ours docRelativePath];
+  if (!docRelativePath || (v5 = [docRelativePath isEqualToString:{-[THModelContentNode applePubRelativePath](-[THContentLinkResolver contentNode](self, "contentNode"), "applePubRelativePath")}]) != 0)
   {
     LOBYTE(v5) = 1;
   }
@@ -78,36 +78,36 @@
   return v5;
 }
 
-- (id)p_pageAnchorFromLink:(id)a3
+- (id)p_pageAnchorFromLink:(id)link
 {
   if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:?])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:a3])
+  if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:link])
   {
     return 0;
   }
 
   v5 = [[THModelPageAnchor alloc] initWithContentNode:[(THContentLinkResolver *)self contentNode] relativePageIndex:0 presentationType:[(THContentLinkResolver *)self presentationType]];
-  if (![a3 isCustom])
+  if (![link isCustom])
   {
     return v5;
   }
 
-  if (![a3 isCustomPage])
+  if (![link isCustomPage])
   {
     return v5;
   }
 
-  v6 = [a3 customPageIndex];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  customPageIndex = [link customPageIndex];
+  if (customPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return v5;
   }
 
-  v7 = v6;
+  v7 = customPageIndex;
   v8 = [(THModelNode *)[(THContentLinkResolver *)self contentNode] absolutePageRangeForPresentationType:[(THContentLinkResolver *)self presentationType]];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || v7 < v8 || v7 - v8 >= v9)
   {
@@ -119,31 +119,31 @@
   return v10;
 }
 
-- (id)p_storageAnchorFromLink:(id)a3
+- (id)p_storageAnchorFromLink:(id)link
 {
   if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:?])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:a3])
+  if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:link])
   {
     return 0;
   }
 
-  if ([a3 isOrdinary])
+  if ([link isOrdinary])
   {
-    v5 = -[THModelFixedAnchor initWithContentNode:elementId:]([THModelFixedAnchor alloc], "initWithContentNode:elementId:", -[THContentLinkResolver contentNode](self, "contentNode"), [a3 fragment]);
+    v5 = -[THModelFixedAnchor initWithContentNode:elementId:]([THModelFixedAnchor alloc], "initWithContentNode:elementId:", -[THContentLinkResolver contentNode](self, "contentNode"), [link fragment]);
 
     return [(THContentLinkResolver *)self p_storageAnchorFromFixedAnchor:v5];
   }
 
-  if (![a3 isDynamic])
+  if (![link isDynamic])
   {
     return 0;
   }
 
-  v6 = [objc_msgSend(a3 "fragment")];
+  v6 = [objc_msgSend(link "fragment")];
   if ([v6 count] != &dword_0 + 2)
   {
     return 0;
@@ -154,29 +154,29 @@
   return [(THContentLinkResolver *)self p_storageAnchorFromDynamicAnchor:v7];
 }
 
-- (id)p_storageAnchorFromFixedAnchor:(id)a3
+- (id)p_storageAnchorFromFixedAnchor:(id)anchor
 {
-  v4 = [(THContentLinkResolver *)self contentNode];
-  v5 = [a3 elementId];
+  contentNode = [(THContentLinkResolver *)self contentNode];
+  elementId = [anchor elementId];
 
-  return [(THModelContentNode *)v4 storageAnchorForAnchorId:v5];
+  return [(THModelContentNode *)contentNode storageAnchorForAnchorId:elementId];
 }
 
-- (id)p_contentNodeAnchorFromLink:(id)a3
+- (id)p_contentNodeAnchorFromLink:(id)link
 {
   if (![(THContentLinkResolver *)self p_linkContentNodeIsConsistentWithOurs:?])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (!-[THContentLinkResolver p_linkContentNodeIsConsistentWithOurs:](self, "p_linkContentNodeIsConsistentWithOurs:", a3) || ![a3 isOrdinary] || objc_msgSend(objc_msgSend(a3, "fragment"), "length"))
+  if (!-[THContentLinkResolver p_linkContentNodeIsConsistentWithOurs:](self, "p_linkContentNodeIsConsistentWithOurs:", link) || ![link isOrdinary] || objc_msgSend(objc_msgSend(link, "fragment"), "length"))
   {
     return 0;
   }
 
-  v6 = [(THContentLinkResolver *)self contentNode];
+  contentNode = [(THContentLinkResolver *)self contentNode];
 
-  return [THModelContentNodeAnchor contentNodeAnchorWithContentNode:v6];
+  return [THModelContentNodeAnchor contentNodeAnchorWithContentNode:contentNode];
 }
 
 @end

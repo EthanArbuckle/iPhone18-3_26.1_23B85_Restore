@@ -1,11 +1,11 @@
 @interface PXAssetsSectionConfigurator
-- (CGRect)containerFrameForAssetSectionLayout:(id)a3;
-- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)a3 isCurated:(BOOL)a4 numberOfAssets:(int64_t)a5 referenceSize:(CGSize)a6;
+- (CGRect)containerFrameForAssetSectionLayout:(id)layout;
+- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)collection isCurated:(BOOL)curated numberOfAssets:(int64_t)assets referenceSize:(CGSize)size;
 - (PXAssetsSectionConfigurator)init;
-- (PXAssetsSectionConfigurator)initWithExtendedTraitCollection:(id)a3 assetsSectionLayoutSpec:(id)a4;
+- (PXAssetsSectionConfigurator)initWithExtendedTraitCollection:(id)collection assetsSectionLayoutSpec:(id)spec;
 - (PXAssetsSectionLayoutSpec)assetsSectionLayoutSpec;
 - (UIEdgeInsets)containerInsets;
-- (void)configureAssetSectionLayout:(id)a3;
+- (void)configureAssetSectionLayout:(id)layout;
 @end
 
 @implementation PXAssetsSectionConfigurator
@@ -23,21 +23,21 @@
   return result;
 }
 
-- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)a3 isCurated:(BOOL)a4 numberOfAssets:(int64_t)a5 referenceSize:(CGSize)a6
+- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)collection isCurated:(BOOL)curated numberOfAssets:(int64_t)assets referenceSize:(CGSize)size
 {
-  v8 = a3;
-  v9 = [MEMORY[0x277CCA890] currentHandler];
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:61 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsSectionConfigurator estimatedSizeOfSectionForAssetCollection:isCurated:numberOfAssets:referenceSize:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:61 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsSectionConfigurator estimatedSizeOfSectionForAssetCollection:isCurated:numberOfAssets:referenceSize:]", v11}];
 
   abort();
 }
 
-- (CGRect)containerFrameForAssetSectionLayout:(id)a3
+- (CGRect)containerFrameForAssetSectionLayout:(id)layout
 {
-  v4 = a3;
-  [v4 contentSize];
+  layoutCopy = layout;
+  [layoutCopy contentSize];
   if (v6 == *MEMORY[0x277CBF3A8] && v5 == *(MEMORY[0x277CBF3A8] + 8))
   {
     v9 = *MEMORY[0x277CBF3A0];
@@ -49,7 +49,7 @@
   else
   {
     [(PXAssetsSectionConfigurator *)self containerInsets];
-    [v4 padding];
+    [layoutCopy padding];
     PXEdgeInsetsInsetRect();
     v9 = v8;
     v11 = v10;
@@ -68,13 +68,13 @@
   return result;
 }
 
-- (void)configureAssetSectionLayout:(id)a3
+- (void)configureAssetSectionLayout:(id)layout
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  layoutCopy = layout;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:39 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsSectionConfigurator configureAssetSectionLayout:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:39 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsSectionConfigurator configureAssetSectionLayout:]", v8}];
 
   abort();
 }
@@ -84,23 +84,23 @@
   WeakRetained = objc_loadWeakRetained(&self->_assetsSectionLayoutSpec);
   if (!WeakRetained)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"assetsSectionLayoutSpec != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"assetsSectionLayoutSpec != nil"}];
   }
 
   return WeakRetained;
 }
 
-- (PXAssetsSectionConfigurator)initWithExtendedTraitCollection:(id)a3 assetsSectionLayoutSpec:(id)a4
+- (PXAssetsSectionConfigurator)initWithExtendedTraitCollection:(id)collection assetsSectionLayoutSpec:(id)spec
 {
-  v5 = a4;
+  specCopy = spec;
   v8.receiver = self;
   v8.super_class = PXAssetsSectionConfigurator;
   v6 = [(PXAssetsSectionConfigurator *)&v8 init];
   if (v6)
   {
-    v6->_variant = [v5 variant];
-    objc_storeWeak(&v6->_assetsSectionLayoutSpec, v5);
+    v6->_variant = [specCopy variant];
+    objc_storeWeak(&v6->_assetsSectionLayoutSpec, specCopy);
   }
 
   return v6;
@@ -108,8 +108,8 @@
 
 - (PXAssetsSectionConfigurator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:20 description:{@"%s is not available as initializer", "-[PXAssetsSectionConfigurator init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsSectionConfigurator.m" lineNumber:20 description:{@"%s is not available as initializer", "-[PXAssetsSectionConfigurator init]"}];
 
   abort();
 }

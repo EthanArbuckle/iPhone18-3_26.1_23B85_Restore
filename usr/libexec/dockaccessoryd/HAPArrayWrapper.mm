@@ -1,16 +1,16 @@
 @interface HAPArrayWrapper
-+ (id)wrappertlv:(unint64_t)a3 name:(id)a4 objectCreator:(id)a5;
++ (id)wrappertlv:(unint64_t)wrappertlv name:(id)name objectCreator:(id)creator;
 @end
 
 @implementation HAPArrayWrapper
 
-+ (id)wrappertlv:(unint64_t)a3 name:(id)a4 objectCreator:(id)a5
++ (id)wrappertlv:(unint64_t)wrappertlv name:(id)name objectCreator:(id)creator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HAPFieldWrapper *)[HAPArrayWrapper alloc] initWithTlvId:a3 name:v8];
+  creatorCopy = creator;
+  nameCopy = name;
+  v9 = [(HAPFieldWrapper *)[HAPArrayWrapper alloc] initWithTlvId:wrappertlv name:nameCopy];
 
-  [(HAPArrayWrapper *)v9 setObjectCreator:v7];
+  [(HAPArrayWrapper *)v9 setObjectCreator:creatorCopy];
 
   return v9;
 }

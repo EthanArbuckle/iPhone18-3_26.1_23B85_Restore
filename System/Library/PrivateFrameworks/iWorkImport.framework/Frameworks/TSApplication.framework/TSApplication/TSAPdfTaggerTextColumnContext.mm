@@ -1,5 +1,5 @@
 @interface TSAPdfTaggerTextColumnContext
-- (TSAPdfTaggerTextColumnContext)initWithStateOfTagger:(id)a3 column:(id)a4 limitSelection:(id)a5;
+- (TSAPdfTaggerTextColumnContext)initWithStateOfTagger:(id)tagger column:(id)column limitSelection:(id)selection;
 - (TSAPdfTaggerTextColumnOwnerContext)textColumnOwner;
 - (TSWPColumn)column;
 - (TSWPSelection)limitSelection;
@@ -8,20 +8,20 @@
 
 @implementation TSAPdfTaggerTextColumnContext
 
-- (TSAPdfTaggerTextColumnContext)initWithStateOfTagger:(id)a3 column:(id)a4 limitSelection:(id)a5
+- (TSAPdfTaggerTextColumnContext)initWithStateOfTagger:(id)tagger column:(id)column limitSelection:(id)selection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taggerCopy = tagger;
+  columnCopy = column;
+  selectionCopy = selection;
   v72.receiver = self;
   v72.super_class = TSAPdfTaggerTextColumnContext;
-  v14 = [(TSAPdfTaggerContext *)&v72 initWithStateOfTagger:v8];
+  v14 = [(TSAPdfTaggerContext *)&v72 initWithStateOfTagger:taggerCopy];
   if (!v14)
   {
     goto LABEL_31;
   }
 
-  v15 = objc_msgSend_topOfContextStack(v8, v11, v12, v13);
+  v15 = objc_msgSend_topOfContextStack(taggerCopy, v11, v12, v13);
   objc_storeWeak(&v14->_textColumnOwner, v15);
 
   WeakRetained = objc_loadWeakRetained(&v14->_textColumnOwner);
@@ -33,17 +33,17 @@
     sub_2760CB2EC(0, "The parent of a column must be a column owner", v17, v18, v19, v20, v21, v22, v68);
   }
 
-  objc_storeWeak(&v14->_column, v9);
-  objc_storeWeak(&v14->_limitSelection, v10);
-  v29 = objc_msgSend_range(v9, v23, v24, v25);
+  objc_storeWeak(&v14->_column, columnCopy);
+  objc_storeWeak(&v14->_limitSelection, selectionCopy);
+  v29 = objc_msgSend_range(columnCopy, v23, v24, v25);
   p_range = &v14->_range;
   v14->_range.location = v29;
   v14->_range.length = v26;
-  if (v10)
+  if (selectionCopy)
   {
-    v31 = objc_msgSend_range(v9, v26, v27, v28);
+    v31 = objc_msgSend_range(columnCopy, v26, v27, v28);
     v33 = v32;
-    v73.location = objc_msgSend_superRange(v10, v32, v34, v35);
+    v73.location = objc_msgSend_superRange(selectionCopy, v32, v34, v35);
     location = v73.location;
     length = v73.length;
     v74.location = v31;
@@ -89,12 +89,12 @@ LABEL_25:
     if (location != 0x7FFFFFFFFFFFFFFFLL)
     {
       v41 = 0;
-      v49 = objc_msgSend_lineCount(v9, v38.length, v27, v28);
+      v49 = objc_msgSend_lineCount(columnCopy, v38.length, v27, v28);
       if (v49)
       {
         while (1)
         {
-          v29 = objc_msgSend_rangeOfLineFragmentAtIndex_(v9, v42, v41, v44);
+          v29 = objc_msgSend_rangeOfLineFragmentAtIndex_(columnCopy, v42, v41, v44);
           if (location >= v29 && location - v29 < v42)
           {
             break;
@@ -117,7 +117,7 @@ LABEL_25:
         v58 = location + v70;
         while (1)
         {
-          v59 = objc_msgSend_rangeOfLineFragmentAtIndex_(v9, v50, v41, v52);
+          v59 = objc_msgSend_rangeOfLineFragmentAtIndex_(columnCopy, v50, v41, v52);
           v57 = &v50[v59];
           if (v58 <= &v50[v59])
           {
@@ -143,7 +143,7 @@ LABEL_25:
 LABEL_26:
   if (v29 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v60 = objc_msgSend_storage(v9, v26, v27, v28);
+    v60 = objc_msgSend_storage(columnCopy, v26, v27, v28);
     v62 = v60;
     if (v60)
     {

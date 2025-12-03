@@ -1,29 +1,29 @@
 @interface FLSchemaFLActionEvaluationEnded
-- (BOOL)isEqual:(id)a3;
-- (FLSchemaFLActionEvaluationEnded)initWithDictionary:(id)a3;
-- (FLSchemaFLActionEvaluationEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLSchemaFLActionEvaluationEnded)initWithDictionary:(id)dictionary;
+- (FLSchemaFLActionEvaluationEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCandidateEvaluations:(id)a3;
-- (void)setHasEvaluationType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateEvaluations:(id)evaluations;
+- (void)setHasEvaluationType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLSchemaFLActionEvaluationEnded
 
-- (FLSchemaFLActionEvaluationEnded)initWithDictionary:(id)a3
+- (FLSchemaFLActionEvaluationEnded)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = FLSchemaFLActionEvaluationEnded;
   v5 = [(FLSchemaFLActionEvaluationEnded *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ifSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ifSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,14 +31,14 @@
       [(FLSchemaFLActionEvaluationEnded *)v5 setIfSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"actionStatementId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"actionStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLSchemaFLActionEvaluationEnded setActionStatementId:](v5, "setActionStatementId:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"taskEvaluation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"taskEvaluation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(FLSchemaFLActionEvaluationEnded *)v5 setTaskEvaluation:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"candidateEvaluations"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"candidateEvaluations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       v9 = v22;
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"evaluationType"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"evaluationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (FLSchemaFLActionEvaluationEnded)initWithJSON:(id)a3
+- (FLSchemaFLActionEvaluationEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLSchemaFLActionEvaluationEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLSchemaFLActionEvaluationEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLSchemaFLActionEvaluationEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -140,16 +140,16 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLSchemaFLActionEvaluationEnded actionStatementId](self, "actionStatementId")}];
-    [v3 setObject:v4 forKeyedSubscript:@"actionStatementId"];
+    [dictionary setObject:v4 forKeyedSubscript:@"actionStatementId"];
   }
 
   if ([(NSArray *)self->_candidateEvaluations count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -169,16 +169,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -188,19 +188,19 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"candidateEvaluations"];
+    [dictionary setObject:array forKeyedSubscript:@"candidateEvaluations"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v13 = [(FLSchemaFLActionEvaluationEnded *)self evaluationType];
+    evaluationType = [(FLSchemaFLActionEvaluationEnded *)self evaluationType];
     v14 = @"FLEVALUATIONTYPE_UNKNOWN";
-    if (v13 == 1)
+    if (evaluationType == 1)
     {
       v14 = @"FLEVALUATIONTYPE_FAST_EVALUATOR";
     }
 
-    if (v13 == 2)
+    if (evaluationType == 2)
     {
       v15 = @"FLEVALUATIONTYPE_FULL_EVALUATOR";
     }
@@ -210,44 +210,44 @@
       v15 = v14;
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"evaluationType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"evaluationType"];
   }
 
   if (self->_ifSessionId)
   {
-    v16 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    ifSessionId = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+    dictionaryRepresentation2 = [ifSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"ifSessionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ifSessionId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"ifSessionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ifSessionId"];
     }
   }
 
   if (self->_taskEvaluation)
   {
-    v19 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    taskEvaluation = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+    dictionaryRepresentation3 = [taskEvaluation dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"taskEvaluation"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"taskEvaluation"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"taskEvaluation"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"taskEvaluation"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -278,28 +278,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
-  v6 = [v4 ifSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  ifSessionId = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+  ifSessionId2 = [equalCopy ifSessionId];
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
-  if (v7)
+  ifSessionId3 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+  if (ifSessionId3)
   {
-    v8 = v7;
-    v9 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
-    v10 = [v4 ifSessionId];
-    v11 = [v9 isEqual:v10];
+    v8 = ifSessionId3;
+    ifSessionId4 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+    ifSessionId5 = [equalCopy ifSessionId];
+    v11 = [ifSessionId4 isEqual:ifSessionId5];
 
     if (!v11)
     {
@@ -311,7 +311,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[44] & 1))
+  if ((*&self->_has & 1) != (equalCopy[44] & 1))
   {
     goto LABEL_20;
   }
@@ -319,26 +319,26 @@
   if (*&self->_has)
   {
     actionStatementId = self->_actionStatementId;
-    if (actionStatementId != [v4 actionStatementId])
+    if (actionStatementId != [equalCopy actionStatementId])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
-  v6 = [v4 taskEvaluation];
-  if ((v5 != 0) == (v6 == 0))
+  ifSessionId = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+  ifSessionId2 = [equalCopy taskEvaluation];
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
-  if (v13)
+  taskEvaluation = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+  if (taskEvaluation)
   {
-    v14 = v13;
-    v15 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
-    v16 = [v4 taskEvaluation];
-    v17 = [v15 isEqual:v16];
+    v14 = taskEvaluation;
+    taskEvaluation2 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+    taskEvaluation3 = [equalCopy taskEvaluation];
+    v17 = [taskEvaluation2 isEqual:taskEvaluation3];
 
     if (!v17)
     {
@@ -350,22 +350,22 @@
   {
   }
 
-  v5 = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
-  v6 = [v4 candidateEvaluations];
-  if ((v5 != 0) == (v6 == 0))
+  ifSessionId = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
+  ifSessionId2 = [equalCopy candidateEvaluations];
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v18 = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
-  if (v18)
+  candidateEvaluations = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
+  if (candidateEvaluations)
   {
-    v19 = v18;
-    v20 = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
-    v21 = [v4 candidateEvaluations];
-    v22 = [v20 isEqual:v21];
+    v19 = candidateEvaluations;
+    candidateEvaluations2 = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
+    candidateEvaluations3 = [equalCopy candidateEvaluations];
+    v22 = [candidateEvaluations2 isEqual:candidateEvaluations3];
 
     if (!v22)
     {
@@ -378,9 +378,9 @@ LABEL_19:
   }
 
   v25 = (*&self->_has >> 1) & 1;
-  if (v25 == ((v4[44] >> 1) & 1))
+  if (v25 == ((equalCopy[44] >> 1) & 1))
   {
-    if (!v25 || (evaluationType = self->_evaluationType, evaluationType == [v4 evaluationType]))
+    if (!v25 || (evaluationType = self->_evaluationType, evaluationType == [equalCopy evaluationType]))
     {
       v23 = 1;
       goto LABEL_21;
@@ -394,15 +394,15 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+  toCopy = to;
+  ifSessionId = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
 
-  if (v5)
+  if (ifSessionId)
   {
-    v6 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+    ifSessionId2 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -411,11 +411,11 @@ LABEL_21:
     PBDataWriterWriteUint32Field();
   }
 
-  v7 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+  taskEvaluation = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
 
-  if (v7)
+  if (taskEvaluation)
   {
-    v8 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+    taskEvaluation2 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
     PBDataWriterWriteSubmessage();
   }
 
@@ -456,9 +456,9 @@ LABEL_21:
   }
 }
 
-- (void)setHasEvaluationType:(BOOL)a3
+- (void)setHasEvaluationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -471,50 +471,50 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCandidateEvaluations:(id)a3
+- (void)addCandidateEvaluations:(id)evaluations
 {
-  v4 = a3;
+  evaluationsCopy = evaluations;
   candidateEvaluations = self->_candidateEvaluations;
-  v8 = v4;
+  v8 = evaluationsCopy;
   if (!candidateEvaluations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateEvaluations;
-    self->_candidateEvaluations = v6;
+    self->_candidateEvaluations = array;
 
-    v4 = v8;
+    evaluationsCopy = v8;
     candidateEvaluations = self->_candidateEvaluations;
   }
 
-  [(NSArray *)candidateEvaluations addObject:v4];
+  [(NSArray *)candidateEvaluations addObject:evaluationsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = FLSchemaFLActionEvaluationEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  ifSessionId = [(FLSchemaFLActionEvaluationEnded *)self ifSessionId];
+  v7 = [ifSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLSchemaFLActionEvaluationEnded *)self deleteIfSessionId];
   }
 
-  v9 = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  taskEvaluation = [(FLSchemaFLActionEvaluationEnded *)self taskEvaluation];
+  v10 = [taskEvaluation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLSchemaFLActionEvaluationEnded *)self deleteTaskEvaluation];
   }
 
-  v12 = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  candidateEvaluations = [(FLSchemaFLActionEvaluationEnded *)self candidateEvaluations];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:candidateEvaluations underConditions:policyCopy];
   [(FLSchemaFLActionEvaluationEnded *)self setCandidateEvaluations:v13];
 
   return v5;

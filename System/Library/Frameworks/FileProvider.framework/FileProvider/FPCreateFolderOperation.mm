@@ -1,35 +1,35 @@
 @interface FPCreateFolderOperation
-- (FPCreateFolderOperation)initWithParentItem:(id)a3 folderName:(id)a4;
+- (FPCreateFolderOperation)initWithParentItem:(id)item folderName:(id)name;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPCreateFolderOperation
 
-- (FPCreateFolderOperation)initWithParentItem:(id)a3 folderName:(id)a4
+- (FPCreateFolderOperation)initWithParentItem:(id)item folderName:(id)name
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 providerDomainID];
+  itemCopy = item;
+  nameCopy = name;
+  providerDomainID = [itemCopy providerDomainID];
   v22.receiver = self;
   v22.super_class = FPCreateFolderOperation;
-  v10 = [(FPActionOperation *)&v22 initWithProvider:v9 action:@"Create"];
+  v10 = [(FPActionOperation *)&v22 initWithProvider:providerDomainID action:@"Create"];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_parentItem, a3);
-    v11 = [v8 fp_filenameFromDisplayNameWithExtension:0];
+    objc_storeStrong(&v10->_parentItem, item);
+    v11 = [nameCopy fp_filenameFromDisplayNameWithExtension:0];
     folderFilename = v10->_folderFilename;
     v10->_folderFilename = v11;
 
-    [(FPActionOperation *)v10 setDestinationItemToPreflight:v7];
+    [(FPActionOperation *)v10 setDestinationItemToPreflight:itemCopy];
     v13 = *MEMORY[0x1E6982D60];
     v14 = [FPItem alloc];
-    v15 = [v7 providerDomainID];
-    v16 = [v7 itemIdentifier];
-    v17 = [(FPItem *)v14 initWithProviderDomainID:v15 itemIdentifier:@"fakeIdentifier" parentItemIdentifier:v16 filename:v10->_folderFilename contentType:v13];
+    providerDomainID2 = [itemCopy providerDomainID];
+    itemIdentifier = [itemCopy itemIdentifier];
+    v17 = [(FPItem *)v14 initWithProviderDomainID:providerDomainID2 itemIdentifier:@"fakeIdentifier" parentItemIdentifier:itemIdentifier filename:v10->_folderFilename contentType:v13];
 
     v18 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:&unk_1F1FC9C50];
     [(FPActionOperation *)v10 setSourceItemKeysAllowList:v18];
@@ -48,23 +48,23 @@
 - (void)actionMain
 {
   v3 = [FPItem alloc];
-  v4 = [(FPItem *)self->_parentItem providerDomainID];
-  v5 = [(FPItem *)self->_parentItem itemIdentifier];
-  v6 = [(FPItem *)v3 initWithProviderDomainID:v4 itemIdentifier:@"__" parentItemIdentifier:v5 filename:self->_folderFilename isDirectory:1];
+  providerDomainID = [(FPItem *)self->_parentItem providerDomainID];
+  itemIdentifier = [(FPItem *)self->_parentItem itemIdentifier];
+  v6 = [(FPItem *)v3 initWithProviderDomainID:providerDomainID itemIdentifier:@"__" parentItemIdentifier:itemIdentifier filename:self->_folderFilename isDirectory:1];
 
-  v7 = [(FPActionOperation *)self stitcher];
-  v8 = [v7 itemWithPlaceholderID:self->_placeholderID];
+  stitcher = [(FPActionOperation *)self stitcher];
+  v8 = [stitcher itemWithPlaceholderID:self->_placeholderID];
 
-  v9 = [v8 contentModificationDate];
-  if (v9)
+  contentModificationDate = [v8 contentModificationDate];
+  if (contentModificationDate)
   {
-    [(FPItem *)v6 setContentModificationDate:v9];
+    [(FPItem *)v6 setContentModificationDate:contentModificationDate];
   }
 
-  v10 = [v8 creationDate];
-  if (v10)
+  creationDate = [v8 creationDate];
+  if (creationDate)
   {
-    [(FPItem *)v6 setCreationDate:v10];
+    [(FPItem *)v6 setCreationDate:creationDate];
   }
 
   v11 = +[FPDaemonConnection sharedConnection];
@@ -96,41 +96,41 @@ void __37__FPCreateFolderOperation_actionMain__block_invoke(uint64_t a1, void *a
   [*(a1 + 32) completedWithResult:v5 error:v6];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPActionOperation *)self stitcher];
-  [v8 finishWithItem:v6 error:v7];
+  resultCopy = result;
+  errorCopy = error;
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItem:resultCopy error:errorCopy];
 
-  v9 = [(FPCreateFolderOperation *)self createFolderCompletionBlock];
-  v10 = v9;
-  if (v9)
+  createFolderCompletionBlock = [(FPCreateFolderOperation *)self createFolderCompletionBlock];
+  v10 = createFolderCompletionBlock;
+  if (createFolderCompletionBlock)
   {
-    (*(v9 + 16))(v9, v6, v7);
+    (*(createFolderCompletionBlock + 16))(createFolderCompletionBlock, resultCopy, errorCopy);
     [(FPCreateFolderOperation *)self setCreateFolderCompletionBlock:0];
   }
 
   v11.receiver = self;
   v11.super_class = FPCreateFolderOperation;
-  [(FPActionOperation *)&v11 finishWithResult:v6 error:v7];
+  [(FPActionOperation *)&v11 finishWithResult:resultCopy error:errorCopy];
 }
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
+  stitcher2 = [(FPActionOperation *)self stitcher];
   folderFilename = self->_folderFilename;
-  v6 = [(FPItem *)self->_parentItem itemIdentifier];
-  v7 = [(FPItem *)self->_parentItem providerDomainID];
-  v8 = [v4 createPlaceholderWithName:folderFilename isFolder:1 contentAccessDate:0 underParent:v6 inProviderDomainID:v7];
+  itemIdentifier = [(FPItem *)self->_parentItem itemIdentifier];
+  providerDomainID = [(FPItem *)self->_parentItem providerDomainID];
+  v8 = [stitcher2 createPlaceholderWithName:folderFilename isFolder:1 contentAccessDate:0 underParent:itemIdentifier inProviderDomainID:providerDomainID];
   placeholderID = self->_placeholderID;
   self->_placeholderID = v8;
 
-  v10 = [(FPActionOperation *)self stitcher];
-  [v10 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
 void __37__FPCreateFolderOperation_actionMain__block_invoke_cold_1(void *a1)

@@ -1,75 +1,75 @@
 @interface CNVisualIdentityContactAvatarProvider
 + (id)descriptorForRequiredKeys;
-- (CNVisualIdentityContactAvatarProvider)initWithSettings:(id)a3;
-- (id)avatarImageForContact:(id)a3 withSize:(CGSize)a4 includePlaceholder:(BOOL)a5 userInterfaceStyle:(int64_t)a6 imageHandler:(id)a7;
-- (id)imageForAvatarAccessoryView:(id)a3 withSize:(CGSize)a4;
+- (CNVisualIdentityContactAvatarProvider)initWithSettings:(id)settings;
+- (id)avatarImageForContact:(id)contact withSize:(CGSize)size includePlaceholder:(BOOL)placeholder userInterfaceStyle:(int64_t)style imageHandler:(id)handler;
+- (id)imageForAvatarAccessoryView:(id)view withSize:(CGSize)size;
 @end
 
 @implementation CNVisualIdentityContactAvatarProvider
 
-- (id)imageForAvatarAccessoryView:(id)a3 withSize:(CGSize)a4
+- (id)imageForAvatarAccessoryView:(id)view withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x1E69DCEB0];
-  v8 = a3;
-  v9 = [v7 mainScreen];
-  [v9 scale];
+  viewCopy = view;
+  mainScreen = [v7 mainScreen];
+  [mainScreen scale];
   v11 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:0 strokeWidth:0 strokeColor:width rightToLeft:height style:v10, 0.0];
 
-  v12 = [(CNVisualIdentityContactAvatarProvider *)self avatarImageRenderer];
-  v13 = [v12 imageForAvatarAccessoryView:v8 scope:v11];
+  avatarImageRenderer = [(CNVisualIdentityContactAvatarProvider *)self avatarImageRenderer];
+  v13 = [avatarImageRenderer imageForAvatarAccessoryView:viewCopy scope:v11];
 
   return v13;
 }
 
-- (id)avatarImageForContact:(id)a3 withSize:(CGSize)a4 includePlaceholder:(BOOL)a5 userInterfaceStyle:(int64_t)a6 imageHandler:(id)a7
+- (id)avatarImageForContact:(id)contact withSize:(CGSize)size includePlaceholder:(BOOL)placeholder userInterfaceStyle:(int64_t)style imageHandler:(id)handler
 {
-  v8 = a5;
-  height = a4.height;
-  width = a4.width;
+  placeholderCopy = placeholder;
+  height = size.height;
+  width = size.width;
   v28[1] = *MEMORY[0x1E69E9840];
-  v13 = a7;
+  handlerCopy = handler;
   v14 = MEMORY[0x1E69DCEB0];
-  v15 = a3;
-  v16 = [v14 mainScreen];
-  [v16 scale];
+  contactCopy = contact;
+  mainScreen = [v14 mainScreen];
+  [mainScreen scale];
   v18 = v17;
 
-  v19 = [MEMORY[0x1E696AC90] indexSet];
-  v20 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:0 strokeWidth:0 strokeColor:a6 == 2 rightToLeft:0 style:v19 backgroundStyle:width color:height maskedAvatarIndices:v18, 0.0];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  v20 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:0 strokeWidth:0 strokeColor:style == 2 rightToLeft:0 style:indexSet backgroundStyle:width color:height maskedAvatarIndices:v18, 0.0];
 
-  v21 = [(CNVisualIdentityContactAvatarProvider *)self avatarImageRenderer];
-  v28[0] = v15;
+  avatarImageRenderer = [(CNVisualIdentityContactAvatarProvider *)self avatarImageRenderer];
+  v28[0] = contactCopy;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __123__CNVisualIdentityContactAvatarProvider_avatarImageForContact_withSize_includePlaceholder_userInterfaceStyle_imageHandler___block_invoke;
   v26[3] = &unk_1E74E4E10;
-  v27 = v13;
-  v23 = v13;
-  v24 = [v21 renderAvatarsForContacts:v22 scope:v20 includePlaceholder:v8 imageHandler:v26];
+  v27 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = [avatarImageRenderer renderAvatarsForContacts:v22 scope:v20 includePlaceholder:placeholderCopy imageHandler:v26];
 
   return v24;
 }
 
-- (CNVisualIdentityContactAvatarProvider)initWithSettings:(id)a3
+- (CNVisualIdentityContactAvatarProvider)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v16.receiver = self;
   v16.super_class = CNVisualIdentityContactAvatarProvider;
   v5 = [(CNVisualIdentityContactAvatarProvider *)&v16 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = settingsCopy;
     if (!v6)
     {
       v7 = +[CNUIContactsEnvironment currentEnvironment];
       v8 = [CNAvatarImageRendererSettings alloc];
-      v9 = [v7 cachingLikenessResolver];
-      v10 = [v7 cachingLikenessRenderer];
-      v11 = [v7 defaultSchedulerProvider];
-      v6 = [(CNAvatarImageRendererSettings *)v8 initWithLikenessResolver:v9 likenessRenderer:v10 schedulerProvider:v11];
+      cachingLikenessResolver = [v7 cachingLikenessResolver];
+      cachingLikenessRenderer = [v7 cachingLikenessRenderer];
+      defaultSchedulerProvider = [v7 defaultSchedulerProvider];
+      v6 = [(CNAvatarImageRendererSettings *)v8 initWithLikenessResolver:cachingLikenessResolver likenessRenderer:cachingLikenessRenderer schedulerProvider:defaultSchedulerProvider];
     }
 
     v12 = [[CNAvatarImageRenderer alloc] initWithSettings:v6];

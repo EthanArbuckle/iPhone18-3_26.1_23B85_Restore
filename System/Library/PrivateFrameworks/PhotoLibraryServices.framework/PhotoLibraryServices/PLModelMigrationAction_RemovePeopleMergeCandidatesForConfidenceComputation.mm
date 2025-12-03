@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RemovePeopleMergeCandidatesForConfidenceComputation
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemovePeopleMergeCandidatesForConfidenceComputation
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -24,7 +24,7 @@
 
   v9 = v52 + 5;
   obj = v52[5];
-  v10 = [v6 executeFetchRequest:v7 error:&obj];
+  v10 = [contextCopy executeFetchRequest:v7 error:&obj];
   objc_storeStrong(v9, obj);
   if ([v10 count])
   {
@@ -43,7 +43,7 @@
     v45 = &v57;
     v12 = v11;
     v42 = v12;
-    v13 = [v6 enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v41];
+    v13 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v41];
     if (v13 && !v52[5])
     {
       objc_storeStrong(v52 + 5, v13);
@@ -57,8 +57,8 @@
 
       if (v15)
       {
-        v16 = [(PLModelMigrationActionCore *)self logger];
-        v17 = v16 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v17 = logger == 0;
 
         if (!v17)
         {
@@ -127,8 +127,8 @@ LABEL_21:
 
       if (v23)
       {
-        v24 = [(PLModelMigrationActionCore *)self logger];
-        v25 = v24 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v25 = logger2 == 0;
 
         if (!v25)
         {
@@ -219,10 +219,10 @@ LABEL_23:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v36 = v58[3];
   v37 = v52[5];
-  if (v36 != 1 && a4)
+  if (v36 != 1 && error)
   {
     v37 = v37;
-    *a4 = v37;
+    *error = v37;
   }
 
   v38 = v58[3];

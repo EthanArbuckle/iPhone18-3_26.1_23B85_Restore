@@ -1,63 +1,63 @@
 @interface MPCMediaRemoteMiddleware
-- ($04B05C73ED6AEEF31C5815932084562D)playerItemDuration:(SEL)a3 atIndexPath:(id *)a4 chain:(id)a5;
-- (BOOL)playerCommandEnabled:(BOOL)a3 command:(unsigned int)a4 chain:(id)a5;
-- (BOOL)playerCommandSupported:(BOOL)a3 command:(unsigned int)a4 chain:(id)a5;
-- (BOOL)playerEnhanceDialogueActive:(BOOL)a3 chain:(id)a4;
-- (BOOL)playerIsSharedListeningSession:(BOOL)a3 chain:(id)a4;
-- (BOOL)playerItemIsFavoritable:(BOOL)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (BOOL)playerItemIsPlaceholder:(BOOL)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (BOOL)playerItemIsPreview:(BOOL)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (BOOL)playerItemShouldDisableJumpToItem:(BOOL)a3 atIndexPath:(id)a4 boundsCheck:(BOOL)a5 chain:(id)a6;
-- (BOOL)playerVocalsControlActive:(BOOL)a3 chain:(id)a4;
-- (BOOL)playerVocalsControlContinuous:(BOOL)a3 chain:(id)a4;
-- (BOOL)sectionIsAutoPlaySection:(BOOL)a3 atIndex:(int64_t)a4 chain:(id)a5;
-- (BOOL)transitionsActive:(BOOL)a3 chain:(id)a4;
-- (double)playerSleepTimerFireDate:(double)a3 chain:(id)a4;
-- (double)playerSleepTimerTime:(double)a3 chain:(id)a4;
-- (float)_playbackRateForContentItem:(id)a3;
-- (float)playerMaxVocalsLevel:(float)a3 chain:(id)a4;
-- (float)playerMinVocalsLevel:(float)a3 chain:(id)a4;
-- (float)playerVocalsLevel:(float)a3 chain:(id)a4;
+- ($04B05C73ED6AEEF31C5815932084562D)playerItemDuration:(SEL)duration atIndexPath:(id *)path chain:(id)chain;
+- (BOOL)playerCommandEnabled:(BOOL)enabled command:(unsigned int)command chain:(id)chain;
+- (BOOL)playerCommandSupported:(BOOL)supported command:(unsigned int)command chain:(id)chain;
+- (BOOL)playerEnhanceDialogueActive:(BOOL)active chain:(id)chain;
+- (BOOL)playerIsSharedListeningSession:(BOOL)session chain:(id)chain;
+- (BOOL)playerItemIsFavoritable:(BOOL)favoritable atIndexPath:(id)path chain:(id)chain;
+- (BOOL)playerItemIsPlaceholder:(BOOL)placeholder atIndexPath:(id)path chain:(id)chain;
+- (BOOL)playerItemIsPreview:(BOOL)preview atIndexPath:(id)path chain:(id)chain;
+- (BOOL)playerItemShouldDisableJumpToItem:(BOOL)item atIndexPath:(id)path boundsCheck:(BOOL)check chain:(id)chain;
+- (BOOL)playerVocalsControlActive:(BOOL)active chain:(id)chain;
+- (BOOL)playerVocalsControlContinuous:(BOOL)continuous chain:(id)chain;
+- (BOOL)sectionIsAutoPlaySection:(BOOL)section atIndex:(int64_t)index chain:(id)chain;
+- (BOOL)transitionsActive:(BOOL)active chain:(id)chain;
+- (double)playerSleepTimerFireDate:(double)date chain:(id)chain;
+- (double)playerSleepTimerTime:(double)time chain:(id)chain;
+- (float)_playbackRateForContentItem:(id)item;
+- (float)playerMaxVocalsLevel:(float)level chain:(id)chain;
+- (float)playerMinVocalsLevel:(float)level chain:(id)chain;
+- (float)playerVocalsLevel:(float)level chain:(id)chain;
 - (id)_stateDumpObject;
-- (id)_supportedCommands:(unsigned int)a3 infoValueForKey:(id)a4;
-- (id)activeAudioFormat:(id)a3 chain:(id)a4;
-- (id)alternateAudioFormats:(id)a3 chain:(id)a4;
-- (id)audioRoute:(id)a3 chain:(id)a4;
-- (id)controller:(id)a3 chain:(id)a4;
-- (id)lastSectionModelObject:(id)a3 propertySet:(id)a4 chain:(id)a5;
-- (id)operationsForPlayerRequest:(id)a3;
-- (id)operationsForRequest:(id)a3;
-- (id)participant:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerCommandOptionValue:(id)a3 forKey:(id)a4 command:(unsigned int)a5 chain:(id)a6;
-- (id)playerItemContentID:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerItemCurrentLanguageOptions:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerItemExplicitBadge:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerItemLanguageOptionGroups:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerItemLocalizedDurationString:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerItemTransitionInfo:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)playerModelObject:(id)a3 propertySet:(id)a4 atIndexPath:(id)a5 chain:(id)a6;
-- (id)playerPlayingItemIndexPath:(id)a3 chain:(id)a4;
-- (id)preferredAudioFormat:(id)a3 chain:(id)a4;
-- (id)queueItemIdentifier:(id)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (id)tracklistProperties:(id)a3 chain:(id)a4;
-- (id)tracklistUniqueIdentifier:(id)a3 chain:(id)a4;
-- (int64_t)activeAudioFormatJustification:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerCommandDisabledReason:(int64_t)a3 command:(unsigned int)a4 chain:(id)a5;
-- (int64_t)playerExplicitContentState:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerGlobalItemCount:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerItemEditingStyleFlags:(int64_t)a3 atIndexPath:(id)a4 chain:(id)a5;
-- (int64_t)playerLastChangeDirection:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerPlayingItemGlobalIndex:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerQueueEndAction:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerRepeatType:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerShuffleType:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerSleepTimerStopMode:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerState:(int64_t)a3 chain:(id)a4;
-- (int64_t)playerUpNextItemCount:(int64_t)a3 chain:(id)a4;
-- (int64_t)transitionStyle:(int64_t)a3 chain:(id)a4;
-- (unint64_t)audioFormatPreference:(unint64_t)a3 chain:(id)a4;
-- (unint64_t)playerNumberOfItems:(unint64_t)a3 inSection:(unint64_t)a4 chain:(id)a5;
-- (unint64_t)playerNumberOfSections:(unint64_t)a3 chain:(id)a4;
+- (id)_supportedCommands:(unsigned int)commands infoValueForKey:(id)key;
+- (id)activeAudioFormat:(id)format chain:(id)chain;
+- (id)alternateAudioFormats:(id)formats chain:(id)chain;
+- (id)audioRoute:(id)route chain:(id)chain;
+- (id)controller:(id)controller chain:(id)chain;
+- (id)lastSectionModelObject:(id)object propertySet:(id)set chain:(id)chain;
+- (id)operationsForPlayerRequest:(id)request;
+- (id)operationsForRequest:(id)request;
+- (id)participant:(id)participant atIndexPath:(id)path chain:(id)chain;
+- (id)playerCommandOptionValue:(id)value forKey:(id)key command:(unsigned int)command chain:(id)chain;
+- (id)playerItemContentID:(id)d atIndexPath:(id)path chain:(id)chain;
+- (id)playerItemCurrentLanguageOptions:(id)options atIndexPath:(id)path chain:(id)chain;
+- (id)playerItemExplicitBadge:(id)badge atIndexPath:(id)path chain:(id)chain;
+- (id)playerItemLanguageOptionGroups:(id)groups atIndexPath:(id)path chain:(id)chain;
+- (id)playerItemLocalizedDurationString:(id)string atIndexPath:(id)path chain:(id)chain;
+- (id)playerItemTransitionInfo:(id)info atIndexPath:(id)path chain:(id)chain;
+- (id)playerModelObject:(id)object propertySet:(id)set atIndexPath:(id)path chain:(id)chain;
+- (id)playerPlayingItemIndexPath:(id)path chain:(id)chain;
+- (id)preferredAudioFormat:(id)format chain:(id)chain;
+- (id)queueItemIdentifier:(id)identifier atIndexPath:(id)path chain:(id)chain;
+- (id)tracklistProperties:(id)properties chain:(id)chain;
+- (id)tracklistUniqueIdentifier:(id)identifier chain:(id)chain;
+- (int64_t)activeAudioFormatJustification:(int64_t)justification chain:(id)chain;
+- (int64_t)playerCommandDisabledReason:(int64_t)reason command:(unsigned int)command chain:(id)chain;
+- (int64_t)playerExplicitContentState:(int64_t)state chain:(id)chain;
+- (int64_t)playerGlobalItemCount:(int64_t)count chain:(id)chain;
+- (int64_t)playerItemEditingStyleFlags:(int64_t)flags atIndexPath:(id)path chain:(id)chain;
+- (int64_t)playerLastChangeDirection:(int64_t)direction chain:(id)chain;
+- (int64_t)playerPlayingItemGlobalIndex:(int64_t)index chain:(id)chain;
+- (int64_t)playerQueueEndAction:(int64_t)action chain:(id)chain;
+- (int64_t)playerRepeatType:(int64_t)type chain:(id)chain;
+- (int64_t)playerShuffleType:(int64_t)type chain:(id)chain;
+- (int64_t)playerSleepTimerStopMode:(int64_t)mode chain:(id)chain;
+- (int64_t)playerState:(int64_t)state chain:(id)chain;
+- (int64_t)playerUpNextItemCount:(int64_t)count chain:(id)chain;
+- (int64_t)transitionStyle:(int64_t)style chain:(id)chain;
+- (unint64_t)audioFormatPreference:(unint64_t)preference chain:(id)chain;
+- (unint64_t)playerNumberOfItems:(unint64_t)items inSection:(unint64_t)section chain:(id)chain;
+- (unint64_t)playerNumberOfSections:(unint64_t)sections chain:(id)chain;
 @end
 
 @implementation MPCMediaRemoteMiddleware
@@ -75,12 +75,12 @@
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), self->_controller];
   v12[2] = v5;
   v11[3] = @"invalidationObservers";
-  v6 = [(MPCMediaRemoteMiddleware *)self invalidationObservers];
-  v7 = v6;
+  invalidationObservers = [(MPCMediaRemoteMiddleware *)self invalidationObservers];
+  v7 = invalidationObservers;
   v8 = @"<NULL>";
-  if (v6)
+  if (invalidationObservers)
   {
-    v8 = v6;
+    v8 = invalidationObservers;
   }
 
   v12[3] = v8;
@@ -89,21 +89,21 @@
   return v9;
 }
 
-- (id)operationsForPlayerRequest:(id)a3
+- (id)operationsForPlayerRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = [MPCMediaRemoteMiddlewareControllerOperation alloc];
-  v7 = [v4 playerPath];
-  v8 = [(MPCMediaRemoteMiddlewareControllerOperation *)v6 initWithMiddleware:self playerPath:v7];
+  playerPath = [requestCopy playerPath];
+  v8 = [(MPCMediaRemoteMiddlewareControllerOperation *)v6 initWithMiddleware:self playerPath:playerPath];
 
   [v5 addObject:v8];
-  v9 = [v4 playingItemProperties];
-  if (v9 || ([v4 queueSectionProperties], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  playingItemProperties = [requestCopy playingItemProperties];
+  if (playingItemProperties || ([requestCopy queueSectionProperties], (playingItemProperties = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
-    v10 = [[MPCMediaRemoteMiddlewareMetadataOperation alloc] initWithMiddleware:self request:v4];
+    v10 = [[MPCMediaRemoteMiddlewareMetadataOperation alloc] initWithMiddleware:self request:requestCopy];
     [(MPCMediaRemoteMiddlewareMetadataOperation *)v10 addDependency:v8];
     [v5 addObject:v10];
     v11 = [[MPCMediaRemoteMiddlewareParticipantsOperation alloc] initWithMiddleware:self];
@@ -113,9 +113,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v15 = [v4 queueItemProperties];
+  queueItemProperties = [requestCopy queueItemProperties];
 
-  if (v15)
+  if (queueItemProperties)
   {
     goto LABEL_4;
   }
@@ -132,13 +132,13 @@ LABEL_5:
   return v5;
 }
 
-- (id)operationsForRequest:(id)a3
+- (id)operationsForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MPCMediaRemoteMiddleware *)self operationsForPlayerRequest:v4];
+    v5 = [(MPCMediaRemoteMiddleware *)self operationsForPlayerRequest:requestCopy];
   }
 
   else
@@ -149,33 +149,33 @@ LABEL_5:
   return v5;
 }
 
-- (id)controller:(id)a3 chain:(id)a4
+- (id)controller:(id)controller chain:(id)chain
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPCMediaRemoteMiddleware *)self controller];
+  controllerCopy = controller;
+  chainCopy = chain;
+  controller = [(MPCMediaRemoteMiddleware *)self controller];
 
-  v9 = v6;
-  if (v8)
+  controller2 = controllerCopy;
+  if (controller)
   {
-    v9 = [(MPCMediaRemoteMiddleware *)self controller];
+    controller2 = [(MPCMediaRemoteMiddleware *)self controller];
   }
 
-  v10 = [v7 nextObject];
-  v11 = [v10 controller:v9 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v11 = [nextObject controller:controller2 chain:chainCopy];
 
   return v11;
 }
 
-- (float)_playbackRateForContentItem:(id)a3
+- (float)_playbackRateForContentItem:(id)item
 {
-  v4 = a3;
-  [v4 playbackRate];
+  itemCopy = item;
+  [itemCopy playbackRate];
   v6 = v5;
-  v7 = [(MPCMediaRemoteMiddleware *)self playerState];
-  if (v7 > 3)
+  playerState = [(MPCMediaRemoteMiddleware *)self playerState];
+  if (playerState > 3)
   {
-    if (v7 != 4 && v7 != 6)
+    if (playerState != 4 && playerState != 6)
     {
       goto LABEL_10;
     }
@@ -185,14 +185,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v7 == 1)
+  if (playerState == 1)
   {
     goto LABEL_9;
   }
 
-  if (v7 == 2)
+  if (playerState == 2)
   {
-    [v4 _mediaRemoteContentItem];
+    [itemCopy _mediaRemoteContentItem];
     if (!MRContentItemHasPlaybackRate())
     {
       v6 = 1.0;
@@ -204,12 +204,12 @@ LABEL_10:
   return v6;
 }
 
-- (id)_supportedCommands:(unsigned int)a3 infoValueForKey:(id)a4
+- (id)_supportedCommands:(unsigned int)commands infoValueForKey:(id)key
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self supportedCommands];
-  v8 = [v7 commandInfoForCommand:v4];
+  v4 = *&commands;
+  keyCopy = key;
+  supportedCommands = [(MPCMediaRemoteMiddleware *)self supportedCommands];
+  v8 = [supportedCommands commandInfoForCommand:v4];
 
   if (v8)
   {
@@ -219,247 +219,247 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)playerEnhanceDialogueActive:(BOOL)a3 chain:(id)a4
+- (BOOL)playerEnhanceDialogueActive:(BOOL)active chain:(id)chain
 {
-  v4 = a3;
+  activeCopy = active;
   v6 = *MEMORY[0x1E69B0C68];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:147 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
-    v4 = [v8 BOOLValue];
+    activeCopy = [v8 BOOLValue];
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerEnhanceDialogueActive:v4 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerEnhanceDialogueActive:activeCopy chain:chainCopy];
 
   return v10;
 }
 
-- (int64_t)transitionStyle:(int64_t)a3 chain:(id)a4
+- (int64_t)transitionStyle:(int64_t)style chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0D78];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:149 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
-    a3 = [v8 unsignedIntegerValue];
+    style = [v8 unsignedIntegerValue];
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 transitionStyle:a3 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject transitionStyle:style chain:chainCopy];
 
   return v10;
 }
 
-- (BOOL)transitionsActive:(BOOL)a3 chain:(id)a4
+- (BOOL)transitionsActive:(BOOL)active chain:(id)chain
 {
-  v4 = a3;
+  activeCopy = active;
   v6 = *MEMORY[0x1E69B0C68];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:149 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
-    v4 = [v8 BOOLValue];
+    activeCopy = [v8 BOOLValue];
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 transitionsActive:v4 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject transitionsActive:activeCopy chain:chainCopy];
 
   return v10;
 }
 
-- (int64_t)playerSleepTimerStopMode:(int64_t)a3 chain:(id)a4
+- (int64_t)playerSleepTimerStopMode:(int64_t)mode chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0D10];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:124 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 unsignedIntegerValue];
-    a3 = MPSleepTimerStopModeFromMediaRemoteSleepTimerStopMode();
+    mode = MPSleepTimerStopModeFromMediaRemoteSleepTimerStopMode();
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerSleepTimerStopMode:a3 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerSleepTimerStopMode:mode chain:chainCopy];
 
   return v10;
 }
 
-- (double)playerSleepTimerFireDate:(double)a3 chain:(id)a4
+- (double)playerSleepTimerFireDate:(double)date chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0D08];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:124 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 doubleValue];
-    a3 = v9;
+    date = v9;
   }
 
-  v10 = [v7 nextObject];
-  [v10 playerSleepTimerFireDate:v7 chain:a3];
+  nextObject = [chainCopy nextObject];
+  [nextObject playerSleepTimerFireDate:chainCopy chain:date];
   v12 = v11;
 
   return v12;
 }
 
-- (double)playerSleepTimerTime:(double)a3 chain:(id)a4
+- (double)playerSleepTimerTime:(double)time chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0D18];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:124 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 doubleValue];
-    a3 = v9;
+    time = v9;
   }
 
-  v10 = [v7 nextObject];
-  [v10 playerSleepTimerTime:v7 chain:a3];
+  nextObject = [chainCopy nextObject];
+  [nextObject playerSleepTimerTime:chainCopy chain:time];
   v12 = v11;
 
   return v12;
 }
 
-- (BOOL)playerVocalsControlContinuous:(BOOL)a3 chain:(id)a4
+- (BOOL)playerVocalsControlContinuous:(BOOL)continuous chain:(id)chain
 {
-  v4 = a3;
+  continuousCopy = continuous;
   v6 = *MEMORY[0x1E69B0D90];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:142 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
-    v4 = [v8 BOOLValue];
+    continuousCopy = [v8 BOOLValue];
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerVocalsControlContinuous:v4 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerVocalsControlContinuous:continuousCopy chain:chainCopy];
 
   return v10;
 }
 
-- (float)playerMaxVocalsLevel:(float)a3 chain:(id)a4
+- (float)playerMaxVocalsLevel:(float)level chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0DA0];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:142 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 floatValue];
-    a3 = v9;
+    level = v9;
   }
 
-  v10 = [v7 nextObject];
-  *&v11 = a3;
-  [v10 playerMaxVocalsLevel:v7 chain:v11];
+  nextObject = [chainCopy nextObject];
+  *&v11 = level;
+  [nextObject playerMaxVocalsLevel:chainCopy chain:v11];
   v13 = v12;
 
   return v13;
 }
 
-- (float)playerMinVocalsLevel:(float)a3 chain:(id)a4
+- (float)playerMinVocalsLevel:(float)level chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0DA8];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:142 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 floatValue];
-    a3 = v9;
+    level = v9;
   }
 
-  v10 = [v7 nextObject];
-  *&v11 = a3;
-  [v10 playerMinVocalsLevel:v7 chain:v11];
+  nextObject = [chainCopy nextObject];
+  *&v11 = level;
+  [nextObject playerMinVocalsLevel:chainCopy chain:v11];
   v13 = v12;
 
   return v13;
 }
 
-- (float)playerVocalsLevel:(float)a3 chain:(id)a4
+- (float)playerVocalsLevel:(float)level chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0D98];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:142 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 floatValue];
-    a3 = v9;
+    level = v9;
   }
 
-  v10 = [v7 nextObject];
-  *&v11 = a3;
-  [v10 playerVocalsLevel:v7 chain:v11];
+  nextObject = [chainCopy nextObject];
+  *&v11 = level;
+  [nextObject playerVocalsLevel:chainCopy chain:v11];
   v13 = v12;
 
   return v13;
 }
 
-- (BOOL)playerVocalsControlActive:(BOOL)a3 chain:(id)a4
+- (BOOL)playerVocalsControlActive:(BOOL)active chain:(id)chain
 {
-  v4 = a3;
+  activeCopy = active;
   v6 = *MEMORY[0x1E69B0D88];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:142 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
-    v4 = [v8 BOOLValue];
+    activeCopy = [v8 BOOLValue];
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerVocalsControlActive:v4 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerVocalsControlActive:activeCopy chain:chainCopy];
 
   return v10;
 }
 
-- (id)audioRoute:(id)a3 chain:(id)a4
+- (id)audioRoute:(id)route chain:(id)chain
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:self->_playingIndexPath];
+  routeCopy = route;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:self->_playingIndexPath];
 
   if (!v10)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:509 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:509 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
   }
 
-  v11 = [v10 audioRoute];
+  audioRoute = [v10 audioRoute];
 
-  v12 = v7;
-  if (v11)
+  v12 = routeCopy;
+  if (audioRoute)
   {
     v13 = [MPCPlayerAudioRoute alloc];
-    v14 = [v10 audioRoute];
-    v12 = [(MPCPlayerAudioRoute *)v13 initWithNowPlayingInfoAudioRoute:v14];
+    audioRoute2 = [v10 audioRoute];
+    v12 = [(MPCPlayerAudioRoute *)v13 initWithNowPlayingInfoAudioRoute:audioRoute2];
   }
 
-  v15 = [v8 nextObject];
-  v16 = [v15 audioRoute:v12 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject audioRoute:v12 chain:chainCopy];
 
   return v16;
 }
 
-- (id)alternateAudioFormats:(id)a3 chain:(id)a4
+- (id)alternateAudioFormats:(id)formats chain:(id)chain
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:self->_playingIndexPath];
+  formatsCopy = formats;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:self->_playingIndexPath];
 
   if (!v10)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:499 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:499 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
   }
 
-  v11 = [v10 alternativeFormats];
-  v12 = [v11 msv_map:&__block_literal_global_27727];
+  alternativeFormats = [v10 alternativeFormats];
+  v12 = [alternativeFormats msv_map:&__block_literal_global_27727];
 
-  v13 = [v8 nextObject];
-  v14 = [v13 alternateAudioFormats:v12 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject alternateAudioFormats:v12 chain:chainCopy];
 
   return v14;
 }
@@ -472,113 +472,113 @@ MPCPlayerAudioFormat *__82__MPCMediaRemoteMiddleware_MPCPlayerResponseBuilder__a
   return v3;
 }
 
-- (unint64_t)audioFormatPreference:(unint64_t)a3 chain:(id)a4
+- (unint64_t)audioFormatPreference:(unint64_t)preference chain:(id)chain
 {
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v8 = [v7 itemAtIndexPath:self->_playingIndexPath];
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v8 = [queueContentItems itemAtIndexPath:self->_playingIndexPath];
 
   if (!v8)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:491 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:491 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
   }
 
-  v9 = [v8 formatTierPreference];
-  v10 = [v6 nextObject];
-  v11 = [v10 audioFormatPreference:v9 chain:v6];
+  formatTierPreference = [v8 formatTierPreference];
+  nextObject = [chainCopy nextObject];
+  v11 = [nextObject audioFormatPreference:formatTierPreference chain:chainCopy];
 
   return v11;
 }
 
-- (int64_t)activeAudioFormatJustification:(int64_t)a3 chain:(id)a4
+- (int64_t)activeAudioFormatJustification:(int64_t)justification chain:(id)chain
 {
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v8 = [v7 itemAtIndexPath:self->_playingIndexPath];
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v8 = [queueContentItems itemAtIndexPath:self->_playingIndexPath];
 
   if (!v8)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:483 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:483 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
   }
 
-  v9 = [v8 activeFormatJustification];
-  v10 = [v6 nextObject];
-  v11 = [v10 activeAudioFormatJustification:v9 chain:v6];
+  activeFormatJustification = [v8 activeFormatJustification];
+  nextObject = [chainCopy nextObject];
+  v11 = [nextObject activeAudioFormatJustification:activeFormatJustification chain:chainCopy];
 
   return v11;
 }
 
-- (id)activeAudioFormat:(id)a3 chain:(id)a4
+- (id)activeAudioFormat:(id)format chain:(id)chain
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:self->_playingIndexPath];
+  formatCopy = format;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:self->_playingIndexPath];
 
   if (!v10)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:473 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:473 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
   }
 
-  v11 = [v10 activeFormat];
+  activeFormat = [v10 activeFormat];
 
-  v12 = v7;
-  if (v11)
+  v12 = formatCopy;
+  if (activeFormat)
   {
     v13 = [MPCPlayerAudioFormat alloc];
-    v14 = [v10 activeFormat];
-    v12 = [(MPCPlayerAudioFormat *)v13 initWithNowPlayingInfoAudioFormat:v14];
+    activeFormat2 = [v10 activeFormat];
+    v12 = [(MPCPlayerAudioFormat *)v13 initWithNowPlayingInfoAudioFormat:activeFormat2];
   }
 
-  v15 = [v8 nextObject];
-  v16 = [v15 activeAudioFormat:v12 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject activeAudioFormat:v12 chain:chainCopy];
 
   return v16;
 }
 
-- (id)preferredAudioFormat:(id)a3 chain:(id)a4
+- (id)preferredAudioFormat:(id)format chain:(id)chain
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:self->_playingIndexPath];
+  formatCopy = format;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:self->_playingIndexPath];
 
   if (!v10)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:463 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:463 description:{@"Could not find content item at indexPath: %@", self->_playingIndexPath}];
   }
 
-  v11 = [v10 preferredFormat];
+  preferredFormat = [v10 preferredFormat];
 
-  v12 = v7;
-  if (v11)
+  v12 = formatCopy;
+  if (preferredFormat)
   {
     v13 = [MPCPlayerAudioFormat alloc];
-    v14 = [v10 preferredFormat];
-    v12 = [(MPCPlayerAudioFormat *)v13 initWithNowPlayingInfoAudioFormat:v14];
+    preferredFormat2 = [v10 preferredFormat];
+    v12 = [(MPCPlayerAudioFormat *)v13 initWithNowPlayingInfoAudioFormat:preferredFormat2];
   }
 
-  v15 = [v8 nextObject];
-  v16 = [v15 preferredAudioFormat:v12 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject preferredAudioFormat:v12 chain:chainCopy];
 
   return v16;
 }
 
-- (BOOL)playerItemIsFavoritable:(BOOL)a3 atIndexPath:(id)a4 chain:(id)a5
+- (BOOL)playerItemIsFavoritable:(BOOL)favoritable atIndexPath:(id)path chain:(id)chain
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v11 = [v10 itemAtIndexPath:v8];
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v11 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v11)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:455 description:{@"Could not find content item at indexPath: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:455 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
   if ([v11 mediaType])
@@ -591,24 +591,24 @@ MPCPlayerAudioFormat *__82__MPCMediaRemoteMiddleware_MPCPlayerResponseBuilder__a
     v12 = ([v11 mediaType] >> 11) & 1;
   }
 
-  v13 = [v9 nextObject];
-  v14 = [v13 playerItemIsFavoritable:v12 atIndexPath:v8 chain:v9];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject playerItemIsFavoritable:v12 atIndexPath:pathCopy chain:chainCopy];
 
   return v14;
 }
 
-- (id)participant:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)participant:(id)participant atIndexPath:(id)path chain:(id)chain
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:v7];
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:pathCopy];
 
-  v11 = [v10 associatedParticipantIdentifier];
-  if (v11)
+  associatedParticipantIdentifier = [v10 associatedParticipantIdentifier];
+  if (associatedParticipantIdentifier)
   {
-    v12 = [(MPCMediaRemoteMiddleware *)self queueParticipants];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    queueParticipants = [(MPCMediaRemoteMiddleware *)self queueParticipants];
+    v13 = [queueParticipants objectForKeyedSubscript:associatedParticipantIdentifier];
   }
 
   else
@@ -616,61 +616,61 @@ MPCPlayerAudioFormat *__82__MPCMediaRemoteMiddleware_MPCPlayerResponseBuilder__a
     v13 = 0;
   }
 
-  v14 = [v8 nextObject];
-  v15 = [v14 participant:v13 atIndexPath:v7 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v15 = [nextObject participant:v13 atIndexPath:pathCopy chain:chainCopy];
 
   return v15;
 }
 
-- (BOOL)playerIsSharedListeningSession:(BOOL)a3 chain:(id)a4
+- (BOOL)playerIsSharedListeningSession:(BOOL)session chain:(id)chain
 {
-  v5 = a4;
-  v6 = [(MPCMediaRemoteMiddleware *)self supportedCommands];
-  v7 = [v6 commandInfoForCommand:139];
+  chainCopy = chain;
+  supportedCommands = [(MPCMediaRemoteMiddleware *)self supportedCommands];
+  v7 = [supportedCommands commandInfoForCommand:139];
 
   v8 = v7 != 0;
-  v9 = [v5 nextObject];
-  LOBYTE(v8) = [v9 playerIsSharedListeningSession:v8 chain:v5];
+  nextObject = [chainCopy nextObject];
+  LOBYTE(v8) = [nextObject playerIsSharedListeningSession:v8 chain:chainCopy];
 
   return v8;
 }
 
-- (BOOL)sectionIsAutoPlaySection:(BOOL)a3 atIndex:(int64_t)a4 chain:(id)a5
+- (BOOL)sectionIsAutoPlaySection:(BOOL)section atIndex:(int64_t)index chain:(id)chain
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 sectionAtIndex:a4];
+  sectionCopy = section;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems sectionAtIndex:index];
 
-  v11 = [v10 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69702B8]];
-  v13 = [v12 BOOLValue];
+  userInfo = [v10 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702B8]];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v8 nextObject];
-  LOBYTE(a4) = [v14 sectionIsAutoPlaySection:v13 | v6 atIndex:a4 chain:v8];
+  nextObject = [chainCopy nextObject];
+  LOBYTE(index) = [nextObject sectionIsAutoPlaySection:bOOLValue | sectionCopy atIndex:index chain:chainCopy];
 
-  return a4;
+  return index;
 }
 
-- (id)tracklistProperties:(id)a3 chain:(id)a4
+- (id)tracklistProperties:(id)properties chain:(id)chain
 {
-  v5 = a4;
-  v6 = [(MPCMediaRemoteMiddleware *)self queueProperties];
-  v7 = [v5 nextObject];
-  v8 = [v7 tracklistProperties:v6 chain:v5];
+  chainCopy = chain;
+  queueProperties = [(MPCMediaRemoteMiddleware *)self queueProperties];
+  nextObject = [chainCopy nextObject];
+  v8 = [nextObject tracklistProperties:queueProperties chain:chainCopy];
 
   return v8;
 }
 
-- (id)tracklistUniqueIdentifier:(id)a3 chain:(id)a4
+- (id)tracklistUniqueIdentifier:(id)identifier chain:(id)chain
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPCMediaRemoteMiddleware *)self queueIdentifier];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  chainCopy = chain;
+  queueIdentifier = [(MPCMediaRemoteMiddleware *)self queueIdentifier];
+  v9 = queueIdentifier;
+  if (queueIdentifier)
   {
-    v10 = v8;
+    v10 = queueIdentifier;
   }
 
   else
@@ -684,44 +684,44 @@ MPCPlayerAudioFormat *__82__MPCMediaRemoteMiddleware_MPCPlayerResponseBuilder__a
 
     else
     {
-      v13 = v6;
+      v13 = identifierCopy;
     }
 
     v10 = v13;
   }
 
-  v14 = [v7 nextObject];
-  v15 = [v14 tracklistUniqueIdentifier:v10 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v15 = [nextObject tracklistUniqueIdentifier:v10 chain:chainCopy];
 
   return v15;
 }
 
-- (id)lastSectionModelObject:(id)a3 propertySet:(id)a4 chain:(id)a5
+- (id)lastSectionModelObject:(id)object propertySet:(id)set chain:(id)chain
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self lastSectionContentItem];
-  if (v7)
+  setCopy = set;
+  lastSectionContentItem = [(MPCMediaRemoteMiddleware *)self lastSectionContentItem];
+  if (lastSectionContentItem)
   {
     v8 = [MEMORY[0x1E6970620] translatorForMPModelClass:objc_opt_class()];
     v9 = objc_alloc_init(MEMORY[0x1E6970628]);
-    v10 = [(MPCMediaRemoteMiddleware *)self controller];
-    [v9 setArtworkGenerator:v10];
+    controller = [(MPCMediaRemoteMiddleware *)self controller];
+    [v9 setArtworkGenerator:controller];
 
-    if (!v6)
+    if (!setCopy)
     {
       v11 = MEMORY[0x1E69708B0];
       v17[0] = *MEMORY[0x1E69700D8];
-      v12 = [MEMORY[0x1E69708B0] emptyPropertySet];
-      v18[0] = v12;
+      emptyPropertySet = [MEMORY[0x1E69708B0] emptyPropertySet];
+      v18[0] = emptyPropertySet;
       v17[1] = *MEMORY[0x1E6970118];
-      v13 = [MEMORY[0x1E69708B0] emptyPropertySet];
-      v18[1] = v13;
+      emptyPropertySet2 = [MEMORY[0x1E69708B0] emptyPropertySet];
+      v18[1] = emptyPropertySet2;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-      v6 = [v11 propertySetWithRelationships:v14];
+      setCopy = [v11 propertySetWithRelationships:v14];
     }
 
-    v15 = [v8 sectionObjectForPropertySet:v6 contentItem:v7 context:v9];
+    v15 = [v8 sectionObjectForPropertySet:setCopy contentItem:lastSectionContentItem context:v9];
   }
 
   else
@@ -732,79 +732,79 @@ MPCPlayerAudioFormat *__82__MPCMediaRemoteMiddleware_MPCPlayerResponseBuilder__a
   return v15;
 }
 
-- (int64_t)playerCommandDisabledReason:(int64_t)a3 command:(unsigned int)a4 chain:(id)a5
+- (int64_t)playerCommandDisabledReason:(int64_t)reason command:(unsigned int)command chain:(id)chain
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = [(MPCMediaRemoteMiddleware *)self supportedCommands];
-  v10 = [v9 commandInfoForCommand:v5];
+  v5 = *&command;
+  chainCopy = chain;
+  supportedCommands = [(MPCMediaRemoteMiddleware *)self supportedCommands];
+  v10 = [supportedCommands commandInfoForCommand:v5];
 
   if (v10)
   {
     IntegerValueForKey = MRMediaRemoteCommandInfoGetIntegerValueForKey();
     if (IntegerValueForKey - 1 >= 6)
     {
-      a3 = 0;
+      reason = 0;
     }
 
     else
     {
-      a3 = IntegerValueForKey;
+      reason = IntegerValueForKey;
     }
   }
 
-  v12 = [v8 nextObject];
-  v13 = [v12 playerCommandDisabledReason:a3 command:v5 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v13 = [nextObject playerCommandDisabledReason:reason command:v5 chain:chainCopy];
 
   return v13;
 }
 
-- (id)playerCommandOptionValue:(id)a3 forKey:(id)a4 command:(unsigned int)a5 chain:(id)a6
+- (id)playerCommandOptionValue:(id)value forKey:(id)key command:(unsigned int)command chain:(id)chain
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:v7 infoValueForKey:v12];
+  v7 = *&command;
+  valueCopy = value;
+  chainCopy = chain;
+  keyCopy = key;
+  v13 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:v7 infoValueForKey:keyCopy];
   v14 = v13;
-  v15 = v10;
+  v15 = valueCopy;
   if (v13)
   {
     v15 = v13;
   }
 
-  v16 = [v11 nextObject];
-  v17 = [v16 playerCommandOptionValue:v15 forKey:v12 command:v7 chain:v11];
+  nextObject = [chainCopy nextObject];
+  v17 = [nextObject playerCommandOptionValue:v15 forKey:keyCopy command:v7 chain:chainCopy];
 
   return v17;
 }
 
-- (BOOL)playerCommandEnabled:(BOOL)a3 command:(unsigned int)a4 chain:(id)a5
+- (BOOL)playerCommandEnabled:(BOOL)enabled command:(unsigned int)command chain:(id)chain
 {
-  v5 = *&a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(MPCMediaRemoteMiddleware *)self supportedCommands];
-  v10 = [v9 commandInfoForCommand:v5];
+  v5 = *&command;
+  enabledCopy = enabled;
+  chainCopy = chain;
+  supportedCommands = [(MPCMediaRemoteMiddleware *)self supportedCommands];
+  v10 = [supportedCommands commandInfoForCommand:v5];
 
   if (v10)
   {
-    v6 = MRMediaRemoteCommandInfoGetEnabled() != 0;
+    enabledCopy = MRMediaRemoteCommandInfoGetEnabled() != 0;
   }
 
-  v11 = [v8 nextObject];
-  v12 = [v11 playerCommandEnabled:v6 command:v5 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v12 = [nextObject playerCommandEnabled:enabledCopy command:v5 chain:chainCopy];
 
   return v12;
 }
 
-- (BOOL)playerCommandSupported:(BOOL)a3 command:(unsigned int)a4 chain:(id)a5
+- (BOOL)playerCommandSupported:(BOOL)supported command:(unsigned int)command chain:(id)chain
 {
-  v5 = *&a4;
-  LODWORD(v6) = a3;
-  v8 = a5;
-  v9 = [(MPCMediaRemoteMiddleware *)self supportedCommands];
-  v10 = [v9 commandInfoForCommand:v5];
+  v5 = *&command;
+  LODWORD(v6) = supported;
+  chainCopy = chain;
+  supportedCommands = [(MPCMediaRemoteMiddleware *)self supportedCommands];
+  v10 = [supportedCommands commandInfoForCommand:v5];
 
   if (v10)
   {
@@ -816,171 +816,171 @@ MPCPlayerAudioFormat *__82__MPCMediaRemoteMiddleware_MPCPlayerResponseBuilder__a
     v6 = v6;
   }
 
-  v11 = [v8 nextObject];
-  v12 = [v11 playerCommandSupported:v6 command:v5 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v12 = [nextObject playerCommandSupported:v6 command:v5 chain:chainCopy];
 
   return v12;
 }
 
-- (id)playerItemCurrentLanguageOptions:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)playerItemCurrentLanguageOptions:(id)options atIndexPath:(id)path chain:(id)chain
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v11 = [v10 itemAtIndexPath:v8];
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v11 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v11)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:356 description:{@"Could not find content item at indexPath: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:356 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v12 = [v9 nextObject];
-  v13 = [v11 currentLanguageOptions];
-  v14 = [v13 copy];
-  v15 = [v12 playerItemCurrentLanguageOptions:v14 atIndexPath:v8 chain:v9];
+  nextObject = [chainCopy nextObject];
+  currentLanguageOptions = [v11 currentLanguageOptions];
+  v14 = [currentLanguageOptions copy];
+  v15 = [nextObject playerItemCurrentLanguageOptions:v14 atIndexPath:pathCopy chain:chainCopy];
 
   return v15;
 }
 
-- (id)playerItemLanguageOptionGroups:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)playerItemLanguageOptionGroups:(id)groups atIndexPath:(id)path chain:(id)chain
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v11 = [v10 itemAtIndexPath:v8];
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v11 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v11)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:350 description:{@"Could not find content item at indexPath: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:350 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v12 = [v9 nextObject];
-  v13 = [v11 availableLanguageOptions];
-  v14 = [v13 copy];
-  v15 = [v12 playerItemLanguageOptionGroups:v14 atIndexPath:v8 chain:v9];
+  nextObject = [chainCopy nextObject];
+  availableLanguageOptions = [v11 availableLanguageOptions];
+  v14 = [availableLanguageOptions copy];
+  v15 = [nextObject playerItemLanguageOptionGroups:v14 atIndexPath:pathCopy chain:chainCopy];
 
   return v15;
 }
 
-- (int64_t)playerGlobalItemCount:(int64_t)a3 chain:(id)a4
+- (int64_t)playerGlobalItemCount:(int64_t)count chain:(id)chain
 {
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self queueProperties];
-  v8 = [v7 objectForKeyedSubscript:@"totalItemCount"];
+  chainCopy = chain;
+  queueProperties = [(MPCMediaRemoteMiddleware *)self queueProperties];
+  v8 = [queueProperties objectForKeyedSubscript:@"totalItemCount"];
 
   if (v8)
   {
-    a3 = [v8 integerValue];
+    count = [v8 integerValue];
   }
 
   else
   {
-    v9 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+    playingIndexPath = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
 
-    if (v9)
+    if (playingIndexPath)
     {
-      v10 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-      v11 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
-      v12 = [v10 itemAtIndexPath:v11];
+      queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+      playingIndexPath2 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+      v12 = [queueContentItems itemAtIndexPath:playingIndexPath2];
 
-      v13 = [v12 auxiliaryNowPlayingInfo];
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69B1048]];
-      a3 = [v14 integerValue];
+      auxiliaryNowPlayingInfo = [v12 auxiliaryNowPlayingInfo];
+      v14 = [auxiliaryNowPlayingInfo objectForKeyedSubscript:*MEMORY[0x1E69B1048]];
+      count = [v14 integerValue];
     }
   }
 
-  v15 = [v6 nextObject];
-  v16 = [v15 playerGlobalItemCount:a3 chain:v6];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject playerGlobalItemCount:count chain:chainCopy];
 
   return v16;
 }
 
-- (int64_t)playerPlayingItemGlobalIndex:(int64_t)a3 chain:(id)a4
+- (int64_t)playerPlayingItemGlobalIndex:(int64_t)index chain:(id)chain
 {
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+  chainCopy = chain;
+  playingIndexPath = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
 
-  if (v7)
+  if (playingIndexPath)
   {
-    v8 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-    v9 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
-    v10 = [v8 itemAtIndexPath:v9];
+    queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+    playingIndexPath2 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+    v10 = [queueContentItems itemAtIndexPath:playingIndexPath2];
 
-    v11 = [v10 auxiliaryNowPlayingInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69B0FA0]];
-    a3 = [v12 integerValue];
+    auxiliaryNowPlayingInfo = [v10 auxiliaryNowPlayingInfo];
+    v12 = [auxiliaryNowPlayingInfo objectForKeyedSubscript:*MEMORY[0x1E69B0FA0]];
+    index = [v12 integerValue];
   }
 
-  v13 = [v6 nextObject];
-  v14 = [v13 playerPlayingItemGlobalIndex:a3 chain:v6];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject playerPlayingItemGlobalIndex:index chain:chainCopy];
 
   return v14;
 }
 
-- (BOOL)playerItemShouldDisableJumpToItem:(BOOL)a3 atIndexPath:(id)a4 boundsCheck:(BOOL)a5 chain:(id)a6
+- (BOOL)playerItemShouldDisableJumpToItem:(BOOL)item atIndexPath:(id)path boundsCheck:(BOOL)check chain:(id)chain
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v13 = [v12 itemAtIndexPath:v10];
+  checkCopy = check;
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v13 = [queueContentItems itemAtIndexPath:pathCopy];
 
-  v14 = [v13 editingStyleFlags];
-  if (v7 && !v13)
+  editingStyleFlags = [v13 editingStyleFlags];
+  if (checkCopy && !v13)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    v19 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-    v20 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:320 description:{@"Could not find content item at indexPath: %@ queueContentItems: %p queueContentItems.totalItemCount: %ld", v10, v19, objc_msgSend(v20, "totalItemCount")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    queueContentItems2 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+    queueContentItems3 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:320 description:{@"Could not find content item at indexPath: %@ queueContentItems: %p queueContentItems.totalItemCount: %ld", pathCopy, queueContentItems2, objc_msgSend(queueContentItems3, "totalItemCount")}];
   }
 
-  v15 = [v11 nextObject];
-  v16 = [v15 playerItemShouldDisableJumpToItem:(v14 >> 2) & 1 atIndexPath:v10 boundsCheck:v7 chain:v11];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject playerItemShouldDisableJumpToItem:(editingStyleFlags >> 2) & 1 atIndexPath:pathCopy boundsCheck:checkCopy chain:chainCopy];
 
   return v16;
 }
 
-- (id)playerPlayingItemIndexPath:(id)a3 chain:(id)a4
+- (id)playerPlayingItemIndexPath:(id)path chain:(id)chain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
-  v9 = v8;
-  if (v8)
+  chainCopy = chain;
+  pathCopy = path;
+  playingIndexPath = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+  v9 = playingIndexPath;
+  if (playingIndexPath)
   {
-    v10 = v8;
+    v10 = playingIndexPath;
   }
 
   else
   {
-    v10 = v7;
+    v10 = pathCopy;
   }
 
   v11 = v10;
 
-  v12 = [v6 nextObject];
-  v13 = [v12 playerPlayingItemIndexPath:v11 chain:v6];
+  nextObject = [chainCopy nextObject];
+  v13 = [nextObject playerPlayingItemIndexPath:v11 chain:chainCopy];
 
   return v13;
 }
 
-- (id)playerModelObject:(id)a3 propertySet:(id)a4 atIndexPath:(id)a5 chain:(id)a6
+- (id)playerModelObject:(id)object propertySet:(id)set atIndexPath:(id)path chain:(id)chain
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  if ([v11 length] == 1)
+  objectCopy = object;
+  pathCopy = path;
+  chainCopy = chain;
+  setCopy = set;
+  if ([pathCopy length] == 1)
   {
-    v14 = -[MPSectionedCollection sectionAtIndex:](self->_queueModelObjects, "sectionAtIndex:", [v11 section]);
+    v14 = -[MPSectionedCollection sectionAtIndex:](self->_queueModelObjects, "sectionAtIndex:", [pathCopy section]);
     goto LABEL_5;
   }
 
-  if ([v11 length] == 2)
+  if ([pathCopy length] == 2)
   {
-    v14 = [(MPSectionedCollection *)self->_queueModelObjects itemAtIndexPath:v11];
+    v14 = [(MPSectionedCollection *)self->_queueModelObjects itemAtIndexPath:pathCopy];
 LABEL_5:
     v15 = v14;
     if ([v14 type])
@@ -1003,210 +1003,210 @@ LABEL_10:
   }
 
 LABEL_11:
-  v15 = v10;
+  v15 = objectCopy;
 LABEL_12:
-  v16 = [v12 nextObject];
-  v17 = [v16 playerModelObject:v15 propertySet:v13 atIndexPath:v11 chain:v12];
+  nextObject = [chainCopy nextObject];
+  v17 = [nextObject playerModelObject:v15 propertySet:setCopy atIndexPath:pathCopy chain:chainCopy];
 
   return v17;
 }
 
-- (id)playerItemContentID:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)playerItemContentID:(id)d atIndexPath:(id)path chain:(id)chain
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:v8];
+  chainCopy = chain;
+  pathCopy = path;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:pathCopy];
 
-  v11 = [v7 nextObject];
-  v12 = [v10 identifier];
-  v13 = [v11 playerItemContentID:v12 atIndexPath:v8 chain:v7];
+  nextObject = [chainCopy nextObject];
+  identifier = [v10 identifier];
+  v13 = [nextObject playerItemContentID:identifier atIndexPath:pathCopy chain:chainCopy];
 
   return v13;
 }
 
-- (BOOL)playerItemIsPreview:(BOOL)a3 atIndexPath:(id)a4 chain:(id)a5
+- (BOOL)playerItemIsPreview:(BOOL)preview atIndexPath:(id)path chain:(id)chain
 {
-  v6 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v12 = [v11 itemAtIndexPath:v9];
+  previewCopy = preview;
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v12 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v12)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:276 description:{@"Could not find content item at indexPath: %@", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:276 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v13 = [v12 userInfo];
-  v14 = [v13 objectForKeyedSubscript:@"preview"];
+  userInfo = [v12 userInfo];
+  v14 = [userInfo objectForKeyedSubscript:@"preview"];
 
   if (v14)
   {
-    v6 = [v14 BOOLValue];
+    previewCopy = [v14 BOOLValue];
   }
 
-  v15 = [v10 nextObject];
-  v16 = [v15 playerItemIsPreview:v6 atIndexPath:v9 chain:v10];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject playerItemIsPreview:previewCopy atIndexPath:pathCopy chain:chainCopy];
 
   return v16;
 }
 
-- (BOOL)playerItemIsPlaceholder:(BOOL)a3 atIndexPath:(id)a4 chain:(id)a5
+- (BOOL)playerItemIsPlaceholder:(BOOL)placeholder atIndexPath:(id)path chain:(id)chain
 {
-  v6 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v12 = [v11 itemAtIndexPath:v9];
+  placeholderCopy = placeholder;
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v12 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v12)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:265 description:{@"Could not find content item at indexPath: %@", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:265 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v13 = [v12 userInfo];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69702C8]];
+  userInfo = [v12 userInfo];
+  v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702C8]];
 
   if (v14)
   {
-    v6 = [v14 BOOLValue];
+    placeholderCopy = [v14 BOOLValue];
   }
 
-  v15 = [v10 nextObject];
-  v16 = [v15 playerItemIsPlaceholder:v6 atIndexPath:v9 chain:v10];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject playerItemIsPlaceholder:placeholderCopy atIndexPath:pathCopy chain:chainCopy];
 
   return v16;
 }
 
-- (id)queueItemIdentifier:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)queueItemIdentifier:(id)identifier atIndexPath:(id)path chain:(id)chain
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v10 = [v9 itemAtIndexPath:v8];
+  chainCopy = chain;
+  pathCopy = path;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v10 = [queueContentItems itemAtIndexPath:pathCopy];
 
-  v11 = [v10 _mediaRemoteContentItem];
-  v12 = [v11 queueIdentifier];
-  v13 = [v7 nextObject];
-  v14 = [v13 queueItemIdentifier:v12 atIndexPath:v8 chain:v7];
+  _mediaRemoteContentItem = [v10 _mediaRemoteContentItem];
+  queueIdentifier = [_mediaRemoteContentItem queueIdentifier];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject queueItemIdentifier:queueIdentifier atIndexPath:pathCopy chain:chainCopy];
 
   return v14;
 }
 
-- (int64_t)playerItemEditingStyleFlags:(int64_t)a3 atIndexPath:(id)a4 chain:(id)a5
+- (int64_t)playerItemEditingStyleFlags:(int64_t)flags atIndexPath:(id)path chain:(id)chain
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v11 = [v10 itemAtIndexPath:v8];
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v11 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v11)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:250 description:{@"Could not find content item at indexPath: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:250 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v12 = [v11 editingStyleFlags];
-  v13 = [v9 nextObject];
-  v14 = [v13 playerItemEditingStyleFlags:v12 atIndexPath:v8 chain:v9];
+  editingStyleFlags = [v11 editingStyleFlags];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject playerItemEditingStyleFlags:editingStyleFlags atIndexPath:pathCopy chain:chainCopy];
 
   return v14;
 }
 
-- (id)playerItemTransitionInfo:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)playerItemTransitionInfo:(id)info atIndexPath:(id)path chain:(id)chain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v13 = [v12 itemAtIndexPath:v10];
+  infoCopy = info;
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v13 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v13)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:240 description:{@"Could not find content item at indexPath: %@", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:240 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v14 = [v13 transitionInfo];
-  v15 = [v11 nextObject];
-  v16 = [v15 playerItemTransitionInfo:v14 atIndexPath:v10 chain:v11];
+  transitionInfo = [v13 transitionInfo];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject playerItemTransitionInfo:transitionInfo atIndexPath:pathCopy chain:chainCopy];
 
   return v16;
 }
 
-- (id)playerItemExplicitBadge:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)playerItemExplicitBadge:(id)badge atIndexPath:(id)path chain:(id)chain
 {
-  v7 = a4;
-  v8 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v9 = [v8 itemAtIndexPath:v7];
+  pathCopy = path;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v9 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v9)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:232 description:{@"Could not find content item at indexPath: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:232 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v10 = [v9 userInfo];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69702A8]];
+  userInfo = [v9 userInfo];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702A8]];
 
   return v11;
 }
 
-- (id)playerItemLocalizedDurationString:(id)a3 atIndexPath:(id)a4 chain:(id)a5
+- (id)playerItemLocalizedDurationString:(id)string atIndexPath:(id)path chain:(id)chain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v13 = [v12 itemAtIndexPath:v10];
+  stringCopy = string;
+  pathCopy = path;
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v13 = [queueContentItems itemAtIndexPath:pathCopy];
 
   if (!v13)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:224 description:{@"Could not find content item at indexPath: %@", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:224 description:{@"Could not find content item at indexPath: %@", pathCopy}];
   }
 
-  v14 = [v13 localizedDurationString];
-  v15 = [v11 nextObject];
-  v16 = [v15 playerItemLocalizedDurationString:v14 atIndexPath:v10 chain:v11];
+  localizedDurationString = [v13 localizedDurationString];
+  nextObject = [chainCopy nextObject];
+  v16 = [nextObject playerItemLocalizedDurationString:localizedDurationString atIndexPath:pathCopy chain:chainCopy];
 
   return v16;
 }
 
-- ($04B05C73ED6AEEF31C5815932084562D)playerItemDuration:(SEL)a3 atIndexPath:(id *)a4 chain:(id)a5
+- ($04B05C73ED6AEEF31C5815932084562D)playerItemDuration:(SEL)duration atIndexPath:(id *)path chain:(id)chain
 {
-  v10 = a5;
+  chainCopy = chain;
   v11 = a6;
-  v12 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v13 = [v12 itemAtIndexPath:v10];
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v13 = [queueContentItems itemAtIndexPath:chainCopy];
 
   if (!v13)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a3 object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:199 description:{@"Could not find content item at indexPath: %@", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:duration object:self file:@"MPCMediaRemoteMiddleware.m" lineNumber:199 description:{@"Could not find content item at indexPath: %@", chainCopy}];
   }
 
   if ([v13 isLoading])
   {
-    v39 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v14 = [v13 userInfo];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69702C0]];
-    v39 = [v15 BOOLValue];
+    userInfo = [v13 userInfo];
+    v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702C0]];
+    bOOLValue = [v15 BOOLValue];
   }
 
   [v13 elapsedTimeTimestamp];
   v17 = v16;
   [v13 startTime];
   v19 = v18;
-  v20 = [v13 userInfo];
-  v21 = [v20 objectForKeyedSubscript:*MEMORY[0x1E69702A0]];
+  userInfo2 = [v13 userInfo];
+  v21 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69702A0]];
   [v21 doubleValue];
   v23 = v22;
   [v13 duration];
@@ -1217,13 +1217,13 @@ LABEL_12:
   v29 = v28;
   [v13 defaultPlaybackRate];
   v31 = v30;
-  v32 = [v13 isAlwaysLiveItem];
-  v33 = [(MPCMediaRemoteMiddleware *)self playerState];
-  v34 = [v13 isInTransition];
+  isAlwaysLiveItem = [v13 isAlwaysLiveItem];
+  playerState = [(MPCMediaRemoteMiddleware *)self playerState];
+  isInTransition = [v13 isInTransition];
 
-  v35 = [v11 nextObject];
-  v36 = v35;
-  if (v35)
+  nextObject = [v11 nextObject];
+  v36 = nextObject;
+  if (nextObject)
   {
     v40[0] = v17;
     v40[1] = v19;
@@ -1232,12 +1232,12 @@ LABEL_12:
     v40[4] = v27;
     v41 = v29;
     v42 = v31;
-    v43 = v32;
-    v44 = (v33 == 2) & v39;
-    v45 = v34;
+    v43 = isAlwaysLiveItem;
+    v44 = (playerState == 2) & bOOLValue;
+    v45 = isInTransition;
     v46 = 0;
     v47 = 0;
-    [v35 playerItemDuration:v40 atIndexPath:v10 chain:v11];
+    [nextObject playerItemDuration:v40 atIndexPath:chainCopy chain:v11];
   }
 
   else
@@ -1251,150 +1251,150 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)playerNumberOfItems:(unint64_t)a3 inSection:(unint64_t)a4 chain:(id)a5
+- (unint64_t)playerNumberOfItems:(unint64_t)items inSection:(unint64_t)section chain:(id)chain
 {
-  v8 = a5;
-  v9 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  chainCopy = chain;
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
 
-  if (v9)
+  if (queueContentItems)
   {
-    v10 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-    a3 = [v10 numberOfItemsInSection:a4];
+    queueContentItems2 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+    items = [queueContentItems2 numberOfItemsInSection:section];
   }
 
-  v11 = [v8 nextObject];
-  v12 = [v11 playerNumberOfItems:a3 inSection:a4 chain:v8];
+  nextObject = [chainCopy nextObject];
+  v12 = [nextObject playerNumberOfItems:items inSection:section chain:chainCopy];
 
   return v12;
 }
 
-- (unint64_t)playerNumberOfSections:(unint64_t)a3 chain:(id)a4
+- (unint64_t)playerNumberOfSections:(unint64_t)sections chain:(id)chain
 {
-  v5 = a4;
-  v6 = [v5 nextObject];
-  v7 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-  v8 = [v6 playerNumberOfSections:objc_msgSend(v7 chain:{"numberOfSections"), v5}];
+  chainCopy = chain;
+  nextObject = [chainCopy nextObject];
+  queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+  v8 = [nextObject playerNumberOfSections:objc_msgSend(queueContentItems chain:{"numberOfSections"), chainCopy}];
 
   return v8;
 }
 
-- (int64_t)playerExplicitContentState:(int64_t)a3 chain:(id)a4
+- (int64_t)playerExplicitContentState:(int64_t)state chain:(id)chain
 {
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+  chainCopy = chain;
+  playingIndexPath = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
 
-  if (v7)
+  if (playingIndexPath)
   {
-    v8 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-    v9 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
-    v10 = [v8 itemAtIndexPath:v9];
+    queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+    playingIndexPath2 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+    v10 = [queueContentItems itemAtIndexPath:playingIndexPath2];
 
-    v11 = [v10 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69702B0]];
-    a3 = [v12 integerValue];
+    userInfo = [v10 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702B0]];
+    state = [v12 integerValue];
   }
 
-  v13 = [v6 nextObject];
-  v14 = [v13 playerExplicitContentState:a3 chain:v6];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject playerExplicitContentState:state chain:chainCopy];
 
   return v14;
 }
 
-- (int64_t)playerUpNextItemCount:(int64_t)a3 chain:(id)a4
+- (int64_t)playerUpNextItemCount:(int64_t)count chain:(id)chain
 {
-  v5 = a4;
-  v6 = [(MPCMediaRemoteMiddleware *)self supportedCommands];
-  IntegerValueForKey = [v6 commandInfoForCommand:122];
+  chainCopy = chain;
+  supportedCommands = [(MPCMediaRemoteMiddleware *)self supportedCommands];
+  IntegerValueForKey = [supportedCommands commandInfoForCommand:122];
 
   if (IntegerValueForKey)
   {
     IntegerValueForKey = MRMediaRemoteCommandInfoGetIntegerValueForKey();
   }
 
-  v8 = [v5 nextObject];
-  v9 = [v8 playerUpNextItemCount:IntegerValueForKey chain:v5];
+  nextObject = [chainCopy nextObject];
+  v9 = [nextObject playerUpNextItemCount:IntegerValueForKey chain:chainCopy];
 
   return v9;
 }
 
-- (int64_t)playerLastChangeDirection:(int64_t)a3 chain:(id)a4
+- (int64_t)playerLastChangeDirection:(int64_t)direction chain:(id)chain
 {
-  v6 = a4;
-  v7 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+  chainCopy = chain;
+  playingIndexPath = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
 
-  if (v7)
+  if (playingIndexPath)
   {
-    v8 = [(MPCMediaRemoteMiddleware *)self queueContentItems];
-    v9 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
-    v10 = [v8 itemAtIndexPath:v9];
+    queueContentItems = [(MPCMediaRemoteMiddleware *)self queueContentItems];
+    playingIndexPath2 = [(MPCMediaRemoteMiddleware *)self playingIndexPath];
+    v10 = [queueContentItems itemAtIndexPath:playingIndexPath2];
 
-    v11 = [v10 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69702D0]];
+    userInfo = [v10 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702D0]];
 
-    a3 = [v12 integerValue];
+    direction = [v12 integerValue];
   }
 
-  v13 = [v6 nextObject];
-  v14 = [v13 playerLastChangeDirection:a3 chain:v6];
+  nextObject = [chainCopy nextObject];
+  v14 = [nextObject playerLastChangeDirection:direction chain:chainCopy];
 
   return v14;
 }
 
-- (int64_t)playerQueueEndAction:(int64_t)a3 chain:(id)a4
+- (int64_t)playerQueueEndAction:(int64_t)action chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0C50];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:135 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
-    a3 = [v8 unsignedIntegerValue];
+    action = [v8 unsignedIntegerValue];
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerQueueEndAction:a3 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerQueueEndAction:action chain:chainCopy];
 
   return v10;
 }
 
-- (int64_t)playerShuffleType:(int64_t)a3 chain:(id)a4
+- (int64_t)playerShuffleType:(int64_t)type chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0D00];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:26 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 unsignedIntegerValue];
-    a3 = MPShuffleTypeFromMediaRemoteShuffleMode();
+    type = MPShuffleTypeFromMediaRemoteShuffleMode();
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerShuffleType:a3 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerShuffleType:type chain:chainCopy];
 
   return v10;
 }
 
-- (int64_t)playerRepeatType:(int64_t)a3 chain:(id)a4
+- (int64_t)playerRepeatType:(int64_t)type chain:(id)chain
 {
   v6 = *MEMORY[0x1E69B0CF8];
-  v7 = a4;
+  chainCopy = chain;
   v8 = [(MPCMediaRemoteMiddleware *)self _supportedCommands:25 infoValueForKey:v6];
   if (_NSIsNSNumber())
   {
     [v8 unsignedIntegerValue];
-    a3 = MPRepeatTypeFromMediaRemoteRepeatMode();
+    type = MPRepeatTypeFromMediaRemoteRepeatMode();
   }
 
-  v9 = [v7 nextObject];
-  v10 = [v9 playerRepeatType:a3 chain:v7];
+  nextObject = [chainCopy nextObject];
+  v10 = [nextObject playerRepeatType:type chain:chainCopy];
 
   return v10;
 }
 
-- (int64_t)playerState:(int64_t)a3 chain:(id)a4
+- (int64_t)playerState:(int64_t)state chain:(id)chain
 {
-  v5 = a4;
-  v6 = [v5 nextObject];
-  v7 = [v6 playerState:-[MPCMediaRemoteMiddleware playerState](self chain:{"playerState"), v5}];
+  chainCopy = chain;
+  nextObject = [chainCopy nextObject];
+  v7 = [nextObject playerState:-[MPCMediaRemoteMiddleware playerState](self chain:{"playerState"), chainCopy}];
 
   return v7;
 }

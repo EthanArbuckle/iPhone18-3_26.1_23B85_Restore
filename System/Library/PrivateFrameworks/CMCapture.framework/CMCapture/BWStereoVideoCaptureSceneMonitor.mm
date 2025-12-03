@@ -1,31 +1,31 @@
 @interface BWStereoVideoCaptureSceneMonitor
-- (BOOL)resolveStereoVideoCaptureStatusWithFrameStatistics:(id)a3 sceneFlags:(unint64_t)a4 stereoVideoCaptureStatusOut:(int *)a5;
-- (BWStereoVideoCaptureSceneMonitor)initWithTuningParametersByPortType:(id)a3 attachDebugFrameStatistics:(BOOL)a4;
+- (BOOL)resolveStereoVideoCaptureStatusWithFrameStatistics:(id)statistics sceneFlags:(unint64_t)flags stereoVideoCaptureStatusOut:(int *)out;
+- (BWStereoVideoCaptureSceneMonitor)initWithTuningParametersByPortType:(id)type attachDebugFrameStatistics:(BOOL)statistics;
 - (void)dealloc;
 - (void)focusScanDidComplete;
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5;
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress;
 @end
 
 @implementation BWStereoVideoCaptureSceneMonitor
 
-- (BWStereoVideoCaptureSceneMonitor)initWithTuningParametersByPortType:(id)a3 attachDebugFrameStatistics:(BOOL)a4
+- (BWStereoVideoCaptureSceneMonitor)initWithTuningParametersByPortType:(id)type attachDebugFrameStatistics:(BOOL)statistics
 {
   v14.receiver = self;
   v14.super_class = BWStereoVideoCaptureSceneMonitor;
-  v5 = [(BWStereoVideoCaptureSceneMonitor *)&v14 init:a3];
+  v5 = [(BWStereoVideoCaptureSceneMonitor *)&v14 init:type];
   v6 = v5;
   if (v5)
   {
     *(v5 + 9) = 257;
     v7 = *off_1E798A0C0;
-    [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798A0C0), "objectForKeyedSubscript:", @"TooDarkNormalizedSNRThreshold", "floatValue"}];
+    [objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{*off_1E798A0C0), "objectForKeyedSubscript:", @"TooDarkNormalizedSNRThreshold", "floatValue"}];
     if (v8 == 0.0)
     {
       v8 = 1.1755e-38;
     }
 
     *(v6 + 6) = v8;
-    v9 = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
+    v9 = [objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", @"TooDarkLuxLevelThreshold", "intValue"}];
     if (v9)
     {
       v10 = v9;
@@ -37,14 +37,14 @@
     }
 
     *(v6 + 7) = v10;
-    [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", @"TooCloseFocusDistanceThreshold", "doubleValue"}];
+    [objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", @"TooCloseFocusDistanceThreshold", "doubleValue"}];
     if (v11 == 0.0)
     {
       v11 = 40.0;
     }
 
     *(v6 + 4) = v11;
-    [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", @"MinimumValidFocusDistance", "doubleValue"}];
+    [objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", @"MinimumValidFocusDistance", "doubleValue"}];
     if (v12 == 0.0)
     {
       v12 = 20.0;
@@ -64,11 +64,11 @@
   [(BWStereoVideoCaptureSceneMonitor *)&v2 dealloc];
 }
 
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress
 {
-  if (a3 || a4 || a5)
+  if (progress || locked || inProgress)
   {
-    self->_oneShotFocusScanInProgress = !a3 && !a4;
+    self->_oneShotFocusScanInProgress = !progress && !locked;
   }
 }
 
@@ -80,7 +80,7 @@
   }
 }
 
-- (BOOL)resolveStereoVideoCaptureStatusWithFrameStatistics:(id)a3 sceneFlags:(unint64_t)a4 stereoVideoCaptureStatusOut:(int *)a5
+- (BOOL)resolveStereoVideoCaptureStatusWithFrameStatistics:(id)statistics sceneFlags:(unint64_t)flags stereoVideoCaptureStatusOut:(int *)out
 {
   oneShotFocusScanInProgress = self->_oneShotFocusScanInProgress;
   if (oneShotFocusScanInProgress)
@@ -88,14 +88,14 @@
     return !oneShotFocusScanInProgress;
   }
 
-  v7 = a4;
-  if (![objc_msgSend(a3 "portType")])
+  flagsCopy = flags;
+  if (![objc_msgSend(statistics "portType")])
   {
-    if ([objc_msgSend(a3 "portType")])
+    if ([objc_msgSend(statistics "portType")])
     {
       if (self->_subjectTooCloseMonitoringEnabled)
       {
-        [a3 focusDistance];
+        [statistics focusDistance];
         self->_lastSuperWideFocusDistance = v13;
         if (v13 <= 0.0)
         {
@@ -109,20 +109,20 @@
 
   if (self->_sceneTooDarkMonitoringEnabled)
   {
-    [a3 normalizedSNR];
+    [statistics normalizedSNR];
     v11 = v10;
-    v12 = [a3 luxLevel];
+    luxLevel = [statistics luxLevel];
   }
 
   else
   {
-    v12 = -1;
+    luxLevel = -1;
     v11 = 1.1755e-38;
   }
 
   if (self->_subjectTooCloseMonitoringEnabled)
   {
-    [a3 focusDistance];
+    [statistics focusDistance];
     self->_lastWideFocusDistance = v14;
     if (v14 <= 0.0)
     {
@@ -148,7 +148,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v12 == -1)
+  if (luxLevel == -1)
   {
     goto LABEL_29;
   }
@@ -156,7 +156,7 @@ LABEL_28:
   luxLevelThreshold = self->_luxLevelThreshold;
   if (!self->_sceneIsTooDark)
   {
-    if (v12 > luxLevelThreshold)
+    if (luxLevel > luxLevelThreshold)
     {
       goto LABEL_29;
     }
@@ -164,7 +164,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (v12 > luxLevelThreshold / 5 + luxLevelThreshold)
+  if (luxLevel > luxLevelThreshold / 5 + luxLevelThreshold)
   {
 LABEL_26:
     self->_sceneIsTooDark = 0;
@@ -204,7 +204,7 @@ LABEL_29:
   v22 = !subjectIsTooClose;
   self->_subjectIsTooClose = v21;
 LABEL_39:
-  if (a5)
+  if (out)
   {
     if (self->_sceneIsTooDark)
     {
@@ -216,7 +216,7 @@ LABEL_39:
       v23 = 0;
     }
 
-    if ((v7 & 0x4000000) != 0)
+    if ((flagsCopy & 0x4000000) != 0)
     {
       v24 = 2;
     }
@@ -226,7 +226,7 @@ LABEL_39:
       v24 = v23;
     }
 
-    if ((v7 & 0x8000000) != 0)
+    if ((flagsCopy & 0x8000000) != 0)
     {
       v24 = 3;
     }
@@ -246,7 +246,7 @@ LABEL_39:
       v25 = v24;
     }
 
-    *a5 = v25;
+    *out = v25;
   }
 
   return !oneShotFocusScanInProgress;

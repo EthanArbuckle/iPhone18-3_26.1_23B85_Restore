@@ -1,10 +1,10 @@
 @interface CNFamilyCircleConfigurationUpdateTask
 + (id)os_log;
 - (CNFamilyCircleConfigurationUpdateTask)init;
-- (CNFamilyCircleConfigurationUpdateTask)initWithAccountSource:(id)a3 accountSink:(id)a4 accountStore:(id)a5;
-- (CNFamilyCircleConfigurationUpdateTask)initWithName:(id)a3;
+- (CNFamilyCircleConfigurationUpdateTask)initWithAccountSource:(id)source accountSink:(id)sink accountStore:(id)store;
+- (CNFamilyCircleConfigurationUpdateTask)initWithName:(id)name;
 - (id)description;
-- (id)run:(id *)a3;
+- (id)run:(id *)run;
 - (void)loadDefaultSinkIfNecessary;
 - (void)loadDefaultSourceIfNecessary;
 - (void)loadDelegateAccountsFromSource;
@@ -36,13 +36,13 @@ uint64_t __47__CNFamilyCircleConfigurationUpdateTask_os_log__block_invoke()
 
 - (CNFamilyCircleConfigurationUpdateTask)init
 {
-  v3 = [MEMORY[0x1E6959A48] defaultStore];
-  v4 = [(CNFamilyCircleConfigurationUpdateTask *)self initWithAccountSource:0 accountSink:0 accountStore:v3];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v4 = [(CNFamilyCircleConfigurationUpdateTask *)self initWithAccountSource:0 accountSink:0 accountStore:defaultStore];
 
   return v4;
 }
 
-- (CNFamilyCircleConfigurationUpdateTask)initWithName:(id)a3
+- (CNFamilyCircleConfigurationUpdateTask)initWithName:(id)name
 {
   v3 = [(CNFamilyCircleConfigurationUpdateTask *)self init];
   v4 = v3;
@@ -54,25 +54,25 @@ uint64_t __47__CNFamilyCircleConfigurationUpdateTask_os_log__block_invoke()
   return v4;
 }
 
-- (CNFamilyCircleConfigurationUpdateTask)initWithAccountSource:(id)a3 accountSink:(id)a4 accountStore:(id)a5
+- (CNFamilyCircleConfigurationUpdateTask)initWithAccountSource:(id)source accountSink:(id)sink accountStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  sinkCopy = sink;
+  storeCopy = store;
   v20.receiver = self;
   v20.super_class = CNFamilyCircleConfigurationUpdateTask;
   v12 = [(CNTask *)&v20 initWithName:@"CNFamilyCircleConfigurationUpdateTask"];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountSource, a3);
-    objc_storeStrong(&v13->_accountSink, a4);
-    objc_storeStrong(&v13->_accountStore, a5);
+    objc_storeStrong(&v12->_accountSource, source);
+    objc_storeStrong(&v13->_accountSink, sink);
+    objc_storeStrong(&v13->_accountStore, store);
     delegateAccounts = v13->_delegateAccounts;
     v13->_delegateAccounts = 0;
 
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v16 = [CNResult successWithValue:v15];
+    null = [MEMORY[0x1E695DFB0] null];
+    v16 = [CNResult successWithValue:null];
     v17 = v13->_result;
     v13->_result = v16;
 
@@ -87,44 +87,44 @@ uint64_t __47__CNFamilyCircleConfigurationUpdateTask_os_log__block_invoke()
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"accountSource" object:self->_accountSource];
   v5 = [v3 appendName:@"accountSink" object:self->_accountSink];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
   [(CNFamilyCircleConfigurationUpdateTask *)self loadDefaultSourceIfNecessary];
   [(CNFamilyCircleConfigurationUpdateTask *)self loadDelegateAccountsFromSource];
   [(CNFamilyCircleConfigurationUpdateTask *)self loadDefaultSinkIfNecessary];
   [(CNFamilyCircleConfigurationUpdateTask *)self updateDelegateAccounts];
   v5 = self->_result;
-  v6 = [(CNResult *)v5 value];
+  value = [(CNResult *)v5 value];
 
-  if (v6)
+  if (value)
   {
-    v7 = [(CNResult *)v5 value];
+    value2 = [(CNResult *)v5 value];
   }
 
   else
   {
-    v8 = [(CNResult *)v5 error];
-    if (a3)
+    error = [(CNResult *)v5 error];
+    if (run)
     {
-      v8 = v8;
-      *a3 = v8;
+      error = error;
+      *run = error;
     }
 
-    v7 = 0;
+    value2 = 0;
   }
 
-  return v7;
+  return value2;
 }
 
 - (void)loadDefaultSourceIfNecessary
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 userInfo];
+  userInfo = [self userInfo];
   OUTLINED_FUNCTION_1_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -134,8 +134,8 @@ uint64_t __47__CNFamilyCircleConfigurationUpdateTask_os_log__block_invoke()
 
 - (void)loadDelegateAccountsFromSource
 {
-  v5 = [(CNDelegateAccountSource *)self->_accountSource delegateAccounts];
-  v3 = [v5 copy];
+  delegateAccounts = [(CNDelegateAccountSource *)self->_accountSource delegateAccounts];
+  v3 = [delegateAccounts copy];
   delegateAccounts = self->_delegateAccounts;
   self->_delegateAccounts = v3;
 }
@@ -143,9 +143,9 @@ uint64_t __47__CNFamilyCircleConfigurationUpdateTask_os_log__block_invoke()
 - (void)loadDefaultSinkIfNecessary
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 accountSource];
-  v2 = [v1 primaryAccount];
-  v9 = [v2 appleID];
+  accountSource = [self accountSource];
+  primaryAccount = [accountSource primaryAccount];
+  appleID = [primaryAccount appleID];
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0xCu);
 
@@ -155,7 +155,7 @@ uint64_t __47__CNFamilyCircleConfigurationUpdateTask_os_log__block_invoke()
 - (void)updateDelegateAccounts
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 userInfo];
+  userInfo = [self userInfo];
   OUTLINED_FUNCTION_1_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);

@@ -1,33 +1,33 @@
 @interface SUCorePersistedActivity
-- (BOOL)isEqual:(id)a3;
-- (SUCorePersistedActivity)initWithCoder:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUCorePersistedActivity)initWithCoder:(id)coder;
+- (id)init:(id)init options:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCorePersistedActivity
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = SUCorePersistedActivity;
   v9 = [(SUCorePersistedActivity *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_activityName, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_activityName, init);
+    objc_storeStrong(p_isa + 2, options);
   }
 
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -38,8 +38,8 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = MEMORY[0x277D643F8];
-      v6 = [(SUCorePersistedActivity *)v4 activityName];
-      v7 = [v5 stringIsEqual:v6 to:self->_activityName];
+      activityName = [(SUCorePersistedActivity *)equalCopy activityName];
+      v7 = [v5 stringIsEqual:activityName to:self->_activityName];
     }
 
     else
@@ -51,19 +51,19 @@
   return v7;
 }
 
-- (SUCorePersistedActivity)initWithCoder:(id)a3
+- (SUCorePersistedActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SUCorePersistedActivity;
   v5 = [(SUCorePersistedActivity *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityName"];
     activityName = v5->_activityName;
     v5->_activityName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityOptions"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityOptions"];
     activityOptions = v5->_activityOptions;
     v5->_activityOptions = v8;
   }
@@ -71,12 +71,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityName = self->_activityName;
-  v5 = a3;
-  [v5 encodeObject:activityName forKey:@"activityName"];
-  [v5 encodeObject:self->_activityOptions forKey:@"activityOptions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activityName forKey:@"activityName"];
+  [coderCopy encodeObject:self->_activityOptions forKey:@"activityOptions"];
 }
 
 @end

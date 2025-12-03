@@ -1,8 +1,8 @@
 @interface AKAlarmAuthorization
 - (AKAlarmAuthorization)init;
-- (BOOL)supportsAlarmKit:(id)a3;
-- (id)setAuthorizationState:(unint64_t)a3 forBundleID:(id)a4;
-- (unint64_t)authorizationStateForBundleID:(id)a3;
+- (BOOL)supportsAlarmKit:(id)kit;
+- (id)setAuthorizationState:(unint64_t)state forBundleID:(id)d;
+- (unint64_t)authorizationStateForBundleID:(id)d;
 @end
 
 @implementation AKAlarmAuthorization
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (id)setAuthorizationState:(unint64_t)a3 forBundleID:(id)a4
+- (id)setAuthorizationState:(unint64_t)state forBundleID:(id)d
 {
   alarmAuthorization = self->_alarmAuthorization;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithInteger:a3];
+  dCopy = d;
+  v8 = [[v6 alloc] initWithInteger:state];
   v12 = 0;
-  [(AlarmAuthorization *)alarmAuthorization setWithState:v8 bundleID:v7 error:&v12];
+  [(AlarmAuthorization *)alarmAuthorization setWithState:v8 bundleID:dCopy error:&v12];
 
   v9 = v12;
   v10 = v12;
@@ -37,17 +37,17 @@
   return v9;
 }
 
-- (unint64_t)authorizationStateForBundleID:(id)a3
+- (unint64_t)authorizationStateForBundleID:(id)d
 {
-  v3 = [(AlarmAuthorization *)self->_alarmAuthorization stateWithBundleID:a3 error:0];
-  v4 = [v3 integerValue];
+  v3 = [(AlarmAuthorization *)self->_alarmAuthorization stateWithBundleID:d error:0];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (BOOL)supportsAlarmKit:(id)a3
+- (BOOL)supportsAlarmKit:(id)kit
 {
-  v3 = [(AlarmAuthorization *)self->_alarmAuthorization supportsAlarmKitWithBundleID:a3 error:0];
+  v3 = [(AlarmAuthorization *)self->_alarmAuthorization supportsAlarmKitWithBundleID:kit error:0];
   v4 = [v3 integerValue] != 0;
 
   return v4;

@@ -1,16 +1,16 @@
 @interface UIKBBlurredKeyView
-- (UIKBBlurredKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
+- (UIKBBlurredKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
 - (void)layoutSubviews;
-- (void)setRenderConfig:(id)a3;
+- (void)setRenderConfig:(id)config;
 @end
 
 @implementation UIKBBlurredKeyView
 
-- (UIKBBlurredKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBBlurredKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
   v19.receiver = self;
   v19.super_class = UIKBBlurredKeyView;
-  v5 = [(UIKBContainerKeyView *)&v19 initWithFrame:a4 keyplane:a5 key:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIKBContainerKeyView *)&v19 initWithFrame:keyplane keyplane:key key:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [UIKBBackdropView alloc];
@@ -19,8 +19,8 @@
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(UIView *)v5 _inheritedRenderConfig];
-    v16 = -[UIKBBackdropView initWithFrame:style:](v6, "initWithFrame:style:", [v15 keyBackdropStyle], v8, v10, v12, v14);
+    _inheritedRenderConfig = [(UIView *)v5 _inheritedRenderConfig];
+    v16 = -[UIKBBackdropView initWithFrame:style:](v6, "initWithFrame:style:", [_inheritedRenderConfig keyBackdropStyle], v8, v10, v12, v14);
     backdropView = v5->_backdropView;
     v5->_backdropView = v16;
 
@@ -39,15 +39,15 @@
   [(UIView *)self->_backdropView setFrame:?];
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v4 = a3;
-  if ([v4 animatedBackground] && (-[UIKBContainerKeyView key](self, "key"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "interactionType"), v5, v6 == 14))
+  configCopy = config;
+  if ([configCopy animatedBackground] && (-[UIKBContainerKeyView key](self, "key"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "interactionType"), v5, v6 == 14))
   {
     [(UIView *)self->_backdropView removeFromSuperview];
     v25.receiver = self;
     v25.super_class = UIKBBlurredKeyView;
-    [(UIKBContainerKeyView *)&v25 setRenderConfig:v4, v22.receiver, v22.super_class];
+    [(UIKBContainerKeyView *)&v25 setRenderConfig:configCopy, v22.receiver, v22.super_class];
   }
 
   else
@@ -60,24 +60,24 @@
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(UIView *)self _inheritedRenderConfig];
-      v17 = -[UIKBBackdropView initWithFrame:style:](v7, "initWithFrame:style:", [v16 keyBackdropStyle], v9, v11, v13, v15);
+      _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+      v17 = -[UIKBBackdropView initWithFrame:style:](v7, "initWithFrame:style:", [_inheritedRenderConfig keyBackdropStyle], v9, v11, v13, v15);
       backdropView = self->_backdropView;
       self->_backdropView = v17;
 
       [(UIView *)self insertSubview:self->_backdropView atIndex:0];
     }
 
-    v19 = [(UIKBContainerKeyView *)self keyplane];
-    if (([v19 visualStyling] & 0xFF00) == 0x7F00)
+    keyplane = [(UIKBContainerKeyView *)self keyplane];
+    if (([keyplane visualStyling] & 0xFF00) == 0x7F00)
     {
       v20 = 1;
     }
 
     else
     {
-      v21 = [(UIKBContainerKeyView *)self keyplane];
-      v20 = [v21 visualStyle] == 5;
+      keyplane2 = [(UIKBContainerKeyView *)self keyplane];
+      v20 = [keyplane2 visualStyle] == 5;
     }
 
     v23[0] = MEMORY[0x1E69E9820];
@@ -87,8 +87,8 @@
     v24 = v20;
     v23[4] = self;
     [UIView performWithoutAnimation:v23];
-    [(UIKBKeyView *)self configureBackdropView:self->_backdropView forRenderConfig:v4];
-    [(UIKBContainerKeyView *)&v22 setRenderConfig:v4, self, UIKBBlurredKeyView];
+    [(UIKBKeyView *)self configureBackdropView:self->_backdropView forRenderConfig:configCopy];
+    [(UIKBContainerKeyView *)&v22 setRenderConfig:configCopy, self, UIKBBlurredKeyView];
   }
 }
 

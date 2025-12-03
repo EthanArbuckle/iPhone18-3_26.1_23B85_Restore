@@ -1,72 +1,72 @@
 @interface PKPassEntitlementCapabilitySet
 + (id)predefinedSets;
-- (PKPassEntitlementCapabilitySet)initWithIntRole:(unsigned __int16)a3;
-- (PKPassEntitlementCapabilitySet)initWithLocalizedName:(id)a3 isOwner:(BOOL)a4 shareability:(unint64_t)a5 manageability:(unint64_t)a6 visibility:(unint64_t)a7;
-- (PKPassEntitlementCapabilitySet)initWithRole:(id)a3;
-- (id)_initWithLocalizationKey:(id)a3 isOwner:(BOOL)a4 shareability:(unint64_t)a5 manageability:(unint64_t)a6 visibility:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPassEntitlementCapabilitySet)initWithIntRole:(unsigned __int16)role;
+- (PKPassEntitlementCapabilitySet)initWithLocalizedName:(id)name isOwner:(BOOL)owner shareability:(unint64_t)shareability manageability:(unint64_t)manageability visibility:(unint64_t)visibility;
+- (PKPassEntitlementCapabilitySet)initWithRole:(id)role;
+- (id)_initWithLocalizationKey:(id)key isOwner:(BOOL)owner shareability:(unint64_t)shareability manageability:(unint64_t)manageability visibility:(unint64_t)visibility;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)mutableCopy;
 @end
 
 @implementation PKPassEntitlementCapabilitySet
 
-- (PKPassEntitlementCapabilitySet)initWithLocalizedName:(id)a3 isOwner:(BOOL)a4 shareability:(unint64_t)a5 manageability:(unint64_t)a6 visibility:(unint64_t)a7
+- (PKPassEntitlementCapabilitySet)initWithLocalizedName:(id)name isOwner:(BOOL)owner shareability:(unint64_t)shareability manageability:(unint64_t)manageability visibility:(unint64_t)visibility
 {
-  v13 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = PKPassEntitlementCapabilitySet;
   v14 = [(PKPassEntitlementCapabilitySet *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_isOwner = a4;
-    objc_storeStrong(&v14->_localizedName, a3);
-    v15->_shareability = a5;
-    v15->_manageability = a6;
-    v15->_visibility = a7;
+    v14->_isOwner = owner;
+    objc_storeStrong(&v14->_localizedName, name);
+    v15->_shareability = shareability;
+    v15->_manageability = manageability;
+    v15->_visibility = visibility;
   }
 
   return v15;
 }
 
-- (PKPassEntitlementCapabilitySet)initWithRole:(id)a3
+- (PKPassEntitlementCapabilitySet)initWithRole:(id)role
 {
-  v4 = a3;
-  if ([v4 length] == 4)
+  roleCopy = role;
+  if ([roleCopy length] == 4)
   {
     v8 = 0;
-    v5 = [v4 pk_decodeHexadecimal];
-    [v5 getBytes:&v8 length:2];
+    pk_decodeHexadecimal = [roleCopy pk_decodeHexadecimal];
+    [pk_decodeHexadecimal getBytes:&v8 length:2];
 
     v8 = bswap32(v8) >> 16;
     self = [(PKPassEntitlementCapabilitySet *)self initWithIntRole:?];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PKPassEntitlementCapabilitySet)initWithIntRole:(unsigned __int16)a3
+- (PKPassEntitlementCapabilitySet)initWithIntRole:(unsigned __int16)role
 {
-  v3 = a3;
+  roleCopy = role;
   v4 = 3;
   v5 = 2;
-  if ((a3 & 2) == 0)
+  if ((role & 2) == 0)
   {
-    v5 = a3 & 1;
+    v5 = role & 1;
   }
 
-  if ((~a3 & 3) != 0)
+  if ((~role & 3) != 0)
   {
     v4 = v5;
   }
 
-  if ((~a3 & 7) != 0)
+  if ((~role & 7) != 0)
   {
     v6 = v4;
   }
@@ -76,7 +76,7 @@
     v6 = 999;
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((role & 0x80) != 0)
   {
     v7 = 2;
   }
@@ -86,7 +86,7 @@
     v7 = 1;
   }
 
-  if ((~a3 & 0x90) != 0)
+  if ((~role & 0x90) != 0)
   {
     v8 = v7;
   }
@@ -96,7 +96,7 @@
     v8 = -1;
   }
 
-  if ((a3 & 0x800) != 0)
+  if ((role & 0x800) != 0)
   {
     v9 = 2;
   }
@@ -106,7 +106,7 @@
     v9 = 1;
   }
 
-  v10 = [(PKPassEntitlementCapabilitySet *)self initWithLocalizedName:&stru_1F227FD28 isOwner:a3 >> 15 shareability:v6 manageability:v8 visibility:v9];
+  v10 = [(PKPassEntitlementCapabilitySet *)self initWithLocalizedName:&stru_1F227FD28 isOwner:role >> 15 shareability:v6 manageability:v8 visibility:v9];
   v11 = v10;
   if (v10)
   {
@@ -156,8 +156,8 @@
       v16 = v14;
     }
 
-    v10->_intraAccountSharingEnabled = (v16 | v3) == 0xFFFF;
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
+    v10->_intraAccountSharingEnabled = (v16 | roleCopy) == 0xFFFF;
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:roleCopy];
     capabilityRoleValue = v11->_capabilityRoleValue;
     v11->_capabilityRoleValue = v17;
   }
@@ -165,11 +165,11 @@
   return v11;
 }
 
-- (id)_initWithLocalizationKey:(id)a3 isOwner:(BOOL)a4 shareability:(unint64_t)a5 manageability:(unint64_t)a6 visibility:(unint64_t)a7
+- (id)_initWithLocalizationKey:(id)key isOwner:(BOOL)owner shareability:(unint64_t)shareability manageability:(unint64_t)manageability visibility:(unint64_t)visibility
 {
-  v10 = a4;
-  v12 = PKLocalizedShareableCredentialString(a3, 0);
-  v13 = [(PKPassEntitlementCapabilitySet *)self initWithLocalizedName:v12 isOwner:v10 shareability:a5 manageability:a6 visibility:a7];
+  ownerCopy = owner;
+  v12 = PKLocalizedShareableCredentialString(key, 0);
+  v13 = [(PKPassEntitlementCapabilitySet *)self initWithLocalizedName:v12 isOwner:ownerCopy shareability:shareability manageability:manageability visibility:visibility];
 
   return v13;
 }
@@ -225,7 +225,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PKPassEntitlementCapabilitySet alloc];
   v4->_isOwner = self->_isOwner;

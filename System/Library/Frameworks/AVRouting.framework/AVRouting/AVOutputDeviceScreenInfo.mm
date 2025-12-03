@@ -1,5 +1,5 @@
 @interface AVOutputDeviceScreenInfo
-- (AVOutputDeviceScreenInfo)initWithDict:(id)a3;
+- (AVOutputDeviceScreenInfo)initWithDict:(id)dict;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   [(AVOutputDeviceScreenInfo *)&v3 dealloc];
 }
 
-- (AVOutputDeviceScreenInfo)initWithDict:(id)a3
+- (AVOutputDeviceScreenInfo)initWithDict:(id)dict
 {
   v42 = *MEMORY[0x1E69E9840];
   v36.receiver = self;
@@ -20,14 +20,14 @@
   v4 = [(AVOutputDeviceScreenInfo *)&v36 init];
   if (v4)
   {
-    v4->_ID = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962400]), "copy"}];
-    v4->_inputCapabilities = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962410]), "copy"}];
-    v4->_limitedUI = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962418]), "BOOLValue"}];
-    v4->_limitedUIElements = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962428]), "copy"}];
-    v4->_nightMode = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962420]), "BOOLValue"}];
-    v4->_maxFPS = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962430]), "copy"}];
+    v4->_ID = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962400]), "copy"}];
+    v4->_inputCapabilities = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962410]), "copy"}];
+    v4->_limitedUI = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962418]), "BOOLValue"}];
+    v4->_limitedUIElements = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962428]), "copy"}];
+    v4->_nightMode = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962420]), "BOOLValue"}];
+    v4->_maxFPS = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962430]), "copy"}];
     v5 = MEMORY[0x1E696B098];
-    v6 = [a3 objectForKey:*MEMORY[0x1E6962438]];
+    v6 = [dict objectForKey:*MEMORY[0x1E6962438]];
     size.width = 0.0;
     size.height = 0.0;
     v7 = CGSizeMakeWithDictionaryRepresentation(v6, &size);
@@ -39,7 +39,7 @@
 
     v4->_physicalSize = [v5 valueWithSize:{size.width, size.height}];
     v9 = MEMORY[0x1E696B098];
-    v10 = [a3 objectForKey:*MEMORY[0x1E6962440]];
+    v10 = [dict objectForKey:*MEMORY[0x1E6962440]];
     size.width = 0.0;
     size.height = 0.0;
     if (!CGSizeMakeWithDictionaryRepresentation(v10, &size))
@@ -49,7 +49,7 @@
 
     v4->_pixelSize = [v9 valueWithSize:{size.width, size.height}];
     v11 = MEMORY[0x1E696B098];
-    v12 = [a3 objectForKey:*MEMORY[0x1E6962450]];
+    v12 = [dict objectForKey:*MEMORY[0x1E6962450]];
     size.width = 0.0;
     size.height = 0.0;
     if (!CGSizeMakeWithDictionaryRepresentation(v12, &size))
@@ -58,12 +58,12 @@
     }
 
     v4->_squarePixelSize = [v11 valueWithSize:{size.width, size.height}];
-    v4->_viewHeightScaleFactor = [a3 objectForKey:*MEMORY[0x1E6962460]];
-    v4->_primaryInputDevice = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6962448]), "copy"}];
+    v4->_viewHeightScaleFactor = [dict objectForKey:*MEMORY[0x1E6962460]];
+    v4->_primaryInputDevice = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E6962448]), "copy"}];
     v29 = v4;
-    v4->_cornerMasks = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E69623F8]), "BOOLValue"}];
-    v28 = a3;
-    v13 = [a3 objectForKey:*MEMORY[0x1E6962458]];
+    v4->_cornerMasks = [objc_msgSend(dict objectForKey:{*MEMORY[0x1E69623F8]), "BOOLValue"}];
+    dictCopy = dict;
+    v13 = [dict objectForKey:*MEMORY[0x1E6962458]];
     v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
     v37 = 0u;
     v38 = 0u;
@@ -106,8 +106,8 @@
 
     v4 = v29;
     v29->_viewAreas = v35;
-    v29->_applicationURL = [v28 objectForKey:*MEMORY[0x1E69623F0]];
-    v29->_initialApplicationURL = [v28 objectForKey:*MEMORY[0x1E6962408]];
+    v29->_applicationURL = [dictCopy objectForKey:*MEMORY[0x1E69623F0]];
+    v29->_initialApplicationURL = [dictCopy objectForKey:*MEMORY[0x1E6962408]];
     v25 = v29;
   }
 

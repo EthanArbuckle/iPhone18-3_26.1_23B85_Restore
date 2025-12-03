@@ -1,20 +1,20 @@
 @interface VNAnimalObservation
-- (BOOL)isEqual:(id)a3;
-- (VNAnimalObservation)initWithAnimalprint:(id)a3 confidence:(float)a4;
-- (VNAnimalObservation)initWithCoder:(id)a3;
-- (VNAnimalObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 confidence:(float)a5 labels:(id)a6 groupId:(id)a7 animalprint:(id)a8;
-- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNAnimalObservation)initWithAnimalprint:(id)animalprint confidence:(float)confidence;
+- (VNAnimalObservation)initWithCoder:(id)coder;
+- (VNAnimalObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box confidence:(float)confidence labels:(id)labels groupId:(id)id animalprint:(id)animalprint;
+- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)specifier error:(id *)error;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNAnimalObservation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -23,11 +23,11 @@
   {
     v10.receiver = self;
     v10.super_class = VNAnimalObservation;
-    if ([(VNRecognizedObjectObservation *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNRecognizedObjectObservation *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNAnimalObservation *)self animalprint];
-      v7 = [(VNAnimalObservation *)v5 animalprint];
+      v5 = equalCopy;
+      animalprint = [(VNAnimalObservation *)self animalprint];
+      animalprint2 = [(VNAnimalObservation *)v5 animalprint];
       v8 = VisionCoreEqualOrNilObjects();
     }
 
@@ -45,8 +45,8 @@
   v7.receiver = self;
   v7.super_class = VNAnimalObservation;
   v3 = [(VNRecognizedObjectObservation *)&v7 hash];
-  v4 = [(VNAnimalObservation *)self animalprint];
-  v5 = [v4 hash] ^ __ROR8__(v3, 51);
+  animalprint = [(VNAnimalObservation *)self animalprint];
+  v5 = [animalprint hash] ^ __ROR8__(v3, 51);
 
   return v5;
 }
@@ -55,39 +55,39 @@
 {
   v7.receiver = self;
   v7.super_class = VNAnimalObservation;
-  v3 = [(VNRecognizedObjectObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNRecognizedObjectObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(VNAnimalprint *)self->_animalprint copy];
-    v5 = v3[22];
-    v3[22] = v4;
+    v5 = vn_cloneObject[22];
+    vn_cloneObject[22] = v4;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNAnimalObservation;
-  [(VNRecognizedObjectObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNAnimalObservation"];
-  [v4 encodeObject:self->_animalprint forKey:@"anmlPrnt"];
+  [(VNRecognizedObjectObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNAnimalObservation"];
+  [coderCopy encodeObject:self->_animalprint forKey:@"anmlPrnt"];
 }
 
-- (VNAnimalObservation)initWithCoder:(id)a3
+- (VNAnimalObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = VNAnimalObservation;
-  v5 = [(VNRecognizedObjectObservation *)&v13 initWithCoder:v4];
+  v5 = [(VNRecognizedObjectObservation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 vn_decodeCodingVersionForKey:@"VNAnimalObservation"];
+    v6 = [coderCopy vn_decodeCodingVersionForKey:@"VNAnimalObservation"];
     if (!v6)
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anmlPrnt"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anmlPrnt"];
       animalprint = v5->_animalprint;
       v5->_animalprint = v10;
 
@@ -97,7 +97,7 @@
 
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive %@ object due to coding version mismatch: Currently supported: %u; encoded: %u", objc_opt_class(), 0, v6];
     v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
   }
 
   v9 = 0;
@@ -106,23 +106,23 @@ LABEL_6:
   return v9;
 }
 
-- (VNAnimalObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 confidence:(float)a5 labels:(id)a6 groupId:(id)a7 animalprint:(id)a8
+- (VNAnimalObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box confidence:(float)confidence labels:(id)labels groupId:(id)id animalprint:(id)animalprint
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  specifierCopy = specifier;
+  labelsCopy = labels;
+  idCopy = id;
+  animalprintCopy = animalprint;
   v27.receiver = self;
   v27.super_class = VNAnimalObservation;
-  *&v21 = a5;
-  v22 = [(VNRecognizedObjectObservation *)&v27 initWithOriginatingRequestSpecifier:v17 boundingBox:v18 confidence:0 labels:v19 segmentationMask:x groupId:y, width, height, v21];
+  *&v21 = confidence;
+  v22 = [(VNRecognizedObjectObservation *)&v27 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:labelsCopy confidence:0 labels:idCopy segmentationMask:x groupId:y, width, height, v21];
   if (v22)
   {
-    v23 = [v20 copy];
+    v23 = [animalprintCopy copy];
     animalprint = v22->_animalprint;
     v22->_animalprint = v23;
 
@@ -132,21 +132,21 @@ LABEL_6:
   return v22;
 }
 
-- (VNAnimalObservation)initWithAnimalprint:(id)a3 confidence:(float)a4
+- (VNAnimalObservation)initWithAnimalprint:(id)animalprint confidence:(float)confidence
 {
-  v6 = a3;
-  v7 = [v6 originatingRequestSpecifier];
-  *&v8 = a4;
-  v9 = [(VNAnimalObservation *)self initWithOriginatingRequestSpecifier:v7 boundingBox:MEMORY[0x1E695E0F0] confidence:0 labels:v6 groupId:0.0 animalprint:0.0, 1.0, 1.0, v8];
+  animalprintCopy = animalprint;
+  originatingRequestSpecifier = [animalprintCopy originatingRequestSpecifier];
+  *&v8 = confidence;
+  v9 = [(VNAnimalObservation *)self initWithOriginatingRequestSpecifier:originatingRequestSpecifier boundingBox:MEMORY[0x1E695E0F0] confidence:0 labels:animalprintCopy groupId:0.0 animalprint:0.0, 1.0, 1.0, v8];
 
   return v9;
 }
 
-- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)a3 error:(id *)a4
+- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNAnimalObservation *)self animalprint];
-  v8 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"animalprint", v7, v6, a4);
+  specifierCopy = specifier;
+  animalprint = [(VNAnimalObservation *)self animalprint];
+  v8 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"animalprint", animalprint, specifierCopy, error);
 
   return v8;
 }

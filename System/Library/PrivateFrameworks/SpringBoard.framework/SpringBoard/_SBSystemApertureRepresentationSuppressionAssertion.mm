@@ -1,6 +1,6 @@
 @interface _SBSystemApertureRepresentationSuppressionAssertion
 - (NSString)description;
-- (_SBSystemApertureRepresentationSuppressionAssertion)initWithReason:(unint64_t)a3 invalidationBlock:(id)a4;
+- (_SBSystemApertureRepresentationSuppressionAssertion)initWithReason:(unint64_t)reason invalidationBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -22,14 +22,14 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (_SBSystemApertureRepresentationSuppressionAssertion)initWithReason:(unint64_t)a3 invalidationBlock:(id)a4
+- (_SBSystemApertureRepresentationSuppressionAssertion)initWithReason:(unint64_t)reason invalidationBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = _SBSystemApertureRepresentationSuppressionAssertion;
   v7 = [(_SBSystemApertureRepresentationSuppressionAssertion *)&v12 init];
@@ -37,8 +37,8 @@
   if (v7)
   {
     [(_SBSystemApertureRepresentationSuppressionAssertion *)v7 _setValid:1];
-    v8->_reason = a3;
-    v9 = [v6 copy];
+    v8->_reason = reason;
+    v9 = [blockCopy copy];
     invalidationBlock = v8->_invalidationBlock;
     v8->_invalidationBlock = v9;
   }

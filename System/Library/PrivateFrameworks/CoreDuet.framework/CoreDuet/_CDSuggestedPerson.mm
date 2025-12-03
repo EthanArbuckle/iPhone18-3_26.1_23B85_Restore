@@ -7,11 +7,11 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@:%p {\n", objc_opt_class(), self];
-  v4 = [(_CDSuggestedPerson *)self contact];
-  [v3 appendFormat:@"              contact: %@\n", v4];
+  contact = [(_CDSuggestedPerson *)self contact];
+  [v3 appendFormat:@"              contact: %@\n", contact];
 
-  v5 = [(_CDSuggestedPerson *)self interactionBundleID];
-  [v3 appendFormat:@"  interactionBundleID: %@\n", v5];
+  interactionBundleID = [(_CDSuggestedPerson *)self interactionBundleID];
+  [v3 appendFormat:@"  interactionBundleID: %@\n", interactionBundleID];
 
   v6 = MEMORY[0x1E696AD98];
   [(_CDSuggestedPerson *)self rank];

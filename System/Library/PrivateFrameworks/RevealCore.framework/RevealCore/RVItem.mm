@@ -3,25 +3,25 @@
 - (NSString)textSearchContext;
 - (NSString)trailingText;
 - (NSURL)normalizedURL;
-- (RVItem)initWithClientIdentifier:(id)a3 rangeInContext:(_NSRange)a4;
-- (RVItem)initWithCoder:(id)a3;
-- (RVItem)initWithContactProperty:(int64_t)a3 value:(id)a4 rangeInContext:(_NSRange)a5;
-- (RVItem)initWithDDResult:(id)a3;
-- (RVItem)initWithDDResult:(id)a3 text:(id)a4 range:(_NSRange)a5;
-- (RVItem)initWithSearchQuery:(id)a3 rangeInContext:(_NSRange)a4;
-- (RVItem)initWithText:(id)a3 clickedIndex:(unint64_t)a4 selectionRanges:(id)a5 shouldUpdateSelection:(BOOL *)a6;
-- (RVItem)initWithText:(id)a3 selectedRange:(_NSRange)a4;
-- (RVItem)initWithText:(id)a3 selectedRange:(_NSRange)a4 customURLParser:(id)a5;
-- (RVItem)initWithURL:(id)a3 rangeInContext:(_NSRange)a4;
+- (RVItem)initWithClientIdentifier:(id)identifier rangeInContext:(_NSRange)context;
+- (RVItem)initWithCoder:(id)coder;
+- (RVItem)initWithContactProperty:(int64_t)property value:(id)value rangeInContext:(_NSRange)context;
+- (RVItem)initWithDDResult:(id)result;
+- (RVItem)initWithDDResult:(id)result text:(id)text range:(_NSRange)range;
+- (RVItem)initWithSearchQuery:(id)query rangeInContext:(_NSRange)context;
+- (RVItem)initWithText:(id)text clickedIndex:(unint64_t)index selectionRanges:(id)ranges shouldUpdateSelection:(BOOL *)selection;
+- (RVItem)initWithText:(id)text selectedRange:(_NSRange)range;
+- (RVItem)initWithText:(id)text selectedRange:(_NSRange)range customURLParser:(id)parser;
+- (RVItem)initWithURL:(id)l rangeInContext:(_NSRange)context;
 - (_NSRange)highlightRange;
-- (id)constrainContextSubstring:(uint64_t)a3 range:(unint64_t)a4 leading:(unsigned __int8)a5;
-- (id)getClientHintKey:(id)a3 ofType:(Class)a4;
+- (id)constrainContextSubstring:(uint64_t)substring range:(unint64_t)range leading:(unsigned __int8)leading;
+- (id)getClientHintKey:(id)key ofType:(Class)type;
 - (uint64_t)textContentRange;
-- (void)commonInitWithText:(unint64_t)a3 selectedRange:(uint64_t)a4 customURLParser:(void *)a5 lookup:;
-- (void)encodeWithCoder:(id)a3;
-- (void)normalizeWithParser:(uint64_t)a1 lookupOnly:(void *)a2;
-- (void)setLeadingText:(id)a3;
-- (void)setTrailingText:(id)a3;
+- (void)commonInitWithText:(unint64_t)text selectedRange:(uint64_t)range customURLParser:(void *)parser lookup:;
+- (void)encodeWithCoder:(id)coder;
+- (void)normalizeWithParser:(uint64_t)parser lookupOnly:(void *)only;
+- (void)setLeadingText:(id)text;
+- (void)setTrailingText:(id)text;
 @end
 
 @implementation RVItem
@@ -42,8 +42,8 @@
   {
     if (self->_text && self->_type == 2)
     {
-      v4 = [(RVItem *)self textContentRange];
-      v6 = [(RVItem *)self constrainContextSubstring:v4 + v5 range:[(NSString *)self->_text length]- (v4 + v5) leading:0];
+      textContentRange = [(RVItem *)self textContentRange];
+      v6 = [(RVItem *)self constrainContextSubstring:textContentRange + v5 range:[(NSString *)self->_text length]- (textContentRange + v5) leading:0];
       v7 = self->_trailingText;
       self->_trailingText = v6;
 
@@ -67,8 +67,8 @@
     v2 = *(result + 32);
     if (v2 && *(v1 + 8) == 2 && *(v1 + 16) == 3)
     {
-      v3 = [v2 urlificationRange];
-      v4 = v3 - [*(v1 + 32) range];
+      urlificationRange = [v2 urlificationRange];
+      v4 = urlificationRange - [*(v1 + 32) range];
       result = *(v1 + 64) - v4;
       v5 = *(v1 + 72) + v4;
     }
@@ -83,22 +83,22 @@
   return result;
 }
 
-- (id)constrainContextSubstring:(uint64_t)a3 range:(unint64_t)a4 leading:(unsigned __int8)a5
+- (id)constrainContextSubstring:(uint64_t)substring range:(unint64_t)range leading:(unsigned __int8)leading
 {
   v9 = a2;
   v10 = 0;
-  if (a1 && a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (self && substring != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = +[RVSelection maxContextLength];
-    v12 = a4 - v11;
-    if (((a4 > v11) & a5) == 0)
+    v12 = range - v11;
+    if (((range > v11) & leading) == 0)
     {
       v12 = 0;
     }
 
-    v13 = v12 + a3;
+    v13 = v12 + substring;
     v14 = [v9 length];
-    if (v14 > v13 && (a4 >= v11 ? (v15 = v11) : (v15 = a4), v13 + v15 <= v14 ? (v16 = v15) : (v16 = v14 - v13), v16))
+    if (v14 > v13 && (range >= v11 ? (v15 = v11) : (v15 = range), v13 + v15 <= v14 ? (v16 = v15) : (v16 = v14 - v13), v16))
     {
       if (v13)
       {
@@ -132,13 +132,13 @@
   return v10;
 }
 
-- (void)setTrailingText:(id)a3
+- (void)setTrailingText:(id)text
 {
-  v6 = a3;
-  v4 = [v6 length];
+  textCopy = text;
+  v4 = [textCopy length];
   if (v4)
   {
-    v4 = [(RVItem *)self constrainContextSubstring:v6 range:0 leading:v4, 1u];
+    v4 = [(RVItem *)self constrainContextSubstring:textCopy range:0 leading:v4, 1u];
   }
 
   trailingText = self->_trailingText;
@@ -152,8 +152,8 @@
   {
     if (self->_text && self->_type == 2)
     {
-      v4 = [(RVItem *)self textContentRange];
-      v5 = [(RVItem *)self constrainContextSubstring:0 range:v4 leading:1u];
+      textContentRange = [(RVItem *)self textContentRange];
+      v5 = [(RVItem *)self constrainContextSubstring:0 range:textContentRange leading:1u];
       v6 = self->_leadingText;
       self->_leadingText = v5;
 
@@ -169,29 +169,29 @@
   return leadingText;
 }
 
-- (void)setLeadingText:(id)a3
+- (void)setLeadingText:(id)text
 {
-  v6 = a3;
-  v4 = [v6 length];
+  textCopy = text;
+  v4 = [textCopy length];
   if (v4)
   {
-    v4 = [(RVItem *)self constrainContextSubstring:v6 range:0 leading:v4, 1u];
+    v4 = [(RVItem *)self constrainContextSubstring:textCopy range:0 leading:v4, 1u];
   }
 
   leadingText = self->_leadingText;
   self->_leadingText = v4;
 }
 
-- (id)getClientHintKey:(id)a3 ofType:(Class)a4
+- (id)getClientHintKey:(id)key ofType:(Class)type
 {
-  v5 = a3;
-  v6 = [(RVItem *)self clientHints];
-  if (v6)
+  keyCopy = key;
+  clientHints = [(RVItem *)self clientHints];
+  if (clientHints)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 objectForKeyedSubscript:v5];
+      v7 = [clientHints objectForKeyedSubscript:keyCopy];
       if (objc_opt_isKindOfClass())
       {
         goto LABEL_6;
@@ -217,34 +217,34 @@ LABEL_6:
   return url;
 }
 
-- (void)normalizeWithParser:(uint64_t)a1 lookupOnly:(void *)a2
+- (void)normalizeWithParser:(uint64_t)parser lookupOnly:(void *)only
 {
   v68 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  if ((*(a1 + 96) & 1) == 0)
+  onlyCopy = only;
+  if ((*(parser + 96) & 1) == 0)
   {
-    *(a1 + 16) = *(a1 + 8);
-    v4 = [a1 text];
-    v5 = v4;
-    v6 = *(a1 + 16);
+    *(parser + 16) = *(parser + 8);
+    text = [parser text];
+    v5 = text;
+    v6 = *(parser + 16);
     if (v6 != 2)
     {
       goto LABEL_67;
     }
 
-    v7 = (a1 + 64);
-    if (*(a1 + 64) == 0x7FFFFFFFFFFFFFFFLL || ![v4 length])
+    v7 = (parser + 64);
+    if (*(parser + 64) == 0x7FFFFFFFFFFFFFFFLL || ![text length])
     {
       goto LABEL_66;
     }
 
-    v8 = *(a1 + 64);
-    v9 = *(a1 + 72);
-    v10 = [RVSelection searchRangeForString:*(a1 + 48) aroundLocation:v8];
+    v8 = *(parser + 64);
+    v9 = *(parser + 72);
+    v10 = [RVSelection searchRangeForString:*(parser + 48) aroundLocation:v8];
     if (v11 < 2)
     {
 LABEL_52:
-      if (!v3)
+      if (!onlyCopy)
       {
         goto LABEL_66;
       }
@@ -254,11 +254,11 @@ LABEL_52:
 LABEL_56:
         *&v60 = v8;
         *(&v60 + 1) = v9;
-        v43 = v3[2](v3, &v60);
+        v43 = onlyCopy[2](onlyCopy, &v60);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v44 = *(a1 + 72);
+          v44 = *(parser + 72);
           if (v44)
           {
             if (__PAIR128__(v44, *v7) != v60)
@@ -288,26 +288,26 @@ LABEL_65:
 
         if (v43)
         {
-          v46 = *(a1 + 24);
-          *(a1 + 24) = v43;
+          v46 = *(parser + 24);
+          *(parser + 24) = v43;
           v47 = v43;
 
-          *(a1 + 16) = 1;
+          *(parser + 16) = 1;
           goto LABEL_65;
         }
 
 LABEL_66:
-        v6 = *(a1 + 16);
+        v6 = *(parser + 16);
         goto LABEL_67;
       }
 
-      v6 = *(a1 + 16);
+      v6 = *(parser + 16);
       if (v6 == 2)
       {
-        if (v9 != *(a1 + 72))
+        if (v9 != *(parser + 72))
         {
 LABEL_74:
-          *(a1 + 96) = 1;
+          *(parser + 96) = 1;
 
           goto LABEL_75;
         }
@@ -318,7 +318,7 @@ LABEL_74:
 LABEL_67:
       if (v6 == 3)
       {
-        [*(a1 + 32) coreResult];
+        [*(parser + 32) coreResult];
         if (DDResultGetCategory() == 1)
         {
           v48 = DDResultCopyExtractedURL();
@@ -327,8 +327,8 @@ LABEL_67:
             v49 = [MEMORY[0x277CBEBC0] URLWithString:v48];
             if (v49)
             {
-              objc_storeStrong((a1 + 24), v49);
-              *(a1 + 16) = 1;
+              objc_storeStrong((parser + 24), v49);
+              *(parser + 16) = 1;
             }
           }
         }
@@ -342,26 +342,26 @@ LABEL_67:
     v51 = v11;
     v12 = [v5 substringWithRange:{v10, v11}];
     v13 = [MEMORY[0x277CBEBC0] URLWithString:v12];
-    v14 = [v13 scheme];
+    scheme = [v13 scheme];
     v57 = v12;
     obj = v13;
-    if ([v14 length])
+    if ([scheme length])
     {
-      v15 = [v13 absoluteString];
-      if ([v15 length])
+      absoluteString = [v13 absoluteString];
+      if ([absoluteString length])
       {
-        v16 = [v13 scheme];
-        v17 = [v16 lowercaseString];
-        v18 = [&unk_2874ECC80 containsObject:v17];
+        scheme2 = [v13 scheme];
+        lowercaseString = [scheme2 lowercaseString];
+        v18 = [&unk_2874ECC80 containsObject:lowercaseString];
 
         v12 = v57;
         if (v18)
         {
           v19 = obj;
-          objc_storeStrong((a1 + 24), obj);
-          *(a1 + 16) = 1;
-          *(a1 + 64) = v59;
-          *(a1 + 72) = v51;
+          objc_storeStrong((parser + 24), obj);
+          *(parser + 16) = 1;
+          *(parser + 64) = v59;
+          *(parser + 72) = v51;
 LABEL_51:
 
           v9 = v56;
@@ -415,7 +415,7 @@ LABEL_12:
                   v30.location = DDResultGetRangeForURLification();
                   length = v30.length;
                   v32 = v30.location + v59;
-                  v33.length = *(a1 + 72);
+                  v33.length = *(parser + 72);
                   if (v33.length)
                   {
                     if (v30.length >= 2 && floor(v30.length * 0.66) <= v33.length)
@@ -436,16 +436,16 @@ LABEL_12:
                         v34 = 4;
                       }
 
-                      v33.location = *(a1 + 64);
+                      v33.location = *(parser + 64);
                       v30.length += v34;
                       v35 = NSIntersectionRange(v30, v33);
-                      if (v35.location == *(a1 + 64) && v35.length == *(a1 + 72))
+                      if (v35.location == *(parser + 64) && v35.length == *(parser + 72))
                       {
 LABEL_46:
-                        *(a1 + 64) = v32;
-                        *(a1 + 72) = length;
-                        objc_storeStrong((a1 + 32), v26);
-                        *(a1 + 16) = 3;
+                        *(parser + 64) = v32;
+                        *(parser + 72) = length;
+                        objc_storeStrong((parser + 32), v26);
+                        *(parser + 16) = 3;
                         goto LABEL_47;
                       }
                     }
@@ -472,7 +472,7 @@ LABEL_46:
 LABEL_47:
 
         v12 = v57;
-        if (*(a1 + 16) == 2 && !*(a1 + 72))
+        if (*(parser + 16) == 2 && !*(parser + 72))
         {
           v66 = *MEMORY[0x277CD8978];
           v39 = v66;
@@ -486,12 +486,12 @@ LABEL_47:
           v61[3] = &unk_279B2F9F8;
           v61[6] = v51;
           v61[7] = v58;
-          v61[4] = a1;
+          v61[4] = parser;
           v61[5] = v59;
           [v41 enumerateTagsInRange:0 unit:v42 scheme:0 options:v39 usingBlock:{46, v61}];
         }
 
-        v7 = (a1 + 64);
+        v7 = (parser + 64);
         v5 = v54;
         v8 = v53;
         v19 = obj;
@@ -557,81 +557,81 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeInteger:self->_type forKey:@"type"];
-  [v13 encodeInteger:self->_normalizedType forKey:@"normalizedType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_normalizedType forKey:@"normalizedType"];
   url = self->_url;
   if (url)
   {
-    [v13 encodeObject:url forKey:@"url"];
+    [coderCopy encodeObject:url forKey:@"url"];
   }
 
   ddResult = self->_ddResult;
   if (ddResult)
   {
-    [v13 encodeObject:ddResult forKey:@"ddResult"];
+    [coderCopy encodeObject:ddResult forKey:@"ddResult"];
   }
 
   text = self->_text;
-  v7 = v13;
+  v7 = coderCopy;
   if (text)
   {
-    [v13 encodeObject:text forKey:@"text"];
+    [coderCopy encodeObject:text forKey:@"text"];
     v8 = NSStringFromRange(self->_highlightRange);
-    [v13 encodeObject:v8 forKey:@"highlightRange"];
+    [coderCopy encodeObject:v8 forKey:@"highlightRange"];
 
-    v7 = v13;
+    v7 = coderCopy;
   }
 
   if (self->_contactPropertyValue)
   {
-    [v13 encodeInteger:self->_contactPropertyType forKey:@"contactPropertyType"];
-    [v13 encodeObject:self->_contactPropertyValue forKey:@"contactPropertyValue"];
-    v7 = v13;
+    [coderCopy encodeInteger:self->_contactPropertyType forKey:@"contactPropertyType"];
+    [coderCopy encodeObject:self->_contactPropertyValue forKey:@"contactPropertyValue"];
+    v7 = coderCopy;
   }
 
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v13 encodeObject:clientIdentifier forKey:@"clientIdentifier"];
-    v7 = v13;
+    [coderCopy encodeObject:clientIdentifier forKey:@"clientIdentifier"];
+    v7 = coderCopy;
   }
 
   leadingText = self->_leadingText;
   if (leadingText)
   {
-    [v13 encodeObject:leadingText forKey:@"leadingText"];
-    v7 = v13;
+    [coderCopy encodeObject:leadingText forKey:@"leadingText"];
+    v7 = coderCopy;
   }
 
   trailingText = self->_trailingText;
   if (trailingText)
   {
-    [v13 encodeObject:trailingText forKey:@"trailingText"];
-    v7 = v13;
+    [coderCopy encodeObject:trailingText forKey:@"trailingText"];
+    v7 = coderCopy;
   }
 
   originalSelectedText = self->_originalSelectedText;
   if (originalSelectedText)
   {
-    [v13 encodeObject:originalSelectedText forKey:@"originalSelectedText"];
-    v7 = v13;
+    [coderCopy encodeObject:originalSelectedText forKey:@"originalSelectedText"];
+    v7 = coderCopy;
   }
 }
 
-- (RVItem)initWithCoder:(id)a3
+- (RVItem)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = RVItem;
   v5 = [(RVItem *)&v31 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_normalizedType = [v4 decodeIntegerForKey:@"normalizedType"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_normalizedType = [coderCopy decodeIntegerForKey:@"normalizedType"];
     v6 = NSClassFromString(&cfstr_Wksecurecoding.isa);
     if (v6)
     {
@@ -640,51 +640,51 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
       v32[1] = objc_opt_class();
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
       v9 = [v7 setWithArray:v8];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"url"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"url"];
       url = v5->_url;
       v5->_url = v10;
     }
 
     else
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
       v8 = v5->_url;
       v5->_url = v12;
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ddResult"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ddResult"];
     ddResult = v5->_ddResult;
     v5->_ddResult = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"highlightRange"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"highlightRange"];
     v18 = v17;
     if (v17)
     {
       v5->_highlightRange = NSRangeFromString(v17);
     }
 
-    v5->_contactPropertyType = [v4 decodeIntegerForKey:@"contactPropertyType"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactPropertyValue"];
+    v5->_contactPropertyType = [coderCopy decodeIntegerForKey:@"contactPropertyType"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactPropertyValue"];
     contactPropertyValue = v5->_contactPropertyValue;
     v5->_contactPropertyValue = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leadingText"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leadingText"];
     leadingText = v5->_leadingText;
     v5->_leadingText = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingText"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingText"];
     trailingText = v5->_trailingText;
     v5->_trailingText = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalSelectedText"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalSelectedText"];
     originalSelectedText = v5->_originalSelectedText;
     v5->_originalSelectedText = v27;
   }
@@ -693,11 +693,11 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v5;
 }
 
-- (RVItem)initWithContactProperty:(int64_t)a3 value:(id)a4 rangeInContext:(_NSRange)a5
+- (RVItem)initWithContactProperty:(int64_t)property value:(id)value rangeInContext:(_NSRange)context
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a4;
+  length = context.length;
+  location = context.location;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = RVItem;
   v11 = [(RVItem *)&v14 init];
@@ -705,8 +705,8 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   if (v11)
   {
     v11->_type = 4;
-    v11->_contactPropertyType = a3;
-    objc_storeStrong(&v11->_contactPropertyValue, a4);
+    v11->_contactPropertyType = property;
+    objc_storeStrong(&v11->_contactPropertyValue, value);
     v12->_highlightRange.location = location;
     v12->_highlightRange.length = length;
     v12->_selectionType = 0;
@@ -716,11 +716,11 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v12;
 }
 
-- (RVItem)initWithClientIdentifier:(id)a3 rangeInContext:(_NSRange)a4
+- (RVItem)initWithClientIdentifier:(id)identifier rangeInContext:(_NSRange)context
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = context.length;
+  location = context.location;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = RVItem;
   v9 = [(RVItem *)&v12 init];
@@ -730,7 +730,7 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
     v9->_type = 5;
     v9->_highlightRange.location = location;
     v9->_highlightRange.length = length;
-    objc_storeStrong(&v9->_clientIdentifier, a3);
+    objc_storeStrong(&v9->_clientIdentifier, identifier);
     v10->_selectionType = 0;
     [RVItem normalizeWithParser:v10 lookupOnly:0];
   }
@@ -738,54 +738,54 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v10;
 }
 
-- (RVItem)initWithText:(id)a3 selectedRange:(_NSRange)a4 customURLParser:(id)a5
+- (RVItem)initWithText:(id)text selectedRange:(_NSRange)range customURLParser:(id)parser
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  parserCopy = parser;
   v14.receiver = self;
   v14.super_class = RVItem;
   v11 = [(RVItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(RVItem *)v11 commonInitWithText:v9 selectedRange:location customURLParser:length lookup:v10];
+    [(RVItem *)v11 commonInitWithText:textCopy selectedRange:location customURLParser:length lookup:parserCopy];
   }
 
   return v12;
 }
 
-- (void)commonInitWithText:(unint64_t)a3 selectedRange:(uint64_t)a4 customURLParser:(void *)a5 lookup:
+- (void)commonInitWithText:(unint64_t)text selectedRange:(uint64_t)range customURLParser:(void *)parser lookup:
 {
   v21 = a2;
-  v9 = a5;
-  a1[1] = 2;
+  parserCopy = parser;
+  self[1] = 2;
   v10 = [v21 copy];
-  v11 = a1[6];
-  a1[6] = v10;
+  v11 = self[6];
+  self[6] = v10;
 
-  a1[8] = a3;
-  a1[9] = a4;
-  a1[15] = a4 != 0;
-  [RVItem normalizeWithParser:a1 lookupOnly:v9];
-  if (!a1[15] && !a1[9] && a3 < [v21 length])
+  self[8] = text;
+  self[9] = range;
+  self[15] = range != 0;
+  [RVItem normalizeWithParser:self lookupOnly:parserCopy];
+  if (!self[15] && !self[9] && text < [v21 length])
   {
-    v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v13 = [v12 characterIsMember:{objc_msgSend(v21, "characterAtIndex:", a3)}];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v13 = [whitespaceCharacterSet characterIsMember:{objc_msgSend(v21, "characterAtIndex:", text)}];
 
     if (v13)
     {
-      v14 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
       v15 = [v21 length];
-      v16 = a3;
+      textCopy = text;
       do
       {
-        v17 = v16--;
+        v17 = textCopy--;
       }
 
-      while (v16 < v15 && ([v14 characterIsMember:{objc_msgSend(v21, "characterAtIndex:", v16)}] & 1) != 0);
-      v18 = a3 + 1;
+      while (textCopy < v15 && ([whitespaceCharacterSet2 characterIsMember:{objc_msgSend(v21, "characterAtIndex:", textCopy)}] & 1) != 0);
+      v18 = text + 1;
       do
       {
         v19 = v18;
@@ -794,74 +794,74 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
           break;
         }
 
-        v20 = [v14 characterIsMember:{objc_msgSend(v21, "characterAtIndex:", v18)}];
+        v20 = [whitespaceCharacterSet2 characterIsMember:{objc_msgSend(v21, "characterAtIndex:", v18)}];
         v18 = v19 + 1;
       }
 
       while ((v20 & 1) != 0);
-      a1[8] = v17;
-      a1[9] = v19 - v17;
-      a1[2] = 2;
+      self[8] = v17;
+      self[9] = v19 - v17;
+      self[2] = 2;
     }
   }
 }
 
-- (RVItem)initWithText:(id)a3 selectedRange:(_NSRange)a4
+- (RVItem)initWithText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = RVItem;
   v8 = [(RVItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(RVItem *)v8 commonInitWithText:v7 selectedRange:location customURLParser:length lookup:0];
+    [(RVItem *)v8 commonInitWithText:textCopy selectedRange:location customURLParser:length lookup:0];
   }
 
   return v9;
 }
 
-- (RVItem)initWithText:(id)a3 clickedIndex:(unint64_t)a4 selectionRanges:(id)a5 shouldUpdateSelection:(BOOL *)a6
+- (RVItem)initWithText:(id)text clickedIndex:(unint64_t)index selectionRanges:(id)ranges shouldUpdateSelection:(BOOL *)selection
 {
-  v10 = a3;
-  v11 = a5;
+  textCopy = text;
+  rangesCopy = ranges;
   v24.receiver = self;
   v24.super_class = RVItem;
   v12 = [(RVItem *)&v24 init];
   if (v12)
   {
     v23 = 0;
-    v13 = [RVSelection revealRangeAtIndex:a4 selectedRanges:v11 shouldUpdateSelection:&v23];
+    v13 = [RVSelection revealRangeAtIndex:index selectedRanges:rangesCopy shouldUpdateSelection:&v23];
     v15 = v14;
-    v16 = [v11 firstObject];
-    v17 = [v16 rangeValue];
+    firstObject = [rangesCopy firstObject];
+    rangeValue = [firstObject rangeValue];
     v19 = v18;
 
-    [(RVItem *)v12 commonInitWithText:v10 selectedRange:v13 customURLParser:v15 lookup:0];
-    if (a4 >= v17 && a4 - v17 < v19 && v19 > v12->_highlightRange.length)
+    [(RVItem *)v12 commonInitWithText:textCopy selectedRange:v13 customURLParser:v15 lookup:0];
+    if (index >= rangeValue && index - rangeValue < v19 && v19 > v12->_highlightRange.length)
     {
-      v20 = [v10 substringWithRange:{v17, v19}];
+      v20 = [textCopy substringWithRange:{rangeValue, v19}];
       originalSelectedText = v12->_originalSelectedText;
       v12->_originalSelectedText = v20;
     }
 
-    if (a6)
+    if (selection)
     {
-      *a6 = v23;
+      *selection = v23;
     }
   }
 
   return v12;
 }
 
-- (RVItem)initWithDDResult:(id)a3 text:(id)a4 range:(_NSRange)a5
+- (RVItem)initWithDDResult:(id)result text:(id)text range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  resultCopy = result;
+  textCopy = text;
   v21.receiver = self;
   v21.super_class = RVItem;
   v12 = [(RVItem *)&v21 init];
@@ -869,13 +869,13 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   if (v12)
   {
     v12->_type = 3;
-    objc_storeStrong(&v12->_ddResult, a3);
-    v13->_highlightRange.location = [v10 urlificationRange];
+    objc_storeStrong(&v12->_ddResult, result);
+    v13->_highlightRange.location = [resultCopy urlificationRange];
     v13->_highlightRange.length = v14;
     v13->_selectionType = 2;
-    if (v11)
+    if (textCopy)
     {
-      v15 = [v11 copy];
+      v15 = [textCopy copy];
 
       v16 = [(RVItem *)v13 constrainContextSubstring:v15 range:0 leading:location, 1u];
       leadingText = v13->_leadingText;
@@ -885,7 +885,7 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
       trailingText = v13->_trailingText;
       v13->_trailingText = v18;
 
-      v11 = v15;
+      textCopy = v15;
     }
 
     [RVItem normalizeWithParser:v13 lookupOnly:0];
@@ -894,9 +894,9 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v13;
 }
 
-- (RVItem)initWithDDResult:(id)a3
+- (RVItem)initWithDDResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = RVItem;
   v6 = [(RVItem *)&v10 init];
@@ -904,8 +904,8 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   if (v6)
   {
     v6->_type = 3;
-    objc_storeStrong(&v6->_ddResult, a3);
-    v7->_highlightRange.location = [v5 urlificationRange];
+    objc_storeStrong(&v6->_ddResult, result);
+    v7->_highlightRange.location = [resultCopy urlificationRange];
     v7->_highlightRange.length = v8;
     v7->_selectionType = 2;
     [RVItem normalizeWithParser:v7 lookupOnly:0];
@@ -914,11 +914,11 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v7;
 }
 
-- (RVItem)initWithURL:(id)a3 rangeInContext:(_NSRange)a4
+- (RVItem)initWithURL:(id)l rangeInContext:(_NSRange)context
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = context.length;
+  location = context.location;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = RVItem;
   v9 = [(RVItem *)&v12 init];
@@ -926,7 +926,7 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   if (v9)
   {
     v9->_type = 1;
-    objc_storeStrong(&v9->_url, a3);
+    objc_storeStrong(&v9->_url, l);
     v10->_highlightRange.location = location;
     v10->_highlightRange.length = length;
     v10->_selectionType = 0;
@@ -936,11 +936,11 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   return v10;
 }
 
-- (RVItem)initWithSearchQuery:(id)a3 rangeInContext:(_NSRange)a4
+- (RVItem)initWithSearchQuery:(id)query rangeInContext:(_NSRange)context
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = context.length;
+  location = context.location;
+  queryCopy = query;
   v12.receiver = self;
   v12.super_class = RVItem;
   v9 = [(RVItem *)&v12 init];
@@ -948,7 +948,7 @@ void *__41__RVItem_normalizeWithParser_lookupOnly___block_invoke(void *result, u
   if (v9)
   {
     v9->_type = 6;
-    objc_storeStrong(&v9->_query, a3);
+    objc_storeStrong(&v9->_query, query);
     v10->_highlightRange.location = location;
     v10->_highlightRange.length = length;
     v10->_selectionType = 0;

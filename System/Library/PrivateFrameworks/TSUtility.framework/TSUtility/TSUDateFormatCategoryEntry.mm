@@ -1,13 +1,13 @@
 @interface TSUDateFormatCategoryEntry
-- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)a3;
-- (__CFDate)newDateFromString:(__CFString *)a3 forceAllowAMPM:(BOOL)a4 successfulFormatString:(const __CFString *)a5 perfect:(BOOL *)a6;
-- (void)addFormat:(id)a3 locale:(__CFLocale *)a4;
+- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)separator;
+- (__CFDate)newDateFromString:(__CFString *)string forceAllowAMPM:(BOOL)m successfulFormatString:(const __CFString *)formatString perfect:(BOOL *)perfect;
+- (void)addFormat:(id)format locale:(__CFLocale *)locale;
 - (void)dealloc;
 @end
 
 @implementation TSUDateFormatCategoryEntry
 
-- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)a3
+- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)separator
 {
   v7.receiver = self;
   v7.super_class = TSUDateFormatCategoryEntry;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mSeparator = a3;
+    v4->mSeparator = separator;
     v4->mFormatters = CFArrayCreateMutable(0, 0, MEMORY[0x277CBF128]);
     v5->mFormatStrings = objc_alloc_init(MEMORY[0x277CBEB58]);
   }
@@ -32,35 +32,35 @@
   [(TSUDateFormatCategoryEntry *)&v3 dealloc];
 }
 
-- (void)addFormat:(id)a3 locale:(__CFLocale *)a4
+- (void)addFormat:(id)format locale:(__CFLocale *)locale
 {
   if (([(NSMutableSet *)self->mFormatStrings containsObject:?]& 1) == 0)
   {
-    [(NSMutableSet *)self->mFormatStrings addObject:a3];
-    v7 = CFDateFormatterCreate(0, a4, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
+    [(NSMutableSet *)self->mFormatStrings addObject:format];
+    v7 = CFDateFormatterCreate(0, locale, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
     CFDateFormatterSetProperty(v7, *MEMORY[0x277CBED88], *MEMORY[0x277CBED10]);
     v8 = *MEMORY[0x277CBEDF8];
     v9 = TSUGetGMTTimeZone();
     CFDateFormatterSetProperty(v7, v8, v9);
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v11 = objc_alloc(MEMORY[0x277CBEA80]);
     v13 = [v11 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v12 = [v13 dateFromComponents:{objc_msgSend(v13, "components:fromDate:", 4, v10)}];
+    v12 = [v13 dateFromComponents:{objc_msgSend(v13, "components:fromDate:", 4, date)}];
     CFDateFormatterSetProperty(v7, *MEMORY[0x277CBED78], v12);
-    CFDateFormatterSetFormat(v7, a3);
+    CFDateFormatterSetFormat(v7, format);
     CFArrayAppendValue(self->mFormatters, v7);
     CFRelease(v7);
   }
 }
 
-- (__CFDate)newDateFromString:(__CFString *)a3 forceAllowAMPM:(BOOL)a4 successfulFormatString:(const __CFString *)a5 perfect:(BOOL *)a6
+- (__CFDate)newDateFromString:(__CFString *)string forceAllowAMPM:(BOOL)m successfulFormatString:(const __CFString *)formatString perfect:(BOOL *)perfect
 {
-  v31 = a4;
-  Length = CFStringGetLength(a3);
-  v30 = self;
+  mCopy = m;
+  Length = CFStringGetLength(string);
+  selfCopy = self;
   Count = CFArrayGetCount(self->mFormatters);
-  v27 = a6;
-  *a6 = 0;
+  perfectCopy = perfect;
+  *perfect = 0;
   if (Count < 1)
   {
     return 0;
@@ -74,10 +74,10 @@
   v14 = 1;
   do
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(v30->mFormatters, v14 - 1);
+    ValueAtIndex = CFArrayGetValueAtIndex(selfCopy->mFormatters, v14 - 1);
     rangep.location = 0;
     rangep.length = Length;
-    v16 = CFDateFormatterCreateDateFromString(0, ValueAtIndex, a3, &rangep);
+    v16 = CFDateFormatterCreateDateFromString(0, ValueAtIndex, string, &rangep);
     if (v16)
     {
       v17 = 1;
@@ -85,7 +85,7 @@
 
     else
     {
-      v17 = !v31;
+      v17 = !mCopy;
     }
 
     if (!v17)
@@ -96,7 +96,7 @@
       CFDateFormatterSetProperty(ValueAtIndex, v13, @"PM");
       rangep.location = 0;
       rangep.length = Length;
-      v16 = CFDateFormatterCreateDateFromString(0, ValueAtIndex, a3, &rangep);
+      v16 = CFDateFormatterCreateDateFromString(0, ValueAtIndex, string, &rangep);
       CFDateFormatterSetProperty(ValueAtIndex, v12, v18);
       CFDateFormatterSetProperty(ValueAtIndex, v13, v19);
       CFRelease(v18);
@@ -119,38 +119,38 @@ LABEL_18:
     Format = CFDateFormatterGetFormat(ValueAtIndex);
     v21 = TSUCreateDateWithGregorianUnitsSetToDefaultValue(v16, Format);
     CFRelease(v16);
-    if (a5)
+    if (formatString)
     {
-      *a5 = CFStringCreateCopy(0, Format);
+      *formatString = CFStringCreateCopy(0, Format);
     }
 
     StringWithDate = CFDateFormatterCreateStringWithDate(0, ValueAtIndex, v21);
-    if (CFStringCompare(StringWithDate, a3, 1uLL) == kCFCompareEqualTo)
+    if (CFStringCompare(StringWithDate, string, 1uLL) == kCFCompareEqualTo)
     {
-      *v27 = 1;
+      *perfectCopy = 1;
       goto LABEL_25;
     }
 
     if (cf)
     {
       CFRelease(v21);
-      if (a5)
+      if (formatString)
       {
-        CFRelease(*a5);
-        v23 = a5;
+        CFRelease(*formatString);
+        formatStringCopy2 = formatString;
 LABEL_22:
         v21 = 0;
-        *v23 = 0;
+        *formatStringCopy2 = 0;
         goto LABEL_25;
       }
     }
 
     else
     {
-      v23 = a5;
-      if (a5)
+      formatStringCopy2 = formatString;
+      if (formatString)
       {
-        v26 = *a5;
+        v26 = *formatString;
         cf = v21;
         goto LABEL_22;
       }
@@ -184,9 +184,9 @@ LABEL_25:
     return v21;
   }
 
-  else if (a5)
+  else if (formatString)
   {
-    *a5 = v26;
+    *formatString = v26;
   }
 
   return result;

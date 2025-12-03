@@ -1,10 +1,10 @@
 @interface VCWiFiUtils
-+ (BOOL)getInfraChannelNumber:(int *)a3 is5Ghz:(BOOL *)a4 isPresent:(BOOL *)a5;
++ (BOOL)getInfraChannelNumber:(int *)number is5Ghz:(BOOL *)ghz isPresent:(BOOL *)present;
 @end
 
 @implementation VCWiFiUtils
 
-+ (BOOL)getInfraChannelNumber:(int *)a3 is5Ghz:(BOOL *)a4 isPresent:(BOOL *)a5
++ (BOOL)getInfraChannelNumber:(int *)number is5Ghz:(BOOL *)ghz isPresent:(BOOL *)present
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = 0;
@@ -20,9 +20,9 @@
   }
 
   Int32IfPresent = FigCFDictionaryGetInt32IfPresent();
-  if (a5)
+  if (present)
   {
-    *a5 = Int32IfPresent != 0;
+    *present = Int32IfPresent != 0;
   }
 
   if (!Int32IfPresent)
@@ -37,14 +37,14 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (number)
   {
-    *a3 = v12[0];
+    *number = v12[0];
   }
 
-  if (a4)
+  if (ghz)
   {
-    *a4 = 0;
+    *ghz = 0;
   }
 
   v10 = 1;

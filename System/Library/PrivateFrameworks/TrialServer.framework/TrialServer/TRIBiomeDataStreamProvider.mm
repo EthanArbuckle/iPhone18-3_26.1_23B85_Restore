@@ -1,12 +1,12 @@
 @interface TRIBiomeDataStreamProvider
 - (TRIBiomeDataStreamProvider)init;
-- (id)_streamForIdentifier:(id)a3 eventHandler:(id)a4;
-- (void)_subscribeForStreamIdentifier:(id)a3 eventHandler:(id)a4;
+- (id)_streamForIdentifier:(id)identifier eventHandler:(id)handler;
+- (void)_subscribeForStreamIdentifier:(id)identifier eventHandler:(id)handler;
 - (void)_unsubscribeAllDataStreams;
 - (void)dealloc;
-- (void)readLastDataStreamEventForIdentifier:(id)a3 eventHandler:(id)a4;
-- (void)readLastDataStreamEventForIdentifier:(id)a3 withFilter:(id)a4 eventHandler:(id)a5;
-- (void)subscribeDataStreamForIdentifier:(id)a3 eventHandler:(id)a4;
+- (void)readLastDataStreamEventForIdentifier:(id)identifier eventHandler:(id)handler;
+- (void)readLastDataStreamEventForIdentifier:(id)identifier withFilter:(id)filter eventHandler:(id)handler;
+- (void)subscribeDataStreamForIdentifier:(id)identifier eventHandler:(id)handler;
 - (void)unsubscribeAllDataStreams;
 @end
 
@@ -41,35 +41,35 @@
   [(TRIBiomeDataStreamProvider *)&v3 dealloc];
 }
 
-- (void)readLastDataStreamEventForIdentifier:(id)a3 eventHandler:(id)a4
+- (void)readLastDataStreamEventForIdentifier:(id)identifier eventHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v7 = BiomeLibrary();
   v17 = 0;
-  v8 = [v7 streamWithIdentifier:v6 error:&v17];
+  v8 = [v7 streamWithIdentifier:identifierCopy error:&v17];
 
   v9 = v17;
   if (v9)
   {
-    v5[2](v5, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
   else
   {
-    v10 = [v8 publisher];
-    v11 = [v10 last];
+    publisher = [v8 publisher];
+    last = [publisher last];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __80__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_eventHandler___block_invoke;
     v15[3] = &unk_279DE1100;
-    v16 = v5;
+    v16 = handlerCopy;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __80__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_eventHandler___block_invoke_12;
     v13[3] = &unk_279DE1128;
     v14 = v16;
-    v12 = [v11 sinkWithCompletion:v15 receiveInput:v13];
+    v12 = [last sinkWithCompletion:v15 receiveInput:v13];
   }
 }
 
@@ -114,34 +114,34 @@ void __80__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_event
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)readLastDataStreamEventForIdentifier:(id)a3 withFilter:(id)a4 eventHandler:(id)a5
+- (void)readLastDataStreamEventForIdentifier:(id)identifier withFilter:(id)filter eventHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TRIBiomeDataStreamProvider *)self _streamForIdentifier:a3 eventHandler:v9];
+  filterCopy = filter;
+  handlerCopy = handler;
+  v10 = [(TRIBiomeDataStreamProvider *)self _streamForIdentifier:identifier eventHandler:handlerCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 publisher];
+    publisher = [v10 publisher];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withFilter_eventHandler___block_invoke;
     v20[3] = &unk_279DE1150;
-    v21 = v8;
-    v13 = [v12 filterWithIsIncluded:v20];
+    v21 = filterCopy;
+    v13 = [publisher filterWithIsIncluded:v20];
 
-    v14 = [v13 last];
+    last = [v13 last];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withFilter_eventHandler___block_invoke_2;
     v18[3] = &unk_279DE1100;
-    v19 = v9;
+    v19 = handlerCopy;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withFilter_eventHandler___block_invoke_16;
     v16[3] = &unk_279DE1128;
     v17 = v19;
-    v15 = [v14 sinkWithCompletion:v18 receiveInput:v16];
+    v15 = [last sinkWithCompletion:v18 receiveInput:v16];
   }
 }
 
@@ -213,35 +213,35 @@ void __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withF
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)subscribeDataStreamForIdentifier:(id)a3 eventHandler:(id)a4
+- (void)subscribeDataStreamForIdentifier:(id)identifier eventHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   providerQueue = self->_providerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__TRIBiomeDataStreamProvider_subscribeDataStreamForIdentifier_eventHandler___block_invoke;
   block[3] = &unk_279DDF470;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_sync(providerQueue, block);
 }
 
-- (id)_streamForIdentifier:(id)a3 eventHandler:(id)a4
+- (id)_streamForIdentifier:(id)identifier eventHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v7 = BiomeLibrary();
   v12 = 0;
-  v8 = [v7 streamWithIdentifier:v6 error:&v12];
+  v8 = [v7 streamWithIdentifier:identifierCopy error:&v12];
 
   v9 = v12;
   if (v9)
   {
-    v5[2](v5, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
     v10 = 0;
   }
 
@@ -253,20 +253,20 @@ void __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withF
   return v10;
 }
 
-- (void)_subscribeForStreamIdentifier:(id)a3 eventHandler:(id)a4
+- (void)_subscribeForStreamIdentifier:(id)identifier eventHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   providerQueue = self->_providerQueue;
-  v8 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(providerQueue);
-  v9 = [(TRIBiomeDataStreamProvider *)self _streamForIdentifier:v8 eventHandler:v6];
+  v9 = [(TRIBiomeDataStreamProvider *)self _streamForIdentifier:identifierCopy eventHandler:handlerCopy];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v9 identifier];
-    v12 = [v10 stringWithFormat:@"com.apple.trial.%@", v11];
+    identifier = [v9 identifier];
+    v12 = [v10 stringWithFormat:@"com.apple.trial.%@", identifier];
 
     v13 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -277,13 +277,13 @@ void __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withF
     }
 
     v14 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:v12 targetQueue:self->_providerQueue waking:self->_shouldSubscribeWithWaking];
-    v15 = [v9 DSLPublisher];
-    v16 = [v15 subscribeOn:v14];
+    dSLPublisher = [v9 DSLPublisher];
+    v16 = [dSLPublisher subscribeOn:v14];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __73__TRIBiomeDataStreamProvider__subscribeForStreamIdentifier_eventHandler___block_invoke;
     v27[3] = &unk_279DE1100;
-    v28 = v6;
+    v28 = handlerCopy;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __73__TRIBiomeDataStreamProvider__subscribeForStreamIdentifier_eventHandler___block_invoke_23;
@@ -292,8 +292,8 @@ void __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withF
     v17 = [v16 sinkWithCompletion:v27 receiveInput:v25];
 
     streamIdentifierstoSubscribedSinks = self->_streamIdentifierstoSubscribedSinks;
-    v19 = [v9 identifier];
-    v20 = [(NSMutableDictionary *)streamIdentifierstoSubscribedSinks objectForKeyedSubscript:v19];
+    identifier2 = [v9 identifier];
+    v20 = [(NSMutableDictionary *)streamIdentifierstoSubscribedSinks objectForKeyedSubscript:identifier2];
 
     if (v20)
     {
@@ -307,8 +307,8 @@ void __91__TRIBiomeDataStreamProvider_readLastDataStreamEventForIdentifier_withF
     }
 
     v22 = self->_streamIdentifierstoSubscribedSinks;
-    v23 = [v9 identifier];
-    [(NSMutableDictionary *)v22 setObject:v17 forKeyedSubscript:v23];
+    identifier3 = [v9 identifier];
+    [(NSMutableDictionary *)v22 setObject:v17 forKeyedSubscript:identifier3];
   }
 
   v24 = *MEMORY[0x277D85DE8];

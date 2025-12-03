@@ -1,51 +1,51 @@
 @interface NLXSchemaSSUUserRequestCacheEntryInfo
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithDictionary:(id)a3;
-- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithDictionary:(id)dictionary;
+- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCategoryType:(BOOL)a3;
-- (void)setHasClosestNegativeExampleScore:(BOOL)a3;
-- (void)setHasClosestPositiveExampleScore:(BOOL)a3;
-- (void)setHasNumEncodingSimilarityScoreComparisons:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCategoryType:(BOOL)type;
+- (void)setHasClosestNegativeExampleScore:(BOOL)score;
+- (void)setHasClosestPositiveExampleScore:(BOOL)score;
+- (void)setHasNumEncodingSimilarityScoreComparisons:(BOOL)comparisons;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaSSUUserRequestCacheEntryInfo
 
-- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithDictionary:(id)a3
+- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = NLXSchemaSSUUserRequestCacheEntryInfo;
   v5 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"triggerReason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"triggerReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUUserRequestCacheEntryInfo setTriggerReason:](v5, "setTriggerReason:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"categoryType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"categoryType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUUserRequestCacheEntryInfo setCategoryType:](v5, "setCategoryType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numEncodingSimilarityScoreComparisons"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numEncodingSimilarityScoreComparisons"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUUserRequestCacheEntryInfo setNumEncodingSimilarityScoreComparisons:](v5, "setNumEncodingSimilarityScoreComparisons:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"closestNegativeExampleScore"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"closestNegativeExampleScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(NLXSchemaSSUUserRequestCacheEntryInfo *)v5 setClosestNegativeExampleScore:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"closestPositiveExampleScore"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"closestPositiveExampleScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(NLXSchemaSSUUserRequestCacheEntryInfo *)v5 setClosestPositiveExampleScore:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"matchInfo"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"matchInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,30 +75,30 @@
   return v5;
 }
 
-- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithJSON:(id)a3
+- (NLXSchemaSSUUserRequestCacheEntryInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -111,7 +111,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -126,7 +126,7 @@
       v6 = off_1E78DC8C0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"categoryType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"categoryType"];
     has = self->_has;
   }
 
@@ -135,7 +135,7 @@
     v7 = MEMORY[0x1E696AD98];
     [(NLXSchemaSSUUserRequestCacheEntryInfo *)self closestNegativeExampleScore];
     v8 = [v7 numberWithDouble:?];
-    [v3 setObject:v8 forKeyedSubscript:@"closestNegativeExampleScore"];
+    [dictionary setObject:v8 forKeyedSubscript:@"closestNegativeExampleScore"];
 
     has = self->_has;
   }
@@ -145,22 +145,22 @@
     v9 = MEMORY[0x1E696AD98];
     [(NLXSchemaSSUUserRequestCacheEntryInfo *)self closestPositiveExampleScore];
     v10 = [v9 numberWithDouble:?];
-    [v3 setObject:v10 forKeyedSubscript:@"closestPositiveExampleScore"];
+    [dictionary setObject:v10 forKeyedSubscript:@"closestPositiveExampleScore"];
   }
 
   if (self->_matchInfo)
   {
-    v11 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    matchInfo = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
+    dictionaryRepresentation = [matchInfo dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"matchInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"matchInfo"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"matchInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"matchInfo"];
     }
   }
 
@@ -168,7 +168,7 @@
   if ((v14 & 4) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaSSUUserRequestCacheEntryInfo numEncodingSimilarityScoreComparisons](self, "numEncodingSimilarityScoreComparisons")}];
-    [v3 setObject:v15 forKeyedSubscript:@"numEncodingSimilarityScoreComparisons"];
+    [dictionary setObject:v15 forKeyedSubscript:@"numEncodingSimilarityScoreComparisons"];
 
     v14 = self->_has;
   }
@@ -186,12 +186,12 @@
       v17 = off_1E78DC8E0[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"triggerReason"];
+    [dictionary setObject:v17 forKeyedSubscript:@"triggerReason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -307,16 +307,16 @@ LABEL_13:
   return v9 ^ v8 ^ v10 ^ v14 ^ v15 ^ [(NLXSchemaSSUUserRequestMatchInfo *)self->_matchInfo hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[48];
+  v6 = equalCopy[48];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -325,13 +325,13 @@ LABEL_13:
   if (*&has)
   {
     triggerReason = self->_triggerReason;
-    if (triggerReason != [v4 triggerReason])
+    if (triggerReason != [equalCopy triggerReason])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -340,13 +340,13 @@ LABEL_13:
     if (v8)
     {
       categoryType = self->_categoryType;
-      if (categoryType != [v4 categoryType])
+      if (categoryType != [equalCopy categoryType])
       {
         goto LABEL_26;
       }
 
       has = self->_has;
-      v6 = v4[48];
+      v6 = equalCopy[48];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -355,13 +355,13 @@ LABEL_13:
       if (v10)
       {
         numEncodingSimilarityScoreComparisons = self->_numEncodingSimilarityScoreComparisons;
-        if (numEncodingSimilarityScoreComparisons != [v4 numEncodingSimilarityScoreComparisons])
+        if (numEncodingSimilarityScoreComparisons != [equalCopy numEncodingSimilarityScoreComparisons])
         {
           goto LABEL_26;
         }
 
         has = self->_has;
-        v6 = v4[48];
+        v6 = equalCopy[48];
       }
 
       v12 = (*&has >> 3) & 1;
@@ -370,28 +370,28 @@ LABEL_13:
         if (v12)
         {
           closestNegativeExampleScore = self->_closestNegativeExampleScore;
-          [v4 closestNegativeExampleScore];
+          [equalCopy closestNegativeExampleScore];
           if (closestNegativeExampleScore != v14)
           {
             goto LABEL_26;
           }
 
           has = self->_has;
-          v6 = v4[48];
+          v6 = equalCopy[48];
         }
 
         v15 = (*&has >> 4) & 1;
         if (v15 == ((v6 >> 4) & 1))
         {
-          if (!v15 || (closestPositiveExampleScore = self->_closestPositiveExampleScore, [v4 closestPositiveExampleScore], closestPositiveExampleScore == v17))
+          if (!v15 || (closestPositiveExampleScore = self->_closestPositiveExampleScore, [equalCopy closestPositiveExampleScore], closestPositiveExampleScore == v17))
           {
-            v18 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
-            v19 = [v4 matchInfo];
-            v20 = v19;
-            if ((v18 != 0) != (v19 == 0))
+            matchInfo = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
+            matchInfo2 = [equalCopy matchInfo];
+            v20 = matchInfo2;
+            if ((matchInfo != 0) != (matchInfo2 == 0))
             {
-              v21 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
-              if (!v21)
+              matchInfo3 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
+              if (!matchInfo3)
               {
 
 LABEL_29:
@@ -399,10 +399,10 @@ LABEL_29:
                 goto LABEL_27;
               }
 
-              v22 = v21;
-              v23 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
-              v24 = [v4 matchInfo];
-              v25 = [v23 isEqual:v24];
+              v22 = matchInfo3;
+              matchInfo4 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
+              matchInfo5 = [equalCopy matchInfo];
+              v25 = [matchInfo4 isEqual:matchInfo5];
 
               if (v25)
               {
@@ -426,9 +426,9 @@ LABEL_27:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -487,21 +487,21 @@ LABEL_6:
   }
 
 LABEL_7:
-  v5 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
+  matchInfo = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (matchInfo)
   {
-    v7 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
+    matchInfo2 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasClosestPositiveExampleScore:(BOOL)a3
+- (void)setHasClosestPositiveExampleScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -514,9 +514,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasClosestNegativeExampleScore:(BOOL)a3
+- (void)setHasClosestNegativeExampleScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -529,9 +529,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumEncodingSimilarityScoreComparisons:(BOOL)a3
+- (void)setHasNumEncodingSimilarityScoreComparisons:(BOOL)comparisons
 {
-  if (a3)
+  if (comparisons)
   {
     v3 = 4;
   }
@@ -544,9 +544,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCategoryType:(BOOL)a3
+- (void)setHasCategoryType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -559,17 +559,17 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLXSchemaSSUUserRequestCacheEntryInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaSSUUserRequestCacheEntryInfo *)self matchInfo:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaSSUUserRequestCacheEntryInfo *)self deleteMatchInfo];
   }

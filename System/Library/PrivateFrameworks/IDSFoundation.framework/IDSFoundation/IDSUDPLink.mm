@@ -1,49 +1,49 @@
 @interface IDSUDPLink
-- (BOOL)_setTrafficClassOnSocket:(int)a3 trafficClassValue:(int)a4;
-- (BOOL)setDestinationAddress:(id)a3 isFixedDestination:(BOOL)a4 fromAddress:(id)a5;
-- (BOOL)setDestinationAddress:(id)a3 localIfIndex:(unsigned int)a4 isFixedDestination:(BOOL)a5 fromAddress:(id)a6;
-- (BOOL)setDestinationAddressToDeviceIDMap:(id)a3;
-- (BOOL)setTrafficClass:(int)a3;
+- (BOOL)_setTrafficClassOnSocket:(int)socket trafficClassValue:(int)value;
+- (BOOL)setDestinationAddress:(id)address isFixedDestination:(BOOL)destination fromAddress:(id)fromAddress;
+- (BOOL)setDestinationAddress:(id)address localIfIndex:(unsigned int)index isFixedDestination:(BOOL)destination fromAddress:(id)fromAddress;
+- (BOOL)setDestinationAddressToDeviceIDMap:(id)map;
+- (BOOL)setTrafficClass:(int)class;
 - (IDSLinkDelegate)alternateDelegate;
 - (IDSLinkDelegate)delegate;
-- (IDSUDPLink)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4;
-- (id)_createNetworkInterfaceArrayWithIPVersion:(unint64_t)a3 wantsAWDL:(BOOL)a4 wantsWiFi:(BOOL)a5 wantsCellular:(BOOL)a6 allowsLinkLocal:(BOOL)a7 useDefaultInterfaceOnly:(BOOL)a8 defaultPairedDevice:(BOOL)a9;
+- (IDSUDPLink)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (id)_createNetworkInterfaceArrayWithIPVersion:(unint64_t)version wantsAWDL:(BOOL)l wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular allowsLinkLocal:(BOOL)local useDefaultInterfaceOnly:(BOOL)only defaultPairedDevice:(BOOL)device;
 - (id)copyCurrentNetworkInterfaces;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4;
-- (id)newSocketWithIPVersion:(unint64_t)a3 wantsAWDL:(BOOL)a4 wantsWiFi:(BOOL)a5 wantsCellular:(BOOL)a6;
-- (id)newSocketWithIPVersion:(unint64_t)a3 wantsAWDL:(BOOL)a4 wantsWiFi:(BOOL)a5 wantsCellular:(BOOL)a6 clientUUID:(unsigned __int8)a7[16];
-- (int)_createNewUDPSocketWithIPVersion:(unint64_t)a3 localPort:(unsigned __int16 *)a4 wantsAWDL:(BOOL)a5 clientUUID:(unsigned __int8)a6[16];
-- (int)_findSocketForInterfaceIndex:(int)a3;
-- (unint64_t)_sendBytes:(const void *)a3 length:(unint64_t)a4;
-- (unint64_t)_sendBytes:(const void *)a3 length:(unint64_t)a4 destinationAddress:(const sockaddr *)a5;
-- (unint64_t)_sendBytesArray:(const void *)a3 lengthArray:(unint64_t *)a4 arraySize:(int)a5 localInterfaceIndex:(int)a6 localAddress:(const sockaddr *)a7 destinationAddress:(const sockaddr *)a8 trafficClass:(unsigned __int16)a9 DSCP:(unsigned __int8)a10;
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link;
+- (id)newSocketWithIPVersion:(unint64_t)version wantsAWDL:(BOOL)l wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular;
+- (id)newSocketWithIPVersion:(unint64_t)version wantsAWDL:(BOOL)l wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular clientUUID:(unsigned __int8)d[16];
+- (int)_createNewUDPSocketWithIPVersion:(unint64_t)version localPort:(unsigned __int16 *)port wantsAWDL:(BOOL)l clientUUID:(unsigned __int8)d[16];
+- (int)_findSocketForInterfaceIndex:(int)index;
+- (unint64_t)_sendBytes:(const void *)bytes length:(unint64_t)length;
+- (unint64_t)_sendBytes:(const void *)bytes length:(unint64_t)length destinationAddress:(const sockaddr *)address;
+- (unint64_t)_sendBytesArray:(const void *)array lengthArray:(unint64_t *)lengthArray arraySize:(int)size localInterfaceIndex:(int)index localAddress:(const sockaddr *)address destinationAddress:(const sockaddr *)destinationAddress trafficClass:(unsigned __int16)class DSCP:(unsigned __int8)self0;
 - (unint64_t)headerOverhead;
-- (unint64_t)sendPacketBuffer:(id *)a3 destination:(id)a4 toDeviceID:(id)a5;
-- (unint64_t)sendPacketBuffer:(id *)a3 sourceInterface:(id)a4 destination:(id)a5 toDeviceID:(id)a6;
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (unint64_t)sendPacketBufferArray:(id *)a3 arraySize:(int)a4 toDeviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (void)_processIncomingPacketOnSocket:(int)a3;
+- (unint64_t)sendPacketBuffer:(id *)buffer destination:(id)destination toDeviceID:(id)d;
+- (unint64_t)sendPacketBuffer:(id *)buffer sourceInterface:(id)interface destination:(id)destination toDeviceID:(id)d;
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (unint64_t)sendPacketBufferArray:(id *)array arraySize:(int)size toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)_processIncomingPacketOnSocket:(int)socket;
 - (void)dealloc;
-- (void)reconnectWithLocalAddress:(id)a3;
+- (void)reconnectWithLocalAddress:(id)address;
 - (void)removeSocket;
-- (void)setWiFiAssistState:(BOOL)a3;
+- (void)setWiFiAssistState:(BOOL)state;
 @end
 
 @implementation IDSUDPLink
 
-- (IDSUDPLink)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4
+- (IDSUDPLink)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v12.receiver = self;
   v12.super_class = IDSUDPLink;
   v9 = [(IDSUDPLink *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cbuuid, a4);
-    objc_storeStrong(&v10->_deviceUniqueID, a3);
+    objc_storeStrong(&v9->_cbuuid, cbuuid);
+    objc_storeStrong(&v10->_deviceUniqueID, d);
     *&v10->_socket = -1;
     v10->_state = 0;
     v10->_previousReportTime = ids_monotonic_time();
@@ -74,10 +74,10 @@
   [(IDSUDPLink *)&v6 dealloc];
 }
 
-- (id)_createNetworkInterfaceArrayWithIPVersion:(unint64_t)a3 wantsAWDL:(BOOL)a4 wantsWiFi:(BOOL)a5 wantsCellular:(BOOL)a6 allowsLinkLocal:(BOOL)a7 useDefaultInterfaceOnly:(BOOL)a8 defaultPairedDevice:(BOOL)a9
+- (id)_createNetworkInterfaceArrayWithIPVersion:(unint64_t)version wantsAWDL:(BOOL)l wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular allowsLinkLocal:(BOOL)local useDefaultInterfaceOnly:(BOOL)only defaultPairedDevice:(BOOL)device
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = GLUCreateNetworkInterfaceArrayWithOptions(a3, a4, a5, a6, a7, a8, a9, 0, 0);
+  v10 = GLUCreateNetworkInterfaceArrayWithOptions(version, l, fi, cellular, local, only, device, 0, 0);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -97,19 +97,19 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 isCellular];
-        v17 = [v15 address];
-        if (v16)
+        isCellular = [v15 isCellular];
+        address = [v15 address];
+        if (isCellular)
         {
-          v18 = [(IDSUDPLink *)self cellularPort];
+          cellularPort = [(IDSUDPLink *)self cellularPort];
         }
 
         else
         {
-          v18 = [(IDSUDPLink *)self port];
+          cellularPort = [(IDSUDPLink *)self port];
         }
 
-        [v17 updateLocalPort:v18];
+        [address updateLocalPort:cellularPort];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -121,9 +121,9 @@
   return v10;
 }
 
-- (void)_processIncomingPacketOnSocket:(int)a3
+- (void)_processIncomingPacketOnSocket:(int)socket
 {
-  v68 = a3;
+  socketCopy = socket;
   v4 = 0;
   v80 = *MEMORY[0x1E69E9840];
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
@@ -312,7 +312,7 @@ LABEL_20:
               v74 = 2112;
               v75 = v30;
               v76 = 1024;
-              v77 = v68;
+              v77 = socketCopy;
               v78 = 2112;
               v79 = destinationAddressToDeviceIDMap;
               _os_log_error_impl(&dword_1A7AD9000, v44, OS_LOG_TYPE_ERROR, "%s found no matching deviceID for %@, socket %d, map = %@", buf, 0x26u);
@@ -368,7 +368,7 @@ LABEL_46:
   }
 }
 
-- (unint64_t)_sendBytes:(const void *)a3 length:(unint64_t)a4
+- (unint64_t)_sendBytes:(const void *)bytes length:(unint64_t)length
 {
   v34 = *MEMORY[0x1E69E9840];
   socket = self->_socket;
@@ -381,7 +381,7 @@ LABEL_46:
   {
     v8 = [(IDSSockAddrWrapper *)self->_destinationAddress sa];
 
-    return [(IDSUDPLink *)self _sendBytes:a3 length:a4 destinationAddress:v8];
+    return [(IDSUDPLink *)self _sendBytes:bytes length:length destinationAddress:v8];
   }
 
   else
@@ -432,7 +432,7 @@ LABEL_46:
       }
     }
 
-    v16 = send(self->_socket, a3, a4, 0);
+    v16 = send(self->_socket, bytes, length, 0);
     if (v16 < 0)
     {
       v19 = *__error();
@@ -449,7 +449,7 @@ LABEL_46:
             v28 = 1024;
             *v29 = 309;
             *&v29[4] = 2048;
-            *&v29[6] = a4;
+            *&v29[6] = length;
             v30 = 1024;
             v31 = v25;
             v32 = 1024;
@@ -469,7 +469,7 @@ LABEL_46:
             v28 = 1024;
             *v29 = 307;
             *&v29[4] = 2048;
-            *&v29[6] = a4;
+            *&v29[6] = length;
             v30 = 1024;
             v31 = v24;
             v32 = 1024;
@@ -498,7 +498,7 @@ LABEL_46:
   return result;
 }
 
-- (unint64_t)_sendBytes:(const void *)a3 length:(unint64_t)a4 destinationAddress:(const sockaddr *)a5
+- (unint64_t)_sendBytes:(const void *)bytes length:(unint64_t)length destinationAddress:(const sockaddr *)address
 {
   v25 = *MEMORY[0x1E69E9840];
   socket = self->_socket;
@@ -509,7 +509,7 @@ LABEL_46:
 
   if (self->_destinationAddress && !self->_hasFixedDestination)
   {
-    if (a5 && a5->sa_family)
+    if (address && address->sa_family)
     {
       return 5;
     }
@@ -517,13 +517,13 @@ LABEL_46:
     else
     {
 
-      return [(IDSUDPLink *)self _sendBytes:a3 length:?];
+      return [(IDSUDPLink *)self _sendBytes:bytes length:?];
     }
   }
 
   else
   {
-    v8 = sendto(socket, a3, a4, 0, a5, a5->sa_len);
+    v8 = sendto(socket, bytes, length, 0, address, address->sa_len);
     if (v8 < 0)
     {
       v12 = *__error();
@@ -544,7 +544,7 @@ LABEL_46:
           v17 = 1024;
           v18 = 339;
           v19 = 2048;
-          v20 = a4;
+          lengthCopy = length;
           v21 = 1024;
           v22 = v14;
           v23 = 1024;
@@ -570,7 +570,7 @@ LABEL_46:
   return result;
 }
 
-- (unint64_t)_sendBytesArray:(const void *)a3 lengthArray:(unint64_t *)a4 arraySize:(int)a5 localInterfaceIndex:(int)a6 localAddress:(const sockaddr *)a7 destinationAddress:(const sockaddr *)a8 trafficClass:(unsigned __int16)a9 DSCP:(unsigned __int8)a10
+- (unint64_t)_sendBytesArray:(const void *)array lengthArray:(unint64_t *)lengthArray arraySize:(int)size localInterfaceIndex:(int)index localAddress:(const sockaddr *)address destinationAddress:(const sockaddr *)destinationAddress trafficClass:(unsigned __int16)class DSCP:(unsigned __int8)self0
 {
   v59 = *MEMORY[0x1E69E9840];
   if (self->_socket == -1)
@@ -578,19 +578,19 @@ LABEL_46:
     return 7;
   }
 
-  if (a7 && a7->sa_family)
+  if (address && address->sa_family)
   {
     if (self->_destinationAddress)
     {
-      if (a8 && a8->sa_family)
+      if (destinationAddress && destinationAddress->sa_family)
       {
         return 5;
       }
 
-      if (a5 == 1)
+      if (size == 1)
       {
-        v15 = *a3;
-        v16 = *a4;
+        v15 = *array;
+        v16 = *lengthArray;
 
         return [(IDSUDPLink *)self _sendBytes:v15 length:v16];
       }
@@ -598,14 +598,14 @@ LABEL_46:
       return 12;
     }
 
-    if (!a8 || !a8->sa_family)
+    if (!destinationAddress || !destinationAddress->sa_family)
     {
       return 6;
     }
 
-    if (!a6)
+    if (!index)
     {
-      v26 = [IDSFoundationLog IDSUDPLink:a3];
+      v26 = [IDSFoundationLog IDSUDPLink:array];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         sub_1A7E1FBA4();
@@ -632,7 +632,7 @@ LABEL_46:
     *v48 = v25;
     *v46 = v25;
     *&v46[16] = v25;
-    if (a5 > 8)
+    if (size > 8)
     {
       v26 = [IDSFoundationLog IDSUDPLink:*v46];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -645,10 +645,10 @@ LABEL_28:
       return 9;
     }
 
-    if (a5 >= 1)
+    if (size >= 1)
     {
       v27 = 0;
-      v28 = a5;
+      sizeCopy = size;
       v29 = &v51 + 1;
       do
       {
@@ -659,16 +659,16 @@ LABEL_28:
         *v29 = v32;
         v27 += v32;
         v29 += 2;
-        --v28;
+        --sizeCopy;
       }
 
-      while (v28);
+      while (sizeCopy);
     }
 
     *&v48[16] = v22;
     *&v48[24] = *v22;
     *&v49 = &v51;
-    DWORD2(v49) = a5;
+    DWORD2(v49) = size;
     HIDWORD(v50) = 0;
     v33 = *(v21 + 1);
     if (v33 == 2)
@@ -766,24 +766,24 @@ LABEL_36:
 
   else
   {
-    if (a5 != 1)
+    if (size != 1)
     {
       return 12;
     }
 
-    v13 = *a3;
-    v14 = *a4;
+    v13 = *array;
+    v14 = *lengthArray;
 
-    return [(IDSUDPLink *)self _sendBytes:v13 length:v14 destinationAddress:a8, *&a6];
+    return [(IDSUDPLink *)self _sendBytes:v13 length:v14 destinationAddress:destinationAddress, *&index];
   }
 }
 
-- (int)_createNewUDPSocketWithIPVersion:(unint64_t)a3 localPort:(unsigned __int16 *)a4 wantsAWDL:(BOOL)a5 clientUUID:(unsigned __int8)a6[16]
+- (int)_createNewUDPSocketWithIPVersion:(unint64_t)version localPort:(unsigned __int16 *)port wantsAWDL:(BOOL)l clientUUID:(unsigned __int8)d[16]
 {
-  v7 = a5;
+  lCopy = l;
   v38 = *MEMORY[0x1E69E9840];
   memset(v37, 0, sizeof(v37));
-  if (a3 == 1)
+  if (version == 1)
   {
     v10 = 0;
     *&v37[0].sa_len = 7708;
@@ -794,7 +794,7 @@ LABEL_36:
 
   else
   {
-    if (a3)
+    if (version)
     {
       v17 = +[IDSFoundationLog IDSUDPLink];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -811,7 +811,7 @@ LABEL_36:
     v11 = 16;
   }
 
-  *v37[0].sa_data = bswap32(*a4) >> 16;
+  *v37[0].sa_data = bswap32(*port) >> 16;
   v12 = socket(v9, 2, 17);
   if (v12 == -1)
   {
@@ -847,7 +847,7 @@ LABEL_12:
   }
 
   setsockopt(v14, v15, v16, &v27, 4u);
-  if (v7)
+  if (lCopy)
   {
     setsockopt(v13, 0xFFFF, 4356, &v27, 4u);
   }
@@ -890,16 +890,16 @@ LABEL_28:
     return -1;
   }
 
-  *a4 = bswap32(*v37[0].sa_data) >> 16;
-  if (!uuid_is_null(a6))
+  *port = bswap32(*v37[0].sa_data) >> 16;
+  if (!uuid_is_null(d))
   {
     *&out[29] = 0xAAAAAAAAAAAAAAAALL;
     *&v20 = 0xAAAAAAAAAAAAAAAALL;
     *(&v20 + 1) = 0xAAAAAAAAAAAAAAAALL;
     *out = v20;
     *&out[16] = v20;
-    uuid_unparse(a6, out);
-    if (setsockopt(v13, 0xFFFF, 4360, a6, 0x10u))
+    uuid_unparse(d, out);
+    if (setsockopt(v13, 0xFFFF, 4360, d, 0x10u))
     {
       v21 = *__error();
       v22 = +[IDSFoundationLog IDSUDPLink];
@@ -936,9 +936,9 @@ LABEL_28:
   return v13;
 }
 
-- (int)_findSocketForInterfaceIndex:(int)a3
+- (int)_findSocketForInterfaceIndex:(int)index
 {
-  v4 = [(IDSUDPLink *)self _isInterfaceIndexCellular:*&a3];
+  v4 = [(IDSUDPLink *)self _isInterfaceIndexCellular:*&index];
   v5 = 8;
   if (v4)
   {
@@ -948,11 +948,11 @@ LABEL_28:
   return *(&self->super.isa + v5);
 }
 
-- (BOOL)_setTrafficClassOnSocket:(int)a3 trafficClassValue:(int)a4
+- (BOOL)_setTrafficClassOnSocket:(int)socket trafficClassValue:(int)value
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v5 = setsockopt(a3, 0xFFFF, 4230, &v9, 4u);
+  valueCopy = value;
+  v5 = setsockopt(socket, 0xFFFF, 4230, &valueCopy, 4u);
   if (v5)
   {
     v6 = *__error();
@@ -964,9 +964,9 @@ LABEL_28:
       *&v11[8] = 1024;
       v12 = 608;
       v13 = 1024;
-      v14 = v9;
+      v14 = valueCopy;
       v15 = 1024;
-      v16 = a3;
+      socketCopy = socket;
       v17 = 1024;
       v18 = v6;
       _os_log_error_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_ERROR, "%s:%d traffic class (%d) failed to set for socket (%d), error (%d).", buf, 0x24u);
@@ -979,9 +979,9 @@ LABEL_28:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      *v11 = v9;
+      *v11 = valueCopy;
       *&v11[4] = 1024;
-      *&v11[6] = a3;
+      *&v11[6] = socket;
       _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_INFO, "traffic class (%d) is set for socket (%d).", buf, 0xEu);
     }
   }
@@ -1050,12 +1050,12 @@ LABEL_28:
   }
 }
 
-- (BOOL)setDestinationAddress:(id)a3 isFixedDestination:(BOOL)a4 fromAddress:(id)a5
+- (BOOL)setDestinationAddress:(id)address isFixedDestination:(BOOL)destination fromAddress:(id)fromAddress
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  addressCopy = address;
+  fromAddressCopy = fromAddress;
+  v10 = fromAddressCopy;
   if (self->_socket == -1)
   {
     self->_state = 0;
@@ -1068,7 +1068,7 @@ LABEL_28:
     goto LABEL_13;
   }
 
-  if (v9 && ![(IDSSockAddrWrapper *)v8 isEqualToWrapper:v9])
+  if (fromAddressCopy && ![(IDSSockAddrWrapper *)addressCopy isEqualToWrapper:fromAddressCopy])
   {
     WeakRetained = +[IDSFoundationLog IDSUDPLink];
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_ERROR))
@@ -1081,11 +1081,11 @@ LABEL_13:
     goto LABEL_25;
   }
 
-  if (![(IDSSockAddrWrapper *)v8 isEqual:self->_destinationAddress]&& !a4)
+  if (![(IDSSockAddrWrapper *)addressCopy isEqual:self->_destinationAddress]&& !destination)
   {
-    if (v8)
+    if (addressCopy)
     {
-      if (connect(self->_socket, [(IDSSockAddrWrapper *)v8 sa], *[(IDSSockAddrWrapper *)v8 sa]) < 0)
+      if (connect(self->_socket, [(IDSSockAddrWrapper *)addressCopy sa], *[(IDSSockAddrWrapper *)addressCopy sa]) < 0)
       {
         v15 = *__error();
         v16 = +[IDSFoundationLog IDSUDPLink];
@@ -1097,7 +1097,7 @@ LABEL_13:
           *&v24[12] = 1024;
           *&v24[14] = 677;
           v25 = 2112;
-          v26 = v8;
+          v26 = addressCopy;
           v27 = 1024;
           v28 = socket;
           v29 = 1024;
@@ -1132,11 +1132,11 @@ LABEL_13:
     }
   }
 
-  v17 = [(IDSSockAddrWrapper *)v8 copy];
+  v17 = [(IDSSockAddrWrapper *)addressCopy copy];
   v18 = self->_destinationAddress;
   self->_destinationAddress = v17;
 
-  self->_hasFixedDestination = a4;
+  self->_hasFixedDestination = destination;
   self->_lastDestinationReceived = ids_monotonic_time();
   v19 = +[IDSFoundationLog IDSUDPLink];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1152,7 +1152,7 @@ LABEL_13:
   }
 
   v21 = 4;
-  if (!v8)
+  if (!addressCopy)
   {
     v21 = 1;
   }
@@ -1166,13 +1166,13 @@ LABEL_25:
   return v12;
 }
 
-- (BOOL)setDestinationAddress:(id)a3 localIfIndex:(unsigned int)a4 isFixedDestination:(BOOL)a5 fromAddress:(id)a6
+- (BOOL)setDestinationAddress:(id)address localIfIndex:(unsigned int)index isFixedDestination:(BOOL)destination fromAddress:(id)fromAddress
 {
-  v7 = a5;
+  destinationCopy = destination;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v19 = a4;
-  v11 = a6;
+  addressCopy = address;
+  indexCopy = index;
+  fromAddressCopy = fromAddress;
   v12 = +[IDSFoundationLog IDSUDPLink];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -1180,11 +1180,11 @@ LABEL_25:
     *buf = 67109376;
     *v21 = socket;
     *&v21[4] = 1024;
-    *&v21[6] = a4;
+    *&v21[6] = index;
     _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_DEFAULT, "setting local interface index on socket %d to %u", buf, 0xEu);
   }
 
-  if (setsockopt(self->_socket, 0, 25, &v19, 4u) < 0)
+  if (setsockopt(self->_socket, 0, 25, &indexCopy, 4u) < 0)
   {
     v14 = *__error();
     v15 = +[IDSFoundationLog IDSUDPLink];
@@ -1196,7 +1196,7 @@ LABEL_25:
       *&v21[8] = 1024;
       v22 = 720;
       v23 = 1024;
-      v24 = v19;
+      v24 = indexCopy;
       v25 = 1024;
       v26 = v18;
       v27 = 1024;
@@ -1205,15 +1205,15 @@ LABEL_25:
     }
   }
 
-  v16 = [(IDSUDPLink *)self setDestinationAddress:v10 isFixedDestination:v7 fromAddress:v11];
+  v16 = [(IDSUDPLink *)self setDestinationAddress:addressCopy isFixedDestination:destinationCopy fromAddress:fromAddressCopy];
 
   return v16;
 }
 
-- (BOOL)setDestinationAddressToDeviceIDMap:(id)a3
+- (BOOL)setDestinationAddressToDeviceIDMap:(id)map
 {
-  objc_storeStrong(&self->_destinationAddressToDeviceIDMap, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_destinationAddressToDeviceIDMap, map);
+  mapCopy = map;
   self->_hasFixedDestination = 1;
   self->_state = 4;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1222,10 +1222,10 @@ LABEL_25:
   return 1;
 }
 
-- (void)reconnectWithLocalAddress:(id)a3
+- (void)reconnectWithLocalAddress:(id)address
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   destinationAddress = self->_destinationAddress;
   if (!destinationAddress || self->_hasFixedDestination)
   {
@@ -1282,9 +1282,9 @@ LABEL_14:
   }
 
   v7 = [[IDSSockAddrWrapper alloc] initWithSockAddr:v18];
-  v8 = [v4 ipString];
-  v9 = [(IDSSockAddrWrapper *)v7 ipString];
-  if (v8 && ![v8 isEqualToString:v9])
+  ipString = [addressCopy ipString];
+  ipString2 = [(IDSSockAddrWrapper *)v7 ipString];
+  if (ipString && ![ipString isEqualToString:ipString2])
   {
     v10 = +[IDSFoundationLog IDSUDPLink];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1311,13 +1311,13 @@ LABEL_14:
 LABEL_19:
 }
 
-- (id)newSocketWithIPVersion:(unint64_t)a3 wantsAWDL:(BOOL)a4 wantsWiFi:(BOOL)a5 wantsCellular:(BOOL)a6 clientUUID:(unsigned __int8)a7[16]
+- (id)newSocketWithIPVersion:(unint64_t)version wantsAWDL:(BOOL)l wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular clientUUID:(unsigned __int8)d[16]
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  cellularCopy = cellular;
+  fiCopy = fi;
+  lCopy = l;
   v38 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (version)
   {
     v13 = 30;
   }
@@ -1328,9 +1328,9 @@ LABEL_19:
   }
 
   self->_addressFamily = v13;
-  self->_wantsAWDL = a4;
-  self->_wantsWiFi = a5;
-  self->_wantsCellular = a6;
+  self->_wantsAWDL = l;
+  self->_wantsWiFi = fi;
+  self->_wantsCellular = cellular;
   v14 = [IDSUDPLink _createNewUDPSocketWithIPVersion:"_createNewUDPSocketWithIPVersion:localPort:wantsAWDL:clientUUID:" localPort:? wantsAWDL:? clientUUID:?];
   self->_socket = v14;
   if (v14 == -1)
@@ -1354,7 +1354,7 @@ LABEL_19:
     IDSTransportThreadAddSocket(v14, v27, 0);
   }
 
-  v15 = [(IDSUDPLink *)self _createNewUDPSocketWithIPVersion:a3 localPort:&self->_cellularPort wantsAWDL:v10 clientUUID:a7];
+  v15 = [(IDSUDPLink *)self _createNewUDPSocketWithIPVersion:version localPort:&self->_cellularPort wantsAWDL:lCopy clientUUID:d];
   self->_cellularSocket = v15;
   if (v15 == -1)
   {
@@ -1403,7 +1403,7 @@ LABEL_18:
   allowsLinkLocal = self->_allowsLinkLocal;
   useDefaultInterfaceOnly = self->_useDefaultInterfaceOnly;
   LOBYTE(v25) = [(NSString *)self->_cbuuid isEqualToString:@"12345678-7654-DADA-DADA-DADADADADADA"];
-  result = [(IDSUDPLink *)self _createNetworkInterfaceArrayWithIPVersion:a3 wantsAWDL:v10 wantsWiFi:v9 wantsCellular:v8 allowsLinkLocal:allowsLinkLocal useDefaultInterfaceOnly:useDefaultInterfaceOnly defaultPairedDevice:v25];
+  result = [(IDSUDPLink *)self _createNetworkInterfaceArrayWithIPVersion:version wantsAWDL:lCopy wantsWiFi:fiCopy wantsCellular:cellularCopy allowsLinkLocal:allowsLinkLocal useDefaultInterfaceOnly:useDefaultInterfaceOnly defaultPairedDevice:v25];
   if (!result)
   {
     self->_state = 1;
@@ -1412,12 +1412,12 @@ LABEL_18:
   return result;
 }
 
-- (id)newSocketWithIPVersion:(unint64_t)a3 wantsAWDL:(BOOL)a4 wantsWiFi:(BOOL)a5 wantsCellular:(BOOL)a6
+- (id)newSocketWithIPVersion:(unint64_t)version wantsAWDL:(BOOL)l wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v7[0] = 0;
   v7[1] = 0;
-  return [(IDSUDPLink *)self newSocketWithIPVersion:a3 wantsAWDL:a4 wantsWiFi:a5 wantsCellular:a6 clientUUID:v7];
+  return [(IDSUDPLink *)self newSocketWithIPVersion:version wantsAWDL:l wantsWiFi:fi wantsCellular:cellular clientUUID:v7];
 }
 
 - (id)copyCurrentNetworkInterfaces
@@ -1433,30 +1433,30 @@ LABEL_18:
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ([v9 isEqualToString:self->_cbuuid] & 1) == 0)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v10 = cbuuidCopy;
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 819, a3);
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 819, buffer);
     v14 = 10;
   }
 
   else
   {
-    var0 = a3->var0;
-    var2 = a3->var2;
+    var0 = buffer->var0;
+    var2 = buffer->var2;
     v18[0] = var0;
-    if (a3->var19.ss_family)
+    if (buffer->var19.ss_family)
     {
-      if (a3->var18.ss_family && (var17 = a3->var17, var17))
+      if (buffer->var18.ss_family && (var17 = buffer->var17, var17))
       {
-        BYTE2(v16) = a3->var22;
-        LOWORD(v16) = a3->var21;
-        v13 = [(IDSUDPLink *)self _sendBytesArray:v18 lengthArray:&var2 arraySize:1 localInterfaceIndex:var17 localAddress:&a3->var18 destinationAddress:&a3->var19 trafficClass:v16 DSCP:?];
+        BYTE2(v16) = buffer->var22;
+        LOWORD(v16) = buffer->var21;
+        v13 = [(IDSUDPLink *)self _sendBytesArray:v18 lengthArray:&var2 arraySize:1 localInterfaceIndex:var17 localAddress:&buffer->var18 destinationAddress:&buffer->var19 trafficClass:v16 DSCP:?];
       }
 
       else
@@ -1471,72 +1471,72 @@ LABEL_18:
     }
 
     v14 = v13;
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 847, a3);
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 847, buffer);
   }
 
   return v14;
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 destination:(id)a4 toDeviceID:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer destination:(id)destination toDeviceID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ([v9 isEqualToString:self->_cbuuid] & 1) == 0)
+  destinationCopy = destination;
+  dCopy = d;
+  v10 = dCopy;
+  if (dCopy && ([dCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 853, a3);
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 853, buffer);
     v11 = 10;
   }
 
   else
   {
-    v11 = -[IDSUDPLink _sendBytes:length:destinationAddress:](self, "_sendBytes:length:destinationAddress:", a3->var0, a3->var2, [v8 sa]);
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 861, a3);
+    v11 = -[IDSUDPLink _sendBytes:length:destinationAddress:](self, "_sendBytes:length:destinationAddress:", buffer->var0, buffer->var2, [destinationCopy sa]);
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 861, buffer);
   }
 
   return v11;
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 sourceInterface:(id)a4 destination:(id)a5 toDeviceID:(id)a6
+- (unint64_t)sendPacketBuffer:(id *)buffer sourceInterface:(id)interface destination:(id)destination toDeviceID:(id)d
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12 && ([v12 isEqualToString:self->_cbuuid] & 1) == 0)
+  interfaceCopy = interface;
+  destinationCopy = destination;
+  dCopy = d;
+  v13 = dCopy;
+  if (dCopy && ([dCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 867, a3);
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 867, buffer);
     v19 = 10;
   }
 
   else
   {
-    var0 = a3->var0;
-    var2 = a3->var2;
+    var0 = buffer->var0;
+    var2 = buffer->var2;
     v23[0] = var0;
-    v15 = [v10 index];
-    v16 = [v10 address];
-    v17 = [v16 sa];
-    v18 = [v11 sa];
-    BYTE2(v21) = a3->var22;
-    LOWORD(v21) = a3->var21;
-    v19 = [(IDSUDPLink *)self _sendBytesArray:v23 lengthArray:&var2 arraySize:1 localInterfaceIndex:v15 localAddress:v17 destinationAddress:v18 trafficClass:v21 DSCP:?];
+    index = [interfaceCopy index];
+    address = [interfaceCopy address];
+    v17 = [address sa];
+    v18 = [destinationCopy sa];
+    BYTE2(v21) = buffer->var22;
+    LOWORD(v21) = buffer->var21;
+    v19 = [(IDSUDPLink *)self _sendBytesArray:v23 lengthArray:&var2 arraySize:1 localInterfaceIndex:index localAddress:v17 destinationAddress:v18 trafficClass:v21 DSCP:?];
 
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 883, a3);
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 883, buffer);
   }
 
   return v19;
 }
 
-- (unint64_t)sendPacketBufferArray:(id *)a3 arraySize:(int)a4 toDeviceUniqueID:(id)a5 cbuuid:(id)a6
+- (unint64_t)sendPacketBufferArray:(id *)array arraySize:(int)size toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v7 = *&a4;
+  v7 = *&size;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (v11 && ([v11 isEqualToString:self->_cbuuid] & 1) == 0)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v12 = cbuuidCopy;
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
     if (v7 < 1)
     {
@@ -1549,7 +1549,7 @@ LABEL_18:
       v23 = 10;
       do
       {
-        v22 = *a3++;
+        v22 = *array++;
         _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 890, v22);
         --v21;
       }
@@ -1574,11 +1574,11 @@ LABEL_18:
     {
       v14 = v28;
       v15 = v29;
-      v16 = a3;
+      arrayCopy = array;
       v17 = v7;
       do
       {
-        v18 = *v16++;
+        v18 = *arrayCopy++;
         *v15++ = *v18;
         *v14++ = v18[2];
         --v17;
@@ -1587,8 +1587,8 @@ LABEL_18:
       while (v17);
     }
 
-    v19 = *a3;
-    if (!*(*a3 + 185) || (*(v19 + 57) ? (v20 = *(v19 + 12) == 0) : (v20 = 1), v20))
+    v19 = *array;
+    if (!*(*array + 185) || (*(v19 + 57) ? (v20 = *(v19 + 12) == 0) : (v20 = 1), v20))
     {
       v23 = 12;
     }
@@ -1605,7 +1605,7 @@ LABEL_18:
       v24 = v7;
       do
       {
-        v25 = *a3++;
+        v25 = *array++;
         _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSUDPLink.m", 922, v25);
         --v24;
       }
@@ -1617,7 +1617,7 @@ LABEL_18:
   return v23;
 }
 
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link
 {
   previousReportTime = self->_previousReportTime;
   if (previousReportTime == 0.0)
@@ -1627,10 +1627,10 @@ LABEL_18:
 
   else
   {
-    v7 = a3 - previousReportTime;
+    v7 = report - previousReportTime;
     v8 = self->_totalBytesSent - self->_previousBytesSent;
     v9 = self->_totalBytesReceived - self->_previousBytesReceived;
-    if (a4)
+    if (link)
     {
       v10 = 42;
     }
@@ -1675,7 +1675,7 @@ LABEL_18:
     v12 = [v28 stringWithFormat:@"%c InfraWiFi (%s) Tx %6llu pkts %@B %@bps     %6llu pkts %@B\n                        Rx %6llu pkts %@B %@bps     %6llu pkts %@B\n", v27, v26, v25, v14, v15, totalPacketsSent, v17, v18, v19, v20, totalPacketsReceived, v22];
   }
 
-  self->_previousReportTime = a3;
+  self->_previousReportTime = report;
   v23 = *&self->_totalBytesReceived;
   *&self->_previousBytesSent = *&self->_totalBytesSent;
   *&self->_previousBytesReceived = v23;
@@ -1683,9 +1683,9 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)setTrafficClass:(int)a3
+- (BOOL)setTrafficClass:(int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   socket = self->_socket;
   if (socket == -1)
   {
@@ -1713,18 +1713,18 @@ LABEL_18:
   return v6;
 }
 
-- (void)setWiFiAssistState:(BOOL)a3
+- (void)setWiFiAssistState:(BOOL)state
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = 1;
-  if (!a3)
+  if (!state)
   {
     v5 = 2;
   }
 
   v9 = v5;
-  v8 = a3;
-  if (setsockopt(self->_cellularSocket, 0xFFFF, 4387, &v9, 8u) == -1 || setsockopt(self->_cellularSocket, 0xFFFF, 4373, &v8, 4u) == -1)
+  stateCopy = state;
+  if (setsockopt(self->_cellularSocket, 0xFFFF, 4387, &v9, 8u) == -1 || setsockopt(self->_cellularSocket, 0xFFFF, 4373, &stateCopy, 4u) == -1)
   {
     v6 = +[IDSFoundationLog IDSUDPLink];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1742,7 +1742,7 @@ LABEL_18:
 
   else
   {
-    self->_wifiAssistEnabled = a3;
+    self->_wifiAssistEnabled = state;
   }
 }
 

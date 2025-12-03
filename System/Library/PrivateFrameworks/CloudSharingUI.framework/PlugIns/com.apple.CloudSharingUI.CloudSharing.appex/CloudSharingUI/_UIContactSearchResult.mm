@@ -1,17 +1,17 @@
 @interface _UIContactSearchResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _UIContactSearchResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CNComposeRecipient *)self->_composeRecipient isEqual:v4[1]];
+    v5 = [(CNComposeRecipient *)self->_composeRecipient isEqual:equalCopy[1]];
   }
 
   else
@@ -24,8 +24,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CNComposeRecipient *)self->_composeRecipient address];
-  v3 = [v2 hash];
+  address = [(CNComposeRecipient *)self->_composeRecipient address];
+  v3 = [address hash];
 
   return v3;
 }

@@ -1,19 +1,19 @@
 @interface KeychainItemUpgradeRequestServer
 + (id)server;
-- (KeychainItemUpgradeRequestServer)initWithLockStateTracker:(id)a3;
+- (KeychainItemUpgradeRequestServer)initWithLockStateTracker:(id)tracker;
 @end
 
 @implementation KeychainItemUpgradeRequestServer
 
-- (KeychainItemUpgradeRequestServer)initWithLockStateTracker:(id)a3
+- (KeychainItemUpgradeRequestServer)initWithLockStateTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = KeychainItemUpgradeRequestServer;
   v5 = [(KeychainItemUpgradeRequestServer *)&v9 init];
   if (v5)
   {
-    v6 = [[KeychainItemUpgradeRequestController alloc] initWithLockStateTracker:v4];
+    v6 = [[KeychainItemUpgradeRequestController alloc] initWithLockStateTracker:trackerCopy];
     controller = v5->_controller;
     v5->_controller = v6;
   }

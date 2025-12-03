@@ -9,8 +9,8 @@
 {
   v45 = *MEMORY[0x277D85DE8];
   v7 = a5;
-  v8 = [a3 eventBody];
-  if (v8)
+  eventBody = [a3 eventBody];
+  if (eventBody)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -18,40 +18,40 @@
       v9 = getWFTriggersLogObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v8 semanticModeIdentifier];
-        v11 = [v8 mode];
-        v12 = [v8 semanticModeIdentifier];
-        v26 = [v8 starting];
-        v13 = [a1 activityUniqueIdentifier];
-        v14 = [a1 activitySemanticIdentifier];
+        semanticModeIdentifier = [eventBody semanticModeIdentifier];
+        mode = [eventBody mode];
+        semanticModeIdentifier2 = [eventBody semanticModeIdentifier];
+        starting = [eventBody starting];
+        activityUniqueIdentifier = [self activityUniqueIdentifier];
+        activitySemanticIdentifier = [self activitySemanticIdentifier];
         *buf = 136317186;
         v28 = "[WFUserFocusActivityTrigger(BiomeContext) shouldFireInResponseToEvent:triggerIdentifier:completion:]";
         v29 = 2114;
-        v30 = v10;
+        v30 = semanticModeIdentifier;
         v31 = 2114;
-        v32 = v11;
+        v32 = mode;
         v33 = 2114;
-        v34 = v12;
+        v34 = semanticModeIdentifier2;
         v35 = 1024;
-        v36 = v26;
+        v36 = starting;
         v37 = 2114;
-        v38 = v13;
+        v38 = activityUniqueIdentifier;
         v39 = 2114;
-        v40 = v14;
+        v40 = activitySemanticIdentifier;
         v41 = 1024;
-        v42 = [a1 onEnable];
+        onEnable = [self onEnable];
         v43 = 1024;
-        v44 = [a1 onDisable];
+        onDisable = [self onDisable];
         _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s Received change for Kettle mode (%{public}@) — incoming change (uuid: %{public}@, id: %{public}@, starting: %i), trigger (uuid: %{public}@, id: %{public}@, onEnable: %i, onDisable: %i)", buf, 0x50u);
       }
 
-      v15 = [a1 activitySemanticIdentifier];
+      activitySemanticIdentifier2 = [self activitySemanticIdentifier];
 
-      if (v15)
+      if (activitySemanticIdentifier2)
       {
-        v16 = [a1 activitySemanticIdentifier];
-        v17 = [v8 semanticModeIdentifier];
-        v18 = [v16 isEqualToString:v17];
+        activitySemanticIdentifier3 = [self activitySemanticIdentifier];
+        semanticModeIdentifier3 = [eventBody semanticModeIdentifier];
+        v18 = [activitySemanticIdentifier3 isEqualToString:semanticModeIdentifier3];
 
         if ((v18 & 1) == 0)
         {
@@ -72,9 +72,9 @@ LABEL_18:
 
       else
       {
-        v21 = [a1 activityUniqueIdentifier];
-        v22 = [v8 mode];
-        v23 = [v21 isEqualToString:v22];
+        activityUniqueIdentifier2 = [self activityUniqueIdentifier];
+        mode2 = [eventBody mode];
+        v23 = [activityUniqueIdentifier2 isEqualToString:mode2];
 
         if ((v23 & 1) == 0)
         {
@@ -96,22 +96,22 @@ LABEL_22:
         }
       }
 
-      if ([v8 starting] && (objc_msgSend(a1, "onEnable") & 1) != 0)
+      if ([eventBody starting] && (objc_msgSend(self, "onEnable") & 1) != 0)
       {
-        v24 = 1;
+        onDisable2 = 1;
       }
 
-      else if ([v8 starting])
+      else if ([eventBody starting])
       {
-        v24 = 0;
+        onDisable2 = 0;
       }
 
       else
       {
-        v24 = [a1 onDisable];
+        onDisable2 = [self onDisable];
       }
 
-      v7[2](v7, v24);
+      v7[2](v7, onDisable2);
       goto LABEL_22;
     }
   }
@@ -126,10 +126,10 @@ LABEL_23:
 {
   v3 = a3;
   v4 = BiomeLibrary();
-  v5 = [v4 UserFocus];
-  v6 = [v5 ComputedMode];
+  userFocus = [v4 UserFocus];
+  computedMode = [userFocus ComputedMode];
 
-  v7 = [v6 DSLPublisherWithUseCase:@"Automation.Trigger"];
+  v7 = [computedMode DSLPublisherWithUseCase:@"Automation.Trigger"];
   v8 = [v7 subscribeOn:v3];
 
   return v8;

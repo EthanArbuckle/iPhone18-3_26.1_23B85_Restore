@@ -1,6 +1,6 @@
 @interface _ISAnimatedImageTimerForwardingProxy
 - (ISAnimatedImageTimer)_forwardingTarget;
-- (void)_displayLinkFire:(id)a3;
+- (void)_displayLinkFire:(id)fire;
 @end
 
 @implementation _ISAnimatedImageTimerForwardingProxy
@@ -12,11 +12,11 @@
   return WeakRetained;
 }
 
-- (void)_displayLinkFire:(id)a3
+- (void)_displayLinkFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   WeakRetained = objc_loadWeakRetained(&self->__forwardingTarget);
-  [WeakRetained _animationTimerFired:v4];
+  [WeakRetained _animationTimerFired:fireCopy];
 }
 
 @end

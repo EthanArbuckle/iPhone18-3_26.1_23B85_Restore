@@ -1,27 +1,27 @@
 @interface CRLMetalShaderManager
-- (CRLMetalShaderManager)initWithDevice:(id)a3;
-- (id)computeShaderWithName:(id)a3 initBlock:(id)a4;
-- (id)libraryForBundle:(id)a3;
+- (CRLMetalShaderManager)initWithDevice:(id)device;
+- (id)computeShaderWithName:(id)name initBlock:(id)block;
+- (id)libraryForBundle:(id)bundle;
 - (id)linearClampToEdgeSampler;
 - (id)linearClampToZeroSampler;
 - (id)nearestClampToEdgeSampler;
 - (id)nearestClampToZeroSampler;
-- (id)samplerWithName:(id)a3 initBlock:(id)a4;
-- (id)shaderWithName:(id)a3 initBlock:(id)a4;
+- (id)samplerWithName:(id)name initBlock:(id)block;
+- (id)shaderWithName:(id)name initBlock:(id)block;
 @end
 
 @implementation CRLMetalShaderManager
 
-- (CRLMetalShaderManager)initWithDevice:(id)a3
+- (CRLMetalShaderManager)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = CRLMetalShaderManager;
   v6 = [(CRLMetalShaderManager *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[NSMapTable strongToStrongObjectsMapTable];
     libraries = v7->_libraries;
     v7->_libraries = v8;
@@ -45,16 +45,16 @@
   return v7;
 }
 
-- (id)libraryForBundle:(id)a3
+- (id)libraryForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   os_unfair_lock_lock(&self->_librariesLock);
-  v5 = [(NSMapTable *)self->_libraries objectForKeyedSubscript:v4];
+  v5 = [(NSMapTable *)self->_libraries objectForKeyedSubscript:bundleCopy];
   if (!v5)
   {
-    v6 = [(CRLMetalShaderManager *)self device];
+    device = [(CRLMetalShaderManager *)self device];
     v13 = 0;
-    v5 = [v6 newDefaultLibraryWithBundle:v4 error:&v13];
+    v5 = [device newDefaultLibraryWithBundle:bundleCopy error:&v13];
     v7 = v13;
 
     if (!v5)
@@ -86,7 +86,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:57 isFatal:0 description:"Failed to create library, error %@", v7];
     }
 
-    [(NSMapTable *)self->_libraries setObject:v5 forKeyedSubscript:v4];
+    [(NSMapTable *)self->_libraries setObject:v5 forKeyedSubscript:bundleCopy];
   }
 
   os_unfair_lock_unlock(&self->_librariesLock);
@@ -94,15 +94,15 @@
   return v5;
 }
 
-- (id)shaderWithName:(id)a3 initBlock:(id)a4
+- (id)shaderWithName:(id)name initBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_shadersLock);
-  v8 = [(NSMutableDictionary *)self->_shaders objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_shaders objectForKeyedSubscript:nameCopy];
   if (!v8)
   {
-    v8 = v7[2](v7);
+    v8 = blockCopy[2](blockCopy);
     if (!v8)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -132,7 +132,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:70 isFatal:0 description:"invalid nil value for '%{public}s'", "namedShader"];
     }
 
-    [(NSMutableDictionary *)self->_shaders setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_shaders setObject:v8 forKeyedSubscript:nameCopy];
   }
 
   os_unfair_lock_unlock(&self->_shadersLock);
@@ -140,15 +140,15 @@
   return v8;
 }
 
-- (id)computeShaderWithName:(id)a3 initBlock:(id)a4
+- (id)computeShaderWithName:(id)name initBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_computeShadersLock);
-  v8 = [(NSMutableDictionary *)self->_computeShaders objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_computeShaders objectForKeyedSubscript:nameCopy];
   if (!v8)
   {
-    v8 = v7[2](v7);
+    v8 = blockCopy[2](blockCopy);
     if (!v8)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -178,7 +178,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:83 isFatal:0 description:"invalid nil value for '%{public}s'", "namedShader"];
     }
 
-    [(NSMutableDictionary *)self->_computeShaders setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_computeShaders setObject:v8 forKeyedSubscript:nameCopy];
   }
 
   os_unfair_lock_unlock(&self->_computeShadersLock);
@@ -186,15 +186,15 @@
   return v8;
 }
 
-- (id)samplerWithName:(id)a3 initBlock:(id)a4
+- (id)samplerWithName:(id)name initBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_samplersLock);
-  v8 = [(NSMutableDictionary *)self->_samplers objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_samplers objectForKeyedSubscript:nameCopy];
   if (!v8)
   {
-    v8 = v7[2](v7);
+    v8 = blockCopy[2](blockCopy);
     if (!v8)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -224,7 +224,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:97 isFatal:0 description:"invalid nil value for '%{public}s'", "namedSampler"];
     }
 
-    [(NSMutableDictionary *)self->_samplers setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_samplers setObject:v8 forKeyedSubscript:nameCopy];
   }
 
   os_unfair_lock_unlock(&self->_samplersLock);

@@ -1,36 +1,36 @@
 @interface MRSendVoiceInputMessage
 - ($F24F406B2B787EFB06265DBA3D28CBD5)time;
 - (MRAudioBuffer)buffer;
-- (MRSendVoiceInputMessage)initWithBuffer:(id)a3 time:(id)a4 gain:(float)a5;
+- (MRSendVoiceInputMessage)initWithBuffer:(id)buffer time:(id)time gain:(float)gain;
 - (float)gain;
 - (void)_initializeDataIfNecessary;
 @end
 
 @implementation MRSendVoiceInputMessage
 
-- (MRSendVoiceInputMessage)initWithBuffer:(id)a3 time:(id)a4 gain:(float)a5
+- (MRSendVoiceInputMessage)initWithBuffer:(id)buffer time:(id)time gain:(float)gain
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
+  var1 = time.var1;
+  var0 = time.var0;
+  bufferCopy = buffer;
   v18.receiver = self;
   v18.super_class = MRSendVoiceInputMessage;
   v10 = [(MRProtocolMessage *)&v18 init];
   if (v10)
   {
     v11 = objc_alloc_init(MRMutableAudioDataBlock);
-    [(MRMutableAudioDataBlock *)v11 setBuffer:v9];
+    [(MRMutableAudioDataBlock *)v11 setBuffer:bufferCopy];
     [(MRMutableAudioDataBlock *)v11 setTime:var0, var1];
-    *&v12 = a5;
+    *&v12 = gain;
     [(MRMutableAudioDataBlock *)v11 setGain:v12];
     dataBlock = v10->_dataBlock;
     v10->_dataBlock = &v11->super;
     v14 = v11;
 
     v15 = objc_alloc_init(_MRSendVoiceInputMessageProtobuf);
-    v16 = [(MRAudioDataBlock *)v10->_dataBlock protobuf];
+    protobuf = [(MRAudioDataBlock *)v10->_dataBlock protobuf];
 
-    [(_MRSendVoiceInputMessageProtobuf *)v15 setDataBlock:v16];
+    [(_MRSendVoiceInputMessageProtobuf *)v15 setDataBlock:protobuf];
     [(MRProtocolMessage *)v10 setUnderlyingCodableMessage:v15];
   }
 
@@ -70,9 +70,9 @@
   if (!self->_dataBlock)
   {
     v3 = [MRAudioDataBlock alloc];
-    v7 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v4 = [v7 dataBlock];
-    v5 = [(MRAudioDataBlock *)v3 initWithProtobuf:v4];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    dataBlock = [underlyingCodableMessage dataBlock];
+    v5 = [(MRAudioDataBlock *)v3 initWithProtobuf:dataBlock];
     dataBlock = self->_dataBlock;
     self->_dataBlock = v5;
   }

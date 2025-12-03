@@ -1,9 +1,9 @@
 @interface ACCTransportIOAccessoryOOBPairing
 - (ACCTransportIOAccessoryOOBPairingProtocol)delegate;
-- (BOOL)_handleIncomingOOBPairingInfoData:(int)a3;
+- (BOOL)_handleIncomingOOBPairingInfoData:(int)data;
 - (BOOL)openServiceSession;
-- (BOOL)supportsType:(int)a3;
-- (BOOL)transmitData:(id)a3;
+- (BOOL)supportsType:(int)type;
+- (BOOL)transmitData:(id)data;
 - (NSMutableData)deviceSupportedTypes;
 - (NSNumber)devicePlatformID;
 - (NSNumber)supports2way;
@@ -17,7 +17,7 @@
 - (NSString)deviceVendorName;
 - (NSString)parentConnectionUUID;
 - (id)description;
-- (int)_convertOOBPairingTypeFromIOAccessory:(int)a3;
+- (int)_convertOOBPairingTypeFromIOAccessory:(int)accessory;
 - (void)_checkAccInfo;
 - (void)_registerReadCallback;
 - (void)closeServiceSession;
@@ -65,12 +65,12 @@
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ACCTransportIOAccessoryBase *)self ioService];
-    v7 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
+    endpointUUID = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
     v24 = 67109378;
-    *v25 = v6;
+    *v25 = ioService;
     *&v25[4] = 2112;
-    *&v25[6] = v7;
+    *&v25[6] = endpointUUID;
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "OOBPairing openServiceSession, ioService = %d, endpointUUID %@", &v24, 0x12u);
   }
 
@@ -97,9 +97,9 @@
       goto LABEL_25;
     }
 
-    v13 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+    endpointUUID2 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
     v24 = 138412290;
-    *v25 = v13;
+    *v25 = endpointUUID2;
     v14 = "OOB Pairing is already open (endpointUUID %@)";
     v15 = v8;
     v16 = 12;
@@ -111,8 +111,8 @@ LABEL_25:
     goto LABEL_35;
   }
 
-  v9 = [(ACCTransportIOAccessoryBase *)self ioService];
-  v10 = IOServiceOpen(v9, *MEMORY[0x277D85F48], 0, &self->super._ioConnect);
+  ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
+  v10 = IOServiceOpen(ioService2, *MEMORY[0x277D85F48], 0, &self->super._ioConnect);
   if (!v10)
   {
     [(ACCTransportIOAccessoryOOBPairing *)self _registerReadCallback];
@@ -137,14 +137,14 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    v23 = [(ACCTransportIOAccessoryBase *)self ioService];
-    v13 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+    ioService3 = [(ACCTransportIOAccessoryBase *)self ioService];
+    endpointUUID2 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
     v24 = 67109634;
-    *v25 = v23;
+    *v25 = ioService3;
     *&v25[4] = 1024;
     *&v25[6] = 0;
     *&v25[10] = 2112;
-    *&v25[12] = v13;
+    *&v25[12] = endpointUUID2;
     v14 = "OOB Pairing for self.ioService %d is open, result = 0x%X (endpointUUID %@)";
     v15 = v8;
     v16 = 24;
@@ -170,11 +170,11 @@ LABEL_25:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+    endpointUUID3 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
     v24 = 67109378;
     *v25 = v11;
     *&v25[4] = 2112;
-    *&v25[6] = v19;
+    *&v25[6] = endpointUUID3;
     _os_log_impl(&dword_233656000, v8, OS_LOG_TYPE_DEFAULT, "ERROR: OOB Pairing open failed! result %xh (endpointUUID %@)", &v24, 0x12u);
   }
 
@@ -221,9 +221,9 @@ LABEL_35:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+      endpointUUID = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = endpointUUID;
       v10 = "OOB Pairing is closed (endpointUUID %@)";
 LABEL_22:
       _os_log_impl(&dword_233656000, v8, OS_LOG_TYPE_DEFAULT, v10, &v12, 0xCu);
@@ -260,9 +260,9 @@ LABEL_22:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+      endpointUUID = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = endpointUUID;
       v10 = "OOB Pairing is already closed (endpointUUID %@)";
       goto LABEL_22;
     }
@@ -271,9 +271,9 @@ LABEL_22:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)supportsType:(int)a3
+- (BOOL)supportsType:(int)type
 {
-  if (a3 > 1 || ![(NSMutableData *)self->_deviceSupportedTypes length])
+  if (type > 1 || ![(NSMutableData *)self->_deviceSupportedTypes length])
   {
     return 0;
   }
@@ -282,8 +282,8 @@ LABEL_22:
   do
   {
     v6 = *([(NSMutableData *)self->_deviceSupportedTypes bytes]+ v5);
-    v7 = v6 == a3;
-    if (v6 == a3)
+    v7 = v6 == type;
+    if (v6 == type)
     {
       break;
     }
@@ -295,7 +295,7 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)_handleIncomingOOBPairingInfoData:(int)a3
+- (BOOL)_handleIncomingOOBPairingInfoData:(int)data
 {
   v113 = *MEMORY[0x277D85DE8];
   v4 = 0x2812FE000uLL;
@@ -310,9 +310,9 @@ LABEL_22:
   }
 
   v6 = !v5;
-  if (a3)
+  if (data)
   {
-    if (a3 == 1)
+    if (data == 1)
     {
       if (v6)
       {
@@ -367,12 +367,12 @@ LABEL_22:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
             oobPairingDataReadBufferLength = self->_oobPairingDataReadBufferLength;
-            v40 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+            endpointUUID = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
             ioConnect = self->super._ioConnect;
             *buf = 134218498;
             *v111 = oobPairingDataReadBufferLength;
             *&v111[8] = 2112;
-            *&v111[10] = v40;
+            *&v111[10] = endpointUUID;
             *&v111[18] = 1024;
             *&v111[20] = ioConnect;
             _os_log_debug_impl(&dword_233656000, v19, OS_LOG_TYPE_DEBUG, "read upto %zu bytes for OOB Pairing Data (endpointUUID %@), call IOAccessoryOOBPairingInterfaceGetPairingData, ioConnect %d", buf, 0x1Cu);
@@ -406,11 +406,11 @@ LABEL_22:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
             v42 = self->_oobPairingDataReadBufferLength;
-            v43 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+            endpointUUID2 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
             *buf = 134218498;
             *v111 = v42;
             *&v111[8] = 2112;
-            *&v111[10] = v43;
+            *&v111[10] = endpointUUID2;
             *&v111[18] = 1024;
             *&v111[20] = PairingData;
             _os_log_debug_impl(&dword_233656000, v25, OS_LOG_TYPE_DEBUG, "read %zu bytes for OOB Pairing Data (endpointUUID %@), result = 0x%X", buf, 0x1Cu);
@@ -427,14 +427,14 @@ LABEL_22:
             goto LABEL_48;
           }
 
-          v28 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
-          if (!v28)
+          delegate = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
+          if (!delegate)
           {
             goto LABEL_48;
           }
 
-          v29 = v28;
-          v30 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
+          v29 = delegate;
+          delegate2 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
           v31 = objc_opt_respondsToSelector();
 
           if (v31)
@@ -445,9 +445,9 @@ LABEL_22:
             [v32 appendBytes:buf length:2];
             [v32 appendBytes:&activeType length:2];
             [v32 appendBytes:self->_oobPairingDataReadBuffer length:self->_oobPairingDataReadBufferLength];
-            v33 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
-            v34 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-            [v33 IOAccessoryOOBPairingDataArrived:v32 endpointUUID:v34];
+            delegate3 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
+            endpointUUID3 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+            [delegate3 IOAccessoryOOBPairingDataArrived:v32 endpointUUID:endpointUUID3];
           }
 
           else
@@ -478,14 +478,14 @@ LABEL_48:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
             {
               v44 = self->_oobPairingDataReadBufferLength;
-              v45 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-              v46 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
+              endpointUUID4 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+              parentConnectionUUID = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
               *buf = 134218754;
               *v111 = v44;
               *&v111[8] = 2112;
-              *&v111[10] = v45;
+              *&v111[10] = endpointUUID4;
               *&v111[18] = 2112;
-              *&v111[20] = v46;
+              *&v111[20] = parentConnectionUUID;
               *&v111[28] = 1024;
               v112 = 0;
               _os_log_error_impl(&dword_233656000, v37, OS_LOG_TYPE_ERROR, "received OOB Pairing Data (%zu) but delegate doesn't handle it or no data, endpointUUID %@, parentUUID %@, result %d", buf, 0x26u);
@@ -524,12 +524,12 @@ LABEL_48:
 
         if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
         {
-          v102 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-          v103 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
+          endpointUUID5 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+          parentConnectionUUID2 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
           *buf = 138412802;
-          *v111 = v102;
+          *v111 = endpointUUID5;
           *&v111[8] = 2112;
-          *&v111[10] = v103;
+          *&v111[10] = parentConnectionUUID2;
           *&v111[18] = 1024;
           *&v111[20] = PairingData;
           v104 = "error reading OOB Pairing Data, endpointUUID %@, parentUUID %@, result %d";
@@ -564,7 +564,7 @@ LABEL_157:
 
     else
     {
-      if (a3 == 2)
+      if (data == 2)
       {
         if (v6)
         {
@@ -633,14 +633,14 @@ LABEL_157:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v93 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-        v94 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
+        endpointUUID6 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+        parentConnectionUUID3 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
         *buf = 67109634;
-        *v111 = a3;
+        *v111 = data;
         *&v111[4] = 2112;
-        *&v111[6] = v93;
+        *&v111[6] = endpointUUID6;
         *&v111[14] = 2112;
-        *&v111[16] = v94;
+        *&v111[16] = parentConnectionUUID3;
         _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "Wrong OOB Pairing data type (%d), endpointUUID %@, parentUUID %@", buf, 0x1Cu);
       }
     }
@@ -710,12 +710,12 @@ LABEL_157:
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
     {
       oobPairingInfoReadBufferLength = self->_oobPairingInfoReadBufferLength;
-      v77 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+      endpointUUID7 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
       v78 = self->super._ioConnect;
       *buf = 134218498;
       *v111 = oobPairingInfoReadBufferLength;
       *&v111[8] = 2112;
-      *&v111[10] = v77;
+      *&v111[10] = endpointUUID7;
       *&v111[18] = 1024;
       *&v111[20] = v78;
       _os_log_debug_impl(&dword_233656000, v53, OS_LOG_TYPE_DEBUG, "read upto %zu bytes for OOB Pairing Info (endpointUUID %@), call IOAccessoryOOBPairingInterfaceGetPairingInfo, ioConnect %d", buf, 0x1Cu);
@@ -748,17 +748,17 @@ LABEL_157:
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
         v84 = self->super._ioConnect;
-        v85 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-        v86 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
-        v87 = [(ACCTransportIOAccessoryBase *)self ioService];
+        endpointUUID8 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+        parentConnectionUUID4 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
+        ioService = [(ACCTransportIOAccessoryBase *)self ioService];
         *buf = 67109890;
         *v111 = v84;
         *&v111[4] = 2112;
-        *&v111[6] = v85;
+        *&v111[6] = endpointUUID8;
         *&v111[14] = 2112;
-        *&v111[16] = v86;
+        *&v111[16] = parentConnectionUUID4;
         *&v111[24] = 1024;
-        *&v111[26] = v87;
+        *&v111[26] = ioService;
         _os_log_error_impl(&dword_233656000, v61, OS_LOG_TYPE_ERROR, "ERROR: No _ioConnect(%d) while trying to get OOB Pairing Info, endpointUUID %@, parentUUID %@, ioService %d", buf, 0x22u);
 
         v4 = 0x2812FE000;
@@ -795,11 +795,11 @@ LABEL_157:
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
     {
       v79 = self->_oobPairingInfoReadBufferLength;
-      v80 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+      endpointUUID9 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
       *buf = 134218498;
       *v111 = v79;
       *&v111[8] = 2112;
-      *&v111[10] = v80;
+      *&v111[10] = endpointUUID9;
       *&v111[18] = 1024;
       *&v111[20] = PairingInfo;
       _os_log_debug_impl(&dword_233656000, v58, OS_LOG_TYPE_DEBUG, "read %zu bytes for OOB Pairing Info (endpointUUID %@), result = 0x%X", buf, 0x1Cu);
@@ -813,8 +813,8 @@ LABEL_157:
     }
 
     v63 = self->_oobPairingInfoReadBufferLength;
-    v64 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
-    if (v64 && (v65 = v64, [(ACCTransportIOAccessoryOOBPairing *)self delegate], v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_opt_respondsToSelector(), v66, v4 = 0x2812FE000, v65, (v67 & 1) != 0))
+    delegate4 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
+    if (delegate4 && (v65 = delegate4, [(ACCTransportIOAccessoryOOBPairing *)self delegate], v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_opt_respondsToSelector(), v66, v4 = 0x2812FE000, v65, (v67 & 1) != 0))
     {
       *buf = 4;
       activeType = self->_activeType;
@@ -822,9 +822,9 @@ LABEL_157:
       [v68 appendBytes:buf length:2];
       [v68 appendBytes:&activeType length:2];
       [v68 appendBytes:self->_oobPairingInfoReadBuffer length:self->_oobPairingInfoReadBufferLength];
-      v69 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
-      v70 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-      [v69 IOAccessoryOOBPairingInfoArrived:v68 endpointUUID:v70];
+      delegate5 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
+      endpointUUID10 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+      [delegate5 IOAccessoryOOBPairingInfoArrived:v68 endpointUUID:endpointUUID10];
 
       v4 = 0x2812FE000;
     }
@@ -856,14 +856,14 @@ LABEL_157:
       if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
       {
         v81 = self->_oobPairingDataReadBufferLength;
-        v82 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-        v83 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
+        endpointUUID11 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+        parentConnectionUUID5 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
         *buf = 134218754;
         *v111 = v81;
         *&v111[8] = 2112;
-        *&v111[10] = v82;
+        *&v111[10] = endpointUUID11;
         *&v111[18] = 2112;
-        *&v111[20] = v83;
+        *&v111[20] = parentConnectionUUID5;
         *&v111[28] = 1024;
         v112 = 0;
         _os_log_error_impl(&dword_233656000, v73, OS_LOG_TYPE_ERROR, "received OOB Pairing Info (%zu) but delegate doesn't handle it, endpointUUID %@, parentUUID %@, result = %02x", buf, 0x26u);
@@ -904,12 +904,12 @@ LABEL_107:
 
   if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
   {
-    v102 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-    v103 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
+    endpointUUID5 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+    parentConnectionUUID2 = [(ACCTransportIOAccessoryOOBPairing *)self parentConnectionUUID];
     *buf = 138412802;
-    *v111 = v102;
+    *v111 = endpointUUID5;
     *&v111[8] = 2112;
-    *&v111[10] = v103;
+    *&v111[10] = parentConnectionUUID2;
     *&v111[18] = 1024;
     *&v111[20] = PairingInfo;
     v104 = "error reading OOB Pairing Info, endpointUUID %@, parentUUID %@, result = %02x";
@@ -1045,8 +1045,8 @@ LABEL_155:
 
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v27 = [(ACCTransportIOAccessoryBase *)self ioService];
-    v28 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
+    endpointUUID = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
     v29 = self->_deviceVendorName;
     v30 = self->_deviceName;
     v31 = self->_deviceModelNumber;
@@ -1063,10 +1063,10 @@ LABEL_155:
     v44 = 1024;
     v45 = 437;
     v46 = 1024;
-    v47 = v27;
+    v47 = ioService;
     v48 = 2112;
-    v49 = v28;
-    v40 = v28;
+    v49 = endpointUUID;
+    v40 = endpointUUID;
     v50 = 2112;
     v51 = v29;
     v52 = 2112;
@@ -1095,9 +1095,9 @@ LABEL_155:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_convertOOBPairingTypeFromIOAccessory:(int)a3
+- (int)_convertOOBPairingTypeFromIOAccessory:(int)accessory
 {
-  if (a3 == 1)
+  if (accessory == 1)
   {
     v3 = 1;
   }
@@ -1107,7 +1107,7 @@ LABEL_155:
     v3 = 2;
   }
 
-  if (a3)
+  if (accessory)
   {
     return v3;
   }
@@ -1118,10 +1118,10 @@ LABEL_155:
   }
 }
 
-- (BOOL)transmitData:(id)a3
+- (BOOL)transmitData:(id)data
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 8;
@@ -1153,15 +1153,15 @@ LABEL_155:
     [ACCTransportIOAccessoryOOBPairing transmitData:?];
   }
 
-  if (!v4)
+  if (!dataCopy)
   {
     goto LABEL_71;
   }
 
-  v8 = [v4 bytes];
-  v9 = [v4 length];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
   v10 = v9;
-  if (!v8 || (v11 = v9 - 4, v9 < 4))
+  if (!bytes || (v11 = v9 - 4, v9 < 4))
   {
     if (gLogObjects && gNumLogObjects >= 8)
     {
@@ -1192,11 +1192,11 @@ LABEL_155:
     goto LABEL_70;
   }
 
-  v12 = *v8;
+  v12 = *bytes;
   if (v12 >= 2)
   {
-    v13 = v8[1];
-    if (![(ACCTransportIOAccessoryOOBPairing *)self supportsType:v8[1]])
+    v13 = bytes[1];
+    if (![(ACCTransportIOAccessoryOOBPairing *)self supportsType:bytes[1]])
     {
       if (gLogObjects && gNumLogObjects >= 8)
       {
@@ -1342,15 +1342,15 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  v19 = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
+  delegate = [(ACCTransportIOAccessoryOOBPairing *)self delegate];
   if (v12)
   {
-    v20 = [v19 IOAccessoryOOBPairingDataFinishedForEndpointUUID:self->_endpointUUID];
+    v20 = [delegate IOAccessoryOOBPairingDataFinishedForEndpointUUID:self->_endpointUUID];
   }
 
   else
   {
-    v20 = [v19 IOAccessoryOOBPairingDataStartedForEndpointUUID:self->_endpointUUID];
+    v20 = [delegate IOAccessoryOOBPairingDataStartedForEndpointUUID:self->_endpointUUID];
   }
 
   v24 = v20;
@@ -1370,69 +1370,69 @@ LABEL_72:
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
-  v6 = [v4 stringWithFormat:@"OOBPairing %@\n", v5];
-  [v3 appendFormat:@"%@", v6];
+  endpointUUID = [(ACCTransportIOAccessoryOOBPairing *)self endpointUUID];
+  v6 = [v4 stringWithFormat:@"OOBPairing %@\n", endpointUUID];
+  [string appendFormat:@"%@", v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(ACCTransportIOAccessoryOOBPairing *)self deviceVendorName];
-  v9 = [v7 stringWithFormat:@"    deviceVendorName %@\n", v8];
-  [v3 appendFormat:@"%@", v9];
+  deviceVendorName = [(ACCTransportIOAccessoryOOBPairing *)self deviceVendorName];
+  v9 = [v7 stringWithFormat:@"    deviceVendorName %@\n", deviceVendorName];
+  [string appendFormat:@"%@", v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(ACCTransportIOAccessoryOOBPairing *)self deviceName];
-  v12 = [v10 stringWithFormat:@"    deviceName %@\n", v11];
-  [v3 appendFormat:@"%@", v12];
+  deviceName = [(ACCTransportIOAccessoryOOBPairing *)self deviceName];
+  v12 = [v10 stringWithFormat:@"    deviceName %@\n", deviceName];
+  [string appendFormat:@"%@", v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(ACCTransportIOAccessoryOOBPairing *)self deviceModelNumber];
-  v15 = [v13 stringWithFormat:@"    deviceModelNumber %@\n", v14];
-  [v3 appendFormat:@"%@", v15];
+  deviceModelNumber = [(ACCTransportIOAccessoryOOBPairing *)self deviceModelNumber];
+  v15 = [v13 stringWithFormat:@"    deviceModelNumber %@\n", deviceModelNumber];
+  [string appendFormat:@"%@", v15];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [(ACCTransportIOAccessoryOOBPairing *)self deviceHardwareRevision];
-  v18 = [v16 stringWithFormat:@"    deviceHardwareRevision %@\n", v17];
-  [v3 appendFormat:@"%@", v18];
+  deviceHardwareRevision = [(ACCTransportIOAccessoryOOBPairing *)self deviceHardwareRevision];
+  v18 = [v16 stringWithFormat:@"    deviceHardwareRevision %@\n", deviceHardwareRevision];
+  [string appendFormat:@"%@", v18];
 
   v19 = MEMORY[0x277CCACA8];
-  v20 = [(ACCTransportIOAccessoryOOBPairing *)self deviceFirmwareRevision];
-  v21 = [v19 stringWithFormat:@"    deviceFirmwareRevision %@\n", v20];
-  [v3 appendFormat:@"%@", v21];
+  deviceFirmwareRevision = [(ACCTransportIOAccessoryOOBPairing *)self deviceFirmwareRevision];
+  v21 = [v19 stringWithFormat:@"    deviceFirmwareRevision %@\n", deviceFirmwareRevision];
+  [string appendFormat:@"%@", v21];
 
   v22 = MEMORY[0x277CCACA8];
-  v23 = [(ACCTransportIOAccessoryOOBPairing *)self deviceSerialNumber];
-  v24 = [v22 stringWithFormat:@"    deviceSerialNumber %@\n", v23];
-  [v3 appendFormat:@"%@", v24];
+  deviceSerialNumber = [(ACCTransportIOAccessoryOOBPairing *)self deviceSerialNumber];
+  v24 = [v22 stringWithFormat:@"    deviceSerialNumber %@\n", deviceSerialNumber];
+  [string appendFormat:@"%@", v24];
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [(ACCTransportIOAccessoryOOBPairing *)self deviceDockType];
-  v27 = [v25 stringWithFormat:@"    deviceDockType %@\n", v26];
-  [v3 appendFormat:@"%@", v27];
+  deviceDockType = [(ACCTransportIOAccessoryOOBPairing *)self deviceDockType];
+  v27 = [v25 stringWithFormat:@"    deviceDockType %@\n", deviceDockType];
+  [string appendFormat:@"%@", v27];
 
   v28 = MEMORY[0x277CCACA8];
-  v29 = [(ACCTransportIOAccessoryOOBPairing *)self deviceUID];
-  v30 = [v28 stringWithFormat:@"    deviceUID %@\n", v29];
-  [v3 appendFormat:@"%@", v30];
+  deviceUID = [(ACCTransportIOAccessoryOOBPairing *)self deviceUID];
+  v30 = [v28 stringWithFormat:@"    deviceUID %@\n", deviceUID];
+  [string appendFormat:@"%@", v30];
 
   v31 = MEMORY[0x277CCACA8];
-  v32 = [(ACCTransportIOAccessoryOOBPairing *)self deviceSupportedTypes];
-  v33 = [v31 stringWithFormat:@"    deviceSupportedTypes %@\n", v32];
-  [v3 appendFormat:@"%@", v33];
+  deviceSupportedTypes = [(ACCTransportIOAccessoryOOBPairing *)self deviceSupportedTypes];
+  v33 = [v31 stringWithFormat:@"    deviceSupportedTypes %@\n", deviceSupportedTypes];
+  [string appendFormat:@"%@", v33];
 
   v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"    activeType %d\n", -[ACCTransportIOAccessoryOOBPairing activeType](self, "activeType")];
-  [v3 appendFormat:@"%@", v34];
+  [string appendFormat:@"%@", v34];
 
   v35 = MEMORY[0x277CCACA8];
-  v36 = [(ACCTransportIOAccessoryOOBPairing *)self supports2way];
-  v37 = [v35 stringWithFormat:@"    Supports2Way %@\n", v36];
-  [v3 appendFormat:@"%@", v37];
+  supports2way = [(ACCTransportIOAccessoryOOBPairing *)self supports2way];
+  v37 = [v35 stringWithFormat:@"    Supports2Way %@\n", supports2way];
+  [string appendFormat:@"%@", v37];
 
   v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"    IOService %d\n", -[ACCTransportIOAccessoryBase ioService](self, "ioService")];
-  [v3 appendFormat:@"%@", v38];
+  [string appendFormat:@"%@", v38];
 
-  return v3;
+  return string;
 }
 
 - (NSString)deviceVendorName

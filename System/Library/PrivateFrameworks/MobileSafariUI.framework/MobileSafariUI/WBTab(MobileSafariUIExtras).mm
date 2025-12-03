@@ -6,10 +6,10 @@
 
 - (id)addressForNewBookmark
 {
-  v1 = [a1 url];
-  v2 = [v1 safari_originalDataAsString];
+  v1 = [self url];
+  safari_originalDataAsString = [v1 safari_originalDataAsString];
 
-  return v2;
+  return safari_originalDataAsString;
 }
 
 @end

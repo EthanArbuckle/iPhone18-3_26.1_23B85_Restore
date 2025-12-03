@@ -9,15 +9,15 @@
 {
   if (*(self + OBJC_IVAR___STOnBoardingConfigurationUser_age + 8))
   {
-    v2 = [objc_allocWithZone(MEMORY[0x277CCABB0]) init];
+    initWithInteger_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) init];
   }
 
   else
   {
-    v2 = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithInteger_];
+    initWithInteger_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithInteger_];
   }
 
-  return v2;
+  return initWithInteger_;
 }
 
 - (STOnBoardingConfigurationUser)init

@@ -1,21 +1,21 @@
 @interface RTPredictedLocationOfInterest
-- (BOOL)isEqual:(id)a3;
-- (RTPredictedLocationOfInterest)initWithCoder:(id)a3;
-- (RTPredictedLocationOfInterest)initWithLocationOfInterest:(id)a3 confidence:(double)a4 nextEntryTime:(id)a5 modeOfTransportation:(int64_t)a6 sources:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (RTPredictedLocationOfInterest)initWithCoder:(id)coder;
+- (RTPredictedLocationOfInterest)initWithLocationOfInterest:(id)interest confidence:(double)confidence nextEntryTime:(id)time modeOfTransportation:(int64_t)transportation sources:(id)sources;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfidence:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfidence:(double)confidence;
 @end
 
 @implementation RTPredictedLocationOfInterest
 
-- (RTPredictedLocationOfInterest)initWithLocationOfInterest:(id)a3 confidence:(double)a4 nextEntryTime:(id)a5 modeOfTransportation:(int64_t)a6 sources:(id)a7
+- (RTPredictedLocationOfInterest)initWithLocationOfInterest:(id)interest confidence:(double)confidence nextEntryTime:(id)time modeOfTransportation:(int64_t)transportation sources:(id)sources
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  if (v13)
+  interestCopy = interest;
+  timeCopy = time;
+  sourcesCopy = sources;
+  if (interestCopy)
   {
     v21.receiver = self;
     v21.super_class = RTPredictedLocationOfInterest;
@@ -23,15 +23,15 @@
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_locationOfInterest, a3);
-      v17->_confidence = a4;
-      objc_storeStrong(&v17->_nextEntryTime, a5);
-      v17->_modeOfTransportation = a6;
-      objc_storeStrong(&v17->_sources, a7);
+      objc_storeStrong(&v16->_locationOfInterest, interest);
+      v17->_confidence = confidence;
+      objc_storeStrong(&v17->_nextEntryTime, time);
+      v17->_modeOfTransportation = transportation;
+      objc_storeStrong(&v17->_sources, sources);
     }
 
     self = v17;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -43,37 +43,37 @@
       _os_log_error_impl(&dword_1BF1C4000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locationOfInterest", buf, 2u);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (RTPredictedLocationOfInterest)initWithCoder:(id)a3
+- (RTPredictedLocationOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = RTPredictedLocationOfInterest;
   v5 = [(RTPredictedLocationOfInterest *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
     locationOfInterest = v5->_locationOfInterest;
     v5->_locationOfInterest = v6;
 
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     v5->_confidence = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nextEntryTime"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nextEntryTime"];
     nextEntryTime = v5->_nextEntryTime;
     v5->_nextEntryTime = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeOfTransportation"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeOfTransportation"];
     v5->_modeOfTransportation = [v11 unsignedIntegerValue];
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"sources"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"sources"];
     sources = v5->_sources;
     v5->_sources = v15;
   }
@@ -81,26 +81,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   locationOfInterest = self->_locationOfInterest;
-  v6 = a3;
-  [v6 encodeObject:locationOfInterest forKey:@"locationOfInterest"];
-  [v6 encodeDouble:@"confidence" forKey:self->_confidence];
-  [v6 encodeObject:self->_nextEntryTime forKey:@"nextEntryTime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:locationOfInterest forKey:@"locationOfInterest"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
+  [coderCopy encodeObject:self->_nextEntryTime forKey:@"nextEntryTime"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_modeOfTransportation];
-  [v6 encodeObject:v5 forKey:@"modeOfTransportation"];
+  [coderCopy encodeObject:v5 forKey:@"modeOfTransportation"];
 
-  [v6 encodeObject:self->_sources forKey:@"sources"];
+  [coderCopy encodeObject:self->_sources forKey:@"sources"];
 }
 
-- (void)setConfidence:(double)a3
+- (void)setConfidence:(double)confidence
 {
-  if (a3 <= 1.0)
+  if (confidence <= 1.0)
   {
-    if (a3 >= 0.0)
+    if (confidence >= 0.0)
     {
-      self->_confidence = a3;
+      self->_confidence = confidence;
     }
 
     else
@@ -115,10 +115,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (v7 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_24;
@@ -131,13 +131,13 @@
     goto LABEL_24;
   }
 
-  v8 = v7;
-  v9 = [(RTPredictedLocationOfInterest *)self locationOfInterest];
-  if (v9 || ([(RTPredictedLocationOfInterest *)v8 locationOfInterest], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+  v8 = equalCopy;
+  locationOfInterest = [(RTPredictedLocationOfInterest *)self locationOfInterest];
+  if (locationOfInterest || ([(RTPredictedLocationOfInterest *)v8 locationOfInterest], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(RTPredictedLocationOfInterest *)self locationOfInterest];
-    v4 = [(RTPredictedLocationOfInterest *)v8 locationOfInterest];
-    if (([v3 isEqual:v4] & 1) == 0)
+    locationOfInterest2 = [(RTPredictedLocationOfInterest *)self locationOfInterest];
+    locationOfInterest3 = [(RTPredictedLocationOfInterest *)v8 locationOfInterest];
+    if (([locationOfInterest2 isEqual:locationOfInterest3] & 1) == 0)
     {
 
       v11 = 0;
@@ -158,18 +158,18 @@
   [(RTPredictedLocationOfInterest *)v8 confidence];
   if (v13 == v14)
   {
-    v15 = [(RTPredictedLocationOfInterest *)self nextEntryTime];
-    if (!v15)
+    nextEntryTime = [(RTPredictedLocationOfInterest *)self nextEntryTime];
+    if (!nextEntryTime)
     {
-      v29 = [(RTPredictedLocationOfInterest *)v8 nextEntryTime];
-      if (!v29)
+      nextEntryTime2 = [(RTPredictedLocationOfInterest *)v8 nextEntryTime];
+      if (!nextEntryTime2)
       {
         v30 = v10;
-        v29 = 0;
+        nextEntryTime2 = 0;
         v17 = 0;
 LABEL_26:
-        v19 = [(RTPredictedLocationOfInterest *)self modeOfTransportation];
-        if (v19 != [(RTPredictedLocationOfInterest *)v8 modeOfTransportation])
+        modeOfTransportation = [(RTPredictedLocationOfInterest *)self modeOfTransportation];
+        if (modeOfTransportation != [(RTPredictedLocationOfInterest *)v8 modeOfTransportation])
         {
           v11 = 0;
           v23 = v30;
@@ -181,14 +181,14 @@ LABEL_26:
           goto LABEL_33;
         }
 
-        v20 = [(RTPredictedLocationOfInterest *)self sources];
-        if (v20 || ([(RTPredictedLocationOfInterest *)v8 sources], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+        sources = [(RTPredictedLocationOfInterest *)self sources];
+        if (sources || ([(RTPredictedLocationOfInterest *)v8 sources], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v27 = v17;
           [(RTPredictedLocationOfInterest *)self sources];
-          v21 = v26 = v20;
-          v22 = [(RTPredictedLocationOfInterest *)v8 sources];
-          v11 = [v21 isEqualToArray:v22];
+          v21 = v26 = sources;
+          sources2 = [(RTPredictedLocationOfInterest *)v8 sources];
+          v11 = [v21 isEqualToArray:sources2];
 
           if (v26)
           {
@@ -217,7 +217,7 @@ LABEL_26:
         if ((v17 & 1) == 0)
         {
 LABEL_34:
-          if (!v15)
+          if (!nextEntryTime)
           {
           }
 
@@ -235,17 +235,17 @@ LABEL_33:
       }
     }
 
-    v16 = [(RTPredictedLocationOfInterest *)self nextEntryTime];
-    v5 = [(RTPredictedLocationOfInterest *)v8 nextEntryTime];
-    if ([v16 isEqualToDate:v5])
+    nextEntryTime3 = [(RTPredictedLocationOfInterest *)self nextEntryTime];
+    nextEntryTime4 = [(RTPredictedLocationOfInterest *)v8 nextEntryTime];
+    if ([nextEntryTime3 isEqualToDate:nextEntryTime4])
     {
-      v28 = v16;
+      v28 = nextEntryTime3;
       v30 = v10;
       v17 = 1;
       goto LABEL_26;
     }
 
-    if (v15)
+    if (nextEntryTime)
     {
     }
 
@@ -261,7 +261,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  if (!v9)
+  if (!locationOfInterest)
   {
   }
 
@@ -271,18 +271,18 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v3 = [(RTPredictedLocationOfInterest *)self locationOfInterest];
-  v4 = [v3 hash];
+  locationOfInterest = [(RTPredictedLocationOfInterest *)self locationOfInterest];
+  v4 = [locationOfInterest hash];
   v5 = MEMORY[0x1E696AD98];
   [(RTPredictedLocationOfInterest *)self confidence];
   v6 = [v5 numberWithDouble:?];
   v7 = [v6 hash];
-  v8 = [(RTPredictedLocationOfInterest *)self nextEntryTime];
-  v9 = v7 ^ v4 ^ [v8 hash];
+  nextEntryTime = [(RTPredictedLocationOfInterest *)self nextEntryTime];
+  v9 = v7 ^ v4 ^ [nextEntryTime hash];
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[RTPredictedLocationOfInterest modeOfTransportation](self, "modeOfTransportation")}];
   v11 = [v10 hash];
-  v12 = [(RTPredictedLocationOfInterest *)self sources];
-  v13 = v11 ^ [v12 hash];
+  sources = [(RTPredictedLocationOfInterest *)self sources];
+  v13 = v11 ^ [sources hash];
 
   return v9 ^ v13;
 }
@@ -290,14 +290,14 @@ LABEL_24:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTPredictedLocationOfInterest *)self locationOfInterest];
+  locationOfInterest = [(RTPredictedLocationOfInterest *)self locationOfInterest];
   [(RTPredictedLocationOfInterest *)self confidence];
   v6 = v5;
-  v7 = [(RTPredictedLocationOfInterest *)self nextEntryTime];
-  v8 = [v7 stringFromDate];
+  nextEntryTime = [(RTPredictedLocationOfInterest *)self nextEntryTime];
+  stringFromDate = [nextEntryTime stringFromDate];
   v9 = [RTRoutineManager modeOfTransportationToString:[(RTPredictedLocationOfInterest *)self modeOfTransportation]];
-  v10 = [(RTPredictedLocationOfInterest *)self sources];
-  v11 = [v3 stringWithFormat:@"loi, %@, prediction confidence, %f, next entry time, %@, mode of transportation, %@, sources, %@", v4, v6, v8, v9, v10];
+  sources = [(RTPredictedLocationOfInterest *)self sources];
+  v11 = [v3 stringWithFormat:@"loi, %@, prediction confidence, %f, next entry time, %@, mode of transportation, %@, sources, %@", locationOfInterest, v6, stringFromDate, v9, sources];
 
   return v11;
 }

@@ -1,9 +1,9 @@
 @interface ASCEditorsChoiceView
 + (id)editorsChoiceFont;
-- (ASCEditorsChoiceView)initWithCoder:(id)a3;
-- (ASCEditorsChoiceView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)drawRect:(CGRect)a3;
+- (ASCEditorsChoiceView)initWithCoder:(id)coder;
+- (ASCEditorsChoiceView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
@@ -28,17 +28,17 @@ uint64_t __41__ASCEditorsChoiceView_editorsChoiceFont__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCEditorsChoiceView)initWithFrame:(CGRect)a3
+- (ASCEditorsChoiceView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = ASCEditorsChoiceView;
-  v3 = [(ASCEditorsChoiceView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCEditorsChoiceView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(ASCEditorsChoiceView *)v3 setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(ASCEditorsChoiceView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ASCEditorsChoiceView *)v4 setBackgroundColor:clearColor];
 
     [(ASCEditorsChoiceView *)v4 setContentMode:3];
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -47,8 +47,8 @@ uint64_t __41__ASCEditorsChoiceView_editorsChoiceFont__block_invoke()
 
     [(UILabel *)v4->_titleLabel setLineBreakMode:0];
     v8 = v4->_titleLabel;
-    v9 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v8 setTextColor:v9];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v8 setTextColor:grayColor];
 
     v10 = v4->_titleLabel;
     v11 = +[ASCEditorsChoiceView editorsChoiceText];
@@ -66,16 +66,16 @@ uint64_t __41__ASCEditorsChoiceView_editorsChoiceFont__block_invoke()
   return v4;
 }
 
-- (ASCEditorsChoiceView)initWithCoder:(id)a3
+- (ASCEditorsChoiceView)initWithCoder:(id)coder
 {
   [(ASCEditorsChoiceView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [ASCEditorsChoiceView leftLaurel:a3.width];
+  v4 = [ASCEditorsChoiceView leftLaurel:fits.width];
   v5 = +[ASCEditorsChoiceView rightLaurel];
   +[ASCEditorsChoiceView laurelPadding];
   v7 = v6;
@@ -120,12 +120,12 @@ uint64_t __41__ASCEditorsChoiceView_editorsChoiceFont__block_invoke()
   [(UILabel *)self->_titleLabel setFrame:v18, v19 * 0.5 - v16 * 0.5, v12, v16];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v22 = +[ASCEditorsChoiceView leftLaurel];
   [v22 size];
   v8 = v7;

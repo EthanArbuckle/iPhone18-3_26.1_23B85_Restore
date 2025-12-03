@@ -1,39 +1,39 @@
 @interface ACHTemplateSourceScheduler
-- (ACHTemplateSourceScheduler)initWithClient:(id)a3 assertionClient:(id)a4 templateStore:(id)a5 achievementStore:(id)a6;
+- (ACHTemplateSourceScheduler)initWithClient:(id)client assertionClient:(id)assertionClient templateStore:(id)store achievementStore:(id)achievementStore;
 - (BOOL)_isProtectedDataAvailable;
-- (BOOL)_queue_runTemplateSources:(id)a3 requiringRunnableForDate:(BOOL)a4 error:(id *)a5;
-- (BOOL)_runSynchronouslyWithError:(id *)a3;
+- (BOOL)_queue_runTemplateSources:(id)sources requiringRunnableForDate:(BOOL)date error:(id *)error;
+- (BOOL)_runSynchronouslyWithError:(id *)error;
 - (id)_currentDate;
-- (id)_runnableSourcesInSources:(id)a3 forDate:(id)a4 calendar:(id)a5;
+- (id)_runnableSourcesInSources:(id)sources forDate:(id)date calendar:(id)calendar;
 - (unint64_t)_sourceCount;
 - (void)_listenForSignificantTimeChanges;
 - (void)_runAllTemplateSources;
 - (void)_startUp;
-- (void)achievementStoreDidFinishInitialFetch:(id)a3;
+- (void)achievementStoreDidFinishInitialFetch:(id)fetch;
 - (void)dealloc;
-- (void)deregisterTemplateSource:(id)a3;
-- (void)registerTemplateSource:(id)a3;
-- (void)runImmediatelyForTemplateSource:(id)a3;
+- (void)deregisterTemplateSource:(id)source;
+- (void)registerTemplateSource:(id)source;
+- (void)runImmediatelyForTemplateSource:(id)source;
 @end
 
 @implementation ACHTemplateSourceScheduler
 
-- (ACHTemplateSourceScheduler)initWithClient:(id)a3 assertionClient:(id)a4 templateStore:(id)a5 achievementStore:(id)a6
+- (ACHTemplateSourceScheduler)initWithClient:(id)client assertionClient:(id)assertionClient templateStore:(id)store achievementStore:(id)achievementStore
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  clientCopy = client;
+  assertionClientCopy = assertionClient;
+  storeCopy = store;
+  achievementStoreCopy = achievementStore;
   v33.receiver = self;
   v33.super_class = ACHTemplateSourceScheduler;
   v15 = [(ACHTemplateSourceScheduler *)&v33 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_client, a3);
-    objc_storeStrong(&v16->_assertionClient, a4);
-    objc_storeStrong(&v16->_templateStore, a5);
-    objc_storeStrong(&v16->_achievementStore, a6);
+    objc_storeStrong(&v15->_client, client);
+    objc_storeStrong(&v16->_assertionClient, assertionClient);
+    objc_storeStrong(&v16->_templateStore, store);
+    objc_storeStrong(&v16->_achievementStore, achievementStore);
     [(ACHAchievementStoring *)v16->_achievementStore addObserver:v16];
     v17 = HKCreateSerialDispatchQueue();
     serialQueue = v16->_serialQueue;
@@ -47,19 +47,19 @@
     lastRunDateByTemplateSourceIdentifier = v16->_lastRunDateByTemplateSourceIdentifier;
     v16->_lastRunDateByTemplateSourceIdentifier = MEMORY[0x277CBEC10];
 
-    v22 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     gregorianCalendar = v16->_gregorianCalendar;
-    v16->_gregorianCalendar = v22;
+    v16->_gregorianCalendar = hk_gregorianCalendar;
 
     objc_initWeak(&location, v16);
-    v24 = [*MEMORY[0x277CE8C10] UTF8String];
+    uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
     v25 = v16->_serialQueue;
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __92__ACHTemplateSourceScheduler_initWithClient_assertionClient_templateStore_achievementStore___block_invoke;
     v30 = &unk_2784907F8;
     objc_copyWeak(&v31, &location);
-    notify_register_dispatch(v24, &v16->_protectedDataToken, v25, &v27);
+    notify_register_dispatch(uTF8String, &v16->_protectedDataToken, v25, &v27);
     [(ACHTemplateSourceScheduler *)v16 _startUp:v27];
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -93,18 +93,18 @@ void __92__ACHTemplateSourceScheduler_initWithClient_assertionClient_templateSto
   [(ACHTemplateSourceScheduler *)&v3 dealloc];
 }
 
-- (void)registerTemplateSource:(id)a3
+- (void)registerTemplateSource:(id)source
 {
-  v4 = a3;
-  v5 = [(ACHTemplateSourceScheduler *)self serialQueue];
+  sourceCopy = source;
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ACHTemplateSourceScheduler_registerTemplateSource___block_invoke;
   v7[3] = &unk_278490898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __53__ACHTemplateSourceScheduler_registerTemplateSource___block_invoke(uint64_t a1)
@@ -178,18 +178,18 @@ void __53__ACHTemplateSourceScheduler_registerTemplateSource___block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterTemplateSource:(id)a3
+- (void)deregisterTemplateSource:(id)source
 {
-  v4 = a3;
-  v5 = [(ACHTemplateSourceScheduler *)self serialQueue];
+  sourceCopy = source;
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ACHTemplateSourceScheduler_deregisterTemplateSource___block_invoke;
   v7[3] = &unk_278490898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __55__ACHTemplateSourceScheduler_deregisterTemplateSource___block_invoke(uint64_t a1)
@@ -254,28 +254,28 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runImmediatelyForTemplateSource:(id)a3
+- (void)runImmediatelyForTemplateSource:(id)source
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = ACHLogDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [sourceCopy identifier];
     *buf = 138543362;
-    v13 = v6;
+    v13 = identifier;
     _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "Template Source scheduler immediate run requested for source: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(ACHTemplateSourceScheduler *)self serialQueue];
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__ACHTemplateSourceScheduler_runImmediatelyForTemplateSource___block_invoke;
   v10[3] = &unk_278490898;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  dispatch_async(v7, v10);
+  v11 = sourceCopy;
+  v8 = sourceCopy;
+  dispatch_async(serialQueue, v10);
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -335,10 +335,10 @@ void __62__ACHTemplateSourceScheduler_runImmediatelyForTemplateSource___block_in
 
 - (BOOL)_isProtectedDataAvailable
 {
-  v2 = [(ACHTemplateSourceScheduler *)self client];
-  v3 = [v2 isProtectedDataAvailable];
+  client = [(ACHTemplateSourceScheduler *)self client];
+  isProtectedDataAvailable = [client isProtectedDataAvailable];
 
-  return v3;
+  return isProtectedDataAvailable;
 }
 
 - (void)_startUp
@@ -365,7 +365,7 @@ void __62__ACHTemplateSourceScheduler_runImmediatelyForTemplateSource___block_in
   aBlock[3] = &unk_278490820;
   objc_copyWeak(&v18, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [@"SignificantTimeChangeNotification" UTF8String];
+  uTF8String = [@"SignificantTimeChangeNotification" UTF8String];
   v5 = MEMORY[0x277D85CD0];
   v6 = MEMORY[0x277D85CD0];
   handler[0] = MEMORY[0x277D85DD0];
@@ -374,10 +374,10 @@ void __62__ACHTemplateSourceScheduler_runImmediatelyForTemplateSource___block_in
   handler[3] = &unk_278492D70;
   v7 = v3;
   v16 = v7;
-  notify_register_dispatch(v4, &self->_significantTimeChangeToken, v5, handler);
+  notify_register_dispatch(uTF8String, &self->_significantTimeChangeToken, v5, handler);
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  v9 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v10 = *MEMORY[0x277CBE580];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -385,7 +385,7 @@ void __62__ACHTemplateSourceScheduler_runImmediatelyForTemplateSource___block_in
   v13[3] = &unk_278492D98;
   v11 = v7;
   v14 = v11;
-  v12 = [v8 addObserverForName:v10 object:0 queue:v9 usingBlock:v13];
+  v12 = [defaultCenter addObserverForName:v10 object:0 queue:mainQueue usingBlock:v13];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -422,20 +422,20 @@ void __62__ACHTemplateSourceScheduler__listenForSignificantTimeChanges__block_in
   }
 }
 
-- (id)_runnableSourcesInSources:(id)a3 forDate:(id)a4 calendar:(id)a5
+- (id)_runnableSourcesInSources:(id)sources forDate:(id)date calendar:(id)calendar
 {
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  calendarCopy = calendar;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__ACHTemplateSourceScheduler__runnableSourcesInSources_forDate_calendar___block_invoke;
   v14[3] = &unk_278492DC0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = [a3 hk_filter:v14];
+  v15 = calendarCopy;
+  v16 = dateCopy;
+  v10 = dateCopy;
+  v11 = calendarCopy;
+  v12 = [sources hk_filter:v14];
 
   return v12;
 }
@@ -471,13 +471,13 @@ LABEL_9:
 
 - (void)_runAllTemplateSources
 {
-  v3 = [(ACHTemplateSourceScheduler *)self serialQueue];
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint64_t a1)
@@ -508,13 +508,13 @@ void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_runTemplateSources:(id)a3 requiringRunnableForDate:(BOOL)a4 error:(id *)a5
+- (BOOL)_queue_runTemplateSources:(id)sources requiringRunnableForDate:(BOOL)date error:(id *)error
 {
   v108 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v62 = self;
-  v8 = [(ACHTemplateSourceScheduler *)self serialQueue];
-  dispatch_assert_queue_V2(v8);
+  sourcesCopy = sources;
+  selfCopy = self;
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v9 = ACHLogAwardEngine();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -527,13 +527,13 @@ void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint6
   v61 = [v10 initWithSuiteName:*MEMORY[0x277CE8C00]];
   v11 = [v61 BOOLForKey:*MEMORY[0x277CE8AC0]];
   v12 = [v61 BOOLForKey:*MEMORY[0x277CE8AB8]];
-  v65 = [(ACHTemplateSourceScheduler *)v62 _currentDate];
-  v13 = v7;
+  _currentDate = [(ACHTemplateSourceScheduler *)selfCopy _currentDate];
+  v13 = sourcesCopy;
   v60 = v13;
-  if (!(v11 & 1 | !a4 | v12 & 1))
+  if (!(v11 & 1 | !date | v12 & 1))
   {
-    v14 = [(ACHTemplateSourceScheduler *)v62 gregorianCalendar];
-    v15 = [(ACHTemplateSourceScheduler *)v62 _runnableSourcesInSources:v60 forDate:v65 calendar:v14];
+    gregorianCalendar = [(ACHTemplateSourceScheduler *)selfCopy gregorianCalendar];
+    v15 = [(ACHTemplateSourceScheduler *)selfCopy _runnableSourcesInSources:v60 forDate:_currentDate calendar:gregorianCalendar];
 
     v13 = v15;
   }
@@ -541,9 +541,9 @@ void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint6
   v59 = v13;
   if ([v13 count])
   {
-    v16 = [(ACHTemplateSourceScheduler *)v62 assertionClient];
+    assertionClient = [(ACHTemplateSourceScheduler *)selfCopy assertionClient];
     v100 = 0;
-    v58 = [v16 acquireDatabaseAssertionWithIdentifier:@"ACHTemplateSourceScheduler" duration:&v100 error:20.0];
+    v58 = [assertionClient acquireDatabaseAssertionWithIdentifier:@"ACHTemplateSourceScheduler" duration:&v100 error:20.0];
     v56 = v100;
 
     v98[0] = 0;
@@ -613,10 +613,10 @@ void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint6
           v71 = v24;
           v25 = _Block_copy(aBlock);
           dispatch_group_enter(v24);
-          [v23 templatesForDate:v65 completion:v25];
-          v26 = [v23 identifier];
-          v103 = v26;
-          v104 = v65;
+          [v23 templatesForDate:_currentDate completion:v25];
+          identifier = [v23 identifier];
+          v103 = identifier;
+          v104 = _currentDate;
           v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
           v20 = [v22 hk_dictionaryByAddingEntriesFromDictionary:v27];
 
@@ -655,10 +655,10 @@ void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint6
       v35 = v34;
       if (v34)
       {
-        if (a5)
+        if (error)
         {
           v36 = v34;
-          *a5 = v35;
+          *error = v35;
         }
 
         else
@@ -667,34 +667,34 @@ void __52__ACHTemplateSourceScheduler__runAllTemplateSources__block_invoke(uint6
         }
       }
 
-      v40 = [(ACHTemplateSourceScheduler *)v62 assertionClient];
+      assertionClient2 = [(ACHTemplateSourceScheduler *)selfCopy assertionClient];
       v69 = v56;
-      [v40 invalidateAssertionWithToken:v58 error:&v69];
+      [assertionClient2 invalidateAssertionWithToken:v58 error:&v69];
       v38 = v69;
 
       v28 = 0;
       goto LABEL_41;
     }
 
-    v37 = [(ACHTemplateSourceScheduler *)v62 assertionClient];
+    assertionClient3 = [(ACHTemplateSourceScheduler *)selfCopy assertionClient];
     v68 = v56;
-    [v37 invalidateAssertionWithToken:v58 error:&v68];
+    [assertionClient3 invalidateAssertionWithToken:v58 error:&v68];
     v38 = v68;
 
     if ([*(v93 + 5) count])
     {
-      v39 = [*(v93 + 5) firstObject];
-      v40 = v39;
-      if (v39)
+      firstObject = [*(v93 + 5) firstObject];
+      assertionClient2 = firstObject;
+      if (firstObject)
       {
-        if (a5)
+        if (error)
         {
-          v41 = v39;
+          v41 = firstObject;
 LABEL_33:
           v28 = 0;
-          *a5 = v40;
+          *error = assertionClient2;
 LABEL_40:
-          v35 = v40;
+          v35 = assertionClient2;
 LABEL_41:
 
           _Block_object_dispose(&v80, 8);
@@ -712,29 +712,29 @@ LABEL_41:
 
     else
     {
-      v42 = [(ACHTemplateSourceScheduler *)v62 templateStore];
+      templateStore = [(ACHTemplateSourceScheduler *)selfCopy templateStore];
       v43 = v81[5];
       v67 = 0;
-      [v42 removeTemplates:v43 error:&v67];
+      [templateStore removeTemplates:v43 error:&v67];
       v35 = v67;
 
       if (!v35)
       {
-        v46 = [(ACHTemplateSourceScheduler *)v62 templateStore];
+        templateStore2 = [(ACHTemplateSourceScheduler *)selfCopy templateStore];
         v47 = v87[5];
         v66 = 0;
-        [v46 addTemplates:v47 error:&v66];
-        v40 = v66;
+        [templateStore2 addTemplates:v47 error:&v66];
+        assertionClient2 = v66;
 
-        v28 = v40 == 0;
-        if (v40)
+        v28 = assertionClient2 == 0;
+        if (assertionClient2)
         {
-          v48 = v40;
+          v48 = assertionClient2;
           v49 = v48;
-          if (a5)
+          if (error)
           {
             v50 = v48;
-            *a5 = v49;
+            *error = v49;
           }
 
           else
@@ -745,16 +745,16 @@ LABEL_41:
 
         else
         {
-          v53 = [(ACHTemplateSourceScheduler *)v62 lastRunDateByTemplateSourceIdentifier];
-          v54 = [v53 hk_dictionaryByAddingEntriesFromDictionary:v20];
-          [(ACHTemplateSourceScheduler *)v62 setLastRunDateByTemplateSourceIdentifier:v54];
+          lastRunDateByTemplateSourceIdentifier = [(ACHTemplateSourceScheduler *)selfCopy lastRunDateByTemplateSourceIdentifier];
+          v54 = [lastRunDateByTemplateSourceIdentifier hk_dictionaryByAddingEntriesFromDictionary:v20];
+          [(ACHTemplateSourceScheduler *)selfCopy setLastRunDateByTemplateSourceIdentifier:v54];
 
           v49 = ACHLogTemplates();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
-            v55 = [(ACHTemplateSourceScheduler *)v62 lastRunDateByTemplateSourceIdentifier];
+            lastRunDateByTemplateSourceIdentifier2 = [(ACHTemplateSourceScheduler *)selfCopy lastRunDateByTemplateSourceIdentifier];
             *v106 = 138543362;
-            v107 = v55;
+            v107 = lastRunDateByTemplateSourceIdentifier2;
             _os_log_impl(&dword_221DDC000, v49, OS_LOG_TYPE_DEFAULT, "Updated last run dates for template sources to: %{public}@", v106, 0xCu);
           }
         }
@@ -763,8 +763,8 @@ LABEL_41:
       }
 
       v44 = v35;
-      v40 = v44;
-      if (a5)
+      assertionClient2 = v44;
+      if (error)
       {
         v45 = v44;
         goto LABEL_33;
@@ -948,7 +948,7 @@ void __87__ACHTemplateSourceScheduler__queue_runTemplateSources_requiringRunnabl
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)achievementStoreDidFinishInitialFetch:(id)a3
+- (void)achievementStoreDidFinishInitialFetch:(id)fetch
 {
   [(ACHTemplateSourceScheduler *)self setAchievementStoreDidFinishInitialFetch:1];
   if ([(ACHTemplateSourceScheduler *)self shouldScheduleAfterInitialFetch]&& [(ACHTemplateSourceScheduler *)self _isProtectedDataAvailable])
@@ -964,14 +964,14 @@ void __87__ACHTemplateSourceScheduler__queue_runTemplateSources_requiringRunnabl
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(ACHTemplateSourceScheduler *)self serialQueue];
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__ACHTemplateSourceScheduler__sourceCount__block_invoke;
   v6[3] = &unk_278490FE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -986,24 +986,24 @@ void __42__ACHTemplateSourceScheduler__sourceCount__block_invoke(uint64_t a1)
 
 - (id)_currentDate
 {
-  v2 = [(ACHTemplateSourceScheduler *)self currentDateOverride];
-  v3 = v2;
-  if (v2)
+  currentDateOverride = [(ACHTemplateSourceScheduler *)self currentDateOverride];
+  v3 = currentDateOverride;
+  if (currentDateOverride)
   {
-    v4 = v2;
+    date = currentDateOverride;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v5 = v4;
+  v5 = date;
 
   return v5;
 }
 
-- (BOOL)_runSynchronouslyWithError:(id *)a3
+- (BOOL)_runSynchronouslyWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -1011,18 +1011,18 @@ void __42__ACHTemplateSourceScheduler__sourceCount__block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__30;
   v13 = __Block_byref_object_dispose__30;
   v14 = 0;
-  v5 = [(ACHTemplateSourceScheduler *)self serialQueue];
+  serialQueue = [(ACHTemplateSourceScheduler *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__ACHTemplateSourceScheduler__runSynchronouslyWithError___block_invoke;
   v8[3] = &unk_278491920;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v5, v8);
+  dispatch_sync(serialQueue, v8);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v10[5] == 0;

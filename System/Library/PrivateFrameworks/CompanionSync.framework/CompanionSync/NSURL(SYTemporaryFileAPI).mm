@@ -10,8 +10,8 @@
   v5 = [v4 stringByAppendingPathComponent:@"CompanionSync"];
 
   v6 = v5;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6];
 
   if (v8)
   {
@@ -48,8 +48,8 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:a3];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager2 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:a3];
 
   v11 = 0;
   if (v10)

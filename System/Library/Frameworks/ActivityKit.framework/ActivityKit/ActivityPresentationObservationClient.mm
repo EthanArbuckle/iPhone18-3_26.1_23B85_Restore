@@ -1,18 +1,18 @@
 @interface ActivityPresentationObservationClient
 - (_TtC11ActivityKit37ActivityPresentationObservationClient)init;
-- (id)listenForActivityPresentationWithActivityIdentifier:(id)a3 presenterBundleIdentifier:(id)a4 handler:(id)a5;
+- (id)listenForActivityPresentationWithActivityIdentifier:(id)identifier presenterBundleIdentifier:(id)bundleIdentifier handler:(id)handler;
 @end
 
 @implementation ActivityPresentationObservationClient
 
-- (id)listenForActivityPresentationWithActivityIdentifier:(id)a3 presenterBundleIdentifier:(id)a4 handler:(id)a5
+- (id)listenForActivityPresentationWithActivityIdentifier:(id)identifier presenterBundleIdentifier:(id)bundleIdentifier handler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = qword_1EB09ECD8;
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   if (v9 != -1)
   {
     swift_once();
@@ -27,7 +27,7 @@
   v16[3] = &block_descriptor_63_0;
   v13 = _Block_copy(v16);
 
-  v14 = [v12 listenForActivityPresentationWithActivityIdentifier:v10 presenterBundleIdentifier:v11 handler:v13];
+  v14 = [v12 listenForActivityPresentationWithActivityIdentifier:identifierCopy presenterBundleIdentifier:bundleIdentifierCopy handler:v13];
   _Block_release(v13);
 
   return v14;

@@ -1,45 +1,45 @@
 @interface SmallDropDownOutlineCell
-- (SmallDropDownOutlineCell)initWithFrame:(CGRect)a3;
-- (void)_itemSelectedAtIndex:(int64_t)a3;
+- (SmallDropDownOutlineCell)initWithFrame:(CGRect)frame;
+- (void)_itemSelectedAtIndex:(int64_t)index;
 - (void)_updateFromModel;
-- (void)setCellModel:(id)a3;
+- (void)setCellModel:(id)model;
 @end
 
 @implementation SmallDropDownOutlineCell
 
-- (void)_itemSelectedAtIndex:(int64_t)a3
+- (void)_itemSelectedAtIndex:(int64_t)index
 {
-  v5 = [(SmallDropDownOutlineCellModel *)self->_cellModel delegate];
-  [v5 smallDropDownOutlineCell:self didSelectItemAtIndex:a3];
+  delegate = [(SmallDropDownOutlineCellModel *)self->_cellModel delegate];
+  [delegate smallDropDownOutlineCell:self didSelectItemAtIndex:index];
 }
 
 - (void)_updateFromModel
 {
   button = self->_button;
-  v4 = [(SmallDropDownOutlineCellModel *)self->_cellModel buttonTitle];
-  v5 = [v4 stringByAppendingString:@" "];
+  buttonTitle = [(SmallDropDownOutlineCellModel *)self->_cellModel buttonTitle];
+  v5 = [buttonTitle stringByAppendingString:@" "];
   [(MapsRightImageButton *)button setTitle:v5 forState:0];
 
-  v6 = [(SmallDropDownOutlineCellModel *)self->_cellModel dropDownTitles];
-  v7 = [v6 count];
+  dropDownTitles = [(SmallDropDownOutlineCellModel *)self->_cellModel dropDownTitles];
+  v7 = [dropDownTitles count];
 
   if (v7)
   {
     objc_initWeak(&location, self);
     v8 = +[NSMutableArray array];
-    v9 = [(SmallDropDownOutlineCellModel *)self->_cellModel dropDownTitles];
+    dropDownTitles2 = [(SmallDropDownOutlineCellModel *)self->_cellModel dropDownTitles];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_100EE15B0;
     v16 = &unk_101658B80;
     objc_copyWeak(&v19, &location);
-    v17 = self;
+    selfCopy = self;
     v10 = v8;
     v18 = v10;
-    [v9 enumerateObjectsUsingBlock:&v13];
+    [dropDownTitles2 enumerateObjectsUsingBlock:&v13];
 
-    v11 = [UIMenu menuWithTitle:&stru_1016631F0 children:v10, v13, v14, v15, v16, v17];
-    [(MapsRightImageButton *)self->_button setMenu:v11];
+    selfCopy = [UIMenu menuWithTitle:&stru_1016631F0 children:v10, v13, v14, v15, v16, selfCopy];
+    [(MapsRightImageButton *)self->_button setMenu:selfCopy];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -50,33 +50,33 @@
     [(MapsRightImageButton *)self->_button setMenu:0];
   }
 
-  v12 = [(SmallDropDownOutlineCellModel *)self->_cellModel backgroundModel];
-  [(SidebarOutlineCell *)self setBackgroundModel:v12];
+  backgroundModel = [(SmallDropDownOutlineCellModel *)self->_cellModel backgroundModel];
+  [(SidebarOutlineCell *)self setBackgroundModel:backgroundModel];
 }
 
-- (void)setCellModel:(id)a3
+- (void)setCellModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cellModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_cellModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(SmallDropDownOutlineCellModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(SmallDropDownOutlineCellModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cellModel, a3);
+      objc_storeStrong(&self->_cellModel, model);
       [(SmallDropDownOutlineCell *)self _updateFromModel];
       v6 = v8;
     }
   }
 }
 
-- (SmallDropDownOutlineCell)initWithFrame:(CGRect)a3
+- (SmallDropDownOutlineCell)initWithFrame:(CGRect)frame
 {
   v36.receiver = self;
   v36.super_class = SmallDropDownOutlineCell;
-  v3 = [(SidebarOutlineCell *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SidebarOutlineCell *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MapsRightImageButton buttonWithType:0];
@@ -85,8 +85,8 @@
 
     [(MapsRightImageButton *)v3->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = +[UIFont system15];
-    v7 = [(MapsRightImageButton *)v3->_button titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(MapsRightImageButton *)v3->_button titleLabel];
+    [titleLabel setFont:v6];
 
     [(MapsThemeButton *)v3->_button setTitleColorProvider:&stru_101658B30];
     v8 = v3->_button;
@@ -95,37 +95,37 @@
     v11 = [UIImage systemImageNamed:@"chevron.up.chevron.down" withConfiguration:v10];
     [(MapsRightImageButton *)v8 setImage:v11 forState:0];
 
-    v12 = [(SmallDropDownOutlineCell *)v3 theme];
-    v13 = [v12 keyColor];
-    [(MapsRightImageButton *)v3->_button setTintColor:v13];
+    theme = [(SmallDropDownOutlineCell *)v3 theme];
+    keyColor = [theme keyColor];
+    [(MapsRightImageButton *)v3->_button setTintColor:keyColor];
 
     [(MapsRightImageButton *)v3->_button setShowsMenuAsPrimaryAction:1];
     [(MapsRightImageButton *)v3->_button setAccessibilityIdentifier:@"SmallDropDownButton"];
-    v14 = [(SmallDropDownOutlineCell *)v3 contentView];
-    [v14 addSubview:v3->_button];
+    contentView = [(SmallDropDownOutlineCell *)v3 contentView];
+    [contentView addSubview:v3->_button];
 
-    v34 = [(MapsRightImageButton *)v3->_button topAnchor];
-    v35 = [(SmallDropDownOutlineCell *)v3 contentView];
-    v33 = [v35 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:4.0];
+    topAnchor = [(MapsRightImageButton *)v3->_button topAnchor];
+    contentView2 = [(SmallDropDownOutlineCell *)v3 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     v37[0] = v32;
-    v30 = [(MapsRightImageButton *)v3->_button leadingAnchor];
-    v31 = [(SmallDropDownOutlineCell *)v3 contentView];
-    v29 = [v31 layoutMarginsGuide];
-    v28 = [v29 leadingAnchor];
-    v27 = [v30 constraintEqualToAnchor:v28];
+    leadingAnchor = [(MapsRightImageButton *)v3->_button leadingAnchor];
+    contentView3 = [(SmallDropDownOutlineCell *)v3 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[1] = v27;
-    v26 = [(MapsRightImageButton *)v3->_button trailingAnchor];
-    v15 = [(SmallDropDownOutlineCell *)v3 contentView];
-    v16 = [v15 layoutMarginsGuide];
-    v17 = [v16 trailingAnchor];
-    v18 = [v26 constraintLessThanOrEqualToAnchor:v17];
+    trailingAnchor = [(MapsRightImageButton *)v3->_button trailingAnchor];
+    contentView4 = [(SmallDropDownOutlineCell *)v3 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v18 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v37[2] = v18;
-    v19 = [(MapsRightImageButton *)v3->_button bottomAnchor];
-    v20 = [(SmallDropDownOutlineCell *)v3 contentView];
-    v21 = [v20 bottomAnchor];
+    bottomAnchor = [(MapsRightImageButton *)v3->_button bottomAnchor];
+    contentView5 = [(SmallDropDownOutlineCell *)v3 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
     LODWORD(v22) = 1112276992;
-    v23 = [v19 constraintEqualToAnchor:v21 constant:-4.0 priority:v22];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0 priority:v22];
     v37[3] = v23;
     v24 = [NSArray arrayWithObjects:v37 count:4];
     [NSLayoutConstraint activateConstraints:v24];

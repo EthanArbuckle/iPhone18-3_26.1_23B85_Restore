@@ -1,63 +1,63 @@
 @interface VSCredentialEntryViewController_iOS
 - (CGSize)preferredLogoSize;
 - (VSAuthenticationViewControllerDelegate)delegate;
-- (VSCredentialEntryViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_createSpecifierForField:(id)a3;
-- (id)_credentialEntryFieldForSpecifier:(id)a3;
+- (VSCredentialEntryViewController_iOS)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_createSpecifierForField:(id)field;
+- (id)_credentialEntryFieldForSpecifier:(id)specifier;
 - (id)_linkURL;
-- (id)_specifierForTextField:(id)a3;
-- (id)_textFieldForSpecifier:(id)a3;
-- (id)_textForSpecifier:(id)a3;
+- (id)_specifierForTextField:(id)field;
+- (id)_textFieldForSpecifier:(id)specifier;
+- (id)_textForSpecifier:(id)specifier;
 - (id)pickerTitle;
-- (id)pickerViewCell:(id)a3 titleForRow:(int64_t)a4;
+- (id)pickerViewCell:(id)cell titleForRow:(int64_t)row;
 - (id)textFieldTextDidChangeObserver;
-- (int64_t)pickerViewCellInitialSelectedRow:(id)a3;
-- (int64_t)pickerViewCellNumberOfRows:(id)a3;
-- (void)_jsButtonTapped:(id)a3;
-- (void)_linkButtonTapped:(id)a3;
-- (void)_presentError:(id)a3;
-- (void)_setText:(id)a3 forSpecifier:(id)a4;
-- (void)_startObservingViewModel:(id)a3;
+- (int64_t)pickerViewCellInitialSelectedRow:(id)row;
+- (int64_t)pickerViewCellNumberOfRows:(id)rows;
+- (void)_jsButtonTapped:(id)tapped;
+- (void)_linkButtonTapped:(id)tapped;
+- (void)_presentError:(id)error;
+- (void)_setText:(id)text forSpecifier:(id)specifier;
+- (void)_startObservingViewModel:(id)model;
 - (void)_startValidation;
-- (void)_stopObservingViewModel:(id)a3;
+- (void)_stopObservingViewModel:(id)model;
 - (void)buildButtonsIfNeeded;
-- (void)cancelButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)doneButtonPressed:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)doneButtonPressed:(id)pressed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pickerButtonSelected;
-- (void)pickerViewCell:(id)a3 didSelectRow:(int64_t)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)pickerViewCell:(id)cell didSelectRow:(int64_t)row;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setViewModel:(id)model;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VSCredentialEntryViewController_iOS
 
-- (VSCredentialEntryViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4
+- (VSCredentialEntryViewController_iOS)initWithNibName:(id)name bundle:(id)bundle
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v23.receiver = self;
   v23.super_class = VSCredentialEntryViewController_iOS;
-  v8 = [(VSCredentialEntryViewController_iOS *)&v23 initWithNibName:v6 bundle:v7];
+  v8 = [(VSCredentialEntryViewController_iOS *)&v23 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CE2348]);
     [v9 setObject:v8];
     [(VSCredentialEntryViewController_iOS *)v8 setWeakTarget:v9];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    v11 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     objc_initWeak(&location, v8);
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __62__VSCredentialEntryViewController_iOS_initWithNibName_bundle___block_invoke;
     v20 = &unk_279E1A638;
     objc_copyWeak(&v21, &location);
-    v12 = [v10 addObserverForName:*MEMORY[0x277D770B0] object:0 queue:v11 usingBlock:&v17];
+    v12 = [defaultCenter addObserverForName:*MEMORY[0x277D770B0] object:0 queue:mainQueue usingBlock:&v17];
     objc_storeWeak(&v8->_textFieldTextDidChangeObserver, v12);
 
     v24[0] = objc_opt_class();
@@ -75,11 +75,11 @@
 - (void)dealloc
 {
   [(VSCredentialEntryViewController_iOS *)self _stopObservingViewModel:self->_viewModel];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_textFieldTextDidChangeObserver);
   if (WeakRetained)
   {
-    [v3 removeObserver:WeakRetained];
+    [defaultCenter removeObserver:WeakRetained];
   }
 
   v5.receiver = self;
@@ -87,29 +87,29 @@
   [(ACUIViewController *)&v5 dealloc];
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = VSErrorLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(VSCredentialEntryViewController_iOS *)v4 _presentError:v5];
+    [(VSCredentialEntryViewController_iOS *)errorCopy _presentError:v5];
   }
 
-  v6 = VSAlertForError(v4, 0);
+  v6 = VSAlertForError(errorCopy, 0);
   [(VSCredentialEntryViewController_iOS *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)_specifierForTextField:(id)a3
+- (id)_specifierForTextField:(id)field
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fieldCopy = field;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ACUIViewController *)self specifiers];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  specifiers = [(ACUIViewController *)self specifiers];
+  v6 = [specifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -120,13 +120,13 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(specifiers);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(VSCredentialEntryViewController_iOS *)self _textFieldForSpecifier:v10];
         v12 = v11;
-        if (v11 == v4)
+        if (v11 == fieldCopy)
         {
           v13 = v10;
 
@@ -134,7 +134,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [specifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -152,11 +152,11 @@ LABEL_11:
   return v13;
 }
 
-- (id)_textFieldForSpecifier:(id)a3
+- (id)_textFieldForSpecifier:(id)specifier
 {
-  v4 = [(VSCredentialEntryViewController_iOS *)self indexPathForSpecifier:a3];
-  v5 = [(VSCredentialEntryViewController_iOS *)self table];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  v4 = [(VSCredentialEntryViewController_iOS *)self indexPathForSpecifier:specifier];
+  table = [(VSCredentialEntryViewController_iOS *)self table];
+  v6 = [table cellForRowAtIndexPath:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -177,29 +177,29 @@ LABEL_11:
       [v8 raise:v9 format:{@"Unexpectedly, cell was %@, instead of PSEditableTableCell.", v11}];
     }
 
-    v12 = [v7 textField];
+    textField = [v7 textField];
   }
 
   else
   {
-    v12 = 0;
+    textField = 0;
   }
 
-  return v12;
+  return textField;
 }
 
-- (id)_credentialEntryFieldForSpecifier:(id)a3
+- (id)_credentialEntryFieldForSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  v6 = [v5 credentialEntryFields];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  credentialEntryFields = [viewModel credentialEntryFields];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [credentialEntryFields countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -211,13 +211,13 @@ LABEL_11:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(credentialEntryFields);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [v4 identifier];
-        v15 = [v13 isEqualToString:v14];
+        identifier = [v12 identifier];
+        identifier2 = [specifierCopy identifier];
+        v15 = [identifier isEqualToString:identifier2];
 
         if (v15)
         {
@@ -227,7 +227,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [credentialEntryFields countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -243,95 +243,95 @@ LABEL_11:
   return v9;
 }
 
-- (id)_textForSpecifier:(id)a3
+- (id)_textForSpecifier:(id)specifier
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self _credentialEntryFieldForSpecifier:a3];
-  v4 = [v3 text];
+  v3 = [(VSCredentialEntryViewController_iOS *)self _credentialEntryFieldForSpecifier:specifier];
+  text = [v3 text];
 
-  return v4;
+  return text;
 }
 
-- (void)_setText:(id)a3 forSpecifier:(id)a4
+- (void)_setText:(id)text forSpecifier:(id)specifier
 {
-  v6 = a3;
+  textCopy = text;
   v7 = &stru_2880B8BB0;
-  if (v6)
+  if (textCopy)
   {
-    v7 = v6;
+    v7 = textCopy;
   }
 
   v10 = v7;
-  v8 = [(VSCredentialEntryViewController_iOS *)self _credentialEntryFieldForSpecifier:a4];
+  v8 = [(VSCredentialEntryViewController_iOS *)self _credentialEntryFieldForSpecifier:specifier];
   [v8 setText:v10];
 
-  v9 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  [v9 validateCredentialEntryFields];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  [viewModel validateCredentialEntryFields];
 }
 
 - (id)_linkURL
 {
-  v2 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  v3 = [v2 linkURL];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  linkURL = [viewModel linkURL];
 
-  return v3;
+  return linkURL;
 }
 
-- (void)_linkButtonTapped:(id)a3
+- (void)_linkButtonTapped:(id)tapped
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self _linkURL];
-  if (v3)
+  _linkURL = [(VSCredentialEntryViewController_iOS *)self _linkURL];
+  if (_linkURL)
   {
-    v4 = v3;
+    v4 = _linkURL;
     VSOpenURL();
-    v3 = v4;
+    _linkURL = v4;
   }
 }
 
-- (void)_jsButtonTapped:(id)a3
+- (void)_jsButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(VSCredentialEntryViewController_iOS *)self buttons];
-  v6 = [v5 indexOfObject:v4];
+  tappedCopy = tapped;
+  buttons = [(VSCredentialEntryViewController_iOS *)self buttons];
+  v6 = [buttons indexOfObject:tappedCopy];
 
-  v7 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  [v7 buttonTappedAtIndex:v6];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  [viewModel buttonTappedAtIndex:v6];
 }
 
 - (void)_startValidation
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self table];
-  v2 = [v3 firstResponder];
-  [v2 resignFirstResponder];
+  table = [(VSCredentialEntryViewController_iOS *)self table];
+  firstResponder = [table firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
   v4 = kVSKeyValueObservingContext_DoneButton;
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"beginValidationButtonEnabled" options:4 context:v4];
-  [v5 addObserver:self forKeyPath:@"logo" options:4 context:kVSKeyValueObservingContext_Image];
-  [v5 addObserver:self forKeyPath:@"validationState" options:3 context:kVSKeyValueObservingContext_ValidationState_0];
-  v6 = [v5 picker];
+  modelCopy = model;
+  [modelCopy addObserver:self forKeyPath:@"beginValidationButtonEnabled" options:4 context:v4];
+  [modelCopy addObserver:self forKeyPath:@"logo" options:4 context:kVSKeyValueObservingContext_Image];
+  [modelCopy addObserver:self forKeyPath:@"validationState" options:3 context:kVSKeyValueObservingContext_ValidationState_0];
+  picker = [modelCopy picker];
 
-  [v6 addObserver:self forKeyPath:@"selectedIndex" options:4 context:kVSKeyValueObservingContext_PickerSelectedItemIndex];
+  [picker addObserver:self forKeyPath:@"selectedIndex" options:4 context:kVSKeyValueObservingContext_PickerSelectedItemIndex];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
   v4 = kVSKeyValueObservingContext_DoneButton;
-  v5 = a3;
-  [v5 removeObserver:self forKeyPath:@"beginValidationButtonEnabled" context:v4];
-  [v5 removeObserver:self forKeyPath:@"logo" context:kVSKeyValueObservingContext_Image];
-  [v5 removeObserver:self forKeyPath:@"validationState" context:kVSKeyValueObservingContext_ValidationState_0];
-  v6 = [v5 picker];
+  modelCopy = model;
+  [modelCopy removeObserver:self forKeyPath:@"beginValidationButtonEnabled" context:v4];
+  [modelCopy removeObserver:self forKeyPath:@"logo" context:kVSKeyValueObservingContext_Image];
+  [modelCopy removeObserver:self forKeyPath:@"validationState" context:kVSKeyValueObservingContext_ValidationState_0];
+  picker = [modelCopy picker];
 
-  [v6 removeObserver:self forKeyPath:@"selectedIndex" context:kVSKeyValueObservingContext_PickerSelectedItemIndex];
+  [picker removeObserver:self forKeyPath:@"selectedIndex" context:kVSKeyValueObservingContext_PickerSelectedItemIndex];
 }
 
-- (id)_createSpecifierForField:(id)a3
+- (id)_createSpecifierForField:(id)field
 {
-  v4 = a3;
-  if ([v4 isSecure])
+  fieldCopy = field;
+  if ([fieldCopy isSecure])
   {
     v5 = 12;
   }
@@ -342,47 +342,47 @@ LABEL_11:
   }
 
   v6 = MEMORY[0x277D3FB40];
-  v7 = [v4 title];
-  v8 = [(VSCredentialEntryViewController_iOS *)self weakTarget];
-  v9 = [v6 preferenceSpecifierNamed:v7 target:v8 set:sel__setText_forSpecifier_ get:sel__textForSpecifier_ detail:0 cell:v5 edit:0];
+  title = [fieldCopy title];
+  weakTarget = [(VSCredentialEntryViewController_iOS *)self weakTarget];
+  v9 = [v6 preferenceSpecifierNamed:title target:weakTarget set:sel__setText_forSpecifier_ get:sel__textForSpecifier_ detail:0 cell:v5 edit:0];
 
-  if ([v4 isSecure])
+  if ([fieldCopy isSecure])
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v9 setProperty:v10 forKey:*MEMORY[0x277D40080]];
   }
 
-  [v9 setKeyboardType:objc_msgSend(v4 autoCaps:"keyboardType") autoCorrection:{objc_msgSend(v4, "autocapitalizationType"), objc_msgSend(v4, "autocorrectionType")}];
-  v11 = [v4 placeholder];
-  [v9 setPlaceholder:v11];
+  [v9 setKeyboardType:objc_msgSend(fieldCopy autoCaps:"keyboardType") autoCorrection:{objc_msgSend(fieldCopy, "autocapitalizationType"), objc_msgSend(fieldCopy, "autocorrectionType")}];
+  placeholder = [fieldCopy placeholder];
+  [v9 setPlaceholder:placeholder];
 
   return v9;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
     [(VSCredentialEntryViewController_iOS *)self _stopObservingViewModel:?];
-    objc_storeStrong(&self->_viewModel, a3);
-    v6 = [(VSViewModel *)v5 title];
-    [(VSCredentialEntryViewController_iOS *)self setTitle:v6];
+    objc_storeStrong(&self->_viewModel, model);
+    title = [(VSViewModel *)modelCopy title];
+    [(VSCredentialEntryViewController_iOS *)self setTitle:title];
 
     v7 = objc_alloc(MEMORY[0x277D751E0]);
-    v8 = [(VSCuratedViewModel *)v5 beginValidationButtonTitle];
-    v9 = [v7 initWithTitle:v8 style:0 target:self action:sel_doneButtonPressed_];
+    beginValidationButtonTitle = [(VSCuratedViewModel *)modelCopy beginValidationButtonTitle];
+    v9 = [v7 initWithTitle:beginValidationButtonTitle style:0 target:self action:sel_doneButtonPressed_];
 
     [v9 setEnabled:0];
     [(ACUIViewController *)self setDoneButton:v9];
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v11 = [(VSCredentialEntryViewModel *)v5 credentialEntryFields];
-    v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    credentialEntryFields = [(VSCredentialEntryViewModel *)modelCopy credentialEntryFields];
+    v12 = [credentialEntryFields countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v12)
     {
       v13 = v12;
@@ -393,53 +393,53 @@ LABEL_11:
         {
           if (*v39 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(credentialEntryFields);
           }
 
           v16 = *(*(&v38 + 1) + 8 * i);
           v17 = [(VSCredentialEntryViewController_iOS *)self _createSpecifierForField:v16];
-          v18 = [v16 identifier];
-          [v17 setIdentifier:v18];
+          identifier = [v16 identifier];
+          [v17 setIdentifier:identifier];
 
-          [v10 addObject:v17];
+          [array addObject:v17];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v13 = [credentialEntryFields countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v13);
     }
 
-    v19 = [(VSCredentialEntryViewModel *)v5 picker];
+    picker = [(VSCredentialEntryViewModel *)modelCopy picker];
 
-    if (v19)
+    if (picker)
     {
-      v20 = [(VSCredentialEntryViewModel *)v5 picker];
+      picker2 = [(VSCredentialEntryViewModel *)modelCopy picker];
 
-      if (!v20)
+      if (!picker2)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [viewModel picker] parameter must not be nil."];
       }
 
-      v21 = [(VSCredentialEntryViewModel *)v5 picker];
-      [(VSCredentialEntryViewController_iOS *)self setPicker:v21];
+      picker3 = [(VSCredentialEntryViewModel *)modelCopy picker];
+      [(VSCredentialEntryViewController_iOS *)self setPicker:picker3];
       v22 = MEMORY[0x277D3FAD8];
-      v23 = [(VSCredentialEntryViewController_iOS *)self pickerTitle];
-      v24 = [v22 preferenceSpecifierNamed:v23 target:self set:0 get:0 detail:0 cell:13 edit:0];
+      pickerTitle = [(VSCredentialEntryViewController_iOS *)self pickerTitle];
+      v24 = [v22 preferenceSpecifierNamed:pickerTitle target:self set:0 get:0 detail:0 cell:13 edit:0];
 
       [v24 setButtonAction:sel_pickerButtonSelected];
       [(VSCredentialEntryViewController_iOS *)self setPickerButtonSpecifier:v24];
-      [v10 addObject:v24];
+      [array addObject:v24];
     }
 
-    if ([(VSCuratedViewModel *)v5 showFooter])
+    if ([(VSCuratedViewModel *)modelCopy showFooter])
     {
-      v25 = [(VSCuratedViewModel *)v5 message];
-      v26 = [(VSCredentialEntryViewModel *)v5 additionalMessage];
-      v27 = v26;
-      if (v25 && [v26 length])
+      message = [(VSCuratedViewModel *)modelCopy message];
+      additionalMessage = [(VSCredentialEntryViewModel *)modelCopy additionalMessage];
+      v27 = additionalMessage;
+      if (message && [additionalMessage length])
       {
-        v28 = v25;
+        v28 = message;
         if (!v27)
         {
           [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The additionalMessageOrNil parameter must not be nil."];
@@ -451,21 +451,21 @@ LABEL_11:
         v30 = v27;
         v31 = [v29 arrayWithObjects:v42 count:2];
 
-        v25 = [v31 componentsJoinedByString:@"\n\n"];
+        message = [v31 componentsJoinedByString:@"\n\n"];
       }
 
-      v32 = [(VSCuratedViewModel *)v5 notice];
-      v33 = [(VSCuratedViewModel *)v5 footerText];
-      v34 = VSSpecifierForFooter(v25, v32, v33);
-      [v10 addObject:v34];
+      notice = [(VSCuratedViewModel *)modelCopy notice];
+      footerText = [(VSCuratedViewModel *)modelCopy footerText];
+      v34 = VSSpecifierForFooter(message, notice, footerText);
+      [array addObject:v34];
     }
 
-    [(VSCredentialEntryViewController_iOS *)self setSpecifiers:v10];
-    v35 = [(VSCredentialEntryViewController_iOS *)self logoView];
-    v36 = [(VSCuratedViewModel *)v5 logoAccessibilityLabel];
-    [v35 setAccessibilityLabel:v36];
+    [(VSCredentialEntryViewController_iOS *)self setSpecifiers:array];
+    logoView = [(VSCredentialEntryViewController_iOS *)self logoView];
+    logoAccessibilityLabel = [(VSCuratedViewModel *)modelCopy logoAccessibilityLabel];
+    [logoView setAccessibilityLabel:logoAccessibilityLabel];
 
-    [(VSCredentialEntryViewController_iOS *)self _startObservingViewModel:v5];
+    [(VSCredentialEntryViewController_iOS *)self _startObservingViewModel:modelCopy];
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -474,22 +474,22 @@ LABEL_11:
 - (void)buildButtonsIfNeeded
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  if (v3)
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  if (viewModel)
   {
-    v4 = [(VSCredentialEntryViewController_iOS *)self buttonView];
-    [v4 removeAllButtons];
+    buttonView = [(VSCredentialEntryViewController_iOS *)self buttonView];
+    [buttonView removeAllButtons];
 
-    v35 = v3;
-    v5 = v3;
+    v35 = viewModel;
+    v5 = viewModel;
     [(VSCredentialEntryViewController_iOS *)self setButtons:MEMORY[0x277CBEBF8]];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
     v34 = v5;
-    v6 = [v5 buttons];
-    v7 = [v6 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    buttons = [v5 buttons];
+    v7 = [buttons countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v7)
     {
       v8 = v7;
@@ -500,83 +500,83 @@ LABEL_11:
         {
           if (*v37 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(buttons);
           }
 
           v11 = *(*(&v36 + 1) + 8 * i);
           v12 = objc_alloc_init(VSMultilineButton);
-          v13 = [MEMORY[0x277D75348] whiteColor];
-          [(VSMultilineButton *)v12 setTitleColor:v13 forState:1];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          [(VSMultilineButton *)v12 setTitleColor:whiteColor forState:1];
 
-          v14 = [v11 title];
-          [(VSMultilineButton *)v12 setTitle:v14 forState:0];
+          title = [v11 title];
+          [(VSMultilineButton *)v12 setTitle:title forState:0];
 
-          v15 = [(VSMultilineButton *)v12 titleLabel];
-          [v15 setTextAlignment:1];
+          titleLabel = [(VSMultilineButton *)v12 titleLabel];
+          [titleLabel setTextAlignment:1];
 
-          v16 = [(VSMultilineButton *)v12 titleLabel];
-          [v16 setNumberOfLines:0];
+          titleLabel2 = [(VSMultilineButton *)v12 titleLabel];
+          [titleLabel2 setNumberOfLines:0];
 
-          v17 = [(VSMultilineButton *)v12 titleLabel];
-          [v17 setLineBreakMode:0];
+          titleLabel3 = [(VSMultilineButton *)v12 titleLabel];
+          [titleLabel3 setLineBreakMode:0];
 
           [(VSMultilineButton *)v12 addTarget:self action:sel__jsButtonTapped_ forControlEvents:64];
-          v18 = [(VSCredentialEntryViewController_iOS *)self buttonView];
-          [v18 addButton:v12];
+          buttonView2 = [(VSCredentialEntryViewController_iOS *)self buttonView];
+          [buttonView2 addButton:v12];
 
-          v19 = [(VSCredentialEntryViewController_iOS *)self buttons];
-          v20 = [v19 mutableCopy];
+          buttons2 = [(VSCredentialEntryViewController_iOS *)self buttons];
+          v20 = [buttons2 mutableCopy];
           v21 = v20;
           if (v20)
           {
-            v22 = v20;
+            array = v20;
           }
 
           else
           {
-            v22 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          v23 = v22;
+          v23 = array;
 
           [v23 addObject:v12];
           v24 = [v23 copy];
           [(VSCredentialEntryViewController_iOS *)self setButtons:v24];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v8 = [buttons countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v8);
     }
 
-    v25 = [v34 linkURL];
+    linkURL = [v34 linkURL];
 
-    if (v25)
+    if (linkURL)
     {
       v26 = objc_alloc_init(VSMultilineButton);
-      v27 = [MEMORY[0x277D75348] whiteColor];
-      [(VSMultilineButton *)v26 setTitleColor:v27 forState:1];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [(VSMultilineButton *)v26 setTitleColor:whiteColor2 forState:1];
 
-      v28 = [v34 linkTitle];
-      [(VSMultilineButton *)v26 setTitle:v28 forState:0];
+      linkTitle = [v34 linkTitle];
+      [(VSMultilineButton *)v26 setTitle:linkTitle forState:0];
 
-      v29 = [(VSMultilineButton *)v26 titleLabel];
-      [v29 setNumberOfLines:0];
+      titleLabel4 = [(VSMultilineButton *)v26 titleLabel];
+      [titleLabel4 setNumberOfLines:0];
 
-      v30 = [(VSMultilineButton *)v26 titleLabel];
-      [v30 setLineBreakMode:0];
+      titleLabel5 = [(VSMultilineButton *)v26 titleLabel];
+      [titleLabel5 setLineBreakMode:0];
 
-      v31 = [(VSMultilineButton *)v26 titleLabel];
-      [v31 setTextAlignment:1];
+      titleLabel6 = [(VSMultilineButton *)v26 titleLabel];
+      [titleLabel6 setTextAlignment:1];
 
       [(VSMultilineButton *)v26 addTarget:self action:sel__linkButtonTapped_ forControlEvents:64];
       [(VSCredentialEntryViewController_iOS *)self setLinkButton:v26];
-      v32 = [(VSCredentialEntryViewController_iOS *)self buttonView];
-      [v32 addButton:v26];
+      buttonView3 = [(VSCredentialEntryViewController_iOS *)self buttonView];
+      [buttonView3 addButton:v26];
     }
 
-    v3 = v35;
+    viewModel = v35;
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -584,22 +584,22 @@ LABEL_11:
 
 - (void)pickerButtonSelected
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self pickerSpecifier];
+  pickerSpecifier = [(VSCredentialEntryViewController_iOS *)self pickerSpecifier];
 
-  if (v3)
+  if (pickerSpecifier)
   {
-    v4 = [(ACUIViewController *)self specifiers];
-    v12 = [v4 mutableCopy];
+    specifiers = [(ACUIViewController *)self specifiers];
+    v12 = [specifiers mutableCopy];
 
-    v5 = [(VSCredentialEntryViewController_iOS *)self pickerSpecifier];
+    pickerSpecifier2 = [(VSCredentialEntryViewController_iOS *)self pickerSpecifier];
 
-    if (!v5)
+    if (!pickerSpecifier2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self pickerSpecifier] parameter must not be nil."];
     }
 
-    v6 = [(VSCredentialEntryViewController_iOS *)self pickerSpecifier];
-    [v12 removeObject:v6];
+    pickerSpecifier3 = [(VSCredentialEntryViewController_iOS *)self pickerSpecifier];
+    [v12 removeObject:pickerSpecifier3];
 
     [(VSCredentialEntryViewController_iOS *)self setPickerSpecifier:0];
     [(VSCredentialEntryViewController_iOS *)self setSpecifiers:v12];
@@ -616,11 +616,11 @@ LABEL_11:
 
     [v12 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     [(VSCredentialEntryViewController_iOS *)self setPickerSpecifier:v12];
-    v9 = [(ACUIViewController *)self specifiers];
-    v10 = [v9 mutableCopy];
+    specifiers2 = [(ACUIViewController *)self specifiers];
+    v10 = [specifiers2 mutableCopy];
 
-    v11 = [(VSCredentialEntryViewController_iOS *)self pickerButtonSpecifier];
-    [v10 ps_insertObject:v12 afterObject:v11];
+    pickerButtonSpecifier = [(VSCredentialEntryViewController_iOS *)self pickerButtonSpecifier];
+    [v10 ps_insertObject:v12 afterObject:pickerButtonSpecifier];
 
     [(VSCredentialEntryViewController_iOS *)self setSpecifiers:v10];
   }
@@ -628,83 +628,83 @@ LABEL_11:
 
 - (id)pickerTitle
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self picker];
+  picker = [(VSCredentialEntryViewController_iOS *)self picker];
 
-  if (!v3)
+  if (!picker)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self picker] parameter must not be nil."];
   }
 
-  v4 = [(VSCredentialEntryViewController_iOS *)self picker];
-  v5 = [v4 title];
+  picker2 = [(VSCredentialEntryViewController_iOS *)self picker];
+  title = [picker2 title];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(VSCredentialEntryViewController_iOS *)self picker];
-  v8 = [v7 pickerItemAtCurrentIndex];
-  v9 = [v8 itemName];
-  v10 = [v6 stringWithFormat:@"%@ %@", v5, v9];
+  picker3 = [(VSCredentialEntryViewController_iOS *)self picker];
+  pickerItemAtCurrentIndex = [picker3 pickerItemAtCurrentIndex];
+  itemName = [pickerItemAtCurrentIndex itemName];
+  v10 = [v6 stringWithFormat:@"%@ %@", title, itemName];
 
   return v10;
 }
 
-- (id)pickerViewCell:(id)a3 titleForRow:(int64_t)a4
+- (id)pickerViewCell:(id)cell titleForRow:(int64_t)row
 {
-  v6 = [(VSCredentialEntryViewController_iOS *)self picker];
+  picker = [(VSCredentialEntryViewController_iOS *)self picker];
 
-  if (!v6)
+  if (!picker)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self picker] parameter must not be nil."];
   }
 
-  v7 = [(VSCredentialEntryViewController_iOS *)self picker];
-  v8 = [v7 pickerItems];
-  v9 = [v8 objectAtIndex:a4];
-  v10 = [v9 itemName];
+  picker2 = [(VSCredentialEntryViewController_iOS *)self picker];
+  pickerItems = [picker2 pickerItems];
+  v9 = [pickerItems objectAtIndex:row];
+  itemName = [v9 itemName];
 
-  return v10;
+  return itemName;
 }
 
-- (int64_t)pickerViewCellInitialSelectedRow:(id)a3
+- (int64_t)pickerViewCellInitialSelectedRow:(id)row
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self picker];
-  v4 = [v3 selectedIndex];
+  picker = [(VSCredentialEntryViewController_iOS *)self picker];
+  selectedIndex = [picker selectedIndex];
 
-  return v4;
+  return selectedIndex;
 }
 
-- (int64_t)pickerViewCellNumberOfRows:(id)a3
+- (int64_t)pickerViewCellNumberOfRows:(id)rows
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self picker];
-  v4 = [v3 pickerItems];
-  v5 = [v4 count];
+  picker = [(VSCredentialEntryViewController_iOS *)self picker];
+  pickerItems = [picker pickerItems];
+  v5 = [pickerItems count];
 
   return v5;
 }
 
-- (void)pickerViewCell:(id)a3 didSelectRow:(int64_t)a4
+- (void)pickerViewCell:(id)cell didSelectRow:(int64_t)row
 {
-  v6 = [(VSCredentialEntryViewController_iOS *)self picker];
-  [v6 setSelectedIndex:a4];
+  picker = [(VSCredentialEntryViewController_iOS *)self picker];
+  [picker setSelectedIndex:row];
 
-  v7 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  [v7 pickerDidSelectRow:a4];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  [viewModel pickerDidSelectRow:row];
 
-  v8 = [(VSCredentialEntryViewController_iOS *)self pickerButtonSpecifier];
-  v9 = [(VSCredentialEntryViewController_iOS *)self pickerTitle];
-  [v8 setName:v9];
+  pickerButtonSpecifier = [(VSCredentialEntryViewController_iOS *)self pickerButtonSpecifier];
+  pickerTitle = [(VSCredentialEntryViewController_iOS *)self pickerTitle];
+  [pickerButtonSpecifier setName:pickerTitle];
 
-  v10 = [(VSCredentialEntryViewController_iOS *)self pickerButtonSpecifier];
-  [(VSCredentialEntryViewController_iOS *)self reloadSpecifier:v10];
+  pickerButtonSpecifier2 = [(VSCredentialEntryViewController_iOS *)self pickerButtonSpecifier];
+  [(VSCredentialEntryViewController_iOS *)self reloadSpecifier:pickerButtonSpecifier2];
 }
 
 - (CGSize)preferredLogoSize
 {
-  v2 = [(VSCredentialEntryViewController_iOS *)self logoView];
-  [v2 preferredImageSize];
+  logoView = [(VSCredentialEntryViewController_iOS *)self logoView];
+  [logoView preferredImageSize];
   v4 = v3;
   v6 = v5;
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
   v10 = v6 * v9;
@@ -714,31 +714,31 @@ LABEL_11:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (kVSKeyValueObservingContext_DoneButton == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (kVSKeyValueObservingContext_DoneButton == context)
   {
-    v14 = [(ACUIViewController *)self doneButton];
-    v15 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-    [v14 setEnabled:{objc_msgSend(v15, "isBeginValidationButtonEnabled")}];
+    doneButton = [(ACUIViewController *)self doneButton];
+    viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+    [doneButton setEnabled:{objc_msgSend(viewModel, "isBeginValidationButtonEnabled")}];
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  if (kVSKeyValueObservingContext_Image == a6)
+  if (kVSKeyValueObservingContext_Image == context)
   {
-    if (!v11)
+    if (!objectCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The objectOrNil parameter must not be nil."];
     }
 
-    v16 = v11;
+    v16 = objectCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -749,48 +749,48 @@ LABEL_14:
       [v17 raise:v18 format:{@"Unexpectedly, object was %@, instead of VSCredentialEntryViewModel.", v20}];
     }
 
-    v14 = v16;
-    if (!v10)
+    doneButton = v16;
+    if (!pathCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The keyPathOrNil parameter must not be nil."];
     }
 
-    v21 = [v14 valueForKeyPath:v10];
-    v22 = [(VSCredentialEntryViewController_iOS *)self logoView];
-    [v22 setLogo:v21];
+    v21 = [doneButton valueForKeyPath:pathCopy];
+    logoView = [(VSCredentialEntryViewController_iOS *)self logoView];
+    [logoView setLogo:v21];
 
     goto LABEL_14;
   }
 
-  if (kVSKeyValueObservingContext_ValidationState_0 == a6)
+  if (kVSKeyValueObservingContext_ValidationState_0 == context)
   {
-    v24 = [v12 objectForKey:*MEMORY[0x277CCA300]];
-    v25 = [v24 unsignedIntegerValue];
+    v24 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
+    unsignedIntegerValue = [v24 unsignedIntegerValue];
 
     v26 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
-    v27 = [v26 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v26 unsignedIntegerValue];
 
     v28 = VSDefaultLogObject();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v36 = v25;
+      v36 = unsignedIntegerValue;
       v37 = 2048;
-      v38 = v27;
+      v38 = unsignedIntegerValue2;
       _os_log_impl(&dword_270DD4000, v28, OS_LOG_TYPE_DEFAULT, "credential entry controller validation state changed from %lu to %lu", buf, 0x16u);
     }
 
-    if (v27 != 3)
+    if (unsignedIntegerValue2 != 3)
     {
-      if (v27 == 2)
+      if (unsignedIntegerValue2 == 2)
       {
-        if (v25)
+        if (unsignedIntegerValue)
         {
           goto LABEL_15;
         }
       }
 
-      else if (v27 != 1)
+      else if (unsignedIntegerValue2 != 1)
       {
         goto LABEL_15;
       }
@@ -799,19 +799,19 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (v25 == 2)
+    if (unsignedIntegerValue == 2)
     {
       [(ACUIViewController *)self setCellsChecked:1];
     }
   }
 
-  else if (kVSKeyValueObservingContext_PickerSelectedItemIndex == a6)
+  else if (kVSKeyValueObservingContext_PickerSelectedItemIndex == context)
   {
     v30 = MEMORY[0x277D85DD0];
     v31 = 3221225472;
     v32 = __86__VSCredentialEntryViewController_iOS_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v33 = &unk_279E19290;
-    v34 = self;
+    selfCopy = self;
     VSPerformBlockOnMainThread();
   }
 
@@ -819,7 +819,7 @@ LABEL_14:
   {
     v29.receiver = self;
     v29.super_class = VSCredentialEntryViewController_iOS;
-    [(VSCredentialEntryViewController_iOS *)&v29 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VSCredentialEntryViewController_iOS *)&v29 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_15:
@@ -827,16 +827,16 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 credentialEntryFields];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  credentialEntryFields = [viewModel credentialEntryFields];
+  v6 = [credentialEntryFields countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -848,29 +848,29 @@ LABEL_15:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(credentialEntryFields);
         }
 
         [*(*(&v12 + 1) + 8 * v9++) setText:&stru_2880B8BB0];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [credentialEntryFields countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(VSCredentialEntryViewController_iOS *)self delegate];
-  [v10 authenticationViewControllerDidCancel:self];
+  delegate = [(VSCredentialEntryViewController_iOS *)self delegate];
+  [delegate authenticationViewControllerDidCancel:self];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
-  v3 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  [v3 setValidationState:1];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  [viewModel setValidationState:1];
 }
 
 - (void)viewDidLoad
@@ -878,40 +878,40 @@ LABEL_15:
   v15.receiver = self;
   v15.super_class = VSCredentialEntryViewController_iOS;
   [(ACUIViewController *)&v15 viewDidLoad];
-  v3 = [(VSCredentialEntryViewController_iOS *)self table];
+  table = [(VSCredentialEntryViewController_iOS *)self table];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(VSCredentialEntryViewController_iOS *)self table];
-    [v4 setViewController:self];
+    table2 = [(VSCredentialEntryViewController_iOS *)self table];
+    [table2 setViewController:self];
   }
 
-  [v3 setPreservesSuperviewLayoutMargins:1];
+  [table setPreservesSuperviewLayoutMargins:1];
   v5 = [VSIdentityProviderLogoView alloc];
-  v6 = [v3 tableHeaderView];
-  [v6 frame];
+  tableHeaderView = [table tableHeaderView];
+  [tableHeaderView frame];
   v7 = [(VSIdentityProviderLogoView *)v5 initWithFrame:?];
 
-  v8 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  v9 = [v8 logo];
-  [(VSIdentityProviderLogoView *)v7 setLogo:v9];
+  viewModel = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  logo = [viewModel logo];
+  [(VSIdentityProviderLogoView *)v7 setLogo:logo];
 
-  v10 = [(VSCredentialEntryViewController_iOS *)self viewModel];
-  v11 = [v10 logoAccessibilityLabel];
-  [(VSIdentityProviderLogoView *)v7 setAccessibilityLabel:v11];
+  viewModel2 = [(VSCredentialEntryViewController_iOS *)self viewModel];
+  logoAccessibilityLabel = [viewModel2 logoAccessibilityLabel];
+  [(VSIdentityProviderLogoView *)v7 setAccessibilityLabel:logoAccessibilityLabel];
 
   [(VSCredentialEntryViewController_iOS *)self setLogoView:v7];
   [(VSIdentityProviderLogoView *)v7 sizeToFit];
-  [v3 setTableHeaderView:v7];
+  [table setTableHeaderView:v7];
   v12 = [VSIdentityProviderButtonView alloc];
-  v13 = [v3 tableFooterView];
-  [v13 frame];
+  tableFooterView = [table tableFooterView];
+  [tableFooterView frame];
   v14 = [(VSIdentityProviderButtonView *)v12 initWithFrame:?];
 
   [(VSCredentialEntryViewController_iOS *)self setButtonView:v14];
   [(VSCredentialEntryViewController_iOS *)self buildButtonsIfNeeded];
   [(VSIdentityProviderButtonView *)v14 sizeToFit];
-  [v3 setTableFooterView:v14];
+  [table setTableFooterView:v14];
   VSAuthenticationViewControllerViewDidLoad(self);
 }
 
@@ -922,29 +922,29 @@ LABEL_15:
   [(VSCredentialEntryViewController_iOS *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
+  scrollCopy = scroll;
   if ([MEMORY[0x277CE85A0] instancesRespondToSelector:a2])
   {
     v6.receiver = self;
     v6.super_class = VSCredentialEntryViewController_iOS;
-    [(VSCredentialEntryViewController_iOS *)&v6 scrollViewDidScroll:v5];
+    [(VSCredentialEntryViewController_iOS *)&v6 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a3.width;
+  width = size.width;
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(VSCredentialEntryViewController_iOS *)self buttonView:a4];
-  v6 = [v5 subviews];
+  v5 = [(VSCredentialEntryViewController_iOS *)self buttonView:coordinator];
+  subviews = [v5 subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -955,7 +955,7 @@ LABEL_15:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -964,7 +964,7 @@ LABEL_15:
         [v11 setFrame:floorf(v13 * 0.5)];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

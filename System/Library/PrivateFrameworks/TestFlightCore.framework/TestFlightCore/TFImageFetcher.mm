@@ -1,7 +1,7 @@
 @interface TFImageFetcher
 - (TFImageFetcher)init;
-- (id)_urlStringForIconArtwork:(id)a3 ofSize:(CGSize)a4 fileFormat:(id)a5;
-- (void)fetchIconArtwork:(id)a3 ofSize:(CGSize)a4 intoView:(id)a5 animated:(BOOL)a6;
+- (id)_urlStringForIconArtwork:(id)artwork ofSize:(CGSize)size fileFormat:(id)format;
+- (void)fetchIconArtwork:(id)artwork ofSize:(CGSize)size intoView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation TFImageFetcher
@@ -13,34 +13,34 @@
   v2 = [(TFImageFetcher *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v2->_displayedScreenScale = v4;
   }
 
   return v2;
 }
 
-- (void)fetchIconArtwork:(id)a3 ofSize:(CGSize)a4 intoView:(id)a5 animated:(BOOL)a6
+- (void)fetchIconArtwork:(id)artwork ofSize:(CGSize)size intoView:(id)view animated:(BOOL)animated
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = [(TFImageFetcher *)self _urlStringForIconArtwork:a3 ofSize:@"jpeg" fileFormat:width, height];
-  v13 = [MEMORY[0x277CBEBC0] URLWithString:v12];
+  viewCopy = view;
+  height = [(TFImageFetcher *)self _urlStringForIconArtwork:artwork ofSize:@"jpeg" fileFormat:width, height];
+  v13 = [MEMORY[0x277CBEBC0] URLWithString:height];
   if (v13)
   {
-    v14 = [MEMORY[0x277CCAD30] sharedSession];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __60__TFImageFetcher_fetchIconArtwork_ofSize_intoView_animated___block_invoke;
     v22 = &unk_279D98428;
-    v23 = self;
+    selfCopy = self;
     v24 = v13;
-    v25 = v11;
-    v26 = a6;
-    v15 = [v14 dataTaskWithURL:v24 completionHandler:&v19];
+    v25 = viewCopy;
+    animatedCopy = animated;
+    v15 = [mEMORY[0x277CCAD30] dataTaskWithURL:v24 completionHandler:&v19];
 
     [v15 resume];
   }
@@ -48,15 +48,15 @@
   else
   {
     v16 = +[TFLogConfiguration defaultConfiguration];
-    v17 = [v16 generatedLogger];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    generatedLogger = [v16 generatedLogger];
+    if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
       v28 = objc_opt_class();
       v29 = 2112;
-      v30 = v12;
+      v30 = height;
       v18 = v28;
-      _os_log_impl(&dword_26D2C7000, v17, OS_LOG_TYPE_ERROR, "%@: Invalid URL %@", buf, 0x16u);
+      _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_ERROR, "%@: Invalid URL %@", buf, 0x16u);
     }
   }
 }
@@ -99,13 +99,13 @@ void __60__TFImageFetcher_fetchIconArtwork_ofSize_intoView_animated___block_invo
   }
 }
 
-- (id)_urlStringForIconArtwork:(id)a3 ofSize:(CGSize)a4 fileFormat:(id)a5
+- (id)_urlStringForIconArtwork:(id)artwork ofSize:(CGSize)size fileFormat:(id)format
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v36[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  artworkCopy = artwork;
+  formatCopy = format;
   v11 = MEMORY[0x277CCACA8];
   [(TFImageFetcher *)self displayedScreenScale];
   v13 = [v11 stringWithFormat:@"%d", (width * v12)];
@@ -117,17 +117,17 @@ void __60__TFImageFetcher_fetchIconArtwork_ofSize_intoView_animated___block_invo
   v36[0] = v13;
   v36[1] = v16;
   v35[2] = @"{f}";
-  v28 = v10;
-  v36[2] = v10;
+  v28 = formatCopy;
+  v36[2] = formatCopy;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:3];
-  v29 = v9;
-  v18 = [v9 urlTemplate];
+  v29 = artworkCopy;
+  urlTemplate = [artworkCopy urlTemplate];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v19 = [v17 allKeys];
-  v20 = [v19 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  allKeys = [v17 allKeys];
+  v20 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v20)
   {
     v21 = v20;
@@ -135,30 +135,30 @@ void __60__TFImageFetcher_fetchIconArtwork_ofSize_intoView_animated___block_invo
     do
     {
       v23 = 0;
-      v24 = v18;
+      v24 = urlTemplate;
       do
       {
         if (*v31 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allKeys);
         }
 
         v25 = *(*(&v30 + 1) + 8 * v23);
         v26 = [v17 objectForKeyedSubscript:v25];
-        v18 = [v24 stringByReplacingOccurrencesOfString:v25 withString:v26];
+        urlTemplate = [v24 stringByReplacingOccurrencesOfString:v25 withString:v26];
 
         ++v23;
-        v24 = v18;
+        v24 = urlTemplate;
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v21);
   }
 
-  return v18;
+  return urlTemplate;
 }
 
 @end

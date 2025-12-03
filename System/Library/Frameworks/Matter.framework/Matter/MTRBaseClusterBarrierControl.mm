@@ -104,53 +104,53 @@
 - (void)barrierControlGoToPercentWithParams:(MTRBarrierControlClusterBarrierControlGoToPercentParams *)params completion:(MTRStatusCompletion)completion
 {
   v5 = completion;
-  v6 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392371A4;
   block[3] = &unk_278A72B88;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)barrierControlStopWithParams:(MTRBarrierControlClusterBarrierControlStopParams *)params completion:(MTRStatusCompletion)completion
 {
   v5 = completion;
-  v6 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392372F4;
   block[3] = &unk_278A72B88;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)readAttributeBarrierMovingStateWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239237438;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierMovingStateWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239237580;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierMovingStateWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -168,27 +168,27 @@
 - (void)readAttributeBarrierSafetyStatusWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392377E8;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierSafetyStatusWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239237930;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierSafetyStatusWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -206,27 +206,27 @@
 - (void)readAttributeBarrierCapabilitiesWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239237B98;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierCapabilitiesWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239237CE0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierCapabilitiesWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -244,40 +244,40 @@
 - (void)readAttributeBarrierOpenEventsWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239237F48;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeBarrierOpenEventsWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923809C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierOpenEventsWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392381E0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierOpenEventsWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -295,40 +295,40 @@
 - (void)readAttributeBarrierCloseEventsWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239238448;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeBarrierCloseEventsWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923859C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierCloseEventsWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392386E0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierCloseEventsWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -346,40 +346,40 @@
 - (void)readAttributeBarrierCommandOpenEventsWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239238948;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeBarrierCommandOpenEventsWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239238A9C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierCommandOpenEventsWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239238BE0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierCommandOpenEventsWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -397,40 +397,40 @@
 - (void)readAttributeBarrierCommandCloseEventsWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239238E48;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeBarrierCommandCloseEventsWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239238F9C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierCommandCloseEventsWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392390E0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierCommandCloseEventsWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -448,40 +448,40 @@
 - (void)readAttributeBarrierOpenPeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239239348;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeBarrierOpenPeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923949C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierOpenPeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392395E0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierOpenPeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -499,40 +499,40 @@
 - (void)readAttributeBarrierClosePeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239239848;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeBarrierClosePeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923999C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierClosePeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239239AE0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierClosePeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -550,27 +550,27 @@
 - (void)readAttributeBarrierPositionWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239239D48;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeBarrierPositionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239239E90;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeBarrierPositionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -588,27 +588,27 @@
 - (void)readAttributeGeneratedCommandListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923A0F8;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeGeneratedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923A240;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeGeneratedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -626,27 +626,27 @@
 - (void)readAttributeAcceptedCommandListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923A4A8;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcceptedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923A5F0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcceptedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -664,27 +664,27 @@
 - (void)readAttributeAttributeListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923A858;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAttributeListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923A9A0;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAttributeListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -702,27 +702,27 @@
 - (void)readAttributeFeatureMapWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923AC08;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeFeatureMapWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923AD50;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeFeatureMapWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -740,27 +740,27 @@
 - (void)readAttributeClusterRevisionWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923AFB8;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeClusterRevisionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923B100;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeClusterRevisionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -820,14 +820,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923B614;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierMovingStateWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierMovingStateWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierSafetyStatusWithCompletionHandler:(void *)completionHandler
@@ -875,14 +875,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923B978;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierSafetyStatusWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierSafetyStatusWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierCapabilitiesWithCompletionHandler:(void *)completionHandler
@@ -930,14 +930,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923BCDC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierCapabilitiesWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierCapabilitiesWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierOpenEventsWithCompletionHandler:(void *)completionHandler
@@ -985,14 +985,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923C050;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierOpenEventsWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierOpenEventsWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierCloseEventsWithCompletionHandler:(void *)completionHandler
@@ -1040,14 +1040,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923C3C4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierCloseEventsWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierCloseEventsWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierCommandOpenEventsWithCompletionHandler:(void *)completionHandler
@@ -1095,14 +1095,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923C738;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierCommandOpenEventsWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierCommandOpenEventsWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierCommandCloseEventsWithCompletionHandler:(void *)completionHandler
@@ -1150,14 +1150,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923CAAC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierCommandCloseEventsWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierCommandCloseEventsWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierOpenPeriodWithCompletionHandler:(void *)completionHandler
@@ -1205,14 +1205,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923CE20;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierOpenPeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierOpenPeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierClosePeriodWithCompletionHandler:(void *)completionHandler
@@ -1260,14 +1260,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923D194;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierClosePeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierClosePeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBarrierPositionWithCompletionHandler:(void *)completionHandler
@@ -1315,14 +1315,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923D4F8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBarrierPositionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBarrierPositionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeGeneratedCommandListWithCompletionHandler:(void *)completionHandler
@@ -1370,14 +1370,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923D85C;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeGeneratedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeGeneratedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcceptedCommandListWithCompletionHandler:(void *)completionHandler
@@ -1425,14 +1425,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923DBC0;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcceptedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcceptedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAttributeListWithCompletionHandler:(void *)completionHandler
@@ -1480,14 +1480,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923DF24;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAttributeListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAttributeListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeFeatureMapWithCompletionHandler:(void *)completionHandler
@@ -1535,14 +1535,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923E288;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeFeatureMapWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeFeatureMapWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeClusterRevisionWithCompletionHandler:(void *)completionHandler
@@ -1590,14 +1590,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923E5EC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeClusterRevisionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeClusterRevisionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 @end

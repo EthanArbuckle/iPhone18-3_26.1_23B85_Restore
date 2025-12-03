@@ -1,7 +1,7 @@
 @interface HMBooleanSetting
-- (BOOL)isEqual:(id)a3;
-- (HMBooleanSetting)initWithProtoPayload:(id)a3;
-- (HMBooleanSetting)settingWithSettingValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMBooleanSetting)initWithProtoPayload:(id)payload;
+- (HMBooleanSetting)settingWithSettingValue:(id)value;
 - (id)attributeDescriptions;
 - (id)payloadCopy;
 - (id)protoPayload;
@@ -10,10 +10,10 @@
 
 @implementation HMBooleanSetting
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
@@ -23,7 +23,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -34,8 +34,8 @@
     v6 = v5;
     if (v6 && (v10.receiver = self, v10.super_class = HMBooleanSetting, [(HMImmutableSetting *)&v10 isEqual:v6]))
     {
-      v7 = [(HMBooleanSetting *)self BOOLValue];
-      v8 = v7 ^ [(HMBooleanSetting *)v6 BOOLValue]^ 1;
+      bOOLValue = [(HMBooleanSetting *)self BOOLValue];
+      v8 = bOOLValue ^ [(HMBooleanSetting *)v6 BOOLValue]^ 1;
     }
 
     else
@@ -52,14 +52,14 @@
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = HMBooleanSetting;
-  v3 = [(HMImmutableSetting *)&v11 attributeDescriptions];
+  attributeDescriptions = [(HMImmutableSetting *)&v11 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMBooleanSetting *)self BOOLValue];
   v5 = HMFBooleanToString();
   v6 = [v4 initWithName:@"BOOLValue" value:v5];
   v12[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v8 = [v3 arrayByAddingObjectsFromArray:v7];
+  v8 = [attributeDescriptions arrayByAddingObjectsFromArray:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 
@@ -71,8 +71,8 @@
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = HMBooleanSetting;
-  v3 = [(HMImmutableSetting *)&v10 payloadCopy];
-  v4 = [v3 mutableCopy];
+  payloadCopy = [(HMImmutableSetting *)&v10 payloadCopy];
+  v4 = [payloadCopy mutableCopy];
 
   v11[0] = @"HMImmutableSettingTypePayloadKey";
   v11[1] = @"HMImmutableSettingValuePayloadKey";
@@ -92,30 +92,30 @@
 {
   v11.receiver = self;
   v11.super_class = HMBooleanSetting;
-  v3 = [(HMImmutableSetting *)&v11 protoPayload];
+  protoPayload = [(HMImmutableSetting *)&v11 protoPayload];
   v4 = objc_alloc_init(HMImmutableSettingsProtoBoolSettingEvent);
-  [v3 setBoolSetting:v4];
+  [protoPayload setBoolSetting:v4];
 
   v5 = objc_alloc_init(HMImmutableSettingsProtoBoolValueEvent);
-  v6 = [v3 BOOLSetting];
-  [v6 setValue:v5];
+  bOOLSetting = [protoPayload BOOLSetting];
+  [bOOLSetting setValue:v5];
 
-  v7 = [(HMBooleanSetting *)self BOOLValue];
-  v8 = [v3 BOOLSetting];
-  v9 = [v8 value];
-  [v9 setValue:v7];
+  bOOLValue = [(HMBooleanSetting *)self BOOLValue];
+  bOOLSetting2 = [protoPayload BOOLSetting];
+  value = [bOOLSetting2 value];
+  [value setValue:bOOLValue];
 
-  return v3;
+  return protoPayload;
 }
 
-- (HMBooleanSetting)initWithProtoPayload:(id)a3
+- (HMBooleanSetting)initWithProtoPayload:(id)payload
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 hasKeyPath] & 1) == 0)
+  payloadCopy = payload;
+  if (([payloadCopy hasKeyPath] & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -126,7 +126,7 @@
     v19 = 138543618;
     v20 = v15;
     v21 = 2112;
-    v22 = v4;
+    v22 = payloadCopy;
     v16 = "%{public}@Failed to decode setting missing keyPath: %@";
 LABEL_12:
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, v16, &v19, 0x16u);
@@ -134,10 +134,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([v4 hasReadOnly] & 1) == 0)
+  if (([payloadCopy hasReadOnly] & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -148,15 +148,15 @@ LABEL_12:
     v19 = 138543618;
     v20 = v15;
     v21 = 2112;
-    v22 = v4;
+    v22 = payloadCopy;
     v16 = "%{public}@Failed to decode setting missing readOnly: %@";
     goto LABEL_12;
   }
 
-  if (![v4 hasBoolSetting] || (objc_msgSend(v4, "BOOLSetting"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasValue"), v5, (v6 & 1) == 0))
+  if (![payloadCopy hasBoolSetting] || (objc_msgSend(payloadCopy, "BOOLSetting"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasValue"), v5, (v6 & 1) == 0))
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -164,7 +164,7 @@ LABEL_12:
       v19 = 138543618;
       v20 = v15;
       v21 = 2112;
-      v22 = v4;
+      v22 = payloadCopy;
       v16 = "%{public}@Failed to decode setting missing BOOL value: %@";
       goto LABEL_12;
     }
@@ -176,13 +176,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [v4 keyPath];
-  v8 = [v4 readOnly];
-  v9 = [v4 BOOLSetting];
-  v10 = [v9 value];
-  v11 = -[HMBooleanSetting initWithKeyPath:readOnly:BOOLValue:](self, "initWithKeyPath:readOnly:BOOLValue:", v7, v8, [v10 value]);
+  keyPath = [payloadCopy keyPath];
+  readOnly = [payloadCopy readOnly];
+  bOOLSetting = [payloadCopy BOOLSetting];
+  value = [bOOLSetting value];
+  selfCopy3 = -[HMBooleanSetting initWithKeyPath:readOnly:BOOLValue:](self, "initWithKeyPath:readOnly:BOOLValue:", keyPath, readOnly, [value value]);
 
-  v12 = v11;
+  v12 = selfCopy3;
 LABEL_14:
 
   v17 = *MEMORY[0x1E69E9840];
@@ -196,13 +196,13 @@ LABEL_14:
   return v2;
 }
 
-- (HMBooleanSetting)settingWithSettingValue:(id)a3
+- (HMBooleanSetting)settingWithSettingValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -214,8 +214,8 @@ LABEL_14:
   if (v6)
   {
     v7 = [HMBooleanSetting alloc];
-    v8 = [(HMImmutableSetting *)self keyPath];
-    v9 = -[HMBooleanSetting initWithKeyPath:readOnly:BOOLValue:](v7, "initWithKeyPath:readOnly:BOOLValue:", v8, -[HMImmutableSetting isReadOnly](self, "isReadOnly"), [v6 BOOLValue]);
+    keyPath = [(HMImmutableSetting *)self keyPath];
+    v9 = -[HMBooleanSetting initWithKeyPath:readOnly:BOOLValue:](v7, "initWithKeyPath:readOnly:BOOLValue:", keyPath, -[HMImmutableSetting isReadOnly](self, "isReadOnly"), [v6 BOOLValue]);
   }
 
   else

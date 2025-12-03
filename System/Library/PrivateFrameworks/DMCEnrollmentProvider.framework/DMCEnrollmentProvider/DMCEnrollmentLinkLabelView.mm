@@ -1,31 +1,31 @@
 @interface DMCEnrollmentLinkLabelView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DMCEnrollmentLinkLabelView)initWithIcon:(id)a3 message:(id)a4 linkMessage:(id)a5 linkHandler:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DMCEnrollmentLinkLabelView)initWithIcon:(id)icon message:(id)message linkMessage:(id)linkMessage linkHandler:(id)handler;
 - (id)_textFont;
-- (void)_populateTextLabelWithMessage:(id)a3 linkMessage:(id)a4;
+- (void)_populateTextLabelWithMessage:(id)message linkMessage:(id)linkMessage;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation DMCEnrollmentLinkLabelView
 
-- (DMCEnrollmentLinkLabelView)initWithIcon:(id)a3 message:(id)a4 linkMessage:(id)a5 linkHandler:(id)a6
+- (DMCEnrollmentLinkLabelView)initWithIcon:(id)icon message:(id)message linkMessage:(id)linkMessage linkHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  iconCopy = icon;
+  messageCopy = message;
+  linkMessageCopy = linkMessage;
+  handlerCopy = handler;
   v33.receiver = self;
   v33.super_class = DMCEnrollmentLinkLabelView;
   v14 = [(DMCEnrollmentLinkLabelView *)&v33 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v14)
   {
-    if (v10)
+    if (iconCopy)
     {
       v15 = objc_alloc(MEMORY[0x277D755E8]);
-      v16 = [MEMORY[0x277D755B8] _systemImageNamed:v10];
+      v16 = [MEMORY[0x277D755B8] _systemImageNamed:iconCopy];
       v17 = [v15 initWithImage:v16];
       imageView = v14->_imageView;
       v14->_imageView = v17;
@@ -35,11 +35,11 @@
     }
 
     v14->_enabled = 1;
-    v19 = [v11 copy];
+    v19 = [messageCopy copy];
     message = v14->_message;
     v14->_message = v19;
 
-    v21 = [v12 copy];
+    v21 = [linkMessageCopy copy];
     linkMessage = v14->_linkMessage;
     v14->_linkMessage = v21;
 
@@ -48,13 +48,13 @@
     v14->_textLabel = v23;
 
     [(UILabel *)v14->_textLabel setNumberOfLines:0];
-    [(DMCEnrollmentLinkLabelView *)v14 _populateTextLabelWithMessage:v11 linkMessage:v12];
+    [(DMCEnrollmentLinkLabelView *)v14 _populateTextLabelWithMessage:messageCopy linkMessage:linkMessageCopy];
     [(DMCEnrollmentLinkLabelView *)v14 addSubview:v14->_textLabel];
-    v25 = _Block_copy(v13);
+    v25 = _Block_copy(handlerCopy);
     linkHandler = v14->_linkHandler;
     v14->_linkHandler = v25;
 
-    [(DMCEnrollmentLinkLabelView *)v14 setUserInteractionEnabled:v13 != 0];
+    [(DMCEnrollmentLinkLabelView *)v14 setUserInteractionEnabled:handlerCopy != 0];
     objc_initWeak(&location, v14);
     v34[0] = objc_opt_class();
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
@@ -87,12 +87,12 @@ void __75__DMCEnrollmentLinkLabelView_initWithIcon_message_linkMessage_linkHandl
   [(DMCEnrollmentLinkLabelView *)&v15 layoutSubviews];
   [(DMCEnrollmentLinkLabelView *)self bounds];
   v3 = (CGRectGetWidth(v16) + -35.0) * 0.5;
-  v4 = [(DMCEnrollmentLinkLabelView *)self imageView];
-  [v4 setFrame:{v3, 0.0, 35.0, 35.0}];
+  imageView = [(DMCEnrollmentLinkLabelView *)self imageView];
+  [imageView setFrame:{v3, 0.0, 35.0, 35.0}];
 
-  v5 = [(DMCEnrollmentLinkLabelView *)self textLabel];
+  textLabel = [(DMCEnrollmentLinkLabelView *)self textLabel];
   [(DMCEnrollmentLinkLabelView *)self bounds];
-  [v5 sizeThatFits:{v6, v7}];
+  [textLabel sizeThatFits:{v6, v7}];
   v9 = v8;
   v11 = v10;
 
@@ -100,22 +100,22 @@ void __75__DMCEnrollmentLinkLabelView_initWithIcon_message_linkMessage_linkHandl
   v12 = (CGRectGetWidth(v17) - v9) * 0.5;
   [(DMCEnrollmentLinkLabelView *)self bounds];
   v13 = CGRectGetHeight(v18) - v11 + -5.0;
-  v14 = [(DMCEnrollmentLinkLabelView *)self textLabel];
-  [v14 setFrame:{v12, v13, v9, v11}];
+  textLabel2 = [(DMCEnrollmentLinkLabelView *)self textLabel];
+  [textLabel2 setFrame:{v12, v13, v9, v11}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(DMCEnrollmentLinkLabelView *)self textLabel];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  textLabel = [(DMCEnrollmentLinkLabelView *)self textLabel];
+  [textLabel sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(DMCEnrollmentLinkLabelView *)self imageView];
+  imageView = [(DMCEnrollmentLinkLabelView *)self imageView];
 
-  if (v11)
+  if (imageView)
   {
     v12 = v10 + 50.0;
   }
@@ -131,60 +131,60 @@ void __75__DMCEnrollmentLinkLabelView_initWithIcon_message_linkMessage_linkHandl
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(DMCEnrollmentLinkLabelView *)self setAlpha:a3, a4, 1.0];
-  v5 = [(DMCEnrollmentLinkLabelView *)self linkHandler];
+  [(DMCEnrollmentLinkLabelView *)self setAlpha:ended, event, 1.0];
+  linkHandler = [(DMCEnrollmentLinkLabelView *)self linkHandler];
 
-  if (v5)
+  if (linkHandler)
   {
-    v6 = [(DMCEnrollmentLinkLabelView *)self linkHandler];
-    v6[2]();
+    linkHandler2 = [(DMCEnrollmentLinkLabelView *)self linkHandler];
+    linkHandler2[2]();
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    v6 = [(DMCEnrollmentLinkLabelView *)self message];
-    v5 = [(DMCEnrollmentLinkLabelView *)self linkMessage];
-    [(DMCEnrollmentLinkLabelView *)self _populateTextLabelWithMessage:v6 linkMessage:v5];
+    self->_enabled = enabled;
+    message = [(DMCEnrollmentLinkLabelView *)self message];
+    linkMessage = [(DMCEnrollmentLinkLabelView *)self linkMessage];
+    [(DMCEnrollmentLinkLabelView *)self _populateTextLabelWithMessage:message linkMessage:linkMessage];
   }
 }
 
-- (void)_populateTextLabelWithMessage:(id)a3 linkMessage:(id)a4
+- (void)_populateTextLabelWithMessage:(id)message linkMessage:(id)linkMessage
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = a4;
+  messageCopy = message;
+  linkMessageCopy = linkMessage;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   [v8 setAlignment:{2 * (objc_msgSend(*MEMORY[0x277D76620], "userInterfaceLayoutDirection") != 0)}];
   v9 = *MEMORY[0x277D740A8];
   v26[0] = *MEMORY[0x277D740A8];
-  v10 = [(DMCEnrollmentLinkLabelView *)self _textFont];
-  v27[0] = v10;
+  _textFont = [(DMCEnrollmentLinkLabelView *)self _textFont];
+  v27[0] = _textFont;
   v11 = *MEMORY[0x277D740C0];
   v26[1] = *MEMORY[0x277D740C0];
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   v13 = *MEMORY[0x277D74118];
   v26[2] = *MEMORY[0x277D74118];
-  v27[1] = v12;
+  v27[1] = secondaryLabelColor;
   v27[2] = v8;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
 
-  if (v6)
+  if (messageCopy)
   {
-    v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6 attributes:v14];
+    v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:messageCopy attributes:v14];
     [v7 appendAttributedString:v15];
   }
 
-  v23 = v6;
+  v23 = messageCopy;
   v24[0] = v9;
-  v16 = [(DMCEnrollmentLinkLabelView *)self _textFont];
-  v25[0] = v16;
+  _textFont2 = [(DMCEnrollmentLinkLabelView *)self _textFont];
+  v25[0] = _textFont2;
   v24[1] = v11;
   if ([(DMCEnrollmentLinkLabelView *)self enabled])
   {
@@ -201,11 +201,11 @@ void __75__DMCEnrollmentLinkLabelView_initWithIcon_message_linkMessage_linkHandl
   v25[2] = v8;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
-  if (v22)
+  if (linkMessageCopy)
   {
     v19 = objc_alloc(MEMORY[0x277CCA898]);
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", v22];
-    v21 = [v19 initWithString:v20 attributes:v18];
+    linkMessageCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", linkMessageCopy];
+    v21 = [v19 initWithString:linkMessageCopy attributes:v18];
     [v7 appendAttributedString:v21];
   }
 

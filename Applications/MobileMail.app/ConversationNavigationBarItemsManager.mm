@@ -48,57 +48,57 @@
 - (UIBarButtonItemGroup)readButtonItemGroup;
 - (UIBarButtonItemGroup)replyAllButtonItemGroup;
 - (UIBarButtonItemGroup)replyButtonItemGroup;
-- (_TtC10MobileMail37ConversationNavigationBarItemsManager)initWithScene:(id)a3 delegate:(id)a4 actionHandler:(id)a5 arrowDelegate:(id)a6;
+- (_TtC10MobileMail37ConversationNavigationBarItemsManager)initWithScene:(id)scene delegate:(id)delegate actionHandler:(id)handler arrowDelegate:(id)arrowDelegate;
 - (_TtP10MobileMail44ConversationNavigationBarItemsActionHandling_)actionHandler;
 - (_TtP10MobileMail45ConversationNavigationBarItemsManagerDelegate_)delegate;
-- (void)configureDesktopClassButtonsFor:(id)a3 isPrimary:(BOOL)a4 isShowingTitle:(BOOL)a5 animated:(BOOL)a6;
-- (void)configureNavigationBar:(id)a3 navigationItem:(id)a4;
+- (void)configureDesktopClassButtonsFor:(id)for isPrimary:(BOOL)primary isShowingTitle:(BOOL)title animated:(BOOL)animated;
+- (void)configureNavigationBar:(id)bar navigationItem:(id)item;
 - (void)prewarmContent;
-- (void)setActionHandler:(id)a3;
-- (void)setArchiveButtonItem:(id)a3;
-- (void)setArrowControlsButtonItem:(id)a3;
-- (void)setArrowControlsButtonItems:(id)a3;
-- (void)setArrowControlsView:(id)a3;
-- (void)setArrowDelegate:(id)a3;
-- (void)setCategorizeButtonItem:(id)a3;
-- (void)setCleanBackButtonItem:(id)a3;
-- (void)setComposeButtonItem:(id)a3;
-- (void)setContactLeftDoneButtonItem:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDeleteButtonItem:(id)a3;
-- (void)setDoneButton:(id)a3;
-- (void)setDownArrowBarButtonItem:(id)a3;
-- (void)setFlagButtonItem:(id)a3;
-- (void)setForwardButtonItem:(id)a3;
-- (void)setGroupedSenderActionsButtonItem:(id)a3;
-- (void)setJunkButtonItem:(id)a3;
-- (void)setLaterButtonItem:(id)a3;
-- (void)setLeftSpaceItem:(id)a3;
-- (void)setMoveButtonItem:(id)a3;
-- (void)setMuteButtonItem:(id)a3;
-- (void)setReadButtonItem:(id)a3;
-- (void)setReplyAllButtonItem:(id)a3;
-- (void)setReplyButtonItem:(id)a3;
-- (void)setRevealActionsButtonItem:(id)a3;
-- (void)setScene:(id)a3;
-- (void)setShowNavigationArrows:(BOOL)a3;
-- (void)setShowSupplementaryButtonItem:(BOOL)a3;
-- (void)setUnreadButtonItem:(id)a3;
-- (void)setUpArrowBarButtonItem:(id)a3;
-- (void)setUseArchiveButton:(BOOL)a3;
-- (void)setUseDesktopClassNavigationBar:(BOOL)a3;
-- (void)updateEnabledStatesForMessage:(id)a3;
+- (void)setActionHandler:(id)handler;
+- (void)setArchiveButtonItem:(id)item;
+- (void)setArrowControlsButtonItem:(id)item;
+- (void)setArrowControlsButtonItems:(id)items;
+- (void)setArrowControlsView:(id)view;
+- (void)setArrowDelegate:(id)delegate;
+- (void)setCategorizeButtonItem:(id)item;
+- (void)setCleanBackButtonItem:(id)item;
+- (void)setComposeButtonItem:(id)item;
+- (void)setContactLeftDoneButtonItem:(id)item;
+- (void)setDelegate:(id)delegate;
+- (void)setDeleteButtonItem:(id)item;
+- (void)setDoneButton:(id)button;
+- (void)setDownArrowBarButtonItem:(id)item;
+- (void)setFlagButtonItem:(id)item;
+- (void)setForwardButtonItem:(id)item;
+- (void)setGroupedSenderActionsButtonItem:(id)item;
+- (void)setJunkButtonItem:(id)item;
+- (void)setLaterButtonItem:(id)item;
+- (void)setLeftSpaceItem:(id)item;
+- (void)setMoveButtonItem:(id)item;
+- (void)setMuteButtonItem:(id)item;
+- (void)setReadButtonItem:(id)item;
+- (void)setReplyAllButtonItem:(id)item;
+- (void)setReplyButtonItem:(id)item;
+- (void)setRevealActionsButtonItem:(id)item;
+- (void)setScene:(id)scene;
+- (void)setShowNavigationArrows:(BOOL)arrows;
+- (void)setShowSupplementaryButtonItem:(BOOL)item;
+- (void)setUnreadButtonItem:(id)item;
+- (void)setUpArrowBarButtonItem:(id)item;
+- (void)setUseArchiveButton:(BOOL)button;
+- (void)setUseDesktopClassNavigationBar:(BOOL)bar;
+- (void)updateEnabledStatesForMessage:(id)message;
 @end
 
 @implementation ConversationNavigationBarItemsManager
 
-- (_TtC10MobileMail37ConversationNavigationBarItemsManager)initWithScene:(id)a3 delegate:(id)a4 actionHandler:(id)a5 arrowDelegate:(id)a6
+- (_TtC10MobileMail37ConversationNavigationBarItemsManager)initWithScene:(id)scene delegate:(id)delegate actionHandler:(id)handler arrowDelegate:(id)arrowDelegate
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return ConversationNavigationBarItemsManager.init(scene:delegate:actionHandler:arrowDelegate:)(a3, a4, a5, a6);
+  return ConversationNavigationBarItemsManager.init(scene:delegate:actionHandler:arrowDelegate:)(scene, delegate, handler, arrowDelegate);
 }
 
 - (ComposeCapable)scene
@@ -110,7 +110,7 @@
   return v4;
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -127,7 +127,7 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -144,7 +144,7 @@
   return v4;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -161,7 +161,7 @@
   return v4;
 }
 
-- (void)setArrowDelegate:(id)a3
+- (void)setArrowDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -177,7 +177,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setUseArchiveButton:(BOOL)a3
+- (void)setUseArchiveButton:(BOOL)button
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -193,7 +193,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setShowNavigationArrows:(BOOL)a3
+- (void)setShowNavigationArrows:(BOOL)arrows
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -209,7 +209,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setShowSupplementaryButtonItem:(BOOL)a3
+- (void)setShowSupplementaryButtonItem:(BOOL)item
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -225,7 +225,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setUseDesktopClassNavigationBar:(BOOL)a3
+- (void)setUseDesktopClassNavigationBar:(BOOL)bar
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -242,11 +242,11 @@
   return v4;
 }
 
-- (void)setDoneButton:(id)a3
+- (void)setDoneButton:(id)button
 {
-  _objc_retain(a3);
+  _objc_retain(button);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.doneButton.setter(a3);
+  ConversationNavigationBarItemsManager.doneButton.setter(button);
   _objc_release(self);
 }
 
@@ -268,11 +268,11 @@
   return v4;
 }
 
-- (void)setRevealActionsButtonItem:(id)a3
+- (void)setRevealActionsButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.revealActionsButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.revealActionsButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -285,11 +285,11 @@
   return v4;
 }
 
-- (void)setReplyButtonItem:(id)a3
+- (void)setReplyButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.replyButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.replyButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -311,11 +311,11 @@
   return v4;
 }
 
-- (void)setReplyAllButtonItem:(id)a3
+- (void)setReplyAllButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.replyAllButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.replyAllButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -337,11 +337,11 @@
   return v4;
 }
 
-- (void)setForwardButtonItem:(id)a3
+- (void)setForwardButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.forwardButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.forwardButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -363,11 +363,11 @@
   return v4;
 }
 
-- (void)setArchiveButtonItem:(id)a3
+- (void)setArchiveButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.archiveButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.archiveButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -380,11 +380,11 @@
   return v4;
 }
 
-- (void)setDeleteButtonItem:(id)a3
+- (void)setDeleteButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.deleteButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.deleteButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -415,11 +415,11 @@
   return v4;
 }
 
-- (void)setMoveButtonItem:(id)a3
+- (void)setMoveButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.moveButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.moveButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -441,11 +441,11 @@
   return v4;
 }
 
-- (void)setFlagButtonItem:(id)a3
+- (void)setFlagButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.flagButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.flagButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -467,11 +467,11 @@
   return v4;
 }
 
-- (void)setReadButtonItem:(id)a3
+- (void)setReadButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.readButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.readButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -484,11 +484,11 @@
   return v4;
 }
 
-- (void)setUnreadButtonItem:(id)a3
+- (void)setUnreadButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.unreadButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.unreadButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -510,11 +510,11 @@
   return v4;
 }
 
-- (void)setJunkButtonItem:(id)a3
+- (void)setJunkButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.junkButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.junkButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -536,11 +536,11 @@
   return v4;
 }
 
-- (void)setMuteButtonItem:(id)a3
+- (void)setMuteButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.muteButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.muteButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -562,11 +562,11 @@
   return v4;
 }
 
-- (void)setLaterButtonItem:(id)a3
+- (void)setLaterButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.laterButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.laterButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -588,11 +588,11 @@
   return v4;
 }
 
-- (void)setComposeButtonItem:(id)a3
+- (void)setComposeButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.composeButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.composeButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -605,11 +605,11 @@
   return v4;
 }
 
-- (void)setContactLeftDoneButtonItem:(id)a3
+- (void)setContactLeftDoneButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.contactLeftDoneButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.contactLeftDoneButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -622,11 +622,11 @@
   return v4;
 }
 
-- (void)setLeftSpaceItem:(id)a3
+- (void)setLeftSpaceItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.leftSpaceItem.setter(a3);
+  ConversationNavigationBarItemsManager.leftSpaceItem.setter(item);
   _objc_release(self);
 }
 
@@ -639,11 +639,11 @@
   return v4;
 }
 
-- (void)setArrowControlsButtonItem:(id)a3
+- (void)setArrowControlsButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.arrowControlsButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.arrowControlsButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -658,14 +658,14 @@
   return isa;
 }
 
-- (void)setArrowControlsButtonItems:(id)a3
+- (void)setArrowControlsButtonItems:(id)items
 {
-  _objc_retain(a3);
+  _objc_retain(items);
   _objc_retain(self);
   sub_100295C30();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   ConversationNavigationBarItemsManager.arrowControlsButtonItems.setter(v4);
-  _objc_release(a3);
+  _objc_release(items);
   _objc_release(self);
 }
 
@@ -678,11 +678,11 @@
   return v4;
 }
 
-- (void)setGroupedSenderActionsButtonItem:(id)a3
+- (void)setGroupedSenderActionsButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.groupedSenderActionsButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.groupedSenderActionsButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -695,11 +695,11 @@
   return v4;
 }
 
-- (void)setCleanBackButtonItem:(id)a3
+- (void)setCleanBackButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.cleanBackButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.cleanBackButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -712,11 +712,11 @@
   return v4;
 }
 
-- (void)setCategorizeButtonItem:(id)a3
+- (void)setCategorizeButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.categorizeButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.categorizeButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -738,11 +738,11 @@
   return v4;
 }
 
-- (void)setArrowControlsView:(id)a3
+- (void)setArrowControlsView:(id)view
 {
-  _objc_retain(a3);
+  _objc_retain(view);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.arrowControlsView.setter(a3);
+  ConversationNavigationBarItemsManager.arrowControlsView.setter(view);
   _objc_release(self);
 }
 
@@ -755,11 +755,11 @@
   return v4;
 }
 
-- (void)setUpArrowBarButtonItem:(id)a3
+- (void)setUpArrowBarButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.upArrowBarButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.upArrowBarButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -772,11 +772,11 @@
   return v4;
 }
 
-- (void)setDownArrowBarButtonItem:(id)a3
+- (void)setDownArrowBarButtonItem:(id)item
 {
-  _objc_retain(a3);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.downArrowBarButtonItem.setter(a3);
+  ConversationNavigationBarItemsManager.downArrowBarButtonItem.setter(item);
   _objc_release(self);
 }
 
@@ -787,11 +787,11 @@
   _objc_release(self);
 }
 
-- (void)updateEnabledStatesForMessage:(id)a3
+- (void)updateEnabledStatesForMessage:(id)message
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.updateEnabledStatesForMessage(_:)(a3);
+  ConversationNavigationBarItemsManager.updateEnabledStatesForMessage(_:)(message);
   _objc_release(self);
   swift_unknownObjectRelease();
 }
@@ -812,27 +812,27 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)configureNavigationBar:(id)a3 navigationItem:(id)a4
+- (void)configureNavigationBar:(id)bar navigationItem:(id)item
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
+  _objc_retain(bar);
+  _objc_retain(item);
   _objc_retain(self);
-  ConversationNavigationBarItemsManager.configureNavigationBar(_:navigationItem:)(a3, a4);
+  ConversationNavigationBarItemsManager.configureNavigationBar(_:navigationItem:)(bar, item);
   _objc_release(self);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(item);
+  _objc_release(bar);
 }
 
-- (void)configureDesktopClassButtonsFor:(id)a3 isPrimary:(BOOL)a4 isShowingTitle:(BOOL)a5 animated:(BOOL)a6
+- (void)configureDesktopClassButtonsFor:(id)for isPrimary:(BOOL)primary isShowingTitle:(BOOL)title animated:(BOOL)animated
 {
-  _objc_retain(a3);
+  _objc_retain(for);
   _objc_retain(self);
   v8 = _convertObjCBoolToBool(_:)();
   v9 = _convertObjCBoolToBool(_:)();
   v7 = _convertObjCBoolToBool(_:)();
-  ConversationNavigationBarItemsManager.configureDesktopClassButtons(for:isPrimary:isShowingTitle:animated:)(a3, v8 & 1, v9 & 1, v7 & 1);
+  ConversationNavigationBarItemsManager.configureDesktopClassButtons(for:isPrimary:isShowingTitle:animated:)(for, v8 & 1, v9 & 1, v7 & 1);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(for);
 }
 
 - (NSArray)desktopClassCenterBarButtonItems

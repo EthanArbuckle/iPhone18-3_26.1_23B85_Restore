@@ -2,14 +2,14 @@
 - (BOOL)isOfflineAsset;
 - (NSString)description;
 - (PFFairPlayAsset)init;
-- (PFFairPlayAsset)initWithAdamID:(int64_t)a3 avAsset:(id)a4;
+- (PFFairPlayAsset)initWithAdamID:(int64_t)d avAsset:(id)asset;
 @end
 
 @implementation PFFairPlayAsset
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   FairPlayAsset.description.getter();
 
   v3 = _sSS18PodcastsFoundationE18userDefaultsObjectSo8NSStringCSgyF_0();
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (PFFairPlayAsset)initWithAdamID:(int64_t)a3 avAsset:(id)a4
+- (PFFairPlayAsset)initWithAdamID:(int64_t)d avAsset:(id)asset
 {
-  v5 = a4;
-  v6 = sub_1D8E90C4C(a3, v5);
+  assetCopy = asset;
+  v6 = sub_1D8E90C4C(d, assetCopy);
 
   return v6;
 }
@@ -43,7 +43,7 @@
   v9 = *&self->avAsset[OBJC_IVAR___PFFairPlayAsset_avAsset + 16];
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR___PFFairPlayAsset_avAsset), v8);
   v10 = *(v9 + 8);
-  v11 = self;
+  selfCopy = self;
   v12 = v10(v8, v9);
   v13 = [v12 URL];
   sub_1D9176B9C();

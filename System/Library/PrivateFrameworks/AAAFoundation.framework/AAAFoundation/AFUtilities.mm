@@ -20,17 +20,17 @@
 
 + (id)bundleIdentifier
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 + (id)bundleVersion
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695E500]];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v4 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
 
   return v4;
 }
@@ -38,12 +38,12 @@
 + (id)currentApplicationIdentifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processIdentifier];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
-  LODWORD(v2) = proc_pidpath(v3, buffer, 0x1000u);
+  LODWORD(processInfo) = proc_pidpath(processIdentifier, buffer, 0x1000u);
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:buffer length:v2 encoding:4];
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:buffer length:processInfo encoding:4];
   v6 = [v4 fileURLWithPath:v5];
 
   if (v6)
@@ -65,15 +65,15 @@
 
 + (id)currentApplicationVersion
 {
-  v3 = [a1 currentApplicationIdentifier];
-  if (v3)
+  currentApplicationIdentifier = [self currentApplicationIdentifier];
+  if (currentApplicationIdentifier)
   {
     v4 = MEMORY[0x1E696AAE8];
-    v5 = [a1 currentApplicationIdentifier];
-    v6 = [v4 bundleWithIdentifier:v5];
+    currentApplicationIdentifier2 = [self currentApplicationIdentifier];
+    v6 = [v4 bundleWithIdentifier:currentApplicationIdentifier2];
 
-    v7 = [v6 infoDictionary];
-    v8 = [v7 objectForKey:*MEMORY[0x1E695E500]];
+    infoDictionary = [v6 infoDictionary];
+    v8 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
   }
 
   else

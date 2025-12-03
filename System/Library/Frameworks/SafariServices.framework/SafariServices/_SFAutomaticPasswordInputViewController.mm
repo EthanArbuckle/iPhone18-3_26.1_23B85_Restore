@@ -1,51 +1,51 @@
 @interface _SFAutomaticPasswordInputViewController
-+ (void)_inputViewControllerWithAutoFillContext:(id)a3 passwordRules:(id)a4 overrideApplicationIdentifier:(id)a5 completion:(id)a6;
++ (void)_inputViewControllerWithAutoFillContext:(id)context passwordRules:(id)rules overrideApplicationIdentifier:(id)identifier completion:(id)completion;
 - (CGSize)_currentKeyboardSize;
-- (CGSize)intrinsicContentSizeForInputView:(id)a3;
+- (CGSize)intrinsicContentSizeForInputView:(id)view;
 - (_SFAutoFillContextProviding)autoFillContextProvider;
-- (_SFAutomaticPasswordInputViewController)initWithPassword:(id)a3 keyboardType:(int64_t)a4;
+- (_SFAutomaticPasswordInputViewController)initWithPassword:(id)password keyboardType:(int64_t)type;
 - (id)_editingStrongPasswordInformationViewControllerIfNeeded;
-- (id)strongPasswordIntroductionViewController:(id)a3 automaticStrongPasswordWithFormat:(unint64_t)a4;
+- (id)strongPasswordIntroductionViewController:(id)controller automaticStrongPasswordWithFormat:(unint64_t)format;
 - (id)strongPasswordIntroductionViewControllerIfNeeded;
-- (void)_postButtonPressedNotificationForButton:(int64_t)a3;
+- (void)_postButtonPressedNotificationForButton:(int64_t)button;
 - (void)_postContextProviderRequiredNotificationIfNeeded;
 - (void)_updateKeyboardHeight;
 - (void)_updateKeyboardMetricsAndInterfaceOrientationIfNeeded;
 - (void)dismissKeyboardPreservingFirstResponderIfNecessary;
-- (void)imageForStrongPasswordIntroductionViewController:(id)a3 completionHandler:(id)a4;
-- (void)streamlinedStrongPasswordViewController:(id)a3 shouldFillStrongPasswordWithFormat:(unint64_t)a4;
-- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)a3;
-- (void)strongPasswordIntroductionViewController:(id)a3 shouldFillPasswordWithFormat:(unint64_t)a4;
-- (void)strongPasswordIntroductionViewController:(id)a3 shouldPerformAction:(unint64_t)a4 willShowAdditionalView:(BOOL)a5;
-- (void)strongPasswordIntroductionViewControllerDidFinishIntroduction:(id)a3;
-- (void)strongPasswordIntroductionViewControllerShowKeyboard:(id)a3;
-- (void)strongPasswordIntroductionViewControllerShowOtherPasswords:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)imageForStrongPasswordIntroductionViewController:(id)controller completionHandler:(id)handler;
+- (void)streamlinedStrongPasswordViewController:(id)controller shouldFillStrongPasswordWithFormat:(unint64_t)format;
+- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)password;
+- (void)strongPasswordIntroductionViewController:(id)controller shouldFillPasswordWithFormat:(unint64_t)format;
+- (void)strongPasswordIntroductionViewController:(id)controller shouldPerformAction:(unint64_t)action willShowAdditionalView:(BOOL)view;
+- (void)strongPasswordIntroductionViewControllerDidFinishIntroduction:(id)introduction;
+- (void)strongPasswordIntroductionViewControllerShowKeyboard:(id)keyboard;
+- (void)strongPasswordIntroductionViewControllerShowOtherPasswords:(id)passwords;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _SFAutomaticPasswordInputViewController
 
-+ (void)_inputViewControllerWithAutoFillContext:(id)a3 passwordRules:(id)a4 overrideApplicationIdentifier:(id)a5 completion:(id)a6
++ (void)_inputViewControllerWithAutoFillContext:(id)context passwordRules:(id)rules overrideApplicationIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  contextCopy = context;
+  rulesCopy = rules;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (contextCopy)
     {
       if ([MEMORY[0x1E69C8880] isPasswordsAppInstalled])
       {
-        v12[2](v12, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_12;
       }
 
-      v15 = [v9 objectForKeyedSubscript:@"_automaticPasswordKeyboard"];
+      v15 = [contextCopy objectForKeyedSubscript:@"_automaticPasswordKeyboard"];
       if (v15)
       {
         v16 = v15;
@@ -53,7 +53,7 @@
 
         if (v14)
         {
-          v17 = [v9 objectForKeyedSubscript:@"strongPasswordAdditionalContext"];
+          v17 = [contextCopy objectForKeyedSubscript:@"strongPasswordAdditionalContext"];
           v18 = [v17 objectForKeyedSubscript:@"SFAutoFillContextProviderIdentifierUserInfoKey"];
           v19 = [v18 copy];
           autoFillContextProtocolObjectUUID = v14->_autoFillContextProtocolObjectUUID;
@@ -66,7 +66,7 @@
         v14 = 0;
       }
 
-      (v12)[2](v12, v14);
+      (completionCopy)[2](completionCopy, v14);
     }
 
     else
@@ -77,29 +77,29 @@
       v21[2] = __138___SFAutomaticPasswordInputViewController__inputViewControllerWithAutoFillContext_passwordRules_overrideApplicationIdentifier_completion___block_invoke;
       v21[3] = &unk_1E8493A80;
       v22 = v13;
-      v23 = v11;
-      v24 = v12;
+      v23 = identifierCopy;
+      v24 = completionCopy;
       v14 = v13;
-      [(_SFAutomaticPasswordInputViewController *)v14 getAutomaticStrongPasswordForAppWithPasswordRules:v10 confirmPasswordRules:0 overrideApplicationIdentifier:v23 completion:v21];
+      [(_SFAutomaticPasswordInputViewController *)v14 getAutomaticStrongPasswordForAppWithPasswordRules:rulesCopy confirmPasswordRules:0 overrideApplicationIdentifier:v23 completion:v21];
     }
   }
 
 LABEL_12:
 }
 
-- (_SFAutomaticPasswordInputViewController)initWithPassword:(id)a3 keyboardType:(int64_t)a4
+- (_SFAutomaticPasswordInputViewController)initWithPassword:(id)password keyboardType:(int64_t)type
 {
-  v6 = a3;
+  passwordCopy = password;
   v12.receiver = self;
   v12.super_class = _SFAutomaticPasswordInputViewController;
   v7 = [(UIInputViewController *)&v12 initWithNibName:0 bundle:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [passwordCopy copy];
     password = v7->_password;
     v7->_password = v8;
 
-    v7->_keyboardType = a4;
+    v7->_keyboardType = type;
     v10 = v7;
   }
 
@@ -108,10 +108,10 @@ LABEL_12:
 
 - (void)_updateKeyboardMetricsAndInterfaceOrientationIfNeeded
 {
-  v3 = [*MEMORY[0x1E69DDA98] interfaceOrientation];
-  if (v3 != self->_currentInterfaceOrientation)
+  interfaceOrientation = [*MEMORY[0x1E69DDA98] interfaceOrientation];
+  if (interfaceOrientation != self->_currentInterfaceOrientation)
   {
-    self->_currentInterfaceOrientation = v3;
+    self->_currentInterfaceOrientation = interfaceOrientation;
     v4 = [_SFKeyboardGeometry keyboardGeometryForInterfaceOrientation:1];
     [v4 sizeWithBar];
     self->_portraitKeyboardSize.width = v5;
@@ -139,57 +139,57 @@ LABEL_12:
   v22.receiver = self;
   v22.super_class = _SFAutomaticPasswordInputViewController;
   [(UIInputViewController *)&v22 viewDidLoad];
-  v3 = [(_SFAutomaticPasswordInputViewController *)self strongPasswordIntroductionViewControllerIfNeeded];
-  if (v3)
+  strongPasswordIntroductionViewControllerIfNeeded = [(_SFAutomaticPasswordInputViewController *)self strongPasswordIntroductionViewControllerIfNeeded];
+  if (strongPasswordIntroductionViewControllerIfNeeded)
   {
-    [(_SFAutomaticPasswordInputViewController *)self addChildViewController:v3];
+    [(_SFAutomaticPasswordInputViewController *)self addChildViewController:strongPasswordIntroductionViewControllerIfNeeded];
     v4 = [SFAutoFillStrongPasswordContainerInputView alloc];
-    v5 = [(UIInputViewController *)self inputView];
-    v6 = [v5 inputViewStyle];
-    v7 = [v3 view];
-    v8 = [(SFAutoFillStrongPasswordContainerInputView *)v4 initWithInputViewStyle:v6 containingView:v7];
+    inputView = [(UIInputViewController *)self inputView];
+    inputViewStyle = [inputView inputViewStyle];
+    view = [strongPasswordIntroductionViewControllerIfNeeded view];
+    v8 = [(SFAutoFillStrongPasswordContainerInputView *)v4 initWithInputViewStyle:inputViewStyle containingView:view];
 
     [(SFAutoFillStrongPasswordContainerInputView *)v8 setInputViewSizing:self];
     [(UIInputViewController *)self setInputView:v8];
-    v9 = [(SFAutoFillStrongPasswordContainerInputView *)v8 heightAnchor];
-    v10 = [v9 constraintEqualToConstant:100.0];
+    heightAnchor = [(SFAutoFillStrongPasswordContainerInputView *)v8 heightAnchor];
+    v10 = [heightAnchor constraintEqualToConstant:100.0];
     heightConstraint = self->_heightConstraint;
     self->_heightConstraint = v10;
 
     [(NSLayoutConstraint *)self->_heightConstraint setActive:1];
-    [v3 didMoveToParentViewController:self];
-    v12 = v3;
+    [strongPasswordIntroductionViewControllerIfNeeded didMoveToParentViewController:self];
+    v12 = strongPasswordIntroductionViewControllerIfNeeded;
     passwordManagerIntroductionViewController = self->_passwordManagerIntroductionViewController;
     self->_passwordManagerIntroductionViewController = v12;
   }
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x1E69BC7E8]) initForApp];
-    [(_SFAutomaticPasswordInputViewController *)self addChildViewController:v14];
+    initForApp = [objc_alloc(MEMORY[0x1E69BC7E8]) initForApp];
+    [(_SFAutomaticPasswordInputViewController *)self addChildViewController:initForApp];
     v15 = [SFAutoFillStrongPasswordContainerInputView alloc];
-    v16 = [(UIInputViewController *)self inputView];
-    v17 = [v16 inputViewStyle];
-    v18 = [(UIViewController *)v14 view];
-    v8 = [(SFAutoFillStrongPasswordContainerInputView *)v15 initWithInputViewStyle:v17 containingView:v18];
+    inputView2 = [(UIInputViewController *)self inputView];
+    inputViewStyle2 = [inputView2 inputViewStyle];
+    view2 = [(UIViewController *)initForApp view];
+    v8 = [(SFAutoFillStrongPasswordContainerInputView *)v15 initWithInputViewStyle:inputViewStyle2 containingView:view2];
 
     [(SFAutoFillStrongPasswordContainerInputView *)v8 setInputViewSizing:self];
     [(UIInputView *)v8 setAllowsSelfSizing:1];
     [(UIInputViewController *)self setInputView:v8];
-    v19 = [(SFAutoFillStrongPasswordContainerInputView *)v8 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:100.0];
+    heightAnchor2 = [(SFAutoFillStrongPasswordContainerInputView *)v8 heightAnchor];
+    v20 = [heightAnchor2 constraintEqualToConstant:100.0];
     v21 = self->_heightConstraint;
     self->_heightConstraint = v20;
 
     [(NSLayoutConstraint *)self->_heightConstraint setActive:1];
-    [(UIViewController *)v14 didMoveToParentViewController:self];
-    [(UIViewController *)v14 setDelegate:self];
+    [(UIViewController *)initForApp didMoveToParentViewController:self];
+    [(UIViewController *)initForApp setDelegate:self];
     passwordManagerIntroductionViewController = self->_strongPasswordViewController;
-    self->_strongPasswordViewController = v14;
+    self->_strongPasswordViewController = initForApp;
   }
 }
 
-- (void)_postButtonPressedNotificationForButton:(int64_t)a3
+- (void)_postButtonPressedNotificationForButton:(int64_t)button
 {
   v9[2] = *MEMORY[0x1E69E9840];
   if (!self->_autoFillContextProtocolObjectUUID)
@@ -197,59 +197,59 @@ LABEL_12:
     self->_autoFillContextProtocolObjectUUID = &stru_1F4FE9E38;
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8[0] = @"_SFAutomaticPasswordInputViewNotificationPressedButtonUserInfoKey";
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:button];
   v8[1] = @"SFAutoFillContextProviderIdentifierUserInfoKey";
   v9[0] = v6;
   v9[1] = self->_autoFillContextProtocolObjectUUID;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
-  [v5 postNotificationName:@"_SFAutomaticPasswordInputViewButtonPressedNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"_SFAutomaticPasswordInputViewButtonPressedNotification" object:self userInfo:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = _SFAutomaticPasswordInputViewController;
-  [(_SFAutomaticPasswordInputViewController *)&v7 viewWillAppear:a3];
+  [(_SFAutomaticPasswordInputViewController *)&v7 viewWillAppear:appear];
   [(_SFAutomaticPasswordInputViewController *)self _updateKeyboardHeight];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__dismissKeyboard_ name:@"_SFAutomaticPasswordDismissedByUser" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__dismissKeyboard_ name:@"_SFAutomaticPasswordDismissedByUser" object:0];
 
   if ([MEMORY[0x1E69C8880] isPasswordsAppInstalled])
   {
     if (self->_passwordManagerIntroductionViewController)
     {
       [(_SFAutomaticPasswordInputViewController *)self _postContextProviderRequiredNotificationIfNeeded];
-      v5 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-      v6 = [v5 autoFillController];
-      [v6 hideInputAccessoryView];
+      autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+      autoFillController = [autoFillContextProvider autoFillController];
+      [autoFillController hideInputAccessoryView];
     }
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = _SFAutomaticPasswordInputViewController;
-  [(_SFAutomaticPasswordInputViewController *)&v4 viewIsAppearing:a3];
+  [(_SFAutomaticPasswordInputViewController *)&v4 viewIsAppearing:appearing];
   [(_SFAutomaticPasswordInputViewController *)self _updateKeyboardHeight];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _SFAutomaticPasswordInputViewController;
-  [(_SFAutomaticPasswordInputViewController *)&v4 viewDidDisappear:a3];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:@"_SFAutomaticPasswordDismissedByUser"];
+  [(_SFAutomaticPasswordInputViewController *)&v4 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:@"_SFAutomaticPasswordDismissedByUser"];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = _SFAutomaticPasswordInputViewController;
-  [(_SFAutomaticPasswordInputViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(_SFAutomaticPasswordInputViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(_SFAutomaticPasswordInputViewController *)self _updateKeyboardHeight];
 }
 
@@ -272,16 +272,16 @@ LABEL_12:
   passwordManagerIntroductionViewController = self->_passwordManagerIntroductionViewController;
   if (passwordManagerIntroductionViewController || (p_passwordManagerIntroductionViewController = &self->_strongPasswordViewController, (passwordManagerIntroductionViewController = self->_strongPasswordViewController) != 0))
   {
-    v9 = [(UIViewController *)passwordManagerIntroductionViewController view];
-    [v9 setNeedsUpdateConstraints];
+    view = [(UIViewController *)passwordManagerIntroductionViewController view];
+    [view setNeedsUpdateConstraints];
 
-    v10 = [(UIViewController *)*p_passwordManagerIntroductionViewController view];
-    [v10 layoutIfNeeded];
+    view2 = [(UIViewController *)*p_passwordManagerIntroductionViewController view];
+    [view2 layoutIfNeeded];
 
-    v11 = [(UIViewController *)*p_passwordManagerIntroductionViewController view];
+    view3 = [(UIViewController *)*p_passwordManagerIntroductionViewController view];
     LODWORD(v12) = 1144750080;
     LODWORD(v13) = 1112014848;
-    [v11 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:1.79769313e308 verticalFittingPriority:{v12, v13}];
+    [view3 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:1.79769313e308 verticalFittingPriority:{v12, v13}];
     v6 = v14;
     v16 = v15;
 
@@ -326,12 +326,12 @@ LABEL_12:
   }
 
   [(_SFAutomaticPasswordInputViewController *)self _postContextProviderRequiredNotificationIfNeeded];
-  v5 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v6 = [v5 autoFillFormType];
-  v7 = [v5 autoFillController];
-  [v7 hideInputAccessoryView];
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  autoFillFormType = [autoFillContextProvider autoFillFormType];
+  autoFillController = [autoFillContextProvider autoFillController];
+  [autoFillController hideInputAccessoryView];
 
-  if (v6 == 3)
+  if (autoFillFormType == 3)
   {
     if ([MEMORY[0x1E69BC7D8] shouldShowLoginIntroduction])
     {
@@ -341,11 +341,11 @@ LABEL_12:
     }
   }
 
-  else if (v6 == 4)
+  else if (autoFillFormType == 4)
   {
-    v8 = [MEMORY[0x1E69BC7D8] shouldShowLoginIntroduction];
+    shouldShowLoginIntroduction = [MEMORY[0x1E69BC7D8] shouldShowLoginIntroduction];
     v9 = MEMORY[0x1E69BC7D8];
-    if (v8)
+    if (shouldShowLoginIntroduction)
     {
       v10 = 0;
     }
@@ -380,19 +380,19 @@ LABEL_17:
 - (id)_editingStrongPasswordInformationViewControllerIfNeeded
 {
   [(_SFAutomaticPasswordInputViewController *)self _postContextProviderRequiredNotificationIfNeeded];
-  v3 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v4 = [v3 url];
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  v4 = [autoFillContextProvider url];
   v5 = objc_alloc(MEMORY[0x1E69BC7D0]);
-  v6 = [v4 host];
-  v7 = [v6 safari_highLevelDomainForPasswordManager];
-  v8 = [v5 initWithWebsiteTitle:v7 url:v4];
+  host = [v4 host];
+  safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+  v8 = [v5 initWithWebsiteTitle:safari_highLevelDomainForPasswordManager url:v4];
 
   [v8 setDelegate:self];
 
   return v8;
 }
 
-- (CGSize)intrinsicContentSizeForInputView:(id)a3
+- (CGSize)intrinsicContentSizeForInputView:(id)view
 {
   [(_SFAutomaticPasswordInputViewController *)self _updateKeyboardMetricsAndInterfaceOrientationIfNeeded];
 
@@ -404,12 +404,12 @@ LABEL_17:
 
 - (void)dismissKeyboardPreservingFirstResponderIfNecessary
 {
-  v3 = [MEMORY[0x1E69DCBE0] activeInstance];
-  v5 = [v3 inputDelegate];
+  activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+  inputDelegate = [activeInstance inputDelegate];
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 accessoryDone];
+    [inputDelegate accessoryDone];
   }
 
   else
@@ -419,8 +419,8 @@ LABEL_17:
 
   if (!self->_keyboardType && [MEMORY[0x1E69C8880] isPasswordsAppInstalled])
   {
-    v4 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-    [v4 makeStrongPasswordFieldViewable:0];
+    autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+    [autoFillContextProvider makeStrongPasswordFieldViewable:0];
   }
 }
 
@@ -431,14 +431,14 @@ LABEL_17:
   {
     if (self->_autoFillContextProtocolObjectUUID)
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v7[0] = @"SFAutomaticPasswordInputViewControllerKey";
       v7[1] = @"SFAutoFillContextProviderIdentifierUserInfoKey";
       autoFillContextProtocolObjectUUID = self->_autoFillContextProtocolObjectUUID;
       v8[0] = self;
       v8[1] = autoFillContextProtocolObjectUUID;
       v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
-      [v3 postNotificationName:@"SFAutomaticPasswordInputViewAutoFillContextProviderRequiredNotification" object:self userInfo:v5];
+      [defaultCenter postNotificationName:@"SFAutomaticPasswordInputViewAutoFillContextProviderRequiredNotification" object:self userInfo:v5];
 
       self->_hasPostedContextProviderRequiredNotification = 1;
     }
@@ -454,23 +454,23 @@ LABEL_17:
   }
 }
 
-- (void)strongPasswordIntroductionViewController:(id)a3 shouldPerformAction:(unint64_t)a4 willShowAdditionalView:(BOOL)a5
+- (void)strongPasswordIntroductionViewController:(id)controller shouldPerformAction:(unint64_t)action willShowAdditionalView:(BOOL)view
 {
   [(_SFAutomaticPasswordInputViewController *)self _postContextProviderRequiredNotificationIfNeeded];
-  v11 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  if (a4 - 2 < 2)
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  if (action - 2 < 2)
   {
     v8 = *MEMORY[0x1E69DDA98];
-    v9 = [MEMORY[0x1E69C8978] passwordManagerURL];
-    [v8 openURL:v9 options:MEMORY[0x1E695E0F8] completionHandler:0];
+    passwordManagerURL = [MEMORY[0x1E69C8978] passwordManagerURL];
+    [v8 openURL:passwordManagerURL options:MEMORY[0x1E695E0F8] completionHandler:0];
 
     goto LABEL_5;
   }
 
-  if (a4)
+  if (action)
   {
 LABEL_5:
-    if (a5)
+    if (view)
     {
       goto LABEL_7;
     }
@@ -478,78 +478,78 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [v11 autoFillController];
-  [v10 setDidCloseStrongPasswordIntroductionView:1];
+  autoFillController = [autoFillContextProvider autoFillController];
+  [autoFillController setDidCloseStrongPasswordIntroductionView:1];
 
 LABEL_6:
   [(_SFAutomaticPasswordInputViewController *)self dismissKeyboardPreservingFirstResponderIfNecessary];
 LABEL_7:
 }
 
-- (void)imageForStrongPasswordIntroductionViewController:(id)a3 completionHandler:(id)a4
+- (void)imageForStrongPasswordIntroductionViewController:(id)controller completionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v6 = [v7 autoFillController];
-  [v6 fetchIconForURLWithCompletionHandler:v5];
+  handlerCopy = handler;
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  autoFillController = [autoFillContextProvider autoFillController];
+  [autoFillController fetchIconForURLWithCompletionHandler:handlerCopy];
 }
 
-- (void)strongPasswordIntroductionViewController:(id)a3 shouldFillPasswordWithFormat:(unint64_t)a4
+- (void)strongPasswordIntroductionViewController:(id)controller shouldFillPasswordWithFormat:(unint64_t)format
 {
-  v5 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider:a3];
-  v4 = [v5 autoFillController];
-  [v4 generateAndFillStrongPassword];
+  v5 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider:controller];
+  autoFillController = [v5 autoFillController];
+  [autoFillController generateAndFillStrongPassword];
 }
 
-- (id)strongPasswordIntroductionViewController:(id)a3 automaticStrongPasswordWithFormat:(unint64_t)a4
+- (id)strongPasswordIntroductionViewController:(id)controller automaticStrongPasswordWithFormat:(unint64_t)format
 {
-  v6 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v7 = v6;
-  if (a4 == 1)
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  v7 = autoFillContextProvider;
+  if (format == 1)
   {
-    v8 = [v6 alphanumericStrongPassword];
+    alphanumericStrongPassword = [autoFillContextProvider alphanumericStrongPassword];
   }
 
   else
   {
-    if (a4)
+    if (format)
     {
       goto LABEL_6;
     }
 
-    v8 = [v6 defaultStrongPassword];
+    alphanumericStrongPassword = [autoFillContextProvider defaultStrongPassword];
   }
 
-  v4 = v8;
+  v4 = alphanumericStrongPassword;
 LABEL_6:
 
   return v4;
 }
 
-- (void)strongPasswordIntroductionViewControllerDidFinishIntroduction:(id)a3
+- (void)strongPasswordIntroductionViewControllerDidFinishIntroduction:(id)introduction
 {
-  v4 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v3 = [v4 autoFillController];
-  [v3 reloadFirstResponderInputViews];
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  autoFillController = [autoFillContextProvider autoFillController];
+  [autoFillController reloadFirstResponderInputViews];
 }
 
-- (void)strongPasswordIntroductionViewControllerShowOtherPasswords:(id)a3
+- (void)strongPasswordIntroductionViewControllerShowOtherPasswords:(id)passwords
 {
-  v4 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v3 = [v4 autoFillController];
-  [v3 userDidSelectShowMorePasswords];
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  autoFillController = [autoFillContextProvider autoFillController];
+  [autoFillController userDidSelectShowMorePasswords];
 }
 
-- (void)strongPasswordIntroductionViewControllerShowKeyboard:(id)a3
+- (void)strongPasswordIntroductionViewControllerShowKeyboard:(id)keyboard
 {
-  v4 = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
-  v3 = [v4 autoFillController];
-  [v3 userDidSelectUseKeyboard];
+  autoFillContextProvider = [(_SFAutomaticPasswordInputViewController *)self autoFillContextProvider];
+  autoFillController = [autoFillContextProvider autoFillController];
+  [autoFillController userDidSelectUseKeyboard];
 }
 
-- (void)streamlinedStrongPasswordViewController:(id)a3 shouldFillStrongPasswordWithFormat:(unint64_t)a4
+- (void)streamlinedStrongPasswordViewController:(id)controller shouldFillStrongPasswordWithFormat:(unint64_t)format
 {
-  v5 = [(UIInputViewController *)self textDocumentProxy:a3];
+  v5 = [(UIInputViewController *)self textDocumentProxy:controller];
   [v5 insertText:self->_password];
 
   [(_SFAutomaticPasswordInputViewController *)self _postButtonPressedNotificationForButton:0];
@@ -557,11 +557,11 @@ LABEL_6:
   [(_SFAutomaticPasswordInputViewController *)self dismissKeyboardPreservingFirstResponderIfNecessary];
 }
 
-- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)a3
+- (void)streamlinedStrongPasswordViewControllerDeclinedStrongPassword:(id)password
 {
   [(_SFAutomaticPasswordInputViewController *)self _postButtonPressedNotificationForButton:1];
-  v4 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v4 didChooseCustomPassword];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] didChooseCustomPassword];
 
   [(UIInputViewController *)self advanceToNextInputMode];
 }

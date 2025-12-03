@@ -1,42 +1,42 @@
 @interface FMDSecureLocationInfo
-+ (id)stringFromPublishReason:(int64_t)a3;
++ (id)stringFromPublishReason:(int64_t)reason;
 - (BOOL)isLocationValid;
-- (FMDSecureLocationInfo)initWithLocation:(id)a3 motion:(id)a4 publishReason:(int64_t)a5;
+- (FMDSecureLocationInfo)initWithLocation:(id)location motion:(id)motion publishReason:(int64_t)reason;
 - (id)convertToSecureLocationObject;
-- (int64_t)_spMotionStateFrom:(int64_t)a3;
-- (int64_t)_spPublishReasonFrom:(int64_t)a3;
+- (int64_t)_spMotionStateFrom:(int64_t)from;
+- (int64_t)_spPublishReasonFrom:(int64_t)from;
 @end
 
 @implementation FMDSecureLocationInfo
 
-- (FMDSecureLocationInfo)initWithLocation:(id)a3 motion:(id)a4 publishReason:(int64_t)a5
+- (FMDSecureLocationInfo)initWithLocation:(id)location motion:(id)motion publishReason:(int64_t)reason
 {
-  v9 = a3;
-  v10 = a4;
+  locationCopy = location;
+  motionCopy = motion;
   v14.receiver = self;
   v14.super_class = FMDSecureLocationInfo;
   v11 = [(FMDSecureLocationInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_locationInfo, a3);
-    objc_storeStrong(&v12->_motionInfo, a4);
-    v12->_publishReason = a5;
+    objc_storeStrong(&v11->_locationInfo, location);
+    objc_storeStrong(&v12->_motionInfo, motion);
+    v12->_publishReason = reason;
   }
 
   return v12;
 }
 
-+ (id)stringFromPublishReason:(int64_t)a3
++ (id)stringFromPublishReason:(int64_t)reason
 {
-  if ((a3 - 1) > 7)
+  if ((reason - 1) > 7)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1002D0440[a3 - 1];
+    return off_1002D0440[reason - 1];
   }
 }
 
@@ -44,37 +44,37 @@
 {
   v3 = objc_alloc_init(SPSecureLocation);
   [v3 setFindMyId:&stru_1002DCE08];
-  v4 = [(FMGeoLocatable *)self->_locationInfo latitude];
-  [v4 doubleValue];
+  latitude = [(FMGeoLocatable *)self->_locationInfo latitude];
+  [latitude doubleValue];
   [v3 setLatitude:?];
 
-  v5 = [(FMGeoLocatable *)self->_locationInfo longitude];
-  [v5 doubleValue];
+  longitude = [(FMGeoLocatable *)self->_locationInfo longitude];
+  [longitude doubleValue];
   [v3 setLongitude:?];
 
-  v6 = [(FMGeoLocatable *)self->_locationInfo horizontalAccuracy];
-  [v6 doubleValue];
+  horizontalAccuracy = [(FMGeoLocatable *)self->_locationInfo horizontalAccuracy];
+  [horizontalAccuracy doubleValue];
   [v3 setHorizontalAccuracy:?];
 
-  v7 = [(FMGeoLocatable *)self->_locationInfo verticalAccuracy];
-  [v7 doubleValue];
+  verticalAccuracy = [(FMGeoLocatable *)self->_locationInfo verticalAccuracy];
+  [verticalAccuracy doubleValue];
   [v3 setVerticalAccuracy:?];
 
-  v8 = [(FMGeoLocatable *)self->_locationInfo speed];
-  [v8 doubleValue];
+  speed = [(FMGeoLocatable *)self->_locationInfo speed];
+  [speed doubleValue];
   [v3 setSpeed:?];
 
-  v9 = [(FMGeoLocatable *)self->_locationInfo course];
-  [v9 doubleValue];
+  course = [(FMGeoLocatable *)self->_locationInfo course];
+  [course doubleValue];
   [v3 setCourse:?];
 
-  v10 = [(FMGeoLocatable *)self->_locationInfo floor];
-  [v3 setFloor:v10];
+  floor = [(FMGeoLocatable *)self->_locationInfo floor];
+  [v3 setFloor:floor];
 
-  v11 = [(FMGeoLocatable *)self->_locationInfo timestamp];
-  if (v11)
+  timestamp = [(FMGeoLocatable *)self->_locationInfo timestamp];
+  if (timestamp)
   {
-    [v3 setTimestamp:v11];
+    [v3 setTimestamp:timestamp];
   }
 
   else
@@ -83,8 +83,8 @@
     [v3 setTimestamp:v12];
   }
 
-  v13 = [(FMDSecureLocationInfo *)self motionInfo];
-  [v3 setMotionActivityState:{-[FMDSecureLocationInfo _spMotionStateFrom:](self, "_spMotionStateFrom:", objc_msgSend(v13, "activityState"))}];
+  motionInfo = [(FMDSecureLocationInfo *)self motionInfo];
+  [v3 setMotionActivityState:{-[FMDSecureLocationInfo _spMotionStateFrom:](self, "_spMotionStateFrom:", objc_msgSend(motionInfo, "activityState"))}];
 
   [v3 setPublishReason:{-[FMDSecureLocationInfo _spPublishReasonFrom:](self, "_spPublishReasonFrom:", -[FMDSecureLocationInfo publishReason](self, "publishReason"))}];
 
@@ -93,12 +93,12 @@
 
 - (BOOL)isLocationValid
 {
-  v3 = [(FMGeoLocatable *)self->_locationInfo latitude];
-  [v3 doubleValue];
+  latitude = [(FMGeoLocatable *)self->_locationInfo latitude];
+  [latitude doubleValue];
   if (v4 == 0.0)
   {
-    v5 = [(FMGeoLocatable *)self->_locationInfo longitude];
-    [v5 doubleValue];
+    longitude = [(FMGeoLocatable *)self->_locationInfo longitude];
+    [longitude doubleValue];
     v7 = v6 != 0.0;
   }
 
@@ -110,29 +110,29 @@
   return v7;
 }
 
-- (int64_t)_spMotionStateFrom:(int64_t)a3
+- (int64_t)_spMotionStateFrom:(int64_t)from
 {
-  if ((a3 - 1) >= 5)
+  if ((from - 1) >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return from;
   }
 }
 
-- (int64_t)_spPublishReasonFrom:(int64_t)a3
+- (int64_t)_spPublishReasonFrom:(int64_t)from
 {
-  if ((a3 - 1) >= 0xC)
+  if ((from - 1) >= 0xC)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return from;
   }
 }
 

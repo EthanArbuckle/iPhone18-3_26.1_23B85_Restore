@@ -1,17 +1,17 @@
 @interface PHASEContext
 - (NSArray)environments;
 - (PHASEContext)init;
-- (PHASEContext)initWithEngine:(id)a3;
+- (PHASEContext)initWithEngine:(id)engine;
 - (PHASEEngine)engine;
 - (PHASEMedium)medium;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)streamForKey:(id)a3;
-- (void)addEnvironment:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)streamForKey:(id)key;
+- (void)addEnvironment:(id)environment;
 - (void)dealloc;
-- (void)removeEnvironment:(id)a3;
-- (void)setEnvironments:(id)a3;
-- (void)setMedium:(id)a3;
-- (void)setStream:(id)a3 forKey:(id)a4;
+- (void)removeEnvironment:(id)environment;
+- (void)setEnvironments:(id)environments;
+- (void)setMedium:(id)medium;
+- (void)setStream:(id)stream forKey:(id)key;
 @end
 
 @implementation PHASEContext
@@ -23,10 +23,10 @@
   return 0;
 }
 
-- (PHASEContext)initWithEngine:(id)a3
+- (PHASEContext)initWithEngine:(id)engine
 {
-  v4 = a3;
-  if (!v4)
+  engineCopy = engine;
+  if (!engineCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"engine is nil."];
   }
@@ -37,7 +37,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_engine, v4);
+    objc_storeWeak(&v5->_engine, engineCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     streams = v6->_streams;
     v6->_streams = v7;
@@ -46,15 +46,15 @@
     streamsLock = v6->_streamsLock;
     v6->_streamsLock = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     internalEnvironments = v6->_internalEnvironments;
-    v6->_internalEnvironments = v11;
+    v6->_internalEnvironments = array;
 
     v13 = objc_alloc_init(MEMORY[0x277D82BB8]);
     internalEnvironmentsLock = v6->_internalEnvironmentsLock;
     v6->_internalEnvironmentsLock = v13;
 
-    v15 = [[PHASEMedium alloc] initWithEngine:v4 preset:1835286898];
+    v15 = [[PHASEMedium alloc] initWithEngine:engineCopy preset:1835286898];
     internalMedium = v6->_internalMedium;
     v6->_internalMedium = v15;
 
@@ -63,8 +63,8 @@
     v6->_internalMediumLock = v17;
 
     WeakRetained = objc_loadWeakRetained(&v6->_engine);
-    v20 = [WeakRetained implementation];
-    v6->_geoContextHandle.mData = (*(**(v20 + 368) + 80))(*(v20 + 368));
+    implementation = [WeakRetained implementation];
+    v6->_geoContextHandle.mData = (*(**(implementation + 368) + 80))(*(implementation + 368));
 
     if (!v6->_geoContextHandle.mData)
     {
@@ -75,30 +75,30 @@
   return v6;
 }
 
-- (void)setStream:(id)a3 forKey:(id)a4
+- (void)setStream:(id)stream forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  streamCopy = stream;
+  keyCopy = key;
+  if (streamCopy)
   {
-    v7 = [v14 engine];
-    v8 = [(PHASEContext *)self engine];
+    engine = [streamCopy engine];
+    engine2 = [(PHASEContext *)self engine];
 
-    if (v7 != v8)
+    if (engine != engine2)
     {
       v9 = MEMORY[0x277CBEAD8];
-      v10 = [v14 engine];
-      v11 = [(PHASEContext *)self engine];
-      [v9 raise:*MEMORY[0x277CBE660] format:{@"stream's engine %p does not match this context's engine %p.", v10, v11}];
+      engine3 = [streamCopy engine];
+      engine4 = [(PHASEContext *)self engine];
+      [v9 raise:*MEMORY[0x277CBE660] format:{@"stream's engine %p does not match this context's engine %p.", engine3, engine4}];
     }
   }
 
-  if (!v6)
+  if (!keyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"key is nil."];
   }
 
-  if (v14 && (PHASEEnvironmentalMetadataStreamKeyIsPublished(v6) & 1) == 0)
+  if (streamCopy && (PHASEEnvironmentalMetadataStreamKeyIsPublished(keyCopy) & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"key is unpublished."];
   }
@@ -106,55 +106,55 @@
   v12 = self->_streamsLock;
   objc_sync_enter(v12);
   streams = self->_streams;
-  if (v14)
+  if (streamCopy)
   {
-    [(NSMutableDictionary *)streams setObject:v14 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)streams setObject:streamCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)streams removeObjectForKey:v6];
+    [(NSMutableDictionary *)streams removeObjectForKey:keyCopy];
   }
 
   objc_sync_exit(v12);
 }
 
-- (id)streamForKey:(id)a3
+- (id)streamForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"key is nil."];
   }
 
   v5 = self->_streamsLock;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_streams objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_streams objectForKeyedSubscript:keyCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)addEnvironment:(id)a3
+- (void)addEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = MEMORY[0x277CBE660];
-  v13 = v4;
-  if (!v4)
+  v13 = environmentCopy;
+  if (!environmentCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"environment is nil."];
   }
 
-  v6 = [v13 engine];
+  engine = [v13 engine];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
 
-  if (v6 != WeakRetained)
+  if (engine != WeakRetained)
   {
     v8 = MEMORY[0x277CBEAD8];
-    v9 = [v13 engine];
+    engine2 = [v13 engine];
     v10 = *v5;
     v11 = objc_loadWeakRetained(&self->_engine);
-    [v8 raise:v10 format:{@"environment's engine %p does not match this context's engine %p.", v9, v11}];
+    [v8 raise:v10 format:{@"environment's engine %p does not match this context's engine %p.", engine2, v11}];
   }
 
   v12 = self->_internalEnvironmentsLock;
@@ -168,31 +168,31 @@
   objc_sync_exit(v12);
 }
 
-- (void)removeEnvironment:(id)a3
+- (void)removeEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"environment is nil."];
   }
 
   v4 = self->_internalEnvironmentsLock;
   objc_sync_enter(v4);
-  if (([(NSMutableArray *)self->_internalEnvironments containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->_internalEnvironments containsObject:environmentCopy]& 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"environment does not exist in environments."];
   }
 
-  [(NSMutableArray *)self->_internalEnvironments removeObject:v5];
+  [(NSMutableArray *)self->_internalEnvironments removeObject:environmentCopy];
   objc_sync_exit(v4);
 }
 
-- (void)setEnvironments:(id)a3
+- (void)setEnvironments:(id)environments
 {
-  v4 = a3;
+  environmentsCopy = environments;
   v5 = MEMORY[0x277CBE660];
-  v18 = v4;
-  if (!v4)
+  v18 = environmentsCopy;
+  if (!environmentsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"environments is nil."];
   }
@@ -208,15 +208,15 @@
       [MEMORY[0x277CBEAD8] raise:v8 format:{@"environments[%lu] is nil.", v7}];
     }
 
-    v10 = [v9 engine];
+    engine = [v9 engine];
     WeakRetained = objc_loadWeakRetained(&self->_engine);
 
-    if (v10 != WeakRetained)
+    if (engine != WeakRetained)
     {
       v12 = MEMORY[0x277CBEAD8];
-      v13 = [v9 engine];
+      engine2 = [v9 engine];
       v14 = objc_loadWeakRetained(&self->_engine);
-      [v12 raise:v8 format:{@"environments[%lu]'s engine %p does not match this context's engine %p", v7, v13, v14}];
+      [v12 raise:v8 format:{@"environments[%lu]'s engine %p does not match this context's engine %p", v7, engine2, v14}];
     }
 
     if ([v6 containsObject:v9])
@@ -248,22 +248,22 @@
   return v4;
 }
 
-- (void)setMedium:(id)a3
+- (void)setMedium:(id)medium
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  mediumCopy = medium;
+  v5 = mediumCopy;
+  if (mediumCopy)
   {
-    v6 = [(PHASEMedium *)v4 engine];
+    engine = [(PHASEMedium *)mediumCopy engine];
     WeakRetained = objc_loadWeakRetained(&self->_engine);
 
-    if (v6 != WeakRetained)
+    if (engine != WeakRetained)
     {
       v8 = MEMORY[0x277CBEAD8];
-      v9 = [(PHASEMedium *)v5 engine];
+      engine2 = [(PHASEMedium *)v5 engine];
       v10 = *MEMORY[0x277CBE660];
       v11 = objc_loadWeakRetained(&self->_engine);
-      [v8 raise:v10 format:{@"medium's engine %p does not match this context's engine %p.", v9, v11}];
+      [v8 raise:v10 format:{@"medium's engine %p does not match this context's engine %p.", engine2, v11}];
     }
   }
 
@@ -286,22 +286,22 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PHASEContext *)self engine];
-  v6 = [v4 initWithEngine:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  engine = [(PHASEContext *)self engine];
+  v6 = [v4 initWithEngine:engine];
 
   v7 = self->_streamsLock;
   objc_sync_enter(v7);
   objc_storeStrong(v6 + 2, self->_streams);
   objc_sync_exit(v7);
 
-  v8 = [(PHASEContext *)self environments];
-  [v6 setEnvironments:v8];
+  environments = [(PHASEContext *)self environments];
+  [v6 setEnvironments:environments];
 
-  v9 = [(PHASEContext *)self medium];
-  [v6 setMedium:v9];
+  medium = [(PHASEContext *)self medium];
+  [v6 setMedium:medium];
 
   return v6;
 }
@@ -318,8 +318,8 @@
     }
 
     v4 = objc_loadWeakRetained(&self->_engine);
-    v5 = [v4 implementation];
-    (*(**(v5 + 368) + 104))(*(v5 + 368), self->_geoContextHandle.mData);
+    implementation = [v4 implementation];
+    (*(**(implementation + 368) + 104))(*(implementation + 368), self->_geoContextHandle.mData);
   }
 
   v6.receiver = self;

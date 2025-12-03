@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilAutomatonOperations_PointTransitions
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 - (void)dealloc;
-- (void)resetWithInt:(int)a3;
+- (void)resetWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonOperations_PointTransitions
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -20,12 +20,12 @@
     JreThrowClassCastException();
   }
 
-  return self->point_ - *(a3 + 2);
+  return self->point_ - *(id + 2);
 }
 
-- (void)resetWithInt:(int)a3
+- (void)resetWithInt:(int)int
 {
-  self->point_ = a3;
+  self->point_ = int;
   ends = self->ends_;
   if (!ends || (ends->next_ = 0, (starts = self->starts_) == 0))
   {
@@ -35,10 +35,10 @@
   starts->next_ = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -48,7 +48,7 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 2) == self->point_;
+  return *(equal + 2) == self->point_;
 }
 
 - (void)dealloc

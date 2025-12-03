@@ -1,29 +1,29 @@
 @interface ATXMagicalMomentsContexts
-+ (id)eventIdentifierPredicateForValue:(id)a3;
++ (id)eventIdentifierPredicateForValue:(id)value;
 + (id)getCurrentLOI;
-+ (id)locationOfInterestForDate:(id)a3 dateIntervalForSearch:(id)a4;
-+ (id)loiPredicateForUUIDString:(id)a3;
-+ (id)partOfWeekPredicatesUsingStartDate:(BOOL)a3;
-+ (id)timeOfDayPredicatesWithRequestedDurationInHours:(unint64_t)a3 shouldPredicateOnStartDate:(BOOL)a4;
-+ (unint64_t)getMinTemporalDistanceFromDate:(id)a3 toVisitsToLOI:(id)a4;
-+ (unint64_t)minDistanceFromDate:(id)a3 toDateRange:(_NSRange)a4;
++ (id)locationOfInterestForDate:(id)date dateIntervalForSearch:(id)search;
++ (id)loiPredicateForUUIDString:(id)string;
++ (id)partOfWeekPredicatesUsingStartDate:(BOOL)date;
++ (id)timeOfDayPredicatesWithRequestedDurationInHours:(unint64_t)hours shouldPredicateOnStartDate:(BOOL)date;
++ (unint64_t)getMinTemporalDistanceFromDate:(id)date toVisitsToLOI:(id)i;
++ (unint64_t)minDistanceFromDate:(id)date toDateRange:(_NSRange)range;
 @end
 
 @implementation ATXMagicalMomentsContexts
 
 + (id)getCurrentLOI
 {
-  v2 = [MEMORY[0x277D41BF8] sharedInstance];
-  v3 = [v2 locationOfInterestAtCurrentLocation];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  locationOfInterestAtCurrentLocation = [mEMORY[0x277D41BF8] locationOfInterestAtCurrentLocation];
 
-  return v3;
+  return locationOfInterestAtCurrentLocation;
 }
 
-+ (unint64_t)minDistanceFromDate:(id)a3 toDateRange:(_NSRange)a4
++ (unint64_t)minDistanceFromDate:(id)date toDateRange:(_NSRange)range
 {
-  location = a4.location;
-  v5 = a4.location + a4.length;
-  [a3 timeIntervalSinceReferenceDate];
+  location = range.location;
+  v5 = range.location + range.length;
+  [date timeIntervalSinceReferenceDate];
   v7 = v6;
   v8 = v6 - v5;
   if (v6 < v5)
@@ -44,16 +44,16 @@
   }
 }
 
-+ (unint64_t)getMinTemporalDistanceFromDate:(id)a3 toVisitsToLOI:(id)a4
++ (unint64_t)getMinTemporalDistanceFromDate:(id)date toVisitsToLOI:(id)i
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 visits];
+  dateCopy = date;
+  visits = [i visits];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [visits countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -65,18 +65,18 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visits);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) rangeValue];
-        v15 = [a1 minDistanceFromDate:v6 toDateRange:{v13, v14}];
+        rangeValue = [*(*(&v18 + 1) + 8 * i) rangeValue];
+        v15 = [self minDistanceFromDate:dateCopy toDateRange:{rangeValue, v14}];
         if (v15 < v11)
         {
           v11 = v15;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [visits countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -91,11 +91,11 @@
   return v11;
 }
 
-+ (id)locationOfInterestForDate:(id)a3 dateIntervalForSearch:(id)a4
++ (id)locationOfInterestForDate:(id)date dateIntervalForSearch:(id)search
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D41BF8] sharedInstance];
+  dateCopy = date;
+  searchCopy = search;
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
   v8 = dispatch_semaphore_create(0);
   v19 = 0;
   v20 = &v19;
@@ -107,12 +107,12 @@
   v15[1] = 3221225472;
   v15[2] = __77__ATXMagicalMomentsContexts_locationOfInterestForDate_dateIntervalForSearch___block_invoke;
   v15[3] = &unk_2785991D8;
-  v9 = v5;
+  v9 = dateCopy;
   v16 = v9;
   v18 = &v19;
   v10 = v8;
   v17 = v10;
-  [v7 fetchLocationsOfInterestVisitedDuring:v6 handler:v15];
+  [mEMORY[0x277D41BF8] fetchLocationsOfInterestVisitedDuring:searchCopy handler:v15];
   if ([MEMORY[0x277D425A0] waitForSemaphore:v10 timeoutSeconds:2.0])
   {
     v11 = __atxlog_handle_default();
@@ -188,23 +188,23 @@ LABEL_3:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)timeOfDayPredicatesWithRequestedDurationInHours:(unint64_t)a3 shouldPredicateOnStartDate:(BOOL)a4
++ (id)timeOfDayPredicatesWithRequestedDurationInHours:(unint64_t)hours shouldPredicateOnStartDate:(BOOL)date
 {
-  if (a3)
+  if (hours)
   {
-    v5 = a4;
-    if (a3 >= 0x18)
+    dateCopy = date;
+    if (hours >= 0x18)
     {
-      v6 = 24;
+      hoursCopy = 24;
     }
 
     else
     {
-      v6 = a3;
+      hoursCopy = hours;
     }
 
-    v19 = 0x18 / v6;
-    if ((v19 * v6) != 24)
+    v19 = 0x18 / hoursCopy;
+    if ((v19 * hoursCopy) != 24)
     {
       v7 = __atxlog_handle_default();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -217,7 +217,7 @@ LABEL_3:
     v8 = 0;
     v9 = 0;
     v10 = 0;
-    if (v5)
+    if (dateCopy)
     {
       v11 = @"startDateSecondsAfterMidnight";
     }
@@ -227,9 +227,9 @@ LABEL_3:
       v11 = @"endDateSecondsAfterMidnight";
     }
 
-    v12 = 3600 * v6;
-    v13 = 3600 * v6;
-    v14 = v6;
+    v12 = 3600 * hoursCopy;
+    v13 = 3600 * hoursCopy;
+    v14 = hoursCopy;
     do
     {
       if (v9 % 0x18 >= v14 % 0x18)
@@ -245,9 +245,9 @@ LABEL_3:
       ++v10;
       [v18 addObject:v15];
 
-      v14 += v6;
+      v14 += hoursCopy;
       v13 += v12;
-      v9 += v6;
+      v9 += hoursCopy;
       v8 += v12;
     }
 
@@ -263,10 +263,10 @@ LABEL_3:
   return v16;
 }
 
-+ (id)partOfWeekPredicatesUsingStartDate:(BOOL)a3
++ (id)partOfWeekPredicatesUsingStartDate:(BOOL)date
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (date)
   {
     v3 = @"isStartDateOnWeekday";
   }
@@ -287,30 +287,30 @@ LABEL_3:
   return v6;
 }
 
-+ (id)eventIdentifierPredicateForValue:(id)a3
++ (id)eventIdentifierPredicateForValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    [(ATXMagicalMomentsContexts *)a2 eventIdentifierPredicateForValue:a1];
+    [(ATXMagicalMomentsContexts *)a2 eventIdentifierPredicateForValue:self];
   }
 
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %@", v5];
+  valueCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %@", valueCopy];
 
-  return v6;
+  return valueCopy;
 }
 
-+ (id)loiPredicateForUUIDString:(id)a3
++ (id)loiPredicateForUUIDString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    [(ATXMagicalMomentsContexts *)a2 loiPredicateForUUIDString:a1];
+    [(ATXMagicalMomentsContexts *)a2 loiPredicateForUUIDString:self];
   }
 
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"locationIdentifierUUIDString = %@", v5];
+  stringCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"locationIdentifierUUIDString = %@", stringCopy];
 
-  return v6;
+  return stringCopy;
 }
 
 + (void)eventIdentifierPredicateForValue:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

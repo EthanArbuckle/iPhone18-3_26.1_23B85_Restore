@@ -1,16 +1,16 @@
 @interface MigratorArcadeTask
-- (MigratorArcadeTask)initWithConfiguration:(id)a3;
+- (MigratorArcadeTask)initWithConfiguration:(id)configuration;
 - (id)copyConfiguration;
 - (void)main;
 @end
 
 @implementation MigratorArcadeTask
 
-- (MigratorArcadeTask)initWithConfiguration:(id)a3
+- (MigratorArcadeTask)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = MigratorArcadeTask;
-  return [(MigratorTask *)&v4 initWithConfiguration:a3];
+  return [(MigratorTask *)&v4 initWithConfiguration:configuration];
 }
 
 - (id)copyConfiguration
@@ -63,12 +63,12 @@
   }
 
   v13 = +[ACAccountStore ams_sharedAccountStore];
-  v14 = [v13 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v13 ams_activeiTunesAccount];
 
-  if (v14)
+  if (ams_activeiTunesAccount)
   {
     v15 = +[_TtC9appstored29KatanaSubscriptionCoordinator shared];
-    v16 = [v15 migrateSubscriptionStateWithAccount:v14 logKey:v2];
+    v16 = [v15 migrateSubscriptionStateWithAccount:ams_activeiTunesAccount logKey:v2];
 
     v17 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))

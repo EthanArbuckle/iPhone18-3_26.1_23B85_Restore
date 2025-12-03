@@ -1,41 +1,41 @@
 @interface CHUISWatchComplicationsSnapshotMetadataUpdateAction
-- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)a3 completion:(id)a4;
-- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)a3 directory:(id)a4 completion:(id)a5;
+- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)metadata completion:(id)completion;
+- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)metadata directory:(id)directory completion:(id)completion;
 - (CHUISWatchComplicationsWidgetSnapshotMetadata)metadata;
 @end
 
 @implementation CHUISWatchComplicationsSnapshotMetadataUpdateAction
 
-- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)a3 completion:(id)a4
+- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 temporaryDirectory];
-  v10 = [v9 URLByAppendingPathComponent:@"SnapshotMetadataImageData"];
+  metadataCopy = metadata;
+  completionCopy = completion;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v10 = [temporaryDirectory URLByAppendingPathComponent:@"SnapshotMetadataImageData"];
 
-  v11 = [(CHUISWatchComplicationsSnapshotMetadataUpdateAction *)self initWithMetadata:v6 directory:v10 completion:v7];
+  v11 = [(CHUISWatchComplicationsSnapshotMetadataUpdateAction *)self initWithMetadata:metadataCopy directory:v10 completion:completionCopy];
   return v11;
 }
 
-- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)a3 directory:(id)a4 completion:(id)a5
+- (CHUISWatchComplicationsSnapshotMetadataUpdateAction)initWithMetadata:(id)metadata directory:(id)directory completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  directoryCopy = directory;
+  completionCopy = completion;
   v11 = MEMORY[0x1E698E5F8];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __93__CHUISWatchComplicationsSnapshotMetadataUpdateAction_initWithMetadata_directory_completion___block_invoke;
   v21[3] = &unk_1E8575460;
-  v12 = v10;
+  v12 = completionCopy;
   v22 = v12;
   v13 = [v11 responderWithHandler:v21];
   [v13 setQueue:MEMORY[0x1E69E96A0]];
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  [v14 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtURL:directoryCopy withIntermediateDirectories:1 attributes:0 error:0];
 
-  v15 = [v8 copyForEncodingAtUrlDirectory:v9];
+  v15 = [metadataCopy copyForEncodingAtUrlDirectory:directoryCopy];
   v16 = objc_opt_new();
   [v16 setObject:v15 forSetting:0];
   v17 = [v16 copy];
@@ -69,8 +69,8 @@ void __93__CHUISWatchComplicationsSnapshotMetadataUpdateAction_initWithMetadata_
 
 - (CHUISWatchComplicationsWidgetSnapshotMetadata)metadata
 {
-  v2 = [(CHUISWatchComplicationsSnapshotMetadataUpdateAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(CHUISWatchComplicationsSnapshotMetadataUpdateAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }

@@ -1,16 +1,16 @@
 @interface JavaNioDatagramChannelImpl_DatagramSocketAdapter
 - (void)__javaClone;
-- (void)bindWithJavaNetSocketAddress:(id)a3;
+- (void)bindWithJavaNetSocketAddress:(id)address;
 - (void)close;
-- (void)connectWithJavaNetSocketAddress:(id)a3;
+- (void)connectWithJavaNetSocketAddress:(id)address;
 - (void)disconnect;
-- (void)receiveWithJavaNetDatagramPacket:(id)a3;
-- (void)sendWithJavaNetDatagramPacket:(id)a3;
+- (void)receiveWithJavaNetDatagramPacket:(id)packet;
+- (void)sendWithJavaNetDatagramPacket:(id)packet;
 @end
 
 @implementation JavaNioDatagramChannelImpl_DatagramSocketAdapter
 
-- (void)bindWithJavaNetSocketAddress:(id)a3
+- (void)bindWithJavaNetSocketAddress:(id)address
 {
   Weak = objc_loadWeak(&self->channelImpl_);
   if (!Weak)
@@ -26,11 +26,11 @@
 
   v7.receiver = self;
   v7.super_class = JavaNioDatagramChannelImpl_DatagramSocketAdapter;
-  [(JavaNetDatagramSocket *)&v7 bindWithJavaNetSocketAddress:a3];
+  [(JavaNetDatagramSocket *)&v7 bindWithJavaNetSocketAddress:address];
   [objc_loadWeak(&self->channelImpl_) onBindWithBoolean:0];
 }
 
-- (void)connectWithJavaNetSocketAddress:(id)a3
+- (void)connectWithJavaNetSocketAddress:(id)address
 {
   if ([(JavaNetDatagramSocket *)self isConnected])
   {
@@ -40,7 +40,7 @@
 
   v7.receiver = self;
   v7.super_class = JavaNioDatagramChannelImpl_DatagramSocketAdapter;
-  [(JavaNetDatagramSocket *)&v7 connectWithJavaNetSocketAddress:a3];
+  [(JavaNetDatagramSocket *)&v7 connectWithJavaNetSocketAddress:address];
   Weak = objc_loadWeak(&self->channelImpl_);
   if (!Weak)
   {
@@ -49,7 +49,7 @@
 
   [Weak onBindWithBoolean:0];
   objc_opt_class();
-  if (!a3)
+  if (!address)
   {
     objc_loadWeak(&self->channelImpl_);
     JreThrowNullPointerException();
@@ -60,10 +60,10 @@
     JreThrowClassCastException();
   }
 
-  [objc_loadWeak(&self->channelImpl_) onConnectWithJavaNetInetAddress:objc_msgSend(a3 withInt:"getAddress") withBoolean:{objc_msgSend(a3, "getPort"), 0}];
+  [objc_loadWeak(&self->channelImpl_) onConnectWithJavaNetInetAddress:objc_msgSend(address withInt:"getAddress") withBoolean:{objc_msgSend(address, "getPort"), 0}];
 }
 
-- (void)receiveWithJavaNetDatagramPacket:(id)a3
+- (void)receiveWithJavaNetDatagramPacket:(id)packet
 {
   Weak = objc_loadWeak(&self->channelImpl_);
   if (!Weak)
@@ -77,17 +77,17 @@
     objc_exception_throw(v7);
   }
 
-  v6 = [(JavaNetDatagramSocket *)self isBound];
+  isBound = [(JavaNetDatagramSocket *)self isBound];
   v8.receiver = self;
   v8.super_class = JavaNioDatagramChannelImpl_DatagramSocketAdapter;
-  [(JavaNetDatagramSocket *)&v8 receiveWithJavaNetDatagramPacket:a3];
-  if ((v6 & 1) == 0)
+  [(JavaNetDatagramSocket *)&v8 receiveWithJavaNetDatagramPacket:packet];
+  if ((isBound & 1) == 0)
   {
     [objc_loadWeak(&self->channelImpl_) onBindWithBoolean:0];
   }
 }
 
-- (void)sendWithJavaNetDatagramPacket:(id)a3
+- (void)sendWithJavaNetDatagramPacket:(id)packet
 {
   Weak = objc_loadWeak(&self->channelImpl_);
   if (!Weak)
@@ -101,11 +101,11 @@
     objc_exception_throw(v7);
   }
 
-  v6 = [(JavaNetDatagramSocket *)self isBound];
+  isBound = [(JavaNetDatagramSocket *)self isBound];
   v8.receiver = self;
   v8.super_class = JavaNioDatagramChannelImpl_DatagramSocketAdapter;
-  [(JavaNetDatagramSocket *)&v8 sendWithJavaNetDatagramPacket:a3];
-  if ((v6 & 1) == 0)
+  [(JavaNetDatagramSocket *)&v8 sendWithJavaNetDatagramPacket:packet];
+  if ((isBound & 1) == 0)
   {
     [objc_loadWeak(&self->channelImpl_) onBindWithBoolean:0];
   }

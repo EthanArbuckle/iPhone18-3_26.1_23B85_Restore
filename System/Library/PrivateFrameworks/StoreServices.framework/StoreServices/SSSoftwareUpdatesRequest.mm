@@ -1,24 +1,24 @@
 @interface SSSoftwareUpdatesRequest
 - (BOOL)start;
 - (SSSoftwareUpdatesContext)updateQueueContext;
-- (SSSoftwareUpdatesRequest)initWithUpdateQueueContext:(id)a3;
-- (SSSoftwareUpdatesRequest)initWithXPCEncoding:(id)a3;
+- (SSSoftwareUpdatesRequest)initWithUpdateQueueContext:(id)context;
+- (SSSoftwareUpdatesRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithUpdatesResponseBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithUpdatesResponseBlock:(id)block;
 @end
 
 @implementation SSSoftwareUpdatesRequest
 
-- (SSSoftwareUpdatesRequest)initWithUpdateQueueContext:(id)a3
+- (SSSoftwareUpdatesRequest)initWithUpdateQueueContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = SSSoftwareUpdatesRequest;
   v4 = [(SSRequest *)&v6 init];
   if (v4)
   {
-    v4->_context = [a3 copy];
+    v4->_context = [context copy];
   }
 
   return v4;
@@ -31,16 +31,16 @@
   [(SSRequest *)&v3 dealloc];
 }
 
-- (void)startWithUpdatesResponseBlock:(id)a3
+- (void)startWithUpdatesResponseBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     global_queue = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__SSSoftwareUpdatesRequest_startWithUpdatesResponseBlock___block_invoke;
     block[3] = &unk_1E84AC710;
-    block[4] = a3;
+    block[4] = block;
     dispatch_async(global_queue, block);
   }
 }
@@ -118,13 +118,13 @@ uint64_t __33__SSSoftwareUpdatesRequest_start__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__SSSoftwareUpdatesRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84AED30;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSSoftwareUpdatesRequest *)self startWithUpdatesResponseBlock:v3];
 }
 
@@ -146,9 +146,9 @@ uint64_t __53__SSSoftwareUpdatesRequest_startWithCompletionBlock___block_invoke(
   return v3;
 }
 
-- (SSSoftwareUpdatesRequest)initWithXPCEncoding:(id)a3
+- (SSSoftwareUpdatesRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSSoftwareUpdatesRequest;
@@ -157,7 +157,7 @@ uint64_t __53__SSSoftwareUpdatesRequest_startWithCompletionBlock___block_invoke(
     if (v7)
     {
 
-      v5->_context = [[SSSoftwareUpdatesContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "50")];
+      v5->_context = [[SSSoftwareUpdatesContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "50")];
     }
   }
 

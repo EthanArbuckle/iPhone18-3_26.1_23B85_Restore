@@ -16,45 +16,45 @@
 
 - (void)_performInteraction_Internal
 {
-  v8 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
-  v3 = [(MFMessageCompositionTriageInteraction *)self daemonInterface];
-  v4 = [v3 interactionLogger];
-  [v4 composeReplyStartedForMessage:v8];
+  emailMessage = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+  daemonInterface = [(MFMessageCompositionTriageInteraction *)self daemonInterface];
+  interactionLogger = [daemonInterface interactionLogger];
+  [interactionLogger composeReplyStartedForMessage:emailMessage];
 
   v5 = [_MFMailCompositionContext alloc];
-  v6 = [(MFMessageCompositionTriageInteraction *)self message];
-  v7 = [v5 initReplyAllToMessage:v8 legacyMessage:v6 isEML:{-[MFMessageCompositionTriageInteraction isActingOnEML](self, "isActingOnEML")}];
+  message = [(MFMessageCompositionTriageInteraction *)self message];
+  v7 = [v5 initReplyAllToMessage:emailMessage legacyMessage:message isEML:{-[MFMessageCompositionTriageInteraction isActingOnEML](self, "isActingOnEML")}];
 
   [(MFMessageCompositionTriageInteraction *)self presentComposeWithContext:v7];
 }
 
 - (BOOL)isPermitted
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+  emailMessage = [(MFMessageCompositionTriageInteraction *)self emailMessage];
 
-  if (v3)
+  if (emailMessage)
   {
-    v4 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+    emailMessage2 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
     v5 = +[MFEmailSet set];
-    v6 = [v4 toList];
-    v7 = [v6 ef_map:&stru_1006555B0];
+    toList = [emailMessage2 toList];
+    v7 = [toList ef_map:&stru_1006555B0];
     [v5 addObjectsFromArray:v7];
 
-    v8 = [v4 ccList];
-    v9 = [v8 ef_map:&stru_1006555D0];
+    ccList = [emailMessage2 ccList];
+    v9 = [ccList ef_map:&stru_1006555D0];
     [v5 addObjectsFromArray:v9];
 
-    v10 = [v4 senderList];
-    v11 = [v10 ef_map:&stru_1006555F0];
+    senderList = [emailMessage2 senderList];
+    v11 = [senderList ef_map:&stru_1006555F0];
     [v5 addObjectsFromArray:v11];
 
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 accountsProvider];
-    v14 = [v4 mailboxes];
-    v15 = [v14 firstObject];
-    v16 = [v15 account];
-    v17 = [v16 objectID];
-    v18 = [v13 legacyMailAccountForObjectID:v17];
+    accountsProvider = [v12 accountsProvider];
+    mailboxes = [emailMessage2 mailboxes];
+    firstObject = [mailboxes firstObject];
+    account = [firstObject account];
+    objectID = [account objectID];
+    v18 = [accountsProvider legacyMailAccountForObjectID:objectID];
     v19 = v18;
     if (v18)
     {
@@ -72,8 +72,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v24 = [v23 emailAddressesAndAliasesList];
-    v25 = [v24 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    emailAddressesAndAliasesList = [v23 emailAddressesAndAliasesList];
+    v25 = [emailAddressesAndAliasesList countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v25)
     {
       v26 = *v30;
@@ -83,28 +83,28 @@
         {
           if (*v30 != v26)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(emailAddressesAndAliasesList);
           }
 
           [v5 removeObject:*(*(&v29 + 1) + 8 * i)];
         }
 
-        v25 = [v24 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v25 = [emailAddressesAndAliasesList countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v25);
     }
 
-    v22 = [v5 count] != 0;
+    canReplyAll = [v5 count] != 0;
   }
 
   else
   {
-    v21 = [(MFMessageCompositionTriageInteraction *)self message];
-    v22 = [v21 canReplyAll];
+    message = [(MFMessageCompositionTriageInteraction *)self message];
+    canReplyAll = [message canReplyAll];
   }
 
-  return v22;
+  return canReplyAll;
 }
 
 - (id)title

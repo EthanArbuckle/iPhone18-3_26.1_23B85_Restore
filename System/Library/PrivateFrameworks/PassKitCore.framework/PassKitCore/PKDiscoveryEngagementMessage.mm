@@ -1,27 +1,27 @@
 @interface PKDiscoveryEngagementMessage
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoveryEngagementMessage)initWithCoder:(id)a3;
-- (PKDiscoveryEngagementMessage)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoveryEngagementMessage)initWithCoder:(id)coder;
+- (PKDiscoveryEngagementMessage)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)localizeWithBundle:(id)a3;
-- (void)updateForRuleResult:(BOOL)a3;
-- (void)updateWithDiscoveryEngagementMessage:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)localizeWithBundle:(id)bundle;
+- (void)updateForRuleResult:(BOOL)result;
+- (void)updateWithDiscoveryEngagementMessage:(id)message;
 @end
 
 @implementation PKDiscoveryEngagementMessage
 
-- (PKDiscoveryEngagementMessage)initWithDictionary:(id)a3
+- (PKDiscoveryEngagementMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PKDiscoveryEngagementMessage;
-  v5 = [(PKDiscoveryObject *)&v19 initWithDictionary:v4];
+  v5 = [(PKDiscoveryObject *)&v19 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     if ([v6 isEqualToString:@"promotion"])
     {
       v7 = 2;
@@ -48,23 +48,23 @@
     }
 
     v5->_type = v7;
-    v8 = [v4 PKStringForKey:@"passQualifier"];
+    v8 = [dictionaryCopy PKStringForKey:@"passQualifier"];
     v5->_passQualifier = PKDiscoveryPassQualifierFromString(v8);
 
-    v9 = [v4 PKStringForKey:@"titleKey"];
+    v9 = [dictionaryCopy PKStringForKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v9;
 
-    v11 = [v4 PKStringForKey:@"messageKey"];
+    v11 = [dictionaryCopy PKStringForKey:@"messageKey"];
     messageKey = v5->_messageKey;
     v5->_messageKey = v11;
 
-    v13 = [v4 PKDictionaryForKey:@"iconURLs"];
+    v13 = [dictionaryCopy PKDictionaryForKey:@"iconURLs"];
     iconURLs = v5->_iconURLs;
     v5->_iconURLs = v13;
 
-    v5->_reportIdentifierToAggd = [v4 PKBoolForKey:@"canReportIdentifier"];
-    v15 = [v4 PKDictionaryForKey:@"action"];
+    v5->_reportIdentifierToAggd = [dictionaryCopy PKBoolForKey:@"canReportIdentifier"];
+    v15 = [dictionaryCopy PKDictionaryForKey:@"action"];
     if (v15)
     {
       v16 = [[PKDiscoveryEngagementMessageAction alloc] initWithDictionary:v15];
@@ -76,69 +76,69 @@
   return v5;
 }
 
-- (void)localizeWithBundle:(id)a3
+- (void)localizeWithBundle:(id)bundle
 {
   titleKey = self->_titleKey;
-  v9 = a3;
-  v5 = [v9 localizedStringForKey:titleKey value:&stru_1F227FD28 table:@"localizable"];
+  bundleCopy = bundle;
+  v5 = [bundleCopy localizedStringForKey:titleKey value:&stru_1F227FD28 table:@"localizable"];
   localizedTitle = self->_localizedTitle;
   self->_localizedTitle = v5;
 
-  v7 = [v9 localizedStringForKey:self->_messageKey value:&stru_1F227FD28 table:@"localizable"];
+  v7 = [bundleCopy localizedStringForKey:self->_messageKey value:&stru_1F227FD28 table:@"localizable"];
   localizedMessage = self->_localizedMessage;
   self->_localizedMessage = v7;
 
-  [(PKDiscoveryEngagementMessageAction *)self->_action localizeWithBundle:v9];
+  [(PKDiscoveryEngagementMessageAction *)self->_action localizeWithBundle:bundleCopy];
 }
 
-- (void)updateWithDiscoveryEngagementMessage:(id)a3
+- (void)updateWithDiscoveryEngagementMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = PKDiscoveryEngagementMessage;
-  if ([(PKDiscoveryObject *)&v13 updateWithDiscoveryObject:v4])
+  if ([(PKDiscoveryObject *)&v13 updateWithDiscoveryObject:messageCopy])
   {
-    self->_type = [v4 type];
-    self->_passQualifier = [v4 passQualifier];
-    v5 = [v4 titleKey];
+    self->_type = [messageCopy type];
+    self->_passQualifier = [messageCopy passQualifier];
+    titleKey = [messageCopy titleKey];
     titleKey = self->_titleKey;
-    self->_titleKey = v5;
+    self->_titleKey = titleKey;
 
-    v7 = [v4 messageKey];
+    messageKey = [messageCopy messageKey];
     messageKey = self->_messageKey;
-    self->_messageKey = v7;
+    self->_messageKey = messageKey;
 
-    v9 = [v4 iconURLs];
+    iconURLs = [messageCopy iconURLs];
     iconURLs = self->_iconURLs;
-    self->_iconURLs = v9;
+    self->_iconURLs = iconURLs;
 
-    v11 = [v4 action];
+    action = [messageCopy action];
     action = self->_action;
-    self->_action = v11;
+    self->_action = action;
 
-    self->_reportIdentifierToAggd = [v4 canReportIdentifierToAggd];
+    self->_reportIdentifierToAggd = [messageCopy canReportIdentifierToAggd];
   }
 }
 
-- (void)updateForRuleResult:(BOOL)a3
+- (void)updateForRuleResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v20 = *MEMORY[0x1E69E9840];
   if ([(PKDiscoveryObject *)self isTerminalStatus])
   {
     v5 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PKDiscoveryObject *)self identifier];
+      identifier = [(PKDiscoveryObject *)self identifier];
       v12 = 138412290;
-      v13 = v6;
+      v13 = identifier;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Discovery Message with identifier: %@ is in terminal state and won't be updated based on rule result", &v12, 0xCu);
     }
   }
 
   else
   {
-    if (v3)
+    if (resultCopy)
     {
       v7 = 2;
     }
@@ -151,18 +151,18 @@
     v8 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PKDiscoveryObject *)self identifier];
-      v10 = [(PKDiscoveryObject *)self status];
+      identifier2 = [(PKDiscoveryObject *)self identifier];
+      status = [(PKDiscoveryObject *)self status];
       v11 = "NO";
       v12 = 138413058;
-      v13 = v9;
+      v13 = identifier2;
       v14 = 2048;
-      if (v3)
+      if (resultCopy)
       {
         v11 = "YES";
       }
 
-      v15 = v10;
+      v15 = status;
       v16 = 2048;
       v17 = v7;
       v18 = 2080;
@@ -174,41 +174,41 @@
   }
 }
 
-- (PKDiscoveryEngagementMessage)initWithCoder:(id)a3
+- (PKDiscoveryEngagementMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKDiscoveryEngagementMessage;
-  v5 = [(PKDiscoveryObject *)&v22 initWithCoder:v4];
+  v5 = [(PKDiscoveryObject *)&v22 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_passQualifier = [v4 decodeIntegerForKey:@"passQualifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_passQualifier = [coderCopy decodeIntegerForKey:@"passQualifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageKey"];
     messageKey = v5->_messageKey;
     v5->_messageKey = v8;
 
     v10 = objc_alloc(MEMORY[0x1E695DFD8]);
     v11 = objc_opt_class();
     v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"iconURLs"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"iconURLs"];
     iconURLs = v5->_iconURLs;
     v5->_iconURLs = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v15;
 
-    v5->_reportIdentifierToAggd = [v4 decodeBoolForKey:@"canReportIdentifier"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v5->_reportIdentifierToAggd = [coderCopy decodeBoolForKey:@"canReportIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedMessage"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedMessage"];
     localizedMessage = v5->_localizedMessage;
     v5->_localizedMessage = v19;
   }
@@ -216,76 +216,76 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKDiscoveryEngagementMessage;
-  v4 = a3;
-  [(PKDiscoveryObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_passQualifier forKey:@"passQualifier"];
-  [v4 encodeObject:self->_titleKey forKey:@"titleKey"];
-  [v4 encodeObject:self->_messageKey forKey:@"messageKey"];
-  [v4 encodeObject:self->_iconURLs forKey:@"iconURLs"];
-  [v4 encodeObject:self->_action forKey:@"action"];
-  [v4 encodeBool:self->_reportIdentifierToAggd forKey:@"canReportIdentifier"];
-  [v4 encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
-  [v4 encodeObject:self->_localizedMessage forKey:@"localizedMessage"];
+  coderCopy = coder;
+  [(PKDiscoveryObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_passQualifier forKey:@"passQualifier"];
+  [coderCopy encodeObject:self->_titleKey forKey:@"titleKey"];
+  [coderCopy encodeObject:self->_messageKey forKey:@"messageKey"];
+  [coderCopy encodeObject:self->_iconURLs forKey:@"iconURLs"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
+  [coderCopy encodeBool:self->_reportIdentifierToAggd forKey:@"canReportIdentifier"];
+  [coderCopy encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_localizedMessage forKey:@"localizedMessage"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19.receiver = self;
   v19.super_class = PKDiscoveryEngagementMessage;
   v5 = [(PKDiscoveryObject *)&v19 copyWithZone:?];
   v5[13] = self->_type;
   v5[14] = self->_passQualifier;
-  v6 = [(NSString *)self->_titleKey copyWithZone:a3];
+  v6 = [(NSString *)self->_titleKey copyWithZone:zone];
   v7 = v5[15];
   v5[15] = v6;
 
-  v8 = [(NSString *)self->_messageKey copyWithZone:a3];
+  v8 = [(NSString *)self->_messageKey copyWithZone:zone];
   v9 = v5[16];
   v5[16] = v8;
 
-  v10 = [(NSDictionary *)self->_iconURLs copyWithZone:a3];
+  v10 = [(NSDictionary *)self->_iconURLs copyWithZone:zone];
   v11 = v5[17];
   v5[17] = v10;
 
-  v12 = [(PKDiscoveryEngagementMessageAction *)self->_action copyWithZone:a3];
+  v12 = [(PKDiscoveryEngagementMessageAction *)self->_action copyWithZone:zone];
   v13 = v5[18];
   v5[18] = v12;
 
   *(v5 + 96) = self->_reportIdentifierToAggd;
-  v14 = [(NSString *)self->_localizedTitle copyWithZone:a3];
+  v14 = [(NSString *)self->_localizedTitle copyWithZone:zone];
   v15 = v5[19];
   v5[19] = v14;
 
-  v16 = [(NSString *)self->_localizedMessage copyWithZone:a3];
+  v16 = [(NSString *)self->_localizedMessage copyWithZone:zone];
   v17 = v5[20];
   v5[20] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v20.receiver = self;
   v20.super_class = PKDiscoveryEngagementMessage;
-  if (![(PKDiscoveryObject *)&v20 isEqual:v4])
+  if (![(PKDiscoveryObject *)&v20 isEqual:equalCopy])
   {
     goto LABEL_36;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != v4[13] || self->_passQualifier != v4[14])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != equalCopy[13] || self->_passQualifier != equalCopy[14])
   {
     goto LABEL_36;
   }
 
   titleKey = self->_titleKey;
-  v6 = v4[15];
+  v6 = equalCopy[15];
   if (titleKey)
   {
     v7 = v6 == 0;
@@ -310,7 +310,7 @@
   }
 
   messageKey = self->_messageKey;
-  v9 = v4[16];
+  v9 = equalCopy[16];
   if (messageKey && v9)
   {
     if (([(NSString *)messageKey isEqual:?]& 1) == 0)
@@ -325,7 +325,7 @@
   }
 
   iconURLs = self->_iconURLs;
-  v11 = v4[17];
+  v11 = equalCopy[17];
   if (iconURLs && v11)
   {
     if (([(NSDictionary *)iconURLs isEqual:?]& 1) == 0)
@@ -340,7 +340,7 @@
   }
 
   action = self->_action;
-  v13 = v4[18];
+  v13 = equalCopy[18];
   if (action && v13)
   {
     if (![(PKDiscoveryEngagementMessageAction *)action isEqual:?])
@@ -354,13 +354,13 @@
     goto LABEL_36;
   }
 
-  if (self->_reportIdentifierToAggd != *(v4 + 96))
+  if (self->_reportIdentifierToAggd != *(equalCopy + 96))
   {
     goto LABEL_36;
   }
 
   localizedTitle = self->_localizedTitle;
-  v15 = v4[19];
+  v15 = equalCopy[19];
   if (!localizedTitle || !v15)
   {
     if (localizedTitle == v15)
@@ -380,7 +380,7 @@ LABEL_36:
 
 LABEL_32:
   localizedMessage = self->_localizedMessage;
-  v17 = v4[20];
+  v17 = equalCopy[20];
   if (localizedMessage && v17)
   {
     v18 = [(NSString *)localizedMessage isEqual:?];
@@ -401,14 +401,14 @@ LABEL_37:
   v10.receiver = self;
   v10.super_class = PKDiscoveryEngagementMessage;
   v3 = [(PKDiscoveryObject *)&v10 hash];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 safelyAddObject:self->_titleKey];
-  [v4 safelyAddObject:self->_messageKey];
-  [v4 safelyAddObject:self->_iconURLs];
-  [v4 safelyAddObject:self->_action];
-  [v4 safelyAddObject:self->_localizedTitle];
-  [v4 safelyAddObject:self->_localizedMessage];
-  v5 = PKCombinedHash(v3, v4);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_titleKey];
+  [array safelyAddObject:self->_messageKey];
+  [array safelyAddObject:self->_iconURLs];
+  [array safelyAddObject:self->_action];
+  [array safelyAddObject:self->_localizedTitle];
+  [array safelyAddObject:self->_localizedMessage];
+  v5 = PKCombinedHash(v3, array);
   v6 = self->_type - v5 + 32 * v5;
   v7 = self->_passQualifier - v6 + 32 * v6;
   v8 = self->_reportIdentifierToAggd - v7 + 32 * v7;

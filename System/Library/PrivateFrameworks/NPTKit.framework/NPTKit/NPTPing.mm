@@ -1,26 +1,26 @@
 @interface NPTPing
-- (NPTPing)initWithCoder:(id)a3;
-- (NPTPing)initWithNetworkActivityParent:(id)a3;
-- (NPTPing)initWithNetworkActivityParent:(id)a3 pingTarget:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NPTPing)initWithCoder:(id)coder;
+- (NPTPing)initWithNetworkActivityParent:(id)parent;
+- (NPTPing)initWithNetworkActivityParent:(id)parent pingTarget:(id)target;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)delegate;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sendPing;
-- (void)simplePing:(id)a3 didFailToSendPacket:(id)a4 sequenceNumber:(unsigned __int16)a5 error:(id)a6;
-- (void)simplePing:(id)a3 didFailWithError:(id)a4;
-- (void)simplePing:(id)a3 didReceivePingResponsePacket:(id)a4 sequenceNumber:(unsigned __int16)a5;
-- (void)simplePing:(id)a3 didReceiveUnexpectedPacket:(id)a4;
-- (void)simplePing:(id)a3 didTimeOut:(id)a4 sequenceNumber:(unsigned __int16)a5 error:(id)a6;
-- (void)startWithNumberOfPings:(unint64_t)a3 forcingIPv4:(BOOL)a4 forcingIPv6:(BOOL)a5 completion:(id)a6;
+- (void)simplePing:(id)ping didFailToSendPacket:(id)packet sequenceNumber:(unsigned __int16)number error:(id)error;
+- (void)simplePing:(id)ping didFailWithError:(id)error;
+- (void)simplePing:(id)ping didReceivePingResponsePacket:(id)packet sequenceNumber:(unsigned __int16)number;
+- (void)simplePing:(id)ping didReceiveUnexpectedPacket:(id)packet;
+- (void)simplePing:(id)ping didTimeOut:(id)out sequenceNumber:(unsigned __int16)number error:(id)error;
+- (void)startWithNumberOfPings:(unint64_t)pings forcingIPv4:(BOOL)pv4 forcingIPv6:(BOOL)pv6 completion:(id)completion;
 - (void)stop;
 @end
 
 @implementation NPTPing
 
-- (NPTPing)initWithNetworkActivityParent:(id)a3
+- (NPTPing)initWithNetworkActivityParent:(id)parent
 {
-  v5 = a3;
+  parentCopy = parent;
   v17.receiver = self;
   v17.super_class = NPTPing;
   v6 = [(NPTPing *)&v17 init];
@@ -42,7 +42,7 @@
     pingActivity = v6->pingActivity;
     v6->pingActivity = v12;
 
-    objc_storeStrong(&v6->activityParent, a3);
+    objc_storeStrong(&v6->activityParent, parent);
     activityParent = v6->activityParent;
     v14 = v6->pingActivity;
     nw_activity_set_parent_activity();
@@ -51,10 +51,10 @@
   return v6;
 }
 
-- (NPTPing)initWithNetworkActivityParent:(id)a3 pingTarget:(id)a4
+- (NPTPing)initWithNetworkActivityParent:(id)parent pingTarget:(id)target
 {
-  v7 = a3;
-  v8 = a4;
+  parentCopy = parent;
+  targetCopy = target;
   v20.receiver = self;
   v20.super_class = NPTPing;
   v9 = [(NPTPing *)&v20 init];
@@ -63,7 +63,7 @@
     v10 = objc_alloc_init(NPTPingResult);
     [(NPTPing *)v9 setResults:v10];
 
-    v11 = [[SimplePing alloc] initWithHostName:v8];
+    v11 = [[SimplePing alloc] initWithHostName:targetCopy];
     pinger = v9->pinger;
     v9->pinger = v11;
 
@@ -76,7 +76,7 @@
     pingActivity = v9->pingActivity;
     v9->pingActivity = v15;
 
-    objc_storeStrong(&v9->activityParent, a3);
+    objc_storeStrong(&v9->activityParent, parent);
     activityParent = v9->activityParent;
     v17 = v9->pingActivity;
     nw_activity_set_parent_activity();
@@ -85,17 +85,17 @@
   return v9;
 }
 
-- (void)startWithNumberOfPings:(unint64_t)a3 forcingIPv4:(BOOL)a4 forcingIPv6:(BOOL)a5 completion:(id)a6
+- (void)startWithNumberOfPings:(unint64_t)pings forcingIPv4:(BOOL)pv4 forcingIPv6:(BOOL)pv6 completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
+  pv6Copy = pv6;
+  pv4Copy = pv4;
   v18 = *MEMORY[0x277D85DE8];
-  [(NPTPing *)self setCompletion:a6];
+  [(NPTPing *)self setCompletion:completion];
   pingActivity = self->pingActivity;
   nw_activity_activate();
   [(NPTPing *)self setCanceled:0];
-  self->pingCount = a3;
-  if (v7 && !v6)
+  self->pingCount = pings;
+  if (pv4Copy && !pv6Copy)
   {
     v11 = 1;
 LABEL_7:
@@ -103,26 +103,26 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v6 && !v7)
+  if (pv6Copy && !pv4Copy)
   {
     v11 = 2;
     goto LABEL_7;
   }
 
 LABEL_8:
-  v12 = [(NPTPing *)self delegate];
+  delegate = [(NPTPing *)self delegate];
 
-  if (v12)
+  if (delegate)
   {
-    v13 = [(NPTPing *)self delegate];
-    [v13 pingWillStartPinging];
+    delegate2 = [(NPTPing *)self delegate];
+    [delegate2 pingWillStartPinging];
   }
 
   v14 = +[NPTLogger network];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134217984;
-    v17 = a3;
+    pingsCopy = pings;
     _os_log_impl(&dword_233421000, v14, OS_LOG_TYPE_DEFAULT, "Will test ping latency by sending %lu pings to Apple CDN Server", &v16, 0xCu);
   }
 
@@ -143,26 +143,26 @@ LABEL_8:
 
 - (void)stop
 {
-  v3 = [(NPTPing *)self results];
-  v4 = [v3 error];
+  results = [(NPTPing *)self results];
+  error = [results error];
 
   v5 = [NPTPingResult alloc];
   pings = self->pings;
-  v7 = [(SimplePing *)self->pinger hostName];
-  v8 = [(NPTPingResult *)v5 initWithPings:pings usingAddress:v7];
+  hostName = [(SimplePing *)self->pinger hostName];
+  v8 = [(NPTPingResult *)v5 initWithPings:pings usingAddress:hostName];
   [(NPTPing *)self setResults:v8];
 
-  v9 = [(NPTPing *)self results];
-  [v9 setError:v4];
+  results2 = [(NPTPing *)self results];
+  [results2 setError:error];
 
   [(SimplePing *)self->pinger stop];
-  v10 = [(NPTPing *)self results];
-  [v10 percentLost];
+  results3 = [(NPTPing *)self results];
+  [results3 percentLost];
   if (v11 == 0.0)
   {
-    v12 = [(NPTPing *)self results];
-    v13 = [v12 pings];
-    v14 = [v13 count];
+    results4 = [(NPTPing *)self results];
+    pings = [results4 pings];
+    v14 = [pings count];
     pingCount = self->pingCount;
 
     v16 = v14 == pingCount;
@@ -176,18 +176,18 @@ LABEL_8:
 
   pingActivity = self->pingActivity;
   nw_activity_complete_with_reason();
-  v18 = [(NPTPing *)self delegate];
+  delegate = [(NPTPing *)self delegate];
 
-  if (v18)
+  if (delegate)
   {
-    v19 = [(NPTPing *)self delegate];
-    v20 = [(NPTPing *)self results];
-    [v19 pingDidFinishWithResults:v20];
+    delegate2 = [(NPTPing *)self delegate];
+    results5 = [(NPTPing *)self results];
+    [delegate2 pingDidFinishWithResults:results5];
   }
 
-  v21 = [(NPTPing *)self completion];
+  completion = [(NPTPing *)self completion];
 
-  if (v21)
+  if (completion)
   {
     if (v16)
     {
@@ -197,55 +197,55 @@ LABEL_8:
     else
     {
       v58 = MEMORY[0x277CCACA8];
-      v60 = v4;
-      v23 = [(NPTPing *)self results];
-      v24 = [v23 pings];
-      v25 = [v24 count];
-      v26 = [(NPTPing *)self results];
-      v27 = [v26 pings];
-      v28 = [v27 count];
-      v29 = [(NPTPing *)self results];
-      [v29 percentLost];
+      v60 = error;
+      results6 = [(NPTPing *)self results];
+      pings2 = [results6 pings];
+      v25 = [pings2 count];
+      results7 = [(NPTPing *)self results];
+      pings3 = [results7 pings];
+      v28 = [pings3 count];
+      results8 = [(NPTPing *)self results];
+      [results8 percentLost];
       v31 = ((v30 / -100.0 + 1.0) * v28);
       v32 = self->pingCount;
-      v33 = [(NPTPing *)self results];
-      [v33 percentLost];
+      results9 = [(NPTPing *)self results];
+      [results9 percentLost];
       v35 = [v58 stringWithFormat:@"Errors encountered with ping. Sent: %ld Received: %ld Expected: %lu Percent Lost: %f", v25, v31, v32, v34];
 
-      v36 = [(NPTPing *)self results];
-      v37 = [v36 error];
-      v38 = [v37 localizedDescription];
+      results10 = [(NPTPing *)self results];
+      error2 = [results10 error];
+      localizedDescription = [error2 localizedDescription];
 
-      if (v38)
+      if (localizedDescription)
       {
         v55 = MEMORY[0x277CCACA8];
-        v59 = [(NPTPing *)self results];
-        v57 = [v59 error];
-        v54 = [v57 localizedDescription];
-        v56 = [(NPTPing *)self results];
-        v39 = [v56 pings];
-        v40 = [v39 count];
-        v41 = [(NPTPing *)self results];
-        v42 = [v41 pings];
-        v43 = [v42 count];
-        v44 = [(NPTPing *)self results];
-        [v44 percentLost];
+        results11 = [(NPTPing *)self results];
+        error3 = [results11 error];
+        localizedDescription2 = [error3 localizedDescription];
+        results12 = [(NPTPing *)self results];
+        pings4 = [results12 pings];
+        v40 = [pings4 count];
+        results13 = [(NPTPing *)self results];
+        pings5 = [results13 pings];
+        v43 = [pings5 count];
+        results14 = [(NPTPing *)self results];
+        [results14 percentLost];
         v46 = ((v45 / -100.0 + 1.0) * v43);
         v47 = self->pingCount;
-        v48 = [(NPTPing *)self results];
-        [v48 percentLost];
-        v50 = [v55 stringWithFormat:@"%@. Sent: %ld Received: %ld Expected: %lu Percent Lost: %.02f", v54, v40, v46, v47, v49];
+        results15 = [(NPTPing *)self results];
+        [results15 percentLost];
+        v50 = [v55 stringWithFormat:@"%@. Sent: %ld Received: %ld Expected: %lu Percent Lost: %.02f", localizedDescription2, v40, v46, v47, v49];
 
         v35 = v50;
       }
 
-      v51 = [MEMORY[0x277CBEB38] dictionary];
-      [v51 setValue:v35 forKey:*MEMORY[0x277CCA450]];
-      v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:v51];
-      v52 = [(NPTPing *)self results];
-      [v52 setError:v22];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setValue:v35 forKey:*MEMORY[0x277CCA450]];
+      v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:dictionary];
+      results16 = [(NPTPing *)self results];
+      [results16 setError:v22];
 
-      v4 = v60;
+      error = v60;
     }
 
     block[0] = MEMORY[0x277D85DD0];
@@ -266,14 +266,14 @@ void __15__NPTPing_stop__block_invoke(uint64_t a1)
   v3[2](v3, v2, *(a1 + 40));
 }
 
-- (void)simplePing:(id)a3 didReceivePingResponsePacket:(id)a4 sequenceNumber:(unsigned __int16)a5
+- (void)simplePing:(id)ping didReceivePingResponsePacket:(id)packet sequenceNumber:(unsigned __int16)number
 {
-  v6 = a5;
-  v7 = [(NSMutableArray *)self->pings objectAtIndex:a5, a4];
-  [v7 setWasSuccessful:1];
+  numberCopy = number;
+  packet = [(NSMutableArray *)self->pings objectAtIndex:number, packet];
+  [packet setWasSuccessful:1];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-  v9 = [(NSMutableArray *)self->pings objectAtIndex:v6];
+  v9 = [(NSMutableArray *)self->pings objectAtIndex:numberCopy];
   [v9 setEndTime:v8];
 
   if ([(NPTPing *)self canceled]|| [(NSMutableArray *)self->pings count]>= self->pingCount)
@@ -289,32 +289,32 @@ void __15__NPTPing_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)simplePing:(id)a3 didFailWithError:(id)a4
+- (void)simplePing:(id)ping didFailWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  pingCopy = ping;
   v8 = +[NPTLogger network];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [NPTPing simplePing:v6 didFailWithError:?];
+    [NPTPing simplePing:errorCopy didFailWithError:?];
   }
 
-  [v7 stop];
-  v9 = [(NPTPing *)self results];
-  v10 = [v9 error];
+  [pingCopy stop];
+  results = [(NPTPing *)self results];
+  error = [results error];
 
-  if (!v10)
+  if (!error)
   {
-    v11 = [(NPTPing *)self results];
-    [v11 setError:v6];
+    results2 = [(NPTPing *)self results];
+    [results2 setError:errorCopy];
   }
 
-  v12 = [(NPTPing *)self delegate];
+  delegate = [(NPTPing *)self delegate];
 
-  if (v12)
+  if (delegate)
   {
-    v13 = [(NPTPing *)self delegate];
-    [v13 pingDidFinishWithError:v6];
+    delegate2 = [(NPTPing *)self delegate];
+    [delegate2 pingDidFinishWithError:errorCopy];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -322,8 +322,8 @@ void __15__NPTPing_stop__block_invoke(uint64_t a1)
   v15[2] = __39__NPTPing_simplePing_didFailWithError___block_invoke;
   v15[3] = &unk_2789D4388;
   v15[4] = self;
-  v16 = v6;
-  v14 = v6;
+  v16 = errorCopy;
+  v14 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v15);
 }
 
@@ -338,23 +338,23 @@ void __39__NPTPing_simplePing_didFailWithError___block_invoke(uint64_t a1)
   }
 }
 
-- (void)simplePing:(id)a3 didTimeOut:(id)a4 sequenceNumber:(unsigned __int16)a5 error:(id)a6
+- (void)simplePing:(id)ping didTimeOut:(id)out sequenceNumber:(unsigned __int16)number error:(id)error
 {
-  v6 = a5;
-  v8 = a6;
+  numberCopy = number;
+  errorCopy = error;
   v9 = +[NPTLogger network];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [NPTPing simplePing:v8 didTimeOut:? sequenceNumber:? error:?];
+    [NPTPing simplePing:errorCopy didTimeOut:? sequenceNumber:? error:?];
   }
 
-  v10 = [(NPTPing *)self results];
-  v11 = [v10 error];
+  results = [(NPTPing *)self results];
+  error = [results error];
 
-  if (!v11)
+  if (!error)
   {
-    v12 = [(NPTPing *)self results];
-    [v12 setError:v8];
+    results2 = [(NPTPing *)self results];
+    [results2 setError:errorCopy];
   }
 
   if (![(NSMutableArray *)self->pings count])
@@ -362,11 +362,11 @@ void __39__NPTPing_simplePing_didFailWithError___block_invoke(uint64_t a1)
     goto LABEL_9;
   }
 
-  v13 = [(NSMutableArray *)self->pings objectAtIndex:v6];
+  v13 = [(NSMutableArray *)self->pings objectAtIndex:numberCopy];
   [v13 setWasSuccessful:0];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-  v15 = [(NSMutableArray *)self->pings objectAtIndex:v6];
+  v15 = [(NSMutableArray *)self->pings objectAtIndex:numberCopy];
   [v15 setEndTime:v14];
 
   if ([(NPTPing *)self canceled]|| [(NSMutableArray *)self->pings count]>= self->pingCount)
@@ -381,30 +381,30 @@ LABEL_9:
   }
 }
 
-- (void)simplePing:(id)a3 didFailToSendPacket:(id)a4 sequenceNumber:(unsigned __int16)a5 error:(id)a6
+- (void)simplePing:(id)ping didFailToSendPacket:(id)packet sequenceNumber:(unsigned __int16)number error:(id)error
 {
-  v6 = a5;
-  v8 = a6;
+  numberCopy = number;
+  errorCopy = error;
   v9 = +[NPTLogger network];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [NPTPing simplePing:v8 didFailToSendPacket:? sequenceNumber:? error:?];
+    [NPTPing simplePing:errorCopy didFailToSendPacket:? sequenceNumber:? error:?];
   }
 
-  v10 = [(NSMutableArray *)self->pings objectAtIndex:v6];
+  v10 = [(NSMutableArray *)self->pings objectAtIndex:numberCopy];
   [v10 setWasSuccessful:0];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-  v12 = [(NSMutableArray *)self->pings objectAtIndex:v6];
+  v12 = [(NSMutableArray *)self->pings objectAtIndex:numberCopy];
   [v12 setEndTime:v11];
 
-  v13 = [(NPTPing *)self results];
-  v14 = [v13 error];
+  results = [(NPTPing *)self results];
+  error = [results error];
 
-  if (!v14)
+  if (!error)
   {
-    v15 = [(NPTPing *)self results];
-    [v15 setError:v8];
+    results2 = [(NPTPing *)self results];
+    [results2 setError:errorCopy];
   }
 
   if ([(NPTPing *)self canceled]|| [(NSMutableArray *)self->pings count]>= self->pingCount)
@@ -418,9 +418,9 @@ LABEL_9:
   }
 }
 
-- (void)simplePing:(id)a3 didReceiveUnexpectedPacket:(id)a4
+- (void)simplePing:(id)ping didReceiveUnexpectedPacket:(id)packet
 {
-  v5 = [NPTLogger network:a3];
+  v5 = [NPTLogger network:ping];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [NPTPing simplePing:v5 didReceiveUnexpectedPacket:?];
@@ -444,20 +444,20 @@ LABEL_9:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NPTPing *)self results];
-  [v4 encodeObject:v5 forKey:@"pingResults"];
+  coderCopy = coder;
+  results = [(NPTPing *)self results];
+  [coderCopy encodeObject:results forKey:@"pingResults"];
 }
 
-- (NPTPing)initWithCoder:(id)a3
+- (NPTPing)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NPTPing;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(NPTPing *)&v7 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"pingResults", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"pingResults", v7.receiver, v7.super_class}];
 
   [(NPTPing *)v4 setResults:v5];
   return v4;
@@ -471,11 +471,11 @@ LABEL_9:
   [(SimplePing *)pinger stop];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NPTPing allocWithZone:?]];
-  v5 = [(NPTPing *)self results];
-  [(NPTPing *)v4 setResults:v5];
+  results = [(NPTPing *)self results];
+  [(NPTPing *)v4 setResults:results];
 
   return v4;
 }

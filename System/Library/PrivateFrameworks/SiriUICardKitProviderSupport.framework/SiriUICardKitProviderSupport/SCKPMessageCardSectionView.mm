@@ -1,22 +1,22 @@
 @interface SCKPMessageCardSectionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SCKPMessageCardSectionView)initWithMessageCardSection:(id)a3 delegate:(id)a4;
-- (void)_sendButtonPressed:(id)a3;
-- (void)audioMessagePlayButtonTapped:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SCKPMessageCardSectionView)initWithMessageCardSection:(id)section delegate:(id)delegate;
+- (void)_sendButtonPressed:(id)pressed;
+- (void)audioMessagePlayButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setMessageContents:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)userDidTapAttachmentView:(id)a3;
+- (void)setMessageContents:(id)contents;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)userDidTapAttachmentView:(id)view;
 @end
 
 @implementation SCKPMessageCardSectionView
 
-- (SCKPMessageCardSectionView)initWithMessageCardSection:(id)a3 delegate:(id)a4
+- (SCKPMessageCardSectionView)initWithMessageCardSection:(id)section delegate:(id)delegate
 {
   v84 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  obj = a4;
+  sectionCopy = section;
+  obj = delegate;
   v72.receiver = self;
   v72.super_class = SCKPMessageCardSectionView;
   v7 = [(SCKPMessageCardSectionView *)&v72 init];
@@ -24,9 +24,9 @@
   if (v7)
   {
     objc_storeWeak(&v7->_delegate, obj);
-    v9 = [v6 messageStatus];
-    v8->_messageStatus = v9;
-    if (v9 == 2 && ([v6 audioMessageURL], v10 = objc_claimAutoreleasedReturnValue(), v11 = v10 == 0, v10, v11))
+    messageStatus = [sectionCopy messageStatus];
+    v8->_messageStatus = messageStatus;
+    if (messageStatus == 2 && ([sectionCopy audioMessageURL], v10 = objc_claimAutoreleasedReturnValue(), v11 = v10 == 0, v10, v11))
     {
       v73 = 0;
       v74 = &v73;
@@ -55,11 +55,11 @@
       [(CKTextBalloonView *)v8->_sentBalloonView setOrientation:1];
       v61 = v8->_sentBalloonView;
       v62 = objc_alloc(MEMORY[0x277CCA898]);
-      v63 = [v6 messageText];
-      v64 = v63;
-      if (v63)
+      messageText = [sectionCopy messageText];
+      v64 = messageText;
+      if (messageText)
       {
-        v65 = v63;
+        v65 = messageText;
       }
 
       else
@@ -71,8 +71,8 @@
       v66 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
       v80[0] = v66;
       v79[1] = *MEMORY[0x277D740C0];
-      v67 = [MEMORY[0x277D75348] whiteColor];
-      v80[1] = v67;
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v80[1] = whiteColor;
       v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:2];
       v69 = [v62 initWithString:v65 attributes:v68];
       [(CKTextBalloonView *)v61 setAttributedText:v69];
@@ -84,8 +84,8 @@
       textView = v8->_textView;
       v8->_textView = v12;
 
-      v14 = [(UITextView *)v8->_textView layer];
-      [v14 setCornerRadius:8.0];
+      layer = [(UITextView *)v8->_textView layer];
+      [layer setCornerRadius:8.0];
 
       v15 = v8->_textView;
       v70 = *MEMORY[0x277D76918];
@@ -93,24 +93,24 @@
       [(UITextView *)v15 setFont:v16];
 
       v17 = v8->_textView;
-      v18 = [v6 messageText];
-      [(UITextView *)v17 setText:v18];
+      messageText2 = [sectionCopy messageText];
+      [(UITextView *)v17 setText:messageText2];
 
       v19 = v8->_textView;
-      v20 = [MEMORY[0x277D75348] clearColor];
-      [(UITextView *)v19 setBackgroundColor:v20];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UITextView *)v19 setBackgroundColor:clearColor];
 
       [(UITextView *)v8->_textView setTextContainerInset:8.0, 4.0, 8.0, 4.0];
       [(UITextView *)v8->_textView setDelegate:v8];
     }
 
-    v21 = [v6 audioMessageURL];
+    audioMessageURL = [sectionCopy audioMessageURL];
 
-    if (v21)
+    if (audioMessageURL)
     {
       v22 = [SCKPAudioMessageView alloc];
-      v23 = [v6 audioMessageURL];
-      v24 = [(SCKPAudioMessageView *)v22 initWithAudioMessageURL:v23 delegate:v8];
+      audioMessageURL2 = [sectionCopy audioMessageURL];
+      v24 = [(SCKPAudioMessageView *)v22 initWithAudioMessageURL:audioMessageURL2 delegate:v8];
       audioMessageView = v8->_audioMessageView;
       v8->_audioMessageView = v24;
 
@@ -128,13 +128,13 @@
       messageBackgroundView = v8->_messageBackgroundView;
       v8->_messageBackgroundView = v29;
 
-      v31 = [(UIVisualEffectView *)v8->_messageBackgroundView contentView];
+      contentView = [(UIVisualEffectView *)v8->_messageBackgroundView contentView];
       v32 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.8];
-      [v31 setBackgroundColor:v32];
+      [contentView setBackgroundColor:v32];
 
-      v33 = [(UIVisualEffectView *)v8->_messageBackgroundView contentView];
-      v34 = [v33 layer];
-      [v34 setCornerRadius:8.0];
+      contentView2 = [(UIVisualEffectView *)v8->_messageBackgroundView contentView];
+      layer2 = [contentView2 layer];
+      [layer2 setCornerRadius:8.0];
 
       [(SCKPMessageCardSectionView *)v8 addSubview:v8->_messageBackgroundView];
     }
@@ -154,12 +154,12 @@
       v41 = [MEMORY[0x277D75348] colorWithRed:0.176470588 green:0.490196078 blue:0.964705882 alpha:1.0];
       [(UIButton *)v40 setTitleColor:v41 forState:0];
 
-      v42 = [(UIButton *)v8->_sendButton titleLabel];
+      titleLabel = [(UIButton *)v8->_sendButton titleLabel];
       v43 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-      [v42 setFont:v43];
+      [titleLabel setFont:v43];
 
-      v44 = [(UIButton *)v8->_sendButton titleLabel];
-      [v44 setAdjustsFontSizeToFitWidth:1];
+      titleLabel2 = [(UIButton *)v8->_sendButton titleLabel];
+      [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
       [(UIButton *)v8->_sendButton addTarget:v8 action:sel__sendButtonPressed_ forControlEvents:64];
       [(SCKPMessageCardSectionView *)v8 addSubview:v8->_sendButton];
@@ -167,10 +167,10 @@
 
     [(SCKPMessageCardSectionView *)v8 addSubview:v8->_sentBalloonView];
     [(SCKPMessageCardSectionView *)v8 addSubview:v8->_textView];
-    -[CKTextBalloonView setColor:](v8->_sentBalloonView, "setColor:", [v6 messageServiceType] == 1);
+    -[CKTextBalloonView setColor:](v8->_sentBalloonView, "setColor:", [sectionCopy messageServiceType] == 1);
     [(CKTextBalloonView *)v8->_sentBalloonView prepareForDisplayIfNeeded];
-    v45 = [v6 messageAttachment];
-    if (v45)
+    messageAttachment = [sectionCopy messageAttachment];
+    if (messageAttachment)
     {
       v46 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -178,11 +178,11 @@
         *buf = 136315394;
         *&buf[4] = "[SCKPMessageCardSectionView initWithMessageCardSection:delegate:]";
         *&buf[12] = 2112;
-        *&buf[14] = v45;
+        *&buf[14] = messageAttachment;
         _os_log_impl(&dword_26950D000, v46, OS_LOG_TYPE_DEFAULT, "%s #messages: Attempting to build attachment view with attachment:%@", buf, 0x16u);
       }
 
-      v47 = [[SCKPMessageCardSectionAttachmentView alloc] initWithAttachment:v45];
+      v47 = [[SCKPMessageCardSectionAttachmentView alloc] initWithAttachment:messageAttachment];
       attachmentView = v8->_attachmentView;
       v8->_attachmentView = v47;
 
@@ -255,8 +255,8 @@
     p_sentBalloonView = &self->_sentBalloonView;
     [(CKTextBalloonView *)self->_sentBalloonView sizeThatFits:0 textAlignmentInsets:v18, v19];
     v26 = v25;
-    v27 = [(CKTextBalloonView *)self->_sentBalloonView attributedText];
-    v28 = [v27 length];
+    attributedText = [(CKTextBalloonView *)self->_sentBalloonView attributedText];
+    v28 = [attributedText length];
 
     if (v28)
     {
@@ -304,10 +304,10 @@
   [*p_sentBalloonView setFrame:{v20, v21, v23, v22}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIButton *)self->_sendButton sizeThatFits:?];
   if (v6 >= width * 0.5)
   {
@@ -331,8 +331,8 @@
   {
     if (!self->_sendButton)
     {
-      v17 = [(CKTextBalloonView *)sentBalloonView attributedText];
-      v18 = [v17 length];
+      attributedText = [(CKTextBalloonView *)sentBalloonView attributedText];
+      v18 = [attributedText length];
 
       v16 = 24.0;
       if (!v18)
@@ -359,19 +359,19 @@
   return result;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained messageCardSectionViewBeganEditing:self];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained messageCardSectionViewFinishedEditing:self];
 }
 
-- (void)_sendButtonPressed:(id)a3
+- (void)_sendButtonPressed:(id)pressed
 {
   [(UIButton *)self->_sendButton setEnabled:0];
   [(UITextView *)self->_textView resignFirstResponder];
@@ -379,22 +379,22 @@
   [WeakRetained messageCardSectionSendButtonTapped:self];
 }
 
-- (void)audioMessagePlayButtonTapped:(id)a3
+- (void)audioMessagePlayButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained messageCardSectionPlayButtonTapped:self];
 }
 
-- (void)setMessageContents:(id)a3
+- (void)setMessageContents:(id)contents
 {
-  [(UITextView *)self->_textView setText:a3];
-  v4 = [(UITextView *)self->_textView text];
-  v5 = [v4 length];
+  [(UITextView *)self->_textView setText:contents];
+  text = [(UITextView *)self->_textView text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(UITextView *)self->_textView text];
-    v7 = [v6 length] - 1;
+    text2 = [(UITextView *)self->_textView text];
+    v7 = [text2 length] - 1;
 
     textView = self->_textView;
 
@@ -402,7 +402,7 @@
   }
 }
 
-- (void)userDidTapAttachmentView:(id)a3
+- (void)userDidTapAttachmentView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained messageCardSectionAttachmentTapped:self];

@@ -1,33 +1,33 @@
 @interface CKCloudSettingsCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CKCloudSettingsCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = CKCloudSettingsCell;
-  [(PSTableCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(CKCloudSettingsCell *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v22 = [(PSTableCell *)self specifier];
-  v5 = [v4 copy];
+  stateCopy = state;
+  specifier = [(PSTableCell *)self specifier];
+  v5 = [stateCopy copy];
 
   v6 = *MEMORY[0x277D3FF38];
-  v7 = [v22 objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
+  v7 = [specifier objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   if (v7)
   {
-    v8 = [v22 objectForKeyedSubscript:v6];
-    v9 = [v8 BOOLValue];
+    v8 = [specifier objectForKeyedSubscript:v6];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = v9 ^ 1u;
+    v10 = bOOLValue ^ 1u;
   }
 
   else
@@ -36,29 +36,29 @@
   }
 
   [v5 setDisabled:v10];
-  v11 = [MEMORY[0x277D756E0] cellConfiguration];
-  v12 = [v11 updatedConfigurationForState:v5];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  v12 = [cellConfiguration updatedConfigurationForState:v5];
 
   [v12 setPrefersSideBySideTextAndSecondaryText:1];
-  v13 = [v22 name];
-  [v12 setText:v13];
+  name = [specifier name];
+  [v12 setText:name];
 
-  v14 = [(PSTableCell *)self value];
-  [v12 setSecondaryText:v14];
+  value = [(PSTableCell *)self value];
+  [v12 setSecondaryText:value];
 
-  v15 = [MEMORY[0x277D3FA48] appearance];
-  v16 = [v15 altTextColor];
+  appearance = [MEMORY[0x277D3FA48] appearance];
+  altTextColor = [appearance altTextColor];
 
-  v17 = [v12 textProperties];
-  v18 = [v17 font];
-  v19 = [v12 secondaryTextProperties];
-  [v19 setFont:v18];
+  textProperties = [v12 textProperties];
+  font = [textProperties font];
+  secondaryTextProperties = [v12 secondaryTextProperties];
+  [secondaryTextProperties setFont:font];
 
-  v20 = [v12 secondaryTextProperties];
-  [v20 setColor:v16];
+  secondaryTextProperties2 = [v12 secondaryTextProperties];
+  [secondaryTextProperties2 setColor:altTextColor];
 
-  v21 = [v22 identifier];
-  [(CKCloudSettingsCell *)self setAccessibilityIdentifier:v21];
+  identifier = [specifier identifier];
+  [(CKCloudSettingsCell *)self setAccessibilityIdentifier:identifier];
 
   [(CKCloudSettingsCell *)self setContentConfiguration:v12];
 }

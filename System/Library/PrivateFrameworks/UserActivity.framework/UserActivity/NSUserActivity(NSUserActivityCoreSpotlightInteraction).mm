@@ -7,25 +7,25 @@
 
 - (void)_updateForwardToCoreSpotlightIndexer:()NSUserActivityCoreSpotlightInteraction
 {
-  v5 = [a1 _internalUserActivity];
+  _internalUserActivity = [self _internalUserActivity];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [a1 _internalUserActivity];
-    [v7 updateForwardToCoreSpotlightIndexer:a3];
+    _internalUserActivity2 = [self _internalUserActivity];
+    [_internalUserActivity2 updateForwardToCoreSpotlightIndexer:a3];
   }
 }
 
 - (void)_sendToCoreSpotlightIndexer
 {
-  v2 = [a1 _internalUserActivity];
+  _internalUserActivity = [self _internalUserActivity];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [a1 _internalUserActivity];
-    [v4 sendToCoreSpotlightIndexer];
+    _internalUserActivity2 = [self _internalUserActivity];
+    [_internalUserActivity2 sendToCoreSpotlightIndexer];
   }
 }
 

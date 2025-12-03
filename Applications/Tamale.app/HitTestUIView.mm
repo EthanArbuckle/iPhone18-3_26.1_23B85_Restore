@@ -1,22 +1,22 @@
 @interface HitTestUIView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithCoder:(id)a3;
-- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithCoder:(id)coder;
+- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HitTestUIView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView_shouldPassthroughUserInput) == 1)
   {
     v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView_isPointInside);
     if (v7)
     {
-      v8 = a4;
-      v9 = self;
+      eventCopy = event;
+      selfCopy = self;
       v10 = sub_100005630(v7);
       v11 = v7(v10, x, y);
 
@@ -33,18 +33,18 @@
   {
     v14.receiver = self;
     v14.super_class = type metadata accessor for HitTestUIView();
-    v11 = [(HitTestUIView *)&v14 pointInside:a4 withEvent:x, y];
+    v11 = [(HitTestUIView *)&v14 pointInside:event withEvent:x, y];
   }
 
   return v11 & 1;
 }
 
-- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithFrame:(CGRect)a3
+- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView_shouldPassthroughUserInput) = 0;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView_isPointInside);
   v9 = type metadata accessor for HitTestUIView();
@@ -55,7 +55,7 @@
   return [(HitTestUIView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithCoder:(id)a3
+- (_TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView_shouldPassthroughUserInput) = 0;
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC6TamaleP33_31636EDB02EC328D3D92B71E399B2D0913HitTestUIView_isPointInside);
@@ -63,8 +63,8 @@
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HitTestUIView();
-  v5 = a3;
-  v6 = [(HitTestUIView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(HitTestUIView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

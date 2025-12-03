@@ -1,37 +1,37 @@
 @interface AXRDeviceActionsViewController
-- (AXRDeviceActionsViewController)initWithRemoteDevice:(id)a3 delegate:(id)a4;
+- (AXRDeviceActionsViewController)initWithRemoteDevice:(id)device delegate:(id)delegate;
 - (AXRDeviceActionsViewControllerDelegate)delegate;
-- (BOOL)_indexPathSectionIsForHandGestures:(int64_t)a3;
-- (id)_actionForIndexPath:(id)a3;
-- (id)_footerForSection:(int64_t)a3;
-- (id)_imageForListItemAtIndexPath:(id)a3;
-- (id)_leadingImageViewForListItemAtIndexPath:(id)a3;
-- (id)_subtitleForListItemAtIndexPath:(id)a3;
-- (id)_titleForListItemAtIndexPath:(id)a3;
-- (id)_titleForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_handGestureEventUsageForIndexPath:(id)a3;
-- (int64_t)_numberOfRowsInSection:(int64_t)a3;
+- (BOOL)_indexPathSectionIsForHandGestures:(int64_t)gestures;
+- (id)_actionForIndexPath:(id)path;
+- (id)_footerForSection:(int64_t)section;
+- (id)_imageForListItemAtIndexPath:(id)path;
+- (id)_leadingImageViewForListItemAtIndexPath:(id)path;
+- (id)_subtitleForListItemAtIndexPath:(id)path;
+- (id)_titleForListItemAtIndexPath:(id)path;
+- (id)_titleForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_handGestureEventUsageForIndexPath:(id)path;
+- (int64_t)_numberOfRowsInSection:(int64_t)section;
 - (int64_t)_numberOfSections;
-- (void)_handleIndexPathSelection:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_handleIndexPathSelection:(id)selection;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation AXRDeviceActionsViewController
 
-- (AXRDeviceActionsViewController)initWithRemoteDevice:(id)a3 delegate:(id)a4
+- (AXRDeviceActionsViewController)initWithRemoteDevice:(id)device delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = AXRDeviceActionsViewController;
   v8 = [(AXRDeviceActionsViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AXRDeviceActionsViewController *)v8 setActiveDevice:v6];
-    [(AXRDeviceActionsViewController *)v9 setDelegate:v7];
+    [(AXRDeviceActionsViewController *)v8 setActiveDevice:deviceCopy];
+    [(AXRDeviceActionsViewController *)v9 setDelegate:delegateCopy];
   }
 
   return v9;
@@ -42,98 +42,98 @@
   v4.receiver = self;
   v4.super_class = AXRDeviceActionsViewController;
   [(AXRDeviceActionsViewController *)&v4 viewDidLoad];
-  v3 = [(AXRDeviceActionsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellIdentifier"];
+  tableView = [(AXRDeviceActionsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CellIdentifier"];
 }
 
 - (int64_t)_numberOfSections
 {
-  v3 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v4 = [v3 deviceRemoteActions];
-  v5 = [v4 count];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v5 = [deviceRemoteActions count];
 
   return v5 + [(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures];
 }
 
-- (BOOL)_indexPathSectionIsForHandGestures:(int64_t)a3
+- (BOOL)_indexPathSectionIsForHandGestures:(int64_t)gestures
 {
-  v5 = [(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures];
-  if (v5)
+  _deviceSupportsHandGestures = [(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures];
+  if (_deviceSupportsHandGestures)
   {
-    LOBYTE(v5) = [(AXRDeviceActionsViewController *)self _numberOfSections]- 1 == a3;
+    LOBYTE(_deviceSupportsHandGestures) = [(AXRDeviceActionsViewController *)self _numberOfSections]- 1 == gestures;
   }
 
-  return v5;
+  return _deviceSupportsHandGestures;
 }
 
-- (int64_t)_numberOfRowsInSection:(int64_t)a3
+- (int64_t)_numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v6 = [v5 deviceRemoteActions];
-  v7 = [v6 count];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v7 = [deviceRemoteActions count];
 
-  if (v7 <= a3)
+  if (v7 <= section)
   {
     if (![(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures])
     {
       return 0;
     }
 
-    v10 = [(AXRDeviceActionsViewController *)self _supportedHandGestures];
-    v12 = [v10 count];
+    _supportedHandGestures = [(AXRDeviceActionsViewController *)self _supportedHandGestures];
+    v12 = [_supportedHandGestures count];
   }
 
   else
   {
-    v8 = [(AXRDeviceActionsViewController *)self activeDevice];
-    v9 = [v8 deviceRemoteActions];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    activeDevice2 = [(AXRDeviceActionsViewController *)self activeDevice];
+    deviceRemoteActions2 = [activeDevice2 deviceRemoteActions];
+    _supportedHandGestures = [deviceRemoteActions2 objectAtIndexedSubscript:section];
 
-    v11 = [v10 remoteActions];
-    v12 = [v11 count];
+    remoteActions = [_supportedHandGestures remoteActions];
+    v12 = [remoteActions count];
   }
 
   return v12;
 }
 
-- (id)_titleForSection:(int64_t)a3
+- (id)_titleForSection:(int64_t)section
 {
-  v5 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v6 = [v5 deviceRemoteActions];
-  v7 = [v6 count];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v7 = [deviceRemoteActions count];
 
-  if (v7 <= a3)
+  if (v7 <= section)
   {
     if ([(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures])
     {
-      v11 = AXRLocalizedStringForKey();
+      localizedTitle = AXRLocalizedStringForKey();
     }
 
     else
     {
-      v11 = 0;
+      localizedTitle = 0;
     }
   }
 
   else
   {
-    v8 = [(AXRDeviceActionsViewController *)self activeDevice];
-    v9 = [v8 deviceRemoteActions];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    activeDevice2 = [(AXRDeviceActionsViewController *)self activeDevice];
+    deviceRemoteActions2 = [activeDevice2 deviceRemoteActions];
+    v10 = [deviceRemoteActions2 objectAtIndexedSubscript:section];
 
-    v11 = [v10 localizedTitle];
+    localizedTitle = [v10 localizedTitle];
   }
 
-  return v11;
+  return localizedTitle;
 }
 
-- (id)_footerForSection:(int64_t)a3
+- (id)_footerForSection:(int64_t)section
 {
-  v5 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v6 = [v5 deviceRemoteActions];
-  v7 = [v6 count];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v7 = [deviceRemoteActions count];
 
-  if (v7 <= a3 && [(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures])
+  if (v7 <= section && [(AXRDeviceActionsViewController *)self _deviceSupportsHandGestures])
   {
     v8 = AXRLocalizedStringForKey();
   }
@@ -146,87 +146,87 @@
   return v8;
 }
 
-- (id)_actionForIndexPath:(id)a3
+- (id)_actionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v7 = [v6 deviceRemoteActions];
-  v8 = [v7 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v8 = [deviceRemoteActions count];
 
-  if (v5 >= v8)
+  if (section >= v8)
   {
     v13 = 0;
   }
 
   else
   {
-    v9 = [(AXRDeviceActionsViewController *)self activeDevice];
-    v10 = [v9 deviceRemoteActions];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+    activeDevice2 = [(AXRDeviceActionsViewController *)self activeDevice];
+    deviceRemoteActions2 = [activeDevice2 deviceRemoteActions];
+    v11 = [deviceRemoteActions2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v12 = [v11 remoteActions];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    remoteActions = [v11 remoteActions];
+    v13 = [remoteActions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v13;
 }
 
-- (int64_t)_handGestureEventUsageForIndexPath:(id)a3
+- (int64_t)_handGestureEventUsageForIndexPath:(id)path
 {
-  v4 = a3;
-  if (-[AXRDeviceActionsViewController _indexPathSectionIsForHandGestures:](self, "_indexPathSectionIsForHandGestures:", [v4 section]))
+  pathCopy = path;
+  if (-[AXRDeviceActionsViewController _indexPathSectionIsForHandGestures:](self, "_indexPathSectionIsForHandGestures:", [pathCopy section]))
   {
-    v5 = [(AXRDeviceActionsViewController *)self _supportedHandGestures];
-    v6 = [v5 objectAtIndex:{objc_msgSend(v4, "item")}];
-    v7 = [v6 intValue];
+    _supportedHandGestures = [(AXRDeviceActionsViewController *)self _supportedHandGestures];
+    v6 = [_supportedHandGestures objectAtIndex:{objc_msgSend(pathCopy, "item")}];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v7 = 0;
+    intValue = 0;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (void)_handleIndexPathSelection:(id)a3
+- (void)_handleIndexPathSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v7 = [v6 deviceRemoteActions];
-  v8 = [v7 count];
+  selectionCopy = selection;
+  section = [selectionCopy section];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v8 = [deviceRemoteActions count];
 
-  if (v5 >= v8)
+  if (section >= v8)
   {
-    v10 = [v4 section];
+    section2 = [selectionCopy section];
 
-    [(AXRDeviceActionsViewController *)self _indexPathSectionIsForHandGestures:v10];
+    [(AXRDeviceActionsViewController *)self _indexPathSectionIsForHandGestures:section2];
   }
 
   else
   {
-    v11 = [(AXRDeviceActionsViewController *)self _actionForIndexPath:v4];
+    v11 = [(AXRDeviceActionsViewController *)self _actionForIndexPath:selectionCopy];
 
-    v9 = [(AXRDeviceActionsViewController *)self delegate];
-    [v9 actionsViewController:self selectedAction:v11];
+    delegate = [(AXRDeviceActionsViewController *)self delegate];
+    [delegate actionsViewController:self selectedAction:v11];
   }
 }
 
-- (id)_titleForListItemAtIndexPath:(id)a3
+- (id)_titleForListItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v7 = [v6 deviceRemoteActions];
-  v8 = [v7 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v8 = [deviceRemoteActions count];
 
-  if (v5 >= v8)
+  if (section >= v8)
   {
-    if (-[AXRDeviceActionsViewController _indexPathSectionIsForHandGestures:](self, "_indexPathSectionIsForHandGestures:", [v4 section]))
+    if (-[AXRDeviceActionsViewController _indexPathSectionIsForHandGestures:](self, "_indexPathSectionIsForHandGestures:", [pathCopy section]))
     {
-      [(AXRDeviceActionsViewController *)self _handGestureEventUsageForIndexPath:v4];
+      [(AXRDeviceActionsViewController *)self _handGestureEventUsageForIndexPath:pathCopy];
       v11 = AXLocalizedStringForHandGestureEventUsage();
     }
 
@@ -238,26 +238,26 @@
 
   else
   {
-    v9 = [(AXRDeviceActionsViewController *)self _actionForIndexPath:v4];
-    v10 = [(AXRDeviceActionsViewController *)self activeDevice];
-    [v10 deviceType];
+    v9 = [(AXRDeviceActionsViewController *)self _actionForIndexPath:pathCopy];
+    activeDevice2 = [(AXRDeviceActionsViewController *)self activeDevice];
+    [activeDevice2 deviceType];
     v11 = AXRLocalizedStringForRemoteActionWithDeviceType();
   }
 
   return v11;
 }
 
-- (id)_subtitleForListItemAtIndexPath:(id)a3
+- (id)_subtitleForListItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (-[AXRDeviceActionsViewController _indexPathSectionIsForHandGestures:](self, "_indexPathSectionIsForHandGestures:", [v4 section]))
+  pathCopy = path;
+  if (-[AXRDeviceActionsViewController _indexPathSectionIsForHandGestures:](self, "_indexPathSectionIsForHandGestures:", [pathCopy section]))
   {
-    v5 = [(AXRDeviceActionsViewController *)self _handGestureEventUsageForIndexPath:v4];
-    v6 = [(AXRDeviceActionsViewController *)self activeDevice];
-    v7 = [v6 customizedRemoteActionForHandGestureEventUsage:v5];
+    v5 = [(AXRDeviceActionsViewController *)self _handGestureEventUsageForIndexPath:pathCopy];
+    activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+    v7 = [activeDevice customizedRemoteActionForHandGestureEventUsage:v5];
 
-    v8 = [(AXRDeviceActionsViewController *)self activeDevice];
-    [v8 deviceType];
+    activeDevice2 = [(AXRDeviceActionsViewController *)self activeDevice];
+    [activeDevice2 deviceType];
     v9 = AXRLocalizedStringForRemoteActionWithDeviceType();
   }
 
@@ -269,32 +269,32 @@
   return v9;
 }
 
-- (id)_imageForListItemAtIndexPath:(id)a3
+- (id)_imageForListItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(AXRDeviceActionsViewController *)self activeDevice];
-  v7 = [v6 deviceRemoteActions];
-  v8 = [v7 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  activeDevice = [(AXRDeviceActionsViewController *)self activeDevice];
+  deviceRemoteActions = [activeDevice deviceRemoteActions];
+  v8 = [deviceRemoteActions count];
 
-  if (v5 >= v8)
+  if (section >= v8)
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(AXRDeviceActionsViewController *)self _actionForIndexPath:v4];
-    v10 = [(AXRDeviceActionsViewController *)self activeDevice];
-    v11 = AXRUIImageForRemoteActionWithDeviceType(v9, [v10 deviceType]);
+    v9 = [(AXRDeviceActionsViewController *)self _actionForIndexPath:pathCopy];
+    activeDevice2 = [(AXRDeviceActionsViewController *)self activeDevice];
+    v11 = AXRUIImageForRemoteActionWithDeviceType(v9, [activeDevice2 deviceType]);
   }
 
   return v11;
 }
 
-- (id)_leadingImageViewForListItemAtIndexPath:(id)a3
+- (id)_leadingImageViewForListItemAtIndexPath:(id)path
 {
-  v3 = [(AXRDeviceActionsViewController *)self _imageForListItemAtIndexPath:a3];
+  v3 = [(AXRDeviceActionsViewController *)self _imageForListItemAtIndexPath:path];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v3];
@@ -308,34 +308,34 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:v6];
-  v8 = [v7 defaultContentConfiguration];
-  v9 = [(AXRDeviceActionsViewController *)self _imageForListItemAtIndexPath:v6];
-  [v8 setImage:v9];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:pathCopy];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  v9 = [(AXRDeviceActionsViewController *)self _imageForListItemAtIndexPath:pathCopy];
+  [defaultContentConfiguration setImage:v9];
 
-  v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v11 = [v8 imageProperties];
-  [v11 setTintColor:v10];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setTintColor:secondaryLabelColor];
 
-  v12 = [(AXRDeviceActionsViewController *)self _titleForListItemAtIndexPath:v6];
-  [v8 setText:v12];
+  v12 = [(AXRDeviceActionsViewController *)self _titleForListItemAtIndexPath:pathCopy];
+  [defaultContentConfiguration setText:v12];
 
-  v13 = [(AXRDeviceActionsViewController *)self _subtitleForListItemAtIndexPath:v6];
+  v13 = [(AXRDeviceActionsViewController *)self _subtitleForListItemAtIndexPath:pathCopy];
 
-  [v8 setSecondaryText:v13];
-  [v7 setContentConfiguration:v8];
+  [defaultContentConfiguration setSecondaryText:v13];
+  [v7 setContentConfiguration:defaultContentConfiguration];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  [(AXRDeviceActionsViewController *)self _handleIndexPathSelection:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  [(AXRDeviceActionsViewController *)self _handleIndexPathSelection:pathCopy];
 }
 
 - (AXRDeviceActionsViewControllerDelegate)delegate

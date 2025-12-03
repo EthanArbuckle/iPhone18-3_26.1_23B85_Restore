@@ -1,16 +1,16 @@
 @interface WFURLWebResource
-- (WFURLWebResource)initWithURL:(id)a3;
-- (id)loadInWKWebView:(id)a3;
+- (WFURLWebResource)initWithURL:(id)l;
+- (id)loadInWKWebView:(id)view;
 - (id)request;
 @end
 
 @implementation WFURLWebResource
 
-- (id)loadInWKWebView:(id)a3
+- (id)loadInWKWebView:(id)view
 {
-  v4 = a3;
-  v5 = [(WFURLWebResource *)self request];
-  v6 = [v4 loadRequest:v5];
+  viewCopy = view;
+  request = [(WFURLWebResource *)self request];
+  v6 = [viewCopy loadRequest:request];
 
   return v6;
 }
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (WFURLWebResource)initWithURL:(id)a3
+- (WFURLWebResource)initWithURL:(id)l
 {
   v4.receiver = self;
   v4.super_class = WFURLWebResource;
-  return [(WFWebResource *)&v4 initWithData:0 URL:a3 MIMEType:0 textEncodingName:0 frameName:0];
+  return [(WFWebResource *)&v4 initWithData:0 URL:l MIMEType:0 textEncodingName:0 frameName:0];
 }
 
 @end

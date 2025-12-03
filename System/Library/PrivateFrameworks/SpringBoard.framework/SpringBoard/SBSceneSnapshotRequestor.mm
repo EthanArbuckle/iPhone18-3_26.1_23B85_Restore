@@ -1,35 +1,35 @@
 @interface SBSceneSnapshotRequestor
-- (BOOL)handleSnapshotRequestAction:(id)a3 forSceneHandle:(id)a4;
-- (SBSceneSnapshotRequestor)initWithDelegate:(id)a3;
+- (BOOL)handleSnapshotRequestAction:(id)action forSceneHandle:(id)handle;
+- (SBSceneSnapshotRequestor)initWithDelegate:(id)delegate;
 - (SBSceneSnapshotRequestorDelegate)delegate;
 - (id)_debugName;
 - (id)_displayItemLayoutAttributesProvider;
-- (id)_fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:(id)a3 forSceneHandle:(id)a4 settings:(id)a5 snapshotRequestContext:(id)a6;
-- (id)_sbSceneSnapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5;
+- (id)_fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:(id)requests forSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context;
+- (id)_sbSceneSnapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context;
 - (id)_sceneSnapshotRequestContext;
 - (id)_sceneSnapshotRequestStrategy;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason:(id)reason;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)invalidate;
-- (void)invalidatePendingSnapshotsForSceneID:(id)a3;
-- (void)requestSnapshotsForSceneHandle:(id)a3 updatingToNewSettings:(id)a4 withUpdateContext:(id)a5;
+- (void)invalidatePendingSnapshotsForSceneID:(id)d;
+- (void)requestSnapshotsForSceneHandle:(id)handle updatingToNewSettings:(id)settings withUpdateContext:(id)context;
 @end
 
 @implementation SBSceneSnapshotRequestor
 
-- (SBSceneSnapshotRequestor)initWithDelegate:(id)a3
+- (SBSceneSnapshotRequestor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SBSceneSnapshotRequestor;
   v5 = [(SBSceneSnapshotRequestor *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     outgoingSnapshots = v6->_outgoingSnapshots;
     v6->_outgoingSnapshots = v7;
@@ -44,39 +44,39 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSceneSnapshotRequestor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSceneSnapshotRequestor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBSceneSnapshotRequestor *)self _debugName];
-  v5 = [v3 appendObject:v4 withName:@"debugName"];
+  _debugName = [(SBSceneSnapshotRequestor *)self _debugName];
+  v5 = [v3 appendObject:_debugName withName:@"debugName"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneSnapshotRequestor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneSnapshotRequestor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSceneSnapshotRequestor *)self succinctDescriptionBuilder];
-  v5 = [(SBSceneSnapshotRequestor *)self _sceneSnapshotRequestStrategy];
-  v6 = [v4 appendObject:v5 withName:@"strategy"];
+  succinctDescriptionBuilder = [(SBSceneSnapshotRequestor *)self succinctDescriptionBuilder];
+  _sceneSnapshotRequestStrategy = [(SBSceneSnapshotRequestor *)self _sceneSnapshotRequestStrategy];
+  v6 = [succinctDescriptionBuilder appendObject:_sceneSnapshotRequestStrategy withName:@"strategy"];
 
-  v7 = [v4 appendUnsignedInteger:-[NSMutableSet count](self->_incomingSnapshots withName:{"count"), @"incomingSnapshots.count"}];
-  v8 = [v4 appendUnsignedInteger:-[NSMutableSet count](self->_outgoingSnapshots withName:{"count"), @"outgoingSnapshots.count"}];
+  v7 = [succinctDescriptionBuilder appendUnsignedInteger:-[NSMutableSet count](self->_incomingSnapshots withName:{"count"), @"incomingSnapshots.count"}];
+  v8 = [succinctDescriptionBuilder appendUnsignedInteger:-[NSMutableSet count](self->_outgoingSnapshots withName:{"count"), @"outgoingSnapshots.count"}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (void)invalidate
@@ -143,9 +143,9 @@
   }
 }
 
-- (id)preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason:(id)a3
+- (id)preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CF0CE8]);
   v6 = MEMORY[0x277D85CD0];
@@ -155,14 +155,14 @@
   v15 = __95__SBSceneSnapshotRequestor_preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason___block_invoke;
   v16 = &unk_2783A9070;
   objc_copyWeak(&v17, &location);
-  v8 = [v5 initWithIdentifier:@"SBSceneSnapshotRequestor.PreventSupplementalSnapshots" forReason:v4 queue:v6 invalidationBlock:&v13];
+  v8 = [v5 initWithIdentifier:@"SBSceneSnapshotRequestor.PreventSupplementalSnapshots" forReason:reasonCopy queue:v6 invalidationBlock:&v13];
 
   preventSupplementalSnapshotsAssertions = self->_preventSupplementalSnapshotsAssertions;
   if (!preventSupplementalSnapshotsAssertions)
   {
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v11 = self->_preventSupplementalSnapshotsAssertions;
-    self->_preventSupplementalSnapshotsAssertions = v10;
+    self->_preventSupplementalSnapshotsAssertions = weakObjectsHashTable;
 
     preventSupplementalSnapshotsAssertions = self->_preventSupplementalSnapshotsAssertions;
   }
@@ -191,40 +191,40 @@ void __95__SBSceneSnapshotRequestor_preventTakingSupplementalSnapshotsForBackgro
   }
 }
 
-- (void)requestSnapshotsForSceneHandle:(id)a3 updatingToNewSettings:(id)a4 withUpdateContext:(id)a5
+- (void)requestSnapshotsForSceneHandle:(id)handle updatingToNewSettings:(id)settings withUpdateContext:(id)context
 {
   v124 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v91 = a5;
-  v92 = v7;
-  if (!v7)
+  handleCopy = handle;
+  settingsCopy = settings;
+  contextCopy = context;
+  v92 = handleCopy;
+  if (!handleCopy)
   {
     [SBSceneSnapshotRequestor requestSnapshotsForSceneHandle:updatingToNewSettings:withUpdateContext:];
   }
 
-  v90 = v8;
-  if (!v8)
+  v90 = settingsCopy;
+  if (!settingsCopy)
   {
     [SBSceneSnapshotRequestor requestSnapshotsForSceneHandle:updatingToNewSettings:withUpdateContext:];
   }
 
-  if (!v91)
+  if (!contextCopy)
   {
     [SBSceneSnapshotRequestor requestSnapshotsForSceneHandle:updatingToNewSettings:withUpdateContext:];
   }
 
-  v95 = [v7 scene];
-  v9 = [v7 application];
-  v89 = [v9 info];
+  scene = [handleCopy scene];
+  application = [handleCopy application];
+  info = [application info];
 
-  v10 = v89;
-  if (([v89 disablesSnapshots] & 1) == 0)
+  v10 = info;
+  if (([info disablesSnapshots] & 1) == 0)
   {
-    v88 = [v95 settings];
-    if ([v88 isForeground])
+    settings = [scene settings];
+    if ([settings isForeground])
     {
-      v85 = [v8 isForeground] ^ 1;
+      v85 = [settingsCopy isForeground] ^ 1;
     }
 
     else
@@ -232,19 +232,19 @@ void __95__SBSceneSnapshotRequestor_preventTakingSupplementalSnapshotsForBackgro
       v85 = 0;
     }
 
-    if ([v88 isForeground])
+    if ([settings isForeground])
     {
-      v11 = 0;
+      isForeground = 0;
     }
 
     else
     {
-      v11 = [v8 isForeground];
+      isForeground = [settingsCopy isForeground];
     }
 
-    v87 = [v91 transitionContext];
-    v12 = [v87 watchdogTransitionContext];
-    v13 = [v12 watchdogBehavior];
+    transitionContext = [contextCopy transitionContext];
+    watchdogTransitionContext = [transitionContext watchdogTransitionContext];
+    watchdogBehavior = [watchdogTransitionContext watchdogBehavior];
 
     if (v85)
     {
@@ -253,38 +253,38 @@ void __95__SBSceneSnapshotRequestor_preventTakingSupplementalSnapshotsForBackgro
 
     else
     {
-      if (v13 == 1)
+      if (watchdogBehavior == 1)
       {
         v15 = 1;
       }
 
       else
       {
-        v15 = v11;
+        v15 = isForeground;
       }
 
       if (v15 != 1)
       {
 LABEL_88:
 
-        v10 = v89;
+        v10 = info;
         goto LABEL_89;
       }
 
       v14 = @"(unknown)";
-      if (v13 == 1)
+      if (watchdogBehavior == 1)
       {
         v14 = @"another scene update with a watchdog is happening";
       }
 
-      if (v11)
+      if (isForeground)
       {
         v14 = @"the scene is moving to the foreground";
       }
     }
 
     v94 = v14;
-    v16 = [v95 identifier];
+    identifier = [scene identifier];
     v114 = 0u;
     v115 = 0u;
     v112 = 0u;
@@ -304,22 +304,22 @@ LABEL_88:
           }
 
           v21 = *(*(&v112 + 1) + 8 * i);
-          v22 = [v21 sceneID];
-          v23 = [v16 isEqualToString:v22];
+          sceneID = [v21 sceneID];
+          v23 = [identifier isEqualToString:sceneID];
 
           if (v23)
           {
             v24 = SBLogSceneSnapshots();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
             {
-              v25 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-              v26 = [v95 identifier];
+              succinctDescription = [(SBSceneSnapshotRequestor *)self succinctDescription];
+              identifier2 = [scene identifier];
               v27 = objc_opt_class();
               v28 = NSStringFromClass(v27);
               *buf = 138544386;
-              *&buf[4] = v25;
+              *&buf[4] = succinctDescription;
               *&buf[12] = 2114;
-              *&buf[14] = v26;
+              *&buf[14] = identifier2;
               *&buf[22] = 2114;
               *v122 = v28;
               *&v122[8] = 2050;
@@ -359,23 +359,23 @@ LABEL_88:
           }
 
           v33 = *(*(&v108 + 1) + 8 * j);
-          v34 = [v33 context];
-          v35 = [v34 sceneID];
-          v36 = [v16 isEqualToString:v35];
+          context = [v33 context];
+          sceneID2 = [context sceneID];
+          v36 = [identifier isEqualToString:sceneID2];
 
           if (v36)
           {
             v37 = SBLogSceneSnapshots();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
-              v39 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-              v40 = [v95 identifier];
+              succinctDescription2 = [(SBSceneSnapshotRequestor *)self succinctDescription];
+              identifier3 = [scene identifier];
               v41 = objc_opt_class();
               v42 = NSStringFromClass(v41);
               *buf = 138544386;
-              *&buf[4] = v39;
+              *&buf[4] = succinctDescription2;
               *&buf[12] = 2114;
-              *&buf[14] = v40;
+              *&buf[14] = identifier3;
               *&buf[22] = 2114;
               *v122 = v42;
               *&v122[8] = 2050;
@@ -400,8 +400,8 @@ LABEL_88:
 
     if (v85)
     {
-      v86 = [(SBSceneSnapshotRequestor *)self _sceneSnapshotRequestContext];
-      v93 = [(SBSceneSnapshotRequestor *)self _sbSceneSnapshotRequestsForSceneHandle:v92 settings:v90 snapshotRequestContext:v86];
+      _sceneSnapshotRequestContext = [(SBSceneSnapshotRequestor *)self _sceneSnapshotRequestContext];
+      v93 = [(SBSceneSnapshotRequestor *)self _sbSceneSnapshotRequestsForSceneHandle:v92 settings:v90 snapshotRequestContext:_sceneSnapshotRequestContext];
       v43 = SBLogSceneSnapshots();
       v44 = os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG);
 
@@ -410,13 +410,13 @@ LABEL_88:
         v45 = SBLogSceneSnapshots();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
         {
-          v81 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-          v82 = [v95 identifier];
+          succinctDescription3 = [(SBSceneSnapshotRequestor *)self succinctDescription];
+          identifier4 = [scene identifier];
           v83 = [v93 count];
           *buf = 138543874;
-          *&buf[4] = v81;
+          *&buf[4] = succinctDescription3;
           *&buf[12] = 2114;
-          *&buf[14] = v82;
+          *&buf[14] = identifier4;
           *&buf[22] = 1026;
           *v122 = v83;
           _os_log_debug_impl(&dword_21ED4E000, v45, OS_LOG_TYPE_DEBUG, "%{public}@ [%{public}@] Generated %{public}d SB requests", buf, 0x1Cu);
@@ -457,17 +457,17 @@ LABEL_88:
 
       if ([v93 count])
       {
-        v84 = [(SBSceneSnapshotRequestor *)self _fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:v93 forSceneHandle:v92 settings:v90 snapshotRequestContext:v86];
+        v84 = [(SBSceneSnapshotRequestor *)self _fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:v93 forSceneHandle:v92 settings:v90 snapshotRequestContext:_sceneSnapshotRequestContext];
         v52 = SBLogSceneSnapshots();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-          v54 = [v95 identifier];
+          succinctDescription4 = [(SBSceneSnapshotRequestor *)self succinctDescription];
+          identifier5 = [scene identifier];
           v55 = [v84 count];
           *buf = 138544130;
-          *&buf[4] = v53;
+          *&buf[4] = succinctDescription4;
           *&buf[12] = 2114;
-          *&buf[14] = v54;
+          *&buf[14] = identifier5;
           *&buf[22] = 1024;
           *v122 = v55;
           *&v122[4] = 2112;
@@ -498,9 +498,9 @@ LABEL_88:
                   objc_enumerationMutation(v58);
                 }
 
-                v62 = [*(*(&v100 + 1) + 8 * m) settings];
+                settings2 = [*(*(&v100 + 1) + 8 * m) settings];
                 v63 = objc_opt_class();
-                v64 = v62;
+                v64 = settings2;
                 if (v63)
                 {
                   if (objc_opt_isKindOfClass())
@@ -547,7 +547,7 @@ LABEL_88:
           }
         }
 
-        if (v87)
+        if (transitionContext)
         {
           v71 = self->_outgoingSnapshots;
           *buf = 0;
@@ -564,16 +564,16 @@ LABEL_88:
           v73 = v71;
           v98 = v73;
           v99 = buf;
-          v74 = [v72 initWithScene:v95 requests:v84 expirationInterval:v97 responseHandler:5.0];
+          v74 = [v72 initWithScene:scene requests:v84 expirationInterval:v97 responseHandler:5.0];
           v75 = *(*&buf[8] + 40);
           *(*&buf[8] + 40) = v74;
 
           [(NSMutableSet *)self->_outgoingSnapshots addObject:*(*&buf[8] + 40)];
-          v76 = [v87 actions];
-          v77 = v76;
-          if (v76)
+          actions = [transitionContext actions];
+          v77 = actions;
+          if (actions)
           {
-            v78 = v76;
+            v78 = actions;
           }
 
           else
@@ -584,7 +584,7 @@ LABEL_88:
           v79 = v78;
 
           v80 = [v79 setByAddingObject:*(*&buf[8] + 40)];
-          [v87 setActions:v80];
+          [transitionContext setActions:v80];
 
           _Block_object_dispose(buf, 8);
         }
@@ -594,7 +594,7 @@ LABEL_88:
           v73 = SBLogSceneSnapshots();
           if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
           {
-            [SBSceneSnapshotRequestor requestSnapshotsForSceneHandle:v95 updatingToNewSettings:v73 withUpdateContext:?];
+            [SBSceneSnapshotRequestor requestSnapshotsForSceneHandle:scene updatingToNewSettings:v73 withUpdateContext:?];
           }
         }
       }
@@ -619,27 +619,27 @@ void __99__SBSceneSnapshotRequestor_requestSnapshotsForSceneHandle_updatingToNew
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
-- (BOOL)handleSnapshotRequestAction:(id)a3 forSceneHandle:(id)a4
+- (BOOL)handleSnapshotRequestAction:(id)action forSceneHandle:(id)handle
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  actionCopy = action;
+  handleCopy = handle;
+  if (!actionCopy)
   {
     [SBSceneSnapshotRequestor handleSnapshotRequestAction:forSceneHandle:];
   }
 
-  if (!v7)
+  if (!handleCopy)
   {
     [SBSceneSnapshotRequestor handleSnapshotRequestAction:forSceneHandle:];
   }
 
-  v8 = [v7 application];
-  if (v8)
+  application = [handleCopy application];
+  if (application)
   {
-    v9 = [v6 context];
-    v10 = [v6 type];
-    if (v10 == 2)
+    context = [actionCopy context];
+    type = [actionCopy type];
+    if (type == 2)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
@@ -649,28 +649,28 @@ void __99__SBSceneSnapshotRequestor_requestSnapshotsForSceneHandle_updatingToNew
       v23 = XBLogFileManifest();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-        v25 = [v7 sceneIdentifier];
+        succinctDescription = [(SBSceneSnapshotRequestor *)self succinctDescription];
+        sceneIdentifier = [handleCopy sceneIdentifier];
         *buf = 138543874;
-        v36 = v24;
+        v36 = succinctDescription;
         v37 = 2114;
-        v38 = v25;
+        v38 = sceneIdentifier;
         v39 = 2112;
-        v40 = v9;
+        v40 = context;
         _os_log_impl(&dword_21ED4E000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Got snapshot-invalidate request with context: %@", buf, 0x20u);
       }
 
-      [v8 deleteSnapshotForContext:v9];
+      [application deleteSnapshotForContext:context];
       v26 = FBSSceneSnapshotActionResponseForErrorCode();
-      [v6 sendResponse:v26];
+      [actionCopy sendResponse:v26];
     }
 
     else
     {
-      if (v10 != 1)
+      if (type != 1)
       {
         v27 = FBSSceneSnapshotActionResponseForErrorCode();
-        [v6 sendResponse:v27];
+        [actionCopy sendResponse:v27];
 
 LABEL_23:
         goto LABEL_24;
@@ -684,32 +684,32 @@ LABEL_23:
       v12 = SBLogSceneSnapshots();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-        v14 = [v7 sceneIdentifier];
+        succinctDescription2 = [(SBSceneSnapshotRequestor *)self succinctDescription];
+        sceneIdentifier2 = [handleCopy sceneIdentifier];
         *buf = 138543874;
-        v36 = v13;
+        v36 = succinctDescription2;
         v37 = 2114;
-        v38 = v14;
+        v38 = sceneIdentifier2;
         v39 = 2048;
-        v40 = v6;
+        v40 = actionCopy;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Got FBSSceneSnapshotRequestTypePerform (%p)", buf, 0x20u);
       }
 
-      v15 = [v7 sceneIfExists];
-      v16 = [v15 settings];
-      v17 = v16;
-      if (v16 && ([v16 isForeground] & 1) == 0)
+      sceneIfExists = [handleCopy sceneIfExists];
+      settings = [sceneIfExists settings];
+      v17 = settings;
+      if (settings && ([settings isForeground] & 1) == 0)
       {
-        [(NSMutableSet *)self->_incomingSnapshots addObject:v6];
+        [(NSMutableSet *)self->_incomingSnapshots addObject:actionCopy];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __71__SBSceneSnapshotRequestor_handleSnapshotRequestAction_forSceneHandle___block_invoke;
         v29[3] = &unk_2783B4A30;
         v29[4] = self;
-        v30 = v7;
-        v31 = v6;
-        v32 = v8;
-        v33 = v9;
+        v30 = handleCopy;
+        v31 = actionCopy;
+        v32 = application;
+        v33 = context;
         [v32 saveSnapshotForSceneHandle:v30 context:v33 completion:v29];
       }
 
@@ -718,14 +718,14 @@ LABEL_23:
         v18 = SBLogSceneSnapshots();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-          [v7 sceneIdentifier];
+          succinctDescription3 = [(SBSceneSnapshotRequestor *)self succinctDescription];
+          [handleCopy sceneIdentifier];
           objc_claimAutoreleasedReturnValue();
           [SBSceneSnapshotRequestor handleSnapshotRequestAction:forSceneHandle:];
         }
 
         v20 = FBSSceneSnapshotActionResponseForErrorCode();
-        [v6 sendResponse:v20];
+        [actionCopy sendResponse:v20];
       }
     }
 
@@ -734,7 +734,7 @@ LABEL_23:
   }
 
   v21 = FBSSceneSnapshotActionResponseForErrorCode();
-  [v6 sendResponse:v21];
+  [actionCopy sendResponse:v21];
 
 LABEL_24:
   return 1;
@@ -829,10 +829,10 @@ uint64_t __71__SBSceneSnapshotRequestor_handleSnapshotRequestAction_forSceneHand
   return [*(a1 + 56) deleteSnapshotForContext:*(a1 + 64)];
 }
 
-- (void)invalidatePendingSnapshotsForSceneID:(id)a3
+- (void)invalidatePendingSnapshotsForSceneID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -853,8 +853,8 @@ uint64_t __71__SBSceneSnapshotRequestor_handleSnapshotRequestAction_forSceneHand
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 sceneID];
-        v12 = [v4 isEqualToString:v11];
+        sceneID = [v10 sceneID];
+        v12 = [dCopy isEqualToString:sceneID];
 
         if (v12)
         {
@@ -889,9 +889,9 @@ uint64_t __71__SBSceneSnapshotRequestor_handleSnapshotRequestAction_forSceneHand
         }
 
         v18 = *(*(&v22 + 1) + 8 * j);
-        v19 = [v18 context];
-        v20 = [v19 sceneID];
-        v21 = [v4 isEqualToString:v20];
+        context = [v18 context];
+        sceneID2 = [context sceneID];
+        v21 = [dCopy isEqualToString:sceneID2];
 
         if (v21)
         {
@@ -907,22 +907,22 @@ uint64_t __71__SBSceneSnapshotRequestor_handleSnapshotRequestAction_forSceneHand
   }
 }
 
-- (id)_sbSceneSnapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5
+- (id)_sbSceneSnapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  handleCopy = handle;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (handleCopy)
   {
-    if (v9)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_16:
     [SBSceneSnapshotRequestor _sbSceneSnapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
-    if (v10)
+    if (contextCopy)
     {
       goto LABEL_4;
     }
@@ -931,13 +931,13 @@ LABEL_16:
   }
 
   [SBSceneSnapshotRequestor _sbSceneSnapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
-  if (!v9)
+  if (!settingsCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_3:
-  if (v10)
+  if (contextCopy)
   {
     goto LABEL_4;
   }
@@ -950,15 +950,15 @@ LABEL_4:
     v11 = SBLogSceneSnapshots();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(SBSceneSnapshotRequestor *)self succinctDescription];
-      v19 = [v8 sceneIdentifier];
+      succinctDescription = [(SBSceneSnapshotRequestor *)self succinctDescription];
+      sceneIdentifier = [handleCopy sceneIdentifier];
       v20 = [(NSHashTable *)self->_preventSupplementalSnapshotsAssertions count];
-      v21 = [(NSHashTable *)self->_preventSupplementalSnapshotsAssertions allObjects];
-      v22 = [v21 bs_map:&__block_literal_global_130];
+      allObjects = [(NSHashTable *)self->_preventSupplementalSnapshotsAssertions allObjects];
+      v22 = [allObjects bs_map:&__block_literal_global_130];
       v23 = 138544130;
-      v24 = v18;
+      v24 = succinctDescription;
       v25 = 2114;
-      v26 = v19;
+      v26 = sceneIdentifier;
       v27 = 2050;
       v28 = v20;
       v29 = 2114;
@@ -968,41 +968,41 @@ LABEL_4:
 
 LABEL_7:
 
-    v12 = objc_alloc_init(SBSingleSceneSnapshotRequestStrategy);
+    _sceneSnapshotRequestStrategy = objc_alloc_init(SBSingleSceneSnapshotRequestStrategy);
     goto LABEL_10;
   }
 
-  v13 = [v10 sceneDisplayLayoutStateTransitionContext];
-  v14 = [v13 fromLayoutState];
+  sceneDisplayLayoutStateTransitionContext = [contextCopy sceneDisplayLayoutStateTransitionContext];
+  fromLayoutState = [sceneDisplayLayoutStateTransitionContext fromLayoutState];
 
-  if (!v14)
+  if (!fromLayoutState)
   {
     v11 = SBLogSceneSnapshots();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [SBSceneSnapshotRequestor _sbSceneSnapshotRequestsForSceneHandle:v8 settings:v11 snapshotRequestContext:?];
+      [SBSceneSnapshotRequestor _sbSceneSnapshotRequestsForSceneHandle:handleCopy settings:v11 snapshotRequestContext:?];
     }
 
     goto LABEL_7;
   }
 
-  v12 = [(SBSceneSnapshotRequestor *)self _sceneSnapshotRequestStrategy];
+  _sceneSnapshotRequestStrategy = [(SBSceneSnapshotRequestor *)self _sceneSnapshotRequestStrategy];
 LABEL_10:
-  v15 = v12;
-  v16 = [(SBSingleSceneSnapshotRequestStrategy *)v12 snapshotRequestsForSceneHandle:v8 settings:v9 snapshotRequestContext:v10];
+  v15 = _sceneSnapshotRequestStrategy;
+  v16 = [(SBSingleSceneSnapshotRequestStrategy *)_sceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:handleCopy settings:settingsCopy snapshotRequestContext:contextCopy];
 
   return v16;
 }
 
-- (id)_fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:(id)a3 forSceneHandle:(id)a4 settings:(id)a5 snapshotRequestContext:(id)a6
+- (id)_fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:(id)requests forSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  requestsCopy = requests;
+  handleCopy = handle;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (requestsCopy)
   {
-    if (v12)
+    if (handleCopy)
     {
       goto LABEL_3;
     }
@@ -1011,17 +1011,17 @@ LABEL_10:
   else
   {
     [SBSceneSnapshotRequestor _fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:forSceneHandle:settings:snapshotRequestContext:];
-    if (v12)
+    if (handleCopy)
     {
 LABEL_3:
-      if (v13)
+      if (settingsCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_18:
       [SBSceneSnapshotRequestor _fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:forSceneHandle:settings:snapshotRequestContext:];
-      if (v14)
+      if (contextCopy)
       {
         goto LABEL_5;
       }
@@ -1031,13 +1031,13 @@ LABEL_18:
   }
 
   [SBSceneSnapshotRequestor _fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests:forSceneHandle:settings:snapshotRequestContext:];
-  if (!v13)
+  if (!settingsCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_4:
-  if (v14)
+  if (contextCopy)
   {
     goto LABEL_5;
   }
@@ -1047,11 +1047,11 @@ LABEL_19:
 LABEL_5:
   v49 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v15 = [v12 application];
-  v16 = [v15 info];
+  application = [handleCopy application];
+  info = [application info];
 
   v17 = objc_opt_class();
-  v18 = v13;
+  v18 = settingsCopy;
   v50 = a2;
   if (v17)
   {
@@ -1077,24 +1077,24 @@ LABEL_5:
   v69[0] = 0;
   v69[1] = v69;
   v69[2] = 0x2020000000;
-  v47 = [v16 xb_userInterfaceStyleForRequestedUserInterfaceStyle:{objc_msgSend(v20, "userInterfaceStyle")}];
+  v47 = [info xb_userInterfaceStyleForRequestedUserInterfaceStyle:{objc_msgSend(v20, "userInterfaceStyle")}];
   v69[3] = v47;
-  v46 = [v14 sceneDisplayReferenceFrameProvider];
-  v21 = [v14 sceneDisplayLayoutStateTransitionContext];
-  v22 = [v21 fromLayoutState];
+  sceneDisplayReferenceFrameProvider = [contextCopy sceneDisplayReferenceFrameProvider];
+  sceneDisplayLayoutStateTransitionContext = [contextCopy sceneDisplayLayoutStateTransitionContext];
+  fromLayoutState = [sceneDisplayLayoutStateTransitionContext fromLayoutState];
 
-  v44 = [v14 embeddedDisplayReferenceFrameProvider];
-  v51 = v22;
-  v23 = [v22 appLayout];
-  v24 = [v12 sceneIdentifier];
-  v25 = [v51 elementWithIdentifier:v24];
-  v26 = [v25 layoutRole];
+  embeddedDisplayReferenceFrameProvider = [contextCopy embeddedDisplayReferenceFrameProvider];
+  v51 = fromLayoutState;
+  appLayout = [fromLayoutState appLayout];
+  sceneIdentifier = [handleCopy sceneIdentifier];
+  v25 = [v51 elementWithIdentifier:sceneIdentifier];
+  layoutRole = [v25 layoutRole];
 
-  v27 = [v18 interfaceOrientation];
-  v42 = v16;
-  v43 = v14;
-  v28 = [(SBSceneSnapshotRequestor *)self _displayItemLayoutAttributesProvider];
-  if ((v27 - 1) >= 2)
+  interfaceOrientation = [v18 interfaceOrientation];
+  v42 = info;
+  v43 = contextCopy;
+  _displayItemLayoutAttributesProvider = [(SBSceneSnapshotRequestor *)self _displayItemLayoutAttributesProvider];
+  if ((interfaceOrientation - 1) >= 2)
   {
     v29 = 1;
   }
@@ -1108,23 +1108,23 @@ LABEL_5:
   v52[1] = 3221225472;
   v52[2] = __128__SBSceneSnapshotRequestor__fbsSceneSnapshotRequestsFromSBSceneSnapshotRequests_forSceneHandle_settings_snapshotRequestContext___block_invoke;
   v52[3] = &unk_2783B4A78;
-  v30 = v28;
+  v30 = _displayItemLayoutAttributesProvider;
   v53 = v30;
-  v31 = v23;
+  v31 = appLayout;
   v54 = v31;
-  v64 = v27;
-  v32 = v11;
+  v64 = interfaceOrientation;
+  v32 = requestsCopy;
   v55 = v32;
-  v33 = v46;
+  v33 = sceneDisplayReferenceFrameProvider;
   v56 = v33;
-  v57 = self;
-  v34 = v12;
+  selfCopy = self;
+  v34 = handleCopy;
   v58 = v34;
   v65 = v29;
-  v66 = v26;
+  v66 = layoutRole;
   v35 = v18;
   v59 = v35;
-  v36 = v44;
+  v36 = embeddedDisplayReferenceFrameProvider;
   v67 = v50;
   v68 = v47;
   v60 = v36;
@@ -1596,11 +1596,11 @@ LABEL_93:
 - (id)_displayItemLayoutAttributesProvider
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained switcherController];
+  switcherController = [WeakRetained switcherController];
 
-  v4 = [v3 displayItemLayoutAttributesProvider];
+  displayItemLayoutAttributesProvider = [switcherController displayItemLayoutAttributesProvider];
 
-  return v4;
+  return displayItemLayoutAttributesProvider;
 }
 
 - (SBSceneSnapshotRequestorDelegate)delegate

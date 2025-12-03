@@ -1,36 +1,36 @@
 @interface HDClinicalIngestionTask
-+ (BOOL)_accumulatedErrorAllowsToProceedRunningStaleResourcesOperation:(id)a3;
-- (BOOL)_handleStaleResourcesOfAccount:(id)a3 ingestStartDate:(id)a4 error:(id *)a5;
++ (BOOL)_accumulatedErrorAllowsToProceedRunningStaleResourcesOperation:(id)operation;
+- (BOOL)_handleStaleResourcesOfAccount:(id)account ingestStartDate:(id)date error:(id *)error;
 - (BOOL)_ingestionAllowed;
-- (BOOL)_performResourceFetchWithAccount:(id)a3 batchingSemaphore:(id)a4 error:(id *)a5;
-- (BOOL)_prepareAccounts:(id *)a3 userFetchEligibleAccounts:(id *)a4 withError:(id *)a5;
-- (BOOL)_updateGatewayForAccount:(id)a3 error:(id *)a4;
+- (BOOL)_performResourceFetchWithAccount:(id)account batchingSemaphore:(id)semaphore error:(id *)error;
+- (BOOL)_prepareAccounts:(id *)accounts userFetchEligibleAccounts:(id *)eligibleAccounts withError:(id *)error;
+- (BOOL)_updateGatewayForAccount:(id)account error:(id *)error;
 - (HDClinicalIngestionTask)init;
-- (HDClinicalIngestionTask)initWithContext:(id)a3 extension:(id)a4 accountIdentifiers:(id)a5 completion:(id)a6;
+- (HDClinicalIngestionTask)initWithContext:(id)context extension:(id)extension accountIdentifiers:(id)identifiers completion:(id)completion;
 - (HDProfile)profile;
-- (id)_analyticsStringAfterCollectingAndSubmittingIngestionAnalyticsOnQueue:(id)a3;
-- (id)_fetchableAccountForAccount:(id)a3 error:(id *)a4;
-- (id)_gatewayFeatureOperationsForAccount:(id)a3 queryMode:(int64_t)a4 error:(id *)a5;
-- (id)_gatewaysOperationForAccount:(id)a3;
-- (id)_runAndAwaitPreflightOperations:(id)a3 accountContext:(id)a4;
+- (id)_analyticsStringAfterCollectingAndSubmittingIngestionAnalyticsOnQueue:(id)queue;
+- (id)_fetchableAccountForAccount:(id)account error:(id *)error;
+- (id)_gatewayFeatureOperationsForAccount:(id)account queryMode:(int64_t)mode error:(id *)error;
+- (id)_gatewaysOperationForAccount:(id)account;
+- (id)_runAndAwaitPreflightOperations:(id)operations accountContext:(id)context;
 - (id)_serialIngestionDoneOperations;
 - (id)description;
-- (void)_accountWithIdentifier:(id)a3 addOutcomeInfo:(unint64_t)a4;
-- (void)_cancelWithError:(id)a3;
-- (void)_didFinishWithStartTimeInternal:(double)a3;
+- (void)_accountWithIdentifier:(id)identifier addOutcomeInfo:(unint64_t)info;
+- (void)_cancelWithError:(id)error;
+- (void)_didFinishWithStartTimeInternal:(double)internal;
 - (void)_didStart;
-- (void)_markAccountsWithoutCredentialsAsReloginNeeded:(id)a3;
-- (void)_markHadError:(id)a3;
-- (void)_notifyIfWorkMayBeDoneForAccounts:(id)a3;
-- (void)_performExtractionWithAccount:(id)a3;
-- (void)_performFetchWithAccount:(id)a3 batchingSemaphore:(id)a4;
-- (void)_performFileImportWithAccount:(id)a3;
-- (void)_prepareUpdateGatewaysOperationsForAccounts:(id)a3;
+- (void)_markAccountsWithoutCredentialsAsReloginNeeded:(id)needed;
+- (void)_markHadError:(id)error;
+- (void)_notifyIfWorkMayBeDoneForAccounts:(id)accounts;
+- (void)_performExtractionWithAccount:(id)account;
+- (void)_performFetchWithAccount:(id)account batchingSemaphore:(id)semaphore;
+- (void)_performFileImportWithAccount:(id)account;
+- (void)_prepareUpdateGatewaysOperationsForAccounts:(id)accounts;
 - (void)_runIngestionDoneOperations;
-- (void)accumulateIngestionAnalyticsFromTaskStates:(id)a3 gateway:(id)a4;
+- (void)accumulateIngestionAnalyticsFromTaskStates:(id)states gateway:(id)gateway;
 - (void)cancel;
 - (void)main;
-- (void)recordCountOfAllRecords:(unint64_t)a3 allLabs:(unint64_t)a4 pinnedLabs:(unint64_t)a5;
+- (void)recordCountOfAllRecords:(unint64_t)records allLabs:(unint64_t)labs pinnedLabs:(unint64_t)pinnedLabs;
 @end
 
 @implementation HDClinicalIngestionTask
@@ -43,55 +43,55 @@
   return 0;
 }
 
-- (HDClinicalIngestionTask)initWithContext:(id)a3 extension:(id)a4 accountIdentifiers:(id)a5 completion:(id)a6
+- (HDClinicalIngestionTask)initWithContext:(id)context extension:(id)extension accountIdentifiers:(id)identifiers completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  extensionCopy = extension;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v34.receiver = self;
   v34.super_class = HDClinicalIngestionTask;
   v14 = [(HDClinicalIngestionTask *)&v34 init];
   if (v14)
   {
     v15 = +[NSUUID UUID];
-    v16 = [v15 UUIDString];
+    uUIDString = [v15 UUIDString];
     taskIdentifier = v14->_taskIdentifier;
-    v14->_taskIdentifier = v16;
+    v14->_taskIdentifier = uUIDString;
 
-    v18 = [v10 copy];
+    v18 = [contextCopy copy];
     context = v14->_context;
     v14->_context = v18;
 
-    v20 = [v13 copy];
+    v20 = [completionCopy copy];
     completion = v14->_completion;
     v14->_completion = v20;
 
-    objc_storeStrong(&v14->_profileExtension, a4);
-    v22 = [v11 profile];
-    objc_storeWeak(&v14->_profile, v22);
+    objc_storeStrong(&v14->_profileExtension, extension);
+    profile = [extensionCopy profile];
+    objc_storeWeak(&v14->_profile, profile);
 
-    v23 = [v11 createHealthRecordsXPCServiceClient];
+    createHealthRecordsXPCServiceClient = [extensionCopy createHealthRecordsXPCServiceClient];
     healthRecordsServiceClient = v14->_healthRecordsServiceClient;
-    v14->_healthRecordsServiceClient = v23;
+    v14->_healthRecordsServiceClient = createHealthRecordsXPCServiceClient;
 
-    v25 = [v11 createHealthRecordsIngestionServiceClient];
+    createHealthRecordsIngestionServiceClient = [extensionCopy createHealthRecordsIngestionServiceClient];
     healthRecordsIngestionServiceClient = v14->_healthRecordsIngestionServiceClient;
-    v14->_healthRecordsIngestionServiceClient = v25;
+    v14->_healthRecordsIngestionServiceClient = createHealthRecordsIngestionServiceClient;
 
-    v27 = [(HDHealthRecordsProfileExtension *)v14->_profileExtension createHealthRecordsLegacyIngestionServiceClient];
+    createHealthRecordsLegacyIngestionServiceClient = [(HDHealthRecordsProfileExtension *)v14->_profileExtension createHealthRecordsLegacyIngestionServiceClient];
     legacyXPCIngestionServiceClient = v14->_legacyXPCIngestionServiceClient;
-    v14->_legacyXPCIngestionServiceClient = v27;
+    v14->_legacyXPCIngestionServiceClient = createHealthRecordsLegacyIngestionServiceClient;
 
     v29 = objc_alloc_init(HDClinicalIngestionAnalyticsAccumulator);
     analyticsAccumulator = v14->_analyticsAccumulator;
     v14->_analyticsAccumulator = v29;
 
     v14->_ivarLock._os_unfair_lock_opaque = 0;
-    v31 = [v12 count];
+    v31 = [identifiersCopy count];
     if (v31)
     {
-      v32 = [[NSSet alloc] initWithArray:v12];
+      v32 = [[NSSet alloc] initWithArray:identifiersCopy];
     }
 
     else
@@ -115,12 +115,12 @@
   self->_taskBeganDate = v3;
 
   [(HDClinicalIngestionTask *)self _didStart];
-  v37 = self;
+  selfCopy = self;
   obj = [(HDHealthRecordsProfileExtension *)self->_profileExtension accountManager];
   if (!obj)
   {
-    v22 = [(HDClinicalIngestionTask *)self profile];
-    v23 = [NSError hk_error:100 format:@"HDClinicalIngestionTask can only be used on profiles with account managers, but %@ doesn't have one", v22];
+    profile = [(HDClinicalIngestionTask *)self profile];
+    v23 = [NSError hk_error:100 format:@"HDClinicalIngestionTask can only be used on profiles with account managers, but %@ doesn't have one", profile];
 
     [(HDClinicalIngestionTask *)self _cancelWithError:v23];
     v31 = 0;
@@ -132,10 +132,10 @@
   objc_storeStrong(&self->_accountManager, obj);
   if (![(HDClinicalIngestionTask *)self _ingestionAllowed])
   {
-    v5 = [(HDClinicalIngestionTask *)self context];
-    v6 = [v5 shouldSkipFetch];
+    context = [(HDClinicalIngestionTask *)self context];
+    shouldSkipFetch = [context shouldSkipFetch];
 
-    if ((v6 & 1) == 0)
+    if ((shouldSkipFetch & 1) == 0)
     {
       _HKInitializeLogging();
       v25 = HKLogHealthRecords;
@@ -168,18 +168,18 @@
     v24 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
-      sub_9BE10(v37, v32, v24);
+      sub_9BE10(selfCopy, v32, v24);
     }
 
 LABEL_24:
-    v27 = v37;
+    v27 = selfCopy;
     goto LABEL_25;
   }
 
   if ([v8 count])
   {
-    [(HDClinicalIngestionTask *)v37 _prepareUpdateGatewaysOperationsForAccounts:v8];
-    [(HDClinicalIngestionTask *)v37 _notifyIfWorkMayBeDoneForAccounts:v31];
+    [(HDClinicalIngestionTask *)selfCopy _prepareUpdateGatewaysOperationsForAccounts:v8];
+    [(HDClinicalIngestionTask *)selfCopy _notifyIfWorkMayBeDoneForAccounts:v31];
     v35 = objc_alloc_init(NSOperationQueue);
     v9 = [NSString stringWithFormat:@"%@-Main-WorkQueue", objc_opt_class()];
     [v35 setName:v9];
@@ -199,7 +199,7 @@ LABEL_24:
       v12 = v11;
       v13 = [v8 count];
       *buf = 138543618;
-      *&buf[4] = v37;
+      *&buf[4] = selfCopy;
       *&buf[12] = 2048;
       *&buf[14] = v13;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling ingestion & extraction operations for %ld accounts", buf, 0x16u);
@@ -235,7 +235,7 @@ LABEL_24:
           v41[1] = 3221225472;
           v41[2] = sub_3A48;
           v41[3] = &unk_1057B0;
-          v41[4] = v37;
+          v41[4] = selfCopy;
           v41[5] = v17;
           v19 = v18;
           v42 = v19;
@@ -245,7 +245,7 @@ LABEL_24:
           v38[1] = 3221225472;
           v38[2] = sub_3C58;
           v38[3] = &unk_1057D8;
-          v38[4] = v37;
+          v38[4] = selfCopy;
           v38[5] = v17;
           v40 = buf;
           v20 = v19;
@@ -263,10 +263,10 @@ LABEL_24:
 
     [v35 waitUntilAllOperationsAreFinished];
     [v36 waitUntilAllOperationsAreFinished];
-    v21 = [(HDClinicalIngestionTask *)v37 _analyticsStringAfterCollectingAndSubmittingIngestionAnalyticsOnQueue:v36];
-    [(HDClinicalIngestionTask *)v37 setAnalyticsString:v21];
+    v21 = [(HDClinicalIngestionTask *)selfCopy _analyticsStringAfterCollectingAndSubmittingIngestionAnalyticsOnQueue:v36];
+    [(HDClinicalIngestionTask *)selfCopy setAnalyticsString:v21];
 
-    [(HDClinicalIngestionTask *)v37 _runIngestionDoneOperations];
+    [(HDClinicalIngestionTask *)selfCopy _runIngestionDoneOperations];
     goto LABEL_26;
   }
 
@@ -278,38 +278,38 @@ LABEL_24:
   }
 
   *buf = 138543362;
-  v27 = v37;
-  *&buf[4] = v37;
+  v27 = selfCopy;
+  *&buf[4] = selfCopy;
   _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ will not perform ingestion since there are no CHR accounts", buf, 0xCu);
 LABEL_25:
   [(HDClinicalIngestionTask *)v27 _cancelWithError:v32];
 LABEL_26:
-  if (([(HDClinicalIngestionTaskContext *)v37->_context options]& 0x80) != 0)
+  if (([(HDClinicalIngestionTaskContext *)selfCopy->_context options]& 0x80) != 0)
   {
     _HKInitializeLogging();
     v28 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v37;
+      *&buf[4] = selfCopy;
       _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ task has option never finish set, starting to spin", buf, 0xCu);
     }
 
     v29 = dispatch_semaphore_create(0);
-    neverFinishSemaphore = v37->_neverFinishSemaphore;
-    v37->_neverFinishSemaphore = v29;
+    neverFinishSemaphore = selfCopy->_neverFinishSemaphore;
+    selfCopy->_neverFinishSemaphore = v29;
 
-    dispatch_semaphore_wait(v37->_neverFinishSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_semaphore_wait(selfCopy->_neverFinishSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  [(NSDate *)v37->_taskBeganDate timeIntervalSinceReferenceDate];
-  [(HDClinicalIngestionTask *)v37 _didFinishWithStartTimeInternal:?];
+  [(NSDate *)selfCopy->_taskBeganDate timeIntervalSinceReferenceDate];
+  [(HDClinicalIngestionTask *)selfCopy _didFinishWithStartTimeInternal:?];
 LABEL_31:
 }
 
-- (void)_notifyIfWorkMayBeDoneForAccounts:(id)a3
+- (void)_notifyIfWorkMayBeDoneForAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   os_unfair_lock_lock(&self->_ivarLock);
   v5 = objc_retainBlock(self->_willBeginFetchingAndExtracting);
   willBeginFetchingAndExtracting = self->_willBeginFetchingAndExtracting;
@@ -318,13 +318,13 @@ LABEL_31:
   os_unfair_lock_unlock(&self->_ivarLock);
   if (v5)
   {
-    v7 = [(HDClinicalIngestionTaskContext *)self->_context shouldFetchImmediately];
+    shouldFetchImmediately = [(HDClinicalIngestionTaskContext *)self->_context shouldFetchImmediately];
     v8 = +[NSDate date];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v4;
+    v9 = accountsCopy;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -340,14 +340,14 @@ LABEL_31:
             objc_enumerationMutation(v9);
           }
 
-          if (v7)
+          if (shouldFetchImmediately)
           {
-            v7 = 1;
+            shouldFetchImmediately = 1;
           }
 
           else
           {
-            v7 = [*(*(&v14 + 1) + 8 * v13) shouldPerformFetchWithNowDate:{v8, v14}];
+            shouldFetchImmediately = [*(*(&v14 + 1) + 8 * v13) shouldPerformFetchWithNowDate:{v8, v14}];
           }
 
           v13 = v13 + 1;
@@ -360,60 +360,60 @@ LABEL_31:
       while (v11);
     }
 
-    if (v7)
+    if (shouldFetchImmediately)
     {
       v5[2](v5, self);
     }
   }
 }
 
-- (void)_performFileImportWithAccount:(id)a3
+- (void)_performFileImportWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [HDClinicalIngestionFileImportOperation alloc];
-  v6 = [(HDClinicalIngestionTaskContext *)self->_context inputFileHandle];
-  v7 = [(HDClinicalIngestionFileImportOperation *)v5 initWithFileHandle:v6];
+  inputFileHandle = [(HDClinicalIngestionTaskContext *)self->_context inputFileHandle];
+  v7 = [(HDClinicalIngestionFileImportOperation *)v5 initWithFileHandle:inputFileHandle];
 
   [(HDClinicalIngestionFileImportOperation *)v7 start];
-  v8 = [v4 identifier];
-  [(HDClinicalIngestionTask *)self _accountWithIdentifier:v8 addOutcomeInfo:4];
+  identifier = [accountCopy identifier];
+  [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier addOutcomeInfo:4];
 
-  v9 = [(HDClinicalIngestionFileImportOperation *)v7 documentData];
+  documentData = [(HDClinicalIngestionFileImportOperation *)v7 documentData];
 
-  if (v9)
+  if (documentData)
   {
-    v10 = [v4 gateway];
-    v11 = [v10 FHIRVersion];
+    gateway = [accountCopy gateway];
+    fHIRVersion = [gateway FHIRVersion];
 
     v12 = [HDFHIRResourceData alloc];
-    v13 = [(HDClinicalIngestionFileImportOperation *)v7 documentData];
-    v14 = [v12 initWithData:v13 sourceURL:0 FHIRVersion:v11];
+    documentData2 = [(HDClinicalIngestionFileImportOperation *)v7 documentData];
+    v14 = [v12 initWithData:documentData2 sourceURL:0 FHIRVersion:fHIRVersion];
 
     _HKInitializeLogging();
     v15 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
     {
-      sub_9BEDC(self, v15, v4);
+      sub_9BEDC(self, v15, accountCopy);
     }
 
     v16 = [HDClinicalIngestionExtractReferencesOperation alloc];
     v51 = v14;
     v53 = v14;
     v17 = [NSArray arrayWithObjects:&v53 count:1];
-    v18 = [(HDClinicalIngestionExtractReferencesOperation *)v16 initWithTask:self account:v4 resourceData:v17 sourceResourceObjects:0 nextOperation:0];
+    v18 = [(HDClinicalIngestionExtractReferencesOperation *)v16 initWithTask:self account:accountCopy resourceData:v17 sourceResourceObjects:0 nextOperation:0];
 
     [(HDClinicalIngestionExtractReferencesOperation *)v18 start];
-    v19 = [(HDClinicalIngestionExtractReferencesOperation *)v18 extractionResult];
-    v20 = [v19 completeResources];
+    extractionResult = [(HDClinicalIngestionExtractReferencesOperation *)v18 extractionResult];
+    completeResources = [extractionResult completeResources];
 
-    v21 = [(HDClinicalIngestionExtractReferencesOperation *)v18 extractionResult];
-    v22 = [v21 incompleteResources];
-    v23 = [v22 hk_map:&stru_105818];
-    v24 = [v20 arrayByAddingObjectsFromArray:v23];
+    extractionResult2 = [(HDClinicalIngestionExtractReferencesOperation *)v18 extractionResult];
+    incompleteResources = [extractionResult2 incompleteResources];
+    v23 = [incompleteResources hk_map:&stru_105818];
+    v24 = [completeResources arrayByAddingObjectsFromArray:v23];
 
-    v25 = [(HDClinicalIngestionExtractReferencesOperation *)v18 extractionResult];
-    v26 = [v25 unresolvableReferences];
-    v27 = [v26 hk_map:&stru_105838];
+    extractionResult3 = [(HDClinicalIngestionExtractReferencesOperation *)v18 extractionResult];
+    unresolvableReferences = [extractionResult3 unresolvableReferences];
+    v27 = [unresolvableReferences hk_map:&stru_105838];
     v28 = [v24 arrayByAddingObjectsFromArray:v27];
 
     _HKInitializeLogging();
@@ -423,40 +423,40 @@ LABEL_31:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         v30 = v29;
-        v31 = [v4 identifier];
+        identifier2 = [accountCopy identifier];
         v32 = [v28 count];
         *buf = 138543874;
-        v55 = self;
+        selfCopy6 = self;
         v56 = 2114;
-        v57 = v31;
+        v57 = identifier2;
         v58 = 2048;
         v59 = v32;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: extractReferencesOperation complete: %lu resources", buf, 0x20u);
       }
 
-      v33 = [(HDClinicalIngestionTask *)self profile];
+      profile = [(HDClinicalIngestionTask *)self profile];
       v52 = 0;
-      v34 = [HDOriginalFHIRResourceEntity insertNewResourceObjects:v28 account:v4 profile:v33 error:&v52];
-      v35 = v52;
+      v34 = [HDOriginalFHIRResourceEntity insertNewResourceObjects:v28 account:accountCopy profile:profile error:&v52];
+      resolutionError2 = v52;
 
       _HKInitializeLogging();
       v36 = HKLogHealthRecords;
-      if (!v35)
+      if (!resolutionError2)
       {
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           v40 = v36;
-          v41 = [v4 identifier];
+          identifier3 = [accountCopy identifier];
           *buf = 138543618;
-          v55 = self;
+          selfCopy6 = self;
           v56 = 2114;
-          v57 = v41;
+          v57 = identifier3;
           _os_log_impl(&dword_0, v40, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: saveFetchedResources is complete", buf, 0x16u);
         }
 
         if (v34)
         {
-          [(HDClinicalAccountManager *)self->_accountManager didCompleteFetchForAccount:v4 wasFullFetch:1];
+          [(HDClinicalAccountManager *)self->_accountManager didCompleteFetchForAccount:accountCopy wasFullFetch:1];
         }
 
         _HKInitializeLogging();
@@ -464,11 +464,11 @@ LABEL_31:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           v43 = v42;
-          v44 = [v4 identifier];
+          identifier4 = [accountCopy identifier];
           *buf = 138543874;
-          v55 = self;
+          selfCopy6 = self;
           v56 = 2114;
-          v57 = v44;
+          v57 = identifier4;
           v58 = 1024;
           LODWORD(v59) = v34;
           _os_log_impl(&dword_0, v43, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: file Import is complete. Did add new resources? %{BOOL}d", buf, 0x1Cu);
@@ -480,13 +480,13 @@ LABEL_31:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v37 = v36;
-        v38 = [v4 identifier];
+        identifier5 = [accountCopy identifier];
         *buf = 138543874;
-        v55 = self;
+        selfCopy6 = self;
         v56 = 2114;
-        v57 = v38;
+        v57 = identifier5;
         v58 = 2112;
-        v59 = v35;
+        v59 = resolutionError2;
         _os_log_error_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: saveFetchedResources failed with error: %@", buf, 0x20u);
       }
     }
@@ -496,21 +496,21 @@ LABEL_31:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v48 = v29;
-        v49 = [v4 identifier];
-        v50 = [(HDClinicalIngestionExtractReferencesOperation *)v18 resolutionError];
+        identifier6 = [accountCopy identifier];
+        resolutionError = [(HDClinicalIngestionExtractReferencesOperation *)v18 resolutionError];
         *buf = 138543874;
-        v55 = self;
+        selfCopy6 = self;
         v56 = 2114;
-        v57 = v49;
+        v57 = identifier6;
         v58 = 2112;
-        v59 = v50;
+        v59 = resolutionError;
         _os_log_error_impl(&dword_0, v48, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: extractReferencesOperation failed with error: %@", buf, 0x20u);
       }
 
-      v35 = [(HDClinicalIngestionExtractReferencesOperation *)v18 resolutionError];
+      resolutionError2 = [(HDClinicalIngestionExtractReferencesOperation *)v18 resolutionError];
     }
 
-    [(HDClinicalIngestionTask *)self _markHadError:v35];
+    [(HDClinicalIngestionTask *)self _markHadError:resolutionError2];
 LABEL_17:
 
     goto LABEL_18;
@@ -521,48 +521,48 @@ LABEL_17:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
   {
     v45 = v39;
-    v46 = [v4 identifier];
-    v47 = [(HDClinicalIngestionFileImportOperation *)v7 operationError];
+    identifier7 = [accountCopy identifier];
+    operationError = [(HDClinicalIngestionFileImportOperation *)v7 operationError];
     *buf = 138543874;
-    v55 = self;
+    selfCopy6 = self;
     v56 = 2114;
-    v57 = v46;
+    v57 = identifier7;
     v58 = 2112;
-    v59 = v47;
+    v59 = operationError;
     _os_log_error_impl(&dword_0, v45, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: fileImportOperation failed with error: %@", buf, 0x20u);
   }
 
-  v11 = [(HDClinicalIngestionFileImportOperation *)v7 operationError];
-  [(HDClinicalIngestionTask *)self _markHadError:v11];
+  fHIRVersion = [(HDClinicalIngestionFileImportOperation *)v7 operationError];
+  [(HDClinicalIngestionTask *)self _markHadError:fHIRVersion];
 LABEL_18:
 }
 
-- (void)_performFetchWithAccount:(id)a3 batchingSemaphore:(id)a4
+- (void)_performFetchWithAccount:(id)account batchingSemaphore:(id)semaphore
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  semaphoreCopy = semaphore;
   if (([(HDClinicalIngestionTask *)self isCancelled]& 1) == 0)
   {
-    v8 = [v6 gateway];
+    gateway = [accountCopy gateway];
 
     _HKInitializeLogging();
     v9 = HKLogHealthRecords;
     v10 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (gateway)
     {
       if (v10)
       {
         v11 = v9;
-        v12 = [v6 identifier];
+        identifier = [accountCopy identifier];
         *buf = 138543618;
-        v55 = self;
+        selfCopy9 = self;
         v56 = 2114;
-        v57 = v12;
+        v57 = identifier;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: preparing ingestion", buf, 0x16u);
       }
 
       v53 = 0;
-      v13 = [(HDClinicalIngestionTask *)self _updateGatewayForAccount:v6 error:&v53];
+      v13 = [(HDClinicalIngestionTask *)self _updateGatewayForAccount:accountCopy error:&v53];
       v14 = v53;
       v15 = v14;
       if ((v13 & 1) == 0)
@@ -572,11 +572,11 @@ LABEL_18:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
           v41 = v35;
-          v42 = [v6 identifier];
+          identifier2 = [accountCopy identifier];
           *buf = 138543874;
-          v55 = self;
+          selfCopy9 = self;
           v56 = 2114;
-          v57 = v42;
+          v57 = identifier2;
           v58 = 2114;
           v59 = v15;
           _os_log_error_impl(&dword_0, v41, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: gateway operation failed: %{public}@.", buf, 0x20u);
@@ -587,7 +587,7 @@ LABEL_18:
       }
 
       v52 = v14;
-      v16 = [(HDClinicalIngestionTask *)self _fetchableAccountForAccount:v6 error:&v52];
+      v16 = [(HDClinicalIngestionTask *)self _fetchableAccountForAccount:accountCopy error:&v52];
       v17 = v52;
 
       if (!v16)
@@ -599,11 +599,11 @@ LABEL_18:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
           {
             v43 = v36;
-            v44 = [v6 identifier];
+            identifier3 = [accountCopy identifier];
             *buf = 138543874;
-            v55 = self;
+            selfCopy9 = self;
             v56 = 2114;
-            v57 = v44;
+            v57 = identifier3;
             v58 = 2114;
             v59 = v17;
             _os_log_error_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: account fetchability determination failed: %{public}@.", buf, 0x20u);
@@ -617,11 +617,11 @@ LABEL_18:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
           {
             v39 = v36;
-            v40 = [v6 identifier];
+            identifier4 = [accountCopy identifier];
             *buf = 138543618;
-            v55 = self;
+            selfCopy9 = self;
             v56 = 2114;
-            v57 = v40;
+            v57 = identifier4;
             _os_log_impl(&dword_0, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: not fetchable, not performing ingestion", buf, 0x16u);
           }
 
@@ -634,16 +634,16 @@ LABEL_18:
       if ([v16 currentCredentialHasOutdatedScopes])
       {
         v18 = [HKClinicalAccountEvent alloc];
-        v19 = [v6 identifier];
+        identifier5 = [accountCopy identifier];
         v20 = [NSString stringWithFormat:@"%s:%d (%s)", "[HDClinicalIngestionTask _performFetchWithAccount:batchingSemaphore:]", 345, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Ingestion/Pipeline/HDClinicalIngestionTask.m"];
         v21 = +[NSDate date];
-        [v6 credentialState];
+        [accountCopy credentialState];
         v22 = HKOptionalClinicalAccountCredentialStateFromHKClinicalAccountCredentialState();
-        v23 = [v18 initWithAccountIdentifier:v19 type:1 caller:v20 timestamp:v21 eventDescription:@"The current credential had outdated scopes during clinical ingestion task (fetchableAccount.currentCredentialHasOutdatedScopes was true)." credentialStateBefore:v22 credentialStateAfter:HKOptionalClinicalAccountCredentialStateFromHKClinicalAccountCredentialState()];
+        v23 = [v18 initWithAccountIdentifier:identifier5 type:1 caller:v20 timestamp:v21 eventDescription:@"The current credential had outdated scopes during clinical ingestion task (fetchableAccount.currentCredentialHasOutdatedScopes was true)." credentialStateBefore:v22 credentialStateAfter:HKOptionalClinicalAccountCredentialStateFromHKClinicalAccountCredentialState()];
 
         accountManager = self->_accountManager;
         v51 = v17;
-        LOBYTE(v20) = [(HDClinicalAccountManager *)accountManager updateCredentialStateForAccount:v6 state:2 event:v23 error:&v51];
+        LOBYTE(v20) = [(HDClinicalAccountManager *)accountManager updateCredentialStateForAccount:accountCopy state:2 event:v23 error:&v51];
         v25 = v51;
 
         if ((v20 & 1) == 0)
@@ -653,11 +653,11 @@ LABEL_18:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
           {
             v45 = v38;
-            v46 = [v6 identifier];
+            identifier6 = [accountCopy identifier];
             *buf = 138543874;
-            v55 = self;
+            selfCopy9 = self;
             v56 = 2114;
-            v57 = v46;
+            v57 = identifier6;
             v58 = 2114;
             v59 = v25;
             _os_log_error_impl(&dword_0, v45, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: attempt to mark account as needing upgrade failed with error: %{public}@", buf, 0x20u);
@@ -667,14 +667,14 @@ LABEL_18:
           goto LABEL_36;
         }
 
-        v26 = [v6 identifier];
-        [(HDClinicalIngestionTask *)self _accountWithIdentifier:v26 addOutcomeInfo:64];
+        identifier7 = [accountCopy identifier];
+        [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier7 addOutcomeInfo:64];
 
         v17 = v25;
       }
 
       v50 = 0;
-      v27 = [(HDClinicalIngestionTask *)self _performResourceFetchWithAccount:v16 batchingSemaphore:v7 error:&v50];
+      v27 = [(HDClinicalIngestionTask *)self _performResourceFetchWithAccount:v16 batchingSemaphore:semaphoreCopy error:&v50];
       v28 = v50;
       if (v27)
       {
@@ -683,11 +683,11 @@ LABEL_18:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v29;
-          v31 = [v6 identifier];
+          identifier8 = [accountCopy identifier];
           *buf = 138543618;
-          v55 = self;
+          selfCopy9 = self;
           v56 = 2114;
-          v57 = v31;
+          v57 = identifier8;
           v32 = "%{public}@ Account %{public}@: ingestion complete";
 LABEL_34:
           _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, v32, buf, 0x16u);
@@ -703,14 +703,14 @@ LABEL_34:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
           {
             v47 = v37;
-            v48 = [v6 identifier];
-            v49 = [v28 hrs_safelyLoggableDescription];
+            identifier9 = [accountCopy identifier];
+            hrs_safelyLoggableDescription = [v28 hrs_safelyLoggableDescription];
             *buf = 138543874;
-            v55 = self;
+            selfCopy9 = self;
             v56 = 2114;
-            v57 = v48;
+            v57 = identifier9;
             v58 = 2112;
-            v59 = v49;
+            v59 = hrs_safelyLoggableDescription;
             _os_log_error_impl(&dword_0, v47, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: ingestion failed: %@", buf, 0x20u);
           }
 
@@ -721,11 +721,11 @@ LABEL_34:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v37;
-          v31 = [v6 identifier];
+          identifier8 = [accountCopy identifier];
           *buf = 138543618;
-          v55 = self;
+          selfCopy9 = self;
           v56 = 2114;
-          v57 = v31;
+          v57 = identifier8;
           v32 = "%{public}@ Account %{public}@: ingestion not completed";
           goto LABEL_34;
         }
@@ -743,11 +743,11 @@ LABEL_37:
     if (v10)
     {
       v33 = v9;
-      v34 = [v6 identifier];
+      identifier10 = [accountCopy identifier];
       *buf = 138543618;
-      v55 = self;
+      selfCopy9 = self;
       v56 = 2114;
-      v57 = v34;
+      v57 = identifier10;
       _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: not gateway backed, not attempting to ingest", buf, 0x16u);
     }
   }
@@ -755,12 +755,12 @@ LABEL_37:
 LABEL_38:
 }
 
-- (BOOL)_performResourceFetchWithAccount:(id)a3 batchingSemaphore:(id)a4 error:(id *)a5
+- (BOOL)_performResourceFetchWithAccount:(id)account batchingSemaphore:(id)semaphore error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v98 = v6;
-  v8 = [v6 currentCredentialScopeSet];
+  accountCopy = account;
+  semaphoreCopy = semaphore;
+  v98 = accountCopy;
+  currentCredentialScopeSet = [accountCopy currentCredentialScopeSet];
   v91 = +[NSDate date];
   if ([v98 canDetectUnmergeFromPatientResource])
   {
@@ -774,8 +774,8 @@ LABEL_38:
       v9 = 2;
     }
 
-    v10 = [(HDClinicalIngestionTask *)self context];
-    v11 = [v10 queryModeFromOptionsGivenQueryMode:v9];
+    context = [(HDClinicalIngestionTask *)self context];
+    v11 = [context queryModeFromOptionsGivenQueryMode:v9];
 
     v89 = v11;
     v95 = v11 == &dword_0 + 2;
@@ -783,8 +783,8 @@ LABEL_38:
 
   else
   {
-    v12 = [(HDClinicalIngestionTask *)self context];
-    if ([v12 isBackgroundTask])
+    context2 = [(HDClinicalIngestionTask *)self context];
+    if ([context2 isBackgroundTask])
     {
       v13 = 2;
     }
@@ -799,8 +799,8 @@ LABEL_38:
       v13 = 1;
     }
 
-    v14 = [(HDClinicalIngestionTask *)self context];
-    v89 = [v14 queryModeFromOptionsGivenQueryMode:v13];
+    context3 = [(HDClinicalIngestionTask *)self context];
+    v89 = [context3 queryModeFromOptionsGivenQueryMode:v13];
 
     v95 = 0;
   }
@@ -810,12 +810,12 @@ LABEL_38:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v98 identifier];
+    identifier = [v98 identifier];
     v18 = NSStringFromHKFHIRResourceQueryMode();
     *buf = 138543874;
-    v114 = self;
+    selfCopy7 = self;
     v115 = 2114;
-    v116 = v17;
+    v116 = identifier;
     v117 = 2114;
     v118 = v18;
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: %{public}@ fetch beginning", buf, 0x20u);
@@ -837,7 +837,7 @@ LABEL_38:
   v106[3] = &unk_105860;
   v108 = v111;
   v109 = v110;
-  v20 = v7;
+  v20 = semaphoreCopy;
   v107 = v20;
   v21 = [(HDClinicalIngestionTaskAccountContext *)v19 initWithIngestionTask:self account:v98 queryMode:v89 ingestStartDate:v91 didSaveResourcesHandler:v106];
   v93 = objc_alloc_init(NSMutableArray);
@@ -846,19 +846,19 @@ LABEL_38:
   v96 = v21;
   v85 = v20;
   v22 = [HKClinicalGateway alloc];
-  v23 = [v98 gateway];
-  v90 = [v22 initWithDaemonClinicalGateway:v23];
+  gateway = [v98 gateway];
+  v90 = [v22 initWithDaemonClinicalGateway:gateway];
 
-  v24 = [v90 resourceSchemas];
-  v88 = [v24 hk_filter:&stru_1058A0];
+  resourceSchemas = [v90 resourceSchemas];
+  v88 = [resourceSchemas hk_filter:&stru_1058A0];
 
   v94 = [v88 count];
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v25 = [v90 resourceSchemas];
-  v26 = [v25 countByEnumeratingWithState:&v102 objects:v121 count:16];
+  resourceSchemas2 = [v90 resourceSchemas];
+  v26 = [resourceSchemas2 countByEnumeratingWithState:&v102 objects:v121 count:16];
   if (v26)
   {
     v27 = *v103;
@@ -869,27 +869,27 @@ LABEL_38:
       {
         if (*v103 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(resourceSchemas2);
         }
 
         v29 = *(*(&v102 + 1) + 8 * v28);
-        if (v8 && [v8 hasAtLeastOneResourceTypeScope] && (objc_msgSend(v29, "name"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v8, "canReadResourceType:", v30), v30, (v31 & 1) == 0))
+        if (currentCredentialScopeSet && [currentCredentialScopeSet hasAtLeastOneResourceTypeScope] && (objc_msgSend(v29, "name"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(currentCredentialScopeSet, "canReadResourceType:", v30), v30, (v31 & 1) == 0))
         {
           _HKInitializeLogging();
           v32 = HKLogHealthRecords;
           if (os_log_type_enabled(&v32->super.super, OS_LOG_TYPE_DEFAULT))
           {
-            v47 = [v98 identifier];
-            v48 = [v29 name];
-            v49 = [v8 originalScopes];
+            identifier2 = [v98 identifier];
+            name = [v29 name];
+            originalScopes = [currentCredentialScopeSet originalScopes];
             *buf = 138544130;
-            v114 = self;
+            selfCopy7 = self;
             v115 = 2114;
-            v116 = v47;
+            v116 = identifier2;
             v117 = 2114;
-            v118 = v48;
+            v118 = name;
             v119 = 2114;
-            v120 = v49;
+            v120 = originalScopes;
             _os_log_impl(&dword_0, &v32->super.super, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: Skipping ingest for resource type %{public}@ because a valid scope wasn't found in %{public}@", buf, 0x2Au);
           }
         }
@@ -902,8 +902,8 @@ LABEL_38:
             v32 = [[HDClinicalIngestionTaskResourceSchemaOperation alloc] initWithResourceSchema:v29 accountContext:v96];
             if (v95)
             {
-              v33 = [v29 name];
-              v34 = [v33 isEqualToString:@"Patient"];
+              name2 = [v29 name];
+              v34 = [name2 isEqualToString:@"Patient"];
 
               if (v34)
               {
@@ -911,14 +911,14 @@ LABEL_38:
                 v35 = HKLogHealthRecords;
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                 {
-                  v36 = [v98 identifier];
-                  v37 = [v29 name];
+                  identifier3 = [v98 identifier];
+                  name3 = [v29 name];
                   *buf = 138543874;
-                  v114 = self;
+                  selfCopy7 = self;
                   v115 = 2114;
-                  v116 = v36;
+                  v116 = identifier3;
                   v117 = 2114;
-                  v118 = v37;
+                  v118 = name3;
                   _os_log_impl(&dword_0, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: Preflighting ingest for %{public}@", buf, 0x20u);
                 }
 
@@ -935,8 +935,8 @@ LABEL_35:
               goto LABEL_35;
             }
 
-            v41 = [v29 name];
-            v42 = [v41 isEqualToString:@"DiagnosticReport"];
+            name4 = [v29 name];
+            v42 = [name4 isEqualToString:@"DiagnosticReport"];
 
             v38 = v99;
             if (!v42)
@@ -948,20 +948,20 @@ LABEL_35:
             v43 = HKLogHealthRecords;
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
             {
-              v44 = [v98 identifier];
-              v45 = [v29 name];
+              identifier4 = [v98 identifier];
+              name5 = [v29 name];
               *buf = 138543874;
-              v114 = self;
+              selfCopy7 = self;
               v115 = 2114;
-              v116 = v44;
+              v116 = identifier4;
               v117 = 2114;
-              v118 = v45;
+              v118 = name5;
               _os_log_impl(&dword_0, v43, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: Postponing ingest for %{public}@ until all other resources have been ingested", buf, 0x20u);
             }
 
             [v92 addObject:v32];
-            v46 = [v98 identifier];
-            [(HDClinicalIngestionTask *)self _accountWithIdentifier:v46 addOutcomeInfo:1024];
+            identifier5 = [v98 identifier];
+            [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier5 addOutcomeInfo:1024];
           }
 
           else
@@ -970,14 +970,14 @@ LABEL_35:
             v32 = HKLogHealthRecords;
             if (os_log_type_enabled(&v32->super.super, OS_LOG_TYPE_DEFAULT))
             {
-              v39 = [v98 identifier];
-              v40 = [v29 minCompatibleAPIVersion];
+              identifier6 = [v98 identifier];
+              minCompatibleAPIVersion = [v29 minCompatibleAPIVersion];
               *buf = 138543874;
-              v114 = self;
+              selfCopy7 = self;
               v115 = 2114;
-              v116 = v39;
+              v116 = identifier6;
               v117 = 2050;
-              v118 = v40;
+              v118 = minCompatibleAPIVersion;
               _os_log_impl(&dword_0, &v32->super.super, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: Detected a resource schema with MCAV %{public}ld, which is greater than our version, skipping this schema", buf, 0x20u);
             }
           }
@@ -989,7 +989,7 @@ LABEL_36:
       }
 
       while (v26 != v28);
-      v50 = [v25 countByEnumeratingWithState:&v102 objects:v121 count:16];
+      v50 = [resourceSchemas2 countByEnumeratingWithState:&v102 objects:v121 count:16];
       v26 = v50;
     }
 
@@ -1000,22 +1000,22 @@ LABEL_36:
   v52 = [(HDClinicalIngestionTaskAccountContext *)v96 runAndAwaitSchemaOperations:v99];
   if ([v51 atLeastOneFetchSucceeded])
   {
-    v53 = 1;
+    atLeastOneFetchSucceeded = 1;
   }
 
   else
   {
-    v53 = [v52 atLeastOneFetchSucceeded];
+    atLeastOneFetchSucceeded = [v52 atLeastOneFetchSucceeded];
   }
 
   if ([v51 accountMustLimitRequests])
   {
-    v54 = &dword_0 + 1;
+    accountMustLimitRequests = &dword_0 + 1;
   }
 
   else
   {
-    v54 = [v52 accountMustLimitRequests];
+    accountMustLimitRequests = [v52 accountMustLimitRequests];
   }
 
   if ([v92 count])
@@ -1024,19 +1024,19 @@ LABEL_36:
     v55 = HKLogHealthRecords;
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
     {
-      v56 = [v98 identifier];
+      identifier7 = [v98 identifier];
       v57 = [v92 count];
       v58 = [v92 count];
       v59 = @"s";
       *buf = 138544130;
-      v114 = self;
+      selfCopy7 = self;
       v115 = 2114;
       if (v58 == &dword_0 + 1)
       {
         v59 = &stru_1090E8;
       }
 
-      v116 = v56;
+      v116 = identifier7;
       v117 = 2048;
       v118 = v57;
       v119 = 2114;
@@ -1046,45 +1046,45 @@ LABEL_36:
 
     v60 = [(HDClinicalIngestionTaskAccountContext *)v96 runAndAwaitSchemaOperations:v92];
     v61 = v60;
-    if (v53)
+    if (atLeastOneFetchSucceeded)
     {
-      v53 = 1;
+      atLeastOneFetchSucceeded = 1;
     }
 
     else
     {
-      v53 = [v60 atLeastOneFetchSucceeded];
+      atLeastOneFetchSucceeded = [v60 atLeastOneFetchSucceeded];
     }
   }
 
-  v62 = [v98 identifier];
-  [(HDClinicalIngestionTask *)self _accountWithIdentifier:v62 addOutcomeInfo:8];
+  identifier8 = [v98 identifier];
+  [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier8 addOutcomeInfo:8];
 
   [(HDClinicalIngestionTaskAccountContext *)v96 queryMode];
   if (HKFHIRResourceQueryModeIncludesFullMode())
   {
-    v63 = [v98 identifier];
-    [(HDClinicalIngestionTask *)self _accountWithIdentifier:v63 addOutcomeInfo:16];
+    identifier9 = [v98 identifier];
+    [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier9 addOutcomeInfo:16];
   }
 
-  if (v54)
+  if (accountMustLimitRequests)
   {
-    v64 = [v98 identifier];
-    [(HDClinicalIngestionTask *)self _accountWithIdentifier:v64 addOutcomeInfo:4096];
+    identifier10 = [v98 identifier];
+    [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier10 addOutcomeInfo:4096];
   }
 
   else
   {
     v101 = 0;
     v65 = [(HDClinicalIngestionTask *)self _gatewayFeatureOperationsForAccount:v98 queryMode:v89 error:&v101];
-    v64 = v101;
+    identifier10 = v101;
     if (v65)
     {
       if ([v65 count])
       {
         [(HDClinicalIngestionTaskAccountContext *)v96 runAndAwaitFeatureOperations:v65];
-        v66 = [v98 identifier];
-        [(HDClinicalIngestionTask *)self _accountWithIdentifier:v66 addOutcomeInfo:512];
+        identifier11 = [v98 identifier];
+        [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier11 addOutcomeInfo:512];
       }
     }
 
@@ -1094,24 +1094,24 @@ LABEL_36:
       v67 = HKLogHealthRecords;
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
       {
-        v84 = [v98 identifier];
+        identifier12 = [v98 identifier];
         *buf = 138543874;
-        v114 = self;
+        selfCopy7 = self;
         v115 = 2114;
-        v116 = v84;
+        v116 = identifier12;
         v117 = 2114;
-        v118 = v64;
+        v118 = identifier10;
         _os_log_error_impl(&dword_0, v67, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: gateway feature operations error: %{public}@", buf, 0x20u);
       }
 
-      [(HDClinicalIngestionTaskAccountContext *)v96 didEncounterError:v64];
+      [(HDClinicalIngestionTaskAccountContext *)v96 didEncounterError:identifier10];
     }
   }
 
-  v68 = [(HDClinicalIngestionTaskAccountContext *)v96 accumulatedErrors];
-  v69 = [v68 count];
+  accumulatedErrors = [(HDClinicalIngestionTaskAccountContext *)v96 accumulatedErrors];
+  v69 = [accumulatedErrors count];
   v70 = v69;
-  if (v53)
+  if (atLeastOneFetchSucceeded)
   {
     ModeIncludesFullMode = HKFHIRResourceQueryModeIncludesFullMode();
     if (!v70)
@@ -1135,12 +1135,12 @@ LABEL_70:
         v74 = v100;
         if (v73)
         {
-          v75 = v68;
+          v75 = accumulatedErrors;
         }
 
         else
         {
-          v75 = [v68 arrayByAddingObject:v74];
+          v75 = [accumulatedErrors arrayByAddingObject:v74];
 
           v77 = [NSError hrs_errorWithAccumulatedErrors:v75];
 
@@ -1148,7 +1148,7 @@ LABEL_70:
         }
 
         v76 = 0;
-        v68 = v75;
+        accumulatedErrors = v75;
         goto LABEL_79;
       }
 
@@ -1156,8 +1156,8 @@ LABEL_70:
     }
   }
 
-  v72 = [NSError hrs_errorWithAccumulatedErrors:v68];
-  v76 = [v72 hrs_hasAuthorizationFailure] | v53 ^ 1;
+  v72 = [NSError hrs_errorWithAccumulatedErrors:accumulatedErrors];
+  v76 = [v72 hrs_hasAuthorizationFailure] | atLeastOneFetchSucceeded ^ 1;
   if (ModeIncludesFullMode && (v76 & 1) == 0)
   {
     if ([objc_opt_class() _accumulatedErrorAllowsToProceedRunningStaleResourcesOperation:v72])
@@ -1170,9 +1170,9 @@ LABEL_76:
   }
 
 LABEL_79:
-  if ((v76 | v54))
+  if ((v76 | accountMustLimitRequests))
   {
-    [(HDClinicalAccountManager *)self->_accountManager failedToCompleteFetchForAccount:v98 mustLimitFutureRequests:v54];
+    [(HDClinicalAccountManager *)self->_accountManager failedToCompleteFetchForAccount:v98 mustLimitFutureRequests:accountMustLimitRequests];
   }
 
   else
@@ -1195,10 +1195,10 @@ LABEL_79:
   {
     v80 = v72;
     v81 = v80;
-    if (a5)
+    if (error)
     {
       v82 = v80;
-      *a5 = v81;
+      *error = v81;
     }
 
     else
@@ -1213,11 +1213,11 @@ LABEL_79:
   return v72 == 0;
 }
 
-- (id)_runAndAwaitPreflightOperations:(id)a3 accountContext:(id)a4
+- (id)_runAndAwaitPreflightOperations:(id)operations accountContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count] || (-[HDClinicalIngestionTask isCancelled](self, "isCancelled") & 1) != 0)
+  operationsCopy = operations;
+  contextCopy = context;
+  if (![operationsCopy count] || (-[HDClinicalIngestionTask isCancelled](self, "isCancelled") & 1) != 0)
   {
     v8 = 0;
     goto LABEL_29;
@@ -1227,44 +1227,44 @@ LABEL_79:
   v9 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_9BF7C(self, v9, v7);
+    sub_9BF7C(self, v9, contextCopy);
   }
 
-  v10 = [v7 account];
-  v11 = [v10 identifier];
+  account = [contextCopy account];
+  identifier = [account identifier];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v51 = 0;
-  v13 = [HDOriginalFHIRResourceEntity resourceDataForPatientResourceForAccountWithIdentifier:v11 profile:WeakRetained error:&v51];
+  v13 = [HDOriginalFHIRResourceEntity resourceDataForPatientResourceForAccountWithIdentifier:identifier profile:WeakRetained error:&v51];
   v14 = v51;
 
   if (v13 || !v14)
   {
-    v8 = [v7 runAndAwaitSchemaOperations:v6];
+    v8 = [contextCopy runAndAwaitSchemaOperations:operationsCopy];
     if (!v13)
     {
       goto LABEL_28;
     }
 
-    v15 = [v7 account];
-    v16 = [v15 identifier];
+    account2 = [contextCopy account];
+    identifier2 = [account2 identifier];
     v17 = objc_loadWeakRetained(&self->_profile);
     v50 = 0;
-    v18 = [HDOriginalFHIRResourceEntity resourceDataForPatientResourceForAccountWithIdentifier:v16 profile:v17 error:&v50];
+    account9 = [HDOriginalFHIRResourceEntity resourceDataForPatientResourceForAccountWithIdentifier:identifier2 profile:v17 error:&v50];
     v14 = v50;
 
-    if (!v18)
+    if (!account9)
     {
       _HKInitializeLogging();
       v29 = HKLogHealthRecords;
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
         v30 = v29;
-        v31 = [v7 account];
-        v32 = [v31 identifier];
+        account3 = [contextCopy account];
+        identifier3 = [account3 identifier];
         *buf = 138543874;
-        v53 = self;
+        selfCopy6 = self;
         v54 = 2114;
-        v55 = v32;
+        v55 = identifier3;
         v56 = 2114;
         v57 = v14;
         _os_log_error_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: failed to retrieve incoming Patient resource: %{public}@", buf, 0x20u);
@@ -1274,33 +1274,33 @@ LABEL_79:
     }
 
     v19 = [HDClinicalIngestionComparePatientResourcesOperation alloc];
-    v20 = [v7 account];
-    v21 = [(HDClinicalIngestionComparePatientResourcesOperation *)v19 initWithTask:self account:v20 existingResourceData:v13 incomingResourceData:v18];
+    account4 = [contextCopy account];
+    identifier8 = [(HDClinicalIngestionComparePatientResourcesOperation *)v19 initWithTask:self account:account4 existingResourceData:v13 incomingResourceData:account9];
 
-    [(HDClinicalIngestionComparePatientResourcesOperation *)v21 start];
-    v22 = [(HDClinicalIngestionComparePatientResourcesOperation *)v21 result];
-    v23 = [v22 outcome];
+    [(HDClinicalIngestionComparePatientResourcesOperation *)identifier8 start];
+    result = [(HDClinicalIngestionComparePatientResourcesOperation *)identifier8 result];
+    outcome = [result outcome];
 
-    if ((v23 & 8) == 0)
+    if ((outcome & 8) == 0)
     {
-      v24 = [(HDClinicalIngestionOperation *)v21 operationError];
+      operationError = [(HDClinicalIngestionOperation *)identifier8 operationError];
 
       _HKInitializeLogging();
       v25 = HKLogHealthRecords;
-      if (v24)
+      if (operationError)
       {
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
           log = v25;
-          v47 = [v7 account];
-          v26 = [v47 identifier];
-          v27 = [(HDClinicalIngestionOperation *)v21 operationError];
+          account5 = [contextCopy account];
+          identifier4 = [account5 identifier];
+          operationError2 = [(HDClinicalIngestionOperation *)identifier8 operationError];
           *buf = 138543874;
-          v53 = self;
+          selfCopy6 = self;
           v54 = 2114;
-          v55 = v26;
+          v55 = identifier4;
           v56 = 2114;
-          v57 = v27;
+          v57 = operationError2;
           _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: failed to compare Patient resources: %{public}@", buf, 0x20u);
         }
       }
@@ -1308,12 +1308,12 @@ LABEL_79:
       else if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         v49 = v25;
-        v41 = [v7 account];
-        v42 = [v41 identifier];
+        account6 = [contextCopy account];
+        identifier5 = [account6 identifier];
         *buf = 138543618;
-        v53 = self;
+        selfCopy6 = self;
         v54 = 2114;
-        v55 = v42;
+        v55 = identifier5;
         _os_log_impl(&dword_0, v49, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: no unmerge detected", buf, 0x16u);
       }
 
@@ -1325,12 +1325,12 @@ LABEL_79:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v33;
-      v48 = [v7 account];
-      v35 = [v48 identifier];
+      account7 = [contextCopy account];
+      identifier6 = [account7 identifier];
       *buf = 138543618;
-      v53 = self;
+      selfCopy6 = self;
       v54 = 2114;
-      v55 = v35;
+      v55 = identifier6;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: unmerge detected!!", buf, 0x16u);
     }
 
@@ -1340,19 +1340,19 @@ LABEL_24:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v36;
-      v38 = [v7 account];
-      v39 = [v38 identifier];
+      account8 = [contextCopy account];
+      identifier7 = [account8 identifier];
       *buf = 138543618;
-      v53 = self;
+      selfCopy6 = self;
       v54 = 2114;
-      v55 = v39;
+      v55 = identifier7;
       _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: upgrading ingest to full query mode", buf, 0x16u);
     }
 
-    [v7 changeQueryMode:1];
-    v18 = [v7 account];
-    v21 = [v18 identifier];
-    [(HDClinicalIngestionTask *)self _accountWithIdentifier:v21 addOutcomeInfo:2048];
+    [contextCopy changeQueryMode:1];
+    account9 = [contextCopy account];
+    identifier8 = [account9 identifier];
+    [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier8 addOutcomeInfo:2048];
 LABEL_27:
 
     goto LABEL_28;
@@ -1365,22 +1365,22 @@ LABEL_27:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
       v43 = v28;
-      v44 = [v7 account];
-      v45 = [v44 identifier];
+      account10 = [contextCopy account];
+      identifier9 = [account10 identifier];
       *buf = 138543874;
-      v53 = self;
+      selfCopy6 = self;
       v54 = 2114;
-      v55 = v45;
+      v55 = identifier9;
       v56 = 2114;
       v57 = v14;
       _os_log_error_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: failed to retrieve existing Patient resource: %{public}@", buf, 0x20u);
     }
 
-    v8 = [v7 runAndAwaitSchemaOperations:v6];
+    v8 = [contextCopy runAndAwaitSchemaOperations:operationsCopy];
     goto LABEL_24;
   }
 
-  v8 = [v7 runAndAwaitSchemaOperations:v6];
+  v8 = [contextCopy runAndAwaitSchemaOperations:operationsCopy];
 LABEL_28:
 
 LABEL_29:
@@ -1388,10 +1388,10 @@ LABEL_29:
   return v8;
 }
 
-- (BOOL)_handleStaleResourcesOfAccount:(id)a3 ingestStartDate:(id)a4 error:(id *)a5
+- (BOOL)_handleStaleResourcesOfAccount:(id)account ingestStartDate:(id)date error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  dateCopy = date;
   v10 = objc_alloc_init(NSOperationQueue);
   v11 = [NSString stringWithFormat:@"%@-ResourceFetch-StaleResourcesQueue", objc_opt_class()];
   [v10 setName:v11];
@@ -1402,48 +1402,48 @@ LABEL_29:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v8 identifier];
+    identifier = [accountCopy identifier];
     *buf = 138543618;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
-    v28 = v14;
+    v28 = identifier;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: running stale resources operation", buf, 0x16u);
   }
 
-  v15 = [[HDClinicalIngestionHandleStaleResourcesOperation alloc] initWithTask:self account:v8 ingestStartDate:v9 nextOperation:0];
+  v15 = [[HDClinicalIngestionHandleStaleResourcesOperation alloc] initWithTask:self account:accountCopy ingestStartDate:dateCopy nextOperation:0];
 
   [v10 addOperation:v15];
   [v10 waitUntilAllOperationsAreFinished];
-  v16 = [v8 identifier];
-  [(HDClinicalIngestionTask *)self _accountWithIdentifier:v16 addOutcomeInfo:256];
+  identifier2 = [accountCopy identifier];
+  [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier2 addOutcomeInfo:256];
 
-  v17 = [(HDClinicalIngestionOperation *)v15 operationError];
+  operationError = [(HDClinicalIngestionOperation *)v15 operationError];
 
-  if (v17)
+  if (operationError)
   {
     _HKInitializeLogging();
     v18 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
       v22 = v18;
-      v23 = [v8 identifier];
-      v24 = [(HDClinicalIngestionOperation *)v15 operationError];
+      identifier3 = [accountCopy identifier];
+      operationError2 = [(HDClinicalIngestionOperation *)v15 operationError];
       *buf = 138543874;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
-      v28 = v23;
+      v28 = identifier3;
       v29 = 2114;
-      v30 = v24;
+      v30 = operationError2;
       _os_log_error_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: stale resources operation failed: %{public}@", buf, 0x20u);
     }
 
-    v19 = [(HDClinicalIngestionOperation *)v15 operationError];
-    if (v19)
+    operationError3 = [(HDClinicalIngestionOperation *)v15 operationError];
+    if (operationError3)
     {
-      if (a5)
+      if (error)
       {
-        v20 = v19;
-        *a5 = v19;
+        v20 = operationError3;
+        *error = operationError3;
       }
 
       else
@@ -1453,22 +1453,22 @@ LABEL_29:
     }
   }
 
-  return v17 == 0;
+  return operationError == 0;
 }
 
-- (void)_performExtractionWithAccount:(id)a3
+- (void)_performExtractionWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  [(HDClinicalIngestionTask *)self _accountWithIdentifier:v5 addOutcomeInfo:32];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier addOutcomeInfo:32];
 
   p_vtable = &OBJC_METACLASS___HDClinicalIngestionTaskContext.vtable;
   v7 = &off_110000;
   v8 = &HKLogHealthRecords;
-  v25 = v4;
+  v25 = accountCopy;
   while (1)
   {
-    v9 = [objc_alloc((p_vtable + 381)) initWithTask:self account:v4 nextOperation:0];
+    v9 = [objc_alloc((p_vtable + 381)) initWithTask:self account:accountCopy nextOperation:0];
     [v9 setBatchSize:v7];
     [v9 start];
     if ([v9 isCancelled])
@@ -1476,45 +1476,45 @@ LABEL_29:
       break;
     }
 
-    v10 = [v9 countOfExtractedResources];
+    countOfExtractedResources = [v9 countOfExtractedResources];
     _HKInitializeLogging();
     v11 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      [v4 identifier];
+      [accountCopy identifier];
       v13 = v7;
       v14 = p_vtable;
       v16 = v15 = v8;
-      v17 = [v9 countOfExtractedResources];
-      v18 = [v9 countOfExtractedMedicalRecords];
-      v19 = [v9 countOfExtractedClinicalRecords];
+      countOfExtractedResources2 = [v9 countOfExtractedResources];
+      countOfExtractedMedicalRecords = [v9 countOfExtractedMedicalRecords];
+      countOfExtractedClinicalRecords = [v9 countOfExtractedClinicalRecords];
       *buf = 138544386;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = v16;
       v30 = 2048;
-      v31 = v17;
+      v31 = countOfExtractedResources2;
       v32 = 2048;
-      v33 = v18;
+      v33 = countOfExtractedMedicalRecords;
       v34 = 2048;
-      v35 = v19;
+      v35 = countOfExtractedClinicalRecords;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: extraction of %ld resources produced %ld medical and %ld clinical records", buf, 0x34u);
 
       v8 = v15;
       p_vtable = v14;
       v7 = v13;
-      v4 = v25;
+      accountCopy = v25;
     }
 
-    if (!v10)
+    if (!countOfExtractedResources)
     {
       goto LABEL_10;
     }
 
-    v20 = [(HDClinicalIngestionTask *)self isCancelled];
+    isCancelled = [(HDClinicalIngestionTask *)self isCancelled];
 
-    if (v20)
+    if (isCancelled)
     {
       goto LABEL_11;
     }
@@ -1525,14 +1525,14 @@ LABEL_29:
   if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
   {
     v22 = v21;
-    v23 = [v4 identifier];
-    v24 = [v9 extractionError];
+    identifier2 = [accountCopy identifier];
+    extractionError = [v9 extractionError];
     *buf = 138543874;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
-    v29 = v23;
+    v29 = identifier2;
     v30 = 2112;
-    v31 = v24;
+    v31 = extractionError;
     _os_log_error_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: extraction failed: %@", buf, 0x20u);
   }
 
@@ -1548,7 +1548,7 @@ LABEL_11:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "START ingestion task %{public}@", &v6, 0xCu);
   }
 
@@ -1557,12 +1557,12 @@ LABEL_11:
   self->_transaction = v4;
 }
 
-- (void)_didFinishWithStartTimeInternal:(double)a3
+- (void)_didFinishWithStartTimeInternal:(double)internal
 {
   +[NSDate timeIntervalSinceReferenceDate];
   v6 = v5;
   os_unfair_lock_lock(&self->_ivarLock);
-  v7 = v6 - a3;
+  v7 = v6 - internal;
   v8 = objc_retainBlock(self->_willFinishFetchingAndExtracting);
   willFinishFetchingAndExtracting = self->_willFinishFetchingAndExtracting;
   self->_willFinishFetchingAndExtracting = 0;
@@ -1598,7 +1598,7 @@ LABEL_11:
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
     v23 = v7;
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "FINISH ingestion task %{public}@. Runtime: %.2f sec", buf, 0x16u);
@@ -1615,19 +1615,19 @@ LABEL_11:
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)_markHadError:(id)a3
+- (void)_markHadError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_ivarLock);
   ingestionError = self->_ingestionError;
-  self->_ingestionError = v4;
+  self->_ingestionError = errorCopy;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     [(HDClinicalIngestionTask *)self _markHadError:?];
   }
@@ -1659,11 +1659,11 @@ LABEL_11:
   }
 }
 
-- (id)_gatewaysOperationForAccount:(id)a3
+- (id)_gatewaysOperationForAccount:(id)account
 {
-  v4 = [a3 identifier];
-  v5 = [(HDClinicalIngestionTask *)self updateGatewayOperationsByAccountIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifier = [account identifier];
+  updateGatewayOperationsByAccountIdentifier = [(HDClinicalIngestionTask *)self updateGatewayOperationsByAccountIdentifier];
+  v6 = [updateGatewayOperationsByAccountIdentifier objectForKey:identifier];
 
   if (!v6)
   {
@@ -1672,9 +1672,9 @@ LABEL_11:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = identifier;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: no update gateways operation created", &v9, 0x16u);
     }
   }
@@ -1684,45 +1684,45 @@ LABEL_11:
 
 - (BOOL)_ingestionAllowed
 {
-  v3 = [(HDClinicalIngestionTask *)self context];
-  v4 = [v3 isBackgroundTask];
+  context = [(HDClinicalIngestionTask *)self context];
+  isBackgroundTask = [context isBackgroundTask];
 
-  if (v4 && (+[MCProfileConnection sharedConnection](MCProfileConnection, "sharedConnection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAutomaticAppUpdatesAllowed], v5, !v6))
+  if (isBackgroundTask && (+[MCProfileConnection sharedConnection](MCProfileConnection, "sharedConnection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAutomaticAppUpdatesAllowed], v5, !v6))
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v7 = [(HDClinicalIngestionTask *)self profile];
-    v8 = [v7 daemon];
-    v9 = [v8 behavior];
-    v10 = [v9 healthAppNotInstalled] ^ 1;
+    profile = [(HDClinicalIngestionTask *)self profile];
+    daemon = [profile daemon];
+    behavior = [daemon behavior];
+    v10 = [behavior healthAppNotInstalled] ^ 1;
   }
 
   return v10;
 }
 
-- (void)_prepareUpdateGatewaysOperationsForAccounts:(id)a3
+- (void)_prepareUpdateGatewaysOperationsForAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = [(HDClinicalIngestionTask *)self context];
-  v6 = [v5 shouldSkipGatewaysUpdate];
+  accountsCopy = accounts;
+  context = [(HDClinicalIngestionTask *)self context];
+  shouldSkipGatewaysUpdate = [context shouldSkipGatewaysUpdate];
 
-  if (v6)
+  if (shouldSkipGatewaysUpdate)
   {
     _HKInitializeLogging();
     v7 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = v7;
-      v9 = [v4 hk_map:&stru_105948];
+      providerServiceManager = v7;
+      v9 = [accountsCopy hk_map:&stru_105948];
       v10 = [v9 componentsJoinedByString:{@", "}];
       v13 = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping _prepareUpdateGatewaysOperationsForAccounts %{public}@", &v13, 0x16u);
+      _os_log_impl(&dword_0, providerServiceManager, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping _prepareUpdateGatewaysOperationsForAccounts %{public}@", &v13, 0x16u);
 
 LABEL_6:
     }
@@ -1730,8 +1730,8 @@ LABEL_6:
 
   else if (!self->_updateGatewayOperationsByAccountIdentifier)
   {
-    v8 = [(HDHealthRecordsProfileExtension *)self->_profileExtension providerServiceManager];
-    v11 = [v8 createUpdateGatewaysOperationsForAccounts:v4];
+    providerServiceManager = [(HDHealthRecordsProfileExtension *)self->_profileExtension providerServiceManager];
+    v11 = [providerServiceManager createUpdateGatewaysOperationsForAccounts:accountsCopy];
     updateGatewayOperationsByAccountIdentifier = self->_updateGatewayOperationsByAccountIdentifier;
     self->_updateGatewayOperationsByAccountIdentifier = v11;
 
@@ -1739,12 +1739,12 @@ LABEL_6:
   }
 }
 
-- (BOOL)_prepareAccounts:(id *)a3 userFetchEligibleAccounts:(id *)a4 withError:(id *)a5
+- (BOOL)_prepareAccounts:(id *)accounts userFetchEligibleAccounts:(id *)eligibleAccounts withError:(id *)error
 {
   accountManager = self->_accountManager;
-  v10 = [(NSSet *)self->_accountIdentifiers allObjects];
+  allObjects = [(NSSet *)self->_accountIdentifiers allObjects];
   v23 = 0;
-  v11 = [(HDClinicalAccountManager *)accountManager accountsWithIdentifiers:v10 error:&v23];
+  v11 = [(HDClinicalAccountManager *)accountManager accountsWithIdentifiers:allObjects error:&v23];
   v12 = v23;
 
   if (!v11)
@@ -1753,11 +1753,11 @@ LABEL_5:
     v15 = v12;
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v20 = v15;
         v19 = 0;
-        *a5 = v15;
+        *error = v15;
 LABEL_10:
         v16 = v15;
         goto LABEL_11;
@@ -1771,9 +1771,9 @@ LABEL_10:
   }
 
   v13 = self->_accountManager;
-  v14 = [(NSSet *)self->_accountIdentifiers allObjects];
+  allObjects2 = [(NSSet *)self->_accountIdentifiers allObjects];
   v22 = v12;
-  v15 = [(HDClinicalAccountManager *)v13 userFetchEligibleAccountsWithIdentifiers:v14 error:&v22];
+  v15 = [(HDClinicalAccountManager *)v13 userFetchEligibleAccountsWithIdentifiers:allObjects2 error:&v22];
   v16 = v22;
 
   [(HDClinicalIngestionTask *)self _markAccountsWithoutCredentialsAsReloginNeeded:v11];
@@ -1783,8 +1783,8 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  *a3 = [v11 copy];
-  *a4 = [v15 copy];
+  *accounts = [v11 copy];
+  *eligibleAccounts = [v15 copy];
   v17 = [v11 hk_mapToDictionary:&stru_105988];
   perAccountInfo = self->_perAccountInfo;
   self->_perAccountInfo = v17;
@@ -1795,14 +1795,14 @@ LABEL_11:
   return v19;
 }
 
-- (void)_markAccountsWithoutCredentialsAsReloginNeeded:(id)a3
+- (void)_markAccountsWithoutCredentialsAsReloginNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v4 = [neededCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1813,12 +1813,12 @@ LABEL_11:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(neededCopy);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 credential];
-        if (!v9)
+        credential = [v8 credential];
+        if (!credential)
         {
           if ([v8 needsRelogin])
           {
@@ -1826,69 +1826,69 @@ LABEL_11:
           }
 
           v10 = [HKClinicalAccountEvent alloc];
-          v11 = [v8 identifier];
+          identifier = [v8 identifier];
           v12 = [NSString stringWithFormat:@"%s:%d (%s)", "[HDClinicalIngestionTask _markAccountsWithoutCredentialsAsReloginNeeded:]", 830, "/Library/Caches/com.apple.xbs/Sources/HealthKit/HealthRecords/HealthRecordsPlugin/Ingestion/Pipeline/HDClinicalIngestionTask.m"];
           v13 = +[NSDate date];
           [v8 credentialState];
           v14 = HKOptionalClinicalAccountCredentialStateFromHKClinicalAccountCredentialState();
-          v15 = [v10 initWithAccountIdentifier:v11 type:1 caller:v12 timestamp:v13 eventDescription:@"No credentials were found for the account during clinical ingestion task." credentialStateBefore:v14 credentialStateAfter:HKOptionalClinicalAccountCredentialStateFromHKClinicalAccountCredentialState()];
+          v15 = [v10 initWithAccountIdentifier:identifier type:1 caller:v12 timestamp:v13 eventDescription:@"No credentials were found for the account during clinical ingestion task." credentialStateBefore:v14 credentialStateAfter:HKOptionalClinicalAccountCredentialStateFromHKClinicalAccountCredentialState()];
 
           accountManager = self->_accountManager;
           v21 = 0;
           [(HDClinicalAccountManager *)accountManager updateCredentialStateForAccount:v8 state:1 event:v15 error:&v21];
-          v9 = v21;
-          if (v9)
+          credential = v21;
+          if (credential)
           {
             _HKInitializeLogging();
             v17 = HKLogHealthRecords;
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
             {
               v18 = v17;
-              v19 = [v8 identifier];
+              identifier2 = [v8 identifier];
               *buf = 138543874;
-              v27 = self;
+              selfCopy = self;
               v28 = 2114;
-              v29 = v19;
+              v29 = identifier2;
               v30 = 2114;
-              v31 = v9;
+              v31 = credential;
               _os_log_fault_impl(&dword_0, v18, OS_LOG_TYPE_FAULT, "%{public}@ Error marking account: %{public}@ as needs relogin %{public}@", buf, 0x20u);
             }
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v5 = [neededCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)_updateGatewayForAccount:(id)a3 error:(id *)a4
+- (BOOL)_updateGatewayForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDClinicalIngestionTask *)self _gatewaysOperationForAccount:v6];
+  accountCopy = account;
+  v7 = [(HDClinicalIngestionTask *)self _gatewaysOperationForAccount:accountCopy];
   if (v7)
   {
-    v8 = [(HDClinicalIngestionTask *)self profileExtension];
-    v9 = [v8 providerServiceManager];
-    [v9 addOperationUnlessAlreadyEnqueued:v7];
+    profileExtension = [(HDClinicalIngestionTask *)self profileExtension];
+    providerServiceManager = [profileExtension providerServiceManager];
+    [providerServiceManager addOperationUnlessAlreadyEnqueued:v7];
 
     [v7 waitUntilFinished];
-    v10 = [v6 identifier];
-    [(HDClinicalIngestionTask *)self _accountWithIdentifier:v10 addOutcomeInfo:1];
+    identifier = [accountCopy identifier];
+    [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier addOutcomeInfo:1];
   }
 
-  v11 = [v7 isCancelled];
-  if (v11)
+  isCancelled = [v7 isCancelled];
+  if (isCancelled)
   {
-    v12 = [v7 error];
-    if (v12)
+    error = [v7 error];
+    if (error)
     {
-      if (a4)
+      if (error)
       {
-        v13 = v12;
-        *a4 = v12;
+        v13 = error;
+        *error = error;
       }
 
       else
@@ -1898,15 +1898,15 @@ LABEL_11:
     }
   }
 
-  return v11 ^ 1;
+  return isCancelled ^ 1;
 }
 
-- (id)_fetchableAccountForAccount:(id)a3 error:(id *)a4
+- (id)_fetchableAccountForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   accountManager = self->_accountManager;
-  v8 = [v6 identifier];
-  v9 = [(HDClinicalAccountManager *)accountManager accountWithIdentifier:v8 error:a4];
+  identifier = [accountCopy identifier];
+  v9 = [(HDClinicalAccountManager *)accountManager accountWithIdentifier:identifier error:error];
 
   if (v9)
   {
@@ -1915,8 +1915,8 @@ LABEL_11:
     v11 = 0;
     if ([(HDClinicalIngestionIsAccountFetchableOperation *)v10 accountFetchable])
     {
-      v12 = [v6 identifier];
-      [(HDClinicalIngestionTask *)self _accountWithIdentifier:v12 addOutcomeInfo:2];
+      identifier2 = [accountCopy identifier];
+      [(HDClinicalIngestionTask *)self _accountWithIdentifier:identifier2 addOutcomeInfo:2];
 
       v11 = v9;
     }
@@ -1930,25 +1930,25 @@ LABEL_11:
   return v11;
 }
 
-- (id)_gatewayFeatureOperationsForAccount:(id)a3 queryMode:(int64_t)a4 error:(id *)a5
+- (id)_gatewayFeatureOperationsForAccount:(id)account queryMode:(int64_t)mode error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 gateway];
+  accountCopy = account;
+  gateway = [accountCopy gateway];
 
-  if (v7)
+  if (gateway)
   {
-    v8 = [v6 gateway];
-    v9 = [v8 hkGateway];
+    gateway2 = [accountCopy gateway];
+    hkGateway = [gateway2 hkGateway];
 
     *buf = objc_opt_class();
     v42 = [NSArray arrayWithObjects:buf count:1];
-    v46 = v9;
+    v46 = hkGateway;
     v47 = objc_alloc_init(NSMutableArray);
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = [v9 features];
+    obj = [hkGateway features];
     v43 = [obj countByEnumeratingWithState:&v54 objects:v66 count:16];
     if (!v43)
     {
@@ -1958,7 +1958,7 @@ LABEL_11:
     v41 = *v55;
     *&v10 = 138544130;
     v38 = v10;
-    v48 = v6;
+    v48 = accountCopy;
     while (1)
     {
       for (i = 0; i != v43; i = i + 1)
@@ -1974,14 +1974,14 @@ LABEL_11:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
         {
           v34 = v13;
-          v35 = [v6 identifier];
-          v36 = [v12 name];
+          identifier = [accountCopy identifier];
+          name = [v12 name];
           *buf = 138543874;
           *&buf[4] = self;
           v59 = 2114;
-          v60 = v35;
+          v60 = identifier;
           v61 = 2114;
-          v62 = v36;
+          v62 = name;
           _os_log_debug_impl(&dword_0, v34, OS_LOG_TYPE_DEBUG, "%{public}@ Account %{public}@: checking for gateway feature %{public}@ handlers", buf, 0x20u);
         }
 
@@ -1993,14 +1993,14 @@ LABEL_11:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_INFO))
           {
             v15 = v14;
-            v16 = [v6 identifier];
-            v17 = [v12 name];
+            identifier2 = [accountCopy identifier];
+            name2 = [v12 name];
             *buf = 138543874;
             *&buf[4] = self;
             v59 = 2114;
-            v60 = v16;
+            v60 = identifier2;
             v61 = 2114;
-            v62 = v17;
+            v62 = name2;
             _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "%{public}@ Account %{public}@: gateway feature %{public}@ is not supported by this device, skipping", buf, 0x20u);
           }
         }
@@ -2032,14 +2032,14 @@ LABEL_11:
                 sub_9C0A4(a2, self, v24);
               }
 
-              v25 = [v12 name];
-              v26 = [v24 featureName];
-              v27 = [v25 isEqualToString:v26];
+              name3 = [v12 name];
+              featureName = [v24 featureName];
+              v27 = [name3 isEqualToString:featureName];
 
               if (v27)
               {
                 ++v21;
-                v28 = [[v24 alloc] initWithTask:self account:v48 gateway:v46 feature:v12 queryMode:a4];
+                v28 = [[v24 alloc] initWithTask:self account:v48 gateway:v46 feature:v12 queryMode:mode];
                 [v47 addObject:v28];
               }
             }
@@ -2049,7 +2049,7 @@ LABEL_11:
 
           while (v20);
 
-          v6 = v48;
+          accountCopy = v48;
           i = v44;
           if (v21)
           {
@@ -2061,14 +2061,14 @@ LABEL_11:
             }
 
             v30 = v29;
-            v31 = [v48 identifier];
-            v32 = [v12 name];
+            identifier3 = [v48 identifier];
+            name4 = [v12 name];
             *buf = v38;
             *&buf[4] = self;
             v59 = 2114;
-            v60 = v31;
+            v60 = identifier3;
             v61 = 2114;
-            v62 = v32;
+            v62 = name4;
             v63 = 2050;
             v64 = v21;
             _os_log_debug_impl(&dword_0, v30, OS_LOG_TYPE_DEBUG, "%{public}@ Account %{public}@: gateway feature %{public}@ is handled by %{public}lld", buf, 0x2Au);
@@ -2088,14 +2088,14 @@ LABEL_11:
         }
 
         v30 = v33;
-        v31 = [v6 identifier];
-        v32 = [v12 name];
+        identifier3 = [accountCopy identifier];
+        name4 = [v12 name];
         *buf = 138543874;
         *&buf[4] = self;
         v59 = 2114;
-        v60 = v31;
+        v60 = identifier3;
         v61 = 2114;
-        v62 = v32;
+        v62 = name4;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: gateway feature %{public}@ NOT handled, no handler is registered", buf, 0x20u);
 LABEL_29:
       }
@@ -2110,7 +2110,7 @@ LABEL_32:
     }
   }
 
-  [NSError hk_assignError:a5 code:3 description:@"account does not have a gateway"];
+  [NSError hk_assignError:error code:3 description:@"account does not have a gateway"];
   v47 = 0;
 LABEL_34:
 
@@ -2122,10 +2122,10 @@ LABEL_34:
   v3 = objc_alloc_init(NSMutableArray);
   v4 = [(HDClinicalIngestionOperation *)[HDClinicalIngestionNotifyHealthRecordsDaemonOperation alloc] initWithTask:self nextOperation:0];
   [v3 addObject:v4];
-  v5 = [(HDClinicalIngestionTask *)self context];
-  v6 = [v5 _unitTesting_shouldSkipAttachmentDownload];
+  context = [(HDClinicalIngestionTask *)self context];
+  _unitTesting_shouldSkipAttachmentDownload = [context _unitTesting_shouldSkipAttachmentDownload];
 
-  if ((v6 & 1) == 0)
+  if ((_unitTesting_shouldSkipAttachmentDownload & 1) == 0)
   {
     v7 = [(HDClinicalIngestionOperation *)[HDClinicalIngestionDownloadAttachmentsOperation alloc] initWithTask:self nextOperation:0];
     [v3 addObject:v7];
@@ -2139,8 +2139,8 @@ LABEL_34:
 
 - (void)_runIngestionDoneOperations
 {
-  v3 = [(HDClinicalIngestionTask *)self _serialIngestionDoneOperations];
-  if ([v3 count])
+  _serialIngestionDoneOperations = [(HDClinicalIngestionTask *)self _serialIngestionDoneOperations];
+  if ([_serialIngestionDoneOperations count])
   {
     v4 = objc_alloc_init(NSOperationQueue);
     v5 = [NSString stringWithFormat:@"%@-Main-IngestDoneQueue", objc_opt_class()];
@@ -2151,8 +2151,8 @@ LABEL_34:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v3;
-    v6 = v3;
+    v18 = _serialIngestionDoneOperations;
+    v6 = _serialIngestionDoneOperations;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v29 count:16];
     if (v7)
     {
@@ -2174,7 +2174,7 @@ LABEL_34:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v24 = self;
+            selfCopy2 = self;
             v25 = 2114;
             v26 = v11;
             _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Running ingest done operation %{public}@", buf, 0x16u);
@@ -2182,27 +2182,27 @@ LABEL_34:
 
           [v4 addOperation:v11];
           [v11 waitUntilFinished];
-          v13 = [v11 operationError];
+          operationError = [v11 operationError];
 
-          if (v13)
+          if (operationError)
           {
             _HKInitializeLogging();
             v14 = HKLogHealthRecords;
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
             {
               v16 = v14;
-              v17 = [v11 operationError];
+              operationError2 = [v11 operationError];
               *buf = 138543874;
-              v24 = self;
+              selfCopy2 = self;
               v25 = 2114;
               v26 = v11;
               v27 = 2112;
-              v28 = v17;
+              v28 = operationError2;
               _os_log_error_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "%{public}@: Ingest done operation %{public}@ failed with error: %@", buf, 0x20u);
             }
 
-            v15 = [v11 operationError];
-            [(HDClinicalIngestionTask *)self _markHadError:v15];
+            operationError3 = [v11 operationError];
+            [(HDClinicalIngestionTask *)self _markHadError:operationError3];
           }
 
           v10 = v10 + 1;
@@ -2215,25 +2215,25 @@ LABEL_34:
       while (v8);
     }
 
-    v3 = v18;
+    _serialIngestionDoneOperations = v18;
   }
 }
 
-- (void)accumulateIngestionAnalyticsFromTaskStates:(id)a3 gateway:(id)a4
+- (void)accumulateIngestionAnalyticsFromTaskStates:(id)states gateway:(id)gateway
 {
   analyticsAccumulator = self->_analyticsAccumulator;
-  v6 = a3;
-  v7 = [a4 hkGateway];
-  [(HDClinicalIngestionAnalyticsAccumulator *)analyticsAccumulator accumulateIngestionAnalyticsFromTaskStates:v6 gateway:v7 completion:0];
+  statesCopy = states;
+  hkGateway = [gateway hkGateway];
+  [(HDClinicalIngestionAnalyticsAccumulator *)analyticsAccumulator accumulateIngestionAnalyticsFromTaskStates:statesCopy gateway:hkGateway completion:0];
 }
 
-- (id)_analyticsStringAfterCollectingAndSubmittingIngestionAnalyticsOnQueue:(id)a3
+- (id)_analyticsStringAfterCollectingAndSubmittingIngestionAnalyticsOnQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HDClinicalIngestionTaskContext *)self->_context shouldSkipIngestionMetricsSubmission];
-  v6 = [(HDClinicalAccountManager *)self->_accountManager currentAnalyticsAccumulator];
+  queueCopy = queue;
+  shouldSkipIngestionMetricsSubmission = [(HDClinicalIngestionTaskContext *)self->_context shouldSkipIngestionMetricsSubmission];
+  currentAnalyticsAccumulator = [(HDClinicalAccountManager *)self->_accountManager currentAnalyticsAccumulator];
   v7 = self->_analyticsAccumulator;
-  v8 = [(HDHealthRecordsProfileExtension *)self->_profileExtension analyticsManager];
+  analyticsManager = [(HDHealthRecordsProfileExtension *)self->_profileExtension analyticsManager];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -2247,15 +2247,15 @@ LABEL_34:
   v16[3] = &unk_105A00;
   v10 = v7;
   v17 = v10;
-  v11 = v6;
+  v11 = currentAnalyticsAccumulator;
   v18 = v11;
   v20 = &v22;
-  v21 = v5 ^ 1;
-  v12 = v8;
+  v21 = shouldSkipIngestionMetricsSubmission ^ 1;
+  v12 = analyticsManager;
   v19 = v12;
   v13 = [v9 initWithName:@"ingestion-analytics-submission" operationBlock:v16];
-  [v4 addOperation:v13];
-  [v4 waitUntilAllOperationsAreFinished];
+  [queueCopy addOperation:v13];
+  [queueCopy waitUntilAllOperationsAreFinished];
   v14 = v23[5];
 
   _Block_object_dispose(&v22, 8);
@@ -2263,47 +2263,47 @@ LABEL_34:
   return v14;
 }
 
-- (void)_accountWithIdentifier:(id)a3 addOutcomeInfo:(unint64_t)a4
+- (void)_accountWithIdentifier:(id)identifier addOutcomeInfo:(unint64_t)info
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v7 = [(NSDictionary *)self->_perAccountInfo objectForKeyedSubscript:?];
   if (!v7)
   {
-    sub_9C118(a2, self, v8);
+    sub_9C118(a2, self, identifierCopy);
   }
 
-  [v7 addOutcomeInfo:a4];
+  [v7 addOutcomeInfo:info];
 }
 
-- (void)recordCountOfAllRecords:(unint64_t)a3 allLabs:(unint64_t)a4 pinnedLabs:(unint64_t)a5
+- (void)recordCountOfAllRecords:(unint64_t)records allLabs:(unint64_t)labs pinnedLabs:(unint64_t)pinnedLabs
 {
-  self->_countOfAllRecords = a3;
-  self->_countOfAllLabs = a4;
-  self->_countOfPinnedLabs = a5;
+  self->_countOfAllRecords = records;
+  self->_countOfAllLabs = labs;
+  self->_countOfPinnedLabs = pinnedLabs;
 }
 
-+ (BOOL)_accumulatedErrorAllowsToProceedRunningStaleResourcesOperation:(id)a3
++ (BOOL)_accumulatedErrorAllowsToProceedRunningStaleResourcesOperation:(id)operation
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:HRSAccumulatedIngestionErrorDomain];
+  operationCopy = operation;
+  domain = [operationCopy domain];
+  v7 = [domain isEqualToString:HRSAccumulatedIngestionErrorDomain];
 
   if ((v7 & 1) == 0)
   {
-    sub_9C19C(a2, a1);
+    sub_9C19C(a2, self);
   }
 
-  if ([v5 hrs_hasAuthorizationFailure])
+  if ([operationCopy hrs_hasAuthorizationFailure])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v5 hrs_accumulatedResourceFetchFailures];
-    if ([v9 count])
+    hrs_accumulatedResourceFetchFailures = [operationCopy hrs_accumulatedResourceFetchFailures];
+    if ([hrs_accumulatedResourceFetchFailures count])
     {
-      v10 = [v9 hk_filter:&stru_105A40];
+      v10 = [hrs_accumulatedResourceFetchFailures hk_filter:&stru_105A40];
       v8 = [v10 count] == 0;
     }
 
@@ -2320,9 +2320,9 @@ LABEL_34:
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(HDClinicalIngestionTask *)self taskIdentifier];
-  v6 = [(HDClinicalIngestionTask *)self context];
-  v7 = [v3 initWithFormat:@"<%@ %@; context: %@;>", v4, v5, v6, 0];
+  taskIdentifier = [(HDClinicalIngestionTask *)self taskIdentifier];
+  context = [(HDClinicalIngestionTask *)self context];
+  v7 = [v3 initWithFormat:@"<%@ %@; context: %@;>", v4, taskIdentifier, context, 0];
 
   return v7;
 }

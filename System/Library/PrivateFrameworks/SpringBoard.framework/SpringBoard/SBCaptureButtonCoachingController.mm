@@ -1,29 +1,29 @@
 @interface SBCaptureButtonCoachingController
-- (SBCaptureButtonCoachingController)initWithHUDController:(id)a3;
-- (id)viewForSystemGestureRecognizer:(id)a3;
-- (void)_backlightLevelChanged:(id)a3;
-- (void)_gestureRecognizerFailed:(id)a3;
+- (SBCaptureButtonCoachingController)initWithHUDController:(id)controller;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
+- (void)_backlightLevelChanged:(id)changed;
+- (void)_gestureRecognizerFailed:(id)failed;
 - (void)_startObservingSignalsToDismissIfNeeded;
 - (void)_stopObservingSignalsToDismissIfNeeded;
-- (void)captureButtonCoachingHUDViewController:(id)a3 didBeginTransitionToState:(int64_t)a4;
-- (void)captureButtonCoachingHUDViewControllerWillRotate:(id)a3;
+- (void)captureButtonCoachingHUDViewController:(id)controller didBeginTransitionToState:(int64_t)state;
+- (void)captureButtonCoachingHUDViewControllerWillRotate:(id)rotate;
 - (void)dismissCoachingUI;
-- (void)setExtraCoachingUIButtonOffset:(double)a3;
-- (void)showCoachingUIWithText:(id)a3 glyphPackageName:(id)a4 glyphLandscapeStateName:(id)a5 dismissInterval:(double)a6;
+- (void)setExtraCoachingUIButtonOffset:(double)offset;
+- (void)showCoachingUIWithText:(id)text glyphPackageName:(id)name glyphLandscapeStateName:(id)stateName dismissInterval:(double)interval;
 @end
 
 @implementation SBCaptureButtonCoachingController
 
-- (SBCaptureButtonCoachingController)initWithHUDController:(id)a3
+- (SBCaptureButtonCoachingController)initWithHUDController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = SBCaptureButtonCoachingController;
   v6 = [(SBCaptureButtonCoachingController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hudController, a3);
+    objc_storeStrong(&v6->_hudController, controller);
     v8 = [[SBCaptureButtonCoachingHUDViewController alloc] initWithNibName:0 bundle:0];
     hudViewController = v7->_hudViewController;
     v7->_hudViewController = v8;
@@ -38,33 +38,33 @@
   return v7;
 }
 
-- (void)showCoachingUIWithText:(id)a3 glyphPackageName:(id)a4 glyphLandscapeStateName:(id)a5 dismissInterval:(double)a6
+- (void)showCoachingUIWithText:(id)text glyphPackageName:(id)name glyphLandscapeStateName:(id)stateName dismissInterval:(double)interval
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  nameCopy = name;
+  stateNameCopy = stateName;
   v12 = *MEMORY[0x277D66EF0];
   v13 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D66EF0]];
-  v14 = [v13 HUDViewController];
+  hUDViewController = [v13 HUDViewController];
   if (!v13)
   {
     v15 = [[SBCaptureButtonCoachingHUDViewController alloc] initWithNibName:0 bundle:0];
 
     [(SBCaptureButtonCoachingHUDViewController *)v15 setDelegate:self];
     v13 = [(SBHUDController *)self->_hudController HUDSessionForViewController:v15 identifier:v12];
-    v14 = v15;
+    hUDViewController = v15;
   }
 
-  [v14 setCoachingText:v16 glyphPackageName:v10 glyphLandscapeState:v11];
-  [v13 presentWithDismissalInterval:0 animated:a6];
-  [v14 transitionToState:1 animated:1 completion:0];
+  [hUDViewController setCoachingText:textCopy glyphPackageName:nameCopy glyphLandscapeState:stateNameCopy];
+  [v13 presentWithDismissalInterval:0 animated:interval];
+  [hUDViewController transitionToState:1 animated:1 completion:0];
 }
 
 - (void)dismissCoachingUI
 {
   v2 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D66EF0]];
-  v3 = [v2 HUDViewController];
-  if ([v3 state] && (objc_msgSend(v3, "isBeingDismissed") & 1) == 0)
+  hUDViewController = [v2 HUDViewController];
+  if ([hUDViewController state] && (objc_msgSend(hUDViewController, "isBeingDismissed") & 1) == 0)
   {
     [v2 invalidateDismissalTimer];
     v4[0] = MEMORY[0x277D85DD0];
@@ -72,7 +72,7 @@
     v4[2] = __54__SBCaptureButtonCoachingController_dismissCoachingUI__block_invoke;
     v4[3] = &unk_2783A9398;
     v5 = v2;
-    [v3 transitionToState:0 animated:1 completion:v4];
+    [hUDViewController transitionToState:0 animated:1 completion:v4];
   }
 }
 
@@ -86,14 +86,14 @@ uint64_t __54__SBCaptureButtonCoachingController_dismissCoachingUI__block_invoke
   return result;
 }
 
-- (void)setExtraCoachingUIButtonOffset:(double)a3
+- (void)setExtraCoachingUIButtonOffset:(double)offset
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __68__SBCaptureButtonCoachingController_setExtraCoachingUIButtonOffset___block_invoke;
   v3[3] = &unk_2783A8BC8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = offset;
   [MEMORY[0x277D75D18] animateWithDuration:v3 animations:0.2];
 }
 
@@ -104,56 +104,56 @@ void __68__SBCaptureButtonCoachingController_setExtraCoachingUIButtonOffset___bl
   [v2 setPositionOffset:{*(a1 + 40), 0.0}];
 }
 
-- (void)captureButtonCoachingHUDViewController:(id)a3 didBeginTransitionToState:(int64_t)a4
+- (void)captureButtonCoachingHUDViewController:(id)controller didBeginTransitionToState:(int64_t)state
 {
-  v6 = a3;
-  if ((a4 - 1) >= 2)
+  controllerCopy = controller;
+  if ((state - 1) >= 2)
   {
-    if (a4)
+    if (state)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
+    v7 = controllerCopy;
     [(SBCaptureButtonCoachingController *)self _stopObservingSignalsToDismissIfNeeded];
   }
 
   else
   {
-    v7 = v6;
+    v7 = controllerCopy;
     [(SBCaptureButtonCoachingController *)self _startObservingSignalsToDismissIfNeeded];
   }
 
-  v6 = v7;
+  controllerCopy = v7;
 LABEL_6:
 }
 
-- (void)captureButtonCoachingHUDViewControllerWillRotate:(id)a3
+- (void)captureButtonCoachingHUDViewControllerWillRotate:(id)rotate
 {
   v3 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D66EF0]];
   [v3 rescheduleDismissalTimer];
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
-  if (self->_dismissGestureRecognizer == a3)
+  if (self->_dismissGestureRecognizer == recognizer)
   {
     v4 = [(SBHUDController *)self->_hudController knownHUDControllerForIdentifier:*MEMORY[0x277D66EF0]];
-    v5 = [v4 HUDViewController];
-    v3 = [v5 view];
+    hUDViewController = [v4 HUDViewController];
+    view = [hUDViewController view];
   }
 
   else
   {
-    v3 = 0;
+    view = 0;
   }
 
-  return v3;
+  return view;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  if (self->_dismissGestureRecognizer == a3)
+  if (self->_dismissGestureRecognizer == failed)
   {
     [(SBCaptureButtonCoachingController *)self dismissCoachingUI];
   }
@@ -169,13 +169,13 @@ LABEL_6:
     self->_dismissGestureRecognizer = v4;
     v6 = v4;
 
-    v7 = [(SBHUDController *)self->_hudController windowScene];
-    v8 = [v7 systemGestureManager];
-    [v8 addGestureRecognizer:self->_dismissGestureRecognizer withType:140];
+    windowScene = [(SBHUDController *)self->_hudController windowScene];
+    systemGestureManager = [windowScene systemGestureManager];
+    [systemGestureManager addGestureRecognizer:self->_dismissGestureRecognizer withType:140];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__backlightLevelChanged_ name:*MEMORY[0x277D67A20] object:0];
-    [v9 addObserver:self selector:sel__volumeButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__backlightLevelChanged_ name:*MEMORY[0x277D67A20] object:0];
+    [defaultCenter addObserver:self selector:sel__volumeButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
   }
 }
 
@@ -183,34 +183,34 @@ LABEL_6:
 {
   if (self->_dismissGestureRecognizer)
   {
-    v3 = [(SBHUDController *)self->_hudController windowScene];
-    v4 = [v3 systemGestureManager];
-    [v4 removeGestureRecognizer:self->_dismissGestureRecognizer];
+    windowScene = [(SBHUDController *)self->_hudController windowScene];
+    systemGestureManager = [windowScene systemGestureManager];
+    [systemGestureManager removeGestureRecognizer:self->_dismissGestureRecognizer];
 
     dismissGestureRecognizer = self->_dismissGestureRecognizer;
     self->_dismissGestureRecognizer = 0;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277D67A20] object:0];
-    [v6 removeObserver:self name:*MEMORY[0x277D67AF0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D67A20] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D67AF0] object:0];
   }
 }
 
-- (void)_backlightLevelChanged:(id)a3
+- (void)_backlightLevelChanged:(id)changed
 {
-  v13 = [a3 userInfo];
-  v4 = [v13 objectForKey:*MEMORY[0x277D67A10]];
-  v5 = [v4 integerValue];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D67A10]];
+  integerValue = [v4 integerValue];
 
-  v6 = [v13 objectForKey:*MEMORY[0x277D67A30]];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D67A30]];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v13 objectForKey:*MEMORY[0x277D67A28]];
+  v9 = [userInfo objectForKey:*MEMORY[0x277D67A28]];
   [v9 floatValue];
   v11 = v10;
 
-  if (v5 == 3 && v11 > v8)
+  if (integerValue == 3 && v11 > v8)
   {
     [(SBCaptureButtonCoachingController *)self dismissCoachingUI];
   }

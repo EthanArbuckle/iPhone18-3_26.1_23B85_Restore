@@ -1,80 +1,80 @@
 @interface PHAWallpaperShuffleDescriptorGenerator
-+ (id)displayNameLocalizationKeyForTopSubtype:(unsigned __int16)a3;
-+ (unsigned)wallpaperTopSubtypeFromShuffleSubtype:(unsigned __int16)a3;
-- (PHAWallpaperShuffleDescriptorGenerator)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-- (id)allVIPShufflePosterDescriptorFromEligiblePersonLocalIdentifiers:(id)a3;
-- (id)baseSuggestionFetchOptionsWithSubtype:(unsigned __int16)a3 personLocalIdentifiers:(id)a4 suggestionUUIDsToAvoid:(id)a5;
-- (id)descriptorForSuggestion:(id)a3;
-- (id)fetchSuggestionWithSubtype:(unsigned __int16)a3 personLocalIdentifiers:(id)a4;
++ (id)displayNameLocalizationKeyForTopSubtype:(unsigned __int16)subtype;
++ (unsigned)wallpaperTopSubtypeFromShuffleSubtype:(unsigned __int16)subtype;
+- (PHAWallpaperShuffleDescriptorGenerator)initWithPhotoLibrary:(id)library loggingConnection:(id)connection;
+- (id)allVIPShufflePosterDescriptorFromEligiblePersonLocalIdentifiers:(id)identifiers;
+- (id)baseSuggestionFetchOptionsWithSubtype:(unsigned __int16)subtype personLocalIdentifiers:(id)identifiers suggestionUUIDsToAvoid:(id)avoid;
+- (id)descriptorForSuggestion:(id)suggestion;
+- (id)fetchSuggestionWithSubtype:(unsigned __int16)subtype personLocalIdentifiers:(id)identifiers;
 - (id)peopleShufflePosterDescriptors;
-- (id)randomizeSuggestions:(id)a3;
+- (id)randomizeSuggestions:(id)suggestions;
 - (id)shuffleDescriptorEligiblePersonLocalIdentifiers;
 - (id)shuffleDescriptorsForDonation;
-- (id)shufflePosterDescriptorForShuffleSubtype:(unsigned __int16)a3 personLocalIdentifiers:(id)a4 suggestionUUIDsToAvoid:(id)a5 requireMinimumShuffleCount:(BOOL)a6;
+- (id)shufflePosterDescriptorForShuffleSubtype:(unsigned __int16)subtype personLocalIdentifiers:(id)identifiers suggestionUUIDsToAvoid:(id)avoid requireMinimumShuffleCount:(BOOL)count;
 - (id)shuffleVIPPersonLocalIdentifiers;
-- (id)suggestionPersonLocalIdentifiersFromSuggestions:(id)a3;
+- (id)suggestionPersonLocalIdentifiersFromSuggestions:(id)suggestions;
 @end
 
 @implementation PHAWallpaperShuffleDescriptorGenerator
 
-- (id)fetchSuggestionWithSubtype:(unsigned __int16)a3 personLocalIdentifiers:(id)a4
+- (id)fetchSuggestionWithSubtype:(unsigned __int16)subtype personLocalIdentifiers:(id)identifiers
 {
-  v4 = [(PHAWallpaperShuffleDescriptorGenerator *)self baseSuggestionFetchOptionsWithSubtype:a3 personLocalIdentifiers:a4 suggestionUUIDsToAvoid:0];
+  v4 = [(PHAWallpaperShuffleDescriptorGenerator *)self baseSuggestionFetchOptionsWithSubtype:subtype personLocalIdentifiers:identifiers suggestionUUIDsToAvoid:0];
   v5 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v4];
 
   return v5;
 }
 
-- (id)baseSuggestionFetchOptionsWithSubtype:(unsigned __int16)a3 personLocalIdentifiers:(id)a4 suggestionUUIDsToAvoid:(id)a5
+- (id)baseSuggestionFetchOptionsWithSubtype:(unsigned __int16)subtype personLocalIdentifiers:(id)identifiers suggestionUUIDsToAvoid:(id)avoid
 {
-  v6 = a3;
+  subtypeCopy = subtype;
   v24[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifiersCopy = identifiers;
+  avoidCopy = avoid;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v24[0] = v11;
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
   v24[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  [v10 setSortDescriptors:v13];
+  [librarySpecificFetchOptions setSortDescriptors:v13];
 
   v14 = objc_alloc(MEMORY[0x277CBEB18]);
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v23[0] = v15;
-  v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"subtype", v6];
-  v23[1] = v16;
+  subtypeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"subtype", subtypeCopy];
+  v23[1] = subtypeCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v18 = [v14 initWithArray:v17];
 
-  if (v8)
+  if (identifiersCopy)
   {
-    v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"context", v8];
-    [v18 addObject:v19];
+    identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"context", identifiersCopy];
+    [v18 addObject:identifiersCopy];
   }
 
-  if (v9)
+  if (avoidCopy)
   {
-    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", v9];
-    [v18 addObject:v20];
+    avoidCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", avoidCopy];
+    [v18 addObject:avoidCopy];
   }
 
   v21 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v18];
-  [v10 setPredicate:v21];
+  [librarySpecificFetchOptions setPredicate:v21];
 
-  return v10;
+  return librarySpecificFetchOptions;
 }
 
-- (id)suggestionPersonLocalIdentifiersFromSuggestions:(id)a3
+- (id)suggestionPersonLocalIdentifiersFromSuggestions:(id)suggestions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_alloc_init(MEMORY[0x277CCA940]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -89,8 +89,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) context];
-        [v4 addObject:v10];
+        context = [*(*(&v12 + 1) + 8 * i) context];
+        [v4 addObject:context];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -102,18 +102,18 @@
   return v4;
 }
 
-- (id)descriptorForSuggestion:(id)a3
+- (id)descriptorForSuggestion:(id)suggestion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v37 = [v3 firstObject];
-  v36 = [v37 subtype];
-  v40 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  suggestionCopy = suggestion;
+  firstObject = [suggestionCopy firstObject];
+  subtype = [firstObject subtype];
+  v40 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(suggestionCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v3;
+  obj = suggestionCopy;
   v4 = [obj countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v4)
   {
@@ -130,14 +130,14 @@
 
         v8 = *(*(&v41 + 1) + 8 * i);
         v9 = MEMORY[0x277CD97A8];
-        v10 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-        v11 = [v9 fetchKeyAssetsInAssetCollection:v8 options:v10];
-        v12 = [v11 firstObject];
+        librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+        v11 = [v9 fetchKeyAssetsInAssetCollection:v8 options:librarySpecificFetchOptions];
+        firstObject2 = [v11 firstObject];
 
         v13 = objc_alloc(MEMORY[0x277D3B4A8]);
-        v14 = [v12 uuid];
-        v15 = [v8 uuid];
-        v16 = [v13 initWithAssetUUID:v14 suggestionUUID:v15 suggestionSubtype:{objc_msgSend(v8, "subtype")}];
+        uuid = [firstObject2 uuid];
+        uuid2 = [v8 uuid];
+        v16 = [v13 initWithAssetUUID:uuid suggestionUUID:uuid2 suggestionSubtype:{objc_msgSend(v8, "subtype")}];
         [v40 addObject:v16];
       }
 
@@ -151,8 +151,8 @@
   v18 = [objc_alloc(MEMORY[0x277D3B498]) initWithDescriptorType:2 media:v40];
   v19 = MEMORY[0x277CCACA8];
   v20 = MEMORY[0x277D3B498];
-  v21 = [v37 uuid];
-  v47 = v21;
+  uuid3 = [firstObject uuid];
+  v47 = uuid3;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
   v23 = [v20 descriptorIdentifierForDescriptorType:2 uuids:v22];
   v24 = PHSuggestionStringWithSubtype();
@@ -161,7 +161,7 @@
 
   v26 = [objc_alloc(MEMORY[0x277D3B4B8]) initWithShuffleType:0];
   [v18 setShuffleConfiguration:v26];
-  switch(v36)
+  switch(subtype)
   {
     case 0x25Cu:
       v17 = 4;
@@ -186,13 +186,13 @@ LABEL_13:
   }
 
   [v26 setShuffleSmartAlbums:0];
-  if (v36 == 652)
+  if (subtype == 652)
   {
 LABEL_17:
-    v28 = [v37 context];
-    if (v28)
+    context = [firstObject context];
+    if (context)
     {
-      v29 = [MEMORY[0x277CBEB98] setWithObject:v28];
+      v29 = [MEMORY[0x277CBEB98] setWithObject:context];
       [v26 setPersonLocalIdentifiers:v29];
     }
 
@@ -205,9 +205,9 @@ LABEL_17:
       }
 
       v29 = v30;
-      v35 = [v37 uuid];
+      uuid4 = [firstObject uuid];
       *buf = 138412290;
-      v46 = v35;
+      v46 = uuid4;
       _os_log_error_impl(&dword_22FA28000, v29, OS_LOG_TYPE_ERROR, "[PHAWallpaperShuffleDescriptorGenerator] Person Suggestion %@ has nil context.", buf, 0xCu);
     }
 
@@ -215,7 +215,7 @@ LABEL_21:
   }
 
 LABEL_22:
-  v31 = [objc_opt_class() displayNameLocalizationKeyForTopSubtype:v36];
+  v31 = [objc_opt_class() displayNameLocalizationKeyForTopSubtype:subtype];
   [v18 setDisplayNameLocalizationKey:v31];
 
   return v18;
@@ -273,13 +273,13 @@ LABEL_5:
 
       v16 = *(*(&v29 + 1) + 8 * v15);
       v17 = [v16 count];
-      v18 = [v17 integerValue];
+      integerValue = [v17 integerValue];
       shuffleMinimumSuggestionRequired = self->_shuffleMinimumSuggestionRequired;
 
-      if (v18 >= shuffleMinimumSuggestionRequired)
+      if (integerValue >= shuffleMinimumSuggestionRequired)
       {
-        v20 = [v16 personLocalIdentifer];
-        [v10 addObject:v20];
+        personLocalIdentifer = [v16 personLocalIdentifer];
+        [v10 addObject:personLocalIdentifer];
       }
 
       if ([v10 count] > 5)
@@ -329,13 +329,13 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CD99F8]) initWithPhotoLibrary:self->_photoLibrary];
-  v4 = [v3 personUUIDsWithNegativeFeedback];
+  personUUIDsWithNegativeFeedback = [v3 personUUIDsWithNegativeFeedback];
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = personUUIDsWithNegativeFeedback;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
@@ -380,28 +380,28 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
   return v14;
 }
 
-- (id)allVIPShufflePosterDescriptorFromEligiblePersonLocalIdentifiers:(id)a3
+- (id)allVIPShufflePosterDescriptorFromEligiblePersonLocalIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] > 1)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] > 1)
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 objectAtIndex:{-[PFPseudoRandomNumberGenerator nextUnsignedIntegerLessThan:](self->_randomNumberGenerator, "nextUnsignedIntegerLessThan:", objc_msgSend(v7, "count"))}];
+    allObjects = [identifiersCopy allObjects];
+    v8 = [allObjects objectAtIndex:{-[PFPseudoRandomNumberGenerator nextUnsignedIntegerLessThan:](self->_randomNumberGenerator, "nextUnsignedIntegerLessThan:", objc_msgSend(allObjects, "count"))}];
     v9 = [MEMORY[0x277CBEB98] setWithObject:v8];
     v6 = [(PHAWallpaperShuffleDescriptorGenerator *)self shufflePosterDescriptorForShuffleSubtype:652 personLocalIdentifiers:v9 suggestionUUIDsToAvoid:0 requireMinimumShuffleCount:0];
 
     if (v6)
     {
-      v10 = [v6 shuffleConfiguration];
-      [v10 setPersonLocalIdentifiers:v4];
+      shuffleConfiguration = [v6 shuffleConfiguration];
+      [shuffleConfiguration setPersonLocalIdentifiers:identifiersCopy];
 
       v11 = MEMORY[0x277CCACA8];
       v12 = [MEMORY[0x277D3B498] descriptorTypeStringWithType:2];
       v13 = [v11 stringWithFormat:@"%@|%@", v12, @"All-VIP"];
       [v6 setIdentifier:v13];
 
-      v14 = [MEMORY[0x277D3BC60] peopleShuffleDescriptorTitleWithCount:{objc_msgSend(v7, "count")}];
+      v14 = [MEMORY[0x277D3BC60] peopleShuffleDescriptorTitleWithCount:{objc_msgSend(allObjects, "count")}];
       [v6 setDisplayNameLocalizationKey:v14];
     }
 
@@ -433,21 +433,21 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
 {
   v38 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v28 = [(PHAWallpaperShuffleDescriptorGenerator *)self shuffleVIPPersonLocalIdentifiers];
+  shuffleVIPPersonLocalIdentifiers = [(PHAWallpaperShuffleDescriptorGenerator *)self shuffleVIPPersonLocalIdentifiers];
   v4 = [(PHAWallpaperShuffleDescriptorGenerator *)self allVIPShufflePosterDescriptorFromEligiblePersonLocalIdentifiers:?];
   v26 = v4;
   if (v4)
   {
     v5 = v4;
     [v3 addObject:{v4, v4}];
-    v6 = [v5 media];
-    v7 = [v6 firstObject];
+    media = [v5 media];
+    firstObject = [media firstObject];
 
-    if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (firstObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = MEMORY[0x277CBEB98];
-      v9 = [v7 suggestionUUID];
-      v10 = [v8 setWithObject:v9];
+      suggestionUUID = [firstObject suggestionUUID];
+      v10 = [v8 setWithObject:suggestionUUID];
     }
 
     else
@@ -493,7 +493,7 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
             v19 = loggingConnection;
             [v17 identifier];
             v20 = v11;
-            v21 = self;
+            selfCopy = self;
             v22 = v10;
             v24 = v23 = v3;
             *buf = 138412290;
@@ -502,7 +502,7 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
 
             v3 = v23;
             v10 = v22;
-            self = v21;
+            self = selfCopy;
             v11 = v20;
             v12 = 0x277CBE000;
           }
@@ -522,28 +522,28 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
   return v3;
 }
 
-- (id)randomizeSuggestions:(id)a3
+- (id)randomizeSuggestions:(id)suggestions
 {
   v3 = MEMORY[0x277D3C810];
-  v4 = a3;
-  v5 = [v3 randomNumberGeneratorForWallpaperDonation];
+  suggestionsCopy = suggestions;
+  randomNumberGeneratorForWallpaperDonation = [v3 randomNumberGeneratorForWallpaperDonation];
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
-  v7 = [v4 fetchedObjects];
+  fetchedObjects = [suggestionsCopy fetchedObjects];
 
-  v8 = [v6 initWithArray:v7];
+  v8 = [v6 initWithArray:fetchedObjects];
   PFMutableArrayShuffleWithRandomNumberGenerator();
   v9 = [v8 copy];
 
   return v9;
 }
 
-- (id)shufflePosterDescriptorForShuffleSubtype:(unsigned __int16)a3 personLocalIdentifiers:(id)a4 suggestionUUIDsToAvoid:(id)a5 requireMinimumShuffleCount:(BOOL)a6
+- (id)shufflePosterDescriptorForShuffleSubtype:(unsigned __int16)subtype personLocalIdentifiers:(id)identifiers suggestionUUIDsToAvoid:(id)avoid requireMinimumShuffleCount:(BOOL)count
 {
-  v6 = a6;
-  v8 = a3;
+  countCopy = count;
+  subtypeCopy = subtype;
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  identifiersCopy = identifiers;
+  avoidCopy = avoid;
   v12 = PHSuggestionStringWithSubtype();
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
@@ -551,13 +551,13 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
     *buf = 138412546;
     v46 = v12;
     v47 = 2112;
-    v48 = v10;
+    v48 = identifiersCopy;
     _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperShuffleDescriptorGenerator] Fetching suggestion with subtype (%@), personLocalIdentifiers %@", buf, 0x16u);
   }
 
-  v14 = [(PHAWallpaperShuffleDescriptorGenerator *)self fetchSuggestionWithSubtype:v8 personLocalIdentifiers:v10];
+  v14 = [(PHAWallpaperShuffleDescriptorGenerator *)self fetchSuggestionWithSubtype:subtypeCopy personLocalIdentifiers:identifiersCopy];
   v15 = v14;
-  if (v6 && [v14 count] < self->_shuffleMinimumSuggestionRequired)
+  if (countCopy && [v14 count] < self->_shuffleMinimumSuggestionRequired)
   {
     v16 = self->_loggingConnection;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -582,13 +582,13 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
   else
   {
     v21 = MEMORY[0x277CD97A8];
-    v22 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    v23 = [v21 fetchKeyAssetBySuggestionUUIDForSuggestions:v15 options:v22];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    v23 = [v21 fetchKeyAssetBySuggestionUUIDForSuggestions:v15 options:librarySpecificFetchOptions];
 
-    v24 = -[PHAWallpaperShuffleDescriptorGenerator baseSuggestionFetchOptionsWithSubtype:personLocalIdentifiers:suggestionUUIDsToAvoid:](self, "baseSuggestionFetchOptionsWithSubtype:personLocalIdentifiers:suggestionUUIDsToAvoid:", [objc_opt_class() wallpaperTopSubtypeFromShuffleSubtype:v8], 0, v11);
+    v24 = -[PHAWallpaperShuffleDescriptorGenerator baseSuggestionFetchOptionsWithSubtype:personLocalIdentifiers:suggestionUUIDsToAvoid:](self, "baseSuggestionFetchOptionsWithSubtype:personLocalIdentifiers:suggestionUUIDsToAvoid:", [objc_opt_class() wallpaperTopSubtypeFromShuffleSubtype:subtypeCopy], 0, avoidCopy);
     v25 = MEMORY[0x277CD99E0];
-    v26 = [v23 allValues];
-    v27 = [v25 fetchAssetCollectionsContainingAssets:v26 withType:8 options:v24];
+    allValues = [v23 allValues];
+    v27 = [v25 fetchAssetCollectionsContainingAssets:allValues withType:8 options:v24];
 
     if ([v27 count])
     {
@@ -599,15 +599,15 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
         v43 = v24;
         v30 = v15;
         v31 = v23;
-        v32 = v10;
+        v32 = identifiersCopy;
         v33 = v12;
-        v34 = v11;
+        v34 = avoidCopy;
         v35 = [v29 mutableCopy];
 
         v28 = v35;
-        v11 = v34;
+        avoidCopy = v34;
         v12 = v33;
-        v10 = v32;
+        identifiersCopy = v32;
         v23 = v31;
         v15 = v30;
         v24 = v43;
@@ -620,14 +620,14 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         v44 = v12;
-        v38 = v11;
+        v38 = avoidCopy;
         v39 = v37;
-        v40 = [v20 identifier];
+        identifier = [v20 identifier];
         *buf = 138412290;
-        v46 = v40;
+        v46 = identifier;
         _os_log_impl(&dword_22FA28000, v39, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperShuffleDescriptorGenerator] Created Shuffle Poster Descriptor: %@", buf, 0xCu);
 
-        v11 = v38;
+        avoidCopy = v38;
         v12 = v44;
       }
     }
@@ -677,7 +677,7 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
     [v8 addObject:v10];
   }
 
-  v25 = [(PHAWallpaperShuffleDescriptorGenerator *)self peopleShufflePosterDescriptors];
+  peopleShufflePosterDescriptors = [(PHAWallpaperShuffleDescriptorGenerator *)self peopleShufflePosterDescriptors];
   [v8 addObjectsFromArray:?];
   v11 = mach_absolute_time();
   numer = info.numer;
@@ -719,8 +719,8 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v26 + 1) + 8 * i) identifier];
-        [v16 addObject:v22];
+        identifier = [*(*(&v26 + 1) + 8 * i) identifier];
+        [v16 addObject:identifier];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -740,26 +740,26 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
   return v17;
 }
 
-- (PHAWallpaperShuffleDescriptorGenerator)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4
+- (PHAWallpaperShuffleDescriptorGenerator)initWithPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = PHAWallpaperShuffleDescriptorGenerator;
   v9 = [(PHAWallpaperShuffleDescriptorGenerator *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
-    v11 = [MEMORY[0x277D3C810] randomNumberGeneratorForWallpaperDonation];
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_loggingConnection, connection);
+    randomNumberGeneratorForWallpaperDonation = [MEMORY[0x277D3C810] randomNumberGeneratorForWallpaperDonation];
     randomNumberGenerator = v10->_randomNumberGenerator;
-    v10->_randomNumberGenerator = v11;
+    v10->_randomNumberGenerator = randomNumberGeneratorForWallpaperDonation;
 
     v10->_shuffleMinimumSuggestionRequired = 25;
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 integerForKey:@"PHAWallpaperSuggestionShuffleMinimumSuggestionRequired"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults integerForKey:@"PHAWallpaperSuggestionShuffleMinimumSuggestionRequired"];
 
     if (v14 >= 1)
     {
@@ -778,40 +778,40 @@ void __89__PHAWallpaperShuffleDescriptorGenerator_shuffleDescriptorEligiblePerso
   return v10;
 }
 
-+ (id)displayNameLocalizationKeyForTopSubtype:(unsigned __int16)a3
++ (id)displayNameLocalizationKeyForTopSubtype:(unsigned __int16)subtype
 {
   v7 = *MEMORY[0x277D85DE8];
-  if ((a3 - 602) < 3)
+  if ((subtype - 602) < 3)
   {
-    return off_2788B2CA8[(a3 - 602)];
+    return off_2788B2CA8[(subtype - 602)];
   }
 
-  v4 = a3;
+  subtypeCopy = subtype;
   v5 = PLWallpaperGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = subtypeCopy;
     _os_log_error_impl(&dword_22FA28000, v5, OS_LOG_TYPE_ERROR, "[PHAWallpaperShuffleDescriptorGenerator] wallpaperTopSubtypeFromShuffleSubtype called with %d. This method should only take in non-top wallpaper subtypes.", v6, 8u);
   }
 
   return 0;
 }
 
-+ (unsigned)wallpaperTopSubtypeFromShuffleSubtype:(unsigned __int16)a3
++ (unsigned)wallpaperTopSubtypeFromShuffleSubtype:(unsigned __int16)subtype
 {
-  v3 = a3;
+  subtypeCopy = subtype;
   v8 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0xFFFC) == 0x28C)
+  if ((subtype & 0xFFFC) == 0x28C)
   {
-    return a3 - 50;
+    return subtype - 50;
   }
 
   v5 = PLWallpaperGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = subtypeCopy;
     _os_log_error_impl(&dword_22FA28000, v5, OS_LOG_TYPE_ERROR, "[PHAWallpaperShuffleDescriptorGenerator] wallpaperTopSubtypeFromShuffleSubtype called with %d. This method should only take in non-top wallpaper subtypes.", v7, 8u);
   }
 

@@ -1,14 +1,14 @@
 @interface RTLocationContextManagerPlaceInferencesNotification
-- (RTLocationContextManagerPlaceInferencesNotification)initWithPlaceInferences:(id)a3;
+- (RTLocationContextManagerPlaceInferencesNotification)initWithPlaceInferences:(id)inferences;
 @end
 
 @implementation RTLocationContextManagerPlaceInferencesNotification
 
-- (RTLocationContextManagerPlaceInferencesNotification)initWithPlaceInferences:(id)a3
+- (RTLocationContextManagerPlaceInferencesNotification)initWithPlaceInferences:(id)inferences
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  inferencesCopy = inferences;
+  if (!inferencesCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@
   v6 = [(RTNotification *)&v10 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [inferencesCopy copy];
     placeInferences = v6->_placeInferences;
     v6->_placeInferences = v7;
   }

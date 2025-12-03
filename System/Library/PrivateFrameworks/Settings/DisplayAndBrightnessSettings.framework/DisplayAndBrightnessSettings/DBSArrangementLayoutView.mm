@@ -1,31 +1,31 @@
 @interface DBSArrangementLayoutView
 - (CGSize)externalDisplaySize;
 - (CGSize)nativeDisplaySize;
-- (DBSArrangementLayoutView)initWithDataSource:(id)a3;
+- (DBSArrangementLayoutView)initWithDataSource:(id)source;
 - (DBSArrangementLayoutViewController)dataSource;
-- (id)_placeHolderMainDisplayImageWithWidth:(double)a3 orientation:(int64_t)a4;
-- (unint64_t)displayLocationForPointInView:(CGPoint)a3;
+- (id)_placeHolderMainDisplayImageWithWidth:(double)width orientation:(int64_t)orientation;
+- (unint64_t)displayLocationForPointInView:(CGPoint)view;
 - (void)arrangeDisplayIcons;
-- (void)placeCurrentDisplayAtLocation:(unint64_t)a3;
-- (void)updateForOrientation:(int64_t)a3;
-- (void)updateNativeDisplayImagesWithOrientation:(int64_t)a3;
+- (void)placeCurrentDisplayAtLocation:(unint64_t)location;
+- (void)updateForOrientation:(int64_t)orientation;
+- (void)updateNativeDisplayImagesWithOrientation:(int64_t)orientation;
 @end
 
 @implementation DBSArrangementLayoutView
 
-- (DBSArrangementLayoutView)initWithDataSource:(id)a3
+- (DBSArrangementLayoutView)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = DBSArrangementLayoutView;
   v5 = [(DBSArrangementLayoutView *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
     v6->_margin = 20.0;
-    v7 = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
-    [(DBSArrangementLayoutView *)v6 setBackgroundColor:v7];
+    tableCellGroupedBackgroundColor = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
+    [(DBSArrangementLayoutView *)v6 setBackgroundColor:tableCellGroupedBackgroundColor];
 
     [(DBSArrangementLayoutView *)v6 arrangeDisplayIcons];
   }
@@ -33,54 +33,54 @@
   return v6;
 }
 
-- (void)placeCurrentDisplayAtLocation:(unint64_t)a3
+- (void)placeCurrentDisplayAtLocation:(unint64_t)location
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v5 = [(DBSArrangementLayoutView *)self northDisplay];
-  v22[0] = v5;
-  v6 = [(DBSArrangementLayoutView *)self eastDisplay];
-  v22[1] = v6;
-  v7 = [(DBSArrangementLayoutView *)self southDisplay];
-  v22[2] = v7;
-  v8 = [(DBSArrangementLayoutView *)self westDisplay];
-  v22[3] = v8;
+  northDisplay = [(DBSArrangementLayoutView *)self northDisplay];
+  v22[0] = northDisplay;
+  eastDisplay = [(DBSArrangementLayoutView *)self eastDisplay];
+  v22[1] = eastDisplay;
+  southDisplay = [(DBSArrangementLayoutView *)self southDisplay];
+  v22[2] = southDisplay;
+  westDisplay = [(DBSArrangementLayoutView *)self westDisplay];
+  v22[3] = westDisplay;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
   v10 = 0;
-  if (a3 > 1)
+  if (location > 1)
   {
-    if (a3 == 2)
+    if (location == 2)
     {
-      v11 = [(DBSArrangementLayoutView *)self southDisplay];
+      southDisplay2 = [(DBSArrangementLayoutView *)self southDisplay];
     }
 
     else
     {
-      if (a3 != 3)
+      if (location != 3)
       {
         goto LABEL_11;
       }
 
-      v11 = [(DBSArrangementLayoutView *)self westDisplay];
+      southDisplay2 = [(DBSArrangementLayoutView *)self westDisplay];
     }
   }
 
-  else if (a3)
+  else if (location)
   {
-    if (a3 != 1)
+    if (location != 1)
     {
       goto LABEL_11;
     }
 
-    v11 = [(DBSArrangementLayoutView *)self eastDisplay];
+    southDisplay2 = [(DBSArrangementLayoutView *)self eastDisplay];
   }
 
   else
   {
-    v11 = [(DBSArrangementLayoutView *)self northDisplay];
+    southDisplay2 = [(DBSArrangementLayoutView *)self northDisplay];
   }
 
-  v10 = v11;
+  v10 = southDisplay2;
 LABEL_11:
   v19 = 0u;
   v20 = 0u;
@@ -116,8 +116,8 @@ LABEL_11:
 
 - (void)arrangeDisplayIcons
 {
-  v3 = [(DBSArrangementLayoutView *)self dataSource];
-  [v3 externalDisplaySize];
+  dataSource = [(DBSArrangementLayoutView *)self dataSource];
+  [dataSource externalDisplaySize];
   v5 = v4;
   v7 = v6;
 
@@ -127,33 +127,33 @@ LABEL_11:
   v86 = __Block_byref_object_copy__0;
   v87 = __Block_byref_object_dispose__0;
   v88 = 0;
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  v9 = [v8 connectedScenes];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128] connectedScenes];
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
   v82[2] = __47__DBSArrangementLayoutView_arrangeDisplayIcons__block_invoke;
   v82[3] = &unk_278459708;
   v82[4] = &v83;
-  [v9 enumerateObjectsUsingBlock:v82];
+  [connectedScenes enumerateObjectsUsingBlock:v82];
 
-  v10 = [(DBSArrangementLayoutView *)self dataSource];
-  [v10 nativeDisplaySize];
+  dataSource2 = [(DBSArrangementLayoutView *)self dataSource];
+  [dataSource2 nativeDisplaySize];
   v12 = v11;
   v14 = v13;
 
   v15 = [DBSExternalDisplayIconView alloc];
-  v16 = [(DBSArrangementLayoutView *)self dataSource];
-  v17 = [v16 externalDisplayName];
-  v18 = [(DBSExternalDisplayIconView *)v15 initWithFrame:v17 displayName:0.0, 0.0, v5, v7];
+  dataSource3 = [(DBSArrangementLayoutView *)self dataSource];
+  externalDisplayName = [dataSource3 externalDisplayName];
+  v18 = [(DBSExternalDisplayIconView *)v15 initWithFrame:externalDisplayName displayName:0.0, 0.0, v5, v7];
 
-  v19 = [(DBSArrangementLayoutView *)self dataSource];
-  v20 = [v19 nativeDisplayName];
+  dataSource4 = [(DBSArrangementLayoutView *)self dataSource];
+  nativeDisplayName = [dataSource4 nativeDisplayName];
 
-  v21 = [[DBSNativeDisplayIconView alloc] initWithFrame:v20 displayName:0.0, 0.0, v12, v14];
-  v22 = [[DBSNativeDisplayIconView alloc] initWithFrame:v20 displayName:0.0, 0.0, v12, v14];
-  v81 = v20;
-  v23 = [[DBSNativeDisplayIconView alloc] initWithFrame:v20 displayName:0.0, 0.0, v12, v14];
-  v24 = [[DBSNativeDisplayIconView alloc] initWithFrame:v20 displayName:0.0, 0.0, v12, v14];
+  v21 = [[DBSNativeDisplayIconView alloc] initWithFrame:nativeDisplayName displayName:0.0, 0.0, v12, v14];
+  v22 = [[DBSNativeDisplayIconView alloc] initWithFrame:nativeDisplayName displayName:0.0, 0.0, v12, v14];
+  v81 = nativeDisplayName;
+  v23 = [[DBSNativeDisplayIconView alloc] initWithFrame:nativeDisplayName displayName:0.0, 0.0, v12, v14];
+  v24 = [[DBSNativeDisplayIconView alloc] initWithFrame:nativeDisplayName displayName:0.0, 0.0, v12, v14];
   [(DBSExternalDisplayIconView *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(DBSArrangementLayoutView *)self addSubview:v18];
   [(DBSArrangementLayoutView *)self addSubview:v21];
@@ -163,69 +163,69 @@ LABEL_11:
   v25 = MEMORY[0x277CCABB0];
   [(DBSArrangementLayoutView *)self margin];
   v26 = [v25 numberWithDouble:?];
-  v27 = [(DBSExternalDisplayIconView *)v18 heightAnchor];
-  v28 = [(DBSExternalDisplayIconView *)v18 widthAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 multiplier:v7 / v5];
+  heightAnchor = [(DBSExternalDisplayIconView *)v18 heightAnchor];
+  widthAnchor = [(DBSExternalDisplayIconView *)v18 widthAnchor];
+  v29 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v7 / v5];
   [v29 setActive:1];
 
-  v30 = [(DBSNativeDisplayIconView *)v22 heightAnchor];
-  v31 = [(DBSNativeDisplayIconView *)v21 heightAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  heightAnchor2 = [(DBSNativeDisplayIconView *)v22 heightAnchor];
+  heightAnchor3 = [(DBSNativeDisplayIconView *)v21 heightAnchor];
+  v32 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [v32 setActive:1];
 
-  v33 = [(DBSNativeDisplayIconView *)v23 heightAnchor];
-  v34 = [(DBSNativeDisplayIconView *)v21 heightAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  heightAnchor4 = [(DBSNativeDisplayIconView *)v23 heightAnchor];
+  heightAnchor5 = [(DBSNativeDisplayIconView *)v21 heightAnchor];
+  v35 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   [v35 setActive:1];
 
-  v36 = [(DBSNativeDisplayIconView *)v24 heightAnchor];
-  v37 = [(DBSNativeDisplayIconView *)v21 heightAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  heightAnchor6 = [(DBSNativeDisplayIconView *)v24 heightAnchor];
+  heightAnchor7 = [(DBSNativeDisplayIconView *)v21 heightAnchor];
+  v38 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7];
   [v38 setActive:1];
 
-  v39 = [(DBSNativeDisplayIconView *)v22 widthAnchor];
-  v40 = [(DBSNativeDisplayIconView *)v21 widthAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  widthAnchor2 = [(DBSNativeDisplayIconView *)v22 widthAnchor];
+  widthAnchor3 = [(DBSNativeDisplayIconView *)v21 widthAnchor];
+  v41 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   [v41 setActive:1];
 
-  v42 = [(DBSNativeDisplayIconView *)v23 widthAnchor];
-  v43 = [(DBSNativeDisplayIconView *)v21 widthAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  widthAnchor4 = [(DBSNativeDisplayIconView *)v23 widthAnchor];
+  widthAnchor5 = [(DBSNativeDisplayIconView *)v21 widthAnchor];
+  v44 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   [v44 setActive:1];
 
-  v45 = [(DBSNativeDisplayIconView *)v24 widthAnchor];
-  v46 = [(DBSNativeDisplayIconView *)v21 widthAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  widthAnchor6 = [(DBSNativeDisplayIconView *)v24 widthAnchor];
+  widthAnchor7 = [(DBSNativeDisplayIconView *)v21 widthAnchor];
+  v47 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7];
   [v47 setActive:1];
 
-  v48 = [(DBSExternalDisplayIconView *)v18 centerYAnchor];
-  v49 = [(DBSArrangementLayoutView *)self centerYAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  centerYAnchor = [(DBSExternalDisplayIconView *)v18 centerYAnchor];
+  centerYAnchor2 = [(DBSArrangementLayoutView *)self centerYAnchor];
+  v50 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v50 setActive:1];
 
-  v51 = [(DBSExternalDisplayIconView *)v18 centerYAnchor];
-  v52 = [(DBSNativeDisplayIconView *)v21 centerYAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  centerYAnchor3 = [(DBSExternalDisplayIconView *)v18 centerYAnchor];
+  centerYAnchor4 = [(DBSNativeDisplayIconView *)v21 centerYAnchor];
+  v53 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v53 setActive:1];
 
-  v54 = [(DBSExternalDisplayIconView *)v18 centerYAnchor];
-  v55 = [(DBSNativeDisplayIconView *)v22 centerYAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  centerYAnchor5 = [(DBSExternalDisplayIconView *)v18 centerYAnchor];
+  centerYAnchor6 = [(DBSNativeDisplayIconView *)v22 centerYAnchor];
+  v56 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v56 setActive:1];
 
-  v57 = [(DBSExternalDisplayIconView *)v18 centerXAnchor];
-  v58 = [(DBSArrangementLayoutView *)self centerXAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58];
+  centerXAnchor = [(DBSExternalDisplayIconView *)v18 centerXAnchor];
+  centerXAnchor2 = [(DBSArrangementLayoutView *)self centerXAnchor];
+  v59 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v59 setActive:1];
 
-  v60 = [(DBSExternalDisplayIconView *)v18 centerXAnchor];
-  v61 = [(DBSNativeDisplayIconView *)v23 centerXAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  centerXAnchor3 = [(DBSExternalDisplayIconView *)v18 centerXAnchor];
+  centerXAnchor4 = [(DBSNativeDisplayIconView *)v23 centerXAnchor];
+  v62 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v62 setActive:1];
 
-  v63 = [(DBSExternalDisplayIconView *)v18 centerXAnchor];
-  v64 = [(DBSNativeDisplayIconView *)v24 centerXAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  centerXAnchor5 = [(DBSExternalDisplayIconView *)v18 centerXAnchor];
+  centerXAnchor6 = [(DBSNativeDisplayIconView *)v24 centerXAnchor];
+  v65 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v65 setActive:1];
 
   v66 = MEMORY[0x277CCAAD0];
@@ -235,10 +235,10 @@ LABEL_11:
   v80 = [v66 constraintsWithVisualFormat:@"H:|-margin@900-[nativeIconWest][externalIcon][nativeIconEast]-margin@900-|" options:0 metrics:v67 views:v68];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v80];
-  v69 = [(DBSNativeDisplayIconView *)v21 leadingAnchor];
-  v70 = [(DBSArrangementLayoutView *)self leadingAnchor];
+  leadingAnchor = [(DBSNativeDisplayIconView *)v21 leadingAnchor];
+  leadingAnchor2 = [(DBSArrangementLayoutView *)self leadingAnchor];
   [(DBSArrangementLayoutView *)self margin];
-  v71 = [v69 constraintGreaterThanOrEqualToAnchor:v70 constant:?];
+  v71 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
   [v71 setActive:1];
 
   v72 = MEMORY[0x277CCAAD0];
@@ -247,10 +247,10 @@ LABEL_11:
   v75 = [v72 constraintsWithVisualFormat:@"V:|-margin@900-[nativeIconNorth][externalIcon][nativeIconSouth]-margin@900-|" options:0 metrics:v73 views:v74];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v75];
-  v76 = [(DBSNativeDisplayIconView *)v23 topAnchor];
-  v77 = [(DBSArrangementLayoutView *)self topAnchor];
+  topAnchor = [(DBSNativeDisplayIconView *)v23 topAnchor];
+  topAnchor2 = [(DBSArrangementLayoutView *)self topAnchor];
   [(DBSArrangementLayoutView *)self margin];
-  v78 = [v76 constraintGreaterThanOrEqualToAnchor:v77 constant:?];
+  v78 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:?];
   [v78 setActive:1];
 
   [(DBSArrangementLayoutView *)self setExternalDisplay:v18];
@@ -280,51 +280,51 @@ void __47__DBSArrangementLayoutView_arrangeDisplayIcons__block_invoke(uint64_t a
   }
 }
 
-- (void)updateForOrientation:(int64_t)a3
+- (void)updateForOrientation:(int64_t)orientation
 {
-  v5 = [(DBSArrangementLayoutView *)self dataSource];
-  [v5 externalDisplaySize];
+  dataSource = [(DBSArrangementLayoutView *)self dataSource];
+  [dataSource externalDisplaySize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(DBSArrangementLayoutView *)self dataSource];
-  [v10 nativeDisplaySize];
+  dataSource2 = [(DBSArrangementLayoutView *)self dataSource];
+  [dataSource2 nativeDisplaySize];
   v12 = v11;
   v14 = v13;
 
   [(DBSArrangementLayoutView *)self setExternalDisplaySize:v7, v9];
   [(DBSArrangementLayoutView *)self setNativeDisplaySize:v12, v14];
-  v15 = [(DBSArrangementLayoutView *)self widthRatioConstraint];
-  [v15 setActive:0];
+  widthRatioConstraint = [(DBSArrangementLayoutView *)self widthRatioConstraint];
+  [widthRatioConstraint setActive:0];
 
   v16 = MEMORY[0x277CCAAD0];
-  v17 = [(DBSArrangementLayoutView *)self externalDisplay];
-  v18 = [(DBSArrangementLayoutView *)self westDisplay];
-  v19 = [v16 constraintWithItem:v17 attribute:7 relatedBy:0 toItem:v18 attribute:7 multiplier:v7 / v12 constant:0.0];
+  externalDisplay = [(DBSArrangementLayoutView *)self externalDisplay];
+  westDisplay = [(DBSArrangementLayoutView *)self westDisplay];
+  v19 = [v16 constraintWithItem:externalDisplay attribute:7 relatedBy:0 toItem:westDisplay attribute:7 multiplier:v7 / v12 constant:0.0];
   [(DBSArrangementLayoutView *)self setWidthRatioConstraint:v19];
 
-  v20 = [(DBSArrangementLayoutView *)self widthRatioConstraint];
-  [v20 setActive:1];
+  widthRatioConstraint2 = [(DBSArrangementLayoutView *)self widthRatioConstraint];
+  [widthRatioConstraint2 setActive:1];
 
-  v21 = [(DBSArrangementLayoutView *)self nativeIconAspectRatioConstraint];
-  [v21 setActive:0];
+  nativeIconAspectRatioConstraint = [(DBSArrangementLayoutView *)self nativeIconAspectRatioConstraint];
+  [nativeIconAspectRatioConstraint setActive:0];
 
-  v22 = [(DBSArrangementLayoutView *)self westDisplay];
-  v23 = [v22 heightAnchor];
-  v24 = [(DBSArrangementLayoutView *)self westDisplay];
-  v25 = [v24 widthAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25 multiplier:v14 / v12];
+  westDisplay2 = [(DBSArrangementLayoutView *)self westDisplay];
+  heightAnchor = [westDisplay2 heightAnchor];
+  westDisplay3 = [(DBSArrangementLayoutView *)self westDisplay];
+  widthAnchor = [westDisplay3 widthAnchor];
+  v26 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v14 / v12];
   [(DBSArrangementLayoutView *)self setNativeIconAspectRatioConstraint:v26];
 
-  v27 = [(DBSArrangementLayoutView *)self nativeIconAspectRatioConstraint];
-  [v27 setActive:1];
+  nativeIconAspectRatioConstraint2 = [(DBSArrangementLayoutView *)self nativeIconAspectRatioConstraint];
+  [nativeIconAspectRatioConstraint2 setActive:1];
 
-  [(DBSArrangementLayoutView *)self updateNativeDisplayImagesWithOrientation:a3];
+  [(DBSArrangementLayoutView *)self updateNativeDisplayImagesWithOrientation:orientation];
 }
 
-- (id)_placeHolderMainDisplayImageWithWidth:(double)a3 orientation:(int64_t)a4
+- (id)_placeHolderMainDisplayImageWithWidth:(double)width orientation:(int64_t)orientation
 {
-  if ((a4 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v5 = @"ipad";
   }
@@ -335,13 +335,13 @@ void __47__DBSArrangementLayoutView_arrangeDisplayIcons__block_invoke(uint64_t a
   }
 
   v6 = [MEMORY[0x277D755B8] systemImageNamed:v5 compatibleWithTraitCollection:0];
-  v7 = [MEMORY[0x277D755D0] configurationWithPointSize:2 weight:a3];
+  v7 = [MEMORY[0x277D755D0] configurationWithPointSize:2 weight:width];
   v8 = [v6 imageWithSymbolConfiguration:v7];
 
   return v8;
 }
 
-- (void)updateNativeDisplayImagesWithOrientation:(int64_t)a3
+- (void)updateNativeDisplayImagesWithOrientation:(int64_t)orientation
 {
   [(DBSArrangementLayoutView *)self nativeDisplaySize];
   v6 = v5;
@@ -387,13 +387,13 @@ void __47__DBSArrangementLayoutView_arrangeDisplayIcons__block_invoke(uint64_t a
   v21 = MEMORY[0x223D9E740](v32);
   if (v18 > 0.0)
   {
-    v22 = [(DBSArrangementLayoutView *)self northDisplay];
-    v23 = [v22 imageView];
-    v24 = [v23 image];
+    northDisplay = [(DBSArrangementLayoutView *)self northDisplay];
+    imageView = [northDisplay imageView];
+    image = [imageView image];
 
-    if (!v24)
+    if (!image)
     {
-      v25 = [(DBSArrangementLayoutView *)self _placeHolderMainDisplayImageWithWidth:a3 orientation:v6 * v18];
+      v25 = [(DBSArrangementLayoutView *)self _placeHolderMainDisplayImageWithWidth:orientation orientation:v6 * v18];
       (v21)[2](v21, v25);
     }
 
@@ -466,37 +466,37 @@ void __69__DBSArrangementLayoutView_updateNativeDisplayImagesWithOrientation___b
   [v5 setNeedsLayout];
 }
 
-- (unint64_t)displayLocationForPointInView:(CGPoint)a3
+- (unint64_t)displayLocationForPointInView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   v52[4] = *MEMORY[0x277D85DE8];
-  v6 = [(DBSArrangementLayoutView *)self northDisplay];
-  [v6 frame];
+  northDisplay = [(DBSArrangementLayoutView *)self northDisplay];
+  [northDisplay frame];
   MidX = CGRectGetMidX(v53);
-  v8 = [(DBSArrangementLayoutView *)self northDisplay];
-  [v8 frame];
+  northDisplay2 = [(DBSArrangementLayoutView *)self northDisplay];
+  [northDisplay2 frame];
   MidY = CGRectGetMidY(v54);
 
-  v9 = [(DBSArrangementLayoutView *)self eastDisplay];
-  [v9 frame];
+  eastDisplay = [(DBSArrangementLayoutView *)self eastDisplay];
+  [eastDisplay frame];
   v45 = CGRectGetMidX(v55);
-  v10 = [(DBSArrangementLayoutView *)self eastDisplay];
-  [v10 frame];
+  eastDisplay2 = [(DBSArrangementLayoutView *)self eastDisplay];
+  [eastDisplay2 frame];
   v11 = CGRectGetMidY(v56);
 
-  v12 = [(DBSArrangementLayoutView *)self southDisplay];
-  [v12 frame];
+  southDisplay = [(DBSArrangementLayoutView *)self southDisplay];
+  [southDisplay frame];
   v13 = CGRectGetMidX(v57);
-  v14 = [(DBSArrangementLayoutView *)self southDisplay];
-  [v14 frame];
+  southDisplay2 = [(DBSArrangementLayoutView *)self southDisplay];
+  [southDisplay2 frame];
   v15 = CGRectGetMidY(v58);
 
-  v16 = [(DBSArrangementLayoutView *)self westDisplay];
-  [v16 frame];
+  westDisplay = [(DBSArrangementLayoutView *)self westDisplay];
+  [westDisplay frame];
   v17 = CGRectGetMidX(v59);
-  v18 = [(DBSArrangementLayoutView *)self westDisplay];
-  [v18 frame];
+  westDisplay2 = [(DBSArrangementLayoutView *)self westDisplay];
+  [westDisplay2 frame];
   v19 = CGRectGetMidY(v60);
 
   [(DBSArrangementLayoutView *)self _pointDistanceFirst:x second:y, MidX, MidY];

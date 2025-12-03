@@ -1,7 +1,7 @@
 @interface TrendsScrubberFlagpoleView
 + (uint64_t)layerClass;
-- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithCoder:(id)a3;
-- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithFrame:(CGRect)a3;
+- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithCoder:(id)coder;
+- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,16 +16,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100609888();
 }
 
-- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithFrame:(CGRect)a3
+- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC10FitnessApp26TrendsScrubberFlagpoleView_platterColor;
   *(&self->super.super.super.isa + v8) = [objc_opt_self() whiteColor];
   v10.receiver = self;
@@ -33,15 +33,15 @@
   return [(TrendsScrubberFlagpoleView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithCoder:(id)a3
+- (_TtC10FitnessApp26TrendsScrubberFlagpoleView)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC10FitnessApp26TrendsScrubberFlagpoleView_platterColor;
   v6 = objc_opt_self();
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 whiteColor];
   v10.receiver = self;
   v10.super_class = type metadata accessor for TrendsScrubberFlagpoleView();
-  v8 = [(TrendsScrubberFlagpoleView *)&v10 initWithCoder:v7];
+  v8 = [(TrendsScrubberFlagpoleView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

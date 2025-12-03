@@ -3,46 +3,46 @@
 + (id)logger;
 - (NSXPCConnection)xpcConnection;
 - (SKPresenceConnectionDelegateProtocol)connectionDelegate;
-- (SKPresenceDaemonConnection)initWithPresenceDaemonDelegate:(id)a3 connectionDelegate:(id)a4;
+- (SKPresenceDaemonConnection)initWithPresenceDaemonDelegate:(id)delegate connectionDelegate:(id)connectionDelegate;
 - (SKPresenceDaemonDelegateProtocol)presenceDaemonDelegate;
-- (id)asynchronousRemoteDaemonWithErrorHandler:(id)a3;
-- (id)synchronousRemoteDaemonWithErrorHandler:(id)a3;
+- (id)asynchronousRemoteDaemonWithErrorHandler:(id)handler;
+- (id)synchronousRemoteDaemonWithErrorHandler:(id)handler;
 - (void)_resetConnectionHandlers;
 - (void)invalidate;
-- (void)setXPCConnection:(id)a3;
+- (void)setXPCConnection:(id)connection;
 @end
 
 @implementation SKPresenceDaemonConnection
 
-- (SKPresenceDaemonConnection)initWithPresenceDaemonDelegate:(id)a3 connectionDelegate:(id)a4
+- (SKPresenceDaemonConnection)initWithPresenceDaemonDelegate:(id)delegate connectionDelegate:(id)connectionDelegate
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  connectionDelegateCopy = connectionDelegate;
   v11.receiver = self;
   v11.super_class = SKPresenceDaemonConnection;
   v8 = [(SKPresenceDaemonConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presenceDaemonDelegate, v6);
-    objc_storeWeak(&v9->_connectionDelegate, v7);
+    objc_storeWeak(&v8->_presenceDaemonDelegate, delegateCopy);
+    objc_storeWeak(&v9->_connectionDelegate, connectionDelegateCopy);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v9;
 }
 
-- (id)asynchronousRemoteDaemonWithErrorHandler:(id)a3
+- (id)asynchronousRemoteDaemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKPresenceDaemonConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKPresenceDaemonConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__SKPresenceDaemonConnection_asynchronousRemoteDaemonWithErrorHandler___block_invoke;
   v9[3] = &unk_279D128F8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -59,17 +59,17 @@ void __71__SKPresenceDaemonConnection_asynchronousRemoteDaemonWithErrorHandler__
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)synchronousRemoteDaemonWithErrorHandler:(id)a3
+- (id)synchronousRemoteDaemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKPresenceDaemonConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKPresenceDaemonConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SKPresenceDaemonConnection_synchronousRemoteDaemonWithErrorHandler___block_invoke;
   v9[3] = &unk_279D128F8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -130,8 +130,8 @@ uint64_t __36__SKPresenceDaemonConnection_logger__block_invoke()
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
   {
-    v4 = [(SKPresenceDaemonConnection *)self _xpcConnectionOptions];
-    v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.StatusKit.presence" options:v4];
+    _xpcConnectionOptions = [(SKPresenceDaemonConnection *)self _xpcConnectionOptions];
+    v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.StatusKit.presence" options:_xpcConnectionOptions];
     v6 = self->_xpcConnection;
     self->_xpcConnection = v5;
 
@@ -242,12 +242,12 @@ void __43__SKPresenceDaemonConnection_xpcConnection__block_invoke_7(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setXPCConnection:(id)a3
+- (void)setXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   xpcConnection = self->_xpcConnection;
-  self->_xpcConnection = v4;
+  self->_xpcConnection = connectionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

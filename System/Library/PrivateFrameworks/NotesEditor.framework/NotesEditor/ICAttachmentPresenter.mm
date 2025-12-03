@@ -1,13 +1,13 @@
 @interface ICAttachmentPresenter
-+ (BOOL)shouldCommitPreviewViewController:(id)a3;
-+ (id)previewViewControllerWithViewControllerManager:(id)a3 attachments:(id)a4 startingAtIndex:(unint64_t)a5 delegate:(id)a6 editable:(BOOL)a7 isFromAttachmentBrowser:(BOOL)a8;
++ (BOOL)shouldCommitPreviewViewController:(id)controller;
++ (id)previewViewControllerWithViewControllerManager:(id)manager attachments:(id)attachments startingAtIndex:(unint64_t)index delegate:(id)delegate editable:(BOOL)editable isFromAttachmentBrowser:(BOOL)browser;
 - (BOOL)isAttachmentBrowser;
 - (BOOL)isAttachmentPresentedInProcess;
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)previewController:(id)a3 canShareItem:(id)a4;
+- (BOOL)previewController:(id)controller canShareItem:(id)item;
 - (ICAttachment)displayedAttachment;
 - (ICAttachment)selectedSubAttachment;
-- (ICAttachmentPresenter)initWithViewControllerManager:(id)a3 attachments:(id)a4 startingAtIndex:(unint64_t)a5 delegate:(id)a6 displayShowInNote:(BOOL)a7 editable:(BOOL)a8 presentingViewController:(id)a9;
+- (ICAttachmentPresenter)initWithViewControllerManager:(id)manager attachments:(id)attachments startingAtIndex:(unint64_t)index delegate:(id)delegate displayShowInNote:(BOOL)note editable:(BOOL)editable presentingViewController:(id)controller;
 - (ICAttachmentPresenterDelegate)delegate;
 - (ICNAEventReporter)eventReporter;
 - (ICViewControllerManager)ic_viewControllerManager;
@@ -17,68 +17,68 @@
 - (UIViewController)presentingViewController;
 - (UIViewController)rootViewController;
 - (id)attachment;
-- (id)excludedActivityTypesForPreviewController:(id)a3;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4;
-- (id)transitionViewForAttachment:(id)a3;
-- (id)transitionViewForAttachment:(id)a3 atIndexPath:(id)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4;
+- (id)excludedActivityTypesForPreviewController:(id)controller;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item;
+- (id)transitionViewForAttachment:(id)attachment;
+- (id)transitionViewForAttachment:(id)attachment atIndexPath:(id)path;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item;
 - (unint64_t)quickLookFilteredStartingIndex;
-- (void)applyPresentedAttachmentUIStateIfNecessary:(id)a3;
-- (void)attachmentWillBeDeletedNotification:(id)a3;
+- (void)applyPresentedAttachmentUIStateIfNecessary:(id)necessary;
+- (void)attachmentWillBeDeletedNotification:(id)notification;
 - (void)dealloc;
-- (void)dismiss:(id)a3;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)eventReporterLostSession:(id)a3;
+- (void)dismiss:(id)dismiss;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)eventReporterLostSession:(id)session;
 - (void)galleryAttachmentEditorControllerDeleteAttachment;
 - (void)galleryAttachmentEditorControllerDidDismiss;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
 - (void)notifyDelegateDidDismiss;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentAttachmentViewController:(id)a3;
-- (void)presentAttachmentWithSelectedSubAttachment:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentAttachmentViewController:(id)controller;
+- (void)presentAttachmentWithSelectedSubAttachment:(id)attachment;
 - (void)presentAudioRecording;
-- (void)presentExportViewForAttachment:(id)a3;
-- (void)presentGalleryAttachmentWithSelectedSubAttachment:(id)a3;
+- (void)presentExportViewForAttachment:(id)attachment;
+- (void)presentGalleryAttachmentWithSelectedSubAttachment:(id)attachment;
 - (void)presentMovie;
 - (void)presentQuickLook;
-- (void)presentReadOnlyAlertIfNecessaryForAttachment:(id)a3;
-- (void)presentSharingViewForAttachment:(id)a3 fromSourceView:(id)a4;
+- (void)presentReadOnlyAlertIfNecessaryForAttachment:(id)attachment;
+- (void)presentSharingViewForAttachment:(id)attachment fromSourceView:(id)view;
 - (void)presentSynapseLink;
 - (void)presentURL;
-- (void)previewControllerDidDismiss:(id)a3;
+- (void)previewControllerDidDismiss:(id)dismiss;
 - (void)removeTempooraryExportURL;
-- (void)scrollCollectionViewToIndexPath:(id)a3;
-- (void)showInNote:(id)a3;
-- (void)updateEditedPreviewItem:(id)a3 atURL:(id)a4 shouldAttemptToWriteDataFromURL:(BOOL)a5 previewController:(id)a6;
-- (void)updateEditedPreviewItemAtURL:(id)a3;
+- (void)scrollCollectionViewToIndexPath:(id)path;
+- (void)showInNote:(id)note;
+- (void)updateEditedPreviewItem:(id)item atURL:(id)l shouldAttemptToWriteDataFromURL:(BOOL)rL previewController:(id)controller;
+- (void)updateEditedPreviewItemAtURL:(id)l;
 - (void)updateQuickLookFilteredAttachments;
 @end
 
 @implementation ICAttachmentPresenter
 
-- (ICAttachmentPresenter)initWithViewControllerManager:(id)a3 attachments:(id)a4 startingAtIndex:(unint64_t)a5 delegate:(id)a6 displayShowInNote:(BOOL)a7 editable:(BOOL)a8 presentingViewController:(id)a9
+- (ICAttachmentPresenter)initWithViewControllerManager:(id)manager attachments:(id)attachments startingAtIndex:(unint64_t)index delegate:(id)delegate displayShowInNote:(BOOL)note editable:(BOOL)editable presentingViewController:(id)controller
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  editableCopy = editable;
+  noteCopy = note;
+  managerCopy = manager;
+  attachmentsCopy = attachments;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v19 = [(ICAttachmentPresenter *)self init];
   v20 = v19;
   if (v19)
   {
-    [(ICAttachmentPresenter *)v19 setIc_viewControllerManager:v15];
-    [(ICAttachmentPresenter *)v20 setAttachments:v16];
-    [(ICAttachmentPresenter *)v20 setStartingIndex:a5];
-    [(ICAttachmentPresenter *)v20 setDelegate:v17];
-    [(ICAttachmentPresenter *)v20 setDisplayShowInNote:v10];
-    [(ICAttachmentPresenter *)v20 setAttachmentEditable:v9];
-    [(ICAttachmentPresenter *)v20 setPresentingViewController:v18];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v20 selector:sel_hardLinksDidDelete_ name:*MEMORY[0x277D35BA0] object:0];
+    [(ICAttachmentPresenter *)v19 setIc_viewControllerManager:managerCopy];
+    [(ICAttachmentPresenter *)v20 setAttachments:attachmentsCopy];
+    [(ICAttachmentPresenter *)v20 setStartingIndex:index];
+    [(ICAttachmentPresenter *)v20 setDelegate:delegateCopy];
+    [(ICAttachmentPresenter *)v20 setDisplayShowInNote:noteCopy];
+    [(ICAttachmentPresenter *)v20 setAttachmentEditable:editableCopy];
+    [(ICAttachmentPresenter *)v20 setPresentingViewController:controllerCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel_hardLinksDidDelete_ name:*MEMORY[0x277D35BA0] object:0];
   }
 
   return v20;
@@ -86,8 +86,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(ICQLPreviewController *)self->_qlPreviewController ic_removeObserver:self forKeyPath:@"currentPreviewItemIndex" context:&compoundliteral_7];
   v4.receiver = self;
@@ -100,8 +100,8 @@
   showInNoteButton = self->_showInNoteButton;
   if (!showInNoteButton)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 localizedStringForKey:@"Show in Note" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v5 = [mainBundle localizedStringForKey:@"Show in Note" value:&stru_282757698 table:0];
 
     v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v5 style:0 target:self action:sel_showInNote_];
     v7 = self->_showInNoteButton;
@@ -116,36 +116,36 @@
 - (id)attachment
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachmentPresenter *)self startingIndex];
-  v4 = [(ICAttachmentPresenter *)self attachments];
-  v5 = [v4 count];
+  startingIndex = [(ICAttachmentPresenter *)self startingIndex];
+  attachments = [(ICAttachmentPresenter *)self attachments];
+  v5 = [attachments count];
 
-  if (v3 > v5)
+  if (startingIndex > v5)
   {
     v6 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(ICAttachmentPresenter *)self startingIndex];
-      v8 = [(ICAttachmentPresenter *)self attachments];
+      startingIndex2 = [(ICAttachmentPresenter *)self startingIndex];
+      attachments2 = [(ICAttachmentPresenter *)self attachments];
       v12 = 134218240;
-      v13 = v7;
+      v13 = startingIndex2;
       v14 = 2048;
-      v15 = [v8 count];
+      v15 = [attachments2 count];
       _os_log_impl(&dword_2151A1000, v6, OS_LOG_TYPE_INFO, "Trying to access attachment %ld out of %ld. Falling back to first attachment", &v12, 0x16u);
     }
 
-    v3 = 0;
+    startingIndex = 0;
   }
 
-  v9 = [(ICAttachmentPresenter *)self attachments];
-  v10 = [v9 objectAtIndexedSubscript:v3];
+  attachments3 = [(ICAttachmentPresenter *)self attachments];
+  v10 = [attachments3 objectAtIndexedSubscript:startingIndex];
 
   return v10;
 }
 
 - (BOOL)isAttachmentBrowser
 {
-  v3 = [(ICAttachmentPresenter *)self delegate];
+  delegate = [(ICAttachmentPresenter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -153,10 +153,10 @@
     return 0;
   }
 
-  v5 = [(ICAttachmentPresenter *)self delegate];
-  v6 = [v5 isAttachmentBrowser];
+  delegate2 = [(ICAttachmentPresenter *)self delegate];
+  isAttachmentBrowser = [delegate2 isAttachmentBrowser];
 
-  return v6;
+  return isAttachmentBrowser;
 }
 
 - (NSArray)quickLookFilteredAttachments
@@ -186,18 +186,18 @@
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = [(ICAttachmentPresenter *)self startingIndex];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICAttachmentPresenter *)self attachments];
+  startingIndex = [(ICAttachmentPresenter *)self startingIndex];
+  array = [MEMORY[0x277CBEB18] array];
+  attachments = [(ICAttachmentPresenter *)self attachments];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__ICAttachmentPresenter_updateQuickLookFilteredAttachments__block_invoke;
   v11[3] = &unk_2781AF7F8;
-  v5 = v3;
+  v5 = array;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
-  [v4 enumerateObjectsUsingBlock:v11];
+  [attachments enumerateObjectsUsingBlock:v11];
 
   v6 = v16[3];
   if (v6 <= [v5 count])
@@ -241,22 +241,22 @@ void __59__ICAttachmentPresenter_updateQuickLookFilteredAttachments__block_invok
 
 - (BOOL)isAttachmentPresentedInProcess
 {
-  v3 = [(ICAttachmentPresenter *)self attachment];
-  v4 = [v3 synapseData];
+  attachment = [(ICAttachmentPresenter *)self attachment];
+  synapseData = [attachment synapseData];
 
-  if (v4)
+  if (synapseData)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(ICAttachmentPresenter *)self attachment];
-    v7 = [v6 attachmentType];
+    attachment2 = [(ICAttachmentPresenter *)self attachment];
+    attachmentType = [attachment2 attachmentType];
 
-    if (v7 <= 0xD)
+    if (attachmentType <= 0xD)
     {
-      v5 = 0x980u >> v7;
+      v5 = 0x980u >> attachmentType;
     }
 
     else
@@ -268,50 +268,50 @@ void __59__ICAttachmentPresenter_updateQuickLookFilteredAttachments__block_invok
   return v5 & 1;
 }
 
-- (void)presentAttachmentWithSelectedSubAttachment:(id)a3
+- (void)presentAttachmentWithSelectedSubAttachment:(id)attachment
 {
-  v15 = a3;
-  v4 = [(ICAttachmentPresenter *)self delegate];
+  attachmentCopy = attachment;
+  delegate = [(ICAttachmentPresenter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICAttachmentPresenter *)self delegate];
-    [v6 attachmentPresenterWillPresent:self];
+    delegate2 = [(ICAttachmentPresenter *)self delegate];
+    [delegate2 attachmentPresenterWillPresent:self];
   }
 
-  v7 = [(ICAttachmentPresenter *)self attachment];
-  v8 = [v7 synapseData];
+  attachment = [(ICAttachmentPresenter *)self attachment];
+  synapseData = [attachment synapseData];
 
-  v9 = [v7 attachmentType];
-  if (v8)
+  attachmentType = [attachment attachmentType];
+  if (synapseData)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v9 == 0;
+    v10 = attachmentType == 0;
   }
 
   if (!v10)
   {
-    v11 = v9;
-    if ((v9 & 0xFFFFFFFB) != 9)
+    v11 = attachmentType;
+    if ((attachmentType & 0xFFFFFFFB) != 9)
     {
-      if ((v9 - 9) <= 0xFFFDu)
+      if ((attachmentType - 9) <= 0xFFFDu)
       {
         [*MEMORY[0x277D76620] sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
       }
 
-      if (v8)
+      if (synapseData)
       {
         [(ICAttachmentPresenter *)self presentSynapseLink];
 LABEL_19:
-        v12 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v13 = *MEMORY[0x277D35C28];
-        v14 = [(ICAttachmentPresenter *)self attachment];
-        [v12 addObserver:self selector:sel_attachmentWillBeDeletedNotification_ name:v13 object:v14];
+        attachment2 = [(ICAttachmentPresenter *)self attachment];
+        [defaultCenter addObserver:self selector:sel_attachmentWillBeDeletedNotification_ name:v13 object:attachment2];
 
         goto LABEL_20;
       }
@@ -355,7 +355,7 @@ LABEL_19:
 
           else if (v11 == 11)
           {
-            [(ICAttachmentPresenter *)self presentGalleryAttachmentWithSelectedSubAttachment:v15];
+            [(ICAttachmentPresenter *)self presentGalleryAttachmentWithSelectedSubAttachment:attachmentCopy];
           }
 
           goto LABEL_19;
@@ -372,48 +372,48 @@ LABEL_20:
 
 - (void)presentMovie
 {
-  v3 = [MEMORY[0x277D366C0] sharedAudioController];
-  [v3 stop];
+  mEMORY[0x277D366C0] = [MEMORY[0x277D366C0] sharedAudioController];
+  [mEMORY[0x277D366C0] stop];
 
   [(ICAttachmentPresenter *)self presentPreview];
 }
 
 - (void)presentAudioRecording
 {
-  v11 = [(ICAttachmentPresenter *)self attachment];
-  v3 = [v11 audioModel];
-  if (v3)
+  attachment = [(ICAttachmentPresenter *)self attachment];
+  audioModel = [attachment audioModel];
+  if (audioModel)
   {
-    v4 = v3;
-    v5 = [(ICAttachmentPresenter *)self attachment];
-    v6 = [v5 note];
-    if ([v6 isDeletedOrInTrash])
+    v4 = audioModel;
+    attachment2 = [(ICAttachmentPresenter *)self attachment];
+    note = [attachment2 note];
+    if ([note isDeletedOrInTrash])
     {
     }
 
     else
     {
-      v7 = [(ICAttachmentPresenter *)self attachment];
-      v8 = [v7 needsInitialFetchFromCloud];
+      attachment3 = [(ICAttachmentPresenter *)self attachment];
+      needsInitialFetchFromCloud = [attachment3 needsInitialFetchFromCloud];
 
-      if (v8)
+      if (needsInitialFetchFromCloud)
       {
         return;
       }
 
-      v9 = [(ICAttachmentPresenter *)self attachment];
-      v10 = [v9 audioModel];
-      v11 = [ICAudioRecordingViewController getHostingViewForAttachmentModel:v10 delegate:self];
+      attachment4 = [(ICAttachmentPresenter *)self attachment];
+      audioModel2 = [attachment4 audioModel];
+      attachment = [ICAudioRecordingViewController getHostingViewForAttachmentModel:audioModel2 delegate:self];
 
-      [(ICAttachmentPresenter *)self presentAttachmentViewController:v11];
+      [(ICAttachmentPresenter *)self presentAttachmentViewController:attachment];
     }
   }
 }
 
 - (void)presentURL
 {
-  v1 = [a1 attachment];
-  v2 = [v1 shortLoggingDescription];
+  attachment = [self attachment];
+  shortLoggingDescription = [attachment shortLoggingDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xCu);
@@ -501,58 +501,58 @@ void __43__ICAttachmentPresenter_presentSynapseLink__block_invoke_158(uint64_t a
 - (void)presentQuickLook
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachmentPresenter *)self qlPreviewController];
+  qlPreviewController = [(ICAttachmentPresenter *)self qlPreviewController];
 
-  if (!v3)
+  if (!qlPreviewController)
   {
     v4 = objc_alloc_init(ICQLPreviewController);
     [(ICAttachmentPresenter *)self setQlPreviewController:v4];
 
-    v5 = [(ICAttachmentPresenter *)self qlPreviewController];
-    [v5 ic_addObserver:self forKeyPath:@"currentPreviewItemIndex" context:&compoundliteral_7];
+    qlPreviewController2 = [(ICAttachmentPresenter *)self qlPreviewController];
+    [qlPreviewController2 ic_addObserver:self forKeyPath:@"currentPreviewItemIndex" context:&compoundliteral_7];
   }
 
   if ([(ICAttachmentPresenter *)self displayShowInNote])
   {
-    v6 = [(ICAttachmentPresenter *)self showInNoteButton];
-    v15[0] = v6;
+    showInNoteButton = [(ICAttachmentPresenter *)self showInNoteButton];
+    v15[0] = showInNoteButton;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    v8 = [(ICAttachmentPresenter *)self qlPreviewController];
-    v9 = [v8 navigationItem];
-    [v9 setRightBarButtonItems:v7];
+    qlPreviewController3 = [(ICAttachmentPresenter *)self qlPreviewController];
+    navigationItem = [qlPreviewController3 navigationItem];
+    [navigationItem setRightBarButtonItems:v7];
   }
 
-  v10 = [(ICAttachmentPresenter *)self qlPreviewController];
-  [v10 setDataSource:self];
+  qlPreviewController4 = [(ICAttachmentPresenter *)self qlPreviewController];
+  [qlPreviewController4 setDataSource:self];
 
-  v11 = [(ICAttachmentPresenter *)self qlPreviewController];
-  [v11 setDelegate:self];
+  qlPreviewController5 = [(ICAttachmentPresenter *)self qlPreviewController];
+  [qlPreviewController5 setDelegate:self];
 
-  v12 = [(ICAttachmentPresenter *)self quickLookFilteredStartingIndex];
-  v13 = [(ICAttachmentPresenter *)self qlPreviewController];
-  [v13 setCurrentPreviewItemIndex:v12];
+  quickLookFilteredStartingIndex = [(ICAttachmentPresenter *)self quickLookFilteredStartingIndex];
+  qlPreviewController6 = [(ICAttachmentPresenter *)self qlPreviewController];
+  [qlPreviewController6 setCurrentPreviewItemIndex:quickLookFilteredStartingIndex];
 
-  v14 = [(ICAttachmentPresenter *)self qlPreviewController];
-  [(ICAttachmentPresenter *)self presentAttachmentViewController:v14];
+  qlPreviewController7 = [(ICAttachmentPresenter *)self qlPreviewController];
+  [(ICAttachmentPresenter *)self presentAttachmentViewController:qlPreviewController7];
 }
 
-- (void)presentGalleryAttachmentWithSelectedSubAttachment:(id)a3
+- (void)presentGalleryAttachmentWithSelectedSubAttachment:(id)attachment
 {
-  v19 = a3;
+  attachmentCopy = attachment;
   v4 = [ICGalleryAttachmentEditorController alloc];
-  v5 = [(ICAttachmentPresenter *)self attachment];
-  v6 = [(ICGalleryAttachmentEditorController *)v4 initWithGalleryAttachment:v5 browserMode:[(ICAttachmentPresenter *)self isAttachmentBrowser] delegate:self];
+  attachment = [(ICAttachmentPresenter *)self attachment];
+  v6 = [(ICGalleryAttachmentEditorController *)v4 initWithGalleryAttachment:attachment browserMode:[(ICAttachmentPresenter *)self isAttachmentBrowser] delegate:self];
   [(ICAttachmentPresenter *)self setGalleryAttachmentEditorController:v6];
 
-  if (v19)
+  if (attachmentCopy)
   {
     objc_opt_class();
-    v7 = [(ICAttachmentPresenter *)self attachment];
-    v8 = [v7 attachmentModel];
+    attachment2 = [(ICAttachmentPresenter *)self attachment];
+    attachmentModel = [attachment2 attachmentModel];
     v9 = ICDynamicCast();
 
-    v10 = [v19 identifier];
-    v11 = [v9 indexOfSubAttachmentWithIdentifier:v10];
+    identifier = [attachmentCopy identifier];
+    v11 = [v9 indexOfSubAttachmentWithIdentifier:identifier];
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -570,13 +570,13 @@ void __43__ICAttachmentPresenter_presentSynapseLink__block_invoke_158(uint64_t a
     v12 = 0;
   }
 
-  v13 = [(ICAttachmentPresenter *)self delegate];
-  v14 = [(ICAttachmentPresenter *)self attachment];
-  v15 = [v13 attachmentPresenter:self transitionViewForAttachment:v14];
+  delegate = [(ICAttachmentPresenter *)self delegate];
+  attachment3 = [(ICAttachmentPresenter *)self attachment];
+  v15 = [delegate attachmentPresenter:self transitionViewForAttachment:attachment3];
 
-  v16 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
-  v17 = [(ICAttachmentPresenter *)self presentingViewController];
-  v18 = [v16 openEditorOnViewController:v17 pageIndex:v12 sourceView:v15];
+  galleryAttachmentEditorController = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+  presentingViewController = [(ICAttachmentPresenter *)self presentingViewController];
+  v18 = [galleryAttachmentEditorController openEditorOnViewController:presentingViewController pageIndex:v12 sourceView:v15];
 
   if ((v18 & 1) == 0)
   {
@@ -584,63 +584,63 @@ void __43__ICAttachmentPresenter_presentSynapseLink__block_invoke_158(uint64_t a
   }
 }
 
-- (id)transitionViewForAttachment:(id)a3
+- (id)transitionViewForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICAttachmentPresenter *)self delegate];
-  v6 = [v5 attachmentPresenter:self transitionViewForAttachment:v4];
+  attachmentCopy = attachment;
+  delegate = [(ICAttachmentPresenter *)self delegate];
+  v6 = [delegate attachmentPresenter:self transitionViewForAttachment:attachmentCopy];
 
   return v6;
 }
 
-- (id)transitionViewForAttachment:(id)a3 atIndexPath:(id)a4
+- (id)transitionViewForAttachment:(id)attachment atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICAttachmentPresenter *)self delegate];
+  attachmentCopy = attachment;
+  pathCopy = path;
+  delegate = [(ICAttachmentPresenter *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [(ICAttachmentPresenter *)self delegate];
-  v11 = v10;
+  delegate2 = [(ICAttachmentPresenter *)self delegate];
+  v11 = delegate2;
   if (v9)
   {
-    [v10 attachmentPresenter:self transitionViewForIndexPath:v7];
+    [delegate2 attachmentPresenter:self transitionViewForIndexPath:pathCopy];
   }
 
   else
   {
-    [v10 attachmentPresenter:self transitionViewForAttachment:v6];
+    [delegate2 attachmentPresenter:self transitionViewForAttachment:attachmentCopy];
   }
   v12 = ;
 
   return v12;
 }
 
-- (void)scrollCollectionViewToIndexPath:(id)a3
+- (void)scrollCollectionViewToIndexPath:(id)path
 {
-  v7 = a3;
-  v4 = [(ICAttachmentPresenter *)self delegate];
+  pathCopy = path;
+  delegate = [(ICAttachmentPresenter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICAttachmentPresenter *)self delegate];
-    [v6 scrollCollectionViewToIndexPath:v7];
+    delegate2 = [(ICAttachmentPresenter *)self delegate];
+    [delegate2 scrollCollectionViewToIndexPath:pathCopy];
   }
 }
 
-- (void)presentAttachmentViewController:(id)a3
+- (void)presentAttachmentViewController:(id)controller
 {
-  v4 = a3;
-  [(ICAttachmentPresenter *)self setPresentedViewController:v4];
-  v5 = [(ICAttachmentPresenter *)self presentingViewController];
-  v6 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  controllerCopy = controller;
+  [(ICAttachmentPresenter *)self setPresentedViewController:controllerCopy];
+  presentingViewController = [(ICAttachmentPresenter *)self presentingViewController];
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ICAttachmentPresenter_presentAttachmentViewController___block_invoke;
   v7[3] = &unk_2781ABCF8;
   v7[4] = self;
-  [v5 presentViewController:v4 animated:v6 completion:v7];
+  [presentingViewController presentViewController:controllerCopy animated:areAnimationsEnabled completion:v7];
 }
 
 void __57__ICAttachmentPresenter_presentAttachmentViewController___block_invoke(uint64_t a1)
@@ -667,47 +667,47 @@ void __57__ICAttachmentPresenter_presentAttachmentViewController___block_invoke(
   [*(a1 + 32) presentReadOnlyAlertIfNecessaryForAttachment:v8];
 }
 
-+ (id)previewViewControllerWithViewControllerManager:(id)a3 attachments:(id)a4 startingAtIndex:(unint64_t)a5 delegate:(id)a6 editable:(BOOL)a7 isFromAttachmentBrowser:(BOOL)a8
++ (id)previewViewControllerWithViewControllerManager:(id)manager attachments:(id)attachments startingAtIndex:(unint64_t)index delegate:(id)delegate editable:(BOOL)editable isFromAttachmentBrowser:(BOOL)browser
 {
-  v8 = a8;
-  v9 = a7;
+  browserCopy = browser;
+  editableCopy = editable;
   v65[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = [v14 objectAtIndexedSubscript:a5];
-  v17 = [v16 attachmentType];
-  if (v17 == 12 || (v18 = v17, !v17) && ![v16 hasFallbackPDF])
+  managerCopy = manager;
+  attachmentsCopy = attachments;
+  delegateCopy = delegate;
+  v16 = [attachmentsCopy objectAtIndexedSubscript:index];
+  attachmentType = [v16 attachmentType];
+  if (attachmentType == 12 || (v18 = attachmentType, !attachmentType) && ![v16 hasFallbackPDF])
   {
 LABEL_14:
     v24 = 0;
     goto LABEL_18;
   }
 
-  v63 = v14;
-  v64 = v15;
-  v19 = v13;
-  v20 = [v13 window];
-  v21 = [v20 windowScene];
-  v22 = [v21 screen];
-  v23 = [v22 ic_isSecure];
+  v63 = attachmentsCopy;
+  v64 = delegateCopy;
+  v19 = managerCopy;
+  window = [managerCopy window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  ic_isSecure = [screen ic_isSecure];
 
   v24 = 0;
   if (v18 > 0xF)
   {
-    v13 = v19;
-    v14 = v63;
-    v15 = v64;
+    managerCopy = v19;
+    attachmentsCopy = v63;
+    delegateCopy = v64;
     goto LABEL_18;
   }
 
-  v15 = v64;
+  delegateCopy = v64;
   if (((1 << v18) & 0xEC77) == 0)
   {
     if (((1 << v18) & 0x180) == 0)
     {
-      v13 = v19;
-      v14 = v63;
+      managerCopy = v19;
+      attachmentsCopy = v63;
       if (((1 << v18) & 0x208) == 0)
       {
         goto LABEL_18;
@@ -721,46 +721,46 @@ LABEL_14:
       v24 = [[ICImagePreviewController alloc] initWithAttachment:v16];
       v39 = objc_alloc_init(MEMORY[0x277D755E8]);
       [v39 setContentMode:1];
-      v40 = [(ICImagePreviewController *)v24 view];
-      [v40 addSubview:v39];
+      view = [(ICImagePreviewController *)v24 view];
+      [view addSubview:v39];
 
       [v39 ic_addAnchorsToFillSuperviewWithPadding:-1.0];
-      v41 = [v16 image];
-      if (v41)
+      image = [v16 image];
+      if (image)
       {
-        [v39 setImage:v41];
+        [v39 setImage:image];
       }
 
       else
       {
-        v42 = [MEMORY[0x277D759A0] mainScreen];
-        [v42 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v44 = v43;
         v46 = v45;
-        v47 = [MEMORY[0x277D759A0] mainScreen];
-        [v47 scale];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 scale];
         v49 = [v16 attachmentPreviewImageWithMinSize:v44 scale:{v46, v48}];
 
-        v15 = v64;
-        v50 = [v49 orientedImage];
-        [v39 setImage:v50];
+        delegateCopy = v64;
+        orientedImage = [v49 orientedImage];
+        [v39 setImage:orientedImage];
       }
 
-      v51 = [(ICImagePreviewController *)v24 view];
-      [v51 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+      view2 = [(ICImagePreviewController *)v24 view];
+      [view2 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
       [(ICImagePreviewController *)v24 setPreferredContentSize:?];
 
 LABEL_49:
       goto LABEL_18;
     }
 
-    if (v23)
+    if (ic_isSecure)
     {
 LABEL_16:
       v24 = 0;
-      v13 = v19;
+      managerCopy = v19;
 LABEL_17:
-      v14 = v63;
+      attachmentsCopy = v63;
       goto LABEL_18;
     }
 
@@ -768,11 +768,11 @@ LABEL_17:
     {
 LABEL_34:
       v39 = [v16 URL];
-      v53 = [MEMORY[0x277D262A0] sharedConnection];
-      if ([v53 effectiveBoolValueForSetting:*MEMORY[0x277D25FB8]] == 2)
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      if ([mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25FB8]] == 2)
       {
 
-        v13 = v19;
+        managerCopy = v19;
       }
 
       else
@@ -780,21 +780,21 @@ LABEL_34:
         Helper_x8__OBJC_CLASS___NSSNewsViewController = gotLoadHelper_x8__OBJC_CLASS___NSSNewsViewController(v54);
         v57 = [*(v56 + 3096) canOpenURL:{v39, Helper_x8__OBJC_CLASS___NSSNewsViewController}];
 
-        v13 = v19;
+        managerCopy = v19;
         if (v57)
         {
           v24 = [[ICNewsViewController alloc] initWithURL:v39];
           [(ICImagePreviewController *)v24 setAttachment:v16];
-          v14 = v63;
+          attachmentsCopy = v63;
 LABEL_48:
-          v15 = v64;
+          delegateCopy = v64;
           goto LABEL_49;
         }
       }
 
-      v58 = [MEMORY[0x277D262A0] sharedConnection];
-      v14 = v63;
-      if ([v58 effectiveBoolValueForSetting:*MEMORY[0x277D26028]] == 2)
+      mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+      attachmentsCopy = v63;
+      if ([mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:*MEMORY[0x277D26028]] == 2)
       {
 
 LABEL_40:
@@ -802,20 +802,20 @@ LABEL_40:
         goto LABEL_48;
       }
 
-      v59 = [v39 scheme];
-      v15 = v64;
-      if (![v59 length])
+      scheme = [v39 scheme];
+      delegateCopy = v64;
+      if (![scheme length])
       {
 
         v24 = 0;
         goto LABEL_49;
       }
 
-      v60 = [v39 scheme];
-      if ([v60 caseInsensitiveCompare:@"http"])
+      scheme2 = [v39 scheme];
+      if ([scheme2 caseInsensitiveCompare:@"http"])
       {
-        v61 = [v39 scheme];
-        v62 = [v61 caseInsensitiveCompare:@"https"];
+        scheme3 = [v39 scheme];
+        v62 = [scheme3 caseInsensitiveCompare:@"https"];
 
         if (v62)
         {
@@ -839,16 +839,16 @@ LABEL_40:
 
     if ([v37 parseIncludingCustomParameters:1])
     {
-      v38 = [v37 collectionStorage];
-      v15 = v64;
-      if (v38)
+      collectionStorage = [v37 collectionStorage];
+      delegateCopy = v64;
+      if (collectionStorage)
       {
 
 LABEL_33:
         goto LABEL_34;
       }
 
-      v13 = v19;
+      managerCopy = v19;
       if (!v34)
       {
         goto LABEL_33;
@@ -857,8 +857,8 @@ LABEL_33:
 
     else
     {
-      v13 = v19;
-      v15 = v64;
+      managerCopy = v19;
+      delegateCopy = v64;
       if (!v34)
       {
         goto LABEL_33;
@@ -871,33 +871,33 @@ LABEL_33:
     goto LABEL_17;
   }
 
-  if (v23 & 1) != 0 || ([v16 needsInitialFetchFromCloud])
+  if (ic_isSecure & 1) != 0 || ([v16 needsInitialFetchFromCloud])
   {
     goto LABEL_16;
   }
 
   v24 = objc_alloc_init(ICQLPreviewController);
   v25 = [ICAttachmentPresenter alloc];
-  v13 = v19;
+  managerCopy = v19;
   v26 = v19;
-  v14 = v63;
-  v27 = [(ICAttachmentPresenter *)v25 initWithViewControllerManager:v26 attachments:v63 startingAtIndex:a5 delegate:v64 displayShowInNote:0 editable:v9 presentingViewController:0];
+  attachmentsCopy = v63;
+  v27 = [(ICAttachmentPresenter *)v25 initWithViewControllerManager:v26 attachments:v63 startingAtIndex:index delegate:v64 displayShowInNote:0 editable:editableCopy presentingViewController:0];
   [(ICAttachmentPresenter *)v27 setQlPreviewController:v24];
   [(ICImagePreviewController *)v24 setDelegate:v27];
   [(ICImagePreviewController *)v24 setDataSource:v27];
   [(ICImagePreviewController *)v24 setCurrentPreviewItemIndex:[(ICAttachmentPresenter *)v27 quickLookFilteredStartingIndex]];
-  if (v8)
+  if (browserCopy)
   {
-    v28 = [MEMORY[0x277CCA8D8] mainBundle];
-    v29 = [v28 localizedStringForKey:@"Show in Note" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v29 = [mainBundle localizedStringForKey:@"Show in Note" value:&stru_282757698 table:0];
 
     v30 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v29 style:0 target:v27 action:sel_showInNote_];
     v65[0] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:1];
-    v32 = [(ICImagePreviewController *)v24 navigationItem];
-    [v32 setRightBarButtonItems:v31];
+    navigationItem = [(ICImagePreviewController *)v24 navigationItem];
+    [navigationItem setRightBarButtonItems:v31];
 
-    v15 = v64;
+    delegateCopy = v64;
   }
 
   objc_setAssociatedObject(v24, ICAttachmentPreviewViewControllerKey, v27, 0x301);
@@ -909,26 +909,26 @@ LABEL_18:
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 keyWindow];
-  v4 = [v3 rootViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  LOBYTE(v2) = [v4 prefersStatusBarHidden];
-  return v2;
+  LOBYTE(mEMORY[0x277D75128]) = [rootViewController prefersStatusBarHidden];
+  return mEMORY[0x277D75128];
 }
 
-+ (BOOL)shouldCommitPreviewViewController:(id)a3
++ (BOOL)shouldCommitPreviewViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 currentPreviewItem];
+    v4 = controllerCopy;
+    currentPreviewItem = [v4 currentPreviewItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = [v4 currentPreviewItem];
+    currentPreviewItem2 = [v4 currentPreviewItem];
     if ((isKindOfClass & 1) == 0)
     {
       objc_opt_class();
@@ -939,14 +939,14 @@ LABEL_18:
         goto LABEL_8;
       }
 
-      v9 = [v4 currentPreviewItem];
-      v7 = [v9 attachment];
+      currentPreviewItem3 = [v4 currentPreviewItem];
+      currentPreviewItem2 = [currentPreviewItem3 attachment];
     }
 
-    if (v7)
+    if (currentPreviewItem2)
     {
-      v10 = [v7 parentAttachment];
-      v11 = v10 == 0;
+      parentAttachment = [currentPreviewItem2 parentAttachment];
+      v11 = parentAttachment == 0;
 
 LABEL_9:
       goto LABEL_10;
@@ -963,33 +963,33 @@ LABEL_10:
   return v11;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
 
-  [(ICAttachmentPresenter *)self dismissAnimated:v4 completion:0];
+  [(ICAttachmentPresenter *)self dismissAnimated:areAnimationsEnabled completion:0];
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(ICAttachmentPresenter *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(ICAttachmentPresenter *)self presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
     if (![(ICAttachmentPresenter *)self isDismissing])
     {
       [(ICAttachmentPresenter *)self setIsDismissing:1];
-      v8 = [(ICAttachmentPresenter *)self presentedViewController];
-      v9 = [v8 presentingViewController];
+      presentedViewController2 = [(ICAttachmentPresenter *)self presentedViewController];
+      presentingViewController = [presentedViewController2 presentingViewController];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __52__ICAttachmentPresenter_dismissAnimated_completion___block_invoke;
       v11[3] = &unk_2781AE4F0;
       v11[4] = self;
-      v12 = v6;
-      [v9 dismissViewControllerAnimated:v4 completion:v11];
+      v12 = completionCopy;
+      [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v11];
 
       goto LABEL_8;
     }
@@ -997,18 +997,18 @@ LABEL_10:
 
   else
   {
-    v10 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+    galleryAttachmentEditorController = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
 
-    if (v10)
+    if (galleryAttachmentEditorController)
     {
       [(ICAttachmentPresenter *)self setGalleryAttachmentEditorController:0];
       [(ICAttachmentPresenter *)self notifyDelegateDidDismiss];
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_8:
@@ -1030,59 +1030,59 @@ uint64_t __52__ICAttachmentPresenter_dismissAnimated_completion___block_invoke(u
 
 - (void)notifyDelegateDidDismiss
 {
-  v3 = [(ICAttachmentPresenter *)self ic_viewControllerManager];
-  v4 = [v3 currentAttachmentPresenter];
+  ic_viewControllerManager = [(ICAttachmentPresenter *)self ic_viewControllerManager];
+  currentAttachmentPresenter = [ic_viewControllerManager currentAttachmentPresenter];
 
-  if (v4 == self)
+  if (currentAttachmentPresenter == self)
   {
-    v5 = [(ICAttachmentPresenter *)self ic_viewControllerManager];
-    [v5 setCurrentAttachmentPresenter:0];
+    ic_viewControllerManager2 = [(ICAttachmentPresenter *)self ic_viewControllerManager];
+    [ic_viewControllerManager2 setCurrentAttachmentPresenter:0];
   }
 
-  v6 = [(ICAttachmentPresenter *)self delegate];
+  delegate = [(ICAttachmentPresenter *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ICAttachmentPresenter *)self delegate];
-    [v8 attachmentPresenterDidDismiss:self];
+    delegate2 = [(ICAttachmentPresenter *)self delegate];
+    [delegate2 attachmentPresenterDidDismiss:self];
   }
 }
 
-- (void)showInNote:(id)a3
+- (void)showInNote:(id)note
 {
-  v4 = [(ICAttachmentPresenter *)self qlPreviewController];
+  qlPreviewController = [(ICAttachmentPresenter *)self qlPreviewController];
 
-  if (v4)
+  if (qlPreviewController)
   {
-    v5 = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
-    v6 = [(ICAttachmentPresenter *)self qlPreviewController];
-    v10 = [v5 objectAtIndexedSubscript:{objc_msgSend(v6, "currentPreviewItemIndex")}];
+    quickLookFilteredAttachments = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
+    qlPreviewController2 = [(ICAttachmentPresenter *)self qlPreviewController];
+    attachment = [quickLookFilteredAttachments objectAtIndexedSubscript:{objc_msgSend(qlPreviewController2, "currentPreviewItemIndex")}];
   }
 
   else
   {
-    v10 = [(ICAttachmentPresenter *)self attachment];
+    attachment = [(ICAttachmentPresenter *)self attachment];
   }
 
-  v7 = [(ICAttachmentPresenter *)self ic_viewControllerManager];
-  v8 = [v10 objectID];
-  [v7 selectAttachmentWithObjectID:v8 animated:1];
+  ic_viewControllerManager = [(ICAttachmentPresenter *)self ic_viewControllerManager];
+  objectID = [attachment objectID];
+  [ic_viewControllerManager selectAttachmentWithObjectID:objectID animated:1];
 
-  v9 = [(ICAttachmentPresenter *)self eventReporter];
-  [v9 submitAttachmentBrowserActionEventForType:3];
+  eventReporter = [(ICAttachmentPresenter *)self eventReporter];
+  [eventReporter submitAttachmentBrowserActionEventForType:3];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICAttachmentPresenter *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/AttachmentPresentation/ICAttachmentPresenter.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICAttachmentPresenter *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/AttachmentPresentation/ICAttachmentPresenter.m"]& 1) != 0)
   {
-    v13 = [(ICAttachmentPresenter *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICAttachmentPresenter *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_7 && (v13 & 1) == 0)
+    if (context == &compoundliteral_7 && (v13 & 1) == 0)
     {
 
       [(ICAttachmentPresenter *)self previewControllerDidChangeCurrentItem];
@@ -1093,58 +1093,58 @@ uint64_t __52__ICAttachmentPresenter_dismissAnimated_completion___block_invoke(u
   {
     v14.receiver = self;
     v14.super_class = ICAttachmentPresenter;
-    [(ICAttachmentPresenter *)&v14 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICAttachmentPresenter *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)presentReadOnlyAlertIfNecessaryForAttachment:(id)a3
+- (void)presentReadOnlyAlertIfNecessaryForAttachment:(id)attachment
 {
-  v5 = a3;
-  if ([v5 attachmentType] == 1 && objc_msgSend(v5, "hasFallbackPDF"))
+  attachmentCopy = attachment;
+  if ([attachmentCopy attachmentType] == 1 && objc_msgSend(attachmentCopy, "hasFallbackPDF"))
   {
-    v4 = [(ICAttachmentPresenter *)self qlPreviewController];
-    [v4 showViewOnlyWarning];
+    qlPreviewController = [(ICAttachmentPresenter *)self qlPreviewController];
+    [qlPreviewController showViewOnlyWarning];
   }
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v6 = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
-  v7 = [v6 count];
+  quickLookFilteredAttachments = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
+  v7 = [quickLookFilteredAttachments count];
 
-  v8 = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
-  v9 = v8;
-  if (v7 <= a4)
+  quickLookFilteredAttachments2 = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
+  v9 = quickLookFilteredAttachments2;
+  if (v7 <= index)
   {
-    [v8 firstObject];
+    [quickLookFilteredAttachments2 firstObject];
   }
 
   else
   {
-    [v8 objectAtIndexedSubscript:a4];
+    [quickLookFilteredAttachments2 objectAtIndexedSubscript:index];
   }
   v10 = ;
 
   v11 = [[ICQLItem alloc] initWithAttachment:v10];
   if ([v10 attachmentType] == 6 || objc_msgSend(v10, "hasFallbackPDF"))
   {
-    v12 = [(ICAttachmentPresenter *)self delegate];
+    delegate = [(ICAttachmentPresenter *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(ICAttachmentPresenter *)self delegate];
-      -[ICQLItem setUseFullPDFTransition:](v11, "setUseFullPDFTransition:", [v14 attachmentPresenter:self useFullPDFTransitionForAttachment:v10]);
+      delegate2 = [(ICAttachmentPresenter *)self delegate];
+      -[ICQLItem setUseFullPDFTransition:](v11, "setUseFullPDFTransition:", [delegate2 attachmentPresenter:self useFullPDFTransitionForAttachment:v10]);
     }
   }
 
   return v11;
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v4 = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
-  v5 = [v4 count];
+  quickLookFilteredAttachments = [(ICAttachmentPresenter *)self quickLookFilteredAttachments];
+  v5 = [quickLookFilteredAttachments count];
 
   if (v5)
   {
@@ -1161,7 +1161,7 @@ uint64_t __52__ICAttachmentPresenter_dismissAnimated_completion___block_invoke(u
   return v7;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1185,14 +1185,14 @@ void __53__ICAttachmentPresenter_previewControllerDidDismiss___block_invoke(uint
   [v4 setIsPreviewingAttachmentFromNote:0];
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    attachment = itemCopy;
   }
 
   else
@@ -1203,14 +1203,14 @@ void __53__ICAttachmentPresenter_previewControllerDidDismiss___block_invoke(uint
       goto LABEL_7;
     }
 
-    v6 = [v5 attachment];
+    attachment = [itemCopy attachment];
   }
 
-  v7 = v6;
-  if (v6)
+  v7 = attachment;
+  if (attachment)
   {
-    v8 = [(ICAttachmentPresenter *)self delegate];
-    v9 = [v8 attachmentPresenter:self transitionViewForAttachment:v7];
+    delegate = [(ICAttachmentPresenter *)self delegate];
+    v9 = [delegate attachmentPresenter:self transitionViewForAttachment:v7];
 
     goto LABEL_10;
   }
@@ -1220,7 +1220,7 @@ LABEL_7:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = itemCopy;
     _os_log_impl(&dword_2151A1000, v7, OS_LOG_TYPE_INFO, "Could not find attachment for transitioning preview item: %@", &v11, 0xCu);
   }
 
@@ -1230,7 +1230,7 @@ LABEL_10:
   return v9;
 }
 
-- (id)excludedActivityTypesForPreviewController:(id)a3
+- (id)excludedActivityTypesForPreviewController:(id)controller
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D54790];
@@ -1241,24 +1241,24 @@ LABEL_10:
   return v4;
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  v5 = [a3 presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [controller presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)attachmentWillBeDeletedNotification:(id)a3
+- (void)attachmentWillBeDeletedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(ICAttachmentPresenter *)self attachment];
+  object = [notification object];
+  attachment = [(ICAttachmentPresenter *)self attachment];
 
-  if (v4 == v5)
+  if (object == attachment)
   {
     [(ICAttachmentPresenter *)self dismiss:self];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D35C28];
-    v7 = [(ICAttachmentPresenter *)self attachment];
-    [v8 removeObserver:self name:v6 object:v7];
+    attachment2 = [(ICAttachmentPresenter *)self attachment];
+    [defaultCenter removeObserver:self name:v6 object:attachment2];
   }
 }
 
@@ -1268,9 +1268,9 @@ void __44__ICAttachmentPresenter_hardLinksDidDelete___block_invoke(uint64_t a1)
   [v1 reloadData];
 }
 
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   if (![(ICAttachmentPresenter *)self isAttachmentEditable])
   {
     goto LABEL_9;
@@ -1282,9 +1282,9 @@ void __44__ICAttachmentPresenter_hardLinksDidDelete___block_invoke(uint64_t a1)
   {
     objc_opt_class();
     v8 = ICDynamicCast();
-    v7 = [v8 attachment];
+    attachment = [v8 attachment];
 
-    if (v7)
+    if (attachment)
     {
       goto LABEL_5;
     }
@@ -1294,12 +1294,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = v6;
+  attachment = v6;
 LABEL_5:
-  v9 = [v7 attachmentModel];
-  v10 = [v9 canMarkup];
+  attachmentModel = [attachment attachmentModel];
+  canMarkup = [attachmentModel canMarkup];
 
-  if (v10)
+  if (canMarkup)
   {
     v11 = 2;
   }
@@ -1313,45 +1313,45 @@ LABEL_10:
   return v11;
 }
 
-- (void)updateEditedPreviewItemAtURL:(id)a3
+- (void)updateEditedPreviewItemAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICAttachmentPresenter *)self attachment];
-  [(ICAttachmentPresenter *)self updateEditedPreviewItem:v5 atURL:v4 shouldAttemptToWriteDataFromURL:1 previewController:0];
+  lCopy = l;
+  attachment = [(ICAttachmentPresenter *)self attachment];
+  [(ICAttachmentPresenter *)self updateEditedPreviewItem:attachment atURL:lCopy shouldAttemptToWriteDataFromURL:1 previewController:0];
 }
 
-- (void)updateEditedPreviewItem:(id)a3 atURL:(id)a4 shouldAttemptToWriteDataFromURL:(BOOL)a5 previewController:(id)a6
+- (void)updateEditedPreviewItem:(id)item atURL:(id)l shouldAttemptToWriteDataFromURL:(BOOL)rL previewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  itemCopy = item;
+  lCopy = l;
+  controllerCopy = controller;
   objc_opt_class();
   v12 = ICDynamicCast();
   if (v12)
   {
-    v13 = v12;
+    attachment = v12;
 LABEL_4:
-    [v10 startAccessingSecurityScopedResource];
-    v15 = [v13 managedObjectContext];
+    [lCopy startAccessingSecurityScopedResource];
+    managedObjectContext = [attachment managedObjectContext];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __105__ICAttachmentPresenter_updateEditedPreviewItem_atURL_shouldAttemptToWriteDataFromURL_previewController___block_invoke;
     v17[3] = &unk_2781AF848;
-    v18 = v11;
-    v19 = v13;
-    v20 = v10;
-    v21 = a5;
-    v16 = v13;
-    [v15 performBlockAndWait:v17];
+    v18 = controllerCopy;
+    v19 = attachment;
+    v20 = lCopy;
+    rLCopy = rL;
+    v16 = attachment;
+    [managedObjectContext performBlockAndWait:v17];
 
     goto LABEL_5;
   }
 
   objc_opt_class();
   v14 = ICDynamicCast();
-  v13 = [v14 attachment];
+  attachment = [v14 attachment];
 
-  if (v13)
+  if (attachment)
   {
     goto LABEL_4;
   }
@@ -1444,12 +1444,12 @@ LABEL_21:
   [*(a1 + 48) stopAccessingSecurityScopedResource];
 }
 
-- (BOOL)previewController:(id)a3 canShareItem:(id)a4
+- (BOOL)previewController:(id)controller canShareItem:(id)item
 {
-  v4 = [MEMORY[0x277D369A0] sharedInstance];
-  v5 = [v4 isSecureScreenShowing];
+  mEMORY[0x277D369A0] = [MEMORY[0x277D369A0] sharedInstance];
+  isSecureScreenShowing = [mEMORY[0x277D369A0] isSecureScreenShowing];
 
-  return v5 ^ 1;
+  return isSecureScreenShowing ^ 1;
 }
 
 - (void)galleryAttachmentEditorControllerDidDismiss
@@ -1461,13 +1461,13 @@ LABEL_21:
 
 - (void)galleryAttachmentEditorControllerDeleteAttachment
 {
-  v3 = [(ICAttachmentPresenter *)self delegate];
+  delegate = [(ICAttachmentPresenter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(ICAttachmentPresenter *)self delegate];
-    [v6 handleDeleteAttachmentFromPresenter:self];
+    delegate2 = [(ICAttachmentPresenter *)self delegate];
+    [delegate2 handleDeleteAttachmentFromPresenter:self];
   }
 
   else
@@ -1485,14 +1485,14 @@ LABEL_21:
     v3 = objc_alloc(MEMORY[0x277D35978]);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ICAttachmentPresenter *)self ic_viewControllerManager];
-    v7 = [v6 window];
-    v8 = [v3 initWithSubTrackerName:v5 window:v7];
+    ic_viewControllerManager = [(ICAttachmentPresenter *)self ic_viewControllerManager];
+    window = [ic_viewControllerManager window];
+    v8 = [v3 initWithSubTrackerName:v5 window:window];
     eventReporter = self->_eventReporter;
     self->_eventReporter = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
   }
 
   v11 = self->_eventReporter;
@@ -1500,56 +1500,56 @@ LABEL_21:
   return v11;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
 - (UIViewController)rootViewController
 {
-  v2 = [(ICAttachmentPresenter *)self presentingViewController];
-  v3 = [v2 ic_topViewController];
+  presentingViewController = [(ICAttachmentPresenter *)self presentingViewController];
+  ic_topViewController = [presentingViewController ic_topViewController];
 
-  return v3;
+  return ic_topViewController;
 }
 
-- (void)presentSharingViewForAttachment:(id)a3 fromSourceView:(id)a4
+- (void)presentSharingViewForAttachment:(id)attachment fromSourceView:(id)view
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  viewCopy = view;
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICAttachmentPresenter presentSharingViewForAttachment:v6 fromSourceView:?];
+    [ICAttachmentPresenter presentSharingViewForAttachment:attachmentCopy fromSourceView:?];
   }
 
-  v9 = [(ICAttachmentPresenter *)self presentingViewController];
-  v10 = [v9 ic_topViewController];
+  presentingViewController = [(ICAttachmentPresenter *)self presentingViewController];
+  ic_topViewController = [presentingViewController ic_topViewController];
 
   v11 = MEMORY[0x277D36788];
-  v21[0] = v6;
+  v21[0] = attachmentCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v13 = [v10 ic_window];
+  ic_window = [ic_topViewController ic_window];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__ICAttachmentPresenter_presentSharingViewForAttachment_fromSourceView___block_invoke;
   v17[3] = &unk_2781AD198;
-  v18 = v6;
-  v19 = v7;
-  v20 = v10;
-  v14 = v10;
-  v15 = v7;
-  v16 = v6;
-  [v11 generatePDFsIfNecessaryForGalleryAttachments:v12 displayWindow:v13 presentingViewController:v14 completionHandler:v17];
+  v18 = attachmentCopy;
+  v19 = viewCopy;
+  v20 = ic_topViewController;
+  v14 = ic_topViewController;
+  v15 = viewCopy;
+  v16 = attachmentCopy;
+  [v11 generatePDFsIfNecessaryForGalleryAttachments:v12 displayWindow:ic_window presentingViewController:v14 completionHandler:v17];
 }
 
 void __72__ICAttachmentPresenter_presentSharingViewForAttachment_fromSourceView___block_invoke(uint64_t a1)
@@ -1568,33 +1568,33 @@ void __72__ICAttachmentPresenter_presentSharingViewForAttachment_fromSourceView_
   }
 }
 
-- (void)presentExportViewForAttachment:(id)a3
+- (void)presentExportViewForAttachment:(id)attachment
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [ICAttachmentPresenter presentExportViewForAttachment:v4];
+    [ICAttachmentPresenter presentExportViewForAttachment:attachmentCopy];
   }
 
-  v6 = [(ICAttachmentPresenter *)self presentingViewController];
-  v7 = [v6 ic_topViewController];
+  presentingViewController = [(ICAttachmentPresenter *)self presentingViewController];
+  ic_topViewController = [presentingViewController ic_topViewController];
 
   v8 = MEMORY[0x277D36788];
-  v17[0] = v4;
+  v17[0] = attachmentCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v10 = [v7 ic_window];
+  ic_window = [ic_topViewController ic_window];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__ICAttachmentPresenter_presentExportViewForAttachment___block_invoke;
   v13[3] = &unk_2781AD198;
-  v14 = v4;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v4;
-  [v8 generatePDFsIfNecessaryForGalleryAttachments:v9 displayWindow:v10 presentingViewController:v11 completionHandler:v13];
+  v14 = attachmentCopy;
+  selfCopy = self;
+  v16 = ic_topViewController;
+  v11 = ic_topViewController;
+  v12 = attachmentCopy;
+  [v8 generatePDFsIfNecessaryForGalleryAttachments:v9 displayWindow:ic_window presentingViewController:v11 completionHandler:v13];
 }
 
 void __56__ICAttachmentPresenter_presentExportViewForAttachment___block_invoke(id *a1)
@@ -1725,13 +1725,13 @@ LABEL_26:
 
 - (void)removeTempooraryExportURL
 {
-  v3 = [(ICAttachmentPresenter *)self temporaryExportURLToRemove];
+  temporaryExportURLToRemove = [(ICAttachmentPresenter *)self temporaryExportURLToRemove];
 
-  if (v3)
+  if (temporaryExportURLToRemove)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [(ICAttachmentPresenter *)self temporaryExportURLToRemove];
-    [v5 removeItemAtURL:v4 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    temporaryExportURLToRemove2 = [(ICAttachmentPresenter *)self temporaryExportURLToRemove];
+    [defaultManager removeItemAtURL:temporaryExportURLToRemove2 error:0];
   }
 }
 
@@ -1758,97 +1758,97 @@ LABEL_26:
 
 - (ICAttachment)displayedAttachment
 {
-  v3 = [(ICAttachmentPresenter *)self presentedViewController];
+  presentedViewController = [(ICAttachmentPresenter *)self presentedViewController];
   objc_opt_class();
   v4 = ICDynamicCast();
   if (v4)
   {
     objc_opt_class();
-    v5 = [v4 currentPreviewItem];
+    currentPreviewItem = [v4 currentPreviewItem];
     v6 = ICCheckedDynamicCast();
 
-    v7 = [v6 attachment];
+    attachment = [v6 attachment];
   }
 
   else
   {
-    v8 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+    galleryAttachmentEditorController = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
 
-    if (v8)
+    if (galleryAttachmentEditorController)
     {
-      v9 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
-      v7 = [v9 galleryAttachment];
+      galleryAttachmentEditorController2 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+      attachment = [galleryAttachmentEditorController2 galleryAttachment];
     }
 
     else
     {
-      [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAttachmentPresenter(AttachmentState) displayedAttachment]" simulateCrash:1 showAlert:0 format:{@"Unknown type of attachment controller: %@", v3}];
-      v7 = 0;
+      [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAttachmentPresenter(AttachmentState) displayedAttachment]" simulateCrash:1 showAlert:0 format:{@"Unknown type of attachment controller: %@", presentedViewController}];
+      attachment = 0;
     }
   }
 
-  return v7;
+  return attachment;
 }
 
 - (ICAttachment)selectedSubAttachment
 {
-  v3 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+  galleryAttachmentEditorController = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
 
-  if (v3)
+  if (galleryAttachmentEditorController)
   {
-    v4 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
-    v5 = [v4 extractedDocumentController];
-    v6 = [v5 selectedScanDataDelegate];
+    galleryAttachmentEditorController2 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+    extractedDocumentController = [galleryAttachmentEditorController2 extractedDocumentController];
+    selectedScanDataDelegate = [extractedDocumentController selectedScanDataDelegate];
   }
 
   else
   {
-    v6 = 0;
+    selectedScanDataDelegate = 0;
   }
 
-  return v6;
+  return selectedScanDataDelegate;
 }
 
 - (NSDictionary)presentedAttachmentUIState
 {
-  v3 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+  galleryAttachmentEditorController = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
 
-  if (v3)
+  if (galleryAttachmentEditorController)
   {
-    v4 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
-    v5 = [v4 attachmentUIState];
+    galleryAttachmentEditorController2 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+    attachmentUIState = [galleryAttachmentEditorController2 attachmentUIState];
   }
 
   else
   {
-    v4 = [(ICAttachmentPresenter *)self presentedViewController];
+    galleryAttachmentEditorController2 = [(ICAttachmentPresenter *)self presentedViewController];
     v6 = ICProtocolCast();
-    v5 = [v6 attachmentUIState];
+    attachmentUIState = [v6 attachmentUIState];
   }
 
-  return v5;
+  return attachmentUIState;
 }
 
-- (void)applyPresentedAttachmentUIStateIfNecessary:(id)a3
+- (void)applyPresentedAttachmentUIStateIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+  necessaryCopy = necessary;
+  galleryAttachmentEditorController = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
 
-  if (v5)
+  if (galleryAttachmentEditorController)
   {
-    v6 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
+    galleryAttachmentEditorController2 = [(ICAttachmentPresenter *)self galleryAttachmentEditorController];
   }
 
   else
   {
-    v7 = [(ICAttachmentPresenter *)self presentedViewController];
+    presentedViewController = [(ICAttachmentPresenter *)self presentedViewController];
     v8 = ICProtocolCast();
 
-    v6 = v8;
+    galleryAttachmentEditorController2 = v8;
   }
 
-  v9 = v6;
-  [v6 applyAttachmentUIStateIfNecessary:v4];
+  v9 = galleryAttachmentEditorController2;
+  [galleryAttachmentEditorController2 applyAttachmentUIStateIfNecessary:necessaryCopy];
 }
 
 void __35__ICAttachmentPresenter_presentURL__block_invoke_cold_1(uint64_t a1)

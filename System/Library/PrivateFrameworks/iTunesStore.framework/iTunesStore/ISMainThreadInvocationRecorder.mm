@@ -1,15 +1,15 @@
 @interface ISMainThreadInvocationRecorder
-- (void)invokeInvocation:(id)a3;
+- (void)invokeInvocation:(id)invocation;
 @end
 
 @implementation ISMainThreadInvocationRecorder
 
-- (void)invokeInvocation:(id)a3
+- (void)invokeInvocation:(id)invocation
 {
-  [a3 retainArguments];
+  [invocation retainArguments];
   waitUntilDone = self->_waitUntilDone;
 
-  [a3 performSelectorOnMainThread:sel_invoke withObject:0 waitUntilDone:waitUntilDone];
+  [invocation performSelectorOnMainThread:sel_invoke withObject:0 waitUntilDone:waitUntilDone];
 }
 
 @end

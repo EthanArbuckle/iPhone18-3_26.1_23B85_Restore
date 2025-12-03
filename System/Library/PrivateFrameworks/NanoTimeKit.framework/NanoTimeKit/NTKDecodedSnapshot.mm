@@ -1,14 +1,14 @@
 @interface NTKDecodedSnapshot
-+ (id)decodedSnapshotFromURL:(id)a3 error:(id *)a4;
-+ (id)queue_decodedSnapshotFromURL:(id)a3 error:(id *)a4;
-- (NTKDecodedSnapshot)initWithImage:(id)a3 context:(id)a4;
++ (id)decodedSnapshotFromURL:(id)l error:(id *)error;
++ (id)queue_decodedSnapshotFromURL:(id)l error:(id *)error;
+- (NTKDecodedSnapshot)initWithImage:(id)image context:(id)context;
 @end
 
 @implementation NTKDecodedSnapshot
 
-+ (id)decodedSnapshotFromURL:(id)a3 error:(id *)a4
++ (id)decodedSnapshotFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -16,17 +16,17 @@
   v21 = __Block_byref_object_dispose__0;
   v22 = 0;
   v7 = +[NTKSnapshotFileQueue defaultFileQueue];
-  v8 = [v7 queue];
+  queue = [v7 queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__NTKDecodedSnapshot_decodedSnapshotFromURL_error___block_invoke;
   v12[3] = &unk_27877DE58;
-  v13 = v6;
+  v13 = lCopy;
   v14 = &v17;
-  v15 = a1;
-  v16 = a4;
-  v9 = v6;
-  dispatch_sync(v8, v12);
+  selfCopy = self;
+  errorCopy = error;
+  v9 = lCopy;
+  dispatch_sync(queue, v12);
 
   v10 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -42,18 +42,18 @@ void __51__NTKDecodedSnapshot_decodedSnapshotFromURL_error___block_invoke(uint64
   *(v3 + 40) = v2;
 }
 
-+ (id)queue_decodedSnapshotFromURL:(id)a3 error:(id *)a4
++ (id)queue_decodedSnapshotFromURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[NTKSnapshotFileQueue defaultFileQueue];
-  v7 = [v6 queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [v6 queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [v5 absoluteURL];
-  v9 = [v8 path];
+  absoluteURL = [lCopy absoluteURL];
+  path = [absoluteURL path];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:path];
 
   if (v11)
   {
@@ -63,7 +63,7 @@ void __51__NTKDecodedSnapshot_decodedSnapshotFromURL_error___block_invoke(uint64
     v13 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(NTKDecodedSnapshot *)v9 queue_decodedSnapshotFromURL:v15 error:v13];
+      [(NTKDecodedSnapshot *)path queue_decodedSnapshotFromURL:v15 error:v13];
     }
 
     if (v15[0])
@@ -71,9 +71,9 @@ void __51__NTKDecodedSnapshot_decodedSnapshotFromURL_error___block_invoke(uint64
       CFRelease(v15[0]);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v15[0];
+      *error = v15[0];
     }
 
     v12 = 0;
@@ -87,18 +87,18 @@ void __51__NTKDecodedSnapshot_decodedSnapshotFromURL_error___block_invoke(uint64
   return v12;
 }
 
-- (NTKDecodedSnapshot)initWithImage:(id)a3 context:(id)a4
+- (NTKDecodedSnapshot)initWithImage:(id)image context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = NTKDecodedSnapshot;
   v9 = [(NTKDecodedSnapshot *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_image, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_image, image);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;

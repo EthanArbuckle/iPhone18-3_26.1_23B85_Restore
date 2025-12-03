@@ -1,10 +1,10 @@
 @interface SharedDefaults
 + (id)defaults;
 + (int64_t)currentMeasureUnits;
-+ (void)setupSpecifier:(id)a3;
++ (void)setupSpecifier:(id)specifier;
 - (SharedDefaults)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SharedDefaults
@@ -17,8 +17,8 @@
   if (v2)
   {
     v3 = +[NSUserDefaults standardUserDefaults];
-    v4 = [objc_opt_class() measureUnits];
-    [v3 addObserver:v2 forKeyPath:v4 options:5 context:0];
+    measureUnits = [objc_opt_class() measureUnits];
+    [v3 addObserver:v2 forKeyPath:measureUnits options:5 context:0];
   }
 
   return v2;
@@ -27,8 +27,8 @@
 - (void)dealloc
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [objc_opt_class() measureUnits];
-  [v3 removeObserver:self forKeyPath:v4];
+  measureUnits = [objc_opt_class() measureUnits];
+  [v3 removeObserver:self forKeyPath:measureUnits];
 
   v5.receiver = self;
   v5.super_class = SharedDefaults;
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_1DB4;
   block[3] = &unk_42B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_8548[0] != -1)
   {
     dispatch_once(qword_8548, block);
@@ -52,11 +52,11 @@
   return v2;
 }
 
-+ (void)setupSpecifier:(id)a3
++ (void)setupSpecifier:(id)specifier
 {
-  v10 = a3;
-  v4 = [v10 propertyForKey:PSDefaultsKey];
-  v5 = [v10 propertyForKey:PSKeyNameKey];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:PSDefaultsKey];
+  v5 = [specifierCopy propertyForKey:PSKeyNameKey];
   v6 = v5;
   if (v4)
   {
@@ -70,47 +70,47 @@
 
   if (!v7 && [v4 isEqualToString:@"com.apple.measure"])
   {
-    v8 = [a1 getDefaultValues];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    getDefaultValues = [self getDefaultValues];
+    v9 = [getDefaultValues objectForKeyedSubscript:v6];
     if (v9)
     {
-      [v10 setProperty:v9 forKey:PSDefaultValueKey];
+      [specifierCopy setProperty:v9 forKey:PSDefaultValueKey];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  v8 = [objc_opt_class() measureUnits];
-  v9 = [v7 isEqualToString:v8];
+  pathCopy = path;
+  measureUnits = [objc_opt_class() measureUnits];
+  v9 = [pathCopy isEqualToString:measureUnits];
 
   if (v9)
   {
     v10 = +[NSUserDefaults standardUserDefaults];
-    v11 = [objc_opt_class() measureUnits];
-    v13 = [v10 valueForKeyPath:v11];
+    measureUnits2 = [objc_opt_class() measureUnits];
+    v13 = [v10 valueForKeyPath:measureUnits2];
 
     if (v13)
     {
-      v12 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v12 = sub_1BAC();
+      integerValue = sub_1BAC();
     }
 
-    [(SharedDefaults *)self setCachedMeasureUnits:v12];
+    [(SharedDefaults *)self setCachedMeasureUnits:integerValue];
   }
 }
 
 + (int64_t)currentMeasureUnits
 {
-  v2 = [a1 defaults];
-  v3 = [v2 cachedMeasureUnits];
+  defaults = [self defaults];
+  cachedMeasureUnits = [defaults cachedMeasureUnits];
 
-  return v3;
+  return cachedMeasureUnits;
 }
 
 @end

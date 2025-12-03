@@ -1,20 +1,20 @@
 @interface CollectionPicker
-- (CollectionPicker)initWithCollectionEditSession:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5;
+- (CollectionPicker)initWithCollectionEditSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect;
 - (CollectionPickerDelegate)delegate;
 - (id)alertController;
 - (id)collectionPickerContaineeViewController;
 - (id)guidesPickerContaineeViewController;
-- (void)_collectionPickerDismissedAfterSelectingCollection:(id)a3 parentVC:(id)a4;
-- (void)_collectionPickerDismissedAfterSelectingCollectionsConfirmation:(id)a3 parentVC:(id)a4 addToLibrary:(BOOL)a5;
+- (void)_collectionPickerDismissedAfterSelectingCollection:(id)collection parentVC:(id)c;
+- (void)_collectionPickerDismissedAfterSelectingCollectionsConfirmation:(id)confirmation parentVC:(id)c addToLibrary:(BOOL)library;
 - (void)cleanControllers;
-- (void)collectionPickerContaineeViewController:(id)a3 selectCollection:(id)a4;
-- (void)collectionPickerContaineeViewControllerCancelTapped:(id)a3;
-- (void)collectionPickerViewController:(id)a3 selectCollection:(id)a4;
-- (void)collectionPickerViewController:(id)a3 unselectCollection:(id)a4;
-- (void)guidesPickerContaineeViewControllerCancelTapped:(id)a3;
-- (void)guidesPickerContaineeViewControllerConfirmationTapped:(id)a3 forCollections:(id)a4 addToLibrary:(BOOL)a5;
-- (void)guidesPickerContaineeViewControllerDidSelectAdd:(id)a3;
-- (void)viewControllerToPresentIfContainee:(id)a3 ifAlertController:(id)a4;
+- (void)collectionPickerContaineeViewController:(id)controller selectCollection:(id)collection;
+- (void)collectionPickerContaineeViewControllerCancelTapped:(id)tapped;
+- (void)collectionPickerViewController:(id)controller selectCollection:(id)collection;
+- (void)collectionPickerViewController:(id)controller unselectCollection:(id)collection;
+- (void)guidesPickerContaineeViewControllerCancelTapped:(id)tapped;
+- (void)guidesPickerContaineeViewControllerConfirmationTapped:(id)tapped forCollections:(id)collections addToLibrary:(BOOL)library;
+- (void)guidesPickerContaineeViewControllerDidSelectAdd:(id)add;
+- (void)viewControllerToPresentIfContainee:(id)containee ifAlertController:(id)controller;
 @end
 
 @implementation CollectionPicker
@@ -26,86 +26,86 @@
   return WeakRetained;
 }
 
-- (void)guidesPickerContaineeViewControllerDidSelectAdd:(id)a3
+- (void)guidesPickerContaineeViewControllerDidSelectAdd:(id)add
 {
-  v4 = a3;
+  addCopy = add;
   v6 = +[CollectionHandler addToCollection];
   v5 = [NSSet setWithObject:v6];
-  [(CollectionPicker *)self guidesPickerContaineeViewControllerConfirmationTapped:v4 forCollections:v5 addToLibrary:1];
+  [(CollectionPicker *)self guidesPickerContaineeViewControllerConfirmationTapped:addCopy forCollections:v5 addToLibrary:1];
 }
 
-- (void)guidesPickerContaineeViewControllerCancelTapped:(id)a3
+- (void)guidesPickerContaineeViewControllerCancelTapped:(id)tapped
 {
-  [a3 handleDismissAction:0];
+  [tapped handleDismissAction:0];
   [(CollectionPicker *)self cleanControllers];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained collectionPickerClosed:self];
 }
 
-- (void)guidesPickerContaineeViewControllerConfirmationTapped:(id)a3 forCollections:(id)a4 addToLibrary:(BOOL)a5
+- (void)guidesPickerContaineeViewControllerConfirmationTapped:(id)tapped forCollections:(id)collections addToLibrary:(BOOL)library
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [v8 handleDismissAction:0];
-  v10 = [v8 transitionCoordinator];
+  libraryCopy = library;
+  tappedCopy = tapped;
+  collectionsCopy = collections;
+  [tappedCopy handleDismissAction:0];
+  transitionCoordinator = [tappedCopy transitionCoordinator];
 
-  if (v10)
+  if (transitionCoordinator)
   {
-    v11 = [v8 transitionCoordinator];
+    transitionCoordinator2 = [tappedCopy transitionCoordinator];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100609F28;
     v12[3] = &unk_101623E58;
     v12[4] = self;
-    v13 = v9;
-    v14 = v8;
-    v15 = v5;
-    [v11 animateAlongsideTransition:0 completion:v12];
+    v13 = collectionsCopy;
+    v14 = tappedCopy;
+    v15 = libraryCopy;
+    [transitionCoordinator2 animateAlongsideTransition:0 completion:v12];
   }
 
   else
   {
-    [(CollectionPicker *)self _collectionPickerDismissedAfterSelectingCollectionsConfirmation:v9 parentVC:v8 addToLibrary:v5];
+    [(CollectionPicker *)self _collectionPickerDismissedAfterSelectingCollectionsConfirmation:collectionsCopy parentVC:tappedCopy addToLibrary:libraryCopy];
   }
 }
 
-- (void)collectionPickerContaineeViewControllerCancelTapped:(id)a3
+- (void)collectionPickerContaineeViewControllerCancelTapped:(id)tapped
 {
-  [a3 handleDismissAction:0];
+  [tapped handleDismissAction:0];
   [(CollectionPicker *)self cleanControllers];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained collectionPickerClosed:self];
 }
 
-- (void)collectionPickerContaineeViewController:(id)a3 selectCollection:(id)a4
+- (void)collectionPickerContaineeViewController:(id)controller selectCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 presentingViewController];
-  [v6 handleDismissAction:0];
-  v9 = [v6 transitionCoordinator];
+  controllerCopy = controller;
+  collectionCopy = collection;
+  presentingViewController = [controllerCopy presentingViewController];
+  [controllerCopy handleDismissAction:0];
+  transitionCoordinator = [controllerCopy transitionCoordinator];
 
-  if (v9)
+  if (transitionCoordinator)
   {
-    v10 = [v6 transitionCoordinator];
+    transitionCoordinator2 = [controllerCopy transitionCoordinator];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10060A0CC;
     v11[3] = &unk_101623E30;
     v11[4] = self;
-    v12 = v7;
-    v13 = v8;
-    [v10 animateAlongsideTransition:0 completion:v11];
+    v12 = collectionCopy;
+    v13 = presentingViewController;
+    [transitionCoordinator2 animateAlongsideTransition:0 completion:v11];
   }
 
   else
   {
-    [(CollectionPicker *)self _collectionPickerDismissedAfterSelectingCollection:v7 parentVC:v8];
+    [(CollectionPicker *)self _collectionPickerDismissedAfterSelectingCollection:collectionCopy parentVC:presentingViewController];
   }
 }
 
-- (void)collectionPickerViewController:(id)a3 unselectCollection:(id)a4
+- (void)collectionPickerViewController:(id)controller unselectCollection:(id)collection
 {
   [(UIAlertController *)self->_alertController dismissViewControllerAnimated:1 completion:0];
   [(CollectionPicker *)self cleanControllers];
@@ -113,36 +113,36 @@
   [WeakRetained collectionPickerClosed:self];
 }
 
-- (void)collectionPickerViewController:(id)a3 selectCollection:(id)a4
+- (void)collectionPickerViewController:(id)controller selectCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(UIAlertController *)self->_alertController presentingViewController];
+  collectionCopy = collection;
+  presentingViewController = [(UIAlertController *)self->_alertController presentingViewController];
   alertController = self->_alertController;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10060A210;
   v10[3] = &unk_101661A40;
   v10[4] = self;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = collectionCopy;
+  v12 = presentingViewController;
+  v8 = presentingViewController;
+  v9 = collectionCopy;
   [(UIAlertController *)alertController dismissViewControllerAnimated:1 completion:v10];
 }
 
-- (void)_collectionPickerDismissedAfterSelectingCollectionsConfirmation:(id)a3 parentVC:(id)a4 addToLibrary:(BOOL)a5
+- (void)_collectionPickerDismissedAfterSelectingCollectionsConfirmation:(id)confirmation parentVC:(id)c addToLibrary:(BOOL)library
 {
-  v8 = a3;
-  v9 = a4;
+  confirmationCopy = confirmation;
+  cCopy = c;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10060A464;
   v27[3] = &unk_101661A90;
-  v10 = v8;
+  v10 = confirmationCopy;
   v28 = v10;
-  v29 = self;
+  selfCopy = self;
   v11 = objc_retainBlock(v27);
-  if (a5)
+  if (library)
   {
     if ([v10 count] != 1 || (editSession = self->_editSession, objc_msgSend(v10, "anyObject"), v13 = objc_claimAutoreleasedReturnValue(), LODWORD(editSession) = -[CollectionSaveSession canRenameSelectedObjectInCollection:](editSession, "canRenameSelectedObjectInCollection:", v13), v13, !editSession))
     {
@@ -150,16 +150,16 @@
       goto LABEL_8;
     }
 
-    v14 = [(CollectionSaveSession *)self->_editSession mapItem];
-    v15 = [(CollectionPicker *)self delegate];
+    mapItem = [(CollectionSaveSession *)self->_editSession mapItem];
+    delegate = [(CollectionPicker *)self delegate];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_10060A5B4;
     v24 = &unk_10165F618;
-    v25 = v14;
+    v25 = mapItem;
     v26 = v11;
-    WeakRetained = v14;
-    [v15 viewController:v9 editNameOfMapItem:WeakRetained saveHandler:&v21 cancelHandler:&stru_101623E08];
+    WeakRetained = mapItem;
+    [delegate viewController:cCopy editNameOfMapItem:WeakRetained saveHandler:&v21 cancelHandler:&stru_101623E08];
   }
 
   else
@@ -167,8 +167,8 @@
     v17 = [_TtC4Maps29LibraryDataOperationsProvider alloc];
     v18 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
     v19 = [(LibraryDataOperationsProvider *)v17 initWithMapsSyncStore:v18];
-    v20 = [(CollectionSaveSession *)self->_editSession mapItem];
-    [(LibraryDataOperationsProvider *)v19 deletePlacesMatchingMapItem:v20];
+    mapItem2 = [(CollectionSaveSession *)self->_editSession mapItem];
+    [(LibraryDataOperationsProvider *)v19 deletePlacesMatchingMapItem:mapItem2];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained collectionPickerClosed:self];
@@ -178,11 +178,11 @@ LABEL_8:
   [(CollectionPicker *)self cleanControllers:v21];
 }
 
-- (void)_collectionPickerDismissedAfterSelectingCollection:(id)a3 parentVC:(id)a4
+- (void)_collectionPickerDismissedAfterSelectingCollection:(id)collection parentVC:(id)c
 {
-  v6 = a4;
-  v7 = [NSSet setWithObject:a3];
-  [(CollectionPicker *)self _collectionPickerDismissedAfterSelectingCollectionsConfirmation:v7 parentVC:v6 addToLibrary:1];
+  cCopy = c;
+  v7 = [NSSet setWithObject:collection];
+  [(CollectionPicker *)self _collectionPickerDismissedAfterSelectingCollectionsConfirmation:v7 parentVC:cCopy addToLibrary:1];
 }
 
 - (void)cleanControllers
@@ -211,8 +211,8 @@ LABEL_8:
       [(CollectionPickerViewController *)self->_pickerViewController setDelegate:self];
     }
 
-    v6 = [(CollectionEditSession *)self->_editSession selectedObjectSet];
-    v7 = [v6 count];
+    selectedObjectSet = [(CollectionEditSession *)self->_editSession selectedObjectSet];
+    v7 = [selectedObjectSet count];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
@@ -230,19 +230,19 @@ LABEL_8:
 
     v12 = [UIAlertController alertControllerWithTitle:0 message:v11 preferredStyle:0];
     sourceView = self->_sourceView;
-    v14 = [(UIAlertController *)v12 popoverPresentationController];
-    [v14 setSourceView:sourceView];
+    popoverPresentationController = [(UIAlertController *)v12 popoverPresentationController];
+    [popoverPresentationController setSourceView:sourceView];
 
     x = self->_sourceRect.origin.x;
     y = self->_sourceRect.origin.y;
     width = self->_sourceRect.size.width;
     height = self->_sourceRect.size.height;
-    v19 = [(UIAlertController *)v12 popoverPresentationController];
-    [v19 setSourceRect:{x, y, width, height}];
+    popoverPresentationController2 = [(UIAlertController *)v12 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
     [(UIAlertController *)v12 setContentViewController:self->_pickerViewController];
-    v20 = [(UIAlertController *)v12 view];
-    [v20 setAccessibilityIdentifier:@"CollectionPickerAlert"];
+    view = [(UIAlertController *)v12 view];
+    [view setAccessibilityIdentifier:@"CollectionPickerAlert"];
 
     objc_initWeak(&location, self);
     v21 = +[NSBundle mainBundle];
@@ -299,22 +299,22 @@ LABEL_8:
   return collectionPickerContaineeController;
 }
 
-- (void)viewControllerToPresentIfContainee:(id)a3 ifAlertController:(id)a4
+- (void)viewControllerToPresentIfContainee:(id)containee ifAlertController:(id)controller
 {
-  v11 = a3;
-  v6 = a4;
+  containeeCopy = containee;
+  controllerCopy = controller;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if (v6 && self->_sourceView && (v8 != 6 ? (v9 = v8 == 1) : (v9 = 1), v9))
+  if (controllerCopy && self->_sourceView && (userInterfaceIdiom != 6 ? (v9 = userInterfaceIdiom == 1) : (v9 = 1), v9))
   {
-    v10 = [(CollectionPicker *)self alertController];
-    v6[2](v6, v10);
+    alertController = [(CollectionPicker *)self alertController];
+    controllerCopy[2](controllerCopy, alertController);
   }
 
   else
   {
-    if (!v11)
+    if (!containeeCopy)
     {
       goto LABEL_15;
     }
@@ -328,29 +328,29 @@ LABEL_8:
     {
       [(CollectionPicker *)self collectionPickerContaineeViewController];
     }
-    v10 = ;
-    v11[2](v11, v10);
+    alertController = ;
+    containeeCopy[2](containeeCopy, alertController);
   }
 
 LABEL_15:
 }
 
-- (CollectionPicker)initWithCollectionEditSession:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5
+- (CollectionPicker)initWithCollectionEditSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sessionCopy = session;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = CollectionPicker;
   v14 = [(CollectionPicker *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_editSession, a3);
-    objc_storeStrong(&v15->_sourceView, a4);
+    objc_storeStrong(&v14->_editSession, session);
+    objc_storeStrong(&v15->_sourceView, view);
     v15->_sourceRect.origin.x = x;
     v15->_sourceRect.origin.y = y;
     v15->_sourceRect.size.width = width;

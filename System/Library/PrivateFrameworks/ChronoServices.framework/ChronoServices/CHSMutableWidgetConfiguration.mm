@@ -1,48 +1,48 @@
 @interface CHSMutableWidgetConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContainerDescriptors:(id)a3;
-- (void)setMetricsSpecification:(id)a3;
-- (void)setRateLimitPolicies:(id)a3;
-- (void)setReplicationPredicate:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContainerDescriptors:(id)descriptors;
+- (void)setMetricsSpecification:(id)specification;
+- (void)setRateLimitPolicies:(id)policies;
+- (void)setReplicationPredicate:(id)predicate;
 @end
 
 @implementation CHSMutableWidgetConfiguration
 
-- (void)setContainerDescriptors:(id)a3
+- (void)setContainerDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  descriptorsCopy = descriptors;
+  v4 = [descriptorsCopy copy];
   containerDescriptors = self->super._containerDescriptors;
   self->super._containerDescriptors = v4;
 }
 
-- (void)setMetricsSpecification:(id)a3
+- (void)setMetricsSpecification:(id)specification
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  specificationCopy = specification;
+  v4 = [specificationCopy copy];
   metricsSpecification = self->super._metricsSpecification;
   self->super._metricsSpecification = v4;
 }
 
-- (void)setRateLimitPolicies:(id)a3
+- (void)setRateLimitPolicies:(id)policies
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  policiesCopy = policies;
+  v4 = [policiesCopy copy];
   rateLimitPolicies = self->super._rateLimitPolicies;
   self->super._rateLimitPolicies = v4;
 }
 
-- (void)setReplicationPredicate:(id)a3
+- (void)setReplicationPredicate:(id)predicate
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  predicateCopy = predicate;
+  v4 = [predicateCopy copy];
   replicationPredicate = self->super._replicationPredicate;
   self->super._replicationPredicate = v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSWidgetConfiguration allocWithZone:a3];
+  v4 = [CHSWidgetConfiguration allocWithZone:zone];
 
   return [(CHSWidgetConfiguration *)v4 initWithConfiguration:self];
 }

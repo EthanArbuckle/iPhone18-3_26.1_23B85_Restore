@@ -1,134 +1,134 @@
 @interface CIRedEyeRepair3
-+ ($807B2EF8CC2A3BA0CBD71F9CA1C0D669)settingsWithOptions:(SEL)a3;
-+ ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithImageSubRectangle:(CGRect)a3 settings:(id *)a4;
-+ (CGRect)supportRectangleWithFaceArray:(id)a3 options:(id)a4;
-+ (CGRect)supportRectangleWithRepair:(id)a3 imageSize:(CGSize)a4;
-+ (float)yawAngleWithFaceDictionary:(id)a3;
-+ (int)bitmapRect:(id *)a3 point:(CGPoint *)a4 polygon:(CGPoint)a5[8] andDistMatrix:(float)a6[4] forEye:(int)a7 inFaceDictionary:(id)a8 settings:(id *)a9;
-+ (int)faceContext:(id *)a3 withFaceArray:(id)a4 index:(int)a5 settings:(id *)a6;
-+ (void)insertIntoConnectionHopper:(id *)a3 index1:(int)a4 drop1:(int)a5 index2:(int)a6 drop2:(int)a7 score:(float)a8;
-+ (void)insertIntoThreadHopper:(id *)a3 index:(int)a4 recChannel:(float)a5 hue:(float)a6 saturation:(float)a7 luminance:(float)a8 shapeMetricTotal:(float)a9 xPosition:(float)a10;
-- ($000CCD7ED2ADA2E18343834BA3C2DAF0)focusStatsWithBitmap:(id *)a3 IOD:(float)a4;
-- ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithDictionaryRectArray:(id)a3;
-- ($A3B2E143E1A03423F9FC703C010436DC)globalBitmapRectWithDictionaryRectArray:(id)a3;
++ ($807B2EF8CC2A3BA0CBD71F9CA1C0D669)settingsWithOptions:(SEL)options;
++ ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithImageSubRectangle:(CGRect)rectangle settings:(id *)settings;
++ (CGRect)supportRectangleWithFaceArray:(id)array options:(id)options;
++ (CGRect)supportRectangleWithRepair:(id)repair imageSize:(CGSize)size;
++ (float)yawAngleWithFaceDictionary:(id)dictionary;
++ (int)bitmapRect:(id *)rect point:(CGPoint *)point polygon:(CGPoint)polygon[8] andDistMatrix:(float)matrix[4] forEye:(int)eye inFaceDictionary:(id)dictionary settings:(id *)settings;
++ (int)faceContext:(id *)context withFaceArray:(id)array index:(int)index settings:(id *)settings;
++ (void)insertIntoConnectionHopper:(id *)hopper index1:(int)index1 drop1:(int)drop1 index2:(int)index2 drop2:(int)drop2 score:(float)score;
++ (void)insertIntoThreadHopper:(id *)hopper index:(int)index recChannel:(float)channel hue:(float)hue saturation:(float)saturation luminance:(float)luminance shapeMetricTotal:(float)total xPosition:(float)self0;
+- ($000CCD7ED2ADA2E18343834BA3C2DAF0)focusStatsWithBitmap:(id *)bitmap IOD:(float)d;
+- ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithDictionaryRectArray:(id)array;
+- ($A3B2E143E1A03423F9FC703C010436DC)globalBitmapRectWithDictionaryRectArray:(id)array;
 - ($A3B2E143E1A03423F9FC703C010436DC)repairRect;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)RGBtoHSV:(id)a3;
-- (BOOL)edgePoint:(CGPoint *)a3 withBitmap:(id *)a4 center:(CGPoint)a5 perp:(CGPoint)a6;
-- (BOOL)gatherFaceStatistics:(id *)a3;
-- (BOOL)initGridWithBitmap:(id *)a3 scale:(int)a4;
-- (BOOL)isConvex:(id *)a3;
-- (BOOL)openRepairDictionary:(id)a3 convexHull:(id *)a4 facts:(id *)a5;
-- (BOOL)trimConcaveFromHull:(id *)a3;
-- (BOOL)trimEndPointFromHull:(id *)a3;
-- (BOOL)trimStartPointFromHull:(id *)a3;
-- (BOOL)unpackToGlobalRepairDictionary:(id)a3 convexHull:(id *)a4 facts:(id *)a5;
-- (CGAffineTransform)inverseImageTransformForOrientation:(SEL)a3;
-- (CGPoint)bitmapPointWithDictionaryPoint:(CGPoint)a3;
-- (CGPoint)bitmapPointWithDictionaryPointArray:(id)a3;
-- (CGPoint)centroidWithConvexHull:(id *)a3;
-- (CGPoint)dictionaryPointWithBitmapPoint:(CGPoint)a3;
-- (CGPoint)dictionaryPointWithGlobalBitmapPoint:(CGPoint)a3;
-- (CGPoint)globalBitmapPointWithDictionaryPoint:(CGPoint)a3;
-- (CGPoint)globalBitmapPointWithDictionaryPointArray:(id)a3;
-- (CGPoint)leftHandedTransform:(CGAffineTransform *)a3 ofPoint:(CGPoint)a4;
-- (CGPoint)threadCentroid:(id *)a3;
-- (CIRedEyeRepair3)initWithExternalBuffer:(char *)a3 subRectangle:(CGRect)a4 rowBytes:(unint64_t)a5 options:(id)a6;
-- (float)threadSignedArea:(id *)a3 centroid:(CGPoint)a4;
-- (id)dictionaryPointArrayWithBitmapPoint:(CGPoint)a3;
-- (id)dictionaryPointArrayWithEyeBitmapPoint:(CGPoint)a3;
-- (id)dictionaryPointArrayWithGlobalBitmapPoint:(CGPoint)a3;
-- (id)dictionaryRectArrayWithBitmapRect:(id)a3;
-- (id)dictionaryRectArrayWithGlobalBitmapRect:(id)a3;
-- (id)mutableCopyOfArray:(id)a3;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)RGBtoHSV:(id)v;
+- (BOOL)edgePoint:(CGPoint *)point withBitmap:(id *)bitmap center:(CGPoint)center perp:(CGPoint)perp;
+- (BOOL)gatherFaceStatistics:(id *)statistics;
+- (BOOL)initGridWithBitmap:(id *)bitmap scale:(int)scale;
+- (BOOL)isConvex:(id *)convex;
+- (BOOL)openRepairDictionary:(id)dictionary convexHull:(id *)hull facts:(id *)facts;
+- (BOOL)trimConcaveFromHull:(id *)hull;
+- (BOOL)trimEndPointFromHull:(id *)hull;
+- (BOOL)trimStartPointFromHull:(id *)hull;
+- (BOOL)unpackToGlobalRepairDictionary:(id)dictionary convexHull:(id *)hull facts:(id *)facts;
+- (CGAffineTransform)inverseImageTransformForOrientation:(SEL)orientation;
+- (CGPoint)bitmapPointWithDictionaryPoint:(CGPoint)point;
+- (CGPoint)bitmapPointWithDictionaryPointArray:(id)array;
+- (CGPoint)centroidWithConvexHull:(id *)hull;
+- (CGPoint)dictionaryPointWithBitmapPoint:(CGPoint)point;
+- (CGPoint)dictionaryPointWithGlobalBitmapPoint:(CGPoint)point;
+- (CGPoint)globalBitmapPointWithDictionaryPoint:(CGPoint)point;
+- (CGPoint)globalBitmapPointWithDictionaryPointArray:(id)array;
+- (CGPoint)leftHandedTransform:(CGAffineTransform *)transform ofPoint:(CGPoint)point;
+- (CGPoint)threadCentroid:(id *)centroid;
+- (CIRedEyeRepair3)initWithExternalBuffer:(char *)buffer subRectangle:(CGRect)rectangle rowBytes:(unint64_t)bytes options:(id)options;
+- (float)threadSignedArea:(id *)area centroid:(CGPoint)centroid;
+- (id)dictionaryPointArrayWithBitmapPoint:(CGPoint)point;
+- (id)dictionaryPointArrayWithEyeBitmapPoint:(CGPoint)point;
+- (id)dictionaryPointArrayWithGlobalBitmapPoint:(CGPoint)point;
+- (id)dictionaryRectArrayWithBitmapRect:(id)rect;
+- (id)dictionaryRectArrayWithGlobalBitmapRect:(id)rect;
+- (id)mutableCopyOfArray:(id)array;
 - (id)repairArray;
-- (id)repairWithSide:(int)a3;
-- (id)stringWithRER3Error:(int)a3;
-- (int)addPoint:(CGPoint)a3 toHull:(id *)a4;
-- (int)addPoint:(CGPoint)a3 toShapePoints:(id *)a4;
-- (int)analyzeMask:(id *)a3 usingConvexHull:(id *)a4 producingOptimizedMask:(id *)a5;
-- (int)attemptClosureOfThreadIndex:(int)a3;
-- (int)closeThreadIndex:(int)a3 usingVectorField:(id *)a4;
-- (int)color:(id *)a3 underConvexHull:(id *)a4 saturated:(id *)a5;
-- (int)connectThreads:(int)a3 drop1:(int)a4 and:(int)a5 drop2:(int)a6;
+- (id)repairWithSide:(int)side;
+- (id)stringWithRER3Error:(int)error;
+- (int)addPoint:(CGPoint)point toHull:(id *)hull;
+- (int)addPoint:(CGPoint)point toShapePoints:(id *)points;
+- (int)analyzeMask:(id *)mask usingConvexHull:(id *)hull producingOptimizedMask:(id *)optimizedMask;
+- (int)attemptClosureOfThreadIndex:(int)index;
+- (int)closeThreadIndex:(int)index usingVectorField:(id *)field;
+- (int)color:(id *)color underConvexHull:(id *)hull saturated:(id *)saturated;
+- (int)connectThreads:(int)threads drop1:(int)drop1 and:(int)and drop2:(int)drop2;
 - (int)connectThreadsInGrid;
-- (int)convexHull:(id *)a3 ofOriented:(BOOL)a4 shape:(id *)a5;
-- (int)convexHull:(id *)a3 ofOriented:(BOOL)a4 threadIndex:(int)a5;
-- (int)copyGridInto:(id *)a3 transform:(CGAffineTransform *)a4 height:(int)a5;
-- (int)copyShape:(id *)a3 into:(id *)a4 transform:(CGAffineTransform *)a5 height:(int)a6;
-- (int)executeRepairWithRepairDictionary:(id)a3;
+- (int)convexHull:(id *)hull ofOriented:(BOOL)oriented shape:(id *)shape;
+- (int)convexHull:(id *)hull ofOriented:(BOOL)oriented threadIndex:(int)index;
+- (int)copyGridInto:(id *)into transform:(CGAffineTransform *)transform height:(int)height;
+- (int)copyShape:(id *)shape into:(id *)into transform:(CGAffineTransform *)transform height:(int)height;
+- (int)executeRepairWithRepairDictionary:(id)dictionary;
 - (int)findThreadsInGrid;
-- (int)gatherThreadInfo:(id *)a3;
-- (int)improvedShape:(id *)a3 withShape:(id *)a4;
-- (int)initHull:(id *)a3 withOrientation:(BOOL)a4;
-- (int)initShapePoints:(id *)a3 withMaxPoints:(int)a4;
-- (int)insertPoint:(CGPoint)a3 andDirection:(CGPoint)a4 intoGrid:(BOOL)a5;
-- (int)linkUpPointIndex:(int)a3 toPointIndex:(int)a4;
-- (int)lookForPoint:(CGPoint *)a3 onLine:(id)a4 nearestPoint:(CGPoint)a5;
-- (int)newShape:(id *)a3;
-- (int)newShape:(id *)a3 byInterpolatingBetweenCheckpoints:(id)a4[100] nc:(int)a5 usingVectorField:(id *)a6;
-- (int)newThread:(id *)a3;
-- (int)nextPointIndexWithPointIndex:(int)a3;
-- (int)packGlobalRepairDictionary:(id *)a3 withConvexHull:(id *)a4 facts:(id *)a5;
-- (int)prepareBitmapsWithString:(char *)a3;
-- (int)prepareMasksWithConvexHull:(id *)a3;
-- (int)prepareTransformWithEyeIndex:(int)a3;
-- (int)prominenceConvexHull:(id *)a3 facts:(id *)a4;
-- (int)recognizeThreadsWinningThreadIndex:(int *)a3 info:(id *)a4;
-- (int)renderConvexHull:(id *)a3 distance:(float)a4 fieldToBitmap:(id *)a5;
-- (int)renderEyePolygonToBitmap:(id *)a3;
-- (int)renderHull:(id *)a3 toBitmap:(id *)a4;
-- (int)repairDictionary:(id *)a3 withEyeIndex:(int)a4;
-- (int)replacePointAndDirection:(int)a3;
-- (int)saveRepairDictionary:(id *)a3 withConvexHull:(id *)a4 facts:(id *)a5;
-- (int)shape:(id *)a3 withThreadAtIndex:(int)a4 centroid:(CGPoint)a5;
-- (int)transformRepairArray:(CGAffineTransform *)a3;
-- (int)updateWithFaceIndex:(int)a3;
-- (int)updatedCheckpoint:(CGPoint *)a3 withCheckpoint:(CGPoint)a4 checkpointIndex:(int)a5 angle:(float)a6 width:(int)a7 height:(int)a8 inChannel:(id *)a9 threadIndex:(int)a10 returningEdgeWidth:(float *)a11;
-- (int)widenedHull:(id *)a3 withHull:(id *)a4 by:(float)a5;
-- (void)autoRepairWithFaceArray:(id)a3;
-- (void)computeLengthsAnglesAndDeltaAnglesForShape:(id *)a3;
-- (void)condenseFourChannelRecognitionMap:(id *)a3 intoOneChanneMap:(id *)a4;
+- (int)gatherThreadInfo:(id *)info;
+- (int)improvedShape:(id *)shape withShape:(id *)withShape;
+- (int)initHull:(id *)hull withOrientation:(BOOL)orientation;
+- (int)initShapePoints:(id *)points withMaxPoints:(int)maxPoints;
+- (int)insertPoint:(CGPoint)point andDirection:(CGPoint)direction intoGrid:(BOOL)grid;
+- (int)linkUpPointIndex:(int)index toPointIndex:(int)pointIndex;
+- (int)lookForPoint:(CGPoint *)point onLine:(id)line nearestPoint:(CGPoint)nearestPoint;
+- (int)newShape:(id *)shape;
+- (int)newShape:(id *)shape byInterpolatingBetweenCheckpoints:(id)checkpoints[100] nc:(int)nc usingVectorField:(id *)field;
+- (int)newThread:(id *)thread;
+- (int)nextPointIndexWithPointIndex:(int)index;
+- (int)packGlobalRepairDictionary:(id *)dictionary withConvexHull:(id *)hull facts:(id *)facts;
+- (int)prepareBitmapsWithString:(char *)string;
+- (int)prepareMasksWithConvexHull:(id *)hull;
+- (int)prepareTransformWithEyeIndex:(int)index;
+- (int)prominenceConvexHull:(id *)hull facts:(id *)facts;
+- (int)recognizeThreadsWinningThreadIndex:(int *)index info:(id *)info;
+- (int)renderConvexHull:(id *)hull distance:(float)distance fieldToBitmap:(id *)bitmap;
+- (int)renderEyePolygonToBitmap:(id *)bitmap;
+- (int)renderHull:(id *)hull toBitmap:(id *)bitmap;
+- (int)repairDictionary:(id *)dictionary withEyeIndex:(int)index;
+- (int)replacePointAndDirection:(int)direction;
+- (int)saveRepairDictionary:(id *)dictionary withConvexHull:(id *)hull facts:(id *)facts;
+- (int)shape:(id *)shape withThreadAtIndex:(int)index centroid:(CGPoint)centroid;
+- (int)transformRepairArray:(CGAffineTransform *)array;
+- (int)updateWithFaceIndex:(int)index;
+- (int)updatedCheckpoint:(CGPoint *)checkpoint withCheckpoint:(CGPoint)withCheckpoint checkpointIndex:(int)index angle:(float)angle width:(int)width height:(int)height inChannel:(id *)channel threadIndex:(int)self0 returningEdgeWidth:(float *)self1;
+- (int)widenedHull:(id *)hull withHull:(id *)withHull by:(float)by;
+- (void)autoRepairWithFaceArray:(id)array;
+- (void)computeLengthsAnglesAndDeltaAnglesForShape:(id *)shape;
+- (void)condenseFourChannelRecognitionMap:(id *)map intoOneChanneMap:(id *)channeMap;
 - (void)dealloc;
-- (void)executeRepair:(id)a3;
-- (void)forAllGridPointsNear:(int)a3 withinRadius:(float)a4 do:(void *)a5 context:(void *)a6;
-- (void)forAllGridThreadsNear:(CGPoint)a3 withinRadius:(float)a4 do:(void *)a5 context:(void *)a6;
+- (void)executeRepair:(id)repair;
+- (void)forAllGridPointsNear:(int)near withinRadius:(float)radius do:(void *)do context:(void *)context;
+- (void)forAllGridThreadsNear:(CGPoint)near withinRadius:(float)radius do:(void *)do context:(void *)context;
 - (void)initBitmaps;
-- (void)magnitudeMap:(id *)a3 fromGabor:(id *)a4;
-- (void)measureHull:(id *)a3 majorAxis:(CGPoint *)a4 majorTo:(CGPoint *)a5 majorDiameter:(float *)a6 minorAxis:(CGPoint *)a7 minorTo:(CGPoint *)a8 minorDiameter:(float *)a9;
-- (void)point:(CGPoint)a3 toGridRow:(int *)a4 column:(int *)a5;
-- (void)printConnectionHopper:(id *)a3 message:(char *)a4;
+- (void)magnitudeMap:(id *)map fromGabor:(id *)gabor;
+- (void)measureHull:(id *)hull majorAxis:(CGPoint *)axis majorTo:(CGPoint *)to majorDiameter:(float *)diameter minorAxis:(CGPoint *)minorAxis minorTo:(CGPoint *)minorTo minorDiameter:(float *)minorDiameter;
+- (void)point:(CGPoint)point toGridRow:(int *)row column:(int *)column;
+- (void)printConnectionHopper:(id *)hopper message:(char *)message;
 - (void)printFaceArray;
-- (void)printThreadWithIndex:(int)a3;
-- (void)printThreadsOnlyClosed:(BOOL)a3 message:(char *)a4;
-- (void)putThreadAtIndex:(int)a3;
-- (void)regressionWithPointIndex:(int)a3;
-- (void)removeRedundantPointsFromShape:(id *)a3 closerThan:(float)a4;
-- (void)removeSmallBumpsFromShape:(id *)a3 center:(CGPoint)a4 threshold:(float)a5;
-- (void)removeSpikesFromShape:(id *)a3;
-- (void)removeThreadAtIndex:(int)a3;
+- (void)printThreadWithIndex:(int)index;
+- (void)printThreadsOnlyClosed:(BOOL)closed message:(char *)message;
+- (void)putThreadAtIndex:(int)index;
+- (void)regressionWithPointIndex:(int)index;
+- (void)removeRedundantPointsFromShape:(id *)shape closerThan:(float)than;
+- (void)removeSmallBumpsFromShape:(id *)shape center:(CGPoint)center threshold:(float)threshold;
+- (void)removeSpikesFromShape:(id *)shape;
+- (void)removeThreadAtIndex:(int)index;
 - (void)repairExternalBuffer;
-- (void)slidingWindowAnalysisOfShape:(id *)a3 into:(id *)a4;
-- (void)swapHopperElement:(id *)a3 withElement:(id *)a4;
+- (void)slidingWindowAnalysisOfShape:(id *)shape into:(id *)into;
+- (void)swapHopperElement:(id *)element withElement:(id *)withElement;
 - (void)termBitmaps;
 - (void)termGrid;
-- (void)termHull:(id *)a3;
-- (void)termShapePoints:(id *)a3;
-- (void)transformConvexHull:(id *)a3 withTransform:(CGAffineTransform *)a4;
-- (void)transformGlobalsWithTransform:(CGAffineTransform *)a3;
+- (void)termHull:(id *)hull;
+- (void)termShapePoints:(id *)points;
+- (void)transformConvexHull:(id *)hull withTransform:(CGAffineTransform *)transform;
+- (void)transformGlobalsWithTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CIRedEyeRepair3
 
-+ ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithImageSubRectangle:(CGRect)a3 settings:(id *)a4
++ ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithImageSubRectangle:(CGRect)rectangle settings:(id *)settings
 {
-  width = a3.size.width;
+  width = rectangle.size.width;
   v5 = rintf(width);
-  height = a3.size.height;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  x = rectangle.origin.x;
   v8 = rintf(x);
-  y = a3.origin.y;
+  y = rectangle.origin.y;
   v10 = rintf(y);
-  BitmapRect = makeBitmapRect(v8, (a4->var4 - (v10 + rintf(height))), (v8 + v5), (a4->var4 - v10));
+  BitmapRect = makeBitmapRect(v8, (settings->var4 - (v10 + rintf(height))), (v8 + v5), (settings->var4 - v10));
   result.var2 = v12;
   result.var3 = HIDWORD(v12);
   result.var0 = BitmapRect;
@@ -136,76 +136,76 @@
   return result;
 }
 
-+ (float)yawAngleWithFaceDictionary:(id)a3
++ (float)yawAngleWithFaceDictionary:(id)dictionary
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"leftEyeX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeX", "floatValue"}];
   v5 = v4;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"leftEyeY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeY", "floatValue"}];
   v7 = v6;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"rightEyeX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeX", "floatValue"}];
   v9 = v8;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"rightEyeY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeY", "floatValue"}];
   v11 = v10;
   v12 = (v5 + v9) * 0.5;
   v13 = (v7 + v10) * 0.5;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"mouthCenterX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"mouthCenterX", "floatValue"}];
   v15 = v14;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"mouthCenterY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"mouthCenterY", "floatValue"}];
   v17 = v16;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"noseTipX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"noseTipX", "floatValue"}];
   v19 = v18;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"noseTipY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"noseTipY", "floatValue"}];
   v20 = 1.0 / sqrtf(((v17 - v13) * (v17 - v13)) + ((v15 - v12) * (v15 - v12)));
   v22 = (((v21 - v17) * -((v15 - v12) * v20)) + ((v19 - v15) * ((v17 - v13) * v20))) / (((v11 - v17) * -((v15 - v12) * v20)) + ((v9 - v15) * ((v17 - v13) * v20)));
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"leftEyeLeftX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeLeftX", "floatValue"}];
   v24 = v23;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"leftEyeLeftY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeLeftY", "floatValue"}];
   v26 = v25;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"leftEyeRightX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeRightX", "floatValue"}];
   v28 = v27;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"leftEyeRightY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeRightY", "floatValue"}];
   v30 = v29;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"rightEyeLeftX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeLeftX", "floatValue"}];
   v32 = v31;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"rightEyeLeftY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeLeftY", "floatValue"}];
   v34 = v33;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"rightEyeRightX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeRightX", "floatValue"}];
   v36 = v35;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"rightEyeRightY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeRightY", "floatValue"}];
   v38 = atan((1.0 - (sqrtf(((v37 - v34) * (v37 - v34)) + ((v36 - v32) * (v36 - v32))) / sqrtf(((v30 - v26) * (v30 - v26)) + ((v28 - v24) * (v28 - v24))))) * 5.5) * 32.0;
   v39 = sin(v22 * 1.3) * 45.0;
   return ((v39 + v38) * 0.5) * 3.14159265 / 180.0;
 }
 
-+ (int)bitmapRect:(id *)a3 point:(CGPoint *)a4 polygon:(CGPoint)a5[8] andDistMatrix:(float)a6[4] forEye:(int)a7 inFaceDictionary:(id)a8 settings:(id *)a9
++ (int)bitmapRect:(id *)rect point:(CGPoint *)point polygon:(CGPoint)polygon[8] andDistMatrix:(float)matrix[4] forEye:(int)eye inFaceDictionary:(id)dictionary settings:(id *)settings
 {
-  [objc_msgSend(a8 objectForKeyedSubscript:{@"leftEyeX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeX", "floatValue"}];
   v16 = v15;
-  [objc_msgSend(a8 objectForKeyedSubscript:{@"leftEyeY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"leftEyeY", "floatValue"}];
   v18 = v17;
-  [objc_msgSend(a8 objectForKeyedSubscript:{@"rightEyeX", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeX", "floatValue"}];
   v20 = v19;
-  [objc_msgSend(a8 objectForKeyedSubscript:{@"rightEyeY", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"rightEyeY", "floatValue"}];
   v22 = v21 - v18;
-  [CIRedEyeRepair3 yawAngleWithFaceDictionary:a8];
+  [CIRedEyeRepair3 yawAngleWithFaceDictionary:dictionary];
   v24 = sqrt(((v22 * v22) + ((v20 - v16) * (v20 - v16)))) / cos(v23);
   if (v24 < 200.0)
   {
-    a9->var7 = 0;
+    settings->var7 = 0;
   }
 
-  a9->var24 = v24;
-  if (a7)
+  settings->var24 = v24;
+  if (eye)
   {
-    if (a7 != 1)
+    if (eye != 1)
     {
       return 53;
     }
 
-    v95 = a3;
-    v96 = a4;
+    rectCopy2 = rect;
+    pointCopy2 = point;
     v115 = @"rightEyelidSWY";
-    v117 = a9;
+    settingsCopy2 = settings;
     v111 = @"rightEyelidLowerY";
     v113 = @"rightEyelidSWX";
     v107 = @"rightEyelidSEY";
@@ -227,10 +227,10 @@
 
   else
   {
-    v95 = a3;
-    v96 = a4;
+    rectCopy2 = rect;
+    pointCopy2 = point;
     v115 = @"leftEyelidSWY";
-    v117 = a9;
+    settingsCopy2 = settings;
     v111 = @"leftEyelidLowerY";
     v113 = @"leftEyelidSWX";
     v107 = @"leftEyelidSEY";
@@ -250,41 +250,41 @@
     v32 = @"leftEyeX";
   }
 
-  [objc_msgSend(a8 objectForKeyedSubscript:{v32), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v32), "floatValue"}];
   v92 = v33;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v31), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v31), "floatValue"}];
   v91 = v34;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v30), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v30), "floatValue"}];
   v36 = v35;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v29), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v29), "floatValue"}];
   v38 = v37;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v28), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v28), "floatValue"}];
   v94 = v39;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v27), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v27), "floatValue"}];
   v93 = v40;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v26), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v26), "floatValue"}];
   v118 = v41;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v25), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v25), "floatValue"}];
   v43 = v42;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v97), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v97), "floatValue"}];
   v98 = v44;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v99), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v99), "floatValue"}];
   v100 = v45;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v101), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v101), "floatValue"}];
   v47 = v46;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v103), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v103), "floatValue"}];
   v49 = v48;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v105), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v105), "floatValue"}];
   v106 = v50;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v107), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v107), "floatValue"}];
   v108 = v51;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v109), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v109), "floatValue"}];
   v53 = v52;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v111), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v111), "floatValue"}];
   v55 = v54;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v113), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v113), "floatValue"}];
   v104 = v56;
-  [objc_msgSend(a8 objectForKeyedSubscript:{v115), "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{v115), "floatValue"}];
   v102 = v57;
   v114 = v47;
   v58 = v47 - v36;
@@ -299,11 +299,11 @@
   v64 = __sincos_stret(v60);
   sinval = v64.__sinval;
   cosval = v64.__cosval;
-  *a6 = cosval;
-  a6[1] = -sinval;
-  a6[2] = v63 * sinval;
-  a6[3] = v63 * cosval;
-  var7 = v117->var7;
+  *matrix = cosval;
+  matrix[1] = -sinval;
+  matrix[2] = v63 * sinval;
+  matrix[3] = v63 * cosval;
+  var7 = settingsCopy2->var7;
   if (var7 > 3)
   {
     return 17;
@@ -315,7 +315,7 @@
   v71 = v62 * 1.8;
   v72 = v61 * 1.3;
   v73 = 1.0 / fmaxf(v61, 0.00001);
-  v117->var23 = v69;
+  settingsCopy2->var23 = v69;
   v74 = v72 * 0.5;
   v75 = (v58 * v73);
   v76 = v92 - v74 * v75;
@@ -348,36 +348,36 @@
   v81.f32[0] = floorf(*&v87 * v69);
   v81.i32[1] = ceilf(*&v90 * v69);
   v81.i64[1] = __PAIR64__(COERCE_UNSIGNED_INT(ceilf(*&v85 * v69)), COERCE_UNSIGNED_INT(floorf(*&v79 * v69)));
-  *v95 = vcvtq_s32_f32(vrndxq_f32(vmulq_n_f32(v81, v70)));
-  v96->x = v92;
-  v96->y = v91;
-  a5->x = v36;
-  a5->y = v38;
-  a5[1].x = v94;
-  a5[1].y = v93;
-  a5[2].x = v118;
-  a5[2].y = v116;
-  a5[3].x = v98;
-  a5[3].y = v100;
-  a5[4].x = v114;
-  a5[4].y = v112;
-  a5[5].x = v106;
-  a5[5].y = v108;
-  a5[6].x = v110;
-  a5[6].y = v55;
-  a5[7].x = v104;
-  a5[7].y = v102;
+  *rectCopy2 = vcvtq_s32_f32(vrndxq_f32(vmulq_n_f32(v81, v70)));
+  pointCopy2->x = v92;
+  pointCopy2->y = v91;
+  polygon->x = v36;
+  polygon->y = v38;
+  polygon[1].x = v94;
+  polygon[1].y = v93;
+  polygon[2].x = v118;
+  polygon[2].y = v116;
+  polygon[3].x = v98;
+  polygon[3].y = v100;
+  polygon[4].x = v114;
+  polygon[4].y = v112;
+  polygon[5].x = v106;
+  polygon[5].y = v108;
+  polygon[6].x = v110;
+  polygon[6].y = v55;
+  polygon[7].x = v104;
+  polygon[7].y = v102;
   return result;
 }
 
-+ (int)faceContext:(id *)a3 withFaceArray:(id)a4 index:(int)a5 settings:(id *)a6
++ (int)faceContext:(id *)context withFaceArray:(id)array index:(int)index settings:(id *)settings
 {
   memset(__src, 0, 376);
-  v8 = [a4 objectAtIndexedSubscript:a5];
-  result = [CIRedEyeRepair3 bitmapRect:&__src[3] point:&__src[1] polygon:&__src[7] andDistMatrix:&__src[5] forEye:0 inFaceDictionary:v8 settings:a6];
+  v8 = [array objectAtIndexedSubscript:index];
+  result = [CIRedEyeRepair3 bitmapRect:&__src[3] point:&__src[1] polygon:&__src[7] andDistMatrix:&__src[5] forEye:0 inFaceDictionary:v8 settings:settings];
   if (!result)
   {
-    result = [CIRedEyeRepair3 bitmapRect:&__src[4] point:&__src[2] polygon:&__src[15] andDistMatrix:&__src[6] forEye:1 inFaceDictionary:v8 settings:a6];
+    result = [CIRedEyeRepair3 bitmapRect:&__src[4] point:&__src[2] polygon:&__src[15] andDistMatrix:&__src[6] forEye:1 inFaceDictionary:v8 settings:settings];
     if (!result)
     {
       v10 = unionBitmapRects(__src[3].i64[0], __src[3].i64[1], __src[4].i64[0]);
@@ -407,7 +407,7 @@
       }
 
       while (v11 != 8);
-      memcpy(a3, __src, sizeof($B29CA33EEFC607F4C0219A205B6CAFC6));
+      memcpy(context, __src, sizeof($B29CA33EEFC607F4C0219A205B6CAFC6));
       return 0;
     }
   }
@@ -415,7 +415,7 @@
   return result;
 }
 
-+ ($807B2EF8CC2A3BA0CBD71F9CA1C0D669)settingsWithOptions:(SEL)a3
++ ($807B2EF8CC2A3BA0CBD71F9CA1C0D669)settingsWithOptions:(SEL)options
 {
   *&retstr->var26 = 0;
   *&retstr->var25.c = 0u;
@@ -432,15 +432,15 @@
   v6 = [a4 objectForKeyedSubscript:@"downsampleType"];
   if (v6)
   {
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v7 = 1;
+    intValue = 1;
   }
 
-  retstr->var7 = v7;
+  retstr->var7 = intValue;
   v8 = [a4 objectForKeyedSubscript:@"downsampleOversizeX"];
   if (v8)
   {
@@ -468,27 +468,27 @@
   v12 = [a4 objectForKeyedSubscript:@"gradientChannel"];
   if (v12)
   {
-    v13 = [v12 intValue];
+    intValue2 = [v12 intValue];
   }
 
   else
   {
-    v13 = 6;
+    intValue2 = 6;
   }
 
-  retstr->var10 = v13;
+  retstr->var10 = intValue2;
   v14 = [a4 objectForKeyedSubscript:@"edgeFindingChannel"];
   if (v14)
   {
-    v15 = [v14 intValue];
+    intValue3 = [v14 intValue];
   }
 
   else
   {
-    v15 = 6;
+    intValue3 = 6;
   }
 
-  retstr->var11 = v15;
+  retstr->var11 = intValue3;
   v16 = [a4 objectForKeyedSubscript:@"minMagnitude"];
   if (v16)
   {
@@ -559,15 +559,15 @@
   v27 = [a4 objectForKeyedSubscript:@"orientation"];
   if (v27)
   {
-    v28 = [v27 intValue];
+    intValue4 = [v27 intValue];
   }
 
   else
   {
-    v28 = 1;
+    intValue4 = 1;
   }
 
-  retstr->var19 = v28;
+  retstr->var19 = intValue4;
   v29 = [a4 objectForKeyedSubscript:@"imageExtent"];
   if (v29)
   {
@@ -647,10 +647,10 @@
   return result;
 }
 
-- (int)updateWithFaceIndex:(int)a3
+- (int)updateWithFaceIndex:(int)index
 {
-  self->S.faceIndex = a3;
-  result = [CIRedEyeRepair3 faceContext:&self->FC withFaceArray:self->faceArray index:*&a3 settings:&self->S];
+  self->S.faceIndex = index;
+  result = [CIRedEyeRepair3 faceContext:&self->FC withFaceArray:self->faceArray index:*&index settings:&self->S];
   if (!result)
   {
     x = self->S.inputImageExtent.origin.x;
@@ -768,11 +768,11 @@
   return result;
 }
 
-- (CGPoint)bitmapPointWithDictionaryPoint:(CGPoint)a3
+- (CGPoint)bitmapPointWithDictionaryPoint:(CGPoint)point
 {
-  v3 = a3.x * self->S.xf;
+  v3 = point.x * self->S.xf;
   yf = self->S.yf;
-  v5 = a3.y * yf;
+  v5 = point.y * yf;
   v6 = (v3 - self->ioffx);
   v7 = ((yf - v5) - self->ioffy);
   result.y = v7;
@@ -780,11 +780,11 @@
   return result;
 }
 
-- (CGPoint)globalBitmapPointWithDictionaryPoint:(CGPoint)a3
+- (CGPoint)globalBitmapPointWithDictionaryPoint:(CGPoint)point
 {
-  v3 = a3.x * self->S.xf;
+  v3 = point.x * self->S.xf;
   yf = self->S.yf;
-  v5 = a3.y * yf;
+  v5 = point.y * yf;
   v6 = v3;
   v7 = (yf - v5);
   result.y = v7;
@@ -792,11 +792,11 @@
   return result;
 }
 
-- (CGPoint)bitmapPointWithDictionaryPointArray:(id)a3
+- (CGPoint)bitmapPointWithDictionaryPointArray:(id)array
 {
-  [objc_msgSend(a3 objectAtIndexedSubscript:{0), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{0), "floatValue"}];
   v6 = v5 * self->S.xf;
-  [objc_msgSend(a3 objectAtIndexedSubscript:{1), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{1), "floatValue"}];
   v8 = (self->S.yf - (v7 * self->S.yf)) - self->ioffy;
   v9 = (v6 - self->ioffx);
   v10 = v8;
@@ -805,11 +805,11 @@
   return result;
 }
 
-- (CGPoint)globalBitmapPointWithDictionaryPointArray:(id)a3
+- (CGPoint)globalBitmapPointWithDictionaryPointArray:(id)array
 {
-  [objc_msgSend(a3 objectAtIndexedSubscript:{0), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{0), "floatValue"}];
   v6 = v5 * self->S.xf;
-  [objc_msgSend(a3 objectAtIndexedSubscript:{1), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{1), "floatValue"}];
   v8 = self->S.yf - (v7 * self->S.yf);
   v9 = v6;
   v10 = v8;
@@ -818,10 +818,10 @@
   return result;
 }
 
-- (CGPoint)dictionaryPointWithBitmapPoint:(CGPoint)a3
+- (CGPoint)dictionaryPointWithBitmapPoint:(CGPoint)point
 {
-  v3 = a3.x + self->ioffx;
-  v4 = a3.y + self->ioffy;
+  v3 = point.x + self->ioffx;
+  v4 = point.y + self->ioffy;
   v5 = (self->S.xfi * v3);
   v6 = (self->S.yfi * (self->S.yf - v4));
   result.y = v6;
@@ -829,10 +829,10 @@
   return result;
 }
 
-- (CGPoint)dictionaryPointWithGlobalBitmapPoint:(CGPoint)a3
+- (CGPoint)dictionaryPointWithGlobalBitmapPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v5 = (self->S.xfi * x);
   v6 = ((self->S.yf - y) * self->S.yfi);
   result.y = v6;
@@ -840,7 +840,7 @@
   return result;
 }
 
-- (id)dictionaryPointArrayWithEyeBitmapPoint:(CGPoint)a3
+- (id)dictionaryPointArrayWithEyeBitmapPoint:(CGPoint)point
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v3 = 136;
@@ -855,9 +855,9 @@
     v4 = 128;
   }
 
-  v5 = a3.x + (self->FC.FR.mincol + *(&self->super.isa + v4));
+  v5 = point.x + (self->FC.FR.mincol + *(&self->super.isa + v4));
   *&v5 = v5;
-  v6 = a3.y + (self->FC.FR.minrow + *(&self->super.isa + v3));
+  v6 = point.y + (self->FC.FR.minrow + *(&self->super.isa + v3));
   *&v5 = self->S.xfi * *&v5;
   v7 = self->S.yfi * (self->S.yf - v6);
   v10[0] = [MEMORY[0x1E696AD98] numberWithFloat:v5];
@@ -866,12 +866,12 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
 }
 
-- (id)dictionaryPointArrayWithBitmapPoint:(CGPoint)a3
+- (id)dictionaryPointArrayWithBitmapPoint:(CGPoint)point
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = a3.x + self->FC.FR.mincol;
+  v3 = point.x + self->FC.FR.mincol;
   *&v3 = v3;
-  v4 = a3.y + self->FC.FR.minrow;
+  v4 = point.y + self->FC.FR.minrow;
   *&v3 = self->S.xfi * *&v3;
   v5 = self->S.yfi * (self->S.yf - v4);
   v8[0] = [MEMORY[0x1E696AD98] numberWithFloat:v3];
@@ -880,28 +880,28 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
 }
 
-- (id)dictionaryPointArrayWithGlobalBitmapPoint:(CGPoint)a3
+- (id)dictionaryPointArrayWithGlobalBitmapPoint:(CGPoint)point
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  *&a3.x = a3.x;
-  y = a3.y;
-  *&a3.x = self->S.xfi * *&a3.x;
+  *&point.x = point.x;
+  y = point.y;
+  *&point.x = self->S.xfi * *&point.x;
   v4 = (self->S.yf - y) * self->S.yfi;
-  v7[0] = [MEMORY[0x1E696AD98] numberWithFloat:a3.x];
+  v7[0] = [MEMORY[0x1E696AD98] numberWithFloat:point.x];
   *&v5 = v4;
   v7[1] = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 }
 
-- ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithDictionaryRectArray:(id)a3
+- ($A3B2E143E1A03423F9FC703C010436DC)bitmapRectWithDictionaryRectArray:(id)array
 {
-  [objc_msgSend(a3 objectAtIndexedSubscript:{0), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{0), "floatValue"}];
   v6 = rintf(v5 * self->S.xf);
-  [objc_msgSend(a3 objectAtIndexedSubscript:{1), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{1), "floatValue"}];
   v8 = rintf(v7 * self->S.yf);
-  [objc_msgSend(a3 objectAtIndexedSubscript:{2), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{2), "floatValue"}];
   v10 = rintf(v9 * self->S.xf);
-  [objc_msgSend(a3 objectAtIndexedSubscript:{3), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{3), "floatValue"}];
   BitmapRect = makeBitmapRect(v6, (self->S.ify - (rintf(v11 * self->S.yf) + v8)), (v10 + v6), (self->S.ify - v8));
   v14 = -self->ioffx;
   v15 = -self->ioffy;
@@ -914,15 +914,15 @@
   return result;
 }
 
-- ($A3B2E143E1A03423F9FC703C010436DC)globalBitmapRectWithDictionaryRectArray:(id)a3
+- ($A3B2E143E1A03423F9FC703C010436DC)globalBitmapRectWithDictionaryRectArray:(id)array
 {
-  [objc_msgSend(a3 objectAtIndexedSubscript:{0), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{0), "floatValue"}];
   v6 = rintf(v5 * self->S.xf);
-  [objc_msgSend(a3 objectAtIndexedSubscript:{1), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{1), "floatValue"}];
   v8 = rintf(v7 * self->S.yf);
-  [objc_msgSend(a3 objectAtIndexedSubscript:{2), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{2), "floatValue"}];
   v10 = rintf(v9 * self->S.xf);
-  [objc_msgSend(a3 objectAtIndexedSubscript:{3), "floatValue"}];
+  [objc_msgSend(array objectAtIndexedSubscript:{3), "floatValue"}];
   v12 = rintf(v11 * self->S.yf);
   ify = self->S.ify;
 
@@ -934,15 +934,15 @@
   return result;
 }
 
-- (id)dictionaryRectArrayWithBitmapRect:(id)a3
+- (id)dictionaryRectArrayWithBitmapRect:(id)rect
 {
   v13[4] = *MEMORY[0x1E69E9840];
   xfi = self->S.xfi;
-  *&v3 = xfi * (self->ioffx + a3.var2);
+  *&v3 = xfi * (self->ioffx + rect.var2);
   yfi = self->S.yfi;
-  v6 = yfi * (self->S.ify - (self->ioffy + a3.var1));
-  v7 = xfi * (a3.var3 - a3.var2);
-  v8 = yfi * (a3.var1 - a3.var0);
+  v6 = yfi * (self->S.ify - (self->ioffy + rect.var1));
+  v7 = xfi * (rect.var3 - rect.var2);
+  v8 = yfi * (rect.var1 - rect.var0);
   v13[0] = [MEMORY[0x1E696AD98] numberWithFloat:v3];
   *&v9 = v6;
   v13[1] = [MEMORY[0x1E696AD98] numberWithFloat:v9];
@@ -953,15 +953,15 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:4];
 }
 
-- (id)dictionaryRectArrayWithGlobalBitmapRect:(id)a3
+- (id)dictionaryRectArrayWithGlobalBitmapRect:(id)rect
 {
   v13[4] = *MEMORY[0x1E69E9840];
   xfi = self->S.xfi;
-  *&v3 = xfi * a3.var2;
+  *&v3 = xfi * rect.var2;
   yfi = self->S.yfi;
-  v6 = yfi * (self->S.ify - a3.var1);
-  v7 = xfi * (a3.var3 - a3.var2);
-  v8 = yfi * (a3.var1 - a3.var0);
+  v6 = yfi * (self->S.ify - rect.var1);
+  v7 = xfi * (rect.var3 - rect.var2);
+  v8 = yfi * (rect.var1 - rect.var0);
   v13[0] = [MEMORY[0x1E696AD98] numberWithFloat:v3];
   *&v9 = v6;
   v13[1] = [MEMORY[0x1E696AD98] numberWithFloat:v9];
@@ -972,10 +972,10 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:4];
 }
 
-- (int)saveRepairDictionary:(id *)a3 withConvexHull:(id *)a4 facts:(id *)a5
+- (int)saveRepairDictionary:(id *)dictionary withConvexHull:(id *)hull facts:(id *)facts
 {
   v103[4] = *MEMORY[0x1E69E9840];
-  [(CIRedEyeRepair3 *)self centroidWithConvexHull:a4];
+  [(CIRedEyeRepair3 *)self centroidWithConvexHull:hull];
   v9 = [(CIRedEyeRepair3 *)self dictionaryPointArrayWithEyeBitmapPoint:?];
   v10 = [(CIRedEyeRepair3 *)self dictionaryRectArrayWithGlobalBitmapRect:*&self->FC.FR.minrow, *&self->FC.FR.mincol];
   if (!v10)
@@ -1202,33 +1202,33 @@
   }
 
   v43 = v42;
-  v44 = [MEMORY[0x1E695DF70] array];
-  if (!v44)
+  array = [MEMORY[0x1E695DF70] array];
+  if (!array)
   {
     return 8;
   }
 
-  v45 = v44;
-  if (a4->var1 >= 1)
+  v45 = array;
+  if (hull->var1 >= 1)
   {
     v46 = 0;
     v47 = 0;
     do
     {
-      [v45 addObject:{-[CIRedEyeRepair3 dictionaryPointArrayWithEyeBitmapPoint:](self, "dictionaryPointArrayWithEyeBitmapPoint:", a4->var3[v46].x, a4->var3[v46].y)}];
+      [v45 addObject:{-[CIRedEyeRepair3 dictionaryPointArrayWithEyeBitmapPoint:](self, "dictionaryPointArrayWithEyeBitmapPoint:", hull->var3[v46].x, hull->var3[v46].y)}];
       ++v47;
       ++v46;
     }
 
-    while (v47 < a4->var1);
+    while (v47 < hull->var1);
   }
 
   v98[0] = @"counterClockwise";
-  v99[0] = [MEMORY[0x1E696AD98] numberWithBool:a4->var0];
+  v99[0] = [MEMORY[0x1E696AD98] numberWithBool:hull->var0];
   v98[1] = @"nPoints";
-  v99[1] = [MEMORY[0x1E696AD98] numberWithInt:a4->var1];
+  v99[1] = [MEMORY[0x1E696AD98] numberWithInt:hull->var1];
   v98[2] = @"maxPoints";
-  v48 = [MEMORY[0x1E696AD98] numberWithInt:a4->var2];
+  v48 = [MEMORY[0x1E696AD98] numberWithInt:hull->var2];
   v98[3] = @"hullBody";
   v99[2] = v48;
   v99[3] = v45;
@@ -1339,16 +1339,16 @@
   v93[18] = @"nNonZero";
   v94[18] = [MEMORY[0x1E696AD98] numberWithInt:self->FS.nNonZero];
   v93[19] = @"xPosition";
-  *&v69 = a5->var6;
+  *&v69 = facts->var6;
   v94[19] = [MEMORY[0x1E696AD98] numberWithFloat:v69];
   v93[20] = @"hue";
-  *&v70 = a5->var7;
+  *&v70 = facts->var7;
   v94[20] = [MEMORY[0x1E696AD98] numberWithFloat:v70];
   v93[21] = @"saturation";
-  *&v71 = a5->var8;
+  *&v71 = facts->var8;
   v94[21] = [MEMORY[0x1E696AD98] numberWithFloat:v71];
   v93[22] = @"luminance";
-  *&v72 = a5->var9;
+  *&v72 = facts->var9;
   v94[22] = [MEMORY[0x1E696AD98] numberWithFloat:v72];
   v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:23];
   if (!v73)
@@ -1358,14 +1358,14 @@
 
   v74 = v73;
   result = 0;
-  *a3 = v74;
+  *dictionary = v74;
   return result;
 }
 
-- (int)packGlobalRepairDictionary:(id *)a3 withConvexHull:(id *)a4 facts:(id *)a5
+- (int)packGlobalRepairDictionary:(id *)dictionary withConvexHull:(id *)hull facts:(id *)facts
 {
   v103[4] = *MEMORY[0x1E69E9840];
-  [(CIRedEyeRepair3 *)self centroidWithConvexHull:a4];
+  [(CIRedEyeRepair3 *)self centroidWithConvexHull:hull];
   v9 = [(CIRedEyeRepair3 *)self dictionaryPointArrayWithGlobalBitmapPoint:?];
   v10 = [(CIRedEyeRepair3 *)self dictionaryRectArrayWithGlobalBitmapRect:*&self->FC.FR.minrow, *&self->FC.FR.mincol];
   if (!v10)
@@ -1592,33 +1592,33 @@
   }
 
   v43 = v42;
-  v44 = [MEMORY[0x1E695DF70] array];
-  if (!v44)
+  array = [MEMORY[0x1E695DF70] array];
+  if (!array)
   {
     return 8;
   }
 
-  v45 = v44;
-  if (a4->var1 >= 1)
+  v45 = array;
+  if (hull->var1 >= 1)
   {
     v46 = 0;
     v47 = 0;
     do
     {
-      [v45 addObject:{-[CIRedEyeRepair3 dictionaryPointArrayWithGlobalBitmapPoint:](self, "dictionaryPointArrayWithGlobalBitmapPoint:", a4->var3[v46].x, a4->var3[v46].y)}];
+      [v45 addObject:{-[CIRedEyeRepair3 dictionaryPointArrayWithGlobalBitmapPoint:](self, "dictionaryPointArrayWithGlobalBitmapPoint:", hull->var3[v46].x, hull->var3[v46].y)}];
       ++v47;
       ++v46;
     }
 
-    while (v47 < a4->var1);
+    while (v47 < hull->var1);
   }
 
   v98[0] = @"counterClockwise";
-  v99[0] = [MEMORY[0x1E696AD98] numberWithBool:a4->var0];
+  v99[0] = [MEMORY[0x1E696AD98] numberWithBool:hull->var0];
   v98[1] = @"nPoints";
-  v99[1] = [MEMORY[0x1E696AD98] numberWithInt:a4->var1];
+  v99[1] = [MEMORY[0x1E696AD98] numberWithInt:hull->var1];
   v98[2] = @"maxPoints";
-  v48 = [MEMORY[0x1E696AD98] numberWithInt:a4->var2];
+  v48 = [MEMORY[0x1E696AD98] numberWithInt:hull->var2];
   v98[3] = @"hullBody";
   v99[2] = v48;
   v99[3] = v45;
@@ -1729,16 +1729,16 @@
   v93[18] = @"nNonZero";
   v94[18] = [MEMORY[0x1E696AD98] numberWithInt:self->FS.nNonZero];
   v93[19] = @"xPosition";
-  *&v69 = a5->var6;
+  *&v69 = facts->var6;
   v94[19] = [MEMORY[0x1E696AD98] numberWithFloat:v69];
   v93[20] = @"hue";
-  *&v70 = a5->var7;
+  *&v70 = facts->var7;
   v94[20] = [MEMORY[0x1E696AD98] numberWithFloat:v70];
   v93[21] = @"saturation";
-  *&v71 = a5->var8;
+  *&v71 = facts->var8;
   v94[21] = [MEMORY[0x1E696AD98] numberWithFloat:v71];
   v93[22] = @"luminance";
-  *&v72 = a5->var9;
+  *&v72 = facts->var9;
   v94[22] = [MEMORY[0x1E696AD98] numberWithFloat:v72];
   v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:23];
   if (!v73)
@@ -1748,15 +1748,15 @@
 
   v74 = v73;
   result = 0;
-  *a3 = v74;
+  *dictionary = v74;
   return result;
 }
 
-- (BOOL)unpackToGlobalRepairDictionary:(id)a3 convexHull:(id *)a4 facts:(id *)a5
+- (BOOL)unpackToGlobalRepairDictionary:(id)dictionary convexHull:(id *)hull facts:(id *)facts
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"xf", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"xf", "floatValue"}];
   self->S.xf = v9;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"yf", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"yf", "floatValue"}];
   self->S.yf = v10;
   v11.i32[0] = LODWORD(self->S.xf);
   v11.f32[1] = v10;
@@ -1764,32 +1764,32 @@
 
   *&self->S.xfi = vdiv_f32(_D2, v11);
   self->S.ify = rintf(v10);
-  self->S.ioffx = [objc_msgSend(a3 objectForKeyedSubscript:{@"ioffx", "intValue"}];
-  self->S.ioffy = [objc_msgSend(a3 objectForKeyedSubscript:{@"ioffy", "intValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"skinval", "floatValue"}];
+  self->S.ioffx = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ioffx", "intValue"}];
+  self->S.ioffy = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ioffy", "intValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"skinval", "floatValue"}];
   self->M.skinval = v17;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"avgLuminance", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"avgLuminance", "floatValue"}];
   self->M.avgLuminance = v18;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"minLuminance", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"minLuminance", "floatValue"}];
   self->M.minLuminance = v19;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"maxLuminance", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"maxLuminance", "floatValue"}];
   self->M.maxLuminance = v20;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"darkPercent", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"darkPercent", "floatValue"}];
   self->M.darkPercent = v21;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"clipPercent", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"clipPercent", "floatValue"}];
   self->M.clipPercent = v22;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"xPosition", "floatValue"}];
-  a5->var6 = v23;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"hue", "floatValue"}];
-  a5->var7 = v24;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"saturation", "floatValue"}];
-  a5->var8 = v25;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"luminance", "floatValue"}];
-  a5->var9 = v26;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"variance", "doubleValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"xPosition", "floatValue"}];
+  facts->var6 = v23;
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"hue", "floatValue"}];
+  facts->var7 = v24;
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"saturation", "floatValue"}];
+  facts->var8 = v25;
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"luminance", "floatValue"}];
+  facts->var9 = v26;
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"variance", "doubleValue"}];
   self->FS.variance = v27;
-  self->FS.nNonZero = [objc_msgSend(a3 objectForKeyedSubscript:{@"nNonZero", "intValue"}];
-  v28 = [a3 objectForKeyedSubscript:@"context"];
+  self->FS.nNonZero = [objc_msgSend(dictionary objectForKeyedSubscript:{@"nNonZero", "intValue"}];
+  v28 = [dictionary objectForKeyedSubscript:@"context"];
   if (!v28)
   {
     goto LABEL_37;
@@ -1954,7 +1954,7 @@
     goto LABEL_37;
   }
 
-  v56 = [a3 objectForKeyedSubscript:@"convexHull"];
+  v56 = [dictionary objectForKeyedSubscript:@"convexHull"];
   if (!v56)
   {
     goto LABEL_37;
@@ -1967,7 +1967,7 @@
     goto LABEL_37;
   }
 
-  v58 = [a3 objectForKeyedSubscript:@"settings"];
+  v58 = [dictionary objectForKeyedSubscript:@"settings"];
   v59 = v58;
   if (!v58)
   {
@@ -2095,15 +2095,15 @@ LABEL_37:
   v116 = [v59 objectForKeyedSubscript:{@"downsampleType", v151}];
   if (v116)
   {
-    v117 = [v116 intValue];
+    intValue = [v116 intValue];
   }
 
   else
   {
-    v117 = 1;
+    intValue = 1;
   }
 
-  self->S.downsampleType = v117;
+  self->S.downsampleType = intValue;
   v119 = [v59 objectForKeyedSubscript:@"downsampleOversizeX"];
   if (v119)
   {
@@ -2131,27 +2131,27 @@ LABEL_37:
   v123 = [v59 objectForKeyedSubscript:@"gradientChannel"];
   if (v123)
   {
-    v124 = [v123 intValue];
+    intValue2 = [v123 intValue];
   }
 
   else
   {
-    v124 = 6;
+    intValue2 = 6;
   }
 
-  self->S.gradientChannel = v124;
+  self->S.gradientChannel = intValue2;
   v125 = [v59 objectForKeyedSubscript:@"edgeFindingChannel"];
   if (v125)
   {
-    v126 = [v125 intValue];
+    intValue3 = [v125 intValue];
   }
 
   else
   {
-    v126 = 6;
+    intValue3 = 6;
   }
 
-  self->S.edgeFindingChannel = v126;
+  self->S.edgeFindingChannel = intValue3;
   v127 = [v59 objectForKeyedSubscript:@"minMagnitude"];
   if (v127)
   {
@@ -2253,15 +2253,15 @@ LABEL_37:
   v143 = [v59 objectForKeyedSubscript:@"height"];
   if (v143)
   {
-    v144 = [v143 intValue];
+    intValue4 = [v143 intValue];
   }
 
   else
   {
-    v144 = 3024;
+    intValue4 = 3024;
   }
 
-  self->S.height = v144;
+  self->S.height = intValue4;
   [objc_msgSend(v152 objectAtIndexedSubscript:{0), "floatValue"}];
   self->S.transform.a = v145;
   LOBYTE(v59) = 1;
@@ -2275,14 +2275,14 @@ LABEL_37:
   self->S.transform.tx = v149;
   [objc_msgSend(v152 objectAtIndexedSubscript:{5), "floatValue"}];
   self->S.transform.ty = v150;
-  *a4 = v108;
+  *hull = v108;
   return v59;
 }
 
-- (BOOL)openRepairDictionary:(id)a3 convexHull:(id *)a4 facts:(id *)a5
+- (BOOL)openRepairDictionary:(id)dictionary convexHull:(id *)hull facts:(id *)facts
 {
   v28 = 0;
-  v7 = [(CIRedEyeRepair3 *)self unpackToGlobalRepairDictionary:a3 convexHull:&v28 facts:a5];
+  v7 = [(CIRedEyeRepair3 *)self unpackToGlobalRepairDictionary:dictionary convexHull:&v28 facts:facts];
   if (v7)
   {
     RPoly = self->FC.RPoly;
@@ -2343,23 +2343,23 @@ LABEL_37:
       while (v20);
     }
 
-    *a4 = v19;
+    *hull = v19;
   }
 
   return v7;
 }
 
-- (CIRedEyeRepair3)initWithExternalBuffer:(char *)a3 subRectangle:(CGRect)a4 rowBytes:(unint64_t)a5 options:(id)a6
+- (CIRedEyeRepair3)initWithExternalBuffer:(char *)buffer subRectangle:(CGRect)rectangle rowBytes:(unint64_t)bytes options:(id)options
 {
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  bytesCopy = bytes;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   self->repairMap.baseAddress = 0;
   self->faceBitmap.baseAddress = 0;
   self->repairs = 0;
-  [CIRedEyeRepair3 settingsWithOptions:a6];
+  [CIRedEyeRepair3 settingsWithOptions:options];
   v14 = v32;
   *&self->S.transform.a = v31;
   *&self->S.transform.c = v14;
@@ -2378,13 +2378,13 @@ LABEL_37:
   *&self->S.downsampleOversizeX = v25;
   *&self->S.minMagnitude = v18;
   self->repairs = [MEMORY[0x1E695DF70] array];
-  v19 = [CIRedEyeRepair3 bitmapRectWithImageSubRectangle:&self->S settings:x, y, width, height];
-  *&self->subRectangle.minrow = v19;
+  height = [CIRedEyeRepair3 bitmapRectWithImageSubRectangle:&self->S settings:x, y, width, height];
+  *&self->subRectangle.minrow = height;
   *&self->subRectangle.mincol = v20;
-  constructBitmap(&self->fullBitmap, a3, HIDWORD(v20) - v20, HIDWORD(v19) - v19, 4, 1, v7, 100.0);
-  if ([a6 objectForKeyedSubscript:@"inspector"])
+  constructBitmap(&self->fullBitmap, buffer, HIDWORD(v20) - v20, HIDWORD(height) - height, 4, 1, bytesCopy, 100.0);
+  if ([options objectForKeyedSubscript:@"inspector"])
   {
-    -[CIRedEyeRepair3 setInspector:](self, "setInspector:", [a6 objectForKeyedSubscript:@"inspector"]);
+    -[CIRedEyeRepair3 setInspector:](self, "setInspector:", [options objectForKeyedSubscript:@"inspector"]);
   }
 
   v22.receiver = self;
@@ -2410,11 +2410,11 @@ LABEL_37:
   [(CIRedEyeRepair3 *)&v3 dealloc];
 }
 
-+ (CGRect)supportRectangleWithRepair:(id)a3 imageSize:(CGSize)a4
++ (CGRect)supportRectangleWithRepair:(id)repair imageSize:(CGSize)size
 {
-  width = a4.width;
-  height = a4.height;
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"context", "objectForKeyedSubscript:", @"faceRect"}];
+  width = size.width;
+  height = size.height;
+  v6 = [objc_msgSend(repair objectForKeyedSubscript:{@"context", "objectForKeyedSubscript:", @"faceRect"}];
   [objc_msgSend(v6 objectAtIndexedSubscript:{0), "floatValue"}];
   v8 = rintf(v7 * width);
   [objc_msgSend(v6 objectAtIndexedSubscript:{1), "floatValue"}];
@@ -2433,13 +2433,13 @@ LABEL_37:
   return result;
 }
 
-+ (CGRect)supportRectangleWithFaceArray:(id)a3 options:(id)a4
++ (CGRect)supportRectangleWithFaceArray:(id)array options:(id)options
 {
   v20 = 0;
   memset(v19, 0, sizeof(v19));
   v18 = 0;
-  [CIRedEyeRepair3 settingsWithOptions:a4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  v5 = [a3 count];
+  [CIRedEyeRepair3 settingsWithOptions:options, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  v5 = [array count];
   v6 = v5;
   if (!v5)
   {
@@ -2460,7 +2460,7 @@ LABEL_10:
     while (1)
     {
       LODWORD(v17) = v10;
-      if ([CIRedEyeRepair3 faceContext:v19 withFaceArray:a3 index:v10 settings:&v16])
+      if ([CIRedEyeRepair3 faceContext:v19 withFaceArray:array index:v10 settings:&v16])
       {
         goto LABEL_10;
       }
@@ -2502,7 +2502,7 @@ LABEL_13:
   return result;
 }
 
-- (CGAffineTransform)inverseImageTransformForOrientation:(SEL)a3
+- (CGAffineTransform)inverseImageTransformForOrientation:(SEL)orientation
 {
   v40 = *MEMORY[0x1E69E9840];
   xf = self->S.xf;
@@ -2705,18 +2705,18 @@ LABEL_13:
   }
 }
 
-- (void)autoRepairWithFaceArray:(id)a3
+- (void)autoRepairWithFaceArray:(id)array
 {
   v53 = *MEMORY[0x1E69E9840];
-  self->faceArray = a3;
-  v4 = [a3 count];
+  self->faceArray = array;
+  v4 = [array count];
   if (self->printFaceArrayLevel >= 1)
   {
     [(CIRedEyeRepair3 *)self printFaceArray];
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  self->failureCauses = v5;
+  array = [MEMORY[0x1E695DF70] array];
+  self->failureCauses = array;
   if (v4)
   {
     if (v4 >= 1)
@@ -2941,7 +2941,7 @@ LABEL_10:
 
   else
   {
-    -[NSMutableArray addObject:](v5, "addObject:", [MEMORY[0x1E696AEC0] stringWithFormat:@"red-eye correction was prevented: no face detected"]);
+    -[NSMutableArray addObject:](array, "addObject:", [MEMORY[0x1E696AEC0] stringWithFormat:@"red-eye correction was prevented: no face detected"]);
     if (!self->S.forceFail)
     {
       return;
@@ -2962,7 +2962,7 @@ LABEL_66:
   }
 }
 
-- (id)repairWithSide:(int)a3
+- (id)repairWithSide:(int)side
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -2990,7 +2990,7 @@ LABEL_3:
     v10 = *(*(&v15 + 1) + 8 * v9);
     v11 = [objc_msgSend(v10 objectForKeyedSubscript:{@"rf", "intValue"}];
     v12 = [objc_msgSend(v10 objectForKeyedSubscript:{@"re", "intValue"}];
-    if (v11 == self->S.faceIndex && v12 == a3)
+    if (v11 == self->S.faceIndex && v12 == side)
     {
       return v10;
     }
@@ -3008,13 +3008,13 @@ LABEL_3:
   }
 }
 
-- (id)mutableCopyOfArray:(id)a3
+- (id)mutableCopyOfArray:(id)array
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (array)
   {
     v7 = 0;
-    v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v7];
+    v3 = [MEMORY[0x1E696AE40] dataWithPropertyList:array format:200 options:0 error:&v7];
     if (v3)
     {
       v4 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:1 format:0 error:&v7];
@@ -3024,18 +3024,18 @@ LABEL_3:
       }
     }
 
-    v6 = [v7 localizedDescription];
-    [v6 getCString:v8 maxLength:128 encoding:{objc_msgSend(MEMORY[0x1E696AEC0], "defaultCStringEncoding")}];
+    localizedDescription = [v7 localizedDescription];
+    [localizedDescription getCString:v8 maxLength:128 encoding:{objc_msgSend(MEMORY[0x1E696AEC0], "defaultCStringEncoding")}];
     printf("mutableCopyOfArray: %s\n", v8);
   }
 
   return 0;
 }
 
-- (CGPoint)leftHandedTransform:(CGAffineTransform *)a3 ofPoint:(CGPoint)a4
+- (CGPoint)leftHandedTransform:(CGAffineTransform *)transform ofPoint:(CGPoint)point
 {
-  d = a3->d;
-  if (a3->a == 0.0 && d == 0.0)
+  d = transform->d;
+  if (transform->a == 0.0 && d == 0.0)
   {
     yf = self->S.yf;
     xf = self->S.xf;
@@ -3047,32 +3047,32 @@ LABEL_3:
     xf = yf;
   }
 
-  v7 = yf - a4.y;
-  v8 = a3->tx + v7 * a3->c + a3->a * a4.x;
-  v9 = xf - (a3->ty + v7 * d + a3->b * a4.x);
+  v7 = yf - point.y;
+  v8 = transform->tx + v7 * transform->c + transform->a * point.x;
+  v9 = xf - (transform->ty + v7 * d + transform->b * point.x);
   v10 = v8;
   result.y = v9;
   result.x = v10;
   return result;
 }
 
-- (void)transformGlobalsWithTransform:(CGAffineTransform *)a3
+- (void)transformGlobalsWithTransform:(CGAffineTransform *)transform
 {
   mincol = self->FC.FR.mincol;
   minrow = self->FC.FR.minrow;
   maxcol = self->FC.FR.maxcol;
   maxrow = self->FC.FR.maxrow;
-  v9 = *&a3->c;
-  v68 = *&a3->a;
+  v9 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v9;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:mincol, minrow];
   v11 = v10;
   v13 = v12;
-  v14 = *&a3->c;
-  v68 = *&a3->a;
+  v14 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v14;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:maxcol, maxrow];
   v15 = v11;
   *&v16 = v16;
@@ -3084,34 +3084,34 @@ LABEL_3:
   v20.i32[1] = fmaxf(v18, *&v19);
   v20.i64[1] = __PAIR64__(LODWORD(v16), v17);
   self->FC.FR = vcvtq_s32_f32(vrndxq_f32(v20));
-  v21 = *&a3->c;
-  v68 = *&a3->a;
+  v21 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v21;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:self->FC.leftEye.x, self->FC.leftEye.y];
   self->FC.leftEye.x = v22;
   self->FC.leftEye.y = v23;
-  v24 = *&a3->c;
-  v68 = *&a3->a;
+  v24 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v24;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:self->FC.rightEye.x, self->FC.rightEye.y];
   self->FC.rightEye.x = v25;
   self->FC.rightEye.y = v26;
   for (i = 184; i != 312; i += 16)
   {
     v28 = self + i;
-    v29 = *&a3->c;
-    v68 = *&a3->a;
+    v29 = *&transform->c;
+    v68 = *&transform->a;
     v69 = v29;
-    v70 = *&a3->tx;
+    v70 = *&transform->tx;
     [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:*(&self->super.isa + i), *(&self->inspector + i)];
     *v28 = v30;
     *(v28 + 1) = v31;
-    v32 = *&a3->c;
-    v68 = *&a3->a;
+    v32 = *&transform->c;
+    v68 = *&transform->a;
     v69 = v32;
-    v70 = *&a3->tx;
+    v70 = *&transform->tx;
     [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:*(v28 + 16), *(v28 + 17)];
     *(v28 + 16) = v33;
     *(v28 + 17) = v34;
@@ -3121,17 +3121,17 @@ LABEL_3:
   v36 = self->FC.LR.minrow;
   v37 = self->FC.LR.maxcol;
   v38 = self->FC.LR.maxrow;
-  v39 = *&a3->c;
-  v68 = *&a3->a;
+  v39 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v39;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:v35, v36];
   v41 = v40;
   v43 = v42;
-  v44 = *&a3->c;
-  v68 = *&a3->a;
+  v44 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v44;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:v37, v38];
   v45 = v41;
   *&v46 = v46;
@@ -3149,17 +3149,17 @@ LABEL_3:
   v50.i64[1] = __PAIR64__(v48, v47);
   self->FC.LR = vcvtq_s32_f32(vrndxq_f32(v50));
   v56 = v53;
-  v57 = *&a3->c;
-  v68 = *&a3->a;
+  v57 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v57;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:v52, v54];
   v59 = v58;
   v61 = v60;
-  v62 = *&a3->c;
-  v68 = *&a3->a;
+  v62 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v62;
-  v70 = *&a3->tx;
+  v70 = *&transform->tx;
   [(CIRedEyeRepair3 *)self leftHandedTransform:&v68 ofPoint:v55, v56];
   v63 = v59;
   *&v64 = v64;
@@ -3171,9 +3171,9 @@ LABEL_3:
   self->FC.RR = vcvtq_s32_f32(vrndxq_f32(v67));
 }
 
-- (void)transformConvexHull:(id *)a3 withTransform:(CGAffineTransform *)a4
+- (void)transformConvexHull:(id *)hull withTransform:(CGAffineTransform *)transform
 {
-  if (a3->var1 >= 1)
+  if (hull->var1 >= 1)
   {
     v16 = v4;
     v17 = v5;
@@ -3181,11 +3181,11 @@ LABEL_3:
     v10 = 0;
     do
     {
-      v11 = &a3->var3[v9];
-      v12 = *&a4->c;
-      v15[0] = *&a4->a;
+      v11 = &hull->var3[v9];
+      v12 = *&transform->c;
+      v15[0] = *&transform->a;
       v15[1] = v12;
-      v15[2] = *&a4->tx;
+      v15[2] = *&transform->tx;
       [(CIRedEyeRepair3 *)self leftHandedTransform:v15 ofPoint:v11->x, v11->y];
       v11->x = v13;
       v11->y = v14;
@@ -3193,14 +3193,14 @@ LABEL_3:
       ++v9;
     }
 
-    while (v10 < a3->var1);
+    while (v10 < hull->var1);
   }
 }
 
-- (int)transformRepairArray:(CGAffineTransform *)a3
+- (int)transformRepairArray:(CGAffineTransform *)array
 {
   v5 = [(NSMutableArray *)self->repairs count];
-  v6 = a3->a == 0.0 && a3->d == 0.0;
+  v6 = array->a == 0.0 && array->d == 0.0;
   if (v5 < 1)
   {
     return 0;
@@ -3220,15 +3220,15 @@ LABEL_3:
   v22 = 0u;
   while ([(CIRedEyeRepair3 *)self unpackToGlobalRepairDictionary:[(NSMutableArray *)self->repairs objectAtIndexedSubscript:v7 convexHull:v22] facts:&v29, v26])
   {
-    v17 = *&a3->c;
-    v23 = *&a3->a;
+    v17 = *&array->c;
+    v23 = *&array->a;
     v24 = v17;
-    v25 = *&a3->tx;
+    v25 = *&array->tx;
     [(CIRedEyeRepair3 *)self transformGlobalsWithTransform:&v23];
-    v18 = *&a3->c;
-    v23 = *&a3->a;
+    v18 = *&array->c;
+    v23 = *&array->a;
     v24 = v18;
-    v25 = *&a3->tx;
+    v25 = *&array->tx;
     [(CIRedEyeRepair3 *)self transformConvexHull:v29 withTransform:&v23];
     if (v6)
     {
@@ -3276,25 +3276,25 @@ LABEL_3:
   return v2;
 }
 
-- (id)stringWithRER3Error:(int)a3
+- (id)stringWithRER3Error:(int)error
 {
-  if ((a3 - 1) > 0x3C)
+  if ((error - 1) > 0x3C)
   {
     v3 = "unknown error code";
   }
 
   else
   {
-    v3 = off_1E75C3A70[a3 - 1];
+    v3 = off_1E75C3A70[error - 1];
   }
 
   return [MEMORY[0x1E696AEC0] stringWithCString:v3 encoding:30];
 }
 
-- (void)executeRepair:(id)a3
+- (void)executeRepair:(id)repair
 {
   self->failureCauses = [MEMORY[0x1E695DF70] array];
-  v5 = [(CIRedEyeRepair3 *)self executeRepairWithRepairDictionary:a3];
+  v5 = [(CIRedEyeRepair3 *)self executeRepairWithRepairDictionary:repair];
   if (v5)
   {
     failureCauses = self->failureCauses;
@@ -3304,19 +3304,19 @@ LABEL_3:
   }
 }
 
-- (void)magnitudeMap:(id *)a3 fromGabor:(id *)a4
+- (void)magnitudeMap:(id *)map fromGabor:(id *)gabor
 {
-  var2 = a4->var2;
+  var2 = gabor->var2;
   if (var2 >= 1)
   {
     v5 = 0;
-    var1 = a4->var1;
-    var6 = a3->var6;
-    var3 = a3->var3;
-    var0 = a3->var0;
-    v10 = a4->var0;
-    v11 = 4 * a4->var3;
-    v12 = 4 * a4->var6;
+    var1 = gabor->var1;
+    var6 = map->var6;
+    var3 = map->var3;
+    var0 = map->var0;
+    v10 = gabor->var0;
+    v11 = 4 * gabor->var3;
+    v12 = 4 * gabor->var6;
     do
     {
       if (var1 >= 1)
@@ -3344,20 +3344,20 @@ LABEL_3:
   }
 }
 
-- (void)condenseFourChannelRecognitionMap:(id *)a3 intoOneChanneMap:(id *)a4
+- (void)condenseFourChannelRecognitionMap:(id *)map intoOneChanneMap:(id *)channeMap
 {
-  bzero(a4->var0, a4->var5);
-  var2 = a3->var2;
+  bzero(channeMap->var0, channeMap->var5);
+  var2 = map->var2;
   if (var2 >= 1)
   {
     v7 = 0;
-    var1 = a3->var1;
-    var6 = a4->var6;
-    var3 = a4->var3;
-    var0 = a4->var0;
-    v12 = a3->var6;
-    v13 = a3->var3;
-    v14 = a3->var0;
+    var1 = map->var1;
+    var6 = channeMap->var6;
+    var3 = channeMap->var3;
+    var0 = channeMap->var0;
+    v12 = map->var6;
+    v13 = map->var3;
+    v14 = map->var0;
     do
     {
       if (var1 >= 1)
@@ -3385,71 +3385,71 @@ LABEL_3:
   }
 }
 
-- (int)initShapePoints:(id *)a3 withMaxPoints:(int)a4
+- (int)initShapePoints:(id *)points withMaxPoints:(int)maxPoints
 {
-  v6 = malloc_type_malloc(48 * a4, 0x1000040EED21634uLL);
-  a3->var2 = v6;
+  v6 = malloc_type_malloc(48 * maxPoints, 0x1000040EED21634uLL);
+  points->var2 = v6;
   if (!v6)
   {
     return 29;
   }
 
   result = 0;
-  a3->var0 = 0;
-  a3->var1 = a4;
+  points->var0 = 0;
+  points->var1 = maxPoints;
   return result;
 }
 
-- (int)addPoint:(CGPoint)a3 toShapePoints:(id *)a4
+- (int)addPoint:(CGPoint)point toShapePoints:(id *)points
 {
-  var0 = a4->var0;
-  if (a4->var0 >= a4->var1)
+  var0 = points->var0;
+  if (points->var0 >= points->var1)
   {
     return 30;
   }
 
   result = 0;
-  v6 = a4->var2 + 48 * var0;
-  *v6 = a3;
+  v6 = points->var2 + 48 * var0;
+  *v6 = point;
   *(v6 + 2) = 0;
   *(v6 + 6) = 0;
-  a4->var0 = var0 + 1;
+  points->var0 = var0 + 1;
   return result;
 }
 
-- (void)termShapePoints:(id *)a3
+- (void)termShapePoints:(id *)points
 {
-  free(a3->var2);
-  *&a3->var0 = 0;
-  a3->var2 = 0;
+  free(points->var2);
+  *&points->var0 = 0;
+  points->var2 = 0;
 }
 
-- (int)copyShape:(id *)a3 into:(id *)a4 transform:(CGAffineTransform *)a5 height:(int)a6
+- (int)copyShape:(id *)shape into:(id *)into transform:(CGAffineTransform *)transform height:(int)height
 {
-  v10 = *&a3->var3;
-  *&a4->var0 = *&a3->var0;
-  *&a4->var3 = v10;
-  a4->var2 = 0;
-  v11 = malloc_type_malloc(48 * a3->var0, 0x1000040EED21634uLL);
-  a4->var2 = v11;
+  v10 = *&shape->var3;
+  *&into->var0 = *&shape->var0;
+  *&into->var3 = v10;
+  into->var2 = 0;
+  v11 = malloc_type_malloc(48 * shape->var0, 0x1000040EED21634uLL);
+  into->var2 = v11;
   if (!v11)
   {
     return 31;
   }
 
-  memmove(v11, a3->var2, 48 * a3->var0);
-  var0 = a4->var0;
-  a4->var1 = a4->var0;
+  memmove(v11, shape->var2, 48 * shape->var0);
+  var0 = into->var0;
+  into->var1 = into->var0;
   if (var0 >= 1)
   {
-    var2 = a4->var2;
+    var2 = into->var2;
     do
     {
-      v14 = a6 - *(var2 + 1);
+      v14 = height - *(var2 + 1);
       v15 = *var2 + 0.5;
       *var2 = v15;
       *(var2 + 1) = v14;
-      *var2 = vaddq_f64(*&a5->tx, vmlaq_n_f64(vmulq_n_f64(*&a5->c, v14), *&a5->a, v15));
+      *var2 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v14), *&transform->a, v15));
       var2 = (var2 + 48);
       --var0;
     }
@@ -3460,14 +3460,14 @@ LABEL_3:
   return 0;
 }
 
-- (BOOL)initGridWithBitmap:(id *)a3 scale:(int)a4
+- (BOOL)initGridWithBitmap:(id *)bitmap scale:(int)scale
 {
-  v4 = (a3->var1 + a4 - 1) / a4;
+  v4 = (bitmap->var1 + scale - 1) / scale;
   p_G = &self->G;
-  v6 = (a3->var2 + a4 - 1) / a4;
+  v6 = (bitmap->var2 + scale - 1) / scale;
   self->G.width = v4;
   self->G.height = v6;
-  self->G.scaleFactor = 1.0 / a4;
+  self->G.scaleFactor = 1.0 / scale;
   v7 = malloc_type_malloc(8 * v6 * v4, 0x100004000313F17uLL);
   p_G->grid = v7;
   if (v7)
@@ -3561,10 +3561,10 @@ LABEL_3:
   p_G->shapes = 0;
 }
 
-- (void)point:(CGPoint)a3 toGridRow:(int *)a4 column:(int *)a5
+- (void)point:(CGPoint)point toGridRow:(int *)row column:(int *)column
 {
   scaleFactor = self->G.scaleFactor;
-  v6 = vcvtmd_s64_f64(a3.y * scaleFactor);
+  v6 = vcvtmd_s64_f64(point.y * scaleFactor);
   if (v6 < 0)
   {
     v6 = 0;
@@ -3579,7 +3579,7 @@ LABEL_3:
     }
   }
 
-  v8 = vcvtmd_s64_f64(a3.x * scaleFactor);
+  v8 = vcvtmd_s64_f64(point.x * scaleFactor);
   if (v8 < 0)
   {
     v10 = 0;
@@ -3599,17 +3599,17 @@ LABEL_3:
     }
   }
 
-  *a4 = v6;
-  *a5 = v10;
+  *row = v6;
+  *column = v10;
 }
 
-- (int)insertPoint:(CGPoint)a3 andDirection:(CGPoint)a4 intoGrid:(BOOL)a5
+- (int)insertPoint:(CGPoint)point andDirection:(CGPoint)direction intoGrid:(BOOL)grid
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  gridCopy = grid;
+  y = direction.y;
+  x = direction.x;
+  v8 = point.y;
+  v9 = point.x;
   p_G = &self->G;
   nPoints = self->G.nPoints;
   maxPoints = self->G.maxPoints;
@@ -3637,7 +3637,7 @@ LABEL_3:
   v21 = 0;
   p_G->nPoints = nPoints + 1;
   v16 = points + 96 * nPoints;
-  if (v5)
+  if (gridCopy)
   {
     [(CIRedEyeRepair3 *)self point:&v21 + 4 toGridRow:&v21 column:v9, v8];
     v17 = (p_G->grid + 8 * v21 + 8 * p_G->width * HIDWORD(v21));
@@ -3661,7 +3661,7 @@ LABEL_3:
   *(v16 + 19) = 0;
   *(v16 + 20) = nextNetNumber;
   p_G->nextNetNumber = nextNetNumber + 1;
-  if (v5)
+  if (gridCopy)
   {
     result = 0;
     *v17 = nPoints;
@@ -3670,7 +3670,7 @@ LABEL_3:
   return result;
 }
 
-- (int)newThread:(id *)a3
+- (int)newThread:(id *)thread
 {
   p_G = &self->G;
   nThreads = self->G.nThreads;
@@ -3681,7 +3681,7 @@ LABEL_3:
 LABEL_5:
     result = 0;
     p_G->nThreads = nThreads + 1;
-    *a3 = (threads + 96 * nThreads);
+    *thread = (threads + 96 * nThreads);
     return result;
   }
 
@@ -3700,7 +3700,7 @@ LABEL_5:
   return 36;
 }
 
-- (int)newShape:(id *)a3
+- (int)newShape:(id *)shape
 {
   p_G = &self->G;
   nShapes = self->G.nShapes;
@@ -3711,7 +3711,7 @@ LABEL_5:
 LABEL_5:
     result = 0;
     p_G->nShapes = nShapes + 1;
-    *a3 = (shapes + 32 * nShapes);
+    *shape = (shapes + 32 * nShapes);
     return result;
   }
 
@@ -3730,15 +3730,15 @@ LABEL_5:
   return 34;
 }
 
-- (int)connectThreads:(int)a3 drop1:(int)a4 and:(int)a5 drop2:(int)a6
+- (int)connectThreads:(int)threads drop1:(int)drop1 and:(int)and drop2:(int)drop2
 {
   threads = self->G.threads;
-  v8 = threads + 96 * a3;
-  v9 = (threads + 96 * a5);
+  v8 = threads + 96 * threads;
+  v9 = (threads + 96 * and);
   v10 = *(v8 + 1);
   points = self->G.points;
   v12 = v10;
-  if (a4 >= 1)
+  if (drop1 >= 1)
   {
     do
     {
@@ -3747,16 +3747,16 @@ LABEL_5:
       *(v13 + 18) = -1;
       v12 = v14;
       *(points + 24 * v14 + 17) = -1;
-      --a4;
+      --drop1;
     }
 
-    while (a4);
+    while (drop1);
     v10 = v14;
   }
 
   v15 = *v9;
   v16 = *v9;
-  if (a6 >= 1)
+  if (drop2 >= 1)
   {
     do
     {
@@ -3765,27 +3765,27 @@ LABEL_5:
       *(v17 + 17) = -1;
       v16 = v18;
       *(points + 24 * v18 + 18) = -1;
-      --a6;
+      --drop2;
     }
 
-    while (a6);
+    while (drop2);
     v15 = v18;
   }
 
   *(points + 24 * v12 + 17) = v15;
   *(points + 24 * v16 + 18) = v10;
   *(v8 + 1) = v9[1];
-  [(CIRedEyeRepair3 *)self removeThreadAtIndex:*&a5];
+  [(CIRedEyeRepair3 *)self removeThreadAtIndex:*&and];
   *(v9 + 24) = 0;
 
   return [(CIRedEyeRepair3 *)self gatherThreadInfo:v8];
 }
 
-- (void)putThreadAtIndex:(int)a3
+- (void)putThreadAtIndex:(int)index
 {
   v11 = 0;
   p_G = &self->G;
-  v5 = (self->G.threads + 96 * a3);
+  v5 = (self->G.threads + 96 * index);
   v6 = (self->G.points + 96 * *v5);
   [(CIRedEyeRepair3 *)self point:&v11 + 4 toGridRow:&v11 column:*v6, v6[1]];
   v7 = p_G->grid + 8 * v11 + 8 * p_G->width * HIDWORD(v11);
@@ -3796,18 +3796,18 @@ LABEL_5:
   v5[8] = -1;
   if (v10 != -1)
   {
-    *(p_G->threads + 24 * v9 + 8) = a3;
+    *(p_G->threads + 24 * v9 + 8) = index;
   }
 
-  *v8 = a3;
+  *v8 = index;
 }
 
-- (void)removeThreadAtIndex:(int)a3
+- (void)removeThreadAtIndex:(int)index
 {
   v9 = 0;
   p_G = &self->G;
   threads = self->G.threads;
-  v5 = (threads + 96 * a3);
+  v5 = (threads + 96 * index);
   v6 = v5[8];
   if (v6 == -1)
   {
@@ -3829,21 +3829,21 @@ LABEL_5:
   }
 }
 
-- (int)lookForPoint:(CGPoint *)a3 onLine:(id)a4 nearestPoint:(CGPoint)a5
+- (int)lookForPoint:(CGPoint *)point onLine:(id)line nearestPoint:(CGPoint)nearestPoint
 {
-  if (a4.var0 == 0.0 && a4.var1 == 0.0)
+  if (line.var0 == 0.0 && line.var1 == 0.0)
   {
     return 37;
   }
 
   result = 0;
-  v6 = a5.y * a4.var0 + -a4.var1 * a5.x;
-  v7 = a4.var0 == 0.0;
-  v8 = (a4.var1 * a4.var1) + (a4.var0 * a4.var0);
-  v9 = -((a4.var1 * v6) + (a4.var0 * a4.var2)) / v8;
-  v10 = -(a4.var2 + (a4.var0 * v9)) / a4.var1;
-  v11 = ((a4.var2 * -a4.var1) + (a4.var0 * v6)) / v8;
-  v12 = -(a4.var2 + (a4.var1 * v11)) / a4.var0;
+  v6 = nearestPoint.y * line.var0 + -line.var1 * nearestPoint.x;
+  v7 = line.var0 == 0.0;
+  v8 = (line.var1 * line.var1) + (line.var0 * line.var0);
+  v9 = -((line.var1 * v6) + (line.var0 * line.var2)) / v8;
+  v10 = -(line.var2 + (line.var0 * v9)) / line.var1;
+  v11 = ((line.var2 * -line.var1) + (line.var0 * v6)) / v8;
+  v12 = -(line.var2 + (line.var1 * v11)) / line.var0;
   if (v7)
   {
     v12 = v9;
@@ -3855,27 +3855,27 @@ LABEL_5:
     v13 = v11;
   }
 
-  a3->x = v12;
-  a3->y = v13;
+  point->x = v12;
+  point->y = v13;
   return result;
 }
 
-- (void)forAllGridPointsNear:(int)a3 withinRadius:(float)a4 do:(void *)a5 context:(void *)a6
+- (void)forAllGridPointsNear:(int)near withinRadius:(float)radius do:(void *)do context:(void *)context
 {
   v26 = 0;
   v27 = 0;
   p_G = &self->G;
-  v12 = (self->G.points + 96 * a3);
+  v12 = (self->G.points + 96 * near);
   v13 = *v12;
   v14 = v12[1];
-  v15 = a4;
-  [(CIRedEyeRepair3 *)self point:&v27 + 4 toGridRow:&v26 + 4 column:*v12 - a4, v14 - a4];
-  [(CIRedEyeRepair3 *)self point:&v27 toGridRow:&v26 column:*v12 + v15, v12[1] + v15];
+  radiusCopy = radius;
+  [(CIRedEyeRepair3 *)self point:&v27 + 4 toGridRow:&v26 + 4 column:*v12 - radius, v14 - radius];
+  [(CIRedEyeRepair3 *)self point:&v27 toGridRow:&v26 column:*v12 + radiusCopy, v12[1] + radiusCopy];
   v16 = v27;
   v17 = HIDWORD(v27);
   if (SHIDWORD(v27) <= v27)
   {
-    v18 = a4 * a4;
+    v18 = radius * radius;
     v19 = v26;
     do
     {
@@ -3890,13 +3890,13 @@ LABEL_5:
             do
             {
               v22 = p_G->points + 96 * v21;
-              if (v21 != a3)
+              if (v21 != near)
               {
                 v23 = *v22 - v13;
                 v24 = *(v22 + 8) - v14;
                 if (((v24 * v24) + (v23 * v23)) <= v18)
                 {
-                  (a5)(a6);
+                  (do)(context);
                 }
               }
 
@@ -3921,20 +3921,20 @@ LABEL_5:
   }
 }
 
-- (void)forAllGridThreadsNear:(CGPoint)a3 withinRadius:(float)a4 do:(void *)a5 context:(void *)a6
+- (void)forAllGridThreadsNear:(CGPoint)near withinRadius:(float)radius do:(void *)do context:(void *)context
 {
-  y = a3.y;
-  x = a3.x;
+  y = near.y;
+  x = near.x;
   v24 = 0;
   v25 = 0;
-  v12 = a4;
-  [(CIRedEyeRepair3 *)self point:&v25 + 4 toGridRow:&v24 + 4 column:a3.x - a4, a3.y - a4];
-  [(CIRedEyeRepair3 *)self point:&v25 toGridRow:&v24 column:x + v12, y + v12];
+  radiusCopy = radius;
+  [(CIRedEyeRepair3 *)self point:&v25 + 4 toGridRow:&v24 + 4 column:near.x - radius, near.y - radius];
+  [(CIRedEyeRepair3 *)self point:&v25 toGridRow:&v24 column:x + radiusCopy, y + radiusCopy];
   v13 = v25;
   v14 = HIDWORD(v25);
   if (SHIDWORD(v25) <= v25)
   {
-    v15 = a4 * a4;
+    v15 = radius * radius;
     v16 = v24;
     do
     {
@@ -3954,7 +3954,7 @@ LABEL_5:
               v22 = v20[1] - y;
               if (((v22 * v22) + (v21 * v21)) <= v15)
               {
-                (a5)(a6);
+                (do)(context);
               }
 
               v18 = v19[7];
@@ -3978,10 +3978,10 @@ LABEL_5:
   }
 }
 
-- (int)replacePointAndDirection:(int)a3
+- (int)replacePointAndDirection:(int)direction
 {
   v10 = 0uLL;
-  v6 = self->G.points + 96 * a3;
+  v6 = self->G.points + 96 * direction;
   LODWORD(v3) = *(v6 + 21);
   LODWORD(v4) = *(v6 + 22);
   LODWORD(v5) = *(v6 + 23);
@@ -4010,11 +4010,11 @@ LABEL_5:
   return result;
 }
 
-- (int)linkUpPointIndex:(int)a3 toPointIndex:(int)a4
+- (int)linkUpPointIndex:(int)index toPointIndex:(int)pointIndex
 {
   points = self->G.points;
-  v5 = (points + 96 * a3);
-  v6 = (points + 96 * a4);
+  v5 = (points + 96 * index);
+  v6 = (points + 96 * pointIndex);
   v7 = v6[19];
   v8 = v5[19];
   if (v7 > v8 + 1)
@@ -4038,11 +4038,11 @@ LABEL_5:
   if (v7 <= 0)
   {
 LABEL_5:
-    v5[17] = a4;
-    v6[18] = a3;
+    v5[17] = pointIndex;
+    v6[18] = index;
     v6[19] = v8 + 1;
     v6[20] = v9;
-    v11 = *(points + 24 * a4 + 17);
+    v11 = *(points + 24 * pointIndex + 17);
     if (v11 != -1)
     {
       v12 = v5[20];
@@ -4065,44 +4065,44 @@ LABEL_5:
   return 38;
 }
 
-- (int)copyGridInto:(id *)a3 transform:(CGAffineTransform *)a4 height:(int)a5
+- (int)copyGridInto:(id *)into transform:(CGAffineTransform *)transform height:(int)height
 {
   p_G = &self->G;
-  memmove(a3, &self->G, 0x50uLL);
-  a3->var3 = 0;
-  a3->var6 = 0;
-  v9 = malloc_type_malloc(8 * a3->var1 * a3->var0, 0x100004000313F17uLL);
-  a3->var3 = v9;
+  memmove(into, &self->G, 0x50uLL);
+  into->var3 = 0;
+  into->var6 = 0;
+  v9 = malloc_type_malloc(8 * into->var1 * into->var0, 0x100004000313F17uLL);
+  into->var3 = v9;
   if (v9)
   {
-    memmove(v9, p_G->grid, 8 * a3->var1 * a3->var0);
-    v10 = malloc_type_malloc(96 * a3->var4, 0x1000040565EDBD2uLL);
-    a3->var6 = v10;
+    memmove(v9, p_G->grid, 8 * into->var1 * into->var0);
+    v10 = malloc_type_malloc(96 * into->var4, 0x1000040565EDBD2uLL);
+    into->var6 = v10;
     if (v10)
     {
-      memmove(v10, p_G->points, 96 * a3->var4);
-      var4 = a3->var4;
-      a3->var5 = var4;
+      memmove(v10, p_G->points, 96 * into->var4);
+      var4 = into->var4;
+      into->var5 = var4;
       if (var4 >= 1)
       {
-        var6 = a3->var6;
-        v13 = a5;
+        var6 = into->var6;
+        heightCopy = height;
         do
         {
-          v14 = v13 - *(var6 + 1);
+          v14 = heightCopy - *(var6 + 1);
           v15 = *var6 + 0.5;
           *var6 = v15;
           *(var6 + 1) = v14;
-          *var6 = vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v14), *&a4->a, v15));
-          v16 = v13 - *(var6 + 5);
+          *var6 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v14), *&transform->a, v15));
+          v16 = heightCopy - *(var6 + 5);
           v17 = *(var6 + 4) + 0.5;
           *(var6 + 4) = v17;
           *(var6 + 5) = v16;
-          *(var6 + 2) = vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v16), *&a4->a, v17));
+          *(var6 + 2) = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v16), *&transform->a, v17));
           LODWORD(v17) = *(var6 + 22);
           v18 = *(var6 + 21);
-          v19 = *(var6 + 23) + v18 * -0.5 + (*&v17 * a5);
-          *&v18 = v19 * a4->a - a4->tx * v18 + *&v17 * a4->ty;
+          v19 = *(var6 + 23) + v18 * -0.5 + (*&v17 * height);
+          *&v18 = v19 * transform->a - transform->tx * v18 + *&v17 * transform->ty;
           *(var6 + 22) = -*&v17;
           *(var6 + 23) = LODWORD(v18);
           var6 = (var6 + 96);
@@ -4112,27 +4112,27 @@ LABEL_5:
         while (var4);
       }
 
-      v20 = malloc_type_malloc(96 * a3->var8, 0x1000040DB95C216uLL);
-      a3->var10 = v20;
+      v20 = malloc_type_malloc(96 * into->var8, 0x1000040DB95C216uLL);
+      into->var10 = v20;
       if (v20)
       {
-        memmove(v20, p_G->threads, 96 * a3->var8);
-        a3->var9 = a3->var8;
-        v21 = malloc_type_malloc(32 * a3->var11, 0x1020040A150DD5AuLL);
-        a3->var13 = v21;
+        memmove(v20, p_G->threads, 96 * into->var8);
+        into->var9 = into->var8;
+        v21 = malloc_type_malloc(32 * into->var11, 0x1020040A150DD5AuLL);
+        into->var13 = v21;
         if (v21)
         {
-          memmove(v21, p_G->shapes, 32 * a3->var11);
-          var11 = a3->var11;
+          memmove(v21, p_G->shapes, 32 * into->var11);
+          var11 = into->var11;
           if (var11 < 1)
           {
             result = 0;
-            a3->var12 = var11;
+            into->var12 = var11;
             return result;
           }
 
           v23 = 0;
-          var13 = a3->var13;
+          var13 = into->var13;
           v25 = vdupq_n_s64(var11 - 1);
           v26 = (var13 + 40);
           do
@@ -4153,7 +4153,7 @@ LABEL_5:
           }
 
           while (((var11 + 1) & 0xFFFFFFFE) != v23);
-          a3->var12 = var11;
+          into->var12 = var11;
           v28 = 0;
           v29 = (p_G->shapes + 8);
           while (1)
@@ -4172,14 +4172,14 @@ LABEL_5:
             var13 = (var13 + 32);
             memmove(v30, v31, 48 * v33);
             result = 0;
-            if (++v28 >= a3->var11)
+            if (++v28 >= into->var11)
             {
               return result;
             }
           }
 
-          v35 = a3->var13;
-          v36 = a3->var11;
+          v35 = into->var13;
+          v36 = into->var11;
           if (v36 >= 1)
           {
             v37 = 0;
@@ -4190,7 +4190,7 @@ LABEL_5:
               {
                 free(*v38);
                 *v38 = 0;
-                v36 = a3->var11;
+                v36 = into->var11;
               }
 
               ++v37;
@@ -4198,41 +4198,41 @@ LABEL_5:
             }
 
             while (v37 < v36);
-            v35 = a3->var13;
+            v35 = into->var13;
           }
 
           free(v35);
-          a3->var13 = 0;
+          into->var13 = 0;
         }
 
-        free(a3->var10);
-        a3->var10 = 0;
+        free(into->var10);
+        into->var10 = 0;
       }
 
-      free(a3->var6);
-      a3->var6 = 0;
+      free(into->var6);
+      into->var6 = 0;
     }
 
-    free(a3->var3);
-    a3->var3 = 0;
+    free(into->var3);
+    into->var3 = 0;
   }
 
   return 39;
 }
 
-- (int)nextPointIndexWithPointIndex:(int)a3
+- (int)nextPointIndexWithPointIndex:(int)index
 {
-  v3 = self->G.points + 96 * a3;
+  v3 = self->G.points + 96 * index;
   *&v5 = (self->S.capture * self->S.capture) + 1.0;
   HIDWORD(v5) = -1;
   [(CIRedEyeRepair3 *)self forAllGridPointsNear:*v3 withinRadius:*(v3 + 1) do:*(v3 + 84) context:__PAIR64__(LODWORD(self->S.alignmentTolerance), *(v3 + 23)), v5];
   return v6;
 }
 
-- (void)regressionWithPointIndex:(int)a3
+- (void)regressionWithPointIndex:(int)index
 {
-  v3 = *&a3;
-  v5 = (self->G.points + 96 * a3);
+  v3 = *&index;
+  v5 = (self->G.points + 96 * index);
   v6 = *v5;
   v23 = vcvt_f32_f64(*v5);
   v22 = vcvt_hight_f32_f64(v23, v6);
@@ -4282,14 +4282,14 @@ LABEL_5:
   v5[23] = _S4 * v19;
 }
 
-- (int)initHull:(id *)a3 withOrientation:(BOOL)a4
+- (int)initHull:(id *)hull withOrientation:(BOOL)orientation
 {
   v6 = 24;
   v7 = malloc_type_malloc(0x18uLL, 0x10200409093602BuLL);
   if (v7)
   {
     v8 = v7;
-    *v7 = a4;
+    *v7 = orientation;
     *(v7 + 4) = 0x4000000000;
     v9 = malloc_type_malloc(0x400uLL, 0x1000040451B5BE8uLL);
     *(v8 + 2) = v9;
@@ -4297,7 +4297,7 @@ LABEL_5:
     {
       bzero(v9, 0x400uLL);
       v6 = 0;
-      *a3 = v8;
+      *hull = v8;
     }
 
     else
@@ -4310,25 +4310,25 @@ LABEL_5:
   return v6;
 }
 
-- (void)termHull:(id *)a3
+- (void)termHull:(id *)hull
 {
-  free(a3->var3);
+  free(hull->var3);
 
-  free(a3);
+  free(hull);
 }
 
-- (int)addPoint:(CGPoint)a3 toHull:(id *)a4
+- (int)addPoint:(CGPoint)point toHull:(id *)hull
 {
-  y = a3.y;
-  x = a3.x;
-  var1 = a4->var1;
-  var2 = a4->var2;
+  y = point.y;
+  x = point.x;
+  var1 = hull->var1;
+  var2 = hull->var2;
   if (var1 < var2)
   {
-    var3 = a4->var3;
+    var3 = hull->var3;
 LABEL_5:
     result = 0;
-    a4->var1 = var1 + 1;
+    hull->var1 = var1 + 1;
     p_x = &var3[var1].x;
     *p_x = x;
     p_x[1] = y;
@@ -4339,26 +4339,26 @@ LABEL_5:
   if (v10)
   {
     var3 = v10;
-    memmove(v10, a4->var3, 16 * a4->var1);
-    free(a4->var3);
-    a4->var3 = var3;
-    var1 = a4->var1;
-    a4->var2 += 32;
+    memmove(v10, hull->var3, 16 * hull->var1);
+    free(hull->var3);
+    hull->var3 = var3;
+    var1 = hull->var1;
+    hull->var2 += 32;
     goto LABEL_5;
   }
 
   return 50;
 }
 
-- (BOOL)trimConcaveFromHull:(id *)a3
+- (BOOL)trimConcaveFromHull:(id *)hull
 {
-  var1 = a3->var1;
+  var1 = hull->var1;
   if (var1 < 3)
   {
     return 0;
   }
 
-  v4 = &a3->var3[var1];
+  v4 = &hull->var3[var1];
   x = v4[-2].x;
   y = v4[-2].y;
   v7 = v4[-1].x;
@@ -4367,26 +4367,26 @@ LABEL_5:
   v10 = y - v4[-3].y;
   *&x = v7 - x;
   *&y = v8 - y;
-  if (a3->var0 == ((v9 * *&y) - (v10 * *&x)) < 0.0)
+  if (hull->var0 == ((v9 * *&y) - (v10 * *&x)) < 0.0)
   {
     return 0;
   }
 
   v4[-2].x = v7;
   v4[-2].y = v8;
-  a3->var1 = var1 - 1;
+  hull->var1 = var1 - 1;
   return 1;
 }
 
-- (BOOL)trimEndPointFromHull:(id *)a3
+- (BOOL)trimEndPointFromHull:(id *)hull
 {
-  var1 = a3->var1;
+  var1 = hull->var1;
   if (var1 < 3)
   {
     return 0;
   }
 
-  var3 = a3->var3;
+  var3 = hull->var3;
   v5 = &var3[var1];
   x = v5[-1].x;
   y = v5[-1].y;
@@ -4394,31 +4394,31 @@ LABEL_5:
   v9 = y - v5[-2].y;
   *&x = var3->x - x;
   *&y = var3->y - y;
-  if (a3->var0 == ((v8 * *&y) - (v9 * *&x)) < 0.0)
+  if (hull->var0 == ((v8 * *&y) - (v9 * *&x)) < 0.0)
   {
     return 0;
   }
 
-  a3->var1 = var1 - 1;
+  hull->var1 = var1 - 1;
   return 1;
 }
 
-- (BOOL)trimStartPointFromHull:(id *)a3
+- (BOOL)trimStartPointFromHull:(id *)hull
 {
-  var1 = a3->var1;
+  var1 = hull->var1;
   if (var1 < 3)
   {
     return 0;
   }
 
-  var3 = a3->var3;
+  var3 = hull->var3;
   v5 = &var3[var1];
   y = var3->y;
   v7 = var3->x - v5[-1].x;
   v8 = y - v5[-1].y;
   v9 = var3[1].x - var3->x;
   *&y = var3[1].y - y;
-  if (a3->var0 == ((v7 * *&y) - (v8 * v9)) < 0.0)
+  if (hull->var0 == ((v7 * *&y) - (v8 * v9)) < 0.0)
   {
     return 0;
   }
@@ -4427,20 +4427,20 @@ LABEL_5:
   v12 = 1;
   do
   {
-    a3->var3[v11] = a3->var3[v11 + 1];
+    hull->var3[v11] = hull->var3[v11 + 1];
     ++v12;
-    v13 = a3->var1;
+    v13 = hull->var1;
     ++v11;
   }
 
   while (v12 < v13);
-  a3->var1 = v13 - 1;
+  hull->var1 = v13 - 1;
   return 1;
 }
 
-- (BOOL)isConvex:(id *)a3
+- (BOOL)isConvex:(id *)convex
 {
-  var1 = a3->var1;
+  var1 = convex->var1;
   if (var1 < 1)
   {
     return 1;
@@ -4455,7 +4455,7 @@ LABEL_5:
     {
       if (v4 * 16)
       {
-        var3 = a3->var3;
+        var3 = convex->var3;
         v9 = &var3[v4];
         p_x = &var3[v4 - 1].x;
         p_y = &var3[v4 - 1].y;
@@ -4483,7 +4483,7 @@ LABEL_5:
 
       else
       {
-        v9 = a3->var3;
+        v9 = convex->var3;
         v18 = &v9[var1];
         p_x = &v18[-1].x;
         p_y = &v18[-1].y;
@@ -4496,7 +4496,7 @@ LABEL_5:
       v20 = *v12 - *p_y;
       v21 = var3->x - v9->x;
       v22 = *v17 - *v12;
-      if (a3->var0 != ((v19 * v22) - (v20 * v21)) < 0.0)
+      if (convex->var0 != ((v19 * v22) - (v20 * v21)) < 0.0)
       {
         break;
       }
@@ -4512,13 +4512,13 @@ LABEL_5:
   return v5;
 }
 
-- (int)convexHull:(id *)a3 ofOriented:(BOOL)a4 threadIndex:(int)a5
+- (int)convexHull:(id *)hull ofOriented:(BOOL)oriented threadIndex:(int)index
 {
   v13 = 0;
-  result = [(CIRedEyeRepair3 *)self initHull:&v13 withOrientation:a4];
+  result = [(CIRedEyeRepair3 *)self initHull:&v13 withOrientation:oriented];
   if (!result)
   {
-    v9 = (self->G.threads + 96 * a5);
+    v9 = (self->G.threads + 96 * index);
     if (v9[6])
     {
       v10 = (self->G.points + 96 * *v9);
@@ -4539,7 +4539,7 @@ LABEL_8:
           if ([(CIRedEyeRepair3 *)self isConvex:v13])
           {
             result = 0;
-            *a3 = v13;
+            *hull = v13;
           }
 
           else
@@ -4583,17 +4583,17 @@ LABEL_8:
   return result;
 }
 
-- (int)convexHull:(id *)a3 ofOriented:(BOOL)a4 shape:(id *)a5
+- (int)convexHull:(id *)hull ofOriented:(BOOL)oriented shape:(id *)shape
 {
   v13 = 0;
-  result = [(CIRedEyeRepair3 *)self initHull:&v13 withOrientation:a4];
+  result = [(CIRedEyeRepair3 *)self initHull:&v13 withOrientation:oriented];
   if (!result)
   {
-    var2 = a5->var2;
+    var2 = shape->var2;
     result = [(CIRedEyeRepair3 *)self addPoint:v13 toHull:*var2, *(var2 + 1)];
     if (!result)
     {
-      if (a5->var0 < 2)
+      if (shape->var0 < 2)
       {
         do
         {
@@ -4604,7 +4604,7 @@ LABEL_8:
 
         while ([(CIRedEyeRepair3 *)self trimStartPointFromHull:v13]);
         result = 0;
-        *a3 = v13;
+        *hull = v13;
       }
 
       else
@@ -4624,7 +4624,7 @@ LABEL_8:
             ;
           }
 
-          if (++v10 >= a5->var0)
+          if (++v10 >= shape->var0)
           {
             goto LABEL_8;
           }
@@ -4636,10 +4636,10 @@ LABEL_8:
   return result;
 }
 
-- (void)measureHull:(id *)a3 majorAxis:(CGPoint *)a4 majorTo:(CGPoint *)a5 majorDiameter:(float *)a6 minorAxis:(CGPoint *)a7 minorTo:(CGPoint *)a8 minorDiameter:(float *)a9
+- (void)measureHull:(id *)hull majorAxis:(CGPoint *)axis majorTo:(CGPoint *)to majorDiameter:(float *)diameter minorAxis:(CGPoint *)minorAxis minorTo:(CGPoint *)minorTo minorDiameter:(float *)minorDiameter
 {
-  var3 = a3->var3;
-  var1 = a3->var1;
+  var3 = hull->var3;
+  var1 = hull->var1;
   v11 = &var3[var1];
   x = v11[-1].x;
   y = v11[-1].y;
@@ -4765,22 +4765,22 @@ LABEL_17:
     while (v18 < var1);
   }
 
-  a4->x = v30;
-  a4->y = v29;
-  a5->x = v25;
-  a5->y = v24;
-  *a6 = sqrtf(v26);
-  a7->x = v32;
-  a7->y = v31;
-  a8->x = v28;
-  a8->y = v27;
-  *a9 = sqrtf(v23);
+  axis->x = v30;
+  axis->y = v29;
+  to->x = v25;
+  to->y = v24;
+  *diameter = sqrtf(v26);
+  minorAxis->x = v32;
+  minorAxis->y = v31;
+  minorTo->x = v28;
+  minorTo->y = v27;
+  *minorDiameter = sqrtf(v23);
 }
 
-- (int)renderHull:(id *)a3 toBitmap:(id *)a4
+- (int)renderHull:(id *)hull toBitmap:(id *)bitmap
 {
-  var1 = a4->var1;
-  var2 = a4->var2;
+  var1 = bitmap->var1;
+  var2 = bitmap->var2;
   DeviceGray = CGColorSpaceCreateDeviceGray();
   if (!DeviceGray)
   {
@@ -4788,7 +4788,7 @@ LABEL_17:
   }
 
   v9 = DeviceGray;
-  v10 = CGBitmapContextCreate(a4->var0, var1, var2, 8uLL, a4->var4, DeviceGray, 0);
+  v10 = CGBitmapContextCreate(bitmap->var0, var1, var2, 8uLL, bitmap->var4, DeviceGray, 0);
   CGColorSpaceRelease(v9);
   if (!v10)
   {
@@ -4806,7 +4806,7 @@ LABEL_17:
   CGContextFillPath(v10);
   CGContextSetRGBFillColor(v10, 1.0, 1.0, 1.0, 1.0);
   CGContextBeginPath(v10);
-  if (a3->var1 <= 0)
+  if (hull->var1 <= 0)
   {
     v13 = (var2 - 1);
   }
@@ -4818,7 +4818,7 @@ LABEL_17:
     v13 = (var2 - 1);
     do
     {
-      v14 = &a3->var3[v11];
+      v14 = &hull->var3[v11];
       v15 = v14->x + 0.5;
       v16 = v13 - v14->y + 0.5;
       if (v11 * 16)
@@ -4835,17 +4835,17 @@ LABEL_17:
       ++v11;
     }
 
-    while (v12 < a3->var1);
+    while (v12 < hull->var1);
   }
 
-  CGContextAddLineToPoint(v10, a3->var3->x + 0.5, v13 - a3->var3->y + 0.5);
+  CGContextAddLineToPoint(v10, hull->var3->x + 0.5, v13 - hull->var3->y + 0.5);
   CGContextClosePath(v10);
   CGContextFillPath(v10);
   CGContextRelease(v10);
   return 0;
 }
 
-- (int)widenedHull:(id *)a3 withHull:(id *)a4 by:(float)a5
+- (int)widenedHull:(id *)hull withHull:(id *)withHull by:(float)by
 {
   v34 = 0;
   v9 = [(CIRedEyeRepair3 *)self initHull:&v34 withOrientation:0];
@@ -4854,12 +4854,12 @@ LABEL_17:
     return v9;
   }
 
-  var1 = a4->var1;
+  var1 = withHull->var1;
   if (var1 < 1)
   {
 LABEL_15:
     v10 = 0;
-    *a3 = v34;
+    *hull = v34;
   }
 
   else
@@ -4874,7 +4874,7 @@ LABEL_15:
     {
       v14 = v12 == 24 ? var1 : 0;
       v15 = v13 >= var1 ? var1 : 0;
-      var3 = a4->var3;
+      var3 = withHull->var3;
       v17 = &var3[v14] + v12;
       v18 = *(v17 - 40);
       v19 = *(v17 - 32);
@@ -4896,10 +4896,10 @@ LABEL_15:
       }
 
       v26 = (*&v32 * *(&v30 + 1)) - (*&v30 * *(&v32 + 1));
-      v27 = ((*(&v32 + 1) * (v31 + a5)) - (*(&v30 + 1) * (v33 + a5))) / v26;
-      v28 = ((*&v30 * (v33 + a5)) - (*&v32 * (v31 + a5))) / v26;
-      v33 = (v33 + a5) - a5;
-      v31 = (v31 + a5) - a5;
+      v27 = ((*(&v32 + 1) * (v31 + by)) - (*(&v30 + 1) * (v33 + by))) / v26;
+      v28 = ((*&v30 * (v33 + by)) - (*&v32 * (v31 + by))) / v26;
+      v33 = (v33 + by) - by;
+      v31 = (v31 + by) - by;
       v9 = [(CIRedEyeRepair3 *)self addPoint:v34 toHull:v27, v28];
       if (v9)
       {
@@ -4920,33 +4920,33 @@ LABEL_15:
   return v10;
 }
 
-- (int)renderConvexHull:(id *)a3 distance:(float)a4 fieldToBitmap:(id *)a5
+- (int)renderConvexHull:(id *)hull distance:(float)distance fieldToBitmap:(id *)bitmap
 {
   v112 = *MEMORY[0x1E69E9840];
   v109 = 0;
   v107 = 0u;
   v108 = 0u;
-  var0 = a5->var0;
-  var2 = a5->var2;
-  var3 = a5->var3;
-  var6 = a5->var6;
-  var1 = a5->var1;
+  var0 = bitmap->var0;
+  var2 = bitmap->var2;
+  var3 = bitmap->var3;
+  var6 = bitmap->var6;
+  var1 = bitmap->var1;
   initBitmap(&v107, var1, var2, var6, 1, 100.0);
   if (!v107)
   {
     return 45;
   }
 
-  v14 = [(CIRedEyeRepair3 *)self renderHull:a3 toBitmap:&v107];
+  v14 = [(CIRedEyeRepair3 *)self renderHull:hull toBitmap:&v107];
   if (!v14)
   {
     v15 = v107;
     v16 = v108;
     v17 = SHIDWORD(v108);
     v106 = var0;
-    bzero(var0, a5->var5);
-    v18 = a3;
-    v19 = a3->var1;
+    bzero(var0, bitmap->var5);
+    hullCopy = hull;
+    v19 = hull->var1;
     v20 = malloc_type_malloc(12 * v19, 0x10000403E1C8BA9uLL);
     if (v20)
     {
@@ -4969,7 +4969,7 @@ LABEL_15:
           v25 = 0;
         }
 
-        v26 = lineEquationThroughTwoPoints(v24, v18->var3[v21].x, v18->var3[v21].y, v18->var3[v23 - v25].x, v18->var3[v23 - v25].y);
+        v26 = lineEquationThroughTwoPoints(v24, hullCopy->var3[v21].x, hullCopy->var3[v21].y, hullCopy->var3[v23 - v25].x, hullCopy->var3[v23 - v25].y);
         ++v21;
         v24 += 3;
         ++v23;
@@ -4983,7 +4983,7 @@ LABEL_15:
       }
 
       v28 = v15;
-      v29 = v18;
+      v29 = hullCopy;
       v30 = v106;
       if (v19 < 1)
       {
@@ -5100,18 +5100,18 @@ LABEL_73:
           v66 = (v60 - v61) * v63;
           v67 = v61 - v62;
           v68 = 1.0 / v50;
-          v69 = v61 + a4;
-          v70 = v62 + a4;
-          v71 = (v40 * (v62 + a4)) - (v47 * v69);
+          v69 = v61 + distance;
+          v70 = v62 + distance;
+          v71 = (v40 * (v62 + distance)) - (v47 * v69);
           v72 = (v39 * v47) - (v46 * v40);
           v73 = v71 / v72;
           v74 = ((v46 * v69) - (v39 * v70)) / v72;
-          v75 = v69 - a4;
-          v76 = (v37 * ((v69 - a4) + a4)) - (v40 * (v60 + a4));
+          v75 = v69 - distance;
+          v76 = (v37 * ((v69 - distance) + distance)) - (v40 * (v60 + distance));
           v77 = (v36 * v40) - (v39 * v37);
           v78 = v76 / v77;
-          v79 = ((v39 * (v60 + a4)) - (v36 * ((v69 - a4) + a4))) / v77;
-          v80 = (v75 + a4) - a4;
+          v79 = ((v39 * (v60 + distance)) - (v36 * ((v69 - distance) + distance))) / v77;
+          v80 = (v75 + distance) - distance;
           if (v73 > v55)
           {
             v81 = v73;
@@ -5211,7 +5211,7 @@ LABEL_73:
           v110[5] = v66;
           v110[6] = v39;
           v110[7] = v40;
-          v110[8] = v80 + a4;
+          v110[8] = v80 + distance;
           v110[9] = -(v48 * v68);
           v49.f32[1] = v67;
           v111 = vmul_n_f32(vneg_f32(v49), v68);
@@ -5235,7 +5235,7 @@ LABEL_73:
                     v95 += 3;
                     if ((v95 * 4) == 48)
                     {
-                      v97 = (1.0 - ((((-v40 * v89) + (v110[0] * v96)) - v80) / a4)) * 255.0;
+                      v97 = (1.0 - ((((-v40 * v89) + (v110[0] * v96)) - v80) / distance)) * 255.0;
                       v98 = rintf(v97);
                       if (v98 >= 255)
                       {
@@ -5284,9 +5284,9 @@ LABEL_73:
   return v14;
 }
 
-- (CGPoint)centroidWithConvexHull:(id *)a3
+- (CGPoint)centroidWithConvexHull:(id *)hull
 {
-  var1 = a3->var1;
+  var1 = hull->var1;
   v4 = 0.0;
   if (var1 < 1)
   {
@@ -5296,7 +5296,7 @@ LABEL_73:
   else
   {
     v5 = 0;
-    var3 = a3->var3;
+    var3 = hull->var3;
     v7 = 0;
     do
     {
@@ -5314,7 +5314,7 @@ LABEL_73:
     {
       if (v8 >= var1 - 1)
       {
-        v13 = a3->var3;
+        v13 = hull->var3;
       }
 
       else
@@ -5347,7 +5347,7 @@ LABEL_73:
   return result;
 }
 
-- (int)analyzeMask:(id *)a3 usingConvexHull:(id *)a4 producingOptimizedMask:(id *)a5
+- (int)analyzeMask:(id *)mask usingConvexHull:(id *)hull producingOptimizedMask:(id *)optimizedMask
 {
   v154 = *MEMORY[0x1E69E9840];
   inspector = self->inspector;
@@ -5361,13 +5361,13 @@ LABEL_73:
     v10 = 0;
   }
 
-  var1 = a4->var1;
+  var1 = hull->var1;
   if (!var1)
   {
     return 3;
   }
 
-  [(CIRedEyeRepair3 *)self centroidWithConvexHull:a4];
+  [(CIRedEyeRepair3 *)self centroidWithConvexHull:hull];
   v13 = v12;
   v15 = v14;
   v16 = malloc_type_malloc(80 * var1, 0x10000404E27CAF5uLL);
@@ -5381,12 +5381,12 @@ LABEL_73:
   v144 = v16;
   if (var1 >= 1)
   {
-    v142 = a5;
+    optimizedMaskCopy = optimizedMask;
     v18 = 0;
     v19 = 0;
     v20 = 0;
     v21 = 0;
-    var3 = a4->var3;
+    var3 = hull->var3;
     v23 = v16;
     while (1)
     {
@@ -5422,7 +5422,7 @@ LABEL_73:
       v38 = y - (v33 * v35);
       v39 = v37;
       *&v30 = v38;
-      v40 = bilinearLookup(a3, v39, *&v30);
+      v40 = bilinearLookup(mask, v39, *&v30);
       v41 = v40;
       *(v23 + 12) = v40;
       *(v23 + 52) = v40;
@@ -5448,7 +5448,7 @@ LABEL_73:
           v38 = v38 + v43;
           v45 = v37;
           v46 = v38;
-          v47 = bilinearLookup(a3, v45, v46);
+          v47 = bilinearLookup(mask, v45, v46);
           v48 = v47;
           if (v10)
           {
@@ -5509,7 +5509,7 @@ LABEL_24:
         v55 = v21;
         v56 = v19;
         v57 = v20;
-        a5 = v142;
+        optimizedMask = optimizedMaskCopy;
         v17 = v144;
         goto LABEL_31;
       }
@@ -5632,16 +5632,16 @@ LABEL_60:
     while (v78);
   }
 
-  var0 = a3->var0;
-  var6 = a3->var6;
-  v81 = a3->var3;
-  var2 = a3->var2;
-  v143 = a3->var1;
-  v82 = a5->var3;
-  v83 = a5->var6;
-  v136 = a5->var0;
+  var0 = mask->var0;
+  var6 = mask->var6;
+  v81 = mask->var3;
+  var2 = mask->var2;
+  v143 = mask->var1;
+  v82 = optimizedMask->var3;
+  v83 = optimizedMask->var6;
+  v136 = optimizedMask->var0;
   v137 = var0;
-  bzero(a5->var0, a5->var5);
+  bzero(optimizedMask->var0, optimizedMask->var5);
   if (var1 < 1)
   {
 LABEL_122:
@@ -5833,24 +5833,24 @@ LABEL_123:
   return v54;
 }
 
-- (BOOL)edgePoint:(CGPoint *)a3 withBitmap:(id *)a4 center:(CGPoint)a5 perp:(CGPoint)a6
+- (BOOL)edgePoint:(CGPoint *)point withBitmap:(id *)bitmap center:(CGPoint)center perp:(CGPoint)perp
 {
-  y = a6.y;
-  x = a6.x;
-  v9 = a5.y;
-  v10 = a5.x;
+  y = perp.y;
+  x = perp.x;
+  v9 = center.y;
+  v10 = center.x;
   v11 = 0;
   v65[22] = *MEMORY[0x1E69E9840];
   v62 = 0;
   v63[0] = 0;
-  v12 = a5.x + a6.x * -7.0;
+  v12 = center.x + perp.x * -7.0;
   p_samplesPerPixel = &self->fullBitmap.samplesPerPixel;
-  v14 = a5.y + a6.y * -7.0;
+  v14 = center.y + perp.y * -7.0;
   do
   {
     v15 = v14;
     v16 = v12;
-    bilinearARGB8LookupComponents(a4, &v62 + 1, v63, v63 + 1, &v62, v16, v15);
+    bilinearARGB8LookupComponents(bitmap, &v62 + 1, v63, v63 + 1, &v62, v16, v15);
     v17 = p_samplesPerPixel[124];
     v18 = HIDWORD(v63[0]);
     if (v17 <= 4)
@@ -6106,14 +6106,14 @@ LABEL_52:
   }
 
   result = v45 != -1;
-  a3->x = v54;
-  a3->y = v55;
+  point->x = v54;
+  point->y = v55;
   return result;
 }
 
-+ (void)insertIntoConnectionHopper:(id *)a3 index1:(int)a4 drop1:(int)a5 index2:(int)a6 drop2:(int)a7 score:(float)a8
++ (void)insertIntoConnectionHopper:(id *)hopper index1:(int)index1 drop1:(int)drop1 index2:(int)index2 drop2:(int)drop2 score:(float)score
 {
-  var0 = a3->var0;
+  var0 = hopper->var0;
   if (var0 < 1)
   {
     LODWORD(v9) = 0;
@@ -6131,7 +6131,7 @@ LABEL_9:
     if (v11 >= v9)
     {
       v12 = v11 + 1;
-      v13 = &a3->var1[v11 + 1];
+      v13 = &hopper->var1[v11 + 1];
       do
       {
         *&v13->var0 = *&v13[-1].var0;
@@ -6141,15 +6141,15 @@ LABEL_9:
       }
 
       while (v12 > v9);
-      LODWORD(var0) = a3->var0;
+      LODWORD(var0) = hopper->var0;
     }
 
-    v14 = &a3->var1[v9];
-    v14->var0 = a4;
-    v14->var1 = a5;
-    v14->var2 = a6;
-    v14->var3 = a7;
-    v14->var4 = a8;
+    v14 = &hopper->var1[v9];
+    v14->var0 = index1;
+    v14->var1 = drop1;
+    v14->var2 = index2;
+    v14->var3 = drop2;
+    v14->var4 = score;
     if (var0 < 20)
     {
       v15 = var0 + 1;
@@ -6160,19 +6160,19 @@ LABEL_9:
       v15 = 20;
     }
 
-    a3->var0 = v15;
+    hopper->var0 = v15;
     return;
   }
 
   v9 = 0;
-  p_var4 = &a3->var1[0].var4;
-  while (*p_var4 <= a8)
+  p_var4 = &hopper->var1[0].var4;
+  while (*p_var4 <= score)
   {
     ++v9;
     p_var4 += 5;
     if (var0 == v9)
     {
-      LODWORD(v9) = a3->var0;
+      LODWORD(v9) = hopper->var0;
       break;
     }
   }
@@ -6183,26 +6183,26 @@ LABEL_9:
   }
 }
 
-- (void)printConnectionHopper:(id *)a3 message:(char *)a4
+- (void)printConnectionHopper:(id *)hopper message:(char *)message
 {
-  printf("\n%s -- hopper with %d elements total\n", a4, a3->var0);
-  if (a3->var0 >= 1)
+  printf("\n%s -- hopper with %d elements total\n", message, hopper->var0);
+  if (hopper->var0 >= 1)
   {
     v5 = 0;
     v6 = 4;
     do
     {
-      printf("  element %d i %3d/%d j %3d/%d score %5.3f\n", v5++, *(&a3->var0 + v6), *(&a3->var1[0].var0 + v6), *(&a3->var1[0].var1 + v6), *(&a3->var1[0].var2 + v6), *(&a3->var1[0].var3 + v6));
+      printf("  element %d i %3d/%d j %3d/%d score %5.3f\n", v5++, *(&hopper->var0 + v6), *(&hopper->var1[0].var0 + v6), *(&hopper->var1[0].var1 + v6), *(&hopper->var1[0].var2 + v6), *(&hopper->var1[0].var3 + v6));
       v6 += 20;
     }
 
-    while (v5 < a3->var0);
+    while (v5 < hopper->var0);
   }
 }
 
-- (void)printThreadWithIndex:(int)a3
+- (void)printThreadWithIndex:(int)index
 {
-  v3 = self->G.threads + 96 * a3;
+  v3 = self->G.threads + 96 * index;
   if (v3[24])
   {
     printf("  ");
@@ -6220,11 +6220,11 @@ LABEL_9:
   }
 }
 
-- (void)printThreadsOnlyClosed:(BOOL)a3 message:(char *)a4
+- (void)printThreadsOnlyClosed:(BOOL)closed message:(char *)message
 {
-  v4 = a3;
+  closedCopy = closed;
   p_G = &self->G;
-  printf("\n%s -- %d threads total\n", a4, self->G.nThreads);
+  printf("\n%s -- %d threads total\n", message, self->G.nThreads);
   nThreads = p_G->nThreads;
   if (nThreads >= 1)
   {
@@ -6232,7 +6232,7 @@ LABEL_9:
     v9 = p_G->threads + 25;
     do
     {
-      if (*(v9 - 1) == 1 && (!v4 || *v9 == 1))
+      if (*(v9 - 1) == 1 && (!closedCopy || *v9 == 1))
       {
         [(CIRedEyeRepair3 *)self printThreadWithIndex:v8];
         putchar(10);
@@ -6247,16 +6247,16 @@ LABEL_9:
   }
 }
 
-- (int)gatherThreadInfo:(id *)a3
+- (int)gatherThreadInfo:(id *)info
 {
-  if (!a3->var6)
+  if (!info->var6)
   {
     return 35;
   }
 
   points = self->G.points;
-  v5 = points + 96 * a3->var0;
-  a3->var5 = *(v5 + 20);
+  v5 = points + 96 * info->var0;
+  info->var5 = *(v5 + 20);
   v6 = *(v5 + 17);
   if (v6 == -1)
   {
@@ -6306,9 +6306,9 @@ LABEL_9:
   }
 
   result = 0;
-  a3->var2 = v9;
-  a3->var3 = v14;
-  a3->var4 = v13;
+  info->var2 = v9;
+  info->var3 = v14;
+  info->var4 = v13;
   return result;
 }
 
@@ -6385,11 +6385,11 @@ LABEL_4:
   p_G = &self->G;
   if (self->G.nThreads >= 1)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = 0;
     do
     {
-      [(CIRedEyeRepair3 *)v3 putThreadAtIndex:v4];
+      [(CIRedEyeRepair3 *)selfCopy putThreadAtIndex:v4];
       v4 = (v4 + 1);
       nThreads = p_G->nThreads;
     }
@@ -6397,9 +6397,9 @@ LABEL_4:
     while (v4 < nThreads);
     if (nThreads >= 1)
     {
-      p_mincol = &v3->subRectangle.mincol;
-      v37 = v3;
-      v38 = &v3->subRectangle.mincol;
+      p_mincol = &selfCopy->subRectangle.mincol;
+      v37 = selfCopy;
+      v38 = &selfCopy->subRectangle.mincol;
       while (1)
       {
         v8 = 0;
@@ -6416,7 +6416,7 @@ LABEL_4:
             v40[3] = p_G;
             v40[4] = &v41;
             *&v5 = *(p_mincol + 124) + *(p_mincol + 124);
-            [(CIRedEyeRepair3 *)v3 forAllGridThreadsNear:threadSearchAction withinRadius:v40 do:*v10 context:v10[1], v5];
+            [(CIRedEyeRepair3 *)selfCopy forAllGridThreadsNear:threadSearchAction withinRadius:v40 do:*v10 context:v10[1], v5];
             nThreads = p_G->nThreads;
           }
 
@@ -6439,7 +6439,7 @@ LABEL_47:
 
         result = 0;
         nThreads = p_G->nThreads;
-        v3 = v37;
+        selfCopy = v37;
         if (nThreads < 1)
         {
           return result;
@@ -6646,16 +6646,16 @@ LABEL_47:
   }
 }
 
-- (void)removeRedundantPointsFromShape:(id *)a3 closerThan:(float)a4
+- (void)removeRedundantPointsFromShape:(id *)shape closerThan:(float)than
 {
-  v4 = a4 * a4;
-  var2 = a3->var2;
-  var0 = a3->var0;
+  v4 = than * than;
+  var2 = shape->var2;
+  var0 = shape->var0;
   if (var0 >= 1)
   {
     v7 = 0;
     v8 = 0;
-    v9 = a3->var2;
+    v9 = shape->var2;
     while (1)
     {
       if (!v7)
@@ -6699,22 +6699,22 @@ LABEL_11:
   v15 = (var2 + 48 * v8);
   v16 = *var2 - *(v15 - 6);
   v17 = *(var2 + 1) - *(v15 - 5);
-  a3->var0 = v8 - (((v17 * v17) + (v16 * v16)) <= v4);
+  shape->var0 = v8 - (((v17 * v17) + (v16 * v16)) <= v4);
   [(CIRedEyeRepair3 *)self computeLengthsAnglesAndDeltaAnglesForShape:?];
 }
 
-- (void)computeLengthsAnglesAndDeltaAnglesForShape:(id *)a3
+- (void)computeLengthsAnglesAndDeltaAnglesForShape:(id *)shape
 {
-  var0 = a3->var0;
-  if (a3->var0 >= 1)
+  var0 = shape->var0;
+  if (shape->var0 >= 1)
   {
     v5 = 0;
-    var2 = a3->var2;
+    var2 = shape->var2;
     do
     {
       if (v5 == var0 - 1)
       {
-        v7 = a3->var2;
+        v7 = shape->var2;
       }
 
       else
@@ -6725,14 +6725,14 @@ LABEL_11:
       computeLengthAndAngle(var2, v7);
       ++v5;
       var2 = (var2 + 48);
-      var0 = a3->var0;
+      var0 = shape->var0;
     }
 
-    while (v5 < a3->var0);
+    while (v5 < shape->var0);
     if (var0 >= 1)
     {
       v8 = 0;
-      v9 = a3->var2;
+      v9 = shape->var2;
       v10 = (v9 + 48 * var0);
       while (1)
       {
@@ -6768,14 +6768,14 @@ LABEL_16:
   }
 }
 
-- (void)removeSmallBumpsFromShape:(id *)a3 center:(CGPoint)a4 threshold:(float)a5
+- (void)removeSmallBumpsFromShape:(id *)shape center:(CGPoint)center threshold:(float)threshold
 {
-  var0 = a3->var0;
-  if (a3->var0 >= 1)
+  var0 = shape->var0;
+  if (shape->var0 >= 1)
   {
-    y = a4.y;
+    y = center.y;
     v8 = 0;
-    var2 = a3->var2;
+    var2 = shape->var2;
     v10 = var2;
     do
     {
@@ -6794,17 +6794,17 @@ LABEL_16:
       v13 = v8 ? (v10 - 48) : (var2 + 48 * var0 - 48);
       v14 = (var0 - 2);
       v15 = v8 >= v14 ? (var2 + 48 * v8 + -48 * v14) : (v10 + 96);
-      LODWORD(a4.x) = *(v10 + 24);
-      LODWORD(a4.y) = *(v12 + 6);
-      if (*&a4.x < 0.0 == *&a4.y < 0.0)
+      LODWORD(center.x) = *(v10 + 24);
+      LODWORD(center.y) = *(v12 + 6);
+      if (*&center.x < 0.0 == *&center.y < 0.0)
       {
         goto LABEL_29;
       }
 
-      v16 = fabsf(*&a4.x) + fabsf(*&a4.y);
-      a4.x = fabsf(*&a4.x + *&a4.y);
-      a4.y = v16 * 0.333333;
-      if (a4.y <= a4.x)
+      v16 = fabsf(*&center.x) + fabsf(*&center.y);
+      center.x = fabsf(*&center.x + *&center.y);
+      center.y = v16 * 0.333333;
+      if (center.y <= center.x)
       {
         goto LABEL_29;
       }
@@ -6813,16 +6813,16 @@ LABEL_16:
       v18 = *(v10 + 8) - y;
       v19 = *(v12 + 1) - y;
       v20 = v15[1] - y;
-      a4.x = (*v10 + *v12) * 0.5;
-      a4.y = (v18 + v19) * 0.5;
+      center.x = (*v10 + *v12) * 0.5;
+      center.y = (v18 + v19) * 0.5;
       v21 = (*v12 - *v10) * (v18 + v19) * 0.5 + (*v10 - *v13) * (v17 + v18) * 0.5 + (*v15 - *v12) * (v19 + v20) * 0.5;
-      v22 = (*v15 - a4.x) * (v20 + a4.y - y) * 0.5 + (a4.x - *v13) * (v17 + a4.y - y) * 0.5;
-      if (vabds_f32(v22, v21) >= a5)
+      v22 = (*v15 - center.x) * (v20 + center.y - y) * 0.5 + (center.x - *v13) * (v17 + center.y - y) * 0.5;
+      if (vabds_f32(v22, v21) >= threshold)
       {
         goto LABEL_29;
       }
 
-      *v10 = a4;
+      *v10 = center;
       computeLengthAndAngle(v13, v10);
       computeLengthAndAngle(v10, v15);
       if (v8 == v11)
@@ -6835,16 +6835,16 @@ LABEL_16:
       {
         v23 = var2 + 48 * v8 + 48;
         v24 = v8;
-        v25 = a3;
+        shapeCopy2 = shape;
         do
         {
           v26 = (var2 + 48 * v24);
-          a4 = *v23;
-          *&a4.y = *(v23 + 1);
+          center = *v23;
+          *&center.y = *(v23 + 1);
           v27 = *(v23 + 2);
-          v26[1] = *&a4.y;
+          v26[1] = *&center.y;
           v26[2] = v27;
-          *v26 = a4;
+          *v26 = center;
           ++v24;
           v23 += 48;
         }
@@ -6853,9 +6853,9 @@ LABEL_16:
         goto LABEL_22;
       }
 
-      v25 = a3;
+      shapeCopy2 = shape;
 LABEL_22:
-      --v25->var0;
+      --shapeCopy2->var0;
       v28 = var2 + 48 * v11;
       v29 = &v28[48 * v8 - 96];
       if (v8 >= 2)
@@ -6877,10 +6877,10 @@ LABEL_22:
 
       v32 = *(v30 + 20);
       *(v30 + 24) = v32 - *(v29 + 20);
-      LODWORD(a4.y) = *(v10 + 20);
-      *(v10 + 24) = *&a4.y - v32;
-      *&a4.x = *(v31 + 5) - *&a4.y;
-      *(v31 + 6) = LODWORD(a4.x);
+      LODWORD(center.y) = *(v10 + 20);
+      *(v10 + 24) = *&center.y - v32;
+      *&center.x = *(v31 + 5) - *&center.y;
+      *(v31 + 6) = LODWORD(center.x);
       --v8;
       v10 -= 48;
       --var0;
@@ -6892,21 +6892,21 @@ LABEL_29:
     while (v8 < var0);
   }
 
-  [(CIRedEyeRepair3 *)self computeLengthsAnglesAndDeltaAnglesForShape:a4.x, a4.y];
+  [(CIRedEyeRepair3 *)self computeLengthsAnglesAndDeltaAnglesForShape:center.x, center.y];
 }
 
-- (void)removeSpikesFromShape:(id *)a3
+- (void)removeSpikesFromShape:(id *)shape
 {
   v5 = 0;
   do
   {
-    LODWORD(var0) = a3->var0;
-    if (a3->var0 < 1)
+    LODWORD(var0) = shape->var0;
+    if (shape->var0 < 1)
     {
       return;
     }
 
-    var2 = a3->var2;
+    var2 = shape->var2;
     v8 = -2;
     v9 = 2;
     v10 = 3;
@@ -7000,7 +7000,7 @@ LABEL_29:
       }
 
       v31 = v21 + v30 - 1;
-      v32 = a3->var2;
+      v32 = shape->var2;
       v33 = (v32 + 48 * v31);
       v34 = *(v32 + 12 * (v23 + var0 * v29) + 6);
       LODWORD(v35) = v21 + 1;
@@ -7054,13 +7054,13 @@ LABEL_43:
         v44 = 48 * v21;
         do
         {
-          v45 = (a3->var2 + v44);
+          v45 = (shape->var2 + v44);
           v46 = v45[4];
           *v45 = v45[3];
           v45[1] = v46;
           v45[2] = v45[5];
           ++v35;
-          var0 = a3->var0;
+          var0 = shape->var0;
           v44 += 48;
         }
 
@@ -7068,7 +7068,7 @@ LABEL_43:
       }
 
       LODWORD(var0) = var0 - 1;
-      a3->var0 = var0;
+      shape->var0 = var0;
       var2 = (var2 - 48);
       v22 = 1;
 LABEL_44:
@@ -7081,7 +7081,7 @@ LABEL_44:
       break;
     }
 
-    [(CIRedEyeRepair3 *)self computeLengthsAnglesAndDeltaAnglesForShape:a3];
+    [(CIRedEyeRepair3 *)self computeLengthsAnglesAndDeltaAnglesForShape:shape];
     v47 = v5++ >= 2;
     v48 = !v47;
   }
@@ -7089,10 +7089,10 @@ LABEL_44:
   while ((v48 & v22 & 1) != 0);
 }
 
-- (void)slidingWindowAnalysisOfShape:(id *)a3 into:(id *)a4
+- (void)slidingWindowAnalysisOfShape:(id *)shape into:(id *)into
 {
   v4 = 0;
-  var0 = a3->var0;
+  var0 = shape->var0;
   v6 = vdupq_n_s64(var0 - 1);
   v7 = 28;
   v8 = 124;
@@ -7101,7 +7101,7 @@ LABEL_44:
     if ((var0 >> ++v4) > 1)
     {
       v13 = var0 >> v4 >> 1;
-      var2 = a3->var2;
+      var2 = shape->var2;
       if (v13 < 0)
       {
         v17 = 0.0;
@@ -7182,7 +7182,7 @@ LABEL_44:
     else if (var0 >= 1)
     {
       v9 = 0;
-      v10 = (a3->var2 + v8);
+      v10 = (shape->var2 + v8);
       do
       {
         v11 = vdupq_n_s64(v9);
@@ -7217,18 +7217,18 @@ LABEL_44:
   while (v4 != 4);
   v24 = 0;
   v25 = 1.0 / var0;
-  var1 = a4->var1;
-  var3 = a4->var3;
-  v29 = (a3->var2 + 28);
+  var1 = into->var1;
+  var3 = into->var3;
+  v29 = (shape->var2 + 28);
   do
   {
-    a4->var0[v24] = 0.0;
-    v26 = a4->var2;
-    a4->var2[v24] = 0.0;
+    into->var0[v24] = 0.0;
+    v26 = into->var2;
+    into->var2[v24] = 0.0;
     v30 = &var1[v24];
     *v30 = 0.0;
     var3[v24] = 0;
-    if (a3->var0 >= 1)
+    if (shape->var0 >= 1)
     {
       v31 = 0;
       v32 = 0;
@@ -7276,10 +7276,10 @@ LABEL_44:
 LABEL_45:
         v33 = COERCE_DOUBLE(0x400921FB54442D18 - (v24 << 52));
         v37 = vabds_f32(v38, v33) + v37;
-        a4->var0[v24] = v37;
+        into->var0[v24] = v37;
         ++v32;
         v35 += 12;
-        if (v32 >= a3->var0)
+        if (v32 >= shape->var0)
         {
           goto LABEL_50;
         }
@@ -7288,24 +7288,24 @@ LABEL_45:
 
     v37 = 0.0;
 LABEL_50:
-    a4->var0[v24++] = v25 * v37;
+    into->var0[v24++] = v25 * v37;
     ++v29;
   }
 
   while (v24 != 4);
 }
 
-- (int)updatedCheckpoint:(CGPoint *)a3 withCheckpoint:(CGPoint)a4 checkpointIndex:(int)a5 angle:(float)a6 width:(int)a7 height:(int)a8 inChannel:(id *)a9 threadIndex:(int)a10 returningEdgeWidth:(float *)a11
+- (int)updatedCheckpoint:(CGPoint *)checkpoint withCheckpoint:(CGPoint)withCheckpoint checkpointIndex:(int)index angle:(float)angle width:(int)width height:(int)height inChannel:(id *)channel threadIndex:(int)self0 returningEdgeWidth:(float *)self1
 {
-  y = a4.y;
-  x = a4.x;
+  y = withCheckpoint.y;
+  x = withCheckpoint.x;
   v144[4] = *MEMORY[0x1E69E9840];
   memset(v144, 0, 30);
   v140 = 0;
   memset(v139, 0, sizeof(v139));
   if (self->inspector)
   {
-    v18 = [(RedEyeInspector3 *)self->inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&a10];
+    v18 = [(RedEyeInspector3 *)self->inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&threadIndex];
   }
 
   else
@@ -7313,14 +7313,14 @@ LABEL_50:
     v18 = 0;
   }
 
-  var0 = a9->var0;
-  var3 = a9->var3;
-  var6 = a9->var6;
-  v23 = __sincos_stret(a6);
+  var0 = channel->var0;
+  var3 = channel->var3;
+  var6 = channel->var6;
+  v23 = __sincos_stret(angle);
   cosval = v23.__cosval;
   sinval = v23.__sinval;
-  v26 = vcvts_n_f32_s32(a7, 1uLL);
-  v27 = vcvts_n_f32_s32(a8, 1uLL);
+  v26 = vcvts_n_f32_s32(width, 1uLL);
+  v27 = vcvts_n_f32_s32(height, 1uLL);
   v28 = (v26 * cosval);
   v29 = (v27 * sinval);
   v30 = x + v28 + v29;
@@ -7433,7 +7433,7 @@ LABEL_50:
     v49 = v47;
   }
 
-  var1 = a9->var1;
+  var1 = channel->var1;
   if (var1 >= SHIDWORD(v49))
   {
     v51 = v49;
@@ -7444,14 +7444,14 @@ LABEL_50:
     v51 = v49 | (var1 << 32);
   }
 
-  if (a9->var2 >= SHIDWORD(BitmapRect))
+  if (channel->var2 >= SHIDWORD(BitmapRect))
   {
     var2 = HIDWORD(BitmapRect);
   }
 
   else
   {
-    var2 = a9->var2;
+    var2 = channel->var2;
   }
 
   result = lineEquationThroughTwoPoints(&v135, v30, v33, v34, v35);
@@ -7485,10 +7485,10 @@ LABEL_50:
   }
 
   v54 = v48 & ~(v48 >> 31);
-  if (a8 >= 1)
+  if (height >= 1)
   {
-    bzero(v141, 4 * a8);
-    bzero(v143, 4 * a8);
+    bzero(v141, 4 * height);
+    bzero(v143, 4 * height);
   }
 
   if (v54 < var2)
@@ -7517,7 +7517,7 @@ LABEL_50:
             if (v67 > 0.0 && (v61 + ((*(&v60 + 1) * v54) + (*&v60 * v66))) > 0.0 && (v63 + ((*(&v62 + 1) * v54) + (*&v62 * v66))) > 0.0)
             {
               v68 = vcvtms_s32_f32(v67);
-              if ((v68 & 0x80000000) == 0 && v68 < a8)
+              if ((v68 & 0x80000000) == 0 && v68 < height)
               {
                 v69 = v56[v64];
                 ++v141[v68];
@@ -7540,7 +7540,7 @@ LABEL_50:
     while (v54 != var2);
   }
 
-  if (a8 < 1)
+  if (height < 1)
   {
     return 58;
   }
@@ -7548,25 +7548,25 @@ LABEL_50:
   v70 = v139;
   v71 = v141;
   v72 = v143;
-  v73 = a8;
+  heightCopy = height;
   do
   {
     v74 = *v72++;
     v75 = v74;
     v76 = *v71++;
     *v70++ = v75 / v76;
-    --v73;
+    --heightCopy;
   }
 
-  while (v73);
+  while (heightCopy);
   LOBYTE(v144[0]) = 0;
-  if (a8 != 1)
+  if (height != 1)
   {
     v77 = &v142;
     v78 = &v139[1];
     v79 = &v138;
     v80 = v144 + 1;
-    v81 = a8 - 1;
+    v81 = height - 1;
     do
     {
       if (*(v77 - 1) && *v77)
@@ -7605,7 +7605,7 @@ LABEL_50:
     ++v82;
   }
 
-  while (a8 != v82);
+  while (height != v82);
   if (v84 == 0.0)
   {
     return 58;
@@ -7624,15 +7624,15 @@ LABEL_50:
     ++v86;
   }
 
-  while (a8 != v86);
+  while (height != v86);
   v89 = sqrtf(v87 / v84);
-  *a11 = v89;
+  *edgeWidth = v89;
   v90 = -1.0;
   v91 = 0.0;
   v92 = v139;
   v93 = v144;
   v94 = 256.0;
-  v95 = a8;
+  heightCopy2 = height;
   do
   {
     v96 = *v93++;
@@ -7653,10 +7653,10 @@ LABEL_50:
     }
 
     ++v92;
-    --v95;
+    --heightCopy2;
   }
 
-  while (v95);
+  while (heightCopy2);
   v98 = 0;
   v99 = 0;
   v100 = v94;
@@ -7664,9 +7664,9 @@ LABEL_50:
   v102 = 0.0;
   v103 = v139;
   v104 = v144;
-  v105 = a8;
+  heightCopy3 = height;
   v106 = 0.0;
-  v107 = v91 / a8;
+  v107 = v91 / height;
   do
   {
     v108 = *v104++;
@@ -7687,16 +7687,16 @@ LABEL_50:
     }
 
     ++v103;
-    --v105;
+    --heightCopy3;
   }
 
-  while (v105);
+  while (heightCopy3);
   v110 = v106 / v98;
   v111 = v102 / v99;
   if (v18)
   {
     v112 = v89;
-    printf("checkpoint %d bins (min %.2f max %.2f avg %.2f low avg %.2f high avg %.2f)\n", a5, v100, v101, v107, v110, v111);
+    printf("checkpoint %d bins (min %.2f max %.2f avg %.2f low avg %.2f high avg %.2f)\n", index, v100, v101, v107, v110, v111);
     v113 = 0;
     do
     {
@@ -7726,12 +7726,12 @@ LABEL_50:
       ++v113;
     }
 
-    while (v113 != a8);
+    while (v113 != height);
     printf("mean = %.2f SD = %.2f\n", v88, v112);
   }
 
   v116 = -v123;
-  if (a8 == 1)
+  if (height == 1)
   {
     v117 = v125;
     goto LABEL_109;
@@ -7745,7 +7745,7 @@ LABEL_50:
     ++v118;
 LABEL_108:
     v116 = v116 + 1.0;
-    if (v118 == a8 - 1)
+    if (v118 == height - 1)
     {
       goto LABEL_109;
     }
@@ -7761,15 +7761,15 @@ LABEL_108:
   v116 = v116 + ((v119 - v120) / (v121 - v120));
 LABEL_109:
   result = 0;
-  a3->x = v128 + (v116 * v124);
-  a3->y = v117 + (v116 * -v127);
+  checkpoint->x = v128 + (v116 * v124);
+  checkpoint->y = v117 + (v116 * -v127);
   return result;
 }
 
-- (int)newShape:(id *)a3 byInterpolatingBetweenCheckpoints:(id)a4[100] nc:(int)a5 usingVectorField:(id *)a6
+- (int)newShape:(id *)shape byInterpolatingBetweenCheckpoints:(id)checkpoints[100] nc:(int)nc usingVectorField:(id *)field
 {
   v65 = *MEMORY[0x1E69E9840];
-  if (a5 < 1)
+  if (nc < 1)
   {
     v12 = 0;
     v11 = 0;
@@ -7780,22 +7780,22 @@ LABEL_109:
     LODWORD(v11) = 0;
     v12 = 0;
     v13 = 1;
-    v14 = a4;
+    checkpointsCopy = checkpoints;
     do
     {
-      if (v13 >= a5)
+      if (v13 >= nc)
       {
-        v15 = a5;
+        ncCopy = nc;
       }
 
       else
       {
-        v15 = 0;
+        ncCopy = 0;
       }
 
-      v16 = &v14[-v15];
-      v17 = v14->var0.x - v16[1].var0.x;
-      v18 = v14->var0.y - v16[1].var0.y;
+      v16 = &checkpointsCopy[-ncCopy];
+      v17 = checkpointsCopy->var0.x - v16[1].var0.x;
+      v18 = checkpointsCopy->var0.y - v16[1].var0.y;
       v19 = sqrt(((v18 * v18) + (v17 * v17)));
       *&v19 = v19 + v19 + v19 + v19;
       v20 = vcvtps_s32_f32(*&v19);
@@ -7805,11 +7805,11 @@ LABEL_109:
       }
 
       v11 = (v11 + v20);
-      ++v14;
+      ++checkpointsCopy;
       ++v13;
     }
 
-    while (v13 - a5 != 1);
+    while (v13 - nc != 1);
   }
 
   v21 = malloc_type_malloc(16 * v12, 0x1000040451B5BE8uLL);
@@ -7820,44 +7820,44 @@ LABEL_109:
 
   v22 = v21;
   v62 = 0;
-  v23 = [(CIRedEyeRepair3 *)self newShape:&v62];
-  if (v23 || (v23 = [(CIRedEyeRepair3 *)self initShapePoints:v62 withMaxPoints:v11]) != 0)
+  shapeCopy = [(CIRedEyeRepair3 *)self newShape:&v62];
+  if (shapeCopy || (shapeCopy = [(CIRedEyeRepair3 *)self initShapePoints:v62 withMaxPoints:v11]) != 0)
   {
 LABEL_14:
-    v24 = v23;
+    v24 = shapeCopy;
     free(v22);
   }
 
   else
   {
-    if (a5 >= 1)
+    if (nc >= 1)
     {
       v25 = 0;
-      v60 = a3;
+      shapeCopy = shape;
       while (1)
       {
-        v26 = &a4[v25];
+        v26 = &checkpoints[v25];
         x = v26->var0.x;
         y = v26->var0.y;
-        v23 = [(CIRedEyeRepair3 *)self addPoint:v62 toShapePoints:v26->var0.x, y, v60];
-        if (v23)
+        shapeCopy = [(CIRedEyeRepair3 *)self addPoint:v62 toShapePoints:v26->var0.x, y, shapeCopy];
+        if (shapeCopy)
         {
           goto LABEL_14;
         }
 
         v29 = v25 + 1;
-        if (v29 >= a5)
+        if (v29 >= nc)
         {
-          v30 = a5;
+          ncCopy2 = nc;
         }
 
         else
         {
-          v30 = 0;
+          ncCopy2 = 0;
         }
 
         v61 = v29;
-        v31 = &a4[v29 - v30];
+        v31 = &checkpoints[v29 - ncCopy2];
         v33 = v31->var0.x;
         v32 = v31->var0.y;
         v34 = x - v31->var0.x;
@@ -7883,7 +7883,7 @@ LABEL_14:
         {
           v41 = x;
           v42 = y;
-          bilinearFloat4LookupComponents(a6, &v63, v41, v42);
+          bilinearFloat4LookupComponents(field, &v63, v41, v42);
           v43 = 6.28318531 - v64;
           v44 = __sincos_stret(v43);
           x = x + v44.__cosval * 0.5;
@@ -7952,8 +7952,8 @@ LABEL_33:
         }
 
 LABEL_38:
-        a3 = v60;
-        if (v25 == a5)
+        shape = shapeCopy;
+        if (v25 == nc)
         {
           goto LABEL_39;
         }
@@ -7976,21 +7976,21 @@ LABEL_41:
 LABEL_39:
     free(v22);
     v24 = 0;
-    *a3 = v62;
+    *shape = v62;
   }
 
   return v24;
 }
 
-- (int)improvedShape:(id *)a3 withShape:(id *)a4
+- (int)improvedShape:(id *)shape withShape:(id *)withShape
 {
   v72 = *MEMORY[0x1E69E9840];
   v65 = 0;
   inspector = self->inspector;
-  if (inspector && [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:a4->var5])
+  if (inspector && [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:withShape->var5])
   {
     [(RedEyeInspector3 *)self->inspector getIdentifyingString:v67 settings:&self->S];
-    printf("\n%s %3d with %d points\n", v67, a4->var5, a4->var0);
+    printf("\n%s %3d with %d points\n", v67, withShape->var5, withShape->var0);
     v7 = 1;
   }
 
@@ -7999,8 +7999,8 @@ LABEL_39:
     v7 = 0;
   }
 
-  var0 = a4->var0;
-  if (a4->var0 < 1)
+  var0 = withShape->var0;
+  if (withShape->var0 < 1)
   {
     v20 = 0;
     v12 = 0.0;
@@ -8009,7 +8009,7 @@ LABEL_39:
 
   v9 = 0;
   v10 = 0;
-  var2 = a4->var2;
+  var2 = withShape->var2;
   v12 = 0.0;
   do
   {
@@ -8050,7 +8050,7 @@ LABEL_12:
       if (v7)
       {
         printf("  %d\n", v10);
-        var0 = a4->var0;
+        var0 = withShape->var0;
       }
     }
 
@@ -8067,7 +8067,7 @@ LABEL_12:
     v22 = 20;
     do
     {
-      *&v67[v22] = checkpointScore(v21++, v67, v9, a4);
+      *&v67[v22] = checkpointScore(v21++, v67, v9, withShape);
       v22 += 24;
     }
 
@@ -8143,7 +8143,7 @@ LABEL_23:
       v37 = 0;
     }
 
-    *&v69[3 * v25 - 3 + 3 * v37] = checkpointScore(v25 + v37 - 1, v67, v20, a4);
+    *&v69[3 * v25 - 3 + 3 * v37] = checkpointScore(v25 + v37 - 1, v67, v20, withShape);
     if (v25 >= v20)
     {
       v38 = v23 - 1;
@@ -8154,13 +8154,13 @@ LABEL_23:
       v38 = 0;
     }
 
-    *&v69[3 * (v25 - v38)] = checkpointScore(v25 - v38, v67, v20, a4);
+    *&v69[3 * (v25 - v38)] = checkpointScore(v25 - v38, v67, v20, withShape);
   }
 
   if (v7)
   {
     [(RedEyeInspector3 *)self->inspector getIdentifyingString:v66 settings:&self->S];
-    printf("\n%s %3d with %d points and %d checkpoints\n", v66, a4->var5, a4->var0, v20);
+    printf("\n%s %3d with %d points and %d checkpoints\n", v66, withShape->var5, withShape->var0, v20);
     if (v20 >= 1)
     {
       v39 = v68;
@@ -8230,7 +8230,7 @@ LABEL_23:
       v57 = v55;
       bilinearFloat4LookupComponents(&self->PB.G, &v70, v56, v57);
       *&v58 = 6.28318531 - v71;
-      result = [(CIRedEyeRepair3 *)self updatedCheckpoint:i withCheckpoint:v42 checkpointIndex:v49 angle:v51 width:&self->PB.D height:a4->var5 inChannel:v54 threadIndex:v55 returningEdgeWidth:v58, &v64];
+      result = [(CIRedEyeRepair3 *)self updatedCheckpoint:i withCheckpoint:v42 checkpointIndex:v49 angle:v51 width:&self->PB.D height:withShape->var5 inChannel:v54 threadIndex:v55 returningEdgeWidth:v58, &v64];
       if (result)
       {
         break;
@@ -8242,7 +8242,7 @@ LABEL_23:
         if (v7)
         {
           [(RedEyeInspector3 *)self->inspector getIdentifyingString:v66 settings:&self->S];
-          printf("\n%s after update %3d with %d points and %d checkpoints\n", v66, a4->var5, a4->var0, v23);
+          printf("\n%s after update %3d with %d points and %d checkpoints\n", v66, withShape->var5, withShape->var0, v23);
           v59 = v68;
           v60 = v23;
           do
@@ -8256,7 +8256,7 @@ LABEL_23:
           printf("edge width %.2f\n", (v52 / v23));
         }
 
-        var5 = a4->var5;
+        var5 = withShape->var5;
         result = [(CIRedEyeRepair3 *)self newShape:&v65 byInterpolatingBetweenCheckpoints:v67 nc:v23 usingVectorField:&self->PB.G];
         if (!result)
         {
@@ -8265,7 +8265,7 @@ LABEL_23:
           v62 = v65;
           *(v65 + 16) = *&self->S.faceIndex;
           *(v62 + 24) = var5;
-          *a3 = v62;
+          *shape = v62;
         }
 
         return result;
@@ -8276,22 +8276,22 @@ LABEL_23:
   else
   {
     result = 0;
-    *a3 = 0;
+    *shape = 0;
   }
 
   return result;
 }
 
-- (int)shape:(id *)a3 withThreadAtIndex:(int)a4 centroid:(CGPoint)a5
+- (int)shape:(id *)shape withThreadAtIndex:(int)index centroid:(CGPoint)centroid
 {
-  y = a5.y;
-  x = a5.x;
+  y = centroid.y;
+  x = centroid.x;
   p_G = &self->G;
   threads = self->G.threads;
   inspector = self->inspector;
   if (inspector)
   {
-    v13 = [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&a4];
+    v13 = [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&index];
   }
 
   else
@@ -8304,13 +8304,13 @@ LABEL_23:
   result = [(CIRedEyeRepair3 *)self newShape:&v29];
   if (!result)
   {
-    v15 = (threads + 96 * a4);
+    v15 = (threads + 96 * index);
     result = [(CIRedEyeRepair3 *)self initShapePoints:v29 withMaxPoints:v15[2]];
     if (!result)
     {
       v16 = v29;
       *(v29 + 16) = *&self->S.faceIndex;
-      *(v16 + 24) = a4;
+      *(v16 + 24) = index;
       v17 = p_G->points + 96 * *v15;
       v18 = *(v17 + 68);
       if (v18 == -1)
@@ -8369,7 +8369,7 @@ LABEL_10:
                 }
 
                 result = 0;
-                *a3 = v26;
+                *shape = v26;
               }
             }
 
@@ -8412,16 +8412,16 @@ LABEL_10:
   return result;
 }
 
-- (int)closeThreadIndex:(int)a3 usingVectorField:(id *)a4
+- (int)closeThreadIndex:(int)index usingVectorField:(id *)field
 {
   v46[2] = *MEMORY[0x1E69E9840];
   inspector = self->inspector;
-  if (inspector && [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&a3])
+  if (inspector && [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&index])
   {
     putchar(10);
   }
 
-  v10 = (self->G.threads + 96 * a3);
+  v10 = (self->G.threads + 96 * index);
   points = self->G.points;
   v12 = 96 * *v10;
   v13 = (points + 96 * v10[1]);
@@ -8455,7 +8455,7 @@ LABEL_10:
   {
     v27 = v14;
     v28 = v15;
-    bilinearFloat4LookupComponents(a4, v46, v27, v28);
+    bilinearFloat4LookupComponents(field, v46, v27, v28);
     v14 = v14 + v46[0].f32[0] * 0.5;
     v15 = v15 + v46[0].f32[1] * 0.5;
     *(v25 - 1) = v14;
@@ -8518,7 +8518,7 @@ LABEL_20:
 
       v37 = self->G.nPoints - 1;
       v38 = self->G.points;
-      v39 = self->G.threads + 96 * a3;
+      v39 = self->G.threads + 96 * index;
       v40 = *(v39 + 2);
       v41 = *(v39 + 1);
       *(v38 + 24 * v41 + 17) = v37;
@@ -8542,18 +8542,18 @@ LABEL_20:
   return v43;
 }
 
-- (int)attemptClosureOfThreadIndex:(int)a3
+- (int)attemptClosureOfThreadIndex:(int)index
 {
   p_G = &self->G;
-  v4 = (self->G.threads + 96 * a3);
+  v4 = (self->G.threads + 96 * index);
   if (*(v4 + 24) != 1)
   {
     return 22;
   }
 
-  v5 = *&a3;
+  v5 = *&index;
   inspector = self->inspector;
-  if (inspector && [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&a3])
+  if (inspector && [(RedEyeInspector3 *)inspector debuggingThisFaceAndEye:&self->S andThreadIndex:*&index])
   {
     [(CIRedEyeRepair3 *)self printThreadWithIndex:v5];
     putchar(10);
@@ -8788,10 +8788,10 @@ LABEL_50:
   return result;
 }
 
-- (CGPoint)threadCentroid:(id *)a3
+- (CGPoint)threadCentroid:(id *)centroid
 {
   points = self->G.points;
-  v4 = points + 96 * a3->var0;
+  v4 = points + 96 * centroid->var0;
   v5 = vcvt_f32_f64(*v4);
   v6 = *(v4 + 17);
   if (v6 == -1)
@@ -8821,15 +8821,15 @@ LABEL_50:
   return result;
 }
 
-- (float)threadSignedArea:(id *)a3 centroid:(CGPoint)a4
+- (float)threadSignedArea:(id *)area centroid:(CGPoint)centroid
 {
   points = self->G.points;
-  v5 = points + 96 * a3->var0;
+  v5 = points + 96 * area->var0;
   v6 = *(v5 + 17);
   v7 = *(v5 + 1);
   if (v6 == -1)
   {
-    v16 = v7 - a4.y;
+    v16 = v7 - centroid.y;
     v8 = 0.0;
     v15 = v16;
     v10 = *v5;
@@ -8844,18 +8844,18 @@ LABEL_50:
     {
       v11 = v10;
       v12 = (points + 96 * v6);
-      v13 = v9 - a4.y;
+      v13 = v9 - centroid.y;
       v10 = *v12;
       v9 = v12[1];
       v14 = *v12 - v11;
-      v15 = v9 - a4.y;
-      *&v13 = (v13 + v9 - a4.y) * 0.5;
+      v15 = v9 - centroid.y;
+      *&v13 = (v13 + v9 - centroid.y) * 0.5;
       v8 = v8 + (v14 * *&v13);
       v6 = *(v12 + 17);
     }
 
     while (v6 != -1);
-    v16 = v7 - a4.y;
+    v16 = v7 - centroid.y;
   }
 
   v17 = *v5 - v10;
@@ -8863,7 +8863,7 @@ LABEL_50:
   return v8 + (v17 * v18);
 }
 
-- (int)color:(id *)a3 underConvexHull:(id *)a4 saturated:(id *)a5
+- (int)color:(id *)color underConvexHull:(id *)hull saturated:(id *)saturated
 {
   v43 = 0;
   v41 = 0u;
@@ -8877,7 +8877,7 @@ LABEL_50:
     return 51;
   }
 
-  result = [(CIRedEyeRepair3 *)self renderHull:a4 toBitmap:&v41];
+  result = [(CIRedEyeRepair3 *)self renderHull:hull toBitmap:&v41];
   if (!result)
   {
     if (height)
@@ -8970,22 +8970,22 @@ LABEL_50:
     v40 = v17 / v22;
     termBitmap(&v41);
     result = 0;
-    a5->var0 = v38;
-    a5->var1 = v39;
-    a5->var2 = v40;
-    a5->var3 = 0.0;
-    a3->var0 = v34;
-    a3->var1 = v35;
-    a3->var2 = v36;
-    a3->var3 = v37;
+    saturated->var0 = v38;
+    saturated->var1 = v39;
+    saturated->var2 = v40;
+    saturated->var3 = 0.0;
+    color->var0 = v34;
+    color->var1 = v35;
+    color->var2 = v36;
+    color->var3 = v37;
   }
 
   return result;
 }
 
-+ (void)insertIntoThreadHopper:(id *)a3 index:(int)a4 recChannel:(float)a5 hue:(float)a6 saturation:(float)a7 luminance:(float)a8 shapeMetricTotal:(float)a9 xPosition:(float)a10
++ (void)insertIntoThreadHopper:(id *)hopper index:(int)index recChannel:(float)channel hue:(float)hue saturation:(float)saturation luminance:(float)luminance shapeMetricTotal:(float)total xPosition:(float)self0
 {
-  var0 = a3->var0;
+  var0 = hopper->var0;
   if (var0 < 1)
   {
     LODWORD(v11) = 0;
@@ -9003,7 +9003,7 @@ LABEL_16:
     if (v15 >= v11)
     {
       v16 = v15 + 1;
-      v17 = &a3->var1[v15 + 1];
+      v17 = &hopper->var1[v15 + 1];
       do
       {
         *&v17->var0 = *&v17[-1].var0;
@@ -9013,17 +9013,17 @@ LABEL_16:
       }
 
       while (v16 > v11);
-      LODWORD(var0) = a3->var0;
+      LODWORD(var0) = hopper->var0;
     }
 
-    v18 = &a3->var1[v11];
-    v18->var0 = a4;
-    v18->var1 = a5;
-    v18->var2 = a6;
-    v18->var3 = a7;
-    v18->var4 = a8;
-    v18->var5 = a9;
-    v18->var6 = a10;
+    v18 = &hopper->var1[v11];
+    v18->var0 = index;
+    v18->var1 = channel;
+    v18->var2 = hue;
+    v18->var3 = saturation;
+    v18->var4 = luminance;
+    v18->var5 = total;
+    v18->var6 = position;
     if (var0 < 20)
     {
       v19 = var0 + 1;
@@ -9034,16 +9034,16 @@ LABEL_16:
       v19 = 20;
     }
 
-    a3->var0 = v19;
+    hopper->var0 = v19;
     return;
   }
 
   v11 = 0;
-  p_var5 = &a3->var1[0].var5;
+  p_var5 = &hopper->var1[0].var5;
   while (1)
   {
-    v13 = *(p_var5 - 4) < a5;
-    if (*(p_var5 - 4) >= a5)
+    v13 = *(p_var5 - 4) < channel;
+    if (*(p_var5 - 4) >= channel)
     {
       v14 = 1;
     }
@@ -9053,12 +9053,12 @@ LABEL_16:
       v14 = 2;
     }
 
-    if (*(p_var5 - 2) < a7)
+    if (*(p_var5 - 2) < saturation)
     {
       v13 = v14;
     }
 
-    if (*p_var5 > a9)
+    if (*p_var5 > total)
     {
       ++v13;
     }
@@ -9072,7 +9072,7 @@ LABEL_16:
     p_var5 += 7;
     if (var0 == v11)
     {
-      LODWORD(v11) = a3->var0;
+      LODWORD(v11) = hopper->var0;
       break;
     }
   }
@@ -9083,16 +9083,16 @@ LABEL_16:
   }
 }
 
-- (void)swapHopperElement:(id *)a3 withElement:(id *)a4
+- (void)swapHopperElement:(id *)element withElement:(id *)withElement
 {
   v7 = *MEMORY[0x1E69E9840];
-  *&v5[12] = *&a3->var3;
-  *v5 = *&a3->var0;
-  v4 = *&a4->var3;
-  *&a3->var0 = *&a4->var0;
-  *&a3->var3 = v4;
-  *&a4->var0 = *v5;
-  *&a4->var3 = *&v5[12];
+  *&v5[12] = *&element->var3;
+  *v5 = *&element->var0;
+  v4 = *&withElement->var3;
+  *&element->var0 = *&withElement->var0;
+  *&element->var3 = v4;
+  *&withElement->var0 = *v5;
+  *&withElement->var3 = *&v5[12];
   if (self->inspector)
   {
     [(RedEyeInspector3 *)self->inspector getIdentifyingString:v6 settings:&self->S];
@@ -9100,7 +9100,7 @@ LABEL_16:
   }
 }
 
-- (int)recognizeThreadsWinningThreadIndex:(int *)a3 info:(id *)a4
+- (int)recognizeThreadsWinningThreadIndex:(int *)index info:(id *)info
 {
   v90 = 0;
   p_G = &self->G;
@@ -9396,10 +9396,10 @@ LABEL_80:
             while (v77 != v76);
 LABEL_86:
             v11 = 0;
-            *a3 = v91[0];
+            *index = v91[0];
             *&v78.var0 = __PAIR64__(v91[2], v91[6]);
             *&v78.var2 = *&v91[3];
-            *a4 = v78;
+            *info = v78;
             return v11;
           }
 
@@ -9435,11 +9435,11 @@ LABEL_85:
   return 25;
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)RGBtoHSV:(id)a3
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)RGBtoHSV:(id)v
 {
-  var2 = a3.var2;
-  v4 = fmaxf(a3.var0, fmaxf(a3.var1, a3.var2));
-  v5 = fminf(a3.var0, fminf(a3.var1, a3.var2));
+  var2 = v.var2;
+  v4 = fmaxf(v.var0, fmaxf(v.var1, v.var2));
+  v5 = fminf(v.var0, fminf(v.var1, v.var2));
   v6 = v4 - v5;
   v7 = 0.0;
   if ((v4 - v5) == 0.0)
@@ -9462,17 +9462,17 @@ LABEL_85:
   }
 
   v13 = 1.0 / (v9 * 6.0);
-  if (a3.var0 == v4)
+  if (v.var0 == v4)
   {
-    v14 = ((a3.var1 - var2) * v13);
+    v14 = ((v.var1 - var2) * v13);
     v15 = 0.333333333;
   }
 
   else
   {
-    if (a3.var1 != v4)
+    if (v.var1 != v4)
     {
-      v16 = (a3.var0 - a3.var1) * v13;
+      v16 = (v.var0 - v.var1) * v13;
       if (var2 != v4)
       {
         v16 = 0.0;
@@ -9481,7 +9481,7 @@ LABEL_85:
       goto LABEL_11;
     }
 
-    v14 = ((var2 - a3.var0) * v13);
+    v14 = ((var2 - v.var0) * v13);
     v15 = 0.666666667;
   }
 
@@ -9523,7 +9523,7 @@ LABEL_18:
   return result;
 }
 
-- (int)prominenceConvexHull:(id *)a3 facts:(id *)a4
+- (int)prominenceConvexHull:(id *)hull facts:(id *)facts
 {
   v110 = *MEMORY[0x1E69E9840];
   v106 = 0;
@@ -9558,11 +9558,11 @@ LABEL_18:
     return 18;
   }
 
-  v92 = a4;
+  factsCopy = facts;
   v93 = p_PB;
   v94 = v11;
   v95 = v12;
-  v91 = a3;
+  hullCopy = hull;
   v14 = width;
   if (height >= 1)
   {
@@ -9676,7 +9676,7 @@ LABEL_36:
     }
   }
 
-  v32 = [(CIRedEyeRepair3 *)self findThreadsInGrid];
+  findThreadsInGrid = [(CIRedEyeRepair3 *)self findThreadsInGrid];
   v33 = self->inspector;
   if (v33 && [(RedEyeInspector3 *)v33 BOOLOptionIsOn:3]&& [(RedEyeInspector3 *)self->inspector BOOLOptionIsOn:5])
   {
@@ -9718,12 +9718,12 @@ LABEL_36:
     v28 = v95;
   }
 
-  if (v32)
+  if (findThreadsInGrid)
   {
-    return v32;
+    return findThreadsInGrid;
   }
 
-  v32 = [(CIRedEyeRepair3 *)self connectThreadsInGrid];
+  findThreadsInGrid = [(CIRedEyeRepair3 *)self connectThreadsInGrid];
   v40 = self->inspector;
   if (v40 && [(RedEyeInspector3 *)v40 BOOLOptionIsOn:3]&& [(RedEyeInspector3 *)self->inspector BOOLOptionIsOn:5])
   {
@@ -9764,22 +9764,22 @@ LABEL_36:
     v28 = v95;
   }
 
-  if (v32)
+  if (findThreadsInGrid)
   {
-    return v32;
+    return findThreadsInGrid;
   }
 
   v102 = 0uLL;
-  v32 = [(CIRedEyeRepair3 *)self recognizeThreadsWinningThreadIndex:&v106 info:&v102];
+  findThreadsInGrid = [(CIRedEyeRepair3 *)self recognizeThreadsWinningThreadIndex:&v106 info:&v102];
   v51 = self->inspector;
   v52 = v94;
   if (v51)
   {
     [(RedEyeInspector3 *)v51 setDebugFaceIndex:self->S.faceIndex side:self->S.side];
-    v53 = [(RedEyeInspector3 *)self->inspector newSavedGradientList];
-    if (v53)
+    newSavedGradientList = [(RedEyeInspector3 *)self->inspector newSavedGradientList];
+    if (newSavedGradientList)
     {
-      v54 = v53;
+      v54 = newSavedGradientList;
       v55 = self->inspector;
       v56 = *&v93->Tp.c;
       v107 = *&v93->Tp.a;
@@ -9788,13 +9788,13 @@ LABEL_36:
       [(RedEyeInspector3 *)v55 copyGradients:v103 into:v54 bitmap:&v93->G transform:&v107];
     }
 
-    v57 = [(RedEyeInspector3 *)self->inspector newSavedGrid];
+    newSavedGrid = [(RedEyeInspector3 *)self->inspector newSavedGrid];
     v58 = v93->height;
     v59 = *&v93->Tp.c;
     v107 = *&v93->Tp.a;
     v108 = v59;
     v109 = *&v93->Tp.tx;
-    [(CIRedEyeRepair3 *)self copyGridInto:v57 transform:&v107 height:v58];
+    [(CIRedEyeRepair3 *)self copyGridInto:newSavedGrid transform:&v107 height:v58];
     [(RedEyeInspector3 *)self->inspector termGradients:v103];
     v60 = self->inspector;
     if (v60 && [(RedEyeInspector3 *)v60 BOOLOptionIsOn:3]&& [(RedEyeInspector3 *)self->inspector BOOLOptionIsOn:5])
@@ -9838,9 +9838,9 @@ LABEL_36:
     }
   }
 
-  if (v32)
+  if (findThreadsInGrid)
   {
-    return v32;
+    return findThreadsInGrid;
   }
 
   v101 = 0;
@@ -9870,13 +9870,13 @@ LABEL_36:
   LODWORD(v49) = *(v67 + 60);
   LODWORD(v50) = *(v67 + 64);
   [(CIRedEyeRepair3 *)self RGBtoHSV:v47, v48, v49, v50];
-  v92->var0 = *(v67 + 52);
-  *&v92->var1 = vuzp1q_s32(*(v67 + 36), vrev64q_s32(*(v67 + 36)));
+  factsCopy->var0 = *(v67 + 52);
+  *&factsCopy->var1 = vuzp1q_s32(*(v67 + 36), vrev64q_s32(*(v67 + 36)));
   LODWORD(v79) = *(v67 + 84);
   DWORD1(v79) = v102;
   *(&v79 + 1) = *(&v102 + 4);
-  *&v92->var5 = v79;
-  v92->var9 = *(&v102 + 3);
+  *&factsCopy->var5 = v79;
+  factsCopy->var9 = *(&v102 + 3);
   nShapes = p_G->nShapes;
   if (nShapes < 1)
   {
@@ -9908,7 +9908,7 @@ LABEL_88:
 LABEL_84:
   v83 = [(CIRedEyeRepair3 *)self convexHull:&v101 ofOriented:0 threadIndex:v106];
 LABEL_89:
-  v32 = v83;
+  findThreadsInGrid = v83;
   if (!v83)
   {
     v85 = self->inspector;
@@ -9954,36 +9954,36 @@ LABEL_89:
     }
 
     [(CIRedEyeRepair3 *)self termGrid];
-    v32 = 0;
-    *v91 = v101;
+    findThreadsInGrid = 0;
+    *hullCopy = v101;
   }
 
-  return v32;
+  return findThreadsInGrid;
 }
 
-- (int)prepareTransformWithEyeIndex:(int)a3
+- (int)prepareTransformWithEyeIndex:(int)index
 {
   p_FC = &self->FC;
   v5 = 64;
-  if (!a3)
+  if (!index)
   {
     v5 = 48;
   }
 
   v6 = 68;
-  if (!a3)
+  if (!index)
   {
     v6 = 52;
   }
 
   v7 = 72;
-  if (!a3)
+  if (!index)
   {
     v7 = 56;
   }
 
   v8 = 76;
-  if (!a3)
+  if (!index)
   {
     v8 = 60;
   }
@@ -10075,10 +10075,10 @@ LABEL_13:
   return 17;
 }
 
-- (int)renderEyePolygonToBitmap:(id *)a3
+- (int)renderEyePolygonToBitmap:(id *)bitmap
 {
-  var1 = a3->var1;
-  var2 = a3->var2;
+  var1 = bitmap->var1;
+  var2 = bitmap->var2;
   DeviceGray = CGColorSpaceCreateDeviceGray();
   if (!DeviceGray)
   {
@@ -10086,7 +10086,7 @@ LABEL_13:
   }
 
   v8 = DeviceGray;
-  v9 = CGBitmapContextCreate(a3->var0, var1, var2, 8uLL, a3->var4, DeviceGray, 0);
+  v9 = CGBitmapContextCreate(bitmap->var0, var1, var2, 8uLL, bitmap->var4, DeviceGray, 0);
   CGColorSpaceRelease(v8);
   if (!v9)
   {
@@ -10157,7 +10157,7 @@ LABEL_13:
   return 0;
 }
 
-- (int)prepareBitmapsWithString:(char *)a3
+- (int)prepareBitmapsWithString:(char *)string
 {
   v57[1] = *MEMORY[0x1E69E9840];
   v47 = 0;
@@ -10200,7 +10200,7 @@ LABEL_13:
   inspector = self->inspector;
   if (inspector && [(RedEyeInspector3 *)inspector BOOLOptionIsOn:4])
   {
-    [(RedEyeInspector3 *)self->inspector saveBitmap:&self->PB.O format:266 faceIndex:self->S.faceIndex side:self->S.side name:"1-ORIG" which:a3];
+    [(RedEyeInspector3 *)self->inspector saveBitmap:&self->PB.O format:266 faceIndex:self->S.faceIndex side:self->S.side name:"1-ORIG" which:string];
   }
 
   gradientChannel = self->S.gradientChannel;
@@ -10224,7 +10224,7 @@ LABEL_13:
       if (v45)
       {
         [(CIContext *)v11 render:v37 toBitmap:v45 rowBytes:SDWORD1(v46) bounds:266 format:0 colorSpace:0.0, 0.0, p_PB->width, self->PB.height];
-        [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"2-REC" which:a3];
+        [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"2-REC" which:string];
         termBitmap(&v45);
       }
     }
@@ -10243,7 +10243,7 @@ LABEL_13:
       if (v45)
       {
         [(CIContext *)v11 render:v21 toBitmap:v45 rowBytes:SDWORD1(v46) bounds:266 format:0 colorSpace:0.0, 0.0, p_PB->width, self->PB.height];
-        [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"3-MIN" which:a3];
+        [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"3-MIN" which:string];
         termBitmap(&v45);
       }
     }
@@ -10262,7 +10262,7 @@ LABEL_13:
       if (v45)
       {
         [(CIContext *)v11 render:v24 toBitmap:v45 rowBytes:SDWORD1(v46) bounds:266 format:0 colorSpace:0.0, 0.0, p_PB->width, self->PB.height];
-        [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"4-MAX" which:a3];
+        [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"4-MAX" which:string];
         termBitmap(&v45);
       }
     }
@@ -10297,7 +10297,7 @@ LABEL_13:
   v28 = self->inspector;
   if (v28 && [(RedEyeInspector3 *)v28 BOOLOptionIsOn:4])
   {
-    [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"5-DIFF" which:a3];
+    [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"5-DIFF" which:string];
   }
 
   termBitmap(&v45);
@@ -10352,7 +10352,7 @@ LABEL_63:
       if (*&v38[0])
       {
         [(CIRedEyeRepair3 *)self magnitudeMap:v38 fromGabor:&self->PB.G];
-        [(RedEyeInspector3 *)self->inspector saveBitmap:v38 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"6-MAG" which:a3];
+        [(RedEyeInspector3 *)self->inspector saveBitmap:v38 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"6-MAG" which:string];
         termBitmap(v38);
       }
     }
@@ -10396,7 +10396,7 @@ LABEL_42:
     v35 = self->inspector;
     if (v35 && [(RedEyeInspector3 *)v35 BOOLOptionIsOn:4])
     {
-      [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"7-SHIN" which:a3];
+      [(RedEyeInspector3 *)self->inspector saveBitmap:&v45 format:266 faceIndex:self->S.faceIndex side:self->S.side name:"7-SHIN" which:string];
     }
 
     termBitmap(&v45);
@@ -10455,107 +10455,107 @@ LABEL_68:
   return result;
 }
 
-- (int)prepareMasksWithConvexHull:(id *)a3
+- (int)prepareMasksWithConvexHull:(id *)hull
 {
-  v4 = self;
+  selfCopy = self;
   v210 = *MEMORY[0x1E69E9840];
   inspector = self->inspector;
   if (inspector)
   {
     if ([(RedEyeInspector3 *)inspector BOOLOptionIsOn:0])
     {
-      [(RedEyeInspector3 *)v4->inspector saveBitmap:&v4->PB.O format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"1-ORIG" which:"M"];
+      [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&selfCopy->PB.O format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"1-ORIG" which:"M"];
     }
 
-    v6 = v4->inspector;
+    v6 = selfCopy->inspector;
     if (v6)
     {
       if ([(RedEyeInspector3 *)v6 BOOLOptionIsOn:1])
       {
-        [(RedEyeInspector3 *)v4->inspector saveBitmap:&v4->PB.D format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"2-DIFF" which:"M"];
+        [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&selfCopy->PB.D format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"2-DIFF" which:"M"];
       }
 
-      v7 = v4->inspector;
+      v7 = selfCopy->inspector;
       if (v7)
       {
         if ([(RedEyeInspector3 *)v7 BOOLOptionIsOn:1])
         {
-          [(RedEyeInspector3 *)v4->inspector saveBitmap:&v4->PB.S format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"A-OSHN" which:"M"];
+          [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&selfCopy->PB.S format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"A-OSHN" which:"M"];
         }
 
-        v8 = v4->inspector;
+        v8 = selfCopy->inspector;
         if (v8 && [(RedEyeInspector3 *)v8 BOOLOptionIsOn:1])
         {
-          [(RedEyeInspector3 *)v4->inspector saveBitmap:&v4->PB.EP format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"B-POLY" which:"M"];
+          [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&selfCopy->PB.EP format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"B-POLY" which:"M"];
         }
       }
     }
   }
 
-  p_PB = &v4->PB;
-  initBitmap(&v4->PB.M, v4->PB.width, v4->PB.height, 1, 1, 100.0);
-  if (!v4->PB.M.baseAddress)
+  p_PB = &selfCopy->PB;
+  initBitmap(&selfCopy->PB.M, selfCopy->PB.width, selfCopy->PB.height, 1, 1, 100.0);
+  if (!selfCopy->PB.M.baseAddress)
   {
     return 6;
   }
 
-  v10 = [(CIRedEyeRepair3 *)v4 analyzeMask:&v4->PB.D usingConvexHull:a3 producingOptimizedMask:&v4->PB.M];
+  v10 = [(CIRedEyeRepair3 *)selfCopy analyzeMask:&selfCopy->PB.D usingConvexHull:hull producingOptimizedMask:&selfCopy->PB.M];
   if (v10)
   {
     return v10;
   }
 
-  v11 = v4->inspector;
+  v11 = selfCopy->inspector;
   if (v11 && [(RedEyeInspector3 *)v11 BOOLOptionIsOn:1])
   {
-    [(RedEyeInspector3 *)v4->inspector saveBitmap:&v4->PB.M format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"3-OPTI" which:"M"];
+    [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&selfCopy->PB.M format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"3-OPTI" which:"M"];
   }
 
   v206 = 0;
   v207 = 0;
   v204 = 0u;
   v205 = 0u;
-  v10 = [(CIRedEyeRepair3 *)v4 widenedHull:&v207 withHull:a3 by:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
+  v10 = [(CIRedEyeRepair3 *)selfCopy widenedHull:&v207 withHull:hull by:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
   if (v10)
   {
     return v10;
   }
 
-  initBitmap(&v204, v4->PB.width, v4->PB.height, 1, 1, 100.0);
+  initBitmap(&v204, selfCopy->PB.width, selfCopy->PB.height, 1, 1, 100.0);
   if (!v204)
   {
-    [(CIRedEyeRepair3 *)v4 termHull:v207];
+    [(CIRedEyeRepair3 *)selfCopy termHull:v207];
     return 7;
   }
 
   LODWORD(v14) = 2.0;
-  v15 = [(CIRedEyeRepair3 *)v4 renderConvexHull:v207 distance:&v204 fieldToBitmap:v14];
+  v15 = [(CIRedEyeRepair3 *)selfCopy renderConvexHull:v207 distance:&v204 fieldToBitmap:v14];
   if (v15)
   {
     v12 = v15;
-    [(CIRedEyeRepair3 *)v4 termHull:v207];
+    [(CIRedEyeRepair3 *)selfCopy termHull:v207];
     termBitmap(&v204);
     return v12;
   }
 
-  v16 = v4->inspector;
+  v16 = selfCopy->inspector;
   if (v16 && [(RedEyeInspector3 *)v16 BOOLOptionIsOn:1])
   {
-    [(RedEyeInspector3 *)v4->inspector saveBitmap:&v204 format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"4-DIST" which:"M"];
+    [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&v204 format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"4-DIST" which:"M"];
   }
 
-  [(CIRedEyeRepair3 *)v4 termHull:v207];
-  if ((applyMaxFilter8(&v4->PB.M.baseAddress, 3) & 1) == 0)
+  [(CIRedEyeRepair3 *)selfCopy termHull:v207];
+  if ((applyMaxFilter8(&selfCopy->PB.M.baseAddress, 3) & 1) == 0)
   {
     termBitmap(&v204);
     return 0;
   }
 
-  baseAddress = v4->PB.S.baseAddress;
-  rowSamples = v4->PB.S.rowSamples;
-  samplesPerPixel = v4->PB.S.samplesPerPixel;
+  baseAddress = selfCopy->PB.S.baseAddress;
+  rowSamples = selfCopy->PB.S.rowSamples;
+  samplesPerPixel = selfCopy->PB.S.samplesPerPixel;
   width = p_PB->width;
-  height = v4->PB.height;
+  height = selfCopy->PB.height;
   if (height < 1)
   {
     v40 = 0.0;
@@ -10572,10 +10572,10 @@ LABEL_68:
     v25 = SHIDWORD(v205);
     v26 = v205;
     v27 = v204;
-    v28 = v4->PB.M.samplesPerPixel;
-    v29 = v4->PB.M.rowSamples;
-    v30 = v4->PB.S.baseAddress;
-    v31 = v4->PB.M.baseAddress;
+    v28 = selfCopy->PB.M.samplesPerPixel;
+    v29 = selfCopy->PB.M.rowSamples;
+    v30 = selfCopy->PB.S.baseAddress;
+    v31 = selfCopy->PB.M.baseAddress;
     do
     {
       if (width >= 1)
@@ -10621,10 +10621,10 @@ LABEL_68:
   }
 
   termBitmap(&v204);
-  v45 = v4->inspector;
+  v45 = selfCopy->inspector;
   if (v45)
   {
-    v182 = [(RedEyeInspector3 *)v45 debuggingThisFaceAndEye:&v4->S];
+    v182 = [(RedEyeInspector3 *)v45 debuggingThisFaceAndEye:&selfCopy->S];
   }
 
   else
@@ -10632,39 +10632,39 @@ LABEL_68:
     v182 = 0;
   }
 
-  p_S = &v4->S;
+  p_S = &selfCopy->S;
   v46 = 32;
-  if (!v4->S.side)
+  if (!selfCopy->S.side)
   {
     v46 = 16;
   }
 
   v47 = 40;
-  if (!v4->S.side)
+  if (!selfCopy->S.side)
   {
     v47 = 24;
   }
 
   v48 = 64;
-  if (!v4->S.side)
+  if (!selfCopy->S.side)
   {
     v48 = 48;
   }
 
   v49 = 56;
-  if (v4->S.side)
+  if (selfCopy->S.side)
   {
     v49 = 72;
   }
 
   v50 = 96;
-  if (!v4->S.side)
+  if (!selfCopy->S.side)
   {
     v50 = 80;
   }
 
-  p_FC = &v4->FC;
-  v186 = &v4->PB;
+  p_FC = &selfCopy->FC;
+  v186 = &selfCopy->PB;
   if (height >= 1)
   {
     v51 = 0;
@@ -10719,7 +10719,7 @@ LABEL_68:
     }
 
     while (v51 != height);
-    p_PB = &v4->PB;
+    p_PB = &selfCopy->PB;
     if (v58 > 0.0)
     {
       v200 = v52;
@@ -10735,7 +10735,7 @@ LABEL_68:
         {
           sinval = v69.__sinval;
           cosval = v69.__cosval;
-          v67[i] = bilinearLookup(&v4->PB.S, v65 + (i * cosval), v68 + (i * sinval));
+          v67[i] = bilinearLookup(&selfCopy->PB.S, v65 + (i * cosval), v68 + (i * sinval));
         }
 
         ++v64;
@@ -10746,7 +10746,7 @@ LABEL_68:
       while (v64 != 8);
       if (v182)
       {
-        [(RedEyeInspector3 *)v4->inspector getIdentifyingString:v208 settings:p_S];
+        [(RedEyeInspector3 *)selfCopy->inspector getIdentifyingString:v208 settings:p_S];
         printf("%s glint neighborhood\n", v208);
         v74 = 0;
         v75 = v209;
@@ -10809,8 +10809,8 @@ LABEL_68:
         }
 
         putchar(10);
-        p_IOD = &v4->S.IOD;
-        v87 = v4->S.IOD * 0.025;
+        p_IOD = &selfCopy->S.IOD;
+        v87 = selfCopy->S.IOD * 0.025;
         v88 = v80 / v78;
         printf("intensity %5.1f diameter %4.1f falloff %.3f\n", v78, v87, v88);
         putchar(10);
@@ -10820,8 +10820,8 @@ LABEL_68:
       else
       {
         v88 = v80 / v78;
-        p_IOD = &v4->S.IOD;
-        v87 = v4->S.IOD * 0.025;
+        p_IOD = &selfCopy->S.IOD;
+        v87 = selfCopy->S.IOD * 0.025;
       }
 
       if (v78 < 121.0 || v88 > 0.28)
@@ -10832,8 +10832,8 @@ LABEL_68:
         v97 = *p_IOD;
         if (v97 * 0.025 <= v96)
         {
-          p_PB = &v4->PB;
-          bzero(baseAddress, v4->PB.S.size);
+          p_PB = &selfCopy->PB;
+          bzero(baseAddress, selfCopy->PB.S.size);
         }
 
         else
@@ -10848,7 +10848,7 @@ LABEL_68:
           }
 
           LODWORD(v44) = 0.5;
-          p_PB = &v4->PB;
+          p_PB = &selfCopy->PB;
           do
           {
             if (width >= 1)
@@ -10902,7 +10902,7 @@ LABEL_68:
         }
 
         LODWORD(v44) = 0.5;
-        p_PB = &v4->PB;
+        p_PB = &selfCopy->PB;
         do
         {
           if (width >= 1)
@@ -10939,11 +10939,11 @@ LABEL_68:
     }
   }
 
-  v103 = v4->inspector;
+  v103 = selfCopy->inspector;
   if (v103 && [(RedEyeInspector3 *)v103 BOOLOptionIsOn:1, v43, v44])
   {
-    [(RedEyeInspector3 *)v4->inspector saveBitmap:&p_PB->M format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"5-PROD" which:"M"];
-    [(RedEyeInspector3 *)v4->inspector saveBitmap:&p_PB->S format:266 faceIndex:v4->S.faceIndex side:v4->S.side name:"6-SHIN" which:"M"];
+    [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&p_PB->M format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"5-PROD" which:"M"];
+    [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&p_PB->S format:266 faceIndex:selfCopy->S.faceIndex side:selfCopy->S.side name:"6-SHIN" which:"M"];
   }
 
   v104 = p_PB->height;
@@ -11076,9 +11076,9 @@ LABEL_68:
   v196 = v106 + 1;
   BitmapRect = makeBitmapRect(v109, v108, (v107 + 1), (v106 + 1));
   v168 = v124;
-  termBitmap(&v4->repairMap.baseAddress);
-  initBitmap(&v4->repairMap, v201 - v109, v196 - v108, 4, 1, 100.0);
-  v125 = v4->repairMap.baseAddress;
+  termBitmap(&selfCopy->repairMap.baseAddress);
+  initBitmap(&selfCopy->repairMap, v201 - v109, v196 - v108, 4, 1, 100.0);
+  v125 = selfCopy->repairMap.baseAddress;
   if (!v125)
   {
     return 2;
@@ -11088,20 +11088,20 @@ LABEL_68:
   v157 = v104;
   v126 = BitmapRect;
   v165 = p_PB->OO.rowSamples;
-  v164 = v4->repairMap.rowSamples;
-  p_repairMap = &v4->repairMap;
-  v179 = v4->repairMap.samplesPerPixel;
+  v164 = selfCopy->repairMap.rowSamples;
+  p_repairMap = &selfCopy->repairMap;
+  v179 = selfCopy->repairMap.samplesPerPixel;
   v127 = BitmapRect;
   v197 = p_PB->EP.baseAddress;
   v202 = p_PB->OO.baseAddress;
   v128 = p_PB->EP.rowSamples;
   v183 = p_PB->EP.samplesPerPixel;
   v185 = p_PB->OO.samplesPerPixel;
-  avgLuminance = v4->M.avgLuminance;
-  [(CIRedEyeRepair3 *)v4 start12BitRandom:75838567];
+  avgLuminance = selfCopy->M.avgLuminance;
+  [(CIRedEyeRepair3 *)selfCopy start12BitRandom:75838567];
   if (BitmapRect < SHIDWORD(BitmapRect))
   {
-    v181 = v4;
+    v181 = selfCopy;
     v172 = 0;
     v174 = 0;
     v130 = (avgLuminance * 0.0000036 * avgLuminance + 0.08) * 255.0;
@@ -11187,7 +11187,7 @@ LABEL_68:
     }
 
     while (v170 + 1 != HIDWORD(BitmapRect));
-    v4 = v181;
+    selfCopy = v181;
     v126 = BitmapRect;
     if (v174 < v172)
     {
@@ -11195,7 +11195,7 @@ LABEL_68:
     }
   }
 
-  v148 = v4->inspector;
+  v148 = selfCopy->inspector;
   if (v148 && [(RedEyeInspector3 *)v148 BOOLOptionIsOn:0])
   {
     initBitmap(&p_PB->P, v156, v157, 4, 1, 100.0);
@@ -11204,7 +11204,7 @@ LABEL_68:
     {
       memmove(v149, p_PB->OO.baseAddress, p_PB->P.size);
       copyBitmapToSliceOfBitmap(p_repairMap, &p_PB->P, v126, v168);
-      [(RedEyeInspector3 *)v4->inspector saveBitmap:&p_PB->P format:266 faceIndex:p_S->faceIndex side:p_S->side name:"7-FINL" which:"M"];
+      [(RedEyeInspector3 *)selfCopy->inspector saveBitmap:&p_PB->P format:266 faceIndex:p_S->faceIndex side:p_S->side name:"7-FINL" which:"M"];
       goto LABEL_163;
     }
 
@@ -11226,20 +11226,20 @@ LABEL_163:
 
   v152 = offsetBitmapRect(v126, v168, *(&p_FC->FR.minrow + v151), *(&p_FC->FR.minrow + v150));
   v12 = 0;
-  *&v4->repairRect.minrow = offsetBitmapRect(v152, v153, p_FC->FR.mincol, p_FC->FR.minrow);
-  *&v4->repairRect.mincol = v154;
+  *&selfCopy->repairRect.minrow = offsetBitmapRect(v152, v153, p_FC->FR.mincol, p_FC->FR.minrow);
+  *&selfCopy->repairRect.mincol = v154;
   return v12;
 }
 
-- (int)repairDictionary:(id *)a3 withEyeIndex:(int)a4
+- (int)repairDictionary:(id *)dictionary withEyeIndex:(int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   v34[1] = *MEMORY[0x1E69E9840];
   v30 = 0;
   v33 = 0;
   v34[0] = 0;
   p_S = &self->S;
-  self->S.side = a4;
+  self->S.side = index;
   [(CIRedEyeRepair3 *)self initBitmaps];
   v8 = [(CIRedEyeRepair3 *)self prepareTransformWithEyeIndex:v4];
   if (v8)
@@ -11257,7 +11257,7 @@ LABEL_163:
     return v8;
   }
 
-  v25 = a3;
+  dictionaryCopy = dictionary;
   v26 = 0;
   v27 = 0;
   v11 = 0;
@@ -11285,9 +11285,9 @@ LABEL_163:
     }
 
     p_S->edgeFindingChannel = v19;
-    v20 = [(CIRedEyeRepair3 *)self prominenceConvexHull:v15 facts:v16, v25];
-    *v14 = v20;
-    if (v20)
+    dictionaryCopy = [(CIRedEyeRepair3 *)self prominenceConvexHull:v15 facts:v16, dictionaryCopy];
+    *v14 = dictionaryCopy;
+    if (dictionaryCopy)
     {
       *v15 = 0;
     }
@@ -11347,18 +11347,18 @@ LABEL_163:
   [(CIRedEyeRepair3 *)self termHull:v27];
   if (!v9)
   {
-    *v25 = v30;
+    *dictionaryCopy = v30;
   }
 
   return v9;
 }
 
-- (int)executeRepairWithRepairDictionary:(id)a3
+- (int)executeRepairWithRepairDictionary:(id)dictionary
 {
   v28 = 0;
   v27 = 0;
   memset(v26, 0, sizeof(v26));
-  if (![(CIRedEyeRepair3 *)self openRepairDictionary:a3 convexHull:&v28 facts:v26])
+  if (![(CIRedEyeRepair3 *)self openRepairDictionary:dictionary convexHull:&v28 facts:v26])
   {
     return 1;
   }
@@ -11447,7 +11447,7 @@ LABEL_163:
   return v22;
 }
 
-- (BOOL)gatherFaceStatistics:(id *)a3
+- (BOOL)gatherFaceStatistics:(id *)statistics
 {
   p_FS = &self->FS;
   p_faceBitmap = &self->faceBitmap;
@@ -11579,25 +11579,25 @@ LABEL_163:
   v40 = 1.0 / (height * width);
   self->skinval = v39;
   v41 = v40 * v21;
-  a3->var0 = v39;
-  a3->var1 = v41;
-  a3->var2 = v19;
-  a3->var3 = v20;
+  statistics->var0 = v39;
+  statistics->var1 = v41;
+  statistics->var2 = v19;
+  statistics->var3 = v20;
   v42 = v40 * v37;
   v43 = v40 * v38;
-  a3->var4 = v42;
-  a3->var5 = v43;
+  statistics->var4 = v42;
+  statistics->var5 = v43;
   return 1;
 }
 
-- ($000CCD7ED2ADA2E18343834BA3C2DAF0)focusStatsWithBitmap:(id *)a3 IOD:(float)a4
+- ($000CCD7ED2ADA2E18343834BA3C2DAF0)focusStatsWithBitmap:(id *)bitmap IOD:(float)d
 {
   v53 = *MEMORY[0x1E69E9840];
-  var0 = a3->var0;
-  var2 = a3->var2;
-  var3 = a3->var3;
-  var6 = a3->var6;
-  var1 = a3->var1;
+  var0 = bitmap->var0;
+  var2 = bitmap->var2;
+  var3 = bitmap->var3;
+  var6 = bitmap->var6;
+  var1 = bitmap->var1;
   bzero(v52, 0x800uLL);
   bzero(v51, 0x400uLL);
   if (var2 > 2)

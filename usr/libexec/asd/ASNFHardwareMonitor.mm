@@ -14,15 +14,15 @@
 
   if (self->_notified)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)waitForNotification
@@ -34,8 +34,8 @@
 
 - (void)hardwareStateDidChange
 {
-  v2 = [(ASNFHardwareMonitor *)self notified];
-  dispatch_semaphore_signal(v2);
+  notified = [(ASNFHardwareMonitor *)self notified];
+  dispatch_semaphore_signal(notified);
 }
 
 @end

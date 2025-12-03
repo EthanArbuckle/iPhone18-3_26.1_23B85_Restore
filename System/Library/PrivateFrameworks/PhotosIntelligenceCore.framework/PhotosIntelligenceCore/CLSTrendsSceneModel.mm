@@ -1,8 +1,8 @@
 @interface CLSTrendsSceneModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSTrendsSceneModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSTrendsSceneModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
 - (void)setupVersion33;
 - (void)setupVersion80;
 - (void)setupVersion84;
@@ -42,21 +42,21 @@ void __32__CLSTrendsSceneModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
   v4 = 0;
-  if (a3 > 568)
+  if (identifier > 568)
   {
-    if (a3 <= 1214)
+    if (identifier <= 1214)
     {
-      if (a3 == 569)
+      if (identifier == 569)
       {
         v5 = 40;
       }
 
       else
       {
-        if (a3 != 1072)
+        if (identifier != 1072)
         {
           goto LABEL_25;
         }
@@ -67,7 +67,7 @@ void __32__CLSTrendsSceneModel_modelInfo__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      switch(a3)
+      switch(identifier)
       {
         case 0x4BFuLL:
           v5 = 64;
@@ -84,16 +84,16 @@ void __32__CLSTrendsSceneModel_modelInfo__block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  else if (a3 <= 105)
+  else if (identifier <= 105)
   {
-    if (a3 == 16)
+    if (identifier == 16)
     {
       v5 = 48;
     }
 
     else
     {
-      if (a3 != 36)
+      if (identifier != 36)
       {
         goto LABEL_25;
       }
@@ -104,7 +104,7 @@ void __32__CLSTrendsSceneModel_modelInfo__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    switch(a3)
+    switch(identifier)
     {
       case 0x6AuLL:
         v5 = 16;
@@ -264,7 +264,7 @@ LABEL_25:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSTrendsSceneModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSTrendsSceneModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -273,17 +273,17 @@ LABEL_25:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x54)
+    if (version < 0x54)
     {
-      if (a3 < 0x50)
+      if (version < 0x50)
       {
-        if (a3 < 0x21)
+        if (version < 0x21)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -314,9 +314,9 @@ LABEL_25:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
-  if (a3 >= 0x21)
+  if (version >= 0x21)
   {
     return 33;
   }

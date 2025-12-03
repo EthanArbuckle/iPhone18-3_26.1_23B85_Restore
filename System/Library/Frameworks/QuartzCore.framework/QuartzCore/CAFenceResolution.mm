@@ -1,10 +1,10 @@
 @interface CAFenceResolution
-+ (CAFenceResolution)_newResolutionWithTime:(double)a1;
++ (CAFenceResolution)_newResolutionWithTime:(double)time;
 @end
 
 @implementation CAFenceResolution
 
-+ (CAFenceResolution)_newResolutionWithTime:(double)a1
++ (CAFenceResolution)_newResolutionWithTime:(double)time
 {
   v4 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -19,7 +19,7 @@
       __assert_rtn("[CAFenceResolution _initWithTime:]", "CAFenceResolution.mm", 28, "self");
     }
 
-    result->_time = a1;
+    result->_time = time;
   }
 
   return result;

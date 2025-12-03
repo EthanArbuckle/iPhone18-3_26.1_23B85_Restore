@@ -1,6 +1,6 @@
 @interface MTRLaundryWasherModeClusterModeOptionStruct
 - (MTRLaundryWasherModeClusterModeOptionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,25 +20,25 @@
     mode = v3->_mode;
     v3->_mode = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     modeTags = v3->_modeTags;
-    v3->_modeTags = v6;
+    v3->_modeTags = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRLaundryWasherModeClusterModeOptionStruct);
-  v5 = [(MTRLaundryWasherModeClusterModeOptionStruct *)self label];
-  [(MTRLaundryWasherModeClusterModeOptionStruct *)v4 setLabel:v5];
+  label = [(MTRLaundryWasherModeClusterModeOptionStruct *)self label];
+  [(MTRLaundryWasherModeClusterModeOptionStruct *)v4 setLabel:label];
 
-  v6 = [(MTRLaundryWasherModeClusterModeOptionStruct *)self mode];
-  [(MTRLaundryWasherModeClusterModeOptionStruct *)v4 setMode:v6];
+  mode = [(MTRLaundryWasherModeClusterModeOptionStruct *)self mode];
+  [(MTRLaundryWasherModeClusterModeOptionStruct *)v4 setMode:mode];
 
-  v7 = [(MTRLaundryWasherModeClusterModeOptionStruct *)self modeTags];
-  [(MTRLaundryWasherModeClusterModeOptionStruct *)v4 setModeTags:v7];
+  modeTags = [(MTRLaundryWasherModeClusterModeOptionStruct *)self modeTags];
+  [(MTRLaundryWasherModeClusterModeOptionStruct *)v4 setModeTags:modeTags];
 
   return v4;
 }

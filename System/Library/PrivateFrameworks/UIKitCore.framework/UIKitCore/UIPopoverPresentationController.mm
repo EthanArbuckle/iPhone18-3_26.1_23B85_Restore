@@ -1,30 +1,30 @@
 @interface UIPopoverPresentationController
 + (BOOL)_forceAttemptsToAvoidKeyboard;
 + (BOOL)_showTargetRectPref;
-+ (UIEdgeInsets)_defaultPopoverLayoutMarginsForPopoverControllerStyle:(int64_t)a3 andContentViewController:(id)a4;
-- (BOOL)_attemptDismissalWithCompletion:(id)a3;
++ (UIEdgeInsets)_defaultPopoverLayoutMarginsForPopoverControllerStyle:(int64_t)style andContentViewController:(id)controller;
+- (BOOL)_attemptDismissalWithCompletion:(id)completion;
 - (BOOL)_attemptsToAvoidKeyboard;
 - (BOOL)_fallbackShouldDismiss;
-- (BOOL)_focusedItemFrameIntersectsSufficientlyWithPresentedView:(id)a3;
+- (BOOL)_focusedItemFrameIntersectsSufficientlyWithPresentedView:(id)view;
 - (BOOL)_isShimmingPopoverControllerPresentation;
 - (BOOL)_isSourceViewSafeForMorphing;
 - (BOOL)_shouldAutoDismissOnFocusedItemIntersection;
 - (BOOL)_shouldConvertToScene;
 - (BOOL)_shouldOccludeDuringPresentation;
-- (BOOL)_shouldPopoverContentExtendOverArrowForViewController:(id)a3 backgroundViewClass:(Class)a4;
+- (BOOL)_shouldPopoverContentExtendOverArrowForViewController:(id)controller backgroundViewClass:(Class)class;
 - (BOOL)_shouldPresentedViewControllerServeAsBaseForScrollToTop;
 - (BOOL)_shouldUseNewPopoverAnimations;
 - (BOOL)_usesPreferredTransition;
 - (BOOL)isPresentingOrDismissing;
-- (BOOL)popoverDimmingViewDidReceiveDismissalInteraction:(id)a3 atLocation:(CGPoint)a4;
-- (BOOL)popoverDimmingViewShouldAllowInteraction:(id)a3;
-- (CGPoint)_centerPointForScale:(double)a3 frame:(CGRect)a4 anchor:(CGPoint)a5;
+- (BOOL)popoverDimmingViewDidReceiveDismissalInteraction:(id)interaction atLocation:(CGPoint)location;
+- (BOOL)popoverDimmingViewShouldAllowInteraction:(id)interaction;
+- (CGPoint)_centerPointForScale:(double)scale frame:(CGRect)frame anchor:(CGPoint)anchor;
 - (CGPoint)_dismissalInteractionLocation;
 - (CGRect)_containingFrame;
-- (CGRect)_sourceRectFromSourceView:(id)a3;
+- (CGRect)_sourceRectFromSourceView:(id)view;
 - (CGRect)_sourceRectInContainerView;
 - (CGRect)_sourceRectInContainingScene;
-- (CGRect)_sourceRectInCoordinateSpace:(id)a3;
+- (CGRect)_sourceRectInCoordinateSpace:(id)space;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (CGSize)_currentPopoverContentSize;
 - (CGSize)_defaultPopoverSize;
@@ -32,124 +32,124 @@
 - (CGSize)_proposedSize;
 - (CGSize)popoverContentSize;
 - (Class)_defaultChromeViewClass;
-- (Class)_popoverLayoutInfoForChromeClass:(Class)a3;
+- (Class)_popoverLayoutInfoForChromeClass:(Class)class;
 - (UIEdgeInsets)_additionalSafeAreaInsets;
-- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)a3 rightMargin:(double *)a4;
+- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)margin rightMargin:(double *)rightMargin;
 - (UIEdgeInsets)_containingFrameInsets;
 - (UIEdgeInsets)popoverLayoutMargins;
 - (UIPopoverArrowDirection)arrowDirection;
 - (UIPopoverPresentationController)init;
-- (UIPopoverPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (UIPopoverPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (UISheetPresentationController)adaptiveSheetPresentationController;
 - (UIView)_presentingView;
-- (id)_completionBlockForDismissalWhenNotifyingDelegate:(BOOL)a3;
-- (id)_createHostManagerPopoverWithConfiguration:(id)a3;
-- (id)_createVisualStyleForProvider:(id)a3;
+- (id)_completionBlockForDismissalWhenNotifyingDelegate:(BOOL)delegate;
+- (id)_createHostManagerPopoverWithConfiguration:(id)configuration;
+- (id)_createVisualStyleForProvider:(id)provider;
 - (id)_hostManagerPopoverCloseConfiguration;
 - (id)_hostManagerPopoverCreationConfiguration;
 - (id)_hostManagerPopoverUpdateConfiguration;
-- (id)_initialPresentationViewControllerForViewController:(id)a3;
+- (id)_initialPresentationViewControllerForViewController:(id)controller;
 - (id)_layoutInfoForCurrentKeyboardState;
-- (id)_layoutInfoFromLayoutInfo:(id)a3 forCurrentKeyboardStateAndHostingWindow:(id)a4;
+- (id)_layoutInfoFromLayoutInfo:(id)info forCurrentKeyboardStateAndHostingWindow:(id)window;
 - (id)_metrics;
 - (id)_popoverHostingWindow;
 - (id)_preferredAnimationControllerForDismissal;
 - (id)_preferredAnimationControllerForPresentation;
 - (id)_presentationView;
-- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)a3;
-- (int64_t)_defaultPresentationStyleForTraitCollection:(id)a3;
+- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)controller;
+- (int64_t)_defaultPresentationStyleForTraitCollection:(id)collection;
 - (unint64_t)_effectivePermittedArrowDirections;
 - (void)_autoDismissIfFocusedItemSufficientlyIntersectsPresentedView;
 - (void)_cancelDelayedFocusAutoDismiss;
 - (void)_clearCachedPopoverContentSize;
 - (void)_closeScene;
-- (void)_configureRootPresentationControllerForHostWindow:(id)a3;
+- (void)_configureRootPresentationControllerForHostWindow:(id)window;
 - (void)_configureZoomTransition;
-- (void)_convertToSceneFromPresentingViewController:(id)a3;
+- (void)_convertToSceneFromPresentingViewController:(id)controller;
 - (void)_createHostManagerIfNeeded;
-- (void)_handlePan:(id)a3;
-- (void)_incrementSlideTransitionCount:(BOOL)a3;
+- (void)_handlePan:(id)pan;
+- (void)_incrementSlideTransitionCount:(BOOL)count;
 - (void)_invalidateLayoutInfo;
-- (void)_keyboardDidHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_moveAwayFromTheKeyboard:(id)a3 showing:(BOOL)a4;
-- (void)_observeFocusDidUpdateNotification:(id)a3;
-- (void)_performHierarchyCheckOnViewController:(id)a3;
+- (void)_keyboardDidHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_moveAwayFromTheKeyboard:(id)keyboard showing:(BOOL)showing;
+- (void)_observeFocusDidUpdateNotification:(id)notification;
+- (void)_performHierarchyCheckOnViewController:(id)controller;
 - (void)_postludeForDismissal;
-- (void)_prepareForWindowDeallocRecursively:(BOOL)a3;
+- (void)_prepareForWindowDeallocRecursively:(BOOL)recursively;
 - (void)_presentedViewControllerUserInterfaceStyleChanged;
-- (void)_presentingViewControllerWindowSceneDidUpdateEffectiveGeometry:(id)a3;
-- (void)_realSourceViewDidChangeFromView:(id)a3 toView:(id)a4;
+- (void)_presentingViewControllerWindowSceneDidUpdateEffectiveGeometry:(id)geometry;
+- (void)_realSourceViewDidChangeFromView:(id)view toView:(id)toView;
 - (void)_realSourceViewGeometryDidChange;
-- (void)_scrollViewDidEndDragging:(id)a3;
-- (void)_scrollViewWillBeginDragging:(id)a3;
+- (void)_scrollViewDidEndDragging:(id)dragging;
+- (void)_scrollViewWillBeginDragging:(id)dragging;
 - (void)_sendDelegateWillRepositionToRect;
 - (void)_sendFallbackDidDismiss;
 - (void)_sendFallbackWillDismiss;
-- (void)_setAccessoryView:(id)a3;
-- (void)_setAllowDismissalTapsToPassThrough:(BOOL)a3;
-- (void)_setAllowsFocusInPresentingViewController:(BOOL)a3;
-- (void)_setArrowOffset:(double)a3;
-- (void)_setBackgroundBlurDisabled:(BOOL)a3;
-- (void)_setBackgroundBlurEffectStyle:(int64_t)a3;
-- (void)_setContentViewController:(id)a3 animated:(BOOL)a4;
-- (void)_setContentViewController:(id)a3 backgroundStyle:(int64_t)a4 animated:(BOOL)a5;
-- (void)_setCornerConfiguration:(id)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)_setGesturesEnabled:(BOOL)a3;
-- (void)_setIgnoresKeyboardNotifications:(BOOL)a3;
-- (void)_setOverrideAllowsHitTestingOnBackgroundViews:(BOOL)a3;
-- (void)_setPopoverBackgroundStyle:(int64_t)a3;
-- (void)_setPopoverFrame:(CGRect)a3 animated:(BOOL)a4 coordinator:(id)a5;
-- (void)_setPopoverView:(id)a3;
-- (void)_setPrefersZoomTransitions:(BOOL)a3;
+- (void)_setAccessoryView:(id)view;
+- (void)_setAllowDismissalTapsToPassThrough:(BOOL)through;
+- (void)_setAllowsFocusInPresentingViewController:(BOOL)controller;
+- (void)_setArrowOffset:(double)offset;
+- (void)_setBackgroundBlurDisabled:(BOOL)disabled;
+- (void)_setBackgroundBlurEffectStyle:(int64_t)style;
+- (void)_setContentViewController:(id)controller animated:(BOOL)animated;
+- (void)_setContentViewController:(id)controller backgroundStyle:(int64_t)style animated:(BOOL)animated;
+- (void)_setCornerConfiguration:(id)configuration;
+- (void)_setCornerRadius:(double)radius;
+- (void)_setGesturesEnabled:(BOOL)enabled;
+- (void)_setIgnoresKeyboardNotifications:(BOOL)notifications;
+- (void)_setOverrideAllowsHitTestingOnBackgroundViews:(BOOL)views;
+- (void)_setPopoverBackgroundStyle:(int64_t)style;
+- (void)_setPopoverFrame:(CGRect)frame animated:(BOOL)animated coordinator:(id)coordinator;
+- (void)_setPopoverView:(id)view;
+- (void)_setPrefersZoomTransitions:(BOOL)transitions;
 - (void)_startWatchingForKeyboardNotificationsIfNecessary;
 - (void)_startWatchingForScrollViewNotifications;
 - (void)_stopWatchingForKeyboardNotifications;
 - (void)_stopWatchingForNotifications;
 - (void)_stopWatchingForScrollViewNotifications;
 - (void)_traitCollectionForGlassContentDidChange;
-- (void)_transitionFromViewController:(id)a3 toViewController:(id)a4 animated:(BOOL)a5;
+- (void)_transitionFromViewController:(id)controller toViewController:(id)viewController animated:(BOOL)animated;
 - (void)_transitionToDidEnd;
 - (void)_transitionToWillBegin;
 - (void)_updateHostedPopover;
-- (void)_updatePopoverFrame:(CGRect)a3 arrowOffset:(double)a4;
-- (void)_updateShouldObserveFocusUpdateNotification:(BOOL)a3;
+- (void)_updatePopoverFrame:(CGRect)frame arrowOffset:(double)offset;
+- (void)_updateShouldObserveFocusUpdateNotification:(BOOL)notification;
 - (void)_updateSourceOverlayViewConstraints;
 - (void)containerViewWillLayoutSubviews;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setArrowBackgroundColor:(id)a3;
+- (void)setArrowBackgroundColor:(id)color;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 - (void)setPassthroughViews:(NSArray *)passthroughViews;
-- (void)setPopoverContentSize:(CGSize)a3 animated:(BOOL)a4;
+- (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated;
 - (void)setPopoverLayoutMargins:(UIEdgeInsets)popoverLayoutMargins;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIPopoverPresentationController
 
 - (id)_metrics
 {
-  v3 = [(UIPresentationController *)self _visualStyle];
+  _visualStyle = [(UIPresentationController *)self _visualStyle];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIPresentationController *)self _visualStyle];
-    v6 = [v5 metrics];
+    _visualStyle2 = [(UIPresentationController *)self _visualStyle];
+    metrics = [_visualStyle2 metrics];
   }
 
   else
   {
-    v6 = +[_UIPopoverPresentationMetrics defaultPopoverMetrics];
+    metrics = +[_UIPopoverPresentationMetrics defaultPopoverMetrics];
   }
 
-  return v6;
+  return metrics;
 }
 
 - (Class)_defaultChromeViewClass
@@ -169,8 +169,8 @@
   if (popoverControllerStyle || (v5 = +[_UIPopoverStandardChromeView standardChromeViewClass]) == 0)
   {
 LABEL_8:
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIPopoverPresentationController.m" lineNumber:789 description:@"Failed to determine chrome view class"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPopoverPresentationController.m" lineNumber:789 description:@"Failed to determine chrome view class"];
 
     v5 = 0;
   }
@@ -182,10 +182,10 @@ LABEL_4:
 
 - (id)_popoverHostingWindow
 {
-  v2 = [(UIPresentationController *)self containerView];
-  v3 = [v2 window];
+  containerView = [(UIPresentationController *)self containerView];
+  window = [containerView window];
 
-  return v3;
+  return window;
 }
 
 + (BOOL)_showTargetRectPref
@@ -230,11 +230,11 @@ void __54__UIPopoverPresentationController__showTargetRectPref__block_invoke()
     return 0;
   }
 
-  v3 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UIPresentationController *)self delegate];
-    v5 = [v4 _popoverPresentationControllerShouldConvertToScene:self];
+    delegate2 = [(UIPresentationController *)self delegate];
+    v5 = [delegate2 _popoverPresentationControllerShouldConvertToScene:self];
   }
 
   else
@@ -257,8 +257,8 @@ void __54__UIPopoverPresentationController__showTargetRectPref__block_invoke()
 
 - (id)_layoutInfoForCurrentKeyboardState
 {
-  v3 = [(UIView *)self->_popoverView window];
-  v4 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardStateAndHostingWindow:v3];
+  window = [(UIView *)self->_popoverView window];
+  v4 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardStateAndHostingWindow:window];
 
   return v4;
 }
@@ -267,30 +267,30 @@ void __54__UIPopoverPresentationController__showTargetRectPref__block_invoke()
 {
   v98 = *MEMORY[0x1E69E9840];
   [(UIPopoverPresentationController *)self _createHostManagerIfNeeded];
-  v3 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 prepareForPopoverPresentation:self];
+    [delegate prepareForPopoverPresentation:self];
   }
 
   self->_presentationState = 1;
-  v4 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   contentViewController = self->_contentViewController;
-  self->_contentViewController = v4;
+  self->_contentViewController = presentedViewController;
 
-  v6 = [(UIPresentationController *)self barButtonItem];
+  barButtonItem = [(UIPresentationController *)self barButtonItem];
 
-  if (v6)
+  if (barButtonItem)
   {
-    v7 = [(UIPresentationController *)self barButtonItem];
-    v8 = [v7 buttonGroup];
+    barButtonItem2 = [(UIPresentationController *)self barButtonItem];
+    buttonGroup = [barButtonItem2 buttonGroup];
 
-    if ([v8 alwaysAvailable])
+    if ([buttonGroup alwaysAvailable])
     {
-      v9 = [(UIPresentationController *)self barButtonItem];
-      v10 = [v9 _viewForPresenting];
+      barButtonItem3 = [(UIPresentationController *)self barButtonItem];
+      _viewForPresenting = [barButtonItem3 _viewForPresenting];
 
-      if (!v10)
+      if (!_viewForPresenting)
       {
         [(UIPopoverPresentationController *)self _setCentersPopoverIfSourceViewNotSet:1];
         [(UIPresentationController *)self setBarButtonItem:0];
@@ -300,12 +300,12 @@ void __54__UIPopoverPresentationController__showTargetRectPref__block_invoke()
 
   if ([(UIPopoverPresentationController *)self _centersPopoverIfSourceViewNotSet]|| [(UIPopoverPresentationController *)self _bottomAlignsPopoverIfSourceViewNotSet])
   {
-    v11 = [(UIPresentationController *)self _realSourceView];
+    _realSourceView = [(UIPresentationController *)self _realSourceView];
 
-    if (!v11)
+    if (!_realSourceView)
     {
-      v12 = [(UIPresentationController *)self containerView];
-      [(UIPresentationController *)self setSourceView:v12];
+      containerView = [(UIPresentationController *)self containerView];
+      [(UIPresentationController *)self setSourceView:containerView];
 
       self->_deriveSourceRectFromSourceViewBounds = 1;
       if ([(UIPopoverPresentationController *)self _softAssertWhenNoSourceViewOrBarButtonItemSpecified])
@@ -318,12 +318,12 @@ void __54__UIPopoverPresentationController__showTargetRectPref__block_invoke()
             goto LABEL_16;
           }
 
-          v15 = [(UIPresentationController *)self presentedViewController];
-          v16 = [(UIPresentationController *)self presentingViewController];
+          presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+          presentingViewController = [(UIPresentationController *)self presentingViewController];
           *buf = 138412546;
-          v95 = v15;
+          v95 = presentedViewController2;
           v96 = 2112;
-          v97 = v16;
+          v97 = presentingViewController;
           _os_log_fault_impl(&dword_188A29000, v14, OS_LOG_TYPE_FAULT, "Tried to present %@ from %@ as a popover without setting a sourceView or barButtonItem.", buf, 0x16u);
         }
 
@@ -336,12 +336,12 @@ void __54__UIPopoverPresentationController__showTargetRectPref__block_invoke()
           }
 
           v14 = v13;
-          v15 = [(UIPresentationController *)self presentedViewController];
-          v16 = [(UIPresentationController *)self presentingViewController];
+          presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+          presentingViewController = [(UIPresentationController *)self presentingViewController];
           *buf = 138412546;
-          v95 = v15;
+          v95 = presentedViewController2;
           v96 = 2112;
-          v97 = v16;
+          v97 = presentingViewController;
           _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Tried to present %@ from %@ as a popover without setting a sourceView or barButtonItem.", buf, 0x16u);
         }
 
@@ -351,44 +351,44 @@ LABEL_16:
   }
 
 LABEL_17:
-  v78 = [(UIPresentationController *)self _realSourceView];
-  if (!v78)
+  _realSourceView2 = [(UIPresentationController *)self _realSourceView];
+  if (!_realSourceView2)
   {
     v73 = MEMORY[0x1E695DF30];
     v74 = *MEMORY[0x1E695D920];
-    v75 = [(UIPopoverPresentationController *)self _exceptionStringForNilSourceViewOrBarButtonItem];
-    v76 = [v73 exceptionWithName:v74 reason:v75 userInfo:0];
+    _exceptionStringForNilSourceViewOrBarButtonItem = [(UIPopoverPresentationController *)self _exceptionStringForNilSourceViewOrBarButtonItem];
+    v76 = [v73 exceptionWithName:v74 reason:_exceptionStringForNilSourceViewOrBarButtonItem userInfo:0];
     v77 = v76;
 
     objc_exception_throw(v76);
   }
 
-  v17 = [(UIPresentationController *)self barButtonItem];
-  v18 = [v17 view];
-  if (v18)
+  barButtonItem4 = [(UIPresentationController *)self barButtonItem];
+  view = [barButtonItem4 view];
+  if (view)
   {
-    v19 = v18;
-    v20 = [(UIPopoverPresentationController *)self _ignoreBarButtonItemSiblings];
+    v19 = view;
+    _ignoreBarButtonItemSiblings = [(UIPopoverPresentationController *)self _ignoreBarButtonItemSiblings];
 
-    if (!v20)
+    if (!_ignoreBarButtonItemSiblings)
     {
-      v21 = [v17 view];
-      v22 = [v21 superview];
-      v23 = [v22 subviews];
-      v24 = [v17 view];
-      v93 = v24;
+      view2 = [barButtonItem4 view];
+      superview = [view2 superview];
+      subviews = [superview subviews];
+      view3 = [barButtonItem4 view];
+      v93 = view3;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
-      v26 = [v23 arrayByExcludingObjectsInArray:v25];
+      v26 = [subviews arrayByExcludingObjectsInArray:v25];
 
       if ([v26 count])
       {
-        v27 = [(UIPopoverPresentationController *)self passthroughViews];
-        v28 = [v27 count];
+        passthroughViews = [(UIPopoverPresentationController *)self passthroughViews];
+        v28 = [passthroughViews count];
 
         if (v28)
         {
-          v29 = [(UIPopoverPresentationController *)self passthroughViews];
-          v30 = [v29 mutableCopy];
+          passthroughViews2 = [(UIPopoverPresentationController *)self passthroughViews];
+          v30 = [passthroughViews2 mutableCopy];
 
           v88 = 0u;
           v89 = 0u;
@@ -433,80 +433,80 @@ LABEL_17:
     }
   }
 
-  v37 = [(UIPresentationController *)self containerView];
-  v38 = [v37 _focusBehavior];
-  v39 = [v38 supportsViewTransparency];
+  containerView2 = [(UIPresentationController *)self containerView];
+  _focusBehavior = [containerView2 _focusBehavior];
+  supportsViewTransparency = [_focusBehavior supportsViewTransparency];
 
-  if ((v39 & 1) == 0)
+  if ((supportsViewTransparency & 1) == 0)
   {
-    v40 = [(UIPresentationController *)self containerView];
-    [v40 _setFocusInteractionEnabled:{-[UIPopoverPresentationController _allowsFocusInPresentingViewController](self, "_allowsFocusInPresentingViewController") ^ 1}];
+    containerView3 = [(UIPresentationController *)self containerView];
+    [containerView3 _setFocusInteractionEnabled:{-[UIPopoverPresentationController _allowsFocusInPresentingViewController](self, "_allowsFocusInPresentingViewController") ^ 1}];
   }
 
   [(UIPopoverPresentationController *)self _transitionFromViewController:0 toViewController:self->_contentViewController animated:0];
   dimmingView = self->_dimmingView;
-  v42 = [(UIPresentationController *)self containerView];
-  [v42 bounds];
+  containerView4 = [(UIPresentationController *)self containerView];
+  [containerView4 bounds];
   [(UIView *)dimmingView setFrame:?];
 
   [(UIView *)self->_dimmingView setTintAdjustmentMode:1];
   [(UIView *)self->_dimmingView setAutoresizingMask:18];
   [(UIDimmingView *)self->_dimmingView setDelegate:self];
   v43 = self->_dimmingView;
-  v44 = [(UIPresentationController *)self containerView];
-  [(_UIPopoverDimmingView *)v43 setTransitionContainerView:v44];
+  containerView5 = [(UIPresentationController *)self containerView];
+  [(_UIPopoverDimmingView *)v43 setTransitionContainerView:containerView5];
 
   [(UIView *)self->_dimmingView setUserInteractionEnabled:1];
   if (dyld_program_sdk_at_least())
   {
-    v45 = [(UIPresentationController *)self containerView];
+    containerView6 = [(UIPresentationController *)self containerView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v47 = [(UIPresentationController *)self containerView];
-      [v47 setIgnoreDirectTouchEvents:1];
+      containerView7 = [(UIPresentationController *)self containerView];
+      [containerView7 setIgnoreDirectTouchEvents:1];
     }
   }
 
-  v48 = [(UIPopoverPresentationController *)self _popoverHostingWindow];
-  if ([v48 _isTextEffectsWindow])
+  _popoverHostingWindow = [(UIPopoverPresentationController *)self _popoverHostingWindow];
+  if ([_popoverHostingWindow _isTextEffectsWindow])
   {
     *&self->_popoverControllerFlags |= 8u;
   }
 
-  v49 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v49 postNotificationName:@"_UIAlertWillAppearNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIAlertWillAppearNotification" object:self userInfo:0];
   v90 = @"UIPopoverControllerPresentingWindowKey";
-  v91 = v48;
+  v91 = _popoverHostingWindow;
   v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-  [v49 postNotificationName:@"UIPopoverControllerWillPresentPopoverNotification" object:self userInfo:v50];
+  [defaultCenter postNotificationName:@"UIPopoverControllerWillPresentPopoverNotification" object:self userInfo:v50];
 
   if (self->_retainsSelfWhilePresented)
   {
     objc_storeStrong(&self->_retainedSelf, self);
   }
 
-  v51 = [(UIPresentationController *)self containerView];
-  [v51 addSubview:self->_dimmingView];
+  containerView8 = [(UIPresentationController *)self containerView];
+  [containerView8 addSubview:self->_dimmingView];
 
-  v52 = [(UIPopoverPresentationController *)self _sourceOverlayView];
+  _sourceOverlayView = [(UIPopoverPresentationController *)self _sourceOverlayView];
 
-  if (v52)
+  if (_sourceOverlayView)
   {
-    v53 = [(UIPresentationController *)self containerView];
-    v54 = [(UIPopoverPresentationController *)self _sourceOverlayView];
-    [v53 addSubview:v54];
+    containerView9 = [(UIPresentationController *)self containerView];
+    _sourceOverlayView2 = [(UIPopoverPresentationController *)self _sourceOverlayView];
+    [containerView9 addSubview:_sourceOverlayView2];
 
     [(UIPopoverPresentationController *)self _updateSourceOverlayViewConstraints];
   }
 
   if ([(UIPopoverPresentationController *)self showsTargetRect])
   {
-    v55 = [(UIPresentationController *)self containerView];
-    v56 = [(UIPopoverPresentationController *)self _targetRectView];
-    [v55 addSubview:v56];
+    containerView10 = [(UIPresentationController *)self containerView];
+    _targetRectView = [(UIPopoverPresentationController *)self _targetRectView];
+    [containerView10 addSubview:_targetRectView];
   }
 
   popoverBackgroundViewClass = self->_popoverBackgroundViewClass;
@@ -526,7 +526,7 @@ LABEL_17:
   v83[3] = &unk_1E7101808;
   v83[4] = self;
   v85 = popoverBackgroundViewClass;
-  v61 = v48;
+  v61 = _popoverHostingWindow;
   v84 = v61;
   [(_UIPopoverLayoutInfo *)v60 updateProperties:v83];
   v62 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardStateAndHostingWindow:v61];
@@ -536,24 +536,24 @@ LABEL_17:
   self->_previousContainerViewRect.size = v64;
   if (self->_hostManager)
   {
-    v65 = [(UIPopoverPresentationController *)self _hostManagerPopoverCreationConfiguration];
+    _hostManagerPopoverCreationConfiguration = [(UIPopoverPresentationController *)self _hostManagerPopoverCreationConfiguration];
     [(UIPopoverPresentationController *)self _sourceRectInContainerView];
-    [v65 setSourceRectInParentUIWindow:?];
-    [v65 setCompletionBlock:0];
+    [_hostManagerPopoverCreationConfiguration setSourceRectInParentUIWindow:?];
+    [_hostManagerPopoverCreationConfiguration setCompletionBlock:0];
     objc_opt_class();
-    v66 = v3;
+    v66 = delegate;
     if (objc_opt_isKindOfClass())
     {
-      v67 = [v63 arrowDirection];
+      arrowDirection = [v63 arrowDirection];
     }
 
     else
     {
-      v67 = [(UIPopoverPresentationController *)self _effectivePermittedArrowDirections];
+      arrowDirection = [(UIPopoverPresentationController *)self _effectivePermittedArrowDirections];
     }
 
-    [v65 setPermittedArrowDirections:v67];
-    v68 = [(UIPopoverPresentationController *)self _createHostManagerPopoverWithConfiguration:v65];
+    [_hostManagerPopoverCreationConfiguration setPermittedArrowDirections:arrowDirection];
+    v68 = [(UIPopoverPresentationController *)self _createHostManagerPopoverWithConfiguration:_hostManagerPopoverCreationConfiguration];
     popoverIdentifier = self->_popoverIdentifier;
     self->_popoverIdentifier = v68;
   }
@@ -569,7 +569,7 @@ LABEL_17:
     v81 = v62;
     [UIView performWithoutAnimation:v80];
 
-    v66 = v3;
+    v66 = delegate;
   }
 
   [(UIPopoverPresentationController *)self _transitionFromViewController:0 toViewController:self->_contentViewController animated:0];
@@ -577,17 +577,17 @@ LABEL_17:
   if (![(UIPopoverPresentationController *)self _shouldUseNewPopoverAnimations])
   {
     [(_UIPopoverView *)self->_popoverView setChromeHidden:1];
-    v70 = [(UIPresentationController *)self presentingViewController];
-    v71 = [v70 _transitionCoordinator];
+    presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+    _transitionCoordinator = [presentingViewController2 _transitionCoordinator];
 
-    if (v71)
+    if (_transitionCoordinator)
     {
       v79[0] = MEMORY[0x1E69E9820];
       v79[1] = 3221225472;
       v79[2] = __66__UIPopoverPresentationController_presentationTransitionWillBegin__block_invoke_3;
       v79[3] = &unk_1E70F3B98;
       v79[4] = self;
-      [v71 animateAlongsideTransition:v79 completion:0];
+      [_transitionCoordinator animateAlongsideTransition:v79 completion:0];
     }
 
     else
@@ -598,8 +598,8 @@ LABEL_17:
     [(UIView *)self->_shadowView setAlpha:1.0];
   }
 
-  v72 = [(UIView *)self->_popoverView layer];
-  [v72 setAllowsGroupOpacity:0];
+  layer = [(UIView *)self->_popoverView layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(UIPopoverPresentationController *)self _startWatchingForScrollViewNotifications];
 }
@@ -638,48 +638,48 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 
 - (unint64_t)_effectivePermittedArrowDirections
 {
-  v3 = [(UIPopoverPresentationController *)self permittedArrowDirections];
-  v4 = [(UIPopoverPresentationController *)self _usesPreferredTransition];
+  permittedArrowDirections = [(UIPopoverPresentationController *)self permittedArrowDirections];
+  _usesPreferredTransition = [(UIPopoverPresentationController *)self _usesPreferredTransition];
   v5 = ([(UIPopoverPresentationController *)self _centersPopoverIfSourceViewNotSet]|| [(UIPopoverPresentationController *)self _bottomAlignsPopoverIfSourceViewNotSet]) && self->_deriveSourceRectFromSourceViewBounds;
-  if (v4 || v5)
+  if (_usesPreferredTransition || v5)
   {
-    v3 = 0;
+    permittedArrowDirections = 0;
   }
 
-  v6 = [(UIPresentationController *)self barButtonItem];
-  v7 = [v6 view];
-  if (v7)
+  barButtonItem = [(UIPresentationController *)self barButtonItem];
+  view = [barButtonItem view];
+  if (view)
   {
-    v8 = v7;
-    v9 = [(UIPopoverPresentationController *)self _ignoreBarButtonItemSiblings];
+    v8 = view;
+    _ignoreBarButtonItemSiblings = [(UIPopoverPresentationController *)self _ignoreBarButtonItemSiblings];
 
-    if (!v9)
+    if (!_ignoreBarButtonItemSiblings)
     {
-      v3 &= 3u;
+      permittedArrowDirections &= 3u;
     }
   }
 
-  return v3;
+  return permittedArrowDirections;
 }
 
 - (CGRect)_containingFrame
 {
-  v3 = [(UIPresentationController *)self containerView];
-  v4 = [v3 _window];
-  v5 = [(UIWindow *)v4 _fbsScene];
+  containerView = [(UIPresentationController *)self containerView];
+  _window = [containerView _window];
+  _fbsScene = [(UIWindow *)_window _fbsScene];
 
-  [v3 safeAreaInsets];
+  [containerView safeAreaInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(UIPopoverPresentationController *)self _ignoredEdgesForSafeArea];
-  if ((v14 & 8) != 0)
+  _ignoredEdgesForSafeArea = [(UIPopoverPresentationController *)self _ignoredEdgesForSafeArea];
+  if ((_ignoredEdgesForSafeArea & 8) != 0)
   {
     v13 = 0.0;
   }
 
-  if ((v14 & 4) != 0)
+  if ((_ignoredEdgesForSafeArea & 4) != 0)
   {
     v15 = 0.0;
   }
@@ -689,7 +689,7 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     v15 = v11;
   }
 
-  if ((v14 & 2) != 0)
+  if ((_ignoredEdgesForSafeArea & 2) != 0)
   {
     v16 = 0.0;
   }
@@ -699,7 +699,7 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     v16 = v9;
   }
 
-  if (v14)
+  if (_ignoredEdgesForSafeArea)
   {
     v17 = 0.0;
   }
@@ -709,26 +709,26 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     v17 = v7;
   }
 
-  [v3 bounds];
+  [containerView bounds];
   v19 = v16 + v18;
   v21 = v17 + v20;
   v23 = v22 - (v16 + v13);
   v25 = v24 - (v17 + v15);
-  if (v5)
+  if (_fbsScene)
   {
-    v26 = [v5 settings];
-    [v26 bounds];
+    settings = [_fbsScene settings];
+    [settings bounds];
     v28 = v27;
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    v35 = [v3 _window];
-    v36 = _UIConvertSceneRectToWindow(v5, v35, v28, v30, v32, v34);
+    _window2 = [containerView _window];
+    v36 = _UIConvertSceneRectToWindow(_fbsScene, _window2, v28, v30, v32, v34);
     v38 = v37;
     v40 = v39;
     v42 = v41;
 
-    [v3 convertRect:0 fromView:{v36, v38, v40, v42}];
+    [containerView convertRect:0 fromView:{v36, v38, v40, v42}];
     v54.origin.x = v19;
     v54.origin.y = v21;
     v54.size.width = v23;
@@ -772,10 +772,10 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     v8 = v12;
     v9 = v13;
     v10 = v14;
-    v15 = [(UIPopoverPresentationController *)self _popoverHostingWindow];
-    v16 = [v15 _isRemoteInputHostWindow];
+    _popoverHostingWindow = [(UIPopoverPresentationController *)self _popoverHostingWindow];
+    _isRemoteInputHostWindow = [_popoverHostingWindow _isRemoteInputHostWindow];
 
-    if (v16)
+    if (_isRemoteInputHostWindow)
     {
       +[UIKeyboardImpl persistentOffset];
       v18 = 0.0;
@@ -826,8 +826,8 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 
 - (CGRect)_sourceRectInContainerView
 {
-  v3 = [(UIPresentationController *)self containerView];
-  [(UIPopoverPresentationController *)self _sourceRectInCoordinateSpace:v3];
+  containerView = [(UIPresentationController *)self containerView];
+  [(UIPopoverPresentationController *)self _sourceRectInCoordinateSpace:containerView];
   x = v4;
   y = v6;
   width = v8;
@@ -882,27 +882,27 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
   {
     if (self->_hostManager)
     {
-      v8 = [(UIPopoverPresentationController *)self _metrics];
-      [v8 defaultPreferredSmallContentSize];
+      _metrics = [(UIPopoverPresentationController *)self _metrics];
+      [_metrics defaultPreferredSmallContentSize];
       v10 = v9;
       v12 = v11;
     }
 
     else
     {
-      v8 = [(UIPresentationController *)self _currentPresentationSuperview];
-      [v8 bounds];
+      _metrics = [(UIPresentationController *)self _currentPresentationSuperview];
+      [_metrics bounds];
       v14 = v13;
-      v15 = [(UIPopoverPresentationController *)self _metrics];
-      v16 = v15;
+      _metrics2 = [(UIPopoverPresentationController *)self _metrics];
+      v16 = _metrics2;
       if (v14 < 1024.0)
       {
-        [v15 defaultPreferredSmallContentSize];
+        [_metrics2 defaultPreferredSmallContentSize];
       }
 
       else
       {
-        [v15 defaultPreferredLargeContentSize];
+        [_metrics2 defaultPreferredLargeContentSize];
       }
 
       v10 = v17;
@@ -931,9 +931,9 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     return 1;
   }
 
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = [v3 preferredTransition];
-  v2 = v4 != 0;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  preferredTransition = [presentedViewController preferredTransition];
+  v2 = preferredTransition != 0;
 
   return v2;
 }
@@ -971,9 +971,9 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 
 - (void)_stopWatchingForKeyboardNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
-  [v3 removeObserver:self name:@"UIKeyboardDidHideNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
+  [defaultCenter removeObserver:self name:@"UIKeyboardDidHideNotification" object:0];
 }
 
 void __66__UIPopoverPresentationController_presentationTransitionWillBegin__block_invoke_2(uint64_t a1)
@@ -1052,9 +1052,9 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 {
   if ([(UIPopoverPresentationController *)self _attemptsToAvoidKeyboard])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__keyboardWillShow_ name:@"UIKeyboardWillShowNotification" object:0];
-    [v3 addObserver:self selector:sel__keyboardDidHide_ name:@"UIKeyboardDidHideNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:@"UIKeyboardWillShowNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardDidHide_ name:@"UIKeyboardDidHideNotification" object:0];
   }
 }
 
@@ -1062,8 +1062,8 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 {
   if ([(UIPopoverPresentationController *)self popoverBackgroundViewClass])
   {
-    v3 = [(UIPopoverPresentationController *)self popoverBackgroundViewClass];
-    v4 = v3 == +[_UIPopoverStandardChromeView standardChromeViewClass];
+    popoverBackgroundViewClass = [(UIPopoverPresentationController *)self popoverBackgroundViewClass];
+    v4 = popoverBackgroundViewClass == +[_UIPopoverStandardChromeView standardChromeViewClass];
   }
 
   else
@@ -1078,8 +1078,8 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 
   else if ([(UIPopoverPresentationController *)self _centersPopoverIfSourceViewNotSet])
   {
-    v5 = [(UIPresentationController *)self _realSourceView];
-    v6 = v5 != 0;
+    _realSourceView = [(UIPresentationController *)self _realSourceView];
+    v6 = _realSourceView != 0;
   }
 
   else
@@ -1087,37 +1087,37 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     v6 = 1;
   }
 
-  v7 = [(UIPopoverPresentationController *)self _centersPopoverIfSourceViewNotSet]|| [(UIPopoverPresentationController *)self _bottomAlignsPopoverIfSourceViewNotSet];
-  return ((v6 || v7) && v4) & (_UIInternalPreferenceUsesDefault(&_UIInternalPreference_UseNewPopoverAnimations, @"UseNewPopoverAnimations", _UIInternalPreferenceUpdateBool) | (byte_1EA95E254 != 0)) & 1;
+  _bottomAlignsPopoverIfSourceViewNotSet = [(UIPopoverPresentationController *)self _centersPopoverIfSourceViewNotSet]|| [(UIPopoverPresentationController *)self _bottomAlignsPopoverIfSourceViewNotSet];
+  return ((v6 || _bottomAlignsPopoverIfSourceViewNotSet) && v4) & (_UIInternalPreferenceUsesDefault(&_UIInternalPreference_UseNewPopoverAnimations, @"UseNewPopoverAnimations", _UIInternalPreferenceUpdateBool) | (byte_1EA95E254 != 0)) & 1;
 }
 
 - (void)_startWatchingForScrollViewNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__scrollViewWillBeginDragging_ name:@"_UIScrollViewWillBeginDraggingNotification" object:0];
-  [v3 addObserver:self selector:sel__scrollViewDidEndDragging_ name:@"_UIScrollViewDidEndDraggingNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__scrollViewWillBeginDragging_ name:@"_UIScrollViewWillBeginDraggingNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__scrollViewDidEndDragging_ name:@"_UIScrollViewDidEndDraggingNotification" object:0];
 }
 
 - (BOOL)_shouldOccludeDuringPresentation
 {
-  v3 = [(UIPopoverPresentationController *)self _shouldDimPresentingViewTint];
-  if (v3)
+  _shouldDimPresentingViewTint = [(UIPopoverPresentationController *)self _shouldDimPresentingViewTint];
+  if (_shouldDimPresentingViewTint)
   {
     hostManager = self->_hostManager;
     if (hostManager)
     {
       popoverIdentifier = self->_popoverIdentifier;
 
-      LOBYTE(v3) = [(_UIPopoverHostManager *)hostManager shouldOccludeDuringPresentationForPopoverWithIdentifier:popoverIdentifier];
+      LOBYTE(_shouldDimPresentingViewTint) = [(_UIPopoverHostManager *)hostManager shouldOccludeDuringPresentationForPopoverWithIdentifier:popoverIdentifier];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_shouldDimPresentingViewTint) = 1;
     }
   }
 
-  return v3;
+  return _shouldDimPresentingViewTint;
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
@@ -1144,10 +1144,10 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 {
   if ((*&self->_popoverControllerFlags & 0x40) == 0)
   {
-    v3 = [(UIPresentationController *)self _realSourceView];
+    _realSourceView = [(UIPresentationController *)self _realSourceView];
     if (os_variant_has_internal_diagnostics())
     {
-      if (!v3)
+      if (!_realSourceView)
       {
         v50 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_FAULT))
@@ -1158,7 +1158,7 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
       }
     }
 
-    else if (!v3)
+    else if (!_realSourceView)
     {
       v51 = *(__UILogGetCategoryCachedImpl("Assert", &containerViewWillLayoutSubviews___s_category) + 8);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -1170,7 +1170,7 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
 
     if (self->_deriveSourceRectFromSourceViewBounds)
     {
-      [(UIPopoverPresentationController *)self _sourceRectFromSourceView:v3];
+      [(UIPopoverPresentationController *)self _sourceRectFromSourceView:_realSourceView];
       [(UIPresentationController *)self setSourceRect:?];
     }
 
@@ -1181,8 +1181,8 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     v11 = v10;
     if ([(UIPopoverPresentationController *)self showsTargetRect])
     {
-      v12 = [(UIPopoverPresentationController *)self _targetRectView];
-      [v12 setFrame:{v5, v7, v9, v11}];
+      _targetRectView = [(UIPopoverPresentationController *)self _targetRectView];
+      [_targetRectView setFrame:{v5, v7, v9, v11}];
     }
 
     [(UIPopoverPresentationController *)self _containingFrame];
@@ -1216,15 +1216,15 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
     *&v55[12] = v11;
     v56 = v20;
     [(_UIPopoverLayoutInfo *)preferredLayoutInfo updateProperties:v55, *&v52];
-    v22 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
-    v23 = v22;
+    _layoutInfoForCurrentKeyboardState = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+    v23 = _layoutInfoForCurrentKeyboardState;
     if (v20)
     {
-      [v22 frame];
+      [_layoutInfoForCurrentKeyboardState frame];
       if (v24 >= 100.0 && ([v23 frame], v25 >= 100.0))
       {
-        v49 = [v23 arrowDirection];
-        v28 = v49 != [(UIPopoverPresentationController *)self arrowDirection];
+        arrowDirection = [v23 arrowDirection];
+        v28 = arrowDirection != [(UIPopoverPresentationController *)self arrowDirection];
       }
 
       else
@@ -1236,16 +1236,16 @@ void __66__UIPopoverPresentationController_presentationTransitionWillBegin__bloc
         v54[3] = &unk_1E70F3590;
         v54[4] = self;
         [(_UIPopoverLayoutInfo *)v26 updateProperties:v54];
-        v27 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+        _layoutInfoForCurrentKeyboardState2 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
 
         v28 = 1;
-        v23 = v27;
+        v23 = _layoutInfoForCurrentKeyboardState2;
       }
     }
 
     else
     {
-      -[_UIPopoverLayoutInfo setPreferredArrowDirections:](self->_preferredLayoutInfo, "setPreferredArrowDirections:", [v22 arrowDirection]);
+      -[_UIPopoverLayoutInfo setPreferredArrowDirections:](self->_preferredLayoutInfo, "setPreferredArrowDirections:", [_layoutInfoForCurrentKeyboardState arrowDirection]);
       v28 = 1;
     }
 
@@ -1278,17 +1278,17 @@ LABEL_25:
     popoverView = self->_popoverView;
     if ([(UIPopoverPresentationController *)self _shouldHideArrow])
     {
-      v39 = 0;
+      arrowDirection2 = 0;
     }
 
     else
     {
-      v39 = [v23 arrowDirection];
+      arrowDirection2 = [v23 arrowDirection];
     }
 
-    [(_UIPopoverView *)popoverView setArrowDirection:v39];
-    v40 = [(UIPresentationController *)self presentedViewController];
-    [v40 _updateContentOverlayInsetsFromParentIfNecessary];
+    [(_UIPopoverView *)popoverView setArrowDirection:arrowDirection2];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController _updateContentOverlayInsetsFromParentIfNecessary];
 
     v41 = self->_popoverView;
     [(_UIPopoverView *)v41 safeAreaInsetsForContentView];
@@ -1299,8 +1299,8 @@ LABEL_25:
     }
 
     v46 = self->_popoverView;
-    v47 = [(UIPopoverPresentationController *)self _cornerConfiguration];
-    [(UIView *)v46 setCornerConfiguration:v47];
+    _cornerConfiguration = [(UIPopoverPresentationController *)self _cornerConfiguration];
+    [(UIView *)v46 setCornerConfiguration:_cornerConfiguration];
 
     v48 = self->_popoverView;
     [v23 offset];
@@ -1316,7 +1316,7 @@ LABEL_25:
 
 - (void)_sendDelegateWillRepositionToRect
 {
-  v4 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if ((*&self->_popoverControllerFlags & 0x80) != 0)
   {
     if (!dyld_program_sdk_at_least())
@@ -1324,25 +1324,25 @@ LABEL_25:
       goto LABEL_7;
     }
 
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIPopoverPresentationController.m" lineNumber:2402 description:@"Trying to layout popover in the delegate callback popoverPresentationController:willRepositionPopoverToRect:inView: will lead to recursion. Do not force the popover's container view or an ancestor to layout in this callback."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPopoverPresentationController.m" lineNumber:2402 description:@"Trying to layout popover in the delegate callback popoverPresentationController:willRepositionPopoverToRect:inView: will lead to recursion. Do not force the popover's container view or an ancestor to layout in this callback."];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UIPresentationController *)self barButtonItem];
+    barButtonItem = [(UIPresentationController *)self barButtonItem];
 
-    if (!v6)
+    if (!barButtonItem)
     {
-      v7 = [(UIPresentationController *)self sourceView];
+      sourceView = [(UIPresentationController *)self sourceView];
       [(UIPresentationController *)self sourceRect];
       v15 = v8;
       v16 = v9;
       v17 = v10;
       v18 = v11;
       *&self->_popoverControllerFlags |= 0x80u;
-      v14 = v7;
-      [v4 popoverPresentationController:self willRepositionPopoverToRect:&v15 inView:&v14];
+      v14 = sourceView;
+      [delegate popoverPresentationController:self willRepositionPopoverToRect:&v15 inView:&v14];
       v12 = v14;
 
       *&self->_popoverControllerFlags &= ~0x80u;
@@ -1373,19 +1373,19 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   return result;
 }
 
-- (void)_configureRootPresentationControllerForHostWindow:(id)a3
+- (void)_configureRootPresentationControllerForHostWindow:(id)window
 {
-  v3 = [a3 _rootPresentationController];
-  [v3 set_shouldDisableAppearanceCallbacksForPresentedViewController:1];
+  _rootPresentationController = [window _rootPresentationController];
+  [_rootPresentationController set_shouldDisableAppearanceCallbacksForPresentedViewController:1];
 }
 
 - (BOOL)_isSourceViewSafeForMorphing
 {
-  v3 = [(UIPresentationController *)self _realSourceView];
-  if (v3)
+  _realSourceView = [(UIPresentationController *)self _realSourceView];
+  if (_realSourceView)
   {
-    v4 = [(UIPresentationController *)self containerView];
-    v5 = v3 != v4;
+    containerView = [(UIPresentationController *)self containerView];
+    v5 = _realSourceView != containerView;
   }
 
   else
@@ -1396,25 +1396,25 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   return v5;
 }
 
-+ (UIEdgeInsets)_defaultPopoverLayoutMarginsForPopoverControllerStyle:(int64_t)a3 andContentViewController:(id)a4
++ (UIEdgeInsets)_defaultPopoverLayoutMarginsForPopoverControllerStyle:(int64_t)style andContentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 || (v8 = 10.0, v9 = 10.0, v10 = 10.0, v11 = 10.0, (_UISolariumEnabled() & 1) == 0))
+  if (userInterfaceIdiom || (v8 = 10.0, v9 = 10.0, v10 = 10.0, v11 = 10.0, (_UISolariumEnabled() & 1) == 0))
   {
     v9 = 0.0;
-    if (a3 == 1)
+    if (style == 1)
     {
-      v12 = [v5 view];
-      [v12 bounds];
+      view = [controllerCopy view];
+      [view bounds];
       v8 = -CGRectGetWidth(v19);
 
-      v13 = [v5 view];
-      v14 = [v13 _shouldReverseLayoutDirection];
+      view2 = [controllerCopy view];
+      _shouldReverseLayoutDirection = [view2 _shouldReverseLayoutDirection];
 
-      if (v14)
+      if (_shouldReverseLayoutDirection)
       {
         v10 = -1.0;
       }
@@ -1424,7 +1424,7 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
         v10 = v8;
       }
 
-      if (!v14)
+      if (!_shouldReverseLayoutDirection)
       {
         v8 = -1.0;
       }
@@ -1434,7 +1434,7 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
 
     else
     {
-      if (a3)
+      if (style)
       {
         v8 = 0.0;
       }
@@ -1444,7 +1444,7 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
         v8 = 19.0;
       }
 
-      if (a3)
+      if (style)
       {
         v10 = 0.0;
       }
@@ -1454,7 +1454,7 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
         v10 = 19.0;
       }
 
-      if (a3)
+      if (style)
       {
         v11 = 0.0;
       }
@@ -1464,7 +1464,7 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
         v11 = 30.0;
       }
 
-      if (!a3)
+      if (!style)
       {
         v9 = 10.0;
       }
@@ -1489,11 +1489,11 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   return 0;
 }
 
-- (UIPopoverPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (UIPopoverPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v31.receiver = self;
   v31.super_class = UIPopoverPresentationController;
-  v4 = [(UIPresentationController *)&v31 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(UIPresentationController *)&v31 initWithPresentedViewController:controller presentingViewController:viewController];
   v5 = v4;
   if (v4)
   {
@@ -1530,8 +1530,8 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
       popoverBackgroundViewClass = [(UIPopoverPresentationController *)v5 _defaultChromeViewClass];
     }
 
-    v10 = [(UIPopoverPresentationController *)v5 _popoverHostingWindow];
-    v11 = [(UIPopoverPresentationController *)v5 _layoutInfoForCurrentKeyboardStateAndHostingWindow:v10];
+    _popoverHostingWindow = [(UIPopoverPresentationController *)v5 _popoverHostingWindow];
+    v11 = [(UIPopoverPresentationController *)v5 _layoutInfoForCurrentKeyboardStateAndHostingWindow:_popoverHostingWindow];
     -[objc_class _contentViewCornerRadiusForArrowDirection:](popoverBackgroundViewClass, "_contentViewCornerRadiusForArrowDirection:", [v11 arrowDirection]);
     v13 = [[_UIRoundedRectShadowView alloc] initWithCornerRadius:v12];
     shadowView = v5->_shadowView;
@@ -1553,15 +1553,15 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
       [(UIPresentationController *)v5 setSourceRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     }
 
-    v17 = [(UIPresentationController *)v5 _internalTraitOverrides];
-    [v17 setHorizontalSizeClass:1];
+    _internalTraitOverrides = [(UIPresentationController *)v5 _internalTraitOverrides];
+    [_internalTraitOverrides setHorizontalSizeClass:1];
 
-    v18 = [(UIPresentationController *)v5 _internalTraitOverrides];
-    [v18 _setNSIntegerValue:3 forTraitToken:0x1EFE32578];
+    _internalTraitOverrides2 = [(UIPresentationController *)v5 _internalTraitOverrides];
+    [_internalTraitOverrides2 _setNSIntegerValue:3 forTraitToken:0x1EFE32578];
 
-    v19 = [objc_opt_class() _showTargetRectPref];
-    v5->_showsTargetRect = v19;
-    if (v19)
+    _showTargetRectPref = [objc_opt_class() _showTargetRectPref];
+    v5->_showsTargetRect = _showTargetRectPref;
+    if (_showTargetRectPref)
     {
       v20 = +[UIColor redColor];
       v21 = [v20 colorWithAlphaComponent:0.2];
@@ -1574,18 +1574,18 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
 
       [(UIView *)v5->_targetRectView setUserInteractionEnabled:0];
       v24 = +[UIColor redColor];
-      v25 = [v24 CGColor];
-      v26 = [(UIView *)v5->_targetRectView layer];
-      [v26 setBorderColor:v25];
+      cGColor = [v24 CGColor];
+      layer = [(UIView *)v5->_targetRectView layer];
+      [layer setBorderColor:cGColor];
 
-      v27 = [(UIView *)v5->_targetRectView layer];
-      [v27 setBorderWidth:2.0];
+      layer2 = [(UIView *)v5->_targetRectView layer];
+      [layer2 setBorderWidth:2.0];
 
       [(UIView *)v5->_targetRectView _setContinuousCornerRadius:4.0];
     }
 
-    v28 = [(UIPopoverPresentationController *)v5 _metrics];
-    v5->__shouldHideArrow = [v28 shouldHideArrow];
+    _metrics = [(UIPopoverPresentationController *)v5 _metrics];
+    v5->__shouldHideArrow = [_metrics shouldHideArrow];
 
     v5->__ignoreBarButtonItemSiblings = dyld_program_sdk_at_least();
     v5->__defaultPopoverSizeOverride = *MEMORY[0x1E695F060];
@@ -1602,23 +1602,23 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
 {
   v10[5] = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10[0] = @"UIKeyboardWillShowNotification";
   v10[1] = @"UIKeyboardDidHideNotification";
   v10[2] = @"_UIScrollViewWillBeginDraggingNotification";
   v10[3] = @"_UIScrollViewDidEndDraggingNotification";
   v10[4] = @"UIFocusDidUpdateNotification";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:5];
-  [(NSNotificationCenter *)v4 _uiRemoveObserver:v5 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v5 names:?];
 
   [(_UIPopoverView *)self->_popoverView setPopoverController:0];
   [(UIDimmingView *)self->_dimmingView setDelegate:0];
-  v6 = [(UIGestureRecognizer *)self->_vendedGestureRecognizer view];
-  [v6 removeGestureRecognizer:self->_vendedGestureRecognizer];
+  view = [(UIGestureRecognizer *)self->_vendedGestureRecognizer view];
+  [view removeGestureRecognizer:self->_vendedGestureRecognizer];
 
   [(UIGestureRecognizer *)self->_vendedGestureRecognizer removeTarget:self action:sel__swipe_];
-  v7 = [(UIGestureRecognizer *)self->_dimmingViewGestureRecognizer view];
-  [v7 removeGestureRecognizer:self->_dimmingViewGestureRecognizer];
+  view2 = [(UIGestureRecognizer *)self->_dimmingViewGestureRecognizer view];
+  [view2 removeGestureRecognizer:self->_dimmingViewGestureRecognizer];
 
   [(UIGestureRecognizer *)self->_dimmingViewGestureRecognizer removeTarget:self action:sel__swipe_];
   [(UIPopoverPresentationController *)self _cancelDelayedFocusAutoDismiss];
@@ -1631,11 +1631,11 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   [(UIPresentationController *)&v9 dealloc];
 }
 
-- (void)_prepareForWindowDeallocRecursively:(BOOL)a3
+- (void)_prepareForWindowDeallocRecursively:(BOOL)recursively
 {
   v4.receiver = self;
   v4.super_class = UIPopoverPresentationController;
-  [(UIPresentationController *)&v4 _prepareForWindowDeallocRecursively:a3];
+  [(UIPresentationController *)&v4 _prepareForWindowDeallocRecursively:recursively];
   if (self->_hostManager)
   {
     if (objc_opt_respondsToSelector())
@@ -1645,17 +1645,17 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   }
 }
 
-- (void)_setPopoverFrame:(CGRect)a3 animated:(BOOL)a4 coordinator:(id)a5
+- (void)_setPopoverFrame:(CGRect)frame animated:(BOOL)animated coordinator:(id)coordinator
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  animatedCopy = animated;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  coordinatorCopy = coordinator;
   v12 = self->_popoverView;
-  v13 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
-  [v13 offset];
+  _layoutInfoForCurrentKeyboardState = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+  [_layoutInfoForCurrentKeyboardState offset];
   v15 = v14;
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1672,12 +1672,12 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   v37 = v15;
   v17 = _Block_copy(aBlock);
   v18 = v17;
-  if (v5)
+  if (animatedCopy)
   {
-    v19 = [(UIPresentationController *)self presentedViewController];
-    v20 = [v19 _transitionCoordinator];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    _transitionCoordinator = [presentedViewController _transitionCoordinator];
 
-    if (v20)
+    if (_transitionCoordinator)
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
@@ -1685,9 +1685,9 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
       v29[3] = &unk_1E7101880;
       v29[4] = self;
       v30 = v18;
-      [v20 animateAlongsideTransition:0 completion:v29];
-      [v11 _runAlongsideAnimations];
-      [v11 _runAlongsideCompletionsAfterCommit];
+      [_transitionCoordinator animateAlongsideTransition:0 completion:v29];
+      [coordinatorCopy _runAlongsideAnimations];
+      [coordinatorCopy _runAlongsideCompletionsAfterCommit];
       v21 = v30;
     }
 
@@ -1700,7 +1700,7 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
       v26[2] = __73__UIPopoverPresentationController__setPopoverFrame_animated_coordinator___block_invoke_3;
       v26[3] = &unk_1E70F4A50;
       v28 = v18;
-      v27 = v11;
+      v27 = coordinatorCopy;
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __73__UIPopoverPresentationController__setPopoverFrame_animated_coordinator___block_invoke_4;
@@ -1715,8 +1715,8 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   else
   {
     (*(v17 + 2))(v17);
-    [v11 _runAlongsideAnimations];
-    [v11 _runAlongsideCompletionsAfterCommit];
+    [coordinatorCopy _runAlongsideAnimations];
+    [coordinatorCopy _runAlongsideCompletionsAfterCommit];
   }
 }
 
@@ -1788,20 +1788,20 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   return v2;
 }
 
-- (void)setPopoverContentSize:(CGSize)a3 animated:(BOOL)a4
+- (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated
 {
   if (!self->_popoverControllerStyle)
   {
-    v4 = a4;
-    height = a3.height;
-    width = a3.width;
-    self->_popoverContentSize = a3;
+    animatedCopy = animated;
+    height = size.height;
+    width = size.width;
+    self->_popoverContentSize = size;
     v8 = [(_UIPopoverLayoutInfo *)self->_preferredLayoutInfo copy];
     [v8 setPreferredContentSize:{width, height}];
     if ((*&self->_popoverControllerFlags & 0x10) != 0 && self->_layoutConstraintView)
     {
-      v9 = [(UIView *)self->_popoverView superview];
-      [v9 convertRect:self->_layoutConstraintView toView:{self->_targetRectInEmbeddingView.origin.x, self->_targetRectInEmbeddingView.origin.y, self->_targetRectInEmbeddingView.size.width, self->_targetRectInEmbeddingView.size.height}];
+      superview = [(UIView *)self->_popoverView superview];
+      [superview convertRect:self->_layoutConstraintView toView:{self->_targetRectInEmbeddingView.origin.x, self->_targetRectInEmbeddingView.origin.y, self->_targetRectInEmbeddingView.size.width, self->_targetRectInEmbeddingView.size.height}];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -1810,19 +1810,19 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
       [v8 setSourceViewRect:{v11, v13, v15, v17}];
     }
 
-    v18 = [(_UIPopoverView *)self->_popoverView backgroundView];
-    v19 = v18;
-    if (v18)
+    backgroundView = [(_UIPopoverView *)self->_popoverView backgroundView];
+    v19 = backgroundView;
+    if (backgroundView)
     {
-      [v18 _contentViewInsets];
+      [backgroundView _contentViewInsets];
       [v8 setContentInset:?];
     }
 
     [(UIPopoverPresentationController *)self setPreferredLayoutInfo:v8];
     if ([(UIPopoverPresentationController *)self isPopoverVisible]|| [(UIPopoverPresentationController *)self _isPresenting])
     {
-      v20 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
-      [v20 frame];
+      _layoutInfoForCurrentKeyboardState = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+      [_layoutInfoForCurrentKeyboardState frame];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -1839,7 +1839,7 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
       v41.size.height = v28;
       if (!CGRectEqualToRect(v41, v42))
       {
-        if (v4)
+        if (animatedCopy)
         {
           v33 = ![(UIPopoverPresentationController *)self _isPresenting];
         }
@@ -1854,8 +1854,8 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
         v39[2] = 0x3032000000;
         v39[3] = __Block_byref_object_copy__50;
         v39[4] = __Block_byref_object_dispose__50;
-        v34 = self;
-        v40 = v34;
+        selfCopy = self;
+        v40 = selfCopy;
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __66__UIPopoverPresentationController_setPopoverContentSize_animated___block_invoke;
@@ -1871,7 +1871,7 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
         if (v33)
         {
           [(UIView *)self->_popoverView layoutBelowIfNeeded];
-          [(UIPopoverPresentationController *)v34 _presentationAnimationDuration];
+          [(UIPopoverPresentationController *)selfCopy _presentationAnimationDuration];
           [UIView animateWithDuration:"animateWithDuration:delay:options:animations:completion:" delay:0 options:v36 animations:0 completion:?];
         }
 
@@ -1921,21 +1921,21 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   }
 }
 
-- (void)_setBackgroundBlurDisabled:(BOOL)a3
+- (void)_setBackgroundBlurDisabled:(BOOL)disabled
 {
-  if (self->_backgroundBlurDisabled != a3)
+  if (self->_backgroundBlurDisabled != disabled)
   {
-    self->_backgroundBlurDisabled = a3;
-    v4 = [(_UIPopoverView *)self->_popoverView backgroundView];
-    [v4 _setChromeHidden:self->_backgroundBlurDisabled];
+    self->_backgroundBlurDisabled = disabled;
+    backgroundView = [(_UIPopoverView *)self->_popoverView backgroundView];
+    [backgroundView _setChromeHidden:self->_backgroundBlurDisabled];
   }
 }
 
-- (void)_setBackgroundBlurEffectStyle:(int64_t)a3
+- (void)_setBackgroundBlurEffectStyle:(int64_t)style
 {
-  if (self->_backgroundBlurEffectStyle != a3)
+  if (self->_backgroundBlurEffectStyle != style)
   {
-    self->_backgroundBlurEffectStyle = a3;
+    self->_backgroundBlurEffectStyle = style;
     [(_UIPopoverView *)self->_popoverView setBackgroundBlurEffectStyle:?];
   }
 }
@@ -1952,7 +1952,7 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   }
 }
 
-- (Class)_popoverLayoutInfoForChromeClass:(Class)a3
+- (Class)_popoverLayoutInfoForChromeClass:(Class)class
 {
   objc_opt_class();
   v3 = objc_opt_class();
@@ -1960,9 +1960,9 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   return v3;
 }
 
-- (void)_incrementSlideTransitionCount:(BOOL)a3
+- (void)_incrementSlideTransitionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v4 = 1;
   }
@@ -1971,8 +1971,8 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   {
     if (!self->_slideTransitionCount)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"UIPopoverPresentationController.m" lineNumber:806 description:@"About to overflow slide transition count"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIPopoverPresentationController.m" lineNumber:806 description:@"About to overflow slide transition count"];
     }
 
     v4 = -1;
@@ -1987,10 +1987,10 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   self->_preferredLayoutInfo = 0;
 }
 
-- (CGPoint)_centerPointForScale:(double)a3 frame:(CGRect)a4 anchor:(CGPoint)a5
+- (CGPoint)_centerPointForScale:(double)scale frame:(CGRect)frame anchor:(CGPoint)anchor
 {
-  v5 = round(a4.origin.x + a4.size.width * 0.5 * a3 - (a3 + -1.0) * a5.x);
-  v6 = a4.size.height * 0.5 * a3 + round(a4.origin.y - (a3 + -1.0) * a5.y);
+  v5 = round(frame.origin.x + frame.size.width * 0.5 * scale - (scale + -1.0) * anchor.x);
+  v6 = frame.size.height * 0.5 * scale + round(frame.origin.y - (scale + -1.0) * anchor.y);
   v7 = v5;
   result.y = v6;
   result.x = v7;
@@ -1999,30 +1999,30 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
 
 - (BOOL)_isShimmingPopoverControllerPresentation
 {
-  v2 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_setPopoverView:(id)a3
+- (void)_setPopoverView:(id)view
 {
-  v5 = a3;
-  if (self->_popoverView != v5)
+  viewCopy = view;
+  if (self->_popoverView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_popoverView, a3);
-    v5 = v6;
+    v6 = viewCopy;
+    objc_storeStrong(&self->_popoverView, view);
+    viewCopy = v6;
   }
 }
 
-- (void)_setArrowOffset:(double)a3
+- (void)_setArrowOffset:(double)offset
 {
   [(_UIPopoverLayoutInfo *)self->_preferredLayoutInfo setArrowOffset:?];
   popoverView = self->_popoverView;
 
-  [(_UIPopoverView *)popoverView setArrowOffset:a3];
+  [(_UIPopoverView *)popoverView setArrowOffset:offset];
 }
 
 - (CGSize)_currentPopoverContentSize
@@ -2030,8 +2030,8 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   popoverView = self->_popoverView;
   if (popoverView)
   {
-    v3 = [(_UIPopoverView *)popoverView contentView];
-    [v3 bounds];
+    contentView = [(_UIPopoverView *)popoverView contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
   }
@@ -2049,16 +2049,16 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   return result;
 }
 
-- (void)_transitionFromViewController:(id)a3 toViewController:(id)a4 animated:(BOOL)a5
+- (void)_transitionFromViewController:(id)controller toViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 view];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  view = [viewControllerCopy view];
   p_popoverContentSize = &self->_popoverContentSize;
   if (self->_popoverContentSize.width == *MEMORY[0x1E695F060] && self->_popoverContentSize.height == *(MEMORY[0x1E695F060] + 8))
   {
-    [v9 _resolvedPreferredContentSize];
+    [viewControllerCopy _resolvedPreferredContentSize];
     p_popoverContentSize->width = v13;
     self->_popoverContentSize.height = v14;
   }
@@ -2066,35 +2066,35 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
   popoverView = self->_popoverView;
   if (popoverView)
   {
-    v34 = v5;
-    v16 = [(_UIPopoverView *)popoverView contentView];
-    v17 = [v9 view];
-    v18 = [v8 view];
-    [v16 bounds];
-    [v17 setFrame:?];
-    v19 = [(UIViewController *)v9 _parentViewController];
+    v34 = animatedCopy;
+    contentView = [(_UIPopoverView *)popoverView contentView];
+    view2 = [viewControllerCopy view];
+    view3 = [controllerCopy view];
+    [contentView bounds];
+    [view2 setFrame:?];
+    _parentViewController = [(UIViewController *)viewControllerCopy _parentViewController];
 
-    if (v19)
+    if (_parentViewController)
     {
-      v20 = [v9 _existingView];
-      v21 = [v20 window];
+      _existingView = [viewControllerCopy _existingView];
+      window = [_existingView window];
 
-      if (v9)
+      if (viewControllerCopy)
       {
-        v22 = v9[192];
-        v9[192] = v22 | 0x100;
-        [v9 setParentViewController:0];
-        v9[192] = v9[192] & 0xFEFF | v22 & 0x100;
+        v22 = viewControllerCopy[192];
+        viewControllerCopy[192] = v22 | 0x100;
+        [viewControllerCopy setParentViewController:0];
+        viewControllerCopy[192] = viewControllerCopy[192] & 0xFEFF | v22 & 0x100;
       }
 
-      [v9 _setNavigationControllerContentInsetAdjustment:{0.0, 0.0, 0.0, 0.0}];
-      if (v21)
+      [viewControllerCopy _setNavigationControllerContentInsetAdjustment:{0.0, 0.0, 0.0, 0.0}];
+      if (window)
       {
-        [v9 setPerformingModalTransition:1];
-        v23 = [v9 _existingView];
-        [v23 removeFromSuperview];
+        [viewControllerCopy setPerformingModalTransition:1];
+        _existingView2 = [viewControllerCopy _existingView];
+        [_existingView2 removeFromSuperview];
 
-        [v9 setPerformingModalTransition:0];
+        [viewControllerCopy setPerformingModalTransition:0];
       }
     }
 
@@ -2116,16 +2116,16 @@ id __59__UIPopoverPresentationController__configureZoomTransition__block_invoke(
     v40[1] = 3221225472;
     v40[2] = __91__UIPopoverPresentationController__transitionFromViewController_toViewController_animated___block_invoke;
     v40[3] = &unk_1E70F35B8;
-    v29 = v9;
+    v29 = viewControllerCopy;
     v41 = v29;
-    v42 = self;
+    selfCopy = self;
     [UIView performWithoutAnimation:v40];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __91__UIPopoverPresentationController__transitionFromViewController_toViewController_animated___block_invoke_2;
     aBlock[3] = &unk_1E70F35B8;
     v38 = v29;
-    v30 = v18;
+    v30 = view3;
     v39 = v30;
     v31 = _Block_copy(aBlock);
     v35[0] = MEMORY[0x1E69E9820];
@@ -2170,14 +2170,14 @@ uint64_t __91__UIPopoverPresentationController__transitionFromViewController_toV
   return [v3 setAlpha:0.0];
 }
 
-- (void)_performHierarchyCheckOnViewController:(id)a3
+- (void)_performHierarchyCheckOnViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [(UIViewController *)v6 _parentViewController];
-  if (v4)
+  controllerCopy = controller;
+  _parentViewController = [(UIViewController *)controllerCopy _parentViewController];
+  if (_parentViewController)
   {
-    v3 = [(UIViewController *)v6 _parentViewController];
-    if (([v3 _optsOutOfPopoverControllerHierarchyCheck] & 1) == 0)
+    _parentViewController2 = [(UIViewController *)controllerCopy _parentViewController];
+    if (([_parentViewController2 _optsOutOfPopoverControllerHierarchyCheck] & 1) == 0)
     {
 
 LABEL_7:
@@ -2186,13 +2186,13 @@ LABEL_7:
     }
   }
 
-  v5 = [v6 _parentModalViewController];
+  _parentModalViewController = [controllerCopy _parentModalViewController];
 
-  if (v4)
+  if (_parentViewController)
   {
   }
 
-  if (v5)
+  if (_parentModalViewController)
   {
     goto LABEL_7;
   }
@@ -2200,32 +2200,32 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setArrowBackgroundColor:(id)a3
+- (void)setArrowBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_arrowBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_arrowBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_arrowBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_arrowBackgroundColor, color);
     [(_UIPopoverView *)self->_popoverView setArrowBackgroundColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  v3 = a3;
-  if (self->_cornerRadius != a3)
+  radiusCopy = radius;
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
-    if (a3 == -1.0)
+    self->_cornerRadius = radius;
+    if (radius == -1.0)
     {
-      v5 = [(UIPopoverPresentationController *)self _metrics];
-      [v5 cornerRadius];
-      v3 = v6;
+      _metrics = [(UIPopoverPresentationController *)self _metrics];
+      [_metrics cornerRadius];
+      radiusCopy = v6;
     }
 
-    v7 = [UICornerRadius fixedRadius:v3];
+    v7 = [UICornerRadius fixedRadius:radiusCopy];
     v8 = [UICornerConfiguration configurationWithRadius:v7];
 
     cornerConfiguration = self->_cornerConfiguration;
@@ -2233,55 +2233,55 @@ LABEL_8:
     v10 = v8;
 
     [(UIView *)self->_popoverView setCornerConfiguration:v10];
-    v11 = [(UIPresentationController *)self _internalTraitOverrides];
-    [v11 _setCGFloatValue:0x1EFE32548 forTraitToken:v3];
+    _internalTraitOverrides = [(UIPresentationController *)self _internalTraitOverrides];
+    [_internalTraitOverrides _setCGFloatValue:0x1EFE32548 forTraitToken:radiusCopy];
   }
 }
 
-- (void)_setCornerConfiguration:(id)a3
+- (void)_setCornerConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   cornerConfiguration = self->_cornerConfiguration;
   self->_cornerConfiguration = v4;
   v6 = v4;
 
   [(UIView *)self->_popoverView setCornerConfiguration:v6];
   self->_cornerRadius = -1.0;
-  v7 = [(UIPresentationController *)self _internalTraitOverrides];
-  [(_UITraitOverrides *)v7 _removeTraitToken:?];
+  _internalTraitOverrides = [(UIPresentationController *)self _internalTraitOverrides];
+  [(_UITraitOverrides *)_internalTraitOverrides _removeTraitToken:?];
 }
 
-- (void)_setPrefersZoomTransitions:(BOOL)a3
+- (void)_setPrefersZoomTransitions:(BOOL)transitions
 {
-  if (self->__prefersZoomTransitions != a3)
+  if (self->__prefersZoomTransitions != transitions)
   {
-    self->__prefersZoomTransitions = a3;
+    self->__prefersZoomTransitions = transitions;
     [(UIPopoverPresentationController *)self _configureZoomTransition];
   }
 }
 
-- (void)_setAllowDismissalTapsToPassThrough:(BOOL)a3
+- (void)_setAllowDismissalTapsToPassThrough:(BOOL)through
 {
-  if (self->_allowDismissalTapsToPassThrough != a3)
+  if (self->_allowDismissalTapsToPassThrough != through)
   {
-    self->_allowDismissalTapsToPassThrough = a3;
+    self->_allowDismissalTapsToPassThrough = through;
     [(_UIPopoverDimmingView *)self->_dimmingView setPassThroughDismissalTaps:?];
   }
 }
 
-- (void)_setAccessoryView:(id)a3
+- (void)_setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryView = self->_accessoryView;
-  if (accessoryView != v5)
+  if (accessoryView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
-    v7 = [(UIPresentationController *)self containerView];
-    [v7 setNeedsLayout];
+    objc_storeStrong(&self->_accessoryView, view);
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView setNeedsLayout];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
@@ -2289,16 +2289,16 @@ LABEL_8:
 {
   if (self->_hostManager && self->_popoverIdentifier)
   {
-    v3 = [(UIPopoverPresentationController *)self _hostManagerPopoverUpdateConfiguration];
+    _hostManagerPopoverUpdateConfiguration = [(UIPopoverPresentationController *)self _hostManagerPopoverUpdateConfiguration];
     [(UIPopoverPresentationController *)self _sourceRectInContainerView];
-    [v3 setSourceRectInParentUIWindow:?];
-    [(_UIPopoverHostManager *)self->_hostManager updatePopoverWithIdentifier:self->_popoverIdentifier configuration:v3];
+    [_hostManagerPopoverUpdateConfiguration setSourceRectInParentUIWindow:?];
+    [(_UIPopoverHostManager *)self->_hostManager updatePopoverWithIdentifier:self->_popoverIdentifier configuration:_hostManagerPopoverUpdateConfiguration];
   }
 }
 
-- (void)_setPopoverBackgroundStyle:(int64_t)a3
+- (void)_setPopoverBackgroundStyle:(int64_t)style
 {
-  self->_popoverBackgroundStyle = a3;
+  self->_popoverBackgroundStyle = style;
   popoverView = self->_popoverView;
   if (popoverView)
   {
@@ -2306,29 +2306,29 @@ LABEL_8:
   }
 }
 
-- (void)_setContentViewController:(id)a3 backgroundStyle:(int64_t)a4 animated:(BOOL)a5
+- (void)_setContentViewController:(id)controller backgroundStyle:(int64_t)style animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  self->_popoverBackgroundStyle = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  self->_popoverBackgroundStyle = style;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__50;
   v16 = __Block_byref_object_dispose__50;
-  v9 = self;
-  v17 = v9;
+  selfCopy = self;
+  v17 = selfCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__UIPopoverPresentationController__setContentViewController_backgroundStyle_animated___block_invoke;
   v11[3] = &unk_1E7101790;
   v11[4] = &v12;
-  v11[5] = a4;
+  v11[5] = style;
   v10 = _Block_copy(v11);
-  [v13[5] _setContentViewController:v8 animated:v5];
-  if (v5)
+  [v13[5] _setContentViewController:controllerCopy animated:animatedCopy];
+  if (animatedCopy)
   {
-    [(UIPopoverPresentationController *)v9 _presentationAnimationDuration];
+    [(UIPopoverPresentationController *)selfCopy _presentationAnimationDuration];
     [UIView animateWithDuration:"animateWithDuration:delay:options:animations:completion:" delay:4 options:v10 animations:0 completion:?];
   }
 
@@ -2342,37 +2342,37 @@ LABEL_8:
 
 - (void)_presentedViewControllerUserInterfaceStyleChanged
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   popoverView = self->_popoverView;
-  v8 = v3;
-  v5 = [v3 traitCollection];
-  -[UIView setOverrideUserInterfaceStyle:](popoverView, "setOverrideUserInterfaceStyle:", [v5 userInterfaceStyle]);
+  v8 = presentedViewController;
+  traitCollection = [presentedViewController traitCollection];
+  -[UIView setOverrideUserInterfaceStyle:](popoverView, "setOverrideUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
   if (self->_popoverIdentifier && self->_hostManager && (objc_opt_respondsToSelector() & 1) != 0)
   {
     hostManager = self->_hostManager;
-    v7 = [v8 traitCollection];
-    -[_UIPopoverHostManager updateUserInterfaceStyle:forPopoverWithIdentifier:](hostManager, "updateUserInterfaceStyle:forPopoverWithIdentifier:", [v7 userInterfaceStyle], self->_popoverIdentifier);
+    traitCollection2 = [v8 traitCollection];
+    -[_UIPopoverHostManager updateUserInterfaceStyle:forPopoverWithIdentifier:](hostManager, "updateUserInterfaceStyle:forPopoverWithIdentifier:", [traitCollection2 userInterfaceStyle], self->_popoverIdentifier);
   }
 }
 
-- (id)_completionBlockForDismissalWhenNotifyingDelegate:(BOOL)a3
+- (id)_completionBlockForDismissalWhenNotifyingDelegate:(BOOL)delegate
 {
   v5 = self->_dimmingView;
   v6 = self->_dimmingViewGestureRecognizer;
   v7 = self->_popoverView;
-  v8 = self;
+  selfCopy = self;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__UIPopoverPresentationController__completionBlockForDismissalWhenNotifyingDelegate___block_invoke;
   v16[3] = &unk_1E71017B8;
   v17 = v6;
   v18 = v5;
-  v22 = a3;
+  delegateCopy = delegate;
   v19 = v7;
-  v20 = v8;
-  v21 = v8;
-  v9 = v8;
+  v20 = selfCopy;
+  v21 = selfCopy;
+  v9 = selfCopy;
   v10 = v7;
   v11 = v5;
   v12 = v6;
@@ -2421,8 +2421,8 @@ void __85__UIPopoverPresentationController__completionBlockForDismissalWhenNotif
   [(UIPopoverPresentationController *)self _stopWatchingForNotifications];
   if (self->_showsTargetRect)
   {
-    v3 = [(UIPopoverPresentationController *)self _targetRectView];
-    [v3 removeFromSuperview];
+    _targetRectView = [(UIPopoverPresentationController *)self _targetRectView];
+    [_targetRectView removeFromSuperview];
   }
 
   if (self->_showsOrientationMarker)
@@ -2445,40 +2445,40 @@ void __85__UIPopoverPresentationController__completionBlockForDismissalWhenNotif
   }
 }
 
-- (void)_setAllowsFocusInPresentingViewController:(BOOL)a3
+- (void)_setAllowsFocusInPresentingViewController:(BOOL)controller
 {
-  v3 = a3;
-  self->__allowsFocusInPresentingViewController = a3;
-  v5 = [(UIPresentationController *)self containerView];
-  v7 = [v5 _focusBehavior];
+  controllerCopy = controller;
+  self->__allowsFocusInPresentingViewController = controller;
+  containerView = [(UIPresentationController *)self containerView];
+  _focusBehavior = [containerView _focusBehavior];
 
-  if (([v7 supportsViewTransparency] & 1) == 0)
+  if (([_focusBehavior supportsViewTransparency] & 1) == 0)
   {
-    v6 = [(UIPresentationController *)self containerView];
-    [v6 _setFocusInteractionEnabled:v3 ^ 1];
+    containerView2 = [(UIPresentationController *)self containerView];
+    [containerView2 _setFocusInteractionEnabled:controllerCopy ^ 1];
   }
 
-  if ([v7 autoDismissesPopoverControllersOnFocusIntersection])
+  if ([_focusBehavior autoDismissesPopoverControllersOnFocusIntersection])
   {
-    [(UIPopoverPresentationController *)self _updateShouldObserveFocusUpdateNotification:v3];
-    if (v3)
+    [(UIPopoverPresentationController *)self _updateShouldObserveFocusUpdateNotification:controllerCopy];
+    if (controllerCopy)
     {
       [(UIPopoverPresentationController *)self _autoDismissIfFocusedItemSufficientlyIntersectsPresentedView];
     }
   }
 }
 
-- (void)_updateShouldObserveFocusUpdateNotification:(BOOL)a3
+- (void)_updateShouldObserveFocusUpdateNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     if ((*&self->_popoverControllerFlags & 0x100) != 0)
     {
       return;
     }
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__observeFocusDidUpdateNotification_ name:@"UIFocusDidUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__observeFocusDidUpdateNotification_ name:@"UIFocusDidUpdateNotification" object:0];
   }
 
   else
@@ -2488,24 +2488,24 @@ void __85__UIPopoverPresentationController__completionBlockForDismissalWhenNotif
       return;
     }
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"UIFocusDidUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIFocusDidUpdateNotification" object:0];
   }
 }
 
-- (void)_observeFocusDidUpdateNotification:(id)a3
+- (void)_observeFocusDidUpdateNotification:(id)notification
 {
-  v11 = a3;
+  notificationCopy = notification;
   [(UIPopoverPresentationController *)self _cancelDelayedFocusAutoDismiss];
-  v4 = [(UIPopoverPresentationController *)self _shouldAutoDismissOnFocusedItemIntersection];
-  v5 = v11;
-  if (v4)
+  _shouldAutoDismissOnFocusedItemIntersection = [(UIPopoverPresentationController *)self _shouldAutoDismissOnFocusedItemIntersection];
+  v5 = notificationCopy;
+  if (_shouldAutoDismissOnFocusedItemIntersection)
   {
-    v6 = [v11 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"UIFocusUpdateContextKey"];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"UIFocusUpdateContextKey"];
 
-    v8 = [v7 nextFocusedItem];
-    if ([(UIPopoverPresentationController *)self _focusedItemFrameIntersectsSufficientlyWithPresentedView:v8])
+    nextFocusedItem = [v7 nextFocusedItem];
+    if ([(UIPopoverPresentationController *)self _focusedItemFrameIntersectsSufficientlyWithPresentedView:nextFocusedItem])
     {
       v9 = _UIInternalPreferenceUsesDefault(&_UIInternalPreference_FocusPopoverAutoDismissDelay, @"FocusPopoverAutoDismissDelay", _UIInternalPreferenceUpdateDouble);
       v10 = *&qword_1EA95E270;
@@ -2517,7 +2517,7 @@ void __85__UIPopoverPresentationController__completionBlockForDismissalWhenNotif
       [(UIPopoverPresentationController *)self performSelector:sel__autoDismissIfFocusedItemSufficientlyIntersectsPresentedView withObject:0 afterDelay:v10];
     }
 
-    v5 = v11;
+    v5 = notificationCopy;
   }
 }
 
@@ -2534,46 +2534,46 @@ void __85__UIPopoverPresentationController__completionBlockForDismissalWhenNotif
   if ([(UIPopoverPresentationController *)self _shouldAutoDismissOnFocusedItemIntersection])
   {
     v3 = [UIFocusSystem focusSystemForEnvironment:self];
-    v5 = [v3 focusedItem];
+    focusedItem = [v3 focusedItem];
 
-    if ([(UIPopoverPresentationController *)self _focusedItemFrameIntersectsSufficientlyWithPresentedView:v5]&& [(UIPresentationController *)self _shouldDismiss])
+    if ([(UIPopoverPresentationController *)self _focusedItemFrameIntersectsSufficientlyWithPresentedView:focusedItem]&& [(UIPresentationController *)self _shouldDismiss])
     {
-      v4 = [(UIPresentationController *)self presentedViewController];
-      [v4 dismissViewControllerAnimated:1 completion:0];
+      presentedViewController = [(UIPresentationController *)self presentedViewController];
+      [presentedViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
 - (BOOL)_shouldAutoDismissOnFocusedItemIntersection
 {
-  v3 = [(UIPopoverPresentationController *)self _allowsFocusInPresentingViewController];
-  if (v3)
+  _allowsFocusInPresentingViewController = [(UIPopoverPresentationController *)self _allowsFocusInPresentingViewController];
+  if (_allowsFocusInPresentingViewController)
   {
 
-    LOBYTE(v3) = [(UIPresentationController *)self presented];
+    LOBYTE(_allowsFocusInPresentingViewController) = [(UIPresentationController *)self presented];
   }
 
-  return v3;
+  return _allowsFocusInPresentingViewController;
 }
 
-- (BOOL)_focusedItemFrameIntersectsSufficientlyWithPresentedView:(id)a3
+- (BOOL)_focusedItemFrameIntersectsSufficientlyWithPresentedView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [(UIPresentationController *)self presentedViewController];
-    v6 = [v5 _existingView];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    _existingView = [presentedViewController _existingView];
 
-    if (!v6)
+    if (!_existingView)
     {
       goto LABEL_13;
     }
 
-    v7 = _UIFocusItemFrameInCoordinateSpace(v4, v6);
+    v7 = _UIFocusItemFrameInCoordinateSpace(viewCopy, _existingView);
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v6 bounds];
+    [_existingView bounds];
     v29.origin.x = v14;
     v29.origin.y = v15;
     v29.size.width = v16;
@@ -2626,18 +2626,18 @@ LABEL_13:
   return v24;
 }
 
-- (BOOL)popoverDimmingViewShouldAllowInteraction:(id)a3
+- (BOOL)popoverDimmingViewShouldAllowInteraction:(id)interaction
 {
-  v4 = [(UIPresentationController *)self _childPresentationController];
-  if (v4)
+  _childPresentationController = [(UIPresentationController *)self _childPresentationController];
+  if (_childPresentationController)
   {
-    v5 = v4;
+    v5 = _childPresentationController;
     while (([v5 shouldPresentInFullscreen] & 1) == 0)
     {
-      v6 = [v5 _childPresentationController];
+      _childPresentationController2 = [v5 _childPresentationController];
 
-      v5 = v6;
-      if (!v6)
+      v5 = _childPresentationController2;
+      if (!_childPresentationController2)
       {
         goto LABEL_5;
       }
@@ -2654,25 +2654,25 @@ LABEL_5:
   }
 }
 
-- (BOOL)popoverDimmingViewDidReceiveDismissalInteraction:(id)a3 atLocation:(CGPoint)a4
+- (BOOL)popoverDimmingViewDidReceiveDismissalInteraction:(id)interaction atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   [(UIPopoverPresentationController *)self set_dismissalInteractionLocation:x, y];
-  v8 = [(UIPopoverPresentationController *)self dimmingViewWasTapped:v7 withDismissCompletion:0];
+  v8 = [(UIPopoverPresentationController *)self dimmingViewWasTapped:interactionCopy withDismissCompletion:0];
 
   [(UIPopoverPresentationController *)self set_dismissalInteractionLocation:1.79769313e308, 1.79769313e308];
   return v8;
 }
 
-- (void)_setGesturesEnabled:(BOOL)a3
+- (void)_setGesturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(UIGestureRecognizer *)self->_vendedGestureRecognizer setEnabled:?];
   dimmingViewGestureRecognizer = self->_dimmingViewGestureRecognizer;
 
-  [(UIGestureRecognizer *)dimmingViewGestureRecognizer setEnabled:v3];
+  [(UIGestureRecognizer *)dimmingViewGestureRecognizer setEnabled:enabledCopy];
 }
 
 + (BOOL)_forceAttemptsToAvoidKeyboard
@@ -2708,8 +2708,8 @@ void __64__UIPopoverPresentationController__forceAttemptsToAvoidKeyboard__block_
     v8[3] = &unk_1E70F3590;
     v8[4] = self;
     [(_UIPopoverLayoutInfo *)preferredLayoutInfo updateProperties:v8];
-    v7 = [(UIPresentationController *)self containerView];
-    [v7 setNeedsLayout];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView setNeedsLayout];
   }
 }
 
@@ -2722,21 +2722,21 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
   return [v2 setContainingFrameInsets:?];
 }
 
-- (id)_layoutInfoFromLayoutInfo:(id)a3 forCurrentKeyboardStateAndHostingWindow:(id)a4
+- (id)_layoutInfoFromLayoutInfo:(id)info forCurrentKeyboardStateAndHostingWindow:(id)window
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  if ([v6 _isRemoteInputHostWindow])
+  windowCopy = window;
+  v7 = [info copy];
+  if ([windowCopy _isRemoteInputHostWindow])
   {
     [v7 setPreferredArrowDirections:2];
   }
 
   if ([(UIPopoverPresentationController *)self _attemptsToAvoidKeyboard])
   {
-    v8 = [v6 windowScene];
-    v9 = [v8 keyboardSceneDelegate];
+    windowScene = [windowCopy windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-    [v9 visibleFrameInView:0];
+    [keyboardSceneDelegate visibleFrameInView:0];
     x = v91.origin.x;
     y = v91.origin.y;
     width = v91.size.width;
@@ -2754,13 +2754,13 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
       v92.size.height = height;
       if (CGRectContainsRect(v92, v100))
       {
-        v18 = [v9 inputViews];
-        v19 = [(UIPresentationController *)self sourceView];
-        v20 = [v18 hierarchyContainsView:v19];
+        inputViews = [keyboardSceneDelegate inputViews];
+        sourceView = [(UIPresentationController *)self sourceView];
+        v20 = [inputViews hierarchyContainsView:sourceView];
 
         if (v20)
         {
-          [v9 visibleInputViewFrameInView:0];
+          [keyboardSceneDelegate visibleInputViewFrameInView:0];
           x = v21;
           y = v22;
           width = v23;
@@ -2784,8 +2784,8 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
             [(UIView *)dimmingView transform];
           }
 
-          [v6 convertRect:0 fromWindow:{x, y, width, height}];
-          [v6 convertRect:self->_dimmingView toView:?];
+          [windowCopy convertRect:0 fromWindow:{x, y, width, height}];
+          [windowCopy convertRect:self->_dimmingView toView:?];
           v31 = v30;
           v33 = v32;
           v35 = v34;
@@ -2858,16 +2858,16 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
   return v7;
 }
 
-- (void)_moveAwayFromTheKeyboard:(id)a3 showing:(BOOL)a4
+- (void)_moveAwayFromTheKeyboard:(id)keyboard showing:(BOOL)showing
 {
   if ((*&self->_popoverControllerFlags & 0x40) == 0)
   {
-    v4 = a4;
+    showingCopy = showing;
     popoverView = self->_popoverView;
-    v7 = a3;
+    keyboardCopy = keyboard;
     [(UIView *)popoverView layoutIfNeeded];
-    v8 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
-    v9 = [v7 objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"];
+    _layoutInfoForCurrentKeyboardState = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+    v9 = [keyboardCopy objectForKey:@"UIKeyboardAnimationDurationUserInfoKey"];
 
     if (v9)
     {
@@ -2880,11 +2880,11 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
       v11 = 0.0;
     }
 
-    v12 = [(UIPresentationController *)self delegate];
+    delegate = [(UIPresentationController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 frame];
-      if ([v12 _popoverPresentationController:self shouldRecalculateArrowDirectionOnKeyboardVisibilityChange:v4 proposedHeight:v13])
+      [_layoutInfoForCurrentKeyboardState frame];
+      if ([delegate _popoverPresentationController:self shouldRecalculateArrowDirectionOnKeyboardVisibilityChange:showingCopy proposedHeight:v13])
       {
         v14 = *(MEMORY[0x1E695F058] + 16);
         self->_previousContainerViewRect.origin = *MEMORY[0x1E695F058];
@@ -2896,9 +2896,9 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
         }
 
         [(_UIPopoverLayoutInfo *)self->_preferredLayoutInfo setPreferredArrowDirections:[(UIPopoverPresentationController *)self _effectivePermittedArrowDirections]];
-        v16 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+        _layoutInfoForCurrentKeyboardState2 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
 
-        v8 = v16;
+        _layoutInfoForCurrentKeyboardState = _layoutInfoForCurrentKeyboardState2;
       }
     }
 
@@ -2908,22 +2908,22 @@ uint64_t __59__UIPopoverPresentationController_setPopoverLayoutMargins___block_i
     aBlock[3] = &unk_1E71017E0;
     v23 = v11;
     aBlock[4] = self;
-    v22 = v8;
-    v17 = v8;
+    v22 = _layoutInfoForCurrentKeyboardState;
+    v17 = _layoutInfoForCurrentKeyboardState;
     v18 = _Block_copy(aBlock);
-    v19 = [(UIPresentationController *)self presentedViewController];
-    v20 = [v19 _transitionCoordinator];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    _transitionCoordinator = [presentedViewController _transitionCoordinator];
 
-    if (v20)
+    if (_transitionCoordinator)
     {
-      if ([v20 isInteractive])
+      if ([_transitionCoordinator isInteractive])
       {
-        [v20 notifyWhenInteractionChangesUsingBlock:v18];
+        [_transitionCoordinator notifyWhenInteractionChangesUsingBlock:v18];
       }
 
       else
       {
-        [v20 animateAlongsideTransition:0 completion:v18];
+        [_transitionCoordinator animateAlongsideTransition:0 completion:v18];
       }
     }
 
@@ -2973,17 +2973,17 @@ uint64_t __68__UIPopoverPresentationController__moveAwayFromTheKeyboard_showing_
   return [v5 _updatePopoverFrame:v7 arrowOffset:{v9, v11, v13, v14}];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   [(UIPopoverPresentationController *)self _sendDelegateWillRepositionToRect];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__UIPopoverPresentationController__keyboardWillShow___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = showCopy;
+  v5 = showCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2994,17 +2994,17 @@ void __53__UIPopoverPresentationController__keyboardWillShow___block_invoke(uint
   [v1 _moveAwayFromTheKeyboard:v2 showing:1];
 }
 
-- (void)_keyboardDidHide:(id)a3
+- (void)_keyboardDidHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   [(UIPopoverPresentationController *)self _sendDelegateWillRepositionToRect];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__UIPopoverPresentationController__keyboardDidHide___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = hideCopy;
+  v5 = hideCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -3015,14 +3015,14 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   [v1 _moveAwayFromTheKeyboard:v2 showing:0];
 }
 
-- (void)_scrollViewWillBeginDragging:(id)a3
+- (void)_scrollViewWillBeginDragging:(id)dragging
 {
   popoverView = self->_popoverView;
-  v5 = [a3 object];
+  object = [dragging object];
   if (popoverView)
   {
-    v9 = v5;
-    v6 = [v5 isDescendantOfView:popoverView];
+    v9 = object;
+    v6 = [object isDescendantOfView:popoverView];
 
     if (v6)
     {
@@ -3053,14 +3053,14 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   }
 }
 
-- (void)_scrollViewDidEndDragging:(id)a3
+- (void)_scrollViewDidEndDragging:(id)dragging
 {
-  v4 = [a3 object];
-  v5 = v4;
+  object = [dragging object];
+  v5 = object;
   if (self->_popoverView)
   {
-    v8 = v4;
-    v6 = [v4 isDescendantOfView:?];
+    v8 = object;
+    v6 = [object isDescendantOfView:?];
     v5 = v8;
     if (v6)
     {
@@ -3077,9 +3077,9 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
 
 - (void)_stopWatchingForScrollViewNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIScrollViewWillBeginDraggingNotification" object:0];
-  [v3 removeObserver:self name:@"_UIScrollViewDidEndDraggingNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIScrollViewWillBeginDraggingNotification" object:0];
+  [defaultCenter removeObserver:self name:@"_UIScrollViewDidEndDraggingNotification" object:0];
 }
 
 - (UISheetPresentationController)adaptiveSheetPresentationController
@@ -3088,9 +3088,9 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   if (!adaptiveSheetPresentationController)
   {
     v4 = [_UIFormSheetPresentationController alloc];
-    v5 = [(UIPresentationController *)self presentedViewController];
-    v6 = [(UIPresentationController *)self presentingViewController];
-    v7 = [(UISheetPresentationController *)v4 initWithPresentedViewController:v5 presentingViewController:v6];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    v7 = [(UISheetPresentationController *)v4 initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
     v8 = self->_adaptiveSheetPresentationController;
     self->_adaptiveSheetPresentationController = v7;
 
@@ -3100,12 +3100,12 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   return adaptiveSheetPresentationController;
 }
 
-- (void)_setIgnoresKeyboardNotifications:(BOOL)a3
+- (void)_setIgnoresKeyboardNotifications:(BOOL)notifications
 {
-  if (self->_ignoresKeyboardNotifications != a3)
+  if (self->_ignoresKeyboardNotifications != notifications)
   {
-    self->_ignoresKeyboardNotifications = a3;
-    if (a3)
+    self->_ignoresKeyboardNotifications = notifications;
+    if (notifications)
     {
       [(UIPopoverPresentationController *)self _stopWatchingForKeyboardNotifications];
       if (UIKeyboardAutomaticIsOnScreen())
@@ -3133,16 +3133,16 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   }
 }
 
-- (void)_setOverrideAllowsHitTestingOnBackgroundViews:(BOOL)a3
+- (void)_setOverrideAllowsHitTestingOnBackgroundViews:(BOOL)views
 {
-  v3 = a3;
-  self->_overrideAllowsHitTestingOnBackgroundViews = a3;
-  v5 = [(UIView *)self->_dimmingView layer];
-  [v5 setAllowsHitTesting:v3];
+  viewsCopy = views;
+  self->_overrideAllowsHitTestingOnBackgroundViews = views;
+  layer = [(UIView *)self->_dimmingView layer];
+  [layer setAllowsHitTesting:viewsCopy];
 
   overrideAllowsHitTestingOnBackgroundViews = self->_overrideAllowsHitTestingOnBackgroundViews;
-  v7 = [(UIView *)self->_shadowView layer];
-  [v7 setAllowsHitTesting:overrideAllowsHitTestingOnBackgroundViews];
+  layer2 = [(UIView *)self->_shadowView layer];
+  [layer2 setAllowsHitTesting:overrideAllowsHitTestingOnBackgroundViews];
 
   dimmingView = self->_dimmingView;
   v9 = self->_overrideAllowsHitTestingOnBackgroundViews;
@@ -3159,12 +3159,12 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
 
 - (BOOL)_fallbackShouldDismiss
 {
-  v3 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     if ([(UIPresentationController *)self presented]&& ![(UIPresentationController *)self dismissing])
     {
-      v4 = [v3 popoverPresentationControllerShouldDismissPopover:self];
+      v4 = [delegate popoverPresentationControllerShouldDismissPopover:self];
     }
 
     else
@@ -3183,19 +3183,19 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
 
 - (void)_sendFallbackWillDismiss
 {
-  v3 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 popoverPresentationControllerWillDismissPopover:self];
+    [delegate popoverPresentationControllerWillDismissPopover:self];
   }
 }
 
 - (void)_sendFallbackDidDismiss
 {
-  v3 = [(UIPresentationController *)self delegate];
+  delegate = [(UIPresentationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 popoverPresentationControllerDidDismissPopover:self];
+    [delegate popoverPresentationControllerDidDismissPopover:self];
   }
 }
 
@@ -3209,29 +3209,29 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   return [(UIPopoverPresentationController *)self _isDismissing];
 }
 
-- (id)_initialPresentationViewControllerForViewController:(id)a3
+- (id)_initialPresentationViewControllerForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (dyld_program_sdk_at_least() && ![(UIPopoverPresentationController *)self _allowsSourceViewInDifferentWindowThanInitialPresentationViewController])
   {
-    v6 = [(UIPresentationController *)self _realSourceView];
-    v7 = [v6 window];
-    v8 = [v4 _window];
-    v9 = v8;
-    v10 = 0;
-    if (v8 && v7 && v7 != v8)
+    _realSourceView = [(UIPresentationController *)self _realSourceView];
+    window = [_realSourceView window];
+    _window = [controllerCopy _window];
+    v9 = _window;
+    _viewControllerForAncestor = 0;
+    if (_window && window && window != _window)
     {
-      v10 = [v6 _viewControllerForAncestor];
+      _viewControllerForAncestor = [_realSourceView _viewControllerForAncestor];
     }
 
-    if (v10)
+    if (_viewControllerForAncestor)
     {
-      v11 = v10;
+      v11 = _viewControllerForAncestor;
     }
 
     else
     {
-      v11 = v4;
+      v11 = controllerCopy;
     }
 
     v5 = v11;
@@ -3239,17 +3239,17 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
 
   else
   {
-    v5 = v4;
+    v5 = controllerCopy;
   }
 
   return v5;
 }
 
-- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)a3 rightMargin:(double *)a4
+- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)margin rightMargin:(double *)rightMargin
 {
   v17.receiver = self;
   v17.super_class = UIPopoverPresentationController;
-  [(UIPresentationController *)&v17 _baseContentInsetsWithLeftMargin:a3 rightMargin:a4];
+  [(UIPresentationController *)&v17 _baseContentInsetsWithLeftMargin:margin rightMargin:rightMargin];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -3279,7 +3279,7 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
   {
     v6.receiver = self;
     v6.super_class = UIPopoverPresentationController;
-    v3 = [(UIPresentationController *)&v6 _presentationView];
+    _presentationView = [(UIPresentationController *)&v6 _presentationView];
   }
 
   else
@@ -3287,38 +3287,38 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
     popoverView = self->_popoverView;
     if (popoverView)
     {
-      v3 = popoverView->_contentView;
+      _presentationView = popoverView->_contentView;
     }
 
     else
     {
-      v3 = 0;
+      _presentationView = 0;
     }
   }
 
-  return v3;
+  return _presentationView;
 }
 
 - (BOOL)_shouldPresentedViewControllerServeAsBaseForScrollToTop
 {
-  v2 = [(UIPopoverPresentationController *)self _passthroughViews];
-  v3 = [v2 count] == 0;
+  _passthroughViews = [(UIPopoverPresentationController *)self _passthroughViews];
+  v3 = [_passthroughViews count] == 0;
 
   return v3;
 }
 
-- (BOOL)_shouldPopoverContentExtendOverArrowForViewController:(id)a3 backgroundViewClass:(Class)a4
+- (BOOL)_shouldPopoverContentExtendOverArrowForViewController:(id)controller backgroundViewClass:(Class)class
 {
-  v5 = a3;
-  v6 = dyld_program_sdk_at_least() && ([UIApp _isSpringBoard] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && +[_UIPopoverStandardChromeView standardChromeViewClass](_UIPopoverStandardChromeView, "standardChromeViewClass") == a4;
+  controllerCopy = controller;
+  v6 = dyld_program_sdk_at_least() && ([UIApp _isSpringBoard] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && +[_UIPopoverStandardChromeView standardChromeViewClass](_UIPopoverStandardChromeView, "standardChromeViewClass") == class;
 
   return v6;
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = [(UIView *)self->_popoverView layer];
-  [v4 setAllowsGroupOpacity:1];
+  layer = [(UIView *)self->_popoverView layer];
+  [layer setAllowsGroupOpacity:1];
 
   self->_presentationState = 2;
   if (objc_opt_respondsToSelector())
@@ -3349,30 +3349,30 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
 
   if (self->_hostManager)
   {
-    v7 = [(UIPopoverPresentationController *)self _hostManagerPopoverCloseConfiguration];
-    v8 = [(UIPresentationController *)self presentingViewController];
-    v9 = [v8 _transitionCoordinator];
-    [v7 setTransitionCoordinator:v9];
+    _hostManagerPopoverCloseConfiguration = [(UIPopoverPresentationController *)self _hostManagerPopoverCloseConfiguration];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    _transitionCoordinator = [presentingViewController _transitionCoordinator];
+    [_hostManagerPopoverCloseConfiguration setTransitionCoordinator:_transitionCoordinator];
 
-    [(_UIPopoverHostManager *)self->_hostManager closePopoverWithIdentifier:self->_popoverIdentifier configuration:v7];
-    v10 = [v7 transitionCoordinator];
+    [(_UIPopoverHostManager *)self->_hostManager closePopoverWithIdentifier:self->_popoverIdentifier configuration:_hostManagerPopoverCloseConfiguration];
+    transitionCoordinator = [_hostManagerPopoverCloseConfiguration transitionCoordinator];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __63__UIPopoverPresentationController_dismissalTransitionWillBegin__block_invoke;
     v35[3] = &unk_1E71018A8;
     v35[4] = self;
     v36 = shouldSendDidDismiss;
-    [v10 animateAlongsideTransition:0 completion:v35];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v35];
   }
 
   else if (self->_popoverView)
   {
     self->_presentationState = 3;
     objc_initWeak(&location, self->_popoverView);
-    v11 = [(UIView *)self->_popoverView window];
+    window = [(UIView *)self->_popoverView window];
     if (os_variant_has_internal_diagnostics())
     {
-      if (!v11)
+      if (!window)
       {
         v22 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -3385,7 +3385,7 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
       }
     }
 
-    else if (!v11)
+    else if (!window)
     {
       v23 = *(__UILogGetCategoryCachedImpl("Assert", &dismissalTransitionWillBegin___s_category) + 8);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3412,34 +3412,34 @@ void __52__UIPopoverPresentationController__keyboardDidHide___block_invoke(uint6
     v14 = v13;
     v32 = v14;
     v15 = _Block_copy(v31);
-    v16 = [(UIView *)self->_popoverView layer];
-    if (v11)
+    layer = [(UIView *)self->_popoverView layer];
+    if (window)
     {
-      v17 = [v11 screen];
-      [v17 scale];
+      screen = [window screen];
+      [screen scale];
     }
 
     else
     {
-      v17 = [(UIPresentationController *)self presentedViewController];
-      v2 = [v17 _screen];
-      [v2 scale];
+      screen = [(UIPresentationController *)self presentedViewController];
+      _screen = [screen _screen];
+      [_screen scale];
     }
 
-    [v16 setRasterizationScale:?];
-    if (!v11)
+    [layer setRasterizationScale:?];
+    if (!window)
     {
     }
 
-    v18 = [(UIPresentationController *)self presentingViewController];
-    v19 = [v18 _definiteTransitionCoordinator];
+    presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+    _definiteTransitionCoordinator = [presentingViewController2 _definiteTransitionCoordinator];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __63__UIPopoverPresentationController_dismissalTransitionWillBegin__block_invoke_3;
     v29 = &unk_1E70F3770;
     v20 = v12;
     v30 = v20;
-    [v19 animateAlongsideTransition:&v26 completion:v15];
+    [_definiteTransitionCoordinator animateAlongsideTransition:&v26 completion:v15];
 
     v21 = [(UIView *)self->_popoverView layer:v26];
     [v21 setAllowsGroupOpacity:0];
@@ -3478,9 +3478,9 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
   return v4(v2, v3 ^ 1u);
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     if (self->_deriveSourceRectFromSourceViewBounds)
     {
@@ -3509,22 +3509,22 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
 
 - (void)_transitionToDidEnd
 {
-  v3 = [(UIPresentationController *)self containerView];
-  [v3 setNeedsLayout];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setNeedsLayout];
 
   *&self->_popoverControllerFlags &= ~0x40u;
 
   [(UIPresentationController *)self _updateRealSourceView];
 }
 
-- (BOOL)_attemptDismissalWithCompletion:(id)a3
+- (BOOL)_attemptDismissalWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(UIPresentationController *)self presented]&& !self->_shouldSendDidDismiss && [(UIPresentationController *)self _shouldDismiss]&& (self->_shouldSendDidDismiss = 1, [(UIPresentationController *)self presented]))
   {
-    v5 = [(UIPresentationController *)self presentingViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
     v6 = 1;
-    [v5 dismissViewControllerAnimated:1 completion:v4];
+    [presentingViewController dismissViewControllerAnimated:1 completion:completionCopy];
 
     [(UIPresentationController *)self _sendWillDismiss];
   }
@@ -3537,38 +3537,38 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
   return v6;
 }
 
-- (void)_presentingViewControllerWindowSceneDidUpdateEffectiveGeometry:(id)a3
+- (void)_presentingViewControllerWindowSceneDidUpdateEffectiveGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if (self->_hostManager)
   {
-    v7 = v4;
+    v7 = geometryCopy;
     v5 = objc_opt_respondsToSelector();
-    v4 = v7;
+    geometryCopy = v7;
     if (v5)
     {
       v6 = [(_UIPopoverHostManager *)self->_hostManager popoverWithIdentifier:self->_popoverIdentifier shouldAttemptDismissWhenWindowSceneUpdatesEffectiveGeometry:v7];
-      v4 = v7;
+      geometryCopy = v7;
       if (v6)
       {
         [(UIPopoverPresentationController *)self _dismissWithCompletion:0];
-        v4 = v7;
+        geometryCopy = v7;
       }
     }
   }
 }
 
-- (void)_realSourceViewDidChangeFromView:(id)a3 toView:(id)a4
+- (void)_realSourceViewDidChangeFromView:(id)view toView:(id)toView
 {
-  v5 = [(UIPopoverPresentationController *)self _sourceOverlayView:a3];
+  v5 = [(UIPopoverPresentationController *)self _sourceOverlayView:view];
 
   if (v5)
   {
     [(UIPopoverPresentationController *)self _updateSourceOverlayViewConstraints];
   }
 
-  v6 = [(UIPresentationController *)self barButtonItem];
-  if (v6 && (v7 = v6, v8 = _UISolariumEnabled(), v7, v8))
+  barButtonItem = [(UIPresentationController *)self barButtonItem];
+  if (barButtonItem && (v7 = barButtonItem, v8 = _UISolariumEnabled(), v7, v8))
   {
     [(UIPopoverPresentationController *)self _configureZoomTransition];
   }
@@ -3582,17 +3582,17 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
   v10 = *(MEMORY[0x1E695F058] + 16);
   self->_previousContainerViewRect.origin = *MEMORY[0x1E695F058];
   self->_previousContainerViewRect.size = v10;
-  v11 = [(UIPresentationController *)self containerView];
-  [v11 setNeedsLayout];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setNeedsLayout];
 }
 
 - (CGRect)_sourceRectInContainingScene
 {
-  v3 = [(UIPresentationController *)self _realSourceView];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _coordinateSpace];
-  [(UIPopoverPresentationController *)self _sourceRectInCoordinateSpace:v6];
+  _realSourceView = [(UIPresentationController *)self _realSourceView];
+  window = [_realSourceView window];
+  windowScene = [window windowScene];
+  _coordinateSpace = [windowScene _coordinateSpace];
+  [(UIPopoverPresentationController *)self _sourceRectInCoordinateSpace:_coordinateSpace];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -3609,22 +3609,22 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
   return result;
 }
 
-- (CGRect)_sourceRectInCoordinateSpace:(id)a3
+- (CGRect)_sourceRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   [(UIPresentationController *)self sourceRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIPresentationController *)self sourceItem];
-  v14 = _UIPopoverPresentationControllerSourceItemUpCast(v13);
+  sourceItem = [(UIPresentationController *)self sourceItem];
+  v14 = _UIPopoverPresentationControllerSourceItemUpCast(sourceItem);
 
   if (v14)
   {
-    v15 = [(UIPresentationController *)self containerView];
-    v16 = [v15 _window];
-    [v14 _sourceRectForPresentationInWindow:v16];
+    containerView = [(UIPresentationController *)self containerView];
+    _window = [containerView _window];
+    [v14 _sourceRectForPresentationInWindow:_window];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -3643,42 +3643,42 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
     }
   }
 
-  v25 = [(UIPresentationController *)self _realSourceView];
+  _realSourceView = [(UIPresentationController *)self _realSourceView];
   v60.origin.x = v6;
   v60.origin.y = v8;
   v60.size.width = v10;
   v60.size.height = v12;
   if (CGRectIsNull(v60))
   {
-    v26 = [(UIPopoverPresentationController *)self _sourceOverlayView];
-    v27 = v26;
-    if (!v26)
+    _sourceOverlayView = [(UIPopoverPresentationController *)self _sourceOverlayView];
+    v27 = _sourceOverlayView;
+    if (!_sourceOverlayView)
     {
-      v26 = v25;
+      _sourceOverlayView = _realSourceView;
     }
 
-    [v26 bounds];
+    [_sourceOverlayView bounds];
     v6 = v28;
     v8 = v29;
     v10 = v30;
     v12 = v31;
   }
 
-  v32 = [(UIPopoverPresentationController *)self _sourceOverlayView];
+  _sourceOverlayView2 = [(UIPopoverPresentationController *)self _sourceOverlayView];
 
-  if (v32)
+  if (_sourceOverlayView2)
   {
-    v33 = [(UIPopoverPresentationController *)self _sourceOverlayView];
-    [v25 bounds];
+    _sourceOverlayView3 = [(UIPopoverPresentationController *)self _sourceOverlayView];
+    [_realSourceView bounds];
     v35 = -v34;
-    [v25 bounds];
+    [_realSourceView bounds];
     v37 = -v36;
     v61.origin.x = v6;
     v61.origin.y = v8;
     v61.size.width = v10;
     v61.size.height = v12;
     v62 = CGRectOffset(v61, v35, v37);
-    [v33 convertRect:v4 toCoordinateSpace:{v62.origin.x, v62.origin.y, v62.size.width, v62.size.height}];
+    [_sourceOverlayView3 convertRect:spaceCopy toCoordinateSpace:{v62.origin.x, v62.origin.y, v62.size.width, v62.size.height}];
     v39 = v38;
     v41 = v40;
     v43 = v42;
@@ -3687,13 +3687,13 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
 
   else
   {
-    v33 = [(UIPresentationController *)self containerView];
-    v46 = [v25 _window];
-    v47 = [v33 _window];
-    v48 = [(UIPopoverPresentationController *)self _shouldConvertToScene];
-    if (v46 && (v48 || ([v46 screen], v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v47, "screen"), v50 = objc_claimAutoreleasedReturnValue(), v50, v49, v49 == v50)))
+    _sourceOverlayView3 = [(UIPresentationController *)self containerView];
+    _window2 = [_realSourceView _window];
+    _window3 = [_sourceOverlayView3 _window];
+    _shouldConvertToScene = [(UIPopoverPresentationController *)self _shouldConvertToScene];
+    if (_window2 && (_shouldConvertToScene || ([_window2 screen], v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(_window3, "screen"), v50 = objc_claimAutoreleasedReturnValue(), v50, v49, v49 == v50)))
     {
-      [v25 convertRect:v4 toCoordinateSpace:{v6, v8, v10, v12}];
+      [_realSourceView convertRect:spaceCopy toCoordinateSpace:{v6, v8, v10, v12}];
       v39 = v51;
       v41 = v52;
       v43 = v53;
@@ -3722,11 +3722,11 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
 
 - (CGSize)_proposedSize
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  traitCollection = [presentedViewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 6)
+  if (userInterfaceIdiom == 6)
   {
 
     [(UIPopoverPresentationController *)self _defaultPopoverSize];
@@ -3746,7 +3746,7 @@ uint64_t __63__UIPopoverPresentationController_dismissalTransitionWillBegin__blo
     v17[1] = 3221225472;
     v17[2] = __48__UIPopoverPresentationController__proposedSize__block_invoke;
     v17[3] = &unk_1E7101830;
-    v19 = self;
+    selfCopy = self;
     v20 = popoverBackgroundViewClass;
     v21 = v10;
     v22 = v11;
@@ -3797,19 +3797,19 @@ void __48__UIPopoverPresentationController__proposedSize__block_invoke(uint64_t 
   [v10 setIsRTL:{objc_msgSend(v11, "effectiveUserInterfaceLayoutDirection") == 1}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = UIPopoverPresentationController;
-  [(UIPresentationController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(UIPresentationController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   *&self->_popoverControllerFlags |= 0x40u;
-  if ([v7 isAnimated])
+  if ([coordinatorCopy isAnimated])
   {
-    v8 = [(UIView *)self->_popoverView layer];
-    [v8 setAllowsGroupOpacity:0];
+    layer = [(UIView *)self->_popoverView layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(_UIPopoverView *)self->_popoverView setChromeHiddenForSizeTransition:1];
     [(UIView *)self->_shadowView setAlpha:0.0];
@@ -3820,7 +3820,7 @@ void __48__UIPopoverPresentationController__proposedSize__block_invoke(uint64_t 
   v9[2] = __86__UIPopoverPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_1E70F3B98;
   v9[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v9];
 }
 
 void __86__UIPopoverPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -3871,64 +3871,64 @@ void __86__UIPopoverPresentationController_viewWillTransitionToSize_withTransiti
 - (void)_updateSourceOverlayViewConstraints
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v3 = [(UIPopoverPresentationController *)self _sourceOverlayViewConstraints];
+  _sourceOverlayViewConstraints = [(UIPopoverPresentationController *)self _sourceOverlayViewConstraints];
 
-  if (v3)
+  if (_sourceOverlayViewConstraints)
   {
     v4 = MEMORY[0x1E69977A0];
-    v5 = [(UIPopoverPresentationController *)self _sourceOverlayViewConstraints];
-    [v4 deactivateConstraints:v5];
+    _sourceOverlayViewConstraints2 = [(UIPopoverPresentationController *)self _sourceOverlayViewConstraints];
+    [v4 deactivateConstraints:_sourceOverlayViewConstraints2];
   }
 
-  v6 = [(UIPresentationController *)self _realSourceView];
-  v7 = [(UIPopoverPresentationController *)self _sourceOverlayView];
-  v8 = v7;
-  if (v6)
+  _realSourceView = [(UIPresentationController *)self _realSourceView];
+  _sourceOverlayView = [(UIPopoverPresentationController *)self _sourceOverlayView];
+  v8 = _sourceOverlayView;
+  if (_realSourceView)
   {
-    if (v7)
+    if (_sourceOverlayView)
     {
-      v9 = [v6 window];
-      v10 = [v8 window];
-      v11 = [v9 isEqual:v10];
+      window = [_realSourceView window];
+      window2 = [v8 window];
+      v11 = [window isEqual:window2];
 
       if (v11)
       {
-        v26 = [v6 leftAnchor];
-        v25 = [v8 leftAnchor];
-        v24 = [v26 constraintEqualToAnchor:v25];
+        leftAnchor = [_realSourceView leftAnchor];
+        leftAnchor2 = [v8 leftAnchor];
+        v24 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         v27[0] = v24;
-        v23 = [v6 rightAnchor];
-        v22 = [v8 rightAnchor];
-        v21 = [v23 constraintEqualToAnchor:v22];
+        rightAnchor = [_realSourceView rightAnchor];
+        rightAnchor2 = [v8 rightAnchor];
+        v21 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
         v27[1] = v21;
-        v12 = [v6 topAnchor];
-        v13 = [v8 topAnchor];
-        v14 = [v12 constraintEqualToAnchor:v13];
+        topAnchor = [_realSourceView topAnchor];
+        topAnchor2 = [v8 topAnchor];
+        v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v27[2] = v14;
-        v15 = [v6 bottomAnchor];
-        v16 = [v8 bottomAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16];
+        bottomAnchor = [_realSourceView bottomAnchor];
+        bottomAnchor2 = [v8 bottomAnchor];
+        v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v27[3] = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
         [(UIPopoverPresentationController *)self _setSourceOverlayViewConstraints:v18];
 
         v19 = MEMORY[0x1E69977A0];
-        v20 = [(UIPopoverPresentationController *)self _sourceOverlayViewConstraints];
-        [v19 activateConstraints:v20];
+        _sourceOverlayViewConstraints3 = [(UIPopoverPresentationController *)self _sourceOverlayViewConstraints];
+        [v19 activateConstraints:_sourceOverlayViewConstraints3];
       }
     }
   }
 }
 
-- (CGRect)_sourceRectFromSourceView:(id)a3
+- (CGRect)_sourceRectFromSourceView:(id)view
 {
-  [a3 bounds];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIPopoverPresentationController *)self _bottomAlignsPopoverIfSourceViewNotSet];
-  if (v12)
+  _bottomAlignsPopoverIfSourceViewNotSet = [(UIPopoverPresentationController *)self _bottomAlignsPopoverIfSourceViewNotSet];
+  if (_bottomAlignsPopoverIfSourceViewNotSet)
   {
     v13 = 10.0;
   }
@@ -3938,7 +3938,7 @@ void __86__UIPopoverPresentationController_viewWillTransitionToSize_withTransiti
     v13 = v11;
   }
 
-  if (v12)
+  if (_bottomAlignsPopoverIfSourceViewNotSet)
   {
     v14 = v11 + -10.0;
   }
@@ -3957,27 +3957,27 @@ void __86__UIPopoverPresentationController_viewWillTransitionToSize_withTransiti
   return result;
 }
 
-- (void)_updatePopoverFrame:(CGRect)a3 arrowOffset:(double)a4
+- (void)_updatePopoverFrame:(CGRect)frame arrowOffset:(double)offset
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(_UIPopoverView *)self->_popoverView _setFrame:a3.origin.x arrowOffset:a3.origin.y, a3.size.width, a3.size.height, a4];
-  v8 = [(UIPopoverPresentationController *)self _accessoryView];
-  if (v8)
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(_UIPopoverView *)self->_popoverView _setFrame:frame.origin.x arrowOffset:frame.origin.y, frame.size.width, frame.size.height, offset];
+  _accessoryView = [(UIPopoverPresentationController *)self _accessoryView];
+  if (_accessoryView)
   {
-    v13 = v8;
-    v9 = [v8 superview];
+    v13 = _accessoryView;
+    superview = [_accessoryView superview];
 
-    if (!v9)
+    if (!superview)
     {
-      v10 = [(UIPresentationController *)self containerView];
-      [v10 addSubview:self->_accessoryView];
+      containerView = [(UIPresentationController *)self containerView];
+      [containerView addSubview:self->_accessoryView];
     }
 
     [(UIView *)self->_accessoryView systemLayoutSizeFittingSize:width, 0.0];
     [(UIView *)self->_accessoryView setFrame:x, y - v11 + -10.0, v12, v11];
-    v8 = v13;
+    _accessoryView = v13;
   }
 }
 
@@ -3990,10 +3990,10 @@ uint64_t __66__UIPopoverPresentationController_containerViewWillLayoutSubviews__
   return [v2 setPreferredArrowDirections:v3];
 }
 
-- (int64_t)_defaultPresentationStyleForTraitCollection:(id)a3
+- (int64_t)_defaultPresentationStyleForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
+  collectionCopy = collection;
+  v5 = collectionCopy;
   if (self->_hostManager)
   {
 LABEL_2:
@@ -4001,7 +4001,7 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  if ([v4 horizontalSizeClass] != 1)
+  if ([collectionCopy horizontalSizeClass] != 1)
   {
     if ([v5 horizontalSizeClass] == 2 && objc_msgSend(v5, "verticalSizeClass") == 1 && _AlwaysAllowPopoverPresentations != 1)
     {
@@ -4021,8 +4021,8 @@ LABEL_2:
 
   else
   {
-    v10 = [(UIPresentationController *)self presentedViewController];
-    if (_UISheetPresentationControllerStylesSheetsAsCards(v10))
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    if (_UISheetPresentationControllerStylesSheetsAsCards(presentedViewController))
     {
       v6 = 2;
     }
@@ -4040,112 +4040,112 @@ LABEL_3:
 - (id)_preferredAnimationControllerForPresentation
 {
   [(UIPopoverPresentationController *)self _createHostManagerIfNeeded];
-  v3 = [(UIPopoverPresentationController *)self _metrics];
-  v4 = [v3 shouldUseVisualStyleAnimationControllerForPresentation];
+  _metrics = [(UIPopoverPresentationController *)self _metrics];
+  shouldUseVisualStyleAnimationControllerForPresentation = [_metrics shouldUseVisualStyleAnimationControllerForPresentation];
 
-  if (v4)
+  if (shouldUseVisualStyleAnimationControllerForPresentation)
   {
-    v5 = [(UIPresentationController *)self _visualStyle];
-    v6 = [v5 preferredAnimationControllerForPresentation:1];
+    _visualStyle = [(UIPresentationController *)self _visualStyle];
+    _preferredAnimationControllerForPresentation = [_visualStyle preferredAnimationControllerForPresentation:1];
   }
 
   else if ([(_UIPopoverHostManager *)self->_hostManager useDefaultPreferredAnimationControllerForPresentationWithPopoverWithIdentifier:self->_popoverIdentifier])
   {
     v8.receiver = self;
     v8.super_class = UIPopoverPresentationController;
-    v6 = [(UIPresentationController *)&v8 _preferredAnimationControllerForPresentation];
+    _preferredAnimationControllerForPresentation = [(UIPresentationController *)&v8 _preferredAnimationControllerForPresentation];
   }
 
   else if (self->_zoomTransition)
   {
-    v6 = 0;
+    _preferredAnimationControllerForPresentation = 0;
   }
 
   else
   {
-    v6 = objc_alloc_init(_UIModernPopoverAnimationController);
-    [(_UIModernPopoverAnimationController *)v6 setPopoverPresentationController:self];
-    [(_UIModernPopoverAnimationController *)v6 setPresenting:1];
+    _preferredAnimationControllerForPresentation = objc_alloc_init(_UIModernPopoverAnimationController);
+    [(_UIModernPopoverAnimationController *)_preferredAnimationControllerForPresentation setPopoverPresentationController:self];
+    [(_UIModernPopoverAnimationController *)_preferredAnimationControllerForPresentation setPresenting:1];
   }
 
-  return v6;
+  return _preferredAnimationControllerForPresentation;
 }
 
 - (id)_preferredAnimationControllerForDismissal
 {
   [(UIPopoverPresentationController *)self _createHostManagerIfNeeded];
-  v3 = [(UIPopoverPresentationController *)self _metrics];
-  v4 = [v3 shouldUseVisualStyleAnimationControllerForDismissal];
+  _metrics = [(UIPopoverPresentationController *)self _metrics];
+  shouldUseVisualStyleAnimationControllerForDismissal = [_metrics shouldUseVisualStyleAnimationControllerForDismissal];
 
-  if (v4)
+  if (shouldUseVisualStyleAnimationControllerForDismissal)
   {
-    v5 = [(UIPresentationController *)self _visualStyle];
-    v6 = [v5 preferredAnimationControllerForPresentation:0];
+    _visualStyle = [(UIPresentationController *)self _visualStyle];
+    _preferredAnimationControllerForDismissal = [_visualStyle preferredAnimationControllerForPresentation:0];
   }
 
   else if ([(_UIPopoverHostManager *)self->_hostManager useDefaultPreferredAnimationControllerForDismissalWithPopoverWithIdentifier:self->_popoverIdentifier])
   {
     v8.receiver = self;
     v8.super_class = UIPopoverPresentationController;
-    v6 = [(UIPresentationController *)&v8 _preferredAnimationControllerForDismissal];
+    _preferredAnimationControllerForDismissal = [(UIPresentationController *)&v8 _preferredAnimationControllerForDismissal];
   }
 
   else if (self->_zoomTransition)
   {
-    v6 = 0;
+    _preferredAnimationControllerForDismissal = 0;
   }
 
   else
   {
-    v6 = objc_alloc_init(_UIModernPopoverAnimationController);
-    [(_UIModernPopoverAnimationController *)v6 setPopoverPresentationController:self];
-    [(_UIModernPopoverAnimationController *)v6 setPresenting:0];
+    _preferredAnimationControllerForDismissal = objc_alloc_init(_UIModernPopoverAnimationController);
+    [(_UIModernPopoverAnimationController *)_preferredAnimationControllerForDismissal setPopoverPresentationController:self];
+    [(_UIModernPopoverAnimationController *)_preferredAnimationControllerForDismissal setPresenting:0];
   }
 
-  return v6;
+  return _preferredAnimationControllerForDismissal;
 }
 
-- (void)_setContentViewController:(id)a3 animated:(BOOL)a4
+- (void)_setContentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if (![(UIPresentationController *)self presented])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"-[UIPopoverController setContentViewController:animated:] can only be called after the popover has been presented."];
   }
 
-  v7 = [(UIPresentationController *)self presentedViewController];
-  v8 = [v7 view];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
 
-  v9 = [v6 view];
-  [v8 frame];
-  [v9 setFrame:?];
+  view2 = [controllerCopy view];
+  [view frame];
+  [view2 setFrame:?];
 
-  v10 = [v8 superview];
+  superview = [view superview];
 
-  if (v10)
+  if (superview)
   {
-    v11 = [v8 superview];
-    v12 = [v6 view];
-    [v11 insertSubview:v12 aboveSubview:v8];
+    superview2 = [view superview];
+    view3 = [controllerCopy view];
+    [superview2 insertSubview:view3 aboveSubview:view];
 
-    if (v4)
+    if (animatedCopy)
     {
-      v13 = [v6 view];
-      [v13 setAlpha:0.0];
+      view4 = [controllerCopy view];
+      [view4 setAlpha:0.0];
 
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __70__UIPopoverPresentationController__setContentViewController_animated___block_invoke;
       v27[3] = &unk_1E70F3590;
-      v28 = v6;
+      v28 = controllerCopy;
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __70__UIPopoverPresentationController__setContentViewController_animated___block_invoke_2;
       v23[3] = &unk_1E70F4638;
-      v24 = v8;
+      v24 = view;
       v25 = v28;
-      v26 = self;
+      selfCopy = self;
       [UIView animateWithDuration:v27 animations:v23 completion:0.4];
 
       v14 = v28;
@@ -4154,17 +4154,17 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    [v8 removeFromSuperview];
-    v15 = [v6 childModalViewController];
+    [view removeFromSuperview];
+    childModalViewController = [controllerCopy childModalViewController];
 
-    if (!v15)
+    if (!childModalViewController)
     {
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __70__UIPopoverPresentationController__setContentViewController_animated___block_invoke_3;
       v20 = &unk_1E70F35B8;
-      v21 = self;
-      v22 = v6;
+      selfCopy2 = self;
+      v22 = controllerCopy;
       [UIView performWithoutAnimation:&v17];
       v14 = v22;
       goto LABEL_8;
@@ -4173,9 +4173,9 @@ LABEL_8:
 
 LABEL_9:
   v16 = [(UIPresentationController *)self presentedViewController:v17];
-  [v6 _replaceViewControllerInPresentationHierarchy:v16];
+  [controllerCopy _replaceViewControllerInPresentationHierarchy:v16];
 
-  [(UIPresentationController *)self _setPresentedViewController:v6];
+  [(UIPresentationController *)self _setPresentedViewController:controllerCopy];
 }
 
 void __70__UIPopoverPresentationController__setContentViewController_animated___block_invoke(uint64_t a1)
@@ -4198,26 +4198,26 @@ void __70__UIPopoverPresentationController__setContentViewController_animated___
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(UIPresentationController *)self presentedViewController];
-  v6 = v5;
-  if (v5 == v4)
+  containerCopy = container;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v6 = presentedViewController;
+  if (presentedViewController == containerCopy)
   {
   }
 
   else
   {
-    v7 = [(UIPresentationController *)self _childPresentationController];
+    _childPresentationController = [(UIPresentationController *)self _childPresentationController];
 
-    if (v7 != v4)
+    if (_childPresentationController != containerCopy)
     {
       goto LABEL_35;
     }
   }
 
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   v9 = *(MEMORY[0x1E695F060] + 8);
   v11 = v10 == *MEMORY[0x1E695F060] && v8 == v9;
   if (!v11 || (self->_popoverContentSize.width == *MEMORY[0x1E695F060] ? (v12 = self->_popoverContentSize.height == v9) : (v12 = 0), v12))
@@ -4225,7 +4225,7 @@ void __70__UIPopoverPresentationController__setContentViewController_animated___
     [(UIPopoverPresentationController *)self _defaultPopoverSize];
     v14 = v13;
     v16 = v15;
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     v19 = v17;
     v20 = v18;
     if (v17 <= 0.0 || v18 <= 0.0)
@@ -4244,19 +4244,19 @@ void __70__UIPopoverPresentationController__setContentViewController_animated___
     if (v19 != self->_popoverContentSize.width || v20 != self->_popoverContentSize.height)
     {
       v22 = objc_alloc_init(_UIViewControllerNullAnimationTransitionCoordinator);
-      v23 = [(UIPresentationController *)self _childPresentationController];
-      v24 = v23;
-      if (v23)
+      _childPresentationController2 = [(UIPresentationController *)self _childPresentationController];
+      v24 = _childPresentationController2;
+      if (_childPresentationController2)
       {
-        v25 = v23;
+        presentedViewController2 = _childPresentationController2;
       }
 
       else
       {
-        v25 = [(UIPresentationController *)self presentedViewController];
+        presentedViewController2 = [(UIPresentationController *)self presentedViewController];
       }
 
-      v26 = v25;
+      v26 = presentedViewController2;
 
       [v26 viewWillTransitionToSize:v22 withTransitionCoordinator:{v19, v20}];
       self->_popoverContentSize.width = v19;
@@ -4270,8 +4270,8 @@ void __70__UIPopoverPresentationController__setContentViewController_animated___
       *&v39[5] = v19;
       *&v39[6] = v20;
       [(_UIPopoverLayoutInfo *)preferredLayoutInfo updateProperties:v39];
-      v28 = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
-      v29 = v28;
+      _layoutInfoForCurrentKeyboardState = [(UIPopoverPresentationController *)self _layoutInfoForCurrentKeyboardState];
+      v29 = _layoutInfoForCurrentKeyboardState;
       if (self->_hostManager)
       {
         [(UIPopoverPresentationController *)self _updateHostedPopover];
@@ -4281,7 +4281,7 @@ void __70__UIPopoverPresentationController__setContentViewController_animated___
 
       else
       {
-        [v28 frame];
+        [_layoutInfoForCurrentKeyboardState frame];
         v31 = v30;
         v33 = v32;
         v35 = v34;
@@ -4308,21 +4308,21 @@ LABEL_35:
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(UIPresentationController *)self presentedViewController];
-  [v3 setContentViewController:v4];
-  v5 = [(UIPresentationController *)self _realSourceView];
-  [v3 setSourceView:v5];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [v3 setContentViewController:presentedViewController];
+  _realSourceView = [(UIPresentationController *)self _realSourceView];
+  [v3 setSourceView:_realSourceView];
 
   [(UIPopoverPresentationController *)self popoverContentSize];
   [v3 setContentSize:?];
   [v3 setShowsArrow:{-[UIPopoverPresentationController _shouldHideArrow](self, "_shouldHideArrow") ^ 1}];
   [v3 setCreatingPopoverPresentationController:self];
-  v6 = [v4 traitCollection];
-  [v3 setUserInterfaceStyle:{objc_msgSend(v6, "userInterfaceStyle")}];
+  traitCollection = [presentedViewController traitCollection];
+  [v3 setUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   v10[0] = 0x1EFE323B0;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v8 = [v4 _registerForTraitTokenChanges:v7 withTarget:self action:sel__presentedViewControllerUserInterfaceStyleChanged];
+  v8 = [presentedViewController _registerForTraitTokenChanges:v7 withTarget:self action:sel__presentedViewControllerUserInterfaceStyleChanged];
 
   return v3;
 }
@@ -4334,8 +4334,8 @@ LABEL_35:
   [v3 setContentSize:?];
   [v3 setPreferredHorizontalAlignment:{-[UIPopoverPresentationController _preferredHorizontalAlignment](self, "_preferredHorizontalAlignment")}];
   [v3 setShowsArrow:{-[UIPopoverPresentationController _shouldHideArrow](self, "_shouldHideArrow") ^ 1}];
-  v4 = [(UIPresentationController *)self containerView];
-  [v3 setIsRTL:{objc_msgSend(v4, "effectiveUserInterfaceLayoutDirection") == 1}];
+  containerView = [(UIPresentationController *)self containerView];
+  [v3 setIsRTL:{objc_msgSend(containerView, "effectiveUserInterfaceLayoutDirection") == 1}];
 
   return v3;
 }
@@ -4343,13 +4343,13 @@ LABEL_35:
 - (id)_hostManagerPopoverCloseConfiguration
 {
   v3 = objc_opt_new();
-  v4 = [(UIPresentationController *)self presentedViewController];
-  v5 = [v4 _window];
-  [v3 setPopoverWindow:v5];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  _window = [presentedViewController _window];
+  [v3 setPopoverWindow:_window];
 
-  v6 = [(UIPresentationController *)self _realSourceView];
-  v7 = [v6 window];
-  [v3 setParentWindow:v7];
+  _realSourceView = [(UIPresentationController *)self _realSourceView];
+  window = [_realSourceView window];
+  [v3 setParentWindow:window];
 
   [v3 setTransitionCoordinator:0];
 
@@ -4374,22 +4374,22 @@ LABEL_35:
   }
 }
 
-- (void)_convertToSceneFromPresentingViewController:(id)a3
+- (void)_convertToSceneFromPresentingViewController:(id)controller
 {
-  v4 = [(UIPresentationController *)self presentedViewController];
-  [(UIPopoverPresentationController *)self preferredContentSizeDidChangeForChildContentContainer:v4];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [(UIPopoverPresentationController *)self preferredContentSizeDidChangeForChildContentContainer:presentedViewController];
 
-  v5 = [(UIPopoverPresentationController *)self _hostManagerPopoverCreationConfiguration];
+  _hostManagerPopoverCreationConfiguration = [(UIPopoverPresentationController *)self _hostManagerPopoverCreationConfiguration];
   [(UIPopoverPresentationController *)self _sourceRectInContainingScene];
-  [v5 setSourceRectInParentUIWindow:?];
-  [v5 setPermittedArrowDirections:{-[UIPopoverPresentationController _effectivePermittedArrowDirections](self, "_effectivePermittedArrowDirections")}];
+  [_hostManagerPopoverCreationConfiguration setSourceRectInParentUIWindow:?];
+  [_hostManagerPopoverCreationConfiguration setPermittedArrowDirections:{-[UIPopoverPresentationController _effectivePermittedArrowDirections](self, "_effectivePermittedArrowDirections")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__UIPopoverPresentationController__convertToSceneFromPresentingViewController___block_invoke;
   v8[3] = &unk_1E70F3590;
   v8[4] = self;
-  [v5 setCompletionBlock:v8];
-  v6 = [(UIPopoverPresentationController *)self _createHostManagerPopoverWithConfiguration:v5];
+  [_hostManagerPopoverCreationConfiguration setCompletionBlock:v8];
+  v6 = [(UIPopoverPresentationController *)self _createHostManagerPopoverWithConfiguration:_hostManagerPopoverCreationConfiguration];
   popoverIdentifier = self->_popoverIdentifier;
   self->_popoverIdentifier = v6;
 }
@@ -4424,15 +4424,15 @@ void __79__UIPopoverPresentationController__convertToSceneFromPresentingViewCont
   [v11 addGestureRecognizer:*(*(a1 + 32) + 712)];
 }
 
-- (id)_createHostManagerPopoverWithConfiguration:(id)a3
+- (id)_createHostManagerPopoverWithConfiguration:(id)configuration
 {
   hostManager = self->_hostManager;
-  v5 = a3;
-  v6 = [(_UIPopoverHostManager *)hostManager createPopoverWithConfiguration:v5];
-  v7 = [v5 contentViewController];
+  configurationCopy = configuration;
+  v6 = [(_UIPopoverHostManager *)hostManager createPopoverWithConfiguration:configurationCopy];
+  contentViewController = [configurationCopy contentViewController];
 
-  v8 = [v7 _window];
-  [v8 _setOverrideParentTraitEnvironment:self];
+  _window = [contentViewController _window];
+  [_window _setOverrideParentTraitEnvironment:self];
 
   return v6;
 }
@@ -4441,53 +4441,53 @@ void __79__UIPopoverPresentationController__convertToSceneFromPresentingViewCont
 {
   if (self->_popoverIdentifier && self->_hostManager)
   {
-    v3 = [(UIPopoverPresentationController *)self _hostManagerPopoverCloseConfiguration];
-    [(_UIPopoverHostManager *)self->_hostManager closePopoverWithIdentifier:self->_popoverIdentifier configuration:v3];
+    _hostManagerPopoverCloseConfiguration = [(UIPopoverPresentationController *)self _hostManagerPopoverCloseConfiguration];
+    [(_UIPopoverHostManager *)self->_hostManager closePopoverWithIdentifier:self->_popoverIdentifier configuration:_hostManagerPopoverCloseConfiguration];
   }
 }
 
-- (id)_createVisualStyleForProvider:(id)a3
+- (id)_createVisualStyleForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 styleForPopoverPresentationController:self];
+  providerCopy = provider;
+  v5 = [providerCopy styleForPopoverPresentationController:self];
   if (!v5)
   {
     v7.receiver = self;
     v7.super_class = UIPopoverPresentationController;
-    v5 = [(UIPresentationController *)&v7 _createVisualStyleForProvider:v4];
+    v5 = [(UIPresentationController *)&v7 _createVisualStyleForProvider:providerCopy];
   }
 
   return v5;
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 translationInView:v5];
+  panCopy = pan;
+  view = [panCopy view];
+  [panCopy translationInView:view];
   if (!self->_wasDetached)
   {
     v8 = v6;
     v9 = v7;
-    if ([v4 state] == 1)
+    if ([panCopy state] == 1)
     {
-      [v4 locationInView:v5];
+      [panCopy locationInView:view];
       v11 = v10 - v8;
       v13 = v12 - v9;
-      v14 = [(UIPresentationController *)self presentedViewController];
-      v15 = [v14 _window];
-      v16 = [v15 windowScene];
-      v17 = [v16 _coordinateSpace];
-      [v5 convertPoint:v17 toCoordinateSpace:{v11, v13}];
+      presentedViewController = [(UIPresentationController *)self presentedViewController];
+      _window = [presentedViewController _window];
+      windowScene = [_window windowScene];
+      _coordinateSpace = [windowScene _coordinateSpace];
+      [view convertPoint:_coordinateSpace toCoordinateSpace:{v11, v13}];
       v19 = v18;
       v21 = v20;
 
-      v22 = [(UIPresentationController *)self presentedViewController];
-      v23 = [v22 _window];
-      v24 = [v23 windowScene];
+      presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+      _window2 = [presentedViewController2 _window];
+      windowScene2 = [_window2 windowScene];
 
-      v25 = [(UIPresentationController *)self delegate];
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v25 _popoverPresentationController:self shouldDetachScene:v24])
+      delegate = [(UIPresentationController *)self delegate];
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate _popoverPresentationController:self shouldDetachScene:windowScene2])
       {
         if (objc_opt_respondsToSelector())
         {
@@ -4502,9 +4502,9 @@ void __79__UIPopoverPresentationController__convertToSceneFromPresentingViewCont
           v28[1] = 3221225472;
           v28[2] = __46__UIPopoverPresentationController__handlePan___block_invoke;
           v28[3] = &unk_1E70F6228;
-          v29 = v25;
-          v30 = self;
-          v31 = v24;
+          v29 = delegate;
+          selfCopy = self;
+          v31 = windowScene2;
           [(_UIPopoverHostManager *)hostManager detachPopoverWithIdentifier:popoverIdentifier fromPoint:v28 withCompletionCallback:v19, v21];
         }
       }
@@ -4525,21 +4525,21 @@ void __46__UIPopoverPresentationController__handlePan___block_invoke(uint64_t a1
   *(*(a1 + 40) + 720) = 1;
 }
 
-- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)a3
+- (id)_traitCollectionForCherryPickingToPresentedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPopoverView *)self->_popoverView _traitCollectionForGlassContent];
-  v6 = v5;
-  if (v5)
+  controllerCopy = controller;
+  _traitCollectionForGlassContent = [(_UIPopoverView *)self->_popoverView _traitCollectionForGlassContent];
+  v6 = _traitCollectionForGlassContent;
+  if (_traitCollectionForGlassContent)
   {
-    v7 = v5;
+    v7 = _traitCollectionForGlassContent;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIPopoverPresentationController;
-    v7 = [(UIPresentationController *)&v10 _traitCollectionForCherryPickingToPresentedViewController:v4];
+    v7 = [(UIPresentationController *)&v10 _traitCollectionForCherryPickingToPresentedViewController:controllerCopy];
   }
 
   v8 = v7;
@@ -4549,8 +4549,8 @@ void __46__UIPopoverPresentationController__handlePan___block_invoke(uint64_t a1
 
 - (void)_traitCollectionForGlassContentDidChange
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  [v2 _updateTraitsIfNecessary];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController _updateTraitsIfNecessary];
 }
 
 - (UIView)_presentingView

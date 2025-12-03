@@ -1,13 +1,13 @@
 @interface CNAutocompleteSuggestionsSearch
 + (unint64_t)charactersThreshold;
 - (CNAutocompleteSuggestionsSearch)init;
-- (CNAutocompleteSuggestionsSearch)initWithContactStore:(id)a3;
-- (id)convertContacts:(id)a3 request:(id)a4;
-- (id)executeRequest:(id)a3 completionHandler:(id)a4;
-- (id)keysToFetchForRequest:(id)a3;
-- (id)resultTransformWithFactory:(id)a3 properties:(id)a4;
-- (id)resultTransformWithRequest:(id)a3;
-- (id)suggestedContactsWithRequest:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
+- (CNAutocompleteSuggestionsSearch)initWithContactStore:(id)store;
+- (id)convertContacts:(id)contacts request:(id)request;
+- (id)executeRequest:(id)request completionHandler:(id)handler;
+- (id)keysToFetchForRequest:(id)request;
+- (id)resultTransformWithFactory:(id)factory properties:(id)properties;
+- (id)resultTransformWithRequest:(id)request;
+- (id)suggestedContactsWithRequest:(id)request keysToFetch:(id)fetch error:(id *)error;
 @end
 
 @implementation CNAutocompleteSuggestionsSearch
@@ -15,8 +15,8 @@
 + (unint64_t)charactersThreshold
 {
   v5 = 0;
-  v2 = [MEMORY[0x277CFBEE8] standardPreferences];
-  v3 = [v2 integerForKey:@"CNSuggestionsCharactersThresholdInAutocomplete" keyExists:&v5];
+  standardPreferences = [MEMORY[0x277CFBEE8] standardPreferences];
+  v3 = [standardPreferences integerForKey:@"CNSuggestionsCharactersThresholdInAutocomplete" keyExists:&v5];
 
   if (v5)
   {
@@ -39,39 +39,39 @@
   return v5;
 }
 
-- (CNAutocompleteSuggestionsSearch)initWithContactStore:(id)a3
+- (CNAutocompleteSuggestionsSearch)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CNAutocompleteSuggestionsSearch;
   v6 = [(CNAutocompleteSuggestionsSearch *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)executeRequest:(id)a3 completionHandler:(id)a4
+- (id)executeRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v9 = [v8 schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___block_invoke;
   v15[3] = &unk_2781C4630;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 performCancelableBlock:v15];
+  v16 = requestCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
+  v13 = [backgroundScheduler performCancelableBlock:v15];
 
   return v13;
 }
@@ -132,34 +132,34 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)keysToFetchForRequest:(id)a3
+- (id)keysToFetchForRequest:(id)request
 {
   v3 = MEMORY[0x277CBEB18];
   v4 = MEMORY[0x277CBDA78];
-  v5 = a3;
+  requestCopy = request;
   v6 = [v4 descriptorForRequiredKeysForStyle:0];
   v7 = [v3 arrayWithObject:v6];
 
-  v8 = [v5 searchableProperties];
+  searchableProperties = [requestCopy searchableProperties];
 
-  [v7 addObjectsFromArray:v8];
+  [v7 addObjectsFromArray:searchableProperties];
   v9 = +[CNAutocompleteNameComponents contactKeys];
   [v7 addObjectsFromArray:v9];
 
   return v7;
 }
 
-- (id)suggestedContactsWithRequest:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)suggestedContactsWithRequest:(id)request keysToFetch:(id)fetch error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  fetchCopy = fetch;
   v10 = CNALoggingContextTriage();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 triageIdentifier];
+    triageIdentifier = [requestCopy triageIdentifier];
     v46 = 138543362;
-    v47 = v11;
+    v47 = triageIdentifier;
     _os_log_impl(&dword_2155FE000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] CoreSuggestions: Will search", &v46, 0xCu);
   }
 
@@ -167,12 +167,12 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v46 = 134217984;
-    v47 = v8;
+    v47 = requestCopy;
     _os_log_impl(&dword_2155FE000, v12, OS_LOG_TYPE_DEFAULT, "Executing request %p against suggested contacts", &v46, 0xCu);
   }
 
-  v13 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v13 timestamp];
+  defaultProvider = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider timestamp];
   v15 = v14;
 
   v16 = CNALoggingContextTriage();
@@ -187,11 +187,11 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
   }
 
   v20 = MEMORY[0x277CBDA58];
-  v21 = [v8 searchString];
-  v22 = [v20 predicateForContactsMatchingName:v21];
+  searchString = [requestCopy searchString];
+  v22 = [v20 predicateForContactsMatchingName:searchString];
 
-  v23 = [(CNAutocompleteSuggestionsSearch *)self contactStore];
-  v24 = [v23 unifiedContactsMatchingPredicate:v22 keysToFetch:v9 error:a5];
+  contactStore = [(CNAutocompleteSuggestionsSearch *)self contactStore];
+  v24 = [contactStore unifiedContactsMatchingPredicate:v22 keysToFetch:fetchCopy error:error];
 
   v25 = CNALoggingContextPerformance();
   v26 = v25;
@@ -201,8 +201,8 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
     _os_signpost_emit_with_name_impl(&dword_2155FE000, v26, OS_SIGNPOST_INTERVAL_END, v17, "Searching CoreSuggestions", "", &v46, 2u);
   }
 
-  v27 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v27 timestamp];
+  defaultProvider2 = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider2 timestamp];
   v29 = v28;
 
   v30 = [MEMORY[0x277CFBEC8] stringForTimeInterval:v29 - v15];
@@ -234,10 +234,10 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
     v36 = CNALoggingContextTriage();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v8 triageIdentifier];
+      triageIdentifier2 = [requestCopy triageIdentifier];
       v38 = [v24 count];
       v46 = 138543874;
-      v47 = v37;
+      v47 = triageIdentifier2;
       v48 = 2048;
       v49 = v38;
       v50 = 2114;
@@ -250,9 +250,9 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
 
   else
   {
-    if (a5)
+    if (error)
     {
-      v40 = *a5;
+      v40 = *error;
     }
 
     else
@@ -264,9 +264,9 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
     v42 = CNALoggingContextTriage();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [v8 triageIdentifier];
+      triageIdentifier3 = [requestCopy triageIdentifier];
       v46 = 138543874;
-      v47 = v43;
+      v47 = triageIdentifier3;
       v48 = 2114;
       v49 = v30;
       v50 = 2114;
@@ -280,33 +280,33 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
   return v24;
 }
 
-- (id)convertContacts:(id)a3 request:(id)a4
+- (id)convertContacts:(id)contacts request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAutocompleteSuggestionsSearch *)self resultTransformWithRequest:v6];
-  v9 = [v7 _cn_flatMap:v8];
+  requestCopy = request;
+  contactsCopy = contacts;
+  v8 = [(CNAutocompleteSuggestionsSearch *)self resultTransformWithRequest:requestCopy];
+  v9 = [contactsCopy _cn_flatMap:v8];
 
   v10 = [CNAutocompleteResultTokenMatcher alloc];
-  v11 = [v6 searchString];
+  searchString = [requestCopy searchString];
 
-  v12 = [(CNAutocompleteResultTokenMatcher *)v10 initWithSearchString:v11];
-  v13 = [(CNAutocompleteResultTokenMatcher *)v12 filterAdapter];
-  v14 = [v9 _cn_filter:v13];
+  v12 = [(CNAutocompleteResultTokenMatcher *)v10 initWithSearchString:searchString];
+  filterAdapter = [(CNAutocompleteResultTokenMatcher *)v12 filterAdapter];
+  v14 = [v9 _cn_filter:filterAdapter];
 
   return v14;
 }
 
-- (id)resultTransformWithRequest:(id)a3
+- (id)resultTransformWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 priorityDomainForSorting];
-  v6 = [v4 fetchContext];
-  v7 = [v6 sendingAddress];
-  v8 = [CNAutocompleteResultFactory factoryWithPriorityDomain:v5 sendingAddress:v7];
+  requestCopy = request;
+  priorityDomainForSorting = [requestCopy priorityDomainForSorting];
+  fetchContext = [requestCopy fetchContext];
+  sendingAddress = [fetchContext sendingAddress];
+  v8 = [CNAutocompleteResultFactory factoryWithPriorityDomain:priorityDomainForSorting sendingAddress:sendingAddress];
 
-  v9 = [v4 searchableProperties];
-  v10 = [(CNAutocompleteSuggestionsSearch *)self resultTransformWithFactory:v8 properties:v9];
+  searchableProperties = [requestCopy searchableProperties];
+  v10 = [(CNAutocompleteSuggestionsSearch *)self resultTransformWithFactory:v8 properties:searchableProperties];
 
   v11 = self->_contactStore;
   v17[0] = MEMORY[0x277D85DD0];
@@ -314,11 +314,11 @@ void __68__CNAutocompleteSuggestionsSearch_executeRequest_completionHandler___bl
   v17[2] = __62__CNAutocompleteSuggestionsSearch_resultTransformWithRequest___block_invoke;
   v17[3] = &unk_2781C51D0;
   v17[4] = self;
-  v18 = v4;
+  v18 = requestCopy;
   v19 = v11;
   v20 = v10;
   v12 = v11;
-  v13 = v4;
+  v13 = requestCopy;
   v14 = v10;
   v15 = [v17 copy];
 
@@ -514,16 +514,16 @@ uint64_t __62__CNAutocompleteSuggestionsSearch_resultTransformWithRequest___bloc
   return v6;
 }
 
-- (id)resultTransformWithFactory:(id)a3 properties:(id)a4
+- (id)resultTransformWithFactory:(id)factory properties:(id)properties
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [CNAutocompleteLocalContactResultTransformBuilder suggestedContactBuilderWithResultFactory:a3];
+  propertiesCopy = properties;
+  v6 = [CNAutocompleteLocalContactResultTransformBuilder suggestedContactBuilderWithResultFactory:factory];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = propertiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -547,11 +547,11 @@ uint64_t __62__CNAutocompleteSuggestionsSearch_resultTransformWithRequest___bloc
     while (v9);
   }
 
-  v12 = [v6 build];
+  build = [v6 build];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return build;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface GDXPCKnowledgeConstructionService
-- (BOOL)checkInWithError:(id *)a3;
-- (BOOL)runFastpassPipelineWithReason:(unint64_t)a3 error:(id *)a4;
-- (BOOL)runFullPipelineWithReason:(unint64_t)a3 error:(id *)a4;
-- (BOOL)stopPipelineWithError:(id *)a3;
+- (BOOL)checkInWithError:(id *)error;
+- (BOOL)runFastpassPipelineWithReason:(unint64_t)reason error:(id *)error;
+- (BOOL)runFullPipelineWithReason:(unint64_t)reason error:(id *)error;
+- (BOOL)stopPipelineWithError:(id *)error;
 - (GDXPCKnowledgeConstructionService)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
@@ -56,7 +56,7 @@
   }
 }
 
-- (BOOL)checkInWithError:(id *)a3
+- (BOOL)checkInWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -90,9 +90,9 @@
   v9[5] = &v12;
   [v6 checkInWithCompletion:v9];
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -101,7 +101,7 @@
   return v7 & 1;
 }
 
-- (BOOL)stopPipelineWithError:(id *)a3
+- (BOOL)stopPipelineWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -135,9 +135,9 @@
   v9[5] = &v12;
   [v6 stopPipelineWithCompletion:v9];
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -146,7 +146,7 @@
   return v7 & 1;
 }
 
-- (BOOL)runFastpassPipelineWithReason:(unint64_t)a3 error:(id *)a4
+- (BOOL)runFastpassPipelineWithReason:(unint64_t)reason error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -178,12 +178,12 @@
   v11[3] = &unk_1E79628A0;
   v11[4] = &v20;
   v11[5] = &v14;
-  [v8 runFastpassPipelineWithReason:a3 completion:v11];
+  [v8 runFastpassPipelineWithReason:reason completion:v11];
 
   v9 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = v15[5];
+    *error = v15[5];
     v9 = *(v21 + 24);
   }
 
@@ -193,7 +193,7 @@
   return v9 & 1;
 }
 
-- (BOOL)runFullPipelineWithReason:(unint64_t)a3 error:(id *)a4
+- (BOOL)runFullPipelineWithReason:(unint64_t)reason error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -225,12 +225,12 @@
   v11[3] = &unk_1E79628A0;
   v11[4] = &v20;
   v11[5] = &v14;
-  [v8 runFullPipelineWithReason:a3 completion:v11];
+  [v8 runFullPipelineWithReason:reason completion:v11];
 
   v9 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = v15[5];
+    *error = v15[5];
     v9 = *(v21 + 24);
   }
 
@@ -240,14 +240,14 @@
   return v9 & 1;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCKnowledgeConstructionService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCKnowledgeConstructionService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

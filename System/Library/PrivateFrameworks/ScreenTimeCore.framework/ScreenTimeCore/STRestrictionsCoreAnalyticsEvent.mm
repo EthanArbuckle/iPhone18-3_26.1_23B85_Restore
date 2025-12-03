@@ -1,27 +1,27 @@
 @interface STRestrictionsCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STRestrictionsCoreAnalyticsEvent)initWithContentAndPrivacyRestrictionsEnabled:(BOOL)a3 mediaAndAppleMusicIsRestricted:(BOOL)a4 gameCenterMultiplayerGamesIsRestricted:(BOOL)a5 gameCenterAddingFriendsIsRestricted:(BOOL)a6 gameCenterConnectWithFriendsIsRestricted:(BOOL)a7 gameCenterScreenRecordingIsRestricted:(BOOL)a8 gameCenterNearbyMultiplayerIsRestricted:(BOOL)a9 gameCenterPrivateMessagingIsRestricted:(BOOL)a10 gameCenterProfilePrivacyChangesIsRestricted:(BOOL)a11 gameCenterAvatarAndNicknameChangesIsRestricted:(BOOL)a12 userAgeGroup:(int64_t)a13 userIsManaged:(BOOL)a14;
+- (STRestrictionsCoreAnalyticsEvent)initWithContentAndPrivacyRestrictionsEnabled:(BOOL)enabled mediaAndAppleMusicIsRestricted:(BOOL)restricted gameCenterMultiplayerGamesIsRestricted:(BOOL)isRestricted gameCenterAddingFriendsIsRestricted:(BOOL)friendsIsRestricted gameCenterConnectWithFriendsIsRestricted:(BOOL)withFriendsIsRestricted gameCenterScreenRecordingIsRestricted:(BOOL)recordingIsRestricted gameCenterNearbyMultiplayerIsRestricted:(BOOL)multiplayerIsRestricted gameCenterPrivateMessagingIsRestricted:(BOOL)self0 gameCenterProfilePrivacyChangesIsRestricted:(BOOL)self1 gameCenterAvatarAndNicknameChangesIsRestricted:(BOOL)self2 userAgeGroup:(int64_t)self3 userIsManaged:(BOOL)self4;
 @end
 
 @implementation STRestrictionsCoreAnalyticsEvent
 
-- (STRestrictionsCoreAnalyticsEvent)initWithContentAndPrivacyRestrictionsEnabled:(BOOL)a3 mediaAndAppleMusicIsRestricted:(BOOL)a4 gameCenterMultiplayerGamesIsRestricted:(BOOL)a5 gameCenterAddingFriendsIsRestricted:(BOOL)a6 gameCenterConnectWithFriendsIsRestricted:(BOOL)a7 gameCenterScreenRecordingIsRestricted:(BOOL)a8 gameCenterNearbyMultiplayerIsRestricted:(BOOL)a9 gameCenterPrivateMessagingIsRestricted:(BOOL)a10 gameCenterProfilePrivacyChangesIsRestricted:(BOOL)a11 gameCenterAvatarAndNicknameChangesIsRestricted:(BOOL)a12 userAgeGroup:(int64_t)a13 userIsManaged:(BOOL)a14
+- (STRestrictionsCoreAnalyticsEvent)initWithContentAndPrivacyRestrictionsEnabled:(BOOL)enabled mediaAndAppleMusicIsRestricted:(BOOL)restricted gameCenterMultiplayerGamesIsRestricted:(BOOL)isRestricted gameCenterAddingFriendsIsRestricted:(BOOL)friendsIsRestricted gameCenterConnectWithFriendsIsRestricted:(BOOL)withFriendsIsRestricted gameCenterScreenRecordingIsRestricted:(BOOL)recordingIsRestricted gameCenterNearbyMultiplayerIsRestricted:(BOOL)multiplayerIsRestricted gameCenterPrivateMessagingIsRestricted:(BOOL)self0 gameCenterProfilePrivacyChangesIsRestricted:(BOOL)self1 gameCenterAvatarAndNicknameChangesIsRestricted:(BOOL)self2 userAgeGroup:(int64_t)self3 userIsManaged:(BOOL)self4
 {
   v21.receiver = self;
   v21.super_class = STRestrictionsCoreAnalyticsEvent;
   result = [(STRestrictionsCoreAnalyticsEvent *)&v21 init];
-  result->_contentAndPrivacyRestrictionsEnabled = a3;
-  result->_mediaAndAppleMusicIsRestricted = a4;
-  result->_gameCenterMultiplayerGamesIsRestricted = a5;
-  result->_gameCenterAddingFriendsIsRestricted = a6;
-  result->_gameCenterConnectWithFriendsIsRestricted = a7;
-  result->_gameCenterScreenRecordingIsRestricted = a8;
-  result->_gameCenterNearbyMultiplayerIsRestricted = a9;
-  result->_gameCenterPrivateMessagingIsRestricted = a10;
-  result->_gameCenterProfilePrivacyChangesIsRestricted = a11;
-  result->_gameCenterAvatarAndNicknameChangesIsRestricted = a12;
-  result->_userAgeGroup = a13;
-  result->_userIsManaged = a14;
+  result->_contentAndPrivacyRestrictionsEnabled = enabled;
+  result->_mediaAndAppleMusicIsRestricted = restricted;
+  result->_gameCenterMultiplayerGamesIsRestricted = isRestricted;
+  result->_gameCenterAddingFriendsIsRestricted = friendsIsRestricted;
+  result->_gameCenterConnectWithFriendsIsRestricted = withFriendsIsRestricted;
+  result->_gameCenterScreenRecordingIsRestricted = recordingIsRestricted;
+  result->_gameCenterNearbyMultiplayerIsRestricted = multiplayerIsRestricted;
+  result->_gameCenterPrivateMessagingIsRestricted = messagingIsRestricted;
+  result->_gameCenterProfilePrivacyChangesIsRestricted = changesIsRestricted;
+  result->_gameCenterAvatarAndNicknameChangesIsRestricted = nicknameChangesIsRestricted;
+  result->_userAgeGroup = group;
+  result->_userIsManaged = managed;
   return result;
 }
 

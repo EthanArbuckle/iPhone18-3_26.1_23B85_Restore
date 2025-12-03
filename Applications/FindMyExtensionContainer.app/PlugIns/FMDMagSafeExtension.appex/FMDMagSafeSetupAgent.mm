@@ -1,11 +1,11 @@
 @interface FMDMagSafeSetupAgent
 + (id)sharedInstance;
 - (FMDMagSafeSetupAgent)init;
-- (void)_launchRemoteViewWithContext:(id)a3;
-- (void)launchSetupModule:(id)a3;
-- (void)launchSetupModuleWith:(id)a3 completion:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)_launchRemoteViewWithContext:(id)context;
+- (void)launchSetupModule:(id)module;
+- (void)launchSetupModuleWith:(id)with completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation FMDMagSafeSetupAgent
@@ -43,18 +43,18 @@
   return v2;
 }
 
-- (void)launchSetupModule:(id)a3
+- (void)launchSetupModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   v5 = sub_1000011D8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = moduleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "received notification %@", &v7, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"com.apple.icloud.FindMy.addMagSafeAccessory"])
+  if ([moduleCopy isEqualToString:@"com.apple.icloud.FindMy.addMagSafeAccessory"])
   {
     v6 = &off_100028D10;
   }
@@ -67,38 +67,38 @@
   [(FMDMagSafeSetupAgent *)self _launchRemoteViewWithContext:v6];
 }
 
-- (void)_launchRemoteViewWithContext:(id)a3
+- (void)_launchRemoteViewWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(FMDMagSafeSetupAgent *)self serialQueue];
+  contextCopy = context;
+  serialQueue = [(FMDMagSafeSetupAgent *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000076D4;
   v7[3] = &unk_1000249C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = contextCopy;
+  v6 = contextCopy;
+  dispatch_async(serialQueue, v7);
 }
 
-- (void)launchSetupModuleWith:(id)a3 completion:(id)a4
+- (void)launchSetupModuleWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDMagSafeSetupAgent *)self serialQueue];
+  withCopy = with;
+  completionCopy = completion;
+  serialQueue = [(FMDMagSafeSetupAgent *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000793C;
   block[3] = &unk_1000249F0;
-  v12 = v6;
-  v13 = v7;
+  v12 = withCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = withCopy;
+  v10 = completionCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = sub_1000011D8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -108,33 +108,33 @@
   }
 
   [(FMDMagSafeSetupAgent *)self setRemoteAlertHandle:0];
-  v5 = [(FMDMagSafeSetupAgent *)self launchCompleted];
+  launchCompleted = [(FMDMagSafeSetupAgent *)self launchCompleted];
 
-  if (v5)
+  if (launchCompleted)
   {
-    v6 = [(FMDMagSafeSetupAgent *)self launchCompleted];
-    v6[2](v6, 0);
+    launchCompleted2 = [(FMDMagSafeSetupAgent *)self launchCompleted];
+    launchCompleted2[2](launchCompleted2, 0);
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_1000011D8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "remote handler invalidated with error %@", &v9, 0xCu);
   }
 
   [(FMDMagSafeSetupAgent *)self setRemoteAlertHandle:0];
-  v7 = [(FMDMagSafeSetupAgent *)self launchCompleted];
+  launchCompleted = [(FMDMagSafeSetupAgent *)self launchCompleted];
 
-  if (v7)
+  if (launchCompleted)
   {
-    v8 = [(FMDMagSafeSetupAgent *)self launchCompleted];
-    (v8)[2](v8, v5);
+    launchCompleted2 = [(FMDMagSafeSetupAgent *)self launchCompleted];
+    (launchCompleted2)[2](launchCompleted2, errorCopy);
   }
 }
 

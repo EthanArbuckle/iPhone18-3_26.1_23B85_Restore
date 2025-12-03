@@ -1,10 +1,10 @@
 @interface HUCCControlCenterCompactModule
-- (BOOL)isDeviceUnlockedForModuleContentViewController:(id)a3;
+- (BOOL)isDeviceUnlockedForModuleContentViewController:(id)controller;
 - (HUCCControlCenterCompactModule)init;
-- (id)contentViewControllerForContext:(id)a3;
-- (void)launchHomeAppForModuleContentViewController:(id)a3;
-- (void)moduleContentViewController:(id)a3 viewDidDisappear:(BOOL)a4;
-- (void)moduleContentViewController:(id)a3 viewWillAppear:(BOOL)a4;
+- (id)contentViewControllerForContext:(id)context;
+- (void)launchHomeAppForModuleContentViewController:(id)controller;
+- (void)moduleContentViewController:(id)controller viewDidDisappear:(BOOL)disappear;
+- (void)moduleContentViewController:(id)controller viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUCCControlCenterCompactModule
@@ -18,8 +18,8 @@
   {
     if (_os_feature_enabled_impl())
     {
-      v3 = [MEMORY[0x29EDC54A8] sharedManager];
-      [v3 bootstrap];
+      mEMORY[0x29EDC54A8] = [MEMORY[0x29EDC54A8] sharedManager];
+      [mEMORY[0x29EDC54A8] bootstrap];
     }
 
     else
@@ -40,19 +40,19 @@
   return v2;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v3 = [[HUCCCompactModuleContentViewController alloc] initWithDelegate:self];
 
   return v3;
 }
 
-- (void)moduleContentViewController:(id)a3 viewWillAppear:(BOOL)a4
+- (void)moduleContentViewController:(id)controller viewWillAppear:(BOOL)appear
 {
   if (_os_feature_enabled_impl())
   {
-    v4 = [MEMORY[0x29EDC54A8] sharedManager];
-    [v4 enterModuleViewWillAppear];
+    mEMORY[0x29EDC54A8] = [MEMORY[0x29EDC54A8] sharedManager];
+    [mEMORY[0x29EDC54A8] enterModuleViewWillAppear];
   }
 
   else
@@ -62,12 +62,12 @@
   }
 }
 
-- (void)moduleContentViewController:(id)a3 viewDidDisappear:(BOOL)a4
+- (void)moduleContentViewController:(id)controller viewDidDisappear:(BOOL)disappear
 {
   if (_os_feature_enabled_impl())
   {
-    v4 = [MEMORY[0x29EDC54A8] sharedManager];
-    [v4 exitModuleViewDidDisappear];
+    mEMORY[0x29EDC54A8] = [MEMORY[0x29EDC54A8] sharedManager];
+    [mEMORY[0x29EDC54A8] exitModuleViewDidDisappear];
   }
 
   else
@@ -77,19 +77,19 @@
   }
 }
 
-- (void)launchHomeAppForModuleContentViewController:(id)a3
+- (void)launchHomeAppForModuleContentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(HUCCControlCenterCompactModule *)self contentModuleContext];
-  launchHomeAppForModuleViewController(v4, v5);
+  controllerCopy = controller;
+  contentModuleContext = [(HUCCControlCenterCompactModule *)self contentModuleContext];
+  launchHomeAppForModuleViewController(controllerCopy, contentModuleContext);
 }
 
-- (BOOL)isDeviceUnlockedForModuleContentViewController:(id)a3
+- (BOOL)isDeviceUnlockedForModuleContentViewController:(id)controller
 {
-  v3 = [(HUCCControlCenterCompactModule *)self lockStateHandler];
-  v4 = [v3 isDeviceUnlocked];
+  lockStateHandler = [(HUCCControlCenterCompactModule *)self lockStateHandler];
+  isDeviceUnlocked = [lockStateHandler isDeviceUnlocked];
 
-  return v4;
+  return isDeviceUnlocked;
 }
 
 @end

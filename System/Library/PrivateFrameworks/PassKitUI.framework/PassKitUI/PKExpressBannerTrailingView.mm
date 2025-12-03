@@ -1,16 +1,16 @@
 @interface PKExpressBannerTrailingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (uint64_t)_updateStateAnimated:(double)a3 withDelay:;
-- (void)expressGlyphView:(id)a3 revealingCheckmarkAnimated:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (uint64_t)_updateStateAnimated:(double)animated withDelay:;
+- (void)expressGlyphView:(id)view revealingCheckmarkAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 @end
 
 @implementation PKExpressBannerTrailingView
 
-- (uint64_t)_updateStateAnimated:(double)a3 withDelay:
+- (uint64_t)_updateStateAnimated:(double)animated withDelay:
 {
   memset(&v21, 0, sizeof(v21));
-  if (*(a1 + 408) == 1)
+  if (*(self + 408) == 1)
   {
     v6 = *(MEMORY[0x1E69792E8] + 80);
     *&v21.m31 = *(MEMORY[0x1E69792E8] + 64);
@@ -32,7 +32,7 @@
   }
 
   memset(&v20, 0, sizeof(v20));
-  v10 = *(a1 + 416);
+  v10 = *(self + 416);
   if (v10)
   {
     [v10 transform3D];
@@ -50,13 +50,13 @@
       a = v20;
       b = v21;
       [v13 pkui_updateForAdditiveAnimationFromTransform:&a toTransform:&b];
-      if (a3 != 0.0)
+      if (animated != 0.0)
       {
-        [v13 setBeginTime:a3];
+        [v13 setBeginTime:animated];
       }
 
-      v14 = [*(a1 + 416) layer];
-      v15 = [v14 pkui_addAdditiveAnimation:v13];
+      layer = [*(self + 416) layer];
+      v15 = [layer pkui_addAdditiveAnimation:v13];
     }
 
     v16[0] = MEMORY[0x1E69E9820];
@@ -64,14 +64,14 @@
     v17 = v21;
     v16[2] = __62__PKExpressBannerTrailingView__updateStateAnimated_withDelay___block_invoke;
     v16[3] = &unk_1E80121B0;
-    v16[4] = a1;
+    v16[4] = self;
     return [MEMORY[0x1E69DD250] performWithoutAnimation:v16];
   }
 
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(PKExpressGlyphView *)self->_glyphView sizeThatFits:18.0, 18.0];
   result.height = v4;
@@ -115,11 +115,11 @@ uint64_t __62__PKExpressBannerTrailingView__updateStateAnimated_withDelay___bloc
   return [v1 setTransform3D:v7];
 }
 
-- (void)expressGlyphView:(id)a3 revealingCheckmarkAnimated:(BOOL)a4
+- (void)expressGlyphView:(id)view revealingCheckmarkAnimated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained expressTrailingView:self revealingCheckmarkAnimated:v4];
+  [WeakRetained expressTrailingView:self revealingCheckmarkAnimated:animatedCopy];
 }
 
 @end

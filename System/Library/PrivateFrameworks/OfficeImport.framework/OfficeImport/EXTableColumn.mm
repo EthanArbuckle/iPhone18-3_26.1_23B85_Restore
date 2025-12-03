@@ -1,20 +1,20 @@
 @interface EXTableColumn
-+ (id)edTableColumnFromXmlTableColumnElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edTableColumnFromXmlTableColumnElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation EXTableColumn
 
-+ (id)edTableColumnFromXmlTableColumnElement:(_xmlNode *)a3 state:(id)a4
++ (id)edTableColumnFromXmlTableColumnElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v6 = [EDTableColumn alloc];
-    v7 = [v5 resources];
-    v8 = [(EDTableColumn *)v6 initWithResources:v7];
+    resources = [stateCopy resources];
+    v8 = [(EDTableColumn *)v6 initWithResources:resources];
 
     v25 = 0;
-    v9 = CXOptionalStringAttribute(a3, CXNoNamespace, "name", &v25);
+    v9 = CXOptionalStringAttribute(element, CXNoNamespace, "name", &v25);
     v10 = v25;
     if (v9)
     {
@@ -25,7 +25,7 @@
     }
 
     v24 = 0;
-    v13 = CXOptionalStringAttribute(a3, CXNoNamespace, "uniqueName", &v24);
+    v13 = CXOptionalStringAttribute(element, CXNoNamespace, "uniqueName", &v24);
     v14 = v24;
     if (v13)
     {
@@ -34,7 +34,7 @@
     }
 
     v23 = 0;
-    v16 = CXOptionalStringAttribute(a3, CXNoNamespace, "totalsRowLabel", &v23);
+    v16 = CXOptionalStringAttribute(element, CXNoNamespace, "totalsRowLabel", &v23);
     v17 = v23;
     if (v16)
     {
@@ -43,19 +43,19 @@
     }
 
     v22 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "headerRowDxfId", &v22))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "headerRowDxfId", &v22))
     {
       [(EDTableColumn *)v8 setHeaderRowDxfIndex:v22];
     }
 
     v21 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "dataDxfId", &v21))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "dataDxfId", &v21))
     {
       [(EDTableColumn *)v8 setDataAreaDxfIndex:v21];
     }
 
     v20 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "totalsRowDxfId", &v20))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "totalsRowDxfId", &v20))
     {
       [(EDTableColumn *)v8 setTotalsRowDxfIndex:v20];
     }

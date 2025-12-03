@@ -1,30 +1,30 @@
 @interface FPUIManager
-+ (BOOL)isAction:(id)a3 eligibleForItems:(id)a4;
-+ (id)actionsForProviderDomain:(id)a3;
-+ (id)authenticationActionForProviderDomain:(id)a3;
-+ (id)extensionMatchingDictionaryForItems:(id)a3 fpProviderDomain:(id)a4;
-+ (id)valueForKey:(id)a3 inActionPlist:(id)a4;
-+ (void)getExtensionRecordsForUseCase:(unint64_t)a3 uiExtensionRecord:(id *)a4 nonUIExtensionRecord:(id *)a5 forProviderDomain:(id)a6;
++ (BOOL)isAction:(id)action eligibleForItems:(id)items;
++ (id)actionsForProviderDomain:(id)domain;
++ (id)authenticationActionForProviderDomain:(id)domain;
++ (id)extensionMatchingDictionaryForItems:(id)items fpProviderDomain:(id)domain;
++ (id)valueForKey:(id)key inActionPlist:(id)plist;
++ (void)getExtensionRecordsForUseCase:(unint64_t)case uiExtensionRecord:(id *)record nonUIExtensionRecord:(id *)extensionRecord forProviderDomain:(id)domain;
 @end
 
 @implementation FPUIManager
 
-+ (id)authenticationActionForProviderDomain:(id)a3
++ (id)authenticationActionForProviderDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v14 = 0;
-  [a1 getExtensionRecordsForUseCase:0 uiExtensionRecord:&v14 nonUIExtensionRecord:0 forProviderDomain:v4];
+  [self getExtensionRecordsForUseCase:0 uiExtensionRecord:&v14 nonUIExtensionRecord:0 forProviderDomain:domainCopy];
   v5 = v14;
   if (v5)
   {
     v6 = [v5 fpui_entitlementValueForKey:@"com.apple.private.fileproviderui.display-inline" ofClass:objc_opt_class()];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [v5 bundleIdentifier];
-    v9 = [v4 providerID];
+    bundleIdentifier = [v5 bundleIdentifier];
+    providerID = [domainCopy providerID];
     v10 = [MEMORY[0x277CCAC30] predicateWithValue:1];
     LOBYTE(v13) = 0;
-    v11 = [FPUIManager createFPUIActionWithIdentifier:&stru_284B1A950 uiActionProviderIdentifier:v8 fileProviderIdentifier:v9 displayName:&stru_284B1A950 predicate:v10 displayInline:v7 isNonUIAction:v13 fpProviderDomain:v4];
+    v11 = [FPUIManager createFPUIActionWithIdentifier:&stru_284B1A950 uiActionProviderIdentifier:bundleIdentifier fileProviderIdentifier:providerID displayName:&stru_284B1A950 predicate:v10 displayInline:bOOLValue isNonUIAction:v13 fpProviderDomain:domainCopy];
   }
 
   else
@@ -35,10 +35,10 @@
   return v11;
 }
 
-+ (id)valueForKey:(id)a3 inActionPlist:(id)a4
++ (id)valueForKey:(id)key inActionPlist:(id)plist
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v6 = [plist objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -56,7 +56,7 @@
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [FPUIManager valueForKey:v5 inActionPlist:v8];
+      [FPUIManager valueForKey:keyCopy inActionPlist:v8];
     }
 
     v7 = 0;
@@ -65,10 +65,10 @@
   return v7;
 }
 
-+ (id)actionsForProviderDomain:(id)a3
++ (id)actionsForProviderDomain:(id)domain
 {
   v67 = *MEMORY[0x277D85DE8];
-  v46 = a3;
+  domainCopy = domain;
   v3 = fpuiLogHandle;
   if (!fpuiLogHandle)
   {
@@ -78,20 +78,20 @@
 
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    [(FPUIManager *)v46 actionsForProviderDomain:v3];
+    [(FPUIManager *)domainCopy actionsForProviderDomain:v3];
   }
 
   v59 = 0;
   v60 = 0;
-  [a1 getExtensionRecordsForUseCase:1 uiExtensionRecord:&v60 nonUIExtensionRecord:&v59 forProviderDomain:v46];
+  [self getExtensionRecordsForUseCase:1 uiExtensionRecord:&v60 nonUIExtensionRecord:&v59 forProviderDomain:domainCopy];
   v36 = v60;
   v43 = v59;
   v42 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
   if (v36)
   {
-    [v4 addObject:v36];
+    [array addObject:v36];
   }
 
   if (v43)
@@ -149,9 +149,9 @@
                 }
 
                 v8 = *(*(&v51 + 1) + 8 * v7);
-                v9 = [a1 valueForKey:@"NSExtensionFileProviderActionIdentifier" inActionPlist:v8];
-                v10 = [a1 valueForKey:@"NSExtensionFileProviderActionName" inActionPlist:v8];
-                v11 = [a1 valueForKey:@"NSExtensionFileProviderActionActivationRule" inActionPlist:v8];
+                v9 = [self valueForKey:@"NSExtensionFileProviderActionIdentifier" inActionPlist:v8];
+                v10 = [self valueForKey:@"NSExtensionFileProviderActionName" inActionPlist:v8];
+                v11 = [self valueForKey:@"NSExtensionFileProviderActionActivationRule" inActionPlist:v8];
                 v12 = CFBundleCopyLocalizedString(bundle, v10, v10, @"Localizable");
                 v13 = v12;
                 if (v12)
@@ -217,10 +217,10 @@ LABEL_33:
 
                   if (v21)
                   {
-                    v22 = [v44 bundleIdentifier];
-                    v23 = [v46 providerID];
+                    bundleIdentifier = [v44 bundleIdentifier];
+                    providerID = [domainCopy providerID];
                     LOBYTE(v35) = v44 == v43;
-                    v24 = [FPUIManager createFPUIActionWithIdentifier:v9 uiActionProviderIdentifier:v22 fileProviderIdentifier:v23 displayName:v15 predicate:v21 displayInline:0 isNonUIAction:v35 fpProviderDomain:v46];
+                    v24 = [FPUIManager createFPUIActionWithIdentifier:v9 uiActionProviderIdentifier:bundleIdentifier fileProviderIdentifier:providerID displayName:v15 predicate:v21 displayInline:0 isNonUIAction:v35 fpProviderDomain:domainCopy];
 
                     [v42 addObject:v24];
                     v25 = fpuiLogHandle;
@@ -284,7 +284,7 @@ LABEL_55:
             v31 = v30;
             v32 = [v44 URL];
             *buf = 138543618;
-            v63 = v46;
+            v63 = domainCopy;
             v64 = 2112;
             v65 = v32;
             _os_log_error_impl(&dword_238356000, v31, OS_LOG_TYPE_ERROR, "No extension bundle found for domain: %{public}@ at url %@", buf, 0x16u);
@@ -303,7 +303,7 @@ LABEL_55:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v63 = v46;
+            v63 = domainCopy;
             _os_log_error_impl(&dword_238356000, v29, OS_LOG_TYPE_ERROR, "No action plists found for domain: %{public}@", buf, 0xCu);
           }
         }
@@ -322,20 +322,20 @@ LABEL_64:
   return v42;
 }
 
-+ (BOOL)isAction:(id)a3 eligibleForItems:(id)a4
++ (BOOL)isAction:(id)action eligibleForItems:(id)items
 {
-  v20 = a1;
+  selfCopy = self;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
-  v6 = [v5 predicate];
-  if (v6)
+  actionCopy = action;
+  itemsCopy = items;
+  predicate = [actionCopy predicate];
+  if (predicate)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v21;
+    v7 = itemsCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
@@ -353,7 +353,7 @@ LABEL_64:
           }
 
           v13 = *(*(&v22 + 1) + 8 * v11);
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 isKnownByTheProvider] || (objc_msgSend(v5, "fileProviderIdentifier", v20), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "providerID"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, !v16))
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 isKnownByTheProvider] || (objc_msgSend(actionCopy, "fileProviderIdentifier", selfCopy), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "providerID"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, !v16))
           {
             v17 = 0;
             goto LABEL_15;
@@ -374,8 +374,8 @@ LABEL_64:
       }
     }
 
-    v7 = [v20 extensionMatchingDictionaryForItems:v7 fpProviderDomain:0];
-    v17 = [v6 evaluateWithObject:v7];
+    v7 = [selfCopy extensionMatchingDictionaryForItems:v7 fpProviderDomain:0];
+    v17 = [predicate evaluateWithObject:v7];
 LABEL_15:
   }
 
@@ -388,58 +388,58 @@ LABEL_15:
   return v17;
 }
 
-+ (void)getExtensionRecordsForUseCase:(unint64_t)a3 uiExtensionRecord:(id *)a4 nonUIExtensionRecord:(id *)a5 forProviderDomain:(id)a6
++ (void)getExtensionRecordsForUseCase:(unint64_t)case uiExtensionRecord:(id *)record nonUIExtensionRecord:(id *)extensionRecord forProviderDomain:(id)domain
 {
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = [v9 providerID];
-  v11 = [v10 isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProvider"];
+  domainCopy = domain;
+  providerID = [domainCopy providerID];
+  v11 = [providerID isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProvider"];
 
-  if (v11 || ([v9 providerID], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProvider"), v12, v13))
+  if (v11 || ([domainCopy providerID], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProvider"), v12, v13))
   {
-    if (a4)
+    if (record)
     {
-      *a4 = [MEMORY[0x277CC1E50] fpui_extensionRecordForIdentifier:@"com.apple.CloudDocs.MobileDocumentsFileProviderUI" useCase:a3 isUIExtension:1];
+      *record = [MEMORY[0x277CC1E50] fpui_extensionRecordForIdentifier:@"com.apple.CloudDocs.MobileDocumentsFileProviderUI" useCase:case isUIExtension:1];
     }
   }
 
   else
   {
     v14 = MEMORY[0x277CC1E50];
-    v15 = [v9 extensionBundleURL];
-    v16 = [v14 fpui_extensionRecordForURL:v15 useCase:a3 isUIExtension:0];
+    extensionBundleURL = [domainCopy extensionBundleURL];
+    v16 = [v14 fpui_extensionRecordForURL:extensionBundleURL useCase:case isUIExtension:0];
 
     if (v16)
     {
-      if (a5)
+      if (extensionRecord)
       {
         v17 = v16;
-        *a5 = v16;
+        *extensionRecord = v16;
       }
 
-      v18 = [v9 providerID];
-      v19 = [v18 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"];
+      providerID2 = [domainCopy providerID];
+      v19 = [providerID2 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"];
 
       if (v19)
       {
-        if (a4)
+        if (record)
         {
-          *a4 = [MEMORY[0x277CC1E50] fpui_extensionRecordForIdentifier:@"com.apple.FileProviderUI.ServerAuthUIExtension" useCase:a3 isUIExtension:1];
+          *record = [MEMORY[0x277CC1E50] fpui_extensionRecordForIdentifier:@"com.apple.FileProviderUI.ServerAuthUIExtension" useCase:case isUIExtension:1];
         }
       }
 
       else
       {
-        v20 = [v16 fpui_containingApplicationRecord];
-        if (v20)
+        fpui_containingApplicationRecord = [v16 fpui_containingApplicationRecord];
+        if (fpui_containingApplicationRecord)
         {
-          v32 = v20;
-          v31 = a4;
+          v32 = fpui_containingApplicationRecord;
+          recordCopy = record;
           v36 = 0u;
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          obj = [v20 applicationExtensionRecords];
+          obj = [fpui_containingApplicationRecord applicationExtensionRecords];
           v21 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
           if (v21)
           {
@@ -458,14 +458,14 @@ LABEL_15:
                 v26 = [v25 fpui_extensionInfoForKey:@"NSExtensionPointIdentifier" ofClass:objc_opt_class()];
                 if ([v26 isEqualToString:@"com.apple.fileprovider-actionsui"])
                 {
-                  v27 = [MEMORY[0x277CC1E50] fpui_extensionRecordByFiltering:v25 useCase:a3 isUIExtension:1];
+                  v27 = [MEMORY[0x277CC1E50] fpui_extensionRecordByFiltering:v25 useCase:case isUIExtension:1];
                   if (v27)
                   {
                     v28 = v27;
-                    if (v31)
+                    if (recordCopy)
                     {
                       v29 = v25;
-                      *v31 = v25;
+                      *recordCopy = v25;
                     }
 
                     goto LABEL_25;
@@ -485,7 +485,7 @@ LABEL_15:
 
 LABEL_25:
 
-          v20 = v32;
+          fpui_containingApplicationRecord = v32;
         }
       }
     }
@@ -494,17 +494,17 @@ LABEL_25:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)extensionMatchingDictionaryForItems:(id)a3 fpProviderDomain:(id)a4
++ (id)extensionMatchingDictionaryForItems:(id)items fpProviderDomain:(id)domain
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  itemsCopy = items;
+  domainCopy = domain;
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {

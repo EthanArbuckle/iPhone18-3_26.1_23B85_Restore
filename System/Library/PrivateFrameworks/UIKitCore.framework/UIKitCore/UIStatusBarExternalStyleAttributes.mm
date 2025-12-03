@@ -1,5 +1,5 @@
 @interface UIStatusBarExternalStyleAttributes
-- (BOOL)shouldShowInternalItemType:(int)a3 withScreenCapabilities:(id)a4;
+- (BOOL)shouldShowInternalItemType:(int)type withScreenCapabilities:(id)capabilities;
 - (Class)foregroundStyleClass;
 - (int64_t)tapButtonType;
 @end
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (BOOL)shouldShowInternalItemType:(int)a3 withScreenCapabilities:(id)a4
+- (BOOL)shouldShowInternalItemType:(int)type withScreenCapabilities:(id)capabilities
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  capabilitiesCopy = capabilities;
   if (v4 == 46)
   {
     goto LABEL_7;
@@ -47,7 +47,7 @@ LABEL_7:
 LABEL_5:
   v9.receiver = self;
   v9.super_class = UIStatusBarExternalStyleAttributes;
-  v7 = [(UIStatusBarStyleAttributes *)&v9 shouldShowInternalItemType:v4 withScreenCapabilities:v6];
+  v7 = [(UIStatusBarStyleAttributes *)&v9 shouldShowInternalItemType:v4 withScreenCapabilities:capabilitiesCopy];
 LABEL_8:
 
   return v7;

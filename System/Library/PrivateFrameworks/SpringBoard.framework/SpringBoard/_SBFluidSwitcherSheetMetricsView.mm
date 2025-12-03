@@ -1,11 +1,11 @@
 @interface _SBFluidSwitcherSheetMetricsView
-- (UIEdgeInsets)_safeAreaInsetsForFrame:(CGRect)a3 inSuperview:(id)a4;
+- (UIEdgeInsets)_safeAreaInsetsForFrame:(CGRect)frame inSuperview:(id)superview;
 - (UIEdgeInsets)overrideSafeAreaInsets;
 @end
 
 @implementation _SBFluidSwitcherSheetMetricsView
 
-- (UIEdgeInsets)_safeAreaInsetsForFrame:(CGRect)a3 inSuperview:(id)a4
+- (UIEdgeInsets)_safeAreaInsetsForFrame:(CGRect)frame inSuperview:(id)superview
 {
   top = self->_overrideSafeAreaInsets.top;
   left = self->_overrideSafeAreaInsets.left;

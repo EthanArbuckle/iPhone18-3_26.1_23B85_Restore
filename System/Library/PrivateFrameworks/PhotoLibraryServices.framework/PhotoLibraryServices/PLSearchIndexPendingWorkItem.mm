@@ -1,12 +1,12 @@
 @interface PLSearchIndexPendingWorkItem
-+ (id)pendingWorkItemWithType:(signed __int16)a3 flags:(int64_t)a4;
++ (id)pendingWorkItemWithType:(signed __int16)type flags:(int64_t)flags;
 + (id)rebuildInProgressPendingWorkItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PLSearchIndexPendingWorkItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(PLSearchIndexPendingWorkItem);
   *(result + 8) = self->_rebuildInProgress;
@@ -15,19 +15,19 @@
   return result;
 }
 
-+ (id)pendingWorkItemWithType:(signed __int16)a3 flags:(int64_t)a4
++ (id)pendingWorkItemWithType:(signed __int16)type flags:(int64_t)flags
 {
-  v5 = a3;
-  v6 = objc_alloc_init(a1);
-  [v6 setJobType:v5];
-  [v6 setJobFlags:a4];
+  typeCopy = type;
+  v6 = objc_alloc_init(self);
+  [v6 setJobType:typeCopy];
+  [v6 setJobFlags:flags];
 
   return v6;
 }
 
 + (id)rebuildInProgressPendingWorkItem
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setRebuildInProgress:1];
 
   return v2;

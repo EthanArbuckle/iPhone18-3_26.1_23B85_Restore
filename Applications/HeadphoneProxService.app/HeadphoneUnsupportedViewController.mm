@@ -1,5 +1,5 @@
 @interface HeadphoneUnsupportedViewController
-- (_TtC20HeadphoneProxService34HeadphoneUnsupportedViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService34HeadphoneUnsupportedViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008C1C4();
 }
 
-- (_TtC20HeadphoneProxService34HeadphoneUnsupportedViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService34HeadphoneUnsupportedViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC20HeadphoneProxService34HeadphoneUnsupportedViewController_viewModel;
@@ -23,7 +23,7 @@
   self->super.PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService34HeadphoneUnsupportedViewController_type] = 26;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  return [(SoftwareUpdateRequiredViewController *)&v10 initWithContentView:a3];
+  return [(SoftwareUpdateRequiredViewController *)&v10 initWithContentView:view];
 }
 
 @end

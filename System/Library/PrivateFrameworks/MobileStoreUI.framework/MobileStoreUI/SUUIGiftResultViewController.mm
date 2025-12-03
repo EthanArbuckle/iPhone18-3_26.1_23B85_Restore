@@ -1,29 +1,29 @@
 @interface SUUIGiftResultViewController
-- (SUUIGiftResultViewController)initWithGift:(id)a3 configuration:(id)a4;
+- (SUUIGiftResultViewController)initWithGift:(id)gift configuration:(id)configuration;
 - (id)_itemImage;
 - (id)_itemView;
-- (void)_giftAgainAction:(id)a3;
-- (void)_setItemImage:(id)a3 error:(id)a4;
+- (void)_giftAgainAction:(id)action;
+- (void)_setItemImage:(id)image error:(id)error;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUIGiftResultViewController
 
-- (SUUIGiftResultViewController)initWithGift:(id)a3 configuration:(id)a4
+- (SUUIGiftResultViewController)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = SUUIGiftResultViewController;
-  v7 = [(SUUIGiftStepViewController *)&v12 initWithGift:a3 configuration:v6];
+  v7 = [(SUUIGiftStepViewController *)&v12 initWithGift:gift configuration:configurationCopy];
   if (v7)
   {
-    v8 = [v6 clientContext];
-    v9 = v8;
-    if (v8)
+    clientContext = [configurationCopy clientContext];
+    v9 = clientContext;
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"GIFTING_RESULT_TITLE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_RESULT_TITLE" inTable:@"Gifting"];
     }
 
     else
@@ -48,24 +48,24 @@
 - (void)loadView
 {
   v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v4 = [v3 clientContext];
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
 
   v5 = objc_alloc_init(SUUIGiftResultView);
-  v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(SUUIGiftResultView *)v5 setBackgroundColor:v6];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(SUUIGiftResultView *)v5 setBackgroundColor:systemBackgroundColor];
 
-  v7 = [(SUUIGiftStepViewController *)self gift];
-  v8 = [v7 item];
+  gift = [(SUUIGiftStepViewController *)self gift];
+  item = [gift item];
 
-  if (v8)
+  if (item)
   {
-    v9 = [(SUUIGiftResultViewController *)self _itemView];
-    [(SUUIGiftResultView *)v5 setItemView:v9];
+    _itemView = [(SUUIGiftResultViewController *)self _itemView];
+    [(SUUIGiftResultView *)v5 setItemView:_itemView];
 
-    if (v4)
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"GIFTING_RESULT_ITEM_MESSAGE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_RESULT_ITEM_MESSAGE" inTable:@"Gifting"];
     }
 
     else
@@ -81,9 +81,9 @@
     v10 = [MEMORY[0x277D755B8] imageNamed:@"RedemptionCardStack" inBundle:v21];
     [(SUUIGiftResultView *)v5 setImage:v10];
 
-    if (v4)
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"GIFTING_RESULT_AMOUNT_MESSAGE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_RESULT_AMOUNT_MESSAGE" inTable:@"Gifting"];
     }
 
     else
@@ -92,17 +92,17 @@
     }
     v11 = ;
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(SUUIGiftStepViewController *)self gift];
-    v14 = [v13 totalGiftAmountString];
-    v15 = [v12 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, v14];
+    gift2 = [(SUUIGiftStepViewController *)self gift];
+    totalGiftAmountString = [gift2 totalGiftAmountString];
+    v15 = [v12 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, totalGiftAmountString];
     [(SUUIGiftResultView *)v5 setTitle:v15];
   }
 
-  v16 = [(SUUIGiftResultView *)v5 giftAgainButton];
-  [v16 addTarget:self action:sel__giftAgainAction_ forControlEvents:64];
-  if (v4)
+  giftAgainButton = [(SUUIGiftResultView *)v5 giftAgainButton];
+  [giftAgainButton addTarget:self action:sel__giftAgainAction_ forControlEvents:64];
+  if (clientContext)
   {
-    [v4 localizedStringForKey:@"GIFTING_RESULT_SEND_ANOTHER_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_RESULT_SEND_ANOTHER_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -110,19 +110,19 @@
     [SUUIClientContext localizedStringForKey:@"GIFTING_RESULT_SEND_ANOTHER_BUTTON" inBundles:0 inTable:@"Gifting"];
   }
   v17 = ;
-  [v16 setTitle:v17 forState:0];
+  [giftAgainButton setTitle:v17 forState:0];
 
-  [v16 sizeToFit];
+  [giftAgainButton sizeToFit];
   [(SUUIGiftResultViewController *)self setView:v5];
-  v18 = [(SUUIGiftResultViewController *)self navigationItem];
-  [v18 setHidesBackButton:1];
+  navigationItem = [(SUUIGiftResultViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v19 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v19 setAction:sel__doneButtonAction_];
   [v19 setStyle:2];
   [v19 setTarget:self];
-  if (v4)
+  if (clientContext)
   {
-    [v4 localizedStringForKey:@"GIFTING_DONE_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_DONE_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -132,16 +132,16 @@
   v20 = ;
   [v19 setTitle:v20];
 
-  [v18 setRightBarButtonItem:v19];
+  [navigationItem setRightBarButtonItem:v19];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUUIGiftResultViewController *)self _itemView];
-  v6 = [v5 artworkContext];
+  appearCopy = appear;
+  _itemView = [(SUUIGiftResultViewController *)self _itemView];
+  artworkContext = [_itemView artworkContext];
 
-  if (v6 && !self->_itemImage)
+  if (artworkContext && !self->_itemImage)
   {
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x277D85DD0];
@@ -149,14 +149,14 @@
     v8[2] = __47__SUUIGiftResultViewController_viewWillAppear___block_invoke;
     v8[3] = &unk_2798F5E28;
     objc_copyWeak(&v9, &location);
-    [(SUUIGiftStepViewController *)self loadItemArtworkWithArtworkContext:v6 completionBlock:v8];
+    [(SUUIGiftStepViewController *)self loadItemArtworkWithArtworkContext:artworkContext completionBlock:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
   v7.receiver = self;
   v7.super_class = SUUIGiftResultViewController;
-  [(SUUIGiftResultViewController *)&v7 viewWillAppear:v3];
+  [(SUUIGiftResultViewController *)&v7 viewWillAppear:appearCopy];
 }
 
 void __47__SUUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -167,24 +167,24 @@ void __47__SUUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
   [WeakRetained _setItemImage:v6 error:v5];
 }
 
-- (void)_giftAgainAction:(id)a3
+- (void)_giftAgainAction:(id)action
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIGiftStepViewController *)self gift];
-  v5 = [v4 copy];
+  gift = [(SUUIGiftStepViewController *)self gift];
+  v5 = [gift copy];
 
   [v5 reset];
   v6 = [SUUIGiftComposeViewController alloc];
-  v7 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v8 = [(SUUIGiftComposeViewController *)v6 initWithGift:v5 configuration:v7];
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  v8 = [(SUUIGiftComposeViewController *)v6 initWithGift:v5 configuration:giftConfiguration];
 
-  v9 = [(SUUIGiftStepViewController *)self operationQueue];
-  [(SUUIGiftStepViewController *)v8 setOperationQueue:v9];
+  operationQueue = [(SUUIGiftStepViewController *)self operationQueue];
+  [(SUUIGiftStepViewController *)v8 setOperationQueue:operationQueue];
 
-  v10 = [(SUUIGiftResultViewController *)self navigationController];
+  navigationController = [(SUUIGiftResultViewController *)self navigationController];
   v12[0] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v10 setViewControllers:v11 animated:1];
+  [navigationController setViewControllers:v11 animated:1];
 }
 
 - (id)_itemImage
@@ -192,10 +192,10 @@ void __47__SUUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
   v3 = self->_itemImage;
   if (!v3)
   {
-    v4 = [(SUUIGiftItemView *)self->_itemView artworkContext];
-    v5 = [(SUUIGiftStepViewController *)self gift];
-    v6 = [v5 item];
-    v3 = [v4 placeholderImageForItem:v6];
+    artworkContext = [(SUUIGiftItemView *)self->_itemView artworkContext];
+    gift = [(SUUIGiftStepViewController *)self gift];
+    item = [gift item];
+    v3 = [artworkContext placeholderImageForItem:item];
   }
 
   return v3;
@@ -203,42 +203,42 @@ void __47__SUUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
 
 - (id)_itemView
 {
-  v3 = [(SUUIGiftStepViewController *)self gift];
-  v4 = [v3 item];
+  gift = [(SUUIGiftStepViewController *)self gift];
+  item = [gift item];
 
-  if (v4 && !self->_itemView)
+  if (item && !self->_itemView)
   {
     v5 = [SUUIGiftItemView alloc];
-    v6 = [(SUUIGiftStepViewController *)self giftConfiguration];
-    v7 = [v6 clientContext];
-    v8 = [(SUUIGiftItemView *)v5 initWithStyle:2 item:v4 clientContext:v7];
+    giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
+    v8 = [(SUUIGiftItemView *)v5 initWithStyle:2 item:item clientContext:clientContext];
     itemView = self->_itemView;
     self->_itemView = v8;
 
     v10 = self->_itemView;
-    v11 = [v4 artistName];
-    [(SUUIGiftItemView *)v10 setArtistName:v11];
+    artistName = [item artistName];
+    [(SUUIGiftItemView *)v10 setArtistName:artistName];
 
     v12 = self->_itemView;
-    v13 = [v4 categoryName];
-    [(SUUIGiftItemView *)v12 setCategoryName:v13];
+    categoryName = [item categoryName];
+    [(SUUIGiftItemView *)v12 setCategoryName:categoryName];
 
     v14 = self->_itemView;
-    v15 = [(SUUIGiftResultViewController *)self _itemImage];
-    [(SUUIGiftItemView *)v14 setItemImage:v15];
+    _itemImage = [(SUUIGiftResultViewController *)self _itemImage];
+    [(SUUIGiftItemView *)v14 setItemImage:_itemImage];
 
-    -[SUUIGiftItemView setNumberOfUserRatings:](self->_itemView, "setNumberOfUserRatings:", [v4 numberOfUserRatings]);
+    -[SUUIGiftItemView setNumberOfUserRatings:](self->_itemView, "setNumberOfUserRatings:", [item numberOfUserRatings]);
     v16 = self->_itemView;
-    v17 = [v4 primaryItemOffer];
-    v18 = [v17 buttonText];
-    [(SUUIGiftItemView *)v16 setPrice:v18];
+    primaryItemOffer = [item primaryItemOffer];
+    buttonText = [primaryItemOffer buttonText];
+    [(SUUIGiftItemView *)v16 setPrice:buttonText];
 
     v19 = self->_itemView;
-    v20 = [v4 title];
-    [(SUUIGiftItemView *)v19 setTitle:v20];
+    title = [item title];
+    [(SUUIGiftItemView *)v19 setTitle:title];
 
     v21 = self->_itemView;
-    [v4 userRating];
+    [item userRating];
     *&v23 = v22 / 5.0;
     [(SUUIGiftItemView *)v21 setUserRating:v23];
     [(SUUIGiftItemView *)self->_itemView sizeToFit];
@@ -250,15 +250,15 @@ void __47__SUUIGiftResultViewController_viewWillAppear___block_invoke(uint64_t a
   return v24;
 }
 
-- (void)_setItemImage:(id)a3 error:(id)a4
+- (void)_setItemImage:(id)image error:(id)error
 {
-  v6 = a3;
-  if (v6)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_itemImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_itemImage, image);
     [(SUUIGiftItemView *)self->_itemView setItemImage:self->_itemImage];
-    v6 = v7;
+    imageCopy = v7;
   }
 }
 

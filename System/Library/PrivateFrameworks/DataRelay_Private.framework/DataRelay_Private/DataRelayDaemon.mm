@@ -2,9 +2,9 @@
 + (id)sharedDataRelayInstance;
 - (DataRelayDaemon)init;
 - (void)activate;
-- (void)handleXPCDisconnected:(unsigned int)a3;
-- (void)informDRClientSensorDataAvailable:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6;
-- (void)informDRClientSensorDataUnavailable:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6;
+- (void)handleXPCDisconnected:(unsigned int)disconnected;
+- (void)informDRClientSensorDataAvailable:(id)available dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion;
+- (void)informDRClientSensorDataUnavailable:(id)unavailable dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -66,7 +66,7 @@ uint64_t __27__DataRelayDaemon_activate__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)handleXPCDisconnected:(unsigned int)a3
+- (void)handleXPCDisconnected:(unsigned int)disconnected
 {
   dispatchQueue = self->dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -74,45 +74,45 @@ uint64_t __27__DataRelayDaemon_activate__block_invoke(uint64_t a1)
   v4[2] = __41__DataRelayDaemon_handleXPCDisconnected___block_invoke;
   v4[3] = &unk_278F4EF40;
   v4[4] = self;
-  v5 = a3;
+  disconnectedCopy = disconnected;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)informDRClientSensorDataAvailable:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6
+- (void)informDRClientSensorDataAvailable:(id)available dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  availableCopy = available;
+  completionCopy = completion;
   dispatchQueue = self->dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__DataRelayDaemon_informDRClientSensorDataAvailable_dataTypes_connectionID_completion___block_invoke;
   block[3] = &unk_278F4EF68;
   block[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v17 = v11;
-  v18 = a4;
-  v13 = v11;
-  v14 = v10;
+  v16 = availableCopy;
+  dCopy = d;
+  v17 = completionCopy;
+  typesCopy = types;
+  v13 = completionCopy;
+  v14 = availableCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)informDRClientSensorDataUnavailable:(id)a3 dataTypes:(unint64_t)a4 connectionID:(unsigned int)a5 completion:(id)a6
+- (void)informDRClientSensorDataUnavailable:(id)unavailable dataTypes:(unint64_t)types connectionID:(unsigned int)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  unavailableCopy = unavailable;
+  completionCopy = completion;
   dispatchQueue = self->dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__DataRelayDaemon_informDRClientSensorDataUnavailable_dataTypes_connectionID_completion___block_invoke;
   block[3] = &unk_278F4EF68;
   block[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v17 = v11;
-  v18 = a4;
-  v13 = v11;
-  v14 = v10;
+  v16 = unavailableCopy;
+  dCopy = d;
+  v17 = completionCopy;
+  typesCopy = types;
+  v13 = completionCopy;
+  v14 = unavailableCopy;
   dispatch_async(dispatchQueue, block);
 }
 

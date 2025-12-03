@@ -1,41 +1,41 @@
 @interface HKPopulationNormsAgeBucketBarView
-- (HKPopulationNormsAgeBucketBarView)initWithReferenceMinY:(double)a3 referenceMaxY:(double)a4 highlightColor:(id)a5;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)updateWithAscendingThresholds:(id)a3 currentHighlightIndex:(unint64_t)a4;
+- (HKPopulationNormsAgeBucketBarView)initWithReferenceMinY:(double)y referenceMaxY:(double)maxY highlightColor:(id)color;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)updateWithAscendingThresholds:(id)thresholds currentHighlightIndex:(unint64_t)index;
 @end
 
 @implementation HKPopulationNormsAgeBucketBarView
 
-- (HKPopulationNormsAgeBucketBarView)initWithReferenceMinY:(double)a3 referenceMaxY:(double)a4 highlightColor:(id)a5
+- (HKPopulationNormsAgeBucketBarView)initWithReferenceMinY:(double)y referenceMaxY:(double)maxY highlightColor:(id)color
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  colorCopy = color;
   v38.receiver = self;
   v38.super_class = HKPopulationNormsAgeBucketBarView;
   v10 = [(HKPopulationNormsAgeBucketBarView *)&v38 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v11 = v10;
   if (v10)
   {
-    v10->_referenceMinY = a3;
-    v10->_referenceMaxY = a4;
+    v10->_referenceMinY = y;
+    v10->_referenceMaxY = maxY;
     v12 = objc_alloc_init(MEMORY[0x1E6979398]);
     underlyingBarLayer = v11->_underlyingBarLayer;
     v11->_underlyingBarLayer = v12;
 
     [(CALayer *)v11->_underlyingBarLayer setCornerRadius:5.0];
     [(CALayer *)v11->_underlyingBarLayer setMasksToBounds:1];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    -[CALayer setBackgroundColor:](v11->_underlyingBarLayer, "setBackgroundColor:", [v14 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CALayer setBackgroundColor:](v11->_underlyingBarLayer, "setBackgroundColor:", [clearColor CGColor]);
 
-    v15 = [(HKPopulationNormsAgeBucketBarView *)v11 layer];
-    [v15 addSublayer:v11->_underlyingBarLayer];
+    layer = [(HKPopulationNormsAgeBucketBarView *)v11 layer];
+    [layer addSublayer:v11->_underlyingBarLayer];
 
     v16 = objc_alloc_init(MEMORY[0x1E6979398]);
     segmentsLayer = v11->_segmentsLayer;
     v11->_segmentsLayer = v16;
 
     [(CALayer *)v11->_underlyingBarLayer addSublayer:v11->_segmentsLayer];
-    objc_storeStrong(&v11->_highlightColor, a5);
+    objc_storeStrong(&v11->_highlightColor, color);
     v18 = objc_alloc_init(MEMORY[0x1E6979398]);
     highlightedLayer = v11->_highlightedLayer;
     v11->_highlightedLayer = v18;
@@ -48,8 +48,8 @@
     v21 = *MEMORY[0x1E69DDD10];
     v22 = *MEMORY[0x1E69DB8D8];
     v23 = *MEMORY[0x1E69DDC60];
-    v24 = [(HKPopulationNormsAgeBucketBarView *)v11 traitCollection];
-    v25 = [v20 _preferredFontForTextStyle:v21 design:v22 variant:1024 maximumContentSizeCategory:v23 compatibleWithTraitCollection:v24];
+    traitCollection = [(HKPopulationNormsAgeBucketBarView *)v11 traitCollection];
+    v25 = [v20 _preferredFontForTextStyle:v21 design:v22 variant:1024 maximumContentSizeCategory:v23 compatibleWithTraitCollection:traitCollection];
 
     v39 = *MEMORY[0x1E69DB648];
     v40[0] = v25;
@@ -63,14 +63,14 @@
 
     [(CATextLayer *)v11->_highlightedTopLabelLayer setFont:v25];
     [(CATextLayer *)v11->_highlightedTopLabelLayer setFontSize:12.0];
-    v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v30 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     [(CATextLayer *)v11->_highlightedTopLabelLayer setContentsScale:?];
 
     v31 = *MEMORY[0x1E6979560];
     [(CATextLayer *)v11->_highlightedTopLabelLayer setAlignmentMode:*MEMORY[0x1E6979560]];
-    v32 = [(HKPopulationNormsAgeBucketBarView *)v11 layer];
-    [v32 addSublayer:v11->_highlightedTopLabelLayer];
+    layer2 = [(HKPopulationNormsAgeBucketBarView *)v11 layer];
+    [layer2 addSublayer:v11->_highlightedTopLabelLayer];
 
     v33 = objc_alloc_init(MEMORY[0x1E6979508]);
     highlightedBottomLabelLayer = v11->_highlightedBottomLabelLayer;
@@ -78,37 +78,37 @@
 
     [(CATextLayer *)v11->_highlightedBottomLabelLayer setFont:v25];
     [(CATextLayer *)v11->_highlightedBottomLabelLayer setFontSize:12.0];
-    v35 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v35 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     [(CATextLayer *)v11->_highlightedBottomLabelLayer setContentsScale:?];
 
     [(CATextLayer *)v11->_highlightedBottomLabelLayer setAlignmentMode:v31];
-    v36 = [(HKPopulationNormsAgeBucketBarView *)v11 layer];
-    [v36 addSublayer:v11->_highlightedBottomLabelLayer];
+    layer3 = [(HKPopulationNormsAgeBucketBarView *)v11 layer];
+    [layer3 addSublayer:v11->_highlightedBottomLabelLayer];
   }
 
   return v11;
 }
 
-- (void)updateWithAscendingThresholds:(id)a3 currentHighlightIndex:(unint64_t)a4
+- (void)updateWithAscendingThresholds:(id)thresholds currentHighlightIndex:(unint64_t)index
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 count] <= 2)
+  thresholdsCopy = thresholds;
+  if ([thresholdsCopy count] <= 2)
   {
     [HKPopulationNormsAgeBucketBarView updateWithAscendingThresholds:a2 currentHighlightIndex:self];
   }
 
-  if ([(NSArray *)self->_ascendingThresholds count]- 1 <= a4)
+  if ([(NSArray *)self->_ascendingThresholds count]- 1 <= index)
   {
     [HKPopulationNormsAgeBucketBarView updateWithAscendingThresholds:a2 currentHighlightIndex:self];
   }
 
-  objc_storeStrong(&self->_ascendingThresholds, a3);
-  self->_highlightedSegmentIndex = a4;
+  objc_storeStrong(&self->_ascendingThresholds, thresholds);
+  self->_highlightedSegmentIndex = index;
   v9 = [(NSArray *)self->_ascendingThresholds count];
-  v10 = [(CALayer *)self->_segmentsLayer sublayers];
-  v11 = [v10 count];
+  sublayers = [(CALayer *)self->_segmentsLayer sublayers];
+  v11 = [sublayers count];
   v12 = v9 + ~v11;
 
   if (v12 < 1)
@@ -118,9 +118,9 @@
       v14 = v11 - v9 + 1;
       do
       {
-        v15 = [(CALayer *)self->_segmentsLayer sublayers];
-        v16 = [v15 lastObject];
-        [v16 removeFromSuperlayer];
+        sublayers2 = [(CALayer *)self->_segmentsLayer sublayers];
+        lastObject = [sublayers2 lastObject];
+        [lastObject removeFromSuperlayer];
 
         --v14;
       }
@@ -149,7 +149,7 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = v8;
+  v17 = thresholdsCopy;
   v18 = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v18)
   {
@@ -187,11 +187,11 @@
     while (v19);
   }
 
-  v24 = [(NSArray *)self->_ascendingThresholds objectAtIndexedSubscript:a4];
+  v24 = [(NSArray *)self->_ascendingThresholds objectAtIndexedSubscript:index];
   [v24 floatValue];
   self->_highlightedSectionMinY = v25;
 
-  v26 = [(NSArray *)self->_ascendingThresholds objectAtIndexedSubscript:a4 + 1];
+  v26 = [(NSArray *)self->_ascendingThresholds objectAtIndexedSubscript:index + 1];
   [v26 floatValue];
   self->_highlightedSectionMaxY = v27;
 
@@ -203,27 +203,27 @@
   v31 = HKLocalizedStringForNumberWithDecimalPrecision(v30, 1, 0);
   [(CATextLayer *)self->_highlightedTopLabelLayer setString:v31];
 
-  v32 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-  [v32 layoutSublayers];
+  layer = [(HKPopulationNormsAgeBucketBarView *)self layer];
+  [layer layoutSublayers];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v69 = a3;
-  v4 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-  v5 = [v69 isEqual:v4];
+  layerCopy = layer;
+  layer = [(HKPopulationNormsAgeBucketBarView *)self layer];
+  v5 = [layerCopy isEqual:layer];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] hk_populationChartSeriesColor];
-    v7 = [v6 CGColor];
+    hk_populationChartSeriesColor = [MEMORY[0x1E69DC888] hk_populationChartSeriesColor];
+    cGColor = [hk_populationChartSeriesColor CGColor];
 
-    v8 = [(UIColor *)self->_highlightColor CGColor];
-    v9 = [MEMORY[0x1E69DC888] hk_populationChartTextColor];
-    -[CATextLayer setForegroundColor:](self->_highlightedTopLabelLayer, "setForegroundColor:", [v9 CGColor]);
+    cGColor2 = [(UIColor *)self->_highlightColor CGColor];
+    hk_populationChartTextColor = [MEMORY[0x1E69DC888] hk_populationChartTextColor];
+    -[CATextLayer setForegroundColor:](self->_highlightedTopLabelLayer, "setForegroundColor:", [hk_populationChartTextColor CGColor]);
 
-    v10 = [MEMORY[0x1E69DC888] hk_populationChartTextColor];
-    -[CATextLayer setForegroundColor:](self->_highlightedBottomLabelLayer, "setForegroundColor:", [v10 CGColor]);
+    hk_populationChartTextColor2 = [MEMORY[0x1E69DC888] hk_populationChartTextColor];
+    -[CATextLayer setForegroundColor:](self->_highlightedBottomLabelLayer, "setForegroundColor:", [hk_populationChartTextColor2 CGColor]);
 
     referenceMaxY = self->_referenceMaxY;
     v12 = referenceMaxY - self->_referenceMinY;
@@ -231,8 +231,8 @@
     v14 = visibleBarMaxY - self->_visibleBarMinY;
     v15 = v14 / v12;
     v16 = (referenceMaxY - visibleBarMaxY) / v12;
-    v17 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-    [v17 frame];
+    layer2 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+    [layer2 frame];
     v18 = CGRectGetWidth(v71) + -20.0;
 
     if (v18 > 30.0)
@@ -240,18 +240,18 @@
       v18 = 30.0;
     }
 
-    v19 = [(HKPopulationNormsAgeBucketBarView *)self window];
+    window = [(HKPopulationNormsAgeBucketBarView *)self window];
 
-    if (v19)
+    if (window)
     {
-      v20 = [(HKPopulationNormsAgeBucketBarView *)self window];
-      v21 = [v20 traitCollection];
-      v22 = [v21 horizontalSizeClass];
+      window2 = [(HKPopulationNormsAgeBucketBarView *)self window];
+      traitCollection = [window2 traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-      if (v22 == 2)
+      if (horizontalSizeClass == 2)
       {
-        v23 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-        [v23 frame];
+        layer3 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+        [layer3 frame];
         v18 = CGRectGetWidth(v72) + -20.0;
 
         if (v18 > 60.0)
@@ -261,16 +261,16 @@
       }
     }
 
-    v24 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-    [v24 frame];
+    layer4 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+    [layer4 frame];
     Width = CGRectGetWidth(v73);
     v26 = HKUIFloorToScreenScale((Width - v18) * 0.5);
 
-    v27 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-    [v27 frame];
+    layer5 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+    [layer5 frame];
     v28 = v16 * CGRectGetHeight(v74);
-    v29 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-    [v29 frame];
+    layer6 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+    [layer6 frame];
     [(CALayer *)self->_underlyingBarLayer setFrame:v26, v28, v18, v15 * CGRectGetHeight(v75)];
 
     [(CALayer *)self->_underlyingBarLayer frame];
@@ -278,7 +278,7 @@
     v31 = self->_visibleBarMaxY;
     v32 = (v31 - self->_highlightedSectionMinY) / v14;
     v33 = (v31 - self->_highlightedSectionMaxY) / v14;
-    v34 = [(HKPopulationNormsAgeBucketBarView *)self _bottomSegmentIsHighlighted];
+    _bottomSegmentIsHighlighted = [(HKPopulationNormsAgeBucketBarView *)self _bottomSegmentIsHighlighted];
     if ([(HKPopulationNormsAgeBucketBarView *)self _topSegmentIsHighlighted])
     {
       v35 = 0.0;
@@ -292,7 +292,7 @@
     [(CALayer *)self->_underlyingBarLayer frame];
     Height = CGRectGetHeight(v77);
     v37 = -0.0;
-    if (!v34)
+    if (!_bottomSegmentIsHighlighted)
     {
       v37 = -1.0;
     }
@@ -300,44 +300,44 @@
     v38 = v37 + Height * v32;
     [(CALayer *)self->_underlyingBarLayer frame];
     v39 = v35 + CGRectGetHeight(v78) * v33;
-    [(CALayer *)self->_highlightedLayer setBackgroundColor:v8];
+    [(CALayer *)self->_highlightedLayer setBackgroundColor:cGColor2];
     [(CALayer *)self->_underlyingBarLayer frame];
     [(CALayer *)self->_highlightedLayer setFrame:0.0, v38, CGRectGetWidth(v79), v39 - v38];
-    v68 = [(CATextLayer *)self->_highlightedTopLabelLayer string];
-    [v68 sizeWithAttributes:self->_highlightedTextLayerAttributes];
+    string = [(CATextLayer *)self->_highlightedTopLabelLayer string];
+    [string sizeWithAttributes:self->_highlightedTextLayerAttributes];
     v41 = v40;
     v42 = MinY + v39 - v40 + -4.0;
-    v43 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-    [v43 frame];
+    layer7 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+    [layer7 frame];
     [(CATextLayer *)self->_highlightedTopLabelLayer setFrame:0.0, v42, CGRectGetWidth(v80), v41];
 
     [(CATextLayer *)self->_highlightedTopLabelLayer setHidden:[(HKPopulationNormsAgeBucketBarView *)self _topSegmentIsHighlighted]];
-    v67 = [(CATextLayer *)self->_highlightedBottomLabelLayer string];
-    [v67 sizeWithAttributes:self->_highlightedTextLayerAttributes];
+    string2 = [(CATextLayer *)self->_highlightedBottomLabelLayer string];
+    [string2 sizeWithAttributes:self->_highlightedTextLayerAttributes];
     v45 = v44;
-    v46 = [(HKPopulationNormsAgeBucketBarView *)self layer];
-    [v46 frame];
+    layer8 = [(HKPopulationNormsAgeBucketBarView *)self layer];
+    [layer8 frame];
     [(CATextLayer *)self->_highlightedBottomLabelLayer setFrame:0.0, MinY + v38 + 4.0, CGRectGetWidth(v81), v45];
 
     [(CATextLayer *)self->_highlightedBottomLabelLayer setHidden:[(HKPopulationNormsAgeBucketBarView *)self _bottomSegmentIsHighlighted]];
     [(CALayer *)self->_underlyingBarLayer bounds];
     [(CALayer *)self->_segmentsLayer setFrame:?];
-    v47 = [(CALayer *)self->_segmentsLayer sublayers];
-    v48 = [v47 count];
+    sublayers = [(CALayer *)self->_segmentsLayer sublayers];
+    v48 = [sublayers count];
 
     if (v48)
     {
       v49 = 0;
       do
       {
-        v50 = [(CALayer *)self->_segmentsLayer sublayers];
-        v51 = [v50 objectAtIndexedSubscript:v49];
+        sublayers2 = [(CALayer *)self->_segmentsLayer sublayers];
+        v51 = [sublayers2 objectAtIndexedSubscript:v49];
 
-        [v51 setBackgroundColor:v7];
+        [v51 setBackgroundColor:cGColor];
         v52 = [(NSArray *)self->_ascendingThresholds objectAtIndexedSubscript:v49];
         v53 = v49 + 1;
         [(NSArray *)self->_ascendingThresholds objectAtIndexedSubscript:v49 + 1];
-        v55 = v54 = v7;
+        v55 = v54 = cGColor;
         if (v49 == v48 - 1)
         {
           v56 = 0.0;
@@ -372,7 +372,7 @@
         [(CALayer *)self->_segmentsLayer frame];
         [v51 setFrame:{0.0, v65, CGRectGetWidth(v84), v66 - v65}];
 
-        v7 = v54;
+        cGColor = v54;
         ++v49;
       }
 

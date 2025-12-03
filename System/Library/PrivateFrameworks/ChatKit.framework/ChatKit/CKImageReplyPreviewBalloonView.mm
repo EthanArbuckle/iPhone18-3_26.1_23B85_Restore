@@ -1,7 +1,7 @@
 @interface CKImageReplyPreviewBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKImageReplyPreviewBalloonView)initWithFrame:(CGRect)a3;
-- (void)configureForMessagePart:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKImageReplyPreviewBalloonView)initWithFrame:(CGRect)frame;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)updateImageAlpha;
@@ -9,15 +9,15 @@
 
 @implementation CKImageReplyPreviewBalloonView
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v9.receiver = self;
   v9.super_class = CKImageReplyPreviewBalloonView;
-  [(CKImageBalloonView *)&v9 configureForMessagePart:v4];
-  if (v4)
+  [(CKImageBalloonView *)&v9 configureForMessagePart:partCopy];
+  if (partCopy)
   {
-    [v4 balloonDescriptor];
+    [partCopy balloonDescriptor];
   }
 
   else
@@ -26,22 +26,22 @@
   }
 
   [(CKBalloonView *)self setBalloonDescriptor:v8];
-  v5 = [v4 mediaObject];
+  mediaObject = [partCopy mediaObject];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 previewMaxWidth];
-  -[CKImageBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", v5, [v4 balloonOrientation], v7);
+  -[CKImageBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", mediaObject, [partCopy balloonOrientation], v7);
 }
 
-- (CKImageReplyPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKImageReplyPreviewBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKImageReplyPreviewBalloonView;
-  v3 = [(CKImageBalloonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
-    [v5 setEnabled:0];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setEnabled:0];
   }
 
   return v4;
@@ -52,8 +52,8 @@
   v4.receiver = self;
   v4.super_class = CKImageReplyPreviewBalloonView;
   [(CKImageBalloonView *)&v4 layoutSubviews];
-  v3 = [(CKImageBalloonView *)self irisBadgeView];
-  [v3 setHidden:1];
+  irisBadgeView = [(CKImageBalloonView *)self irisBadgeView];
+  [irisBadgeView setHidden:1];
 
   [(CKImageReplyPreviewBalloonView *)self updateImageAlpha];
 }
@@ -68,10 +68,10 @@
 
 - (void)updateImageAlpha
 {
-  v3 = [(CKImageReplyPreviewBalloonView *)self traitCollection];
-  v4 = [v3 isTranscriptBackgroundActive];
+  traitCollection = [(CKImageReplyPreviewBalloonView *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  if (v4)
+  if (isTranscriptBackgroundActive)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 replyPreviewBalloonImageAlpha];
@@ -89,11 +89,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
   v21.receiver = self;
   v21.super_class = CKImageReplyPreviewBalloonView;
-  [(CKImageBalloonView *)&v21 sizeThatFits:a4 textAlignmentInsets:a5 tailInsets:a3.width, a3.height];
+  [(CKImageBalloonView *)&v21 sizeThatFits:insets textAlignmentInsets:tailInsets tailInsets:fits.width, fits.height];
   v6 = v5;
   v8 = v7;
   v9 = +[CKUIBehavior sharedBehaviors];

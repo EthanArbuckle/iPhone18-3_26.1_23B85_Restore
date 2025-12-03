@@ -1,20 +1,20 @@
 @interface SKGTextQueryManager
-+ (id)queryForAttributesAbsent:(id)a3;
-+ (id)queryForAttributesExist:(id)a3;
-+ (id)queryForBundlesExcluded:(id)a3;
-+ (id)queryForBundlesIncluded:(id)a3;
-+ (id)queryForDocUnderstandingUpdatesIncludeBundles:(id)a3;
-+ (id)queryForEligibleItemsWithTaskQueries:(id)a3 excludeBundles:(id)a4;
-+ (id)queryForEmbeddingsUpdatesExcludeBundles:(id)a3;
-+ (id)queryForEmbeddingsUpdatesIncludeBundles:(id)a3;
++ (id)queryForAttributesAbsent:(id)absent;
++ (id)queryForAttributesExist:(id)exist;
++ (id)queryForBundlesExcluded:(id)excluded;
++ (id)queryForBundlesIncluded:(id)included;
++ (id)queryForDocUnderstandingUpdatesIncludeBundles:(id)bundles;
++ (id)queryForEligibleItemsWithTaskQueries:(id)queries excludeBundles:(id)bundles;
++ (id)queryForEmbeddingsUpdatesExcludeBundles:(id)bundles;
++ (id)queryForEmbeddingsUpdatesIncludeBundles:(id)bundles;
 + (id)queryForInvalidItems;
-+ (id)queryForKeyphrasesUpdatesExcludeBundles:(id)a3;
-+ (id)queryForKeyphrasesUpdatesIncludeBundles:(id)a3;
++ (id)queryForKeyphrasesUpdatesExcludeBundles:(id)bundles;
++ (id)queryForKeyphrasesUpdatesIncludeBundles:(id)bundles;
 + (id)queryForPipelineReport;
-+ (id)queryForPipelineUpdatesWithTaskQueries:(id)a3 excludeBundles:(id)a4 throttleHorizonDate:(int64_t)a5;
-+ (id)queryForSuggestedEventsUpdatesIncludeBundles:(id)a3;
-+ (id)queryForTask:(id)a3 event:(int64_t)a4;
-+ (id)queryForUpdaterVersionsWithThrottleHorizonDate:(int64_t)a3;
++ (id)queryForPipelineUpdatesWithTaskQueries:(id)queries excludeBundles:(id)bundles throttleHorizonDate:(int64_t)date;
++ (id)queryForSuggestedEventsUpdatesIncludeBundles:(id)bundles;
++ (id)queryForTask:(id)task event:(int64_t)event;
++ (id)queryForUpdaterVersionsWithThrottleHorizonDate:(int64_t)date;
 @end
 
 @implementation SKGTextQueryManager
@@ -22,131 +22,131 @@
 + (id)queryForInvalidItems
 {
   v19 = objc_alloc_init(SKGQueryStringBuilder);
-  v18 = [(SKGQueryStringBuilder *)v19 beginGroup];
-  v17 = [v18 withAttribute];
-  v16 = (v17)[2](v17, @"*", @"=", @"*");
+  beginGroup = [(SKGQueryStringBuilder *)v19 beginGroup];
+  withAttribute = [beginGroup withAttribute];
+  v16 = (withAttribute)[2](withAttribute, @"*", @"=", @"*");
   v15 = [v16 and];
-  v2 = [v15 withAttribute];
-  v14 = (v2)[2](v2, @"_kMDItemUserActivityType", @"!=", @"*");
+  withAttribute2 = [v15 withAttribute];
+  v14 = (withAttribute2)[2](withAttribute2, @"_kMDItemUserActivityType", @"!=", @"*");
   v3 = [v14 and];
-  v4 = [v3 beginGroup];
-  v5 = [v4 withAttribute];
-  v6 = (v5)[2](v5, @"_kMDItemIsZombie", @"!=", @"*");
+  beginGroup2 = [v3 beginGroup];
+  withAttribute3 = [beginGroup2 withAttribute];
+  v6 = (withAttribute3)[2](withAttribute3, @"_kMDItemIsZombie", @"!=", @"*");
   v7 = [v6 or];
-  v8 = [v7 withAttribute];
-  v9 = (v8)[2](v8, @"_kMDItemIsZombie", @"!=", &unk_2846E7CB0);
-  v10 = [v9 endGroup];
-  v11 = [v10 endGroup];
-  v13 = [v11 build];
+  withAttribute4 = [v7 withAttribute];
+  v9 = (withAttribute4)[2](withAttribute4, @"_kMDItemIsZombie", @"!=", &unk_2846E7CB0);
+  endGroup = [v9 endGroup];
+  v10EndGroup = [endGroup endGroup];
+  build = [v10EndGroup build];
 
-  return v13;
+  return build;
 }
 
-+ (id)queryForUpdaterVersionsWithThrottleHorizonDate:(int64_t)a3
++ (id)queryForUpdaterVersionsWithThrottleHorizonDate:(int64_t)date
 {
   v57 = objc_alloc_init(SKGQueryStringBuilder);
-  v56 = [(SKGQueryStringBuilder *)v57 beginGroup];
-  v55 = [v56 beginGroup];
-  v54 = [v55 withAttribute];
-  v53 = (v54)[2](v54, @"_kMDItemUpdaterVersion", @"!=", @"*");
+  beginGroup = [(SKGQueryStringBuilder *)v57 beginGroup];
+  v56BeginGroup = [beginGroup beginGroup];
+  withAttribute = [v56BeginGroup withAttribute];
+  v53 = (withAttribute)[2](withAttribute, @"_kMDItemUpdaterVersion", @"!=", @"*");
   v52 = [v53 or];
-  v51 = [v52 beginGroup];
-  v50 = [v51 withAttribute];
-  v49 = (v50)[2](v50, @"_kMDItemUpdaterVersion", @"=", @"*");
+  beginGroup2 = [v52 beginGroup];
+  withAttribute2 = [beginGroup2 withAttribute];
+  v49 = (withAttribute2)[2](withAttribute2, @"_kMDItemUpdaterVersion", @"=", @"*");
   v48 = [v49 and];
-  v4 = [v48 withAttribute];
+  withAttribute3 = [v48 withAttribute];
   v5 = MEMORY[0x277CCABB0];
-  v47 = [MEMORY[0x277D657A0] sharedContext];
-  v45 = [v5 numberWithInteger:{objc_msgSend(v47, "textVersion")}];
-  v46 = v4;
-  v44 = (*(v4 + 16))(v4, @"_kMDItemUpdaterVersion", @"!=", v45);
-  v43 = [v44 endGroup];
-  v42 = [v43 endGroup];
-  v41 = [v42 or];
-  v40 = [v41 beginGroup];
-  v39 = [v40 beginGroup];
-  v38 = [v39 withAttribute];
-  v37 = (v38)[2](v38, @"_kMDItemUpdaterLastRequested", @"!=", @"*");
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  v45 = [v5 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "textVersion")}];
+  v46 = withAttribute3;
+  v44 = (*(withAttribute3 + 16))(withAttribute3, @"_kMDItemUpdaterVersion", @"!=", v45);
+  endGroup = [v44 endGroup];
+  v43EndGroup = [endGroup endGroup];
+  v41 = [v43EndGroup or];
+  beginGroup3 = [v41 beginGroup];
+  v40BeginGroup = [beginGroup3 beginGroup];
+  withAttribute4 = [v40BeginGroup withAttribute];
+  v37 = (withAttribute4)[2](withAttribute4, @"_kMDItemUpdaterLastRequested", @"!=", @"*");
   v36 = [v37 or];
-  v35 = [v36 beginGroup];
-  v34 = [v35 withAttribute];
-  v33 = (v34)[2](v34, @"_kMDItemUpdaterLastRequested", @"=", @"*");
+  beginGroup4 = [v36 beginGroup];
+  withAttribute5 = [beginGroup4 withAttribute];
+  v33 = (withAttribute5)[2](withAttribute5, @"_kMDItemUpdaterLastRequested", @"=", @"*");
   v32 = [v33 and];
-  v6 = [v32 withAttribute];
-  v30 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v31 = v6;
-  v29 = (*(v6 + 16))(v6, @"_kMDItemUpdaterLastRequested");
-  v27 = [v29 endGroup];
-  v26 = [v27 endGroup];
-  v25 = [v26 and];
-  v24 = [v25 beginGroup];
-  v23 = [v24 withAttribute];
-  v22 = (v23)[2](v23, @"_kMDItemUpdaterRequestedCount", @"!=", @"*");
+  withAttribute6 = [v32 withAttribute];
+  v30 = [MEMORY[0x277CCABB0] numberWithInteger:date];
+  v31 = withAttribute6;
+  v29 = (*(withAttribute6 + 16))(withAttribute6, @"_kMDItemUpdaterLastRequested");
+  endGroup2 = [v29 endGroup];
+  v27EndGroup = [endGroup2 endGroup];
+  v25 = [v27EndGroup and];
+  beginGroup5 = [v25 beginGroup];
+  withAttribute7 = [beginGroup5 withAttribute];
+  v22 = (withAttribute7)[2](withAttribute7, @"_kMDItemUpdaterRequestedCount", @"!=", @"*");
   v21 = [v22 or];
-  v20 = [v21 beginGroup];
-  v7 = [v20 withAttribute];
-  v19 = (v7)[2](v7, @"_kMDItemUpdaterRequestedCount", @"=", @"*");
+  beginGroup6 = [v21 beginGroup];
+  withAttribute8 = [beginGroup6 withAttribute];
+  v19 = (withAttribute8)[2](withAttribute8, @"_kMDItemUpdaterRequestedCount", @"=", @"*");
   v8 = [v19 and];
-  v9 = [v8 withAttribute];
+  withAttribute9 = [v8 withAttribute];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [MEMORY[0x277D657A0] sharedContext];
-  v12 = [v10 numberWithInteger:{objc_msgSend(v11, "redonationRepeatCap")}];
-  v13 = (v9)[2](v9, @"_kMDItemUpdaterRequestedCount", @"<", v12);
-  v14 = [v13 endGroup];
-  v15 = [v14 endGroup];
-  v16 = [v15 endGroup];
-  v17 = [v16 endGroup];
-  v28 = [v17 build];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v12 = [v10 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "redonationRepeatCap")}];
+  v13 = (withAttribute9)[2](withAttribute9, @"_kMDItemUpdaterRequestedCount", @"<", v12);
+  endGroup3 = [v13 endGroup];
+  v14EndGroup = [endGroup3 endGroup];
+  v15EndGroup = [v14EndGroup endGroup];
+  v16EndGroup = [v15EndGroup endGroup];
+  build = [v16EndGroup build];
 
-  return v28;
+  return build;
 }
 
-+ (id)queryForBundlesExcluded:(id)a3
++ (id)queryForBundlesExcluded:(id)excluded
 {
-  v3 = a3;
+  excludedCopy = excluded;
   v4 = objc_alloc_init(SKGQueryStringBuilder);
-  v5 = [(SKGQueryStringBuilder *)v4 beginGroup];
+  beginGroup = [(SKGQueryStringBuilder *)v4 beginGroup];
 
-  if ([v3 count])
+  if ([excludedCopy count])
   {
-    v6 = [v5 not];
-    v7 = [v6 withFieldMatch];
-    v8 = (*(v7 + 16))(v7, @"_kMDItemBundleID", v3);
+    withQuery = [beginGroup not];
+    withFieldMatch = [withQuery withFieldMatch];
+    v8 = (*(withFieldMatch + 16))(withFieldMatch, @"_kMDItemBundleID", excludedCopy);
 
-    v5 = v7;
+    beginGroup = withFieldMatch;
   }
 
   else
   {
-    v6 = [v5 withQuery];
-    v8 = (v6)[2](v6, @"true");
+    withQuery = [beginGroup withQuery];
+    v8 = (withQuery)[2](withQuery, @"true");
   }
 
-  v9 = [v8 endGroup];
+  endGroup = [v8 endGroup];
 
-  v10 = [v9 build];
+  build = [endGroup build];
 
-  return v10;
+  return build;
 }
 
-+ (id)queryForAttributesExist:(id)a3
++ (id)queryForAttributesExist:(id)exist
 {
-  v3 = a3;
+  existCopy = exist;
   v4 = objc_alloc_init(SKGQueryStringBuilder);
-  v5 = [(SKGQueryStringBuilder *)v4 beginGroup];
+  beginGroup = [(SKGQueryStringBuilder *)v4 beginGroup];
 
-  if ([v3 count])
+  if ([existCopy count])
   {
-    if ([v3 count])
+    if ([existCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v6];
-        v8 = [v5 withAttribute];
-        v9 = (v8)[2](v8, v7, @"=", @"*");
+        v7 = [existCopy objectAtIndexedSubscript:v6];
+        withAttribute = [beginGroup withAttribute];
+        v9 = (withAttribute)[2](withAttribute, v7, @"=", @"*");
 
-        if (v6 != [v3 count] - 1)
+        if (v6 != [existCopy count] - 1)
         {
           v10 = [v9 or];
 
@@ -154,49 +154,49 @@
         }
 
         ++v6;
-        v5 = v9;
+        beginGroup = v9;
       }
 
-      while (v6 < [v3 count]);
+      while (v6 < [existCopy count]);
     }
 
     else
     {
-      v9 = v5;
+      v9 = beginGroup;
     }
   }
 
   else
   {
-    v11 = [v5 withQuery];
-    v9 = (v11)[2](v11, @"true");
+    withQuery = [beginGroup withQuery];
+    v9 = (withQuery)[2](withQuery, @"true");
   }
 
-  v12 = [v9 endGroup];
+  endGroup = [v9 endGroup];
 
-  v13 = [v12 build];
+  build = [endGroup build];
 
-  return v13;
+  return build;
 }
 
-+ (id)queryForAttributesAbsent:(id)a3
++ (id)queryForAttributesAbsent:(id)absent
 {
-  v3 = a3;
+  absentCopy = absent;
   v4 = objc_alloc_init(SKGQueryStringBuilder);
-  v5 = [(SKGQueryStringBuilder *)v4 beginGroup];
+  beginGroup = [(SKGQueryStringBuilder *)v4 beginGroup];
 
-  if ([v3 count])
+  if ([absentCopy count])
   {
-    if ([v3 count])
+    if ([absentCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v6];
-        v8 = [v5 withAttribute];
-        v9 = (v8)[2](v8, v7, @"!=", @"*");
+        v7 = [absentCopy objectAtIndexedSubscript:v6];
+        withAttribute = [beginGroup withAttribute];
+        v9 = (withAttribute)[2](withAttribute, v7, @"!=", @"*");
 
-        if (v6 != [v3 count] - 1)
+        if (v6 != [absentCopy count] - 1)
         {
           v10 = [v9 or];
 
@@ -204,49 +204,49 @@
         }
 
         ++v6;
-        v5 = v9;
+        beginGroup = v9;
       }
 
-      while (v6 < [v3 count]);
+      while (v6 < [absentCopy count]);
     }
 
     else
     {
-      v9 = v5;
+      v9 = beginGroup;
     }
   }
 
   else
   {
-    v11 = [v5 withQuery];
-    v9 = (v11)[2](v11, @"true");
+    withQuery = [beginGroup withQuery];
+    v9 = (withQuery)[2](withQuery, @"true");
   }
 
-  v12 = [v9 endGroup];
+  endGroup = [v9 endGroup];
 
-  v13 = [v12 build];
+  build = [endGroup build];
 
-  return v13;
+  return build;
 }
 
-+ (id)queryForBundlesIncluded:(id)a3
++ (id)queryForBundlesIncluded:(id)included
 {
-  v3 = a3;
+  includedCopy = included;
   v4 = objc_alloc_init(SKGQueryStringBuilder);
-  v5 = [(SKGQueryStringBuilder *)v4 beginGroup];
+  beginGroup = [(SKGQueryStringBuilder *)v4 beginGroup];
 
-  if ([v3 count])
+  if ([includedCopy count])
   {
-    if ([v3 count])
+    if ([includedCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v6];
-        v8 = [v5 withAttribute];
-        v9 = (v8)[2](v8, @"_kMDItemBundleID", @"=", v7);
+        v7 = [includedCopy objectAtIndexedSubscript:v6];
+        withAttribute = [beginGroup withAttribute];
+        v9 = (withAttribute)[2](withAttribute, @"_kMDItemBundleID", @"=", v7);
 
-        if (v6 != [v3 count] - 1)
+        if (v6 != [includedCopy count] - 1)
         {
           v10 = [v9 or];
 
@@ -254,239 +254,239 @@
         }
 
         ++v6;
-        v5 = v9;
+        beginGroup = v9;
       }
 
-      while (v6 < [v3 count]);
+      while (v6 < [includedCopy count]);
     }
 
     else
     {
-      v9 = v5;
+      v9 = beginGroup;
     }
   }
 
   else
   {
-    v11 = [v5 withQuery];
-    v9 = (v11)[2](v11, @"true");
+    withQuery = [beginGroup withQuery];
+    v9 = (withQuery)[2](withQuery, @"true");
   }
 
-  v12 = [v9 endGroup];
+  endGroup = [v9 endGroup];
 
-  v13 = [v12 build];
+  build = [endGroup build];
 
-  return v13;
+  return build;
 }
 
-+ (id)queryForEmbeddingsUpdatesExcludeBundles:(id)a3
++ (id)queryForEmbeddingsUpdatesExcludeBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v59 = objc_alloc_init(SKGQueryStringBuilder);
-  v58 = [(SKGQueryStringBuilder *)v59 beginGroup];
-  v4 = [v58 withQuery];
-  v56 = [SKGTextQueryManager queryForBundlesExcluded:v3];
+  beginGroup = [(SKGQueryStringBuilder *)v59 beginGroup];
+  withQuery = [beginGroup withQuery];
+  v56 = [SKGTextQueryManager queryForBundlesExcluded:bundlesCopy];
 
-  v57 = v4;
-  v55 = (*(v4 + 16))(v4, v56);
+  v57 = withQuery;
+  v55 = (*(withQuery + 16))(withQuery, v56);
   v54 = [v55 and];
-  v53 = [v54 beginGroup];
-  v52 = [v53 beginGroup];
-  v51 = [v52 withAttribute];
-  v50 = (v51)[2](v51, @"_kMDItemNeedsEmbeddings", @"!=", @"*");
+  beginGroup2 = [v54 beginGroup];
+  v53BeginGroup = [beginGroup2 beginGroup];
+  withAttribute = [v53BeginGroup withAttribute];
+  v50 = (withAttribute)[2](withAttribute, @"_kMDItemNeedsEmbeddings", @"!=", @"*");
   v49 = [v50 and];
-  v48 = [v49 withAttribute];
-  v47 = (v48)[2](v48, @"kMDItemEmbeddingVersion", @"!=", @"*");
+  withAttribute2 = [v49 withAttribute];
+  v47 = (withAttribute2)[2](withAttribute2, @"kMDItemEmbeddingVersion", @"!=", @"*");
   v46 = [v47 and];
-  v45 = [v46 withAttribute];
-  v44 = (v45)[2](v45, @"_kMDItemMediaEmbeddingVersion", @"!=", @"*");
-  v43 = [v44 endGroup];
-  v42 = [v43 or];
-  v41 = [v42 beginGroup];
-  v40 = [v41 beginGroup];
-  v39 = [v40 withAttribute];
-  v38 = (v39)[2](v39, @"kMDItemEmbeddingVersion", @"=", @"*");
+  withAttribute3 = [v46 withAttribute];
+  v44 = (withAttribute3)[2](withAttribute3, @"_kMDItemMediaEmbeddingVersion", @"!=", @"*");
+  endGroup = [v44 endGroup];
+  v42 = [endGroup or];
+  beginGroup3 = [v42 beginGroup];
+  v41BeginGroup = [beginGroup3 beginGroup];
+  withAttribute4 = [v41BeginGroup withAttribute];
+  v38 = (withAttribute4)[2](withAttribute4, @"kMDItemEmbeddingVersion", @"=", @"*");
   v37 = [v38 and];
-  v5 = [v37 withAttribute];
+  withAttribute5 = [v37 withAttribute];
   v6 = MEMORY[0x277CCABB0];
-  v36 = [MEMORY[0x277D657A0] sharedContext];
-  v34 = [v6 numberWithInteger:{objc_msgSend(v36, "embeddingVersion")}];
-  v35 = v5;
-  v33 = (*(v5 + 16))(v5, @"kMDItemEmbeddingVersion", @"!=", v34);
-  v32 = [v33 endGroup];
-  v31 = [v32 or];
-  v30 = [v31 beginGroup];
-  v28 = [v30 withAttribute];
-  v27 = (v28)[2](v28, @"_kMDItemMediaEmbeddingVersion", @"=", @"*");
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  v34 = [v6 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "embeddingVersion")}];
+  v35 = withAttribute5;
+  v33 = (*(withAttribute5 + 16))(withAttribute5, @"kMDItemEmbeddingVersion", @"!=", v34);
+  endGroup2 = [v33 endGroup];
+  v31 = [endGroup2 or];
+  beginGroup4 = [v31 beginGroup];
+  withAttribute6 = [beginGroup4 withAttribute];
+  v27 = (withAttribute6)[2](withAttribute6, @"_kMDItemMediaEmbeddingVersion", @"=", @"*");
   v26 = [v27 and];
-  v7 = [v26 withAttribute];
+  withAttribute7 = [v26 withAttribute];
   v8 = MEMORY[0x277CCABB0];
-  v25 = [MEMORY[0x277D657A0] sharedContext];
-  v23 = [v8 numberWithInteger:{objc_msgSend(v25, "embeddingModelVersion")}];
-  v24 = v7;
-  v22 = (*(v7 + 16))(v7, @"_kMDItemMediaEmbeddingVersion", @"!=", v23);
-  v21 = [v22 endGroup];
-  v20 = [v21 endGroup];
-  v9 = [v20 or];
-  v10 = [v9 beginGroup];
-  v11 = [v10 withAttribute];
-  v12 = (v11)[2](v11, @"_kMDItemEmbeddingsError", @"=", @"*");
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v23 = [v8 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "embeddingModelVersion")}];
+  v24 = withAttribute7;
+  v22 = (*(withAttribute7 + 16))(withAttribute7, @"_kMDItemMediaEmbeddingVersion", @"!=", v23);
+  endGroup3 = [v22 endGroup];
+  v21EndGroup = [endGroup3 endGroup];
+  v9 = [v21EndGroup or];
+  beginGroup5 = [v9 beginGroup];
+  withAttribute8 = [beginGroup5 withAttribute];
+  v12 = (withAttribute8)[2](withAttribute8, @"_kMDItemEmbeddingsError", @"=", @"*");
   v13 = [v12 and];
-  v14 = [v13 withAttribute];
-  v15 = (v14)[2](v14, @"_kMDItemEmbeddingsError", @"<", &unk_2846E7CC8);
-  v16 = [v15 endGroup];
-  v17 = [v16 endGroup];
-  v18 = [v17 endGroup];
-  v29 = [v18 build];
+  withAttribute9 = [v13 withAttribute];
+  v15 = (withAttribute9)[2](withAttribute9, @"_kMDItemEmbeddingsError", @"<", &unk_2846E7CC8);
+  endGroup4 = [v15 endGroup];
+  v16EndGroup = [endGroup4 endGroup];
+  v17EndGroup = [v16EndGroup endGroup];
+  build = [v17EndGroup build];
 
-  return v29;
+  return build;
 }
 
-+ (id)queryForKeyphrasesUpdatesExcludeBundles:(id)a3
++ (id)queryForKeyphrasesUpdatesExcludeBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v65 = objc_alloc_init(SKGQueryStringBuilder);
-  v64 = [(SKGQueryStringBuilder *)v65 beginGroup];
-  v63 = [v64 beginGroup];
-  v4 = [v63 withQuery];
-  v61 = [SKGTextQueryManager queryForBundlesExcluded:v3];
+  beginGroup = [(SKGQueryStringBuilder *)v65 beginGroup];
+  v64BeginGroup = [beginGroup beginGroup];
+  withQuery = [v64BeginGroup withQuery];
+  v61 = [SKGTextQueryManager queryForBundlesExcluded:bundlesCopy];
 
-  v62 = v4;
-  v60 = (*(v4 + 16))(v4, v61);
+  v62 = withQuery;
+  v60 = (*(withQuery + 16))(withQuery, v61);
   v59 = [v60 and];
-  v58 = [v59 beginGroup];
-  v57 = [v58 withAttribute];
-  v56 = (v57)[2](v57, @"_kMDItemBundleID", @"!=", @"com.apple*");
+  beginGroup2 = [v59 beginGroup];
+  withAttribute = [beginGroup2 withAttribute];
+  v56 = (withAttribute)[2](withAttribute, @"_kMDItemBundleID", @"!=", @"com.apple*");
   v55 = [v56 or];
-  v5 = [v55 withQuery];
-  v54 = [MEMORY[0x277D657A0] sharedContext];
-  v52 = [v54 keyphraseIncludeBundles];
-  v51 = [SKGTextQueryManager queryForBundlesIncluded:v52];
-  v53 = v5;
-  v50 = (*(v5 + 16))(v5, v51);
-  v49 = [v50 endGroup];
-  v48 = [v49 endGroup];
-  v47 = [v48 and];
-  v46 = [v47 beginGroup];
-  v6 = [v46 withQuery];
-  v45 = [MEMORY[0x277D657A0] sharedContext];
-  v43 = [v45 keyphraseExtractionAttributes];
-  v42 = [SKGTextQueryManager queryForAttributesExist:v43];
-  v44 = v6;
-  v41 = (*(v6 + 16))(v6, v42);
-  v40 = [v41 endGroup];
-  v39 = [v40 and];
-  v38 = [v39 beginGroup];
-  v37 = [v38 beginGroup];
-  v36 = [v37 withAttribute];
-  v35 = (v36)[2](v36, @"_kMDItemNeedsKeyphrases", @"!=", @"*");
+  withQuery2 = [v55 withQuery];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  keyphraseIncludeBundles = [mEMORY[0x277D657A0] keyphraseIncludeBundles];
+  v51 = [SKGTextQueryManager queryForBundlesIncluded:keyphraseIncludeBundles];
+  v53 = withQuery2;
+  v50 = (*(withQuery2 + 16))(withQuery2, v51);
+  endGroup = [v50 endGroup];
+  v49EndGroup = [endGroup endGroup];
+  v47 = [v49EndGroup and];
+  beginGroup3 = [v47 beginGroup];
+  withQuery3 = [beginGroup3 withQuery];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  keyphraseExtractionAttributes = [mEMORY[0x277D657A0]2 keyphraseExtractionAttributes];
+  v42 = [SKGTextQueryManager queryForAttributesExist:keyphraseExtractionAttributes];
+  v44 = withQuery3;
+  v41 = (*(withQuery3 + 16))(withQuery3, v42);
+  endGroup2 = [v41 endGroup];
+  v39 = [endGroup2 and];
+  beginGroup4 = [v39 beginGroup];
+  v38BeginGroup = [beginGroup4 beginGroup];
+  withAttribute2 = [v38BeginGroup withAttribute];
+  v35 = (withAttribute2)[2](withAttribute2, @"_kMDItemNeedsKeyphrases", @"!=", @"*");
   v34 = [v35 and];
-  v33 = [v34 withAttribute];
-  v32 = (v33)[2](v33, @"kMDItemKeyphraseVersion", @"!=", @"*");
-  v30 = [v32 endGroup];
-  v29 = [v30 or];
-  v28 = [v29 beginGroup];
-  v27 = [v28 withAttribute];
-  v26 = (v27)[2](v27, @"kMDItemKeyphraseVersion", @"=", @"*");
+  withAttribute3 = [v34 withAttribute];
+  v32 = (withAttribute3)[2](withAttribute3, @"kMDItemKeyphraseVersion", @"!=", @"*");
+  endGroup3 = [v32 endGroup];
+  v29 = [endGroup3 or];
+  beginGroup5 = [v29 beginGroup];
+  withAttribute4 = [beginGroup5 withAttribute];
+  v26 = (withAttribute4)[2](withAttribute4, @"kMDItemKeyphraseVersion", @"=", @"*");
   v25 = [v26 and];
-  v7 = [v25 withAttribute];
+  withAttribute5 = [v25 withAttribute];
   v8 = MEMORY[0x277CCABB0];
-  v24 = [MEMORY[0x277D657A0] sharedContext];
-  v22 = [v8 numberWithInteger:{objc_msgSend(v24, "keyphraseVersion")}];
-  v23 = v7;
-  v21 = (*(v7 + 16))(v7, @"kMDItemKeyphraseVersion", @"!=", v22);
-  v20 = [v21 endGroup];
-  v9 = [v20 or];
-  v10 = [v9 beginGroup];
-  v11 = [v10 withAttribute];
-  v12 = (v11)[2](v11, @"_kMDItemKeyphrasesError", @"=", @"*");
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  v22 = [v8 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]3, "keyphraseVersion")}];
+  v23 = withAttribute5;
+  v21 = (*(withAttribute5 + 16))(withAttribute5, @"kMDItemKeyphraseVersion", @"!=", v22);
+  endGroup4 = [v21 endGroup];
+  v9 = [endGroup4 or];
+  beginGroup6 = [v9 beginGroup];
+  withAttribute6 = [beginGroup6 withAttribute];
+  v12 = (withAttribute6)[2](withAttribute6, @"_kMDItemKeyphrasesError", @"=", @"*");
   v13 = [v12 and];
-  v14 = [v13 withAttribute];
-  v15 = (v14)[2](v14, @"_kMDItemKeyphrasesError", @"<", &unk_2846E7CC8);
-  v16 = [v15 endGroup];
-  v17 = [v16 endGroup];
-  v18 = [v17 endGroup];
-  v31 = [v18 build];
+  withAttribute7 = [v13 withAttribute];
+  v15 = (withAttribute7)[2](withAttribute7, @"_kMDItemKeyphrasesError", @"<", &unk_2846E7CC8);
+  endGroup5 = [v15 endGroup];
+  v16EndGroup = [endGroup5 endGroup];
+  v17EndGroup = [v16EndGroup endGroup];
+  build = [v17EndGroup build];
 
-  return v31;
+  return build;
 }
 
-+ (id)queryForEmbeddingsUpdatesIncludeBundles:(id)a3
++ (id)queryForEmbeddingsUpdatesIncludeBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v59 = objc_alloc_init(SKGQueryStringBuilder);
-  v58 = [(SKGQueryStringBuilder *)v59 beginGroup];
-  v4 = [v58 withQuery];
-  v56 = [SKGTextQueryManager queryForBundlesIncluded:v3];
+  beginGroup = [(SKGQueryStringBuilder *)v59 beginGroup];
+  withQuery = [beginGroup withQuery];
+  v56 = [SKGTextQueryManager queryForBundlesIncluded:bundlesCopy];
 
-  v57 = v4;
-  v55 = (*(v4 + 16))(v4, v56);
+  v57 = withQuery;
+  v55 = (*(withQuery + 16))(withQuery, v56);
   v54 = [v55 and];
-  v53 = [v54 beginGroup];
-  v52 = [v53 beginGroup];
-  v51 = [v52 withAttribute];
-  v50 = (v51)[2](v51, @"_kMDItemNeedsEmbeddings", @"!=", @"*");
+  beginGroup2 = [v54 beginGroup];
+  v53BeginGroup = [beginGroup2 beginGroup];
+  withAttribute = [v53BeginGroup withAttribute];
+  v50 = (withAttribute)[2](withAttribute, @"_kMDItemNeedsEmbeddings", @"!=", @"*");
   v49 = [v50 and];
-  v48 = [v49 withAttribute];
-  v47 = (v48)[2](v48, @"kMDItemEmbeddingVersion", @"!=", @"*");
+  withAttribute2 = [v49 withAttribute];
+  v47 = (withAttribute2)[2](withAttribute2, @"kMDItemEmbeddingVersion", @"!=", @"*");
   v46 = [v47 and];
-  v45 = [v46 withAttribute];
-  v44 = (v45)[2](v45, @"_kMDItemMediaEmbeddingVersion", @"!=", @"*");
-  v43 = [v44 endGroup];
-  v42 = [v43 or];
-  v41 = [v42 beginGroup];
-  v40 = [v41 beginGroup];
-  v39 = [v40 withAttribute];
-  v38 = (v39)[2](v39, @"kMDItemEmbeddingVersion", @"=", @"*");
+  withAttribute3 = [v46 withAttribute];
+  v44 = (withAttribute3)[2](withAttribute3, @"_kMDItemMediaEmbeddingVersion", @"!=", @"*");
+  endGroup = [v44 endGroup];
+  v42 = [endGroup or];
+  beginGroup3 = [v42 beginGroup];
+  v41BeginGroup = [beginGroup3 beginGroup];
+  withAttribute4 = [v41BeginGroup withAttribute];
+  v38 = (withAttribute4)[2](withAttribute4, @"kMDItemEmbeddingVersion", @"=", @"*");
   v37 = [v38 and];
-  v5 = [v37 withAttribute];
+  withAttribute5 = [v37 withAttribute];
   v6 = MEMORY[0x277CCABB0];
-  v36 = [MEMORY[0x277D657A0] sharedContext];
-  v34 = [v6 numberWithInteger:{objc_msgSend(v36, "embeddingVersion")}];
-  v35 = v5;
-  v33 = (*(v5 + 16))(v5, @"kMDItemEmbeddingVersion", @"!=", v34);
-  v32 = [v33 endGroup];
-  v31 = [v32 or];
-  v30 = [v31 beginGroup];
-  v28 = [v30 withAttribute];
-  v27 = (v28)[2](v28, @"_kMDItemMediaEmbeddingVersion", @"=", @"*");
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  v34 = [v6 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "embeddingVersion")}];
+  v35 = withAttribute5;
+  v33 = (*(withAttribute5 + 16))(withAttribute5, @"kMDItemEmbeddingVersion", @"!=", v34);
+  endGroup2 = [v33 endGroup];
+  v31 = [endGroup2 or];
+  beginGroup4 = [v31 beginGroup];
+  withAttribute6 = [beginGroup4 withAttribute];
+  v27 = (withAttribute6)[2](withAttribute6, @"_kMDItemMediaEmbeddingVersion", @"=", @"*");
   v26 = [v27 and];
-  v7 = [v26 withAttribute];
+  withAttribute7 = [v26 withAttribute];
   v8 = MEMORY[0x277CCABB0];
-  v25 = [MEMORY[0x277D657A0] sharedContext];
-  v23 = [v8 numberWithInteger:{objc_msgSend(v25, "embeddingModelVersion")}];
-  v24 = v7;
-  v22 = (*(v7 + 16))(v7, @"_kMDItemMediaEmbeddingVersion", @"!=", v23);
-  v21 = [v22 endGroup];
-  v20 = [v21 endGroup];
-  v9 = [v20 or];
-  v10 = [v9 beginGroup];
-  v11 = [v10 withAttribute];
-  v12 = (v11)[2](v11, @"_kMDItemEmbeddingsError", @"=", @"*");
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v23 = [v8 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "embeddingModelVersion")}];
+  v24 = withAttribute7;
+  v22 = (*(withAttribute7 + 16))(withAttribute7, @"_kMDItemMediaEmbeddingVersion", @"!=", v23);
+  endGroup3 = [v22 endGroup];
+  v21EndGroup = [endGroup3 endGroup];
+  v9 = [v21EndGroup or];
+  beginGroup5 = [v9 beginGroup];
+  withAttribute8 = [beginGroup5 withAttribute];
+  v12 = (withAttribute8)[2](withAttribute8, @"_kMDItemEmbeddingsError", @"=", @"*");
   v13 = [v12 and];
-  v14 = [v13 withAttribute];
-  v15 = (v14)[2](v14, @"_kMDItemEmbeddingsError", @"<", &unk_2846E7CC8);
-  v16 = [v15 endGroup];
-  v17 = [v16 endGroup];
-  v18 = [v17 endGroup];
-  v29 = [v18 build];
+  withAttribute9 = [v13 withAttribute];
+  v15 = (withAttribute9)[2](withAttribute9, @"_kMDItemEmbeddingsError", @"<", &unk_2846E7CC8);
+  endGroup4 = [v15 endGroup];
+  v16EndGroup = [endGroup4 endGroup];
+  v17EndGroup = [v16EndGroup endGroup];
+  build = [v17EndGroup build];
 
-  return v29;
+  return build;
 }
 
-+ (id)queryForKeyphrasesUpdatesIncludeBundles:(id)a3
++ (id)queryForKeyphrasesUpdatesIncludeBundles:(id)bundles
 {
   v69 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [MEMORY[0x277D657A0] sharedContext];
-  v6 = [v5 excludeBundles];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  excludeBundles = [mEMORY[0x277D657A0] excludeBundles];
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v7 = v3;
+  v7 = bundlesCopy;
   v8 = [v7 countByEnumeratingWithState:&v64 objects:v68 count:16];
   if (v8)
   {
@@ -502,10 +502,10 @@
         }
 
         v12 = *(*(&v64 + 1) + 8 * i);
-        if (([v6 containsObject:v12] & 1) == 0)
+        if (([excludeBundles containsObject:v12] & 1) == 0)
         {
-          v13 = [MEMORY[0x277D657A0] sharedContext];
-          v14 = [v13 keyphrasesSupportsBundle:v12 domainID:0];
+          mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+          v14 = [mEMORY[0x277D657A0]2 keyphrasesSupportsBundle:v12 domainID:0];
 
           if (v14)
           {
@@ -523,160 +523,160 @@
   if ([v4 count])
   {
     v62 = objc_alloc_init(SKGQueryStringBuilder);
-    v61 = [(SKGQueryStringBuilder *)v62 beginGroup];
-    v15 = [v61 withQuery];
+    beginGroup = [(SKGQueryStringBuilder *)v62 beginGroup];
+    withQuery = [beginGroup withQuery];
     v59 = [SKGTextQueryManager queryForBundlesIncluded:v7];
-    v60 = v15;
-    v58 = (*(v15 + 16))(v15, v59);
+    v60 = withQuery;
+    v58 = (*(withQuery + 16))(withQuery, v59);
     v57 = [v58 and];
-    v56 = [v57 beginGroup];
-    v16 = [v56 withQuery];
-    v55 = [MEMORY[0x277D657A0] sharedContext];
-    v53 = [v55 keyphraseExtractionAttributes];
-    v52 = [SKGTextQueryManager queryForAttributesExist:v53];
-    v54 = v16;
-    v51 = (*(v16 + 16))(v16, v52);
-    v50 = [v51 endGroup];
-    v49 = [v50 and];
-    v48 = [v49 beginGroup];
-    v47 = [v48 beginGroup];
-    v46 = [v47 withAttribute];
-    v45 = (v46)[2](v46, @"_kMDItemNeedsKeyphrases", @"!=", @"*");
+    beginGroup2 = [v57 beginGroup];
+    withQuery2 = [beginGroup2 withQuery];
+    mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+    keyphraseExtractionAttributes = [mEMORY[0x277D657A0]3 keyphraseExtractionAttributes];
+    v52 = [SKGTextQueryManager queryForAttributesExist:keyphraseExtractionAttributes];
+    v54 = withQuery2;
+    v51 = (*(withQuery2 + 16))(withQuery2, v52);
+    endGroup = [v51 endGroup];
+    v49 = [endGroup and];
+    beginGroup3 = [v49 beginGroup];
+    v48BeginGroup = [beginGroup3 beginGroup];
+    withAttribute = [v48BeginGroup withAttribute];
+    v45 = (withAttribute)[2](withAttribute, @"_kMDItemNeedsKeyphrases", @"!=", @"*");
     v44 = [v45 and];
-    v43 = [v44 withAttribute];
-    v42 = (v43)[2](v43, @"kMDItemKeyphraseVersion", @"!=", @"*");
-    v41 = [v42 endGroup];
-    v40 = [v41 or];
-    v39 = [v40 beginGroup];
-    v38 = [v39 withAttribute];
-    v37 = (v38)[2](v38, @"kMDItemKeyphraseVersion", @"=", @"*");
+    withAttribute2 = [v44 withAttribute];
+    v42 = (withAttribute2)[2](withAttribute2, @"kMDItemKeyphraseVersion", @"!=", @"*");
+    endGroup2 = [v42 endGroup];
+    v40 = [endGroup2 or];
+    beginGroup4 = [v40 beginGroup];
+    withAttribute3 = [beginGroup4 withAttribute];
+    v37 = (withAttribute3)[2](withAttribute3, @"kMDItemKeyphraseVersion", @"=", @"*");
     v36 = [v37 and];
-    v17 = [v36 withAttribute];
+    withAttribute4 = [v36 withAttribute];
     v18 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277D657A0] sharedContext];
-    v33 = [v18 numberWithInteger:{objc_msgSend(v35, "keyphraseVersion")}];
-    v34 = v17;
-    v32 = (*(v17 + 16))(v17, @"kMDItemKeyphraseVersion", @"!=", v33);
-    v31 = [v32 endGroup];
-    v30 = [v31 or];
-    v29 = [v30 beginGroup];
-    v19 = [v29 withAttribute];
-    v28 = (v19)[2](v19, @"_kMDItemKeyphrasesError", @"=", @"*");
+    mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+    v33 = [v18 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]4, "keyphraseVersion")}];
+    v34 = withAttribute4;
+    v32 = (*(withAttribute4 + 16))(withAttribute4, @"kMDItemKeyphraseVersion", @"!=", v33);
+    endGroup3 = [v32 endGroup];
+    v30 = [endGroup3 or];
+    beginGroup5 = [v30 beginGroup];
+    withAttribute5 = [beginGroup5 withAttribute];
+    v28 = (withAttribute5)[2](withAttribute5, @"_kMDItemKeyphrasesError", @"=", @"*");
     v20 = [v28 and];
-    v21 = [v20 withAttribute];
-    v22 = (v21)[2](v21, @"_kMDItemKeyphrasesError", @"<", &unk_2846E7CC8);
-    v23 = [v22 endGroup];
-    v24 = [v23 endGroup];
-    v25 = [v24 endGroup];
-    v63 = [v25 build];
+    withAttribute6 = [v20 withAttribute];
+    v22 = (withAttribute6)[2](withAttribute6, @"_kMDItemKeyphrasesError", @"<", &unk_2846E7CC8);
+    endGroup4 = [v22 endGroup];
+    v23EndGroup = [endGroup4 endGroup];
+    v24EndGroup = [v23EndGroup endGroup];
+    build = [v24EndGroup build];
   }
 
   else
   {
-    v63 = @"false";
+    build = @"false";
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v63;
+  return build;
 }
 
-+ (id)queryForDocUnderstandingUpdatesIncludeBundles:(id)a3
++ (id)queryForDocUnderstandingUpdatesIncludeBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v40 = objc_alloc_init(SKGQueryStringBuilder);
-  v39 = [(SKGQueryStringBuilder *)v40 beginGroup];
-  v4 = [v39 withQuery];
-  v37 = [SKGTextQueryManager queryForBundlesIncluded:v3];
+  beginGroup = [(SKGQueryStringBuilder *)v40 beginGroup];
+  withQuery = [beginGroup withQuery];
+  v37 = [SKGTextQueryManager queryForBundlesIncluded:bundlesCopy];
 
-  v38 = v4;
-  v36 = (*(v4 + 16))(v4, v37);
+  v38 = withQuery;
+  v36 = (*(withQuery + 16))(withQuery, v37);
   v35 = [v36 and];
-  v5 = [v35 withQuery];
-  v34 = [MEMORY[0x277D657A0] sharedContext];
-  v32 = [v34 docUnderstandingExtractionAttributes];
-  v31 = [SKGTextQueryManager queryForAttributesExist:v32];
-  v33 = v5;
-  v30 = (*(v5 + 16))(v5, v31);
+  withQuery2 = [v35 withQuery];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  docUnderstandingExtractionAttributes = [mEMORY[0x277D657A0] docUnderstandingExtractionAttributes];
+  v31 = [SKGTextQueryManager queryForAttributesExist:docUnderstandingExtractionAttributes];
+  v33 = withQuery2;
+  v30 = (*(withQuery2 + 16))(withQuery2, v31);
   v29 = [v30 and];
-  v28 = [v29 beginGroup];
-  v27 = [v28 beginGroup];
-  v26 = [v27 withAttribute];
-  v25 = (v26)[2](v26, @"_kMDItemNeedsDocumentUnderstanding", @"!=", @"*");
+  beginGroup2 = [v29 beginGroup];
+  v28BeginGroup = [beginGroup2 beginGroup];
+  withAttribute = [v28BeginGroup withAttribute];
+  v25 = (withAttribute)[2](withAttribute, @"_kMDItemNeedsDocumentUnderstanding", @"!=", @"*");
   v24 = [v25 and];
-  v23 = [v24 withAttribute];
-  v22 = (v23)[2](v23, @"kMDItemDocumentUnderstandingVersion", @"!=", @"*");
-  v21 = [v22 endGroup];
-  v19 = [v21 or];
-  v18 = [v19 beginGroup];
-  v6 = [v18 withAttribute];
-  v7 = (v6)[2](v6, @"kMDItemDocumentUnderstandingVersion", @"=", @"*");
+  withAttribute2 = [v24 withAttribute];
+  v22 = (withAttribute2)[2](withAttribute2, @"kMDItemDocumentUnderstandingVersion", @"!=", @"*");
+  endGroup = [v22 endGroup];
+  v19 = [endGroup or];
+  beginGroup3 = [v19 beginGroup];
+  withAttribute3 = [beginGroup3 withAttribute];
+  v7 = (withAttribute3)[2](withAttribute3, @"kMDItemDocumentUnderstandingVersion", @"=", @"*");
   v8 = [v7 and];
-  v9 = [v8 withAttribute];
+  withAttribute4 = [v8 withAttribute];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [MEMORY[0x277D657A0] sharedContext];
-  v12 = [v10 numberWithInteger:{objc_msgSend(v11, "documentUnderstandingVersion")}];
-  v13 = (v9)[2](v9, @"kMDItemDocumentUnderstandingVersion", @"!=", v12);
-  v14 = [v13 endGroup];
-  v15 = [v14 endGroup];
-  v16 = [v15 endGroup];
-  v20 = [v16 build];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v12 = [v10 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "documentUnderstandingVersion")}];
+  v13 = (withAttribute4)[2](withAttribute4, @"kMDItemDocumentUnderstandingVersion", @"!=", v12);
+  endGroup2 = [v13 endGroup];
+  v14EndGroup = [endGroup2 endGroup];
+  v15EndGroup = [v14EndGroup endGroup];
+  build = [v15EndGroup build];
 
-  return v20;
+  return build;
 }
 
-+ (id)queryForSuggestedEventsUpdatesIncludeBundles:(id)a3
++ (id)queryForSuggestedEventsUpdatesIncludeBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v40 = objc_alloc_init(SKGQueryStringBuilder);
-  v39 = [(SKGQueryStringBuilder *)v40 beginGroup];
-  v4 = [v39 withQuery];
-  v37 = [SKGTextQueryManager queryForBundlesIncluded:v3];
+  beginGroup = [(SKGQueryStringBuilder *)v40 beginGroup];
+  withQuery = [beginGroup withQuery];
+  v37 = [SKGTextQueryManager queryForBundlesIncluded:bundlesCopy];
 
-  v38 = v4;
-  v36 = (*(v4 + 16))(v4, v37);
+  v38 = withQuery;
+  v36 = (*(withQuery + 16))(withQuery, v37);
   v35 = [v36 and];
-  v5 = [v35 withQuery];
-  v34 = [MEMORY[0x277D657A0] sharedContext];
-  v32 = [v34 suggestedEventsExtractionAttributes];
-  v31 = [SKGTextQueryManager queryForAttributesExist:v32];
-  v33 = v5;
-  v30 = (*(v5 + 16))(v5, v31);
+  withQuery2 = [v35 withQuery];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  suggestedEventsExtractionAttributes = [mEMORY[0x277D657A0] suggestedEventsExtractionAttributes];
+  v31 = [SKGTextQueryManager queryForAttributesExist:suggestedEventsExtractionAttributes];
+  v33 = withQuery2;
+  v30 = (*(withQuery2 + 16))(withQuery2, v31);
   v29 = [v30 and];
-  v28 = [v29 beginGroup];
-  v27 = [v28 beginGroup];
-  v26 = [v27 withAttribute];
-  v25 = (v26)[2](v26, @"_kMDItemNeedsSuggestedEvents", @"!=", @"*");
+  beginGroup2 = [v29 beginGroup];
+  v28BeginGroup = [beginGroup2 beginGroup];
+  withAttribute = [v28BeginGroup withAttribute];
+  v25 = (withAttribute)[2](withAttribute, @"_kMDItemNeedsSuggestedEvents", @"!=", @"*");
   v24 = [v25 and];
-  v23 = [v24 withAttribute];
-  v22 = (v23)[2](v23, @"kMDItemSuggestedEventsVersion", @"!=", @"*");
-  v21 = [v22 endGroup];
-  v19 = [v21 or];
-  v18 = [v19 beginGroup];
-  v6 = [v18 withAttribute];
-  v7 = (v6)[2](v6, @"kMDItemSuggestedEventsVersion", @"=", @"*");
+  withAttribute2 = [v24 withAttribute];
+  v22 = (withAttribute2)[2](withAttribute2, @"kMDItemSuggestedEventsVersion", @"!=", @"*");
+  endGroup = [v22 endGroup];
+  v19 = [endGroup or];
+  beginGroup3 = [v19 beginGroup];
+  withAttribute3 = [beginGroup3 withAttribute];
+  v7 = (withAttribute3)[2](withAttribute3, @"kMDItemSuggestedEventsVersion", @"=", @"*");
   v8 = [v7 and];
-  v9 = [v8 withAttribute];
+  withAttribute4 = [v8 withAttribute];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [MEMORY[0x277D657A0] sharedContext];
-  v12 = [v10 numberWithInteger:{objc_msgSend(v11, "suggestedEventsVersion")}];
-  v13 = (v9)[2](v9, @"kMDItemSuggestedEventsVersion", @"!=", v12);
-  v14 = [v13 endGroup];
-  v15 = [v14 endGroup];
-  v16 = [v15 endGroup];
-  v20 = [v16 build];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  v12 = [v10 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0]2, "suggestedEventsVersion")}];
+  v13 = (withAttribute4)[2](withAttribute4, @"kMDItemSuggestedEventsVersion", @"!=", v12);
+  endGroup2 = [v13 endGroup];
+  v14EndGroup = [endGroup2 endGroup];
+  v15EndGroup = [v14EndGroup endGroup];
+  build = [v15EndGroup build];
 
-  return v20;
+  return build;
 }
 
-+ (id)queryForEligibleItemsWithTaskQueries:(id)a3 excludeBundles:(id)a4
++ (id)queryForEligibleItemsWithTaskQueries:(id)queries excludeBundles:(id)bundles
 {
-  v5 = a3;
-  v6 = a4;
-  v26 = v5;
-  if ([v5 count])
+  queriesCopy = queries;
+  bundlesCopy = bundles;
+  v26 = queriesCopy;
+  if ([queriesCopy count])
   {
-    v7 = [v5 componentsJoinedByString:@"||"];
+    v7 = [queriesCopy componentsJoinedByString:@"||"];
   }
 
   else
@@ -686,89 +686,89 @@
 
   v20 = v7;
   v25 = objc_alloc_init(SKGQueryStringBuilder);
-  v24 = [(SKGQueryStringBuilder *)v25 beginGroup];
-  v8 = [v24 withQuery];
-  v23 = [SKGTextQueryManager queryForBundlesExcluded:v6];
+  beginGroup = [(SKGQueryStringBuilder *)v25 beginGroup];
+  withQuery = [beginGroup withQuery];
+  v23 = [SKGTextQueryManager queryForBundlesExcluded:bundlesCopy];
 
-  v22 = (v8)[2](v8, v23);
+  v22 = (withQuery)[2](withQuery, v23);
   v21 = [v22 and];
-  v9 = [v21 withQuery];
+  withQuery2 = [v21 withQuery];
   v10 = +[SKGTextQueryManager queryForInvalidItems];
-  v11 = (v9)[2](v9, v10);
+  v11 = (withQuery2)[2](withQuery2, v10);
   v12 = [v11 and];
-  v13 = [v12 beginGroup];
-  v14 = [v13 withQuery];
-  v15 = (v14)[2](v14, v7);
-  v16 = [v15 endGroup];
-  v17 = [v16 endGroup];
-  v19 = [v17 build];
+  beginGroup2 = [v12 beginGroup];
+  withQuery3 = [beginGroup2 withQuery];
+  v15 = (withQuery3)[2](withQuery3, v7);
+  endGroup = [v15 endGroup];
+  v16EndGroup = [endGroup endGroup];
+  build = [v16EndGroup build];
 
-  return v19;
+  return build;
 }
 
-+ (id)queryForTask:(id)a3 event:(int64_t)a4
++ (id)queryForTask:(id)task event:(int64_t)event
 {
-  v4 = [a3 queryForEvent:a4];
+  v4 = [task queryForEvent:event];
   if (v4)
   {
     v22 = objc_alloc_init(SKGQueryStringBuilder);
-    v21 = [(SKGQueryStringBuilder *)v22 beginGroup];
-    v5 = [v21 withQuery];
-    v20 = [MEMORY[0x277D657A0] sharedContext];
-    v18 = [v20 excludeBundles];
-    v17 = [SKGTextQueryManager queryForBundlesExcluded:v18];
-    v19 = v5;
-    v16 = (*(v5 + 16))(v5, v17);
+    beginGroup = [(SKGQueryStringBuilder *)v22 beginGroup];
+    withQuery = [beginGroup withQuery];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    excludeBundles = [mEMORY[0x277D657A0] excludeBundles];
+    v17 = [SKGTextQueryManager queryForBundlesExcluded:excludeBundles];
+    v19 = withQuery;
+    v16 = (*(withQuery + 16))(withQuery, v17);
     v6 = [v16 and];
-    v7 = [v6 withQuery];
+    withQuery2 = [v6 withQuery];
     v8 = +[SKGTextQueryManager queryForInvalidItems];
-    v9 = (v7)[2](v7, v8);
+    v9 = (withQuery2)[2](withQuery2, v8);
     v10 = [v9 and];
-    v11 = [v10 withQuery];
-    v12 = (v11)[2](v11, v4);
-    v13 = [v12 endGroup];
-    v14 = [v13 build];
+    withQuery3 = [v10 withQuery];
+    v12 = (withQuery3)[2](withQuery3, v4);
+    endGroup = [v12 endGroup];
+    build = [endGroup build];
   }
 
   else
   {
-    v14 = @"false";
+    build = @"false";
   }
 
-  return v14;
+  return build;
 }
 
-+ (id)queryForPipelineUpdatesWithTaskQueries:(id)a3 excludeBundles:(id)a4 throttleHorizonDate:(int64_t)a5
++ (id)queryForPipelineUpdatesWithTaskQueries:(id)queries excludeBundles:(id)bundles throttleHorizonDate:(int64_t)date
 {
-  v7 = a4;
-  v8 = a3;
+  bundlesCopy = bundles;
+  queriesCopy = queries;
   v20 = objc_alloc_init(SKGQueryStringBuilder);
-  v9 = [(SKGQueryStringBuilder *)v20 beginGroup];
-  v10 = [v9 withQuery];
-  v11 = [SKGTextQueryManager queryForEligibleItemsWithTaskQueries:v8 excludeBundles:v7];
+  beginGroup = [(SKGQueryStringBuilder *)v20 beginGroup];
+  withQuery = [beginGroup withQuery];
+  v11 = [SKGTextQueryManager queryForEligibleItemsWithTaskQueries:queriesCopy excludeBundles:bundlesCopy];
 
-  v12 = (v10)[2](v10, v11);
+  v12 = (withQuery)[2](withQuery, v11);
   v13 = [v12 and];
-  v14 = [v13 withQuery];
-  v15 = [SKGTextQueryManager queryForUpdaterVersionsWithThrottleHorizonDate:a5];
-  v16 = (v14)[2](v14, v15);
-  v17 = [v16 endGroup];
-  v18 = [v17 build];
+  withQuery2 = [v13 withQuery];
+  v15 = [SKGTextQueryManager queryForUpdaterVersionsWithThrottleHorizonDate:date];
+  v16 = (withQuery2)[2](withQuery2, v15);
+  endGroup = [v16 endGroup];
+  build = [endGroup build];
 
-  return v18;
+  return build;
 }
 
 + (id)queryForPipelineReport
 {
   v2 = objc_alloc_init(SKGQueryStringBuilder);
-  v3 = [(SKGQueryStringBuilder *)v2 beginGroup];
-  v4 = [v3 withQuery];
+  beginGroup = [(SKGQueryStringBuilder *)v2 beginGroup];
+  withQuery = [beginGroup withQuery];
   v5 = +[SKGTextQueryManager queryForInvalidItems];
-  v6 = (v4)[2](v4, v5);
-  v7 = [v6 endGroup];
-  v8 = [v7 build];
+  v6 = (withQuery)[2](withQuery, v5);
+  endGroup = [v6 endGroup];
+  build = [endGroup build];
 
-  return v8;
+  return build;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface FindDeviceAndPlaySoundIntentResponse
-- (FindDeviceAndPlaySoundIntentResponse)initWithPropertiesByName:(id)a3;
+- (FindDeviceAndPlaySoundIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation FindDeviceAndPlaySoundIntentResponse
 
-- (FindDeviceAndPlaySoundIntentResponse)initWithPropertiesByName:(id)a3
+- (FindDeviceAndPlaySoundIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_266DAA6AC();
   }

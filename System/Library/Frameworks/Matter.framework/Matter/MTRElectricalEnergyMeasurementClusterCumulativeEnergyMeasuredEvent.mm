@@ -1,6 +1,6 @@
 @interface MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent
 - (MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent);
-  v5 = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)self energyImported];
-  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)v4 setEnergyImported:v5];
+  energyImported = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)self energyImported];
+  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)v4 setEnergyImported:energyImported];
 
-  v6 = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)self energyExported];
-  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)v4 setEnergyExported:v6];
+  energyExported = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)self energyExported];
+  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyMeasuredEvent *)v4 setEnergyExported:energyExported];
 
   return v4;
 }

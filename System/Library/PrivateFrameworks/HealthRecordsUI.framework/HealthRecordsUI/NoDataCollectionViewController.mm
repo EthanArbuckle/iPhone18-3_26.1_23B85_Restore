@@ -1,6 +1,6 @@
 @interface NoDataCollectionViewController
-- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)reloadAccounts;
 - (void)viewDidLoad;
 @end
@@ -9,7 +9,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D136F8FC();
 }
 
@@ -21,24 +21,24 @@
   v6 = sub_1D13905DC();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   sub_1D13905AC();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1D139059C();
   v9 = swift_allocObject();
   v10 = MEMORY[0x1E69E85E0];
   v9[2] = v8;
   v9[3] = v10;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1D107877C(0, 0, v5, &unk_1D13B42E0, v9);
 }
 
-- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15HealthRecordsUI30NoDataCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

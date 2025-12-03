@@ -1,21 +1,21 @@
 @interface SKUIPageControlCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SKUIPageControlCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SKUIPageControlCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setNumberOfPages:(int64_t)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setNumberOfPages:(int64_t)pages;
 @end
 
 @implementation SKUIPageControlCollectionViewCell
 
-- (SKUIPageControlCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIPageControlCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPageControlCollectionViewCell initWithFrame:];
@@ -23,32 +23,32 @@
 
   v13.receiver = self;
   v13.super_class = SKUIPageControlCollectionViewCell;
-  v8 = [(SKUIViewReuseCollectionViewCell *)&v13 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIViewReuseCollectionViewCell *)&v13 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D757E0]);
-    pageControl = v8->_pageControl;
-    v8->_pageControl = v9;
+    pageControl = height->_pageControl;
+    height->_pageControl = v9;
 
-    [(UIPageControl *)v8->_pageControl setEnabled:0];
-    v11 = [(SKUIPageControlCollectionViewCell *)v8 contentView];
-    [v11 addSubview:v8->_pageControl];
+    [(UIPageControl *)height->_pageControl setEnabled:0];
+    contentView = [(SKUIPageControlCollectionViewCell *)height contentView];
+    [contentView addSubview:height->_pageControl];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setNumberOfPages:(int64_t)a3
+- (void)setNumberOfPages:(int64_t)pages
 {
-  if ([(UIPageControl *)self->_pageControl numberOfPages]!= a3)
+  if ([(UIPageControl *)self->_pageControl numberOfPages]!= pages)
   {
-    [(UIPageControl *)self->_pageControl setNumberOfPages:a3];
+    [(UIPageControl *)self->_pageControl setNumberOfPages:pages];
 
     [(SKUIPageControlCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -57,51 +57,51 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v5 = 37.0;
   result.height = v5;
-  result.width = a3;
+  result.width = width;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v10 = [a3 style];
-  self->_pageControlPosition = [v10 elementPosition];
-  v6 = [v10 ikColor];
-  v7 = [v6 color];
+  style = [element style];
+  self->_pageControlPosition = [style elementPosition];
+  ikColor = [style ikColor];
+  color = [ikColor color];
 
-  if (!v7)
+  if (!color)
   {
-    v7 = [MEMORY[0x277D75348] darkGrayColor];
+    color = [MEMORY[0x277D75348] darkGrayColor];
   }
 
-  [(UIPageControl *)self->_pageControl setCurrentPageIndicatorTintColor:v7];
+  [(UIPageControl *)self->_pageControl setCurrentPageIndicatorTintColor:color];
   pageControl = self->_pageControl;
-  v9 = [v7 colorWithAlphaComponent:0.33];
+  v9 = [color colorWithAlphaComponent:0.33];
   [(UIPageControl *)pageControl setPageIndicatorTintColor:v9];
 
   [(SKUIPageControlCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIPageControlCollectionViewCell *)self setNeedsLayout];
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(SKUIPageControlCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIPageControlCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 

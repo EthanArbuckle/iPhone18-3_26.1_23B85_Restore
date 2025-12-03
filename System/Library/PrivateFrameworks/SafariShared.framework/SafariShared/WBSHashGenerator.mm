@@ -1,39 +1,39 @@
 @interface WBSHashGenerator
 - (WBSHashGenerator)init;
-- (WBSHashGenerator)initWithCoder:(id)a3;
-- (WBSHashGenerator)initWithKey:(id)a3 keyID:(id)a4;
+- (WBSHashGenerator)initWithCoder:(id)coder;
+- (WBSHashGenerator)initWithKey:(id)key keyID:(id)d;
 - (id)_createEncryptionKeyData;
-- (id)_createEncryptionKeyIDDataUsingKey:(id)a3;
-- (id)generateHashStringWithComponents:(id)a3;
-- (id)generateHashWithComponents:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_createEncryptionKeyIDDataUsingKey:(id)key;
+- (id)generateHashStringWithComponents:(id)components;
+- (id)generateHashWithComponents:(id)components;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHashGenerator
 
 - (WBSHashGenerator)init
 {
-  v3 = [(WBSHashGenerator *)self _createEncryptionKeyData];
-  v4 = [(WBSHashGenerator *)self _createEncryptionKeyIDDataUsingKey:v3];
-  v5 = [(WBSHashGenerator *)self initWithKey:v3 keyID:v4];
+  _createEncryptionKeyData = [(WBSHashGenerator *)self _createEncryptionKeyData];
+  v4 = [(WBSHashGenerator *)self _createEncryptionKeyIDDataUsingKey:_createEncryptionKeyData];
+  v5 = [(WBSHashGenerator *)self initWithKey:_createEncryptionKeyData keyID:v4];
 
   return v5;
 }
 
-- (WBSHashGenerator)initWithKey:(id)a3 keyID:(id)a4
+- (WBSHashGenerator)initWithKey:(id)key keyID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = WBSHashGenerator;
   v8 = [(WBSHashGenerator *)&v15 init];
-  if (v8 && [v6 length] && objc_msgSend(v7, "length") && objc_msgSend(v7, "length") >= 4)
+  if (v8 && [keyCopy length] && objc_msgSend(dCopy, "length") && objc_msgSend(dCopy, "length") >= 4)
   {
-    v11 = [v6 copy];
+    v11 = [keyCopy copy];
     key = v8->_key;
     v8->_key = v11;
 
-    v13 = [v7 copy];
+    v13 = [dCopy copy];
     keyID = v8->_keyID;
     v8->_keyID = v13;
 
@@ -48,9 +48,9 @@
   return v9;
 }
 
-- (id)generateHashStringWithComponents:(id)a3
+- (id)generateHashStringWithComponents:(id)components
 {
-  v3 = [(WBSHashGenerator *)self generateHashWithComponents:a3];
+  v3 = [(WBSHashGenerator *)self generateHashWithComponents:components];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:v3];
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (id)generateHashWithComponents:(id)a3
+- (id)generateHashWithComponents:(id)components
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 safari_containsObjectPassingTest:&__block_literal_global_57])
+  componentsCopy = components;
+  if ([componentsCopy safari_containsObjectPassingTest:&__block_literal_global_57])
   {
     memset(&ctx, 0, sizeof(ctx));
     p_key = &self->_key;
@@ -77,7 +77,7 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = v4;
+    v6 = componentsCopy;
     v7 = [v6 countByEnumeratingWithState:&v28 objects:v40 count:16];
     if (v7)
     {
@@ -107,9 +107,9 @@
             }
 
             v14 = v13;
-            v15 = [v13 UTF8String];
-            v16 = strlen(v15);
-            CCHmacUpdate(&ctx, v15, v16);
+            uTF8String = [v13 UTF8String];
+            v16 = strlen(uTF8String);
+            CCHmacUpdate(&ctx, uTF8String, v16);
           }
 
           v10 = 0;
@@ -140,14 +140,14 @@
       {
         v22 = v21;
         v23 = [v6 componentsJoinedByString:{@", "}];
-        v24 = [*p_key safari_descriptionWithoutSpaces];
-        v25 = [(NSData *)*p_keyID safari_descriptionWithoutSpaces];
+        safari_descriptionWithoutSpaces = [*p_key safari_descriptionWithoutSpaces];
+        safari_descriptionWithoutSpaces2 = [(NSData *)*p_keyID safari_descriptionWithoutSpaces];
         *buf = 138478339;
         v34 = v23;
         v35 = 2114;
-        v36 = v24;
+        v36 = safari_descriptionWithoutSpaces;
         v37 = 2114;
-        v38 = v25;
+        v38 = safari_descriptionWithoutSpaces2;
         _os_log_debug_impl(&dword_1BB6F3000, v22, OS_LOG_TYPE_DEBUG, "Could not generate IdentityHash for components %{private}@, with key %{public}@, keyID %{public}@", buf, 0x20u);
       }
     }
@@ -172,45 +172,45 @@
   v5[2] = *MEMORY[0x1E69E9840];
   v5[0] = 0;
   v5[1] = 0;
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  [v2 getUUIDBytes:v5];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [uUID getUUIDBytes:v5];
 
   v3 = [MEMORY[0x1E695DEF0] dataWithBytes:v5 length:16];
 
   return v3;
 }
 
-- (id)_createEncryptionKeyIDDataUsingKey:(id)a3
+- (id)_createEncryptionKeyIDDataUsingKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [@"Safari" UTF8String];
-  v5 = [v3 bytes];
-  v6 = [v3 length];
+  keyCopy = key;
+  uTF8String = [@"Safari" UTF8String];
+  bytes = [keyCopy bytes];
+  v6 = [keyCopy length];
 
-  v7 = strlen(v4);
-  CCHmac(2u, v5, v6, v4, v7, macOut);
+  v7 = strlen(uTF8String);
+  CCHmac(2u, bytes, v6, uTF8String, v7, macOut);
   v8 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:32];
 
   return v8;
 }
 
-- (WBSHashGenerator)initWithCoder:(id)a3
+- (WBSHashGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KeyID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KeyID"];
 
   v7 = [(WBSHashGenerator *)self initWithKey:v5 keyID:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"Key"];
-  [v5 encodeObject:self->_keyID forKey:@"KeyID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"Key"];
+  [coderCopy encodeObject:self->_keyID forKey:@"KeyID"];
 }
 
 - (void)generateHashWithComponents:(id *)a3 .cold.2(void **a1, void *a2, id *a3)

@@ -1,28 +1,28 @@
 @interface NLXSchemaCDMTokenizationEnded
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMTokenizationEnded)initWithDictionary:(id)a3;
-- (NLXSchemaCDMTokenizationEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMTokenizationEnded)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMTokenizationEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTokenChains:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokenChains:(id)chains;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMTokenizationEnded
 
-- (NLXSchemaCDMTokenizationEnded)initWithDictionary:(id)a3
+- (NLXSchemaCDMTokenizationEnded)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = NLXSchemaCDMTokenizationEnded;
   v5 = [(NLXSchemaCDMTokenizationEnded *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(NLXSchemaCDMTokenizationEnded *)v5 setContextId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"tokenChains"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tokenChains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       v6 = v19;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"inputType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"inputType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMTokenizationEnded)initWithJSON:(id)a3
+- (NLXSchemaCDMTokenizationEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMTokenizationEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMTokenizationEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMTokenizationEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,20 +126,20 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contextId)
   {
-    v4 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contextId = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+    dictionaryRepresentation = [contextId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contextId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contextId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contextId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contextId"];
     }
   }
 
@@ -156,12 +156,12 @@
       v8 = off_1E78DC368[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"inputType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"inputType"];
   }
 
   if ([(NSArray *)self->_tokenChains count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -181,16 +181,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation2 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -200,12 +200,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"tokenChains"];
+    [dictionary setObject:array forKeyedSubscript:@"tokenChains"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -225,28 +225,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
-  v6 = [v4 contextId];
-  if ((v5 != 0) == (v6 == 0))
+  contextId = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+  contextId2 = [equalCopy contextId];
+  if ((contextId != 0) == (contextId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
-  if (v7)
+  contextId3 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+  if (contextId3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
-    v10 = [v4 contextId];
-    v11 = [v9 isEqual:v10];
+    v8 = contextId3;
+    contextId4 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+    contextId5 = [equalCopy contextId];
+    v11 = [contextId4 isEqual:contextId5];
 
     if (!v11)
     {
@@ -258,22 +258,22 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
-  v6 = [v4 tokenChains];
-  if ((v5 != 0) == (v6 == 0))
+  contextId = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
+  contextId2 = [equalCopy tokenChains];
+  if ((contextId != 0) == (contextId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
-  if (v12)
+  tokenChains = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
+  if (tokenChains)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
-    v15 = [v4 tokenChains];
-    v16 = [v14 isEqual:v15];
+    v13 = tokenChains;
+    tokenChains2 = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
+    tokenChains3 = [equalCopy tokenChains];
+    v16 = [tokenChains2 isEqual:tokenChains3];
 
     if (!v16)
     {
@@ -285,9 +285,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (inputType = self->_inputType, inputType == [v4 inputType]))
+    if ((*&self->_has & 1) == 0 || (inputType = self->_inputType, inputType == [equalCopy inputType]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -301,15 +301,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+  toCopy = to;
+  contextId = [(NLXSchemaCDMTokenizationEnded *)self contextId];
 
-  if (v5)
+  if (contextId)
   {
-    v6 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+    contextId2 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -350,41 +350,41 @@ LABEL_13:
   }
 }
 
-- (void)addTokenChains:(id)a3
+- (void)addTokenChains:(id)chains
 {
-  v4 = a3;
+  chainsCopy = chains;
   tokenChains = self->_tokenChains;
-  v8 = v4;
+  v8 = chainsCopy;
   if (!tokenChains)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokenChains;
-    self->_tokenChains = v6;
+    self->_tokenChains = array;
 
-    v4 = v8;
+    chainsCopy = v8;
     tokenChains = self->_tokenChains;
   }
 
-  [(NSArray *)tokenChains addObject:v4];
+  [(NSArray *)tokenChains addObject:chainsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = NLXSchemaCDMTokenizationEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMTokenizationEnded *)self contextId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  contextId = [(NLXSchemaCDMTokenizationEnded *)self contextId];
+  v7 = [contextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMTokenizationEnded *)self deleteContextId];
   }
 
-  v9 = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  tokenChains = [(NLXSchemaCDMTokenizationEnded *)self tokenChains];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:tokenChains underConditions:policyCopy];
   [(NLXSchemaCDMTokenizationEnded *)self setTokenChains:v10];
 
   return v5;

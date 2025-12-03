@@ -59,7 +59,7 @@ LABEL_11:
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The options parameter must not be nil."];
 LABEL_5:
   v13 = objc_autoreleasePoolPush();
-  v14 = [a1 vs_binderCreatingIfNeeded:1];
+  v14 = [self vs_binderCreatingIfNeeded:1];
   v15 = [[VSBindingInfo alloc] initWithObservedObject:v10 keyPath:v11 options:v12];
   [v14 establishBinding:v16 withInfo:v15];
 
@@ -75,7 +75,7 @@ LABEL_5:
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [a1 vs_binderCreatingIfNeeded:0];
+  v5 = [self vs_binderCreatingIfNeeded:0];
   [v5 tearDownBinding:v6];
 
   objc_autoreleasePoolPop(v4);
@@ -90,7 +90,7 @@ LABEL_5:
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 vs_binderCreatingIfNeeded:0];
+  v6 = [self vs_binderCreatingIfNeeded:0];
   v7 = [v6 valueForBinding:v4];
 
   objc_autoreleasePoolPop(v5);
@@ -108,7 +108,7 @@ LABEL_5:
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 vs_binderCreatingIfNeeded:0];
+  v8 = [self vs_binderCreatingIfNeeded:0];
   [v8 setValue:v9 forBinding:v6];
 
   objc_autoreleasePoolPop(v7);

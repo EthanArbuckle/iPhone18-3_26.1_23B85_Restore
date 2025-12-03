@@ -1,43 +1,43 @@
 @interface _PSCandidate
 + (id)selfCandidate;
-- (BOOL)isEqual:(id)a3;
-- (_PSCandidate)initWithCoder:(id)a3;
-- (_PSCandidate)initWithDomainId:(id)a3 derivedIntentId:(id)a4 bundleId:(id)a5 recipientsId:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (_PSCandidate)initWithCoder:(id)coder;
+- (_PSCandidate)initWithDomainId:(id)id derivedIntentId:(id)intentId bundleId:(id)bundleId recipientsId:(id)recipientsId;
 - (id)candidateForDeduping;
 - (id)candidateIdentifier;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)populateIsSystemBundleId;
 @end
 
 @implementation _PSCandidate
 
-- (_PSCandidate)initWithDomainId:(id)a3 derivedIntentId:(id)a4 bundleId:(id)a5 recipientsId:(id)a6
+- (_PSCandidate)initWithDomainId:(id)id derivedIntentId:(id)intentId bundleId:(id)bundleId recipientsId:(id)recipientsId
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  intentIdCopy = intentId;
+  bundleIdCopy = bundleId;
+  recipientsIdCopy = recipientsId;
   v24.receiver = self;
   v24.super_class = _PSCandidate;
   v14 = [(_PSCandidate *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [idCopy copy];
     domainId = v14->_domainId;
     v14->_domainId = v15;
 
-    v17 = [v11 copy];
+    v17 = [intentIdCopy copy];
     derivedIntentId = v14->_derivedIntentId;
     v14->_derivedIntentId = v17;
 
-    v19 = [v12 copy];
+    v19 = [bundleIdCopy copy];
     bundleId = v14->_bundleId;
     v14->_bundleId = v19;
 
-    v21 = [v13 copy];
+    v21 = [recipientsIdCopy copy];
     recipientsId = v14->_recipientsId;
     v14->_recipientsId = v21;
 
@@ -47,27 +47,27 @@
   return v14;
 }
 
-- (_PSCandidate)initWithCoder:(id)a3
+- (_PSCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _PSCandidate;
   v5 = [(_PSCandidate *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainId"];
     domainId = v5->_domainId;
     v5->_domainId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"derivedIntentId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"derivedIntentId"];
     derivedIntentId = v5->_derivedIntentId;
     v5->_derivedIntentId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
     bundleId = v5->_bundleId;
     v5->_bundleId = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientsId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientsId"];
     recipientsId = v5->_recipientsId;
     v5->_recipientsId = v12;
 
@@ -84,21 +84,21 @@
   self->_isSystemBundleId = [v3 containsObject:self->_bundleId];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domainId = self->_domainId;
-  v5 = a3;
-  [v5 encodeObject:domainId forKey:@"domainId"];
-  [v5 encodeObject:self->_derivedIntentId forKey:@"derivedIntentId"];
-  [v5 encodeObject:self->_bundleId forKey:@"bundleId"];
-  [v5 encodeObject:self->_recipientsId forKey:@"recipientsId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domainId forKey:@"domainId"];
+  [coderCopy encodeObject:self->_derivedIntentId forKey:@"derivedIntentId"];
+  [coderCopy encodeObject:self->_bundleId forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_recipientsId forKey:@"recipientsId"];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(_PSCandidate *)self candidateIdentifier];
-  v5 = [v3 initWithFormat:@"%@_%@", v4, self->_bundleId];
+  candidateIdentifier = [(_PSCandidate *)self candidateIdentifier];
+  v5 = [v3 initWithFormat:@"%@_%@", candidateIdentifier, self->_bundleId];
 
   return v5;
 }
@@ -111,10 +111,10 @@
   return [(NSString *)self->_bundleId hash]- v5 + 32 * v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -124,7 +124,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_domainId;
       v7 = v6;
       if (v6 == v5->_domainId)
@@ -243,21 +243,21 @@ LABEL_5:
   v7 = [(_PSCandidate *)v4 initWithDomainId:domainId derivedIntentId:derivedIntentId bundleId:self->_bundleId recipientsId:self->_recipientsId];
   if ([(_PSCandidate *)v7 isEqual:self])
   {
-    v8 = self;
+    selfCopy = self;
 
-    v7 = v8;
+    v7 = selfCopy;
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(_PSCandidate *)self candidateIdentifier];
-  v6 = [v4 candidateIdentifier];
+  compareCopy = compare;
+  candidateIdentifier = [(_PSCandidate *)self candidateIdentifier];
+  candidateIdentifier2 = [compareCopy candidateIdentifier];
 
-  v7 = [v5 compare:v6];
+  v7 = [candidateIdentifier compare:candidateIdentifier2];
   return v7;
 }
 

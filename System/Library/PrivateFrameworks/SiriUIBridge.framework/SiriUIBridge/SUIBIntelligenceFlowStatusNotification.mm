@@ -1,23 +1,23 @@
 @interface SUIBIntelligenceFlowStatusNotification
-- (SUIBIntelligenceFlowStatusNotification)initWithBuilder:(id)a3;
-- (SUIBIntelligenceFlowStatusNotification)initWithCoder:(id)a3;
+- (SUIBIntelligenceFlowStatusNotification)initWithBuilder:(id)builder;
+- (SUIBIntelligenceFlowStatusNotification)initWithCoder:(id)coder;
 @end
 
 @implementation SUIBIntelligenceFlowStatusNotification
 
-- (SUIBIntelligenceFlowStatusNotification)initWithBuilder:(id)a3
+- (SUIBIntelligenceFlowStatusNotification)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = SUIBIntelligenceFlowStatusNotification;
   v5 = [(SUIBIntelligenceFlowStatusNotification *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBIntelligenceFlowStatusNotificationMutation);
-    v4[2](v4, v7);
-    v8 = [(SUIBIntelligenceFlowStatusNotificationMutation *)v7 statusString];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    statusString = [(SUIBIntelligenceFlowStatusNotificationMutation *)v7 statusString];
+    v9 = [statusString copy];
     statusString = v6->_statusString;
     v6->_statusString = v9;
   }
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (SUIBIntelligenceFlowStatusNotification)initWithCoder:(id)a3
+- (SUIBIntelligenceFlowStatusNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowStatusStringNotification::statusString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowStatusStringNotification::statusString"];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

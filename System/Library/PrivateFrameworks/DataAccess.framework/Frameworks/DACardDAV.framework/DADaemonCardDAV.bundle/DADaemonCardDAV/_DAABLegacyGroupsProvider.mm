@@ -1,21 +1,21 @@
 @interface _DAABLegacyGroupsProvider
-- (_DAABLegacyGroupsProvider)initWithAddressBook:(void *)a3;
-- (id)groupsInContainer:(id)a3;
-- (id)groupsWithExternalHREFs:(id)a3 container:(id)a4;
-- (id)groupsWithExternalUUIDs:(id)a3 container:(id)a4;
+- (_DAABLegacyGroupsProvider)initWithAddressBook:(void *)book;
+- (id)groupsInContainer:(id)container;
+- (id)groupsWithExternalHREFs:(id)fs container:(id)container;
+- (id)groupsWithExternalUUIDs:(id)ds container:(id)container;
 - (void)dealloc;
 @end
 
 @implementation _DAABLegacyGroupsProvider
 
-- (_DAABLegacyGroupsProvider)initWithAddressBook:(void *)a3
+- (_DAABLegacyGroupsProvider)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _DAABLegacyGroupsProvider;
   v4 = [(_DAABLegacyGroupsProvider *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -29,10 +29,10 @@
   [(_DAABLegacyGroupsProvider *)&v3 dealloc];
 }
 
-- (id)groupsInContainer:(id)a3
+- (id)groupsInContainer:(id)container
 {
-  v4 = a3;
-  v5 = ABAddressBookCopyArrayOfAllGroupsInSource(-[_DAABLegacyGroupsProvider addressBook](self, "addressBook"), [v4 asSource]);
+  containerCopy = container;
+  v5 = ABAddressBookCopyArrayOfAllGroupsInSource(-[_DAABLegacyGroupsProvider addressBook](self, "addressBook"), [containerCopy asSource]);
   v6 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
@@ -68,15 +68,15 @@
   return v6;
 }
 
-- (id)groupsWithExternalHREFs:(id)a3 container:(id)a4
+- (id)groupsWithExternalHREFs:(id)fs container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  fsCopy = fs;
+  containerCopy = container;
   v8 = +[NSMutableArray array];
-  if ([v6 count])
+  if ([fsCopy count])
   {
     addressBook = self->_addressBook;
-    [v7 asSource];
+    [containerCopy asSource];
     v10 = ABAddressBookCopyArrayOfAllGroupsWithExternalIdentifiersInSource();
     if (v10)
     {
@@ -99,15 +99,15 @@
   return v8;
 }
 
-- (id)groupsWithExternalUUIDs:(id)a3 container:(id)a4
+- (id)groupsWithExternalUUIDs:(id)ds container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  containerCopy = container;
   v8 = +[NSMutableArray array];
-  if ([v6 count])
+  if ([dsCopy count])
   {
     addressBook = self->_addressBook;
-    [v7 asSource];
+    [containerCopy asSource];
     v10 = ABAddressBookCopyArrayOfAllGroupsWithExternalUUIDsInSource();
     if (v10)
     {

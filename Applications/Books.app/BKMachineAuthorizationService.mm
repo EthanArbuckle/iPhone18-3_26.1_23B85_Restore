@@ -1,20 +1,20 @@
 @interface BKMachineAuthorizationService
-+ (void)requestAuthorizeWithAccount:(id)a3 completion:(id)a4;
-+ (void)requestKeybagRefetchWithDsid:(unint64_t)a3 completion:(id)a4;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
++ (void)requestAuthorizeWithAccount:(id)account completion:(id)completion;
++ (void)requestKeybagRefetchWithDsid:(unint64_t)dsid completion:(id)completion;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation BKMachineAuthorizationService
 
-+ (void)requestAuthorizeWithAccount:(id)a3 completion:(id)a4
++ (void)requestAuthorizeWithAccount:(id)account completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = sub_1007A2254();
   v7 = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = v4;
-  v9 = [objc_opt_self() sceneManager];
+  sceneManager = [objc_opt_self() sceneManager];
   v10 = swift_allocObject();
   v10[2] = v5;
   v10[3] = v7;
@@ -28,19 +28,19 @@
   v12[3] = &unk_100A1DA60;
   v11 = _Block_copy(v12);
 
-  [v9 requestPrimaryScene:v11];
+  [sceneManager requestPrimaryScene:v11];
 
   _Block_release(v11);
 }
 
-+ (void)requestKeybagRefetchWithDsid:(unint64_t)a3 completion:(id)a4
++ (void)requestKeybagRefetchWithDsid:(unint64_t)dsid completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = [objc_opt_self() sceneManager];
+  sceneManager = [objc_opt_self() sceneManager];
   v8 = swift_allocObject();
-  v8[2] = a3;
+  v8[2] = dsid;
   v8[3] = sub_1004749E8;
   v8[4] = v6;
   v10[4] = sub_1004749F0;
@@ -51,14 +51,14 @@
   v10[3] = &unk_100A1D9E8;
   v9 = _Block_copy(v10);
 
-  [v7 requestPrimaryScene:v9];
+  [sceneManager requestPrimaryScene:v9];
 
   _Block_release(v9);
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   sub_100017E74();
@@ -66,29 +66,29 @@
   swift_unknownObjectWeakInit();
   v9 = swift_allocObject();
   v9[2] = v8;
-  v9[3] = a3;
+  v9[3] = request;
   v9[4] = sub_100474A1C;
   v9[5] = v7;
-  v10 = a3;
-  v11 = self;
+  requestCopy = request;
+  selfCopy = self;
 
   sub_1007A2CD4();
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   sub_100017E74();
   v8 = swift_allocObject();
   v8[2] = self;
-  v8[3] = a3;
+  v8[3] = request;
   v8[4] = sub_100474890;
   v8[5] = v7;
-  v9 = a3;
-  v11 = self;
-  v10 = v9;
+  requestCopy = request;
+  selfCopy = self;
+  v10 = requestCopy;
 
   sub_1007A2CD4();
 }

@@ -1,21 +1,21 @@
 @interface NLZoneTrackerFactory
-+ (id)makeWithActivityType:(id)a3 liveWorkoutConfiguration:(id)a4 distanceUnit:(id)a5 metadataSavingDelegate:(id)a6 error:(id *)a7;
++ (id)makeWithActivityType:(id)type liveWorkoutConfiguration:(id)configuration distanceUnit:(id)unit metadataSavingDelegate:(id)delegate error:(id *)error;
 - (NLZoneTrackerFactory)init;
 @end
 
 @implementation NLZoneTrackerFactory
 
-+ (id)makeWithActivityType:(id)a3 liveWorkoutConfiguration:(id)a4 distanceUnit:(id)a5 metadataSavingDelegate:(id)a6 error:(id *)a7
++ (id)makeWithActivityType:(id)type liveWorkoutConfiguration:(id)configuration distanceUnit:(id)unit metadataSavingDelegate:(id)delegate error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  configurationCopy = configuration;
+  unitCopy = unit;
   swift_unknownObjectRetain();
   v13 = LiveWorkoutConfiguration.currentTargetZones.getter();
   v14 = objc_allocWithZone(type metadata accessor for ZoneTracker());
-  v15 = v12;
+  v15 = unitCopy;
   swift_unknownObjectRetain();
-  v16 = ZoneTracker.init(activityType:targetZones:distanceUnit:metadataSavingDelegate:)(v10, v13, v15, a6);
+  v16 = ZoneTracker.init(activityType:targetZones:distanceUnit:metadataSavingDelegate:)(typeCopy, v13, v15, delegate);
   swift_unknownObjectRelease();
 
   return v16;

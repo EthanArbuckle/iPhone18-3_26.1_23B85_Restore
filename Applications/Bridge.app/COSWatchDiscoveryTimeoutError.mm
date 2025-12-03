@@ -7,10 +7,10 @@
 - (id)titleString;
 - (void)_radarButtonTapped;
 - (void)_showRadarUI;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSWatchDiscoveryTimeoutError
@@ -29,11 +29,11 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(COSWatchDiscoveryTimeoutError *)self navigationController];
-  [v5 setNavigationBarHidden:1];
+  appearCopy = appear;
+  navigationController = [(COSWatchDiscoveryTimeoutError *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
   if (sub_100009A74())
   {
@@ -42,18 +42,18 @@
 
   v6.receiver = self;
   v6.super_class = COSWatchDiscoveryTimeoutError;
-  [(COSWatchDiscoveryTimeoutError *)&v6 viewWillAppear:v3];
+  [(COSWatchDiscoveryTimeoutError *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(COSWatchDiscoveryTimeoutError *)self navigationController];
-  [v5 setNavigationBarHidden:0];
+  disappearCopy = disappear;
+  navigationController = [(COSWatchDiscoveryTimeoutError *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
   v6.receiver = self;
   v6.super_class = COSWatchDiscoveryTimeoutError;
-  [(COSWatchDiscoveryTimeoutError *)&v6 viewWillDisappear:v3];
+  [(COSWatchDiscoveryTimeoutError *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (void)_showRadarUI
@@ -80,45 +80,45 @@
   [v8 setSpacing:8.0];
   [v8 addArrangedSubview:v3];
   [v8 addArrangedSubview:v7];
-  v9 = [(COSWatchDiscoveryTimeoutError *)self view];
-  [v9 addSubview:v8];
+  view = [(COSWatchDiscoveryTimeoutError *)self view];
+  [view addSubview:v8];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [v8 topAnchor];
-  v11 = [(COSWatchDiscoveryTimeoutError *)self illustratedWatchView];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  topAnchor = [v8 topAnchor];
+  illustratedWatchView = [(COSWatchDiscoveryTimeoutError *)self illustratedWatchView];
+  bottomAnchor = [illustratedWatchView bottomAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v13 setActive:1];
 
-  v14 = [v8 bottomAnchor];
-  v15 = [(COSWatchDiscoveryTimeoutError *)self contentView];
-  v16 = [v15 bottomAnchor];
-  v36 = [v14 constraintEqualToAnchor:v16];
+  bottomAnchor2 = [v8 bottomAnchor];
+  contentView = [(COSWatchDiscoveryTimeoutError *)self contentView];
+  bottomAnchor3 = [contentView bottomAnchor];
+  v36 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
 
   [v36 setActive:1];
-  v17 = [v8 centerXAnchor];
-  v18 = [(COSWatchDiscoveryTimeoutError *)self view];
-  v19 = [v18 centerXAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  centerXAnchor = [v8 centerXAnchor];
+  view2 = [(COSWatchDiscoveryTimeoutError *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v20 setActive:1];
 
-  v34 = [v8 bottomAnchor];
-  v35 = [(COSWatchDiscoveryTimeoutError *)self buttonTray];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  bottomAnchor4 = [v8 bottomAnchor];
+  buttonTray = [(COSWatchDiscoveryTimeoutError *)self buttonTray];
+  topAnchor2 = [buttonTray topAnchor];
+  v32 = [bottomAnchor4 constraintEqualToAnchor:topAnchor2];
   v39[0] = v32;
-  v30 = [v8 leftAnchor];
-  v31 = [(COSWatchDiscoveryTimeoutError *)self contentView];
-  v21 = [v31 leftAnchor];
-  v22 = [v30 constraintEqualToAnchor:v21];
+  leftAnchor = [v8 leftAnchor];
+  contentView2 = [(COSWatchDiscoveryTimeoutError *)self contentView];
+  leftAnchor2 = [contentView2 leftAnchor];
+  v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v39[1] = v22;
-  v23 = [v8 rightAnchor];
-  v24 = [(COSWatchDiscoveryTimeoutError *)self contentView];
-  v25 = [v24 rightAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  rightAnchor = [v8 rightAnchor];
+  contentView3 = [(COSWatchDiscoveryTimeoutError *)self contentView];
+  rightAnchor2 = [contentView3 rightAnchor];
+  v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v39[2] = v26;
-  v27 = [v8 heightAnchor];
-  v28 = [v27 constraintEqualToConstant:100.0];
+  heightAnchor = [v8 heightAnchor];
+  v28 = [heightAnchor constraintEqualToConstant:100.0];
   v39[3] = v28;
   v29 = [NSArray arrayWithObjects:v39 count:4];
   [NSLayoutConstraint activateConstraints:v29];
@@ -166,7 +166,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v3 = pbb_setup_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -180,7 +180,7 @@
   [v4 dismissSetupFlowComplete:1 animated:1];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v3 = [NSURL URLWithString:@"https://support.apple.com/HT209512"];
@@ -190,8 +190,8 @@
 - (id)imageResource
 {
   v0 = +[UIApplication sharedApplication];
-  v1 = [v0 activeWatch];
-  v2 = sub_10002D568(v1);
+  activeWatch = [v0 activeWatch];
+  v2 = sub_10002D568(activeWatch);
 
   return v2;
 }

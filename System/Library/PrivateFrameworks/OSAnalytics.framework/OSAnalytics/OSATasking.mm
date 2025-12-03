@@ -1,12 +1,12 @@
 @interface OSATasking
-+ (BOOL)preference:(id)a3 alreadySetInInstructions:(id)a4;
-+ (BOOL)shouldApplyPreference:(id)a3 forSamplingKey:(const char *)a4;
++ (BOOL)preference:(id)preference alreadySetInInstructions:(id)instructions;
++ (BOOL)shouldApplyPreference:(id)preference forSamplingKey:(const char *)key;
 + (const)samplingKey;
-+ (id)applyTasking:(id)a3 taskId:(id)a4 fromBlob:(id)a5;
++ (id)applyTasking:(id)tasking taskId:(id)id fromBlob:(id)blob;
 + (id)defaultTasking;
 + (id)getInstalledTaskIds;
-+ (id)normalizeInstructions:(id)a3 forSamplingKey:(const char *)a4;
-+ (id)proxyTasking:(id)a3 taskId:(id)a4 usingConfig:(id)a5 fromBlob:(id)a6;
++ (id)normalizeInstructions:(id)instructions forSamplingKey:(const char *)key;
++ (id)proxyTasking:(id)tasking taskId:(id)id usingConfig:(id)config fromBlob:(id)blob;
 + (id)randomizedCRKey;
 + (void)checkTaskingRelevance;
 + (void)samplingKey;
@@ -14,39 +14,39 @@
 
 @implementation OSATasking
 
-+ (id)proxyTasking:(id)a3 taskId:(id)a4 usingConfig:(id)a5 fromBlob:(id)a6
++ (id)proxyTasking:(id)tasking taskId:(id)id usingConfig:(id)config fromBlob:(id)blob
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 length];
-  if ((v13 != 0) != [(__CFString *)v10 isEqualToString:@"-1"])
+  taskingCopy = tasking;
+  idCopy = id;
+  configCopy = config;
+  blobCopy = blob;
+  v13 = [blobCopy length];
+  if ((v13 != 0) != [(__CFString *)idCopy isEqualToString:@"-1"])
   {
-    if ([v12 length])
+    if ([blobCopy length])
     {
-      if (v12)
+      if (blobCopy)
       {
         v14 = 0;
 LABEL_9:
-        if ([v9 isEqualToString:@"ca1"])
+        if ([taskingCopy isEqualToString:@"ca1"])
         {
-          v17 = v12;
+          identifier = blobCopy;
           v34 = 0;
           goto LABEL_13;
         }
 
         v35 = 0;
-        v17 = [MEMORY[0x1E696AE40] propertyListWithData:v12 options:0 format:0 error:&v35];
+        identifier = [MEMORY[0x1E696AE40] propertyListWithData:blobCopy options:0 format:0 error:&v35];
         v18 = v35;
         v19 = v18;
-        if (v14 & 1 | (v17 != 0))
+        if (v14 & 1 | (identifier != 0))
         {
           v34 = v18;
 LABEL_13:
           v44[0] = @"taskingID";
-          v20 = v10;
+          v20 = idCopy;
           if ((v14 & 1) == 0)
           {
             goto LABEL_22;
@@ -63,14 +63,14 @@ LABEL_13:
         }
 
         v21 = +[OSASystemConfiguration sharedInstance];
-        v22 = [v21 appleInternal];
+        appleInternal = [v21 appleInternal];
 
-        if (v22)
+        if (appleInternal)
         {
           v23 = MEMORY[0x1E696AEC0];
-          v17 = [v11 identifier];
-          v24 = [v23 stringWithFormat:@"/tmp/bad_%@_%@.blob", v17, v9];
-          [v12 writeToFile:v24 atomically:1];
+          identifier = [configCopy identifier];
+          taskingCopy = [v23 stringWithFormat:@"/tmp/bad_%@_%@.blob", identifier, taskingCopy];
+          [blobCopy writeToFile:taskingCopy atomically:1];
           v15 = MEMORY[0x1E695E0F8];
 LABEL_27:
 
@@ -86,16 +86,16 @@ LABEL_29:
 
     else
     {
-      v16 = [(__CFString *)v10 isEqualToString:@"-1"];
+      v16 = [(__CFString *)idCopy isEqualToString:@"-1"];
       v14 = v16;
-      if (v12)
+      if (blobCopy)
       {
         goto LABEL_9;
       }
 
       if (v16)
       {
-        v17 = 0;
+        identifier = 0;
         v34 = 0;
         v44[0] = @"taskingID";
         v14 = 1;
@@ -105,21 +105,21 @@ LABEL_22:
         v45[0] = v20;
         v44[1] = @"proxyingDeviceTimeAtReceipt";
         v25 = MEMORY[0x1E696AD98];
-        v26 = [MEMORY[0x1E695DF00] date];
-        [v26 timeIntervalSinceReferenceDate];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceReferenceDate];
         v27 = [v25 numberWithDouble:?];
         v45[1] = v27;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
-        v24 = [v28 mutableCopy];
+        taskingCopy = [v28 mutableCopy];
 
         if ((v14 & 1) == 0)
         {
-          [v24 setObject:v17 forKeyedSubscript:@"payload"];
+          [taskingCopy setObject:identifier forKeyedSubscript:@"payload"];
         }
 
-        v29 = [v11 logPath];
-        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"tasking.%@.proxy", v9];
-        v31 = [v29 stringByAppendingPathComponent:v30];
+        logPath = [configCopy logPath];
+        taskingCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"tasking.%@.proxy", taskingCopy];
+        v31 = [logPath stringByAppendingPathComponent:taskingCopy2];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -128,11 +128,11 @@ LABEL_22:
           _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "saving proxy tasking as %@", buf, 0xCu);
         }
 
-        [v24 writeToFile:v31 atomically:1];
+        [taskingCopy writeToFile:v31 atomically:1];
         v42[0] = @"action";
         v42[1] = @"taskId";
         v43[0] = @"staged";
-        v43[1] = v10;
+        v43[1] = idCopy;
         v42[2] = @"blob";
         v43[2] = v31;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:3];
@@ -149,11 +149,11 @@ LABEL_22:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v37 = v9;
+    v37 = taskingCopy;
     v38 = 2112;
-    v39 = v10;
+    v39 = idCopy;
     v40 = 2048;
-    v41 = [v12 length];
+    v41 = [blobCopy length];
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "proxy %@ taskId %@ with rawblob (%lu bytes) is inconsistent", buf, 0x20u);
   }
 
@@ -165,22 +165,22 @@ LABEL_31:
   return v15;
 }
 
-+ (id)applyTasking:(id)a3 taskId:(id)a4 fromBlob:(id)a5
++ (id)applyTasking:(id)tasking taskId:(id)id fromBlob:(id)blob
 {
   v141 = *MEMORY[0x1E69E9840];
-  v88 = a3;
-  v7 = a4;
-  v8 = a5;
+  taskingCopy = tasking;
+  idCopy = id;
+  blobCopy = blob;
   v103 = 0;
   v104 = &v103;
   v105 = 0x3032000000;
   v106 = __Block_byref_object_copy_;
   v107 = __Block_byref_object_dispose_;
   v108 = MEMORY[0x1E695E0F8];
-  v87 = v8;
-  v9 = [v8 length];
-  v86 = v7;
-  if ((v9 != 0) != [v7 isEqualToString:@"-1"])
+  v87 = blobCopy;
+  v9 = [blobCopy length];
+  v86 = idCopy;
+  if ((v9 != 0) != [idCopy isEqualToString:@"-1"])
   {
     if ([v87 length])
     {
@@ -189,7 +189,7 @@ LABEL_31:
 
     else
     {
-      v85 = [v7 isEqualToString:@"-1"];
+      v85 = [idCopy isEqualToString:@"-1"];
     }
 
     v14 = MEMORY[0x1E69E9C10];
@@ -198,9 +198,9 @@ LABEL_31:
     {
       v16 = [v87 length];
       *buf = 138413058;
-      *&buf[4] = v88;
+      *&buf[4] = taskingCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = idCopy;
       *&buf[22] = 1024;
       LODWORD(v139) = v16;
       WORD2(v139) = 1024;
@@ -208,7 +208,7 @@ LABEL_31:
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "applyTasking routing %@ id %@ length %d; untasked %d", buf, 0x22u);
     }
 
-    if ([v88 isEqualToString:@"da3"])
+    if ([taskingCopy isEqualToString:@"da3"])
     {
       v17 = MEMORY[0x1E695E0F0];
       if (v85)
@@ -228,8 +228,8 @@ LABEL_31:
           if (v29)
           {
             v130 = @"error";
-            v52 = [v29 localizedDescription];
-            v131 = v52;
+            localizedDescription = [v29 localizedDescription];
+            v131 = localizedDescription;
             v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v131 forKeys:&v130 count:1];
             v54 = v104[5];
             v104[5] = v53;
@@ -276,13 +276,13 @@ LABEL_31:
         +[OSATasking applyTasking:taskId:fromBlob:];
       }
 
-      v133[0] = v7;
+      v133[0] = idCopy;
       v132[0] = @"TaskingID";
       v132[1] = @"TaskingOS";
       v34 = +[OSASystemConfiguration sharedInstance];
-      v35 = [v34 buildVersion];
+      buildVersion = [v34 buildVersion];
       v132[2] = @"TaskingPayload";
-      v133[1] = v35;
+      v133[1] = buildVersion;
       v133[2] = v33;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v133 forKeys:v132 count:3];
 
@@ -299,7 +299,7 @@ LABEL_31:
       goto LABEL_31;
     }
 
-    if ([v88 isEqualToString:@"ca1"])
+    if ([taskingCopy isEqualToString:@"ca1"])
     {
       *&v110 = 0;
       *(&v110 + 1) = &v110;
@@ -312,8 +312,8 @@ LABEL_31:
       *(&v139 + 1) = __Block_byref_object_dispose_;
       v140 = 0;
       v20 = +[OSASystemConfiguration sharedInstance];
-      v21 = [v20 pathCATasking];
-      v22 = [v21 stringByAppendingPathComponent:@"taskedConfig.json"];
+      pathCATasking = [v20 pathCATasking];
+      v22 = [pathCATasking stringByAppendingPathComponent:@"taskedConfig.json"];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -326,15 +326,15 @@ LABEL_31:
       {
         if (v85)
         {
-          v23 = [MEMORY[0x1E696AC08] defaultManager];
-          v24 = [v23 fileExistsAtPath:v22];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          v24 = [defaultManager fileExistsAtPath:v22];
 
           if (v24)
           {
-            v25 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
             v26 = *&buf[8];
             obj = *(*&buf[8] + 40);
-            v27 = [v25 removeItemAtPath:v22 error:&obj];
+            v27 = [defaultManager2 removeItemAtPath:v22 error:&obj];
             objc_storeStrong((v26 + 40), obj);
             *(*(&v110 + 1) + 24) = v27;
 
@@ -394,9 +394,9 @@ LABEL_31:
         v124[1] = @"savedAs";
         v125[0] = v86;
         v125[1] = v22;
-        v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v125 forKeys:v124 count:2];
+        localizedDescription2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v125 forKeys:v124 count:2];
         v62 = +[OSASystemConfiguration sharedInstance];
-        [v62 setPrefsKey:@"CATaskingID" value:v61 forDomain:@"com.apple.OTACrashCopier" withSync:1];
+        [v62 setPrefsKey:@"CATaskingID" value:localizedDescription2 forDomain:@"com.apple.OTACrashCopier" withSync:1];
 
         AnalyticsNotifyTaskingAvailable();
       }
@@ -412,15 +412,15 @@ LABEL_31:
         v63 = *(*&buf[8] + 40);
         if (v63)
         {
-          v61 = [*(*&buf[8] + 40) localizedDescription];
+          localizedDescription2 = [*(*&buf[8] + 40) localizedDescription];
         }
 
         else
         {
-          v61 = @"unknown failure to apply ca1 tasking";
+          localizedDescription2 = @"unknown failure to apply ca1 tasking";
         }
 
-        v123 = v61;
+        v123 = localizedDescription2;
         v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v123 forKeys:&v122 count:1];
         v79 = v104[5];
         v104[5] = v78;
@@ -438,7 +438,7 @@ LABEL_65:
       goto LABEL_86;
     }
 
-    if (![v88 isEqualToString:@"awd"])
+    if (![taskingCopy isEqualToString:@"awd"])
     {
       __assert_rtn("+[OSATasking applyTasking:taskId:fromBlob:]", "OSATasking.m", 410, "0 && Unsupported routing used in tasking");
     }
@@ -461,8 +461,8 @@ LABEL_65:
         {
           v114 = @"error";
           v82 = v39;
-          v55 = [v39 localizedDescription];
-          v115 = v55;
+          localizedDescription3 = [v39 localizedDescription];
+          v115 = localizedDescription3;
           v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
           v57 = v104[5];
           v104[5] = v56;
@@ -479,8 +479,8 @@ LABEL_65:
     }
 
     v40 = +[OSASystemConfiguration sharedInstance];
-    v41 = [v40 pathAWDTasking];
-    v42 = [v41 stringByAppendingPathComponent:v88];
+    pathAWDTasking = [v40 pathAWDTasking];
+    v42 = [pathAWDTasking stringByAppendingPathComponent:taskingCopy];
     v84 = [v42 stringByAppendingPathExtension:@"plist"];
 
     if (!v84)
@@ -492,7 +492,7 @@ LABEL_65:
     v43 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:?];
     if (isConfigValid(v43))
     {
-      v90 = [MEMORY[0x1E69B7BD8] sharedClient];
+      mEMORY[0x1E69B7BD8] = [MEMORY[0x1E69B7BD8] sharedClient];
       v112 = 0u;
       v113 = 0u;
       v110 = 0u;
@@ -516,7 +516,7 @@ LABEL_65:
             v49 = [v48 objectForKey:@"Key"];
             v50 = [v48 objectForKey:@"User"];
             v51 = [v48 objectForKey:@"Domain"];
-            if (([v90 deletePreference:v49 forUser:v50 inDomain:v51] & 1) == 0)
+            if (([mEMORY[0x1E69B7BD8] deletePreference:v49 forUser:v50 inDomain:v51] & 1) == 0)
             {
               v46 = 0;
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -549,11 +549,11 @@ LABEL_75:
       {
       }
 
-      v64 = [MEMORY[0x1E696AC08] defaultManager];
-      if ([v64 fileExistsAtPath:v80])
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      if ([defaultManager3 fileExistsAtPath:v80])
       {
         v109 = 0;
-        v65 = [v64 removeItemAtPath:v80 error:&v109];
+        v65 = [defaultManager3 removeItemAtPath:v80 error:&v109];
         v66 = v109;
         if ((v65 & 1) == 0)
         {
@@ -607,8 +607,8 @@ LABEL_75:
         v116[1] = @"TaskingOS";
         v117[0] = v86;
         v70 = +[OSASystemConfiguration sharedInstance];
-        v71 = [v70 buildVersion];
-        v117[1] = v71;
+        buildVersion2 = [v70 buildVersion];
+        v117[1] = buildVersion2;
         v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v117 forKeys:v116 count:2];
 
         v73 = +[OSASystemConfiguration sharedInstance];
@@ -640,9 +640,9 @@ LABEL_83:
   {
     v13 = [v87 length];
     *buf = 138412802;
-    *&buf[4] = v88;
+    *&buf[4] = taskingCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = idCopy;
     *&buf[22] = 2048;
     *&v139 = v13;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ taskId %@ with rawblob (%lu bytes) is inconsistent", buf, 0x20u);
@@ -725,19 +725,19 @@ void __43__OSATasking_applyTasking_taskId_fromBlob___block_invoke_101(void *a1)
 
   v4 = [v3 objectForKeyedSubscript:@"TaskingOS"];
   v5 = +[OSASystemConfiguration sharedInstance];
-  v6 = [v5 buildVersion];
-  v7 = [v4 isEqualToString:v6];
+  buildVersion = [v5 buildVersion];
+  v7 = [v4 isEqualToString:buildVersion];
 
   if ((v7 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v8 = +[OSASystemConfiguration sharedInstance];
-      v9 = [v8 buildVersion];
+      buildVersion2 = [v8 buildVersion];
       v12 = 138412546;
       v13 = v4;
       v14 = 2112;
-      v15 = v9;
+      v15 = buildVersion2;
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "removing outdated da tasking (and restoring hotship) %@ -> %@", &v12, 0x16u);
     }
 
@@ -749,19 +749,19 @@ void __43__OSATasking_applyTasking_taskId_fromBlob___block_invoke_101(void *a1)
 
 + (id)getInstalledTaskIds
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = +[OSASystemConfiguration sharedInstance];
   v4 = [v3 getPrefsKey:@"ScheduledTasking" forDomain:@"com.apple.OTACrashCopier" withOptions:0];
 
   if (v4)
   {
     v5 = [v4 objectForKeyedSubscript:@"TaskingID"];
-    [v2 setObject:v5 forKeyedSubscript:@"da3"];
+    [dictionary setObject:v5 forKeyedSubscript:@"da3"];
   }
 
   else
   {
-    [v2 setObject:@"-1" forKeyedSubscript:@"da3"];
+    [dictionary setObject:@"-1" forKeyedSubscript:@"da3"];
   }
 
   v6 = +[OSASystemConfiguration sharedInstance];
@@ -770,12 +770,12 @@ void __43__OSATasking_applyTasking_taskId_fromBlob___block_invoke_101(void *a1)
   if (v7)
   {
     v8 = [v7 objectForKeyedSubscript:@"TaskingID"];
-    [v2 setObject:v8 forKeyedSubscript:@"awd"];
+    [dictionary setObject:v8 forKeyedSubscript:@"awd"];
   }
 
   else
   {
-    [v2 setObject:@"-1" forKeyedSubscript:@"awd"];
+    [dictionary setObject:@"-1" forKeyedSubscript:@"awd"];
   }
 
   v9 = +[OSASystemConfiguration sharedInstance];
@@ -784,20 +784,20 @@ void __43__OSATasking_applyTasking_taskId_fromBlob___block_invoke_101(void *a1)
   if (v10)
   {
     v11 = [v10 objectForKeyedSubscript:@"TaskingID"];
-    [v2 setObject:v11 forKeyedSubscript:@"ca1"];
+    [dictionary setObject:v11 forKeyedSubscript:@"ca1"];
   }
 
   else
   {
-    [v2 setObject:@"-1" forKeyedSubscript:@"ca1"];
+    [dictionary setObject:@"-1" forKeyedSubscript:@"ca1"];
   }
 
-  return v2;
+  return dictionary;
 }
 
-+ (BOOL)shouldApplyPreference:(id)a3 forSamplingKey:(const char *)a4
++ (BOOL)shouldApplyPreference:(id)preference forSamplingKey:(const char *)key
 {
-  v5 = [a3 objectForKeyedSubscript:@"Sample"];
+  v5 = [preference objectForKeyedSubscript:@"Sample"];
   if (!v5)
   {
     goto LABEL_6;
@@ -810,24 +810,24 @@ void __43__OSATasking_applyTasking_taskId_fromBlob___block_invoke_101(void *a1)
   }
 
   v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
 
-  if (!v9)
+  if (!unsignedIntegerValue2)
   {
     goto LABEL_15;
   }
 
-  if (v9 == 1)
+  if (unsignedIntegerValue2 == 1)
   {
 LABEL_6:
     v10 = 1;
     goto LABEL_7;
   }
 
-  if (v7 >= v9)
+  if (unsignedIntegerValue >= unsignedIntegerValue2)
   {
 LABEL_15:
     v10 = 0;
@@ -835,11 +835,11 @@ LABEL_15:
   }
 
   v12 = crc32(0, 0, 0);
-  v13 = crc32(v12, a4, 8u);
-  v14 = 0xFFFFFFFF / v9 * v7;
+  v13 = crc32(v12, key, 8u);
+  v14 = 0xFFFFFFFF / unsignedIntegerValue2 * unsignedIntegerValue;
   v16 = v13 >= v14;
   v15 = v13 - v14;
-  v16 = !v16 || v15 >= 0xFFFFFFFF / v9;
+  v16 = !v16 || v15 >= 0xFFFFFFFF / unsignedIntegerValue2;
   v10 = !v16;
 LABEL_7:
 
@@ -868,9 +868,9 @@ LABEL_7:
 + (const)samplingKey
 {
   v2 = +[OSASystemConfiguration sharedInstance];
-  v3 = [v2 crashReporterKey];
+  crashReporterKey = [v2 crashReporterKey];
 
-  if ([v3 hasPrefix:@"baadbaadbaaadbaaaadbaadbaadbaaadbaaaad"])
+  if ([crashReporterKey hasPrefix:@"baadbaadbaaadbaaaadbaadbaadbaaadbaaaad"])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -879,25 +879,25 @@ LABEL_7:
 
     v4 = +[OSATasking randomizedCRKey];
 
-    v3 = v4;
+    crashReporterKey = v4;
   }
 
-  v5 = [v3 UTF8String];
+  uTF8String = [crashReporterKey UTF8String];
 
-  return v5;
+  return uTF8String;
 }
 
-+ (id)normalizeInstructions:(id)a3 forSamplingKey:(const char *)a4
++ (id)normalizeInstructions:(id)instructions forSamplingKey:(const char *)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  instructionsCopy = instructions;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v5 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  reverseObjectEnumerator = [instructionsCopy reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -909,11 +909,11 @@ LABEL_7:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([OSATasking shouldApplyPreference:v13 forSamplingKey:a4])
+        if ([OSATasking shouldApplyPreference:v13 forSamplingKey:key])
         {
           if ([OSATasking preference:v13 alreadySetInInstructions:v6])
           {
@@ -935,7 +935,7 @@ LABEL_7:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v9);
@@ -946,22 +946,22 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)preference:(id)a3 alreadySetInInstructions:(id)a4
++ (BOOL)preference:(id)preference alreadySetInInstructions:(id)instructions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  preferenceCopy = preference;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a4;
+  obj = instructions;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
     v21 = 0;
     v23 = *v25;
-    v19 = v5;
+    v19 = preferenceCopy;
     do
     {
       v8 = 0;
@@ -974,19 +974,19 @@ LABEL_7:
         }
 
         v9 = *(*(&v24 + 1) + 8 * v8);
-        v10 = [v5 objectForKeyedSubscript:@"User"];
+        v10 = [preferenceCopy objectForKeyedSubscript:@"User"];
         v11 = [v9 objectForKeyedSubscript:@"User"];
         if ([v10 isEqualToString:v11])
         {
-          v12 = [v5 objectForKeyedSubscript:@"Domain"];
+          v12 = [preferenceCopy objectForKeyedSubscript:@"Domain"];
           v13 = [v9 objectForKeyedSubscript:@"Domain"];
           if ([v12 isEqualToString:v13])
           {
-            v14 = [v5 objectForKeyedSubscript:@"Key"];
+            v14 = [preferenceCopy objectForKeyedSubscript:@"Key"];
             v15 = [v9 objectForKeyedSubscript:@"Key"];
             v16 = [v14 isEqualToString:v15];
 
-            v5 = v19;
+            preferenceCopy = v19;
             v7 = v20;
             v21 |= v16;
           }
@@ -1015,10 +1015,10 @@ LABEL_7:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v2 stringWithFormat:@"%@%@", v4, v5];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v2 stringWithFormat:@"%@%@", uUIDString, date];
 
   *md = 0;
   v11 = 0;

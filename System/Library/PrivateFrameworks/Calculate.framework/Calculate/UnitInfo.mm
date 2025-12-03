@@ -1,12 +1,12 @@
 @interface UnitInfo
 - ($71D83D51AB0F57F7CF166351F850C832)baseDenominator;
 - ($71D83D51AB0F57F7CF166351F850C832)baseNumerator;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UnitInfo)bestEquivalent;
 - (UnitInfo)init;
 - (UnitInfo)nextSmallest;
 - (UnitTypeInfo)typeInfo;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation UnitInfo
@@ -68,14 +68,14 @@
   return WeakRetained;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(UnitInfo *)self unitID];
-  if (v5 <= [v4 unitID])
+  compareCopy = compare;
+  unitID = [(UnitInfo *)self unitID];
+  if (unitID <= [compareCopy unitID])
   {
-    v7 = [(UnitInfo *)self unitID];
-    if (v7 >= [v4 unitID])
+    unitID2 = [(UnitInfo *)self unitID];
+    if (unitID2 >= [compareCopy unitID])
     {
       v6 = 0;
     }
@@ -94,14 +94,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(UnitInfo *)self unitID];
-  if (v5 == [v4 unitID])
+  equalCopy = equal;
+  unitID = [(UnitInfo *)self unitID];
+  if (unitID == [equalCopy unitID])
   {
-    v6 = [(UnitInfo *)self unitType];
-    v7 = v6 == [v4 unitType];
+    unitType = [(UnitInfo *)self unitType];
+    v7 = unitType == [equalCopy unitType];
   }
 
   else

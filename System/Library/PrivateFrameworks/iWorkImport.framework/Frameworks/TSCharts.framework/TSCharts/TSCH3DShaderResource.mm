@@ -1,17 +1,17 @@
 @interface TSCH3DShaderResource
-+ (pair<TSCH3D::IteratorRange<const)stringsFromBuffer:(id)a2;
-- (IteratorRange<const)resourceStringOfString:(id)a3;
++ (pair<TSCH3D::IteratorRange<const)stringsFromBuffer:(id)buffer;
+- (IteratorRange<const)resourceStringOfString:(id)string;
 - (TSCH3DShaderProgram)program;
-- (TSCH3DShaderResource)initWithCaching:(int)a3;
-- (TSCH3DShaderResource)initWithCaching:(int)a3 version:(id)a4;
+- (TSCH3DShaderResource)initWithCaching:(int)caching;
+- (TSCH3DShaderResource)initWithCaching:(int)caching version:(id)version;
 - (TSCH3DVersion)version;
 - (id)get;
-- (void)appendShaderResourceString:(IteratorRange<const char *>)a3 toDataBuffer:(id)a4;
+- (void)appendShaderResourceString:(IteratorRange<const char *>)string toDataBuffer:(id)buffer;
 @end
 
 @implementation TSCH3DShaderResource
 
-+ (pair<TSCH3D::IteratorRange<const)stringsFromBuffer:(id)a2
++ (pair<TSCH3D::IteratorRange<const)stringsFromBuffer:(id)buffer
 {
   v41 = a4;
   if (objc_msgSend_componentByteSize(v41, v5, v6, v7, v8) != 1)
@@ -52,24 +52,24 @@
   return result;
 }
 
-- (TSCH3DShaderResource)initWithCaching:(int)a3
+- (TSCH3DShaderResource)initWithCaching:(int)caching
 {
   objc_msgSend_doesNotRecognizeSelector_(self, a2, v3, v4, v5, a2);
 
   return 0;
 }
 
-- (TSCH3DShaderResource)initWithCaching:(int)a3 version:(id)a4
+- (TSCH3DShaderResource)initWithCaching:(int)caching version:(id)version
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&caching;
+  versionCopy = version;
   v16.receiver = self;
   v16.super_class = TSCH3DShaderResource;
   v7 = [(TSCH3DResource *)&v16 initWithCaching:v4];
   if (v7)
   {
     v8 = [TSCH3DShaderProgram alloc];
-    v13 = objc_msgSend_initWithVersion_(v8, v9, v10, v11, v12, v6);
+    v13 = objc_msgSend_initWithVersion_(v8, v9, v10, v11, v12, versionCopy);
     program = v7->_program;
     v7->_program = v13;
   }
@@ -85,10 +85,10 @@
   return v10;
 }
 
-- (IteratorRange<const)resourceStringOfString:(id)a3
+- (IteratorRange<const)resourceStringOfString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   v9 = objc_msgSend_UTF8String(v4, v5, v6, v7, v8);
   v10 = (v9 - 1);
   v11 = v9;
@@ -107,12 +107,12 @@
   return result;
 }
 
-- (void)appendShaderResourceString:(IteratorRange<const char *>)a3 toDataBuffer:(id)a4
+- (void)appendShaderResourceString:(IteratorRange<const char *>)string toDataBuffer:(id)buffer
 {
-  var1 = a3.var0.var1;
-  var0 = a3.var0.var0;
-  v35 = a4;
-  if (!v35)
+  var1 = string.var0.var1;
+  var0 = string.var0.var0;
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCH3DShaderResource appendShaderResourceString:toDataBuffer:]");
@@ -122,7 +122,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  v25 = objc_msgSend_container(v35, v6, v7, v8, v9);
+  v25 = objc_msgSend_container(bufferCopy, v6, v7, v8, v9);
   sub_27619DF3C(v25, *(v25 + 8), var0, var1, var1 - var0);
   v27 = *(v25 + 8);
   v26 = *(v25 + 16);

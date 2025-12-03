@@ -1,38 +1,38 @@
 @interface CAMPreparePhotoSettingsCommand
-- (CAMPreparePhotoSettingsCommand)initWithCoder:(id)a3;
-- (CAMPreparePhotoSettingsCommand)initWithGraphConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPreparePhotoSettingsCommand)initWithCoder:(id)coder;
+- (CAMPreparePhotoSettingsCommand)initWithGraphConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPreparePhotoSettingsCommand
 
-- (CAMPreparePhotoSettingsCommand)initWithGraphConfiguration:(id)a3
+- (CAMPreparePhotoSettingsCommand)initWithGraphConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CAMPreparePhotoSettingsCommand;
   v6 = [(CAMCaptureCommand *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__desiredGraphConfiguration, a3);
+    objc_storeStrong(&v6->__desiredGraphConfiguration, configuration);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (CAMPreparePhotoSettingsCommand)initWithCoder:(id)a3
+- (CAMPreparePhotoSettingsCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CAMPreparePhotoSettingsCommand;
-  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMPreparePhotoSettingsCommandDesiredConfiguration"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMPreparePhotoSettingsCommandDesiredConfiguration"];
     desiredGraphConfiguration = v5->__desiredGraphConfiguration;
     v5->__desiredGraphConfiguration = v6;
 
@@ -42,67 +42,67 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CAMPreparePhotoSettingsCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CAMPreparePhotoSettingsCommand *)self _desiredGraphConfiguration:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"CAMPreparePhotoSettingsCommandDesiredConfiguration"];
+  [coderCopy encodeObject:v5 forKey:@"CAMPreparePhotoSettingsCommandDesiredConfiguration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMPreparePhotoSettingsCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMPreparePhotoSettingsCommand *)self _desiredGraphConfiguration];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  _desiredGraphConfiguration = [(CAMPreparePhotoSettingsCommand *)self _desiredGraphConfiguration];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _desiredGraphConfiguration;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 currentStillImageOutput];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
 
-  v8 = [(CAMPreparePhotoSettingsCommand *)self _desiredGraphConfiguration];
+  _desiredGraphConfiguration = [(CAMPreparePhotoSettingsCommand *)self _desiredGraphConfiguration];
   v9 = +[CAMCaptureCapabilities capabilities];
-  v10 = [v8 mode];
-  v11 = [v8 device];
-  v12 = [v9 isHDRSupportedForMode:v10 devicePosition:{objc_msgSend(v8, "devicePosition")}];
-  v13 = [v8 photoEncodingBehavior];
-  if (v10 > 5)
+  mode = [_desiredGraphConfiguration mode];
+  device = [_desiredGraphConfiguration device];
+  v12 = [v9 isHDRSupportedForMode:mode devicePosition:{objc_msgSend(_desiredGraphConfiguration, "devicePosition")}];
+  photoEncodingBehavior = [_desiredGraphConfiguration photoEncodingBehavior];
+  if (mode > 5)
   {
-    if (v10 == 6 || v10 == 9)
+    if (mode == 6 || mode == 9)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!v10 || v10 == 4)
+  else if (!mode || mode == 4)
   {
-    if ([v9 isBurstSupportedForMode:v10 device:v11])
+    if ([v9 isBurstSupportedForMode:mode device:device])
     {
-      v14 = [MEMORY[0x1E6987100] burstQualityPhotoSettings];
-      [v14 setHDRMode:0];
-      [v14 setPhotoQualityPrioritization:1];
-      [v14 setHighResolutionPhotoEnabled:1];
-      [v6 addObject:v14];
+      burstQualityPhotoSettings = [MEMORY[0x1E6987100] burstQualityPhotoSettings];
+      [burstQualityPhotoSettings setHDRMode:0];
+      [burstQualityPhotoSettings setPhotoQualityPrioritization:1];
+      [burstQualityPhotoSettings setHighResolutionPhotoEnabled:1];
+      [v6 addObject:burstQualityPhotoSettings];
     }
 
 LABEL_8:
-    if (v13)
+    if (photoEncodingBehavior)
     {
-      if (v13 != 2)
+      if (photoEncodingBehavior != 2)
       {
-        if (v13 == 1)
+        if (photoEncodingBehavior == 1)
         {
           v15 = MEMORY[0x1E6987100];
           v20 = *MEMORY[0x1E6987CB0];
@@ -119,24 +119,24 @@ LABEL_8:
         goto LABEL_16;
       }
 
-      v18 = [CAMStillImageCaptureRequest rawPixelFormatTypeForPhotoOutput:v7];
-      v19 = [MEMORY[0x1E6987100] photoSettingsWithRawPixelFormatType:v18 rawFileType:*MEMORY[0x1E6987498] processedFormat:0 processedFileType:*MEMORY[0x1E6987498]];
+      v18 = [CAMStillImageCaptureRequest rawPixelFormatTypeForPhotoOutput:currentStillImageOutput];
+      photoSettings = [MEMORY[0x1E6987100] photoSettingsWithRawPixelFormatType:v18 rawFileType:*MEMORY[0x1E6987498] processedFormat:0 processedFileType:*MEMORY[0x1E6987498]];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E6987100] photoSettings];
+      photoSettings = [MEMORY[0x1E6987100] photoSettings];
     }
 
-    v17 = v19;
+    v17 = photoSettings;
 LABEL_16:
     [v17 setHDRMode:{+[CAMCaptureConversions captureHDRModeForHDRMode:](CAMCaptureConversions, "captureHDRModeForHDRMode:", v12)}];
     [v17 setHighResolutionPhotoEnabled:1];
-    [v17 setPhotoQualityPrioritization:{+[CAMCaptureConversions AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:](CAMCaptureConversions, "AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:", objc_msgSend(v8, "photoQualityPrioritization"))}];
+    [v17 setPhotoQualityPrioritization:{+[CAMCaptureConversions AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:](CAMCaptureConversions, "AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:", objc_msgSend(_desiredGraphConfiguration, "photoQualityPrioritization"))}];
     [v6 addObject:v17];
   }
 
-  [v7 setPreparedPhotoSettingsArray:v6 completionHandler:0];
+  [currentStillImageOutput setPreparedPhotoSettingsArray:v6 completionHandler:0];
 }
 
 @end

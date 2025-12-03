@@ -1,63 +1,63 @@
 @interface PVInstructionGraphRectangleMaskNode
-+ (id)newMaskNode:(id)a3 normalizedMaskRect:(CGRect)a4;
-- (CGRect)denormalizedMaskRectInSize:(CGSize)a3;
++ (id)newMaskNode:(id)node normalizedMaskRect:(CGRect)rect;
+- (CGRect)denormalizedMaskRectInSize:(CGSize)size;
 - (CGRect)normalizedMaskRect;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (PVInstructionGraphRectangleMaskNode)initWithInputNode:(id)a3 normalizedMaskRect:(CGRect)a4;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PVInstructionGraphRectangleMaskNode)initWithInputNode:(id)node normalizedMaskRect:(CGRect)rect;
 - (id)getAllSourceNodes;
 - (id)requiredSourceTrackIDs;
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4;
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects;
 - (void)unloadIGNode;
 @end
 
 @implementation PVInstructionGraphRectangleMaskNode
 
-+ (id)newMaskNode:(id)a3 normalizedMaskRect:(CGRect)a4
++ (id)newMaskNode:(id)node normalizedMaskRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithInputNode:v9 normalizedMaskRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  nodeCopy = node;
+  v10 = [[self alloc] initWithInputNode:nodeCopy normalizedMaskRect:{x, y, width, height}];
 
   return v10;
 }
 
-- (PVInstructionGraphRectangleMaskNode)initWithInputNode:(id)a3 normalizedMaskRect:(CGRect)a4
+- (PVInstructionGraphRectangleMaskNode)initWithInputNode:(id)node normalizedMaskRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  nodeCopy = node;
   v13.receiver = self;
   v13.super_class = PVInstructionGraphRectangleMaskNode;
   v10 = [(PVInstructionGraphNode *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(PVInstructionGraphRectangleMaskNode *)v10 setInputNode:v9];
+    [(PVInstructionGraphRectangleMaskNode *)v10 setInputNode:nodeCopy];
     [(PVInstructionGraphRectangleMaskNode *)v11 setNormalizedMaskRect:x, y, width, height];
   }
 
   return v11;
 }
 
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects
 {
-  v6 = a4;
-  v7 = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
-  v8 = *a3.m_Obj;
+  effectsCopy = effects;
+  inputNode = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
+  v8 = *node.m_Obj;
   v9 = v8;
   if (v8)
   {
     (*(*v8 + 16))(v8);
   }
 
-  [v7 loadIGNode:&v9 returnLoadedEffects:v6];
+  [inputNode loadIGNode:&v9 returnLoadedEffects:effectsCopy];
   if (v9)
   {
     (*(*v9 + 24))(v9);
@@ -66,26 +66,26 @@
 
 - (void)unloadIGNode
 {
-  v2 = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
-  [v2 unloadIGNode];
+  inputNode = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
+  [inputNode unloadIGNode];
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v12 = v6;
   HGTraceGuard::HGTraceGuard(v43, "kPVInstructionGraphToHeliumGraphLogContext", 1, "[PVInstructionGraphRectangleMaskNode hgNodeForTime:...]");
-  v13 = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
-  v42 = *a3;
-  v14 = *a6.m_Obj;
+  inputNode = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
+  v42 = *time;
+  v14 = *context.m_Obj;
   v41 = v14;
   if (v14)
   {
     (*(*v14 + 16))(v14);
   }
 
-  if (v13)
+  if (inputNode)
   {
-    [v13 hgNodeForTime:&v42 trackInputs:a4 renderer:a5 igContext:&v41];
+    [inputNode hgNodeForTime:&v42 trackInputs:inputs renderer:renderer igContext:&v41];
   }
 
   else
@@ -98,9 +98,9 @@
     (*(*v41 + 24))(v41);
   }
 
-  v15 = (*(**a6.m_Obj + 40))();
+  v15 = (*(**context.m_Obj + 40))();
   v17 = v16;
-  v18 = (*(**a6.m_Obj + 48))().n128_f32[0];
+  v18 = (*(**context.m_Obj + 48))().n128_f32[0];
   v19 = v15 * v18;
   v20 = v17 * v18;
   [(PVInstructionGraphRectangleMaskNode *)self denormalizedMaskRectInSize:v19, v17 * v18];
@@ -191,27 +191,27 @@
 
 - (id)requiredSourceTrackIDs
 {
-  v2 = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
-  v3 = [v2 requiredSourceTrackIDs];
+  inputNode = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
+  requiredSourceTrackIDs = [inputNode requiredSourceTrackIDs];
 
-  return v3;
+  return requiredSourceTrackIDs;
 }
 
 - (id)getAllSourceNodes
 {
-  v2 = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
-  v3 = [v2 getAllSourceNodes];
+  inputNode = [(PVInstructionGraphRectangleMaskNode *)self inputNode];
+  getAllSourceNodes = [inputNode getAllSourceNodes];
 
-  return v3;
+  return getAllSourceNodes;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v15 = a3;
-  v7 = (*(**a4.m_Obj + 40))();
+  effectCopy = effect;
+  v7 = (*(**context.m_Obj + 40))();
   v9 = v8;
-  v10 = (*(**a4.m_Obj + 48))();
+  v10 = (*(**context.m_Obj + 48))();
   *v6 = 0;
   *(v6 + 8) = 0;
   *(v6 + 16) = v7 * v10;
@@ -224,13 +224,13 @@
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
-  v17 = a4;
+  contextCopy = context;
   v7 = (*(**a5.m_Obj + 40))();
   v9 = v8;
   v10 = (*(**a5.m_Obj + 48))();
-  [v17 outputSize];
+  [contextCopy outputSize];
   v11 = v9;
   v12 = (v10 * v11);
   v13 = v7;
@@ -253,10 +253,10 @@
   return result;
 }
 
-- (CGRect)denormalizedMaskRectInSize:(CGSize)a3
+- (CGRect)denormalizedMaskRectInSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PVInstructionGraphRectangleMaskNode *)self normalizedMaskRect];
   v6 = width * v5;
   v8 = height * v7;

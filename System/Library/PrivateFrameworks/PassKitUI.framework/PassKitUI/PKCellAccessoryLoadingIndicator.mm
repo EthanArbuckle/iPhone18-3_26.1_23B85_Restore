@@ -1,7 +1,7 @@
 @interface PKCellAccessoryLoadingIndicator
 + (id)accessory;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCellAccessoryLoadingIndicator)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCellAccessoryLoadingIndicator)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,11 +16,11 @@
   return v4;
 }
 
-- (PKCellAccessoryLoadingIndicator)initWithFrame:(CGRect)a3
+- (PKCellAccessoryLoadingIndicator)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKCellAccessoryLoadingIndicator;
-  v3 = [(PKCellAccessoryLoadingIndicator *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKCellAccessoryLoadingIndicator *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIActivityIndicatorView *)self->_loadingIndicator sizeThatFits:a3.width, a3.height];
+  [(UIActivityIndicatorView *)self->_loadingIndicator sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

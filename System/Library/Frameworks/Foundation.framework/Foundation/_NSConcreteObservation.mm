@@ -1,8 +1,8 @@
 @interface _NSConcreteObservation
-- (BOOL)isEqual:(id)a3;
-- (_NSConcreteObservation)initWithObservable:(id)a3 observer:(id)a4;
-- (void)_observerStorageOfSize:(unint64_t)a3;
-- (void)_receiveBox:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_NSConcreteObservation)initWithObservable:(id)observable observer:(id)observer;
+- (void)_observerStorageOfSize:(unint64_t)size;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 - (void)finishObserving;
 - (void)remove;
@@ -10,27 +10,27 @@
 
 @implementation _NSConcreteObservation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if ((objc_opt_isKindOfClass() & 1) != 0 && *(a3 + 1) == self->_LHSobservable)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && *(equal + 1) == self->_LHSobservable)
   {
-    return *(a3 + 2) == self->_RHSobserver;
+    return *(equal + 2) == self->_RHSobserver;
   }
 
   return 0;
 }
 
-- (_NSConcreteObservation)initWithObservable:(id)a3 observer:(id)a4
+- (_NSConcreteObservation)initWithObservable:(id)observable observer:(id)observer
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -38,8 +38,8 @@
   v6 = [(_NSConcreteObservation *)&v10 init];
   if (v6)
   {
-    v6->_RHSobserver = a4;
-    v6->_LHSobservable = a3;
+    v6->_RHSobserver = observer;
+    v6->_LHSobservable = observable;
     if ([(NSObserver *)v6->_RHSobserver conformsToProtocol:&unk_1EEF70E88])
     {
       [(NSObserver *)v6->_RHSobserver setObservation:v6];
@@ -64,9 +64,9 @@
   return v6;
 }
 
-- (void)_observerStorageOfSize:(unint64_t)a3
+- (void)_observerStorageOfSize:(unint64_t)size
 {
-  if (a3 != 32)
+  if (size != 32)
   {
     __assert_rtn("[_NSConcreteObservation _observerStorageOfSize:]", "NSObserving.m", 126, "sz == 4 * sizeof(id)");
   }
@@ -98,18 +98,18 @@
   [(_NSConcreteObservation *)&v3 finishObserving];
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (*(a3 + 2) == self->_RHSobserver)
+  if (*(box + 2) == self->_RHSobserver)
   {
-    v5 = *(a3 + 1);
-    v6 = *(a3 + 6);
+    v5 = *(box + 1);
+    v6 = *(box + 6);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v13 = __38___NSConcreteObservation__receiveBox___block_invoke;
     v14 = &unk_1E69F30D8;
-    v15 = self;
+    selfCopy = self;
     v16[0] = 0;
     StackObservedValueClassAndBoxSize = getStackObservedValueClassAndBoxSize(v16);
     MEMORY[0x1EEE9AC00](StackObservedValueClassAndBoxSize);

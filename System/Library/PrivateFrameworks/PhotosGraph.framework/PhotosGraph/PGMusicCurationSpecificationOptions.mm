@@ -1,7 +1,7 @@
 @interface PGMusicCurationSpecificationOptions
 - (BOOL)isQUEmpty;
 - (PGMusicCurationSpecificationOptions)init;
-- (PGMusicCurationSpecificationOptions)initWithOptionsDictionary:(id)a3;
+- (PGMusicCurationSpecificationOptions)initWithOptionsDictionary:(id)dictionary;
 @end
 
 @implementation PGMusicCurationSpecificationOptions
@@ -24,15 +24,15 @@
   return !(v3 | v4) && v5 == 0 && v6;
 }
 
-- (PGMusicCurationSpecificationOptions)initWithOptionsDictionary:(id)a3
+- (PGMusicCurationSpecificationOptions)initWithOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PGMusicCurationSpecificationOptions;
   v5 = [(PGMusicCurationSpecificationOptions *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AED8]];
+    v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AED8]];
     v7 = v6;
     v8 = MEMORY[0x277CBEBF8];
     if (v6)
@@ -47,7 +47,7 @@
 
     objc_storeStrong(&v5->_titles, v9);
 
-    v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AE98]];
+    v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AE98]];
     v11 = v10;
     if (v10)
     {
@@ -61,7 +61,7 @@
 
     objc_storeStrong(&v5->_artists, v12);
 
-    v13 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEA0]];
+    v13 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEA0]];
     v14 = v13;
     if (v13)
     {
@@ -75,7 +75,7 @@
 
     objc_storeStrong(&v5->_genres, v15);
 
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEB8]];
+    v16 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEB8]];
     v17 = v16;
     if (v16)
     {
@@ -89,7 +89,7 @@
 
     objc_storeStrong(&v5->_moodsText, v18);
 
-    v19 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEC8]];
+    v19 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEC8]];
     v20 = v19;
     if (v19)
     {
@@ -103,15 +103,15 @@
 
     objc_storeStrong(&v5->_phMoods, v21);
 
-    v22 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEB0]];
+    v22 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEB0]];
     length = v5->_length;
     v5->_length = v22;
 
     v24 = *MEMORY[0x277D3AEA8];
-    v25 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEA8]];
+    v25 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEA8]];
     if (v25)
     {
-      v26 = [v4 objectForKeyedSubscript:v24];
+      v26 = [dictionaryCopy objectForKeyedSubscript:v24];
       v5->_isTrip = [v26 BOOLValue];
     }
 
@@ -121,10 +121,10 @@
     }
 
     v27 = *MEMORY[0x277D3AED0];
-    v28 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AED0]];
+    v28 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AED0]];
     if (v28)
     {
-      v29 = [v4 objectForKeyedSubscript:v27];
+      v29 = [dictionaryCopy objectForKeyedSubscript:v27];
       v5->_shouldDownloadKeyFlexSong = [v29 BOOLValue];
     }
 
@@ -133,7 +133,7 @@
       v5->_shouldDownloadKeyFlexSong = 0;
     }
 
-    v30 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEE0]];
+    v30 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEE0]];
     v31 = MEMORY[0x277CBEC10];
     if (v30)
     {
@@ -147,7 +147,7 @@
 
     v5->_weightByLanguage = v32;
 
-    v33 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3AEE8]];
+    v33 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3AEE8]];
     if (v33)
     {
       v34 = v33;

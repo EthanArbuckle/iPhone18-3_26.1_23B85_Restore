@@ -1,35 +1,35 @@
 @interface HKMedicationDosage
-+ (id)dosageWithInstruction:(id)a3 timingPeriod:(id)a4;
-+ (id)dosageWithInstruction:(id)a3 timingPeriod:(id)a4 siteCoding:(id)a5 routeCoding:(id)a6 methodCoding:(id)a7;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)dosageWithInstruction:(id)instruction timingPeriod:(id)period;
++ (id)dosageWithInstruction:(id)instruction timingPeriod:(id)period siteCoding:(id)coding routeCoding:(id)routeCoding methodCoding:(id)methodCoding;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationDosage)init;
-- (HKMedicationDosage)initWithCoder:(id)a3;
-- (HKMedicationDosage)initWithInstruction:(id)a3 timingPeriod:(id)a4 siteCoding:(id)a5 routeCoding:(id)a6 methodCoding:(id)a7;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (HKMedicationDosage)initWithCoder:(id)coder;
+- (HKMedicationDosage)initWithInstruction:(id)instruction timingPeriod:(id)period siteCoding:(id)coding routeCoding:(id)routeCoding methodCoding:(id)methodCoding;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationDosage
 
-+ (id)dosageWithInstruction:(id)a3 timingPeriod:(id)a4
++ (id)dosageWithInstruction:(id)instruction timingPeriod:(id)period
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithInstruction:v7 timingPeriod:v6 siteCoding:0 routeCoding:0 methodCoding:0];
+  periodCopy = period;
+  instructionCopy = instruction;
+  v8 = [[self alloc] initWithInstruction:instructionCopy timingPeriod:periodCopy siteCoding:0 routeCoding:0 methodCoding:0];
 
   return v8;
 }
 
-+ (id)dosageWithInstruction:(id)a3 timingPeriod:(id)a4 siteCoding:(id)a5 routeCoding:(id)a6 methodCoding:(id)a7
++ (id)dosageWithInstruction:(id)instruction timingPeriod:(id)period siteCoding:(id)coding routeCoding:(id)routeCoding methodCoding:(id)methodCoding
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithInstruction:v16 timingPeriod:v15 siteCoding:v14 routeCoding:v13 methodCoding:v12];
+  methodCodingCopy = methodCoding;
+  routeCodingCopy = routeCoding;
+  codingCopy = coding;
+  periodCopy = period;
+  instructionCopy = instruction;
+  v17 = [[self alloc] initWithInstruction:instructionCopy timingPeriod:periodCopy siteCoding:codingCopy routeCoding:routeCodingCopy methodCoding:methodCodingCopy];
 
   return v17;
 }
@@ -44,58 +44,58 @@
   return 0;
 }
 
-- (HKMedicationDosage)initWithInstruction:(id)a3 timingPeriod:(id)a4 siteCoding:(id)a5 routeCoding:(id)a6 methodCoding:(id)a7
+- (HKMedicationDosage)initWithInstruction:(id)instruction timingPeriod:(id)period siteCoding:(id)coding routeCoding:(id)routeCoding methodCoding:(id)methodCoding
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  instructionCopy = instruction;
+  periodCopy = period;
+  codingCopy = coding;
+  routeCodingCopy = routeCoding;
+  methodCodingCopy = methodCoding;
   v38.receiver = self;
   v38.super_class = HKMedicationDosage;
   v17 = [(HKMedicationDosage *)&v38 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [instructionCopy copy];
     instruction = v17->_instruction;
     v17->_instruction = v18;
 
-    v20 = [v13 copy];
+    v20 = [periodCopy copy];
     timingPeriod = v17->_timingPeriod;
     v17->_timingPeriod = v20;
 
-    v22 = [v14 copy];
+    v22 = [codingCopy copy];
     siteCoding = v17->_siteCoding;
     v17->_siteCoding = v22;
 
-    v24 = [v15 copy];
+    v24 = [routeCodingCopy copy];
     routeCoding = v17->_routeCoding;
     v17->_routeCoding = v24;
 
-    v26 = [v16 copy];
+    v26 = [methodCodingCopy copy];
     methodCoding = v17->_methodCoding;
     v17->_methodCoding = v26;
 
     if (v17->_siteCoding)
     {
-      v28 = [(HKMedicationDosage *)v17 _siteCodingCollection];
-      v29 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v28];
+      _siteCodingCollection = [(HKMedicationDosage *)v17 _siteCodingCollection];
+      v29 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:_siteCodingCollection];
       site = v17->_site;
       v17->_site = v29;
     }
 
     if (v17->_routeCoding)
     {
-      v31 = [(HKMedicationDosage *)v17 _routeCodingCollection];
-      v32 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v31];
+      _routeCodingCollection = [(HKMedicationDosage *)v17 _routeCodingCollection];
+      v32 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:_routeCodingCollection];
       route = v17->_route;
       v17->_route = v32;
     }
 
     if (v17->_methodCoding)
     {
-      v34 = [(HKMedicationDosage *)v17 _methodCodingCollection];
-      v35 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v34];
+      _methodCodingCollection = [(HKMedicationDosage *)v17 _methodCodingCollection];
+      v35 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:_methodCodingCollection];
       method = v17->_method;
       v17->_method = v35;
     }
@@ -116,10 +116,10 @@
   return v9 ^ [(HKMedicalCoding *)self->_methodCoding hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -129,26 +129,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       instruction = self->_instruction;
-      v7 = [(HKMedicationDosage *)v5 instruction];
-      v8 = v7;
-      if (instruction == v7)
+      instruction = [(HKMedicationDosage *)v5 instruction];
+      v8 = instruction;
+      if (instruction == instruction)
       {
       }
 
       else
       {
-        v9 = [(HKMedicationDosage *)v5 instruction];
-        if (!v9)
+        instruction2 = [(HKMedicationDosage *)v5 instruction];
+        if (!instruction2)
         {
           goto LABEL_44;
         }
 
-        v10 = v9;
+        v10 = instruction2;
         v11 = self->_instruction;
-        v12 = [(HKMedicationDosage *)v5 instruction];
-        LODWORD(v11) = [(NSString *)v11 isEqual:v12];
+        instruction3 = [(HKMedicationDosage *)v5 instruction];
+        LODWORD(v11) = [(NSString *)v11 isEqual:instruction3];
 
         if (!v11)
         {
@@ -157,24 +157,24 @@
       }
 
       timingPeriod = self->_timingPeriod;
-      v15 = [(HKMedicationDosage *)v5 timingPeriod];
-      v8 = v15;
-      if (timingPeriod == v15)
+      timingPeriod = [(HKMedicationDosage *)v5 timingPeriod];
+      v8 = timingPeriod;
+      if (timingPeriod == timingPeriod)
       {
       }
 
       else
       {
-        v16 = [(HKMedicationDosage *)v5 timingPeriod];
-        if (!v16)
+        timingPeriod2 = [(HKMedicationDosage *)v5 timingPeriod];
+        if (!timingPeriod2)
         {
           goto LABEL_44;
         }
 
-        v17 = v16;
+        v17 = timingPeriod2;
         v18 = self->_timingPeriod;
-        v19 = [(HKMedicationDosage *)v5 timingPeriod];
-        LODWORD(v18) = [(HKMedicalDateInterval *)v18 isEqual:v19];
+        timingPeriod3 = [(HKMedicationDosage *)v5 timingPeriod];
+        LODWORD(v18) = [(HKMedicalDateInterval *)v18 isEqual:timingPeriod3];
 
         if (!v18)
         {
@@ -183,24 +183,24 @@
       }
 
       siteCoding = self->_siteCoding;
-      v21 = [(HKMedicationDosage *)v5 siteCoding];
-      v8 = v21;
-      if (siteCoding == v21)
+      siteCoding = [(HKMedicationDosage *)v5 siteCoding];
+      v8 = siteCoding;
+      if (siteCoding == siteCoding)
       {
       }
 
       else
       {
-        v22 = [(HKMedicationDosage *)v5 siteCoding];
-        if (!v22)
+        siteCoding2 = [(HKMedicationDosage *)v5 siteCoding];
+        if (!siteCoding2)
         {
           goto LABEL_44;
         }
 
-        v23 = v22;
+        v23 = siteCoding2;
         v24 = self->_siteCoding;
-        v25 = [(HKMedicationDosage *)v5 siteCoding];
-        LODWORD(v24) = [(HKMedicalCoding *)v24 isEqual:v25];
+        siteCoding3 = [(HKMedicationDosage *)v5 siteCoding];
+        LODWORD(v24) = [(HKMedicalCoding *)v24 isEqual:siteCoding3];
 
         if (!v24)
         {
@@ -209,24 +209,24 @@
       }
 
       routeCoding = self->_routeCoding;
-      v27 = [(HKMedicationDosage *)v5 routeCoding];
-      v8 = v27;
-      if (routeCoding == v27)
+      routeCoding = [(HKMedicationDosage *)v5 routeCoding];
+      v8 = routeCoding;
+      if (routeCoding == routeCoding)
       {
       }
 
       else
       {
-        v28 = [(HKMedicationDosage *)v5 routeCoding];
-        if (!v28)
+        routeCoding2 = [(HKMedicationDosage *)v5 routeCoding];
+        if (!routeCoding2)
         {
           goto LABEL_44;
         }
 
-        v29 = v28;
+        v29 = routeCoding2;
         v30 = self->_routeCoding;
-        v31 = [(HKMedicationDosage *)v5 routeCoding];
-        LODWORD(v30) = [(HKMedicalCoding *)v30 isEqual:v31];
+        routeCoding3 = [(HKMedicationDosage *)v5 routeCoding];
+        LODWORD(v30) = [(HKMedicalCoding *)v30 isEqual:routeCoding3];
 
         if (!v30)
         {
@@ -235,24 +235,24 @@
       }
 
       methodCoding = self->_methodCoding;
-      v33 = [(HKMedicationDosage *)v5 methodCoding];
-      v8 = v33;
-      if (methodCoding == v33)
+      methodCoding = [(HKMedicationDosage *)v5 methodCoding];
+      v8 = methodCoding;
+      if (methodCoding == methodCoding)
       {
       }
 
       else
       {
-        v34 = [(HKMedicationDosage *)v5 methodCoding];
-        if (!v34)
+        methodCoding2 = [(HKMedicationDosage *)v5 methodCoding];
+        if (!methodCoding2)
         {
           goto LABEL_44;
         }
 
-        v35 = v34;
+        v35 = methodCoding2;
         v36 = self->_methodCoding;
-        v37 = [(HKMedicationDosage *)v5 methodCoding];
-        LODWORD(v36) = [(HKMedicalCoding *)v36 isEqual:v37];
+        methodCoding3 = [(HKMedicationDosage *)v5 methodCoding];
+        LODWORD(v36) = [(HKMedicalCoding *)v36 isEqual:methodCoding3];
 
         if (!v36)
         {
@@ -261,24 +261,24 @@
       }
 
       site = self->_site;
-      v39 = [(HKMedicationDosage *)v5 site];
-      v8 = v39;
-      if (site == v39)
+      site = [(HKMedicationDosage *)v5 site];
+      v8 = site;
+      if (site == site)
       {
       }
 
       else
       {
-        v40 = [(HKMedicationDosage *)v5 site];
-        if (!v40)
+        site2 = [(HKMedicationDosage *)v5 site];
+        if (!site2)
         {
           goto LABEL_44;
         }
 
-        v41 = v40;
+        v41 = site2;
         v42 = self->_site;
-        v43 = [(HKMedicationDosage *)v5 site];
-        LODWORD(v42) = [(HKConcept *)v42 isEqual:v43];
+        site3 = [(HKMedicationDosage *)v5 site];
+        LODWORD(v42) = [(HKConcept *)v42 isEqual:site3];
 
         if (!v42)
         {
@@ -287,24 +287,24 @@
       }
 
       route = self->_route;
-      v45 = [(HKMedicationDosage *)v5 route];
-      v8 = v45;
-      if (route == v45)
+      route = [(HKMedicationDosage *)v5 route];
+      v8 = route;
+      if (route == route)
       {
       }
 
       else
       {
-        v46 = [(HKMedicationDosage *)v5 route];
-        if (!v46)
+        route2 = [(HKMedicationDosage *)v5 route];
+        if (!route2)
         {
           goto LABEL_44;
         }
 
-        v47 = v46;
+        v47 = route2;
         v48 = self->_route;
-        v49 = [(HKMedicationDosage *)v5 route];
-        LODWORD(v48) = [(HKConcept *)v48 isEqual:v49];
+        route3 = [(HKMedicationDosage *)v5 route];
+        LODWORD(v48) = [(HKConcept *)v48 isEqual:route3];
 
         if (!v48)
         {
@@ -313,9 +313,9 @@
       }
 
       method = self->_method;
-      v51 = [(HKMedicationDosage *)v5 method];
-      v8 = v51;
-      if (method == v51)
+      method = [(HKMedicationDosage *)v5 method];
+      v8 = method;
+      if (method == method)
       {
 
 LABEL_49:
@@ -323,13 +323,13 @@ LABEL_49:
         goto LABEL_46;
       }
 
-      v52 = [(HKMedicationDosage *)v5 method];
-      if (v52)
+      method2 = [(HKMedicationDosage *)v5 method];
+      if (method2)
       {
-        v53 = v52;
+        v53 = method2;
         v54 = self->_method;
-        v55 = [(HKMedicationDosage *)v5 method];
-        LOBYTE(v54) = [(HKConcept *)v54 isEqual:v55];
+        method3 = [(HKMedicationDosage *)v5 method];
+        LOBYTE(v54) = [(HKConcept *)v54 isEqual:method3];
 
         if (v54)
         {
@@ -356,43 +356,43 @@ LABEL_47:
   return v13;
 }
 
-- (HKMedicationDosage)initWithCoder:(id)a3
+- (HKMedicationDosage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HKMedicationDosage;
   v5 = [(HKMedicationDosage *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Instruction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Instruction"];
     instruction = v5->_instruction;
     v5->_instruction = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TimingPeriod"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TimingPeriod"];
     timingPeriod = v5->_timingPeriod;
     v5->_timingPeriod = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SiteConcept"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiteConcept"];
     site = v5->_site;
     v5->_site = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SiteCoding"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiteCoding"];
     siteCoding = v5->_siteCoding;
     v5->_siteCoding = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RouteConcept"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RouteConcept"];
     route = v5->_route;
     v5->_route = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RouteCoding"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RouteCoding"];
     routeCoding = v5->_routeCoding;
     v5->_routeCoding = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MethodConcept"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MethodConcept"];
     method = v5->_method;
     v5->_method = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MethodCoding"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MethodCoding"];
     methodCoding = v5->_methodCoding;
     v5->_methodCoding = v20;
   }
@@ -400,32 +400,32 @@ LABEL_47:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   instruction = self->_instruction;
-  v5 = a3;
-  [v5 encodeObject:instruction forKey:@"Instruction"];
-  [v5 encodeObject:self->_timingPeriod forKey:@"TimingPeriod"];
-  [v5 encodeObject:self->_site forKey:@"SiteConcept"];
-  [v5 encodeObject:self->_siteCoding forKey:@"SiteCoding"];
-  [v5 encodeObject:self->_route forKey:@"RouteConcept"];
-  [v5 encodeObject:self->_routeCoding forKey:@"RouteCoding"];
-  [v5 encodeObject:self->_method forKey:@"MethodConcept"];
-  [v5 encodeObject:self->_methodCoding forKey:@"MethodCoding"];
+  coderCopy = coder;
+  [coderCopy encodeObject:instruction forKey:@"Instruction"];
+  [coderCopy encodeObject:self->_timingPeriod forKey:@"TimingPeriod"];
+  [coderCopy encodeObject:self->_site forKey:@"SiteConcept"];
+  [coderCopy encodeObject:self->_siteCoding forKey:@"SiteCoding"];
+  [coderCopy encodeObject:self->_route forKey:@"RouteConcept"];
+  [coderCopy encodeObject:self->_routeCoding forKey:@"RouteCoding"];
+  [coderCopy encodeObject:self->_method forKey:@"MethodConcept"];
+  [coderCopy encodeObject:self->_methodCoding forKey:@"MethodCoding"];
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"site"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"site"])
   {
-    v7 = [(HKMedicationDosage *)self siteCoding];
+    siteCoding = [(HKMedicationDosage *)self siteCoding];
 
-    if (v7)
+    if (siteCoding)
     {
-      v8 = [(HKMedicationDosage *)self _siteCodingCollection];
-      v9 = [HKIndexableObject indexableObjectWithObject:v8];
+      _siteCodingCollection = [(HKMedicationDosage *)self _siteCodingCollection];
+      v9 = [HKIndexableObject indexableObjectWithObject:_siteCodingCollection];
       v19 = v9;
       v10 = MEMORY[0x1E695DEC8];
       v11 = &v19;
@@ -438,14 +438,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"method"])
+  if ([pathCopy isEqualToString:@"method"])
   {
-    v12 = [(HKMedicationDosage *)self methodCoding];
+    methodCoding = [(HKMedicationDosage *)self methodCoding];
 
-    if (v12)
+    if (methodCoding)
     {
-      v8 = [(HKMedicationDosage *)self _methodCodingCollection];
-      v9 = [HKIndexableObject indexableObjectWithObject:v8];
+      _siteCodingCollection = [(HKMedicationDosage *)self _methodCodingCollection];
+      v9 = [HKIndexableObject indexableObjectWithObject:_siteCodingCollection];
       v18 = v9;
       v10 = MEMORY[0x1E695DEC8];
       v11 = &v18;
@@ -455,14 +455,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:@"route"])
+  if ([pathCopy isEqualToString:@"route"])
   {
-    v13 = [(HKMedicationDosage *)self routeCoding];
+    routeCoding = [(HKMedicationDosage *)self routeCoding];
 
-    if (v13)
+    if (routeCoding)
     {
-      v8 = [(HKMedicationDosage *)self _routeCodingCollection];
-      v9 = [HKIndexableObject indexableObjectWithObject:v8];
+      _siteCodingCollection = [(HKMedicationDosage *)self _routeCodingCollection];
+      v9 = [HKIndexableObject indexableObjectWithObject:_siteCodingCollection];
       v17 = v9;
       v10 = MEMORY[0x1E695DEC8];
       v11 = &v17;
@@ -474,7 +474,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+  [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
   v14 = 0;
 LABEL_13:
 
@@ -483,38 +483,38 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v9 isEqualToString:@"site"])
+  conceptsCopy = concepts;
+  pathCopy = path;
+  if (![pathCopy isEqualToString:@"site"])
   {
-    if ([v9 isEqualToString:@"method"])
+    if ([pathCopy isEqualToString:@"method"])
     {
-      v16 = [(HKMedicationDosage *)self methodCoding];
-      v17 = HKIndexableObjectCheckCardinalityForIndexRestore(1, v16 != 0, v9, a5);
+      methodCoding = [(HKMedicationDosage *)self methodCoding];
+      v17 = HKIndexableObjectCheckCardinalityForIndexRestore(1, methodCoding != 0, pathCopy, error);
 
       if (v17)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        v18 = [v13 copy];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        v18 = [object copy];
         method = self->_method;
         self->_method = v18;
         goto LABEL_10;
       }
     }
 
-    else if ([v9 isEqualToString:@"route"])
+    else if ([pathCopy isEqualToString:@"route"])
     {
-      v19 = [(HKMedicationDosage *)self routeCoding];
-      v20 = HKIndexableObjectCheckCardinalityForIndexRestore(1, v19 != 0, v9, a5);
+      routeCoding = [(HKMedicationDosage *)self routeCoding];
+      v20 = HKIndexableObjectCheckCardinalityForIndexRestore(1, routeCoding != 0, pathCopy, error);
 
       if (v20)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        v21 = [v13 copy];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        v21 = [object copy];
         method = self->_route;
         self->_route = v21;
         goto LABEL_10;
@@ -523,7 +523,7 @@ LABEL_13:
 
     else
     {
-      [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v9 inClass:objc_opt_class()];
+      [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
     }
 
 LABEL_12:
@@ -531,17 +531,17 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [(HKMedicationDosage *)self siteCoding];
-  v11 = HKIndexableObjectCheckCardinalityForIndexRestore(1, v10 != 0, v9, a5);
+  siteCoding = [(HKMedicationDosage *)self siteCoding];
+  v11 = HKIndexableObjectCheckCardinalityForIndexRestore(1, siteCoding != 0, pathCopy, error);
 
   if (!v11)
   {
     goto LABEL_12;
   }
 
-  v12 = [v8 firstObject];
-  v13 = [v12 object];
-  v14 = [v13 copy];
+  firstObject = [conceptsCopy firstObject];
+  object = [firstObject object];
+  v14 = [object copy];
   method = self->_site;
   self->_site = v14;
 LABEL_10:

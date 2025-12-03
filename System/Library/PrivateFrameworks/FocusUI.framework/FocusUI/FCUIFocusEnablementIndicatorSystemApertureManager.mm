@@ -1,41 +1,41 @@
 @interface FCUIFocusEnablementIndicatorSystemApertureManager
-+ (id)managerWithSystemApertureElementRegistrar:(id)a3;
-- (BOOL)shouldKeepPresentingAfterActiveActivityDidChange:(id)a3 lastActivity:(id)a4;
-- (id)_initWithSystemApertureElementRegistrar:(id)a3;
-- (id)postPersistentActivity:(id)a3 enabled:(BOOL)a4 systemApertureElementProvider:(id)a5 pickerPresentation:(BOOL)a6;
-- (void)postActivity:(id)a3 enabled:(BOOL)a4;
-- (void)revokeWithReason:(id)a3;
++ (id)managerWithSystemApertureElementRegistrar:(id)registrar;
+- (BOOL)shouldKeepPresentingAfterActiveActivityDidChange:(id)change lastActivity:(id)activity;
+- (id)_initWithSystemApertureElementRegistrar:(id)registrar;
+- (id)postPersistentActivity:(id)activity enabled:(BOOL)enabled systemApertureElementProvider:(id)provider pickerPresentation:(BOOL)presentation;
+- (void)postActivity:(id)activity enabled:(BOOL)enabled;
+- (void)revokeWithReason:(id)reason;
 @end
 
 @implementation FCUIFocusEnablementIndicatorSystemApertureManager
 
-+ (id)managerWithSystemApertureElementRegistrar:(id)a3
++ (id)managerWithSystemApertureElementRegistrar:(id)registrar
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithSystemApertureElementRegistrar:v3];
+  registrarCopy = registrar;
+  v4 = [objc_alloc(objc_opt_class()) _initWithSystemApertureElementRegistrar:registrarCopy];
 
   return v4;
 }
 
-- (id)_initWithSystemApertureElementRegistrar:(id)a3
+- (id)_initWithSystemApertureElementRegistrar:(id)registrar
 {
-  v5 = a3;
+  registrarCopy = registrar;
   v9.receiver = self;
   v9.super_class = FCUIFocusEnablementIndicatorSystemApertureManager;
   v6 = [(FCUIFocusEnablementIndicatorManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementRegistrar, a3);
+    objc_storeStrong(&v6->_elementRegistrar, registrar);
   }
 
   return v7;
 }
 
-- (BOOL)shouldKeepPresentingAfterActiveActivityDidChange:(id)a3 lastActivity:(id)a4
+- (BOOL)shouldKeepPresentingAfterActiveActivityDidChange:(id)change lastActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_registeredPersistentElementAssertion);
   if (([WeakRetained isValid] & 1) == 0)
   {
@@ -46,7 +46,7 @@
 
   v9 = objc_loadWeakRetained(&self->_lastPresentedPersistentElement);
 
-  if (!v9 || v6 && ([v9 activityDescription], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v6, "isEqual:", v10), v10, !v11))
+  if (!v9 || changeCopy && ([v9 activityDescription], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(changeCopy, "isEqual:", v10), v10, !v11))
   {
 LABEL_7:
     if ([(SAInvalidatable *)self->_registeredElementAssertion isValid])
@@ -54,9 +54,9 @@ LABEL_7:
       v13 = objc_loadWeakRetained(&self->_lastPresentedElement);
       if (v13)
       {
-        if (!v6 || ([v6 isEqual:v7] & 1) != 0 || (objc_msgSend(v13, "activityDescription"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v6, "isEqual:", v14), v14, v15))
+        if (!changeCopy || ([changeCopy isEqual:activityCopy] & 1) != 0 || (objc_msgSend(v13, "activityDescription"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(changeCopy, "isEqual:", v14), v14, v15))
         {
-          [v13 setActivityEnabled:v6 != 0];
+          [v13 setActivityEnabled:changeCopy != 0];
           v12 = 1;
 LABEL_15:
 
@@ -74,27 +74,27 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  [v9 setActivityEnabled:v6 != 0];
+  [v9 setActivityEnabled:changeCopy != 0];
   v12 = 1;
 LABEL_16:
 
   return v12;
 }
 
-- (void)revokeWithReason:(id)a3
+- (void)revokeWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(SAInvalidatable *)self->_registeredElementAssertion isValid])
   {
-    [(SAInvalidatable *)self->_registeredElementAssertion invalidateWithReason:v4];
+    [(SAInvalidatable *)self->_registeredElementAssertion invalidateWithReason:reasonCopy];
   }
 }
 
-- (void)postActivity:(id)a3 enabled:(BOOL)a4
+- (void)postActivity:(id)activity enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[FCUIFocusEnablementIndicatorSystemApertureElement alloc] initWithActivityDescription:v6 enabled:v4];
+  enabledCopy = enabled;
+  activityCopy = activity;
+  v7 = [[FCUIFocusEnablementIndicatorSystemApertureElement alloc] initWithActivityDescription:activityCopy enabled:enabledCopy];
   if (self->_registeredElementAssertion)
   {
     [(FCUIFocusEnablementIndicatorSystemApertureManager *)self revokeWithReason:@"Activity Changed"];
@@ -134,18 +134,18 @@ void __74__FCUIFocusEnablementIndicatorSystemApertureManager_postActivity_enable
   }
 }
 
-- (id)postPersistentActivity:(id)a3 enabled:(BOOL)a4 systemApertureElementProvider:(id)a5 pickerPresentation:(BOOL)a6
+- (id)postPersistentActivity:(id)activity enabled:(BOOL)enabled systemApertureElementProvider:(id)provider pickerPresentation:(BOOL)presentation
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  presentationCopy = presentation;
+  enabledCopy = enabled;
+  activityCopy = activity;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_registeredPersistentElementAssertion);
   if ([WeakRetained isValid])
   {
     v13 = objc_loadWeakRetained(&self->_lastPresentedPersistentElement);
-    v14 = [v13 activityDescription];
-    v15 = [v14 isEqual:v10];
+    activityDescription = [v13 activityDescription];
+    v15 = [activityDescription isEqual:activityCopy];
 
     if (v15)
     {
@@ -156,17 +156,17 @@ void __74__FCUIFocusEnablementIndicatorSystemApertureManager_postActivity_enable
     [WeakRetained invalidateWithReason:@"Persistent Activity Changed"];
   }
 
-  if (v11)
+  if (providerCopy)
   {
-    if (!v6)
+    if (!presentationCopy)
     {
-      v17 = [v11 createPersistentFocusElementForActivityDescription:v10 enabled:v8];
+      v17 = [providerCopy createPersistentFocusElementForActivityDescription:activityCopy enabled:enabledCopy];
       goto LABEL_15;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v11 createPersistentFocusPickerElementForActivityDescription:v10 enabled:v8];
+      v17 = [providerCopy createPersistentFocusPickerElementForActivityDescription:activityCopy enabled:enabledCopy];
 LABEL_15:
       v18 = v17;
       goto LABEL_16;
@@ -175,15 +175,15 @@ LABEL_15:
 
   else
   {
-    if (!v6)
+    if (!presentationCopy)
     {
-      v17 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)[FCUIFocusEnablementIndicatorSystemApertureActivityElement alloc] initWithActivityDescription:v10 enabled:v8];
+      v17 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)[FCUIFocusEnablementIndicatorSystemApertureActivityElement alloc] initWithActivityDescription:activityCopy enabled:enabledCopy];
       goto LABEL_15;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)[FCUIFocusEnablementIndicatorSystemApertureActivityElement alloc] initForPickerWithActivityDescription:v10 enabled:v8];
+      v17 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)[FCUIFocusEnablementIndicatorSystemApertureActivityElement alloc] initForPickerWithActivityDescription:activityCopy enabled:enabledCopy];
       goto LABEL_15;
     }
   }

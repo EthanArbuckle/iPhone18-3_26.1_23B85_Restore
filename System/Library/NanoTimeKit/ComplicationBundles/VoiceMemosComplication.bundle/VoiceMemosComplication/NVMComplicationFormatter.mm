@@ -1,24 +1,24 @@
 @interface NVMComplicationFormatter
-- (BOOL)supportsFamily:(int64_t)a3 forDevice:(id)a4;
-- (id)_templateWithFamily:(int64_t)a3 forDevice:(id)a4;
-- (id)basicAccentImageProviderWithPrefix:(id)a3;
-- (id)fullColorImageProviderWithPrefix:(id)a3 suffix:(id)a4;
-- (id)imageProviderWithPrefix:(id)a3 suffix:(id)a4;
+- (BOOL)supportsFamily:(int64_t)family forDevice:(id)device;
+- (id)_templateWithFamily:(int64_t)family forDevice:(id)device;
+- (id)basicAccentImageProviderWithPrefix:(id)prefix;
+- (id)fullColorImageProviderWithPrefix:(id)prefix suffix:(id)suffix;
+- (id)imageProviderWithPrefix:(id)prefix suffix:(id)suffix;
 @end
 
 @implementation NVMComplicationFormatter
 
-- (BOOL)supportsFamily:(int64_t)a3 forDevice:(id)a4
+- (BOOL)supportsFamily:(int64_t)family forDevice:(id)device
 {
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = 0x1595u >> a3;
-    if (a3 > 0xC)
+    v4 = 0x1595u >> family;
+    if (family > 0xC)
     {
       LOBYTE(v4) = 0;
     }
@@ -27,23 +27,23 @@
   return v4 & 1;
 }
 
-- (id)basicAccentImageProviderWithPrefix:(id)a3
+- (id)basicAccentImageProviderWithPrefix:(id)prefix
 {
-  v3 = [NSString stringWithFormat:@"%@_voicememos-color", a3];
-  v4 = sub_B80(v3);
+  prefix = [NSString stringWithFormat:@"%@_voicememos-color", prefix];
+  v4 = sub_B80(prefix);
   v5 = [CLKImageProvider imageProviderWithOnePieceImage:v4];
   [v5 setForegroundAccentImage:v4];
 
   return v5;
 }
 
-- (id)imageProviderWithPrefix:(id)a3 suffix:(id)a4
+- (id)imageProviderWithPrefix:(id)prefix suffix:(id)suffix
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  prefixCopy = prefix;
+  suffixCopy = suffix;
+  if (prefixCopy)
   {
-    v7 = v5;
+    v7 = prefixCopy;
   }
 
   else
@@ -51,9 +51,9 @@
     v7 = &stru_4200;
   }
 
-  if (v6)
+  if (suffixCopy)
   {
-    v8 = v6;
+    v8 = suffixCopy;
   }
 
   else
@@ -85,19 +85,19 @@
   return v17;
 }
 
-- (id)fullColorImageProviderWithPrefix:(id)a3 suffix:(id)a4
+- (id)fullColorImageProviderWithPrefix:(id)prefix suffix:(id)suffix
 {
-  v4 = [NSString stringWithFormat:@"%@_voicememos-color%@", a3, a4];
-  v5 = sub_B80(v4);
+  suffix = [NSString stringWithFormat:@"%@_voicememos-color%@", prefix, suffix];
+  v5 = sub_B80(suffix);
   v6 = [CLKFullColorImageProvider providerWithFullColorImage:v5 monochromeFilterType:1 applyScalingAndCircularMasking:0];
 
   return v6;
 }
 
-- (id)_templateWithFamily:(int64_t)a3 forDevice:(id)a4
+- (id)_templateWithFamily:(int64_t)family forDevice:(id)device
 {
-  v6 = a4;
-  if (CLKComplicationFamilyCircularMedium == a3)
+  deviceCopy = device;
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v7 = CLKComplicationTemplateCircularMediumSimpleImage;
     v8 = @"circular-md";
@@ -110,13 +110,13 @@ LABEL_22:
   }
 
   v10 = 0;
-  if (a3 <= 6)
+  if (family <= 6)
   {
-    if (a3)
+    if (family)
     {
-      if (a3 != 2)
+      if (family != 2)
       {
-        if (a3 != 4)
+        if (family != 4)
         {
           goto LABEL_24;
         }
@@ -141,9 +141,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 > 9)
+  if (family > 9)
   {
-    if (a3 == 10)
+    if (family == 10)
     {
       v17 = [(NVMComplicationFormatter *)self fullColorImageProviderWithPrefix:@"graphic-circular" suffix:@"-394h"];
       v10 = [CLKComplicationTemplateGraphicCircularImage templateWithImageProvider:v17];
@@ -157,7 +157,7 @@ LABEL_21:
 
     else
     {
-      if (a3 != 12)
+      if (family != 12)
       {
         goto LABEL_24;
       }
@@ -175,14 +175,14 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  if (a3 == 7)
+  if (family == 7)
   {
     v7 = CLKComplicationTemplateExtraLargeSimpleImage;
     v16 = @"XL";
     goto LABEL_21;
   }
 
-  if (a3 != 8)
+  if (family != 8)
   {
     goto LABEL_24;
   }

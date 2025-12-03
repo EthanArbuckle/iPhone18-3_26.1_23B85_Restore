@@ -1,26 +1,26 @@
 @interface CNComposeDropTarget
 + (id)os_log;
-- (BOOL)_delegateCanDropItemsWithDropSession:(id)a3;
-- (BOOL)_sessionContainsOnlyAcceptableTypeIdentifiers:(id)a3;
-- (BOOL)canLoadContactObjectsFromSession:(id)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
-- (BOOL)shouldHandleContactItemsFromSession:(id)a3;
-- (CNComposeDropTarget)initWithView:(id)a3 delegate:(id)a4;
+- (BOOL)_delegateCanDropItemsWithDropSession:(id)session;
+- (BOOL)_sessionContainsOnlyAcceptableTypeIdentifiers:(id)identifiers;
+- (BOOL)canLoadContactObjectsFromSession:(id)session;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
+- (BOOL)shouldHandleContactItemsFromSession:(id)session;
+- (CNComposeDropTarget)initWithView:(id)view delegate:(id)delegate;
 - (CNComposeDropTargetDelegate)delegate;
 - (UIView)targetView;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)emailRecipientForContact:(id)a3;
-- (id)unifiedEmailRecipientForContact:(id)a3;
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (unint64_t)composeAddressKind:(unint64_t)a3;
-- (void)_delegateDidDropItemsWithDropSession:(id)a3;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)emailRecipientForContact:(id)contact;
+- (id)unifiedEmailRecipientForContact:(id)contact;
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (unint64_t)composeAddressKind:(unint64_t)kind;
+- (void)_delegateDidDropItemsWithDropSession:(id)session;
 - (void)_updateDelegateFlags;
-- (void)addContactItemsToTargetViewFromSession:(id)a3;
-- (void)addDroppedContacts:(id)a3 toTargetView:(id)a4 forSession:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
-- (void)handleDropOfContactItemProviders:(id)a3;
+- (void)addContactItemsToTargetViewFromSession:(id)session;
+- (void)addDroppedContacts:(id)contacts toTargetView:(id)view forSession:(id)session;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
+- (void)handleDropOfContactItemProviders:(id)providers;
 @end
 
 @implementation CNComposeDropTarget
@@ -46,23 +46,23 @@ uint64_t __29__CNComposeDropTarget_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNComposeDropTarget)initWithView:(id)a3 delegate:(id)a4
+- (CNComposeDropTarget)initWithView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = CNComposeDropTarget;
   v8 = [(CNComposeDropTarget *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_targetView, v6);
+    objc_storeWeak(&v8->_targetView, viewCopy);
     v10 = [objc_alloc(MEMORY[0x1E69DC9B8]) initWithDelegate:v9];
     dropInteraction = v9->_dropInteraction;
     v9->_dropInteraction = v10;
 
-    [v6 addInteraction:v9->_dropInteraction];
-    objc_storeWeak(&v9->_delegate, v7);
+    [viewCopy addInteraction:v9->_dropInteraction];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     [(CNComposeDropTarget *)v9 _updateDelegateFlags];
   }
 
@@ -71,7 +71,7 @@ uint64_t __29__CNComposeDropTarget_os_log__block_invoke()
 
 - (void)_updateDelegateFlags
 {
-  v3 = [(CNComposeDropTarget *)self delegate];
+  delegate = [(CNComposeDropTarget *)self delegate];
   self->_delegateFlags.respondsToCanDropDraggedItemsAtPoint = objc_opt_respondsToSelector() & 1;
   self->_delegateFlags.respondsToDragEntered = objc_opt_respondsToSelector() & 1;
   self->_delegateFlags.respondsToDragExited = objc_opt_respondsToSelector() & 1;
@@ -84,69 +84,69 @@ uint64_t __29__CNComposeDropTarget_os_log__block_invoke()
   self->_delegateFlags.respondsToComposeRecipientsForDroppedContacts = objc_opt_respondsToSelector() & 1;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v5 = a4;
-  v6 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  enterCopy = enter;
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    [(CNComposeDropTarget *)v6 dropInteraction:v7 sessionDidEnter:v8, v9, v10, v11, v12, v13];
+    [(CNComposeDropTarget *)os_log dropInteraction:v7 sessionDidEnter:v8, v9, v10, v11, v12, v13];
   }
 
   if (self->_delegateFlags.respondsToDragEntered)
   {
-    v14 = [(CNComposeDropTarget *)self delegate];
-    v15 = [(CNComposeDropTarget *)self targetView];
-    [v5 locationInView:v15];
+    delegate = [(CNComposeDropTarget *)self delegate];
+    targetView = [(CNComposeDropTarget *)self targetView];
+    [enterCopy locationInView:targetView];
     v17 = v16;
     v19 = v18;
 
-    [v14 dropTarget:self dragEnteredAtPoint:{v17, v19}];
+    [delegate dropTarget:self dragEnteredAtPoint:{v17, v19}];
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v5 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    [(CNComposeDropTarget *)v5 dropInteraction:v6 sessionDidExit:v7, v8, v9, v10, v11, v12];
+    [(CNComposeDropTarget *)os_log dropInteraction:v6 sessionDidExit:v7, v8, v9, v10, v11, v12];
   }
 
   if (self->_delegateFlags.respondsToDragExited)
   {
-    v13 = [(CNComposeDropTarget *)self delegate];
-    [v13 dropTargetDragExited:self];
+    delegate = [(CNComposeDropTarget *)self delegate];
+    [delegate dropTargetDragExited:self];
   }
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
-  v6 = ([(CNComposeDropTarget *)self _delegateHandlesDrops]|| [(CNComposeDropTarget *)self shouldHandleContactItemsFromSession:v5]) && [(CNComposeDropTarget *)self _sessionContainsOnlyAcceptableTypeIdentifiers:v5];
+  sessionCopy = session;
+  v6 = ([(CNComposeDropTarget *)self _delegateHandlesDrops]|| [(CNComposeDropTarget *)self shouldHandleContactItemsFromSession:sessionCopy]) && [(CNComposeDropTarget *)self _sessionContainsOnlyAcceptableTypeIdentifiers:sessionCopy];
 
   return v6;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  updateCopy = update;
   if (self->_delegateFlags.respondsToDragDidMoveToPoint)
   {
-    v8 = [(CNComposeDropTarget *)self targetView];
-    [v7 locationInView:v8];
+    targetView = [(CNComposeDropTarget *)self targetView];
+    [updateCopy locationInView:targetView];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CNComposeDropTarget *)self delegate];
-    [v13 dropTarget:self dragDidMoveToPoint:{v10, v12}];
+    delegate = [(CNComposeDropTarget *)self delegate];
+    [delegate dropTarget:self dragDidMoveToPoint:{v10, v12}];
   }
 
-  if ([v7 allowsMoveOperation])
+  if ([updateCopy allowsMoveOperation])
   {
-    v14 = [v7 localDragSession];
-    if (v14)
+    localDragSession = [updateCopy localDragSession];
+    if (localDragSession)
     {
       v15 = 3;
     }
@@ -167,47 +167,47 @@ uint64_t __29__CNComposeDropTarget_os_log__block_invoke()
   return v16;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  dropCopy = drop;
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    [(CNComposeDropTarget *)v6 dropInteraction:v7 performDrop:v8, v9, v10, v11, v12, v13];
+    [(CNComposeDropTarget *)os_log dropInteraction:v7 performDrop:v8, v9, v10, v11, v12, v13];
   }
 
-  [(CNComposeDropTarget *)self _delegateDidDropItemsWithDropSession:v5];
+  [(CNComposeDropTarget *)self _delegateDidDropItemsWithDropSession:dropCopy];
 }
 
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session
 {
   if (!self->_delegateFlags.respondsToDataOwner)
   {
     return 3;
   }
 
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained dropTarget:self dataOwnerForSession:v5];
+  v7 = [WeakRetained dropTarget:self dataOwnerForSession:sessionCopy];
 
   return v7;
 }
 
-- (BOOL)_sessionContainsOnlyAcceptableTypeIdentifiers:(id)a3
+- (BOOL)_sessionContainsOnlyAcceptableTypeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [v4 items];
+  items = [identifiersCopy items];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__CNComposeDropTarget__sessionContainsOnlyAcceptableTypeIdentifiers___block_invoke;
   v7[3] = &unk_1E7CD2D58;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [items enumerateObjectsUsingBlock:v7];
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -232,54 +232,54 @@ void __69__CNComposeDropTarget__sessionContainsOnlyAcceptableTypeIdentifiers___b
   }
 }
 
-- (void)_delegateDidDropItemsWithDropSession:(id)a3
+- (void)_delegateDidDropItemsWithDropSession:(id)session
 {
-  v12 = a3;
-  if (-[CNComposeDropTarget shouldHandleContactItemsFromSession:](self, "shouldHandleContactItemsFromSession:") && ([v12 localDragSession], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  sessionCopy = session;
+  if (-[CNComposeDropTarget shouldHandleContactItemsFromSession:](self, "shouldHandleContactItemsFromSession:") && ([sessionCopy localDragSession], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    [(CNComposeDropTarget *)self addContactItemsToTargetViewFromSession:v12];
+    [(CNComposeDropTarget *)self addContactItemsToTargetViewFromSession:sessionCopy];
   }
 
   else if ([(CNComposeDropTarget *)self _delegateHandlesDrops])
   {
-    v5 = [(CNComposeDropTarget *)self targetView];
-    [v12 locationInView:v5];
+    targetView = [(CNComposeDropTarget *)self targetView];
+    [sessionCopy locationInView:targetView];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(CNComposeDropTarget *)self delegate];
-    v11 = [v12 items];
-    [v10 dropTarget:self didDropDragItems:v11 atPoint:{v7, v9}];
+    delegate = [(CNComposeDropTarget *)self delegate];
+    items = [sessionCopy items];
+    [delegate dropTarget:self didDropDragItems:items atPoint:{v7, v9}];
   }
 }
 
-- (BOOL)_delegateCanDropItemsWithDropSession:(id)a3
+- (BOOL)_delegateCanDropItemsWithDropSession:(id)session
 {
   if (!self->_delegateFlags.respondsToCanDropDraggedItemsAtPoint)
   {
     return 1;
   }
 
-  v3 = self;
-  v4 = a3;
-  v5 = [(CNComposeDropTarget *)v3 delegate];
-  v6 = [(CNComposeDropTarget *)v3 targetView];
-  [v4 locationInView:v6];
+  selfCopy = self;
+  sessionCopy = session;
+  delegate = [(CNComposeDropTarget *)selfCopy delegate];
+  targetView = [(CNComposeDropTarget *)selfCopy targetView];
+  [sessionCopy locationInView:targetView];
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(v3) = [v5 dropTarget:v3 canDropDraggedItemsAtPoint:{v8, v10}];
-  return v3;
+  LOBYTE(selfCopy) = [delegate dropTarget:selfCopy canDropDraggedItemsAtPoint:{v8, v10}];
+  return selfCopy;
 }
 
-- (BOOL)shouldHandleContactItemsFromSession:(id)a3
+- (BOOL)shouldHandleContactItemsFromSession:(id)session
 {
-  v4 = a3;
-  if (self->_delegateFlags.respondsToShouldHandleDroppedContacts && (WeakRetained = objc_loadWeakRetained(&self->_delegate), -[CNComposeDropTarget targetView](self, "targetView"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [WeakRetained dropTarget:self shouldAddDroppedContactsToTargetView:v6 forSession:v4], v6, WeakRetained, v7))
+  sessionCopy = session;
+  if (self->_delegateFlags.respondsToShouldHandleDroppedContacts && (WeakRetained = objc_loadWeakRetained(&self->_delegate), -[CNComposeDropTarget targetView](self, "targetView"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [WeakRetained dropTarget:self shouldAddDroppedContactsToTargetView:v6 forSession:sessionCopy], v6, WeakRetained, v7))
   {
-    if (v4)
+    if (sessionCopy)
     {
-      v8 = [(CNComposeDropTarget *)self canLoadContactObjectsFromSession:v4];
+      v8 = [(CNComposeDropTarget *)self canLoadContactObjectsFromSession:sessionCopy];
     }
 
     else
@@ -296,22 +296,22 @@ void __69__CNComposeDropTarget__sessionContainsOnlyAcceptableTypeIdentifiers___b
   return v8;
 }
 
-- (BOOL)canLoadContactObjectsFromSession:(id)a3
+- (BOOL)canLoadContactObjectsFromSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 canLoadObjectsOfClass:objc_opt_class()];
+  sessionCopy = session;
+  v4 = [sessionCopy canLoadObjectsOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (void)addContactItemsToTargetViewFromSession:(id)a3
+- (void)addContactItemsToTargetViewFromSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
-  v5 = [(CNComposeDropTarget *)self targetView];
+  targetView = [(CNComposeDropTarget *)self targetView];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = targetView;
   }
 
   else
@@ -334,25 +334,25 @@ void __69__CNComposeDropTarget__sessionContainsOnlyAcceptableTypeIdentifiers___b
     v13[3] = &unk_1E7CD2D80;
     v13[4] = self;
     v14 = v7;
-    v15 = v4;
+    v15 = sessionCopy;
     [v8 provideContactsForDropSession:v15 withKeys:v12 completionBlock:v13];
   }
 }
 
-- (void)addDroppedContacts:(id)a3 toTargetView:(id)a4 forSession:(id)a5
+- (void)addDroppedContacts:(id)contacts toTargetView:(id)view forSession:(id)session
 {
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  sessionCopy = session;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__CNComposeDropTarget_addDroppedContacts_toTargetView_forSession___block_invoke;
   v16[3] = &unk_1E7CD2DA8;
   v16[4] = self;
-  v10 = [a3 _cn_map:v16];
+  v10 = [contacts _cn_map:v16];
   if (self->_delegateFlags.respondsToComposeRecipientsForDroppedContacts)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [WeakRetained dropTarget:self proposedRecipientsForDroppedContacts:v10 forSession:v9];
+    v12 = [WeakRetained dropTarget:self proposedRecipientsForDroppedContacts:v10 forSession:sessionCopy];
 
     v10 = v12;
   }
@@ -361,8 +361,8 @@ void __69__CNComposeDropTarget__sessionContainsOnlyAcceptableTypeIdentifiers___b
   v14[1] = 3221225472;
   v14[2] = __66__CNComposeDropTarget_addDroppedContacts_toTargetView_forSession___block_invoke_2;
   v14[3] = &unk_1E7CD2D10;
-  v15 = v8;
-  v13 = v8;
+  v15 = viewCopy;
+  v13 = viewCopy;
   [v10 _cn_each:v14];
 }
 
@@ -379,16 +379,16 @@ void __66__CNComposeDropTarget_addDroppedContacts_toTargetView_forSession___bloc
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)handleDropOfContactItemProviders:(id)a3
+- (void)handleDropOfContactItemProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   if ([(CNComposeDropTarget *)self shouldHandleContactItemsFromSession:0]&& ((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
     objc_opt_class();
-    v5 = [(CNComposeDropTarget *)self targetView];
+    targetView = [(CNComposeDropTarget *)self targetView];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = targetView;
     }
 
     else
@@ -406,7 +406,7 @@ void __66__CNComposeDropTarget_addDroppedContacts_toTargetView_forSession___bloc
       v8[3] = &unk_1E7CD2DF8;
       v8[4] = self;
       v9 = v7;
-      [v4 _cn_each:v8];
+      [providersCopy _cn_each:v8];
     }
   }
 }
@@ -461,37 +461,37 @@ void __56__CNComposeDropTarget_handleDropOfContactItemProviders___block_invoke_2
   }
 }
 
-- (id)emailRecipientForContact:(id)a3
+- (id)emailRecipientForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = *MEMORY[0x1E6996530];
-  v6 = [v4 emailAddresses];
-  LODWORD(v5) = (*(v5 + 16))(v5, v6);
+  emailAddresses = [contactCopy emailAddresses];
+  LODWORD(v5) = (*(v5 + 16))(v5, emailAddresses);
 
   if (v5)
   {
     v7 = [CNComposeRecipient alloc];
-    v8 = [MEMORY[0x1E695CD80] stringFromContact:v4 style:0];
-    v9 = [(CNComposeRecipient *)v7 initWithContact:v4 address:v8 kind:0];
+    v8 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
+    v9 = [(CNComposeRecipient *)v7 initWithContact:contactCopy address:v8 kind:0];
   }
 
   else
   {
-    v9 = [(CNComposeDropTarget *)self unifiedEmailRecipientForContact:v4];
+    v9 = [(CNComposeDropTarget *)self unifiedEmailRecipientForContact:contactCopy];
   }
 
   return v9;
 }
 
-- (id)unifiedEmailRecipientForContact:(id)a3
+- (id)unifiedEmailRecipientForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = [MEMORY[0x1E6996368] factoryWithPriorityDomain:0 sendingAddress:0];
   if (self->_delegateFlags.respondsToAddressKind)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(CNComposeDropTarget *)self targetView];
-    v8 = [WeakRetained addressKindForDropTarget:self withTargetView:v7];
+    targetView = [(CNComposeDropTarget *)self targetView];
+    v8 = [WeakRetained addressKindForDropTarget:self withTargetView:targetView];
   }
 
   else
@@ -499,24 +499,24 @@ void __56__CNComposeDropTarget_handleDropOfContactItemProviders___block_invoke_2
     v8 = 0;
   }
 
-  v9 = [v4 emailAddresses];
+  emailAddresses = [contactCopy emailAddresses];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __55__CNComposeDropTarget_unifiedEmailRecipientForContact___block_invoke;
   v26[3] = &unk_1E7CD2E20;
   v10 = v5;
   v27 = v10;
-  v11 = v4;
+  v11 = contactCopy;
   v28 = v11;
-  v29 = self;
+  selfCopy = self;
   v30 = v8;
-  v12 = [v9 _cn_map:v26];
+  v12 = [emailAddresses _cn_map:v26];
 
   if (self->_delegateFlags.respondsToSendingAddressForTargetView)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [(CNComposeDropTarget *)self targetView];
-    v15 = [v13 sendingAddressForDropTarget:self withTargetView:v14];
+    targetView2 = [(CNComposeDropTarget *)self targetView];
+    v15 = [v13 sendingAddressForDropTarget:self withTargetView:targetView2];
 
     v16 = [MEMORY[0x1E699AFD0] rangeOfAddressDomainFromAddress:v15];
     v18 = [v15 substringWithRange:{v16, v17}];
@@ -571,9 +571,9 @@ uint64_t __55__CNComposeDropTarget_unifiedEmailRecipientForContact___block_invok
   return v4;
 }
 
-- (unint64_t)composeAddressKind:(unint64_t)a3
+- (unint64_t)composeAddressKind:(unint64_t)kind
 {
-  if (a3)
+  if (kind)
   {
     return 5;
   }

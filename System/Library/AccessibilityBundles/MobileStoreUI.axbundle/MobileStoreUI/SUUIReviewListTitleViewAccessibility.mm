@@ -1,14 +1,14 @@
 @interface SUUIReviewListTitleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SUUIReviewListTitleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIReviewListTitleView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIReviewListTitleView" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIReviewListTitleView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIReviewListTitleView" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
 }
 
 @end

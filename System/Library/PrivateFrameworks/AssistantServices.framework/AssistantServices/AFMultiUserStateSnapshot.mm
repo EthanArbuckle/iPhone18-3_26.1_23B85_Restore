@@ -1,16 +1,16 @@
 @interface AFMultiUserStateSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFMultiUserStateSnapshot)initWithBuilder:(id)a3;
-- (AFMultiUserStateSnapshot)initWithCoder:(id)a3;
-- (AFMultiUserStateSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (AFMultiUserStateSnapshot)initWithSerializedBackingStore:(id)a3;
-- (AFMultiUserStateSnapshot)initWithVtSatScore:(id)a3 confidenceScores:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFMultiUserStateSnapshot)initWithBuilder:(id)builder;
+- (AFMultiUserStateSnapshot)initWithCoder:(id)coder;
+- (AFMultiUserStateSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (AFMultiUserStateSnapshot)initWithSerializedBackingStore:(id)store;
+- (AFMultiUserStateSnapshot)initWithVtSatScore:(id)score confidenceScores:(id)scores;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)ad_shortDescription;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFMultiUserStateSnapshot
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) buildDictionaryRepresentation];
-          [v6 addObject:v12];
+          buildDictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) buildDictionaryRepresentation];
+          [v6 addObject:buildDictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -69,14 +69,14 @@
   return v14;
 }
 
-- (AFMultiUserStateSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFMultiUserStateSnapshot)initWithDictionaryRepresentation:(id)representation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"vtSatScore"];
+    v6 = [representationCopy objectForKey:@"vtSatScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = self;
+      selfCopy = self;
       v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
       v22 = 0u;
       v23 = 0u;
@@ -139,7 +139,7 @@
       }
 
       v18 = [v10 copy];
-      self = v21;
+      self = selfCopy;
     }
 
     else
@@ -148,43 +148,43 @@
     }
 
     self = [(AFMultiUserStateSnapshot *)self initWithVtSatScore:v7 confidenceScores:v18];
-    v8 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vtSatScore = self->_vtSatScore;
-  v5 = a3;
-  [v5 encodeObject:vtSatScore forKey:@"AFMultiUserStateSnapshot::vtSatScore"];
-  [v5 encodeObject:self->_confidenceScores forKey:@"AFMultiUserStateSnapshot::confidenceScores"];
+  coderCopy = coder;
+  [coderCopy encodeObject:vtSatScore forKey:@"AFMultiUserStateSnapshot::vtSatScore"];
+  [coderCopy encodeObject:self->_confidenceScores forKey:@"AFMultiUserStateSnapshot::confidenceScores"];
 }
 
-- (AFMultiUserStateSnapshot)initWithCoder:(id)a3
+- (AFMultiUserStateSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMultiUserStateSnapshot::vtSatScore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMultiUserStateSnapshot::vtSatScore"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"AFMultiUserStateSnapshot::confidenceScores"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"AFMultiUserStateSnapshot::confidenceScores"];
 
   v10 = [(AFMultiUserStateSnapshot *)self initWithVtSatScore:v5 confidenceScores:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -194,14 +194,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFMultiUserStateSnapshot *)v5 vtSatScore];
+      v5 = equalCopy;
+      vtSatScore = [(AFMultiUserStateSnapshot *)v5 vtSatScore];
       vtSatScore = self->_vtSatScore;
-      if (vtSatScore == v6 || [(NSNumber *)vtSatScore isEqual:v6])
+      if (vtSatScore == vtSatScore || [(NSNumber *)vtSatScore isEqual:vtSatScore])
       {
-        v8 = [(AFMultiUserStateSnapshot *)v5 confidenceScores];
+        confidenceScores = [(AFMultiUserStateSnapshot *)v5 confidenceScores];
         confidenceScores = self->_confidenceScores;
-        v10 = confidenceScores == v8 || [(NSArray *)confidenceScores isEqual:v8];
+        v10 = confidenceScores == confidenceScores || [(NSArray *)confidenceScores isEqual:confidenceScores];
       }
 
       else
@@ -219,7 +219,7 @@
   return v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -230,18 +230,18 @@
   return v6;
 }
 
-- (AFMultiUserStateSnapshot)initWithVtSatScore:(id)a3 confidenceScores:(id)a4
+- (AFMultiUserStateSnapshot)initWithVtSatScore:(id)score confidenceScores:(id)scores
 {
-  v6 = a3;
-  v7 = a4;
+  scoreCopy = score;
+  scoresCopy = scores;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__AFMultiUserStateSnapshot_initWithVtSatScore_confidenceScores___block_invoke;
   v12[3] = &unk_1E73425C0;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = scoreCopy;
+  v14 = scoresCopy;
+  v8 = scoresCopy;
+  v9 = scoreCopy;
   v10 = [(AFMultiUserStateSnapshot *)self initWithBuilder:v12];
 
   return v10;
@@ -255,26 +255,26 @@ void __64__AFMultiUserStateSnapshot_initWithVtSatScore_confidenceScores___block_
   [v4 setConfidenceScores:*(a1 + 40)];
 }
 
-- (AFMultiUserStateSnapshot)initWithBuilder:(id)a3
+- (AFMultiUserStateSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFMultiUserStateSnapshot;
   v5 = [(AFMultiUserStateSnapshot *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFMultiUserStateSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFMultiUserStateSnapshotMutation *)v7 isDirty])
     {
-      v8 = [(_AFMultiUserStateSnapshotMutation *)v7 getVtSatScore];
-      v9 = [v8 copy];
+      getVtSatScore = [(_AFMultiUserStateSnapshotMutation *)v7 getVtSatScore];
+      v9 = [getVtSatScore copy];
       vtSatScore = v6->_vtSatScore;
       v6->_vtSatScore = v9;
 
-      v11 = [(_AFMultiUserStateSnapshotMutation *)v7 getConfidenceScores];
-      v12 = [v11 copy];
+      getConfidenceScores = [(_AFMultiUserStateSnapshotMutation *)v7 getConfidenceScores];
+      v12 = [getConfidenceScores copy];
       confidenceScores = v6->_confidenceScores;
       v6->_confidenceScores = v12;
     }
@@ -283,31 +283,31 @@ void __64__AFMultiUserStateSnapshot_initWithVtSatScore_confidenceScores___block_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFMultiUserStateSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFMultiUserStateSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFMultiUserStateSnapshot);
-      v7 = [(_AFMultiUserStateSnapshotMutation *)v5 getVtSatScore];
-      v8 = [v7 copy];
+      getVtSatScore = [(_AFMultiUserStateSnapshotMutation *)v5 getVtSatScore];
+      v8 = [getVtSatScore copy];
       vtSatScore = v6->_vtSatScore;
       v6->_vtSatScore = v8;
 
-      v10 = [(_AFMultiUserStateSnapshotMutation *)v5 getConfidenceScores];
-      v11 = [v10 copy];
+      getConfidenceScores = [(_AFMultiUserStateSnapshotMutation *)v5 getConfidenceScores];
+      v11 = [getConfidenceScores copy];
       confidenceScores = v6->_confidenceScores;
       v6->_confidenceScores = v11;
     }
@@ -329,36 +329,36 @@ void __64__AFMultiUserStateSnapshot_initWithVtSatScore_confidenceScores___block_
 - (id)ad_shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AFMultiUserStateSnapshot *)self vtSatScore];
-  v5 = [(AFMultiUserStateSnapshot *)self confidenceScores];
-  v6 = [v5 count];
+  vtSatScore = [(AFMultiUserStateSnapshot *)self vtSatScore];
+  confidenceScores = [(AFMultiUserStateSnapshot *)self confidenceScores];
+  v6 = [confidenceScores count];
   v7 = @"YES";
   if (!v6)
   {
     v7 = @"NO";
   }
 
-  v8 = [v3 stringWithFormat:@"(vtSatScore = %@, hasConfidenceScores = %@)", v4, v7];
+  v8 = [v3 stringWithFormat:@"(vtSatScore = %@, hasConfidenceScores = %@)", vtSatScore, v7];
 
   return v8;
 }
 
-- (AFMultiUserStateSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFMultiUserStateSnapshot)initWithSerializedBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(AFMultiUserStateSnapshot *)self initWithDictionaryRepresentation:v4];
-    v5 = self;
+    self = [(AFMultiUserStateSnapshot *)self initWithDictionaryRepresentation:storeCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

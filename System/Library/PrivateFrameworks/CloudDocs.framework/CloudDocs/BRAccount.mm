@@ -1,18 +1,18 @@
 @interface BRAccount
-+ (BOOL)_refreshCurrentLoggedInAccountForcingRefresh:(BOOL)a3 personaID:(id)a4 error:(id *)a5;
++ (BOOL)_refreshCurrentLoggedInAccountForcingRefresh:(BOOL)refresh personaID:(id)d error:(id *)error;
 + (BOOL)refreshCurrentLoggedInAccount;
-+ (BOOL)refreshCurrentLoggedInAccountWithError:(id *)a3;
-+ (id)currentCachedLoggedInAccountWithError:(id *)a3;
-+ (id)currentLoggedInAccountWithError:(id *)a3;
++ (BOOL)refreshCurrentLoggedInAccountWithError:(id *)error;
++ (id)currentCachedLoggedInAccountWithError:(id *)error;
++ (id)currentLoggedInAccountWithError:(id *)error;
 + (void)startAccountTokenChangeObserverIfNeeded;
-- (BOOL)getEvictableSpace:(id *)a3 error:(id *)a4;
-- (BOOL)hasOptimizeStorageWithError:(id *)a3;
-- (BOOL)iCloudDesktopSettingsChangedWithAttributes:(id)a3 error:(id *)a4;
+- (BOOL)getEvictableSpace:(id *)space error:(id *)error;
+- (BOOL)hasOptimizeStorageWithError:(id *)error;
+- (BOOL)iCloudDesktopSettingsChangedWithAttributes:(id)attributes error:(id *)error;
 - (BRAccount)init;
-- (BRAccount)initWithAccountID:(id)a3;
+- (BRAccount)initWithAccountID:(id)d;
 - (id)containerWithPendingChanges;
 - (void)containerWithPendingChanges;
-- (void)evictOldDocumentsWithHandler:(id)a3;
+- (void)evictOldDocumentsWithHandler:(id)handler;
 @end
 
 @implementation BRAccount
@@ -82,20 +82,20 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   v2 = [(BRAccount *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DF068] sharedManager];
-    v4 = [v3 br_currentPersonaID];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
     personaID = v2->_personaID;
-    v2->_personaID = v4;
+    v2->_personaID = br_currentPersonaID;
   }
 
   return v2;
 }
 
-+ (BOOL)_refreshCurrentLoggedInAccountForcingRefresh:(BOOL)a3 personaID:(id)a4 error:(id *)a5
++ (BOOL)_refreshCurrentLoggedInAccountForcingRefresh:(BOOL)refresh personaID:(id)d error:(id *)error
 {
-  v6 = a3;
+  refreshCopy = refresh;
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  dCopy = d;
   if (+[BRCloudDocsHelperProvider hasDaemonicParts])
   {
     v9 = brc_bread_crumbs("+[BRAccount _refreshCurrentLoggedInAccountForcingRefresh:personaID:error:]", 70);
@@ -116,7 +116,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
         *buf = 136315906;
         v54 = "+[BRAccount _refreshCurrentLoggedInAccountForcingRefresh:personaID:error:]";
         v55 = 2080;
-        if (!a5)
+        if (!error)
         {
           v46 = "(ignored by caller)";
         }
@@ -130,11 +130,11 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       }
     }
 
-    if (a5)
+    if (error)
     {
       v14 = v11;
       v15 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -152,13 +152,13 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       currentLoggedInAccountOrNullByPersonaID = v16;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
-    [a1 startAccountTokenChangeObserverIfNeeded];
-    v11 = [currentLoggedInAccountOrNullByPersonaID objectForKeyedSubscript:v8];
+    [self startAccountTokenChangeObserverIfNeeded];
+    v11 = [currentLoggedInAccountOrNullByPersonaID objectForKeyedSubscript:dCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -171,35 +171,35 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
     }
 
     v19 = v18;
-    if (!v11 || v6)
+    if (!v11 || refreshCopy)
     {
       v47 = brc_monotonic_time_now();
-      v20 = [MEMORY[0x1E696AAE8] mainBundle];
-      v21 = [v20 bundleIdentifier];
-      v50 = v20;
-      v22 = [v20 infoDictionary];
-      v23 = [v22 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v50 = mainBundle;
+      infoDictionary = [mainBundle infoDictionary];
+      v23 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
 
-      v24 = [[BRDaemonConnection alloc] initUsingUserLocalDaemonTokenService];
-      v25 = [v24 newSyncTokenProxy];
+      initUsingUserLocalDaemonTokenService = [[BRDaemonConnection alloc] initUsingUserLocalDaemonTokenService];
+      newSyncTokenProxy = [initUsingUserLocalDaemonTokenService newSyncTokenProxy];
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __74__BRAccount__refreshCurrentLoggedInAccountForcingRefresh_personaID_error___block_invoke;
       v51[3] = &unk_1E7A147E0;
-      v26 = v25;
+      v26 = newSyncTokenProxy;
       v52 = v26;
       v48 = v23;
-      v49 = v21;
-      [v26 currentAccountCopyTokenWithBundleID:v21 version:v23 reply:v51];
-      v27 = [v26 result];
-      if (a5)
+      v49 = bundleIdentifier;
+      [v26 currentAccountCopyTokenWithBundleID:bundleIdentifier version:v23 reply:v51];
+      result = [v26 result];
+      if (error)
       {
-        *a5 = [v26 error];
+        *error = [v26 error];
       }
 
-      v28 = [v26 error];
+      error = [v26 error];
 
-      if (v28)
+      if (error)
       {
         v29 = brc_bread_crumbs("+[BRAccount _refreshCurrentLoggedInAccountForcingRefresh:personaID:error:]", 116);
         v30 = brc_default_log(0, 0);
@@ -209,14 +209,14 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
         }
       }
 
-      [v24 invalidate];
-      v31 = [(BRAccount *)v19 perAppAccountIdentifier];
-      if (v27 == v31 || ([v27 isEqual:v31] & 1) != 0)
+      [initUsingUserLocalDaemonTokenService invalidate];
+      perAppAccountIdentifier = [(BRAccount *)v19 perAppAccountIdentifier];
+      if (result == perAppAccountIdentifier || ([result isEqual:perAppAccountIdentifier] & 1) != 0)
       {
         if (!v11)
         {
-          v32 = [MEMORY[0x1E695DFB0] null];
-          [currentLoggedInAccountOrNullByPersonaID setObject:v32 forKeyedSubscript:v8];
+          null = [MEMORY[0x1E695DFB0] null];
+          [currentLoggedInAccountOrNullByPersonaID setObject:null forKeyedSubscript:dCopy];
         }
 
         v15 = 0;
@@ -229,36 +229,36 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v54 = v31;
+          v54 = perAppAccountIdentifier;
           v55 = 2112;
-          v56 = v27;
+          v56 = result;
           v57 = 2112;
           v58 = v33;
           _os_log_debug_impl(&dword_1AE2A9000, v34, OS_LOG_TYPE_DEBUG, "[DEBUG] got an account change (previous token %@, new token %@)%@", buf, 0x20u);
         }
 
         v35 = +[BRDaemonConnection defaultConnectionIfExists];
-        v36 = [v35 remoteObjectProxy];
-        [v36 updatePrivilegesDescriptor];
+        remoteObjectProxy = [v35 remoteObjectProxy];
+        [remoteObjectProxy updatePrivilegesDescriptor];
 
         v37 = +[BRDaemonConnection secondaryConnectionIfExists];
-        v38 = [v37 remoteObjectProxy];
-        [v38 updatePrivilegesDescriptor];
+        remoteObjectProxy2 = [v37 remoteObjectProxy];
+        [remoteObjectProxy2 updatePrivilegesDescriptor];
 
-        if (v27)
+        if (result)
         {
           v39 = objc_alloc_init(BRAccount);
 
-          [(BRAccount *)v39 setPerAppAccountIdentifier:v27];
-          [currentLoggedInAccountOrNullByPersonaID setObject:v39 forKeyedSubscript:v8];
+          [(BRAccount *)v39 setPerAppAccountIdentifier:result];
+          [currentLoggedInAccountOrNullByPersonaID setObject:v39 forKeyedSubscript:dCopy];
           v15 = 1;
           v19 = v39;
         }
 
         else
         {
-          v40 = [MEMORY[0x1E695DFB0] null];
-          [currentLoggedInAccountOrNullByPersonaID setObject:v40 forKeyedSubscript:v8];
+          null2 = [MEMORY[0x1E695DFB0] null];
+          [currentLoggedInAccountOrNullByPersonaID setObject:null2 forKeyedSubscript:dCopy];
 
           v15 = 1;
         }
@@ -296,7 +296,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   return v15;
 }
 
-+ (id)currentCachedLoggedInAccountWithError:(id *)a3
++ (id)currentCachedLoggedInAccountWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   if (+[BRCloudDocsHelperProvider hasDaemonicParts])
@@ -319,7 +319,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
         v19 = 136315906;
         v20 = "+[BRAccount currentCachedLoggedInAccountWithError:]";
         v21 = 2080;
-        if (!a3)
+        if (!error)
         {
           v18 = "(ignored by caller)";
         }
@@ -333,10 +333,10 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       }
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     v11 = 0;
@@ -344,13 +344,13 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
 
   else
   {
-    v12 = a1;
-    objc_sync_enter(v12);
-    v13 = [MEMORY[0x1E69DF068] sharedManager];
-    v14 = [v13 br_currentPersonaID];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
 
-    [v12 _refreshCurrentLoggedInAccountForcingRefresh:0 personaID:v14 error:a3];
-    v15 = [currentLoggedInAccountOrNullByPersonaID objectForKeyedSubscript:v14];
+    [selfCopy _refreshCurrentLoggedInAccountForcingRefresh:0 personaID:br_currentPersonaID error:error];
+    v15 = [currentLoggedInAccountOrNullByPersonaID objectForKeyedSubscript:br_currentPersonaID];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -362,7 +362,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       v11 = 0;
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -370,7 +370,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   return v11;
 }
 
-+ (id)currentLoggedInAccountWithError:(id *)a3
++ (id)currentLoggedInAccountWithError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   if (+[BRCloudDocsHelperProvider hasDaemonicParts])
@@ -393,7 +393,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
         v15 = 136315906;
         v16 = "+[BRAccount currentLoggedInAccountWithError:]";
         v17 = 2080;
-        if (!a3)
+        if (!error)
         {
           v14 = "(ignored by caller)";
         }
@@ -407,10 +407,10 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       }
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     v11 = 0;
@@ -418,8 +418,8 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
 
   else
   {
-    [a1 refreshCurrentLoggedInAccount];
-    v11 = [a1 currentCachedLoggedInAccountWithError:a3];
+    [self refreshCurrentLoggedInAccount];
+    v11 = [self currentCachedLoggedInAccountWithError:error];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -427,7 +427,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   return v11;
 }
 
-+ (BOOL)refreshCurrentLoggedInAccountWithError:(id *)a3
++ (BOOL)refreshCurrentLoggedInAccountWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   if (+[BRCloudDocsHelperProvider hasDaemonicParts])
@@ -439,8 +439,8 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       +[BRAccount _refreshCurrentLoggedInAccountForcingRefresh:personaID:error:];
     }
 
-    v7 = [MEMORY[0x1E696ABC0] br_errorWithDomain:@"BRInternalErrorDomain" code:15 description:@"unreachable: Can't refresh current logged in account from the daemon"];
-    if (v7)
+    selfCopy = [MEMORY[0x1E696ABC0] br_errorWithDomain:@"BRInternalErrorDomain" code:15 description:@"unreachable: Can't refresh current logged in account from the daemon"];
+    if (selfCopy)
     {
       v8 = brc_bread_crumbs("+[BRAccount refreshCurrentLoggedInAccountWithError:]", 189);
       v9 = brc_default_log(0, 0);
@@ -450,25 +450,25 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
         LODWORD(v19[0]) = 136315906;
         *(v19 + 4) = "+[BRAccount refreshCurrentLoggedInAccountWithError:]";
         WORD2(v19[1]) = 2080;
-        if (!a3)
+        if (!error)
         {
           v18 = "(ignored by caller)";
         }
 
         *(&v19[1] + 6) = v18;
         HIWORD(v19[2]) = 2112;
-        v19[3] = v7;
+        v19[3] = selfCopy;
         v20 = 2112;
         v21 = v8;
         _os_log_error_impl(&dword_1AE2A9000, v9, 0x90u, "[ERROR] %s: %s error: %@%@", v19, 0x2Au);
       }
     }
 
-    if (a3)
+    if (error)
     {
-      v10 = v7;
+      v10 = selfCopy;
       v11 = 0;
-      *a3 = v7;
+      *error = selfCopy;
     }
 
     else
@@ -479,8 +479,8 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
 
   else
   {
-    v7 = a1;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     memset(v19, 0, 24);
     __brc_create_section(0, "+[BRAccount refreshCurrentLoggedInAccountWithError:]", 194, 0, v19);
     v12 = brc_bread_crumbs("+[BRAccount refreshCurrentLoggedInAccountWithError:]", 194);
@@ -490,12 +490,12 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       [BRAccount refreshCurrentLoggedInAccountWithError:v19];
     }
 
-    v14 = [MEMORY[0x1E69DF068] sharedManager];
-    v15 = [v14 br_currentPersonaID];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
 
-    v11 = [v7 _refreshCurrentLoggedInAccountForcingRefresh:1 personaID:v15 error:a3];
+    v11 = [selfCopy _refreshCurrentLoggedInAccountForcingRefresh:1 personaID:br_currentPersonaID error:error];
     __brc_leave_section(v19);
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -519,24 +519,24 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   else
   {
 
-    return [a1 refreshCurrentLoggedInAccountWithError:0];
+    return [self refreshCurrentLoggedInAccountWithError:0];
   }
 }
 
-- (BRAccount)initWithAccountID:(id)a3
+- (BRAccount)initWithAccountID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BRAccount;
   v6 = [(BRAccount *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountID, a3);
-    v8 = [MEMORY[0x1E69DF068] sharedManager];
-    v9 = [v8 br_currentPersonaID];
+    objc_storeStrong(&v6->_accountID, d);
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
     personaID = v7->_personaID;
-    v7->_personaID = v9;
+    v7->_personaID = br_currentPersonaID;
   }
 
   return v7;
@@ -562,13 +562,13 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x1E69DF068] sharedManager];
-  v7 = [v6 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v36 = 0;
-  v8 = [v7 userPersonaUniqueString];
-  v9 = v8;
-  if (v8 == v4 || [(NSString *)v8 isEqualToString:v4])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v9 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v4 || [(NSString *)userPersonaUniqueString isEqualToString:v4])
   {
     v10 = 0;
     goto LABEL_10;
@@ -577,7 +577,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   if (voucher_process_can_use_arbitrary_personas())
   {
     v35 = 0;
-    v23 = [v7 copyCurrentPersonaContextWithError:&v35];
+    v23 = [currentPersona copyCurrentPersonaContextWithError:&v35];
     v24 = v35;
     v25 = v36;
     v36 = v23;
@@ -592,7 +592,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       }
     }
 
-    v10 = [v7 br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
+    v10 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
 
     if (v10)
     {
@@ -616,7 +616,7 @@ LABEL_35:
 
   else
   {
-    if (v5 && ([v7 isDataSeparatedPersona] & 1) == 0)
+    if (v5 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v28 = brc_bread_crumbs("[BRAccount containerWithPendingChanges]", 235);
       v29 = brc_default_log(1, 0);
@@ -650,26 +650,26 @@ LABEL_10:
   }
 
   v13 = +[BRDaemonConnection defaultConnection];
-  v14 = [v13 newSyncProxy];
+  newSyncProxy = [v13 newSyncProxy];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __40__BRAccount_containerWithPendingChanges__block_invoke_46;
   v33[3] = &unk_1E7A14808;
-  v15 = v14;
+  v15 = newSyncProxy;
   v34 = v15;
   [v15 getContainersNeedingUpload:v33];
-  v16 = [v15 result];
-  v17 = [v15 error];
+  result = [v15 result];
+  error = [v15 error];
 
-  if (v17)
+  if (error)
   {
     v18 = brc_bread_crumbs("[BRAccount containerWithPendingChanges]", 244);
     v19 = brc_default_log(0, 0);
     if (os_log_type_enabled(v19, 0x90u))
     {
-      v20 = [v15 error];
-      [(BRAccount *)v20 containerWithPendingChanges];
+      error2 = [v15 error];
+      [(BRAccount *)error2 containerWithPendingChanges];
     }
   }
 
@@ -678,7 +678,7 @@ LABEL_10:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return result;
 }
 
 void __40__BRAccount_containerWithPendingChanges__block_invoke()
@@ -689,10 +689,10 @@ void __40__BRAccount_containerWithPendingChanges__block_invoke()
   containerWithPendingChanges___personalPersona = v0;
 }
 
-- (BOOL)iCloudDesktopSettingsChangedWithAttributes:(id)a3 error:(id *)a4
+- (BOOL)iCloudDesktopSettingsChangedWithAttributes:(id)attributes error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  attributesCopy = attributes;
   if ([(NSString *)self->_personaID isEqualToString:@"__defaultPersonaID__"]|| (v7 = self->_personaID) == 0)
   {
     if (iCloudDesktopSettingsChangedWithAttributes_error____personaOnceToken != -1)
@@ -710,13 +710,13 @@ void __40__BRAccount_containerWithPendingChanges__block_invoke()
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E69DF068] sharedManager];
-  v11 = [v10 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v35 = 0;
-  v12 = [v11 userPersonaUniqueString];
-  v13 = v12;
-  if (v12 == v8 || [(NSString *)v12 isEqualToString:v8])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v13 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v8 || [(NSString *)userPersonaUniqueString isEqualToString:v8])
   {
     v14 = 0;
     goto LABEL_10;
@@ -725,7 +725,7 @@ void __40__BRAccount_containerWithPendingChanges__block_invoke()
   if (voucher_process_can_use_arbitrary_personas())
   {
     v34 = 0;
-    v22 = [v11 copyCurrentPersonaContextWithError:&v34];
+    v22 = [currentPersona copyCurrentPersonaContextWithError:&v34];
     v23 = v34;
     v24 = v35;
     v35 = v22;
@@ -740,7 +740,7 @@ void __40__BRAccount_containerWithPendingChanges__block_invoke()
       }
     }
 
-    v14 = [v11 br_generateAndRestorePersonaContextWithPersonaUniqueString:v8];
+    v14 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v8];
 
     if (v14)
     {
@@ -764,7 +764,7 @@ LABEL_29:
 
   else
   {
-    if (v9 && ([v11 isDataSeparatedPersona] & 1) == 0)
+    if (v9 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v27 = brc_bread_crumbs("[BRAccount iCloudDesktopSettingsChangedWithAttributes:error:]", 253);
       v28 = brc_default_log(1, 0);
@@ -789,22 +789,22 @@ LABEL_29:
 
 LABEL_10:
   v15 = +[BRDaemonConnection defaultConnection];
-  v16 = [v15 newSyncProxy];
+  newSyncProxy = [v15 newSyncProxy];
 
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __62__BRAccount_iCloudDesktopSettingsChangedWithAttributes_error___block_invoke_50;
   v32[3] = &unk_1E7A14830;
-  v17 = v16;
+  v17 = newSyncProxy;
   v33 = v17;
-  [v17 iCloudDesktopSettingsChangedWithAttributes:v6 reply:v32];
-  if (a4)
+  [v17 iCloudDesktopSettingsChangedWithAttributes:attributesCopy reply:v32];
+  if (error)
   {
-    *a4 = [v17 error];
+    *error = [v17 error];
   }
 
-  v18 = [v17 error];
-  v19 = v18 == 0;
+  error = [v17 error];
+  v19 = error == 0;
 
   _BRRestorePersona(&v35);
   v20 = *MEMORY[0x1E69E9840];
@@ -858,7 +858,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   objc_autoreleasePoolPop(v4);
 }
 
-- (BOOL)hasOptimizeStorageWithError:(id *)a3
+- (BOOL)hasOptimizeStorageWithError:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_personaID isEqualToString:@"__defaultPersonaID__"]|| (v4 = self->_personaID) == 0)
@@ -878,13 +878,13 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x1E69DF068] sharedManager];
-  v8 = [v7 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v38 = 0;
-  v9 = [v8 userPersonaUniqueString];
-  v10 = v9;
-  if (v9 == v5 || [(NSString *)v9 isEqualToString:v5])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v10 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v5 || [(NSString *)userPersonaUniqueString isEqualToString:v5])
   {
     v11 = 0;
     goto LABEL_10;
@@ -893,7 +893,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
   if (voucher_process_can_use_arbitrary_personas())
   {
     v37 = 0;
-    v23 = [v8 copyCurrentPersonaContextWithError:&v37];
+    v23 = [currentPersona copyCurrentPersonaContextWithError:&v37];
     v24 = v37;
     v25 = v38;
     v38 = v23;
@@ -908,7 +908,7 @@ void __63__BRAccount_BRPrivate__startAccountTokenChangeObserverIfNeeded__block_i
       }
     }
 
-    v11 = [v8 br_generateAndRestorePersonaContextWithPersonaUniqueString:v5];
+    v11 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v5];
 
     if (v11)
     {
@@ -932,7 +932,7 @@ LABEL_32:
 
   else
   {
-    if (v6 && ([v8 isDataSeparatedPersona] & 1) == 0)
+    if (v6 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v28 = brc_bread_crumbs("[BRAccount(BRPrivate) hasOptimizeStorageWithError:]", 311);
       v29 = brc_default_log(1, 0);
@@ -957,20 +957,20 @@ LABEL_32:
 
 LABEL_10:
   v12 = +[BRDaemonConnection defaultConnection];
-  v13 = [v12 newSyncProxy];
+  newSyncProxy = [v12 newSyncProxy];
 
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __52__BRAccount_BRPrivate__hasOptimizeStorageWithError___block_invoke_88;
   v35[3] = &unk_1E7A14880;
-  v14 = v13;
+  v14 = newSyncProxy;
   v36 = v14;
   [v14 hasOptimizeStorageWithReply:v35];
-  v15 = [v14 result];
-  v16 = [v15 BOOLValue];
+  result = [v14 result];
+  bOOLValue = [result BOOLValue];
 
-  v17 = [v14 error];
-  if (v17)
+  error = [v14 error];
+  if (error)
   {
     v18 = brc_bread_crumbs("[BRAccount(BRPrivate) hasOptimizeStorageWithError:]", 319);
     v19 = brc_default_log(0, 0);
@@ -980,29 +980,29 @@ LABEL_10:
       *buf = 136315906;
       v40 = "[BRAccount(BRPrivate) hasOptimizeStorageWithError:]";
       v41 = 2080;
-      if (!a3)
+      if (!error)
       {
         v33 = "(ignored by caller)";
       }
 
       v42 = v33;
       v43 = 2112;
-      v44 = v17;
+      v44 = error;
       v45 = 2112;
       v46 = v18;
       _os_log_error_impl(&dword_1AE2A9000, v19, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
     }
   }
 
-  if (a3)
+  if (error)
   {
-    v20 = v17;
-    *a3 = v17;
+    v20 = error;
+    *error = error;
   }
 
   _BRRestorePersona(&v38);
   v21 = *MEMORY[0x1E69E9840];
-  return v16;
+  return bOOLValue;
 }
 
 void __52__BRAccount_BRPrivate__hasOptimizeStorageWithError___block_invoke()
@@ -1028,7 +1028,7 @@ void __56__BRAccount_BRPrivate__setOptimizeStorageEnabled_error___block_invoke_9
   [WeakRetained setBoolResult:v3 == 0 error:v3];
 }
 
-- (BOOL)getEvictableSpace:(id *)a3 error:(id *)a4
+- (BOOL)getEvictableSpace:(id *)space error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696ABC0] brc_errorMethodNotImplemented:sel_getEvictableSpace_error_];
@@ -1042,7 +1042,7 @@ void __56__BRAccount_BRPrivate__setOptimizeStorageEnabled_error___block_invoke_9
       v12 = 136315906;
       v13 = "[BRAccount(BRPrivate) getEvictableSpace:error:]";
       v14 = 2080;
-      if (!a4)
+      if (!error)
       {
         v11 = "(ignored by caller)";
       }
@@ -1056,20 +1056,20 @@ void __56__BRAccount_BRPrivate__setOptimizeStorageEnabled_error___block_invoke_9
     }
   }
 
-  if (a4)
+  if (error)
   {
     v8 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   v9 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)evictOldDocumentsWithHandler:(id)a3
+- (void)evictOldDocumentsWithHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(NSString *)self->_personaID isEqualToString:@"__defaultPersonaID__"]|| (v5 = self->_personaID) == 0)
   {
     if (evictOldDocumentsWithHandler____personaOnceToken != -1)
@@ -1087,13 +1087,13 @@ void __56__BRAccount_BRPrivate__setOptimizeStorageEnabled_error___block_invoke_9
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E69DF068] sharedManager];
-  v9 = [v8 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v33 = 0;
-  v10 = [v9 userPersonaUniqueString];
-  v11 = v10;
-  if (v10 == v6 || [(NSString *)v10 isEqualToString:v6])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v11 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v6 || [(NSString *)userPersonaUniqueString isEqualToString:v6])
   {
     v12 = 0;
     goto LABEL_10;
@@ -1102,7 +1102,7 @@ void __56__BRAccount_BRPrivate__setOptimizeStorageEnabled_error___block_invoke_9
   if (voucher_process_can_use_arbitrary_personas())
   {
     v32 = 0;
-    v18 = [v9 copyCurrentPersonaContextWithError:&v32];
+    v18 = [currentPersona copyCurrentPersonaContextWithError:&v32];
     v19 = v32;
     v20 = v33;
     v33 = v18;
@@ -1117,7 +1117,7 @@ void __56__BRAccount_BRPrivate__setOptimizeStorageEnabled_error___block_invoke_9
       }
     }
 
-    v12 = [v9 br_generateAndRestorePersonaContextWithPersonaUniqueString:v6];
+    v12 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v6];
 
     if (v12)
     {
@@ -1141,7 +1141,7 @@ LABEL_27:
 
   else
   {
-    if (v7 && ([v9 isDataSeparatedPersona] & 1) == 0)
+    if (v7 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v23 = brc_bread_crumbs("[BRAccount(BRPrivate) evictOldDocumentsWithHandler:]", 359);
       v24 = brc_default_log(1, 0);
@@ -1170,7 +1170,7 @@ LABEL_10:
   v30[1] = 3221225472;
   v30[2] = __53__BRAccount_BRPrivate__evictOldDocumentsWithHandler___block_invoke_97;
   v30[3] = &unk_1E7A148D0;
-  v14 = v4;
+  v14 = handlerCopy;
   v31 = v14;
   v15 = [v13 remoteObjectProxyWithErrorHandler:v30];
 
@@ -1279,7 +1279,7 @@ uint64_t __53__BRAccount_BRPrivate__evictOldDocumentsWithHandler___block_invoke_
 
 - (void)containerWithPendingChanges
 {
-  OUTLINED_FUNCTION_8(a1, a2, a3, 5.778e-34);
+  OUTLINED_FUNCTION_8(self, a2, a3, 5.778e-34);
   OUTLINED_FUNCTION_7(&dword_1AE2A9000, v6, v4, "[ERROR] %@%@", v5);
 }
 

@@ -1,29 +1,29 @@
 @interface _HKWristDetectionSettingManagerObserverBridge
-- (_HKWristDetectionSettingManagerObserverBridge)initWithHandle:(id)a3;
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3;
+- (_HKWristDetectionSettingManagerObserverBridge)initWithHandle:(id)handle;
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change;
 @end
 
 @implementation _HKWristDetectionSettingManagerObserverBridge
 
-- (_HKWristDetectionSettingManagerObserverBridge)initWithHandle:(id)a3
+- (_HKWristDetectionSettingManagerObserverBridge)initWithHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = _HKWristDetectionSettingManagerObserverBridge;
   v6 = [(_HKWristDetectionSettingManagerObserverBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_handle, a3);
+    objc_storeStrong(&v6->_handle, handle);
   }
 
   return v7;
 }
 
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -35,12 +35,12 @@
   }
 
   handle = self->_handle;
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [v4 isWristDetectEnabled];
+  isWristDetectEnabled = [changeCopy isWristDetectEnabled];
 
-  v11 = [v9 numberWithBool:v10];
-  [(HKObserverBridgeHandle *)handle notifyObserversOfChangeForKey:v8 newValue:v11];
+  v11 = [v9 numberWithBool:isWristDetectEnabled];
+  [(HKObserverBridgeHandle *)handle notifyObserversOfChangeForKey:null newValue:v11];
 
   v12 = *MEMORY[0x1E69E9840];
 }

@@ -1,22 +1,22 @@
 @interface _EFMergingObservable
-+ (void)subscribeObserver:(id)a3 toObservables:(id)a4 unless:(id)a5;
++ (void)subscribeObserver:(id)observer toObservables:(id)observables unless:(id)unless;
 @end
 
 @implementation _EFMergingObservable
 
-+ (void)subscribeObserver:(id)a3 toObservables:(id)a4 unless:(id)a5
++ (void)subscribeObserver:(id)observer toObservables:(id)observables unless:(id)unless
 {
   v44 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v22 = a4;
-  v23 = a5;
+  observerCopy = observer;
+  observablesCopy = observables;
+  unlessCopy = unless;
   v7 = objc_alloc_init(EFManualCancelationToken);
-  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v22, "count")}];
+  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(observablesCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v22;
+  obj = observablesCopy;
   v8 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v8)
   {
@@ -37,7 +37,7 @@
         v37[1] = 3221225472;
         v37[2] = __63___EFMergingObservable_subscribeObserver_toObservables_unless___block_invoke;
         v37[3] = &unk_1E8248648;
-        v38 = v25;
+        v38 = observerCopy;
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __63___EFMergingObservable_subscribeObserver_toObservables_unless___block_invoke_2;
@@ -73,7 +73,7 @@
   v30[3] = &unk_1E82484E0;
   v17 = v7;
   v31 = v17;
-  v18 = v25;
+  v18 = observerCopy;
   v32 = v18;
   [v16 addSuccessBlock:v30];
   v27[0] = MEMORY[0x1E69E9820];
@@ -85,7 +85,7 @@
   v20 = v18;
   v29 = v20;
   [v16 addFailureBlock:v27];
-  [v23 addCancelable:v19];
+  [unlessCopy addCancelable:v19];
 
   v21 = *MEMORY[0x1E69E9840];
 }

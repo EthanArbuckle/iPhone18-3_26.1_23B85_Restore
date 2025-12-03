@@ -1,12 +1,12 @@
 @interface HDMockIDSDevice
-- (BOOL)hd_isEquivalentToDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hd_isEquivalentToDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hd_destinationIdentifier;
 @end
 
 @implementation HDMockIDSDevice
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HDMockIDSDevice);
   [(HDMockIDSDevice *)v4 setUniqueID:self->_uniqueID];
@@ -37,24 +37,24 @@
   return v2;
 }
 
-- (BOOL)hd_isEquivalentToDevice:(id)a3
+- (BOOL)hd_isEquivalentToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HDMockIDSDevice *)self hd_deviceIdentifier];
-  v6 = [v4 hd_deviceIdentifier];
-  if (v5 == v6)
+  deviceCopy = device;
+  hd_deviceIdentifier = [(HDMockIDSDevice *)self hd_deviceIdentifier];
+  hd_deviceIdentifier2 = [deviceCopy hd_deviceIdentifier];
+  if (hd_deviceIdentifier == hd_deviceIdentifier2)
   {
     v10 = 1;
   }
 
   else
   {
-    v7 = [v4 hd_deviceIdentifier];
-    if (v7)
+    hd_deviceIdentifier3 = [deviceCopy hd_deviceIdentifier];
+    if (hd_deviceIdentifier3)
     {
-      v8 = [(HDMockIDSDevice *)self hd_deviceIdentifier];
-      v9 = [v4 hd_deviceIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      hd_deviceIdentifier4 = [(HDMockIDSDevice *)self hd_deviceIdentifier];
+      hd_deviceIdentifier5 = [deviceCopy hd_deviceIdentifier];
+      v10 = [hd_deviceIdentifier4 isEqualToString:hd_deviceIdentifier5];
     }
 
     else

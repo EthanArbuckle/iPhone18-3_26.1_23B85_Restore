@@ -1,43 +1,43 @@
 @interface AKDataSeparatedAuthorizationStore
-- (AKDataSeparatedAuthorizationStore)initWithContainerPath:(id)a3 withSandboxToken:(char *)a4;
-- (void)perform:(id)a3;
+- (AKDataSeparatedAuthorizationStore)initWithContainerPath:(id)path withSandboxToken:(char *)token;
+- (void)perform:(id)perform;
 - (void)prepare;
 @end
 
 @implementation AKDataSeparatedAuthorizationStore
 
-- (AKDataSeparatedAuthorizationStore)initWithContainerPath:(id)a3 withSandboxToken:(char *)a4
+- (AKDataSeparatedAuthorizationStore)initWithContainerPath:(id)path withSandboxToken:(char *)token
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(location, path);
+  tokenCopy = token;
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AKDataSeparatedAuthorizationStore;
-  v11 = [(AKAuthorizationStore *)&v8 initWithPath:location[0]];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKAuthorizationStore *)&v8 initWithPath:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(AKDataSeparatedAuthorizationStore *)v11 setContainerPath:location[0]];
-    [(AKDataSeparatedAuthorizationStore *)v11 setToken:v9];
+    [(AKDataSeparatedAuthorizationStore *)selfCopy setContainerPath:location[0]];
+    [(AKDataSeparatedAuthorizationStore *)selfCopy setToken:tokenCopy];
   }
 
-  v6 = _objc_retain(v11);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)prepare
 {
-  v4 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(AKDataSeparatedAuthorizationStore *)self token])
   {
-    [(AKDataSeparatedAuthorizationStore *)v4 token];
+    [(AKDataSeparatedAuthorizationStore *)selfCopy token];
     v2 = sandbox_extension_consume();
   }
 
@@ -46,13 +46,13 @@
     v2 = -1;
   }
 
-  v4->handle = v2;
-  if (v4->handle <= 0)
+  selfCopy->handle = v2;
+  if (selfCopy->handle <= 0)
   {
     oslog[0] = _AKLogSiwa();
     if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_ERROR))
     {
-      sub_100036FE8(v5, v4->handle);
+      sub_100036FE8(v5, selfCopy->handle);
       _os_log_error_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_ERROR, "DS:Problem getting access to data container, sandbox consume handle returned %lld, show error", v5, 0xCu);
     }
 
@@ -60,17 +60,17 @@
   }
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKDataSeparatedAuthorizationStore *)v5 prepare];
-  v3.receiver = v5;
+  objc_storeStrong(location, perform);
+  [(AKDataSeparatedAuthorizationStore *)selfCopy prepare];
+  v3.receiver = selfCopy;
   v3.super_class = AKDataSeparatedAuthorizationStore;
   [(AKAuthorizationStore *)&v3 perform:location[0]];
-  [(AKDataSeparatedAuthorizationStore *)v5 cleanup];
+  [(AKDataSeparatedAuthorizationStore *)selfCopy cleanup];
   objc_storeStrong(location, 0);
 }
 

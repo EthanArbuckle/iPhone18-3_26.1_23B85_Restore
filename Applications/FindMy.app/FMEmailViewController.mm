@@ -1,19 +1,19 @@
 @interface FMEmailViewController
-- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)handleBackgroundTap;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMEmailViewController
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100341670();
 }
 
@@ -27,11 +27,11 @@
   sub_100341370();
   v3 = objc_allocWithZone(UITapGestureRecognizer);
   v4 = [v3 initWithTarget:v2 action:{"handleBackgroundTap", v7.receiver, v7.super_class}];
-  v5 = [v2 view];
-  if (v5)
+  view = [v2 view];
+  if (view)
   {
-    v6 = v5;
-    [v5 addGestureRecognizer:v4];
+    v6 = view;
+    [view addGestureRecognizer:v4];
   }
 
   else
@@ -40,13 +40,13 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FMEmailViewController();
   v4 = v8.receiver;
-  [(FMEmailViewController *)&v8 viewWillAppear:v3];
+  [(FMEmailViewController *)&v8 viewWillAppear:appearCopy];
   sub_10034199C();
   v5 = sub_1003421A0();
   if (v5)
@@ -61,13 +61,13 @@
   v4[OBJC_IVAR____TtC6FindMy21FMEmailViewController_hasAdjustedKeyboardHeight] = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FMEmailViewController();
   v4 = v8.receiver;
-  [(FMEmailViewController *)&v8 viewWillDisappear:v3];
+  [(FMEmailViewController *)&v8 viewWillDisappear:disappearCopy];
   v5 = sub_1003421A0();
   if (v5)
   {
@@ -82,16 +82,16 @@
   v4[OBJC_IVAR____TtC6FindMy21FMEmailViewController_hasAdjustedKeyboardHeight] = 0;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100341E5C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100341E5C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
@@ -100,28 +100,28 @@
 
 - (void)handleBackgroundTap
 {
-  v5 = self;
+  selfCopy = self;
   v2 = sub_1003421A0();
   if (v2)
   {
     v3 = v2;
     [v2 resignFirstResponder];
 
-    v4 = &v5->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy21FMEmailViewController_paddingHeight];
+    v4 = &selfCopy->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy21FMEmailViewController_paddingHeight];
     *v4 = 0;
     v4[8] = 1;
-    v5->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy21FMEmailViewController_hasAdjustedKeyboardHeight] = 0;
+    selfCopy->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy21FMEmailViewController_hasAdjustedKeyboardHeight] = 0;
   }
 }
 
-- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -129,12 +129,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_1003428F4(v9, v11, a4, v13, v14, v16, a6);
+    return sub_1003428F4(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -142,16 +142,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_1003428F4(v9, v11, a4, v13, v14, v16, a6);
+  return sub_1003428F4(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy21FMEmailViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -160,8 +160,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_100342C0C(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_100342C0C(v9, v11, text, v13, icon, layout);
 }
 
 @end

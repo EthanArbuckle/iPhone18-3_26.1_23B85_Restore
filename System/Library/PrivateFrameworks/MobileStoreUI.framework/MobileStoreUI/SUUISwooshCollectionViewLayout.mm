@@ -1,7 +1,7 @@
 @interface SUUISwooshCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (SUUISwooshCollectionViewLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation SUUISwooshCollectionViewLayout
@@ -22,12 +22,12 @@
   return v3;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SUUISwooshCollectionViewLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v14 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UICollectionViewFlowLayout *)&v14 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -58,32 +58,32 @@
   return v4;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  x = a4.x;
+  x = velocity.x;
   v31.receiver = self;
   v31.super_class = SUUISwooshCollectionViewLayout;
-  [(SUUISwooshCollectionViewLayout *)&v31 targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, a4.x, a4.y];
+  [(SUUISwooshCollectionViewLayout *)&v31 targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, velocity.x, velocity.y];
   v7 = v6;
   v9 = v8;
   if (self->_snapsToItemBoundaries || self->_snapsToItemCenters)
   {
-    v10 = [(SUUISwooshCollectionViewLayout *)self collectionView];
-    v11 = [v10 dataSource];
-    v12 = [v10 delegate];
+    collectionView = [(SUUISwooshCollectionViewLayout *)self collectionView];
+    dataSource = [collectionView dataSource];
+    delegate = [collectionView delegate];
     if (objc_opt_respondsToSelector())
     {
       [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
       v14 = v13;
-      [v10 frame];
+      [collectionView frame];
       v16 = v15 + v15;
-      if ([v10 numberOfSections] >= 1)
+      if ([collectionView numberOfSections] >= 1)
       {
         v17 = 0;
         v18 = 0.0;
         do
         {
-          v19 = [v11 collectionView:v10 numberOfItemsInSection:v17];
+          v19 = [dataSource collectionView:collectionView numberOfItemsInSection:v17];
           if (v19 >= 1)
           {
             v20 = v19;
@@ -91,7 +91,7 @@
             while (1)
             {
               v22 = [MEMORY[0x277CCAA70] indexPathForItem:v21 inSection:v17];
-              [v12 collectionView:v10 layout:self sizeForItemAtIndexPath:v22];
+              [delegate collectionView:collectionView layout:self sizeForItemAtIndexPath:v22];
               v16 = v23;
 
               v24 = v18 + v16;
@@ -122,17 +122,17 @@ LABEL_19:
           ++v17;
         }
 
-        while (v17 < [v10 numberOfSections]);
+        while (v17 < [collectionView numberOfSections]);
       }
 
       if (self->_snapsToItemCenters)
       {
-        [v10 frame];
+        [collectionView frame];
         v7 = v7 + (v26 - v16) * -0.5;
-        [v10 contentInset];
+        [collectionView contentInset];
         if (v7 < -v27)
         {
-          [v10 contentInset];
+          [collectionView contentInset];
           v7 = -v28;
         }
       }

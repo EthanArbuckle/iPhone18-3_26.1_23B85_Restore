@@ -1,8 +1,8 @@
 @interface MTRColorControlClusterStepSaturationParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRColorControlClusterStepSaturationParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -41,29 +41,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRColorControlClusterStepSaturationParams);
-  v5 = [(MTRColorControlClusterStepSaturationParams *)self stepMode];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setStepMode:v5];
+  stepMode = [(MTRColorControlClusterStepSaturationParams *)self stepMode];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setStepMode:stepMode];
 
-  v6 = [(MTRColorControlClusterStepSaturationParams *)self stepSize];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setStepSize:v6];
+  stepSize = [(MTRColorControlClusterStepSaturationParams *)self stepSize];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setStepSize:stepSize];
 
-  v7 = [(MTRColorControlClusterStepSaturationParams *)self transitionTime];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setTransitionTime:v7];
+  transitionTime = [(MTRColorControlClusterStepSaturationParams *)self transitionTime];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setTransitionTime:transitionTime];
 
-  v8 = [(MTRColorControlClusterStepSaturationParams *)self optionsMask];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setOptionsMask:v8];
+  optionsMask = [(MTRColorControlClusterStepSaturationParams *)self optionsMask];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setOptionsMask:optionsMask];
 
-  v9 = [(MTRColorControlClusterStepSaturationParams *)self optionsOverride];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setOptionsOverride:v9];
+  optionsOverride = [(MTRColorControlClusterStepSaturationParams *)self optionsOverride];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setOptionsOverride:optionsOverride];
 
-  v10 = [(MTRColorControlClusterStepSaturationParams *)self timedInvokeTimeoutMs];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRColorControlClusterStepSaturationParams *)self timedInvokeTimeoutMs];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTRColorControlClusterStepSaturationParams *)self serverSideProcessingTimeout];
-  [(MTRColorControlClusterStepSaturationParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTRColorControlClusterStepSaturationParams *)self serverSideProcessingTimeout];
+  [(MTRColorControlClusterStepSaturationParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -78,27 +78,27 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v27 = 0;
+  unsignedCharValue = 0;
   v26 = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRColorControlClusterStepSaturationParams *)self stepMode];
-  LOBYTE(v26) = [v5 unsignedCharValue];
+  stepMode = [(MTRColorControlClusterStepSaturationParams *)self stepMode];
+  LOBYTE(v26) = [stepMode unsignedCharValue];
 
-  v6 = [(MTRColorControlClusterStepSaturationParams *)self stepSize];
-  BYTE1(v26) = [v6 unsignedCharValue];
+  stepSize = [(MTRColorControlClusterStepSaturationParams *)self stepSize];
+  BYTE1(v26) = [stepSize unsignedCharValue];
 
-  v7 = [(MTRColorControlClusterStepSaturationParams *)self transitionTime];
-  BYTE2(v26) = [v7 unsignedCharValue];
+  transitionTime = [(MTRColorControlClusterStepSaturationParams *)self transitionTime];
+  BYTE2(v26) = [transitionTime unsignedCharValue];
 
-  v8 = [(MTRColorControlClusterStepSaturationParams *)self optionsMask];
-  HIBYTE(v26) = [v8 unsignedCharValue];
+  optionsMask = [(MTRColorControlClusterStepSaturationParams *)self optionsMask];
+  HIBYTE(v26) = [optionsMask unsignedCharValue];
 
-  v9 = [(MTRColorControlClusterStepSaturationParams *)self optionsOverride];
-  v27 = [v9 unsignedCharValue];
+  optionsOverride = [(MTRColorControlClusterStepSaturationParams *)self optionsOverride];
+  unsignedCharValue = [optionsOverride unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v23);
   if (v23)
@@ -119,8 +119,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -148,19 +148,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRColorControlClusterStepSaturationParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -171,7 +171,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x633C00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

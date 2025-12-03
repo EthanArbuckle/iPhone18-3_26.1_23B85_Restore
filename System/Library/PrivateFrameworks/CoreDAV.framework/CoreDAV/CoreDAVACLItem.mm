@@ -2,8 +2,8 @@
 + (id)copyParseRules;
 - (id)description;
 - (id)liveACEs;
-- (id)notGrantedSubsetOfACEs:(id)a3;
-- (void)addACE:(id)a3;
+- (id)notGrantedSubsetOfACEs:(id)es;
+- (void)addACE:(id)e;
 @end
 
 @implementation CoreDAVACLItem
@@ -16,8 +16,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVACLItem *)self accessControlEntities];
-  [v3 appendFormat:@"\n  Number of access control entities: [%lu]", objc_msgSend(v5, "count")];
+  accessControlEntities = [(CoreDAVACLItem *)self accessControlEntities];
+  [v3 appendFormat:@"\n  Number of access control entities: [%lu]", objc_msgSend(accessControlEntities, "count")];
 
   return v3;
 }
@@ -25,7 +25,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -36,38 +36,38 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addACE:(id)a3
+- (void)addACE:(id)e
 {
-  v4 = a3;
-  v5 = [(CoreDAVACLItem *)self accessControlEntities];
+  eCopy = e;
+  accessControlEntities = [(CoreDAVACLItem *)self accessControlEntities];
 
-  if (!v5)
+  if (!accessControlEntities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVACLItem *)self setAccessControlEntities:v6];
   }
 
-  v7 = [(CoreDAVACLItem *)self accessControlEntities];
-  [v7 addObject:v4];
+  accessControlEntities2 = [(CoreDAVACLItem *)self accessControlEntities];
+  [accessControlEntities2 addObject:eCopy];
 }
 
-- (id)notGrantedSubsetOfACEs:(id)a3
+- (id)notGrantedSubsetOfACEs:(id)es
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  esCopy = es;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v3;
+  obj = esCopy;
   v5 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v5)
   {
@@ -83,21 +83,21 @@
         }
 
         v9 = *(*(&v55 + 1) + 8 * i);
-        v10 = [v9 principal];
-        v11 = [v10 hashString];
-        v12 = [v4 objectForKey:v11];
+        principal = [v9 principal];
+        hashString = [principal hashString];
+        v12 = [dictionary objectForKey:hashString];
 
         if (!v12)
         {
           v12 = [MEMORY[0x277CBEB58] set];
-          v13 = [v9 principal];
-          v14 = [v13 hashString];
-          [v4 setObject:v12 forKey:v14];
+          principal2 = [v9 principal];
+          hashString2 = [principal2 hashString];
+          [dictionary setObject:v12 forKey:hashString2];
         }
 
-        v15 = [v9 grant];
-        v16 = [v15 privileges];
-        v17 = [v16 valueForKey:@"hashString"];
+        grant = [v9 grant];
+        privileges = [grant privileges];
+        v17 = [privileges valueForKey:@"hashString"];
         [v12 unionSet:v17];
       }
 
@@ -108,16 +108,16 @@
   }
 
   v38 = [CoreDAVACEItem privilegeItemWithNameSpace:@"DAV:" andName:@"all"];
-  v18 = [v38 hashString];
+  hashString3 = [v38 hashString];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v39 = [(CoreDAVACLItem *)self accessControlEntities];
-  v44 = [v39 countByEnumeratingWithState:&v51 objects:v60 count:16];
+  accessControlEntities = [(CoreDAVACLItem *)self accessControlEntities];
+  v44 = [accessControlEntities countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v44)
   {
-    v41 = v4;
+    v41 = dictionary;
     v42 = *v52;
     do
     {
@@ -125,13 +125,13 @@
       {
         if (*v52 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(accessControlEntities);
         }
 
         v20 = *(*(&v51 + 1) + 8 * j);
-        v21 = [v20 principal];
-        v22 = [v21 hashString];
-        v23 = [v4 objectForKey:v22];
+        principal3 = [v20 principal];
+        hashString4 = [principal3 hashString];
+        v23 = [dictionary objectForKey:hashString4];
 
         if ([v23 count])
         {
@@ -139,10 +139,10 @@
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v24 = [v20 grant];
-          v25 = [v24 privileges];
+          grant2 = [v20 grant];
+          privileges2 = [grant2 privileges];
 
-          v26 = [v25 countByEnumeratingWithState:&v47 objects:v59 count:16];
+          v26 = [privileges2 countByEnumeratingWithState:&v47 objects:v59 count:16];
           if (v26)
           {
             v27 = v26;
@@ -153,12 +153,12 @@
               {
                 if (*v48 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(privileges2);
                 }
 
                 v30 = *(*(&v47 + 1) + 8 * k);
-                v31 = [v30 hashString];
-                v32 = [v31 isEqualToString:v18];
+                hashString5 = [v30 hashString];
+                v32 = [hashString5 isEqualToString:hashString3];
 
                 if (v32)
                 {
@@ -166,11 +166,11 @@
                   goto LABEL_26;
                 }
 
-                v33 = [v30 hashString];
-                [v23 removeObject:v33];
+                hashString6 = [v30 hashString];
+                [v23 removeObject:hashString6];
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v47 objects:v59 count:16];
+              v27 = [privileges2 countByEnumeratingWithState:&v47 objects:v59 count:16];
               if (v27)
               {
                 continue;
@@ -182,11 +182,11 @@
 
 LABEL_26:
 
-          v4 = v41;
+          dictionary = v41;
         }
       }
 
-      v44 = [v39 countByEnumeratingWithState:&v51 objects:v60 count:16];
+      v44 = [accessControlEntities countByEnumeratingWithState:&v51 objects:v60 count:16];
     }
 
     while (v44);
@@ -196,8 +196,8 @@ LABEL_26:
   v45[1] = 3221225472;
   v45[2] = __41__CoreDAVACLItem_notGrantedSubsetOfACEs___block_invoke;
   v45[3] = &unk_278E31488;
-  v46 = v4;
-  v34 = v4;
+  v46 = dictionary;
+  v34 = dictionary;
   v35 = [obj objectsPassingTest:v45];
 
   v36 = *MEMORY[0x277D85DE8];
@@ -270,8 +270,8 @@ LABEL_12:
 
 - (id)liveACEs
 {
-  v2 = [(CoreDAVACLItem *)self accessControlEntities];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_4];
+  accessControlEntities = [(CoreDAVACLItem *)self accessControlEntities];
+  v3 = [accessControlEntities objectsPassingTest:&__block_literal_global_4];
 
   return v3;
 }

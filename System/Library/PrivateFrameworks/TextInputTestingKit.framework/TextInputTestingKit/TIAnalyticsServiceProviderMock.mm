@@ -1,36 +1,36 @@
 @interface TIAnalyticsServiceProviderMock
 - (TIAnalyticsServiceProviderMock)init;
-- (double)sumFloatField:(id)a3 forEvent:(id)a4;
-- (double)sumFloatField:(id)a3 forEvent:(id)a4 filteredWithPredicate:(id)a5;
-- (double)sumFloatField:(id)a3 forEvents:(id)a4;
-- (id)eventsWithName:(id)a3;
-- (int64_t)countEvent:(id)a3;
-- (int64_t)countEvent:(id)a3 filteredWithPredicate:(id)a4;
-- (int64_t)sumIntegerField:(id)a3 forEvent:(id)a4;
-- (int64_t)sumIntegerField:(id)a3 forEvent:(id)a4 filteredWithPredicate:(id)a5;
-- (int64_t)sumIntegerField:(id)a3 forEvents:(id)a4;
+- (double)sumFloatField:(id)field forEvent:(id)event;
+- (double)sumFloatField:(id)field forEvent:(id)event filteredWithPredicate:(id)predicate;
+- (double)sumFloatField:(id)field forEvents:(id)events;
+- (id)eventsWithName:(id)name;
+- (int64_t)countEvent:(id)event;
+- (int64_t)countEvent:(id)event filteredWithPredicate:(id)predicate;
+- (int64_t)sumIntegerField:(id)field forEvent:(id)event;
+- (int64_t)sumIntegerField:(id)field forEvent:(id)event filteredWithPredicate:(id)predicate;
+- (int64_t)sumIntegerField:(id)field forEvents:(id)events;
 - (void)clear;
-- (void)dispatchEventWithName:(id)a3 payload:(id)a4;
+- (void)dispatchEventWithName:(id)name payload:(id)payload;
 @end
 
 @implementation TIAnalyticsServiceProviderMock
 
 - (void)clear
 {
-  v2 = [(TIAnalyticsServiceProviderMock *)self allEvents];
-  [v2 removeAllObjects];
+  allEvents = [(TIAnalyticsServiceProviderMock *)self allEvents];
+  [allEvents removeAllObjects];
 }
 
-- (double)sumFloatField:(id)a3 forEvents:(id)a4
+- (double)sumFloatField:(id)field forEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  eventsCopy = events;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -42,15 +42,15 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(eventsCopy);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) objectForKey:v5];
+        v12 = [*(*(&v15 + 1) + 8 * i) objectForKey:fieldCopy];
         [v12 floatValue];
         v10 = v10 + v13;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -64,39 +64,39 @@
   return v10;
 }
 
-- (double)sumFloatField:(id)a3 forEvent:(id)a4 filteredWithPredicate:(id)a5
+- (double)sumFloatField:(id)field forEvent:(id)event filteredWithPredicate:(id)predicate
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a4];
-  v11 = [v10 filteredArrayUsingPredicate:v8];
+  predicateCopy = predicate;
+  fieldCopy = field;
+  v10 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:event];
+  v11 = [v10 filteredArrayUsingPredicate:predicateCopy];
 
-  [(TIAnalyticsServiceProviderMock *)self sumFloatField:v9 forEvents:v11];
+  [(TIAnalyticsServiceProviderMock *)self sumFloatField:fieldCopy forEvents:v11];
   v13 = v12;
 
   return v13;
 }
 
-- (double)sumFloatField:(id)a3 forEvent:(id)a4
+- (double)sumFloatField:(id)field forEvent:(id)event
 {
-  v6 = a3;
-  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a4];
-  [(TIAnalyticsServiceProviderMock *)self sumFloatField:v6 forEvents:v7];
+  fieldCopy = field;
+  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:event];
+  [(TIAnalyticsServiceProviderMock *)self sumFloatField:fieldCopy forEvents:v7];
   v9 = v8;
 
   return v9;
 }
 
-- (int64_t)sumIntegerField:(id)a3 forEvents:(id)a4
+- (int64_t)sumIntegerField:(id)field forEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  eventsCopy = events;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [eventsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -108,14 +108,14 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(eventsCopy);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) objectForKey:v5];
+        v12 = [*(*(&v14 + 1) + 8 * i) objectForKey:fieldCopy];
         v9 += [v12 integerValue];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [eventsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -129,65 +129,65 @@
   return v9;
 }
 
-- (int64_t)sumIntegerField:(id)a3 forEvent:(id)a4 filteredWithPredicate:(id)a5
+- (int64_t)sumIntegerField:(id)field forEvent:(id)event filteredWithPredicate:(id)predicate
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a4];
-  v11 = [v10 filteredArrayUsingPredicate:v8];
+  predicateCopy = predicate;
+  fieldCopy = field;
+  v10 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:event];
+  v11 = [v10 filteredArrayUsingPredicate:predicateCopy];
 
-  v12 = [(TIAnalyticsServiceProviderMock *)self sumIntegerField:v9 forEvents:v11];
+  v12 = [(TIAnalyticsServiceProviderMock *)self sumIntegerField:fieldCopy forEvents:v11];
   return v12;
 }
 
-- (int64_t)sumIntegerField:(id)a3 forEvent:(id)a4
+- (int64_t)sumIntegerField:(id)field forEvent:(id)event
 {
-  v6 = a3;
-  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a4];
-  v8 = [(TIAnalyticsServiceProviderMock *)self sumIntegerField:v6 forEvents:v7];
+  fieldCopy = field;
+  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:event];
+  v8 = [(TIAnalyticsServiceProviderMock *)self sumIntegerField:fieldCopy forEvents:v7];
 
   return v8;
 }
 
-- (int64_t)countEvent:(id)a3 filteredWithPredicate:(id)a4
+- (int64_t)countEvent:(id)event filteredWithPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a3];
-  v8 = [v7 filteredArrayUsingPredicate:v6];
+  predicateCopy = predicate;
+  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:event];
+  v8 = [v7 filteredArrayUsingPredicate:predicateCopy];
 
   v9 = [v8 count];
   return v9;
 }
 
-- (int64_t)countEvent:(id)a3
+- (int64_t)countEvent:(id)event
 {
-  v3 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a3];
+  v3 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:event];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)eventsWithName:(id)a3
+- (id)eventsWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(TIAnalyticsServiceProviderMock *)self allEvents];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  allEvents = [(TIAnalyticsServiceProviderMock *)self allEvents];
+  v6 = [allEvents objectForKey:nameCopy];
 
   if (!v6)
   {
     v6 = objc_opt_new();
-    v7 = [(TIAnalyticsServiceProviderMock *)self allEvents];
-    [v7 setObject:v6 forKey:v4];
+    allEvents2 = [(TIAnalyticsServiceProviderMock *)self allEvents];
+    [allEvents2 setObject:v6 forKey:nameCopy];
   }
 
   return v6;
 }
 
-- (void)dispatchEventWithName:(id)a3 payload:(id)a4
+- (void)dispatchEventWithName:(id)name payload:(id)payload
 {
-  v6 = a4;
-  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:a3];
-  [v7 addObject:v6];
+  payloadCopy = payload;
+  v7 = [(TIAnalyticsServiceProviderMock *)self eventsWithName:name];
+  [v7 addObject:payloadCopy];
 }
 
 - (TIAnalyticsServiceProviderMock)init

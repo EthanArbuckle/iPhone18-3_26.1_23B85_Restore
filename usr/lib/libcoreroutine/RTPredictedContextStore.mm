@@ -1,53 +1,53 @@
 @interface RTPredictedContextStore
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_fetchPredictedContextAndRequestDateWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchPredictedContextRequestsWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchPredictedContextsWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgePredictedContextRequestsPredating:(id)a3 handler:(id)a4;
-- (void)_purgePredictedContextsPredating:(id)a3 handler:(id)a4;
-- (void)_storePredictedContextRequest:(id)a3 handler:(id)a4;
-- (void)fetchPredictedContextAndRequestDateWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchPredictedContextRequestsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchPredictedContextsWithOptions:(id)a3 handler:(id)a4;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)purgePredictedContextRequestsPredating:(id)a3 handler:(id)a4;
-- (void)purgePredictedContextsPredating:(id)a3 handler:(id)a4;
-- (void)storePredictedContextRequest:(id)a3 handler:(id)a4;
-- (void)storePredictedContexts:(id)a3 handler:(id)a4;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_fetchPredictedContextAndRequestDateWithOptions:(id)options handler:(id)handler;
+- (void)_fetchPredictedContextRequestsWithOptions:(id)options handler:(id)handler;
+- (void)_fetchPredictedContextsWithOptions:(id)options handler:(id)handler;
+- (void)_purgePredictedContextRequestsPredating:(id)predating handler:(id)handler;
+- (void)_purgePredictedContextsPredating:(id)predating handler:(id)handler;
+- (void)_storePredictedContextRequest:(id)request handler:(id)handler;
+- (void)fetchPredictedContextAndRequestDateWithOptions:(id)options handler:(id)handler;
+- (void)fetchPredictedContextRequestsWithOptions:(id)options handler:(id)handler;
+- (void)fetchPredictedContextsWithOptions:(id)options handler:(id)handler;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)purgePredictedContextRequestsPredating:(id)predating handler:(id)handler;
+- (void)purgePredictedContextsPredating:(id)predating handler:(id)handler;
+- (void)storePredictedContextRequest:(id)request handler:(id)handler;
+- (void)storePredictedContexts:(id)contexts handler:(id)handler;
 @end
 
 @implementation RTPredictedContextStore
 
-- (void)fetchPredictedContextsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPredictedContextsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RTPredictedContextStore_fetchPredictedContextsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchPredictedContextsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchPredictedContextsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __70__RTPredictedContextStore__fetchPredictedContextsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v14 = v7;
+    v14 = optionsCopy;
     v16 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = _Block_copy(aBlock);
     v11[0] = MEMORY[0x277D85DD0];
@@ -218,36 +218,36 @@ void __70__RTPredictedContextStore__fetchPredictedContextsWithOptions_handler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchPredictedContextRequestsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPredictedContextRequestsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__RTPredictedContextStore_fetchPredictedContextRequestsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchPredictedContextRequestsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchPredictedContextRequestsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __77__RTPredictedContextStore__fetchPredictedContextRequestsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v14 = v7;
+    v14 = optionsCopy;
     v16 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = _Block_copy(aBlock);
     v11[0] = MEMORY[0x277D85DD0];
@@ -411,36 +411,36 @@ void __77__RTPredictedContextStore__fetchPredictedContextRequestsWithOptions_han
   (*(*(v45 + 40) + 16))();
 }
 
-- (void)fetchPredictedContextAndRequestDateWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPredictedContextAndRequestDateWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__RTPredictedContextStore_fetchPredictedContextAndRequestDateWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchPredictedContextAndRequestDateWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchPredictedContextAndRequestDateWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__RTPredictedContextStore__fetchPredictedContextAndRequestDateWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v14 = v7;
+    v14 = optionsCopy;
     v16 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = _Block_copy(aBlock);
     v11[0] = MEMORY[0x277D85DD0];
@@ -616,77 +616,77 @@ void __83__RTPredictedContextStore__fetchPredictedContextAndRequestDateWithOptio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)storePredictedContexts:(id)a3 handler:(id)a4
+- (void)storePredictedContexts:(id)contexts handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  contextsCopy = contexts;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTPredictedContextStore_storePredictedContexts_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contextsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)storePredictedContextRequest:(id)a3 handler:(id)a4
+- (void)storePredictedContextRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  requestCopy = request;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__RTPredictedContextStore_storePredictedContextRequest_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storePredictedContextRequest:(id)a3 handler:(id)a4
+- (void)_storePredictedContextRequest:(id)request handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (request)
   {
-    v10 = a3;
+    requestCopy = request;
     v6 = MEMORY[0x277CBEA60];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v6 arrayWithObjects:&v10 count:1];
+    handlerCopy = handler;
+    requestCopy2 = request;
+    v9 = [v6 arrayWithObjects:&requestCopy count:1];
 
-    [(RTStore *)self storeWritableObjects:v9 handler:v7, v10, v11];
+    [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy, requestCopy, v11];
   }
 }
 
-- (void)purgePredictedContextsPredating:(id)a3 handler:(id)a4
+- (void)purgePredictedContextsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTPredictedContextStore_purgePredictedContextsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgePredictedContextsPredating:(id)a3 handler:(id)a4
+- (void)_purgePredictedContextsPredating:(id)predating handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  predatingCopy = predating;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -695,13 +695,13 @@ void __83__RTPredictedContextStore__fetchPredictedContextAndRequestDateWithOptio
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
-      v13 = [v7 stringFromDate];
+      stringFromDate = [predatingCopy stringFromDate];
       *buf = 138412802;
       v20 = v11;
       v21 = 2112;
       v22 = v12;
       v23 = 2112;
-      v24 = v13;
+      v24 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, purging predicted contexts with end dates predating %@", buf, 0x20u);
     }
   }
@@ -712,31 +712,31 @@ void __83__RTPredictedContextStore__fetchPredictedContextAndRequestDateWithOptio
   v18 = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v15 handler:v8];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v15 handler:handlerCopy];
 }
 
-- (void)purgePredictedContextRequestsPredating:(id)a3 handler:(id)a4
+- (void)purgePredictedContextRequestsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__RTPredictedContextStore_purgePredictedContextRequestsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgePredictedContextRequestsPredating:(id)a3 handler:(id)a4
+- (void)_purgePredictedContextRequestsPredating:(id)predating handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  predatingCopy = predating;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -750,7 +750,7 @@ void __83__RTPredictedContextStore__fetchPredictedContextAndRequestDateWithOptio
       v20 = 2112;
       v21 = v12;
       v22 = 2112;
-      v23 = v7;
+      v23 = predatingCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, purging predicted context requests with end dates predating %@", buf, 0x20u);
     }
   }
@@ -761,25 +761,25 @@ void __83__RTPredictedContextStore__fetchPredictedContextAndRequestDateWithOptio
   v17 = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v14 handler:v8];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v14 handler:handlerCopy];
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__RTPredictedContextStore_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = dateCopy;
+  v15 = completionCopy;
   v16 = a2;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 void __71__RTPredictedContextStore_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -849,7 +849,7 @@ void __71__RTPredictedContextStore_performPurgeOfType_referenceDate_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -859,10 +859,10 @@ void __71__RTPredictedContextStore_performPurgeOfType_referenceDate_completion__
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

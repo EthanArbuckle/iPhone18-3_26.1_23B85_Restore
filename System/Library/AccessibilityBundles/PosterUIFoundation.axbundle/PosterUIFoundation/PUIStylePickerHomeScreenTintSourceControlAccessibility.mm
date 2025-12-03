@@ -45,11 +45,11 @@ LABEL_10:
   v24 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  if (v4 && [v4 count])
+  if (subviews && [subviews count])
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [subviews objectAtIndexedSubscript:0];
     [v5 frame];
     v7 = v6;
     v9 = v8;

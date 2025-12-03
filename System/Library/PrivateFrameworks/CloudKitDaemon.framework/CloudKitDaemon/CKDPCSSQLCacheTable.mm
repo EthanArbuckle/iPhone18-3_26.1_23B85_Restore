@@ -1,11 +1,11 @@
 @interface CKDPCSSQLCacheTable
 + (double)cacheValidTime;
-+ (id)objectClassesForProperty:(id)a3;
++ (id)objectClassesForProperty:(id)property;
 - (CKDPCSSQLCacheTable)init;
-- (id)PCSDataForID:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5 accountID:(id)a6 serviceName:(id)a7;
-- (id)deletePCSDataForID:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5 accountID:(id)a6 serviceName:(id)a7;
-- (id)deletePCSDataForShare:(id)a3 account:(id)a4 serviceName:(id)a5;
-- (id)deletePCSDataForZone:(id)a3 account:(id)a4 serviceName:(id)a5;
+- (id)PCSDataForID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type accountID:(id)iD serviceName:(id)name;
+- (id)deletePCSDataForID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type accountID:(id)iD serviceName:(id)name;
+- (id)deletePCSDataForShare:(id)share account:(id)account serviceName:(id)name;
+- (id)deletePCSDataForZone:(id)zone account:(id)account serviceName:(id)name;
 @end
 
 @implementation CKDPCSSQLCacheTable
@@ -28,13 +28,13 @@
   return v7;
 }
 
-+ (id)objectClassesForProperty:(id)a3
++ (id)objectClassesForProperty:(id)property
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___CKDPCSSQLCacheTable;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v10, sel_objectClassesForProperty_, v3);
-  isEqualToString = objc_msgSend_isEqualToString_(v3, v5, @"CKDPCSData", v10.receiver, v10.super_class);
+  propertyCopy = property;
+  v4 = objc_msgSendSuper2(&v10, sel_objectClassesForProperty_, propertyCopy);
+  isEqualToString = objc_msgSend_isEqualToString_(propertyCopy, v5, @"CKDPCSData", v10.receiver, v10.super_class);
 
   if (isEqualToString)
   {
@@ -45,26 +45,26 @@
   return v4;
 }
 
-- (id)deletePCSDataForZone:(id)a3 account:(id)a4 serviceName:(id)a5
+- (id)deletePCSDataForZone:(id)zone account:(id)account serviceName:(id)name
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
+  zoneCopy = zone;
+  accountCopy = account;
+  nameCopy = name;
   v21[0] = @"ZONE";
   v21[1] = @"ACCOUNT";
-  v22[0] = v8;
-  v22[1] = v9;
+  v22[0] = zoneCopy;
+  v22[1] = accountCopy;
   v21[2] = @"SERVICE";
-  v13 = v12;
-  if (!v12)
+  v13 = nameCopy;
+  if (!nameCopy)
   {
     v13 = objc_msgSend_null(MEMORY[0x277CBEB68], v10, v11);
   }
 
   v22[2] = v13;
   v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v22, v21, 3);
-  if (!v12)
+  if (!nameCopy)
   {
   }
 
@@ -77,26 +77,26 @@
   return v16;
 }
 
-- (id)deletePCSDataForShare:(id)a3 account:(id)a4 serviceName:(id)a5
+- (id)deletePCSDataForShare:(id)share account:(id)account serviceName:(id)name
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
+  shareCopy = share;
+  accountCopy = account;
+  nameCopy = name;
   v21[0] = @"SHARE";
   v21[1] = @"ACCOUNT";
-  v22[0] = v8;
-  v22[1] = v9;
+  v22[0] = shareCopy;
+  v22[1] = accountCopy;
   v21[2] = @"SERVICE";
-  v13 = v12;
-  if (!v12)
+  v13 = nameCopy;
+  if (!nameCopy)
   {
     v13 = objc_msgSend_null(MEMORY[0x277CBEB68], v10, v11);
   }
 
   v22[2] = v13;
   v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v22, v21, 3);
-  if (!v12)
+  if (!nameCopy)
   {
   }
 
@@ -109,32 +109,32 @@
   return v16;
 }
 
-- (id)deletePCSDataForID:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5 accountID:(id)a6 serviceName:(id)a7
+- (id)deletePCSDataForID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type accountID:(id)iD serviceName:(id)name
 {
   v30[5] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v30[0] = v12;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  v30[0] = dCopy;
   v29[0] = @"IDENTIFIER";
   v29[1] = @"SCOPE";
-  v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v15, a4);
+  v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v15, scope);
   v30[1] = v16;
   v29[2] = @"TYPE";
-  v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v17, a5);
+  v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v17, type);
   v30[2] = v20;
-  v30[3] = v13;
+  v30[3] = iDCopy;
   v29[3] = @"ACCOUNT";
   v29[4] = @"SERVICE";
-  v21 = v14;
-  if (!v14)
+  v21 = nameCopy;
+  if (!nameCopy)
   {
     v21 = objc_msgSend_null(MEMORY[0x277CBEB68], v18, v19);
   }
 
   v30[4] = v21;
   v22 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, v30, v29, 5);
-  if (!v14)
+  if (!nameCopy)
   {
   }
 
@@ -147,21 +147,21 @@
   return v24;
 }
 
-- (id)PCSDataForID:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5 accountID:(id)a6 serviceName:(id)a7
+- (id)PCSDataForID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type accountID:(id)iD serviceName:(id)name
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
   v15 = objc_alloc_init(CKDPCSSQLCacheEntry);
-  objc_msgSend_setIdentifier_(v15, v16, v12);
-  v18 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v17, a4);
+  objc_msgSend_setIdentifier_(v15, v16, dCopy);
+  v18 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v17, scope);
   objc_msgSend_setDatabaseScope_(v15, v19, v18);
 
-  v21 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v20, a5);
+  v21 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v20, type);
   objc_msgSend_setItemType_(v15, v22, v21);
 
-  objc_msgSend_setAccountID_(v15, v23, v13);
-  objc_msgSend_setServiceName_(v15, v24, v14);
+  objc_msgSend_setAccountID_(v15, v23, iDCopy);
+  objc_msgSend_setServiceName_(v15, v24, nameCopy);
   v28 = objc_msgSend_fetchProperties_inObject_matchingDBProperties_label_(self, v25, &unk_2838C8EF8, v15, &unk_2838C8F10, off_27D71A828);
   if (v28)
   {
@@ -179,7 +179,7 @@
         _os_log_fault_impl(&dword_22506F000, v29, OS_LOG_TYPE_FAULT, "Found multiple matching PCS cache database entries. Removing them.", v34, 2u);
       }
 
-      v31 = objc_msgSend_deletePCSDataForID_databaseScope_itemType_accountID_serviceName_(self, v30, v12, a4, a5, v13, v14);
+      v31 = objc_msgSend_deletePCSDataForID_databaseScope_itemType_accountID_serviceName_(self, v30, dCopy, scope, type, iDCopy, nameCopy);
     }
 
     v32 = 0;

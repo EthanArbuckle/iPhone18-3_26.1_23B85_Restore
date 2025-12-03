@@ -1,14 +1,14 @@
 @interface FCArticleSearchResult
-- (FCArticleSearchResult)initWithParsecSearchResult:(id)a3 cloudContext:(id)a4;
+- (FCArticleSearchResult)initWithParsecSearchResult:(id)result cloudContext:(id)context;
 @end
 
 @implementation FCArticleSearchResult
 
-- (FCArticleSearchResult)initWithParsecSearchResult:(id)a3 cloudContext:(id)a4
+- (FCArticleSearchResult)initWithParsecSearchResult:(id)result cloudContext:(id)context
 {
   v117 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  contextCopy = context;
   v115.receiver = self;
   v115.super_class = FCArticleSearchResult;
   v9 = [(FCArticleSearchResult *)&v115 init];
@@ -19,17 +19,17 @@
   }
 
   v105 = v9;
-  v106 = v8;
-  objc_storeStrong(&v9->_searchResult, a3);
+  v106 = contextCopy;
+  objc_storeStrong(&v9->_searchResult, result);
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v107 = v7;
-  v10 = [v7 card];
-  v11 = [v10 cardSections];
+  v107 = resultCopy;
+  card = [resultCopy card];
+  cardSections = [card cardSections];
 
-  v12 = [v11 countByEnumeratingWithState:&v111 objects:v116 count:16];
+  v12 = [cardSections countByEnumeratingWithState:&v111 objects:v116 count:16];
   if (!v12)
   {
     v108 = 0;
@@ -55,7 +55,7 @@
     {
       if (*v112 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(cardSections);
       }
 
       v19 = *(*(&v111 + 1) + 8 * i);
@@ -73,7 +73,7 @@
       if (v22)
       {
         [v20 value];
-        v14 = v23 = v14;
+        v14 = value = v14;
       }
 
       else
@@ -84,7 +84,7 @@
         if (v25)
         {
           [v20 value];
-          v110 = v23 = v110;
+          v110 = value = v110;
         }
 
         else
@@ -95,7 +95,7 @@
           if (v27)
           {
             [v20 image];
-            v109 = v23 = v109;
+            v109 = value = v109;
           }
 
           else
@@ -105,8 +105,8 @@
 
             if (v29)
             {
-              v23 = [v20 value];
-              v108 = [v23 integerValue] == 1;
+              value = [v20 value];
+              v108 = [value integerValue] == 1;
             }
 
             else
@@ -116,8 +116,8 @@
 
               if (v31)
               {
-                v23 = [v20 value];
-                [v23 floatValue];
+                value = [v20 value];
+                [value floatValue];
                 v17 = v32;
               }
 
@@ -131,8 +131,8 @@
                   goto LABEL_23;
                 }
 
-                v23 = [v20 value];
-                [v23 floatValue];
+                value = [v20 value];
+                [value floatValue];
                 v16 = v35;
               }
             }
@@ -143,27 +143,27 @@
 LABEL_23:
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v111 objects:v116 count:16];
+    v13 = [cardSections countByEnumeratingWithState:&v111 objects:v116 count:16];
   }
 
   while (v13);
 LABEL_28:
 
-  v7 = v107;
-  v37 = [v107 punchout];
-  v38 = [v37 urls];
-  v39 = [v38 fc_firstObjectPassingTest:&__block_literal_global_126];
+  resultCopy = v107;
+  punchout = [v107 punchout];
+  urls = [punchout urls];
+  v39 = [urls fc_firstObjectPassingTest:&__block_literal_global_126];
 
-  v40 = [v39 fc_NewsArticleID];
+  fc_NewsArticleID = [v39 fc_NewsArticleID];
   v36 = v105;
   articleID = v105->_articleID;
-  v105->_articleID = v40;
+  v105->_articleID = fc_NewsArticleID;
 
   if (v105->_articleID)
   {
     objc_opt_class();
-    v42 = [v8 tagController];
-    v43 = [v42 slowCachedTagForID:v14];
+    tagController = [contextCopy tagController];
+    v43 = [tagController slowCachedTagForID:v14];
     if (v43)
     {
       if (objc_opt_isKindOfClass())
@@ -189,11 +189,11 @@ LABEL_28:
       v46 = [[FCTag alloc] initWithTagType:2 identifier:v14 name:v110];
       if (v109)
       {
-        v47 = [v8 assetManager];
-        v48 = [v8 internalContentContext];
-        [v48 contentDatabase];
+        assetManager = [contextCopy assetManager];
+        internalContentContext = [contextCopy internalContentContext];
+        [internalContentContext contentDatabase];
         v50 = v49 = v46;
-        v51 = [v47 assetHandleForRecordID:v14 field:2 lifetimeHint:0 contentDatabase:v50];
+        v51 = [assetManager assetHandleForRecordID:v14 field:2 lifetimeHint:0 contentDatabase:v50];
 
         v46 = v49;
         if (v51)
@@ -219,45 +219,45 @@ LABEL_28:
       v53 = objc_alloc_init(FCHeadline);
       [(FCHeadline *)v53 setIdentifier:v105->_articleID];
       [(FCHeadline *)v53 setArticleID:v105->_articleID];
-      v54 = [v107 title];
-      v55 = [v54 text];
-      [(FCHeadline *)v53 setTitle:v55];
+      title = [v107 title];
+      text = [title text];
+      [(FCHeadline *)v53 setTitle:text];
 
       [(FCHeadline *)v53 setSourceChannel:v46];
       v104 = v46;
-      v56 = [(FCTag *)v46 name];
-      [(FCHeadline *)v53 setSourceName:v56];
+      name = [(FCTag *)v46 name];
+      [(FCHeadline *)v53 setSourceName:name];
 
       v57 = MEMORY[0x1E695DF00];
-      v58 = [v107 publishDate];
-      [v58 doubleValue];
+      publishDate = [v107 publishDate];
+      [publishDate doubleValue];
       v59 = [v57 dateWithTimeIntervalSince1970:?];
       [(FCHeadline *)v53 setPublishDate:v59];
 
       [(FCHeadline *)v53 setPaid:v108];
       [(FCHeadline *)v53 setRole:1];
       [(FCHeadline *)v53 setTopicIDs:MEMORY[0x1E695E0F0]];
-      v60 = [v8 paidAccessChecker];
+      paidAccessChecker = [contextCopy paidAccessChecker];
       v61 = v53;
-      v62 = [(FCHeadline *)v61 isPaid];
-      v63 = [(FCHeadline *)v61 isBundlePaid];
-      v102 = [(FCHeadline *)v61 sourceChannel];
-      v64 = [v102 identifier];
-      v65 = v60;
-      v66 = v64;
-      v67 = [v65 bundleSubscriptionProvider];
-      v68 = [v65 purchaseProvider];
-      v69 = v67;
-      v70 = v68;
+      isPaid = [(FCHeadline *)v61 isPaid];
+      isBundlePaid = [(FCHeadline *)v61 isBundlePaid];
+      sourceChannel = [(FCHeadline *)v61 sourceChannel];
+      identifier = [sourceChannel identifier];
+      v65 = paidAccessChecker;
+      v66 = identifier;
+      bundleSubscriptionProvider = [v65 bundleSubscriptionProvider];
+      purchaseProvider = [v65 purchaseProvider];
+      v69 = bundleSubscriptionProvider;
+      v70 = purchaseProvider;
       v71 = v66;
-      if (!v62 && !v63)
+      if (!isPaid && !isBundlePaid)
       {
 LABEL_44:
         v72 = v104;
         goto LABEL_57;
       }
 
-      v73 = !v62;
+      v73 = !isPaid;
       if (!v70)
       {
         v73 = 1;
@@ -265,17 +265,17 @@ LABEL_44:
 
       if ((v73 & 1) == 0)
       {
-        v74 = [v70 purchasedTagIDs];
-        v75 = [v74 containsObject:v71];
+        purchasedTagIDs = [v70 purchasedTagIDs];
+        v75 = [purchasedTagIDs containsObject:v71];
 
         if (v75)
         {
-          v63 = 0;
+          isBundlePaid = 0;
           goto LABEL_44;
         }
       }
 
-      v76 = v63 ^ 1;
+      v76 = isBundlePaid ^ 1;
       if (!v69)
       {
         v76 = 1;
@@ -297,10 +297,10 @@ LABEL_44:
       [v77 bundleSubscription];
       v79 = v101 = v77;
       v98 = objc_getAssociatedObject(v79, (v79 + 1));
-      v80 = [v98 unsignedIntegerValue];
+      unsignedIntegerValue = [v98 unsignedIntegerValue];
       v100 = v78;
-      v81 = v80;
-      v82 = objc_getAssociatedObject(v79, ~v80);
+      v81 = unsignedIntegerValue;
+      v82 = objc_getAssociatedObject(v79, ~unsignedIntegerValue);
       v83 = [v82 unsignedIntegerValue] ^ v81;
       v78 = v100;
 
@@ -314,43 +314,43 @@ LABEL_55:
         goto LABEL_56;
       }
 
-      v96 = [v101 bundleSubscription];
-      v97 = [v96 bundleChannelIDs];
-      v99 = [v97 containsObject:v100];
+      bundleSubscription = [v101 bundleSubscription];
+      bundleChannelIDs = [bundleSubscription bundleChannelIDs];
+      v99 = [bundleChannelIDs containsObject:v100];
 
       v72 = v104;
       v52 = v108;
       if ((v99 & 1) == 0)
       {
 LABEL_56:
-        v63 = 1;
+        isBundlePaid = 1;
       }
 
       else
       {
-        v63 = 0;
+        isBundlePaid = 0;
       }
 
 LABEL_57:
 
-      [(FCHeadline *)v61 setShowSubscriptionRequiredText:v52 & v63];
-      v7 = v107;
-      v84 = [v107 thumbnail];
+      [(FCHeadline *)v61 setShowSubscriptionRequiredText:v52 & isBundlePaid];
+      resultCopy = v107;
+      thumbnail = [v107 thumbnail];
 
       v36 = v105;
-      v8 = v106;
-      if (v84)
+      contextCopy = v106;
+      if (thumbnail)
       {
-        v85 = [v106 assetManager];
+        assetManager2 = [v106 assetManager];
         v86 = v105->_articleID;
-        v87 = [v106 internalContentContext];
-        v88 = [v87 contentDatabase];
-        v89 = [v85 assetHandleForRecordID:v86 field:0 lifetimeHint:0 contentDatabase:v88];
+        internalContentContext2 = [v106 internalContentContext];
+        contentDatabase = [internalContentContext2 contentDatabase];
+        v89 = [assetManager2 assetHandleForRecordID:v86 field:0 lifetimeHint:0 contentDatabase:contentDatabase];
 
         if (v89)
         {
-          v90 = [v107 thumbnail];
-          [v90 size];
+          thumbnail2 = [v107 thumbnail];
+          [thumbnail2 size];
           v91 = [FCHeadlineThumbnail headlineThumbnailWithAssetHandle:v89 thumbnailSize:?];
           [(FCHeadline *)v61 setThumbnail:v91];
 

@@ -1,17 +1,17 @@
 @interface FIUIChartDashedBackgroundView
-- (FIUIChartDashedBackgroundView)initWithFrame:(CGRect)a3;
+- (FIUIChartDashedBackgroundView)initWithFrame:(CGRect)frame;
 - (void)_updateLinePositions;
-- (void)drawLine:(id)a3 rect:(CGRect)a4 context:(CGContext *)a5;
-- (void)drawRect:(CGRect)a3;
+- (void)drawLine:(id)line rect:(CGRect)rect context:(CGContext *)context;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation FIUIChartDashedBackgroundView
 
-- (FIUIChartDashedBackgroundView)initWithFrame:(CGRect)a3
+- (FIUIChartDashedBackgroundView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = FIUIChartDashedBackgroundView;
-  result = [(FIUIChartBackgroundView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(FIUIChartBackgroundView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_direction = 0;
@@ -22,7 +22,7 @@
 
 - (void)_updateLinePositions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   numLines = self->_numLines;
   if (numLines)
   {
@@ -51,27 +51,27 @@
       }
 
       v9 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
-      [(NSArray *)v3 addObject:v9];
+      [(NSArray *)array addObject:v9];
 
       numLines = self->_numLines;
     }
   }
 
   linePositions = self->_linePositions;
-  self->_linePositions = v3;
+  self->_linePositions = array;
 
   [(FIUIChartDashedBackgroundView *)self setNeedsDisplay];
 }
 
-- (void)drawLine:(id)a3 rect:(CGRect)a4 context:(CGContext *)a5
+- (void)drawLine:(id)line rect:(CGRect)rect context:(CGContext *)context
 {
-  width = a4.size.width;
+  width = rect.size.width;
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [v7 doubleValue];
+  lineCopy = line;
+  [lineCopy doubleValue];
   UIRoundToViewScale();
   v9 = v8;
-  [v7 doubleValue];
+  [lineCopy doubleValue];
   v11 = v10;
 
   if (v11 == 0.0)
@@ -84,22 +84,22 @@
 
   v14 = xmmword_1E5DB1910;
   UIRoundToViewScale();
-  CGContextSetLineWidth(a5, v13);
-  CGContextSetLineDash(a5, 0.0, &v14, 1uLL);
-  CGContextMoveToPoint(a5, 0.0, v9);
-  CGContextAddLineToPoint(a5, width, v9);
-  CGContextStrokePath(a5);
+  CGContextSetLineWidth(context, v13);
+  CGContextSetLineDash(context, 0.0, &v14, 1uLL);
+  CGContextMoveToPoint(context, 0.0, v9);
+  CGContextAddLineToPoint(context, width, v9);
+  CGContextStrokePath(context);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v46 = *MEMORY[0x1E69E9840];
   if (self->_lineType == 1)
   {
-    y = a3.origin.y;
-    x = a3.origin.x;
+    y = rect.origin.y;
+    x = rect.origin.x;
     CurrentContext = UIGraphicsGetCurrentContext();
     v40 = 0u;
     v41 = 0u;

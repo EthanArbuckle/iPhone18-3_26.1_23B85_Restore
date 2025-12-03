@@ -1,37 +1,37 @@
 @interface IRCandidateClassificationDetectorSameSpace
-+ (BOOL)isSameSpaceForCandidate:(id)a3 basedOnMiLoPrediction:(id)a4 andHistoryEventsAsc:(id)a5 andDate:(id)a6;
-+ (id)sameSpaceMiLoScoresForCandidate:(id)a3 basedOnMiLoPrediction:(id)a4 andHistoryEventsAsc:(id)a5 andDate:(id)a6;
-- (BOOL)_isSameSpaceBasedOnPDRFenceForCandidate:(id)a3 basedOnSystemState:(id)a4;
-- (BOOL)_isSameSpaceBrokeredDeviceForCandidate:(id)a3 basedOnSystemState:(id)a4 andHistoryEventsAsc:(id)a5 andDate:(id)a6;
-- (BOOL)_isSameSpaceCandidate:(id)a3;
-- (BOOL)_isSameSpaceForCandidate:(id)a3 basedOnHistoryEventsAsc:(id)a4 andDate:(id)a5;
-- (id)_isSameSpaceForCandidate:(id)a3 basedOnNearbyDevices:(id)a4 andExpiryDate:(id)a5 isUWB:(BOOL)a6;
-- (void)adjustSameSpaceParametersForCandidates:(id)a3 withSystemState:(id)a4 andHistoryEventsAsc:(id)a5 andMiLoPrediction:(id)a6 andNearbyDevicesContainer:(id)a7 andDate:(id)a8;
++ (BOOL)isSameSpaceForCandidate:(id)candidate basedOnMiLoPrediction:(id)prediction andHistoryEventsAsc:(id)asc andDate:(id)date;
++ (id)sameSpaceMiLoScoresForCandidate:(id)candidate basedOnMiLoPrediction:(id)prediction andHistoryEventsAsc:(id)asc andDate:(id)date;
+- (BOOL)_isSameSpaceBasedOnPDRFenceForCandidate:(id)candidate basedOnSystemState:(id)state;
+- (BOOL)_isSameSpaceBrokeredDeviceForCandidate:(id)candidate basedOnSystemState:(id)state andHistoryEventsAsc:(id)asc andDate:(id)date;
+- (BOOL)_isSameSpaceCandidate:(id)candidate;
+- (BOOL)_isSameSpaceForCandidate:(id)candidate basedOnHistoryEventsAsc:(id)asc andDate:(id)date;
+- (id)_isSameSpaceForCandidate:(id)candidate basedOnNearbyDevices:(id)devices andExpiryDate:(id)date isUWB:(BOOL)b;
+- (void)adjustSameSpaceParametersForCandidates:(id)candidates withSystemState:(id)state andHistoryEventsAsc:(id)asc andMiLoPrediction:(id)prediction andNearbyDevicesContainer:(id)container andDate:(id)date;
 @end
 
 @implementation IRCandidateClassificationDetectorSameSpace
 
-+ (id)sameSpaceMiLoScoresForCandidate:(id)a3 basedOnMiLoPrediction:(id)a4 andHistoryEventsAsc:(id)a5 andDate:(id)a6
++ (id)sameSpaceMiLoScoresForCandidate:(id)candidate basedOnMiLoPrediction:(id)prediction andHistoryEventsAsc:(id)asc andDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 canUse])
+  candidateCopy = candidate;
+  predictionCopy = prediction;
+  ascCopy = asc;
+  dateCopy = date;
+  if ([predictionCopy canUse])
   {
     v13 = +[IRPreferences shared];
-    v14 = [v13 miloSameSpaceEventsTimeIntervalSeconds];
-    [v14 doubleValue];
-    v16 = [v12 dateByAddingTimeInterval:-v15];
+    miloSameSpaceEventsTimeIntervalSeconds = [v13 miloSameSpaceEventsTimeIntervalSeconds];
+    [miloSameSpaceEventsTimeIntervalSeconds doubleValue];
+    v16 = [dateCopy dateByAddingTimeInterval:-v15];
 
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __128__IRCandidateClassificationDetectorSameSpace_sameSpaceMiLoScoresForCandidate_basedOnMiLoPrediction_andHistoryEventsAsc_andDate___block_invoke;
     v43[3] = &unk_2797E1AA0;
-    v44 = v9;
+    v44 = candidateCopy;
     v17 = v16;
     v45 = v17;
-    v18 = [v11 allWhere:v43];
+    v18 = [ascCopy allWhere:v43];
     v39 = 0;
     v40 = &v39;
     v41 = 0x2020000000;
@@ -41,8 +41,8 @@
     v37 = 0x2020000000;
     v38 = 0;
     v19 = +[IRPreferences shared];
-    v20 = [v19 miloLslIsSameMiloThreshold];
-    [v20 doubleValue];
+    miloLslIsSameMiloThreshold = [v19 miloLslIsSameMiloThreshold];
+    [miloLslIsSameMiloThreshold doubleValue];
     v22 = v21;
 
     v27 = MEMORY[0x277D85DD0];
@@ -51,7 +51,7 @@
     v30 = &unk_2797E1AC8;
     v32 = &v39;
     v34 = v22;
-    v31 = v10;
+    v31 = predictionCopy;
     v33 = &v35;
     [v18 enumerateObjectsUsingBlock:&v27];
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v36[3], v27, v28, v29, v30}];
@@ -121,23 +121,23 @@ void __128__IRCandidateClassificationDetectorSameSpace_sameSpaceMiLoScoresForCan
   }
 }
 
-+ (BOOL)isSameSpaceForCandidate:(id)a3 basedOnMiLoPrediction:(id)a4 andHistoryEventsAsc:(id)a5 andDate:(id)a6
++ (BOOL)isSameSpaceForCandidate:(id)candidate basedOnMiLoPrediction:(id)prediction andHistoryEventsAsc:(id)asc andDate:(id)date
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dateCopy = date;
+  ascCopy = asc;
+  predictionCopy = prediction;
+  candidateCopy = candidate;
   v13 = objc_opt_class();
-  v14 = [v12 candidateIdentifier];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
 
-  v15 = [v13 sameSpaceMiLoScoresForCandidate:v14 basedOnMiLoPrediction:v11 andHistoryEventsAsc:v10 andDate:v9];
+  v15 = [v13 sameSpaceMiLoScoresForCandidate:candidateIdentifier basedOnMiLoPrediction:predictionCopy andHistoryEventsAsc:ascCopy andDate:dateCopy];
 
-  v16 = [v15 first];
-  [v16 doubleValue];
+  first = [v15 first];
+  [first doubleValue];
   v18 = v17;
 
-  v19 = [v15 second];
-  [v19 doubleValue];
+  second = [v15 second];
+  [second doubleValue];
   v21 = v20;
 
   if (v21 <= 0.0)
@@ -148,40 +148,40 @@ void __128__IRCandidateClassificationDetectorSameSpace_sameSpaceMiLoScoresForCan
   else
   {
     v22 = +[IRPreferences shared];
-    v23 = [v22 miloSameSpaceRatioThreshold];
-    [v23 doubleValue];
+    miloSameSpaceRatioThreshold = [v22 miloSameSpaceRatioThreshold];
+    [miloSameSpaceRatioThreshold doubleValue];
     v25 = v18 / v21 > v24;
   }
 
   return v25;
 }
 
-- (void)adjustSameSpaceParametersForCandidates:(id)a3 withSystemState:(id)a4 andHistoryEventsAsc:(id)a5 andMiLoPrediction:(id)a6 andNearbyDevicesContainer:(id)a7 andDate:(id)a8
+- (void)adjustSameSpaceParametersForCandidates:(id)candidates withSystemState:(id)state andHistoryEventsAsc:(id)asc andMiLoPrediction:(id)prediction andNearbyDevicesContainer:(id)container andDate:(id)date
 {
   v63 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v17 freezeDateNIHomeDevice];
-  if (v19)
+  candidatesCopy = candidates;
+  stateCopy = state;
+  ascCopy = asc;
+  predictionCopy = prediction;
+  containerCopy = container;
+  dateCopy = date;
+  freezeDateNIHomeDevice = [containerCopy freezeDateNIHomeDevice];
+  if (freezeDateNIHomeDevice)
   {
-    v40 = [v17 freezeDateNIHomeDevice];
+    freezeDateNIHomeDevice2 = [containerCopy freezeDateNIHomeDevice];
   }
 
   else
   {
-    v40 = v18;
+    freezeDateNIHomeDevice2 = dateCopy;
   }
 
   v20 = +[IRPreferences shared];
-  v21 = [v20 nearbyDeviceMeasurmentExpityTimeSeconds];
-  [v21 doubleValue];
-  v23 = [v40 dateByAddingTimeInterval:-v22];
+  nearbyDeviceMeasurmentExpityTimeSeconds = [v20 nearbyDeviceMeasurmentExpityTimeSeconds];
+  [nearbyDeviceMeasurmentExpityTimeSeconds doubleValue];
+  v23 = [freezeDateNIHomeDevice2 dateByAddingTimeInterval:-v22];
 
-  v24 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -191,22 +191,22 @@ void __128__IRCandidateClassificationDetectorSameSpace_sameSpaceMiLoScoresForCan
   v42[2] = __173__IRCandidateClassificationDetectorSameSpace_adjustSameSpaceParametersForCandidates_withSystemState_andHistoryEventsAsc_andMiLoPrediction_andNearbyDevicesContainer_andDate___block_invoke;
   v42[3] = &unk_2797E1AF0;
   v42[4] = self;
-  v25 = v16;
+  v25 = predictionCopy;
   v43 = v25;
-  v26 = v15;
+  v26 = ascCopy;
   v44 = v26;
-  v27 = v18;
+  v27 = dateCopy;
   v45 = v27;
-  v28 = v14;
+  v28 = stateCopy;
   v46 = v28;
-  v29 = v17;
+  v29 = containerCopy;
   v47 = v29;
   v30 = v23;
   v48 = v30;
-  v31 = v24;
+  v31 = distantPast;
   v49 = v31;
   v50 = &v51;
-  [v41 enumerateObjectsUsingBlock:v42];
+  [candidatesCopy enumerateObjectsUsingBlock:v42];
   v32 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v33 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -215,7 +215,7 @@ void __128__IRCandidateClassificationDetectorSameSpace_sameSpaceMiLoScoresForCan
     v34 = v28;
     v35 = v26;
     v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v52[3]];
-    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v41, "count")}];
+    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(candidatesCopy, "count")}];
     *buf = 136315906;
     v56 = "#detector-same-space, ";
     v57 = 2112;
@@ -365,27 +365,27 @@ void __173__IRCandidateClassificationDetectorSameSpace_adjustSameSpaceParameters
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isSameSpaceCandidate:(id)a3
+- (BOOL)_isSameSpaceCandidate:(id)candidate
 {
-  v3 = a3;
-  if ([v3 sameSpaceBasedOnMiLo] & 1) != 0 || (objc_msgSend(v3, "sameSpaceBasedOnUWB") & 1) != 0 || (objc_msgSend(v3, "sameSpaceBasedOnBLE") & 1) != 0 || (objc_msgSend(v3, "sameSpaceBasedOnBrokeredLOI") & 1) != 0 || (objc_msgSend(v3, "sameSpaceBasedOnPDRFence"))
+  candidateCopy = candidate;
+  if ([candidateCopy sameSpaceBasedOnMiLo] & 1) != 0 || (objc_msgSend(candidateCopy, "sameSpaceBasedOnUWB") & 1) != 0 || (objc_msgSend(candidateCopy, "sameSpaceBasedOnBLE") & 1) != 0 || (objc_msgSend(candidateCopy, "sameSpaceBasedOnBrokeredLOI") & 1) != 0 || (objc_msgSend(candidateCopy, "sameSpaceBasedOnPDRFence"))
   {
-    v4 = 1;
+    sameSpaceBasedOnHistory = 1;
   }
 
   else
   {
-    v4 = [v3 sameSpaceBasedOnHistory];
+    sameSpaceBasedOnHistory = [candidateCopy sameSpaceBasedOnHistory];
   }
 
-  return v4;
+  return sameSpaceBasedOnHistory;
 }
 
-- (id)_isSameSpaceForCandidate:(id)a3 basedOnNearbyDevices:(id)a4 andExpiryDate:(id)a5 isUWB:(BOOL)a6
+- (id)_isSameSpaceForCandidate:(id)candidate basedOnNearbyDevices:(id)devices andExpiryDate:(id)date isUWB:(BOOL)b
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  candidateCopy = candidate;
+  devicesCopy = devices;
+  dateCopy = date;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -396,23 +396,23 @@ void __173__IRCandidateClassificationDetectorSameSpace_adjustSameSpaceParameters
   v27[3] = __Block_byref_object_copy__8;
   v27[4] = __Block_byref_object_dispose__8;
   v28 = 0;
-  v12 = [v9 nodes];
+  nodes = [candidateCopy nodes];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __112__IRCandidateClassificationDetectorSameSpace__isSameSpaceForCandidate_basedOnNearbyDevices_andExpiryDate_isUWB___block_invoke;
   v21[3] = &unk_2797E1B40;
-  v13 = v10;
+  v13 = devicesCopy;
   v22 = v13;
-  v14 = v11;
-  v26 = a6;
+  v14 = dateCopy;
+  bCopy = b;
   v23 = v14;
   v24 = v27;
   v25 = &v29;
-  [v12 enumerateObjectsUsingBlock:v21];
+  [nodes enumerateObjectsUsingBlock:v21];
 
   v15 = +[IRPreferences shared];
-  v16 = [v15 deviceRangeProximityThreshold];
-  [v16 doubleValue];
+  deviceRangeProximityThreshold = [v15 deviceRangeProximityThreshold];
+  [deviceRangeProximityThreshold doubleValue];
   v18 = v17;
 
   if (v30[3] <= v18)
@@ -542,28 +542,28 @@ BOOL __112__IRCandidateClassificationDetectorSameSpace__isSameSpaceForCandidate_
   return v3;
 }
 
-- (BOOL)_isSameSpaceBrokeredDeviceForCandidate:(id)a3 basedOnSystemState:(id)a4 andHistoryEventsAsc:(id)a5 andDate:(id)a6
+- (BOOL)_isSameSpaceBrokeredDeviceForCandidate:(id)candidate basedOnSystemState:(id)state andHistoryEventsAsc:(id)asc andDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 isBrokeredDevice])
+  candidateCopy = candidate;
+  stateCopy = state;
+  ascCopy = asc;
+  dateCopy = date;
+  if ([candidateCopy isBrokeredDevice])
   {
     v13 = +[IRPreferences shared];
-    v14 = [v13 loiSameSpaceEventsTimeIntervalSeconds];
-    [v14 doubleValue];
-    v16 = [v12 dateByAddingTimeInterval:-v15];
+    loiSameSpaceEventsTimeIntervalSeconds = [v13 loiSameSpaceEventsTimeIntervalSeconds];
+    [loiSameSpaceEventsTimeIntervalSeconds doubleValue];
+    v16 = [dateCopy dateByAddingTimeInterval:-v15];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __132__IRCandidateClassificationDetectorSameSpace__isSameSpaceBrokeredDeviceForCandidate_basedOnSystemState_andHistoryEventsAsc_andDate___block_invoke;
     v21[3] = &unk_2797E1B68;
-    v22 = v9;
+    v22 = candidateCopy;
     v23 = v16;
-    v24 = v10;
+    v24 = stateCopy;
     v17 = v16;
-    v18 = [v11 firstWhere:v21];
+    v18 = [ascCopy firstWhere:v21];
     v19 = v18 != 0;
   }
 
@@ -628,43 +628,43 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)_isSameSpaceBasedOnPDRFenceForCandidate:(id)a3 basedOnSystemState:(id)a4
+- (BOOL)_isSameSpaceBasedOnPDRFenceForCandidate:(id)candidate basedOnSystemState:(id)state
 {
-  v5 = a4;
-  if ([a3 isBrokeredDevice])
+  stateCopy = state;
+  if ([candidate isBrokeredDevice])
   {
-    v6 = [v5 pdrFenceActive];
+    pdrFenceActive = [stateCopy pdrFenceActive];
   }
 
   else
   {
-    v6 = 0;
+    pdrFenceActive = 0;
   }
 
-  return v6;
+  return pdrFenceActive;
 }
 
-- (BOOL)_isSameSpaceForCandidate:(id)a3 basedOnHistoryEventsAsc:(id)a4 andDate:(id)a5
+- (BOOL)_isSameSpaceForCandidate:(id)candidate basedOnHistoryEventsAsc:(id)asc andDate:(id)date
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  candidateCopy = candidate;
+  dateCopy = date;
+  ascCopy = asc;
   v10 = +[IRPreferences shared];
-  v11 = [v10 historySameSpaceEventsTimeIntervalSeconds];
-  [v11 doubleValue];
-  v13 = [v8 dateByAddingTimeInterval:-v12];
+  historySameSpaceEventsTimeIntervalSeconds = [v10 historySameSpaceEventsTimeIntervalSeconds];
+  [historySameSpaceEventsTimeIntervalSeconds doubleValue];
+  v13 = [dateCopy dateByAddingTimeInterval:-v12];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __103__IRCandidateClassificationDetectorSameSpace__isSameSpaceForCandidate_basedOnHistoryEventsAsc_andDate___block_invoke;
   v17[3] = &unk_2797E1AA0;
-  v18 = v7;
+  v18 = candidateCopy;
   v19 = v13;
   v14 = v13;
-  v15 = v7;
-  LOBYTE(v11) = [v9 containsObjectPassingTest:v17];
+  v15 = candidateCopy;
+  LOBYTE(historySameSpaceEventsTimeIntervalSeconds) = [ascCopy containsObjectPassingTest:v17];
 
-  return v11;
+  return historySameSpaceEventsTimeIntervalSeconds;
 }
 
 uint64_t __103__IRCandidateClassificationDetectorSameSpace__isSameSpaceForCandidate_basedOnHistoryEventsAsc_andDate___block_invoke(uint64_t a1, void *a2)

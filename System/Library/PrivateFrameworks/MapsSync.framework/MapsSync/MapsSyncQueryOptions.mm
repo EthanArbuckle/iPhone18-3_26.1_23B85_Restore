@@ -1,30 +1,30 @@
 @interface MapsSyncQueryOptions
-+ (id)restrictOptionsWithOptions:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5;
++ (id)restrictOptionsWithOptions:(id)options predicate:(id)predicate sortDescriptors:(id)descriptors;
 - (BOOL)lazyLoad;
 - (NSArray)sortDescriptors;
 - (_TtC8MapsSync13MapsSyncRange)range;
 - (_TtC8MapsSync20MapsSyncQueryOptions)init;
-- (_TtC8MapsSync20MapsSyncQueryOptions)initWithOptions:(id)a3;
-- (_TtC8MapsSync20MapsSyncQueryOptions)initWithPredicate:(id)a3 sortDescriptors:(id)a4 range:(id)a5;
+- (_TtC8MapsSync20MapsSyncQueryOptions)initWithOptions:(id)options;
+- (_TtC8MapsSync20MapsSyncQueryOptions)initWithPredicate:(id)predicate sortDescriptors:(id)descriptors range:(id)range;
 - (_TtC8MapsSync22MapsSyncQueryPredicate)predicate;
-- (void)setLazyLoad:(BOOL)a3;
-- (void)setSortDescriptors:(id)a3;
+- (void)setLazyLoad:(BOOL)load;
+- (void)setSortDescriptors:(id)descriptors;
 @end
 
 @implementation MapsSyncQueryOptions
 
-- (_TtC8MapsSync20MapsSyncQueryOptions)initWithPredicate:(id)a3 sortDescriptors:(id)a4 range:(id)a5
+- (_TtC8MapsSync20MapsSyncQueryOptions)initWithPredicate:(id)predicate sortDescriptors:(id)descriptors range:(id)range
 {
-  v6 = a4;
-  if (a4)
+  descriptorsCopy = descriptors;
+  if (descriptors)
   {
     sub_1B6281C60(0, &qword_1EDB0F638, 0x1E696AEB0);
-    v6 = sub_1B63BECA4();
+    descriptorsCopy = sub_1B63BECA4();
   }
 
-  v8 = a3;
-  v9 = a5;
-  v10 = sub_1B62895F4(a3, v6, a5);
+  predicateCopy = predicate;
+  rangeCopy = range;
+  v10 = sub_1B62895F4(predicate, descriptorsCopy, range);
 
   return v10;
 }
@@ -62,19 +62,19 @@
   return v4;
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v3 = a3;
-  if (a3)
+  descriptorsCopy = descriptors;
+  if (descriptors)
   {
     sub_1B6281C60(0, &qword_1EDB0F638, 0x1E696AEB0);
-    v3 = sub_1B63BECA4();
+    descriptorsCopy = sub_1B63BECA4();
   }
 
   v5 = OBJC_IVAR____TtC8MapsSync20MapsSyncQueryOptions_sortDescriptors;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = descriptorsCopy;
 }
 
 - (BOOL)lazyLoad
@@ -84,33 +84,33 @@
   return *(self + v3);
 }
 
-- (void)setLazyLoad:(BOOL)a3
+- (void)setLazyLoad:(BOOL)load
 {
   v5 = OBJC_IVAR____TtC8MapsSync20MapsSyncQueryOptions_lazyLoad;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = load;
 }
 
-- (_TtC8MapsSync20MapsSyncQueryOptions)initWithOptions:(id)a3
+- (_TtC8MapsSync20MapsSyncQueryOptions)initWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = sub_1B628DD60(v3);
+  optionsCopy = options;
+  v4 = sub_1B628DD60(optionsCopy);
 
   return v4;
 }
 
-+ (id)restrictOptionsWithOptions:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5
++ (id)restrictOptionsWithOptions:(id)options predicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v5 = a5;
-  if (a5)
+  descriptorsCopy = descriptors;
+  if (descriptors)
   {
     sub_1B6281C60(0, &qword_1EDB0F638, 0x1E696AEB0);
-    v5 = sub_1B63BECA4();
+    descriptorsCopy = sub_1B63BECA4();
   }
 
-  v8 = a3;
-  v9 = a4;
-  v10 = sub_1B628EC4C(a3, a4, v5);
+  optionsCopy = options;
+  predicateCopy = predicate;
+  v10 = sub_1B628EC4C(options, predicate, descriptorsCopy);
 
   return v10;
 }

@@ -1,22 +1,22 @@
 @interface WFAttributedAlertButton
-+ (id)buttonWithAttributedTitle:(id)a3 label:(id)a4 selected:(BOOL)a5 style:(int64_t)a6 handler:(id)a7;
++ (id)buttonWithAttributedTitle:(id)title label:(id)label selected:(BOOL)selected style:(int64_t)style handler:(id)handler;
 @end
 
 @implementation WFAttributedAlertButton
 
-+ (id)buttonWithAttributedTitle:(id)a3 label:(id)a4 selected:(BOOL)a5 style:(int64_t)a6 handler:(id)a7
++ (id)buttonWithAttributedTitle:(id)title label:(id)label selected:(BOOL)selected style:(int64_t)style handler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = [a1 buttonWithTitle:v13 subtitle:0 selected:v9 style:a6 handler:a7];
+  selectedCopy = selected;
+  titleCopy = title;
+  labelCopy = label;
+  v14 = [self buttonWithTitle:labelCopy subtitle:0 selected:selectedCopy style:style handler:handler];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [titleCopy copy];
     v16 = v14[10];
     v14[10] = v15;
 
-    v17 = [v13 copy];
+    v17 = [labelCopy copy];
     v18 = v14[11];
     v14[11] = v17;
 

@@ -1,24 +1,24 @@
 @interface PKWorldRegionUpdater
-- (PKWorldRegionUpdater)initWithSearchService:(id)a3;
-- (void)_accessObserversWithHandler:(id)a3;
+- (PKWorldRegionUpdater)initWithSearchService:(id)service;
+- (void)_accessObserversWithHandler:(id)handler;
 - (void)_beginReverseGeocodingIfPossible;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)updateCoordinatesForWorldRegionIfNeeded:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)updateCoordinatesForWorldRegionIfNeeded:(id)needed;
 @end
 
 @implementation PKWorldRegionUpdater
 
-- (PKWorldRegionUpdater)initWithSearchService:(id)a3
+- (PKWorldRegionUpdater)initWithSearchService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v23.receiver = self;
   v23.super_class = PKWorldRegionUpdater;
   v6 = [(PKWorldRegionUpdater *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchService, a3);
+    objc_storeStrong(&v6->_searchService, service);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     regionsToGeocode = v7->_regionsToGeocode;
     v7->_regionsToGeocode = v8;
@@ -32,9 +32,9 @@
     v7->_regionIdentifiersToGeocode = v12;
 
     v7->_lockObservers._os_unfair_lock_opaque = 0;
-    v14 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v7->_observers;
-    v7->_observers = v14;
+    v7->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, -1);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(v16, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -51,17 +51,17 @@
   return v7;
 }
 
-- (void)updateCoordinatesForWorldRegionIfNeeded:(id)a3
+- (void)updateCoordinatesForWorldRegionIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PKWorldRegionUpdater_updateCoordinatesForWorldRegionIfNeeded___block_invoke;
   v7[3] = &unk_1E8010A10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = neededCopy;
+  selfCopy = self;
+  v6 = neededCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -98,11 +98,11 @@ void __64__PKWorldRegionUpdater_updateCoordinatesForWorldRegionIfNeeded___block_
   p_currentRegionToGeocode = &self->_currentRegionToGeocode;
   if (!self->_currentRegionToGeocode)
   {
-    v4 = [(NSMutableArray *)self->_regionsToGeocode firstObject];
-    v5 = v4;
-    if (v4)
+    firstObject = [(NSMutableArray *)self->_regionsToGeocode firstObject];
+    v5 = firstObject;
+    if (firstObject)
     {
-      v6 = [v4 identifier];
+      identifier = [firstObject identifier];
       objc_storeStrong(p_currentRegionToGeocode, v5);
       v7 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -114,8 +114,8 @@ void __64__PKWorldRegionUpdater_updateCoordinatesForWorldRegionIfNeeded___block_
 
       objc_initWeak(buf, self);
       v8 = objc_alloc(MEMORY[0x1E696F260]);
-      v9 = [v5 searchString];
-      v10 = [v8 initWithNaturalLanguageQuery:v9];
+      searchString = [v5 searchString];
+      v10 = [v8 initWithNaturalLanguageQuery:searchString];
 
       v11 = [objc_alloc(MEMORY[0x1E696F248]) initWithRequest:v10];
       v14[0] = MEMORY[0x1E69E9820];
@@ -123,11 +123,11 @@ void __64__PKWorldRegionUpdater_updateCoordinatesForWorldRegionIfNeeded___block_
       v14[2] = __56__PKWorldRegionUpdater__beginReverseGeocodingIfPossible__block_invoke;
       v14[3] = &unk_1E8020AB0;
       objc_copyWeak(&v18, buf);
-      v12 = v6;
+      v12 = identifier;
       v15 = v12;
       v13 = v5;
       v16 = v13;
-      v17 = self;
+      selfCopy = self;
       [v11 startWithCompletionHandler:v14];
 
       objc_destroyWeak(&v18);
@@ -271,46 +271,46 @@ uint64_t __56__PKWorldRegionUpdater__beginReverseGeocodingIfPossible__block_invo
   return [v4 _beginReverseGeocodingIfPossible];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_lockObservers);
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_lockObservers);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_lockObservers);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_lockObservers);
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockObservers);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_lockObservers);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __52__PKWorldRegionUpdater__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E8010DD0;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }

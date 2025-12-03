@@ -1,26 +1,26 @@
 @interface SIRINLUINTERNALQUERYREWRITEQRResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRepetitionType:(id)a3;
+- (int)StringAsRepetitionType:(id)type;
 - (int)repetitionType;
 - (unint64_t)hash;
-- (void)addQrHypotheses:(id)a3;
-- (void)addRewriteHypotheses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addQrHypotheses:(id)hypotheses;
+- (void)addRewriteHypotheses:(id)hypotheses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALQUERYREWRITEQRResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (requestId)
   {
     if (v6)
@@ -38,7 +38,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -62,9 +62,9 @@
     while (v9);
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_repetitionType = *(v4 + 4);
+    self->_repetitionType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -72,7 +72,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 4);
+  v12 = *(fromCopy + 4);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -116,16 +116,16 @@
   return v4 ^ v3 ^ v5 ^ [(NSMutableArray *)self->_rewriteHypotheses hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 3))
+  if (requestId | *(equalCopy + 3))
   {
     if (![(SIRINLUEXTERNALUUID *)requestId isEqual:?])
     {
@@ -134,7 +134,7 @@
   }
 
   qrHypotheses = self->_qrHypotheses;
-  if (qrHypotheses | *(v4 + 1))
+  if (qrHypotheses | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)qrHypotheses isEqual:?])
     {
@@ -142,16 +142,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_repetitionType != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_repetitionType != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -159,7 +159,7 @@ LABEL_13:
   }
 
   rewriteHypotheses = self->_rewriteHypotheses;
-  if (rewriteHypotheses | *(v4 + 4))
+  if (rewriteHypotheses | *(equalCopy + 4))
   {
     v9 = [(NSMutableArray *)rewriteHypotheses isEqual:?];
   }
@@ -174,11 +174,11 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -202,7 +202,7 @@ LABEL_14:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addQrHypotheses:v13];
 
         ++v12;
@@ -241,7 +241,7 @@ LABEL_14:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addRewriteHypotheses:v19];
 
         ++v18;
@@ -258,55 +258,55 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v12 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if ([(SIRINLUINTERNALQUERYREWRITEQRResponse *)self qrHypothesesCount])
   {
-    [v12 clearQrHypotheses];
-    v4 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self qrHypothesesCount];
-    if (v4)
+    [toCopy clearQrHypotheses];
+    qrHypothesesCount = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self qrHypothesesCount];
+    if (qrHypothesesCount)
     {
-      v5 = v4;
+      v5 = qrHypothesesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self qrHypothesesAtIndex:i];
-        [v12 addQrHypotheses:v7];
+        [toCopy addQrHypotheses:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v12 + 4) = self->_repetitionType;
-    *(v12 + 40) |= 1u;
+    *(toCopy + 4) = self->_repetitionType;
+    *(toCopy + 40) |= 1u;
   }
 
   if ([(SIRINLUINTERNALQUERYREWRITEQRResponse *)self rewriteHypothesesCount])
   {
-    [v12 clearRewriteHypotheses];
-    v8 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self rewriteHypothesesCount];
-    if (v8)
+    [toCopy clearRewriteHypotheses];
+    rewriteHypothesesCount = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self rewriteHypothesesCount];
+    if (rewriteHypothesesCount)
     {
-      v9 = v8;
+      v9 = rewriteHypothesesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self rewriteHypothesesAtIndex:j];
-        [v12 addRewriteHypotheses:v11];
+        [toCopy addRewriteHypotheses:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
@@ -388,12 +388,12 @@ LABEL_14:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   if ([(NSMutableArray *)self->_qrHypotheses count])
@@ -418,8 +418,8 @@ LABEL_14:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -428,7 +428,7 @@ LABEL_14:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"qr_hypotheses"];
+    [dictionary setObject:v6 forKey:@"qr_hypotheses"];
   }
 
   if (*&self->_has)
@@ -444,7 +444,7 @@ LABEL_14:
       v14 = off_1E8327F80[repetitionType];
     }
 
-    [v3 setObject:v14 forKey:@"repetition_type"];
+    [dictionary setObject:v14 forKey:@"repetition_type"];
   }
 
   if ([(NSMutableArray *)self->_rewriteHypotheses count])
@@ -469,8 +469,8 @@ LABEL_14:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -479,12 +479,12 @@ LABEL_14:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"rewrite_hypotheses"];
+    [dictionary setObject:v15 forKey:@"rewrite_hypotheses"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -493,49 +493,49 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALQUERYREWRITEQRResponse;
   v4 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)&v8 description];
-  v5 = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALQUERYREWRITEQRResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addRewriteHypotheses:(id)a3
+- (void)addRewriteHypotheses:(id)hypotheses
 {
-  v4 = a3;
+  hypothesesCopy = hypotheses;
   rewriteHypotheses = self->_rewriteHypotheses;
-  v8 = v4;
+  v8 = hypothesesCopy;
   if (!rewriteHypotheses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rewriteHypotheses;
     self->_rewriteHypotheses = v6;
 
-    v4 = v8;
+    hypothesesCopy = v8;
     rewriteHypotheses = self->_rewriteHypotheses;
   }
 
-  [(NSMutableArray *)rewriteHypotheses addObject:v4];
+  [(NSMutableArray *)rewriteHypotheses addObject:hypothesesCopy];
 }
 
-- (int)StringAsRepetitionType:(id)a3
+- (int)StringAsRepetitionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NOT_AVAILABLE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"NOT_AVAILABLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NO_REPETITION"])
+  else if ([typeCopy isEqualToString:@"NO_REPETITION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PARTIAL_REPETITION"])
+  else if ([typeCopy isEqualToString:@"PARTIAL_REPETITION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FULL_REPETITION"])
+  else if ([typeCopy isEqualToString:@"FULL_REPETITION"])
   {
     v4 = 3;
   }
@@ -561,22 +561,22 @@ LABEL_14:
   }
 }
 
-- (void)addQrHypotheses:(id)a3
+- (void)addQrHypotheses:(id)hypotheses
 {
-  v4 = a3;
+  hypothesesCopy = hypotheses;
   qrHypotheses = self->_qrHypotheses;
-  v8 = v4;
+  v8 = hypothesesCopy;
   if (!qrHypotheses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_qrHypotheses;
     self->_qrHypotheses = v6;
 
-    v4 = v8;
+    hypothesesCopy = v8;
     qrHypotheses = self->_qrHypotheses;
   }
 
-  [(NSMutableArray *)qrHypotheses addObject:v4];
+  [(NSMutableArray *)qrHypotheses addObject:hypothesesCopy];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface NEFilterSource
 + (BOOL)filterRequired;
-- (NEFilterSource)initWithDecisionQueue:(id)a3;
-- (NEFilterSource)initWithURL:(id)a3 direction:(int64_t)a4 socketIdentifier:(unint64_t)a5;
+- (NEFilterSource)initWithDecisionQueue:(id)queue;
+- (NEFilterSource)initWithURL:(id)l direction:(int64_t)direction socketIdentifier:(unint64_t)identifier;
 - (id)filterOptions;
 - (id)replacementData;
-- (uint64_t)generateCryptoSignature:(_DWORD *)a3 length:;
-- (uint64_t)sendDataToPluginWithConnection:(void *)a3 completionHandler:;
-- (void)addData:(id)a3 withCompletionQueue:(id)a4 completionHandler:(id)a5;
-- (void)connectToFilterUnit:(void *)a3 withCompletionHandler:;
-- (void)dataCompleteWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)finishedLoadingWithDecisionHandler:(id)a3;
+- (uint64_t)generateCryptoSignature:(_DWORD *)signature length:;
+- (uint64_t)sendDataToPluginWithConnection:(void *)connection completionHandler:;
+- (void)addData:(id)data withCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)connectToFilterUnit:(void *)unit withCompletionHandler:;
+- (void)dataCompleteWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)finishedLoadingWithDecisionHandler:(id)handler;
 - (void)initGlobals;
-- (void)prepareAgentForResponse:(void *)a3 handler:;
-- (void)prepareAgentForURL:(void *)a3 urlRequest:(void *)a4 urlResponse:(void *)a5 parentURL:(uint64_t)a6 direction:(void *)a7 flowUUID:(void *)a8 handler:;
-- (void)prepareAgentWithHandler:(void *)a1;
-- (void)receivedData:(id)a3 decisionHandler:(id)a4;
-- (void)receivedResponse:(id)a3 decisionHandler:(id)a4;
-- (void)remediateWithDecisionHandler:(id)a3;
-- (void)willSendRequest:(id)a3 decisionHandler:(id)a4;
+- (void)prepareAgentForResponse:(void *)response handler:;
+- (void)prepareAgentForURL:(void *)l urlRequest:(void *)request urlResponse:(void *)response parentURL:(uint64_t)rL direction:(void *)direction flowUUID:(void *)d handler:;
+- (void)prepareAgentWithHandler:(void *)handler;
+- (void)receivedData:(id)data decisionHandler:(id)handler;
+- (void)receivedResponse:(id)response decisionHandler:(id)handler;
+- (void)remediateWithDecisionHandler:(id)handler;
+- (void)willSendRequest:(id)request decisionHandler:(id)handler;
 @end
 
 @implementation NEFilterSource
 
-- (void)remediateWithDecisionHandler:(id)a3
+- (void)remediateWithDecisionHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (self && (objc_setProperty_atomic(self, v4, 0, 160), self->_expectRemediation))
     {
@@ -39,7 +39,7 @@
         v15[2] = __47__NEFilterSource_remediateWithDecisionHandler___block_invoke_3;
         v15[3] = &unk_1E7F07830;
         v15[4] = self;
-        v18 = v5;
+        v18 = handlerCopy;
         v16 = v6;
         v17 = v9;
         [(NEFilterSource *)self connectToFilterUnit:v15 withCompletionHandler:?];
@@ -56,7 +56,7 @@
         v19[2] = __47__NEFilterSource_remediateWithDecisionHandler___block_invoke_2;
         v19[3] = &unk_1E7F0B588;
         v19[4] = self;
-        v20 = v5;
+        v20 = handlerCopy;
         dispatch_async(Property, v19);
         v11 = v20;
       }
@@ -80,7 +80,7 @@
       block[1] = 3221225472;
       block[2] = __47__NEFilterSource_remediateWithDecisionHandler___block_invoke;
       block[3] = &unk_1E7F0B600;
-      v22 = v5;
+      v22 = handlerCopy;
       dispatch_async(&self->super, block);
       v6 = v22;
     }
@@ -169,22 +169,22 @@ void __47__NEFilterSource_remediateWithDecisionHandler___block_invoke_3(uint64_t
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectToFilterUnit:(void *)a3 withCompletionHandler:
+- (void)connectToFilterUnit:(void *)unit withCompletionHandler:
 {
-  v4 = a3;
-  if (v4)
+  unitCopy = unit;
+  if (unitCopy)
   {
-    v5 = *(a1 + 192);
+    v5 = *(self + 192);
     v6 = ne_filter_copy_connection();
     if (v6)
     {
-      v4[2](v4, v6);
+      unitCopy[2](unitCopy, v6);
     }
 
     else
     {
-      v7 = *(a1 + 192);
-      v8 = v4;
+      v7 = *(self + 192);
+      v8 = unitCopy;
       ne_filter_request_connection();
     }
   }
@@ -295,33 +295,33 @@ void __47__NEFilterSource_remediateWithDecisionHandler___block_invoke_87(uint64_
 
 - (id)filterOptions
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_15;
   }
 
-  if ([a1 status] == 2)
+  if ([self status] == 2)
   {
     v3 = objc_alloc_init(NEFilterBlockPage);
-    v4 = [a1 url];
-    v6 = [v4 absoluteString];
+    v4 = [self url];
+    absoluteString = [v4 absoluteString];
     if (v3)
     {
-      objc_setProperty_atomic_copy(v3, v5, v6, 24);
+      objc_setProperty_atomic_copy(v3, v5, absoluteString, 24);
     }
 
-    if (objc_getProperty(a1, v7, 160, 1))
+    if (objc_getProperty(self, v7, 160, 1))
     {
-      Property = objc_getProperty(a1, v8, 160, 1);
+      Property = objc_getProperty(self, v8, 160, 1);
       if (v3)
       {
         objc_setProperty_atomic_copy(v3, v10, Property, 32);
         objc_setProperty_atomic_copy(v3, v11, &stru_1F3880810, 40);
       }
 
-      if ([objc_getProperty(a1 v10])
+      if ([objc_getProperty(self v10])
       {
-        v12 = objc_getProperty(a1, v8, 168, 1);
+        v12 = objc_getProperty(self, v8, 168, 1);
         if (v3)
         {
           v13 = v12;
@@ -348,9 +348,9 @@ LABEL_21:
       objc_setProperty_atomic_copy(v25, v8, v13, v26);
     }
 
-    if (objc_getProperty(a1, v8, 176, 1))
+    if (objc_getProperty(self, v8, 176, 1))
     {
-      v28 = objc_getProperty(a1, v27, 176, 1);
+      v28 = objc_getProperty(self, v27, 176, 1);
       v29 = v28;
       if (v3)
       {
@@ -369,17 +369,17 @@ LABEL_21:
       }
     }
 
-    v32 = [(NEFilterBlockPage *)v3 page];
-    if (v32)
+    page = [(NEFilterBlockPage *)v3 page];
+    if (page)
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v33 = [v32 dataUsingEncoding:4];
+      v33 = [page dataUsingEncoding:4];
       v34 = [v33 copy];
       [v14 setObject:v34 forKeyedSubscript:@"PageData"];
 
-      if (objc_getProperty(a1, v35, 160, 1))
+      if (objc_getProperty(self, v35, 160, 1))
       {
-        [v14 setObject:objc_getProperty(a1 forKeyedSubscript:{v36, 160, 1), @"RemediationURL"}];
+        [v14 setObject:objc_getProperty(self forKeyedSubscript:{v36, 160, 1), @"RemediationURL"}];
       }
     }
 
@@ -391,7 +391,7 @@ LABEL_21:
     goto LABEL_45;
   }
 
-  if (!objc_getProperty(a1, v2, 152, 1))
+  if (!objc_getProperty(self, v2, 152, 1))
   {
 LABEL_15:
     v14 = 0;
@@ -399,14 +399,14 @@ LABEL_15:
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v15 = [a1 url];
+  v15 = [self url];
 
   if (v15)
   {
-    v17 = [a1 url];
-    v18 = [v17 absoluteString];
-    v20 = objc_getProperty(a1, v19, 152, 1);
-    v21 = v18;
+    v17 = [self url];
+    absoluteString2 = [v17 absoluteString];
+    v20 = objc_getProperty(self, v19, 152, 1);
+    v21 = absoluteString2;
     v22 = v20;
     v23 = &stru_1F3880810;
     if ([v21 containsString:@"?"])
@@ -424,8 +424,8 @@ LABEL_15:
       v24 = @"?";
     }
 
-    v37 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    v38 = [v22 stringByAddingPercentEncodingWithAllowedCharacters:v37];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    v38 = [v22 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@", v21, v23, v24, v38];
     v40 = [MEMORY[0x1E695DFF8] URLWithString:v39];
@@ -445,18 +445,18 @@ LABEL_15:
     }
   }
 
-  v42 = [objc_getProperty(a1 v16];
+  v42 = [objc_getProperty(self v16];
   [v14 setObject:v42 forKeyedSubscript:@"URLAppendString"];
 
-  objc_setProperty_atomic(a1, v43, 0, 152);
+  objc_setProperty_atomic(self, v43, 0, 152);
 LABEL_45:
 
   return v14;
 }
 
-- (void)finishedLoadingWithDecisionHandler:(id)a3
+- (void)finishedLoadingWithDecisionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     v6 = objc_getProperty(self, v4, 216, 1);
@@ -474,8 +474,8 @@ LABEL_45:
   v10[2] = __53__NEFilterSource_finishedLoadingWithDecisionHandler___block_invoke;
   v10[3] = &unk_1E7F0B588;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_group_notify(v6, Property, v10);
 }
 
@@ -710,30 +710,30 @@ LABEL_25:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareAgentForResponse:(void *)a3 handler:
+- (void)prepareAgentForResponse:(void *)response handler:
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    responseCopy = response;
     v6 = a2;
     v7 = [v6 URL];
-    objc_setProperty_atomic(a1, v8, v6, 128);
+    objc_setProperty_atomic(self, v8, v6, 128);
 
-    [a1 setUrl:v7];
-    if ((*(a1 + 8) & 1) == 0)
+    [self setUrl:v7];
+    if ((*(self + 8) & 1) == 0)
     {
       v9 = objc_alloc_init(MEMORY[0x1E6977E40]);
       [v9 setUrl:v7];
-      [v9 setPid:{objc_msgSend(a1, "sourceAppPid")}];
-      v10 = [a1 sourceAppIdentifier];
-      if ([v10 isEqualToString:@"com.apple.SafariViewService"])
+      [v9 setPid:{objc_msgSend(self, "sourceAppPid")}];
+      sourceAppIdentifier = [self sourceAppIdentifier];
+      if ([sourceAppIdentifier isEqualToString:@"com.apple.SafariViewService"])
       {
         v11 = [v9 pid];
 
         if (v11 >= 1)
         {
-          [a1 setSourceAppIdentifier:0];
+          [self setSourceAppIdentifier:0];
         }
       }
 
@@ -741,14 +741,14 @@ LABEL_25:
       {
       }
 
-      v12 = [a1 sourceAppIdentifier];
-      [v9 setSourceApplicationWithBundleID:v12];
+      sourceAppIdentifier2 = [self sourceAppIdentifier];
+      [v9 setSourceApplicationWithBundleID:sourceAppIdentifier2];
 
       if (![v9 pid])
       {
-        v13 = [v9 effectiveBundleID];
+        effectiveBundleID = [v9 effectiveBundleID];
 
-        if (!v13)
+        if (!effectiveBundleID)
         {
           v14 = ne_log_obj();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -759,14 +759,14 @@ LABEL_25:
         }
       }
 
-      if ([a1 sourceAppPid] >= 1)
+      if ([self sourceAppPid] >= 1)
       {
-        v15 = [a1 sourceAppPid];
-        if (v15 != getpid())
+        sourceAppPid = [self sourceAppPid];
+        if (sourceAppPid != getpid())
         {
           v48 = 0;
           memset(buffer, 0, sizeof(buffer));
-          if (proc_pidinfo([a1 sourceAppPid], 17, 1uLL, buffer, 56) == 56)
+          if (proc_pidinfo([self sourceAppPid], 17, 1uLL, buffer, 56) == 56)
           {
             v16 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:buffer];
             [v9 setProcessUUID:v16];
@@ -781,28 +781,28 @@ LABEL_25:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               *buf = 67109120;
-              v46 = [a1 sourceAppPid];
+              sourceAppPid2 = [self sourceAppPid];
               _os_log_error_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_ERROR, "Failed to convert from PID (%d) to UUID", buf, 8u);
             }
           }
         }
       }
 
-      v18 = [v7 host];
-      if (v18)
+      host = [v7 host];
+      if (host)
       {
-        v19 = [v7 port];
-        v20 = [v19 stringValue];
-        if (v20)
+        port = [v7 port];
+        stringValue = [port stringValue];
+        if (stringValue)
         {
           v21 = MEMORY[0x1E6977E28];
           [v7 host];
-          v22 = v44 = v5;
-          v23 = [v7 port];
-          v24 = [v23 stringValue];
-          v25 = [v21 endpointWithHostname:v22 port:v24];
+          v22 = v44 = responseCopy;
+          port2 = [v7 port];
+          stringValue2 = [port2 stringValue];
+          v25 = [v21 endpointWithHostname:v22 port:stringValue2];
 
-          v5 = v44;
+          responseCopy = v44;
         }
 
         else
@@ -817,59 +817,59 @@ LABEL_25:
       }
 
       v26 = [objc_alloc(MEMORY[0x1E6977E50]) initWithEndpoint:v25 parameters:v9];
-      objc_setProperty_atomic(a1, v27, v26, 72);
+      objc_setProperty_atomic(self, v27, v26, 72);
 
-      v29 = [objc_getProperty(a1 v28];
-      v30 = [v29 clientID];
-      objc_setProperty_atomic(a1, v31, v30, 80);
+      v29 = [objc_getProperty(self v28];
+      clientID = [v29 clientID];
+      objc_setProperty_atomic(self, v31, clientID, 80);
 
-      v33 = [objc_getProperty(a1 v32];
-      *(a1 + 16) = [v33 filterControlUnit];
+      v33 = [objc_getProperty(self v32];
+      *(self + 16) = [v33 filterControlUnit];
     }
 
-    v34 = [a1 url];
-    v36 = objc_getProperty(a1, v35, 136, 1);
-    v38 = objc_getProperty(a1, v37, 128, 1);
-    v40 = objc_getProperty(a1, v39, 184, 1);
-    Property = objc_getProperty(a1, v41, 80, 1);
-    [(NEFilterSource *)a1 prepareAgentForURL:v34 urlRequest:v36 urlResponse:v38 parentURL:v40 direction:2 flowUUID:Property handler:v5];
+    v34 = [self url];
+    v36 = objc_getProperty(self, v35, 136, 1);
+    v38 = objc_getProperty(self, v37, 128, 1);
+    v40 = objc_getProperty(self, v39, 184, 1);
+    Property = objc_getProperty(self, v41, 80, 1);
+    [(NEFilterSource *)self prepareAgentForURL:v34 urlRequest:v36 urlResponse:v38 parentURL:v40 direction:2 flowUUID:Property handler:responseCopy];
   }
 
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareAgentForURL:(void *)a3 urlRequest:(void *)a4 urlResponse:(void *)a5 parentURL:(uint64_t)a6 direction:(void *)a7 flowUUID:(void *)a8 handler:
+- (void)prepareAgentForURL:(void *)l urlRequest:(void *)request urlResponse:(void *)response parentURL:(uint64_t)rL direction:(void *)direction flowUUID:(void *)d handler:
 {
   v15 = a2;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  if (v20)
+  lCopy = l;
+  requestCopy = request;
+  responseCopy = response;
+  directionCopy = direction;
+  dCopy = d;
+  v21 = dCopy;
+  if (dCopy)
   {
-    v22 = *(a1 + 16);
+    v22 = *(self + 16);
     if (v22)
     {
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __97__NEFilterSource_prepareAgentForURL_urlRequest_urlResponse_parentURL_direction_flowUUID_handler___block_invoke;
       v24[3] = &unk_1E7F07768;
-      v24[4] = a1;
-      v30 = v20;
-      v25 = v19;
+      v24[4] = self;
+      v30 = dCopy;
+      v25 = directionCopy;
       v26 = v15;
-      v27 = v18;
-      v28 = v16;
-      v29 = v17;
-      v31 = a6;
-      [(NEFilterSource *)a1 connectToFilterUnit:v22 withCompletionHandler:v24];
+      v27 = responseCopy;
+      v28 = lCopy;
+      v29 = requestCopy;
+      rLCopy = rL;
+      [(NEFilterSource *)self connectToFilterUnit:v22 withCompletionHandler:v24];
     }
 
     else
     {
-      *(a1 + 24) = 1;
+      *(self + 24) = 1;
       v23 = ne_log_obj();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
@@ -998,10 +998,10 @@ LABEL_27:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)generateCryptoSignature:(_DWORD *)a3 length:
+- (uint64_t)generateCryptoSignature:(_DWORD *)signature length:
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v3 = 0;
     goto LABEL_14;
@@ -1019,28 +1019,28 @@ LABEL_27:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  if (a2 && a3)
+  if (a2 && signature)
   {
-    [objc_getProperty(a1 a2];
+    [objc_getProperty(self a2];
     DWORD2(v19) = 1;
-    HIDWORD(v23) = [a1 sourceAppPid];
+    HIDWORD(v23) = [self sourceAppPid];
     DWORD2(v23) = getpid();
-    v6 = a1[26];
-    *(&v27 + 1) = a1[25];
+    v6 = self[26];
+    *(&v27 + 1) = self[25];
     v28 = v6;
-    v7 = [a1 sourceAppIdentifier];
-    v8 = [v7 UTF8String];
+    sourceAppIdentifier = [self sourceAppIdentifier];
+    uTF8String = [sourceAppIdentifier UTF8String];
 
-    v9 = [a1 url];
-    v10 = [v9 absoluteString];
-    v11 = [v10 UTF8String];
+    v9 = [self url];
+    absoluteString = [v9 absoluteString];
+    uTF8String2 = [absoluteString UTF8String];
 
-    *a3 = 32;
-    v12 = a1[24];
-    if (v8)
+    *signature = 32;
+    v12 = self[24];
+    if (uTF8String)
     {
-      strlen(v8);
-      if (!v11)
+      strlen(uTF8String);
+      if (!uTF8String2)
       {
 LABEL_8:
         v3 = ne_filter_sign_data();
@@ -1065,12 +1065,12 @@ LABEL_8:
       }
     }
 
-    else if (!v11)
+    else if (!uTF8String2)
     {
       goto LABEL_8;
     }
 
-    strlen(v11);
+    strlen(uTF8String2);
     goto LABEL_8;
   }
 
@@ -1329,11 +1329,11 @@ void __59__NEFilterSource_handleFinishedLoadingWithDecisionHandler___block_invok
   (*(v4 + 16))(v4, v5, v6);
 }
 
-- (void)receivedData:(id)a3 decisionHandler:(id)a4
+- (void)receivedData:(id)data decisionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (self && self->_controlUnit)
     {
@@ -1344,7 +1344,7 @@ void __59__NEFilterSource_handleFinishedLoadingWithDecisionHandler___block_invok
         aBlock[2] = __47__NEFilterSource_receivedData_decisionHandler___block_invoke_3;
         aBlock[3] = &unk_1E7F0B588;
         aBlock[4] = self;
-        v10 = v8;
+        v10 = handlerCopy;
         v25 = v10;
         v11 = _Block_copy(aBlock);
         Property = objc_getProperty(self, v12, 216, 1);
@@ -1357,7 +1357,7 @@ void __59__NEFilterSource_handleFinishedLoadingWithDecisionHandler___block_invok
         v20[4] = self;
         v22 = v10;
         v23 = v11;
-        v21 = v6;
+        v21 = dataCopy;
         v16 = v11;
         [(NEFilterSource *)self prepareAgentForResponse:v15 handler:v20];
 
@@ -1371,7 +1371,7 @@ void __59__NEFilterSource_handleFinishedLoadingWithDecisionHandler___block_invok
         v26[1] = 3221225472;
         v26[2] = __47__NEFilterSource_receivedData_decisionHandler___block_invoke_2;
         v26[3] = &unk_1E7F0B600;
-        v27 = v8;
+        v27 = handlerCopy;
         dispatch_async(v19, v26);
         v17 = v27;
       }
@@ -1386,7 +1386,7 @@ void __59__NEFilterSource_handleFinishedLoadingWithDecisionHandler___block_invok
       block[2] = __47__NEFilterSource_receivedData_decisionHandler___block_invoke;
       block[3] = &unk_1E7F0B588;
       block[4] = self;
-      v29 = v8;
+      v29 = handlerCopy;
       dispatch_async(v18, block);
       v17 = v29;
     }
@@ -1524,38 +1524,38 @@ uint64_t __47__NEFilterSource_receivedData_decisionHandler___block_invoke_6(uint
   return v3(v1, v2, 0);
 }
 
-- (uint64_t)sendDataToPluginWithConnection:(void *)a3 completionHandler:
+- (uint64_t)sendDataToPluginWithConnection:(void *)connection completionHandler:
 {
   v33 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v7 = a3;
-  if (!a1)
+  connectionCopy = connection;
+  if (!self)
   {
     goto LABEL_22;
   }
 
-  if (*(a1 + 120) == -1 || ![objc_getProperty(a1 v6] || (v8 = *(a1 + 120), v9 = *(a1 + 104), v8 >= objc_msgSend(objc_getProperty(a1, v6, 64, 1), "length") + v9))
+  if (*(self + 120) == -1 || ![objc_getProperty(self v6] || (v8 = *(self + 120), v9 = *(self + 104), v8 >= objc_msgSend(objc_getProperty(self, v6, 64, 1), "length") + v9))
   {
-    v12 = objc_getProperty(a1, v6, 64, 1);
-    [v12 replaceBytesInRange:0 withBytes:objc_msgSend(objc_getProperty(a1 length:{v13, 64, 1), "length"), 0, 0}];
+    v12 = objc_getProperty(self, v6, 64, 1);
+    [v12 replaceBytesInRange:0 withBytes:objc_msgSend(objc_getProperty(self length:{v13, 64, 1), "length"), 0, 0}];
 
     goto LABEL_8;
   }
 
-  v10 = *(a1 + 120);
-  v11 = *(a1 + 104);
+  v10 = *(self + 120);
+  v11 = *(self + 104);
   if (v10 > v11)
   {
-    [objc_getProperty(a1 v6];
+    [objc_getProperty(self v6];
 LABEL_8:
-    *(a1 + 104) = *(a1 + 120);
+    *(self + 104) = *(self + 120);
   }
 
-  v14 = [objc_getProperty(a1 v6];
-  v16 = *(a1 + 104);
-  if (v14 >= *(a1 + 112) - v16)
+  v14 = [objc_getProperty(self v6];
+  v16 = *(self + 104);
+  if (v14 >= *(self + 112) - v16)
   {
-    v17 = *(a1 + 112) - v16;
+    v17 = *(self + 112) - v16;
   }
 
   else
@@ -1563,7 +1563,7 @@ LABEL_8:
     v17 = v14;
   }
 
-  if (*(a1 + 88) == v16 && *(a1 + 96) == v17)
+  if (*(self + 88) == v16 && *(self + 96) == v17)
   {
     v18 = ne_log_obj();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -1575,44 +1575,44 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  *(a1 + 88) = v16;
-  *(a1 + 96) = v17;
+  *(self + 88) = v16;
+  *(self + 96) = v17;
   if (!v17)
   {
 LABEL_21:
-    a1 = 0;
+    self = 0;
     goto LABEL_22;
   }
 
   *buf = 0;
   v32 = 0;
-  [objc_getProperty(a1 v15];
+  [objc_getProperty(self v15];
   v19 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v19, "command", 3);
   xpc_dictionary_set_uuid(v19, "flow-uuid", buf);
-  v21 = [objc_getProperty(a1 v20];
+  v21 = [objc_getProperty(self v20];
   xpc_dictionary_set_data(v19, "data", v21, v17);
-  xpc_dictionary_set_uint64(v19, "data-start-offset", *(a1 + 104));
+  xpc_dictionary_set_uint64(v19, "data-start-offset", *(self + 104));
   xpc_dictionary_set_int64(v19, "direction", 2);
-  if (objc_getProperty(a1, v22, 128, 1))
+  if (objc_getProperty(self, v22, 128, 1))
   {
     v23 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-    [v23 encodeObject:objc_getProperty(a1 forKey:{v24, 128, 1), @"URL_Response"}];
+    [v23 encodeObject:objc_getProperty(self forKey:{v24, 128, 1), @"URL_Response"}];
     [v23 finishEncoding];
-    v25 = [v23 encodedData];
-    xpc_dictionary_set_data(v19, "url-response", [v25 bytes], objc_msgSend(v25, "length"));
+    encodedData = [v23 encodedData];
+    xpc_dictionary_set_data(v19, "url-response", [encodedData bytes], objc_msgSend(encodedData, "length"));
   }
 
-  v26 = *(a1 + 192);
+  v26 = *(self + 192);
   v29 = v5;
-  v30 = v7;
+  v30 = connectionCopy;
   ne_filter_send_message();
 
-  a1 = 1;
+  self = 1;
 LABEL_22:
 
   v27 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 void __67__NEFilterSource_sendDataToPluginWithConnection_completionHandler___block_invoke(void *a1, void *a2)
@@ -1760,19 +1760,19 @@ void __47__NEFilterSource_receivedData_decisionHandler___block_invoke_4(uint64_t
   dispatch_group_leave(Property);
 }
 
-- (void)receivedResponse:(id)a3 decisionHandler:(id)a4
+- (void)receivedResponse:(id)response decisionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__NEFilterSource_receivedResponse_decisionHandler___block_invoke;
     v8[3] = &unk_1E7F07A78;
     v8[4] = self;
-    v9 = v6;
-    [(NEFilterSource *)self prepareAgentForResponse:a3 handler:v8];
+    v9 = handlerCopy;
+    [(NEFilterSource *)self prepareAgentForResponse:response handler:v8];
   }
 }
 
@@ -1816,19 +1816,19 @@ void __51__NEFilterSource_receivedResponse_decisionHandler___block_invoke_2(uint
   (*(v5 + 16))(v5, v6, v7);
 }
 
-- (void)willSendRequest:(id)a3 decisionHandler:(id)a4
+- (void)willSendRequest:(id)request decisionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50__NEFilterSource_willSendRequest_decisionHandler___block_invoke;
     aBlock[3] = &unk_1E7F0AAA0;
     aBlock[4] = self;
-    v22 = v6;
-    v8 = v7;
+    v22 = requestCopy;
+    v8 = handlerCopy;
     v23 = v8;
     v9 = _Block_copy(aBlock);
     v19[0] = MEMORY[0x1E69E9820];
@@ -2319,9 +2319,9 @@ void __50__NEFilterSource_willSendRequest_decisionHandler___block_invoke_3(uint6
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (NEFilterSource)initWithDecisionQueue:(id)a3
+- (NEFilterSource)initWithDecisionQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = NEFilterSource;
   v6 = [(NEFilterSource *)&v13 init];
@@ -2336,7 +2336,7 @@ void __50__NEFilterSource_willSendRequest_decisionHandler___block_invoke_3(uint6
     v7->_pendingData = v8;
 
     v7->_pendingDataStartIndex = 0;
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
     v10 = dispatch_group_create();
     sendDataGroup = v7->_sendDataGroup;
     v7->_sendDataGroup = v10;
@@ -2358,7 +2358,7 @@ void __50__NEFilterSource_willSendRequest_decisionHandler___block_invoke_3(uint6
   v4 = v2;
   nw_queue_context_async();
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
-  *(a1 + 192) = v6[3];
+  *(self + 192) = v6[3];
 
   _Block_object_dispose(&v5, 8);
 }
@@ -2374,19 +2374,19 @@ intptr_t __29__NEFilterSource_initGlobals__block_invoke(void *a1)
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)dataCompleteWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)dataCompleteWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__NEFilterSource_dataCompleteWithCompletionQueue_completionHandler___block_invoke;
   v10[3] = &unk_1E7F07790;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = queueCopy;
   [(NEFilterSource *)self prepareAgentWithHandler:v10];
 }
 
@@ -2519,18 +2519,18 @@ LABEL_24:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareAgentWithHandler:(void *)a1
+- (void)prepareAgentWithHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
     v3 = a2;
-    v13 = [a1 url];
-    v5 = objc_getProperty(a1, v4, 136, 1);
-    v7 = objc_getProperty(a1, v6, 128, 1);
-    v9 = objc_getProperty(a1, v8, 184, 1);
-    v10 = [a1 direction];
-    Property = objc_getProperty(a1, v11, 80, 1);
-    [(NEFilterSource *)a1 prepareAgentForURL:v13 urlRequest:v5 urlResponse:v7 parentURL:v9 direction:v10 flowUUID:Property handler:v3];
+    v13 = [handler url];
+    v5 = objc_getProperty(handler, v4, 136, 1);
+    v7 = objc_getProperty(handler, v6, 128, 1);
+    v9 = objc_getProperty(handler, v8, 184, 1);
+    direction = [handler direction];
+    Property = objc_getProperty(handler, v11, 80, 1);
+    [(NEFilterSource *)handler prepareAgentForURL:v13 urlRequest:v5 urlResponse:v7 parentURL:v9 direction:direction flowUUID:Property handler:v3];
   }
 }
 
@@ -2661,57 +2661,57 @@ void __68__NEFilterSource_dataCompleteWithCompletionQueue_completionHandler___bl
 
 - (id)replacementData
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 status] == 2)
+    if ([self status] == 2)
     {
       v2 = objc_alloc_init(NEFilterBlockPage);
-      v3 = [v1 url];
-      v5 = [v3 absoluteString];
+      v3 = [selfCopy url];
+      absoluteString = [v3 absoluteString];
       if (v2)
       {
-        objc_setProperty_atomic_copy(v2, v4, v5, 24);
+        objc_setProperty_atomic_copy(v2, v4, absoluteString, 24);
       }
 
-      v6 = [(NEFilterBlockPage *)v2 page];
-      if (v6)
+      page = [(NEFilterBlockPage *)v2 page];
+      if (page)
       {
-        v7 = v6;
-        v1 = [v6 dataUsingEncoding:4];
+        v7 = page;
+        selfCopy = [page dataUsingEncoding:4];
       }
 
       else
       {
-        v1 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)addData:(id)a3 withCompletionQueue:(id)a4 completionHandler:(id)a5
+- (void)addData:(id)data withCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__NEFilterSource_addData_withCompletionQueue_completionHandler___block_invoke;
   v14[3] = &unk_1E7F07830;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = queueCopy;
+  v16 = dataCopy;
+  v17 = handlerCopy;
+  v11 = dataCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
   [(NEFilterSource *)self prepareAgentWithHandler:v14];
 }
 
@@ -2837,9 +2837,9 @@ void __64__NEFilterSource_addData_withCompletionQueue_completionHandler___block_
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (NEFilterSource)initWithURL:(id)a3 direction:(int64_t)a4 socketIdentifier:(unint64_t)a5
+- (NEFilterSource)initWithURL:(id)l direction:(int64_t)direction socketIdentifier:(unint64_t)identifier
 {
-  v9 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = NEFilterSource;
   v10 = [(NEFilterSource *)&v18 init];
@@ -2847,18 +2847,18 @@ void __64__NEFilterSource_addData_withCompletionQueue_completionHandler___block_
   if (v10)
   {
     v10->_registered = 0;
-    objc_storeStrong(&v10->_url, a3);
-    *(v11 + 40) = a4;
-    *(v11 + 48) = a5;
+    objc_storeStrong(&v10->_url, l);
+    *(v11 + 40) = direction;
+    *(v11 + 48) = identifier;
     v12 = *(v11 + 56);
     *(v11 + 56) = 0;
 
     *(v11 + 12) = 0;
     *(v11 + 24) = 3;
     *(v11 + 112) = xmmword_1BAA4E540;
-    v13 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v14 = *(v11 + 80);
-    *(v11 + 80) = v13;
+    *(v11 + 80) = uUID;
 
     v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:0];
     v16 = *(v11 + 64);
@@ -2895,19 +2895,19 @@ void __64__NEFilterSource_addData_withCompletionQueue_completionHandler___block_
     v6 = g_pathEvaluator;
     g_pathEvaluator = v5;
 
-    v7 = g_pathEvaluator;
+    mEMORY[0x1E6977E50] = g_pathEvaluator;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6977E50] sharedDefaultEvaluator];
-    v2 = v7;
+    mEMORY[0x1E6977E50] = [MEMORY[0x1E6977E50] sharedDefaultEvaluator];
+    v2 = mEMORY[0x1E6977E50];
   }
 
-  v8 = [v7 path];
-  v9 = [v8 filterControlUnit];
+  path = [mEMORY[0x1E6977E50] path];
+  filterControlUnit = [path filterControlUnit];
 
-  v11 = (v9 & 0x40000000) == 0 && v9 != 0;
+  v11 = (filterControlUnit & 0x40000000) == 0 && filterControlUnit != 0;
   v12 = ne_log_obj();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {

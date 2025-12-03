@@ -13,7 +13,7 @@
 
 - (TTSAssetType)assetType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1ABC12C();
 
   return v3;
@@ -21,7 +21,7 @@
 
 - (TTSAssetTechnology)technology
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1ABC150();
 
   return v3;
@@ -29,7 +29,7 @@
 
 - (TTSAssetQuality)quality
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B2ECA4();
 
   return v3;
@@ -44,7 +44,7 @@
 
 - (int64_t)versionNumber
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1B62AC8();
   v4 = v3;
 
@@ -53,7 +53,7 @@
 
 - (NSNumber)diskSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1B630F4();
   v4 = v3;
 
@@ -69,7 +69,7 @@
 
 - (BOOL)purgeable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B63458();
 
   return v3 & 1;

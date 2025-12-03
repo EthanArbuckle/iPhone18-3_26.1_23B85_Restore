@@ -1,11 +1,11 @@
 @interface MRContentItemMetadataAudioFormat
-- (BOOL)isEqual:(id)a3;
-- (MRContentItemMetadataAudioFormat)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRContentItemMetadataAudioFormat)initWithProtobuf:(id)protobuf;
 - (NSDictionary)dictionaryRepresentation;
 - (_MRAudioFormatProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setGroupID:(id)a3;
-- (void)setStableVariantID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setGroupID:(id)d;
+- (void)setStableVariantID:(id)d;
 @end
 
 @implementation MRContentItemMetadataAudioFormat
@@ -111,92 +111,92 @@
   }
 
   *&v3->_has = *&v3->_has & 0xFFF7 | v11;
-  v12 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
-  v13 = [v12 copy];
+  audioChannelLayoutDescription = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
+  v13 = [audioChannelLayoutDescription copy];
   [(_MRAudioFormatProtobuf *)v3 setAudioChannelLayoutDescription:v13];
 
-  v14 = [(MRContentItemMetadataAudioFormat *)self groupID];
-  v15 = [v14 copy];
+  groupID = [(MRContentItemMetadataAudioFormat *)self groupID];
+  v15 = [groupID copy];
   groupID = v3->_groupID;
   v3->_groupID = v15;
 
-  v17 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
-  v18 = [v17 copy];
+  stableVariantID = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
+  v18 = [stableVariantID copy];
   stableVariantID = v3->_stableVariantID;
   v3->_stableVariantID = v18;
 
   return v3;
 }
 
-- (MRContentItemMetadataAudioFormat)initWithProtobuf:(id)a3
+- (MRContentItemMetadataAudioFormat)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v15.receiver = self;
     v15.super_class = MRContentItemMetadataAudioFormat;
     v5 = [(MRContentItemMetadataAudioFormat *)&v15 init];
     if (v5)
     {
-      v5->_tier = [v4 tier];
-      v5->_hasTier = [v4 hasTier];
-      v5->_bitrate = [v4 bitrate];
-      v5->_hasBitrate = [v4 hasBitrate];
-      v5->_sampleRate = [v4 sampleRate];
-      v5->_hasSampleRate = [v4 hasSampleRate];
-      v5->_bitDepth = [v4 bitDepth];
-      v5->_hasBitDepth = [v4 hasBitDepth];
-      v5->_codec = [v4 codec];
-      v5->_hasCodec = [v4 hasCodec];
-      v5->_spatialized = [v4 spatialized];
-      v5->_hasSpatialized = [v4 hasSpatialized];
-      v5->_multiChannel = [v4 multiChannel];
-      v5->_hasMultiChannel = [v4 hasMultiChannel];
-      v5->_renderingMode = [v4 renderingMode];
-      v5->_hasRenderingMode = [v4 hasRenderingMode];
-      v5->_channelLayout = [v4 channelLayout];
-      v5->_hasChannelLayout = [v4 hasChannelLayout];
-      v6 = [v4 audioChannelLayoutDescription];
-      v7 = [v6 copy];
+      v5->_tier = [protobufCopy tier];
+      v5->_hasTier = [protobufCopy hasTier];
+      v5->_bitrate = [protobufCopy bitrate];
+      v5->_hasBitrate = [protobufCopy hasBitrate];
+      v5->_sampleRate = [protobufCopy sampleRate];
+      v5->_hasSampleRate = [protobufCopy hasSampleRate];
+      v5->_bitDepth = [protobufCopy bitDepth];
+      v5->_hasBitDepth = [protobufCopy hasBitDepth];
+      v5->_codec = [protobufCopy codec];
+      v5->_hasCodec = [protobufCopy hasCodec];
+      v5->_spatialized = [protobufCopy spatialized];
+      v5->_hasSpatialized = [protobufCopy hasSpatialized];
+      v5->_multiChannel = [protobufCopy multiChannel];
+      v5->_hasMultiChannel = [protobufCopy hasMultiChannel];
+      v5->_renderingMode = [protobufCopy renderingMode];
+      v5->_hasRenderingMode = [protobufCopy hasRenderingMode];
+      v5->_channelLayout = [protobufCopy channelLayout];
+      v5->_hasChannelLayout = [protobufCopy hasChannelLayout];
+      audioChannelLayoutDescription = [protobufCopy audioChannelLayoutDescription];
+      v7 = [audioChannelLayoutDescription copy];
       audioChannelLayoutDescription = v5->_audioChannelLayoutDescription;
       v5->_audioChannelLayoutDescription = v7;
 
-      v9 = [v4 groupID];
+      groupID = [protobufCopy groupID];
       groupID = v5->_groupID;
-      v5->_groupID = v9;
+      v5->_groupID = groupID;
 
-      v11 = [v4 stableVariantID];
+      stableVariantID = [protobufCopy stableVariantID];
       stableVariantID = v5->_stableVariantID;
-      v5->_stableVariantID = v11;
+      v5->_stableVariantID = stableVariantID;
     }
 
     self = v5;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)setGroupID:(id)a3
+- (void)setGroupID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   groupID = self->_groupID;
   self->_groupID = v4;
 }
 
-- (void)setStableVariantID:(id)a3
+- (void)setStableVariantID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   stableVariantID = self->_stableVariantID;
   self->_stableVariantID = v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if ([(MRContentItemMetadataAudioFormat *)self hasTier])
@@ -224,12 +224,12 @@
     [v5 setCodec:{-[MRContentItemMetadataAudioFormat codec](self, "codec")}];
   }
 
-  v6 = [(MRContentItemMetadataAudioFormat *)self groupID];
-  v7 = [v6 copyWithZone:a3];
+  groupID = [(MRContentItemMetadataAudioFormat *)self groupID];
+  v7 = [groupID copyWithZone:zone];
   [v5 setGroupID:v7];
 
-  v8 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
-  v9 = [v8 copyWithZone:a3];
+  stableVariantID = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
+  v9 = [stableVariantID copyWithZone:zone];
   [v5 setStableVariantID:v9];
 
   if ([(MRContentItemMetadataAudioFormat *)self hasSpatialized])
@@ -252,17 +252,17 @@
     [v5 setChannelLayout:{-[MRContentItemMetadataAudioFormat channelLayout](self, "channelLayout")}];
   }
 
-  v10 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
-  v11 = [v10 copyWithZone:a3];
+  audioChannelLayoutDescription = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
+  v11 = [audioChannelLayoutDescription copyWithZone:zone];
   [v5 setAudioChannelLayoutDescription:v11];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v29 = 1;
   }
@@ -275,180 +275,180 @@
       goto LABEL_46;
     }
 
-    v5 = [(MRContentItemMetadataAudioFormat *)v4 hasTier];
-    if (v5 != [(MRContentItemMetadataAudioFormat *)self hasTier])
+    hasTier = [(MRContentItemMetadataAudioFormat *)equalCopy hasTier];
+    if (hasTier != [(MRContentItemMetadataAudioFormat *)self hasTier])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasTier])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasTier])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasTier])
       {
-        v6 = [(MRContentItemMetadataAudioFormat *)v4 tier];
-        if (v6 != [(MRContentItemMetadataAudioFormat *)self tier])
+        tier = [(MRContentItemMetadataAudioFormat *)equalCopy tier];
+        if (tier != [(MRContentItemMetadataAudioFormat *)self tier])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v7 = [(MRContentItemMetadataAudioFormat *)v4 hasBitrate];
-    if (v7 != [(MRContentItemMetadataAudioFormat *)self hasBitrate])
+    hasBitrate = [(MRContentItemMetadataAudioFormat *)equalCopy hasBitrate];
+    if (hasBitrate != [(MRContentItemMetadataAudioFormat *)self hasBitrate])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasBitrate])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasBitrate])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasBitrate])
       {
-        v8 = [(MRContentItemMetadataAudioFormat *)v4 bitrate];
-        if (v8 != [(MRContentItemMetadataAudioFormat *)self bitrate])
+        bitrate = [(MRContentItemMetadataAudioFormat *)equalCopy bitrate];
+        if (bitrate != [(MRContentItemMetadataAudioFormat *)self bitrate])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v9 = [(MRContentItemMetadataAudioFormat *)v4 hasSampleRate];
-    if (v9 != [(MRContentItemMetadataAudioFormat *)self hasSampleRate])
+    hasSampleRate = [(MRContentItemMetadataAudioFormat *)equalCopy hasSampleRate];
+    if (hasSampleRate != [(MRContentItemMetadataAudioFormat *)self hasSampleRate])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasSampleRate])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasSampleRate])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasSampleRate])
       {
-        v10 = [(MRContentItemMetadataAudioFormat *)v4 sampleRate];
-        if (v10 != [(MRContentItemMetadataAudioFormat *)self sampleRate])
+        sampleRate = [(MRContentItemMetadataAudioFormat *)equalCopy sampleRate];
+        if (sampleRate != [(MRContentItemMetadataAudioFormat *)self sampleRate])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v11 = [(MRContentItemMetadataAudioFormat *)v4 hasBitDepth];
-    if (v11 != [(MRContentItemMetadataAudioFormat *)self hasBitDepth])
+    hasBitDepth = [(MRContentItemMetadataAudioFormat *)equalCopy hasBitDepth];
+    if (hasBitDepth != [(MRContentItemMetadataAudioFormat *)self hasBitDepth])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasBitDepth])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasBitDepth])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasBitDepth])
       {
-        v12 = [(MRContentItemMetadataAudioFormat *)v4 bitDepth];
-        if (v12 != [(MRContentItemMetadataAudioFormat *)self bitDepth])
+        bitDepth = [(MRContentItemMetadataAudioFormat *)equalCopy bitDepth];
+        if (bitDepth != [(MRContentItemMetadataAudioFormat *)self bitDepth])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v13 = [(MRContentItemMetadataAudioFormat *)v4 hasCodec];
-    if (v13 != [(MRContentItemMetadataAudioFormat *)self hasCodec])
+    hasCodec = [(MRContentItemMetadataAudioFormat *)equalCopy hasCodec];
+    if (hasCodec != [(MRContentItemMetadataAudioFormat *)self hasCodec])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasCodec])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasCodec])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasCodec])
       {
-        v14 = [(MRContentItemMetadataAudioFormat *)v4 codec];
-        if (v14 != [(MRContentItemMetadataAudioFormat *)self codec])
+        codec = [(MRContentItemMetadataAudioFormat *)equalCopy codec];
+        if (codec != [(MRContentItemMetadataAudioFormat *)self codec])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v15 = [(MRContentItemMetadataAudioFormat *)v4 hasSpatialized];
-    if (v15 != [(MRContentItemMetadataAudioFormat *)self hasSpatialized])
+    hasSpatialized = [(MRContentItemMetadataAudioFormat *)equalCopy hasSpatialized];
+    if (hasSpatialized != [(MRContentItemMetadataAudioFormat *)self hasSpatialized])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasSpatialized])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasSpatialized])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasSpatialized])
       {
-        v16 = [(MRContentItemMetadataAudioFormat *)v4 isSpatialized];
-        if (v16 != [(MRContentItemMetadataAudioFormat *)self isSpatialized])
+        isSpatialized = [(MRContentItemMetadataAudioFormat *)equalCopy isSpatialized];
+        if (isSpatialized != [(MRContentItemMetadataAudioFormat *)self isSpatialized])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v17 = [(MRContentItemMetadataAudioFormat *)v4 hasMultiChannel];
-    if (v17 != [(MRContentItemMetadataAudioFormat *)self hasMultiChannel])
+    hasMultiChannel = [(MRContentItemMetadataAudioFormat *)equalCopy hasMultiChannel];
+    if (hasMultiChannel != [(MRContentItemMetadataAudioFormat *)self hasMultiChannel])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasMultiChannel])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasMultiChannel])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasMultiChannel])
       {
-        v18 = [(MRContentItemMetadataAudioFormat *)v4 isMultiChannel];
-        if (v18 != [(MRContentItemMetadataAudioFormat *)self isMultiChannel])
+        isMultiChannel = [(MRContentItemMetadataAudioFormat *)equalCopy isMultiChannel];
+        if (isMultiChannel != [(MRContentItemMetadataAudioFormat *)self isMultiChannel])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v19 = [(MRContentItemMetadataAudioFormat *)v4 hasRenderingMode];
-    if (v19 != [(MRContentItemMetadataAudioFormat *)self hasRenderingMode])
+    hasRenderingMode = [(MRContentItemMetadataAudioFormat *)equalCopy hasRenderingMode];
+    if (hasRenderingMode != [(MRContentItemMetadataAudioFormat *)self hasRenderingMode])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasRenderingMode])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasRenderingMode])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasRenderingMode])
       {
-        v20 = [(MRContentItemMetadataAudioFormat *)v4 renderingMode];
-        if (v20 != [(MRContentItemMetadataAudioFormat *)self renderingMode])
+        renderingMode = [(MRContentItemMetadataAudioFormat *)equalCopy renderingMode];
+        if (renderingMode != [(MRContentItemMetadataAudioFormat *)self renderingMode])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v21 = [(MRContentItemMetadataAudioFormat *)v4 hasChannelLayout];
-    if (v21 != [(MRContentItemMetadataAudioFormat *)self hasChannelLayout])
+    hasChannelLayout = [(MRContentItemMetadataAudioFormat *)equalCopy hasChannelLayout];
+    if (hasChannelLayout != [(MRContentItemMetadataAudioFormat *)self hasChannelLayout])
     {
       goto LABEL_46;
     }
 
-    if ([(MRContentItemMetadataAudioFormat *)v4 hasChannelLayout])
+    if ([(MRContentItemMetadataAudioFormat *)equalCopy hasChannelLayout])
     {
       if ([(MRContentItemMetadataAudioFormat *)self hasChannelLayout])
       {
-        v22 = [(MRContentItemMetadataAudioFormat *)v4 channelLayout];
-        if (v22 != [(MRContentItemMetadataAudioFormat *)self channelLayout])
+        channelLayout = [(MRContentItemMetadataAudioFormat *)equalCopy channelLayout];
+        if (channelLayout != [(MRContentItemMetadataAudioFormat *)self channelLayout])
         {
           goto LABEL_46;
         }
       }
     }
 
-    v23 = [(MRContentItemMetadataAudioFormat *)v4 audioChannelLayoutDescription];
-    v24 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
-    v25 = v24;
-    if (v23 == v24)
+    audioChannelLayoutDescription = [(MRContentItemMetadataAudioFormat *)equalCopy audioChannelLayoutDescription];
+    audioChannelLayoutDescription2 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
+    v25 = audioChannelLayoutDescription2;
+    if (audioChannelLayoutDescription == audioChannelLayoutDescription2)
     {
     }
 
     else
     {
-      v26 = [(MRContentItemMetadataAudioFormat *)v4 audioChannelLayoutDescription];
-      v27 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
-      v28 = [v26 isEqualToString:v27];
+      audioChannelLayoutDescription3 = [(MRContentItemMetadataAudioFormat *)equalCopy audioChannelLayoutDescription];
+      audioChannelLayoutDescription4 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
+      v28 = [audioChannelLayoutDescription3 isEqualToString:audioChannelLayoutDescription4];
 
       if (!v28)
       {
@@ -456,18 +456,18 @@
       }
     }
 
-    v30 = [(MRContentItemMetadataAudioFormat *)v4 groupID];
-    v31 = [(MRContentItemMetadataAudioFormat *)self groupID];
-    v32 = v31;
-    if (v30 == v31)
+    groupID = [(MRContentItemMetadataAudioFormat *)equalCopy groupID];
+    groupID2 = [(MRContentItemMetadataAudioFormat *)self groupID];
+    v32 = groupID2;
+    if (groupID == groupID2)
     {
     }
 
     else
     {
-      v33 = [(MRContentItemMetadataAudioFormat *)v4 groupID];
-      v34 = [(MRContentItemMetadataAudioFormat *)self groupID];
-      v35 = [v33 isEqualToString:v34];
+      groupID3 = [(MRContentItemMetadataAudioFormat *)equalCopy groupID];
+      groupID4 = [(MRContentItemMetadataAudioFormat *)self groupID];
+      v35 = [groupID3 isEqualToString:groupID4];
 
       if (!v35)
       {
@@ -477,18 +477,18 @@ LABEL_46:
       }
     }
 
-    v37 = [(MRContentItemMetadataAudioFormat *)v4 stableVariantID];
-    v38 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
-    if (v37 == v38)
+    stableVariantID = [(MRContentItemMetadataAudioFormat *)equalCopy stableVariantID];
+    stableVariantID2 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
+    if (stableVariantID == stableVariantID2)
     {
       v29 = 1;
     }
 
     else
     {
-      v39 = [(MRContentItemMetadataAudioFormat *)v4 stableVariantID];
-      v40 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
-      v29 = [v39 isEqualToString:v40];
+      stableVariantID3 = [(MRContentItemMetadataAudioFormat *)equalCopy stableVariantID];
+      stableVariantID4 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
+      v29 = [stableVariantID3 isEqualToString:stableVariantID4];
     }
   }
 
@@ -554,14 +554,14 @@ LABEL_47:
     [v3 setObject:v12 forKeyedSubscript:@"channelLayout"];
   }
 
-  v13 = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
-  [v3 setObject:v13 forKeyedSubscript:@"audioChannelLayoutDescription"];
+  audioChannelLayoutDescription = [(MRContentItemMetadataAudioFormat *)self audioChannelLayoutDescription];
+  [v3 setObject:audioChannelLayoutDescription forKeyedSubscript:@"audioChannelLayoutDescription"];
 
-  v14 = [(MRContentItemMetadataAudioFormat *)self groupID];
-  [v3 setObject:v14 forKeyedSubscript:@"groupID"];
+  groupID = [(MRContentItemMetadataAudioFormat *)self groupID];
+  [v3 setObject:groupID forKeyedSubscript:@"groupID"];
 
-  v15 = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
-  [v3 setObject:v15 forKeyedSubscript:@"stableVariantID"];
+  stableVariantID = [(MRContentItemMetadataAudioFormat *)self stableVariantID];
+  [v3 setObject:stableVariantID forKeyedSubscript:@"stableVariantID"];
 
   return v3;
 }

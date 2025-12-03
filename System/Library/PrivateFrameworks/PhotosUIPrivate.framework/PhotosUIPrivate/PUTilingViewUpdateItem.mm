@@ -1,66 +1,66 @@
 @interface PUTilingViewUpdateItem
-- (PUTilingViewUpdateItem)initWithAction:(int64_t)a3 indexPathBeforeUpdate:(id)a4 indexPathAfterUpdate:(id)a5 dataSource:(id)a6;
-- (id)transformedIndexPath:(id)a3 withDataSource:(id)a4;
+- (PUTilingViewUpdateItem)initWithAction:(int64_t)action indexPathBeforeUpdate:(id)update indexPathAfterUpdate:(id)afterUpdate dataSource:(id)source;
+- (id)transformedIndexPath:(id)path withDataSource:(id)source;
 @end
 
 @implementation PUTilingViewUpdateItem
 
-- (id)transformedIndexPath:(id)a3 withDataSource:(id)a4
+- (id)transformedIndexPath:(id)path withDataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUTilingViewUpdateItem *)self dataSource];
-  v10 = [v8 isEqual:v9];
+  pathCopy = path;
+  sourceCopy = source;
+  dataSource = [(PUTilingViewUpdateItem *)self dataSource];
+  v10 = [sourceCopy isEqual:dataSource];
 
-  v11 = v7;
+  v11 = pathCopy;
   if (v10)
   {
-    v12 = [(PUTilingViewUpdateItem *)self action];
-    if (v12 <= 1)
+    action = [(PUTilingViewUpdateItem *)self action];
+    if (action <= 1)
     {
-      if (!v12)
+      if (!action)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:48 description:@"undefined action"];
-        v11 = v7;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:48 description:@"undefined action"];
+        v11 = pathCopy;
         goto LABEL_14;
       }
 
-      v11 = v7;
-      if (v12 != 1)
+      v11 = pathCopy;
+      if (action != 1)
       {
         goto LABEL_15;
       }
 
-      v13 = [(PUTilingViewUpdateItem *)self indexPathAfterUpdate];
-      v14 = [v7 pu_indexPathAfterInsertingItemAtIndexPath:v13];
+      currentHandler = [(PUTilingViewUpdateItem *)self indexPathAfterUpdate];
+      v14 = [pathCopy pu_indexPathAfterInsertingItemAtIndexPath:currentHandler];
     }
 
-    else if (v12 == 2)
+    else if (action == 2)
     {
-      v13 = [(PUTilingViewUpdateItem *)self indexPathBeforeUpdate];
-      v14 = [v7 pu_indexPathAfterDeletingItemAtIndexPath:v13];
+      currentHandler = [(PUTilingViewUpdateItem *)self indexPathBeforeUpdate];
+      v14 = [pathCopy pu_indexPathAfterDeletingItemAtIndexPath:currentHandler];
     }
 
     else
     {
-      if (v12 == 3)
+      if (action == 3)
       {
-        v13 = [(PUTilingViewUpdateItem *)self indexPathBeforeUpdate];
-        v15 = [(PUTilingViewUpdateItem *)self indexPathAfterUpdate];
-        v11 = [v7 pu_indexPathAfterMovingItemFromIndexPath:v13 toIndexPath:v15];
+        currentHandler = [(PUTilingViewUpdateItem *)self indexPathBeforeUpdate];
+        indexPathAfterUpdate = [(PUTilingViewUpdateItem *)self indexPathAfterUpdate];
+        v11 = [pathCopy pu_indexPathAfterMovingItemFromIndexPath:currentHandler toIndexPath:indexPathAfterUpdate];
 
         goto LABEL_14;
       }
 
-      v11 = v7;
-      if (v12 != 4)
+      v11 = pathCopy;
+      if (action != 4)
       {
         goto LABEL_15;
       }
 
-      v13 = [(PUTilingViewUpdateItem *)self indexPathBeforeUpdate];
-      v14 = [v7 pu_indexPathAfterReloadingItemAtIndexPath:v13];
+      currentHandler = [(PUTilingViewUpdateItem *)self indexPathBeforeUpdate];
+      v14 = [pathCopy pu_indexPathAfterReloadingItemAtIndexPath:currentHandler];
     }
 
     v11 = v14;
@@ -73,29 +73,29 @@ LABEL_15:
   return v11;
 }
 
-- (PUTilingViewUpdateItem)initWithAction:(int64_t)a3 indexPathBeforeUpdate:(id)a4 indexPathAfterUpdate:(id)a5 dataSource:(id)a6
+- (PUTilingViewUpdateItem)initWithAction:(int64_t)action indexPathBeforeUpdate:(id)update indexPathAfterUpdate:(id)afterUpdate dataSource:(id)source
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a3 == 1)
+  updateCopy = update;
+  afterUpdateCopy = afterUpdate;
+  sourceCopy = source;
+  if (action == 1)
   {
-    if (v12)
+    if (updateCopy)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"indexPathBeforeUpdate == nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"indexPathBeforeUpdate == nil"}];
 
-      if (v13)
+      if (afterUpdateCopy)
       {
         goto LABEL_10;
       }
 
 LABEL_17:
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"indexPathAfterUpdate != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"indexPathAfterUpdate != nil"}];
 LABEL_18:
 
-      if (v14)
+      if (sourceCopy)
       {
         goto LABEL_11;
       }
@@ -104,7 +104,7 @@ LABEL_18:
     }
 
 LABEL_9:
-    if (v13)
+    if (afterUpdateCopy)
     {
       goto LABEL_10;
     }
@@ -112,50 +112,50 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!action)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"action != PUTilingViewUpdateActionUndefined"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"action != PUTilingViewUpdateActionUndefined"}];
 
-    if (v12)
+    if (updateCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_15:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"indexPathBeforeUpdate != nil"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"indexPathBeforeUpdate != nil"}];
 
     goto LABEL_4;
   }
 
-  if (!v12)
+  if (!updateCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_4:
-  if (a3 != 4 && a3 != 2)
+  if (action != 4 && action != 2)
   {
     goto LABEL_9;
   }
 
-  if (v13)
+  if (afterUpdateCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"indexPathAfterUpdate == nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"indexPathAfterUpdate == nil"}];
     goto LABEL_18;
   }
 
 LABEL_10:
-  if (v14)
+  if (sourceCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_19:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"dataSource != nil"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"PUTilingViewUpdateItem.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"dataSource != nil"}];
 
 LABEL_11:
   v23.receiver = self;
@@ -164,10 +164,10 @@ LABEL_11:
   v17 = v16;
   if (v16)
   {
-    v16->_action = a3;
-    objc_storeStrong(&v16->_indexPathBeforeUpdate, a4);
-    objc_storeStrong(&v17->_indexPathAfterUpdate, a5);
-    objc_storeStrong(&v17->_dataSource, a6);
+    v16->_action = action;
+    objc_storeStrong(&v16->_indexPathBeforeUpdate, update);
+    objc_storeStrong(&v17->_indexPathAfterUpdate, afterUpdate);
+    objc_storeStrong(&v17->_dataSource, source);
   }
 
   return v17;

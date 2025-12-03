@@ -15,7 +15,7 @@
 - (BOOL)supportsSMSRelay;
 - (BOOL)supportsTethering;
 - (BOOL)supportsiCloudPairing;
-- (IDSDevice)initWithDictionary:(id)a3;
+- (IDSDevice)initWithDictionary:(id)dictionary;
 - (IDSEndpointCapabilities)capabilities;
 - (NSArray)identities;
 - (NSArray)linkedUserURIs;
@@ -33,7 +33,7 @@
 - (NSString)uniqueIDOverride;
 - (NSUUID)nsuuid;
 - (NSUUID)stableBluetoothIdentifier;
-- (id)_initWithDictionary:(id)a3;
+- (id)_initWithDictionary:(id)dictionary;
 - (id)_internal;
 - (id)compactDescription;
 - (id)description;
@@ -44,11 +44,11 @@
 - (unint64_t)minCompatibilityVersion;
 - (unint64_t)pairingProtocolVersion;
 - (unint64_t)serviceMinCompatibilityVersion;
-- (void)_addIdentity:(id)a3;
-- (void)_setAccount:(id)a3;
-- (void)_setService:(id)a3;
+- (void)_addIdentity:(id)identity;
+- (void)_setAccount:(id)account;
+- (void)_setService:(id)service;
 - (void)dealloc;
-- (void)setNSUUID:(id)a3;
+- (void)setNSUUID:(id)d;
 @end
 
 @implementation IDSDevice
@@ -147,8 +147,8 @@
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersion
 {
-  v5 = [(IDSDevice *)self productVersion];
-  IDSOSVersionFromString(v5, retstr);
+  productVersion = [(IDSDevice *)self productVersion];
+  IDSOSVersionFromString(productVersion, retstr);
 
   return result;
 }
@@ -325,12 +325,12 @@
 - (id)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B40244();
     }
@@ -568,9 +568,9 @@
   return v4;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (_IDSRunningInDaemon())
   {
     v5 = +[IDSLogging IDSDevice];
@@ -579,18 +579,18 @@
       sub_195B26A7C();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = +[IDSInternalQueueController sharedInstance];
-    v8 = [v7 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v7 assertQueueIsCurrent];
 
-    if (v8)
+    if (assertQueueIsCurrent)
     {
-      v9 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B40104();
       }
@@ -601,21 +601,21 @@
     v10 = [(IDSDevice *)&v14 init];
     if (v10)
     {
-      v11 = [[_IDSDevice alloc] initWithDictionary:v4];
+      v11 = [[_IDSDevice alloc] initWithDictionary:dictionaryCopy];
       internal = v10->_internal;
       v10->_internal = v11;
     }
 
     self = v10;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (IDSDevice)initWithDictionary:(id)a3
+- (IDSDevice)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (_IDSRunningInDaemon())
   {
     v5 = +[IDSLogging IDSDevice];
@@ -624,18 +624,18 @@
       sub_195B26A7C();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = +[IDSInternalQueueController sharedInstance];
-    v8 = [v7 assertQueueIsNotCurrent];
+    assertQueueIsNotCurrent = [v7 assertQueueIsNotCurrent];
 
-    if (v8)
+    if (assertQueueIsNotCurrent)
     {
-      v9 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B401A4();
       }
@@ -652,15 +652,15 @@
       v13[2] = sub_195AF1BE8;
       v13[3] = &unk_1E743EA30;
       v14 = v10;
-      v15 = v4;
+      v15 = dictionaryCopy;
       [v11 performBlock:v13];
     }
 
     self = v10;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)fullDescription
@@ -815,17 +815,17 @@
   return v4;
 }
 
-- (void)setNSUUID:(id)a3
+- (void)setNSUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195AF2640;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [v5 performBlock:v7];
 }
 
@@ -1021,17 +1021,17 @@
   return v4;
 }
 
-- (void)_addIdentity:(id)a3
+- (void)_addIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195AF3284;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identityCopy;
+  v6 = identityCopy;
   [v5 performBlock:v7];
 }
 
@@ -1115,31 +1115,31 @@
   return v4;
 }
 
-- (void)_setAccount:(id)a3
+- (void)_setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195AF37C8;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accountCopy;
+  v6 = accountCopy;
   [v5 performBlock:v7];
 }
 
-- (void)_setService:(id)a3
+- (void)_setService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195AF388C;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serviceCopy;
+  v6 = serviceCopy;
   [v5 performBlock:v7];
 }
 

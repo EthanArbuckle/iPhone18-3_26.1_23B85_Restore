@@ -1,29 +1,29 @@
 @interface TPSResponseError
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4;
-- (TPSResponseError)initWithCode:(int64_t)a3 userInfo:(id)a4;
-- (TPSResponseError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
++ (id)errorWithCode:(int64_t)code userInfo:(id)info;
+- (TPSResponseError)initWithCode:(int64_t)code userInfo:(id)info;
+- (TPSResponseError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation TPSResponseError
 
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [[TPSResponseError alloc] initWithCode:a3 userInfo:v5];
+  infoCopy = info;
+  v6 = [[TPSResponseError alloc] initWithCode:code userInfo:infoCopy];
 
   return v6;
 }
 
-- (TPSResponseError)initWithCode:(int64_t)a3 userInfo:(id)a4
+- (TPSResponseError)initWithCode:(int64_t)code userInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = TPSResponseError;
-  return [(TPSResponseError *)&v5 initWithDomain:TPSResponseErrorDomain code:a3 userInfo:a4];
+  return [(TPSResponseError *)&v5 initWithDomain:TPSResponseErrorDomain code:code userInfo:info];
 }
 
-- (TPSResponseError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (TPSResponseError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  [(TPSResponseError *)self doesNotRecognizeSelector:a2, a4, a5];
+  [(TPSResponseError *)self doesNotRecognizeSelector:a2, code, info];
 
   return 0;
 }

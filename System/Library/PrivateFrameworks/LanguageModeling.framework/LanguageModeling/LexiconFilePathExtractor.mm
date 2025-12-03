@@ -1,10 +1,10 @@
 @interface LexiconFilePathExtractor
-- (id)lexiconFilePath:(id)a3;
+- (id)lexiconFilePath:(id)path;
 @end
 
 @implementation LexiconFilePathExtractor
 
-- (id)lexiconFilePath:(id)a3
+- (id)lexiconFilePath:(id)path
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
 

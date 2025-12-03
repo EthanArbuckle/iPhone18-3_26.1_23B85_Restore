@@ -1,19 +1,19 @@
 @interface HLPImageCacheController
 + (id)defaultInMemoryImageCache;
 + (id)sharedInstance;
-- (BOOL)isURLValid:(id)a3;
-- (id)formattedDataWithData:(id)a3;
-- (id)formattedDataWithFileURL:(id)a3;
-- (id)getImageForPath:(id)a3;
-- (id)imageFromMemoryCacheForPath:(id)a3;
+- (BOOL)isURLValid:(id)valid;
+- (id)formattedDataWithData:(id)data;
+- (id)formattedDataWithFileURL:(id)l;
+- (id)getImageForPath:(id)path;
+- (id)imageFromMemoryCacheForPath:(id)path;
 - (id)newDataCache;
-- (void)addInMemoryCacheForImage:(id)a3 identifier:(id)a4 cost:(unint64_t)a5;
-- (void)addInMemoryCacheForImage:(id)a3 path:(id)a4 cost:(unint64_t)a5;
+- (void)addInMemoryCacheForImage:(id)image identifier:(id)identifier cost:(unint64_t)cost;
+- (void)addInMemoryCacheForImage:(id)image path:(id)path cost:(unint64_t)cost;
 - (void)commonInit;
-- (void)formattedDataWithFileURL:(id)a3 completionHandler:(id)a4;
+- (void)formattedDataWithFileURL:(id)l completionHandler:(id)handler;
 - (void)removeAllDataCache;
 - (void)removeInMemoryCache;
-- (void)removeInMemoryCacheForPath:(id)a3;
+- (void)removeInMemoryCacheForPath:(id)path;
 @end
 
 @implementation HLPImageCacheController
@@ -93,67 +93,67 @@ uint64_t __52__HLPImageCacheController_defaultInMemoryImageCache__block_invoke()
   [v2 removeAllObjects];
 }
 
-- (void)addInMemoryCacheForImage:(id)a3 path:(id)a4 cost:(unint64_t)a5
+- (void)addInMemoryCacheForImage:(id)image path:(id)path cost:(unint64_t)cost
 {
-  v8 = a3;
-  v9 = [a4 lastPathComponent];
-  [(HLPImageCacheController *)self addInMemoryCacheForImage:v8 identifier:v9 cost:a5];
+  imageCopy = image;
+  lastPathComponent = [path lastPathComponent];
+  [(HLPImageCacheController *)self addInMemoryCacheForImage:imageCopy identifier:lastPathComponent cost:cost];
 }
 
-- (void)addInMemoryCacheForImage:(id)a3 identifier:(id)a4 cost:(unint64_t)a5
+- (void)addInMemoryCacheForImage:(id)image identifier:(id)identifier cost:(unint64_t)cost
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  imageCopy = image;
+  identifierCopy = identifier;
+  if (imageCopy)
   {
     v8 = +[HLPImageCacheController defaultInMemoryImageCache];
     v9 = v8;
-    if (a5)
+    if (cost)
     {
-      [v8 setObject:v10 forKey:v7 cost:a5];
+      [v8 setObject:imageCopy forKey:identifierCopy cost:cost];
     }
 
     else
     {
-      [v8 setObject:v10 forKey:v7];
+      [v8 setObject:imageCopy forKey:identifierCopy];
     }
   }
 }
 
-- (void)removeInMemoryCacheForPath:(id)a3
+- (void)removeInMemoryCacheForPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v3 = a3;
+    pathCopy = path;
     v4 = +[HLPImageCacheController defaultInMemoryImageCache];
-    [v4 removeObjectForKey:v3];
+    [v4 removeObjectForKey:pathCopy];
   }
 }
 
-- (id)imageFromMemoryCacheForPath:(id)a3
+- (id)imageFromMemoryCacheForPath:(id)path
 {
-  v3 = [a3 lastPathComponent];
+  lastPathComponent = [path lastPathComponent];
   v4 = +[HLPImageCacheController defaultInMemoryImageCache];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:lastPathComponent];
 
   return v5;
 }
 
-- (id)getImageForPath:(id)a3
+- (id)getImageForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HLPImageCacheController *)self imageFromMemoryCacheForPath:v4];
+  pathCopy = path;
+  v5 = [(HLPImageCacheController *)self imageFromMemoryCacheForPath:pathCopy];
   if (!v5)
   {
-    v6 = [v4 lastPathComponent];
-    v7 = [(HLPDataCacheController *)self dataCacheForIdentifier:v6];
+    lastPathComponent = [pathCopy lastPathComponent];
+    v7 = [(HLPDataCacheController *)self dataCacheForIdentifier:lastPathComponent];
     v8 = [(HLPDataCacheController *)self cacheFileURLForDataCache:v7];
     v9 = v8;
     if (v8)
     {
       v10 = MEMORY[0x277D755B8];
-      v11 = [v8 path];
-      v5 = [v10 imageWithContentsOfFile:v11];
+      path = [v8 path];
+      v5 = [v10 imageWithContentsOfFile:path];
     }
 
     else
@@ -165,10 +165,10 @@ uint64_t __52__HLPImageCacheController_defaultInMemoryImageCache__block_invoke()
   return v5;
 }
 
-- (BOOL)isURLValid:(id)a3
+- (BOOL)isURLValid:(id)valid
 {
-  v4 = [a3 path];
-  v5 = [(HLPImageCacheController *)self imageFromMemoryCacheForPath:v4];
+  path = [valid path];
+  v5 = [(HLPImageCacheController *)self imageFromMemoryCacheForPath:path];
   if (v5)
   {
     v6 = 1;
@@ -176,40 +176,40 @@ uint64_t __52__HLPImageCacheController_defaultInMemoryImageCache__block_invoke()
 
   else
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v7 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:path];
   }
 
   return v6;
 }
 
-- (void)formattedDataWithFileURL:(id)a3 completionHandler:(id)a4
+- (void)formattedDataWithFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 path];
-  v9 = [(HLPImageCacheController *)self imageFromMemoryCacheForPath:v8];
+  lCopy = l;
+  handlerCopy = handler;
+  path = [lCopy path];
+  v9 = [(HLPImageCacheController *)self imageFromMemoryCacheForPath:path];
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
-  else if (v6 && ([MEMORY[0x277CCAA00] defaultManager], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "path"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "fileExistsAtPath:", v11), v11, v10, v12))
+  else if (lCopy && ([MEMORY[0x277CCAA00] defaultManager], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "path"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "fileExistsAtPath:", v11), v11, v10, v12))
   {
     v13 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__HLPImageCacheController_formattedDataWithFileURL_completionHandler___block_invoke;
     block[3] = &unk_2797074D8;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
+    v15 = lCopy;
+    selfCopy = self;
+    v17 = handlerCopy;
     dispatch_async(v13, block);
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
@@ -248,17 +248,17 @@ uint64_t __70__HLPImageCacheController_formattedDataWithFileURL_completionHandle
   }
 }
 
-- (id)formattedDataWithFileURL:(id)a3
+- (id)formattedDataWithFileURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [v4 lastPathComponent];
-  v6 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:v5];
+  path = [l path];
+  lastPathComponent = [path lastPathComponent];
+  v6 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:lastPathComponent];
 
   if (v6)
   {
     v7 = MEMORY[0x277D755B8];
-    v8 = [v6 path];
-    v9 = [v7 imageWithContentsOfFile:v8];
+    path2 = [v6 path];
+    v9 = [v7 imageWithContentsOfFile:path2];
   }
 
   else
@@ -269,9 +269,9 @@ uint64_t __70__HLPImageCacheController_formattedDataWithFileURL_completionHandle
   return v9;
 }
 
-- (id)formattedDataWithData:(id)a3
+- (id)formattedDataWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = [MEMORY[0x277D755B8] imageWithData:?];
   }

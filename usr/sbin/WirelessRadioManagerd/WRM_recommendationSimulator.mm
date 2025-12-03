@@ -1,9 +1,9 @@
 @interface WRM_recommendationSimulator
 - (WRM_recommendationSimulator)init;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
-- (void)triggerSetMeadowModeTimer:(id)a3;
-- (void)triggerTerminiousRecommendation:(id)a3;
+- (void)handleMessage:(id)message;
+- (void)triggerSetMeadowModeTimer:(id)timer;
+- (void)triggerTerminiousRecommendation:(id)recommendation;
 @end
 
 @implementation WRM_recommendationSimulator
@@ -22,39 +22,39 @@
   [(WCM_Controller *)&v2 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
-  [WCM_Logging logLevel:26 message:@"WRM_recommendationSimulator: received message: %@", a3];
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
+  [WCM_Logging logLevel:26 message:@"WRM_recommendationSimulator: received message: %@", message];
   switch(uint64)
   {
     case 4uLL:
 
-      [(WRM_recommendationSimulator *)self triggerGetMeadowModeTimer:a3];
+      [(WRM_recommendationSimulator *)self triggerGetMeadowModeTimer:message];
       break;
     case 3uLL:
 
-      [(WRM_recommendationSimulator *)self triggerSetMeadowModeTimer:a3];
+      [(WRM_recommendationSimulator *)self triggerSetMeadowModeTimer:message];
       break;
     case 2uLL:
 
-      [(WRM_recommendationSimulator *)self triggerTerminiousRecommendation:a3];
+      [(WRM_recommendationSimulator *)self triggerTerminiousRecommendation:message];
       break;
   }
 }
 
-- (void)triggerSetMeadowModeTimer:(id)a3
+- (void)triggerSetMeadowModeTimer:(id)timer
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(timer, "kMessageArgs");
   if (xpc_dictionary_get_value(value, "kSetMeadowModeTimer"))
   {
     [WCM_Logging logLevel:26 message:@"WRM_recommendationSimulator: SetMeadowModeTimer %llu seconds", xpc_dictionary_get_uint64(value, "kSetMeadowModeTimer")];
   }
 }
 
-- (void)triggerTerminiousRecommendation:(id)a3
+- (void)triggerTerminiousRecommendation:(id)recommendation
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(recommendation, "kMessageArgs");
   if (xpc_dictionary_get_value(value, "kBTRecommendationEnabled"))
   {
     v5 = xpc_dictionary_get_uint64(value, "kBTRecommendationEnabled") != 0;

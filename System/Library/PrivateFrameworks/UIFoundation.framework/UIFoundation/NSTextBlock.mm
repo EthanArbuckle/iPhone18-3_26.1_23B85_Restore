@@ -4,17 +4,17 @@
 - (NSRect)boundsRectForContentRect:(NSRect)contentRect inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)charRange;
 - (NSRect)rectForLayoutAtPoint:(NSPoint)startingPoint inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)charRange;
 - (NSTextBlock)init;
-- (NSTextBlock)initWithCoder:(id)a3;
-- (double)_valueForParameter:(unint64_t)a3;
+- (NSTextBlock)initWithCoder:(id)coder;
+- (double)_valueForParameter:(unint64_t)parameter;
 - (id)_attributeDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_createFloatStorage;
 - (void)_destroyFloatStorage;
-- (void)_setValue:(double)a3 type:(unint64_t)a4 forParameter:(unint64_t)a5;
-- (void)_takeValuesFromTextBlock:(id)a3;
+- (void)_setValue:(double)value type:(unint64_t)type forParameter:(unint64_t)parameter;
+- (void)_takeValuesFromTextBlock:(id)block;
 - (void)dealloc;
 - (void)drawBackgroundWithFrame:(NSRect)frameRect inView:(NSView *)controlView characterRange:(NSRange)charRange layoutManager:(NSLayoutManager *)layoutManager;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setBackgroundColor:(NSColor *)backgroundColor;
 - (void)setBorderColor:(NSColor *)color;
 - (void)setBorderColor:(NSColor *)color forEdge:(NSRectEdge)edge;
@@ -25,10 +25,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     [NSTextBlock setVersion:1];
-    __NSTextBlockClass = a1;
+    __NSTextBlockClass = self;
   }
 }
 
@@ -81,21 +81,21 @@
   [(NSTextBlock *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     propMask = self->_propMask;
     if (propMask)
     {
-      [a3 encodeInteger:propMask forKey:@"NSValueTypes"];
+      [coder encodeInteger:propMask forKey:@"NSValueTypes"];
     }
 
     typeMask = self->_typeMask;
     if (typeMask)
     {
-      [a3 encodeInteger:typeMask forKey:@"NSFlags"];
+      [coder encodeInteger:typeMask forKey:@"NSFlags"];
     }
 
     if (self->_propVals)
@@ -105,7 +105,7 @@
         v8 = *(self->_propVals + i);
         if (v8 != 0.0)
         {
-          [a3 encodeDouble:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithFormat:", @"NSParam%lu", i), v8}];
+          [coder encodeDouble:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithFormat:", @"NSParam%lu", i), v8}];
         }
       }
     }
@@ -113,13 +113,13 @@
     primParamVal = self->_primParamVal;
     if (primParamVal)
     {
-      [a3 encodeObject:primParamVal forKey:@"NSBackgroundColor"];
+      [coder encodeObject:primParamVal forKey:@"NSBackgroundColor"];
     }
 
     if (self->_otherParamVals)
     {
 
-      [a3 encodeObject:? forKey:?];
+      [coder encodeObject:? forKey:?];
     }
   }
 
@@ -171,25 +171,25 @@
       v21 = v13 | 0x20000000;
     }
 
-    [a3 encodeValuesOfObjCTypes:{"III", &v21, &v20, &v19}];
+    [coder encodeValuesOfObjCTypes:{"III", &v21, &v20, &v19}];
     if (v12)
     {
-      [a3 encodeArrayOfObjCType:"f" count:v12 at:v22];
+      [coder encodeArrayOfObjCType:"f" count:v12 at:v22];
     }
 
     if (*p_primParamVal)
     {
-      [a3 encodeValuesOfObjCTypes:{"@", p_primParamVal}];
+      [coder encodeValuesOfObjCTypes:{"@", p_primParamVal}];
     }
 
     if (*p_otherParamVals)
     {
-      [a3 encodeValuesOfObjCTypes:{"@", p_otherParamVals}];
+      [coder encodeValuesOfObjCTypes:{"@", p_otherParamVals}];
     }
   }
 }
 
-- (NSTextBlock)initWithCoder:(id)a3
+- (NSTextBlock)initWithCoder:(id)coder
 {
   v35 = *MEMORY[0x1E69E9840];
   v33.receiver = self;
@@ -200,34 +200,34 @@
     return v4;
   }
 
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    if ([a3 containsValueForKey:@"NSValueTypes"])
+    if ([coder containsValueForKey:@"NSValueTypes"])
     {
-      v4->_propMask = [a3 decodeInt64ForKey:@"NSValueTypes"];
+      v4->_propMask = [coder decodeInt64ForKey:@"NSValueTypes"];
     }
 
-    if ([a3 containsValueForKey:@"NSFlags"])
+    if ([coder containsValueForKey:@"NSFlags"])
     {
-      v4->_typeMask = [a3 decodeIntegerForKey:@"NSFlags"];
+      v4->_typeMask = [coder decodeIntegerForKey:@"NSFlags"];
     }
 
     for (i = 0; i != 20; ++i)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSParam%lu", i];
-      if ([a3 containsValueForKey:v6])
+      if ([coder containsValueForKey:v6])
       {
         if (!v4->_propVals)
         {
           [(NSTextBlock *)v4 _createFloatStorage];
         }
 
-        [a3 decodeDoubleForKey:v6];
+        [coder decodeDoubleForKey:v6];
         *(v4->_propVals + i) = v7;
       }
     }
 
-    if ([a3 containsValueForKey:@"NSBackgroundColor"])
+    if ([coder containsValueForKey:@"NSBackgroundColor"])
     {
       v8 = MEMORY[0x1E695DFD8];
       if (__NSTextBlockPrimaryColorClass_onceToken != -1)
@@ -241,10 +241,10 @@
         [NSTextBlock initWithCoder:];
       }
 
-      v4->_primParamVal = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, __NSTextBlockSecondaryColorClass_colorClass, 0), @"NSBackgroundColor"}];
+      v4->_primParamVal = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, __NSTextBlockSecondaryColorClass_colorClass, 0), @"NSBackgroundColor"}];
     }
 
-    if ([a3 containsValueForKey:@"NSBorderColors"])
+    if ([coder containsValueForKey:@"NSBorderColors"])
     {
       v10 = MEMORY[0x1E695DFD8];
       v11 = objc_opt_class();
@@ -261,13 +261,13 @@
         [NSTextBlock initWithCoder:];
       }
 
-      v4->_otherParamVals = [a3 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, v12, v13, v14, __NSTextBlockSecondaryColorClass_colorClass, 0), @"NSBorderColors"}];
+      v4->_otherParamVals = [coder decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, v12, v13, v14, __NSTextBlockSecondaryColorClass_colorClass, 0), @"NSBorderColors"}];
     }
 
     return v4;
   }
 
-  v15 = [a3 versionForClassName:@"NSTextBlock"];
+  v15 = [coder versionForClassName:@"NSTextBlock"];
   if (v15 != 1)
   {
     v27 = v15;
@@ -280,7 +280,7 @@
   v31 = 0;
   v32 = 0;
   v30 = 0;
-  [a3 decodeValuesOfObjCTypes:{"III", &v31 + 4, &v31, &v30}];
+  [coder decodeValuesOfObjCTypes:{"III", &v31 + 4, &v31, &v30}];
   v16 = v30;
   v4->_propMask = v31;
   v4->_typeMask = v16;
@@ -305,7 +305,7 @@
     while (v21);
     if (vaddvq_s32(v20))
     {
-      [a3 decodeArrayOfObjCType:"f" count:? at:?];
+      [coder decodeArrayOfObjCType:"f" count:? at:?];
       [(NSTextBlock *)v4 _createFloatStorage];
       v24 = 0;
       v25 = 0;
@@ -326,7 +326,7 @@
 
     if ((v17 & 0x10000000) != 0)
     {
-      [a3 decodeValuesOfObjCTypes:{"@", &v4->_primParamVal}];
+      [coder decodeValuesOfObjCTypes:{"@", &v4->_primParamVal}];
       v17 = HIDWORD(v31);
       if ((v31 & 0x2000000000000000) == 0)
       {
@@ -345,28 +345,28 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    [a3 decodeValuesOfObjCTypes:{"@", &v4->_otherParamVals}];
+    [coder decodeValuesOfObjCTypes:{"@", &v4->_otherParamVals}];
     if ((v31 & 0x4000000000000000) == 0)
     {
       return v4;
     }
 
 LABEL_41:
-    [a3 decodeValuesOfObjCTypes:{"@", &v32}];
+    [coder decodeValuesOfObjCTypes:{"@", &v32}];
   }
 
   return v4;
 }
 
-- (void)_setValue:(double)a3 type:(unint64_t)a4 forParameter:(unint64_t)a5
+- (void)_setValue:(double)value type:(unint64_t)type forParameter:(unint64_t)parameter
 {
-  if (a5 > 0x13)
+  if (parameter > 0x13)
   {
     goto LABEL_7;
   }
 
   propVals = self->_propVals;
-  if (a3 == 0.0)
+  if (value == 0.0)
   {
     if (!propVals)
     {
@@ -380,10 +380,10 @@ LABEL_41:
     propVals = self->_propVals;
   }
 
-  propVals[a5] = a3;
+  propVals[parameter] = value;
 LABEL_7:
-  v10 = 1 << a5;
-  if (a4 == 1)
+  v10 = 1 << parameter;
+  if (type == 1)
   {
     v11 = self->_propMask | v10;
   }
@@ -396,28 +396,28 @@ LABEL_7:
   self->_propMask = v11;
 }
 
-- (double)_valueForParameter:(unint64_t)a3
+- (double)_valueForParameter:(unint64_t)parameter
 {
   result = 0.0;
-  if (a3 <= 0x13)
+  if (parameter <= 0x13)
   {
     propVals = self->_propVals;
     if (propVals)
     {
-      return propVals[a3];
+      return propVals[parameter];
     }
   }
 
   return result;
 }
 
-- (void)_takeValuesFromTextBlock:(id)a3
+- (void)_takeValuesFromTextBlock:(id)block
 {
-  if (*(a3 + 1))
+  if (*(block + 1))
   {
     [(NSTextBlock *)self _createFloatStorage];
     v5 = 0;
-    v6 = *(a3 + 1);
+    v6 = *(block + 1);
     propVals = self->_propVals;
     do
     {
@@ -428,24 +428,24 @@ LABEL_7:
     while (v5 != 160);
   }
 
-  self->_propMask = *(a3 + 2);
-  self->_typeMask = *(a3 + 3);
-  v8 = *(a3 + 4);
+  self->_propMask = *(block + 2);
+  self->_typeMask = *(block + 3);
+  v8 = *(block + 4);
   if (v8)
   {
     self->_primParamVal = [v8 copy];
   }
 
-  v9 = *(a3 + 5);
+  v9 = *(block + 5);
   if (v9)
   {
     self->_otherParamVals = [v9 mutableCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 _takeValuesFromTextBlock:self];
   return v4;
 }
@@ -471,7 +471,7 @@ LABEL_7:
 
 - (void)setBorderColor:(NSColor *)color forEdge:(NSRectEdge)edge
 {
-  v5 = color;
+  null = color;
   otherParamVals = self->_otherParamVals;
   if (otherParamVals)
   {
@@ -493,15 +493,15 @@ LABEL_7:
 
   while (v8);
   otherParamVals = self->_otherParamVals;
-  if (!v5)
+  if (!null)
   {
 LABEL_9:
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
 LABEL_3:
 
-  [otherParamVals replaceObjectAtIndex:edge withObject:v5];
+  [otherParamVals replaceObjectAtIndex:edge withObject:null];
 }
 
 - (NSColor)borderColorForEdge:(NSRectEdge)edge
@@ -559,7 +559,7 @@ LABEL_3:
 
 - (id)_attributeDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   [(NSTextBlock *)self valueForDimension:0];
   v77 = v4;
   [(NSTextBlock *)self valueForDimension:1];
@@ -633,7 +633,7 @@ LABEL_3:
     v41 = &stru_1F01AD578;
   }
 
-  [v3 appendFormat:@"w %g%@ ", v77, v41];
+  [string appendFormat:@"w %g%@ ", v77, v41];
   if (v6 > 0.0 || v76 > 0.0)
   {
     if (v63 == NSTextBlockPercentageValueType)
@@ -656,7 +656,7 @@ LABEL_3:
       v43 = &stru_1F01AD578;
     }
 
-    [v3 appendFormat:@"%g%@-%g%@ ", *&v6, v42, *&v76, v43];
+    [string appendFormat:@"%g%@-%g%@ ", *&v6, v42, *&v76, v43];
   }
 
   if (v75 == NSTextBlockPercentageValueType)
@@ -669,7 +669,7 @@ LABEL_3:
     v44 = &stru_1F01AD578;
   }
 
-  [v3 appendFormat:@"h %g%@ ", v79, v44];
+  [string appendFormat:@"h %g%@ ", v79, v44];
   if (v10 > 0.0 || v81 > 0.0)
   {
     if (v71 == NSTextBlockPercentageValueType)
@@ -692,12 +692,12 @@ LABEL_3:
       v46 = &stru_1F01AD578;
     }
 
-    [v3 appendFormat:@"%g%@-%g%@ ", *&v10, v45, *&v81, v46];
+    [string appendFormat:@"%g%@-%g%@ ", *&v10, v45, *&v81, v46];
   }
 
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v3 appendFormat:@"bgc #%.6x ", v13];
+    [string appendFormat:@"bgc #%.6x ", v13];
   }
 
   if (v19 > 0.0 || v15 > 0.0 || v80 > 0.0 || v78 > 0.0)
@@ -742,7 +742,7 @@ LABEL_3:
       v50 = &stru_1F01AD578;
     }
 
-    [v3 appendFormat:@"m %g%@ %g%@ %g%@ %g%@ ", *&v15, v47, *&v80, v48, *&v78, v49, *&v19, v50];
+    [string appendFormat:@"m %g%@ %g%@ %g%@ %g%@ ", *&v15, v47, *&v80, v48, *&v78, v49, *&v19, v50];
   }
 
   if (v27 > 0.0 || v21 > 0.0 || v23 > 0.0 || v25 > 0.0)
@@ -751,48 +751,48 @@ LABEL_3:
     v52 = v64 == NSTextBlockPercentageValueType ? @"%" : &stru_1F01AD578;
     v53 = v62 == NSTextBlockPercentageValueType ? @"%" : &stru_1F01AD578;
     v54 = v60 == NSTextBlockPercentageValueType ? @"%" : &stru_1F01AD578;
-    [v3 appendFormat:@"b %g%@ %g%@ %g%@ %g%@ ", *&v21, v51, *&v23, v52, *&v25, v53, *&v27, v54];
+    [string appendFormat:@"b %g%@ %g%@ %g%@ %g%@ ", *&v21, v51, *&v23, v52, *&v25, v53, *&v27, v54];
     if (v35 != 0x7FFFFFFFFFFFFFFFLL || v32 != 0x7FFFFFFFFFFFFFFFLL || v33 != 0x7FFFFFFFFFFFFFFFLL || v34 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v3 appendFormat:@"boc"];
+      [string appendFormat:@"boc"];
       if (v32 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 appendString:@" transparent"];
+        [string appendString:@" transparent"];
       }
 
       else
       {
-        [v3 appendFormat:@" #%.6x", v32];
+        [string appendFormat:@" #%.6x", v32];
       }
 
       if (v33 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 appendString:@" transparent"];
+        [string appendString:@" transparent"];
       }
 
       else
       {
-        [v3 appendFormat:@" #%.6x", v33];
+        [string appendFormat:@" #%.6x", v33];
       }
 
       if (v34 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 appendString:@" transparent"];
+        [string appendString:@" transparent"];
       }
 
       else
       {
-        [v3 appendFormat:@" #%.6x", v34];
+        [string appendFormat:@" #%.6x", v34];
       }
 
       if (v35 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 appendString:@" transparent "];
+        [string appendString:@" transparent "];
       }
 
       else
       {
-        [v3 appendFormat:@" #%.6x ", v35];
+        [string appendFormat:@" #%.6x ", v35];
       }
     }
   }
@@ -839,10 +839,10 @@ LABEL_3:
       v58 = &stru_1F01AD578;
     }
 
-    [v3 appendFormat:@"p %g%@ %g%@ %g%@ %g%@ ", *&v85, v55, *&v84, v56, *&v83, v57, *&v82, v58];
+    [string appendFormat:@"p %g%@ %g%@ %g%@ %g%@ ", *&v85, v55, *&v84, v56, *&v83, v57, *&v82, v58];
   }
 
-  return v3;
+  return string;
 }
 
 - (NSRect)rectForLayoutAtPoint:(NSPoint)startingPoint inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)charRange
@@ -854,10 +854,10 @@ LABEL_3:
   y = rect.origin.y;
   x = rect.origin.x;
   v12 = startingPoint.y;
-  v14 = [(NSTextContainer *)textContainer layoutManager];
+  layoutManager = [(NSTextContainer *)textContainer layoutManager];
   v15 = [NSTextBlockLayoutHelper alloc];
-  [(NSLayoutManager *)v14 textStorage];
-  v17 = [(NSTextBlockLayoutHelper *)v15 initWithTextBlock:location charRange:length text:width layoutManager:v16 containerWidth:v14 collapseBorders:0];
+  [(NSLayoutManager *)layoutManager textStorage];
+  v17 = [(NSTextBlockLayoutHelper *)v15 initWithTextBlock:location charRange:length text:width layoutManager:v16 containerWidth:layoutManager collapseBorders:0];
   v18 = v17[20];
   v19 = v17[14] + v17[15] + v17[16];
   v20 = v19 + v17[22] + v17[23] + v17[24];
@@ -893,19 +893,19 @@ LABEL_3:
   v15 = [NSTextBlockLayoutHelper alloc];
   [(NSLayoutManager *)v14 textStorage];
   v17 = [(NSTextBlockLayoutHelper *)v15 initWithTextBlock:location charRange:length text:width layoutManager:v16 containerWidth:v14 collapseBorders:0];
-  v18 = [(NSTextBlock *)self verticalAlignment];
+  verticalAlignment = [(NSTextBlock *)self verticalAlignment];
   v19 = *(v17 + 21) - height;
   if (v19 > 0.0)
   {
     height = height + v19;
-    if (v18 == NSTextBlockBottomAlignment)
+    if (verticalAlignment == NSTextBlockBottomAlignment)
     {
 LABEL_5:
       _moveLinesInLayoutManager(v14, *(v17 + 4), *(v17 + 5), 0, v19);
       goto LABEL_6;
     }
 
-    if (v18 == NSTextBlockMiddleAlignment)
+    if (verticalAlignment == NSTextBlockMiddleAlignment)
     {
       v19 = v19 * 0.5;
       goto LABEL_5;
@@ -942,7 +942,7 @@ LABEL_6:
   v14 = [NSTextBlockLayoutHelper alloc];
   [(NSLayoutManager *)layoutManager textStorage];
   v16 = [(NSTextBlockLayoutHelper *)v14 initWithTextBlock:location charRange:length text:0.0 layoutManager:v15 containerWidth:layoutManager collapseBorders:0];
-  v17 = [(NSTextBlock *)self backgroundColor];
+  backgroundColor = [(NSTextBlock *)self backgroundColor];
   v18 = [(NSTextBlock *)self borderColorForEdge:0];
   v19 = [(NSTextBlock *)self borderColorForEdge:1];
   v20 = [(NSTextBlock *)self borderColorForEdge:2];
@@ -951,11 +951,11 @@ LABEL_6:
   v22 = *(v16 + 15);
   v29 = x + v23;
   v25 = v23 + v22;
-  if (v17)
+  if (backgroundColor)
   {
     v26 = *(v16 + 23);
     v24 = *(v16 + 17);
-    [(NSColor *)v17 set:x + v25];
+    [(NSColor *)backgroundColor set:x + v25];
     [OUTLINED_FUNCTION_1_5() fillBackgroundRectArray:? count:? forCharacterRange:? color:?];
     v22 = *(v16 + 15);
   }

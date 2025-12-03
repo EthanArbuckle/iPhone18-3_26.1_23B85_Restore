@@ -1,45 +1,45 @@
 @interface PersistentAddressBookAddress
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAddressID:(BOOL)a3;
-- (void)setHasRecordID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAddressID:(BOOL)d;
+- (void)setHasRecordID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PersistentAddressBookAddress
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_recordID = *(v4 + 5);
+    self->_recordID = *(fromCopy + 5);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_addressID = *(v4 + 4);
+    self->_addressID = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(PersistentAddressBookAddress *)self setSyncIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_position = *(v4 + 1);
+    self->_position = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
@@ -97,44 +97,44 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_recordID != *(v4 + 5))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_recordID != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_addressID != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_addressID != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   syncIdentifier = self->_syncIdentifier;
-  if (syncIdentifier | *(v4 + 3))
+  if (syncIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)syncIdentifier isEqual:?])
     {
@@ -144,13 +144,13 @@ LABEL_19:
     }
 
     has = self->_has;
-    v6 = *(v4 + 32);
+    v6 = *(equalCopy + 32);
   }
 
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_position != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_position != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -163,9 +163,9 @@ LABEL_20:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -181,7 +181,7 @@ LABEL_20:
     *(v5 + 32) |= 2u;
   }
 
-  v8 = [(NSString *)self->_syncIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_syncIdentifier copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -194,40 +194,40 @@ LABEL_20:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[5] = self->_recordID;
-    *(v4 + 32) |= 4u;
+    toCopy[5] = self->_recordID;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[4] = self->_addressID;
-    *(v4 + 32) |= 2u;
+    toCopy[4] = self->_addressID;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_syncIdentifier)
   {
-    v6 = v4;
-    [v4 setSyncIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSyncIdentifier:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_position;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_position;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -289,15 +289,15 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = PersistentAddressBookAddress;
   v3 = [(PersistentAddressBookAddress *)&v7 description];
-  v4 = [(PersistentAddressBookAddress *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PersistentAddressBookAddress *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasAddressID:(BOOL)a3
+- (void)setHasAddressID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -310,9 +310,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRecordID:(BOOL)a3
+- (void)setHasRecordID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }

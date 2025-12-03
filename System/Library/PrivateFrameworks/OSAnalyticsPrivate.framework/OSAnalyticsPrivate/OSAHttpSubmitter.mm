@@ -1,12 +1,12 @@
 @interface OSAHttpSubmitter
 - (OSAHttpSubmitter)init;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
 - (void)abort;
 - (void)cancelCurrentTask;
-- (void)postContent:(id)a3 withHeaders:(id)a4 toEndpoint:(int)a5;
+- (void)postContent:(id)content withHeaders:(id)headers toEndpoint:(int)endpoint;
 @end
 
 @implementation OSAHttpSubmitter
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (void)postContent:(id)a3 withHeaders:(id)a4 toEndpoint:(int)a5
+- (void)postContent:(id)content withHeaders:(id)headers toEndpoint:(int)endpoint
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  contentCopy = content;
+  headersCopy = headers;
   response = self->_response;
   self->_response = 0;
 
@@ -46,17 +46,17 @@
   responseError = self->super._responseError;
   self->super._responseError = 0;
 
-  v39 = v8;
-  v38 = a5;
-  if (a5 == 2)
+  v39 = contentCopy;
+  endpointCopy = endpoint;
+  if (endpoint == 2)
   {
-    v17 = [MEMORY[0x277D36B80] sharedInstance];
-    [v17 appleInternal];
+    mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+    [mEMORY[0x277D36B80] appleInternal];
 
     v16 = @"https://gateway-oblivious.apple.com/iphonesubmissions/convert.jsp";
   }
 
-  else if (a5 == 1 && ([MEMORY[0x277D36B80] sharedInstance], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "appleInternal"), v14, (v15 & 1) != 0))
+  else if (endpoint == 1 && ([MEMORY[0x277D36B80] sharedInstance], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "appleInternal"), v14, (v15 & 1) != 0))
   {
     v16 = @"https://iphonesubmissions-uat.corp.apple.com/convert.jsp";
   }
@@ -79,7 +79,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v22 = v9;
+  v22 = headersCopy;
   v23 = [v22 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v23)
   {
@@ -106,11 +106,11 @@
   }
 
   [v21 setHTTPBody:v39];
-  v29 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  v30 = v29;
-  if (v38 == 2)
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  v30 = defaultSessionConfiguration;
+  if (endpointCopy == 2)
   {
-    [v29 set_usesNWLoader:1];
+    [defaultSessionConfiguration set_usesNWLoader:1];
   }
 
   v31 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v30 delegate:self delegateQueue:0];
@@ -125,9 +125,9 @@
   if (v34)
   {
     self->super._responseCode = [(NSHTTPURLResponse *)v34 statusCode];
-    v35 = [(NSHTTPURLResponse *)self->_response allHeaderFields];
+    allHeaderFields = [(NSHTTPURLResponse *)self->_response allHeaderFields];
     responseHeaders = self->super._responseHeaders;
-    self->super._responseHeaders = v35;
+    self->super._responseHeaders = allHeaderFields;
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -147,104 +147,104 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  responseCopy = response;
+  handlerCopy = handler;
   v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v10)
   {
     [(OSAHttpSubmitter *)v10 URLSession:v11 dataTask:v12 didReceiveResponse:v13 completionHandler:v14, v15, v16, v17];
   }
 
-  v9[2](v9, 1);
+  handlerCopy[2](handlerCopy, 1);
   response = self->_response;
-  self->_response = v8;
+  self->_response = responseCopy;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v7)
   {
     [(OSAHttpSubmitter *)v7 URLSession:v8 dataTask:v9 didReceiveData:v10, v11, v12, v13, v14];
   }
 
-  [(NSMutableData *)self->_payload appendData:v6];
+  [(NSMutableData *)self->_payload appendData:dataCopy];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v11)
   {
     [(OSAHttpSubmitter *)v11 URLSession:v12 task:v13 didCompleteWithError:v14, v15, v16, v17, v18];
-    if (!v10)
+    if (!errorCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (!v10)
+  else if (!errorCopy)
   {
     goto LABEL_9;
   }
 
-  v19 = [v10 copy];
+  v19 = [errorCopy copy];
   responseError = self->super._responseError;
   self->super._responseError = v19;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412290;
-    v26 = v10;
+    v26 = errorCopy;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Connection failed: %@", &v25, 0xCu);
   }
 
-  v21 = [v10 domain];
-  v22 = v21;
-  if (v21 == *MEMORY[0x277CCA738])
+  domain = [errorCopy domain];
+  v22 = domain;
+  if (domain == *MEMORY[0x277CCA738])
   {
   }
 
   else
   {
-    v23 = [v10 code];
+    code = [errorCopy code];
 
-    if (v23 != -999)
+    if (code != -999)
     {
       [(OSAHttpSubmitter *)self cancelCurrentTask];
     }
   }
 
 LABEL_9:
-  [v8 finishTasksAndInvalidate];
+  [sessionCopy finishTasksAndInvalidate];
   dispatch_semaphore_signal(self->_submissionSem);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v8 = a6;
+  sentCopy = sent;
   v32 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v12 = v11;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [OSAHttpSubmitter URLSession:a5 task:v8 didSendBodyData:a7 totalBytesSent:? totalBytesExpectedToSend:?];
+    [OSAHttpSubmitter URLSession:data task:sentCopy didSendBodyData:send totalBytesSent:? totalBytesExpectedToSend:?];
   }
 
   last_thoughput_check = self->_last_thoughput_check;
   if (last_thoughput_check != 0.0)
   {
     v14 = v12 - last_thoughput_check;
-    v15 = vcvtd_n_f64_s64(a5, 0xAuLL) / (pow(vcvtd_n_f64_s64(a7, 0xAuLL), 0.4) * 0.5);
+    v15 = vcvtd_n_f64_s64(data, 0xAuLL) / (pow(vcvtd_n_f64_s64(send, 0xAuLL), 0.4) * 0.5);
     v16 = v14 <= v15 ? 0 : self->_thoughput_warnings + 1;
     self->_thoughput_warnings = v16;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))

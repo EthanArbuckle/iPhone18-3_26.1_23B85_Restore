@@ -1,29 +1,29 @@
 @interface VNHomographyTracker
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNHomographyTracker
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v12 = a5;
-  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNHomographyTrackerProcessOption_State" inOptions:v12 error:a8];
+    v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNHomographyTrackerProcessOption_State" inOptions:optionsCopy error:error];
     if (v14)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -32,14 +32,14 @@
       v20[2] = __121__VNHomographyTracker_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
       v20[3] = &unk_1E77B2398;
       v20[4] = self;
-      v21 = v12;
+      v21 = optionsCopy;
       v22 = v14;
-      v25 = a4;
+      bufferCopy = buffer;
       v23 = v13;
       v16 = v15;
       v24 = v16;
       v17 = _Block_copy(v20);
-      if (VNExecuteBlock(v17, a8))
+      if (VNExecuteBlock(v17, error))
       {
         v18 = v16;
       }
@@ -183,21 +183,21 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 width];
-    v20 = [v18 height];
-    v21 = [v18 croppedBufferWithWidth:(width * (v19 & 0xFFFFFFFFFFFFFFFELL)) height:(height * (v20 & 0xFFFFFFFFFFFFFFFELL)) format:875704422 cropRect:v16 options:a8 error:{x * (v19 & 0xFFFFFFFFFFFFFFFELL), y * (v20 & 0xFFFFFFFFFFFFFFFELL)}];
-    *a7 = v21;
+    width = [v17 width];
+    height = [v18 height];
+    v21 = [v18 croppedBufferWithWidth:(width * (width & 0xFFFFFFFFFFFFFFFELL)) height:(height * (height & 0xFFFFFFFFFFFFFFFELL)) format:875704422 cropRect:optionsCopy options:error error:{x * (width & 0xFFFFFFFFFFFFFFFELL), y * (height & 0xFFFFFFFFFFFFFFFELL)}];
+    *buffer = v21;
     v22 = v21 != 0;
   }
 

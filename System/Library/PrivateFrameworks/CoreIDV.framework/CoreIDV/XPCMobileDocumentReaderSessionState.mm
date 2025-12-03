@@ -1,15 +1,15 @@
 @interface XPCMobileDocumentReaderSessionState
 - (_TtC7CoreIDV35XPCMobileDocumentReaderSessionState)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMobileDocumentReaderSessionState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s7CoreIDV35XPCMobileDocumentReaderSessionStateC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s7CoreIDV35XPCMobileDocumentReaderSessionStateC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (_TtC7CoreIDV35XPCMobileDocumentReaderSessionState)init

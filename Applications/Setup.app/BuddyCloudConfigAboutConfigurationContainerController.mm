@@ -1,11 +1,11 @@
 @interface BuddyCloudConfigAboutConfigurationContainerController
 - (BuddyCloudConfigAboutConfigurationContainerController)init;
 - (id)_detailText;
-- (void)_doneTapped:(id)a3;
-- (void)setCloudConfiguration:(id)a3;
-- (void)setCloudConfigurationFromProfileConnection:(id)a3;
+- (void)_doneTapped:(id)tapped;
+- (void)setCloudConfiguration:(id)configuration;
+- (void)setCloudConfigurationFromProfileConnection:(id)connection;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyCloudConfigAboutConfigurationContainerController
@@ -26,22 +26,22 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = BuddyCloudConfigAboutConfigurationContainerController;
-  [(BuddyCloudConfigAboutConfigurationContainerController *)&v5 viewWillAppear:a3];
-  v3 = [(BuddyCloudConfigAboutConfigurationContainerController *)v8 headerView];
-  v4 = [(BuddyCloudConfigAboutConfigurationContainerController *)v8 _detailText];
-  [v3 setDetailText:v4];
+  [(BuddyCloudConfigAboutConfigurationContainerController *)&v5 viewWillAppear:appear];
+  headerView = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy headerView];
+  _detailText = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy _detailText];
+  [headerView setDetailText:_detailText];
 }
 
 - (void)viewDidLoad
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyCloudConfigAboutConfigurationContainerController;
@@ -49,161 +49,161 @@
   v2 = [UIBarButtonItem alloc];
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"DONE" value:&stru_10032F900 table:@"Localizable"];
-  v5 = [v2 initWithTitle:v4 style:2 target:v9 action:"_doneTapped:"];
-  v6 = [(BuddyCloudConfigAboutConfigurationContainerController *)v9 navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  v5 = [v2 initWithTitle:v4 style:2 target:selfCopy action:"_doneTapped:"];
+  navigationItem = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (void)_doneTapped:(id)a3
+- (void)_doneTapped:(id)tapped
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCloudConfigAboutConfigurationContainerController *)v5 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  objc_storeStrong(location, tapped);
+  presentingViewController = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setCloudConfiguration:(id)a3
+- (void)setCloudConfiguration:(id)configuration
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [location[0] details];
-  if (v15)
+  objc_storeStrong(location, configuration);
+  details = [location[0] details];
+  if (details)
   {
-    v3 = [location[0] isSupervised];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setIsSupervised:v3 & 1];
-    v4 = [v15 objectForKeyedSubscript:kCCOrganizationSupportPhoneKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationSupportPhone:v4];
+    isSupervised = [location[0] isSupervised];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setIsSupervised:isSupervised & 1];
+    v4 = [details objectForKeyedSubscript:kCCOrganizationSupportPhoneKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationSupportPhone:v4];
 
-    v5 = [v15 objectForKeyedSubscript:kCCOrganizationSupportEmailKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationSupportEmail:v5];
+    v5 = [details objectForKeyedSubscript:kCCOrganizationSupportEmailKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationSupportEmail:v5];
 
-    v6 = [v15 objectForKeyedSubscript:kCCOrganizationNameKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationName:v6];
+    v6 = [details objectForKeyedSubscript:kCCOrganizationNameKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationName:v6];
 
-    v7 = [v15 objectForKeyedSubscript:kCCOrganizationDepartmentKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationDepartment:v7];
+    v7 = [details objectForKeyedSubscript:kCCOrganizationDepartmentKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationDepartment:v7];
 
-    v8 = [v15 objectForKeyedSubscript:kCCOrganizationAddressKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationAddress:v8];
+    v8 = [details objectForKeyedSubscript:kCCOrganizationAddressKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationAddress:v8];
 
-    v9 = [v15 objectForKeyedSubscript:kCCOrganizationAddressLine1Key];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationAddressLine1:v9];
+    v9 = [details objectForKeyedSubscript:kCCOrganizationAddressLine1Key];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationAddressLine1:v9];
 
-    v10 = [v15 objectForKeyedSubscript:kCCOrganizationAddressLine2Key];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationAddressLine2:v10];
+    v10 = [details objectForKeyedSubscript:kCCOrganizationAddressLine2Key];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationAddressLine2:v10];
 
-    v11 = [v15 objectForKeyedSubscript:kCCOrganizationCityKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationCity:v11];
+    v11 = [details objectForKeyedSubscript:kCCOrganizationCityKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationCity:v11];
 
-    v12 = [v15 objectForKeyedSubscript:kCCOrganizationRegionKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationRegion:v12];
+    v12 = [details objectForKeyedSubscript:kCCOrganizationRegionKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationRegion:v12];
 
-    v13 = [v15 objectForKeyedSubscript:kCCOrganizationZipCodeKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationZipCode:v13];
+    v13 = [details objectForKeyedSubscript:kCCOrganizationZipCodeKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationZipCode:v13];
 
-    v14 = [v15 objectForKeyedSubscript:kCCOrganizationCountryKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationCountry:v14];
+    v14 = [details objectForKeyedSubscript:kCCOrganizationCountryKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationCountry:v14];
   }
 
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&details, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setCloudConfigurationFromProfileConnection:(id)a3
+- (void)setCloudConfigurationFromProfileConnection:(id)connection
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [location[0] cloudConfigurationDetails];
-  if (v15)
+  objc_storeStrong(location, connection);
+  cloudConfigurationDetails = [location[0] cloudConfigurationDetails];
+  if (cloudConfigurationDetails)
   {
-    v3 = [location[0] isSupervised];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setIsSupervised:v3 & 1];
-    v4 = [v15 objectForKeyedSubscript:kMCCCOrganizationSupportPhoneKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationSupportPhone:v4];
+    isSupervised = [location[0] isSupervised];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setIsSupervised:isSupervised & 1];
+    v4 = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCOrganizationSupportPhoneKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationSupportPhone:v4];
 
-    v5 = [v15 objectForKeyedSubscript:kCCOrganizationSupportEmailKey];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationSupportEmail:v5];
+    v5 = [cloudConfigurationDetails objectForKeyedSubscript:kCCOrganizationSupportEmailKey];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationSupportEmail:v5];
 
-    v6 = [location[0] deviceOrganizationName];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationName:v6];
+    deviceOrganizationName = [location[0] deviceOrganizationName];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationName:deviceOrganizationName];
 
-    v7 = [location[0] deviceDepartmentName];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationDepartment:v7];
+    deviceDepartmentName = [location[0] deviceDepartmentName];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationDepartment:deviceDepartmentName];
 
-    v8 = [location[0] deviceOrganizationAddress];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationAddress:v8];
+    deviceOrganizationAddress = [location[0] deviceOrganizationAddress];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationAddress:deviceOrganizationAddress];
 
-    v9 = [location[0] deviceOrganizationAddressLine1];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationAddressLine1:v9];
+    deviceOrganizationAddressLine1 = [location[0] deviceOrganizationAddressLine1];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationAddressLine1:deviceOrganizationAddressLine1];
 
-    v10 = [location[0] deviceOrganizationAddressLine2];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationAddressLine2:v10];
+    deviceOrganizationAddressLine2 = [location[0] deviceOrganizationAddressLine2];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationAddressLine2:deviceOrganizationAddressLine2];
 
-    v11 = [location[0] deviceOrganizationCity];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationCity:v11];
+    deviceOrganizationCity = [location[0] deviceOrganizationCity];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationCity:deviceOrganizationCity];
 
-    v12 = [location[0] deviceOrganizationRegion];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationRegion:v12];
+    deviceOrganizationRegion = [location[0] deviceOrganizationRegion];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationRegion:deviceOrganizationRegion];
 
-    v13 = [location[0] deviceOrganizationZipCode];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationZipCode:v13];
+    deviceOrganizationZipCode = [location[0] deviceOrganizationZipCode];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationZipCode:deviceOrganizationZipCode];
 
-    v14 = [location[0] deviceOrganizationCountry];
-    [(BuddyCloudConfigAboutConfigurationContainerController *)v17 setOrganizationCountry:v14];
+    deviceOrganizationCountry = [location[0] deviceOrganizationCountry];
+    [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy setOrganizationCountry:deviceOrganizationCountry];
   }
 
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&cloudConfigurationDetails, 0);
   objc_storeStrong(location, 0);
 }
 
 - (id)_detailText
 {
-  v43 = self;
+  selfCopy = self;
   v42[1] = a2;
   v42[0] = objc_opt_new();
-  v2 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationName];
+  organizationName = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationName];
 
-  if (v2)
+  if (organizationName)
   {
-    v3 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationName];
-    [v42[0] addObject:v3];
+    organizationName2 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationName];
+    [v42[0] addObject:organizationName2];
   }
 
-  v4 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationDepartment];
+  organizationDepartment = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationDepartment];
 
-  if (v4)
+  if (organizationDepartment)
   {
-    v5 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationDepartment];
-    [v42[0] addObject:v5];
+    organizationDepartment2 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationDepartment];
+    [v42[0] addObject:organizationDepartment2];
   }
 
   v41 = 0;
   v40 = objc_opt_new();
-  v6 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationAddressLine1];
-  [v40 setValue:v6 forKey:CNPostalAddressStreetKey];
+  organizationAddressLine1 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationAddressLine1];
+  [v40 setValue:organizationAddressLine1 forKey:CNPostalAddressStreetKey];
 
-  v7 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationAddressLine2];
-  [v40 setValue:v7 forKey:CNPostalAddressSubLocalityKey];
+  organizationAddressLine2 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationAddressLine2];
+  [v40 setValue:organizationAddressLine2 forKey:CNPostalAddressSubLocalityKey];
 
-  v8 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationCity];
-  [v40 setValue:v8 forKey:CNPostalAddressCityKey];
+  organizationCity = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationCity];
+  [v40 setValue:organizationCity forKey:CNPostalAddressCityKey];
 
-  v9 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationRegion];
-  [v40 setValue:v9 forKey:CNPostalAddressStateKey];
+  organizationRegion = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationRegion];
+  [v40 setValue:organizationRegion forKey:CNPostalAddressStateKey];
 
-  v10 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationZipCode];
-  [v40 setValue:v10 forKey:CNPostalAddressPostalCodeKey];
+  organizationZipCode = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationZipCode];
+  [v40 setValue:organizationZipCode forKey:CNPostalAddressPostalCodeKey];
 
-  v11 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationCountry];
-  [v40 setValue:v11 forKey:CNPostalAddressCountryKey];
+  organizationCountry = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationCountry];
+  [v40 setValue:organizationCountry forKey:CNPostalAddressCountryKey];
 
   v39 = [CNPostalAddress postalAddressWithDictionaryRepresentation:v40];
   if (v39)
@@ -222,9 +222,9 @@
   v12 = 0;
   if ((v41 & 1) == 0)
   {
-    v37 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationAddress];
+    organizationAddress = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationAddress];
     v36 = 1;
-    v12 = v37 != 0;
+    v12 = organizationAddress != 0;
   }
 
   if (v36)
@@ -234,8 +234,8 @@
   if (v12)
   {
     v13 = objc_opt_new();
-    v14 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationAddress];
-    v35 = [v13 postalAddressFromString:v14];
+    organizationAddress2 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationAddress];
+    v35 = [v13 postalAddressFromString:organizationAddress2];
 
     v34 = 0;
     if (v35)
@@ -249,7 +249,7 @@
     v32 = 0;
     if (!v34)
     {
-      v33 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationAddress];
+      organizationAddress3 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationAddress];
       v32 = 1;
     }
 
@@ -262,34 +262,34 @@
     objc_storeStrong(&v35, 0);
   }
 
-  v18 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationSupportPhone];
+  organizationSupportPhone = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationSupportPhone];
 
-  if (v18)
+  if (organizationSupportPhone)
   {
     v19 = v42[0];
-    v20 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationSupportPhone];
-    [v19 addObject:v20];
+    organizationSupportPhone2 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationSupportPhone];
+    [v19 addObject:organizationSupportPhone2];
   }
 
-  v21 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationSupportEmail];
+  organizationSupportEmail = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationSupportEmail];
 
-  if (v21)
+  if (organizationSupportEmail)
   {
     v22 = v42[0];
-    v23 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationSupportEmail];
-    [v22 addObject:v23];
+    organizationSupportEmail2 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationSupportEmail];
+    [v22 addObject:organizationSupportEmail2];
   }
 
   [v42[0] addObject:@"\n"];
-  v24 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationName];
+  organizationName3 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationName];
 
-  if (v24)
+  if (organizationName3)
   {
     v25 = +[NSBundle mainBundle];
     v26 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"REMOTE_MANAGEMENT_ABOUT_DESCRIPTION"];
     v27 = [(NSBundle *)v25 localizedStringForKey:v26 value:&stru_10032F900 table:@"Localizable"];
-    v28 = [(BuddyCloudConfigAboutConfigurationContainerController *)v43 organizationName];
-    v31 = [NSString localizedStringWithFormat:v27, v28];
+    organizationName4 = [(BuddyCloudConfigAboutConfigurationContainerController *)selfCopy organizationName];
+    v31 = [NSString localizedStringWithFormat:v27, organizationName4];
 
     [v42[0] addObject:v31];
     objc_storeStrong(&v31, 0);

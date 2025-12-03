@@ -10,7 +10,7 @@
 - (BOOL)isStroked;
 - (BOOL)isWordArt;
 - (CGPoint)shadowOffsets;
-- (OAVShapeManager)initWithShape:(_xmlNode *)a3 type:(unsigned __int16)a4 packagePart:(id)a5 state:(id)a6;
+- (OAVShapeManager)initWithShape:(_xmlNode *)shape type:(unsigned __int16)type packagePart:(id)part state:(id)state;
 - (OAVTextBoxInsets)textInsets;
 - (float)fillAngle;
 - (float)fillBgAlpha;
@@ -56,8 +56,8 @@
 
 - (BOOL)isImage
 {
-  v2 = [(OAVShapeManager *)self imageRelId];
-  v3 = [v2 length] != 0;
+  imageRelId = [(OAVShapeManager *)self imageRelId];
+  v3 = [imageRelId length] != 0;
 
   return v3;
 }
@@ -68,20 +68,20 @@
   if (v3)
   {
     v4 = v3;
-    v5 = CXDefaultStringAttribute(v3, OAVOfficeDrawingNamespace, "relid", 0);
-    if (!v5)
+    identifier = CXDefaultStringAttribute(v3, OAVOfficeDrawingNamespace, "relid", 0);
+    if (!identifier)
     {
       v6 = [(OCXReadState *)self->mOAVState OCXReadRelationshipForNode:v4 packagePart:self->mPackagePart];
-      v5 = [v6 identifier];
+      identifier = [v6 identifier];
     }
   }
 
   else
   {
-    v5 = 0;
+    identifier = 0;
   }
 
-  return v5;
+  return identifier;
 }
 
 - (BOOL)isWordArt
@@ -217,8 +217,8 @@
       for (i = 0; [v10 count] > i; ++i)
       {
         v12 = [v10 objectAtIndex:i];
-        v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v14 = [v12 stringByTrimmingCharactersInSet:v13];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v14 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if ([(NSString *)v14 length])
         {
@@ -647,29 +647,29 @@
 - (id)movieRelId
 {
   mShape = self->mShape;
-  v4 = [(OAVReadState *)self->mOAVState oaxState];
-  v5 = [v4 OAXWordProcessingMLNamespace];
-  v6 = OCXFindChild(mShape, v5, "movie");
+  oaxState = [(OAVReadState *)self->mOAVState oaxState];
+  oAXWordProcessingMLNamespace = [oaxState OAXWordProcessingMLNamespace];
+  v6 = OCXFindChild(mShape, oAXWordProcessingMLNamespace, "movie");
 
   if (v6)
   {
-    v7 = [(OAVReadState *)self->mOAVState oaxState];
-    v8 = [v7 OAXWordProcessingMLNamespace];
-    v9 = CXDefaultStringAttribute(v6, v8, "relid", 0);
+    oaxState2 = [(OAVReadState *)self->mOAVState oaxState];
+    oAXWordProcessingMLNamespace2 = [oaxState2 OAXWordProcessingMLNamespace];
+    identifier = CXDefaultStringAttribute(v6, oAXWordProcessingMLNamespace2, "relid", 0);
 
-    if (!v9)
+    if (!identifier)
     {
       v10 = [(OCXReadState *)self->mOAVState OCXReadRelationshipForNode:v6 packagePart:self->mPackagePart];
-      v9 = [v10 identifier];
+      identifier = [v10 identifier];
     }
   }
 
   else
   {
-    v9 = 0;
+    identifier = 0;
   }
 
-  return v9;
+  return identifier;
 }
 
 - (float)fillAngle
@@ -747,20 +747,20 @@
   if (v3)
   {
     v4 = v3;
-    v5 = CXDefaultStringAttribute(v3, OAVOfficeDrawingNamespace, "relid", 0);
-    if (!v5)
+    identifier = CXDefaultStringAttribute(v3, OAVOfficeDrawingNamespace, "relid", 0);
+    if (!identifier)
     {
       v6 = [(OCXReadState *)self->mOAVState OCXReadRelationshipForNode:v4 packagePart:self->mPackagePart];
-      v5 = [v6 identifier];
+      identifier = [v6 identifier];
     }
   }
 
   else
   {
-    v5 = 0;
+    identifier = 0;
   }
 
-  return v5;
+  return identifier;
 }
 
 - (id)textRotation
@@ -807,20 +807,20 @@
   return v2;
 }
 
-- (OAVShapeManager)initWithShape:(_xmlNode *)a3 type:(unsigned __int16)a4 packagePart:(id)a5 state:(id)a6
+- (OAVShapeManager)initWithShape:(_xmlNode *)shape type:(unsigned __int16)type packagePart:(id)part state:(id)state
 {
-  v11 = a5;
-  v12 = a6;
+  partCopy = part;
+  stateCopy = state;
   v24.receiver = self;
   v24.super_class = OAVShapeManager;
   v13 = [(OAVShapeManager *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    v13->mShape = a3;
-    v13->mType = a4;
-    objc_storeStrong(&v13->mPackagePart, a5);
-    v15 = CXRequiredStringAttribute(a3, CXNoNamespace, "style");
+    v13->mShape = shape;
+    v13->mType = type;
+    objc_storeStrong(&v13->mPackagePart, part);
+    v15 = CXRequiredStringAttribute(shape, CXNoNamespace, "style");
     v16 = OAVReadComposite(v15);
     mShapeStyle = v14->mShapeStyle;
     v14->mShapeStyle = v16;
@@ -838,7 +838,7 @@
       }
     }
 
-    objc_storeStrong(&v14->mOAVState, a6);
+    objc_storeStrong(&v14->mOAVState, state);
   }
 
   return v14;

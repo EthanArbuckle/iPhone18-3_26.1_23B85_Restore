@@ -1,20 +1,20 @@
 @interface NCAudioPlayerControlsViewController
 - (NCAudioPlayerControlsView)playerControlsView;
 - (NCAudioPlayerControlsViewController)init;
-- (NCAudioPlayerControlsViewController)initWithCoder:(id)a3;
-- (NCAudioPlayerControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)detailSlider:(id)a3 didChangeValue:(float)a4;
-- (void)detailSliderTrackingDidBegin:(id)a3;
-- (void)detailSliderTrackingDidCancel:(id)a3;
-- (void)detailSliderTrackingDidEnd:(id)a3;
-- (void)playbackControls:(id)a3 didRequestState:(int64_t)a4;
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4;
-- (void)playerController:(id)a3 didChangeToDuration:(double)a4;
-- (void)playerController:(id)a3 didChangeToPlaybackState:(int64_t)a4;
-- (void)playerController:(id)a3 didChangeToStatus:(int64_t)a4;
-- (void)playerController:(id)a3 didSeekToTime:(float)a4;
-- (void)setPlayerController:(id)a3;
-- (void)setURL:(id)a3;
+- (NCAudioPlayerControlsViewController)initWithCoder:(id)coder;
+- (NCAudioPlayerControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)detailSlider:(id)slider didChangeValue:(float)value;
+- (void)detailSliderTrackingDidBegin:(id)begin;
+- (void)detailSliderTrackingDidCancel:(id)cancel;
+- (void)detailSliderTrackingDidEnd:(id)end;
+- (void)playbackControls:(id)controls didRequestState:(int64_t)state;
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time;
+- (void)playerController:(id)controller didChangeToDuration:(double)duration;
+- (void)playerController:(id)controller didChangeToPlaybackState:(int64_t)state;
+- (void)playerController:(id)controller didChangeToStatus:(int64_t)status;
+- (void)playerController:(id)controller didSeekToTime:(float)time;
+- (void)setPlayerController:(id)controller;
+- (void)setURL:(id)l;
 @end
 
 @implementation NCAudioPlayerControlsViewController
@@ -26,27 +26,27 @@
   return [(NCAudioPlayerControlsViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (NCAudioPlayerControlsViewController)initWithCoder:(id)a3
+- (NCAudioPlayerControlsViewController)initWithCoder:(id)coder
 {
   [(NCAudioPlayerControlsViewController *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (NCAudioPlayerControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NCAudioPlayerControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(NCAudioPlayerControlsViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(NCAudioPlayerControlsViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
-  if (self->_URL != v5)
+  lCopy = l;
+  if (self->_URL != lCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_URL, a3);
+    v9 = lCopy;
+    objc_storeStrong(&self->_URL, l);
     URL = self->_URL;
     if (URL)
     {
@@ -61,31 +61,31 @@
 
     [(NCAudioPlayerControlsViewController *)self setPlayerController:v8];
 
-    v5 = v9;
+    lCopy = v9;
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v12 = a3;
-  if (self->_playerController != v12)
+  controllerCopy = controller;
+  if (self->_playerController != controllerCopy)
   {
-    objc_storeStrong(&self->_playerController, a3);
+    objc_storeStrong(&self->_playerController, controller);
     playerController = self->_playerController;
     if (playerController)
     {
       [(NCAudioPlayerController *)playerController setDelegate:self];
       if ([(NCAudioPlayerController *)self->_playerController status]== 1)
       {
-        v6 = [(NCAudioPlayerControlsViewController *)self playerController];
-        [v6 duration];
+        playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+        [playerController duration];
         v8 = v7;
-        v9 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-        v10 = [v9 timelineSlider];
-        [v10 setDuration:v8];
+        playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+        timelineSlider = [playerControlsView timelineSlider];
+        [timelineSlider setDuration:v8];
 
-        v11 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-        [v11 setEnabled:1];
+        playerControlsView2 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+        [playerControlsView2 setEnabled:1];
       }
     }
   }
@@ -102,25 +102,25 @@
 
     [(NCAudioPlayerControlsView *)self->_playerControlsView setDelegate:self];
     [(NCAudioPlayerControlsView *)self->_playerControlsView setEnabled:0];
-    v6 = [(NCAudioPlayerControlsView *)self->_playerControlsView timelineSlider];
-    [v6 setDelegate:self];
+    timelineSlider = [(NCAudioPlayerControlsView *)self->_playerControlsView timelineSlider];
+    [timelineSlider setDelegate:self];
 
     [(NCAudioPlayerControlsView *)self->_playerControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(NCAudioPlayerControlsViewController *)self view];
-    [v7 addSubview:self->_playerControlsView];
-    v8 = [(NCAudioPlayerControlsView *)self->_playerControlsView leadingAnchor];
-    v9 = [v7 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    view = [(NCAudioPlayerControlsViewController *)self view];
+    [view addSubview:self->_playerControlsView];
+    leadingAnchor = [(NCAudioPlayerControlsView *)self->_playerControlsView leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v10 setActive:1];
 
-    v11 = [(NCAudioPlayerControlsView *)self->_playerControlsView topAnchor];
-    v12 = [v7 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(NCAudioPlayerControlsView *)self->_playerControlsView topAnchor];
+    topAnchor2 = [view topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v13 setActive:1];
 
-    v14 = [(NCAudioPlayerControlsView *)self->_playerControlsView trailingAnchor];
-    v15 = [v7 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [(NCAudioPlayerControlsView *)self->_playerControlsView trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v16 setActive:1];
 
     playerControlsView = self->_playerControlsView;
@@ -129,142 +129,142 @@
   return playerControlsView;
 }
 
-- (void)detailSliderTrackingDidBegin:(id)a3
+- (void)detailSliderTrackingDidBegin:(id)begin
 {
-  v3 = [(NCAudioPlayerControlsViewController *)self playerController];
-  [v3 pause];
+  playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+  [playerController pause];
 }
 
-- (void)detailSliderTrackingDidEnd:(id)a3
+- (void)detailSliderTrackingDidEnd:(id)end
 {
-  v3 = [(NCAudioPlayerControlsViewController *)self playerController];
-  [v3 play];
+  playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+  [playerController play];
 }
 
-- (void)detailSliderTrackingDidCancel:(id)a3
+- (void)detailSliderTrackingDidCancel:(id)cancel
 {
-  v6 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-  v4 = [v6 timelineSlider];
-  v5 = [(NCAudioPlayerControlsViewController *)self playerController];
-  [v5 currentTime];
-  [v4 setValue:0 animated:?];
+  playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+  timelineSlider = [playerControlsView timelineSlider];
+  playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+  [playerController currentTime];
+  [timelineSlider setValue:0 animated:?];
 }
 
-- (void)detailSlider:(id)a3 didChangeValue:(float)a4
+- (void)detailSlider:(id)slider didChangeValue:(float)value
 {
-  v6 = [(NCAudioPlayerControlsViewController *)self playerController];
-  *&v5 = a4;
-  [v6 seekToTime:v5];
+  playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+  *&v5 = value;
+  [playerController seekToTime:v5];
 }
 
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time
 {
-  v7 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-  v5 = [v7 timelineSlider];
-  *&v6 = a4;
-  [v5 setValue:1 animated:v6];
+  playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+  timelineSlider = [playerControlsView timelineSlider];
+  *&v6 = time;
+  [timelineSlider setValue:1 animated:v6];
 }
 
-- (void)playerController:(id)a3 didChangeToDuration:(double)a4
+- (void)playerController:(id)controller didChangeToDuration:(double)duration
 {
-  v6 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-  v7 = [v6 timelineSlider];
-  [v7 setDuration:a4];
+  playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+  timelineSlider = [playerControlsView timelineSlider];
+  [timelineSlider setDuration:duration];
 
-  v8 = [(NCAudioPlayerControlsViewController *)self playerController];
-  v9 = [v8 status];
+  playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+  status = [playerController status];
 
-  if (v9 == 1)
+  if (status == 1)
   {
-    v10 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-    [v10 setEnabled:1];
+    playerControlsView2 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+    [playerControlsView2 setEnabled:1];
   }
 }
 
-- (void)playerController:(id)a3 didChangeToPlaybackState:(int64_t)a4
+- (void)playerController:(id)controller didChangeToPlaybackState:(int64_t)state
 {
-  v6 = a3;
-  if (a4 <= 2)
+  controllerCopy = controller;
+  if (state <= 2)
   {
-    v7 = qword_100007750[a4];
-    v9 = v6;
-    v8 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-    [v8 setState:v7 animated:1];
+    v7 = qword_100007750[state];
+    v9 = controllerCopy;
+    playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+    [playerControlsView setState:v7 animated:1];
 
-    v6 = v9;
+    controllerCopy = v9;
   }
 }
 
-- (void)playerController:(id)a3 didChangeToStatus:(int64_t)a4
+- (void)playerController:(id)controller didChangeToStatus:(int64_t)status
 {
-  v6 = a3;
-  if (a4 == 1)
+  controllerCopy = controller;
+  if (status == 1)
   {
-    v11 = v6;
-    v8 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-    v7 = [v8 timelineSlider];
+    v11 = controllerCopy;
+    playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+    timelineSlider = [playerControlsView timelineSlider];
 
-    v9 = [(NCAudioPlayerControlsViewController *)self playerController];
-    [v9 duration];
-    [v7 setDuration:?];
+    playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+    [playerController duration];
+    [timelineSlider setDuration:?];
 
-    [v7 setValue:0 animated:0.0];
-    v10 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-    [v10 setEnabled:1];
+    [timelineSlider setValue:0 animated:0.0];
+    playerControlsView2 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+    [playerControlsView2 setEnabled:1];
   }
 
   else
   {
-    if (a4)
+    if (status)
     {
       goto LABEL_6;
     }
 
-    v11 = v6;
-    v7 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-    [v7 setEnabled:0];
+    v11 = controllerCopy;
+    timelineSlider = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+    [timelineSlider setEnabled:0];
   }
 
-  v6 = v11;
+  controllerCopy = v11;
 LABEL_6:
 }
 
-- (void)playerController:(id)a3 didSeekToTime:(float)a4
+- (void)playerController:(id)controller didSeekToTime:(float)time
 {
-  v7 = [(NCAudioPlayerControlsViewController *)self playerControlsView];
-  v5 = [v7 timelineSlider];
-  *&v6 = a4;
-  [v5 setValue:1 animated:v6];
+  playerControlsView = [(NCAudioPlayerControlsViewController *)self playerControlsView];
+  timelineSlider = [playerControlsView timelineSlider];
+  *&v6 = time;
+  [timelineSlider setValue:1 animated:v6];
 }
 
-- (void)playbackControls:(id)a3 didRequestState:(int64_t)a4
+- (void)playbackControls:(id)controls didRequestState:(int64_t)state
 {
-  v7 = a3;
-  if (a4 == 2)
+  controlsCopy = controls;
+  if (state == 2)
   {
-    v6 = [(NCAudioPlayerControlsViewController *)self playerController];
-    [v6 pause];
+    playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+    [playerController pause];
   }
 
-  else if (a4 == 1)
+  else if (state == 1)
   {
-    v6 = [(NCAudioPlayerControlsViewController *)self playerController];
-    [v6 play];
+    playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+    [playerController play];
   }
 
   else
   {
-    if (a4)
+    if (state)
     {
       goto LABEL_8;
     }
 
-    v6 = [(NCAudioPlayerControlsViewController *)self playerController];
-    [v6 stop];
+    playerController = [(NCAudioPlayerControlsViewController *)self playerController];
+    [playerController stop];
   }
 
 LABEL_8:
-  [v7 setState:a4];
+  [controlsCopy setState:state];
 }
 
 @end

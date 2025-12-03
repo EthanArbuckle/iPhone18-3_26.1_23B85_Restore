@@ -1,52 +1,52 @@
 @interface HDCodableCategoryDomainDictionary
-- (BOOL)_validateForInsertionWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDCodableCategoryDomainDictionary)initWithCategory:(int64_t)a3 domain:(id)a4;
+- (BOOL)_validateForInsertionWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (HDCodableCategoryDomainDictionary)initWithCategory:(int64_t)category domain:(id)domain;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKeyValuePairs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeyValuePairs:(id)pairs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableCategoryDomainDictionary
 
-- (HDCodableCategoryDomainDictionary)initWithCategory:(int64_t)a3 domain:(id)a4
+- (HDCodableCategoryDomainDictionary)initWithCategory:(int64_t)category domain:(id)domain
 {
-  v6 = a4;
+  domainCopy = domain;
   v11.receiver = self;
   v11.super_class = HDCodableCategoryDomainDictionary;
   v7 = [(HDCodableCategoryDomainDictionary *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(HDCodableCategoryDomainDictionary *)v7 setCategory:a3];
-    v9 = [v6 copy];
+    [(HDCodableCategoryDomainDictionary *)v7 setCategory:category];
+    v9 = [domainCopy copy];
     [(HDCodableCategoryDomainDictionary *)v8 setDomain:v9];
   }
 
   return v8;
 }
 
-- (void)addKeyValuePairs:(id)a3
+- (void)addKeyValuePairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   keyValuePairs = self->_keyValuePairs;
-  v8 = v4;
+  v8 = pairsCopy;
   if (!keyValuePairs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_keyValuePairs;
     self->_keyValuePairs = v6;
 
-    v4 = v8;
+    pairsCopy = v8;
     keyValuePairs = self->_keyValuePairs;
   }
 
-  [(NSMutableArray *)keyValuePairs addObject:v4];
+  [(NSMutableArray *)keyValuePairs addObject:pairsCopy];
 }
 
 - (NSString)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableCategoryDomainDictionary;
   v4 = [(HDCodableCategoryDomainDictionary *)&v8 description];
-  v5 = [(HDCodableCategoryDomainDictionary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableCategoryDomainDictionary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,17 +64,17 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_category];
-    [v3 setObject:v4 forKey:@"category"];
+    [dictionary setObject:v4 forKey:@"category"];
   }
 
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   if ([(NSMutableArray *)self->_keyValuePairs count])
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -109,25 +109,25 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"keyValuePairs"];
+    [dictionary setObject:v6 forKey:@"keyValuePairs"];
   }
 
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v14 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"syncIdentity"];
+    dictionaryRepresentation2 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"syncIdentity"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     category = self->_category;
@@ -179,28 +179,28 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_category;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_category;
+    *(toCopy + 40) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
+    [toCopy setDomain:?];
   }
 
   if ([(HDCodableCategoryDomainDictionary *)self keyValuePairsCount])
   {
     [v9 clearKeyValuePairs];
-    v5 = [(HDCodableCategoryDomainDictionary *)self keyValuePairsCount];
-    if (v5)
+    keyValuePairsCount = [(HDCodableCategoryDomainDictionary *)self keyValuePairsCount];
+    if (keyValuePairsCount)
     {
-      v6 = v5;
+      v6 = keyValuePairsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HDCodableCategoryDomainDictionary *)self keyValuePairsAtIndex:i];
@@ -215,10 +215,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -226,7 +226,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_domain copyWithZone:a3];
+  v7 = [(NSString *)self->_domain copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
@@ -250,7 +250,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * v13) copyWithZone:{a3, v19}];
+        v14 = [*(*(&v19 + 1) + 8 * v13) copyWithZone:{zone, v19}];
         [v6 addKeyValuePairs:v14];
 
         ++v13;
@@ -263,7 +263,7 @@
     while (v11);
   }
 
-  v15 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v15 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v16 = v6[4];
   v6[4] = v15;
 
@@ -271,24 +271,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_category != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_category != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -296,13 +296,13 @@ LABEL_13:
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 2) && ![(NSString *)domain isEqual:?])
+  if (domain | *(equalCopy + 2) && ![(NSString *)domain isEqual:?])
   {
     goto LABEL_13;
   }
 
   keyValuePairs = self->_keyValuePairs;
-  if (keyValuePairs | *(v4 + 3))
+  if (keyValuePairs | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)keyValuePairs isEqual:?])
     {
@@ -311,7 +311,7 @@ LABEL_13:
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 4))
+  if (syncIdentity | *(equalCopy + 4))
   {
     v9 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -343,18 +343,18 @@ LABEL_14:
   return v4 ^ v5 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_category = v4[1];
+    self->_category = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HDCodableCategoryDomainDictionary *)self setDomain:?];
   }
@@ -405,7 +405,7 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_validateForInsertionWithError:(id *)a3
+- (BOOL)_validateForInsertionWithError:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   if ([(HDCodableCategoryDomainDictionary *)self hasCategory])
@@ -473,10 +473,10 @@ LABEL_16:
   v18 = v6;
   if (v18)
   {
-    if (a3)
+    if (error)
     {
       v19 = v18;
-      *a3 = v18;
+      *error = v18;
     }
 
     else

@@ -1,22 +1,22 @@
 @interface ObjCDataUsageReader
-- (ObjCDataUsageReader)initWithRegistry:(const void *)a3 withQueue:(queue)a4;
+- (ObjCDataUsageReader)initWithRegistry:(const void *)registry withQueue:(queue)queue;
 - (id).cxx_construct;
-- (void)logPerAppUsageData_sync:(BOOL)a3 withCurrentSubtag:(unsigned int)a4 withCallback:(function<void)(BOOL;
+- (void)logPerAppUsageData_sync:(BOOL)data_sync withCurrentSubtag:(unsigned int)subtag withCallback:(function<void)(BOOL;
 - (void)resetWorkspace_sync;
 @end
 
 @implementation ObjCDataUsageReader
 
-- (ObjCDataUsageReader)initWithRegistry:(const void *)a3 withQueue:(queue)a4
+- (ObjCDataUsageReader)initWithRegistry:(const void *)registry withQueue:(queue)queue
 {
   v22.receiver = self;
   v22.super_class = ObjCDataUsageReader;
-  v5 = [(ObjCDataUsageReader *)&v22 init:a3];
+  v5 = [(ObjCDataUsageReader *)&v22 init:registry];
   v6 = v5;
   if (v5)
   {
-    v8 = *a3;
-    v7 = *(a3 + 1);
+    v8 = *registry;
+    v7 = *(registry + 1);
     if (v7)
     {
       atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -69,9 +69,9 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)logPerAppUsageData_sync:(BOOL)a3 withCurrentSubtag:(unsigned int)a4 withCallback:(function<void)(BOOL
+- (void)logPerAppUsageData_sync:(BOOL)data_sync withCurrentSubtag:(unsigned int)subtag withCallback:(function<void)(BOOL
 {
-  v7 = a3;
+  data_syncCopy = data_sync;
   v9 = objc_autoreleasePoolPush();
   v66[0] = 0;
   v66[1] = 0;
@@ -81,9 +81,9 @@
   v63 = 0;
   workspace = self->_workspace;
   DataUsageLog = getDataUsageLog();
-  sub_100002EF8(workspace, &v65, a4, DataUsageLog, &v62);
+  sub_100002EF8(workspace, &v65, subtag, DataUsageLog, &v62);
   v12 = *getDataUsageLog();
-  if (v7)
+  if (data_syncCopy)
   {
     v61 = 0;
     v59 = 0u;

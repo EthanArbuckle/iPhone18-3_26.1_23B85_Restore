@@ -1,11 +1,11 @@
 @interface ARAudioData
-- (ARAudioData)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (ARAudioData)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
 @end
 
 @implementation ARAudioData
 
-- (ARAudioData)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (ARAudioData)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v8.receiver = self;
   v8.super_class = ARAudioData;
@@ -13,11 +13,11 @@
   if (v4)
   {
     memset(&v7, 0, sizeof(v7));
-    CMSampleBufferGetPresentationTimeStamp(&v7, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v7, buffer);
     v6 = v7;
     v4->_timestamp = CMTimeGetSeconds(&v6);
-    v4->_sampleBuffer = a3;
-    CFRetain(a3);
+    v4->_sampleBuffer = buffer;
+    CFRetain(buffer);
   }
 
   return v4;

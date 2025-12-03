@@ -4,23 +4,23 @@
 - (BOOL)_canShowWhileLocked;
 - (BOOL)_shouldShowUndoRedoButtonsInNavigationBar;
 - (BOOL)_useLegacyToolbar;
-- (BOOL)_writeToDataConsumer:(CGDataConsumer *)a3 embedSourceImageAndEditModel:(BOOL)a4 options:(id)a5 error:(id *)a6;
+- (BOOL)_writeToDataConsumer:(CGDataConsumer *)consumer embedSourceImageAndEditModel:(BOOL)model options:(id)options error:(id *)error;
 - (BOOL)allEditingDisabled;
 - (BOOL)allowsThumbnailViewPageReordering;
 - (BOOL)annotationEditingEnabled;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)contentViewController:(id)a3 shouldHandleURL:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)contentViewController:(id)controller shouldHandleURL:(id)l;
 - (BOOL)fixedThumbnailView;
 - (BOOL)formFillingEnabled;
-- (BOOL)isTouchInThumbnailView:(id)a3;
+- (BOOL)isTouchInThumbnailView:(id)view;
 - (BOOL)pencilAlwaysDraws;
-- (BOOL)validateRedo:(id)a3;
-- (BOOL)validateUndo:(id)a3;
-- (BOOL)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 options:(id)a5 error:(id *)a6;
+- (BOOL)validateRedo:(id)redo;
+- (BOOL)validateUndo:(id)undo;
+- (BOOL)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model options:(id)options error:(id *)error;
 - (CGSize)adjustedSourceImageSize;
-- (MarkupViewController)initWithCoder:(id)a3;
-- (MarkupViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MarkupViewController)initWithCoder:(id)coder;
+- (MarkupViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MarkupViewControllerDelegate)delegate;
 - (NSString)outputType;
 - (UIEdgeInsets)sketchOverlayInsets;
@@ -34,12 +34,12 @@
 - (id)_effectiveToolbarTintColor;
 - (id)_pdfDocument;
 - (id)_pdfView;
-- (id)annotationControllerOfContentViewController:(id)a3 willSetToolbarItems:(id)a4;
+- (id)annotationControllerOfContentViewController:(id)controller willSetToolbarItems:(id)items;
 - (id)createArchivedModelData;
-- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)a3 error:(id *)a4;
-- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)a3 withDestinationType:(id)a4 error:(id *)a5;
-- (id)getMenuElementsForPage:(id)a3;
-- (int64_t)positionForBar:(id)a3;
+- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)model error:(id *)error;
+- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)model withDestinationType:(id)type error:(id *)error;
+- (id)getMenuElementsForPage:(id)page;
+- (int64_t)positionForBar:(id)bar;
 - (int64_t)preferredStatusBarStyle;
 - (int64_t)thumbnailViewStyle;
 - (unint64_t)currentPDFPageIndex;
@@ -47,83 +47,83 @@
 - (void)_cleanupPlaceholderImage;
 - (void)_commonInit;
 - (void)_createCancelDoneNavBar;
-- (void)_installContentViewControllerForUTI:(id)a3;
-- (void)_loadSourceContentWithCompletion:(id)a3;
+- (void)_installContentViewControllerForUTI:(id)i;
+- (void)_loadSourceContentWithCompletion:(id)completion;
 - (void)_notifyDidChangeShowingSignaturesUI;
 - (void)_presentPlaceholderImage;
-- (void)_saveEditing:(id)a3;
-- (void)_setFileURL:(id)a3 withArchivedModelData:(id)a4 withCompletion:(id)a5;
-- (void)_setLegacyToolbarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setThumbnailViewHidden:(BOOL)a3;
+- (void)_saveEditing:(id)editing;
+- (void)_setFileURL:(id)l withArchivedModelData:(id)data withCompletion:(id)completion;
+- (void)_setLegacyToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)_setThumbnailViewHidden:(BOOL)hidden;
 - (void)_setupAnnotationController;
-- (void)_setupInitialBaseModelScaleFactorWithScreenSize:(CGSize)a3 windowDecorationSize:(CGSize)a4;
-- (void)_showTextStyleOptions:(id)a3;
+- (void)_setupInitialBaseModelScaleFactorWithScreenSize:(CGSize)size windowDecorationSize:(CGSize)decorationSize;
+- (void)_showTextStyleOptions:(id)options;
 - (void)_startObservingAnnotationController;
 - (void)_stopObservingAnnotationController;
-- (void)_toolbarShareButtonTapped:(id)a3;
-- (void)_updateAndLoadSourceContent:(id)a3 withArchivedModelData:(id)a4 withCompletion:(id)a5;
-- (void)_updateAppearanceForTraitCollection:(id)a3;
-- (void)_updateConstraintsForBarPosition:(int64_t)a3;
+- (void)_toolbarShareButtonTapped:(id)tapped;
+- (void)_updateAndLoadSourceContent:(id)content withArchivedModelData:(id)data withCompletion:(id)completion;
+- (void)_updateAppearanceForTraitCollection:(id)collection;
+- (void)_updateConstraintsForBarPosition:(int64_t)position;
 - (void)_updateNavBarProperties;
-- (void)_updateundoBarButtonWithController:(id)a3;
+- (void)_updateundoBarButtonWithController:(id)controller;
 - (void)adjustContentInsetsForBars;
-- (void)annotationController:(id)a3 detectedEditOfType:(unint64_t)a4;
-- (void)cancel:(id)a3;
+- (void)annotationController:(id)controller detectedEditOfType:(unint64_t)type;
+- (void)cancel:(id)cancel;
 - (void)dealloc;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)documentDidCloseTeardown;
-- (void)duplicate:(id)a3;
-- (void)editTextAnnotation:(id)a3;
+- (void)duplicate:(id)duplicate;
+- (void)editTextAnnotation:(id)annotation;
 - (void)finalizeCrop;
 - (void)fullTeardown;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)positionSketchOverlay:(id)a3 forContentViewController:(id)a4;
-- (void)redo:(id)a3;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)positionSketchOverlay:(id)overlay forContentViewController:(id)controller;
+- (void)redo:(id)redo;
 - (void)restoreToolModeForContentType;
 - (void)revert;
-- (void)setAllEditingDisabled:(BOOL)a3;
-- (void)setAllowsThumbnailViewPageReordering:(BOOL)a3;
-- (void)setAnnotationEditingEnabled:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCurrentPDFPageIndex:(unint64_t)a3;
-- (void)setData:(id)a3 withArchivedModelData:(id)a4 placeholderImage:(id)a5;
-- (void)setFileURL:(id)a3 withArchivedModelData:(id)a4 placeholderImage:(id)a5;
-- (void)setFixedThumbnailView:(BOOL)a3;
-- (void)setForcesPDFViewTopAlignment:(BOOL)a3;
-- (void)setFormFillingEnabled:(BOOL)a3 didUseBanner:(BOOL)a4;
-- (void)setImage:(id)a3 withArchivedModelData:(id)a4 placeholderImage:(id)a5;
-- (void)setNavBar:(id)a3;
-- (void)setNavBarTitleColor:(id)a3;
-- (void)setNavigationModeHorizontal:(BOOL)a3;
-- (void)setPencilAlwaysDraws:(BOOL)a3;
-- (void)setPreferredFileDisplayName:(id)a3;
-- (void)setShapeDetectionEnabled:(BOOL)a3;
-- (void)setShowShareButtonInToolbar:(BOOL)a3;
-- (void)setShowThumbnailViewForMultipage:(BOOL)a3;
-- (void)setSourceContent:(id)a3 withArchivedModelData:(id)a4;
-- (void)setThumbnailViewStyle:(int64_t)a3;
-- (void)setToolbarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setToolbarItemTintColor:(id)a3;
-- (void)setToolbarPosition:(int64_t)a3;
-- (void)setToolbarTintColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)undo:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setAllEditingDisabled:(BOOL)disabled;
+- (void)setAllowsThumbnailViewPageReordering:(BOOL)reordering;
+- (void)setAnnotationEditingEnabled:(BOOL)enabled;
+- (void)setBackgroundColor:(id)color;
+- (void)setCurrentPDFPageIndex:(unint64_t)index;
+- (void)setData:(id)data withArchivedModelData:(id)modelData placeholderImage:(id)image;
+- (void)setFileURL:(id)l withArchivedModelData:(id)data placeholderImage:(id)image;
+- (void)setFixedThumbnailView:(BOOL)view;
+- (void)setForcesPDFViewTopAlignment:(BOOL)alignment;
+- (void)setFormFillingEnabled:(BOOL)enabled didUseBanner:(BOOL)banner;
+- (void)setImage:(id)image withArchivedModelData:(id)data placeholderImage:(id)placeholderImage;
+- (void)setNavBar:(id)bar;
+- (void)setNavBarTitleColor:(id)color;
+- (void)setNavigationModeHorizontal:(BOOL)horizontal;
+- (void)setPencilAlwaysDraws:(BOOL)draws;
+- (void)setPreferredFileDisplayName:(id)name;
+- (void)setShapeDetectionEnabled:(BOOL)enabled;
+- (void)setShowShareButtonInToolbar:(BOOL)toolbar;
+- (void)setShowThumbnailViewForMultipage:(BOOL)multipage;
+- (void)setSourceContent:(id)content withArchivedModelData:(id)data;
+- (void)setThumbnailViewStyle:(int64_t)style;
+- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setToolbarItemTintColor:(id)color;
+- (void)setToolbarPosition:(int64_t)position;
+- (void)setToolbarTintColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
+- (void)undo:(id)undo;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 - (void)willBeginLoadingNewDocument;
 @end
 
 @implementation MarkupViewController
 
-- (MarkupViewController)initWithCoder:(id)a3
+- (MarkupViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MarkupViewController;
-  v3 = [(MarkupViewController *)&v6 initWithCoder:a3];
+  v3 = [(MarkupViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -133,11 +133,11 @@
   return v4;
 }
 
-- (MarkupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MarkupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = MarkupViewController;
-  v4 = [(MarkupViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(MarkupViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -150,10 +150,10 @@
 - (void)_commonInit
 {
   kdebug_trace();
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   hostProcessBundleIdentifier = self->_hostProcessBundleIdentifier;
-  self->_hostProcessBundleIdentifier = v4;
+  self->_hostProcessBundleIdentifier = bundleIdentifier;
 
   [MEMORY[0x277CD93F8] EnableAnnotationKit];
   self->_toolbarHidden = 0;
@@ -191,10 +191,10 @@
 
 - (BOOL)_canShowWhileLocked
 {
-  v3 = [(MarkupViewController *)self delegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(MarkupViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 controllerCanShowWhileLocked:self];
+    v4 = [delegate controllerCanShowWhileLocked:self];
   }
 
   else
@@ -233,72 +233,72 @@
   if ([(MarkupViewController *)self needToPerformDocumentClosedTeardown])
   {
     [(MarkupViewController *)self setNeedToPerformDocumentClosedTeardown:0];
-    v3 = [(MarkupViewController *)self contentViewController];
-    [v3 uninstallAllAnnotationControllerOverlays];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    [contentViewController uninstallAllAnnotationControllerOverlays];
 
-    v4 = [(MarkupViewController *)self toolbarTopConstraint];
-    [v4 setActive:0];
+    toolbarTopConstraint = [(MarkupViewController *)self toolbarTopConstraint];
+    [toolbarTopConstraint setActive:0];
 
-    v5 = [(MarkupViewController *)self toolbarTopAttachedConstraint];
-    [v5 setActive:0];
+    toolbarTopAttachedConstraint = [(MarkupViewController *)self toolbarTopAttachedConstraint];
+    [toolbarTopAttachedConstraint setActive:0];
 
-    v6 = [(MarkupViewController *)self toolbarBottomConstraint];
-    [v6 setActive:0];
+    toolbarBottomConstraint = [(MarkupViewController *)self toolbarBottomConstraint];
+    [toolbarBottomConstraint setActive:0];
 
     [(MarkupViewController *)self setToolbarTopConstraint:0];
     [(MarkupViewController *)self setToolbarTopAttachedConstraint:0];
     [(MarkupViewController *)self setToolbarBottomConstraint:0];
     if ([(MarkupViewController *)self _useLegacyToolbar])
     {
-      v7 = [(MarkupViewController *)self annotationController];
-      v8 = [v7 toolbarViewController];
+      annotationController = [(MarkupViewController *)self annotationController];
+      toolbarViewController = [annotationController toolbarViewController];
 
-      v9 = [v8 view];
-      [v9 setDelegate:0];
+      view = [toolbarViewController view];
+      [view setDelegate:0];
 
-      [v8 willMoveToParentViewController:0];
-      [v8 removeFromParentViewController];
-      v10 = [(MarkupViewController *)self annotationController];
-      v11 = [v10 toolbarView];
-      [v11 removeFromSuperview];
+      [toolbarViewController willMoveToParentViewController:0];
+      [toolbarViewController removeFromParentViewController];
+      annotationController2 = [(MarkupViewController *)self annotationController];
+      toolbarView = [annotationController2 toolbarView];
+      [toolbarView removeFromSuperview];
     }
 
-    v12 = [(MarkupViewController *)self toolbar];
-    [v12 removeFromSuperview];
+    toolbar = [(MarkupViewController *)self toolbar];
+    [toolbar removeFromSuperview];
 
     [(MarkupViewController *)self setToolbar:0];
     [(MarkupViewController *)self _stopObservingAnnotationController];
-    v13 = [(MarkupViewController *)self contentViewController];
-    [v13 willMoveToParentViewController:0];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 willMoveToParentViewController:0];
 
-    v14 = [(MarkupViewController *)self contentViewController];
-    [v14 removeFromParentViewController];
+    contentViewController3 = [(MarkupViewController *)self contentViewController];
+    [contentViewController3 removeFromParentViewController];
 
-    v15 = [(MarkupViewController *)self contentViewController];
-    v16 = [v15 view];
-    [v16 removeFromSuperview];
+    contentViewController4 = [(MarkupViewController *)self contentViewController];
+    view2 = [contentViewController4 view];
+    [view2 removeFromSuperview];
 
-    v17 = [(MarkupViewController *)self contentViewController];
-    [v17 teardown];
+    contentViewController5 = [(MarkupViewController *)self contentViewController];
+    [contentViewController5 teardown];
 
     [(MarkupViewController *)self setContentViewController:0];
     [(MarkupViewController *)self setAkUndoManager:0];
     [(MarkupViewController *)self setSourceContent:0];
     [(MarkupViewController *)self setDigestedSourceContent:0];
     [(MarkupViewController *)self setSourceContentType:0];
-    v18 = [(MarkupViewController *)self navBar];
-    [v18 setDelegate:0];
+    navBar = [(MarkupViewController *)self navBar];
+    [navBar setDelegate:0];
 
     [(MarkupViewController *)self setNavBar:0];
     [(MarkupViewController *)self setNavItem:0];
     [(MarkupViewController *)self setCancelButton:0];
     [(MarkupViewController *)self setDoneButton:0];
-    v19 = [(MarkupViewController *)self transitionDimmingView];
-    [v19 removeFromSuperview];
+    transitionDimmingView = [(MarkupViewController *)self transitionDimmingView];
+    [transitionDimmingView removeFromSuperview];
 
     [(MarkupViewController *)self setTransitionDimmingView:0];
-    v20 = [(MarkupViewController *)self whiteView];
-    [v20 removeFromSuperview];
+    whiteView = [(MarkupViewController *)self whiteView];
+    [whiteView removeFromSuperview];
 
     [(MarkupViewController *)self setWhiteView:0];
     [(MarkupViewController *)self setAlreadyLoggedSavingForThisDocument:0];
@@ -312,74 +312,74 @@
   v19.receiver = self;
   v19.super_class = MarkupViewController;
   [(MarkupViewController *)&v19 viewDidLoad];
-  v3 = [(MarkupViewController *)self view];
-  [v3 addSubview:self->_modernToolbar];
+  view = [(MarkupViewController *)self view];
+  [view addSubview:self->_modernToolbar];
 
   if ([(AKToolbarView *)self->_modernToolbar useNewFullscreenPalette])
   {
-    v4 = [(MarkupViewController *)self view];
-    [v4 bringSubviewToFront:self->_modernToolbar];
+    view2 = [(MarkupViewController *)self view];
+    [view2 bringSubviewToFront:self->_modernToolbar];
   }
 
-  v5 = [(AKToolbarView *)self->_modernToolbar bottomAnchor];
-  v6 = [(MarkupViewController *)self view];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  bottomAnchor = [(AKToolbarView *)self->_modernToolbar bottomAnchor];
+  view3 = [(MarkupViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(MarkupViewController *)self setToolbarBottomConstraint:v8];
 
-  v9 = [(AKToolbarView *)self->_modernToolbar leadingAnchor];
-  v10 = [(MarkupViewController *)self view];
-  v11 = [v10 leadingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  leadingAnchor = [(AKToolbarView *)self->_modernToolbar leadingAnchor];
+  view4 = [(MarkupViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v12 setActive:1];
 
-  v13 = [(AKToolbarView *)self->_modernToolbar trailingAnchor];
-  v14 = [(MarkupViewController *)self view];
-  v15 = [v14 trailingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  trailingAnchor = [(AKToolbarView *)self->_modernToolbar trailingAnchor];
+  view5 = [(MarkupViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v16 setActive:1];
 
   [(AKToolbarView *)self->_modernToolbar setShareButtonAction:sel__toolbarShareButtonTapped_];
   [(AKToolbarView *)self->_modernToolbar setShareButtonTarget:self];
-  v17 = [(MarkupViewController *)self toolbarBottomConstraint];
-  [v17 setActive:1];
+  toolbarBottomConstraint = [(MarkupViewController *)self toolbarBottomConstraint];
+  [toolbarBottomConstraint setActive:1];
 
-  v18 = [(MarkupViewController *)self view];
-  [(MarkupViewController *)self setContentContainerView:v18];
+  view6 = [(MarkupViewController *)self view];
+  [(MarkupViewController *)self setContentContainerView:view6];
 
   [(MarkupViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MarkupViewController;
-  [(MarkupViewController *)&v6 viewWillAppear:a3];
-  v4 = [(MarkupViewController *)self navBar];
+  [(MarkupViewController *)&v6 viewWillAppear:appear];
+  navBar = [(MarkupViewController *)self navBar];
 
-  if (!v4)
+  if (!navBar)
   {
-    v5 = [(MarkupViewController *)self contentViewController];
-    [(MarkupViewController *)self _updateundoBarButtonWithController:v5];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    [(MarkupViewController *)self _updateundoBarButtonWithController:contentViewController];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   kdebug_trace();
   v8.receiver = self;
   v8.super_class = MarkupViewController;
-  [(MarkupViewController *)&v8 viewDidAppear:v3];
+  [(MarkupViewController *)&v8 viewDidAppear:appearCopy];
   if (!self->_toolbarHidden)
   {
-    v5 = [(MarkupViewController *)self annotationController];
-    if (v5)
+    annotationController = [(MarkupViewController *)self annotationController];
+    if (annotationController)
     {
-      v6 = [(MarkupViewController *)self annotationController];
-      v7 = [v6 toolPicker];
+      annotationController2 = [(MarkupViewController *)self annotationController];
+      toolPicker = [annotationController2 toolPicker];
 
-      [v7 setVisible:1 forFirstResponder:self];
+      [toolPicker setVisible:1 forFirstResponder:self];
       [(AKToolbarView *)self->_modernToolbar setContentsHidden:0];
     }
 
@@ -399,18 +399,18 @@
     return 0;
   }
 
-  v3 = [(MarkupViewController *)self _pdfDocument];
-  v4 = [v3 isLocked];
+  _pdfDocument = [(MarkupViewController *)self _pdfDocument];
+  isLocked = [_pdfDocument isLocked];
 
-  if (v4)
+  if (isLocked)
   {
     return 0;
   }
 
-  v6 = [(MarkupViewController *)self delegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(MarkupViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v6 controllerCanBecomeFirstResponder:self];
+    v5 = [delegate controllerCanBecomeFirstResponder:self];
   }
 
   else
@@ -435,16 +435,16 @@
   v4.super_class = MarkupViewController;
   [(MarkupViewController *)&v4 viewDidLayoutSubviews];
   [(MarkupViewController *)self adjustContentInsetsForBars];
-  v3 = [(MarkupViewController *)self contentViewController];
-  [(MarkupViewController *)self _updateundoBarButtonWithController:v3];
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  [(MarkupViewController *)self _updateundoBarButtonWithController:contentViewController];
 }
 
 - (UIEdgeInsets)sketchOverlayInsets
 {
-  v3 = [(MarkupViewController *)self delegate];
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 customSketchOverlayInsets];
+    [delegate customSketchOverlayInsets];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -453,8 +453,8 @@
 
   else
   {
-    v12 = [(MarkupViewController *)self contentViewController];
-    [v12 edgeInsets];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    [contentViewController edgeInsets];
     v5 = v13;
     v7 = v14;
     v9 = v15;
@@ -472,37 +472,37 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = MarkupViewController;
-  [(MarkupViewController *)&v13 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceIdiom];
-  v6 = [(MarkupViewController *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  [(MarkupViewController *)&v13 traitCollectionDidChange:changeCopy];
+  userInterfaceIdiom = [changeCopy userInterfaceIdiom];
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection userInterfaceIdiom];
 
-  if (v5 != v7)
+  if (userInterfaceIdiom != userInterfaceIdiom2)
   {
-    v8 = [(MarkupViewController *)self traitCollection];
-    [(MarkupViewController *)self _updateAppearanceForTraitCollection:v8];
+    traitCollection2 = [(MarkupViewController *)self traitCollection];
+    [(MarkupViewController *)self _updateAppearanceForTraitCollection:traitCollection2];
   }
 
-  v9 = [v4 horizontalSizeClass];
-  v10 = [(MarkupViewController *)self traitCollection];
-  v11 = [v10 horizontalSizeClass];
+  horizontalSizeClass = [changeCopy horizontalSizeClass];
+  traitCollection3 = [(MarkupViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection3 horizontalSizeClass];
 
-  if (v9 != v11)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
-    v12 = [(MarkupViewController *)self contentViewController];
-    [(MarkupViewController *)self _updateundoBarButtonWithController:v12];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    [(MarkupViewController *)self _updateundoBarButtonWithController:contentViewController];
   }
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(MarkupViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 1;
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 1;
 
   return v3;
 }
@@ -529,24 +529,24 @@ void __41__MarkupViewController__useLegacyToolbar__block_invoke(uint64_t a1)
   _useLegacyToolbar__isItunesU = [v1 containsString:@"itunesu"];
 }
 
-- (void)_setLegacyToolbarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setLegacyToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MarkupViewController *)self annotationController];
-  v8 = [v7 toolbarViewController];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  annotationController = [(MarkupViewController *)self annotationController];
+  toolbarViewController = [annotationController toolbarViewController];
 
-  [v8 beginAppearanceTransition:v5 ^ 1 animated:v4];
-  if (v4 && !v5)
+  [toolbarViewController beginAppearanceTransition:hiddenCopy ^ 1 animated:animatedCopy];
+  if (animatedCopy && !hiddenCopy)
   {
-    v9 = [(MarkupViewController *)self toolbar];
-    [v9 setAlpha:0.0];
+    toolbar = [(MarkupViewController *)self toolbar];
+    [toolbar setAlpha:0.0];
 
-    v10 = [(MarkupViewController *)self toolbar];
-    [v10 setHidden:0];
+    toolbar2 = [(MarkupViewController *)self toolbar];
+    [toolbar2 setHidden:0];
   }
 
-  if (v4)
+  if (animatedCopy)
   {
     v11 = MEMORY[0x277D75D18];
     v17[0] = MEMORY[0x277D85DD0];
@@ -554,22 +554,22 @@ void __41__MarkupViewController__useLegacyToolbar__block_invoke(uint64_t a1)
     v17[2] = __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke;
     v17[3] = &unk_27986E5B8;
     v17[4] = self;
-    v18 = v5;
+    v18 = hiddenCopy;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_2;
     v13[3] = &unk_27986E5E0;
-    v14 = v8;
-    v15 = self;
-    v16 = v5;
+    v14 = toolbarViewController;
+    selfCopy = self;
+    v16 = hiddenCopy;
     [v11 _animateUsingDefaultTimingWithOptions:6 animations:v17 completion:v13];
   }
 
   else
   {
-    [v8 endAppearanceTransition];
-    v12 = [(MarkupViewController *)self toolbar];
-    [v12 setHidden:v5];
+    [toolbarViewController endAppearanceTransition];
+    toolbar3 = [(MarkupViewController *)self toolbar];
+    [toolbar3 setHidden:hiddenCopy];
   }
 }
 
@@ -597,25 +597,25 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
   [v3 setHidden:v2];
 }
 
-- (void)setToolbarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_toolbarHidden != a3)
+  if (self->_toolbarHidden != hidden)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_toolbarHidden = a3;
+    animatedCopy = animated;
+    hiddenCopy = hidden;
+    self->_toolbarHidden = hidden;
     if ([(MarkupViewController *)self _useLegacyToolbar])
     {
 
-      [(MarkupViewController *)self _setLegacyToolbarHidden:v5 animated:v4];
+      [(MarkupViewController *)self _setLegacyToolbarHidden:hiddenCopy animated:animatedCopy];
     }
 
     else
     {
-      v7 = [(MarkupViewController *)self annotationController];
-      v12 = [v7 toolPicker];
+      annotationController = [(MarkupViewController *)self annotationController];
+      toolPicker = [annotationController toolPicker];
 
-      [v12 setVisible:1 forFirstResponder:self];
+      [toolPicker setVisible:1 forFirstResponder:self];
       if (self->_toolbarHidden)
       {
         if (([(MarkupViewController *)self isFirstResponder]& 1) == 0)
@@ -623,16 +623,16 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
           [(MarkupViewController *)self becomeFirstResponder];
         }
 
-        v8 = [(MarkupViewController *)self toolbar];
-        [v8 endAnnotationEditing];
+        toolbar = [(MarkupViewController *)self toolbar];
+        [toolbar endAnnotationEditing];
 
-        v9 = [(MarkupViewController *)self toolbar];
-        [v9 dismissPresentedPopoversAnimated:1];
+        toolbar2 = [(MarkupViewController *)self toolbar];
+        [toolbar2 dismissPresentedPopoversAnimated:1];
 
-        v10 = [(MarkupViewController *)self toolbar];
-        [v10 forceHideRuler];
+        toolbar3 = [(MarkupViewController *)self toolbar];
+        [toolbar3 forceHideRuler];
 
-        [v12 setVisible:0 forFirstResponder:self];
+        [toolPicker setVisible:0 forFirstResponder:self];
       }
 
       else
@@ -640,21 +640,21 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
         [(MarkupViewController *)self becomeFirstResponder];
       }
 
-      v11 = [(MarkupViewController *)self toolbar];
-      [v11 setContentsHidden:v5 animated:v4];
+      toolbar4 = [(MarkupViewController *)self toolbar];
+      [toolbar4 setContentsHidden:hiddenCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)setToolbarPosition:(int64_t)a3
+- (void)setToolbarPosition:(int64_t)position
 {
   if ([(MarkupViewController *)self _useLegacyToolbar])
   {
-    if (self->_toolbarPosition != a3)
+    if (self->_toolbarPosition != position)
     {
-      self->_toolbarPosition = a3;
+      self->_toolbarPosition = position;
 
-      [(MarkupViewController *)self _updateConstraintsForBarPosition:a3];
+      [(MarkupViewController *)self _updateConstraintsForBarPosition:position];
     }
   }
 
@@ -664,21 +664,21 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
   }
 }
 
-- (void)setShowThumbnailViewForMultipage:(BOOL)a3
+- (void)setShowThumbnailViewForMultipage:(BOOL)multipage
 {
-  v3 = a3;
-  v6 = [(MarkupViewController *)self contentViewController];
-  v5 = !v3 || (objc_opt_respondsToSelector() & 1) == 0 || -[MarkupViewController thumbnailViewStyle](self, "thumbnailViewStyle") != 1 && [v6 pageCount] == 1;
+  multipageCopy = multipage;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  v5 = !multipageCopy || (objc_opt_respondsToSelector() & 1) == 0 || -[MarkupViewController thumbnailViewStyle](self, "thumbnailViewStyle") != 1 && [contentViewController pageCount] == 1;
   [(MarkupViewController *)self _setThumbnailViewHidden:v5];
 }
 
-- (void)_setThumbnailViewHidden:(BOOL)a3
+- (void)_setThumbnailViewHidden:(BOOL)hidden
 {
-  self->_thumbnailViewHidden = a3;
-  v4 = [(MarkupViewController *)self contentViewController];
-  if (v4)
+  self->_thumbnailViewHidden = hidden;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  if (contentViewController)
   {
-    v5 = v4;
+    v5 = contentViewController;
     if (objc_opt_respondsToSelector())
     {
       [v5 setShowsThumbnailView:!self->_thumbnailViewHidden];
@@ -688,23 +688,23 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
   MEMORY[0x2821F97C8]();
 }
 
-- (void)setFixedThumbnailView:(BOOL)a3
+- (void)setFixedThumbnailView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(MarkupViewController *)self contentViewController];
+  viewCopy = view;
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(MarkupViewController *)self contentViewController];
-    [v7 setFixedThumbnailView:v3];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 setFixedThumbnailView:viewCopy];
   }
 }
 
 - (BOOL)fixedThumbnailView
 {
-  v3 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -713,23 +713,23 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
     return 0;
   }
 
-  v5 = [(MarkupViewController *)self contentViewController];
-  v6 = [v5 fixedThumbnailView];
+  contentViewController2 = [(MarkupViewController *)self contentViewController];
+  fixedThumbnailView = [contentViewController2 fixedThumbnailView];
 
-  return v6;
+  return fixedThumbnailView;
 }
 
-- (BOOL)isTouchInThumbnailView:(id)a3
+- (BOOL)isTouchInThumbnailView:(id)view
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self contentViewController];
+  viewCopy = view;
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(MarkupViewController *)self contentViewController];
-    v8 = [v7 isTouchInThumbnailView:v4];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    v8 = [contentViewController2 isTouchInThumbnailView:viewCopy];
   }
 
   else
@@ -740,13 +740,13 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
   return v8;
 }
 
-- (void)setNavigationModeHorizontal:(BOOL)a3
+- (void)setNavigationModeHorizontal:(BOOL)horizontal
 {
-  self->_navigationModeHorizontal = a3;
-  v4 = [(MarkupViewController *)self contentViewController];
-  if (v4)
+  self->_navigationModeHorizontal = horizontal;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  if (contentViewController)
   {
-    v5 = v4;
+    v5 = contentViewController;
     if (objc_opt_respondsToSelector())
     {
       [v5 setNavigationModeHorizontal:self->_navigationModeHorizontal];
@@ -756,23 +756,23 @@ void __57__MarkupViewController__setLegacyToolbarHidden_animated___block_invoke_
   MEMORY[0x2821F97C8]();
 }
 
-- (void)setFileURL:(id)a3 withArchivedModelData:(id)a4 placeholderImage:(id)a5
+- (void)setFileURL:(id)l withArchivedModelData:(id)data placeholderImage:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dataCopy = data;
+  imageCopy = image;
   v11 = dispatch_get_global_queue(2, 0);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__MarkupViewController_setFileURL_withArchivedModelData_placeholderImage___block_invoke;
   v15[3] = &unk_27986E630;
-  v16 = v10;
-  v17 = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = imageCopy;
+  selfCopy = self;
+  v18 = lCopy;
+  v19 = dataCopy;
+  v12 = dataCopy;
+  v13 = lCopy;
+  v14 = imageCopy;
   dispatch_sync(v11, v15);
 }
 
@@ -814,11 +814,11 @@ void __74__MarkupViewController_setFileURL_withArchivedModelData_placeholderImag
   [WeakRetained _cleanupPlaceholderImage];
 }
 
-- (void)_setFileURL:(id)a3 withArchivedModelData:(id)a4 withCompletion:(id)a5
+- (void)_setFileURL:(id)l withArchivedModelData:(id)data withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dataCopy = data;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -831,24 +831,24 @@ void __74__MarkupViewController_setFileURL_withArchivedModelData_placeholderImag
   v13[2] = __73__MarkupViewController__setFileURL_withArchivedModelData_withCompletion___block_invoke;
   v13[3] = &unk_27986E658;
   v13[4] = &v14;
-  [v11 coordinateReadingItemAtURL:v8 options:0 error:0 byAccessor:v13];
+  [v11 coordinateReadingItemAtURL:lCopy options:0 error:0 byAccessor:v13];
   v12 = v15[5];
 
-  [(MarkupViewController *)self _updateAndLoadSourceContent:v12 withArchivedModelData:v9 withCompletion:v10];
+  [(MarkupViewController *)self _updateAndLoadSourceContent:v12 withArchivedModelData:dataCopy withCompletion:completionCopy];
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)setImage:(id)a3 withArchivedModelData:(id)a4 placeholderImage:(id)a5
+- (void)setImage:(id)image withArchivedModelData:(id)data placeholderImage:(id)placeholderImage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  imageCopy = image;
+  dataCopy = data;
+  placeholderImageCopy = placeholderImage;
+  if (placeholderImageCopy)
   {
     v11 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{0.0, 0.0, 100.0, 100.0}];
     [(MarkupViewController *)self setPlaceholderImageView:v11];
 
-    [(MarkupViewController *)self setPlaceholderImage:v10];
+    [(MarkupViewController *)self setPlaceholderImage:placeholderImageCopy];
   }
 
   objc_initWeak(&location, self);
@@ -857,7 +857,7 @@ void __74__MarkupViewController_setFileURL_withArchivedModelData_placeholderImag
   v14 = __72__MarkupViewController_setImage_withArchivedModelData_placeholderImage___block_invoke;
   v15 = &unk_27986E318;
   objc_copyWeak(&v16, &location);
-  [(MarkupViewController *)self _updateAndLoadSourceContent:v8 withArchivedModelData:v9 withCompletion:&v12];
+  [(MarkupViewController *)self _updateAndLoadSourceContent:imageCopy withArchivedModelData:dataCopy withCompletion:&v12];
   [(MarkupViewController *)self _presentPlaceholderImage:v12];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -874,17 +874,17 @@ void __72__MarkupViewController_setImage_withArchivedModelData_placeholderImage_
   }
 }
 
-- (void)setData:(id)a3 withArchivedModelData:(id)a4 placeholderImage:(id)a5
+- (void)setData:(id)data withArchivedModelData:(id)modelData placeholderImage:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dataCopy = data;
+  modelDataCopy = modelData;
+  imageCopy = image;
+  if (imageCopy)
   {
     v11 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{0.0, 0.0, 100.0, 100.0}];
     [(MarkupViewController *)self setPlaceholderImageView:v11];
 
-    [(MarkupViewController *)self setPlaceholderImage:v10];
+    [(MarkupViewController *)self setPlaceholderImage:imageCopy];
   }
 
   objc_initWeak(&location, self);
@@ -893,7 +893,7 @@ void __72__MarkupViewController_setImage_withArchivedModelData_placeholderImage_
   v14 = __71__MarkupViewController_setData_withArchivedModelData_placeholderImage___block_invoke;
   v15 = &unk_27986E318;
   objc_copyWeak(&v16, &location);
-  [(MarkupViewController *)self _setData:v8 withArchivedModelData:v9 withCompletion:&v12];
+  [(MarkupViewController *)self _setData:dataCopy withArchivedModelData:modelDataCopy withCompletion:&v12];
   [(MarkupViewController *)self _presentPlaceholderImage:v12];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -912,10 +912,10 @@ void __71__MarkupViewController_setData_withArchivedModelData_placeholderImage__
 
 - (UTType)outputContentType
 {
-  v2 = [(MarkupViewController *)self sourceContentType];
-  if (v2)
+  sourceContentType = [(MarkupViewController *)self sourceContentType];
+  if (sourceContentType)
   {
-    v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v2];
+    v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:sourceContentType];
     v4 = *MEMORY[0x277CE1E08];
     if ([v3 conformsToType:*MEMORY[0x277CE1E08]] || (v4 = *MEMORY[0x277CE1E10], objc_msgSend(v3, "conformsToType:", *MEMORY[0x277CE1E10])) || (v4 = *MEMORY[0x277CE1E80], objc_msgSend(v3, "conformsToType:", *MEMORY[0x277CE1E80])) || (v4 = *MEMORY[0x277CE1D90], objc_msgSend(v3, "conformsToType:", *MEMORY[0x277CE1D90])))
     {
@@ -926,7 +926,7 @@ void __71__MarkupViewController_setData_withArchivedModelData_placeholderImage__
     {
       if (![v3 conformsToType:*MEMORY[0x277CE1DB0]])
       {
-        NSLog(&cfstr_SNullOutputtyp.isa, "[MarkupViewController outputContentType]", v2);
+        NSLog(&cfstr_SNullOutputtyp.isa, "[MarkupViewController outputContentType]", sourceContentType);
         v6 = 0;
         goto LABEL_8;
       }
@@ -949,23 +949,23 @@ LABEL_10:
 
 - (NSString)outputType
 {
-  v2 = [(MarkupViewController *)self outputContentType];
-  v3 = [v2 identifier];
+  outputContentType = [(MarkupViewController *)self outputContentType];
+  identifier = [outputContentType identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (BOOL)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 options:(id)a5 error:(id *)a6
+- (BOOL)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model options:(id)options error:(id *)error
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = CGDataConsumerCreateWithURL(a3);
+  modelCopy = model;
+  optionsCopy = options;
+  v11 = CGDataConsumerCreateWithURL(l);
   if (v11)
   {
     v12 = v11;
-    v13 = [(MarkupViewController *)self _writeToDataConsumer:v11 embedSourceImageAndEditModel:v7 options:v10 error:a6];
+    v13 = [(MarkupViewController *)self _writeToDataConsumer:v11 embedSourceImageAndEditModel:modelCopy options:optionsCopy error:error];
     CFRelease(v12);
-    if (!a6)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -974,15 +974,15 @@ LABEL_10:
   else
   {
     v13 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_8;
     }
   }
 
-  if (!v13 && !*a6)
+  if (!v13 && !*error)
   {
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
   }
 
 LABEL_8:
@@ -990,16 +990,16 @@ LABEL_8:
   return v13;
 }
 
-- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)a3 error:(id *)a4
+- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)model error:(id *)error
 {
-  v5 = a3;
-  v7 = [MEMORY[0x277CBEB28] data];
-  v8 = CGDataConsumerCreateWithCFData(v7);
+  modelCopy = model;
+  data = [MEMORY[0x277CBEB28] data];
+  v8 = CGDataConsumerCreateWithCFData(data);
   if (!v8)
   {
     v16 = 0;
     v17 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1008,23 +1008,23 @@ LABEL_8:
   }
 
   v9 = v8;
-  v10 = [(MarkupViewController *)self _writeToDataConsumer:v8 embedSourceImageAndEditModel:v5 error:a4];
+  v10 = [(MarkupViewController *)self _writeToDataConsumer:v8 embedSourceImageAndEditModel:modelCopy error:error];
   if (v10)
   {
     if (_MUWriteOutputToTemp())
     {
-      v11 = [(MarkupViewController *)self outputContentType];
-      v12 = [v11 preferredFilenameExtension];
+      outputContentType = [(MarkupViewController *)self outputContentType];
+      preferredFilenameExtension = [outputContentType preferredFilenameExtension];
 
       v13 = NSTemporaryDirectory();
       v14 = [v13 stringByAppendingPathComponent:@"output"];
-      v15 = [v14 stringByAppendingPathExtension:v12];
+      v15 = [v14 stringByAppendingPathExtension:preferredFilenameExtension];
 
       NSLog(&cfstr_WritingOutputT.isa, v15);
-      [(__CFData *)v7 writeToFile:v15 atomically:0];
+      [(__CFData *)data writeToFile:v15 atomically:0];
     }
 
-    v16 = v7;
+    v16 = data;
   }
 
   else
@@ -1034,12 +1034,12 @@ LABEL_8:
 
   CFRelease(v9);
   v17 = !v10;
-  if (a4)
+  if (error)
   {
 LABEL_10:
-    if (v17 && !*a4)
+    if (v17 && !*error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
     }
   }
 
@@ -1048,16 +1048,16 @@ LABEL_13:
   return v16;
 }
 
-- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)a3 withDestinationType:(id)a4 error:(id *)a5
+- (id)dataRepresentationEmbeddingSourceImageAndEditModel:(BOOL)model withDestinationType:(id)type error:(id *)error
 {
-  v6 = a3;
-  v8 = [MEMORY[0x277CBEB28] data];
-  v9 = CGDataConsumerCreateWithCFData(v8);
+  modelCopy = model;
+  data = [MEMORY[0x277CBEB28] data];
+  v9 = CGDataConsumerCreateWithCFData(data);
   if (!v9)
   {
     v17 = 0;
     v18 = 1;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1066,23 +1066,23 @@ LABEL_13:
   }
 
   v10 = v9;
-  v11 = [(MarkupViewController *)self _writeToDataConsumer:v9 embedSourceImageAndEditModel:v6 error:a5];
+  v11 = [(MarkupViewController *)self _writeToDataConsumer:v9 embedSourceImageAndEditModel:modelCopy error:error];
   if (v11)
   {
     if (_MUWriteOutputToTemp())
     {
-      v12 = [(MarkupViewController *)self outputContentType];
-      v13 = [v12 preferredFilenameExtension];
+      outputContentType = [(MarkupViewController *)self outputContentType];
+      preferredFilenameExtension = [outputContentType preferredFilenameExtension];
 
       v14 = NSTemporaryDirectory();
       v15 = [v14 stringByAppendingPathComponent:@"output"];
-      v16 = [v15 stringByAppendingPathExtension:v13];
+      v16 = [v15 stringByAppendingPathExtension:preferredFilenameExtension];
 
       NSLog(&cfstr_WritingOutputT.isa, v16);
-      [(__CFData *)v8 writeToFile:v16 atomically:0];
+      [(__CFData *)data writeToFile:v16 atomically:0];
     }
 
-    v17 = v8;
+    v17 = data;
   }
 
   else
@@ -1092,12 +1092,12 @@ LABEL_13:
 
   CFRelease(v10);
   v18 = !v11;
-  if (a5)
+  if (error)
   {
 LABEL_10:
-    if (v18 && !*a5)
+    if (v18 && !*error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
     }
   }
 
@@ -1109,8 +1109,8 @@ LABEL_13:
 - (id)createArchivedModelData
 {
   v3 = objc_alloc_init(MUImageWriter);
-  v4 = [(MarkupViewController *)self annotationController];
-  v5 = [(MUImageWriter *)v3 encodedModelFromAnnotationsController:v4 encrypt:0];
+  annotationController = [(MarkupViewController *)self annotationController];
+  v5 = [(MUImageWriter *)v3 encodedModelFromAnnotationsController:annotationController encrypt:0];
 
   return v5;
 }
@@ -1125,11 +1125,11 @@ LABEL_13:
   }
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self annotationController];
-  v6 = [v5 validateUndo:0];
+  cancelCopy = cancel;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v6 = [annotationController validateUndo:0];
 
   if (v6)
   {
@@ -1152,11 +1152,11 @@ LABEL_13:
     [v7 addAction:v15];
 
     [v7 setModalPresentationStyle:7];
-    v16 = [v7 popoverPresentationController];
-    [v16 setPermittedArrowDirections:1];
+    popoverPresentationController = [v7 popoverPresentationController];
+    [popoverPresentationController setPermittedArrowDirections:1];
 
-    v17 = [v7 popoverPresentationController];
-    [v17 setBarButtonItem:v4];
+    popoverPresentationController2 = [v7 popoverPresentationController];
+    [popoverPresentationController2 setBarButtonItem:cancelCopy];
 
     [(MarkupViewController *)self presentViewController:v7 animated:1 completion:0];
   }
@@ -1172,89 +1172,89 @@ LABEL_13:
   [(MarkupViewController *)self setUserDidCancel:1];
   if ([(MarkupViewController *)self useFancyTransition])
   {
-    v4 = [(MarkupViewController *)self _remoteViewControllerProxy];
-    [v4 serviceDidFinishwithResults:0 andSandboxExtension:0];
+    _remoteViewControllerProxy = [(MarkupViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy serviceDidFinishwithResults:0 andSandboxExtension:0];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
-    v3 = [(MarkupViewController *)self extensionContext];
-    [v3 cancelRequestWithError:v4];
+    _remoteViewControllerProxy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
+    extensionContext = [(MarkupViewController *)self extensionContext];
+    [extensionContext cancelRequestWithError:_remoteViewControllerProxy];
 
     [(MarkupViewController *)self documentDidCloseTeardown];
   }
 }
 
-- (BOOL)validateRedo:(id)a3
+- (BOOL)validateRedo:(id)redo
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self annotationController];
-  v6 = [v5 validateRedo:v4];
+  redoCopy = redo;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v6 = [annotationController validateRedo:redoCopy];
 
   return v6;
 }
 
-- (BOOL)validateUndo:(id)a3
+- (BOOL)validateUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self annotationController];
-  v6 = [v5 validateUndo:v4];
+  undoCopy = undo;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v6 = [annotationController validateUndo:undoCopy];
 
   return v6;
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self annotationController];
-  [v5 undo:v4];
+  undoCopy = undo;
+  annotationController = [(MarkupViewController *)self annotationController];
+  [annotationController undo:undoCopy];
 }
 
-- (void)redo:(id)a3
+- (void)redo:(id)redo
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self annotationController];
-  [v5 redo:v4];
+  redoCopy = redo;
+  annotationController = [(MarkupViewController *)self annotationController];
+  [annotationController redo:redoCopy];
 }
 
 - (void)revert
 {
-  v3 = [(MarkupViewController *)self undoManager];
-  v4 = [v3 canUndo];
+  undoManager = [(MarkupViewController *)self undoManager];
+  canUndo = [undoManager canUndo];
 
-  if (v4)
+  if (canUndo)
   {
     do
     {
-      v5 = [(MarkupViewController *)self undoManager];
-      [v5 undo];
+      undoManager2 = [(MarkupViewController *)self undoManager];
+      [undoManager2 undo];
 
-      v6 = [(MarkupViewController *)self undoManager];
-      v7 = [v6 canUndo];
+      undoManager3 = [(MarkupViewController *)self undoManager];
+      canUndo2 = [undoManager3 canUndo];
     }
 
-    while ((v7 & 1) != 0);
+    while ((canUndo2 & 1) != 0);
   }
 
-  v8 = [(MarkupViewController *)self undoManager];
-  [v8 removeAllActions];
+  undoManager4 = [(MarkupViewController *)self undoManager];
+  [undoManager4 removeAllActions];
 }
 
-- (BOOL)_writeToDataConsumer:(CGDataConsumer *)a3 embedSourceImageAndEditModel:(BOOL)a4 options:(id)a5 error:(id *)a6
+- (BOOL)_writeToDataConsumer:(CGDataConsumer *)consumer embedSourceImageAndEditModel:(BOOL)model options:(id)options error:(id *)error
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = [(MarkupViewController *)self undoManager];
-  if ([v11 canUndo])
+  modelCopy = model;
+  optionsCopy = options;
+  undoManager = [(MarkupViewController *)self undoManager];
+  if ([undoManager canUndo])
   {
     alreadyLoggedSavingForThisDocument = self->_alreadyLoggedSavingForThisDocument;
 
     if (!alreadyLoggedSavingForThisDocument)
     {
-      v13 = [(MarkupViewController *)self sourceContentType];
-      v14 = [(MarkupViewController *)self hostProcessBundleIdentifier];
-      [MUStatistics logFileTypeSaved:v13 byProcess:v14];
+      sourceContentType = [(MarkupViewController *)self sourceContentType];
+      hostProcessBundleIdentifier = [(MarkupViewController *)self hostProcessBundleIdentifier];
+      [MUStatistics logFileTypeSaved:sourceContentType byProcess:hostProcessBundleIdentifier];
 
       [(MarkupViewController *)self setAlreadyLoggedSavingForThisDocument:1];
     }
@@ -1264,40 +1264,40 @@ LABEL_13:
   {
   }
 
-  v15 = [(MarkupViewController *)self annotationController];
-  [v15 endLogging];
+  annotationController = [(MarkupViewController *)self annotationController];
+  [annotationController endLogging];
 
-  v16 = [(MarkupViewController *)self outputContentType];
-  if ([v16 conformsToType:*MEMORY[0x277CE1DB0]])
+  outputContentType = [(MarkupViewController *)self outputContentType];
+  if ([outputContentType conformsToType:*MEMORY[0x277CE1DB0]])
   {
     v17 = objc_alloc_init(MUImageWriter);
-    v18 = [(MarkupViewController *)self digestedSourceContent];
-    v19 = [(MarkupViewController *)self annotationController];
-    v20 = [v16 identifier];
-    v21 = [(MUImageWriter *)v17 writeUsingBaseImage:v18 withAnnotationsFromController:v19 asImageOfType:v20 toConsumer:a3 embedSourceImageAndAnnotationsAsMetadata:v7 encryptPrivateMetadata:[(MarkupViewController *)self encryptPrivateMetadata] error:a6];
+    digestedSourceContent = [(MarkupViewController *)self digestedSourceContent];
+    annotationController2 = [(MarkupViewController *)self annotationController];
+    identifier = [outputContentType identifier];
+    v21 = [(MUImageWriter *)v17 writeUsingBaseImage:digestedSourceContent withAnnotationsFromController:annotationController2 asImageOfType:identifier toConsumer:consumer embedSourceImageAndAnnotationsAsMetadata:modelCopy encryptPrivateMetadata:[(MarkupViewController *)self encryptPrivateMetadata] error:error];
   }
 
-  else if ([v16 conformsToType:*MEMORY[0x277CE1E08]])
+  else if ([outputContentType conformsToType:*MEMORY[0x277CE1E08]])
   {
-    v22 = [(MarkupViewController *)self digestedSourceContent];
+    digestedSourceContent2 = [(MarkupViewController *)self digestedSourceContent];
     v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v23 setValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CD9458]];
-    if (v10 && [v10 count])
+    if (optionsCopy && [optionsCopy count])
     {
-      [v23 addEntriesFromDictionary:v10];
+      [v23 addEntriesFromDictionary:optionsCopy];
     }
 
     v24 = [v23 copy];
-    v21 = [v22 writeToConsumer:a3 withOptions:v24];
+    v21 = [digestedSourceContent2 writeToConsumer:consumer withOptions:v24];
   }
 
   else
   {
-    NSLog(&cfstr_SUnexpectedOut.isa, "[MarkupViewController _writeToDataConsumer:embedSourceImageAndEditModel:options:error:]", v16);
-    if (a6)
+    NSLog(&cfstr_SUnexpectedOut.isa, "[MarkupViewController _writeToDataConsumer:embedSourceImageAndEditModel:options:error:]", outputContentType);
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:518 userInfo:0];
-      *a6 = v21 = 0;
+      *error = v21 = 0;
     }
 
     else
@@ -1309,25 +1309,25 @@ LABEL_13:
   return v21;
 }
 
-- (void)_updateAndLoadSourceContent:(id)a3 withArchivedModelData:(id)a4 withCompletion:(id)a5
+- (void)_updateAndLoadSourceContent:(id)content withArchivedModelData:(id)data withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  dataCopy = data;
+  contentCopy = content;
   kdebug_trace();
   [(MarkupViewController *)self willBeginLoadingNewDocument];
-  [(MarkupViewController *)self setSourceContent:v10 withArchivedModelData:v9];
+  [(MarkupViewController *)self setSourceContent:contentCopy withArchivedModelData:dataCopy];
 
-  v11 = [(MarkupViewController *)self sourceContentType];
+  sourceContentType = [(MarkupViewController *)self sourceContentType];
 
-  if (v11)
+  if (sourceContentType)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __89__MarkupViewController__updateAndLoadSourceContent_withArchivedModelData_withCompletion___block_invoke;
     v12[3] = &unk_27986E4C8;
     v12[4] = self;
-    v13 = v8;
+    v13 = completionCopy;
     [(MarkupViewController *)self _loadSourceContentWithCompletion:v12];
   }
 
@@ -1390,12 +1390,12 @@ void __89__MarkupViewController__updateAndLoadSourceContent_withArchivedModelDat
   [v27 beginLogging:@"markup" documentType:v28];
 }
 
-- (void)_loadSourceContentWithCompletion:(id)a3
+- (void)_loadSourceContentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self sourceContent];
+  completionCopy = completion;
+  sourceContent = [(MarkupViewController *)self sourceContent];
 
-  if (v5)
+  if (sourceContent)
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -1404,52 +1404,52 @@ void __89__MarkupViewController__updateAndLoadSourceContent_withArchivedModelDat
     block[3] = &unk_27986E318;
     objc_copyWeak(&v26, &location);
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v6 = [(MarkupViewController *)self sourceContentType];
-    [(MarkupViewController *)self _installContentViewControllerForUTI:v6];
+    sourceContentType = [(MarkupViewController *)self sourceContentType];
+    [(MarkupViewController *)self _installContentViewControllerForUTI:sourceContentType];
 
     v7 = MEMORY[0x277CE1CB8];
-    v8 = [(MarkupViewController *)self sourceContentType];
-    v9 = [v7 typeWithIdentifier:v8];
+    sourceContentType2 = [(MarkupViewController *)self sourceContentType];
+    v9 = [v7 typeWithIdentifier:sourceContentType2];
 
     if ([v9 conformsToType:*MEMORY[0x277CE1E08]])
     {
-      v10 = [(MarkupViewController *)self contentViewController];
-      [v10 setForcesPDFViewTopAlignment:{-[MarkupViewController forcesPDFViewTopAlignment](self, "forcesPDFViewTopAlignment")}];
+      contentViewController = [(MarkupViewController *)self contentViewController];
+      [contentViewController setForcesPDFViewTopAlignment:{-[MarkupViewController forcesPDFViewTopAlignment](self, "forcesPDFViewTopAlignment")}];
 
-      v11 = [(MarkupViewController *)self contentViewController];
+      contentViewController2 = [(MarkupViewController *)self contentViewController];
       v19 = MEMORY[0x277D85DD0];
       v20 = 3221225472;
       v21 = __57__MarkupViewController__loadSourceContentWithCompletion___block_invoke_2;
       v22 = &unk_27986E4C8;
-      v23 = self;
-      v24 = v4;
-      [v11 loadContentWithCompletionBlock:&v19];
+      selfCopy = self;
+      v24 = completionCopy;
+      [contentViewController2 loadContentWithCompletionBlock:&v19];
     }
 
     else if ([v9 conformsToType:*MEMORY[0x277CE1DB0]])
     {
-      v12 = [(MarkupViewController *)self contentViewController];
+      contentViewController3 = [(MarkupViewController *)self contentViewController];
       if (v9)
       {
         v13 = +[MUImageWriter outputTypesSupportingHDR];
-        v14 = [v9 identifier];
-        v15 = [v13 containsObject:v14];
+        identifier = [v9 identifier];
+        v15 = [v13 containsObject:identifier];
 
         if (v15)
         {
-          [v12 enableHDRAnnotations];
+          [contentViewController3 enableHDRAnnotations];
         }
       }
 
       [(MarkupViewController *)self _setupAnnotationController];
-      v16 = [(MarkupViewController *)self placeholderImage];
-      [v12 setTentativePlaceholderImage:v16];
+      placeholderImage = [(MarkupViewController *)self placeholderImage];
+      [contentViewController3 setTentativePlaceholderImage:placeholderImage];
 
-      v17 = [(MarkupViewController *)self contentViewController];
-      [v17 loadContentWithCompletionBlock:v4];
+      contentViewController4 = [(MarkupViewController *)self contentViewController];
+      [contentViewController4 loadContentWithCompletionBlock:completionCopy];
     }
 
-    [(MarkupViewController *)self setAllEditingDisabled:0, v19, v20, v21, v22, v23];
+    [(MarkupViewController *)self setAllEditingDisabled:0, v19, v20, v21, v22, selfCopy];
     [(MarkupViewController *)self setAnnotationEditingEnabled:1];
     [(MarkupViewController *)self setFormFillingEnabled:0];
     [(MarkupViewController *)self _startObservingAnnotationController];
@@ -1458,8 +1458,8 @@ void __89__MarkupViewController__updateAndLoadSourceContent_withArchivedModelDat
     objc_destroyWeak(&location);
   }
 
-  v18 = [(MarkupViewController *)self contentViewController];
-  [(MarkupViewController *)self _updateundoBarButtonWithController:v18];
+  contentViewController5 = [(MarkupViewController *)self contentViewController];
+  [(MarkupViewController *)self _updateundoBarButtonWithController:contentViewController5];
 }
 
 void __57__MarkupViewController__loadSourceContentWithCompletion___block_invoke(uint64_t a1)
@@ -1498,59 +1498,59 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
 
 - (BOOL)allEditingDisabled
 {
-  v2 = [(MarkupViewController *)self annotationController];
-  v3 = [v2 allEditingDisabled];
+  annotationController = [(MarkupViewController *)self annotationController];
+  allEditingDisabled = [annotationController allEditingDisabled];
 
-  return v3;
+  return allEditingDisabled;
 }
 
-- (void)setAllEditingDisabled:(BOOL)a3
+- (void)setAllEditingDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(MarkupViewController *)self annotationController];
-  [v4 setAllEditingDisabled:v3];
+  disabledCopy = disabled;
+  annotationController = [(MarkupViewController *)self annotationController];
+  [annotationController setAllEditingDisabled:disabledCopy];
 }
 
-- (void)setAnnotationEditingEnabled:(BOOL)a3
+- (void)setAnnotationEditingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v6 = [(MarkupViewController *)self annotationController];
-  if ([v6 annotationEditingEnabled] != v3)
+  enabledCopy = enabled;
+  annotationController = [(MarkupViewController *)self annotationController];
+  if ([annotationController annotationEditingEnabled] != enabledCopy)
   {
-    [v6 setAnnotationEditingEnabled:v3];
-    if (v3)
+    [annotationController setAnnotationEditingEnabled:enabledCopy];
+    if (enabledCopy)
     {
       [(MarkupViewController *)self restoreToolModeForContentType];
     }
 
     else
     {
-      v5 = [v6 modelController];
-      [v5 deselectAllAnnotations];
+      modelController = [annotationController modelController];
+      [modelController deselectAllAnnotations];
 
-      [v6 resetToDefaultToolMode];
+      [annotationController resetToDefaultToolMode];
     }
   }
 }
 
-- (void)setFormFillingEnabled:(BOOL)a3 didUseBanner:(BOOL)a4
+- (void)setFormFillingEnabled:(BOOL)enabled didUseBanner:(BOOL)banner
 {
-  v4 = a3;
-  v6 = [(MarkupViewController *)self _pdfView:a3];
+  enabledCopy = enabled;
+  v6 = [(MarkupViewController *)self _pdfView:enabled];
   if (v6)
   {
     v10 = v6;
-    v7 = [v6 isInFormFillingMode] == v4;
+    v7 = [v6 isInFormFillingMode] == enabledCopy;
     v6 = v10;
     if (!v7)
     {
-      [v10 setInFormFillingMode:v4];
+      [v10 setInFormFillingMode:enabledCopy];
       v6 = v10;
-      if (!v4)
+      if (!enabledCopy)
       {
-        v8 = [(MarkupViewController *)self annotationController];
-        v9 = [v8 modelController];
-        [v9 deselectAllAnnotations];
+        annotationController = [(MarkupViewController *)self annotationController];
+        modelController = [annotationController modelController];
+        [modelController deselectAllAnnotations];
 
         v6 = v10;
       }
@@ -1560,47 +1560,47 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
 
 - (void)restoreToolModeForContentType
 {
-  v6 = [(MarkupViewController *)self annotationController];
+  annotationController = [(MarkupViewController *)self annotationController];
   if (-[MarkupViewController annotationEditingEnabled](self, "annotationEditingEnabled") && (-[MarkupViewController contentViewController](self, "contentViewController"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 defaultToolTag], v3, v4 != 763000))
   {
     v5 = objc_opt_new();
     [v5 setTag:v4];
-    [v6 performActionForSender:v5];
-    if ([v6 toolMode] != 4)
+    [annotationController performActionForSender:v5];
+    if ([annotationController toolMode] != 4)
     {
-      [v6 performActionForSender:v5];
+      [annotationController performActionForSender:v5];
     }
   }
 
   else
   {
-    [v6 resetToDefaultToolMode];
+    [annotationController resetToDefaultToolMode];
   }
 }
 
 - (BOOL)annotationEditingEnabled
 {
-  v2 = [(MarkupViewController *)self annotationController];
-  v3 = [v2 annotationEditingEnabled];
+  annotationController = [(MarkupViewController *)self annotationController];
+  annotationEditingEnabled = [annotationController annotationEditingEnabled];
 
-  return v3;
+  return annotationEditingEnabled;
 }
 
 - (BOOL)formFillingEnabled
 {
-  v2 = [(MarkupViewController *)self annotationController];
-  v3 = [v2 formFillingEnabled];
+  annotationController = [(MarkupViewController *)self annotationController];
+  formFillingEnabled = [annotationController formFillingEnabled];
 
-  return v3;
+  return formFillingEnabled;
 }
 
-- (void)setPencilAlwaysDraws:(BOOL)a3
+- (void)setPencilAlwaysDraws:(BOOL)draws
 {
-  self->_pencilAlwaysDraws = [MEMORY[0x277CEA698] canConnectToStylus] & a3;
-  v4 = [(MarkupViewController *)self annotationController];
+  self->_pencilAlwaysDraws = [MEMORY[0x277CEA698] canConnectToStylus] & draws;
+  annotationController = [(MarkupViewController *)self annotationController];
   pencilAlwaysDraws = self->_pencilAlwaysDraws;
-  v6 = v4;
-  if (pencilAlwaysDraws != [v4 pencilAlwaysDraws])
+  v6 = annotationController;
+  if (pencilAlwaysDraws != [annotationController pencilAlwaysDraws])
   {
     [v6 setPencilAlwaysDraws:self->_pencilAlwaysDraws];
   }
@@ -1608,9 +1608,9 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
 
 - (BOOL)pencilAlwaysDraws
 {
-  v3 = [(MarkupViewController *)self annotationController];
+  annotationController = [(MarkupViewController *)self annotationController];
   pencilAlwaysDraws = self->_pencilAlwaysDraws;
-  if (pencilAlwaysDraws != [v3 pencilAlwaysDraws])
+  if (pencilAlwaysDraws != [annotationController pencilAlwaysDraws])
   {
     NSLog(&cfstr_TheAkcontrolle.isa);
   }
@@ -1620,22 +1620,22 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
   return v5;
 }
 
-- (void)_saveEditing:(id)a3
+- (void)_saveEditing:(id)editing
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = [(MarkupViewController *)self extensionContext];
+  extensionContext = [(MarkupViewController *)self extensionContext];
 
-  if (v4)
+  if (extensionContext)
   {
-    v5 = [(MarkupViewController *)self outputContentType];
+    outputContentType = [(MarkupViewController *)self outputContentType];
     v6 = +[MUImageDownsamplingUtilities _uniqueTemporaryDirectory];
-    v7 = [(MarkupViewController *)self preferredFileDisplayName];
-    v8 = [v5 preferredFilenameExtension];
-    if (v8)
+    preferredFileDisplayName = [(MarkupViewController *)self preferredFileDisplayName];
+    preferredFilenameExtension = [outputContentType preferredFilenameExtension];
+    if (preferredFilenameExtension)
     {
-      v9 = [v7 stringByAppendingPathExtension:v8];
+      v9 = [preferredFileDisplayName stringByAppendingPathExtension:preferredFilenameExtension];
 
-      v7 = v9;
+      preferredFileDisplayName = v9;
     }
 
     else
@@ -1643,12 +1643,12 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
       NSLog(&cfstr_SNoPreferredFi.isa, "[MarkupViewController _saveEditing:]");
     }
 
-    v10 = [v6 URLByAppendingPathComponent:v7];
-    v11 = [v10 filePathURL];
+    v10 = [v6 URLByAppendingPathComponent:preferredFileDisplayName];
+    filePathURL = [v10 filePathURL];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v36 = 0;
-    [v12 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v36];
+    [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v36];
     v13 = v36;
 
     if (v13)
@@ -1657,31 +1657,31 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
     }
 
     v35 = 0;
-    [(MarkupViewController *)self writeToURL:v11 error:&v35];
+    [(MarkupViewController *)self writeToURL:filePathURL error:&v35];
     v14 = v35;
     v15 = v14;
     if (v14)
     {
       NSLog(&cfstr_FailedToWriteF.isa, v14);
       v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:512 userInfo:0];
-      v17 = [(MarkupViewController *)self extensionContext];
-      [v17 cancelRequestWithError:v16];
+      extensionContext2 = [(MarkupViewController *)self extensionContext];
+      [extensionContext2 cancelRequestWithError:v16];
 
       [(MarkupViewController *)self documentDidCloseTeardown];
     }
 
     else
     {
-      v30 = v5;
+      v30 = outputContentType;
       v18 = objc_alloc_init(MEMORY[0x277CCAA88]);
-      v19 = [*MEMORY[0x277CE1D70] identifier];
+      identifier = [*MEMORY[0x277CE1D70] identifier];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __37__MarkupViewController__saveEditing___block_invoke;
       v33[3] = &unk_27986E6A8;
-      v31 = v11;
+      v31 = filePathURL;
       v34 = v31;
-      [v18 registerItemForTypeIdentifier:v19 loadHandler:v33];
+      [v18 registerItemForTypeIdentifier:identifier loadHandler:v33];
 
       v20 = v18;
       v21 = objc_opt_new();
@@ -1694,9 +1694,9 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
       if ([(MarkupViewController *)self useFancyTransition])
       {
-        v28 = [(MarkupViewController *)self _remoteViewControllerProxy];
-        v23 = [v31 path];
-        [v23 UTF8String];
+        _remoteViewControllerProxy = [(MarkupViewController *)self _remoteViewControllerProxy];
+        path = [v31 path];
+        [path UTF8String];
 
         v24 = sandbox_extension_issue_file();
         if (v24)
@@ -1712,21 +1712,21 @@ uint64_t __57__MarkupViewController__loadSourceContentWithCompletion___block_inv
           v26 = 0;
         }
 
-        v5 = v30;
-        [v28 serviceDidFinishwithResults:v31 andSandboxExtension:v26];
+        outputContentType = v30;
+        [_remoteViewControllerProxy serviceDidFinishwithResults:v31 andSandboxExtension:v26];
       }
 
       else
       {
-        v27 = [(MarkupViewController *)self extensionContext];
+        extensionContext3 = [(MarkupViewController *)self extensionContext];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __37__MarkupViewController__saveEditing___block_invoke_2;
         v32[3] = &unk_27986E6D0;
         v32[4] = self;
-        [v27 completeRequestReturningItems:v16 completionHandler:v32];
+        [extensionContext3 completeRequestReturningItems:v16 completionHandler:v32];
 
-        v5 = v30;
+        outputContentType = v30;
       }
     }
   }
@@ -1752,16 +1752,16 @@ void __37__MarkupViewController__saveEditing___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setSourceContent:(id)a3 withArchivedModelData:(id)a4
+- (void)setSourceContent:(id)content withArchivedModelData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_sourceContent == v7)
+  contentCopy = content;
+  dataCopy = data;
+  if (self->_sourceContent == contentCopy)
   {
     goto LABEL_70;
   }
 
-  objc_storeStrong(&self->_sourceContent, a3);
+  objc_storeStrong(&self->_sourceContent, content);
   [(MarkupViewController *)self setSourceContentType:0];
   [(MarkupViewController *)self setDigestedSourceContent:0];
   [(MarkupViewController *)self setPreferredFileDisplayName:0];
@@ -1780,9 +1780,9 @@ void __37__MarkupViewController__saveEditing___block_invoke_2(uint64_t a1)
 
       if ((isKindOfClass & 1) == 0)
       {
-        if (v7)
+        if (contentCopy)
         {
-          NSLog(&cfstr_SUnsupportedSo.isa, "[MarkupViewController setSourceContent:withArchivedModelData:]", v7);
+          NSLog(&cfstr_SUnsupportedSo.isa, "[MarkupViewController setSourceContent:withArchivedModelData:]", contentCopy);
         }
 
         goto LABEL_67;
@@ -1790,10 +1790,10 @@ void __37__MarkupViewController__saveEditing___block_invoke_2(uint64_t a1)
     }
 
     v18 = 0x27986D000uLL;
-    v15 = [MUImageDownsamplingUtilities _sourceContentType:v7];
+    v15 = [MUImageDownsamplingUtilities _sourceContentType:contentCopy];
     if (!v15)
     {
-      NSLog(&cfstr_SFailedToGetCo.isa, "[MarkupViewController setSourceContent:withArchivedModelData:]", v7);
+      NSLog(&cfstr_SFailedToGetCo.isa, "[MarkupViewController setSourceContent:withArchivedModelData:]", contentCopy);
       goto LABEL_66;
     }
 
@@ -1803,20 +1803,20 @@ void __37__MarkupViewController__saveEditing___block_invoke_2(uint64_t a1)
     v20 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v15];
     if ([v20 conformsToType:*MEMORY[0x277CE1E08]])
     {
-      v21 = [(MarkupViewController *)self sourceContent];
+      sourceContent = [(MarkupViewController *)self sourceContent];
       v22 = objc_opt_self();
       v23 = objc_opt_isKindOfClass();
 
       if (v23)
       {
         v24 = objc_alloc(MEMORY[0x277CD93D0]);
-        v25 = [(MarkupViewController *)self sourceContent];
-        v26 = [v24 initWithURL:v25];
+        sourceContent2 = [(MarkupViewController *)self sourceContent];
+        v26 = [v24 initWithURL:sourceContent2];
       }
 
       else
       {
-        v30 = [(MarkupViewController *)self sourceContent];
+        sourceContent3 = [(MarkupViewController *)self sourceContent];
         v31 = objc_opt_self();
         v32 = objc_opt_isKindOfClass();
 
@@ -1826,8 +1826,8 @@ void __37__MarkupViewController__saveEditing___block_invoke_2(uint64_t a1)
         }
 
         v33 = objc_alloc(MEMORY[0x277CD93D0]);
-        v25 = [(MarkupViewController *)self sourceContent];
-        v26 = [v33 initWithData:v25];
+        sourceContent2 = [(MarkupViewController *)self sourceContent];
+        v26 = [v33 initWithData:sourceContent2];
       }
 
       v29 = v26;
@@ -1840,11 +1840,11 @@ LABEL_61:
       }
 
 LABEL_62:
-      v50 = [(MarkupViewController *)self sourceContentType];
+      sourceContentType = [(MarkupViewController *)self sourceContentType];
 
-      if (v50)
+      if (sourceContentType)
       {
-        v51 = [*(v18 + 2976) _preferredFileDisplayNameForSourceContent:v7];
+        v51 = [*(v18 + 2976) _preferredFileDisplayNameForSourceContent:contentCopy];
         [(MarkupViewController *)self setPreferredFileDisplayName:v51];
       }
 
@@ -1864,7 +1864,7 @@ LABEL_62:
     }
 
     v58 = 0;
-    [MUImageDownsamplingUtilities _shouldFlattenEXIFOrientation:&v58 + 1 andDownsample:&v58 sourceContent:v7];
+    [MUImageDownsamplingUtilities _shouldFlattenEXIFOrientation:&v58 + 1 andDownsample:&v58 sourceContent:contentCopy];
     if ([objc_opt_class() _isInLowMemoryEnvironment])
     {
       v27 = HIBYTE(v58);
@@ -1890,17 +1890,17 @@ LABEL_62:
       v27 = 1;
     }
 
-    v34 = [(MarkupViewController *)self outputContentType];
-    v29 = [MUImageDownsamplingUtilities _flattenEXIFOrientation:v27 withDownsampling:v28 & 1 sourceContent:v7 withContentType:v34];
+    outputContentType = [(MarkupViewController *)self outputContentType];
+    v29 = [MUImageDownsamplingUtilities _flattenEXIFOrientation:v27 withDownsampling:v28 & 1 sourceContent:contentCopy withContentType:outputContentType];
 
     v18 = 0x27986D000uLL;
-    if (v29 || ([MUImageDownsamplingUtilities _flattenEXIFOrientation:HIBYTE(v58) withDownsampling:v58 sourceContent:v7 withContentType:*MEMORY[0x277CE1DC0]], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v29 || ([MUImageDownsamplingUtilities _flattenEXIFOrientation:HIBYTE(v58) withDownsampling:v58 sourceContent:contentCopy withContentType:*MEMORY[0x277CE1DC0]], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       objc_storeStrong(&self->_sourceContent, v29);
       v29 = v29;
 
       [(MarkupViewController *)self _cleanupPlaceholderImage];
-      v7 = v29;
+      contentCopy = v29;
     }
 
 LABEL_37:
@@ -1924,40 +1924,40 @@ LABEL_60:
     {
       v55 = v29;
       v57 = 0;
-      v36 = [(MarkupViewController *)self sourceContent];
+      sourceContent4 = [(MarkupViewController *)self sourceContent];
       v37 = objc_opt_self();
       v38 = objc_opt_isKindOfClass();
 
-      v39 = [(MarkupViewController *)self sourceContent];
+      sourceContent5 = [(MarkupViewController *)self sourceContent];
       if (v38)
       {
-        [(MUImageReader *)v35 readBaseImageFromData:v39 baseWasValid:&v57];
+        [(MUImageReader *)v35 readBaseImageFromData:sourceContent5 baseWasValid:&v57];
       }
 
       else
       {
-        [(MUImageReader *)v35 readBaseImageFromImageAtURL:v39 baseWasValid:&v57];
+        [(MUImageReader *)v35 readBaseImageFromImageAtURL:sourceContent5 baseWasValid:&v57];
       }
-      v40 = ;
+      sourceContent8 = ;
 
       v29 = v55;
-      if (v40)
+      if (sourceContent8)
       {
         if (v57 == 1)
         {
-          v42 = [(MarkupViewController *)self sourceContent];
+          sourceContent6 = [(MarkupViewController *)self sourceContent];
           v43 = objc_opt_self();
           v54 = objc_opt_isKindOfClass();
 
-          v44 = [(MarkupViewController *)self sourceContent];
+          sourceContent7 = [(MarkupViewController *)self sourceContent];
           if (v54)
           {
-            [(MUImageReader *)v35 readArchivedModelDataFromImageData:v44];
+            [(MUImageReader *)v35 readArchivedModelDataFromImageData:sourceContent7];
           }
 
           else
           {
-            [(MUImageReader *)v35 readArchivedModelDataFromImageURL:v44];
+            [(MUImageReader *)v35 readArchivedModelDataFromImageURL:sourceContent7];
           }
           v45 = ;
 
@@ -1969,30 +1969,30 @@ LABEL_60:
           v45 = 0;
         }
 
-        [(MarkupViewController *)self setDigestedSourceContent:v40];
+        [(MarkupViewController *)self setDigestedSourceContent:sourceContent8];
         goto LABEL_54;
       }
     }
 
     else
     {
-      v40 = [(MarkupViewController *)self sourceContent];
-      [(MarkupViewController *)self setDigestedSourceContent:v40];
+      sourceContent8 = [(MarkupViewController *)self sourceContent];
+      [(MarkupViewController *)self setDigestedSourceContent:sourceContent8];
     }
 
     v45 = 0;
 LABEL_54:
 
-    if (v8 && !v45)
+    if (dataCopy && !v45)
     {
-      v45 = v8;
+      v45 = dataCopy;
     }
 
     [(MarkupViewController *)self setArchivedModelData:v45];
     [(MarkupViewController *)self setSourceContentType:v15];
-    v46 = [(MarkupViewController *)self originalImageDescription];
+    originalImageDescription = [(MarkupViewController *)self originalImageDescription];
 
-    if (!v46)
+    if (!originalImageDescription)
     {
       [(MarkupViewController *)self sourceContent];
       v56 = v35;
@@ -2008,14 +2008,14 @@ LABEL_54:
     goto LABEL_60;
   }
 
-  v9 = [*MEMORY[0x277CE1DC0] identifier];
-  [(MarkupViewController *)self setSourceContentType:v9];
+  identifier = [*MEMORY[0x277CE1DC0] identifier];
+  [(MarkupViewController *)self setSourceContentType:identifier];
 
-  v10 = [(MarkupViewController *)self sourceContent];
-  [(MarkupViewController *)self setDigestedSourceContent:v10];
+  sourceContent9 = [(MarkupViewController *)self sourceContent];
+  [(MarkupViewController *)self setDigestedSourceContent:sourceContent9];
 
   v59 = 0;
-  [MUImageDownsamplingUtilities _shouldFlattenEXIFOrientation:&v59 + 1 andDownsample:&v59 sourceContent:v7];
+  [MUImageDownsamplingUtilities _shouldFlattenEXIFOrientation:&v59 + 1 andDownsample:&v59 sourceContent:contentCopy];
   if ([objc_opt_class() _isInLowMemoryEnvironment])
   {
     if (v59 & 0x100) != 0 || (v59)
@@ -2027,11 +2027,11 @@ LABEL_10:
         v13 = v12;
 
         [(MarkupViewController *)self setSourceContent:v13];
-        v14 = [(MarkupViewController *)self sourceContent];
-        [(MarkupViewController *)self setDigestedSourceContent:v14];
+        sourceContent10 = [(MarkupViewController *)self sourceContent];
+        [(MarkupViewController *)self setDigestedSourceContent:sourceContent10];
 
         [(MarkupViewController *)self _cleanupPlaceholderImage];
-        v7 = v13;
+        contentCopy = v13;
       }
     }
   }
@@ -2052,9 +2052,9 @@ LABEL_66:
 LABEL_67:
   if (self->_sourceContent)
   {
-    v52 = [(MarkupViewController *)self sourceContentType];
+    sourceContentType2 = [(MarkupViewController *)self sourceContentType];
 
-    if (!v52)
+    if (!sourceContentType2)
     {
       NSLog(&cfstr_SClearingSourc.isa, "[MarkupViewController setSourceContent:withArchivedModelData:]");
       sourceContent = self->_sourceContent;
@@ -2067,57 +2067,57 @@ LABEL_67:
 LABEL_70:
 }
 
-- (void)setPreferredFileDisplayName:(id)a3
+- (void)setPreferredFileDisplayName:(id)name
 {
-  v6 = [a3 copy];
-  v4 = [v6 stringByDeletingPathExtension];
+  v6 = [name copy];
+  stringByDeletingPathExtension = [v6 stringByDeletingPathExtension];
   preferredFileDisplayName = self->_preferredFileDisplayName;
-  self->_preferredFileDisplayName = v4;
+  self->_preferredFileDisplayName = stringByDeletingPathExtension;
 }
 
 - (id)_pdfView
 {
-  v3 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MarkupViewController *)self contentViewController];
-    v6 = [v5 pdfView];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    pdfView = [contentViewController2 pdfView];
   }
 
   else
   {
-    v6 = 0;
+    pdfView = 0;
   }
 
-  return v6;
+  return pdfView;
 }
 
 - (id)_pdfDocument
 {
-  v3 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MarkupViewController *)self contentViewController];
-    v6 = [v5 pdfDocument];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    pdfDocument = [contentViewController2 pdfDocument];
   }
 
   else
   {
-    v6 = 0;
+    pdfDocument = 0;
   }
 
-  return v6;
+  return pdfDocument;
 }
 
 - (int64_t)thumbnailViewStyle
 {
-  v3 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2126,28 +2126,28 @@ LABEL_70:
     return 0;
   }
 
-  v5 = [(MarkupViewController *)self contentViewController];
-  v6 = [v5 thumbnailViewStyle];
+  contentViewController2 = [(MarkupViewController *)self contentViewController];
+  thumbnailViewStyle = [contentViewController2 thumbnailViewStyle];
 
-  return v6;
+  return thumbnailViewStyle;
 }
 
-- (void)setThumbnailViewStyle:(int64_t)a3
+- (void)setThumbnailViewStyle:(int64_t)style
 {
-  v5 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(MarkupViewController *)self contentViewController];
-    [v7 setThumbnailViewStyle:a3];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 setThumbnailViewStyle:style];
   }
 }
 
 - (BOOL)allowsThumbnailViewPageReordering
 {
-  v3 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2156,54 +2156,54 @@ LABEL_70:
     return 0;
   }
 
-  v5 = [(MarkupViewController *)self contentViewController];
-  v6 = [v5 allowsThumbnailViewPageReordering];
+  contentViewController2 = [(MarkupViewController *)self contentViewController];
+  allowsThumbnailViewPageReordering = [contentViewController2 allowsThumbnailViewPageReordering];
 
-  return v6;
+  return allowsThumbnailViewPageReordering;
 }
 
-- (void)setAllowsThumbnailViewPageReordering:(BOOL)a3
+- (void)setAllowsThumbnailViewPageReordering:(BOOL)reordering
 {
-  v3 = a3;
-  v5 = [(MarkupViewController *)self contentViewController];
+  reorderingCopy = reordering;
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(MarkupViewController *)self contentViewController];
-    [v7 setAllowsThumbnailViewPageReordering:v3];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 setAllowsThumbnailViewPageReordering:reorderingCopy];
   }
 }
 
 - (UIScrollView)contentViewScrollView
 {
-  v2 = [(MarkupViewController *)self contentViewController];
-  v3 = [v2 contentViewScrollView];
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  contentViewScrollView = [contentViewController contentViewScrollView];
 
-  return v3;
+  return contentViewScrollView;
 }
 
 - (UIView)imageViewCombinedContentView
 {
-  v2 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 combinedContentView];
+    combinedContentView = [contentViewController combinedContentView];
   }
 
   else
   {
-    v3 = 0;
+    combinedContentView = 0;
   }
 
-  return v3;
+  return combinedContentView;
 }
 
 - (unint64_t)currentPDFPageIndex
 {
-  v3 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2212,81 +2212,81 @@ LABEL_70:
     return 0;
   }
 
-  v5 = [(MarkupViewController *)self annotationController];
-  v6 = [v5 currentPageIndex];
+  annotationController = [(MarkupViewController *)self annotationController];
+  currentPageIndex = [annotationController currentPageIndex];
 
-  return v6;
+  return currentPageIndex;
 }
 
-- (void)setCurrentPDFPageIndex:(unint64_t)a3
+- (void)setCurrentPDFPageIndex:(unint64_t)index
 {
-  v5 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(MarkupViewController *)self contentViewController];
-    v7 = [v11 pdfView];
-    v8 = [v7 document];
-    v9 = v8;
-    if (v7 && v8)
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    pdfView = [contentViewController2 pdfView];
+    document = [pdfView document];
+    v9 = document;
+    if (pdfView && document)
     {
-      v10 = [v8 pageAtIndex:a3];
+      v10 = [document pageAtIndex:index];
       if (v10)
       {
-        [v7 goToPage:v10];
+        [pdfView goToPage:v10];
       }
     }
   }
 }
 
-- (void)setShapeDetectionEnabled:(BOOL)a3
+- (void)setShapeDetectionEnabled:(BOOL)enabled
 {
-  if (self->_shapeDetectionEnabled != a3)
+  if (self->_shapeDetectionEnabled != enabled)
   {
-    v4 = a3;
-    self->_shapeDetectionEnabled = a3;
-    v5 = [(MarkupViewController *)self annotationController];
-    [v5 setShapeDetectionEnabled:v4];
+    enabledCopy = enabled;
+    self->_shapeDetectionEnabled = enabled;
+    annotationController = [(MarkupViewController *)self annotationController];
+    [annotationController setShapeDetectionEnabled:enabledCopy];
   }
 }
 
-- (void)setForcesPDFViewTopAlignment:(BOOL)a3
+- (void)setForcesPDFViewTopAlignment:(BOOL)alignment
 {
-  self->_forcesPDFViewTopAlignment = a3;
-  v4 = [(MarkupViewController *)self contentViewController];
+  self->_forcesPDFViewTopAlignment = alignment;
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MarkupViewController *)self contentViewController];
-    [v6 setForcesPDFViewTopAlignment:{-[MarkupViewController forcesPDFViewTopAlignment](self, "forcesPDFViewTopAlignment")}];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 setForcesPDFViewTopAlignment:{-[MarkupViewController forcesPDFViewTopAlignment](self, "forcesPDFViewTopAlignment")}];
   }
 }
 
-- (void)setShowShareButtonInToolbar:(BOOL)a3
+- (void)setShowShareButtonInToolbar:(BOOL)toolbar
 {
-  v3 = a3;
-  self->_showShareButtonInToolbar = a3;
-  v5 = [(MarkupViewController *)self annotationController];
-  v4 = [v5 modernToolbarView];
-  [v4 setShareButtonHidden:!v3];
+  toolbarCopy = toolbar;
+  self->_showShareButtonInToolbar = toolbar;
+  annotationController = [(MarkupViewController *)self annotationController];
+  modernToolbarView = [annotationController modernToolbarView];
+  [modernToolbarView setShareButtonHidden:!toolbarCopy];
 }
 
 - (AKController)annotationController
 {
-  v2 = [(MarkupViewController *)self contentViewController];
-  v3 = [v2 annotationController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  annotationController = [contentViewController annotationController];
 
-  return v3;
+  return annotationController;
 }
 
 + (double)_maxImageDimensionInView
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -2295,25 +2295,25 @@ LABEL_70:
     v4 = v6;
   }
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 nativeScale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 nativeScale];
   v9 = v4 * floor(v8);
 
   return fmax(v9, 1500.0);
 }
 
-- (void)_setupInitialBaseModelScaleFactorWithScreenSize:(CGSize)a3 windowDecorationSize:(CGSize)a4
+- (void)_setupInitialBaseModelScaleFactorWithScreenSize:(CGSize)size windowDecorationSize:(CGSize)decorationSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  v9 = [(MarkupViewController *)self contentViewController];
-  [v9 idealContentSizeForScreenSize:v7 windowDecorationSize:{v6, width, height}];
+  height = decorationSize.height;
+  width = decorationSize.width;
+  v6 = size.height;
+  v7 = size.width;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  [contentViewController idealContentSizeForScreenSize:v7 windowDecorationSize:{v6, width, height}];
   v11 = v10;
 
-  v12 = [(MarkupViewController *)self contentViewController];
-  [v12 contentSize];
+  contentViewController2 = [(MarkupViewController *)self contentViewController];
+  [contentViewController2 contentSize];
   v14 = v13;
 
   [(MarkupViewController *)self setInitialContentScale:v14 / v11];
@@ -2321,172 +2321,172 @@ LABEL_70:
 
 - (BOOL)_shouldShowUndoRedoButtonsInNavigationBar
 {
-  v3 = [(MarkupViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 1)
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MarkupViewController *)self traitCollection];
-    v4 = [v5 userInterfaceIdiom] == 0;
+    traitCollection2 = [(MarkupViewController *)self traitCollection];
+    v4 = [traitCollection2 userInterfaceIdiom] == 0;
   }
 
   return v4;
 }
 
-- (void)_updateundoBarButtonWithController:(id)a3
+- (void)_updateundoBarButtonWithController:(id)controller
 {
-  v18 = a3;
-  v4 = [(MarkupViewController *)self extensionContext];
+  controllerCopy = controller;
+  extensionContext = [(MarkupViewController *)self extensionContext];
   if (objc_opt_respondsToSelector())
   {
     if ([(MarkupViewController *)self _shouldShowUndoRedoButtonsInNavigationBar])
     {
-      v5 = [(MarkupViewController *)self undoManager];
+      undoManager = [(MarkupViewController *)self undoManager];
     }
 
     else
     {
-      v5 = 0;
+      undoManager = 0;
     }
 
-    [v4 setUndoManagerForBarButtons:v5];
+    [extensionContext setUndoManagerForBarButtons:undoManager];
   }
 
-  v6 = [(MarkupViewController *)self navItem];
+  navItem = [(MarkupViewController *)self navItem];
 
-  if (v6)
+  if (navItem)
   {
-    v7 = [(MarkupViewController *)self navItem];
+    navItem2 = [(MarkupViewController *)self navItem];
   }
 
   else
   {
-    v8 = [(MarkupViewController *)self navigationItem];
+    navigationItem = [(MarkupViewController *)self navigationItem];
 
-    if (!v8)
+    if (!navigationItem)
     {
 LABEL_18:
-      v9 = 0;
+      array = 0;
       goto LABEL_27;
     }
 
-    v7 = [(MarkupViewController *)self navigationItem];
+    navItem2 = [(MarkupViewController *)self navigationItem];
   }
 
-  v8 = v7;
-  if (!v7)
+  navigationItem = navItem2;
+  if (!navItem2)
   {
     goto LABEL_18;
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [v8 rightBarButtonItems];
+  array = [MEMORY[0x277CBEB18] array];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
 
-  if (v10)
+  if (rightBarButtonItems)
   {
-    v11 = [v8 rightBarButtonItems];
-    [v9 addObjectsFromArray:v11];
+    rightBarButtonItems2 = [navigationItem rightBarButtonItems];
+    [array addObjectsFromArray:rightBarButtonItems2];
   }
 
-  if (v18)
+  if (controllerCopy)
   {
-    v12 = [v18 annotationController];
-    v13 = [v12 toolbarButtonItemOfType:10];
+    annotationController = [controllerCopy annotationController];
+    v13 = [annotationController toolbarButtonItemOfType:10];
 
-    v14 = [v18 annotationController];
-    v15 = [v14 toolbarButtonItemOfType:11];
+    annotationController2 = [controllerCopy annotationController];
+    v15 = [annotationController2 toolbarButtonItemOfType:11];
 
     if ([(MarkupViewController *)self _useLegacyToolbar])
     {
-      if (v13 && ([v9 containsObject:v13] & 1) == 0)
+      if (v13 && ([array containsObject:v13] & 1) == 0)
       {
-        [v9 addObject:v13];
+        [array addObject:v13];
       }
 
       goto LABEL_26;
     }
 
-    v16 = [(MarkupViewController *)self toolbar];
-    v17 = [(MarkupViewController *)self _shouldShowUndoRedoButtonsInNavigationBar];
-    if (v17)
+    toolbar = [(MarkupViewController *)self toolbar];
+    _shouldShowUndoRedoButtonsInNavigationBar = [(MarkupViewController *)self _shouldShowUndoRedoButtonsInNavigationBar];
+    if (_shouldShowUndoRedoButtonsInNavigationBar)
     {
       if (!v13 || !v15)
       {
         goto LABEL_25;
       }
 
-      [v9 removeObjectIdenticalTo:v13];
-      [v9 removeObjectIdenticalTo:v15];
-      [v9 addObject:v15];
-      [v9 addObject:v13];
+      [array removeObjectIdenticalTo:v13];
+      [array removeObjectIdenticalTo:v15];
+      [array addObject:v15];
+      [array addObject:v13];
     }
 
     else
     {
-      [v9 removeObject:v13];
-      [v9 removeObject:v15];
+      [array removeObject:v13];
+      [array removeObject:v15];
     }
 
-    [v16 setUndoRedoButtonsHidden:v17];
+    [toolbar setUndoRedoButtonsHidden:_shouldShowUndoRedoButtonsInNavigationBar];
 LABEL_25:
 
 LABEL_26:
   }
 
 LABEL_27:
-  [v8 setRightBarButtonItems:v9];
+  [navigationItem setRightBarButtonItems:array];
 }
 
 - (void)_presentPlaceholderImage
 {
-  v3 = [(MarkupViewController *)self placeholderImage];
+  placeholderImage = [(MarkupViewController *)self placeholderImage];
 
-  if (v3)
+  if (placeholderImage)
   {
-    v4 = [(MarkupViewController *)self contentViewController];
-    v5 = [(MarkupViewController *)self view];
-    [v4 visibleContentRectInCoordinateSpace:v5];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    view = [(MarkupViewController *)self view];
+    [contentViewController visibleContentRectInCoordinateSpace:view];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [(MarkupViewController *)self placeholderImageView];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    placeholderImageView = [(MarkupViewController *)self placeholderImageView];
+    [placeholderImageView setFrame:{v7, v9, v11, v13}];
 
-    v15 = [(MarkupViewController *)self placeholderImage];
-    v16 = [(MarkupViewController *)self placeholderImageView];
-    [v16 setImage:v15];
+    placeholderImage2 = [(MarkupViewController *)self placeholderImage];
+    placeholderImageView2 = [(MarkupViewController *)self placeholderImageView];
+    [placeholderImageView2 setImage:placeholderImage2];
 
-    v17 = [(MarkupViewController *)self annotationController];
-    v24 = [v17 toolbarView];
+    annotationController = [(MarkupViewController *)self annotationController];
+    toolbarView = [annotationController toolbarView];
 
-    v18 = [v24 superview];
-    v19 = [(MarkupViewController *)self view];
+    superview = [toolbarView superview];
+    view2 = [(MarkupViewController *)self view];
 
-    v20 = [(MarkupViewController *)self view];
-    v21 = [(MarkupViewController *)self placeholderImageView];
-    if (v18 == v19)
+    view3 = [(MarkupViewController *)self view];
+    placeholderImageView3 = [(MarkupViewController *)self placeholderImageView];
+    if (superview == view2)
     {
-      v22 = [(MarkupViewController *)self annotationController];
-      v23 = [v22 toolbarView];
-      [v20 insertSubview:v21 belowSubview:v23];
+      annotationController2 = [(MarkupViewController *)self annotationController];
+      toolbarView2 = [annotationController2 toolbarView];
+      [view3 insertSubview:placeholderImageView3 belowSubview:toolbarView2];
     }
 
     else
     {
-      [v20 addSubview:v21];
+      [view3 addSubview:placeholderImageView3];
     }
   }
 }
 
 - (void)_cleanupPlaceholderImage
 {
-  v3 = [(MarkupViewController *)self placeholderImageView];
-  [v3 removeFromSuperview];
+  placeholderImageView = [(MarkupViewController *)self placeholderImageView];
+  [placeholderImageView removeFromSuperview];
 
   [(MarkupViewController *)self setPlaceholderImageView:0];
 
@@ -2495,55 +2495,55 @@ LABEL_27:
 
 - (void)_startObservingAnnotationController
 {
-  v3 = [(MarkupViewController *)self annotationController];
-  if (v3)
+  annotationController = [(MarkupViewController *)self annotationController];
+  if (annotationController)
   {
-    v4 = v3;
-    v5 = [(MarkupViewController *)self isObservingAKCurrentPageIndex];
+    v4 = annotationController;
+    isObservingAKCurrentPageIndex = [(MarkupViewController *)self isObservingAKCurrentPageIndex];
 
-    if (!v5)
+    if (!isObservingAKCurrentPageIndex)
     {
       [(MarkupViewController *)self setObservingAKCurrentPageIndex:1];
-      v6 = [(MarkupViewController *)self annotationController];
-      [v6 addObserver:self forKeyPath:@"currentPageIndex" options:11 context:@"MUVCcurrentPageObservationContext"];
+      annotationController2 = [(MarkupViewController *)self annotationController];
+      [annotationController2 addObserver:self forKeyPath:@"currentPageIndex" options:11 context:@"MUVCcurrentPageObservationContext"];
     }
   }
 }
 
 - (void)_stopObservingAnnotationController
 {
-  v3 = [(MarkupViewController *)self annotationController];
-  if (v3)
+  annotationController = [(MarkupViewController *)self annotationController];
+  if (annotationController)
   {
-    v4 = v3;
-    v5 = [(MarkupViewController *)self isObservingAKCurrentPageIndex];
+    v4 = annotationController;
+    isObservingAKCurrentPageIndex = [(MarkupViewController *)self isObservingAKCurrentPageIndex];
 
-    if (v5)
+    if (isObservingAKCurrentPageIndex)
     {
       [(MarkupViewController *)self setObservingAKCurrentPageIndex:0];
-      v6 = [(MarkupViewController *)self annotationController];
-      [v6 removeObserver:self forKeyPath:@"currentPageIndex" context:@"MUVCcurrentPageObservationContext"];
+      annotationController2 = [(MarkupViewController *)self annotationController];
+      [annotationController2 removeObserver:self forKeyPath:@"currentPageIndex" context:@"MUVCcurrentPageObservationContext"];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = v10;
-  if (a6 == @"MUVCcurrentPageObservationContext")
+  changeCopy = change;
+  v11 = changeCopy;
+  if (context == @"MUVCcurrentPageObservationContext")
   {
-    v12 = [v10 objectForKey:*MEMORY[0x277CCA2F8]];
-    v13 = [v12 BOOLValue];
+    v12 = [changeCopy objectForKey:*MEMORY[0x277CCA2F8]];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       [(MarkupViewController *)self willChangeValueForKey:@"currentPDFPageIndex"];
       goto LABEL_16;
     }
 
     [(MarkupViewController *)self didChangeValueForKey:@"currentPDFPageIndex"];
-    v14 = [(MarkupViewController *)self delegate];
+    delegate = [(MarkupViewController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([(MarkupViewController *)self contentViewController], v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) == 0))
     {
 LABEL_15:
@@ -2556,15 +2556,15 @@ LABEL_15:
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 unsignedIntegerValue];
+      unsignedIntegerValue = [v18 unsignedIntegerValue];
       if (v17)
       {
 LABEL_9:
-        v21 = [v17 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 LABEL_12:
-        if (v20 != v21)
+        if (unsignedIntegerValue != unsignedIntegerValue2)
         {
-          [v14 controller:self didChangeToPDFPageIndex:?];
+          [delegate controller:self didChangeToPDFPageIndex:?];
         }
 
         goto LABEL_15;
@@ -2573,35 +2573,35 @@ LABEL_12:
 
     else
     {
-      v20 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
       if (v17)
       {
         goto LABEL_9;
       }
     }
 
-    v21 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_12;
   }
 
   v22.receiver = self;
   v22.super_class = MarkupViewController;
-  [(MarkupViewController *)&v22 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+  [(MarkupViewController *)&v22 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
 LABEL_16:
 }
 
-- (void)_installContentViewControllerForUTI:(id)a3
+- (void)_installContentViewControllerForUTI:(id)i
 {
-  v23 = a3;
-  v4 = [(MarkupViewController *)self contentContainerView];
+  iCopy = i;
+  contentContainerView = [(MarkupViewController *)self contentContainerView];
 
-  if (!v4)
+  if (!contentContainerView)
   {
-    v5 = [(MarkupViewController *)self view];
-    [(MarkupViewController *)self setContentContainerView:v5];
+    view = [(MarkupViewController *)self view];
+    [(MarkupViewController *)self setContentContainerView:view];
   }
 
-  if (v23)
+  if (iCopy)
   {
     v6 = [MEMORY[0x277CE1CB8] typeWithIdentifier:?];
   }
@@ -2616,9 +2616,9 @@ LABEL_16:
     if ([v6 conformsToType:*MEMORY[0x277CE1DB0]])
     {
       v9 = [MUImageContentViewController alloc];
-      v10 = [(MarkupViewController *)self digestedSourceContent];
-      v11 = [(MarkupViewController *)self archivedModelData];
-      v8 = [(MUImageContentViewController *)v9 initWithSourceContent:v10 archivedDataModel:v11 delegate:self];
+      digestedSourceContent = [(MarkupViewController *)self digestedSourceContent];
+      archivedModelData = [(MarkupViewController *)self archivedModelData];
+      v8 = [(MUImageContentViewController *)v9 initWithSourceContent:digestedSourceContent archivedDataModel:archivedModelData delegate:self];
 
       [(MUPDFContentViewController *)v8 setInkStyle:[(MarkupViewController *)self inkStyle]];
       if (v8)
@@ -2629,16 +2629,16 @@ LABEL_16:
 
     else
     {
-      NSLog(&cfstr_SUnexpectedCon.isa, "[MarkupViewController _installContentViewControllerForUTI:]", v23);
+      NSLog(&cfstr_SUnexpectedCon.isa, "[MarkupViewController _installContentViewControllerForUTI:]", iCopy);
     }
 
 LABEL_23:
-    NSLog(&cfstr_FailedToLoadFi.isa, v23);
+    NSLog(&cfstr_FailedToLoadFi.isa, iCopy);
     goto LABEL_24;
   }
 
-  v7 = [(MarkupViewController *)self digestedSourceContent];
-  v8 = [[MUPDFContentViewController alloc] initWithPDFDocument:v7 delegate:self];
+  digestedSourceContent2 = [(MarkupViewController *)self digestedSourceContent];
+  v8 = [[MUPDFContentViewController alloc] initWithPDFDocument:digestedSourceContent2 delegate:self];
   [(MUPDFContentViewController *)v8 setInkStyle:[(MarkupViewController *)self inkStyle]];
 
   if (!v8)
@@ -2648,8 +2648,8 @@ LABEL_23:
 
 LABEL_11:
   [(MarkupViewController *)self setContentViewController:v8];
-  v12 = [(MarkupViewController *)self contentViewController];
-  [(MarkupViewController *)self addChildViewController:v12];
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  [(MarkupViewController *)self addChildViewController:contentViewController];
 
   if (objc_opt_respondsToSelector())
   {
@@ -2673,25 +2673,25 @@ LABEL_11:
     [(MUPDFContentViewController *)v8 setMaxImageDimension:?];
   }
 
-  v13 = [(MarkupViewController *)self contentViewController];
-  v14 = [v13 view];
+  contentViewController2 = [(MarkupViewController *)self contentViewController];
+  view2 = [contentViewController2 view];
 
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(MarkupViewController *)self _effectiveBackgroundColor];
-  [v14 setBackgroundColor:v15];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _effectiveBackgroundColor = [(MarkupViewController *)self _effectiveBackgroundColor];
+  [view2 setBackgroundColor:_effectiveBackgroundColor];
 
-  v16 = [(MarkupViewController *)self contentContainerView];
-  [v16 insertSubview:v14 atIndex:0];
+  contentContainerView2 = [(MarkupViewController *)self contentContainerView];
+  [contentContainerView2 insertSubview:view2 atIndex:0];
 
   if ([(MarkupViewController *)self useFancyTransition])
   {
-    [v14 setAlpha:0.0];
+    [view2 setAlpha:0.0];
   }
 
-  v17 = [(MarkupViewController *)self contentViewController];
-  [v17 didMoveToParentViewController:self];
+  contentViewController3 = [(MarkupViewController *)self contentViewController];
+  [contentViewController3 didMoveToParentViewController:self];
 
-  v18 = _NSDictionaryOfVariableBindings(&cfstr_Contentview.isa, v14, 0);
+  v18 = _NSDictionaryOfVariableBindings(&cfstr_Contentview.isa, view2, 0);
   v19 = MEMORY[0x277CCAAD0];
   v20 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:0 views:v18];
   [v19 activateConstraints:v20];
@@ -2705,120 +2705,120 @@ LABEL_24:
 
 - (void)_setupAnnotationController
 {
-  v3 = [(MarkupViewController *)self annotationController];
-  v41 = v3;
-  if (v3)
+  annotationController = [(MarkupViewController *)self annotationController];
+  v41 = annotationController;
+  if (annotationController)
   {
-    v4 = [v3 legacyDoodleController];
-    [v4 setPreferDoodle:1];
+    legacyDoodleController = [annotationController legacyDoodleController];
+    [legacyDoodleController setPreferDoodle:1];
 
-    v5 = [v41 legacyDoodleController];
-    [v5 setCoalescesDoodles:1];
+    legacyDoodleController2 = [v41 legacyDoodleController];
+    [legacyDoodleController2 setCoalescesDoodles:1];
 
     [v41 setSelectNewlyCreatedAnnotations:1];
     [v41 setShapeDetectionEnabled:{-[MarkupViewController isShapeDetectionEnabled](self, "isShapeDetectionEnabled")}];
     [v41 setIsUsedOnDarkBackground:{-[MarkupViewController isUsedOnDarkBackground](self, "isUsedOnDarkBackground")}];
-    v6 = [v41 attributeController];
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    v8 = [v6 strokeColorIsEqualTo:v7];
+    attributeController = [v41 attributeController];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v8 = [attributeController strokeColorIsEqualTo:whiteColor];
 
     if (v8)
     {
-      v9 = [v41 attributeController];
-      [v9 restoreStrokeColorToSystemDefault];
+      attributeController2 = [v41 attributeController];
+      [attributeController2 restoreStrokeColorToSystemDefault];
     }
 
     if ([(MarkupViewController *)self _useLegacyToolbar])
     {
-      v10 = [v41 toolbarViewController];
-      [(MarkupViewController *)self addChildViewController:v10];
-      v11 = [v10 view];
-      [v11 setDelegate:self];
+      toolbarViewController = [v41 toolbarViewController];
+      [(MarkupViewController *)self addChildViewController:toolbarViewController];
+      view = [toolbarViewController view];
+      [view setDelegate:self];
 
-      [v10 beginAppearanceTransition:1 animated:0];
-      v12 = [(MarkupViewController *)self contentContainerView];
-      v13 = [v10 view];
-      [v12 addSubview:v13];
+      [toolbarViewController beginAppearanceTransition:1 animated:0];
+      contentContainerView = [(MarkupViewController *)self contentContainerView];
+      view2 = [toolbarViewController view];
+      [contentContainerView addSubview:view2];
 
-      [v10 didMoveToParentViewController:self];
-      [v10 endAppearanceTransition];
-      v14 = [v41 toolbarView];
-      [(MarkupViewController *)self setToolbar:v14];
+      [toolbarViewController didMoveToParentViewController:self];
+      [toolbarViewController endAppearanceTransition];
+      toolbarView = [v41 toolbarView];
+      [(MarkupViewController *)self setToolbar:toolbarView];
 
-      v15 = [(MarkupViewController *)self isToolbarHidden];
-      v16 = [(MarkupViewController *)self toolbar];
-      [v16 setHidden:v15];
+      isToolbarHidden = [(MarkupViewController *)self isToolbarHidden];
+      toolbar = [(MarkupViewController *)self toolbar];
+      [toolbar setHidden:isToolbarHidden];
 
-      v17 = [(MarkupViewController *)self toolbar];
-      [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+      toolbar2 = [(MarkupViewController *)self toolbar];
+      [toolbar2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v18 = [(MarkupViewController *)self _effectiveToolbarTintColor];
-      [v10 setBarTintColor:v18];
+      _effectiveToolbarTintColor = [(MarkupViewController *)self _effectiveToolbarTintColor];
+      [toolbarViewController setBarTintColor:_effectiveToolbarTintColor];
 
-      v19 = [(MarkupViewController *)self _effectiveToolbarItemTintColor];
-      [v10 setTintColor:v19];
+      _effectiveToolbarItemTintColor = [(MarkupViewController *)self _effectiveToolbarItemTintColor];
+      [toolbarViewController setTintColor:_effectiveToolbarItemTintColor];
 
       if ([(MarkupViewController *)self useFancyTransition])
       {
-        v20 = [(MarkupViewController *)self toolbar];
-        [v20 setAlpha:0.0];
+        toolbar3 = [(MarkupViewController *)self toolbar];
+        [toolbar3 setAlpha:0.0];
 
-        v21 = [v10 floatingAttributeToolbarContainer];
-        [v21 setAlpha:0.0];
+        floatingAttributeToolbarContainer = [toolbarViewController floatingAttributeToolbarContainer];
+        [floatingAttributeToolbarContainer setAlpha:0.0];
       }
 
-      v22 = [(MarkupViewController *)self toolbar];
-      v23 = [v22 leadingAnchor];
-      v24 = [(MarkupViewController *)self contentContainerView];
-      v25 = [v24 leadingAnchor];
-      v26 = [v23 constraintEqualToAnchor:v25];
+      toolbar4 = [(MarkupViewController *)self toolbar];
+      leadingAnchor = [toolbar4 leadingAnchor];
+      contentContainerView2 = [(MarkupViewController *)self contentContainerView];
+      leadingAnchor2 = [contentContainerView2 leadingAnchor];
+      v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v26 setActive:1];
 
-      v27 = [(MarkupViewController *)self toolbar];
-      v28 = [v27 trailingAnchor];
-      v29 = [(MarkupViewController *)self contentContainerView];
-      v30 = [v29 trailingAnchor];
-      v31 = [v28 constraintEqualToAnchor:v30];
+      toolbar5 = [(MarkupViewController *)self toolbar];
+      trailingAnchor = [toolbar5 trailingAnchor];
+      contentContainerView3 = [(MarkupViewController *)self contentContainerView];
+      trailingAnchor2 = [contentContainerView3 trailingAnchor];
+      v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v31 setActive:1];
 
-      v32 = [(MarkupViewController *)self toolbar];
+      toolbar6 = [(MarkupViewController *)self toolbar];
       LODWORD(v33) = 1148846080;
-      [v32 setContentHuggingPriority:1 forAxis:v33];
+      [toolbar6 setContentHuggingPriority:1 forAxis:v33];
 
       [(MarkupViewController *)self _updateConstraintsForBarPosition:self->_toolbarPosition];
     }
 
     else
     {
-      v34 = [(MarkupViewController *)self modernToolbar];
-      [v34 setAnnotationController:v41];
+      modernToolbar = [(MarkupViewController *)self modernToolbar];
+      [modernToolbar setAnnotationController:v41];
 
-      LODWORD(v34) = [(MarkupViewController *)self showShareButtonInToolbar];
-      v35 = [(MarkupViewController *)self modernToolbar];
-      [v35 setShareButtonHidden:v34 ^ 1];
+      LODWORD(modernToolbar) = [(MarkupViewController *)self showShareButtonInToolbar];
+      modernToolbar2 = [(MarkupViewController *)self modernToolbar];
+      [modernToolbar2 setShareButtonHidden:modernToolbar ^ 1];
 
-      v10 = [(MarkupViewController *)self modernToolbar];
-      [(MarkupViewController *)self setToolbar:v10];
+      toolbarViewController = [(MarkupViewController *)self modernToolbar];
+      [(MarkupViewController *)self setToolbar:toolbarViewController];
     }
 
     [v41 setRulerHostingDelegate:self];
     [(MarkupViewController *)self adjustContentInsetsForBars];
     if ([(MarkupViewController *)self needsToolPickerVisibleWhenAnnotationControllerIsAvailable])
     {
-      v36 = [(MarkupViewController *)self annotationController];
-      v37 = [v36 toolPicker];
-      [v37 setVisible:1 forFirstResponder:self];
+      annotationController2 = [(MarkupViewController *)self annotationController];
+      toolPicker = [annotationController2 toolPicker];
+      [toolPicker setVisible:1 forFirstResponder:self];
 
       [(AKToolbarView *)self->_modernToolbar setContentsHidden:0];
       [(MarkupViewController *)self setNeedsToolPickerVisibleWhenAnnotationControllerIsAvailable:0];
     }
 
-    v38 = [(MarkupViewController *)self contentViewController];
-    v39 = [v38 view];
-    [v39 layoutSubviews];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    view3 = [contentViewController view];
+    [view3 layoutSubviews];
 
-    v40 = [(MarkupViewController *)self view];
-    [v40 layoutSubviews];
+    view4 = [(MarkupViewController *)self view];
+    [view4 layoutSubviews];
   }
 
   else
@@ -2830,50 +2830,50 @@ LABEL_24:
 - (void)_createCancelDoneNavBar
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MarkupViewController *)self navBar];
+  navBar = [(MarkupViewController *)self navBar];
 
-  if (!v3)
+  if (!navBar)
   {
     v4 = objc_alloc(MEMORY[0x277D75780]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v5 setDelegate:self];
-    v6 = [(MarkupViewController *)self contentContainerView];
-    [v6 addSubview:v5];
+    contentContainerView = [(MarkupViewController *)self contentContainerView];
+    [contentContainerView addSubview:v5];
 
     [(MarkupViewController *)self setNavBar:v5];
     [(MarkupViewController *)self _updateNavBarProperties];
     if ([(MarkupViewController *)self useFancyTransition])
     {
-      v7 = [(MarkupViewController *)self navBar];
-      [v7 setAlpha:0.0];
+      navBar2 = [(MarkupViewController *)self navBar];
+      [navBar2 setAlpha:0.0];
     }
 
     v8 = _NSDictionaryOfVariableBindings(&cfstr_Navbar.isa, v5, 0);
-    v9 = [(MarkupViewController *)self contentContainerView];
+    contentContainerView2 = [(MarkupViewController *)self contentContainerView];
     v10 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[navBar]|" options:0 metrics:0 views:v8];
-    [v9 addConstraints:v10];
+    [contentContainerView2 addConstraints:v10];
 
     if ([(MarkupViewController *)self showAsFormSheet]&& [(MarkupViewController *)self useFancyTransition])
     {
       v11 = MEMORY[0x277CCAAD0];
-      v12 = [(MarkupViewController *)self contentContainerView];
-      v13 = [v11 constraintWithItem:v5 attribute:3 relatedBy:0 toItem:v12 attribute:3 multiplier:1.0 constant:0.0];
+      contentContainerView3 = [(MarkupViewController *)self contentContainerView];
+      v13 = [v11 constraintWithItem:v5 attribute:3 relatedBy:0 toItem:contentContainerView3 attribute:3 multiplier:1.0 constant:0.0];
     }
 
     else
     {
-      v12 = [v5 topAnchor];
-      v14 = [(MarkupViewController *)self view];
-      v15 = [v14 safeAreaLayoutGuide];
-      v16 = [v15 topAnchor];
-      v13 = [v12 constraintEqualToAnchor:v16];
+      contentContainerView3 = [v5 topAnchor];
+      view = [(MarkupViewController *)self view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      topAnchor = [safeAreaLayoutGuide topAnchor];
+      v13 = [contentContainerView3 constraintEqualToAnchor:topAnchor];
     }
 
     [v13 setActive:1];
     v17 = objc_alloc(MEMORY[0x277D757A8]);
-    v18 = [(MarkupViewController *)self title];
-    v19 = [v17 initWithTitle:v18];
+    title = [(MarkupViewController *)self title];
+    v19 = [v17 initWithTitle:title];
     [(MarkupViewController *)self setNavItem:v19];
 
     v20 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
@@ -2882,18 +2882,18 @@ LABEL_24:
     v21 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_done_];
     [(MarkupViewController *)self setDoneButton:v21];
 
-    v22 = [(MarkupViewController *)self navItem];
-    v23 = [(MarkupViewController *)self cancelButton];
-    v30[0] = v23;
+    navItem = [(MarkupViewController *)self navItem];
+    cancelButton = [(MarkupViewController *)self cancelButton];
+    v30[0] = cancelButton;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-    [v22 setLeftBarButtonItems:v24];
+    [navItem setLeftBarButtonItems:v24];
 
-    v25 = [(MarkupViewController *)self navItem];
-    v26 = [(MarkupViewController *)self doneButton];
-    [v25 setRightBarButtonItem:v26];
+    navItem2 = [(MarkupViewController *)self navItem];
+    doneButton = [(MarkupViewController *)self doneButton];
+    [navItem2 setRightBarButtonItem:doneButton];
 
-    v27 = [(MarkupViewController *)self navItem];
-    v29 = v27;
+    navItem3 = [(MarkupViewController *)self navItem];
+    v29 = navItem3;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
     [v5 setItems:v28];
   }
@@ -2901,10 +2901,10 @@ LABEL_24:
 
 - (void)adjustContentInsetsForBars
 {
-  v44 = [(MarkupViewController *)self delegate];
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v44 customEdgeInsets];
+    [delegate customEdgeInsets];
     v4 = v3;
     v6 = v5;
     v8 = v7;
@@ -2914,9 +2914,9 @@ LABEL_24:
       goto LABEL_17;
     }
 
-    v11 = [(MarkupViewController *)self annotationController];
-    v12 = [v11 toolbarViewController];
-    [v12 visibleHeightOfAttributeBar];
+    annotationController = [(MarkupViewController *)self annotationController];
+    toolbarViewController = [annotationController toolbarViewController];
+    [toolbarViewController visibleHeightOfAttributeBar];
     v8 = v8 + v13;
     goto LABEL_10;
   }
@@ -2924,36 +2924,36 @@ LABEL_24:
   v14 = MEMORY[0x277D768C8];
   v6 = *(MEMORY[0x277D768C8] + 8);
   v10 = *(MEMORY[0x277D768C8] + 24);
-  v15 = [(MarkupViewController *)self navBar];
+  navBar = [(MarkupViewController *)self navBar];
 
-  if (v15)
+  if (navBar)
   {
     if (![(MarkupViewController *)self showAsFormSheet]|| (v16 = 0.0, ![(MarkupViewController *)self useFancyTransition]))
     {
-      v17 = [(MarkupViewController *)self view];
-      [v17 safeAreaInsets];
+      view = [(MarkupViewController *)self view];
+      [view safeAreaInsets];
       v16 = v18;
     }
 
-    v19 = [(MarkupViewController *)self navBar];
-    [v19 frame];
+    navBar2 = [(MarkupViewController *)self navBar];
+    [navBar2 frame];
     v4 = v16 + v20;
 
     if ([(MarkupViewController *)self _useLegacyToolbar])
     {
-      v11 = [(MarkupViewController *)self annotationController];
-      v12 = [v11 toolbarViewController];
-      [v12 heightIncludingAdditionalVisibleBars];
+      annotationController = [(MarkupViewController *)self annotationController];
+      toolbarViewController = [annotationController toolbarViewController];
+      [toolbarViewController heightIncludingAdditionalVisibleBars];
       v8 = v21;
 LABEL_10:
 
       goto LABEL_17;
     }
 
-    v36 = [(MarkupViewController *)self modernToolbar];
-    v37 = [(MarkupViewController *)self view];
-    [v37 bounds];
-    [v36 sizeThatFits:{CGRectGetWidth(v46), 1000.0}];
+    modernToolbar = [(MarkupViewController *)self modernToolbar];
+    view2 = [(MarkupViewController *)self view];
+    [view2 bounds];
+    [modernToolbar sizeThatFits:{CGRectGetWidth(v46), 1000.0}];
 
     v8 = 0.0;
   }
@@ -2962,13 +2962,13 @@ LABEL_10:
   {
     v22 = *v14;
     v23 = v14[2];
-    v24 = [(MarkupViewController *)self view];
-    [v24 safeAreaInsets];
+    view3 = [(MarkupViewController *)self view];
+    [view3 safeAreaInsets];
     v26 = v25;
 
     v4 = v22 + fmax(v26, 0.0);
-    v27 = [(MarkupViewController *)self view];
-    [v27 safeAreaInsets];
+    view4 = [(MarkupViewController *)self view];
+    [view4 safeAreaInsets];
     v29 = v28;
 
     v8 = v23 + fmax(v29, 0.0);
@@ -2981,8 +2981,8 @@ LABEL_10:
       {
         if (v32 <= 1)
         {
-          v33 = [(MarkupViewController *)self toolbar];
-          [v33 frame];
+          toolbar = [(MarkupViewController *)self toolbar];
+          [toolbar frame];
           v35 = v34;
 
           v4 = v4 + v35;
@@ -2993,17 +2993,17 @@ LABEL_10:
       {
         if (![(MarkupViewController *)self _useLegacyToolbar])
         {
-          v11 = [(MarkupViewController *)self modernToolbar];
-          v12 = [(MarkupViewController *)self view];
-          [v12 bounds];
-          [v11 sizeThatFits:{CGRectGetWidth(v47), 1000.0}];
+          annotationController = [(MarkupViewController *)self modernToolbar];
+          toolbarViewController = [(MarkupViewController *)self view];
+          [toolbarViewController bounds];
+          [annotationController sizeThatFits:{CGRectGetWidth(v47), 1000.0}];
           v8 = v43;
           goto LABEL_10;
         }
 
-        v39 = [(MarkupViewController *)self annotationController];
-        v40 = [v39 toolbarViewController];
-        [v40 heightIncludingAdditionalVisibleBars];
+        annotationController2 = [(MarkupViewController *)self annotationController];
+        toolbarViewController2 = [annotationController2 toolbarViewController];
+        [toolbarViewController2 heightIncludingAdditionalVisibleBars];
         v42 = v41;
 
         v8 = v8 + v42;
@@ -3012,146 +3012,146 @@ LABEL_10:
   }
 
 LABEL_17:
-  v38 = [(MarkupViewController *)self contentViewController];
-  [v38 setEdgeInsets:{v4, v6, v8, v10}];
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  [contentViewController setEdgeInsets:{v4, v6, v8, v10}];
 }
 
-- (void)_updateConstraintsForBarPosition:(int64_t)a3
+- (void)_updateConstraintsForBarPosition:(int64_t)position
 {
-  v5 = [(MarkupViewController *)self toolbarTopConstraint];
-  [v5 setActive:0];
+  toolbarTopConstraint = [(MarkupViewController *)self toolbarTopConstraint];
+  [toolbarTopConstraint setActive:0];
 
-  v6 = [(MarkupViewController *)self toolbarTopAttachedConstraint];
-  [v6 setActive:0];
+  toolbarTopAttachedConstraint = [(MarkupViewController *)self toolbarTopAttachedConstraint];
+  [toolbarTopAttachedConstraint setActive:0];
 
-  v7 = [(MarkupViewController *)self toolbarBottomConstraint];
-  [v7 setActive:0];
+  toolbarBottomConstraint = [(MarkupViewController *)self toolbarBottomConstraint];
+  [toolbarBottomConstraint setActive:0];
 
-  if (a3 < 2)
+  if (position < 2)
   {
-    v14 = [(MarkupViewController *)self toolbarBottomConstraint];
+    toolbarBottomConstraint2 = [(MarkupViewController *)self toolbarBottomConstraint];
 
-    if (!v14)
+    if (!toolbarBottomConstraint2)
     {
-      v15 = [(MarkupViewController *)self toolbar];
-      v16 = [v15 bottomAnchor];
-      v17 = [(MarkupViewController *)self view];
-      v18 = [v17 bottomAnchor];
-      v19 = [v16 constraintEqualToAnchor:v18];
+      toolbar = [(MarkupViewController *)self toolbar];
+      bottomAnchor = [toolbar bottomAnchor];
+      view = [(MarkupViewController *)self view];
+      bottomAnchor2 = [view bottomAnchor];
+      v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [(MarkupViewController *)self setToolbarBottomConstraint:v19];
     }
 
-    v13 = [(MarkupViewController *)self toolbarBottomConstraint];
+    toolbarBottomConstraint3 = [(MarkupViewController *)self toolbarBottomConstraint];
   }
 
-  else if (a3 == 3)
+  else if (position == 3)
   {
-    v20 = [(MarkupViewController *)self toolbarTopAttachedConstraint];
+    toolbarTopAttachedConstraint2 = [(MarkupViewController *)self toolbarTopAttachedConstraint];
 
-    if (!v20)
+    if (!toolbarTopAttachedConstraint2)
     {
-      v21 = [(MarkupViewController *)self toolbar];
-      v22 = [v21 topAnchor];
-      v23 = [(MarkupViewController *)self view];
-      v24 = [v23 safeAreaLayoutGuide];
-      v25 = [v24 topAnchor];
-      v26 = [v22 constraintEqualToAnchor:v25];
+      toolbar2 = [(MarkupViewController *)self toolbar];
+      topAnchor = [toolbar2 topAnchor];
+      view2 = [(MarkupViewController *)self view];
+      safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+      topAnchor2 = [safeAreaLayoutGuide topAnchor];
+      v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [(MarkupViewController *)self setToolbarTopAttachedConstraint:v26];
     }
 
-    v13 = [(MarkupViewController *)self toolbarTopAttachedConstraint];
+    toolbarBottomConstraint3 = [(MarkupViewController *)self toolbarTopAttachedConstraint];
   }
 
   else
   {
-    if (a3 != 2)
+    if (position != 2)
     {
       return;
     }
 
-    v8 = [(MarkupViewController *)self toolbarTopConstraint];
+    toolbarTopConstraint2 = [(MarkupViewController *)self toolbarTopConstraint];
 
-    if (!v8)
+    if (!toolbarTopConstraint2)
     {
       v9 = MEMORY[0x277CCAAD0];
-      v10 = [(MarkupViewController *)self toolbar];
-      v11 = [(MarkupViewController *)self contentContainerView];
-      v12 = [v9 constraintWithItem:v10 attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:0.0];
+      toolbar3 = [(MarkupViewController *)self toolbar];
+      contentContainerView = [(MarkupViewController *)self contentContainerView];
+      v12 = [v9 constraintWithItem:toolbar3 attribute:3 relatedBy:0 toItem:contentContainerView attribute:3 multiplier:1.0 constant:0.0];
       [(MarkupViewController *)self setToolbarTopConstraint:v12];
     }
 
-    v13 = [(MarkupViewController *)self toolbarTopConstraint];
+    toolbarBottomConstraint3 = [(MarkupViewController *)self toolbarTopConstraint];
   }
 
-  v27 = v13;
-  [v13 setActive:1];
+  v27 = toolbarBottomConstraint3;
+  [toolbarBottomConstraint3 setActive:1];
 }
 
-- (void)_updateAppearanceForTraitCollection:(id)a3
+- (void)_updateAppearanceForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self contentViewController];
-  v6 = [v5 view];
-  [v6 alpha];
+  collectionCopy = collection;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  view = [contentViewController view];
+  [view alpha];
   v8 = v7;
 
   if (v8 == 1.0)
   {
-    v9 = [(MarkupViewController *)self _effectiveBackgroundColor];
-    v10 = [(MarkupViewController *)self contentContainerView];
-    [v10 setBackgroundColor:v9];
+    _effectiveBackgroundColor = [(MarkupViewController *)self _effectiveBackgroundColor];
+    contentContainerView = [(MarkupViewController *)self contentContainerView];
+    [contentContainerView setBackgroundColor:_effectiveBackgroundColor];
   }
 
-  v11 = [(MarkupViewController *)self _effectiveBackgroundColor];
-  v12 = [(MarkupViewController *)self contentViewController];
-  v13 = [v12 view];
-  [v13 setBackgroundColor:v11];
+  _effectiveBackgroundColor2 = [(MarkupViewController *)self _effectiveBackgroundColor];
+  contentViewController2 = [(MarkupViewController *)self contentViewController];
+  view2 = [contentViewController2 view];
+  [view2 setBackgroundColor:_effectiveBackgroundColor2];
 
   if ([(MarkupViewController *)self _useLegacyToolbar])
   {
-    v14 = [(MarkupViewController *)self annotationController];
-    v15 = [v14 toolbarViewController];
+    annotationController = [(MarkupViewController *)self annotationController];
+    toolbarViewController = [annotationController toolbarViewController];
 
-    v16 = [(MarkupViewController *)self _effectiveToolbarTintColor];
-    [v15 setBarTintColor:v16];
+    _effectiveToolbarTintColor = [(MarkupViewController *)self _effectiveToolbarTintColor];
+    [toolbarViewController setBarTintColor:_effectiveToolbarTintColor];
 
-    v17 = [(MarkupViewController *)self _effectiveToolbarItemTintColor];
-    [v15 setTintColor:v17];
+    _effectiveToolbarItemTintColor = [(MarkupViewController *)self _effectiveToolbarItemTintColor];
+    [toolbarViewController setTintColor:_effectiveToolbarItemTintColor];
   }
 
   [(MarkupViewController *)self _updateNavBarProperties];
-  v18 = [(MarkupViewController *)self annotationController];
-  v19 = [v18 toolbarViewController];
-  [v19 traitCollectionDidChange:v4];
+  annotationController2 = [(MarkupViewController *)self annotationController];
+  toolbarViewController2 = [annotationController2 toolbarViewController];
+  [toolbarViewController2 traitCollectionDidChange:collectionCopy];
 
   [(MarkupViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)setNavBar:(id)a3
+- (void)setNavBar:(id)bar
 {
-  v5 = a3;
-  if (self->_navBar != v5)
+  barCopy = bar;
+  if (self->_navBar != barCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_navBar, a3);
+    v6 = barCopy;
+    objc_storeStrong(&self->_navBar, bar);
     [(MarkupViewController *)self _updateNavBarProperties];
-    v5 = v6;
+    barCopy = v6;
   }
 }
 
 - (void)_updateNavBarProperties
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MarkupViewController *)self _effectiveToolbarTintColor];
-  v4 = [(MarkupViewController *)self navBar];
-  [v4 setBarTintColor:v3];
+  _effectiveToolbarTintColor = [(MarkupViewController *)self _effectiveToolbarTintColor];
+  navBar = [(MarkupViewController *)self navBar];
+  [navBar setBarTintColor:_effectiveToolbarTintColor];
 
-  v5 = [(MarkupViewController *)self _effectiveNavBarTitleColor];
-  if (v5)
+  _effectiveNavBarTitleColor = [(MarkupViewController *)self _effectiveNavBarTitleColor];
+  if (_effectiveNavBarTitleColor)
   {
     v8 = *MEMORY[0x277D740C0];
-    v4 = [(MarkupViewController *)self _effectiveNavBarTitleColor];
-    v9[0] = v4;
+    navBar = [(MarkupViewController *)self _effectiveNavBarTitleColor];
+    v9[0] = navBar;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 
@@ -3160,37 +3160,37 @@ LABEL_17:
     v6 = 0;
   }
 
-  v7 = [(MarkupViewController *)self navBar];
-  [v7 setTitleTextAttributes:v6];
+  navBar2 = [(MarkupViewController *)self navBar];
+  [navBar2 setTitleTextAttributes:v6];
 
-  if (v5)
+  if (_effectiveNavBarTitleColor)
   {
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v11 = a3;
-  v4 = [(MarkupViewController *)self backgroundColor];
-  v5 = [v4 isEqual:v11];
+  colorCopy = color;
+  backgroundColor = [(MarkupViewController *)self backgroundColor];
+  v5 = [backgroundColor isEqual:colorCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v11 copy];
+    v6 = [colorCopy copy];
     backgroundColor = self->_backgroundColor;
     self->_backgroundColor = v6;
 
     v8 = self->_backgroundColor;
-    v9 = [(MarkupViewController *)self contentViewController];
-    v10 = [v9 view];
-    [v10 setBackgroundColor:v8];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    view = [contentViewController view];
+    [view setBackgroundColor:v8];
   }
 }
 
 - (id)_effectiveBackgroundColor
 {
-  v3 = [(MarkupViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 1)
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -3201,45 +3201,45 @@ LABEL_17:
   }
   v4 = ;
 
-  v5 = [(MarkupViewController *)self backgroundColor];
-  if (v5)
+  backgroundColor = [(MarkupViewController *)self backgroundColor];
+  if (backgroundColor)
   {
-    v6 = [(MarkupViewController *)self backgroundColor];
+    backgroundColor2 = [(MarkupViewController *)self backgroundColor];
   }
 
   else
   {
-    v6 = v4;
+    backgroundColor2 = v4;
   }
 
-  v7 = v6;
+  v7 = backgroundColor2;
 
   return v7;
 }
 
-- (void)setToolbarItemTintColor:(id)a3
+- (void)setToolbarItemTintColor:(id)color
 {
-  v10 = a3;
-  v4 = [(MarkupViewController *)self toolbarItemTintColor];
-  v5 = [v4 isEqual:v10];
+  colorCopy = color;
+  toolbarItemTintColor = [(MarkupViewController *)self toolbarItemTintColor];
+  v5 = [toolbarItemTintColor isEqual:colorCopy];
 
   if ((v5 & 1) == 0 && [(MarkupViewController *)self _useLegacyToolbar])
   {
-    v6 = [v10 copy];
+    v6 = [colorCopy copy];
     toolbarItemTintColor = self->_toolbarItemTintColor;
     self->_toolbarItemTintColor = v6;
 
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 toolbarViewController];
+    annotationController = [(MarkupViewController *)self annotationController];
+    toolbarViewController = [annotationController toolbarViewController];
 
-    [v9 setTintColor:v10];
+    [toolbarViewController setTintColor:colorCopy];
   }
 }
 
 - (id)_effectiveToolbarItemTintColor
 {
-  v3 = [(MarkupViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 1)
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     [MEMORY[0x277D75348] systemBlueColor];
   }
@@ -3265,39 +3265,39 @@ LABEL_17:
   return toolbarItemTintColor;
 }
 
-- (void)setToolbarTintColor:(id)a3
+- (void)setToolbarTintColor:(id)color
 {
-  v10 = a3;
-  v4 = [(MarkupViewController *)self toolbarTintColor];
-  v5 = [v4 isEqual:v10];
+  colorCopy = color;
+  toolbarTintColor = [(MarkupViewController *)self toolbarTintColor];
+  v5 = [toolbarTintColor isEqual:colorCopy];
 
   if ((v5 & 1) == 0 && [(MarkupViewController *)self _useLegacyToolbar])
   {
-    v6 = [v10 copy];
+    v6 = [colorCopy copy];
     toolbarTintColor = self->_toolbarTintColor;
     self->_toolbarTintColor = v6;
 
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 toolbarViewController];
+    annotationController = [(MarkupViewController *)self annotationController];
+    toolbarViewController = [annotationController toolbarViewController];
 
-    [v9 setBarTintColor:self->_toolbarTintColor];
+    [toolbarViewController setBarTintColor:self->_toolbarTintColor];
   }
 }
 
 - (id)_effectiveToolbarTintColor
 {
-  v3 = [(MarkupViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 1)
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
-    v4 = 0;
+    _markupBlackColor = 0;
   }
 
   else
   {
-    v4 = [(MarkupViewController *)self _markupBlackColor];
+    _markupBlackColor = [(MarkupViewController *)self _markupBlackColor];
   }
 
-  toolbarTintColor = v4;
+  toolbarTintColor = _markupBlackColor;
   if (self->_toolbarItemTintColor)
   {
     toolbarTintColor = self->_toolbarTintColor;
@@ -3308,16 +3308,16 @@ LABEL_17:
   return toolbarTintColor;
 }
 
-- (void)setNavBarTitleColor:(id)a3
+- (void)setNavBarTitleColor:(id)color
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MarkupViewController *)self navBarTitleColor];
-  v6 = [v5 isEqual:v4];
+  colorCopy = color;
+  navBarTitleColor = [(MarkupViewController *)self navBarTitleColor];
+  v6 = [navBarTitleColor isEqual:colorCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 copy];
+    v7 = [colorCopy copy];
     navBarTitleColor = self->_navBarTitleColor;
     self->_navBarTitleColor = v7;
 
@@ -3334,8 +3334,8 @@ LABEL_17:
       v10 = 0;
     }
 
-    v11 = [(MarkupViewController *)self navBar];
-    [v11 setTitleTextAttributes:v10];
+    navBar = [(MarkupViewController *)self navBar];
+    [navBar setTitleTextAttributes:v10];
 
     if (v9)
     {
@@ -3345,8 +3345,8 @@ LABEL_17:
 
 - (id)_effectiveNavBarTitleColor
 {
-  v3 = [(MarkupViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 1)
+  traitCollection = [(MarkupViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -3357,75 +3357,75 @@ LABEL_17:
   }
   v4 = ;
 
-  v5 = [(MarkupViewController *)self navBarTitleColor];
-  if (v5)
+  navBarTitleColor = [(MarkupViewController *)self navBarTitleColor];
+  if (navBarTitleColor)
   {
-    v6 = [(MarkupViewController *)self navBarTitleColor];
+    navBarTitleColor2 = [(MarkupViewController *)self navBarTitleColor];
   }
 
   else
   {
-    v6 = v4;
+    navBarTitleColor2 = v4;
   }
 
-  v7 = v6;
+  v7 = navBarTitleColor2;
 
   return v7;
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self annotationController];
-  v5 = [v4 validateDelete:v7];
+  deleteCopy = delete;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v5 = [annotationController validateDelete:deleteCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self annotationController];
-    [v6 delete:v7];
+    annotationController2 = [(MarkupViewController *)self annotationController];
+    [annotationController2 delete:deleteCopy];
   }
 }
 
-- (void)duplicate:(id)a3
+- (void)duplicate:(id)duplicate
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self annotationController];
-  v5 = [v4 validateDuplicate:v7];
+  duplicateCopy = duplicate;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v5 = [annotationController validateDuplicate:duplicateCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self annotationController];
-    [v6 duplicate:v7];
+    annotationController2 = [(MarkupViewController *)self annotationController];
+    [annotationController2 duplicate:duplicateCopy];
   }
 }
 
-- (void)editTextAnnotation:(id)a3
+- (void)editTextAnnotation:(id)annotation
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self annotationController];
-  v5 = [v4 validateEditTextAnnotation:v7];
+  annotationCopy = annotation;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v5 = [annotationController validateEditTextAnnotation:annotationCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self annotationController];
-    [v6 editTextAnnotation:v7];
+    annotationController2 = [(MarkupViewController *)self annotationController];
+    [annotationController2 editTextAnnotation:annotationCopy];
   }
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [(MarkupViewController *)self allowShakeToUndo];
-  if (a3 == 1 && v7)
+  eventCopy = event;
+  allowShakeToUndo = [(MarkupViewController *)self allowShakeToUndo];
+  if (ended == 1 && allowShakeToUndo)
   {
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 validateUndo:0];
+    annotationController = [(MarkupViewController *)self annotationController];
+    v9 = [annotationController validateUndo:0];
 
-    v10 = [(MarkupViewController *)self annotationController];
-    v11 = [v10 validateRedo:0];
+    annotationController2 = [(MarkupViewController *)self annotationController];
+    v11 = [annotationController2 validateRedo:0];
 
-    v12 = [(MarkupViewController *)self annotationController];
-    objc_initWeak(location, v12);
+    annotationController3 = [(MarkupViewController *)self annotationController];
+    objc_initWeak(location, annotationController3);
 
     objc_initWeak(&from, self);
     v42[0] = MEMORY[0x277D85DD0];
@@ -3514,7 +3514,7 @@ LABEL_17:
     {
       v32.receiver = self;
       v32.super_class = MarkupViewController;
-      [(MarkupViewController *)&v32 motionEnded:a3 withEvent:v6];
+      [(MarkupViewController *)&v32 motionEnded:ended withEvent:eventCopy];
     }
   }
 }
@@ -3539,68 +3539,68 @@ void __46__MarkupViewController_motionEnded_withEvent___block_invoke_4(uint64_t 
   [WeakRetained redo:0];
 }
 
-- (void)_showTextStyleOptions:(id)a3
+- (void)_showTextStyleOptions:(id)options
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self annotationController];
-  v5 = [v4 validateShowAttributeInspector:v7];
+  optionsCopy = options;
+  annotationController = [(MarkupViewController *)self annotationController];
+  v5 = [annotationController validateShowAttributeInspector:optionsCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self annotationController];
-    [v6 showAttributeInspector:v7];
+    annotationController2 = [(MarkupViewController *)self annotationController];
+    [annotationController2 showAttributeInspector:optionsCopy];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel__showTextStyleOptions_ == a3)
+  senderCopy = sender;
+  if (sel__showTextStyleOptions_ == action)
   {
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 validateShowAttributeInspector:v6];
+    annotationController = [(MarkupViewController *)self annotationController];
+    v9 = [annotationController validateShowAttributeInspector:senderCopy];
 LABEL_10:
     v7 = v9;
 
     goto LABEL_11;
   }
 
-  if (sel_editTextAnnotation_ == a3)
+  if (sel_editTextAnnotation_ == action)
   {
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 validateEditTextAnnotation:v6];
+    annotationController = [(MarkupViewController *)self annotationController];
+    v9 = [annotationController validateEditTextAnnotation:senderCopy];
     goto LABEL_10;
   }
 
-  if (sel_duplicate_ == a3)
+  if (sel_duplicate_ == action)
   {
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 validateDuplicate:v6];
+    annotationController = [(MarkupViewController *)self annotationController];
+    v9 = [annotationController validateDuplicate:senderCopy];
     goto LABEL_10;
   }
 
-  if (sel_delete_ == a3)
+  if (sel_delete_ == action)
   {
-    v8 = [(MarkupViewController *)self annotationController];
-    v9 = [v8 validateDelete:v6];
+    annotationController = [(MarkupViewController *)self annotationController];
+    v9 = [annotationController validateDelete:senderCopy];
     goto LABEL_10;
   }
 
   v11.receiver = self;
   v11.super_class = MarkupViewController;
-  v7 = [(MarkupViewController *)&v11 canPerformAction:a3 withSender:v6];
+  v7 = [(MarkupViewController *)&v11 canPerformAction:action withSender:senderCopy];
 LABEL_11:
 
   return v7;
 }
 
-- (void)positionSketchOverlay:(id)a3 forContentViewController:(id)a4
+- (void)positionSketchOverlay:(id)overlay forContentViewController:(id)controller
 {
-  v49 = a3;
-  v5 = [(MarkupViewController *)self toolbar];
-  v6 = [v5 superview];
+  overlayCopy = overlay;
+  toolbar = [(MarkupViewController *)self toolbar];
+  superview = [toolbar superview];
 
-  [v6 bounds];
+  [superview bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -3613,16 +3613,16 @@ LABEL_11:
   NSClassFromString(&cfstr_Aksmoothpathvi.isa);
   if (objc_opt_isKindOfClass())
   {
-    v23 = [(MarkupViewController *)self contentViewController];
-    [v23 visibleContentRectInCoordinateSpace:v6];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    [contentViewController visibleContentRectInCoordinateSpace:superview];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [(MarkupViewController *)self contentViewController];
-    v33 = [v32 view];
-    [v33 convertRect:v6 toView:{v25, v27, v29, v31}];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    view = [contentViewController2 view];
+    [view convertRect:superview toView:{v25, v27, v29, v31}];
     v35 = v34;
     v37 = v36;
     v39 = v38;
@@ -3650,27 +3650,27 @@ LABEL_11:
     }
   }
 
-  [v6 convertRect:0 toView:{v16, v18, v20, v22}];
+  [superview convertRect:0 toView:{v16, v18, v20, v22}];
   v54 = CGRectIntegral(v53);
-  [v6 convertRect:0 fromView:{v54.origin.x, v54.origin.y, v54.size.width, v54.size.height}];
-  [v49 setFrame:?];
-  v46 = [v49 superview];
+  [superview convertRect:0 fromView:{v54.origin.x, v54.origin.y, v54.size.width, v54.size.height}];
+  [overlayCopy setFrame:?];
+  superview2 = [overlayCopy superview];
 
-  if (v46 != v6)
+  if (superview2 != superview)
   {
-    [v49 setAutoresizingMask:18];
-    v47 = [(MarkupViewController *)self toolbar];
-    v48 = [v47 superview];
-    [v48 addSubview:v49];
+    [overlayCopy setAutoresizingMask:18];
+    toolbar2 = [(MarkupViewController *)self toolbar];
+    superview3 = [toolbar2 superview];
+    [superview3 addSubview:overlayCopy];
   }
 }
 
-- (id)annotationControllerOfContentViewController:(id)a3 willSetToolbarItems:(id)a4
+- (id)annotationControllerOfContentViewController:(id)controller willSetToolbarItems:(id)items
 {
-  v6 = a4;
-  v7 = [a3 annotationController];
-  v8 = [(MarkupViewController *)self sourceContent];
-  v9 = [MUImageDownsamplingUtilities _sourceContentType:v8];
+  itemsCopy = items;
+  annotationController = [controller annotationController];
+  sourceContent = [(MarkupViewController *)self sourceContent];
+  v9 = [MUImageDownsamplingUtilities _sourceContentType:sourceContent];
 
   if (v9)
   {
@@ -3684,23 +3684,23 @@ LABEL_11:
 
   if (([v10 conformsToType:*MEMORY[0x277CE1E08]] & 1) == 0)
   {
-    v11 = [v6 indexOfObjectPassingTest:&__block_literal_global_0];
+    v11 = [itemsCopy indexOfObjectPassingTest:&__block_literal_global_0];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = v11;
-      v13 = [v6 mutableCopy];
+      v13 = [itemsCopy mutableCopy];
       [v13 removeObjectAtIndex:v12];
 
-      v6 = v13;
+      itemsCopy = v13;
     }
   }
 
-  v14 = [(MarkupViewController *)self filteredToolbarItemsForItems:v6 fromController:v7];
+  v14 = [(MarkupViewController *)self filteredToolbarItemsForItems:itemsCopy fromController:annotationController];
 
-  v15 = [(MarkupViewController *)self delegate];
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 controller:self willSetToolbarItems:v14];
+    v16 = [delegate controller:self willSetToolbarItems:v14];
 
     v14 = v16;
   }
@@ -3715,13 +3715,13 @@ BOOL __88__MarkupViewController_annotationControllerOfContentViewController_will
   return result;
 }
 
-- (BOOL)contentViewController:(id)a3 shouldHandleURL:(id)a4
+- (BOOL)contentViewController:(id)controller shouldHandleURL:(id)l
 {
-  v5 = a4;
-  v6 = [(MarkupViewController *)self delegate];
+  lCopy = l;
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 controller:self shouldOpenLinkAtURL:v5];
+    v7 = [delegate controller:self shouldOpenLinkAtURL:lCopy];
   }
 
   else
@@ -3732,9 +3732,9 @@ BOOL __88__MarkupViewController_annotationControllerOfContentViewController_will
   return v7;
 }
 
-- (void)annotationController:(id)a3 detectedEditOfType:(unint64_t)a4
+- (void)annotationController:(id)controller detectedEditOfType:(unint64_t)type
 {
-  v5 = [(MarkupViewController *)self delegate:a3];
+  v5 = [(MarkupViewController *)self delegate:controller];
   if (v5)
   {
     v6 = v5;
@@ -3749,10 +3749,10 @@ BOOL __88__MarkupViewController_annotationControllerOfContentViewController_will
 
 - (void)_notifyDidChangeShowingSignaturesUI
 {
-  v3 = [(MarkupViewController *)self delegate];
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 markupViewController:self didChangeShowingSignaturesUI:self->_showingSignaturesUI];
+    [delegate markupViewController:self didChangeShowingSignaturesUI:self->_showingSignaturesUI];
   }
 }
 
@@ -3765,12 +3765,12 @@ BOOL __88__MarkupViewController_annotationControllerOfContentViewController_will
   return result;
 }
 
-- (int64_t)positionForBar:(id)a3
+- (int64_t)positionForBar:(id)bar
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self navBar];
+  barCopy = bar;
+  navBar = [(MarkupViewController *)self navBar];
 
-  if (v5 == v4)
+  if (navBar == barCopy)
   {
     return 3;
   }
@@ -3785,34 +3785,34 @@ BOOL __88__MarkupViewController_annotationControllerOfContentViewController_will
 {
   if ([(MarkupViewController *)self _useLegacyToolbar])
   {
-    v3 = [(MarkupViewController *)self annotationController];
-    v4 = [v3 toolbarView];
+    annotationController = [(MarkupViewController *)self annotationController];
+    toolbarView = [annotationController toolbarView];
   }
 
   else
   {
-    v4 = [(MarkupViewController *)self modernToolbar];
+    toolbarView = [(MarkupViewController *)self modernToolbar];
   }
 
-  return v4;
+  return toolbarView;
 }
 
-- (void)_toolbarShareButtonTapped:(id)a3
+- (void)_toolbarShareButtonTapped:(id)tapped
 {
-  v4 = [(MarkupViewController *)self delegate];
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 performSelector:sel_controllerWantsToShowShareSheet_ withObject:self];
+    [delegate performSelector:sel_controllerWantsToShowShareSheet_ withObject:self];
   }
 }
 
-- (id)getMenuElementsForPage:(id)a3
+- (id)getMenuElementsForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(MarkupViewController *)self delegate];
+  pageCopy = page;
+  delegate = [(MarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 menuElementsForPage:v4];
+    v6 = [delegate menuElementsForPage:pageCopy];
   }
 
   else

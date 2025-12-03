@@ -1,20 +1,20 @@
 @interface MemojiGlyphDataSource
 - (NSArray)categories;
-- (id)indexPathForIdentifier:(id)a3 ofType:(int64_t)a4;
-- (int64_t)categoryIndexForIndexPath:(id)a3;
+- (id)indexPathForIdentifier:(id)identifier ofType:(int64_t)type;
+- (int64_t)categoryIndexForIndexPath:(id)path;
 - (int64_t)numberOfItems;
-- (int64_t)numberOfItemsInCategory:(id)a3;
+- (int64_t)numberOfItemsInCategory:(id)category;
 - (int64_t)numberOfSections;
-- (void)configureWith:(id)a3;
-- (void)deleteItem:(STKImageGlyph *)a3 completionHandler:(id)a4;
-- (void)imageAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4;
-- (void)imageForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4;
-- (void)moveItemFromIndex:(int64_t)a3 toIndex:(int64_t)a4 completionHandler:(id)a5;
-- (void)moveItemFromIndexPath:(NSIndexPath *)a3 toIndexPath:(NSIndexPath *)a4 completionHandler:(id)a5;
+- (void)configureWith:(id)with;
+- (void)deleteItem:(STKImageGlyph *)item completionHandler:(id)handler;
+- (void)imageAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler;
+- (void)imageForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler;
+- (void)moveItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex completionHandler:(id)handler;
+- (void)moveItemFromIndexPath:(NSIndexPath *)path toIndexPath:(NSIndexPath *)indexPath completionHandler:(id)handler;
 - (void)refresh;
-- (void)setCategories:(id)a3;
-- (void)stickerAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4;
-- (void)stickerForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4;
+- (void)setCategories:(id)categories;
+- (void)stickerAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler;
+- (void)stickerForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler;
 @end
 
 @implementation MemojiGlyphDataSource
@@ -28,19 +28,19 @@
   return v2;
 }
 
-- (void)setCategories:(id)a3
+- (void)setCategories:(id)categories
 {
   type metadata accessor for ImageGlyphCategory(0);
   *(self + 4) = sub_19A7AB254();
 }
 
-- (void)configureWith:(id)a3
+- (void)configureWith:(id)with
 {
   v5 = *(self + 3);
   v6 = objc_allocWithZone(type metadata accessor for ImageGlyphUIConfiguration());
-  v7 = a3;
+  withCopy = with;
 
-  v8 = ImageGlyphUIConfiguration.init(_:glyphType:)(a3, v5);
+  v8 = ImageGlyphUIConfiguration.init(_:glyphType:)(with, v5);
   v9 = *(self + 13);
   *(self + 13) = v8;
 }
@@ -83,14 +83,14 @@
   return result;
 }
 
-- (id)indexPathForIdentifier:(id)a3 ofType:(int64_t)a4
+- (id)indexPathForIdentifier:(id)identifier ofType:(int64_t)type
 {
   v6 = sub_19A7A9094();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v20[-((v8 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v10 = sub_19A7AB014();
-  if (a4 != 2)
+  if (type != 2)
   {
 
     goto LABEL_5;
@@ -129,7 +129,7 @@ LABEL_7:
   return v17;
 }
 
-- (int64_t)numberOfItemsInCategory:(id)a3
+- (int64_t)numberOfItemsInCategory:(id)category
 {
   v3 = *(self + 11);
 
@@ -148,14 +148,14 @@ LABEL_7:
   return result;
 }
 
-- (void)deleteItem:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)deleteItem:(STKImageGlyph *)item completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = item;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -170,20 +170,20 @@ LABEL_7:
   v14[3] = 0;
   v14[4] = &unk_19A7C04F0;
   v14[5] = v13;
-  v15 = a3;
+  itemCopy = item;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7C04F8, v14);
 }
 
-- (void)moveItemFromIndex:(int64_t)a3 toIndex:(int64_t)a4 completionHandler:(id)a5
+- (void)moveItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v17 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = index;
+  v13[3] = toIndex;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_19A7AB394();
@@ -202,15 +202,15 @@ LABEL_7:
   sub_19A78E8A0(0, 0, v11, &unk_19A7BE7A8, v16);
 }
 
-- (void)moveItemFromIndexPath:(NSIndexPath *)a3 toIndexPath:(NSIndexPath *)a4 completionHandler:(id)a5
+- (void)moveItemFromIndexPath:(NSIndexPath *)path toIndexPath:(NSIndexPath *)indexPath completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = path;
+  v13[3] = indexPath;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_19A7AB394();
@@ -225,13 +225,13 @@ LABEL_7:
   v16[3] = 0;
   v16[4] = &unk_19A7C04C0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  pathCopy = path;
+  indexPathCopy = indexPath;
 
   sub_19A78E8A0(0, 0, v11, &unk_19A7C04C8, v16);
 }
 
-- (int64_t)categoryIndexForIndexPath:(id)a3
+- (int64_t)categoryIndexForIndexPath:(id)path
 {
   v4 = sub_19A7A9094();
   v5 = *(v4 - 8);
@@ -240,7 +240,7 @@ LABEL_7:
   sub_19A7A9024();
   v8 = *(self + 11);
   v13 = sub_19A740B80;
-  v14 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock(v8 + 4);
   sub_19A6FBE70(&v15);
@@ -260,14 +260,14 @@ LABEL_7:
   }
 }
 
-- (void)imageAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4
+- (void)imageAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = path;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -282,19 +282,19 @@ LABEL_7:
   v14[3] = 0;
   v14[4] = &unk_19A7C04A0;
   v14[5] = v13;
-  v15 = a3;
+  pathCopy = path;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7C04A8, v14);
 }
 
-- (void)imageForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)imageForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = glyph;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -309,19 +309,19 @@ LABEL_7:
   v14[3] = 0;
   v14[4] = &unk_19A7C0480;
   v14[5] = v13;
-  v15 = a3;
+  glyphCopy = glyph;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7C0488, v14);
 }
 
-- (void)stickerAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4
+- (void)stickerAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = path;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -336,19 +336,19 @@ LABEL_7:
   v14[3] = 0;
   v14[4] = &unk_19A7C0460;
   v14[5] = v13;
-  v15 = a3;
+  pathCopy = path;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7C0468, v14);
 }
 
-- (void)stickerForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)stickerForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = glyph;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -363,7 +363,7 @@ LABEL_7:
   v14[3] = 0;
   v14[4] = &unk_19A7BE620;
   v14[5] = v13;
-  v15 = a3;
+  glyphCopy = glyph;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7B6B20, v14);
 }

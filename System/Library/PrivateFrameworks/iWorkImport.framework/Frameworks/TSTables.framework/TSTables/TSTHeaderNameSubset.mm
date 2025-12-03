@@ -1,35 +1,35 @@
 @interface TSTHeaderNameSubset
-- (TSCECellRefSet)headerCellsExactlyMatching:(SEL)a3;
-- (TSCECellRefSet)headerCellsMatchingPrefix:(SEL)a3;
+- (TSCECellRefSet)headerCellsExactlyMatching:(SEL)matching;
+- (TSCECellRefSet)headerCellsMatchingPrefix:(SEL)prefix;
 - (TSKUIDStruct)limitedToTableUID;
-- (TSTHeaderNameSubset)initWithHeaderNameMgr:(id)a3 limitToTableUID:(const TSKUIDStruct *)a4;
+- (TSTHeaderNameSubset)initWithHeaderNameMgr:(id)mgr limitToTableUID:(const TSKUIDStruct *)d;
 - (id).cxx_construct;
 - (id)description;
-- (void)loadSubsetWithExactMatches:(const void *)a3 prefixMatches:(const void *)a4;
+- (void)loadSubsetWithExactMatches:(const void *)matches prefixMatches:(const void *)prefixMatches;
 @end
 
 @implementation TSTHeaderNameSubset
 
-- (TSTHeaderNameSubset)initWithHeaderNameMgr:(id)a3 limitToTableUID:(const TSKUIDStruct *)a4
+- (TSTHeaderNameSubset)initWithHeaderNameMgr:(id)mgr limitToTableUID:(const TSKUIDStruct *)d
 {
-  v7 = a3;
+  mgrCopy = mgr;
   v11.receiver = self;
   v11.super_class = TSTHeaderNameSubset;
   v8 = [(TSTHeaderNameSubset *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_hnm, a3);
-    v9->_limitedToTableUID = *a4;
+    objc_storeStrong(&v8->_hnm, mgr);
+    v9->_limitedToTableUID = *d;
   }
 
   return v9;
 }
 
-- (void)loadSubsetWithExactMatches:(const void *)a3 prefixMatches:(const void *)a4
+- (void)loadSubsetWithExactMatches:(const void *)matches prefixMatches:(const void *)prefixMatches
 {
-  v8 = objc_msgSend_calcEngine(self->_hnm, a2, a3, a4, v4);
-  for (i = *(a3 + 2); i; i = *i)
+  v8 = objc_msgSend_calcEngine(self->_hnm, a2, matches, prefixMatches, v4);
+  for (i = *(matches + 2); i; i = *i)
   {
     if ((sub_221278D0C(i + 3) & 1) == 0)
     {
@@ -45,7 +45,7 @@
     }
   }
 
-  for (j = *(a4 + 2); j; j = *j)
+  for (j = *(prefixMatches + 2); j; j = *j)
   {
     if ((sub_221278D0C(j + 3) & 1) == 0)
     {
@@ -62,7 +62,7 @@
   }
 }
 
-- (TSCECellRefSet)headerCellsExactlyMatching:(SEL)a3
+- (TSCECellRefSet)headerCellsExactlyMatching:(SEL)matching
 {
   v6 = a4;
   v49 = 0;
@@ -144,7 +144,7 @@ LABEL_14:
       v37[3] = &unk_278464A68;
       v41 = v43;
       v38 = v34;
-      v39 = self;
+      selfCopy = self;
       v40 = v19;
       v42 = &v49;
       v35 = v34;
@@ -170,7 +170,7 @@ LABEL_14:
   return result;
 }
 
-- (TSCECellRefSet)headerCellsMatchingPrefix:(SEL)a3
+- (TSCECellRefSet)headerCellsMatchingPrefix:(SEL)prefix
 {
   v6 = a4;
   v73 = 0;
@@ -301,7 +301,7 @@ LABEL_24:
     v58[3] = &unk_278464A68;
     v62 = &v64;
     v59 = v54;
-    v60 = self;
+    selfCopy = self;
     v61 = v57;
     v63 = &v73;
     v55 = v54;

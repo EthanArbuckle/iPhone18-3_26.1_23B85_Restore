@@ -4,14 +4,14 @@
 - (BOOL)isBSIScreenreaderMode;
 - (BOOL)isDefaultScreenreaderMode;
 - (BOOL)isHandwritingScreenreaderMode;
-- (VOSCommandResolver)resolverWithScreenreaderModeVariant:(id)a3;
+- (VOSCommandResolver)resolverWithScreenreaderModeVariant:(id)variant;
 - (VOSScreenreaderMode)screenreaderMode;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)pressCount;
 - (unint64_t)context;
-- (void)setFetchContextBlock:(id)a3;
-- (void)setFetchPressCountBlock:(id)a3;
+- (void)setFetchContextBlock:(id)block;
+- (void)setFetchPressCountBlock:(id)block;
 @end
 
 @implementation VOSCommandResolver
@@ -56,38 +56,38 @@ uint64_t __33__VOSCommandResolver_currentHost__block_invoke()
   return v2;
 }
 
-- (VOSCommandResolver)resolverWithScreenreaderModeVariant:(id)a3
+- (VOSCommandResolver)resolverWithScreenreaderModeVariant:(id)variant
 {
-  v4 = a3;
+  variantCopy = variant;
   v5 = [(VOSCommandResolver *)self copy];
-  [v5 setScreenreaderMode:v4];
+  [v5 setScreenreaderMode:variantCopy];
 
   return v5;
 }
 
 - (BOOL)isDefaultScreenreaderMode
 {
-  v2 = [(VOSCommandResolver *)self screenreaderMode];
+  screenreaderMode = [(VOSCommandResolver *)self screenreaderMode];
   v3 = +[VOSScreenreaderMode Default];
-  v4 = v2 == v3;
+  v4 = screenreaderMode == v3;
 
   return v4;
 }
 
 - (BOOL)isBSIScreenreaderMode
 {
-  v2 = [(VOSCommandResolver *)self screenreaderMode];
+  screenreaderMode = [(VOSCommandResolver *)self screenreaderMode];
   v3 = +[VOSScreenreaderMode BrailleScreenInput];
-  v4 = v2 == v3;
+  v4 = screenreaderMode == v3;
 
   return v4;
 }
 
 - (BOOL)isHandwritingScreenreaderMode
 {
-  v2 = [(VOSCommandResolver *)self screenreaderMode];
+  screenreaderMode = [(VOSCommandResolver *)self screenreaderMode];
   v3 = +[VOSScreenreaderMode Handwriting];
-  v4 = v2 == v3;
+  v4 = screenreaderMode == v3;
 
   return v4;
 }
@@ -113,12 +113,12 @@ uint64_t __33__VOSCommandResolver_currentHost__block_invoke()
   cachedPressCount = self->_cachedPressCount;
   if (!cachedPressCount)
   {
-    v4 = [(VOSCommandResolver *)self fetchPressCountBlock];
+    fetchPressCountBlock = [(VOSCommandResolver *)self fetchPressCountBlock];
 
-    if (v4)
+    if (fetchPressCountBlock)
     {
-      v5 = [(VOSCommandResolver *)self fetchPressCountBlock];
-      v6 = (v5)[2](v5, self);
+      fetchPressCountBlock2 = [(VOSCommandResolver *)self fetchPressCountBlock];
+      v6 = (fetchPressCountBlock2)[2](fetchPressCountBlock2, self);
 
       if (v6 <= 1)
       {
@@ -151,15 +151,15 @@ uint64_t __33__VOSCommandResolver_currentHost__block_invoke()
   cachedContext = self->_cachedContext;
   if (!cachedContext)
   {
-    v4 = [(VOSCommandResolver *)self fetchContextBlock];
+    fetchContextBlock = [(VOSCommandResolver *)self fetchContextBlock];
 
-    if (v4)
+    if (fetchContextBlock)
     {
-      v5 = [(VOSCommandResolver *)self fetchContextBlock];
-      v4 = (v5)[2](v5, self);
+      fetchContextBlock2 = [(VOSCommandResolver *)self fetchContextBlock];
+      fetchContextBlock = (fetchContextBlock2)[2](fetchContextBlock2, self);
     }
 
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:fetchContextBlock];
     v7 = self->_cachedContext;
     self->_cachedContext = v6;
 
@@ -169,11 +169,11 @@ uint64_t __33__VOSCommandResolver_currentHost__block_invoke()
   return [(NSNumber *)cachedContext unsignedIntegerValue];
 }
 
-- (void)setFetchContextBlock:(id)a3
+- (void)setFetchContextBlock:(id)block
 {
-  if (self->_fetchContextBlock != a3)
+  if (self->_fetchContextBlock != block)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(block);
     fetchContextBlock = self->_fetchContextBlock;
     self->_fetchContextBlock = v5;
 
@@ -182,11 +182,11 @@ uint64_t __33__VOSCommandResolver_currentHost__block_invoke()
   }
 }
 
-- (void)setFetchPressCountBlock:(id)a3
+- (void)setFetchPressCountBlock:(id)block
 {
-  if (self->_fetchPressCountBlock != a3)
+  if (self->_fetchPressCountBlock != block)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(block);
     fetchPressCountBlock = self->_fetchPressCountBlock;
     self->_fetchPressCountBlock = v5;
 
@@ -200,31 +200,31 @@ uint64_t __33__VOSCommandResolver_currentHost__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VOSCommandResolver *)self host];
-  v7 = [(VOSCommandResolver *)self screenreaderMode];
-  v8 = [v3 stringWithFormat:@"%@<%p> Host:%d SCRMode:%@ ApplyRTL:%d BSI:%d pressCount:%d", v5, self, v6, v7, -[VOSCommandResolver shouldApplyRTL](self, "shouldApplyRTL"), -[VOSCommandResolver bsiTypingMode](self, "bsiTypingMode"), -[VOSCommandResolver pressCount](self, "pressCount")];
+  host = [(VOSCommandResolver *)self host];
+  screenreaderMode = [(VOSCommandResolver *)self screenreaderMode];
+  v8 = [v3 stringWithFormat:@"%@<%p> Host:%d SCRMode:%@ ApplyRTL:%d BSI:%d pressCount:%d", v5, self, host, screenreaderMode, -[VOSCommandResolver shouldApplyRTL](self, "shouldApplyRTL"), -[VOSCommandResolver bsiTypingMode](self, "bsiTypingMode"), -[VOSCommandResolver pressCount](self, "pressCount")];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VOSCommandResolver);
-  v5 = [(VOSCommandResolver *)self screenreaderMode];
-  [(VOSCommandResolver *)v4 setScreenreaderMode:v5];
+  screenreaderMode = [(VOSCommandResolver *)self screenreaderMode];
+  [(VOSCommandResolver *)v4 setScreenreaderMode:screenreaderMode];
 
   [(VOSCommandResolver *)v4 setShouldApplyRTL:[(VOSCommandResolver *)self shouldApplyRTL]];
   [(VOSCommandResolver *)v4 setKeyboardMode:[(VOSCommandResolver *)self keyboardMode]];
   [(VOSCommandResolver *)v4 setHost:[(VOSCommandResolver *)self host]];
   [(VOSCommandResolver *)v4 setBsiTypingMode:[(VOSCommandResolver *)self bsiTypingMode]];
-  v6 = [(VOSCommandResolver *)self fetchPressCountBlock];
-  [(VOSCommandResolver *)v4 setFetchPressCountBlock:v6];
+  fetchPressCountBlock = [(VOSCommandResolver *)self fetchPressCountBlock];
+  [(VOSCommandResolver *)v4 setFetchPressCountBlock:fetchPressCountBlock];
 
-  v7 = [(VOSCommandResolver *)self fetchContextBlock];
-  [(VOSCommandResolver *)v4 setFetchContextBlock:v7];
+  fetchContextBlock = [(VOSCommandResolver *)self fetchContextBlock];
+  [(VOSCommandResolver *)v4 setFetchContextBlock:fetchContextBlock];
 
-  v8 = [(VOSCommandResolver *)self resolvingEventOccurredBlock];
-  [(VOSCommandResolver *)v4 setResolvingEventOccurredBlock:v8];
+  resolvingEventOccurredBlock = [(VOSCommandResolver *)self resolvingEventOccurredBlock];
+  [(VOSCommandResolver *)v4 setResolvingEventOccurredBlock:resolvingEventOccurredBlock];
 
   return v4;
 }

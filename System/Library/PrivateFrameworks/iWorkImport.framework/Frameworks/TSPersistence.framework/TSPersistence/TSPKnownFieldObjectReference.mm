@@ -1,20 +1,20 @@
 @interface TSPKnownFieldObjectReference
 - (id)debugDescription;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPKnownFieldObjectReference
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v13.receiver = self;
   v13.super_class = TSPKnownFieldObjectReference;
-  [(TSPKnownField *)&v13 loadFromUnarchiver:v4];
+  [(TSPKnownField *)&v13 loadFromUnarchiver:unarchiverCopy];
   TSP::Reference::Reference(v12, 0);
   google::protobuf::MessageLite::ParseFromString(v12, &self->super._value);
-  v7 = objc_msgSend_strongReferences(v4, v5, v6);
+  v7 = objc_msgSend_strongReferences(unarchiverCopy, v5, v6);
   if (v7)
   {
     v11 = v12[3];
@@ -31,16 +31,16 @@
   v10[2] = sub_276A05DC0;
   v10[3] = &unk_27A6E41F8;
   v10[4] = self;
-  objc_msgSend_readUnknownLazyReferenceMessage_ownershipMode_completion_(v4, v8, v12, v9, v10);
+  objc_msgSend_readUnknownLazyReferenceMessage_ownershipMode_completion_(unarchiverCopy, v8, v12, v9, v10);
   TSP::Reference::~Reference(v12);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v11.receiver = self;
   v11.super_class = TSPKnownFieldObjectReference;
-  [(TSPKnownField *)&v11 saveToArchiver:v4];
+  [(TSPKnownField *)&v11 saveToArchiver:archiverCopy];
   if (self->_reference)
   {
     TSP::Reference::Reference(v10, 0);
@@ -48,12 +48,12 @@
     reference = self->_reference;
     if (v7)
     {
-      objc_msgSend_setWeakLazyReference_message_(v4, v8, reference, v10);
+      objc_msgSend_setWeakLazyReference_message_(archiverCopy, v8, reference, v10);
     }
 
     else
     {
-      objc_msgSend_setStrongLazyReference_message_(v4, v8, reference, v10);
+      objc_msgSend_setStrongLazyReference_message_(archiverCopy, v8, reference, v10);
     }
 
     TSP::Reference::~Reference(v10);

@@ -16,7 +16,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004BDCA8();
 
   v3 = String._bridgeToObjectiveC()();
@@ -26,7 +26,7 @@
 
 - (NSString)_maps_diffableDataSourceIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B733C();
   v4 = v3;
 

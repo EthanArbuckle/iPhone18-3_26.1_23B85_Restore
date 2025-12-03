@@ -4,20 +4,20 @@
 + (id)sharedConfigurationPublisher;
 + (void)fetchVisibleConfigurationUIs;
 + (void)reprocessActiveConfigurations;
-- (RMConfigurationPublisher)initWithPersistentActiveIdentifiers:(id)a3 context:(id)a4;
+- (RMConfigurationPublisher)initWithPersistentActiveIdentifiers:(id)identifiers context:(id)context;
 - (RMConfigurationPublisherDelegate)delegate;
 - (id)_createInternalPlugins;
-- (void)_addEventStreamSubscriberWithSubscription:(id)a3;
+- (void)_addEventStreamSubscriberWithSubscription:(id)subscription;
 - (void)_fetchVisibleConfigurationUIs;
 - (void)_loadAllConfigurationSubscribersAllowingThemToCheckForChanges;
 - (void)_loadPlugins;
-- (void)_managedObjectContextDidSave:(id)a3;
-- (void)_notifyChangedConfigurationsForTypes:(id)a3;
-- (void)_notifyChangedConfigurationsIfNeededWithStatusUpdate:(BOOL)a3;
-- (void)_notifyMissingConfigurationUIsForTypes:(id)a3;
-- (void)_notifySubscribersWithConfigurationTypes:(id)a3;
-- (void)_notifySubscribersWithMissingConfigurationUITypes:(id)a3;
-- (void)_removeEventStreamSubscriberForToken:(unint64_t)a3;
+- (void)_managedObjectContextDidSave:(id)save;
+- (void)_notifyChangedConfigurationsForTypes:(id)types;
+- (void)_notifyChangedConfigurationsIfNeededWithStatusUpdate:(BOOL)update;
+- (void)_notifyMissingConfigurationUIsForTypes:(id)types;
+- (void)_notifySubscribersWithConfigurationTypes:(id)types;
+- (void)_notifySubscribersWithMissingConfigurationUITypes:(id)types;
+- (void)_removeEventStreamSubscriberForToken:(unint64_t)token;
 - (void)_reprocessActiveConfigurations;
 - (void)_start;
 @end
@@ -51,12 +51,12 @@
   v3 = dispatch_queue_create(v2, 0);
   v4 = xpc_event_publisher_create();
   v5 = +[RMPersistentController sharedController];
-  v6 = [v5 persistentContainer];
+  persistentContainer = [v5 persistentContainer];
 
-  v7 = [v6 newBackgroundContext];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
   v8 = +[RMInternalStateArchiver sharedArchiver];
-  v9 = [v8 persistentActiveIdentifiers];
-  v10 = [[RMConfigurationPublisher alloc] initWithPersistentActiveIdentifiers:v9 context:v7];
+  persistentActiveIdentifiers = [v8 persistentActiveIdentifiers];
+  v10 = [[RMConfigurationPublisher alloc] initWithPersistentActiveIdentifiers:persistentActiveIdentifiers context:newBackgroundContext];
   [(RMConfigurationPublisher *)v10 setDelegate:v8];
   v15 = v10;
   v16 = v4;
@@ -70,22 +70,22 @@
   return v14;
 }
 
-- (RMConfigurationPublisher)initWithPersistentActiveIdentifiers:(id)a3 context:(id)a4
+- (RMConfigurationPublisher)initWithPersistentActiveIdentifiers:(id)identifiers context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = RMConfigurationPublisher;
   v9 = [(RMConfigurationPublisher *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistentActiveIdentifiers, a3);
+    objc_storeStrong(&v9->_persistentActiveIdentifiers, identifiers);
     v11 = objc_opt_new();
     plugins = v10->_plugins;
     v10->_plugins = v11;
 
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v10->_context, context);
     v13 = objc_opt_new();
     eventStreamSubscriptionByToken = v10->_eventStreamSubscriptionByToken;
     v10->_eventStreamSubscriptionByToken = v13;
@@ -138,9 +138,9 @@
     }
 
     v6 = +[NSNotificationCenter defaultCenter];
-    v7 = [(RMConfigurationPublisher *)self context];
-    v8 = [v7 persistentStoreCoordinator];
-    [v6 addObserver:self selector:"_managedObjectContextDidSave:" name:NSManagedObjectContextDidSaveObjectIDsNotification object:v8];
+    context = [(RMConfigurationPublisher *)self context];
+    persistentStoreCoordinator = [context persistentStoreCoordinator];
+    [v6 addObserver:self selector:"_managedObjectContextDidSave:" name:NSManagedObjectContextDidSaveObjectIDsNotification object:persistentStoreCoordinator];
 
     [(RMConfigurationPublisher *)self _loadAllConfigurationSubscribersAllowingThemToCheckForChanges];
     [(RMConfigurationPublisher *)self _notifyChangedConfigurationsIfNeeded];
@@ -154,11 +154,11 @@
   }
 }
 
-- (void)_addEventStreamSubscriberWithSubscription:(id)a3
+- (void)_addEventStreamSubscriberWithSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [v4 token];
-  v6 = [NSNumber numberWithUnsignedLongLong:v5];
+  subscriptionCopy = subscription;
+  token = [subscriptionCopy token];
+  v6 = [NSNumber numberWithUnsignedLongLong:token];
   v7 = self->_pluginsLock;
   objc_sync_enter(v7);
   v8 = +[RMLog configurationPublisher];
@@ -167,8 +167,8 @@
     sub_100022680();
   }
 
-  v9 = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  eventStreamSubscriptionByToken = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
+  v10 = [eventStreamSubscriptionByToken objectForKeyedSubscript:v6];
 
   if (v10)
   {
@@ -183,26 +183,26 @@
 
   else
   {
-    v12 = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
-    [v12 setObject:v4 forKeyedSubscript:v6];
+    eventStreamSubscriptionByToken2 = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
+    [eventStreamSubscriptionByToken2 setObject:subscriptionCopy forKeyedSubscript:v6];
 
-    v13 = [(RMConfigurationPublisher *)self plugins];
-    [v13 addObject:v4];
+    plugins = [(RMConfigurationPublisher *)self plugins];
+    [plugins addObject:subscriptionCopy];
 
     objc_sync_exit(v7);
     v11 = +[RMLog configurationPublisher];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218242;
-      v15 = v5;
+      v15 = token;
       v16 = 2114;
-      v17 = v4;
+      v17 = subscriptionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Added subscriber for %llu: %{public}@.", &v14, 0x16u);
     }
   }
 }
 
-- (void)_removeEventStreamSubscriberForToken:(unint64_t)a3
+- (void)_removeEventStreamSubscriberForToken:(unint64_t)token
 {
   v5 = self->_pluginsLock;
   objc_sync_enter(v5);
@@ -212,24 +212,24 @@
     sub_100022770();
   }
 
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
-  v8 = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v7 = [NSNumber numberWithUnsignedLongLong:token];
+  eventStreamSubscriptionByToken = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
+  v9 = [eventStreamSubscriptionByToken objectForKeyedSubscript:v7];
 
   if (v9)
   {
-    v10 = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
-    [v10 removeObjectForKey:v7];
+    eventStreamSubscriptionByToken2 = [(RMConfigurationPublisher *)self eventStreamSubscriptionByToken];
+    [eventStreamSubscriptionByToken2 removeObjectForKey:v7];
 
-    v11 = [(RMConfigurationPublisher *)self plugins];
-    [v11 removeObject:v9];
+    plugins = [(RMConfigurationPublisher *)self plugins];
+    [plugins removeObject:v9];
 
     objc_sync_exit(v5);
     v12 = +[RMLog configurationPublisher];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134218242;
-      v14 = a3;
+      tokenCopy = token;
       v15 = 2114;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Removed subscriber for %llu: %{public}@.", &v13, 0x16u);
@@ -257,15 +257,15 @@
   v3 = self->_pluginsLock;
   objc_sync_enter(v3);
   [(RMConfigurationPublisher *)self _loadPlugins];
-  v4 = [(RMConfigurationPublisher *)self plugins];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  plugins = [(RMConfigurationPublisher *)self plugins];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [plugins count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(RMConfigurationPublisher *)self plugins];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
+  plugins2 = [(RMConfigurationPublisher *)self plugins];
+  v7 = [plugins2 countByEnumeratingWithState:&v17 objects:v26 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -276,28 +276,28 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(plugins2);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
         v11 = +[RMLog configurationPublisher];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [v10 identifier];
-          sub_100022858(v12, v24, &v25, v11);
+          identifier = [v10 identifier];
+          sub_100022858(identifier, v24, &v25, v11);
         }
 
-        v13 = [v10 identifier];
-        [v5 addObject:v13];
+        identifier2 = [v10 identifier];
+        [v5 addObject:identifier2];
 
-        v14 = [v10 configurationTypes];
-        [v10 applyChangedConfigurationsTypes:v14];
+        configurationTypes = [v10 configurationTypes];
+        [v10 applyChangedConfigurationsTypes:configurationTypes];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
+      v7 = [plugins2 countByEnumeratingWithState:&v17 objects:v26 count:16];
     }
 
     while (v7);
@@ -323,9 +323,9 @@
     sub_1000228B4();
   }
 
-  v4 = [(RMConfigurationPublisher *)self plugins];
+  plugins = [(RMConfigurationPublisher *)self plugins];
   v5 = +[RMConfigurationSubscriberServicePlugin loadPlugins];
-  [v4 addObjectsFromArray:v5];
+  [plugins addObjectsFromArray:v5];
 
   v6 = +[RMLog configurationPublisher];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -333,9 +333,9 @@
     sub_1000228E8();
   }
 
-  v7 = [(RMConfigurationPublisher *)self plugins];
-  v8 = [(RMConfigurationPublisher *)self _createInternalPlugins];
-  [v7 addObjectsFromArray:v8];
+  plugins2 = [(RMConfigurationPublisher *)self plugins];
+  _createInternalPlugins = [(RMConfigurationPublisher *)self _createInternalPlugins];
+  [plugins2 addObjectsFromArray:_createInternalPlugins];
 }
 
 - (id)_createInternalPlugins
@@ -356,8 +356,8 @@
 - (void)_reprocessActiveConfigurations
 {
   v3 = objc_opt_new();
-  v4 = [(RMConfigurationPublisher *)self persistentActiveIdentifiers];
-  [v4 setUniqueIdentifiersByConfigurationType:v3];
+  persistentActiveIdentifiers = [(RMConfigurationPublisher *)self persistentActiveIdentifiers];
+  [persistentActiveIdentifiers setUniqueIdentifiersByConfigurationType:v3];
 
   [(RMConfigurationPublisher *)self _notifyChangedConfigurationsIfNeededWithStatusUpdate:0];
 }
@@ -370,13 +370,13 @@
 
 - (void)_fetchVisibleConfigurationUIs
 {
-  v3 = [(RMConfigurationPublisher *)self context];
+  context = [(RMConfigurationPublisher *)self context];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100020B38;
   v4[3] = &unk_1000D0F50;
   v4[4] = self;
-  [v3 performBlockAndWait:v4];
+  [context performBlockAndWait:v4];
 }
 
 + (id)reportDetails
@@ -387,9 +387,9 @@
   v13 = 0u;
   v14 = 0u;
   v3 = +[RMConfigurationPublisher sharedConfigurationPublisher];
-  v4 = [v3 plugins];
+  plugins = [v3 plugins];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [plugins countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -400,14 +400,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(plugins);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) reportDetails];
-        [v2 addObject:v9];
+        reportDetails = [*(*(&v11 + 1) + 8 * i) reportDetails];
+        [v2 addObject:reportDetails];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [plugins countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -416,25 +416,25 @@
   return v2;
 }
 
-- (void)_managedObjectContextDidSave:(id)a3
+- (void)_managedObjectContextDidSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = self->_startLock;
   objc_sync_enter(v5);
-  v45 = v4;
+  v45 = saveCopy;
   if (self->_started)
   {
     val = self;
     objc_sync_exit(v5);
 
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:NSInsertedObjectIDsKey];
+    userInfo = [saveCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:NSInsertedObjectIDsKey];
 
-    v8 = [v4 userInfo];
-    v44 = [v8 objectForKeyedSubscript:NSUpdatedObjectIDsKey];
+    userInfo2 = [saveCopy userInfo];
+    v44 = [userInfo2 objectForKeyedSubscript:NSUpdatedObjectIDsKey];
 
-    v9 = [v4 userInfo];
-    v43 = [v9 objectForKeyedSubscript:NSDeletedObjectIDsKey];
+    userInfo3 = [saveCopy userInfo];
+    v43 = [userInfo3 objectForKeyedSubscript:NSDeletedObjectIDsKey];
 
     v49 = 0u;
     v50 = 0u;
@@ -455,15 +455,15 @@
           }
 
           v13 = *(*(&v49 + 1) + 8 * i);
-          v14 = [v13 entity];
+          entity = [v13 entity];
           v15 = +[RMConfigurationPayload entity];
-          if ([v14 isKindOfEntity:v15])
+          if ([entity isKindOfEntity:v15])
           {
             goto LABEL_37;
           }
 
           v16 = +[RMConfigurationPayloadState entity];
-          if ([v14 isKindOfEntity:v16])
+          if ([entity isKindOfEntity:v16])
           {
 
 LABEL_37:
@@ -483,7 +483,7 @@ LABEL_45:
           }
 
           v17 = +[RMAssetPayloadReference entity];
-          v18 = [v14 isKindOfEntity:v17];
+          v18 = [entity isKindOfEntity:v17];
 
           if (v18)
           {
@@ -521,15 +521,15 @@ LABEL_45:
           }
 
           v24 = *(*(&v49 + 1) + 8 * j);
-          v25 = [v24 entity];
+          entity2 = [v24 entity];
           v26 = +[RMConfigurationPayload entity];
-          if ([v25 isKindOfEntity:v26])
+          if ([entity2 isKindOfEntity:v26])
           {
             goto LABEL_40;
           }
 
           v27 = +[RMConfigurationPayloadState entity];
-          if ([v25 isKindOfEntity:v27])
+          if ([entity2 isKindOfEntity:v27])
           {
 
 LABEL_40:
@@ -539,7 +539,7 @@ LABEL_44:
           }
 
           v28 = +[RMAssetPayloadReference entity];
-          v29 = [v25 isKindOfEntity:v28];
+          v29 = [entity2 isKindOfEntity:v28];
 
           if (v29)
           {
@@ -577,15 +577,15 @@ LABEL_44:
           }
 
           v34 = *(*(&v49 + 1) + 8 * k);
-          v35 = [v34 entity];
+          entity3 = [v34 entity];
           v36 = +[RMConfigurationPayload entity];
-          if ([v35 isKindOfEntity:v36])
+          if ([entity3 isKindOfEntity:v36])
           {
             goto LABEL_43;
           }
 
           v37 = +[RMConfigurationPayloadState entity];
-          if ([v35 isKindOfEntity:v37])
+          if ([entity3 isKindOfEntity:v37])
           {
 
 LABEL_43:
@@ -593,7 +593,7 @@ LABEL_43:
           }
 
           v38 = +[RMAssetPayloadReference entity];
-          v39 = [v35 isKindOfEntity:v38];
+          v39 = [entity3 isKindOfEntity:v38];
 
           if (v39)
           {
@@ -620,9 +620,9 @@ LABEL_46:
     v40 = +[RMLog configurationPublisher];
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [v4 name];
+      name = [saveCopy name];
       *buf = 138543362;
-      v54 = v41;
+      v54 = name;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Ignoring %{public}@, the publisher has not finish starting yet.", buf, 0xCu);
     }
 
@@ -630,9 +630,9 @@ LABEL_46:
   }
 }
 
-- (void)_notifyChangedConfigurationsIfNeededWithStatusUpdate:(BOOL)a3
+- (void)_notifyChangedConfigurationsIfNeededWithStatusUpdate:(BOOL)update
 {
-  v34 = a3;
+  updateCopy = update;
   v3 = +[RMLog configurationPublisher];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -647,24 +647,24 @@ LABEL_46:
   v44 = sub_100021B2C;
   v45 = sub_100021B3C;
   v46 = 0;
-  v4 = [(RMConfigurationPublisher *)self context];
+  context = [(RMConfigurationPublisher *)self context];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100021B44;
   v40[3] = &unk_1000D13E0;
   v40[4] = &v41;
-  [v4 performBlockAndWait:v40];
+  [context performBlockAndWait:v40];
 
   v5 = self->_persistentActiveIdentifiers;
   [(RMConfigurationPublisher *)self setPersistentActiveIdentifiers:v42[5]];
   v6 = v42[5];
   v36 = v5;
   v37 = v6;
-  v7 = [(RMPersistentActiveIdentifiers *)v36 uniqueIdentifiersByConfigurationType];
-  v8 = v7;
-  if (v7)
+  uniqueIdentifiersByConfigurationType = [(RMPersistentActiveIdentifiers *)v36 uniqueIdentifiersByConfigurationType];
+  v8 = uniqueIdentifiersByConfigurationType;
+  if (uniqueIdentifiersByConfigurationType)
   {
-    v9 = v7;
+    v9 = uniqueIdentifiersByConfigurationType;
   }
 
   else
@@ -674,10 +674,10 @@ LABEL_46:
 
   v10 = v9;
 
-  v11 = [v37 uniqueIdentifiersByConfigurationType];
-  v12 = [v10 allKeys];
-  v13 = [v11 allKeys];
-  v14 = [v12 arrayByAddingObjectsFromArray:v13];
+  uniqueIdentifiersByConfigurationType2 = [v37 uniqueIdentifiersByConfigurationType];
+  allKeys = [v10 allKeys];
+  allKeys2 = [uniqueIdentifiersByConfigurationType2 allKeys];
+  v14 = [allKeys arrayByAddingObjectsFromArray:allKeys2];
   v15 = [NSSet setWithArray:v14];
 
   v39 = objc_opt_new();
@@ -714,7 +714,7 @@ LABEL_46:
 
         v24 = v23;
 
-        v25 = [v11 objectForKeyedSubscript:v20];
+        v25 = [uniqueIdentifiersByConfigurationType2 objectForKeyedSubscript:v20];
         v26 = v25;
         if (v25)
         {
@@ -751,10 +751,10 @@ LABEL_46:
     }
 
     [(RMConfigurationPublisher *)self _notifyChangedConfigurationsForTypes:v39];
-    v30 = [(RMConfigurationPublisher *)self delegate];
-    [v30 configurationPublisher:self didChangePersistentActiveIdentifiers:v42[5]];
+    delegate = [(RMConfigurationPublisher *)self delegate];
+    [delegate configurationPublisher:self didChangePersistentActiveIdentifiers:v42[5]];
 
-    if (v34)
+    if (updateCopy)
     {
       v31 = +[RMLog configurationPublisher];
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -792,22 +792,22 @@ LABEL_46:
   objc_sync_exit(obj);
 }
 
-- (void)_notifyChangedConfigurationsForTypes:(id)a3
+- (void)_notifyChangedConfigurationsForTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
 
   v5 = +[RMLog configurationPublisher];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100022B08(v4);
+    sub_100022B08(typesCopy);
   }
 
-  [(RMConfigurationPublisher *)self _notifySubscribersWithConfigurationTypes:v4];
+  [(RMConfigurationPublisher *)self _notifySubscribersWithConfigurationTypes:typesCopy];
   v6 = +[RMLog configurationPublisher];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects = [typesCopy allObjects];
+    v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v9 = [v8 componentsJoinedByString:{@", "}];
 
     v10 = 138543362;
@@ -816,9 +816,9 @@ LABEL_46:
   }
 }
 
-- (void)_notifySubscribersWithConfigurationTypes:(id)a3
+- (void)_notifySubscribersWithConfigurationTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
 
   obj = self->_pluginsLock;
   objc_sync_enter(obj);
@@ -826,8 +826,8 @@ LABEL_46:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(RMConfigurationPublisher *)self plugins];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  plugins = [(RMConfigurationPublisher *)self plugins];
+  v6 = [plugins countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -837,22 +837,22 @@ LABEL_46:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(plugins);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 configurationTypes];
-        v11 = [v10 mutableCopy];
+        configurationTypes = [v9 configurationTypes];
+        v11 = [configurationTypes mutableCopy];
 
-        [v11 intersectSet:v4];
+        [v11 intersectSet:typesCopy];
         if ([v11 count])
         {
           v12 = +[RMLog configurationPublisher];
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v9 identifier];
+            identifier = [v9 identifier];
             *buf = 138543362;
-            v20 = v13;
+            v20 = identifier;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Triggering configuration subscriber plugin: %{public}@", buf, 0xCu);
           }
 
@@ -860,7 +860,7 @@ LABEL_46:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [plugins countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
@@ -869,22 +869,22 @@ LABEL_46:
   objc_sync_exit(obj);
 }
 
-- (void)_notifyMissingConfigurationUIsForTypes:(id)a3
+- (void)_notifyMissingConfigurationUIsForTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
 
   v5 = +[RMLog configurationPublisher];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100022BC8(v4);
+    sub_100022BC8(typesCopy);
   }
 
-  [(RMConfigurationPublisher *)self _notifySubscribersWithMissingConfigurationUITypes:v4];
+  [(RMConfigurationPublisher *)self _notifySubscribersWithMissingConfigurationUITypes:typesCopy];
   v6 = +[RMLog configurationPublisher];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects = [typesCopy allObjects];
+    v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v9 = [v8 componentsJoinedByString:{@", "}];
 
     v10 = 138543362;
@@ -893,9 +893,9 @@ LABEL_46:
   }
 }
 
-- (void)_notifySubscribersWithMissingConfigurationUITypes:(id)a3
+- (void)_notifySubscribersWithMissingConfigurationUITypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
 
   obj = self->_pluginsLock;
   objc_sync_enter(obj);
@@ -903,8 +903,8 @@ LABEL_46:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(RMConfigurationPublisher *)self plugins];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  plugins = [(RMConfigurationPublisher *)self plugins];
+  v6 = [plugins countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -914,22 +914,22 @@ LABEL_46:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(plugins);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 configurationTypes];
-        v11 = [v10 mutableCopy];
+        configurationTypes = [v9 configurationTypes];
+        v11 = [configurationTypes mutableCopy];
 
-        [v11 intersectSet:v4];
+        [v11 intersectSet:typesCopy];
         if ([v11 count])
         {
           v12 = +[RMLog configurationPublisher];
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v9 identifier];
+            identifier = [v9 identifier];
             *buf = 138543362;
-            v20 = v13;
+            v20 = identifier;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Triggering configuration subscriber UI plugin: %{public}@", buf, 0xCu);
           }
 
@@ -937,7 +937,7 @@ LABEL_46:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [plugins countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);

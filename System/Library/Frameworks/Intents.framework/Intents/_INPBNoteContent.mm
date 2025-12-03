@@ -1,45 +1,45 @@
 @interface _INPBNoteContent
-- (BOOL)isEqual:(id)a3;
-- (_INPBNoteContent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBNoteContent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBNoteContent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBNoteContent *)self image];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"image"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  image = [(_INPBNoteContent *)self image];
+  dictionaryRepresentation = [image dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"image"];
 
-  v6 = [(_INPBNoteContent *)self text];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"text"];
+  text = [(_INPBNoteContent *)self text];
+  dictionaryRepresentation2 = [text dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"text"];
 
   if ([(_INPBNoteContent *)self hasType])
   {
-    v8 = [(_INPBNoteContent *)self type];
-    if (v8 >= 3)
+    type = [(_INPBNoteContent *)self type];
+    if (type >= 3)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v9 = off_1E7283FE8[v8];
+      v9 = off_1E7283FE8[type];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"type"];
+    [dictionary setObject:v9 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -59,28 +59,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBNoteContent *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_INPBNoteContent *)self image];
+  image2 = [equalCopy image];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBNoteContent *)self image];
-  if (v7)
+  image3 = [(_INPBNoteContent *)self image];
+  if (image3)
   {
-    v8 = v7;
-    v9 = [(_INPBNoteContent *)self image];
-    v10 = [v4 image];
-    v11 = [v9 isEqual:v10];
+    v8 = image3;
+    image4 = [(_INPBNoteContent *)self image];
+    image5 = [equalCopy image];
+    v11 = [image4 isEqual:image5];
 
     if (!v11)
     {
@@ -92,22 +92,22 @@
   {
   }
 
-  v5 = [(_INPBNoteContent *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_INPBNoteContent *)self text];
+  image2 = [equalCopy text];
+  if ((image != 0) == (image2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(_INPBNoteContent *)self text];
-  if (v12)
+  text = [(_INPBNoteContent *)self text];
+  if (text)
   {
-    v13 = v12;
-    v14 = [(_INPBNoteContent *)self text];
-    v15 = [v4 text];
-    v16 = [v14 isEqual:v15];
+    v13 = text;
+    text2 = [(_INPBNoteContent *)self text];
+    text3 = [equalCopy text];
+    v16 = [text2 isEqual:text3];
 
     if (!v16)
     {
@@ -119,10 +119,10 @@ LABEL_11:
   {
   }
 
-  v19 = [(_INPBNoteContent *)self hasType];
-  if (v19 == [v4 hasType])
+  hasType = [(_INPBNoteContent *)self hasType];
+  if (hasType == [equalCopy hasType])
   {
-    if (!-[_INPBNoteContent hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+    if (!-[_INPBNoteContent hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
     {
       v17 = 1;
       goto LABEL_13;
@@ -136,13 +136,13 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBNoteContent allocWithZone:](_INPBNoteContent init];
-  v6 = [(_INPBImageNoteContent *)self->_image copyWithZone:a3];
+  v6 = [(_INPBImageNoteContent *)self->_image copyWithZone:zone];
   [(_INPBNoteContent *)v5 setImage:v6];
 
-  v7 = [(_INPBTextNoteContent *)self->_text copyWithZone:a3];
+  v7 = [(_INPBTextNoteContent *)self->_text copyWithZone:zone];
   [(_INPBNoteContent *)v5 setText:v7];
 
   if ([(_INPBNoteContent *)self hasType])
@@ -153,46 +153,46 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBNoteContent *)self data];
+  coderCopy = coder;
+  data = [(_INPBNoteContent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBNoteContent)initWithCoder:(id)a3
+- (_INPBNoteContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBNoteContent *)self initWithData:v6];
+    self = [(_INPBNoteContent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_INPBNoteContent *)self image];
+  toCopy = to;
+  image = [(_INPBNoteContent *)self image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(_INPBNoteContent *)self image];
+    image2 = [(_INPBNoteContent *)self image];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBNoteContent *)self text];
+  text = [(_INPBNoteContent *)self text];
 
-  if (v6)
+  if (text)
   {
-    v7 = [(_INPBNoteContent *)self text];
+    text2 = [(_INPBNoteContent *)self text];
     PBDataWriterWriteSubmessage();
   }
 
@@ -203,20 +203,20 @@ LABEL_13:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_NOTE_CONTENT_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_NOTE_CONTENT_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TEXT"])
+  else if ([typeCopy isEqualToString:@"TEXT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IMAGE"])
+  else if ([typeCopy isEqualToString:@"IMAGE"])
   {
     v4 = 2;
   }
@@ -229,10 +229,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -240,7 +240,7 @@ LABEL_13:
   else
   {
     *&self->_has = has | 1;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 

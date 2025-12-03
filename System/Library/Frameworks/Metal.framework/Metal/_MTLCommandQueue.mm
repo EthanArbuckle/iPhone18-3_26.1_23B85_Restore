@@ -1,18 +1,18 @@
 @interface _MTLCommandQueue
 - (BOOL)_submitAvailableCommandBuffers;
-- (BOOL)getPrivateDataAndOffset:(id *)a3 privateDataOffset:(unint64_t *)a4;
-- (BOOL)submitCommandBuffer:(id)a3;
-- (_MTLCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4;
-- (_MTLCommandQueue)initWithDevice:(id)a3 maxCommandBufferCount:(unint64_t)a4;
-- (id)commandBufferWithDescriptor:(id)a3;
-- (id)formattedDescription:(unint64_t)a3;
-- (void)addPerfSampleHandler:(id)a3;
-- (void)commandBufferDidComplete:(id)a3 startTime:(unint64_t)a4 completionTime:(unint64_t)a5 error:(id)a6;
-- (void)completeCommandBuffers:(id *)a3 count:(unint64_t)a4;
+- (BOOL)getPrivateDataAndOffset:(id *)offset privateDataOffset:(unint64_t *)dataOffset;
+- (BOOL)submitCommandBuffer:(id)buffer;
+- (_MTLCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor;
+- (_MTLCommandQueue)initWithDevice:(id)device maxCommandBufferCount:(unint64_t)count;
+- (id)commandBufferWithDescriptor:(id)descriptor;
+- (id)formattedDescription:(unint64_t)description;
+- (void)addPerfSampleHandler:(id)handler;
+- (void)commandBufferDidComplete:(id)complete startTime:(unint64_t)time completionTime:(unint64_t)completionTime error:(id)error;
+- (void)completeCommandBuffers:(id *)buffers count:(unint64_t)count;
 - (void)dealloc;
-- (void)enqueueCommandBuffer:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setSubmissionQueue:(id)a3;
+- (void)enqueueCommandBuffer:(id)buffer;
+- (void)setLabel:(id)label;
+- (void)setSubmissionQueue:(id)queue;
 @end
 
 @implementation _MTLCommandQueue
@@ -43,7 +43,7 @@
 
 LABEL_8:
     v20 = v3;
-    v18 = self;
+    selfCopy = self;
     v19 = v4;
     do
     {
@@ -124,7 +124,7 @@ LABEL_14:
     while (v4);
     v13 = v19;
     v3 = v20;
-    v14 = v18;
+    v14 = selfCopy;
   }
 
   else
@@ -200,24 +200,24 @@ LABEL_30:
   [(_MTLObjectWithLabel *)&v9 dealloc];
 }
 
-- (_MTLCommandQueue)initWithDevice:(id)a3 maxCommandBufferCount:(unint64_t)a4
+- (_MTLCommandQueue)initWithDevice:(id)device maxCommandBufferCount:(unint64_t)count
 {
   v7 = objc_alloc_init(MTLCommandQueueDescriptor);
-  [(MTLCommandQueueDescriptor *)v7 setMaxCommandBufferCount:a4];
+  [(MTLCommandQueueDescriptor *)v7 setMaxCommandBufferCount:count];
 
-  return [(_MTLCommandQueue *)self initWithDevice:a3 descriptor:v7];
+  return [(_MTLCommandQueue *)self initWithDevice:device descriptor:v7];
 }
 
-- (_MTLCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MTLCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v40 = 0;
   memset(v39, 0, sizeof(v39));
-  _MTLMessageContextBegin_(v39, "[_MTLCommandQueue initWithDevice:descriptor:]", 141, a3, 13, "Command Queue Creation Validation");
-  if (a3)
+  _MTLMessageContextBegin_(v39, "[_MTLCommandQueue initWithDevice:descriptor:]", 141, device, 13, "Command Queue Creation Validation");
+  if (device)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [_MTLIOCommandQueue initWithDevice:a3 descriptor:v39];
+      [_MTLIOCommandQueue initWithDevice:device descriptor:v39];
     }
   }
 
@@ -226,17 +226,17 @@ LABEL_30:
     _MTLMessageContextPush_(v39, 4, @"device must not be nil.", v7, v8, v9, v10, v11, v35);
   }
 
-  if (![a4 maxCommandBufferCount])
+  if (![descriptor maxCommandBufferCount])
   {
-    [_MTLIOCommandQueue initWithDevice:a4 descriptor:v39];
+    [_MTLIOCommandQueue initWithDevice:descriptor descriptor:v39];
   }
 
-  if ([a4 qosLevel] && objc_msgSend(a4, "qosLevel") != 1 && objc_msgSend(a4, "qosLevel") != 2 && objc_msgSend(a4, "qosLevel") != 3 && objc_msgSend(a4, "qosLevel") != 4)
+  if ([descriptor qosLevel] && objc_msgSend(descriptor, "qosLevel") != 1 && objc_msgSend(descriptor, "qosLevel") != 2 && objc_msgSend(descriptor, "qosLevel") != 3 && objc_msgSend(descriptor, "qosLevel") != 4)
   {
-    [_MTLCommandQueue initWithDevice:a4 descriptor:v39];
+    [_MTLCommandQueue initWithDevice:descriptor descriptor:v39];
   }
 
-  if ([a3 _rateLimitQueueCreation] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ([device _rateLimitQueueCreation] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     [_MTLCommandQueue initWithDevice:descriptor:];
   }
@@ -253,35 +253,35 @@ LABEL_30:
     pthread_mutex_init((v12 + 112), 0);
     *(v12 + 22) = dispatch_group_create();
     v12[345] = 1;
-    v13 = dispatch_semaphore_create([a4 maxCommandBufferCount]);
+    v13 = dispatch_semaphore_create([descriptor maxCommandBufferCount]);
     *(v12 + 26) = v13;
     if (!v13)
     {
       _MTLMessageContextPush_(v39, 4, @"cannot create command-buffer counting semaphore", v14, v15, v16, v17, v18, v35);
     }
 
-    *(v12 + 38) = [a4 maxCommandBufferCount];
-    *(v12 + 39) = [a4 qosLevel];
-    *(v12 + 40) = [a4 commitQueue];
-    v12[328] = [a4 commitSynchronously];
-    *(v12 + 42) = [a4 completionQueue];
-    v12[344] = [a4 disableCrossQueueHazardTracking];
-    v12[347] = [a4 isOpenGLQueue];
-    if ([a4 commitQueue])
+    *(v12 + 38) = [descriptor maxCommandBufferCount];
+    *(v12 + 39) = [descriptor qosLevel];
+    *(v12 + 40) = [descriptor commitQueue];
+    v12[328] = [descriptor commitSynchronously];
+    *(v12 + 42) = [descriptor completionQueue];
+    v12[344] = [descriptor disableCrossQueueHazardTracking];
+    v12[347] = [descriptor isOpenGLQueue];
+    if ([descriptor commitQueue])
     {
-      v19 = [a4 commitQueue];
-      *(v12 + 23) = v19;
-      dispatch_retain(v19);
+      commitQueue = [descriptor commitQueue];
+      *(v12 + 23) = commitQueue;
+      dispatch_retain(commitQueue);
     }
 
-    if ([a4 completionQueue])
+    if ([descriptor completionQueue])
     {
-      v20 = [a4 completionQueue];
-      *(v12 + 24) = v20;
-      dispatch_retain(v20);
+      completionQueue = [descriptor completionQueue];
+      *(v12 + 24) = completionQueue;
+      dispatch_retain(completionQueue);
     }
 
-    v12[376] = [a4 commitsWithQoS];
+    v12[376] = [descriptor commitsWithQoS];
     v21 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     if (!*(v12 + 23))
     {
@@ -309,18 +309,18 @@ LABEL_30:
     handler[4] = v37;
     dispatch_source_set_event_handler(v22, handler);
     dispatch_resume(*(v12 + 25));
-    v23 = a3;
-    *(v12 + 3) = v23;
-    [v23 _incrementCommandQueueCount];
+    deviceCopy = device;
+    *(v12 + 3) = deviceCopy;
+    [deviceCopy _incrementCommandQueueCount];
     [*(v12 + 3) _incrementAcquireCount];
     v12[256] = 0;
     *(v12 + 33) = 0;
     *(v12 + 34) = 0;
     *(v12 + 36) = 0;
     atomic_store(0, v12 + 70);
-    if ([a4 logState])
+    if ([descriptor logState])
     {
-      v24 = [a4 logState];
+      logState = [descriptor logState];
     }
 
     else
@@ -337,10 +337,10 @@ LABEL_30:
         [*(v12 + 3) initDefaultLogState];
       }
 
-      v24 = [*(v12 + 3) defaultLogState];
+      logState = [*(v12 + 3) defaultLogState];
     }
 
-    v26 = v24;
+    v26 = logState;
 LABEL_33:
     *(v12 + 31) = v26;
     *(v12 + 37) = 0;
@@ -356,8 +356,8 @@ LABEL_33:
       [_MTLCommandQueue initWithDevice:descriptor:];
     }
 
-    v33 = [a4 commitSynchronously];
-    v12[360] = (v33 | initWithDevice_descriptor__force_immediate_submission_on_commit_thread) & 1;
+    commitSynchronously = [descriptor commitSynchronously];
+    v12[360] = (commitSynchronously | initWithDevice_descriptor__force_immediate_submission_on_commit_thread) & 1;
     *(v12 + 46) = objc_alloc_init(MTLPrivateDataTable);
     _Block_object_dispose(v37, 8);
   }
@@ -366,7 +366,7 @@ LABEL_33:
   return v12;
 }
 
-- (void)setSubmissionQueue:(id)a3
+- (void)setSubmissionQueue:(id)queue
 {
   commandQueueEventSource = self->_commandQueueEventSource;
   if (commandQueueEventSource)
@@ -381,9 +381,9 @@ LABEL_33:
     dispatch_release(commandQueueDispatch);
   }
 
-  dispatch_retain(a3);
-  self->_commandQueueDispatch = a3;
-  v7 = dispatch_source_create(MEMORY[0x1E69E96B0], 0, 0, a3);
+  dispatch_retain(queue);
+  self->_commandQueueDispatch = queue;
+  v7 = dispatch_source_create(MEMORY[0x1E69E96B0], 0, 0, queue);
   self->_commandQueueEventSource = v7;
   v9[0] = 0;
   v9[1] = v9;
@@ -401,11 +401,11 @@ LABEL_33:
   _Block_object_dispose(v9, 8);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [(_MTLObjectWithLabel *)self retainedLabel];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(_MTLObjectWithLabel *)self retainedLabel];
   v7 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = _MTLCommandQueue;
@@ -413,9 +413,9 @@ LABEL_33:
   v16[0] = v5;
   v16[1] = @"label =";
   v9 = @"<none>";
-  if (v6)
+  if (retainedLabel)
   {
-    v9 = v6;
+    v9 = retainedLabel;
   }
 
   v16[2] = v9;
@@ -435,49 +435,49 @@ LABEL_33:
   return v12;
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
-  if ([a3 retainedReferences])
+  if ([descriptor retainedReferences])
   {
-    v5 = [(_MTLCommandQueue *)self commandBuffer];
+    commandBuffer = [(_MTLCommandQueue *)self commandBuffer];
   }
 
   else
   {
-    v5 = [(_MTLCommandQueue *)self commandBufferWithUnretainedReferences];
+    commandBuffer = [(_MTLCommandQueue *)self commandBufferWithUnretainedReferences];
   }
 
-  v6 = v5;
-  [v5 setErrorOptions:{objc_msgSend(a3, "errorOptions")}];
+  v6 = commandBuffer;
+  [commandBuffer setErrorOptions:{objc_msgSend(descriptor, "errorOptions")}];
   return v6;
 }
 
-- (BOOL)getPrivateDataAndOffset:(id *)a3 privateDataOffset:(unint64_t *)a4
+- (BOOL)getPrivateDataAndOffset:(id *)offset privateDataOffset:(unint64_t *)dataOffset
 {
   privateDataTable = self->_privateDataTable;
-  v7 = [(_MTLCommandQueue *)self device];
+  device = [(_MTLCommandQueue *)self device];
 
-  return [(MTLPrivateDataTable *)privateDataTable getPrivateDataAndOffset:v7 privateData:a3 privateDataOffset:a4];
+  return [(MTLPrivateDataTable *)privateDataTable getPrivateDataAndOffset:device privateData:offset privateDataOffset:dataOffset];
 }
 
-- (void)enqueueCommandBuffer:(id)a3
+- (void)enqueueCommandBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(_MTLCommandQueue *)a3 enqueueCommandBuffer:v10, v11, v12, v13, v14, v15, v16, v26];
+      [(_MTLCommandQueue *)buffer enqueueCommandBuffer:v10, v11, v12, v13, v14, v15, v16, v26];
     }
 
-    v17 = [(_MTLCommandQueue *)self device];
-    v18 = [a3 device];
-    if (v17 != v18)
+    device = [(_MTLCommandQueue *)self device];
+    device2 = [buffer device];
+    if (device != device2)
     {
-      [(_MTLCommandQueue *)v18 enqueueCommandBuffer:v19, v20, v21, v22, v23, v24, v25, v26];
+      [(_MTLCommandQueue *)device2 enqueueCommandBuffer:v19, v20, v21, v22, v23, v24, v25, v26];
     }
 
     pthread_mutex_lock(&self->_pendingQueueLock);
-    [(NSMutableArray *)self->_pendingQueue addObject:a3];
+    [(NSMutableArray *)self->_pendingQueue addObject:buffer];
 
     pthread_mutex_unlock(&self->_pendingQueueLock);
   }
@@ -488,27 +488,27 @@ LABEL_33:
   }
 }
 
-- (void)completeCommandBuffers:(id *)a3 count:(unint64_t)a4
+- (void)completeCommandBuffers:(id *)buffers count:(unint64_t)count
 {
   v7 = mach_absolute_time();
-  if (a4)
+  if (count)
   {
     v15 = v7;
     do
     {
-      v16 = *a3;
-      if (*a3)
+      v16 = *buffers;
+      if (*buffers)
       {
         if (MTLFailureTypeGetEnabled(1uLL))
         {
           [_MTLCommandQueue completeCommandBuffers:v16 count:?];
         }
 
-        v17 = [(_MTLCommandQueue *)self device];
-        v18 = [v16 device];
-        if (v17 != v18)
+        device = [(_MTLCommandQueue *)self device];
+        device2 = [v16 device];
+        if (device != device2)
         {
-          [(_MTLCommandQueue *)v18 completeCommandBuffers:v19 count:v20, v21, v22, v23, v24, v25];
+          [(_MTLCommandQueue *)device2 completeCommandBuffers:v19 count:v20, v21, v22, v23, v24, v25];
         }
       }
 
@@ -534,15 +534,15 @@ LABEL_33:
       v28[5] = v16;
       v28[6] = v15;
       dispatch_async(v27, v28);
-      ++a3;
-      --a4;
+      ++buffers;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 }
 
-- (BOOL)submitCommandBuffer:(id)a3
+- (BOOL)submitCommandBuffer:(id)buffer
 {
   v7 = 0;
   v8 = &v7;
@@ -561,47 +561,47 @@ LABEL_33:
   return v4;
 }
 
-- (void)commandBufferDidComplete:(id)a3 startTime:(unint64_t)a4 completionTime:(unint64_t)a5 error:(id)a6
+- (void)commandBufferDidComplete:(id)complete startTime:(unint64_t)time completionTime:(unint64_t)completionTime error:(id)error
 {
-  if (a3)
+  if (complete)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(_MTLCommandQueue *)a3 commandBufferDidComplete:v13 startTime:v14 completionTime:v15 error:v16, v17, v18, v19, v30];
+      [(_MTLCommandQueue *)complete commandBufferDidComplete:v13 startTime:v14 completionTime:v15 error:v16, v17, v18, v19, v30];
     }
 
-    v20 = [(_MTLCommandQueue *)self device];
-    v21 = [a3 device];
-    if (v20 != v21)
+    device = [(_MTLCommandQueue *)self device];
+    device2 = [complete device];
+    if (device != device2)
     {
-      [(_MTLCommandQueue *)v21 commandBufferDidComplete:v22 startTime:v23 completionTime:v24 error:v25, v26, v27, v28, v30];
+      [(_MTLCommandQueue *)device2 commandBufferDidComplete:v22 startTime:v23 completionTime:v24 error:v25, v26, v27, v28, v30];
     }
   }
 
   else
   {
-    [(_MTLCommandQueue *)self commandBufferDidComplete:a2 startTime:0 completionTime:a4 error:a5, a6, v6, v7, v30];
+    [(_MTLCommandQueue *)self commandBufferDidComplete:a2 startTime:0 completionTime:time error:completionTime, error, v6, v7, v30];
   }
 
-  [a3 didCompleteWithStartTime:a4 endTime:a5 error:a6];
+  [complete didCompleteWithStartTime:time endTime:completionTime error:error];
   pthread_mutex_lock(&self->_submittedQueueLock);
-  [(NSMutableArray *)self->_submittedQueue removeObject:a3];
+  [(NSMutableArray *)self->_submittedQueue removeObject:complete];
   pthread_mutex_unlock(&self->_submittedQueueLock);
   submittedGroup = self->_submittedGroup;
 
   dispatch_group_leave(submittedGroup);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v3.receiver = self;
   v3.super_class = _MTLCommandQueue;
-  [(_MTLObjectWithLabel *)&v3 setLabel:a3];
+  [(_MTLObjectWithLabel *)&v3 setLabel:label];
 }
 
-- (void)addPerfSampleHandler:(id)a3
+- (void)addPerfSampleHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_release(self->_perfSampleHandlerBlock);
   self->_perfSampleHandlerBlock = v4;
 }

@@ -1,11 +1,11 @@
 @interface MKMarkerStyleConfiguration
-+ (BOOL)_darkModeForView:(id)a3;
-+ (BOOL)_increaseContrastForView:(id)a3;
++ (BOOL)_darkModeForView:(id)view;
++ (BOOL)_increaseContrastForView:(id)view;
 + (double)_fallbackScale;
-+ (double)_scaleForView:(id)a3;
-+ (id)configurationForView:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMarkerStyleConfiguration:(id)a3;
++ (double)_scaleForView:(id)view;
++ (id)configurationForView:(id)view;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMarkerStyleConfiguration:(id)configuration;
 - (MKMarkerStyleConfiguration)init;
 - (id)debugDescription;
 - (unint64_t)hash;
@@ -84,35 +84,35 @@
   return v3;
 }
 
-- (BOOL)isEqualToMarkerStyleConfiguration:(id)a3
+- (BOOL)isEqualToMarkerStyleConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   selected = self->_selected;
-  if (selected != [v4 selected])
+  if (selected != [configurationCopy selected])
   {
     goto LABEL_24;
   }
 
   darkMode = self->_darkMode;
-  if (darkMode != [v4 darkMode])
+  if (darkMode != [configurationCopy darkMode])
   {
     goto LABEL_24;
   }
 
   increasedContrast = self->_increasedContrast;
-  if (increasedContrast != [v4 increasedContrast])
+  if (increasedContrast != [configurationCopy increasedContrast])
   {
     goto LABEL_24;
   }
 
   glyphHidden = self->_glyphHidden;
-  if (glyphHidden != [v4 glyphHidden])
+  if (glyphHidden != [configurationCopy glyphHidden])
   {
     goto LABEL_24;
   }
 
   scale = self->_scale;
-  [v4 scale];
+  [configurationCopy scale];
   if (vabdd_f64(scale, v10) > 2.22044605e-16)
   {
     goto LABEL_24;
@@ -122,18 +122,18 @@
   v12 = fillColor;
   if (!fillColor)
   {
-    v13 = [v4 fillColor];
-    if (!v13)
+    fillColor = [configurationCopy fillColor];
+    if (!fillColor)
     {
       goto LABEL_13;
     }
 
-    glyphHidden = v13;
+    glyphHidden = fillColor;
     v12 = self->_fillColor;
   }
 
-  v14 = [v4 fillColor];
-  v15 = [(UIColor *)v12 isEqual:v14];
+  fillColor2 = [configurationCopy fillColor];
+  v15 = [(UIColor *)v12 isEqual:fillColor2];
 
   if (fillColor)
   {
@@ -157,18 +157,18 @@ LABEL_13:
   v17 = glyphColor;
   if (!glyphColor)
   {
-    v18 = [v4 glyphColor];
-    if (!v18)
+    glyphColor = [configurationCopy glyphColor];
+    if (!glyphColor)
     {
       goto LABEL_18;
     }
 
-    glyphHidden = v18;
+    glyphHidden = glyphColor;
     v17 = self->_glyphColor;
   }
 
-  v19 = [v4 glyphColor];
-  v20 = [(UIColor *)v17 isEqual:v19];
+  glyphColor2 = [configurationCopy glyphColor];
+  v20 = [(UIColor *)v17 isEqual:glyphColor2];
 
   if (glyphColor)
   {
@@ -192,7 +192,7 @@ LABEL_18:
   v22 = styleAttributes;
   if (!styleAttributes)
   {
-    glyphHidden = [v4 styleAttributes];
+    glyphHidden = [configurationCopy styleAttributes];
     if (!glyphHidden)
     {
       v24 = 1;
@@ -204,8 +204,8 @@ LABEL_27:
     v22 = self->_styleAttributes;
   }
 
-  v23 = [v4 styleAttributes];
-  v24 = [(GEOFeatureStyleAttributes *)v22 isEqual:v23];
+  styleAttributes = [configurationCopy styleAttributes];
+  v24 = [(GEOFeatureStyleAttributes *)v22 isEqual:styleAttributes];
 
   if (!styleAttributes)
   {
@@ -217,10 +217,10 @@ LABEL_25:
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -228,7 +228,7 @@ LABEL_25:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKMarkerStyleConfiguration *)self isEqualToMarkerStyleConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKMarkerStyleConfiguration *)self isEqualToMarkerStyleConfiguration:equalCopy];
   }
 
   return v5;
@@ -249,17 +249,17 @@ LABEL_25:
 
 + (double)_fallbackScale
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
 }
 
-+ (double)_scaleForView:(id)a3
++ (double)_scaleForView:(id)view
 {
-  v4 = [a3 traitCollection];
-  [v4 displayScale];
+  traitCollection = [view traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   if (v6 != 0.0)
@@ -267,34 +267,34 @@ LABEL_25:
     return v6;
   }
 
-  [a1 _fallbackScale];
+  [self _fallbackScale];
   return result;
 }
 
-+ (BOOL)_darkModeForView:(id)a3
++ (BOOL)_darkModeForView:(id)view
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 userInterfaceStyle] == 2;
+  traitCollection = [view traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == 2;
 
   return v4;
 }
 
-+ (BOOL)_increaseContrastForView:(id)a3
++ (BOOL)_increaseContrastForView:(id)view
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 accessibilityContrast] == 1;
+  traitCollection = [view traitCollection];
+  v4 = [traitCollection accessibilityContrast] == 1;
 
   return v4;
 }
 
-+ (id)configurationForView:(id)a3
++ (id)configurationForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(MKMarkerStyleConfiguration);
-  [a1 _scaleForView:v4];
+  [self _scaleForView:viewCopy];
   [(MKMarkerStyleConfiguration *)v5 setScale:?];
-  -[MKMarkerStyleConfiguration setDarkMode:](v5, "setDarkMode:", [a1 _darkModeForView:v4]);
-  v6 = [a1 _increaseContrastForView:v4];
+  -[MKMarkerStyleConfiguration setDarkMode:](v5, "setDarkMode:", [self _darkModeForView:viewCopy]);
+  v6 = [self _increaseContrastForView:viewCopy];
 
   [(MKMarkerStyleConfiguration *)v5 setIncreasedContrast:v6];
 

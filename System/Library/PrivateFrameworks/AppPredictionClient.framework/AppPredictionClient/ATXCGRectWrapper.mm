@@ -1,15 +1,15 @@
 @interface ATXCGRectWrapper
-- (ATXCGRectWrapper)initWithCGRect:(CGRect)a3;
-- (ATXCGRectWrapper)initWithCoder:(id)a3;
-- (ATXCGRectWrapper)initWithProto:(id)a3;
-- (ATXCGRectWrapper)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXCGRectWrapper:(id)a3;
+- (ATXCGRectWrapper)initWithCGRect:(CGRect)rect;
+- (ATXCGRectWrapper)initWithCoder:(id)coder;
+- (ATXCGRectWrapper)initWithProto:(id)proto;
+- (ATXCGRectWrapper)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXCGRectWrapper:(id)wrapper;
 - (CGRect)rect;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXCGRectWrapper
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (ATXCGRectWrapper)initWithCGRect:(CGRect)a3
+- (ATXCGRectWrapper)initWithCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = ATXCGRectWrapper;
   result = [(ATXCGRectWrapper *)&v8 init];
@@ -62,32 +62,32 @@
   return result;
 }
 
-- (ATXCGRectWrapper)initWithProtoData:(id)a3
+- (ATXCGRectWrapper)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBCGRectWrapper alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBCGRectWrapper alloc] initWithData:dataCopy];
 
     self = [(ATXCGRectWrapper *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXCGRectWrapper)initWithProto:(id)a3
+- (ATXCGRectWrapper)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -103,64 +103,64 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   v6 = [(ATXPBCGRectWrapper *)v5 x];
   v7 = [(ATXPBCGRectWrapper *)v5 y];
-  v8 = [(ATXPBCGRectWrapper *)v5 width];
-  v9 = [(ATXPBCGRectWrapper *)v5 height];
+  width = [(ATXPBCGRectWrapper *)v5 width];
+  height = [(ATXPBCGRectWrapper *)v5 height];
 
-  self = [(ATXCGRectWrapper *)self initWithCGRect:v6, v7, v8, v9];
-  v10 = self;
+  self = [(ATXCGRectWrapper *)self initWithCGRect:v6, v7, width, height];
+  selfCopy = self;
 LABEL_8:
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXCGRectWrapper *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXCGRectWrapper *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXCGRectWrapper *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXCGRectWrapper *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXCGRectWrapper)initWithCoder:(id)a3
+- (ATXCGRectWrapper)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"protobufData" withCoder:v5 expectNonNull:0 errorDomain:@"com.apple.ATXCGRectWrapper" errorCode:-1 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"protobufData" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.ATXCGRectWrapper" errorCode:-1 logHandle:0];
 
   v7 = [(ATXCGRectWrapper *)self initWithProtoData:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCGRectWrapper *)self isEqualToATXCGRectWrapper:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCGRectWrapper *)self isEqualToATXCGRectWrapper:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXCGRectWrapper:(id)a3
+- (BOOL)isEqualToATXCGRectWrapper:(id)wrapper
 {
-  [a3 rect];
+  [wrapper rect];
   v5 = v4;
   v7 = v6;
   v9 = v8;

@@ -1,38 +1,38 @@
 @interface MiniPlayerViewController
-- (_TtC5Music24MiniPlayerViewController)initWithCoder:(id)a3;
-- (_TtC5Music24MiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Music24MiniPlayerViewController)initWithCoder:(id)coder;
+- (_TtC5Music24MiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation MiniPlayerViewController
 
-- (_TtC5Music24MiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Music24MiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for MiniPlayerViewController();
-  v9 = [(MiniPlayerViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(MiniPlayerViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC5Music24MiniPlayerViewController)initWithCoder:(id)a3
+- (_TtC5Music24MiniPlayerViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MiniPlayerViewController();
-  v4 = a3;
-  v5 = [(MiniPlayerViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(MiniPlayerViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

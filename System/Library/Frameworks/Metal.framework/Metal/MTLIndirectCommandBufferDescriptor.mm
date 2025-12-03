@@ -1,7 +1,7 @@
 @interface MTLIndirectCommandBufferDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLIndirectCommandBufferDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MTLIndirectCommandBufferDescriptor
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[MTLIndirectCommandBufferDescriptor allocWithZone:?]];
   if (result)
@@ -43,15 +43,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && memcmp(&self->_state, a3 + 8, 0x70uLL) == 0;
+  return Class == object_getClass(equal) && memcmp(&self->_state, equal + 8, 0x70uLL) == 0;
 }
 
 @end

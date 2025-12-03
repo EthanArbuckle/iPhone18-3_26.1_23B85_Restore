@@ -1,21 +1,21 @@
 @interface SUICKPCardSectionViewProvider
 - (CRKCardSectionViewProviderDelegate)delegate;
 - (NSArray)viewConfigurations;
-- (SUICKPCardSectionViewProvider)initWithCard:(id)a3;
+- (SUICKPCardSectionViewProvider)initWithCard:(id)card;
 @end
 
 @implementation SUICKPCardSectionViewProvider
 
-- (SUICKPCardSectionViewProvider)initWithCard:(id)a3
+- (SUICKPCardSectionViewProvider)initWithCard:(id)card
 {
-  v5 = a3;
+  cardCopy = card;
   v9.receiver = self;
   v9.super_class = SUICKPCardSectionViewProvider;
   v6 = [(SUICKPCardSectionViewProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_card, a3);
+    objc_storeStrong(&v6->_card, card);
   }
 
   return v7;
@@ -30,14 +30,14 @@
     viewConfigurations = self->_viewConfigurations;
     if (!viewConfigurations)
     {
-      v29 = self;
-      v5 = [(CRCard *)card resolvedCardSections];
-      v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+      selfCopy = self;
+      resolvedCardSections = [(CRCard *)card resolvedCardSections];
+      v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(resolvedCardSections, "count")}];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v6 = v5;
+      v6 = resolvedCardSections;
       v7 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v7)
       {
@@ -55,11 +55,11 @@
             v11 = *(*(&v35 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v12 = [v11 backingCardSection];
-              if (v12)
+              backingCardSection = [v11 backingCardSection];
+              if (backingCardSection)
               {
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) == 0 || ([v12 visualCATOutput], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+                if ((objc_opt_isKindOfClass() & 1) == 0 || ([backingCardSection visualCATOutput], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
                 {
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
@@ -67,7 +67,7 @@
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      [v30 addObject:v12];
+                      [v30 addObject:backingCardSection];
                     }
                   }
                 }
@@ -76,7 +76,7 @@
 
             else
             {
-              v12 = 0;
+              backingCardSection = 0;
             }
           }
 
@@ -87,42 +87,42 @@
       }
 
       v14 = objc_alloc_init(SUICKPFeedbackDelegateDemultiplexer);
-      feedbackDelegateDemux = v29->_feedbackDelegateDemux;
-      v29->_feedbackDelegateDemux = v14;
+      feedbackDelegateDemux = selfCopy->_feedbackDelegateDemux;
+      selfCopy->_feedbackDelegateDemux = v14;
 
-      WeakRetained = objc_loadWeakRetained(&v29->_delegate);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       v17 = objc_opt_respondsToSelector();
 
       if (v17)
       {
-        v18 = objc_loadWeakRetained(&v29->_delegate);
-        v19 = [v18 defaultFeedbackDelegateForProvider:v29];
+        v18 = objc_loadWeakRetained(&selfCopy->_delegate);
+        v19 = [v18 defaultFeedbackDelegateForProvider:selfCopy];
 
         if (v19)
         {
           v20 = objc_alloc_init(SUICKPFeedbackAdapter);
           [(SUICKPFeedbackAdapter *)v20 setFeedbackDelegate:v19];
-          [(SUICKPFeedbackDelegateDemultiplexer *)v29->_feedbackDelegateDemux setDefaultDelegate:v20];
+          [(SUICKPFeedbackDelegateDemultiplexer *)selfCopy->_feedbackDelegateDemux setDefaultDelegate:v20];
         }
       }
 
-      v21 = [MEMORY[0x277D4C818] viewsForCardSections:v30 feedbackListener:v29->_feedbackDelegateDemux];
+      v21 = [MEMORY[0x277D4C818] viewsForCardSections:v30 feedbackListener:selfCopy->_feedbackDelegateDemux];
       v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __51__SUICKPCardSectionViewProvider_viewConfigurations__block_invoke;
       v31[3] = &unk_279B8EEB8;
       v32 = v21;
-      v33 = v29;
+      v33 = selfCopy;
       v23 = v22;
       v34 = v23;
       v24 = v21;
       [v30 enumerateObjectsUsingBlock:v31];
-      v25 = v29->_viewConfigurations;
-      v29->_viewConfigurations = v23;
+      v25 = selfCopy->_viewConfigurations;
+      selfCopy->_viewConfigurations = v23;
       v26 = v23;
 
-      viewConfigurations = v29->_viewConfigurations;
+      viewConfigurations = selfCopy->_viewConfigurations;
     }
 
     card = viewConfigurations;

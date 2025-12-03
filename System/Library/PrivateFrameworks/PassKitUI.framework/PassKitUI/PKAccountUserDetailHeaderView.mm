@@ -1,18 +1,18 @@
 @interface PKAccountUserDetailHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountUserDetailHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountUserDetailHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContactForActions:(id)a3;
-- (void)setContactForDisplay:(id)a3;
+- (void)setContactForActions:(id)actions;
+- (void)setContactForDisplay:(id)display;
 @end
 
 @implementation PKAccountUserDetailHeaderView
 
-- (PKAccountUserDetailHeaderView)initWithFrame:(CGRect)a3
+- (PKAccountUserDetailHeaderView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKAccountUserDetailHeaderView;
-  v3 = [(PKAccountUserDetailHeaderView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKAccountUserDetailHeaderView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[PKAvatarHeaderView alloc] initWithContact:0 counterpartHandle:0];
@@ -27,19 +27,19 @@
     [(CNContactInlineActionsViewController *)v3->_actionsViewController setDisplaysTitles:1];
     [(CNContactInlineActionsViewController *)v3->_actionsViewController setDisplaysUnavailableActionTypes:1];
     [(CNContactInlineActionsViewController *)v3->_actionsViewController setViewStyle:7];
-    v8 = [(CNContactInlineActionsViewController *)v3->_actionsViewController view];
-    [v8 setAccessibilityIdentifier:*MEMORY[0x1E69B93D0]];
-    [(PKAccountUserDetailHeaderView *)v3 addSubview:v8];
+    view = [(CNContactInlineActionsViewController *)v3->_actionsViewController view];
+    [view setAccessibilityIdentifier:*MEMORY[0x1E69B93D0]];
+    [(PKAccountUserDetailHeaderView *)v3 addSubview:view];
     [(PKAccountUserDetailHeaderView *)v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = PKUserInterfaceIdiomSupportsLargeLayouts();
   v7 = -20.0;
   if (v6)
@@ -50,8 +50,8 @@
   v8 = width + v7 * 2.0;
   [(PKAvatarHeaderView *)self->_avatarHeaderView sizeThatFits:v8, height];
   v10 = v9;
-  v11 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
-  [v11 sizeThatFits:{v8, height}];
+  view = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
+  [view sizeThatFits:{v8, height}];
   v13 = v12;
 
   v14 = v10 + v13 + 15.0;
@@ -96,29 +96,29 @@
   CGRectDivide(remainder, &v15, &remainder, v12, CGRectMinYEdge);
   [(PKAvatarHeaderView *)self->_avatarHeaderView setFrame:*&v15.origin, *&v15.size];
   CGRectDivide(remainder, &v15, &remainder, 15.0, CGRectMinYEdge);
-  v13 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
-  [v13 sizeThatFits:{remainder.size.width, remainder.size.height}];
+  view = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
+  [view sizeThatFits:{remainder.size.width, remainder.size.height}];
   CGRectDivide(remainder, &v15, &remainder, v14, CGRectMinYEdge);
-  [v13 setFrame:{*&v15.origin, *&v15.size}];
+  [view setFrame:{*&v15.origin, *&v15.size}];
 }
 
-- (void)setContactForDisplay:(id)a3
+- (void)setContactForDisplay:(id)display
 {
-  v5 = a3;
+  displayCopy = display;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contactForDisplay, a3);
+    objc_storeStrong(&self->_contactForDisplay, display);
     [(PKAvatarHeaderView *)self->_avatarHeaderView setContact:self->_contactForDisplay];
     [(PKAccountUserDetailHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setContactForActions:(id)a3
+- (void)setContactForActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contactForActions, a3);
+    objc_storeStrong(&self->_contactForActions, actions);
     [(CNContactInlineActionsViewController *)self->_actionsViewController setContact:self->_contactForActions];
     [(PKAccountUserDetailHeaderView *)self setNeedsLayout];
   }

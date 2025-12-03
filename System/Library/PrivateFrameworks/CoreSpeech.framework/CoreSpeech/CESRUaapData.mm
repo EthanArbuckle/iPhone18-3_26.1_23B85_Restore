@@ -1,16 +1,16 @@
 @interface CESRUaapData
-+ (BOOL)removeUaapOovsForLanguage:(id)a3 bundleId:(id)a4;
-+ (BOOL)writeUaapOovsForLanguage:(id)a3 bundleId:(id)a4 customProns:(id)a5 newOovs:(id)a6 error:(id *)a7;
-+ (id)readUaapOovsForLanguage:(id)a3;
++ (BOOL)removeUaapOovsForLanguage:(id)language bundleId:(id)id;
++ (BOOL)writeUaapOovsForLanguage:(id)language bundleId:(id)id customProns:(id)prons newOovs:(id)oovs error:(id *)error;
++ (id)readUaapOovsForLanguage:(id)language;
 @end
 
 @implementation CESRUaapData
 
-+ (BOOL)removeUaapOovsForLanguage:(id)a3 bundleId:(id)a4
++ (BOOL)removeUaapOovsForLanguage:(id)language bundleId:(id)id
 {
-  v5 = a4;
-  v6 = sub_1000091D4(a3);
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  idCopy = id;
+  v6 = sub_1000091D4(language);
+  v7 = [v6 stringByAppendingPathComponent:idCopy];
 
   v8 = [v7 stringByAppendingPathComponent:@"Prons"];
   v9 = +[NSFileManager defaultManager];
@@ -19,19 +19,19 @@
   return v10;
 }
 
-+ (BOOL)writeUaapOovsForLanguage:(id)a3 bundleId:(id)a4 customProns:(id)a5 newOovs:(id)a6 error:(id *)a7
++ (BOOL)writeUaapOovsForLanguage:(id)language bundleId:(id)id customProns:(id)prons newOovs:(id)oovs error:(id *)error
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  idCopy = id;
+  oovsCopy = oovs;
+  pronsCopy = prons;
+  languageCopy = language;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_10000966C;
   v38[3] = &unk_10024E080;
   v14 = objc_alloc_init(NSMutableDictionary);
   v39 = v14;
-  [v11 enumerateObjectsUsingBlock:v38];
+  [oovsCopy enumerateObjectsUsingBlock:v38];
 
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
@@ -39,11 +39,11 @@
   v36[3] = &unk_10024E0A8;
   v15 = v14;
   v37 = v15;
-  [v12 enumerateKeysAndObjectsUsingBlock:v36];
+  [pronsCopy enumerateKeysAndObjectsUsingBlock:v36];
 
-  v16 = sub_1000091D4(v13);
+  v16 = sub_1000091D4(languageCopy);
 
-  v17 = [v16 stringByAppendingPathComponent:v10];
+  v17 = [v16 stringByAppendingPathComponent:idCopy];
 
   v18 = [v17 stringByAppendingPathComponent:@"Prons"];
   v19 = +[NSFileManager defaultManager];
@@ -76,14 +76,14 @@ LABEL_14:
       *buf = 136315650;
       v41 = "+[CESRUaapData writeUaapOovsForLanguage:bundleId:customProns:newOovs:error:]";
       v42 = 2112;
-      v43 = v10;
+      v43 = idCopy;
       v44 = 2112;
       v45 = v26;
       _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%s Failed to write app-specific OOVs for %@: %@", buf, 0x20u);
     }
 
-    v29 = a7;
-    if (!a7)
+    errorCopy2 = error;
+    if (!error)
     {
       v27 = 0;
       goto LABEL_14;
@@ -99,19 +99,19 @@ LABEL_14:
     *buf = 136315650;
     v41 = "+[CESRUaapData writeUaapOovsForLanguage:bundleId:customProns:newOovs:error:]";
     v42 = 2112;
-    v43 = v10;
+    v43 = idCopy;
     v44 = 2112;
     v45 = v23;
     _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s Failed to create UaaP app directory for %@: %@", buf, 0x20u);
   }
 
-  v29 = a7;
-  if (a7)
+  errorCopy2 = error;
+  if (error)
   {
 LABEL_12:
     v31 = v23;
     v27 = 0;
-    *v29 = v23;
+    *errorCopy2 = v23;
     goto LABEL_15;
   }
 
@@ -121,9 +121,9 @@ LABEL_15:
   return v27;
 }
 
-+ (id)readUaapOovsForLanguage:(id)a3
++ (id)readUaapOovsForLanguage:(id)language
 {
-  v3 = sub_1000091D4(a3);
+  v3 = sub_1000091D4(language);
   v4 = +[NSFileManager defaultManager];
   v15 = 0;
   v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v15];

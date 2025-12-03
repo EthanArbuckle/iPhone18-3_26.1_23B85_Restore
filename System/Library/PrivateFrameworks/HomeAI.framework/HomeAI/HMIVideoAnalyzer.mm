@@ -1,30 +1,30 @@
 @interface HMIVideoAnalyzer
 + (id)allowedClasses;
-+ (id)analyzerWithConfiguration:(id)a3 identifier:(id)a4 remote:(BOOL)a5 error:(id *)a6;
-+ (id)analyzerWithOptions:(id)a3 error:(id *)a4;
++ (id)analyzerWithConfiguration:(id)configuration identifier:(id)identifier remote:(BOOL)remote error:(id *)error;
++ (id)analyzerWithOptions:(id)options error:(id *)error;
 - (BOOL)boosted;
 - (BOOL)encode;
 - (BOOL)monitored;
-- (HMIVideoAnalyzer)initWithConfiguration:(id)a3 identifier:(id)a4;
+- (HMIVideoAnalyzer)initWithConfiguration:(id)configuration identifier:(id)identifier;
 - (HMIVideoAnalyzerDelegate)delegate;
 - (double)analysisFPS;
 - (double)delay;
-- (id)finalizeFragmentResult:(id)a3 homePersonManager:(id)a4 analysisStateManager:(id)a5;
+- (id)finalizeFragmentResult:(id)result homePersonManager:(id)manager analysisStateManager:(id)stateManager;
 - (id)logIdentifier;
 - (int64_t)decodeMode;
-- (void)analyzeFragment:(id)a3 configuration:(id)a4;
+- (void)analyzeFragment:(id)fragment configuration:(id)configuration;
 - (void)cancel;
 - (void)dealloc;
-- (void)finishWithCompletionHandler:(id)a3;
+- (void)finishWithCompletionHandler:(id)handler;
 - (void)flush;
 - (void)flushAsync;
-- (void)handleAssetData:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (void)handleMessageWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)setAnalysisFPS:(double)a3;
-- (void)setBoosted:(BOOL)a3;
-- (void)setDecodeMode:(int64_t)a3;
-- (void)setEncode:(BOOL)a3;
-- (void)setMonitored:(BOOL)a3;
+- (void)handleAssetData:(id)data withOptions:(id)options completionHandler:(id)handler;
+- (void)handleMessageWithOptions:(id)options completionHandler:(id)handler;
+- (void)setAnalysisFPS:(double)s;
+- (void)setBoosted:(BOOL)boosted;
+- (void)setDecodeMode:(int64_t)mode;
+- (void)setEncode:(BOOL)encode;
+- (void)setMonitored:(BOOL)monitored;
 @end
 
 @implementation HMIVideoAnalyzer
@@ -56,10 +56,10 @@
   return v4;
 }
 
-+ (id)analyzerWithOptions:(id)a3 error:(id *)a4
++ (id)analyzerWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"configuration"];
+  optionsCopy = options;
+  v7 = [optionsCopy objectForKeyedSubscript:@"configuration"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -81,7 +81,7 @@ LABEL_13:
     return [(HMIVideoAnalyzer *)v15 analyzerWithConfiguration:v16 identifier:v17 error:v18, v19];
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"identifier"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,21 +100,21 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v13 = [a1 analyzerWithConfiguration:v9 identifier:v12 remote:0 error:a4];
+  v13 = [self analyzerWithConfiguration:v9 identifier:v12 remote:0 error:error];
 
   return v13;
 }
 
-+ (id)analyzerWithConfiguration:(id)a3 identifier:(id)a4 remote:(BOOL)a5 error:(id *)a6
++ (id)analyzerWithConfiguration:(id)configuration identifier:(id)identifier remote:(BOOL)remote error:(id *)error
 {
-  v6 = a5;
+  remoteCopy = remote;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (v6)
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  if (remoteCopy)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -122,14 +122,14 @@ LABEL_13:
       *buf = 138543874;
       v22 = v14;
       v23 = 2112;
-      v24 = v10;
+      v24 = identifierCopy;
       v25 = 2112;
-      v26 = v9;
+      v26 = configurationCopy;
       _os_log_impl(&dword_22D12F000, v13, OS_LOG_TYPE_INFO, "%{public}@Creating analyzer with identifier: %@, configuration: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [[HMIVideoAnalyzerClient alloc] initWithConfiguration:v9 identifier:v10];
+    v15 = [[HMIVideoAnalyzerClient alloc] initWithConfiguration:configurationCopy identifier:identifierCopy];
   }
 
   else
@@ -139,9 +139,9 @@ LABEL_13:
     v18[1] = 3221225472;
     v18[2] = __70__HMIVideoAnalyzer_analyzerWithConfiguration_identifier_remote_error___block_invoke;
     v18[3] = &unk_278755CD0;
-    v20 = a1;
-    v19 = v10;
-    v15 = [v16 analyzerWithConfiguration:v9 block:v18];
+    selfCopy2 = self;
+    v19 = identifierCopy;
+    v15 = [v16 analyzerWithConfiguration:configurationCopy block:v18];
   }
 
   return v15;
@@ -173,19 +173,19 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   return v9;
 }
 
-- (HMIVideoAnalyzer)initWithConfiguration:(id)a3 identifier:(id)a4
+- (HMIVideoAnalyzer)initWithConfiguration:(id)configuration identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = HMIVideoAnalyzer;
   v9 = [(HMIVideoAnalyzer *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_identifier, a4);
-    if ([v7 saveAnalyzerResultsToDisk])
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_identifier, identifier);
+    if ([configurationCopy saveAnalyzerResultsToDisk])
     {
       v11 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v11 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
@@ -193,8 +193,8 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
       v13 = [v11 stringFromDate:v12];
 
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v8 UUIDString];
-      v16 = [v14 stringWithFormat:@"VideoAnalyzerReport %@ %@", v13, v15];
+      uUIDString = [identifierCopy UUIDString];
+      v16 = [v14 stringWithFormat:@"VideoAnalyzerReport %@ %@", v13, uUIDString];
 
       v17 = [[HMIVideoAnalyzerMutableReport alloc] initWithName:v16];
       report = v10->_report;
@@ -208,21 +208,21 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
 - (void)dealloc
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMIVideoAnalyzer *)self report];
+  report = [(HMIVideoAnalyzer *)self report];
 
-  if (v3)
+  if (report)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(HMIVideoAnalyzer *)self report];
-    v6 = [v5 name];
-    v7 = [v4 stringWithFormat:@"/tmp/%@.plist", v6];
+    report2 = [(HMIVideoAnalyzer *)self report];
+    name = [report2 name];
+    v7 = [v4 stringWithFormat:@"/tmp/%@.plist", name];
 
-    v8 = [(HMIVideoAnalyzer *)self report];
-    v9 = [v8 data];
-    [v9 writeToFile:v7 atomically:1];
+    report3 = [(HMIVideoAnalyzer *)self report];
+    data = [report3 data];
+    [data writeToFile:v7 atomically:1];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -242,11 +242,11 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   [(HMIVideoAnalyzer *)&v14 dealloc];
 }
 
-- (void)handleAssetData:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)handleAssetData:(id)data withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -258,10 +258,10 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v16);
 }
 
-- (void)handleMessageWithOptions:(id)a3 completionHandler:(id)a4
+- (void)handleMessageWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -286,10 +286,10 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v7);
 }
 
-- (void)analyzeFragment:(id)a3 configuration:(id)a4
+- (void)analyzeFragment:(id)fragment configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  fragmentCopy = fragment;
+  configurationCopy = configuration;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -327,9 +327,9 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v7);
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -354,7 +354,7 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v7);
 }
 
-- (void)setAnalysisFPS:(double)a3
+- (void)setAnalysisFPS:(double)s
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -367,7 +367,7 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v8);
 }
 
-- (void)setMonitored:(BOOL)a3
+- (void)setMonitored:(BOOL)monitored
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -380,7 +380,7 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v8);
 }
 
-- (void)setEncode:(BOOL)a3
+- (void)setEncode:(BOOL)encode
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -393,7 +393,7 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v8);
 }
 
-- (void)setDecodeMode:(int64_t)a3
+- (void)setDecodeMode:(int64_t)mode
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -406,7 +406,7 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v8);
 }
 
-- (void)setBoosted:(BOOL)a3
+- (void)setBoosted:(BOOL)boosted
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -484,24 +484,24 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
   objc_exception_throw(v7);
 }
 
-- (id)finalizeFragmentResult:(id)a3 homePersonManager:(id)a4 analysisStateManager:(id)a5
+- (id)finalizeFragmentResult:(id)result homePersonManager:(id)manager analysisStateManager:(id)stateManager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  resultCopy = result;
+  managerCopy = manager;
+  stateManagerCopy = stateManager;
+  if (resultCopy)
   {
-    v11 = v10;
+    v11 = stateManagerCopy;
     v12 = +[HMIPreference sharedInstance];
     v13 = [v12 BOOLPreferenceForKey:@"uploadVideoAnalysisEvent" defaultValue:1];
 
-    if (v9)
+    if (managerCopy)
     {
-      v14 = [v8 frameResults];
-      v15 = [v14 na_flatMap:&__block_literal_global_40];
+      frameResults = [resultCopy frameResults];
+      v15 = [frameResults na_flatMap:&__block_literal_global_40];
 
       v16 = [MEMORY[0x277CBEB98] setWithArray:v15];
-      [v9 handleNewFaceEvents:v16];
+      [managerCopy handleNewFaceEvents:v16];
 
       if (v13)
       {
@@ -509,27 +509,27 @@ HMIVideoAnalyzerServer *__70__HMIVideoAnalyzer_analyzerWithConfiguration_identif
         v27 = 3221225472;
         v28 = __82__HMIVideoAnalyzer_finalizeFragmentResult_homePersonManager_analysisStateManager___block_invoke_3;
         v29 = &unk_278755CF8;
-        v30 = v9;
-        v31 = self;
+        v30 = managerCopy;
+        selfCopy = self;
         [v15 na_each:&v26];
       }
     }
 
-    [HMIAnalytics sendEventsForFragmentResult:v8, v26, v27, v28, v29];
-    v17 = [(HMIVideoAnalyzer *)self report];
+    [HMIAnalytics sendEventsForFragmentResult:resultCopy, v26, v27, v28, v29];
+    report = [(HMIVideoAnalyzer *)self report];
 
-    if (v17)
+    if (report)
     {
-      v18 = [(HMIVideoAnalyzer *)self report];
-      v19 = [(HMIVideoAnalyzer *)self identifier];
-      v20 = [v19 UUIDString];
-      v21 = [v20 substringToIndex:4];
-      v22 = [(HMIVideoAnalyzer *)self identifier];
-      v23 = [v22 UUIDString];
-      [v18 appendFragmentResult:v8 forKey:v21 source:v23 redactFrames:0];
+      report2 = [(HMIVideoAnalyzer *)self report];
+      identifier = [(HMIVideoAnalyzer *)self identifier];
+      uUIDString = [identifier UUIDString];
+      v21 = [uUIDString substringToIndex:4];
+      identifier2 = [(HMIVideoAnalyzer *)self identifier];
+      uUIDString2 = [identifier2 UUIDString];
+      [report2 appendFragmentResult:resultCopy forKey:v21 source:uUIDString2 redactFrames:0];
     }
 
-    return v8;
+    return resultCopy;
   }
 
   else
@@ -594,10 +594,10 @@ void __82__HMIVideoAnalyzer_finalizeFragmentResult_homePersonManager_analysisSta
 
 - (id)logIdentifier
 {
-  v2 = [(HMIVideoAnalyzer *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMIVideoAnalyzer *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (HMIVideoAnalyzerDelegate)delegate

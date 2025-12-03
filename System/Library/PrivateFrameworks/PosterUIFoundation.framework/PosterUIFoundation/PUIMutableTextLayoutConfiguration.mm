@@ -1,67 +1,67 @@
 @interface PUIMutableTextLayoutConfiguration
-- (PUIMutableTextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 style:(id)a6 styleColor:(id)a7 numberingSystemType:(id)a8 userConfigured:(BOOL)a9 contentsLuminance:(double)a10 alternateDateEnabled:(BOOL)a11 groupName:(id)a12;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setStyleColor:(id)a3;
+- (PUIMutableTextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout style:(id)style styleColor:(id)color numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)self0 alternateDateEnabled:(BOOL)self1 groupName:(id)self2;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setStyleColor:(id)color;
 @end
 
 @implementation PUIMutableTextLayoutConfiguration
 
-- (PUIMutableTextLayoutConfiguration)initWithFontConfiguration:(id)a3 preferredAlignment:(unint64_t)a4 preferredLayout:(unint64_t)a5 style:(id)a6 styleColor:(id)a7 numberingSystemType:(id)a8 userConfigured:(BOOL)a9 contentsLuminance:(double)a10 alternateDateEnabled:(BOOL)a11 groupName:(id)a12
+- (PUIMutableTextLayoutConfiguration)initWithFontConfiguration:(id)configuration preferredAlignment:(unint64_t)alignment preferredLayout:(unint64_t)layout style:(id)style styleColor:(id)color numberingSystemType:(id)type userConfigured:(BOOL)configured contentsLuminance:(double)self0 alternateDateEnabled:(BOOL)self1 groupName:(id)self2
 {
-  v19 = a3;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a12;
+  configurationCopy = configuration;
+  styleCopy = style;
+  colorCopy = color;
+  typeCopy = type;
+  nameCopy = name;
   v37.receiver = self;
   v37.super_class = PUIMutableTextLayoutConfiguration;
-  HIBYTE(v36) = a11;
-  LOBYTE(v36) = a9;
-  v24 = [(PUITextLayoutConfiguration *)&v37 initWithFontConfiguration:v19 preferredAlignment:a4 preferredLayout:a5 style:v20 styleColor:v21 numberingSystemType:v22 userConfigured:a10 contentsLuminance:v36 alternateDateEnabled:v23 groupName:?];
+  HIBYTE(v36) = enabled;
+  LOBYTE(v36) = configured;
+  v24 = [(PUITextLayoutConfiguration *)&v37 initWithFontConfiguration:configurationCopy preferredAlignment:alignment preferredLayout:layout style:styleCopy styleColor:colorCopy numberingSystemType:typeCopy userConfigured:luminance contentsLuminance:v36 alternateDateEnabled:nameCopy groupName:?];
   if (v24)
   {
-    v25 = [v19 copy];
+    v25 = [configurationCopy copy];
     fontConfiguration = v24->_fontConfiguration;
     v24->_fontConfiguration = v25;
 
-    v24->_preferredAlignment = a4;
-    v24->_preferredLayout = a5;
-    v27 = [v20 copy];
+    v24->_preferredAlignment = alignment;
+    v24->_preferredLayout = layout;
+    v27 = [styleCopy copy];
     style = v24->_style;
     v24->_style = v27;
 
-    v29 = [v21 copy];
+    v29 = [colorCopy copy];
     styleColor = v24->_styleColor;
     v24->_styleColor = v29;
 
-    v31 = [v22 copy];
+    v31 = [typeCopy copy];
     numberingSystemType = v24->_numberingSystemType;
     v24->_numberingSystemType = v31;
 
-    v24->_userConfigured = a9;
-    v24->_contentsLuminance = a10;
-    v33 = [v23 copy];
+    v24->_userConfigured = configured;
+    v24->_contentsLuminance = luminance;
+    v33 = [nameCopy copy];
     groupName = v24->_groupName;
     v24->_groupName = v33;
 
-    v24->_alternateDateEnabled = a11;
+    v24->_alternateDateEnabled = enabled;
   }
 
   return v24;
 }
 
-- (void)setStyleColor:(id)a3
+- (void)setStyleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (![(PUIStyleColor *)self->_styleColor isEqual:?])
   {
-    objc_storeStrong(&self->_styleColor, a3);
-    v5 = [v6 contentStyle];
-    [(PUIMutableTextLayoutConfiguration *)self setStyle:v5];
+    objc_storeStrong(&self->_styleColor, color);
+    contentStyle = [colorCopy contentStyle];
+    [(PUIMutableTextLayoutConfiguration *)self setStyle:contentStyle];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PUIImmutableTextLayoutConfiguration alloc];
 

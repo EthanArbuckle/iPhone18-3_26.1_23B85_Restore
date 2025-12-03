@@ -1,23 +1,23 @@
 @interface PKPassDeleteHelper
-+ (BOOL)_canDeletePaymentPass:(id)a3 transitPassProperties:(id)a4;
-+ (BOOL)hasAppleCashMerchantTokenForMerchantTokensResponse:(id)a3;
-+ (BOOL)hasPositiveBalanceForTransitPassProperties:(id)a3 transitBalanceModel:(id)a4;
-+ (void)deletePaymentPass:(id)a3 withDeleteHander:(id)a4 passLibraryDataProvider:(id)a5 presentingViewController:(id)a6 detailViewStyle:(int64_t)a7;
-+ (void)deletePaymentPassAlertCopyForPass:(id)a3 webService:(id)a4 paymentServiceDataProvider:(id)a5 isBridge:(BOOL)a6 completion:(id)a7;
-+ (void)deletePaymentPassAlertCopyForPass:(id)a3 withAccount:(id)a4 paymentServiceDataProvider:(id)a5 transitBalanceModel:(id)a6 transitPassProperties:(id)a7 merchantTokensResponse:(id)a8 fkInstitution:(id)a9 isBridge:(BOOL)a10 completion:(id)a11;
-+ (void)presentDeleteBarcodePassAlertForPass:(id)a3 withHandler:(id)a4 presentationTarget:(id)a5;
-+ (void)presentDeletePaymentPassAlertForPass:(id)a3 withAccount:(id)a4 paymentServiceDataProvider:(id)a5 transitBalanceModel:(id)a6 transitPassProperties:(id)a7 fkInstitution:(id)a8 detailViewStyle:(int64_t)a9 deleteHander:(id)a10 passLibraryDataProvider:(id)a11 presentationTarget:(id)a12;
-+ (void)presentMerchantTokenDeletePaymentPassAlertForPass:(id)a3 withAccount:(id)a4 merchantTokensResponse:(id)a5 deleteHander:(id)a6 passLibraryDataProvider:(id)a7 navigationController:(id)a8 presentationTarget:(id)a9 isBridge:(BOOL)a10;
++ (BOOL)_canDeletePaymentPass:(id)pass transitPassProperties:(id)properties;
++ (BOOL)hasAppleCashMerchantTokenForMerchantTokensResponse:(id)response;
++ (BOOL)hasPositiveBalanceForTransitPassProperties:(id)properties transitBalanceModel:(id)model;
++ (void)deletePaymentPass:(id)pass withDeleteHander:(id)hander passLibraryDataProvider:(id)provider presentingViewController:(id)controller detailViewStyle:(int64_t)style;
++ (void)deletePaymentPassAlertCopyForPass:(id)pass webService:(id)service paymentServiceDataProvider:(id)provider isBridge:(BOOL)bridge completion:(id)completion;
++ (void)deletePaymentPassAlertCopyForPass:(id)pass withAccount:(id)account paymentServiceDataProvider:(id)provider transitBalanceModel:(id)model transitPassProperties:(id)properties merchantTokensResponse:(id)response fkInstitution:(id)institution isBridge:(BOOL)self0 completion:(id)self1;
++ (void)presentDeleteBarcodePassAlertForPass:(id)pass withHandler:(id)handler presentationTarget:(id)target;
++ (void)presentDeletePaymentPassAlertForPass:(id)pass withAccount:(id)account paymentServiceDataProvider:(id)provider transitBalanceModel:(id)model transitPassProperties:(id)properties fkInstitution:(id)institution detailViewStyle:(int64_t)style deleteHander:(id)self0 passLibraryDataProvider:(id)self1 presentationTarget:(id)self2;
++ (void)presentMerchantTokenDeletePaymentPassAlertForPass:(id)pass withAccount:(id)account merchantTokensResponse:(id)response deleteHander:(id)hander passLibraryDataProvider:(id)provider navigationController:(id)controller presentationTarget:(id)target isBridge:(BOOL)self0;
 @end
 
 @implementation PKPassDeleteHelper
 
-+ (void)presentDeleteBarcodePassAlertForPass:(id)a3 withHandler:(id)a4 presentationTarget:(id)a5
++ (void)presentDeleteBarcodePassAlertForPass:(id)pass withHandler:(id)handler presentationTarget:(id)target
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 presentingViewController];
+  passCopy = pass;
+  handlerCopy = handler;
+  targetCopy = target;
+  presentingViewController = [targetCopy presentingViewController];
   if (PKStoreDemoModeEnabled())
   {
     v11 = MEMORY[0x1E69DC650];
@@ -29,7 +29,7 @@
     v16 = [v14 actionWithTitle:v15 style:1 handler:0];
     [v13 addAction:v16];
 
-    [v10 presentViewController:v13 animated:1 completion:0];
+    [presentingViewController presentViewController:v13 animated:1 completion:0];
   }
 
   else
@@ -37,14 +37,14 @@
     v17 = PKLocalizedString(&cfstr_RemoveSheetTit.isa);
     v18 = PKLocalizedString(&cfstr_RemoveSheetCan.isa);
     v19 = PKLocalizedString(&cfstr_RemoveSheetCon.isa);
-    v20 = [v9 sourceItem];
+    sourceItem = [targetCopy sourceItem];
     v28 = v17;
-    v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v17 message:0 preferredStyle:v20 == 0];
+    v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v17 message:0 preferredStyle:sourceItem == 0];
     v22 = v21;
-    if (v20)
+    if (sourceItem)
     {
-      v23 = [v21 popoverPresentationController];
-      [v23 setSourceItem:v20];
+      popoverPresentationController = [v21 popoverPresentationController];
+      [popoverPresentationController setSourceItem:sourceItem];
     }
 
     v24 = [MEMORY[0x1E69DC648] actionWithTitle:v18 style:1 handler:0];
@@ -55,9 +55,9 @@
     v29[1] = 3221225472;
     v29[2] = __90__PKPassDeleteHelper_presentDeleteBarcodePassAlertForPass_withHandler_presentationTarget___block_invoke;
     v29[3] = &unk_1E8010D38;
-    v30 = v8;
-    v31 = v7;
-    v26 = v10;
+    v30 = handlerCopy;
+    v31 = passCopy;
+    v26 = presentingViewController;
     v32 = v26;
     v27 = [v25 actionWithTitle:v19 style:2 handler:v29];
     [v22 addAction:v27];
@@ -77,12 +77,12 @@ void *__90__PKPassDeleteHelper_presentDeleteBarcodePassAlertForPass_withHandler_
   return result;
 }
 
-+ (void)deletePaymentPassAlertCopyForPass:(id)a3 webService:(id)a4 paymentServiceDataProvider:(id)a5 isBridge:(BOOL)a6 completion:(id)a7
++ (void)deletePaymentPassAlertCopyForPass:(id)pass webService:(id)service paymentServiceDataProvider:(id)provider isBridge:(BOOL)bridge completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  passCopy = pass;
+  serviceCopy = service;
+  providerCopy = provider;
+  completionCopy = completion;
   v16 = objc_alloc_init(MEMORY[0x1E69B8658]);
   v78[0] = 0;
   v78[1] = v78;
@@ -124,9 +124,9 @@ void *__90__PKPassDeleteHelper_presentDeleteBarcodePassAlertForPass_withHandler_
   v64[1] = 3221225472;
   v64[2] = __114__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_webService_paymentServiceDataProvider_isBridge_completion___block_invoke;
   v64[3] = &unk_1E8012D58;
-  v17 = v12;
+  v17 = passCopy;
   v65 = v17;
-  v18 = v13;
+  v18 = serviceCopy;
   v66 = v18;
   v67 = v78;
   [v16 addOperation:v64];
@@ -134,7 +134,7 @@ void *__90__PKPassDeleteHelper_presentDeleteBarcodePassAlertForPass_withHandler_
   v60[1] = 3221225472;
   v60[2] = __114__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_webService_paymentServiceDataProvider_isBridge_completion___block_invoke_3;
   v60[3] = &unk_1E8012D58;
-  v19 = v14;
+  v19 = providerCopy;
   v61 = v19;
   v20 = v17;
   v62 = v20;
@@ -180,12 +180,12 @@ void *__90__PKPassDeleteHelper_presentDeleteBarcodePassAlertForPass_withHandler_
   v45 = v27;
   v46 = v72;
   [v16 addOperation:v43];
-  v28 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __114__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_webService_paymentServiceDataProvider_isBridge_completion___block_invoke_12;
   v33[3] = &unk_1E8012E70;
-  v41 = a1;
+  selfCopy = self;
   v29 = v26;
   v34 = v29;
   v37 = v78;
@@ -194,10 +194,10 @@ void *__90__PKPassDeleteHelper_presentDeleteBarcodePassAlertForPass_withHandler_
   v38 = v74;
   v39 = v76;
   v40 = v72;
-  v42 = a6;
-  v31 = v15;
+  bridgeCopy = bridge;
+  v31 = completionCopy;
   v36 = v31;
-  v32 = [v16 evaluateWithInput:v28 completion:v33];
+  v32 = [v16 evaluateWithInput:null completion:v33];
 
   _Block_object_dispose(v68, 8);
   _Block_object_dispose(v70, 8);
@@ -415,49 +415,49 @@ void __114__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_webService_paym
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (BOOL)hasPositiveBalanceForTransitPassProperties:(id)a3 transitBalanceModel:(id)a4
++ (BOOL)hasPositiveBalanceForTransitPassProperties:(id)properties transitBalanceModel:(id)model
 {
-  v5 = a4;
-  v6 = [a3 balanceAmount];
-  v7 = [v6 amount];
+  modelCopy = model;
+  balanceAmount = [properties balanceAmount];
+  amount = [balanceAmount amount];
 
-  if (v7 && ([MEMORY[0x1E696AB90] zero], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "compare:", v7), v8, v9 == -1))
+  if (amount && ([MEMORY[0x1E696AB90] zero], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "compare:", amount), v8, v9 == -1))
   {
-    v10 = 1;
+    hasPositiveBalance = 1;
   }
 
   else
   {
-    v10 = [v5 hasPositiveBalance];
+    hasPositiveBalance = [modelCopy hasPositiveBalance];
   }
 
-  return v10;
+  return hasPositiveBalance;
 }
 
-+ (void)deletePaymentPassAlertCopyForPass:(id)a3 withAccount:(id)a4 paymentServiceDataProvider:(id)a5 transitBalanceModel:(id)a6 transitPassProperties:(id)a7 merchantTokensResponse:(id)a8 fkInstitution:(id)a9 isBridge:(BOOL)a10 completion:(id)a11
++ (void)deletePaymentPassAlertCopyForPass:(id)pass withAccount:(id)account paymentServiceDataProvider:(id)provider transitBalanceModel:(id)model transitPassProperties:(id)properties merchantTokensResponse:(id)response fkInstitution:(id)institution isBridge:(BOOL)self0 completion:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
+  passCopy = pass;
+  accountCopy = account;
+  providerCopy = provider;
+  modelCopy = model;
+  propertiesCopy = properties;
+  responseCopy = response;
+  institutionCopy = institution;
+  completionCopy = completion;
   if (PKStoreDemoModeEnabled())
   {
     v25 = PKLocalizedString(&cfstr_RemoveSheetDem.isa);
-    (*(v24 + 2))(v24, v25, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v25, 0, 0);
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if (([a1 _canDeletePaymentPass:v17 transitPassProperties:v21] & 1) == 0)
+  if (([self _canDeletePaymentPass:passCopy transitPassProperties:propertiesCopy] & 1) == 0)
   {
     v25 = PKLocalizedPaymentString(&cfstr_CardInTransit.isa);
     v28 = PKLocalizedPaymentString(&cfstr_CardInTransitM.isa);
-    (*(v24 + 2))(v24, v25, v28, 0);
+    (*(completionCopy + 2))(completionCopy, v25, v28, 0);
 
     goto LABEL_6;
   }
@@ -480,28 +480,28 @@ LABEL_6:
   v35[1] = 3221225472;
   v35[2] = __194__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_withAccount_paymentServiceDataProvider_transitBalanceModel_transitPassProperties_merchantTokensResponse_fkInstitution_isBridge_completion___block_invoke;
   v35[3] = &unk_1E8012EE8;
-  v36 = v20;
+  v36 = modelCopy;
   v43 = v50;
-  v37 = v17;
+  v37 = passCopy;
   v44 = v48;
-  v45 = a1;
-  v38 = v21;
-  v39 = v22;
-  v40 = v18;
+  selfCopy = self;
+  v38 = propertiesCopy;
+  v39 = responseCopy;
+  v40 = accountCopy;
   v46 = v30;
-  v41 = v19;
-  v47 = a10;
-  v42 = v23;
+  v41 = providerCopy;
+  bridgeCopy = bridge;
+  v42 = institutionCopy;
   [v29 addOperation:v35];
-  v26 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __194__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_withAccount_paymentServiceDataProvider_transitBalanceModel_transitPassProperties_merchantTokensResponse_fkInstitution_isBridge_completion___block_invoke_4;
   v31[3] = &unk_1E8012F38;
-  v32 = v24;
+  v32 = completionCopy;
   v33 = v50;
   v34 = v48;
-  v27 = [v29 evaluateWithInput:v26 completion:v31];
+  v27 = [v29 evaluateWithInput:null completion:v31];
 
   _Block_object_dispose(v48, 8);
   _Block_object_dispose(v50, 8);
@@ -834,28 +834,28 @@ void __194__PKPassDeleteHelper_deletePaymentPassAlertCopyForPass_withAccount_pay
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (void)presentDeletePaymentPassAlertForPass:(id)a3 withAccount:(id)a4 paymentServiceDataProvider:(id)a5 transitBalanceModel:(id)a6 transitPassProperties:(id)a7 fkInstitution:(id)a8 detailViewStyle:(int64_t)a9 deleteHander:(id)a10 passLibraryDataProvider:(id)a11 presentationTarget:(id)a12
++ (void)presentDeletePaymentPassAlertForPass:(id)pass withAccount:(id)account paymentServiceDataProvider:(id)provider transitBalanceModel:(id)model transitPassProperties:(id)properties fkInstitution:(id)institution detailViewStyle:(int64_t)style deleteHander:(id)self0 passLibraryDataProvider:(id)self1 presentationTarget:(id)self2
 {
-  v14 = a3;
-  v15 = a10;
-  v16 = a11;
-  v17 = a12;
+  passCopy = pass;
+  handerCopy = hander;
+  dataProviderCopy = dataProvider;
+  targetCopy = target;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __226__PKPassDeleteHelper_presentDeletePaymentPassAlertForPass_withAccount_paymentServiceDataProvider_transitBalanceModel_transitPassProperties_fkInstitution_detailViewStyle_deleteHander_passLibraryDataProvider_presentationTarget___block_invoke;
   v27[3] = &unk_1E8012F88;
-  v28 = v17;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = a1;
-  v33 = a9;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v17;
-  LOBYTE(v22) = a9 == 2;
-  [PKPassDeleteHelper deletePaymentPassAlertCopyForPass:v20 withAccount:a4 paymentServiceDataProvider:a5 transitBalanceModel:a6 transitPassProperties:a7 merchantTokensResponse:0 fkInstitution:a8 isBridge:v22 completion:v27];
+  v28 = targetCopy;
+  v29 = passCopy;
+  v30 = handerCopy;
+  v31 = dataProviderCopy;
+  selfCopy = self;
+  styleCopy = style;
+  v18 = dataProviderCopy;
+  v19 = handerCopy;
+  v20 = passCopy;
+  v21 = targetCopy;
+  LOBYTE(v22) = style == 2;
+  [PKPassDeleteHelper deletePaymentPassAlertCopyForPass:v20 withAccount:account paymentServiceDataProvider:provider transitBalanceModel:model transitPassProperties:properties merchantTokensResponse:0 fkInstitution:institution isBridge:v22 completion:v27];
 }
 
 void __226__PKPassDeleteHelper_presentDeletePaymentPassAlertForPass_withAccount_paymentServiceDataProvider_transitBalanceModel_transitPassProperties_fkInstitution_detailViewStyle_deleteHander_passLibraryDataProvider_presentationTarget___block_invoke(uint64_t a1, void *a2, void *a3, int a4)
@@ -919,22 +919,22 @@ void __226__PKPassDeleteHelper_presentDeletePaymentPassAlertForPass_withAccount_
   [v10 presentViewController:v14 animated:1 completion:0];
 }
 
-+ (void)presentMerchantTokenDeletePaymentPassAlertForPass:(id)a3 withAccount:(id)a4 merchantTokensResponse:(id)a5 deleteHander:(id)a6 passLibraryDataProvider:(id)a7 navigationController:(id)a8 presentationTarget:(id)a9 isBridge:(BOOL)a10
++ (void)presentMerchantTokenDeletePaymentPassAlertForPass:(id)pass withAccount:(id)account merchantTokensResponse:(id)response deleteHander:(id)hander passLibraryDataProvider:(id)provider navigationController:(id)controller presentationTarget:(id)target isBridge:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = [v22 presentingViewController];
-  v24 = [v22 sourceItem];
+  passCopy = pass;
+  accountCopy = account;
+  responseCopy = response;
+  handerCopy = hander;
+  providerCopy = provider;
+  controllerCopy = controller;
+  targetCopy = target;
+  presentingViewController = [targetCopy presentingViewController];
+  sourceItem = [targetCopy sourceItem];
 
-  if ([v16 hasMerchantTokens])
+  if ([passCopy hasMerchantTokens])
   {
     v25 = 2;
-    if (a10)
+    if (bridge)
     {
       v25 = 0;
     }
@@ -944,17 +944,17 @@ void __226__PKPassDeleteHelper_presentDeletePaymentPassAlertForPass_withAccount_
     v29[1] = 3221225472;
     v29[2] = __193__PKPassDeleteHelper_presentMerchantTokenDeletePaymentPassAlertForPass_withAccount_merchantTokensResponse_deleteHander_passLibraryDataProvider_navigationController_presentationTarget_isBridge___block_invoke;
     v29[3] = &unk_1E8013020;
-    v30 = v23;
-    v31 = v24;
-    v32 = v18;
-    v37 = a1;
-    v33 = v21;
-    v34 = v16;
-    v35 = v19;
-    v36 = v20;
+    v30 = presentingViewController;
+    v31 = sourceItem;
+    v32 = responseCopy;
+    selfCopy = self;
+    v33 = controllerCopy;
+    v34 = passCopy;
+    v35 = handerCopy;
+    v36 = providerCopy;
     v38 = v28;
-    LOBYTE(v27) = !a10;
-    [PKPassDeleteHelper deletePaymentPassAlertCopyForPass:v34 withAccount:v17 paymentServiceDataProvider:0 transitBalanceModel:0 transitPassProperties:0 merchantTokensResponse:v32 fkInstitution:0 isBridge:v27 completion:v29];
+    LOBYTE(v27) = !bridge;
+    [PKPassDeleteHelper deletePaymentPassAlertCopyForPass:v34 withAccount:accountCopy paymentServiceDataProvider:0 transitBalanceModel:0 transitPassProperties:0 merchantTokensResponse:v32 fkInstitution:0 isBridge:v27 completion:v29];
 
     v26 = v30;
   }
@@ -1210,43 +1210,43 @@ uint64_t __193__PKPassDeleteHelper_presentMerchantTokenDeletePaymentPassAlertFor
   return [*(a1 + 64) deletePaymentPass:*(a1 + 32) withDeleteHander:*(a1 + 40) passLibraryDataProvider:*(a1 + 48) presentingViewController:*(a1 + 56) detailViewStyle:*(a1 + 72)];
 }
 
-+ (void)deletePaymentPass:(id)a3 withDeleteHander:(id)a4 passLibraryDataProvider:(id)a5 presentingViewController:(id)a6 detailViewStyle:(int64_t)a7
++ (void)deletePaymentPass:(id)pass withDeleteHander:(id)hander passLibraryDataProvider:(id)provider presentingViewController:(id)controller detailViewStyle:(int64_t)style
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11 && ([v11 handleDeletePassRequestWithPass:v10 forViewController:v13] & 1) != 0)
+  passCopy = pass;
+  handerCopy = hander;
+  providerCopy = provider;
+  controllerCopy = controller;
+  if (handerCopy && ([handerCopy handleDeletePassRequestWithPass:passCopy forViewController:controllerCopy] & 1) != 0)
   {
     v14 = 1;
   }
 
   else
   {
-    [v12 removePass:v10];
-    v15 = [v13 navigationController];
-    v16 = [v15 viewControllers];
-    v17 = [v16 count];
+    [providerCopy removePass:passCopy];
+    navigationController = [controllerCopy navigationController];
+    viewControllers = [navigationController viewControllers];
+    v17 = [viewControllers count];
 
     if (v17)
     {
-      v18 = [v13 navigationController];
-      v19 = [v18 popViewControllerAnimated:1];
+      navigationController2 = [controllerCopy navigationController];
+      v19 = [navigationController2 popViewControllerAnimated:1];
     }
 
     else
     {
-      [v13 dismissViewControllerAnimated:1 completion:0];
+      [controllerCopy dismissViewControllerAnimated:1 completion:0];
     }
 
     v14 = 0;
   }
 
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9F90], &unk_1F3CC87F8);
-  v20 = [v10 hasMerchantTokens];
+  hasMerchantTokens = [passCopy hasMerchantTokens];
   v21 = MEMORY[0x1E69B8540];
-  if (v20)
+  if (hasMerchantTokens)
   {
     v37[0] = *MEMORY[0x1E69BB6F8];
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
@@ -1270,7 +1270,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v22 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v10];
+  v22 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:passCopy];
   if (v22)
   {
     v28 = MEMORY[0x1E69B8540];
@@ -1295,15 +1295,15 @@ LABEL_16:
 LABEL_17:
 }
 
-+ (BOOL)_canDeletePaymentPass:(id)a3 transitPassProperties:(id)a4
++ (BOOL)_canDeletePaymentPass:(id)pass transitPassProperties:(id)properties
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 devicePrimaryContactlessPaymentApplication];
-  v7 = [v6 state];
+  propertiesCopy = properties;
+  devicePrimaryContactlessPaymentApplication = [pass devicePrimaryContactlessPaymentApplication];
+  state = [devicePrimaryContactlessPaymentApplication state];
 
   v8 = 1;
-  if (v7 <= 0xF && ((1 << v7) & 0x83DE) != 0 && v5 && [v5 isEnRoute])
+  if (state <= 0xF && ((1 << state) & 0x83DE) != 0 && propertiesCopy && [propertiesCopy isEnRoute])
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1327,22 +1327,22 @@ LABEL_17:
     v13 = 138543618;
     v14 = v11;
     v15 = 2050;
-    v16 = v7;
+    v16 = state;
     _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Pass deletion allowed: %{public}@ for state: %{public}lu", &v13, 0x16u);
   }
 
   return v8;
 }
 
-+ (BOOL)hasAppleCashMerchantTokenForMerchantTokensResponse:(id)a3
++ (BOOL)hasAppleCashMerchantTokenForMerchantTokensResponse:(id)response
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [a3 merchantTokens];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  merchantTokens = [response merchantTokens];
+  v4 = [merchantTokens countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -1352,7 +1352,7 @@ LABEL_17:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(merchantTokens);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isAppleCashPaymentToken])
@@ -1362,7 +1362,7 @@ LABEL_17:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [merchantTokens countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;

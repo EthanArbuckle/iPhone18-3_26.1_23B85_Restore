@@ -1,24 +1,24 @@
 @interface ServiceScanner
 + (id)sharedInstance;
-- (BOOL)isValidUUID:(id)a3;
+- (BOOL)isValidUUID:(id)d;
 - (ServiceScanner)init;
-- (id)fetchingDeviceIDWithParingCode:(id)a3;
+- (id)fetchingDeviceIDWithParingCode:(id)code;
 - (id)getParingCode;
 - (void)allocatePeripheralsArray;
 - (void)cancelFetchingDeviceID;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)connectPeripheral:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)connectPeripheral:(id)peripheral;
 - (void)disconnectAllPeripherals;
-- (void)disconnectPeripheral:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)registerServiceDetectCallback:(id)a3;
-- (void)setParingCode:(id)a3;
+- (void)disconnectPeripheral:(id)peripheral;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)registerServiceDetectCallback:(id)callback;
+- (void)setParingCode:(id)code;
 - (void)startScanning;
 - (void)stopScanning;
 - (void)unregisterServiceDetectCallback;
@@ -82,17 +82,17 @@
   return v3;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  if ([a3 state] == 5)
+  if ([state state] == 5)
   {
     v4 = [NSString stringWithFormat:@"Bluetooth is ON."];
-    v5 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
       v8 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v7, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v7, 0xCu);
     }
 
     v6 = 1;
@@ -101,8 +101,8 @@
   else
   {
     v4 = [NSString stringWithFormat:@"Bluetooth is OFF or unavailable."];
-    v5 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100012CD8();
     }
@@ -113,72 +113,72 @@
   self->_bluetoothOn = v6;
 }
 
-- (void)registerServiceDetectCallback:(id)a3
+- (void)registerServiceDetectCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   [(ServiceScanner *)self unregisterServiceDetectCallback];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = objc_retainBlock(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_retainBlock(callbackCopy);
 
-  detectCallback = v5->_detectCallback;
-  v5->_detectCallback = v6;
+  detectCallback = selfCopy->_detectCallback;
+  selfCopy->_detectCallback = v6;
 
-  v5->_paringVersion = 0;
-  objc_sync_exit(v5);
+  selfCopy->_paringVersion = 0;
+  objc_sync_exit(selfCopy);
 
-  [(ServiceScanner *)v5 startScanning];
+  [(ServiceScanner *)selfCopy startScanning];
   v8 = [NSString stringWithFormat:@"Store Paring Service detect callback is registered!"];
-  v9 = [(MDRBaseObject *)v5 logger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
     v11 = v8;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", &v10, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v10, 0xCu);
   }
 }
 
 - (void)unregisterServiceDetectCallback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  detectCallback = v2->_detectCallback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  detectCallback = selfCopy->_detectCallback;
   if (detectCallback)
   {
-    v2->_detectCallback = 0;
+    selfCopy->_detectCallback = 0;
 
     v4 = [NSString stringWithFormat:@"Store Paring Service detect callback is unregistered"];
-    v5 = [(MDRBaseObject *)v2 logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
       v7 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  [(ServiceScanner *)v2 stopScanning];
+  [(ServiceScanner *)selfCopy stopScanning];
 }
 
-- (void)setParingCode:(id)a3
+- (void)setParingCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   obj = self;
   objc_sync_enter(obj);
   paringCode = obj->_paringCode;
-  obj->_paringCode = v4;
+  obj->_paringCode = codeCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)getParingCode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_paringCode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_paringCode;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -186,12 +186,12 @@
 - (void)startScanning
 {
   v3 = [NSString stringWithFormat:@"Start scanning Store Paring Service"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v8 = v3;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   scanQ = self->_scanQ;
@@ -225,31 +225,31 @@
   dispatch_sync(connectionQ, block);
 }
 
-- (void)connectPeripheral:(id)a3
+- (void)connectPeripheral:(id)peripheral
 {
-  v4 = a3;
+  peripheralCopy = peripheral;
   connectionQ = self->_connectionQ;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002BE4;
   v7[3] = &unk_100020918;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = peripheralCopy;
+  v6 = peripheralCopy;
   dispatch_sync(connectionQ, v7);
 }
 
-- (void)disconnectPeripheral:(id)a3
+- (void)disconnectPeripheral:(id)peripheral
 {
-  v4 = a3;
+  peripheralCopy = peripheral;
   connectionQ = self->_connectionQ;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002DD8;
   v7[3] = &unk_100020918;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = peripheralCopy;
+  selfCopy = self;
+  v6 = peripheralCopy;
   dispatch_sync(connectionQ, v7);
 }
 
@@ -264,16 +264,16 @@
   dispatch_sync(connectionQ, block);
 }
 
-- (id)fetchingDeviceIDWithParingCode:(id)a3
+- (id)fetchingDeviceIDWithParingCode:(id)code
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"Start fetching deviceID with paring code: %@", v4];
-  v6 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  codeCopy = code;
+  codeCopy = [NSString stringWithFormat:@"Start fetching deviceID with paring code: %@", codeCopy];
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    v13 = codeCopy;
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   deviceID = self->_deviceID;
@@ -283,7 +283,7 @@
   pairingSem = self->_pairingSem;
   self->_pairingSem = v8;
 
-  [(ServiceScanner *)self setParingCode:v4];
+  [(ServiceScanner *)self setParingCode:codeCopy];
   [(ServiceScanner *)self startScanning];
   dispatch_semaphore_wait(self->_pairingSem, 0xFFFFFFFFFFFFFFFFLL);
   v10 = self->_deviceID;
@@ -293,29 +293,29 @@
 
 - (void)cancelFetchingDeviceID
 {
-  v3 = [(ServiceScanner *)self getParingCode];
-  v4 = [NSString stringWithFormat:@"Stop fetching deviceID with paring code: %@", v3];
+  getParingCode = [(ServiceScanner *)self getParingCode];
+  v4 = [NSString stringWithFormat:@"Stop fetching deviceID with paring code: %@", getParingCode];
 
-  v5 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v7 = v4;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   [(ServiceScanner *)self stopScanning];
   dispatch_semaphore_signal(self->_pairingSem);
 }
 
-- (BOOL)isValidUUID:(id)a3
+- (BOOL)isValidUUID:(id)d
 {
-  v3 = a3;
-  if ([v3 length] == 12)
+  dCopy = d;
+  if ([dCopy length] == 12)
   {
     v4 = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEF"];
-    v5 = [v4 invertedSet];
-    v6 = [v3 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL;
+    invertedSet = [v4 invertedSet];
+    v6 = [dCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -326,29 +326,29 @@
   return v6;
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  dataCopy = data;
   if (self->_paringVersion)
   {
-    [(ServiceScanner *)self connectPeripheral:v8];
+    [(ServiceScanner *)self connectPeripheral:peripheralCopy];
     goto LABEL_27;
   }
 
-  v10 = [v8 identifier];
-  v11 = [v8 name];
-  v12 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Detected Store Paring Service", v10, v11];
+  identifier = [peripheralCopy identifier];
+  name = [peripheralCopy name];
+  v12 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Detected Store Paring Service", identifier, name];
 
-  v13 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v42 = v12;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  v14 = [v9 objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
+  v14 = [dataCopy objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
   v15 = v14;
   if (!v14 || ![v14 count])
   {
@@ -369,7 +369,7 @@
   v17 = v16;
   v18 = *v37;
   v33 = v15;
-  v34 = v9;
+  v34 = dataCopy;
   while (2)
   {
     for (i = 0; i != v17; i = i + 1)
@@ -380,47 +380,47 @@
       }
 
       v20 = *(*(&v36 + 1) + 8 * i);
-      v21 = [v20 UUIDString];
-      v22 = [v21 isEqualToString:@"C1C46849-CFBD-4949-A1A5-1E693FA4BA92"];
+      uUIDString = [v20 UUIDString];
+      v22 = [uUIDString isEqualToString:@"C1C46849-CFBD-4949-A1A5-1E693FA4BA92"];
 
       if (v22)
       {
-        v25 = [v8 identifier];
-        v26 = [v8 name];
-        v27 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Paring Version 2", v25, v26];
+        identifier2 = [peripheralCopy identifier];
+        name2 = [peripheralCopy name];
+        v27 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Paring Version 2", identifier2, name2];
 
-        v28 = [(MDRBaseObject *)self logger];
-        v9 = v34;
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+        logger2 = [(MDRBaseObject *)self logger];
+        dataCopy = v34;
+        if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
           v42 = v27;
-          _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
 
         v29 = 2;
         goto LABEL_23;
       }
 
-      v23 = [v20 UUIDString];
-      v24 = [v23 isEqualToString:@"C1C46849-CFBD-4949-A1A5-1E693FA4BA91"];
+      uUIDString2 = [v20 UUIDString];
+      v24 = [uUIDString2 isEqualToString:@"C1C46849-CFBD-4949-A1A5-1E693FA4BA91"];
 
       if (v24)
       {
-        v30 = [v8 identifier];
-        v31 = [v8 name];
-        v27 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Paring Version 1", v30, v31];
+        identifier3 = [peripheralCopy identifier];
+        name3 = [peripheralCopy name];
+        v27 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Paring Version 1", identifier3, name3];
 
-        v28 = [(MDRBaseObject *)self logger];
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+        logger2 = [(MDRBaseObject *)self logger];
+        if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
           v42 = v27;
-          _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
 
         v29 = 1;
-        v9 = v34;
+        dataCopy = v34;
 LABEL_23:
         v15 = v33;
 
@@ -438,7 +438,7 @@ LABEL_23:
 
     v17 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     v15 = v33;
-    v9 = v34;
+    dataCopy = v34;
     if (v17)
     {
       continue;
@@ -453,42 +453,42 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = a4;
-  [v5 setDelegate:self];
-  v6 = [v5 identifier];
-  v7 = [v5 name];
-  v8 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Connected", v6, v7];
+  peripheralCopy = peripheral;
+  [peripheralCopy setDelegate:self];
+  identifier = [peripheralCopy identifier];
+  name = [peripheralCopy name];
+  v8 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Connected", identifier, name];
 
-  v9 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v11 = v8;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  [v5 discoverServices:self->_serviceUUIDs];
+  [peripheralCopy discoverServices:self->_serviceUUIDs];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  peripheralCopy = peripheral;
+  servicesCopy = services;
+  if (servicesCopy)
   {
-    v8 = [v6 identifier];
-    v9 = [v6 name];
-    v10 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error didDiscoverServices: %@", v8, v9, v7];
+    identifier = [peripheralCopy identifier];
+    name = [peripheralCopy name];
+    servicesCopy = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error didDiscoverServices: %@", identifier, name, servicesCopy];
 
-    v11 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100012D4C();
     }
 
-    [(ServiceScanner *)self disconnectPeripheral:v6];
+    [(ServiceScanner *)self disconnectPeripheral:peripheralCopy];
   }
 
   else
@@ -497,8 +497,8 @@ LABEL_27:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = [v6 services];
-    v13 = [v12 countByEnumeratingWithState:&v26 objects:v33 count:16];
+    services = [peripheralCopy services];
+    v13 = [services countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v13)
     {
       v14 = v13;
@@ -509,38 +509,38 @@ LABEL_27:
         {
           if (*v27 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(services);
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
           serviceUUIDs = self->_serviceUUIDs;
-          v19 = [v17 UUID];
-          LODWORD(serviceUUIDs) = [(NSArray *)serviceUUIDs containsObject:v19];
+          uUID = [v17 UUID];
+          LODWORD(serviceUUIDs) = [(NSArray *)serviceUUIDs containsObject:uUID];
 
           if (serviceUUIDs)
           {
-            v20 = [v6 identifier];
-            v21 = [v6 name];
-            v22 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Found Store Paring Service", v20, v21];
+            identifier2 = [peripheralCopy identifier];
+            name2 = [peripheralCopy name];
+            v22 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Found Store Paring Service", identifier2, name2];
 
-            v23 = [(MDRBaseObject *)self logger];
-            if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+            logger2 = [(MDRBaseObject *)self logger];
+            if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
               v32 = v22;
-              _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
             }
 
             v24 = [CBUUID UUIDWithString:@"EC34D91F-F95E-4B2C-A33C-5C973F4B1255"];
             v30 = v24;
             v25 = [NSArray arrayWithObjects:&v30 count:1];
-            [v6 discoverCharacteristics:v25 forService:v17];
+            [peripheralCopy discoverCharacteristics:v25 forService:v17];
 
             goto LABEL_17;
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v26 objects:v33 count:16];
+        v14 = [services countByEnumeratingWithState:&v26 objects:v33 count:16];
         if (v14)
         {
           continue;
@@ -552,39 +552,39 @@ LABEL_27:
 
 LABEL_17:
 
-    v7 = 0;
+    servicesCopy = 0;
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v10 = [v8 identifier];
-    v11 = [v8 name];
-    v12 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error didDiscoverCharacteristicsForService: %@", v10, v11, v9];
+    identifier = [peripheralCopy identifier];
+    name = [peripheralCopy name];
+    errorCopy = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error didDiscoverCharacteristicsForService: %@", identifier, name, errorCopy];
 
-    v13 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100012DC0();
     }
 
-    [(ServiceScanner *)self disconnectPeripheral:v8];
+    [(ServiceScanner *)self disconnectPeripheral:peripheralCopy];
   }
 
   else
   {
-    v29 = self;
-    v30 = v8;
+    selfCopy = self;
+    v30 = peripheralCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [a4 characteristics];
-    v15 = [v14 countByEnumeratingWithState:&v31 objects:v37 count:16];
+    characteristics = [service characteristics];
+    v15 = [characteristics countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v15)
     {
       v16 = v15;
@@ -595,39 +595,39 @@ LABEL_17:
         {
           if (*v32 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(characteristics);
           }
 
           v19 = *(*(&v31 + 1) + 8 * i);
-          v20 = [v19 UUID];
+          uUID = [v19 UUID];
           v21 = [CBUUID UUIDWithString:@"EC34D91F-F95E-4B2C-A33C-5C973F4B1255"];
-          v22 = [v20 isEqual:v21];
+          v22 = [uUID isEqual:v21];
 
           if (v22)
           {
-            v8 = v30;
-            v23 = [v30 identifier];
-            v24 = [v30 name];
-            v25 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Found Store Paring Characteristic", v23, v24];
+            peripheralCopy = v30;
+            identifier2 = [v30 identifier];
+            name2 = [v30 name];
+            v25 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Found Store Paring Characteristic", identifier2, name2];
 
-            v26 = [(MDRBaseObject *)v29 logger];
-            if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+            logger2 = [(MDRBaseObject *)selfCopy logger];
+            if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
               v36 = v25;
-              _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
             }
 
             [v30 setNotifyValue:1 forCharacteristic:v19];
-            v27 = [(ServiceScanner *)v29 getParingCode];
-            v28 = [v27 dataUsingEncoding:4];
+            getParingCode = [(ServiceScanner *)selfCopy getParingCode];
+            v28 = [getParingCode dataUsingEncoding:4];
             [v30 writeValue:v28 forCharacteristic:v19 type:0];
 
             goto LABEL_17;
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v31 objects:v37 count:16];
+        v16 = [characteristics countByEnumeratingWithState:&v31 objects:v37 count:16];
         if (v16)
         {
           continue;
@@ -637,89 +637,89 @@ LABEL_17:
       }
     }
 
-    v8 = v30;
+    peripheralCopy = v30;
 LABEL_17:
-    v9 = 0;
+    errorCopy = 0;
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 identifier];
-  v10 = [v7 name];
-  v11 = v10;
-  if (v8)
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  identifier = [peripheralCopy identifier];
+  name = [peripheralCopy name];
+  v11 = name;
+  if (errorCopy)
   {
-    v12 = [v8 localizedDescription];
-    v13 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error writing: %@ Perhaps Paring Code not match", v9, v11, v12];
+    localizedDescription = [errorCopy localizedDescription];
+    v13 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error writing: %@ Perhaps Paring Code not match", identifier, v11, localizedDescription];
 
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100012E34();
     }
 
-    [(ServiceScanner *)self disconnectPeripheral:v7];
+    [(ServiceScanner *)self disconnectPeripheral:peripheralCopy];
   }
 
   else
   {
-    v15 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | responded with CBATTErrorSuccess", v9, v10];
+    v15 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | responded with CBATTErrorSuccess", identifier, name];
 
-    v16 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v18 = v15;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v11 = [v8 identifier];
-    v12 = [v8 name];
-    v13 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error didUpdateValueForCharacteristic: %@", v11, v12, v10];
+    identifier = [peripheralCopy identifier];
+    name = [peripheralCopy name];
+    errorCopy = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Error didUpdateValueForCharacteristic: %@", identifier, name, errorCopy];
 
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100012EA8();
     }
 
-    [(ServiceScanner *)self disconnectPeripheral:v8];
+    [(ServiceScanner *)self disconnectPeripheral:peripheralCopy];
   }
 
   else
   {
-    v15 = [v9 UUID];
+    uUID = [characteristicCopy UUID];
     v16 = [CBUUID UUIDWithString:@"EC34D91F-F95E-4B2C-A33C-5C973F4B1255"];
-    v17 = [v15 isEqual:v16];
+    v17 = [uUID isEqual:v16];
 
     if (v17)
     {
       v18 = [NSString alloc];
-      v19 = [v9 value];
-      v20 = [v18 initWithData:v19 encoding:4];
+      value = [characteristicCopy value];
+      v20 = [v18 initWithData:value encoding:4];
 
-      v21 = [v8 identifier];
-      v22 = [v8 name];
-      v23 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Received Device ID: %@", v21, v22, v20];
+      identifier2 = [peripheralCopy identifier];
+      name2 = [peripheralCopy name];
+      v23 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Received Device ID: %@", identifier2, name2, v20];
 
-      v24 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      logger2 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
         v28 = v23;
-        _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
 
       if ([(ServiceScanner *)self isValidUUID:v20])
@@ -731,32 +731,32 @@ LABEL_17:
       else
       {
         v25 = [NSString stringWithFormat:@"Received Invalid Device ID: %@", v20];
-        v26 = [(MDRBaseObject *)self logger];
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+        logger3 = [(MDRBaseObject *)self logger];
+        if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
         {
           sub_100012EA8();
         }
 
-        [(ServiceScanner *)self disconnectPeripheral:v8];
+        [(ServiceScanner *)self disconnectPeripheral:peripheralCopy];
       }
     }
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v6 = a4;
-  v7 = [v6 identifier];
-  v8 = [v6 name];
+  peripheralCopy = peripheral;
+  identifier = [peripheralCopy identifier];
+  name = [peripheralCopy name];
 
-  v9 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Disconnected", v7, v8];
+  v9 = [NSString stringWithFormat:@"Peripheral: %@ (%@) | Disconnected", identifier, name];
 
-  v10 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v12 = v9;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 }
 

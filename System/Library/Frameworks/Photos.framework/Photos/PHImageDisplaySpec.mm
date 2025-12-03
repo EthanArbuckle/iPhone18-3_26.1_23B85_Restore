@@ -1,13 +1,13 @@
 @interface PHImageDisplaySpec
 - (CGRect)normalizedCropRect;
 - (CGSize)fallbackTargetSizeIfRequestedSizeNotLocallyAvailable;
-- (CGSize)requestSizeFromFullSizedWidth:(int64_t)a3 height:(int64_t)a4;
-- (CGSize)requestSizeFromFullSizedWidth:(int64_t)a3 height:(int64_t)a4 resizeMode:(int64_t)a5;
+- (CGSize)requestSizeFromFullSizedWidth:(int64_t)width height:(int64_t)height;
+- (CGSize)requestSizeFromFullSizedWidth:(int64_t)width height:(int64_t)height resizeMode:(int64_t)mode;
 - (CGSize)targetSize;
-- (PHImageDisplaySpec)initWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 normalizedCropRect:(CGRect)a5;
+- (PHImageDisplaySpec)initWithTargetSize:(CGSize)size contentMode:(int64_t)mode normalizedCropRect:(CGRect)rect;
 - (id)description;
 - (id)shortDescription;
-- (void)setNormalizedCropRect:(CGRect)a3;
+- (void)setNormalizedCropRect:(CGRect)rect;
 @end
 
 @implementation PHImageDisplaySpec
@@ -43,17 +43,17 @@
   return result;
 }
 
-- (CGSize)requestSizeFromFullSizedWidth:(int64_t)a3 height:(int64_t)a4
+- (CGSize)requestSizeFromFullSizedWidth:(int64_t)width height:(int64_t)height
 {
-  [(PHImageDisplaySpec *)self requestSizeFromFullSizedWidth:a3 height:a4 resizeMode:1];
+  [(PHImageDisplaySpec *)self requestSizeFromFullSizedWidth:width height:height resizeMode:1];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)requestSizeFromFullSizedWidth:(int64_t)a3 height:(int64_t)a4 resizeMode:(int64_t)a5
+- (CGSize)requestSizeFromFullSizedWidth:(int64_t)width height:(int64_t)height resizeMode:(int64_t)mode
 {
-  if (a3 && a4 && self->_targetSize.width > 0.0 && self->_targetSize.height > 0.0)
+  if (width && height && self->_targetSize.width > 0.0 && self->_targetSize.height > 0.0)
   {
     [(PHImageDisplaySpec *)self normalizedCropRect];
     width = v24.size.width;
@@ -63,24 +63,24 @@
     v13 = v12;
     v15 = v14;
     v16 = v12 / v14;
-    v17 = [(PHImageDisplaySpec *)self contentMode];
-    if (v17 == 1 && a5 == 2)
+    contentMode = [(PHImageDisplaySpec *)self contentMode];
+    if (contentMode == 1 && mode == 2)
     {
       v19 = v16;
     }
 
     else
     {
-      v19 = a3 / a4;
+      v19 = width / height;
     }
 
-    v20 = a3 / a4 * width / height;
+    v20 = width / height * width / height;
     if (v11)
     {
       v20 = v19;
     }
 
-    if (v17 == 1)
+    if (contentMode == 1)
     {
       if (v20 <= v16)
       {
@@ -95,7 +95,7 @@ LABEL_21:
 
     else
     {
-      if (v17)
+      if (contentMode)
       {
         v13 = *MEMORY[0x1E695F060];
         v15 = *(MEMORY[0x1E695F060] + 8);
@@ -120,15 +120,15 @@ LABEL_22:
   return result;
 }
 
-- (void)setNormalizedCropRect:(CGRect)a3
+- (void)setNormalizedCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  self->_normalizedCropRect.origin.x = PHSanitizeNormalizedCropRect(&v13, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  self->_normalizedCropRect.origin.x = PHSanitizeNormalizedCropRect(&v13, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   self->_normalizedCropRect.origin.y = v8;
   self->_normalizedCropRect.size.width = v9;
   self->_normalizedCropRect.size.height = v10;
@@ -154,8 +154,8 @@ LABEL_22:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PHImageDisplaySpec *)self shortDescription];
-  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v5, self, v6];
+  shortDescription = [(PHImageDisplaySpec *)self shortDescription];
+  v7 = [v3 stringWithFormat:@"<%@ %p> %@", v5, self, shortDescription];
 
   return v7;
 }
@@ -195,14 +195,14 @@ LABEL_22:
   return v9;
 }
 
-- (PHImageDisplaySpec)initWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 normalizedCropRect:(CGRect)a5
+- (PHImageDisplaySpec)initWithTargetSize:(CGSize)size contentMode:(int64_t)mode normalizedCropRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
   v24 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = PHImageDisplaySpec;
@@ -211,7 +211,7 @@ LABEL_22:
   if (v12)
   {
     [(PHImageDisplaySpec *)v12 setNormalizedCropRect:x, y, width, height];
-    v13->_contentMode = a4;
+    v13->_contentMode = mode;
     if (v11 <= 0.0 || v10 <= 0.0)
     {
       v14 = *MEMORY[0x1E695F060];

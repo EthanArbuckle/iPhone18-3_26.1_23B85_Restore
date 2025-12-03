@@ -1,20 +1,20 @@
 @interface WidgetContainerViewController
 - (BOOL)showsSquareCorners;
 - (CGRect)visibleBounds;
-- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithCoder:(id)a3;
-- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithCoder:(id)coder;
+- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)continuousCornerRadius;
 - (id)sourceView;
 - (int64_t)presentationMode;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setPresentationMode:(int64_t)a3;
-- (void)setShowsSquareCorners:(BOOL)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setPresentationMode:(int64_t)mode;
+- (void)setShowsSquareCorners:(BOOL)corners;
 - (void)viewDidLoad;
 @end
 
 @implementation WidgetContainerViewController
 
-- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithCoder:(id)a3
+- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14CarPlayAssetUI29WidgetContainerViewController_showsSquareCorners) = 0;
   result = sub_242F05C60();
@@ -24,11 +24,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_242E31588();
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -44,8 +44,8 @@
 
 - (id)sourceView
 {
-  v2 = self;
-  result = [(WidgetContainerViewController *)v2 view];
+  selfCopy = self;
+  result = [(WidgetContainerViewController *)selfCopy view];
   if (result)
   {
     v4 = result;
@@ -86,11 +86,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setShowsSquareCorners:(BOOL)a3
+- (void)setShowsSquareCorners:(BOOL)corners
 {
   v5 = OBJC_IVAR____TtC14CarPlayAssetUI29WidgetContainerViewController_showsSquareCorners;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = corners;
 }
 
 - (int64_t)presentationMode
@@ -100,18 +100,18 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setPresentationMode:(int64_t)a3
+- (void)setPresentationMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14CarPlayAssetUI29WidgetContainerViewController_presentationMode;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = mode;
   v6 = 3;
-  if (a3 != 1)
+  if (mode != 1)
   {
     v6 = 1;
   }
 
-  if (a3)
+  if (mode)
   {
     v7 = v6;
   }
@@ -124,7 +124,7 @@
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC14CarPlayAssetUI29WidgetContainerViewController_widgetViewController) setPresentationMode_];
 }
 
-- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14CarPlayAssetUI29WidgetContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

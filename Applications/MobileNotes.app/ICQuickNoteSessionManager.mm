@@ -1,18 +1,18 @@
 @interface ICQuickNoteSessionManager
-+ (BOOL)lastViewedDateExpired:(id)a3 currentDate:(id)a4;
-+ (BOOL)requirePasscodeInContext:(id)a3 stateArchive:(id)a4;
-+ (BOOL)requirePasscodeInContext:(id)a3 stateArchive:(id)a4 currentDate:(id)a5;
++ (BOOL)lastViewedDateExpired:(id)expired currentDate:(id)date;
++ (BOOL)requirePasscodeInContext:(id)context stateArchive:(id)archive;
++ (BOOL)requirePasscodeInContext:(id)context stateArchive:(id)archive currentDate:(id)date;
 + (id)sharedManager;
 - (BOOL)isQuickNoteFirstLaunch;
 - (ICNote)createdNoteForSession;
 - (ICViewControllerManager)viewControllerManager;
-- (id)newEmptyNoteInContext:(id)a3;
-- (id)noteForSessionCreatingIfNecessaryInContext:(id)a3 stateArchive:(id)a4 canResume:(BOOL)a5 currentDate:(id)a6 isNewlyCreated:(BOOL *)a7;
-- (id)noteForSessionCreatingIfNecessaryInContext:(id)a3 stateArchive:(id)a4 canResume:(BOOL)a5 isNewlyCreated:(BOOL *)a6;
-- (void)beginSessionWithNoteEditorViewController:(id)a3;
+- (id)newEmptyNoteInContext:(id)context;
+- (id)noteForSessionCreatingIfNecessaryInContext:(id)context stateArchive:(id)archive canResume:(BOOL)resume currentDate:(id)date isNewlyCreated:(BOOL *)created;
+- (id)noteForSessionCreatingIfNecessaryInContext:(id)context stateArchive:(id)archive canResume:(BOOL)resume isNewlyCreated:(BOOL *)created;
+- (void)beginSessionWithNoteEditorViewController:(id)controller;
 - (void)endSession;
 - (void)saveSession;
-- (void)setQuickNoteFirstLaunch:(BOOL)a3;
+- (void)setQuickNoteFirstLaunch:(BOOL)launch;
 @end
 
 @implementation ICQuickNoteSessionManager
@@ -31,10 +31,10 @@
 
 - (ICViewControllerManager)viewControllerManager
 {
-  v2 = [(ICQuickNoteSessionManager *)self noteEditorViewController];
-  v3 = [v2 ic_viewControllerManager];
+  noteEditorViewController = [(ICQuickNoteSessionManager *)self noteEditorViewController];
+  ic_viewControllerManager = [noteEditorViewController ic_viewControllerManager];
 
-  return v3;
+  return ic_viewControllerManager;
 }
 
 - (BOOL)isQuickNoteFirstLaunch
@@ -49,37 +49,37 @@
     v5 = [ICSettingsUtilities objectForKey:@"QNForceFirstLaunchStateTrue"];
     v6 = ICCheckedDynamicCast();
 
-    v4 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setQuickNoteFirstLaunch:(BOOL)a3
+- (void)setQuickNoteFirstLaunch:(BOOL)launch
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:launch];
   [ICSettingsUtilities setObject:v3 forKey:@"QNFirstLaunchState"];
 }
 
-+ (BOOL)requirePasscodeInContext:(id)a3 stateArchive:(id)a4
++ (BOOL)requirePasscodeInContext:(id)context stateArchive:(id)archive
 {
-  v6 = a4;
-  v7 = a3;
+  archiveCopy = archive;
+  contextCopy = context;
   v8 = +[NSDate date];
-  LOBYTE(a1) = [a1 requirePasscodeInContext:v7 stateArchive:v6 currentDate:v8];
+  LOBYTE(self) = [self requirePasscodeInContext:contextCopy stateArchive:archiveCopy currentDate:v8];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)requirePasscodeInContext:(id)a3 stateArchive:(id)a4 currentDate:(id)a5
++ (BOOL)requirePasscodeInContext:(id)context stateArchive:(id)archive currentDate:(id)date
 {
-  v8 = a4;
-  v9 = a5;
+  archiveCopy = archive;
+  dateCopy = date;
   if (+[ICQuickNoteSessionSettings showOnLockScreen](ICQuickNoteSessionSettings, "showOnLockScreen") == 1 || +[ICQuickNoteSessionSettings showOnLockScreen]== 3)
   {
     v10 = os_log_create("com.apple.notes", "QuickNote");
@@ -93,8 +93,8 @@
 
   else if (+[ICQuickNoteSessionSettings showOnLockScreen]== 2)
   {
-    v14 = [v8 currentNoteLastViewedDate];
-    v11 = [a1 lastViewedDateExpired:v14 currentDate:v9];
+    currentNoteLastViewedDate = [archiveCopy currentNoteLastViewedDate];
+    v11 = [self lastViewedDateExpired:currentNoteLastViewedDate currentDate:dateCopy];
   }
 
   else
@@ -122,26 +122,26 @@
   return v11;
 }
 
-- (id)noteForSessionCreatingIfNecessaryInContext:(id)a3 stateArchive:(id)a4 canResume:(BOOL)a5 isNewlyCreated:(BOOL *)a6
+- (id)noteForSessionCreatingIfNecessaryInContext:(id)context stateArchive:(id)archive canResume:(BOOL)resume isNewlyCreated:(BOOL *)created
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
+  resumeCopy = resume;
+  archiveCopy = archive;
+  contextCopy = context;
   v12 = +[NSDate date];
-  v13 = [(ICQuickNoteSessionManager *)self noteForSessionCreatingIfNecessaryInContext:v11 stateArchive:v10 canResume:v7 currentDate:v12 isNewlyCreated:a6];
+  v13 = [(ICQuickNoteSessionManager *)self noteForSessionCreatingIfNecessaryInContext:contextCopy stateArchive:archiveCopy canResume:resumeCopy currentDate:v12 isNewlyCreated:created];
 
   return v13;
 }
 
-- (id)noteForSessionCreatingIfNecessaryInContext:(id)a3 stateArchive:(id)a4 canResume:(BOOL)a5 currentDate:(id)a6 isNewlyCreated:(BOOL *)a7
+- (id)noteForSessionCreatingIfNecessaryInContext:(id)context stateArchive:(id)archive canResume:(BOOL)resume currentDate:(id)date isNewlyCreated:(BOOL *)created
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  if (a7)
+  resumeCopy = resume;
+  contextCopy = context;
+  archiveCopy = archive;
+  dateCopy = date;
+  if (created)
   {
-    *a7 = 0;
+    *created = 0;
   }
 
   v16 = os_log_create("com.apple.notes", "QuickNote");
@@ -155,18 +155,18 @@
     v67 = 2112;
     v68 = v38;
     v69 = 1024;
-    LODWORD(v70[0]) = v9;
+    LODWORD(v70[0]) = resumeCopy;
     WORD2(v70[0]) = 2112;
-    *(v70 + 6) = v15;
+    *(v70 + 6) = dateCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%@ %@ canResume %d currentDate %@", buf, 0x26u);
   }
 
   if (ICInternalSettingsIsSelectionStateTrackingEnabled())
   {
-    if (v9 && +[ICQuickNoteSessionSettings showOnLockScreen]== 2)
+    if (resumeCopy && +[ICQuickNoteSessionSettings showOnLockScreen]== 2)
     {
-      v17 = [_TtC11MobileNotes25ICSelectionStateUtilities selectedNoteObjectIDFromArchive:v14 modernManagedObjectContext:v13 legacyManagedObjectContext:0];
-      v18 = [ICNote ic_existingObjectWithID:v17 context:v13];
+      v17 = [_TtC11MobileNotes25ICSelectionStateUtilities selectedNoteObjectIDFromArchive:archiveCopy modernManagedObjectContext:contextCopy legacyManagedObjectContext:0];
+      createdNoteForSession = [ICNote ic_existingObjectWithID:v17 context:contextCopy];
       v19 = os_log_create("com.apple.notes", "QuickNote");
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -184,16 +184,16 @@ LABEL_19:
       }
 
       v24 = objc_opt_class();
-      v25 = [v14 currentNoteLastViewedDate];
-      LOBYTE(v24) = [v24 lastViewedDateExpired:v25 currentDate:v15];
+      currentNoteLastViewedDate = [archiveCopy currentNoteLastViewedDate];
+      LOBYTE(v24) = [v24 lastViewedDateExpired:currentNoteLastViewedDate currentDate:dateCopy];
 
       if (v24)
       {
         goto LABEL_31;
       }
 
-      v17 = [_TtC11MobileNotes25ICSelectionStateUtilities selectedNoteObjectIDFromArchive:v14 modernManagedObjectContext:v13 legacyManagedObjectContext:0];
-      v18 = [ICNote ic_existingObjectWithID:v17 context:v13];
+      v17 = [_TtC11MobileNotes25ICSelectionStateUtilities selectedNoteObjectIDFromArchive:archiveCopy modernManagedObjectContext:contextCopy legacyManagedObjectContext:0];
+      createdNoteForSession = [ICNote ic_existingObjectWithID:v17 context:contextCopy];
       v19 = os_log_create("com.apple.notes", "QuickNote");
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -204,20 +204,20 @@ LABEL_19:
     v55 = objc_opt_class();
     v63 = NSStringFromClass(v55);
     v62 = NSStringFromSelector(a2);
-    v56 = [v18 shortLoggingDescription];
+    shortLoggingDescription = [createdNoteForSession shortLoggingDescription];
     *buf = 138412802;
     v66 = v63;
     v67 = 2112;
     v68 = v62;
     v69 = 2112;
-    v70[0] = v56;
-    v57 = v56;
+    v70[0] = shortLoggingDescription;
+    v57 = shortLoggingDescription;
     _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%@ %@ found %@", buf, 0x20u);
 
     goto LABEL_19;
   }
 
-  if (v9 && +[ICQuickNoteSessionSettings showOnLockScreen]== 2)
+  if (resumeCopy && +[ICQuickNoteSessionSettings showOnLockScreen]== 2)
   {
     v20 = os_log_create("com.apple.notes", "QuickNote");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -225,20 +225,20 @@ LABEL_19:
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
       v53 = NSStringFromSelector(a2);
-      v54 = [v14 currentNoteObjectIDURL];
+      currentNoteObjectIDURL = [archiveCopy currentNoteObjectIDURL];
       *buf = 138412802;
       v66 = v52;
       v67 = 2112;
       v68 = v53;
       v69 = 2112;
-      v70[0] = v54;
+      v70[0] = currentNoteObjectIDURL;
       _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%@ %@ looking for current note %@", buf, 0x20u);
     }
 
-    v21 = [v13 persistentStoreCoordinator];
-    v22 = [v14 currentNoteObjectIDURL];
-    v23 = [v21 ic_managedObjectIDForURIRepresentation:v22];
-    v18 = [ICNote ic_existingObjectWithID:v23 context:v13];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+    currentNoteObjectIDURL2 = [archiveCopy currentNoteObjectIDURL];
+    v23 = [persistentStoreCoordinator ic_managedObjectIDForURIRepresentation:currentNoteObjectIDURL2];
+    createdNoteForSession = [ICNote ic_existingObjectWithID:v23 context:contextCopy];
 
     v19 = os_log_create("com.apple.notes", "QuickNote");
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -260,29 +260,29 @@ LABEL_19:
       v47 = objc_opt_class();
       v48 = NSStringFromClass(v47);
       v49 = NSStringFromSelector(a2);
-      v50 = [v14 currentNoteObjectIDURL];
+      currentNoteObjectIDURL3 = [archiveCopy currentNoteObjectIDURL];
       *buf = 138412802;
       v66 = v48;
       v67 = 2112;
       v68 = v49;
       v69 = 2112;
-      v70[0] = v50;
+      v70[0] = currentNoteObjectIDURL3;
       _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "%@ %@ looking for instant note %@", buf, 0x20u);
     }
 
     v27 = objc_opt_class();
-    v28 = [v14 currentNoteLastViewedDate];
-    LOBYTE(v27) = [v27 lastViewedDateExpired:v28 currentDate:v15];
+    currentNoteLastViewedDate2 = [archiveCopy currentNoteLastViewedDate];
+    LOBYTE(v27) = [v27 lastViewedDateExpired:currentNoteLastViewedDate2 currentDate:dateCopy];
 
     if (v27)
     {
       goto LABEL_31;
     }
 
-    v29 = [v13 persistentStoreCoordinator];
-    v30 = [v14 currentNoteObjectIDURL];
-    v31 = [v29 ic_managedObjectIDForURIRepresentation:v30];
-    v18 = [ICNote ic_existingObjectWithID:v31 context:v13];
+    persistentStoreCoordinator2 = [contextCopy persistentStoreCoordinator];
+    currentNoteObjectIDURL4 = [archiveCopy currentNoteObjectIDURL];
+    v31 = [persistentStoreCoordinator2 ic_managedObjectIDForURIRepresentation:currentNoteObjectIDURL4];
+    createdNoteForSession = [ICNote ic_existingObjectWithID:v31 context:contextCopy];
 
     v19 = os_log_create("com.apple.notes", "QuickNote");
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -294,23 +294,23 @@ LABEL_19:
   v58 = objc_opt_class();
   v64 = NSStringFromClass(v58);
   v59 = NSStringFromSelector(a2);
-  v60 = [v18 shortLoggingDescription];
+  shortLoggingDescription2 = [createdNoteForSession shortLoggingDescription];
   *buf = 138412802;
   v66 = v64;
   v67 = 2112;
   v68 = v59;
   v69 = 2112;
-  v70[0] = v60;
-  v61 = v60;
+  v70[0] = shortLoggingDescription2;
+  v61 = shortLoggingDescription2;
   _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%@ %@ found %@", buf, 0x20u);
 
 LABEL_25:
   v17 = v19;
 LABEL_26:
 
-  if (v18)
+  if (createdNoteForSession)
   {
-    if (![v18 isDeletedOrInTrash])
+    if (![createdNoteForSession isDeletedOrInTrash])
     {
       goto LABEL_37;
     }
@@ -323,14 +323,14 @@ LABEL_26:
   }
 
 LABEL_31:
-  v18 = [(ICQuickNoteSessionManager *)self createdNoteForSession];
-  if (!v18)
+  createdNoteForSession = [(ICQuickNoteSessionManager *)self createdNoteForSession];
+  if (!createdNoteForSession)
   {
-    v18 = [(ICQuickNoteSessionManager *)self newEmptyNoteInContext:v13];
-    [(ICQuickNoteSessionManager *)self setCreatedNoteForSession:v18];
-    if (a7)
+    createdNoteForSession = [(ICQuickNoteSessionManager *)self newEmptyNoteInContext:contextCopy];
+    [(ICQuickNoteSessionManager *)self setCreatedNoteForSession:createdNoteForSession];
+    if (created)
     {
-      *a7 = 1;
+      *created = 1;
     }
 
     v33 = os_log_create("com.apple.notes", "QuickNote");
@@ -339,13 +339,13 @@ LABEL_31:
       v43 = objc_opt_class();
       v44 = NSStringFromClass(v43);
       v45 = NSStringFromSelector(a2);
-      v46 = [v18 shortLoggingDescription];
+      shortLoggingDescription3 = [createdNoteForSession shortLoggingDescription];
       *buf = 138412802;
       v66 = v44;
       v67 = 2112;
       v68 = v45;
       v69 = 2112;
-      v70[0] = v46;
+      v70[0] = shortLoggingDescription3;
       _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "%@ %@ created new note %@", buf, 0x20u);
     }
   }
@@ -357,29 +357,29 @@ LABEL_37:
     v39 = objc_opt_class();
     v40 = NSStringFromClass(v39);
     v41 = NSStringFromSelector(a2);
-    v42 = [v18 shortLoggingDescription];
+    shortLoggingDescription4 = [createdNoteForSession shortLoggingDescription];
     *buf = 138412802;
     v66 = v40;
     v67 = 2112;
     v68 = v41;
     v69 = 2112;
-    v70[0] = v42;
+    v70[0] = shortLoggingDescription4;
     _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "%@ %@ note %@", buf, 0x20u);
   }
 
-  return v18;
+  return createdNoteForSession;
 }
 
-- (void)beginSessionWithNoteEditorViewController:(id)a3
+- (void)beginSessionWithNoteEditorViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(ICQuickNoteSessionManager *)self isQuickNoteSessionActive])
   {
     [ICAssert handleFailedAssertWithCondition:"!self.isQuickNoteSessionActive" functionName:"[ICQuickNoteSessionManager beginSessionWithNoteEditorViewController:]" simulateCrash:1 showAlert:0 format:@"Beginning a quicknote session when one is active"];
   }
 
   [(ICQuickNoteSessionManager *)self setQuickNoteSessionActive:1];
-  [(ICQuickNoteSessionManager *)self setNoteEditorViewController:v4];
+  [(ICQuickNoteSessionManager *)self setNoteEditorViewController:controllerCopy];
 
   v5 = os_log_create("com.apple.notes", "QuickNote");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -395,9 +395,9 @@ LABEL_37:
     [ICAssert handleFailedAssertWithCondition:"self.isQuickNoteSessionActive" functionName:"[ICQuickNoteSessionManager saveSession]" simulateCrash:1 showAlert:0 format:@"Attempting to save a quicknote session when one is not active"];
   }
 
-  v3 = [(ICQuickNoteSessionManager *)self noteEditorViewController];
+  noteEditorViewController = [(ICQuickNoteSessionManager *)self noteEditorViewController];
 
-  if (!v3)
+  if (!noteEditorViewController)
   {
     [ICAssert handleFailedAssertWithCondition:"self.noteEditorViewController" functionName:"[ICQuickNoteSessionManager saveSession]" simulateCrash:1 showAlert:0 format:@"Attempting to save a quicknote session without a note editor"];
   }
@@ -410,18 +410,18 @@ LABEL_37:
 
   if ([(ICQuickNoteSessionManager *)self isQuickNoteSessionActive])
   {
-    v5 = [(ICQuickNoteSessionManager *)self noteEditorViewController];
+    noteEditorViewController2 = [(ICQuickNoteSessionManager *)self noteEditorViewController];
 
-    if (v5)
+    if (noteEditorViewController2)
     {
-      v6 = [(ICQuickNoteSessionManager *)self viewControllerManager];
-      v7 = [v6 windowStateArchive];
+      viewControllerManager = [(ICQuickNoteSessionManager *)self viewControllerManager];
+      windowStateArchive = [viewControllerManager windowStateArchive];
 
       v8 = +[ICAppDelegate sharedInstance];
-      [v8 saveQuicknoteArchiveState:v7];
+      [v8 saveQuicknoteArchiveState:windowStateArchive];
 
       v9 = +[ICAppDelegate sharedInstance];
-      [v9 saveLastBackgroundedArchiveState:v7];
+      [v9 saveLastBackgroundedArchiveState:windowStateArchive];
     }
   }
 }
@@ -441,10 +441,10 @@ LABEL_37:
 
   if (+[ICQuickNoteSessionSettings showOnLockScreen]== 2)
   {
-    v4 = [(ICQuickNoteSessionManager *)self noteEditorViewController];
-    v5 = [v4 note];
+    noteEditorViewController = [(ICQuickNoteSessionManager *)self noteEditorViewController];
+    note = [noteEditorViewController note];
     v6 = +[ICNoteContext sharedContext];
-    [v6 setCurrentNote:v5];
+    [v6 setCurrentNote:note];
   }
 
   [(ICQuickNoteSessionManager *)self saveSession];
@@ -453,25 +453,25 @@ LABEL_37:
   [(ICQuickNoteSessionManager *)self setCreatedNoteForSession:0];
 }
 
-- (id)newEmptyNoteInContext:(id)a3
+- (id)newEmptyNoteInContext:(id)context
 {
-  v3 = [ICAccount defaultAccountInContext:a3];
-  v4 = [v3 defaultFolder];
-  v5 = [ICNote newEmptyNoteInFolder:v4];
+  v3 = [ICAccount defaultAccountInContext:context];
+  defaultFolder = [v3 defaultFolder];
+  v5 = [ICNote newEmptyNoteInFolder:defaultFolder];
 
   objc_opt_class();
   v6 = [ICSettingsUtilities objectForKey:@"PaperStyle"];
   v7 = ICCheckedDynamicCast();
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
-  if (v8 <= 1)
+  if (intValue <= 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8;
+    v9 = intValue;
   }
 
   [v5 setPaperStyleType:v9];
@@ -479,10 +479,10 @@ LABEL_37:
   return v5;
 }
 
-+ (BOOL)lastViewedDateExpired:(id)a3 currentDate:(id)a4
++ (BOOL)lastViewedDateExpired:(id)expired currentDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  expiredCopy = expired;
+  dateCopy = date;
   v7 = +[ICQuickNoteSessionSettings sessionDuration];
   v8 = v7;
   if (v7 == -1)
@@ -491,11 +491,11 @@ LABEL_37:
     goto LABEL_14;
   }
 
-  if (v5)
+  if (expiredCopy)
   {
     if (v7 == -2)
     {
-      v9 = [v5 ic_isToday] ^ 1;
+      v9 = [expiredCopy ic_isToday] ^ 1;
       v10 = os_log_create("com.apple.notes", "QuickNote");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
@@ -509,7 +509,7 @@ LABEL_12:
 
     if (v7 >= 1)
     {
-      [v6 timeIntervalSinceDate:v5];
+      [dateCopy timeIntervalSinceDate:expiredCopy];
       v12 = v11;
       v13 = os_log_create("com.apple.notes", "QuickNote");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -534,9 +534,9 @@ LABEL_14:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138413058;
-    v17 = v5;
+    v17 = expiredCopy;
     v18 = 2112;
-    v19 = v6;
+    v19 = dateCopy;
     v20 = 2048;
     v21 = v8;
     v22 = 1024;

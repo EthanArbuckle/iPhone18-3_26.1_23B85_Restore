@@ -1,27 +1,27 @@
 @interface SSCoreHapticsPlayer
-- (BOOL)createAudioPlayerAndReturnError:(id *)a3;
-- (BOOL)doInit:(id)a3 haptic:(id)a4 error:(id *)a5;
-- (BOOL)playWithOptions:(id)a3 completionCallbackToken:(unsigned int)a4 error:(id *)a5;
-- (BOOL)prepareHapticPatternFromPlayOptions:(id)a3;
-- (SSCoreHapticsPlayer)initWithAudio:(id)a3 haptic:(id)a4 error:(id *)a5;
-- (SSCoreHapticsPlayer)initWithAudio:(id)a3 hapticDictionary:(id)a4 error:(id *)a5;
-- (id)getHapticDictionaryFromURL:(id)a3;
+- (BOOL)createAudioPlayerAndReturnError:(id *)error;
+- (BOOL)doInit:(id)init haptic:(id)haptic error:(id *)error;
+- (BOOL)playWithOptions:(id)options completionCallbackToken:(unsigned int)token error:(id *)error;
+- (BOOL)prepareHapticPatternFromPlayOptions:(id)options;
+- (SSCoreHapticsPlayer)initWithAudio:(id)audio haptic:(id)haptic error:(id *)error;
+- (SSCoreHapticsPlayer)initWithAudio:(id)audio hapticDictionary:(id)dictionary error:(id *)error;
+- (id)getHapticDictionaryFromURL:(id)l;
 - (id)setupDefaultEngineConfigBlock;
-- (unint64_t)createAudioResource:(id)a3 error:(id *)a4;
-- (void)createHapticPlayer:(id)a3 error:(id *)a4;
+- (unint64_t)createAudioResource:(id)resource error:(id *)error;
+- (void)createHapticPlayer:(id)player error:(id *)error;
 - (void)dealloc;
 - (void)handleFinish;
-- (void)prewarm:(BOOL)a3;
-- (void)registerCompletionPortion:(BOOL)a3;
+- (void)prewarm:(BOOL)prewarm;
+- (void)registerCompletionPortion:(BOOL)portion;
 - (void)setupLooping;
-- (void)stop:(BOOL)a3;
+- (void)stop:(BOOL)stop;
 @end
 
 @implementation SSCoreHapticsPlayer
 
-- (void)prewarm:(BOOL)a3
+- (void)prewarm:(BOOL)prewarm
 {
-  v3 = a3;
+  prewarmCopy = prewarm;
   v21 = *MEMORY[0x1E69E9840];
   if (kSystemSoundClientLogSubsystem)
   {
@@ -45,7 +45,7 @@
     v11 = 136316162;
     v12 = "SSCoreHapticsPlayer.mm";
     v13 = 1024;
-    if (v3)
+    if (prewarmCopy)
     {
       v7 = @"Prewarming";
     }
@@ -56,13 +56,13 @@
     v17 = 1024;
     v18 = ssid;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B9A08000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %@ SSID %u, SSCoreHapticsPlayer %p", &v11, 0x2Cu);
   }
 
 LABEL_10:
   engine = self->_engine;
-  if (v3)
+  if (prewarmCopy)
   {
     [(CHHapticEngine *)engine prewarmWithCompletionHandler:0];
   }
@@ -75,9 +75,9 @@ LABEL_10:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stop:(BOOL)a3
+- (void)stop:(BOOL)stop
 {
-  v3 = a3;
+  stopCopy = stop;
   v19 = *MEMORY[0x1E69E9840];
   if (!kSystemSoundClientLogSubsystem)
   {
@@ -94,13 +94,13 @@ LABEL_6:
       v13 = 1024;
       v14 = ssid;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
-      v18 = v3;
+      v18 = stopCopy;
       _os_log_impl(&dword_1B9A08000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Stopping SSID %u, SSCoreHapticsPlayer %p. stopNow: %d", &v9, 0x28u);
     }
 
-    if (v3)
+    if (stopCopy)
     {
       goto LABEL_4;
     }
@@ -114,7 +114,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (v3)
+  if (stopCopy)
   {
 LABEL_4:
     [(SSCoreHapticsPlayer *)self registerCompletionAndStop];
@@ -136,14 +136,14 @@ LABEL_13:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)playWithOptions:(id)a3 completionCallbackToken:(unsigned int)a4 error:(id *)a5
+- (BOOL)playWithOptions:(id)options completionCallbackToken:(unsigned int)token error:(id *)error
 {
   v77 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  optionsCopy = options;
   v8 = getpid();
-  self->_clientCompletionToken = a4;
-  v9 = [(SSCoreHapticsPlayer *)self prepareHapticPatternFromPlayOptions:v7];
-  SSClientPlayOptions::SSClientPlayOptions(&v64, self->_ssid, v7);
+  self->_clientCompletionToken = token;
+  v9 = [(SSCoreHapticsPlayer *)self prepareHapticPatternFromPlayOptions:optionsCopy];
+  SSClientPlayOptions::SSClientPlayOptions(&v64, self->_ssid, optionsCopy);
   if (*(&v64 + 3) < 0.0)
   {
     HIDWORD(v64) = 0;
@@ -208,7 +208,7 @@ LABEL_13:
     v73 = 1024;
     v74 = DWORD2(v64);
     v75 = 2048;
-    v76 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B9A08000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d -> Incoming Request : SSID %d, inClientPID %d(%s), behaviorID %d, customHapticsProvided %d, loop %d, loopPeriod %f, inFlags %u, SSCoreHapticsPlayer %p", buf, 0x54u);
     if (SHIBYTE(v57) < 0)
     {
@@ -430,7 +430,7 @@ LABEL_48:
 
   v53 = v35;
   applesauce::xpc::object::object(&v54, v67);
-  v47 = v7;
+  v47 = optionsCopy;
   v50 = buf;
   v36 = v27;
   v48 = v36;
@@ -717,45 +717,45 @@ LABEL_34:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (SSCoreHapticsPlayer)initWithAudio:(id)a3 hapticDictionary:(id)a4 error:(id *)a5
+- (SSCoreHapticsPlayer)initWithAudio:(id)audio hapticDictionary:(id)dictionary error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 | v9)
+  audioCopy = audio;
+  dictionaryCopy = dictionary;
+  if (audioCopy | dictionaryCopy)
   {
     v14.receiver = self;
     v14.super_class = SSCoreHapticsPlayer;
     v10 = [(SSCoreHapticsPlayer *)&v14 init];
     v11 = v10;
-    if (v10 && ![(SSCoreHapticsPlayer *)v10 doInit:v8 haptic:v9 error:a5])
+    if (v10 && ![(SSCoreHapticsPlayer *)v10 doInit:audioCopy haptic:dictionaryCopy error:error])
     {
 
       v11 = 0;
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:-4813 userInfo:0];
-    *a5 = v12 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (SSCoreHapticsPlayer)initWithAudio:(id)a3 haptic:(id)a4 error:(id *)a5
+- (SSCoreHapticsPlayer)initWithAudio:(id)audio haptic:(id)haptic error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 | v9)
+  audioCopy = audio;
+  hapticCopy = haptic;
+  if (audioCopy | hapticCopy)
   {
     v15.receiver = self;
     v15.super_class = SSCoreHapticsPlayer;
@@ -763,8 +763,8 @@ LABEL_34:
     v11 = v10;
     if (v10)
     {
-      v12 = [(SSCoreHapticsPlayer *)v10 getHapticDictionaryFromURL:v9];
-      if (![(SSCoreHapticsPlayer *)v11 doInit:v8 haptic:v12 error:a5])
+      v12 = [(SSCoreHapticsPlayer *)v10 getHapticDictionaryFromURL:hapticCopy];
+      if (![(SSCoreHapticsPlayer *)v11 doInit:audioCopy haptic:v12 error:error])
       {
 
         v11 = 0;
@@ -772,21 +772,21 @@ LABEL_34:
     }
 
     self = v11;
-    v13 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:-4813 userInfo:0];
-    *a5 = v13 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -814,7 +814,7 @@ LABEL_34:
     v13 = 1024;
     v14 = 429;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B9A08000, v3, OS_LOG_TYPE_INFO, "%25s:%-5d Destroying SSCoreHapticsPlayer %p", buf, 0x1Cu);
   }
 
@@ -837,11 +837,11 @@ LABEL_8:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerCompletionPortion:(BOOL)a3
+- (void)registerCompletionPortion:(BOOL)portion
 {
-  v3 = a3;
+  portionCopy = portion;
   v22 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (portion)
   {
     if (!self->_audioPlayer)
     {
@@ -891,7 +891,7 @@ LABEL_18:
         *&v15[4] = "SSCoreHapticsPlayer.mm";
         *v15 = 136316162;
         *&v15[12] = 1024;
-        if (v3)
+        if (portionCopy)
         {
           v9 = @"Audio";
         }
@@ -902,7 +902,7 @@ LABEL_18:
         v18 = 1024;
         v19 = ssid;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B9A08000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %@ completed for SSID %d, SSCoreHapticsPlayer %p", v15, 0x2Cu);
       }
 
@@ -932,7 +932,7 @@ LABEL_18:
     *&v15[4] = "SSCoreHapticsPlayer.mm";
     *v15 = 136316162;
     *&v15[12] = 1024;
-    if (v3)
+    if (portionCopy)
     {
       v12 = @"Audio";
     }
@@ -943,7 +943,7 @@ LABEL_18:
     v18 = 1024;
     v19 = v13;
     v20 = 2048;
-    v21 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_DEBUG, "%25s:%-5d %@ for SSID %d, SSCoreHapticsPlayer %p has already finished or never started", v15, 0x2Cu);
   }
 
@@ -1051,10 +1051,10 @@ LABEL_8:
   [(CHHapticAdvancedPatternPlayerExtended *)hapticPlayer setLoopEnd:audioPatternDuration];
 }
 
-- (BOOL)prepareHapticPatternFromPlayOptions:(id)a3
+- (BOOL)prepareHapticPatternFromPlayOptions:(id)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKey:@"PlaySystemSoundOption_VibrationPattern"];
+  v4 = [options objectForKey:@"PlaySystemSoundOption_VibrationPattern"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1099,7 +1099,7 @@ LABEL_8:
         v16 = 1024;
         v17 = 343;
         v18 = 2048;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_DEBUG, "%25s:%-5d playOptions contain haptic pattern identical to the one stored in SSCoreHapticsPlayer %p. NOT recreating haptic player", buf, 0x1Cu);
       }
 
@@ -1125,30 +1125,30 @@ LABEL_17:
   return v8;
 }
 
-- (id)getHapticDictionaryFromURL:(id)a3
+- (id)getHapticDictionaryFromURL:(id)l
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 path];
-    v5 = [v4 pathExtension];
-    if ([v5 isEqualToString:@"json"])
+    path = [lCopy path];
+    pathExtension = [path pathExtension];
+    if ([pathExtension isEqualToString:@"json"])
     {
 
       goto LABEL_5;
     }
 
-    v6 = [v3 path];
-    v7 = [v6 pathExtension];
-    v8 = [v7 isEqualToString:@"ahap"];
+    path2 = [lCopy path];
+    pathExtension2 = [path2 pathExtension];
+    v8 = [pathExtension2 isEqualToString:@"ahap"];
 
     if (v8)
     {
 LABEL_5:
       v9 = MEMORY[0x1E695DEF0];
-      v10 = [v3 path];
-      v11 = [v9 dataWithContentsOfFile:v10];
+      path3 = [lCopy path];
+      v11 = [v9 dataWithContentsOfFile:path3];
 
       if (kSystemSoundClientLogSubsystem)
       {
@@ -1247,11 +1247,11 @@ LABEL_29:
   return v14;
 }
 
-- (BOOL)doInit:(id)a3 haptic:(id)a4 error:(id *)a5
+- (BOOL)doInit:(id)init haptic:(id)haptic error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  initCopy = init;
+  hapticCopy = haptic;
   if (kSystemSoundClientLogSubsystem)
   {
     v10 = *kSystemSoundClientLogSubsystem;
@@ -1270,13 +1270,13 @@ LABEL_29:
   v12 = v10;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 absoluteString];
+    absoluteString = [initCopy absoluteString];
     *buf = 136315650;
     *&buf[4] = "SSCoreHapticsPlayer.mm";
     *&buf[12] = 1024;
     *&buf[14] = 232;
     *&buf[18] = 2112;
-    *&buf[20] = v13;
+    *&buf[20] = absoluteString;
     _os_log_impl(&dword_1B9A08000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Creating new system sound. Audio: %@", buf, 0x1Cu);
   }
 
@@ -1289,11 +1289,11 @@ LABEL_8:
   v49 = 0;
   self->_audioResourceID = 0;
   *&self->_shouldPlayAudioFinal = 16842752;
-  v14 = [(SSCoreHapticsPlayer *)self setupDefaultEngineConfigBlock];
+  setupDefaultEngineConfigBlock = [(SSCoreHapticsPlayer *)self setupDefaultEngineConfigBlock];
   v15 = objc_alloc(MEMORY[0x1E695F578]);
   v16 = (*&buf[8] + 40);
   obj = *(*&buf[8] + 40);
-  v17 = [v15 initWithAudioSession:0 sessionIsShared:0 options:v14 error:&obj];
+  v17 = [v15 initWithAudioSession:0 sessionIsShared:0 options:setupDefaultEngineConfigBlock error:&obj];
   objc_storeStrong(v16, obj);
   engine = self->_engine;
   self->_engine = v17;
@@ -1329,12 +1329,12 @@ LABEL_8:
     }
 
 LABEL_21:
-    if (a5)
+    if (error)
     {
       v29 = *(*&buf[8] + 40);
 LABEL_23:
       v26 = 0;
-      *a5 = v29;
+      *error = v29;
       goto LABEL_27;
     }
 
@@ -1343,7 +1343,7 @@ LABEL_23:
 
   if (!self->_engine)
   {
-    if (a5)
+    if (error)
     {
       v29 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:-4898 userInfo:0];
       goto LABEL_23;
@@ -1355,7 +1355,7 @@ LABEL_26:
   }
 
   v40 = 0;
-  v21 = [(SSCoreHapticsPlayer *)self createAudioResource:v8 error:&v40];
+  v21 = [(SSCoreHapticsPlayer *)self createAudioResource:initCopy error:&v40];
   objc_storeStrong(v19, v40);
   self->_audioResourceID = v21;
   if (v21)
@@ -1372,7 +1372,7 @@ LABEL_26:
 
   v24 = (*&buf[8] + 40);
   v38 = *(*&buf[8] + 40);
-  [(SSCoreHapticsPlayer *)self createHapticPlayer:v9 error:&v38];
+  [(SSCoreHapticsPlayer *)self createHapticPlayer:hapticCopy error:&v38];
   objc_storeStrong(v24, v38);
   objc_initWeak(location, self);
   v32 = MEMORY[0x1E69E9820];
@@ -1481,12 +1481,12 @@ LABEL_8:
   return v6;
 }
 
-- (void)createHapticPlayer:(id)a3 error:(id *)a4
+- (void)createHapticPlayer:(id)player error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  playerCopy = player;
+  v7 = playerCopy;
+  if (!playerCopy)
   {
     if (kSystemSoundClientLogSubsystem)
     {
@@ -1515,20 +1515,20 @@ LABEL_8:
     goto LABEL_29;
   }
 
-  v8 = [v6 objectForKey:*MEMORY[0x1E695F540]];
+  v8 = [playerCopy objectForKey:*MEMORY[0x1E695F540]];
 
   if (!v8)
   {
-    v13 = [(CHHapticEngine *)self->_engine createAdvancedPlayerWithVibePatternDictionary:v7 error:a4];
+    v13 = [(CHHapticEngine *)self->_engine createAdvancedPlayerWithVibePatternDictionary:v7 error:error];
     hapticPlayer = self->_hapticPlayer;
     self->_hapticPlayer = v13;
 
     goto LABEL_27;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695F598]) initWithDictionary:v7 error:a4];
+  v9 = [objc_alloc(MEMORY[0x1E695F598]) initWithDictionary:v7 error:error];
   v10 = v9;
-  if (!*a4)
+  if (!*error)
   {
     [v9 duration];
     self->_hapticPatternDuration = v15;
@@ -1538,7 +1538,7 @@ LABEL_8:
       if (!v16)
       {
 LABEL_24:
-        v22 = [(CHHapticEngine *)self->_engine createAdvancedPlayerWithPattern:v10 error:a4];
+        v22 = [(CHHapticEngine *)self->_engine createAdvancedPlayerWithPattern:v10 error:error];
         v11 = self->_hapticPlayer;
         self->_hapticPlayer = v22;
         goto LABEL_25;
@@ -1583,7 +1583,7 @@ LABEL_24:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = *a4;
+    v19 = *error;
     v25 = 136315650;
     v26 = "SSCoreHapticsPlayer.mm";
     v27 = 1024;
@@ -1597,7 +1597,7 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-  if (!*a4)
+  if (!*error)
   {
     v23 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v7 copyItems:1];
     hapticPatternDict = self->_hapticPatternDict;
@@ -1610,7 +1610,7 @@ LABEL_30:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)createAudioPlayerAndReturnError:(id *)a3
+- (BOOL)createAudioPlayerAndReturnError:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
   audioPlayer = self->_audioPlayer;
@@ -1623,9 +1623,9 @@ LABEL_30:
   v10 = [v9 initWithAudioResourceID:self->_audioResourceID parameters:MEMORY[0x1E695E0F0] relativeTime:0.0 duration:v7];
   v34[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-  v12 = [v8 initWithEvents:v11 parameters:MEMORY[0x1E695E0F0] error:a3];
+  v12 = [v8 initWithEvents:v11 parameters:MEMORY[0x1E695E0F0] error:error];
 
-  if (*a3)
+  if (*error)
   {
     if (kSystemSoundClientLogSubsystem)
     {
@@ -1651,7 +1651,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v17 = *a3;
+    v17 = *error;
     v28 = 136315650;
     v29 = "SSCoreHapticsPlayer.mm";
     v30 = 1024;
@@ -1694,11 +1694,11 @@ LABEL_23:
   }
 
 LABEL_15:
-  v21 = [(CHHapticEngine *)self->_engine createAdvancedPlayerWithPattern:v12 error:a3];
+  v21 = [(CHHapticEngine *)self->_engine createAdvancedPlayerWithPattern:v12 error:error];
   v22 = self->_audioPlayer;
   self->_audioPlayer = v21;
 
-  if (*a3)
+  if (*error)
   {
     if (kSystemSoundClientLogSubsystem)
     {
@@ -1720,7 +1720,7 @@ LABEL_15:
       goto LABEL_24;
     }
 
-    v25 = *a3;
+    v25 = *error;
     v28 = 136315650;
     v29 = "SSCoreHapticsPlayer.mm";
     v30 = 1024;
@@ -1738,21 +1738,21 @@ LABEL_26:
   return v23;
 }
 
-- (unint64_t)createAudioResource:(id)a3 error:(id *)a4
+- (unint64_t)createAudioResource:(id)resource error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  resourceCopy = resource;
+  if (resourceCopy)
   {
     engine = self->_engine;
     v27 = *MEMORY[0x1E695F488];
     v28[0] = MEMORY[0x1E695E110];
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    v9 = [(CHHapticEngine *)engine registerAudioResource:v6 options:v8 error:a4];
+    v9 = [(CHHapticEngine *)engine registerAudioResource:resourceCopy options:v8 error:error];
 
-    if (!*a4)
+    if (!*error)
     {
-      v11 = [v6 copy];
+      v11 = [resourceCopy copy];
       audioURL = self->_audioURL;
       self->_audioURL = v11;
 LABEL_18:
@@ -1777,7 +1777,7 @@ LABEL_18:
 
     if (os_log_type_enabled(&audioURL->super, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a4;
+      v13 = *error;
       v21 = 136315650;
       v22 = "SSCoreHapticsPlayer.mm";
       v23 = 1024;

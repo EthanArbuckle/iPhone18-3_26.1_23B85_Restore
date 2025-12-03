@@ -1,39 +1,39 @@
 @interface EMMessageCategoryChangeAction
 - (BOOL)isModelCategoryRestoration;
-- (EMMessageCategoryChangeAction)initWithCoder:(id)a3;
-- (EMMessageCategoryChangeAction)initWithMessageListItems:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 categoryType:(unint64_t)a6 changeOptions:(unint64_t)a7;
-- (EMMessageCategoryChangeAction)initWithSenderAddress:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 categoryType:(unint64_t)a6 changeOptions:(unint64_t)a7;
-- (void)encodeWithCoder:(id)a3;
+- (EMMessageCategoryChangeAction)initWithCoder:(id)coder;
+- (EMMessageCategoryChangeAction)initWithMessageListItems:(id)items origin:(int64_t)origin actor:(int64_t)actor categoryType:(unint64_t)type changeOptions:(unint64_t)options;
+- (EMMessageCategoryChangeAction)initWithSenderAddress:(id)address origin:(int64_t)origin actor:(int64_t)actor categoryType:(unint64_t)type changeOptions:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMessageCategoryChangeAction
 
-- (EMMessageCategoryChangeAction)initWithMessageListItems:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 categoryType:(unint64_t)a6 changeOptions:(unint64_t)a7
+- (EMMessageCategoryChangeAction)initWithMessageListItems:(id)items origin:(int64_t)origin actor:(int64_t)actor categoryType:(unint64_t)type changeOptions:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = EMMessageCategoryChangeAction;
-  result = [(EMMessageChangeAction *)&v10 initWithMessageListItems:a3 origin:a4 actor:a5];
+  result = [(EMMessageChangeAction *)&v10 initWithMessageListItems:items origin:origin actor:actor];
   if (result)
   {
-    result->_categoryType = a6;
-    result->_changeOptions = a7;
+    result->_categoryType = type;
+    result->_changeOptions = options;
   }
 
   return result;
 }
 
-- (EMMessageCategoryChangeAction)initWithSenderAddress:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 categoryType:(unint64_t)a6 changeOptions:(unint64_t)a7
+- (EMMessageCategoryChangeAction)initWithSenderAddress:(id)address origin:(int64_t)origin actor:(int64_t)actor categoryType:(unint64_t)type changeOptions:(unint64_t)options
 {
-  v13 = a3;
+  addressCopy = address;
   v17.receiver = self;
   v17.super_class = EMMessageCategoryChangeAction;
-  v14 = [(EMMessageChangeAction *)&v17 initWithMessageListItems:0 origin:a4 actor:a5];
+  v14 = [(EMMessageChangeAction *)&v17 initWithMessageListItems:0 origin:origin actor:actor];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_senderAddress, a3);
-    v15->_categoryType = a6;
-    v15->_changeOptions = a7;
+    objc_storeStrong(&v14->_senderAddress, address);
+    v15->_categoryType = type;
+    v15->_changeOptions = options;
   }
 
   return v15;
@@ -41,22 +41,22 @@
 
 - (BOOL)isModelCategoryRestoration
 {
-  v2 = [(EMMessageCategoryChangeAction *)self changeOptions];
+  changeOptions = [(EMMessageCategoryChangeAction *)self changeOptions];
 
-  return [EMMessageCategoryChangeAction isModelCategoryRestoration:v2];
+  return [EMMessageCategoryChangeAction isModelCategoryRestoration:changeOptions];
 }
 
-- (EMMessageCategoryChangeAction)initWithCoder:(id)a3
+- (EMMessageCategoryChangeAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EMMessageCategoryChangeAction;
-  v5 = [(EMMessageChangeAction *)&v9 initWithCoder:v4];
+  v5 = [(EMMessageChangeAction *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_categoryType = [v4 decodeIntegerForKey:@"EFPropertyKey_categoryType"];
-    v5->_changeOptions = [v4 decodeIntegerForKey:@"EFPropertyKey_changeOptions"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_senderAddress"];
+    v5->_categoryType = [coderCopy decodeIntegerForKey:@"EFPropertyKey_categoryType"];
+    v5->_changeOptions = [coderCopy decodeIntegerForKey:@"EFPropertyKey_changeOptions"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_senderAddress"];
     senderAddress = v5->_senderAddress;
     v5->_senderAddress = v6;
   }
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = EMMessageCategoryChangeAction;
-  [(EMMessageChangeAction *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[EMMessageCategoryChangeAction categoryType](self forKey:{"categoryType"), @"EFPropertyKey_categoryType"}];
-  [v4 encodeInteger:-[EMMessageCategoryChangeAction changeOptions](self forKey:{"changeOptions"), @"EFPropertyKey_changeOptions"}];
-  v5 = [(EMMessageCategoryChangeAction *)self senderAddress];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_senderAddress"];
+  [(EMMessageChangeAction *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[EMMessageCategoryChangeAction categoryType](self forKey:{"categoryType"), @"EFPropertyKey_categoryType"}];
+  [coderCopy encodeInteger:-[EMMessageCategoryChangeAction changeOptions](self forKey:{"changeOptions"), @"EFPropertyKey_changeOptions"}];
+  senderAddress = [(EMMessageCategoryChangeAction *)self senderAddress];
+  [coderCopy encodeObject:senderAddress forKey:@"EFPropertyKey_senderAddress"];
 }
 
 @end

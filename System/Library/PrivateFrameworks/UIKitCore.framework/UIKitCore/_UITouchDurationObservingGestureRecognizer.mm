@@ -1,19 +1,19 @@
 @interface _UITouchDurationObservingGestureRecognizer
-- (BOOL)_exceededNumberOfTouchesForEvent:(id)a3;
-- (BOOL)_isGestureType:(int64_t)a3;
+- (BOOL)_exceededNumberOfTouchesForEvent:(id)event;
+- (BOOL)_isGestureType:(int64_t)type;
 - (CADisplayLink)displayLink;
 - (CGPoint)originalCentroid;
-- (_UITouchDurationObservingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UITouchDurationObservingGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)touchDuration;
-- (id)_allTouchesMatchingRequirementsForEvent:(id)a3;
+- (id)_allTouchesMatchingRequirementsForEvent:(id)event;
 - (void)_cancelOrFail;
-- (void)_displayLinkDidFire:(id)a3;
+- (void)_displayLinkDidFire:(id)fire;
 - (void)dealloc;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UITouchDurationObservingGestureRecognizer
@@ -24,8 +24,8 @@
   v5.super_class = _UITouchDurationObservingGestureRecognizer;
   [(UIGestureRecognizer *)&v5 reset];
   [(CADisplayLink *)self->_displayLink setPaused:1];
-  v3 = [(_UITouchDurationObservingGestureRecognizer *)self delayedAction];
-  [v3 cancel];
+  delayedAction = [(_UITouchDurationObservingGestureRecognizer *)self delayedAction];
+  [delayedAction cancel];
 
   delayedAction = self->_delayedAction;
   self->_delayedAction = 0;
@@ -39,8 +39,8 @@
 - (void)dealloc
 {
   displayLink = self->_displayLink;
-  v4 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)displayLink removeFromRunLoop:v4 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)displayLink removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   v5.receiver = self;
   v5.super_class = _UITouchDurationObservingGestureRecognizer;
@@ -58,8 +58,8 @@
     self->_displayLink = v5;
 
     v7 = self->_displayLink;
-    v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v7 addToRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v7 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(CADisplayLink *)self->_displayLink setPaused:1];
     displayLink = self->_displayLink;
@@ -68,11 +68,11 @@
   return displayLink;
 }
 
-- (_UITouchDurationObservingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UITouchDurationObservingGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UITouchDurationObservingGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -99,9 +99,9 @@
   return result;
 }
 
-- (void)_displayLinkDidFire:(id)a3
+- (void)_displayLinkDidFire:(id)fire
 {
-  v5 = [(UIGestureRecognizer *)self _activeTouchesEvent];
+  _activeTouchesEvent = [(UIGestureRecognizer *)self _activeTouchesEvent];
   if ([(_UITouchDurationObservingGestureRecognizer *)self _exceededNumberOfTouchesForEvent:?])
   {
     [(_UITouchDurationObservingGestureRecognizer *)self _cancelOrFail];
@@ -109,7 +109,7 @@
 
   else
   {
-    v4 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:v5];
+    v4 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:_activeTouchesEvent];
     self->_touchForce = _UITouchForceFromTouches(v4);
 
     if ([(UIGestureRecognizer *)self state]< UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]> UIGestureRecognizerStateEnded)
@@ -128,12 +128,12 @@
   }
 }
 
-- (BOOL)_isGestureType:(int64_t)a3
+- (BOOL)_isGestureType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = _UITouchDurationObservingGestureRecognizer;
   result = [(UIGestureRecognizer *)&v5 _isGestureType:?];
-  if (a3 == 7)
+  if (type == 7)
   {
     return 1;
   }
@@ -141,17 +141,17 @@
   return result;
 }
 
-- (id)_allTouchesMatchingRequirementsForEvent:(id)a3
+- (id)_allTouchesMatchingRequirementsForEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = [MEMORY[0x1E695DFA8] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 allTouches];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allTouches = [eventCopy allTouches];
+  v7 = [allTouches countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -162,18 +162,18 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allTouches);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 type];
-        if (self && (self->super._allowedTouchTypes & (1 << v12)) != 0)
+        type = [v11 type];
+        if (self && (self->super._allowedTouchTypes & (1 << type)) != 0)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allTouches countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -182,9 +182,9 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v9 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:a4];
+  v9 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:event];
   if ([v9 count] == 1 && -[UIGestureRecognizer state](self, "state") == UIGestureRecognizerStatePossible)
   {
     [(UIGestureRecognizer *)self locationInView:0];
@@ -198,8 +198,8 @@
     self->_delayedAction = v6;
 
     self->_touchForce = _UITouchForceFromTouches(v9);
-    v8 = [(_UITouchDurationObservingGestureRecognizer *)self displayLink];
-    [v8 setPaused:0];
+    displayLink = [(_UITouchDurationObservingGestureRecognizer *)self displayLink];
+    [displayLink setPaused:0];
   }
 
   else
@@ -208,9 +208,9 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v17 = a4;
+  eventCopy = event;
   if ([(_UITouchDurationObservingGestureRecognizer *)self _exceededNumberOfTouchesForEvent:?])
   {
     [(_UITouchDurationObservingGestureRecognizer *)self _cancelOrFail];
@@ -218,7 +218,7 @@
 
   else
   {
-    v5 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:v17];
+    v5 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:eventCopy];
     self->_touchForce = _UITouchForceFromTouches(v5);
 
     [(_UITouchDurationObservingGestureRecognizer *)self allowableMovement];
@@ -234,16 +234,16 @@
       {
         self->_hasExceededAllowableMovement = 1;
         [(_UITouchDurationObservingGestureRecognizer *)self _cancelOrFail];
-        v16 = [(_UITouchDurationObservingGestureRecognizer *)self delayedAction];
-        [v16 cancel];
+        delayedAction = [(_UITouchDurationObservingGestureRecognizer *)self delayedAction];
+        [delayedAction cancel];
       }
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]<= UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)self state:ended]<= UIGestureRecognizerStatePossible)
   {
     v5 = 5;
   }
@@ -256,16 +256,16 @@
   [(UIGestureRecognizer *)self setState:v5];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(UIGestureRecognizer *)self setState:4, a4];
-  v5 = [(_UITouchDurationObservingGestureRecognizer *)self delayedAction];
-  [v5 cancel];
+  [(UIGestureRecognizer *)self setState:4, event];
+  delayedAction = [(_UITouchDurationObservingGestureRecognizer *)self delayedAction];
+  [delayedAction cancel];
 }
 
-- (BOOL)_exceededNumberOfTouchesForEvent:(id)a3
+- (BOOL)_exceededNumberOfTouchesForEvent:(id)event
 {
-  v3 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:a3];
+  v3 = [(_UITouchDurationObservingGestureRecognizer *)self _allTouchesMatchingRequirementsForEvent:event];
   v4 = [v3 count] > 1;
 
   return v4;

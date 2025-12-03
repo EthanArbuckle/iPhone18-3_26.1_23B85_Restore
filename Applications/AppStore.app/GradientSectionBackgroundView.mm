@@ -1,28 +1,28 @@
 @interface GradientSectionBackgroundView
-- (_TtC8AppStore29GradientSectionBackgroundView)initWithCoder:(id)a3;
-- (_TtC8AppStore29GradientSectionBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore29GradientSectionBackgroundView)initWithCoder:(id)coder;
+- (_TtC8AppStore29GradientSectionBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation GradientSectionBackgroundView
 
-- (_TtC8AppStore29GradientSectionBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore29GradientSectionBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC8AppStore29GradientSectionBackgroundView_gradientView;
   *(&self->super.super.super.super.isa + v8) = [objc_allocWithZone(type metadata accessor for GradientView()) init];
   v11.receiver = self;
   v11.super_class = type metadata accessor for GradientSectionBackgroundView();
-  v9 = [(GradientSectionBackgroundView *)&v11 initWithFrame:x, y, width, height];
-  [(GradientSectionBackgroundView *)v9 addSubview:*(&v9->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore29GradientSectionBackgroundView_gradientView)];
-  return v9;
+  height = [(GradientSectionBackgroundView *)&v11 initWithFrame:x, y, width, height];
+  [(GradientSectionBackgroundView *)height addSubview:*(&height->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore29GradientSectionBackgroundView_gradientView)];
+  return height;
 }
 
-- (_TtC8AppStore29GradientSectionBackgroundView)initWithCoder:(id)a3
+- (_TtC8AppStore29GradientSectionBackgroundView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8AppStore29GradientSectionBackgroundView_gradientView;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for GradientView()) init];

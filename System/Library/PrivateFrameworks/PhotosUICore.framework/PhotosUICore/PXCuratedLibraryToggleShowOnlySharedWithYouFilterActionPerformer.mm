@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryToggleShowOnlySharedWithYouFilterActionPerformer
-- (PXCuratedLibraryToggleShowOnlySharedWithYouFilterActionPerformer)initWithViewModel:(id)a3;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXCuratedLibraryToggleShowOnlySharedWithYouFilterActionPerformer)initWithViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -9,17 +9,17 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  [v3 setShowOnlySharedWithYou:{objc_msgSend(v3, "showOnlySharedWithYou") ^ 1}];
-  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setShowOnlySharedWithYou:{objc_msgSend(currentContentFilterState, "showOnlySharedWithYou") ^ 1}];
+  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-    if ([v3 showOnlyScreenshots])
+    currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+    if ([currentContentFilterState showOnlyScreenshots])
     {
       v4 = @"DISABLE_SHOW_ONLY_SWY_FILTER_SHORTCUT";
     }
@@ -42,17 +42,17 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:17];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:17];
 
   return v3;
 }
 
-- (PXCuratedLibraryToggleShowOnlySharedWithYouFilterActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibraryToggleShowOnlySharedWithYouFilterActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryToggleShowOnlySharedWithYouFilterActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleShowOnlySharedWithYouFilter" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleShowOnlySharedWithYouFilter" viewModel:model];
 }
 
 @end

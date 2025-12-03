@@ -1,15 +1,15 @@
 @interface MUScrollableSegmentedPickerContentView
-- (MUScrollableSegmentedPickerContentView)initWithFrame:(CGRect)a3;
+- (MUScrollableSegmentedPickerContentView)initWithFrame:(CGRect)frame;
 - (MUScrollableSegmentedPickerContentViewDelegate)delegate;
-- (double)idealWidthForProposedSize:(CGSize)a3;
-- (void)_handleTapWithSegmentView:(id)a3;
+- (double)idealWidthForProposedSize:(CGSize)size;
+- (void)_handleTapWithSegmentView:(id)view;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateGradientColors;
 - (void)_updateGradientVisibility;
-- (void)_updateSelectedIndexAnimated:(BOOL)a3 invokeDelegate:(BOOL)a4;
+- (void)_updateSelectedIndexAnimated:(BOOL)animated invokeDelegate:(BOOL)delegate;
 - (void)layoutSubviews;
-- (void)setViewModels:(id)a3;
+- (void)setViewModels:(id)models;
 - (void)updateSelectionViewPositionIfNeeded;
 @end
 
@@ -25,8 +25,8 @@
 - (void)_updateGradientColors
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 2)
+  traitCollection = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -44,15 +44,15 @@
   v14[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
 
-  v9 = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
-  v10 = [v9 layoutDirection];
+  traitCollection2 = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
+  layoutDirection = [traitCollection2 layoutDirection];
 
-  if (v10 == 1)
+  if (layoutDirection == 1)
   {
-    v11 = [v8 reverseObjectEnumerator];
-    v12 = [v11 allObjects];
+    reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v8 = v12;
+    v8 = allObjects;
   }
 
   [(_MKGradientView *)self->_leadingGradientOverlayView setColors:v8];
@@ -61,24 +61,24 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleTapWithSegmentView:(id)a3
+- (void)_handleTapWithSegmentView:(id)view
 {
   contentStackView = self->_contentStackView;
-  v5 = a3;
-  v6 = [(MUScrollableStackView *)contentStackView arrangedSubviews];
-  v7 = [v6 indexOfObject:v5];
+  viewCopy = view;
+  arrangedSubviews = [(MUScrollableStackView *)contentStackView arrangedSubviews];
+  v7 = [arrangedSubviews indexOfObject:viewCopy];
 
   [(MUScrollableSegmentedPickerContentView *)self _setSelectedIndex:v7 animated:1 invokeDelegate:1];
 }
 
 - (void)_updateGradientVisibility
 {
-  v3 = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
-  v4 = [v3 layoutDirection];
+  traitCollection = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if ((v4 + 1) >= 2)
+  if ((layoutDirection + 1) >= 2)
   {
-    if (v4 == 1)
+    if (layoutDirection == 1)
     {
       [(MUScrollableStackView *)self->_contentStackView contentOffset];
       v13 = v12;
@@ -165,12 +165,12 @@ void __59__MUScrollableSegmentedPickerContentView__updateAppearance__block_invok
   }
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (([(NSArray *)self->_viewModels isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -178,24 +178,24 @@ void __59__MUScrollableSegmentedPickerContentView__updateAppearance__block_invok
   }
 }
 
-- (void)_updateSelectedIndexAnimated:(BOOL)a3 invokeDelegate:(BOOL)a4
+- (void)_updateSelectedIndexAnimated:(BOOL)animated invokeDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v5 = a3;
+  delegateCopy = delegate;
+  animatedCopy = animated;
   selectedIndex = self->_selectedIndex;
   if (selectedIndex >= [(NSArray *)self->_viewModels count])
   {
     self->_selectedIndex = 0;
   }
 
-  if (v4)
+  if (delegateCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained segmentedPickerContentViewDidUpdateSelection:self];
   }
 
-  v9 = [(MUScrollableStackView *)self->_contentStackView arrangedSubviews];
-  v10 = [v9 objectAtIndexedSubscript:self->_selectedIndex];
+  arrangedSubviews = [(MUScrollableStackView *)self->_contentStackView arrangedSubviews];
+  v10 = [arrangedSubviews objectAtIndexedSubscript:self->_selectedIndex];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -212,7 +212,7 @@ void __59__MUScrollableSegmentedPickerContentView__updateAppearance__block_invok
   v17 = &unk_1E821BAC8;
   objc_copyWeak(&v18, &location);
   v13 = _Block_copy(&v14);
-  if (v5)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v12 options:0 animations:0.300000012 completion:{0.0, v14, v15, v16, v17}];
   }
@@ -286,10 +286,10 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
   }
 }
 
-- (double)idealWidthForProposedSize:(CGSize)a3
+- (double)idealWidthForProposedSize:(CGSize)size
 {
-  width = a3.width;
-  [(MUScrollableStackView *)self->_contentStackView systemLayoutSizeFittingSize:a3.width, a3.height];
+  width = size.width;
+  [(MUScrollableStackView *)self->_contentStackView systemLayoutSizeFittingSize:size.width, size.height];
   return fmin(width, v4);
 }
 
@@ -314,11 +314,11 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
   [(MUScrollableSegmentedPickerContentView *)&v12 layoutSubviews];
   [(MUScrollableSegmentedPickerContentView *)self bounds];
   Height = CGRectGetHeight(v13);
-  v4 = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
-  v5 = [v4 layoutDirection];
+  traitCollection = [(MUScrollableSegmentedPickerContentView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v6 = v5 + 1;
-  if ((v5 + 1) > 2)
+  v6 = layoutDirection + 1;
+  if ((layoutDirection + 1) > 2)
   {
     v7 = 0;
     v8 = 0;
@@ -333,12 +333,12 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
   v9 = Height * 0.5;
   [(UIVisualEffectView *)self->_backgroundBlurView _setCornerRadius:1 continuous:15 maskedCorners:v9];
   [(MUGradientView *)self->_leadingGradientOverlayView _setContinuousCornerRadius:v9];
-  v10 = [(MUGradientView *)self->_leadingGradientOverlayView layer];
-  [v10 setMaskedCorners:v7];
+  layer = [(MUGradientView *)self->_leadingGradientOverlayView layer];
+  [layer setMaskedCorners:v7];
 
   [(MUGradientView *)self->_trailingGradientOverlayView _setContinuousCornerRadius:v9];
-  v11 = [(MUGradientView *)self->_trailingGradientOverlayView layer];
-  [v11 setMaskedCorners:v8];
+  layer2 = [(MUGradientView *)self->_trailingGradientOverlayView layer];
+  [layer2 setMaskedCorners:v8];
 
   [(MUScrollableSegmentedPickerContentView *)self updateSelectionViewPositionIfNeeded];
 }
@@ -365,13 +365,13 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
 
   [(MUScrollableStackView *)self->_contentStackView setAxis:0];
   [(MUScrollableStackView *)self->_contentStackView setDelegate:self];
-  v14 = [(UIVisualEffectView *)self->_backgroundBlurView contentView];
-  [v14 addSubview:self->_contentStackView];
+  contentView = [(UIVisualEffectView *)self->_backgroundBlurView contentView];
+  [contentView addSubview:self->_contentStackView];
 
   v15 = [MUEdgeLayout alloc];
   v16 = self->_contentStackView;
-  v17 = [(UIVisualEffectView *)self->_backgroundBlurView contentView];
-  v51 = [(MUEdgeLayout *)v15 initWithItem:v16 container:v17];
+  contentView2 = [(UIVisualEffectView *)self->_backgroundBlurView contentView];
+  v51 = [(MUEdgeLayout *)v15 initWithItem:v16 container:contentView2];
 
   [(MUConstraintLayout *)v51 activate];
   v50 = [[MUEdgeLayout alloc] initWithItem:self->_backgroundBlurView container:self];
@@ -384,8 +384,8 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
 
   [(UIVisualEffectView *)self->_selectedPillView setClipsToBounds:1];
   v22 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:0.45];
-  v23 = [(UIVisualEffectView *)self->_selectedPillView contentView];
-  [v23 setBackgroundColor:v22];
+  contentView3 = [(UIVisualEffectView *)self->_selectedPillView contentView];
+  [contentView3 setBackgroundColor:v22];
 
   [(MUScrollableStackView *)self->_contentStackView addSubview:self->_selectedPillView];
   [(MUScrollableStackView *)self->_contentStackView sendSubviewToBack:self->_selectedPillView];
@@ -432,8 +432,8 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
   [v40 _mapsui_activateLayouts:v41];
 
   [(MUScrollableSegmentedPickerContentView *)self _updateGradientColors];
-  v42 = [(MUScrollableSegmentedPickerContentView *)self layer];
-  [v42 setAllowsGroupOpacity:0];
+  layer = [(MUScrollableSegmentedPickerContentView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   v43 = objc_opt_self();
   v53 = v43;
@@ -448,11 +448,11 @@ void __86__MUScrollableSegmentedPickerContentView__updateSelectedIndexAnimated_i
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (MUScrollableSegmentedPickerContentView)initWithFrame:(CGRect)a3
+- (MUScrollableSegmentedPickerContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUScrollableSegmentedPickerContentView;
-  v3 = [(MUScrollableSegmentedPickerContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUScrollableSegmentedPickerContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

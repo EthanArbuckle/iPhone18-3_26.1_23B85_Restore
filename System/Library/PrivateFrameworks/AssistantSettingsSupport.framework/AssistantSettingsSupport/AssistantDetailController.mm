@@ -1,30 +1,30 @@
 @interface AssistantDetailController
-- (BOOL)_isApplicationHiddenCheck:(id)a3;
-- (BOOL)_isApplicationLockedCheck:(id)a3;
+- (BOOL)_isApplicationHiddenCheck:(id)check;
+- (BOOL)_isApplicationLockedCheck:(id)check;
 - (id)_appName;
 - (id)_bundleId;
 - (id)_siriSuggestionsClients;
 - (id)_suggestionsFooterString;
 - (id)_suggestionsShowToggleLableString;
-- (id)_watchBundleToMirrorWithBundleId:(id)a3;
-- (id)inAppLearnFromAppEnabled:(id)a3;
+- (id)_watchBundleToMirrorWithBundleId:(id)id;
+- (id)inAppLearnFromAppEnabled:(id)enabled;
 - (id)specifiers;
-- (id)suggestionsShowInAppEnabled:(id)a3;
-- (id)suggestionsShowOnHomeScreenEnabled:(id)a3;
-- (id)suggestionsSuggestAppEnabled:(id)a3;
-- (id)suggestionsSuggestionNotificationEnabled:(id)a3;
-- (void)_addInAppSpecifiersToSpecifiers:(id)a3;
-- (void)_addSuggestionsSpecifiersToSpecifiers:(id)a3;
+- (id)suggestionsShowInAppEnabled:(id)enabled;
+- (id)suggestionsShowOnHomeScreenEnabled:(id)enabled;
+- (id)suggestionsSuggestAppEnabled:(id)enabled;
+- (id)suggestionsSuggestionNotificationEnabled:(id)enabled;
+- (void)_addInAppSpecifiersToSpecifiers:(id)specifiers;
+- (void)_addSuggestionsSpecifiersToSpecifiers:(id)specifiers;
 - (void)_asyncAddAskSiriSettingsIfNecessary;
-- (void)_authenticateForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)_fetchIntentsSpecifiersWithCompletion:(id)a3;
-- (void)setAskSiriUseWithAskSiriEnabled:(id)a3 specifier:(id)a4;
-- (void)setInAppLearnFromAppEnabled:(id)a3 specifier:(id)a4;
-- (void)setNanoInAppShowSiriSuggestionsEnabled:(BOOL)a3 bundleId:(id)a4;
-- (void)setSuggestionsShowInAppEnabled:(id)a3 specifier:(id)a4;
-- (void)setSuggestionsShowOnHomeScreenEnabled:(id)a3 specifier:(id)a4;
-- (void)setSuggestionsSuggestAppEnabled:(id)a3 specifier:(id)a4;
-- (void)setSuggestionsSuggestionNotificationsEnabled:(id)a3 specifier:(id)a4;
+- (void)_authenticateForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_fetchIntentsSpecifiersWithCompletion:(id)completion;
+- (void)setAskSiriUseWithAskSiriEnabled:(id)enabled specifier:(id)specifier;
+- (void)setInAppLearnFromAppEnabled:(id)enabled specifier:(id)specifier;
+- (void)setNanoInAppShowSiriSuggestionsEnabled:(BOOL)enabled bundleId:(id)id;
+- (void)setSuggestionsShowInAppEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSuggestionsShowOnHomeScreenEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSuggestionsSuggestAppEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSuggestionsSuggestionNotificationsEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AssistantDetailController
@@ -37,23 +37,23 @@
   {
     if (!self->_suggestionsController)
     {
-      v5 = [MEMORY[0x277CEF610] sharedController];
+      mEMORY[0x277CEF610] = [MEMORY[0x277CEF610] sharedController];
       suggestionsController = self->_suggestionsController;
-      self->_suggestionsController = v5;
+      self->_suggestionsController = mEMORY[0x277CEF610];
     }
 
-    v7 = [(AssistantDetailController *)self _bundleId];
-    self->_isApplicationHidden = [(AssistantDetailController *)self _isApplicationHiddenCheck:v7];
+    _bundleId = [(AssistantDetailController *)self _bundleId];
+    self->_isApplicationHidden = [(AssistantDetailController *)self _isApplicationHiddenCheck:_bundleId];
 
-    v8 = [(AssistantDetailController *)self _bundleId];
-    self->_isApplicationLocked = [(AssistantDetailController *)self _isApplicationLockedCheck:v8];
+    _bundleId2 = [(AssistantDetailController *)self _bundleId];
+    self->_isApplicationLocked = [(AssistantDetailController *)self _isApplicationLockedCheck:_bundleId2];
 
-    v9 = [MEMORY[0x277CBEB18] array];
-    [(AssistantDetailController *)self _addInAppSpecifiersToSpecifiers:v9];
-    [(AssistantDetailController *)self _addSuggestionsSpecifiersToSpecifiers:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    [(AssistantDetailController *)self _addInAppSpecifiersToSpecifiers:array];
+    [(AssistantDetailController *)self _addSuggestionsSpecifiersToSpecifiers:array];
     [(AssistantDetailController *)self _asyncAddAskSiriSettingsIfNecessary];
     v10 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v9;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -61,41 +61,41 @@
   return v4;
 }
 
-- (BOOL)_isApplicationHiddenCheck:(id)a3
+- (BOOL)_isApplicationHiddenCheck:(id)check
 {
-  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:a3];
-  v4 = [MEMORY[0x277CEBE80] hiddenApplications];
-  v5 = [v4 containsObject:v3];
+  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:check];
+  hiddenApplications = [MEMORY[0x277CEBE80] hiddenApplications];
+  v5 = [hiddenApplications containsObject:v3];
 
   return v5;
 }
 
-- (BOOL)_isApplicationLockedCheck:(id)a3
+- (BOOL)_isApplicationLockedCheck:(id)check
 {
-  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:a3];
-  v4 = [MEMORY[0x277CEBE80] lockedApplications];
-  v5 = [v4 containsObject:v3];
+  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:check];
+  lockedApplications = [MEMORY[0x277CEBE80] lockedApplications];
+  v5 = [lockedApplications containsObject:v3];
 
   return v5;
 }
 
-- (void)_addInAppSpecifiersToSpecifiers:(id)a3
+- (void)_addInAppSpecifiersToSpecifiers:(id)specifiers
 {
-  v35 = a3;
+  specifiersCopy = specifiers;
   v4 = MEMORY[0x277D3FAD8];
   v5 = MEMORY[0x277CCACA8];
   v6 = +[AssistantController bundle];
   v7 = [v6 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_INAPP_HEADER" value:&stru_285317CF0 table:@"AssistantSettings"];
-  v8 = [(AssistantDetailController *)self _appName];
-  v9 = [v5 stringWithFormat:v7, v8];
+  _appName = [(AssistantDetailController *)self _appName];
+  v9 = [v5 stringWithFormat:v7, _appName];
   v10 = [v4 groupSpecifierWithName:v9];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = +[AssistantController bundle];
   v13 = [v12 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_INAPP_FOOTER" value:&stru_285317CF0 table:@"AssistantSettings"];
-  v14 = [(AssistantDetailController *)self _appName];
-  v15 = [(AssistantDetailController *)self _appName];
-  v16 = [v11 stringWithFormat:v13, v14, v15];
+  _appName2 = [(AssistantDetailController *)self _appName];
+  _appName3 = [(AssistantDetailController *)self _appName];
+  v16 = [v11 stringWithFormat:v13, _appName2, _appName3];
   v17 = *MEMORY[0x277D3FF88];
   [v10 setProperty:v16 forKey:*MEMORY[0x277D3FF88]];
 
@@ -112,17 +112,17 @@
     v25 = MEMORY[0x277CCACA8];
     v26 = +[AssistantController bundle];
     v27 = [v26 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_INAPP_HEADER_DETAIL" value:&stru_285317CF0 table:@"AssistantSettings"];
-    v28 = [(AssistantDetailController *)self _appName];
-    v29 = [(AssistantDetailController *)self _appName];
-    v30 = [v25 stringWithFormat:v27, v28, v29];
+    _appName4 = [(AssistantDetailController *)self _appName];
+    _appName5 = [(AssistantDetailController *)self _appName];
+    v30 = [v25 stringWithFormat:v27, _appName4, _appName5];
     [v24 setProperty:v30 forKey:v17];
 
     v18 = MEMORY[0x277D3FF38];
-    [v35 addObject:v24];
+    [specifiersCopy addObject:v24];
     [v10 setProperty:MEMORY[0x277CBEC28] forKey:*v18];
   }
 
-  [v35 addObject:v10];
+  [specifiersCopy addObject:v10];
   v31 = MEMORY[0x277D3FAD8];
   v32 = +[AssistantController bundle];
   v33 = [v32 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_INAPP_LEARNFROMAPP_TOGGLE" value:&stru_285317CF0 table:@"AssistantSettings"];
@@ -134,13 +134,13 @@
     [v34 setProperty:MEMORY[0x277CBEC28] forKey:*v18];
   }
 
-  [v35 addObject:v34];
+  [specifiersCopy addObject:v34];
 }
 
-- (void)setNanoInAppShowSiriSuggestionsEnabled:(BOOL)a3 bundleId:(id)a4
+- (void)setNanoInAppShowSiriSuggestionsEnabled:(BOOL)enabled bundleId:(id)id
 {
-  v4 = a3;
-  v10 = a4;
+  enabledCopy = enabled;
+  idCopy = id;
   v5 = CFPreferencesCopyAppValue(@"NanoAppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
   v6 = v5;
   if (v5)
@@ -154,14 +154,14 @@
   }
 
   v8 = v7;
-  if (v4)
+  if (enabledCopy)
   {
-    [v7 removeObject:v10];
+    [v7 removeObject:idCopy];
   }
 
-  else if (([v7 containsObject:v10] & 1) == 0)
+  else if (([v7 containsObject:idCopy] & 1) == 0)
   {
-    [v8 addObject:v10];
+    [v8 addObject:idCopy];
   }
 
   CFPreferencesSetAppValue(@"NanoAppCanShowSiriSuggestionsBlacklist", v8, @"com.apple.suggestions");
@@ -169,51 +169,51 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.suggestions.settingsChanged", 0, 0, 1u);
 }
 
-- (id)inAppLearnFromAppEnabled:(id)a3
+- (id)inAppLearnFromAppEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(AssistantDetailController *)self _bundleId];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
   v5 = CFPreferencesCopyAppValue(@"SiriCanLearnFromAppBlacklist", @"com.apple.suggestions");
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:_bundleId];
 
   v7 = [v3 numberWithBool:v6 ^ 1u];
 
   return v7;
 }
 
-- (void)_authenticateForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_authenticateForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_isApplicationLocked)
   {
-    v8 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:a3];
-    v9 = [MEMORY[0x277CEBE98] sharedGuard];
+    v8 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:identifier];
+    mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __73__AssistantDetailController__authenticateForBundleIdentifier_completion___block_invoke;
     v10[3] = &unk_278CD1F30;
     v11 = v7;
-    [v9 authenticateForSubject:v8 relayingAuditToken:1 completion:v10];
+    [mEMORY[0x277CEBE98] authenticateForSubject:v8 relayingAuditToken:1 completion:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
-- (void)setInAppLearnFromAppEnabled:(id)a3 specifier:(id)a4
+- (void)setInAppLearnFromAppEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___block_invoke;
   aBlock[3] = &unk_278CD1AF0;
   objc_copyWeak(&v21, &location);
-  v8 = v6;
+  v8 = enabledCopy;
   v20 = v8;
   v9 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x277D85DD0];
@@ -222,7 +222,7 @@
   v17[3] = &unk_278CD1520;
   objc_copyWeak(&v18, &location);
   v10 = _Block_copy(v17);
-  v11 = [(AssistantDetailController *)self _bundleId];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___block_invoke_3;
@@ -231,7 +231,7 @@
   v15 = v12;
   v13 = v10;
   v16 = v13;
-  [(AssistantDetailController *)self _authenticateForBundleIdentifier:v11 completion:v14];
+  [(AssistantDetailController *)self _authenticateForBundleIdentifier:_bundleId completion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v21);
@@ -292,22 +292,22 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
   dispatch_async(MEMORY[0x277D85CD0], *(a1 + v2));
 }
 
-- (void)_addSuggestionsSpecifiersToSpecifiers:(id)a3
+- (void)_addSuggestionsSpecifiersToSpecifiers:(id)specifiers
 {
-  v38 = a3;
+  specifiersCopy = specifiers;
   v4 = MEMORY[0x277D3FAD8];
   v5 = MEMORY[0x277CCACA8];
   v6 = +[AssistantController bundle];
   v7 = [v6 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_SUGGESTIONS_HEADER" value:&stru_285317CF0 table:@"AssistantSettings"];
-  v8 = [(AssistantDetailController *)self _appName];
-  v9 = [v5 stringWithFormat:v7, v8];
+  _appName = [(AssistantDetailController *)self _appName];
+  v9 = [v5 stringWithFormat:v7, _appName];
   v10 = [v4 groupSpecifierWithName:v9];
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(AssistantDetailController *)self _suggestionsFooterString];
-  v13 = [(AssistantDetailController *)self _appName];
-  v14 = [(AssistantDetailController *)self _appName];
-  v15 = [v11 stringWithFormat:v12, v13, v14];
+  _suggestionsFooterString = [(AssistantDetailController *)self _suggestionsFooterString];
+  _appName2 = [(AssistantDetailController *)self _appName];
+  _appName3 = [(AssistantDetailController *)self _appName];
+  v15 = [v11 stringWithFormat:_suggestionsFooterString, _appName2, _appName3];
   [v10 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
 
   if (self->_isApplicationHidden)
@@ -315,16 +315,16 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     [v10 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
 
-  [v38 addObject:v10];
-  v16 = [(AssistantDetailController *)self _siriSuggestionsClients];
-  v17 = [(AssistantDetailController *)self _bundleId];
-  v18 = [v16 containsObject:v17];
+  [specifiersCopy addObject:v10];
+  _siriSuggestionsClients = [(AssistantDetailController *)self _siriSuggestionsClients];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  v18 = [_siriSuggestionsClients containsObject:_bundleId];
 
   if (v18)
   {
     v19 = MEMORY[0x277D3FAD8];
-    v20 = [(AssistantDetailController *)self _suggestionsShowToggleLableString];
-    v21 = [v19 preferenceSpecifierNamed:v20 target:self set:sel_setSuggestionsShowInAppEnabled_specifier_ get:sel_suggestionsShowInAppEnabled_ detail:0 cell:6 edit:0];
+    _suggestionsShowToggleLableString = [(AssistantDetailController *)self _suggestionsShowToggleLableString];
+    v21 = [v19 preferenceSpecifierNamed:_suggestionsShowToggleLableString target:self set:sel_setSuggestionsShowInAppEnabled_specifier_ get:sel_suggestionsShowInAppEnabled_ detail:0 cell:6 edit:0];
 
     v22 = *MEMORY[0x277D3FD80];
     [v21 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
@@ -333,7 +333,7 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
       [v21 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     }
 
-    [v38 addObject:v21];
+    [specifiersCopy addObject:v21];
   }
 
   else
@@ -352,7 +352,7 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     [v26 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
 
-  [v38 addObject:v26];
+  [specifiersCopy addObject:v26];
   v27 = MEMORY[0x277D3FAD8];
   v28 = +[AssistantController bundle];
   v29 = [v28 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_SUGGESTIONS_SUGGESTAPP_TOGGLE" value:&stru_285317CF0 table:@"AssistantSettings"];
@@ -364,7 +364,7 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     [v30 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
 
-  [v38 addObject:v30];
+  [specifiersCopy addObject:v30];
   v31 = CFPreferencesCopyAppValue(@"LockScreenSuggestionsDisabled", @"com.apple.lockscreen.shared");
   if (!v31 || (v32 = v31, v33 = [v31 BOOLValue], v32, (v33 & 1) == 0))
   {
@@ -381,15 +381,15 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
         [v37 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
       }
 
-      [v38 addObject:v37];
+      [specifiersCopy addObject:v37];
     }
   }
 }
 
 - (id)_suggestionsShowToggleLableString
 {
-  v2 = [(AssistantDetailController *)self _bundleId];
-  if ([v2 isEqualToString:@"com.apple.MobileAddressBook"])
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  if ([_bundleId isEqualToString:@"com.apple.MobileAddressBook"])
   {
     v3 = +[AssistantController bundle];
     v4 = v3;
@@ -398,7 +398,7 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
 
   else
   {
-    v6 = [v2 isEqualToString:@"com.apple.mobilephone"];
+    v6 = [_bundleId isEqualToString:@"com.apple.mobilephone"];
     v3 = +[AssistantController bundle];
     v4 = v3;
     if (v6)
@@ -419,8 +419,8 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
 
 - (id)_suggestionsFooterString
 {
-  v3 = [(AssistantDetailController *)self _bundleId];
-  if ([v3 isEqualToString:@"com.apple.MobileAddressBook"])
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  if ([_bundleId isEqualToString:@"com.apple.MobileAddressBook"])
   {
     v4 = CFPreferencesCopyAppValue(@"LockScreenSuggestionsDisabled", @"com.apple.lockscreen.shared");
     v5 = @"SIRIANDSEARCH_PERAPP_SUGGESTIONS_FOOTER_CONTACTSAPP_WITHNOTIFICATIONS";
@@ -430,13 +430,13 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     }
 
     v6 = v4;
-    v7 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
     v8 = @"SIRIANDSEARCH_PERAPP_SUGGESTIONS_FOOTER_CONTACTSAPP_NONOTIFICATIONS";
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"com.apple.mobilephone"])
+  if ([_bundleId isEqualToString:@"com.apple.mobilephone"])
   {
     v9 = CFPreferencesCopyAppValue(@"LockScreenSuggestionsDisabled", @"com.apple.lockscreen.shared");
     v5 = @"SIRIANDSEARCH_PERAPP_SUGGESTIONS_FOOTER_PHONEAPP_WITHNOTIFICATIONS";
@@ -446,14 +446,14 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     }
 
     v10 = v9;
-    v7 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
     v8 = @"SIRIANDSEARCH_PERAPP_SUGGESTIONS_FOOTER_PHONEAPP_NONOTIFICATIONS";
     goto LABEL_7;
   }
 
-  v14 = [(AssistantDetailController *)self _siriSuggestionsClients];
-  v15 = [v14 containsObject:v3];
+  _siriSuggestionsClients = [(AssistantDetailController *)self _siriSuggestionsClients];
+  v15 = [_siriSuggestionsClients containsObject:_bundleId];
 
   v16 = +[AssistantUtilities deviceIsVision];
   if (v15)
@@ -469,7 +469,7 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     if (v17)
     {
       v18 = v17;
-      v7 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
 
       v8 = @"SIRIANDSEARCH_PERAPP_SUGGESTIONS_FOOTER_WITHSHOW_NONOTIFICATIONS";
       goto LABEL_7;
@@ -489,11 +489,11 @@ void __67__AssistantDetailController_setInAppLearnFromAppEnabled_specifier___blo
     if (v19)
     {
       v20 = v19;
-      v7 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
 
       v8 = @"SIRIANDSEARCH_PERAPP_SUGGESTIONS_FOOTER_NOSHOW_WITHNOTIFICATIONS";
 LABEL_7:
-      if (v7)
+      if (bOOLValue)
       {
         v5 = v8;
       }
@@ -507,32 +507,32 @@ LABEL_9:
   return v12;
 }
 
-- (id)suggestionsShowInAppEnabled:(id)a3
+- (id)suggestionsShowInAppEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(AssistantDetailController *)self _bundleId];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
   v5 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:_bundleId];
 
   v7 = [v3 numberWithBool:v6 ^ 1u];
 
   return v7;
 }
 
-- (void)setSuggestionsShowInAppEnabled:(id)a3 specifier:(id)a4
+- (void)setSuggestionsShowInAppEnabled:(id)enabled specifier:(id)specifier
 {
-  v18 = a3;
-  v5 = [(AssistantDetailController *)self _bundleId];
-  v6 = [(AssistantDetailController *)self _watchBundleToMirrorWithBundleId:v5];
+  enabledCopy = enabled;
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  v6 = [(AssistantDetailController *)self _watchBundleToMirrorWithBundleId:_bundleId];
 
   if (v6)
   {
-    -[AssistantDetailController setNanoInAppShowSiriSuggestionsEnabled:bundleId:](self, "setNanoInAppShowSiriSuggestionsEnabled:bundleId:", [v18 BOOLValue], v6);
+    -[AssistantDetailController setNanoInAppShowSiriSuggestionsEnabled:bundleId:](self, "setNanoInAppShowSiriSuggestionsEnabled:bundleId:", [enabledCopy BOOLValue], v6);
   }
 
-  v7 = [(AssistantDetailController *)self _bundleId];
-  v8 = [v18 BOOLValue];
-  v9 = v7;
+  _bundleId2 = [(AssistantDetailController *)self _bundleId];
+  bOOLValue = [enabledCopy BOOLValue];
+  v9 = _bundleId2;
   v10 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
   v11 = v10;
   if (v10)
@@ -546,7 +546,7 @@ LABEL_9:
   }
 
   v13 = v12;
-  if (v8)
+  if (bOOLValue)
   {
     [v12 removeObject:v9];
   }
@@ -564,31 +564,31 @@ LABEL_9:
   v16 = objc_opt_new();
   [v16 synchronizeUserDefaultsDomain:@"com.apple.suggestions" keys:v15];
 
-  v17 = [(AssistantDetailController *)self _bundleId];
-  +[AssistantMetrics didDetailToggle:bundleId:on:](AssistantMetrics, "didDetailToggle:bundleId:on:", @"inAppShow", v17, [v18 BOOLValue]);
+  _bundleId3 = [(AssistantDetailController *)self _bundleId];
+  +[AssistantMetrics didDetailToggle:bundleId:on:](AssistantMetrics, "didDetailToggle:bundleId:on:", @"inAppShow", _bundleId3, [enabledCopy BOOLValue]);
 }
 
-- (id)suggestionsShowOnHomeScreenEnabled:(id)a3
+- (id)suggestionsShowOnHomeScreenEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   suggestionsController = self->_suggestionsController;
-  v5 = [(AssistantDetailController *)self _bundleId];
-  v6 = [v3 numberWithBool:{-[ASFSuggestionsController suggestionsShowOnHomeScreenEnabledForBundleId:](suggestionsController, "suggestionsShowOnHomeScreenEnabledForBundleId:", v5)}];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  v6 = [v3 numberWithBool:{-[ASFSuggestionsController suggestionsShowOnHomeScreenEnabledForBundleId:](suggestionsController, "suggestionsShowOnHomeScreenEnabledForBundleId:", _bundleId)}];
 
   return v6;
 }
 
-- (void)setSuggestionsShowOnHomeScreenEnabled:(id)a3 specifier:(id)a4
+- (void)setSuggestionsShowOnHomeScreenEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__AssistantDetailController_setSuggestionsShowOnHomeScreenEnabled_specifier___block_invoke;
   aBlock[3] = &unk_278CD1AF0;
   objc_copyWeak(&v21, &location);
-  v8 = v6;
+  v8 = enabledCopy;
   v20 = v8;
   v9 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x277D85DD0];
@@ -597,7 +597,7 @@ LABEL_9:
   v17[3] = &unk_278CD1520;
   objc_copyWeak(&v18, &location);
   v10 = _Block_copy(v17);
-  v11 = [(AssistantDetailController *)self _bundleId];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__AssistantDetailController_setSuggestionsShowOnHomeScreenEnabled_specifier___block_invoke_3;
@@ -606,7 +606,7 @@ LABEL_9:
   v15 = v12;
   v13 = v10;
   v16 = v13;
-  [(AssistantDetailController *)self _authenticateForBundleIdentifier:v11 completion:v14];
+  [(AssistantDetailController *)self _authenticateForBundleIdentifier:_bundleId completion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v21);
@@ -638,40 +638,40 @@ void __77__AssistantDetailController_setSuggestionsShowOnHomeScreenEnabled_speci
   dispatch_async(MEMORY[0x277D85CD0], *(a1 + v2));
 }
 
-- (id)suggestionsSuggestAppEnabled:(id)a3
+- (id)suggestionsSuggestAppEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   suggestionsController = self->_suggestionsController;
-  v5 = [(AssistantDetailController *)self _bundleId];
-  v6 = [v3 numberWithBool:{-[ASFSuggestionsController suggestionsSuggestAppEnabledForBundleId:](suggestionsController, "suggestionsSuggestAppEnabledForBundleId:", v5)}];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  v6 = [v3 numberWithBool:{-[ASFSuggestionsController suggestionsSuggestAppEnabledForBundleId:](suggestionsController, "suggestionsSuggestAppEnabledForBundleId:", _bundleId)}];
 
   return v6;
 }
 
-- (void)setSuggestionsSuggestAppEnabled:(id)a3 specifier:(id)a4
+- (void)setSuggestionsSuggestAppEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(AssistantDetailController *)self _bundleId];
-  [(ASFSuggestionsController *)self->_suggestionsController setSuggestionsSuggestAppEnabled:v5 bundleId:v6];
+  bOOLValue = [enabled BOOLValue];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  [(ASFSuggestionsController *)self->_suggestionsController setSuggestionsSuggestAppEnabled:bOOLValue bundleId:_bundleId];
 }
 
-- (id)suggestionsSuggestionNotificationEnabled:(id)a3
+- (id)suggestionsSuggestionNotificationEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   suggestionsController = self->_suggestionsController;
-  v5 = [(AssistantDetailController *)self _bundleId];
-  v6 = [v3 numberWithBool:{-[ASFSuggestionsController suggestionsNotificationEnabledForBundleId:](suggestionsController, "suggestionsNotificationEnabledForBundleId:", v5)}];
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  v6 = [v3 numberWithBool:{-[ASFSuggestionsController suggestionsNotificationEnabledForBundleId:](suggestionsController, "suggestionsNotificationEnabledForBundleId:", _bundleId)}];
 
   return v6;
 }
 
-- (void)setSuggestionsSuggestionNotificationsEnabled:(id)a3 specifier:(id)a4
+- (void)setSuggestionsSuggestionNotificationsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(AssistantDetailController *)self specifier];
-  v7 = [v6 propertyForKey:@"BUNDLE_ID"];
+  bOOLValue = [enabled BOOLValue];
+  specifier = [(AssistantDetailController *)self specifier];
+  v7 = [specifier propertyForKey:@"BUNDLE_ID"];
 
-  [(ASFSuggestionsController *)self->_suggestionsController setSuggestionsNotificationsEnabled:v5 bundleId:v7];
+  [(ASFSuggestionsController *)self->_suggestionsController setSuggestionsNotificationsEnabled:bOOLValue bundleId:v7];
 }
 
 - (void)_asyncAddAskSiriSettingsIfNecessary
@@ -718,16 +718,16 @@ void __64__AssistantDetailController__asyncAddAskSiriSettingsIfNecessary__block_
   }
 }
 
-- (void)_fetchIntentsSpecifiersWithCompletion:(id)a3
+- (void)_fetchIntentsSpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__AssistantDetailController__fetchIntentsSpecifiersWithCompletion___block_invoke;
   v6[3] = &unk_278CD15E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [IntentsUtilities intentsAppsWithCompletion:v6];
 }
 
@@ -802,20 +802,20 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAskSiriUseWithAskSiriEnabled:(id)a3 specifier:(id)a4
+- (void)setAskSiriUseWithAskSiriEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v8 = *MEMORY[0x277D401A8];
-  v9 = [v7 propertyForKey:*MEMORY[0x277D401A8]];
-  v10 = [v6 isEqual:v9];
+  v9 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
+  v10 = [enabledCopy isEqual:v9];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v7 propertyForKey:@"intentsAppID"];
+    v11 = [specifierCopy propertyForKey:@"intentsAppID"];
     v12 = objc_alloc_init(MEMORY[0x277CF3580]);
     v13 = [v12 sectionInfoForSectionID:v11];
-    if ([v13 spokenNotificationSetting] == 2 && (objc_msgSend(v6, "BOOLValue") & 1) == 0)
+    if ([v13 spokenNotificationSetting] == 2 && (objc_msgSend(enabledCopy, "BOOLValue") & 1) == 0)
     {
       v14 = MEMORY[0x277D750F8];
       v15 = +[AssistantController bundle];
@@ -825,9 +825,9 @@ LABEL_12:
       v33[1] = 3221225472;
       v33[2] = __71__AssistantDetailController_setAskSiriUseWithAskSiriEnabled_specifier___block_invoke;
       v33[3] = &unk_278CD1FA8;
-      v34 = v6;
+      v34 = enabledCopy;
       v35 = v11;
-      v17 = v7;
+      v17 = specifierCopy;
       v36 = v17;
       v37 = v13;
       v29 = [v14 actionWithTitle:v16 style:0 handler:v33];
@@ -857,14 +857,14 @@ LABEL_12:
 
     else
     {
-      +[IntentsUtilities setAccess:appID:](IntentsUtilities, "setAccess:appID:", [v6 BOOLValue], v11);
-      [v7 setProperty:v6 forKey:v8];
+      +[IntentsUtilities setAccess:appID:](IntentsUtilities, "setAccess:appID:", [enabledCopy BOOLValue], v11);
+      [specifierCopy setProperty:enabledCopy forKey:v8];
       PSResetCachedSiriKitTCCEnabledAppIds();
     }
   }
 
-  v26 = [(AssistantDetailController *)self _bundleId];
-  +[AssistantMetrics didDetailToggle:bundleId:on:](AssistantMetrics, "didDetailToggle:bundleId:on:", @"sirikit", v26, [v6 BOOLValue]);
+  _bundleId = [(AssistantDetailController *)self _bundleId];
+  +[AssistantMetrics didDetailToggle:bundleId:on:](AssistantMetrics, "didDetailToggle:bundleId:on:", @"sirikit", _bundleId, [enabledCopy BOOLValue]);
 }
 
 uint64_t __71__AssistantDetailController_setAskSiriUseWithAskSiriEnabled_specifier___block_invoke(uint64_t a1)
@@ -890,9 +890,9 @@ void __71__AssistantDetailController_setAskSiriUseWithAskSiriEnabled_specifier__
   return v2;
 }
 
-- (id)_watchBundleToMirrorWithBundleId:(id)a3
+- (id)_watchBundleToMirrorWithBundleId:(id)id
 {
-  v3 = [&unk_285320078 objectForKeyedSubscript:a3];
+  v3 = [&unk_285320078 objectForKeyedSubscript:id];
   v4 = CFPreferencesCopyAppValue(@"AppHasCustomBridgeSettings", @"com.apple.suggestions");
   v5 = [v4 containsObject:v3];
 
@@ -911,16 +911,16 @@ void __71__AssistantDetailController_setAskSiriUseWithAskSiriEnabled_specifier__
 
 - (id)_bundleId
 {
-  v2 = [(AssistantDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"BUNDLE_ID"];
+  specifier = [(AssistantDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"BUNDLE_ID"];
 
   return v3;
 }
 
 - (id)_appName
 {
-  v2 = [(AssistantDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"APP_NAME"];
+  specifier = [(AssistantDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"APP_NAME"];
 
   return v3;
 }

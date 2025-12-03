@@ -1,18 +1,18 @@
 @interface WFWidgetConfigurationAttributionYahooFinanceLogoAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (WFWidgetConfigurationAttributionYahooFinanceLogoAttachment)init;
 @end
 
 @implementation WFWidgetConfigurationAttributionYahooFinanceLogoAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  v7 = ceil(a4.size.height * 26.0 / 30.0);
-  v8 = [(WFWidgetConfigurationAttributionYahooFinanceLogoAttachment *)self image:a3];
+  v7 = ceil(fragment.size.height * 26.0 / 30.0);
+  v8 = [(WFWidgetConfigurationAttributionYahooFinanceLogoAttachment *)self image:container];
   [v8 size];
   v10 = v9;
-  v11 = [(WFWidgetConfigurationAttributionYahooFinanceLogoAttachment *)self image];
-  [v11 size];
+  image = [(WFWidgetConfigurationAttributionYahooFinanceLogoAttachment *)self image];
+  [image size];
   v13 = v7 * (v10 / v12);
 
   v14 = -ceil(v7 * 0.21);

@@ -21,13 +21,13 @@
   v20 = 0;
   v11 = v10;
   v18 = v11;
-  LOBYTE(a1) = [a1 enumerateSyncAnchorsForStoreID:a3 database:v9 error:&v20 handler:&v14];
+  LOBYTE(self) = [self enumerateSyncAnchorsForStoreID:a3 database:v9 error:&v20 handler:&v14];
   v12 = v20;
-  v13 = [v11 formattedTable];
-  [v8 appendString:v13];
+  formattedTable = [v11 formattedTable];
+  [v8 appendString:formattedTable];
 
   [v8 appendNewline];
-  if (a1)
+  if (self)
   {
     if ((v22[3] & 1) == 0)
     {

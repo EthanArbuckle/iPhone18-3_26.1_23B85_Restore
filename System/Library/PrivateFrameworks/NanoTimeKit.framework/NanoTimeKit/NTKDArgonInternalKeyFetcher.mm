@@ -1,19 +1,19 @@
 @interface NTKDArgonInternalKeyFetcher
-- (void)fetchNewRecordsSinceChangeToken:(id)a3 forReason:(int64_t)a4 completion:(id)a5;
+- (void)fetchNewRecordsSinceChangeToken:(id)token forReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation NTKDArgonInternalKeyFetcher
 
-- (void)fetchNewRecordsSinceChangeToken:(id)a3 forReason:(int64_t)a4 completion:(id)a5
+- (void)fetchNewRecordsSinceChangeToken:(id)token forReason:(int64_t)reason completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a5;
-  v7 = NTKFaceSupportInternalDirectory(v5, v6);
+  completionCopy = completion;
+  v7 = NTKFaceSupportInternalDirectory(completionCopy, v6);
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v28 = 0;
-    v9 = [v8 contentsOfDirectoryAtPath:v7 error:&v28];
+    v9 = [defaultManager contentsOfDirectoryAtPath:v7 error:&v28];
     v10 = v28;
 
     if (v9)
@@ -58,21 +58,21 @@
       }
 
       v20 = [v23 copy];
-      (*(v5 + 2))(v5, v20, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v20, 0, 0);
 
       v10 = v22;
     }
 
     else
     {
-      (*(v5 + 2))(v5, 0, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v10);
     }
   }
 
   else
   {
     v21 = [MEMORY[0x277CBEB98] set];
-    (*(v5 + 2))(v5, v21, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v21, 0, 0);
   }
 }
 

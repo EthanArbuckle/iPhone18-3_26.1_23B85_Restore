@@ -1,59 +1,59 @@
 @interface PXSurveyQuestionAssetGroupConfiguration
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionAssetGroupConfiguration)init;
-- (PXSurveyQuestionAssetGroupConfiguration)initWithTitle:(id)a3 assetCollection:(id)a4;
+- (PXSurveyQuestionAssetGroupConfiguration)initWithTitle:(id)title assetCollection:(id)collection;
 - (UIView)contentView;
-- (id)px_surveyQuestionAssetGroupViewMetadataDateRangeStringWithFormatter:(id)a3 assetGroupView:(id)a4;
-- (id)px_surveyQuestionAssetGroupViewMetadataLocationString:(id)a3;
-- (void)px_surveyQuestionAssetGroupViewWasTapped:(id)a3;
+- (id)px_surveyQuestionAssetGroupViewMetadataDateRangeStringWithFormatter:(id)formatter assetGroupView:(id)view;
+- (id)px_surveyQuestionAssetGroupViewMetadataLocationString:(id)string;
+- (void)px_surveyQuestionAssetGroupViewWasTapped:(id)tapped;
 @end
 
 @implementation PXSurveyQuestionAssetGroupConfiguration
 
-- (void)px_surveyQuestionAssetGroupViewWasTapped:(id)a3
+- (void)px_surveyQuestionAssetGroupViewWasTapped:(id)tapped
 {
-  v14 = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
+  assetCollection = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
   v4 = MEMORY[0x1E6978630];
-  v5 = [v14 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
-  v7 = [v4 fetchAssetsInAssetCollection:v14 options:v6];
+  photoLibrary = [assetCollection photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v7 = [v4 fetchAssetsInAssetCollection:assetCollection options:librarySpecificFetchOptions];
 
-  v8 = PXPhotosViewConfigurationForAssetCollectionWithExistingAssetsFetchResult(v14, v7, 0, 0, 1);
+  v8 = PXPhotosViewConfigurationForAssetCollectionWithExistingAssetsFetchResult(assetCollection, v7, 0, 0, 1);
   v9 = [[PXPhotosUIViewController alloc] initWithConfiguration:v8];
-  v10 = [(PXSurveyQuestionAssetGroupConfiguration *)self handlers];
-  v11 = [v10 pushViewControllerHandler];
+  handlers = [(PXSurveyQuestionAssetGroupConfiguration *)self handlers];
+  pushViewControllerHandler = [handlers pushViewControllerHandler];
 
-  if (v11)
+  if (pushViewControllerHandler)
   {
-    v12 = [(PXSurveyQuestionAssetGroupConfiguration *)self handlers];
-    v13 = [v12 pushViewControllerHandler];
-    (v13)[2](v13, v9, v14);
+    handlers2 = [(PXSurveyQuestionAssetGroupConfiguration *)self handlers];
+    pushViewControllerHandler2 = [handlers2 pushViewControllerHandler];
+    (pushViewControllerHandler2)[2](pushViewControllerHandler2, v9, assetCollection);
   }
 }
 
-- (id)px_surveyQuestionAssetGroupViewMetadataDateRangeStringWithFormatter:(id)a3 assetGroupView:(id)a4
+- (id)px_surveyQuestionAssetGroupViewMetadataDateRangeStringWithFormatter:(id)formatter assetGroupView:(id)view
 {
-  v5 = a3;
-  v6 = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
-  v7 = [v6 startDate];
-  v8 = [v5 stringFromDate:v7];
+  formatterCopy = formatter;
+  assetCollection = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
+  startDate = [assetCollection startDate];
+  v8 = [formatterCopy stringFromDate:startDate];
 
-  v9 = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
-  v10 = [v9 endDate];
-  v11 = [v5 stringFromDate:v10];
+  assetCollection2 = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
+  endDate = [assetCollection2 endDate];
+  v11 = [formatterCopy stringFromDate:endDate];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v8, v11];
 
   return v12;
 }
 
-- (id)px_surveyQuestionAssetGroupViewMetadataLocationString:(id)a3
+- (id)px_surveyQuestionAssetGroupViewMetadataLocationString:(id)string
 {
-  v3 = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
-  v4 = [v3 localizedLocationNames];
-  v5 = [v4 firstObject];
+  assetCollection = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
+  localizedLocationNames = [assetCollection localizedLocationNames];
+  firstObject = [localizedLocationNames firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (CGRect)contentRectForOneUp
@@ -80,8 +80,8 @@
   else
   {
     v5 = [PXSurveyQuestionAssetGroupView alloc];
-    v6 = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
-    v7 = [(PXSurveyQuestionAssetGroupView *)v5 initWithAssetCollection:v6];
+    assetCollection = [(PXSurveyQuestionAssetGroupConfiguration *)self assetCollection];
+    v7 = [(PXSurveyQuestionAssetGroupView *)v5 initWithAssetCollection:assetCollection];
 
     [(PXSurveyQuestionAssetGroupView *)v7 setDelegate:self];
     v8 = self->_contentView;
@@ -96,27 +96,27 @@
 
 - (PXSurveyQuestionAssetGroupConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionAssetGroupConfiguration.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXSurveyQuestionAssetGroupConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionAssetGroupConfiguration.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXSurveyQuestionAssetGroupConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionAssetGroupConfiguration)initWithTitle:(id)a3 assetCollection:(id)a4
+- (PXSurveyQuestionAssetGroupConfiguration)initWithTitle:(id)title assetCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = PXSurveyQuestionAssetGroupConfiguration;
   v8 = [(PXSurveyQuestionAssetGroupConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
     v8->_isStale = 0;
-    objc_storeStrong(&v8->_assetCollection, a4);
+    objc_storeStrong(&v8->_assetCollection, collection);
   }
 
   return v8;

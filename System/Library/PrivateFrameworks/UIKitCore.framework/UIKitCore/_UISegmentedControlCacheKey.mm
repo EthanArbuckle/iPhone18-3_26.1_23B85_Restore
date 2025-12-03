@@ -1,8 +1,8 @@
 @interface _UISegmentedControlCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_UISegmentedControlCacheKey)initWithCornerRadius:(double)a3 capSize:(CGSize)a4 scale:(double)a5 state:(unint64_t)a6 primaryColor:(CGColor *)a7;
-- (_UISegmentedControlCacheKey)initWithSize:(int)a3 scale:(double)a4 primaryColor:(CGColor *)a5 background:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_UISegmentedControlCacheKey)initWithCornerRadius:(double)radius capSize:(CGSize)size scale:(double)scale state:(unint64_t)state primaryColor:(CGColor *)color;
+- (_UISegmentedControlCacheKey)initWithSize:(int)size scale:(double)scale primaryColor:(CGColor *)color background:(BOOL)background;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -36,9 +36,9 @@
   [(_UISegmentedControlCacheKey *)&v3 dealloc];
 }
 
-- (_UISegmentedControlCacheKey)initWithSize:(int)a3 scale:(double)a4 primaryColor:(CGColor *)a5 background:(BOOL)a6
+- (_UISegmentedControlCacheKey)initWithSize:(int)size scale:(double)scale primaryColor:(CGColor *)color background:(BOOL)background
 {
-  v6 = a6;
+  backgroundCopy = background;
   v13.receiver = self;
   v13.super_class = _UISegmentedControlCacheKey;
   v10 = [(_UISegmentedControlCacheKey *)&v13 init];
@@ -46,20 +46,20 @@
   if (v10)
   {
     v10->_size.width = 0.0;
-    v10->_size.height = a3;
-    CGColorRetain(a5);
-    v11->_state = v6;
-    v11->_primaryColor = a5;
-    v11->_scale = a4;
+    v10->_size.height = size;
+    CGColorRetain(color);
+    v11->_state = backgroundCopy;
+    v11->_primaryColor = color;
+    v11->_scale = scale;
   }
 
   return v11;
 }
 
-- (_UISegmentedControlCacheKey)initWithCornerRadius:(double)a3 capSize:(CGSize)a4 scale:(double)a5 state:(unint64_t)a6 primaryColor:(CGColor *)a7
+- (_UISegmentedControlCacheKey)initWithCornerRadius:(double)radius capSize:(CGSize)size scale:(double)scale state:(unint64_t)state primaryColor:(CGColor *)color
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = _UISegmentedControlCacheKey;
   v13 = [(_UISegmentedControlCacheKey *)&v16 init];
@@ -67,21 +67,21 @@
   if (v13)
   {
     v13->_size.height = height;
-    v13->_cornerRadius = a3;
+    v13->_cornerRadius = radius;
     v13->_size.width = width;
-    v13->_state = a6;
-    CGColorRetain(a7);
-    v14->_primaryColor = a7;
-    v14->_scale = a5;
+    v13->_state = state;
+    CGColorRetain(color);
+    v14->_primaryColor = color;
+    v14->_scale = scale;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -89,17 +89,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UISegmentedControlCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UISegmentedControlCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  v7 = v4 && (self->_size.width == *(v4 + 1) ? (v6 = self->_size.height == *(v4 + 2)) : (v6 = 0), v6 && self->_cornerRadius == *(v4 + 3) && self->_scale == *(v4 + 4) && self->_state == v4[5]) && CGColorEqualToColor(self->_primaryColor, v4[6]);
+  keyCopy = key;
+  v5 = keyCopy;
+  v7 = keyCopy && (self->_size.width == *(keyCopy + 1) ? (v6 = self->_size.height == *(keyCopy + 2)) : (v6 = 0), v6 && self->_cornerRadius == *(keyCopy + 3) && self->_scale == *(keyCopy + 4) && self->_state == keyCopy[5]) && CGColorEqualToColor(self->_primaryColor, keyCopy[6]);
 
   return v7;
 }

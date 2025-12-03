@@ -1,28 +1,28 @@
 @interface EKParticipantToContactMatcher
-+ (id)_allParticipantsOnItem:(id)a3;
-+ (id)_nameComponentsForContact:(id)a3 reverse:(BOOL)a4;
-+ (id)_nameComponentsWithGivenName:(id)a3 familyName:(id)a4;
-- (BOOL)anyContactMatchesAnyParticipant:(id)a3;
-- (BOOL)anyContactMatchesAnyParticipantFromItem:(id)a3;
-- (BOOL)anyContactMatchesParticipant:(id)a3;
-- (EKParticipantToContactMatcher)initWithContacts:(id)a3;
-- (id)matchingParticipantsFromItem:(id)a3;
-- (id)matchingParticipantsFromParticipants:(id)a3;
++ (id)_allParticipantsOnItem:(id)item;
++ (id)_nameComponentsForContact:(id)contact reverse:(BOOL)reverse;
++ (id)_nameComponentsWithGivenName:(id)name familyName:(id)familyName;
+- (BOOL)anyContactMatchesAnyParticipant:(id)participant;
+- (BOOL)anyContactMatchesAnyParticipantFromItem:(id)item;
+- (BOOL)anyContactMatchesParticipant:(id)participant;
+- (EKParticipantToContactMatcher)initWithContacts:(id)contacts;
+- (id)matchingParticipantsFromItem:(id)item;
+- (id)matchingParticipantsFromParticipants:(id)participants;
 - (void)_cacheContactData;
 @end
 
 @implementation EKParticipantToContactMatcher
 
-- (EKParticipantToContactMatcher)initWithContacts:(id)a3
+- (EKParticipantToContactMatcher)initWithContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   v9.receiver = self;
   v9.super_class = EKParticipantToContactMatcher;
   v6 = [(EKParticipantToContactMatcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contacts, a3);
+    objc_storeStrong(&v6->_contacts, contacts);
     [(EKParticipantToContactMatcher *)v7 _cacheContactData];
   }
 
@@ -39,7 +39,7 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v33 = self;
+  selfCopy = self;
   obj = [(EKParticipantToContactMatcher *)self contacts];
   v4 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v4)
@@ -68,8 +68,8 @@
         if ([v11 isKeyAvailable:v7])
         {
           v12 = v6;
-          v13 = [v11 emailAddresses];
-          v14 = [v13 valueForKey:@"value"];
+          emailAddresses = [v11 emailAddresses];
+          v14 = [emailAddresses valueForKey:@"value"];
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
@@ -88,8 +88,8 @@
                   objc_enumerationMutation(v14);
                 }
 
-                v19 = [*(*(&v36 + 1) + 8 * i) lowercaseString];
-                [v3 addObject:v19];
+                lowercaseString = [*(*(&v36 + 1) + 8 * i) lowercaseString];
+                [v3 addObject:lowercaseString];
               }
 
               v16 = [v14 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -122,14 +122,14 @@
 
         if ([v11 isKeyAvailable:v9])
         {
-          v22 = [v11 organizationName];
-          v23 = [v22 length];
+          organizationName = [v11 organizationName];
+          v23 = [organizationName length];
 
           if (v23)
           {
-            v24 = [v11 organizationName];
-            v25 = [v24 lowercaseString];
-            [v27 addObject:v25];
+            organizationName2 = [v11 organizationName];
+            lowercaseString2 = [organizationName2 lowercaseString];
+            [v27 addObject:lowercaseString2];
           }
         }
 
@@ -143,48 +143,48 @@
     while (v5);
   }
 
-  [(EKParticipantToContactMatcher *)v33 setContactEmailAddresses:v3];
-  [(EKParticipantToContactMatcher *)v33 setContactNameComponents:v28];
-  [(EKParticipantToContactMatcher *)v33 setContactCompanyNames:v27];
+  [(EKParticipantToContactMatcher *)selfCopy setContactEmailAddresses:v3];
+  [(EKParticipantToContactMatcher *)selfCopy setContactNameComponents:v28];
+  [(EKParticipantToContactMatcher *)selfCopy setContactCompanyNames:v27];
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_nameComponentsForContact:(id)a3 reverse:(BOOL)a4
++ (id)_nameComponentsForContact:(id)contact reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  reverseCopy = reverse;
+  contactCopy = contact;
+  v7 = contactCopy;
+  if (reverseCopy)
   {
-    v8 = [v6 familyName];
+    familyName = [contactCopy familyName];
     [v7 givenName];
   }
 
   else
   {
-    v8 = [v6 givenName];
+    familyName = [contactCopy givenName];
     [v7 familyName];
   }
   v9 = ;
 
-  v10 = [a1 _nameComponentsWithGivenName:v8 familyName:v9];
+  v10 = [self _nameComponentsWithGivenName:familyName familyName:v9];
 
   return v10;
 }
 
-+ (id)_nameComponentsWithGivenName:(id)a3 familyName:(id)a4
++ (id)_nameComponentsWithGivenName:(id)name familyName:(id)familyName
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] || objc_msgSend(v6, "length"))
+  nameCopy = name;
+  familyNameCopy = familyName;
+  if ([nameCopy length] || objc_msgSend(familyNameCopy, "length"))
   {
     v7 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v8 = [v5 lowercaseString];
-    v9 = v8;
-    if (v8)
+    lowercaseString = [nameCopy lowercaseString];
+    v9 = lowercaseString;
+    if (lowercaseString)
     {
-      v10 = v8;
+      v10 = lowercaseString;
     }
 
     else
@@ -194,11 +194,11 @@
 
     [v7 setGivenName:v10];
 
-    v11 = [v6 lowercaseString];
-    v12 = v11;
-    if (v11)
+    lowercaseString2 = [familyNameCopy lowercaseString];
+    v12 = lowercaseString2;
+    if (lowercaseString2)
     {
-      v13 = v11;
+      v13 = lowercaseString2;
     }
 
     else
@@ -217,42 +217,42 @@
   return v7;
 }
 
-+ (id)_allParticipantsOnItem:(id)a3
++ (id)_allParticipantsOnItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [v3 attendees];
-  v6 = [v4 arrayWithArray:v5];
+  attendees = [itemCopy attendees];
+  v6 = [v4 arrayWithArray:attendees];
 
-  v7 = [v3 organizer];
+  organizer = [itemCopy organizer];
 
-  if (v7)
+  if (organizer)
   {
-    v8 = [v3 organizer];
-    [v6 addObject:v8];
+    organizer2 = [itemCopy organizer];
+    [v6 addObject:organizer2];
   }
 
   return v6;
 }
 
-- (BOOL)anyContactMatchesAnyParticipantFromItem:(id)a3
+- (BOOL)anyContactMatchesAnyParticipantFromItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _allParticipantsOnItem:v4];
+  itemCopy = item;
+  v5 = [objc_opt_class() _allParticipantsOnItem:itemCopy];
 
   LOBYTE(self) = [(EKParticipantToContactMatcher *)self anyContactMatchesAnyParticipant:v5];
   return self;
 }
 
-- (BOOL)anyContactMatchesAnyParticipant:(id)a3
+- (BOOL)anyContactMatchesAnyParticipant:(id)participant
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  participantCopy = participant;
+  v5 = [participantCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -263,7 +263,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(participantCopy);
         }
 
         if ([(EKParticipantToContactMatcher *)self anyContactMatchesParticipant:*(*(&v12 + 1) + 8 * i), v12])
@@ -273,7 +273,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [participantCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -290,26 +290,26 @@ LABEL_11:
   return v9;
 }
 
-- (id)matchingParticipantsFromItem:(id)a3
+- (id)matchingParticipantsFromItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _allParticipantsOnItem:v4];
+  itemCopy = item;
+  v5 = [objc_opt_class() _allParticipantsOnItem:itemCopy];
 
   v6 = [(EKParticipantToContactMatcher *)self matchingParticipantsFromParticipants:v5];
 
   return v6;
 }
 
-- (id)matchingParticipantsFromParticipants:(id)a3
+- (id)matchingParticipantsFromParticipants:(id)participants
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  participantsCopy = participants;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = participantsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -327,7 +327,7 @@ LABEL_11:
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([(EKParticipantToContactMatcher *)self anyContactMatchesParticipant:v11, v14])
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -339,35 +339,35 @@ LABEL_11:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (BOOL)anyContactMatchesParticipant:(id)a3
+- (BOOL)anyContactMatchesParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  participantCopy = participant;
+  v5 = participantCopy;
+  if (!participantCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 emailAddress];
-  v7 = [v6 lowercaseString];
+  emailAddress = [participantCopy emailAddress];
+  lowercaseString = [emailAddress lowercaseString];
 
-  v8 = [(EKParticipantToContactMatcher *)self contactEmailAddresses];
-  v9 = [v8 containsObject:v7];
+  contactEmailAddresses = [(EKParticipantToContactMatcher *)self contactEmailAddresses];
+  v9 = [contactEmailAddresses containsObject:lowercaseString];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v5 nameComponents];
+    nameComponents = [v5 nameComponents];
     v11 = objc_opt_class();
-    v12 = [v10 givenName];
-    v13 = [v10 familyName];
-    v14 = [v11 _nameComponentsWithGivenName:v12 familyName:v13];
+    givenName = [nameComponents givenName];
+    familyName = [nameComponents familyName];
+    v14 = [v11 _nameComponentsWithGivenName:givenName familyName:familyName];
 
-    v15 = [(EKParticipantToContactMatcher *)self contactNameComponents];
-    v16 = [v15 allObjects];
-    v17 = [v16 containsObject:v14];
+    contactNameComponents = [(EKParticipantToContactMatcher *)self contactNameComponents];
+    allObjects = [contactNameComponents allObjects];
+    v17 = [allObjects containsObject:v14];
 
     if (v17)
     {
@@ -375,13 +375,13 @@ LABEL_11:
       goto LABEL_5;
     }
 
-    v19 = [v5 name];
-    v20 = [v19 lowercaseString];
+    name = [v5 name];
+    lowercaseString2 = [name lowercaseString];
 
-    v21 = [(EKParticipantToContactMatcher *)self contactCompanyNames];
-    LOBYTE(v19) = [v21 containsObject:v20];
+    contactCompanyNames = [(EKParticipantToContactMatcher *)self contactCompanyNames];
+    LOBYTE(name) = [contactCompanyNames containsObject:lowercaseString2];
 
-    if (v19)
+    if (name)
     {
       goto LABEL_6;
     }

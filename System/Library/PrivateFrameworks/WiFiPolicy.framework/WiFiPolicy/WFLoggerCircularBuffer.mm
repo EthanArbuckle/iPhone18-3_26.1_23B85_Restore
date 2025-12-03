@@ -1,14 +1,14 @@
 @interface WFLoggerCircularBuffer
 - (WFLoggerCircularBuffer)init;
-- (void)WFLog:(unint64_t)a3 privacy:(unint64_t)a4 cfStrMsg:(__CFString *)a5;
-- (void)WFLog:(unint64_t)a3 privacy:(unint64_t)a4 message:(const char *)a5 valist:(char *)a6;
+- (void)WFLog:(unint64_t)log privacy:(unint64_t)privacy cfStrMsg:(__CFString *)msg;
+- (void)WFLog:(unint64_t)log privacy:(unint64_t)privacy message:(const char *)message valist:(char *)valist;
 - (void)dealloc;
 - (void)dump;
 @end
 
 @implementation WFLoggerCircularBuffer
 
-- (void)WFLog:(unint64_t)a3 privacy:(unint64_t)a4 message:(const char *)a5 valist:(char *)a6
+- (void)WFLog:(unint64_t)log privacy:(unint64_t)privacy message:(const char *)message valist:(char *)valist
 {
   v28 = *MEMORY[0x277D85DE8];
   v14 = 0;
@@ -27,7 +27,7 @@
   v19 = 0u;
   if (self->_wiFiLoggingLogBufferRef)
   {
-    __vsnprintf_chk(v18, 0xA0uLL, 0, 0xA0uLL, a5, a6);
+    __vsnprintf_chk(v18, 0xA0uLL, 0, 0xA0uLL, message, valist);
     v7 = -[NSDateFormatter stringFromDate:](self->_tsFormatter, "stringFromDate:", [MEMORY[0x277CBEAA8] date]);
     v8 = *MEMORY[0x277CBECE8];
     v9 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %s\n", v7, v18);
@@ -91,7 +91,7 @@ void __55__WFLoggerCircularBuffer_WFLog_privacy_message_valist___block_invoke(ui
   }
 }
 
-- (void)WFLog:(unint64_t)a3 privacy:(unint64_t)a4 cfStrMsg:(__CFString *)a5
+- (void)WFLog:(unint64_t)log privacy:(unint64_t)privacy cfStrMsg:(__CFString *)msg
 {
   v11 = 0;
   v12 = &v11;
@@ -100,7 +100,7 @@ void __55__WFLoggerCircularBuffer_WFLog_privacy_message_valist___block_invoke(ui
   if (self->_wiFiLoggingLogBufferRef)
   {
     v6 = *MEMORY[0x277CBECE8];
-    v7 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ \n", a4, a5);
+    v7 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ \n", privacy, msg);
     if (v7)
     {
       ExternalRepresentation = CFStringCreateExternalRepresentation(v6, v7, 0x8000100u, 0x3Fu);

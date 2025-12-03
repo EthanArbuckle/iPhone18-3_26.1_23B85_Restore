@@ -1,81 +1,81 @@
 @interface UIKeyboardEmojiCategoryBar
-- (CGRect)categorySelectedCircleRect:(int64_t)a3;
-- (CGRect)frameForDivider:(int)a3;
+- (CGRect)categorySelectedCircleRect:(int64_t)rect;
+- (CGRect)frameForDivider:(int)divider;
 - (CGRect)paddedFrame;
-- (UIKeyboardEmojiCategoryBar)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6;
-- (unint64_t)flippedIndexForIndex:(unint64_t)a3;
-- (unint64_t)selectedIndexForTouches:(id)a3;
-- (void)animateScrubberToRect:(CGRect)a3;
+- (UIKeyboardEmojiCategoryBar)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits;
+- (unint64_t)flippedIndexForIndex:(unint64_t)index;
+- (unint64_t)selectedIndexForTouches:(id)touches;
+- (void)animateScrubberToRect:(CGRect)rect;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dimKeys:(id)a3;
+- (void)dimKeys:(id)keys;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)removeFromSuperview;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateCategory;
-- (void)updateCategoryOnBar:(unint64_t)a3;
-- (void)updateToCategory:(int64_t)a3;
+- (void)updateCategoryOnBar:(unint64_t)bar;
+- (void)updateToCategory:(int64_t)category;
 @end
 
 @implementation UIKeyboardEmojiCategoryBar
 
-- (UIKeyboardEmojiCategoryBar)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6
+- (UIKeyboardEmojiCategoryBar)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  keyplaneCopy = keyplane;
+  keyCopy = key;
+  traitsCopy = traits;
   v33.receiver = self;
   v33.super_class = UIKeyboardEmojiCategoryBar;
-  v16 = [(UIView *)&v33 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(UIView *)&v33 initWithFrame:x, y, width, height];
+  if (height)
   {
-    if (!v15)
+    if (!traitsCopy)
     {
       v17 = +[UIKeyboardImpl keyboardScreen];
       v18 = +[UIKeyboard activeKeyboard];
-      v15 = +[UIKBScreenTraits traitsWithScreen:orientation:](UIKBScreenTraits, "traitsWithScreen:orientation:", v17, [v18 interfaceOrientation]);
+      traitsCopy = +[UIKBScreenTraits traitsWithScreen:orientation:](UIKBScreenTraits, "traitsWithScreen:orientation:", v17, [v18 interfaceOrientation]);
     }
 
-    v19 = [UIKeyboardEmojiGraphicsTraits emojiGraphicsTraitsWithScreenTraits:v15];
-    emojiGraphicsTraits = v16->_emojiGraphicsTraits;
-    v16->_emojiGraphicsTraits = v19;
+    v19 = [UIKeyboardEmojiGraphicsTraits emojiGraphicsTraitsWithScreenTraits:traitsCopy];
+    emojiGraphicsTraits = height->_emojiGraphicsTraits;
+    height->_emojiGraphicsTraits = v19;
 
-    v16->_selectedIndex = -1;
-    v16->_isScrubbing = 0;
+    height->_selectedIndex = -1;
+    height->_isScrubbing = 0;
     v21 = +[UIColor clearColor];
-    [(UIView *)v16 setBackgroundColor:v21];
+    [(UIView *)height setBackgroundColor:v21];
 
-    [(UIView *)v16 setOpaque:0];
-    [v14 setState:16];
-    [v14 setSelectedVariantIndex:v16->_selectedIndex];
-    [(UIKBKeyView *)v16 updateForKeyplane:v13 key:v14];
-    scrubView = v16->_scrubView;
+    [(UIView *)height setOpaque:0];
+    [keyCopy setState:16];
+    [keyCopy setSelectedVariantIndex:height->_selectedIndex];
+    [(UIKBKeyView *)height updateForKeyplane:keyplaneCopy key:keyCopy];
+    scrubView = height->_scrubView;
     if (!scrubView)
     {
-      [(UIKeyboardEmojiGraphicsTraits *)v16->_emojiGraphicsTraits categorySelectedCirWidth];
+      [(UIKeyboardEmojiGraphicsTraits *)height->_emojiGraphicsTraits categorySelectedCirWidth];
       v24 = [(UIView *)[UIKeyboardEmojiScrubBarView alloc] initWithFrame:0.0, (height - v23) * 0.5, v23, v23];
-      v25 = v16->_scrubView;
-      v16->_scrubView = &v24->super;
+      v25 = height->_scrubView;
+      height->_scrubView = &v24->super;
 
-      [(UIKeyboardEmojiGraphicsTraits *)v16->_emojiGraphicsTraits categorySelectedCirWidth];
+      [(UIKeyboardEmojiGraphicsTraits *)height->_emojiGraphicsTraits categorySelectedCirWidth];
       v27 = v26 * 0.5;
-      v28 = [(UIView *)v16->_scrubView layer];
-      [v28 setCornerRadius:v27];
+      layer = [(UIView *)height->_scrubView layer];
+      [layer setCornerRadius:v27];
 
-      v29 = v16->_scrubView;
+      v29 = height->_scrubView;
       if (v29)
       {
-        if (v15)
+        if (traitsCopy)
         {
-          v30 = v15[35];
+          v30 = traitsCopy[35];
         }
 
         else
@@ -84,7 +84,7 @@
         }
 
         LOBYTE(v29[1].super.super.isa) = v30 & 1;
-        scrubView = v16->_scrubView;
+        scrubView = height->_scrubView;
       }
 
       else
@@ -93,12 +93,12 @@
       }
     }
 
-    [(UIView *)v16 addSubview:scrubView];
-    v31 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v31 addObserver:v16 selector:sel_receiveNotifictaion_ name:@"UIKeyboardEmojiDidScrollNotification" object:0];
+    [(UIView *)height addSubview:scrubView];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:height selector:sel_receiveNotifictaion_ name:@"UIKeyboardEmojiDidScrollNotification" object:0];
   }
 
-  return v16;
+  return height;
 }
 
 - (void)prepareForDisplay
@@ -115,8 +115,8 @@
     {
       v6 = [UIKeyboardEmojiCategory categoryForType:[UIKeyboardEmojiCategory categoryTypeForCategoryIndex:v5]];
       v7 = [[UIKBTree alloc] initWithType:8];
-      v8 = [(UIKBKeyView *)self renderConfig];
-      v9 = [UIKeyboardEmojiGraphics emojiCategoryImagePath:v6 forRenderConfig:v8];
+      renderConfig = [(UIKBKeyView *)self renderConfig];
+      v9 = [UIKeyboardEmojiGraphics emojiCategoryImagePath:v6 forRenderConfig:renderConfig];
       [(UIKBTree *)v7 setDisplayString:v9];
 
       [v4 addObject:v7];
@@ -131,8 +131,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardEmojiDidScrollNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardEmojiDidScrollNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UIKeyboardEmojiCategoryBar;
@@ -141,9 +141,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  v4 = [v3 lastViewedCategory];
-  v5 = +[UIKeyboardEmojiCategory categoryIndexForCategoryType:](UIKeyboardEmojiCategory, "categoryIndexForCategoryType:", [v4 categoryType]);
+  emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  lastViewedCategory = [emojiKeyManager lastViewedCategory];
+  v5 = +[UIKeyboardEmojiCategory categoryIndexForCategoryType:](UIKeyboardEmojiCategory, "categoryIndexForCategoryType:", [lastViewedCategory categoryType]);
 
   [(UIKeyboardEmojiCategoryBar *)self updateCategoryOnBar:v5];
 }
@@ -160,21 +160,21 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    scrubView = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+    [scrubView setFrame:{v4, v6, v8, v10}];
   }
 }
 
-- (void)dimKeys:(id)a3
+- (void)dimKeys:(id)keys
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v19.receiver = self;
   v19.super_class = UIKeyboardEmojiCategoryBar;
-  [(UIKBKeyView *)&v19 dimKeys:v4];
-  v5 = [(UIView *)self subviews];
+  [(UIKBKeyView *)&v19 dimKeys:keysCopy];
+  subviews = [(UIView *)self subviews];
 
-  if (v5)
+  if (subviews)
   {
     v15 = 0;
     v16 = &v15;
@@ -185,13 +185,13 @@
     v14[2] = __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke;
     v14[3] = &unk_1E7115DA0;
     v14[4] = &v15;
-    [v4 enumerateKeysAndObjectsUsingBlock:v14];
+    [keysCopy enumerateKeysAndObjectsUsingBlock:v14];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [(UIView *)self subviews];
-    v7 = [v6 countByEnumeratingWithState:&v10 objects:v20 count:16];
+    subviews2 = [(UIView *)self subviews];
+    v7 = [subviews2 countByEnumeratingWithState:&v10 objects:v20 count:16];
     if (v7)
     {
       v8 = *v11;
@@ -202,14 +202,14 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews2);
           }
 
           [*(*(&v10 + 1) + 8 * v9++) setHidden:(v16[3] & 1) == 0];
         }
 
         while (v7 != v9);
-        v7 = [v6 countByEnumeratingWithState:&v10 objects:v20 count:16];
+        v7 = [subviews2 countByEnumeratingWithState:&v10 objects:v20 count:16];
       }
 
       while (v7);
@@ -230,31 +230,31 @@ void __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)updateToCategory:(int64_t)a3
+- (void)updateToCategory:(int64_t)category
 {
-  v4 = [UIKeyboardEmojiCategory categoryIndexForCategoryType:a3];
+  v4 = [UIKeyboardEmojiCategory categoryIndexForCategoryType:category];
 
   [(UIKeyboardEmojiCategoryBar *)self updateCategoryOnBar:v4];
 }
 
-- (void)updateCategoryOnBar:(unint64_t)a3
+- (void)updateCategoryOnBar:(unint64_t)bar
 {
   [(UIKeyboardEmojiCategoryBar *)self setSelectedIndex:?];
-  [(UIKBKeyView *)self updateKeySelectedVariantIndex:a3];
+  [(UIKBKeyView *)self updateKeySelectedVariantIndex:bar];
   if (!self->_isScrubbing)
   {
-    [(UIKeyboardEmojiCategoryBar *)self categorySelectedCircleRect:a3];
+    [(UIKeyboardEmojiCategoryBar *)self categorySelectedCircleRect:bar];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    scrubView = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+    [scrubView setFrame:{v6, v8, v10, v12}];
 
-    v14 = [(UIKBKeyView *)self renderConfig];
-    v15 = [v14 whiteText];
+    renderConfig = [(UIKBKeyView *)self renderConfig];
+    whiteText = [renderConfig whiteText];
 
-    if (v15)
+    if (whiteText)
     {
 
       [(UIView *)self setNeedsDisplay];
@@ -265,25 +265,25 @@ void __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke(uint64_t a1, void *
 - (void)updateCategory
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 feedbackGenerator];
-  [v4 actionOccurred:1];
+  feedbackGenerator = [v3 feedbackGenerator];
+  [feedbackGenerator actionOccurred:1];
 
   v5 = [UIKeyboardEmojiCategory categoryTypeForCategoryIndex:[(UIKeyboardEmojiCategoryBar *)self selectedIndex]];
-  v6 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  [v6 reloadForCategory:v5 withSender:self];
+  emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  [emojiKeyManager reloadForCategory:v5 withSender:self];
 }
 
-- (unint64_t)flippedIndexForIndex:(unint64_t)a3
+- (unint64_t)flippedIndexForIndex:(unint64_t)index
 {
   if (+[UIKeyboardEmojiCategory isRTLMode])
   {
     v4 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
     v5 = [v4 count];
 
-    return v5 + ~a3;
+    return v5 + ~index;
   }
 
-  return a3;
+  return index;
 }
 
 - (CGRect)paddedFrame
@@ -319,7 +319,7 @@ void __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (CGRect)frameForDivider:(int)a3
+- (CGRect)frameForDivider:(int)divider
 {
   [(UIKeyboardEmojiCategoryBar *)self paddedFrame];
   v5 = v4 + 4.0;
@@ -329,7 +329,7 @@ void __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke(uint64_t a1, void *
   v12 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
   v13 = [v12 count];
 
-  v14 = round(v5 + ((v7 - (v13 + 1)) / v13 + 1.0) * a3);
+  v14 = round(v5 + ((v7 - (v13 + 1)) / v13 + 1.0) * divider);
   v15 = 1.0;
   v16 = v9;
   v17 = v11;
@@ -340,14 +340,14 @@ void __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)animateScrubberToRect:(CGRect)a3
+- (void)animateScrubberToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-  [v8 frame];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scrubView = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+  [scrubView frame];
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
@@ -356,8 +356,8 @@ void __38__UIKeyboardEmojiCategoryBar_dimKeys___block_invoke(uint64_t a1, void *
 
   if (!v9)
   {
-    v10 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-    [v10 frame];
+    scrubView2 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+    [scrubView2 frame];
     v12 = v11 > width;
 
     v13 = dbl_18A67F790[v12];
@@ -384,7 +384,7 @@ void __52__UIKeyboardEmojiCategoryBar_animateScrubberToRect___block_invoke(uint6
   [v5 setFrame:{v1, v2, v3, v4}];
 }
 
-- (CGRect)categorySelectedCircleRect:(int64_t)a3
+- (CGRect)categorySelectedCircleRect:(int64_t)rect
 {
   [(UIKeyboardEmojiCategoryBar *)self paddedFrame];
   v6 = v5;
@@ -394,9 +394,9 @@ void __52__UIKeyboardEmojiCategoryBar_animateScrubberToRect___block_invoke(uint6
 
   [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits categorySelectedCirWidth];
   v12 = v11;
-  v13 = v6 + (v10 - v11) * 0.5 + v10 * [(UIKeyboardEmojiCategoryBar *)self flippedIndexForIndex:a3];
-  v14 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-  [v14 frame];
+  v13 = v6 + (v10 - v11) * 0.5 + v10 * [(UIKeyboardEmojiCategoryBar *)self flippedIndexForIndex:rect];
+  scrubView = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+  [scrubView frame];
   v16 = v15;
 
   v17 = v13;
@@ -418,77 +418,77 @@ void __52__UIKeyboardEmojiCategoryBar_animateScrubberToRect___block_invoke(uint6
   [(UIKBKeyView *)&v2 removeFromSuperview];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v10 = a3;
-  v5 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-  v6 = [v5 isTrackpadMode];
+  beganCopy = began;
+  hitTestResponder = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+  isTrackpadMode = [hitTestResponder isTrackpadMode];
 
-  if ((v6 & 1) == 0)
+  if ((isTrackpadMode & 1) == 0)
   {
-    v7 = [v10 anyObject];
-    [v7 locationInView:self];
+    anyObject = [beganCopy anyObject];
+    [anyObject locationInView:self];
     self->_scrubStartXLocation = v8;
-    v9 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-    [v9 prepareSliderBehaviorFeedback];
+    hitTestResponder2 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+    [hitTestResponder2 prepareSliderBehaviorFeedback];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v32 = a3;
-  v5 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-  v6 = [v5 isTrackpadMode];
+  movedCopy = moved;
+  hitTestResponder = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+  isTrackpadMode = [hitTestResponder isTrackpadMode];
 
-  v7 = v32;
-  if ((v6 & 1) == 0)
+  v7 = movedCopy;
+  if ((isTrackpadMode & 1) == 0)
   {
-    v8 = [v32 anyObject];
-    [v8 locationInView:self];
+    anyObject = [movedCopy anyObject];
+    [anyObject locationInView:self];
     v10 = v9;
     if (vabdd_f64(v9, self->_scrubStartXLocation) > 5.0)
     {
       self->_isScrubbing = 1;
-      v11 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-      [v11 frame];
+      scrubView = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+      [scrubView frame];
       v13 = v12;
       [(UIView *)self frame];
       v15 = v14;
-      v16 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-      [v16 frame];
+      scrubView2 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+      [scrubView2 frame];
       v18 = v17;
 
       [(UIKeyboardEmojiCategoryBar *)self animateScrubberToRect:0.0, v13, v15, v18];
-      v19 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-      [v19 bounds];
+      scrubView3 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+      [scrubView3 bounds];
       v21 = v10 - v20;
-      v22 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
-      [v22 bounds];
+      scrubView4 = [(UIKeyboardEmojiCategoryBar *)self scrubView];
+      [scrubView4 bounds];
       v24 = v21 / v23;
 
       v25 = v24 >= 0.0 ? v24 : 0.0;
       v26 = fmin(v25, 1.0);
       v27 = +[UIKeyboardEmojiCategory isRTLMode]? 1.0 - v26 : v26;
-      v28 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-      v29 = [v28 reloadCategoryForOffsetPercentage:self withSender:v27];
+      emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+      v29 = [emojiKeyManager reloadCategoryForOffsetPercentage:self withSender:v27];
 
-      v30 = [(UIKeyboardEmojiCategoryBar *)self selectedIndex];
-      if (v30 != [UIKeyboardEmojiCategory categoryIndexForCategoryType:v29])
+      selectedIndex = [(UIKeyboardEmojiCategoryBar *)self selectedIndex];
+      if (selectedIndex != [UIKeyboardEmojiCategory categoryIndexForCategoryType:v29])
       {
         [(UIKeyboardEmojiCategoryBar *)self setSelectedIndex:[UIKeyboardEmojiCategory categoryIndexForCategoryType:v29]];
         [(UIKeyboardEmojiCategoryBar *)self updateCategoryOnBar:[(UIKeyboardEmojiCategoryBar *)self selectedIndex]];
-        v31 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-        [v31 provideSliderBehaviorFeedback];
+        hitTestResponder2 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+        [hitTestResponder2 provideSliderBehaviorFeedback];
       }
     }
 
-    v7 = v32;
+    v7 = movedCopy;
   }
 }
 
-- (unint64_t)selectedIndexForTouches:(id)a3
+- (unint64_t)selectedIndexForTouches:(id)touches
 {
-  v4 = a3;
+  touchesCopy = touches;
   v5 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
   v6 = [v5 count];
 
@@ -499,8 +499,8 @@ void __52__UIKeyboardEmojiCategoryBar_animateScrubberToRect___block_invoke(uint6
   {
     [(UIKeyboardEmojiCategoryBar *)self frameForDivider:(v9 + 2)];
     v11 = v10;
-    v12 = [v4 anyObject];
-    [v12 locationInView:self];
+    anyObject = [touchesCopy anyObject];
+    [anyObject locationInView:self];
     v14 = v13;
 
     ++v9;
@@ -517,13 +517,13 @@ LABEL_6:
   return v15;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = a3;
-  v5 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-  v6 = [v5 isTrackpadMode];
+  endedCopy = ended;
+  hitTestResponder = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+  isTrackpadMode = [hitTestResponder isTrackpadMode];
 
-  if ((v6 & 1) == 0)
+  if ((isTrackpadMode & 1) == 0)
   {
     if (self->_isScrubbing)
     {
@@ -534,25 +534,25 @@ LABEL_6:
 
     else
     {
-      [(UIKeyboardEmojiCategoryBar *)self setSelectedIndex:[(UIKeyboardEmojiCategoryBar *)self selectedIndexForTouches:v9]];
+      [(UIKeyboardEmojiCategoryBar *)self setSelectedIndex:[(UIKeyboardEmojiCategoryBar *)self selectedIndexForTouches:endedCopy]];
       [(UIKeyboardEmojiCategoryBar *)self updateCategory];
       [(UIKeyboardEmojiCategoryBar *)self updateCategoryOnBar:[(UIKeyboardEmojiCategoryBar *)self selectedIndex]];
-      v7 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-      [v7 provideSliderBehaviorFeedback];
+      hitTestResponder2 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+      [hitTestResponder2 provideSliderBehaviorFeedback];
     }
 
-    v8 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-    [v8 finishSliderBehaviorFeedback];
+    hitTestResponder3 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+    [hitTestResponder3 finishSliderBehaviorFeedback];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v8 = a3;
-  v5 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-  v6 = [v5 isTrackpadMode];
+  cancelledCopy = cancelled;
+  hitTestResponder = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+  isTrackpadMode = [hitTestResponder isTrackpadMode];
 
-  if ((v6 & 1) == 0)
+  if ((isTrackpadMode & 1) == 0)
   {
     if (self->_isScrubbing)
     {
@@ -560,13 +560,13 @@ LABEL_6:
       [(UIKeyboardEmojiCategoryBar *)self animateScrubberToRect:?];
       [(UIKeyboardEmojiCategoryBar *)self updateCategory];
       self->_isScrubbing = 0;
-      v7 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
-      [v7 finishSliderBehaviorFeedback];
+      hitTestResponder2 = [(UIKeyboardEmojiCategoryBar *)self hitTestResponder];
+      [hitTestResponder2 finishSliderBehaviorFeedback];
     }
 
     else
     {
-      [(UIKeyboardEmojiCategoryBar *)self setSelectedIndex:[(UIKeyboardEmojiCategoryBar *)self selectedIndexForTouches:v8]];
+      [(UIKeyboardEmojiCategoryBar *)self setSelectedIndex:[(UIKeyboardEmojiCategoryBar *)self selectedIndexForTouches:cancelledCopy]];
       [(UIKeyboardEmojiCategoryBar *)self updateCategory];
       [(UIKeyboardEmojiCategoryBar *)self updateCategoryOnBar:[(UIKeyboardEmojiCategoryBar *)self selectedIndex]];
     }

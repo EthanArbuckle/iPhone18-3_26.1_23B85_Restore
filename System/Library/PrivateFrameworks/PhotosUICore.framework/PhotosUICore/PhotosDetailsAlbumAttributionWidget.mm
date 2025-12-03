@@ -2,26 +2,26 @@
 - (NSString)snappableWidgetIdentifier;
 - (PXPhotosDetailsContext)context;
 - (_TtC12PhotosUICore35PhotosDetailsAlbumAttributionWidget)init;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (int64_t)contentLayoutStyle;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation PhotosDetailsAlbumAttributionWidget
 
 - (PXPhotosDetailsContext)context
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4110EF8();
 
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A446BFE0(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A446BFE0(contextCopy);
 }
 
 - (NSString)snappableWidgetIdentifier
@@ -31,7 +31,7 @@
   return v2;
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
   v4 = sub_1A52486A4();
   v5 = *(v4 - 8);
@@ -39,11 +39,11 @@
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = type metadata accessor for PhotosDetailsAlbumAttributionWidgetView(0);
   v9 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0x108);
-  v10 = self;
+  selfCopy = self;
   v11 = v9();
-  v12 = [v11 contentSizeCategory];
+  contentSizeCategory = [v11 contentSizeCategory];
 
-  sub_1A412028C(v12, v7);
+  sub_1A412028C(contentSizeCategory, v7);
   v13 = sub_1A4394B64(v7, v8, &off_1EE6E41F0);
 
   (*(v5 + 8))(v7, v4);
@@ -53,7 +53,7 @@
 - (int64_t)contentLayoutStyle
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0x168);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 

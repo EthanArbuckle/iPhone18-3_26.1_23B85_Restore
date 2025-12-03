@@ -49,7 +49,7 @@
     return 0;
   }
 
-  v9 = [(CIColorMap *)self _kernel];
+  _kernel = [(CIColorMap *)self _kernel];
   [(CIImage *)self->inputImage extent];
   v11 = v10;
   v13 = v12;
@@ -67,7 +67,7 @@
   v20[0] = inputImage;
   v20[1] = inputGradientImage;
   v20[2] = [MEMORY[0x1E696AD98] numberWithDouble:width + -1.0];
-  return [v9 applyWithExtent:v19 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 3), v11, v13, v15, v17}];
+  return [_kernel applyWithExtent:v19 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 3), v11, v13, v15, v17}];
 }
 
 double __25__CIColorMap_outputImage__block_invoke(uint64_t a1, int a2)

@@ -1,54 +1,54 @@
 @interface TKSEPClientTokenObject
-- (BOOL)deleteWithError:(id *)a3;
-- (TKSEPClientTokenObject)initWithSession:(id)a3 key:(id)a4 error:(id *)a5;
-- (id)operation:(int64_t)a3 data:(id)a4 algorithms:(id)a5 parameters:(id)a6 error:(id *)a7;
-- (id)withError:(id *)a3 invoke:(id)a4;
+- (BOOL)deleteWithError:(id *)error;
+- (TKSEPClientTokenObject)initWithSession:(id)session key:(id)key error:(id *)error;
+- (id)operation:(int64_t)operation data:(id)data algorithms:(id)algorithms parameters:(id)parameters error:(id *)error;
+- (id)withError:(id *)error invoke:(id)invoke;
 @end
 
 @implementation TKSEPClientTokenObject
 
-- (TKSEPClientTokenObject)initWithSession:(id)a3 key:(id)a4 error:(id *)a5
+- (TKSEPClientTokenObject)initWithSession:(id)session key:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 publicKeyWithError:a5];
+  sessionCopy = session;
+  keyCopy = key;
+  v10 = [keyCopy publicKeyWithError:error];
   if (v10)
   {
-    v11 = [v9 attributes];
-    v12 = [v11 mutableCopy];
+    attributes = [keyCopy attributes];
+    v12 = [attributes mutableCopy];
 
     [v12 setObject:v10 forKeyedSubscript:@"pubk"];
-    v13 = [v9 objectID];
-    v14 = [TKTokenID encodedKeyID:v13];
+    objectID = [keyCopy objectID];
+    v14 = [TKTokenID encodedKeyID:objectID];
     v15 = [v12 copy];
     v19.receiver = self;
     v19.super_class = TKSEPClientTokenObject;
-    v16 = [(TKClientTokenObject *)&v19 initWithSession:v8 objectID:v14 attributes:v15];
+    v16 = [(TKClientTokenObject *)&v19 initWithSession:sessionCopy objectID:v14 attributes:v15];
 
     if (v16)
     {
-      objc_storeStrong(&v16->_key, a4);
+      objc_storeStrong(&v16->_key, key);
     }
 
     self = v16;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)withError:(id *)a3 invoke:(id)a4
+- (id)withError:(id *)error invoke:(id)invoke
 {
-  v6 = a4;
-  v7 = v6[2];
+  invokeCopy = invoke;
+  v7 = invokeCopy[2];
   v37 = 0;
-  v8 = v7(v6, &v37);
+  v8 = v7(invokeCopy, &v37);
   v9 = v37;
   if (v8)
   {
@@ -62,16 +62,16 @@
     v11 = 17;
     while (1)
     {
-      v12 = [v9 domain];
-      if (![v12 isEqualToString:@"CryptoTokenKit"] || objc_msgSend(v9, "code") != -9)
+      domain = [v9 domain];
+      if (![domain isEqualToString:@"CryptoTokenKit"] || objc_msgSend(v9, "code") != -9)
       {
         break;
       }
 
-      v13 = [(TKClientTokenObject *)self session];
-      v14 = [v13 authenticateWhenNeeded];
+      session = [(TKClientTokenObject *)self session];
+      authenticateWhenNeeded = [session authenticateWhenNeeded];
 
-      if ((v14 & 1) == 0)
+      if ((authenticateWhenNeeded & 1) == 0)
       {
         goto LABEL_17;
       }
@@ -85,9 +85,9 @@
           [(TKSEPClientTokenObject *)self withError:v10 invoke:v32];
         }
 
-        if (a3)
+        if (error)
         {
-          *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:0];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:0];
 
           v8 = 0;
           if ((v36 & 1) == 0)
@@ -103,8 +103,8 @@
         goto LABEL_35;
       }
 
-      v15 = [v9 userInfo];
-      v16 = [v15 objectForKeyedSubscript:@"operation"];
+      userInfo = [v9 userInfo];
+      v16 = [userInfo objectForKeyedSubscript:@"operation"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -115,9 +115,9 @@
           [TKSEPClientTokenObject withError:v9 invoke:v34];
         }
 
-        if (a3)
+        if (error)
         {
-          *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:0];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:0];
 
           v8 = 0;
 LABEL_29:
@@ -136,9 +136,9 @@ LABEL_30:
       }
 
       v17 = [(TKSEPClientTokenObject *)self key];
-      v18 = [v17 authContext];
+      authContext = [v17 authContext];
 
-      if (!v18)
+      if (!authContext)
       {
         gotLoadHelper_x8__OBJC_CLASS___LAContext(v19);
         v21 = objc_alloc_init(*(v20 + 3664));
@@ -148,21 +148,21 @@ LABEL_30:
         v36 = 1;
       }
 
-      v23 = [(TKClientTokenObject *)self session];
-      v24 = [v23 _testing_AuthContextUsed];
+      session2 = [(TKClientTokenObject *)self session];
+      _testing_AuthContextUsed = [session2 _testing_AuthContextUsed];
 
-      if (v24)
+      if (_testing_AuthContextUsed)
       {
         v25 = [(TKSEPClientTokenObject *)self key];
-        v26 = [v25 authContext];
-        v27 = [(TKClientTokenObject *)self session];
-        [v27 set_testing_AuthContextUsed:v26];
+        authContext2 = [v25 authContext];
+        session3 = [(TKClientTokenObject *)self session];
+        [session3 set_testing_AuthContextUsed:authContext2];
       }
 
       v28 = [(TKSEPClientTokenObject *)self key];
-      v29 = [v28 authContext];
-      v30 = [(TKClientTokenObject *)self accessControlRef];
-      v8 = [v29 evaluateAccessControl:v30 aksOperation:v16 options:MEMORY[0x1E695E0F8] error:a3];
+      authContext3 = [v28 authContext];
+      accessControlRef = [(TKClientTokenObject *)self accessControlRef];
+      v8 = [authContext3 evaluateAccessControl:accessControlRef aksOperation:v16 options:MEMORY[0x1E695E0F8] error:error];
 
       if (!v8)
       {
@@ -170,7 +170,7 @@ LABEL_30:
       }
 
       v37 = 0;
-      v8 = (v6[2])(v6, &v37);
+      v8 = (invokeCopy[2])(invokeCopy, &v37);
       v9 = v37;
       v10 = v16;
       if (v8)
@@ -180,10 +180,10 @@ LABEL_30:
     }
 
 LABEL_17:
-    if (a3)
+    if (error)
     {
       v31 = v9;
-      *a3 = v9;
+      *error = v9;
 
       v8 = 0;
       goto LABEL_30;
@@ -211,7 +211,7 @@ LABEL_38:
   return v8;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DF413000, "SEPClientObject: deleteKey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -222,11 +222,11 @@ LABEL_38:
   v8[2] = __42__TKSEPClientTokenObject_deleteWithError___block_invoke;
   v8[3] = &unk_1E86B7850;
   v8[4] = self;
-  v6 = [(TKSEPClientTokenObject *)self withError:a3 invoke:v8];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(TKSEPClientTokenObject *)self withError:error invoke:v8];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&state);
-  return a3;
+  return error;
 }
 
 void *__42__TKSEPClientTokenObject_deleteWithError___block_invoke(uint64_t a1, uint64_t a2)
@@ -247,12 +247,12 @@ void *__42__TKSEPClientTokenObject_deleteWithError___block_invoke(uint64_t a1, u
   return v4;
 }
 
-- (id)operation:(int64_t)a3 data:(id)a4 algorithms:(id)a5 parameters:(id)a6 error:(id *)a7
+- (id)operation:(int64_t)operation data:(id)data algorithms:(id)algorithms parameters:(id)parameters error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  algorithmsCopy = algorithms;
+  parametersCopy = parameters;
   v15 = _os_activity_create(&dword_1DF413000, "SEPClientObject: operation", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -260,8 +260,8 @@ void *__42__TKSEPClientTokenObject_deleteWithError___block_invoke(uint64_t a1, u
   v16 = TK_LOG_client();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v13 lastObject];
-    [TKSEPClientTokenObject operation:a3 data:v17 algorithms:buf parameters:v16 error:?];
+    lastObject = [algorithmsCopy lastObject];
+    [TKSEPClientTokenObject operation:operation data:lastObject algorithms:buf parameters:v16 error:?];
   }
 
   v25[0] = MEMORY[0x1E69E9820];
@@ -269,20 +269,20 @@ void *__42__TKSEPClientTokenObject_deleteWithError___block_invoke(uint64_t a1, u
   v25[2] = __69__TKSEPClientTokenObject_operation_data_algorithms_parameters_error___block_invoke;
   v25[3] = &unk_1E86B7878;
   v25[4] = self;
-  v29 = a3;
-  v18 = v13;
+  operationCopy = operation;
+  v18 = algorithmsCopy;
   v26 = v18;
-  v19 = v12;
+  v19 = dataCopy;
   v27 = v19;
-  v20 = v14;
+  v20 = parametersCopy;
   v28 = v20;
-  v21 = [(TKSEPClientTokenObject *)self withError:a7 invoke:v25];
+  v21 = [(TKSEPClientTokenObject *)self withError:error invoke:v25];
   if (!v21)
   {
     v22 = TK_LOG_client();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      [TKSEPClientTokenObject operation:a3 data:a7 algorithms:v22 parameters:? error:?];
+      [TKSEPClientTokenObject operation:operation data:error algorithms:v22 parameters:? error:?];
     }
   }
 

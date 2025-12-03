@@ -1,42 +1,42 @@
 @interface PSFooterMultiHyperlinkView
-- (BOOL)isValidLinkRange:(_NSRange)a3;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (PSFooterMultiHyperlinkView)initWithSpecifier:(id)a3;
+- (BOOL)isValidLinkRange:(_NSRange)range;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (PSFooterMultiHyperlinkView)initWithSpecifier:(id)specifier;
 - (SEL)action;
 - (_NSRange)linkRange;
 - (id)target;
-- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)a3;
-- (void)_addLinkSpec:(id)a3 toAttrStr:(id)a4;
+- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)intent;
+- (void)_addLinkSpec:(id)spec toAttrStr:(id)str;
 - (void)_linkify;
-- (void)refreshContentsWithSpecifier:(id)a3;
-- (void)setAction:(SEL)a3;
-- (void)setLinkRange:(_NSRange)a3;
-- (void)setLinkSpecs:(id)a3;
-- (void)setText:(id)a3;
-- (void)setURL:(id)a3;
+- (void)refreshContentsWithSpecifier:(id)specifier;
+- (void)setAction:(SEL)action;
+- (void)setLinkRange:(_NSRange)range;
+- (void)setLinkSpecs:(id)specs;
+- (void)setText:(id)text;
+- (void)setURL:(id)l;
 - (void)setupSubviewsAndContstraints;
 @end
 
 @implementation PSFooterMultiHyperlinkView
 
-- (PSFooterMultiHyperlinkView)initWithSpecifier:(id)a3
+- (PSFooterMultiHyperlinkView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [(PSFooterMultiHyperlinkView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(PSFooterMultiHyperlinkView *)v5 refreshContentsWithSpecifier:v4];
+    [(PSFooterMultiHyperlinkView *)v5 refreshContentsWithSpecifier:specifierCopy];
   }
 
   return v6;
 }
 
-- (void)refreshContentsWithSpecifier:(id)a3
+- (void)refreshContentsWithSpecifier:(id)specifier
 {
-  v15 = a3;
+  specifierCopy = specifier;
   [(PSFooterMultiHyperlinkView *)self setupSubviewsAndContstraints];
-  v4 = [v15 propertyForKey:@"headerFooterHyperlinkButtonTitle"];
+  v4 = [specifierCopy propertyForKey:@"headerFooterHyperlinkButtonTitle"];
   if (v4)
   {
     [(PSFooterMultiHyperlinkView *)self setText:v4];
@@ -44,14 +44,14 @@
 
   else
   {
-    v5 = [v15 propertyForKey:@"footerText"];
+    v5 = [specifierCopy propertyForKey:@"footerText"];
     [(PSFooterMultiHyperlinkView *)self setText:v5];
   }
 
-  v6 = [v15 propertyForKey:@"headerFooterHyperlinkButtonURL"];
+  v6 = [specifierCopy propertyForKey:@"headerFooterHyperlinkButtonURL"];
   [(PSFooterMultiHyperlinkView *)self setURL:v6];
 
-  v7 = [v15 propertyForKey:@"footerHyperlinkRange"];
+  v7 = [specifierCopy propertyForKey:@"footerHyperlinkRange"];
   v8 = v7;
   if (v7)
   {
@@ -59,17 +59,17 @@
     [(PSFooterMultiHyperlinkView *)self setLinkRange:v9.location, v9.length];
   }
 
-  v10 = [v15 propertyForKey:@"footerHyperlinkAction"];
+  v10 = [specifierCopy propertyForKey:@"footerHyperlinkAction"];
   v11 = v10;
   if (v10)
   {
     [(PSFooterMultiHyperlinkView *)self setAction:NSSelectorFromString(v10)];
-    v12 = [v15 propertyForKey:@"footerHyperlinkTarget"];
-    v13 = [v12 nonretainedObjectValue];
-    [(PSFooterMultiHyperlinkView *)self setTarget:v13];
+    v12 = [specifierCopy propertyForKey:@"footerHyperlinkTarget"];
+    nonretainedObjectValue = [v12 nonretainedObjectValue];
+    [(PSFooterMultiHyperlinkView *)self setTarget:nonretainedObjectValue];
   }
 
-  v14 = [v15 propertyForKey:@"footerHyperlinkLinkSpecs"];
+  v14 = [specifierCopy propertyForKey:@"footerHyperlinkLinkSpecs"];
   if (v14)
   {
     [(PSFooterMultiHyperlinkView *)self setLinkSpecs:v14];
@@ -80,97 +80,97 @@
 
 - (void)setupSubviewsAndContstraints
 {
-  v3 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v3 removeFromSuperview];
+  textView = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView removeFromSuperview];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DD168]);
   [(PSFooterMultiHyperlinkView *)self setTextView:v4];
 
-  v5 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textView2 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  v7 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  textView3 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView3 setBackgroundColor:clearColor];
 
-  v8 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v8 setShowsVerticalScrollIndicator:0];
+  textView4 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView4 setShowsVerticalScrollIndicator:0];
 
-  v9 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v9 setEditable:0];
+  textView5 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView5 setEditable:0];
 
-  v10 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v10 setSelectable:1];
+  textView6 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView6 setSelectable:1];
 
-  v11 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v11 setScrollEnabled:0];
+  textView7 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView7 setScrollEnabled:0];
 
-  v12 = [(PSFooterMultiHyperlinkView *)self textView];
-  v13 = [v12 textContainer];
-  [v13 setLineFragmentPadding:0.0];
+  textView8 = [(PSFooterMultiHyperlinkView *)self textView];
+  textContainer = [textView8 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   v14 = *MEMORY[0x1E69DDCE0];
   v15 = *(MEMORY[0x1E69DDCE0] + 8);
   v16 = *(MEMORY[0x1E69DDCE0] + 16);
   v17 = *(MEMORY[0x1E69DDCE0] + 24);
-  v18 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v18 setTextContainerInset:{v14, v15, v16, v17}];
+  textView9 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView9 setTextContainerInset:{v14, v15, v16, v17}];
 
-  v19 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v19 _setInteractiveTextSelectionDisabled:1];
+  textView10 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView10 _setInteractiveTextSelectionDisabled:1];
 
-  v20 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v20 setDelegate:self];
+  textView11 = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView11 setDelegate:self];
 
-  v21 = [(PSFooterMultiHyperlinkView *)self contentView];
-  v22 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v21 addSubview:v22];
+  contentView = [(PSFooterMultiHyperlinkView *)self contentView];
+  textView12 = [(PSFooterMultiHyperlinkView *)self textView];
+  [contentView addSubview:textView12];
 
-  v47 = [MEMORY[0x1E695DF70] array];
-  v23 = [(PSFooterMultiHyperlinkView *)self textView];
-  v24 = [v23 leadingAnchor];
-  v25 = [(PSFooterMultiHyperlinkView *)self contentView];
-  v26 = [v25 layoutMarginsGuide];
-  v27 = [v26 leadingAnchor];
-  v28 = [v24 constraintEqualToAnchor:v27];
-  [v47 addObject:v28];
+  array = [MEMORY[0x1E695DF70] array];
+  textView13 = [(PSFooterMultiHyperlinkView *)self textView];
+  leadingAnchor = [textView13 leadingAnchor];
+  contentView2 = [(PSFooterMultiHyperlinkView *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v28];
 
-  v29 = [(PSFooterMultiHyperlinkView *)self textView];
-  v30 = [v29 trailingAnchor];
-  v31 = [(PSFooterMultiHyperlinkView *)self contentView];
-  v32 = [v31 layoutMarginsGuide];
-  v33 = [v32 trailingAnchor];
-  v34 = [v30 constraintEqualToAnchor:v33];
-  [v47 addObject:v34];
+  textView14 = [(PSFooterMultiHyperlinkView *)self textView];
+  trailingAnchor = [textView14 trailingAnchor];
+  contentView3 = [(PSFooterMultiHyperlinkView *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v34];
 
-  v35 = [(PSFooterMultiHyperlinkView *)self textView];
-  v36 = [v35 topAnchor];
-  v37 = [(PSFooterMultiHyperlinkView *)self contentView];
-  v38 = [v37 layoutMarginsGuide];
-  v39 = [v38 topAnchor];
-  v40 = [v36 constraintEqualToAnchor:v39];
-  [v47 addObject:v40];
+  textView15 = [(PSFooterMultiHyperlinkView *)self textView];
+  topAnchor = [textView15 topAnchor];
+  contentView4 = [(PSFooterMultiHyperlinkView *)self contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v40];
 
-  v41 = [(PSFooterMultiHyperlinkView *)self textView];
-  v42 = [v41 bottomAnchor];
-  v43 = [(PSFooterMultiHyperlinkView *)self contentView];
-  v44 = [v43 layoutMarginsGuide];
-  v45 = [v44 bottomAnchor];
-  v46 = [v42 constraintEqualToAnchor:v45];
-  [v47 addObject:v46];
+  textView16 = [(PSFooterMultiHyperlinkView *)self textView];
+  bottomAnchor = [textView16 bottomAnchor];
+  contentView5 = [(PSFooterMultiHyperlinkView *)self contentView];
+  layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v46];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v47];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     text = self->_text;
-    v6 = [(PSFooterMultiHyperlinkView *)self textView];
-    [v6 setText:text];
+    textView = [(PSFooterMultiHyperlinkView *)self textView];
+    [textView setText:text];
 
     [(PSFooterMultiHyperlinkView *)self linkRange];
     if (v7)
@@ -182,39 +182,39 @@
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (([(NSURL *)self->_URL isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_URL, a3);
+    objc_storeStrong(&self->_URL, l);
     [(PSFooterMultiHyperlinkView *)self setNeedsUpdateConstraints];
     [(PSFooterMultiHyperlinkView *)self _linkify];
   }
 }
 
-- (void)setLinkSpecs:(id)a3
+- (void)setLinkSpecs:(id)specs
 {
-  v7 = a3;
-  v5 = [(PSFooterMultiHyperlinkView *)self linkSpecs];
-  v6 = [v5 isEqual:v7];
+  specsCopy = specs;
+  linkSpecs = [(PSFooterMultiHyperlinkView *)self linkSpecs];
+  v6 = [linkSpecs isEqual:specsCopy];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_linkSpecs, a3);
+    objc_storeStrong(&self->_linkSpecs, specs);
     [(PSFooterMultiHyperlinkView *)self setNeedsUpdateConstraints];
     [(PSFooterMultiHyperlinkView *)self _linkify];
   }
 }
 
-- (void)setLinkRange:(_NSRange)a3
+- (void)setLinkRange:(_NSRange)range
 {
-  if (self->_linkRange.location != a3.location || self->_linkRange.length != a3.length)
+  if (self->_linkRange.location != range.location || self->_linkRange.length != range.length)
   {
-    self->_linkRange = a3;
-    v5 = [(PSFooterMultiHyperlinkView *)self text];
+    self->_linkRange = range;
+    text = [(PSFooterMultiHyperlinkView *)self text];
 
-    if (v5)
+    if (text)
     {
 
       [(PSFooterMultiHyperlinkView *)self _linkify];
@@ -225,9 +225,9 @@
 - (void)_linkify
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PSFooterMultiHyperlinkView *)self text];
+  text = [(PSFooterMultiHyperlinkView *)self text];
 
-  if (!v3)
+  if (!text)
   {
     return;
   }
@@ -235,10 +235,10 @@
   [(PSFooterMultiHyperlinkView *)self linkRange];
   if (v4 && ([(PSFooterMultiHyperlinkView *)self URL], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(PSFooterMultiHyperlinkView *)self linkRange];
+    linkRange = [(PSFooterMultiHyperlinkView *)self linkRange];
     v8 = v7;
     v9 = [(PSFooterMultiHyperlinkView *)self URL];
-    v10 = [PSFooterMultiHyperlinkViewLinkSpec specWithRange:v6 url:v8, v9];
+    v10 = [PSFooterMultiHyperlinkViewLinkSpec specWithRange:linkRange url:v8, v9];
 
     linkSpecs = self->_linkSpecs;
     if (!linkSpecs)
@@ -260,24 +260,24 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v15 = [(PSFooterMultiHyperlinkView *)self target];
-    if (!v15)
+    target = [(PSFooterMultiHyperlinkView *)self target];
+    if (!target)
     {
       goto LABEL_14;
     }
 
-    v16 = v15;
-    v17 = [(PSFooterMultiHyperlinkView *)self action];
+    v16 = target;
+    action = [(PSFooterMultiHyperlinkView *)self action];
 
-    if (!v17)
+    if (!action)
     {
       goto LABEL_14;
     }
 
-    v18 = [(PSFooterMultiHyperlinkView *)self linkRange];
+    linkRange2 = [(PSFooterMultiHyperlinkView *)self linkRange];
     v20 = v19;
-    v21 = [(PSFooterMultiHyperlinkView *)self target];
-    v10 = [PSFooterMultiHyperlinkViewLinkSpec specWithRange:v18 target:v20 action:v21, [(PSFooterMultiHyperlinkView *)self action]];
+    target2 = [(PSFooterMultiHyperlinkView *)self target];
+    v10 = [PSFooterMultiHyperlinkViewLinkSpec specWithRange:linkRange2 target:v20 action:target2, [(PSFooterMultiHyperlinkView *)self action]];
 
     linkSpecs = self->_linkSpecs;
     if (!linkSpecs)
@@ -295,20 +295,20 @@ LABEL_13:
   self->_linkSpecs = v22;
 
 LABEL_14:
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   rangeLinkSpecMap = self->_rangeLinkSpecMap;
-  self->_rangeLinkSpecMap = v24;
+  self->_rangeLinkSpecMap = dictionary;
 
   v26 = objc_alloc(MEMORY[0x1E696AD40]);
-  v27 = [(PSFooterMultiHyperlinkView *)self text];
-  v28 = [v26 initWithString:v27];
+  text2 = [(PSFooterMultiHyperlinkView *)self text];
+  v28 = [v26 initWithString:text2];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v29 = [(PSFooterMultiHyperlinkView *)self linkSpecs];
-  v30 = [v29 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  linkSpecs = [(PSFooterMultiHyperlinkView *)self linkSpecs];
+  v30 = [linkSpecs countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v30)
   {
     v31 = v30;
@@ -319,7 +319,7 @@ LABEL_14:
       {
         if (*v38 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(linkSpecs);
         }
 
         v34 = *(*(&v37 + 1) + 8 * i);
@@ -331,135 +331,135 @@ LABEL_14:
         [(PSFooterMultiHyperlinkView *)self _addLinkSpec:v34 toAttrStr:v28];
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v31 = [linkSpecs countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v31);
   }
 }
 
-- (void)_addLinkSpec:(id)a3 toAttrStr:(id)a4
+- (void)_addLinkSpec:(id)spec toAttrStr:(id)str
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  specCopy = spec;
+  strCopy = str;
   v8 = +[PSListController appearance];
-  v9 = [v8 altTextColor];
-  if (v9)
+  altTextColor = [v8 altTextColor];
+  if (altTextColor)
   {
     v10 = +[PSListController appearance];
-    v11 = [v10 altTextColor];
+    altTextColor2 = [v10 altTextColor];
   }
 
   else
   {
-    v11 = PreferencesTableViewFooterColor();
+    altTextColor2 = PreferencesTableViewFooterColor();
   }
 
   v12 = +[PSListController appearance];
-  v13 = [v12 footerHyperlinkColor];
-  if (v13)
+  footerHyperlinkColor = [v12 footerHyperlinkColor];
+  if (footerHyperlinkColor)
   {
     v14 = +[PSListController appearance];
-    v15 = [v14 footerHyperlinkColor];
+    footerHyperlinkColor2 = [v14 footerHyperlinkColor];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DC888] systemBlueColor];
+    footerHyperlinkColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  v16 = [(PSFooterMultiHyperlinkView *)self text];
-  v17 = [v16 length];
+  text = [(PSFooterMultiHyperlinkView *)self text];
+  v17 = [text length];
 
-  v18 = [MEMORY[0x1E69DC668] sharedApplication];
-  v19 = [v18 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v19);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
     v21 = objc_opt_new();
     LODWORD(v22) = 1055286886;
     [v21 setHyphenationFactor:v22];
-    [v7 addAttribute:*MEMORY[0x1E69DB688] value:v21 range:{0, v17}];
+    [strCopy addAttribute:*MEMORY[0x1E69DB688] value:v21 range:{0, v17}];
   }
 
   v23 = *MEMORY[0x1E69DB648];
   v24 = PreferencesTableViewFooterFont();
-  [v7 addAttribute:v23 value:v24 range:{0, v17}];
+  [strCopy addAttribute:v23 value:v24 range:{0, v17}];
 
   v25 = *MEMORY[0x1E69DB650];
-  v26 = [(PSFooterMultiHyperlinkView *)self _accessibilityHigherContrastTintColorForColor:v11];
-  [v7 addAttribute:v25 value:v26 range:{0, v17}];
+  v26 = [(PSFooterMultiHyperlinkView *)self _accessibilityHigherContrastTintColorForColor:altTextColor2];
+  [strCopy addAttribute:v25 value:v26 range:{0, v17}];
 
-  v27 = [v6 linkRange];
-  if ([(PSFooterMultiHyperlinkView *)self isValidLinkRange:v27, v28])
+  linkRange = [specCopy linkRange];
+  if ([(PSFooterMultiHyperlinkView *)self isValidLinkRange:linkRange, v28])
   {
-    v29 = [(PSFooterMultiHyperlinkView *)self _accessibilityHigherContrastTintColorForColor:v15];
-    v30 = [v6 linkRange];
-    [v7 addAttribute:v25 value:v29 range:{v30, v31}];
+    v29 = [(PSFooterMultiHyperlinkView *)self _accessibilityHigherContrastTintColorForColor:footerHyperlinkColor2];
+    linkRange2 = [specCopy linkRange];
+    [strCopy addAttribute:v25 value:v29 range:{linkRange2, v31}];
 
     v32 = *MEMORY[0x1E69DB670];
     v33 = [MEMORY[0x1E695DFF8] URLWithString:&stru_1EFE45030];
-    v34 = [v6 linkRange];
-    [v7 addAttribute:v32 value:v33 range:{v34, v35}];
+    linkRange3 = [specCopy linkRange];
+    [strCopy addAttribute:v32 value:v33 range:{linkRange3, v35}];
 
     v36 = *MEMORY[0x1E69DB758];
-    v37 = [v6 linkRange];
-    [v7 addAttribute:v36 value:MEMORY[0x1E695E110] range:{v37, v38}];
+    linkRange4 = [specCopy linkRange];
+    [strCopy addAttribute:v36 value:MEMORY[0x1E695E110] range:{linkRange4, v38}];
   }
 
-  v39 = [(PSFooterMultiHyperlinkView *)self textView];
-  [v39 setAttributedText:v7];
+  textView = [(PSFooterMultiHyperlinkView *)self textView];
+  [textView setAttributedText:strCopy];
 
-  if (v15)
+  if (footerHyperlinkColor2)
   {
     v43 = v25;
-    v40 = [(PSFooterMultiHyperlinkView *)self _accessibilityHigherContrastTintColorForColor:v15];
+    v40 = [(PSFooterMultiHyperlinkView *)self _accessibilityHigherContrastTintColorForColor:footerHyperlinkColor2];
     v44[0] = v40;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-    v42 = [(PSFooterMultiHyperlinkView *)self textView];
-    [v42 setLinkTextAttributes:v41];
+    textView2 = [(PSFooterMultiHyperlinkView *)self textView];
+    [textView2 setLinkTextAttributes:v41];
   }
 }
 
-- (BOOL)isValidLinkRange:(_NSRange)a3
+- (BOOL)isValidLinkRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v4 = a3.location + a3.length;
-  v5 = [(PSFooterMultiHyperlinkView *)self text];
-  v3 = v4 <= [v5 length];
+  v4 = range.location + range.length;
+  text = [(PSFooterMultiHyperlinkView *)self text];
+  v3 = v4 <= [text length];
 
   return v3;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   rangeLinkSpecMap = self->_rangeLinkSpecMap;
-  v7 = NSStringFromRange(a5);
+  v7 = NSStringFromRange(range);
   v8 = [(NSMutableDictionary *)rangeLinkSpecMap valueForKey:v7];
 
-  v9 = [v8 target];
+  target = [v8 target];
 
-  if (v9)
+  if (target)
   {
     [v8 action];
-    v10 = [v8 target];
+    target2 = [v8 target];
     v11 = SFPerformSelector();
   }
 
-  return v9 == 0;
+  return target == 0;
 }
 
-- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)a3
+- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)intent
 {
   v4.receiver = self;
   v4.super_class = PSFooterMultiHyperlinkView;
-  [(PSFooterMultiHyperlinkView *)&v4 _accessibilitySetInterfaceStyleIntent:a3];
+  [(PSFooterMultiHyperlinkView *)&v4 _accessibilitySetInterfaceStyleIntent:intent];
   [(PSFooterMultiHyperlinkView *)self _linkify];
 }
 
@@ -493,19 +493,19 @@ LABEL_14:
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

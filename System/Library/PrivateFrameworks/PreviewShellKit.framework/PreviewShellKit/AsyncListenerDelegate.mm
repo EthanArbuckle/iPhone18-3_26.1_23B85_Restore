@@ -1,11 +1,11 @@
 @interface AsyncListenerDelegate
 - (_TtC15PreviewShellKit21AsyncListenerDelegate)init;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation AsyncListenerDelegate
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD46BB0, &qword_25F17AF30);
   v9 = *(*(v8 - 8) + 64);
@@ -17,11 +17,11 @@
   v13[2] = 0;
   v13[3] = 0;
   v13[4] = self;
-  v13[5] = a4;
-  v13[6] = a5;
-  v14 = a4;
+  v13[5] = connection;
+  v13[6] = context;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v15 = self;
+  selfCopy = self;
   sub_25F0CD9E8(0, 0, v11, &unk_25F17C928, v13);
 }
 

@@ -1,13 +1,13 @@
 @interface DetailsTabBarView.SelectionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithCoder:(id)a3;
-- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithCoder:(id)coder;
+- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DetailsTabBarView.SelectionView
 
-- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithCoder:(id)a3
+- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -35,14 +35,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   DetailsTabBarView.SelectionView.layoutSubviews()();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -53,9 +53,9 @@
 
   v16.receiver = self;
   v16.super_class = type metadata accessor for DetailsTabBarView.SelectionView();
-  v8 = a4;
-  v9 = self;
-  v10 = [(DetailsTabBarView.SelectionView *)&v16 pointInside:v8 withEvent:x, y];
+  eventCopy = event;
+  selfCopy = self;
+  v10 = [(DetailsTabBarView.SelectionView *)&v16 pointInside:eventCopy withEvent:x, y];
   if (v10)
   {
 
@@ -64,12 +64,12 @@
 
   else
   {
-    v13 = (*((*MEMORY[0x1E69E7D40] & v9->super.super.super.super.isa) + 0xB8))(v10, v11);
+    v13 = (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.super.isa) + 0xB8))(v10, v11);
     if (v13)
     {
       v14 = v13;
-      [v13 convertPoint:v9 fromCoordinateSpace:{x, y, v16.receiver, v16.super_class}];
-      v12 = [v14 pointInside:v8 withEvent:?];
+      [v13 convertPoint:selfCopy fromCoordinateSpace:{x, y, v16.receiver, v16.super_class}];
+      v12 = [v14 pointInside:eventCopy withEvent:?];
     }
 
     else
@@ -82,7 +82,7 @@
   return v12;
 }
 
-- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithFrame:(CGRect)a3
+- (_TtCC20CommunicationDetails17DetailsTabBarView13SelectionView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

@@ -3,54 +3,54 @@
 + (id)sharedStatisticsManager;
 - (uint64_t)analyticsActionFromPreferredAction:(uint64_t)result;
 - (uint64_t)recordPencilAction:(uint64_t)result doubleTap:;
-- (void)recordAutoMinimizeEnabledDidChange:(uint64_t)a3 type:;
-- (void)recordBitmapEraseWithInputType:(uint64_t)a1;
-- (void)recordCollaboration:(uint64_t)a1;
-- (void)recordColorPanelInvoked:(uint64_t)a1;
-- (void)recordColorsChangedBeforeChosen:(uint64_t)a1;
-- (void)recordCopyAsTextWithLength:(uint64_t)a1 time:(uint64_t)a2 didShowHUD:(uint64_t)a3 invokedFromSmartSelection:(int)a4;
-- (void)recordCreateShapeWithType:(int)a3 fromMenu:(int)a4 multiple:;
-- (void)recordDataDetectorItemAdd:(uint64_t)a1;
-- (void)recordDataDetectorItemDefaultAction:(uint64_t)a1;
-- (void)recordDataDetectorItemMenuAction:(uint64_t)a1;
-- (void)recordDataDetectorItemRemove:(uint64_t)a1;
+- (void)recordAutoMinimizeEnabledDidChange:(uint64_t)change type:;
+- (void)recordBitmapEraseWithInputType:(uint64_t)type;
+- (void)recordCollaboration:(uint64_t)collaboration;
+- (void)recordColorPanelInvoked:(uint64_t)invoked;
+- (void)recordColorsChangedBeforeChosen:(uint64_t)chosen;
+- (void)recordCopyAsTextWithLength:(uint64_t)length time:(uint64_t)time didShowHUD:(uint64_t)d invokedFromSmartSelection:(int)selection;
+- (void)recordCreateShapeWithType:(int)type fromMenu:(int)menu multiple:;
+- (void)recordDataDetectorItemAdd:(uint64_t)add;
+- (void)recordDataDetectorItemDefaultAction:(uint64_t)action;
+- (void)recordDataDetectorItemMenuAction:(uint64_t)action;
+- (void)recordDataDetectorItemRemove:(uint64_t)remove;
 - (void)recordDragAndDropSelection;
 - (void)recordDragSelection;
-- (void)recordDrawStroke:(uint64_t)a1;
-- (void)recordDrawWithFingerToggle:(uint64_t)a1;
+- (void)recordDrawStroke:(uint64_t)stroke;
+- (void)recordDrawWithFingerToggle:(uint64_t)toggle;
 - (void)recordHashtagItemActivate;
 - (void)recordHashtagItemAdd;
 - (void)recordHashtagItemDeactivate;
 - (void)recordHashtagItemRemove;
-- (void)recordHoverDuration:(uint64_t)a1 onScreenDuration:hoverEdgeDuration:hoverExteriorDuration:sessionDuration:showEffectsEnabled:shadowEnabled:scribbleEnabled:doubleTapOnlyInHoverRangeEnabled:doubleTapsInRange:doubleTapsOutsideRange:deviceIsConnectedToCharger:intentionalHoverDuration:intentionalToolPreviewHoverDuration:countIntentionalHoverActions:maxIntentionalHoverDuration:meanIntentionalHoverDuration:minIntentionalHoverDuration:;
-- (void)recordHoverLatency:(uint64_t)a1 mean:max:shadowEnabled:isInPDF:;
-- (void)recordHoverToolType:(uint64_t)a3 hoverDuration:(uint64_t)a4 intentionalToolPreviewHoverDuration:(uint64_t)a5 intentionalHoverDuration:(uint64_t)a6 maxIntentionalHoverDuration:(uint64_t)a7 meanIntentionalHoverDuration:(void *)a8 minIntentionalHoverDuration:countIntentionalHoverActions:activepencilminutes:onScreenDuration:settingShowEffectsEnabled:settingSystemShadowEnabled:settingScribbleEnabled:settingDoubleTapInRangeEnabled:bundleID:;
-- (void)recordInkPickerNoOp:(uint64_t)a1;
-- (void)recordInsertSpaceAddWhitespace:(uint64_t)a1;
-- (void)recordInsertSpaceWithType:(uint64_t)a1;
+- (void)recordHoverDuration:(uint64_t)duration onScreenDuration:hoverEdgeDuration:hoverExteriorDuration:sessionDuration:showEffectsEnabled:shadowEnabled:scribbleEnabled:doubleTapOnlyInHoverRangeEnabled:doubleTapsInRange:doubleTapsOutsideRange:deviceIsConnectedToCharger:intentionalHoverDuration:intentionalToolPreviewHoverDuration:countIntentionalHoverActions:maxIntentionalHoverDuration:meanIntentionalHoverDuration:minIntentionalHoverDuration:;
+- (void)recordHoverLatency:(uint64_t)latency mean:max:shadowEnabled:isInPDF:;
+- (void)recordHoverToolType:(uint64_t)type hoverDuration:(uint64_t)duration intentionalToolPreviewHoverDuration:(uint64_t)hoverDuration intentionalHoverDuration:(uint64_t)intentionalHoverDuration maxIntentionalHoverDuration:(uint64_t)maxIntentionalHoverDuration meanIntentionalHoverDuration:(void *)meanIntentionalHoverDuration minIntentionalHoverDuration:countIntentionalHoverActions:activepencilminutes:onScreenDuration:settingShowEffectsEnabled:settingSystemShadowEnabled:settingScribbleEnabled:settingDoubleTapInRangeEnabled:bundleID:;
+- (void)recordInkPickerNoOp:(uint64_t)op;
+- (void)recordInsertSpaceAddWhitespace:(uint64_t)whitespace;
+- (void)recordInsertSpaceWithType:(uint64_t)type;
 - (void)recordJumpToSettings;
-- (void)recordLatency:(uint64_t)a1 mean:max:percentageOverLatencyThreshold:isInPDF:;
+- (void)recordLatency:(uint64_t)latency mean:max:percentageOverLatencyThreshold:isInPDF:;
 - (void)recordMentionItemActivate;
 - (void)recordMentionItemAdd;
 - (void)recordMentionItemDeactivate;
 - (void)recordMentionItemRemove;
-- (void)recordNumberOfUndos:(uint64_t)a3 numberOfStrokes:(uint64_t)a4 showEffectsEnabled:(uint64_t)a5 shadowEnabled:(void *)a6 bundleID:;
-- (void)recordObjectEraseWithInputType:(uint64_t)a1;
-- (void)recordPalettePositionChange:(uint64_t)a3 type:;
-- (void)recordPerceivedLatency:(uint64_t)a1 mean:max:isInPDF:;
-- (void)recordPixelObjectEraseModeChange:(uint64_t)a1;
-- (void)recordRulerInteractionEndedWithType:(uint64_t)a1 angle:(uint64_t)a2;
-- (void)recordSelectAllWithStrokeCount:(uint64_t)a1 externalElementsCount:;
-- (void)recordShapeEventWithType:(void *)a1 modeString:(void *)a2;
+- (void)recordNumberOfUndos:(uint64_t)undos numberOfStrokes:(uint64_t)strokes showEffectsEnabled:(uint64_t)enabled shadowEnabled:(void *)shadowEnabled bundleID:;
+- (void)recordObjectEraseWithInputType:(uint64_t)type;
+- (void)recordPalettePositionChange:(uint64_t)change type:;
+- (void)recordPerceivedLatency:(uint64_t)latency mean:max:isInPDF:;
+- (void)recordPixelObjectEraseModeChange:(uint64_t)change;
+- (void)recordRulerInteractionEndedWithType:(uint64_t)type angle:(uint64_t)angle;
+- (void)recordSelectAllWithStrokeCount:(uint64_t)count externalElementsCount:;
+- (void)recordShapeEventWithType:(void *)type modeString:(void *)string;
 - (void)recordShapeUndoIfNecessary;
 - (void)recordShowRuler;
-- (void)recordStrokeWithInk:(double)a3 rollAngleDelta:;
-- (void)recordTextLineStraightening:(char)a3 withUndo:;
-- (void)recordTextLineStraighteningPerSession:(uint64_t)a1 Undos:;
+- (void)recordStrokeWithInk:(double)ink rollAngleDelta:;
+- (void)recordTextLineStraightening:(char)straightening withUndo:;
+- (void)recordTextLineStraighteningPerSession:(uint64_t)session Undos:;
 - (void)recordTextLineStraighteningUndoIfNecessary;
-- (void)recordTool:(uint64_t)a1;
-- (void)recordToolAttributePopoverAppearedForTool:(uint64_t)a1 hadInteraction:(void *)a2;
-- (void)recordUndo:(void *)a3 forStrokes:(void *)a4 fallbackInkIdentifier:;
+- (void)recordTool:(uint64_t)tool;
+- (void)recordToolAttributePopoverAppearedForTool:(uint64_t)tool hadInteraction:(void *)interaction;
+- (void)recordUndo:(void *)undo forStrokes:(void *)strokes fallbackInkIdentifier:;
 - (void)recordUndoIfNecessary;
 - (void)submitRecentRollStroke;
 @end
@@ -121,10 +121,10 @@ void __39__PKStatisticsManager_bundleIDCategory__block_invoke()
   qword_1ED6A51D0 = v4;
 }
 
-- (void)recordDrawStroke:(uint64_t)a1
+- (void)recordDrawStroke:(uint64_t)stroke
 {
   v3 = a2;
-  if (a1)
+  if (stroke)
   {
     v4 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
     v5 = v4;
@@ -133,19 +133,19 @@ void __39__PKStatisticsManager_bundleIDCategory__block_invoke()
       [(PKCanvasSessionStatisticsManager *)v4 logFeatureUsed:?];
     }
 
-    v6 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v6 = *(stroke + 8);
+    *(stroke + 8) = 0;
 
-    v7 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v7 = *(stroke + 24);
+    *(stroke + 24) = 0;
 
     v8 = [v3 ink];
-    v9 = [v8 identifier];
-    v10 = v9;
+    identifier = [v8 identifier];
+    v10 = identifier;
     v11 = @"unknown";
-    if (v9)
+    if (identifier)
     {
-      v11 = v9;
+      v11 = identifier;
     }
 
     v12 = v11;
@@ -156,39 +156,39 @@ void __39__PKStatisticsManager_bundleIDCategory__block_invoke()
     [v14 weight];
 
     v15 = [v3 ink];
-    v16 = [v15 color];
-    if (v16)
+    color = [v15 color];
+    if (color)
     {
       v17 = [v3 ink];
-      v18 = [v17 color];
-      CGColorGetAlpha([v18 CGColor]);
+      color2 = [v17 color];
+      CGColorGetAlpha([color2 CGColor]);
     }
 
     v19 = v3;
-    v20 = [v19 _inputType];
-    if (v20)
+    _inputType = [v19 _inputType];
+    if (_inputType)
     {
-      if (v20 == 1)
+      if (_inputType == 1)
       {
-        v21 = @"pencil";
+        stringValue = @"pencil";
       }
 
       else
       {
         v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v19, "_inputType")}];
-        v21 = [v22 stringValue];
+        stringValue = [v22 stringValue];
       }
     }
 
     else
     {
-      v21 = @"touch";
+      stringValue = @"touch";
     }
 
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"stroke.added"];
     v26 = v13;
-    v27 = v21;
-    v24 = v21;
+    v27 = stringValue;
+    v24 = stringValue;
     v25 = v13;
     AnalyticsSendEventLazy();
   }
@@ -213,9 +213,9 @@ id __40__PKStatisticsManager_recordDrawStroke___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)recordBitmapEraseWithInputType:(uint64_t)a1
+- (void)recordBitmapEraseWithInputType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     if ((a2 - 1) > 2)
     {
@@ -245,15 +245,15 @@ id __54__PKStatisticsManager_recordBitmapEraseWithInputType___block_invoke(uint6
   return v2;
 }
 
-- (void)recordObjectEraseWithInputType:(uint64_t)a1
+- (void)recordObjectEraseWithInputType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    v4 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v4 = *(type + 8);
+    *(type + 8) = 0;
 
-    v5 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v5 = *(type + 24);
+    *(type + 24) = 0;
 
     if ((a2 - 1) > 2)
     {
@@ -283,9 +283,9 @@ id __54__PKStatisticsManager_recordObjectEraseWithInputType___block_invoke(uint6
   return v2;
 }
 
-- (void)recordLatency:(uint64_t)a1 mean:max:percentageOverLatencyThreshold:isInPDF:
+- (void)recordLatency:(uint64_t)latency mean:max:percentageOverLatencyThreshold:isInPDF:
 {
-  if (a1)
+  if (latency)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"stroke.latency"];
     AnalyticsSendEventLazy();
@@ -319,9 +319,9 @@ id __85__PKStatisticsManager_recordLatency_mean_max_percentageOverLatencyThresho
   return v11;
 }
 
-- (void)recordPerceivedLatency:(uint64_t)a1 mean:max:isInPDF:
+- (void)recordPerceivedLatency:(uint64_t)latency mean:max:isInPDF:
 {
-  if (a1)
+  if (latency)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"stroke.perceivedLatency"];
     AnalyticsSendEventLazy();
@@ -351,9 +351,9 @@ id __63__PKStatisticsManager_recordPerceivedLatency_mean_max_isInPDF___block_inv
   return v9;
 }
 
-- (void)recordHoverLatency:(uint64_t)a1 mean:max:shadowEnabled:isInPDF:
+- (void)recordHoverLatency:(uint64_t)latency mean:max:shadowEnabled:isInPDF:
 {
-  if (a1)
+  if (latency)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"stroke.hoverLatency"];
     AnalyticsSendEventLazy();
@@ -386,9 +386,9 @@ id __73__PKStatisticsManager_recordHoverLatency_mean_max_shadowEnabled_isInPDF__
   return v10;
 }
 
-- (void)recordHoverDuration:(uint64_t)a1 onScreenDuration:hoverEdgeDuration:hoverExteriorDuration:sessionDuration:showEffectsEnabled:shadowEnabled:scribbleEnabled:doubleTapOnlyInHoverRangeEnabled:doubleTapsInRange:doubleTapsOutsideRange:deviceIsConnectedToCharger:intentionalHoverDuration:intentionalToolPreviewHoverDuration:countIntentionalHoverActions:maxIntentionalHoverDuration:meanIntentionalHoverDuration:minIntentionalHoverDuration:
+- (void)recordHoverDuration:(uint64_t)duration onScreenDuration:hoverEdgeDuration:hoverExteriorDuration:sessionDuration:showEffectsEnabled:shadowEnabled:scribbleEnabled:doubleTapOnlyInHoverRangeEnabled:doubleTapsInRange:doubleTapsOutsideRange:deviceIsConnectedToCharger:intentionalHoverDuration:intentionalToolPreviewHoverDuration:countIntentionalHoverActions:maxIntentionalHoverDuration:meanIntentionalHoverDuration:minIntentionalHoverDuration:
 {
-  if (a1)
+  if (duration)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"hover"];
     AnalyticsSendEventLazy();
@@ -460,14 +460,14 @@ id __441__PKStatisticsManager_recordHoverDuration_onScreenDuration_hoverEdgeDura
   return v11;
 }
 
-- (void)recordHoverToolType:(uint64_t)a3 hoverDuration:(uint64_t)a4 intentionalToolPreviewHoverDuration:(uint64_t)a5 intentionalHoverDuration:(uint64_t)a6 maxIntentionalHoverDuration:(uint64_t)a7 meanIntentionalHoverDuration:(void *)a8 minIntentionalHoverDuration:countIntentionalHoverActions:activepencilminutes:onScreenDuration:settingShowEffectsEnabled:settingSystemShadowEnabled:settingScribbleEnabled:settingDoubleTapInRangeEnabled:bundleID:
+- (void)recordHoverToolType:(uint64_t)type hoverDuration:(uint64_t)duration intentionalToolPreviewHoverDuration:(uint64_t)hoverDuration intentionalHoverDuration:(uint64_t)intentionalHoverDuration maxIntentionalHoverDuration:(uint64_t)maxIntentionalHoverDuration meanIntentionalHoverDuration:(void *)meanIntentionalHoverDuration minIntentionalHoverDuration:countIntentionalHoverActions:activepencilminutes:onScreenDuration:settingShowEffectsEnabled:settingSystemShadowEnabled:settingScribbleEnabled:settingDoubleTapInRangeEnabled:bundleID:
 {
   v10 = a2;
-  v11 = a8;
-  if (a1)
+  meanIntentionalHoverDurationCopy = meanIntentionalHoverDuration;
+  if (self)
   {
     v12 = v10;
-    v13 = v11;
+    v13 = meanIntentionalHoverDurationCopy;
     AnalyticsSendEventLazy();
   }
 }
@@ -526,7 +526,7 @@ id __385__PKStatisticsManager_recordHoverToolType_hoverDuration_intentionalToolP
 
 - (void)recordDragSelection
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"selection.drag"];
     AnalyticsSendEventLazy();
@@ -535,17 +535,17 @@ id __385__PKStatisticsManager_recordHoverToolType_hoverDuration_intentionalToolP
 
 - (void)recordDragAndDropSelection
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"selection.drag"];
     AnalyticsSendEventLazy();
   }
 }
 
-- (void)recordInkPickerNoOp:(uint64_t)a1
+- (void)recordInkPickerNoOp:(uint64_t)op
 {
   v3 = a2;
-  if (a1)
+  if (op)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"inkpicker.noOp"];
     v5 = v3;
@@ -564,10 +564,10 @@ id __43__PKStatisticsManager_recordInkPickerNoOp___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)recordColorPanelInvoked:(uint64_t)a1
+- (void)recordColorPanelInvoked:(uint64_t)invoked
 {
   v3 = a2;
-  if (a1)
+  if (invoked)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"colorpicker.invoke"];
     v5 = v3;
@@ -586,9 +586,9 @@ id __47__PKStatisticsManager_recordColorPanelInvoked___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)recordColorsChangedBeforeChosen:(uint64_t)a1
+- (void)recordColorsChangedBeforeChosen:(uint64_t)chosen
 {
-  if (a1)
+  if (chosen)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"colorpicker.colors"];
     AnalyticsSendEventLazy();
@@ -606,24 +606,24 @@ id __55__PKStatisticsManager_recordColorsChangedBeforeChosen___block_invoke(uint
   return v2;
 }
 
-- (void)recordCollaboration:(uint64_t)a1
+- (void)recordCollaboration:(uint64_t)collaboration
 {
-  if (a1)
+  if (collaboration)
   {
     if (a2 >= 3)
     {
       v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a2];
-      v2 = [v3 stringValue];
+      stringValue = [v3 stringValue];
     }
 
     else
     {
-      v2 = off_1E82DA800[a2];
+      stringValue = off_1E82DA800[a2];
     }
 
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"drawing.didCollaborate"];
-    v6 = v2;
-    v5 = v2;
+    v6 = stringValue;
+    v5 = stringValue;
     AnalyticsSendEventLazy();
   }
 }
@@ -639,10 +639,10 @@ id __43__PKStatisticsManager_recordCollaboration___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)recordTool:(uint64_t)a1
+- (void)recordTool:(uint64_t)tool
 {
   v3 = a2;
-  if (a1)
+  if (tool)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"stroke.tool"];
     v5 = v3;
@@ -661,25 +661,25 @@ id __34__PKStatisticsManager_recordTool___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)recordUndo:(void *)a3 forStrokes:(void *)a4 fallbackInkIdentifier:
+- (void)recordUndo:(void *)undo forStrokes:(void *)strokes fallbackInkIdentifier:
 {
   v29 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  undoCopy = undo;
+  strokesCopy = strokes;
+  if (self)
   {
-    if ([v8 count])
+    if ([undoCopy count])
     {
-      v10 = [v8 firstObject];
-      v11 = [v10 ink];
-      v12 = [v11 identifier];
+      firstObject = [undoCopy firstObject];
+      v11 = [firstObject ink];
+      identifier = [v11 identifier];
 
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v13 = v8;
+      v13 = undoCopy;
       v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v14)
       {
@@ -695,13 +695,13 @@ id __34__PKStatisticsManager_recordTool___block_invoke(uint64_t a1)
             }
 
             v18 = [*(*(&v24 + 1) + 8 * i) ink];
-            v19 = [v18 identifier];
-            v20 = [(__CFString *)v12 isEqual:v19];
+            identifier2 = [v18 identifier];
+            v20 = [(__CFString *)identifier isEqual:identifier2];
 
             if ((v20 & 1) == 0)
             {
 
-              v12 = @"mixed";
+              identifier = @"mixed";
               goto LABEL_13;
             }
           }
@@ -718,7 +718,7 @@ id __34__PKStatisticsManager_recordTool___block_invoke(uint64_t a1)
 
 LABEL_13:
 
-      v9 = v12;
+      strokesCopy = identifier;
     }
 
     if (!v7)
@@ -733,11 +733,11 @@ LABEL_13:
       v7 = @"unknown";
     }
 
-    if (v9)
+    if (strokesCopy)
     {
       v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"undoAction"];
       v7 = v7;
-      v9 = v9;
+      strokesCopy = strokesCopy;
       AnalyticsSendEventLazy();
     }
   }
@@ -756,13 +756,13 @@ id __67__PKStatisticsManager_recordUndo_forStrokes_fallbackInkIdentifier___block
   return v2;
 }
 
-- (void)recordNumberOfUndos:(uint64_t)a3 numberOfStrokes:(uint64_t)a4 showEffectsEnabled:(uint64_t)a5 shadowEnabled:(void *)a6 bundleID:
+- (void)recordNumberOfUndos:(uint64_t)undos numberOfStrokes:(uint64_t)strokes showEffectsEnabled:(uint64_t)enabled shadowEnabled:(void *)shadowEnabled bundleID:
 {
-  v8 = a6;
-  if (a1 && a3 >= 1)
+  shadowEnabledCopy = shadowEnabled;
+  if (self && undos >= 1)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"undo"];
-    v10 = v8;
+    v10 = shadowEnabledCopy;
     AnalyticsSendEventLazy();
   }
 }
@@ -796,10 +796,10 @@ id __101__PKStatisticsManager_recordNumberOfUndos_numberOfStrokes_showEffectsEna
   return v8;
 }
 
-- (void)recordTextLineStraightening:(char)a3 withUndo:
+- (void)recordTextLineStraightening:(char)straightening withUndo:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
     v7 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
     v8 = v7;
@@ -809,25 +809,25 @@ id __101__PKStatisticsManager_recordNumberOfUndos_numberOfStrokes_showEffectsEna
     }
 
     v9 = [v6 mutableCopy];
-    if (a3)
+    if (straightening)
     {
       v10 = @"undo";
     }
 
     else
     {
-      if (!*(a1 + 24))
+      if (!*(self + 24))
       {
         goto LABEL_11;
       }
 
-      if (*(a1 + 32) <= 0.0)
+      if (*(self + 32) <= 0.0)
       {
         goto LABEL_11;
       }
 
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-      if (v11 - *(a1 + 32) >= 20.0)
+      if (v11 - *(self + 32) >= 20.0)
       {
         goto LABEL_11;
       }
@@ -837,9 +837,9 @@ id __101__PKStatisticsManager_recordNumberOfUndos_numberOfStrokes_showEffectsEna
 
     [v9 setValue:MEMORY[0x1E695E118] forKey:v10];
 LABEL_11:
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((self + 24), a2);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    *(a1 + 32) = v12;
+    *(self + 32) = v12;
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"textLineStraightening"];
     v15 = v9;
     v14 = v9;
@@ -849,24 +849,24 @@ LABEL_11:
 
 - (void)recordTextLineStraighteningUndoIfNecessary
 {
-  if (a1 && *(a1 + 24) && *(a1 + 32) > 0.0)
+  if (self && *(self + 24) && *(self + 32) > 0.0)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    if (v2 - *(a1 + 32) < 10.0)
+    if (v2 - *(self + 32) < 10.0)
     {
-      [(PKStatisticsManager *)a1 recordTextLineStraightening:1 withUndo:?];
+      [(PKStatisticsManager *)self recordTextLineStraightening:1 withUndo:?];
     }
 
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v3 = *(self + 24);
+    *(self + 24) = 0;
 
-    *(a1 + 32) = 0;
+    *(self + 32) = 0;
   }
 }
 
-- (void)recordTextLineStraighteningPerSession:(uint64_t)a1 Undos:
+- (void)recordTextLineStraighteningPerSession:(uint64_t)session Undos:
 {
-  if (a1)
+  if (session)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"textLineStraighteningPerSession"];
     AnalyticsSendEventLazy();
@@ -887,9 +887,9 @@ id __67__PKStatisticsManager_recordTextLineStraighteningPerSession_Undos___block
   return v4;
 }
 
-- (void)recordCopyAsTextWithLength:(uint64_t)a1 time:(uint64_t)a2 didShowHUD:(uint64_t)a3 invokedFromSmartSelection:(int)a4
+- (void)recordCopyAsTextWithLength:(uint64_t)length time:(uint64_t)time didShowHUD:(uint64_t)d invokedFromSmartSelection:(int)selection
 {
-  if (a1)
+  if (length)
   {
     v5 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
     v6 = v5;
@@ -899,7 +899,7 @@ id __67__PKStatisticsManager_recordTextLineStraighteningPerSession_Undos___block
     }
 
     v7 = @"lasso";
-    if (a4)
+    if (selection)
     {
       v7 = @"smartSelection";
     }
@@ -931,9 +931,9 @@ id __92__PKStatisticsManager_recordCopyAsTextWithLength_time_didShowHUD_invokedF
   return v6;
 }
 
-- (void)recordSelectAllWithStrokeCount:(uint64_t)a1 externalElementsCount:
+- (void)recordSelectAllWithStrokeCount:(uint64_t)count externalElementsCount:
 {
-  if (a1)
+  if (count)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"selection.selectAll"];
     AnalyticsSendEventLazy();
@@ -954,9 +954,9 @@ id __76__PKStatisticsManager_recordSelectAllWithStrokeCount_externalElementsCoun
   return v4;
 }
 
-- (void)recordInsertSpaceWithType:(uint64_t)a1
+- (void)recordInsertSpaceWithType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     v3 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
     v4 = v3;
@@ -991,9 +991,9 @@ id __49__PKStatisticsManager_recordInsertSpaceWithType___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)recordInsertSpaceAddWhitespace:(uint64_t)a1
+- (void)recordInsertSpaceAddWhitespace:(uint64_t)whitespace
 {
-  if (a1)
+  if (whitespace)
   {
     v2 = @"removeWhitespace";
     if (a2)
@@ -1021,16 +1021,16 @@ id __54__PKStatisticsManager_recordInsertSpaceAddWhitespace___block_invoke(uint6
 
 - (void)recordJumpToSettings
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"palette.openPreferences"];
     AnalyticsSendEventLazy();
   }
 }
 
-- (void)recordDrawWithFingerToggle:(uint64_t)a1
+- (void)recordDrawWithFingerToggle:(uint64_t)toggle
 {
-  if (a1)
+  if (toggle)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"palette.toggleDrawWithFinger"];
     AnalyticsSendEventLazy();
@@ -1050,19 +1050,19 @@ id __50__PKStatisticsManager_recordDrawWithFingerToggle___block_invoke(uint64_t 
 
 - (void)recordShowRuler
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"ruler.show"];
     AnalyticsSendEventLazy();
   }
 }
 
-- (void)recordRulerInteractionEndedWithType:(uint64_t)a1 angle:(uint64_t)a2
+- (void)recordRulerInteractionEndedWithType:(uint64_t)type angle:(uint64_t)angle
 {
-  if (a1)
+  if (type)
   {
     v2 = @"mask";
-    if (!a2)
+    if (!angle)
     {
       v2 = @"snap";
     }
@@ -1139,9 +1139,9 @@ id __52__PKStatisticsManager_recordPencilAction_doubleTap___block_invoke(void *a
   return v6;
 }
 
-- (void)recordPalettePositionChange:(uint64_t)a3 type:
+- (void)recordPalettePositionChange:(uint64_t)change type:
 {
-  if (a1)
+  if (self)
   {
     if (a2 > 4)
     {
@@ -1226,13 +1226,13 @@ id __52__PKStatisticsManager_recordPencilAction_doubleTap___block_invoke(void *a
     }
 
     v14 = @"drawing";
-    v15 = a3 - 1;
-    if (a3 != 1)
+    v15 = change - 1;
+    if (change != 1)
     {
       v14 = 0;
     }
 
-    if (a3 == 2)
+    if (change == 2)
     {
       v14 = @"ucb";
     }
@@ -1260,17 +1260,17 @@ id __56__PKStatisticsManager_recordPalettePositionChange_type___block_invoke(uin
   return v2;
 }
 
-- (void)recordAutoMinimizeEnabledDidChange:(uint64_t)a3 type:
+- (void)recordAutoMinimizeEnabledDidChange:(uint64_t)change type:
 {
-  if (a1)
+  if (self)
   {
     v3 = @"drawing";
-    if (a3 != 1)
+    if (change != 1)
     {
       v3 = 0;
     }
 
-    if (a3 == 2)
+    if (change == 2)
     {
       v3 = @"ucb";
     }
@@ -1298,9 +1298,9 @@ id __63__PKStatisticsManager_recordAutoMinimizeEnabledDidChange_type___block_inv
   return v3;
 }
 
-- (void)recordPixelObjectEraseModeChange:(uint64_t)a1
+- (void)recordPixelObjectEraseModeChange:(uint64_t)change
 {
-  if (a1)
+  if (change)
   {
     v2 = @"bitmap";
     if (a2 == 1)
@@ -1327,11 +1327,11 @@ id __56__PKStatisticsManager_recordPixelObjectEraseModeChange___block_invoke(uin
   return v2;
 }
 
-- (void)recordToolAttributePopoverAppearedForTool:(uint64_t)a1 hadInteraction:(void *)a2
+- (void)recordToolAttributePopoverAppearedForTool:(uint64_t)tool hadInteraction:(void *)interaction
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1 && v3)
+  interactionCopy = interaction;
+  v4 = interactionCopy;
+  if (tool && interactionCopy)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"palette.attributePopover.appear"];
     v6 = v4;
@@ -1353,13 +1353,13 @@ id __80__PKStatisticsManager_recordToolAttributePopoverAppearedForTool_hadIntera
   return v3;
 }
 
-- (void)recordShapeEventWithType:(void *)a1 modeString:(void *)a2
+- (void)recordShapeEventWithType:(void *)type modeString:(void *)string
 {
-  v3 = a1;
-  v4 = a2;
+  typeCopy = type;
+  stringCopy = string;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"shape"];
-  v6 = v3;
-  v7 = v4;
+  v6 = typeCopy;
+  v7 = stringCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -1376,9 +1376,9 @@ id __59__PKStatisticsManager_recordShapeEventWithType_modeString___block_invoke(
   return v2;
 }
 
-- (void)recordCreateShapeWithType:(int)a3 fromMenu:(int)a4 multiple:
+- (void)recordCreateShapeWithType:(int)type fromMenu:(int)menu multiple:
 {
-  if (a1)
+  if (self)
   {
     v8 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
     v9 = v8;
@@ -1397,18 +1397,18 @@ id __59__PKStatisticsManager_recordShapeEventWithType_modeString___block_invoke(
       v10 = off_1E82DA830[a2 - 1];
     }
 
-    v11 = *(a1 + 8);
+    v11 = *(self + 8);
     v12 = @"multiple";
-    if (!a4)
+    if (!menu)
     {
       v12 = v10;
     }
 
-    *(a1 + 8) = v12;
+    *(self + 8) = v12;
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    *(a1 + 16) = v13;
-    if (a3)
+    *(self + 16) = v13;
+    if (type)
     {
       v14 = @"fromMenu";
     }
@@ -1424,47 +1424,47 @@ id __59__PKStatisticsManager_recordShapeEventWithType_modeString___block_invoke(
 
 - (void)recordShapeUndoIfNecessary
 {
-  if (a1 && *(a1 + 8) && *(a1 + 16) > 0.0)
+  if (self && *(self + 8) && *(self + 16) > 0.0)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    if (v2 - *(a1 + 16) < 5.0)
+    if (v2 - *(self + 16) < 5.0)
     {
       [PKStatisticsManager recordShapeEventWithType:@"undo" modeString:?];
     }
 
-    v3 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v3 = *(self + 8);
+    *(self + 8) = 0;
 
-    *(a1 + 16) = 0;
+    *(self + 16) = 0;
   }
 }
 
 - (void)recordUndoIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
-      *(a1 + 56) = 1;
+      *(self + 56) = 1;
     }
 
-    [(PKStatisticsManager *)a1 recordShapeUndoIfNecessary];
+    [(PKStatisticsManager *)self recordShapeUndoIfNecessary];
 
-    [(PKStatisticsManager *)a1 recordTextLineStraighteningUndoIfNecessary];
+    [(PKStatisticsManager *)self recordTextLineStraighteningUndoIfNecessary];
   }
 }
 
-- (void)recordDataDetectorItemAdd:(uint64_t)a1
+- (void)recordDataDetectorItemAdd:(uint64_t)add
 {
-  if (a1)
+  if (add)
   {
-    v2 = [a2 scannerResult];
-    v3 = [v2 type];
-    v4 = v3;
+    scannerResult = [a2 scannerResult];
+    type = [scannerResult type];
+    v4 = type;
     v5 = @"unknown";
-    if (v3)
+    if (type)
     {
-      v5 = v3;
+      v5 = type;
     }
 
     v6 = v5;
@@ -1486,17 +1486,17 @@ id __49__PKStatisticsManager_recordDataDetectorItemAdd___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)recordDataDetectorItemRemove:(uint64_t)a1
+- (void)recordDataDetectorItemRemove:(uint64_t)remove
 {
-  if (a1)
+  if (remove)
   {
-    v2 = [a2 scannerResult];
-    v3 = [v2 type];
-    v4 = v3;
+    scannerResult = [a2 scannerResult];
+    type = [scannerResult type];
+    v4 = type;
     v5 = @"unknown";
-    if (v3)
+    if (type)
     {
-      v5 = v3;
+      v5 = type;
     }
 
     v6 = v5;
@@ -1518,9 +1518,9 @@ id __52__PKStatisticsManager_recordDataDetectorItemRemove___block_invoke(uint64_
   return v2;
 }
 
-- (void)recordDataDetectorItemDefaultAction:(uint64_t)a1
+- (void)recordDataDetectorItemDefaultAction:(uint64_t)action
 {
-  if (a1)
+  if (action)
   {
     v2 = a2;
     v3 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
@@ -1530,14 +1530,14 @@ id __52__PKStatisticsManager_recordDataDetectorItemRemove___block_invoke(uint64_
       [(PKCanvasSessionStatisticsManager *)v3 logFeatureUsed:?];
     }
 
-    v5 = [v2 scannerResult];
+    scannerResult = [v2 scannerResult];
 
-    v6 = [v5 type];
-    v7 = v6;
+    type = [scannerResult type];
+    v7 = type;
     v8 = @"unknown";
-    if (v6)
+    if (type)
     {
-      v8 = v6;
+      v8 = type;
     }
 
     v9 = v8;
@@ -1559,9 +1559,9 @@ id __59__PKStatisticsManager_recordDataDetectorItemDefaultAction___block_invoke(
   return v2;
 }
 
-- (void)recordDataDetectorItemMenuAction:(uint64_t)a1
+- (void)recordDataDetectorItemMenuAction:(uint64_t)action
 {
-  if (a1)
+  if (action)
   {
     v2 = a2;
     v3 = +[PKCanvasSessionStatisticsManager sharedStatisticsManager];
@@ -1571,14 +1571,14 @@ id __59__PKStatisticsManager_recordDataDetectorItemDefaultAction___block_invoke(
       [(PKCanvasSessionStatisticsManager *)v3 logFeatureUsed:?];
     }
 
-    v5 = [v2 scannerResult];
+    scannerResult = [v2 scannerResult];
 
-    v6 = [v5 type];
-    v7 = v6;
+    type = [scannerResult type];
+    v7 = type;
     v8 = @"unknown";
-    if (v6)
+    if (type)
     {
-      v8 = v6;
+      v8 = type;
     }
 
     v9 = v8;
@@ -1602,7 +1602,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordHashtagItemAdd
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"hashtag"];
     AnalyticsSendEventLazy();
@@ -1611,7 +1611,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordHashtagItemRemove
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"hashtag"];
     AnalyticsSendEventLazy();
@@ -1620,7 +1620,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordHashtagItemActivate
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"hashtag"];
     AnalyticsSendEventLazy();
@@ -1629,7 +1629,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordHashtagItemDeactivate
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"hashtag"];
     AnalyticsSendEventLazy();
@@ -1638,7 +1638,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordMentionItemAdd
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"mention"];
     AnalyticsSendEventLazy();
@@ -1647,7 +1647,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordMentionItemRemove
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"mention"];
     AnalyticsSendEventLazy();
@@ -1656,7 +1656,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordMentionItemActivate
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"mention"];
     AnalyticsSendEventLazy();
@@ -1665,7 +1665,7 @@ id __56__PKStatisticsManager_recordDataDetectorItemMenuAction___block_invoke(uin
 
 - (void)recordMentionItemDeactivate
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"mention"];
     AnalyticsSendEventLazy();
@@ -1705,19 +1705,19 @@ id __45__PKStatisticsManager_submitRecentRollStroke__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)recordStrokeWithInk:(double)a3 rollAngleDelta:
+- (void)recordStrokeWithInk:(double)ink rollAngleDelta:
 {
   v5 = a2;
   v6 = v5;
-  if (a1 && a3 > 0.0 && (([v5 _isFountainPenInkV2] & 1) != 0 || objc_msgSend(v6, "_isMarkerInk")))
+  if (self && ink > 0.0 && (([v5 _isFountainPenInkV2] & 1) != 0 || objc_msgSend(v6, "_isMarkerInk")))
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__PKStatisticsManager_recordStrokeWithInk_rollAngleDelta___block_invoke;
     block[3] = &unk_1E82DA7B0;
-    block[4] = a1;
+    block[4] = self;
     v8 = v6;
-    v9 = a3;
+    inkCopy = ink;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

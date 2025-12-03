@@ -1,42 +1,42 @@
 @interface TUIInteractionsHelper
-- (TUIInteractionsHelper)initWithView:(id)a3;
+- (TUIInteractionsHelper)initWithView:(id)view;
 - (void)detachInteractions;
-- (void)updateInteractionsWithBuilder:(id)a3;
-- (void)updateWithLinkEntities:(id)a3;
+- (void)updateInteractionsWithBuilder:(id)builder;
+- (void)updateWithLinkEntities:(id)entities;
 @end
 
 @implementation TUIInteractionsHelper
 
-- (TUIInteractionsHelper)initWithView:(id)a3
+- (TUIInteractionsHelper)initWithView:(id)view
 {
   v5.receiver = self;
   v5.super_class = TUIInteractionsHelper;
   result = [(TUIInteractionsHelper *)&v5 init];
   if (result)
   {
-    result->_view = a3;
+    result->_view = view;
     result->_flags.linkEntitiesNeedsUpdate = 0;
   }
 
   return result;
 }
 
-- (void)updateWithLinkEntities:(id)a3
+- (void)updateWithLinkEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   linkEntities = self->_linkEntities;
-  if (linkEntities != v4)
+  if (linkEntities != entitiesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)linkEntities isEqual:v4];
-    v4 = v9;
+    v9 = entitiesCopy;
+    v6 = [(NSArray *)linkEntities isEqual:entitiesCopy];
+    entitiesCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
       v8 = self->_linkEntities;
       self->_linkEntities = v7;
 
-      v4 = v9;
+      entitiesCopy = v9;
       self->_flags.linkEntitiesNeedsUpdate = 1;
     }
   }
@@ -79,9 +79,9 @@
   self->_linkEntityInteractions = 0;
 }
 
-- (void)updateInteractionsWithBuilder:(id)a3
+- (void)updateInteractionsWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   if (self->_flags.linkEntitiesNeedsUpdate)
   {
     self->_flags.linkEntitiesNeedsUpdate = 0;
@@ -133,7 +133,7 @@
             objc_enumerationMutation(v10);
           }
 
-          v16 = [v4 interactionForLinkEntity:{*(*(&v19 + 1) + 8 * j), v19}];
+          v16 = [builderCopy interactionForLinkEntity:{*(*(&v19 + 1) + 8 * j), v19}];
           if (v16)
           {
             if (!v13)

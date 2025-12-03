@@ -1,27 +1,27 @@
 @interface ULModelMO
-+ (id)createFromDO:(const void *)a3 withServiceMO:(id)a4 loiMO:(id)a5 inManagedObjectContext:(id)a6;
++ (id)createFromDO:(const void *)o withServiceMO:(id)mO loiMO:(id)loiMO inManagedObjectContext:(id)context;
 - (optional<ULModelDO>)convertToDO;
 @end
 
 @implementation ULModelMO
 
-+ (id)createFromDO:(const void *)a3 withServiceMO:(id)a4 loiMO:(id)a5 inManagedObjectContext:(id)a6
++ (id)createFromDO:(const void *)o withServiceMO:(id)mO loiMO:(id)loiMO inManagedObjectContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [[ULModelMO alloc] initWithContext:a6];
-  [(ULModelMO *)v11 setService:v9];
-  [(ULModelMO *)v11 setLoi:v10];
-  v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v13 = [v12 UUIDString];
-  [(ULModelMO *)v11 setModelUUID:v13];
+  mOCopy = mO;
+  loiMOCopy = loiMO;
+  v11 = [[ULModelMO alloc] initWithContext:context];
+  [(ULModelMO *)v11 setService:mOCopy];
+  [(ULModelMO *)v11 setLoi:loiMOCopy];
+  v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o];
+  uUIDString = [v12 UUIDString];
+  [(ULModelMO *)v11 setModelUUID:uUIDString];
 
-  [(ULModelMO *)v11 setGenerationTimestamp:*(a3 + 2)];
-  [(ULModelMO *)v11 setModelType:*(a3 + 6)];
-  v14 = a3 + 32;
-  v15 = *(a3 + 60);
-  v16 = *(a3 + 6);
+  [(ULModelMO *)v11 setGenerationTimestamp:*(o + 2)];
+  [(ULModelMO *)v11 setModelType:*(o + 6)];
+  v14 = o + 32;
+  v15 = *(o + 60);
+  v16 = *(o + 6);
   if (v15 == 2)
   {
     if (v16 == 5)
@@ -188,11 +188,11 @@
 - (optional<ULModelDO>)convertToDO
 {
   v69 = *MEMORY[0x277D85DE8];
-  v5 = [(ULModelMO *)self modelUUID];
-  v6 = v5;
-  if (v5)
+  modelUUID = [(ULModelMO *)self modelUUID];
+  v6 = modelUUID;
+  if (modelUUID)
   {
-    [v5 boostUUID];
+    [modelUUID boostUUID];
   }
 
   else
@@ -205,11 +205,11 @@
   if (v68)
   {
     v7 = [(ULModelMO *)self loi];
-    v8 = [v7 loiId];
-    v9 = v8;
-    if (v8)
+    loiId = [v7 loiId];
+    v9 = loiId;
+    if (loiId)
     {
-      [v8 boostUUID];
+      [loiId boostUUID];
     }
 
     else
@@ -245,18 +245,18 @@
     v14 = v13;
     LOBYTE(v48[0]) = 0;
     v50 = 0;
-    v15 = [(ULModelMO *)self service];
-    v16 = [v15 clientId];
-    v17 = [v16 length] == 0;
+    service = [(ULModelMO *)self service];
+    clientId = [service clientId];
+    v17 = [clientId length] == 0;
 
     if (!v17)
     {
-      v18 = [(ULModelMO *)self service];
-      v19 = [v18 clientId];
-      v20 = v19;
-      if (v19)
+      service2 = [(ULModelMO *)self service];
+      clientId2 = [service2 clientId];
+      v20 = clientId2;
+      if (clientId2)
       {
-        [v19 stdString];
+        [clientId2 stdString];
       }
 
       else
@@ -272,9 +272,9 @@
       }
     }
 
-    v21 = [(ULModelMO *)self service];
-    v22 = [v21 serviceUUID];
-    v23 = [v22 length] == 0;
+    service3 = [(ULModelMO *)self service];
+    serviceUUID = [service3 serviceUUID];
+    v23 = [serviceUUID length] == 0;
 
     if (v23)
     {
@@ -284,12 +284,12 @@
 
     else
     {
-      v24 = [(ULModelMO *)self service];
-      v25 = [v24 serviceUUID];
-      v26 = v25;
-      if (v25)
+      service4 = [(ULModelMO *)self service];
+      serviceUUID2 = [service4 serviceUUID];
+      v26 = serviceUUID2;
+      if (serviceUUID2)
       {
-        [v25 boostUUID];
+        [serviceUUID2 boostUUID];
         v27 = buf[0];
         v28 = v52;
       }
@@ -311,14 +311,14 @@
     v61 = 0;
     if ([(ULModelMO *)self modelType]== 4)
     {
-      v30 = [(ULModelMO *)self model];
-      v31 = v30;
-      v32 = [v30 bytes];
-      v33 = [(ULModelMO *)self model];
-      [v33 length];
-      LODWORD(v32) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(buf, v32);
+      model = [(ULModelMO *)self model];
+      v31 = model;
+      bytes = [model bytes];
+      model2 = [(ULModelMO *)self model];
+      [model2 length];
+      LODWORD(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(buf, bytes);
 
-      if (v32)
+      if (bytes)
       {
         ULProtoMessageWrapper<CLMicroLocationProto::HomeSlamModel>::ULProtoMessageWrapper(&v57, buf);
         std::__variant_detail::__assignment<std::__variant_detail::__traits<ULProtoMessageWrapper<CLMicroLocationProto::Model>,ULProtoMessageWrapper<CLMicroLocationProto::HomeSlamModel>,ULProtoMessageWrapper<CLMicroLocationProto::VMKModel>>>::__assign_alt[abi:ne200100]<1ul,ULProtoMessageWrapper<CLMicroLocationProto::HomeSlamModel>,ULProtoMessageWrapper<CLMicroLocationProto::HomeSlamModel>>(v60, v60, &v57);
@@ -371,14 +371,14 @@ LABEL_58:
     else if ([(ULModelMO *)self modelType]== 5)
     {
       CLMicroLocationProto::VMKModel::VMKModel(buf);
-      v34 = [(ULModelMO *)self model];
-      v35 = v34;
-      v36 = [v34 bytes];
-      v37 = [(ULModelMO *)self model];
-      [v37 length];
-      LODWORD(v36) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(buf, v36);
+      model3 = [(ULModelMO *)self model];
+      v35 = model3;
+      bytes2 = [model3 bytes];
+      model4 = [(ULModelMO *)self model];
+      [model4 length];
+      LODWORD(bytes2) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(buf, bytes2);
 
-      if (v36)
+      if (bytes2)
       {
         ULProtoMessageWrapper<CLMicroLocationProto::VMKModel>::ULProtoMessageWrapper(&v57, buf);
         std::__variant_detail::__assignment<std::__variant_detail::__traits<ULProtoMessageWrapper<CLMicroLocationProto::Model>,ULProtoMessageWrapper<CLMicroLocationProto::HomeSlamModel>,ULProtoMessageWrapper<CLMicroLocationProto::VMKModel>>>::__assign_alt[abi:ne200100]<2ul,ULProtoMessageWrapper<CLMicroLocationProto::VMKModel>,ULProtoMessageWrapper<CLMicroLocationProto::VMKModel>>(v60, v60, &v57);
@@ -392,14 +392,14 @@ LABEL_58:
 
     else
     {
-      v38 = [(ULModelMO *)self model];
-      v39 = v38;
-      v40 = [v38 bytes];
-      v41 = [(ULModelMO *)self model];
-      [v41 length];
-      LODWORD(v40) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(buf, v40);
+      model5 = [(ULModelMO *)self model];
+      v39 = model5;
+      bytes3 = [model5 bytes];
+      model6 = [(ULModelMO *)self model];
+      [model6 length];
+      LODWORD(bytes3) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(buf, bytes3);
 
-      if (v40)
+      if (bytes3)
       {
         ULProtoMessageWrapper<CLMicroLocationProto::Model>::ULProtoMessageWrapper(&v57, buf);
         std::__variant_detail::__assignment<std::__variant_detail::__traits<ULProtoMessageWrapper<CLMicroLocationProto::Model>,ULProtoMessageWrapper<CLMicroLocationProto::HomeSlamModel>,ULProtoMessageWrapper<CLMicroLocationProto::VMKModel>>>::__assign_alt[abi:ne200100]<0ul,ULProtoMessageWrapper<CLMicroLocationProto::Model>,ULProtoMessageWrapper<CLMicroLocationProto::Model>>(v60, v60, &v57);

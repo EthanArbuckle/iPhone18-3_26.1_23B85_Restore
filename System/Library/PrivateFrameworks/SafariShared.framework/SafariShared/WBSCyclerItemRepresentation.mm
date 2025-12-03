@@ -1,27 +1,27 @@
 @interface WBSCyclerItemRepresentation
-- (WBSCyclerItemRepresentation)initWithCoder:(id)a3;
-- (WBSCyclerItemRepresentation)initWithTitle:(id)a3 symbolImageName:(id)a4 uniqueIdentifier:(id)a5;
-- (WBSCyclerItemRepresentation)initWithTitle:(id)a3 uniqueIdentifier:(id)a4;
-- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WBSCyclerItemRepresentation)initWithCoder:(id)coder;
+- (WBSCyclerItemRepresentation)initWithTitle:(id)title symbolImageName:(id)name uniqueIdentifier:(id)identifier;
+- (WBSCyclerItemRepresentation)initWithTitle:(id)title uniqueIdentifier:(id)identifier;
+- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSCyclerItemRepresentation
 
-- (WBSCyclerItemRepresentation)initWithTitle:(id)a3 uniqueIdentifier:(id)a4
+- (WBSCyclerItemRepresentation)initWithTitle:(id)title uniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = WBSCyclerItemRepresentation;
   v8 = [(WBSCyclerItemRepresentation *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     uniqueIdentifier = v8->_uniqueIdentifier;
     v8->_uniqueIdentifier = v11;
 
@@ -31,34 +31,34 @@
   return v8;
 }
 
-- (WBSCyclerItemRepresentation)initWithTitle:(id)a3 symbolImageName:(id)a4 uniqueIdentifier:(id)a5
+- (WBSCyclerItemRepresentation)initWithTitle:(id)title symbolImageName:(id)name uniqueIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = [(WBSCyclerItemRepresentation *)self initWithTitle:a3 uniqueIdentifier:a5];
+  nameCopy = name;
+  v10 = [(WBSCyclerItemRepresentation *)self initWithTitle:title uniqueIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_symbolImageName, a4);
+    objc_storeStrong(&v10->_symbolImageName, name);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (WBSCyclerItemRepresentation)initWithCoder:(id)a3
+- (WBSCyclerItemRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = WBSCyclerItemRepresentation;
   v5 = [(WBSCyclerItemRepresentation *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
     v7 = [v6 copy];
     title = v5->_title;
     v5->_title = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UniqueIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UniqueIdentifier"];
     v10 = [v9 copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v10;
@@ -67,7 +67,7 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"ExtraAttributes"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"ExtraAttributes"];
     v17 = [v16 mutableCopy];
     extraAttributes = v5->_extraAttributes;
     v5->_extraAttributes = v17;
@@ -78,19 +78,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"Title"];
-  [v5 encodeObject:self->_uniqueIdentifier forKey:@"UniqueIdentifier"];
-  [v5 encodeObject:self->_extraAttributes forKey:@"ExtraAttributes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"Title"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"UniqueIdentifier"];
+  [coderCopy encodeObject:self->_extraAttributes forKey:@"ExtraAttributes"];
 }
 
-- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)a3
+- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)to
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_extraAttributes)
   {
     extraAttributes = self->_extraAttributes;
@@ -101,9 +101,9 @@
     extraAttributes = MEMORY[0x1E695E0F8];
   }
 
-  if (v4[3])
+  if (toCopy[3])
   {
-    v6 = v4[3];
+    v6 = toCopy[3];
   }
 
   else
@@ -118,7 +118,7 @@
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E69C88F0]) initWithFirst:self second:v4];
+    v8 = [objc_alloc(MEMORY[0x1E69C88F0]) initWithFirst:self second:toCopy];
     v10[0] = v8;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }

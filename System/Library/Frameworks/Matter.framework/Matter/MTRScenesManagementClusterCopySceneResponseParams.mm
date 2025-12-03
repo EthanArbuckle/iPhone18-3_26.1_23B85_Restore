@@ -1,9 +1,9 @@
 @interface MTRScenesManagementClusterCopySceneResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRScenesManagementClusterCopySceneResponseParams)init;
-- (MTRScenesManagementClusterCopySceneResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
-- (MTRScenesManagementClusterCopySceneResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRScenesManagementClusterCopySceneResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
+- (MTRScenesManagementClusterCopySceneResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterCopySceneResponseParams);
-  v5 = [(MTRScenesManagementClusterCopySceneResponseParams *)self status];
-  [(MTRScenesManagementClusterCopySceneResponseParams *)v4 setStatus:v5];
+  status = [(MTRScenesManagementClusterCopySceneResponseParams *)self status];
+  [(MTRScenesManagementClusterCopySceneResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRScenesManagementClusterCopySceneResponseParams *)self groupIdentifierFrom];
-  [(MTRScenesManagementClusterCopySceneResponseParams *)v4 setGroupIdentifierFrom:v6];
+  groupIdentifierFrom = [(MTRScenesManagementClusterCopySceneResponseParams *)self groupIdentifierFrom];
+  [(MTRScenesManagementClusterCopySceneResponseParams *)v4 setGroupIdentifierFrom:groupIdentifierFrom];
 
-  v7 = [(MTRScenesManagementClusterCopySceneResponseParams *)self sceneIdentifierFrom];
-  [(MTRScenesManagementClusterCopySceneResponseParams *)v4 setSceneIdentifierFrom:v7];
+  sceneIdentifierFrom = [(MTRScenesManagementClusterCopySceneResponseParams *)self sceneIdentifierFrom];
+  [(MTRScenesManagementClusterCopySceneResponseParams *)v4 setSceneIdentifierFrom:sceneIdentifierFrom];
 
   return v4;
 }
@@ -55,9 +55,9 @@
   return v6;
 }
 
-- (MTRScenesManagementClusterCopySceneResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRScenesManagementClusterCopySceneResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MTRScenesManagementClusterCopySceneResponseParams;
   v7 = [(MTRScenesManagementClusterCopySceneResponseParams *)&v17 init];
@@ -67,7 +67,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:98 commandID:64 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:98 commandID:64 error:error];
   if (v16)
   {
     sub_2393C5AAC(v15);
@@ -90,7 +90,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -101,7 +101,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRScenesManagementClusterCopySceneResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRScenesManagementClusterCopySceneResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRScenesManagementClusterCopySceneResponseParams;
@@ -109,7 +109,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRScenesManagementClusterCopySceneResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRScenesManagementClusterCopySceneResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -125,15 +125,15 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTRScenesManagementClusterCopySceneResponseParams *)self setStatus:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*&a3[2].var0];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*&struct[2].var0];
   [(MTRScenesManagementClusterCopySceneResponseParams *)self setGroupIdentifierFrom:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3[4].var0];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct[4].var0];
   [(MTRScenesManagementClusterCopySceneResponseParams *)self setSceneIdentifierFrom:v7];
 
   v8 = 0;

@@ -1,64 +1,64 @@
 @interface REMBaseSection
 + (NSString)cdEntityName;
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
++ (id)objectIDWithUUID:(id)d;
 + (void)cdEntityName;
 + (void)newObjectID;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (REMBaseSection)initWithStore:(id)a3 accountCapabilities:(id)a4 storage:(id)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (REMBaseSection)initWithStore:(id)store accountCapabilities:(id)capabilities storage:(id)storage;
 - (id)debugDescription;
 - (id)description;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation REMBaseSection
 
-- (REMBaseSection)initWithStore:(id)a3 accountCapabilities:(id)a4 storage:(id)a5
+- (REMBaseSection)initWithStore:(id)store accountCapabilities:(id)capabilities storage:(id)storage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  capabilitiesCopy = capabilities;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = REMBaseSection;
   v12 = [(REMBaseSection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
-    objc_storeStrong(&v13->_accountCapabilities, a4);
-    objc_storeStrong(&v13->_storage, a5);
-    -[REMBaseSectionStorage setStoreGenerationIfNeeded:](v13->_storage, "setStoreGenerationIfNeeded:", [v9 storeGeneration]);
+    objc_storeStrong(&v12->_store, store);
+    objc_storeStrong(&v13->_accountCapabilities, capabilities);
+    objc_storeStrong(&v13->_storage, storage);
+    -[REMBaseSectionStorage setStoreGenerationIfNeeded:](v13->_storage, "setStoreGenerationIfNeeded:", [storeCopy storeGeneration]);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMBaseSection *)self store];
-      v8 = [(REMBaseSection *)v6 store];
-      v9 = v8;
-      if (v7 == v8)
+      store = [(REMBaseSection *)self store];
+      store2 = [(REMBaseSection *)v6 store];
+      v9 = store2;
+      if (store == store2)
       {
       }
 
       else
       {
-        v10 = [(REMBaseSection *)self store];
-        v11 = [(REMBaseSection *)v6 store];
-        v12 = [v10 isEqual:v11];
+        store3 = [(REMBaseSection *)self store];
+        store4 = [(REMBaseSection *)v6 store];
+        v12 = [store3 isEqual:store4];
 
         if (!v12)
         {
@@ -66,18 +66,18 @@
         }
       }
 
-      v14 = [(REMBaseSection *)self accountCapabilities];
-      v15 = [(REMBaseSection *)v6 accountCapabilities];
-      v16 = v15;
-      if (v14 == v15)
+      accountCapabilities = [(REMBaseSection *)self accountCapabilities];
+      accountCapabilities2 = [(REMBaseSection *)v6 accountCapabilities];
+      v16 = accountCapabilities2;
+      if (accountCapabilities == accountCapabilities2)
       {
       }
 
       else
       {
-        v17 = [(REMBaseSection *)self accountCapabilities];
-        v18 = [(REMBaseSection *)v6 accountCapabilities];
-        v19 = [v17 isEqual:v18];
+        accountCapabilities3 = [(REMBaseSection *)self accountCapabilities];
+        accountCapabilities4 = [(REMBaseSection *)v6 accountCapabilities];
+        v19 = [accountCapabilities3 isEqual:accountCapabilities4];
 
         if (!v19)
         {
@@ -85,18 +85,18 @@
         }
       }
 
-      v20 = [(REMBaseSection *)self storage];
-      v21 = [(REMBaseSection *)v6 storage];
-      if (v20 == v21)
+      storage = [(REMBaseSection *)self storage];
+      storage2 = [(REMBaseSection *)v6 storage];
+      if (storage == storage2)
       {
         v13 = 1;
       }
 
       else
       {
-        v22 = [(REMBaseSection *)self storage];
-        v23 = [(REMBaseSection *)v6 storage];
-        v13 = [v22 isEqual:v23];
+        storage3 = [(REMBaseSection *)self storage];
+        storage4 = [(REMBaseSection *)v6 storage];
+        v13 = [storage3 isEqual:storage4];
       }
 
       goto LABEL_16;
@@ -117,8 +117,8 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(REMBaseSection *)self storage];
-  v3 = [v2 hash];
+  storage = [(REMBaseSection *)self storage];
+  v3 = [storage hash];
 
   return v3;
 }
@@ -127,8 +127,8 @@ LABEL_17:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMBaseSection *)self storage];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  storage = [(REMBaseSection *)self storage];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, storage];
 
   return v6;
 }
@@ -137,23 +137,23 @@ LABEL_17:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMBaseSection *)self storage];
-  v6 = [v5 debugDescription];
+  storage = [(REMBaseSection *)self storage];
+  v6 = [storage debugDescription];
   v7 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v6];
 
   return v7;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMBaseSection *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMBaseSection *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMBaseSection;
@@ -164,26 +164,26 @@ LABEL_17:
 
   else
   {
-    v5 = [(REMBaseSection *)self storage];
+    storage = [(REMBaseSection *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMBaseSection *)self storage];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  storage = [(REMBaseSection *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
 + (id)newObjectID
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 isEqualToString:v5];
 
   if ((v6 & 1) == 0)
@@ -194,12 +194,12 @@ LABEL_17:
   return +[REMBaseSectionStorage newObjectID];
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = NSStringFromClass(a1);
+  v7 = NSStringFromClass(self);
   v8 = [v6 isEqualToString:v7];
 
   if ((v8 & 1) == 0)
@@ -207,7 +207,7 @@ LABEL_17:
     +[REMBaseSection objectIDWithUUID:];
   }
 
-  v9 = [REMBaseSectionStorage objectIDWithUUID:v4];
+  v9 = [REMBaseSectionStorage objectIDWithUUID:dCopy];
 
   return v9;
 }
@@ -216,7 +216,7 @@ LABEL_17:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 isEqualToString:v5];
 
   if ((v6 & 1) == 0)
@@ -231,10 +231,10 @@ LABEL_17:
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMBaseSection *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMBaseSection *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
 + (void)newObjectID
@@ -243,7 +243,7 @@ LABEL_17:
   v0 = +[REMLogStore read];
   if (os_log_type_enabled(v0, OS_LOG_TYPE_FAULT))
   {
-    v2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     OUTLINED_FUNCTION_0_8(&dword_19A0DB000, v3, v4, "rem_log_fault_if (![NSStringFromClass([REMBaseSection class]) isEqualToString:NSStringFromClass(self)]) -- A subclass of REMBaseSectionStorage called '- [REMBaseSectionStorage newObjectID]'. The subclass should override this method. {callstack: %@}", v5, v6, v7, v8, 2u);
   }
 
@@ -269,7 +269,7 @@ LABEL_17:
   v0 = +[REMLogStore read];
   if (os_log_type_enabled(v0, OS_LOG_TYPE_FAULT))
   {
-    v2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     OUTLINED_FUNCTION_0_8(&dword_19A0DB000, v3, v4, "rem_log_fault_if (![NSStringFromClass([REMBaseSection class]) isEqualToString:NSStringFromClass(self)]) -- A subclass of REMBaseSectionStorage called '- [REMBaseSectionStorage cdEntityName]'. The subclass should override this method. {callstack: %@}", v5, v6, v7, v8, 2u);
   }
 

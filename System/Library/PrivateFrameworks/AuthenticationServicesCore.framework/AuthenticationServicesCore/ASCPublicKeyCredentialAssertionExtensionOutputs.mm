@@ -1,16 +1,16 @@
 @interface ASCPublicKeyCredentialAssertionExtensionOutputs
 - (NSString)description;
 - (_TtC26AuthenticationServicesCore47ASCPublicKeyCredentialAssertionExtensionOutputs)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPublicKeyCredentialAssertionExtensionOutputs
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2167BA4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C2167BA4(coderCopy);
 }
 
 - (_TtC26AuthenticationServicesCore47ASCPublicKeyCredentialAssertionExtensionOutputs)init
@@ -29,7 +29,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C21681C0();
 
   v3 = sub_1C21708F4();

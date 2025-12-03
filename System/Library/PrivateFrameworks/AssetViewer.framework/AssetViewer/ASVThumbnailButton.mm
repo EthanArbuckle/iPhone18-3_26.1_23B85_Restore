@@ -3,9 +3,9 @@
 - (void)_setupButton;
 - (void)_updateSubviewVisibility;
 - (void)layoutSubviews;
-- (void)setError:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setThumbnail:(id)a3;
+- (void)setError:(id)error;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setThumbnail:(id)thumbnail;
 @end
 
 @implementation ASVThumbnailButton
@@ -48,8 +48,8 @@
   badgeView = self->_badgeView;
   self->_badgeView = v8;
 
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [(ASVThumbnailButton *)self setBackgroundColor:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(ASVThumbnailButton *)self setBackgroundColor:whiteColor];
 
   [(ASVThumbnailButton *)self addSubview:self->_loadingView];
   [(ASVThumbnailButton *)self addSubview:self->_imageView];
@@ -57,46 +57,46 @@
   [(ASVLoadingView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ASVBadgeView *)self->_badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(ASVBadgeView *)self->_badgeView topAnchor];
-  v12 = [(ASVThumbnailButton *)self topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(ASVBadgeView *)self->_badgeView topAnchor];
+  topAnchor2 = [(ASVThumbnailButton *)self topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   badgeTopConstraint = self->_badgeTopConstraint;
   self->_badgeTopConstraint = v13;
 
-  v15 = [(ASVBadgeView *)self->_badgeView trailingAnchor];
-  v16 = [(ASVThumbnailButton *)self trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  trailingAnchor = [(ASVBadgeView *)self->_badgeView trailingAnchor];
+  trailingAnchor2 = [(ASVThumbnailButton *)self trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   badgeTrailingConstraint = self->_badgeTrailingConstraint;
   self->_badgeTrailingConstraint = v17;
 
   v33 = MEMORY[0x277CCAAD0];
-  v42 = [(ASVLoadingView *)self->_loadingView centerXAnchor];
-  v41 = [(ASVThumbnailButton *)self centerXAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  centerXAnchor = [(ASVLoadingView *)self->_loadingView centerXAnchor];
+  centerXAnchor2 = [(ASVThumbnailButton *)self centerXAnchor];
+  v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v44[0] = v40;
-  v39 = [(ASVLoadingView *)self->_loadingView centerYAnchor];
-  v38 = [(ASVThumbnailButton *)self centerYAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  centerYAnchor = [(ASVLoadingView *)self->_loadingView centerYAnchor];
+  centerYAnchor2 = [(ASVThumbnailButton *)self centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v44[1] = v37;
-  v36 = [(ASVLoadingView *)self->_loadingView widthAnchor];
-  v35 = [(ASVThumbnailButton *)self widthAnchor];
-  v34 = [v36 constraintLessThanOrEqualToAnchor:v35];
+  widthAnchor = [(ASVLoadingView *)self->_loadingView widthAnchor];
+  widthAnchor2 = [(ASVThumbnailButton *)self widthAnchor];
+  v34 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   v44[2] = v34;
-  v32 = [(UIImageView *)self->_imageView leadingAnchor];
-  v31 = [(ASVThumbnailButton *)self leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor2 = [(ASVThumbnailButton *)self leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[3] = v30;
-  v29 = [(UIImageView *)self->_imageView trailingAnchor];
-  v19 = [(ASVThumbnailButton *)self trailingAnchor];
-  v20 = [v29 constraintEqualToAnchor:v19];
+  trailingAnchor3 = [(UIImageView *)self->_imageView trailingAnchor];
+  trailingAnchor4 = [(ASVThumbnailButton *)self trailingAnchor];
+  v20 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v44[4] = v20;
-  v21 = [(UIImageView *)self->_imageView topAnchor];
-  v22 = [(ASVThumbnailButton *)self topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  topAnchor3 = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor4 = [(ASVThumbnailButton *)self topAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v44[5] = v23;
-  v24 = [(UIImageView *)self->_imageView bottomAnchor];
-  v25 = [(ASVThumbnailButton *)self bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  bottomAnchor = [(UIImageView *)self->_imageView bottomAnchor];
+  bottomAnchor2 = [(ASVThumbnailButton *)self bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27 = self->_badgeTopConstraint;
   v44[6] = v26;
   v44[7] = v27;
@@ -108,52 +108,52 @@
   [(ASVThumbnailButton *)self setAccessibilityIgnoresInvertColors:1];
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  [(UIImageView *)self->_imageView setImage:a3];
+  [(UIImageView *)self->_imageView setImage:thumbnail];
 
   [(ASVThumbnailButton *)self _updateSubviewVisibility];
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  [(ASVLoadingView *)self->_loadingView setLoadingError:a3];
+  [(ASVLoadingView *)self->_loadingView setLoadingError:error];
 
   [(ASVThumbnailButton *)self _updateSubviewVisibility];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = ASVThumbnailButton;
   [(ASVThumbnailButton *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
-    v5 = [MEMORY[0x277D75348] colorWithWhite:0.7 alpha:1.0];
+    whiteColor = [MEMORY[0x277D75348] colorWithWhite:0.7 alpha:1.0];
     v6 = 3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     v6 = 0;
   }
 
-  [(ASVThumbnailButton *)self setBackgroundColor:v5];
+  [(ASVThumbnailButton *)self setBackgroundColor:whiteColor];
 
-  [(ASVBadgeView *)self->_badgeView setHighlighted:v3];
+  [(ASVBadgeView *)self->_badgeView setHighlighted:highlightedCopy];
   [(UIImageView *)self->_imageView setDrawMode:v6];
 }
 
 - (void)_updateSubviewVisibility
 {
-  v3 = [(ASVThumbnailButton *)self thumbnail];
+  thumbnail = [(ASVThumbnailButton *)self thumbnail];
   v4 = 0.0;
-  if (v3)
+  if (thumbnail)
   {
-    v5 = [(ASVThumbnailButton *)self error];
-    if (v5)
+    error = [(ASVThumbnailButton *)self error];
+    if (error)
     {
       v4 = 0.0;
     }
@@ -164,11 +164,11 @@
     }
   }
 
-  v6 = [(ASVThumbnailButton *)self thumbnail];
+  thumbnail2 = [(ASVThumbnailButton *)self thumbnail];
 
   [(UIImageView *)self->_imageView setAlpha:v4];
   v7 = 1.0;
-  if (v6)
+  if (thumbnail2)
   {
     v7 = 0.0;
   }
@@ -191,12 +191,12 @@
   {
     [(ASVThumbnailButton *)self bounds];
     [(ASVBadgeView *)self->_badgeView setThumbnailSize:v10, v11];
-    v12 = [(ASVBadgeView *)self->_badgeView badgeDescription];
-    [v12 badgeOffset];
+    badgeDescription = [(ASVBadgeView *)self->_badgeView badgeDescription];
+    [badgeDescription badgeOffset];
     [(NSLayoutConstraint *)self->_badgeTopConstraint setConstant:v13];
 
-    v14 = [(ASVBadgeView *)self->_badgeView badgeDescription];
-    [v14 badgeOffset];
+    badgeDescription2 = [(ASVBadgeView *)self->_badgeView badgeDescription];
+    [badgeDescription2 badgeOffset];
     [(NSLayoutConstraint *)self->_badgeTrailingConstraint setConstant:-v15];
   }
 }

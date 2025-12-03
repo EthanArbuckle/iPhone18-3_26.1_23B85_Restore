@@ -10,14 +10,14 @@
 - (void)migrateFromOldStorage
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a1 alarms];
-  v5 = [a1 sleepAlarm];
+  alarms = [self alarms];
+  sleepAlarm = [self sleepAlarm];
   v7 = 138543874;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2114;
-  v10 = v4;
+  v10 = alarms;
   v11 = 2114;
-  v12 = v5;
+  v12 = sleepAlarm;
   _os_log_debug_impl(&dword_1B1F9F000, a2, OS_LOG_TYPE_DEBUG, "%{public}@ migrated to alarms: %{public}@ and sleep alarm: %{public}@", &v7, 0x20u);
 
   v6 = *MEMORY[0x1E69E9840];
@@ -58,7 +58,7 @@ void __40__MTAlarmMigrator_migrateFromOldStorage__block_invoke(uint64_t a1, uint
     if (v5)
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping migration removal, as this device doesn't support the old storage", &v7, 0xCu);
     }
   }
@@ -68,7 +68,7 @@ void __40__MTAlarmMigrator_migrateFromOldStorage__block_invoke(uint64_t a1, uint
     if (v5)
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ removing old alarms and notifications from storage", &v7, 0xCu);
     }
 
@@ -90,7 +90,7 @@ void __40__MTAlarmMigrator_migrateFromOldStorage__block_invoke(uint64_t a1, uint
     if (v5)
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ notification cleanup, as this device doesn't support the old storage", &v7, 0xCu);
     }
   }
@@ -100,7 +100,7 @@ void __40__MTAlarmMigrator_migrateFromOldStorage__block_invoke(uint64_t a1, uint
     if (v5)
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ cleaning up old notifications", &v7, 0xCu);
     }
 

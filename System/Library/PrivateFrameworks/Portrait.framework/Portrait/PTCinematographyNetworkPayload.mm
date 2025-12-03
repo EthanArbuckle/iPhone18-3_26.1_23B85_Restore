@@ -1,23 +1,23 @@
 @interface PTCinematographyNetworkPayload
-- (PTCinematographyNetworkPayload)initWithTime:(id *)a3 detection:(id)a4 missing:(BOOL)a5;
+- (PTCinematographyNetworkPayload)initWithTime:(id *)time detection:(id)detection missing:(BOOL)missing;
 @end
 
 @implementation PTCinematographyNetworkPayload
 
-- (PTCinematographyNetworkPayload)initWithTime:(id *)a3 detection:(id)a4 missing:(BOOL)a5
+- (PTCinematographyNetworkPayload)initWithTime:(id *)time detection:(id)detection missing:(BOOL)missing
 {
-  v9 = a4;
+  detectionCopy = detection;
   v14.receiver = self;
   v14.super_class = PTCinematographyNetworkPayload;
   v10 = [(PTCinematographyNetworkPayload *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v12 = *&a3->var0;
-    *(v10 + 5) = a3->var3;
+    v12 = *&time->var0;
+    *(v10 + 5) = time->var3;
     *(v10 + 24) = v12;
-    objc_storeStrong(v10 + 2, a4);
-    v11->_isMissingDetection = a5;
+    objc_storeStrong(v10 + 2, detection);
+    v11->_isMissingDetection = missing;
   }
 
   return v11;

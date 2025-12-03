@@ -1,37 +1,37 @@
 @interface AKFollowUpViewController
-- (BOOL)_shouldFetchUserInformationForAccount:(id)a3;
-- (id)_URLWithString:(id)a3 byAppendingParameters:(id)a4;
+- (BOOL)_shouldFetchUserInformationForAccount:(id)account;
+- (id)_URLWithString:(id)string byAppendingParameters:(id)parameters;
 - (id)_primaryAppleAccount;
-- (void)_beginServerUIRequest:(id)a3 completion:(id)a4;
-- (void)_fetchUserInformationIfNeededForAltDSID:(id)a3 completion:(id)a4;
-- (void)_handleAuthKitAction:(id)a3 forItem:(id)a4 telemetryFlowID:(id)a5 completion:(id)a6;
-- (void)_handleAuthKitSignal:(unint64_t)a3 forItem:(id)a4 completion:(id)a5;
-- (void)_handleFinalServerResponse:(id)a3 completion:(id)a4;
-- (void)_handleLocalURLKey:(id)a3 withActionIdentifier:(id)a4 forItem:(id)a5 completion:(id)a6;
-- (void)_handleSensitiveURL:(id)a3 withActionIdentifier:(id)a4 completion:(id)a5;
-- (void)_handleURL:(id)a3 withActionIdentifier:(id)a4 completion:(id)a5;
-- (void)_handleURLKey:(id)a3 withAction:(id)a4 forItem:(id)a5 telemetryFlowID:(id)a6 completion:(id)a7;
-- (void)_prepareAuthContextForAltDSID:(id)a3 telemetryFlowID:(id)a4;
-- (void)_reauthenticateContext:(id)a3;
-- (void)_refreshServerUIDelegateWithParentContext:(id)a3 item:(id)a4 completion:(id)a5;
-- (void)_startCDPRepairWithAdditionalData:(id)a3 completion:(id)a4;
-- (void)_startShowingServerUI:(id)a3;
-- (void)_updateAccountUsernameWithHarvestedData:(id)a3;
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
-- (void)sendCFUClickedEventWithTelemetryFlowID:(id)a3 altDSID:(id)a4 identifier:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_beginServerUIRequest:(id)request completion:(id)completion;
+- (void)_fetchUserInformationIfNeededForAltDSID:(id)d completion:(id)completion;
+- (void)_handleAuthKitAction:(id)action forItem:(id)item telemetryFlowID:(id)d completion:(id)completion;
+- (void)_handleAuthKitSignal:(unint64_t)signal forItem:(id)item completion:(id)completion;
+- (void)_handleFinalServerResponse:(id)response completion:(id)completion;
+- (void)_handleLocalURLKey:(id)key withActionIdentifier:(id)identifier forItem:(id)item completion:(id)completion;
+- (void)_handleSensitiveURL:(id)l withActionIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleURL:(id)l withActionIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleURLKey:(id)key withAction:(id)action forItem:(id)item telemetryFlowID:(id)d completion:(id)completion;
+- (void)_prepareAuthContextForAltDSID:(id)d telemetryFlowID:(id)iD;
+- (void)_reauthenticateContext:(id)context;
+- (void)_refreshServerUIDelegateWithParentContext:(id)context item:(id)item completion:(id)completion;
+- (void)_startCDPRepairWithAdditionalData:(id)data completion:(id)completion;
+- (void)_startShowingServerUI:(id)i;
+- (void)_updateAccountUsernameWithHarvestedData:(id)data;
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
+- (void)sendCFUClickedEventWithTelemetryFlowID:(id)d altDSID:(id)iD identifier:(id)identifier;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation AKFollowUpViewController
 
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v21 = _os_activity_create(&_mh_execute_header, "authkit-ext/synchronize-follow-ups", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v22 = v21;
   state.opaque[0] = 0;
@@ -49,11 +49,11 @@
   v8 = +[AKFollowUpProviderFactory sharedAuthKitFollowupProvider];
   [v11 setFollowupProvider:?];
 
-  v7 = [(AKFollowUpViewController *)v24 _primaryAppleAccount];
+  _primaryAppleAccount = [(AKFollowUpViewController *)selfCopy _primaryAppleAccount];
   v6 = +[AKAccountManager sharedInstance];
-  v4 = [(AKAccountManager *)v6 store];
+  store = [(AKAccountManager *)v6 store];
   v9[1] = 0;
-  v5 = [v11 synchronizeFollowUpsForAccount:v7 inStore:? error:?];
+  v5 = [v11 synchronizeFollowUpsForAccount:_primaryAppleAccount inStore:? error:?];
   objc_storeStrong(&v12, 0);
 
   v10 = v5;
@@ -69,8 +69,8 @@
     objc_storeStrong(v9, 0);
   }
 
-  v3 = [v12 domain];
-  if ([v3 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+  domain = [v12 domain];
+  if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
   {
     [v12 code];
   }
@@ -101,21 +101,21 @@
 
   objc_storeStrong(location, 0);
   v3 = +[AKAccountManager sharedInstance];
-  v4 = [(AKAccountManager *)v3 primaryiCloudAccount];
+  primaryiCloudAccount = [(AKAccountManager *)v3 primaryiCloudAccount];
 
-  return v4;
+  return primaryiCloudAccount;
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v97 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v95 = 0;
-  objc_storeStrong(&v95, a4);
+  objc_storeStrong(&v95, action);
   v94 = 0;
-  objc_storeStrong(&v94, a5);
+  objc_storeStrong(&v94, completion);
   v92 = _os_activity_create(&_mh_execute_header, "authkit-ext/process-follow-up-action", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v93 = v92;
   state.opaque[0] = 0;
@@ -125,24 +125,24 @@
   v89 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [location[0] uniqueIdentifier];
-    v38 = [location[0] userInfo];
-    v37 = [v38 objectForKeyedSubscript:AKFollowUpAltDSIDKey];
-    v36 = [v95 userInfo];
-    v35 = [v36 objectForKeyedSubscript:AKFollowUpURLKey];
-    sub_100003A10(v99, v39, 1752392040, v37, v35);
+    uniqueIdentifier = [location[0] uniqueIdentifier];
+    userInfo = [location[0] userInfo];
+    v37 = [userInfo objectForKeyedSubscript:AKFollowUpAltDSIDKey];
+    userInfo2 = [v95 userInfo];
+    v35 = [userInfo2 objectForKeyedSubscript:AKFollowUpURLKey];
+    sub_100003A10(v99, uniqueIdentifier, 1752392040, v37, v35);
     _os_log_impl(&_mh_execute_header, v90, v89, "AKFollowUpViewController processFollowUpItem: %@ altDSID: %{mask.hash}@ urlKey: %@", v99, 0x2Au);
   }
 
   objc_storeStrong(&v90, 0);
   v34 = +[NSUUID UUID];
-  v88 = [(NSUUID *)v34 UUIDString];
+  uUIDString = [(NSUUID *)v34 UUIDString];
 
-  v33 = v97;
-  v32 = [location[0] userInfo];
-  v31 = [v32 objectForKeyedSubscript:AKFollowUpAltDSIDKey];
-  v30 = [location[0] uniqueIdentifier];
-  [(AKFollowUpViewController *)v33 sendCFUClickedEventWithTelemetryFlowID:v88 altDSID:v31 identifier:?];
+  v33 = selfCopy;
+  userInfo3 = [location[0] userInfo];
+  v31 = [userInfo3 objectForKeyedSubscript:AKFollowUpAltDSIDKey];
+  uniqueIdentifier2 = [location[0] uniqueIdentifier];
+  [(AKFollowUpViewController *)v33 sendCFUClickedEventWithTelemetryFlowID:uUIDString altDSID:v31 identifier:?];
 
   v77 = _NSConcreteStackBlock;
   v78 = -1073741824;
@@ -150,42 +150,42 @@
   v80 = sub_100003A90;
   v81 = &unk_1000103F8;
   v82 = v95;
-  v83 = v97;
+  v83 = selfCopy;
   v84 = location[0];
-  v85 = v88;
+  v85 = uUIDString;
   v86 = v94;
   v87 = objc_retainBlock(&v77);
-  objc_storeStrong(&v97->_item, location[0]);
+  objc_storeStrong(&selfCopy->_item, location[0]);
   oslog = _AKLogSystem();
   v75 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
     v29 = location[0];
-    v28 = [v95 userInfo];
-    sub_100003CAC(v98, v29, v28);
+    userInfo4 = [v95 userInfo];
+    sub_100003CAC(v98, v29, userInfo4);
     _os_log_debug_impl(&_mh_execute_header, oslog, v75, "Processing Item: %@ - %@", v98, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v27 = [v95 userInfo];
-  v74 = [v27 objectForKeyedSubscript:AKActionKey];
+  userInfo5 = [v95 userInfo];
+  v74 = [userInfo5 objectForKeyedSubscript:AKActionKey];
 
-  v26 = [v95 userInfo];
-  v73 = [v26 objectForKeyedSubscript:AKFollowUpURLKey];
+  userInfo6 = [v95 userInfo];
+  v73 = [userInfo6 objectForKeyedSubscript:AKFollowUpURLKey];
 
-  v25 = [v95 userInfo];
-  v24 = [v25 objectForKeyedSubscript:AKFollowUpSafariURLKey];
+  userInfo7 = [v95 userInfo];
+  v24 = [userInfo7 objectForKeyedSubscript:AKFollowUpSafariURLKey];
   v72 = [NSURL URLWithString:?];
 
-  v23 = [v95 userInfo];
-  v71 = [v23 objectForKeyedSubscript:@"AKFollowUpLocalURLKey"];
+  userInfo8 = [v95 userInfo];
+  v71 = [userInfo8 objectForKeyedSubscript:@"AKFollowUpLocalURLKey"];
 
   if (v74)
   {
-    v22 = v97;
+    v22 = selfCopy;
     v19 = v74;
     v20 = location[0];
-    v21 = v88;
+    v21 = uUIDString;
     v65 = _NSConcreteStackBlock;
     v66 = -1073741824;
     v67 = 0;
@@ -198,11 +198,11 @@
 
   else if (v73)
   {
-    v18 = v97;
+    v18 = selfCopy;
     v14 = v73;
     v15 = v95;
     v16 = location[0];
-    v17 = v88;
+    v17 = uUIDString;
     v58 = _NSConcreteStackBlock;
     v59 = -1073741824;
     v60 = 0;
@@ -217,25 +217,25 @@
 
   else if (v72)
   {
-    v12 = v97;
+    v12 = selfCopy;
     v13 = v72;
-    v11 = [v95 identifier];
+    identifier = [v95 identifier];
     v52 = _NSConcreteStackBlock;
     v53 = -1073741824;
     v54 = 0;
     v55 = sub_100003EC4;
     v56 = &unk_100010420;
     v57 = v87;
-    [(AKFollowUpViewController *)v12 _handleURL:v13 withActionIdentifier:v11 completion:&v52];
+    [(AKFollowUpViewController *)v12 _handleURL:v13 withActionIdentifier:identifier completion:&v52];
 
     objc_storeStrong(&v57, 0);
   }
 
   else if (v71)
   {
-    v9 = v97;
+    v9 = selfCopy;
     v10 = v71;
-    v7 = [v95 identifier];
+    identifier2 = [v95 identifier];
     v8 = location[0];
     v45 = _NSConcreteStackBlock;
     v46 = -1073741824;
@@ -244,7 +244,7 @@
     v49 = &unk_100010470;
     v51 = v87;
     v50 = location[0];
-    [(AKFollowUpViewController *)v9 _handleLocalURLKey:v10 withActionIdentifier:v7 forItem:v8 completion:&v45];
+    [(AKFollowUpViewController *)v9 _handleLocalURLKey:v10 withActionIdentifier:identifier2 forItem:v8 completion:&v45];
 
     objc_storeStrong(&v50, 0);
     objc_storeStrong(&v51, 0);
@@ -279,7 +279,7 @@
   objc_storeStrong(&v84, 0);
   objc_storeStrong(&v83, 0);
   objc_storeStrong(&v82, 0);
-  objc_storeStrong(&v88, 0);
+  objc_storeStrong(&uUIDString, 0);
   os_activity_scope_leave(&state);
   objc_storeStrong(&v93, 0);
   objc_storeStrong(&v94, 0);
@@ -287,20 +287,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleURLKey:(id)a3 withAction:(id)a4 forItem:(id)a5 telemetryFlowID:(id)a6 completion:(id)a7
+- (void)_handleURLKey:(id)key withAction:(id)action forItem:(id)item telemetryFlowID:(id)d completion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, action);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
+  objc_storeStrong(&v38, item);
   v37 = 0;
-  objc_storeStrong(&v37, a6);
+  objc_storeStrong(&v37, d);
   v36 = 0;
-  objc_storeStrong(&v36, a7);
+  objc_storeStrong(&v36, completion);
   v35 = _AKLogSystem();
   v34 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -310,16 +310,16 @@
   }
 
   objc_storeStrong(&v35, 0);
-  objc_storeStrong(&v41->_urlKey, location[0]);
-  v7 = [v39 identifier];
-  v8 = [v7 isEqualToString:@"continuity_push_followup_notification"];
+  objc_storeStrong(&selfCopy->_urlKey, location[0]);
+  identifier = [v39 identifier];
+  v8 = [identifier isEqualToString:@"continuity_push_followup_notification"];
 
   v33 = v8;
-  v9 = [v38 userInfo];
-  v32 = [v9 objectForKeyedSubscript:AKFollowUpAltDSIDKey];
+  userInfo = [v38 userInfo];
+  v32 = [userInfo objectForKeyedSubscript:AKFollowUpAltDSIDKey];
 
-  v10 = [v39 userInfo];
-  v31 = [v10 objectForKeyedSubscript:AKActionKey];
+  userInfo2 = [v39 userInfo];
+  v31 = [userInfo2 objectForKeyedSubscript:AKActionKey];
 
   v12 = [AKURLBag bagForAltDSID:v32];
   v11 = location[0];
@@ -328,7 +328,7 @@
   v19 = 0;
   v20 = sub_1000045A0;
   v21 = &unk_1000104C0;
-  v22 = v41;
+  v22 = selfCopy;
   v23 = location[0];
   v29 = v36;
   v30 = v33 & 1;
@@ -356,16 +356,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleURL:(id)a3 withActionIdentifier:(id)a4 completion:(id)a5
+- (void)_handleURL:(id)l withActionIdentifier:(id)identifier completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, identifier);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, completion);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -392,16 +392,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleSensitiveURL:(id)a3 withActionIdentifier:(id)a4 completion:(id)a5
+- (void)_handleSensitiveURL:(id)l withActionIdentifier:(id)identifier completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, identifier);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, completion);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -427,18 +427,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleLocalURLKey:(id)a3 withActionIdentifier:(id)a4 forItem:(id)a5 completion:(id)a6
+- (void)_handleLocalURLKey:(id)key withActionIdentifier:(id)identifier forItem:(id)item completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, identifier);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, item);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -448,8 +448,8 @@
   }
 
   objc_storeStrong(&v23, 0);
-  v6 = [v25 userInfo];
-  v21 = [v6 objectForKeyedSubscript:AKFollowUpAltDSIDKey];
+  userInfo = [v25 userInfo];
+  v21 = [userInfo objectForKeyedSubscript:AKFollowUpAltDSIDKey];
 
   v8 = [AKURLBag bagForAltDSID:v21];
   v7 = location[0];
@@ -458,7 +458,7 @@
   v14 = 0;
   v15 = sub_10000566C;
   v16 = &unk_100010510;
-  v17 = v28;
+  v17 = selfCopy;
   v18 = v26;
   v20 = v24;
   v19 = location[0];
@@ -475,18 +475,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAuthKitAction:(id)a3 forItem:(id)a4 telemetryFlowID:(id)a5 completion:(id)a6
+- (void)_handleAuthKitAction:(id)action forItem:(id)item telemetryFlowID:(id)d completion:(id)completion
 {
-  v63 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v61 = 0;
-  objc_storeStrong(&v61, a4);
+  objc_storeStrong(&v61, item);
   v60 = 0;
-  objc_storeStrong(&v60, a5);
+  objc_storeStrong(&v60, d);
   v59 = 0;
-  objc_storeStrong(&v59, a6);
+  objc_storeStrong(&v59, completion);
   v58 = _AKLogSystem();
   v57 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -502,7 +502,7 @@
   v53 = 48;
   v54 = sub_100006328;
   v55 = sub_100006380;
-  v56 = v63;
+  v56 = selfCopy;
   v44 = _NSConcreteStackBlock;
   v45 = -1073741824;
   v46 = 0;
@@ -511,25 +511,25 @@
   v49[1] = v51;
   v49[0] = v59;
   v50 = objc_retainBlock(&v44);
-  v16 = [v61 userInfo];
-  v43 = [v16 objectForKeyedSubscript:AKFollowUpAltDSIDKey];
+  userInfo = [v61 userInfo];
+  v43 = [userInfo objectForKeyedSubscript:AKFollowUpAltDSIDKey];
 
-  v15 = [v61 userInfo];
-  v42 = [v15 objectForKeyedSubscript:@"txnid"];
+  userInfo2 = [v61 userInfo];
+  v42 = [userInfo2 objectForKeyedSubscript:@"txnid"];
 
-  v14 = [v61 userInfo];
-  v41 = [v14 objectForKeyedSubscript:AKIdmsDataKey];
+  userInfo3 = [v61 userInfo];
+  v41 = [userInfo3 objectForKeyedSubscript:AKIdmsDataKey];
 
   v40 = 0;
-  v12 = [v61 actions];
-  v13 = [v12 count];
+  actions = [v61 actions];
+  v13 = [actions count];
 
   if (v13)
   {
-    v11 = [v61 actions];
-    v10 = [v11 firstObject];
-    v9 = [v10 identifier];
-    v40 = [v9 isEqualToString:@"continuity_push_followup_notification"];
+    actions2 = [v61 actions];
+    firstObject = [actions2 firstObject];
+    identifier = [firstObject identifier];
+    v40 = [identifier isEqualToString:@"continuity_push_followup_notification"];
   }
 
   v33 = 0;
@@ -540,7 +540,7 @@
   v38 = sub_100006380;
   v39 = objc_alloc_init(AKAppleIDAuthenticationController);
   v32 = objc_opt_new();
-  v8 = [v61 uniqueIdentifier];
+  uniqueIdentifier = [v61 uniqueIdentifier];
   [v32 setItemIdentifier:?];
 
   [v32 setAkAction:location[0]];
@@ -576,7 +576,7 @@
   v25 = v61;
   v26 = location[0];
   v27 = v43;
-  v28 = v63;
+  v28 = selfCopy;
   v29[0] = v50;
   v29[1] = &v33;
   [v7 teardownFollowUpWithContext:v6 completion:&v20];
@@ -601,14 +601,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_prepareAuthContextForAltDSID:(id)a3 telemetryFlowID:(id)a4
+- (void)_prepareAuthContextForAltDSID:(id)d telemetryFlowID:(id)iD
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, iD);
   v12 = _AKLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -618,55 +618,55 @@
 
   objc_storeStrong(&v12, 0);
   v4 = objc_alloc_init(AKAppleIDAuthenticationInAppExtensionContext);
-  authContext = v15->_authContext;
-  v15->_authContext = v4;
+  authContext = selfCopy->_authContext;
+  selfCopy->_authContext = v4;
 
-  [(AKAppleIDAuthenticationInAppExtensionContext *)v15->_authContext set_shouldSendIdentityTokenForRemoteUI:0];
+  [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext set_shouldSendIdentityTokenForRemoteUI:0];
   v10 = +[AKAccountManager sharedInstance];
   v9 = [(AKAccountManager *)v10 authKitAccountWithAltDSID:location[0] error:0];
-  v8 = [v9 username];
-  [(AKAppleIDAuthenticationInAppExtensionContext *)v15->_authContext setUsername:?];
+  username = [v9 username];
+  [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext setUsername:?];
 
-  [(AKAppleIDAuthenticationInAppExtensionContext *)v15->_authContext setAltDSID:location[0]];
-  [(AKAppleIDAuthenticationInAppExtensionContext *)v15->_authContext setTelemetryFlowID:v13];
-  [(AKAppleIDAuthenticationInAppExtensionContext *)v15->_authContext setCellularDataAttributionAppBundleID:AKCellularDataAttributionAppBundleIDAuthKit];
-  [(AKAppleIDAuthenticationInAppExtensionContext *)v15->_authContext setPresentingViewController:v15];
+  [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext setAltDSID:location[0]];
+  [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext setTelemetryFlowID:v13];
+  [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext setCellularDataAttributionAppBundleID:AKCellularDataAttributionAppBundleIDAuthKit];
+  [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext setPresentingViewController:selfCopy];
   v6 = objc_alloc_init(AKAppleIDAuthenticationController);
-  authController = v15->_authController;
-  v15->_authController = v6;
+  authController = selfCopy->_authController;
+  selfCopy->_authController = v6;
 
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_refreshServerUIDelegateWithParentContext:(id)a3 item:(id)a4 completion:(id)a5
+- (void)_refreshServerUIDelegateWithParentContext:(id)context item:(id)item completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, item);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, completion);
   if (!v18)
   {
     __assert_rtn("[AKFollowUpViewController _refreshServerUIDelegateWithParentContext:item:completion:]", "AKFollowUpViewController.m", 371, "completion");
   }
 
   v17 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  v5 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   [v17 setAltDSID:?];
 
   [v17 setAnticipateEscrowAttempt:1];
-  authController = v21->_authController;
+  authController = selfCopy->_authController;
   v6 = v17;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_100006C9C;
   v14 = &unk_100010588;
-  v15 = v21;
+  v15 = selfCopy;
   v16 = v18;
   [(AKAppleIDAuthenticationController *)authController getServerUILoadDelegateWithContext:v6 completion:&v10];
   objc_storeStrong(&v16, 0);
@@ -679,41 +679,41 @@
 
 - (void)viewDidLoad
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = AKFollowUpViewController;
   [(AKFollowUpViewController *)&v4 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v2 = [(AKFollowUpViewController *)v6 view];
-  [v2 setBackgroundColor:v3];
+  view = [(AKFollowUpViewController *)selfCopy view];
+  [view setBackgroundColor:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = AKFollowUpViewController;
-  [(AKFollowUpViewController *)&v10 viewDidAppear:a3];
-  v3 = v13;
+  [(AKFollowUpViewController *)&v10 viewDidAppear:appear];
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100006F08;
   v8 = &unk_1000105B0;
-  v9 = v13;
+  v9 = selfCopy;
   [(AKFollowUpViewController *)v3 _startShowingServerUI:?];
   objc_storeStrong(&v9, 0);
 }
 
-- (void)_startShowingServerUI:(id)a3
+- (void)_startShowingServerUI:(id)i
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, i);
   if (!location[0])
   {
     __assert_rtn("[AKFollowUpViewController _startShowingServerUI:]", "AKFollowUpViewController.m", 425, "completion");
@@ -724,19 +724,19 @@
   v17 = 0;
   v18 = sub_1000072A4;
   v19 = &unk_100010600;
-  v20 = v24;
+  v20 = selfCopy;
   v21 = location[0];
   v22 = objc_retainBlock(&v15);
   v3 = [NSURLRequest alloc];
-  v14 = [v3 initWithURL:v24->_url];
-  v5 = v24;
+  v14 = [v3 initWithURL:selfCopy->_url];
+  v5 = selfCopy;
   v4 = v14;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_1000078B4;
   v10 = &unk_100010650;
-  v11 = v24;
+  v11 = selfCopy;
   v13 = v22;
   v12 = v14;
   [(AKFollowUpViewController *)v5 _beginServerUIRequest:v4 completion:&v6];
@@ -750,14 +750,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleFinalServerResponse:(id)a3 completion:(id)a4
+- (void)_handleFinalServerResponse:(id)response completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -766,56 +766,56 @@
   }
 
   objc_storeStrong(&v7, 0);
-  v5 = v10;
+  v5 = selfCopy;
   v4 = [AKAppleIDServerResourceLoadDelegate signalFromServerResponse:location[0]];
-  [(AKFollowUpViewController *)v5 _handleAuthKitSignal:v4 forItem:v10->_item completion:v8];
+  [(AKFollowUpViewController *)v5 _handleAuthKitSignal:v4 forItem:selfCopy->_item completion:v8];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAuthKitSignal:(unint64_t)a3 forItem:(id)a4 completion:(id)a5
+- (void)_handleAuthKitSignal:(unint64_t)signal forItem:(id)item completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  signalCopy = signal;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, item);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v8 = _AKLogSystem();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100007F30(v14, v11);
+    sub_100007F30(v14, signalCopy);
     _os_log_impl(&_mh_execute_header, v8, v7, "Sending tear down with signal: %lu", v14, 0xCu);
   }
 
   objc_storeStrong(&v8, 0);
   v6 = 0;
-  if (v11 == 7)
+  if (signalCopy == 7)
   {
     objc_storeStrong(&v6, AKActionDelete);
   }
 
-  else if (v11 == 8)
+  else if (signalCopy == 8)
   {
     objc_storeStrong(&v6, AKActionTeardown);
   }
 
-  [AKFollowUpViewController _handleAuthKitAction:v13 forItem:"_handleAuthKitAction:forItem:telemetryFlowID:completion:" telemetryFlowID:v6 completion:location];
+  [AKFollowUpViewController _handleAuthKitAction:selfCopy forItem:"_handleAuthKitAction:forItem:telemetryFlowID:completion:" telemetryFlowID:v6 completion:location];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)_beginServerUIRequest:(id)a3 completion:(id)a4
+- (void)_beginServerUIRequest:(id)request completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, completion);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -827,16 +827,16 @@
   objc_storeStrong(&v17, 0);
   v4 = [AKServerRequestConfiguration alloc];
   v15 = [v4 initWithRequest:location[0] requestType:0];
-  [v15 setUrlConfiguration:v20->_urlConfiguration];
-  [v15 setResourceLoadDelegate:v20->_serverUIDelegate];
-  authContext = v20->_authContext;
+  [v15 setUrlConfiguration:selfCopy->_urlConfiguration];
+  [v15 setResourceLoadDelegate:selfCopy->_serverUIDelegate];
+  authContext = selfCopy->_authContext;
   v5 = v15;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000081DC;
   v12 = &unk_100010600;
-  v13 = v20;
+  v13 = selfCopy;
   v14 = v18;
   [(AKAppleIDAuthenticationInAppExtensionContext *)authContext presentServerProvidedUIWithConfiguration:v5 completion:&v8];
   objc_storeStrong(&v14, 0);
@@ -846,17 +846,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateAccountUsernameWithHarvestedData:(id)a3
+- (void)_updateAccountUsernameWithHarvestedData:(id)data
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v10 = [location[0] objectForKeyedSubscript:AKAuthenticationUsernameKey];
   if ([v10 length])
   {
     v6 = +[AKAccountManager sharedInstance];
-    v5 = [(AKAppleIDAuthenticationInAppExtensionContext *)v12->_authContext altDSID];
+    altDSID = [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext altDSID];
     [(AKAccountManager *)v6 updateUsername:v10 forAccountsWithAltDSID:?];
   }
 
@@ -879,14 +879,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_startCDPRepairWithAdditionalData:(id)a3 completion:(id)a4
+- (void)_startCDPRepairWithAdditionalData:(id)data completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v4 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
   v7 = _NSConcreteStackBlock;
@@ -894,7 +894,7 @@
   v9 = 0;
   v10 = sub_10000883C;
   v11 = &unk_1000106A0;
-  v12 = v17;
+  v12 = selfCopy;
   v13 = location[0];
   v14 = v15;
   dispatch_async(queue, &v7);
@@ -906,12 +906,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_reauthenticateContext:(id)a3
+- (void)_reauthenticateContext:(id)context
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = _AKLogSystem();
   v21 = 2;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -926,15 +926,15 @@
   v19 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
   v18 = objc_alloc_init(AKAppleIDAuthenticationController);
   v3 = v19;
-  v4 = [(AKAppleIDAuthenticationInAppExtensionContext *)v24->_authContext username];
+  username = [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext username];
   [v3 setUsername:?];
 
   v5 = v19;
-  v6 = [(AKAppleIDAuthenticationInAppExtensionContext *)v24->_authContext altDSID];
+  altDSID = [(AKAppleIDAuthenticationInAppExtensionContext *)selfCopy->_authContext altDSID];
   [v5 setAltDSID:?];
 
   [v19 setIsUsernameEditable:0];
-  [v19 setPresentingViewController:v24];
+  [v19 setPresentingViewController:selfCopy];
   v8 = v18;
   v7 = v19;
   v11 = _NSConcreteStackBlock;
@@ -942,7 +942,7 @@
   v13 = 0;
   v14 = sub_100008DB4;
   v15 = &unk_1000106C8;
-  v16 = v24;
+  v16 = selfCopy;
   v17 = location[0];
   [v8 authenticateWithContext:v7 completion:&v11];
   objc_storeStrong(&v17, 0);
@@ -952,18 +952,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchUserInformationIfNeededForAltDSID:(id)a3 completion:(id)a4
+- (void)_fetchUserInformationIfNeededForAltDSID:(id)d completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v7 = +[AKAccountManager sharedInstance];
   v15 = [(AKAccountManager *)v7 authKitAccountWithAltDSID:location[0] error:0];
 
-  if (v15 && [(AKFollowUpViewController *)v18 _shouldFetchUserInformationForAccount:v15])
+  if (v15 && [(AKFollowUpViewController *)selfCopy _shouldFetchUserInformationForAccount:v15])
   {
     v14 = objc_alloc_init(AKAppleIDAuthenticationController);
     v5 = v14;
@@ -989,12 +989,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldFetchUserInformationForAccount:(id)a3
+- (BOOL)_shouldFetchUserInformationForAccount:(id)account
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = +[AKAccountManager sharedInstance];
   v5 = [(AKAccountManager *)v4 repairStateForAccount:location[0]];
 
@@ -1008,18 +1008,18 @@
   return v6;
 }
 
-- (id)_URLWithString:(id)a3 byAppendingParameters:(id)a4
+- (id)_URLWithString:(id)string byAppendingParameters:(id)parameters
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, parameters);
   v18 = [location[0] mutableCopy];
   memset(__b, 0, sizeof(__b));
-  v14 = [v19 keyEnumerator];
-  v15 = [v14 countByEnumeratingWithState:__b objects:v21 count:16];
+  keyEnumerator = [v19 keyEnumerator];
+  v15 = [keyEnumerator countByEnumeratingWithState:__b objects:v21 count:16];
   if (v15)
   {
     v10 = *__b[2];
@@ -1030,7 +1030,7 @@
       v9 = v11;
       if (*__b[2] != v10)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v17 = *(__b[1] + 8 * v11);
@@ -1043,7 +1043,7 @@
       if (v9 + 1 >= v12)
       {
         v11 = 0;
-        v12 = [v14 countByEnumeratingWithState:__b objects:v21 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:__b objects:v21 count:16];
         if (!v12)
         {
           break;
@@ -1060,16 +1060,16 @@
   return v5;
 }
 
-- (void)sendCFUClickedEventWithTelemetryFlowID:(id)a3 altDSID:(id)a4 identifier:(id)a5
+- (void)sendCFUClickedEventWithTelemetryFlowID:(id)d altDSID:(id)iD identifier:(id)identifier
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, iD);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, identifier);
   if (v11)
   {
     v9 = objc_alloc_init(AAAFollowUpAnalyticsInfo);

@@ -1,22 +1,22 @@
 @interface VNHorizonObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformForImageWidth:(SEL)a3 height:(size_t)width;
-- (VNHorizonObservation)initWithCoder:(id)a3;
-- (double)angleInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
+- (CGAffineTransform)transformForImageWidth:(SEL)width height:(size_t)width;
+- (VNHorizonObservation)initWithCoder:(id)coder;
+- (double)angleInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation VNHorizonObservation
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_transform.a = *&transform->a;
   *&self->_transform.c = v4;
   *&self->_transform.tx = v3;
 }
@@ -30,12 +30,12 @@
   return self;
 }
 
-- (CGAffineTransform)transformForImageWidth:(SEL)a3 height:(size_t)width
+- (CGAffineTransform)transformForImageWidth:(SEL)width height:(size_t)width
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v7 = width;
+  widthCopy = width;
   v8 = height;
   CGAffineTransformMakeTranslation(retstr, vcvtd_n_f64_u64(width, 1uLL), vcvtd_n_f64_u64(height, 1uLL));
   [(VNHorizonObservation *)self angle:*&retstr->a];
@@ -48,7 +48,7 @@
   *&v14.a = *&retstr->a;
   *&v14.c = v11;
   *&v14.tx = *&retstr->tx;
-  result = CGAffineTransformTranslate(&v15, &v14, v7 * -0.5, v8 * -0.5);
+  result = CGAffineTransformTranslate(&v15, &v14, widthCopy * -0.5, v8 * -0.5);
   v13 = *&v15.c;
   *&retstr->a = *&v15.a;
   *&retstr->c = v13;
@@ -56,10 +56,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -68,9 +68,9 @@
   {
     v13.receiver = self;
     v13.super_class = VNHorizonObservation;
-    if ([(VNObservation *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNHorizonObservation *)self transform];
       if (v5)
       {
@@ -126,48 +126,48 @@
 {
   v8.receiver = self;
   v8.super_class = VNHorizonObservation;
-  v3 = [(VNObservation *)&v8 vn_cloneObject];
-  v4 = v3;
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v8 vn_cloneObject];
+  v4 = vn_cloneObject;
+  if (vn_cloneObject)
   {
     v5 = *&self->_transform.c;
     v7[0] = *&self->_transform.a;
     v7[1] = v5;
     v7[2] = *&self->_transform.tx;
-    [v3 setTransform:v7];
+    [vn_cloneObject setTransform:v7];
     [v4 setAngle:self->_angle];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = VNHorizonObservation;
-  [(VNObservation *)&v7 encodeWithCoder:v4];
-  [v4 encodeDouble:@"angle" forKey:self->_angle];
+  [(VNObservation *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"angle" forKey:self->_angle];
   v5 = *&self->_transform.c;
   v6[0] = *&self->_transform.a;
   v6[1] = v5;
   v6[2] = *&self->_transform.tx;
-  [v4 vn_encodeCGAffineTransform:v6 forKey:@"transform"];
+  [coderCopy vn_encodeCGAffineTransform:v6 forKey:@"transform"];
 }
 
-- (VNHorizonObservation)initWithCoder:(id)a3
+- (VNHorizonObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = VNHorizonObservation;
-  v5 = [(VNObservation *)&v12 initWithCoder:v4];
+  v5 = [(VNObservation *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"angle"];
+    [coderCopy decodeDoubleForKey:@"angle"];
     v5->_angle = v6;
-    if (v4)
+    if (coderCopy)
     {
-      [v4 vn_decodeCGAffineTransformForKey:@"transform"];
+      [coderCopy vn_decodeCGAffineTransformForKey:@"transform"];
     }
 
     else
@@ -191,16 +191,16 @@
   return v7;
 }
 
-- (double)angleInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (double)angleInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   [(VNHorizonObservation *)self angle];
   v6 = -result;
-  if (((1 << a4) & 0xB4) == 0)
+  if (((1 << orientation) & 0xB4) == 0)
   {
     v6 = result;
   }
 
-  if (a4 <= 7)
+  if (orientation <= 7)
   {
     return v6;
   }

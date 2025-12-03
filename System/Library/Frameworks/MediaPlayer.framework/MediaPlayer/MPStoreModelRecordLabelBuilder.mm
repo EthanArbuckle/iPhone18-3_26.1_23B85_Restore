@@ -1,6 +1,6 @@
 @interface MPStoreModelRecordLabelBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelRecordLabelBuilder
@@ -20,16 +20,16 @@
   return v4;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedRecordLabelProperties & 1) == 0)
   {
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyRecordLabelName"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyRecordLabelName"])
     {
       v13 = 2;
     }
@@ -40,7 +40,7 @@
     }
 
     *&self->_requestedRecordLabelProperties = *&self->_requestedRecordLabelProperties & 0xFD | v13;
-    if ([v12 containsObject:@"MPModelPropertyRecordLabelDescriptionText"])
+    if ([properties containsObject:@"MPModelPropertyRecordLabelDescriptionText"])
     {
       v14 = 4;
     }
@@ -51,7 +51,7 @@
     }
 
     *&self->_requestedRecordLabelProperties = *&self->_requestedRecordLabelProperties & 0xFB | v14;
-    if ([v12 containsObject:@"MPModelPropertyRecordLabelShortDescriptionText"])
+    if ([properties containsObject:@"MPModelPropertyRecordLabelShortDescriptionText"])
     {
       v15 = 8;
     }
@@ -62,7 +62,7 @@
     }
 
     *&self->_requestedRecordLabelProperties = *&self->_requestedRecordLabelProperties & 0xF7 | v15;
-    if ([v12 containsObject:@"MPModelPropertyRecordLabelArtwork"])
+    if ([properties containsObject:@"MPModelPropertyRecordLabelArtwork"])
     {
       v16 = 16;
     }
@@ -73,7 +73,7 @@
     }
 
     *&self->_requestedRecordLabelProperties = *&self->_requestedRecordLabelProperties & 0xEF | v16;
-    if ([v12 containsObject:@"MPModelPropertyRecordLabelEditorialArtwork"])
+    if ([properties containsObject:@"MPModelPropertyRecordLabelEditorialArtwork"])
     {
       v17 = 33;
     }
@@ -90,32 +90,32 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __98__MPStoreModelRecordLabelBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E767EE00;
-  v18 = v8;
+  v18 = metadataCopy;
   v38 = v18;
-  v19 = v10;
+  v19 = identityCopy;
   v39 = v19;
   v20 = _Block_copy(aBlock);
   v31 = MEMORY[0x1E69E9820];
   v32 = 3221225472;
   v33 = __98__MPStoreModelRecordLabelBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_4;
   v34 = &unk_1E767ED10;
-  v35 = self;
+  selfCopy = self;
   v21 = v18;
   v36 = v21;
   v22 = _Block_copy(&v31);
-  if (v9)
+  if (objectCopy)
   {
-    v23 = [v9 identifiers];
-    v24 = [v23 copyWithSource:@"StorePlatform" block:v20];
-    v25 = [v9 copyWithIdentifiers:v24 block:v22];
+    identifiers = [objectCopy identifiers];
+    v24 = [identifiers copyWithSource:@"StorePlatform" block:v20];
+    v25 = [objectCopy copyWithIdentifiers:v24 block:v22];
   }
 
   else
   {
     v26 = [MPModelRecordLabel alloc];
     v27 = [MPIdentifierSet alloc];
-    v23 = [MPModelArtistKind identityKind:v31];
-    v24 = [(MPIdentifierSet *)v27 initWithSource:@"StorePlatform" modelKind:v23 block:v20];
+    identifiers = [MPModelArtistKind identityKind:v31];
+    v24 = [(MPIdentifierSet *)v27 initWithSource:@"StorePlatform" modelKind:identifiers block:v20];
     v25 = [(MPModelObject *)v26 initWithIdentifiers:v24 block:v22];
   }
 

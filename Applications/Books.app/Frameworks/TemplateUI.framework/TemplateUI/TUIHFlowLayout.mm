@@ -1,24 +1,24 @@
 @interface TUIHFlowLayout
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4;
-- (TUIHFlowLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (id)defaultGuideSpecForLayout:(id)a3 edge:(unint64_t)a4;
-- (id)guideForLayout:(id)a3 spec:(id)a4;
-- (id)guideLayoutControllerForLayout:(id)a3;
-- (id)guideProviderForLayout:(id)a3;
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge;
+- (TUIHFlowLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (id)defaultGuideSpecForLayout:(id)layout edge:(unint64_t)edge;
+- (id)guideForLayout:(id)layout spec:(id)spec;
+- (id)guideLayoutControllerForLayout:(id)layout;
+- (id)guideProviderForLayout:(id)layout;
 - (void)computeLayout;
-- (void)onChildInvalidate:(id)a3;
+- (void)onChildInvalidate:(id)invalidate;
 @end
 
 @implementation TUIHFlowLayout
 
-- (TUIHFlowLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIHFlowLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  parentCopy = parent;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = TUIHFlowLayout;
-  v11 = [(TUILayout *)&v16 initWithModel:v8 parent:v9 controller:v10];
+  v11 = [(TUILayout *)&v16 initWithModel:modelCopy parent:parentCopy controller:controllerCopy];
   v12 = v11;
   if (v11)
   {
@@ -35,21 +35,21 @@
   return v12;
 }
 
-- (id)guideLayoutControllerForLayout:(id)a3
+- (id)guideLayoutControllerForLayout:(id)layout
 {
-  v4 = a3;
-  if (v4)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     while (1)
     {
-      v5 = [(TUILayout *)v4 layoutAncestor];
-      v6 = v5;
-      if (v5 == self)
+      layoutAncestor = [(TUILayout *)layoutCopy layoutAncestor];
+      v6 = layoutAncestor;
+      if (layoutAncestor == self)
       {
         break;
       }
 
-      v4 = v6;
+      layoutCopy = v6;
       if (!v6)
       {
         goto LABEL_6;
@@ -58,21 +58,21 @@
   }
 
 LABEL_6:
-  v7 = [(TUILayout *)v4 guideLayoutController];
+  guideLayoutController = [(TUILayout *)layoutCopy guideLayoutController];
 
-  return v7;
+  return guideLayoutController;
 }
 
-- (id)guideForLayout:(id)a3 spec:(id)a4
+- (id)guideForLayout:(id)layout spec:(id)spec
 {
-  v6 = a4;
-  v7 = [(TUIHFlowLayout *)self guideLayoutControllerForLayout:a3];
-  v8 = [v7 guideForSpec:v6];
+  specCopy = spec;
+  v7 = [(TUIHFlowLayout *)self guideLayoutControllerForLayout:layout];
+  v8 = [v7 guideForSpec:specCopy];
 
   return v8;
 }
 
-- (id)guideProviderForLayout:(id)a3
+- (id)guideProviderForLayout:(id)layout
 {
   if (!self->_guideLayout)
   {
@@ -82,11 +82,11 @@ LABEL_6:
   return self;
 }
 
-- (id)defaultGuideSpecForLayout:(id)a3 edge:(unint64_t)a4
+- (id)defaultGuideSpecForLayout:(id)layout edge:(unint64_t)edge
 {
-  v5 = a3;
-  v6 = v5;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2 && [v5 shouldUseDefaultGuideForLayout:v5 edge:a4])
+  layoutCopy = layout;
+  v6 = layoutCopy;
+  if ((edge & 0xFFFFFFFFFFFFFFFELL) == 2 && [layoutCopy shouldUseDefaultGuideForLayout:layoutCopy edge:edge])
   {
     v7 = +[TUIGuideSpec unbound];
   }
@@ -99,21 +99,21 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge
 {
-  v6 = a3;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   if (self->_guideLayout)
   {
-    v8 = [v6 layoutAncestor];
-    v9 = v8 == self;
+    layoutAncestor = [layoutCopy layoutAncestor];
+    v9 = layoutAncestor == self;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = TUIHFlowLayout;
-    v9 = [(TUILayout *)&v11 shouldUseDefaultGuideForLayout:v6 edge:a4];
+    v9 = [(TUILayout *)&v11 shouldUseDefaultGuideForLayout:layoutCopy edge:edge];
   }
 
   return v9;
@@ -128,9 +128,9 @@ LABEL_6:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = [(TUILayout *)self children];
+  children = [(TUILayout *)self children];
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  v7 = [children countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v7)
   {
     v8 = *v44;
@@ -140,7 +140,7 @@ LABEL_6:
       {
         if (*v44 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v10 = *(*(&v43 + 1) + 8 * i);
@@ -152,8 +152,8 @@ LABEL_6:
         {
           v11 = [TUIMutableHStack alloc];
           v12 = [(TUILayout *)self box];
-          v13 = [v12 hspacing];
-          v15 = [(TUIMutableHStack *)v11 initWithLayout:self spacing:v13 maxWidth:v14, v4];
+          hspacing = [v12 hspacing];
+          v15 = [(TUIMutableHStack *)v11 initWithLayout:self spacing:hspacing maxWidth:v14, v4];
 
           v6 = v15;
           if (self->_guideLayout)
@@ -167,7 +167,7 @@ LABEL_6:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v7 = [children countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v7);
@@ -218,12 +218,12 @@ LABEL_6:
   v25 = COERCE_FLOAT([v24 vspacing]);
 
   v26 = v25;
-  v27 = [(TUILayout *)self computedLayoutDirection];
-  v28 = [(TUILayout *)self layoutAncestor];
-  v29 = [v28 isHorizontallyAligningChildren];
+  computedLayoutDirection = [(TUILayout *)self computedLayoutDirection];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  isHorizontallyAligningChildren = [layoutAncestor isHorizontallyAligningChildren];
 
   v30 = 0.0;
-  if (v29)
+  if (isHorizontallyAligningChildren)
   {
     v4 = v20;
   }
@@ -231,11 +231,11 @@ LABEL_6:
   else
   {
     v31 = [(TUILayout *)self box];
-    v32 = [v31 halign];
+    halign = [v31 halign];
 
-    if (v32 < 2)
+    if (halign < 2)
     {
-      if (v27 == 2)
+      if (computedLayoutDirection == 2)
       {
         v30 = v4 - v20;
       }
@@ -246,14 +246,14 @@ LABEL_6:
       }
     }
 
-    else if (v32 == &dword_0 + 2)
+    else if (halign == &dword_0 + 2)
     {
       v30 = (v4 - v20) * 0.5;
     }
 
-    else if (v32 == &dword_0 + 3)
+    else if (halign == &dword_0 + 3)
     {
-      if (v27 == 2)
+      if (computedLayoutDirection == 2)
       {
         v30 = 0.0;
       }
@@ -278,13 +278,13 @@ LABEL_6:
   _Block_object_dispose(&v35, 8);
 }
 
-- (void)onChildInvalidate:(id)a3
+- (void)onChildInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5.receiver = self;
   v5.super_class = TUIHFlowLayout;
-  [(TUILayout *)&v5 onChildInvalidate:v4];
-  [v4 setFlexedWidth:NAN];
+  [(TUILayout *)&v5 onChildInvalidate:invalidateCopy];
+  [invalidateCopy setFlexedWidth:NAN];
 }
 
 @end

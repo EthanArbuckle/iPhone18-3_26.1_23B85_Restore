@@ -1,32 +1,32 @@
 @interface HNDSystemPointerController
 - (BKSHIDEventPointerAttributes)currentSystemPointerPointAttributes;
-- (BOOL)_accessibilityShouldIgnoreEventRep:(id)a3;
-- (BOOL)_handleRepostedButtonEventWithTimestamp:(unint64_t)a3 buttonMask:(unsigned int)a4 senderID:(unint64_t)a5;
-- (BOOL)handleEventRepresentationForMovement:(id)a3;
-- (BOOL)handleEventRepresentationFromFilter:(id)a3;
+- (BOOL)_accessibilityShouldIgnoreEventRep:(id)rep;
+- (BOOL)_handleRepostedButtonEventWithTimestamp:(unint64_t)timestamp buttonMask:(unsigned int)mask senderID:(unint64_t)d;
+- (BOOL)handleEventRepresentationForMovement:(id)movement;
+- (BOOL)handleEventRepresentationFromFilter:(id)filter;
 - (CGPoint)currentAbsoluteSystemPointerPoint;
 - (CGPoint)currentSystemPointerPoint;
 - (HNDSystemPointerController)init;
-- (id)_localDataForAttributes:(id)a3;
-- (id)customizableMouseForEventSenderID:(unint64_t)a3 serviceClient:(__IOHIDServiceClient *)a4;
-- (unsigned)buttonMaskForSenderID:(unint64_t)a3;
-- (void)_finishHandlingEventRepresentation:(id)a3 forButtonsWithSenderID:(unint64_t)a4 lastButtonMask:(unsigned int)a5 buttonMask:(unsigned int)a6;
-- (void)_recordAndRepostEventRepresentation:(id)a3 forButtonsWithSenderID:(unint64_t)a4 buttonMask:(unsigned int)a5;
-- (void)_recordRepostedButtonEventWithTimestamp:(unint64_t)a3 buttonMask:(unsigned int)a4 senderID:(unint64_t)a5;
-- (void)addPointerStreamObserver:(id)a3;
+- (id)_localDataForAttributes:(id)attributes;
+- (id)customizableMouseForEventSenderID:(unint64_t)d serviceClient:(__IOHIDServiceClient *)client;
+- (unsigned)buttonMaskForSenderID:(unint64_t)d;
+- (void)_finishHandlingEventRepresentation:(id)representation forButtonsWithSenderID:(unint64_t)d lastButtonMask:(unsigned int)mask buttonMask:(unsigned int)buttonMask;
+- (void)_recordAndRepostEventRepresentation:(id)representation forButtonsWithSenderID:(unint64_t)d buttonMask:(unsigned int)mask;
+- (void)_recordRepostedButtonEventWithTimestamp:(unint64_t)timestamp buttonMask:(unsigned int)mask senderID:(unint64_t)d;
+- (void)addPointerStreamObserver:(id)observer;
 - (void)cleanup;
 - (void)clearCachedCustomizableMouse;
 - (void)dealloc;
-- (void)hideSystemPointer:(BOOL)a3 forClient:(id)a4;
-- (void)informDelegatesOfEvent:(id)a3;
-- (void)removeGlobalMouseEventsForDisplayID:(unsigned int)a3;
-- (void)removePointerStreamObserver:(id)a3;
-- (void)requestGlobalMouseEventsForDisplay:(id)a3 displayID:(unsigned int)a4 targetContextID:(unsigned int)a5;
-- (void)setButtonMask:(unsigned int)a3 forSenderID:(unint64_t)a4;
-- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)a3;
-- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)a3 withAttributes:(id)a4 pointerAttributes:(id)a5;
-- (void)setCurrentSystemPointerPoint:(CGPoint)a3;
-- (void)setCurrentSystemPointerPointAttributes:(id)a3;
+- (void)hideSystemPointer:(BOOL)pointer forClient:(id)client;
+- (void)informDelegatesOfEvent:(id)event;
+- (void)removeGlobalMouseEventsForDisplayID:(unsigned int)d;
+- (void)removePointerStreamObserver:(id)observer;
+- (void)requestGlobalMouseEventsForDisplay:(id)display displayID:(unsigned int)d targetContextID:(unsigned int)iD;
+- (void)setButtonMask:(unsigned int)mask forSenderID:(unint64_t)d;
+- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)point;
+- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)point withAttributes:(id)attributes pointerAttributes:(id)pointerAttributes;
+- (void)setCurrentSystemPointerPoint:(CGPoint)point;
+- (void)setCurrentSystemPointerPointAttributes:(id)attributes;
 - (void)updateSensitivityMultiplier;
 @end
 
@@ -122,36 +122,36 @@
   return v3;
 }
 
-- (void)requestGlobalMouseEventsForDisplay:(id)a3 displayID:(unsigned int)a4 targetContextID:(unsigned int)a5
+- (void)requestGlobalMouseEventsForDisplay:(id)display displayID:(unsigned int)d targetContextID:(unsigned int)iD
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
+  v5 = *&iD;
+  v6 = *&d;
+  displayCopy = display;
   v11 = objc_opt_new();
-  [v11 setHardwareIdentifier:v8];
+  [v11 setHardwareIdentifier:displayCopy];
   [v11 setContextID:v5];
   [v11 setDisplayID:v6];
   v9 = +[BKSMousePointerService sharedInstance];
-  v10 = [v9 requestGlobalMouseEventsForDisplay:v8 targetContextID:v5];
+  v10 = [v9 requestGlobalMouseEventsForDisplay:displayCopy targetContextID:v5];
 
   [v11 setPointerStream:v10];
   [(NSMutableArray *)self->_pointerStreamData addObject:v11];
 }
 
-- (void)removeGlobalMouseEventsForDisplayID:(unsigned int)a3
+- (void)removeGlobalMouseEventsForDisplayID:(unsigned int)d
 {
   pointerStreamData = self->_pointerStreamData;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100080818;
   v8[3] = &unk_1001D5BE0;
-  v9 = a3;
+  dCopy = d;
   v5 = [(NSMutableArray *)pointerStreamData axFirstObjectsUsingBlock:v8];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 pointerStream];
-    [v7 invalidate];
+    pointerStream = [v5 pointerStream];
+    [pointerStream invalidate];
 
     [(NSMutableArray *)self->_pointerStreamData removeObject:v6];
   }
@@ -189,10 +189,10 @@
   return result;
 }
 
-- (void)setCurrentSystemPointerPoint:(CGPoint)a3
+- (void)setCurrentSystemPointerPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   os_unfair_lock_lock(&self->_currentPointerPointLock);
   self->_currentSystemPointerPoint.x = x;
   self->_currentSystemPointerPoint.y = y;
@@ -213,10 +213,10 @@
   return result;
 }
 
-- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)a3
+- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   os_unfair_lock_lock(&self->_currentPointerPointLock);
   self->_currentAbsoluteSystemPointerPoint.x = x;
   self->_currentAbsoluteSystemPointerPoint.y = y;
@@ -224,22 +224,22 @@
   os_unfair_lock_unlock(&self->_currentPointerPointLock);
 }
 
-- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)a3 withAttributes:(id)a4 pointerAttributes:(id)a5
+- (void)setCurrentAbsoluteSystemPointerPoint:(CGPoint)point withAttributes:(id)attributes pointerAttributes:(id)pointerAttributes
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = a4;
+  y = point.y;
+  x = point.x;
+  pointerAttributesCopy = pointerAttributes;
+  attributesCopy = attributes;
   os_unfair_lock_lock(&self->_currentPointerPointLock);
   self->_currentAbsoluteSystemPointerPoint.x = x;
   self->_currentAbsoluteSystemPointerPoint.y = y;
   currentSystemPointerPointAttributes = self->_currentSystemPointerPointAttributes;
-  self->_currentSystemPointerPointAttributes = v9;
-  v12 = v9;
+  self->_currentSystemPointerPointAttributes = pointerAttributesCopy;
+  v12 = pointerAttributesCopy;
 
-  v13 = [v10 display];
+  display = [attributesCopy display];
 
-  v14 = [v13 safeStringForKey:@"_hardwareIdentifier"];
+  v14 = [display safeStringForKey:@"_hardwareIdentifier"];
   currentSystemPointerHardwareIdentifier = self->_currentSystemPointerHardwareIdentifier;
   self->_currentSystemPointerHardwareIdentifier = v14;
 
@@ -255,21 +255,21 @@
   return v3;
 }
 
-- (void)setCurrentSystemPointerPointAttributes:(id)a3
+- (void)setCurrentSystemPointerPointAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_lock(&self->_currentPointerPointLock);
   currentSystemPointerPointAttributes = self->_currentSystemPointerPointAttributes;
-  self->_currentSystemPointerPointAttributes = v4;
+  self->_currentSystemPointerPointAttributes = attributesCopy;
 
   os_unfair_lock_unlock(&self->_currentPointerPointLock);
 }
 
-- (unsigned)buttonMaskForSenderID:(unint64_t)a3
+- (unsigned)buttonMaskForSenderID:(unint64_t)d
 {
   os_unfair_lock_lock(&self->_buttonMaskLock);
   buttonMaskBySenderID = self->_buttonMaskBySenderID;
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)buttonMaskBySenderID objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_buttonMaskLock);
@@ -278,13 +278,13 @@
   return v6;
 }
 
-- (void)setButtonMask:(unsigned int)a3 forSenderID:(unint64_t)a4
+- (void)setButtonMask:(unsigned int)mask forSenderID:(unint64_t)d
 {
-  v5 = *&a3;
+  v5 = *&mask;
   os_unfair_lock_lock(&self->_buttonMaskLock);
   buttonMaskBySenderID = self->_buttonMaskBySenderID;
   v8 = [NSNumber numberWithUnsignedInt:v5];
-  v9 = [NSNumber numberWithUnsignedLongLong:a4];
+  v9 = [NSNumber numberWithUnsignedLongLong:d];
   [(NSMutableDictionary *)buttonMaskBySenderID setObject:v8 forKey:v9];
 
   os_unfair_lock_unlock(&self->_buttonMaskLock);
@@ -305,34 +305,34 @@
   os_unfair_lock_unlock(&self->_customizableMouseLock);
 }
 
-- (id)customizableMouseForEventSenderID:(unint64_t)a3 serviceClient:(__IOHIDServiceClient *)a4
+- (id)customizableMouseForEventSenderID:(unint64_t)d serviceClient:(__IOHIDServiceClient *)client
 {
-  if (+[HNDVirtualHIDMouse eventServiceID]== a3)
+  if (+[HNDVirtualHIDMouse eventServiceID]== d)
   {
     goto LABEL_2;
   }
 
   os_unfair_lock_lock(&self->_customizableMouseLock);
   customizableMouseBySenderID = self->_customizableMouseBySenderID;
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
+  v9 = [NSNumber numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)customizableMouseBySenderID objectForKey:v9];
 
   os_unfair_lock_unlock(&self->_customizableMouseLock);
   if (!v7)
   {
-    if (!a4 || (v11 = CFGetTypeID(a4), v11 != IOHIDServiceClientGetTypeID()))
+    if (!client || (v11 = CFGetTypeID(client), v11 != IOHIDServiceClientGetTypeID()))
     {
 LABEL_2:
       v7 = 0;
       goto LABEL_4;
     }
 
-    v7 = [AXCustomizableMouse mouseForHIDServiceClient:a4];
+    v7 = [AXCustomizableMouse mouseForHIDServiceClient:client];
     if (v7)
     {
       os_unfair_lock_lock(&self->_customizableMouseLock);
       v12 = self->_customizableMouseBySenderID;
-      v13 = [NSNumber numberWithUnsignedLongLong:a3];
+      v13 = [NSNumber numberWithUnsignedLongLong:d];
       [(NSMutableDictionary *)v12 setObject:v7 forKey:v13];
 
       os_unfair_lock_unlock(&self->_customizableMouseLock);
@@ -344,34 +344,34 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)handleEventRepresentationForMovement:(id)a3
+- (BOOL)handleEventRepresentationForMovement:(id)movement
 {
-  v4 = a3;
-  v5 = [v4 pointerControllerInfo];
+  movementCopy = movement;
+  pointerControllerInfo = [movementCopy pointerControllerInfo];
   v6 = 0;
-  if ([v4 type] == 3200 && v5)
+  if ([movementCopy type] == 3200 && pointerControllerInfo)
   {
-    if ([v5 pointerIsAbsolute])
+    if ([pointerControllerInfo pointerIsAbsolute])
     {
-      [v5 pointerX];
+      [pointerControllerInfo pointerX];
       v8 = v7;
-      [v5 pointerY];
+      [pointerControllerInfo pointerY];
       v10 = v9;
       if (vabdd_f64(*&qword_100218AE0, v8) >= 0.1 || vabdd_f64(*&qword_100218AE8, v9) >= 0.1)
       {
         qword_100218AE0 = *&v8;
         qword_100218AE8 = *&v9;
-        v11 = [(HNDSystemPointerController *)self pointConversionQueue];
+        pointConversionQueue = [(HNDSystemPointerController *)self pointConversionQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100081000;
         block[3] = &unk_1001D5C48;
         v17 = v8;
         v18 = v10;
-        v14 = v4;
-        v15 = self;
-        v16 = v5;
-        dispatch_async(v11, block);
+        v14 = movementCopy;
+        selfCopy = self;
+        v16 = pointerControllerInfo;
+        dispatch_async(pointConversionQueue, block);
       }
 
       v6 = 1;
@@ -386,10 +386,10 @@ LABEL_4:
   return v6;
 }
 
-- (id)_localDataForAttributes:(id)a3
+- (id)_localDataForAttributes:(id)attributes
 {
-  v4 = [a3 display];
-  v5 = [v4 safeStringForKey:@"_hardwareIdentifier"];
+  display = [attributes display];
+  v5 = [display safeStringForKey:@"_hardwareIdentifier"];
 
   pointerStreamData = self->_pointerStreamData;
   v10[0] = _NSConcreteStackBlock;
@@ -407,9 +407,9 @@ LABEL_4:
   return v8;
 }
 
-- (BOOL)handleEventRepresentationFromFilter:(id)a3
+- (BOOL)handleEventRepresentationFromFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   if ((AXIsInternalInstall() & 1) == 0)
   {
     ASTLogSystemPointerController();
@@ -427,8 +427,8 @@ LABEL_4:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "AXEventProcessor event tap with priority:kAssistiveTouchEventFilterPriority + 1", "", buf, 2u);
   }
 
-  v10 = [v4 pointerControllerInfo];
-  if ([v4 type] != 3200 || !v10)
+  pointerControllerInfo = [filterCopy pointerControllerInfo];
+  if ([filterCopy type] != 3200 || !pointerControllerInfo)
   {
     v14 = ASTLogSystemPointerController();
     v12 = v14;
@@ -442,26 +442,26 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  if (![(HNDSystemPointerController *)self _accessibilityShouldIgnoreEventRep:v4])
+  if (![(HNDSystemPointerController *)self _accessibilityShouldIgnoreEventRep:filterCopy])
   {
-    v15 = [v4 accessibilityData];
-    v16 = [v15 usage];
+    accessibilityData = [filterCopy accessibilityData];
+    usage = [accessibilityData usage];
 
-    if (v16 != 4)
+    if (usage != 4)
     {
       v17 = +[HNDHandManager sharedManager];
-      v18 = [v17 lastMoveWasMouse];
+      lastMoveWasMouse = [v17 lastMoveWasMouse];
 
-      if ((v18 & 1) == 0)
+      if ((lastMoveWasMouse & 1) == 0)
       {
-        [v4 creatorHIDEvent];
+        [filterCopy creatorHIDEvent];
         v19 = BKSHIDEventGetBaseAttributes();
         v20 = [(HNDSystemPointerController *)self _localDataForAttributes:v19];
         if (v20)
         {
           v21 = +[HNDHandManager sharedManager];
-          v22 = [v20 hardwareIdentifier];
-          v23 = [v21 displayManagerForHardwareIdentifier:v22];
+          hardwareIdentifier = [v20 hardwareIdentifier];
+          v23 = [v21 displayManagerForHardwareIdentifier:hardwareIdentifier];
 
           [v23 screenPoint];
           v25 = v24;
@@ -471,26 +471,26 @@ LABEL_4:
           [v28 setContextRelativePointerPosition:v29 onDisplay:0 withAnimationParameters:0 restrictingToPID:0xFFFFFFFFLL];
 
           [(HNDSystemPointerController *)self setCurrentAbsoluteSystemPointerPoint:v25, v27];
-          v30 = [v23 hardwareIdentifier];
-          [(HNDSystemPointerController *)self setCurrentSystemPointerHardwareIdentifier:v30];
+          hardwareIdentifier2 = [v23 hardwareIdentifier];
+          [(HNDSystemPointerController *)self setCurrentSystemPointerHardwareIdentifier:hardwareIdentifier2];
         }
       }
 
       v31 = +[HNDHandManager sharedManager];
-      [v10 pointerX];
+      [pointerControllerInfo pointerX];
       v33 = v32;
-      [v10 pointerAccelX];
+      [pointerControllerInfo pointerAccelX];
       v35 = v33 + v34;
-      [v10 pointerY];
+      [pointerControllerInfo pointerY];
       v37 = v36;
-      [v10 pointerAccelY];
+      [pointerControllerInfo pointerAccelY];
       [v31 mouseEventRecordedWithDelta:{v35, v37 + v38}];
     }
 
-    v39 = [v4 senderID];
-    [v10 pointerButtonMask];
+    senderID = [filterCopy senderID];
+    [pointerControllerInfo pointerButtonMask];
     v41 = v40;
-    if (-[HNDSystemPointerController _handleRepostedButtonEventWithTimestamp:buttonMask:senderID:](self, "_handleRepostedButtonEventWithTimestamp:buttonMask:senderID:", [v4 HIDTime], v41, v39))
+    if (-[HNDSystemPointerController _handleRepostedButtonEventWithTimestamp:buttonMask:senderID:](self, "_handleRepostedButtonEventWithTimestamp:buttonMask:senderID:", [filterCopy HIDTime], v41, senderID))
     {
       v42 = ASTLogSystemPointerController();
       v12 = v42;
@@ -504,18 +504,18 @@ LABEL_4:
       goto LABEL_15;
     }
 
-    if ([(HNDSystemPointerController *)self buttonMaskForSenderID:v39]== v41)
+    if ([(HNDSystemPointerController *)self buttonMaskForSenderID:senderID]== v41)
     {
-      v43 = [v4 pointerControllerInfo];
-      if (([v43 pointerIsAbsolute] & 1) != 0 || (v44 = objc_msgSend(v4, "senderID"), v44 == +[HNDVirtualHIDMouse eventServiceID](HNDVirtualHIDMouse, "eventServiceID")) || vabdd_f64(self->_cachedSensitivityMultiplier, kAXSAssistiveTouchSpeedDefault) < 0.001)
+      pointerControllerInfo2 = [filterCopy pointerControllerInfo];
+      if (([pointerControllerInfo2 pointerIsAbsolute] & 1) != 0 || (v44 = objc_msgSend(filterCopy, "senderID"), v44 == +[HNDVirtualHIDMouse eventServiceID](HNDVirtualHIDMouse, "eventServiceID")) || vabdd_f64(self->_cachedSensitivityMultiplier, kAXSAssistiveTouchSpeedDefault) < 0.001)
       {
 
         goto LABEL_31;
       }
 
-      v51 = [v10 isPointerMove];
+      isPointerMove = [pointerControllerInfo isPointerMove];
 
-      if (!v51)
+      if (!isPointerMove)
       {
 LABEL_31:
         v45 = ASTLogSystemPointerController();
@@ -530,7 +530,7 @@ LABEL_31:
         goto LABEL_15;
       }
 
-      v55 = v4;
+      v55 = filterCopy;
       AXPerformBlockAsynchronouslyOnMainThread();
       v52 = ASTLogSystemPointerController();
       v53 = v52;
@@ -545,8 +545,8 @@ LABEL_31:
 
     else
     {
-      [(HNDSystemPointerController *)self setButtonMask:v41 forSenderID:v39];
-      v54 = v4;
+      [(HNDSystemPointerController *)self setButtonMask:v41 forSenderID:senderID];
+      v54 = filterCopy;
       AXPerformBlockAsynchronouslyOnMainThread();
       v48 = ASTLogSystemPointerController();
       v49 = v48;
@@ -582,15 +582,15 @@ LABEL_35:
   return v46;
 }
 
-- (BOOL)_handleRepostedButtonEventWithTimestamp:(unint64_t)a3 buttonMask:(unsigned int)a4 senderID:(unint64_t)a5
+- (BOOL)_handleRepostedButtonEventWithTimestamp:(unint64_t)timestamp buttonMask:(unsigned int)mask senderID:(unint64_t)d
 {
-  v6 = *&a4;
+  v6 = *&mask;
   v9 = objc_opt_new();
-  [v9 setTimestamp:a3];
+  [v9 setTimestamp:timestamp];
   [v9 setButtonMask:v6];
   os_unfair_lock_lock(&self->_repostedButtonEventsLock);
   repostedButtonEventsBySenderID = self->_repostedButtonEventsBySenderID;
-  v11 = [NSNumber numberWithUnsignedLongLong:a5];
+  v11 = [NSNumber numberWithUnsignedLongLong:d];
   v12 = [(NSMutableDictionary *)repostedButtonEventsBySenderID objectForKeyedSubscript:v11];
 
   v13 = [v12 containsObject:v9];
@@ -604,11 +604,11 @@ LABEL_35:
   return v13;
 }
 
-- (void)_recordRepostedButtonEventWithTimestamp:(unint64_t)a3 buttonMask:(unsigned int)a4 senderID:(unint64_t)a5
+- (void)_recordRepostedButtonEventWithTimestamp:(unint64_t)timestamp buttonMask:(unsigned int)mask senderID:(unint64_t)d
 {
-  v6 = *&a4;
+  v6 = *&mask;
   v9 = objc_opt_new();
-  [v9 setTimestamp:a3];
+  [v9 setTimestamp:timestamp];
   [v9 setButtonMask:v6];
   os_unfair_lock_lock(&self->_repostedButtonEventsLock);
   repostedButtonEventsBySenderID = self->_repostedButtonEventsBySenderID;
@@ -621,14 +621,14 @@ LABEL_35:
     repostedButtonEventsBySenderID = self->_repostedButtonEventsBySenderID;
   }
 
-  v13 = [NSNumber numberWithUnsignedLongLong:a5];
+  v13 = [NSNumber numberWithUnsignedLongLong:d];
   v14 = [(NSMutableDictionary *)repostedButtonEventsBySenderID objectForKeyedSubscript:v13];
 
   if (!v14)
   {
     v14 = +[NSCountedSet set];
     v15 = self->_repostedButtonEventsBySenderID;
-    v16 = [NSNumber numberWithUnsignedLongLong:a5];
+    v16 = [NSNumber numberWithUnsignedLongLong:d];
     [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
   }
 
@@ -645,29 +645,29 @@ LABEL_35:
   os_unfair_lock_unlock(&self->_repostedButtonEventsLock);
 }
 
-- (void)_finishHandlingEventRepresentation:(id)a3 forButtonsWithSenderID:(unint64_t)a4 lastButtonMask:(unsigned int)a5 buttonMask:(unsigned int)a6
+- (void)_finishHandlingEventRepresentation:(id)representation forButtonsWithSenderID:(unint64_t)d lastButtonMask:(unsigned int)mask buttonMask:(unsigned int)buttonMask
 {
-  v10 = a3;
+  representationCopy = representation;
   v11 = objc_alloc_init(HNDEvent);
   [(HNDSystemPointerController *)self currentSystemPointerPoint];
   [(HNDEvent *)v11 setLocation:?];
   v12 = objc_autoreleasePoolPush();
-  v29 = a4;
-  v31 = -[HNDSystemPointerController customizableMouseForEventSenderID:serviceClient:](self, "customizableMouseForEventSenderID:serviceClient:", a4, [v10 creatorHIDServiceClient]);
-  v30 = a6;
-  v13 = sub_10004401C(a5, a6);
-  v14 = [v13 upButton];
-  v15 = [v13 downButton];
-  v16 = v15;
-  if (v14)
+  dCopy = d;
+  v31 = -[HNDSystemPointerController customizableMouseForEventSenderID:serviceClient:](self, "customizableMouseForEventSenderID:serviceClient:", d, [representationCopy creatorHIDServiceClient]);
+  buttonMaskCopy = buttonMask;
+  v13 = sub_10004401C(mask, buttonMask);
+  upButton = [v13 upButton];
+  downButton = [v13 downButton];
+  v16 = downButton;
+  if (upButton)
   {
     v17 = 2;
-    v15 = v14;
+    downButton = upButton;
   }
 
   else
   {
-    if (!v15)
+    if (!downButton)
     {
       goto LABEL_6;
     }
@@ -675,14 +675,14 @@ LABEL_35:
     v17 = 1;
   }
 
-  v18 = [v15 integerValue];
+  integerValue = [downButton integerValue];
   [(HNDEvent *)v11 setType:v17];
-  [(HNDEvent *)v11 setButtonNumber:v18];
-  v19 = [v31 customActionForButtonNumber:v18];
+  [(HNDEvent *)v11 setButtonNumber:integerValue];
+  v19 = [v31 customActionForButtonNumber:integerValue];
   [(HNDEvent *)v11 setActionOverride:v19];
 
-  v20 = [(HNDSystemPointerController *)self currentSystemPointerHardwareIdentifier];
-  [(HNDEvent *)v11 setHardwareIdentifier:v20];
+  currentSystemPointerHardwareIdentifier = [(HNDSystemPointerController *)self currentSystemPointerHardwareIdentifier];
+  [(HNDEvent *)v11 setHardwareIdentifier:currentSystemPointerHardwareIdentifier];
 
 LABEL_6:
   v21 = +[HNDHandManager sharedManager];
@@ -693,18 +693,18 @@ LABEL_6:
   else
   {
     v28 = v16;
-    v22 = a5;
+    maskCopy = mask;
     v23 = v12;
     v24 = +[HNDHandManager sharedManager];
-    v25 = [v24 hitTestsViewAtSystemPointerPoint];
+    hitTestsViewAtSystemPointerPoint = [v24 hitTestsViewAtSystemPointerPoint];
 
-    if ((v25 & 1) == 0)
+    if ((hitTestsViewAtSystemPointerPoint & 1) == 0)
     {
-      [(HNDSystemPointerController *)self _recordAndRepostEventRepresentation:v10 forButtonsWithSenderID:v29 buttonMask:v30];
+      [(HNDSystemPointerController *)self _recordAndRepostEventRepresentation:representationCopy forButtonsWithSenderID:dCopy buttonMask:buttonMaskCopy];
     }
 
     v12 = v23;
-    a5 = v22;
+    mask = maskCopy;
     v16 = v28;
   }
 
@@ -713,11 +713,11 @@ LABEL_6:
   {
     v27 = NSStringFromBOOL();
     *buf = 134219010;
-    v33 = v29;
+    v33 = dCopy;
     v34 = 1024;
-    v35 = v30;
+    v35 = buttonMaskCopy;
     v36 = 1024;
-    v37 = a5;
+    maskCopy2 = mask;
     v38 = 2112;
     v39 = v27;
     v40 = 2112;
@@ -729,59 +729,59 @@ LABEL_6:
   [(HNDSystemPointerController *)self informDelegatesOfEvent:v11];
 }
 
-- (void)_recordAndRepostEventRepresentation:(id)a3 forButtonsWithSenderID:(unint64_t)a4 buttonMask:(unsigned int)a5
+- (void)_recordAndRepostEventRepresentation:(id)representation forButtonsWithSenderID:(unint64_t)d buttonMask:(unsigned int)mask
 {
-  v5 = *&a5;
-  v8 = a3;
-  -[HNDSystemPointerController _recordRepostedButtonEventWithTimestamp:buttonMask:senderID:](self, "_recordRepostedButtonEventWithTimestamp:buttonMask:senderID:", [v8 HIDTime], v5, a4);
+  v5 = *&mask;
+  representationCopy = representation;
+  -[HNDSystemPointerController _recordRepostedButtonEventWithTimestamp:buttonMask:senderID:](self, "_recordRepostedButtonEventWithTimestamp:buttonMask:senderID:", [representationCopy HIDTime], v5, d);
   v9 = +[AXEventTapManager sharedManager];
-  [v9 sendHIDSystemEvent:v8 repostCreatorHIDEvent:1 senderID:a4];
+  [v9 sendHIDSystemEvent:representationCopy repostCreatorHIDEvent:1 senderID:d];
 }
 
-- (BOOL)_accessibilityShouldIgnoreEventRep:(id)a3
+- (BOOL)_accessibilityShouldIgnoreEventRep:(id)rep
 {
-  v4 = [a3 creatorHIDServiceClient];
-  v5 = v4;
-  if (v4)
+  creatorHIDServiceClient = [rep creatorHIDServiceClient];
+  bOOLValue = creatorHIDServiceClient;
+  if (creatorHIDServiceClient)
   {
-    v6 = IOHIDServiceClientCopyProperty(v4, @"PrimaryUsagePage");
+    v6 = IOHIDServiceClientCopyProperty(creatorHIDServiceClient, @"PrimaryUsagePage");
     v7 = CFGetTypeID(v6);
     if (v7 == CFNumberGetTypeID() && [v6 unsignedIntValue] == 96)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(bOOLValue) = 1;
     }
 
     else
     {
-      v8 = IOHIDServiceClientGetRegistryID(v5);
+      v8 = IOHIDServiceClientGetRegistryID(bOOLValue);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [(HNDSystemPointerController *)self disabledIDMappingRegistry];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        disabledIDMappingRegistry = [(HNDSystemPointerController *)self disabledIDMappingRegistry];
+        v10 = [disabledIDMappingRegistry objectForKeyedSubscript:v8];
 
         if (v10)
         {
-          LOBYTE(v5) = [v10 BOOLValue];
+          LOBYTE(bOOLValue) = [v10 BOOLValue];
         }
 
         else
         {
-          v12 = IOHIDServiceClientCopyProperty(v5, @"DisableAccessibilityEventTranslation");
+          v12 = IOHIDServiceClientCopyProperty(bOOLValue, @"DisableAccessibilityEventTranslation");
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v5 = [v12 BOOLValue];
+            bOOLValue = [v12 BOOLValue];
           }
 
           else
           {
-            v5 = 0;
+            bOOLValue = 0;
           }
 
-          v13 = [(HNDSystemPointerController *)self disabledIDMappingRegistry];
-          v14 = [NSNumber numberWithBool:v5];
-          [v13 setObject:v14 forKey:v8];
+          disabledIDMappingRegistry2 = [(HNDSystemPointerController *)self disabledIDMappingRegistry];
+          v14 = [NSNumber numberWithBool:bOOLValue];
+          [disabledIDMappingRegistry2 setObject:v14 forKey:v8];
         }
       }
 
@@ -793,64 +793,64 @@ LABEL_6:
           sub_100129DD4(v8, v11);
         }
 
-        LOBYTE(v5) = 0;
+        LOBYTE(bOOLValue) = 0;
       }
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)informDelegatesOfEvent:(id)a3
+- (void)informDelegatesOfEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   observerQueue = self->_observerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000822C0;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)addPointerStreamObserver:(id)a3
+- (void)addPointerStreamObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100082450;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)removePointerStreamObserver:(id)a3
+- (void)removePointerStreamObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100082550;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)hideSystemPointer:(BOOL)a3 forClient:(id)a4
+- (void)hideSystemPointer:(BOOL)pointer forClient:(id)client
 {
-  v4 = a3;
-  v6 = a4;
+  pointerCopy = pointer;
+  clientCopy = client;
   hidePointerClients = self->_hidePointerClients;
-  if (v4)
+  if (pointerCopy)
   {
-    [(NSMutableSet *)hidePointerClients addObject:v6];
+    [(NSMutableSet *)hidePointerClients addObject:clientCopy];
     if (!self->_hidePointerAssertion)
     {
       v8 = [(PSPointerClientController *)self->_pointerClientController persistentlyHidePointerAssertionForReason:3];
@@ -874,7 +874,7 @@ LABEL_9:
 
   else
   {
-    [(NSMutableSet *)hidePointerClients removeObject:v6];
+    [(NSMutableSet *)hidePointerClients removeObject:clientCopy];
     if (![(NSMutableSet *)self->_hidePointerClients count])
     {
       v13 = self->_hidePointerAssertion;

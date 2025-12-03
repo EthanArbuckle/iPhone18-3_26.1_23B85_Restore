@@ -9,8 +9,8 @@
 
 - (void)startTestServer
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ACDTestManager.m" lineNumber:28 description:@"There can only be one test server running at a time"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ACDTestManager.m" lineNumber:28 description:@"There can only be one test server running at a time"];
 }
 
 - (void)stopTestServer
@@ -25,18 +25,18 @@
 
 - (NSXPCListenerEndpoint)remoteAccountStoreEndpoint
 {
-  v2 = [sTestServer accountStoreListener];
-  v3 = [v2 endpoint];
+  accountStoreListener = [sTestServer accountStoreListener];
+  endpoint = [accountStoreListener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (NSXPCListenerEndpoint)remoteOAuthSignerEndpoint
 {
-  v2 = [sTestServer oauthSignerListener];
-  v3 = [v2 endpoint];
+  oauthSignerListener = [sTestServer oauthSignerListener];
+  endpoint = [oauthSignerListener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 @end

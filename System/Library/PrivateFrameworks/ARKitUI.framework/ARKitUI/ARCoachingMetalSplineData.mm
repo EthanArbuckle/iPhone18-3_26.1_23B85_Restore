@@ -1,18 +1,18 @@
 @interface ARCoachingMetalSplineData
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)computeInstanceTransformScale:(ARCoachingMetalSplineData *)self;
-- (void)computeInstanceTransformTranslate:(int)a3 index:;
-- (void)computeShapeBlendWithEnd:(id *)a3 endCount:(int)a4;
+- (void)computeInstanceTransformTranslate:(int)translate index:;
+- (void)computeShapeBlendWithEnd:(id *)end endCount:(int)count;
 - (void)makeShapes;
 - (void)recordState;
-- (void)resetInstanceTransforms:(id)a3;
+- (void)resetInstanceTransforms:(id)transforms;
 @end
 
 @implementation ARCoachingMetalSplineData
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v19.receiver = self;
   v19.super_class = ARCoachingMetalSplineData;
   v5 = [(ARCoachingMetalSplineData *)&v19 init];
@@ -20,32 +20,32 @@
   if (v5)
   {
     [(ARCoachingMetalSplineData *)v5 makeShapes];
-    v7 = [(ARCoachingBlendableSplineGroup *)v6->_shapes patchDataLength];
-    v6->_patchCount = v7;
-    v8 = [v4 newBufferWithLength:12 * v7 options:32];
+    patchDataLength = [(ARCoachingBlendableSplineGroup *)v6->_shapes patchDataLength];
+    v6->_patchCount = patchDataLength;
+    v8 = [initCopy newBufferWithLength:12 * patchDataLength options:32];
     tessellationFactorsBuffer = v6->_tessellationFactorsBuffer;
     v6->_tessellationFactorsBuffer = v8;
 
     [(MTLBuffer *)v6->_tessellationFactorsBuffer setLabel:@"Tessellation Factors"];
-    v10 = [(ARCoachingBlendableSplineGroup *)v6->_shapes controlPoints];
-    v11 = [v10 objectAtIndexedSubscript:0];
+    controlPoints = [(ARCoachingBlendableSplineGroup *)v6->_shapes controlPoints];
+    v11 = [controlPoints objectAtIndexedSubscript:0];
 
-    v12 = [v4 newBufferWithBytes:objc_msgSend(v11 length:"controlPoints") options:{32 * objc_msgSend(v11, "numControlPoints"), 0}];
+    v12 = [initCopy newBufferWithBytes:objc_msgSend(v11 length:"controlPoints") options:{32 * objc_msgSend(v11, "numControlPoints"), 0}];
     controlPointsBuffer = v6->_controlPointsBuffer;
     v6->_controlPointsBuffer = v12;
 
     [(MTLBuffer *)v6->_controlPointsBuffer setLabel:@"Control Points"];
-    v14 = [v4 newBufferWithBytes:-[ARCoachingBlendableSplineGroup indices](v6->_shapes length:"indices") options:{2 * -[ARCoachingBlendableSplineGroup numIndices](v6->_shapes, "numIndices"), 0}];
+    v14 = [initCopy newBufferWithBytes:-[ARCoachingBlendableSplineGroup indices](v6->_shapes length:"indices") options:{2 * -[ARCoachingBlendableSplineGroup numIndices](v6->_shapes, "numIndices"), 0}];
     controlPointIndicesBuffer = v6->_controlPointIndicesBuffer;
     v6->_controlPointIndicesBuffer = v14;
 
     [(MTLBuffer *)v6->_controlPointIndicesBuffer setLabel:@"Control Point Indices"];
-    v16 = [v4 newBufferWithBytes:-[ARCoachingBlendableSplineGroup patchData](v6->_shapes length:"patchData") options:{8 * -[ARCoachingBlendableSplineGroup patchDataLength](v6->_shapes, "patchDataLength"), 0}];
+    v16 = [initCopy newBufferWithBytes:-[ARCoachingBlendableSplineGroup patchData](v6->_shapes length:"patchData") options:{8 * -[ARCoachingBlendableSplineGroup patchDataLength](v6->_shapes, "patchDataLength"), 0}];
     patchUserDataBuffer = v6->_patchUserDataBuffer;
     v6->_patchUserDataBuffer = v16;
 
     [(MTLBuffer *)v6->_patchUserDataBuffer setLabel:@"Per Patch Tessellator variables"];
-    [(ARCoachingMetalSplineData *)v6 resetInstanceTransforms:v4];
+    [(ARCoachingMetalSplineData *)v6 resetInstanceTransforms:initCopy];
   }
 
   return v6;
@@ -64,8 +64,8 @@
   LODWORD(v7) = 1064178811;
   LODWORD(v5) = 1058642330;
   LODWORD(v8) = 1065017672;
-  v11 = [(ARCoachingCorner *)v4 initWithRadius:*&v6 relativeThickness:*&v7 anchorA:0.0 anchorB:*&v5 cornerEdge:v8 mat:v148, v152, v9, v10, v156];
-  v175[0] = v11;
+  v156 = [(ARCoachingCorner *)v4 initWithRadius:*&v6 relativeThickness:*&v7 anchorA:0.0 anchorB:*&v5 cornerEdge:v8 mat:v148, v152, v9, v10, v156];
+  v175[0] = v156;
   v12 = [ARCoachingCorner alloc];
   LODWORD(v13) = 1119092736;
   [ARCoachingTransformations rotate:v13 axis:0.0];
@@ -77,8 +77,8 @@
   LODWORD(v17) = 1064178811;
   LODWORD(v18) = 1058642330;
   LODWORD(v15) = 1065017672;
-  v20 = [(ARCoachingCorner *)v12 initWithRadius:*&v16 relativeThickness:*&v17 anchorA:0.0 anchorB:*&v18 cornerEdge:v15 mat:v149, v153, v14, v19, v157];
-  v175[1] = v20;
+  v157 = [(ARCoachingCorner *)v12 initWithRadius:*&v16 relativeThickness:*&v17 anchorA:0.0 anchorB:*&v18 cornerEdge:v15 mat:v149, v153, v14, v19, v157];
+  v175[1] = v157;
   v21 = [ARCoachingCorner alloc];
   LODWORD(v22) = 1127481344;
   [ARCoachingTransformations rotate:v22 axis:0.0];
@@ -90,8 +90,8 @@
   LODWORD(v26) = 1064178811;
   LODWORD(v27) = 1058642330;
   LODWORD(v24) = 1065017672;
-  v29 = [(ARCoachingCorner *)v21 initWithRadius:*&v25 relativeThickness:*&v26 anchorA:0.0 anchorB:*&v27 cornerEdge:v24 mat:v150, v154, v23, v28, v158];
-  v175[2] = v29;
+  v158 = [(ARCoachingCorner *)v21 initWithRadius:*&v25 relativeThickness:*&v26 anchorA:0.0 anchorB:*&v27 cornerEdge:v24 mat:v150, v154, v23, v28, v158];
+  v175[2] = v158;
   v30 = [ARCoachingCorner alloc];
   LODWORD(v31) = 1132920832;
   [ARCoachingTransformations rotate:v31 axis:0.0];
@@ -103,8 +103,8 @@
   LODWORD(v35) = 1064178811;
   LODWORD(v36) = 1058642330;
   LODWORD(v33) = 1065017672;
-  v38 = [(ARCoachingCorner *)v30 initWithRadius:*&v34 relativeThickness:*&v35 anchorA:0.0 anchorB:*&v36 cornerEdge:v33 mat:v151, v155, v32, v37, v159];
-  v175[3] = v38;
+  v159 = [(ARCoachingCorner *)v30 initWithRadius:*&v34 relativeThickness:*&v35 anchorA:0.0 anchorB:*&v36 cornerEdge:v33 mat:v151, v155, v32, v37, v159];
+  v175[3] = v159;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v175 count:4];
   v40 = [(ARCoachingSplineGroup *)v3 initWithSplines:v39];
 
@@ -135,8 +135,8 @@
   HIDWORD(v59) = DWORD1(v171);
   LODWORD(v59) = 1053609165;
   v58.i32[0] = 1065017672;
-  v60 = [(ARCoachingCorner *)v52 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v168) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v169) anchorB:1.0)) cornerEdge:0.0 mat:v59, *v58.i64, v168, v169, v170, v171];
-  v174[0] = v60;
+  v171 = [(ARCoachingCorner *)v52 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v168) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v169) anchorB:1.0)) cornerEdge:0.0 mat:v59, *v58.i64, v168, v169, v170, v171];
+  v174[0] = v171;
   v61 = [ARCoachingCorner alloc];
   LODWORD(v62) = 1119092736;
   [ARCoachingTransformations rotate:v62 axis:0.0];
@@ -156,8 +156,8 @@
   HIDWORD(v69) = DWORD1(v169);
   LODWORD(v68) = 1053609165;
   LODWORD(v69) = 1065017672;
-  v70 = [(ARCoachingCorner *)v61 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) anchorB:1.0)) cornerEdge:0.0 mat:v68, v69, v168, v169, v170, v171];
-  v174[1] = v70;
+  v1712 = [(ARCoachingCorner *)v61 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) anchorB:1.0)) cornerEdge:0.0 mat:v68, v69, v168, v169, v170, v171];
+  v174[1] = v1712;
   v71 = [ARCoachingCorner alloc];
   LODWORD(v72) = 1127481344;
   [ARCoachingTransformations rotate:v72 axis:0.0];
@@ -177,8 +177,8 @@
   HIDWORD(v79) = DWORD1(v169);
   LODWORD(v78) = 1053609165;
   LODWORD(v79) = 1065017672;
-  v80 = [(ARCoachingCorner *)v71 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) anchorB:1.0)) cornerEdge:0.0 mat:v78, v79, v168, v169, v170, v171];
-  v174[2] = v80;
+  v1713 = [(ARCoachingCorner *)v71 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) anchorB:1.0)) cornerEdge:0.0 mat:v78, v79, v168, v169, v170, v171];
+  v174[2] = v1713;
   v81 = [ARCoachingCorner alloc];
   LODWORD(v82) = 1132920832;
   [ARCoachingTransformations rotate:v82 axis:0.0];
@@ -198,8 +198,8 @@
   HIDWORD(v89) = DWORD1(v169);
   LODWORD(v88) = 1053609165;
   LODWORD(v89) = 1065017672;
-  v90 = [(ARCoachingCorner *)v81 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) anchorB:1.0)) cornerEdge:0.0 mat:v88, v89, v168, v169, v170, v171];
-  v174[3] = v90;
+  v1714 = [(ARCoachingCorner *)v81 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) anchorB:1.0)) cornerEdge:0.0 mat:v88, v89, v168, v169, v170, v171];
+  v174[3] = v1714;
   v91 = [MEMORY[0x277CBEA60] arrayWithObjects:v174 count:4];
   v92 = [(ARCoachingSplineGroup *)v51 initWithSplines:v91];
 
@@ -222,8 +222,8 @@
   HIDWORD(v101) = DWORD1(v169);
   LODWORD(v101) = 1050253722;
   v100.i32[0] = 1065336439;
-  v102 = [(ARCoachingCorner *)v94 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v168) relativeThickness:1.0)) anchorA:v101 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) cornerEdge:-1.0)) mat:0.0, *v100.i64, v168, v169, v170, v171];
-  v173[0] = v102;
+  v1715 = [(ARCoachingCorner *)v94 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v168) relativeThickness:1.0)) anchorA:v101 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) cornerEdge:-1.0)) mat:0.0, *v100.i64, v168, v169, v170, v171];
+  v173[0] = v1715;
   v103 = [ARCoachingCorner alloc];
   LODWORD(v104) = 1119092736;
   [ARCoachingTransformations rotate:v104 axis:0.0];
@@ -243,8 +243,8 @@
   HIDWORD(v111) = DWORD1(v169);
   LODWORD(v110) = 1050253722;
   LODWORD(v111) = 1065336439;
-  v112 = [(ARCoachingCorner *)v103 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:v110 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) cornerEdge:-1.0)) mat:0.0, v111, v168, v169, v170, v171];
-  v173[1] = v112;
+  v1716 = [(ARCoachingCorner *)v103 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:v110 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) cornerEdge:-1.0)) mat:0.0, v111, v168, v169, v170, v171];
+  v173[1] = v1716;
   v113 = [ARCoachingCorner alloc];
   LODWORD(v114) = 1127481344;
   [ARCoachingTransformations rotate:v114 axis:0.0];
@@ -264,8 +264,8 @@
   HIDWORD(v121) = DWORD1(v169);
   LODWORD(v120) = 1050253722;
   LODWORD(v121) = 1065336439;
-  v122 = [(ARCoachingCorner *)v113 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:v120 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) cornerEdge:-1.0)) mat:0.0, v121, v168, v169, v170, v171];
-  v173[2] = v122;
+  v1717 = [(ARCoachingCorner *)v113 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:v120 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) cornerEdge:-1.0)) mat:0.0, v121, v168, v169, v170, v171];
+  v173[2] = v1717;
   v123 = [ARCoachingCorner alloc];
   LODWORD(v124) = 1132920832;
   [ARCoachingTransformations rotate:v124 axis:0.0];
@@ -285,8 +285,8 @@
   HIDWORD(v131) = DWORD1(v169);
   LODWORD(v130) = 1050253722;
   LODWORD(v131) = 1065336439;
-  v132 = [(ARCoachingCorner *)v123 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:v130 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) cornerEdge:-1.0)) mat:0.0, v131, v168, v169, v170, v171];
-  v173[3] = v132;
+  v1718 = [(ARCoachingCorner *)v123 initWithRadius:COERCE_DOUBLE(__PAIR64__(DWORD1(v170) relativeThickness:1.0)) anchorA:v130 anchorB:COERCE_DOUBLE(__PAIR64__(DWORD1(v171) cornerEdge:-1.0)) mat:0.0, v131, v168, v169, v170, v171];
+  v173[3] = v1718;
   v133 = [MEMORY[0x277CBEA60] arrayWithObjects:v173 count:4];
   v134 = [(ARCoachingSplineGroup *)v93 initWithSplines:v133];
 
@@ -300,12 +300,12 @@
   self->_shapes = v137;
 
   v139 = [ARCoachingControlPointContainer alloc];
-  v140 = [(ARCoachingBlendableSplineGroup *)self->_shapes controlPoints];
-  v141 = [v140 objectAtIndexedSubscript:0];
-  v142 = [v141 controlPoints];
-  v143 = [(ARCoachingBlendableSplineGroup *)self->_shapes controlPoints];
-  v144 = [v143 objectAtIndexedSubscript:0];
-  v145 = -[ARCoachingControlPointContainer initWithControlPoints:numControlPoints:](v139, "initWithControlPoints:numControlPoints:", v142, [v144 numControlPoints]);
+  controlPoints = [(ARCoachingBlendableSplineGroup *)self->_shapes controlPoints];
+  v141 = [controlPoints objectAtIndexedSubscript:0];
+  controlPoints2 = [v141 controlPoints];
+  controlPoints3 = [(ARCoachingBlendableSplineGroup *)self->_shapes controlPoints];
+  v144 = [controlPoints3 objectAtIndexedSubscript:0];
+  v145 = -[ARCoachingControlPointContainer initWithControlPoints:numControlPoints:](v139, "initWithControlPoints:numControlPoints:", controlPoints2, [v144 numControlPoints]);
   recordedControlPoints = self->_recordedControlPoints;
   self->_recordedControlPoints = v145;
 
@@ -315,15 +315,15 @@
 - (void)recordState
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(MTLBuffer *)self->_controlPointsBuffer contents];
+  contents = [(MTLBuffer *)self->_controlPointsBuffer contents];
   v4 = 0;
   __src = 0;
   v30 = 0;
   v31 = 0;
   while (1)
   {
-    v5 = [(ARCoachingBlendableSplineGroup *)self->_shapes controlPoints];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    controlPoints = [(ARCoachingBlendableSplineGroup *)self->_shapes controlPoints];
+    v6 = [controlPoints objectAtIndexedSubscript:0];
     v7 = v4 < [v6 numControlPoints];
 
     if (!v7)
@@ -360,8 +360,8 @@
       }
 
       v16 = (32 * v13);
-      v17 = v3[1];
-      *v16 = *v3;
+      v17 = contents[1];
+      *v16 = *contents;
       v16[1] = v17;
       v10 = 32 * v13 + 32;
       memcpy(0, v11, v12);
@@ -377,15 +377,15 @@
 
     else
     {
-      v9 = v3[1];
-      *v30 = *v3;
+      v9 = contents[1];
+      *v30 = *contents;
       *(v8 + 1) = v9;
       v10 = (v8 + 32);
     }
 
     v30 = v10;
     ++v4;
-    v3 += 2;
+    contents += 2;
   }
 
   [ARCoachingControlPointContainer overwriteWithControlPoints:"overwriteWithControlPoints:numControlPoints:" numControlPoints:?];
@@ -429,10 +429,10 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetInstanceTransforms:(id)a3
+- (void)resetInstanceTransforms:(id)transforms
 {
   v116[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transformsCopy = transforms;
   v5 = [ARCoachingInstanceTransform alloc];
   [ARCoachingTransformations translate:-0.0078125];
   v99 = v7;
@@ -584,7 +584,7 @@
   }
 
   while (v73 != 6);
-  v80 = [v4 newBufferWithBytes:&v112 length:384 options:0];
+  v80 = [transformsCopy newBufferWithBytes:&v112 length:384 options:0];
   instanceBuffer = self->_instanceBuffer;
   p_instanceBuffer = &self->_instanceBuffer;
   *p_instanceBuffer = v80;
@@ -593,14 +593,14 @@
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (void)computeShapeBlendWithEnd:(id *)a3 endCount:(int)a4
+- (void)computeShapeBlendWithEnd:(id *)end endCount:(int)count
 {
-  v6 = [(MTLBuffer *)self->_controlPointsBuffer contents];
-  if (a4 >= 1)
+  contents = [(MTLBuffer *)self->_controlPointsBuffer contents];
+  if (count >= 1)
   {
-    v7 = a4;
-    v8 = (v6 + 16);
-    v9 = a3 + 4;
+    countCopy = count;
+    v8 = (contents + 16);
+    v9 = end + 4;
     do
     {
       *(v8 - 1) = *&v9[-4].var0;
@@ -608,21 +608,21 @@
       v9 += 8;
       *v8 = var0;
       v8 += 8;
-      --v7;
+      --countCopy;
     }
 
-    while (v7);
+    while (countCopy);
   }
 }
 
 - (void)computeInstanceTransformScale:(ARCoachingMetalSplineData *)self
 {
   v13 = v2;
-  v4 = [(MTLBuffer *)self->_instanceBuffer contents];
+  contents = [(MTLBuffer *)self->_instanceBuffer contents];
   if ([(NSArray *)self->_instanceTransforms count])
   {
     v5 = 0;
-    v6 = (v4 + 32);
+    v6 = (contents + 32);
     do
     {
       v7 = [(NSArray *)self->_instanceTransforms objectAtIndexedSubscript:v5];
@@ -643,16 +643,16 @@
   }
 }
 
-- (void)computeInstanceTransformTranslate:(int)a3 index:
+- (void)computeInstanceTransformTranslate:(int)translate index:
 {
   v12 = v3;
-  v6 = [(MTLBuffer *)self->_instanceBuffer contents];
-  v13 = [(NSArray *)self->_instanceTransforms objectAtIndexedSubscript:a3];
+  contents = [(MTLBuffer *)self->_instanceBuffer contents];
+  v13 = [(NSArray *)self->_instanceTransforms objectAtIndexedSubscript:translate];
   [v13 setLocalTranslation:v12];
 
-  v14 = [(NSArray *)self->_instanceTransforms objectAtIndexedSubscript:a3];
+  v14 = [(NSArray *)self->_instanceTransforms objectAtIndexedSubscript:translate];
   [v14 transform];
-  v7 = (v6 + (a3 << 6));
+  v7 = (contents + (translate << 6));
   *v7 = v8;
   v7[1] = v9;
   v7[2] = v10;

@@ -1,9 +1,9 @@
 @interface RMModelStatusSecurityCertificateList
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 subjectSummary:(id)a4 isIdentity:(id)a5 data:(id)a6;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 subjectSummary:(id)a6 isIdentity:(id)a7 data:(id)a8;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier subjectSummary:(id)summary isIdentity:(id)identity data:(id)data;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier subjectSummary:(id)summary isIdentity:(id)identity data:(id)data;
 + (id)supportedOS;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelStatusSecurityCertificateList
@@ -26,20 +26,20 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 subjectSummary:(id)a6 isIdentity:(id)a7 data:(id)a8
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier subjectSummary:(id)summary isIdentity:(id)identity data:(id)data
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  dataCopy = data;
+  identityCopy = identity;
+  summaryCopy = summary;
+  declarationIdentifierCopy = declarationIdentifier;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v19 = objc_opt_new();
-  [v19 setStatusIdentifier:v18];
+  [v19 setStatusIdentifier:identifierCopy];
 
-  if (v17)
+  if (removedCopy)
   {
-    v20 = v17;
+    v20 = removedCopy;
   }
 
   else
@@ -49,28 +49,28 @@
 
   [v19 setStatusRemoved:v20];
 
-  [v19 setStatusDeclarationIdentifier:v16];
-  [v19 setStatusSubjectSummary:v15];
+  [v19 setStatusDeclarationIdentifier:declarationIdentifierCopy];
+  [v19 setStatusSubjectSummary:summaryCopy];
 
-  [v19 setStatusIsIdentity:v14];
-  [v19 setStatusData:v13];
+  [v19 setStatusIsIdentity:identityCopy];
+  [v19 setStatusData:dataCopy];
 
   return v19;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 subjectSummary:(id)a4 isIdentity:(id)a5 data:(id)a6
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier subjectSummary:(id)summary isIdentity:(id)identity data:(id)data
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dataCopy = data;
+  identityCopy = identity;
+  summaryCopy = summary;
+  identifierCopy = identifier;
   v13 = objc_opt_new();
-  [v13 setStatusIdentifier:v12];
+  [v13 setStatusIdentifier:identifierCopy];
 
-  [v13 setStatusSubjectSummary:v11];
-  [v13 setStatusIsIdentity:v10];
+  [v13 setStatusSubjectSummary:summaryCopy];
+  [v13 setStatusIsIdentity:identityCopy];
 
-  [v13 setStatusData:v9];
+  [v13 setStatusData:dataCopy];
 
   return v13;
 }
@@ -127,11 +127,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = RMModelStatusSecurityCertificateList;
-  v4 = [(RMModelPayloadBase *)&v18 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v18 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

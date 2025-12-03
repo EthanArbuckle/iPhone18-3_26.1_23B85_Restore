@@ -1,29 +1,29 @@
 @interface CXCallDirectoryExtensionHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (CXCallDirectoryExtensionHostContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (CXCallDirectoryExtensionHostContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (CXCallDirectoryProviderHostProtocol)delegate;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)activate;
-- (void)addBlockingEntriesWithData:(id)a3 reply:(id)a4;
-- (void)addIdentificationEntriesWithData:(id)a3 reply:(id)a4;
-- (void)completeRequestWithReply:(id)a3;
+- (void)addBlockingEntriesWithData:(id)data reply:(id)reply;
+- (void)addIdentificationEntriesWithData:(id)data reply:(id)reply;
+- (void)completeRequestWithReply:(id)reply;
 - (void)dealloc;
-- (void)isIncrementalLoadingAllowed:(id)a3;
-- (void)removeAllBlockingEntriesWithReply:(id)a3;
-- (void)removeAllIdentificationEntriesWithReply:(id)a3;
-- (void)removeBlockingEntriesWithData:(id)a3 reply:(id)a4;
-- (void)removeIdentificationEntriesWithData:(id)a3 reply:(id)a4;
-- (void)requestFailedWithError:(id)a3 completion:(id)a4;
+- (void)isIncrementalLoadingAllowed:(id)allowed;
+- (void)removeAllBlockingEntriesWithReply:(id)reply;
+- (void)removeAllIdentificationEntriesWithReply:(id)reply;
+- (void)removeBlockingEntriesWithData:(id)data reply:(id)reply;
+- (void)removeIdentificationEntriesWithData:(id)data reply:(id)reply;
+- (void)requestFailedWithError:(id)error completion:(id)completion;
 @end
 
 @implementation CXCallDirectoryExtensionHostContext
 
-- (CXCallDirectoryExtensionHostContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (CXCallDirectoryExtensionHostContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v10.receiver = self;
   v10.super_class = CXCallDirectoryExtensionHostContext;
-  v5 = [(CXCallDirectoryExtensionHostContext *)&v10 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(CXCallDirectoryExtensionHostContext *)&v10 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_initially_inactive(0);
@@ -44,8 +44,8 @@
     _os_log_impl(&dword_1B47F3000, v3, OS_LOG_TYPE_DEFAULT, &unk_1B486C3FA, v5, 2u);
   }
 
-  v4 = [(CXCallDirectoryExtensionHostContext *)self queue];
-  dispatch_activate(v4);
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
+  dispatch_activate(queue);
 }
 
 - (void)dealloc
@@ -56,27 +56,27 @@
   [(CXCallDirectoryExtensionHostContext *)&v3 dealloc];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtensionHostContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(CXCallDirectoryExtensionHostContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)requestFailedWithError:(id)a3 completion:(id)a4
+- (void)requestFailedWithError:(id)error completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__CXCallDirectoryExtensionHostContext_requestFailedWithError_completion___block_invoke;
   v10[3] = &unk_1E7C07230;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  errorCopy = error;
   v9 = [(CXCallDirectoryExtensionHostContext *)self remoteObjectProxyWithErrorHandler:v10];
-  [v9 requestFailedWithError:v8 reply:v7];
+  [v9 requestFailedWithError:errorCopy reply:v7];
 }
 
 void __73__CXCallDirectoryExtensionHostContext_requestFailedWithError_completion___block_invoke(uint64_t a1, void *a2)
@@ -91,18 +91,18 @@ void __73__CXCallDirectoryExtensionHostContext_requestFailedWithError_completion
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)isIncrementalLoadingAllowed:(id)a3
+- (void)isIncrementalLoadingAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  allowedCopy = allowed;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CXCallDirectoryExtensionHostContext_isIncrementalLoadingAllowed___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = allowedCopy;
+  v6 = allowedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__CXCallDirectoryExtensionHostContext_isIncrementalLoadingAllowed___block_invoke(uint64_t a1)
@@ -111,21 +111,21 @@ void __67__CXCallDirectoryExtensionHostContext_isIncrementalLoadingAllowed___blo
   [v2 isIncrementalLoadingAllowed:*(a1 + 40)];
 }
 
-- (void)addBlockingEntriesWithData:(id)a3 reply:(id)a4
+- (void)addBlockingEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__CXCallDirectoryExtensionHostContext_addBlockingEntriesWithData_reply___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__CXCallDirectoryExtensionHostContext_addBlockingEntriesWithData_reply___block_invoke(uint64_t a1)
@@ -134,21 +134,21 @@ void __72__CXCallDirectoryExtensionHostContext_addBlockingEntriesWithData_reply_
   [v2 addBlockingEntriesWithData:*(a1 + 40) reply:*(a1 + 48)];
 }
 
-- (void)removeBlockingEntriesWithData:(id)a3 reply:(id)a4
+- (void)removeBlockingEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__CXCallDirectoryExtensionHostContext_removeBlockingEntriesWithData_reply___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 }
 
 void __75__CXCallDirectoryExtensionHostContext_removeBlockingEntriesWithData_reply___block_invoke(uint64_t a1)
@@ -157,18 +157,18 @@ void __75__CXCallDirectoryExtensionHostContext_removeBlockingEntriesWithData_rep
   [v2 removeBlockingEntriesWithData:*(a1 + 40) reply:*(a1 + 48)];
 }
 
-- (void)removeAllBlockingEntriesWithReply:(id)a3
+- (void)removeAllBlockingEntriesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__CXCallDirectoryExtensionHostContext_removeAllBlockingEntriesWithReply___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __73__CXCallDirectoryExtensionHostContext_removeAllBlockingEntriesWithReply___block_invoke(uint64_t a1)
@@ -177,21 +177,21 @@ void __73__CXCallDirectoryExtensionHostContext_removeAllBlockingEntriesWithReply
   [v2 removeAllBlockingEntriesWithReply:*(a1 + 40)];
 }
 
-- (void)addIdentificationEntriesWithData:(id)a3 reply:(id)a4
+- (void)addIdentificationEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__CXCallDirectoryExtensionHostContext_addIdentificationEntriesWithData_reply___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__CXCallDirectoryExtensionHostContext_addIdentificationEntriesWithData_reply___block_invoke(uint64_t a1)
@@ -200,21 +200,21 @@ void __78__CXCallDirectoryExtensionHostContext_addIdentificationEntriesWithData_
   [v2 addIdentificationEntriesWithData:*(a1 + 40) reply:*(a1 + 48)];
 }
 
-- (void)removeIdentificationEntriesWithData:(id)a3 reply:(id)a4
+- (void)removeIdentificationEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__CXCallDirectoryExtensionHostContext_removeIdentificationEntriesWithData_reply___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 }
 
 void __81__CXCallDirectoryExtensionHostContext_removeIdentificationEntriesWithData_reply___block_invoke(uint64_t a1)
@@ -223,18 +223,18 @@ void __81__CXCallDirectoryExtensionHostContext_removeIdentificationEntriesWithDa
   [v2 removeIdentificationEntriesWithData:*(a1 + 40) reply:*(a1 + 48)];
 }
 
-- (void)removeAllIdentificationEntriesWithReply:(id)a3
+- (void)removeAllIdentificationEntriesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__CXCallDirectoryExtensionHostContext_removeAllIdentificationEntriesWithReply___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __79__CXCallDirectoryExtensionHostContext_removeAllIdentificationEntriesWithReply___block_invoke(uint64_t a1)
@@ -243,18 +243,18 @@ void __79__CXCallDirectoryExtensionHostContext_removeAllIdentificationEntriesWit
   [v2 removeAllIdentificationEntriesWithReply:*(a1 + 40)];
 }
 
-- (void)completeRequestWithReply:(id)a3
+- (void)completeRequestWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtensionHostContext *)self queue];
+  replyCopy = reply;
+  queue = [(CXCallDirectoryExtensionHostContext *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CXCallDirectoryExtensionHostContext_completeRequestWithReply___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __64__CXCallDirectoryExtensionHostContext_completeRequestWithReply___block_invoke(uint64_t a1)

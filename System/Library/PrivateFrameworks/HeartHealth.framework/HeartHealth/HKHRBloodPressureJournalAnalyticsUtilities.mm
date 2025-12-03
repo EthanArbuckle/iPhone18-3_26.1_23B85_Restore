@@ -1,51 +1,51 @@
 @interface HKHRBloodPressureJournalAnalyticsUtilities
-- (HKHRBloodPressureJournalAnalyticsUtilities)initWithLatestActiveJournal:(id)a3;
-- (int64_t)fetchNumDaysSinceMostRecentBPJCycleStart:(id)a3;
-- (int64_t)numberOfDaysBetweenStartDate:(id)a3 endDate:(id)a4 withCalendar:(id)a5;
+- (HKHRBloodPressureJournalAnalyticsUtilities)initWithLatestActiveJournal:(id)journal;
+- (int64_t)fetchNumDaysSinceMostRecentBPJCycleStart:(id)start;
+- (int64_t)numberOfDaysBetweenStartDate:(id)date endDate:(id)endDate withCalendar:(id)calendar;
 @end
 
 @implementation HKHRBloodPressureJournalAnalyticsUtilities
 
-- (HKHRBloodPressureJournalAnalyticsUtilities)initWithLatestActiveJournal:(id)a3
+- (HKHRBloodPressureJournalAnalyticsUtilities)initWithLatestActiveJournal:(id)journal
 {
-  v5 = a3;
+  journalCopy = journal;
   v9.receiver = self;
   v9.super_class = HKHRBloodPressureJournalAnalyticsUtilities;
   v6 = [(HKHRBloodPressureJournalAnalyticsUtilities *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_latestActiveJournal, a3);
+    objc_storeStrong(&v6->_latestActiveJournal, journal);
   }
 
   return v7;
 }
 
-- (int64_t)fetchNumDaysSinceMostRecentBPJCycleStart:(id)a3
+- (int64_t)fetchNumDaysSinceMostRecentBPJCycleStart:(id)start
 {
   if (!self->_latestActiveJournal)
   {
     return -1;
   }
 
-  v4 = a3;
-  v5 = [v4 environmentDataSource];
-  v6 = [v5 currentDate];
+  startCopy = start;
+  environmentDataSource = [startCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
 
-  v7 = [v4 environmentDataSource];
+  environmentDataSource2 = [startCopy environmentDataSource];
 
-  v8 = [v7 calendarCache];
-  v9 = [v8 currentCalendar];
+  calendarCache = [environmentDataSource2 calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v10 = [(HKHRBloodPressureJournal *)self->_latestActiveJournal startDate];
-  v11 = [(HKHRBloodPressureJournalAnalyticsUtilities *)self numberOfDaysBetweenStartDate:v10 endDate:v6 withCalendar:v9];
+  startDate = [(HKHRBloodPressureJournal *)self->_latestActiveJournal startDate];
+  v11 = [(HKHRBloodPressureJournalAnalyticsUtilities *)self numberOfDaysBetweenStartDate:startDate endDate:currentDate withCalendar:currentCalendar];
 
   return v11;
 }
 
-- (int64_t)numberOfDaysBetweenStartDate:(id)a3 endDate:(id)a4 withCalendar:(id)a5
+- (int64_t)numberOfDaysBetweenStartDate:(id)date endDate:(id)endDate withCalendar:(id)calendar
 {
-  v5 = [a5 components:16 fromDate:a3 toDate:a4 options:0];
+  v5 = [calendar components:16 fromDate:date toDate:endDate options:0];
   v6 = [v5 day];
 
   return v6;

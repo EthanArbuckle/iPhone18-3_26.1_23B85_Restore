@@ -1,38 +1,38 @@
 @interface TSWPTranscriber
-+ (id)transcriberWithIdentifier:(id)a3 displayName:(id)a4 romanizationLocaleID:(id)a5 transformIdentifier:(id)a6;
-- (TSWPTranscriber)initWithIdentifier:(id)a3 displayName:(id)a4 romanizationLocaleID:(id)a5 transformIdentifier:(id)a6;
-- (id)transcribeText:(id)a3;
-- (id)transcribeText:(id)a3 withLocale:(id)a4;
-- (void)transcribeWordsInText:(id)a3 withRange:(_NSRange)a4 locale:(id)a5 block:(id)a6;
++ (id)transcriberWithIdentifier:(id)identifier displayName:(id)name romanizationLocaleID:(id)d transformIdentifier:(id)transformIdentifier;
+- (TSWPTranscriber)initWithIdentifier:(id)identifier displayName:(id)name romanizationLocaleID:(id)d transformIdentifier:(id)transformIdentifier;
+- (id)transcribeText:(id)text;
+- (id)transcribeText:(id)text withLocale:(id)locale;
+- (void)transcribeWordsInText:(id)text withRange:(_NSRange)range locale:(id)locale block:(id)block;
 @end
 
 @implementation TSWPTranscriber
 
-- (TSWPTranscriber)initWithIdentifier:(id)a3 displayName:(id)a4 romanizationLocaleID:(id)a5 transformIdentifier:(id)a6
+- (TSWPTranscriber)initWithIdentifier:(id)identifier displayName:(id)name romanizationLocaleID:(id)d transformIdentifier:(id)transformIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
+  transformIdentifierCopy = transformIdentifier;
   v32.receiver = self;
   v32.super_class = TSWPTranscriber;
   v16 = [(TSWPTranscriber *)&v32 init];
   if (v16)
   {
-    v17 = objc_msgSend_copy(v10, v14, v15);
+    v17 = objc_msgSend_copy(identifierCopy, v14, v15);
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v21 = objc_msgSend_copy(v11, v19, v20);
+    v21 = objc_msgSend_copy(nameCopy, v19, v20);
     displayName = v16->_displayName;
     v16->_displayName = v21;
 
-    v25 = objc_msgSend_copy(v13, v23, v24);
+    v25 = objc_msgSend_copy(transformIdentifierCopy, v23, v24);
     transformIdentifier = v16->_transformIdentifier;
     v16->_transformIdentifier = v25;
 
     v27 = objc_alloc(MEMORY[0x277CBEAF8]);
-    v29 = objc_msgSend_initWithLocaleIdentifier_(v27, v28, v12);
+    v29 = objc_msgSend_initWithLocaleIdentifier_(v27, v28, dCopy);
     romanizationLocale = v16->_romanizationLocale;
     v16->_romanizationLocale = v29;
   }
@@ -40,35 +40,35 @@
   return v16;
 }
 
-+ (id)transcriberWithIdentifier:(id)a3 displayName:(id)a4 romanizationLocaleID:(id)a5 transformIdentifier:(id)a6
++ (id)transcriberWithIdentifier:(id)identifier displayName:(id)name romanizationLocaleID:(id)d transformIdentifier:(id)transformIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
+  transformIdentifierCopy = transformIdentifier;
   v13 = objc_alloc(objc_opt_class());
-  v15 = objc_msgSend_initWithIdentifier_displayName_romanizationLocaleID_transformIdentifier_(v13, v14, v9, v10, v11, v12);
+  v15 = objc_msgSend_initWithIdentifier_displayName_romanizationLocaleID_transformIdentifier_(v13, v14, identifierCopy, nameCopy, dCopy, transformIdentifierCopy);
 
   return v15;
 }
 
-- (id)transcribeText:(id)a3
+- (id)transcribeText:(id)text
 {
-  v3 = objc_msgSend_transcribeText_withLocale_(self, a2, a3, self->_romanizationLocale);
+  v3 = objc_msgSend_transcribeText_withLocale_(self, a2, text, self->_romanizationLocale);
 
   return v3;
 }
 
-- (id)transcribeText:(id)a3 withLocale:(id)a4
+- (id)transcribeText:(id)text withLocale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  localeCopy = locale;
   v10 = objc_msgSend_string(MEMORY[0x277CCAB68], v8, v9);
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v13 = objc_msgSend_length(v6, v11, v12);
+  v13 = objc_msgSend_length(textCopy, v11, v12);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = sub_276E04570;
@@ -77,10 +77,10 @@
   v31 = &v33;
   v14 = v10;
   v28 = v14;
-  v15 = v6;
+  v15 = textCopy;
   v29 = v15;
-  v30 = self;
-  sub_276E0405C(v15, 0, v13, v7, v27);
+  selfCopy = self;
+  sub_276E0405C(v15, 0, v13, localeCopy, v27);
   if (objc_msgSend_length(v15, v16, v17))
   {
     v20 = v34[3];
@@ -105,24 +105,24 @@
   return v25;
 }
 
-- (void)transcribeWordsInText:(id)a3 withRange:(_NSRange)a4 locale:(id)a5 block:(id)a6
+- (void)transcribeWordsInText:(id)text withRange:(_NSRange)range locale:(id)locale block:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  localeCopy = locale;
+  blockCopy = block;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_276E047B0;
   v17[3] = &unk_27A6F4BF0;
-  v18 = v11;
-  v19 = self;
-  v20 = v12;
-  v21 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  v18 = textCopy;
+  selfCopy = self;
+  v20 = localeCopy;
+  v21 = blockCopy;
+  v14 = blockCopy;
+  v15 = localeCopy;
+  v16 = textCopy;
   sub_276E0405C(v16, location, length, v15, v17);
 }
 

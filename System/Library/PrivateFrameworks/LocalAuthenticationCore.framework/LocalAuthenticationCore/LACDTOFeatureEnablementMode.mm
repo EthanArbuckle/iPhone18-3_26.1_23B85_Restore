@@ -3,8 +3,8 @@
 + (id)enabled;
 + (id)enabledWithGracePeriod;
 + (id)enabledWithGracePeriodUnlimited;
-- (BOOL)isEqual:(id)a3;
-- (LACDTOFeatureEnablementMode)initWithIsEnabled:(BOOL)a3 isGracePeriodEnabled:(BOOL)a4 rawValue:(unsigned __int8)a5;
+- (BOOL)isEqual:(id)equal;
+- (LACDTOFeatureEnablementMode)initWithIsEnabled:(BOOL)enabled isGracePeriodEnabled:(BOOL)periodEnabled rawValue:(unsigned __int8)value;
 - (NSString)description;
 @end
 
@@ -17,16 +17,16 @@
   return v2;
 }
 
-- (LACDTOFeatureEnablementMode)initWithIsEnabled:(BOOL)a3 isGracePeriodEnabled:(BOOL)a4 rawValue:(unsigned __int8)a5
+- (LACDTOFeatureEnablementMode)initWithIsEnabled:(BOOL)enabled isGracePeriodEnabled:(BOOL)periodEnabled rawValue:(unsigned __int8)value
 {
   v9.receiver = self;
   v9.super_class = LACDTOFeatureEnablementMode;
   result = [(LACDTOFeatureEnablementMode *)&v9 init];
   if (result)
   {
-    result->_isEnabled = a3;
-    result->_isGracePeriodEnabled = a4;
-    result->_rawValue = a5;
+    result->_isEnabled = enabled;
+    result->_isGracePeriodEnabled = periodEnabled;
+    result->_rawValue = value;
   }
 
   return result;
@@ -53,18 +53,18 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LACDTOFeatureEnablementMode *)self isEnabled];
-    if (v6 == [v5 isEnabled] && (v7 = -[LACDTOFeatureEnablementMode isGracePeriodEnabled](self, "isGracePeriodEnabled"), v7 == objc_msgSend(v5, "isGracePeriodEnabled")))
+    v5 = equalCopy;
+    isEnabled = [(LACDTOFeatureEnablementMode *)self isEnabled];
+    if (isEnabled == [v5 isEnabled] && (v7 = -[LACDTOFeatureEnablementMode isGracePeriodEnabled](self, "isGracePeriodEnabled"), v7 == objc_msgSend(v5, "isGracePeriodEnabled")))
     {
-      v9 = [(LACDTOFeatureEnablementMode *)self rawValue];
-      v8 = v9 == [v5 rawValue];
+      rawValue = [(LACDTOFeatureEnablementMode *)self rawValue];
+      v8 = rawValue == [v5 rawValue];
     }
 
     else

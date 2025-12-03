@@ -1,14 +1,14 @@
 @interface CRLPresentedPopoverTextEditingBehaviorProvidingSwiftHelper
-+ (int64_t)allowTextInputWhilePresentingFor:(id)a3;
++ (int64_t)allowTextInputWhilePresentingFor:(id)for;
 - (_TtC8Freeform58CRLPresentedPopoverTextEditingBehaviorProvidingSwiftHelper)init;
 @end
 
 @implementation CRLPresentedPopoverTextEditingBehaviorProvidingSwiftHelper
 
-+ (int64_t)allowTextInputWhilePresentingFor:(id)a3
++ (int64_t)allowTextInputWhilePresentingFor:(id)for
 {
-  v4 = a3;
-  v5 = sub_100AC70A4(a3);
+  forCopy = for;
+  v5 = sub_100AC70A4(for);
 
   return v5;
 }

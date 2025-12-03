@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchBooleanQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)clone;
 - (id)getClauses;
 - (id)iterator;
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (id)toStringWithNSString:(id)a3;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
-- (void)addWithOrgApacheLuceneSearchBooleanClause:(id)a3;
-- (void)addWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)a4;
+- (void)addWithOrgApacheLuceneSearchBooleanClause:(id)clause;
+- (void)addWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)enum;
 - (void)dealloc;
 @end
 
@@ -24,7 +24,7 @@
   return [v3 iterator];
 }
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   if (*&self->mutable__)
   {
@@ -83,14 +83,14 @@ LABEL_6:
             goto LABEL_28;
           }
 
-          v17 = [*(*(&v30 + 1) + 8 * i) getQuery];
-          if (!v17)
+          getQuery = [*(*(&v30 + 1) + 8 * i) getQuery];
+          if (!getQuery)
           {
             goto LABEL_28;
           }
 
-          v18 = v17;
-          v19 = [v17 rewriteWithOrgApacheLuceneIndexIndexReader:a3];
+          v18 = getQuery;
+          v19 = [getQuery rewriteWithOrgApacheLuceneIndexIndexReader:reader];
           v13 |= v19 != v18;
           -[OrgApacheLuceneSearchBooleanQuery_Builder addWithOrgApacheLuceneSearchQuery:withOrgApacheLuceneSearchBooleanClause_OccurEnum:](v10, "addWithOrgApacheLuceneSearchQuery:withOrgApacheLuceneSearchBooleanClause_OccurEnum:", v19, [v16 getOccur]);
         }
@@ -101,16 +101,16 @@ LABEL_6:
       while (v12);
       if (v13)
       {
-        v20 = [(OrgApacheLuceneSearchBooleanQuery_Builder *)v10 build];
-        if (v20)
+        build = [(OrgApacheLuceneSearchBooleanQuery_Builder *)v10 build];
+        if (build)
         {
-          v21 = v20;
+          clone = build;
           [(OrgApacheLuceneSearchQuery *)self getBoost];
 LABEL_18:
-          v23 = v21;
+          v23 = clone;
 LABEL_30:
           [(OrgApacheLuceneSearchQuery *)v23 setBoostWithFloat:v22];
-          return v21;
+          return clone;
         }
 
         goto LABEL_28;
@@ -119,22 +119,22 @@ LABEL_30:
 
     v29.receiver = self;
     v29.super_class = OrgApacheLuceneSearchBooleanQuery;
-    return [(OrgApacheLuceneSearchQuery *)&v29 rewriteWithOrgApacheLuceneIndexIndexReader:a3];
+    return [(OrgApacheLuceneSearchQuery *)&v29 rewriteWithOrgApacheLuceneIndexIndexReader:reader];
   }
 
   else
   {
-    v24 = [v7 getQuery];
-    if (!v24)
+    getQuery2 = [v7 getQuery];
+    if (!getQuery2)
     {
       goto LABEL_28;
     }
 
-    v21 = [v24 rewriteWithOrgApacheLuceneIndexIndexReader:a3];
+    clone = [getQuery2 rewriteWithOrgApacheLuceneIndexIndexReader:reader];
     if (![v7 isScoring])
     {
-      v23 = new_OrgApacheLuceneSearchConstantScoreQuery_initWithOrgApacheLuceneSearchQuery_(v21);
-      v21 = v23;
+      v23 = new_OrgApacheLuceneSearchConstantScoreQuery_initWithOrgApacheLuceneSearchQuery_(clone);
+      clone = v23;
       v22 = 0.0;
       goto LABEL_30;
     }
@@ -142,21 +142,21 @@ LABEL_30:
     [(OrgApacheLuceneSearchQuery *)self getBoost];
     if (v25 != 1.0)
     {
-      if (v21 == [v7 getQuery])
+      if (clone == [v7 getQuery])
       {
-        if (!v21)
+        if (!clone)
         {
           goto LABEL_28;
         }
 
-        v21 = [(OrgApacheLuceneSearchQuery *)v21 clone];
+        clone = [(OrgApacheLuceneSearchQuery *)clone clone];
       }
 
       [(OrgApacheLuceneSearchQuery *)self getBoost];
-      if (v21)
+      if (clone)
       {
         v27 = v26;
-        [(OrgApacheLuceneSearchQuery *)v21 getBoost];
+        [(OrgApacheLuceneSearchQuery *)clone getBoost];
         *&v22 = v27 * *&v22;
         goto LABEL_18;
       }
@@ -166,10 +166,10 @@ LABEL_28:
     }
   }
 
-  return v21;
+  return clone;
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v5 = new_JavaLangStringBuilder_init();
   [(OrgApacheLuceneSearchQuery *)self getBoost];
@@ -211,36 +211,36 @@ LABEL_28:
           goto LABEL_28;
         }
 
-        v13 = [*(*(&v23 + 1) + 8 * v11) getOccur];
-        if (!v13)
+        getOccur = [*(*(&v23 + 1) + 8 * v11) getOccur];
+        if (!getOccur)
         {
           goto LABEL_28;
         }
 
-        -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [v13 description]);
-        v14 = [v12 getQuery];
+        -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [getOccur description]);
+        getQuery = [v12 getQuery];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", @"(");
-          if (!v14)
+          if (!getQuery)
           {
             goto LABEL_28;
           }
 
-          -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [v14 toStringWithNSString:a3]);
+          -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [getQuery toStringWithNSString:string]);
           v15 = v5;
           v16 = @"");
         }
 
         else
         {
-          if (!v14)
+          if (!getQuery)
           {
             goto LABEL_28;
           }
 
-          v16 = [v14 toStringWithNSString:a3];
+          v16 = [getQuery toStringWithNSString:string];
           v15 = v5;
         }
 
@@ -290,7 +290,7 @@ LABEL_28:
   return [(JavaLangStringBuilder *)v5 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = OrgApacheLuceneSearchBooleanQuery;
@@ -298,7 +298,7 @@ LABEL_28:
   if (v5)
   {
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       [(OrgApacheLuceneSearchBooleanQuery *)self getMinimumNumberShouldMatch];
       JreThrowNullPointerException();
@@ -309,8 +309,8 @@ LABEL_28:
       JreThrowClassCastException();
     }
 
-    v6 = [(OrgApacheLuceneSearchBooleanQuery *)self getMinimumNumberShouldMatch];
-    if (v6 == [a3 getMinimumNumberShouldMatch] && *(&self->super.boost_ + 5) == *(a3 + 13))
+    getMinimumNumberShouldMatch = [(OrgApacheLuceneSearchBooleanQuery *)self getMinimumNumberShouldMatch];
+    if (getMinimumNumberShouldMatch == [equal getMinimumNumberShouldMatch] && *(&self->super.boost_ + 5) == *(equal + 13))
     {
       v7 = *&self->minimumNumberShouldMatch_;
       if (!v7)
@@ -318,7 +318,7 @@ LABEL_28:
         JreThrowNullPointerException();
       }
 
-      LOBYTE(v5) = [v7 isEqual:*(a3 + 20)];
+      LOBYTE(v5) = [v7 isEqual:*(equal + 20)];
     }
 
     else
@@ -361,9 +361,9 @@ LABEL_28:
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneSearchBooleanQuery;
-  v3 = [(OrgApacheLuceneSearchQuery *)&v6 clone];
+  clone = [(OrgApacheLuceneSearchQuery *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -374,21 +374,21 @@ LABEL_28:
   }
 
   v4 = new_JavaUtilArrayList_initWithJavaUtilCollection_(*&self->minimumNumberShouldMatch_);
-  JreStrongAssignAndConsume((v3 + 20), v4);
-  return v3;
+  JreStrongAssignAndConsume((clone + 20), v4);
+  return clone;
 }
 
-- (void)addWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)a4
+- (void)addWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)enum
 {
-  v5 = new_OrgApacheLuceneSearchBooleanClause_initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchBooleanClause_OccurEnum_(a3, a4);
+  v5 = new_OrgApacheLuceneSearchBooleanClause_initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchBooleanClause_OccurEnum_(query, enum);
 
   [(OrgApacheLuceneSearchBooleanQuery *)self addWithOrgApacheLuceneSearchBooleanClause:v5];
 }
 
-- (void)addWithOrgApacheLuceneSearchBooleanClause:(id)a3
+- (void)addWithOrgApacheLuceneSearchBooleanClause:(id)clause
 {
-  sub_1000E4CEC(self, @"add", a3, v3, v4, v5, v6, v7);
-  OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(a3, @"BooleanClause must not be null");
+  sub_1000E4CEC(self, @"add", clause, v3, v4, v5, v6, v7);
+  OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(clause, @"BooleanClause must not be null");
   v10 = *&self->minimumNumberShouldMatch_;
   if (!v10)
   {
@@ -404,7 +404,7 @@ LABEL_28:
 
   v12 = *&self->minimumNumberShouldMatch_;
 
-  [v12 addWithId:a3];
+  [v12 addWithId:clause];
 }
 
 - (void)dealloc

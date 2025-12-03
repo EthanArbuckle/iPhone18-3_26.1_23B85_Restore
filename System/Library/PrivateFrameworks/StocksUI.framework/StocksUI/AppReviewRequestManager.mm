@@ -7,7 +7,7 @@
 
 - (void)appleAccountChanged
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_220888DCC();
 }

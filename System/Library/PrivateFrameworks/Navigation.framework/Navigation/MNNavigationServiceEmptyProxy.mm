@@ -1,13 +1,13 @@
 @interface MNNavigationServiceEmptyProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MNNavigationServiceEmptyProxy)initWithPeer:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MNNavigationServiceEmptyProxy)initWithPeer:(id)peer;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation MNNavigationServiceEmptyProxy
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if ([(MNNavigationServiceEmptyProxy *)self _isSelectorValidForForwarding:?])
   {
@@ -16,36 +16,36 @@
 
   v6.receiver = self;
   v6.super_class = MNNavigationServiceEmptyProxy;
-  return [(MNNavigationServiceEmptyProxy *)&v6 respondsToSelector:a3];
+  return [(MNNavigationServiceEmptyProxy *)&v6 respondsToSelector:selector];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   if ([(MNNavigationServiceEmptyProxy *)self _isSelectorValidForForwarding:?])
   {
-    v5 = [MEMORY[0x1E695DF68] _navigation_methodSignatureForEmptyMethod];
+    _navigation_methodSignatureForEmptyMethod = [MEMORY[0x1E695DF68] _navigation_methodSignatureForEmptyMethod];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MNNavigationServiceEmptyProxy;
-    v5 = [(MNNavigationServiceEmptyProxy *)&v7 methodSignatureForSelector:a3];
+    _navigation_methodSignatureForEmptyMethod = [(MNNavigationServiceEmptyProxy *)&v7 methodSignatureForSelector:selector];
   }
 
-  return v5;
+  return _navigation_methodSignatureForEmptyMethod;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 selector];
-  if ([(MNNavigationServiceEmptyProxy *)self _isSelectorValidForForwarding:v4])
+  selector = [invocation selector];
+  if ([(MNNavigationServiceEmptyProxy *)self _isSelectorValidForForwarding:selector])
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = NSStringFromSelector(v4);
+      v6 = NSStringFromSelector(selector);
       peer = self->_peer;
       v10 = 138412546;
       v11 = v6;
@@ -61,20 +61,20 @@
   {
     v9 = *MEMORY[0x1E69E9840];
 
-    [(MNNavigationServiceEmptyProxy *)self doesNotRecognizeSelector:v4];
+    [(MNNavigationServiceEmptyProxy *)self doesNotRecognizeSelector:selector];
   }
 }
 
-- (MNNavigationServiceEmptyProxy)initWithPeer:(id)a3
+- (MNNavigationServiceEmptyProxy)initWithPeer:(id)peer
 {
-  v5 = a3;
+  peerCopy = peer;
   v9.receiver = self;
   v9.super_class = MNNavigationServiceEmptyProxy;
   v6 = [(MNNavigationServiceEmptyProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peer, a3);
+    objc_storeStrong(&v6->_peer, peer);
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface CADDefaultPermissionValidator
-- (BOOL)_valueForBooleanEntitlement:(id)a3 defaultValue:(BOOL)a4;
-- (BOOL)_valueForStringEntitlement:(id)a3 matchesString:(id)a4;
+- (BOOL)_valueForBooleanEntitlement:(id)entitlement defaultValue:(BOOL)value;
+- (BOOL)_valueForStringEntitlement:(id)entitlement matchesString:(id)string;
 - (BOOL)canAccessProcedureAlarms;
 - (BOOL)hasCalendarTCCBypassEntitlement;
 - (BOOL)hasCalendarToolEntitlement;
 - (BOOL)internalAccessLevelGranted;
 - (BOOL)shouldTrustClientEnforcedManagedConfigurationAccess;
 - (BOOL)storageManagementAccessGranted;
-- (CADDefaultPermissionValidator)initWithClientIdentity:(id)a3;
-- (CADDefaultPermissionValidator)initWithClientIdentity:(id)a3 tccPermissionChecker:(id)a4;
+- (CADDefaultPermissionValidator)initWithClientIdentity:(id)identity;
+- (CADDefaultPermissionValidator)initWithClientIdentity:(id)identity tccPermissionChecker:(id)checker;
 - (ClientIdentity)identity;
-- (id)_valueForEntitlement:(id)a3 loadBlock:(id)a4;
+- (id)_valueForEntitlement:(id)entitlement loadBlock:(id)block;
 - (int)eventAccessLevel;
 - (void)_loadAccessPermissionsIfNeeded;
 - (void)dealloc;
@@ -31,9 +31,9 @@
   if (!self->_allowedEntityTypesValid)
   {
     v3 = objc_alloc_init(MEMORY[0x277CF74D0]);
-    v4 = [v3 dataIsAccessible];
+    dataIsAccessible = [v3 dataIsAccessible];
 
-    if (v4)
+    if (dataIsAccessible)
     {
       if ([(CADDefaultPermissionValidator *)self hasSyncClientEntitlement]|| [(CADDefaultPermissionValidator *)self isFirstPartyCalendarApp])
       {
@@ -42,10 +42,10 @@
 
       else
       {
-        v5 = [(CADTCCPermissionChecker *)self->_tccPermissionChecker eventAuthorization];
-        self->_eventAuthorization = CalAuthorizationStatusFromTCCAuthRight(*MEMORY[0x277D6C118], v5);
-        v6 = [(CADTCCPermissionChecker *)self->_tccPermissionChecker remindersAuthorization];
-        self->_remindersAuthorization = CalAuthorizationStatusFromTCCAuthRight(*MEMORY[0x277D6C1E0], v6);
+        eventAuthorization = [(CADTCCPermissionChecker *)self->_tccPermissionChecker eventAuthorization];
+        self->_eventAuthorization = CalAuthorizationStatusFromTCCAuthRight(*MEMORY[0x277D6C118], eventAuthorization);
+        remindersAuthorization = [(CADTCCPermissionChecker *)self->_tccPermissionChecker remindersAuthorization];
+        self->_remindersAuthorization = CalAuthorizationStatusFromTCCAuthRight(*MEMORY[0x277D6C1E0], remindersAuthorization);
       }
     }
 
@@ -64,16 +64,16 @@
   v3 = [(CADDefaultPermissionValidator *)self _valueForEntitlement:@"com.apple.private.tcc.allow" loadBlock:&__block_literal_global_30];
   if ([v3 BOOLValue])
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
     v5 = [(CADDefaultPermissionValidator *)self _valueForEntitlement:@"com.apple.private.tcc.allow.overridable" loadBlock:&__block_literal_global_59];
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 id __64__CADDefaultPermissionValidator_hasCalendarTCCBypassEntitlement__block_invoke_2(int a1, void *cf)
@@ -213,25 +213,25 @@ id __64__CADDefaultPermissionValidator_hasCalendarTCCBypassEntitlement__block_in
 - (BOOL)shouldTrustClientEnforcedManagedConfigurationAccess
 {
   WeakRetained = objc_loadWeakRetained(&self->_identity);
-  v3 = [WeakRetained applicationIdentifier];
+  applicationIdentifier = [WeakRetained applicationIdentifier];
 
   if (shouldTrustClientEnforcedManagedConfigurationAccess_onceToken != -1)
   {
     [CADDefaultPermissionValidator shouldTrustClientEnforcedManagedConfigurationAccess];
   }
 
-  v4 = [shouldTrustClientEnforcedManagedConfigurationAccess_whitelistedBundleIDs containsObject:v3];
+  v4 = [shouldTrustClientEnforcedManagedConfigurationAccess_whitelistedBundleIDs containsObject:applicationIdentifier];
 
   return v4;
 }
 
-- (CADDefaultPermissionValidator)initWithClientIdentity:(id)a3
+- (CADDefaultPermissionValidator)initWithClientIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = [CADAuditTokenTCCPermissionChecker alloc];
-  if (v4)
+  if (identityCopy)
   {
-    [v4 auditToken];
+    [identityCopy auditToken];
   }
 
   else
@@ -240,15 +240,15 @@ id __64__CADDefaultPermissionValidator_hasCalendarTCCBypassEntitlement__block_in
   }
 
   v6 = [(CADAuditTokenTCCPermissionChecker *)v5 initWithAuditToken:v9];
-  v7 = [(CADDefaultPermissionValidator *)self initWithClientIdentity:v4 tccPermissionChecker:v6];
+  v7 = [(CADDefaultPermissionValidator *)self initWithClientIdentity:identityCopy tccPermissionChecker:v6];
 
   return v7;
 }
 
-- (CADDefaultPermissionValidator)initWithClientIdentity:(id)a3 tccPermissionChecker:(id)a4
+- (CADDefaultPermissionValidator)initWithClientIdentity:(id)identity tccPermissionChecker:(id)checker
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  checkerCopy = checker;
   v11.receiver = self;
   v11.super_class = CADDefaultPermissionValidator;
   v8 = [(CADDefaultPermissionValidator *)&v11 init];
@@ -256,8 +256,8 @@ id __64__CADDefaultPermissionValidator_hasCalendarTCCBypassEntitlement__block_in
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_identity, v6);
-    objc_storeStrong(&v9->_tccPermissionChecker, a4);
+    objc_storeWeak(&v8->_identity, identityCopy);
+    objc_storeStrong(&v9->_tccPermissionChecker, checker);
   }
 
   return v9;
@@ -265,9 +265,9 @@ id __64__CADDefaultPermissionValidator_hasCalendarTCCBypassEntitlement__block_in
 
 - (BOOL)canAccessProcedureAlarms
 {
-  v3 = [(CADDefaultPermissionValidator *)self isAutomatorApp];
-  v4 = [(CADDefaultPermissionValidator *)self isShortcutsApp];
-  if (v3 || v4 || [(CADDefaultPermissionValidator *)self isFirstPartyCalendarApp]|| [(CADDefaultPermissionValidator *)self isCalendarDaemon]|| [(CADDefaultPermissionValidator *)self testingAccessLevelGranted])
+  isAutomatorApp = [(CADDefaultPermissionValidator *)self isAutomatorApp];
+  isShortcutsApp = [(CADDefaultPermissionValidator *)self isShortcutsApp];
+  if (isAutomatorApp || isShortcutsApp || [(CADDefaultPermissionValidator *)self isFirstPartyCalendarApp]|| [(CADDefaultPermissionValidator *)self isCalendarDaemon]|| [(CADDefaultPermissionValidator *)self testingAccessLevelGranted])
   {
     return 1;
   }
@@ -291,8 +291,8 @@ id __64__CADDefaultPermissionValidator_hasCalendarTCCBypassEntitlement__block_in
 {
   v3 = [(CADDefaultPermissionValidator *)self _valueForBooleanEntitlement:@"com.apple.private.calendar.storagemanagement" defaultValue:0];
   WeakRetained = objc_loadWeakRetained(&self->_identity);
-  v5 = [WeakRetained applicationIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.Preferences"];
+  applicationIdentifier = [WeakRetained applicationIdentifier];
+  v6 = [applicationIdentifier isEqualToString:@"com.apple.Preferences"];
 
   return (v3 | v6) & 1;
 }
@@ -317,11 +317,11 @@ uint64_t __84__CADDefaultPermissionValidator_shouldTrustClientEnforcedManagedCon
   return MEMORY[0x2821F96F8](v0);
 }
 
-- (id)_valueForEntitlement:(id)a3 loadBlock:(id)a4
+- (id)_valueForEntitlement:(id)entitlement loadBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entitlementCopy = entitlement;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   task = self->_task;
   if (!task)
@@ -346,9 +346,9 @@ uint64_t __84__CADDefaultPermissionValidator_shouldTrustClientEnforcedManagedCon
 
   v12 = 0;
   error = 0;
-  if (v6 && task)
+  if (entitlementCopy && task)
   {
-    v12 = SecTaskCopyValueForEntitlement(task, v6, &error);
+    v12 = SecTaskCopyValueForEntitlement(task, entitlementCopy, &error);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -360,7 +360,7 @@ uint64_t __84__CADDefaultPermissionValidator_shouldTrustClientEnforcedManagedCon
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
       {
         token.val[0] = 138543618;
-        *&token.val[1] = v6;
+        *&token.val[1] = entitlementCopy;
         LOWORD(token.val[3]) = 2112;
         *(&token.val[3] + 2) = error;
         _os_log_impl(&dword_22430B000, v13, OS_LOG_TYPE_ERROR, "CADPermissionValidator: An error occurred while checking for entitlement %{public}@. Error: %@", &token, 0x16u);
@@ -368,7 +368,7 @@ uint64_t __84__CADDefaultPermissionValidator_shouldTrustClientEnforcedManagedCon
     }
   }
 
-  v14 = v7[2](v7, v12);
+  v14 = blockCopy[2](blockCopy, v12);
   if (v12)
   {
     CFRelease(v12);
@@ -379,17 +379,17 @@ uint64_t __84__CADDefaultPermissionValidator_shouldTrustClientEnforcedManagedCon
   return v14;
 }
 
-- (BOOL)_valueForBooleanEntitlement:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_valueForBooleanEntitlement:(id)entitlement defaultValue:(BOOL)value
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__CADDefaultPermissionValidator__valueForBooleanEntitlement_defaultValue___block_invoke;
   v7[3] = &__block_descriptor_33_e9__16__0_v8l;
-  v8 = a4;
-  v4 = [(CADDefaultPermissionValidator *)self _valueForEntitlement:a3 loadBlock:v7];
-  v5 = [v4 BOOLValue];
+  valueCopy = value;
+  v4 = [(CADDefaultPermissionValidator *)self _valueForEntitlement:entitlement loadBlock:v7];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 uint64_t __74__CADDefaultPermissionValidator__valueForBooleanEntitlement_defaultValue___block_invoke(uint64_t a1, CFTypeRef cf)
@@ -411,11 +411,11 @@ uint64_t __74__CADDefaultPermissionValidator__valueForBooleanEntitlement_default
   return [v6 numberWithBool:v5 & 1];
 }
 
-- (BOOL)_valueForStringEntitlement:(id)a3 matchesString:(id)a4
+- (BOOL)_valueForStringEntitlement:(id)entitlement matchesString:(id)string
 {
-  v6 = a4;
-  v7 = [(CADDefaultPermissionValidator *)self _valueForEntitlement:a3 loadBlock:&__block_literal_global_99_0];
-  LOBYTE(self) = [v6 isEqual:v7];
+  stringCopy = string;
+  v7 = [(CADDefaultPermissionValidator *)self _valueForEntitlement:entitlement loadBlock:&__block_literal_global_99_0];
+  LOBYTE(self) = [stringCopy isEqual:v7];
 
   return self;
 }

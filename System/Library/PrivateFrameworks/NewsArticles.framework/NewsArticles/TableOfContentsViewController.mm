@@ -1,17 +1,17 @@
 @interface TableOfContentsViewController
-- (_TtC12NewsArticles29TableOfContentsViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles29TableOfContentsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC12NewsArticles29TableOfContentsViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles29TableOfContentsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation TableOfContentsViewController
 
-- (_TtC12NewsArticles29TableOfContentsViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles29TableOfContentsViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles29TableOfContentsViewController_pageIdentifierToDisplay);
   *v3 = 0;
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC12NewsArticles29TableOfContentsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles29TableOfContentsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -30,53 +30,53 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AB2540();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AB2810();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TableOfContentsViewController *)&v5 viewWillAppear:v3];
+  [(TableOfContentsViewController *)&v5 viewWillAppear:appearCopy];
   sub_1D7D2C43C();
   sub_1D7D2A4AC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(TableOfContentsViewController *)&v4 viewDidAppear:v3];
+  [(TableOfContentsViewController *)&v4 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TableOfContentsViewController *)&v5 viewWillDisappear:v3];
+  [(TableOfContentsViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_1D7D2A4EC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(TableOfContentsViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(TableOfContentsViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_1D7AB34BC();
 }
 

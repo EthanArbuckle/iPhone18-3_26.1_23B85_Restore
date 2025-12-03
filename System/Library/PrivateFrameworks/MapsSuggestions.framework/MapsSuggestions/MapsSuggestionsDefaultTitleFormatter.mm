@@ -1,23 +1,23 @@
 @interface MapsSuggestionsDefaultTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
-- (id)_subtitleStringFromEntry:(void *)a3 andETA:;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
+- (id)_subtitleStringFromEntry:(void *)entry andETA:;
 @end
 
 @implementation MapsSuggestionsDefaultTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  entryCopy = entry;
+  etaCopy = eta;
+  v8 = etaCopy;
+  if (entryCopy)
   {
-    if (v7)
+    if (etaCopy)
     {
-      v13 = [v6 title];
-      v14 = [(MapsSuggestionsDefaultTitleFormatter *)self _subtitleStringFromEntry:v6 andETA:v8];
-      v11 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v6 title:v13 subtitle:v14 includeLockedVersions:0];
+      title = [entryCopy title];
+      v14 = [(MapsSuggestionsDefaultTitleFormatter *)self _subtitleStringFromEntry:entryCopy andETA:v8];
+      v11 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:title subtitle:v14 includeLockedVersions:0];
 
       goto LABEL_9;
     }
@@ -63,18 +63,18 @@ LABEL_9:
   return v11;
 }
 
-- (id)_subtitleStringFromEntry:(void *)a3 andETA:
+- (id)_subtitleStringFromEntry:(void *)entry andETA:
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (self)
   {
-    [v6 seconds];
+    [entryCopy seconds];
     v9 = NSStringFromMapsSuggestionsShortETA(v8);
-    v10 = [v5 undecoratedSubtitle];
-    if ([v9 length] && objc_msgSend(a1, "shouldDecorateEntry:withETA:", v5, v7))
+    undecoratedSubtitle = [v5 undecoratedSubtitle];
+    if ([v9 length] && objc_msgSend(self, "shouldDecorateEntry:withETA:", v5, v7))
     {
       v11 = [v5 dateForKey:@"MapsSuggestionsScheduledTimeKey"];
       if (([v5 BOOLeanForKey:@"MapsSuggestionsCalendarAllDayEventKey" is:1] & 1) != 0 || MapsSuggestionsIsInThePast(v11))
@@ -127,12 +127,12 @@ LABEL_23:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
         v34 = 138412290;
-        v35 = v10;
+        v35 = undecoratedSubtitle;
         _os_log_impl(&dword_1C5126000, v32, OS_LOG_TYPE_DEBUG, "Subtitle from decoration: %@", &v34, 0xCu);
       }
     }
 
-    v21 = v10;
+    v21 = undecoratedSubtitle;
     goto LABEL_23;
   }
 

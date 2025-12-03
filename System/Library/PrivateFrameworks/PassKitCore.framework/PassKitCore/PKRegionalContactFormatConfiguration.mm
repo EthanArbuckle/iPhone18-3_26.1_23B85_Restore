@@ -1,28 +1,28 @@
 @interface PKRegionalContactFormatConfiguration
-- (PKRegionalContactFormatConfiguration)initWithCoder:(id)a3;
-- (PKRegionalContactFormatConfiguration)initWithDictionary:(id)a3;
+- (PKRegionalContactFormatConfiguration)initWithCoder:(id)coder;
+- (PKRegionalContactFormatConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKRegionalContactFormatConfiguration
 
-- (PKRegionalContactFormatConfiguration)initWithDictionary:(id)a3
+- (PKRegionalContactFormatConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PKRegionalContactFormatConfiguration;
   v5 = [(PKRegionalContactFormatConfiguration *)&v15 init];
   if (v5)
   {
     v6 = [PKNameComponentFormatConfiguration alloc];
-    v7 = [v4 PKDictionaryForKey:@"nameComponentsFormat"];
+    v7 = [dictionaryCopy PKDictionaryForKey:@"nameComponentsFormat"];
     v8 = [(PKNameComponentFormatConfiguration *)v6 initWithDictionary:v7];
     nameComponentFormatConfiguration = v5->_nameComponentFormatConfiguration;
     v5->_nameComponentFormatConfiguration = v8;
 
     v10 = [PKAddressFormatConfiguration alloc];
-    v11 = [v4 PKDictionaryForKey:@"addressFormat"];
+    v11 = [dictionaryCopy PKDictionaryForKey:@"addressFormat"];
     v12 = [(PKAddressFormatConfiguration *)v10 initWithDictionary:v11];
     addressFormatConfiguration = v5->_addressFormatConfiguration;
     v5->_addressFormatConfiguration = v12;
@@ -42,27 +42,27 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nameComponentFormatConfiguration = self->_nameComponentFormatConfiguration;
-  v5 = a3;
-  [v5 encodeObject:nameComponentFormatConfiguration forKey:@"nameComponentsFormat"];
-  [v5 encodeObject:self->_addressFormatConfiguration forKey:@"addressFormat"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nameComponentFormatConfiguration forKey:@"nameComponentsFormat"];
+  [coderCopy encodeObject:self->_addressFormatConfiguration forKey:@"addressFormat"];
 }
 
-- (PKRegionalContactFormatConfiguration)initWithCoder:(id)a3
+- (PKRegionalContactFormatConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKRegionalContactFormatConfiguration;
   v5 = [(PKRegionalContactFormatConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nameComponentsFormat"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameComponentsFormat"];
     nameComponentFormatConfiguration = v5->_nameComponentFormatConfiguration;
     v5->_nameComponentFormatConfiguration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addressFormat"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addressFormat"];
     addressFormatConfiguration = v5->_addressFormatConfiguration;
     v5->_addressFormatConfiguration = v8;
   }

@@ -1,18 +1,18 @@
 @interface DDShareAction
-- (DDShareAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (DDShareAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)viewController;
-- (void)performFromView:(id)a3;
-- (void)prepareViewControllerForActionController:(id)a3;
+- (void)performFromView:(id)view;
+- (void)prepareViewControllerForActionController:(id)controller;
 - (void)viewController;
 @end
 
 @implementation DDShareAction
 
-- (DDShareAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDShareAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v10.receiver = self;
   v10.super_class = DDShareAction;
-  v5 = [(DDAction *)&v10 initWithURL:a3 result:a4 context:a5];
+  v5 = [(DDAction *)&v10 initWithURL:l result:result context:context];
   v6 = v5;
   if (!v5 || v5->super._contact || v5->super._ics || v5->super._url)
   {
@@ -187,27 +187,27 @@ LABEL_25:
   return viewController;
 }
 
-- (void)prepareViewControllerForActionController:(id)a3
+- (void)prepareViewControllerForActionController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = DDShareAction;
-  v4 = a3;
-  [(DDAction *)&v5 prepareViewControllerForActionController:v4];
-  [v4 action:self presentationShouldBeModal:{0, v5.receiver, v5.super_class}];
+  controllerCopy = controller;
+  [(DDAction *)&v5 prepareViewControllerForActionController:controllerCopy];
+  [controllerCopy action:self presentationShouldBeModal:{0, v5.receiver, v5.super_class}];
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v9 = a3;
-  v4 = [(DDShareAction *)self viewController];
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  viewController = [(DDShareAction *)self viewController];
+  v5 = viewController;
+  if (viewController)
   {
-    v6 = [v4 popoverPresentationController];
-    [(DDAction *)self setupPopoverPresentationController:v6 view:v9];
-    v7 = [v9 window];
-    v8 = [v7 rootViewController];
-    [v8 presentViewController:v5 animated:1 completion:0];
+    popoverPresentationController = [viewController popoverPresentationController];
+    [(DDAction *)self setupPopoverPresentationController:popoverPresentationController view:viewCopy];
+    window = [viewCopy window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v5 animated:1 completion:0];
   }
 }
 

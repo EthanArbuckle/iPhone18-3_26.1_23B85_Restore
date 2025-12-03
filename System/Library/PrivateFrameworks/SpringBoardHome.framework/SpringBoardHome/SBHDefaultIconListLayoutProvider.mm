@@ -1,36 +1,36 @@
 @interface SBHDefaultIconListLayoutProvider
 + (SBHDefaultIconListLayoutProvider)frameworkFallbackInstance;
-- (BOOL)showsLabelsForScreenType:(unint64_t)a3 iconLocation:(id)a4 layoutOptions:(unint64_t)a5;
+- (BOOL)showsLabelsForScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options;
 - (SBHDefaultIconListLayoutProvider)init;
-- (SBHDefaultIconListLayoutProvider)initWithLayoutOptions:(unint64_t)a3;
-- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)a3;
-- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)a3 layoutOptions:(unint64_t)a4;
-- (UIEdgeInsets)homeScreenSearchOverlayInsetsForScreenType:(unint64_t)a3 iconLocation:(id)a4 layoutOptions:(unint64_t)a5 forAppLibrary:(BOOL)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)layoutForIconLocation:(id)a3;
-- (id)makeLayoutForIconLocation:(id)a3;
+- (SBHDefaultIconListLayoutProvider)initWithLayoutOptions:(unint64_t)options;
+- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)type;
+- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)type layoutOptions:(unint64_t)options;
+- (UIEdgeInsets)homeScreenSearchOverlayInsetsForScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options forAppLibrary:(BOOL)library;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)layoutForIconLocation:(id)location;
+- (id)makeLayoutForIconLocation:(id)location;
 - (id)succinctDescription;
-- (id)supportedIconGridSizeClassesForScreenType:(unint64_t)a3 iconLocation:(id)a4 layoutOptions:(unint64_t)a5;
-- (unint64_t)layoutOptionsForIconLocation:(id)a3;
-- (void)configureAppLibraryConfiguration:(id)a3 forScreenType:(unint64_t)a4 iconLocation:(id)a5 layoutOptions:(unint64_t)a6;
-- (void)configureFloatingDockConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5;
-- (void)configureFloatyFolderConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5;
-- (void)configureFolderIconConfiguration:(id)a3 forScreenType:(unint64_t)a4 numberOfRows:(unint64_t)a5 layoutOptions:(unint64_t)a6;
-- (void)configureIconAccessoryConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5;
-- (void)configureLabelConfigurations:(id)a3 forScreenType:(unint64_t)a4 iconLocation:(id)a5 layoutOptions:(unint64_t)a6;
-- (void)configureRootFolderConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5;
-- (void)configureSidebarConfiguration:(id)a3 forScreenType:(unint64_t)a4 iconLocation:(id)a5 layoutOptions:(unint64_t)a6;
+- (id)supportedIconGridSizeClassesForScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options;
+- (unint64_t)layoutOptionsForIconLocation:(id)location;
+- (void)configureAppLibraryConfiguration:(id)configuration forScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options;
+- (void)configureFloatingDockConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options;
+- (void)configureFloatyFolderConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options;
+- (void)configureFolderIconConfiguration:(id)configuration forScreenType:(unint64_t)type numberOfRows:(unint64_t)rows layoutOptions:(unint64_t)options;
+- (void)configureIconAccessoryConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options;
+- (void)configureLabelConfigurations:(id)configurations forScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options;
+- (void)configureRootFolderConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options;
+- (void)configureSidebarConfiguration:(id)configuration forScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options;
 @end
 
 @implementation SBHDefaultIconListLayoutProvider
 
 - (SBHDefaultIconListLayoutProvider)init
 {
-  v3 = [objc_opt_class() currentDeviceScreenType];
-  v4 = [objc_opt_class() defaultLayoutOptions];
+  currentDeviceScreenType = [objc_opt_class() currentDeviceScreenType];
+  defaultLayoutOptions = [objc_opt_class() defaultLayoutOptions];
 
-  return [(SBHDefaultIconListLayoutProvider *)self initWithScreenType:v3 layoutOptions:v4];
+  return [(SBHDefaultIconListLayoutProvider *)self initWithScreenType:currentDeviceScreenType layoutOptions:defaultLayoutOptions];
 }
 
 uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block_invoke()
@@ -52,41 +52,41 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
   return v3;
 }
 
-- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)a3
+- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)type
 {
-  v5 = [objc_opt_class() defaultLayoutOptions];
+  defaultLayoutOptions = [objc_opt_class() defaultLayoutOptions];
 
-  return [(SBHDefaultIconListLayoutProvider *)self initWithScreenType:a3 layoutOptions:v5];
+  return [(SBHDefaultIconListLayoutProvider *)self initWithScreenType:type layoutOptions:defaultLayoutOptions];
 }
 
-- (SBHDefaultIconListLayoutProvider)initWithLayoutOptions:(unint64_t)a3
+- (SBHDefaultIconListLayoutProvider)initWithLayoutOptions:(unint64_t)options
 {
-  v5 = [objc_opt_class() currentDeviceScreenType];
+  currentDeviceScreenType = [objc_opt_class() currentDeviceScreenType];
 
-  return [(SBHDefaultIconListLayoutProvider *)self initWithScreenType:v5 layoutOptions:a3];
+  return [(SBHDefaultIconListLayoutProvider *)self initWithScreenType:currentDeviceScreenType layoutOptions:options];
 }
 
-- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)a3 layoutOptions:(unint64_t)a4
+- (SBHDefaultIconListLayoutProvider)initWithScreenType:(unint64_t)type layoutOptions:(unint64_t)options
 {
   v7.receiver = self;
   v7.super_class = SBHDefaultIconListLayoutProvider;
   result = [(SBHDefaultIconListLayoutProvider *)&v7 init];
   if (result)
   {
-    result->_screenType = a3;
-    result->_layoutOptions = a4;
+    result->_screenType = type;
+    result->_layoutOptions = options;
   }
 
   return result;
 }
 
-- (id)makeLayoutForIconLocation:(id)a3
+- (id)makeLayoutForIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHDefaultIconListLayoutProvider *)self screenType];
-  v6 = [(SBHDefaultIconListLayoutProvider *)self layoutOptionsForIconLocation:v4];
-  v7 = _SBHDefaultIconGridSizeClassIconImageInfos(v5, v6);
-  v8 = _SBHDefaultIconGridSizeClassEditingAnimationStrengths(v4, v5);
+  locationCopy = location;
+  screenType = [(SBHDefaultIconListLayoutProvider *)self screenType];
+  v6 = [(SBHDefaultIconListLayoutProvider *)self layoutOptionsForIconLocation:locationCopy];
+  v7 = _SBHDefaultIconGridSizeClassIconImageInfos(screenType, v6);
+  v8 = _SBHDefaultIconGridSizeClassEditingAnimationStrengths(locationCopy, screenType);
   v9 = objc_alloc_init(SBIconListGridLayoutConfiguration);
   v175 = v8;
   [(SBIconListGridLayoutConfiguration *)v9 setEditingAnimationStrengths:v8];
@@ -99,10 +99,10 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
   v11 = v9;
   v235 = v11;
   SBHEnumerateIconGridSizeClasses(v233);
-  [(SBIconListGridLayoutConfiguration *)v11 setWidgetContentMargins:SBHDefaultWidgetContentMargins(v5)];
-  v179 = [(SBIconListGridLayoutConfiguration *)v11 sidebarVisualConfiguration];
+  [(SBIconListGridLayoutConfiguration *)v11 setWidgetContentMargins:SBHDefaultWidgetContentMargins(screenType)];
+  sidebarVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 sidebarVisualConfiguration];
   [SBHDefaultIconListLayoutProvider configureSidebarConfiguration:"configureSidebarConfiguration:forScreenType:iconLocation:layoutOptions:" forScreenType:? iconLocation:? layoutOptions:?];
-  v12 = _SBHDefaultNumberOfRowsAndColumnsInFolders(v5);
+  v12 = _SBHDefaultNumberOfRowsAndColumnsInFolders(screenType);
   v13 = *MEMORY[0x1E69DDCE0];
   v14 = *(MEMORY[0x1E69DDCE0] + 8);
   v16 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -110,20 +110,20 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
   v17 = *MEMORY[0x1E695F060];
   v18 = *(MEMORY[0x1E695F060] + 8);
   v212 = @"SBHIconGridSizeClassDefault";
-  v211 = v4;
+  v211 = locationCopy;
   v176 = v10;
   v180 = v6;
   v181 = v12;
-  if (([v4 isEqualToString:@"SBIconLocationFloatingDock"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"SBIconLocationFloatingDockUtilities"))
+  if (([locationCopy isEqualToString:@"SBIconLocationFloatingDock"] & 1) != 0 || objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationFloatingDockUtilities"))
   {
     if ((v6 & 4) != 0)
     {
-      v19 = [objc_opt_class() extendedFloatingDockCapacityIconCount];
+      extendedFloatingDockCapacityIconCount = [objc_opt_class() extendedFloatingDockCapacityIconCount];
     }
 
     else
     {
-      v19 = 0;
+      extendedFloatingDockCapacityIconCount = 0;
     }
 
     v177 = v18;
@@ -149,7 +149,7 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
     v38 = 0;
     v39 = 0;
     v12 = 0;
-    switch(v5)
+    switch(screenType)
     {
       case 0uLL:
       case 1uLL:
@@ -185,7 +185,7 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
         v20 = 0;
         v38 = 0;
         v39 = 0;
-        if ([v4 isEqualToString:{@"SBIconLocationFloatingDock", v29, v14}])
+        if ([locationCopy isEqualToString:{@"SBIconLocationFloatingDock", v29, v14}])
         {
           v12 = 4;
         }
@@ -211,14 +211,14 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
         v20 = 0;
         v38 = 0;
         v39 = 0;
-        v12 = v19 + 20;
+        v12 = extendedFloatingDockCapacityIconCount + 20;
         goto LABEL_25;
       case 0x65uLL:
       case 0x69uLL:
         v20 = 0;
         v38 = 0;
         v39 = 0;
-        v12 = v19 + 16;
+        v12 = extendedFloatingDockCapacityIconCount + 16;
         goto LABEL_25;
       case 0x68uLL:
       case 0x6FuLL:
@@ -228,7 +228,7 @@ uint64_t __61__SBHDefaultIconListLayoutProvider_frameworkFallbackInstance__block
         v20 = 0;
         v38 = 0;
         v39 = 0;
-        v12 = v19 + 26;
+        v12 = extendedFloatingDockCapacityIconCount + 26;
 LABEL_25:
         v21 = 1;
         v22 = v15;
@@ -249,7 +249,7 @@ LABEL_25:
     }
   }
 
-  else if ([v4 isEqualToString:@"SBIconLocationDock"])
+  else if ([locationCopy isEqualToString:@"SBIconLocationDock"])
   {
     v231 = 0u;
     v232 = 0u;
@@ -260,8 +260,8 @@ LABEL_25:
     v225 = 0u;
     v226 = 0u;
     v224 = 0u;
-    SBHGetDefaultIconListLayoutMetrics(v5, v6, &v224);
-    SBHGetScreenSpecification(v5, v223);
+    SBHGetDefaultIconListLayoutMetrics(screenType, v6, &v224);
+    SBHGetScreenSpecification(screenType, v223);
     v177 = *&v223[1];
     v178 = *v223;
     UIEdgeInsetsAdd();
@@ -270,7 +270,7 @@ LABEL_25:
     v38 = 1;
     SBHDefaultAdditionalLayoutInsetsForOrientation();
     UIEdgeInsetsAdd();
-    _SBHDefaultDockAdditionalIconInset(v5, v6);
+    _SBHDefaultDockAdditionalIconInset(screenType, v6);
     UIEdgeInsetsAdd();
     v33 = v13;
     v37 = v40;
@@ -290,7 +290,7 @@ LABEL_25:
     v12 = 4;
   }
 
-  else if ([v4 isEqualToString:@"SBIconLocationFolder"])
+  else if ([locationCopy isEqualToString:@"SBIconLocationFolder"])
   {
     v201 = v16;
     v206 = v13;
@@ -306,7 +306,7 @@ LABEL_25:
     v225 = 0u;
     v226 = 0u;
     v224 = 0u;
-    SBHGetDefaultIconListLayoutMetrics(v5, v6, &v224);
+    SBHGetDefaultIconListLayoutMetrics(screenType, v6, &v224);
     SBHDefaultAdditionalLayoutInsetsForOrientation();
     UIEdgeInsetsAdd();
     v43 = v42;
@@ -316,11 +316,11 @@ LABEL_25:
     [v10 iconImageInfoForGridSizeClass:v212];
     v51 = v50;
     v53 = v52;
-    SBHGetScreenSpecification(v5, v222);
+    SBHGetScreenSpecification(screenType, v222);
     v54 = SBHCalculateIconSpacing(v224, v222[0], v222[1], v43, v45, v47, v49, v51);
     v56 = v55;
     v57 = 0.0;
-    if ([(SBHDefaultIconListLayoutProvider *)self showsLabelsForScreenType:v5 iconLocation:v4 layoutOptions:v6])
+    if ([(SBHDefaultIconListLayoutProvider *)self showsLabelsForScreenType:screenType iconLocation:locationCopy layoutOptions:v6])
     {
       v58 = 16.0;
     }
@@ -330,12 +330,12 @@ LABEL_25:
       v58 = 0.0;
     }
 
-    if (v5 >= 0x1F)
+    if (screenType >= 0x1F)
     {
       *&v59 = 0.0;
-      if (v5 - 100 <= 0x12)
+      if (screenType - 100 <= 0x12)
       {
-        if (((1 << (v5 - 100)) & 0x2D7EF) != 0)
+        if (((1 << (screenType - 100)) & 0x2D7EF) != 0)
         {
           *&v59 = 43.0;
           *&v93 = 64.0;
@@ -357,10 +357,10 @@ LABEL_25:
       *&v59 = v54;
     }
 
-    v117 = [(SBIconListGridLayoutConfiguration *)v11 floatyFolderVisualConfiguration];
-    [v117 setContentBackgroundSize:{v54 * (v12 + 1) + v51 * v12, v58 + v56 + v53 * v12 + v56 * (v12 - 1) + 36.0}];
-    [v117 setPageControlAreaHeight:36.0];
-    [(SBHDefaultIconListLayoutProvider *)self configureFloatyFolderConfiguration:v117 forScreenType:v5 layoutOptions:v6];
+    floatyFolderVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 floatyFolderVisualConfiguration];
+    [floatyFolderVisualConfiguration setContentBackgroundSize:{v54 * (v12 + 1) + v51 * v12, v58 + v56 + v53 * v12 + v56 * (v12 - 1) + 36.0}];
+    [floatyFolderVisualConfiguration setPageControlAreaHeight:36.0];
+    [(SBHDefaultIconListLayoutProvider *)self configureFloatyFolderConfiguration:floatyFolderVisualConfiguration forScreenType:screenType layoutOptions:v6];
 
     *&v27 = v57;
     v26 = *&v59;
@@ -387,7 +387,7 @@ LABEL_25:
   else
   {
     v60 = v6 & 0x18;
-    if (([v4 isEqualToString:@"SBIconLocationRoot"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"SBIconLocationRootWithWidgets"))
+    if (([locationCopy isEqualToString:@"SBIconLocationRoot"] & 1) != 0 || objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationRootWithWidgets"))
     {
       v231 = 0u;
       v232 = 0u;
@@ -398,8 +398,8 @@ LABEL_25:
       v225 = 0u;
       v226 = 0u;
       v224 = 0u;
-      SBHGetDefaultIconListLayoutMetrics(v5, v6, &v224);
-      v61 = [v4 isEqualToString:@"SBIconLocationRoot"];
+      SBHGetDefaultIconListLayoutMetrics(screenType, v6, &v224);
+      v61 = [locationCopy isEqualToString:@"SBIconLocationRoot"];
       v62 = v6;
       if (v61)
       {
@@ -435,11 +435,11 @@ LABEL_25:
       v12 = v69;
       v167 = *v63;
       v95 = v62;
-      v183 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(v5, 1, v62);
+      v183 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(screenType, 1, v62);
       v186 = v96;
       v189 = v97;
       v192 = v98;
-      v99 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(v5, 3, v95);
+      v99 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(screenType, 3, v95);
       v203 = v100;
       v209 = v99;
       v195 = v101;
@@ -450,7 +450,7 @@ LABEL_25:
       v106 = v105;
       v108 = v107;
       v168 = v109;
-      IsPhone = SBHScreenTypeIsPhone(v5);
+      IsPhone = SBHScreenTypeIsPhone(screenType);
       v20 = v94 & IsPhone;
       if (v94 && IsPhone)
       {
@@ -462,14 +462,14 @@ LABEL_25:
         v111 = v108;
       }
 
-      if (SBHScreenTypeIsPad(v5))
+      if (SBHScreenTypeIsPad(screenType))
       {
         v112 = @"SBHIconGridSizeClassLarge";
 
         v212 = v112;
       }
 
-      SBHGetScreenSpecification(v5, v221);
+      SBHGetScreenSpecification(screenType, v221);
       v177 = *&v221[1];
       v178 = *v221;
       v35 = v203;
@@ -489,7 +489,7 @@ LABEL_25:
       v32 = v111;
     }
 
-    else if (([v4 isEqualToString:@"SBIconLocationAppLibrary"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"SBIconLocationAppLibraryOverlay"))
+    else if (([locationCopy isEqualToString:@"SBIconLocationAppLibrary"] & 1) != 0 || objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationAppLibraryOverlay"))
     {
       v231 = 0u;
       v232 = 0u;
@@ -500,11 +500,11 @@ LABEL_25:
       v225 = 0u;
       v226 = 0u;
       v224 = 0u;
-      v113 = _SBHEquivalentPhoneScreenTypeForScreenType(v5);
+      v113 = _SBHEquivalentPhoneScreenTypeForScreenType(screenType);
       SBHGetDefaultIconListLayoutMetrics(v113, v6, &v224);
       v174 = *&v225;
       v114 = *&v226;
-      if (SBHScreenTypeIsPhone(v5))
+      if (SBHScreenTypeIsPhone(screenType))
       {
         v115 = v224;
         v171 = 8.0;
@@ -544,9 +544,9 @@ LABEL_25:
         v174 = 0.0;
       }
 
-      if (SBHScreenTypeHasHomeButton(v5) && SBHScreenTypeIsPhone(v5))
+      if (SBHScreenTypeHasHomeButton(screenType) && SBHScreenTypeIsPhone(screenType))
       {
-        v129 = SBHDefaultScreenSizeBucket(v5);
+        v129 = SBHDefaultScreenSizeBucket(screenType);
         v130 = 35.0;
         if (!v129)
         {
@@ -582,10 +582,10 @@ LABEL_25:
       v12 = v115;
     }
 
-    else if (([v4 isEqualToString:@"SBIconLocationAppLibraryCategoryPod"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"SBIconLocationAppLibraryCategoryPodSuggestions") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"SBIconLocationAppLibraryCategoryPodRecents"))
+    else if (([locationCopy isEqualToString:@"SBIconLocationAppLibraryCategoryPod"] & 1) != 0 || (objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationAppLibraryCategoryPodSuggestions") & 1) != 0 || objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationAppLibraryCategoryPodRecents"))
     {
-      v131 = _SBHDefaultCategoryPodIconInset(v5);
-      v132 = _SBHEquivalentPhoneScreenTypeForScreenType(v5);
+      v131 = _SBHDefaultCategoryPodIconInset(screenType);
+      v132 = _SBHEquivalentPhoneScreenTypeForScreenType(screenType);
       v133 = _SBHDefaultIconGridSizeClassIconImageInfos(v132, v6);
       [v133 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
       v177 = v135;
@@ -618,7 +618,7 @@ LABEL_25:
     {
       v177 = v18;
       v178 = v17;
-      if ([v4 isEqualToString:@"SBIconLocationAppLibraryCategoryPodAdditionalItems"])
+      if ([locationCopy isEqualToString:@"SBIconLocationAppLibraryCategoryPodAdditionalItems"])
       {
         v20 = 0;
         v38 = 0;
@@ -644,12 +644,12 @@ LABEL_25:
         v12 = 2;
       }
 
-      else if ([v4 isEqualToString:@"SBIconLocationAppLibraryCategoryPodExpanded"])
+      else if ([locationCopy isEqualToString:@"SBIconLocationAppLibraryCategoryPodExpanded"])
       {
         v204 = v16;
         v210 = v13;
         v196 = v14;
-        v136 = _SBHEquivalentPhoneScreenTypeForScreenType(v5);
+        v136 = _SBHEquivalentPhoneScreenTypeForScreenType(screenType);
         v231 = 0u;
         v232 = 0u;
         v229 = 0u;
@@ -660,7 +660,7 @@ LABEL_25:
         v226 = 0u;
         v224 = 0u;
         SBHGetDefaultIconListLayoutMetrics(v136, v6, &v224);
-        if (SBHScreenTypeIsPhone(v5))
+        if (SBHScreenTypeIsPhone(screenType))
         {
           v12 = v224;
           if (BYTE2(v224))
@@ -688,7 +688,7 @@ LABEL_25:
 
         else
         {
-          v142 = SBHLibraryScreenSizeBucket(v5);
+          v142 = SBHLibraryScreenSizeBucket(screenType);
           *&v27 = 0.0;
           v31 = 0.0;
           v143 = 0.0;
@@ -700,7 +700,7 @@ LABEL_25:
           }
 
           v39 = 6;
-          if (v5 == 105)
+          if (screenType == 105)
           {
             v26 = 164.5;
           }
@@ -731,7 +731,7 @@ LABEL_25:
         v21 = -1;
       }
 
-      else if ([v4 isEqualToString:@"SBIconLocationAppLibrarySearch"])
+      else if ([locationCopy isEqualToString:@"SBIconLocationAppLibrarySearch"])
       {
         [v10 iconImageInfoForGridSizeClass:v212];
         [(SBIconListGridLayoutConfiguration *)v11 setIconImageInfo:v212 forGridSizeClass:48.0, 48.0, v141, SBHDefaultIconImageContinuousCornerRadius(48.0)];
@@ -761,7 +761,7 @@ LABEL_25:
       else
       {
         v33 = v13;
-        if (([v4 isEqualToString:@"SBIconLocationTodayView"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"SBIconLocationTodayViewOverlay"))
+        if (([locationCopy isEqualToString:@"SBIconLocationTodayView"] & 1) != 0 || objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationTodayViewOverlay"))
         {
           v231 = 0u;
           v232 = 0u;
@@ -772,8 +772,8 @@ LABEL_25:
           v225 = 0u;
           v226 = 0u;
           v224 = 0u;
-          SBHGetDefaultIconListLayoutMetrics(v5, v6, &v224);
-          IsPad = SBHScreenTypeIsPad(v5);
+          SBHGetDefaultIconListLayoutMetrics(screenType, v6, &v224);
+          IsPad = SBHScreenTypeIsPad(screenType);
           if (IsPad)
           {
             v39 = 2;
@@ -784,7 +784,7 @@ LABEL_25:
             v39 = 4;
           }
 
-          [v179 searchBarTopOffset];
+          [sidebarVisualConfiguration searchBarTopOffset];
           SBHDefaultAdditionalLayoutInsetsForOrientation();
           v145 = 0.0;
           UIEdgeInsetsAdd();
@@ -792,21 +792,21 @@ LABEL_25:
           v148 = v147;
           v32 = v149;
           v151 = v150;
-          v184 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(v5, 1, v6);
+          v184 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(screenType, 1, v6);
           v187 = v152;
           v190 = v153;
           v193 = v154;
-          v155 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(v5, 3, v6);
+          v155 = SBHDefaultAdditionalWidgetLayoutInsetsForOrientation(screenType, 3, v6);
           v197 = v156;
           v205 = v157;
           v159 = v158;
-          v160 = _SBHEquivalentPhoneScreenTypeForScreenType(v5);
+          v160 = _SBHEquivalentPhoneScreenTypeForScreenType(screenType);
           SBHGetScreenSpecification(v160, v213);
           v178 = *v213;
           v177 = *&v213[1];
           if (IsPad)
           {
-            v161 = _SBHDefaultIconGridSizeClassIconImageInfos(v5, v6);
+            v161 = _SBHDefaultIconGridSizeClassIconImageInfos(screenType, v6);
             [v161 iconImageInfoForGridSizeClass:@"SBHIconGridSizeClassSmall"];
             v163 = v162;
             v165 = v164;
@@ -905,12 +905,12 @@ LABEL_25:
   [(SBIconListGridLayoutConfiguration *)v11 setRotatedLayoutClusterGridSizeClass:v212];
   [(SBIconListGridLayoutConfiguration *)v11 setListSizeForIconSpacingCalculation:v178, v177];
   [(SBIconListGridLayoutConfiguration *)v11 setIconSpacingAxisMatchingBehavior:v20];
-  v208 = [(SBHDefaultIconListLayoutProvider *)self gridSizeClassSizesForScreenType:v5 numberOfColumns:v12 iconLocation:v4 layoutOptions:v180];
+  v208 = [(SBHDefaultIconListLayoutProvider *)self gridSizeClassSizesForScreenType:screenType numberOfColumns:v12 iconLocation:locationCopy layoutOptions:v180];
   [(SBIconListGridLayoutConfiguration *)v11 setIconGridSizeClassSizes:?];
-  v77 = [(SBHDefaultIconListLayoutProvider *)self supportedIconGridSizeClassesForScreenType:v5 iconLocation:v4 layoutOptions:v180];
+  v77 = [(SBHDefaultIconListLayoutProvider *)self supportedIconGridSizeClassesForScreenType:screenType iconLocation:locationCopy layoutOptions:v180];
   [(SBIconListGridLayoutConfiguration *)v11 setSupportedIconGridSizeClasses:v77];
-  [(SBHDefaultIconListLayoutProvider *)self configureLabelConfigurations:v11 forScreenType:v5 iconLocation:v4 layoutOptions:v180];
-  if (([v4 isEqualToString:@"SBIconLocationAppLibrary"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"SBIconLocationAppLibraryOverlay"))
+  [(SBHDefaultIconListLayoutProvider *)self configureLabelConfigurations:v11 forScreenType:screenType iconLocation:locationCopy layoutOptions:v180];
+  if (([locationCopy isEqualToString:@"SBIconLocationAppLibrary"] & 1) != 0 || objc_msgSend(locationCopy, "isEqualToString:", @"SBIconLocationAppLibraryOverlay"))
   {
     v78 = [(SBIconListGridLayoutConfiguration *)v11 iconLabelVisualConfigurationForContentSizeCategory:*MEMORY[0x1E69DDC70]];
     [v78 setExtraWidth:0.0];
@@ -928,20 +928,20 @@ LABEL_25:
     [v82 setExtraWidth:0.0];
   }
 
-  v83 = [(SBIconListGridLayoutConfiguration *)v11 iconAccessoryVisualConfiguration];
-  [(SBHDefaultIconListLayoutProvider *)self configureIconAccessoryConfiguration:v83 forScreenType:v5 layoutOptions:v180];
-  v84 = [(SBIconListGridLayoutConfiguration *)v11 folderIconVisualConfiguration];
-  [(SBHDefaultIconListLayoutProvider *)self configureFolderIconConfiguration:v84 forScreenType:v5 numberOfRows:v181 layoutOptions:v180];
-  v85 = [(SBIconListGridLayoutConfiguration *)v11 rootFolderVisualConfiguration];
-  [(SBHDefaultIconListLayoutProvider *)self configureRootFolderConfiguration:v85 forScreenType:v5 layoutOptions:v180];
-  v86 = [(SBIconListGridLayoutConfiguration *)v11 floatingDockVisualConfiguration];
-  [(SBHDefaultIconListLayoutProvider *)self configureFloatingDockConfiguration:v86 forScreenType:v5 layoutOptions:v180];
+  iconAccessoryVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 iconAccessoryVisualConfiguration];
+  [(SBHDefaultIconListLayoutProvider *)self configureIconAccessoryConfiguration:iconAccessoryVisualConfiguration forScreenType:screenType layoutOptions:v180];
+  folderIconVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 folderIconVisualConfiguration];
+  [(SBHDefaultIconListLayoutProvider *)self configureFolderIconConfiguration:folderIconVisualConfiguration forScreenType:screenType numberOfRows:v181 layoutOptions:v180];
+  rootFolderVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 rootFolderVisualConfiguration];
+  [(SBHDefaultIconListLayoutProvider *)self configureRootFolderConfiguration:rootFolderVisualConfiguration forScreenType:screenType layoutOptions:v180];
+  floatingDockVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 floatingDockVisualConfiguration];
+  [(SBHDefaultIconListLayoutProvider *)self configureFloatingDockConfiguration:floatingDockVisualConfiguration forScreenType:screenType layoutOptions:v180];
   if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", v211))
   {
-    v87 = [(SBIconListGridLayoutConfiguration *)v11 appLibraryVisualConfiguration];
-    v88 = v5;
-    v89 = v87;
-    [(SBHDefaultIconListLayoutProvider *)self configureAppLibraryConfiguration:v87 forScreenType:v88 iconLocation:v211 layoutOptions:v180];
+    appLibraryVisualConfiguration = [(SBIconListGridLayoutConfiguration *)v11 appLibraryVisualConfiguration];
+    v88 = screenType;
+    v89 = appLibraryVisualConfiguration;
+    [(SBHDefaultIconListLayoutProvider *)self configureAppLibraryConfiguration:appLibraryVisualConfiguration forScreenType:v88 iconLocation:v211 layoutOptions:v180];
   }
 
   v90 = objc_opt_self();
@@ -959,17 +959,17 @@ void __62__SBHDefaultIconListLayoutProvider_makeLayoutForIconLocation___block_in
   [*(a1 + 40) setIconImageInfo:v4 forGridSizeClass:?];
 }
 
-- (id)supportedIconGridSizeClassesForScreenType:(unint64_t)a3 iconLocation:(id)a4 layoutOptions:(unint64_t)a5
+- (id)supportedIconGridSizeClassesForScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options
 {
-  v6 = a4;
+  locationCopy = location;
   v7 = [(SBHIconGridSizeClassSet *)[SBHMutableIconGridSizeClassSet alloc] initWithGridSizeClass:@"SBHIconGridSizeClassDefault"];
-  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", v6))
+  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", locationCopy))
   {
     [(SBHMutableIconGridSizeClassSet *)v7 addGridSizeClass:@"SBHIconGridSizeClassDefault"];
     [(SBHMutableIconGridSizeClassSet *)v7 addGridSizeClass:@"SBHIconGridSizeClassSmall"];
     [(SBHMutableIconGridSizeClassSet *)v7 addGridSizeClass:@"SBHIconGridSizeClassMedium"];
     [(SBHMutableIconGridSizeClassSet *)v7 addGridSizeClass:@"SBHIconGridSizeClassLarge"];
-    if (!SBHScreenTypeIsPad(a3))
+    if (!SBHScreenTypeIsPad(type))
     {
       goto LABEL_7;
     }
@@ -979,7 +979,7 @@ void __62__SBHDefaultIconListLayoutProvider_makeLayoutForIconLocation___block_in
 
   else
   {
-    if (!SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", v6))
+    if (!SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", locationCopy))
     {
       goto LABEL_7;
     }
@@ -997,10 +997,10 @@ LABEL_7:
   return v7;
 }
 
-- (void)configureLabelConfigurations:(id)a3 forScreenType:(unint64_t)a4 iconLocation:(id)a5 layoutOptions:(unint64_t)a6
+- (void)configureLabelConfigurations:(id)configurations forScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options
 {
-  v10 = a5;
-  v11 = a3;
+  locationCopy = location;
+  configurationsCopy = configurations;
   v24 = objc_alloc_init(SBHIconLabelVisualConfiguration);
   v12 = objc_alloc_init(SBHIconLabelVisualConfiguration);
   v13 = objc_alloc_init(SBHIconLabelVisualConfiguration);
@@ -1008,7 +1008,7 @@ LABEL_7:
   v15 = objc_alloc_init(SBHIconLabelVisualConfiguration);
   v16 = 14.0;
   v17 = 14.0;
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -1076,7 +1076,7 @@ LABEL_3:
 
   v18 = 17.0;
   v19 = 16.0;
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -1142,10 +1142,10 @@ LABEL_6:
       break;
   }
 
-  if (a4 >= 0x1F)
+  if (type >= 0x1F)
   {
     v20 = 29.0;
-    if (a4 - 100 >= 0x13)
+    if (type - 100 >= 0x13)
     {
       goto LABEL_11;
     }
@@ -1164,7 +1164,7 @@ LABEL_6:
 LABEL_11:
   v21 = 38.0;
   v22 = 37.0;
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
     case 4uLL:
@@ -1233,50 +1233,50 @@ LABEL_12:
       break;
   }
 
-  [v11 setIconLabelVisualConfiguration:v24 forContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  [v11 setIconLabelVisualConfiguration:v12 forContentSizeCategory:*MEMORY[0x1E69DDC60]];
-  [v11 setIconLabelVisualConfiguration:v13 forContentSizeCategory:*MEMORY[0x1E69DDC58]];
-  [v11 setIconLabelVisualConfiguration:v14 forContentSizeCategory:*MEMORY[0x1E69DDC50]];
-  [v11 setIconLabelVisualConfiguration:v15 forContentSizeCategory:*MEMORY[0x1E69DDC40]];
-  [v11 setShowsLabels:{-[SBHDefaultIconListLayoutProvider showsLabelsForScreenType:iconLocation:layoutOptions:](self, "showsLabelsForScreenType:iconLocation:layoutOptions:", a4, v10, a6)}];
-  v23 = [v10 isEqualToString:@"SBIconLocationFloatingDockUtilities"];
+  [configurationsCopy setIconLabelVisualConfiguration:v24 forContentSizeCategory:*MEMORY[0x1E69DDC70]];
+  [configurationsCopy setIconLabelVisualConfiguration:v12 forContentSizeCategory:*MEMORY[0x1E69DDC60]];
+  [configurationsCopy setIconLabelVisualConfiguration:v13 forContentSizeCategory:*MEMORY[0x1E69DDC58]];
+  [configurationsCopy setIconLabelVisualConfiguration:v14 forContentSizeCategory:*MEMORY[0x1E69DDC50]];
+  [configurationsCopy setIconLabelVisualConfiguration:v15 forContentSizeCategory:*MEMORY[0x1E69DDC40]];
+  [configurationsCopy setShowsLabels:{-[SBHDefaultIconListLayoutProvider showsLabelsForScreenType:iconLocation:layoutOptions:](self, "showsLabelsForScreenType:iconLocation:layoutOptions:", type, locationCopy, options)}];
+  v23 = [locationCopy isEqualToString:@"SBIconLocationFloatingDockUtilities"];
 
-  [v11 setShowsTooltipsOnHover:v23];
+  [configurationsCopy setShowsTooltipsOnHover:v23];
 }
 
-- (BOOL)showsLabelsForScreenType:(unint64_t)a3 iconLocation:(id)a4 layoutOptions:(unint64_t)a5
+- (BOOL)showsLabelsForScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupDock", v6) ^ 1;
-  if ((v5 & 0x10) != 0 && ([v6 isEqualToString:@"SBIconLocationAppLibrary"] & 1) == 0)
+  optionsCopy = options;
+  locationCopy = location;
+  v7 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupDock", locationCopy) ^ 1;
+  if ((optionsCopy & 0x10) != 0 && ([locationCopy isEqualToString:@"SBIconLocationAppLibrary"] & 1) == 0)
   {
-    v7 &= [v6 isEqualToString:@"SBIconLocationAppLibraryOverlay"];
+    v7 &= [locationCopy isEqualToString:@"SBIconLocationAppLibraryOverlay"];
   }
 
   return v7;
 }
 
-- (void)configureIconAccessoryConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5
+- (void)configureIconAccessoryConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options
 {
-  v5 = a5;
-  v13 = a3;
-  v7 = SBHDefaultIconSizeBucket(a4, v5);
-  v8 = v13;
+  optionsCopy = options;
+  configurationCopy = configuration;
+  v7 = SBHDefaultIconSizeBucket(type, optionsCopy);
+  v8 = configurationCopy;
   v9 = v7 - 56;
   if ((v7 - 56) <= 0x1B)
   {
-    v7 = v13;
+    v7 = configurationCopy;
     if (((1 << v9) & 0x101111) != 0)
     {
       v10 = 11.0;
       v11 = 26.0;
       v12 = 16.0;
 LABEL_4:
-      [v13 setFontSize:v12];
-      [v13 setSize:{v11, v11}];
-      v7 = [v13 setOffset:{v10, v10}];
-      v8 = v13;
+      [configurationCopy setFontSize:v12];
+      [configurationCopy setSize:{v11, v11}];
+      v7 = [configurationCopy setOffset:{v10, v10}];
+      v8 = configurationCopy;
       goto LABEL_5;
     }
 
@@ -1294,25 +1294,25 @@ LABEL_5:
   MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-- (void)configureAppLibraryConfiguration:(id)a3 forScreenType:(unint64_t)a4 iconLocation:(id)a5 layoutOptions:(unint64_t)a6
+- (void)configureAppLibraryConfiguration:(id)configuration forScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = SBHLibraryScreenSizeBucket(a4);
-  if (SBHScreenTypeIsPhone(a4))
+  configurationCopy = configuration;
+  locationCopy = location;
+  v12 = SBHLibraryScreenSizeBucket(type);
+  if (SBHScreenTypeIsPhone(type))
   {
     memset(v57, 0, sizeof(v57));
-    SBHGetDefaultIconListLayoutMetrics(a4, a6, v57);
+    SBHGetDefaultIconListLayoutMetrics(type, options, v57);
     SBHDefaultAdditionalLayoutInsetsForOrientation();
     UIEdgeInsetsAdd();
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    SBHGetScreenSpecification(a4, v56);
+    SBHGetScreenSpecification(type, v56);
     v21 = *v56;
     v22 = *&v56[1];
-    v23 = SBHDefaultIconImageSize(a4, a6);
+    v23 = SBHDefaultIconImageSize(type, options);
     v24 = SBHCalculateIconSpacing(LOBYTE(v57[0]), v21, v22, v14, v16, v18, v20, v23);
     v26 = v25;
     v27 = v25;
@@ -1350,28 +1350,28 @@ LABEL_5:
     }
   }
 
-  [v10 setPortraitCategoryPodIconSpacing:?];
-  [v10 setLandscapeCategoryPodIconSpacing:{v28, v27}];
-  [v10 setExpandedCategoryPodIconSpacing:{v24, v26}];
-  [v10 setUsesInsetPlatterSearchAppearance:SBHScreenTypeIsPad(a4)];
-  [v10 setSearchContinuousCornerRadius:24.0];
-  if (SBHScreenTypeIsPhone(a4))
+  [configurationCopy setPortraitCategoryPodIconSpacing:?];
+  [configurationCopy setLandscapeCategoryPodIconSpacing:{v28, v27}];
+  [configurationCopy setExpandedCategoryPodIconSpacing:{v24, v26}];
+  [configurationCopy setUsesInsetPlatterSearchAppearance:SBHScreenTypeIsPad(type)];
+  [configurationCopy setSearchContinuousCornerRadius:24.0];
+  if (SBHScreenTypeIsPhone(type))
   {
-    [(SBHDefaultIconListLayoutProvider *)self homeScreenSearchOverlayInsetsForScreenType:a4 iconLocation:v11 layoutOptions:a6 forAppLibrary:1];
+    [(SBHDefaultIconListLayoutProvider *)self homeScreenSearchOverlayInsetsForScreenType:type iconLocation:locationCopy layoutOptions:options forAppLibrary:1];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [v10 standardSearchVisualConfiguration];
-    [v37 setTextFieldWidth:0.0];
-    [v37 setTextFieldPortraitLayoutInsets:{v30, v32, v34, v36}];
-    [v37 setTextFieldLandscapeLayoutInsets:{v30, v32, v34, v36}];
-    [v10 setActiveSearchVisualConfiguration:v37];
-    [v10 setCompactSearchVisualConfiguration:v37];
-    [v10 setExtendedSearchVisualConfiguration:v37];
-    v38 = [v10 standardSearchVisualConfiguration];
-    v39 = [v10 activeSearchVisualConfiguration];
-    v40 = [v38 isEqual:v39];
+    standardSearchVisualConfiguration = [configurationCopy standardSearchVisualConfiguration];
+    [standardSearchVisualConfiguration setTextFieldWidth:0.0];
+    [standardSearchVisualConfiguration setTextFieldPortraitLayoutInsets:{v30, v32, v34, v36}];
+    [standardSearchVisualConfiguration setTextFieldLandscapeLayoutInsets:{v30, v32, v34, v36}];
+    [configurationCopy setActiveSearchVisualConfiguration:standardSearchVisualConfiguration];
+    [configurationCopy setCompactSearchVisualConfiguration:standardSearchVisualConfiguration];
+    [configurationCopy setExtendedSearchVisualConfiguration:standardSearchVisualConfiguration];
+    standardSearchVisualConfiguration2 = [configurationCopy standardSearchVisualConfiguration];
+    activeSearchVisualConfiguration = [configurationCopy activeSearchVisualConfiguration];
+    v40 = [standardSearchVisualConfiguration2 isEqual:activeSearchVisualConfiguration];
 
     if ((v40 & 1) == 0)
     {
@@ -1381,14 +1381,14 @@ LABEL_5:
 
   else
   {
-    v37 = [v10 extendedSearchVisualConfiguration];
-    v41 = [v10 standardSearchVisualConfiguration];
-    v42 = [v10 compactSearchVisualConfiguration];
-    v43 = [v10 activeSearchVisualConfiguration];
-    [v37 setTextFieldWidth:334.0];
-    [v41 setTextFieldWidth:334.0];
-    [v42 setTextFieldWidth:334.0];
-    [v43 setTextFieldWidth:556.0];
+    standardSearchVisualConfiguration = [configurationCopy extendedSearchVisualConfiguration];
+    standardSearchVisualConfiguration3 = [configurationCopy standardSearchVisualConfiguration];
+    compactSearchVisualConfiguration = [configurationCopy compactSearchVisualConfiguration];
+    activeSearchVisualConfiguration2 = [configurationCopy activeSearchVisualConfiguration];
+    [standardSearchVisualConfiguration setTextFieldWidth:334.0];
+    [standardSearchVisualConfiguration3 setTextFieldWidth:334.0];
+    [compactSearchVisualConfiguration setTextFieldWidth:334.0];
+    [activeSearchVisualConfiguration2 setTextFieldWidth:556.0];
     v44 = 0.0;
     v45 = 0.0;
     v46 = 0.0;
@@ -1415,7 +1415,7 @@ LABEL_5:
 
     v54 = v44;
     v55 = v45;
-    if (a4 == 105)
+    if (type == 105)
     {
       v52 = 260.0;
       v49 = 164.0;
@@ -1424,7 +1424,7 @@ LABEL_5:
       v53 = 72.0;
     }
 
-    else if (a4 == 102)
+    else if (type == 102)
     {
       v52 = 240.0;
       v49 = 144.0;
@@ -1432,29 +1432,29 @@ LABEL_5:
       v47 = 68.0;
     }
 
-    [v37 setTextFieldLandscapeLayoutInsets:{v53, 0.0, v51, 0.0}];
-    [v37 setTextFieldPortraitLayoutInsets:{v52, 0.0, v51, 0.0}];
-    [v41 setTextFieldLandscapeLayoutInsets:{v46, 0.0, v50, 0.0}];
-    [v41 setTextFieldPortraitLayoutInsets:{v49, 0.0, v48, 0.0}];
-    [v42 setTextFieldLandscapeLayoutInsets:{v46, 0.0, v50, 0.0}];
-    [v42 setTextFieldPortraitLayoutInsets:{v45, 0.0, v47, 0.0}];
-    [v43 setTextFieldLandscapeLayoutInsets:{v46, 0.0, v54, 0.0}];
-    [v43 setTextFieldPortraitLayoutInsets:{v55, 0.0, v54, 0.0}];
+    [standardSearchVisualConfiguration setTextFieldLandscapeLayoutInsets:{v53, 0.0, v51, 0.0}];
+    [standardSearchVisualConfiguration setTextFieldPortraitLayoutInsets:{v52, 0.0, v51, 0.0}];
+    [standardSearchVisualConfiguration3 setTextFieldLandscapeLayoutInsets:{v46, 0.0, v50, 0.0}];
+    [standardSearchVisualConfiguration3 setTextFieldPortraitLayoutInsets:{v49, 0.0, v48, 0.0}];
+    [compactSearchVisualConfiguration setTextFieldLandscapeLayoutInsets:{v46, 0.0, v50, 0.0}];
+    [compactSearchVisualConfiguration setTextFieldPortraitLayoutInsets:{v45, 0.0, v47, 0.0}];
+    [activeSearchVisualConfiguration2 setTextFieldLandscapeLayoutInsets:{v46, 0.0, v54, 0.0}];
+    [activeSearchVisualConfiguration2 setTextFieldPortraitLayoutInsets:{v55, 0.0, v54, 0.0}];
   }
 }
 
-- (void)configureFloatyFolderConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5
+- (void)configureFloatyFolderConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options
 {
-  v6 = a3;
-  v14 = v6;
-  if (a4 >= 0x1F)
+  configurationCopy = configuration;
+  v14 = configurationCopy;
+  if (type >= 0x1F)
   {
-    if (a4 - 100 > 0x12)
+    if (type - 100 > 0x12)
     {
       goto LABEL_9;
     }
 
-    if (((1 << (a4 - 100)) & 0x2D7EF) != 0)
+    if (((1 << (type - 100)) & 0x2D7EF) != 0)
     {
       v8 = 487.0;
       v7 = 55.0;
@@ -1466,8 +1466,8 @@ LABEL_5:
       v7 = 79.0;
     }
 
-    [v6 setContentBackgroundSize:{v8, v8}];
-    v6 = v14;
+    [configurationCopy setContentBackgroundSize:{v8, v8}];
+    configurationCopy = v14;
   }
 
   else
@@ -1475,9 +1475,9 @@ LABEL_5:
     v7 = 38.0;
   }
 
-  [v6 setContinuousCornerRadius:v7];
+  [configurationCopy setContinuousCornerRadius:v7];
 LABEL_9:
-  IsPad = SBHScreenTypeIsPad(a4);
+  IsPad = SBHScreenTypeIsPad(type);
   v10 = 7.0;
   if (IsPad)
   {
@@ -1496,15 +1496,15 @@ LABEL_9:
   [v14 setTitleVerticallyCentered:!IsPad];
   [v14 setPageControlCustomPadding:{0.0, 8.0}];
   v12 = 55.0;
-  if (a4 >= 0x1F)
+  if (type >= 0x1F)
   {
     v13 = v14;
-    if (a4 - 100 > 0x12)
+    if (type - 100 > 0x12)
     {
       goto LABEL_18;
     }
 
-    if (((1 << (a4 - 100)) & 0x2D7EF) == 0)
+    if (((1 << (type - 100)) & 0x2D7EF) == 0)
     {
       v12 = 85.0;
     }
@@ -1520,17 +1520,17 @@ LABEL_9:
 LABEL_18:
 }
 
-- (void)configureFolderIconConfiguration:(id)a3 forScreenType:(unint64_t)a4 numberOfRows:(unint64_t)a5 layoutOptions:(unint64_t)a6
+- (void)configureFolderIconConfiguration:(id)configuration forScreenType:(unint64_t)type numberOfRows:(unint64_t)rows layoutOptions:(unint64_t)options
 {
-  v6 = a6;
-  v9 = a3;
-  if (a5 > 2)
+  optionsCopy = options;
+  configurationCopy = configuration;
+  if (rows > 2)
   {
-    if (a5 == 3)
+    if (rows == 3)
     {
       v11 = 13.0;
       v12 = 3.0;
-      if ((v6 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_33;
       }
@@ -1538,7 +1538,7 @@ LABEL_18:
 
     else
     {
-      v13 = SBHDefaultIconSizeBucket(a4, v6);
+      v13 = SBHDefaultIconSizeBucket(type, optionsCopy);
       v12 = 0.0;
       if (v13 > 67)
       {
@@ -1583,7 +1583,7 @@ LABEL_18:
       {
         v11 = 9.5;
         v12 = 2.5;
-        if ((v6 & 8) == 0)
+        if ((optionsCopy & 8) == 0)
         {
           goto LABEL_33;
         }
@@ -1599,7 +1599,7 @@ LABEL_18:
 
         v12 = 2.75;
         v11 = 10.25;
-        if ((v6 & 8) == 0)
+        if ((optionsCopy & 8) == 0)
         {
           goto LABEL_33;
         }
@@ -1609,12 +1609,12 @@ LABEL_18:
 
   else
   {
-    v10 = SBHDefaultScreenSizeBucket(a4);
-    v11 = round(SBHDefaultIconImageSize(a4, v6) * 0.4);
+    v10 = SBHDefaultScreenSizeBucket(type);
+    v11 = round(SBHDefaultIconImageSize(type, optionsCopy) * 0.4);
     if (v10 == 2)
     {
       v12 = 7.0;
-      if ((v6 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_33;
       }
@@ -1628,7 +1628,7 @@ LABEL_18:
         if (!v10)
         {
           v12 = 5.0;
-          if ((v6 & 8) == 0)
+          if ((optionsCopy & 8) == 0)
           {
             goto LABEL_33;
           }
@@ -1637,7 +1637,7 @@ LABEL_18:
         }
 
 LABEL_30:
-        if ((v6 & 8) == 0)
+        if ((optionsCopy & 8) == 0)
         {
           goto LABEL_33;
         }
@@ -1646,7 +1646,7 @@ LABEL_30:
       }
 
       v12 = 6.0;
-      if ((v6 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_33;
       }
@@ -1654,11 +1654,11 @@ LABEL_30:
   }
 
 LABEL_31:
-  if (SBHScreenTypeIsPhone(a4))
+  if (SBHScreenTypeIsPhone(type))
   {
-    SBHDefaultIconImageSize(a4, v6);
-    SBHDefaultIconImageSize(a4, v6 & 0xE7);
-    SBHGetScreenSpecification(a4, v18);
+    SBHDefaultIconImageSize(type, optionsCopy);
+    SBHDefaultIconImageSize(type, optionsCopy & 0xE7);
+    SBHGetScreenSpecification(type, v18);
     UIRoundToScale();
     v11 = v16;
     UIRoundToScale();
@@ -1666,15 +1666,15 @@ LABEL_31:
   }
 
 LABEL_33:
-  [v9 setGridCellSize:{v11, v11}];
-  [v9 setGridCellSpacing:{v12, v12}];
+  [configurationCopy setGridCellSize:{v11, v11}];
+  [configurationCopy setGridCellSpacing:{v12, v12}];
 }
 
-- (void)configureSidebarConfiguration:(id)a3 forScreenType:(unint64_t)a4 iconLocation:(id)a5 layoutOptions:(unint64_t)a6
+- (void)configureSidebarConfiguration:(id)configuration forScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a5;
-  switch(a4)
+  configurationCopy = configuration;
+  locationCopy = location;
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -1707,9 +1707,9 @@ LABEL_33:
     case 0x1CuLL:
     case 0x1DuLL:
     case 0x1EuLL:
-      SBHGetScreenSpecification(a4, v15);
-      [v10 setContentWidth:v15[0]];
-      [v10 setContentFullscreen:1];
+      SBHGetScreenSpecification(type, v15);
+      [configurationCopy setContentWidth:v15[0]];
+      [configurationCopy setContentFullscreen:1];
       break;
     case 0x64uLL:
     case 0x70uLL:
@@ -1717,18 +1717,18 @@ LABEL_33:
       v13 = 145.0;
       goto LABEL_7;
     case 0x65uLL:
-      [v10 setInsets:{0.0, 64.0, 156.0, 64.0}];
-      [v10 setContentWidth:329.0];
+      [configurationCopy setInsets:{0.0, 64.0, 156.0, 64.0}];
+      [configurationCopy setContentWidth:329.0];
       v14 = 29.0;
       goto LABEL_11;
     case 0x66uLL:
-      [v10 setInsets:{0.0, 64.0, 160.0, 64.0}];
-      [v10 setContentWidth:329.0];
+      [configurationCopy setInsets:{0.0, 64.0, 160.0, 64.0}];
+      [configurationCopy setContentWidth:329.0];
       v14 = 37.0;
       goto LABEL_11;
     case 0x67uLL:
-      [v10 setInsets:{0.0, 64.0, 166.0, 64.0}];
-      [v10 setContentWidth:329.0];
+      [configurationCopy setInsets:{0.0, 64.0, 166.0, 64.0}];
+      [configurationCopy setContentWidth:329.0];
       v14 = 44.0;
       goto LABEL_11;
     case 0x68uLL:
@@ -1736,7 +1736,7 @@ LABEL_33:
     case 0x71uLL:
     case 0x74uLL:
     case 0x76uLL:
-      [v10 setInsets:{0.0, 64.0, 193.0, 64.0}];
+      [configurationCopy setInsets:{0.0, 64.0, 193.0, 64.0}];
       v12 = 364.0;
       goto LABEL_8;
     case 0x69uLL:
@@ -1751,32 +1751,32 @@ LABEL_33:
     case 0x73uLL:
       v13 = 166.0;
 LABEL_7:
-      [v10 setInsets:{0.0, 64.0, v13, 64.0}];
+      [configurationCopy setInsets:{0.0, 64.0, v13, 64.0}];
       v12 = 329.0;
 LABEL_8:
-      [v10 setContentWidth:v12];
+      [configurationCopy setContentWidth:v12];
       break;
     default:
       break;
   }
 
-  if (a4 - 100 <= 0x12)
+  if (type - 100 <= 0x12)
   {
-    v14 = dbl_1BEE88AF0[a4 - 100];
+    v14 = dbl_1BEE88AF0[type - 100];
 LABEL_11:
-    [v10 setFirstWidgetTopOffset:v14];
+    [configurationCopy setFirstWidgetTopOffset:v14];
   }
 
-  [(SBHDefaultIconListLayoutProvider *)self homeScreenSearchOverlayInsetsForScreenType:a4 iconLocation:v11 layoutOptions:a6 forAppLibrary:0];
-  [v10 setSearchBarTopOffset:?];
+  [(SBHDefaultIconListLayoutProvider *)self homeScreenSearchOverlayInsetsForScreenType:type iconLocation:locationCopy layoutOptions:options forAppLibrary:0];
+  [configurationCopy setSearchBarTopOffset:?];
 }
 
-- (void)configureRootFolderConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5
+- (void)configureRootFolderConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options
 {
-  v8 = a3;
-  v9 = v8;
+  configurationCopy = configuration;
+  v9 = configurationCopy;
   v10 = 0.0;
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -1843,7 +1843,7 @@ LABEL_11:
     case 0x75uLL:
     case 0x76uLL:
 LABEL_9:
-      [v8 setIdleTextVerticalOffset:v10];
+      [configurationCopy setIdleTextVerticalOffset:v10];
       break;
     default:
       break;
@@ -1872,7 +1872,7 @@ LABEL_9:
   v31 = 50.0;
   v32 = 10.0;
   v33 = 10.0;
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -2089,7 +2089,7 @@ LABEL_13:
       [v9 setEditModeButtonContentEdgeInsets:{16.0, 16.0, 16.0, 16.0, v13, v22, v18, v20}];
       v34 = 7.66666667;
       v35 = 0.666666667;
-      switch(a4)
+      switch(type)
       {
         case 0uLL:
         case 1uLL:
@@ -2169,7 +2169,7 @@ LABEL_53:
 LABEL_51:
   [v9 setPageControlVerticalOffset:{v35, v34}];
 LABEL_52:
-  switch(a4)
+  switch(type)
   {
     case 0uLL:
       goto LABEL_58;
@@ -2253,7 +2253,7 @@ LABEL_68:
   v76 = 0u;
   v77 = 0u;
   v75 = 0u;
-  _SBHDefaultDockMetrics(a4, a5, &v75);
+  _SBHDefaultDockMetrics(type, options, &v75);
   [v9 setDockViewHeight:*&v75];
   [v9 setDockBackgroundViewCornerRadius:*(&v75 + 1)];
   [v9 setDockBackgroundViewInsets:{v76, v77}];
@@ -2262,9 +2262,9 @@ LABEL_68:
   v50 = 36.0;
   [v9 setPageManagementPageCheckboxDiameter:36.0];
   [v9 setPageManagementFocusModeOptionsButtonSize:{132.0, 42.0}];
-  if (a4 - 100 >= 0x13)
+  if (type - 100 >= 0x13)
   {
-    v58 = SBHDefaultScreenSizeBucket(a4);
+    v58 = SBHDefaultScreenSizeBucket(type);
     v54 = 0.45;
     if (v58)
     {
@@ -2346,9 +2346,9 @@ LABEL_68:
   [v9 setPageManagementLayoutMetrics:4 forLayoutConfiguration:{v74, v72, v70, v73}];
 LABEL_78:
   v59 = 14.0;
-  if (a4 >= 0x1F)
+  if (type >= 0x1F)
   {
-    if (a4 - 100 > 0x12)
+    if (type - 100 > 0x12)
     {
       goto LABEL_82;
     }
@@ -2373,11 +2373,11 @@ LABEL_82:
   }
 }
 
-- (void)configureFloatingDockConfiguration:(id)a3 forScreenType:(unint64_t)a4 layoutOptions:(unint64_t)a5
+- (void)configureFloatingDockConfiguration:(id)configuration forScreenType:(unint64_t)type layoutOptions:(unint64_t)options
 {
-  if ((a5 & 0x18) != 0)
+  if ((options & 0x18) != 0)
   {
-    v6 = SBHDefaultIconImageSize(a4, a5 & 0xE7);
+    v6 = SBHDefaultIconImageSize(type, options & 0xE7);
   }
 
   else
@@ -2386,13 +2386,13 @@ LABEL_82:
     v7 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  [a3 setMaximumEditingIconSize:{v6, v7}];
+  [configuration setMaximumEditingIconSize:{v6, v7}];
 }
 
-- (id)layoutForIconLocation:(id)a3
+- (id)layoutForIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cachedListLayouts objectForKey:v4];
+  locationCopy = location;
+  v5 = [(NSMutableDictionary *)self->_cachedListLayouts objectForKey:locationCopy];
   if (!v5)
   {
     if (!self->_cachedListLayouts)
@@ -2402,32 +2402,32 @@ LABEL_82:
       self->_cachedListLayouts = v6;
     }
 
-    v5 = [(SBHDefaultIconListLayoutProvider *)self makeLayoutForIconLocation:v4];
-    [(NSMutableDictionary *)self->_cachedListLayouts setObject:v5 forKey:v4];
+    v5 = [(SBHDefaultIconListLayoutProvider *)self makeLayoutForIconLocation:locationCopy];
+    [(NSMutableDictionary *)self->_cachedListLayouts setObject:v5 forKey:locationCopy];
   }
 
   return v5;
 }
 
-- (UIEdgeInsets)homeScreenSearchOverlayInsetsForScreenType:(unint64_t)a3 iconLocation:(id)a4 layoutOptions:(unint64_t)a5 forAppLibrary:(BOOL)a6
+- (UIEdgeInsets)homeScreenSearchOverlayInsetsForScreenType:(unint64_t)type iconLocation:(id)location layoutOptions:(unint64_t)options forAppLibrary:(BOOL)library
 {
-  v6 = a6;
-  v9 = a4;
+  libraryCopy = library;
+  locationCopy = location;
   memset(v21, 0, sizeof(v21));
-  SBHGetDefaultIconListLayoutMetrics(a3, a5, v21);
+  SBHGetDefaultIconListLayoutMetrics(type, options, v21);
   v10 = *(v21 + 1);
-  if ([v9 isEqualToString:@"SBIconLocationTodayViewOverlay"])
+  if ([locationCopy isEqualToString:@"SBIconLocationTodayViewOverlay"])
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = [v9 isEqualToString:@"SBIconLocationAppLibraryOverlay"];
+    v11 = [locationCopy isEqualToString:@"SBIconLocationAppLibraryOverlay"];
   }
 
   v12 = 0.0;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -2515,7 +2515,7 @@ LABEL_19:
     case 0x74uLL:
     case 0x75uLL:
     case 0x76uLL:
-      if (v6)
+      if (libraryCopy)
       {
         NSLog(&cfstr_AppLibraryOnIp.isa);
       }
@@ -2531,7 +2531,7 @@ LABEL_14:
       if (v11)
       {
 LABEL_15:
-        if (SBHScreenTypeIsPhone(a3))
+        if (SBHScreenTypeIsPhone(type))
         {
           v10 = v10 + 4.0;
         }
@@ -2551,47 +2551,47 @@ LABEL_17:
   }
 }
 
-- (unint64_t)layoutOptionsForIconLocation:(id)a3
+- (unint64_t)layoutOptionsForIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHDefaultIconListLayoutProvider *)self layoutOptions];
-  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", v4) && ![v4 isEqualToString:@"SBIconLocationAppLibraryCategoryPodExpanded"])
+  locationCopy = location;
+  layoutOptions = [(SBHDefaultIconListLayoutProvider *)self layoutOptions];
+  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", locationCopy) && ![locationCopy isEqualToString:@"SBIconLocationAppLibraryCategoryPodExpanded"])
   {
-    v5 &= 0xFFFFFFFFFFFFFFE7;
+    layoutOptions &= 0xFFFFFFFFFFFFFFE7;
   }
 
-  return v5;
+  return layoutOptions;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBHDefaultIconListLayoutProvider *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHDefaultIconListLayoutProvider *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHDefaultIconListLayoutProvider *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHDefaultIconListLayoutProvider *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHDefaultIconListLayoutProvider *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHDefaultIconListLayoutProvider *)self succinctDescriptionBuilder];
   v5 = SBHStringForScreenType([(SBHDefaultIconListLayoutProvider *)self screenType]);
-  [v4 appendString:v5 withName:@"screenType"];
+  [succinctDescriptionBuilder appendString:v5 withName:@"screenType"];
 
   v6 = SBHStringForDefaultListLayoutProviderLayoutOptions([(SBHDefaultIconListLayoutProvider *)self layoutOptions]);
   if ([v6 length])
   {
-    [v4 appendString:v6 withName:@"layoutOptions"];
+    [succinctDescriptionBuilder appendString:v6 withName:@"layoutOptions"];
   }
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

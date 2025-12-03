@@ -1,11 +1,11 @@
 @interface IconListFolderView.IconListView
 - (Class)baseIconViewClass;
 - (NSString)iconDragTypeIdentifier;
-- (_TtCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView)initWithModel:(id)a3 layoutProvider:(id)a4 iconLocation:(id)a5 orientation:(int64_t)a6 iconViewProvider:(id)a7;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView)initWithModel:(id)model layoutProvider:(id)provider iconLocation:(id)location orientation:(int64_t)orientation iconViewProvider:(id)viewProvider;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)makeEmptyGridCellView;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
-- (void)willRotateWithTransitionCoordinator:(id)a3;
+- (void)configureIconView:(id)view forIcon:(id)icon;
+- (void)willRotateWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation IconListFolderView.IconListView
@@ -24,23 +24,23 @@
   return v2;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v15.receiver = self;
   v15.super_class = type metadata accessor for IconListFolderView.IconListView();
   v7 = v15.receiver;
-  v8 = a4;
-  v9 = [(IconListFolderView.IconListView *)&v15 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(IconListFolderView.IconListView *)&v15 hitTest:eventCopy withEvent:x, y];
   if (!v9 || v9 != v7)
   {
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!eventCopy)
   {
-    v8 = v7;
+    eventCopy = v7;
     v7 = v9;
     v9 = 0;
 LABEL_3:
@@ -52,9 +52,9 @@ LABEL_4:
   }
 
   v13 = v9;
-  v14 = [v8 type];
+  type = [eventCopy type];
 
-  if (v14 != 9)
+  if (type != 9)
   {
     v10 = 0;
     v7 = v13;
@@ -67,16 +67,16 @@ LABEL_5:
   return v11;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for IconListFolderView.IconListView();
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  iconCopy = icon;
   v8 = v10.receiver;
-  [(SBIconListView *)&v10 configureIconView:v6 forIcon:v7];
-  v9 = [v6 contentContainerView];
-  [v9 setOverrideUserInterfaceStyle_];
+  [(SBIconListView *)&v10 configureIconView:viewCopy forIcon:iconCopy];
+  contentContainerView = [viewCopy contentContainerView];
+  [contentContainerView setOverrideUserInterfaceStyle_];
 }
 
 - (id)makeEmptyGridCellView
@@ -86,19 +86,19 @@ LABEL_5:
   return v2;
 }
 
-- (void)willRotateWithTransitionCoordinator:(id)a3
+- (void)willRotateWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_21EA8FF80(a3);
+  selfCopy = self;
+  sub_21EA8FF80(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (_TtCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView)initWithModel:(id)a3 layoutProvider:(id)a4 iconLocation:(id)a5 orientation:(int64_t)a6 iconViewProvider:(id)a7
+- (_TtCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView)initWithModel:(id)model layoutProvider:(id)provider iconLocation:(id)location orientation:(int64_t)orientation iconViewProvider:(id)viewProvider
 {
   v13.receiver = self;
   v13.super_class = type metadata accessor for IconListFolderView.IconListView();
-  return [(SBIconListView *)&v13 initWithModel:a3 layoutProvider:a4 iconLocation:a5 orientation:a6 iconViewProvider:a7];
+  return [(SBIconListView *)&v13 initWithModel:model layoutProvider:provider iconLocation:location orientation:orientation iconViewProvider:viewProvider];
 }
 
 @end

@@ -1,111 +1,111 @@
 @interface HKHeartRateSummary
-- (BOOL)isEqual:(id)a3;
-- (HKHeartRateSummary)initWithActivityCacheIndex:(int64_t)a3 heartRateDateInterval:(id)a4 restingHeartRate:(id)a5 walkingAverageHeartRate:(id)a6 allDayStatistics:(id)a7 workoutStatistics:(id)a8 workoutRecoveryStatistics:(id)a9 breatheStatistics:(id)a10 sleepStatistics:(id)a11;
-- (HKHeartRateSummary)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKHeartRateSummary)initWithActivityCacheIndex:(int64_t)index heartRateDateInterval:(id)interval restingHeartRate:(id)rate walkingAverageHeartRate:(id)heartRate allDayStatistics:(id)statistics workoutStatistics:(id)workoutStatistics workoutRecoveryStatistics:(id)recoveryStatistics breatheStatistics:(id)self0 sleepStatistics:(id)self1;
+- (HKHeartRateSummary)initWithCoder:(id)coder;
 - (id)deepCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHeartRateSummary
 
-- (HKHeartRateSummary)initWithActivityCacheIndex:(int64_t)a3 heartRateDateInterval:(id)a4 restingHeartRate:(id)a5 walkingAverageHeartRate:(id)a6 allDayStatistics:(id)a7 workoutStatistics:(id)a8 workoutRecoveryStatistics:(id)a9 breatheStatistics:(id)a10 sleepStatistics:(id)a11
+- (HKHeartRateSummary)initWithActivityCacheIndex:(int64_t)index heartRateDateInterval:(id)interval restingHeartRate:(id)rate walkingAverageHeartRate:(id)heartRate allDayStatistics:(id)statistics workoutStatistics:(id)workoutStatistics workoutRecoveryStatistics:(id)recoveryStatistics breatheStatistics:(id)self0 sleepStatistics:(id)self1
 {
-  v34 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
+  intervalCopy = interval;
+  rateCopy = rate;
+  heartRateCopy = heartRate;
+  statisticsCopy = statistics;
+  workoutStatisticsCopy = workoutStatistics;
+  recoveryStatisticsCopy = recoveryStatistics;
+  breatheStatisticsCopy = breatheStatistics;
+  sleepStatisticsCopy = sleepStatistics;
   v35.receiver = self;
   v35.super_class = HKHeartRateSummary;
   v21 = [(HKHeartRateSummary *)&v35 init];
   v22 = v21;
   if (v21)
   {
-    v21->_activityCacheIndex = a3;
-    objc_storeStrong(&v21->_heartRateDateInterval, a4);
-    objc_storeStrong(&v22->_restingHeartRate, a5);
-    objc_storeStrong(&v22->_walkingAverageHeartRate, a6);
-    objc_storeStrong(&v22->_allDayStatistics, a7);
-    v23 = [v17 copy];
+    v21->_activityCacheIndex = index;
+    objc_storeStrong(&v21->_heartRateDateInterval, interval);
+    objc_storeStrong(&v22->_restingHeartRate, rate);
+    objc_storeStrong(&v22->_walkingAverageHeartRate, heartRate);
+    objc_storeStrong(&v22->_allDayStatistics, statistics);
+    v23 = [workoutStatisticsCopy copy];
     workoutStatistics = v22->_workoutStatistics;
     v22->_workoutStatistics = v23;
 
-    v25 = [v18 copy];
+    v25 = [recoveryStatisticsCopy copy];
     workoutRecoveryStatistics = v22->_workoutRecoveryStatistics;
     v22->_workoutRecoveryStatistics = v25;
 
-    v27 = [v19 copy];
+    v27 = [breatheStatisticsCopy copy];
     breatheStatistics = v22->_breatheStatistics;
     v22->_breatheStatistics = v27;
 
-    objc_storeStrong(&v22->_sleepStatistics, a11);
+    objc_storeStrong(&v22->_sleepStatistics, sleepStatistics);
   }
 
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityCacheIndex = self->_activityCacheIndex;
-  v5 = a3;
-  [v5 encodeInt64:activityCacheIndex forKey:@"ActivityCacheIndex"];
-  [v5 encodeObject:self->_heartRateDateInterval forKey:@"HeartRateDateInterval"];
-  [v5 encodeObject:self->_restingHeartRate forKey:@"RestingHeartRate"];
-  [v5 encodeObject:self->_walkingAverageHeartRate forKey:@"WalkingAverageHeartRate"];
-  [v5 encodeObject:self->_allDayStatistics forKey:@"AllDayStatistics"];
-  [v5 encodeObject:self->_workoutStatistics forKey:@"WorkoutStatistics"];
-  [v5 encodeObject:self->_workoutRecoveryStatistics forKey:@"RecoveryStatistics"];
-  [v5 encodeObject:self->_breatheStatistics forKey:@"BreatheStatistics"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:activityCacheIndex forKey:@"ActivityCacheIndex"];
+  [coderCopy encodeObject:self->_heartRateDateInterval forKey:@"HeartRateDateInterval"];
+  [coderCopy encodeObject:self->_restingHeartRate forKey:@"RestingHeartRate"];
+  [coderCopy encodeObject:self->_walkingAverageHeartRate forKey:@"WalkingAverageHeartRate"];
+  [coderCopy encodeObject:self->_allDayStatistics forKey:@"AllDayStatistics"];
+  [coderCopy encodeObject:self->_workoutStatistics forKey:@"WorkoutStatistics"];
+  [coderCopy encodeObject:self->_workoutRecoveryStatistics forKey:@"RecoveryStatistics"];
+  [coderCopy encodeObject:self->_breatheStatistics forKey:@"BreatheStatistics"];
 }
 
-- (HKHeartRateSummary)initWithCoder:(id)a3
+- (HKHeartRateSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = HKHeartRateSummary;
   v5 = [(HKHeartRateSummary *)&v30 init];
   if (v5)
   {
-    v5->_activityCacheIndex = [v4 decodeInt64ForKey:@"ActivityCacheIndex"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HeartRateDateInterval"];
+    v5->_activityCacheIndex = [coderCopy decodeInt64ForKey:@"ActivityCacheIndex"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HeartRateDateInterval"];
     heartRateDateInterval = v5->_heartRateDateInterval;
     v5->_heartRateDateInterval = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RestingHeartRate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RestingHeartRate"];
     restingHeartRate = v5->_restingHeartRate;
     v5->_restingHeartRate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WalkingAverageHeartRate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WalkingAverageHeartRate"];
     walkingAverageHeartRate = v5->_walkingAverageHeartRate;
     v5->_walkingAverageHeartRate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllDayStatistics"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllDayStatistics"];
     allDayStatistics = v5->_allDayStatistics;
     v5->_allDayStatistics = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"WorkoutStatistics"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"WorkoutStatistics"];
     workoutStatistics = v5->_workoutStatistics;
     v5->_workoutStatistics = v17;
 
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"RecoveryStatistics"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"RecoveryStatistics"];
     workoutRecoveryStatistics = v5->_workoutRecoveryStatistics;
     v5->_workoutRecoveryStatistics = v22;
 
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"BreatheStatistics"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"BreatheStatistics"];
     breatheStatistics = v5->_breatheStatistics;
     v5->_breatheStatistics = v27;
   }
@@ -130,10 +130,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -143,49 +143,49 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(HKHeartRateSummary *)self activityCacheIndex];
-      if (v7 == [(HKHeartRateSummary *)v6 activityCacheIndex])
+      activityCacheIndex = [(HKHeartRateSummary *)self activityCacheIndex];
+      if (activityCacheIndex == [(HKHeartRateSummary *)equalCopy activityCacheIndex])
       {
-        v8 = [(HKHeartRateSummary *)self heartRateDateInterval];
-        v9 = [(HKHeartRateSummary *)v6 heartRateDateInterval];
-        v75 = v8 != v9;
-        if (v8 != v9)
+        heartRateDateInterval = [(HKHeartRateSummary *)self heartRateDateInterval];
+        heartRateDateInterval2 = [(HKHeartRateSummary *)equalCopy heartRateDateInterval];
+        v75 = heartRateDateInterval != heartRateDateInterval2;
+        if (heartRateDateInterval != heartRateDateInterval2)
         {
-          v77 = [(HKHeartRateSummary *)v6 heartRateDateInterval];
-          if (!v77)
+          heartRateDateInterval3 = [(HKHeartRateSummary *)equalCopy heartRateDateInterval];
+          if (!heartRateDateInterval3)
           {
             v12 = 0;
 
             goto LABEL_94;
           }
 
-          v10 = [(HKHeartRateSummary *)self heartRateDateInterval];
-          v11 = [(HKHeartRateSummary *)v6 heartRateDateInterval];
-          if (![v10 isEqual:v11])
+          heartRateDateInterval4 = [(HKHeartRateSummary *)self heartRateDateInterval];
+          heartRateDateInterval5 = [(HKHeartRateSummary *)equalCopy heartRateDateInterval];
+          if (![heartRateDateInterval4 isEqual:heartRateDateInterval5])
           {
             v12 = 0;
             goto LABEL_43;
           }
 
-          v71 = v11;
-          v72 = v10;
+          v71 = heartRateDateInterval5;
+          v72 = heartRateDateInterval4;
         }
 
-        v13 = [(HKHeartRateSummary *)self restingHeartRate];
-        v14 = [(HKHeartRateSummary *)v6 restingHeartRate];
-        if (v13 == v14)
+        restingHeartRate = [(HKHeartRateSummary *)self restingHeartRate];
+        restingHeartRate2 = [(HKHeartRateSummary *)equalCopy restingHeartRate];
+        if (restingHeartRate == restingHeartRate2)
         {
           v68 = 0;
         }
 
         else
         {
-          v15 = [(HKHeartRateSummary *)v6 restingHeartRate];
-          if (!v15)
+          restingHeartRate3 = [(HKHeartRateSummary *)equalCopy restingHeartRate];
+          if (!restingHeartRate3)
           {
 
             v12 = 0;
-            if (v8 == v9)
+            if (heartRateDateInterval == heartRateDateInterval2)
             {
               v75 = 0;
               goto LABEL_92;
@@ -205,10 +205,10 @@ LABEL_94:
             goto LABEL_95;
           }
 
-          v69 = v15;
-          v3 = [(HKHeartRateSummary *)self restingHeartRate];
-          v70 = [(HKHeartRateSummary *)v6 restingHeartRate];
-          if (![v3 isEqual:?])
+          v69 = restingHeartRate3;
+          restingHeartRate4 = [(HKHeartRateSummary *)self restingHeartRate];
+          restingHeartRate5 = [(HKHeartRateSummary *)equalCopy restingHeartRate];
+          if (![restingHeartRate4 isEqual:?])
           {
             v12 = 0;
 LABEL_40:
@@ -216,28 +216,28 @@ LABEL_40:
             goto LABEL_41;
           }
 
-          v68 = v13 != v14;
+          v68 = restingHeartRate != restingHeartRate2;
         }
 
-        v16 = [(HKHeartRateSummary *)self walkingAverageHeartRate];
-        [(HKHeartRateSummary *)v6 walkingAverageHeartRate];
-        v74 = v73 = v16;
-        v17 = v16 == v74;
-        v18 = v16 != v74;
+        walkingAverageHeartRate = [(HKHeartRateSummary *)self walkingAverageHeartRate];
+        [(HKHeartRateSummary *)equalCopy walkingAverageHeartRate];
+        v74 = v73 = walkingAverageHeartRate;
+        v17 = walkingAverageHeartRate == v74;
+        v18 = walkingAverageHeartRate != v74;
         if (v17)
         {
           v64 = v18;
-          v66 = v3;
+          v66 = restingHeartRate4;
         }
 
         else
         {
-          v19 = [(HKHeartRateSummary *)v6 walkingAverageHeartRate];
-          if (!v19)
+          walkingAverageHeartRate2 = [(HKHeartRateSummary *)equalCopy walkingAverageHeartRate];
+          if (!walkingAverageHeartRate2)
           {
 
             v12 = 0;
-            if (v13 != v14)
+            if (restingHeartRate != restingHeartRate2)
             {
               LOBYTE(v27) = 1;
               goto LABEL_88;
@@ -249,7 +249,7 @@ LABEL_96:
             {
 LABEL_90:
 
-              if (v8 == v9)
+              if (heartRateDateInterval == heartRateDateInterval2)
               {
                 goto LABEL_92;
               }
@@ -263,17 +263,17 @@ LABEL_89:
           }
 
           v64 = v18;
-          v61 = v19;
-          v20 = [(HKHeartRateSummary *)self walkingAverageHeartRate];
-          v62 = [(HKHeartRateSummary *)v6 walkingAverageHeartRate];
-          v63 = v20;
-          if (![v20 isEqual:?])
+          v61 = walkingAverageHeartRate2;
+          walkingAverageHeartRate3 = [(HKHeartRateSummary *)self walkingAverageHeartRate];
+          walkingAverageHeartRate4 = [(HKHeartRateSummary *)equalCopy walkingAverageHeartRate];
+          v63 = walkingAverageHeartRate3;
+          if (![walkingAverageHeartRate3 isEqual:?])
           {
             v12 = 0;
             v26 = v73;
 LABEL_39:
 
-            if (v13 == v14)
+            if (restingHeartRate == restingHeartRate2)
             {
               goto LABEL_90;
             }
@@ -281,25 +281,25 @@ LABEL_39:
             goto LABEL_40;
           }
 
-          v66 = v3;
+          v66 = restingHeartRate4;
         }
 
-        v21 = [(HKHeartRateSummary *)self allDayStatistics];
-        v67 = [(HKHeartRateSummary *)v6 allDayStatistics];
-        if (v21 == v67)
+        allDayStatistics = [(HKHeartRateSummary *)self allDayStatistics];
+        allDayStatistics2 = [(HKHeartRateSummary *)equalCopy allDayStatistics];
+        if (allDayStatistics == allDayStatistics2)
         {
           v57 = 0;
         }
 
         else
         {
-          v22 = [(HKHeartRateSummary *)v6 allDayStatistics];
-          if (!v22)
+          allDayStatistics3 = [(HKHeartRateSummary *)equalCopy allDayStatistics];
+          if (!allDayStatistics3)
           {
 
             v12 = 0;
             v26 = v73;
-            v3 = v66;
+            restingHeartRate4 = v66;
             if (v73 != v74)
             {
               LOBYTE(v32) = 1;
@@ -313,7 +313,7 @@ LABEL_98:
 LABEL_87:
 
               v27 = v68;
-              if (v13 != v14)
+              if (restingHeartRate != restingHeartRate2)
               {
 LABEL_88:
 
@@ -333,41 +333,41 @@ LABEL_86:
             goto LABEL_87;
           }
 
-          v57 = v21 != v67;
-          v56 = v22;
-          v23 = [(HKHeartRateSummary *)self allDayStatistics];
-          v24 = [(HKHeartRateSummary *)v6 allDayStatistics];
-          v59 = v23;
-          v25 = v23;
-          v4 = v24;
-          if (![v25 isEqual:v24])
+          v57 = allDayStatistics != allDayStatistics2;
+          v56 = allDayStatistics3;
+          allDayStatistics4 = [(HKHeartRateSummary *)self allDayStatistics];
+          allDayStatistics5 = [(HKHeartRateSummary *)equalCopy allDayStatistics];
+          v59 = allDayStatistics4;
+          v25 = allDayStatistics4;
+          v4 = allDayStatistics5;
+          if (![v25 isEqual:allDayStatistics5])
           {
-            v65 = v21;
+            v65 = allDayStatistics;
             v12 = 0;
             v26 = v73;
             goto LABEL_28;
           }
         }
 
-        v28 = [(HKHeartRateSummary *)self workoutStatistics];
-        v60 = [(HKHeartRateSummary *)v6 workoutStatistics];
-        v65 = v21;
-        if (v28 == v60)
+        workoutStatistics = [(HKHeartRateSummary *)self workoutStatistics];
+        workoutStatistics2 = [(HKHeartRateSummary *)equalCopy workoutStatistics];
+        v65 = allDayStatistics;
+        if (workoutStatistics == workoutStatistics2)
         {
           v55 = v4;
         }
 
         else
         {
-          v29 = [(HKHeartRateSummary *)v6 workoutStatistics];
-          if (!v29)
+          workoutStatistics3 = [(HKHeartRateSummary *)equalCopy workoutStatistics];
+          if (!workoutStatistics3)
           {
 
-            v37 = v21;
+            v37 = allDayStatistics;
             v12 = 0;
             v26 = v73;
             v38 = v57;
-            if (v37 != v67)
+            if (v37 != allDayStatistics2)
             {
               goto LABEL_79;
             }
@@ -376,18 +376,18 @@ LABEL_86:
           }
 
           v55 = v4;
-          v53 = v29;
-          v30 = [(HKHeartRateSummary *)self workoutStatistics];
-          v51 = [(HKHeartRateSummary *)v6 workoutStatistics];
-          v52 = v30;
-          if (![v30 isEqual:?])
+          v53 = workoutStatistics3;
+          workoutStatistics4 = [(HKHeartRateSummary *)self workoutStatistics];
+          workoutStatistics5 = [(HKHeartRateSummary *)equalCopy workoutStatistics];
+          v52 = workoutStatistics4;
+          if (![workoutStatistics4 isEqual:?])
           {
             v12 = 0;
             v26 = v73;
-            v31 = v60;
+            v31 = workoutStatistics2;
 LABEL_77:
 
-            if (v65 != v67)
+            if (v65 != allDayStatistics2)
             {
               LOBYTE(v38) = 1;
               v4 = v55;
@@ -414,39 +414,39 @@ LABEL_82:
           }
         }
 
-        v33 = [(HKHeartRateSummary *)self workoutRecoveryStatistics];
-        v58 = [(HKHeartRateSummary *)v6 workoutRecoveryStatistics];
-        v54 = v33;
-        if (v33 == v58)
+        workoutRecoveryStatistics = [(HKHeartRateSummary *)self workoutRecoveryStatistics];
+        workoutRecoveryStatistics2 = [(HKHeartRateSummary *)equalCopy workoutRecoveryStatistics];
+        v54 = workoutRecoveryStatistics;
+        if (workoutRecoveryStatistics == workoutRecoveryStatistics2)
         {
-          v50 = v28;
+          v50 = workoutStatistics;
           [(HKHeartRateSummary *)self breatheStatistics];
         }
 
         else
         {
-          v34 = [(HKHeartRateSummary *)v6 workoutRecoveryStatistics];
-          if (!v34)
+          workoutRecoveryStatistics3 = [(HKHeartRateSummary *)equalCopy workoutRecoveryStatistics];
+          if (!workoutRecoveryStatistics3)
           {
             v12 = 0;
             v26 = v73;
             goto LABEL_76;
           }
 
-          v49 = v34;
-          v50 = v28;
-          v35 = [(HKHeartRateSummary *)self workoutRecoveryStatistics];
-          v36 = [(HKHeartRateSummary *)v6 workoutRecoveryStatistics];
-          if (([v35 isEqual:v36] & 1) == 0)
+          v49 = workoutRecoveryStatistics3;
+          v50 = workoutStatistics;
+          workoutRecoveryStatistics4 = [(HKHeartRateSummary *)self workoutRecoveryStatistics];
+          workoutRecoveryStatistics5 = [(HKHeartRateSummary *)equalCopy workoutRecoveryStatistics];
+          if (([workoutRecoveryStatistics4 isEqual:workoutRecoveryStatistics5] & 1) == 0)
           {
 
             v12 = 0;
 LABEL_65:
-            if (v50 != v60)
+            if (v50 != workoutStatistics2)
             {
             }
 
-            if (v65 != v67)
+            if (v65 != allDayStatistics2)
             {
             }
 
@@ -454,13 +454,13 @@ LABEL_65:
             {
             }
 
-            if (v13 == v14)
+            if (restingHeartRate == restingHeartRate2)
             {
 LABEL_42:
 
-              v11 = v71;
-              v10 = v72;
-              if (v8 == v9)
+              heartRateDateInterval5 = v71;
+              heartRateDateInterval4 = v72;
+              if (heartRateDateInterval == heartRateDateInterval2)
               {
                 goto LABEL_94;
               }
@@ -475,28 +475,28 @@ LABEL_41:
             goto LABEL_42;
           }
 
-          v48 = v35;
+          v48 = workoutRecoveryStatistics4;
           [(HKHeartRateSummary *)self breatheStatistics];
         }
         v39 = ;
-        v40 = [(HKHeartRateSummary *)v6 breatheStatistics];
-        v12 = v39 == v40;
-        if (v39 == v40)
+        breatheStatistics = [(HKHeartRateSummary *)equalCopy breatheStatistics];
+        v12 = v39 == breatheStatistics;
+        if (v39 == breatheStatistics)
         {
         }
 
         else
         {
-          v41 = v40;
-          v42 = [(HKHeartRateSummary *)v6 breatheStatistics];
-          if (v42)
+          v41 = breatheStatistics;
+          breatheStatistics2 = [(HKHeartRateSummary *)equalCopy breatheStatistics];
+          if (breatheStatistics2)
           {
-            v76 = v42;
-            v43 = [(HKHeartRateSummary *)self breatheStatistics];
-            v44 = [(HKHeartRateSummary *)v6 breatheStatistics];
-            v12 = [v43 isEqual:v44];
+            v76 = breatheStatistics2;
+            breatheStatistics3 = [(HKHeartRateSummary *)self breatheStatistics];
+            breatheStatistics4 = [(HKHeartRateSummary *)equalCopy breatheStatistics];
+            v12 = [breatheStatistics3 isEqual:breatheStatistics4];
 
-            if (v54 != v58)
+            if (v54 != workoutRecoveryStatistics2)
             {
             }
 
@@ -504,13 +504,13 @@ LABEL_41:
           }
         }
 
-        if (v54 == v58)
+        if (v54 == workoutRecoveryStatistics2)
         {
 
-          v31 = v60;
-          v28 = v50;
+          v31 = workoutStatistics2;
+          workoutStatistics = v50;
           v26 = v73;
-          if (v50 != v60)
+          if (v50 != workoutStatistics2)
           {
             goto LABEL_77;
           }
@@ -519,11 +519,11 @@ LABEL_41:
         }
 
         v26 = v73;
-        v28 = v50;
+        workoutStatistics = v50;
 LABEL_76:
 
-        v31 = v60;
-        if (v28 != v60)
+        v31 = workoutStatistics2;
+        if (workoutStatistics != workoutStatistics2)
         {
           goto LABEL_77;
         }
@@ -531,11 +531,11 @@ LABEL_76:
 LABEL_101:
 
         v4 = v55;
-        if (v65 != v67)
+        if (v65 != allDayStatistics2)
         {
 LABEL_28:
 
-          v3 = v66;
+          restingHeartRate4 = v66;
           if (v26 == v74)
           {
             goto LABEL_87;
@@ -546,7 +546,7 @@ LABEL_28:
 
 LABEL_84:
 
-        v3 = v66;
+        restingHeartRate4 = v66;
         v32 = v64;
         if (v26 != v74)
         {
@@ -575,20 +575,20 @@ LABEL_95:
 - (unint64_t)hash
 {
   activityCacheIndex = self->_activityCacheIndex;
-  v4 = [(HKHeartRateSummary *)self heartRateDateInterval];
-  v5 = [v4 hash];
-  v6 = [(HKHeartRateSummary *)self restingHeartRate];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(HKHeartRateSummary *)self walkingAverageHeartRate];
-  v9 = v7 ^ [v8 hash] ^ activityCacheIndex;
-  v10 = [(HKHeartRateSummary *)self allDayStatistics];
-  v11 = [v10 hash];
-  v12 = [(HKHeartRateSummary *)self workoutStatistics];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(HKHeartRateSummary *)self workoutRecoveryStatistics];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(HKHeartRateSummary *)self breatheStatistics];
-  v17 = v15 ^ [v16 hash];
+  heartRateDateInterval = [(HKHeartRateSummary *)self heartRateDateInterval];
+  v5 = [heartRateDateInterval hash];
+  restingHeartRate = [(HKHeartRateSummary *)self restingHeartRate];
+  v7 = v5 ^ [restingHeartRate hash];
+  walkingAverageHeartRate = [(HKHeartRateSummary *)self walkingAverageHeartRate];
+  v9 = v7 ^ [walkingAverageHeartRate hash] ^ activityCacheIndex;
+  allDayStatistics = [(HKHeartRateSummary *)self allDayStatistics];
+  v11 = [allDayStatistics hash];
+  workoutStatistics = [(HKHeartRateSummary *)self workoutStatistics];
+  v13 = v11 ^ [workoutStatistics hash];
+  workoutRecoveryStatistics = [(HKHeartRateSummary *)self workoutRecoveryStatistics];
+  v15 = v13 ^ [workoutRecoveryStatistics hash];
+  breatheStatistics = [(HKHeartRateSummary *)self breatheStatistics];
+  v17 = v15 ^ [breatheStatistics hash];
 
   return v9 ^ v17;
 }

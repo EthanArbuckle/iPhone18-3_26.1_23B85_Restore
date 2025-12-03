@@ -1,67 +1,67 @@
 @interface SCATGridPointPickerView
-- (CGPath)pathForCenterPointAtSelectionPath:(id)a3;
-- (CGRect)_availableFrameForCenterPointAtSelectionPath:(id)a3;
-- (CGRect)frameForCenterPointAtSelectionPath:(id)a3;
-- (CGRect)frameForSelectionPath:(id)a3;
-- (SCATGridPointPickerView)initWithFrame:(CGRect)a3;
-- (id)centerPointImageForGrid:(id)a3;
+- (CGPath)pathForCenterPointAtSelectionPath:(id)path;
+- (CGRect)_availableFrameForCenterPointAtSelectionPath:(id)path;
+- (CGRect)frameForCenterPointAtSelectionPath:(id)path;
+- (CGRect)frameForSelectionPath:(id)path;
+- (SCATGridPointPickerView)initWithFrame:(CGRect)frame;
+- (id)centerPointImageForGrid:(id)grid;
 - (void)_updateGridProperties;
 - (void)layoutSubviews;
-- (void)setCurrentSelectionPath:(id)a3;
+- (void)setCurrentSelectionPath:(id)path;
 @end
 
 @implementation SCATGridPointPickerView
 
-- (SCATGridPointPickerView)initWithFrame:(CGRect)a3
+- (SCATGridPointPickerView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SCATGridPointPickerView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v6 = [(SCATGridPointPickerView *)&v13 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v6)
+  height = [(SCATGridPointPickerView *)&v13 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v7 = +[SCATStyleProvider sharedStyleProvider];
-    v8 = [[SCATGridView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    grid = v6->_grid;
-    v6->_grid = v8;
+    height2 = [[SCATGridView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    grid = height->_grid;
+    height->_grid = height2;
 
-    [(SCATGridView *)v6->_grid setDelegate:v6];
-    [(SCATGridView *)v6->_grid setAutoresizingMask:18];
-    [(SCATGridView *)v6->_grid setNumberOfColumns:3];
+    [(SCATGridView *)height->_grid setDelegate:height];
+    [(SCATGridView *)height->_grid setAutoresizingMask:18];
+    [(SCATGridView *)height->_grid setNumberOfColumns:3];
     [v7 gridLineThickness];
-    [(SCATGridView *)v6->_grid setLineThickness:?];
-    v10 = [v7 gridColor];
-    [(SCATGridView *)v6->_grid setLineColor:v10];
+    [(SCATGridView *)height->_grid setLineThickness:?];
+    gridColor = [v7 gridColor];
+    [(SCATGridView *)height->_grid setLineColor:gridColor];
 
-    v11 = [v7 gridShadowColor];
-    [(SCATGridView *)v6->_grid setShadowColor:v11];
+    gridShadowColor = [v7 gridShadowColor];
+    [(SCATGridView *)height->_grid setShadowColor:gridShadowColor];
 
     [v7 gridShadowOffset];
-    [(SCATGridView *)v6->_grid setShadowOffset:?];
-    [(SCATGridPointPickerView *)v6 _updateGridProperties];
-    [(SCATGridPointPickerView *)v6 addSubview:v6->_grid];
+    [(SCATGridView *)height->_grid setShadowOffset:?];
+    [(SCATGridPointPickerView *)height _updateGridProperties];
+    [(SCATGridPointPickerView *)height addSubview:height->_grid];
   }
 
-  return v6;
+  return height;
 }
 
-- (CGRect)frameForSelectionPath:(id)a3
+- (CGRect)frameForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(SCATGridPointPickerView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 length];
+  v13 = [pathCopy length];
   if (v13)
   {
     v14 = v13;
     for (i = 0; i != v14; ++i)
     {
-      v16 = [v4 indexAtPosition:i];
+      v16 = [pathCopy indexAtPosition:i];
       if (i)
       {
         v10 = v10 / [(SCATGridPointPickerView *)self numberOfColumns];
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (CGRect)frameForCenterPointAtSelectionPath:(id)a3
+- (CGRect)frameForCenterPointAtSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[SCATStyleProvider sharedStyleProvider];
-  [(SCATGridPointPickerView *)self _availableFrameForCenterPointAtSelectionPath:v4];
+  [(SCATGridPointPickerView *)self _availableFrameForCenterPointAtSelectionPath:pathCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -124,11 +124,11 @@
   return result;
 }
 
-- (CGPath)pathForCenterPointAtSelectionPath:(id)a3
+- (CGPath)pathForCenterPointAtSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[SCATStyleProvider sharedStyleProvider];
-  [(SCATGridPointPickerView *)self _availableFrameForCenterPointAtSelectionPath:v4];
+  [(SCATGridPointPickerView *)self _availableFrameForCenterPointAtSelectionPath:pathCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -138,18 +138,18 @@
   return v14;
 }
 
-- (CGRect)_availableFrameForCenterPointAtSelectionPath:(id)a3
+- (CGRect)_availableFrameForCenterPointAtSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (!pathCopy)
   {
     v26 = xmmword_1001BD350;
     v8 = [NSIndexPath indexPathWithIndexes:&v26 length:2];
     goto LABEL_5;
   }
 
-  v6 = [v4 length];
+  v6 = [pathCopy length];
   v7 = [v5 indexPathByAddingIndex:1];
   v8 = v7;
   if (v6)
@@ -184,8 +184,8 @@ LABEL_6:
 
 - (void)_updateGridProperties
 {
-  v3 = [(SCATGridPointPickerView *)self currentSelectionPath];
-  [(SCATGridPointPickerView *)self frameForSelectionPath:v3];
+  currentSelectionPath = [(SCATGridPointPickerView *)self currentSelectionPath];
+  [(SCATGridPointPickerView *)self frameForSelectionPath:currentSelectionPath];
   [(SCATGridView *)self->_grid setFrame:?];
 
   [(SCATGridView *)self->_grid frame];
@@ -204,8 +204,8 @@ LABEL_6:
   MaxY = CGRectGetMaxY(v19);
   [(SCATGridPointPickerView *)self bounds];
   [(SCATGridView *)self->_grid setShowsBottomBorder:MaxY < CGRectGetMaxY(v20)];
-  v12 = [(SCATGridPointPickerView *)self currentSelectionPath];
-  v13 = [v12 length];
+  currentSelectionPath2 = [(SCATGridPointPickerView *)self currentSelectionPath];
+  v13 = [currentSelectionPath2 length];
 
   grid = self->_grid;
   if (v13)
@@ -221,15 +221,15 @@ LABEL_6:
   [(SCATGridView *)grid setNumberOfRows:v15];
 }
 
-- (void)setCurrentSelectionPath:(id)a3
+- (void)setCurrentSelectionPath:(id)path
 {
-  v5 = a3;
-  if (self->_currentSelectionPath != v5)
+  pathCopy = path;
+  if (self->_currentSelectionPath != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentSelectionPath, a3);
+    v6 = pathCopy;
+    objc_storeStrong(&self->_currentSelectionPath, path);
     [(SCATGridPointPickerView *)self _updateGridProperties];
-    v5 = v6;
+    pathCopy = v6;
   }
 }
 
@@ -238,15 +238,15 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = SCATGridPointPickerView;
   [(SCATPromptView *)&v4 layoutSubviews];
-  v3 = [(SCATGridPointPickerView *)self currentSelectionPath];
-  [(SCATGridPointPickerView *)self frameForSelectionPath:v3];
+  currentSelectionPath = [(SCATGridPointPickerView *)self currentSelectionPath];
+  [(SCATGridPointPickerView *)self frameForSelectionPath:currentSelectionPath];
   [(SCATGridView *)self->_grid setFrame:?];
 }
 
-- (id)centerPointImageForGrid:(id)a3
+- (id)centerPointImageForGrid:(id)grid
 {
-  v4 = [(SCATGridPointPickerView *)self currentSelectionPath];
-  [(SCATGridPointPickerView *)self _availableFrameForCenterPointAtSelectionPath:v4];
+  currentSelectionPath = [(SCATGridPointPickerView *)self currentSelectionPath];
+  [(SCATGridPointPickerView *)self _availableFrameForCenterPointAtSelectionPath:currentSelectionPath];
   v6 = v5;
   v8 = v7;
 

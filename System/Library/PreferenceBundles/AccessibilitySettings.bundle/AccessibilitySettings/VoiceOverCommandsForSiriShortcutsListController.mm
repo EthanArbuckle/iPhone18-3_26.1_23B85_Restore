@@ -6,18 +6,18 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
     v26 = objc_opt_new();
     v5 = OBJC_IVAR___PSViewController__specifier;
-    v6 = [*&v2->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+    voCommandManager = [*&selfCopy->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
     v25 = v5;
-    v7 = [*&v2->AXUISettingsBaseListController_opaque[v5] voCommandResolver];
-    v27 = v6;
-    [v6 allSiriShortcutCommandsWithResolver:v7];
+    voCommandResolver = [*&selfCopy->AXUISettingsBaseListController_opaque[v5] voCommandResolver];
+    v27 = voCommandManager;
+    [voCommandManager allSiriShortcutCommandsWithResolver:voCommandResolver];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -26,7 +26,7 @@
     if (v8)
     {
       v9 = v8;
-      v21 = v7;
+      v21 = voCommandResolver;
       v22 = v3;
       v10 = 0;
       v24 = *v29;
@@ -42,14 +42,14 @@
           }
 
           v13 = *(*(&v28 + 1) + 8 * v11);
-          v14 = [v13 localizedName];
+          localizedName = [v13 localizedName];
           v15 = objc_opt_class();
-          [*&v2->AXUISettingsBaseListController_opaque[v25] voCommandContext];
-          v17 = v16 = v2;
-          v18 = [v17 resolver];
-          v10 = [PSSpecifier voCommandSubmenuWithTitle:v14 childViewControllerClass:v15 command:v13 commandManager:v27 resolver:v18];
+          [*&selfCopy->AXUISettingsBaseListController_opaque[v25] voCommandContext];
+          v17 = v16 = selfCopy;
+          resolver = [v17 resolver];
+          v10 = [PSSpecifier voCommandSubmenuWithTitle:localizedName childViewControllerClass:v15 command:v13 commandManager:v27 resolver:resolver];
 
-          v2 = v16;
+          selfCopy = v16;
           [v26 addObject:v10];
           v11 = v11 + 1;
           v12 = v10;
@@ -61,14 +61,14 @@
 
       while (v9);
 
-      v7 = v21;
+      voCommandResolver = v21;
       v3 = v22;
     }
 
-    v19 = *&v2->AXUISettingsBaseListController_opaque[v3];
-    *&v2->AXUISettingsBaseListController_opaque[v3] = v26;
+    v19 = *&selfCopy->AXUISettingsBaseListController_opaque[v3];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v3] = v26;
 
-    v4 = *&v2->AXUISettingsBaseListController_opaque[v3];
+    v4 = *&selfCopy->AXUISettingsBaseListController_opaque[v3];
   }
 
   return v4;

@@ -1,29 +1,29 @@
 @interface CSActivationEventNotifier
 + (id)sharedNotifier;
 - (CSActivationEventNotifier)init;
-- (id)_getHandlerFromEvent:(id)a3;
-- (id)_getHandlerFromHandlerID:(unint64_t)a3;
-- (void)_notifyActivationEvent:(id)a3 completion:(id)a4;
-- (void)notifyActivationEvent:(id)a3 completion:(id)a4;
-- (void)notifyActivationEvent:(unint64_t)a3 deviceId:(id)a4 activationInfo:(id)a5 completion:(id)a6;
-- (void)notifyActivationEventSynchronously:(id)a3 completion:(id)a4;
-- (void)notifyDeviceActivationEvent:(id)a3 completion:(id)a4;
+- (id)_getHandlerFromEvent:(id)event;
+- (id)_getHandlerFromHandlerID:(unint64_t)d;
+- (void)_notifyActivationEvent:(id)event completion:(id)completion;
+- (void)notifyActivationEvent:(id)event completion:(id)completion;
+- (void)notifyActivationEvent:(unint64_t)event deviceId:(id)id activationInfo:(id)info completion:(id)completion;
+- (void)notifyActivationEventSynchronously:(id)synchronously completion:(id)completion;
+- (void)notifyDeviceActivationEvent:(id)event completion:(id)completion;
 @end
 
 @implementation CSActivationEventNotifier
 
-- (id)_getHandlerFromEvent:(id)a3
+- (id)_getHandlerFromEvent:(id)event
 {
-  v4 = ([a3 type] << 16) | 1;
+  v4 = ([event type] << 16) | 1;
 
   return [(CSActivationEventNotifier *)self _getHandlerFromHandlerID:v4];
 }
 
-- (id)_getHandlerFromHandlerID:(unint64_t)a3
+- (id)_getHandlerFromHandlerID:(unint64_t)d
 {
   v13 = *MEMORY[0x277D85DE8];
   handlerMap = self->_handlerMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
   v5 = [(NSDictionary *)handlerMap objectForKey:v4];
 
   if (v5)
@@ -63,19 +63,19 @@
   return v5;
 }
 
-- (void)notifyActivationEvent:(unint64_t)a3 deviceId:(id)a4 activationInfo:(id)a5 completion:(id)a6
+- (void)notifyActivationEvent:(unint64_t)event deviceId:(id)id activationInfo:(id)info completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __86__CSActivationEventNotifier_notifyActivationEvent_deviceId_activationInfo_completion___block_invoke;
   v16[3] = &unk_2784C6E20;
-  v17 = v10;
-  v11 = v10;
-  v12 = a5;
-  v13 = a4;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  infoCopy = info;
+  idCopy = id;
   v14 = MEMORY[0x223DD26C0](v16);
-  v15 = [objc_alloc(MEMORY[0x277D016F0]) initWithType:a3 deviceId:v13 activationInfo:v12 hosttime:mach_absolute_time()];
+  v15 = [objc_alloc(MEMORY[0x277D016F0]) initWithType:event deviceId:idCopy activationInfo:infoCopy hosttime:mach_absolute_time()];
 
   [(CSActivationEventNotifier *)self notifyDeviceActivationEvent:v15 completion:v14];
 }
@@ -108,20 +108,20 @@ void __86__CSActivationEventNotifier_notifyActivationEvent_deviceId_activationIn
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDeviceActivationEvent:(id)a3 completion:(id)a4
+- (void)notifyDeviceActivationEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__CSActivationEventNotifier_notifyDeviceActivationEvent_completion___block_invoke;
   block[3] = &unk_2784C6C68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
@@ -146,20 +146,20 @@ uint64_t __68__CSActivationEventNotifier_notifyDeviceActivationEvent_completion_
   return result;
 }
 
-- (void)notifyActivationEvent:(id)a3 completion:(id)a4
+- (void)notifyActivationEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__CSActivationEventNotifier_notifyActivationEvent_completion___block_invoke;
   block[3] = &unk_2784C6C68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
@@ -186,35 +186,35 @@ void __62__CSActivationEventNotifier_notifyActivationEvent_completion___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyActivationEventSynchronously:(id)a3 completion:(id)a4
+- (void)notifyActivationEventSynchronously:(id)synchronously completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  synchronouslyCopy = synchronously;
+  completionCopy = completion;
   v8 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 localizedDescription];
+    localizedDescription = [synchronouslyCopy localizedDescription];
     v13 = 136315394;
     v14 = "[CSActivationEventNotifier notifyActivationEventSynchronously:completion:]";
     v15 = 2114;
-    v16 = v10;
+    v16 = localizedDescription;
     _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s Received Activation Event : %{public}@", &v13, 0x16u);
   }
 
-  v11 = [v6 deviceActivationEvent];
-  [(CSActivationEventNotifier *)self _notifyActivationEvent:v11 completion:v7];
+  deviceActivationEvent = [synchronouslyCopy deviceActivationEvent];
+  [(CSActivationEventNotifier *)self _notifyActivationEvent:deviceActivationEvent completion:completionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyActivationEvent:(id)a3 completion:(id)a4
+- (void)_notifyActivationEvent:(id)event completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSActivationEventNotifier *)self _getHandlerFromEvent:v7];
-  [v8 notifyActivationEvent:v7 completion:v6];
+  completionCopy = completion;
+  eventCopy = event;
+  v8 = [(CSActivationEventNotifier *)self _getHandlerFromEvent:eventCopy];
+  [v8 notifyActivationEvent:eventCopy completion:completionCopy];
 }
 
 - (CSActivationEventNotifier)init

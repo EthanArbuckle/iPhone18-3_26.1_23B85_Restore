@@ -1,17 +1,17 @@
 @interface RTPredictedContextManager
-+ (BOOL)deferBasedOnFeatureExtractorError:(id)a3;
++ (BOOL)deferBasedOnFeatureExtractorError:(id)error;
 + (id)_dataCollectionDefaultLookbackDurations;
 + (id)_defaultLookbackDurations;
 + (id)modelBinPath;
 + (id)serializedDataContainerPath;
-+ (id)stringFromInferenceTriggerReason:(int64_t)a3;
-+ (id)stringFromTrainPolicy:(int64_t)a3;
-+ (id)stringFromTrainResult:(unint64_t)a3;
-- (BOOL)_didHealthKitInaccessibleErrorOccur:(id)a3;
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4;
-- (BOOL)_isHealthKitInaccessibleErrorIncludedInTheErrorArray:(id)a3;
-- (BOOL)_isMonitoringClientEligibleForTriggerReasonClientRegistration:(id)a3;
-- (BOOL)_isMonitoringClientEligibleToReceiveResultFromTriggerReasonSingleShot:(id)a3;
++ (id)stringFromInferenceTriggerReason:(int64_t)reason;
++ (id)stringFromTrainPolicy:(int64_t)policy;
++ (id)stringFromTrainResult:(unint64_t)result;
+- (BOOL)_didHealthKitInaccessibleErrorOccur:(id)occur;
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error;
+- (BOOL)_isHealthKitInaccessibleErrorIncludedInTheErrorArray:(id)array;
+- (BOOL)_isMonitoringClientEligibleForTriggerReasonClientRegistration:(id)registration;
+- (BOOL)_isMonitoringClientEligibleToReceiveResultFromTriggerReasonSingleShot:(id)shot;
 - (BOOL)_isSupported;
 - (BOOL)_isSupportedForCurrentPlatform;
 - (BOOL)_maxTrainAttemptsReachedWithinLast24Hours;
@@ -19,177 +19,177 @@
 - (BOOL)_shouldPerformManualDelete;
 - (PCAlgorithms)algorithms;
 - (RTDataSerializer)dataSerializer;
-- (RTPredictedContextManager)initWithFeatureExtractor:(id)a3 learnedLocationManager:(id)a4 platform:(id)a5 activityManager:(id)a6 dataProtectionManager:(id)a7 defaultsManager:(id)a8 visitManager:(id)a9 eventManager:(id)a10 mapServiceManager:(id)a11 mapsSupportManager:(id)a12 navigationManager:(id)a13 motionActivityManager:(id)a14 vehicleLocationProvider:(id)a15 distanceCalculator:(id)a16 predictedContextStore:(id)a17 metricsManager:(id)a18;
+- (RTPredictedContextManager)initWithFeatureExtractor:(id)extractor learnedLocationManager:(id)manager platform:(id)platform activityManager:(id)activityManager dataProtectionManager:(id)protectionManager defaultsManager:(id)defaultsManager visitManager:(id)visitManager eventManager:(id)self0 mapServiceManager:(id)self1 mapsSupportManager:(id)self2 navigationManager:(id)self3 motionActivityManager:(id)self4 vehicleLocationProvider:(id)self5 distanceCalculator:(id)self6 predictedContextStore:(id)self7 metricsManager:(id)self8;
 - (double)_activityTrainHighPriorityInterval;
 - (double)_activityTrainRegularInterval;
-- (double)_getActivityTrainIntervalForTrainPolicy:(int64_t)a3;
+- (double)_getActivityTrainIntervalForTrainPolicy:(int64_t)policy;
 - (double)_periodicTriggerTimerInterval;
 - (double)_trainingDurationCapInterval;
-- (id)_convertContextLocation:(id)a3;
-- (id)_convertContextResult:(id)a3;
-- (id)_convertContextSources:(id)a3;
-- (id)_convertContextTransition:(id)a3;
-- (id)_convertContextTransport:(id)a3;
-- (id)_convertContextWorkout:(id)a3;
-- (id)_convertDate:(id)a3;
-- (id)_convertDateInterval:(id)a3;
-- (id)_convertLocationOfInterest:(id)a3 sources:(id)a4;
-- (id)_createXPCActivityCriteriaWithInterval:(double)a3 gracePeriod:(double)a4 allowBattery:(BOOL)a5 requiresClassA:(BOOL)a6 requiresClassB:(BOOL)a7 delay:(double)a8;
-- (id)_extractAndConvertAnalytics:(id)a3;
-- (id)_filterResult:(id)a3 forClient:(id)a4;
+- (id)_convertContextLocation:(id)location;
+- (id)_convertContextResult:(id)result;
+- (id)_convertContextSources:(id)sources;
+- (id)_convertContextTransition:(id)transition;
+- (id)_convertContextTransport:(id)transport;
+- (id)_convertContextWorkout:(id)workout;
+- (id)_convertDate:(id)date;
+- (id)_convertDateInterval:(id)interval;
+- (id)_convertLocationOfInterest:(id)interest sources:(id)sources;
+- (id)_createXPCActivityCriteriaWithInterval:(double)interval gracePeriod:(double)period allowBattery:(BOOL)battery requiresClassA:(BOOL)a requiresClassB:(BOOL)b delay:(double)delay;
+- (id)_extractAndConvertAnalytics:(id)analytics;
+- (id)_filterResult:(id)result forClient:(id)client;
 - (id)_fireDate;
-- (id)_getLocationOfInterestWithIdentifier:(id)a3;
-- (id)_getXpcActivityCriteriaForTrainPolicy:(int64_t)a3;
-- (id)_lookbackIntervalsWithDefaults:(id)a3;
-- (id)_overrideKeyForFeatureOption:(unint64_t)a3;
+- (id)_getLocationOfInterestWithIdentifier:(id)identifier;
+- (id)_getXpcActivityCriteriaForTrainPolicy:(int64_t)policy;
+- (id)_lookbackIntervalsWithDefaults:(id)defaults;
+- (id)_overrideKeyForFeatureOption:(unint64_t)option;
 - (id)_readPersistedArrayLastTrainAttemptsDates;
-- (id)_requestInferenceWithReason:(int64_t)a3 outError:(id *)a4;
-- (id)_stringForFeatureOption:(unint64_t)a3;
-- (int64_t)_migrateLegacyTrainPolicyFromInteger:(int64_t)a3;
+- (id)_requestInferenceWithReason:(int64_t)reason outError:(id *)error;
+- (id)_stringForFeatureOption:(unint64_t)option;
+- (int64_t)_migrateLegacyTrainPolicyFromInteger:(int64_t)integer;
 - (int64_t)_readPersistedTrainPolicyOnSetup;
-- (int64_t)_trainPolicyAfterEvaluatingTrainAttempts:(int64_t)a3;
-- (unint64_t)_evaluateTrainErrorForResult:(id)a3;
+- (int64_t)_trainPolicyAfterEvaluatingTrainAttempts:(int64_t)attempts;
+- (unint64_t)_evaluateTrainErrorForResult:(id)result;
 - (unint64_t)_trainAttemptsDatesQueueCapacity;
-- (void)_addClient:(id)a3;
-- (void)_evaluateTrainErrorAndReschedule:(id)a3;
-- (void)_fetchPredictedContextInputSignalsWithHandler:(id)a3;
-- (void)_fetchPredictedContextWithOptions:(id)a3 handler:(id)a4;
-- (void)_forceTrainModelWithHandler:(id)a3;
-- (void)_handleComputeResultWithRecords:(id)a3 error:(id)a4 inputSignals:(id)a5 stimulationDate:(id)a6 featureExtractorMemoryFootprint:(double)a7 handler:(id)a8;
+- (void)_addClient:(id)client;
+- (void)_evaluateTrainErrorAndReschedule:(id)reschedule;
+- (void)_fetchPredictedContextInputSignalsWithHandler:(id)handler;
+- (void)_fetchPredictedContextWithOptions:(id)options handler:(id)handler;
+- (void)_forceTrainModelWithHandler:(id)handler;
+- (void)_handleComputeResultWithRecords:(id)records error:(id)error inputSignals:(id)signals stimulationDate:(id)date featureExtractorMemoryFootprint:(double)footprint handler:(id)handler;
 - (void)_handlePeriodicTriggerTimer;
-- (void)_handleTrainingDurationCapTimerWithStartTime:(id)a3;
+- (void)_handleTrainingDurationCapTimerWithStartTime:(id)time;
 - (void)_invalidatePeriodicTriggerTimer;
 - (void)_invalidateTrainingDurationCapTimer;
-- (void)_onLearnedLocationManagerDidUpdateNotification:(id)a3;
-- (void)_onMotionActivityManagerNotification:(id)a3;
-- (void)_onNavigationNotification:(id)a3;
-- (void)_onVisit:(id)a3;
-- (void)_onVisitManagerNotification:(id)a3;
-- (void)_postprocessRequest:(id)a3;
-- (void)_preprocessTrainingEventWithStartDate:(id)a3;
-- (void)_processPredictedContextResult:(id)a3 reason:(int64_t)a4;
-- (void)_processTrainingResult:(unint64_t)a3;
-- (void)_pushResult:(id)a3 toMonitoringClient:(id)a4;
-- (void)_registerActivityTrainWithTrainPolicy:(int64_t)a3;
-- (void)_requestInferenceWithReason:(int64_t)a3;
-- (void)_rescheduleActivityTrainWithTrainPolicy:(int64_t)a3;
-- (void)_setInputSignalDefaults:(id)a3;
-- (void)_setLastTrainAttemptsDatesToDefaults:(id)a3;
-- (void)_setRegisteredActivityTrainPolicyDefaults:(int64_t)a3;
-- (void)_setTrainAttemptedDateDefaults:(id)a3;
+- (void)_onLearnedLocationManagerDidUpdateNotification:(id)notification;
+- (void)_onMotionActivityManagerNotification:(id)notification;
+- (void)_onNavigationNotification:(id)notification;
+- (void)_onVisit:(id)visit;
+- (void)_onVisitManagerNotification:(id)notification;
+- (void)_postprocessRequest:(id)request;
+- (void)_preprocessTrainingEventWithStartDate:(id)date;
+- (void)_processPredictedContextResult:(id)result reason:(int64_t)reason;
+- (void)_processTrainingResult:(unint64_t)result;
+- (void)_pushResult:(id)result toMonitoringClient:(id)client;
+- (void)_registerActivityTrainWithTrainPolicy:(int64_t)policy;
+- (void)_requestInferenceWithReason:(int64_t)reason;
+- (void)_rescheduleActivityTrainWithTrainPolicy:(int64_t)policy;
+- (void)_setInputSignalDefaults:(id)defaults;
+- (void)_setLastTrainAttemptsDatesToDefaults:(id)defaults;
+- (void)_setRegisteredActivityTrainPolicyDefaults:(int64_t)defaults;
+- (void)_setTrainAttemptedDateDefaults:(id)defaults;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_simulatePredictedContextResult:(id)a3 handler:(id)a4;
-- (void)_startMonitoringForClient:(id)a3 options:(id)a4 handler:(id)a5;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_simulatePredictedContextResult:(id)result handler:(id)handler;
+- (void)_startMonitoringForClient:(id)client options:(id)options handler:(id)handler;
 - (void)_startPeriodicTriggerTimer;
-- (void)_startTrainingDurationCapTimerWithStartTime:(id)a3;
-- (void)_stopMonitoringForClient:(id)a3 reply:(id)a4;
-- (void)_storeRequest:(id)a3;
-- (void)_submitMetrics:(id)a3;
-- (void)_trainWithHandler:(id)a3;
+- (void)_startTrainingDurationCapTimerWithStartTime:(id)time;
+- (void)_stopMonitoringForClient:(id)client reply:(id)reply;
+- (void)_storeRequest:(id)request;
+- (void)_submitMetrics:(id)metrics;
+- (void)_trainWithHandler:(id)handler;
 - (void)_updateMonitorPredictedContext;
-- (void)checkMotionActivityChangeAndTriggerPrediction:(unint64_t)a3 currentActivity:(unint64_t)a4;
-- (void)fetchPredictedContextInputSignalsWithHandler:(id)a3;
-- (void)fetchPredictedContextWithOptions:(id)a3 handler:(id)a4;
-- (void)forceTrainModelWithHandler:(id)a3;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)onLearnedLocationManagerDidUpdateNotification:(id)a3;
-- (void)onMotionActivityManagerNotification:(id)a3;
-- (void)onNavigationNotification:(id)a3;
-- (void)onVisitManagerNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)saveInteractionRecord:(id)a3;
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)setAlgorithms:(id)a3;
-- (void)setAvailable:(BOOL)a3;
-- (void)setMonitorPredictedContext:(BOOL)a3;
-- (void)setPreviousMotionActivity:(unint64_t)a3;
-- (void)setRouteSummary:(id)a3;
-- (void)simulatePredictedContextResult:(id)a3 handler:(id)a4;
-- (void)startMonitoringForClient:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)stopMonitoringForClient:(id)a3 reply:(id)a4;
+- (void)checkMotionActivityChangeAndTriggerPrediction:(unint64_t)prediction currentActivity:(unint64_t)activity;
+- (void)fetchPredictedContextInputSignalsWithHandler:(id)handler;
+- (void)fetchPredictedContextWithOptions:(id)options handler:(id)handler;
+- (void)forceTrainModelWithHandler:(id)handler;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)onLearnedLocationManagerDidUpdateNotification:(id)notification;
+- (void)onMotionActivityManagerNotification:(id)notification;
+- (void)onNavigationNotification:(id)notification;
+- (void)onVisitManagerNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)saveInteractionRecord:(id)record;
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler;
+- (void)setAlgorithms:(id)algorithms;
+- (void)setAvailable:(BOOL)available;
+- (void)setMonitorPredictedContext:(BOOL)context;
+- (void)setPreviousMotionActivity:(unint64_t)activity;
+- (void)setRouteSummary:(id)summary;
+- (void)simulatePredictedContextResult:(id)result handler:(id)handler;
+- (void)startMonitoringForClient:(id)client options:(id)options handler:(id)handler;
+- (void)stopMonitoringForClient:(id)client reply:(id)reply;
 @end
 
 @implementation RTPredictedContextManager
 
 - (BOOL)_isSupported
 {
-  v3 = [objc_opt_class() featureEnabled];
-  if (v3)
+  featureEnabled = [objc_opt_class() featureEnabled];
+  if (featureEnabled)
   {
 
-    LOBYTE(v3) = [(RTPredictedContextManager *)self _isSupportedForCurrentPlatform];
+    LOBYTE(featureEnabled) = [(RTPredictedContextManager *)self _isSupportedForCurrentPlatform];
   }
 
-  return v3;
+  return featureEnabled;
 }
 
 - (BOOL)_isSupportedForCurrentPlatform
 {
-  v2 = [(RTPredictedContextManager *)self platform];
-  v3 = [v2 deviceClass];
-  v4 = [v3 containsString:@"iPad"];
+  platform = [(RTPredictedContextManager *)self platform];
+  deviceClass = [platform deviceClass];
+  v4 = [deviceClass containsString:@"iPad"];
 
   return v4 ^ 1;
 }
 
-- (RTPredictedContextManager)initWithFeatureExtractor:(id)a3 learnedLocationManager:(id)a4 platform:(id)a5 activityManager:(id)a6 dataProtectionManager:(id)a7 defaultsManager:(id)a8 visitManager:(id)a9 eventManager:(id)a10 mapServiceManager:(id)a11 mapsSupportManager:(id)a12 navigationManager:(id)a13 motionActivityManager:(id)a14 vehicleLocationProvider:(id)a15 distanceCalculator:(id)a16 predictedContextStore:(id)a17 metricsManager:(id)a18
+- (RTPredictedContextManager)initWithFeatureExtractor:(id)extractor learnedLocationManager:(id)manager platform:(id)platform activityManager:(id)activityManager dataProtectionManager:(id)protectionManager defaultsManager:(id)defaultsManager visitManager:(id)visitManager eventManager:(id)self0 mapServiceManager:(id)self1 mapsSupportManager:(id)self2 navigationManager:(id)self3 motionActivityManager:(id)self4 vehicleLocationProvider:(id)self5 distanceCalculator:(id)self6 predictedContextStore:(id)self7 metricsManager:(id)self8
 {
-  v60 = a3;
-  v43 = a4;
-  v23 = a4;
-  v44 = a5;
-  v52 = a5;
-  v45 = a6;
-  v50 = a6;
-  v46 = a7;
-  v53 = a7;
-  v49 = a8;
-  v48 = a9;
-  v47 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
-  v59 = a14;
-  v58 = a15;
-  v57 = a16;
-  v56 = a17;
-  v27 = a18;
-  v51 = v27;
-  if (v60)
+  extractorCopy = extractor;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  platformCopy = platform;
+  platformCopy2 = platform;
+  activityManagerCopy = activityManager;
+  activityManagerCopy2 = activityManager;
+  protectionManagerCopy = protectionManager;
+  protectionManagerCopy2 = protectionManager;
+  defaultsManagerCopy = defaultsManager;
+  visitManagerCopy = visitManager;
+  eventManagerCopy = eventManager;
+  serviceManagerCopy = serviceManager;
+  supportManagerCopy = supportManager;
+  navigationManagerCopy = navigationManager;
+  motionActivityManagerCopy = motionActivityManager;
+  providerCopy = provider;
+  calculatorCopy = calculator;
+  storeCopy = store;
+  metricsManagerCopy = metricsManager;
+  v51 = metricsManagerCopy;
+  if (extractorCopy)
   {
-    if (v23)
+    if (managerCopy2)
     {
-      v28 = v52;
-      v30 = v49;
-      v29 = v50;
-      v31 = v47;
-      v32 = v48;
-      if (v52)
+      v28 = platformCopy2;
+      v30 = defaultsManagerCopy;
+      v29 = activityManagerCopy2;
+      v31 = eventManagerCopy;
+      v32 = visitManagerCopy;
+      if (platformCopy2)
       {
-        if (v50)
+        if (activityManagerCopy2)
         {
-          if (v49)
+          if (defaultsManagerCopy)
           {
-            if (v48)
+            if (visitManagerCopy)
             {
-              if (v47)
+              if (eventManagerCopy)
               {
-                if (v24)
+                if (serviceManagerCopy)
                 {
-                  if (v25)
+                  if (supportManagerCopy)
                   {
-                    if (v26)
+                    if (navigationManagerCopy)
                     {
-                      if (v59)
+                      if (motionActivityManagerCopy)
                       {
-                        if (v58)
+                        if (providerCopy)
                         {
-                          if (v57)
+                          if (calculatorCopy)
                           {
-                            if (v56)
+                            if (storeCopy)
                             {
-                              if (v27)
+                              if (metricsManagerCopy)
                               {
                                 v61.receiver = self;
                                 v61.super_class = RTPredictedContextManager;
@@ -197,27 +197,27 @@
                                 if (v33)
                                 {
                                   v55 = v33;
-                                  objc_storeStrong(&v33->_featureExtractor, a3);
-                                  objc_storeStrong(&v55->_learnedLocationManager, v43);
-                                  objc_storeStrong(&v55->_platform, v44);
-                                  objc_storeStrong(&v55->_activityManager, v45);
-                                  objc_storeStrong(&v55->_dataProtectionManager, v46);
-                                  objc_storeStrong(&v55->_defaultsManager, a8);
-                                  objc_storeStrong(&v55->_visitManager, a9);
-                                  objc_storeStrong(&v55->_eventManager, a10);
-                                  objc_storeStrong(&v55->_mapServiceManager, a11);
-                                  objc_storeStrong(&v55->_mapsSupportManager, a12);
-                                  objc_storeStrong(&v55->_navigationManager, a13);
-                                  objc_storeStrong(&v55->_motionActivityManager, a14);
-                                  objc_storeStrong(&v55->_vehicleLocationProvider, a15);
-                                  objc_storeStrong(&v55->_distanceCalculator, a16);
+                                  objc_storeStrong(&v33->_featureExtractor, extractor);
+                                  objc_storeStrong(&v55->_learnedLocationManager, managerCopy);
+                                  objc_storeStrong(&v55->_platform, platformCopy);
+                                  objc_storeStrong(&v55->_activityManager, activityManagerCopy);
+                                  objc_storeStrong(&v55->_dataProtectionManager, protectionManagerCopy);
+                                  objc_storeStrong(&v55->_defaultsManager, defaultsManager);
+                                  objc_storeStrong(&v55->_visitManager, visitManager);
+                                  objc_storeStrong(&v55->_eventManager, eventManager);
+                                  objc_storeStrong(&v55->_mapServiceManager, serviceManager);
+                                  objc_storeStrong(&v55->_mapsSupportManager, supportManager);
+                                  objc_storeStrong(&v55->_navigationManager, navigationManager);
+                                  objc_storeStrong(&v55->_motionActivityManager, motionActivityManager);
+                                  objc_storeStrong(&v55->_vehicleLocationProvider, provider);
+                                  objc_storeStrong(&v55->_distanceCalculator, calculator);
                                   v34 = objc_opt_new();
                                   clients = v55->_clients;
                                   v55->_clients = v34;
 
                                   v55->_previousMotionActivity = 0;
-                                  objc_storeStrong(&v55->_predictedContextStore, a17);
-                                  objc_storeStrong(&v55->_metricsManager, a18);
+                                  objc_storeStrong(&v55->_predictedContextStore, store);
+                                  objc_storeStrong(&v55->_metricsManager, metricsManager);
                                   v33 = v55;
                                   v55->_pendingInterruptSource = 0;
                                 }
@@ -399,11 +399,11 @@ LABEL_51:
     else
     {
       v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v28 = v52;
-      v30 = v49;
-      v29 = v50;
-      v31 = v47;
-      v32 = v48;
+      v28 = platformCopy2;
+      v30 = defaultsManagerCopy;
+      v29 = activityManagerCopy2;
+      v31 = eventManagerCopy;
+      v32 = visitManagerCopy;
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_51;
@@ -426,11 +426,11 @@ LABEL_50:
   }
 
   v37 = 0;
-  v28 = v52;
-  v30 = v49;
-  v29 = v50;
-  v31 = v47;
-  v32 = v48;
+  v28 = platformCopy2;
+  v30 = defaultsManagerCopy;
+  v29 = activityManagerCopy2;
+  v31 = eventManagerCopy;
+  v32 = visitManagerCopy;
 LABEL_52:
 
   return v37;
@@ -444,14 +444,14 @@ LABEL_52:
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(RTPredictedContextManager *)self setMonitoringClientLastCallbackDate:v4];
 
-    v5 = [(RTPredictedContextManager *)self learnedLocationManager];
+    learnedLocationManager = [(RTPredictedContextManager *)self learnedLocationManager];
     v6 = +[(RTNotification *)RTLearnedLocationManagerNotificationDidUpdate];
-    [v5 addObserver:self selector:sel_onLearnedLocationManagerDidUpdateNotification_ name:v6];
+    [learnedLocationManager addObserver:self selector:sel_onLearnedLocationManagerDidUpdateNotification_ name:v6];
 
     [(RTPredictedContextManager *)self _registerActivityTrainWithTrainPolicy:[(RTPredictedContextManager *)self _readPersistedTrainPolicyOnSetup]];
-    v7 = [(RTPredictedContextManager *)self dataProtectionManager];
+    dataProtectionManager = [(RTPredictedContextManager *)self dataProtectionManager];
     v8 = +[(RTNotification *)RTDataProtectionManagerNotificationUnlockedSinceBoot];
-    [v7 addObserver:self selector:sel_onDataProtectionNotification_ name:v8];
+    [dataProtectionManager addObserver:self selector:sel_onDataProtectionNotification_ name:v8];
 
     [(RTPredictedContextManager *)self setAvailable:0];
   }
@@ -476,8 +476,8 @@ LABEL_52:
 - (int64_t)_readPersistedTrainPolicyOnSetup
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(RTPredictedContextManager *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsPredictedContextManagerRegisteredActivityTrainPolicy"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerRegisteredActivityTrainPolicy"];
 
   if (v5)
   {
@@ -513,25 +513,25 @@ LABEL_52:
   return v6;
 }
 
-- (int64_t)_migrateLegacyTrainPolicyFromInteger:(int64_t)a3
+- (int64_t)_migrateLegacyTrainPolicyFromInteger:(int64_t)integer
 {
-  v3 = a3;
+  integerCopy = integer;
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 > 4)
+  if (integer > 4)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v9 = 134217984;
-      v10 = v3;
+      v10 = integerCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Warning: Encountered an unknown or invalid RTPredictedContextManagerTrainPolicy value: %ld. Defaulting to Unknown.", &v9, 0xCu);
     }
 
-    v3 = 0;
+    integerCopy = 0;
     goto LABEL_11;
   }
 
-  if (((1 << a3) & 0x13) == 0)
+  if (((1 << integer) & 0x13) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -543,27 +543,27 @@ LABEL_52:
         v9 = 138412802;
         v10 = v6;
         v11 = 2048;
-        v12 = v3;
+        v12 = integerCopy;
         v13 = 2112;
         v14 = v7;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@ migrating raw legacyValue, %ld, to %@", &v9, 0x20u);
       }
 
-      v3 = 4;
+      integerCopy = 4;
 LABEL_11:
 
-      return v3;
+      return integerCopy;
     }
 
     return 4;
   }
 
-  return v3;
+  return integerCopy;
 }
 
-- (double)_getActivityTrainIntervalForTrainPolicy:(int64_t)a3
+- (double)_getActivityTrainIntervalForTrainPolicy:(int64_t)policy
 {
-  if (a3 == 4)
+  if (policy == 4)
   {
     [(RTPredictedContextManager *)self _activityTrainHighPriorityInterval];
   }
@@ -579,8 +579,8 @@ LABEL_11:
 - (double)_activityTrainRegularInterval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(RTPredictedContextManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsPredictedContextManagerTrainRegularInterval"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainRegularInterval"];
 
   if (v4)
   {
@@ -619,8 +619,8 @@ LABEL_11:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = RTPredictedContextManagerActivityTrainAttemptsDatesQueueCapacity;
-  v4 = [(RTPredictedContextManager *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptsDatesQueueCapacity"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptsDatesQueueCapacity"];
 
   if (v5)
   {
@@ -652,8 +652,8 @@ LABEL_11:
 - (double)_activityTrainHighPriorityInterval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(RTPredictedContextManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsPredictedContextManagerTrainHighPriorityInterval"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainHighPriorityInterval"];
 
   if (v4)
   {
@@ -688,40 +688,40 @@ LABEL_11:
   return v6;
 }
 
-- (id)_createXPCActivityCriteriaWithInterval:(double)a3 gracePeriod:(double)a4 allowBattery:(BOOL)a5 requiresClassA:(BOOL)a6 requiresClassB:(BOOL)a7 delay:(double)a8
+- (id)_createXPCActivityCriteriaWithInterval:(double)interval gracePeriod:(double)period allowBattery:(BOOL)battery requiresClassA:(BOOL)a requiresClassB:(BOOL)b delay:(double)delay
 {
-  BYTE1(v11) = a7;
-  LOBYTE(v11) = a6;
+  BYTE1(v11) = b;
+  LOBYTE(v11) = a;
   LOBYTE(v10) = 1;
-  v8 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferUploadSize:a5 networkTransferDownloadSize:a3 allowBattery:a4 powerNap:a8 delay:v10 requireBatteryLevel:0 requiresClassB:v11 requiresClassA:?];
+  v8 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferUploadSize:battery networkTransferDownloadSize:interval allowBattery:period powerNap:delay delay:v10 requireBatteryLevel:0 requiresClassB:v11 requiresClassA:?];
 
   return v8;
 }
 
-- (id)_getXpcActivityCriteriaForTrainPolicy:(int64_t)a3
+- (id)_getXpcActivityCriteriaForTrainPolicy:(int64_t)policy
 {
   [(RTPredictedContextManager *)self _getActivityTrainIntervalForTrainPolicy:?];
   v6 = v5;
   v7 = v5 * 0.5;
-  if (a3 == 4)
+  if (policy == 4)
   {
     v5 = 0.0;
-    v8 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v6 = v5 * 0.5;
   }
 
-  v9 = [(RTPredictedContextManager *)v8 _createXPCActivityCriteriaWithInterval:0 gracePeriod:0 allowBattery:0 requiresClassA:v5 requiresClassB:v7 delay:v6];
+  v9 = [(RTPredictedContextManager *)selfCopy2 _createXPCActivityCriteriaWithInterval:0 gracePeriod:0 allowBattery:0 requiresClassA:v5 requiresClassB:v7 delay:v6];
   [v9 setCpuIntensive:1];
 
   return v9;
 }
 
-- (void)_registerActivityTrainWithTrainPolicy:(int64_t)a3
+- (void)_registerActivityTrainWithTrainPolicy:(int64_t)policy
 {
   v37 = *MEMORY[0x277D85DE8];
   v6 = [(RTPredictedContextManager *)self _trainPolicyAfterEvaluatingTrainAttempts:?];
@@ -733,7 +733,7 @@ LABEL_11:
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       v26 = NSStringFromSelector(a2);
-      v27 = [objc_opt_class() stringFromTrainPolicy:a3];
+      v27 = [objc_opt_class() stringFromTrainPolicy:policy];
       v28 = [objc_opt_class() stringFromTrainPolicy:v6];
       *buf = 138413058;
       *&buf[4] = v25;
@@ -771,16 +771,16 @@ LABEL_11:
 
   if ([(RTPredictedContextManager *)self _isSupported])
   {
-    v14 = [(RTPredictedContextManager *)self defaultsManager];
+    defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
-    [v14 setObject:v15 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedPolicy"];
+    [defaultsManager setObject:v15 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedPolicy"];
 
     [(RTPredictedContextManager *)self _setRegisteredActivityTrainPolicyDefaults:v6];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v34) = 0;
-    v16 = [(RTPredictedContextManager *)self activityManager];
+    activityManager = [(RTPredictedContextManager *)self activityManager];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __67__RTPredictedContextManager__registerActivityTrainWithTrainPolicy___block_invoke;
@@ -795,7 +795,7 @@ LABEL_11:
     v29[5] = buf;
     v29[6] = a2;
     v29[4] = self;
-    [v16 registerActivityWithIdentifier:@"com.apple.routined.predictedContext.train" criteria:v8 handler:v30 deferHandler:v29];
+    [activityManager registerActivityWithIdentifier:@"com.apple.routined.predictedContext.train" criteria:v8 handler:v30 deferHandler:v29];
 
     _Block_object_dispose(buf, 8);
   }
@@ -1063,11 +1063,11 @@ void __67__RTPredictedContextManager__registerActivityTrainWithTrainPolicy___blo
   }
 }
 
-- (BOOL)_didHealthKitInaccessibleErrorOccur:(id)a3
+- (BOOL)_didHealthKitInaccessibleErrorOccur:(id)occur
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 code] == 6)
+  occurCopy = occur;
+  if ([occurCopy code] == 6)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -1094,8 +1094,8 @@ LABEL_21:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v4 userInfo];
-    v5 = [v7 objectForKeyedSubscript:*MEMORY[0x277D01440]];
+    userInfo = [occurCopy userInfo];
+    v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D01440]];
 
     v8 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
@@ -1161,11 +1161,11 @@ LABEL_25:
   return v12;
 }
 
-+ (BOOL)deferBasedOnFeatureExtractorError:(id)a3
++ (BOOL)deferBasedOnFeatureExtractorError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 flattenErrors];
+  errorCopy = error;
+  flattenErrors = [errorCopy flattenErrors];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1176,7 +1176,7 @@ LABEL_25:
   v12[3] = &unk_2788D2640;
   v12[4] = &v13;
   v12[5] = a2;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [flattenErrors enumerateObjectsUsingBlock:v12];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -1233,111 +1233,111 @@ void __63__RTPredictedContextManager_deferBasedOnFeatureExtractorError___block_i
   }
 }
 
-- (void)_setRegisteredActivityTrainPolicyDefaults:(int64_t)a3
+- (void)_setRegisteredActivityTrainPolicyDefaults:(int64_t)defaults
 {
-  v5 = [(RTPredictedContextManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v6 forKey:@"RTDefaultsPredictedContextManagerRegisteredActivityTrainPolicy"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:defaults];
+  [defaultsManager setObject:v6 forKey:@"RTDefaultsPredictedContextManagerRegisteredActivityTrainPolicy"];
 
-  v8 = [(RTPredictedContextManager *)self defaultsManager];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v8 setObject:v7 forKey:@"RTDefaultsPredictedContextManagerRegisteredActivityTrainPolicyDate"];
+  defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
+  date = [MEMORY[0x277CBEAA8] date];
+  [defaultsManager2 setObject:date forKey:@"RTDefaultsPredictedContextManagerRegisteredActivityTrainPolicyDate"];
 }
 
-- (void)_setTrainAttemptedDateDefaults:(id)a3
+- (void)_setTrainAttemptedDateDefaults:(id)defaults
 {
-  v11 = a3;
-  v4 = [(RTPredictedContextManager *)self defaultsManager];
-  [v4 setObject:v11 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
+  defaultsCopy = defaults;
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  [defaultsManager setObject:defaultsCopy forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
 
   v5 = [RTFixedSizeQueue alloc];
-  v6 = [(RTPredictedContextManager *)self _trainAttemptsDatesQueueCapacity];
-  v7 = [(RTPredictedContextManager *)self _readPersistedArrayLastTrainAttemptsDates];
-  v8 = [(RTFixedSizeQueue *)v5 initWithCapacity:v6 objects:v7];
+  _trainAttemptsDatesQueueCapacity = [(RTPredictedContextManager *)self _trainAttemptsDatesQueueCapacity];
+  _readPersistedArrayLastTrainAttemptsDates = [(RTPredictedContextManager *)self _readPersistedArrayLastTrainAttemptsDates];
+  v8 = [(RTFixedSizeQueue *)v5 initWithCapacity:_trainAttemptsDatesQueueCapacity objects:_readPersistedArrayLastTrainAttemptsDates];
 
-  v9 = [(RTFixedSizeQueue *)v8 enqueueObject:v11];
-  v10 = [(RTFixedSizeQueue *)v8 objects];
-  [(RTPredictedContextManager *)self _setLastTrainAttemptsDatesToDefaults:v10];
+  v9 = [(RTFixedSizeQueue *)v8 enqueueObject:defaultsCopy];
+  objects = [(RTFixedSizeQueue *)v8 objects];
+  [(RTPredictedContextManager *)self _setLastTrainAttemptsDatesToDefaults:objects];
 }
 
-- (void)_setInputSignalDefaults:(id)a3
+- (void)_setInputSignalDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsCopy = defaults;
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 calendarEvents];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-  [v5 setObject:v8 forKey:@"RTDefaultsFeatureExtractorTrainCalendarEventCount"];
+  calendarEvents = [defaultsCopy calendarEvents];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(calendarEvents, "count")}];
+  [defaultsManager setObject:v8 forKey:@"RTDefaultsFeatureExtractorTrainCalendarEventCount"];
 
-  v9 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v4 homeKitHomes];
-  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
-  [v9 setObject:v12 forKey:@"RTDefaultsFeatureExtractorTrainHomeKitHomesCount"];
+  homeKitHomes = [defaultsCopy homeKitHomes];
+  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(homeKitHomes, "count")}];
+  [defaultsManager2 setObject:v12 forKey:@"RTDefaultsFeatureExtractorTrainHomeKitHomesCount"];
 
-  v13 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager3 = [(RTPredictedContextManager *)self defaultsManager];
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v4 locationHistorys];
-  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-  [v13 setObject:v16 forKey:@"RTDefaultsFeatureExtractorTrainLocationHistoryCount"];
+  locationHistorys = [defaultsCopy locationHistorys];
+  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(locationHistorys, "count")}];
+  [defaultsManager3 setObject:v16 forKey:@"RTDefaultsFeatureExtractorTrainLocationHistoryCount"];
 
-  v17 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager4 = [(RTPredictedContextManager *)self defaultsManager];
   v18 = MEMORY[0x277CCABB0];
-  v19 = [v4 locationOfInterests];
-  v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
-  [v17 setObject:v20 forKey:@"RTDefaultsFeatureExtractorTrainLocationOfInterestCount"];
+  locationOfInterests = [defaultsCopy locationOfInterests];
+  v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(locationOfInterests, "count")}];
+  [defaultsManager4 setObject:v20 forKey:@"RTDefaultsFeatureExtractorTrainLocationOfInterestCount"];
 
-  v21 = [(RTPredictedContextManager *)self defaultsManager];
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "hasMapsActiveNavigation")}];
-  [v21 setObject:v22 forKey:@"RTDefaultsFeatureExtractorTrainMapsActiveNavigation"];
+  defaultsManager5 = [(RTPredictedContextManager *)self defaultsManager];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(defaultsCopy, "hasMapsActiveNavigation")}];
+  [defaultsManager5 setObject:v22 forKey:@"RTDefaultsFeatureExtractorTrainMapsActiveNavigation"];
 
-  v23 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager6 = [(RTPredictedContextManager *)self defaultsManager];
   v24 = MEMORY[0x277CCABB0];
-  v25 = [v4 mapsViewedPlaces];
-  v26 = [v24 numberWithUnsignedInteger:{objc_msgSend(v25, "count")}];
-  [v23 setObject:v26 forKey:@"RTDefaultsFeatureExtractorTrainMapsViewedPlacesCount"];
+  mapsViewedPlaces = [defaultsCopy mapsViewedPlaces];
+  v26 = [v24 numberWithUnsignedInteger:{objc_msgSend(mapsViewedPlaces, "count")}];
+  [defaultsManager6 setObject:v26 forKey:@"RTDefaultsFeatureExtractorTrainMapsViewedPlacesCount"];
 
-  v27 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager7 = [(RTPredictedContextManager *)self defaultsManager];
   v28 = MEMORY[0x277CCABB0];
-  v29 = [v4 motionActivitys];
-  v30 = [v28 numberWithUnsignedInteger:{objc_msgSend(v29, "count")}];
-  [v27 setObject:v30 forKey:@"RTDefaultsFeatureExtractorTrainMotionActivityCount"];
+  motionActivitys = [defaultsCopy motionActivitys];
+  v30 = [v28 numberWithUnsignedInteger:{objc_msgSend(motionActivitys, "count")}];
+  [defaultsManager7 setObject:v30 forKey:@"RTDefaultsFeatureExtractorTrainMotionActivityCount"];
 
-  v31 = [(RTPredictedContextManager *)self defaultsManager];
-  v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "hasParkedCar")}];
-  [v31 setObject:v32 forKey:@"RTDefaultsFeatureExtractorTrainParkedCar"];
+  defaultsManager8 = [(RTPredictedContextManager *)self defaultsManager];
+  v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(defaultsCopy, "hasParkedCar")}];
+  [defaultsManager8 setObject:v32 forKey:@"RTDefaultsFeatureExtractorTrainParkedCar"];
 
-  v33 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager9 = [(RTPredictedContextManager *)self defaultsManager];
   v34 = MEMORY[0x277CCABB0];
-  v35 = [v4 propagatedLocations];
-  v36 = [v34 numberWithUnsignedInteger:{objc_msgSend(v35, "count")}];
-  [v33 setObject:v36 forKey:@"RTDefaultsFeatureExtractorTrainPropagatedLocationCount"];
+  propagatedLocations = [defaultsCopy propagatedLocations];
+  v36 = [v34 numberWithUnsignedInteger:{objc_msgSend(propagatedLocations, "count")}];
+  [defaultsManager9 setObject:v36 forKey:@"RTDefaultsFeatureExtractorTrainPropagatedLocationCount"];
 
-  v37 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager10 = [(RTPredictedContextManager *)self defaultsManager];
   v38 = MEMORY[0x277CCABB0];
-  v39 = [v4 transitions];
-  v40 = [v38 numberWithUnsignedInteger:{objc_msgSend(v39, "count")}];
-  [v37 setObject:v40 forKey:@"RTDefaultsFeatureExtractorTrainTransitionCount"];
+  transitions = [defaultsCopy transitions];
+  v40 = [v38 numberWithUnsignedInteger:{objc_msgSend(transitions, "count")}];
+  [defaultsManager10 setObject:v40 forKey:@"RTDefaultsFeatureExtractorTrainTransitionCount"];
 
-  v41 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager11 = [(RTPredictedContextManager *)self defaultsManager];
   v42 = MEMORY[0x277CCABB0];
-  v43 = [v4 visits];
-  v44 = [v42 numberWithUnsignedInteger:{objc_msgSend(v43, "count")}];
-  [v41 setObject:v44 forKey:@"RTDefaultsFeatureExtractorTrainVisitCount"];
+  visits = [defaultsCopy visits];
+  v44 = [v42 numberWithUnsignedInteger:{objc_msgSend(visits, "count")}];
+  [defaultsManager11 setObject:v44 forKey:@"RTDefaultsFeatureExtractorTrainVisitCount"];
 
-  v48 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager12 = [(RTPredictedContextManager *)self defaultsManager];
   v45 = MEMORY[0x277CCABB0];
-  v46 = [v4 workouts];
+  workouts = [defaultsCopy workouts];
 
-  v47 = [v45 numberWithUnsignedInteger:{objc_msgSend(v46, "count")}];
-  [v48 setObject:v47 forKey:@"RTDefaultsFeatureExtractorTrainWorkoutCount"];
+  v47 = [v45 numberWithUnsignedInteger:{objc_msgSend(workouts, "count")}];
+  [defaultsManager12 setObject:v47 forKey:@"RTDefaultsFeatureExtractorTrainWorkoutCount"];
 }
 
-- (void)_evaluateTrainErrorAndReschedule:(id)a3
+- (void)_evaluateTrainErrorAndReschedule:(id)reschedule
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 flattenErrors];
+  rescheduleCopy = reschedule;
+  flattenErrors = [rescheduleCopy flattenErrors];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1348,7 +1348,7 @@ void __63__RTPredictedContextManager_deferBasedOnFeatureExtractorError___block_i
   v12[3] = &unk_2788D2668;
   v12[4] = self;
   v12[5] = &v13;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [flattenErrors enumerateObjectsUsingBlock:v12];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -1396,19 +1396,19 @@ LABEL_16:
 LABEL_17:
 }
 
-- (unint64_t)_evaluateTrainErrorForResult:(id)a3
+- (unint64_t)_evaluateTrainErrorForResult:(id)result
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 flattenErrors];
+  resultCopy = result;
+  flattenErrors = [resultCopy flattenErrors];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __58__RTPredictedContextManager__evaluateTrainErrorForResult___block_invoke;
   v19[3] = &unk_2788D2690;
   v19[4] = self;
   v19[5] = a2;
-  [v6 enumerateObjectsUsingBlock:v19];
-  if ([v6 count])
+  [flattenErrors enumerateObjectsUsingBlock:v19];
+  if ([flattenErrors count])
   {
     v15 = 0;
     v16 = &v15;
@@ -1421,8 +1421,8 @@ LABEL_17:
     v14[4] = self;
     v14[5] = &v15;
     v14[6] = a2;
-    [v6 enumerateObjectsUsingBlock:v14];
-    if ([(RTPredictedContextManager *)self _didHealthKitInaccessibleErrorOccur:v5])
+    [flattenErrors enumerateObjectsUsingBlock:v14];
+    if ([(RTPredictedContextManager *)self _didHealthKitInaccessibleErrorOccur:resultCopy])
     {
       v16[3] |= 4uLL;
     }
@@ -1443,7 +1443,7 @@ LABEL_17:
         v24 = 2112;
         v25 = v11;
         v26 = 2112;
-        v27 = v6;
+        v27 = flattenErrors;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, training result, %@, after evaluating error(s), %@", buf, 0x2Au);
       }
     }
@@ -1563,17 +1563,17 @@ LABEL_13:
   return [*(a1 + 32) setPendingInterruptSource:0];
 }
 
-- (void)_rescheduleActivityTrainWithTrainPolicy:(int64_t)a3
+- (void)_rescheduleActivityTrainWithTrainPolicy:(int64_t)policy
 {
-  v6 = [(RTPredictedContextManager *)self activityManager];
+  activityManager = [(RTPredictedContextManager *)self activityManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___block_invoke;
   v7[3] = &unk_2788CDAF8;
   v7[4] = self;
   v7[5] = a2;
-  v7[6] = a3;
-  [v6 unregisterActivityWithIdentifier:@"com.apple.routined.predictedContext.train" handler:v7];
+  v7[6] = policy;
+  [activityManager unregisterActivityWithIdentifier:@"com.apple.routined.predictedContext.train" handler:v7];
 }
 
 void __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___block_invoke(uint64_t a1, void *a2)
@@ -1630,7 +1630,7 @@ void __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___b
   }
 }
 
-- (int64_t)_trainPolicyAfterEvaluatingTrainAttempts:(int64_t)a3
+- (int64_t)_trainPolicyAfterEvaluatingTrainAttempts:(int64_t)attempts
 {
   v22 = *MEMORY[0x277D85DE8];
   if ([(RTPredictedContextManager *)self _maxTrainAttemptsReachedWithinLast24Hours])
@@ -1643,7 +1643,7 @@ void __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___b
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = NSStringFromSelector(a2);
-        v10 = [objc_opt_class() stringFromTrainPolicy:a3];
+        v10 = [objc_opt_class() stringFromTrainPolicy:attempts];
         v11 = [objc_opt_class() stringFromTrainPolicy:1];
         v12 = 138413314;
         v13 = v8;
@@ -1662,16 +1662,16 @@ void __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___b
     return 1;
   }
 
-  return a3;
+  return attempts;
 }
 
 - (BOOL)_maxTrainAttemptsReachedWithinLast24Hours
 {
   v34 = *MEMORY[0x277D85DE8];
   v4 = [RTFixedSizeQueue alloc];
-  v5 = [(RTPredictedContextManager *)self _trainAttemptsDatesQueueCapacity];
-  v6 = [(RTPredictedContextManager *)self _readPersistedArrayLastTrainAttemptsDates];
-  v7 = [(RTFixedSizeQueue *)v4 initWithCapacity:v5 objects:v6];
+  _trainAttemptsDatesQueueCapacity = [(RTPredictedContextManager *)self _trainAttemptsDatesQueueCapacity];
+  _readPersistedArrayLastTrainAttemptsDates = [(RTPredictedContextManager *)self _readPersistedArrayLastTrainAttemptsDates];
+  v7 = [(RTFixedSizeQueue *)v4 initWithCapacity:_trainAttemptsDatesQueueCapacity objects:_readPersistedArrayLastTrainAttemptsDates];
 
   if (v7 && [(RTFixedSizeQueue *)v7 count])
   {
@@ -1693,7 +1693,7 @@ void __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___b
               v18 = objc_opt_class();
               v25 = NSStringFromClass(v18);
               v19 = NSStringFromSelector(a2);
-              v20 = [v10 stringFromDate];
+              stringFromDate = [v10 stringFromDate];
               *buf = 138413058;
               v27 = v25;
               v28 = 2112;
@@ -1701,8 +1701,8 @@ void __69__RTPredictedContextManager__rescheduleActivityTrainWithTrainPolicy___b
               v30 = 2048;
               v31 = v8;
               v32 = 2112;
-              v33 = v20;
-              v21 = v20;
+              v33 = stringFromDate;
+              v21 = stringFromDate;
               _os_log_debug_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEBUG, "%@, %@, index, %lu, trainAttemptDate, %@", buf, 0x2Au);
 
               v9 = MEMORY[0x277D86220];
@@ -1761,8 +1761,8 @@ LABEL_17:
 - (id)_readPersistedArrayLastTrainAttemptsDates
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(RTPredictedContextManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsPredictedContextManagerTrainArrayAttemptsDates"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainArrayAttemptsDates"];
 
   if (v4)
   {
@@ -1845,11 +1845,11 @@ LABEL_17:
   return v14;
 }
 
-- (void)_setLastTrainAttemptsDatesToDefaults:(id)a3
+- (void)_setLastTrainAttemptsDatesToDefaults:(id)defaults
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  defaultsCopy = defaults;
+  if (!defaultsCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1863,7 +1863,7 @@ LABEL_17:
   }
 
   v15 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v15];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:defaultsCopy requiringSecureCoding:1 error:&v15];
   v8 = v15;
   if (v8)
   {
@@ -1873,7 +1873,7 @@ LABEL_17:
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
-      v14 = [v5 description];
+      v14 = [defaultsCopy description];
       *buf = 138413058;
       v17 = v12;
       v18 = 2112;
@@ -1886,19 +1886,19 @@ LABEL_17:
     }
   }
 
-  v10 = [(RTPredictedContextManager *)self defaultsManager];
-  [v10 setObject:v7 forKey:@"RTDefaultsPredictedContextManagerTrainArrayAttemptsDates"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  [defaultsManager setObject:v7 forKey:@"RTDefaultsPredictedContextManagerTrainArrayAttemptsDates"];
 }
 
-+ (id)stringFromTrainPolicy:(int64_t)a3
++ (id)stringFromTrainPolicy:(int64_t)policy
 {
   v3 = @"Unknown";
-  if (a3 == 4)
+  if (policy == 4)
   {
     v3 = @"TrainPolicyHighPriority";
   }
 
-  if (a3 == 1)
+  if (policy == 1)
   {
     return @"TrainPolicyRegular";
   }
@@ -1909,20 +1909,20 @@ LABEL_17:
   }
 }
 
-+ (id)stringFromTrainResult:(unint64_t)a3
++ (id)stringFromTrainResult:(unint64_t)result
 {
-  if (a3)
+  if (result)
   {
-    v3 = a3;
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = v4;
-    if (v3)
+    resultCopy = result;
+    array = [MEMORY[0x277CBEB18] array];
+    v5 = array;
+    if (resultCopy)
     {
-      [v4 addObject:@"Unsupported Platform"];
-      if ((v3 & 2) == 0)
+      [array addObject:@"Unsupported Platform"];
+      if ((resultCopy & 2) == 0)
       {
 LABEL_4:
-        if ((v3 & 4) == 0)
+        if ((resultCopy & 4) == 0)
         {
           goto LABEL_5;
         }
@@ -1931,16 +1931,16 @@ LABEL_4:
       }
     }
 
-    else if ((v3 & 2) == 0)
+    else if ((resultCopy & 2) == 0)
     {
       goto LABEL_4;
     }
 
     [v5 addObject:@"Success: No Errors"];
-    if ((v3 & 4) == 0)
+    if ((resultCopy & 4) == 0)
     {
 LABEL_5:
-      if ((v3 & 8) == 0)
+      if ((resultCopy & 8) == 0)
       {
         goto LABEL_6;
       }
@@ -1950,10 +1950,10 @@ LABEL_5:
 
 LABEL_22:
     [v5 addObject:@"Success: HealthKit InaccessibleError"];
-    if ((v3 & 8) == 0)
+    if ((resultCopy & 8) == 0)
     {
 LABEL_6:
-      if ((v3 & 0x10) == 0)
+      if ((resultCopy & 0x10) == 0)
       {
         goto LABEL_7;
       }
@@ -1963,10 +1963,10 @@ LABEL_6:
 
 LABEL_23:
     [v5 addObject:@"Fail: Invalid Parameter Error"];
-    if ((v3 & 0x10) == 0)
+    if ((resultCopy & 0x10) == 0)
     {
 LABEL_7:
-      if ((v3 & 0x20) == 0)
+      if ((resultCopy & 0x20) == 0)
       {
         goto LABEL_8;
       }
@@ -1976,10 +1976,10 @@ LABEL_7:
 
 LABEL_24:
     [v5 addObject:@"Fail: Invalid State Error"];
-    if ((v3 & 0x20) == 0)
+    if ((resultCopy & 0x20) == 0)
     {
 LABEL_8:
-      if ((v3 & 0x40) == 0)
+      if ((resultCopy & 0x40) == 0)
       {
         goto LABEL_9;
       }
@@ -1989,10 +1989,10 @@ LABEL_8:
 
 LABEL_25:
     [v5 addObject:@"Fail: Algo State Version Mismatch Error"];
-    if ((v3 & 0x40) == 0)
+    if ((resultCopy & 0x40) == 0)
     {
 LABEL_9:
-      if ((v3 & 0x80) == 0)
+      if ((resultCopy & 0x80) == 0)
       {
         goto LABEL_10;
       }
@@ -2002,10 +2002,10 @@ LABEL_9:
 
 LABEL_26:
     [v5 addObject:@"Fail: Insufficient Input Error"];
-    if ((v3 & 0x80) == 0)
+    if ((resultCopy & 0x80) == 0)
     {
 LABEL_10:
-      if ((v3 & 0x1000) == 0)
+      if ((resultCopy & 0x1000) == 0)
       {
         goto LABEL_11;
       }
@@ -2015,10 +2015,10 @@ LABEL_10:
 
 LABEL_27:
     [v5 addObject:@"Interrupted: System Deferral"];
-    if ((v3 & 0x1000) == 0)
+    if ((resultCopy & 0x1000) == 0)
     {
 LABEL_11:
-      if ((v3 & 0x100) == 0)
+      if ((resultCopy & 0x100) == 0)
       {
         goto LABEL_12;
       }
@@ -2028,10 +2028,10 @@ LABEL_11:
 
 LABEL_28:
     [v5 addObject:@"Interrupted: Duration Cap"];
-    if ((v3 & 0x100) == 0)
+    if ((resultCopy & 0x100) == 0)
     {
 LABEL_12:
-      if ((v3 & 0x200) == 0)
+      if ((resultCopy & 0x200) == 0)
       {
         goto LABEL_13;
       }
@@ -2041,10 +2041,10 @@ LABEL_12:
 
 LABEL_29:
     [v5 addObject:@"Success: Interruption Ignored"];
-    if ((v3 & 0x200) == 0)
+    if ((resultCopy & 0x200) == 0)
     {
 LABEL_13:
-      if ((v3 & 0x400) == 0)
+      if ((resultCopy & 0x400) == 0)
       {
 LABEL_15:
         v6 = [v5 componentsJoinedByString:{@", "}];
@@ -2059,7 +2059,7 @@ LABEL_14:
 
 LABEL_30:
     [v5 addObject:@"Defer: Feature Extractor Error"];
-    if ((v3 & 0x400) == 0)
+    if ((resultCopy & 0x400) == 0)
     {
       goto LABEL_15;
     }
@@ -2073,19 +2073,19 @@ LABEL_17:
   return v6;
 }
 
-+ (id)stringFromInferenceTriggerReason:(int64_t)a3
++ (id)stringFromInferenceTriggerReason:(int64_t)reason
 {
-  if (a3 >= 7)
+  if (reason >= 7)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid Reason (%ld)", a3];
+    reason = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid Reason (%ld)", reason];
   }
 
   else
   {
-    v4 = off_2788D2908[a3];
+    reason = off_2788D2908[reason];
   }
 
-  return v4;
+  return reason;
 }
 
 - (double)_periodicTriggerTimerInterval
@@ -2101,8 +2101,8 @@ LABEL_17:
     v4 = 3600.0;
   }
 
-  v5 = [(RTPredictedContextManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsPredictedContextManagerPeriodicTriggerInterval"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerPeriodicTriggerInterval"];
 
   if (v6)
   {
@@ -2135,8 +2135,8 @@ LABEL_17:
 - (double)_trainingDurationCapInterval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(RTPredictedContextManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsPredictedContextManagerTrainingDurationCapInterval"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainingDurationCapInterval"];
 
   if (v4)
   {
@@ -2173,24 +2173,24 @@ LABEL_17:
 
 - (id)_fireDate
 {
-  v3 = [(RTPredictedContextManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsPredictedContextManagerPeriodicTriggerFireDate"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerPeriodicTriggerFireDate"];
 
   v5 = MEMORY[0x277CBEAA8];
   [(RTPredictedContextManager *)self _periodicTriggerTimerInterval];
   v7 = v6;
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v5 dateWithTimeInterval:v8 sinceDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [v5 dateWithTimeInterval:date sinceDate:v7];
 
   if (v4)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
-    if ([v4 isAfterDate:v10])
+    date2 = [MEMORY[0x277CBEAA8] date];
+    if ([v4 isAfterDate:date2])
     {
       if ([v9 isBeforeDate:v4])
       {
-        v11 = [MEMORY[0x277CBEAA8] date];
-        v12 = [v9 isAfterDate:v11];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        v12 = [v9 isAfterDate:date3];
 
         if (v12)
         {
@@ -2202,7 +2202,7 @@ LABEL_17:
       {
       }
 
-      v10 = v9;
+      date2 = v9;
       v9 = v4;
     }
   }
@@ -2242,17 +2242,17 @@ LABEL_9:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(RTPredictedContextManager *)self clients];
+  clients = [(RTPredictedContextManager *)self clients];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_invoke;
   v4[3] = &unk_2788D26E0;
   v4[4] = &v5;
-  [v2 enumerateObjectsUsingBlock:v4];
+  [clients enumerateObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(clients) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return clients;
 }
 
 uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -2270,28 +2270,28 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
 - (void)_startPeriodicTriggerTimer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [(RTPredictedContextManager *)self periodicTriggerTimer];
+  periodicTriggerTimer = [(RTPredictedContextManager *)self periodicTriggerTimer];
 
-  if (!v4 && [(RTPredictedContextManager *)self _requiresPeriodicTriggerTimer])
+  if (!periodicTriggerTimer && [(RTPredictedContextManager *)self _requiresPeriodicTriggerTimer])
   {
     v5 = [RTXPCTimerAlarm alloc];
-    v6 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __55__RTPredictedContextManager__startPeriodicTriggerTimer__block_invoke;
     v18[3] = &unk_2788C4EA0;
     v18[4] = self;
-    v7 = [(RTXPCTimerAlarm *)v5 initWithIdentifier:@"com.apple.routined.predictedContext.periodicTriggerTimer" queue:v6 handler:v18];
+    v7 = [(RTXPCTimerAlarm *)v5 initWithIdentifier:@"com.apple.routined.predictedContext.periodicTriggerTimer" queue:queue handler:v18];
     [(RTPredictedContextManager *)self setPeriodicTriggerTimer:v7];
 
-    v8 = [(RTPredictedContextManager *)self _fireDate];
-    v9 = [(RTPredictedContextManager *)self periodicTriggerTimer];
+    _fireDate = [(RTPredictedContextManager *)self _fireDate];
+    periodicTriggerTimer2 = [(RTPredictedContextManager *)self periodicTriggerTimer];
     v17 = 0;
-    [v9 fireWithDate:v8 shouldWake:0 error:&v17];
+    [periodicTriggerTimer2 fireWithDate:_fireDate shouldWake:0 error:&v17];
     v10 = v17;
 
-    v11 = [(RTPredictedContextManager *)self defaultsManager];
-    [v11 setObject:v8 forKey:@"RTDefaultsPredictedContextManagerPeriodicTriggerFireDate"];
+    defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+    [defaultsManager setObject:_fireDate forKey:@"RTDefaultsPredictedContextManagerPeriodicTriggerFireDate"];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2301,13 +2301,13 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         v15 = NSStringFromSelector(a2);
-        v16 = [v8 stringFromDate];
+        stringFromDate = [_fireDate stringFromDate];
         *buf = 138413058;
         v20 = v14;
         v21 = 2112;
         v22 = v15;
         v23 = 2112;
-        v24 = v16;
+        v24 = stringFromDate;
         v25 = 2112;
         v26 = v10;
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@, %@, fireDate, %@, error, %@", buf, 0x2Au);
@@ -2318,50 +2318,50 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
 
 - (void)_invalidatePeriodicTriggerTimer
 {
-  v3 = [(RTPredictedContextManager *)self periodicTriggerTimer];
-  [v3 invalidate];
+  periodicTriggerTimer = [(RTPredictedContextManager *)self periodicTriggerTimer];
+  [periodicTriggerTimer invalidate];
 
   [(RTPredictedContextManager *)self setPeriodicTriggerTimer:0];
 }
 
 + (id)serializedDataContainerPath
 {
-  v2 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"PredictedContext"];
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  v3 = [routineCacheDirectoryPath stringByAppendingPathComponent:@"PredictedContext"];
 
   return v3;
 }
 
 + (id)modelBinPath
 {
-  v2 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"PredictedContext.bin"];
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  v3 = [routineCacheDirectoryPath stringByAppendingPathComponent:@"PredictedContext.bin"];
 
   return v3;
 }
 
-- (void)_handleComputeResultWithRecords:(id)a3 error:(id)a4 inputSignals:(id)a5 stimulationDate:(id)a6 featureExtractorMemoryFootprint:(double)a7 handler:(id)a8
+- (void)_handleComputeResultWithRecords:(id)records error:(id)error inputSignals:(id)signals stimulationDate:(id)date featureExtractorMemoryFootprint:(double)footprint handler:(id)handler
 {
   v88 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v67 = a8;
+  recordsCopy = records;
+  errorCopy = error;
+  signalsCopy = signals;
+  dateCopy = date;
+  handlerCopy = handler;
   [(RTPredictedContextManager *)self _invalidateTrainingDurationCapTimer];
-  v18 = [MEMORY[0x277CBEB18] array];
-  if (v15)
+  array = [MEMORY[0x277CBEB18] array];
+  if (errorCopy)
   {
-    v19 = [v15 flattenErrors];
+    flattenErrors = [errorCopy flattenErrors];
 
-    v18 = v19;
+    array = flattenErrors;
   }
 
-  v69 = v18;
-  v70 = [(RTPredictedContextManager *)self _evaluateTrainErrorForResult:v15];
+  v69 = array;
+  v70 = [(RTPredictedContextManager *)self _evaluateTrainErrorForResult:errorCopy];
   +[RTRuntime footprint];
   v21 = v20;
-  v68 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -2370,22 +2370,22 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       v25 = NSStringFromSelector(a2);
-      [v68 timeIntervalSinceDate:v17];
+      [date timeIntervalSinceDate:dateCopy];
       durationAsReadableString(v26);
-      v28 = v27 = v16;
+      v28 = v27 = signalsCopy;
       *buf = 138413314;
       v76 = v24;
       v77 = 2112;
       v78 = v25;
       v79 = 2112;
-      v80 = v15;
+      v80 = errorCopy;
       v81 = 2112;
       v82 = v28;
       v83 = 2048;
       v84 = v21;
       _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@, %@, Step 2: compute model complete - error, %@, latency, %@, footprint, %.4f MB", buf, 0x34u);
 
-      v16 = v27;
+      signalsCopy = v27;
     }
   }
 
@@ -2393,7 +2393,7 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v29 = v14;
+  v29 = recordsCopy;
   v30 = [v29 countByEnumeratingWithState:&v71 objects:v87 count:16];
   if (v30)
   {
@@ -2454,43 +2454,43 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
     }
   }
 
-  v44 = [MEMORY[0x277CBEAA8] date];
-  [(RTPredictedContextManager *)self _setTrainAttemptedDateDefaults:v17];
-  v45 = [(RTPredictedContextManager *)self defaultsManager];
-  [v45 setObject:v44 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [(RTPredictedContextManager *)self _setTrainAttemptedDateDefaults:dateCopy];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  [defaultsManager setObject:date2 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
 
-  v46 = [(RTPredictedContextManager *)self defaultsManager];
-  v47 = [MEMORY[0x277CCABB0] numberWithDouble:a7];
-  [v46 setObject:v47 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedFeatureExtractorMemoryFootprint"];
+  defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
+  v47 = [MEMORY[0x277CCABB0] numberWithDouble:footprint];
+  [defaultsManager2 setObject:v47 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedFeatureExtractorMemoryFootprint"];
 
-  v48 = [(RTPredictedContextManager *)self defaultsManager];
+  defaultsManager3 = [(RTPredictedContextManager *)self defaultsManager];
   v49 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
-  [v48 setObject:v49 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedComputeMemoryFootprint"];
+  [defaultsManager3 setObject:v49 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedComputeMemoryFootprint"];
 
-  [(RTPredictedContextManager *)self _setInputSignalDefaults:v16];
+  [(RTPredictedContextManager *)self _setInputSignalDefaults:signalsCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v64 = v15;
-    v50 = v17;
+    v64 = errorCopy;
+    v50 = dateCopy;
     v51 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
       v52 = objc_opt_class();
       v53 = NSStringFromClass(v52);
       NSStringFromSelector(a2);
-      v54 = aSelectora = v16;
-      v55 = [v50 stringFromDate];
-      v56 = [v44 stringFromDate];
-      [v44 timeIntervalSinceDate:v50];
+      v54 = aSelectora = signalsCopy;
+      stringFromDate = [v50 stringFromDate];
+      stringFromDate2 = [date2 stringFromDate];
+      [date2 timeIntervalSinceDate:v50];
       v58 = durationAsReadableString(v57);
       *buf = 138413570;
       v76 = v53;
       v77 = 2112;
       v78 = v54;
       v79 = 2112;
-      v80 = v55;
+      v80 = stringFromDate;
       v81 = 2112;
-      v82 = v56;
+      v82 = stringFromDate2;
       v83 = 2112;
       v84 = *&v58;
       v85 = 2112;
@@ -2498,31 +2498,31 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
       _os_log_impl(&dword_2304B3000, v51, OS_LOG_TYPE_INFO, "%@, %@, training attempt completed, start date, %@, completion date, %@, latency, %@, error(s), %@", buf, 0x3Eu);
 
       v39 = v69;
-      v16 = aSelectora;
+      signalsCopy = aSelectora;
     }
 
-    v17 = v50;
-    v15 = v64;
+    dateCopy = v50;
+    errorCopy = v64;
   }
 
-  if ((v70 & 0x106) == 0 || (-[RTPredictedContextManager defaultsManager](self, "defaultsManager"), v59 = objc_claimAutoreleasedReturnValue(), [v59 setObject:v44 forKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"], v59, -[RTPredictedContextManager defaultsManager](self, "defaultsManager"), v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v60, "setObject:forKey:", v44, @"RTDefaultsPredictedContextManagerTrainLocationContextLastCompletionDate"), v60, (v70 & 4) == 0))
+  if ((v70 & 0x106) == 0 || (-[RTPredictedContextManager defaultsManager](self, "defaultsManager"), v59 = objc_claimAutoreleasedReturnValue(), [v59 setObject:date2 forKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"], v59, -[RTPredictedContextManager defaultsManager](self, "defaultsManager"), v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v60, "setObject:forKey:", date2, @"RTDefaultsPredictedContextManagerTrainLocationContextLastCompletionDate"), v60, (v70 & 4) == 0))
   {
-    v61 = [(RTPredictedContextManager *)self defaultsManager];
-    [v61 setObject:v44 forKey:@"RTDefaultsPredictedContextManagerTrainWorkoutContextLastCompletionDate"];
+    defaultsManager4 = [(RTPredictedContextManager *)self defaultsManager];
+    [defaultsManager4 setObject:date2 forKey:@"RTDefaultsPredictedContextManagerTrainWorkoutContextLastCompletionDate"];
   }
 
-  if (v67)
+  if (handlerCopy)
   {
     v62 = _RTSafeArray();
     v63 = _RTMultiErrorCreate();
-    v67[2](v67, v70, v63);
+    handlerCopy[2](handlerCopy, v70, v63);
   }
 }
 
-- (void)_trainWithHandler:(id)a3
+- (void)_trainWithHandler:(id)handler
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -2567,15 +2567,15 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
   {
     if ([(RTPredictedContextManager *)self available])
     {
-      v17 = [MEMORY[0x277CBEAA8] date];
-      [(RTPredictedContextManager *)self _startTrainingDurationCapTimerWithStartTime:v17];
-      [(RTPredictedContextManager *)self _preprocessTrainingEventWithStartDate:v17];
-      v18 = [objc_opt_class() _defaultLookbackDurations];
-      v19 = [(RTPredictedContextManager *)self _lookbackIntervalsWithDefaults:v18];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(RTPredictedContextManager *)self _startTrainingDurationCapTimerWithStartTime:date];
+      [(RTPredictedContextManager *)self _preprocessTrainingEventWithStartDate:date];
+      _defaultLookbackDurations = [objc_opt_class() _defaultLookbackDurations];
+      v19 = [(RTPredictedContextManager *)self _lookbackIntervalsWithDefaults:_defaultLookbackDurations];
 
-      v20 = [(RTPredictedContextManager *)self featureExtractor];
+      featureExtractor = [(RTPredictedContextManager *)self featureExtractor];
       v62 = 0;
-      v21 = [v20 extractFeaturesWithLookbackIntervals:v19 operationType:2 outError:&v62];
+      v21 = [featureExtractor extractFeaturesWithLookbackIntervals:v19 operationType:2 outError:&v62];
       v22 = v62;
 
       v56 = v22;
@@ -2591,8 +2591,8 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
           NSStringFromClass(v27);
           v28 = v53 = v21;
           v29 = NSStringFromSelector(a2);
-          v30 = [MEMORY[0x277CBEAA8] date];
-          [v30 timeIntervalSinceDate:v17];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [date2 timeIntervalSinceDate:date];
           durationAsReadableString(v31);
           v32 = v54 = v19;
           *buf = 138413314;
@@ -2615,23 +2615,23 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
       if ([objc_opt_class() deferBasedOnFeatureExtractorError:v23])
       {
         v55 = v19;
-        v33 = [MEMORY[0x277CBEAA8] date];
-        [(RTPredictedContextManager *)self _setTrainAttemptedDateDefaults:v17];
-        v34 = [(RTPredictedContextManager *)self defaultsManager];
-        [v34 setObject:v33 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [(RTPredictedContextManager *)self _setTrainAttemptedDateDefaults:date];
+        defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+        [defaultsManager setObject:date3 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
 
-        v35 = [(RTPredictedContextManager *)self defaultsManager];
+        defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
         v36 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
-        [v35 setObject:v36 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedFeatureExtractorMemoryFootprint"];
+        [defaultsManager2 setObject:v36 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedFeatureExtractorMemoryFootprint"];
 
-        v37 = [(RTPredictedContextManager *)self defaultsManager];
+        defaultsManager3 = [(RTPredictedContextManager *)self defaultsManager];
         v38 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-        [v37 setObject:v38 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedComputeMemoryFootprint"];
+        [defaultsManager3 setObject:v38 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedComputeMemoryFootprint"];
 
         [(RTPredictedContextManager *)self _setInputSignalDefaults:v21];
-        if (v5)
+        if (handlerCopy)
         {
-          v5[2](v5, 512, v23);
+          handlerCopy[2](handlerCopy, 512, v23);
         }
 
         v19 = v55;
@@ -2639,19 +2639,19 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
 
       else
       {
-        v49 = [(RTPredictedContextManager *)self mapServiceManager];
+        mapServiceManager = [(RTPredictedContextManager *)self mapServiceManager];
         v57[0] = MEMORY[0x277D85DD0];
         v57[1] = 3221225472;
         v57[2] = __47__RTPredictedContextManager__trainWithHandler___block_invoke;
         v57[3] = &unk_2788C5D18;
         v57[4] = self;
         v58 = v21;
-        v59 = v17;
+        v59 = date;
         v61 = v25;
-        v60 = v5;
-        [v49 computeWithInputSignals:v58 handler:v57];
+        v60 = handlerCopy;
+        [mapServiceManager computeWithInputSignals:v58 handler:v57];
 
-        v33 = 0;
+        date3 = 0;
       }
     }
 
@@ -2661,9 +2661,9 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
       v47 = *MEMORY[0x277D01448];
       v73 = *MEMORY[0x277CCA450];
       v74 = @"Resource temporarily unavailable; data access not available until first unlock after boot.";
-      v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-      v48 = [v46 errorWithDomain:v47 code:5 userInfo:v17];
-      v5[2](v5, 2048, v48);
+      date = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
+      v48 = [v46 errorWithDomain:v47 code:5 userInfo:date];
+      handlerCopy[2](handlerCopy, 2048, v48);
     }
   }
 
@@ -2674,7 +2674,7 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
     v75 = *MEMORY[0x277CCA450];
     v76[0] = @"ContextAlgorithms unavailable on this platform";
     v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:&v75 count:1];
-    v17 = [v39 errorWithDomain:v40 code:1 userInfo:v41];
+    date = [v39 errorWithDomain:v40 code:1 userInfo:v41];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2689,14 +2689,14 @@ uint64_t __58__RTPredictedContextManager__requiresPeriodicTriggerTimer__block_in
         v65 = 2112;
         v66 = v45;
         v67 = 2112;
-        v68 = v17;
+        v68 = date;
         _os_log_impl(&dword_2304B3000, v42, OS_LOG_TYPE_INFO, "%@, %@, Platform Not Supported, error, %@", buf, 0x20u);
       }
     }
 
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5, 1, v17);
+      handlerCopy[2](handlerCopy, 1, date);
     }
   }
 }
@@ -2723,15 +2723,15 @@ void __47__RTPredictedContextManager__trainWithHandler___block_invoke(uint64_t a
   dispatch_async(v7, block);
 }
 
-- (BOOL)_isHealthKitInaccessibleErrorIncludedInTheErrorArray:(id)a3
+- (BOOL)_isHealthKitInaccessibleErrorIncludedInTheErrorArray:(id)array
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  arrayCopy = array;
+  v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2742,7 +2742,7 @@ void __47__RTPredictedContextManager__trainWithHandler___block_invoke(uint64_t a
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         if ([(RTPredictedContextManager *)self _didHealthKitInaccessibleErrorOccur:*(*(&v11 + 1) + 8 * i), v11])
@@ -2752,7 +2752,7 @@ void __47__RTPredictedContextManager__trainWithHandler___block_invoke(uint64_t a
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -2768,24 +2768,24 @@ LABEL_11:
   return v9;
 }
 
-- (void)_preprocessTrainingEventWithStartDate:(id)a3
+- (void)_preprocessTrainingEventWithStartDate:(id)date
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTPredictedContextManager *)self defaultsManager];
-  v7 = [v6 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
+  dateCopy = date;
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
 
   v8 = 0.0;
   if (v7)
   {
-    v9 = [(RTPredictedContextManager *)self defaultsManager];
-    v10 = [v9 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
+    defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
+    v10 = [defaultsManager2 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
 
-    [v5 timeIntervalSinceDate:v10];
+    [dateCopy timeIntervalSinceDate:v10];
     v12 = v11;
-    v13 = [(RTPredictedContextManager *)self defaultsManager];
+    defaultsManager3 = [(RTPredictedContextManager *)self defaultsManager];
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
-    [v13 setObject:v14 forKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingAttempt"];
+    [defaultsManager3 setObject:v14 forKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingAttempt"];
   }
 
   else
@@ -2794,26 +2794,26 @@ LABEL_11:
     v12 = 0.0;
   }
 
-  v15 = [(RTPredictedContextManager *)self defaultsManager];
-  v16 = [v15 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
+  defaultsManager4 = [(RTPredictedContextManager *)self defaultsManager];
+  v16 = [defaultsManager4 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
 
   if (v16)
   {
-    v17 = [(RTPredictedContextManager *)self defaultsManager];
-    v18 = [v17 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
+    defaultsManager5 = [(RTPredictedContextManager *)self defaultsManager];
+    v18 = [defaultsManager5 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
 
-    [v5 timeIntervalSinceDate:v18];
+    [dateCopy timeIntervalSinceDate:v18];
     v8 = v19;
-    v20 = [(RTPredictedContextManager *)self defaultsManager];
+    defaultsManager6 = [(RTPredictedContextManager *)self defaultsManager];
     v21 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
-    [v20 setObject:v21 forKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingSuccess"];
+    [defaultsManager6 setObject:v21 forKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingSuccess"];
   }
 
-  v22 = [(RTPredictedContextManager *)self defaultsManager];
-  v23 = [v22 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
+  defaultsManager7 = [(RTPredictedContextManager *)self defaultsManager];
+  v23 = [defaultsManager7 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
 
-  v24 = [(RTPredictedContextManager *)self defaultsManager];
-  v25 = [v24 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
+  defaultsManager8 = [(RTPredictedContextManager *)self defaultsManager];
+  v25 = [defaultsManager8 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -2823,11 +2823,11 @@ LABEL_11:
       v27 = objc_opt_class();
       v35 = NSStringFromClass(v27);
       v34 = NSStringFromSelector(a2);
-      v28 = [v5 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
       [v10 stringFromDate];
-      v29 = v36 = v5;
-      v30 = [v23 stringFromDate];
-      v31 = [v25 stringFromDate];
+      v29 = v36 = dateCopy;
+      stringFromDate2 = [v23 stringFromDate];
+      stringFromDate3 = [v25 stringFromDate];
       v32 = durationAsReadableString(v12);
       durationAsReadableString(v8);
       v33 = v37 = v10;
@@ -2836,13 +2836,13 @@ LABEL_11:
       v40 = 2112;
       v41 = v34;
       v42 = 2112;
-      v43 = v28;
+      v43 = stringFromDate;
       v44 = 2112;
       v45 = v29;
       v46 = 2112;
-      v47 = v30;
+      v47 = stringFromDate2;
       v48 = 2112;
-      v49 = v31;
+      v49 = stringFromDate3;
       v50 = 2112;
       v51 = v32;
       v52 = 2112;
@@ -2850,17 +2850,17 @@ LABEL_11:
       _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%@, %@, new attempt start date, %@, last attempt start date, %@, last training attempt completion date, %@, last successful training attempt completion date, %@, time since last training attempt, %@, time since last training success, %@", buf, 0x52u);
 
       v10 = v37;
-      v5 = v36;
+      dateCopy = v36;
     }
   }
 }
 
-- (void)_processTrainingResult:(unint64_t)a3
+- (void)_processTrainingResult:(unint64_t)result
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CBEAA8] now];
-  v7 = [(RTPredictedContextManager *)self metricsManager];
-  [v7 prepareAndSubmitTrainingEventMetrics:a3];
+  metricsManager = [(RTPredictedContextManager *)self metricsManager];
+  [metricsManager prepareAndSubmitTrainingEventMetrics:result];
 
   v8 = [MEMORY[0x277CBEAA8] now];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2883,19 +2883,19 @@ LABEL_11:
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(RTPredictedContextManager *)self dataProtectionManager];
-  [v4 removeObserver:self];
+  handlerCopy = handler;
+  dataProtectionManager = [(RTPredictedContextManager *)self dataProtectionManager];
+  [dataProtectionManager removeObserver:self];
 
   [(RTPredictedContextManager *)self setAvailable:0];
   [(RTPredictedContextManager *)self setAlgorithms:0];
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
@@ -2904,10 +2904,10 @@ LABEL_11:
   dataSerializer = self->_dataSerializer;
   if (!dataSerializer)
   {
-    v4 = [objc_opt_class() serializedDataContainerPath];
+    serializedDataContainerPath = [objc_opt_class() serializedDataContainerPath];
     v5 = [RTDataSerializer alloc];
-    v6 = [v4 lastPathComponent];
-    v7 = [(RTDataSerializer *)v5 initWithContainerPath:v4 outputPrefix:v6];
+    lastPathComponent = [serializedDataContainerPath lastPathComponent];
+    v7 = [(RTDataSerializer *)v5 initWithContainerPath:serializedDataContainerPath outputPrefix:lastPathComponent];
     v8 = self->_dataSerializer;
     self->_dataSerializer = v7;
 
@@ -2917,19 +2917,19 @@ LABEL_11:
   return dataSerializer;
 }
 
-- (void)saveInteractionRecord:(id)a3
+- (void)saveInteractionRecord:(id)record
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  recordCopy = record;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__RTPredictedContextManager_saveInteractionRecord___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v9 = v5;
+  v9 = recordCopy;
   v10 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = recordCopy;
+  dispatch_async(queue, block);
 }
 
 void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64_t a1)
@@ -2991,16 +2991,16 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
   }
 }
 
-- (id)_convertDate:(id)a3
+- (id)_convertDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     v4 = objc_alloc(MEMORY[0x277D01220]);
     v5 = MEMORY[0x277CBEAA8];
-    [v3 date];
+    [dateCopy date];
     v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
-    [v3 confidenceInterval];
+    [dateCopy confidenceInterval];
     v7 = [v4 initWithDate:v6 confidenceInterval:?];
   }
 
@@ -3019,17 +3019,17 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
   return v7;
 }
 
-- (id)_convertDateInterval:(id)a3
+- (id)_convertDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  intervalCopy = interval;
+  v5 = intervalCopy;
+  if (intervalCopy)
   {
-    v6 = [v4 startDate];
-    v7 = [(RTPredictedContextManager *)self _convertDate:v6];
+    startDate = [intervalCopy startDate];
+    v7 = [(RTPredictedContextManager *)self _convertDate:startDate];
 
-    v8 = [v5 endDate];
-    v9 = [(RTPredictedContextManager *)self _convertDate:v8];
+    endDate = [v5 endDate];
+    v9 = [(RTPredictedContextManager *)self _convertDate:endDate];
 
     v10 = [objc_alloc(MEMORY[0x277D01228]) initWithStartDate:v7 endDate:v9];
   }
@@ -3049,12 +3049,12 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
   return v10;
 }
 
-- (id)_convertLocationOfInterest:(id)a3 sources:(id)a4
+- (id)_convertLocationOfInterest:(id)interest sources:(id)sources
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  interestCopy = interest;
+  sourcesCopy = sources;
+  if (interestCopy)
   {
     aSelector = a2;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -3070,7 +3070,7 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
         *&buf[12] = 2112;
         *&buf[14] = v46;
         *&buf[22] = 2117;
-        v74 = v7;
+        v74 = interestCopy;
         _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@, %@, input predicted locationOfInterest, %{sensitive}@", buf, 0x20u);
       }
     }
@@ -3082,8 +3082,8 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
     v74 = __Block_byref_object_copy__188;
     v75 = __Block_byref_object_dispose__188;
     v11 = objc_alloc(MEMORY[0x277CCAD78]);
-    v12 = [v7 loiIdentifier];
-    v76 = [v11 initWithData:v12];
+    loiIdentifier = [interestCopy loiIdentifier];
+    v76 = [v11 initWithData:loiIdentifier];
 
     v13 = [(RTPredictedContextManager *)self _getLocationOfInterestWithIdentifier:*(*&buf[8] + 40)];
     if (!v13)
@@ -3095,14 +3095,14 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
       v71 = __Block_byref_object_dispose__188;
       v72 = 0;
       v14 = objc_alloc(MEMORY[0x277D01160]);
-      v15 = [v7 location];
-      [v15 locationLatitudeDeg];
+      location = [interestCopy location];
+      [location locationLatitudeDeg];
       v17 = v16;
-      v18 = [v7 location];
-      [v18 locationLongitudeDeg];
+      location2 = [interestCopy location];
+      [location2 locationLongitudeDeg];
       v20 = v19;
-      v21 = [v7 location];
-      [v21 locationHorizontalUncertaintyMeters];
+      location3 = [interestCopy location];
+      [location3 locationHorizontalUncertaintyMeters];
       v23 = v22;
       v24 = [MEMORY[0x277CBEAA8] now];
       v25 = [v14 initWithLatitude:v24 longitude:v17 horizontalUncertainty:v20 date:v23];
@@ -3116,10 +3116,10 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
       v26 = v25;
       v58 = v26;
       v60 = v69;
-      v27 = v7;
+      v27 = interestCopy;
       v59 = v27;
       v61 = buf;
-      [v8 enumerateObjectsUsingBlock:v57];
+      [sourcesCopy enumerateObjectsUsingBlock:v57];
       if (!*(*&v69[8] + 40))
       {
         v28 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -3137,10 +3137,10 @@ void __51__RTPredictedContextManager_saveInteractionRecord___block_invoke(uint64
 
         v29 = [RTLearnedPlace alloc];
         v30 = objc_alloc_init(MEMORY[0x277CCAD78]);
-        v31 = [v27 placeType];
-        v32 = [MEMORY[0x277CBEAA8] date];
-        v33 = [MEMORY[0x277CBEAA8] date];
-        v34 = [(RTLearnedPlace *)v29 initWithIdentifier:v30 type:v31 typeSource:0 mapItem:0 customLabel:@"Unknown" creationDate:v32 expirationDate:v33];
+        placeType = [v27 placeType];
+        date = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v34 = [(RTLearnedPlace *)v29 initWithIdentifier:v30 type:placeType typeSource:0 mapItem:0 customLabel:@"Unknown" creationDate:date expirationDate:date2];
         v35 = *(*&v69[8] + 40);
         *(*&v69[8] + 40) = v34;
       }
@@ -4501,11 +4501,11 @@ void __64__RTPredictedContextManager__convertLocationOfInterest_sources___block_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_convertContextLocation:(id)a3
+- (id)_convertContextLocation:(id)location
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  locationCopy = location;
+  if (locationCopy)
   {
     v6 = objc_autoreleasePoolPush();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4521,24 +4521,24 @@ void __64__RTPredictedContextManager__convertLocationOfInterest_sources___block_
         v31 = 2112;
         v32 = v10;
         v33 = 2117;
-        v34 = v5;
+        v34 = locationCopy;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, input contextLocation, %{sensitive}@", &v29, 0x20u);
       }
     }
 
-    v11 = [v5 predictedContext];
-    v12 = [v11 sources];
-    v13 = [(RTPredictedContextManager *)self _convertContextSources:v12];
+    predictedContext = [locationCopy predictedContext];
+    sources = [predictedContext sources];
+    v13 = [(RTPredictedContextManager *)self _convertContextSources:sources];
 
-    v14 = [v5 locationOfInterest];
-    v15 = [(RTPredictedContextManager *)self _convertLocationOfInterest:v14 sources:v13];
+    locationOfInterest = [locationCopy locationOfInterest];
+    v15 = [(RTPredictedContextManager *)self _convertLocationOfInterest:locationOfInterest sources:v13];
 
-    v16 = [v5 predictedContext];
-    v17 = [v16 dateInterval];
-    v18 = [(RTPredictedContextManager *)self _convertDateInterval:v17];
+    predictedContext2 = [locationCopy predictedContext];
+    dateInterval = [predictedContext2 dateInterval];
+    v18 = [(RTPredictedContextManager *)self _convertDateInterval:dateInterval];
 
-    v19 = [v5 predictedContext];
-    [v19 probability];
+    predictedContext3 = [locationCopy predictedContext];
+    [predictedContext3 probability];
     v21 = v20;
 
     v22 = [objc_alloc(MEMORY[0x277D01230]) initWithLocationOfInterest:v15 dateInterval:v18 predictionSources:v13 probability:v21];
@@ -4578,11 +4578,11 @@ void __64__RTPredictedContextManager__convertLocationOfInterest_sources___block_
   return v22;
 }
 
-- (id)_convertContextTransport:(id)a3
+- (id)_convertContextTransport:(id)transport
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  transportCopy = transport;
+  if (transportCopy)
   {
     v5 = objc_autoreleasePoolPush();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4598,14 +4598,14 @@ void __64__RTPredictedContextManager__convertLocationOfInterest_sources___block_
         v21 = 2112;
         v22 = v9;
         v23 = 2117;
-        v24 = v4;
+        v24 = transportCopy;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, %@, input contextTransport, %{sensitive}@", &v19, 0x20u);
       }
     }
 
-    v10 = [v4 transportMode];
-    [v4 probability];
-    v12 = [objc_alloc(MEMORY[0x277D01258]) initWithTransportMode:v10 probability:v11];
+    transportMode = [transportCopy transportMode];
+    [transportCopy probability];
+    v12 = [objc_alloc(MEMORY[0x277D01258]) initWithTransportMode:transportMode probability:v11];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v13 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -4642,11 +4642,11 @@ void __64__RTPredictedContextManager__convertLocationOfInterest_sources___block_
   return v12;
 }
 
-- (id)_convertContextTransition:(id)a3
+- (id)_convertContextTransition:(id)transition
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  transitionCopy = transition;
+  if (transitionCopy)
   {
     v6 = objc_autoreleasePoolPush();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4662,32 +4662,32 @@ void __64__RTPredictedContextManager__convertLocationOfInterest_sources___block_
         v38 = 2112;
         v39 = v10;
         v40 = 2117;
-        v41 = v5;
+        v41 = transitionCopy;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, input contextTransition, %{sensitive}@", buf, 0x20u);
       }
     }
 
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [v5 predictedContextTransports];
+    array = [MEMORY[0x277CBEB18] array];
+    predictedContextTransports = [transitionCopy predictedContextTransports];
     v30 = MEMORY[0x277D85DD0];
     v31 = 3221225472;
     v32 = __55__RTPredictedContextManager__convertContextTransition___block_invoke;
     v33 = &unk_2788D2730;
-    v34 = self;
-    v13 = v11;
+    selfCopy = self;
+    v13 = array;
     v35 = v13;
-    [v12 enumerateObjectsUsingBlock:&v30];
+    [predictedContextTransports enumerateObjectsUsingBlock:&v30];
 
-    v14 = [v5 predictedContext];
-    v15 = [v14 dateInterval];
-    v16 = [(RTPredictedContextManager *)self _convertDateInterval:v15];
+    predictedContext = [transitionCopy predictedContext];
+    dateInterval = [predictedContext dateInterval];
+    v16 = [(RTPredictedContextManager *)self _convertDateInterval:dateInterval];
 
-    v17 = [v5 predictedContext];
-    v18 = [v17 sources];
-    v19 = [(RTPredictedContextManager *)self _convertContextSources:v18];
+    predictedContext2 = [transitionCopy predictedContext];
+    sources = [predictedContext2 sources];
+    v19 = [(RTPredictedContextManager *)self _convertContextSources:sources];
 
-    v20 = [v5 predictedContext];
-    [v20 probability];
+    predictedContext3 = [transitionCopy predictedContext];
+    [predictedContext3 probability];
     v22 = v21;
 
     v23 = [objc_alloc(MEMORY[0x277D01250]) initWithPredictedContextTransports:v13 predictedContextDateInterval:v16 predictionSources:v19 probability:v22];
@@ -4738,11 +4738,11 @@ uint64_t __55__RTPredictedContextManager__convertContextTransition___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_convertContextWorkout:(id)a3
+- (id)_convertContextWorkout:(id)workout
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  workoutCopy = workout;
+  if (workoutCopy)
   {
     v6 = objc_autoreleasePoolPush();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4758,26 +4758,26 @@ uint64_t __55__RTPredictedContextManager__convertContextTransition___block_invok
         v32 = 2112;
         v33 = v10;
         v34 = 2112;
-        v35 = v5;
+        v35 = workoutCopy;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, input contextWorkout, %@", &v30, 0x20u);
       }
     }
 
-    v11 = [v5 predictedContext];
-    v12 = [v11 sources];
-    v13 = [(RTPredictedContextManager *)self _convertContextSources:v12];
+    predictedContext = [workoutCopy predictedContext];
+    sources = [predictedContext sources];
+    v13 = [(RTPredictedContextManager *)self _convertContextSources:sources];
 
-    v14 = [v5 predictedContext];
-    v15 = [v14 dateInterval];
-    v16 = [(RTPredictedContextManager *)self _convertDateInterval:v15];
+    predictedContext2 = [workoutCopy predictedContext];
+    dateInterval = [predictedContext2 dateInterval];
+    v16 = [(RTPredictedContextManager *)self _convertDateInterval:dateInterval];
 
-    v17 = [v5 workoutLocationType];
+    workoutLocationType = [workoutCopy workoutLocationType];
     v18 = objc_alloc(MEMORY[0x277D01260]);
-    v19 = [v5 predictedContext];
-    [v19 probability];
+    predictedContext3 = [workoutCopy predictedContext];
+    [predictedContext3 probability];
     v21 = v20;
-    v22 = [v5 sourceBundleIdentifier];
-    v23 = [v18 initWithDateInterval:v16 predictionSources:v13 probability:v22 sourceBundleIdentifier:objc_msgSend(v5 workoutActivityType:"workoutActivityType") workoutLocationType:{v17, v21}];
+    sourceBundleIdentifier = [workoutCopy sourceBundleIdentifier];
+    v23 = [v18 initWithDateInterval:v16 predictionSources:v13 probability:sourceBundleIdentifier sourceBundleIdentifier:objc_msgSend(workoutCopy workoutActivityType:"workoutActivityType") workoutLocationType:{workoutLocationType, v21}];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4815,24 +4815,24 @@ uint64_t __55__RTPredictedContextManager__convertContextTransition___block_invok
   return v23;
 }
 
-- (id)_convertContextResult:(id)a3
+- (id)_convertContextResult:(id)result
 {
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v4 predictedContextLocations];
+    array = [MEMORY[0x277CBEB18] array];
+    predictedContextLocations = [resultCopy predictedContextLocations];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __51__RTPredictedContextManager__convertContextResult___block_invoke;
     v25[3] = &unk_2788D2758;
     v25[4] = self;
-    v8 = v6;
+    v8 = array;
     v26 = v8;
-    [v7 enumerateObjectsUsingBlock:v25];
+    [predictedContextLocations enumerateObjectsUsingBlock:v25];
 
-    v9 = [v4 predictedContextTransitions];
+    predictedContextTransitions = [resultCopy predictedContextTransitions];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __51__RTPredictedContextManager__convertContextResult___block_invoke_2;
@@ -4840,20 +4840,20 @@ uint64_t __55__RTPredictedContextManager__convertContextTransition___block_invok
     v23[4] = self;
     v10 = v8;
     v24 = v10;
-    [v9 enumerateObjectsUsingBlock:v23];
+    [predictedContextTransitions enumerateObjectsUsingBlock:v23];
 
-    v11 = [v4 predictedContextWorkouts];
+    predictedContextWorkouts = [resultCopy predictedContextWorkouts];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __51__RTPredictedContextManager__convertContextResult___block_invoke_3;
     v20 = &unk_2788D27A8;
-    v21 = self;
+    selfCopy = self;
     v22 = v10;
     v12 = v10;
-    [v11 enumerateObjectsUsingBlock:&v17];
+    [predictedContextWorkouts enumerateObjectsUsingBlock:&v17];
 
-    v13 = [(RTPredictedContextManager *)self _extractAndConvertAnalytics:v4, v17, v18, v19, v20, v21];
-    v14 = [objc_alloc(MEMORY[0x277D01248]) initWithPredictedContexts:v12 analytics:v13];
+    selfCopy = [(RTPredictedContextManager *)self _extractAndConvertAnalytics:resultCopy, v17, v18, v19, v20, selfCopy];
+    v14 = [objc_alloc(MEMORY[0x277D01248]) initWithPredictedContexts:v12 analytics:selfCopy];
 
     objc_autoreleasePoolPop(v5);
   }
@@ -4906,29 +4906,29 @@ uint64_t __51__RTPredictedContextManager__convertContextResult___block_invoke_3(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_extractAndConvertAnalytics:(id)a3
+- (id)_extractAndConvertAnalytics:(id)analytics
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  analyticsCopy = analytics;
+  if (analyticsCopy)
   {
     context = objc_autoreleasePoolPush();
     [MEMORY[0x277CBEB38] dictionary];
-    v30 = v29 = v3;
+    v30 = v29 = analyticsCopy;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v4 = [v3 predictedContextAnalytics];
-    v5 = [v4 rolledLoiAnalyticsDictionarys];
+    predictedContextAnalytics = [analyticsCopy predictedContextAnalytics];
+    rolledLoiAnalyticsDictionarys = [predictedContextAnalytics rolledLoiAnalyticsDictionarys];
 
-    v6 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v6 = [rolledLoiAnalyticsDictionarys countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v35;
       v31 = *v35;
-      v32 = v5;
+      v32 = rolledLoiAnalyticsDictionarys;
       do
       {
         v9 = 0;
@@ -4937,32 +4937,32 @@ uint64_t __51__RTPredictedContextManager__convertContextResult___block_invoke_3(
         {
           if (*v35 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(rolledLoiAnalyticsDictionarys);
           }
 
           v10 = *(*(&v34 + 1) + 8 * v9);
           v11 = objc_autoreleasePoolPush();
-          v12 = [v10 identifier];
-          if (v12)
+          identifier = [v10 identifier];
+          if (identifier)
           {
-            v13 = v12;
-            v14 = [v10 analytics];
+            v13 = identifier;
+            analytics = [v10 analytics];
 
-            if (v14)
+            if (analytics)
             {
               v15 = objc_alloc(MEMORY[0x277CCAD78]);
-              v16 = [v10 identifier];
-              v17 = [v15 initWithUUIDBytes:{objc_msgSend(v16, "bytes")}];
+              identifier2 = [v10 identifier];
+              v17 = [v15 initWithUUIDBytes:{objc_msgSend(identifier2, "bytes")}];
 
               if (v17)
               {
                 v18 = objc_alloc(MEMORY[0x277D01218]);
-                v19 = [v10 analytics];
-                v20 = [v19 loiIsMissingFromCurrentVisitHistory];
-                v21 = [v10 analytics];
-                v22 = [v21 isHome];
-                v23 = [v10 analytics];
-                v24 = [v18 initWithIdentifier:v17 loiIsMissingFromCurrentVisitHistory:v20 isHome:v22 isWork:{objc_msgSend(v23, "isWork")}];
+                analytics2 = [v10 analytics];
+                loiIsMissingFromCurrentVisitHistory = [analytics2 loiIsMissingFromCurrentVisitHistory];
+                analytics3 = [v10 analytics];
+                isHome = [analytics3 isHome];
+                analytics4 = [v10 analytics];
+                v24 = [v18 initWithIdentifier:v17 loiIsMissingFromCurrentVisitHistory:loiIsMissingFromCurrentVisitHistory isHome:isHome isWork:{objc_msgSend(analytics4, "isWork")}];
 
                 if (v24)
                 {
@@ -4970,7 +4970,7 @@ uint64_t __51__RTPredictedContextManager__convertContextResult___block_invoke_3(
                 }
 
                 v8 = v31;
-                v5 = v32;
+                rolledLoiAnalyticsDictionarys = v32;
                 v7 = v33;
               }
             }
@@ -4981,7 +4981,7 @@ uint64_t __51__RTPredictedContextManager__convertContextResult___block_invoke_3(
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v7 = [rolledLoiAnalyticsDictionarys countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v7);
@@ -4989,7 +4989,7 @@ uint64_t __51__RTPredictedContextManager__convertContextResult___block_invoke_3(
 
     v25 = [objc_alloc(MEMORY[0x277D01210]) initWithRolledLOIResult:v30];
     objc_autoreleasePoolPop(context);
-    v3 = v29;
+    analyticsCopy = v29;
   }
 
   else
@@ -5007,14 +5007,14 @@ uint64_t __51__RTPredictedContextManager__convertContextResult___block_invoke_3(
   return v25;
 }
 
-- (id)_convertContextSources:(id)a3
+- (id)_convertContextSources:(id)sources
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  sourcesCopy = sources;
+  v6 = sourcesCopy;
+  if (sourcesCopy)
   {
-    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
     v8 = objc_autoreleasePoolPush();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -5550,11 +5550,11 @@ LABEL_54:
 LABEL_56:
 }
 
-- (id)_getLocationOfInterestWithIdentifier:(id)a3
+- (id)_getLocationOfInterestWithIdentifier:(id)identifier
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = dispatch_semaphore_create(0);
     *v36 = 0;
@@ -5569,7 +5569,7 @@ LABEL_56:
     v33 = __Block_byref_object_copy__188;
     v34 = __Block_byref_object_dispose__188;
     v35 = 0;
-    v6 = [(RTPredictedContextManager *)self learnedLocationManager];
+    learnedLocationManager = [(RTPredictedContextManager *)self learnedLocationManager];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___block_invoke;
@@ -5578,7 +5578,7 @@ LABEL_56:
     v29 = v36;
     v7 = v5;
     v27 = v7;
-    [v6 fetchLocationOfInterestWithIdentifier:v4 handler:v26];
+    [learnedLocationManager fetchLocationOfInterestWithIdentifier:identifierCopy handler:v26];
 
     v8 = v7;
     v9 = [MEMORY[0x277CBEAA8] now];
@@ -5590,11 +5590,11 @@ LABEL_56:
       v13 = v12;
       v14 = objc_opt_new();
       v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_148];
-      v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v17 = [v16 filteredArrayUsingPredicate:v15];
-      v18 = [v17 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+      firstObject = [v17 firstObject];
 
-      [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+      [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
@@ -5673,14 +5673,14 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
       v9 = objc_opt_new();
       [v8 setLifecycleEvent:v9];
 
-      v10 = [v8 lifecycleEvent];
-      [v10 setType:0];
+      lifecycleEvent = [v8 lifecycleEvent];
+      [lifecycleEvent setType:0];
 
       [(RTPredictedContextManager *)self saveInteractionRecord:v8];
     }
 
     v11 = 0x277CBE000uLL;
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v48 = 0;
     v13 = [RTPredictedContextUtility readAlgorithmStateWithError:&v48];
     v14 = v48;
@@ -5709,8 +5709,8 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
 
           v41 = v37;
           v42 = v36;
-          v43 = [MEMORY[0x277CBEAA8] date];
-          [v43 timeIntervalSinceDate:v12];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [date2 timeIntervalSinceDate:date];
           v39 = v38;
           +[RTRuntime footprint];
           *buf = 138413826;
@@ -5737,8 +5737,8 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
       v21 = objc_opt_new();
       [v20 setApplyStateEvent:v21];
 
-      v22 = [v20 applyStateEvent];
-      [v22 setInState:v13];
+      applyStateEvent = [v20 applyStateEvent];
+      [applyStateEvent setInState:v13];
 
       [(RTPredictedContextManager *)self saveInteractionRecord:v20];
     }
@@ -5769,8 +5769,8 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
           v29 = @"NO";
         }
 
-        v30 = [*(v11 + 2728) date];
-        [v30 timeIntervalSinceDate:v12];
+        date3 = [*(v11 + 2728) date];
+        [date3 timeIntervalSinceDate:date];
         v32 = v31;
         +[RTRuntime footprint];
         *buf = 138413826;
@@ -5801,11 +5801,11 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
 
 - (BOOL)_shouldPerformManualDelete
 {
-  v3 = [(RTPredictedContextManager *)self platform];
-  if ([v3 internalInstall])
+  platform = [(RTPredictedContextManager *)self platform];
+  if ([platform internalInstall])
   {
-    v4 = [(RTPredictedContextManager *)self defaultsManager];
-    v5 = [v4 objectForKey:@"RTDefaultsPredictedContextManagerModelDeleteFlag"];
+    defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+    v5 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerModelDeleteFlag"];
     v6 = v5 != 0;
   }
 
@@ -5817,11 +5817,11 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
   return v6;
 }
 
-- (void)setAlgorithms:(id)a3
+- (void)setAlgorithms:(id)algorithms
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  algorithmsCopy = algorithms;
+  if (algorithmsCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -5835,29 +5835,29 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
   }
 
   algorithms = self->_algorithms;
-  if (algorithms != v5)
+  if (algorithms != algorithmsCopy)
   {
-    if (!v5 && algorithms)
+    if (!algorithmsCopy && algorithms)
     {
       v8 = objc_opt_new();
       v9 = objc_opt_new();
       [v8 setLifecycleEvent:v9];
 
-      v10 = [v8 lifecycleEvent];
-      [v10 setType:1];
+      lifecycleEvent = [v8 lifecycleEvent];
+      [lifecycleEvent setType:1];
 
       [(RTPredictedContextManager *)self saveInteractionRecord:v8];
     }
 
-    objc_storeStrong(&self->_algorithms, a3);
+    objc_storeStrong(&self->_algorithms, algorithms);
   }
 }
 
-- (void)_fetchPredictedContextWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchPredictedContextWithOptions:(id)options handler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (![(RTPredictedContextManager *)self _isSupported])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -5899,44 +5899,44 @@ void __66__RTPredictedContextManager__getLocationOfInterestWithIdentifier___bloc
     v19 = 5;
 LABEL_10:
     v22 = [v17 errorWithDomain:v18 code:v19 userInfo:v16];
-    v8[2](v8, 0, v22);
+    handlerCopy[2](handlerCopy, 0, v22);
 
     goto LABEL_11;
   }
 
-  v9 = [[RTPredictedContextClient alloc] initWithClient:0 options:v7 singleShot:1 handler:v8];
+  v9 = [[RTPredictedContextClient alloc] initWithClient:0 options:optionsCopy singleShot:1 handler:handlerCopy];
   [(RTPredictedContextManager *)self _addClient:v9];
 
 LABEL_11:
 }
 
-- (void)fetchPredictedContextWithOptions:(id)a3 handler:(id)a4
+- (void)fetchPredictedContextWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTPredictedContextManager_fetchPredictedContextWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)setMonitorPredictedContext:(BOOL)a3
+- (void)setMonitorPredictedContext:(BOOL)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  if (self->_monitorPredictedContext == a3)
+  if (self->_monitorPredictedContext == context)
   {
     return;
   }
 
-  v3 = a3;
-  self->_monitorPredictedContext = a3;
+  contextCopy = context;
+  self->_monitorPredictedContext = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -5968,7 +5968,7 @@ LABEL_11:
     }
   }
 
-  else if (!v3)
+  else if (!contextCopy)
   {
 LABEL_8:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -5987,17 +5987,17 @@ LABEL_8:
       }
     }
 
-    v17 = [(RTPredictedContextManager *)self visitManager];
+    visitManager = [(RTPredictedContextManager *)self visitManager];
     v18 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-    [v17 removeObserver:self fromNotification:v18];
+    [visitManager removeObserver:self fromNotification:v18];
 
-    v19 = [(RTPredictedContextManager *)self navigationManager];
+    navigationManager = [(RTPredictedContextManager *)self navigationManager];
     v20 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-    [v19 removeObserver:self fromNotification:v20];
+    [navigationManager removeObserver:self fromNotification:v20];
 
-    v21 = [(RTPredictedContextManager *)self motionActivityManager];
+    motionActivityManager = [(RTPredictedContextManager *)self motionActivityManager];
     v22 = +[(RTNotification *)RTMotionActivityManagerNotificationDominantMotionActivityChange];
-    [v21 removeObserver:self fromNotification:v22];
+    [motionActivityManager removeObserver:self fromNotification:v22];
 
     [(RTPredictedContextManager *)self _invalidatePeriodicTriggerTimer];
     currentVisitType = self->_currentVisitType;
@@ -6022,17 +6022,17 @@ LABEL_8:
     }
   }
 
-  v28 = [(RTPredictedContextManager *)self visitManager];
+  visitManager2 = [(RTPredictedContextManager *)self visitManager];
   v29 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-  [v28 addObserver:self selector:sel_onVisitManagerNotification_ name:v29];
+  [visitManager2 addObserver:self selector:sel_onVisitManagerNotification_ name:v29];
 
-  v30 = [(RTPredictedContextManager *)self navigationManager];
+  navigationManager2 = [(RTPredictedContextManager *)self navigationManager];
   v31 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-  [v30 addObserver:self selector:sel_onNavigationNotification_ name:v31];
+  [navigationManager2 addObserver:self selector:sel_onNavigationNotification_ name:v31];
 
-  v32 = [(RTPredictedContextManager *)self motionActivityManager];
+  motionActivityManager2 = [(RTPredictedContextManager *)self motionActivityManager];
   v33 = +[(RTNotification *)RTMotionActivityManagerNotificationDominantMotionActivityChange];
-  [v32 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v33];
+  [motionActivityManager2 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v33];
 
   if (!self->_currentVisitType)
   {
@@ -6041,14 +6041,14 @@ LABEL_8:
     LOWORD(v38) = 0;
     v36 = [v34 initWithAscending:0 confidence:&unk_2845A2288 dateInterval:0 labelVisit:0 limit:&unk_2845A2288 sources:v35 redact:v38 filterPairedVisitEntries:?];
 
-    v37 = [(RTPredictedContextManager *)self visitManager];
+    visitManager3 = [(RTPredictedContextManager *)self visitManager];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke;
     v39[3] = &unk_2788C4C98;
     v39[4] = self;
     v39[5] = a2;
-    [v37 fetchStoredVisitsWithOptions:v36 handler:v39];
+    [visitManager3 fetchStoredVisitsWithOptions:v36 handler:v39];
   }
 
   [(RTPredictedContextManager *)self _startPeriodicTriggerTimer];
@@ -6124,29 +6124,29 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
   }
 }
 
-- (void)simulatePredictedContextResult:(id)a3 handler:(id)a4
+- (void)simulatePredictedContextResult:(id)result handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  resultCopy = result;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTPredictedContextManager_simulatePredictedContextResult_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = resultCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = resultCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_simulatePredictedContextResult:(id)a3 handler:(id)a4
+- (void)_simulatePredictedContextResult:(id)result handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  [(RTPredictedContextManager *)self setSimulatedPredictedContextResult:v7];
+  resultCopy = result;
+  handlerCopy = handler;
+  [(RTPredictedContextManager *)self setSimulatedPredictedContextResult:resultCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -6155,37 +6155,37 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
-      v13 = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
+      simulatedPredictedContextResult = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
       v14 = 138412802;
       v15 = v11;
       v16 = 2112;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = simulatedPredictedContextResult;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, property simulatedPredictedContextResult is set to %@", &v14, 0x20u);
     }
   }
 
-  [(RTPredictedContextManager *)self _processPredictedContextResult:v7 reason:7];
-  if (v8)
+  [(RTPredictedContextManager *)self _processPredictedContextResult:resultCopy reason:7];
+  if (handlerCopy)
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)_overrideKeyForFeatureOption:(unint64_t)a3
+- (id)_overrideKeyForFeatureOption:(unint64_t)option
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 <= 15)
+  if (option <= 15)
   {
-    if (a3 > 3)
+    if (option > 3)
     {
-      if (a3 == 4)
+      if (option == 4)
       {
         return @"RTDefaultsFeatureExtractorLookbackDurationLocations";
       }
 
-      if (a3 == 8)
+      if (option == 8)
       {
         return @"RTDefaultsFeatureExtractorLookbackDurationWorkouts";
       }
@@ -6193,26 +6193,26 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
 
     else
     {
-      if (a3 == 1)
+      if (option == 1)
       {
         return @"RTDefaultsFeatureExtractorLookbackDurationVisits";
       }
 
-      if (a3 == 2)
+      if (option == 2)
       {
         return @"RTDefaultsFeatureExtractorLookbackDurationLocationsOfInterest";
       }
     }
   }
 
-  else if (a3 <= 63)
+  else if (option <= 63)
   {
-    if (a3 == 16)
+    if (option == 16)
     {
       return @"RTDefaultsFeatureExtractorLookbackDurationMaps";
     }
 
-    if (a3 == 32)
+    if (option == 32)
     {
       return @"RTDefaultsFeatureExtractorLookbackDurationCalendar";
     }
@@ -6220,7 +6220,7 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
 
   else
   {
-    switch(a3)
+    switch(option)
     {
       case 0x40uLL:
         return @"RTDefaultsFeatureExtractorLookbackDurationTransitions";
@@ -6235,7 +6235,7 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134217984;
-    v7 = a3;
+    optionCopy = option;
     _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Missing override key for feature option: %lu", &v6, 0xCu);
   }
 
@@ -6276,18 +6276,18 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
   return v4;
 }
 
-- (id)_lookbackIntervalsWithDefaults:(id)a3
+- (id)_lookbackIntervalsWithDefaults:(id)defaults
 {
   v73 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v45 = [MEMORY[0x277CBEAA8] date];
-  v44 = [v45 dateByAddingTimeInterval:86400.0];
-  v41 = [MEMORY[0x277CBEB38] dictionary];
+  defaultsCopy = defaults;
+  date = [MEMORY[0x277CBEAA8] date];
+  v44 = [date dateByAddingTimeInterval:86400.0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v4 = v3;
+  v4 = defaultsCopy;
   v46 = [v4 countByEnumeratingWithState:&v52 objects:v72 count:16];
   if (v46)
   {
@@ -6312,8 +6312,8 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
         v10 = v9;
 
         v11 = -[RTPredictedContextManager _overrideKeyForFeatureOption:](self, "_overrideKeyForFeatureOption:", [v7 unsignedIntegerValue]);
-        v12 = [(RTPredictedContextManager *)self defaultsManager];
-        v13 = [v12 objectForKey:v11];
+        defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+        v13 = [defaultsManager objectForKey:v11];
 
         if (v13)
         {
@@ -6328,12 +6328,12 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
         }
 
         v47 = v15;
-        v16 = [v45 dateByAddingTimeInterval:{-v10, v33}];
-        v17 = [v7 unsignedIntegerValue];
+        v16 = [date dateByAddingTimeInterval:{-v10, v33}];
+        unsignedIntegerValue = [v7 unsignedIntegerValue];
         v18 = v44;
-        if (v17 != 32)
+        if (unsignedIntegerValue != 32)
         {
-          v18 = v45;
+          v18 = date;
         }
 
         v19 = v18;
@@ -6344,7 +6344,7 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
 
         if (v21)
         {
-          [v41 setObject:v21 forKeyedSubscript:v7];
+          [dictionary setObject:v21 forKeyedSubscript:v7];
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             goto LABEL_18;
@@ -6358,16 +6358,16 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
             v39 = v37 = v22;
             NSStringFromSelector(a2);
             v25 = v36 = v11;
-            v35 = [v7 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v7 unsignedIntegerValue];
             v26 = -[RTPredictedContextManager _stringForFeatureOption:](self, "_stringForFeatureOption:", [v7 unsignedIntegerValue]);
-            v27 = [v16 stringFromDate];
-            v28 = [v19 stringFromDate];
+            stringFromDate = [v16 stringFromDate];
+            stringFromDate2 = [v19 stringFromDate];
             *buf = 138414082;
             v57 = v39;
             v58 = 2112;
             v59 = v25;
             v60 = 2048;
-            v61 = v35;
+            v61 = unsignedIntegerValue2;
             v62 = 2112;
             v63 = v26;
             v64 = 2112;
@@ -6375,9 +6375,9 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
             v66 = 2048;
             v67 = v10;
             v68 = 2112;
-            v69 = v27;
+            v69 = stringFromDate;
             v70 = 2112;
-            v71 = v28;
+            v71 = stringFromDate2;
             _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "%@, %@, Feature: %lu (%@), %@: %.2f, Interval: [%@ → %@]", buf, 0x52u);
 
             v11 = v36;
@@ -6393,19 +6393,19 @@ void __56__RTPredictedContextManager_setMonitorPredictedContext___block_invoke_2
             v29 = objc_opt_class();
             v48 = NSStringFromClass(v29);
             v40 = NSStringFromSelector(a2);
-            v38 = [v7 unsignedIntegerValue];
+            unsignedIntegerValue3 = [v7 unsignedIntegerValue];
             v30 = -[RTPredictedContextManager _stringForFeatureOption:](self, "_stringForFeatureOption:", [v7 unsignedIntegerValue]);
-            v31 = [v22 localizedDescription];
+            localizedDescription = [v22 localizedDescription];
             *buf = v33;
             v57 = v48;
             v58 = 2112;
             v59 = v40;
             v60 = 2048;
-            v61 = v38;
+            v61 = unsignedIntegerValue3;
             v62 = 2112;
             v63 = v30;
             v64 = 2112;
-            v65 = v31;
+            v65 = localizedDescription;
             _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "%@, %@, Failed to create interval for feature %lu (%@): %@", buf, 0x34u);
           }
         }
@@ -6424,17 +6424,17 @@ LABEL_18:
     while (v46);
   }
 
-  return v41;
+  return dictionary;
 }
 
-- (id)_stringForFeatureOption:(unint64_t)a3
+- (id)_stringForFeatureOption:(unint64_t)option
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 > 31)
+  if (option > 31)
   {
-    if (a3 > 255)
+    if (option > 255)
     {
-      switch(a3)
+      switch(option)
       {
         case 0x100uLL:
           return @"HomeKitHomes";
@@ -6447,7 +6447,7 @@ LABEL_18:
 
     else
     {
-      switch(a3)
+      switch(option)
       {
         case 0x20uLL:
           return @"Calendar";
@@ -6459,9 +6459,9 @@ LABEL_18:
     }
   }
 
-  else if (a3 > 3)
+  else if (option > 3)
   {
-    switch(a3)
+    switch(option)
     {
       case 4uLL:
         return @"Locations";
@@ -6474,7 +6474,7 @@ LABEL_18:
 
   else
   {
-    switch(a3)
+    switch(option)
     {
       case 0uLL:
         return @"None";
@@ -6489,31 +6489,31 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134217984;
-    v7 = a3;
+    optionCopy = option;
     _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Unhandled feature option: %lu", &v6, 0xCu);
   }
 
   return @"Unknown";
 }
 
-- (void)fetchPredictedContextInputSignalsWithHandler:(id)a3
+- (void)fetchPredictedContextInputSignalsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__RTPredictedContextManager_fetchPredictedContextInputSignalsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchPredictedContextInputSignalsWithHandler:(id)a3
+- (void)_fetchPredictedContextInputSignalsWithHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -6530,12 +6530,12 @@ LABEL_18:
     }
   }
 
-  v10 = [objc_opt_class() _dataCollectionDefaultLookbackDurations];
-  v11 = [(RTPredictedContextManager *)self _lookbackIntervalsWithDefaults:v10];
+  _dataCollectionDefaultLookbackDurations = [objc_opt_class() _dataCollectionDefaultLookbackDurations];
+  v11 = [(RTPredictedContextManager *)self _lookbackIntervalsWithDefaults:_dataCollectionDefaultLookbackDurations];
 
-  v12 = [(RTPredictedContextManager *)self featureExtractor];
+  featureExtractor = [(RTPredictedContextManager *)self featureExtractor];
   v21 = 0;
-  v13 = [v12 extractFeaturesWithLookbackIntervals:v11 operationType:4 outError:&v21];
+  v13 = [featureExtractor extractFeaturesWithLookbackIntervals:v11 operationType:4 outError:&v21];
   v14 = v21;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -6565,37 +6565,37 @@ LABEL_18:
     }
   }
 
-  v5[2](v5, v13, v14);
+  handlerCopy[2](handlerCopy, v13, v14);
 }
 
-- (void)forceTrainModelWithHandler:(id)a3
+- (void)forceTrainModelWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__RTPredictedContextManager_forceTrainModelWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_forceTrainModelWithHandler:(id)a3
+- (void)_forceTrainModelWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTPredictedContextManager *)self defaultsManager];
-  [v6 setObject:&unk_2845A0500 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedPolicy"];
+  handlerCopy = handler;
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  [defaultsManager setObject:&unk_2845A0500 forKey:@"RTDefaultsPredictedContextManagerTrainAttemptedPolicy"];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__RTPredictedContextManager__forceTrainModelWithHandler___block_invoke;
   v8[3] = &unk_2788D27F8;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   v8[4] = self;
-  v7 = v5;
+  v7 = handlerCopy;
   [(RTPredictedContextManager *)self _trainWithHandler:v8];
 }
 
@@ -6632,27 +6632,27 @@ void __57__RTPredictedContextManager__forceTrainModelWithHandler___block_invoke(
   }
 }
 
-- (void)_processPredictedContextResult:(id)a3 reason:(int64_t)a4
+- (void)_processPredictedContextResult:(id)result reason:(int64_t)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  resultCopy = result;
   v8 = objc_opt_new();
-  v9 = [(RTPredictedContextManager *)self clients];
+  clients = [(RTPredictedContextManager *)self clients];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __67__RTPredictedContextManager__processPredictedContextResult_reason___block_invoke;
   v19[3] = &unk_2788D2820;
   v22 = a2;
   v19[4] = self;
-  v20 = v7;
+  v20 = resultCopy;
   v10 = v8;
   v21 = v10;
-  v23 = a4;
-  v11 = v7;
-  [v9 enumerateObjectsUsingBlock:v19];
+  reasonCopy = reason;
+  v11 = resultCopy;
+  [clients enumerateObjectsUsingBlock:v19];
 
-  v12 = [(RTPredictedContextManager *)self clients];
-  [v12 removeObjectsInArray:v10];
+  clients2 = [(RTPredictedContextManager *)self clients];
+  [clients2 removeObjectsInArray:v10];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -6662,8 +6662,8 @@ void __57__RTPredictedContextManager__forceTrainModelWithHandler___block_invoke(
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
-      v17 = [(RTPredictedContextManager *)self clients];
-      v18 = [v17 count];
+      clients3 = [(RTPredictedContextManager *)self clients];
+      v18 = [clients3 count];
       *buf = 138412802;
       v25 = v15;
       v26 = 2112;
@@ -6738,22 +6738,22 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_pushResult:(id)a3 toMonitoringClient:(id)a4
+- (void)_pushResult:(id)result toMonitoringClient:(id)client
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 handler];
-  v10 = [(RTPredictedContextManager *)self _filterResult:v8 forClient:v7];
+  clientCopy = client;
+  resultCopy = result;
+  handler = [clientCopy handler];
+  v10 = [(RTPredictedContextManager *)self _filterResult:resultCopy forClient:clientCopy];
 
-  (v9)[2](v9, v10, 0);
-  v11 = [v7 clientIdentity];
+  (handler)[2](handler, v10, 0);
+  clientIdentity = [clientCopy clientIdentity];
 
-  if (v11)
+  if (clientIdentity)
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [(RTPredictedContextManager *)self monitoringClientLastCallbackDate];
-    [v13 setObject:v12 forKeyedSubscript:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    monitoringClientLastCallbackDate = [(RTPredictedContextManager *)self monitoringClientLastCallbackDate];
+    [monitoringClientLastCallbackDate setObject:date forKeyedSubscript:clientIdentity];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -6773,12 +6773,12 @@ LABEL_9:
   }
 }
 
-- (BOOL)_isMonitoringClientEligibleForTriggerReasonClientRegistration:(id)a3
+- (BOOL)_isMonitoringClientEligibleForTriggerReasonClientRegistration:(id)registration
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 clientIdentity];
-  v7 = [v5 options];
+  registrationCopy = registration;
+  clientIdentity = [registrationCopy clientIdentity];
+  options = [registrationCopy options];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -6788,21 +6788,21 @@ LABEL_9:
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      v12 = [v7 creationDate];
+      creationDate = [options creationDate];
       *buf = 138413058;
       v37 = v10;
       v38 = 2112;
       v39 = v11;
       v40 = 2112;
-      v41 = v6;
+      v41 = clientIdentity;
       v42 = 2112;
-      v43 = *&v12;
+      v43 = *&creationDate;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@, clientIdentity string, %@, options.creationDate, %@", buf, 0x2Au);
     }
   }
 
-  v13 = [(RTPredictedContextManager *)self defaultsManager];
-  v14 = [v13 objectForKey:@"RTDefaultsPredictedContextManagerClientRegistrationEligibilityInterval"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v14 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerClientRegistrationEligibilityInterval"];
 
   if (v14)
   {
@@ -6839,9 +6839,9 @@ LABEL_9:
     v16 = 900.0;
   }
 
-  v24 = [MEMORY[0x277CBEAA8] date];
-  v25 = [v7 creationDate];
-  [v24 timeIntervalSinceDate:v25];
+  date = [MEMORY[0x277CBEAA8] date];
+  creationDate2 = [options creationDate];
+  [date timeIntervalSinceDate:creationDate2];
   v27 = v26;
 
   v28 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
@@ -6860,7 +6860,7 @@ LABEL_9:
         v38 = 2112;
         v39 = v32;
         v40 = 2112;
-        v41 = v6;
+        v41 = clientIdentity;
         v33 = "%@, %@, returning NO, client, %@";
         goto LABEL_20;
       }
@@ -6882,7 +6882,7 @@ LABEL_17:
       v38 = 2112;
       v39 = v32;
       v40 = 2112;
-      v41 = v6;
+      v41 = clientIdentity;
       v33 = "%@, %@, returning YES, client, %@";
 LABEL_20:
       _os_log_debug_impl(&dword_2304B3000, v29, OS_LOG_TYPE_DEBUG, v33, buf, 0x20u);
@@ -6896,12 +6896,12 @@ LABEL_20:
   return v27 < v16;
 }
 
-- (BOOL)_isMonitoringClientEligibleToReceiveResultFromTriggerReasonSingleShot:(id)a3
+- (BOOL)_isMonitoringClientEligibleToReceiveResultFromTriggerReasonSingleShot:(id)shot
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(__CFString *)v5 clientIdentity];
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+  shotCopy = shot;
+  clientIdentity = [(__CFString *)shotCopy clientIdentity];
+  if (!clientIdentity && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -6917,16 +6917,16 @@ LABEL_20:
     }
   }
 
-  v11 = [(RTPredictedContextManager *)self monitoringClientLastCallbackDate];
-  v12 = [v11 objectForKeyedSubscript:v6];
+  monitoringClientLastCallbackDate = [(RTPredictedContextManager *)self monitoringClientLastCallbackDate];
+  v12 = [monitoringClientLastCallbackDate objectForKeyedSubscript:clientIdentity];
 
-  v13 = [(RTPredictedContextManager *)self defaultsManager];
-  v14 = [v13 objectForKey:@"RTDefaultsPredictedContextManagerMonitoringClientCallbackLimitInterval"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v14 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerMonitoringClientCallbackLimitInterval"];
 
-  if ([(__CFString *)v5 singleShot])
+  if ([(__CFString *)shotCopy singleShot])
   {
-    v15 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       v34 = objc_opt_class();
       v35 = NSStringFromClass(v34);
@@ -6936,8 +6936,8 @@ LABEL_20:
       v39 = 2112;
       v40 = v36;
       v41 = 2112;
-      v42 = v5;
-      _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@, %@, This method should never be called for singleShot clients, client, %@", &v37, 0x20u);
+      v42 = shotCopy;
+      _os_log_error_impl(&dword_2304B3000, date, OS_LOG_TYPE_ERROR, "%@, %@, This method should never be called for singleShot clients, client, %@", &v37, 0x20u);
     }
 
     goto LABEL_9;
@@ -6970,8 +6970,8 @@ LABEL_20:
     if (v12)
     {
 LABEL_16:
-      v15 = [MEMORY[0x277CBEAA8] date];
-      [v15 timeIntervalSinceDate:v12];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:v12];
       v24 = v23;
       v16 = v23 >= v18;
       if (v23 < v18)
@@ -7001,7 +7001,7 @@ LABEL_28:
         v39 = 2112;
         v40 = v28;
         v41 = 2112;
-        v42 = v6;
+        v42 = clientIdentity;
         v43 = 2048;
         v44 = v24;
         v45 = 2048;
@@ -7031,7 +7031,7 @@ LABEL_28:
         v39 = 2112;
         v40 = v28;
         v41 = 2112;
-        v42 = v6;
+        v42 = clientIdentity;
         v43 = 2048;
         v44 = v24;
         v45 = 2048;
@@ -7055,8 +7055,8 @@ LABEL_28:
   v16 = 1;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v15 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    date = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
+    if (os_log_type_enabled(date, OS_LOG_TYPE_INFO))
     {
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
@@ -7066,8 +7066,8 @@ LABEL_28:
       v39 = 2112;
       v40 = v31;
       v41 = 2112;
-      v42 = v6;
-      _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, %@, Client '%@' has no previous callback date. Eligible for single shot.", &v37, 0x20u);
+      v42 = clientIdentity;
+      _os_log_impl(&dword_2304B3000, date, OS_LOG_TYPE_INFO, "%@, %@, Client '%@' has no previous callback date. Eligible for single shot.", &v37, 0x20u);
     }
 
     goto LABEL_30;
@@ -7078,11 +7078,11 @@ LABEL_31:
   return v16;
 }
 
-- (id)_filterResult:(id)a3 forClient:(id)a4
+- (id)_filterResult:(id)result forClient:(id)client
 {
   v76 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v5 = a4;
+  resultCopy = result;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -7091,28 +7091,28 @@ LABEL_31:
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
-      v10 = [v5 options];
-      v11 = [v57 predictedContexts];
+      options = [clientCopy options];
+      predictedContexts = [resultCopy predictedContexts];
       *buf = 138413314;
       v67 = v8;
       v68 = 2112;
       v69 = v9;
       v70 = 2112;
-      v71 = v5;
+      v71 = clientCopy;
       v72 = 2112;
-      v73 = v10;
+      v73 = options;
       v74 = 2048;
-      v75 = [v11 count];
+      v75 = [predictedContexts count];
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, %@, client, %@, options, %@, input predictedContext count, %lu", buf, 0x34u);
     }
   }
 
-  v12 = [v5 options];
-  v13 = [v12 forecastWindowDateInterval];
+  options2 = [clientCopy options];
+  forecastWindowDateInterval = [options2 forecastWindowDateInterval];
 
-  if (v13)
+  if (forecastWindowDateInterval)
   {
-    v14 = [v12 forecastWindowDateInterval];
+    forecastWindowDateInterval2 = [options2 forecastWindowDateInterval];
   }
 
   else
@@ -7120,19 +7120,19 @@ LABEL_31:
     v15 = objc_alloc(MEMORY[0x277CCA970]);
     v16 = [MEMORY[0x277CBEAA8] now];
     v17 = MEMORY[0x277CBEAA8];
-    [v12 forecastWindowTimeInterval];
+    [options2 forecastWindowTimeInterval];
     v18 = [v17 dateWithTimeIntervalSinceNow:?];
-    v14 = [v15 initWithStartDate:v16 endDate:v18];
+    forecastWindowDateInterval2 = [v15 initWithStartDate:v16 endDate:v18];
   }
 
-  v19 = [v12 filterContextTypeMask];
-  v20 = [v5 options];
-  v21 = [v20 filterLocations];
+  filterContextTypeMask = [options2 filterContextTypeMask];
+  options3 = [clientCopy options];
+  filterLocations = [options3 filterLocations];
 
-  v22 = [v5 options];
-  v54 = [v22 resultSortDescriptors];
+  options4 = [clientCopy options];
+  resultSortDescriptors = [options4 resultSortDescriptors];
 
-  v23 = [v57 predictedContexts];
+  predictedContexts2 = [resultCopy predictedContexts];
   v24 = MEMORY[0x277CCAC30];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
@@ -7140,15 +7140,15 @@ LABEL_31:
   v59[3] = &unk_2788D2870;
   v59[4] = self;
   v62 = a2;
-  v52 = v14;
+  v52 = forecastWindowDateInterval2;
   v60 = v52;
-  v63 = v19 & 1;
-  v64 = (v19 & 2) != 0;
-  v65 = (v19 & 4) != 0;
-  v25 = v21;
+  v63 = filterContextTypeMask & 1;
+  v64 = (filterContextTypeMask & 2) != 0;
+  v65 = (filterContextTypeMask & 4) != 0;
+  v25 = filterLocations;
   v61 = v25;
   v26 = [v24 predicateWithBlock:v59];
-  v27 = [v23 filteredArrayUsingPredicate:v26];
+  v27 = [predictedContexts2 filteredArrayUsingPredicate:v26];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -7185,7 +7185,7 @@ LABEL_31:
     }
   }
 
-  v30 = [v27 sortedArrayUsingDescriptors:{v54, v52}];
+  v30 = [v27 sortedArrayUsingDescriptors:{resultSortDescriptors, v52}];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -7210,8 +7210,8 @@ LABEL_31:
   v58[5] = a2;
   [v30 enumerateObjectsUsingBlock:v58];
   v32 = objc_alloc(MEMORY[0x277D01248]);
-  v33 = [v57 analytics];
-  v34 = [v32 initWithPredictedContexts:v30 analytics:v33];
+  analytics = [resultCopy analytics];
+  v34 = [v32 initWithPredictedContexts:v30 analytics:analytics];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -7221,14 +7221,14 @@ LABEL_31:
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
       v38 = NSStringFromSelector(a2);
-      v39 = [v34 predictedContexts];
-      v40 = [v39 count];
+      predictedContexts3 = [v34 predictedContexts];
+      v40 = [predictedContexts3 count];
       *buf = 138413058;
       v67 = v37;
       v68 = 2112;
       v69 = v38;
       v70 = 2112;
-      v71 = v5;
+      v71 = clientCopy;
       v72 = 2048;
       v73 = v40;
       _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_INFO, "%@, %@, client, %@, output predictedContext count, %lu", buf, 0x2Au);
@@ -7486,15 +7486,15 @@ void __53__RTPredictedContextManager__filterResult_forClient___block_invoke_501(
   }
 }
 
-- (void)_postprocessRequest:(id)a3
+- (void)_postprocessRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
     v6 = [MEMORY[0x277CBEAA8] now];
-    [(RTPredictedContextManager *)self _submitMetrics:v5];
-    [(RTPredictedContextManager *)self _storeRequest:v5];
+    [(RTPredictedContextManager *)self _submitMetrics:requestCopy];
+    [(RTPredictedContextManager *)self _storeRequest:requestCopy];
     v7 = [MEMORY[0x277CBEAA8] now];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -7512,18 +7512,18 @@ void __53__RTPredictedContextManager__filterResult_forClient___block_invoke_501(
         v17 = 2048;
         v18 = v12;
         v19 = 2117;
-        v20 = v5;
+        v20 = requestCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@, latency, %.2f, request, %{sensitive}@", &v13, 0x2Au);
       }
     }
   }
 }
 
-- (void)_storeRequest:(id)a3
+- (void)_storeRequest:(id)request
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -7541,24 +7541,24 @@ void __53__RTPredictedContextManager__filterResult_forClient___block_invoke_501(
       }
     }
 
-    v10 = [v5 predictedContextResult];
-    v11 = [v10 nextStepPredictedContextsWithFilterMask:7];
+    predictedContextResult = [requestCopy predictedContextResult];
+    v11 = [predictedContextResult nextStepPredictedContextsWithFilterMask:7];
 
-    v12 = [(RTPredictedContextManager *)self predictedContextStore];
+    predictedContextStore = [(RTPredictedContextManager *)self predictedContextStore];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __43__RTPredictedContextManager__storeRequest___block_invoke;
     v15[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
     v15[4] = a2;
-    [v12 storePredictedContexts:v11 handler:v15];
+    [predictedContextStore storePredictedContexts:v11 handler:v15];
 
-    v13 = [(RTPredictedContextManager *)self predictedContextStore];
+    predictedContextStore2 = [(RTPredictedContextManager *)self predictedContextStore];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __43__RTPredictedContextManager__storeRequest___block_invoke_505;
     v14[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
     v14[4] = a2;
-    [v13 storePredictedContextRequest:v5 handler:v14];
+    [predictedContextStore2 storePredictedContextRequest:requestCopy handler:v14];
   }
 }
 
@@ -7608,19 +7608,19 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
   }
 }
 
-- (void)_submitMetrics:(id)a3
+- (void)_submitMetrics:(id)metrics
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (metrics)
   {
     v5 = MEMORY[0x277CBEAA8];
-    v6 = a3;
+    metricsCopy = metrics;
     v7 = [v5 now];
-    v8 = [(RTPredictedContextManager *)self metricsManager];
-    [v8 prepareAndSubmitInferenceEventMetrics:v6];
+    metricsManager = [(RTPredictedContextManager *)self metricsManager];
+    [metricsManager prepareAndSubmitInferenceEventMetrics:metricsCopy];
 
-    v9 = [(RTPredictedContextManager *)self metricsManager];
-    [v9 prepareAndSubmitInferenceLOIMismatchEventMetrics:v6];
+    metricsManager2 = [(RTPredictedContextManager *)self metricsManager];
+    [metricsManager2 prepareAndSubmitInferenceLOIMismatchEventMetrics:metricsCopy];
 
     v10 = [MEMORY[0x277CBEAA8] now];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -7646,18 +7646,18 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
 
 - (void)_updateMonitorPredictedContext
 {
-  v3 = [(RTPredictedContextManager *)self clients];
-  -[RTPredictedContextManager setMonitorPredictedContext:](self, "setMonitorPredictedContext:", [v3 count] != 0);
+  clients = [(RTPredictedContextManager *)self clients];
+  -[RTPredictedContextManager setMonitorPredictedContext:](self, "setMonitorPredictedContext:", [clients count] != 0);
 }
 
-- (void)_addClient:(id)a3
+- (void)_addClient:(id)client
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v6 = [(RTPredictedContextManager *)self clients];
-    [v6 addObject:v5];
+    clients = [(RTPredictedContextManager *)self clients];
+    [clients addObject:clientCopy];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -7667,22 +7667,22 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
         v8 = objc_opt_class();
         v9 = NSStringFromClass(v8);
         v10 = NSStringFromSelector(a2);
-        v11 = [(RTPredictedContextManager *)self clients];
+        clients2 = [(RTPredictedContextManager *)self clients];
         v20 = 138413058;
         v21 = v9;
         v22 = 2112;
         v23 = v10;
         v24 = 2112;
-        v25 = v5;
+        v25 = clientCopy;
         v26 = 2048;
-        v27 = [v11 count];
+        v27 = [clients2 count];
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, client, %@, total client count, %lu", &v20, 0x2Au);
       }
     }
 
     [(RTPredictedContextManager *)self _updateMonitorPredictedContext];
-    v12 = [v5 singleShot];
-    if (v12)
+    singleShot = [clientCopy singleShot];
+    if (singleShot)
     {
       v13 = 1;
     }
@@ -7692,7 +7692,7 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
       v13 = 2;
     }
 
-    if ((v12 & 1) != 0 || [(RTPredictedContextManager *)self _isMonitoringClientEligibleForTriggerReasonClientRegistration:v5])
+    if ((singleShot & 1) != 0 || [(RTPredictedContextManager *)self _isMonitoringClientEligibleForTriggerReasonClientRegistration:clientCopy])
     {
       [(RTPredictedContextManager *)self _requestInferenceWithReason:v13];
     }
@@ -7706,7 +7706,7 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
         v16 = NSStringFromClass(v15);
         v17 = NSStringFromSelector(a2);
         v18 = [objc_opt_class() stringFromInferenceTriggerReason:2];
-        v19 = [v5 clientIdentity];
+        clientIdentity = [clientCopy clientIdentity];
         v20 = 138413058;
         v21 = v16;
         v22 = 2112;
@@ -7714,19 +7714,19 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
         v24 = 2112;
         v25 = v18;
         v26 = 2112;
-        v27 = v19;
+        v27 = clientIdentity;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, %@, triggerReason, %@, client.clientIdentity, %@, can skip inference since the original registration is old", &v20, 0x2Au);
       }
     }
   }
 }
 
-- (void)setAvailable:(BOOL)a3
+- (void)setAvailable:(BOOL)available
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_available != a3)
+  if (self->_available != available)
   {
-    self->_available = a3;
+    self->_available = available;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -7755,19 +7755,19 @@ void __43__RTPredictedContextManager__storeRequest___block_invoke_505(uint64_t a
   }
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
-  v10 = self;
+  v9 = notificationCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = notificationCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke(uint64_t a1)
@@ -7800,28 +7800,28 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
   }
 }
 
-- (void)onVisitManagerNotification:(id)a3
+- (void)onVisitManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__RTPredictedContextManager_onVisitManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onVisitManagerNotification:(id)a3
+- (void)_onVisitManagerNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -7840,15 +7840,15 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
       }
     }
 
-    v11 = [v6 visitIncident];
-    [(RTPredictedContextManager *)self _onVisit:v11];
+    visitIncident = [v6 visitIncident];
+    [(RTPredictedContextManager *)self _onVisit:visitIncident];
   }
 }
 
-- (void)_onVisit:(id)a3
+- (void)_onVisit:(id)visit
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  visitCopy = visit;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -7862,14 +7862,14 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
       v16 = 2112;
       v17 = v9;
       v18 = 2117;
-      v19 = v5;
+      v19 = visitCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, %@, received visit , %{sensitive}@", &v14, 0x20u);
     }
   }
 
   v10 = MEMORY[0x277CCABB0];
   v11 = self->_currentVisitType;
-  v12 = [v10 numberWithInteger:{objc_msgSend(v5, "type")}];
+  v12 = [v10 numberWithInteger:{objc_msgSend(visitCopy, "type")}];
   currentVisitType = self->_currentVisitType;
   self->_currentVisitType = v12;
 
@@ -7885,34 +7885,34 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
   }
 }
 
-- (void)onNavigationNotification:(id)a3
+- (void)onNavigationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTPredictedContextManager_onNavigationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onNavigationNotification:(id)a3
+- (void)_onNavigationNotification:(id)notification
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 destinationName];
-    v8 = v7;
+    v6 = notificationCopy;
+    destinationName = [v6 destinationName];
+    v8 = destinationName;
     v9 = &stru_284528390;
-    if (v7)
+    if (destinationName)
     {
-      v9 = v7;
+      v9 = destinationName;
     }
 
     v10 = v9;
@@ -7953,31 +7953,31 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
   }
 }
 
-- (void)onMotionActivityManagerNotification:(id)a3
+- (void)onMotionActivityManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__RTPredictedContextManager_onMotionActivityManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onMotionActivityManagerNotification:(id)a3
+- (void)_onMotionActivityManagerNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTMotionActivityManagerNotificationDominantMotionActivityChange];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = [v5 dominantMotionActivity];
+    dominantMotionActivity = [notificationCopy dominantMotionActivity];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -7991,40 +7991,40 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
         v16 = 2112;
         v17 = v13;
         v18 = 2117;
-        v19 = v9;
+        v19 = dominantMotionActivity;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, dominantMotionActivityNotification activity, %{sensitive}@", &v14, 0x20u);
       }
     }
 
-    if ([v9 confidence] != 1)
+    if ([dominantMotionActivity confidence] != 1)
     {
-      -[RTPredictedContextManager setPreviousMotionActivity:](self, "setPreviousMotionActivity:", [v9 type]);
+      -[RTPredictedContextManager setPreviousMotionActivity:](self, "setPreviousMotionActivity:", [dominantMotionActivity type]);
     }
   }
 }
 
-- (void)onLearnedLocationManagerDidUpdateNotification:(id)a3
+- (void)onLearnedLocationManagerDidUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__RTPredictedContextManager_onLearnedLocationManagerDidUpdateNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLearnedLocationManagerDidUpdateNotification:(id)a3
+- (void)_onLearnedLocationManagerDidUpdateNotification:(id)notification
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -8056,7 +8056,7 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
         v14 = NSStringFromSelector(a2);
-        v15 = [v6 trainMode];
+        trainMode = [v6 trainMode];
         v16 = [RTLearnedLocationEngine stringFromTrainMode:[v6 trainMode]];
         v17 = [RTLearnedLocationEngine stringFromTrainResult:[v6 trainResult]];
         v18 = 138413314;
@@ -8064,7 +8064,7 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
         v20 = 2112;
         v21 = v14;
         v22 = 2048;
-        v23 = v15;
+        v23 = trainMode;
         v24 = 2112;
         v25 = v16;
         v26 = 2112;
@@ -8080,7 +8080,7 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412802;
-      v19 = v5;
+      v19 = notificationCopy;
       v20 = 2080;
       v21 = "[RTPredictedContextManager _onLearnedLocationManagerDidUpdateNotification:]";
       v22 = 1024;
@@ -8090,43 +8090,43 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
   }
 }
 
-- (void)checkMotionActivityChangeAndTriggerPrediction:(unint64_t)a3 currentActivity:(unint64_t)a4
+- (void)checkMotionActivityChangeAndTriggerPrediction:(unint64_t)prediction currentActivity:(unint64_t)activity
 {
-  v4 = a3 - 3 > 2 || a4 >= 3;
-  if (!v4 || a3 <= 2 && a4 - 3 <= 2)
+  v4 = prediction - 3 > 2 || activity >= 3;
+  if (!v4 || prediction <= 2 && activity - 3 <= 2)
   {
-    [(RTPredictedContextManager *)self _requestInferenceWithReason:6, a4];
+    [(RTPredictedContextManager *)self _requestInferenceWithReason:6, activity];
   }
 }
 
-- (void)setRouteSummary:(id)a3
+- (void)setRouteSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   if (![(NSDictionary *)self->_routeSummary isEqualToDictionary:?])
   {
-    objc_storeStrong(&self->_routeSummary, a3);
+    objc_storeStrong(&self->_routeSummary, summary);
     [(RTPredictedContextManager *)self _requestInferenceWithReason:5];
   }
 }
 
-- (void)setPreviousMotionActivity:(unint64_t)a3
+- (void)setPreviousMotionActivity:(unint64_t)activity
 {
-  if (self->_previousMotionActivity != a3)
+  if (self->_previousMotionActivity != activity)
   {
-    [(RTPredictedContextManager *)self checkMotionActivityChangeAndTriggerPrediction:[(RTPredictedContextManager *)self previousMotionActivity] currentActivity:a3];
-    self->_previousMotionActivity = a3;
+    [(RTPredictedContextManager *)self checkMotionActivityChangeAndTriggerPrediction:[(RTPredictedContextManager *)self previousMotionActivity] currentActivity:activity];
+    self->_previousMotionActivity = activity;
   }
 }
 
-- (void)_startMonitoringForClient:(id)a3 options:(id)a4 handler:(id)a5
+- (void)_startMonitoringForClient:(id)client options:(id)options handler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  clientCopy = client;
+  optionsCopy = options;
+  handlerCopy = handler;
   if ([(RTPredictedContextManager *)self _isSupported])
   {
-    v12 = [[RTPredictedContextClient alloc] initWithClient:v9 options:v10 singleShot:0 handler:v11];
+    v12 = [[RTPredictedContextClient alloc] initWithClient:clientCopy options:optionsCopy singleShot:0 handler:handlerCopy];
 
     [(RTPredictedContextManager *)self _addClient:v12];
   }
@@ -8155,50 +8155,50 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
     v22 = @"Predicted Context unavailable on this platform";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v20 = [v17 errorWithDomain:v18 code:1 userInfo:v19];
-    (*(v11 + 2))(v11, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, v20);
   }
 }
 
-- (void)startMonitoringForClient:(id)a3 options:(id)a4 handler:(id)a5
+- (void)startMonitoringForClient:(id)client options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  clientCopy = client;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__RTPredictedContextManager_startMonitoringForClient_options_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = clientCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = clientCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_stopMonitoringForClient:(id)a3 reply:(id)a4
+- (void)_stopMonitoringForClient:(id)client reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__188;
   v32 = __Block_byref_object_dispose__188;
   v33 = 0;
-  v9 = [(RTPredictedContextManager *)self clients];
+  clients = [(RTPredictedContextManager *)self clients];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __60__RTPredictedContextManager__stopMonitoringForClient_reply___block_invoke;
   v25 = &unk_2788D28C0;
-  v10 = v7;
+  v10 = clientCopy;
   v26 = v10;
   v27 = &v28;
-  [v9 enumerateObjectsUsingBlock:&v22];
+  [clients enumerateObjectsUsingBlock:&v22];
 
   v11 = v29[5];
   if (v11)
@@ -8217,8 +8217,8 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
-      v17 = [(RTPredictedContextManager *)self clients];
-      v18 = [v17 count];
+      clients2 = [(RTPredictedContextManager *)self clients];
+      v18 = [clients2 count];
       *buf = 138413058;
       v37 = v15;
       v38 = 2112;
@@ -8245,9 +8245,9 @@ void __58__RTPredictedContextManager_onDataProtectionNotification___block_invoke
     v19 = [v20 errorWithDomain:*MEMORY[0x277D01448] code:14 userInfo:v21];
   }
 
-  if (v8)
+  if (replyCopy)
   {
-    v8[2](v8, v19);
+    replyCopy[2](replyCopy, v19);
   }
 
   _Block_object_dispose(&v28, 8);
@@ -8265,24 +8265,24 @@ void __60__RTPredictedContextManager__stopMonitoringForClient_reply___block_invo
   }
 }
 
-- (void)stopMonitoringForClient:(id)a3 reply:(id)a4
+- (void)stopMonitoringForClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  clientCopy = client;
+  replyCopy = reply;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__RTPredictedContextManager_stopMonitoringForClient_reply___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = clientCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = clientCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_requestInferenceWithReason:(int64_t)a3
+- (void)_requestInferenceWithReason:(int64_t)reason
 {
   v38 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -8293,7 +8293,7 @@ void __60__RTPredictedContextManager__stopMonitoringForClient_reply___block_invo
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
-      v10 = [objc_opt_class() stringFromInferenceTriggerReason:a3];
+      v10 = [objc_opt_class() stringFromInferenceTriggerReason:reason];
       *buf = 138412802;
       v33 = v8;
       v34 = 2112;
@@ -8304,14 +8304,14 @@ void __60__RTPredictedContextManager__stopMonitoringForClient_reply___block_invo
     }
   }
 
-  v11 = [(RTPredictedContextManager *)self platform];
-  if (![v11 internalInstall])
+  platform = [(RTPredictedContextManager *)self platform];
+  if (![platform internalInstall])
   {
     goto LABEL_19;
   }
 
-  v12 = [(RTPredictedContextManager *)self defaultsManager];
-  v13 = [v12 objectForKey:@"RTDefaultsPredictedContextManagerWedgeContextSimulateEnabled"];
+  defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+  v13 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerWedgeContextSimulateEnabled"];
   if (!v13)
   {
 
@@ -8320,13 +8320,13 @@ LABEL_19:
   }
 
   v14 = v13;
-  v15 = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
+  simulatedPredictedContextResult = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
 
-  if (v15)
+  if (simulatedPredictedContextResult)
   {
-    v16 = [(RTPredictedContextManager *)self defaultsManager];
-    v17 = [v16 objectForKey:@"RTDefaultsPredictedContextManagerWedgeContextSimulateEnabled"];
-    v18 = [v17 BOOLValue];
+    defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
+    v17 = [defaultsManager2 objectForKey:@"RTDefaultsPredictedContextManagerWedgeContextSimulateEnabled"];
+    bOOLValue = [v17 BOOLValue];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -8334,12 +8334,12 @@ LABEL_19:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        LODWORD(v33) = v18;
+        LODWORD(v33) = bOOLValue;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "RTDefaultsPredictedContextManagerWedgeContextSimulateEnabledKey is %d, disable to stop simulatedPredictedContext", buf, 8u);
       }
     }
 
-    if (v18)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -8349,7 +8349,7 @@ LABEL_19:
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
           v23 = NSStringFromSelector(a2);
-          v24 = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
+          simulatedPredictedContextResult2 = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
           *buf = 138413059;
           v33 = v22;
           v34 = 2112;
@@ -8357,21 +8357,21 @@ LABEL_19:
           v36 = 1024;
           *v37 = 1;
           *&v37[4] = 2117;
-          *&v37[6] = v24;
+          *&v37[6] = simulatedPredictedContextResult2;
           _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, %@, WedgeContextSimulateEnabledKey, %{BOOL}d, calling  _processPredictedContextResult, result, %{sensitive}@", buf, 0x26u);
         }
       }
 
-      v25 = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
-      [(RTPredictedContextManager *)self _processPredictedContextResult:v25 reason:7];
+      simulatedPredictedContextResult3 = [(RTPredictedContextManager *)self simulatedPredictedContextResult];
+      [(RTPredictedContextManager *)self _processPredictedContextResult:simulatedPredictedContextResult3 reason:7];
       goto LABEL_25;
     }
   }
 
 LABEL_20:
   v31 = 0;
-  v26 = [(RTPredictedContextManager *)self _requestInferenceWithReason:a3 outError:&v31];
-  v25 = v31;
+  v26 = [(RTPredictedContextManager *)self _requestInferenceWithReason:reason outError:&v31];
+  simulatedPredictedContextResult3 = v31;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -8387,7 +8387,7 @@ LABEL_20:
       v36 = 2117;
       *v37 = v26;
       *&v37[8] = 2112;
-      *&v37[10] = v25;
+      *&v37[10] = simulatedPredictedContextResult3;
       _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%@, %@, request, %{sensitive}@, error, %@", buf, 0x2Au);
     }
   }
@@ -8399,12 +8399,12 @@ LABEL_20:
 LABEL_25:
 }
 
-- (id)_requestInferenceWithReason:(int64_t)a3 outError:(id *)a4
+- (id)_requestInferenceWithReason:(int64_t)reason outError:(id *)error
 {
   v140[1] = *MEMORY[0x277D85DE8];
   if ([(RTPredictedContextManager *)self available])
   {
-    v113 = a3;
+    reasonCopy = reason;
     v8 = MEMORY[0x277CCACA8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -8433,31 +8433,31 @@ LABEL_25:
     context = objc_autoreleasePoolPush();
     +[RTRuntime footprint];
     v16 = v15;
-    v17 = [(RTPredictedContextManager *)self algorithms];
+    algorithms = [(RTPredictedContextManager *)self algorithms];
     v18 = [MEMORY[0x277CBEAA8] now];
-    v19 = [(RTPredictedContextManager *)self defaultsManager];
-    v20 = [v19 objectForKey:@"RTDefaultsPredictedContextManagerInferenceRequest"];
+    defaultsManager = [(RTPredictedContextManager *)self defaultsManager];
+    v20 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerInferenceRequest"];
 
     if (v20)
     {
-      v21 = [(RTPredictedContextManager *)self defaultsManager];
+      defaultsManager2 = [(RTPredictedContextManager *)self defaultsManager];
       v22 = MEMORY[0x277CCABB0];
       [v18 timeIntervalSinceDate:v20];
       v23 = [v22 numberWithDouble:?];
-      [v21 setObject:v23 forKey:@"RTDefaultsPredictedContextManagerTimeSinceLastInferenceRequestAttempt"];
+      [defaultsManager2 setObject:v23 forKey:@"RTDefaultsPredictedContextManagerTimeSinceLastInferenceRequestAttempt"];
     }
 
-    v24 = [(RTPredictedContextManager *)self defaultsManager];
-    [v24 setObject:v18 forKey:@"RTDefaultsPredictedContextManagerInferenceRequest"];
+    defaultsManager3 = [(RTPredictedContextManager *)self defaultsManager];
+    [defaultsManager3 setObject:v18 forKey:@"RTDefaultsPredictedContextManagerInferenceRequest"];
 
-    v25 = [objc_opt_class() _inferenceDefaultLookbackDurations];
-    v26 = [(RTPredictedContextManager *)self _lookbackIntervalsWithDefaults:v25];
+    _inferenceDefaultLookbackDurations = [objc_opt_class() _inferenceDefaultLookbackDurations];
+    v26 = [(RTPredictedContextManager *)self _lookbackIntervalsWithDefaults:_inferenceDefaultLookbackDurations];
 
     v27 = objc_autoreleasePoolPush();
-    v28 = [(RTPredictedContextManager *)self featureExtractor];
+    featureExtractor = [(RTPredictedContextManager *)self featureExtractor];
     v126 = 0;
     v110 = v26;
-    v120 = [v28 extractFeaturesWithLookbackIntervals:v26 operationType:1 outError:&v126];
+    v120 = [featureExtractor extractFeaturesWithLookbackIntervals:v26 operationType:1 outError:&v126];
     v29 = COERCE_DOUBLE(v126);
 
     objc_autoreleasePoolPop(v27);
@@ -8491,7 +8491,7 @@ LABEL_25:
     v31 = objc_autoreleasePoolPush();
     v124 = 0;
     v125 = 0;
-    [v17 predictContextWithInputSignals:v120 result:&v125 outError:&v124];
+    [algorithms predictContextWithInputSignals:v120 result:&v125 outError:&v124];
     v32 = v125;
     v33 = COERCE_DOUBLE(v124);
     objc_autoreleasePoolPop(v31);
@@ -8551,32 +8551,32 @@ LABEL_25:
     }
 
     v118 = v14;
-    v119 = v17;
+    v119 = algorithms;
     aSelector = a2;
     v43 = objc_autoreleasePoolPush();
     v44 = objc_opt_new();
     v45 = objc_opt_new();
     [v44 setPredictEvent:v45];
 
-    v46 = [v44 predictEvent];
-    [v46 setInput:v120];
+    predictEvent = [v44 predictEvent];
+    [predictEvent setInput:v120];
 
-    v47 = [v44 predictEvent];
-    [v47 setResult:v32];
+    predictEvent2 = [v44 predictEvent];
+    [predictEvent2 setResult:v32];
 
     [(RTPredictedContextManager *)self saveInteractionRecord:v44];
     objc_autoreleasePoolPop(v43);
-    v48 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v49 = +[RTPredictedContextUtility modelPath];
-    LOBYTE(v47) = [v48 fileExistsAtPath:v49];
+    LOBYTE(predictEvent2) = [defaultManager fileExistsAtPath:v49];
 
-    if ((v47 & 1) == 0)
+    if ((predictEvent2 & 1) == 0)
     {
       v108 = [MEMORY[0x277CBEAA8] now];
       v50 = objc_autoreleasePoolPush();
       v122 = 0;
       v123 = 0;
-      [v17 retrieveAlgorithmState:&v123 outError:&v122];
+      [algorithms retrieveAlgorithmState:&v123 outError:&v122];
       v51 = v123;
       v107 = COERCE_DOUBLE(v122);
       objc_autoreleasePoolPop(v50);
@@ -8585,8 +8585,8 @@ LABEL_25:
       v54 = objc_opt_new();
       [v53 setRetrieveStateEvent:v54];
 
-      v55 = [v53 retrieveStateEvent];
-      [v55 setOutState:v51];
+      retrieveStateEvent = [v53 retrieveStateEvent];
+      [retrieveStateEvent setOutState:v51];
 
       [(RTPredictedContextManager *)self saveInteractionRecord:v53];
       objc_autoreleasePoolPop(v52);
@@ -8616,9 +8616,9 @@ LABEL_25:
         }
       }
 
-      v64 = [v51 data];
+      data = [v51 data];
       v121 = 0;
-      v65 = [RTPredictedContextUtility writeModel:v64 error:&v121];
+      v65 = [RTPredictedContextUtility writeModel:data error:&v121];
       v66 = COERCE_DOUBLE(v121);
       if (v66 != 0.0)
       {
@@ -8655,9 +8655,9 @@ LABEL_25:
           NSStringFromClass(v69);
           v70 = v105 = v35;
           v71 = NSStringFromSelector(aSelector);
-          v72 = vcvtd_n_f64_u64([v64 length], 0x14uLL);
+          v72 = vcvtd_n_f64_u64([data length], 0x14uLL);
           v73 = !v65;
-          v74 = a4;
+          errorCopy = error;
           if (v73)
           {
             *&v75 = COERCE_DOUBLE(@"NO");
@@ -8677,7 +8677,7 @@ LABEL_25:
           v132 = v72;
           v133 = 2112;
           v134 = *&v75;
-          a4 = v74;
+          error = errorCopy;
           v135 = 2112;
           v136 = v66;
           v137 = 2048;
@@ -8690,11 +8690,11 @@ LABEL_25:
     }
 
     v77 = [(RTPredictedContextManager *)self _convertContextResult:v32];
-    [(RTPredictedContextManager *)self _processPredictedContextResult:v77 reason:v113];
+    [(RTPredictedContextManager *)self _processPredictedContextResult:v77 reason:reasonCopy];
     v78 = objc_alloc(MEMORY[0x277D01240]);
-    v79 = [MEMORY[0x277CCAD78] UUID];
-    v80 = [(RTPredictedContextManager *)self clients];
-    v81 = COERCE_DOUBLE([v78 initWithIdentifier:v79 predictedContextResult:v77 requestStartDate:v117 requestEndDate:v35 inferenceTriggerReason:v113 memoryFootprintStart:objc_msgSend(v80 memoryFootprintEnd:"count") clientCount:{v16, v37}]);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    clients = [(RTPredictedContextManager *)self clients];
+    v81 = COERCE_DOUBLE([v78 initWithIdentifier:uUID predictedContextResult:v77 requestStartDate:v117 requestEndDate:v35 inferenceTriggerReason:reasonCopy memoryFootprintStart:objc_msgSend(clients memoryFootprintEnd:"count") clientCount:{v16, v37}]);
 
     objc_autoreleasePoolPop(context);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -8717,10 +8717,10 @@ LABEL_25:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v86 = _RTSafeArray();
-      *a4 = _RTMultiErrorCreate();
+      *error = _RTMultiErrorCreate();
     }
 
     v87 = v114;
@@ -8735,11 +8735,11 @@ LABEL_25:
     v90 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v140 forKeys:&v139 count:1];
     v87 = [v88 errorWithDomain:v89 code:5 userInfo:v90];
 
-    if (a4)
+    if (error)
     {
       v91 = v87;
       v81 = 0.0;
-      *a4 = v87;
+      *error = v87;
     }
 
     else
@@ -8751,39 +8751,39 @@ LABEL_25:
   return *&v81;
 }
 
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  array = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = MEMORY[0x277CBEBC0];
   v10 = +[RTPredictedContextUtility modelPath];
   v11 = [v9 fileURLWithPath:v10];
 
-  v12 = [v11 path];
-  LODWORD(v10) = [v8 fileExistsAtPath:v12];
+  path = [v11 path];
+  LODWORD(v10) = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
-    v13 = [v11 path];
-    v14 = [v6 URLByAppendingPathComponent:v13];
+    path2 = [v11 path];
+    v14 = [lCopy URLByAppendingPathComponent:path2];
 
     v55 = 0;
-    v15 = [v8 copyItemAtURL:v11 toURL:v14 error:&v55];
+    v15 = [defaultManager copyItemAtURL:v11 toURL:v14 error:&v55];
     v16 = v55;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v43 = a4;
+      errorCopy = error;
       v17 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = objc_opt_class();
         v40 = NSStringFromClass(v18);
-        v41 = self;
+        selfCopy = self;
         v39 = NSStringFromSelector(a2);
-        v19 = [v11 path];
-        v20 = [v14 path];
+        path3 = [v11 path];
+        path4 = [v14 path];
         *buf = 138413570;
         v21 = @"NO";
         v57 = v40;
@@ -8795,39 +8795,39 @@ LABEL_25:
 
         v59 = v39;
         v60 = 2112;
-        v61 = v19;
+        v61 = path3;
         v62 = 2112;
-        v63 = v20;
-        v22 = v20;
+        v63 = path4;
+        v22 = path4;
         v64 = 2112;
         v65 = v21;
         v66 = 2112;
         v67 = v16;
         _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, %@, copy pc model from, %@, to, %@, success, %@, error, %@", buf, 0x3Eu);
 
-        self = v41;
+        self = selfCopy;
       }
 
-      a4 = v43;
+      error = errorCopy;
     }
 
     if (v16)
     {
-      [v7 addObject:v16];
+      [array addObject:v16];
     }
   }
 
-  v23 = [objc_opt_class() serializedDataContainerPath];
-  if ([v8 fileExistsAtPath:v23])
+  serializedDataContainerPath = [objc_opt_class() serializedDataContainerPath];
+  if ([defaultManager fileExistsAtPath:serializedDataContainerPath])
   {
-    v44 = a4;
-    v24 = [v6 URLByAppendingPathComponent:v23];
-    v25 = [v24 path];
+    errorCopy2 = error;
+    v24 = [lCopy URLByAppendingPathComponent:serializedDataContainerPath];
+    path5 = [v24 path];
 
-    if (([v8 fileExistsAtPath:v25] & 1) == 0)
+    if (([defaultManager fileExistsAtPath:path5] & 1) == 0)
     {
       v54 = 0;
-      v26 = [v8 createDirectoryAtPath:v25 withIntermediateDirectories:1 attributes:0 error:&v54];
+      v26 = [defaultManager createDirectoryAtPath:path5 withIntermediateDirectories:1 attributes:0 error:&v54];
       v27 = v54;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -8849,7 +8849,7 @@ LABEL_25:
           v59 = v30;
           v32 = v30;
           v60 = 2112;
-          v61 = v25;
+          v61 = path5;
           v62 = 2112;
           v63 = v31;
           v64 = 2112;
@@ -8860,39 +8860,39 @@ LABEL_25:
 
       if (v27)
       {
-        [v7 addObject:v27];
+        [array addObject:v27];
       }
     }
 
     v53 = 0;
-    v33 = [v8 contentsOfDirectoryAtPath:v23 error:&v53];
+    v33 = [defaultManager contentsOfDirectoryAtPath:serializedDataContainerPath error:&v53];
     v34 = v53;
     if (v34)
     {
-      [v7 addObject:v34];
+      [array addObject:v34];
     }
 
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __65__RTPredictedContextManager__generateDiagnosticFilesAtURL_error___block_invoke;
     v46[3] = &unk_2788D28E8;
-    v47 = v23;
-    v48 = v6;
-    v49 = v8;
-    v50 = self;
+    v47 = serializedDataContainerPath;
+    v48 = lCopy;
+    v49 = defaultManager;
+    selfCopy2 = self;
     v52 = a2;
-    v51 = v7;
+    v51 = array;
     [v33 enumerateObjectsUsingBlock:v46];
 
-    a4 = v44;
+    error = errorCopy2;
   }
 
-  v35 = [v7 count];
+  v35 = [array count];
   v36 = v35;
-  if (a4 && v35)
+  if (error && v35)
   {
     v37 = _RTSafeArray();
-    *a4 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
   return v36 == 0;
@@ -8954,25 +8954,25 @@ void __65__RTPredictedContextManager__generateDiagnosticFilesAtURL_error___block
   }
 }
 
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTPredictedContextManager_sendDiagnosticsToURL_options_handler___block_invoke;
   block[3] = &unk_2788C47F8;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v17 = optionsCopy;
+  v18 = lCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
+  v15 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
 void __66__RTPredictedContextManager_sendDiagnosticsToURL_options_handler___block_invoke(uint64_t a1)
@@ -9044,20 +9044,20 @@ void __66__RTPredictedContextManager_sendDiagnosticsToURL_options_handler___bloc
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(RTNotifier *)self queue];
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion___block_invoke;
   v11[3] = &unk_2788C6710;
-  v13 = a3;
+  typeCopy = type;
   v14 = a2;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, v11);
 }
 
 void __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -9169,13 +9169,13 @@ void __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion
   }
 }
 
-- (void)_startTrainingDurationCapTimerWithStartTime:(id)a3
+- (void)_startTrainingDurationCapTimerWithStartTime:(id)time
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTPredictedContextManager *)self trainingDurationCapTimer];
+  timeCopy = time;
+  trainingDurationCapTimer = [(RTPredictedContextManager *)self trainingDurationCapTimer];
 
-  if (v6)
+  if (trainingDurationCapTimer)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -9194,22 +9194,22 @@ void __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion
   else
   {
     v8 = [RTXPCTimerAlarm alloc];
-    v9 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __73__RTPredictedContextManager__startTrainingDurationCapTimerWithStartTime___block_invoke;
     v25[3] = &unk_2788C4A70;
     v25[4] = self;
-    v26 = v5;
-    v10 = [(RTXPCTimerAlarm *)v8 initWithIdentifier:@"com.apple.routined.predictedContext.trainingDurationCapTimer" queue:v9 handler:v25];
+    v26 = timeCopy;
+    v10 = [(RTXPCTimerAlarm *)v8 initWithIdentifier:@"com.apple.routined.predictedContext.trainingDurationCapTimer" queue:queue handler:v25];
     [(RTPredictedContextManager *)self setTrainingDurationCapTimer:v10];
 
     v11 = MEMORY[0x277CBEAA8];
     [(RTPredictedContextManager *)self _trainingDurationCapInterval];
     v12 = [v11 dateWithTimeIntervalSinceNow:?];
-    v13 = [(RTPredictedContextManager *)self trainingDurationCapTimer];
+    trainingDurationCapTimer2 = [(RTPredictedContextManager *)self trainingDurationCapTimer];
     v24 = 0;
-    [v13 fireWithDate:v12 shouldWake:0 error:&v24];
+    [trainingDurationCapTimer2 fireWithDate:v12 shouldWake:0 error:&v24];
     v14 = v24;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -9220,14 +9220,14 @@ void __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
         v18 = NSStringFromSelector(a2);
-        v19 = [v12 stringFromDate];
+        stringFromDate = [v12 stringFromDate];
         [(RTPredictedContextManager *)self _trainingDurationCapInterval];
         *buf = 138413314;
         v28 = v17;
         v29 = 2112;
         v30 = v18;
         v31 = 2112;
-        v32 = v19;
+        v32 = stringFromDate;
         v33 = 2048;
         v34 = v20;
         v35 = 2112;
@@ -9238,13 +9238,13 @@ void __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion
   }
 }
 
-- (void)_handleTrainingDurationCapTimerWithStartTime:(id)a3
+- (void)_handleTrainingDurationCapTimerWithStartTime:(id)time
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timeCopy = time;
   [(RTPredictedContextManager *)self _invalidateTrainingDurationCapTimer];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSinceDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:timeCopy];
   v8 = v7;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -9284,17 +9284,17 @@ void __73__RTPredictedContextManager_performPurgeOfType_referenceDate_completion
   }
 
   [(RTPredictedContextManager *)self setPendingInterruptSource:1];
-  v14 = [MEMORY[0x277CBEAA8] date];
-  v15 = [(RTPredictedContextManager *)self mapServiceManager];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  mapServiceManager = [(RTPredictedContextManager *)self mapServiceManager];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __74__RTPredictedContextManager__handleTrainingDurationCapTimerWithStartTime___block_invoke;
   v20[3] = &unk_2788C8A48;
-  v21 = v14;
-  v22 = self;
+  v21 = date2;
+  selfCopy = self;
   v23 = a2;
-  v16 = v14;
-  [v15 interruptComputeWithError:v20];
+  v16 = date2;
+  [mapServiceManager interruptComputeWithError:v20];
 }
 
 void __74__RTPredictedContextManager__handleTrainingDurationCapTimerWithStartTime___block_invoke(uint64_t a1, void *a2)
@@ -9379,12 +9379,12 @@ LABEL_10:
 - (void)_invalidateTrainingDurationCapTimer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [(RTPredictedContextManager *)self trainingDurationCapTimer];
+  trainingDurationCapTimer = [(RTPredictedContextManager *)self trainingDurationCapTimer];
 
-  if (v4)
+  if (trainingDurationCapTimer)
   {
-    v5 = [(RTPredictedContextManager *)self trainingDurationCapTimer];
-    [v5 invalidate];
+    trainingDurationCapTimer2 = [(RTPredictedContextManager *)self trainingDurationCapTimer];
+    [trainingDurationCapTimer2 invalidate];
 
     [(RTPredictedContextManager *)self setTrainingDurationCapTimer:0];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))

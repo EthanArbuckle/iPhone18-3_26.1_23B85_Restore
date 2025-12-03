@@ -1,24 +1,24 @@
 @interface BRKRoutineManager
-+ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)a3 routineManager:(id)a4 withHandler:(id)a5;
++ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)type routineManager:(id)manager withHandler:(id)handler;
 @end
 
 @implementation BRKRoutineManager
 
-+ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)a3 routineManager:(id)a4 withHandler:(id)a5
++ (void)fetchLocationsOfInterestWithSingleRetryOfType:(int64_t)type routineManager:(id)manager withHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  managerCopy = manager;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __94__BRKRoutineManager_fetchLocationsOfInterestWithSingleRetryOfType_routineManager_withHandler___block_invoke;
   v12[3] = &unk_278D287C8;
-  v14 = v8;
-  v15 = a3;
-  v13 = v7;
-  v9 = v8;
-  v10 = v7;
+  v14 = handlerCopy;
+  typeCopy = type;
+  v13 = managerCopy;
+  v9 = handlerCopy;
+  v10 = managerCopy;
   v11 = MEMORY[0x245D05110](v12);
-  [v10 fetchLocationsOfInterestOfType:a3 withHandler:v11];
+  [v10 fetchLocationsOfInterestOfType:type withHandler:v11];
 }
 
 void __94__BRKRoutineManager_fetchLocationsOfInterestWithSingleRetryOfType_routineManager_withHandler___block_invoke(uint64_t a1, void *a2, void *a3)

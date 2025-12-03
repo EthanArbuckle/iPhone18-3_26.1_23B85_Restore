@@ -1,14 +1,14 @@
 @interface PUIDTouchHistory
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3;
-- (PUIDTouchHistory)initWithDepth:(unint64_t)a3;
-- (int)touchHistoryDepthForTimeDuration:(double)a3 forComputingDerivative:(BOOL)a4;
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration;
+- (PUIDTouchHistory)initWithDepth:(unint64_t)depth;
+- (int)touchHistoryDepthForTimeDuration:(double)duration forComputingDerivative:(BOOL)derivative;
 - (void)reset;
-- (void)updateWithLocation:(CGPoint)a3 timestamp:(double)a4;
+- (void)updateWithLocation:(CGPoint)location timestamp:(double)timestamp;
 @end
 
 @implementation PUIDTouchHistory
 
-- (PUIDTouchHistory)initWithDepth:(unint64_t)a3
+- (PUIDTouchHistory)initWithDepth:(unint64_t)depth
 {
   v11.receiver = self;
   v11.super_class = PUIDTouchHistory;
@@ -16,12 +16,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->_depth = a3;
-    v6 = [NSMutableArray arrayWithCapacity:a3];
+    v4->_depth = depth;
+    v6 = [NSMutableArray arrayWithCapacity:depth];
     locations = v5->_locations;
     v5->_locations = v6;
 
-    v8 = [NSMutableArray arrayWithCapacity:a3];
+    v8 = [NSMutableArray arrayWithCapacity:depth];
     timestamps = v5->_timestamps;
     v5->_timestamps = v8;
   }
@@ -29,10 +29,10 @@
   return v5;
 }
 
-- (void)updateWithLocation:(CGPoint)a3 timestamp:(double)a4
+- (void)updateWithLocation:(CGPoint)location timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if ([(NSMutableArray *)self->_locations count]== (self->_depth - 1))
   {
     [(NSMutableArray *)self->_locations removeLastObject];
@@ -44,7 +44,7 @@
   [(NSMutableArray *)locations insertObject:v9 atIndex:0];
 
   timestamps = self->_timestamps;
-  v11 = [NSNumber numberWithDouble:a4];
+  v11 = [NSNumber numberWithDouble:timestamp];
   [(NSMutableArray *)timestamps insertObject:v11 atIndex:0];
 }
 
@@ -56,9 +56,9 @@
   [(NSMutableArray *)timestamps removeAllObjects];
 }
 
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration
 {
-  v4 = [(PUIDTouchHistory *)self touchHistoryDepthForTimeDuration:1 forComputingDerivative:a3];
+  v4 = [(PUIDTouchHistory *)self touchHistoryDepthForTimeDuration:1 forComputingDerivative:duration];
   x = CGPointZero.x;
   y = CGPointZero.y;
   if (v4)
@@ -110,9 +110,9 @@
   return result;
 }
 
-- (int)touchHistoryDepthForTimeDuration:(double)a3 forComputingDerivative:(BOOL)a4
+- (int)touchHistoryDepthForTimeDuration:(double)duration forComputingDerivative:(BOOL)derivative
 {
-  v4 = a4;
+  derivativeCopy = derivative;
   v7 = CACurrentMediaTime();
   if (![(NSMutableArray *)self->_locations count])
   {
@@ -132,9 +132,9 @@
     v10 = v15;
 
     ++v11;
-    if (v13 >= a3)
+    if (v13 >= duration)
     {
-      if (!v4)
+      if (!derivativeCopy)
       {
         --v11;
       }

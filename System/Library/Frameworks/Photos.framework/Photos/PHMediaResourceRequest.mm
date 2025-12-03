@@ -1,73 +1,73 @@
 @interface PHMediaResourceRequest
-- (BOOL)retryAssetResourceRequest:(id)a3 afterFailureWithError:(id)a4;
+- (BOOL)retryAssetResourceRequest:(id)request afterFailureWithError:(id)error;
 - (NSString)description;
-- (PHMediaResourceRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 assetResource:(id)a8 networkAccessAllowed:(BOOL)a9 downloadIntent:(int64_t)a10 downloadPriority:(int64_t)a11 wantsURLOnly:(BOOL)a12 synchronous:(BOOL)a13 delegate:(id)a14;
-- (void)_finishWithError:(id)a3;
-- (void)_handleDidFindFileURL:(id)a3;
-- (void)_receiveAssetResourceDataPart:(id)a3;
-- (void)assetResourceRequest:(id)a3 didFinishWithError:(id)a4;
+- (PHMediaResourceRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset assetResource:(id)resource networkAccessAllowed:(BOOL)allowed downloadIntent:(int64_t)self0 downloadPriority:(int64_t)self1 wantsURLOnly:(BOOL)self2 synchronous:(BOOL)self3 delegate:(id)self4;
+- (void)_finishWithError:(id)error;
+- (void)_handleDidFindFileURL:(id)l;
+- (void)_receiveAssetResourceDataPart:(id)part;
+- (void)assetResourceRequest:(id)request didFinishWithError:(id)error;
 - (void)cancel;
 - (void)startRequest;
 @end
 
 @implementation PHMediaResourceRequest
 
-- (BOOL)retryAssetResourceRequest:(id)a3 afterFailureWithError:(id)a4
+- (BOOL)retryAssetResourceRequest:(id)request afterFailureWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(PHMediaRequest *)self delegate];
-  LOBYTE(self) = [v6 retryMediaRequest:self afterFailureWithError:v5];
+  errorCopy = error;
+  delegate = [(PHMediaRequest *)self delegate];
+  LOBYTE(self) = [delegate retryMediaRequest:self afterFailureWithError:errorCopy];
 
   return self;
 }
 
-- (void)assetResourceRequest:(id)a3 didFinishWithError:(id)a4
+- (void)assetResourceRequest:(id)request didFinishWithError:(id)error
 {
-  [(PHMediaResourceResult *)self->_dataResult setAssetResourceData:self->_compositeData, a4];
+  [(PHMediaResourceResult *)self->_dataResult setAssetResourceData:self->_compositeData, error];
   dataResult = self->_dataResult;
-  v6 = [(PHAssetResourceRequest *)self->_internalRequest info];
-  [(PHCompositeMediaResult *)dataResult addInfoFromDictionary:v6];
+  info = [(PHAssetResourceRequest *)self->_internalRequest info];
+  [(PHCompositeMediaResult *)dataResult addInfoFromDictionary:info];
 
-  v7 = [(PHMediaRequest *)self delegate];
-  [v7 mediaRequest:self didFinishWithResult:self->_dataResult];
+  delegate = [(PHMediaRequest *)self delegate];
+  [delegate mediaRequest:self didFinishWithResult:self->_dataResult];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
-    progressHandler[2](progressHandler, 1, v4, 1.0);
+    progressHandler[2](progressHandler, 1, errorCopy, 1.0);
   }
 
   v6 = PLImageManagerGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(PHMediaRequest *)self identifierString];
+    identifierString = [(PHMediaRequest *)self identifierString];
     v8 = 138412546;
-    v9 = v7;
+    v9 = identifierString;
     v10 = 2112;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEBUG, "[RM] %@ Media resource request finished with error: %@", &v8, 0x16u);
   }
 
-  [(PHCompositeMediaResult *)self->_dataResult setError:v4];
+  [(PHCompositeMediaResult *)self->_dataResult setError:errorCopy];
 }
 
-- (void)_receiveAssetResourceDataPart:(id)a3
+- (void)_receiveAssetResourceDataPart:(id)part
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  partCopy = part;
   v5 = PLImageManagerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PHMediaRequest *)self identifierString];
+    identifierString = [(PHMediaRequest *)self identifierString];
     v10 = 138412546;
-    v11 = v6;
+    v11 = identifierString;
     v12 = 2048;
-    v13 = [v4 length];
+    v13 = [partCopy length];
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "[RM] %@ Media resource request receiving data with length: %ld", &v10, 0x16u);
   }
 
@@ -81,25 +81,25 @@
     compositeData = self->_compositeData;
   }
 
-  [(NSMutableData *)compositeData appendData:v4];
+  [(NSMutableData *)compositeData appendData:partCopy];
 }
 
-- (void)_handleDidFindFileURL:(id)a3
+- (void)_handleDidFindFileURL:(id)l
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = PLImageManagerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PHMediaRequest *)self identifierString];
+    identifierString = [(PHMediaRequest *)self identifierString];
     v7 = 138412546;
-    v8 = v6;
+    v8 = identifierString;
     v9 = 2112;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "[RM] %@ Media resource request determined resource url: %@", &v7, 0x16u);
   }
 
-  [(PHMediaResourceResult *)self->_dataResult setAssetResourceFileURL:v4];
+  [(PHMediaResourceResult *)self->_dataResult setAssetResourceFileURL:lCopy];
 }
 
 - (NSString)description
@@ -144,10 +144,10 @@
   v3 = PLImageManagerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHMediaRequest *)self identifierString];
+    identifierString = [(PHMediaRequest *)self identifierString];
     v5 = _PHAssetResourceTypeDescription([(PHMediaResourceRequest *)self resourceType]);
     *buf = 138412546;
-    v25 = v4;
+    v25 = identifierString;
     v26 = 2112;
     v27 = v5;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEFAULT, "[RM] %@ Starting media resource request for resource type %@", buf, 0x16u);
@@ -158,9 +158,9 @@
     v6 = PLImageManagerGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(PHMediaRequest *)self identifierString];
+      identifierString2 = [(PHMediaRequest *)self identifierString];
       *buf = 138412290;
-      v25 = v7;
+      v25 = identifierString2;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEBUG, "[RM] %@ resource request starting with both synchronous and network access allowed - warning, result may block for a long time", buf, 0xCu);
     }
   }
@@ -183,8 +183,8 @@
 
   v9 = [PHAssetResourceRequest alloc];
   resource = self->_resource;
-  v11 = [(PHMediaRequest *)self requestID];
-  v12 = [(PHMediaRequest *)self managerID];
+  requestID = [(PHMediaRequest *)self requestID];
+  managerID = [(PHMediaRequest *)self managerID];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __38__PHMediaResourceRequest_startRequest__block_invoke_2;
@@ -200,12 +200,12 @@
   v16[2] = __38__PHMediaResourceRequest_startRequest__block_invoke_4;
   v16[3] = &unk_1E75AB048;
   objc_copyWeak(&v17, buf);
-  v13 = [(PHAssetResourceRequest *)v9 initWithAssetResource:resource options:v8 requestID:v11 managerID:v12 delegate:self urlReceivedHandler:v20 dataReceivedHandler:v18 completionHandler:v16];
+  v13 = [(PHAssetResourceRequest *)v9 initWithAssetResource:resource options:v8 requestID:requestID managerID:managerID delegate:self urlReceivedHandler:v20 dataReceivedHandler:v18 completionHandler:v16];
   internalRequest = self->_internalRequest;
   self->_internalRequest = v13;
 
-  v15 = [(PHMediaRequest *)self identifierString];
-  [(PHAssetResourceRequest *)self->_internalRequest setTaskIdentifier:v15];
+  identifierString3 = [(PHMediaRequest *)self identifierString];
+  [(PHAssetResourceRequest *)self->_internalRequest setTaskIdentifier:identifierString3];
 
   [(PHAssetResourceRequest *)self->_internalRequest setLoadURLOnly:self->_wantsURLOnly];
   [(PHAssetResourceRequest *)self->_internalRequest setSynchronous:self->_synchronous];
@@ -243,15 +243,15 @@ void __38__PHMediaResourceRequest_startRequest__block_invoke_4(uint64_t a1, void
   [WeakRetained _finishWithError:v3];
 }
 
-- (PHMediaResourceRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 assetResource:(id)a8 networkAccessAllowed:(BOOL)a9 downloadIntent:(int64_t)a10 downloadPriority:(int64_t)a11 wantsURLOnly:(BOOL)a12 synchronous:(BOOL)a13 delegate:(id)a14
+- (PHMediaResourceRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset assetResource:(id)resource networkAccessAllowed:(BOOL)allowed downloadIntent:(int64_t)self0 downloadPriority:(int64_t)self1 wantsURLOnly:(BOOL)self2 synchronous:(BOOL)self3 delegate:(id)self4
 {
-  v18 = *&a3;
-  v21 = a7;
-  v22 = a8;
-  v23 = a14;
-  if (v21)
+  v18 = *&d;
+  assetCopy = asset;
+  resourceCopy = resource;
+  delegateCopy = delegate;
+  if (assetCopy)
   {
-    if (v22)
+    if (resourceCopy)
     {
       goto LABEL_3;
     }
@@ -259,32 +259,32 @@ void __38__PHMediaResourceRequest_startRequest__block_invoke_4(uint64_t a1, void
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PHMediaResourceRequest.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaResourceRequest.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    if (v22)
+    if (resourceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"PHMediaResourceRequest.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"assetResource"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaResourceRequest.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"assetResource"}];
 
 LABEL_3:
   v31.receiver = self;
   v31.super_class = PHMediaResourceRequest;
-  v24 = [(PHMediaRequest *)&v31 initWithRequestID:v18 requestIndex:a4 contextType:a5 managerID:a6 asset:v21 delegate:v23];
+  v24 = [(PHMediaRequest *)&v31 initWithRequestID:v18 requestIndex:index contextType:type managerID:iD asset:assetCopy delegate:delegateCopy];
   v25 = v24;
   if (v24)
   {
-    v24->_resource = v22;
-    v24->_networkAccessAllowed = a9;
-    v24->_downloadIntent = a10;
-    v24->_downloadPriority = a11;
-    v24->_synchronous = a13;
-    v24->_wantsURLOnly = a12;
-    v26 = [[PHMediaResourceResult alloc] initWithRequestID:v18 assetResource:v22];
+    v24->_resource = resourceCopy;
+    v24->_networkAccessAllowed = allowed;
+    v24->_downloadIntent = intent;
+    v24->_downloadPriority = priority;
+    v24->_synchronous = synchronous;
+    v24->_wantsURLOnly = only;
+    v26 = [[PHMediaResourceResult alloc] initWithRequestID:v18 assetResource:resourceCopy];
     dataResult = v25->_dataResult;
     v25->_dataResult = v26;
   }

@@ -8,7 +8,7 @@
 - (BOOL)ac_isEyesFree
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v2 = [a1 getServiceSetting:1 key:@"BT_KEY_SIRI_EYESFREE_MODE"];
+  v2 = [self getServiceSetting:1 key:@"BT_KEY_SIRI_EYESFREE_MODE"];
   if ([v2 BOOLValue])
   {
 
@@ -24,7 +24,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (![a1 isServiceSupported:128] || (v11 = 0, v12[0] = 0, *(v12 + 7) = 0, objc_msgSend(a1, "device"), BTDeviceGetAddressString()) || (v10 = 0, *bytes = 0, BTDeviceAddressFromString()) || (v7 = CFDataCreate(0, bytes, 6)) == 0)
+  if (![self isServiceSupported:128] || (v11 = 0, v12[0] = 0, *(v12 + 7) = 0, objc_msgSend(self, "device"), BTDeviceGetAddressString()) || (v10 = 0, *bytes = 0, BTDeviceAddressFromString()) || (v7 = CFDataCreate(0, bytes, 6)) == 0)
   {
     v4 = 0;
   }
@@ -43,7 +43,7 @@ LABEL_9:
 
 - (uint64_t)ac_isBluetoothVehicle
 {
-  [a1 device];
+  [self device];
   DeviceType = BTDeviceGetDeviceType();
   result = 0;
   if (!DeviceType)

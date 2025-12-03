@@ -1,12 +1,12 @@
 @interface SearchUICustomViewCardSectionView
 - (BOOL)needsInternalFocus;
 - (BOOL)setupManualFocus;
-- (SearchUICustomViewCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
+- (SearchUICustomViewCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (SearchUICustomViewProvider)viewProvider;
 - (id)setupContentView;
 - (void)removeManualFocus;
-- (void)setViewProvider:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)setViewProvider:(id)provider;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUICustomViewCardSectionView
@@ -18,16 +18,16 @@
   return Strong;
 }
 
-- (void)setViewProvider:(id)a3
+- (void)setViewProvider:(id)provider
 {
   swift_unknownObjectWeakAssign();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v4 = [(SearchUICardSectionView *)v6 rowModel];
-  if (v4)
+  rowModel = [(SearchUICardSectionView *)selfCopy rowModel];
+  if (rowModel)
   {
-    v5 = v4;
-    [(SearchUICustomViewCardSectionView *)v6 updateWithRowModel:v5];
+    v5 = rowModel;
+    [(SearchUICustomViewCardSectionView *)selfCopy updateWithRowModel:v5];
   }
 
   swift_unknownObjectRelease();
@@ -35,21 +35,21 @@
 
 - (id)setupContentView
 {
-  v2 = self;
-  [(SearchUICustomViewCardSectionView *)v2 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+  selfCopy = self;
+  [(SearchUICustomViewCardSectionView *)selfCopy setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
   v3 = OBJC_IVAR___SearchUICustomViewCardSectionView_baseView;
-  [*(v2 + OBJC_IVAR___SearchUICustomViewCardSectionView_baseView) setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview_];
-  v4 = *(v2 + v3);
+  [*(selfCopy + OBJC_IVAR___SearchUICustomViewCardSectionView_baseView) setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview_];
+  v4 = *(selfCopy + v3);
   v5 = v4;
 
   return v4;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v5 = a3;
-  v6 = self;
-  sub_1DA231CBC(a3);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1DA231CBC(model);
 }
 
 - (BOOL)needsInternalFocus
@@ -106,11 +106,11 @@
   }
 }
 
-- (SearchUICustomViewCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUICustomViewCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v6 = a3;
+  modelCopy = model;
   swift_unknownObjectRetain();
-  return sub_1DA2324F8(a3, a4);
+  return sub_1DA2324F8(model, delegate);
 }
 
 @end

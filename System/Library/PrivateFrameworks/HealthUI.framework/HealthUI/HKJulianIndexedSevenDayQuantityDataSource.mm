@@ -1,33 +1,33 @@
 @interface HKJulianIndexedSevenDayQuantityDataSource
-- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4 quantityType:(id)a5 unitController:(id)a6 intervalUserInfoCreationBlock:(id)a7;
-- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4 quantityType:(id)a5 unitController:(id)a6 singlePointUserInfoCreationBlock:(id)a7;
-- (id)_createIntervalChartPointFromDateInterval:(id)a3 timeZoneName:(id)a4 yValue:(id)a5 metadata:(id)a6;
-- (id)_createSinglePointChartPointFromDateInterval:(id)a3 statisticsInterval:(id)a4 timeZoneName:(id)a5 yValue:(id)a6 metadata:(id)a7;
-- (id)_intervalChartPointsWithSamples:(id)a3;
-- (id)_singlePointChartPointsWithSamples:(id)a3 statisticsInterval:(id)a4;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)type healthStore:(id)store quantityType:(id)quantityType unitController:(id)controller intervalUserInfoCreationBlock:(id)block;
+- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)type healthStore:(id)store quantityType:(id)quantityType unitController:(id)controller singlePointUserInfoCreationBlock:(id)block;
+- (id)_createIntervalChartPointFromDateInterval:(id)interval timeZoneName:(id)name yValue:(id)value metadata:(id)metadata;
+- (id)_createSinglePointChartPointFromDateInterval:(id)interval statisticsInterval:(id)statisticsInterval timeZoneName:(id)name yValue:(id)value metadata:(id)metadata;
+- (id)_intervalChartPointsWithSamples:(id)samples;
+- (id)_singlePointChartPointsWithSamples:(id)samples statisticsInterval:(id)interval;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
 @implementation HKJulianIndexedSevenDayQuantityDataSource
 
-- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4 quantityType:(id)a5 unitController:(id)a6 intervalUserInfoCreationBlock:(id)a7
+- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)type healthStore:(id)store quantityType:(id)quantityType unitController:(id)controller intervalUserInfoCreationBlock:(id)block
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  quantityTypeCopy = quantityType;
+  controllerCopy = controller;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = HKJulianIndexedSevenDayQuantityDataSource;
-  v16 = [(HKHealthQueryChartCacheDataSource *)&v24 initWithDisplayType:a3 healthStore:a4];
+  v16 = [(HKHealthQueryChartCacheDataSource *)&v24 initWithDisplayType:type healthStore:store];
   v17 = v16;
   if (v16)
   {
     v16->_dataSourceType = 1;
-    objc_storeStrong(&v16->_unitController, a6);
-    objc_storeStrong(&v17->_quantityType, a5);
-    v18 = _Block_copy(v15);
+    objc_storeStrong(&v16->_unitController, controller);
+    objc_storeStrong(&v17->_quantityType, quantityType);
+    v18 = _Block_copy(blockCopy);
     intervalUserInfoCreationBlock = v17->_intervalUserInfoCreationBlock;
     v17->_intervalUserInfoCreationBlock = v18;
 
@@ -42,24 +42,24 @@
   return v17;
 }
 
-- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4 quantityType:(id)a5 unitController:(id)a6 singlePointUserInfoCreationBlock:(id)a7
+- (HKJulianIndexedSevenDayQuantityDataSource)initWithDisplayType:(id)type healthStore:(id)store quantityType:(id)quantityType unitController:(id)controller singlePointUserInfoCreationBlock:(id)block
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  quantityTypeCopy = quantityType;
+  controllerCopy = controller;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = HKJulianIndexedSevenDayQuantityDataSource;
-  v16 = [(HKHealthQueryChartCacheDataSource *)&v24 initWithDisplayType:a3 healthStore:a4];
+  v16 = [(HKHealthQueryChartCacheDataSource *)&v24 initWithDisplayType:type healthStore:store];
   v17 = v16;
   if (v16)
   {
     v16->_dataSourceType = 0;
-    objc_storeStrong(&v16->_unitController, a6);
-    objc_storeStrong(&v17->_quantityType, a5);
+    objc_storeStrong(&v16->_unitController, controller);
+    objc_storeStrong(&v17->_quantityType, quantityType);
     intervalUserInfoCreationBlock = v17->_intervalUserInfoCreationBlock;
     v17->_intervalUserInfoCreationBlock = 0;
 
-    v19 = _Block_copy(v15);
+    v19 = _Block_copy(blockCopy);
     singlePointUserInfoCreationBlock = v17->_singlePointUserInfoCreationBlock;
     v17->_singlePointUserInfoCreationBlock = v19;
 
@@ -74,28 +74,28 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v4 = [v3 localization];
-  v5 = [v4 displayName];
-  v6 = [v2 stringWithFormat:@"HKJulianIndexedSevenDayQuantity(%@)", v5];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  localization = [displayType localization];
+  displayName = [localization displayName];
+  v6 = [v2 stringWithFormat:@"HKJulianIndexedSevenDayQuantity(%@)", displayName];
 
   return v6;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E696C378];
-  v8 = a3;
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
+  requestCopy = request;
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
 
-  v11 = [v7 predicateForSamplesWithStartDate:v9 endDate:v10 options:1];
+  v11 = [v7 predicateForSamplesWithStartDate:startDate endDate:endDate options:1];
 
   v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:*MEMORY[0x1E696BE38] ascending:1];
   v13 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v14 = [(HKJulianIndexedSevenDayQuantityDataSource *)self quantityType];
+  quantityType = [(HKJulianIndexedSevenDayQuantityDataSource *)self quantityType];
   v23[0] = v12;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v20[0] = MEMORY[0x1E69E9820];
@@ -103,9 +103,9 @@
   v20[2] = __81__HKJulianIndexedSevenDayQuantityDataSource_queriesForRequest_completionHandler___block_invoke;
   v20[3] = &unk_1E81B6D10;
   v20[4] = self;
-  v21 = v6;
-  v16 = v6;
-  v17 = [v13 initWithSampleType:v14 predicate:v11 limit:0 sortDescriptors:v15 resultsHandler:v20];
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = [v13 initWithSampleType:quantityType predicate:v11 limit:0 sortDescriptors:v15 resultsHandler:v20];
 
   [v17 setDebugIdentifier:@"charting (7-day julian)"];
   [v17 setIncludeAutomaticTimeZones:1];
@@ -159,73 +159,73 @@ LABEL_8:
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_createSinglePointChartPointFromDateInterval:(id)a3 statisticsInterval:(id)a4 timeZoneName:(id)a5 yValue:(id)a6 metadata:(id)a7
+- (id)_createSinglePointChartPointFromDateInterval:(id)interval statisticsInterval:(id)statisticsInterval timeZoneName:(id)name yValue:(id)value metadata:(id)metadata
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v48 = a6;
-  v47 = a7;
-  v15 = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
-  v16 = v15;
-  if (v14)
+  intervalCopy = interval;
+  statisticsIntervalCopy = statisticsInterval;
+  nameCopy = name;
+  valueCopy = value;
+  metadataCopy = metadata;
+  calendarCache = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
+  v16 = calendarCache;
+  if (nameCopy)
   {
-    v17 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:v14];
-    v18 = [v16 calendarForTimeZone:v17];
+    v17 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:nameCopy];
+    currentCalendar = [v16 calendarForTimeZone:v17];
   }
 
   else
   {
-    v18 = [v15 currentCalendar];
+    currentCalendar = [calendarCache currentCalendar];
   }
 
-  v19 = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
-  v20 = [v19 currentCalendar];
+  calendarCache2 = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
+  currentCalendar2 = [calendarCache2 currentCalendar];
 
   v21 = objc_alloc(MEMORY[0x1E696AB80]);
-  v22 = [v12 startDate];
-  v23 = [v12 endDate];
-  v24 = [v21 initWithStartDate:v22 endDate:v23];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v24 = [v21 initWithStartDate:startDate endDate:endDate];
 
   v44 = v24;
-  v45 = v20;
-  v46 = v18;
-  v25 = [MEMORY[0x1E696AB80] hk_julianDayDateIntervalFromOpenUpperBoundDateInterval:v24 sourceCalendar:v18 localCalendar:v20];
+  v45 = currentCalendar2;
+  v46 = currentCalendar;
+  v25 = [MEMORY[0x1E696AB80] hk_julianDayDateIntervalFromOpenUpperBoundDateInterval:v24 sourceCalendar:currentCalendar localCalendar:currentCalendar2];
   v26 = v25;
   if (v25)
   {
-    v41 = v14;
-    v43 = v12;
-    v27 = [v25 startDate];
-    v28 = [v26 endDate];
+    v41 = nameCopy;
+    v43 = intervalCopy;
+    startDate2 = [v25 startDate];
+    endDate2 = [v26 endDate];
     v29 = objc_alloc_init(HKQuantityTypeDataSourceValue);
-    [(HKQuantityTypeDataSourceValue *)v29 setStartDate:v27];
-    [(HKQuantityTypeDataSourceValue *)v29 setEndDate:v28];
-    v30 = [(HKJulianIndexedSevenDayQuantityDataSource *)self quantityType];
-    [(HKQuantityTypeDataSourceValue *)v29 setQuantityType:v30];
+    [(HKQuantityTypeDataSourceValue *)v29 setStartDate:startDate2];
+    [(HKQuantityTypeDataSourceValue *)v29 setEndDate:endDate2];
+    quantityType = [(HKJulianIndexedSevenDayQuantityDataSource *)self quantityType];
+    [(HKQuantityTypeDataSourceValue *)v29 setQuantityType:quantityType];
 
-    [(HKQuantityTypeDataSourceValue *)v29 setAverageQuantity:v48];
+    [(HKQuantityTypeDataSourceValue *)v29 setAverageQuantity:valueCopy];
     [(HKQuantityTypeDataSourceValue *)v29 setRecordCount:1];
-    v42 = v13;
-    [(HKQuantityTypeDataSourceValue *)v29 setStatisticsInterval:v13];
-    v31 = [(HKJulianIndexedSevenDayQuantityDataSource *)self singlePointUserInfoCreationBlock];
-    v32 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-    v33 = [(HKJulianIndexedSevenDayQuantityDataSource *)self unitController];
-    v34 = [v33 unitForDisplayType:v32];
+    v42 = statisticsIntervalCopy;
+    [(HKQuantityTypeDataSourceValue *)v29 setStatisticsInterval:statisticsIntervalCopy];
+    singlePointUserInfoCreationBlock = [(HKJulianIndexedSevenDayQuantityDataSource *)self singlePointUserInfoCreationBlock];
+    displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+    unitController = [(HKJulianIndexedSevenDayQuantityDataSource *)self unitController];
+    v34 = [unitController unitForDisplayType:displayType];
 
     v35 = [HKHealthChartPoint alloc];
-    v36 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-    v37 = [(HKHealthChartPoint *)v35 initWithDataSourceValue:v29 options:2 unit:v34 displayType:v36];
+    displayType2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+    v37 = [(HKHealthChartPoint *)v35 initWithDataSourceValue:v29 options:2 unit:v34 displayType:displayType2];
 
-    if (v31)
+    if (singlePointUserInfoCreationBlock)
     {
-      v38 = (v31)[2](v31, v29, v47);
+      v38 = (singlePointUserInfoCreationBlock)[2](singlePointUserInfoCreationBlock, v29, metadataCopy);
       [(HKHealthChartPoint *)v37 setUserInfo:v38];
     }
 
-    v13 = v42;
-    v12 = v43;
-    v14 = v41;
+    statisticsIntervalCopy = v42;
+    intervalCopy = v43;
+    nameCopy = v41;
   }
 
   else
@@ -243,22 +243,22 @@ LABEL_8:
   return v37;
 }
 
-- (id)_singlePointChartPointsWithSamples:(id)a3 statisticsInterval:(id)a4
+- (id)_singlePointChartPointsWithSamples:(id)samples statisticsInterval:(id)interval
 {
-  v6 = a4;
+  intervalCopy = interval;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a3;
+  samplesCopy = samples;
   v9 = objc_alloc_init(v7);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__HKJulianIndexedSevenDayQuantityDataSource__singlePointChartPointsWithSamples_statisticsInterval___block_invoke;
   v14[3] = &unk_1E81BA468;
   v14[4] = self;
-  v15 = v6;
+  v15 = intervalCopy;
   v16 = v9;
   v10 = v9;
-  v11 = v6;
-  [v8 enumerateObjectsUsingBlock:v14];
+  v11 = intervalCopy;
+  [samplesCopy enumerateObjectsUsingBlock:v14];
 
   v12 = objc_alloc_init(HKGraphSeriesDataBlock);
   [(HKGraphSeriesDataBlock *)v12 setChartPoints:v10];
@@ -317,59 +317,59 @@ void __99__HKJulianIndexedSevenDayQuantityDataSource__singlePointChartPointsWith
   }
 }
 
-- (id)_createIntervalChartPointFromDateInterval:(id)a3 timeZoneName:(id)a4 yValue:(id)a5 metadata:(id)a6
+- (id)_createIntervalChartPointFromDateInterval:(id)interval timeZoneName:(id)name yValue:(id)value metadata:(id)metadata
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v41 = a6;
-  v13 = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
-  v14 = v13;
-  if (v11)
+  intervalCopy = interval;
+  nameCopy = name;
+  valueCopy = value;
+  metadataCopy = metadata;
+  calendarCache = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
+  v14 = calendarCache;
+  if (nameCopy)
   {
-    v15 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:v11];
-    v16 = [v14 calendarForTimeZone:v15];
+    v15 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:nameCopy];
+    currentCalendar = [v14 calendarForTimeZone:v15];
   }
 
   else
   {
-    v16 = [v13 currentCalendar];
+    currentCalendar = [calendarCache currentCalendar];
   }
 
-  v17 = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
-  v18 = [v17 currentCalendar];
+  calendarCache2 = [(HKJulianIndexedSevenDayQuantityDataSource *)self calendarCache];
+  currentCalendar2 = [calendarCache2 currentCalendar];
 
   v19 = objc_alloc(MEMORY[0x1E696AB80]);
-  v20 = [v10 startDate];
-  v40 = v10;
-  v21 = [v10 endDate];
-  v22 = [v19 initWithStartDate:v20 endDate:v21];
+  startDate = [intervalCopy startDate];
+  v40 = intervalCopy;
+  endDate = [intervalCopy endDate];
+  v22 = [v19 initWithStartDate:startDate endDate:endDate];
 
-  v39 = v16;
-  v23 = [MEMORY[0x1E696AB80] hk_julianDayDateIntervalFromOpenUpperBoundDateInterval:v22 sourceCalendar:v16 localCalendar:v18];
+  v39 = currentCalendar;
+  v23 = [MEMORY[0x1E696AB80] hk_julianDayDateIntervalFromOpenUpperBoundDateInterval:v22 sourceCalendar:currentCalendar localCalendar:currentCalendar2];
   v24 = v23;
   if (v23)
   {
-    v38 = v11;
-    v25 = [v23 startDate];
-    v26 = [v24 endDate];
-    v27 = [(HKJulianIndexedSevenDayQuantityDataSource *)self unitController];
-    v28 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-    v29 = [v27 unitForDisplayType:v28];
+    v38 = nameCopy;
+    startDate2 = [v23 startDate];
+    endDate2 = [v24 endDate];
+    unitController = [(HKJulianIndexedSevenDayQuantityDataSource *)self unitController];
+    displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+    v29 = [unitController unitForDisplayType:displayType];
 
     v30 = [HKJulianIndexedSevenDayQuantityChartPoint alloc];
-    v31 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-    v32 = [(HKJulianIndexedSevenDayQuantityChartPoint *)v30 initWithStartDate:v25 endDate:v26 displayType:v31 unit:v29 quantity:v12];
+    displayType2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+    v32 = [(HKJulianIndexedSevenDayQuantityChartPoint *)v30 initWithStartDate:startDate2 endDate:endDate2 displayType:displayType2 unit:v29 quantity:valueCopy];
 
-    v33 = [(HKJulianIndexedSevenDayQuantityDataSource *)self intervalUserInfoCreationBlock];
-    v34 = v33;
-    if (v33)
+    intervalUserInfoCreationBlock = [(HKJulianIndexedSevenDayQuantityDataSource *)self intervalUserInfoCreationBlock];
+    v34 = intervalUserInfoCreationBlock;
+    if (intervalUserInfoCreationBlock)
     {
-      v35 = (*(v33 + 16))(v33, v12, v41, v25, v26);
+      v35 = (*(intervalUserInfoCreationBlock + 16))(intervalUserInfoCreationBlock, valueCopy, metadataCopy, startDate2, endDate2);
       [(HKJulianIndexedSevenDayQuantityChartPoint *)v32 setUserInfo:v35];
     }
 
-    v11 = v38;
+    nameCopy = v38;
   }
 
   else
@@ -387,22 +387,22 @@ void __99__HKJulianIndexedSevenDayQuantityDataSource__singlePointChartPointsWith
   return v32;
 }
 
-- (id)_intervalChartPointsWithSamples:(id)a3
+- (id)_intervalChartPointsWithSamples:(id)samples
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  samplesCopy = samples;
   v6 = objc_alloc_init(v4);
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __77__HKJulianIndexedSevenDayQuantityDataSource__intervalChartPointsWithSamples___block_invoke;
   v13 = &unk_1E81BA490;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [samplesCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = objc_alloc_init(HKGraphSeriesDataBlock);
-  [(HKGraphSeriesDataBlock *)v8 setChartPoints:v7, v10, v11, v12, v13, v14];
+  [(HKGraphSeriesDataBlock *)v8 setChartPoints:v7, v10, v11, v12, v13, selfCopy];
 
   return v8;
 }
@@ -457,26 +457,26 @@ void __77__HKJulianIndexedSevenDayQuantityDataSource__intervalChartPointsWithSam
   }
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __111__HKJulianIndexedSevenDayQuantityDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81B6D38;
-  v26 = v8;
-  v27 = self;
-  v28 = v10;
-  v11 = v10;
-  v12 = v8;
+  v26 = requestCopy;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKJulianIndexedSevenDayQuantityDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __111__HKJulianIndexedSevenDayQuantityDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_317;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -560,26 +560,26 @@ void __111__HKJulianIndexedSevenDayQuantityDataSource_generateSharableQueryDataF
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [HKCodableSampleDataSourceQueryData alloc];
-  v7 = [v5 queryDataObject];
-  v8 = [(HKCodableSampleDataSourceQueryData *)v6 initWithData:v7];
+  queryDataObject = [dataCopy queryDataObject];
+  v8 = [(HKCodableSampleDataSourceQueryData *)v6 initWithData:queryDataObject];
 
-  v9 = [(HKCodableSampleDataSourceQueryData *)v8 samples];
-  v10 = [v9 hk_map:&__block_literal_global_322];
+  samples = [(HKCodableSampleDataSourceQueryData *)v8 samples];
+  v10 = [samples hk_map:&__block_literal_global_322];
   v11 = [v10 copy];
 
   v12 = MEMORY[0x1E695DF10];
-  v13 = [v5 statisticsInterval];
+  statisticsInterval = [dataCopy statisticsInterval];
 
-  v14 = [v12 hkui_dateComponentsWithCodableDateComponents:v13];
+  v14 = [v12 hkui_dateComponentsWithCodableDateComponents:statisticsInterval];
 
-  v15 = [(HKJulianIndexedSevenDayQuantityDataSource *)self dataSourceType];
-  if (v15)
+  dataSourceType = [(HKJulianIndexedSevenDayQuantityDataSource *)self dataSourceType];
+  if (dataSourceType)
   {
-    if (v15 != 1)
+    if (dataSourceType != 1)
     {
       goto LABEL_6;
     }

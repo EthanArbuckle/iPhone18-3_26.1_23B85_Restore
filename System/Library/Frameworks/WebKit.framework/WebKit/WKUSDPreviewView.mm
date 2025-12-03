@@ -1,55 +1,55 @@
 @interface WKUSDPreviewView
 - (id).cxx_construct;
-- (id)web_initWithFrame:(CGRect)a3 webView:(id)a4 mimeType:(id)a5;
+- (id)web_initWithFrame:(CGRect)frame webView:(id)view mimeType:(id)type;
 - (void)_layoutThumbnailView;
-- (void)thumbnailView:(id)a3 wantsToPresentPreviewController:(id)a4 forItem:(id)a5;
-- (void)web_countStringMatches:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5;
-- (void)web_findString:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5;
-- (void)web_setContentProviderData:(id)a3 suggestedFilename:(id)a4 completionHandler:(id)a5;
+- (void)thumbnailView:(id)view wantsToPresentPreviewController:(id)controller forItem:(id)item;
+- (void)web_countStringMatches:(id)matches options:(unint64_t)options maxCount:(unint64_t)count;
+- (void)web_findString:(id)string options:(unint64_t)options maxCount:(unint64_t)count;
+- (void)web_setContentProviderData:(id)data suggestedFilename:(id)filename completionHandler:(id)handler;
 @end
 
 @implementation WKUSDPreviewView
 
-- (id)web_initWithFrame:(CGRect)a3 webView:(id)a4 mimeType:(id)a5
+- (id)web_initWithFrame:(CGRect)frame webView:(id)view mimeType:(id)type
 {
   v13.receiver = self;
   v13.super_class = WKUSDPreviewView;
-  v7 = [(WKApplicationStateTrackingView *)&v13 initWithFrame:a3.origin.x webView:a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(WKApplicationStateTrackingView *)&v13 initWithFrame:frame.origin.x webView:frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
     v8 = [MEMORY[0x1E69DC888] colorWithRed:0.149019608 green:0.149019608 blue:0.149019608 alpha:1.0];
     [(WKUSDPreviewView *)v7 setBackgroundColor:v8];
-    v7->_webView = a4;
-    if (a5)
+    v7->_webView = view;
+    if (type)
     {
-      v9 = a5;
+      typeCopy = type;
     }
 
     m_ptr = v7->_mimeType.m_ptr;
-    v7->_mimeType.m_ptr = a5;
+    v7->_mimeType.m_ptr = type;
     if (m_ptr)
     {
     }
 
-    v11 = [a4 scrollView];
-    [v11 setMinimumZoomScale:1.0];
-    [v11 setMaximumZoomScale:1.0];
-    [v11 setBackgroundColor:v8];
+    scrollView = [view scrollView];
+    [scrollView setMinimumZoomScale:1.0];
+    [scrollView setMaximumZoomScale:1.0];
+    [scrollView setBackgroundColor:v8];
   }
 
   return v7;
 }
 
-- (void)web_setContentProviderData:(id)a3 suggestedFilename:(id)a4 completionHandler:(id)a5
+- (void)web_setContentProviderData:(id)data suggestedFilename:(id)filename completionHandler:(id)handler
 {
-  v8 = [a4 copy];
+  v8 = [filename copy];
   m_ptr = self->_suggestedFilename.m_ptr;
   self->_suggestedFilename.m_ptr = v8;
   if (m_ptr)
   {
   }
 
-  v10 = [a3 copy];
+  v10 = [data copy];
   v12 = self->_data.m_ptr;
   self->_data.m_ptr = v10;
   if (v12)
@@ -106,7 +106,7 @@
   v39[3] = &__block_descriptor_48_e8_32c96_ZTSKZ83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_completionHandler__E3__1_e23_v16__0__UIAlertAction_8l;
   arg = 0;
   objc_initWeak(&arg, self);
-  aBlock = _Block_copy(a5);
+  aBlock = _Block_copy(handler);
   v40 = 0;
   objc_copyWeak(&v40, &arg);
   v41 = _Block_copy(aBlock);
@@ -132,7 +132,7 @@
   v33 = 3321888768;
   v34 = __83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_completionHandler___block_invoke_65;
   v35 = &__block_descriptor_40_e8_32c96_ZTSKZ83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_completionHandler__E3__2_e23_v16__0__UIAlertAction_8l;
-  v27 = _Block_copy(a5);
+  v27 = _Block_copy(handler);
   v36 = _Block_copy(v27);
   v28 = [v23 actionWithTitle:v25 style:1 handler:&v32];
   _Block_release(v27);
@@ -281,7 +281,7 @@ void __83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_complet
   }
 }
 
-- (void)thumbnailView:(id)a3 wantsToPresentPreviewController:(id)a4 forItem:(id)a5
+- (void)thumbnailView:(id)view wantsToPresentPreviewController:(id)controller forItem:(id)item
 {
   m_ptr = self->_webView->_page.m_ptr;
   if (m_ptr)
@@ -295,7 +295,7 @@ void __83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_complet
   CFRelease(v7);
 }
 
-- (void)web_countStringMatches:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5
+- (void)web_countStringMatches:(id)matches options:(unint64_t)options maxCount:(unint64_t)count
 {
   m_ptr = self->_webView->_page.m_ptr;
   if (m_ptr)
@@ -304,7 +304,7 @@ void __83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_complet
   }
 
   v7 = *(m_ptr + 16);
-  MEMORY[0x19EB02040](&v10, a3, a3, a4, a5);
+  MEMORY[0x19EB02040](&v10, matches, matches, options, count);
   (*(*v7 + 16))(v7, m_ptr, &v10, 0);
   v9 = v10;
   v10 = 0;
@@ -316,7 +316,7 @@ void __83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_complet
   CFRelease(*(m_ptr + 1));
 }
 
-- (void)web_findString:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5
+- (void)web_findString:(id)string options:(unint64_t)options maxCount:(unint64_t)count
 {
   m_ptr = self->_webView->_page.m_ptr;
   if (m_ptr)
@@ -325,7 +325,7 @@ void __83__WKUSDPreviewView_web_setContentProviderData_suggestedFilename_complet
   }
 
   v7 = *(m_ptr + 16);
-  MEMORY[0x19EB02040](&v10, a3, a3, a4, a5);
+  MEMORY[0x19EB02040](&v10, string, string, options, count);
   (*(*v7 + 32))(v7, m_ptr, &v10);
   v9 = v10;
   v10 = 0;

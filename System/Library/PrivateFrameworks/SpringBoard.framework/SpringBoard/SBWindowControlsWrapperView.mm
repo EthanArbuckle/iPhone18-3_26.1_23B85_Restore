@@ -1,38 +1,38 @@
 @interface SBWindowControlsWrapperView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SBWindowControlsWrapperView)initWithWindowControlsView:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SBWindowControlsWrapperView)initWithWindowControlsView:(id)view;
 @end
 
 @implementation SBWindowControlsWrapperView
 
-- (SBWindowControlsWrapperView)initWithWindowControlsView:(id)a3
+- (SBWindowControlsWrapperView)initWithWindowControlsView:(id)view
 {
-  v5 = a3;
-  [v5 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v9.receiver = self;
   v9.super_class = SBWindowControlsWrapperView;
   v6 = [(SBWindowControlsWrapperView *)&v9 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_windowControlsView, a3);
-    [(SBWindowControlsWrapperView *)v7 addSubview:v5];
+    objc_storeStrong(&v6->_windowControlsView, view);
+    [(SBWindowControlsWrapperView *)v7 addSubview:viewCopy];
   }
 
   return v7;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   v8 = self->_windowControlsView;
-  v9 = a4;
-  [(UIView *)v8 convertPoint:v7 fromView:x, y];
-  LOBYTE(v7) = [(UIView *)v8 pointInside:v9 withEvent:?];
+  eventCopy = event;
+  [(UIView *)v8 convertPoint:selfCopy fromView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)v8 pointInside:eventCopy withEvent:?];
 
-  return v7;
+  return selfCopy;
 }
 
 @end

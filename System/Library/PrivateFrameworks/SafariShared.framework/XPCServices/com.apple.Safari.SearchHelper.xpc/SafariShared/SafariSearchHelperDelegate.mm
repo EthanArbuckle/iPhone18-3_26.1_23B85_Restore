@@ -1,26 +1,26 @@
 @interface SafariSearchHelperDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation SafariSearchHelperDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.safari.can-use-search-helper"];
-  v6 = [v5 BOOLValue];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.safari.can-use-search-helper"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___WBSSafariSearchHelper];
     [v7 setClass:objc_opt_class() forSelector:"updateSuggestionsRequestWithSearchTerms:suggestionsURLTemplate:userAgentString:completionHandler:" argumentIndex:0 ofReply:1];
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
     v8 = objc_alloc_init(SafariSearchHelper);
-    [v4 setExportedObject:v8];
-    [v4 resume];
+    [connectionCopy setExportedObject:v8];
+    [connectionCopy resume];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

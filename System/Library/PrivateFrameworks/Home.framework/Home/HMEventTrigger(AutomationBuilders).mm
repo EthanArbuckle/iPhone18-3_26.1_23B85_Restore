@@ -8,9 +8,9 @@
 
 - (id)hf_copyAsBuilder
 {
-  v1 = [a1 copyAsBuilder];
+  copyAsBuilder = [self copyAsBuilder];
 
-  return v1;
+  return copyAsBuilder;
 }
 
 - (id)hf_updateWithBuilder:()AutomationBuilders
@@ -37,21 +37,21 @@
     v17[1] = 3221225472;
     v17[2] = __59__HMEventTrigger_AutomationBuilders__hf_updateWithBuilder___block_invoke;
     v17[3] = &unk_277DF4150;
-    v17[4] = a1;
+    v17[4] = self;
     v18 = v8;
     v10 = [v9 futureWithErrorOnlyHandlerAdapterBlock:v17];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __59__HMEventTrigger_AutomationBuilders__hf_updateWithBuilder___block_invoke_2;
     v16[3] = &unk_277DF2CE0;
-    v16[4] = a1;
+    v16[4] = self;
     v11 = [v10 flatMap:v16];
   }
 
   else
   {
     v12 = NSStringFromSelector(a2);
-    NSLog(&cfstr_WasPassedABuil.isa, a1, v12, v6);
+    NSLog(&cfstr_WasPassedABuil.isa, self, v12, v6);
 
     v13 = MEMORY[0x277D2C900];
     v14 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
@@ -94,7 +94,7 @@
   else
   {
     v14 = NSStringFromSelector(a2);
-    NSLog(&cfstr_WasPassedABuil.isa, a1, v14, v9);
+    NSLog(&cfstr_WasPassedABuil.isa, self, v14, v9);
 
     v15 = MEMORY[0x277D2C900];
     v16 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];

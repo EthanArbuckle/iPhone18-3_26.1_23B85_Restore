@@ -1,62 +1,62 @@
 @interface SearchController
 - (void)beginSearching;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)updateSearchResultsForSearchController:(id)controller;
 @end
 
 @implementation SearchController
 
 - (void)beginSearching
 {
-  v2 = self;
+  selfCopy = self;
   sub_100090864();
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100090940(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100090940(controllerCopy);
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000909F4(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1000909F4(editingCopy);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
-  sub_100090AD8(v6);
+  barCopy = bar;
+  selfCopy = self;
+  sub_100090AD8(barCopy);
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_100090B9C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_100090B9C(editingCopy);
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_100090CAC(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_100090CAC(clickedCopy);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_100090D68(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_100090D68(clickedCopy);
 }
 
 @end

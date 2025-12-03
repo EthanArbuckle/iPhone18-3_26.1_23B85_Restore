@@ -1,8 +1,8 @@
 @interface CLKComplicationTemplateCircularSmallStackImage
 + (CLKComplicationTemplateCircularSmallStackImage)templateWithLine1ImageProvider:(CLKImageProvider *)line1ImageProvider line2TextProvider:(CLKTextProvider *)line2TextProvider;
-+ (void)_imageSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forSDKVersion:(int64_t)a5;
++ (void)_imageSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forSDKVersion:(int64_t)version;
 - (CLKComplicationTemplateCircularSmallStackImage)initWithLine1ImageProvider:(CLKImageProvider *)line1ImageProvider line2TextProvider:(CLKTextProvider *)line2TextProvider;
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3;
+- (void)_enumerateImageProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateCircularSmallStackImage
@@ -13,11 +13,11 @@
   v7 = line2TextProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateCircularSmallStackImage;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateCircularSmallStackImage *)v8 setLine1ImageProvider:v6];
+    [(CLKComplicationTemplateCircularSmallStackImage *)initPrivate setLine1ImageProvider:v6];
     [(CLKComplicationTemplateCircularSmallStackImage *)v9 setLine2TextProvider:v7];
   }
 
@@ -28,37 +28,37 @@
 {
   v6 = line2TextProvider;
   v7 = line1ImageProvider;
-  v8 = [[a1 alloc] initWithLine1ImageProvider:v7 line2TextProvider:v6];
+  v8 = [[self alloc] initWithLine1ImageProvider:v7 line2TextProvider:v6];
 
   return v8;
 }
 
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateImageProviderKeysWithBlock:(id)block
 {
   v9 = 0;
   v7 = 0.0;
   v8 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
-  v4 = a3;
+  blockCopy = block;
   [objc_opt_class() _imageSDKSize:&v7 deviceSize:&v5 forSDKVersion:{-[CLKComplicationTemplate sdkVersion](self, "sdkVersion")}];
-  (*(v4 + 2))(v4, @"line1ImageProvider", 0, 1, 0, 4, 0, &v9, v7, v8, v5, v6);
+  (*(blockCopy + 2))(blockCopy, @"line1ImageProvider", 0, 1, 0, 4, 0, &v9, v7, v8, v5, v6);
 }
 
-+ (void)_imageSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forSDKVersion:(int64_t)a5
++ (void)_imageSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forSDKVersion:(int64_t)version
 {
   v8 = +[CLKRenderingContext sharedRenderingContext];
-  v10 = [v8 device];
+  device = [v8 device];
 
-  __89__CLKComplicationTemplateCircularSmallStackImage__imageSDKSize_deviceSize_forSDKVersion___block_invoke(v9, v10);
-  if (a4)
+  __89__CLKComplicationTemplateCircularSmallStackImage__imageSDKSize_deviceSize_forSDKVersion___block_invoke(v9, device);
+  if (deviceSize)
   {
-    *a4 = xmmword_27DE91958;
+    *deviceSize = xmmword_27DE91958;
   }
 
-  if (a3)
+  if (size)
   {
-    *a3 = *&_imageSDKSize_deviceSize_forSDKVersion___imageSize[2 * a5];
+    *size = *&_imageSDKSize_deviceSize_forSDKVersion___imageSize[2 * version];
   }
 }
 

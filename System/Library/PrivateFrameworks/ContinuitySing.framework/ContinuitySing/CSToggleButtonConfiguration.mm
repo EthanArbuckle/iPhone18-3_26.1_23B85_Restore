@@ -1,8 +1,8 @@
 @interface CSToggleButtonConfiguration
 + (id)reverbButtonConfiguration;
 + (id)vocalButtonConfiguration;
-- (CSToggleButtonConfiguration)initWithLightCount:(unint64_t)a3 caption:(id)a4;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
+- (CSToggleButtonConfiguration)initWithLightCount:(unint64_t)count caption:(id)caption;
+- (void)setImage:(id)image forState:(unint64_t)state;
 @end
 
 @implementation CSToggleButtonConfiguration
@@ -41,27 +41,27 @@
   return v4;
 }
 
-- (CSToggleButtonConfiguration)initWithLightCount:(unint64_t)a3 caption:(id)a4
+- (CSToggleButtonConfiguration)initWithLightCount:(unint64_t)count caption:(id)caption
 {
-  v7 = a4;
+  captionCopy = caption;
   v16.receiver = self;
   v16.super_class = CSToggleButtonConfiguration;
   v8 = [(CSToggleButtonConfiguration *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_lightCount = a3;
-    objc_storeStrong(&v8->_caption, a4);
-    v10 = [MEMORY[0x277CBEB18] array];
+    v8->_lightCount = count;
+    objc_storeStrong(&v8->_caption, caption);
+    array = [MEMORY[0x277CBEB18] array];
     iconImages = v9->_iconImages;
-    v9->_iconImages = v10;
+    v9->_iconImages = array;
 
-    v12 = a3 + 1;
+    v12 = count + 1;
     do
     {
       v13 = v9->_iconImages;
-      v14 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)v13 addObject:v14];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)v13 addObject:null];
 
       --v12;
     }
@@ -72,12 +72,12 @@
   return v9;
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  if ([(CSToggleButtonConfiguration *)self lightCount]>= a4)
+  imageCopy = image;
+  if ([(CSToggleButtonConfiguration *)self lightCount]>= state)
   {
-    [(NSMutableArray *)self->_iconImages setObject:v6 atIndexedSubscript:a4];
+    [(NSMutableArray *)self->_iconImages setObject:imageCopy atIndexedSubscript:state];
   }
 
   else
@@ -85,7 +85,7 @@
     v7 = ContinuitySingLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(CSToggleButtonConfiguration *)self setImage:a4 forState:v7];
+      [(CSToggleButtonConfiguration *)self setImage:state forState:v7];
     }
   }
 }

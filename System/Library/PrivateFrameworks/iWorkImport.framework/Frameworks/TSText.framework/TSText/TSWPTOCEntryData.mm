@@ -1,29 +1,29 @@
 @interface TSWPTOCEntryData
-+ (id)tocEntryDataWithStorage:(id)a3 paragraphIndex:(unint64_t)a4 pageNumber:(unint64_t)a5 numberFormat:(id)a6 heading:(id)a7 indexedStyle:(id)a8 indexedListStyle:(id)a9 indexedListStart:(unint64_t)a10 indexedParagraphLevel:(unint64_t)a11;
-- (BOOL)isEqual:(id)a3;
++ (id)tocEntryDataWithStorage:(id)storage paragraphIndex:(unint64_t)index pageNumber:(unint64_t)number numberFormat:(id)format heading:(id)heading indexedStyle:(id)style indexedListStyle:(id)listStyle indexedListStart:(unint64_t)self0 indexedParagraphLevel:(unint64_t)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)referencedStyles;
 - (NSString)description;
 - (TSWPStorage)storage;
-- (TSWPTOCEntryData)initWithStorage:(id)a3 paragraphIndex:(unint64_t)a4 pageNumber:(unint64_t)a5 numberFormat:(id)a6 heading:(id)a7 indexedStyle:(id)a8 indexedListStyle:(id)a9 indexedListStart:(unint64_t)a10 indexedParagraphLevel:(unint64_t)a11;
+- (TSWPTOCEntryData)initWithStorage:(id)storage paragraphIndex:(unint64_t)index pageNumber:(unint64_t)number numberFormat:(id)format heading:(id)heading indexedStyle:(id)style indexedListStyle:(id)listStyle indexedListStart:(unint64_t)self0 indexedParagraphLevel:(unint64_t)self1;
 - (unint64_t)hash;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPTOCEntryData
 
-- (TSWPTOCEntryData)initWithStorage:(id)a3 paragraphIndex:(unint64_t)a4 pageNumber:(unint64_t)a5 numberFormat:(id)a6 heading:(id)a7 indexedStyle:(id)a8 indexedListStyle:(id)a9 indexedListStart:(unint64_t)a10 indexedParagraphLevel:(unint64_t)a11
+- (TSWPTOCEntryData)initWithStorage:(id)storage paragraphIndex:(unint64_t)index pageNumber:(unint64_t)number numberFormat:(id)format heading:(id)heading indexedStyle:(id)style indexedListStyle:(id)listStyle indexedListStart:(unint64_t)self0 indexedParagraphLevel:(unint64_t)self1
 {
-  obj = a3;
-  v16 = a6;
-  v36 = a7;
-  v17 = a8;
-  v35 = a9;
-  if (!v17)
+  obj = storage;
+  formatCopy = format;
+  headingCopy = heading;
+  styleCopy = style;
+  listStyleCopy = listStyle;
+  if (!styleCopy)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSWPTOCEntryData initWithStorage:paragraphIndex:pageNumber:numberFormat:heading:indexedStyle:indexedListStyle:indexedListStart:indexedParagraphLevel:]");
@@ -33,7 +33,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
   }
 
-  v27 = objc_msgSend_context(v17, v18, v19);
+  v27 = objc_msgSend_context(styleCopy, v18, v19);
   v38.receiver = self;
   v38.super_class = TSWPTOCEntryData;
   v28 = [(TSWPTOCEntryData *)&v38 initWithContext:v27];
@@ -41,31 +41,31 @@
   if (v28)
   {
     objc_storeWeak(&v28->_storage, obj);
-    v28->_paragraphIndex = a4;
-    v28->_pageNumber = a5;
-    v31 = objc_msgSend_copy(v16, v29, v30);
+    v28->_paragraphIndex = index;
+    v28->_pageNumber = number;
+    v31 = objc_msgSend_copy(formatCopy, v29, v30);
     numberFormat = v28->_numberFormat;
     v28->_numberFormat = v31;
 
-    objc_storeStrong(&v28->_heading, a7);
-    objc_storeStrong(&v28->_indexedStyle, a8);
-    objc_storeStrong(&v28->_indexedListStyle, a9);
-    v28->_indexedListStart = a10;
-    v28->_indexedParagraphLevel = a11;
+    objc_storeStrong(&v28->_heading, heading);
+    objc_storeStrong(&v28->_indexedStyle, style);
+    objc_storeStrong(&v28->_indexedListStyle, listStyle);
+    v28->_indexedListStart = start;
+    v28->_indexedParagraphLevel = level;
   }
 
   return v28;
 }
 
-+ (id)tocEntryDataWithStorage:(id)a3 paragraphIndex:(unint64_t)a4 pageNumber:(unint64_t)a5 numberFormat:(id)a6 heading:(id)a7 indexedStyle:(id)a8 indexedListStyle:(id)a9 indexedListStart:(unint64_t)a10 indexedParagraphLevel:(unint64_t)a11
++ (id)tocEntryDataWithStorage:(id)storage paragraphIndex:(unint64_t)index pageNumber:(unint64_t)number numberFormat:(id)format heading:(id)heading indexedStyle:(id)style indexedListStyle:(id)listStyle indexedListStart:(unint64_t)self0 indexedParagraphLevel:(unint64_t)self1
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  storageCopy = storage;
+  formatCopy = format;
+  headingCopy = heading;
+  styleCopy = style;
+  listStyleCopy = listStyle;
   v21 = objc_alloc(objc_opt_class());
-  started = objc_msgSend_initWithStorage_paragraphIndex_pageNumber_numberFormat_heading_indexedStyle_indexedListStyle_indexedListStart_indexedParagraphLevel_(v21, v22, v16, a4, a5, v17, v18, v19, v20, a10, a11);
+  started = objc_msgSend_initWithStorage_paragraphIndex_pageNumber_numberFormat_heading_indexedStyle_indexedListStyle_indexedListStart_indexedParagraphLevel_(v21, v22, storageCopy, index, number, formatCopy, headingCopy, styleCopy, listStyleCopy, start, level);
 
   return started;
 }
@@ -82,9 +82,9 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7 && (v8 = objc_msgSend_paragraphIndex(self, v5, v6), v8 == objc_msgSend_paragraphIndex(v7, v9, v10)) && (v13 = objc_msgSend_pageNumber(self, v11, v12), v13 == objc_msgSend_pageNumber(v7, v14, v15)))
@@ -162,16 +162,16 @@
   return v26;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v8 = a4;
-  v9 = *(a3 + 15);
-  self->_paragraphIndex = *(a3 + 14);
+  unarchiverCopy = unarchiver;
+  v9 = *(archive + 15);
+  self->_paragraphIndex = *(archive + 14);
   self->_pageNumber = v9;
-  v10 = *(a3 + 4);
+  v10 = *(archive + 4);
   if ((v10 & 2) != 0)
   {
-    v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+    v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL);
     numberFormat = self->_numberFormat;
     self->_numberFormat = v12;
   }
@@ -179,7 +179,7 @@
   else if ((v10 & 0x40) != 0)
   {
     objc_msgSend_willModifyForUpgrade(self, v6, v7);
-    numberFormat = objc_msgSend_pageNumberFormatNameForType_(TSWPItemNumbering, v13, *(a3 + 16));
+    numberFormat = objc_msgSend_pageNumberFormatNameForType_(TSWPItemNumbering, v13, *(archive + 16));
     v16 = objc_msgSend_copy(numberFormat, v14, v15);
     v17 = self->_numberFormat;
     self->_numberFormat = v16;
@@ -192,17 +192,17 @@
     self->_numberFormat = @"decimal";
   }
 
-  v19 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v18, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+  v19 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v18, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
   heading = self->_heading;
   self->_heading = v19;
 
-  v21 = *(a3 + 5);
+  v21 = *(archive + 5);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = sub_276E2DB18;
   v31[3] = &unk_27A6F4A08;
   v31[4] = self;
-  v22 = v8;
+  v22 = unarchiverCopy;
   v24 = objc_opt_class();
   if (v21)
   {
@@ -214,10 +214,10 @@
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v22, v23, MEMORY[0x277D80A18], v24, 0, v31);
   }
 
-  v25 = *(a3 + 4);
+  v25 = *(archive + 4);
   if ((v25 & 8) != 0)
   {
-    v26 = *(a3 + 6);
+    v26 = *(archive + 6);
     if (*(v26 + 16))
     {
       if (*(v26 + 24))
@@ -231,27 +231,27 @@
         v28 = objc_opt_class();
         objc_msgSend_readReferenceMessage_class_protocol_completion_(v27, v29, v26, v28, 0, v30);
 
-        v25 = *(a3 + 4);
+        v25 = *(archive + 4);
       }
     }
   }
 
-  self->_indexedListStart = *(a3 + 17) & (v25 >> 7);
-  self->_indexedParagraphLevel = *(a3 + 18) & (v25 << 23 >> 31);
+  self->_indexedListStart = *(archive + 17) & (v25 >> 7);
+  self->_indexedParagraphLevel = *(archive + 18) & (v25 << 23 >> 31);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[78]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[78]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v57 = a4;
+  archiverCopy = archiver;
   paragraphIndex = self->_paragraphIndex;
   if (HIDWORD(paragraphIndex))
   {
@@ -264,9 +264,9 @@
     LODWORD(paragraphIndex) = -1;
   }
 
-  v8 = *(a3 + 4) | 0x10;
-  *(a3 + 4) = v8;
-  *(a3 + 14) = paragraphIndex;
+  v8 = *(archive + 4) | 0x10;
+  *(archive + 4) = v8;
+  *(archive + 14) = paragraphIndex;
   pageNumber = self->_pageNumber;
   if (HIDWORD(pageNumber))
   {
@@ -276,58 +276,58 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v36, v40, v37, v39, 121, 0, "Out-of-bounds type assignment was clamped to max");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v41, v42);
-    v8 = *(a3 + 4);
+    v8 = *(archive + 4);
     LODWORD(pageNumber) = -1;
   }
 
-  *(a3 + 4) = v8 | 0x20;
-  *(a3 + 15) = pageNumber;
+  *(archive + 4) = v8 | 0x20;
+  *(archive + 15) = pageNumber;
   v10 = objc_msgSend_pageNumberFormatTypeForName_(TSWPItemNumbering, v6, self->_numberFormat);
-  v11 = *(a3 + 4);
-  *(a3 + 4) = v11 | 0x40;
-  *(a3 + 16) = v10;
+  v11 = *(archive + 4);
+  *(archive + 4) = v11 | 0x40;
+  *(archive + 16) = v10;
   numberFormat = self->_numberFormat;
-  *(a3 + 4) = v11 | 0x42;
+  *(archive + 4) = v11 | 0x42;
   v13 = google::protobuf::internal::ArenaStringPtr::Mutable();
   objc_msgSend_tsp_saveToProtobufString_(numberFormat, v14, v13);
   heading = self->_heading;
-  *(a3 + 4) |= 1u;
+  *(archive + 4) |= 1u;
   v16 = google::protobuf::internal::ArenaStringPtr::Mutable();
   objc_msgSend_tsp_saveToProtobufString_(heading, v17, v16);
   indexedStyle = self->_indexedStyle;
-  *(a3 + 4) |= 4u;
-  v20 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v20 = *(archive + 5);
   if (!v20)
   {
-    v21 = *(a3 + 1);
+    v21 = *(archive + 1);
     if (v21)
     {
       v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v20 = MEMORY[0x277CA3250](v21);
-    *(a3 + 5) = v20;
+    *(archive + 5) = v20;
   }
 
-  objc_msgSend_setStrongReference_message_(v57, v18, indexedStyle, v20);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v18, indexedStyle, v20);
   indexedListStyle = self->_indexedListStyle;
   if (indexedListStyle)
   {
-    *(a3 + 4) |= 8u;
-    v24 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v24 = *(archive + 6);
     if (!v24)
     {
-      v25 = *(a3 + 1);
+      v25 = *(archive + 1);
       if (v25)
       {
         v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v24 = MEMORY[0x277CA3250](v25);
-      *(a3 + 6) = v24;
+      *(archive + 6) = v24;
     }
 
-    objc_msgSend_setStrongReference_message_(v57, v22, indexedListStyle, v24);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v22, indexedListStyle, v24);
   }
 
   indexedListStart = self->_indexedListStart;
@@ -342,9 +342,9 @@
     LODWORD(indexedListStart) = -1;
   }
 
-  v27 = *(a3 + 4) | 0x80;
-  *(a3 + 4) = v27;
-  *(a3 + 17) = indexedListStart;
+  v27 = *(archive + 4) | 0x80;
+  *(archive + 4) = v27;
+  *(archive + 17) = indexedListStart;
   indexedParagraphLevel = self->_indexedParagraphLevel;
   if (HIDWORD(indexedParagraphLevel))
   {
@@ -354,29 +354,29 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v50, v54, v51, v53, 131, 0, "Out-of-bounds type assignment was clamped to max");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v55, v56);
-    v27 = *(a3 + 4);
+    v27 = *(archive + 4);
     LODWORD(indexedParagraphLevel) = -1;
   }
 
-  *(a3 + 4) = v27 | 0x100;
-  *(a3 + 18) = indexedParagraphLevel;
+  *(archive + 4) = v27 | 0x100;
+  *(archive + 18) = indexedParagraphLevel;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276E2E6D8, off_2812DC408[78]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276E2E6D8, off_2812DC408[78]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v37 = a4;
+  mapperCopy = mapper;
   objc_msgSend_willModify(self, v5, v6);
-  objc_msgSend_pushMappingContext_(v37, v7, self);
-  v10 = objc_msgSend_mappedStyleForStyle_(v37, v8, self->_indexedStyle);
+  objc_msgSend_pushMappingContext_(mapperCopy, v7, self);
+  v10 = objc_msgSend_mappedStyleForStyle_(mapperCopy, v8, self->_indexedStyle);
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11 = MEMORY[0x277D81150];
@@ -394,7 +394,7 @@
   indexedStyle = self->_indexedStyle;
   self->_indexedStyle = v20;
 
-  v24 = objc_msgSend_mappedStyleForStyle_(v37, v22, self->_indexedListStyle);
+  v24 = objc_msgSend_mappedStyleForStyle_(mapperCopy, v22, self->_indexedListStyle);
   if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v25 = MEMORY[0x277D81150];
@@ -412,7 +412,7 @@
   indexedListStyle = self->_indexedListStyle;
   self->_indexedListStyle = v34;
 
-  objc_msgSend_popMappingContext_(v37, v36, self);
+  objc_msgSend_popMappingContext_(mapperCopy, v36, self);
 }
 
 - (NSSet)referencedStyles
@@ -434,13 +434,13 @@
   return v6;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   if (self->_indexedStyle)
   {
     objc_opt_class();
-    v4 = v10[2](v10, self->_indexedStyle);
+    v4 = blockCopy[2](blockCopy, self->_indexedStyle);
     v5 = TSUDynamicCast();
     indexedStyle = self->_indexedStyle;
     self->_indexedStyle = v5;
@@ -449,7 +449,7 @@
   if (self->_indexedListStyle)
   {
     objc_opt_class();
-    v7 = v10[2](v10, self->_indexedListStyle);
+    v7 = blockCopy[2](blockCopy, self->_indexedListStyle);
     v8 = TSUDynamicCast();
     indexedListStyle = self->_indexedListStyle;
     self->_indexedListStyle = v8;

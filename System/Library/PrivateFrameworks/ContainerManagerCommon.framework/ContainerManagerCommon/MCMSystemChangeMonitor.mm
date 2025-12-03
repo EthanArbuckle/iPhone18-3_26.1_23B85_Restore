@@ -1,9 +1,9 @@
 @interface MCMSystemChangeMonitor
-- (MCMSystemChangeMonitor)initWithQueue:(id)a3 flushables:(id)a4;
+- (MCMSystemChangeMonitor)initWithQueue:(id)queue flushables:(id)flushables;
 - (NSArray)flushables;
 - (OS_dispatch_queue)queue;
-- (void)userIdentityCache:(id)a3 didAddUserIdentity:(id)a4;
-- (void)userIdentityCache:(id)a3 didInvalidateUserIdentity:(id)a4;
+- (void)userIdentityCache:(id)cache didAddUserIdentity:(id)identity;
+- (void)userIdentityCache:(id)cache didInvalidateUserIdentity:(id)identity;
 @end
 
 @implementation MCMSystemChangeMonitor
@@ -24,22 +24,22 @@
   return result;
 }
 
-- (void)userIdentityCache:(id)a3 didAddUserIdentity:(id)a4
+- (void)userIdentityCache:(id)cache didAddUserIdentity:(id)identity
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCMSystemChangeMonitor *)self queue];
+  cacheCopy = cache;
+  identityCopy = identity;
+  queue = [(MCMSystemChangeMonitor *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__MCMSystemChangeMonitor_userIdentityCache_didAddUserIdentity___block_invoke;
   v12[3] = &unk_1E86B0898;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v12);
+  v13 = identityCopy;
+  v14 = cacheCopy;
+  v9 = cacheCopy;
+  v10 = identityCopy;
+  dispatch_async(queue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -105,19 +105,19 @@ void __63__MCMSystemChangeMonitor_userIdentityCache_didAddUserIdentity___block_i
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userIdentityCache:(id)a3 didInvalidateUserIdentity:(id)a4
+- (void)userIdentityCache:(id)cache didInvalidateUserIdentity:(id)identity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MCMSystemChangeMonitor *)self queue];
+  identityCopy = identity;
+  queue = [(MCMSystemChangeMonitor *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__MCMSystemChangeMonitor_userIdentityCache_didInvalidateUserIdentity___block_invoke;
   block[3] = &unk_1E86B0CC8;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = identityCopy;
+  v7 = identityCopy;
+  dispatch_async(queue, block);
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -165,19 +165,19 @@ void __70__MCMSystemChangeMonitor_userIdentityCache_didInvalidateUserIdentity___
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMSystemChangeMonitor)initWithQueue:(id)a3 flushables:(id)a4
+- (MCMSystemChangeMonitor)initWithQueue:(id)queue flushables:(id)flushables
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  flushablesCopy = flushables;
   v13.receiver = self;
   v13.super_class = MCMSystemChangeMonitor;
   v9 = [(MCMSystemChangeMonitor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_flushables, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_flushables, flushables);
   }
 
   v11 = *MEMORY[0x1E69E9840];

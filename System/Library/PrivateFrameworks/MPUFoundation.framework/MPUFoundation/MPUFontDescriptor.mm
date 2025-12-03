@@ -1,13 +1,13 @@
 @interface MPUFontDescriptor
-+ (double)_layoutInterpolatorReferenceMetricForContentSizeCategory:(id)a3;
-+ (id)_adjustedNativeFontDescriptorWithBaseNativeFontDescriptor:(id)a3 forCustomTextStyle:(int64_t)a4;
-+ (id)_baseNativeTextStyleForTextStyle:(int64_t)a3;
-+ (id)_fontDescriptorWithTextStyle:(int64_t)a3 leadingAdjustment:(int64_t)a4 weight:(int64_t)a5 systemFontSize:(double)a6 defaultPointSizeAdjustment:(double)a7;
-+ (id)_fontPointSizeLayoutInterpolatorForTextStyle:(int64_t)a3;
-+ (unsigned)_nativeFontDescriptorSymbolicTraitsForLeadingAdjustment:(int64_t)a3;
-+ (unsigned)_nativeFontDescriptorSymbolicTraitsForUsingItalic:(BOOL)a3 isCondensedMetrics:(BOOL)a4;
-+ (void)_getNativeFontDescriptorSymbolicTraits:(unsigned int *)a3 nativeTextStyleAttribute:(id *)a4 forWeight:(int64_t)a5 textStyle:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
++ (double)_layoutInterpolatorReferenceMetricForContentSizeCategory:(id)category;
++ (id)_adjustedNativeFontDescriptorWithBaseNativeFontDescriptor:(id)descriptor forCustomTextStyle:(int64_t)style;
++ (id)_baseNativeTextStyleForTextStyle:(int64_t)style;
++ (id)_fontDescriptorWithTextStyle:(int64_t)style leadingAdjustment:(int64_t)adjustment weight:(int64_t)weight systemFontSize:(double)size defaultPointSizeAdjustment:(double)sizeAdjustment;
++ (id)_fontPointSizeLayoutInterpolatorForTextStyle:(int64_t)style;
++ (unsigned)_nativeFontDescriptorSymbolicTraitsForLeadingAdjustment:(int64_t)adjustment;
++ (unsigned)_nativeFontDescriptorSymbolicTraitsForUsingItalic:(BOOL)italic isCondensedMetrics:(BOOL)metrics;
++ (void)_getNativeFontDescriptorSymbolicTraits:(unsigned int *)traits nativeTextStyleAttribute:(id *)attribute forWeight:(int64_t)weight textStyle:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (MPUFontDescriptor)init;
 - (UIFont)defaultFont;
 - (UIFont)preferredFont;
@@ -21,13 +21,13 @@
 - (double)preferredFontCapHeight;
 - (double)preferredFontDescender;
 - (double)preferredFontLineHeight;
-- (double)scaledValueForValue:(double)a3;
-- (id)_defaultFontDescriptorForTextStyle:(int64_t)a3;
+- (double)scaledValueForValue:(double)value;
+- (id)_defaultFontDescriptorForTextStyle:(int64_t)style;
 - (id)_fontPointSizeLayoutInterpolator;
-- (id)_fontWithBaseNativeFontDescriptorProvider:(id)a3;
-- (id)_preferredFontDescriptorForTextStyle:(int64_t)a3;
+- (id)_fontWithBaseNativeFontDescriptorProvider:(id)provider;
+- (id)_preferredFontDescriptorForTextStyle:(int64_t)style;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)_invalidateCachedFontsAndMetrics;
 - (void)_resetToDefaultValues;
 - (void)dealloc;
@@ -35,31 +35,31 @@
 
 @implementation MPUFontDescriptor
 
-+ (id)_fontDescriptorWithTextStyle:(int64_t)a3 leadingAdjustment:(int64_t)a4 weight:(int64_t)a5 systemFontSize:(double)a6 defaultPointSizeAdjustment:(double)a7
++ (id)_fontDescriptorWithTextStyle:(int64_t)style leadingAdjustment:(int64_t)adjustment weight:(int64_t)weight systemFontSize:(double)size defaultPointSizeAdjustment:(double)sizeAdjustment
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v14 = +[MPUFontDescriptorCache sharedFontDescriptorCache];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __117__MPUFontDescriptor__fontDescriptorWithTextStyle_leadingAdjustment_weight_systemFontSize_defaultPointSizeAdjustment___block_invoke;
     v16[3] = &__block_descriptor_72_e34_v16__0__MPUMutableFontDescriptor_8l;
-    v16[4] = a3;
-    v16[5] = a4;
-    v16[6] = a5;
-    *&v16[7] = a6;
-    *&v16[8] = a7;
+    v16[4] = style;
+    v16[5] = adjustment;
+    v16[6] = weight;
+    *&v16[7] = size;
+    *&v16[8] = sizeAdjustment;
     v13 = [v14 cachedImmutableFontDescriptorForConfigurationBlock:v16];
   }
 
   else
   {
-    v13 = objc_alloc_init(a1);
-    *(v13 + 4) = a3;
-    *(v13 + 2) = a4;
-    *(v13 + 6) = a5;
-    v13[3] = a6;
-    v13[1] = a7;
+    v13 = objc_alloc_init(self);
+    *(v13 + 4) = style;
+    *(v13 + 2) = adjustment;
+    *(v13 + 6) = weight;
+    v13[3] = size;
+    v13[1] = sizeAdjustment;
   }
 
   return v13;
@@ -85,9 +85,9 @@ void __117__MPUFontDescriptor__fontDescriptorWithTextStyle_leadingAdjustment_wei
   if (v2)
   {
     [(MPUFontDescriptor *)v2 _resetToDefaultValues];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [objc_opt_class() invalidationHandler];
-    [v4 addObserver:v3 selector:sel__handleFontDescriptorDidInvalidateCachedFontsAndMetricsNotification_ name:@"_MPUFontDescriptorDidInvalidateCachedFontsAndMetricsNotification" object:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    invalidationHandler = [objc_opt_class() invalidationHandler];
+    [defaultCenter addObserver:v3 selector:sel__handleFontDescriptorDidInvalidateCachedFontsAndMetricsNotification_ name:@"_MPUFontDescriptorDidInvalidateCachedFontsAndMetricsNotification" object:invalidationHandler];
   }
 
   return v3;
@@ -95,9 +95,9 @@ void __117__MPUFontDescriptor__fontDescriptorWithTextStyle_leadingAdjustment_wei
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [objc_opt_class() invalidationHandler];
-  [v3 removeObserver:self name:@"_MPUFontDescriptorDidInvalidateCachedFontsAndMetricsNotification" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  invalidationHandler = [objc_opt_class() invalidationHandler];
+  [defaultCenter removeObserver:self name:@"_MPUFontDescriptorDidInvalidateCachedFontsAndMetricsNotification" object:invalidationHandler];
 
   v5.receiver = self;
   v5.super_class = MPUFontDescriptor;
@@ -173,10 +173,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -186,7 +186,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v7 = self->_textStyle == v5->_textStyle && self->_weight == v5->_weight && self->_leadingAdjustment == v5->_leadingAdjustment && self->_usesItalic == v5->_usesItalic && self->_usesCondensedMetrics == v5->_usesCondensedMetrics && self->_wantsMonospaceNumbers == v5->_wantsMonospaceNumbers && MPUFloatEqualToFloat(self->_systemFontSize, v5->_systemFontSize) && MPUFloatEqualToFloat(self->_defaultPointSizeAdjustment, v6[1]);
     }
@@ -200,7 +200,7 @@ LABEL_12:
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPUMutableFontDescriptor);
   v5 = v4;
@@ -261,8 +261,8 @@ LABEL_12:
 {
   if (!self->_preferredFontMetrics.isAscenderInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self preferredFont];
-    [v3 ascender];
+    preferredFont = [(MPUFontDescriptor *)self preferredFont];
+    [preferredFont ascender];
     self->_preferredFontMetrics.ascender = v4;
 
     self->_preferredFontMetrics.isAscenderInitialized = 1;
@@ -275,8 +275,8 @@ LABEL_12:
 {
   if (!self->_preferredFontMetrics.isBodyLeadingInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self preferredFont];
-    [v3 _bodyLeading];
+    preferredFont = [(MPUFontDescriptor *)self preferredFont];
+    [preferredFont _bodyLeading];
     self->_preferredFontMetrics.bodyLeading = v4;
 
     self->_preferredFontMetrics.isBodyLeadingInitialized = 1;
@@ -289,8 +289,8 @@ LABEL_12:
 {
   if (!self->_preferredFontMetrics.isLineHeightInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self preferredFont];
-    [v3 lineHeight];
+    preferredFont = [(MPUFontDescriptor *)self preferredFont];
+    [preferredFont lineHeight];
     self->_preferredFontMetrics.lineHeight = v4;
 
     self->_preferredFontMetrics.isLineHeightInitialized = 1;
@@ -303,8 +303,8 @@ LABEL_12:
 {
   if (!self->_preferredFontMetrics.isCapHeightInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self preferredFont];
-    [v3 capHeight];
+    preferredFont = [(MPUFontDescriptor *)self preferredFont];
+    [preferredFont capHeight];
     self->_preferredFontMetrics.capHeight = v4;
 
     self->_preferredFontMetrics.isCapHeightInitialized = 1;
@@ -317,8 +317,8 @@ LABEL_12:
 {
   if (!self->_preferredFontMetrics.isDescenderInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self preferredFont];
-    [v3 descender];
+    preferredFont = [(MPUFontDescriptor *)self preferredFont];
+    [preferredFont descender];
     self->_preferredFontMetrics.descender = v4;
 
     self->_preferredFontMetrics.isDescenderInitialized = 1;
@@ -351,8 +351,8 @@ LABEL_12:
 {
   if (!self->_defaultFontMetrics.isAscenderInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self defaultFont];
-    [v3 ascender];
+    defaultFont = [(MPUFontDescriptor *)self defaultFont];
+    [defaultFont ascender];
     self->_defaultFontMetrics.ascender = v4;
 
     self->_defaultFontMetrics.isAscenderInitialized = 1;
@@ -365,8 +365,8 @@ LABEL_12:
 {
   if (!self->_defaultFontMetrics.isBodyLeadingInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self defaultFont];
-    [v3 _bodyLeading];
+    defaultFont = [(MPUFontDescriptor *)self defaultFont];
+    [defaultFont _bodyLeading];
     self->_defaultFontMetrics.bodyLeading = v4;
 
     self->_defaultFontMetrics.isBodyLeadingInitialized = 1;
@@ -379,8 +379,8 @@ LABEL_12:
 {
   if (!self->_defaultFontMetrics.isCapHeightInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self defaultFont];
-    [v3 capHeight];
+    defaultFont = [(MPUFontDescriptor *)self defaultFont];
+    [defaultFont capHeight];
     self->_defaultFontMetrics.capHeight = v4;
 
     self->_defaultFontMetrics.isCapHeightInitialized = 1;
@@ -393,8 +393,8 @@ LABEL_12:
 {
   if (!self->_defaultFontMetrics.isDescenderInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self defaultFont];
-    [v3 descender];
+    defaultFont = [(MPUFontDescriptor *)self defaultFont];
+    [defaultFont descender];
     self->_defaultFontMetrics.descender = v4;
 
     self->_defaultFontMetrics.isDescenderInitialized = 1;
@@ -407,8 +407,8 @@ LABEL_12:
 {
   if (!self->_defaultFontMetrics.isLineHeightInitialized)
   {
-    v3 = [(MPUFontDescriptor *)self defaultFont];
-    [v3 lineHeight];
+    defaultFont = [(MPUFontDescriptor *)self defaultFont];
+    [defaultFont lineHeight];
     self->_defaultFontMetrics.lineHeight = v4;
 
     self->_defaultFontMetrics.isLineHeightInitialized = 1;
@@ -417,7 +417,7 @@ LABEL_12:
   return self->_defaultFontMetrics.bodyLeading;
 }
 
-- (double)scaledValueForValue:(double)a3
+- (double)scaledValueForValue:(double)value
 {
   [(MPUFontDescriptor *)self preferredFontBodyLeading];
   v6 = v5;
@@ -425,21 +425,21 @@ LABEL_12:
   v8 = v7;
   if (!MPUFloatEqualToFloat(v7, 0.0))
   {
-    return v6 / v8 * a3;
+    return v6 / v8 * value;
   }
 
-  return a3;
+  return value;
 }
 
-+ (id)_adjustedNativeFontDescriptorWithBaseNativeFontDescriptor:(id)a3 forCustomTextStyle:(int64_t)a4
++ (id)_adjustedNativeFontDescriptorWithBaseNativeFontDescriptor:(id)descriptor forCustomTextStyle:(int64_t)style
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 18)
+  descriptorCopy = descriptor;
+  v6 = descriptorCopy;
+  if (style == 18)
   {
     v16 = *MEMORY[0x277D74350];
-    v17 = [v5 objectForKey:*MEMORY[0x277D74350]];
+    v17 = [descriptorCopy objectForKey:*MEMORY[0x277D74350]];
     [v17 floatValue];
     v19 = v18;
 
@@ -453,14 +453,14 @@ LABEL_12:
 
   else
   {
-    v7 = v5;
-    if (a4 != 17)
+    v7 = descriptorCopy;
+    if (style != 17)
     {
       goto LABEL_6;
     }
 
     v8 = *MEMORY[0x277D74350];
-    v9 = [v5 objectForKey:*MEMORY[0x277D74350]];
+    v9 = [descriptorCopy objectForKey:*MEMORY[0x277D74350]];
     [v9 floatValue];
     v11 = v10;
 
@@ -480,10 +480,10 @@ LABEL_6:
   return v7;
 }
 
-+ (id)_baseNativeTextStyleForTextStyle:(int64_t)a3
++ (id)_baseNativeTextStyleForTextStyle:(int64_t)style
 {
   v4 = MEMORY[0x277D76918];
-  switch(a3)
+  switch(style)
   {
     case 0:
     case 21:
@@ -547,7 +547,7 @@ LABEL_6:
       v4 = MEMORY[0x277D76980];
       goto LABEL_22;
     default:
-      if (a3 == 1000)
+      if (style == 1000)
       {
 LABEL_22:
         v5 = *v4;
@@ -562,17 +562,17 @@ LABEL_22:
   }
 }
 
-+ (void)_getNativeFontDescriptorSymbolicTraits:(unsigned int *)a3 nativeTextStyleAttribute:(id *)a4 forWeight:(int64_t)a5 textStyle:(int64_t)a6
++ (void)_getNativeFontDescriptorSymbolicTraits:(unsigned int *)traits nativeTextStyleAttribute:(id *)attribute forWeight:(int64_t)weight textStyle:(int64_t)style
 {
   v8 = 0;
   v9 = 0;
-  if (a5 > 4)
+  if (weight > 4)
   {
 LABEL_10:
-    if (a5 > 6)
+    if (weight > 6)
     {
 LABEL_23:
-      if (a5 == 7)
+      if (weight == 7)
       {
 LABEL_41:
         v20 = 0;
@@ -599,7 +599,7 @@ LABEL_41:
         goto LABEL_44;
       }
 
-      if (a5 != 8)
+      if (weight != 8)
       {
         goto LABEL_45;
       }
@@ -624,7 +624,7 @@ LABEL_44:
         v8 = *v10;
         v9 = 0;
 LABEL_45:
-        if (!a3)
+        if (!traits)
         {
           goto LABEL_47;
         }
@@ -636,7 +636,7 @@ LABEL_45:
       goto LABEL_29;
     }
 
-    if (a5 == 5)
+    if (weight == 5)
     {
 LABEL_33:
       v20 = 0;
@@ -662,7 +662,7 @@ LABEL_33:
       goto LABEL_37;
     }
 
-    if (a5 != 6)
+    if (weight != 6)
     {
       goto LABEL_45;
     }
@@ -688,7 +688,7 @@ LABEL_33:
 
     v8 = [UIFont(MPUDynamicType) MPU_scaledValueForValue:];
 LABEL_17:
-    if (a5 == 3)
+    if (weight == 3)
     {
 LABEL_37:
       v20 = 0;
@@ -714,7 +714,7 @@ LABEL_37:
       goto LABEL_41;
     }
 
-    if (a5 != 4)
+    if (weight != 4)
     {
       goto LABEL_45;
     }
@@ -742,12 +742,12 @@ LABEL_37:
     goto LABEL_23;
   }
 
-  if (a5 > 2)
+  if (weight > 2)
   {
     goto LABEL_17;
   }
 
-  if (a5 == 1)
+  if (weight == 1)
   {
 LABEL_29:
     v20 = 0;
@@ -773,12 +773,12 @@ LABEL_29:
     goto LABEL_33;
   }
 
-  if (a5 != 2)
+  if (weight != 2)
   {
     goto LABEL_45;
   }
 
-  if (a6 == 19)
+  if (style == 19)
   {
     v20 = 0;
     v21 = &v20;
@@ -805,36 +805,36 @@ LABEL_29:
 
   v8 = 0;
   v9 = 2;
-  if (a3)
+  if (traits)
   {
 LABEL_46:
-    *a3 = v9;
+    *traits = v9;
   }
 
 LABEL_47:
-  if (a4)
+  if (attribute)
   {
     v8 = v8;
-    *a4 = v8;
+    *attribute = v8;
   }
 }
 
-+ (unsigned)_nativeFontDescriptorSymbolicTraitsForLeadingAdjustment:(int64_t)a3
++ (unsigned)_nativeFontDescriptorSymbolicTraitsForLeadingAdjustment:(int64_t)adjustment
 {
-  if (a3 == 2)
+  if (adjustment == 2)
   {
     return 0x10000;
   }
 
   else
   {
-    return (a3 == 1) << 15;
+    return (adjustment == 1) << 15;
   }
 }
 
-+ (unsigned)_nativeFontDescriptorSymbolicTraitsForUsingItalic:(BOOL)a3 isCondensedMetrics:(BOOL)a4
++ (unsigned)_nativeFontDescriptorSymbolicTraitsForUsingItalic:(BOOL)italic isCondensedMetrics:(BOOL)metrics
 {
-  if (a4)
+  if (metrics)
   {
     v4 = 64;
   }
@@ -844,7 +844,7 @@ LABEL_47:
     v4 = 0;
   }
 
-  if (a3)
+  if (italic)
   {
     return 1;
   }
@@ -855,9 +855,9 @@ LABEL_47:
   }
 }
 
-+ (id)_fontPointSizeLayoutInterpolatorForTextStyle:(int64_t)a3
++ (id)_fontPointSizeLayoutInterpolatorForTextStyle:(int64_t)style
 {
-  if (a3 == 19)
+  if (style == 19)
   {
     v3 = 28.0;
     v4 = 26.0;
@@ -874,7 +874,7 @@ LABEL_47:
     goto LABEL_5;
   }
 
-  if (a3 == 20)
+  if (style == 20)
   {
     v3 = 26.0;
     v4 = 24.0;
@@ -924,50 +924,50 @@ LABEL_7:
   return v12;
 }
 
-+ (double)_layoutInterpolatorReferenceMetricForContentSizeCategory:(id)a3
++ (double)_layoutInterpolatorReferenceMetricForContentSizeCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = 1.0;
-  if (([v3 isEqualToString:*MEMORY[0x277D76830]] & 1) == 0)
+  if (([categoryCopy isEqualToString:*MEMORY[0x277D76830]] & 1) == 0)
   {
     v4 = 2.0;
-    if (([v3 isEqualToString:*MEMORY[0x277D76858]] & 1) == 0)
+    if (([categoryCopy isEqualToString:*MEMORY[0x277D76858]] & 1) == 0)
     {
       v4 = 3.0;
-      if (([v3 isEqualToString:*MEMORY[0x277D76840]] & 1) == 0)
+      if (([categoryCopy isEqualToString:*MEMORY[0x277D76840]] & 1) == 0)
       {
         v4 = 5.0;
-        if (([v3 isEqualToString:*MEMORY[0x277D76828]] & 1) == 0)
+        if (([categoryCopy isEqualToString:*MEMORY[0x277D76828]] & 1) == 0)
         {
           v4 = 6.0;
-          if (([v3 isEqualToString:*MEMORY[0x277D76820]] & 1) == 0)
+          if (([categoryCopy isEqualToString:*MEMORY[0x277D76820]] & 1) == 0)
           {
             v4 = 7.0;
-            if (([v3 isEqualToString:*MEMORY[0x277D76818]] & 1) == 0)
+            if (([categoryCopy isEqualToString:*MEMORY[0x277D76818]] & 1) == 0)
             {
               v4 = 8.0;
-              if (([v3 isEqualToString:*MEMORY[0x277D76808]] & 1) == 0)
+              if (([categoryCopy isEqualToString:*MEMORY[0x277D76808]] & 1) == 0)
               {
                 v4 = 9.0;
-                if (([v3 isEqualToString:*MEMORY[0x277D76800]] & 1) == 0)
+                if (([categoryCopy isEqualToString:*MEMORY[0x277D76800]] & 1) == 0)
                 {
                   v4 = 10.0;
-                  if (([v3 isEqualToString:*MEMORY[0x277D767F8]] & 1) == 0)
+                  if (([categoryCopy isEqualToString:*MEMORY[0x277D767F8]] & 1) == 0)
                   {
                     v4 = 11.0;
-                    if (([v3 isEqualToString:*MEMORY[0x277D767F0]] & 1) == 0)
+                    if (([categoryCopy isEqualToString:*MEMORY[0x277D767F0]] & 1) == 0)
                     {
                       v4 = 12.0;
-                      if (([v3 isEqualToString:*MEMORY[0x277D767E8]] & 1) == 0)
+                      if (([categoryCopy isEqualToString:*MEMORY[0x277D767E8]] & 1) == 0)
                       {
                         v4 = 4.0;
-                        if (([v3 isEqualToString:*MEMORY[0x277D76838]] & 1) == 0)
+                        if (([categoryCopy isEqualToString:*MEMORY[0x277D76838]] & 1) == 0)
                         {
                           block[0] = MEMORY[0x277D85DD0];
                           block[1] = 3221225472;
                           block[2] = __78__MPUFontDescriptor__layoutInterpolatorReferenceMetricForContentSizeCategory___block_invoke;
                           block[3] = &unk_27984C628;
-                          v7 = v3;
+                          v7 = categoryCopy;
                           if (_layoutInterpolatorReferenceMetricForContentSizeCategory__sOnceToken != -1)
                           {
                             dispatch_once(&_layoutInterpolatorReferenceMetricForContentSizeCategory__sOnceToken, block);
@@ -988,13 +988,13 @@ LABEL_7:
   return v4;
 }
 
-- (id)_defaultFontDescriptorForTextStyle:(int64_t)a3
+- (id)_defaultFontDescriptorForTextStyle:(int64_t)style
 {
-  if (a3 <= 23)
+  if (style <= 23)
   {
-    if (a3 > 20)
+    if (style > 20)
     {
-      if (a3 == 21)
+      if (style == 21)
       {
         v3 = MEMORY[0x277D74300];
         v4 = 0x4044000000000000;
@@ -1003,7 +1003,7 @@ LABEL_7:
       else
       {
         v3 = MEMORY[0x277D74300];
-        if (a3 == 22)
+        if (style == 22)
         {
           v4 = 0x4049000000000000;
         }
@@ -1017,9 +1017,9 @@ LABEL_7:
       goto LABEL_21;
     }
 
-    if (a3 != 19)
+    if (style != 19)
     {
-      if (a3 == 20)
+      if (style == 20)
       {
         v3 = MEMORY[0x277D74300];
         systemFontSize = 20.0;
@@ -1035,9 +1035,9 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if (a3 <= 25)
+  if (style <= 25)
   {
-    if (a3 != 24)
+    if (style != 24)
     {
       v3 = MEMORY[0x277D74300];
       systemFontSize = 13.0;
@@ -1051,7 +1051,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  switch(a3)
+  switch(style)
   {
     case 26:
       goto LABEL_16;
@@ -1064,23 +1064,23 @@ LABEL_21:
       v3 = MEMORY[0x277D74300];
 LABEL_22:
       v6 = [v3 systemFontOfSize:systemFontSize];
-      v7 = [v6 fontDescriptor];
+      fontDescriptor = [v6 fontDescriptor];
       goto LABEL_23;
   }
 
 LABEL_26:
-  v6 = [objc_opt_class() _baseNativeTextStyleForTextStyle:a3];
-  v7 = [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:v6];
+  v6 = [objc_opt_class() _baseNativeTextStyleForTextStyle:style];
+  fontDescriptor = [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:v6];
 LABEL_23:
-  v8 = v7;
+  v8 = fontDescriptor;
 
   return v8;
 }
 
-- (id)_fontWithBaseNativeFontDescriptorProvider:(id)a3
+- (id)_fontWithBaseNativeFontDescriptorProvider:(id)provider
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v4 = (*(a3 + 2))(a3, self->_textStyle);
+  v4 = (*(provider + 2))(provider, self->_textStyle);
   v5 = objc_opt_class();
   v6 = [v5 _adjustedNativeFontDescriptorWithBaseNativeFontDescriptor:v4 forCustomTextStyle:self->_textStyle];
   v42 = 0;
@@ -1231,41 +1231,41 @@ LABEL_23:
   return customFontPointSizeLayoutInterpolator;
 }
 
-- (id)_preferredFontDescriptorForTextStyle:(int64_t)a3
+- (id)_preferredFontDescriptorForTextStyle:(int64_t)style
 {
-  if ((a3 - 21) < 7)
+  if ((style - 21) < 7)
   {
     goto LABEL_2;
   }
 
-  if ((a3 - 19) >= 2)
+  if ((style - 19) >= 2)
   {
-    if (a3 == 1000)
+    if (style == 1000)
     {
 LABEL_2:
-      v3 = [(MPUFontDescriptor *)self _defaultFontDescriptorForTextStyle:a3];
+      fontDescriptor = [(MPUFontDescriptor *)self _defaultFontDescriptorForTextStyle:style];
       goto LABEL_8;
     }
 
-    v4 = [objc_opt_class() _baseNativeTextStyleForTextStyle:a3];
-    v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:v4];
+    _fontPointSizeLayoutInterpolator = [objc_opt_class() _baseNativeTextStyleForTextStyle:style];
+    fontDescriptor = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:_fontPointSizeLayoutInterpolator];
   }
 
   else
   {
-    v4 = [(MPUFontDescriptor *)self _fontPointSizeLayoutInterpolator];
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    v6 = [v5 preferredContentSizeCategory];
+    _fontPointSizeLayoutInterpolator = [(MPUFontDescriptor *)self _fontPointSizeLayoutInterpolator];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-    [objc_opt_class() _layoutInterpolatorReferenceMetricForContentSizeCategory:v6];
-    [v4 valueForReferenceMetric:?];
+    [objc_opt_class() _layoutInterpolatorReferenceMetricForContentSizeCategory:preferredContentSizeCategory];
+    [_fontPointSizeLayoutInterpolator valueForReferenceMetric:?];
     v7 = [MEMORY[0x277D74300] systemFontOfSize:?];
-    v3 = [v7 fontDescriptor];
+    fontDescriptor = [v7 fontDescriptor];
   }
 
 LABEL_8:
 
-  return v3;
+  return fontDescriptor;
 }
 
 - (void)_resetToDefaultValues

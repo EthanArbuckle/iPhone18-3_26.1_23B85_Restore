@@ -3,10 +3,10 @@
 - (CVAQuaternion)sourceColorPixelBufferOrientation;
 - (CVAVector)sourceColorPixelBufferGlobalMotion;
 - (CVAVector)sourceColorPixelBufferGravity;
-- (uint64_t)initWithSourceColorPixelBuffer:(float)a3 segmentationPixelBuffer:(float)a4 focusTileData:(double)a5 focusTileXOffset:(double)a6 focusTileYOffset:(double)a7 focusTileWidth:(double)a8 focusTileHeight:(uint64_t)a9 focusMapWidth:(__CVBuffer *)a10 focusMapHeight:(__CVBuffer *)a11 totalSensorCropXOffset:(void *)a12 totalSensorCropYOffset:(__int16)a13 totalSensorCropWidth:(__int16)a14 totalSensorCropHeight:(__int16)a15 phaseToBlurFactor:(__int16)a16 destinationDisparityPixelBuffer:(__int16)a17 focusRegion:(__int16)a18 focusRegionType:(__int16)a19 currentFocusPosition:(__int16)a20 lockFocalPlane:(__int16)a21 focusDistanceToMaxAllowedFocusDistanceRatio:(__int16)a22 sourceColorPixelBufferOrientation:(__CVBuffer *)texture sourceColorPixelBufferGravity:(void *)a24 sourceColorPixelBufferGlobalMotion:(int)a25 facesArray:(char)a26;
+- (uint64_t)initWithSourceColorPixelBuffer:(float)buffer segmentationPixelBuffer:(float)pixelBuffer focusTileData:(double)data focusTileXOffset:(double)offset focusTileYOffset:(double)yOffset focusTileWidth:(double)width focusTileHeight:(uint64_t)height focusMapWidth:(__CVBuffer *)self0 focusMapHeight:(__CVBuffer *)self1 totalSensorCropXOffset:(void *)self2 totalSensorCropYOffset:(__int16)self3 totalSensorCropWidth:(__int16)self4 totalSensorCropHeight:(__int16)self5 phaseToBlurFactor:(__int16)self6 destinationDisparityPixelBuffer:(__int16)self7 focusRegion:(__int16)self8 focusRegionType:(__int16)self9 currentFocusPosition:(__int16)position lockFocalPlane:(__int16)plane focusDistanceToMaxAllowedFocusDistanceRatio:(__int16)ratio sourceColorPixelBufferOrientation:(__CVBuffer *)texture sourceColorPixelBufferGravity:(void *)gravity sourceColorPixelBufferGlobalMotion:(int)motion facesArray:(char)array;
 - (void)dealloc;
-- (void)initWithSourceColorPixelBuffer:(double)a3 fixedPointDisparityPixelBuffer:(double)a4 destinationDisparityPixelBuffer:(double)a5 focusRegion:(double)a6 focusRegionType:(double)a7 currentFocusPosition:(double)a8 lockFocalPlane:(double)a9 sourceColorPixelBufferOrientation:(uint64_t)a10 sourceColorPixelBufferGravity:(__CVBuffer *)a11 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)a12 facesArray:(__CVBuffer *)a13 disparityNormalizationMultiplier:(void *)a14 disparityNormalizationOffset:(int)a15 primaryCaptureRect:(char)a16 cropDepthToPrimaryCaptureRect:(uint64_t)a17;
-- (void)initWithSourceColorPixelBuffer:(double)a3 segmentationPixelBuffer:(double)a4 networkDisparityPixelBuffer:(double)a5 destinationDisparityPixelBuffer:(double)a6 focusRegion:(double)a7 focusRegionType:(double)a8 currentFocusPosition:(double)a9 lockFocalPlane:(uint64_t)a10 sourceColorPixelBufferOrientation:(__CVBuffer *)a11 sourceColorPixelBufferGravity:(__CVBuffer *)a12 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)a13 facesArray:(__CVBuffer *)a14 disparityNormalizationMultiplier:(void *)a15 disparityNormalizationOffset:(int)a16;
+- (void)initWithSourceColorPixelBuffer:(double)buffer fixedPointDisparityPixelBuffer:(double)pixelBuffer destinationDisparityPixelBuffer:(double)disparityPixelBuffer focusRegion:(double)region focusRegionType:(double)type currentFocusPosition:(double)position lockFocalPlane:(double)plane sourceColorPixelBufferOrientation:(uint64_t)self0 sourceColorPixelBufferGravity:(__CVBuffer *)self1 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)self2 facesArray:(__CVBuffer *)self3 disparityNormalizationMultiplier:(void *)self4 disparityNormalizationOffset:(int)self5 primaryCaptureRect:(char)self6 cropDepthToPrimaryCaptureRect:(uint64_t)self7;
+- (void)initWithSourceColorPixelBuffer:(double)buffer segmentationPixelBuffer:(double)pixelBuffer networkDisparityPixelBuffer:(double)disparityPixelBuffer destinationDisparityPixelBuffer:(double)destinationDisparityPixelBuffer focusRegion:(double)region focusRegionType:(double)type currentFocusPosition:(double)position lockFocalPlane:(uint64_t)self0 sourceColorPixelBufferOrientation:(__CVBuffer *)self1 sourceColorPixelBufferGravity:(__CVBuffer *)self2 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)self3 facesArray:(__CVBuffer *)self4 disparityNormalizationMultiplier:(void *)self5 disparityNormalizationOffset:(int)self6;
 @end
 
 @implementation CVADisparityPostprocessingRequest
@@ -75,90 +75,90 @@
   [(CVADisparityPostprocessingRequest *)&v3 dealloc];
 }
 
-- (uint64_t)initWithSourceColorPixelBuffer:(float)a3 segmentationPixelBuffer:(float)a4 focusTileData:(double)a5 focusTileXOffset:(double)a6 focusTileYOffset:(double)a7 focusTileWidth:(double)a8 focusTileHeight:(uint64_t)a9 focusMapWidth:(__CVBuffer *)a10 focusMapHeight:(__CVBuffer *)a11 totalSensorCropXOffset:(void *)a12 totalSensorCropYOffset:(__int16)a13 totalSensorCropWidth:(__int16)a14 totalSensorCropHeight:(__int16)a15 phaseToBlurFactor:(__int16)a16 destinationDisparityPixelBuffer:(__int16)a17 focusRegion:(__int16)a18 focusRegionType:(__int16)a19 currentFocusPosition:(__int16)a20 lockFocalPlane:(__int16)a21 focusDistanceToMaxAllowedFocusDistanceRatio:(__int16)a22 sourceColorPixelBufferOrientation:(__CVBuffer *)texture sourceColorPixelBufferGravity:(void *)a24 sourceColorPixelBufferGlobalMotion:(int)a25 facesArray:(char)a26
+- (uint64_t)initWithSourceColorPixelBuffer:(float)buffer segmentationPixelBuffer:(float)pixelBuffer focusTileData:(double)data focusTileXOffset:(double)offset focusTileYOffset:(double)yOffset focusTileWidth:(double)width focusTileHeight:(uint64_t)height focusMapWidth:(__CVBuffer *)self0 focusMapHeight:(__CVBuffer *)self1 totalSensorCropXOffset:(void *)self2 totalSensorCropYOffset:(__int16)self3 totalSensorCropWidth:(__int16)self4 totalSensorCropHeight:(__int16)self5 phaseToBlurFactor:(__int16)self6 destinationDisparityPixelBuffer:(__int16)self7 focusRegion:(__int16)self8 focusRegionType:(__int16)self9 currentFocusPosition:(__int16)position lockFocalPlane:(__int16)plane focusDistanceToMaxAllowedFocusDistanceRatio:(__int16)ratio sourceColorPixelBufferOrientation:(__CVBuffer *)texture sourceColorPixelBufferGravity:(void *)gravity sourceColorPixelBufferGlobalMotion:(int)motion facesArray:(char)array
 {
-  v52 = a12;
-  v54 = a24;
+  xOffsetCopy = xOffset;
+  gravityCopy = gravity;
   v55 = a33;
-  *(a1 + 56) = a10;
-  CVPixelBufferRetain(a10);
-  *(a1 + 64) = a11;
-  CVPixelBufferRetain(a11);
-  *(a1 + 72) = 0;
-  *(a1 + 80) = texture;
+  *(self + 56) = mapWidth;
+  CVPixelBufferRetain(mapWidth);
+  *(self + 64) = mapHeight;
+  CVPixelBufferRetain(mapHeight);
+  *(self + 72) = 0;
+  *(self + 80) = texture;
   CVPixelBufferRetain(texture);
-  v38 = *(a1 + 120);
-  *(a1 + 120) = v52;
-  v53 = v52;
+  v38 = *(self + 120);
+  *(self + 120) = xOffsetCopy;
+  v53 = xOffsetCopy;
 
-  *(a1 + 10) = a13;
-  *(a1 + 12) = a14;
-  *(a1 + 14) = a15;
-  *(a1 + 16) = a16;
-  *(a1 + 18) = a17;
-  *(a1 + 20) = a18;
-  *(a1 + 22) = a19;
-  *(a1 + 24) = a20;
-  *(a1 + 26) = a21;
-  *(a1 + 28) = a22;
-  *(a1 + 52) = a2;
-  v39 = *(a1 + 96);
-  *(a1 + 96) = v54;
-  v40 = v54;
+  *(self + 10) = cropYOffset;
+  *(self + 12) = cropWidth;
+  *(self + 14) = cropHeight;
+  *(self + 16) = factor;
+  *(self + 18) = disparityPixelBuffer;
+  *(self + 20) = region;
+  *(self + 22) = type;
+  *(self + 24) = position;
+  *(self + 26) = plane;
+  *(self + 28) = ratio;
+  *(self + 52) = a2;
+  v39 = *(self + 96);
+  *(self + 96) = gravityCopy;
+  v40 = gravityCopy;
 
-  *(a1 + 32) = a25;
-  *(a1 + 8) = a26;
-  *(a1 + 36) = a3;
-  *(a1 + 40) = a4;
-  *(a1 + 176) = a5;
-  *(a1 + 184) = a6;
-  *(a1 + 192) = a7;
-  *(a1 + 200) = a8;
-  *(a1 + 128) = a27;
-  *(a1 + 136) = a28;
-  *(a1 + 144) = a29;
-  *(a1 + 152) = a30;
-  *(a1 + 160) = a31;
-  *(a1 + 168) = a32;
-  v41 = *(a1 + 104);
-  *(a1 + 104) = v55;
+  *(self + 32) = motion;
+  *(self + 8) = array;
+  *(self + 36) = buffer;
+  *(self + 40) = pixelBuffer;
+  *(self + 176) = data;
+  *(self + 184) = offset;
+  *(self + 192) = yOffset;
+  *(self + 200) = width;
+  *(self + 128) = a27;
+  *(self + 136) = a28;
+  *(self + 144) = a29;
+  *(self + 152) = a30;
+  *(self + 160) = a31;
+  *(self + 168) = a32;
+  v41 = *(self + 104);
+  *(self + 104) = v55;
 
   v42 = *(MEMORY[0x1E695F058] + 16);
-  *(a1 + 208) = *MEMORY[0x1E695F058];
-  *(a1 + 224) = v42;
-  return a1;
+  *(self + 208) = *MEMORY[0x1E695F058];
+  *(self + 224) = v42;
+  return self;
 }
 
-- (void)initWithSourceColorPixelBuffer:(double)a3 segmentationPixelBuffer:(double)a4 networkDisparityPixelBuffer:(double)a5 destinationDisparityPixelBuffer:(double)a6 focusRegion:(double)a7 focusRegionType:(double)a8 currentFocusPosition:(double)a9 lockFocalPlane:(uint64_t)a10 sourceColorPixelBufferOrientation:(__CVBuffer *)a11 sourceColorPixelBufferGravity:(__CVBuffer *)a12 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)a13 facesArray:(__CVBuffer *)a14 disparityNormalizationMultiplier:(void *)a15 disparityNormalizationOffset:(int)a16
+- (void)initWithSourceColorPixelBuffer:(double)buffer segmentationPixelBuffer:(double)pixelBuffer networkDisparityPixelBuffer:(double)disparityPixelBuffer destinationDisparityPixelBuffer:(double)destinationDisparityPixelBuffer focusRegion:(double)region focusRegionType:(double)type currentFocusPosition:(double)position lockFocalPlane:(uint64_t)self0 sourceColorPixelBufferOrientation:(__CVBuffer *)self1 sourceColorPixelBufferGravity:(__CVBuffer *)self2 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)self3 facesArray:(__CVBuffer *)self4 disparityNormalizationMultiplier:(void *)self5 disparityNormalizationOffset:(int)self6
 {
-  v32 = a15;
+  multiplierCopy = multiplier;
   v33 = a21;
-  v46.receiver = a1;
+  v46.receiver = self;
   v46.super_class = CVADisparityPostprocessingRequest;
   v34 = objc_msgSendSuper2(&v46, sel_init);
-  v34[7] = a11;
-  CVPixelBufferRetain(a11);
-  v34[8] = a12;
+  v34[7] = orientation;
+  CVPixelBufferRetain(orientation);
+  v34[8] = gravity;
   v34[9] = 0;
-  CVPixelBufferRetain(a12);
-  v34[11] = a13;
-  CVPixelBufferRetain(a13);
-  v34[10] = a14;
-  CVPixelBufferRetain(a14);
+  CVPixelBufferRetain(gravity);
+  v34[11] = motion;
+  CVPixelBufferRetain(motion);
+  v34[10] = array;
+  CVPixelBufferRetain(array);
   v35 = v34[12];
-  v34[12] = v32;
-  v36 = v32;
+  v34[12] = multiplierCopy;
+  v36 = multiplierCopy;
 
-  *(v34 + 8) = a16;
+  *(v34 + 8) = offset;
   *(v34 + 9) = a2;
   *(v34 + 8) = a17;
-  *(v34 + 22) = a3;
-  *(v34 + 23) = a4;
-  *(v34 + 24) = a5;
-  *(v34 + 25) = a6;
-  *(v34 + 16) = a7;
-  *(v34 + 17) = a8;
-  *(v34 + 18) = a9;
+  *(v34 + 22) = buffer;
+  *(v34 + 23) = pixelBuffer;
+  *(v34 + 24) = disparityPixelBuffer;
+  *(v34 + 25) = destinationDisparityPixelBuffer;
+  *(v34 + 16) = region;
+  *(v34 + 17) = type;
+  *(v34 + 18) = position;
   v34[19] = a18;
   v34[20] = a19;
   v34[21] = a20;
@@ -174,35 +174,35 @@
   return v34;
 }
 
-- (void)initWithSourceColorPixelBuffer:(double)a3 fixedPointDisparityPixelBuffer:(double)a4 destinationDisparityPixelBuffer:(double)a5 focusRegion:(double)a6 focusRegionType:(double)a7 currentFocusPosition:(double)a8 lockFocalPlane:(double)a9 sourceColorPixelBufferOrientation:(uint64_t)a10 sourceColorPixelBufferGravity:(__CVBuffer *)a11 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)a12 facesArray:(__CVBuffer *)a13 disparityNormalizationMultiplier:(void *)a14 disparityNormalizationOffset:(int)a15 primaryCaptureRect:(char)a16 cropDepthToPrimaryCaptureRect:(uint64_t)a17
+- (void)initWithSourceColorPixelBuffer:(double)buffer fixedPointDisparityPixelBuffer:(double)pixelBuffer destinationDisparityPixelBuffer:(double)disparityPixelBuffer focusRegion:(double)region focusRegionType:(double)type currentFocusPosition:(double)position lockFocalPlane:(double)plane sourceColorPixelBufferOrientation:(uint64_t)self0 sourceColorPixelBufferGravity:(__CVBuffer *)self1 sourceColorPixelBufferGlobalMotion:(__CVBuffer *)self2 facesArray:(__CVBuffer *)self3 disparityNormalizationMultiplier:(void *)self4 disparityNormalizationOffset:(int)self5 primaryCaptureRect:(char)self6 cropDepthToPrimaryCaptureRect:(uint64_t)self7
 {
-  v33 = a14;
+  multiplierCopy = multiplier;
   v34 = a20;
-  v48.receiver = a1;
+  v48.receiver = self;
   v48.super_class = CVADisparityPostprocessingRequest;
   v35 = objc_msgSendSuper2(&v48, sel_init);
-  v35[7] = a11;
-  CVPixelBufferRetain(a11);
+  v35[7] = gravity;
+  CVPixelBufferRetain(gravity);
   v35[8] = 0;
-  v35[9] = a12;
-  CVPixelBufferRetain(a12);
-  v35[10] = a13;
-  CVPixelBufferRetain(a13);
+  v35[9] = motion;
+  CVPixelBufferRetain(motion);
+  v35[10] = array;
+  CVPixelBufferRetain(array);
   v36 = v35[12];
-  v35[12] = v33;
-  v37 = v33;
+  v35[12] = multiplierCopy;
+  v37 = multiplierCopy;
 
-  *(v35 + 8) = a15;
+  *(v35 + 8) = offset;
   *(v35 + 9) = a2;
-  *(v35 + 8) = a16;
-  *(v35 + 22) = a3;
-  *(v35 + 23) = a4;
-  *(v35 + 24) = a5;
-  *(v35 + 25) = a6;
-  *(v35 + 16) = a7;
-  *(v35 + 17) = a8;
-  *(v35 + 18) = a9;
-  v35[19] = a17;
+  *(v35 + 8) = rect;
+  *(v35 + 22) = buffer;
+  *(v35 + 23) = pixelBuffer;
+  *(v35 + 24) = disparityPixelBuffer;
+  *(v35 + 25) = region;
+  *(v35 + 16) = type;
+  *(v35 + 17) = position;
+  *(v35 + 18) = plane;
+  v35[19] = captureRect;
   v35[20] = a18;
   v35[21] = a19;
   v38 = v35[13];

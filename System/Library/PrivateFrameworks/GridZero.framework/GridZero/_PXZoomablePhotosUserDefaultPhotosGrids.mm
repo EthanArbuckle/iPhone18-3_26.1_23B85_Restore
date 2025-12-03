@@ -1,23 +1,23 @@
 @interface _PXZoomablePhotosUserDefaultPhotosGrids
 - (NSNumber)preferredIndividualItemsColumnsNumber;
-- (void)setPreferredIndividualItemsColumnsNumber:(id)a3;
+- (void)setPreferredIndividualItemsColumnsNumber:(id)number;
 @end
 
 @implementation _PXZoomablePhotosUserDefaultPhotosGrids
 
-- (void)setPreferredIndividualItemsColumnsNumber:(id)a3
+- (void)setPreferredIndividualItemsColumnsNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
-  [v5 setPhotosGridPreferredIndividualItemsColumns:v4];
+  numberCopy = number;
+  defaults = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
+  [defaults setPhotosGridPreferredIndividualItemsColumns:numberCopy];
 }
 
 - (NSNumber)preferredIndividualItemsColumnsNumber
 {
-  v2 = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
-  v3 = [v2 photosGridPreferredIndividualItemsColumns];
+  defaults = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
+  photosGridPreferredIndividualItemsColumns = [defaults photosGridPreferredIndividualItemsColumns];
 
-  return v3;
+  return photosGridPreferredIndividualItemsColumns;
 }
 
 @end

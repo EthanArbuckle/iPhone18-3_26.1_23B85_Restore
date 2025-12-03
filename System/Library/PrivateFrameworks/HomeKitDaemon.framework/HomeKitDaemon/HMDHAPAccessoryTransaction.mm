@@ -1,13 +1,13 @@
 @interface HMDHAPAccessoryTransaction
-+ (id)cd_getMKFHAPAccessoryFromAccessory:(id)a3;
-+ (id)cd_getMKFHAPAccessoryFromAccessoryUUID:(id)a3;
-+ (id)cd_getMKFServiceFromAccessoryUUID:(id)a3 serviceInstanceId:(id)a4;
++ (id)cd_getMKFHAPAccessoryFromAccessory:(id)accessory;
++ (id)cd_getMKFHAPAccessoryFromAccessoryUUID:(id)d;
++ (id)cd_getMKFServiceFromAccessoryUUID:(id)d serviceInstanceId:(id)id;
 + (id)properties;
 - (NSSet)chipPairings;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
-- (void)setChipPairings:(id)a3;
+- (void)setChipPairings:(id)pairings;
 @end
 
 @implementation HMDHAPAccessoryTransaction
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __40__HMDHAPAccessoryTransaction_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_162955 != -1)
   {
     dispatch_once(&properties_onceToken_162955, block);
@@ -317,14 +317,14 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setChipPairings:(id)a3
+- (void)setChipPairings:(id)pairings
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  pairingsCopy = pairings;
+  if (pairingsCopy)
   {
     v12 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:pairingsCopy requiringSecureCoding:1 error:&v12];
     v6 = v12;
     if (v5)
     {
@@ -334,7 +334,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     else
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -342,7 +342,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
         *buf = 138543874;
         v14 = v10;
         v15 = 2112;
-        v16 = v4;
+        v16 = pairingsCopy;
         v17 = 2112;
         v18 = v6;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize pairings %@: %@", buf, 0x20u);
@@ -363,8 +363,8 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
 - (NSSet)chipPairings
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHAPAccessoryTransaction *)self chipPairingsData];
-  if (v3)
+  chipPairingsData = [(HMDHAPAccessoryTransaction *)self chipPairingsData];
+  if (chipPairingsData)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = MEMORY[0x277CBEB98];
@@ -373,7 +373,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v7 = [v5 setWithArray:v6];
     v17 = 0;
-    v8 = [v4 unarchivedObjectOfClasses:v7 fromData:v3 error:&v17];
+    v8 = [v4 unarchivedObjectOfClasses:v7 fromData:chipPairingsData error:&v17];
     v9 = v17;
 
     if (v8)
@@ -384,7 +384,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -412,38 +412,38 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
 
 - (id)dependentUUIDs
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = HMDHAPAccessoryTransaction;
-  v3 = [(HMDAccessoryTransaction *)&v34 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDAccessoryTransaction *)&v34 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDHAPAccessoryTransaction *)v2 bridgeUUID];
+  bridgeUUID = [(HMDHAPAccessoryTransaction *)selfCopy bridgeUUID];
 
-  if (v5)
+  if (bridgeUUID)
   {
     v6 = objc_alloc(MEMORY[0x277CCAD78]);
-    v7 = [(HMDHAPAccessoryTransaction *)v2 bridgeUUID];
-    v8 = [v6 initWithUUIDString:v7];
+    bridgeUUID2 = [(HMDHAPAccessoryTransaction *)selfCopy bridgeUUID];
+    v8 = [v6 initWithUUIDString:bridgeUUID2];
     [v4 addObject:v8];
   }
 
-  v9 = [(HMDHAPAccessoryTransaction *)v2 targetUUIDs];
-  v10 = [v9 count];
+  targetUUIDs = [(HMDHAPAccessoryTransaction *)selfCopy targetUUIDs];
+  v10 = [targetUUIDs count];
 
   if (v10)
   {
     v27 = v4;
     v11 = MEMORY[0x277CBEB18];
-    v12 = [(HMDHAPAccessoryTransaction *)v2 targetUUIDs];
-    v29 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
+    targetUUIDs2 = [(HMDHAPAccessoryTransaction *)selfCopy targetUUIDs];
+    v29 = [v11 arrayWithCapacity:{objc_msgSend(targetUUIDs2, "count")}];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = [(HMDHAPAccessoryTransaction *)v2 targetUUIDs];
+    obj = [(HMDHAPAccessoryTransaction *)selfCopy targetUUIDs];
     v13 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
     v14 = 0x277CCA000uLL;
     if (v13)
@@ -469,19 +469,19 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
           else
           {
             v20 = objc_autoreleasePoolPush();
-            v21 = v2;
+            v21 = selfCopy;
             v22 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               HMFGetLogIdentifier();
-              v24 = v23 = v2;
+              v24 = v23 = selfCopy;
               *buf = 138543618;
               v36 = v24;
               v37 = 2112;
               v38 = v18;
               _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@UUID string not well-formed: %@", buf, 0x16u);
 
-              v2 = v23;
+              selfCopy = v23;
               v14 = 0x277CCA000;
             }
 
@@ -504,18 +504,18 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"cameraActivityZones"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"cameraActivityZones"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"cameraActivityZones"])
     {
-      v11 = [(HMDHAPAccessoryTransaction *)self cameraActivityZones];
-      if (v11)
+      cameraActivityZones = [(HMDHAPAccessoryTransaction *)self cameraActivityZones];
+      if (cameraActivityZones)
       {
         v12 = MEMORY[0x277CCAAC8];
         v13 = MEMORY[0x277CBEB98];
@@ -524,7 +524,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
         v15 = [v13 setWithArray:v14];
         v31 = 0;
-        v16 = [v12 unarchivedObjectOfClasses:v15 fromData:v11 error:&v31];
+        v16 = [v12 unarchivedObjectOfClasses:v15 fromData:cameraActivityZones error:&v31];
         v17 = v31;
 
         if (v16)
@@ -535,7 +535,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
         else
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = self;
+          selfCopy = self;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
@@ -562,55 +562,55 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     goto LABEL_38;
   }
 
-  if ([v9 isEqualToString:@"initialServiceTypes"])
+  if ([fieldCopy isEqualToString:@"initialServiceTypes"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"initialServiceTypeUUIDs"])
     {
-      v19 = [(HMDHAPAccessoryTransaction *)self initialServiceTypeUUIDs];
-      v11 = v19;
-      if (v19)
+      initialServiceTypeUUIDs = [(HMDHAPAccessoryTransaction *)self initialServiceTypeUUIDs];
+      cameraActivityZones = initialServiceTypeUUIDs;
+      if (initialServiceTypeUUIDs)
       {
-        v20 = HMDSortedServiceTypeUUIDsFromStrings(v19);
+        null = HMDSortedServiceTypeUUIDsFromStrings(initialServiceTypeUUIDs);
 LABEL_36:
-        v26 = v20;
+        v26 = null;
 LABEL_37:
 
         goto LABEL_39;
       }
 
 LABEL_13:
-      v20 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       goto LABEL_36;
     }
 
     goto LABEL_38;
   }
 
-  if ([v9 isEqualToString:@"matterNodeID"])
+  if ([fieldCopy isEqualToString:@"matterNodeID"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipNodeID"])
     {
-      v21 = [(HMDHAPAccessoryTransaction *)self chipNodeID];
+      chipNodeID = [(HMDHAPAccessoryTransaction *)self chipNodeID];
 LABEL_33:
-      v11 = v21;
+      cameraActivityZones = chipNodeID;
       v27 = *MEMORY[0x277CBEEE8];
-      if (v21)
+      if (chipNodeID)
       {
-        v27 = v21;
+        v27 = chipNodeID;
       }
 
-      v20 = v27;
+      null = v27;
       goto LABEL_36;
     }
 
     goto LABEL_38;
   }
 
-  if ([v9 isEqualToString:@"matterVendorID"])
+  if ([fieldCopy isEqualToString:@"matterVendorID"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipVendorID"])
     {
-      v21 = [(HMDHAPAccessoryTransaction *)self chipVendorID];
+      chipNodeID = [(HMDHAPAccessoryTransaction *)self chipVendorID];
       goto LABEL_33;
     }
 
@@ -619,44 +619,44 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if ([v9 isEqualToString:@"matterProductID"])
+  if ([fieldCopy isEqualToString:@"matterProductID"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipProductID"])
     {
-      v21 = [(HMDHAPAccessoryTransaction *)self chipProductID];
+      chipNodeID = [(HMDHAPAccessoryTransaction *)self chipProductID];
       goto LABEL_33;
     }
 
     goto LABEL_38;
   }
 
-  if ([v9 isEqualToString:@"matterPairings"])
+  if ([fieldCopy isEqualToString:@"matterPairings"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipPairingsData"])
     {
-      v21 = [(HMDHAPAccessoryTransaction *)self chipPairings];
+      chipNodeID = [(HMDHAPAccessoryTransaction *)self chipPairings];
       goto LABEL_33;
     }
 
     goto LABEL_38;
   }
 
-  if ([v9 isEqualToString:@"matterWEDSupport"])
+  if ([fieldCopy isEqualToString:@"matterWEDSupport"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipWEDSupport"])
     {
-      v21 = [(HMDHAPAccessoryTransaction *)self chipWEDSupport];
+      chipNodeID = [(HMDHAPAccessoryTransaction *)self chipWEDSupport];
       goto LABEL_33;
     }
 
     goto LABEL_38;
   }
 
-  if ([v9 isEqualToString:@"matterExtendedMACAddress"])
+  if ([fieldCopy isEqualToString:@"matterExtendedMACAddress"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipExtendedMACAddress"])
     {
-      v21 = [(HMDHAPAccessoryTransaction *)self chipExtendedMACAddress];
+      chipNodeID = [(HMDHAPAccessoryTransaction *)self chipExtendedMACAddress];
       goto LABEL_33;
     }
 
@@ -665,7 +665,7 @@ LABEL_38:
 
   v30.receiver = self;
   v30.super_class = HMDHAPAccessoryTransaction;
-  v26 = [(HMDAccessoryTransaction *)&v30 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+  v26 = [(HMDAccessoryTransaction *)&v30 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
 LABEL_39:
 
   v28 = *MEMORY[0x277D85DE8];
@@ -673,24 +673,24 @@ LABEL_39:
   return v26;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"cameraActivityZones"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"cameraActivityZones"])
   {
-    v11 = [v8 cameraActivityZones];
-    if (v11)
+    cameraActivityZones = [objectCopy cameraActivityZones];
+    if (cameraActivityZones)
     {
       v45 = 0;
-      v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v45];
+      null2 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:cameraActivityZones requiringSecureCoding:1 error:&v45];
       v13 = v45;
-      if (v12)
+      if (null2)
       {
 LABEL_4:
-        v14 = v12;
+        v14 = null2;
 LABEL_24:
 
 LABEL_41:
@@ -698,7 +698,7 @@ LABEL_41:
       }
 
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -720,18 +720,18 @@ LABEL_22:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"initialServiceTypeUUIDs"])
+  if ([fieldCopy isEqualToString:@"initialServiceTypeUUIDs"])
   {
-    v15 = [v8 initialServiceTypes];
-    if (v15)
+    initialServiceTypes = [objectCopy initialServiceTypes];
+    if (initialServiceTypes)
     {
-      v38 = v8;
-      v16 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v15, "count")}];
+      v38 = objectCopy;
+      v16 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(initialServiceTypes, "count")}];
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v17 = v15;
+      v17 = initialServiceTypes;
       v18 = [v17 countByEnumeratingWithState:&v41 objects:v46 count:16];
       if (v18)
       {
@@ -747,8 +747,8 @@ LABEL_22:
             }
 
             v22 = MEMORY[0x277D0F888];
-            v23 = [*(*(&v41 + 1) + 8 * i) UUIDString];
-            v24 = [v22 hmf_cachedInstanceForString:v23];
+            uUIDString = [*(*(&v41 + 1) + 8 * i) UUIDString];
+            v24 = [v22 hmf_cachedInstanceForString:uUIDString];
             [v16 addObject:v24];
           }
 
@@ -758,75 +758,75 @@ LABEL_22:
         while (v19);
       }
 
-      v12 = [v16 copy];
-      v8 = v38;
+      null2 = [v16 copy];
+      objectCopy = v38;
       goto LABEL_34;
     }
 
-    v34 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_33;
   }
 
-  if ([v9 isEqualToString:@"uniqueIdentifier"])
+  if ([fieldCopy isEqualToString:@"uniqueIdentifier"])
   {
-    v25 = [v8 uniqueIdentifier];
+    uniqueIdentifier = [objectCopy uniqueIdentifier];
 
-    if (v25)
+    if (uniqueIdentifier)
     {
-      v15 = [v8 uniqueIdentifier];
+      initialServiceTypes = [objectCopy uniqueIdentifier];
       v26 = HAPInstanceIDFromUniqueIdentifier();
       v27 = HAPServerIDFromUniqueIdentifier();
-      v12 = HAPUniqueIdentifier();
+      null2 = HAPUniqueIdentifier();
 
 LABEL_34:
       goto LABEL_42;
     }
   }
 
-  if ([v9 isEqualToString:@"chipNodeID"])
+  if ([fieldCopy isEqualToString:@"chipNodeID"])
   {
-    v28 = [v8 matterNodeID];
+    matterNodeID = [objectCopy matterNodeID];
 LABEL_30:
-    v15 = v28;
+    initialServiceTypes = matterNodeID;
     v35 = *MEMORY[0x277CBEEE8];
-    if (v28)
+    if (matterNodeID)
     {
-      v35 = v28;
+      v35 = matterNodeID;
     }
 
-    v34 = v35;
+    null = v35;
 LABEL_33:
-    v12 = v34;
+    null2 = null;
     goto LABEL_34;
   }
 
-  if ([v9 isEqualToString:@"chipVendorID"])
+  if ([fieldCopy isEqualToString:@"chipVendorID"])
   {
-    v28 = [v8 matterVendorID];
+    matterNodeID = [objectCopy matterVendorID];
     goto LABEL_30;
   }
 
-  if ([v9 isEqualToString:@"chipProductID"])
+  if ([fieldCopy isEqualToString:@"chipProductID"])
   {
-    v28 = [v8 matterProductID];
+    matterNodeID = [objectCopy matterProductID];
     goto LABEL_30;
   }
 
-  if ([v9 isEqualToString:@"chipPairingsData"])
+  if ([fieldCopy isEqualToString:@"chipPairingsData"])
   {
-    v11 = [v8 matterPairings];
-    if (v11)
+    cameraActivityZones = [objectCopy matterPairings];
+    if (cameraActivityZones)
     {
       v40 = 0;
-      v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v40];
+      null2 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:cameraActivityZones requiringSecureCoding:1 error:&v40];
       v13 = v40;
-      if (v12)
+      if (null2)
       {
         goto LABEL_4;
       }
 
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -846,44 +846,44 @@ LABEL_23:
     }
 
 LABEL_40:
-    v12 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
     goto LABEL_41;
   }
 
-  if ([v9 isEqualToString:@"chipWEDSupport"])
+  if ([fieldCopy isEqualToString:@"chipWEDSupport"])
   {
-    v28 = [v8 matterWEDSupport];
+    matterNodeID = [objectCopy matterWEDSupport];
     goto LABEL_30;
   }
 
-  if ([v9 isEqualToString:@"chipExtendedMACAddress"])
+  if ([fieldCopy isEqualToString:@"chipExtendedMACAddress"])
   {
-    v28 = [v8 matterExtendedMACAddress];
+    matterNodeID = [objectCopy matterExtendedMACAddress];
     goto LABEL_30;
   }
 
   v39.receiver = self;
   v39.super_class = HMDHAPAccessoryTransaction;
-  v12 = [(HMDAccessoryTransaction *)&v39 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+  null2 = [(HMDAccessoryTransaction *)&v39 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
 LABEL_42:
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return null2;
 }
 
-+ (id)cd_getMKFHAPAccessoryFromAccessoryUUID:(id)a3
++ (id)cd_getMKFHAPAccessoryFromAccessoryUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = dCopy;
   v17 = 0;
-  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofManagedObjectType:objc_opt_class() error:&v17];
+  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:dCopy ofManagedObjectType:objc_opt_class() error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -904,7 +904,7 @@ LABEL_42:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -927,20 +927,20 @@ LABEL_42:
   return v14;
 }
 
-+ (id)cd_getMKFHAPAccessoryFromAccessory:(id)a3
++ (id)cd_getMKFHAPAccessoryFromAccessory:(id)accessory
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  accessoryCopy = accessory;
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:accessoryCopy];
   if (v5)
   {
-    v6 = [a1 cd_getMKFHAPAccessoryFromAccessoryUUID:v5];
+    v6 = [self cd_getMKFHAPAccessoryFromAccessoryUUID:v5];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -948,7 +948,7 @@ LABEL_42:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = accessoryCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@Invalid accessory UUID string '%@'", &v13, 0x16u);
     }
 
@@ -961,25 +961,25 @@ LABEL_42:
   return v6;
 }
 
-+ (id)cd_getMKFServiceFromAccessoryUUID:(id)a3 serviceInstanceId:(id)a4
++ (id)cd_getMKFServiceFromAccessoryUUID:(id)d serviceInstanceId:(id)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  idCopy = id;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
 LABEL_20:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = idCopy;
+  if (!idCopy)
   {
     goto LABEL_20;
   }
 
-  v9 = [a1 cd_getMKFHAPAccessoryFromAccessory:v6];
+  v9 = [self cd_getMKFHAPAccessoryFromAccessory:dCopy];
   v10 = v9;
   if (v9)
   {
@@ -987,8 +987,8 @@ LABEL_20:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = [v9 services];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    services = [v9 services];
+    v12 = [services countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = *v21;
@@ -998,11 +998,11 @@ LABEL_20:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(services);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = [v15 instanceID];
+          instanceID = [v15 instanceID];
           v17 = HAPEqualInstanceIDs();
 
           if (v17)
@@ -1012,7 +1012,7 @@ LABEL_20:
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [services countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v12)
         {
           continue;

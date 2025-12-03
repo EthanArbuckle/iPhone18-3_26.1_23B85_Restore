@@ -1,12 +1,12 @@
 @interface THAnnotationChangeList
 - (NSArray)changedContentNodeIDs;
-- (id)addedAnnotationUUIDsForContentNodeID:(id)a3;
-- (id)changedAnnotationUUIDsForContentNodeID:(id)a3;
-- (id)deletedAnnotationUUIDsForContentNodeID:(id)a3;
+- (id)addedAnnotationUUIDsForContentNodeID:(id)d;
+- (id)changedAnnotationUUIDsForContentNodeID:(id)d;
+- (id)deletedAnnotationUUIDsForContentNodeID:(id)d;
 - (void)dealloc;
-- (void)registerAnnotationAddedWithUUID:(id)a3 toContentNodeWithID:(id)a4;
-- (void)registerAnnotationChangedWithUUID:(id)a3 inContentNodeWithID:(id)a4;
-- (void)registerAnnotationDeletedWithUUID:(id)a3 fromContentNodeWithID:(id)a4;
+- (void)registerAnnotationAddedWithUUID:(id)d toContentNodeWithID:(id)iD;
+- (void)registerAnnotationChangedWithUUID:(id)d inContentNodeWithID:(id)iD;
+- (void)registerAnnotationDeletedWithUUID:(id)d fromContentNodeWithID:(id)iD;
 @end
 
 @implementation THAnnotationChangeList
@@ -18,12 +18,12 @@
   [(THAnnotationChangeList *)&v3 dealloc];
 }
 
-- (void)registerAnnotationAddedWithUUID:(id)a3 toContentNodeWithID:(id)a4
+- (void)registerAnnotationAddedWithUUID:(id)d toContentNodeWithID:(id)iD
 {
-  if (!a3)
+  if (!d)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a4)
+    if (iD)
     {
       return;
     }
@@ -31,7 +31,7 @@
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!iD)
   {
 LABEL_16:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -73,12 +73,12 @@ LABEL_16:
   }
 }
 
-- (void)registerAnnotationDeletedWithUUID:(id)a3 fromContentNodeWithID:(id)a4
+- (void)registerAnnotationDeletedWithUUID:(id)d fromContentNodeWithID:(id)iD
 {
-  if (!a3)
+  if (!d)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a4)
+    if (iD)
     {
       return;
     }
@@ -86,7 +86,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!iD)
   {
 LABEL_16:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -129,12 +129,12 @@ LABEL_16:
   }
 }
 
-- (void)registerAnnotationChangedWithUUID:(id)a3 inContentNodeWithID:(id)a4
+- (void)registerAnnotationChangedWithUUID:(id)d inContentNodeWithID:(id)iD
 {
-  if (!a3)
+  if (!d)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a4)
+    if (iD)
     {
       return;
     }
@@ -142,7 +142,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!iD)
   {
 LABEL_15:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -271,9 +271,9 @@ LABEL_15:
   return [v3 allObjects];
 }
 
-- (id)addedAnnotationUUIDsForContentNodeID:(id)a3
+- (id)addedAnnotationUUIDsForContentNodeID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v5 = +[NSMutableSet set];
     v13 = 0u;
@@ -318,9 +318,9 @@ LABEL_15:
   return [v5 allObjects];
 }
 
-- (id)deletedAnnotationUUIDsForContentNodeID:(id)a3
+- (id)deletedAnnotationUUIDsForContentNodeID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v5 = +[NSMutableSet set];
     v13 = 0u;
@@ -365,9 +365,9 @@ LABEL_15:
   return [v5 allObjects];
 }
 
-- (id)changedAnnotationUUIDsForContentNodeID:(id)a3
+- (id)changedAnnotationUUIDsForContentNodeID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v5 = +[NSMutableSet set];
     v13 = 0u;

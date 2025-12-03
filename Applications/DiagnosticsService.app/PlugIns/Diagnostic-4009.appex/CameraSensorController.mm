@@ -1,23 +1,23 @@
 @interface CameraSensorController
-- (BOOL)enableCameraMaxDataRate:(id)a3 error:(id *)a4;
-- (BOOL)enableCameraTestPatternPN9:(id)a3 error:(id *)a4;
-- (BOOL)setCameraMinimumFrameRate:(id)a3 frameRate:(id)a4 error:(id *)a5;
-- (BOOL)setCameraProperties:(id)a3 error:(id *)a4;
-- (BOOL)streamCamera:(id)a3 error:(id *)a4;
-- (BOOL)syncAndStreamCameras:(id)a3 bravo:(id)a4 error:(id *)a5;
+- (BOOL)enableCameraMaxDataRate:(id)rate error:(id *)error;
+- (BOOL)enableCameraTestPatternPN9:(id)n9 error:(id *)error;
+- (BOOL)setCameraMinimumFrameRate:(id)rate frameRate:(id)frameRate error:(id *)error;
+- (BOOL)setCameraProperties:(id)properties error:(id *)error;
+- (BOOL)streamCamera:(id)camera error:(id *)error;
+- (BOOL)syncAndStreamCameras:(id)cameras bravo:(id)bravo error:(id *)error;
 - (void)disableAttentionDetection;
 - (void)restoreAttentionDetection;
 - (void)runCameraTest;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation CameraSensorController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(CameraSensorController *)self setInputs:a3, a4];
+  [(CameraSensorController *)self setInputs:inputs, responder];
 
   [(CameraSensorController *)self setExclavesStatus:0];
 }
@@ -36,20 +36,20 @@
 
 - (void)teardown
 {
-  v3 = [(CameraSensorController *)self alphaCamera];
+  alphaCamera = [(CameraSensorController *)self alphaCamera];
 
-  if (v3)
+  if (alphaCamera)
   {
-    v4 = [(CameraSensorController *)self alphaCamera];
-    [v4 deactivate];
+    alphaCamera2 = [(CameraSensorController *)self alphaCamera];
+    [alphaCamera2 deactivate];
   }
 
-  v5 = [(CameraSensorController *)self bravoCamera];
+  bravoCamera = [(CameraSensorController *)self bravoCamera];
 
-  if (v5)
+  if (bravoCamera)
   {
-    v6 = [(CameraSensorController *)self alphaCamera];
-    [v6 deactivate];
+    alphaCamera3 = [(CameraSensorController *)self alphaCamera];
+    [alphaCamera3 deactivate];
   }
 
   [(CameraSensorController *)self restoreAttentionDetection];
@@ -61,9 +61,9 @@
   v4 = MGGetBoolAnswer();
   [(CameraSensorController *)self setAlphaCamera:0];
   [(CameraSensorController *)self setBravoCamera:0];
-  v5 = [(CameraSensorController *)self inputs];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:@"Front"];
+  inputs = [(CameraSensorController *)self inputs];
+  identifier = [inputs identifier];
+  v7 = [identifier isEqualToString:@"Front"];
 
   if (v7)
   {
@@ -73,9 +73,9 @@
     goto LABEL_10;
   }
 
-  v11 = [(CameraSensorController *)self inputs];
-  v12 = [v11 identifier];
-  v13 = [v12 isEqualToString:@"FrontSuperWide"];
+  inputs2 = [(CameraSensorController *)self inputs];
+  identifier2 = [inputs2 identifier];
+  v13 = [identifier2 isEqualToString:@"FrontSuperWide"];
 
   if (v13)
   {
@@ -85,9 +85,9 @@
     goto LABEL_10;
   }
 
-  v14 = [(CameraSensorController *)self inputs];
-  v15 = [v14 identifier];
-  v16 = [v15 isEqualToString:@"Rear"];
+  inputs3 = [(CameraSensorController *)self inputs];
+  identifier3 = [inputs3 identifier];
+  v16 = [identifier3 isEqualToString:@"Rear"];
 
   if (v16)
   {
@@ -98,9 +98,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v17 = [(CameraSensorController *)self inputs];
-  v18 = [v17 identifier];
-  v19 = [v18 isEqualToString:@"RearTelephoto"] & v3;
+  inputs4 = [(CameraSensorController *)self inputs];
+  identifier4 = [inputs4 identifier];
+  v19 = [identifier4 isEqualToString:@"RearTelephoto"] & v3;
 
   if (v19)
   {
@@ -110,9 +110,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v68 = [(CameraSensorController *)self inputs];
-  v69 = [v68 identifier];
-  v70 = [v69 isEqualToString:@"RearSynced"] & v3;
+  inputs5 = [(CameraSensorController *)self inputs];
+  identifier5 = [inputs5 identifier];
+  v70 = [identifier5 isEqualToString:@"RearSynced"] & v3;
 
   if (v70)
   {
@@ -121,9 +121,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v79 = [(CameraSensorController *)self inputs];
-  v80 = [v79 identifier];
-  v81 = [v80 isEqualToString:@"RearSuperWide"] & v4;
+  inputs6 = [(CameraSensorController *)self inputs];
+  identifier6 = [inputs6 identifier];
+  v81 = [identifier6 isEqualToString:@"RearSuperWide"] & v4;
 
   if (v81)
   {
@@ -137,9 +137,9 @@ LABEL_10:
     v22 = v88;
     [(CameraSensorController *)self setAlphaCamera:v21];
 
-    v23 = [(CameraSensorController *)self alphaCamera];
+    alphaCamera = [(CameraSensorController *)self alphaCamera];
 
-    if (v23)
+    if (alphaCamera)
     {
       if (!v8)
       {
@@ -152,9 +152,9 @@ LABEL_10:
       v26 = v87;
 
       [(CameraSensorController *)self setBravoCamera:v25];
-      v27 = [(CameraSensorController *)self bravoCamera];
+      bravoCamera = [(CameraSensorController *)self bravoCamera];
 
-      if (v27)
+      if (bravoCamera)
       {
         v22 = v26;
 LABEL_14:
@@ -162,9 +162,9 @@ LABEL_14:
         [(CameraSensorController *)self setAlphaSyncFrameCount:0];
         [(CameraSensorController *)self setBravoSyncFrameCount:0];
         [(CameraSensorController *)self setStreamTime:0.0];
-        v28 = [(CameraSensorController *)self alphaCamera];
+        alphaCamera2 = [(CameraSensorController *)self alphaCamera];
         v86 = v22;
-        v29 = [(CameraSensorController *)self setCameraProperties:v28 error:&v86];
+        v29 = [(CameraSensorController *)self setCameraProperties:alphaCamera2 error:&v86];
         v30 = v86;
 
         if (!v29)
@@ -172,16 +172,16 @@ LABEL_14:
           goto LABEL_28;
         }
 
-        v31 = [(CameraSensorController *)self inputs];
-        v32 = [v31 identifier];
-        v33 = [v32 isEqualToString:@"RearSynced"];
+        inputs7 = [(CameraSensorController *)self inputs];
+        identifier7 = [inputs7 identifier];
+        v33 = [identifier7 isEqualToString:@"RearSynced"];
 
-        v34 = [(CameraSensorController *)self alphaCamera];
+        alphaCamera3 = [(CameraSensorController *)self alphaCamera];
         if (v33)
         {
-          v35 = [(CameraSensorController *)self bravoCamera];
+          bravoCamera2 = [(CameraSensorController *)self bravoCamera];
           v85 = v30;
-          v36 = [(CameraSensorController *)self syncAndStreamCameras:v34 bravo:v35 error:&v85];
+          v36 = [(CameraSensorController *)self syncAndStreamCameras:alphaCamera3 bravo:bravoCamera2 error:&v85];
           v37 = v85;
 
           v30 = v37;
@@ -204,7 +204,7 @@ LABEL_28:
         else
         {
           v84 = v30;
-          v39 = [(CameraSensorController *)self streamCamera:v34 error:&v84];
+          v39 = [(CameraSensorController *)self streamCamera:alphaCamera3 error:&v84];
           v37 = v84;
 
           v30 = v37;
@@ -215,27 +215,27 @@ LABEL_28:
         }
 
         v40 = objc_alloc_init(NSMutableDictionary);
-        v41 = [(CameraSensorController *)self exclavesStatus];
+        exclavesStatus = [(CameraSensorController *)self exclavesStatus];
 
-        if (v41)
+        if (exclavesStatus)
         {
-          v42 = [(CameraSensorController *)self exclavesStatus];
-          [v40 addEntriesFromDictionary:v42];
+          exclavesStatus2 = [(CameraSensorController *)self exclavesStatus];
+          [v40 addEntriesFromDictionary:exclavesStatus2];
         }
 
-        v43 = [(CameraSensorController *)self inputs];
-        v44 = [v43 identifier];
-        v45 = [v44 isEqualToString:@"RearSynced"];
+        inputs8 = [(CameraSensorController *)self inputs];
+        identifier8 = [inputs8 identifier];
+        v45 = [identifier8 isEqualToString:@"RearSynced"];
 
         if (v45)
         {
-          v46 = [(CameraSensorController *)self alphaSyncFrameCount];
-          v47 = [(CameraSensorController *)self inputs];
-          v48 = [v47 framesToSample];
+          alphaSyncFrameCount = [(CameraSensorController *)self alphaSyncFrameCount];
+          inputs9 = [(CameraSensorController *)self inputs];
+          framesToSample = [inputs9 framesToSample];
 
-          v82 = [(CameraSensorController *)self bravoSyncFrameCount];
-          v49 = [(CameraSensorController *)self inputs];
-          v50 = [v49 framesToSample];
+          bravoSyncFrameCount = [(CameraSensorController *)self bravoSyncFrameCount];
+          inputs10 = [(CameraSensorController *)self inputs];
+          framesToSample2 = [inputs10 framesToSample];
 
           v91[0] = @"alphaSyncFrameCount";
           v51 = [NSNumber numberWithInt:[(CameraSensorController *)self alphaSyncFrameCount]];
@@ -251,10 +251,10 @@ LABEL_28:
           [v40 addEntriesFromDictionary:v54];
 
           v55 = [v40 copy];
-          v56 = [(CameraSensorController *)self result];
-          [v56 setData:v55];
+          result = [(CameraSensorController *)self result];
+          [result setData:v55];
 
-          if (v46 >= v48 && v82 >= v50)
+          if (alphaSyncFrameCount >= framesToSample && bravoSyncFrameCount >= framesToSample2)
           {
             goto LABEL_25;
           }
@@ -262,9 +262,9 @@ LABEL_28:
 
         else
         {
-          v71 = [(CameraSensorController *)self soloFrameCount];
-          v72 = [(CameraSensorController *)self inputs];
-          v73 = [v72 framesToSample];
+          soloFrameCount = [(CameraSensorController *)self soloFrameCount];
+          inputs11 = [(CameraSensorController *)self inputs];
+          framesToSample3 = [inputs11 framesToSample];
 
           v89[0] = @"soloFrameCount";
           v74 = [NSNumber numberWithInt:[(CameraSensorController *)self soloFrameCount]];
@@ -277,24 +277,24 @@ LABEL_28:
           [v40 addEntriesFromDictionary:v76];
 
           v77 = [v40 copy];
-          v78 = [(CameraSensorController *)self result];
-          [v78 setData:v77];
+          result2 = [(CameraSensorController *)self result];
+          [result2 setData:v77];
 
-          if (v71 >= v73)
+          if (soloFrameCount >= framesToSample3)
           {
 LABEL_25:
-            v57 = [(CameraSensorController *)self exclavesStatus];
-            v58 = [DAExclavesSupport testResultOverrideForExclavesStatus:v57 originalResult:&off_1000111F8];
-            v59 = [(CameraSensorController *)self result];
-            [v59 setStatusCode:v58];
+            exclavesStatus3 = [(CameraSensorController *)self exclavesStatus];
+            v58 = [DAExclavesSupport testResultOverrideForExclavesStatus:exclavesStatus3 originalResult:&off_1000111F8];
+            result3 = [(CameraSensorController *)self result];
+            [result3 setStatusCode:v58];
 
 LABEL_37:
             return;
           }
         }
 
-        v57 = [(CameraSensorController *)self result];
-        [v57 setStatusCode:&off_100011210];
+        exclavesStatus3 = [(CameraSensorController *)self result];
+        [exclavesStatus3 setStatusCode:&off_100011210];
         goto LABEL_37;
       }
 
@@ -307,55 +307,55 @@ LABEL_37:
       v38 = &off_1000111C8;
     }
 
-    v60 = [(CameraSensorController *)self result];
-    [v60 setStatusCode:v38];
+    result4 = [(CameraSensorController *)self result];
+    [result4 setStatusCode:v38];
 
     v30 = v22;
     goto LABEL_28;
   }
 
-  v83 = [(CameraSensorController *)self result];
-  [v83 setStatusCode:&off_1000111B0];
+  result5 = [(CameraSensorController *)self result];
+  [result5 setStatusCode:&off_1000111B0];
 }
 
-- (BOOL)setCameraProperties:(id)a3 error:(id *)a4
+- (BOOL)setCameraProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CameraSensorController *)self inputs];
-  if ([v7 enableMaxDataRate])
+  propertiesCopy = properties;
+  inputs = [(CameraSensorController *)self inputs];
+  if ([inputs enableMaxDataRate])
   {
   }
 
   else
   {
-    v8 = [(CameraSensorController *)self inputs];
-    v9 = [v8 enableTestPatternPN9];
+    inputs2 = [(CameraSensorController *)self inputs];
+    enableTestPatternPN9 = [inputs2 enableTestPatternPN9];
 
-    if (!v9)
+    if (!enableTestPatternPN9)
     {
       v14 = 1;
       goto LABEL_14;
     }
   }
 
-  if ([v6 activate:a4])
+  if ([propertiesCopy activate:error])
   {
-    v10 = [(CameraSensorController *)self inputs];
-    v11 = [v10 enableMaxDataRate];
+    inputs3 = [(CameraSensorController *)self inputs];
+    enableMaxDataRate = [inputs3 enableMaxDataRate];
 
-    if (v11 && ![(CameraSensorController *)self enableCameraMaxDataRate:v6 error:a4])
+    if (enableMaxDataRate && ![(CameraSensorController *)self enableCameraMaxDataRate:propertiesCopy error:error])
     {
       v14 = 0;
     }
 
     else
     {
-      v12 = [(CameraSensorController *)self inputs];
-      v13 = [v12 enableTestPatternPN9];
+      inputs4 = [(CameraSensorController *)self inputs];
+      enableTestPatternPN92 = [inputs4 enableTestPatternPN9];
 
-      if (v13)
+      if (enableTestPatternPN92)
       {
-        v14 = [(CameraSensorController *)self enableCameraTestPatternPN9:v6 error:a4];
+        v14 = [(CameraSensorController *)self enableCameraTestPatternPN9:propertiesCopy error:error];
       }
 
       else
@@ -364,32 +364,32 @@ LABEL_37:
       }
     }
 
-    [v6 deactivate];
+    [propertiesCopy deactivate];
   }
 
   else
   {
-    v15 = [(CameraSensorController *)self result];
-    [v15 setStatusCode:&off_100011228];
+    result = [(CameraSensorController *)self result];
+    [result setStatusCode:&off_100011228];
 
     v14 = 0;
   }
 
 LABEL_14:
-  v16 = [(CameraSensorController *)self inputs];
-  v17 = [v16 minimumFrameRate];
+  inputs5 = [(CameraSensorController *)self inputs];
+  minimumFrameRate = [inputs5 minimumFrameRate];
 
-  if (v14 && v17)
+  if (v14 && minimumFrameRate)
   {
-    if ([v6 activate:a4])
+    if ([propertiesCopy activate:error])
     {
-      LOBYTE(v14) = [(CameraSensorController *)self setCameraMinimumFrameRate:v6 frameRate:v17 error:a4];
+      LOBYTE(v14) = [(CameraSensorController *)self setCameraMinimumFrameRate:propertiesCopy frameRate:minimumFrameRate error:error];
     }
 
     else
     {
-      v18 = [(CameraSensorController *)self result];
-      [v18 setStatusCode:&off_100011228];
+      result2 = [(CameraSensorController *)self result];
+      [result2 setStatusCode:&off_100011228];
 
       LOBYTE(v14) = 0;
     }
@@ -398,16 +398,16 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)enableCameraMaxDataRate:(id)a3 error:(id *)a4
+- (BOOL)enableCameraMaxDataRate:(id)rate error:(id *)error
 {
-  v6 = a3;
-  if (![v6 enableAgileClocking:0 error:a4])
+  rateCopy = rate;
+  if (![rateCopy enableAgileClocking:0 error:error])
   {
     v9 = &off_100011240;
     goto LABEL_7;
   }
 
-  v7 = [v6 useMaxAvailableDataRate:a4];
+  v7 = [rateCopy useMaxAvailableDataRate:error];
 
   if (!v7)
   {
@@ -416,12 +416,12 @@ LABEL_14:
   }
 
   v8 = 1;
-  if (([v6 enableAgileClocking:1 error:a4] & 1) == 0)
+  if (([rateCopy enableAgileClocking:1 error:error] & 1) == 0)
   {
     v9 = &off_100011270;
 LABEL_7:
-    v10 = [(CameraSensorController *)self result];
-    [v10 setStatusCode:v9];
+    result = [(CameraSensorController *)self result];
+    [result setStatusCode:v9];
 
     v8 = 0;
   }
@@ -429,28 +429,28 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)enableCameraTestPatternPN9:(id)a3 error:(id *)a4
+- (BOOL)enableCameraTestPatternPN9:(id)n9 error:(id *)error
 {
-  v5 = [a3 enableTestPatternPN9:1 error:a4];
+  v5 = [n9 enableTestPatternPN9:1 error:error];
   if ((v5 & 1) == 0)
   {
-    v6 = [(CameraSensorController *)self result];
-    [v6 setStatusCode:&off_100011288];
+    result = [(CameraSensorController *)self result];
+    [result setStatusCode:&off_100011288];
   }
 
   return v5;
 }
 
-- (BOOL)setCameraMinimumFrameRate:(id)a3 frameRate:(id)a4 error:(id *)a5
+- (BOOL)setCameraMinimumFrameRate:(id)rate frameRate:(id)frameRate error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 supportedFormats:a5];
+  rateCopy = rate;
+  frameRateCopy = frameRate;
+  v10 = [rateCopy supportedFormats:error];
   v11 = v10;
   if (v10)
   {
-    v36 = self;
-    v37 = a5;
+    selfCopy = self;
+    errorCopy = error;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -471,12 +471,12 @@ LABEL_4:
           objc_enumerationMutation(v12);
         }
 
-        v18 = [*(*(&v38 + 1) + 8 * v17) objectForKeyedSubscript:{v16, v36}];
+        v18 = [*(*(&v38 + 1) + 8 * v17) objectForKeyedSubscript:{v16, selfCopy}];
         v19 = v18;
         if (v18)
         {
-          v20 = [v18 intValue];
-          if (v20 <= [v9 intValue])
+          intValue = [v18 intValue];
+          if (intValue <= [frameRateCopy intValue])
           {
             break;
           }
@@ -494,34 +494,34 @@ LABEL_4:
         }
       }
 
-      if ([v8 setMinimumFrameRate:v9 error:v37])
+      if ([rateCopy setMinimumFrameRate:frameRateCopy error:errorCopy])
       {
         v34 = 1;
         goto LABEL_19;
       }
 
-      v21 = [(CameraSensorController *)v36 result];
-      [v21 setStatusCode:&off_1000112A0];
+      result = [(CameraSensorController *)selfCopy result];
+      [result setStatusCode:&off_1000112A0];
     }
 
     else
     {
 LABEL_11:
 
-      v21 = DiagnosticLogHandleForCategory();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      result = DiagnosticLogHandleForCategory();
+      if (os_log_type_enabled(result, OS_LOG_TYPE_ERROR))
       {
-        sub_10000839C(v9, v21, v22, v23, v24, v25, v26, v27);
+        sub_10000839C(frameRateCopy, result, v22, v23, v24, v25, v26, v27);
       }
     }
   }
 
   else
   {
-    v21 = DiagnosticLogHandleForCategory();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    result = DiagnosticLogHandleForCategory();
+    if (os_log_type_enabled(result, OS_LOG_TYPE_ERROR))
     {
-      sub_100008408(a5, v21, v28, v29, v30, v31, v32, v33);
+      sub_100008408(error, result, v28, v29, v30, v31, v32, v33);
     }
   }
 
@@ -531,50 +531,50 @@ LABEL_19:
   return v34;
 }
 
-- (BOOL)streamCamera:(id)a3 error:(id *)a4
+- (BOOL)streamCamera:(id)camera error:(id *)error
 {
-  v6 = a3;
+  cameraCopy = camera;
   v7 = dispatch_group_create();
-  if ([v6 activate:a4])
+  if ([cameraCopy activate:error])
   {
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_1000040B4;
     v21 = &unk_1000105A0;
-    v22 = self;
+    selfCopy = self;
     v8 = v7;
     v23 = v8;
     v9 = objc_retainBlock(&v18);
-    [v6 setFrameHandler:{v9, v18, v19, v20, v21, v22}];
-    v10 = [v6 startStreamingWithOptions:0 error:a4];
+    [cameraCopy setFrameHandler:{v9, v18, v19, v20, v21, selfCopy}];
+    v10 = [cameraCopy startStreamingWithOptions:0 error:error];
     if (v10)
     {
-      v11 = +[NSDate date];
+      result = +[NSDate date];
       dispatch_group_enter(v8);
-      v12 = [(CameraSensorController *)self inputs];
-      [v12 frameSampleTimeout];
+      inputs = [(CameraSensorController *)self inputs];
+      [inputs frameSampleTimeout];
       v14 = dispatch_time(0, (v13 * 1000000000.0));
       dispatch_group_wait(v8, v14);
 
-      [v6 stopStreaming:a4];
+      [cameraCopy stopStreaming:error];
       v15 = +[NSDate date];
-      [v15 timeIntervalSinceDate:v11];
+      [v15 timeIntervalSinceDate:result];
       [(CameraSensorController *)self setStreamTime:?];
     }
 
     else
     {
-      v11 = [(CameraSensorController *)self result];
-      [v11 setStatusCode:&off_1000112B8];
+      result = [(CameraSensorController *)self result];
+      [result setStatusCode:&off_1000112B8];
     }
 
-    [v6 deactivate];
+    [cameraCopy deactivate];
   }
 
   else
   {
-    v16 = [(CameraSensorController *)self result];
-    [v16 setStatusCode:&off_100011228];
+    result2 = [(CameraSensorController *)self result];
+    [result2 setStatusCode:&off_100011228];
 
     v10 = 0;
   }
@@ -582,32 +582,32 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)syncAndStreamCameras:(id)a3 bravo:(id)a4 error:(id *)a5
+- (BOOL)syncAndStreamCameras:(id)cameras bravo:(id)bravo error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  camerasCopy = cameras;
+  bravoCopy = bravo;
   v10 = dispatch_group_create();
-  if ([v9 activate:a5])
+  if ([bravoCopy activate:error])
   {
-    if (![v8 activate:a5])
+    if (![camerasCopy activate:error])
     {
-      v15 = [(CameraSensorController *)self result];
-      [v15 setStatusCode:&off_100011228];
+      result = [(CameraSensorController *)self result];
+      [result setStatusCode:&off_100011228];
 
       v13 = 0;
 LABEL_15:
-      [v9 deactivate];
+      [bravoCopy deactivate];
       goto LABEL_16;
     }
 
-    if (![OSDCameraCenter syncCameras:v8 slave:v9 skipSlaveFrames:1 enableSlaveOutput:1 error:a5])
+    if (![OSDCameraCenter syncCameras:camerasCopy slave:bravoCopy skipSlaveFrames:1 enableSlaveOutput:1 error:error])
     {
-      v16 = [(CameraSensorController *)self result];
-      [v16 setStatusCode:&off_1000112E8];
+      result2 = [(CameraSensorController *)self result];
+      [result2 setStatusCode:&off_1000112E8];
 
       v13 = 0;
 LABEL_14:
-      [v8 deactivate];
+      [camerasCopy deactivate];
       goto LABEL_15;
     }
 
@@ -618,31 +618,31 @@ LABEL_14:
     v31[4] = self;
     v11 = v10;
     v32 = v11;
-    [v8 setFrameHandler:v31];
+    [camerasCopy setFrameHandler:v31];
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
     v27 = sub_100004574;
     v28 = &unk_1000105A0;
-    v29 = self;
+    selfCopy = self;
     v12 = v11;
     v30 = v12;
-    [v9 setFrameHandler:&v25];
-    if ([v8 startStreamingWithOptions:0 error:{a5, v25, v26, v27, v28, v29}])
+    [bravoCopy setFrameHandler:&v25];
+    if ([camerasCopy startStreamingWithOptions:0 error:{error, v25, v26, v27, v28, selfCopy}])
     {
-      if ([v9 startStreamingWithOptions:0 error:a5])
+      if ([bravoCopy startStreamingWithOptions:0 error:error])
       {
         v13 = 1;
 LABEL_13:
         v19 = +[NSDate date];
         dispatch_group_enter(v12);
         dispatch_group_enter(v12);
-        v20 = [(CameraSensorController *)self inputs];
-        [v20 frameSampleTimeout];
+        inputs = [(CameraSensorController *)self inputs];
+        [inputs frameSampleTimeout];
         v22 = dispatch_time(0, (v21 * 1000000000.0));
         dispatch_group_wait(v12, v22);
 
-        [v9 stopStreaming:a5];
-        [v8 stopStreaming:a5];
+        [bravoCopy stopStreaming:error];
+        [camerasCopy stopStreaming:error];
         v23 = +[NSDate date];
         [v23 timeIntervalSinceDate:v19];
         [(CameraSensorController *)self setStreamTime:?];
@@ -658,17 +658,17 @@ LABEL_13:
       v17 = &off_1000112B8;
     }
 
-    v18 = [(CameraSensorController *)self result];
-    [v18 setStatusCode:v17];
+    result3 = [(CameraSensorController *)self result];
+    [result3 setStatusCode:v17];
 
     v13 = 0;
     goto LABEL_13;
   }
 
-  v14 = [(CameraSensorController *)self result];
-  [v14 setStatusCode:&off_1000112D0];
+  result4 = [(CameraSensorController *)self result];
+  [result4 setStatusCode:&off_1000112D0];
 
-  [v8 deactivate];
+  [camerasCopy deactivate];
   v13 = 0;
 LABEL_16:
 
@@ -684,9 +684,9 @@ LABEL_16:
 
 - (void)restoreAttentionDetection
 {
-  v2 = [(CameraSensorController *)self attentionDetectionSetting];
+  attentionDetectionSetting = [(CameraSensorController *)self attentionDetectionSetting];
 
-  __AXSSetAttentionAwarenessFeaturesEnabled(v2);
+  __AXSSetAttentionAwarenessFeaturesEnabled(attentionDetectionSetting);
 }
 
 @end

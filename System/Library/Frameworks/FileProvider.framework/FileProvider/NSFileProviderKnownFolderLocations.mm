@@ -1,9 +1,9 @@
 @interface NSFileProviderKnownFolderLocations
 - (NSFileProviderKnownFolderLocations)init;
-- (NSFileProviderKnownFolderLocations)initWithCoder:(id)a3;
+- (NSFileProviderKnownFolderLocations)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)providedKnownFolders;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFileProviderKnownFolderLocations
@@ -21,22 +21,22 @@
   return result;
 }
 
-- (NSFileProviderKnownFolderLocations)initWithCoder:(id)a3
+- (NSFileProviderKnownFolderLocations)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NSFileProviderKnownFolderLocations;
   v5 = [(NSFileProviderKnownFolderLocations *)&v13 init];
   if (v5)
   {
-    v5->_shouldCreateBinaryCompatibilitySymlink = [v4 decodeBoolForKey:@"_shouldCreateBinaryCompatibilitySymlink"];
+    v5->_shouldCreateBinaryCompatibilitySymlink = [coderCopy decodeBoolForKey:@"_shouldCreateBinaryCompatibilitySymlink"];
     v6 = knownFolderLocationConcreteClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_desktopLocation"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_desktopLocation"];
     desktopLocation = v5->_desktopLocation;
     v5->_desktopLocation = v7;
 
     v9 = knownFolderLocationConcreteClasses();
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_documentsLocation"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_documentsLocation"];
     documentsLocation = v5->_documentsLocation;
     v5->_documentsLocation = v10;
   }
@@ -44,13 +44,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shouldCreateBinaryCompatibilitySymlink = self->_shouldCreateBinaryCompatibilitySymlink;
-  v5 = a3;
-  [v5 encodeBool:shouldCreateBinaryCompatibilitySymlink forKey:@"_shouldCreateBinaryCompatibilitySymlink"];
-  [v5 encodeObject:self->_desktopLocation forKey:@"_desktopLocation"];
-  [v5 encodeObject:self->_documentsLocation forKey:@"_documentsLocation"];
+  coderCopy = coder;
+  [coderCopy encodeBool:shouldCreateBinaryCompatibilitySymlink forKey:@"_shouldCreateBinaryCompatibilitySymlink"];
+  [coderCopy encodeObject:self->_desktopLocation forKey:@"_desktopLocation"];
+  [coderCopy encodeObject:self->_documentsLocation forKey:@"_documentsLocation"];
 }
 
 - (unint64_t)providedKnownFolders

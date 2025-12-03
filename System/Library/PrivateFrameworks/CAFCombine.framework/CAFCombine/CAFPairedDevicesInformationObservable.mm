@@ -1,16 +1,16 @@
 @interface CAFPairedDevicesInformationObservable
 - (NSString)description;
-- (void)pairedDevicesInformationService:(id)a3 didUpdatePairedDeviceList:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)pairedDevicesInformationService:(id)service didUpdatePairedDeviceList:(id)list;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFPairedDevicesInformationObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFPairedDevicesInformationObservable.description.getter();
   v5 = v4;
 
@@ -19,33 +19,33 @@
   return v6;
 }
 
-- (void)pairedDevicesInformationService:(id)a3 didUpdatePairedDeviceList:(id)a4
+- (void)pairedDevicesInformationService:(id)service didUpdatePairedDeviceList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFPairedDevicesInformationObservable.pairedDevicesInformationService(_:didUpdatePairedDeviceList:)(v8, v7);
+  serviceCopy = service;
+  listCopy = list;
+  selfCopy = self;
+  CAFPairedDevicesInformationObservable.pairedDevicesInformationService(_:didUpdatePairedDeviceList:)(selfCopy, listCopy);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFPairedDevicesInformationObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFPairedDevicesInformationObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFPairedDevicesInformationObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFPairedDevicesInformationObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFPairedDevicesInformationObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

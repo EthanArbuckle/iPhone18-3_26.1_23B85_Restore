@@ -1,16 +1,16 @@
 @interface QuickActionsContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation QuickActionsContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CommunicationDetails.QuickActionView" hasSwiftField:@"button" withSwiftType:"Button"];
-  [v3 validateClass:@"CommunicationDetails.QuickActionsContainerView" hasInstanceMethod:@"handleAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CommunicationDetails.QuickActionsContainerView" hasSwiftField:@"actionButtons" withSwiftType:{"Dictionary<ButtonType, QuickActionView>"}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CommunicationDetails.QuickActionView" hasSwiftField:@"button" withSwiftType:"Button"];
+  [validationsCopy validateClass:@"CommunicationDetails.QuickActionsContainerView" hasInstanceMethod:@"handleAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CommunicationDetails.QuickActionsContainerView" hasSwiftField:@"actionButtons" withSwiftType:{"Dictionary<ButtonType, QuickActionView>"}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

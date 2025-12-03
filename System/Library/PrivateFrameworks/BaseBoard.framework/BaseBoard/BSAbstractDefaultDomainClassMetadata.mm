@@ -1,24 +1,24 @@
 @interface BSAbstractDefaultDomainClassMetadata
 - (id)description;
-- (void)initWithClass:(void *)a1;
+- (void)initWithClass:(void *)class;
 @end
 
 @implementation BSAbstractDefaultDomainClassMetadata
 
-- (void)initWithClass:(void *)a1
+- (void)initWithClass:(void *)class
 {
-  if (!a1)
+  if (!class)
   {
     return 0;
   }
 
   if (!a2)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:sel_initWithClass_ object:a1 file:@"_BSAbstractDefaultDomainClassMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"clazz"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithClass_ object:class file:@"_BSAbstractDefaultDomainClassMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"clazz"}];
   }
 
-  v12.receiver = a1;
+  v12.receiver = class;
   v12.super_class = BSAbstractDefaultDomainClassMetadata;
   v4 = objc_msgSendSuper2(&v12, sel_init);
   v5 = v4;

@@ -1,15 +1,15 @@
 @interface SFSafariView
 - (void)didMoveToWindow;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation SFSafariView
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = SFSafariView;
-  [(SFSafariView *)&v6 setTintColor:a3];
+  [(SFSafariView *)&v6 setTintColor:color];
   if ((warnAboutTintColorIfNeeded_didWarningCheck & 1) == 0)
   {
     warnAboutTintColorIfNeeded_didWarningCheck = 1;
@@ -39,8 +39,8 @@
   v3.receiver = self;
   v3.super_class = SFSafariView;
   [(SFSafariView *)&v3 didMoveToWindow];
-  v2 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v2 setNeedsUpdate];
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] setNeedsUpdate];
 }
 
 @end

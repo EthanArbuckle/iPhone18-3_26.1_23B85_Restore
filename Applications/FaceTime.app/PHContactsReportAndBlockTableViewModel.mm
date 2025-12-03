@@ -1,22 +1,22 @@
 @interface PHContactsReportAndBlockTableViewModel
 - (PHContactsReportAndBlockTableViewModel)init;
-- (PHContactsReportAndBlockTableViewModel)initWithShouldShowBlockAll:(BOOL)a3 shouldShowReportInitiator:(BOOL)a4 shouldShowBlockUnknown:(BOOL)a5 recentCall:(id)a6 reportSpammer:(id)a7;
+- (PHContactsReportAndBlockTableViewModel)initWithShouldShowBlockAll:(BOOL)all shouldShowReportInitiator:(BOOL)initiator shouldShowBlockUnknown:(BOOL)unknown recentCall:(id)call reportSpammer:(id)spammer;
 - (_TtP8FaceTime18ReportSpamManaging_)reportSpammer;
 - (int64_t)numberOfSections;
-- (void)blockContacts:(id)a3 safetyCheckPresenter:(id)a4;
+- (void)blockContacts:(id)contacts safetyCheckPresenter:(id)presenter;
 - (void)fetchSharing;
-- (void)reportWithRecentCall:(id)a3;
-- (void)setRecentCall:(id)a3;
-- (void)setReportSpammer:(id)a3;
+- (void)reportWithRecentCall:(id)call;
+- (void)setRecentCall:(id)call;
+- (void)setReportSpammer:(id)spammer;
 @end
 
 @implementation PHContactsReportAndBlockTableViewModel
 
-- (void)setRecentCall:(id)a3
+- (void)setRecentCall:(id)call
 {
   v4 = *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_recentCall);
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_recentCall) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_recentCall) = call;
+  callCopy = call;
 }
 
 - (_TtP8FaceTime18ReportSpamManaging_)reportSpammer
@@ -26,25 +26,25 @@
   return v2;
 }
 
-- (void)setReportSpammer:(id)a3
+- (void)setReportSpammer:(id)spammer
 {
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_reportSpammer) = a3;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_reportSpammer) = spammer;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (PHContactsReportAndBlockTableViewModel)initWithShouldShowBlockAll:(BOOL)a3 shouldShowReportInitiator:(BOOL)a4 shouldShowBlockUnknown:(BOOL)a5 recentCall:(id)a6 reportSpammer:(id)a7
+- (PHContactsReportAndBlockTableViewModel)initWithShouldShowBlockAll:(BOOL)all shouldShowReportInitiator:(BOOL)initiator shouldShowBlockUnknown:(BOOL)unknown recentCall:(id)call reportSpammer:(id)spammer
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_shouldShowBlockAll) = a3;
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_shouldShowReportInitiator) = a4;
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_shouldShowBlockUnknown) = a5;
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_recentCall) = a6;
-  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_reportSpammer) = a7;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_shouldShowBlockAll) = all;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_shouldShowReportInitiator) = initiator;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_shouldShowBlockUnknown) = unknown;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_recentCall) = call;
+  *(&self->super.isa + OBJC_IVAR___PHContactsReportAndBlockTableViewModel_reportSpammer) = spammer;
   v16.receiver = self;
   v16.super_class = ObjectType;
-  v14 = a6;
+  callCopy = call;
   swift_unknownObjectRetain();
   return [(PHContactsReportAndBlockTableViewModel *)&v16 init];
 }
@@ -64,20 +64,20 @@
   return 1;
 }
 
-- (void)blockContacts:(id)a3 safetyCheckPresenter:(id)a4
+- (void)blockContacts:(id)contacts safetyCheckPresenter:(id)presenter
 {
   sub_100008BA0(0, &qword_1001243E0);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_10005E0C0(v6, v7);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_10005E0C0(v6, presenterCopy);
 }
 
-- (void)reportWithRecentCall:(id)a3
+- (void)reportWithRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  sub_10005CD54(v4);
+  callCopy = call;
+  selfCopy = self;
+  sub_10005CD54(callCopy);
 }
 
 - (void)fetchSharing

@@ -1,9 +1,9 @@
 @interface NUNIClassicResourceManager
 + (NUNIClassicResourceManager)sharedInstance;
-+ (void)_deallocInstance:(id)a3;
++ (void)_deallocInstance:(id)instance;
 - (NUNIClassicResourceManager)init;
-- (id)provideAtlasBacking:(id)a3;
-- (id)textureGroupWithSuffix:(id)a3;
+- (id)provideAtlasBacking:(id)backing;
+- (id)textureGroupWithSuffix:(id)suffix;
 - (void)_asyncDeallocInstance;
 - (void)addClient;
 - (void)dealloc;
@@ -14,8 +14,8 @@
 
 + (NUNIClassicResourceManager)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!__sharedInstance)
   {
     v3 = objc_alloc_init(NUNIClassicResourceManager);
@@ -23,16 +23,16 @@
     __sharedInstance = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = __sharedInstance;
 
   return v5;
 }
 
-+ (void)_deallocInstance:(id)a3
++ (void)_deallocInstance:(id)instance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v3 = __sharedInstance;
   __sharedInstance = 0;
@@ -51,13 +51,13 @@
     resourceProviderKey = v2->_resourceProviderKey;
     v2->_resourceProviderKey = v3;
 
-    v5 = [MEMORY[0x277CFA798] sharedDevice];
+    mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedDevice];
     device = v2->_device;
-    v2->_device = v5;
+    v2->_device = mEMORY[0x277CFA798];
 
-    v7 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     textureGroupHashTable = v2->_textureGroupHashTable;
-    v2->_textureGroupHashTable = v7;
+    v2->_textureGroupHashTable = strongToWeakObjectsMapTable;
   }
 
   return v2;
@@ -72,9 +72,9 @@
 
 - (void)_asyncDeallocInstance
 {
-  v2 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v3 = objc_opt_class();
-  if (v2)
+  if (isMainThread)
   {
 
     [v3 _deallocInstance:0];
@@ -97,46 +97,46 @@
 
 - (void)removeClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clients - 1;
-  v2->_clients = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clients - 1;
+  selfCopy->_clients = v3;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
 
-    [(NUNIClassicResourceManager *)v2 _asyncDeallocInstance];
+    [(NUNIClassicResourceManager *)selfCopy _asyncDeallocInstance];
   }
 }
 
-- (id)textureGroupWithSuffix:(id)a3
+- (id)textureGroupWithSuffix:(id)suffix
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_textureGroupHashTable objectForKey:v4];
+  suffixCopy = suffix;
+  v5 = [(NSMapTable *)self->_textureGroupHashTable objectForKey:suffixCopy];
   if (!v5)
   {
     v6 = objc_opt_new();
     for (i = 0; i != 14; ++i)
     {
-      v8 = [(__CFString *)textureGroupWithSuffix__uuids[i] stringByAppendingFormat:@"-%@", v4];
-      v9 = [MEMORY[0x277CFA7C0] textureWithProviderDelegate:self uuid:v8];
+      suffixCopy = [(__CFString *)textureGroupWithSuffix__uuids[i] stringByAppendingFormat:@"-%@", suffixCopy];
+      v9 = [MEMORY[0x277CFA7C0] textureWithProviderDelegate:self uuid:suffixCopy];
       [v6 addObject:v9];
     }
 
     v5 = [[NUNIClassicTextureGroup alloc] initWithTextures:v6];
-    [(NSMapTable *)self->_textureGroupHashTable setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_textureGroupHashTable setObject:v5 forKey:suffixCopy];
   }
 
   return v5;
 }
 
-- (id)provideAtlasBacking:(id)a3
+- (id)provideAtlasBacking:(id)backing
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  backingCopy = backing;
   v4 = NUNIBundle();
-  v5 = [v4 pathForResource:v3 ofType:@"art"];
+  v5 = [v4 pathForResource:backingCopy ofType:@"art"];
 
   v6 = NUNILoggingObjectForDomain(0);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -145,13 +145,13 @@
     if (v7)
     {
       v11 = 138412546;
-      v12 = v3;
+      v12 = backingCopy;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_25B6D4000, v6, OS_LOG_TYPE_DEFAULT, "providing artwork for %@ at %@", &v11, 0x16u);
     }
 
-    v8 = [MEMORY[0x277CFA750] atlasBackingWithArt:v5 uuid:v3];
+    v8 = [MEMORY[0x277CFA750] atlasBackingWithArt:v5 uuid:backingCopy];
   }
 
   else
@@ -159,7 +159,7 @@
     if (v7)
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = backingCopy;
       _os_log_impl(&dword_25B6D4000, v6, OS_LOG_TYPE_DEFAULT, "missing artwork for %@", &v11, 0xCu);
     }
 

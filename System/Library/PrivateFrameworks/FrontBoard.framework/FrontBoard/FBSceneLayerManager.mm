@@ -1,10 +1,10 @@
 @interface FBSceneLayerManager
 - (FBScene)scene;
-- (id)_initWithScene:(id)a3;
-- (id)_suspendUpdatesWithReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)layerWithContextID:(unsigned int)a3;
+- (id)_initWithScene:(id)scene;
+- (id)_suspendUpdatesWithReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)layerWithContextID:(unsigned int)d;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_objc_initiateDealloc;
@@ -12,10 +12,10 @@
 - (void)_observer_didStopTrackingLayers;
 - (void)_observer_sceneLayerManagerDidUpdateLayers;
 - (void)_rebuildLayers;
-- (void)_removeSuspendAssertion:(id)a3;
-- (void)_setLayers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_removeSuspendAssertion:(id)assertion;
+- (void)_setLayers:(id)layers;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FBSceneLayerManager
@@ -170,16 +170,16 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "[FBSceneLayerManager addObserver:]");
   }
 
-  v4 = v8;
-  if (v8)
+  v4 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     if (!observers)
@@ -191,20 +191,20 @@
       observers = self->_observers;
     }
 
-    [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    [(NSHashTable *)observers addObject:observerCopy];
+    v4 = observerCopy;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "[FBSceneLayerManager removeObserver:]");
   }
 
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -212,7 +212,7 @@
   }
 }
 
-- (id)layerWithContextID:(unsigned int)a3
+- (id)layerWithContextID:(unsigned int)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -235,7 +235,7 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 contextID] == a3)
+        if ([v9 contextID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -262,69 +262,69 @@ LABEL_11:
 
 - (id)succinctDescription
 {
-  v2 = [(FBSceneLayerManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSceneLayerManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(FBSceneLayerManager *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"identifier"];
+  identifier = [(FBSceneLayerManager *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"identifier"];
 
   v6 = [v3 appendBool:self->_needsRebuildLayers withName:@"needsRebuild" ifEqualTo:1];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSceneLayerManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSceneLayerManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSceneLayerManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSceneLayerManager *)self succinctDescriptionBuilder];
   if ([(NSOrderedSet *)self->_layers count])
   {
-    v6 = [(NSOrderedSet *)self->_layers array];
-    [v5 appendArraySection:v6 withName:@"layers" multilinePrefix:v4 skipIfEmpty:1];
+    array = [(NSOrderedSet *)self->_layers array];
+    [succinctDescriptionBuilder appendArraySection:array withName:@"layers" multilinePrefix:prefixCopy skipIfEmpty:1];
   }
 
   else
   {
-    v7 = [v5 appendObject:@"(none)" withName:@"layers"];
+    v7 = [succinctDescriptionBuilder appendObject:@"(none)" withName:@"layers"];
   }
 
   if ([(NSHashTable *)self->_suspendAssertions count])
   {
-    v8 = [(NSHashTable *)self->_suspendAssertions allObjects];
-    [v5 appendArraySection:v8 withName:@"suspendAssertions" skipIfEmpty:1];
+    allObjects = [(NSHashTable *)self->_suspendAssertions allObjects];
+    [succinctDescriptionBuilder appendArraySection:allObjects withName:@"suspendAssertions" skipIfEmpty:1];
   }
 
   else
   {
-    v9 = [v5 appendObject:@"(none)" withName:@"suspendAssertions"];
+    v9 = [succinctDescriptionBuilder appendObject:@"(none)" withName:@"suspendAssertions"];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)_initWithScene:(id)a3
+- (id)_initWithScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [(FBSceneLayerManager *)a2 _initWithScene:?];
   }
 
-  v6 = v5;
+  v6 = sceneCopy;
   if (_initWithScene__onceToken != -1)
   {
     [FBSceneLayerManager _initWithScene:];
@@ -335,14 +335,14 @@ LABEL_11:
   v7 = [(FBSceneLayerManager *)&v13 init];
   if (v7)
   {
-    v8 = [v6 identifier];
+    identifier = [v6 identifier];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = identifier;
 
     objc_storeWeak(&v7->_scene, v6);
-    v10 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     layers = v7->_layers;
-    v7->_layers = v10;
+    v7->_layers = orderedSet;
   }
 
   return v7;
@@ -355,9 +355,9 @@ uint64_t __38__FBSceneLayerManager__initWithScene___block_invoke()
   return MEMORY[0x1EEE667A8](v0);
 }
 
-- (void)_setLayers:(id)a3
+- (void)_setLayers:(id)layers
 {
-  v7 = a3;
+  layersCopy = layers;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "[FBSceneLayerManager _setLayers:]");
@@ -367,7 +367,7 @@ uint64_t __38__FBSceneLayerManager__initWithScene___block_invoke()
   if ((BSEqualObjects() & 1) == 0)
   {
     self->_needsRebuildLayers = 1;
-    v5 = [v7 copy];
+    v5 = [layersCopy copy];
     v6 = self->_fbsLayers;
     self->_fbsLayers = v5;
   }
@@ -378,9 +378,9 @@ uint64_t __38__FBSceneLayerManager__initWithScene___block_invoke()
   }
 }
 
-- (id)_suspendUpdatesWithReason:(id)a3
+- (id)_suspendUpdatesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "[FBSceneLayerManager _suspendUpdatesWithReason:]");
@@ -393,13 +393,13 @@ uint64_t __38__FBSceneLayerManager__initWithScene___block_invoke()
   v13 = __49__FBSceneLayerManager__suspendUpdatesWithReason___block_invoke;
   v14 = &unk_1E783CF58;
   objc_copyWeak(&v15, &location);
-  v6 = [v5 initWithReason:v4 invalidatedWithContextBlock:&v11];
+  v6 = [v5 initWithReason:reasonCopy invalidatedWithContextBlock:&v11];
   suspendAssertions = self->_suspendAssertions;
   if (!suspendAssertions)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v9 = self->_suspendAssertions;
-    self->_suspendAssertions = v8;
+    self->_suspendAssertions = weakObjectsHashTable;
 
     suspendAssertions = self->_suspendAssertions;
   }
@@ -441,7 +441,7 @@ void __49__FBSceneLayerManager__suspendUpdatesWithReason___block_invoke(uint64_t
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v19 = self;
+  selfCopy = self;
   v4 = self->_fbsLayers;
   v5 = [(NSOrderedSet *)v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v5)
@@ -469,11 +469,11 @@ void __49__FBSceneLayerManager__suspendUpdatesWithReason___block_invoke(uint64_t
           v11 = FBLogCommon();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
-            v12 = [WeakRetained clientHandle];
+            clientHandle = [WeakRetained clientHandle];
             *buf = 138543618;
             v26 = v9;
             v27 = 2114;
-            v28 = v12;
+            v28 = clientHandle;
             _os_log_error_impl(&dword_1A89DD000, v11, OS_LOG_TYPE_ERROR, "Ignoring bogus scene layer %{public}@ from %{public}@", buf, 0x16u);
           }
         }
@@ -486,10 +486,10 @@ void __49__FBSceneLayerManager__suspendUpdatesWithReason___block_invoke(uint64_t
   }
 
   v13 = [v3 copy];
-  layers = v19->_layers;
-  v19->_layers = v13;
+  layers = selfCopy->_layers;
+  selfCopy->_layers = v13;
 
-  v19->_needsRebuildLayers = 0;
+  selfCopy->_needsRebuildLayers = 0;
   if ([WeakRetained isValid])
   {
     v15 = [v3 count];
@@ -498,12 +498,12 @@ void __49__FBSceneLayerManager__suspendUpdatesWithReason___block_invoke(uint64_t
     {
       if (v15 | v18)
       {
-        [(FBSceneLayerManager *)v19 _observer_sceneLayerManagerDidUpdateLayers];
+        [(FBSceneLayerManager *)selfCopy _observer_sceneLayerManagerDidUpdateLayers];
         if (!v16)
         {
           if (v18)
           {
-            [(FBSceneLayerManager *)v19 _observer_didStopTrackingLayers];
+            [(FBSceneLayerManager *)selfCopy _observer_didStopTrackingLayers];
           }
         }
       }
@@ -511,17 +511,17 @@ void __49__FBSceneLayerManager__suspendUpdatesWithReason___block_invoke(uint64_t
 
     else
     {
-      [(FBSceneLayerManager *)v19 _observer_didStartTrackingLayers];
-      [(FBSceneLayerManager *)v19 _observer_sceneLayerManagerDidUpdateLayers];
+      [(FBSceneLayerManager *)selfCopy _observer_didStartTrackingLayers];
+      [(FBSceneLayerManager *)selfCopy _observer_sceneLayerManagerDidUpdateLayers];
     }
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeSuspendAssertion:(id)a3
+- (void)_removeSuspendAssertion:(id)assertion
 {
-  [(NSHashTable *)self->_suspendAssertions removeObject:a3];
+  [(NSHashTable *)self->_suspendAssertions removeObject:assertion];
   if (![(NSHashTable *)self->_suspendAssertions count])
   {
     suspendAssertions = self->_suspendAssertions;

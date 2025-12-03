@@ -1,8 +1,8 @@
 @interface AceObject
 - (id)_ad_mediaRemoteOptions;
-- (void)_ad_setPayloadOnRequestInfo:(id)a3;
+- (void)_ad_setPayloadOnRequestInfo:(id)info;
 - (void)_adui_notifyOthersOfArrival;
-- (void)adClientConnection_enterRequestGroup:(id)a3;
+- (void)adClientConnection_enterRequestGroup:(id)group;
 - (void)adClientConnection_leaveRequestGroup;
 @end
 
@@ -23,10 +23,10 @@
 - (id)_ad_mediaRemoteOptions
 {
   v3 = [[NSMutableDictionary alloc] initWithCapacity:4];
-  v4 = [(AceObject *)self refId];
-  if (v4)
+  refId = [(AceObject *)self refId];
+  if (refId)
   {
-    [v3 setObject:v4 forKey:kMRMediaRemoteOptionContextID];
+    [v3 setObject:refId forKey:kMRMediaRemoteOptionContextID];
   }
 
   [v3 setObject:AFSiriMediaRemoteIdentifier forKey:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
@@ -34,7 +34,7 @@
   return v3;
 }
 
-- (void)_ad_setPayloadOnRequestInfo:(id)a3
+- (void)_ad_setPayloadOnRequestInfo:(id)info
 {
   v3 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -56,13 +56,13 @@
   }
 }
 
-- (void)adClientConnection_enterRequestGroup:(id)a3
+- (void)adClientConnection_enterRequestGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy)
   {
-    dispatch_group_enter(v4);
+    dispatch_group_enter(groupCopy);
     v6 = [(AceObject *)self description];
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))

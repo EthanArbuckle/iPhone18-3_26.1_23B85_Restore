@@ -2,21 +2,21 @@
 - (AAUISpecifierProviderDelegate)delegate;
 - (NSArray)specifiers;
 - (TUIAccountKeySpecifierProvider)init;
-- (TUIAccountKeySpecifierProvider)initWithAccountManager:(id)a3;
-- (TUIAccountKeySpecifierProvider)initWithStaticIdentityManager:(id)a3 analytics:(id)a4;
+- (TUIAccountKeySpecifierProvider)initWithAccountManager:(id)manager;
+- (TUIAccountKeySpecifierProvider)initWithStaticIdentityManager:(id)manager analytics:(id)analytics;
 - (id)_accountKeySpecifier;
 - (id)_buttonSpecifier;
 - (id)_collapsedButtonSpecifier;
 - (id)_collapsedGroupSpecifier;
 - (id)_currentAccountKeyString;
-- (id)_getAccountKeyButtonEnabledForSpecifier:(id)a3;
+- (id)_getAccountKeyButtonEnabledForSpecifier:(id)specifier;
 - (id)_groupSpecifier;
-- (id)createGroupSpecifierWithIdentifier:(id)a3 title:(id)a4 footerText:(id)a5 linkText:(id)a6 actionMethodName:(id)a7 target:(id)a8;
+- (id)createGroupSpecifierWithIdentifier:(id)identifier title:(id)title footerText:(id)text linkText:(id)linkText actionMethodName:(id)name target:(id)target;
 - (int64_t)_accountKeyButtonTableCellType;
-- (void)_accountKeyButtonTapped:(id)a3;
+- (void)_accountKeyButtonTapped:(id)tapped;
 - (void)_learnMoreTapped;
-- (void)_showInfoAlert:(id)a3;
-- (void)_startSpinnerForSpecifier:(id)a3;
+- (void)_showInfoAlert:(id)alert;
+- (void)_startSpinnerForSpecifier:(id)specifier;
 - (void)refreshSelfAccountKey;
 - (void)reloadSpecifiers;
 @end
@@ -37,21 +37,21 @@
   return v5;
 }
 
-- (TUIAccountKeySpecifierProvider)initWithStaticIdentityManager:(id)a3 analytics:(id)a4
+- (TUIAccountKeySpecifierProvider)initWithStaticIdentityManager:(id)manager analytics:(id)analytics
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  analyticsCopy = analytics;
   v13.receiver = self;
   v13.super_class = TUIAccountKeySpecifierProvider;
   v9 = [(TUIAccountKeySpecifierProvider *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_staticIdentityManager, a3);
-    objc_storeStrong(&v10->_analytics, a4);
-    v11 = [(TUIStaticIdentityManager *)v10->_staticIdentityManager delegate];
+    objc_storeStrong(&v9->_staticIdentityManager, manager);
+    objc_storeStrong(&v10->_analytics, analytics);
+    delegate = [(TUIStaticIdentityManager *)v10->_staticIdentityManager delegate];
 
-    if (!v11)
+    if (!delegate)
     {
       [(TUIStaticIdentityManager *)v10->_staticIdentityManager setDelegate:v10];
     }
@@ -60,9 +60,9 @@
   return v10;
 }
 
-- (TUIAccountKeySpecifierProvider)initWithAccountManager:(id)a3
+- (TUIAccountKeySpecifierProvider)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_10 != -1)
   {
     [TUIAccountKeySpecifierProvider initWithAccountManager:];
@@ -104,29 +104,29 @@ uint64_t __55__TUIAccountKeySpecifierProvider_refreshSelfAccountKey__block_invok
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (self->_isExpanded)
     {
-      v5 = [(TUIAccountKeySpecifierProvider *)self _groupSpecifier];
-      [v4 addObject:v5];
+      _groupSpecifier = [(TUIAccountKeySpecifierProvider *)self _groupSpecifier];
+      [array addObject:_groupSpecifier];
 
-      v6 = [(TUIAccountKeySpecifierProvider *)self _accountKeySpecifier];
-      [v4 addObject:v6];
+      _accountKeySpecifier = [(TUIAccountKeySpecifierProvider *)self _accountKeySpecifier];
+      [array addObject:_accountKeySpecifier];
 
       [(TUIAccountKeySpecifierProvider *)self _buttonSpecifier];
     }
 
     else
     {
-      v7 = [(TUIAccountKeySpecifierProvider *)self _collapsedGroupSpecifier];
-      [v4 addObject:v7];
+      _collapsedGroupSpecifier = [(TUIAccountKeySpecifierProvider *)self _collapsedGroupSpecifier];
+      [array addObject:_collapsedGroupSpecifier];
 
       [(TUIAccountKeySpecifierProvider *)self _collapsedButtonSpecifier];
     }
     v8 = ;
-    [v4 addObject:v8];
+    [array addObject:v8];
 
-    v9 = [v4 copy];
+    v9 = [array copy];
     v10 = self->_specifiers;
     self->_specifiers = v9;
 
@@ -212,9 +212,9 @@ uint64_t __50__TUIAccountKeySpecifierProvider_reloadSpecifiers__block_invoke_44(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_startSpinnerForSpecifier:(id)a3
+- (void)_startSpinnerForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:*MEMORY[0x277D40148]];
+  v4 = [specifier propertyForKey:*MEMORY[0x277D40148]];
   v3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v3 startAnimating];
   [v4 setAccessoryView:v3];
@@ -322,8 +322,8 @@ uint64_t __50__TUIAccountKeySpecifierProvider_reloadSpecifiers__block_invoke_44(
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
   [v3 setProperty:v4 forKey:*MEMORY[0x277D40140]];
 
-  v5 = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
-  [v3 setProperty:v5 forKey:*MEMORY[0x277D40170]];
+  _currentAccountKeyString = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
+  [v3 setProperty:_currentAccountKeyString forKey:*MEMORY[0x277D40170]];
 
   [v3 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
   if (self->_isPeerAccount)
@@ -343,15 +343,15 @@ uint64_t __50__TUIAccountKeySpecifierProvider_reloadSpecifiers__block_invoke_44(
 
 - (id)_buttonSpecifier
 {
-  v2 = self;
-  v3 = [(TUIStaticIdentityManager *)self->_staticIdentityManager conversationVerified];
+  selfCopy = self;
+  conversationVerified = [(TUIStaticIdentityManager *)self->_staticIdentityManager conversationVerified];
   v4 = MEMORY[0x277D3FAD8];
-  v5 = v2[8];
+  v5 = selfCopy[8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
   if (v5 == 1)
   {
-    if (v3)
+    if (conversationVerified)
     {
       v8 = [v6 localizedStringForKey:@"VERIFIED" value:&stru_287F92480 table:@"Localizable"];
       v9 = 0;
@@ -373,7 +373,7 @@ uint64_t __50__TUIAccountKeySpecifierProvider_reloadSpecifiers__block_invoke_44(
     v10 = 0;
   }
 
-  v11 = [v4 preferenceSpecifierNamed:v8 target:v2 set:0 get:sel__getAccountKeyButtonEnabledForSpecifier_ detail:0 cell:objc_msgSend(v2 edit:{"_accountKeyButtonTableCellType"), 0}];
+  v11 = [v4 preferenceSpecifierNamed:v8 target:selfCopy set:0 get:sel__getAccountKeyButtonEnabledForSpecifier_ detail:0 cell:objc_msgSend(selfCopy edit:{"_accountKeyButtonTableCellType"), 0}];
   if (v5)
   {
     if (!v9)
@@ -395,7 +395,7 @@ LABEL_8:
 
 LABEL_13:
 
-      if (v3)
+      if (conversationVerified)
       {
         goto LABEL_10;
       }
@@ -410,27 +410,27 @@ LABEL_13:
   }
 
 LABEL_9:
-  if (v3)
+  if (conversationVerified)
   {
 LABEL_10:
     [v11 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     v12 = MEMORY[0x277D755B8];
     v13 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76988] scale:-1];
-    v14 = [v12 systemImageNamed:@"checkmark.circle.fill" withConfiguration:v13];
+    _currentAccountKeyString = [v12 systemImageNamed:@"checkmark.circle.fill" withConfiguration:v13];
 
-    [v11 setProperty:v14 forKey:*MEMORY[0x277D3FFC0]];
+    [v11 setProperty:_currentAccountKeyString forKey:*MEMORY[0x277D3FFC0]];
     [v11 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     goto LABEL_20;
   }
 
 LABEL_14:
-  v14 = [v2 _currentAccountKeyString];
+  _currentAccountKeyString = [selfCopy _currentAccountKeyString];
   v15 = MEMORY[0x277CCABB0];
-  if (v14)
+  if (_currentAccountKeyString)
   {
-    v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v2 localizedStringForKey:@"VERIFICATION_CODE_NOT_AVAILABLE" value:&stru_287F92480 table:@"Localizable"];
-    v16 = [v14 isEqualToString:v8] ^ 1;
+    selfCopy = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v8 = [selfCopy localizedStringForKey:@"VERIFICATION_CODE_NOT_AVAILABLE" value:&stru_287F92480 table:@"Localizable"];
+    v16 = [_currentAccountKeyString isEqualToString:v8] ^ 1;
   }
 
   else
@@ -441,7 +441,7 @@ LABEL_14:
   v17 = [v15 numberWithInt:v16];
   [v11 setProperty:v17 forKey:*MEMORY[0x277D3FF38]];
 
-  if (v14)
+  if (_currentAccountKeyString)
   {
   }
 
@@ -451,14 +451,14 @@ LABEL_20:
   return v11;
 }
 
-- (id)_getAccountKeyButtonEnabledForSpecifier:(id)a3
+- (id)_getAccountKeyButtonEnabledForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
+  specifierCopy = specifier;
+  _currentAccountKeyString = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
 
-  if (!v5)
+  if (!_currentAccountKeyString)
   {
-    [(TUIAccountKeySpecifierProvider *)self _startSpinnerForSpecifier:v4];
+    [(TUIAccountKeySpecifierProvider *)self _startSpinnerForSpecifier:specifierCopy];
   }
 
   return 0;
@@ -466,9 +466,9 @@ LABEL_20:
 
 - (int64_t)_accountKeyButtonTableCellType
 {
-  v2 = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
+  _currentAccountKeyString = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
 
-  if (v2)
+  if (_currentAccountKeyString)
   {
     return 13;
   }
@@ -479,7 +479,7 @@ LABEL_20:
   }
 }
 
-- (void)_accountKeyButtonTapped:(id)a3
+- (void)_accountKeyButtonTapped:(id)tapped
 {
   if (self->_isPeerAccount)
   {
@@ -491,9 +491,9 @@ LABEL_20:
 
   else
   {
-    v5 = [MEMORY[0x277D75810] generalPasteboard];
-    v6 = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
-    [v5 setString:v6];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    _currentAccountKeyString = [(TUIAccountKeySpecifierProvider *)self _currentAccountKeyString];
+    [generalPasteboard setString:_currentAccountKeyString];
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v8 localizedStringForKey:@"VERIFICATON_CODE_COPIED" value:&stru_287F92480 table:@"Localizable"];
@@ -525,23 +525,23 @@ LABEL_20:
   return v4;
 }
 
-- (id)createGroupSpecifierWithIdentifier:(id)a3 title:(id)a4 footerText:(id)a5 linkText:(id)a6 actionMethodName:(id)a7 target:(id)a8
+- (id)createGroupSpecifierWithIdentifier:(id)identifier title:(id)title footerText:(id)text linkText:(id)linkText actionMethodName:(id)name target:(id)target
 {
   v13 = MEMORY[0x277D3FAD8];
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = [v13 groupSpecifierWithID:a3 name:a4];
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v17, v16];
+  targetCopy = target;
+  nameCopy = name;
+  linkTextCopy = linkText;
+  textCopy = text;
+  v18 = [v13 groupSpecifierWithID:identifier name:title];
+  linkTextCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", textCopy, linkTextCopy];
 
-  [v18 setProperty:v19 forKey:*MEMORY[0x277D3FF88]];
+  [v18 setProperty:linkTextCopy forKey:*MEMORY[0x277D3FF88]];
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
   [v18 setProperty:v21 forKey:*MEMORY[0x277D3FF48]];
 
-  [v18 setProperty:v19 forKey:*MEMORY[0x277D3FF70]];
-  v22 = [v19 rangeOfString:v16];
+  [v18 setProperty:linkTextCopy forKey:*MEMORY[0x277D3FF70]];
+  v22 = [linkTextCopy rangeOfString:linkTextCopy];
   v24 = v23;
 
   v29.location = v22;
@@ -549,17 +549,17 @@ LABEL_20:
   v25 = NSStringFromRange(v29);
   [v18 setProperty:v25 forKey:*MEMORY[0x277D3FF58]];
 
-  v26 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v14];
+  v26 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:targetCopy];
 
   [v18 setProperty:v26 forKey:*MEMORY[0x277D3FF68]];
-  [v18 setProperty:v15 forKey:*MEMORY[0x277D3FF50]];
+  [v18 setProperty:nameCopy forKey:*MEMORY[0x277D3FF50]];
 
   return v18;
 }
 
-- (void)_showInfoAlert:(id)a3
+- (void)_showInfoAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_10 != -1)
   {
     [TUIAccountKeySpecifierProvider _showInfoAlert:];
@@ -576,8 +576,8 @@ LABEL_20:
   block[2] = __49__TUIAccountKeySpecifierProvider__showInfoAlert___block_invoke_118;
   block[3] = &unk_279DDA9E8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = alertCopy;
+  v5 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);

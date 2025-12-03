@@ -1,39 +1,39 @@
 @interface HKIDUpdatedAndEditCell
-- (HKIDUpdatedAndEditCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKIDUpdatedAndEditCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HKIDUpdatedAndEditCellDelegate)delegate;
-- (void)_editButtonTapped:(id)a3;
+- (void)_editButtonTapped:(id)tapped;
 - (void)_updateFont;
 - (void)_updateForCurrentSizeCategory;
-- (void)setDateSaved:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDateSaved:(id)saved;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKIDUpdatedAndEditCell
 
-- (HKIDUpdatedAndEditCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKIDUpdatedAndEditCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v87[2] = *MEMORY[0x1E69E9840];
   v84.receiver = self;
   v84.super_class = HKIDUpdatedAndEditCell;
-  v4 = [(HKIDUpdatedAndEditCell *)&v84 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKIDUpdatedAndEditCell *)&v84 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(UILabel *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v7 = [v6 localizedStringForKey:@"updated_title" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v8 = [v7 localizedUppercaseString];
-    [(UILabel *)v5 setText:v8];
+    localizedUppercaseString = [v7 localizedUppercaseString];
+    [(UILabel *)v5 setText:localizedUppercaseString];
 
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5 setTextColor:secondaryLabelColor];
 
     v82 = v5;
     [(UILabel *)v5 setNumberOfLines:0];
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(UILabel *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v10 setTextColor:v11];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v10 setTextColor:secondaryLabelColor2];
 
     v83 = v10;
     [(UILabel *)v10 setNumberOfLines:0];
@@ -43,15 +43,15 @@
     v13 = HKHealthKeyColor();
     [(UIButton *)v12 setTitleColor:v13 forState:0];
 
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIButton *)v12 setTitleColor:v14 forState:2];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIButton *)v12 setTitleColor:secondaryLabelColor3 forState:2];
 
     v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v16 = [v15 localizedStringForKey:@"updated_edit_button_title" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     [(UIButton *)v12 setTitle:v16 forState:0];
 
-    v17 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    [v17 addSubview:v12];
+    contentView = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    [contentView addSubview:v12];
 
     v18 = objc_alloc(MEMORY[0x1E69DCF90]);
     v87[0] = v5;
@@ -63,13 +63,13 @@
     [(UIStackView *)v20 setAxis:1];
     [(UIStackView *)v20 setAlignment:1];
     [(UIStackView *)v20 setDistribution:0];
-    v21 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    [v21 addSubview:v20];
+    contentView2 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    [contentView2 addSubview:v20];
 
-    v22 = [(UIButton *)v12 firstBaselineAnchor];
-    v23 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v24 = [v23 topAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:0.0];
+    firstBaselineAnchor = [(UIButton *)v12 firstBaselineAnchor];
+    contentView3 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    topAnchor = [contentView3 topAnchor];
+    v25 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:0.0];
     editFirstBaseLineAnchorConstraint = v4->_editFirstBaseLineAnchorConstraint;
     v4->_editFirstBaseLineAnchorConstraint = v25;
 
@@ -78,65 +78,65 @@
     v81 = v20;
 
     v86[0] = v4->_editFirstBaseLineAnchorConstraint;
-    v76 = [(UIButton *)v12 trailingAnchor];
-    v78 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v28 = [v78 trailingAnchor];
-    v29 = [v76 constraintEqualToAnchor:v28 constant:-16.0];
+    trailingAnchor = [(UIButton *)v12 trailingAnchor];
+    contentView4 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v86[1] = v29;
     v30 = v12;
     v80 = v12;
-    v31 = [(UIButton *)v12 centerYAnchor];
-    v32 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v33 = [v32 centerYAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    centerYAnchor = [(UIButton *)v12 centerYAnchor];
+    contentView5 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    centerYAnchor2 = [contentView5 centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v86[2] = v34;
-    v35 = [(UIStackView *)v81 centerYAnchor];
-    v36 = [(UIButton *)v30 centerYAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    centerYAnchor3 = [(UIStackView *)v81 centerYAnchor];
+    centerYAnchor4 = [(UIButton *)v30 centerYAnchor];
+    v37 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v86[3] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:4];
     regularLayoutConstraints = v4->_regularLayoutConstraints;
     v4->_regularLayoutConstraints = v38;
 
-    v79 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v77 = [v79 topAnchor];
-    v75 = [(UIStackView *)v81 topAnchor];
-    v74 = [v77 constraintEqualToAnchor:v75 constant:-12.0];
+    contentView6 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    topAnchor2 = [contentView6 topAnchor];
+    topAnchor3 = [(UIStackView *)v81 topAnchor];
+    v74 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:-12.0];
     v85[0] = v74;
-    v73 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v72 = [v73 bottomAnchor];
-    v71 = [(UIStackView *)v81 bottomAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:12.0];
+    contentView7 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v81 bottomAnchor];
+    v70 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:12.0];
     v85[1] = v70;
-    v69 = [(UILabel *)v82 widthAnchor];
-    v68 = [(UIStackView *)v81 widthAnchor];
+    widthAnchor = [(UILabel *)v82 widthAnchor];
+    widthAnchor2 = [(UIStackView *)v81 widthAnchor];
     [(HKIDUpdatedAndEditCell *)v4 separatorInset];
-    v67 = [v69 constraintEqualToAnchor:v68 constant:-v40];
+    v67 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-v40];
     v85[2] = v67;
-    v66 = [(UILabel *)v83 widthAnchor];
-    v65 = [(UIStackView *)v81 widthAnchor];
+    widthAnchor3 = [(UILabel *)v83 widthAnchor];
+    widthAnchor4 = [(UIStackView *)v81 widthAnchor];
     [(HKIDUpdatedAndEditCell *)v4 separatorInset];
-    v42 = [v66 constraintEqualToAnchor:v65 constant:-v41];
+    v42 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 constant:-v41];
     v85[3] = v42;
-    v43 = [(UIStackView *)v81 centerYAnchor];
-    v44 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v45 = [v44 centerYAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
+    centerYAnchor5 = [(UIStackView *)v81 centerYAnchor];
+    contentView8 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    centerYAnchor6 = [contentView8 centerYAnchor];
+    v46 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v85[4] = v46;
-    v47 = [(UIStackView *)v81 trailingAnchor];
-    v48 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v49 = [v48 trailingAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49];
+    trailingAnchor3 = [(UIStackView *)v81 trailingAnchor];
+    contentView9 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    trailingAnchor4 = [contentView9 trailingAnchor];
+    v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v85[5] = v50;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:6];
     largeTextLayoutConstraints = v4->_largeTextLayoutConstraints;
     v4->_largeTextLayoutConstraints = v51;
 
-    v53 = [(UIStackView *)v81 leadingAnchor];
-    v54 = [(HKIDUpdatedAndEditCell *)v4 contentView];
-    v55 = [v54 leadingAnchor];
+    leadingAnchor = [(UIStackView *)v81 leadingAnchor];
+    contentView10 = [(HKIDUpdatedAndEditCell *)v4 contentView];
+    leadingAnchor2 = [contentView10 leadingAnchor];
     [(HKIDUpdatedAndEditCell *)v4 separatorInset];
-    v57 = [v53 constraintEqualToAnchor:v55 constant:v56];
+    v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v56];
     [v57 setActive:1];
 
     LODWORD(v58) = 1148846080;
@@ -166,8 +166,8 @@
   v5 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:v3];
   [(UILabel *)self->_titleLabel setFont:v4];
   [(UILabel *)self->_dateLabel setFont:v5];
-  v6 = [(UIButton *)self->_editButton titleLabel];
-  [v6 setFont:v7];
+  titleLabel = [(UIButton *)self->_editButton titleLabel];
+  [titleLabel setFont:v7];
 
   [v7 _scaledValueForValue:36.0];
   [(NSLayoutConstraint *)self->_editFirstBaseLineAnchorConstraint setConstant:?];
@@ -189,8 +189,8 @@
   else
   {
     [(UIStackView *)stackView removeArrangedSubview:editButton];
-    v8 = [(HKIDUpdatedAndEditCell *)self contentView];
-    [v8 addSubview:self->_editButton];
+    contentView = [(HKIDUpdatedAndEditCell *)self contentView];
+    [contentView addSubview:self->_editButton];
 
     v6 = &OBJC_IVAR___HKIDUpdatedAndEditCell__regularLayoutConstraints;
     v7 = &OBJC_IVAR___HKIDUpdatedAndEditCell__largeTextLayoutConstraints;
@@ -203,34 +203,34 @@
   [v9 activateConstraints:v10];
 }
 
-- (void)_editButtonTapped:(id)a3
+- (void)_editButtonTapped:(id)tapped
 {
-  v4 = [(HKIDUpdatedAndEditCell *)self delegate];
-  [v4 updatedAndEditCellDidTapEditButton:self];
+  delegate = [(HKIDUpdatedAndEditCell *)self delegate];
+  [delegate updatedAndEditCellDidTapEditButton:self];
 }
 
-- (void)setDateSaved:(id)a3
+- (void)setDateSaved:(id)saved
 {
-  objc_storeStrong(&self->_dateSaved, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dateSaved, saved);
+  savedCopy = saved;
   v7 = HKLocalizedStringForDateAndTemplate(self->_dateSaved, 35);
 
-  v6 = [(HKIDUpdatedAndEditCell *)self dateLabel];
-  [v6 setText:v7];
+  dateLabel = [(HKIDUpdatedAndEditCell *)self dateLabel];
+  [dateLabel setText:v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKIDUpdatedAndEditCell;
-  [(HKIDUpdatedAndEditCell *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKIDUpdatedAndEditCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKIDUpdatedAndEditCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKIDUpdatedAndEditCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

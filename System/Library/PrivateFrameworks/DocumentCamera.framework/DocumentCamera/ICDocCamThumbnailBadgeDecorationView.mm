@@ -1,25 +1,25 @@
 @interface ICDocCamThumbnailBadgeDecorationView
-+ (CGSize)sizeThatFitsCount:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (ICDocCamThumbnailBadgeDecorationView)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (CGSize)sizeThatFitsCount:(int64_t)count;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (ICDocCamThumbnailBadgeDecorationView)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation ICDocCamThumbnailBadgeDecorationView
 
-+ (CGSize)sizeThatFitsCount:(int64_t)a3
++ (CGSize)sizeThatFitsCount:(int64_t)count
 {
   if (sizeThatFitsCount__onceToken != -1)
   {
     +[ICDocCamThumbnailBadgeDecorationView sizeThatFitsCount:];
   }
 
-  v5 = [a1 localizedStringForCount:a3];
-  v6 = [sizeThatFitsCount__metricsView badgeLabel];
-  [v6 setText:v5];
+  v5 = [self localizedStringForCount:count];
+  badgeLabel = [sizeThatFitsCount__metricsView badgeLabel];
+  [badgeLabel setText:v5];
 
   v7 = sizeThatFitsCount__metricsView;
   v8 = *MEMORY[0x277CBF3A8];
@@ -38,57 +38,57 @@ void __58__ICDocCamThumbnailBadgeDecorationView_sizeThatFitsCount___block_invoke
   sizeThatFitsCount__metricsView = v0;
 }
 
-- (ICDocCamThumbnailBadgeDecorationView)initWithFrame:(CGRect)a3
+- (ICDocCamThumbnailBadgeDecorationView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = ICDocCamThumbnailBadgeDecorationView;
-  v3 = [(ICDocCamThumbnailBadgeDecorationView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICDocCamThumbnailBadgeDecorationView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     badgeLabel = v3->_badgeLabel;
     v3->_badgeLabel = v4;
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v3->_badgeLabel setTextColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v3->_badgeLabel setTextColor:whiteColor];
 
     [(UILabel *)v3->_badgeLabel setTextAlignment:1];
     [(UILabel *)v3->_badgeLabel setClipsToBounds:1];
-    v7 = [(ICDocCamThumbnailBadgeDecorationView *)v3 tintColor];
-    [(UILabel *)v3->_badgeLabel setBackgroundColor:v7];
+    tintColor = [(ICDocCamThumbnailBadgeDecorationView *)v3 tintColor];
+    [(UILabel *)v3->_badgeLabel setBackgroundColor:tintColor];
   }
 
   return v3;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v9.receiver = self;
   v9.super_class = ICDocCamThumbnailBadgeDecorationView;
-  v4 = a3;
-  [(ICDocCamThumbnailBadgeDecorationView *)&v9 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(ICDocCamThumbnailBadgeDecorationView *)&v9 applyLayoutAttributes:attributesCopy];
   v5 = objc_opt_class();
-  v6 = [v4 indexPath];
+  indexPath = [attributesCopy indexPath];
 
-  v7 = [v5 localizedStringForCount:{objc_msgSend(v6, "item") + 1}];
-  v8 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
-  [v8 setText:v7];
+  v7 = [v5 localizedStringForCount:{objc_msgSend(indexPath, "item") + 1}];
+  badgeLabel = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
+  [badgeLabel setText:v7];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = ICDocCamThumbnailBadgeDecorationView;
-  v4 = [(ICDocCamThumbnailBadgeDecorationView *)&v6 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(ICDocCamThumbnailBadgeDecorationView *)&v6 preferredLayoutAttributesFittingAttributes:attributes];
   [(ICDocCamThumbnailBadgeDecorationView *)self sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   [v4 setSize:?];
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel:a3.width];
+  v3 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel:fits.width];
   [v3 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v5 = v4;
   v7 = v6;
@@ -107,13 +107,13 @@ void __58__ICDocCamThumbnailBadgeDecorationView_sizeThatFitsCount___block_invoke
 
 - (void)layoutSubviews
 {
-  v3 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
-  v4 = [v3 superview];
+  badgeLabel = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
+  superview = [badgeLabel superview];
 
-  if (v4 != self)
+  if (superview != self)
   {
-    v5 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
-    [(ICDocCamThumbnailBadgeDecorationView *)self addSubview:v5];
+    badgeLabel2 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
+    [(ICDocCamThumbnailBadgeDecorationView *)self addSubview:badgeLabel2];
   }
 
   [(ICDocCamThumbnailBadgeDecorationView *)self bounds];
@@ -121,8 +121,8 @@ void __58__ICDocCamThumbnailBadgeDecorationView_sizeThatFitsCount___block_invoke
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  badgeLabel3 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
+  [badgeLabel3 setFrame:{v7, v9, v11, v13}];
 
   [(ICDocCamThumbnailBadgeDecorationView *)self bounds];
   Width = CGRectGetWidth(v21);
@@ -134,9 +134,9 @@ void __58__ICDocCamThumbnailBadgeDecorationView_sizeThatFitsCount___block_invoke
   }
 
   v17 = ceil(Height * 0.5);
-  v19 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
-  v18 = [v19 layer];
-  [v18 setCornerRadius:v17];
+  badgeLabel4 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
+  layer = [badgeLabel4 layer];
+  [layer setCornerRadius:v17];
 }
 
 - (void)tintColorDidChange
@@ -144,9 +144,9 @@ void __58__ICDocCamThumbnailBadgeDecorationView_sizeThatFitsCount___block_invoke
   v5.receiver = self;
   v5.super_class = ICDocCamThumbnailBadgeDecorationView;
   [(ICDocCamThumbnailBadgeDecorationView *)&v5 tintColorDidChange];
-  v3 = [(ICDocCamThumbnailBadgeDecorationView *)self tintColor];
-  v4 = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
-  [v4 setBackgroundColor:v3];
+  tintColor = [(ICDocCamThumbnailBadgeDecorationView *)self tintColor];
+  badgeLabel = [(ICDocCamThumbnailBadgeDecorationView *)self badgeLabel];
+  [badgeLabel setBackgroundColor:tintColor];
 }
 
 @end

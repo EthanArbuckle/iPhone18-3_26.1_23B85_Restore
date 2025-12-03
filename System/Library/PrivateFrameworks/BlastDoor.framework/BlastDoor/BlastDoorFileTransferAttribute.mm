@@ -7,10 +7,10 @@
 - (NSString)description;
 - (NSString)name;
 - (unint64_t)datasize;
-- (void)setAttachmentSubtype:(id)a3;
-- (void)setAttachments:(id)a3;
-- (void)setDatasize:(unint64_t)a3;
-- (void)setName:(id)a3;
+- (void)setAttachmentSubtype:(id)subtype;
+- (void)setAttachments:(id)attachments;
+- (void)setDatasize:(unint64_t)datasize;
+- (void)setName:(id)name;
 @end
 
 @implementation BlastDoorFileTransferAttribute
@@ -27,7 +27,7 @@
   return v5;
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
   type metadata accessor for _ObjCFileTransferAttribute_AttachmentInfoWrapper(0);
   v4 = sub_2146D9918();
@@ -51,13 +51,13 @@
   return *(self + v3);
 }
 
-- (void)setAttachmentSubtype:(id)a3
+- (void)setAttachmentSubtype:(id)subtype
 {
   v5 = OBJC_IVAR___BlastDoorFileTransferAttribute_attachmentSubtype;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = subtype;
+  subtypeCopy = subtype;
 }
 
 - (NSString)name
@@ -72,7 +72,7 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_2146D95B8();
   v6 = v5;
@@ -90,11 +90,11 @@
   return *(self + v3);
 }
 
-- (void)setDatasize:(unint64_t)a3
+- (void)setDatasize:(unint64_t)datasize
 {
   v5 = OBJC_IVAR___BlastDoorFileTransferAttribute_datasize;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = datasize;
 }
 
 - (NSNumber)legacyAnimoji
@@ -106,7 +106,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_214666BC4();
 
   v3 = sub_2146D9588();

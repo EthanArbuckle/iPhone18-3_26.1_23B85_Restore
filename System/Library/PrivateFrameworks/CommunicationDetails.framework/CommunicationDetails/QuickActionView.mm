@@ -1,9 +1,9 @@
 @interface QuickActionView
 - (BOOL)enabled;
 - (NSString)title;
-- (_TtC20CommunicationDetails15QuickActionView)initWithCoder:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (_TtC20CommunicationDetails15QuickActionView)initWithCoder:(id)coder;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setTitle:(id)title;
 @end
 
 @implementation QuickActionView
@@ -18,14 +18,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(self + OBJC_IVAR____TtC20CommunicationDetails15QuickActionView_button) isEnabled];
+  isEnabled = [*(self + OBJC_IVAR____TtC20CommunicationDetails15QuickActionView_button) isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -57,7 +57,7 @@
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -75,7 +75,7 @@
   v7[1] = v6;
 }
 
-- (_TtC20CommunicationDetails15QuickActionView)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails15QuickActionView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

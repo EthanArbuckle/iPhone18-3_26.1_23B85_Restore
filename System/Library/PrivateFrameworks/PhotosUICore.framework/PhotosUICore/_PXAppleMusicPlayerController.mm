@@ -6,25 +6,25 @@
 - (_PXAppleMusicPlayerController)init;
 - (double)volume;
 - (id)_init;
-- (void)_handleDidPrepareToPlayWithExpectation:(id)a3 error:(id)a4;
+- (void)_handleDidPrepareToPlayWithExpectation:(id)expectation error:(id)error;
 - (void)_handleItemPlaybackDidEnd;
 - (void)_handlePlaybackStateDidChange;
-- (void)_queue_callPreparationCompletionHandler:(BOOL)a3 error:(id)a4;
-- (void)_queue_handleDidPrepareToPlayWithError:(id)a3;
-- (void)_queue_handlePreparationExpectationFulfilled:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)_queue_setCurrentClientIdentifier:(id)a3;
-- (void)_queue_setWindowSceneID:(id)a3;
-- (void)clientIdentifier:(id)a3 becomeCurrentClientIfNeeded:(BOOL)a4 performAsyncPlayerTransaction:(id)a5;
+- (void)_queue_callPreparationCompletionHandler:(BOOL)handler error:(id)error;
+- (void)_queue_handleDidPrepareToPlayWithError:(id)error;
+- (void)_queue_handlePreparationExpectationFulfilled:(id)fulfilled success:(BOOL)success error:(id)error;
+- (void)_queue_setCurrentClientIdentifier:(id)identifier;
+- (void)_queue_setWindowSceneID:(id)d;
+- (void)clientIdentifier:(id)identifier becomeCurrentClientIfNeeded:(BOOL)needed performAsyncPlayerTransaction:(id)transaction;
 - (void)dealloc;
 - (void)pause;
 - (void)play;
-- (void)prepareToPlayWithCompletionHandler:(id)a3;
-- (void)setCurrentClientIdentifier:(id)a3;
-- (void)setIsAtEnd:(BOOL)a3;
-- (void)setItemWithStoreID:(id)a3 startTime:(id *)a4;
-- (void)setPlaybackState:(int64_t)a3;
-- (void)setVolume:(double)a3;
-- (void)setWindowSceneID:(id)a3;
+- (void)prepareToPlayWithCompletionHandler:(id)handler;
+- (void)setCurrentClientIdentifier:(id)identifier;
+- (void)setIsAtEnd:(BOOL)end;
+- (void)setItemWithStoreID:(id)d startTime:(id *)time;
+- (void)setPlaybackState:(int64_t)state;
+- (void)setVolume:(double)volume;
+- (void)setWindowSceneID:(id)d;
 @end
 
 @implementation _PXAppleMusicPlayerController
@@ -54,23 +54,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setIsAtEnd:(BOOL)a3
+- (void)setIsAtEnd:(BOOL)end
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_isAtEnd != a3)
+  if (self->_isAtEnd != end)
   {
-    v3 = a3;
+    endCopy = end;
     v5 = PLAudioPlaybackGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"No";
-      if (v3)
+      if (endCopy)
       {
         v6 = @"Yes";
       }
 
       *buf = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Did change IsAtEnd: %@", buf, 0x16u);
@@ -81,14 +81,14 @@
     v7[2] = __44___PXAppleMusicPlayerController_setIsAtEnd___block_invoke;
     v7[3] = &unk_1E774C670;
     v7[4] = self;
-    v8 = v3;
+    v8 = endCopy;
     [(_PXAppleMusicPlayerController *)self performChanges:v7];
   }
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
-  if (self->_playbackState != a3)
+  if (self->_playbackState != state)
   {
     v5[6] = v3;
     v5[7] = v4;
@@ -97,16 +97,16 @@
     v5[2] = __50___PXAppleMusicPlayerController_setPlaybackState___block_invoke;
     v5[3] = &unk_1E7749D78;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = state;
     [(_PXAppleMusicPlayerController *)self performChanges:v5];
   }
 }
 
-- (void)_queue_callPreparationCompletionHandler:(BOOL)a3 error:(id)a4
+- (void)_queue_callPreparationCompletionHandler:(BOOL)handler error:(id)error
 {
-  v4 = a3;
+  handlerCopy = handler;
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   v7 = MEMORY[0x1E6991F28];
   preparationSignpostID = self->_preparationSignpostID;
   v9 = *MEMORY[0x1E6991C98];
@@ -116,7 +116,7 @@
   [v7 endSignpost:preparationSignpostID forEventName:v9 withPayload:v10];
 
   v11 = MEMORY[0x1E6991F28];
-  if (v4)
+  if (handlerCopy)
   {
     v12 = @"com.apple.photos.CPAnalytics.appleMusicPreparationSucceeded";
   }
@@ -131,24 +131,24 @@
   v14 = NSStringFromClass(v13);
   v20 = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-  v16 = [v15 px_dictionaryBySettingObject:v6 forKey:*MEMORY[0x1E6991E28]];
+  v16 = [v15 px_dictionaryBySettingObject:errorCopy forKey:*MEMORY[0x1E6991E28]];
   [v11 sendEvent:v12 withPayload:v16];
 
   queue_preparationCompletionHandler = self->_queue_preparationCompletionHandler;
   if (queue_preparationCompletionHandler)
   {
-    queue_preparationCompletionHandler[2](queue_preparationCompletionHandler, v4, v6);
+    queue_preparationCompletionHandler[2](queue_preparationCompletionHandler, handlerCopy, errorCopy);
     v18 = self->_queue_preparationCompletionHandler;
     self->_queue_preparationCompletionHandler = 0;
   }
 }
 
-- (void)_queue_setWindowSceneID:(id)a3
+- (void)_queue_setWindowSceneID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_queue_windowSceneID != v4 && ![(NSString *)v4 isEqualToString:?])
+  dCopy = d;
+  v5 = dCopy;
+  if (self->_queue_windowSceneID != dCopy && ![(NSString *)dCopy isEqualToString:?])
   {
     v6 = self->_queue_currentClientIdentifier;
     v7 = [(NSString *)v5 copy];
@@ -160,7 +160,7 @@
     {
       v10 = self->_queue_windowSceneID;
       v11 = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
       v14 = v6;
       v15 = 2114;
@@ -170,12 +170,12 @@
   }
 }
 
-- (void)_queue_setCurrentClientIdentifier:(id)a3
+- (void)_queue_setCurrentClientIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_queue_currentClientIdentifier != v4 && ![(NSString *)v4 isEqualToString:?])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_queue_currentClientIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
     v6 = self->_queue_currentClientIdentifier;
     v7 = [(NSString *)v5 copy];
@@ -187,7 +187,7 @@
     {
       v10 = self->_queue_currentClientIdentifier;
       v11 = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
       v14 = v6;
       v15 = 2114;
@@ -197,11 +197,11 @@
   }
 }
 
-- (void)_queue_handleDidPrepareToPlayWithError:(id)a3
+- (void)_queue_handleDidPrepareToPlayWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 px_isDomain:*MEMORY[0x1E6970248] code:2])
+  errorCopy = error;
+  if ([errorCopy px_isDomain:*MEMORY[0x1E6970248] code:2])
   {
 
 LABEL_7:
@@ -209,27 +209,27 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ successfully finished preparing to play.", &v8, 0xCu);
     }
 
-    v4 = 0;
+    errorCopy = 0;
     v5 = 0;
     v7 = 1;
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:4 underlyingError:v4 debugDescription:@"Encountered a MediaPlayer error when preparing to play Apple Music."];
+  v5 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:4 underlyingError:errorCopy debugDescription:@"Encountered a MediaPlayer error when preparing to play Apple Music."];
   v6 = PLAudioPlaybackGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 2114;
     v11 = v5;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "%{public}@ encountered an error while preparing to play: %{public}@", &v8, 0x16u);
@@ -241,53 +241,53 @@ LABEL_10:
   [(_PXAppleMusicPlayerController *)self _queue_callPreparationCompletionHandler:v7 error:v5];
 }
 
-- (void)_handleDidPrepareToPlayWithExpectation:(id)a3 error:(id)a4
+- (void)_handleDidPrepareToPlayWithExpectation:(id)expectation error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  expectationCopy = expectation;
+  errorCopy = error;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78___PXAppleMusicPlayerController__handleDidPrepareToPlayWithExpectation_error___block_invoke;
   v11[3] = &unk_1E774B708;
-  v12 = v6;
-  v9 = v6;
+  v12 = expectationCopy;
+  v9 = expectationCopy;
   objc_copyWeak(&v14, &location);
-  v13 = v7;
-  v10 = v7;
+  v13 = errorCopy;
+  v10 = errorCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)_queue_handlePreparationExpectationFulfilled:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_queue_handlePreparationExpectationFulfilled:(id)fulfilled success:(BOOL)success error:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (self->_queue_preparationExpectation == a3 && !a4)
+  errorCopy = error;
+  if (self->_queue_preparationExpectation == fulfilled && !success)
   {
     v9 = PLAudioPlaybackGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v8;
+      v14 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "%{public}@ timed out preparing to play. Error: %{public}@", buf, 0x16u);
     }
 
-    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:2 underlyingError:v8 debugDescription:{@"Apple Music playback preparation timed out after %fs.", 0x403E000000000000}];
+    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXAppleMusicPlayerControllerErrorDomain" code:2 underlyingError:errorCopy debugDescription:{@"Apple Music playback preparation timed out after %fs.", 0x403E000000000000}];
     [(_PXAppleMusicPlayerController *)self _queue_callPreparationCompletionHandler:0 error:v10];
   }
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
   dispatch_assert_queue_V2(self->_queue);
-  v6 = a3;
-  self->_queue_volume = v6;
+  volumeCopy = volume;
+  self->_queue_volume = volumeCopy;
   if (self->_playerRespondsToRelativeVolume)
   {
     queue_player = self->_queue_player;
@@ -330,7 +330,7 @@ LABEL_10:
   {
     queue_player = self->_queue_player;
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2112;
     v8 = queue_player;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ sending pause command to %@.", &v5, 0x16u);
@@ -339,10 +339,10 @@ LABEL_10:
   [(MPMusicPlayerApplicationController *)self->_queue_player pause];
 }
 
-- (void)prepareToPlayWithCompletionHandler:(id)a3
+- (void)prepareToPlayWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   objc_initWeak(&location, self);
   queue_preparationExpectation = self->_queue_preparationExpectation;
@@ -357,7 +357,7 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ informing existing preparation completion handler that preparation is being interrupted.", buf, 0xCu);
     }
 
@@ -379,7 +379,7 @@ LABEL_10:
   objc_copyWeak(&v23, &location);
   objc_copyWeak(&v24, &from);
   [(PXExpectation *)v12 performWhenFulfilled:v22 timeout:30.0];
-  v13 = [v5 copy];
+  v13 = [handlerCopy copy];
   queue_preparationCompletionHandler = self->_queue_preparationCompletionHandler;
   self->_queue_preparationCompletionHandler = v13;
 
@@ -388,7 +388,7 @@ LABEL_10:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ will prepare to play", buf, 0xCu);
   }
 
@@ -420,21 +420,21 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)setItemWithStoreID:(id)a3 startTime:(id *)a4
+- (void)setItemWithStoreID:(id)d startTime:(id *)time
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     v7 = *MEMORY[0x1E6960CC0];
-    a4->var3 = *(MEMORY[0x1E6960CC0] + 16);
-    *&a4->var0 = v7;
+    time->var3 = *(MEMORY[0x1E6960CC0] + 16);
+    *&time->var0 = v7;
   }
 
   self->_isAtEnd = 0;
   queue_itemStoreID = self->_queue_itemStoreID;
-  v9 = v6;
+  v9 = dCopy;
   v10 = v9;
   if (queue_itemStoreID == v9)
   {
@@ -466,7 +466,7 @@ LABEL_10:
       v17 = [v15 initWithStoreIDs:v16];
 
       [v17 setPrivate:1];
-      buf = *a4;
+      buf = *time;
       [v17 setStartTime:v10 forItemWithStoreID:CMTimeGetSeconds(&buf)];
       [(MPMusicPlayerApplicationController *)self->_queue_player setQueueWithDescriptor:v17];
 
@@ -474,7 +474,7 @@ LABEL_10:
     }
   }
 
-  buf = *a4;
+  buf = *time;
   Seconds = CMTimeGetSeconds(&buf);
   v19 = PLAudioPlaybackGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -530,21 +530,21 @@ LABEL_12:
   return result;
 }
 
-- (void)clientIdentifier:(id)a3 becomeCurrentClientIfNeeded:(BOOL)a4 performAsyncPlayerTransaction:(id)a5
+- (void)clientIdentifier:(id)identifier becomeCurrentClientIfNeeded:(BOOL)needed performAsyncPlayerTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __108___PXAppleMusicPlayerController_clientIdentifier_becomeCurrentClientIfNeeded_performAsyncPlayerTransaction___block_invoke;
   v13[3] = &unk_1E7749350;
-  v16 = a4;
+  neededCopy = needed;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  v15 = transactionCopy;
+  v11 = transactionCopy;
+  v12 = identifierCopy;
   dispatch_async(queue, v13);
 }
 
@@ -570,17 +570,17 @@ LABEL_12:
   return v3;
 }
 
-- (void)setWindowSceneID:(id)a3
+- (void)setWindowSceneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50___PXAppleMusicPlayerController_setWindowSceneID___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -606,25 +606,25 @@ LABEL_12:
   return v3;
 }
 
-- (void)setCurrentClientIdentifier:(id)a3
+- (void)setCurrentClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60___PXAppleMusicPlayerController_setCurrentClientIdentifier___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_playbackStateChangeObserver];
-  [v3 removeObserver:self->_playbackDidEndObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_playbackStateChangeObserver];
+  [defaultCenter removeObserver:self->_playbackDidEndObserver];
 
   v4.receiver = self;
   v4.super_class = _PXAppleMusicPlayerController;
@@ -646,8 +646,8 @@ LABEL_12:
 
 - (_PXAppleMusicPlayerController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPlayerController.m" lineNumber:76 description:{@"%s is not available as initializer", "-[_PXAppleMusicPlayerController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPlayerController.m" lineNumber:76 description:{@"%s is not available as initializer", "-[_PXAppleMusicPlayerController init]"}];
 
   abort();
 }

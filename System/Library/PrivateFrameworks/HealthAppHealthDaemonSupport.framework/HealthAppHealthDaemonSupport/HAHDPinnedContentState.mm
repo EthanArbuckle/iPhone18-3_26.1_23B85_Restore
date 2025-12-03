@@ -1,22 +1,22 @@
 @interface HAHDPinnedContentState
 - (HAHDPinnedContentState)init;
-- (HAHDPinnedContentState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HAHDPinnedContentState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAHDPinnedContentState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PinnedContentState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PinnedContentState.encode(with:)(coderCopy);
 }
 
-- (HAHDPinnedContentState)initWithCoder:(id)a3
+- (HAHDPinnedContentState)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2512E3D20(v3);
+  coderCopy = coder;
+  v4 = sub_2512E3D20(coderCopy);
 
   return v4;
 }

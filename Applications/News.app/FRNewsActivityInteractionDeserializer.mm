@@ -1,12 +1,12 @@
 @interface FRNewsActivityInteractionDeserializer
-- (id)activityDataForIntent:(id)a3;
+- (id)activityDataForIntent:(id)intent;
 @end
 
 @implementation FRNewsActivityInteractionDeserializer
 
-- (id)activityDataForIntent:(id)a3
+- (id)activityDataForIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -18,13 +18,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = intentCopy;
       v6 = [TSNewsActivityData alloc];
       v7 = [v5 tag];
 
-      v8 = [v7 identifier];
+      identifier = [v7 identifier];
       v9 = objc_opt_new();
-      v4 = [v6 initWithActivity:2 identifier:v8 object:v9];
+      v4 = [v6 initWithActivity:2 identifier:identifier object:v9];
     }
 
     else

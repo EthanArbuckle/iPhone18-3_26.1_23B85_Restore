@@ -10,29 +10,29 @@
 
 - (id)tvrui_formattedReleaseDate
 {
-  v2 = [a1 releaseDate];
-  if (v2)
+  releaseDate = [self releaseDate];
+  if (releaseDate)
   {
-    if ([a1 kind] == 1)
+    if ([self kind] == 1)
     {
       if (tvrui_formattedReleaseDate_onceToken != -1)
       {
         [TVRCMediaInfo(TVRUIAdditions) tvrui_formattedReleaseDate];
       }
 
-      v3 = [tvrui_formattedReleaseDate_formatter stringFromDate:v2];
+      v3 = [tvrui_formattedReleaseDate_formatter stringFromDate:releaseDate];
     }
 
     else
     {
-      v4 = [MEMORY[0x277CBEA80] currentCalendar];
-      v5 = [v4 components:4 fromDate:v2];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v5 = [currentCalendar components:4 fromDate:releaseDate];
 
-      v6 = [v5 year];
-      if (v6)
+      year = [v5 year];
+      if (year)
       {
         v7 = MEMORY[0x277CCACA8];
-        v8 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
+        v8 = [MEMORY[0x277CCABB0] numberWithInteger:year];
         v3 = [v7 stringWithFormat:@"%@", v8];
       }
 
@@ -53,9 +53,9 @@
 
 - (id)tvrui_formattedDuration
 {
-  v2 = [a1 duration];
+  duration = [self duration];
 
-  if (v2 && ([a1 duration], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "doubleValue"), v5 = v4, v3, v5 > 0.0))
+  if (duration && ([self duration], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "doubleValue"), v5 = v4, v3, v5 > 0.0))
   {
     v6 = [TVRUIDateUtilities localizedPlaybackTimeForInterval:v5];
   }
@@ -70,19 +70,19 @@
 
 - (id)tvrui_RTReviewPercentage
 {
-  v1 = [a1 rottenTomatoesReview];
-  v2 = v1;
-  if (v1)
+  rottenTomatoesReview = [self rottenTomatoesReview];
+  v2 = rottenTomatoesReview;
+  if (rottenTomatoesReview)
   {
-    v3 = [v1 percentage];
-    if ([v3 integerValue] < 1)
+    percentage = [rottenTomatoesReview percentage];
+    if ([percentage integerValue] < 1)
     {
       v4 = 0;
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%%", v3];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%%", percentage];
     }
   }
 
@@ -104,27 +104,27 @@
   v3 = v2;
   v17 = v3;
   v4 = _Block_copy(&aBlock);
-  v5 = [a1 genre];
-  v4[2](v4, v5);
+  genre = [self genre];
+  v4[2](v4, genre);
 
-  v6 = [a1 tvrui_formattedReleaseDate];
-  v4[2](v4, v6);
+  tvrui_formattedReleaseDate = [self tvrui_formattedReleaseDate];
+  v4[2](v4, tvrui_formattedReleaseDate);
 
-  v7 = [a1 tvrui_formattedDuration];
-  v4[2](v4, v7);
+  tvrui_formattedDuration = [self tvrui_formattedDuration];
+  v4[2](v4, tvrui_formattedDuration);
 
   if (+[TVRUIFeatures includeRTReviewInInfoPanel])
   {
-    v8 = [a1 tvrui_RTReviewPercentage];
-    if (v8)
+    tvrui_RTReviewPercentage = [self tvrui_RTReviewPercentage];
+    if (tvrui_RTReviewPercentage)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"RT %@", v8, aBlock, v14, v15, v16];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"RT %@", tvrui_RTReviewPercentage, aBlock, v14, v15, v16];
       v4[2](v4, v9);
     }
   }
 
-  v10 = [a1 ratingDescription];
-  v4[2](v4, v10);
+  ratingDescription = [self ratingDescription];
+  v4[2](v4, ratingDescription);
 
   v11 = [v3 componentsJoinedByString:@" • "];
 
@@ -133,21 +133,21 @@
 
 - (id)tvrui_effectiveIdentifier
 {
-  v2 = [a1 identifier];
-  if ([a1 kind] == 1)
+  identifier = [self identifier];
+  if ([self kind] == 1)
   {
-    v3 = [a1 showIdentifier];
-    v4 = [v3 length];
+    showIdentifier = [self showIdentifier];
+    v4 = [showIdentifier length];
 
     if (v4)
     {
-      v5 = [a1 showIdentifier];
+      showIdentifier2 = [self showIdentifier];
 
-      v2 = v5;
+      identifier = showIdentifier2;
     }
   }
 
-  return v2;
+  return identifier;
 }
 
 @end

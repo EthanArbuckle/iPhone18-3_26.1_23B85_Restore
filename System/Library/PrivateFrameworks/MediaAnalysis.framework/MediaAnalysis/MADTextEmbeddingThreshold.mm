@@ -1,12 +1,12 @@
 @interface MADTextEmbeddingThreshold
-+ (float)computeThresholdBase:(float)a3;
-+ (id)createForEmbeddingVersion:(unint64_t)a3;
++ (float)computeThresholdBase:(float)base;
++ (id)createForEmbeddingVersion:(unint64_t)version;
 - (MADTextEmbeddingThreshold)init;
 - (int)_createPlan;
 - (int)_loadResources;
-- (int)_processEmbedding:(id)a3 bias:(float *)a4 scale:(float *)a5 threshold:(float *)a6;
+- (int)_processEmbedding:(id)embedding bias:(float *)bias scale:(float *)scale threshold:(float *)threshold;
 - (int)loadResources;
-- (int)processEmbedding:(id)a3 bias:(float *)a4 scale:(float *)a5 threshold:(float *)a6;
+- (int)processEmbedding:(id)embedding bias:(float *)bias scale:(float *)scale threshold:(float *)threshold;
 - (void)dealloc;
 @end
 
@@ -28,19 +28,19 @@
   return v2;
 }
 
-+ (id)createForEmbeddingVersion:(unint64_t)a3
++ (id)createForEmbeddingVersion:(unint64_t)version
 {
-  v3 = a3;
+  versionCopy = version;
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 <= 4)
+  if (version <= 4)
   {
-    if (a3 == 3)
+    if (version == 3)
     {
       v4 = MADTextEmbeddingThresholdMD3;
       goto LABEL_12;
     }
 
-    if (a3 == 4)
+    if (version == 4)
     {
       v4 = MADTextEmbeddingThresholdMD4;
       goto LABEL_12;
@@ -49,7 +49,7 @@
 
   else
   {
-    switch(a3)
+    switch(version)
     {
       case 5uLL:
         v4 = MADTextEmbeddingThresholdMD5;
@@ -68,7 +68,7 @@ LABEL_12:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = versionCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Text|Threshold] Embedding version %d not supported", v7, 8u);
   }
 
@@ -107,15 +107,15 @@ LABEL_13:
     return -18;
   }
 
-  v4 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v5 = [v4 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [objc_opt_class() modelName];
-  v8 = [v6 URLWithString:v7 relativeToURL:v5];
+  modelName = [objc_opt_class() modelName];
+  v8 = [v6 URLWithString:modelName relativeToURL:resourceURL];
 
-  v9 = [v8 path];
-  [v9 UTF8String];
+  path = [v8 path];
+  [path UTF8String];
   blob_dimensions = espresso_plan_add_network();
 
   if (!blob_dimensions)
@@ -198,7 +198,7 @@ LABEL_13:
     v10 = qos_class_self();
     v11 = VCPMAQoSDescription(v10);
     v12 = v11;
-    v13 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v14 = "Failure";
     if (!v2)
     {
@@ -206,7 +206,7 @@ LABEL_13:
     }
 
     *buf = 136446466;
-    v18 = v13;
+    v18 = uTF8String;
     v19 = 2082;
     v20 = v14;
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_END, v5, "MADTextEmbeddingThreshold_loadResources", "QoS=%{public, signpost.telemetry:string1}s Status=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x16u);
@@ -301,17 +301,17 @@ uint64_t __42__MADTextEmbeddingThreshold_loadResources__block_invoke(uint64_t a1
   return result;
 }
 
-+ (float)computeThresholdBase:(float)a3
++ (float)computeThresholdBase:(float)base
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = logf(a3);
-  v5 = logf(1.0 - a3);
+  v4 = logf(base);
+  v5 = logf(1.0 - base);
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v7 = 134219008;
-    v8 = a3;
+    baseCopy = base;
     v9 = 2048;
-    v10 = 1.0 - a3;
+    v10 = 1.0 - base;
     v11 = 2048;
     v12 = v4;
     v13 = 2048;
@@ -324,12 +324,12 @@ uint64_t __42__MADTextEmbeddingThreshold_loadResources__block_invoke(uint64_t a1
   return v4 - v5;
 }
 
-- (int)_processEmbedding:(id)a3 bias:(float *)a4 scale:(float *)a5 threshold:(float *)a6
+- (int)_processEmbedding:(id)embedding bias:(float *)bias scale:(float *)scale threshold:(float *)threshold
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(MADTextEmbeddingThreshold *)self _loadResources];
-  if (v11)
+  embeddingCopy = embedding;
+  _loadResources = [(MADTextEmbeddingThreshold *)self _loadResources];
+  if (_loadResources)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -344,11 +344,11 @@ uint64_t __42__MADTextEmbeddingThreshold_loadResources__block_invoke(uint64_t a1
     aBlock[1] = 3221225472;
     aBlock[2] = __68__MADTextEmbeddingThreshold__processEmbedding_bias_scale_threshold___block_invoke;
     aBlock[3] = &unk_1E834E008;
-    v26 = v10;
-    v27 = self;
-    v28 = a4;
-    v29 = a5;
-    v30 = a6;
+    v26 = embeddingCopy;
+    selfCopy = self;
+    biasCopy = bias;
+    scaleCopy = scale;
+    thresholdCopy = threshold;
     v12 = _Block_copy(aBlock);
     v13 = VCPSignPostPersistentLog();
     v14 = os_signpost_id_generate(v13);
@@ -361,7 +361,7 @@ uint64_t __42__MADTextEmbeddingThreshold_loadResources__block_invoke(uint64_t a1
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "MADTextEmbeddingThreshold_processEmbedding", " enableTelemetry=YES ", buf, 2u);
     }
 
-    v11 = v12[2](v12);
+    _loadResources = v12[2](v12);
     v17 = VCPSignPostPersistentLog();
     v18 = v17;
     if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
@@ -369,22 +369,22 @@ uint64_t __42__MADTextEmbeddingThreshold_loadResources__block_invoke(uint64_t a1
       v19 = qos_class_self();
       v20 = VCPMAQoSDescription(v19);
       v21 = v20;
-      v22 = [v20 UTF8String];
+      uTF8String = [v20 UTF8String];
       v23 = "Failure";
-      if (!v11)
+      if (!_loadResources)
       {
         v23 = "Success";
       }
 
       *buf = 136446466;
-      v32 = v22;
+      v32 = uTF8String;
       v33 = 2082;
       v34 = v23;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v18, OS_SIGNPOST_INTERVAL_END, v14, "MADTextEmbeddingThreshold_processEmbedding", "QoS=%{public, signpost.telemetry:string1}s Status=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x16u);
     }
   }
 
-  return v11;
+  return _loadResources;
 }
 
 uint64_t __68__MADTextEmbeddingThreshold__processEmbedding_bias_scale_threshold___block_invoke(uint64_t a1)
@@ -508,9 +508,9 @@ uint64_t __68__MADTextEmbeddingThreshold__processEmbedding_bias_scale_threshold_
   return v6;
 }
 
-- (int)processEmbedding:(id)a3 bias:(float *)a4 scale:(float *)a5 threshold:(float *)a6
+- (int)processEmbedding:(id)embedding bias:(float *)bias scale:(float *)scale threshold:(float *)threshold
 {
-  v10 = a3;
+  embeddingCopy = embedding;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -521,17 +521,17 @@ uint64_t __68__MADTextEmbeddingThreshold__processEmbedding_bias_scale_threshold_
   v14[2] = __67__MADTextEmbeddingThreshold_processEmbedding_bias_scale_threshold___block_invoke;
   v14[3] = &unk_1E834D600;
   v14[4] = self;
-  v15 = v10;
+  v15 = embeddingCopy;
   v16 = &v20;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v12 = v10;
+  biasCopy = bias;
+  scaleCopy = scale;
+  thresholdCopy = threshold;
+  v12 = embeddingCopy;
   dispatch_sync(queue, v14);
-  LODWORD(a5) = *(v21 + 6);
+  LODWORD(scale) = *(v21 + 6);
 
   _Block_object_dispose(&v20, 8);
-  return a5;
+  return scale;
 }
 
 uint64_t __67__MADTextEmbeddingThreshold_processEmbedding_bias_scale_threshold___block_invoke(uint64_t a1)

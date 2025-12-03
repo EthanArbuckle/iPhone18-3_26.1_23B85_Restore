@@ -1,10 +1,10 @@
 @interface SDProfileUtilities
 + (BOOL)isProfileInstallationAllowed;
 + (BOOL)removeSeedingProfile;
-+ (id)getAssetAudienceIDForInstalledProfile:(id *)a3;
++ (id)getAssetAudienceIDForInstalledProfile:(id *)profile;
 + (id)getInstalledSeedProfile;
 + (void)forceRemoveSeedingProfile;
-+ (void)installProfileWithData:(id)a3 error:(id *)a4;
++ (void)installProfileWithData:(id)data error:(id *)error;
 + (void)removeSeedProfileIfRestricted;
 @end
 
@@ -27,20 +27,20 @@
 
     else
     {
-      [a1 removeSeedingProfile];
+      [self removeSeedingProfile];
     }
   }
 }
 
-+ (void)installProfileWithData:(id)a3 error:(id *)a4
++ (void)installProfileWithData:(id)data error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = +[SDSeedingLogging profileHandle];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v26 = [v5 length];
+    v26 = [dataCopy length];
     _os_log_impl(&dword_22E41E000, v6, OS_LOG_TYPE_DEFAULT, "Will install profile with data.length [%lu]", buf, 0xCu);
   }
 
@@ -48,15 +48,15 @@
   v24 = &unk_284250A68;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   v22 = 0;
-  v8 = [MEMORY[0x277D26290] profileWithData:v5 outError:&v22];
+  v8 = [MEMORY[0x277D26290] profileWithData:dataCopy outError:&v22];
   v9 = v22;
   if (v9)
   {
     v10 = v9;
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
 
     v12 = +[SDSeedingLogging profileHandle];
@@ -70,22 +70,22 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  v13 = [v8 identifier];
-  v14 = SDIsSeedProfileIdentifier(v13);
+  identifier = [v8 identifier];
+  v14 = SDIsSeedProfileIdentifier(identifier);
 
   if (v14)
   {
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     v21 = 0;
-    v16 = [v15 installProfileData:v5 options:v7 outError:&v21];
+    v16 = [mEMORY[0x277D262A0] installProfileData:dataCopy options:v7 outError:&v21];
     v10 = v21;
 
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v17 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
       v12 = +[SDSeedingLogging profileHandle];
@@ -113,7 +113,7 @@ LABEL_8:
       [SDProfileUtilities installProfileWithData:v18 error:?];
     }
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.profile-utils" code:1 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.profile-utils" code:1 userInfo:0];
   }
 
 LABEL_21:
@@ -134,28 +134,28 @@ LABEL_21:
   v27 = buf;
   v28 = 0x2020000000;
   v29 = 0;
-  v4 = [a1 getInstalledSeedProfile];
-  if (v4)
+  getInstalledSeedProfile = [self getInstalledSeedProfile];
+  if (getInstalledSeedProfile)
   {
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v4 identifier];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    identifier = [getInstalledSeedProfile identifier];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __42__SDProfileUtilities_removeSeedingProfile__block_invoke;
     v21[3] = &unk_2787CB838;
     v24 = buf;
-    v8 = v4;
+    v8 = getInstalledSeedProfile;
     v22 = v8;
     v9 = v5;
     v23 = v9;
-    [v6 removeProfileAsyncWithIdentifier:v7 installationType:1 completion:v21];
+    [mEMORY[0x277D262A0] removeProfileAsyncWithIdentifier:identifier installationType:1 completion:v21];
 
     dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-    v10 = [a1 getInstalledSeedProfile];
+    getInstalledSeedProfile2 = [self getInstalledSeedProfile];
 
-    if (v10)
+    if (getInstalledSeedProfile2)
     {
       v11 = +[SDSeedingLogging profileHandle];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -166,17 +166,17 @@ LABEL_21:
 
       v12 = dispatch_group_create();
       dispatch_group_enter(v12);
-      v13 = [MEMORY[0x277D262A0] sharedConnection];
-      v14 = [v10 identifier];
+      mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+      identifier2 = [getInstalledSeedProfile2 identifier];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __42__SDProfileUtilities_removeSeedingProfile__block_invoke_10;
       v17[3] = &unk_2787CB838;
       v20 = buf;
-      v18 = v10;
+      v18 = getInstalledSeedProfile2;
       v9 = v12;
       v19 = v9;
-      [v13 removeProfileAsyncWithIdentifier:v14 installationType:1 completion:v17];
+      [mEMORY[0x277D262A0]2 removeProfileAsyncWithIdentifier:identifier2 installationType:1 completion:v17];
 
       dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -186,11 +186,11 @@ LABEL_21:
 
   else
   {
-    v10 = +[SDSeedingLogging profileHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    getInstalledSeedProfile2 = +[SDSeedingLogging profileHandle];
+    if (os_log_type_enabled(getInstalledSeedProfile2, OS_LOG_TYPE_DEFAULT))
     {
       *v25 = 0;
-      _os_log_impl(&dword_22E41E000, v10, OS_LOG_TYPE_DEFAULT, "No seed profile exists.", v25, 2u);
+      _os_log_impl(&dword_22E41E000, getInstalledSeedProfile2, OS_LOG_TYPE_DEFAULT, "No seed profile exists.", v25, 2u);
     }
 
     v15 = 0;
@@ -262,18 +262,18 @@ void __42__SDProfileUtilities_removeSeedingProfile__block_invoke_10(uint64_t a1,
 
 + (BOOL)isProfileInstallationAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isProfileUIInstallationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isProfileUIInstallationAllowed = [mEMORY[0x277D262A0] isProfileUIInstallationAllowed];
 
-  return v3;
+  return isProfileUIInstallationAllowed;
 }
 
-+ (id)getAssetAudienceIDForInstalledProfile:(id *)a3
++ (id)getAssetAudienceIDForInstalledProfile:(id *)profile
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [a1 getInstalledSeedProfile];
-  v5 = v4;
-  if (!v4)
+  getInstalledSeedProfile = [self getInstalledSeedProfile];
+  v5 = getInstalledSeedProfile;
+  if (!getInstalledSeedProfile)
   {
     v18 = +[SDSeedingLogging profileHandle];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -291,8 +291,8 @@ LABEL_25:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v4 payloads];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  payloads = [getInstalledSeedProfile payloads];
+  v7 = [payloads countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (!v7)
   {
 
@@ -300,7 +300,7 @@ LABEL_25:
   }
 
   v8 = v7;
-  v22 = a3;
+  profileCopy = profile;
   v23 = v5;
   v9 = 0;
   v10 = *v25;
@@ -310,7 +310,7 @@ LABEL_25:
     {
       if (*v25 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(payloads);
       }
 
       v12 = *(*(&v24 + 1) + 8 * i);
@@ -329,25 +329,25 @@ LABEL_25:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    v8 = [payloads countByEnumeratingWithState:&v24 objects:v30 count:16];
   }
 
   while (v8);
 
-  a3 = v22;
+  profile = profileCopy;
   if (!v9)
   {
 LABEL_21:
-    v19 = [SDSeedingLogging profileHandle:v22];
+    v19 = [SDSeedingLogging profileHandle:profileCopy];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       [SDProfileUtilities getAssetAudienceIDForInstalledProfile:v19];
     }
 
-    if (a3)
+    if (profile)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.profile-utils" code:0 userInfo:0];
-      *a3 = v9 = 0;
+      *profile = v9 = 0;
       goto LABEL_26;
     }
 
@@ -377,17 +377,17 @@ LABEL_26:
     _os_log_impl(&dword_22E41E000, v2, OS_LOG_TYPE_INFO, "Removing seeding profile", v5, 2u);
   }
 
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 removeProfileWithIdentifier:@"com.apple.applebetasoftware"];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] removeProfileWithIdentifier:@"com.apple.applebetasoftware"];
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 removeProfileWithIdentifier:@"com.apple.appleseedsoftware"];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0]2 removeProfileWithIdentifier:@"com.apple.appleseedsoftware"];
 }
 
 + (id)getInstalledSeedProfile
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 installedProfileWithIdentifier:@"com.apple.appleseedsoftware"];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] installedProfileWithIdentifier:@"com.apple.appleseedsoftware"];
   v4 = v3;
   if (v3)
   {
@@ -396,7 +396,7 @@ LABEL_26:
 
   else
   {
-    v5 = [v2 installedProfileWithIdentifier:@"com.apple.applebetasoftware"];
+    v5 = [mEMORY[0x277D262A0] installedProfileWithIdentifier:@"com.apple.applebetasoftware"];
   }
 
   v6 = v5;

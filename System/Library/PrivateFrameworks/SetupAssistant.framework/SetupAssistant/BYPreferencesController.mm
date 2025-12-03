@@ -7,18 +7,18 @@
 + (id)randomPreferences;
 + (void)flushEverything;
 + (void)persistEverything;
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (BYPreferencesController)init;
-- (BYPreferencesController)initWithDomain:(id)a3;
-- (id)objectForKey:(id)a3 includeCache:(BOOL)a4;
+- (BYPreferencesController)initWithDomain:(id)domain;
+- (id)objectForKey:(id)key includeCache:(BOOL)cache;
 - (void)flush;
 - (void)persist;
-- (void)persistKeys:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3 onlyFromMemory:(BOOL)a4;
+- (void)persistKeys:(id)keys;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectForKey:(id)key onlyFromMemory:(BOOL)memory;
 - (void)reset;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 persistImmediately:(BOOL)a5;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key persistImmediately:(BOOL)immediately;
 @end
 
 @implementation BYPreferencesController
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __51__BYPreferencesController_buddyPreferencesInternal__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buddyPreferencesInternal_onceToken != -1)
   {
     dispatch_once(&buddyPreferencesInternal_onceToken, block);
@@ -130,58 +130,58 @@ uint64_t __52__BYPreferencesController_buddyPreferencesEphemeral__block_invoke()
 
 + (id)genericPreferencesEphemeral
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (id)randomPreferences
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 initWithDomain:v4];
+  v2 = [self alloc];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [v2 initWithDomain:uUIDString];
 
   return v5;
 }
 
-- (BYPreferencesController)initWithDomain:(id)a3
+- (BYPreferencesController)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = [(BYPreferencesController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(BYPreferencesController *)v5 setDomain:v4];
+    [(BYPreferencesController *)v5 setDomain:domainCopy];
   }
 
   return v6;
 }
 
-- (id)objectForKey:(id)a3 includeCache:(BOOL)a4
+- (id)objectForKey:(id)key includeCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
+  cacheCopy = cache;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__4;
   v20 = __Block_byref_object_dispose__4;
   v21 = 0;
-  if (!v4)
+  if (!cacheCopy)
   {
     goto LABEL_4;
   }
 
-  v7 = [(BYPreferencesController *)self queue];
+  queue = [(BYPreferencesController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__BYPreferencesController_objectForKey_includeCache___block_invoke;
   block[3] = &unk_1E7D032E0;
   v15 = &v16;
   block[4] = self;
-  v14 = v6;
-  dispatch_sync(v7, block);
+  v14 = keyCopy;
+  dispatch_sync(queue, block);
 
   v8 = v17[5];
   if (v8)
@@ -192,12 +192,12 @@ uint64_t __52__BYPreferencesController_buddyPreferencesEphemeral__block_invoke()
   else
   {
 LABEL_4:
-    v10 = [(BYPreferencesController *)self domain];
+    domain = [(BYPreferencesController *)self domain];
 
-    if (v10)
+    if (domain)
     {
-      v11 = [(BYPreferencesController *)self domain];
-      v9 = CFPreferencesCopyValue(v6, v11, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+      domain2 = [(BYPreferencesController *)self domain];
+      v9 = CFPreferencesCopyValue(keyCopy, domain2, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
     }
 
     else
@@ -220,38 +220,38 @@ void __53__BYPreferencesController_objectForKey_includeCache___block_invoke(uint
   *(v3 + 40) = v2;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(BYPreferencesController *)self objectForKey:a3];
+  v3 = [(BYPreferencesController *)self objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BYPreferencesController *)self queue];
+  objectCopy = object;
+  keyCopy = key;
+  queue = [(BYPreferencesController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__BYPreferencesController_setObject_forKey___block_invoke;
   block[3] = &unk_1E7D03308;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
+  dispatch_sync(queue, block);
 }
 
 void __44__BYPreferencesController_setObject_forKey___block_invoke(uint64_t a1)
@@ -260,28 +260,28 @@ void __44__BYPreferencesController_setObject_forKey___block_invoke(uint64_t a1)
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 persistImmediately:(BOOL)a5
+- (void)setObject:(id)object forKey:(id)key persistImmediately:(BOOL)immediately
 {
-  v5 = a5;
-  value = a3;
-  v8 = a4;
-  [(BYPreferencesController *)self setObject:value forKey:v8];
-  if (v5)
+  immediatelyCopy = immediately;
+  value = object;
+  keyCopy = key;
+  [(BYPreferencesController *)self setObject:value forKey:keyCopy];
+  if (immediatelyCopy)
   {
-    v9 = [(BYPreferencesController *)self domain];
-    CFPreferencesSetValue(v8, value, v9, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+    domain = [(BYPreferencesController *)self domain];
+    CFPreferencesSetValue(keyCopy, value, domain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
   }
 }
 
-- (void)persistKeys:(id)a3
+- (void)persistKeys:(id)keys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -292,7 +292,7 @@ void __44__BYPreferencesController_setObject_forKey___block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -303,7 +303,7 @@ void __44__BYPreferencesController_setObject_forKey___block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -312,18 +312,18 @@ void __44__BYPreferencesController_setObject_forKey___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BYPreferencesController *)self queue];
+  keyCopy = key;
+  queue = [(BYPreferencesController *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__BYPreferencesController_removeObjectForKey___block_invoke;
   v7[3] = &unk_1E7D03330;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __46__BYPreferencesController_removeObjectForKey___block_invoke(uint64_t a1)
@@ -332,31 +332,31 @@ void __46__BYPreferencesController_removeObjectForKey___block_invoke(uint64_t a1
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)removeObjectForKey:(id)a3 onlyFromMemory:(BOOL)a4
+- (void)removeObjectForKey:(id)key onlyFromMemory:(BOOL)memory
 {
-  key = a3;
+  key = key;
   [(BYPreferencesController *)self removeObjectForKey:?];
-  if (!a4)
+  if (!memory)
   {
-    v6 = [(BYPreferencesController *)self domain];
+    domain = [(BYPreferencesController *)self domain];
 
-    if (v6)
+    if (domain)
     {
-      v7 = [(BYPreferencesController *)self domain];
-      CFPreferencesSetValue(key, 0, v7, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+      domain2 = [(BYPreferencesController *)self domain];
+      CFPreferencesSetValue(key, 0, domain2, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
     }
   }
 }
 
 - (void)reset
 {
-  v3 = [(BYPreferencesController *)self queue];
+  queue = [(BYPreferencesController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32__BYPreferencesController_reset__block_invoke;
   block[3] = &unk_1E7D027A8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __32__BYPreferencesController_reset__block_invoke(uint64_t a1)
@@ -367,13 +367,13 @@ void __32__BYPreferencesController_reset__block_invoke(uint64_t a1)
 
 - (void)persist
 {
-  v3 = [(BYPreferencesController *)self queue];
+  queue = [(BYPreferencesController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__BYPreferencesController_persist__block_invoke;
   block[3] = &unk_1E7D027A8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __34__BYPreferencesController_persist__block_invoke(uint64_t a1)
@@ -426,33 +426,33 @@ void __34__BYPreferencesController_persist__block_invoke(uint64_t a1)
 
 + (void)persistEverything
 {
-  v2 = [objc_opt_class() buddyPreferences];
-  [v2 persist];
+  buddyPreferences = [objc_opt_class() buddyPreferences];
+  [buddyPreferences persist];
 
-  v3 = [objc_opt_class() buddyPreferencesExcludedFromBackup];
-  [v3 persist];
+  buddyPreferencesExcludedFromBackup = [objc_opt_class() buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup persist];
 
-  v4 = [objc_opt_class() buddyPreferencesInternal];
-  [v4 persist];
+  buddyPreferencesInternal = [objc_opt_class() buddyPreferencesInternal];
+  [buddyPreferencesInternal persist];
 }
 
 - (void)flush
 {
-  v3 = [(BYPreferencesController *)self domain];
+  domain = [(BYPreferencesController *)self domain];
   v2 = *MEMORY[0x1E695E8B8];
   _CFPreferencesFlushCachesForIdentifier();
 }
 
 + (void)flushEverything
 {
-  v2 = [objc_opt_class() buddyPreferences];
-  [v2 flush];
+  buddyPreferences = [objc_opt_class() buddyPreferences];
+  [buddyPreferences flush];
 
-  v3 = [objc_opt_class() buddyPreferencesExcludedFromBackup];
-  [v3 flush];
+  buddyPreferencesExcludedFromBackup = [objc_opt_class() buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup flush];
 
-  v4 = [objc_opt_class() buddyPreferencesInternal];
-  [v4 flush];
+  buddyPreferencesInternal = [objc_opt_class() buddyPreferencesInternal];
+  [buddyPreferencesInternal flush];
 }
 
 @end

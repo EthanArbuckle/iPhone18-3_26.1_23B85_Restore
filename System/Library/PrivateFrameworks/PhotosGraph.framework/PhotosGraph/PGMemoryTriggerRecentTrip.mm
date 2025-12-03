@@ -1,17 +1,17 @@
 @interface PGMemoryTriggerRecentTrip
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerRecentTrip
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,33 +27,33 @@
 
   else
   {
-    v12 = [v8 localDate];
-    v13 = [v8 timeZone];
-    v14 = [PGMemoryTrigger dateNodesInGraph:v9 startDayOffset:-8 endDayOffset:-1 fromLocalDate:v12 inTimeZone:v13];
+    localDate = [contextCopy localDate];
+    timeZone = [contextCopy timeZone];
+    v14 = [PGMemoryTrigger dateNodesInGraph:graphCopy startDayOffset:-8 endDayOffset:-1 fromLocalDate:localDate inTimeZone:timeZone];
 
     v28 = v14;
-    v15 = [v14 momentNodes];
-    v16 = [v15 highlightNodes];
+    momentNodes = [v14 momentNodes];
+    highlightNodes = [momentNodes highlightNodes];
 
-    v27 = v16;
-    v17 = [v16 momentNodes];
-    v18 = [v17 memoryNodes];
+    v27 = highlightNodes;
+    momentNodes2 = [highlightNodes momentNodes];
+    memoryNodes = [momentNodes2 memoryNodes];
 
-    v19 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:19 inGraph:v9];
-    v20 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:18 inGraph:v9];
+    v19 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:19 inGraph:graphCopy];
+    v20 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:18 inGraph:graphCopy];
     v21 = [v19 collectionByFormingUnionWith:v20];
-    v22 = [v21 collectionByIntersecting:v18];
+    v22 = [v21 collectionByIntersecting:memoryNodes];
     v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __82__PGMemoryTriggerRecentTrip_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v29[3] = &unk_278886FC0;
     v29[4] = self;
-    v30 = v8;
+    v30 = contextCopy;
     v24 = v23;
     v31 = v24;
     [v22 enumerateIdentifiersAsCollectionsWithBlock:v29];
-    if ([v10 isCancelledWithProgress:1.0])
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -103,12 +103,12 @@ void __82__PGMemoryTriggerRecentTrip_resultsTriggeredWithContext_inGraph_progres
   [v16 addObjectsFromArray:v18];
 }
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes
 {
-  v3 = [(PGGraphNodeCollection *)PGGraphHighlightGroupNodeCollection subsetInCollection:a3];
-  v4 = [v3 featureNodeCollection];
+  v3 = [(PGGraphNodeCollection *)PGGraphHighlightGroupNodeCollection subsetInCollection:nodes];
+  featureNodeCollection = [v3 featureNodeCollection];
 
-  return v4;
+  return featureNodeCollection;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface TIKeyboardBehaviors_Japanese
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Japanese
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasCandidates])
+  stateCopy = state;
+  if ([stateCopy hasCandidates])
   {
-    if ([v3 followsIncompleteRomaji])
+    if ([stateCopy followsIncompleteRomaji])
     {
       v4 = 13;
     }
 
-    else if ([v3 hasInput])
+    else if ([stateCopy hasInput])
     {
       v4 = 4;
     }
@@ -24,12 +24,12 @@
       v4 = 12;
     }
 
-    if ([v3 hasCandidateSelected])
+    if ([stateCopy hasCandidateSelected])
     {
       v7 = 2;
     }
 
-    else if ([v3 hasInput])
+    else if ([stateCopy hasInput])
     {
       v7 = 10;
     }
@@ -39,7 +39,7 @@
       v7 = 9;
     }
 
-    if ([v3 hasInput])
+    if ([stateCopy hasInput])
     {
       v9 = 4;
     }
@@ -54,7 +54,7 @@
 
   else
   {
-    if ([v3 hasInput])
+    if ([stateCopy hasInput])
     {
       v5 = 8;
       v6 = 10;

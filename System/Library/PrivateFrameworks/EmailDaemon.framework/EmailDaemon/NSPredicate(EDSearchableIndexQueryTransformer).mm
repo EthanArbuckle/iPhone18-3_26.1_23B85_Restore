@@ -8,7 +8,7 @@
 {
   v7 = a3;
   v8 = a4;
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
   __assert_rtn("[NSPredicate(EDSearchableIndexQueryTransformer) ed_transformSearchableIndexPredicateWithSuggestion:searchableIndexManager:]", "EDSearchableIndexQueryTransformer.m", 38, "0");
 }
 

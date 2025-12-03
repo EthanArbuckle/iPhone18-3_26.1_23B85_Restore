@@ -1,11 +1,11 @@
 @interface NUBrushStrokeMaskIntersector
 - (NUBrushStrokeMaskIntersector)init;
-- (NUBrushStrokeMaskIntersector)initWithBrushMask:(id)a3 mask:(id)a4 strokeScale:(id)a5;
+- (NUBrushStrokeMaskIntersector)initWithBrushMask:(id)mask mask:(id)a4 strokeScale:(id)scale;
 - (NUHistogram)brushHistogram;
 - (NUHistogram)intersectionHistogram;
 - (NUHistogram)maskHistogram;
 - (double)brushPercentInsideMask;
-- (double)calculateOverlapOfHistogram:(id)a3;
+- (double)calculateOverlapOfHistogram:(id)histogram;
 - (double)maskPercentInsideBrush;
 @end
 
@@ -27,8 +27,8 @@
     _os_signpost_emit_with_name_impl(&dword_1C0184000, v4, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "NUBrushStrokeMaskIntersector.maskPercentInsideBrush", "", buf, 2u);
   }
 
-  v6 = [(NUBrushStrokeMaskIntersector *)self maskHistogram];
-  [(NUBrushStrokeMaskIntersector *)self calculateOverlapOfHistogram:v6];
+  maskHistogram = [(NUBrushStrokeMaskIntersector *)self maskHistogram];
+  [(NUBrushStrokeMaskIntersector *)self calculateOverlapOfHistogram:maskHistogram];
   v8 = v7;
 
   if (_NULogOnceToken != -1)
@@ -64,8 +64,8 @@
     _os_signpost_emit_with_name_impl(&dword_1C0184000, v4, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "NUBrushStrokeMaskIntersector.brushPercentInsideMask", "", buf, 2u);
   }
 
-  v6 = [(NUBrushStrokeMaskIntersector *)self brushHistogram];
-  [(NUBrushStrokeMaskIntersector *)self calculateOverlapOfHistogram:v6];
+  brushHistogram = [(NUBrushStrokeMaskIntersector *)self brushHistogram];
+  [(NUBrushStrokeMaskIntersector *)self calculateOverlapOfHistogram:brushHistogram];
   v8 = v7;
 
   if (_NULogOnceToken != -1)
@@ -85,11 +85,11 @@
   return v8;
 }
 
-- (double)calculateOverlapOfHistogram:(id)a3
+- (double)calculateOverlapOfHistogram:(id)histogram
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  histogramCopy = histogram;
+  if (!histogramCopy)
   {
     v14 = NUAssertLogger_18533();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -110,8 +110,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v21;
         v32 = 2114;
@@ -122,8 +122,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -132,12 +132,12 @@
     _NUAssertFailHandler("[NUBrushStrokeMaskIntersector calculateOverlapOfHistogram:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Mask/NUBrushStrokeMaskIntersector.m", 107, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "imageHistogram != nil");
   }
 
-  v5 = v4;
-  v6 = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
-  v7 = 1.0 / [v6 binCount];
+  v5 = histogramCopy;
+  histogramCalculator = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
+  v7 = 1.0 / [histogramCalculator binCount];
 
-  v8 = [(NUBrushStrokeMaskIntersector *)self intersectionHistogram];
-  [v8 threshold:v7];
+  intersectionHistogram = [(NUBrushStrokeMaskIntersector *)self intersectionHistogram];
+  [intersectionHistogram threshold:v7];
   v10 = v9;
 
   [v5 threshold:v7];
@@ -151,9 +151,9 @@
   intersectionHistogram = self->_intersectionHistogram;
   if (!intersectionHistogram)
   {
-    v4 = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
-    v5 = [(NUBrushStrokeMaskIntersector *)self intersectionImage];
-    v6 = [v4 computeHistogramFromMatte:v5];
+    histogramCalculator = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
+    intersectionImage = [(NUBrushStrokeMaskIntersector *)self intersectionImage];
+    v6 = [histogramCalculator computeHistogramFromMatte:intersectionImage];
     v7 = self->_intersectionHistogram;
     self->_intersectionHistogram = v6;
 
@@ -168,9 +168,9 @@
   maskHistogram = self->_maskHistogram;
   if (!maskHistogram)
   {
-    v4 = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
-    v5 = [(NUBrushStrokeMaskIntersector *)self maskImage];
-    v6 = [v4 computeHistogramFromMatte:v5];
+    histogramCalculator = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
+    maskImage = [(NUBrushStrokeMaskIntersector *)self maskImage];
+    v6 = [histogramCalculator computeHistogramFromMatte:maskImage];
     v7 = self->_maskHistogram;
     self->_maskHistogram = v6;
 
@@ -185,9 +185,9 @@
   brushHistogram = self->_brushHistogram;
   if (!brushHistogram)
   {
-    v4 = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
-    v5 = [(NUBrushStrokeMaskIntersector *)self brushStrokeMaskImage];
-    v6 = [v4 computeHistogramFromMatte:v5];
+    histogramCalculator = [(NUBrushStrokeMaskIntersector *)self histogramCalculator];
+    brushStrokeMaskImage = [(NUBrushStrokeMaskIntersector *)self brushStrokeMaskImage];
+    v6 = [histogramCalculator computeHistogramFromMatte:brushStrokeMaskImage];
     v7 = self->_brushHistogram;
     self->_brushHistogram = v6;
 
@@ -197,11 +197,11 @@
   return brushHistogram;
 }
 
-- (NUBrushStrokeMaskIntersector)initWithBrushMask:(id)a3 mask:(id)a4 strokeScale:(id)a5
+- (NUBrushStrokeMaskIntersector)initWithBrushMask:(id)mask mask:(id)a4 strokeScale:(id)scale
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v10 = a3;
+  var1 = scale.var1;
+  var0 = scale.var0;
+  maskCopy = mask;
   v38.receiver = self;
   v38.super_class = NUBrushStrokeMaskIntersector;
   v11 = a4;
@@ -212,7 +212,7 @@
   }
 
   v12->_signpost = os_signpost_id_make_with_pointer(_NULogger, v12);
-  objc_storeStrong(&v12->_brushStrokeMaskImage, a3);
+  objc_storeStrong(&v12->_brushStrokeMaskImage, mask);
   if (!NUScaleEqual(var0, var1, NUScaleOne, *(&NUScaleOne + 1)))
   {
     v13 = NUScaleToDouble(var0, var1);
@@ -226,8 +226,8 @@
   }
 
   v17 = MEMORY[0x1E695F658];
-  v18 = [MEMORY[0x1E695F610] blackColor];
-  v19 = [v17 imageWithColor:v18];
+  blackColor = [MEMORY[0x1E695F610] blackColor];
+  v19 = [v17 imageWithColor:blackColor];
 
   v20 = [(CIImage *)v12->_brushStrokeMaskImage imageByCompositingOverImage:v19];
   v21 = [v11 size];
@@ -240,19 +240,19 @@
   maskImage = v12->_maskImage;
   v12->_maskImage = v25;
 
-  v27 = [MEMORY[0x1E695F648] multiplyCompositingFilter];
-  [v27 setInputImage:v12->_maskImage];
-  [v27 setBackgroundImage:v12->_brushStrokeMaskImage];
-  v28 = [v27 outputImage];
+  multiplyCompositingFilter = [MEMORY[0x1E695F648] multiplyCompositingFilter];
+  [multiplyCompositingFilter setInputImage:v12->_maskImage];
+  [multiplyCompositingFilter setBackgroundImage:v12->_brushStrokeMaskImage];
+  outputImage = [multiplyCompositingFilter outputImage];
   intersectionImage = v12->_intersectionImage;
-  v12->_intersectionImage = v28;
+  v12->_intersectionImage = outputImage;
 
-  v30 = [MEMORY[0x1E695F648] subtractBlendModeFilter];
-  [v30 setInputImage:v12->_maskImage];
-  [v30 setBackgroundImage:v12->_brushStrokeMaskImage];
-  v31 = [v30 outputImage];
+  subtractBlendModeFilter = [MEMORY[0x1E695F648] subtractBlendModeFilter];
+  [subtractBlendModeFilter setInputImage:v12->_maskImage];
+  [subtractBlendModeFilter setBackgroundImage:v12->_brushStrokeMaskImage];
+  outputImage2 = [subtractBlendModeFilter outputImage];
   brushMinusMaskImage = v12->_brushMinusMaskImage;
-  v12->_brushMinusMaskImage = v31;
+  v12->_brushMinusMaskImage = outputImage2;
 
   v33 = objc_alloc_init(NUHistogramCalculator);
   histogramCalculator = v12->_histogramCalculator;
@@ -307,8 +307,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -324,8 +324,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

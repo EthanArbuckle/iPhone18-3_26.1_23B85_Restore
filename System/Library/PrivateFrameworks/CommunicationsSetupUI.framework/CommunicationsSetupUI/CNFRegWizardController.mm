@@ -1,10 +1,10 @@
 @interface CNFRegWizardController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (BOOL)shouldShowFirstRunController;
-- (CNFRegWizardController)initWithRegController:(id)a3;
-- (CNFRegWizardController)initWithServiceTypes:(int64_t)a3;
-- (id)controllerClassesToShow:(BOOL)a3;
-- (int)_firstRunState:(id)a3;
+- (CNFRegWizardController)initWithRegController:(id)controller;
+- (CNFRegWizardController)initWithServiceTypes:(int64_t)types;
+- (id)controllerClassesToShow:(BOOL)show;
+- (int)_firstRunState:(id)state;
 - (void)_applicationDidEnterBackground;
 - (void)_checkRestrictions;
 - (void)_doCancel;
@@ -17,25 +17,25 @@
 - (void)applicationDidResume;
 - (void)applicationWillSuspend;
 - (void)dealloc;
-- (void)setAllowCancel:(BOOL)a3;
-- (void)setAllowSMS:(BOOL)a3;
-- (void)setCanShowDisabledScreen:(BOOL)a3;
-- (void)setCanShowSplashScreen:(BOOL)a3;
-- (void)setCanStartNested:(BOOL)a3;
-- (void)setHideLearnMoreButton:(BOOL)a3;
-- (void)setShouldListenForSuspension:(BOOL)a3;
-- (void)setShouldTerminateInBackground:(BOOL)a3;
-- (void)setShowSplashOnSignin:(BOOL)a3;
-- (void)setSkipReloadOnNextViewWillAppear:(BOOL)a3;
+- (void)setAllowCancel:(BOOL)cancel;
+- (void)setAllowSMS:(BOOL)s;
+- (void)setCanShowDisabledScreen:(BOOL)screen;
+- (void)setCanShowSplashScreen:(BOOL)screen;
+- (void)setCanStartNested:(BOOL)nested;
+- (void)setHideLearnMoreButton:(BOOL)button;
+- (void)setShouldListenForSuspension:(BOOL)suspension;
+- (void)setShouldTerminateInBackground:(BOOL)background;
+- (void)setShowSplashOnSignin:(BOOL)signin;
+- (void)setSkipReloadOnNextViewWillAppear:(BOOL)appear;
 - (void)setupController;
 - (void)viewDidLoad;
 @end
 
 @implementation CNFRegWizardController
 
-- (CNFRegWizardController)initWithRegController:(id)a3
+- (CNFRegWizardController)initWithRegController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CNFRegWizardController;
   v5 = [(PSSetupController *)&v12 init];
@@ -43,22 +43,22 @@
   if (v5)
   {
     *&v5->_wizardFlags |= 2u;
-    if (!v4)
+    if (!controllerCopy)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v5->_serviceType = [v4 serviceType];
-    [(CNFRegWizardController *)v6 setRegController:v4];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__restrictionsChanged name:*MEMORY[0x277D07DA8] object:0];
+    v5->_serviceType = [controllerCopy serviceType];
+    [(CNFRegWizardController *)v6 setRegController:controllerCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__restrictionsChanged name:*MEMORY[0x277D07DA8] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel__applicationDidFinishLaunching name:*MEMORY[0x277D76668] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__applicationDidFinishLaunching name:*MEMORY[0x277D76668] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
   }
 
   v10 = v6;
@@ -67,9 +67,9 @@ LABEL_6:
   return v10;
 }
 
-- (CNFRegWizardController)initWithServiceTypes:(int64_t)a3
+- (CNFRegWizardController)initWithServiceTypes:(int64_t)types
 {
-  v4 = [CNFRegController controllerForServiceType:a3];
+  v4 = [CNFRegController controllerForServiceType:types];
   v5 = [(CNFRegWizardController *)self initWithRegController:v4];
 
   return v5;
@@ -77,8 +77,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   self->_firstRunDelegate = 0;
   [(CNFRegWizardController *)self _stopListeningForResignResume];
@@ -87,16 +87,16 @@ LABEL_6:
   [(PSRootController *)&v4 dealloc];
 }
 
-- (int)_firstRunState:(id)a3
+- (int)_firstRunState:(id)state
 {
-  v4 = a3;
-  v5 = [(CNFRegWizardController *)self regController];
-  if (([v5 isConnected] & 1) == 0)
+  stateCopy = state;
+  regController = [(CNFRegWizardController *)self regController];
+  if (([regController isConnected] & 1) == 0)
   {
-    [v5 connect:1];
+    [regController connect:1];
   }
 
-  v6 = [v5 accountState:v4];
+  v6 = [regController accountState:stateCopy];
   if ((v6 & 4) != 0)
   {
     v7 = 4;
@@ -144,10 +144,10 @@ LABEL_6:
 {
   if ([(CNFRegWizardController *)self shouldShowFirstRunController]&& ![(CNFRegWizardController *)self shouldTerminateInBackground])
   {
-    v3 = [MEMORY[0x277D07DB0] sharedInstance];
-    v4 = [v3 accountModificationRestricted];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    accountModificationRestricted = [mEMORY[0x277D07DB0] accountModificationRestricted];
 
-    if (v4)
+    if (accountModificationRestricted)
     {
       CNFRegSetStringTableForServiceType(self->_serviceType);
       v5 = CommunicationsSetupUIBundle();
@@ -196,20 +196,20 @@ void __44__CNFRegWizardController__checkRestrictions__block_invoke(uint64_t a1)
   }
 }
 
-- (id)controllerClassesToShow:(BOOL)a3
+- (id)controllerClassesToShow:(BOOL)show
 {
-  v5 = [(CNFRegWizardController *)self regController];
-  v6 = [v5 isServiceSupported];
+  regController = [(CNFRegWizardController *)self regController];
+  isServiceSupported = [regController isServiceSupported];
 
-  if (!v6)
+  if (!isServiceSupported)
   {
     v10 = 0;
     goto LABEL_22;
   }
 
-  v7 = [(CNFRegWizardController *)self regController];
-  v8 = [v7 appleIDAccounts];
-  v9 = [(CNFRegWizardController *)self _firstRunState:v8];
+  regController2 = [(CNFRegWizardController *)self regController];
+  appleIDAccounts = [regController2 appleIDAccounts];
+  v9 = [(CNFRegWizardController *)self _firstRunState:appleIDAccounts];
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v9 < 4 || (-[CNFRegWizardController regController](self, "regController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 hasFailedLogin], v11, v12))
@@ -235,9 +235,9 @@ void __44__CNFRegWizardController__checkRestrictions__block_invoke(uint64_t a1)
     {
       if (v9 != 3)
       {
-        v17 = [(CNFRegWizardController *)self canShowSplashScreen];
+        canShowSplashScreen = [(CNFRegWizardController *)self canShowSplashScreen];
         v18 = v15;
-        if (!v17)
+        if (!canShowSplashScreen)
         {
 LABEL_19:
           [v10 addObject:v18];
@@ -251,7 +251,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (!a3)
+      if (!show)
       {
 LABEL_20:
 
@@ -291,10 +291,10 @@ LABEL_22:
     IMLogString();
   }
 
-  v4 = [(CNFRegWizardController *)self regController];
-  v5 = [v4 isServiceSupported];
+  regController = [(CNFRegWizardController *)self regController];
+  isServiceSupported = [regController isServiceSupported];
 
-  if ((v5 & 1) == 0)
+  if ((isServiceSupported & 1) == 0)
   {
     v9 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -315,8 +315,8 @@ LABEL_19:
     goto LABEL_41;
   }
 
-  v6 = [MEMORY[0x277D07DB0] sharedInstance];
-  if ([v6 supportsSMSIdentification])
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  if ([mEMORY[0x277D07DB0] supportsSMSIdentification])
   {
     v7 = (*&self->_wizardFlags & 0x200) == 0;
 
@@ -342,13 +342,13 @@ LABEL_19:
   {
   }
 
-  v11 = [(CNFRegWizardController *)self regController];
-  v12 = [v11 isConnected];
+  regController2 = [(CNFRegWizardController *)self regController];
+  isConnected = [regController2 isConnected];
 
-  if ((v12 & 1) == 0)
+  if ((isConnected & 1) == 0)
   {
-    v13 = [(CNFRegWizardController *)self regController];
-    [v13 connect:1];
+    regController3 = [(CNFRegWizardController *)self regController];
+    [regController3 connect:1];
   }
 
   v14 = OSLogHandleForIDSCategory();
@@ -364,9 +364,9 @@ LABEL_19:
   }
 
   CNFRegLogIndent();
-  v15 = [(CNFRegWizardController *)self regController];
-  v16 = [v15 accounts];
-  v17 = [(CNFRegWizardController *)self _firstRunState:v16];
+  regController4 = [(CNFRegWizardController *)self regController];
+  accounts = [regController4 accounts];
+  v17 = [(CNFRegWizardController *)self _firstRunState:accounts];
 
   v18 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -383,10 +383,10 @@ LABEL_19:
   }
 
   v19 = v17 < 4;
-  v20 = [(CNFRegWizardController *)self regController];
-  v21 = [v20 isServiceEnabled];
+  regController5 = [(CNFRegWizardController *)self regController];
+  isServiceEnabled = [regController5 isServiceEnabled];
 
-  v10 = v21 ^ 1 | v19;
+  v10 = isServiceEnabled ^ 1 | v19;
   v22 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
@@ -429,8 +429,8 @@ LABEL_41:
     IMLogString();
   }
 
-  v4 = [(CNFRegWizardController *)self view];
-  [v4 setClipsToBounds:1];
+  view = [(CNFRegWizardController *)self view];
+  [view setClipsToBounds:1];
 
   [(CNFRegWizardController *)self setupController];
 }
@@ -455,8 +455,8 @@ LABEL_41:
   switch(v3)
   {
     case 6:
-      v5 = [(CNFRegWizardController *)self navigationBar];
-      [v5 setBarStyle:1];
+      navigationBar = [(CNFRegWizardController *)self navigationBar];
+      [navigationBar setBarStyle:1];
 
       [(CNFRegWizardController *)self _setClipUnderlapWhileTransitioning:1];
       break;
@@ -464,34 +464,34 @@ LABEL_41:
       [(CNFRegWizardController *)self _setClipUnderlapWhileTransitioning:1];
       break;
     case 3:
-      v4 = [(CNFRegWizardController *)self navigationBar];
-      [v4 setBarStyle:1];
+      navigationBar2 = [(CNFRegWizardController *)self navigationBar];
+      [navigationBar2 setBarStyle:1];
 
       break;
   }
 
   v50 = CNFRegGlobalAppearanceController();
-  v6 = [v50 navigationBarTintColor];
-  v7 = [(CNFRegWizardController *)self navigationBar];
-  [v7 setBarTintColor:v6];
+  navigationBarTintColor = [v50 navigationBarTintColor];
+  navigationBar3 = [(CNFRegWizardController *)self navigationBar];
+  [navigationBar3 setBarTintColor:navigationBarTintColor];
 
-  v8 = [v50 navigationBarTranslucent];
-  v9 = [(CNFRegWizardController *)self navigationBar];
-  [v9 setTranslucent:v8];
+  navigationBarTranslucent = [v50 navigationBarTranslucent];
+  navigationBar4 = [(CNFRegWizardController *)self navigationBar];
+  [navigationBar4 setTranslucent:navigationBarTranslucent];
 
-  v10 = [v50 navigationBarHidesShadow];
-  v11 = [(CNFRegWizardController *)self navigationBar];
-  [v11 _setHidesShadow:v10];
+  navigationBarHidesShadow = [v50 navigationBarHidesShadow];
+  navigationBar5 = [(CNFRegWizardController *)self navigationBar];
+  [navigationBar5 _setHidesShadow:navigationBarHidesShadow];
 
-  v49 = [v50 navigationBarBackgroundImage];
-  if (v49)
+  navigationBarBackgroundImage = [v50 navigationBarBackgroundImage];
+  if (navigationBarBackgroundImage)
   {
-    v12 = [(CNFRegWizardController *)self navigationBar];
-    [v12 setBackgroundImage:v49 forBarPosition:0 barMetrics:0];
+    navigationBar6 = [(CNFRegWizardController *)self navigationBar];
+    [navigationBar6 setBackgroundImage:navigationBarBackgroundImage forBarPosition:0 barMetrics:0];
   }
 
   v13 = [(CNFRegWizardController *)self controllerClassesToShow:1];
-  v51 = [(CNFRegWizardController *)self viewControllers];
+  viewControllers = [(CNFRegWizardController *)self viewControllers];
   if ((*&self->_wizardFlags & 4) == 0 && [v13 count])
   {
     v14 = MEMORY[0x277CBEA60];
@@ -569,7 +569,7 @@ LABEL_41:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v52 = v51;
+  v52 = viewControllers;
   v24 = [v52 countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v24)
   {
@@ -724,9 +724,9 @@ LABEL_81:
   {
     v3 = objc_alloc(MEMORY[0x277D75D18]);
     v4 = [v3 initWithSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-    v5 = [(CNFRegWizardController *)self navigationBar];
-    v6 = [v5 topItem];
-    [v6 setTitleView:v4];
+    navigationBar = [(CNFRegWizardController *)self navigationBar];
+    topItem = [navigationBar topItem];
+    [topItem setTitleView:v4];
   }
 }
 
@@ -746,8 +746,8 @@ LABEL_81:
   v4 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v4 firstNavigationBarHidden])
   {
-    v3 = [(CNFRegWizardController *)self viewControllers];
-    -[CNFRegWizardController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [v3 count] == 2, 1);
+    viewControllers = [(CNFRegWizardController *)self viewControllers];
+    -[CNFRegWizardController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [viewControllers count] == 2, 1);
   }
 
   [(CNFRegWizardController *)self _updateNavigationBarTitle];
@@ -758,8 +758,8 @@ LABEL_81:
   v4 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v4 firstNavigationBarHidden])
   {
-    v3 = [(CNFRegWizardController *)self viewControllers];
-    -[CNFRegWizardController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [v3 count] == 1, 0);
+    viewControllers = [(CNFRegWizardController *)self viewControllers];
+    -[CNFRegWizardController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [viewControllers count] == 1, 0);
   }
 
   [(CNFRegWizardController *)self _updateNavigationBarTitle];
@@ -769,14 +769,14 @@ LABEL_81:
 {
   if (!self->_resignListener && (*&self->_wizardFlags & 2) != 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277D76768];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__CNFRegWizardController__startListeningForResignResume__block_invoke;
     v17[3] = &unk_278DE8900;
-    v18 = v3;
-    v5 = v3;
+    v18 = defaultCenter;
+    v5 = defaultCenter;
     v6 = MEMORY[0x245D4D850](v17);
     v7 = [v5 addObserverForName:v4 object:0 queue:0 usingBlock:v6];
     resignListener = self->_resignListener;
@@ -785,15 +785,15 @@ LABEL_81:
 
   if (!self->_resumeListener && (*&self->_wizardFlags & 2) != 0)
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = *MEMORY[0x277D76648];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __56__CNFRegWizardController__startListeningForResignResume__block_invoke_2;
     v15[3] = &unk_278DE8928;
     v15[4] = self;
-    v16 = v9;
-    v11 = v9;
+    v16 = defaultCenter2;
+    v11 = defaultCenter2;
     v12 = MEMORY[0x245D4D850](v15);
     v13 = [v11 addObserverForName:v10 object:0 queue:0 usingBlock:v12];
     resumeListener = self->_resumeListener;
@@ -815,16 +815,16 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
 {
   if (self->_resignListener)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_resignListener];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_resignListener];
     resignListener = self->_resignListener;
     self->_resignListener = 0;
   }
 
   if (self->_resumeListener)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self->_resumeListener];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self->_resumeListener];
     resumeListener = self->_resumeListener;
     self->_resumeListener = 0;
   }
@@ -849,37 +849,37 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
 {
   if ([(CNFRegWizardController *)self shouldTerminateInBackground])
   {
-    v2 = [MEMORY[0x277D75128] sharedApplication];
-    [v2 terminateWithSuccess];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] terminateWithSuccess];
   }
 }
 
 - (void)_doCancel
 {
-  v5 = [(CNFRegWizardController *)self regController];
-  v3 = [(CNFRegWizardController *)self regController];
-  v4 = [v3 appleIDAccounts];
-  -[CNFRegWizardController dismissWithState:](self, "dismissWithState:", [v5 accountState:v4]);
+  regController = [(CNFRegWizardController *)self regController];
+  regController2 = [(CNFRegWizardController *)self regController];
+  appleIDAccounts = [regController2 appleIDAccounts];
+  -[CNFRegWizardController dismissWithState:](self, "dismissWithState:", [regController accountState:appleIDAccounts]);
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(CNFRegWizardController *)self topViewController];
+  topViewController = [(CNFRegWizardController *)self topViewController];
 
-  if (!v5)
+  if (!topViewController)
   {
-    return a3 == 1;
+    return orientation == 1;
   }
 
-  v6 = [(CNFRegWizardController *)self topViewController];
-  v7 = [v6 _isSupportedInterfaceOrientation:a3];
+  topViewController2 = [(CNFRegWizardController *)self topViewController];
+  v7 = [topViewController2 _isSupportedInterfaceOrientation:orientation];
 
   return v7;
 }
 
-- (void)setCanStartNested:(BOOL)a3
+- (void)setCanStartNested:(BOOL)nested
 {
-  if (a3)
+  if (nested)
   {
     v3 = 4;
   }
@@ -892,9 +892,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFFFB | v3;
 }
 
-- (void)setCanShowSplashScreen:(BOOL)a3
+- (void)setCanShowSplashScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 8;
   }
@@ -907,9 +907,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFFF7 | v3;
 }
 
-- (void)setCanShowDisabledScreen:(BOOL)a3
+- (void)setCanShowDisabledScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 16;
   }
@@ -922,9 +922,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFFEF | v3;
 }
 
-- (void)setSkipReloadOnNextViewWillAppear:(BOOL)a3
+- (void)setSkipReloadOnNextViewWillAppear:(BOOL)appear
 {
-  if (a3)
+  if (appear)
   {
     v3 = 128;
   }
@@ -937,9 +937,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFF7F | v3;
 }
 
-- (void)setShouldListenForSuspension:(BOOL)a3
+- (void)setShouldListenForSuspension:(BOOL)suspension
 {
-  if (a3)
+  if (suspension)
   {
     v3 = 2;
   }
@@ -952,9 +952,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFFFD | v3;
 }
 
-- (void)setAllowCancel:(BOOL)a3
+- (void)setAllowCancel:(BOOL)cancel
 {
-  if (a3)
+  if (cancel)
   {
     v3 = 256;
   }
@@ -967,9 +967,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFEFF | v3;
 }
 
-- (void)setAllowSMS:(BOOL)a3
+- (void)setAllowSMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 512;
   }
@@ -982,9 +982,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFDFF | v3;
 }
 
-- (void)setHideLearnMoreButton:(BOOL)a3
+- (void)setHideLearnMoreButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 32;
   }
@@ -997,9 +997,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFFDF | v3;
 }
 
-- (void)setShowSplashOnSignin:(BOOL)a3
+- (void)setShowSplashOnSignin:(BOOL)signin
 {
-  if (a3)
+  if (signin)
   {
     v3 = 64;
   }
@@ -1012,9 +1012,9 @@ uint64_t __56__CNFRegWizardController__startListeningForResignResume__block_invo
   *&self->_wizardFlags = *&self->_wizardFlags & 0xFFBF | v3;
 }
 
-- (void)setShouldTerminateInBackground:(BOOL)a3
+- (void)setShouldTerminateInBackground:(BOOL)background
 {
-  if (a3)
+  if (background)
   {
     v3 = 1024;
   }

@@ -1,26 +1,26 @@
 @interface OBSetupAssistantBulletedListController
-- (OBSetupAssistantBulletedListController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (void)addBulletedListItemWithDescription:(id)a3 image:(id)a4;
+- (OBSetupAssistantBulletedListController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (void)addBulletedListItemWithDescription:(id)description image:(id)image;
 - (void)viewDidLoad;
 @end
 
 @implementation OBSetupAssistantBulletedListController
 
-- (OBSetupAssistantBulletedListController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (OBSetupAssistantBulletedListController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   v6.receiver = self;
   v6.super_class = OBSetupAssistantBulletedListController;
-  return [(OBWelcomeController *)&v6 initWithTitle:a3 detailText:a4 icon:a5 contentLayout:2];
+  return [(OBWelcomeController *)&v6 initWithTitle:title detailText:text icon:icon contentLayout:2];
 }
 
-- (void)addBulletedListItemWithDescription:(id)a3 image:(id)a4
+- (void)addBulletedListItemWithDescription:(id)description image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  descriptionCopy = description;
   [(OBSetupAssistantBulletedListController *)self loadViewIfNeeded];
   [(OBWelcomeController *)self setupBulletedListIfNeeded];
-  v8 = [(OBWelcomeController *)self bulletedList];
-  [v8 addItemWithDescription:v7 image:v6];
+  bulletedList = [(OBWelcomeController *)self bulletedList];
+  [bulletedList addItemWithDescription:descriptionCopy image:imageCopy];
 }
 
 - (void)viewDidLoad

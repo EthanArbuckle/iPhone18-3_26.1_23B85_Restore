@@ -1,87 +1,87 @@
 @interface IMSyncedSettingsManager_Impl
-- (BOOL)settingExplicitlySetForKey:(int64_t)a3;
+- (BOOL)settingExplicitlySetForKey:(int64_t)key;
 - (IMSyncedSettingsManager_Impl)init;
-- (IMSyncedSettingsManager_Impl)initWithDaemonController:(id)a3 connection:(id)a4 notificationCenter:(id)a5;
-- (void)addObserver:(id)a3 selector:(SEL)a4 key:(int64_t)a5;
+- (IMSyncedSettingsManager_Impl)initWithDaemonController:(id)controller connection:(id)connection notificationCenter:(id)center;
+- (void)addObserver:(id)observer selector:(SEL)selector key:(int64_t)key;
 - (void)dealloc;
-- (void)didUpdateSettingsKeys:(id)a3;
-- (void)removeObserver:(id)a3 key:(int64_t)a4;
-- (void)setSettingValue:(id)a3 forKey:(int64_t)a4;
-- (void)settingValueForKey:(int64_t)a3 reply:(id)a4;
+- (void)didUpdateSettingsKeys:(id)keys;
+- (void)removeObserver:(id)observer key:(int64_t)key;
+- (void)setSettingValue:(id)value forKey:(int64_t)key;
+- (void)settingValueForKey:(int64_t)key reply:(id)reply;
 @end
 
 @implementation IMSyncedSettingsManager_Impl
 
-- (IMSyncedSettingsManager_Impl)initWithDaemonController:(id)a3 connection:(id)a4 notificationCenter:(id)a5
+- (IMSyncedSettingsManager_Impl)initWithDaemonController:(id)controller connection:(id)connection notificationCenter:(id)center
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  return SyncedSettingsManager.init(daemonController:connection:notificationCenter:)(v7, a4, a5);
+  return SyncedSettingsManager.init(daemonController:connection:notificationCenter:)(controllerCopy, connection, center);
 }
 
-- (void)didUpdateSettingsKeys:(id)a3
+- (void)didUpdateSettingsKeys:(id)keys
 {
   v4 = sub_1A84E5FFC();
-  v5 = self;
+  selfCopy = self;
   sub_1A845EFB4(v4);
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IMSyncedSettingsManager_Impl_daemonController);
-  v3 = self;
-  v4 = [v2 listener];
-  [v4 removeHandler_];
+  selfCopy = self;
+  listener = [v2 listener];
+  [listener removeHandler_];
 
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for SyncedSettingsManager();
   [(IMSyncedSettingsManager_Impl *)&v5 dealloc];
 }
 
-- (void)settingValueForKey:(int64_t)a3 reply:(id)a4
+- (void)settingValueForKey:(int64_t)key reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v7 = self;
-  sub_1A8462160(a3, v7, v6);
+  selfCopy = self;
+  sub_1A8462160(key, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)setSettingValue:(id)a3 forKey:(int64_t)a4
+- (void)setSettingValue:(id)value forKey:(int64_t)key
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1A84E63AC();
   swift_unknownObjectRelease();
-  sub_1A845FCDC(v7, a4);
+  sub_1A845FCDC(v7, key);
 
   sub_1A8244788(v7);
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 key:(int64_t)a5
+- (void)addObserver:(id)observer selector:(SEL)selector key:(int64_t)key
 {
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_1A84E63AC();
   swift_unknownObjectRelease();
-  v8 = *(&v7->super.isa + OBJC_IVAR___IMSyncedSettingsManager_Impl_notificationCenter);
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR___IMSyncedSettingsManager_Impl_notificationCenter);
   sub_1A82471E0(v11, v11[3]);
   v9 = sub_1A84E679C();
   v10 = sub_1A84E62DC();
-  [v8 addObserver:v9 selector:a4 name:v10 object:0];
+  [v8 addObserver:v9 selector:selector name:v10 object:0];
 
   swift_unknownObjectRelease();
   sub_1A8244788(v11);
 }
 
-- (void)removeObserver:(id)a3 key:(int64_t)a4
+- (void)removeObserver:(id)observer key:(int64_t)key
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1A84E63AC();
   swift_unknownObjectRelease();
-  v6 = *(&v5->super.isa + OBJC_IVAR___IMSyncedSettingsManager_Impl_notificationCenter);
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR___IMSyncedSettingsManager_Impl_notificationCenter);
   sub_1A82471E0(v9, v9[3]);
   v7 = sub_1A84E679C();
   v8 = sub_1A84E62DC();
@@ -91,12 +91,12 @@
   sub_1A8244788(v9);
 }
 
-- (BOOL)settingExplicitlySetForKey:(int64_t)a3
+- (BOOL)settingExplicitlySetForKey:(int64_t)key
 {
-  v4 = self;
-  LOBYTE(a3) = sub_1A846024C(a3);
+  selfCopy = self;
+  LOBYTE(key) = sub_1A846024C(key);
 
-  return a3 & 1;
+  return key & 1;
 }
 
 - (IMSyncedSettingsManager_Impl)init

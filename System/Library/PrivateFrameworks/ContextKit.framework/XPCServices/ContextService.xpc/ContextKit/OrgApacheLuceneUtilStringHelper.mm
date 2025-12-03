@@ -1,36 +1,36 @@
 @interface OrgApacheLuceneUtilStringHelper
-+ (BOOL)equalsWithNSString:(id)a3 withNSString:(id)a4;
++ (BOOL)equalsWithNSString:(id)string withNSString:(id)sString;
 + (void)initialize;
 @end
 
 @implementation OrgApacheLuceneUtilStringHelper
 
-+ (BOOL)equalsWithNSString:(id)a3 withNSString:(id)a4
++ (BOOL)equalsWithNSString:(id)string withNSString:(id)sString
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilStringHelper__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100005258();
-    if (a3)
+    if (string)
     {
       goto LABEL_3;
     }
 
-    return a4 == 0;
+    return sString == 0;
   }
 
-  if (!a3)
+  if (!string)
   {
-    return a4 == 0;
+    return sString == 0;
   }
 
 LABEL_3:
 
-  return [a3 isEqual:a4];
+  return [string isEqual:sString];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     PropertyWithNSString = JavaLangSystem_getPropertyWithNSString_(@"tests.seed");
     if (PropertyWithNSString)

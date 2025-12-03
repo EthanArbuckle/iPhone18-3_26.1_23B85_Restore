@@ -1,37 +1,37 @@
 @interface AVTEngagementLayout
-+ (UIEdgeInsets)insetsToCenterFirstAndLastItemsGivenContainerSize:(CGSize)a3 itemSize:(CGSize)a4;
-+ (double)minimumInterItemSpacingForVisibileBoundsSize:(CGSize)a3 defaultCellSize:(CGSize)a4 engagedCellSize:(CGSize)a5;
-- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)a3 engagedCellSize:(CGSize)a4 baseInteritemSpacing:(double)a5;
-- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)a3 engagedCellSize:(CGSize)a4 useEngagementSpacing:(BOOL)a5 interItemSpacingProvider:(id)a6;
-- (CGPoint)centerForCenteringElementAtIndex:(int64_t)a3 visibleBoundsSize:(CGSize)a4 proposedOrigin:(CGPoint)a5;
-- (CGRect)engagementBoundsForContainerBounds:(CGRect)a3;
-- (CGRect)frameForElementAfterElementEndingAt:(double)a3 engagementBounds:(CGRect)a4 verticalBounds:(id)a5;
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4;
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4 engagementBounds:(CGRect)a5 verticalBounds:(id)a6;
-- (CGRect)frameForElementBeforeElementStartingAt:(double)a3 engagementBounds:(CGRect)a4 verticalBounds:(id)a5;
-- (CGRect)frameForElementBeforeOriginForVisibleBounds:(CGRect)a3;
-- (CGSize)cellSizeForEngagement:(double)a3;
-- (CGSize)contentSizeForVisibleBounds:(CGRect)a3 numberOfItems:(int64_t)a4;
++ (UIEdgeInsets)insetsToCenterFirstAndLastItemsGivenContainerSize:(CGSize)size itemSize:(CGSize)itemSize;
++ (double)minimumInterItemSpacingForVisibileBoundsSize:(CGSize)size defaultCellSize:(CGSize)cellSize engagedCellSize:(CGSize)engagedCellSize;
+- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)size engagedCellSize:(CGSize)cellSize baseInteritemSpacing:(double)spacing;
+- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)size engagedCellSize:(CGSize)cellSize useEngagementSpacing:(BOOL)spacing interItemSpacingProvider:(id)provider;
+- (CGPoint)centerForCenteringElementAtIndex:(int64_t)index visibleBoundsSize:(CGSize)size proposedOrigin:(CGPoint)origin;
+- (CGRect)engagementBoundsForContainerBounds:(CGRect)bounds;
+- (CGRect)frameForElementAfterElementEndingAt:(double)at engagementBounds:(CGRect)bounds verticalBounds:(id)verticalBounds;
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds;
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds engagementBounds:(CGRect)engagementBounds verticalBounds:(id)verticalBounds;
+- (CGRect)frameForElementBeforeElementStartingAt:(double)at engagementBounds:(CGRect)bounds verticalBounds:(id)verticalBounds;
+- (CGRect)frameForElementBeforeOriginForVisibleBounds:(CGRect)bounds;
+- (CGSize)cellSizeForEngagement:(double)engagement;
+- (CGSize)contentSizeForVisibleBounds:(CGRect)bounds numberOfItems:(int64_t)items;
 - (CGSize)defaultCellSize;
 - (CGSize)engagedCellSize;
-- (CGSize)engagementSizeForVisibleBoundsSize:(CGSize)a3;
+- (CGSize)engagementSizeForVisibleBoundsSize:(CGSize)size;
 - (UIEdgeInsets)engagementBoundsInsets;
-- (double)contentOriginXForVisibleSize:(CGSize)a3;
-- (double)contentTrailingXForVisibleSize:(CGSize)a3;
-- (double)engagementForValue:(double)a3 withRangeMin:(double)a4 rangeMax:(double)a5 rangePeakBegin:(double)a6 rangePeakEnd:(double)a7;
-- (double)interitemSpacingForEngagement:(double)a3;
-- (double)spacingAfterElementEndingAt:(double)a3 engagementBounds:(CGRect)a4;
-- (double)spacingBeforElementStartingAt:(double)a3 engagementBounds:(CGRect)a4;
+- (double)contentOriginXForVisibleSize:(CGSize)size;
+- (double)contentTrailingXForVisibleSize:(CGSize)size;
+- (double)engagementForValue:(double)value withRangeMin:(double)min rangeMax:(double)max rangePeakBegin:(double)begin rangePeakEnd:(double)end;
+- (double)interitemSpacingForEngagement:(double)engagement;
+- (double)spacingAfterElementEndingAt:(double)at engagementBounds:(CGRect)bounds;
+- (double)spacingBeforElementStartingAt:(double)at engagementBounds:(CGRect)bounds;
 - (double)xAxisScale;
-- (id)indexesForElementsInRect:(CGRect)a3 visibleBounds:(CGRect)a4 numberOfItems:(int64_t)a5;
+- (id)indexesForElementsInRect:(CGRect)rect visibleBounds:(CGRect)bounds numberOfItems:(int64_t)items;
 @end
 
 @implementation AVTEngagementLayout
 
-+ (double)minimumInterItemSpacingForVisibileBoundsSize:(CGSize)a3 defaultCellSize:(CGSize)a4 engagedCellSize:(CGSize)a5
++ (double)minimumInterItemSpacingForVisibileBoundsSize:(CGSize)size defaultCellSize:(CGSize)cellSize engagedCellSize:(CGSize)engagedCellSize
 {
-  v5 = (a3.width - a5.width) * 0.5;
-  v6 = floor(a4.width * 0.5);
+  v5 = (size.width - engagedCellSize.width) * 0.5;
+  v6 = floor(cellSize.width * 0.5);
   v7 = floor(v5 - v6) + 1.0;
   if (v5 <= v6)
   {
@@ -44,9 +44,9 @@
   }
 }
 
-+ (UIEdgeInsets)insetsToCenterFirstAndLastItemsGivenContainerSize:(CGSize)a3 itemSize:(CGSize)a4
++ (UIEdgeInsets)insetsToCenterFirstAndLastItemsGivenContainerSize:(CGSize)size itemSize:(CGSize)itemSize
 {
-  v4 = a3.width * 0.5 - a4.width * 0.5;
+  v4 = size.width * 0.5 - itemSize.width * 0.5;
   v5 = *MEMORY[0x1E69DDCE0];
   v6 = *(MEMORY[0x1E69DDCE0] + 16);
   v7 = v4;
@@ -57,30 +57,30 @@
   return result;
 }
 
-- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)a3 engagedCellSize:(CGSize)a4 baseInteritemSpacing:(double)a5
+- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)size engagedCellSize:(CGSize)cellSize baseInteritemSpacing:(double)spacing
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v8 = a3.width;
+  height = cellSize.height;
+  width = cellSize.width;
+  v7 = size.height;
+  v8 = size.width;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__AVTEngagementLayout_initWithDefaultCellSize_engagedCellSize_baseInteritemSpacing___block_invoke;
   v13[3] = &__block_descriptor_40_e8_d16__0d8l;
-  *&v13[4] = a5;
+  *&v13[4] = spacing;
   v10 = MEMORY[0x1BFB0DE80](v13, a2);
-  v11 = [(AVTEngagementLayout *)self initWithDefaultCellSize:v10 engagedCellSize:v8 interItemSpacingProvider:v7, width, height];
+  height = [(AVTEngagementLayout *)self initWithDefaultCellSize:v10 engagedCellSize:v8 interItemSpacingProvider:v7, width, height];
 
-  return v11;
+  return height;
 }
 
-- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)a3 engagedCellSize:(CGSize)a4 useEngagementSpacing:(BOOL)a5 interItemSpacingProvider:(id)a6
+- (AVTEngagementLayout)initWithDefaultCellSize:(CGSize)size engagedCellSize:(CGSize)cellSize useEngagementSpacing:(BOOL)spacing interItemSpacingProvider:(id)provider
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.height;
-  v10 = a3.width;
-  v12 = a6;
+  height = cellSize.height;
+  width = cellSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = AVTEngagementLayout;
   v13 = [(AVTEngagementLayout *)&v23 init];
@@ -95,25 +95,25 @@
     v16 = v15[1];
     *&v13->_engagementBoundsInsets.top = *v15;
     *&v13->_engagementBoundsInsets.bottom = v16;
-    v13->_useEngagementSpacing = a5;
-    v17 = [v12 copy];
+    v13->_useEngagementSpacing = spacing;
+    v17 = [providerCopy copy];
     interItemSpacingProvider = v14->_interItemSpacingProvider;
     v14->_interItemSpacingProvider = v17;
 
     v19 = +[AVTUIEnvironment defaultEnvironment];
-    v20 = [v19 logger];
+    logger = [v19 logger];
     logger = v14->_logger;
-    v14->_logger = v20;
+    v14->_logger = logger;
   }
 
   return v14;
 }
 
-- (CGRect)engagementBoundsForContainerBounds:(CGRect)a3
+- (CGRect)engagementBoundsForContainerBounds:(CGRect)bounds
 {
-  x = a3.origin.x;
+  x = bounds.origin.x;
   v5 = *(MEMORY[0x1E695F058] + 8);
-  [(AVTEngagementLayout *)self engagementSizeForVisibleBoundsSize:a3.size.width, a3.size.height];
+  [(AVTEngagementLayout *)self engagementSizeForVisibleBoundsSize:bounds.size.width, bounds.size.height];
   v7 = v6;
   v9 = v8;
   [(AVTEngagementLayout *)self engagementBoundsInsets];
@@ -128,10 +128,10 @@
   return result;
 }
 
-- (CGSize)engagementSizeForVisibleBoundsSize:(CGSize)a3
+- (CGSize)engagementSizeForVisibleBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AVTEngagementLayout *)self engagementBoundsInsets];
   v7 = width - v6;
   [(AVTEngagementLayout *)self engagementBoundsInsets];
@@ -146,44 +146,44 @@
 {
   [(AVTEngagementLayout *)self defaultCellSize];
   v4 = v3;
-  v5 = [(AVTEngagementLayout *)self interItemSpacingProvider];
-  v6 = v4 + v5[2](0.0);
+  interItemSpacingProvider = [(AVTEngagementLayout *)self interItemSpacingProvider];
+  v6 = v4 + interItemSpacingProvider[2](0.0);
   [(AVTEngagementLayout *)self engagedCellSize];
   v8 = v7;
-  v9 = [(AVTEngagementLayout *)self interItemSpacingProvider];
-  v10 = v6 / (v8 + v9[2](1.0));
+  interItemSpacingProvider2 = [(AVTEngagementLayout *)self interItemSpacingProvider];
+  v10 = v6 / (v8 + interItemSpacingProvider2[2](1.0));
 
   return v10;
 }
 
-- (double)contentOriginXForVisibleSize:(CGSize)a3
+- (double)contentOriginXForVisibleSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_opt_class();
   [(AVTEngagementLayout *)self engagedCellSize];
   [v6 insetsToCenterFirstAndLastItemsGivenContainerSize:width itemSize:{height, v7, v8}];
   return v9;
 }
 
-- (double)contentTrailingXForVisibleSize:(CGSize)a3
+- (double)contentTrailingXForVisibleSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_opt_class();
   [(AVTEngagementLayout *)self engagedCellSize];
   [v6 insetsToCenterFirstAndLastItemsGivenContainerSize:width itemSize:{height, v7, v8}];
   return v9;
 }
 
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(AVTEngagementLayout *)self engagementBoundsForContainerBounds:?];
-  [(AVTEngagementLayout *)self frameForElementAtIndex:a3 visibleBounds:x engagementBounds:y verticalBounds:width, height, v10, v11, v12, v13, *&y, *&height];
+  [(AVTEngagementLayout *)self frameForElementAtIndex:index visibleBounds:x engagementBounds:y verticalBounds:width, height, v10, v11, v12, v13, *&y, *&height];
   result.size.height = v17;
   result.size.width = v16;
   result.origin.y = v15;
@@ -191,19 +191,19 @@
   return result;
 }
 
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4 engagementBounds:(CGRect)a5 verticalBounds:(id)a6
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds engagementBounds:(CGRect)engagementBounds verticalBounds:(id)verticalBounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  rect_24 = a4.origin.y;
-  rect = a4.origin.x;
-  v12 = a3;
+  height = engagementBounds.size.height;
+  width = engagementBounds.size.width;
+  y = engagementBounds.origin.y;
+  x = engagementBounds.origin.x;
+  v10 = bounds.size.height;
+  v11 = bounds.size.width;
+  rect_24 = bounds.origin.y;
+  rect = bounds.origin.x;
+  indexCopy = index;
   v14 = v38;
-  [(AVTEngagementLayout *)self contentOriginXForVisibleSize:a3, *&a6.var0, *&a6.var1, a4.size.width, a4.size.height];
+  [(AVTEngagementLayout *)self contentOriginXForVisibleSize:index, *&verticalBounds.var0, *&verticalBounds.var1, bounds.size.width, bounds.size.height];
   v32 = v15;
   [(AVTEngagementLayout *)self xAxisScale];
   v17 = 1.0 - v16;
@@ -212,7 +212,7 @@
   v39.size.width = v11;
   v39.size.height = v10;
   v18 = v32 + v17 * CGRectGetMinX(v39);
-  if (v12 >= 1)
+  if (indexCopy >= 1)
   {
     do
     {
@@ -237,10 +237,10 @@
       v41.size.height = v26;
       v14 = v38;
       v18 = rect_24a + CGRectGetMaxX(v41);
-      --v12;
+      --indexCopy;
     }
 
-    while (v12);
+    while (indexCopy);
   }
 
   [(AVTEngagementLayout *)self frameForElementAfterElementEndingAt:v18 engagementBounds:x verticalBounds:y, width, height, v37, v14];
@@ -251,13 +251,13 @@
   return result;
 }
 
-- (CGRect)frameForElementAfterElementEndingAt:(double)a3 engagementBounds:(CGRect)a4 verticalBounds:(id)a5
+- (CGRect)frameForElementAfterElementEndingAt:(double)at engagementBounds:(CGRect)bounds verticalBounds:(id)verticalBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MinX = CGRectGetMinX(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MinX = CGRectGetMinX(bounds);
   v34.origin.x = x;
   v34.origin.y = y;
   v34.size.width = width;
@@ -271,7 +271,7 @@
   v35.size.height = height;
   MidX = CGRectGetMidX(v35);
   [(AVTEngagementLayout *)self engagedCellSize];
-  [(AVTEngagementLayout *)self engagementForValue:a3 withRangeMin:MinX rangeMax:v14 rangePeak:MidX + v16 * -0.5];
+  [(AVTEngagementLayout *)self engagementForValue:at withRangeMin:MinX rangeMax:v14 rangePeak:MidX + v16 * -0.5];
   [(AVTEngagementLayout *)self cellSizeForEngagement:?];
   v19 = v18;
   v20 = v17;
@@ -282,15 +282,15 @@
     v20 = v23;
   }
 
-  v36.origin.x = a3;
-  v36.origin.y = a5.var0 + (a5.var1 - v20) * 0.5;
+  v36.origin.x = at;
+  v36.origin.y = verticalBounds.var0 + (verticalBounds.var1 - v20) * 0.5;
   v36.size.width = v19;
   v36.size.height = v20;
   if (CGRectIsInfinite(v36))
   {
     v24 = MEMORY[0x1E696AEC0];
-    v37.origin.x = a3;
-    v37.origin.y = a5.var0 + (a5.var1 - v20) * 0.5;
+    v37.origin.x = at;
+    v37.origin.y = verticalBounds.var0 + (verticalBounds.var1 - v20) * 0.5;
     v37.size.width = v19;
     v37.size.height = v20;
     v25 = NSStringFromCGRect(v37);
@@ -299,30 +299,30 @@
     v38.size.width = width;
     v38.size.height = height;
     v26 = NSStringFromCGRect(v38);
-    v27 = [v24 stringWithFormat:@"Frame %@ has infinity values based on parameters previousElementMaxX=%f, engagementBounds=%@, verticalBounds=(%f %f)", v25, *&a3, v26, *&a5.var1, *&a5.var0];
+    v27 = [v24 stringWithFormat:@"Frame %@ has infinity values based on parameters previousElementMaxX=%f, engagementBounds=%@, verticalBounds=(%f %f)", v25, *&at, v26, *&verticalBounds.var1, *&verticalBounds.var0];
 
-    v28 = [(AVTEngagementLayout *)self logger];
-    [v28 logDebug:v27];
+    logger = [(AVTEngagementLayout *)self logger];
+    [logger logDebug:v27];
   }
 
-  v29 = a3;
-  v30 = a5.var0 + (a5.var1 - v20) * 0.5;
+  atCopy = at;
+  v30 = verticalBounds.var0 + (verticalBounds.var1 - v20) * 0.5;
   v31 = v19;
   v32 = v20;
   result.size.height = v32;
   result.size.width = v31;
   result.origin.y = v30;
-  result.origin.x = v29;
+  result.origin.x = atCopy;
   return result;
 }
 
-- (double)spacingAfterElementEndingAt:(double)a3 engagementBounds:(CGRect)a4
+- (double)spacingAfterElementEndingAt:(double)at engagementBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MidX = CGRectGetMidX(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MidX = CGRectGetMidX(bounds);
   [(AVTEngagementLayout *)self engagedCellSize];
   v12 = MidX - v11 * 0.5;
   [(AVTEngagementLayout *)self interitemSpacingForEngagement:1.0];
@@ -349,11 +349,11 @@
   [(AVTEngagementLayout *)self defaultCellSize];
   v23 = MaxX - v22;
   [(AVTEngagementLayout *)self interitemSpacingForEngagement:0.0];
-  [(AVTEngagementLayout *)self engagementForValue:a3 withRangeMin:v20 rangeMax:v23 - v24 rangePeakBegin:v14 rangePeakEnd:v17];
+  [(AVTEngagementLayout *)self engagementForValue:at withRangeMin:v20 rangeMax:v23 - v24 rangePeakBegin:v14 rangePeakEnd:v17];
   v26 = v25;
-  v27 = [(AVTEngagementLayout *)self useEngagementSpacing];
+  useEngagementSpacing = [(AVTEngagementLayout *)self useEngagementSpacing];
   v28 = 1.0;
-  if (v27)
+  if (useEngagementSpacing)
   {
     v28 = v26;
   }
@@ -362,15 +362,15 @@
   return result;
 }
 
-- (CGRect)frameForElementBeforeElementStartingAt:(double)a3 engagementBounds:(CGRect)a4 verticalBounds:(id)a5
+- (CGRect)frameForElementBeforeElementStartingAt:(double)at engagementBounds:(CGRect)bounds verticalBounds:(id)verticalBounds
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MinX = CGRectGetMinX(a4);
+  var1 = verticalBounds.var1;
+  var0 = verticalBounds.var0;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MinX = CGRectGetMinX(bounds);
   [(AVTEngagementLayout *)self defaultCellSize];
   v14 = MinX + v13;
   v25.origin.x = x;
@@ -384,11 +384,11 @@
   v26.size.height = height;
   MidX = CGRectGetMidX(v26);
   [(AVTEngagementLayout *)self engagedCellSize];
-  [(AVTEngagementLayout *)self engagementForValue:a3 withRangeMin:v14 rangeMax:MaxX rangePeak:MidX + v17 * 0.5];
+  [(AVTEngagementLayout *)self engagementForValue:at withRangeMin:v14 rangeMax:MaxX rangePeak:MidX + v17 * 0.5];
   [(AVTEngagementLayout *)self cellSizeForEngagement:?];
   v19 = v18;
   v21 = v20;
-  v22 = a3 - v18;
+  v22 = at - v18;
   v23 = var0 + (var1 - v20) * 0.5;
   result.size.height = v21;
   result.size.width = v19;
@@ -397,13 +397,13 @@
   return result;
 }
 
-- (double)spacingBeforElementStartingAt:(double)a3 engagementBounds:(CGRect)a4
+- (double)spacingBeforElementStartingAt:(double)at engagementBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MidX = CGRectGetMidX(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MidX = CGRectGetMidX(bounds);
   [(AVTEngagementLayout *)self engagedCellSize];
   v12 = MidX - v11 * 0.5;
   v31.origin.x = x;
@@ -430,11 +430,11 @@
   v33.size.height = height;
   MaxX = CGRectGetMaxX(v33);
   [(AVTEngagementLayout *)self defaultCellSize];
-  [(AVTEngagementLayout *)self engagementForValue:a3 withRangeMin:v22 rangeMax:MaxX - v24 rangePeakBegin:v12 rangePeakEnd:v17];
+  [(AVTEngagementLayout *)self engagementForValue:at withRangeMin:v22 rangeMax:MaxX - v24 rangePeakBegin:v12 rangePeakEnd:v17];
   v26 = v25;
-  v27 = [(AVTEngagementLayout *)self useEngagementSpacing];
+  useEngagementSpacing = [(AVTEngagementLayout *)self useEngagementSpacing];
   v28 = 1.0;
-  if (v27)
+  if (useEngagementSpacing)
   {
     v28 = v26;
   }
@@ -443,12 +443,12 @@
   return result;
 }
 
-- (double)engagementForValue:(double)a3 withRangeMin:(double)a4 rangeMax:(double)a5 rangePeakBegin:(double)a6 rangePeakEnd:(double)a7
+- (double)engagementForValue:(double)value withRangeMin:(double)min rangeMax:(double)max rangePeakBegin:(double)begin rangePeakEnd:(double)end
 {
-  v7 = a5 - a7;
-  if (a3 > a7)
+  v7 = max - end;
+  if (value > end)
   {
-    v8 = a3 - a7;
+    v8 = value - end;
   }
 
   else
@@ -457,10 +457,10 @@
     v8 = 0.0;
   }
 
-  v9 = a6 - a3;
-  v10 = a6 - a4;
-  v11 = a3 < a6;
-  if (a3 < a6)
+  v9 = begin - value;
+  v10 = begin - min;
+  v11 = value < begin;
+  if (value < begin)
   {
     v12 = v10;
   }
@@ -489,46 +489,46 @@
   return result;
 }
 
-- (CGSize)cellSizeForEngagement:(double)a3
+- (CGSize)cellSizeForEngagement:(double)engagement
 {
   [(AVTEngagementLayout *)self defaultCellSize];
   v6 = v5;
   [(AVTEngagementLayout *)self engagedCellSize];
   v8 = v7;
   [(AVTEngagementLayout *)self defaultCellSize];
-  v10 = v6 + (v8 - v9) * a3;
+  v10 = v6 + (v8 - v9) * engagement;
   [(AVTEngagementLayout *)self defaultCellSize];
   v12 = v11;
   [(AVTEngagementLayout *)self engagedCellSize];
   v14 = v13;
   [(AVTEngagementLayout *)self defaultCellSize];
-  v16 = v12 + (v14 - v15) * a3;
+  v16 = v12 + (v14 - v15) * engagement;
   v17 = v10;
   result.height = v16;
   result.width = v17;
   return result;
 }
 
-- (double)interitemSpacingForEngagement:(double)a3
+- (double)interitemSpacingForEngagement:(double)engagement
 {
-  v4 = [(AVTEngagementLayout *)self interItemSpacingProvider];
-  v5 = v4[2](a3);
+  interItemSpacingProvider = [(AVTEngagementLayout *)self interItemSpacingProvider];
+  v5 = interItemSpacingProvider[2](engagement);
 
   return v5;
 }
 
-- (id)indexesForElementsInRect:(CGRect)a3 visibleBounds:(CGRect)a4 numberOfItems:(int64_t)a5
+- (id)indexesForElementsInRect:(CGRect)rect visibleBounds:(CGRect)bounds numberOfItems:(int64_t)items
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  v15 = [MEMORY[0x1E696AD50] indexSet];
-  if (a5 >= 1)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  if (items >= 1)
   {
     v16 = 0;
     do
@@ -544,31 +544,31 @@
       v24.size.height = v10;
       if (CGRectIntersectsRect(v24, v25))
       {
-        [v15 addIndex:v16];
+        [indexSet addIndex:v16];
       }
 
       ++v16;
     }
 
-    while (a5 != v16);
+    while (items != v16);
   }
 
-  v21 = [v15 copy];
+  v21 = [indexSet copy];
 
   return v21;
 }
 
-- (CGPoint)centerForCenteringElementAtIndex:(int64_t)a3 visibleBoundsSize:(CGSize)a4 proposedOrigin:(CGPoint)a5
+- (CGPoint)centerForCenteringElementAtIndex:(int64_t)index visibleBoundsSize:(CGSize)size proposedOrigin:(CGPoint)origin
 {
-  y = a5.y;
-  height = a4.height;
-  width = a4.width;
-  [(AVTEngagementLayout *)self engagementSizeForVisibleBoundsSize:a4.width, a4.height, a5.x];
+  y = origin.y;
+  height = size.height;
+  width = size.width;
+  [(AVTEngagementLayout *)self engagementSizeForVisibleBoundsSize:size.width, size.height, origin.x];
   v11 = v10;
   v13 = v12;
   [(AVTEngagementLayout *)self engagedCellSize];
   MinX = v14 * -0.5;
-  if (a3 >= 1)
+  if (index >= 1)
   {
     v16 = *(MEMORY[0x1E695F058] + 8);
     v17 = v11 * -0.5;
@@ -577,10 +577,10 @@
       [(AVTEngagementLayout *)self spacingBeforElementStartingAt:MinX engagementBounds:v17, v16, v11, v13];
       [(AVTEngagementLayout *)self frameForElementBeforeElementStartingAt:MinX - v18 engagementBounds:v17 verticalBounds:v16, v11, v13, y, height];
       MinX = CGRectGetMinX(v31);
-      --a3;
+      --index;
     }
 
-    while (a3);
+    while (index);
   }
 
   [(AVTEngagementLayout *)self contentOriginXForVisibleSize:width, height];
@@ -599,9 +599,9 @@
   return result;
 }
 
-- (CGSize)contentSizeForVisibleBounds:(CGRect)a3 numberOfItems:(int64_t)a4
+- (CGSize)contentSizeForVisibleBounds:(CGRect)bounds numberOfItems:(int64_t)items
 {
-  if (a4 <= 0)
+  if (items <= 0)
   {
     v14 = *MEMORY[0x1E695F060];
     v15 = *(MEMORY[0x1E695F060] + 8);
@@ -609,11 +609,11 @@
 
   else
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    [(AVTEngagementLayout *)self centerForCenteringElementAtIndex:a4 - 1 visibleBoundsSize:a3.size.width proposedOrigin:a3.size.height, a3.origin.x, a3.origin.y];
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    [(AVTEngagementLayout *)self centerForCenteringElementAtIndex:items - 1 visibleBoundsSize:bounds.size.width proposedOrigin:bounds.size.height, bounds.origin.x, bounds.origin.y];
     v10 = v9;
     [(AVTEngagementLayout *)self contentTrailingXForVisibleSize:width, height];
     v12 = v11;
@@ -632,14 +632,14 @@
   return result;
 }
 
-- (CGRect)frameForElementBeforeOriginForVisibleBounds:(CGRect)a3
+- (CGRect)frameForElementBeforeOriginForVisibleBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  rect_8 = a3.size.height;
-  rect_16 = a3.origin.y;
-  height = a3.size.height;
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  y = bounds.origin.y;
+  rect_8 = bounds.size.height;
+  rect_16 = bounds.origin.y;
+  height = bounds.size.height;
   [(AVTEngagementLayout *)self frameForElementAtIndex:0 visibleBounds:?];
   v9 = v8;
   rect = v8;

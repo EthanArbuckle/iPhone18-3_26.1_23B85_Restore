@@ -1,8 +1,8 @@
 @interface HKSignedClinicalDataParsingResultMux
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSignedClinicalDataParsingResultMux)init;
-- (HKSignedClinicalDataParsingResultMux)initWithCoder:(id)a3;
-- (HKSignedClinicalDataParsingResultMux)initWithSignedClinicalData:(id)a3;
+- (HKSignedClinicalDataParsingResultMux)initWithCoder:(id)coder;
+- (HKSignedClinicalDataParsingResultMux)initWithSignedClinicalData:(id)data;
 @end
 
 @implementation HKSignedClinicalDataParsingResultMux
@@ -17,10 +17,10 @@
   return 0;
 }
 
-- (HKSignedClinicalDataParsingResultMux)initWithSignedClinicalData:(id)a3
+- (HKSignedClinicalDataParsingResultMux)initWithSignedClinicalData:(id)data
 {
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [(HKSignedClinicalDataParsingResultMux *)a2 initWithSignedClinicalData:?];
   }
@@ -31,51 +31,51 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_signedClinicalData, a3);
+    objc_storeStrong(&v7->_signedClinicalData, data);
   }
 
   return v8;
 }
 
-- (HKSignedClinicalDataParsingResultMux)initWithCoder:(id)a3
+- (HKSignedClinicalDataParsingResultMux)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SignedClinicalData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SignedClinicalData"];
   if (v5)
   {
     self = [(HKSignedClinicalDataParsingResultMux *)self initWithSignedClinicalData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v6 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(signedClinicalData) = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       signedClinicalData = self->_signedClinicalData;
       if (signedClinicalData)
       {
-        v8 = [(HKSignedClinicalDataParsingResultMux *)v6 signedClinicalData];
-        LOBYTE(signedClinicalData) = [(HKSignedClinicalDataParsingResult *)signedClinicalData isEqual:v8];
+        signedClinicalData = [(HKSignedClinicalDataParsingResultMux *)v6 signedClinicalData];
+        LOBYTE(signedClinicalData) = [(HKSignedClinicalDataParsingResult *)signedClinicalData isEqual:signedClinicalData];
       }
     }
 

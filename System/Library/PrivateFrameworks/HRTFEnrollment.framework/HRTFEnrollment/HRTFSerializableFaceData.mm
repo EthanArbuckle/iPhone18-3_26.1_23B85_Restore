@@ -1,94 +1,94 @@
 @interface HRTFSerializableFaceData
 - (CGRect)bounds;
-- (HRTFSerializableFaceData)initWithCoder:(id)a3;
-- (HRTFSerializableFaceData)initWithFaceObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HRTFSerializableFaceData)initWithCoder:(id)coder;
+- (HRTFSerializableFaceData)initWithFaceObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HRTFSerializableFaceData
 
-- (HRTFSerializableFaceData)initWithFaceObject:(id)a3
+- (HRTFSerializableFaceData)initWithFaceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = HRTFSerializableFaceData;
   v5 = [(HRTFSerializableFaceData *)&v13 init];
   if (v5)
   {
-    [v4 bounds];
+    [objectCopy bounds];
     v5->_bounds.origin.x = v6;
     v5->_bounds.origin.y = v7;
     v5->_bounds.size.width = v8;
     v5->_bounds.size.height = v9;
-    v5->_faceID = [v4 faceID];
-    v5->_yawAngleAvailable = [v4 hasYawAngle];
-    [v4 yawAngle];
+    v5->_faceID = [objectCopy faceID];
+    v5->_yawAngleAvailable = [objectCopy hasYawAngle];
+    [objectCopy yawAngle];
     v5->_yawAngle = v10;
-    v5->_rollAngleAvailable = [v4 hasRollAngle];
-    [v4 rollAngle];
+    v5->_rollAngleAvailable = [objectCopy hasRollAngle];
+    [objectCopy rollAngle];
     v5->_rollAngle = v11;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&self->_bounds length:32];
-  [v8 encodeObject:v4 forKey:@"Bounds"];
+  [coderCopy encodeObject:v4 forKey:@"Bounds"];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_faceID];
-  [v8 encodeObject:v5 forKey:@"FaceID"];
+  [coderCopy encodeObject:v5 forKey:@"FaceID"];
 
   if (self->_yawAngleAvailable)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_yawAngle];
-    [v8 encodeObject:v6 forKey:@"YawAngle"];
+    [coderCopy encodeObject:v6 forKey:@"YawAngle"];
   }
 
   if (self->_rollAngleAvailable)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_rollAngle];
-    [v8 encodeObject:v7 forKey:@"RollAngle"];
+    [coderCopy encodeObject:v7 forKey:@"RollAngle"];
   }
 }
 
-- (HRTFSerializableFaceData)initWithCoder:(id)a3
+- (HRTFSerializableFaceData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"Bounds"] && objc_msgSend(v4, "containsValueForKey:", @"FaceID"))
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"Bounds"] && objc_msgSend(coderCopy, "containsValueForKey:", @"FaceID"))
   {
     v16.receiver = self;
     v16.super_class = HRTFSerializableFaceData;
     v5 = [(HRTFSerializableFaceData *)&v16 init];
     if (v5)
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Bounds"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Bounds"];
       if ([v6 length] != 32)
       {
         [HRTFSerializableFaceData initWithCoder:];
       }
 
-      v7 = [v6 bytes];
-      v8 = v7[1];
-      *(v5 + 8) = *v7;
+      bytes = [v6 bytes];
+      v8 = bytes[1];
+      *(v5 + 8) = *bytes;
       *(v5 + 24) = v8;
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FaceID"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FaceID"];
       *(v5 + 5) = [v9 integerValue];
-      if ([v4 containsValueForKey:@"YawAngle"])
+      if ([coderCopy containsValueForKey:@"YawAngle"])
       {
         v5[64] = 1;
-        v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"YawAngle"];
+        v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"YawAngle"];
 
         [v10 doubleValue];
         *(v5 + 6) = v11;
         v9 = v10;
       }
 
-      if ([v4 containsValueForKey:@"RollAngle"])
+      if ([coderCopy containsValueForKey:@"RollAngle"])
       {
         v5[65] = 1;
-        v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RollAngle"];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RollAngle"];
 
         [v12 doubleValue];
         *(v5 + 7) = v13;
@@ -97,15 +97,15 @@
     }
 
     self = v5;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (CGRect)bounds

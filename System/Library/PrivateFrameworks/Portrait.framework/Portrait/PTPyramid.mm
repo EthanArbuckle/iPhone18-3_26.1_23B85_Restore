@@ -1,21 +1,21 @@
 @interface PTPyramid
-- (PTPyramid)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 pixelFormat:(unint64_t)a5 skipFullSizeLayer:(BOOL)a6 doFirstLevelGaussianDownsample:(BOOL)a7 mipmapLevelCount:(int)a8;
-- (id)findMipmapLevelLargerThan:(id *)a3;
-- (id)findMipmapLevelLargerThan:(id *)a3 fromLevel:(int)a4;
-- (int)updatePyramid:(id)a3 inPTTexture:(id)a4;
-- (int)updatePyramid:(id)a3 offset:(int)a4 samplingRadius:(float)a5;
+- (PTPyramid)initWithMetalContext:(id)context colorSize:(CGSize)size pixelFormat:(unint64_t)format skipFullSizeLayer:(BOOL)layer doFirstLevelGaussianDownsample:(BOOL)downsample mipmapLevelCount:(int)count;
+- (id)findMipmapLevelLargerThan:(id *)than;
+- (id)findMipmapLevelLargerThan:(id *)than fromLevel:(int)level;
+- (int)updatePyramid:(id)pyramid inPTTexture:(id)texture;
+- (int)updatePyramid:(id)pyramid offset:(int)offset samplingRadius:(float)radius;
 @end
 
 @implementation PTPyramid
 
-- (PTPyramid)initWithMetalContext:(id)a3 colorSize:(CGSize)a4 pixelFormat:(unint64_t)a5 skipFullSizeLayer:(BOOL)a6 doFirstLevelGaussianDownsample:(BOOL)a7 mipmapLevelCount:(int)a8
+- (PTPyramid)initWithMetalContext:(id)context colorSize:(CGSize)size pixelFormat:(unint64_t)format skipFullSizeLayer:(BOOL)layer doFirstLevelGaussianDownsample:(BOOL)downsample mipmapLevelCount:(int)count
 {
-  v10 = a6;
-  height = a4.height;
-  width = a4.width;
+  layerCopy = layer;
+  height = size.height;
+  width = size.width;
   v122 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v120 = a7;
+  contextCopy = context;
+  downsampleCopy = downsample;
   v119.receiver = self;
   v119.super_class = PTPyramid;
   v17 = [(PTPyramid *)&v119 init];
@@ -25,20 +25,20 @@
     goto LABEL_26;
   }
 
-  objc_storeStrong(&v17->_metalContext, a3);
-  v18->_skipFullSizeLayer = v10;
-  v18->_doFirstLevelGaussianDownsample = a7;
-  v19 = [(PTMetalContext *)v18->_metalContext textureUtil];
-  v20 = v19;
+  objc_storeStrong(&v17->_metalContext, context);
+  v18->_skipFullSizeLayer = layerCopy;
+  v18->_doFirstLevelGaussianDownsample = downsample;
+  textureUtil = [(PTMetalContext *)v18->_metalContext textureUtil];
+  v20 = textureUtil;
   v21 = (width + 1.0) * 0.5;
   v22 = (height + 1.0) * 0.5;
-  if (!v10)
+  if (!layerCopy)
   {
     v22 = height;
     v21 = width;
   }
 
-  v23 = [v19 createWithWidth:v21 height:v22 pixelFormat:a5 mipmapLevelCount:a8];
+  v23 = [textureUtil createWithWidth:v21 height:v22 pixelFormat:format mipmapLevelCount:count];
   mipmapTexture = v18->_mipmapTexture;
   v18->_mipmapTexture = v23;
 
@@ -53,8 +53,8 @@
     goto LABEL_44;
   }
 
-  v25 = [(PTMetalContext *)v18->_metalContext textureUtil];
-  v26 = [v25 mipmapLevelsUsingTextureView:v18->_mipmapTexture];
+  textureUtil2 = [(PTMetalContext *)v18->_metalContext textureUtil];
+  v26 = [textureUtil2 mipmapLevelsUsingTextureView:v18->_mipmapTexture];
   mipmapLevels = v18->_mipmapLevels;
   v18->_mipmapLevels = v26;
 
@@ -72,7 +72,7 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v115 = v16;
+  v115 = contextCopy;
   v28 = 0.0;
   v29 = -1;
   v30 = v121;
@@ -140,7 +140,7 @@ LABEL_44:
     }
 
     v62 = 0;
-    v16 = v115;
+    contextCopy = v115;
     goto LABEL_45;
   }
 
@@ -153,7 +153,7 @@ LABEL_44:
   {
     v116 = supportedColorTransferFunctions_1[v48];
     [v45 setConstantValue:&v116 type:29 withName:@"kColorTransferFunctionToLinear"];
-    [v45 setConstantValue:&v120 type:53 withName:@"kDoFirstLevelGaussianDownsample"];
+    [v45 setConstantValue:&downsampleCopy type:53 withName:@"kDoFirstLevelGaussianDownsample"];
     v53 = [(PTMetalContext *)v18->_metalContext computePipelineStateFor:@"updateLevel0FromRGBA" withConstants:v45];
     v54 = updateLevel0FromRGBA[v116];
     updateLevel0FromRGBA[v116] = v53;
@@ -161,7 +161,7 @@ LABEL_44:
     if (!updateLevel0FromRGBA[v116])
     {
       v85 = _PTLogSystem();
-      v16 = v115;
+      contextCopy = v115;
       if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
       {
         [(PTPyramid *)v85 initWithMetalContext:v86 colorSize:v87 pixelFormat:v88 skipFullSizeLayer:v89 doFirstLevelGaussianDownsample:v90 mipmapLevelCount:v91, v92];
@@ -198,7 +198,7 @@ LABEL_44:
       }
 
 LABEL_40:
-      v16 = v115;
+      contextCopy = v115;
 LABEL_43:
 
       goto LABEL_44;
@@ -211,7 +211,7 @@ LABEL_43:
     if (!updateLevel0and1FromYUV[v116])
     {
       v85 = _PTLogSystem();
-      v16 = v115;
+      contextCopy = v115;
       if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
       {
         [(PTPyramid *)v85 initWithMetalContext:v107 colorSize:v108 pixelFormat:v109 skipFullSizeLayer:v110 doFirstLevelGaussianDownsample:v111 mipmapLevelCount:v112, v113];
@@ -224,7 +224,7 @@ LABEL_43:
   }
 
   while (v48 != 5);
-  v16 = v115;
+  contextCopy = v115;
   if (!v18->_mipmapTexture || !v18->_mipmapLevels || !v18->_downscaleGaussian3x3)
   {
     v61 = _PTLogSystem();
@@ -241,15 +241,15 @@ LABEL_45:
   return v62;
 }
 
-- (int)updatePyramid:(id)a3 inPTTexture:(id)a4
+- (int)updatePyramid:(id)pyramid inPTTexture:(id)texture
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 transferFunction];
-  v9 = [PTColorConversion getTransferFunction:v8 toLinear:1];
+  pyramidCopy = pyramid;
+  textureCopy = texture;
+  transferFunction = [textureCopy transferFunction];
+  v9 = [PTColorConversion getTransferFunction:transferFunction toLinear:1];
 
-  v10 = [v6 computeCommandEncoder];
-  if (!v10)
+  computeCommandEncoder = [pyramidCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -258,21 +258,21 @@ LABEL_45:
     }
   }
 
-  if (![v7 isRGB] || !self->_skipFullSizeLayer)
+  if (![textureCopy isRGB] || !self->_skipFullSizeLayer)
   {
-    if (([v7 isRGB] & 1) != 0 || !self->_skipFullSizeLayer)
+    if (([textureCopy isRGB] & 1) != 0 || !self->_skipFullSizeLayer)
     {
-      if ([v7 isRGB])
+      if ([textureCopy isRGB])
       {
-        [v10 setComputePipelineState:self->_updateLevel0and1FromRGBA[v9]];
-        v31 = [v7 texRGBA];
-        [v10 setTexture:v31 atIndex:0];
+        [computeCommandEncoder setComputePipelineState:self->_updateLevel0and1FromRGBA[v9]];
+        texRGBA = [textureCopy texRGBA];
+        [computeCommandEncoder setTexture:texRGBA atIndex:0];
 
         v32 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-        [v10 setTexture:v32 atIndex:1];
+        [computeCommandEncoder setTexture:v32 atIndex:1];
 
         v20 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:1];
-        v21 = v10;
+        v21 = computeCommandEncoder;
         v22 = v20;
         v23 = 2;
         goto LABEL_13;
@@ -281,20 +281,20 @@ LABEL_45:
       v42 = 0;
       v43 = 0;
       v44 = 0;
-      [PTColorConversion getColorMatrix:v7 toRGB:1];
-      [PTColorConversion getChromaOffset:v7];
-      [v10 setComputePipelineState:{self->_updateLevel0and1FromYUV[v9], v33}];
-      v34 = [v7 texLuma];
-      [v10 setTexture:v34 atIndex:0];
+      [PTColorConversion getColorMatrix:textureCopy toRGB:1];
+      [PTColorConversion getChromaOffset:textureCopy];
+      [computeCommandEncoder setComputePipelineState:{self->_updateLevel0and1FromYUV[v9], v33}];
+      texLuma = [textureCopy texLuma];
+      [computeCommandEncoder setTexture:texLuma atIndex:0];
 
-      v35 = [v7 texChroma];
-      [v10 setTexture:v35 atIndex:1];
+      texChroma = [textureCopy texChroma];
+      [computeCommandEncoder setTexture:texChroma atIndex:1];
 
       v36 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-      [v10 setTexture:v36 atIndex:2];
+      [computeCommandEncoder setTexture:v36 atIndex:2];
 
       v27 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:1];
-      v28 = v10;
+      v28 = computeCommandEncoder;
       v29 = v27;
       v30 = 3;
     }
@@ -304,58 +304,58 @@ LABEL_45:
       v42 = 0;
       v43 = 0;
       v44 = 0;
-      [PTColorConversion getColorMatrix:v7 toRGB:1];
-      [PTColorConversion getChromaOffset:v7];
-      [v10 setComputePipelineState:{self->_updateLevel0FromYUV[v9], v24}];
-      v25 = [v7 texLuma];
-      [v10 setTexture:v25 atIndex:0];
+      [PTColorConversion getColorMatrix:textureCopy toRGB:1];
+      [PTColorConversion getChromaOffset:textureCopy];
+      [computeCommandEncoder setComputePipelineState:{self->_updateLevel0FromYUV[v9], v24}];
+      texLuma2 = [textureCopy texLuma];
+      [computeCommandEncoder setTexture:texLuma2 atIndex:0];
 
-      v26 = [v7 texChroma];
-      [v10 setTexture:v26 atIndex:1];
+      texChroma2 = [textureCopy texChroma];
+      [computeCommandEncoder setTexture:texChroma2 atIndex:1];
 
       v27 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-      v28 = v10;
+      v28 = computeCommandEncoder;
       v29 = v27;
       v30 = 2;
     }
 
     [v28 setTexture:v29 atIndex:v30];
 
-    [v10 setBytes:&v42 length:24 atIndex:0];
-    [v10 setBytes:&v40 length:8 atIndex:1];
+    [computeCommandEncoder setBytes:&v42 length:24 atIndex:0];
+    [computeCommandEncoder setBytes:&v40 length:8 atIndex:1];
     goto LABEL_16;
   }
 
-  [v10 setComputePipelineState:self->_updateLevel0FromRGBA[v9]];
-  v19 = [v7 texRGBA];
-  [v10 setTexture:v19 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_updateLevel0FromRGBA[v9]];
+  texRGBA2 = [textureCopy texRGBA];
+  [computeCommandEncoder setTexture:texRGBA2 atIndex:0];
 
   v20 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-  v21 = v10;
+  v21 = computeCommandEncoder;
   v22 = v20;
   v23 = 1;
 LABEL_13:
   [v21 setTexture:v22 atIndex:v23];
 
 LABEL_16:
-  v37 = [v7 width] >> 1;
-  v38 = [v7 height];
+  v37 = [textureCopy width] >> 1;
+  height = [textureCopy height];
   v42 = v37;
-  v43 = v38 >> 1;
+  v43 = height >> 1;
   v44 = 1;
   v40 = vdupq_n_s64(8uLL);
   v41 = 1;
-  [v10 dispatchThreads:&v42 threadsPerThreadgroup:&v40];
-  [v10 endEncoding];
-  [(PTPyramid *)self updatePyramid:v6 offset:!self->_skipFullSizeLayer];
+  [computeCommandEncoder dispatchThreads:&v42 threadsPerThreadgroup:&v40];
+  [computeCommandEncoder endEncoding];
+  [(PTPyramid *)self updatePyramid:pyramidCopy offset:!self->_skipFullSizeLayer];
 
   return 0;
 }
 
-- (int)updatePyramid:(id)a3 offset:(int)a4 samplingRadius:(float)a5
+- (int)updatePyramid:(id)pyramid offset:(int)offset samplingRadius:(float)radius
 {
-  v8 = a3;
-  v32 = a5;
+  pyramidCopy = pyramid;
+  radiusCopy = radius;
   v9 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
   if ([v9 pixelFormat]== 71)
   {
@@ -379,9 +379,9 @@ LABEL_6:
   }
 
   v19 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-  v20 = [v19 pixelFormat];
+  pixelFormat = [v19 pixelFormat];
 
-  if (v20 != 555)
+  if (pixelFormat != 555)
   {
     v9 = _PTLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -393,10 +393,10 @@ LABEL_6:
   }
 
 LABEL_7:
-  v12 = [v8 computeCommandEncoder];
-  [v12 setComputePipelineState:self->_downscaleGaussian3x3];
-  [v12 setBytes:&v32 length:4 atIndex:0];
-  LODWORD(v13) = a4 + 1;
+  computeCommandEncoder = [pyramidCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_downscaleGaussian3x3];
+  [computeCommandEncoder setBytes:&radiusCopy length:4 atIndex:0];
+  LODWORD(v13) = offset + 1;
   if ([(NSArray *)self->_mipmapLevels count]> v13)
   {
     v13 = v13;
@@ -405,16 +405,16 @@ LABEL_7:
     {
       v14 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:v13 - 1, v28];
       v15 = [(NSArray *)self->_mipmapLevels objectAtIndexedSubscript:v13];
-      [v12 setTexture:v14 atIndex:0];
-      [v12 setTexture:v15 atIndex:1];
-      v16 = [v15 width];
-      v17 = [v15 height];
-      v31[0] = v16;
-      v31[1] = v17;
+      [computeCommandEncoder setTexture:v14 atIndex:0];
+      [computeCommandEncoder setTexture:v15 atIndex:1];
+      width = [v15 width];
+      height = [v15 height];
+      v31[0] = width;
+      v31[1] = height;
       v31[2] = 1;
       v29 = v28;
       v30 = 1;
-      [v12 dispatchThreads:v31 threadsPerThreadgroup:&v29];
+      [computeCommandEncoder dispatchThreads:v31 threadsPerThreadgroup:&v29];
 
       ++v13;
     }
@@ -422,24 +422,24 @@ LABEL_7:
     while (v13 < [(NSArray *)self->_mipmapLevels count]);
   }
 
-  [v12 endEncoding];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (id)findMipmapLevelLargerThan:(id *)a3
+- (id)findMipmapLevelLargerThan:(id *)than
 {
-  v5 = *a3;
+  v5 = *than;
   v3 = [(PTPyramid *)self findMipmapLevelLargerThan:&v5 fromLevel:0];
 
   return v3;
 }
 
-- (id)findMipmapLevelLargerThan:(id *)a3 fromLevel:(int)a4
+- (id)findMipmapLevelLargerThan:(id *)than fromLevel:(int)level
 {
   mipmapLevels = self->_mipmapLevels;
-  v7 = *a3;
-  v5 = [PTUtil findMipmapLevel:mipmapLevels largerThan:&v7 fromLevel:*&a4];
+  v7 = *than;
+  v5 = [PTUtil findMipmapLevel:mipmapLevels largerThan:&v7 fromLevel:*&level];
 
   return v5;
 }

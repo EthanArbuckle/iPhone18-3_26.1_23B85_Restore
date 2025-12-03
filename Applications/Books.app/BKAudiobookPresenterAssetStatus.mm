@@ -7,7 +7,7 @@
 
 - (void)assetAudiobookStatusTogglePlayPause
 {
-  v2 = self;
+  selfCopy = self;
   sub_10055BF00();
 }
 

@@ -1,15 +1,15 @@
 @interface HMDAppleMediaAccessorySensorManagerDataStore
-- (HMDAppleMediaAccessorySensorManagerDataStore)initWithLocalMOC:(id)a3;
-- (id)currentSensorPairingWithMOC:(uint64_t)a3 error:;
-- (void)fetchSensorUUIDWithCompletion:(id)a3;
-- (void)saveSensorUUID:(id)a3 completion:(id)a4;
+- (HMDAppleMediaAccessorySensorManagerDataStore)initWithLocalMOC:(id)c;
+- (id)currentSensorPairingWithMOC:(uint64_t)c error:;
+- (void)fetchSensorUUIDWithCompletion:(id)completion;
+- (void)saveSensorUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HMDAppleMediaAccessorySensorManagerDataStore
 
-- (void)fetchSensorUUIDWithCompletion:(id)a3
+- (void)fetchSensorUUIDWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (self)
   {
     Property = objc_getProperty(self, v4, 8, 1);
@@ -27,8 +27,8 @@
   v10[3] = &unk_278689F98;
   v10[4] = self;
   v11 = v7;
-  v12 = v5;
-  v8 = v5;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v7;
   [v9 performBlock:v10];
 }
@@ -45,11 +45,11 @@ void __78__HMDAppleMediaAccessorySensorManagerDataStore_fetchSensorUUIDWithCompl
   (*(v6 + 16))(v6, v7);
 }
 
-- (id)currentSensorPairingWithMOC:(uint64_t)a3 error:
+- (id)currentSensorPairingWithMOC:(uint64_t)c error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     [v5 hmd_assertIsExecuting];
     v12 = 0;
@@ -59,7 +59,7 @@ void __78__HMDAppleMediaAccessorySensorManagerDataStore_fetchSensorUUIDWithCompl
     v16 = __Block_byref_object_dispose__18772;
     v17 = 0;
     v7 = +[MKFLocalAppleMediaSensorPairing fetchRequest];
-    v8 = [v6 executeFetchRequest:v7 error:a3];
+    v8 = [v6 executeFetchRequest:v7 error:c];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __82__HMDAppleMediaAccessorySensorManagerDataStore_currentSensorPairingWithMOC_error___block_invoke;
@@ -92,10 +92,10 @@ void __82__HMDAppleMediaAccessorySensorManagerDataStore_currentSensorPairingWith
   }
 }
 
-- (void)saveSensorUUID:(id)a3 completion:(id)a4
+- (void)saveSensorUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (self)
   {
     Property = objc_getProperty(self, v7, 8, 1);
@@ -113,10 +113,10 @@ void __82__HMDAppleMediaAccessorySensorManagerDataStore_currentSensorPairingWith
   v14[3] = &unk_278689AB8;
   v14[4] = self;
   v15 = v10;
-  v16 = v6;
-  v17 = v8;
-  v11 = v6;
-  v12 = v8;
+  v16 = dCopy;
+  v17 = completionCopy;
+  v11 = dCopy;
+  v12 = completionCopy;
   v13 = v10;
   [v13 performBlock:v14];
 }
@@ -243,16 +243,16 @@ LABEL_23:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaAccessorySensorManagerDataStore)initWithLocalMOC:(id)a3
+- (HMDAppleMediaAccessorySensorManagerDataStore)initWithLocalMOC:(id)c
 {
-  v5 = a3;
+  cCopy = c;
   v9.receiver = self;
   v9.super_class = HMDAppleMediaAccessorySensorManagerDataStore;
   v6 = [(HMDAppleMediaAccessorySensorManagerDataStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localMOC, a3);
+    objc_storeStrong(&v6->_localMOC, c);
   }
 
   return v7;

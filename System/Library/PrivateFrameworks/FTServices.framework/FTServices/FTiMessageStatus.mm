@@ -35,10 +35,10 @@
 
 - (BOOL)iMessageSupported
 {
-  v2 = [(FTiMessageStatus *)self serviceStatus];
-  v3 = [v2 iMessageSupported];
+  serviceStatus = [(FTiMessageStatus *)self serviceStatus];
+  iMessageSupported = [serviceStatus iMessageSupported];
 
-  return v3;
+  return iMessageSupported;
 }
 
 @end

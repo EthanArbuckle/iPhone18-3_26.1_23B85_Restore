@@ -1,33 +1,33 @@
 @interface _DASPPSDataManager
 + (id)sharedInstance;
-- (BOOL)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5;
-- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)a3 category:(id)a4;
+- (BOOL)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category;
+- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)subsystem category:(id)category;
 - (_DASPPSDataManager)init;
-- (id)getPPSData:(id)a3 filepath:(id)a4 error:(id *)a5;
-- (id)getPPSHistogram:(id)a3 category:(id)a4 valueFilter:(id)a5 dimensions:(id)a6 timeFilter:(id)a7 filepath:(id)a8 error:(id *)a9;
-- (id)getPPSTimeIntervalSet:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 filepath:(id)a8 error:(id *)a9;
-- (id)getPPSTimeSeries:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 filepath:(id)a8 error:(id *)a9;
-- (id)getPPSTimeSeries:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 limitCount:(unint64_t)a8 offsetCount:(unint64_t)a9 filepath:(id)a10 error:(id *)a11;
-- (id)getPPSTimeSeries:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 limitCount:(unint64_t)a8 offsetCount:(unint64_t)a9 readDirection:(unint64_t)a10 filepath:(id)a11 error:(id *)a12;
-- (id)getTaskDependencyGraphs:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)loadBuddyData:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)loadConfig:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)loadCustomCheckpoints:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadFeatureCheckpoints:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadIntensiveTaskBlockingReasons:(id)a3 metrics:(id)a4 filepath:(id)a5;
-- (id)loadPluginPrediction:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)loadTaskBlockingReasons:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadTaskCheckpoints:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadTaskDependencies:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadTaskDependencyGraph:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)loadTaskProgress:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadTaskRuntimeAllocation:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)loadTaskThroughput:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)loadTasksForFeatures:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6;
-- (id)valueFilterPredicateForMetric:(id)a3 withMetricValues:(id)a4 predicateModifier:(unint64_t)a5;
-- (void)lockForSubsystemAndCategory:(id)a3 category:(id)a4;
-- (void)sendDataToPPS:(id)a3 ppsID:(PPSTelemetryIdentifier *)a4;
-- (void)unlockForSubsystemAndCategory:(id)a3 category:(id)a4;
+- (id)getPPSData:(id)data filepath:(id)filepath error:(id *)error;
+- (id)getPPSHistogram:(id)histogram category:(id)category valueFilter:(id)filter dimensions:(id)dimensions timeFilter:(id)timeFilter filepath:(id)filepath error:(id *)error;
+- (id)getPPSTimeIntervalSet:(id)set category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter filepath:(id)filepath error:(id *)error;
+- (id)getPPSTimeSeries:(id)series category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter filepath:(id)filepath error:(id *)error;
+- (id)getPPSTimeSeries:(id)series category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter limitCount:(unint64_t)count offsetCount:(unint64_t)offsetCount filepath:(id)self0 error:(id *)self1;
+- (id)getPPSTimeSeries:(id)series category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter limitCount:(unint64_t)count offsetCount:(unint64_t)offsetCount readDirection:(unint64_t)self0 filepath:(id)self1 error:(id *)self2;
+- (id)getTaskDependencyGraphs:(id)graphs timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadBuddyData:(id)data timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadConfig:(id)config timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadCustomCheckpoints:(id)checkpoints metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadFeatureCheckpoints:(id)checkpoints metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadIntensiveTaskBlockingReasons:(id)reasons metrics:(id)metrics filepath:(id)filepath;
+- (id)loadPluginPrediction:(id)prediction timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskBlockingReasons:(id)reasons metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskCheckpoints:(id)checkpoints metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskDependencies:(id)dependencies metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskDependencyGraph:(id)graph timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskProgress:(id)progress metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskRuntimeAllocation:(id)allocation timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTaskThroughput:(id)throughput metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)loadTasksForFeatures:(id)features metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath;
+- (id)valueFilterPredicateForMetric:(id)metric withMetricValues:(id)values predicateModifier:(unint64_t)modifier;
+- (void)lockForSubsystemAndCategory:(id)category category:(id)a4;
+- (void)sendDataToPPS:(id)s ppsID:(PPSTelemetryIdentifier *)d;
+- (void)unlockForSubsystemAndCategory:(id)category category:(id)a4;
 @end
 
 @implementation _DASPPSDataManager
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004F848;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B198 != -1)
   {
     dispatch_once(&qword_10020B198, block);
@@ -78,39 +78,39 @@
   return v2;
 }
 
-- (void)lockForSubsystemAndCategory:(id)a3 category:(id)a4
+- (void)lockForSubsystemAndCategory:(id)category category:(id)a4
 {
-  v12 = a3;
+  categoryCopy = category;
   v6 = a4;
-  v7 = [NSString stringWithFormat:@"%@-%@", v12, v6];
-  v8 = [(_DASPPSDataManager *)self ppsIDLocks];
-  objc_sync_enter(v8);
-  v9 = [(_DASPPSDataManager *)self ppsIDLocks];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v7 = [NSString stringWithFormat:@"%@-%@", categoryCopy, v6];
+  ppsIDLocks = [(_DASPPSDataManager *)self ppsIDLocks];
+  objc_sync_enter(ppsIDLocks);
+  ppsIDLocks2 = [(_DASPPSDataManager *)self ppsIDLocks];
+  v10 = [ppsIDLocks2 objectForKeyedSubscript:v7];
 
   if (!v10)
   {
     v10 = objc_alloc_init(NSRecursiveLock);
-    v11 = [(_DASPPSDataManager *)self ppsIDLocks];
-    [v11 setObject:v10 forKeyedSubscript:v7];
+    ppsIDLocks3 = [(_DASPPSDataManager *)self ppsIDLocks];
+    [ppsIDLocks3 setObject:v10 forKeyedSubscript:v7];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(ppsIDLocks);
 
   [v10 lock];
 }
 
-- (void)unlockForSubsystemAndCategory:(id)a3 category:(id)a4
+- (void)unlockForSubsystemAndCategory:(id)category category:(id)a4
 {
-  v6 = a3;
+  categoryCopy = category;
   v7 = a4;
-  v8 = [NSString stringWithFormat:@"%@-%@", v6, v7];
-  v9 = [(_DASPPSDataManager *)self ppsIDLocks];
-  objc_sync_enter(v9);
-  v10 = [(_DASPPSDataManager *)self ppsIDLocks];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  v8 = [NSString stringWithFormat:@"%@-%@", categoryCopy, v7];
+  ppsIDLocks = [(_DASPPSDataManager *)self ppsIDLocks];
+  objc_sync_enter(ppsIDLocks);
+  ppsIDLocks2 = [(_DASPPSDataManager *)self ppsIDLocks];
+  v11 = [ppsIDLocks2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v9);
+  objc_sync_exit(ppsIDLocks);
   if (v11)
   {
     [v11 unlock];
@@ -122,19 +122,19 @@
   }
 }
 
-- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)a3 category:(id)a4
+- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)subsystem category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSString stringWithFormat:@"%@-%@", v6, v7];
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  categoryCopy = [NSString stringWithFormat:@"%@-%@", subsystemCopy, categoryCopy];
   v19 = 0;
-  v9 = [(_DASPPSDataManager *)self ppsIDMapping];
-  objc_sync_enter(v9);
-  v10 = [(_DASPPSDataManager *)self ppsIDMapping];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  ppsIDMapping = [(_DASPPSDataManager *)self ppsIDMapping];
+  objc_sync_enter(ppsIDMapping);
+  ppsIDMapping2 = [(_DASPPSDataManager *)self ppsIDMapping];
+  v11 = [ppsIDMapping2 objectForKeyedSubscript:categoryCopy];
   v12 = [v11 copy];
 
-  objc_sync_exit(v9);
+  objc_sync_exit(ppsIDMapping);
   if (v12)
   {
     [v12 getValue:&v19 size:8];
@@ -146,7 +146,7 @@
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v8;
+      v21 = categoryCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Creating PPS ID for %@", buf, 0xCu);
     }
 
@@ -154,12 +154,12 @@
     if (v19)
     {
       v14 = [NSValue value:&v19 withObjCType:"^{PPSTelemetryIdentifier=}"];
-      v15 = [(_DASPPSDataManager *)self ppsIDMapping];
-      objc_sync_enter(v15);
-      v16 = [(_DASPPSDataManager *)self ppsIDMapping];
-      [v16 setObject:v14 forKeyedSubscript:v8];
+      ppsIDMapping3 = [(_DASPPSDataManager *)self ppsIDMapping];
+      objc_sync_enter(ppsIDMapping3);
+      ppsIDMapping4 = [(_DASPPSDataManager *)self ppsIDMapping];
+      [ppsIDMapping4 setObject:v14 forKeyedSubscript:categoryCopy];
 
-      objc_sync_exit(v15);
+      objc_sync_exit(ppsIDMapping3);
     }
 
     else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -173,20 +173,20 @@
   return v17;
 }
 
-- (id)valueFilterPredicateForMetric:(id)a3 withMetricValues:(id)a4 predicateModifier:(unint64_t)a5
+- (id)valueFilterPredicateForMetric:(id)metric withMetricValues:(id)values predicateModifier:(unint64_t)modifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && [v8 count])
+  metricCopy = metric;
+  valuesCopy = values;
+  v9 = valuesCopy;
+  if (metricCopy && [valuesCopy count])
   {
     v10 = @"%K IN %@";
-    if (a5 == 1)
+    if (modifier == 1)
     {
       v10 = @"ALL %K IN %@";
     }
 
-    if (a5 == 2)
+    if (modifier == 2)
     {
       v11 = @"ANY %K IN %@";
     }
@@ -196,7 +196,7 @@
       v11 = v10;
     }
 
-    v12 = [NSPredicate predicateWithFormat:v11, v7, v9];
+    v12 = [NSPredicate predicateWithFormat:v11, metricCopy, v9];
   }
 
   else
@@ -207,9 +207,9 @@
   return v12;
 }
 
-- (id)getTaskDependencyGraphs:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)getTaskDependencyGraphs:(id)graphs timeFilter:(id)filter filepath:(id)filepath
 {
-  obj = a3;
+  obj = graphs;
   v6 = [_DASPPSDataManager loadTaskDependencies:"loadTaskDependencies:metrics:timeFilter:filepath:" metrics:? timeFilter:? filepath:?];
   v41 = +[NSMutableDictionary dictionary];
   v50 = 0u;
@@ -217,8 +217,8 @@
   v52 = 0u;
   v53 = 0u;
   v36 = v6;
-  v7 = [v6 array];
-  v8 = [v7 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  array = [v6 array];
+  v8 = [array countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v8)
   {
     v9 = v8;
@@ -229,24 +229,24 @@
       {
         if (*v51 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(array);
         }
 
         v12 = *(*(&v50 + 1) + 8 * i);
-        v13 = [v12 metricKeysAndValues];
-        v14 = [v13 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues = [v12 metricKeysAndValues];
+        v14 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
-        v15 = [v12 metricKeysAndValues];
-        v16 = [v15 objectForKeyedSubscript:@"ProducedResultIdentifiers"];
+        metricKeysAndValues2 = [v12 metricKeysAndValues];
+        v16 = [metricKeysAndValues2 objectForKeyedSubscript:@"ProducedResultIdentifiers"];
 
-        v17 = [v12 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"DependencyIdentifiers"];
+        metricKeysAndValues3 = [v12 metricKeysAndValues];
+        v18 = [metricKeysAndValues3 objectForKeyedSubscript:@"DependencyIdentifiers"];
 
         v19 = [[_DASTaskDependencies alloc] initWithProducedResultIdentifiers:v16 dependencyIdentifiers:v18];
         [v41 setObject:v19 forKeyedSubscript:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v50 objects:v56 count:16];
+      v9 = [array countByEnumeratingWithState:&v50 objects:v56 count:16];
     }
 
     while (v9);
@@ -344,15 +344,15 @@ LABEL_24:
   return v40;
 }
 
-- (id)getPPSData:(id)a3 filepath:(id)a4 error:(id *)a5
+- (id)getPPSData:(id)data filepath:(id)filepath error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  log = v10->_log;
+  dataCopy = data;
+  filepathCopy = filepath;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  log = selfCopy->_log;
   v12 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
-  if (!v9)
+  if (!filepathCopy)
   {
     if (v12)
     {
@@ -360,26 +360,26 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting on-device PPS Data", buf, 2u);
     }
 
-    v18 = [v8 subsystem];
-    v19 = [v8 category];
-    [(_DASPPSDataManager *)v10 lockForSubsystemAndCategory:v18 category:v19];
+    subsystem = [dataCopy subsystem];
+    category = [dataCopy category];
+    [(_DASPPSDataManager *)selfCopy lockForSubsystemAndCategory:subsystem category:category];
 
-    v20 = [(_DASPPSDataManager *)v10 onDeviceDispatcher];
+    onDeviceDispatcher = [(_DASPPSDataManager *)selfCopy onDeviceDispatcher];
 
-    if (!v20)
+    if (!onDeviceDispatcher)
     {
       v21 = [objc_alloc(sub_10005043C()) initWithFilepath:0];
-      [(_DASPPSDataManager *)v10 setOnDeviceDispatcher:v21];
+      [(_DASPPSDataManager *)selfCopy setOnDeviceDispatcher:v21];
     }
 
-    v22 = [(_DASPPSDataManager *)v10 onDeviceDispatcher];
+    onDeviceDispatcher2 = [(_DASPPSDataManager *)selfCopy onDeviceDispatcher];
     v26 = 0;
-    v16 = [v22 dataForRequest:v8 withError:&v26];
+    v16 = [onDeviceDispatcher2 dataForRequest:dataCopy withError:&v26];
     v17 = v26;
 
-    v15 = [v8 subsystem];
-    v14 = [v8 category];
-    [(_DASPPSDataManager *)v10 unlockForSubsystemAndCategory:v15 category:v14];
+    subsystem2 = [dataCopy subsystem];
+    category2 = [dataCopy category];
+    [(_DASPPSDataManager *)selfCopy unlockForSubsystemAndCategory:subsystem2 category:category2];
     goto LABEL_11;
   }
 
@@ -390,41 +390,41 @@ LABEL_24:
   }
 
   v28 = 0;
-  v13 = [v9 checkResourceIsReachableAndReturnError:&v28];
-  v14 = v28;
+  v13 = [filepathCopy checkResourceIsReachableAndReturnError:&v28];
+  category2 = v28;
   if (v13)
   {
-    v15 = [objc_alloc(sub_10005043C()) initWithFilepath:v9];
-    v27 = v14;
-    v16 = [v15 dataForRequest:v8 withError:&v27];
+    subsystem2 = [objc_alloc(sub_10005043C()) initWithFilepath:filepathCopy];
+    v27 = category2;
+    v16 = [subsystem2 dataForRequest:dataCopy withError:&v27];
     v17 = v27;
 LABEL_11:
 
-    v14 = v17;
+    category2 = v17;
     goto LABEL_13;
   }
 
   v16 = 0;
 LABEL_13:
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  if (v14)
+  if (category2)
   {
-    if (os_log_type_enabled(v10->_log, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
     {
       sub_10011F498();
-      if (a5)
+      if (error)
       {
         goto LABEL_16;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_16:
-      v23 = v14;
+      v23 = category2;
       v24 = 0;
-      *a5 = v14;
+      *error = category2;
       goto LABEL_20;
     }
 
@@ -441,134 +441,134 @@ LABEL_20:
   return v24;
 }
 
-- (id)getPPSTimeSeries:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 filepath:(id)a8 error:(id *)a9
+- (id)getPPSTimeSeries:(id)series category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter filepath:(id)filepath error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  seriesCopy = series;
+  categoryCopy = category;
+  filterCopy = filter;
+  metricsCopy = metrics;
+  timeFilterCopy = timeFilter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     v26 = 138413314;
-    v27 = v15;
+    v27 = seriesCopy;
     v28 = 2112;
-    v29 = v16;
+    v29 = categoryCopy;
     v30 = 2112;
-    v31 = v17;
+    v31 = filterCopy;
     v32 = 2112;
-    v33 = v18;
+    v33 = metricsCopy;
     v34 = 2112;
-    v35 = v19;
+    v35 = timeFilterCopy;
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Getting PPSTimeSeries for subsystem: %@ category: %@ with valueFilter: %@ & metrics: %@ & timeFilter:%@", &v26, 0x34u);
   }
 
-  v22 = sub_10000910C(v15, v16, v17);
-  v23 = [objc_alloc(sub_100009264()) initWithMetrics:v18 predicate:v22 timeFilter:v19];
-  v24 = [(_DASPPSDataManager *)self getPPSData:v23 filepath:v20 error:a9];
+  v22 = sub_10000910C(seriesCopy, categoryCopy, filterCopy);
+  v23 = [objc_alloc(sub_100009264()) initWithMetrics:metricsCopy predicate:v22 timeFilter:timeFilterCopy];
+  v24 = [(_DASPPSDataManager *)self getPPSData:v23 filepath:filepathCopy error:error];
 
   return v24;
 }
 
-- (id)getPPSTimeSeries:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 limitCount:(unint64_t)a8 offsetCount:(unint64_t)a9 filepath:(id)a10 error:(id *)a11
+- (id)getPPSTimeSeries:(id)series category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter limitCount:(unint64_t)count offsetCount:(unint64_t)offsetCount filepath:(id)self0 error:(id *)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  seriesCopy = series;
+  categoryCopy = category;
+  filterCopy = filter;
+  metricsCopy = metrics;
+  timeFilterCopy = timeFilter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413826;
-    v29 = v16;
+    v29 = seriesCopy;
     v30 = 2112;
-    v31 = v17;
+    v31 = categoryCopy;
     v32 = 2112;
-    v33 = v18;
+    v33 = filterCopy;
     v34 = 2112;
-    v35 = v19;
+    v35 = metricsCopy;
     v36 = 2112;
-    v37 = v20;
+    v37 = timeFilterCopy;
     v38 = 2048;
-    v39 = a8;
+    countCopy = count;
     v40 = 2048;
-    v41 = a9;
+    offsetCountCopy = offsetCount;
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Getting PPSTimeSeries for subsystem: %@ category: %@ with valueFilter: %@ & metrics: %@ & timeFilter:%@ & limitCount:%lu & offsetCount:%lu", buf, 0x48u);
   }
 
-  v23 = sub_10000910C(v16, v17, v18);
-  v24 = [objc_alloc(sub_100009264()) initWithMetrics:v19 predicate:v23 timeFilter:v20 limitCount:a8 offsetCount:a9];
-  v25 = [(_DASPPSDataManager *)self getPPSData:v24 filepath:v21 error:a11];
+  v23 = sub_10000910C(seriesCopy, categoryCopy, filterCopy);
+  v24 = [objc_alloc(sub_100009264()) initWithMetrics:metricsCopy predicate:v23 timeFilter:timeFilterCopy limitCount:count offsetCount:offsetCount];
+  v25 = [(_DASPPSDataManager *)self getPPSData:v24 filepath:filepathCopy error:error];
 
   return v25;
 }
 
-- (id)getPPSTimeSeries:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 limitCount:(unint64_t)a8 offsetCount:(unint64_t)a9 readDirection:(unint64_t)a10 filepath:(id)a11 error:(id *)a12
+- (id)getPPSTimeSeries:(id)series category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter limitCount:(unint64_t)count offsetCount:(unint64_t)offsetCount readDirection:(unint64_t)self0 filepath:(id)self1 error:(id *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a11;
+  seriesCopy = series;
+  categoryCopy = category;
+  filterCopy = filter;
+  metricsCopy = metrics;
+  timeFilterCopy = timeFilter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138414082;
-    v30 = v17;
+    v30 = seriesCopy;
     v31 = 2112;
-    v32 = v18;
+    v32 = categoryCopy;
     v33 = 2112;
-    v34 = v19;
+    v34 = filterCopy;
     v35 = 2112;
-    v36 = v20;
+    v36 = metricsCopy;
     v37 = 2112;
-    v38 = v21;
+    v38 = timeFilterCopy;
     v39 = 2048;
-    v40 = a8;
+    countCopy = count;
     v41 = 2048;
-    v42 = a9;
+    offsetCountCopy = offsetCount;
     v43 = 2048;
-    v44 = a10;
+    directionCopy = direction;
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Getting PPSTimeSeries for subsystem: %@ category: %@ with valueFilter: %@ & metrics: %@ & timeFilter:%@ & limitCount:%lu & offsetCount:%lu & readDirection: %lu", buf, 0x52u);
   }
 
-  v24 = sub_10000910C(v17, v18, v19);
-  v25 = [objc_alloc(sub_100009264()) initWithMetrics:v20 predicate:v24 timeFilter:v21 limitCount:a8 offsetCount:a9 readDirection:a10];
-  v26 = [(_DASPPSDataManager *)self getPPSData:v25 filepath:v22 error:a12];
+  v24 = sub_10000910C(seriesCopy, categoryCopy, filterCopy);
+  v25 = [objc_alloc(sub_100009264()) initWithMetrics:metricsCopy predicate:v24 timeFilter:timeFilterCopy limitCount:count offsetCount:offsetCount readDirection:direction];
+  v26 = [(_DASPPSDataManager *)self getPPSData:v25 filepath:filepathCopy error:error];
 
   return v26;
 }
 
-- (id)getPPSHistogram:(id)a3 category:(id)a4 valueFilter:(id)a5 dimensions:(id)a6 timeFilter:(id)a7 filepath:(id)a8 error:(id *)a9
+- (id)getPPSHistogram:(id)histogram category:(id)category valueFilter:(id)filter dimensions:(id)dimensions timeFilter:(id)timeFilter filepath:(id)filepath error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  histogramCopy = histogram;
+  categoryCopy = category;
+  filterCopy = filter;
+  dimensionsCopy = dimensions;
+  timeFilterCopy = timeFilter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    *&buf[4] = v15;
+    *&buf[4] = histogramCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = categoryCopy;
     *&buf[22] = 2112;
-    v34 = v17;
+    v34 = filterCopy;
     *v35 = 2112;
-    *&v35[2] = v18;
+    *&v35[2] = dimensionsCopy;
     v36 = 2112;
-    v37 = v19;
+    v37 = timeFilterCopy;
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Getting PPSHistogram for subsystem: %@ category: %@ with valueFilter: %@ dimensions: %@ timeFilter: %@", buf, 0x34u);
   }
 
-  v22 = sub_10000910C(v15, v16, v17);
+  v22 = sub_10000910C(histogramCopy, categoryCopy, filterCopy);
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -588,37 +588,37 @@ LABEL_20:
   v24 = v23;
   _Block_object_dispose(&v29, 8);
   v25 = [v23 alloc];
-  v26 = [v25 initWithDimensions:v18 predicate:v22 timeFilter:{v19, v29}];
-  v27 = [(_DASPPSDataManager *)self getPPSData:v26 filepath:v20 error:a9];
+  v26 = [v25 initWithDimensions:dimensionsCopy predicate:v22 timeFilter:{timeFilterCopy, v29}];
+  v27 = [(_DASPPSDataManager *)self getPPSData:v26 filepath:filepathCopy error:error];
 
   return v27;
 }
 
-- (id)getPPSTimeIntervalSet:(id)a3 category:(id)a4 valueFilter:(id)a5 metrics:(id)a6 timeFilter:(id)a7 filepath:(id)a8 error:(id *)a9
+- (id)getPPSTimeIntervalSet:(id)set category:(id)category valueFilter:(id)filter metrics:(id)metrics timeFilter:(id)timeFilter filepath:(id)filepath error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  setCopy = set;
+  categoryCopy = category;
+  filterCopy = filter;
+  metricsCopy = metrics;
+  timeFilterCopy = timeFilter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    *&buf[4] = v15;
+    *&buf[4] = setCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = categoryCopy;
     *&buf[22] = 2112;
-    v34 = v17;
+    v34 = filterCopy;
     *v35 = 2112;
-    *&v35[2] = v18;
+    *&v35[2] = metricsCopy;
     v36 = 2112;
-    v37 = v19;
+    v37 = timeFilterCopy;
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Getting PPSTimeIntervalSet for subsystem: %@ category: %@ with valueFilter: %@ metrics: %@ timeFilter: %@", buf, 0x34u);
   }
 
-  v22 = sub_10000910C(v15, v16, v17);
+  v22 = sub_10000910C(setCopy, categoryCopy, filterCopy);
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -638,17 +638,17 @@ LABEL_20:
   v24 = v23;
   _Block_object_dispose(&v29, 8);
   v25 = [v23 alloc];
-  v26 = [v25 initWithMetrics:v18 predicate:v22 timeFilter:{v19, v29}];
-  v27 = [(_DASPPSDataManager *)self getPPSData:v26 filepath:v20 error:a9];
+  v26 = [v25 initWithMetrics:metricsCopy predicate:v22 timeFilter:{timeFilterCopy, v29}];
+  v27 = [(_DASPPSDataManager *)self getPPSData:v26 filepath:filepathCopy error:error];
 
   return v27;
 }
 
-- (BOOL)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5
+- (BOOL)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sCopy = s;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   objc_initWeak(&location, self);
   bgQueue = self->_bgQueue;
   block[0] = _NSConcreteStackBlock;
@@ -656,12 +656,12 @@ LABEL_20:
   block[2] = sub_100051070;
   block[3] = &unk_1001B6620;
   objc_copyWeak(&v20, &location);
-  v17 = v9;
-  v18 = v10;
-  v19 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v17 = subsystemCopy;
+  v18 = categoryCopy;
+  v19 = sCopy;
+  v12 = sCopy;
+  v13 = categoryCopy;
+  v14 = subsystemCopy;
   dispatch_async(bgQueue, block);
 
   objc_destroyWeak(&v20);
@@ -669,17 +669,17 @@ LABEL_20:
   return 1;
 }
 
-- (void)sendDataToPPS:(id)a3 ppsID:(PPSTelemetryIdentifier *)a4
+- (void)sendDataToPPS:(id)s ppsID:(PPSTelemetryIdentifier *)d
 {
-  v6 = a3;
-  if (v6)
+  sCopy = s;
+  if (sCopy)
   {
     log = self->_log;
-    if (a4)
+    if (d)
     {
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
       {
-        sub_10011F50C(v6, log);
+        sub_10011F50C(sCopy, log);
       }
 
       PPSSendTelemetry();
@@ -697,27 +697,27 @@ LABEL_20:
   }
 }
 
-- (id)loadTaskCheckpoints:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadTaskCheckpoints:(id)checkpoints metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v58 = a4;
-  v60 = a5;
-  v61 = a6;
+  checkpointsCopy = checkpoints;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = checkpointsCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v58;
+    *&buf[14] = metricsCopy;
     *&buf[22] = 2112;
-    v86 = v60;
+    v86 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting task checkpoints for %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v59 = v10;
-  v12 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"Name" withMetricValues:v10 predicateModifier:0];
-  if ([v10 count])
+  v59 = checkpointsCopy;
+  v12 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"Name" withMetricValues:checkpointsCopy predicateModifier:0];
+  if ([checkpointsCopy count])
   {
     v13 = v12;
   }
@@ -752,11 +752,11 @@ LABEL_20:
 
         v20 = *(*(&v74 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v20 metricKeysAndValues];
-        v23 = [v22 objectForKeyedSubscript:@"TaskID"];
+        metricKeysAndValues = [v20 metricKeysAndValues];
+        v23 = [metricKeysAndValues objectForKeyedSubscript:@"TaskID"];
 
-        v24 = [v20 metricKeysAndValues];
-        v25 = [v24 objectForKeyedSubscript:@"Name"];
+        metricKeysAndValues2 = [v20 metricKeysAndValues];
+        v25 = [metricKeysAndValues2 objectForKeyedSubscript:@"Name"];
         [v16 setObject:v25 forKeyedSubscript:v23];
 
         objc_autoreleasePoolPop(v21);
@@ -771,11 +771,11 @@ LABEL_20:
   if ([v16 count])
   {
 
-    v26 = [v16 allKeys];
-    v27 = [NSSet setWithArray:v26];
+    allKeys = [v16 allKeys];
+    v27 = [NSSet setWithArray:allKeys];
     v56 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskID" withMetricValues:v27 predicateModifier:0];
 
-    v28 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskInstanceStore" valueFilter:v56 metrics:0 timeFilter:v60 filepath:v61 error:0];
+    v28 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskInstanceStore" valueFilter:v56 metrics:0 timeFilter:filterCopy filepath:filepathCopy error:0];
     v29 = +[NSMutableDictionary dictionary];
     v72 = 0u;
     v73 = 0u;
@@ -796,11 +796,11 @@ LABEL_20:
           }
 
           v33 = *(*(&v70 + 1) + 8 * j);
-          v34 = [v33 metricKeysAndValues];
-          v35 = [v34 objectForKeyedSubscript:@"TaskID"];
+          metricKeysAndValues3 = [v33 metricKeysAndValues];
+          v35 = [metricKeysAndValues3 objectForKeyedSubscript:@"TaskID"];
 
-          v36 = [v33 metricKeysAndValues];
-          v37 = [v36 objectForKeyedSubscript:@"TaskInstanceID"];
+          metricKeysAndValues4 = [v33 metricKeysAndValues];
+          v37 = [metricKeysAndValues4 objectForKeyedSubscript:@"TaskInstanceID"];
 
           v38 = [v16 objectForKeyedSubscript:v35];
           [v29 setObject:v38 forKeyedSubscript:v37];
@@ -815,11 +815,11 @@ LABEL_20:
     if ([v29 count])
     {
 
-      v39 = [v29 allKeys];
-      v40 = [NSSet setWithArray:v39];
+      allKeys2 = [v29 allKeys];
+      v40 = [NSSet setWithArray:allKeys2];
       v55 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskInstanceID" withMetricValues:v40 predicateModifier:0];
 
-      v41 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskCheckpoint" valueFilter:v55 metrics:0 timeFilter:v60 filepath:v61 error:0];
+      v41 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskCheckpoint" valueFilter:v55 metrics:0 timeFilter:filterCopy filepath:filepathCopy error:0];
       v62 = objc_alloc_init(sub_100051974());
       v68 = 0u;
       v69 = 0u;
@@ -841,8 +841,8 @@ LABEL_20:
 
             v45 = *(*(&v66 + 1) + 8 * k);
             v46 = objc_autoreleasePoolPush();
-            v47 = [v45 metricKeysAndValues];
-            v48 = [NSMutableDictionary dictionaryWithDictionary:v47];
+            metricKeysAndValues5 = [v45 metricKeysAndValues];
+            v48 = [NSMutableDictionary dictionaryWithDictionary:metricKeysAndValues5];
 
             v49 = [v48 objectForKeyedSubscript:@"TaskInstanceID"];
             v50 = [v29 objectForKeyedSubscript:v49];
@@ -901,145 +901,145 @@ LABEL_20:
   return v62;
 }
 
-- (id)loadCustomCheckpoints:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadCustomCheckpoints:(id)checkpoints metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  checkpointsCopy = checkpoints;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = v10;
+    v19 = checkpointsCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = metricsCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting custom checkpoints for %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:v10 predicateModifier:0];
-  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"CustomCheckpoint" valueFilter:v15 metrics:v11 timeFilter:v12 filepath:v13 error:0];
+  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:checkpointsCopy predicateModifier:0];
+  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"CustomCheckpoint" valueFilter:v15 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v16;
 }
 
-- (id)loadTaskBlockingReasons:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadTaskBlockingReasons:(id)reasons metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reasonsCopy = reasons;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = v10;
+    v19 = reasonsCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = metricsCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting task blocking reasons for %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:v10 predicateModifier:0];
-  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskBlockingPolicies" valueFilter:v15 metrics:v11 timeFilter:v12 filepath:v13 error:0];
+  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:reasonsCopy predicateModifier:0];
+  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskBlockingPolicies" valueFilter:v15 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v16;
 }
 
-- (id)loadIntensiveTaskBlockingReasons:(id)a3 metrics:(id)a4 filepath:(id)a5
+- (id)loadIntensiveTaskBlockingReasons:(id)reasons metrics:(id)metrics filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonsCopy = reasons;
+  metricsCopy = metrics;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = v9;
+    v15 = metricsCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = reasonsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting intensive task blocking reasons with metrics: %@ & timeFilter: %@", buf, 0x16u);
   }
 
-  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"IntensiveTasksBlockingPolicies" valueFilter:0 metrics:v9 timeFilter:v8 filepath:v10 error:0];
+  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"IntensiveTasksBlockingPolicies" valueFilter:0 metrics:metricsCopy timeFilter:reasonsCopy filepath:filepathCopy error:0];
 
   return v12;
 }
 
-- (id)loadFeatureCheckpoints:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadFeatureCheckpoints:(id)checkpoints metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  checkpointsCopy = checkpoints;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v19 = v10;
+    v19 = checkpointsCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = metricsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting feature checkpoints for %@ with metrics: %@", buf, 0x16u);
   }
 
-  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"FeatureCode" withMetricValues:v10 predicateModifier:0];
-  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"FeatureCheckpoint" valueFilter:v15 metrics:v11 timeFilter:v12 filepath:v13 error:0];
+  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"FeatureCode" withMetricValues:checkpointsCopy predicateModifier:0];
+  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"FeatureCheckpoint" valueFilter:v15 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v16;
 }
 
-- (id)loadConfig:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)loadConfig:(id)config timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = v8;
+    v15 = configCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting Config with metrics: %@ & timeFilter: %@", buf, 0x16u);
   }
 
-  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"Config" valueFilter:0 metrics:v8 timeFilter:v9 filepath:v10 error:0];
+  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"Config" valueFilter:0 metrics:configCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v12;
 }
 
-- (id)loadTaskProgress:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadTaskProgress:(id)progress metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  progressCopy = progress;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v37 = v10;
+    v37 = progressCopy;
     v38 = 2112;
-    v39 = v11;
+    v39 = metricsCopy;
     v40 = 2112;
-    v41 = v12;
+    v41 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting task progress for %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v15 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"Progress" valueFilter:0 metrics:v11 timeFilter:v12 filepath:v13 error:0];
-  if ([v10 count])
+  v15 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"Progress" valueFilter:0 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
+  if ([progressCopy count])
   {
-    v29 = v13;
-    v30 = v12;
+    v29 = filepathCopy;
+    v30 = filterCopy;
     v16 = +[NSMutableArray array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v17 = v10;
+    v17 = progressCopy;
     v18 = [v17 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v18)
     {
@@ -1066,12 +1066,12 @@ LABEL_20:
 
     v23 = [NSCompoundPredicate orPredicateWithSubpredicates:v16];
     v24 = objc_alloc(sub_100051974());
-    v25 = [v15 array];
-    v26 = [v25 filteredArrayUsingPredicate:v23];
+    array = [v15 array];
+    v26 = [array filteredArrayUsingPredicate:v23];
     v27 = [v24 initWithEvents:v26];
 
-    v12 = v30;
-    v13 = v29;
+    filterCopy = v30;
+    filepathCopy = v29;
   }
 
   else
@@ -1082,83 +1082,83 @@ LABEL_20:
   return v27;
 }
 
-- (id)loadTaskThroughput:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadTaskThroughput:(id)throughput metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  throughputCopy = throughput;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = v10;
+    v19 = throughputCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = metricsCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting task progress for %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:v10 predicateModifier:0];
-  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskThroughput" valueFilter:v15 metrics:v11 timeFilter:v12 filepath:v13 error:0];
+  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:throughputCopy predicateModifier:0];
+  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskThroughput" valueFilter:v15 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v16;
 }
 
-- (id)loadTasksForFeatures:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadTasksForFeatures:(id)features metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  featuresCopy = features;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = v10;
+    v19 = featuresCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = metricsCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting tasks for Feature Codes: %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"FeatureCodes" withMetricValues:v10 predicateModifier:2];
-  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskFeatureCodes" valueFilter:v15 metrics:v11 timeFilter:v12 filepath:v13 error:0];
+  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"FeatureCodes" withMetricValues:featuresCopy predicateModifier:2];
+  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskFeatureCodes" valueFilter:v15 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v16;
 }
 
-- (id)loadTaskDependencies:(id)a3 metrics:(id)a4 timeFilter:(id)a5 filepath:(id)a6
+- (id)loadTaskDependencies:(id)dependencies metrics:(id)metrics timeFilter:(id)filter filepath:(id)filepath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dependenciesCopy = dependencies;
+  metricsCopy = metrics;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v19 = v10;
+    v19 = dependenciesCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = metricsCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting dependencies for tasks: %@ with metrics: %@ & timeFilter: %@", buf, 0x20u);
   }
 
-  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:v10 predicateModifier:0];
-  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskDependencies" valueFilter:v15 metrics:v11 timeFilter:v12 filepath:v13 error:0];
+  v15 = [(_DASPPSDataManager *)self valueFilterPredicateForMetric:@"TaskName" withMetricValues:dependenciesCopy predicateModifier:0];
+  v16 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskDependencies" valueFilter:v15 metrics:metricsCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v16;
 }
 
-- (id)loadTaskDependencyGraph:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)loadTaskDependencyGraph:(id)graph timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
+  graphCopy = graph;
   v36 = 0;
-  v9 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskDependencies" valueFilter:0 metrics:0 timeFilter:a4 filepath:a5 error:&v36];
+  v9 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskDependencies" valueFilter:0 metrics:0 timeFilter:filter filepath:filepath error:&v36];
   v10 = v36;
   v11 = 0;
   if (!v10)
@@ -1185,16 +1185,16 @@ LABEL_20:
           }
 
           v16 = *(*(&v32 + 1) + 8 * i);
-          v17 = [v16 metricKeysAndValues];
-          v18 = [v17 objectForKeyedSubscript:@"TaskName"];
+          metricKeysAndValues = [v16 metricKeysAndValues];
+          v18 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
           if (v18)
           {
-            v19 = [v16 metricKeysAndValues];
-            v20 = [v19 objectForKeyedSubscript:@"ProducedResultIdentifiers"];
+            metricKeysAndValues2 = [v16 metricKeysAndValues];
+            v20 = [metricKeysAndValues2 objectForKeyedSubscript:@"ProducedResultIdentifiers"];
 
-            v21 = [v16 metricKeysAndValues];
-            v22 = [v21 objectForKeyedSubscript:@"DependencyIdentifiers"];
+            metricKeysAndValues3 = [v16 metricKeysAndValues];
+            v22 = [metricKeysAndValues3 objectForKeyedSubscript:@"DependencyIdentifiers"];
 
             v23 = [_DASTaskDependencies alloc];
             v24 = [NSSet setWithArray:v20];
@@ -1211,7 +1211,7 @@ LABEL_20:
     }
 
     v27 = [_DASTaskDependencyGraph alloc];
-    v11 = [(_DASTaskDependencyGraph *)v27 constructTaskDependencyGraphForTask:v8 dependencyDataMap:v31];
+    v11 = [(_DASTaskDependencyGraph *)v27 constructTaskDependencyGraphForTask:graphCopy dependencyDataMap:v31];
 
     v10 = 0;
     v9 = v29;
@@ -1220,43 +1220,43 @@ LABEL_20:
   return v11;
 }
 
-- (id)loadBuddyData:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)loadBuddyData:(id)data timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = v8;
+    v15 = dataCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting Buddy Data with metrics: %@ & timeFilter: %@", buf, 0x16u);
   }
 
-  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"BuddyData" valueFilter:0 metrics:v8 timeFilter:v9 filepath:v10 error:0];
+  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"BuddyData" valueFilter:0 metrics:dataCopy timeFilter:filterCopy filepath:filepathCopy error:0];
 
   return v12;
 }
 
-- (id)loadPluginPrediction:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)loadPluginPrediction:(id)prediction timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predictionCopy = prediction;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v18 = v8;
+    v18 = predictionCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting Plugin Prediction Data with metrics: %@ & timeFilter: %@", buf, 0x16u);
   }
 
   v16 = 0;
-  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"PluginPrediction" valueFilter:0 metrics:0 timeFilter:v9 filepath:v10 error:&v16];
+  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"PluginPrediction" valueFilter:0 metrics:0 timeFilter:filterCopy filepath:filepathCopy error:&v16];
   v13 = v12;
   v14 = 0;
   if (!v16)
@@ -1267,23 +1267,23 @@ LABEL_20:
   return v14;
 }
 
-- (id)loadTaskRuntimeAllocation:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)loadTaskRuntimeAllocation:(id)allocation timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  allocationCopy = allocation;
+  filterCopy = filter;
+  filepathCopy = filepath;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v18 = v8;
+    v18 = allocationCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = filterCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Getting Task Runtime Allocations with metrics: %@ & timeFilter: %@", buf, 0x16u);
   }
 
   v16 = 0;
-  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskRuntimeAllocation" valueFilter:0 metrics:0 timeFilter:v9 filepath:v10 error:&v16];
+  v12 = [(_DASPPSDataManager *)self getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskRuntimeAllocation" valueFilter:0 metrics:0 timeFilter:filterCopy filepath:filepathCopy error:&v16];
   v13 = v12;
   v14 = 0;
   if (!v16)

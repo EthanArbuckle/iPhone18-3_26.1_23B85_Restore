@@ -1,17 +1,17 @@
 @interface UGCPOIEnrichmentEditorCell
-- (UGCPOIEnrichmentEditorCell)initWithFrame:(CGRect)a3;
-- (void)setShowBottomHairline:(BOOL)a3;
-- (void)setShowTopHairline:(BOOL)a3;
+- (UGCPOIEnrichmentEditorCell)initWithFrame:(CGRect)frame;
+- (void)setShowBottomHairline:(BOOL)hairline;
+- (void)setShowTopHairline:(BOOL)hairline;
 @end
 
 @implementation UGCPOIEnrichmentEditorCell
 
-- (void)setShowBottomHairline:(BOOL)a3
+- (void)setShowBottomHairline:(BOOL)hairline
 {
-  v3 = a3;
-  if ([(UGCPOIEnrichmentEditorCell *)self showBottomHairline]!= a3)
+  hairlineCopy = hairline;
+  if ([(UGCPOIEnrichmentEditorCell *)self showBottomHairline]!= hairline)
   {
-    if (v3)
+    if (hairlineCopy)
     {
       v5 = [[UGCHairlineView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       bottomHairlineView = self->_bottomHairlineView;
@@ -19,18 +19,18 @@
 
       [(UGCHairlineView *)self->_bottomHairlineView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UGCPOIEnrichmentEditorCell *)self addSubview:self->_bottomHairlineView];
-      v18 = [(UGCHairlineView *)self->_bottomHairlineView bottomAnchor];
-      v7 = [(UGCPOIEnrichmentEditorCell *)self bottomAnchor];
-      v8 = [v18 constraintEqualToAnchor:v7];
+      bottomAnchor = [(UGCHairlineView *)self->_bottomHairlineView bottomAnchor];
+      bottomAnchor2 = [(UGCPOIEnrichmentEditorCell *)self bottomAnchor];
+      v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v19[0] = v8;
-      v9 = [(UGCHairlineView *)self->_bottomHairlineView leadingAnchor];
-      v10 = [(UGCPOIEnrichmentEditorCell *)self layoutMarginsGuide];
-      v11 = [v10 leadingAnchor];
-      v12 = [v9 constraintEqualToAnchor:v11];
+      leadingAnchor = [(UGCHairlineView *)self->_bottomHairlineView leadingAnchor];
+      layoutMarginsGuide = [(UGCPOIEnrichmentEditorCell *)self layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v19[1] = v12;
-      v13 = [(UGCHairlineView *)self->_bottomHairlineView trailingAnchor];
-      v14 = [(UGCPOIEnrichmentEditorCell *)self trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [(UGCHairlineView *)self->_bottomHairlineView trailingAnchor];
+      trailingAnchor2 = [(UGCPOIEnrichmentEditorCell *)self trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v19[2] = v15;
       v16 = [NSArray arrayWithObjects:v19 count:3];
       [NSLayoutConstraint activateConstraints:v16];
@@ -45,12 +45,12 @@
   }
 }
 
-- (void)setShowTopHairline:(BOOL)a3
+- (void)setShowTopHairline:(BOOL)hairline
 {
-  v3 = a3;
-  if ([(UGCPOIEnrichmentEditorCell *)self showTopHairline]!= a3)
+  hairlineCopy = hairline;
+  if ([(UGCPOIEnrichmentEditorCell *)self showTopHairline]!= hairline)
   {
-    if (v3)
+    if (hairlineCopy)
     {
       v5 = [[UGCHairlineView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       topHairlineView = self->_topHairlineView;
@@ -58,18 +58,18 @@
 
       [(UGCHairlineView *)self->_topHairlineView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UGCPOIEnrichmentEditorCell *)self addSubview:self->_topHairlineView];
-      v18 = [(UGCHairlineView *)self->_topHairlineView topAnchor];
-      v7 = [(UGCPOIEnrichmentEditorCell *)self topAnchor];
-      v8 = [v18 constraintEqualToAnchor:v7];
+      topAnchor = [(UGCHairlineView *)self->_topHairlineView topAnchor];
+      topAnchor2 = [(UGCPOIEnrichmentEditorCell *)self topAnchor];
+      v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v19[0] = v8;
-      v9 = [(UGCHairlineView *)self->_topHairlineView leadingAnchor];
-      v10 = [(UGCPOIEnrichmentEditorCell *)self layoutMarginsGuide];
-      v11 = [v10 leadingAnchor];
-      v12 = [v9 constraintEqualToAnchor:v11];
+      leadingAnchor = [(UGCHairlineView *)self->_topHairlineView leadingAnchor];
+      layoutMarginsGuide = [(UGCPOIEnrichmentEditorCell *)self layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v19[1] = v12;
-      v13 = [(UGCHairlineView *)self->_topHairlineView trailingAnchor];
-      v14 = [(UGCPOIEnrichmentEditorCell *)self trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [(UGCHairlineView *)self->_topHairlineView trailingAnchor];
+      trailingAnchor2 = [(UGCPOIEnrichmentEditorCell *)self trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v19[2] = v15;
       v16 = [NSArray arrayWithObjects:v19 count:3];
       [NSLayoutConstraint activateConstraints:v16];
@@ -84,11 +84,11 @@
   }
 }
 
-- (UGCPOIEnrichmentEditorCell)initWithFrame:(CGRect)a3
+- (UGCPOIEnrichmentEditorCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UGCPOIEnrichmentEditorCell;
-  v3 = [(UGCPOIEnrichmentEditorCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCPOIEnrichmentEditorCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

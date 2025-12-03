@@ -1,54 +1,54 @@
 @interface HKInteractiveChartViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-+ (void)_axConfigureGraphAccessibilityFromData:(id)a3 forGraphView:(id)a4;
-+ (void)_axConfigureGraphViewInfoFromData:(id)a3 forGraphView:(id)a4;
-+ (void)_axTrimAndInterpolateValues:(id *)a3 withXvalues:(id *)a4;
-- (id)_displayNameForDisplayType:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
++ (void)_axConfigureGraphAccessibilityFromData:(id)data forGraphView:(id)view;
++ (void)_axConfigureGraphViewInfoFromData:(id)data forGraphView:(id)view;
++ (void)_axTrimAndInterpolateValues:(id *)values withXvalues:(id *)xvalues;
+- (id)_displayNameForDisplayType:(id)type;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)a3 anchorDate:(id)a4 animated:(BOOL)a5;
+- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)scope anchorDate:(id)date animated:(BOOL)animated;
 - (void)_setDateSelectorToVisibleRange;
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4;
-- (void)graphViewDidEndSelection:(id)a3;
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point;
+- (void)graphViewDidEndSelection:(id)selection;
 @end
 
 @implementation HKInteractiveChartViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKGraphZoomLevelConfiguration"];
-  [v3 validateClass:@"HKAccessibilityData"];
-  [v3 validateClass:@"HKGraphZoomLevelConfiguration" hasClassMethod:@"timeScopeForDateRange:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_setDateSelectorToVisibleRange" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_replacePrimaryGraphViewControllerWithTimeScope:anchorDate:animated:" withFullSignature:{"v", "q", "@", "B", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HKTimeScopeControl" hasInstanceMethod:@"selectedTimeScope" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"primaryGraphViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKGraphViewController" hasInstanceMethod:@"graphView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceVariable:@"_currentTimeView" withType:"HKCurrentTimeView"];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceVariable:@"_currentValueView" withType:"UIView"];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"accessibilityDataForChart" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityData" hasInstanceMethod:@"accessibilitySpans" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataComprehensionMinYValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataComprehensionMaxYValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataComprehensionUnitForChart" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataSeriesType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"HKAccessibilityData" hasInstanceMethod:@"accessibilityPointData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityPointData" hasInstanceMethod:@"horizontalTimeCoordinate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityPointData" hasInstanceMethod:@"values" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityPointData" hasInstanceMethod:@"horizontalScreenCoordinate" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueAsNumber" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_displayNameForDisplayType:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_currentValueEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"lollipopController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"graphView:didUpdateSelectedPoint:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"graphViewDidEndSelection:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HKDisplayType" hasInstanceMethod:@"localization" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKDisplayTypeLocalization" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKLollipopController" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKGraphZoomLevelConfiguration"];
+  [validationsCopy validateClass:@"HKAccessibilityData"];
+  [validationsCopy validateClass:@"HKGraphZoomLevelConfiguration" hasClassMethod:@"timeScopeForDateRange:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_setDateSelectorToVisibleRange" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_replacePrimaryGraphViewControllerWithTimeScope:anchorDate:animated:" withFullSignature:{"v", "q", "@", "B", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HKTimeScopeControl" hasInstanceMethod:@"selectedTimeScope" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"primaryGraphViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKGraphViewController" hasInstanceMethod:@"graphView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceVariable:@"_currentTimeView" withType:"HKCurrentTimeView"];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceVariable:@"_currentValueView" withType:"UIView"];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"accessibilityDataForChart" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityData" hasInstanceMethod:@"accessibilitySpans" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataComprehensionMinYValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataComprehensionMaxYValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataComprehensionUnitForChart" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilitySpan" hasInstanceMethod:@"dataSeriesType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityData" hasInstanceMethod:@"accessibilityPointData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityPointData" hasInstanceMethod:@"horizontalTimeCoordinate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityPointData" hasInstanceMethod:@"values" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityPointData" hasInstanceMethod:@"horizontalScreenCoordinate" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKAccessibilityValue" hasInstanceMethod:@"valueAsNumber" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_displayNameForDisplayType:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"_currentValueEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"lollipopController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"graphView:didUpdateSelectedPoint:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartViewController" hasInstanceMethod:@"graphViewDidEndSelection:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HKDisplayType" hasInstanceMethod:@"localization" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKDisplayTypeLocalization" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKLollipopController" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -64,15 +64,15 @@
   [objc_opt_class() _axConfigureGraphAccessibilityFromData:v3 forGraphView:v5];
 }
 
-+ (void)_axConfigureGraphViewInfoFromData:(id)a3 forGraphView:(id)a4
++ (void)_axConfigureGraphViewInfoFromData:(id)data forGraphView:(id)view
 {
   v26 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  viewCopy = view;
   MEMORY[0x29C2D9130](@"HKAccessibilityData");
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 safeDictionaryForKey:@"accessibilitySpans"];
+    v7 = [dataCopy safeDictionaryForKey:@"accessibilitySpans"];
     v8 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     v21 = 0u;
     v22 = 0u;
@@ -109,8 +109,8 @@
 
     if ([v8 count])
     {
-      v15 = [v8 firstObject];
-      v16 = [v15 safeValueForKey:@"dataComprehensionMinYValue"];
+      firstObject = [v8 firstObject];
+      v16 = [firstObject safeValueForKey:@"dataComprehensionMinYValue"];
       if (v16)
       {
         v17 = v16;
@@ -121,34 +121,34 @@
         v17 = &unk_2A21BBCB8;
       }
 
-      [v6 _accessibilitySetRetainedValue:v17 forKey:{@"kAXGraphViewYAxisMin", v21}];
-      v18 = [v15 safeValueForKey:@"dataComprehensionMaxYValue"];
-      [v6 _accessibilitySetRetainedValue:v18 forKey:@"kAXGraphViewYAxisMax"];
+      [viewCopy _accessibilitySetRetainedValue:v17 forKey:{@"kAXGraphViewYAxisMin", v21}];
+      v18 = [firstObject safeValueForKey:@"dataComprehensionMaxYValue"];
+      [viewCopy _accessibilitySetRetainedValue:v18 forKey:@"kAXGraphViewYAxisMax"];
 
-      v19 = [v15 safeStringForKey:@"dataComprehensionUnitForChart"];
-      [v6 _accessibilitySetRetainedValue:v19 forKey:@"kAXGraphViewUnit"];
+      v19 = [firstObject safeStringForKey:@"dataComprehensionUnitForChart"];
+      [viewCopy _accessibilitySetRetainedValue:v19 forKey:@"kAXGraphViewUnit"];
 
-      [v6 _accessibilitySetIntegerValue:objc_msgSend(v15 forKey:{"safeIntegerForKey:", @"dataSeriesType", @"kAXGraphViewDataSeriesType"}];
+      [viewCopy _accessibilitySetIntegerValue:objc_msgSend(firstObject forKey:{"safeIntegerForKey:", @"dataSeriesType", @"kAXGraphViewDataSeriesType"}];
     }
   }
 
   v20 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)_axConfigureGraphAccessibilityFromData:(id)a3 forGraphView:(id)a4
++ (void)_axConfigureGraphAccessibilityFromData:(id)data forGraphView:(id)view
 {
   v62 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  viewCopy = view;
   MEMORY[0x29C2D9130](@"HKAccessibilityData");
   if (objc_opt_isKindOfClass())
   {
-    v35 = a1;
+    selfCopy = self;
     v43 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     v42 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     v41 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-    v37 = v6;
-    [v6 safeArrayForKey:@"accessibilityPointData"];
+    v37 = dataCopy;
+    [dataCopy safeArrayForKey:@"accessibilityPointData"];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -162,7 +162,7 @@
     v9 = v8;
     v10 = *v57;
     v38 = *v57;
-    v39 = v7;
+    v39 = viewCopy;
     while (1)
     {
       v11 = 0;
@@ -178,7 +178,7 @@
         MEMORY[0x29C2D9130](@"HKAccessibilityPointData");
         if (objc_opt_isKindOfClass())
         {
-          v13 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:v7];
+          v13 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:viewCopy];
           v48 = [v12 safeStringForKey:@"horizontalTimeCoordinate"];
           v49 = v13;
           [v13 setAccessibilityLabel:?];
@@ -209,7 +209,7 @@
                   }
 
                   v21 = *(*(&v52 + 1) + 8 * i);
-                  v22 = [v21 safeStringForKey:{@"valueTitle", v35}];
+                  v22 = [v21 safeStringForKey:{@"valueTitle", selfCopy}];
                   if (([v15 containsObject:v22] & 1) == 0)
                   {
                     [v15 addObject:v22];
@@ -229,14 +229,14 @@
             }
 
             v25 = MEMORY[0x29C2D9150](v15);
-            v26 = [v16 lastObject];
-            v27 = [v26 safeValueForKey:@"valueAsNumber"];
+            lastObject = [v16 lastObject];
+            null = [lastObject safeValueForKey:@"valueAsNumber"];
 
-            if (v27)
+            if (null)
             {
-              [v41 addObject:v27];
+              [v41 addObject:null];
               v10 = v38;
-              v7 = v39;
+              viewCopy = v39;
               v9 = v40;
               v11 = v45;
 LABEL_23:
@@ -245,9 +245,9 @@ LABEL_23:
               [v49 setAccessibilityValue:v25];
               [v47 safeCGFloatForKey:@"horizontalScreenCoordinate"];
               v29 = v28 + -5.0;
-              [v7 frame];
+              [viewCopy frame];
               v31 = v30;
-              [v7 frame];
+              [viewCopy frame];
               [v49 setAccessibilityFrameInContainerSpace:{v29, v31, 10.0}];
               [v43 addObject:v49];
 
@@ -255,7 +255,7 @@ LABEL_23:
             }
 
             v10 = v38;
-            v7 = v39;
+            viewCopy = v39;
             v9 = v40;
             v11 = v45;
           }
@@ -265,8 +265,8 @@ LABEL_23:
             v25 = 0;
           }
 
-          v27 = [MEMORY[0x29EDB8E28] null];
-          [v41 addObject:v27];
+          null = [MEMORY[0x29EDB8E28] null];
+          [v41 addObject:null];
           goto LABEL_23;
         }
 
@@ -279,17 +279,17 @@ LABEL_24:
       if (!v9)
       {
 LABEL_26:
-        [v7 setAccessibilityElements:{v43, v35}];
+        [viewCopy setAccessibilityElements:{v43, selfCopy}];
         v50 = v42;
         v51 = v41;
         [v36 _axTrimAndInterpolateValues:&v51 withXvalues:&v50];
         v32 = v51;
 
         v33 = v50;
-        [v7 _accessibilitySetRetainedValue:v32 forKey:@"kAXGraphViewGraphElementsYValues"];
-        [v7 _accessibilitySetRetainedValue:v33 forKey:@"kAXGraphViewGraphElementsXValues"];
+        [viewCopy _accessibilitySetRetainedValue:v32 forKey:@"kAXGraphViewGraphElementsYValues"];
+        [viewCopy _accessibilitySetRetainedValue:v33 forKey:@"kAXGraphViewGraphElementsXValues"];
 
-        v6 = v37;
+        dataCopy = v37;
         break;
       }
     }
@@ -298,34 +298,34 @@ LABEL_26:
   v34 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)_axTrimAndInterpolateValues:(id *)a3 withXvalues:(id *)a4
++ (void)_axTrimAndInterpolateValues:(id *)values withXvalues:(id *)xvalues
 {
-  if (a3)
+  if (values)
   {
-    if (a4)
+    if (xvalues)
     {
-      if ([*a3 count])
+      if ([*values count])
       {
-        if ([*a4 count])
+        if ([*xvalues count])
         {
-          v6 = [*a3 count];
-          if (v6 == [*a4 count])
+          v6 = [*values count];
+          if (v6 == [*xvalues count])
           {
-            if ([*a3 count])
+            if ([*values count])
             {
               v7 = 0;
               while (1)
               {
-                v8 = [*a3 objectAtIndexedSubscript:v7];
-                v9 = [MEMORY[0x29EDB8E28] null];
-                v10 = [v8 isEqual:v9];
+                v8 = [*values objectAtIndexedSubscript:v7];
+                null = [MEMORY[0x29EDB8E28] null];
+                v10 = [v8 isEqual:null];
 
                 if (!v10)
                 {
                   break;
                 }
 
-                if ([*a3 count] <= ++v7)
+                if ([*values count] <= ++v7)
                 {
                   goto LABEL_12;
                 }
@@ -337,23 +337,23 @@ LABEL_26:
               }
 
 LABEL_12:
-              [*a3 removeObjectsInRange:{0, v7}];
-              [*a4 removeObjectsInRange:{0, v7}];
+              [*values removeObjectsInRange:{0, v7}];
+              [*xvalues removeObjectsInRange:{0, v7}];
             }
 
 LABEL_13:
-            if ([*a3 count])
+            if ([*values count])
             {
-              v11 = [*a3 count];
+              v11 = [*values count];
               v12 = v11 - 1;
               if (v11 >= 1)
               {
                 v13 = (v11 - 1);
                 while (1)
                 {
-                  v14 = [*a3 objectAtIndexedSubscript:v13];
-                  v15 = [MEMORY[0x29EDB8E28] null];
-                  v16 = [v14 isEqual:v15];
+                  v14 = [*values objectAtIndexedSubscript:v13];
+                  null2 = [MEMORY[0x29EDB8E28] null];
+                  v16 = [v14 isEqual:null2];
 
                   if (!v16)
                   {
@@ -371,14 +371,14 @@ LABEL_13:
                 if (v12 > v13)
                 {
                   v19 = v18;
-                  [*a3 removeObjectsInRange:{v13 + 1, v18}];
-                  [*a4 removeObjectsInRange:{v13 + 1, v19}];
+                  [*values removeObjectsInRange:{v13 + 1, v18}];
+                  [*xvalues removeObjectsInRange:{v13 + 1, v19}];
                 }
               }
 
-              if ([*a3 count] >= 3)
+              if ([*values count] >= 3)
               {
-                v45 = [*a3 count];
+                v45 = [*values count];
                 if (v45 >= 1)
                 {
                   v20 = 0;
@@ -391,9 +391,9 @@ LABEL_13:
                     v24 = v20;
                     while (1)
                     {
-                      v25 = [*a3 objectAtIndexedSubscript:v24];
-                      v26 = [MEMORY[0x29EDB8E28] null];
-                      v27 = [v25 isEqual:v26];
+                      v25 = [*values objectAtIndexedSubscript:v24];
+                      null3 = [MEMORY[0x29EDB8E28] null];
+                      v27 = [v25 isEqual:null3];
 
                       if (v27)
                       {
@@ -421,9 +421,9 @@ LABEL_13:
                     v20 = v21 >> 32;
                     while (1)
                     {
-                      v31 = [*a3 objectAtIndexedSubscript:v20];
-                      v32 = [MEMORY[0x29EDB8E28] null];
-                      v33 = [v31 isEqual:v32];
+                      v31 = [*values objectAtIndexedSubscript:v20];
+                      null4 = [MEMORY[0x29EDB8E28] null];
+                      v33 = [v31 isEqual:null4];
 
                       if (!v33)
                       {
@@ -440,11 +440,11 @@ LABEL_13:
                       }
                     }
 
-                    v34 = [*a3 objectAtIndexedSubscript:v24 - 1];
+                    v34 = [*values objectAtIndexedSubscript:v24 - 1];
                     [v34 doubleValue];
                     v36 = v35;
 
-                    v37 = [*a3 objectAtIndexedSubscript:v21 >> 32];
+                    v37 = [*values objectAtIndexedSubscript:v21 >> 32];
                     [v37 doubleValue];
                     v39 = v38;
 
@@ -454,10 +454,10 @@ LABEL_13:
                       do
                       {
                         v41 = MEMORY[0x29EDBA070];
-                        v42 = [*a3 objectAtIndexedSubscript:v28 - 1];
+                        v42 = [*values objectAtIndexedSubscript:v28 - 1];
                         [v42 doubleValue];
                         v44 = [v41 numberWithDouble:v40 + v43];
-                        [*a3 setObject:v44 atIndexedSubscript:v28];
+                        [*values setObject:v44 atIndexedSubscript:v28];
 
                         ++v28;
                       }
@@ -485,11 +485,11 @@ LABEL_13:
   [(HKInteractiveChartViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)a3 anchorDate:(id)a4 animated:(BOOL)a5
+- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)scope anchorDate:(id)date animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = HKInteractiveChartViewControllerAccessibility;
-  [(HKInteractiveChartViewControllerAccessibility *)&v5 _replacePrimaryGraphViewControllerWithTimeScope:a3 anchorDate:a4 animated:?];
+  [(HKInteractiveChartViewControllerAccessibility *)&v5 _replacePrimaryGraphViewControllerWithTimeScope:scope anchorDate:date animated:?];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -505,13 +505,13 @@ void __117__HKInteractiveChartViewControllerAccessibility__replacePrimaryGraphVi
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (id)_displayNameForDisplayType:(id)a3
+- (id)_displayNameForDisplayType:(id)type
 {
   v10.receiver = self;
   v10.super_class = HKInteractiveChartViewControllerAccessibility;
-  v4 = a3;
-  v5 = [(HKInteractiveChartViewControllerAccessibility *)&v10 _displayNameForDisplayType:v4];
-  v6 = [v4 safeValueForKeyPath:{@"localization.displayName", v10.receiver, v10.super_class}];
+  typeCopy = type;
+  v5 = [(HKInteractiveChartViewControllerAccessibility *)&v10 _displayNameForDisplayType:typeCopy];
+  v6 = [typeCopy safeValueForKeyPath:{@"localization.displayName", v10.receiver, v10.super_class}];
 
   v7 = [(HKInteractiveChartViewControllerAccessibility *)self safeValueForKey:@"primaryGraphViewController"];
   v8 = [v7 safeUIViewForKey:@"graphView"];
@@ -521,11 +521,11 @@ void __117__HKInteractiveChartViewControllerAccessibility__replacePrimaryGraphVi
   return v5;
 }
 
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point
 {
   v10.receiver = self;
   v10.super_class = HKInteractiveChartViewControllerAccessibility;
-  [(HKInteractiveChartViewControllerAccessibility *)&v10 graphView:a3 didUpdateSelectedPoint:a4];
+  [(HKInteractiveChartViewControllerAccessibility *)&v10 graphView:view didUpdateSelectedPoint:point];
   v5 = [(HKInteractiveChartViewControllerAccessibility *)self safeBoolForKey:@"_currentValueEnabled"];
   v6 = [(HKInteractiveChartViewControllerAccessibility *)self safeValueForKey:@"lollipopController"];
   v7 = [v6 safeBoolForKey:@"isVisible"];
@@ -544,11 +544,11 @@ void __117__HKInteractiveChartViewControllerAccessibility__replacePrimaryGraphVi
   [v9 setAccessibilityElementsHidden:v7];
 }
 
-- (void)graphViewDidEndSelection:(id)a3
+- (void)graphViewDidEndSelection:(id)selection
 {
   v5.receiver = self;
   v5.super_class = HKInteractiveChartViewControllerAccessibility;
-  [(HKInteractiveChartViewControllerAccessibility *)&v5 graphViewDidEndSelection:a3];
+  [(HKInteractiveChartViewControllerAccessibility *)&v5 graphViewDidEndSelection:selection];
   v4 = [(HKInteractiveChartViewControllerAccessibility *)self safeUIViewForKey:@"_currentValueView"];
   [v4 setAccessibilityElementsHidden:0];
 }

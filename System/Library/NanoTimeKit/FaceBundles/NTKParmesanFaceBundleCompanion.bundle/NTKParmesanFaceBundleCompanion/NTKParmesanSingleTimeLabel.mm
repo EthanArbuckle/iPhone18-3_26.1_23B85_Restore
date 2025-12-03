@@ -1,11 +1,11 @@
 @interface NTKParmesanSingleTimeLabel
-- (NTKParmesanSingleTimeLabel)initWithCoder:(id)a3;
+- (NTKParmesanSingleTimeLabel)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKParmesanSingleTimeLabel
 
-- (NTKParmesanSingleTimeLabel)initWithCoder:(id)a3
+- (NTKParmesanSingleTimeLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___NTKParmesanSingleTimeLabel_alignment) = 0;
   v3 = self + OBJC_IVAR___NTKParmesanSingleTimeLabel_timeRect;
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFF3BB0();
 }
 

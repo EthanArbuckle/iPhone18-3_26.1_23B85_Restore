@@ -7,10 +7,10 @@
 - (id)bmdsl_serialize
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v13 = 0;
-    v1 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:&v13];
+    v1 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v13];
     v2 = v13;
     if (!v1)
     {

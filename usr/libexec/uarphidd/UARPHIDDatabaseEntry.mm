@@ -1,46 +1,46 @@
 @interface UARPHIDDatabaseEntry
-- (BOOL)isEqual:(id)a3;
-- (UARPHIDDatabaseEntry)initWithCoder:(id)a3;
-- (UARPHIDDatabaseEntry)initWithVendorID:(id)a3 productID:(id)a4 serialNumber:(id)a5 uuid:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UARPHIDDatabaseEntry)initWithCoder:(id)coder;
+- (UARPHIDDatabaseEntry)initWithVendorID:(id)d productID:(id)iD serialNumber:(id)number uuid:(id)uuid;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPHIDDatabaseEntry
 
-- (UARPHIDDatabaseEntry)initWithVendorID:(id)a3 productID:(id)a4 serialNumber:(id)a5 uuid:(id)a6
+- (UARPHIDDatabaseEntry)initWithVendorID:(id)d productID:(id)iD serialNumber:(id)number uuid:(id)uuid
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  numberCopy = number;
+  uuidCopy = uuid;
   v26.receiver = self;
   v26.super_class = UARPHIDDatabaseEntry;
   v14 = [(UARPHIDDatabaseEntry *)&v26 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [uuidCopy copy];
     uuid = v14->_uuid;
     v14->_uuid = v15;
 
-    if (!v13)
+    if (!uuidCopy)
     {
       v17 = +[NSUUID UUID];
       v18 = v14->_uuid;
       v14->_uuid = v17;
     }
 
-    v19 = [v10 copy];
+    v19 = [dCopy copy];
     vendorID = v14->_vendorID;
     v14->_vendorID = v19;
 
-    v21 = [v11 copy];
+    v21 = [iDCopy copy];
     productID = v14->_productID;
     v14->_productID = v21;
 
-    v23 = [v12 copy];
+    v23 = [numberCopy copy];
     serialNumber = v14->_serialNumber;
     v14->_serialNumber = v23;
   }
@@ -48,16 +48,16 @@
   return v14;
 }
 
-- (UARPHIDDatabaseEntry)initWithCoder:(id)a3
+- (UARPHIDDatabaseEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UARPHIDDatabaseEntry *)self init];
   if (!v5)
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
   v7 = v6;
   if (v6)
   {
@@ -65,7 +65,7 @@
     uuid = v5->_uuid;
     v5->_uuid = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VendorID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VendorID"];
     if (v10)
     {
       v11 = v10;
@@ -73,7 +73,7 @@
       vendorID = v5->_vendorID;
       v5->_vendorID = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductID"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductID"];
       if (v14)
       {
         v15 = v14;
@@ -81,7 +81,7 @@
         productID = v5->_productID;
         v5->_productID = v16;
 
-        v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SerialNumber"];
+        v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SerialNumber"];
         if (v18)
         {
           v19 = v18;
@@ -104,17 +104,17 @@ LABEL_11:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"UUID"];
-  [v5 encodeObject:self->_vendorID forKey:@"VendorID"];
-  [v5 encodeObject:self->_productID forKey:@"ProductID"];
-  [v5 encodeObject:self->_serialNumber forKey:@"SerialNumber"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"UUID"];
+  [coderCopy encodeObject:self->_vendorID forKey:@"VendorID"];
+  [coderCopy encodeObject:self->_productID forKey:@"ProductID"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"SerialNumber"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UARPHIDDatabaseEntry alloc];
   productID = self->_productID;
@@ -125,24 +125,24 @@ LABEL_11:
   return [(UARPHIDDatabaseEntry *)v4 initWithVendorID:vendorID productID:productID serialNumber:serialNumber uuid:uuid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(UARPHIDDatabaseEntry *)self uuid];
-      v7 = [(UARPHIDDatabaseEntry *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(UARPHIDDatabaseEntry *)self uuid];
+      uuid2 = [(UARPHIDDatabaseEntry *)v5 uuid];
 
-      v8 = [v6 compare:v7] == 0;
+      v8 = [uuid compare:uuid2] == 0;
     }
   }
 
@@ -156,8 +156,8 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(NSUUID *)self->_uuid UUIDString];
-  v3 = [v2 hash];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v3 = [uUIDString hash];
 
   return v3;
 }
@@ -166,8 +166,8 @@ LABEL_11:
 {
   v6 = *&self->_vendorID;
   serialNumber = self->_serialNumber;
-  v3 = [(NSUUID *)self->_uuid UUIDString];
-  v4 = [NSString stringWithFormat:@"VID <%@>, PID <%@>, Serial Number <%@>, UUID <%@>", v6, serialNumber, v3];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v4 = [NSString stringWithFormat:@"VID <%@>, PID <%@>, Serial Number <%@>, UUID <%@>", v6, serialNumber, uUIDString];
 
   return v4;
 }

@@ -1,29 +1,29 @@
 @interface CLIndoorUniverse
-- (BOOL)debouceUpdateUniverse:(duration<long)long fromLocation:()std:(1000000000>>)a3 :(id *)a4 ratio<1;
-- (BOOL)isAllowedToUpdateUniverse:(id *)a3;
-- (BOOL)updateLocalizerUniverseIfAllowed:(duration<long)long fromLocation:()std:(1000000000>>)a3 :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)a5;
-- (CLIndoorUniverse)initWithAvailableVenues:(id)a3 availabilityZScoreConfidenceInterval:(double)a4 dynamicUniverseParameters:(const void *)a5;
+- (BOOL)debouceUpdateUniverse:(duration<long)long fromLocation:()std:(1000000000>>)std :(id *)a4 ratio<1;
+- (BOOL)isAllowedToUpdateUniverse:(id *)universe;
+- (BOOL)updateLocalizerUniverseIfAllowed:(duration<long)long fromLocation:()std:(1000000000>>)std :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)handler;
+- (CLIndoorUniverse)initWithAvailableVenues:(id)venues availabilityZScoreConfidenceInterval:(double)interval dynamicUniverseParameters:(const void *)parameters;
 - (id).cxx_construct;
-- (id)stripLocatationGroupIdsPrefix:(id)a3;
+- (id)stripLocatationGroupIdsPrefix:(id)prefix;
 - (void)mutableAvailabilityData;
 - (void)mutableUniverseState;
-- (void)updateLocalizerUniverse:(duration<long)long fromLocation:()std:(1000000000>>)a3 :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)a5;
+- (void)updateLocalizerUniverse:(duration<long)long fromLocation:()std:(1000000000>>)std :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)handler;
 @end
 
 @implementation CLIndoorUniverse
 
-- (CLIndoorUniverse)initWithAvailableVenues:(id)a3 availabilityZScoreConfidenceInterval:(double)a4 dynamicUniverseParameters:(const void *)a5
+- (CLIndoorUniverse)initWithAvailableVenues:(id)venues availabilityZScoreConfidenceInterval:(double)interval dynamicUniverseParameters:(const void *)parameters
 {
-  v9 = a3;
+  venuesCopy = venues;
   v19.receiver = self;
   v19.super_class = CLIndoorUniverse;
   v10 = [(CLIndoorUniverse *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    *[(CLIndoorUniverse *)v10 mutableAvailabilityData]= a4;
-    objc_storeStrong([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 1, a3);
-    if ((*(a5 + 56) & 4) == 0)
+    *[(CLIndoorUniverse *)v10 mutableAvailabilityData]= interval;
+    objc_storeStrong([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 1, venues);
+    if ((*(parameters + 56) & 4) == 0)
     {
       sub_1000474A4(v21, "");
       sub_10032C004("Debounce interval must be set in the dynamicUniverseParameters", &__p);
@@ -41,9 +41,9 @@
       sub_10003F5D0(v20);
     }
 
-    v12 = *(a5 + 4);
+    v12 = *(parameters + 4);
     *([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 2) = (v12 * 1000000000.0);
-    if ((*(a5 + 56) & 2) == 0)
+    if ((*(parameters + 56) & 2) == 0)
     {
       sub_1000474A4(v21, "");
       sub_10032C004("Debounce distance must be set in the dynamicUniverseParameters", &__p);
@@ -61,9 +61,9 @@
       sub_10003F5D0(v20);
     }
 
-    v13 = *(a5 + 3);
+    v13 = *(parameters + 3);
     *([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 3) = v13;
-    if ((*(a5 + 56) & 1) == 0)
+    if ((*(parameters + 56) & 1) == 0)
     {
       sub_1000474A4(v21, "");
       sub_100224398("Venue group distance must be set in the dynamicUniverseParameters", &__p);
@@ -81,9 +81,9 @@
       sub_10003F5D0(v20);
     }
 
-    v14 = *(a5 + 2);
+    v14 = *(parameters + 2);
     *([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 4) = v14;
-    if ((*(a5 + 56) & 8) == 0)
+    if ((*(parameters + 56) & 8) == 0)
     {
       sub_1000474A4(v21, "");
       sub_10032C004("Update radius cap must be set in the dynamicUniverseParameters", &__p);
@@ -101,9 +101,9 @@
       sub_10003F5D0(v20);
     }
 
-    v15 = *(a5 + 5);
+    v15 = *(parameters + 5);
     *([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 5) = v15;
-    if ((*(a5 + 56) & 0x10) == 0)
+    if ((*(parameters + 56) & 0x10) == 0)
     {
       sub_1000474A4(v21, "");
       sub_10020A050("Disable dynamic universe must be set in the dynamicUniverseParameters", &__p);
@@ -121,7 +121,7 @@
       sub_10003F5D0(v20);
     }
 
-    v16 = *(a5 + 48);
+    v16 = *(parameters + 48);
     *([(CLIndoorUniverse *)v11 mutableAvailabilityData]+ 48) = v16;
     v11->_indoorUniverseFirstDidChange = 1;
     v17 = v11;
@@ -165,14 +165,14 @@
   return &self->_availabilityData.m_storage.dummy_.aligner_ + 7;
 }
 
-- (BOOL)debouceUpdateUniverse:(duration<long)long fromLocation:()std:(1000000000>>)a3 :(id *)a4 ratio<1
+- (BOOL)debouceUpdateUniverse:(duration<long)long fromLocation:()std:(1000000000>>)std :(id *)a4 ratio<1
 {
   if (!self->_localizerUniverseState.m_initialized)
   {
     goto LABEL_9;
   }
 
-  v5 = a3.__rep_ - *&self->_anon_11[7];
+  v5 = std.__rep_ - *&self->_anon_11[7];
   if (v5 >= *&self->_anon_c9[15])
   {
     *&buf[8] = 0uLL;
@@ -239,9 +239,9 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isAllowedToUpdateUniverse:(id *)a3
+- (BOOL)isAllowedToUpdateUniverse:(id *)universe
 {
-  v3 = *(&a3->var1.var1 + 4);
+  v3 = *(&universe->var1.var1 + 4);
   v4 = *&self->_anon_c9[39];
   if (v3 > v4)
   {
@@ -253,7 +253,7 @@ LABEL_16:
     v7 = qword_10045B078;
     if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
     {
-      v8 = *(&a3->var1.var1 + 4);
+      v8 = *(&universe->var1.var1 + 4);
       v9 = *&self->_anon_c9[39];
       v11 = 134349312;
       v12 = v8;
@@ -266,15 +266,15 @@ LABEL_16:
   return v3 <= v4;
 }
 
-- (id)stripLocatationGroupIdsPrefix:(id)a3
+- (id)stripLocatationGroupIdsPrefix:(id)prefix
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  prefixCopy = prefix;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [prefixCopy count]);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = prefixCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v21 count:16];
   if (v6)
   {
@@ -338,9 +338,9 @@ LABEL_11:
   return v12;
 }
 
-- (void)updateLocalizerUniverse:(duration<long)long fromLocation:()std:(1000000000>>)a3 :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)a5
+- (void)updateLocalizerUniverse:(duration<long)long fromLocation:()std:(1000000000>>)std :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v36[0] = 0;
   v37 = 0;
   v38 = 0;
@@ -483,25 +483,25 @@ LABEL_10:
     }
   }
 
-  *([(CLIndoorUniverse *)self mutableUniverseState]+ 1) = a3;
-  v22 = [(CLIndoorUniverse *)self mutableUniverseState];
+  *([(CLIndoorUniverse *)self mutableUniverseState]+ 1) = std;
+  mutableUniverseState = [(CLIndoorUniverse *)self mutableUniverseState];
   v23 = *&a4->var1.var1;
-  v22[1] = *&a4->var0;
-  v22[2] = v23;
+  mutableUniverseState[1] = *&a4->var0;
+  mutableUniverseState[2] = v23;
   v24 = *&a4->var3;
   v25 = *&a4->var5;
   v26 = *&a4->var9;
-  v22[5] = *&a4->var7;
-  v22[6] = v26;
-  v22[3] = v24;
-  v22[4] = v25;
+  mutableUniverseState[5] = *&a4->var7;
+  mutableUniverseState[6] = v26;
+  mutableUniverseState[3] = v24;
+  mutableUniverseState[4] = v25;
   v27 = *&a4->var11;
   var13 = a4->var13;
   v29 = *&a4->var14;
-  *(v22 + 156) = *&a4->var16;
-  v22[8] = var13;
-  v22[9] = v29;
-  v22[7] = v27;
+  *(mutableUniverseState + 156) = *&a4->var16;
+  mutableUniverseState[8] = var13;
+  mutableUniverseState[9] = v29;
+  mutableUniverseState[7] = v27;
   if (*(&self->_localizerUniverseState.m_storage.dummy_.aligner_ + 7) && ([v20 isSubsetOfSet:?] & 1) != 0)
   {
     v30 = 0;
@@ -517,12 +517,12 @@ LABEL_10:
     v31 = qword_10045B078;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v32 = [v20 allObjects];
-      v33 = [v32 componentsJoinedByString:{@", "}];
+      allObjects = [v20 allObjects];
+      v33 = [allObjects componentsJoinedByString:{@", "}];
       v34 = v33;
-      v35 = [v33 UTF8String];
+      uTF8String = [v33 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v35;
+      *&buf[4] = uTF8String;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "updateUniverse setting _universeState.locationGroupIds: %s", buf, 0xCu);
     }
 
@@ -530,16 +530,16 @@ LABEL_10:
     v30 = 1;
   }
 
-  v8[2](v8, [(CLIndoorUniverse *)self mutableUniverseState], v30, self->_indoorUniverseFirstDidChange);
+  handlerCopy[2](handlerCopy, [(CLIndoorUniverse *)self mutableUniverseState], v30, self->_indoorUniverseFirstDidChange);
   if (v30 && self->_indoorUniverseFirstDidChange)
   {
     self->_indoorUniverseFirstDidChange = 0;
   }
 }
 
-- (BOOL)updateLocalizerUniverseIfAllowed:(duration<long)long fromLocation:()std:(1000000000>>)a3 :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)a5
+- (BOOL)updateLocalizerUniverseIfAllowed:(duration<long)long fromLocation:()std:(1000000000>>)std :(id *)a4 ratio<1 withUniverseUpdatedHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if (!self->_availabilityData.m_initialized)
   {
     sub_1000474A4(v16, "");
@@ -582,9 +582,9 @@ LABEL_10:
   v12 = *&a4->var1.var1;
   *__p = *&a4->var0;
   v19 = v12;
-  if ([(CLIndoorUniverse *)self debouceUpdateUniverse:a3.__rep_ fromLocation:__p])
+  if ([(CLIndoorUniverse *)self debouceUpdateUniverse:std.__rep_ fromLocation:__p])
   {
-    [(CLIndoorUniverse *)self updateLocalizerUniverse:a3.__rep_ fromLocation:a4 withUniverseUpdatedHandler:v8];
+    [(CLIndoorUniverse *)self updateLocalizerUniverse:std.__rep_ fromLocation:a4 withUniverseUpdatedHandler:handlerCopy];
     v13 = 1;
   }
 

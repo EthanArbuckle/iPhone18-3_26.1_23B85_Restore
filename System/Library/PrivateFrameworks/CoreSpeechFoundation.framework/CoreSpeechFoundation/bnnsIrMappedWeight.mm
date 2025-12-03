@@ -1,5 +1,5 @@
 @interface bnnsIrMappedWeight
-- (bnnsIrMappedWeight)initWithWeightFile:(id)a3 errOut:(id *)a4;
+- (bnnsIrMappedWeight)initWithWeightFile:(id)file errOut:(id *)out;
 - (void)dealloc;
 - (void)ummapForWeight;
 @end
@@ -25,10 +25,10 @@
   [(bnnsIrMappedWeight *)&v3 dealloc];
 }
 
-- (bnnsIrMappedWeight)initWithWeightFile:(id)a3 errOut:(id *)a4
+- (bnnsIrMappedWeight)initWithWeightFile:(id)file errOut:(id *)out
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fileCopy = file;
   v24.receiver = self;
   v24.super_class = bnnsIrMappedWeight;
   v7 = [(bnnsIrMappedWeight *)&v24 init];
@@ -37,14 +37,14 @@
     goto LABEL_4;
   }
 
-  v8 = v6;
-  v9 = open([v6 UTF8String], 0);
+  v8 = fileCopy;
+  v9 = open([fileCopy UTF8String], 0);
   fstat(v9, &v23);
   st_size = v23.st_size;
   v7->_weightSize = v23.st_size;
   if (v9 == -1)
   {
-    if (a4)
+    if (out)
     {
       v12 = MEMORY[0x1E696ABC0];
       v27 = *MEMORY[0x1E696A578];
@@ -55,7 +55,7 @@
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v17 = [v12 errorWithDomain:@"com.apple.corespeech" code:2454 userInfo:v16];
 LABEL_9:
-      *a4 = v17;
+      *out = v17;
     }
 
 LABEL_10:
@@ -67,7 +67,7 @@ LABEL_10:
   close(v9);
   if (v7->_weightData == -1)
   {
-    if (a4)
+    if (out)
     {
       v18 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];

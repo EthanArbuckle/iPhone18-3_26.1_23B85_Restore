@@ -10,13 +10,13 @@
   v4 = PKPrivacyBundleIdentifiersForContext(a3);
   if ([v4 count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = [a1 presenterForPrivacySplashWithIdentifier:v5];
+    firstObject = [v4 firstObject];
+    v6 = [self presenterForPrivacySplashWithIdentifier:firstObject];
   }
 
   else
   {
-    v6 = [a1 presenterForPrivacyUnifiedAboutWithIdentifiers:v4];
+    v6 = [self presenterForPrivacyUnifiedAboutWithIdentifiers:v4];
   }
 
   return v6;
@@ -28,7 +28,7 @@
   v5[1] = 3221225472;
   v5[2] = __72__OBPrivacyPresenter_PKPrivacy__pk_defaultPresentationActionForContext___block_invoke;
   v5[3] = &__block_descriptor_48_e26_v16__0__UIViewController_8l;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = a3;
   v3 = _Block_copy(v5);
 

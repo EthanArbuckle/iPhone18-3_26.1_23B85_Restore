@@ -1,65 +1,65 @@
 @interface TSTFormulaPredicate
-+ (id)defaultPredicateForType:(unsigned __int8)a3 argumentCellRef:(TSCECellRef *)a4 hostCell:(TSUCellCoord)a5;
-+ (id)defaultPredicateForType:(unsigned __int8)a3 argumentCellReference:(id)a4 hostCell:(TSUCellCoord)a5;
-- (BOOL)evaluateAtCellID:(TSUCellCoord)a3 onOwnerUID:(const TSKUIDStruct *)a4 calcEngine:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForInspector:(id)a3 atHostCoordinate:(TSUCellCoord)a4;
-- (BOOL)p_isEqualForNonFormulaItems:(id)a3;
-- (BOOL)p_testDataTypesForArg0:(unsigned __int8)a3 arg1:(unsigned __int8)a4 arg2:(unsigned __int8)a5 predShouldReturn:(BOOL *)a6;
++ (id)defaultPredicateForType:(unsigned __int8)type argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell;
++ (id)defaultPredicateForType:(unsigned __int8)type argumentCellReference:(id)reference hostCell:(TSUCellCoord)cell;
+- (BOOL)evaluateAtCellID:(TSUCellCoord)d onOwnerUID:(const TSKUIDStruct *)iD calcEngine:(id)engine;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForInspector:(id)inspector atHostCoordinate:(TSUCellCoord)coordinate;
+- (BOOL)p_isEqualForNonFormulaItems:(id)items;
+- (BOOL)p_testDataTypesForArg0:(unsigned __int8)arg0 arg1:(unsigned __int8)arg1 arg2:(unsigned __int8)arg2 predShouldReturn:(BOOL *)return;
 - (TSCECrossTableReference)crossTableRefParam1;
 - (TSCECrossTableReference)crossTableRefParam2;
-- (TSCEFormulaCreator)p_creatorForPeriodBoundaryWithScale:(unsigned __int8)w2_0 direction:(unsigned __int8)w3_0 offset:(id)a5 argIndex:(unsigned int)a6 earlierBound:(BOOL)a7 isCalPers:(BOOL)a8;
+- (TSCEFormulaCreator)p_creatorForPeriodBoundaryWithScale:(unsigned __int8)w2_0 direction:(unsigned __int8)w3_0 offset:(id)offset argIndex:(unsigned int)index earlierBound:(BOOL)bound isCalPers:(BOOL)pers;
 - (TSCEUidCellRef)hostCellRef;
 - (TSTFormulaPredArg)predArg1;
 - (TSTFormulaPredArg)predArg2;
 - (TSTFormulaPredicate)init;
-- (TSTFormulaPredicate)initWithLiteralDateType:(unsigned __int8)a3 date1:(id)a4 date2:(id)a5 number1:(double)a6 number2:(double)a7 qualifier1:(unsigned __int8)a8 qualifier2:(unsigned __int8)a9 argumentCellRef:(TSCECellRef *)a10 hostCell:(TSUCellCoord)a11 forConditionalStyle:(BOOL)a12;
-- (TSTFormulaPredicate)initWithLiteralDurationType:(unsigned __int8)a3 duration1:(double)a4 durationUnits1:(unsigned __int8)a5 duration2:(double)a6 durationUnits2:(unsigned __int8)a7 qualifier:(unsigned __int8)a8 argumentCellRef:(TSCECellRef *)a9 hostCell:(TSUCellCoord)a10;
-- (TSTFormulaPredicate)initWithLiteralNumberType:(unsigned __int8)a3 number1:(double)a4 number2:(double)a5 qualifier:(unsigned __int8)a6 argumentCellRef:(TSCECellRef *)a7 hostCell:(TSUCellCoord)a8;
-- (TSTFormulaPredicate)initWithLiteralTextType:(unsigned __int8)a3 string:(id)a4 argumentCellRef:(TSCECellRef *)a5 hostCell:(TSUCellCoord)a6;
-- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)a3 arg0:(id)a4 arg1:(id)a5 arg2:(id)a6 qualifier1:(unsigned __int8)a7 qualifier2:(unsigned __int8)a8 forConditionalStyle:(BOOL)a9;
-- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)a3 arg1:(id)a4 arg2:(id)a5 qualifier1:(unsigned __int8)a6 qualifier2:(unsigned __int8)a7 argumentCellRef:(TSCECellRef *)a8 hostCell:(TSUCellCoord)a9 forConditionalStyle:(BOOL)a10;
-- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)a3 arg1:(id)a4 arg2:(id)a5 qualifier1:(unsigned __int8)a6 qualifier2:(unsigned __int8)a7 argumentCellReference:(id)a8 hostCell:(TSUCellCoord)a9 forConditionalStyle:(BOOL)a10;
+- (TSTFormulaPredicate)initWithLiteralDateType:(unsigned __int8)type date1:(id)date1 date2:(id)date2 number1:(double)number1 number2:(double)number2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 argumentCellRef:(TSCECellRef *)self0 hostCell:(TSUCellCoord)self1 forConditionalStyle:(BOOL)self2;
+- (TSTFormulaPredicate)initWithLiteralDurationType:(unsigned __int8)type duration1:(double)duration1 durationUnits1:(unsigned __int8)units1 duration2:(double)duration2 durationUnits2:(unsigned __int8)units2 qualifier:(unsigned __int8)qualifier argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)self0;
+- (TSTFormulaPredicate)initWithLiteralNumberType:(unsigned __int8)type number1:(double)number1 number2:(double)number2 qualifier:(unsigned __int8)qualifier argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell;
+- (TSTFormulaPredicate)initWithLiteralTextType:(unsigned __int8)type string:(id)string argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell;
+- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)type arg0:(id)arg0 arg1:(id)arg1 arg2:(id)arg2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 forConditionalStyle:(BOOL)style;
+- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)type arg1:(id)arg1 arg2:(id)arg2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell forConditionalStyle:(BOOL)self0;
+- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)type arg1:(id)arg1 arg2:(id)arg2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 argumentCellReference:(id)reference hostCell:(TSUCellCoord)cell forConditionalStyle:(BOOL)self0;
 - (id).cxx_construct;
-- (id)copyByClearingUids:(id)a3 containingTableUID:(const TSKUIDStruct *)a4;
-- (id)copyByConvertingBaseToChrome:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5;
-- (id)copyByConvertingChromeToBase:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5;
-- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)a3;
-- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (id)copyByRemappingOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)a3 rewriteBlock:(id)a4;
-- (id)copyByRewritingWithSpec:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5;
-- (id)copyByUpdatingLinkedTable:(const TSKUIDStruct *)a3 hostCell:(TSUCellCoord)a4;
-- (id)copyByUpgradingToLinkedRefForTable:(const TSKUIDStruct *)a3 hostCell:(TSUCellCoord)a4;
-- (id)copyToGeometricFormForHiddenRowsWithTableInfo:(id)a3 containsBadRef:(BOOL *)a4;
-- (id)copyToUidFormForConditionalStylesWithTableInfo:(id)a3 containingCell:(TSUCellCoord)a4 preserveHostCell:(BOOL)a5;
-- (id)copyToUidFormForHiddenRowsWithTableInfo:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)downgradeForPrePivotFormatForLocale:(id)a3;
+- (id)copyByClearingUids:(id)uids containingTableUID:(const TSKUIDStruct *)d;
+- (id)copyByConvertingBaseToChrome:(id)chrome inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate;
+- (id)copyByConvertingChromeToBase:(id)base inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate;
+- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)offset;
+- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (id)copyByRemappingOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)context rewriteBlock:(id)block;
+- (id)copyByRewritingWithSpec:(id)spec inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate;
+- (id)copyByUpdatingLinkedTable:(const TSKUIDStruct *)table hostCell:(TSUCellCoord)cell;
+- (id)copyByUpgradingToLinkedRefForTable:(const TSKUIDStruct *)table hostCell:(TSUCellCoord)cell;
+- (id)copyToGeometricFormForHiddenRowsWithTableInfo:(id)info containsBadRef:(BOOL *)ref;
+- (id)copyToUidFormForConditionalStylesWithTableInfo:(id)info containingCell:(TSUCellCoord)cell preserveHostCell:(BOOL)hostCell;
+- (id)copyToUidFormForHiddenRowsWithTableInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)downgradeForPrePivotFormatForLocale:(id)locale;
 - (id)durationParam1;
 - (id)durationParam2;
-- (id)initFromArchive:(const void *)a3;
-- (id)initFromPrePivotArchive:(const void *)a3;
-- (id)predicateArg1atBaseHostCoord:(TSUModelCellCoord)a3 calcEngine:(id)a4;
-- (id)predicateArg2atBaseHostCoord:(TSUModelCellCoord)a3 calcEngine:(id)a4;
+- (id)initFromArchive:(const void *)archive;
+- (id)initFromPrePivotArchive:(const void *)archive;
+- (id)predicateArg1atBaseHostCoord:(TSUModelCellCoord)coord calcEngine:(id)engine;
+- (id)predicateArg2atBaseHostCoord:(TSUModelCellCoord)coord calcEngine:(id)engine;
 - (unint64_t)hash;
-- (unsigned)expectedArgTypeForPredicateType:(unsigned __int8)a3 firstArg:(BOOL)a4;
-- (unsigned)p_argTypeForPredArg:(id)a3 argNum:(unint64_t)a4 calculationEngine:(id)a5 hostCell:(TSUCellCoord)a6;
+- (unsigned)expectedArgTypeForPredicateType:(unsigned __int8)type firstArg:(BOOL)arg;
+- (unsigned)p_argTypeForPredArg:(id)arg argNum:(unint64_t)num calculationEngine:(id)engine hostCell:(TSUCellCoord)cell;
 - (unsigned)predArg0Type;
 - (unsigned)predArg1Type;
 - (unsigned)predArg2Type;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)encodeToPrePivotArchive:(void *)a3 archiver:(id)a4 encodingForSOS:(BOOL)a5;
-- (void)getPrecedents:(void *)a3 calcEngine:(id)a4 hostOwnerUID:(const TSKUIDStruct *)a5 hostCellID:(const TSUCellCoord *)a6;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)encodeToPrePivotArchive:(void *)archive archiver:(id)archiver encodingForSOS:(BOOL)s;
+- (void)getPrecedents:(void *)precedents calcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d hostCellID:(const TSUCellCoord *)iD;
 - (void)p_populateMembersFromFormula;
 - (void)recreateFormula;
-- (void)remapOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (void)rewriteFormulaWithBlock:(id)a3;
-- (void)rewriteNumberToDurationForSageImport:(const TSCECellRef *)a3 durationUnitLargest:(unsigned __int8)a4;
-- (void)setArgumentAt:(int64_t)a3 withPredArg:(id)a4;
-- (void)setFormula:(id)a3;
-- (void)setHostCell:(const TSKUIDStruct *)a3 hostColumnUID:(const TSKUIDStruct *)a4 hostRowUID:(const TSKUIDStruct *)a5;
-- (void)setHostCellRef:(TSCEUidCellRef *)a3;
+- (void)remapOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (void)rewriteFormulaWithBlock:(id)block;
+- (void)rewriteNumberToDurationForSageImport:(const TSCECellRef *)import durationUnitLargest:(unsigned __int8)largest;
+- (void)setArgumentAt:(int64_t)at withPredArg:(id)arg;
+- (void)setFormula:(id)formula;
+- (void)setHostCell:(const TSKUIDStruct *)cell hostColumnUID:(const TSKUIDStruct *)d hostRowUID:(const TSKUIDStruct *)iD;
+- (void)setHostCellRef:(TSCEUidCellRef *)ref;
 - (void)upgradeTopAndBottom;
 @end
 
@@ -119,14 +119,14 @@
   return v16 ^ objc_msgSend_hash(self->_formula, v17, v18, v19, v20);
 }
 
-- (BOOL)p_isEqualForNonFormulaItems:(id)a3
+- (BOOL)p_isEqualForNonFormulaItems:(id)items
 {
-  v4 = a3;
-  v8 = v4;
+  itemsCopy = items;
+  v8 = itemsCopy;
   v15 = 0;
-  if (v4)
+  if (itemsCopy)
   {
-    if (self->_predicateType == v4[16] && self->_qualifier1 == v4[17] && self->_qualifier2 == v4[18] && self->_forConditionalStyle == v4[56])
+    if (self->_predicateType == itemsCopy[16] && self->_qualifier1 == itemsCopy[17] && self->_qualifier2 == itemsCopy[18] && self->_forConditionalStyle == itemsCopy[56])
     {
       predArg0 = self->_predArg0;
       v10 = *(v8 + 4);
@@ -150,10 +150,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), v5 = TSUDynamicCast(), (objc_msgSend_p_isEqualForNonFormulaItems_(self, v6, v5, v7, v8) & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), v5 = TSUDynamicCast(), (objc_msgSend_p_isEqualForNonFormulaItems_(self, v6, v5, v7, v8) & 1) != 0))
   {
     v13 = objc_msgSend_const_astNodeArray(self->_formula, v9, v10, v11, v12);
     v18 = objc_msgSend_const_astNodeArray(v5[1], v14, v15, v16, v17);
@@ -168,13 +168,13 @@
   return v19;
 }
 
-- (BOOL)isEqualForInspector:(id)a3 atHostCoordinate:(TSUCellCoord)a4
+- (BOOL)isEqualForInspector:(id)inspector atHostCoordinate:(TSUCellCoord)coordinate
 {
-  v6 = a3;
-  if (objc_msgSend_p_isEqualForNonFormulaItems_(self, v7, v6, v8, v9))
+  inspectorCopy = inspector;
+  if (objc_msgSend_p_isEqualForNonFormulaItems_(self, v7, inspectorCopy, v8, v9))
   {
     v14 = objc_msgSend_const_astNodeArray(self->_formula, v10, v11, v12, v13);
-    v19 = objc_msgSend_const_astNodeArray(v6[1], v15, v16, v17, v18);
+    v19 = objc_msgSend_const_astNodeArray(inspectorCopy[1], v15, v16, v17, v18);
     if (sub_2215C5CF4(v14, v19, 3, 0, 0))
     {
       isEqual_atHostCoord = 1;
@@ -182,13 +182,13 @@
 
     else
     {
-      v23 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v20, *&a4, 0, v21);
-      v26 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(v6, v24, *&a4, 0, v25);
-      if (objc_msgSend_isEqual_atHostCoord_(v23, v27, v26, *&a4, v28))
+      v23 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v20, *&coordinate, 0, v21);
+      v26 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(inspectorCopy, v24, *&coordinate, 0, v25);
+      if (objc_msgSend_isEqual_atHostCoord_(v23, v27, v26, *&coordinate, v28))
       {
-        v31 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v29, *&a4, 0, v30);
-        v34 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(v6, v32, *&a4, 0, v33);
-        isEqual_atHostCoord = objc_msgSend_isEqual_atHostCoord_(v31, v35, v34, *&a4, v36);
+        v31 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v29, *&coordinate, 0, v30);
+        v34 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(inspectorCopy, v32, *&coordinate, 0, v33);
+        isEqual_atHostCoord = objc_msgSend_isEqual_atHostCoord_(v31, v35, v34, *&coordinate, v36);
       }
 
       else
@@ -206,40 +206,40 @@
   return isEqual_atHostCoord;
 }
 
-- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)a3 arg0:(id)a4 arg1:(id)a5 arg2:(id)a6 qualifier1:(unsigned __int8)a7 qualifier2:(unsigned __int8)a8 forConditionalStyle:(BOOL)a9
+- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)type arg0:(id)arg0 arg1:(id)arg1 arg2:(id)arg2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 forConditionalStyle:(BOOL)style
 {
-  v29 = a4;
-  v16 = a5;
-  v17 = a6;
+  arg0Copy = arg0;
+  arg1Copy = arg1;
+  arg2Copy = arg2;
   v22 = objc_msgSend_init(self, v18, v19, v20, v21);
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong((v22 + 32), a4);
-    objc_storeStrong(&v23->_predArg1, a5);
-    objc_storeStrong(&v23->_predArg2, a6);
-    v23->_predicateType = a3;
-    v23->_qualifier1 = a7;
-    v23->_qualifier2 = a8;
-    v23->_forConditionalStyle = a9;
+    objc_storeStrong((v22 + 32), arg0);
+    objc_storeStrong(&v23->_predArg1, arg1);
+    objc_storeStrong(&v23->_predArg2, arg2);
+    v23->_predicateType = type;
+    v23->_qualifier1 = qualifier1;
+    v23->_qualifier2 = qualifier2;
+    v23->_forConditionalStyle = style;
     objc_msgSend_recreateFormula(v23, v24, v25, v26, v27);
   }
 
   return v23;
 }
 
-- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)a3 arg1:(id)a4 arg2:(id)a5 qualifier1:(unsigned __int8)a6 qualifier2:(unsigned __int8)a7 argumentCellRef:(TSCECellRef *)a8 hostCell:(TSUCellCoord)a9 forConditionalStyle:(BOOL)a10
+- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)type arg1:(id)arg1 arg2:(id)arg2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell forConditionalStyle:(BOOL)self0
 {
-  v69 = a4;
-  v68 = a5;
+  arg1Copy = arg1;
+  arg2Copy = arg2;
   v20 = objc_msgSend_init(self, v16, v17, v18, v19);
   v21 = v20;
   v22 = v20;
   if (v20)
   {
-    objc_storeStrong((v20 + 40), a4);
-    objc_storeStrong((v21 + 48), a5);
-    if (a10 && (*&a8->coordinate != a9.row || ((*&a8->coordinate ^ *&a9) & 0x101FFFF00000000) != 0))
+    objc_storeStrong((v20 + 40), arg1);
+    objc_storeStrong((v21 + 48), arg2);
+    if (style && (*&ref->coordinate != cell.row || ((*&ref->coordinate ^ *&cell) & 0x101FFFF00000000) != 0))
     {
       v26 = MEMORY[0x277D81150];
       v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "[TSTFormulaPredicate initWithPredicateType:arg1:arg2:qualifier1:qualifier2:argumentCellRef:hostCell:forConditionalStyle:]", v24, v25);
@@ -249,24 +249,24 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34, v35, v36);
     }
 
-    v22->_predicateType = a3;
-    v22->_qualifier1 = a6;
-    v22->_qualifier2 = a7;
-    v22->_forConditionalStyle = a10;
-    objc_msgSend_setHostCellCoord_(v22->_predArg1, v23, *&a9, v24, v25);
-    objc_msgSend_setHostCellCoord_(*(v21 + 48), v37, *&a9, v38, v39);
-    coordinate = a8->coordinate;
+    v22->_predicateType = type;
+    v22->_qualifier1 = qualifier1;
+    v22->_qualifier2 = qualifier2;
+    v22->_forConditionalStyle = style;
+    objc_msgSend_setHostCellCoord_(v22->_predArg1, v23, *&cell, v24, v25);
+    objc_msgSend_setHostCellCoord_(*(v21 + 48), v37, *&cell, v38, v39);
+    coordinate = ref->coordinate;
     LOBYTE(tableUID._lower) = 0;
     v41 = &tableUID;
-    RelativeCellCoordinateFromAbsoluteCoordinates = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*&a9, coordinate, v41, v42);
-    tableUID = a8->_tableUID;
+    RelativeCellCoordinateFromAbsoluteCoordinates = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*&cell, coordinate, v41, v42);
+    tableUID = ref->_tableUID;
     v74 = RelativeCellCoordinateFromAbsoluteCoordinates;
     v71[0]._flags = 0;
     TSCERelativeCellCoordinate::setPreserveFlags(&v74, v71);
     if (v22->_forConditionalStyle)
     {
       v70._flags = 0;
-      *&v71[0]._flags = a8->_tableUID;
+      *&v71[0]._flags = ref->_tableUID;
       v72 = 0;
       TSCERelativeCellCoordinate::setPreserveFlags(&v72, &v70);
       if (objc_msgSend_useColumnRefForArg0(v22, v48, v49, v50, v51))
@@ -300,18 +300,18 @@
   return v22;
 }
 
-- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)a3 arg1:(id)a4 arg2:(id)a5 qualifier1:(unsigned __int8)a6 qualifier2:(unsigned __int8)a7 argumentCellReference:(id)a8 hostCell:(TSUCellCoord)a9 forConditionalStyle:(BOOL)a10
+- (TSTFormulaPredicate)initWithPredicateType:(unsigned __int8)type arg1:(id)arg1 arg2:(id)arg2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 argumentCellReference:(id)reference hostCell:(TSUCellCoord)cell forConditionalStyle:(BOOL)self0
 {
-  v11 = a7;
-  v12 = a6;
-  v14 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v23 = v18;
-  if (v18)
+  qualifier2Copy = qualifier2;
+  qualifier1Copy = qualifier1;
+  typeCopy = type;
+  arg1Copy = arg1;
+  arg2Copy = arg2;
+  referenceCopy = reference;
+  v23 = referenceCopy;
+  if (referenceCopy)
   {
-    objc_msgSend_cellRef(v18, v19, v20, v21, v22);
+    objc_msgSend_cellRef(referenceCopy, v19, v20, v21, v22);
   }
 
   else
@@ -319,47 +319,47 @@
     memset(v26, 0, sizeof(v26));
   }
 
-  v24 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_forConditionalStyle_(self, v19, v14, v16, v17, v12, v11, v26, a9, a10);
+  v24 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_forConditionalStyle_(self, v19, typeCopy, arg1Copy, arg2Copy, qualifier1Copy, qualifier2Copy, v26, cell, style);
 
   return v24;
 }
 
-+ (id)defaultPredicateForType:(unsigned __int8)a3 argumentCellRef:(TSCECellRef *)a4 hostCell:(TSUCellCoord)a5
++ (id)defaultPredicateForType:(unsigned __int8)type argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell
 {
   v5 = 0;
-  if (a3 <= 0x3Cu)
+  if (type <= 0x3Cu)
   {
-    v8 = a3;
-    if (((1 << a3) & 0x1F9CC00C000F9800) != 0)
+    typeCopy = type;
+    if (((1 << type) & 0x1F9CC00C000F9800) != 0)
     {
       v9 = [TSTFormulaPredicate alloc];
       v14 = objc_msgSend_defaultPredicateArg(TSTFormulaPredArg, v10, v11, v12, v13);
       v19 = objc_msgSend_defaultPredicateArg(TSTFormulaPredArg, v15, v16, v17, v18);
-      v24 = *&a4->coordinate.row;
-      upper = a4->_tableUID._upper;
-      v5 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(v9, v20, v8, v14, v19, 0, 0, &v24, a5);
+      v24 = *&ref->coordinate.row;
+      upper = ref->_tableUID._upper;
+      v5 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(v9, v20, typeCopy, v14, v19, 0, 0, &v24, cell);
     }
 
-    else if (a3 == 33)
+    else if (type == 33)
     {
       v22 = [TSTFormulaPredicate alloc];
-      v24 = *&a4->coordinate.row;
-      upper = a4->_tableUID._upper;
-      v5 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(v22, v23, 33, 0, 0, 3, 0, &v24, a5);
+      v24 = *&ref->coordinate.row;
+      upper = ref->_tableUID._upper;
+      v5 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(v22, v23, 33, 0, 0, 3, 0, &v24, cell);
     }
   }
 
   return v5;
 }
 
-+ (id)defaultPredicateForType:(unsigned __int8)a3 argumentCellReference:(id)a4 hostCell:(TSUCellCoord)a5
++ (id)defaultPredicateForType:(unsigned __int8)type argumentCellReference:(id)reference hostCell:(TSUCellCoord)cell
 {
-  v6 = a3;
-  v8 = a4;
-  v13 = v8;
-  if (v8)
+  typeCopy = type;
+  referenceCopy = reference;
+  v13 = referenceCopy;
+  if (referenceCopy)
   {
-    objc_msgSend_cellRef(v8, v9, v10, v11, v12);
+    objc_msgSend_cellRef(referenceCopy, v9, v10, v11, v12);
   }
 
   else
@@ -367,32 +367,32 @@
     memset(v16, 0, sizeof(v16));
   }
 
-  v14 = objc_msgSend_defaultPredicateForType_argumentCellRef_hostCell_(a1, v9, v6, v16, *&a5);
+  v14 = objc_msgSend_defaultPredicateForType_argumentCellRef_hostCell_(self, v9, typeCopy, v16, *&cell);
 
   return v14;
 }
 
-- (TSCEFormulaCreator)p_creatorForPeriodBoundaryWithScale:(unsigned __int8)w2_0 direction:(unsigned __int8)w3_0 offset:(id)a5 argIndex:(unsigned int)a6 earlierBound:(BOOL)a7 isCalPers:(BOOL)a8
+- (TSCEFormulaCreator)p_creatorForPeriodBoundaryWithScale:(unsigned __int8)w2_0 direction:(unsigned __int8)w3_0 offset:(id)offset argIndex:(unsigned int)index earlierBound:(BOOL)bound isCalPers:(BOOL)pers
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = *&a6;
+  persCopy = pers;
+  boundCopy = bound;
+  v11 = *&index;
   v12 = w2_0;
   v13 = v8;
-  v18 = a5;
+  offsetCopy = offset;
   if (v12 <= 3)
   {
     if (v12 == 2)
     {
-      if (v10)
+      if (boundCopy)
       {
         TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v345);
         TSUDecimal::operator=();
         v382._decimal.w[0] = v341;
         TSCEFormulaCreationMagic::number(v340, v382, v47, v48, &v342);
-        if (v18)
+        if (offsetCopy)
         {
-          objc_msgSend_formulaCreatorForPredArg(v18, v49, v50.var0, v51, v52);
+          objc_msgSend_formulaCreatorForPredArg(offsetCopy, v49, v50.var0, v51, v52);
         }
 
         else
@@ -420,9 +420,9 @@
         TSUDecimal::operator=();
         v383._decimal.w[0] = v341;
         TSCEFormulaCreationMagic::number(v340, v383, v90, v91, &v332);
-        if (v18)
+        if (offsetCopy)
         {
-          objc_msgSend_formulaCreatorForPredArg(v18, v92, v93.var0, v94, v95);
+          objc_msgSend_formulaCreatorForPredArg(offsetCopy, v92, v93.var0, v94, v95);
         }
 
         else
@@ -451,9 +451,9 @@
 
     if (v12 == 3)
     {
-      if (v9)
+      if (persCopy)
       {
-        if (v10)
+        if (boundCopy)
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v327);
           TSCEFormulaCreationMagic::TODAY(v31, v32, v33, v34, &v324);
@@ -486,12 +486,12 @@
         }
       }
 
-      else if (v10)
+      else if (boundCopy)
       {
         TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v315);
-        if (v18)
+        if (offsetCopy)
         {
-          objc_msgSend_formulaCreatorForPredArg(v18, v100, v101.var0, v102, v103);
+          objc_msgSend_formulaCreatorForPredArg(offsetCopy, v100, v101.var0, v102, v103);
         }
 
         else
@@ -519,9 +519,9 @@
       else
       {
         TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v307);
-        if (v18)
+        if (offsetCopy)
         {
-          objc_msgSend_formulaCreatorForPredArg(v18, v143, v144.var0, v145, v146);
+          objc_msgSend_formulaCreatorForPredArg(offsetCopy, v143, v144.var0, v145, v146);
         }
 
         else
@@ -557,9 +557,9 @@
     switch(v12)
     {
       case 4:
-        if (v9)
+        if (persCopy)
         {
-          if (v10)
+          if (boundCopy)
           {
             TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v298);
             TSCEFormulaCreationMagic::YEAR(&v298, v351, &v299);
@@ -598,12 +598,12 @@
           }
         }
 
-        else if (v10)
+        else if (boundCopy)
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v287);
-          if (v18)
+          if (offsetCopy)
           {
-            objc_msgSend_formulaCreatorForPredArg(v18, v82, v83.var0, v84, v85);
+            objc_msgSend_formulaCreatorForPredArg(offsetCopy, v82, v83.var0, v84, v85);
           }
 
           else
@@ -627,9 +627,9 @@
         else
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v281);
-          if (v18)
+          if (offsetCopy)
           {
-            objc_msgSend_formulaCreatorForPredArg(v18, v112, v113.var0, v114, v115);
+            objc_msgSend_formulaCreatorForPredArg(offsetCopy, v112, v113.var0, v114, v115);
           }
 
           else
@@ -654,9 +654,9 @@
 
         goto LABEL_69;
       case 5:
-        if (v9)
+        if (persCopy)
         {
-          if (v10)
+          if (boundCopy)
           {
             TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v226);
             TSCEFormulaCreationMagic::YEAR(&v226, v353, &v227);
@@ -689,12 +689,12 @@
           }
         }
 
-        else if (v10)
+        else if (boundCopy)
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v217);
-          if (v18)
+          if (offsetCopy)
           {
-            objc_msgSend_formulaCreatorForPredArg(v18, v86, v87.var0, v88, v89);
+            objc_msgSend_formulaCreatorForPredArg(offsetCopy, v86, v87.var0, v88, v89);
           }
 
           else
@@ -720,9 +720,9 @@
         else
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v209);
-          if (v18)
+          if (offsetCopy)
           {
-            objc_msgSend_formulaCreatorForPredArg(v18, v118, v119.var0, v120, v121);
+            objc_msgSend_formulaCreatorForPredArg(offsetCopy, v118, v119.var0, v120, v121);
           }
 
           else
@@ -749,9 +749,9 @@
 
         goto LABEL_69;
       case 8:
-        if (v9)
+        if (persCopy)
         {
-          if (v10)
+          if (boundCopy)
           {
             TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v274);
             TSCEFormulaCreationMagic::YEAR(&v274, v347, &v275);
@@ -812,12 +812,12 @@
           }
         }
 
-        else if (v10)
+        else if (boundCopy)
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v243);
-          if (v18)
+          if (offsetCopy)
           {
-            objc_msgSend_formulaCreatorForPredArg(v18, v96, v97.var0, v98, v99);
+            objc_msgSend_formulaCreatorForPredArg(offsetCopy, v96, v97.var0, v98, v99);
           }
 
           else
@@ -843,9 +843,9 @@
         else
         {
           TSCEFormulaCreationMagic::TODAY(v14, v15, v16, v17, &v235);
-          if (v18)
+          if (offsetCopy)
           {
-            objc_msgSend_formulaCreatorForPredArg(v18, v131, v132.var0, v133, v134);
+            objc_msgSend_formulaCreatorForPredArg(offsetCopy, v131, v132.var0, v133, v134);
           }
 
           else
@@ -894,83 +894,83 @@ LABEL_70:
   return v201;
 }
 
-- (TSTFormulaPredicate)initWithLiteralDateType:(unsigned __int8)a3 date1:(id)a4 date2:(id)a5 number1:(double)a6 number2:(double)a7 qualifier1:(unsigned __int8)a8 qualifier2:(unsigned __int8)a9 argumentCellRef:(TSCECellRef *)a10 hostCell:(TSUCellCoord)a11 forConditionalStyle:(BOOL)a12
+- (TSTFormulaPredicate)initWithLiteralDateType:(unsigned __int8)type date1:(id)date1 date2:(id)date2 number1:(double)number1 number2:(double)number2 qualifier1:(unsigned __int8)qualifier1 qualifier2:(unsigned __int8)qualifier2 argumentCellRef:(TSCECellRef *)self0 hostCell:(TSUCellCoord)self1 forConditionalStyle:(BOOL)self2
 {
-  v13 = a9;
-  v14 = a8;
-  v18 = a3;
-  v20 = a4;
-  v21 = a5;
+  qualifier2Copy = qualifier2;
+  qualifier1Copy = qualifier1;
+  typeCopy = type;
+  date1Copy = date1;
+  date2Copy = date2;
   v22 = [TSTFormulaPredArg alloc];
-  if (v20)
+  if (date1Copy)
   {
-    v27 = objc_msgSend_initWithDate_(v22, v23, v20, v25, v26);
+    v27 = objc_msgSend_initWithDate_(v22, v23, date1Copy, v25, v26);
   }
 
   else
   {
-    v27 = objc_msgSend_initWithDouble_(v22, v23, v24, v25, v26, a6);
+    v27 = objc_msgSend_initWithDouble_(v22, v23, v24, v25, v26, number1);
   }
 
   v28 = v27;
   v29 = [TSTFormulaPredArg alloc];
-  if (v21)
+  if (date2Copy)
   {
-    v34 = objc_msgSend_initWithDate_(v29, v30, v21, v32, v33);
+    v34 = objc_msgSend_initWithDate_(v29, v30, date2Copy, v32, v33);
   }
 
   else
   {
-    v34 = objc_msgSend_initWithDouble_(v29, v30, v31, v32, v33, a7);
+    v34 = objc_msgSend_initWithDouble_(v29, v30, v31, v32, v33, number2);
   }
 
   v36 = v34;
-  v39 = *&a10->coordinate.row;
-  upper = a10->_tableUID._upper;
-  v37 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_forConditionalStyle_(self, v35, v18, v28, v34, v14, v13, &v39, a11, a12);
+  v39 = *&ref->coordinate.row;
+  upper = ref->_tableUID._upper;
+  v37 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_forConditionalStyle_(self, v35, typeCopy, v28, v34, qualifier1Copy, qualifier2Copy, &v39, cell, style);
 
   return v37;
 }
 
-- (TSTFormulaPredicate)initWithLiteralNumberType:(unsigned __int8)a3 number1:(double)a4 number2:(double)a5 qualifier:(unsigned __int8)a6 argumentCellRef:(TSCECellRef *)a7 hostCell:(TSUCellCoord)a8
+- (TSTFormulaPredicate)initWithLiteralNumberType:(unsigned __int8)type number1:(double)number1 number2:(double)number2 qualifier:(unsigned __int8)qualifier argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell
 {
-  v10 = a6;
-  v13 = a3;
+  qualifierCopy = qualifier;
+  typeCopy = type;
   v15 = [TSTFormulaPredArg alloc];
-  v20 = objc_msgSend_initWithDouble_(v15, v16, v17, v18, v19, a4);
+  v20 = objc_msgSend_initWithDouble_(v15, v16, v17, v18, v19, number1);
   v21 = [TSTFormulaPredArg alloc];
-  v26 = objc_msgSend_initWithDouble_(v21, v22, v23, v24, v25, a5);
-  v30 = *a7;
-  v28 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(self, v27, v13, v20, v26, v10, 0, &v30, a8);
+  v26 = objc_msgSend_initWithDouble_(v21, v22, v23, v24, v25, number2);
+  v30 = *ref;
+  v28 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(self, v27, typeCopy, v20, v26, qualifierCopy, 0, &v30, cell);
 
   return v28;
 }
 
-- (TSTFormulaPredicate)initWithLiteralDurationType:(unsigned __int8)a3 duration1:(double)a4 durationUnits1:(unsigned __int8)a5 duration2:(double)a6 durationUnits2:(unsigned __int8)a7 qualifier:(unsigned __int8)a8 argumentCellRef:(TSCECellRef *)a9 hostCell:(TSUCellCoord)a10
+- (TSTFormulaPredicate)initWithLiteralDurationType:(unsigned __int8)type duration1:(double)duration1 durationUnits1:(unsigned __int8)units1 duration2:(double)duration2 durationUnits2:(unsigned __int8)units2 qualifier:(unsigned __int8)qualifier argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)self0
 {
-  v12 = a8;
-  v13 = a7;
-  v15 = a5;
-  v17 = a3;
+  qualifierCopy = qualifier;
+  units2Copy = units2;
+  units1Copy = units1;
+  typeCopy = type;
   v19 = [TSTFormulaPredArg alloc];
-  v23 = objc_msgSend_initWithDuration_units_(v19, v20, v15, v21, v22, a4);
+  v23 = objc_msgSend_initWithDuration_units_(v19, v20, units1Copy, v21, v22, duration1);
   v24 = [TSTFormulaPredArg alloc];
-  v28 = objc_msgSend_initWithDuration_units_(v24, v25, v13, v26, v27, a6);
-  v32 = *a9;
-  v30 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(self, v29, v17, v23, v28, v12, 0, &v32, a10);
+  v28 = objc_msgSend_initWithDuration_units_(v24, v25, units2Copy, v26, v27, duration2);
+  v32 = *ref;
+  v30 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(self, v29, typeCopy, v23, v28, qualifierCopy, 0, &v32, cell);
 
   return v30;
 }
 
-- (TSTFormulaPredicate)initWithLiteralTextType:(unsigned __int8)a3 string:(id)a4 argumentCellRef:(TSCECellRef *)a5 hostCell:(TSUCellCoord)a6
+- (TSTFormulaPredicate)initWithLiteralTextType:(unsigned __int8)type string:(id)string argumentCellRef:(TSCECellRef *)ref hostCell:(TSUCellCoord)cell
 {
-  v8 = a3;
-  v10 = a4;
+  typeCopy = type;
+  stringCopy = string;
   v11 = [TSTFormulaPredArg alloc];
-  v15 = objc_msgSend_initWithString_(v11, v12, v10, v13, v14);
+  v15 = objc_msgSend_initWithString_(v11, v12, stringCopy, v13, v14);
   v20 = objc_msgSend_defaultPredicateArg(TSTFormulaPredArg, v16, v17, v18, v19);
-  v24 = *a5;
-  v22 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(self, v21, v8, v15, v20, 0, 0, &v24, a6);
+  v24 = *ref;
+  v22 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_(self, v21, typeCopy, v15, v20, 0, 0, &v24, cell);
 
   return v22;
 }
@@ -1915,7 +1915,7 @@ LABEL_65:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSTFormulaPredicate);
   v8 = v4;
@@ -1948,18 +1948,18 @@ LABEL_65:
   return v8;
 }
 
-- (id)copyToUidFormForHiddenRowsWithTableInfo:(id)a3
+- (id)copyToUidFormForHiddenRowsWithTableInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9 = objc_msgSend_filterFormulaContainingCell(TSTHiddenStates, v5, v6, v7, v8);
-  v14 = objc_msgSend_calcEngine(v4, v10, v11, v12, v13);
-  v19 = objc_msgSend_hiddenStates(v4, v15, v16, v17, v18);
+  v14 = objc_msgSend_calcEngine(infoCopy, v10, v11, v12, v13);
+  v19 = objc_msgSend_hiddenStates(infoCopy, v15, v16, v17, v18);
   v40.coordinate = v9;
   v40._tableUID._lower = objc_msgSend_hiddenStateOwnerForRowsUID(v19, v20, v21, v22, v23);
   v40._tableUID._upper = v24;
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v41, v14, &v40);
 
-  v29 = objc_msgSend_hiddenStates(v4, v25, v26, v27, v28);
+  v29 = objc_msgSend_hiddenStates(infoCopy, v25, v26, v27, v28);
   v40.coordinate = objc_msgSend_hiddenStateOwnerForRowsUID(v29, v30, v31, v32, v33);
   v40._tableUID._lower = v34;
   TSCEFormulaRewriteContext::setResolverTableUID(&v41, &v40);
@@ -1968,12 +1968,12 @@ LABEL_65:
   return v38;
 }
 
-- (id)copyToGeometricFormForHiddenRowsWithTableInfo:(id)a3 containsBadRef:(BOOL *)a4
+- (id)copyToGeometricFormForHiddenRowsWithTableInfo:(id)info containsBadRef:(BOOL *)ref
 {
-  v6 = a3;
+  infoCopy = info;
   v11 = objc_msgSend_filterFormulaContainingCell(TSTHiddenStates, v7, v8, v9, v10);
-  v16 = objc_msgSend_calcEngine(v6, v12, v13, v14, v15);
-  v21 = objc_msgSend_hiddenStates(v6, v17, v18, v19, v20);
+  v16 = objc_msgSend_calcEngine(infoCopy, v12, v13, v14, v15);
+  v21 = objc_msgSend_hiddenStates(infoCopy, v17, v18, v19, v20);
   v32.coordinate = v11;
   v32._tableUID._lower = objc_msgSend_hiddenStateOwnerForRowsUID(v21, v22, v23, v24, v25);
   v32._tableUID._upper = v26;
@@ -1981,65 +1981,65 @@ LABEL_65:
 
   TSCEFormulaRewriteContext::setHostCellOverridesTableID(&v33, 0);
   v30 = objc_msgSend_copyToGeometricFormWithRewriteContext_(self, v27, &v33, v28, v29);
-  if (a4)
+  if (ref)
   {
-    *a4 = TSCEFormulaRewriteContext::containsBadRef(&v33);
+    *ref = TSCEFormulaRewriteContext::containsBadRef(&v33);
   }
 
   return v30;
 }
 
-- (id)copyToUidFormForConditionalStylesWithTableInfo:(id)a3 containingCell:(TSUCellCoord)a4 preserveHostCell:(BOOL)a5
+- (id)copyToUidFormForConditionalStylesWithTableInfo:(id)info containingCell:(TSUCellCoord)cell preserveHostCell:(BOOL)hostCell
 {
-  v8 = a3;
-  v13 = objc_msgSend_calcEngine(v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_conditionalStyleFormulaOwner(v8, v14, v15, v16, v17);
-  v34.coordinate = a4;
+  infoCopy = info;
+  v13 = objc_msgSend_calcEngine(infoCopy, v9, v10, v11, v12);
+  v18 = objc_msgSend_conditionalStyleFormulaOwner(infoCopy, v14, v15, v16, v17);
+  v34.coordinate = cell;
   v34._tableUID._lower = objc_msgSend_ownerUID(v18, v19, v20, v21, v22);
   v34._tableUID._upper = v23;
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v35, v13, &v34);
 
-  v34.coordinate = objc_msgSend_tableUID(v8, v24, v25, v26, v27);
+  v34.coordinate = objc_msgSend_tableUID(infoCopy, v24, v25, v26, v27);
   v34._tableUID._lower = v28;
   TSCEFormulaRewriteContext::setResolverTableUID(&v35, &v34);
-  TSCEFormulaRewriteContext::setPreserveHostCell(&v35, a5);
+  TSCEFormulaRewriteContext::setPreserveHostCell(&v35, hostCell);
   v32 = objc_msgSend_copyToUidFormWithRewriteContext_(self, v29, &v35, v30, v31);
 
   return v32;
 }
 
-- (void)setHostCell:(const TSKUIDStruct *)a3 hostColumnUID:(const TSKUIDStruct *)a4 hostRowUID:(const TSKUIDStruct *)a5
+- (void)setHostCell:(const TSKUIDStruct *)cell hostColumnUID:(const TSKUIDStruct *)d hostRowUID:(const TSKUIDStruct *)iD
 {
-  if (objc_msgSend_containsUidReferences(self->_formula, a2, a3, a4, a5))
+  if (objc_msgSend_containsUidReferences(self->_formula, a2, cell, d, iD))
   {
-    v15 = objc_msgSend_copyBySettingHostTableUID_hostColumnUID_hostRowUID_(self->_formula, v9, a3, a4, a5);
+    v15 = objc_msgSend_copyBySettingHostTableUID_hostColumnUID_hostRowUID_(self->_formula, v9, cell, d, iD);
     objc_msgSend_setFormula_(self, v10, v15, v11, v12);
-    v13 = *a4;
-    v14 = *a3;
-    self->_hostCellRef._rowUid = *a5;
+    v13 = *d;
+    v14 = *cell;
+    self->_hostCellRef._rowUid = *iD;
     self->_hostCellRef._tableUid = v14;
     self->_hostCellRef._columnUid = v13;
   }
 }
 
-- (void)getPrecedents:(void *)a3 calcEngine:(id)a4 hostOwnerUID:(const TSKUIDStruct *)a5 hostCellID:(const TSUCellCoord *)a6
+- (void)getPrecedents:(void *)precedents calcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d hostCellID:(const TSUCellCoord *)iD
 {
   formula = self->_formula;
-  v7 = *a6;
-  v8 = *a5;
-  objc_msgSend_getPrecedents_calcEngine_hostCell_allowImplicitIntersection_returnUidReferences_(formula, a2, a3, a4, &v7, 1, 1);
+  v7 = *iD;
+  v8 = *d;
+  objc_msgSend_getPrecedents_calcEngine_hostCell_allowImplicitIntersection_returnUidReferences_(formula, a2, precedents, engine, &v7, 1, 1);
 }
 
-- (unsigned)p_argTypeForPredArg:(id)a3 argNum:(unint64_t)a4 calculationEngine:(id)a5 hostCell:(TSUCellCoord)a6
+- (unsigned)p_argTypeForPredArg:(id)arg argNum:(unint64_t)num calculationEngine:(id)engine hostCell:(TSUCellCoord)cell
 {
-  v10 = a3;
-  v15 = a5;
-  if (!v10)
+  argCopy = arg;
+  engineCopy = engine;
+  if (!argCopy)
   {
     goto LABEL_28;
   }
 
-  v16 = objc_msgSend_type(v10, v11, v12, v13, v14);
+  v16 = objc_msgSend_type(argCopy, v11, v12, v13, v14);
   v17 = v16;
   v18 = 0;
   if (v16 <= 4)
@@ -2052,12 +2052,12 @@ LABEL_65:
         goto LABEL_50;
       }
 
-      if (a4 == 1)
+      if (num == 1)
       {
         objc_msgSend_crossTableRefParam1(self, v11, v12, v13, v14);
       }
 
-      else if (a4)
+      else if (num)
       {
         objc_msgSend_crossTableRefParam2(self, v11, v12, v13, v14);
       }
@@ -2080,9 +2080,9 @@ LABEL_65:
       v105 = *&v103[0]._flags;
       v106 = v104;
       v103[0]._flags = (*&v104 >> 47) & 2 | v104._preserveColumn;
-      v83 = a6;
-      v84 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v83, *&v104, v103, v13, v14);
-      v87 = HIDWORD(*&a6);
+      cellCopy = cell;
+      v84 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(cellCopy, *&v104, v103, v13, v14);
+      v87 = HIDWORD(*&cell);
       if (v84 == 0x7FFFFFFFLL || (v84 & 0xFFFF00000000) != 0x7FFF00000000)
       {
         v87 = HIDWORD(v84);
@@ -2091,7 +2091,7 @@ LABEL_65:
       if (v84 == 0x7FFFFFFFLL && (v84 & 0xFFFF00000000) != 0x7FFF00000000)
       {
         v87 = HIDWORD(v84);
-        row = a6.row;
+        row = cell.row;
       }
 
       else
@@ -2099,7 +2099,7 @@ LABEL_65:
         row = v84;
       }
 
-      v17 = sub_221441A40(v15, &v105, v84 & 0xFFFF000000000000 | row | (v87 << 32), v85, v86);
+      v17 = sub_221441A40(engineCopy, &v105, v84 & 0xFFFF000000000000 | row | (v87 << 32), v85, v86);
     }
 
     goto LABEL_49;
@@ -2118,15 +2118,15 @@ LABEL_65:
       goto LABEL_50;
     }
 
-    if (a4 == 1)
+    if (num == 1)
     {
-      v43 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v11, *&a6, v15, v14);
+      v43 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v11, *&cell, engineCopy, v14);
       v48 = objc_msgSend_viewTractRef(v43, v44, v45, v46, v47);
     }
 
     else
     {
-      if (!a4)
+      if (!num)
       {
         v32 = MEMORY[0x277D81150];
         v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSTFormulaPredicate p_argTypeForPredArg:argNum:calculationEngine:hostCell:]", v13, v14);
@@ -2137,7 +2137,7 @@ LABEL_65:
         goto LABEL_28;
       }
 
-      v43 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v11, *&a6, v15, v14);
+      v43 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v11, *&cell, engineCopy, v14);
       v48 = objc_msgSend_viewTractRef(v43, v55, v56, v57, v58);
     }
 
@@ -2147,7 +2147,7 @@ LABEL_65:
     {
       *&v105 = objc_msgSend_tableUID(v30, v11, v12, v13, v14);
       *(&v105 + 1) = v59;
-      v62 = objc_msgSend_tableResolverForTableUID_(v15, v59, &v105, v60, v61);
+      v62 = objc_msgSend_tableResolverForTableUID_(engineCopy, v59, &v105, v60, v61);
       v64 = v62;
       if (!v62)
       {
@@ -2179,15 +2179,15 @@ LABEL_29:
       goto LABEL_50;
     }
 
-    if (a4 == 1)
+    if (num == 1)
     {
-      v49 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v11, *&a6, v15, v14);
+      v49 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v11, *&cell, engineCopy, v14);
       v54 = objc_msgSend_categoryRef(v49, v50, v51, v52, v53);
     }
 
     else
     {
-      if (!a4)
+      if (!num)
       {
         v19 = MEMORY[0x277D81150];
         v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSTFormulaPredicate p_argTypeForPredArg:argNum:calculationEngine:hostCell:]", v13, v14);
@@ -2201,7 +2201,7 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v49 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v11, *&a6, v15, v14);
+      v49 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v11, *&cell, engineCopy, v14);
       v54 = objc_msgSend_categoryRef(v49, v65, v66, v67, v68);
     }
 
@@ -2212,7 +2212,7 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    v71 = objc_msgSend_groupByForCategoryRef_withCalcEngine_(TSTGroupBy, v69, v30, v15, v70);
+    v71 = objc_msgSend_groupByForCategoryRef_withCalcEngine_(TSTGroupBy, v69, v30, engineCopy, v70);
     v64 = v71;
     if (!v71)
     {
@@ -2220,7 +2220,7 @@ LABEL_37:
     }
 
     v76 = objc_msgSend_tableModel(v71, v72, v73, v74, v75);
-    *&v105 = objc_msgSend_rowUIDForRowIndex_(v76, v77, *&a6, v78, v79);
+    *&v105 = objc_msgSend_rowUIDForRowIndex_(v76, v77, *&cell, v78, v79);
     *(&v105 + 1) = v80;
 
     v102 = 0;
@@ -2257,9 +2257,9 @@ LABEL_50:
   return v17;
 }
 
-- (BOOL)p_testDataTypesForArg0:(unsigned __int8)a3 arg1:(unsigned __int8)a4 arg2:(unsigned __int8)a5 predShouldReturn:(BOOL *)a6
+- (BOOL)p_testDataTypesForArg0:(unsigned __int8)arg0 arg1:(unsigned __int8)arg1 arg2:(unsigned __int8)arg2 predShouldReturn:(BOOL *)return
 {
-  *a6 = 0;
+  *return = 0;
   switch(self->_predicateType)
   {
     case 0u:
@@ -2297,77 +2297,77 @@ LABEL_50:
     case 0x29u:
     case 0x2Au:
     case 0x2Bu:
-      v7 = a3 == a4;
+      v7 = arg0 == arg1;
       goto LABEL_39;
     case 6u:
       result = 1;
-      if (a3 == a4)
+      if (arg0 == arg1)
       {
         return result;
       }
 
-      *a6 = 1;
+      *return = 1;
       goto LABEL_20;
     case 0xBu:
     case 0xCu:
     case 0x2Eu:
     case 0x2Fu:
-      v7 = (a3 & 0xFFFFFFFB) == 1;
+      v7 = (arg0 & 0xFFFFFFFB) == 1;
       goto LABEL_39;
     case 0xDu:
     case 0x2Cu:
     case 0x2Du:
-      v7 = a3 == a4 && a3 == a5;
+      v7 = arg0 == arg1 && arg0 == arg2;
       goto LABEL_39;
     case 0x11u:
     case 0x12u:
     case 0x13u:
     case 0x21u:
-      v7 = a3 == 2;
+      v7 = arg0 == 2;
       goto LABEL_39;
     case 0x14u:
     case 0x15u:
     case 0x16u:
-      v7 = a3 == 2 && a4 == 2;
+      v7 = arg0 == 2 && arg1 == 2;
       goto LABEL_39;
     case 0x17u:
-      v7 = a3 == 2 && a4 == 2 && a5 == 2;
+      v7 = arg0 == 2 && arg1 == 2 && arg2 == 2;
       goto LABEL_39;
     case 0x18u:
     case 0x19u:
     case 0x1Au:
     case 0x1Bu:
     case 0x1Cu:
-      v8 = a3 == 2;
+      v8 = arg0 == 2;
       goto LABEL_6;
     case 0x1Du:
-      v7 = a3 == 2 && a4 == 1 && a5 == 1;
+      v7 = arg0 == 2 && arg1 == 1 && arg2 == 1;
       goto LABEL_39;
     case 0x1Eu:
     case 0x1Fu:
     case 0x30u:
     case 0x31u:
-      v8 = (a3 & 0xFFFFFFFB) == 1;
+      v8 = (arg0 & 0xFFFFFFFB) == 1;
 LABEL_6:
-      v7 = v8 && a4 == 1;
+      v7 = v8 && arg1 == 1;
       goto LABEL_39;
     case 0x20u:
-      if (a3 == a4 && a3 == a5)
+      if (arg0 == arg1 && arg0 == arg2)
       {
         return 1;
       }
 
       result = 0;
-      if (a3 && a4 && a5)
+      if (arg0 && arg1 && arg2)
       {
         result = 0;
-        *a6 = 1;
+        *return = 1;
       }
 
       return result;
     case 0x35u:
     case 0x36u:
-      v7 = a4 == 11;
+      v7 = arg1 == 11;
 LABEL_39:
       result = v7;
       break;
@@ -2380,24 +2380,24 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)evaluateAtCellID:(TSUCellCoord)a3 onOwnerUID:(const TSKUIDStruct *)a4 calcEngine:(id)a5
+- (BOOL)evaluateAtCellID:(TSUCellCoord)d onOwnerUID:(const TSKUIDStruct *)iD calcEngine:(id)engine
 {
-  v104 = a3;
-  v8 = a5;
+  dCopy = d;
+  engineCopy = engine;
   v103 = 0;
   v13 = objc_msgSend_predArg0(self, v9, v10, v11, v12);
-  v15 = objc_msgSend_p_argTypeForPredArg_argNum_calculationEngine_hostCell_(self, v14, v13, 0, v8, a3);
+  v15 = objc_msgSend_p_argTypeForPredArg_argNum_calculationEngine_hostCell_(self, v14, v13, 0, engineCopy, d);
   v20 = objc_msgSend_predArg1(self, v16, v17, v18, v19);
-  v22 = objc_msgSend_p_argTypeForPredArg_argNum_calculationEngine_hostCell_(self, v21, v20, 1, v8, a3);
+  v22 = objc_msgSend_p_argTypeForPredArg_argNum_calculationEngine_hostCell_(self, v21, v20, 1, engineCopy, d);
   v27 = objc_msgSend_predArg2(self, v23, v24, v25, v26);
-  v29 = objc_msgSend_p_argTypeForPredArg_argNum_calculationEngine_hostCell_(self, v28, v27, 2, v8, a3);
+  v29 = objc_msgSend_p_argTypeForPredArg_argNum_calculationEngine_hostCell_(self, v28, v27, 2, engineCopy, d);
   LODWORD(v15) = objc_msgSend_p_testDataTypesForArg0_arg1_arg2_predShouldReturn_(self, v30, v15, v22, v29, &v103);
 
   if (v15)
   {
     if (self->_predicateType - 53 >= 2)
     {
-      v35 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v31, v8, a4, *&a3, 0);
+      v35 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v31, engineCopy, iD, *&d, 0);
       objc_msgSend_setSuppressCycleCheck_(v35, v84, 1, v85, v86);
       v45 = objc_msgSend_evaluateWithContext_(self->_formula, v87, v35, v88, v89);
       v103 = objc_msgSend_BOOLean(v45, v90, v91, v92, v93);
@@ -2421,10 +2421,10 @@ LABEL_20:
     v58 = v57[1];
     *&v102.relativeCoord._row = *v57;
     *&v102.tableUID._upper = v58;
-    TSCERelativeCellRef::cellRefForHostCoord(&v102, &v104, v59, v60, &v100);
-    LODWORD(v100) = v104.row;
+    TSCERelativeCellRef::cellRefForHostCoord(&v102, &dCopy, v59, v60, &v100);
+    LODWORD(v100) = dCopy.row;
     v99 = v101;
-    v63 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v61, &v99, v8, v62);
+    v63 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v61, &v99, engineCopy, v62);
     v68 = v63;
     if (!v63)
     {
@@ -2484,15 +2484,15 @@ LABEL_16:
   return v94;
 }
 
-- (void)setFormula:(id)a3
+- (void)setFormula:(id)formula
 {
-  v16 = a3;
-  if (self->_formula == v16)
+  formulaCopy = formula;
+  if (self->_formula == formulaCopy)
   {
     goto LABEL_25;
   }
 
-  objc_storeStrong(&self->_formula, a3);
+  objc_storeStrong(&self->_formula, formula);
   objc_msgSend_p_populateMembersFromFormula(self, v5, v6, v7, v8);
   predicateType = self->_predicateType;
   if ((predicateType - 5) >= 9 && (predicateType - 30) > 2)
@@ -2579,15 +2579,15 @@ LABEL_16:
 LABEL_25:
 }
 
-- (void)setArgumentAt:(int64_t)a3 withPredArg:(id)a4
+- (void)setArgumentAt:(int64_t)at withPredArg:(id)arg
 {
-  v7 = a4;
-  v11 = v7;
-  if (a3)
+  argCopy = arg;
+  v11 = argCopy;
+  if (at)
   {
-    if (a3 == 2)
+    if (at == 2)
     {
-      if (!v7)
+      if (!argCopy)
       {
         v11 = objc_opt_new();
       }
@@ -2596,9 +2596,9 @@ LABEL_25:
       objc_msgSend_setPredArg2_(self, v11, v11, v9, v10);
     }
 
-    else if (a3 == 1)
+    else if (at == 1)
     {
-      if (!v7)
+      if (!argCopy)
       {
         v11 = objc_opt_new();
       }
@@ -2609,12 +2609,12 @@ LABEL_25:
 
     else
     {
-      v40 = v7;
+      v40 = argCopy;
       v28 = MEMORY[0x277D81150];
-      v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTFormulaPredicate setArgumentAt:withPredArg:]", v9, v10);
+      v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], argCopy, "[TSTFormulaPredicate setArgumentAt:withPredArg:]", v9, v10);
       v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTFormulaPredicate.mm", v31, v32);
       v34 = NSStringFromSelector(a2);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v35, v29, v33, 1588, 0, "%@: Not allowed for argument at position %d", v34, a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v35, v29, v33, 1588, 0, "%@: Not allowed for argument at position %d", v34, at);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
     }
@@ -2622,8 +2622,8 @@ LABEL_25:
 
   else
   {
-    v40 = v7;
-    v12 = objc_msgSend_type(v7, v7, v8, v9, v10);
+    v40 = argCopy;
+    v12 = objc_msgSend_type(argCopy, argCopy, v8, v9, v10);
     v16 = v12;
     if (v12 > 0xC || ((1 << v12) & 0x1210) == 0)
     {
@@ -2734,36 +2734,36 @@ LABEL_25:
   return result;
 }
 
-- (id)predicateArg1atBaseHostCoord:(TSUModelCellCoord)a3 calcEngine:(id)a4
+- (id)predicateArg1atBaseHostCoord:(TSUModelCellCoord)coord calcEngine:(id)engine
 {
-  v6 = a4;
-  sub_221442B38(self->_predArg1, *&a3);
+  engineCopy = engine;
+  sub_221442B38(self->_predArg1, *&coord);
   v11 = objc_msgSend_type(self->_predArg1, v7, v8, v9, v10);
-  if (v6 && v11 == 9)
+  if (engineCopy && v11 == 9)
   {
     v16 = objc_msgSend_uidRectRef(self->_predArg1, v12, v13, v14, v15);
-    objc_msgSend_setCalcEngine_(v16, v17, v6, v18, v19);
+    objc_msgSend_setCalcEngine_(v16, v17, engineCopy, v18, v19);
   }
 
-  objc_msgSend_setHostCellCoord_(self->_predArg1, v12, *&a3, v14, v15);
+  objc_msgSend_setHostCellCoord_(self->_predArg1, v12, *&coord, v14, v15);
   predArg1 = self->_predArg1;
   v21 = predArg1;
 
   return predArg1;
 }
 
-- (id)predicateArg2atBaseHostCoord:(TSUModelCellCoord)a3 calcEngine:(id)a4
+- (id)predicateArg2atBaseHostCoord:(TSUModelCellCoord)coord calcEngine:(id)engine
 {
-  v6 = a4;
-  sub_221442B38(self->_predArg2, *&a3);
+  engineCopy = engine;
+  sub_221442B38(self->_predArg2, *&coord);
   v11 = objc_msgSend_type(self->_predArg2, v7, v8, v9, v10);
-  if (v6 && v11 == 9)
+  if (engineCopy && v11 == 9)
   {
     v16 = objc_msgSend_uidRectRef(self->_predArg2, v12, v13, v14, v15);
-    objc_msgSend_setCalcEngine_(v16, v17, v6, v18, v19);
+    objc_msgSend_setCalcEngine_(v16, v17, engineCopy, v18, v19);
   }
 
-  objc_msgSend_setHostCellCoord_(self->_predArg2, v12, *&a3, v14, v15);
+  objc_msgSend_setHostCellCoord_(self->_predArg2, v12, *&coord, v14, v15);
   predArg2 = self->_predArg2;
   v21 = predArg2;
 
@@ -2819,71 +2819,71 @@ LABEL_25:
   TSCEASTStreamIterator::~TSCEASTStreamIterator(v49, v48);
 }
 
-- (id)copyByRemappingOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (id)copyByRemappingOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
-  v8 = objc_msgSend_copy(self, a2, a3, a4, a5);
-  objc_msgSend_remapOwnerUIDsWithMap_rewriteContext_error_(v8, v9, a3, a4, a5);
+  v8 = objc_msgSend_copy(self, a2, map, context, error);
+  objc_msgSend_remapOwnerUIDsWithMap_rewriteContext_error_(v8, v9, map, context, error);
   return v8;
 }
 
-- (void)remapOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (void)remapOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2214430E4;
   v5[3] = &unk_278465380;
-  v5[4] = a3;
-  v5[5] = a4;
-  v5[6] = a5;
-  objc_msgSend_rewriteFormulaWithBlock_(self, a2, v5, a4, a5);
+  v5[4] = map;
+  v5[5] = context;
+  v5[6] = error;
+  objc_msgSend_rewriteFormulaWithBlock_(self, a2, v5, context, error);
 }
 
-- (void)rewriteNumberToDurationForSageImport:(const TSCECellRef *)a3 durationUnitLargest:(unsigned __int8)a4
+- (void)rewriteNumberToDurationForSageImport:(const TSCECellRef *)import durationUnitLargest:(unsigned __int8)largest
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_221443188;
   v5[3] = &unk_2784653A0;
-  v5[4] = a3;
-  v6 = a4;
-  objc_msgSend_rewriteFormulaWithBlock_(self, a2, v5, a4, v4);
+  v5[4] = import;
+  largestCopy = largest;
+  objc_msgSend_rewriteFormulaWithBlock_(self, a2, v5, largest, v4);
 }
 
-- (void)rewriteFormulaWithBlock:(id)a3
+- (void)rewriteFormulaWithBlock:(id)block
 {
-  v7 = (*(a3 + 2))(a3, self->_formula);
+  v7 = (*(block + 2))(block, self->_formula);
   objc_msgSend_setFormula_(self, v4, v7, v5, v6);
 }
 
-- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2214432A8;
   v6[3] = &unk_2784653C0;
-  v6[4] = a3;
-  v6[5] = a5;
-  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, a2, a4, v6, a5);
+  v6[4] = map;
+  v6[5] = error;
+  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, a2, context, v6, error);
 }
 
-- (id)copyByConvertingBaseToChrome:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5
+- (id)copyByConvertingBaseToChrome:(id)chrome inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = objc_msgSend_rewriteType(v8, v10, v11, v12, v13);
+  chromeCopy = chrome;
+  ownerCopy = owner;
+  v14 = objc_msgSend_rewriteType(chromeCopy, v10, v11, v12, v13);
   if (objc_msgSend_isMoveRewriteType_(TSTConvertFormulasForCategoriesByRewritingWrapper, v15, v14, v16, v17))
   {
-    v22 = objc_msgSend_tableModel(v9, v18, v19, v20, v21);
+    v22 = objc_msgSend_tableModel(ownerCopy, v18, v19, v20, v21);
     v27 = objc_msgSend_calcEngine(v22, v23, v24, v25, v26);
 
-    v32 = objc_msgSend_tableModel(v9, v28, v29, v30, v31);
-    *&v58 = a5;
+    v32 = objc_msgSend_tableModel(ownerCopy, v28, v29, v30, v31);
+    *&v58 = coordinate;
     *(&v58 + 1) = objc_msgSend_tableUID(v32, v33, v34, v35, v36);
     v59 = v37;
 
-    if (v8)
+    if (chromeCopy)
     {
-      objc_msgSend_updatedCellRefForOriginalCellRef_(v8, v38, &v58, v39, v40);
+      objc_msgSend_updatedCellRefForOriginalCellRef_(chromeCopy, v38, &v58, v39, v40);
     }
 
     else
@@ -2894,7 +2894,7 @@ LABEL_25:
 
     sub_2212C726C(&v55, &v58, &v56);
     v42 = [TSTConvertFormulasForCategoriesByRewritingWrapper alloc];
-    v45 = objc_msgSend_initWithCalcEngine_rewriteSpec_(v42, v43, v27, v8, v44);
+    v45 = objc_msgSend_initWithCalcEngine_rewriteSpec_(v42, v43, v27, chromeCopy, v44);
     TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v54, v27, &v55);
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3321888768;
@@ -2914,24 +2914,24 @@ LABEL_25:
   return v41;
 }
 
-- (id)copyByConvertingChromeToBase:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5
+- (id)copyByConvertingChromeToBase:(id)base inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = objc_msgSend_rewriteType(v8, v10, v11, v12, v13);
+  baseCopy = base;
+  ownerCopy = owner;
+  v14 = objc_msgSend_rewriteType(baseCopy, v10, v11, v12, v13);
   if (objc_msgSend_isMoveRewriteType_(TSTConvertFormulasForCategoriesByRewritingWrapper, v15, v14, v16, v17))
   {
-    v22 = objc_msgSend_tableModel(v9, v18, v19, v20, v21);
+    v22 = objc_msgSend_tableModel(ownerCopy, v18, v19, v20, v21);
     v27 = objc_msgSend_calcEngine(v22, v23, v24, v25, v26);
 
-    v32 = objc_msgSend_tableModel(v9, v28, v29, v30, v31);
-    *&v58 = a5;
+    v32 = objc_msgSend_tableModel(ownerCopy, v28, v29, v30, v31);
+    *&v58 = coordinate;
     *(&v58 + 1) = objc_msgSend_tableUID(v32, v33, v34, v35, v36);
     v59 = v37;
 
-    if (v8)
+    if (baseCopy)
     {
-      objc_msgSend_updatedCellRefForOriginalCellRef_(v8, v38, &v58, v39, v40);
+      objc_msgSend_updatedCellRefForOriginalCellRef_(baseCopy, v38, &v58, v39, v40);
     }
 
     else
@@ -2942,7 +2942,7 @@ LABEL_25:
 
     sub_2212C726C(&v55, &v58, &v56);
     v42 = [TSTConvertFormulasForCategoriesByRewritingWrapper alloc];
-    v45 = objc_msgSend_initWithCalcEngine_rewriteSpec_(v42, v43, v27, v8, v44);
+    v45 = objc_msgSend_initWithCalcEngine_rewriteSpec_(v42, v43, v27, baseCopy, v44);
     TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v54, v27, &v55);
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3321888768;
@@ -2962,11 +2962,11 @@ LABEL_25:
   return v41;
 }
 
-- (id)copyByRewritingWithSpec:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5
+- (id)copyByRewritingWithSpec:(id)spec inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = objc_msgSend_rewriteType(v8, v10, v11, v12, v13);
+  specCopy = spec;
+  ownerCopy = owner;
+  v14 = objc_msgSend_rewriteType(specCopy, v10, v11, v12, v13);
   if (v14 >= 0xE)
   {
     v32 = 0;
@@ -2993,15 +2993,15 @@ LABEL_25:
     }
   }
 
-  v19 = objc_msgSend_tableModel(v9, v15, v16, v17, v18);
+  v19 = objc_msgSend_tableModel(ownerCopy, v15, v16, v17, v18);
   v24 = objc_msgSend_calcEngine(v19, v20, v21, v22, v23);
 
-  *&v57 = a5;
-  *(&v57 + 1) = objc_msgSend_ownerUID(v9, v25, v26, v27, v28);
+  *&v57 = coordinate;
+  *(&v57 + 1) = objc_msgSend_ownerUID(ownerCopy, v25, v26, v27, v28);
   v58 = v29;
-  if (v8)
+  if (specCopy)
   {
-    objc_msgSend_updatedCellRefForOriginalCellRef_(v8, v29, &v57, v30, v31);
+    objc_msgSend_updatedCellRefForOriginalCellRef_(specCopy, v29, &v57, v30, v31);
   }
 
   else
@@ -3016,7 +3016,7 @@ LABEL_25:
   v49[1] = 3321888768;
   v49[2] = sub_221443A38;
   v49[3] = &unk_2834A8208;
-  v50 = v8;
+  v50 = specCopy;
   v44 = v24;
   v51 = v44;
   *&v45 = sub_2212C72BC(&v52, &v54).n128_u64[0];
@@ -3026,37 +3026,37 @@ LABEL_9:
   return v32;
 }
 
-- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)a3
+- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)offset
 {
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v9);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_221443B08;
   v8[3] = &unk_2784653E0;
-  v8[4] = a3;
+  v8[4] = offset;
   return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v5, &v9, v8, v6);
 }
 
-- (id)copyByUpgradingToLinkedRefForTable:(const TSKUIDStruct *)a3 hostCell:(TSUCellCoord)a4
+- (id)copyByUpgradingToLinkedRefForTable:(const TSKUIDStruct *)table hostCell:(TSUCellCoord)cell
 {
-  column = a4.column;
-  v9 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, a2, *&a4, 0, v4);
+  column = cell.column;
+  v9 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, a2, *&cell, 0, v4);
   v14 = v9;
-  if (v9 && objc_msgSend_type(v9, v10, v11, v12, v13) == 4 && (objc_msgSend_cellRefForHostCoord_(v14, v10, *&a4, v15, v13), (v82 & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL) && objc_msgSend_hasRelativeCellRef(v14, v10, v16, v17, v13))
+  if (v9 && objc_msgSend_type(v9, v10, v11, v12, v13) == 4 && (objc_msgSend_cellRefForHostCoord_(v14, v10, *&cell, v15, v13), (v82 & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL) && objc_msgSend_hasRelativeCellRef(v14, v10, v16, v17, v13))
   {
     v20 = objc_msgSend_relativeCellRef(v14, v10, v18, v19, v13);
     v21 = *v20;
     v22 = *(v20 + 4);
     v23 = *(v20 + 24);
-    v26 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v24, *&a4, 0, v25);
-    if (a4.row <= -v21)
+    v26 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v24, *&cell, 0, v25);
+    if (cell.row <= -v21)
     {
       row = -v21;
     }
 
     else
     {
-      row = a4.row;
+      row = cell.row;
     }
 
     if (v21 < 0 && (v23 & 0xA) == 0)
@@ -3066,7 +3066,7 @@ LABEL_9:
 
     else
     {
-      v29 = a4.row;
+      v29 = cell.row;
     }
 
     if (column <= -v22)
@@ -3089,16 +3089,16 @@ LABEL_9:
 
   else
   {
-    v29 = a4.row;
+    v29 = cell.row;
   }
 
-  v31 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v10, *&a4, 0, v13);
+  v31 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v10, *&cell, 0, v13);
   v36 = v31;
   if (v31)
   {
     if (objc_msgSend_type(v31, v32, v33, v34, v35) == 4)
     {
-      objc_msgSend_cellRefForHostCoord_(v36, v37, *&a4, v38, v39);
+      objc_msgSend_cellRefForHostCoord_(v36, v37, *&cell, v38, v39);
       if ((v82 & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
       {
         if (objc_msgSend_hasRelativeCellRef(v36, v40, v41, v42, v43))
@@ -3134,9 +3134,9 @@ LABEL_9:
             v29 = v56;
           }
 
-          v58 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v49, *&a4, 0, v50);
+          v58 = objc_msgSend_predicateArg1atBaseHostCoord_calcEngine_(self, v49, *&cell, 0, v50);
 
-          v61 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v59, *&a4, 0, v60);
+          v61 = objc_msgSend_predicateArg2atBaseHostCoord_calcEngine_(self, v59, *&cell, 0, v60);
 
           v36 = v61;
           v14 = v58;
@@ -3145,19 +3145,19 @@ LABEL_9:
     }
   }
 
-  v81 = *a3;
+  v81 = *table;
   v62 = [TSTFormulaPredicate alloc];
   v67 = objc_msgSend_predicateType(self, v63, v64, v65, v66);
   v72 = objc_msgSend_qualifier1(self, v68, v69, v70, v71);
   v77 = objc_msgSend_qualifier2(self, v73, v74, v75, v76);
-  v82 = *&a4 & 0xFFFF000000000000 | (column << 32) | v29;
+  v82 = *&cell & 0xFFFF000000000000 | (column << 32) | v29;
   v83 = v81;
   v79 = objc_msgSend_initWithPredicateType_arg1_arg2_qualifier1_qualifier2_argumentCellRef_hostCell_forConditionalStyle_(v62, v78, v67, v14, v36, v72, v77, &v82, v82, 1);
 
   return v79;
 }
 
-- (id)copyByUpdatingLinkedTable:(const TSKUIDStruct *)a3 hostCell:(TSUCellCoord)a4
+- (id)copyByUpdatingLinkedTable:(const TSKUIDStruct *)table hostCell:(TSUCellCoord)cell
 {
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v19);
   v15 = 0;
@@ -3169,11 +3169,11 @@ LABEL_9:
   v14[2] = sub_221443F5C;
   v14[3] = &unk_278465408;
   v14[4] = &v15;
-  v14[5] = a3;
+  v14[5] = table;
   v11 = objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v7, &v19, v14, v8);
   if ((v16[3] & 1) == 0)
   {
-    v12 = objc_msgSend_copyByUpgradingToLinkedRefForTable_hostCell_(self, v9, a3, *&a4, v10);
+    v12 = objc_msgSend_copyByUpgradingToLinkedRefForTable_hostCell_(self, v9, table, *&cell, v10);
 
     v11 = v12;
   }
@@ -3182,27 +3182,27 @@ LABEL_9:
   return v11;
 }
 
-- (id)copyByClearingUids:(id)a3 containingTableUID:(const TSKUIDStruct *)a4
+- (id)copyByClearingUids:(id)uids containingTableUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
+  uidsCopy = uids;
   v15.coordinate = 0;
-  v15._tableUID = *a4;
-  TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v16, v6, &v15);
+  v15._tableUID = *d;
+  TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v16, uidsCopy, &v15);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_221444080;
   v12[3] = &unk_27845DC60;
-  v7 = v6;
+  v7 = uidsCopy;
   v13 = v7;
-  v14 = a4;
+  dCopy = d;
   v10 = objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v8, &v16, v12, v9);
 
   return v10;
 }
 
-- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)a3 rewriteBlock:(id)a4
+- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)context rewriteBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11 = objc_msgSend_predArg0(self, v7, v8, v9, v10);
   v16 = objc_msgSend_predArg1(self, v12, v13, v14, v15);
   v21 = objc_msgSend_predArg2(self, v17, v18, v19, v20);
@@ -3227,7 +3227,7 @@ LABEL_9:
   {
     forConditionalStyle = self->_forConditionalStyle;
     v36 = objc_msgSend_useColumnRefForArg0(self, v31, v32, v33, v34);
-    v38 = objc_msgSend_rewriteWithContext_forArgAt_usingLinkedRef_useColumnRef_hostCellRef_rewriteBlock_(v11, v37, a3, 0, forConditionalStyle, v36, &v71, v6);
+    v38 = objc_msgSend_rewriteWithContext_forArgAt_usingLinkedRef_useColumnRef_hostCellRef_rewriteBlock_(v11, v37, context, 0, forConditionalStyle, v36, &v71, blockCopy);
 
     columnUid = v71;
     v75 = v72;
@@ -3237,7 +3237,7 @@ LABEL_9:
 
   if (objc_msgSend_needsFormulaRewriting(v16, v31, v32, v33, v34))
   {
-    v43 = objc_msgSend_rewriteWithContext_forArgAt_usingLinkedRef_useColumnRef_hostCellRef_rewriteBlock_(v16, v39, a3, 1, 0, 0, &v68, v6);
+    v43 = objc_msgSend_rewriteWithContext_forArgAt_usingLinkedRef_useColumnRef_hostCellRef_rewriteBlock_(v16, v39, context, 1, 0, 0, &v68, blockCopy);
 
     columnUid = v68;
     v75 = v69;
@@ -3247,7 +3247,7 @@ LABEL_9:
 
   if (objc_msgSend_needsFormulaRewriting(v21, v39, v40, v41, v42))
   {
-    v48 = objc_msgSend_rewriteWithContext_forArgAt_usingLinkedRef_useColumnRef_hostCellRef_rewriteBlock_(v21, v44, a3, 2, 0, 0, &v65, v6);
+    v48 = objc_msgSend_rewriteWithContext_forArgAt_usingLinkedRef_useColumnRef_hostCellRef_rewriteBlock_(v21, v44, context, 2, 0, 0, &v65, blockCopy);
 
     columnUid = v65;
     v75 = v66;
@@ -3291,9 +3291,9 @@ LABEL_9:
   }
 }
 
-- (id)downgradeForPrePivotFormatForLocale:(id)a3
+- (id)downgradeForPrePivotFormatForLocale:(id)locale
 {
-  v6 = objc_msgSend_predicateType(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_predicateType(self, a2, locale, v3, v4);
   if ((v6 - 57) > 1)
   {
     v30 = 0;
@@ -3324,11 +3324,11 @@ LABEL_9:
   return v30;
 }
 
-- (void)encodeToPrePivotArchive:(void *)a3 archiver:(id)a4 encodingForSOS:(BOOL)a5
+- (void)encodeToPrePivotArchive:(void *)archive archiver:(id)archiver encodingForSOS:(BOOL)s
 {
-  v5 = a5;
-  v37 = a4;
-  if (((objc_msgSend_backwardCompatiblePrePivot(self, v8, v9, v10, v11) | v5) & 1) == 0)
+  sCopy = s;
+  archiverCopy = archiver;
+  if (((objc_msgSend_backwardCompatiblePrePivot(self, v8, v9, v10, v11) | sCopy) & 1) == 0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSTFormulaPredicate encodeToPrePivotArchive:archiver:encodingForSOS:]", v13, v14);
@@ -3339,60 +3339,60 @@ LABEL_9:
   }
 
   formula = self->_formula;
-  *(a3 + 4) |= 1u;
-  v27 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v27 = *(archive + 3);
   if (!v27)
   {
-    v28 = *(a3 + 1);
+    v28 = *(archive + 1);
     if (v28)
     {
       v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v27 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaArchive>(v28);
-    *(a3 + 3) = v27;
+    *(archive + 3) = v27;
   }
 
-  v29 = objc_msgSend_encodeToArchive_archiver_(formula, v12, v27, v37, v14);
-  v32 = *(a3 + 4);
+  v29 = objc_msgSend_encodeToArchive_archiver_(formula, v12, v27, archiverCopy, v14);
+  v32 = *(archive + 4);
   qualifier1 = self->_qualifier1;
-  *(a3 + 8) = self->_predicateType;
-  *(a3 + 9) = qualifier1;
+  *(archive + 8) = self->_predicateType;
+  *(archive + 9) = qualifier1;
   argIndex1 = self->_argIndex1;
-  *(a3 + 10) = self->_qualifier2;
-  *(a3 + 11) = argIndex1;
+  *(archive + 10) = self->_qualifier2;
+  *(archive + 11) = argIndex1;
   argIndex0 = self->_argIndex0;
   argIndex2 = self->_argIndex2;
-  *(a3 + 4) = v32 | 0x7E;
-  *(a3 + 12) = argIndex2;
-  *(a3 + 13) = argIndex0;
+  *(archive + 4) = v32 | 0x7E;
+  *(archive + 12) = argIndex2;
+  *(archive + 13) = argIndex0;
   if ((v29 & 6) != 0)
   {
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v37, v30, 0x300020000000ALL, @"TSTCategorizedTables", v31);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v30, 0x300020000000ALL, @"TSTCategorizedTables", v31);
   }
 }
 
-- (id)initFromPrePivotArchive:(const void *)a3
+- (id)initFromPrePivotArchive:(const void *)archive
 {
-  v6 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_init(self, a2, archive, v3, v4);
   v11 = v6;
   if (v6)
   {
-    v12 = *(a3 + 9);
-    *(v6 + 16) = *(a3 + 8);
+    v12 = *(archive + 9);
+    *(v6 + 16) = *(archive + 8);
     *(v6 + 17) = v12;
-    v13 = *(a3 + 11);
-    *(v6 + 18) = *(a3 + 10);
-    v14 = *(a3 + 12);
-    *(v6 + 20) = *(a3 + 13);
+    v13 = *(archive + 11);
+    *(v6 + 18) = *(archive + 10);
+    v14 = *(archive + 12);
+    *(v6 + 20) = *(archive + 13);
     *(v6 + 22) = v13;
     *(v6 + 24) = v14;
-    if (*(a3 + 16))
+    if (*(archive + 16))
     {
       v15 = [TSCEFormulaObject alloc];
-      if (*(a3 + 3))
+      if (*(archive + 3))
       {
-        isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v15, v16, *(a3 + 3), 0, v17);
+        isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v15, v16, *(archive + 3), 0, v17);
       }
 
       else
@@ -3430,91 +3430,91 @@ LABEL_9:
   return v11;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v8 = a4;
+  archiverCopy = archiver;
   formula = self->_formula;
-  *(a3 + 4) |= 8u;
-  v10 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v10 = *(archive + 6);
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaArchive>(v11);
-    *(a3 + 6) = v10;
+    *(archive + 6) = v10;
   }
 
-  v16 = objc_msgSend_encodeToArchive_archiver_(formula, v6, v10, v8, v7);
-  v17 = *(a3 + 4);
+  v16 = objc_msgSend_encodeToArchive_archiver_(formula, v6, v10, archiverCopy, v7);
+  v17 = *(archive + 4);
   qualifier1 = self->_qualifier1;
-  *(a3 + 20) = self->_predicateType;
-  *(a3 + 21) = qualifier1;
-  *(a3 + 22) = self->_qualifier2;
+  *(archive + 20) = self->_predicateType;
+  *(archive + 21) = qualifier1;
+  *(archive + 22) = self->_qualifier2;
   forConditionalStyle = self->_forConditionalStyle;
-  *(a3 + 4) = v17 | 0x780;
-  *(a3 + 92) = forConditionalStyle;
+  *(archive + 4) = v17 | 0x780;
+  *(archive + 92) = forConditionalStyle;
   predArg0 = self->_predArg0;
   if (predArg0)
   {
-    *(a3 + 4) = v17 | 0x781;
-    v21 = *(a3 + 3);
+    *(archive + 4) = v17 | 0x781;
+    v21 = *(archive + 3);
     if (!v21)
     {
-      v22 = *(a3 + 1);
+      v22 = *(archive + 1);
       if (v22)
       {
         v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v21 = google::protobuf::Arena::CreateMaybeMessage<TST::FormulaPredArgArchive>(v22);
-      *(a3 + 3) = v21;
+      *(archive + 3) = v21;
     }
 
-    objc_msgSend_encodeToArchive_archiver_(predArg0, v12, v21, v8, v15);
+    objc_msgSend_encodeToArchive_archiver_(predArg0, v12, v21, archiverCopy, v15);
   }
 
   predArg1 = self->_predArg1;
   if (predArg1)
   {
-    *(a3 + 4) |= 2u;
-    v24 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v24 = *(archive + 4);
     if (!v24)
     {
-      v25 = *(a3 + 1);
+      v25 = *(archive + 1);
       if (v25)
       {
         v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v24 = google::protobuf::Arena::CreateMaybeMessage<TST::FormulaPredArgArchive>(v25);
-      *(a3 + 4) = v24;
+      *(archive + 4) = v24;
     }
 
-    objc_msgSend_encodeToArchive_archiver_(predArg1, v12, v24, v8, v15);
+    objc_msgSend_encodeToArchive_archiver_(predArg1, v12, v24, archiverCopy, v15);
   }
 
   predArg2 = self->_predArg2;
   if (predArg2)
   {
-    *(a3 + 4) |= 4u;
-    v27 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v27 = *(archive + 5);
     if (!v27)
     {
-      v28 = *(a3 + 1);
+      v28 = *(archive + 1);
       if (v28)
       {
         v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v27 = google::protobuf::Arena::CreateMaybeMessage<TST::FormulaPredArgArchive>(v28);
-      *(a3 + 5) = v27;
+      *(archive + 5) = v27;
     }
 
-    objc_msgSend_encodeToArchive_archiver_(predArg2, v12, v27, v8, v15);
+    objc_msgSend_encodeToArchive_archiver_(predArg2, v12, v27, archiverCopy, v15);
   }
 
   if ((self->_hostCellRef._columnUid._lower || self->_hostCellRef._columnUid._upper) && (self->_hostCellRef._rowUid._lower || self->_hostCellRef._rowUid._upper))
@@ -3525,18 +3525,18 @@ LABEL_9:
     rowUid = self->_hostCellRef._rowUid;
     if (tableUid != 0uLL)
     {
-      *(a3 + 4) |= 0x10u;
-      v30 = *(a3 + 7);
+      *(archive + 4) |= 0x10u;
+      v30 = *(archive + 7);
       if (!v30)
       {
-        v31 = *(a3 + 1);
+        v31 = *(archive + 1);
         if (v31)
         {
           v31 = *(v31 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v30 = MEMORY[0x223DA0360](v31);
-        *(a3 + 7) = v30;
+        *(archive + 7) = v30;
       }
 
       TSKUIDStruct::saveToMessage(&v44, v30);
@@ -3544,18 +3544,18 @@ LABEL_9:
 
     if (columnUid != 0uLL)
     {
-      *(a3 + 4) |= 0x20u;
-      v32 = *(a3 + 8);
+      *(archive + 4) |= 0x20u;
+      v32 = *(archive + 8);
       if (!v32)
       {
-        v33 = *(a3 + 1);
+        v33 = *(archive + 1);
         if (v33)
         {
           v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v32 = MEMORY[0x223DA0360](v33);
-        *(a3 + 8) = v32;
+        *(archive + 8) = v32;
       }
 
       TSKUIDStruct::saveToMessage(&columnUid, v32);
@@ -3563,18 +3563,18 @@ LABEL_9:
 
     if (rowUid != 0uLL)
     {
-      *(a3 + 4) |= 0x40u;
-      v34 = *(a3 + 9);
+      *(archive + 4) |= 0x40u;
+      v34 = *(archive + 9);
       if (!v34)
       {
-        v35 = *(a3 + 1);
+        v35 = *(archive + 1);
         if (v35)
         {
           v35 = *(v35 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v34 = MEMORY[0x223DA0360](v35);
-        *(a3 + 9) = v34;
+        *(archive + 9) = v34;
       }
 
       TSKUIDStruct::saveToMessage(&rowUid, v34);
@@ -3583,37 +3583,37 @@ LABEL_9:
 
   if ((v16 & 6) != 0)
   {
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v8, v12, 0x300020000000ALL, @"TSTCategorizedTables", v15);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v12, 0x300020000000ALL, @"TSTCategorizedTables", v15);
   }
 
   if ((objc_msgSend_backwardCompatiblePrePivot(self, v12, v13, v14, v15, rowUid) & 1) == 0 && (objc_msgSend_canDowngradeForPrePivotFormat(self, v36, v37, v38, v39) & 1) == 0)
   {
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v8, v40, 0xB000200000006, @"TSTPivotTables", v41);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v40, 0xB000200000006, @"TSTPivotTables", v41);
   }
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v8 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v8 = objc_msgSend_init(self, a2, archive, v3, v4);
   v13 = v8;
   if (v8)
   {
-    v14 = *(a3 + 21);
-    v8[16] = *(a3 + 20);
+    v14 = *(archive + 21);
+    v8[16] = *(archive + 20);
     v8[17] = v14;
-    v8[18] = *(a3 + 22);
-    v15 = *(a3 + 4);
+    v8[18] = *(archive + 22);
+    v15 = *(archive + 4);
     if ((v15 & 0x400) != 0)
     {
-      v8[56] = *(a3 + 92);
+      v8[56] = *(archive + 92);
     }
 
     if (v15)
     {
       v16 = [TSTFormulaPredArg alloc];
-      if (*(a3 + 3))
+      if (*(archive + 3))
       {
-        v20 = objc_msgSend_initFromArchive_(v16, v17, *(a3 + 3), v18, v19);
+        v20 = objc_msgSend_initFromArchive_(v16, v17, *(archive + 3), v18, v19);
       }
 
       else
@@ -3624,15 +3624,15 @@ LABEL_9:
       v21 = v13[4];
       v13[4] = v20;
 
-      v15 = *(a3 + 4);
+      v15 = *(archive + 4);
     }
 
     if ((v15 & 2) != 0)
     {
       v22 = [TSTFormulaPredArg alloc];
-      if (*(a3 + 4))
+      if (*(archive + 4))
       {
-        v26 = objc_msgSend_initFromArchive_(v22, v23, *(a3 + 4), v24, v25);
+        v26 = objc_msgSend_initFromArchive_(v22, v23, *(archive + 4), v24, v25);
       }
 
       else
@@ -3643,15 +3643,15 @@ LABEL_9:
       v27 = v13[5];
       v13[5] = v26;
 
-      v15 = *(a3 + 4);
+      v15 = *(archive + 4);
     }
 
     if ((v15 & 4) != 0)
     {
       v28 = [TSTFormulaPredArg alloc];
-      if (*(a3 + 5))
+      if (*(archive + 5))
       {
-        v32 = objc_msgSend_initFromArchive_(v28, v29, *(a3 + 5), v30, v31);
+        v32 = objc_msgSend_initFromArchive_(v28, v29, *(archive + 5), v30, v31);
       }
 
       else
@@ -3673,13 +3673,13 @@ LABEL_9:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40, v41, v42);
     }
 
-    v43 = *(a3 + 4);
+    v43 = *(archive + 4);
     if ((v43 & 8) != 0)
     {
       v44 = [TSCEFormulaObject alloc];
-      if (*(a3 + 6))
+      if (*(archive + 6))
       {
-        isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v44, v45, *(a3 + 6), 0, v46);
+        isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v44, v45, *(archive + 6), 0, v46);
       }
 
       else
@@ -3690,21 +3690,21 @@ LABEL_9:
       v48 = v13[1];
       v13[1] = isPreUFF;
 
-      v43 = *(a3 + 4);
+      v43 = *(archive + 4);
     }
 
     if ((v43 & 0x20) != 0 && (v43 & 0x40) != 0)
     {
       if ((v43 & 0x10) != 0)
       {
-        v5 = TSKUIDStruct::loadFromMessage(*(a3 + 7), v9);
+        v5 = TSKUIDStruct::loadFromMessage(*(archive + 7), v9);
         v6 = v9;
       }
 
       v49 = MEMORY[0x277D809E0];
-      if (*(a3 + 8))
+      if (*(archive + 8))
       {
-        v50 = *(a3 + 8);
+        v50 = *(archive + 8);
       }
 
       else
@@ -3714,9 +3714,9 @@ LABEL_9:
 
       v52 = TSKUIDStruct::loadFromMessage(v50, v9);
       v53 = v51;
-      if (*(a3 + 9))
+      if (*(archive + 9))
       {
-        v54 = *(a3 + 9);
+        v54 = *(archive + 9);
       }
 
       else
@@ -3742,24 +3742,24 @@ LABEL_9:
   return v13;
 }
 
-- (unsigned)expectedArgTypeForPredicateType:(unsigned __int8)a3 firstArg:(BOOL)a4
+- (unsigned)expectedArgTypeForPredicateType:(unsigned __int8)type firstArg:(BOOL)arg
 {
-  if (a4)
+  if (arg)
   {
-    if ((a3 - 1) >= 0x3E)
+    if ((type - 1) >= 0x3E)
     {
       return 0;
     }
 
     else
     {
-      return byte_2217E1C7B[(a3 - 1)];
+      return byte_2217E1C7B[(type - 1)];
     }
   }
 
   else
   {
-    if (a3 == 23)
+    if (type == 23)
     {
       v5 = 2;
     }
@@ -3769,17 +3769,17 @@ LABEL_9:
       v5 = 0;
     }
 
-    if (((1 << a3) & 0x300000000000) != 0)
+    if (((1 << type) & 0x300000000000) != 0)
     {
       v5 = 5;
     }
 
-    if (((1 << a3) & 0x120002000) != 0)
+    if (((1 << type) & 0x120002000) != 0)
     {
       v5 = 1;
     }
 
-    if (a3 <= 0x2Du)
+    if (type <= 0x2Du)
     {
       return v5;
     }
@@ -3800,11 +3800,11 @@ LABEL_9:
   return self;
 }
 
-- (void)setHostCellRef:(TSCEUidCellRef *)a3
+- (void)setHostCellRef:(TSCEUidCellRef *)ref
 {
-  columnUid = a3->_columnUid;
-  tableUid = a3->_tableUid;
-  self->_hostCellRef._rowUid = a3->_rowUid;
+  columnUid = ref->_columnUid;
+  tableUid = ref->_tableUid;
+  self->_hostCellRef._rowUid = ref->_rowUid;
   self->_hostCellRef._tableUid = tableUid;
   self->_hostCellRef._columnUid = columnUid;
 }

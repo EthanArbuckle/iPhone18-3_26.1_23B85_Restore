@@ -1,31 +1,31 @@
 @interface AutoLoopStabilizer
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)GetPreciseReferenceTimeFromHomographies:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)GetPreciseReferenceTimeFromHomographies:(SEL)homographies;
 - ($4C6D1E162277694FB76656457146213A)determinePreciseTimeRange;
 - (AutoLoopStabilizer)init;
-- (BOOL)CheckForTripodOKInHomographies:(const void *)a3 firstIndex:(unint64_t)a4 lastIndex:(unint64_t)a5 refIndex:(unint64_t)a6 cropRectOut:(CGRect *)a7 minConfidence:(float)a8 confidenceOut:(float *)a9;
-- (BOOL)CropRectValid:(const CGRect *)a3;
+- (BOOL)CheckForTripodOKInHomographies:(const void *)homographies firstIndex:(unint64_t)index lastIndex:(unint64_t)lastIndex refIndex:(unint64_t)refIndex cropRectOut:(CGRect *)out minConfidence:(float)confidence confidenceOut:(float *)confidenceOut;
+- (BOOL)CropRectValid:(const CGRect *)valid;
 - (BOOL)getNaturalTimeScaleForVideoTrackInAsset;
-- (BOOL)tripodOKWithTrimming:(const void *)a3 frameTimes:(const void *)a4 minConfidence:(float)a5;
+- (BOOL)tripodOKWithTrimming:(const void *)trimming frameTimes:(const void *)times minConfidence:(float)confidence;
 - (BOOL)updateStabilizerStatus;
 - (CGRect)cropRect;
 - (CGSize)inputMovieDimensions;
-- (float)CropRatio:(const CGRect *)a3;
+- (float)CropRatio:(const CGRect *)ratio;
 - (id)getVideoTrack;
-- (int)FindAcceptableTripodSegmentForInput:(const void *)a3 frameTimes:(const void *)a4;
-- (int)analyzeForAutoloopWithDirect:(BOOL)a3 toAnalysisOutput:(void *)a4;
-- (int)processStabilizationAnalysis:(void *)a3 forcePassThru:(BOOL)a4 forceSmoothing:(BOOL)a5 forceSequentialTripod:(BOOL)a6;
-- (int)processStabilizationAnalysisForCinematicL1:(void *)a3;
-- (unint64_t)FindFrameIndexForReferenceTimeInHomographies:(const void *)a3;
-- (void)ICReportProgress:(float)a3;
+- (int)FindAcceptableTripodSegmentForInput:(const void *)input frameTimes:(const void *)times;
+- (int)analyzeForAutoloopWithDirect:(BOOL)direct toAnalysisOutput:(void *)output;
+- (int)processStabilizationAnalysis:(void *)analysis forcePassThru:(BOOL)thru forceSmoothing:(BOOL)smoothing forceSequentialTripod:(BOOL)tripod;
+- (int)processStabilizationAnalysisForCinematicL1:(void *)l1;
+- (unint64_t)FindFrameIndexForReferenceTimeInHomographies:(const void *)homographies;
+- (void)ICReportProgress:(float)progress;
 - (void)dealloc;
-- (void)setFirstFrameTimeAfterDrop:(id *)a3;
-- (void)setLastFrameTimeAfterDrop:(id *)a3;
-- (void)setMaxAllowedTrimTimeEnd:(id *)a3;
-- (void)setMaxAllowedTrimTimeStart:(id *)a3;
-- (void)setMinimumFrameDuration:(id *)a3;
-- (void)setRefFrameTime:(id *)a3;
-- (void)setTrimLength:(id *)a3;
-- (void)setTrimStart:(id *)a3;
+- (void)setFirstFrameTimeAfterDrop:(id *)drop;
+- (void)setLastFrameTimeAfterDrop:(id *)drop;
+- (void)setMaxAllowedTrimTimeEnd:(id *)end;
+- (void)setMaxAllowedTrimTimeStart:(id *)start;
+- (void)setMinimumFrameDuration:(id *)duration;
+- (void)setRefFrameTime:(id *)time;
+- (void)setTrimLength:(id *)length;
+- (void)setTrimStart:(id *)start;
 @end
 
 @implementation AutoLoopStabilizer
@@ -80,12 +80,12 @@
   [(AutoLoopStabilizer *)&v3 dealloc];
 }
 
-- (unint64_t)FindFrameIndexForReferenceTimeInHomographies:(const void *)a3
+- (unint64_t)FindFrameIndexForReferenceTimeInHomographies:(const void *)homographies
 {
   time1 = self->refFrameTime;
   refFrameTime = **&MEMORY[0x277CC0888];
   v5 = CMTimeCompare(&time1, &refFrameTime);
-  v6 = 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3);
+  v6 = 0xAAAAAAAAAAAAAAABLL * ((*(homographies + 1) - *homographies) >> 3);
   if (!v5)
   {
     return v6 >> 1;
@@ -96,7 +96,7 @@
   while (v7 >= 1)
   {
     --v7;
-    v9 = *a3 + v8;
+    v9 = *homographies + v8;
     v10 = *(v9 + 16);
     *&time1.value = *v9;
     time1.epoch = v10;
@@ -111,7 +111,7 @@
   return 0;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)GetPreciseReferenceTimeFromHomographies:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)GetPreciseReferenceTimeFromHomographies:(SEL)homographies
 {
   *retstr = **&MEMORY[0x277CC0888];
   if (*(a4 + 1) != *a4)
@@ -125,9 +125,9 @@
   return self;
 }
 
-- (float)CropRatio:(const CGRect *)a3
+- (float)CropRatio:(const CGRect *)ratio
 {
-  v3 = vcvt_f32_f64(vdivq_f64(a3->size, self->inputMovieDimensions));
+  v3 = vcvt_f32_f64(vdivq_f64(ratio->size, self->inputMovieDimensions));
   if (v3.f32[0] >= v3.f32[1])
   {
     v3.f32[0] = v3.f32[1];
@@ -136,17 +136,17 @@
   return v3.f32[0];
 }
 
-- (BOOL)CropRectValid:(const CGRect *)a3
+- (BOOL)CropRectValid:(const CGRect *)valid
 {
-  width = a3->size.width;
-  height = a3->size.height;
+  width = valid->size.width;
+  height = valid->size.height;
   if (width < 1.0 || height < 1.0)
   {
     return 0;
   }
 
-  x = a3->origin.x;
-  y = a3->origin.y;
+  x = valid->origin.x;
+  y = valid->origin.y;
   v9.size.width = self->inputMovieDimensions.width;
   v9.size.height = self->inputMovieDimensions.height;
   v9.origin.x = 0.0;
@@ -156,8 +156,8 @@
 
 - (id)getVideoTrack
 {
-  v2 = [(AutoLoopStabilizer *)self movieAssetIn];
-  v3 = [v2 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+  movieAssetIn = [(AutoLoopStabilizer *)self movieAssetIn];
+  v3 = [movieAssetIn tracksWithMediaType:*MEMORY[0x277CE5EA8]];
 
   if (v3)
   {
@@ -174,11 +174,11 @@
 
 - (BOOL)getNaturalTimeScaleForVideoTrackInAsset
 {
-  v3 = [(AutoLoopStabilizer *)self getVideoTrack];
-  v4 = v3;
-  if (v3)
+  getVideoTrack = [(AutoLoopStabilizer *)self getVideoTrack];
+  v4 = getVideoTrack;
+  if (getVideoTrack)
   {
-    -[AutoLoopStabilizer setNaturalTimeScale:](self, "setNaturalTimeScale:", [v3 naturalTimeScale]);
+    -[AutoLoopStabilizer setNaturalTimeScale:](self, "setNaturalTimeScale:", [getVideoTrack naturalTimeScale]);
     [v4 minFrameDuration];
     v6 = v8;
     v7 = v9;
@@ -197,11 +197,11 @@
   retstr->var0.var3 = v7;
   *&retstr->var1.var0 = v6;
   retstr->var1.var3 = v7;
-  v8 = [(AutoLoopStabilizer *)self getVideoTrack];
-  v9 = v8;
-  if (v8)
+  getVideoTrack = [(AutoLoopStabilizer *)self getVideoTrack];
+  v9 = getVideoTrack;
+  if (getVideoTrack)
   {
-    [v8 timeRange];
+    [getVideoTrack timeRange];
     v10 = *&v21[16];
     v23 = *v21;
     *v24 = *&v21[16];
@@ -259,16 +259,16 @@
   return result;
 }
 
-- (BOOL)CheckForTripodOKInHomographies:(const void *)a3 firstIndex:(unint64_t)a4 lastIndex:(unint64_t)a5 refIndex:(unint64_t)a6 cropRectOut:(CGRect *)a7 minConfidence:(float)a8 confidenceOut:(float *)a9
+- (BOOL)CheckForTripodOKInHomographies:(const void *)homographies firstIndex:(unint64_t)index lastIndex:(unint64_t)lastIndex refIndex:(unint64_t)refIndex cropRectOut:(CGRect *)out minConfidence:(float)confidence confidenceOut:(float *)confidenceOut
 {
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v15 = [MEMORY[0x277CCABB0] numberWithInt:a4];
+  v15 = [MEMORY[0x277CCABB0] numberWithInt:index];
   [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x277D1B308]];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithInt:a5];
+  v16 = [MEMORY[0x277CCABB0] numberWithInt:lastIndex];
   [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x277D1B310]];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInt:a6];
+  v17 = [MEMORY[0x277CCABB0] numberWithInt:refIndex];
   [v14 setObject:v17 forKeyedSubscript:*MEMORY[0x277D1B318]];
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -281,12 +281,12 @@
   [v22 floatValue];
   v24 = v23;
 
-  if (a9)
+  if (confidenceOut)
   {
-    *a9 = v24;
+    *confidenceOut = v24;
   }
 
-  if (v24 >= a8)
+  if (v24 >= confidence)
   {
     v25 = CanDoTripod;
   }
@@ -299,15 +299,15 @@
   return v25;
 }
 
-- (BOOL)tripodOKWithTrimming:(const void *)a3 frameTimes:(const void *)a4 minConfidence:(float)a5
+- (BOOL)tripodOKWithTrimming:(const void *)trimming frameTimes:(const void *)times minConfidence:(float)confidence
 {
-  if (!a3)
+  if (!trimming)
   {
     LOBYTE(v11) = 0;
     return v11;
   }
 
-  if (*a4 == *(a4 + 1))
+  if (*times == *(times + 1))
   {
     goto LABEL_20;
   }
@@ -331,16 +331,16 @@
 
   self->droppedStartFrameCount = 0;
   self->droppedEndFrameCount = 0;
-  v12 = 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3) - 1;
-  v13 = [(AutoLoopStabilizer *)self FindFrameIndexForReferenceTimeInHomographies:a4];
-  *&v14 = a5;
-  if ([(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:a3 firstIndex:0 lastIndex:v12 refIndex:v13 cropRectOut:&time1 minConfidence:&v55 confidenceOut:v14])
+  v12 = 0xAAAAAAAAAAAAAAABLL * ((*(times + 1) - *times) >> 3) - 1;
+  v13 = [(AutoLoopStabilizer *)self FindFrameIndexForReferenceTimeInHomographies:times];
+  *&v14 = confidence;
+  if ([(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:trimming firstIndex:0 lastIndex:v12 refIndex:v13 cropRectOut:&time1 minConfidence:&v55 confidenceOut:v14])
   {
     [(AutoLoopStabilizer *)self CropRatio:&time1];
     v15 = v55;
 LABEL_9:
     self->_lastTripodQuality = v15;
-    if (v15 >= a5)
+    if (v15 >= confidence)
     {
       LOBYTE(v11) = 1;
     }
@@ -362,18 +362,18 @@ LABEL_20:
   }
 
   v53 = 0.0;
-  time2 = *(*(a4 + 1) - 24);
+  time2 = *(*(times + 1) - 24);
   memset(&v52, 0, sizeof(v52));
   lhs = time2;
   [(AutoLoopStabilizer *)self maxAllowedTrimTimeEnd];
   CMTimeSubtract(&v52, &lhs, &rhs);
-  v16 = *(a4 + 1) - *a4;
+  v16 = *(times + 1) - *times;
   v17 = 0xAAAAAAAAAAAAAAABLL * (v16 >> 3);
   v18 = v16 - 48;
   while (1)
   {
     v19 = v17;
-    v20 = *a4;
+    v20 = *times;
     if (v19 < 2)
     {
       break;
@@ -389,7 +389,7 @@ LABEL_20:
     v17 = v19 - 1;
     if ((v23 & 0x80000000) == 0)
     {
-      v20 = *a4;
+      v20 = *times;
       break;
     }
   }
@@ -407,7 +407,7 @@ LABEL_20:
   while (v29)
   {
     v49 = rhs;
-    v30 = *a4 + v28;
+    v30 = *times + v28;
     v31 = *(v30 + 16);
     *&v48.value = *v30;
     v48.epoch = v31;
@@ -442,16 +442,16 @@ LABEL_23:
     v33 = v25;
   }
 
-  *&v24 = a5;
-  v11 = [(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:a3 firstIndex:v32 lastIndex:v33 refIndex:v13 cropRectOut:&time1 minConfidence:&v53 confidenceOut:v24];
+  *&v24 = confidence;
+  v11 = [(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:trimming firstIndex:v32 lastIndex:v33 refIndex:v13 cropRectOut:&time1 minConfidence:&v53 confidenceOut:v24];
   if (v11)
   {
     v15 = v53;
     LODWORD(v48.value) = 0;
     if (v32)
     {
-      *&v34 = a5;
-      if ([(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:a3 firstIndex:v32 - 1 lastIndex:v33 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v34])
+      *&v34 = confidence;
+      if ([(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:trimming firstIndex:v32 - 1 lastIndex:v33 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v34])
       {
         while (1)
         {
@@ -462,9 +462,9 @@ LABEL_23:
             break;
           }
 
-          *&v34 = a5;
+          *&v34 = confidence;
           --v32;
-          if (![(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:a3 firstIndex:v35 lastIndex:v33 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v34])
+          if (![(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:trimming firstIndex:v35 lastIndex:v33 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v34])
           {
             goto LABEL_37;
           }
@@ -475,14 +475,14 @@ LABEL_23:
     }
 
 LABEL_37:
-    v36 = *a4;
-    v37 = 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3);
+    v36 = *times;
+    v37 = 0xAAAAAAAAAAAAAAABLL * ((*(times + 1) - *times) >> 3);
     if (v33 < v37 - 1)
     {
-      *&v34 = a5;
-      v38 = [(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:a3 firstIndex:v32 lastIndex:v33 + 1 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v34];
-      v36 = *a4;
-      v40 = *(a4 + 1);
+      *&v34 = confidence;
+      v38 = [(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:trimming firstIndex:v32 lastIndex:v33 + 1 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v34];
+      v36 = *times;
+      v40 = *(times + 1);
       if (v38)
       {
         if (v13 <= v25)
@@ -505,10 +505,10 @@ LABEL_37:
             break;
           }
 
-          *&v39 = a5;
-          v42 = [(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:a3 firstIndex:v32 lastIndex:v41 + 2 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v39];
-          v36 = *a4;
-          v40 = *(a4 + 1);
+          *&v39 = confidence;
+          v42 = [(AutoLoopStabilizer *)self CheckForTripodOKInHomographies:trimming firstIndex:v32 lastIndex:v41 + 2 refIndex:v13 cropRectOut:&time1 minConfidence:&v48 confidenceOut:v39];
+          v36 = *times;
+          v40 = *(times + 1);
           v41 = v33;
           if (!v42)
           {
@@ -531,7 +531,7 @@ LABEL_44:
     *&v49.value = *&v43->value;
     v49.epoch = epoch;
     [(AutoLoopStabilizer *)self setFirstFrameTimeAfterDrop:&v49];
-    v44 = *a4 + 24 * v33;
+    v44 = *times + 24 * v33;
     v46 = *(v44 + 16);
     *&v49.value = *v44;
     v49.epoch = v46;
@@ -557,7 +557,7 @@ LABEL_44:
   }
 }
 
-- (void)ICReportProgress:(float)a3
+- (void)ICReportProgress:(float)progress
 {
   [(AutoLoopStabilizer *)self setProgressValue:?];
   if (![(AutoLoopStabilizer *)self updateStabilizerStatus])
@@ -566,22 +566,22 @@ LABEL_44:
   }
 }
 
-- (int)analyzeForAutoloopWithDirect:(BOOL)a3 toAnalysisOutput:(void *)a4
+- (int)analyzeForAutoloopWithDirect:(BOOL)direct toAnalysisOutput:(void *)output
 {
-  if (a3)
+  if (direct)
   {
     NSLog(&cfstr_ErrorDodirectt.isa, a2);
   }
 
   self->canceledAnalysis = 0;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(AutoLoopStabilizer *)self statsFileOutURL];
+  statsFileOutURL = [(AutoLoopStabilizer *)self statsFileOutURL];
 
-  if (v7)
+  if (statsFileOutURL)
   {
-    v8 = [(AutoLoopStabilizer *)self statsFileOutURL];
-    v9 = [v8 path];
-    [v9 cStringUsingEncoding:4];
+    statsFileOutURL2 = [(AutoLoopStabilizer *)self statsFileOutURL];
+    path = [statsFileOutURL2 path];
+    [path cStringUsingEncoding:4];
   }
 
   [(AutoLoopStabilizer *)self getNaturalTimeScaleForVideoTrackInAsset];
@@ -625,7 +625,7 @@ LABEL_44:
       *v35 = v39;
       *&v35[16] = v40[0];
       *&v35[32] = *&v40[1];
-      v18 = [(AutoLoopStabilizer *)self naturalTimeScale];
+      naturalTimeScale = [(AutoLoopStabilizer *)self naturalTimeScale];
       [(AutoLoopStabilizer *)self minimumFrameDuration];
       [(AutoLoopStabilizer *)self maxAllowedTrimTimeStart];
       [(AutoLoopStabilizer *)self maxAllowedTrimTimeEnd];
@@ -636,7 +636,7 @@ LABEL_44:
       rhs.epoch = *(&v40[1] + 1);
       CMTimeAdd(&v48, &lhs.start, &rhs);
       memset(&rhs, 0, sizeof(rhs));
-      CMTimeMakeWithSeconds(&rhs, 1.0, v18);
+      CMTimeMakeWithSeconds(&rhs, 1.0, naturalTimeScale);
       memset(&v46, 0, sizeof(v46));
       lhs.start = rhs;
       time = v34;
@@ -739,7 +739,7 @@ LABEL_44:
     }
 
     LODWORD(lhs.start.value) = 0;
-    v27 = [(AutoLoopStabilizer *)self movieAssetIn];
+    movieAssetIn = [(AutoLoopStabilizer *)self movieAssetIn];
     v11 = ICAnalyzeInputMotion();
 
     v12 = 2 * (LODWORD(lhs.start.value) == 0);
@@ -766,14 +766,14 @@ LABEL_44:
     v29 = ICGetResultStats();
     v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D1B2F0]];
     [v30 getValue:&self->inputMovieDimensions size:16];
-    *a4 = v11;
+    *output = v11;
   }
 
   self->_analysisResult = v28;
   return v28;
 }
 
-- (int)FindAcceptableTripodSegmentForInput:(const void *)a3 frameTimes:(const void *)a4
+- (int)FindAcceptableTripodSegmentForInput:(const void *)input frameTimes:(const void *)times
 {
   *&v4 = self->confidenceHighQualityThreshold;
   if ([AutoLoopStabilizer tripodOKWithTrimming:"tripodOKWithTrimming:frameTimes:minConfidence:" frameTimes:v4 minConfidence:?])
@@ -787,7 +787,7 @@ LABEL_44:
   }
 
   *&v8 = self->minConfidenceForTripodAccept;
-  if (![(AutoLoopStabilizer *)self tripodOKWithTrimming:a3 frameTimes:a4 minConfidence:v8])
+  if (![(AutoLoopStabilizer *)self tripodOKWithTrimming:input frameTimes:times minConfidence:v8])
   {
     return -3;
   }
@@ -800,32 +800,32 @@ LABEL_44:
   return 2;
 }
 
-- (int)processStabilizationAnalysis:(void *)a3 forcePassThru:(BOOL)a4 forceSmoothing:(BOOL)a5 forceSequentialTripod:(BOOL)a6
+- (int)processStabilizationAnalysis:(void *)analysis forcePassThru:(BOOL)thru forceSmoothing:(BOOL)smoothing forceSequentialTripod:(BOOL)tripod
 {
   v68 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!analysis)
   {
     return 0;
   }
 
-  v6 = a6;
-  v7 = a5;
-  v10 = self;
+  tripodCopy = tripod;
+  smoothingCopy = smoothing;
+  selfCopy = self;
   featuresDictionary = self->featuresDictionary;
   self->featuresDictionary = 0;
 
-  v10->_lastTripodQuality = 0.0;
+  selfCopy->_lastTripodQuality = 0.0;
   ICDestroyResult();
-  v10->icCorrectionResultRef = 0;
-  v57 = v10;
-  if (!a4)
+  selfCopy->icCorrectionResultRef = 0;
+  v57 = selfCopy;
+  if (!thru)
   {
     v56 = ICGetResultFramePresentationTimes();
     __p = 0;
     v65 = 0;
     v66 = 0;
     sub_2418D5768(&__p, [v56 count]);
-    v55 = __PAIR64__(v7, v6);
+    v55 = __PAIR64__(smoothingCopy, tripodCopy);
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
@@ -909,14 +909,14 @@ LABEL_44:
       while (v14);
     }
 
-    if (v7)
+    if (smoothingCopy)
     {
       v12 = -2;
     }
 
     else
     {
-      v27 = [(AutoLoopStabilizer *)v57 FindAcceptableTripodSegmentForInput:a3 frameTimes:&__p];
+      v27 = [(AutoLoopStabilizer *)v57 FindAcceptableTripodSegmentForInput:analysis frameTimes:&__p];
       v12 = v27;
       if ((v55 & 1) != 0 || (v27 - 1) <= 1)
       {
@@ -964,7 +964,7 @@ LABEL_44:
       v29 = v28 == 0.0;
       LODWORD(v59.value) = 0;
       v57->icCorrectionResultRef = ICCalcSmoothingCorrections();
-      if (LODWORD(v59.value) || !ICGetCorrectionResultCropData() || ([(AutoLoopStabilizer *)v57 CropRatio:&v57->cropRect], (v30 < v57->cropRatioMinimum) | v29 & ~v7 & 1))
+      if (LODWORD(v59.value) || !ICGetCorrectionResultCropData() || ([(AutoLoopStabilizer *)v57 CropRatio:&v57->cropRect], (v30 < v57->cropRatioMinimum) | v29 & ~smoothingCopy & 1))
       {
         ICDestroyResult();
         v57->icCorrectionResultRef = 0;
@@ -993,7 +993,7 @@ LABEL_38:
       operator delete(__p);
     }
 
-    v10 = v57;
+    selfCopy = v57;
     if (v57->icCorrectionResultRef)
     {
       goto LABEL_43;
@@ -1004,17 +1004,17 @@ LABEL_38:
 
   v12 = -2;
 LABEL_41:
-  if (!v10->onlyProcessForHighQualityTripod)
+  if (!selfCopy->onlyProcessForHighQualityTripod)
   {
     LODWORD(__p) = 0;
     v57->icCorrectionResultRef = ICCalcPassThruCorrections();
     ICGetCorrectionResultCropData();
     v12 = 4;
-    v10 = v57;
+    selfCopy = v57;
   }
 
 LABEL_43:
-  v46 = [(AutoLoopStabilizer *)v10 CropRectValid:&v10->cropRect, v55];
+  v46 = [(AutoLoopStabilizer *)selfCopy CropRectValid:&selfCopy->cropRect, v55];
   if (v12 == -3)
   {
     v47 = 1;
@@ -1039,9 +1039,9 @@ LABEL_43:
   return result;
 }
 
-- (int)processStabilizationAnalysisForCinematicL1:(void *)a3
+- (int)processStabilizationAnalysisForCinematicL1:(void *)l1
 {
-  if (!a3)
+  if (!l1)
   {
     return 0;
   }
@@ -1106,59 +1106,59 @@ LABEL_43:
   return result;
 }
 
-- (void)setRefFrameTime:(id *)a3
+- (void)setRefFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->refFrameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->refFrameTime.epoch = time->var3;
   *&self->refFrameTime.value = v3;
 }
 
-- (void)setTrimStart:(id *)a3
+- (void)setTrimStart:(id *)start
 {
-  v3 = *&a3->var0;
-  self->_trimStart.epoch = a3->var3;
+  v3 = *&start->var0;
+  self->_trimStart.epoch = start->var3;
   *&self->_trimStart.value = v3;
 }
 
-- (void)setTrimLength:(id *)a3
+- (void)setTrimLength:(id *)length
 {
-  v3 = *&a3->var0;
-  self->_trimLength.epoch = a3->var3;
+  v3 = *&length->var0;
+  self->_trimLength.epoch = length->var3;
   *&self->_trimLength.value = v3;
 }
 
-- (void)setMinimumFrameDuration:(id *)a3
+- (void)setMinimumFrameDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_minimumFrameDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_minimumFrameDuration.epoch = duration->var3;
   *&self->_minimumFrameDuration.value = v3;
 }
 
-- (void)setMaxAllowedTrimTimeStart:(id *)a3
+- (void)setMaxAllowedTrimTimeStart:(id *)start
 {
-  v3 = *&a3->var0;
-  self->_maxAllowedTrimTimeStart.epoch = a3->var3;
+  v3 = *&start->var0;
+  self->_maxAllowedTrimTimeStart.epoch = start->var3;
   *&self->_maxAllowedTrimTimeStart.value = v3;
 }
 
-- (void)setMaxAllowedTrimTimeEnd:(id *)a3
+- (void)setMaxAllowedTrimTimeEnd:(id *)end
 {
-  v3 = *&a3->var0;
-  self->_maxAllowedTrimTimeEnd.epoch = a3->var3;
+  v3 = *&end->var0;
+  self->_maxAllowedTrimTimeEnd.epoch = end->var3;
   *&self->_maxAllowedTrimTimeEnd.value = v3;
 }
 
-- (void)setFirstFrameTimeAfterDrop:(id *)a3
+- (void)setFirstFrameTimeAfterDrop:(id *)drop
 {
-  v3 = *&a3->var0;
-  self->_firstFrameTimeAfterDrop.epoch = a3->var3;
+  v3 = *&drop->var0;
+  self->_firstFrameTimeAfterDrop.epoch = drop->var3;
   *&self->_firstFrameTimeAfterDrop.value = v3;
 }
 
-- (void)setLastFrameTimeAfterDrop:(id *)a3
+- (void)setLastFrameTimeAfterDrop:(id *)drop
 {
-  v3 = *&a3->var0;
-  self->_lastFrameTimeAfterDrop.epoch = a3->var3;
+  v3 = *&drop->var0;
+  self->_lastFrameTimeAfterDrop.epoch = drop->var3;
   *&self->_lastFrameTimeAfterDrop.value = v3;
 }
 

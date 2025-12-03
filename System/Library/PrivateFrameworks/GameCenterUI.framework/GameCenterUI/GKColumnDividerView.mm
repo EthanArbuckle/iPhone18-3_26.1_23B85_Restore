@@ -1,14 +1,14 @@
 @interface GKColumnDividerView
-- (GKColumnDividerView)initWithFrame:(CGRect)a3;
+- (GKColumnDividerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GKColumnDividerView
 
-- (GKColumnDividerView)initWithFrame:(CGRect)a3
+- (GKColumnDividerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = GKColumnDividerView;
-  v3 = [(GKColumnDividerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKColumnDividerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [GKHairlineView hairlineViewForAlignment:1];

@@ -1,20 +1,20 @@
 @interface CNTransportButton
-+ (CNTransportButton)transportButtonWithType:(int64_t)a3;
++ (CNTransportButton)transportButtonWithType:(int64_t)type;
 - (CGSize)intrinsicContentSize;
-- (void)_updateImageWithType:(int64_t)a3;
-- (void)_updateTouchInsetsToFillContainerWithSize:(CGSize)a3;
-- (void)setGlyphColor:(id)a3;
-- (void)setShowBackgroundPlatter:(BOOL)a3;
-- (void)setTransportType:(int64_t)a3;
+- (void)_updateImageWithType:(int64_t)type;
+- (void)_updateTouchInsetsToFillContainerWithSize:(CGSize)size;
+- (void)setGlyphColor:(id)color;
+- (void)setShowBackgroundPlatter:(BOOL)platter;
+- (void)setTransportType:(int64_t)type;
 - (void)tintColorDidChange;
 @end
 
 @implementation CNTransportButton
 
-- (void)_updateTouchInsetsToFillContainerWithSize:(CGSize)a3
+- (void)_updateTouchInsetsToFillContainerWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CNTransportButton *)self frame];
   v6 = width - CGRectGetMaxX(v14);
   if (v6 >= 37.0)
@@ -49,18 +49,18 @@
   [(CNTransportButton *)self _setTouchInsets:v12, v12, v12, v7];
 }
 
-- (void)_updateImageWithType:(int64_t)a3
+- (void)_updateImageWithType:(int64_t)type
 {
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = [(CNTransportButton *)self glyphColor];
-  v8 = [v5 cnui_symbolImageForTransportType:a3 withColor:v6];
+  glyphColor = [(CNTransportButton *)self glyphColor];
+  v8 = [v5 cnui_symbolImageForTransportType:type withColor:glyphColor];
 
   if (v8)
   {
     [(CNTransportButton *)self setHidden:0];
     [(CNTransportButton *)self setImage:v8];
-    v7 = [(CNTransportButton *)self image];
-    [(CNTransportButton *)self setImage:v7 forState:0];
+    image = [(CNTransportButton *)self image];
+    [(CNTransportButton *)self setImage:image forState:0];
   }
 
   else
@@ -71,16 +71,16 @@
   }
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
-  v5 = a3;
-  if (self->_glyphColor != v5)
+  colorCopy = color;
+  if (self->_glyphColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_glyphColor, color);
     [(CNTransportButton *)self setTintColor:v6];
     [(CNTransportButton *)self _updateImageWithType:[(CNTransportButton *)self transportType]];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -89,27 +89,27 @@
   v4.receiver = self;
   v4.super_class = CNTransportButton;
   [(CNTransportButton *)&v4 tintColorDidChange];
-  v3 = [(CNTransportButton *)self glyphColor];
+  glyphColor = [(CNTransportButton *)self glyphColor];
 
-  if (!v3)
+  if (!glyphColor)
   {
     [(CNTransportButton *)self _updateImageWithType:[(CNTransportButton *)self transportType]];
   }
 }
 
-- (void)setShowBackgroundPlatter:(BOOL)a3
+- (void)setShowBackgroundPlatter:(BOOL)platter
 {
-  if (self->_showBackgroundPlatter != a3)
+  if (self->_showBackgroundPlatter != platter)
   {
-    self->_showBackgroundPlatter = a3;
-    if (a3)
+    self->_showBackgroundPlatter = platter;
+    if (platter)
     {
       v5 = +[CNContactStyle currentStyle];
-      v6 = [v5 transportBackgroundColor];
-      [(CNTransportButton *)self setBackgroundColor:v6];
+      transportBackgroundColor = [v5 transportBackgroundColor];
+      [(CNTransportButton *)self setBackgroundColor:transportBackgroundColor];
 
-      v7 = [(CNTransportButton *)self _screen];
-      [v7 scale];
+      _screen = [(CNTransportButton *)self _screen];
+      [_screen scale];
       if (v8 == 0.0)
       {
         if (RoundToScale_onceToken != -1)
@@ -126,41 +126,41 @@
         v9 = round(v8 * 18.5) / v8;
       }
 
-      v10 = [(CNTransportButton *)self layer];
-      [v10 setCornerRadius:v9];
+      layer = [(CNTransportButton *)self layer];
+      [layer setCornerRadius:v9];
 
-      v11 = [(CNTransportButton *)self layer];
-      [v11 setBorderWidth:1.0];
+      layer2 = [(CNTransportButton *)self layer];
+      [layer2 setBorderWidth:1.0];
 
-      v18 = +[CNContactStyle currentStyle];
-      v12 = [v18 transportBorderColor];
-      v13 = [v12 CGColor];
-      v14 = [(CNTransportButton *)self layer];
-      [v14 setBorderColor:v13];
+      layer6 = +[CNContactStyle currentStyle];
+      transportBorderColor = [layer6 transportBorderColor];
+      cGColor = [transportBorderColor CGColor];
+      layer3 = [(CNTransportButton *)self layer];
+      [layer3 setBorderColor:cGColor];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E69DC888] clearColor];
-      [(CNTransportButton *)self setBackgroundColor:v15];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(CNTransportButton *)self setBackgroundColor:clearColor];
 
-      v16 = [(CNTransportButton *)self layer];
-      [v16 setCornerRadius:0.0];
+      layer4 = [(CNTransportButton *)self layer];
+      [layer4 setCornerRadius:0.0];
 
-      v17 = [(CNTransportButton *)self layer];
-      [v17 setBorderWidth:0.0];
+      layer5 = [(CNTransportButton *)self layer];
+      [layer5 setBorderWidth:0.0];
 
-      v18 = [(CNTransportButton *)self layer];
-      [v18 setBorderColor:0];
+      layer6 = [(CNTransportButton *)self layer];
+      [layer6 setBorderColor:0];
     }
   }
 }
 
-- (void)setTransportType:(int64_t)a3
+- (void)setTransportType:(int64_t)type
 {
-  if (self->_transportType != a3)
+  if (self->_transportType != type)
   {
-    self->_transportType = a3;
+    self->_transportType = type;
     [(CNTransportButton *)self _updateImageWithType:?];
   }
 }
@@ -174,9 +174,9 @@
   return result;
 }
 
-+ (CNTransportButton)transportButtonWithType:(int64_t)a3
++ (CNTransportButton)transportButtonWithType:(int64_t)type
 {
-  v3 = [a1 buttonWithType:a3];
+  v3 = [self buttonWithType:type];
   LODWORD(v4) = 1148846080;
   [v3 setContentCompressionResistancePriority:0 forAxis:v4];
   LODWORD(v5) = 1148846080;

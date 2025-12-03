@@ -1,27 +1,27 @@
 @interface TSCERangePrecedentsTile
-- (BOOL)containsRect:(const TSUCellRect *)a3 fromCoord:(const TSUCellCoord *)a4;
-- (TSCERangePrecedentsTile)initWithOwnerId:(unsigned __int16)a3 context:(id)a4;
+- (BOOL)containsRect:(const TSUCellRect *)rect fromCoord:(const TSUCellCoord *)coord;
+- (TSCERangePrecedentsTile)initWithOwnerId:(unsigned __int16)id context:(id)context;
 - (id).cxx_construct;
 - (unint64_t)numRangeRecords;
-- (void)addRect:(const TSUCellRect *)a3 fromCoord:(const TSUCellCoord *)a4;
-- (void)enumerateAllRanges:(id)a3;
-- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)a3 usingBlock:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)removeRect:(const TSUCellRect *)a3 fromCoord:(const TSUCellCoord *)a4;
-- (void)removeRectsForFromCoord:(const TSUCellCoord *)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)addRect:(const TSUCellRect *)rect fromCoord:(const TSUCellCoord *)coord;
+- (void)enumerateAllRanges:(id)ranges;
+- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)coord usingBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)removeRect:(const TSUCellRect *)rect fromCoord:(const TSUCellCoord *)coord;
+- (void)removeRectsForFromCoord:(const TSUCellCoord *)coord;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSCERangePrecedentsTile
 
-- (TSCERangePrecedentsTile)initWithOwnerId:(unsigned __int16)a3 context:(id)a4
+- (TSCERangePrecedentsTile)initWithOwnerId:(unsigned __int16)id context:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSCERangePrecedentsTile;
-  result = [(TSCERangePrecedentsTile *)&v6 initWithContext:a4];
+  result = [(TSCERangePrecedentsTile *)&v6 initWithContext:context];
   if (result)
   {
-    result->_toInternalOwnerID = a3;
+    result->_toInternalOwnerID = id;
   }
 
   return result;
@@ -72,71 +72,71 @@
   return result;
 }
 
-- (void)addRect:(const TSUCellRect *)a3 fromCoord:(const TSUCellCoord *)a4
+- (void)addRect:(const TSUCellRect *)rect fromCoord:(const TSUCellCoord *)coord
 {
-  if (a4->row != 0x7FFFFFFF && (*a4 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (coord->row != 0x7FFFFFFF && (*coord & 0xFFFF00000000) != 0x7FFF00000000)
   {
-    objc_msgSend_willModify(self, a2, a3, a4, v4);
-    v9 = sub_2212E4404(&self->_fromCoordToReferRect, a4);
-    sub_2212E4518(v9 + 40, a3);
+    objc_msgSend_willModify(self, a2, rect, coord, v4);
+    v9 = sub_2212E4404(&self->_fromCoordToReferRect, coord);
+    sub_2212E4518(v9 + 40, rect);
   }
 }
 
-- (void)removeRect:(const TSUCellRect *)a3 fromCoord:(const TSUCellCoord *)a4
+- (void)removeRect:(const TSUCellRect *)rect fromCoord:(const TSUCellCoord *)coord
 {
-  if (a4->row != 0x7FFFFFFF && (*a4 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (coord->row != 0x7FFFFFFF && (*coord & 0xFFFF00000000) != 0x7FFF00000000)
   {
     p_fromCoordToReferRect = &self->_fromCoordToReferRect;
-    v9 = sub_2212E46E0(&self->_fromCoordToReferRect, a4);
+    v9 = sub_2212E46E0(&self->_fromCoordToReferRect, coord);
     if (p_fromCoordToReferRect + 1 != v9)
     {
       v14 = v9;
       objc_msgSend_willModify(self, v10, v11, v12, v13);
-      sub_2212E4768(v14 + 5, a3);
+      sub_2212E4768(v14 + 5, rect);
       if (!v14[7])
       {
 
-        sub_2212E484C(p_fromCoordToReferRect, a4);
+        sub_2212E484C(p_fromCoordToReferRect, coord);
       }
     }
   }
 }
 
-- (BOOL)containsRect:(const TSUCellRect *)a3 fromCoord:(const TSUCellCoord *)a4
+- (BOOL)containsRect:(const TSUCellRect *)rect fromCoord:(const TSUCellCoord *)coord
 {
-  if (a4->row == 0x7FFFFFFF || (*a4 & 0xFFFF00000000) == 0x7FFF00000000)
+  if (coord->row == 0x7FFFFFFF || (*coord & 0xFFFF00000000) == 0x7FFF00000000)
   {
     return 0;
   }
 
   p_fromCoordToReferRect = &self->_fromCoordToReferRect;
-  v8 = sub_2212E46E0(&self->_fromCoordToReferRect, a4);
-  return &p_fromCoordToReferRect->__tree_.__end_node_ != v8 && v8 + 6 != sub_2212E47BC((v8 + 5), a3);
+  v8 = sub_2212E46E0(&self->_fromCoordToReferRect, coord);
+  return &p_fromCoordToReferRect->__tree_.__end_node_ != v8 && v8 + 6 != sub_2212E47BC((v8 + 5), rect);
 }
 
-- (void)removeRectsForFromCoord:(const TSUCellCoord *)a3
+- (void)removeRectsForFromCoord:(const TSUCellCoord *)coord
 {
-  if (a3->row != 0x7FFFFFFF && (*a3 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (coord->row != 0x7FFFFFFF && (*coord & 0xFFFF00000000) != 0x7FFF00000000)
   {
     p_fromCoordToReferRect = &self->_fromCoordToReferRect;
-    if (&self->_fromCoordToReferRect.__tree_.__end_node_ != sub_2212E46E0(&self->_fromCoordToReferRect, a3))
+    if (&self->_fromCoordToReferRect.__tree_.__end_node_ != sub_2212E46E0(&self->_fromCoordToReferRect, coord))
     {
       objc_msgSend_willModify(self, v7, v8, v9, v10);
 
-      sub_2212E484C(p_fromCoordToReferRect, a3);
+      sub_2212E484C(p_fromCoordToReferRect, coord);
     }
   }
 }
 
-- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)a3 usingBlock:(id)a4
+- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)coord usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3->row == 0x7FFFFFFF || (*a3 & 0xFFFF00000000) == 0x7FFF00000000;
+  blockCopy = block;
+  v7 = coord->row == 0x7FFFFFFF || (*coord & 0xFFFF00000000) == 0x7FFF00000000;
   if (!v7)
   {
     v14 = 0;
     p_fromCoordToReferRect = &self->_fromCoordToReferRect;
-    v9 = sub_2212E46E0(p_fromCoordToReferRect, a3);
+    v9 = sub_2212E46E0(p_fromCoordToReferRect, coord);
     if (&p_fromCoordToReferRect->__tree_.__end_node_ != v9)
     {
       v10 = v9[5];
@@ -145,7 +145,7 @@
       {
         do
         {
-          v6[2](v6, a3, v10 + 28, &v14);
+          blockCopy[2](blockCopy, coord, v10 + 28, &v14);
           if (v14)
           {
             break;
@@ -184,9 +184,9 @@
   }
 }
 
-- (void)enumerateAllRanges:(id)a3
+- (void)enumerateAllRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v14 = 0;
   self = (self + 72);
   isa = self->super.super.isa;
@@ -236,7 +236,7 @@ LABEL_11:
 
     while (1)
     {
-      v4[2](v4, v6 + 32, v8 + 28, &v14);
+      rangesCopy[2](rangesCopy, v6 + 32, v8 + 28, &v14);
       if (v14)
       {
         break;
@@ -282,11 +282,11 @@ LABEL_11:
 LABEL_17:
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v26 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v26, v4, sub_2212E48D4, off_2812E2AC8[84], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2212E48D4, off_2812E2AC8[84], v5);
 
   toInternalOwnerID = self->_toInternalOwnerID;
   *(v6 + 16) |= 1u;
@@ -434,11 +434,11 @@ LABEL_8:
 LABEL_30:
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E2AC8[84], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E2AC8[84], v6, v7);
 
   self->_toInternalOwnerID = *(v8 + 48);
   v9 = *(v8 + 32);

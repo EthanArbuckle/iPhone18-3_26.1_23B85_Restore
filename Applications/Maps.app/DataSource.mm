@@ -1,33 +1,33 @@
 @interface DataSource
-- (DataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4;
-- (DataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4;
+- (DataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location;
+- (DataSource)initWithTableView:(id)view updateLocation:(BOOL)location;
 - (DataSourceDelegate)delegate;
 - (UICollectionView)collectionView;
 - (UITableView)tableView;
-- (id)tableView:(id)a3 dragPreviewParametersForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
+- (id)tableView:(id)view dragPreviewParametersForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
 - (id)visibleCells;
-- (int)flattenedIndexWithIndexPath:(id)a3;
+- (int)flattenedIndexWithIndexPath:(id)path;
 - (int)listInteractionSessionType;
-- (void)addEKAnalyticsForEntry:(id)a3 tapped:(BOOL)a4;
-- (void)commonInitWithUpdateLocation:(BOOL)a3;
-- (void)preferredContentSizeChanged:(id)a3;
-- (void)proactiveAnalyticElementsAtIndex:(int)a3 action:(int)a4 elementsBlock:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)selectAtIndexPath:(id)a3;
-- (void)sendAnalyticsForDataAtIndexPath:(id)a3 object:(id)a4 childPlaceIndexPath:(id)a5 childPlaceObject:(id)a6 action:(int)a7 eventValue:(id)a8 populateSearchTapEvent:(BOOL)a9;
-- (void)sendAnalyticsObject:(id)a3 geoMapItem:(id)a4 atIndexPath:(id)a5 action:(int)a6 eventValue:(id)a7;
-- (void)setActive:(BOOL)a3;
-- (void)tableView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)tableView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableViewDidFinishReload:(id)a3;
+- (void)addEKAnalyticsForEntry:(id)entry tapped:(BOOL)tapped;
+- (void)commonInitWithUpdateLocation:(BOOL)location;
+- (void)preferredContentSizeChanged:(id)changed;
+- (void)proactiveAnalyticElementsAtIndex:(int)index action:(int)action elementsBlock:(id)block;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)selectAtIndexPath:(id)path;
+- (void)sendAnalyticsForDataAtIndexPath:(id)path object:(id)object childPlaceIndexPath:(id)indexPath childPlaceObject:(id)placeObject action:(int)action eventValue:(id)value populateSearchTapEvent:(BOOL)event;
+- (void)sendAnalyticsObject:(id)object geoMapItem:(id)item atIndexPath:(id)path action:(int)action eventValue:(id)value;
+- (void)setActive:(BOOL)active;
+- (void)tableView:(id)view dragSessionDidEnd:(id)end;
+- (void)tableView:(id)view dragSessionWillBegin:(id)begin;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableViewDidFinishReload:(id)reload;
 - (void)updatePreviewDrag;
-- (void)updateSavedLocation:(id)a3;
+- (void)updateSavedLocation:(id)location;
 @end
 
 @implementation DataSource
@@ -53,23 +53,23 @@
   return WeakRetained;
 }
 
-- (void)updateSavedLocation:(id)a3
+- (void)updateSavedLocation:(id)location
 {
-  v8 = a3;
+  locationCopy = location;
   v4 = +[MKLocationManager sharedLocationManager];
   if ([v4 isAuthorizedForPreciseLocation])
   {
-    v5 = [v8 currentLocation];
+    currentLocation = [locationCopy currentLocation];
   }
 
   else
   {
-    v5 = 0;
+    currentLocation = 0;
   }
 
-  v6 = [(GEOLocation *)self->_currentLocation isEqual:v5];
+  v6 = [(GEOLocation *)self->_currentLocation isEqual:currentLocation];
   currentLocation = self->_currentLocation;
-  self->_currentLocation = v5;
+  self->_currentLocation = currentLocation;
 
   if ((v6 & 1) == 0)
   {
@@ -77,7 +77,7 @@
   }
 }
 
-- (void)preferredContentSizeChanged:(id)a3
+- (void)preferredContentSizeChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   [WeakRetained reloadData];
@@ -86,39 +86,39 @@
 - (id)visibleCells
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
-  v3 = [WeakRetained visibleCells];
+  visibleCells = [WeakRetained visibleCells];
 
-  return v3;
+  return visibleCells;
 }
 
-- (id)tableView:(id)a3 dragPreviewParametersForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view dragPreviewParametersForRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(UIDragPreviewParameters);
-  v6 = [v4 theme];
+  theme = [viewCopy theme];
 
-  v7 = [v6 controlBackgroundColor];
-  [v5 setBackgroundColor:v7];
+  controlBackgroundColor = [theme controlBackgroundColor];
+  [v5 setBackgroundColor:controlBackgroundColor];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   v7 = +[MapsDragAndDropManager sharedManager];
-  v8 = [v7 canStartNewDrag];
+  canStartNewDrag = [v7 canStartNewDrag];
 
-  if (v8)
+  if (canStartNewDrag)
   {
-    v9 = [(DataSource *)self objectAtIndexPath:v6];
+    v9 = [(DataSource *)self objectAtIndexPath:pathCopy];
     v10 = [DragAndDropMapItem dragAndDropItemWithObject:v9];
     v11 = v10;
-    if (v10 && ([v10 setObserver:self], objc_storeStrong(&self->_dragItem, v11), v12 = objc_msgSend(v6, "row"), -[DragAndDropMapItem analyticsHelper](self->_dragItem, "analyticsHelper"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "actionDetails"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "setResultIndex:", v12), v14, v13, v15 = [DragAndDropPreview alloc], WeakRetained = objc_loadWeakRetained(&self->_tableView), objc_msgSend(WeakRetained, "traitCollection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = -[DragAndDropPreview initWithDragAndDropMapItem:traitCollection:](v15, "initWithDragAndDropMapItem:traitCollection:", v11, v17), previewView = self->_previewView, self->_previewView = v18, previewView, v17, WeakRetained, -[DragAndDropPreview setContentUpdateDelegate:](self->_previewView, "setContentUpdateDelegate:", self), objc_msgSend(v11, "itemProviderWriting"), (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v10 && ([v10 setObserver:self], objc_storeStrong(&self->_dragItem, v11), v12 = objc_msgSend(pathCopy, "row"), -[DragAndDropMapItem analyticsHelper](self->_dragItem, "analyticsHelper"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "actionDetails"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "setResultIndex:", v12), v14, v13, v15 = [DragAndDropPreview alloc], WeakRetained = objc_loadWeakRetained(&self->_tableView), objc_msgSend(WeakRetained, "traitCollection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = -[DragAndDropPreview initWithDragAndDropMapItem:traitCollection:](v15, "initWithDragAndDropMapItem:traitCollection:", v11, v17), previewView = self->_previewView, self->_previewView = v18, previewView, v17, WeakRetained, -[DragAndDropPreview setContentUpdateDelegate:](self->_previewView, "setContentUpdateDelegate:", self), objc_msgSend(v11, "itemProviderWriting"), (v20 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v21 = v20;
-      v22 = [v11 itemProvider];
-      v23 = [[UIDragItem alloc] initWithItemProvider:v22];
+      itemProvider = [v11 itemProvider];
+      v23 = [[UIDragItem alloc] initWithItemProvider:itemProvider];
       v26 = v23;
       v24 = [NSArray arrayWithObjects:&v26 count:1];
     }
@@ -137,14 +137,14 @@
   return v24;
 }
 
-- (void)tableView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)tableView:(id)view dragSessionDidEnd:(id)end
 {
-  v12 = [(DragAndDropMapItem *)self->_dragItem analyticsHelper:a3];
+  v12 = [(DragAndDropMapItem *)self->_dragItem analyticsHelper:view];
   v5 = +[MKMapService sharedService];
-  v6 = [(DataSource *)self targetForDragAnalytics];
-  v7 = [v12 eventValue];
-  v8 = [v12 actionDetails];
-  [v5 captureUserAction:17003 onTarget:v6 eventValue:v7 placeActionDetails:v8];
+  targetForDragAnalytics = [(DataSource *)self targetForDragAnalytics];
+  eventValue = [v12 eventValue];
+  actionDetails = [v12 actionDetails];
+  [v5 captureUserAction:17003 onTarget:targetForDragAnalytics eventValue:eventValue placeActionDetails:actionDetails];
 
   currentDragSession = self->_currentDragSession;
   self->_currentDragSession = 0;
@@ -156,32 +156,32 @@
   [v11 setDragSession:0];
 }
 
-- (void)tableView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)tableView:(id)view dragSessionWillBegin:(id)begin
 {
-  v6 = a4;
-  v7 = a3;
+  beginCopy = begin;
+  viewCopy = view;
   v8 = [MapsDragLocalContext alloc];
-  v9 = [v7 window];
+  window = [viewCopy window];
 
-  v10 = [v9 windowScene];
-  v11 = [(MapsDragLocalContext *)v8 initWithWindowScene:v10];
-  [v6 setLocalContext:v11];
+  windowScene = [window windowScene];
+  v11 = [(MapsDragLocalContext *)v8 initWithWindowScene:windowScene];
+  [beginCopy setLocalContext:v11];
 
   currentDragSession = self->_currentDragSession;
-  self->_currentDragSession = v6;
-  v13 = v6;
+  self->_currentDragSession = beginCopy;
+  v13 = beginCopy;
 
   v14 = +[MapsDragAndDropManager sharedManager];
   [v14 setDragSession:v13];
 
   [(DataSource *)self updatePreviewDrag];
-  v19 = [(DragAndDropMapItem *)self->_dragItem analyticsHelper];
+  analyticsHelper = [(DragAndDropMapItem *)self->_dragItem analyticsHelper];
   v15 = +[MKMapService sharedService];
 
-  v16 = [(DataSource *)self targetForDragAnalytics];
-  v17 = [v19 eventValue];
-  v18 = [v19 actionDetails];
-  [v15 captureUserAction:17001 onTarget:v16 eventValue:v17 placeActionDetails:v18];
+  targetForDragAnalytics = [(DataSource *)self targetForDragAnalytics];
+  eventValue = [analyticsHelper eventValue];
+  actionDetails = [analyticsHelper actionDetails];
+  [v15 captureUserAction:17001 onTarget:targetForDragAnalytics eventValue:eventValue placeActionDetails:actionDetails];
 }
 
 - (void)updatePreviewDrag
@@ -191,48 +191,48 @@
     previewView = self->_previewView;
     if (previewView)
     {
-      v4 = [(DragAndDropPreview *)previewView renderPreviewImage];
-      [v4 dragPreview];
+      renderPreviewImage = [(DragAndDropPreview *)previewView renderPreviewImage];
+      [renderPreviewImage dragPreview];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100806A8C;
       v10 = v9[3] = &unk_10164EFF0;
       currentDragSession = self->_currentDragSession;
       v6 = v10;
-      v7 = [(UIDragSession *)currentDragSession items];
-      v8 = [v7 firstObject];
-      [v8 setPreviewProvider:v9];
+      items = [(UIDragSession *)currentDragSession items];
+      firstObject = [items firstObject];
+      [firstObject setPreviewProvider:v9];
     }
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = [(DataSource *)self objectAtIndexPath:a5, a4];
-  if (v6)
+  cell = [(DataSource *)self objectAtIndexPath:path, cell];
+  if (cell)
   {
-    v9 = v6;
-    v7 = [(DataSource *)self analyticsContext];
-    v8 = [v7 matchInfoForObject:v9];
+    v9 = cell;
+    analyticsContext = [(DataSource *)self analyticsContext];
+    v8 = [analyticsContext matchInfoForObject:v9];
 
     [v8 setShownToUser:1];
-    v6 = v9;
+    cell = v9;
   }
 }
 
-- (void)proactiveAnalyticElementsAtIndex:(int)a3 action:(int)a4 elementsBlock:(id)a5
+- (void)proactiveAnalyticElementsAtIndex:(int)index action:(int)action elementsBlock:(id)block
 {
-  v23 = a5;
+  blockCopy = block;
   [(NSDate *)self->_dateActive timeIntervalSinceNow];
   v9 = v8;
-  v10 = [self->_currentListInteractionSession proactiveItems];
+  proactiveItems = [self->_currentListInteractionSession proactiveItems];
   v11 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [v10 allKeys];
-  v13 = [v12 sortedArrayUsingSelector:"compare:"];
+  allKeys = [proactiveItems allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   obj = v13;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -254,8 +254,8 @@
         }
 
         v19 = *(*(&v27 + 1) + 8 * v18);
-        v20 = [v10 objectForKeyedSubscript:v19];
-        if (a3 < 0 || [v19 integerValue] != a3)
+        v20 = [proactiveItems objectForKeyedSubscript:v19];
+        if (index < 0 || [v19 integerValue] != index)
         {
           v21 = v20;
           goto LABEL_24;
@@ -263,16 +263,16 @@
 
         v21 = [v20 copy];
 
-        if (a4 <= 2009)
+        if (action <= 2009)
         {
-          if (a4 != 2007)
+          if (action != 2007)
           {
-            if (a4 == 2008)
+            if (action == 2008)
             {
               [v21 setShared:1];
             }
 
-            else if (a4 == 2009)
+            else if (action == 2009)
             {
               [v21 setDeleted:1];
             }
@@ -285,17 +285,17 @@ LABEL_21:
           goto LABEL_23;
         }
 
-        if (a4 > 6026)
+        if (action > 6026)
         {
-          if (a4 != 6027 && a4 != 6034)
+          if (action != 6027 && action != 6034)
           {
             goto LABEL_23;
           }
         }
 
-        else if (a4 != 2010)
+        else if (action != 2010)
         {
-          if (a4 != 2018)
+          if (action != 2018)
           {
             goto LABEL_23;
           }
@@ -327,14 +327,14 @@ LABEL_24:
 LABEL_28:
 
   v22 = [v11 copy];
-  v23[2](v23, v25, 2, v22, -v9);
+  blockCopy[2](blockCopy, v25, 2, v22, -v9);
 }
 
-- (int)flattenedIndexWithIndexPath:(id)a3
+- (int)flattenedIndexWithIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  if ([v4 section] >= 1)
+  pathCopy = path;
+  v5 = [pathCopy row];
+  if ([pathCopy section] >= 1)
   {
     v6 = 0;
     do
@@ -345,27 +345,27 @@ LABEL_28:
       ++v6;
     }
 
-    while ([v4 section] > v6);
+    while ([pathCopy section] > v6);
   }
 
   return v5;
 }
 
-- (void)sendAnalyticsObject:(id)a3 geoMapItem:(id)a4 atIndexPath:(id)a5 action:(int)a6 eventValue:(id)a7
+- (void)sendAnalyticsObject:(id)object geoMapItem:(id)item atIndexPath:(id)path action:(int)action eventValue:(id)value
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  objectCopy = object;
+  itemCopy = item;
+  pathCopy = path;
+  valueCopy = value;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100807114;
   v34[3] = &unk_10162AFE0;
-  v16 = v14;
-  v38 = a6;
+  v16 = pathCopy;
+  actionCopy = action;
   v35 = v16;
-  v36 = self;
-  v17 = v15;
+  selfCopy = self;
+  v17 = valueCopy;
   v37 = v17;
   v18 = objc_retainBlock(v34);
   v19 = v18;
@@ -375,9 +375,9 @@ LABEL_28:
   v31 = sub_100807280;
   v32 = sub_100807290;
   v33 = 0;
-  if (v13)
+  if (itemCopy)
   {
-    (v18[2])(v18, v13);
+    (v18[2])(v18, itemCopy);
   }
 
   else
@@ -385,8 +385,8 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v12;
-      v21 = [v20 historyEntry];
+      v20 = objectCopy;
+      historyEntry = [v20 historyEntry];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_100807298;
@@ -399,7 +399,7 @@ LABEL_28:
       v22[3] = &unk_10162B030;
       v24 = &v28;
       v23 = v26;
-      [v21 ifSearch:v25 ifRoute:0 ifPlaceDisplay:v22 ifTransitLineItem:0];
+      [historyEntry ifSearch:v25 ifRoute:0 ifPlaceDisplay:v22 ifTransitLineItem:0];
     }
 
     else
@@ -411,19 +411,19 @@ LABEL_28:
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)sendAnalyticsForDataAtIndexPath:(id)a3 object:(id)a4 childPlaceIndexPath:(id)a5 childPlaceObject:(id)a6 action:(int)a7 eventValue:(id)a8 populateSearchTapEvent:(BOOL)a9
+- (void)sendAnalyticsForDataAtIndexPath:(id)path object:(id)object childPlaceIndexPath:(id)indexPath childPlaceObject:(id)placeObject action:(int)action eventValue:(id)value populateSearchTapEvent:(BOOL)event
 {
-  v41 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = v41;
-  v20 = v18;
-  if (v41)
+  pathCopy = path;
+  objectCopy = object;
+  indexPathCopy = indexPath;
+  placeObjectCopy = placeObject;
+  valueCopy = value;
+  v19 = pathCopy;
+  v20 = valueCopy;
+  if (pathCopy)
   {
-    v21 = [(DataSource *)self flattenedIndexWithIndexPath:v41];
-    v19 = v41;
+    v21 = [(DataSource *)self flattenedIndexWithIndexPath:pathCopy];
+    v19 = pathCopy;
     v22 = v21;
   }
 
@@ -434,10 +434,10 @@ LABEL_28:
 
   [(DataSource *)self selectAtIndexPath:v19];
   objc_opt_class();
-  v39 = a7;
+  actionCopy = action;
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v15 _geoMapItem];
+    _geoMapItem = [objectCopy _geoMapItem];
 LABEL_8:
     v40 = 0;
     goto LABEL_9;
@@ -447,8 +447,8 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
 LABEL_7:
-    v24 = [v15 mapItem];
-    v23 = [v24 _geoMapItem];
+    mapItem = [objectCopy mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
 
     goto LABEL_8;
   }
@@ -456,7 +456,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v15 geoMapItem];
+    _geoMapItem = [objectCopy geoMapItem];
     v40 = !self->_eventProactiveSuggestionInteractionSent;
   }
 
@@ -469,15 +469,15 @@ LABEL_7:
     }
 
     v40 = 0;
-    v23 = 0;
+    _geoMapItem = 0;
   }
 
 LABEL_9:
-  v25 = [v23 _hikeAssociatedInfo];
+  _hikeAssociatedInfo = [_geoMapItem _hikeAssociatedInfo];
 
-  if (v25)
+  if (_hikeAssociatedInfo)
   {
-    v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v23 _muid]);
+    v26 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [_geoMapItem _muid]);
 
     v20 = v26;
   }
@@ -490,26 +490,26 @@ LABEL_9:
 
   v28 = +[GEOAPSharedStateData sharedData];
   Current = CFAbsoluteTimeGetCurrent();
-  v30 = v16;
-  if (v17)
+  v30 = indexPathCopy;
+  if (placeObjectCopy)
   {
-    [v28 populateWithChildPlace:v17 timestamp:objc_msgSend(v16 resultIndex:{"row"), Current}];
+    [v28 populateWithChildPlace:placeObjectCopy timestamp:objc_msgSend(indexPathCopy resultIndex:{"row"), Current}];
   }
 
   else
   {
-    [v28 populateWithPlace:v23 timestamp:v27 resultIndex:Current];
+    [v28 populateWithPlace:_geoMapItem timestamp:v27 resultIndex:Current];
 
     v31 = v20;
-    if (!a9)
+    if (!event)
     {
       goto LABEL_21;
     }
 
-    v32 = [v15 searchSection];
-    v33 = [v32 sectionType];
+    searchSection = [objectCopy searchSection];
+    sectionType = [searchSection sectionType];
 
-    if (v33 == 2)
+    if (sectionType == 2)
     {
       v34 = 3;
     }
@@ -521,39 +521,39 @@ LABEL_9:
 
     v38 = v34;
     v28 = +[GEOAPSharedStateData sharedData];
-    v35 = [v23 _muid];
-    v36 = [v23 _place];
-    [v28 populateTapEventForResultIndex:v27 resultType:v38 businessId:v35 localSearchProviderId:objc_msgSend(v36 isEnrichedItem:{"localSearchProviderID"), 0}];
+    _muid = [_geoMapItem _muid];
+    _place = [_geoMapItem _place];
+    [v28 populateTapEventForResultIndex:v27 resultType:v38 businessId:_muid localSearchProviderId:objc_msgSend(_place isEnrichedItem:{"localSearchProviderID"), 0}];
   }
 
   v31 = v20;
 LABEL_21:
-  if (v39)
+  if (actionCopy)
   {
-    [(DataSource *)self sendAnalyticsObject:v15 geoMapItem:v23 atIndexPath:v41 action:v39 eventValue:v31];
+    [(DataSource *)self sendAnalyticsObject:objectCopy geoMapItem:_geoMapItem atIndexPath:pathCopy action:actionCopy eventValue:v31];
   }
 
   if (v40)
   {
     self->_eventProactiveSuggestionInteractionSent = 1;
-    [(DataSource *)self proactiveAnalyticElementsAtIndex:v27 action:v39 elementsBlock:&stru_10162AFB8];
+    [(DataSource *)self proactiveAnalyticElementsAtIndex:v27 action:actionCopy elementsBlock:&stru_10162AFB8];
   }
 
   v37 = +[GEOAPSharedStateData sharedData];
   [v37 clearPlaceCardStateData];
 }
 
-- (void)addEKAnalyticsForEntry:(id)a3 tapped:(BOOL)a4
+- (void)addEKAnalyticsForEntry:(id)entry tapped:(BOOL)tapped
 {
-  v4 = a4;
-  v9 = a3;
+  tappedCopy = tapped;
+  entryCopy = entry;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4)
+    if (tappedCopy)
     {
       v5 = MapsSuggestionsEngineForMapsProcess();
-      [v5 feedbackForEntry:v9 action:1];
+      [v5 feedbackForEntry:entryCopy action:1];
 
       v6 = 5;
     }
@@ -563,18 +563,18 @@ LABEL_21:
       v6 = 4;
     }
 
-    if ([v9 containsKey:@"MapsSuggestionsCoreSuggestionsUniqueKey"])
+    if ([entryCopy containsKey:@"MapsSuggestionsCoreSuggestionsUniqueKey"])
     {
-      v7 = [v9 stringForKey:@"MapsSuggestionsCoreSuggestionsUniqueKey"];
+      v7 = [entryCopy stringForKey:@"MapsSuggestionsCoreSuggestionsUniqueKey"];
       v8 = +[SGSuggestionsService serviceForEvents];
       [v8 logEventInteractionForEventWithUniqueKey:v7 interface:16 actionType:v6];
     }
   }
 }
 
-- (void)selectAtIndexPath:(id)a3
+- (void)selectAtIndexPath:(id)path
 {
-  [self->_currentListInteractionSession updateWithSelection:a3];
+  [self->_currentListInteractionSession updateWithSelection:path];
 
   [(DataSource *)self sendCurrentListSession];
 }
@@ -595,110 +595,110 @@ LABEL_21:
   return v6;
 }
 
-- (void)tableViewDidFinishReload:(id)a3
+- (void)tableViewDidFinishReload:(id)reload
 {
-  v8 = a3;
+  reloadCopy = reload;
   if (self->_currentListInteractionSession)
   {
     [(DataSource *)self sendCurrentListSession];
   }
 
   v4 = [ListInteractionSession alloc];
-  v5 = [(DataSource *)self objectsForAnalytics];
-  v6 = [(ListInteractionSession *)v4 initWithObjects:v5 forType:[(DataSource *)self listInteractionSessionType] startDate:self->_dateActive proactiveStartTimes:self->_proactiveItemAddDates];
+  objectsForAnalytics = [(DataSource *)self objectsForAnalytics];
+  v6 = [(ListInteractionSession *)v4 initWithObjects:objectsForAnalytics forType:[(DataSource *)self listInteractionSessionType] startDate:self->_dateActive proactiveStartTimes:self->_proactiveItemAddDates];
   currentListInteractionSession = self->_currentListInteractionSession;
   self->_currentListInteractionSession = v6;
 
-  [self->_currentListInteractionSession updateWithTableView:v8];
+  [self->_currentListInteractionSession updateWithTableView:reloadCopy];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(DataSource *)self delegate];
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  delegate = [(DataSource *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DataSource *)self delegate];
-    [v8 scrollViewDidEndDragging:v9 willDecelerate:v4];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v7 = a3;
-  v4 = [(DataSource *)self delegate];
+  deceleratingCopy = decelerating;
+  delegate = [(DataSource *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DataSource *)self delegate];
-    [v6 scrollViewDidEndDecelerating:v7];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 scrollViewDidEndDecelerating:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v7 = a3;
-  v4 = [(DataSource *)self delegate];
+  scrollCopy = scroll;
+  delegate = [(DataSource *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DataSource *)self delegate];
-    [v6 scrollViewDidScroll:v7];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 scrollViewDidScroll:scrollCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [self->_currentListInteractionSession updateWithTableView:v7];
+    [self->_currentListInteractionSession updateWithTableView:scrollCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  v9 = [(DataSource *)self delegate];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  delegate = [(DataSource *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DataSource *)self delegate];
-    [v11 scrollViewWillEndDragging:v12 withVelocity:a5 targetContentOffset:{x, y}];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v10 = a3;
+  draggingCopy = dragging;
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v6 = [v10 window];
-    [v6 endEditing:1];
+    window = [draggingCopy window];
+    [window endEditing:1];
   }
 
-  v7 = [(DataSource *)self delegate];
+  delegate = [(DataSource *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DataSource *)self delegate];
-    [v9 scrollViewWillBeginDragging:v10];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 scrollViewWillBeginDragging:draggingCopy];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  self->_active = a3;
-  if (a3)
+  self->_active = active;
+  if (active)
   {
     self->_eventProactiveSuggestionInteractionSent = 0;
     v4 = +[NSMutableDictionary dictionary];
@@ -711,9 +711,9 @@ LABEL_21:
   }
 }
 
-- (void)commonInitWithUpdateLocation:(BOOL)a3
+- (void)commonInitWithUpdateLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -727,35 +727,35 @@ LABEL_21:
   [v4 addObserver:self selector:"preferredContentSizeChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
-- (DataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4
+- (DataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location
 {
-  v4 = a4;
-  v6 = a3;
+  locationCopy = location;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = DataSource;
   v7 = [(DataSource *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_collectionView, v6);
-    [(DataSource *)v8 commonInitWithUpdateLocation:v4];
+    objc_storeWeak(&v7->_collectionView, viewCopy);
+    [(DataSource *)v8 commonInitWithUpdateLocation:locationCopy];
   }
 
   return v8;
 }
 
-- (DataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4
+- (DataSource)initWithTableView:(id)view updateLocation:(BOOL)location
 {
-  v4 = a4;
-  v6 = a3;
+  locationCopy = location;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = DataSource;
   v7 = [(DataSource *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_tableView, v6);
-    [(DataSource *)v8 commonInitWithUpdateLocation:v4];
+    objc_storeWeak(&v7->_tableView, viewCopy);
+    [(DataSource *)v8 commonInitWithUpdateLocation:locationCopy];
   }
 
   return v8;

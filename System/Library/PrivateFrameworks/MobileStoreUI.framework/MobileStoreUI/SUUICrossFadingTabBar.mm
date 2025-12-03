@@ -1,17 +1,17 @@
 @interface SUUICrossFadingTabBar
-- (SUUICrossFadingTabBar)initWithFrame:(CGRect)a3;
+- (SUUICrossFadingTabBar)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTabBarButtons:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTabBarButtons:(id)buttons;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SUUICrossFadingTabBar
 
-- (SUUICrossFadingTabBar)initWithFrame:(CGRect)a3
+- (SUUICrossFadingTabBar)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SUUICrossFadingTabBar;
-  v3 = [(SUUICrossFadingTabBar *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICrossFadingTabBar *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -93,16 +93,16 @@ void __39__SUUICrossFadingTabBar_layoutSubviews__block_invoke(uint64_t a1, void 
   [v13 setFrame:{v6, v10, v11, MaxY - CGRectGetMinY(v16)}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = SUUICrossFadingTabBar;
-  v4 = a3;
-  [(SUUICrossFadingTabBar *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SUUICrossFadingTabBar *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(SUUICrossFadingTabBar *)self traitCollection:v10.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (vabdd_f64(v7, v9) > 0.00000011920929)
@@ -111,12 +111,12 @@ void __39__SUUICrossFadingTabBar_layoutSubviews__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)setTabBarButtons:(id)a3
+- (void)setTabBarButtons:(id)buttons
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buttonsCopy = buttons;
   tabBarButtons = self->_tabBarButtons;
-  if (tabBarButtons != v4)
+  if (tabBarButtons != buttonsCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -138,7 +138,7 @@ void __39__SUUICrossFadingTabBar_layoutSubviews__block_invoke(uint64_t a1, void 
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          if (![(NSArray *)v4 containsObject:v11])
+          if (![(NSArray *)buttonsCopy containsObject:v11])
           {
             [v11 removeFromSuperview];
           }
@@ -150,7 +150,7 @@ void __39__SUUICrossFadingTabBar_layoutSubviews__block_invoke(uint64_t a1, void 
       while (v8);
     }
 
-    v12 = [(NSArray *)v4 copy];
+    v12 = [(NSArray *)buttonsCopy copy];
     v13 = self->_tabBarButtons;
     self->_tabBarButtons = v12;
 
@@ -174,9 +174,9 @@ void __39__SUUICrossFadingTabBar_layoutSubviews__block_invoke(uint64_t a1, void 
           }
 
           v19 = *(*(&v21 + 1) + 8 * j);
-          v20 = [v19 superview];
+          superview = [v19 superview];
 
-          if (v20 != self)
+          if (superview != self)
           {
             [(SUUICrossFadingTabBar *)self addSubview:v19];
           }

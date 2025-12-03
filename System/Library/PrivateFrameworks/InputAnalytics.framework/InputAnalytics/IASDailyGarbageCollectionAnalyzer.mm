@@ -1,17 +1,17 @@
 @interface IASDailyGarbageCollectionAnalyzer
 - (BOOL)shouldBeGarbageCollected;
-- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5;
-- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5 eventHandler:(id)a6;
-- (void)consumeAction:(id)a3;
+- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue;
+- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue eventHandler:(id)handler;
+- (void)consumeAction:(id)action;
 @end
 
 @implementation IASDailyGarbageCollectionAnalyzer
 
-- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5
+- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue
 {
   v11.receiver = self;
   v11.super_class = IASDailyGarbageCollectionAnalyzer;
-  v7 = [(IASAnalyzer *)&v11 initWithAnalyzerSessionId:a3 sessionManagerDelegate:a4 queue:a5];
+  v7 = [(IASAnalyzer *)&v11 initWithAnalyzerSessionId:id sessionManagerDelegate:delegate queue:queue];
   if (v7)
   {
     v8 = objc_msgSend_date(MEMORY[0x1E695DF00], v5, v6);
@@ -21,11 +21,11 @@
   return v7;
 }
 
-- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5 eventHandler:(id)a6
+- (IASDailyGarbageCollectionAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue eventHandler:(id)handler
 {
   v12.receiver = self;
   v12.super_class = IASDailyGarbageCollectionAnalyzer;
-  v8 = [(IASAnalyzer *)&v12 initWithAnalyzerSessionId:a3 sessionManagerDelegate:a4 queue:a5 eventHandler:a6];
+  v8 = [(IASAnalyzer *)&v12 initWithAnalyzerSessionId:id sessionManagerDelegate:delegate queue:queue eventHandler:handler];
   if (v8)
   {
     v9 = objc_msgSend_date(MEMORY[0x1E695DF00], v6, v7);
@@ -35,9 +35,9 @@
   return v8;
 }
 
-- (void)consumeAction:(id)a3
+- (void)consumeAction:(id)action
 {
-  v5 = objc_msgSend_date(MEMORY[0x1E695DF00], a2, a3);
+  v5 = objc_msgSend_date(MEMORY[0x1E695DF00], a2, action);
   objc_msgSend_setDateOfLastAction_(self, v4, v5);
 }
 

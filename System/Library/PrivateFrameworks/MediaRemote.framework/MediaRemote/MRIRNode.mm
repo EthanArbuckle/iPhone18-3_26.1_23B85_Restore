@@ -1,7 +1,7 @@
 @interface MRIRNode
-+ (id)nodeFromIRNode:(id)a3;
-+ (id)nodeFromOutputDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)nodeFromIRNode:(id)node;
++ (id)nodeFromOutputDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -15,14 +15,14 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p): ", v5, self];
 
-  v7 = [(MRIRNode *)self avOutputDeviceIdentifier];
-  [v6 appendFormat:@"avOutputDeviceIdentifier: %@", v7];
+  avOutputDeviceIdentifier = [(MRIRNode *)self avOutputDeviceIdentifier];
+  [v6 appendFormat:@"avOutputDeviceIdentifier: %@", avOutputDeviceIdentifier];
 
-  v8 = [(MRIRNode *)self rapportIdentifier];
-  [v6 appendFormat:@", rapportIdentifier: %@", v8];
+  rapportIdentifier = [(MRIRNode *)self rapportIdentifier];
+  [v6 appendFormat:@", rapportIdentifier: %@", rapportIdentifier];
 
-  v9 = [(MRIRNode *)self idsIdentifier];
-  [v6 appendFormat:@", idsIdentifier: %@", v9];
+  idsIdentifier = [(MRIRNode *)self idsIdentifier];
+  [v6 appendFormat:@", idsIdentifier: %@", idsIdentifier];
 
   [v6 appendString:@">"];
 
@@ -31,65 +31,65 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MRIRNode *)self avOutputDeviceIdentifier];
-  v3 = [v2 hash];
+  avOutputDeviceIdentifier = [(MRIRNode *)self avOutputDeviceIdentifier];
+  v3 = [avOutputDeviceIdentifier hash];
 
   return v3;
 }
 
-+ (id)nodeFromIRNode:(id)a3
++ (id)nodeFromIRNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = objc_alloc_init(MRIRNode);
-  v5 = [v3 avOutpuDeviceIdentifier];
-  [(MRIRNode *)v4 setAvOutputDeviceIdentifier:v5];
+  avOutpuDeviceIdentifier = [nodeCopy avOutpuDeviceIdentifier];
+  [(MRIRNode *)v4 setAvOutputDeviceIdentifier:avOutpuDeviceIdentifier];
 
-  v6 = [v3 rapportIdentifier];
-  [(MRIRNode *)v4 setRapportIdentifier:v6];
+  rapportIdentifier = [nodeCopy rapportIdentifier];
+  [(MRIRNode *)v4 setRapportIdentifier:rapportIdentifier];
 
-  v7 = [v3 idsIdentifier];
-  [(MRIRNode *)v4 setIdsIdentifier:v7];
+  idsIdentifier = [nodeCopy idsIdentifier];
+  [(MRIRNode *)v4 setIdsIdentifier:idsIdentifier];
 
-  v8 = [v3 isLocal];
-  [(MRIRNode *)v4 setIsLocal:v8];
+  isLocal = [nodeCopy isLocal];
+  [(MRIRNode *)v4 setIsLocal:isLocal];
 
   return v4;
 }
 
-+ (id)nodeFromOutputDevice:(id)a3
++ (id)nodeFromOutputDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceType] == 4;
+  deviceCopy = device;
+  v4 = [deviceCopy deviceType] == 4;
   v5 = [MRIRNode alloc];
-  v6 = [v3 uid];
+  v6 = [deviceCopy uid];
 
   v7 = [(MRIRNode *)v5 initWithAVOutputDeviceID:v6 isLocal:v4];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if ([(MRIRNode *)v4 conformsToProtocol:&unk_1F15B23E8])
+  else if ([(MRIRNode *)equalCopy conformsToProtocol:&unk_1F15B23E8])
   {
     v6 = v5;
-    v7 = [(MRIRNode *)self avOutputDeviceIdentifier];
-    v8 = [(MRIRNode *)v6 avOutputDeviceIdentifier];
-    if (v7 == v8)
+    avOutputDeviceIdentifier = [(MRIRNode *)self avOutputDeviceIdentifier];
+    avOutputDeviceIdentifier2 = [(MRIRNode *)v6 avOutputDeviceIdentifier];
+    if (avOutputDeviceIdentifier == avOutputDeviceIdentifier2)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v7 isEqual:v8];
+      v9 = [avOutputDeviceIdentifier isEqual:avOutputDeviceIdentifier2];
     }
   }
 

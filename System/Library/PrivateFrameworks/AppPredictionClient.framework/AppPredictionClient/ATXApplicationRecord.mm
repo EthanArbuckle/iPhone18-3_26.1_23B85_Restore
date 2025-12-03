@@ -1,47 +1,47 @@
 @interface ATXApplicationRecord
-+ (BOOL)isAppClipForBundleId:(id)a3;
-+ (BOOL)isAppClipGivenAppRecord:(id)a3;
-+ (BOOL)isAppleOwnedAppForBundleId:(id)a3;
-+ (BOOL)isAppleOwnedIncludingInternalOrSystemAppForBundleId:(id)a3;
-+ (BOOL)isArcadeAppForBundle:(id)a3;
-+ (BOOL)isBackgroundAudioSupportedForBundle:(id)a3;
-+ (BOOL)isBetaAppForBundle:(id)a3;
-+ (BOOL)isDeviceManagementPolicyOkForBundleId:(id)a3;
-+ (BOOL)isEnterpriseAppForBundle:(id)a3;
-+ (BOOL)isHiddenFromSpringBoardWithBundleId:(id)a3;
-+ (BOOL)isInstalledAndNotRestrictedForBundle:(id)a3;
-+ (BOOL)isInstalledForBundle:(id)a3;
-+ (BOOL)isInstalledOrIsPlaceholderForBundle:(id)a3;
-+ (BOOL)isInstallingForBundle:(id)a3;
-+ (BOOL)isInternalAppForBundleId:(id)a3;
-+ (BOOL)isInternalOrSystemAppForBundleId:(id)a3;
-+ (BOOL)isLaunchProhibitedForBundle:(id)a3;
-+ (BOOL)isOffloadedForBundle:(id)a3;
-+ (BOOL)isRestoreInstallTypeForBundle:(id)a3;
-+ (BOOL)isSwiftPlaygroundsBundle:(id)a3;
-+ (BOOL)isSystemAppForBundleId:(id)a3;
-+ (BOOL)isUPPValidatedForBundle:(id)a3;
-+ (BOOL)isWebClipInstalledWithBundleId:(id)a3;
-+ (id)appInfoForBundle:(id)a3;
-+ (id)bundleIdForAdamIdIfInstalled:(unint64_t)a3;
-+ (id)companionBundleIdForBundleId:(id)a3;
-+ (id)genreForBundle:(id)a3;
-+ (id)localizedNameForBundle:(id)a3;
-+ (id)localizedShortnameForBundle:(id)a3;
-+ (id)parentAppBundleIdForClipBundleID:(id)a3;
-+ (id)recordForAdamId:(unint64_t)a3;
-+ (id)recordForBundleId:(id)a3;
-+ (id)registrationDateForBundle:(id)a3;
-+ (id)schemaWithoutFallbackForBundle:(id)a3;
-+ (unint64_t)genreIdForBundle:(id)a3;
-+ (void)getDeviceManagementPolicyForBundle:(id)a3 completionHandler:(id)a4;
++ (BOOL)isAppClipForBundleId:(id)id;
++ (BOOL)isAppClipGivenAppRecord:(id)record;
++ (BOOL)isAppleOwnedAppForBundleId:(id)id;
++ (BOOL)isAppleOwnedIncludingInternalOrSystemAppForBundleId:(id)id;
++ (BOOL)isArcadeAppForBundle:(id)bundle;
++ (BOOL)isBackgroundAudioSupportedForBundle:(id)bundle;
++ (BOOL)isBetaAppForBundle:(id)bundle;
++ (BOOL)isDeviceManagementPolicyOkForBundleId:(id)id;
++ (BOOL)isEnterpriseAppForBundle:(id)bundle;
++ (BOOL)isHiddenFromSpringBoardWithBundleId:(id)id;
++ (BOOL)isInstalledAndNotRestrictedForBundle:(id)bundle;
++ (BOOL)isInstalledForBundle:(id)bundle;
++ (BOOL)isInstalledOrIsPlaceholderForBundle:(id)bundle;
++ (BOOL)isInstallingForBundle:(id)bundle;
++ (BOOL)isInternalAppForBundleId:(id)id;
++ (BOOL)isInternalOrSystemAppForBundleId:(id)id;
++ (BOOL)isLaunchProhibitedForBundle:(id)bundle;
++ (BOOL)isOffloadedForBundle:(id)bundle;
++ (BOOL)isRestoreInstallTypeForBundle:(id)bundle;
++ (BOOL)isSwiftPlaygroundsBundle:(id)bundle;
++ (BOOL)isSystemAppForBundleId:(id)id;
++ (BOOL)isUPPValidatedForBundle:(id)bundle;
++ (BOOL)isWebClipInstalledWithBundleId:(id)id;
++ (id)appInfoForBundle:(id)bundle;
++ (id)bundleIdForAdamIdIfInstalled:(unint64_t)installed;
++ (id)companionBundleIdForBundleId:(id)id;
++ (id)genreForBundle:(id)bundle;
++ (id)localizedNameForBundle:(id)bundle;
++ (id)localizedShortnameForBundle:(id)bundle;
++ (id)parentAppBundleIdForClipBundleID:(id)d;
++ (id)recordForAdamId:(unint64_t)id;
++ (id)recordForBundleId:(id)id;
++ (id)registrationDateForBundle:(id)bundle;
++ (id)schemaWithoutFallbackForBundle:(id)bundle;
++ (unint64_t)genreIdForBundle:(id)bundle;
++ (void)getDeviceManagementPolicyForBundle:(id)bundle completionHandler:(id)handler;
 @end
 
 @implementation ATXApplicationRecord
 
-+ (id)recordForBundleId:(id)a3
++ (id)recordForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
   v5 = ATXIsRemoteAppBundleId();
   v6 = objc_alloc(MEMORY[0x1E69635F8]);
@@ -62,7 +62,7 @@
   else
   {
     v13 = 0;
-    v9 = [v6 initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v13];
+    v9 = [v6 initWithBundleIdentifier:idCopy allowPlaceholder:1 error:&v13];
     v10 = v13;
     if (v10)
     {
@@ -84,7 +84,7 @@ LABEL_5:
     v11 = __atxlog_handle_default();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ATXApplicationRecord *)v3 recordForBundleId:v11];
+      [(ATXApplicationRecord *)idCopy recordForBundleId:v11];
     }
 
     goto LABEL_5;
@@ -97,26 +97,26 @@ LABEL_8:
   return v9;
 }
 
-+ (id)companionBundleIdForBundleId:(id)a3
++ (id)companionBundleIdForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:idCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 counterpartIdentifiers];
-    v9 = [v8 count];
+    counterpartIdentifiers = [v6 counterpartIdentifiers];
+    v9 = [counterpartIdentifiers count];
 
     if (v9)
     {
-      v10 = [v7 counterpartIdentifiers];
-      v11 = [v10 firstObject];
+      counterpartIdentifiers2 = [v7 counterpartIdentifiers];
+      firstObject = [counterpartIdentifiers2 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v11;
+        v9 = firstObject;
       }
 
       else
@@ -142,38 +142,38 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)isInstalledAndNotRestrictedForBundle:(id)a3
++ (BOOL)isInstalledAndNotRestrictedForBundle:(id)bundle
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  if ([a1 isAppClipWebClipBundleId:v4])
+  if ([self isAppClipWebClipBundleId:bundleCopy])
   {
-    v6 = [a1 isWebClipInstalledWithBundleId:v4];
+    v6 = [self isWebClipInstalledWithBundleId:bundleCopy];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.Health"] && objc_msgSend(MEMORY[0x1E69C5CF8], "isiPad") && (objc_msgSend(MEMORY[0x1E696AE30], "processInfo"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, objc_msgSend(v7, "operatingSystemVersion"), v8, v16 == 16))
+  else if ([bundleCopy isEqualToString:@"com.apple.Health"] && objc_msgSend(MEMORY[0x1E69C5CF8], "isiPad") && (objc_msgSend(MEMORY[0x1E696AE30], "processInfo"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, objc_msgSend(v7, "operatingSystemVersion"), v8, v16 == 16))
   {
     v6 = 0;
   }
 
   else
   {
-    v9 = [a1 recordForBundleId:v4];
-    v10 = [v9 applicationState];
-    v11 = [v10 isInstalled];
-    v12 = [v10 isRestricted];
-    v6 = v11 & (v12 ^ 1);
+    v9 = [self recordForBundleId:bundleCopy];
+    applicationState = [v9 applicationState];
+    isInstalled = [applicationState isInstalled];
+    isRestricted = [applicationState isRestricted];
+    v6 = isInstalled & (isRestricted ^ 1);
     if ((v6 & 1) == 0)
     {
-      v13 = v12;
+      v13 = isRestricted;
       v14 = __atxlog_handle_default();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v18 = v4;
+        v18 = bundleCopy;
         v19 = 1024;
-        v20 = v11;
+        v20 = isInstalled;
         v21 = 1024;
         v22 = v13 & 1;
         _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEFAULT, "ATXApplicationRecord for app: %@ installed: %{BOOL}d restricted: %{BOOL}d", buf, 0x18u);
@@ -186,16 +186,16 @@ LABEL_8:
   return v6;
 }
 
-+ (BOOL)isHiddenFromSpringBoardWithBundleId:(id)a3
++ (BOOL)isHiddenFromSpringBoardWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:idCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 appTags];
-    v9 = [v8 containsObject:@"hidden"];
+    appTags = [v6 appTags];
+    v9 = [appTags containsObject:@"hidden"];
   }
 
   else
@@ -207,18 +207,18 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)isWebClipInstalledWithBundleId:(id)a3
++ (BOOL)isWebClipInstalledWithBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 stringByReplacingOccurrencesOfString:*MEMORY[0x1E6994668] withString:&stru_1F3E050C8];
-  v6 = [MEMORY[0x1E6994690] sharedStore];
-  v7 = [v6 synchronouslyGetAppClipWithIdentifier:v5];
+  v5 = [idCopy stringByReplacingOccurrencesOfString:*MEMORY[0x1E6994668] withString:&stru_1F3E050C8];
+  mEMORY[0x1E6994690] = [MEMORY[0x1E6994690] sharedStore];
+  v7 = [mEMORY[0x1E6994690] synchronouslyGetAppClipWithIdentifier:v5];
 
   if (v7 && [v7 isApplicationInstalled])
   {
-    v8 = [v7 title];
-    v9 = v8 != 0;
+    title = [v7 title];
+    v9 = title != 0;
   }
 
   else
@@ -230,233 +230,233 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)isInstalledOrIsPlaceholderForBundle:(id)a3
++ (BOOL)isInstalledOrIsPlaceholderForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 applicationState];
-  if ([v7 isInstalled])
+  v6 = [self recordForBundleId:bundleCopy];
+  applicationState = [v6 applicationState];
+  if ([applicationState isInstalled])
   {
-    v8 = 1;
+    isPlaceholder = 1;
   }
 
   else
   {
-    v8 = [v7 isPlaceholder];
+    isPlaceholder = [applicationState isPlaceholder];
   }
 
   objc_autoreleasePoolPop(v5);
-  return v8;
+  return isPlaceholder;
 }
 
-+ (BOOL)isInstallingForBundle:(id)a3
++ (BOOL)isInstallingForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 applicationState];
-  if ([v7 isDowngraded])
+  v6 = [self recordForBundleId:bundleCopy];
+  applicationState = [v6 applicationState];
+  if ([applicationState isDowngraded])
   {
-    v8 = 0;
+    isPlaceholder = 0;
   }
 
   else
   {
-    v8 = [v7 isPlaceholder];
+    isPlaceholder = [applicationState isPlaceholder];
   }
 
   objc_autoreleasePoolPop(v5);
-  return v8;
+  return isPlaceholder;
 }
 
-+ (BOOL)isOffloadedForBundle:(id)a3
++ (BOOL)isOffloadedForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 applicationState];
-  if ([v7 isDowngraded])
+  v6 = [self recordForBundleId:bundleCopy];
+  applicationState = [v6 applicationState];
+  if ([applicationState isDowngraded])
   {
-    v8 = [v7 isPlaceholder];
+    isPlaceholder = [applicationState isPlaceholder];
   }
 
   else
   {
-    v8 = 0;
+    isPlaceholder = 0;
   }
 
   objc_autoreleasePoolPop(v5);
-  return v8;
+  return isPlaceholder;
 }
 
-+ (BOOL)isInstalledForBundle:(id)a3
++ (BOOL)isInstalledForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 applicationState];
-  v8 = [v7 isInstalled];
+  v6 = [self recordForBundleId:bundleCopy];
+  applicationState = [v6 applicationState];
+  isInstalled = [applicationState isInstalled];
+
+  objc_autoreleasePoolPop(v5);
+  return isInstalled;
+}
+
++ (id)localizedShortnameForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  localizedShortName = [v6 localizedShortName];
+
+  objc_autoreleasePoolPop(v5);
+
+  return localizedShortName;
+}
+
++ (id)localizedNameForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  localizedName = [v6 localizedName];
+
+  objc_autoreleasePoolPop(v5);
+
+  return localizedName;
+}
+
++ (BOOL)isLaunchProhibitedForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  isLaunchProhibited = [v6 isLaunchProhibited];
+
+  objc_autoreleasePoolPop(v5);
+  return isLaunchProhibited;
+}
+
++ (BOOL)isArcadeAppForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  isArcadeApp = [v6 isArcadeApp];
+
+  objc_autoreleasePoolPop(v5);
+  return isArcadeApp;
+}
+
++ (BOOL)isBackgroundAudioSupportedForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  uIBackgroundModes = [v6 UIBackgroundModes];
+  v8 = [uIBackgroundModes containsObject:@"audio"];
 
   objc_autoreleasePoolPop(v5);
   return v8;
 }
 
-+ (id)localizedShortnameForBundle:(id)a3
++ (BOOL)isEnterpriseAppForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 localizedShortName];
+  v6 = [self recordForBundleId:bundleCopy];
+  isProfileValidated = [v6 isProfileValidated];
+
+  objc_autoreleasePoolPop(v5);
+  return isProfileValidated;
+}
+
++ (BOOL)isUPPValidatedForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  isUPPValidated = [v6 isUPPValidated];
+
+  objc_autoreleasePoolPop(v5);
+  return isUPPValidated;
+}
+
++ (BOOL)isBetaAppForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  isBeta = [v6 isBeta];
+
+  objc_autoreleasePoolPop(v5);
+  return isBeta;
+}
+
++ (id)genreForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  iTunesMetadata = [v6 iTunesMetadata];
+  genre = [iTunesMetadata genre];
 
   objc_autoreleasePoolPop(v5);
 
-  return v7;
+  return genre;
 }
 
-+ (id)localizedNameForBundle:(id)a3
++ (unint64_t)genreIdForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 localizedName];
+  v6 = [self recordForBundleId:bundleCopy];
+  iTunesMetadata = [v6 iTunesMetadata];
+  genreIdentifier = [iTunesMetadata genreIdentifier];
+
+  objc_autoreleasePoolPop(v5);
+  return genreIdentifier;
+}
+
++ (id)registrationDateForBundle:(id)bundle
+{
+  bundleCopy = bundle;
+  v5 = objc_autoreleasePoolPush();
+  v6 = [self recordForBundleId:bundleCopy];
+  registrationDate = [v6 registrationDate];
 
   objc_autoreleasePoolPop(v5);
 
-  return v7;
+  return registrationDate;
 }
 
-+ (BOOL)isLaunchProhibitedForBundle:(id)a3
++ (BOOL)isRestoreInstallTypeForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 isLaunchProhibited];
-
-  objc_autoreleasePoolPop(v5);
-  return v7;
-}
-
-+ (BOOL)isArcadeAppForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 isArcadeApp];
-
-  objc_autoreleasePoolPop(v5);
-  return v7;
-}
-
-+ (BOOL)isBackgroundAudioSupportedForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 UIBackgroundModes];
-  v8 = [v7 containsObject:@"audio"];
-
-  objc_autoreleasePoolPop(v5);
-  return v8;
-}
-
-+ (BOOL)isEnterpriseAppForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 isProfileValidated];
-
-  objc_autoreleasePoolPop(v5);
-  return v7;
-}
-
-+ (BOOL)isUPPValidatedForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 isUPPValidated];
-
-  objc_autoreleasePoolPop(v5);
-  return v7;
-}
-
-+ (BOOL)isBetaAppForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 isBeta];
-
-  objc_autoreleasePoolPop(v5);
-  return v7;
-}
-
-+ (id)genreForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 iTunesMetadata];
-  v8 = [v7 genre];
-
-  objc_autoreleasePoolPop(v5);
-
-  return v8;
-}
-
-+ (unint64_t)genreIdForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 iTunesMetadata];
-  v8 = [v7 genreIdentifier];
-
-  objc_autoreleasePoolPop(v5);
-  return v8;
-}
-
-+ (id)registrationDateForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
-  v7 = [v6 registrationDate];
-
-  objc_autoreleasePoolPop(v5);
-
-  return v7;
-}
-
-+ (BOOL)isRestoreInstallTypeForBundle:(id)a3
-{
-  v4 = a3;
-  v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:bundleCopy];
   v7 = [v6 installType] == 2;
 
   objc_autoreleasePoolPop(v5);
   return v7;
 }
 
-+ (void)getDeviceManagementPolicyForBundle:(id)a3 completionHandler:(id)a4
++ (void)getDeviceManagementPolicyForBundle:(id)bundle completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 recordForBundleId:v9];
-  [v8 getDeviceManagementPolicyWithCompletionHandler:v6];
+  v8 = [self recordForBundleId:bundleCopy];
+  [v8 getDeviceManagementPolicyWithCompletionHandler:handlerCopy];
 
   objc_autoreleasePoolPop(v7);
 }
 
-+ (id)appInfoForBundle:(id)a3
++ (id)appInfoForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:bundleCopy];
   if (v6)
   {
     v7 = [MEMORY[0x1E696E728] appInfoWithApplicationRecord:v6];
@@ -472,11 +472,11 @@ LABEL_8:
   return v7;
 }
 
-+ (id)schemaWithoutFallbackForBundle:(id)a3
++ (id)schemaWithoutFallbackForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:bundleCopy];
   if (v6)
   {
     v7 = [MEMORY[0x1E696E9B8] schemaWithBundleRecord:v6 fallbackToSystemSchema:0];
@@ -492,18 +492,18 @@ LABEL_8:
   return v7;
 }
 
-+ (id)recordForAdamId:(unint64_t)a3
++ (id)recordForAdamId:(unint64_t)id
 {
   v4 = objc_autoreleasePoolPush();
   v9 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithStoreItemIdentifier:a3 error:&v9];
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithStoreItemIdentifier:id error:&v9];
   v6 = v9;
   if (v6)
   {
     v7 = __atxlog_handle_default();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(ATXApplicationRecord *)a3 recordForAdamId:v6, v7];
+      [(ATXApplicationRecord *)id recordForAdamId:v6, v7];
     }
   }
 
@@ -512,34 +512,34 @@ LABEL_8:
   return v5;
 }
 
-+ (id)bundleIdForAdamIdIfInstalled:(unint64_t)a3
++ (id)bundleIdForAdamIdIfInstalled:(unint64_t)installed
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForAdamId:a3];
-  v7 = [v6 applicationState];
-  if ([v7 isInstalled] && (objc_msgSend(v7, "isRestricted") & 1) == 0)
+  v6 = [self recordForAdamId:installed];
+  applicationState = [v6 applicationState];
+  if ([applicationState isInstalled] && (objc_msgSend(applicationState, "isRestricted") & 1) == 0)
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
   }
 
   else
   {
-    v8 = 0;
+    bundleIdentifier = 0;
   }
 
   objc_autoreleasePoolPop(v5);
 
-  return v8;
+  return bundleIdentifier;
 }
 
-+ (BOOL)isAppClipForBundleId:(id)a3
++ (BOOL)isAppClipForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:idCopy];
   if (v6)
   {
-    v7 = [a1 isAppClipGivenAppRecord:v6];
+    v7 = [self isAppClipGivenAppRecord:v6];
   }
 
   else
@@ -551,22 +551,22 @@ LABEL_8:
   return v7;
 }
 
-+ (id)parentAppBundleIdForClipBundleID:(id)a3
++ (id)parentAppBundleIdForClipBundleID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
   v19 = 0;
-  v6 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v19];
+  v6 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v19];
   v7 = v19;
   if (v7)
   {
-    v8 = __atxlog_handle_hero();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    entitlements = __atxlog_handle_hero();
+    if (os_log_type_enabled(entitlements, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v21 = v7;
-      _os_log_impl(&dword_1BF549000, v8, OS_LOG_TYPE_INFO, "Could not get LSApplicationRecord inside parentAppBundleIdForClipBundleID. Error: %@", buf, 0xCu);
+      _os_log_impl(&dword_1BF549000, entitlements, OS_LOG_TYPE_INFO, "Could not get LSApplicationRecord inside parentAppBundleIdForClipBundleID. Error: %@", buf, 0xCu);
     }
 
     v9 = 0;
@@ -575,28 +575,28 @@ LABEL_8:
 
   if (v6)
   {
-    v8 = [v6 entitlements];
-    v12 = [a1 isAppClipGivenAppRecord:v6];
+    entitlements = [v6 entitlements];
+    v12 = [self isAppClipGivenAppRecord:v6];
     v13 = objc_opt_class();
-    v14 = [v8 objectForKey:@"com.apple.developer.parent-application-identifiers" ofClass:v13 valuesOfClass:objc_opt_class()];
+    v14 = [entitlements objectForKey:@"com.apple.developer.parent-application-identifiers" ofClass:v13 valuesOfClass:objc_opt_class()];
     v9 = v14;
     if (v12)
     {
       if ([v14 count])
       {
-        v15 = [v9 firstObject];
-        v16 = [v15 rangeOfString:@"."];
+        firstObject = [v9 firstObject];
+        v16 = [firstObject rangeOfString:@"."];
 
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v17 = [v9 firstObject];
-          v10 = [v17 substringFromIndex:v16 + 1];
+          firstObject2 = [v9 firstObject];
+          v10 = [firstObject2 substringFromIndex:v16 + 1];
 
           v18 = __atxlog_handle_hero();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v21 = v4;
+            v21 = dCopy;
             v22 = 2112;
             v23 = v9;
             _os_log_impl(&dword_1BF549000, v18, OS_LOG_TYPE_DEFAULT, "CLIP app %@ parentAppIDs: %@", buf, 0x16u);
@@ -623,33 +623,33 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)isAppClipGivenAppRecord:(id)a3
++ (BOOL)isAppClipGivenAppRecord:(id)record
 {
-  v3 = [a3 appClipMetadata];
-  v4 = v3 != 0;
+  appClipMetadata = [record appClipMetadata];
+  v4 = appClipMetadata != 0;
 
   return v4;
 }
 
-+ (BOOL)isSwiftPlaygroundsBundle:(id)a3
++ (BOOL)isSwiftPlaygroundsBundle:(id)bundle
 {
-  v3 = [a1 recordForBundleId:a3];
-  v4 = [v3 isSwiftPlaygroundsApp];
+  v3 = [self recordForBundleId:bundle];
+  isSwiftPlaygroundsApp = [v3 isSwiftPlaygroundsApp];
 
-  return v4;
+  return isSwiftPlaygroundsApp;
 }
 
-+ (BOOL)isSystemAppForBundleId:(id)a3
++ (BOOL)isSystemAppForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:idCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 compatibilityObject];
-    v9 = [v8 applicationType];
-    v10 = [v9 isEqualToString:@"System"];
+    compatibilityObject = [v6 compatibilityObject];
+    applicationType = [compatibilityObject applicationType];
+    v10 = [applicationType isEqualToString:@"System"];
   }
 
   else
@@ -661,7 +661,7 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)isAppleOwnedAppForBundleId:(id)a3
++ (BOOL)isAppleOwnedAppForBundleId:(id)id
 {
   v3 = ATXBundleIdForRemoteBundleId();
   v4 = [v3 hasPrefix:@"com.apple."];
@@ -669,17 +669,17 @@ LABEL_7:
   return v4;
 }
 
-+ (BOOL)isInternalAppForBundleId:(id)a3
++ (BOOL)isInternalAppForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:idCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 compatibilityObject];
-    v9 = [v8 applicationType];
-    v10 = [v9 isEqualToString:@"Internal"];
+    compatibilityObject = [v6 compatibilityObject];
+    applicationType = [compatibilityObject applicationType];
+    v10 = [applicationType isEqualToString:@"Internal"];
   }
 
   else
@@ -691,48 +691,48 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)isInternalOrSystemAppForBundleId:(id)a3
++ (BOOL)isInternalOrSystemAppForBundleId:(id)id
 {
-  v4 = a3;
-  if ([a1 isInternalAppForBundleId:v4])
+  idCopy = id;
+  if ([self isInternalAppForBundleId:idCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [a1 isSystemAppForBundleId:v4];
+    v5 = [self isSystemAppForBundleId:idCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)isAppleOwnedIncludingInternalOrSystemAppForBundleId:(id)a3
++ (BOOL)isAppleOwnedIncludingInternalOrSystemAppForBundleId:(id)id
 {
-  v4 = a3;
-  if ([a1 isInternalAppForBundleId:v4] & 1) != 0 || (objc_msgSend(a1, "isSystemAppForBundleId:", v4))
+  idCopy = id;
+  if ([self isInternalAppForBundleId:idCopy] & 1) != 0 || (objc_msgSend(self, "isSystemAppForBundleId:", idCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [a1 isAppleOwnedAppForBundleId:v4];
+    v5 = [self isAppleOwnedAppForBundleId:idCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)isDeviceManagementPolicyOkForBundleId:(id)a3
++ (BOOL)isDeviceManagementPolicyOkForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 recordForBundleId:v4];
+  v6 = [self recordForBundleId:idCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 compatibilityObject];
-    v9 = [v8 deviceManagementPolicy] == 0;
+    compatibilityObject = [v6 compatibilityObject];
+    v9 = [compatibilityObject deviceManagementPolicy] == 0;
   }
 
   else

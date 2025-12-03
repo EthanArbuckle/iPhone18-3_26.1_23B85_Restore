@@ -41,13 +41,13 @@
 + (BOOL)isSignedIntoICloud
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v2 isUserSignedInToiCloud];
 
   v4 = BCUbiquityEnabledLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = @"NO";
-    if (v3)
+    if (isUserSignedInToiCloud)
     {
       v5 = @"YES";
     }
@@ -57,31 +57,31 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "BCSyncUserDefaults: isSignedIntoICloud = %@", &v7, 0xCu);
   }
 
-  return v3;
+  return isUserSignedInToiCloud;
 }
 
 + (BOOL)isCloudKitSyncOptedIn
 {
   +[BCSyncUserDefaults waitForPendingSyncIfNeeded];
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isPrimaryAccountManagedAppleID];
+  isPrimaryAccountManagedAppleID = [v2 isPrimaryAccountManagedAppleID];
 
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"BCSyncCloudKit"];
 
-  return (v3 | v5) & 1;
+  return (isPrimaryAccountManagedAppleID | v5) & 1;
 }
 
 + (BOOL)isGlobalICloudDriveSyncOptedIn
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isGlobalICloudDriveSyncOptedIn];
+  isGlobalICloudDriveSyncOptedIn = [v2 isGlobalICloudDriveSyncOptedIn];
 
   v4 = BCUbiquityEnabledLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = @"NO";
-    if (v3)
+    if (isGlobalICloudDriveSyncOptedIn)
     {
       v5 = @"YES";
     }
@@ -91,7 +91,7 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "BCSyncUserDefaults: isGlobalICloudDriveSyncOptedIn = %@", &v7, 0xCu);
   }
 
-  return v3;
+  return isGlobalICloudDriveSyncOptedIn;
 }
 
 + (BOOL)isICloudDriveSyncOptedIn
@@ -104,7 +104,7 @@
 + (BOOL)_isICloudDriveSyncOptedIn
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isPrimaryAccountManagedAppleID];
+  isPrimaryAccountManagedAppleID = [v2 isPrimaryAccountManagedAppleID];
 
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"BCSyncICloudDrive"];
@@ -116,7 +116,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = @"NO";
-    if (v3)
+    if (isPrimaryAccountManagedAppleID)
     {
       v10 = @"YES";
     }
@@ -150,7 +150,7 @@
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "BCSyncUserDefaults: isICloudDriveSyncOptedIn isPrimaryAccountManagedAppleID = %@ isBCSyncICloudDriveUserDefaults = %@ isBCSyncCloudKitUserDefaults = %@", &v13, 0x20u);
   }
 
-  return (v3 | v5 & v7) & 1;
+  return (isPrimaryAccountManagedAppleID | v5 & v7) & 1;
 }
 
 + (BOOL)archivedICloudDriveSyncOptedInBeforeInitialTCCSync
@@ -241,7 +241,7 @@
   v4[1] = 3221225472;
   v4[2] = sub_E290C;
   v4[3] = &unk_2CD1B0;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [[BUOSStateHandler alloc] initWithTitle:@"BCSyncUserDefaults" block:v4];
 
   return v2;

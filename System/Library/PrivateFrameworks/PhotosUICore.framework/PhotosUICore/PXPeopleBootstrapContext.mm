@@ -1,7 +1,7 @@
 @interface PXPeopleBootstrapContext
-+ (PXPeopleBootstrapContext)contextWithFace:(id)a3 type:(unint64_t)a4 delayedPersonBlock:(id)a5;
-+ (PXPeopleBootstrapContext)contextWithPerson:(id)a3 type:(unint64_t)a4;
-+ (PXPeopleBootstrapContext)contextWithPersonSuggestion:(id)a3;
++ (PXPeopleBootstrapContext)contextWithFace:(id)face type:(unint64_t)type delayedPersonBlock:(id)block;
++ (PXPeopleBootstrapContext)contextWithPerson:(id)person type:(unint64_t)type;
++ (PXPeopleBootstrapContext)contextWithPersonSuggestion:(id)suggestion;
 - (NSString)localizedName;
 - (PXPeopleBootstrapContext)init;
 - (id)description;
@@ -16,29 +16,29 @@
   v3 = [(PXPeopleBootstrapContext *)&v38 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PXPeopleBootstrapContext *)self sourcePerson];
-  [v4 appendFormat:@"\nsourcePerson: %@, \n", v5];
+  sourcePerson = [(PXPeopleBootstrapContext *)self sourcePerson];
+  [v4 appendFormat:@"\nsourcePerson: %@, \n", sourcePerson];
 
-  v6 = [(PXPeopleBootstrapContext *)self targetPerson];
-  [v4 appendFormat:@"targetPerson: %@, \n", v6];
+  targetPerson = [(PXPeopleBootstrapContext *)self targetPerson];
+  [v4 appendFormat:@"targetPerson: %@, \n", targetPerson];
 
-  v7 = [(PXPeopleBootstrapContext *)self bootstrapType];
-  if (v7 - 1 > 2)
+  bootstrapType = [(PXPeopleBootstrapContext *)self bootstrapType];
+  if (bootstrapType - 1 > 2)
   {
     v8 = @"PXPeopleBootstrapTypeFavorite";
   }
 
   else
   {
-    v8 = off_1E7744730[v7 - 1];
+    v8 = off_1E7744730[bootstrapType - 1];
   }
 
   [v4 appendFormat:@"bootstrapType: %@, \n", v8];
-  v9 = [(PXPeopleBootstrapContext *)self nameSelection];
-  [v4 appendFormat:@"nameSelection: %@, \n", v9];
+  nameSelection = [(PXPeopleBootstrapContext *)self nameSelection];
+  [v4 appendFormat:@"nameSelection: %@, \n", nameSelection];
 
-  v10 = [(PXPeopleBootstrapContext *)self suggestionManager];
-  [v4 appendFormat:@"suggestionManager: %@, \n", v10];
+  suggestionManager = [(PXPeopleBootstrapContext *)self suggestionManager];
+  [v4 appendFormat:@"suggestionManager: %@, \n", suggestionManager];
 
   if ([(PXPeopleBootstrapContext *)self skipInitialAction])
   {
@@ -53,12 +53,12 @@
   v12 = v11;
   [v4 appendFormat:@"skipInitialAction: %@, \n", v12];
 
-  v13 = [(PXPeopleBootstrapContext *)self onInitBlock];
-  v14 = _Block_copy(v13);
+  onInitBlock = [(PXPeopleBootstrapContext *)self onInitBlock];
+  v14 = _Block_copy(onInitBlock);
   [v4 appendFormat:@"onInitBlock: %@, \n", v14];
 
-  v15 = [(PXPeopleBootstrapContext *)self cancelBlock];
-  v16 = _Block_copy(v15);
+  cancelBlock = [(PXPeopleBootstrapContext *)self cancelBlock];
+  v16 = _Block_copy(cancelBlock);
   [v4 appendFormat:@"cancelBlock: %@, \n", v16];
 
   if ([(PXPeopleBootstrapContext *)self wantsNaming])
@@ -113,20 +113,20 @@
   v24 = v23;
   [v4 appendFormat:@"wantsToBeAddedToPeopleAlbum: %@, \n", v24];
 
-  v25 = [(PXPeopleBootstrapContext *)self prefetchedDataSource];
-  [v4 appendFormat:@"prefetchedDataSource: %@, \n", v25];
+  prefetchedDataSource = [(PXPeopleBootstrapContext *)self prefetchedDataSource];
+  [v4 appendFormat:@"prefetchedDataSource: %@, \n", prefetchedDataSource];
 
-  v26 = [(PXPeopleBootstrapContext *)self callerInfo];
-  [v4 appendFormat:@"callerInfo: %@, \n", v26];
+  callerInfo = [(PXPeopleBootstrapContext *)self callerInfo];
+  [v4 appendFormat:@"callerInfo: %@, \n", callerInfo];
 
-  v27 = [(PXPeopleBootstrapContext *)self localizedName];
-  [v4 appendFormat:@"localizedName: %@, \n", v27];
+  localizedName = [(PXPeopleBootstrapContext *)self localizedName];
+  [v4 appendFormat:@"localizedName: %@, \n", localizedName];
 
-  v28 = [(PXPeopleBootstrapContext *)self personSuggestion];
-  [v4 appendFormat:@"personSuggestion: %@, \n", v28];
+  personSuggestion = [(PXPeopleBootstrapContext *)self personSuggestion];
+  [v4 appendFormat:@"personSuggestion: %@, \n", personSuggestion];
 
-  v29 = [(PXPeopleBootstrapContext *)self face];
-  [v4 appendFormat:@"face: %@\n", v29];
+  face = [(PXPeopleBootstrapContext *)self face];
+  [v4 appendFormat:@"face: %@\n", face];
 
   [(PXPeopleBootstrapContext *)self backingScaleFactor];
   [v4 appendFormat:@"backingScaleFactor: %f\n", v30];
@@ -143,9 +143,9 @@
   v32 = v31;
   [v4 appendFormat:@"didCommitPreBootstrapAction: %@\n", v32];
 
-  v33 = [(PXPeopleBootstrapContext *)self keyAsset];
-  v34 = [v33 localIdentifier];
-  [v4 appendFormat:@"keyAsset: %@\n", v34];
+  keyAsset = [(PXPeopleBootstrapContext *)self keyAsset];
+  localIdentifier = [keyAsset localIdentifier];
+  [v4 appendFormat:@"keyAsset: %@\n", localIdentifier];
 
   if ([(PXPeopleBootstrapContext *)self wantsContactUnlinkage])
   {
@@ -165,20 +165,20 @@
 
 - (NSString)localizedName
 {
-  v3 = [(PXPeopleBootstrapContext *)self nameSelection];
-  v4 = v3;
-  if (v3)
+  nameSelection = [(PXPeopleBootstrapContext *)self nameSelection];
+  v4 = nameSelection;
+  if (nameSelection)
   {
-    v5 = [v3 localizedName];
+    localizedName = [nameSelection localizedName];
   }
 
   else
   {
-    v6 = [(PXPeopleBootstrapContext *)self sourcePerson];
-    v5 = [v6 px_localizedName];
+    sourcePerson = [(PXPeopleBootstrapContext *)self sourcePerson];
+    localizedName = [sourcePerson px_localizedName];
   }
 
-  return v5;
+  return localizedName;
 }
 
 - (PXPeopleBootstrapContext)init
@@ -195,10 +195,10 @@
   return result;
 }
 
-+ (PXPeopleBootstrapContext)contextWithPersonSuggestion:(id)a3
++ (PXPeopleBootstrapContext)contextWithPersonSuggestion:(id)suggestion
 {
-  v5 = a3;
-  if (v5)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -206,37 +206,37 @@
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v5 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPeopleBootstrapContext.m" lineNumber:68 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"personSuggestion", v11, v13}];
+    px_descriptionForAssertionMessage = [suggestionCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapContext.m" lineNumber:68 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"personSuggestion", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPeopleBootstrapContext.m" lineNumber:68 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"personSuggestion", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapContext.m" lineNumber:68 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"personSuggestion", v11}];
   }
 
 LABEL_3:
-  v6 = [v5 person];
-  v7 = [PXPeopleBootstrapContext contextWithPerson:v6 type:2];
-  [v7 setPersonSuggestion:v5];
+  person = [suggestionCopy person];
+  v7 = [PXPeopleBootstrapContext contextWithPerson:person type:2];
+  [v7 setPersonSuggestion:suggestionCopy];
 
   return v7;
 }
 
-+ (PXPeopleBootstrapContext)contextWithFace:(id)a3 type:(unint64_t)a4 delayedPersonBlock:(id)a5
++ (PXPeopleBootstrapContext)contextWithFace:(id)face type:(unint64_t)type delayedPersonBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  faceCopy = face;
+  blockCopy = block;
+  v11 = blockCopy;
+  if (faceCopy)
   {
-    if (v10)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -244,8 +244,8 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PXPeopleBootstrapContext.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"face"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapContext.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"face"}];
 
     if (v11)
     {
@@ -253,37 +253,37 @@ LABEL_3:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"PXPeopleBootstrapContext.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"delayedPersonBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapContext.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"delayedPersonBlock"}];
 
 LABEL_3:
-  if (a4 != 1)
+  if (type != 1)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PXPeopleBootstrapContext.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"type == PXPeopleBootstrapTypeName"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapContext.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"type == PXPeopleBootstrapTypeName"}];
   }
 
   v12 = objc_alloc_init(PXPeopleBootstrapContext);
-  [(PXPeopleBootstrapContext *)v12 setBootstrapType:a4];
+  [(PXPeopleBootstrapContext *)v12 setBootstrapType:type];
   [(PXPeopleBootstrapContext *)v12 setWantsMergeCandidateSuggestions:0];
-  [(PXPeopleBootstrapContext *)v12 setFace:v9];
+  [(PXPeopleBootstrapContext *)v12 setFace:faceCopy];
   [(PXPeopleBootstrapContext *)v12 setDelayedPersonBlock:v11];
 
   return v12;
 }
 
-+ (PXPeopleBootstrapContext)contextWithPerson:(id)a3 type:(unint64_t)a4
++ (PXPeopleBootstrapContext)contextWithPerson:(id)person type:(unint64_t)type
 {
-  v7 = a3;
-  if (!v7)
+  personCopy = person;
+  if (!personCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPeopleBootstrapContext.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapContext.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v8 = objc_alloc_init(PXPeopleBootstrapContext);
-  [(PXPeopleBootstrapContext *)v8 setSourcePerson:v7];
-  [(PXPeopleBootstrapContext *)v8 setBootstrapType:a4];
+  [(PXPeopleBootstrapContext *)v8 setSourcePerson:personCopy];
+  [(PXPeopleBootstrapContext *)v8 setBootstrapType:type];
 
   return v8;
 }

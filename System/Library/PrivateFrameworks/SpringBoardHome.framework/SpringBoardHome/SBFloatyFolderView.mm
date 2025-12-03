@@ -1,38 +1,38 @@
 @interface SBFloatyFolderView
-- (BOOL)_tapToCloseGestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)locationCountsAsInsideFolder:(CGPoint)a3;
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (CGPoint)_scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)a4 translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9;
-- (CGPoint)visibleFolderRelativeImageCenterForIcon:(id)a3;
+- (BOOL)_tapToCloseGestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)locationCountsAsInsideFolder:(CGPoint)folder;
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (CGPoint)_scrollView:(id)view adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity;
+- (CGPoint)visibleFolderRelativeImageCenterForIcon:(id)icon;
 - (CGRect)_frameForScalingView;
-- (CGRect)_pageBackgroundFrameForPageRect:(CGRect)a3;
-- (SBFloatyFolderView)initWithConfiguration:(id)a3;
+- (CGRect)_pageBackgroundFrameForPageRect:(CGRect)rect;
+- (SBFloatyFolderView)initWithConfiguration:(id)configuration;
 - (double)_rubberBandIntervalForOverscroll;
 - (double)_titleFontSize;
 - (double)cornerRadius;
 - (id)_newPageBackgroundView;
-- (id)accessibilityTintColorForBackgroundView:(id)a3;
+- (id)accessibilityTintColorForBackgroundView:(id)view;
 - (id)floatyFolderConfiguration;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)legibilitySettingsForIconListViews;
 - (void)_configureGesturesIfNecessary;
-- (void)_didAddIconListView:(id)a3;
-- (void)_handleLongPressGesture:(id)a3;
-- (void)_handleOutsideTap:(id)a3;
-- (void)_handlePinchGesture:(id)a3;
+- (void)_didAddIconListView:(id)view;
+- (void)_handleLongPressGesture:(id)gesture;
+- (void)_handleOutsideTap:(id)tap;
+- (void)_handlePinchGesture:(id)gesture;
 - (void)_layoutSubviews;
-- (void)_setScrollViewNeedsToClipCorners:(BOOL)a3;
-- (void)_updateScrollingState:(BOOL)a3;
+- (void)_setScrollViewNeedsToClipCorners:(BOOL)corners;
+- (void)_updateScrollingState:(BOOL)state;
 - (void)dealloc;
-- (void)fadeContentForMagnificationFraction:(double)a3;
-- (void)fadeContentForMinificationFraction:(double)a3;
-- (void)iconFadeAnimator:(id)a3 wantsToApplyAlpha:(double)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setBackgroundEffect:(unint64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)fadeContentForMagnificationFraction:(double)fraction;
+- (void)fadeContentForMinificationFraction:(double)fraction;
+- (void)iconFadeAnimator:(id)animator wantsToApplyAlpha:(double)alpha;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setBackgroundEffect:(unint64_t)effect;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBFloatyFolderView
@@ -51,39 +51,39 @@
 
 - (id)floatyFolderConfiguration
 {
-  v3 = [(SBFolderView *)self listLayoutProvider];
-  v4 = [(SBFolderView *)self iconLocation];
-  v5 = [v3 layoutForIconLocation:v4];
+  listLayoutProvider = [(SBFolderView *)self listLayoutProvider];
+  iconLocation = [(SBFolderView *)self iconLocation];
+  v5 = [listLayoutProvider layoutForIconLocation:iconLocation];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 floatyFolderVisualConfiguration];
+    floatyFolderVisualConfiguration = [v5 floatyFolderVisualConfiguration];
   }
 
   else
   {
-    v6 = objc_alloc_init(SBHFloatyFolderVisualConfiguration);
+    floatyFolderVisualConfiguration = objc_alloc_init(SBHFloatyFolderVisualConfiguration);
   }
 
-  v7 = v6;
+  v7 = floatyFolderVisualConfiguration;
 
   return v7;
 }
 
 - (double)cornerRadius
 {
-  v2 = [(SBFloatyFolderView *)self floatyFolderConfiguration];
-  [v2 continuousCornerRadius];
+  floatyFolderConfiguration = [(SBFloatyFolderView *)self floatyFolderConfiguration];
+  [floatyFolderConfiguration continuousCornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (SBFloatyFolderView)initWithConfiguration:(id)a3
+- (SBFloatyFolderView)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v30.receiver = self;
   v30.super_class = SBFloatyFolderView;
-  v5 = [(SBFolderView *)&v30 initWithConfiguration:v4];
+  v5 = [(SBFolderView *)&v30 initWithConfiguration:configurationCopy];
   if (v5)
   {
     v6 = objc_opt_self();
@@ -91,7 +91,7 @@
 
     if (isKindOfClass)
     {
-      v5->_backgroundEffect = [v4 backgroundEffect];
+      v5->_backgroundEffect = [configurationCopy backgroundEffect];
     }
 
     v8 = objc_alloc_init(SBFloatyFolderBackgroundClipView);
@@ -99,35 +99,35 @@
     v5->_scrollClipView = v8;
 
     [(SBFloatyFolderBackgroundClipView *)v5->_scrollClipView setBackgroundEffect:v5->_backgroundEffect];
-    v10 = [(SBFloatyFolderBackgroundClipView *)v5->_scrollClipView backgroundView];
-    [v10 setDelegate:v5];
+    backgroundView = [(SBFloatyFolderBackgroundClipView *)v5->_scrollClipView backgroundView];
+    [backgroundView setDelegate:v5];
 
     v11 = v5->_scrollClipView;
-    v12 = [(SBFolderView *)v5 scrollView];
-    [(SBFloatyFolderBackgroundClipView *)v11 addSubview:v12];
+    scrollView = [(SBFolderView *)v5 scrollView];
+    [(SBFloatyFolderBackgroundClipView *)v11 addSubview:scrollView];
 
-    v13 = [(SBFolderView *)v5 scalingView];
-    [v13 addSubview:v5->_scrollClipView];
-    v14 = [(SBFolderView *)v5 pageControl];
-    [v13 addSubview:v14];
+    scalingView = [(SBFolderView *)v5 scalingView];
+    [scalingView addSubview:v5->_scrollClipView];
+    pageControl = [(SBFolderView *)v5 pageControl];
+    [scalingView addSubview:pageControl];
 
-    v15 = [(SBFolderView *)v5 _titleTextField];
+    _titleTextField = [(SBFolderView *)v5 _titleTextField];
     v16 = [objc_alloc(MEMORY[0x1E69DCEC8]) initWithDelegate:v5];
     titleScribbleInteraction = v5->_titleScribbleInteraction;
     v5->_titleScribbleInteraction = v16;
 
-    [v15 addInteraction:v5->_titleScribbleInteraction];
-    [(SBFloatyFolderView *)v5 addSubview:v15];
-    v18 = [(SBFloatyFolderView *)v5 floatyFolderConfiguration];
-    [v18 pageControlCustomPadding];
+    [_titleTextField addInteraction:v5->_titleScribbleInteraction];
+    [(SBFloatyFolderView *)v5 addSubview:_titleTextField];
+    floatyFolderConfiguration = [(SBFloatyFolderView *)v5 floatyFolderConfiguration];
+    [floatyFolderConfiguration pageControlCustomPadding];
     v20 = v19;
     v22 = v21;
 
-    v23 = [(SBFolderView *)v5 pageControl];
-    v24 = v23;
+    pageControl2 = [(SBFolderView *)v5 pageControl];
+    v24 = pageControl2;
     if (v20 > 0.0)
     {
-      [v23 _setCustomHorizontalPadding:v20];
+      [pageControl2 _setCustomHorizontalPadding:v20];
     }
 
     if (v22 > 0.0)
@@ -136,16 +136,16 @@
     }
 
     v25 = +[SBHHomeScreenDomain rootSettings];
-    v26 = [v25 folderSettings];
+    folderSettings = [v25 folderSettings];
     folderSettings = v5->_folderSettings;
-    v5->_folderSettings = v26;
+    v5->_folderSettings = folderSettings;
 
     [(PTSettings *)v5->_folderSettings addKeyObserver:v5];
     [(SBFloatyFolderView *)v5 _configureGesturesIfNecessary];
     [(SBFolderView *)v5 _updateTitleLegibilitySettings];
     [(SBFolderView *)v5 _updateIconListLegibilitySettings];
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v5 selector:sel_accessibilityReduceTransparencyDidChange_ name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_accessibilityReduceTransparencyDidChange_ name:*MEMORY[0x1E69DD920] object:0];
   }
 
   return v5;
@@ -159,23 +159,23 @@
   [(SBFolderView *)&v3 dealloc];
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  v4 = [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView backgroundView];
-  [v4 setAlpha:a3];
+  backgroundView = [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView backgroundView];
+  [backgroundView setAlpha:alpha];
 }
 
-- (CGPoint)visibleFolderRelativeImageCenterForIcon:(id)a3
+- (CGPoint)visibleFolderRelativeImageCenterForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBFolderView *)self currentIconListView];
-  if ([v5 containsIcon:v4])
+  iconCopy = icon;
+  currentIconListView = [(SBFolderView *)self currentIconListView];
+  if ([currentIconListView containsIcon:iconCopy])
   {
-    [v5 centerForIcon:v4];
+    [currentIconListView centerForIcon:iconCopy];
     v7 = v6;
     v9 = v8;
-    v10 = [(SBFolderView *)self scalingView];
-    [v10 convertPoint:v5 fromView:{v7, v9}];
+    scalingView = [(SBFolderView *)self scalingView];
+    [scalingView convertPoint:currentIconListView fromView:{v7, v9}];
     v12 = v11;
     v14 = v13;
   }
@@ -198,29 +198,29 @@
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
     [(SBFloatyFolderView *)self _frameForScalingView];
-    v3 = [(SBFolderView *)self accessibilityLegibilitySettingsForRect:2 tintStyle:?];
+    legibilitySettingsForIconListViews = [(SBFolderView *)self accessibilityLegibilitySettingsForRect:2 tintStyle:?];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBFloatyFolderView;
-    v3 = [(SBFolderView *)&v5 legibilitySettingsForIconListViews];
+    legibilitySettingsForIconListViews = [(SBFolderView *)&v5 legibilitySettingsForIconListViews];
   }
 
-  return v3;
+  return legibilitySettingsForIconListViews;
 }
 
-- (void)setBackgroundEffect:(unint64_t)a3
+- (void)setBackgroundEffect:(unint64_t)effect
 {
-  if ([(SBFloatyFolderView *)self backgroundEffect]!= a3)
+  if ([(SBFloatyFolderView *)self backgroundEffect]!= effect)
   {
-    self->_backgroundEffect = a3;
+    self->_backgroundEffect = effect;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __42__SBFloatyFolderView_setBackgroundEffect___block_invoke;
     v5[3] = &__block_descriptor_40_e46_v24__0__SBFloatyFolderBackgroundClipView_8_B16l;
-    v5[4] = a3;
+    v5[4] = effect;
     [(SBFloatyFolderView *)self enumeratePageBackgroundViewsUsingBlock:v5];
   }
 }
@@ -228,50 +228,50 @@
 - (id)_newPageBackgroundView
 {
   v3 = objc_alloc_init(SBFloatyFolderBackgroundClipView);
-  v4 = [(SBFloatyFolderBackgroundClipView *)v3 backgroundView];
-  [v4 setDelegate:self];
+  backgroundView = [(SBFloatyFolderBackgroundClipView *)v3 backgroundView];
+  [backgroundView setDelegate:self];
 
   [(SBFloatyFolderBackgroundClipView *)v3 setBackgroundEffect:[(SBFloatyFolderView *)self backgroundEffect]];
   return v3;
 }
 
-- (void)_didAddIconListView:(id)a3
+- (void)_didAddIconListView:(id)view
 {
   v4.receiver = self;
   v4.super_class = SBFloatyFolderView;
-  [(SBFolderView *)&v4 _didAddIconListView:a3];
+  [(SBFolderView *)&v4 _didAddIconListView:view];
   [(SBFolderView *)self setNeedsLayout];
 }
 
 - (void)_layoutSubviews
 {
-  v3 = [(SBFloatyFolderView *)self floatyFolderConfiguration];
+  floatyFolderConfiguration = [(SBFloatyFolderView *)self floatyFolderConfiguration];
   [(SBFloatyFolderView *)self bounds];
   v59 = v5;
   v60 = v4;
   v61 = v6;
   v62 = v7;
-  v8 = [(SBFloatyFolderView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(SBFloatyFolderView *)self traitCollection];
+  [traitCollection displayScale];
   v64 = v9;
 
-  v10 = [(SBFolderView *)self scalingView];
-  [v10 bounds];
+  scalingView = [(SBFolderView *)self scalingView];
+  [scalingView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
   [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView setFrame:?];
-  [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView convertRect:v10 fromView:v12, v14, v16, v18];
+  [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView convertRect:scalingView fromView:v12, v14, v16, v18];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(SBFolderView *)self scrollView];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  scrollView = [(SBFolderView *)self scrollView];
+  [scrollView setFrame:{v20, v22, v24, v26}];
 
-  v28 = [(SBFolderView *)self pageControl];
-  [v3 pageControlAreaHeight];
+  pageControl = [(SBFolderView *)self pageControl];
+  [floatyFolderConfiguration pageControlAreaHeight];
   v30 = v29;
   memset(&slice, 0, sizeof(slice));
   memset(&remainder, 0, sizeof(remainder));
@@ -280,9 +280,9 @@
   v70.size.width = v16;
   v70.size.height = v18;
   CGRectDivide(v70, &slice, &remainder, v30, CGRectMaxYEdge);
-  [v28 sizeToFit];
+  [pageControl sizeToFit];
   UIRectGetCenter();
-  [v28 setCenter:?];
+  [pageControl setCenter:?];
   [(SBFloatyFolderView *)self _frameForScalingView];
   v32 = v31;
   v34 = v33;
@@ -296,7 +296,7 @@
   memset(&v67, 0, sizeof(v67));
   v46 = v62 - (v41 + v45);
   memset(&v66, 0, sizeof(v66));
-  [v3 titleBottomInset];
+  [floatyFolderConfiguration titleBottomInset];
   v63 = v47;
   v71.origin.x = v32;
   v71.origin.y = v34;
@@ -314,10 +314,10 @@
   v73.size.width = v44;
   v73.size.height = v46;
   CGRectDivide(v73, &v67, &v66, v49, CGRectMinYEdge);
-  v50 = [(SBFolderView *)self _titleTextField];
-  [v50 sizeThatFits:{v67.size.width, v67.size.height}];
+  _titleTextField = [(SBFolderView *)self _titleTextField];
+  [_titleTextField sizeThatFits:{v67.size.width, v67.size.height}];
   v52 = v51;
-  [v3 titleHorizontalInset];
+  [floatyFolderConfiguration titleHorizontalInset];
   v74.origin.x = v32;
   v74.origin.y = v34;
   v74.size.width = v36;
@@ -330,7 +330,7 @@
 
   BSRectWithSize();
   UIRectCenteredIntegralRectScale();
-  if (![v3 isTitleVerticallyCentered])
+  if (![floatyFolderConfiguration isTitleVerticallyCentered])
   {
     UIRectInset();
     x = v75.origin.x;
@@ -358,18 +358,18 @@
   }
 
   BSRectWithSize();
-  [v50 setBounds:?];
+  [_titleTextField setBounds:?];
   UIRectGetCenter();
-  [v50 setCenter:?];
+  [_titleTextField setCenter:?];
 }
 
-- (CGRect)_pageBackgroundFrameForPageRect:(CGRect)a3
+- (CGRect)_pageBackgroundFrameForPageRect:(CGRect)rect
 {
-  v4 = [(SBFloatyFolderView *)self floatyFolderConfiguration];
-  v5 = [(SBFloatyFolderView *)self traitCollection];
-  [v5 displayScale];
+  floatyFolderConfiguration = [(SBFloatyFolderView *)self floatyFolderConfiguration];
+  traitCollection = [(SBFloatyFolderView *)self traitCollection];
+  [traitCollection displayScale];
 
-  [v4 contentBackgroundSize];
+  [floatyFolderConfiguration contentBackgroundSize];
   UISizeRoundToScale();
   UIRectCenteredIntegralRectScale();
   v7 = v6;
@@ -389,10 +389,10 @@
   return result;
 }
 
-- (BOOL)locationCountsAsInsideFolder:(CGPoint)a3
+- (BOOL)locationCountsAsInsideFolder:(CGPoint)folder
 {
-  y = a3.y;
-  x = a3.x;
+  y = folder.y;
+  x = folder.x;
   [(SBFloatyFolderView *)self _frameForScalingView];
   v10 = CGRectInset(v9, -80.0, 0.0);
   v5 = x;
@@ -401,19 +401,19 @@
   return CGRectContainsPoint(v10, *&v5);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBFloatyFolderView;
-  v8 = [(SBFolderView *)&v11 hitTest:v7 withEvent:x, y];
-  if (v8 == self && [v7 type] == 9)
+  v8 = [(SBFolderView *)&v11 hitTest:eventCopy withEvent:x, y];
+  if (v8 == self && [eventCopy type] == 9)
   {
-    v9 = [(SBFolderView *)self currentIconListView];
+    currentIconListView = [(SBFolderView *)self currentIconListView];
 
-    v8 = v9;
+    v8 = currentIconListView;
   }
 
   return v8;
@@ -421,8 +421,8 @@
 
 - (double)_rubberBandIntervalForOverscroll
 {
-  v2 = [(SBFloatyFolderView *)self floatyFolderConfiguration];
-  [v2 rubberBandIntervalForOverscroll];
+  floatyFolderConfiguration = [(SBFloatyFolderView *)self floatyFolderConfiguration];
+  [floatyFolderConfiguration rubberBandIntervalForOverscroll];
   v4 = v3;
 
   return v4;
@@ -430,40 +430,40 @@
 
 - (double)_titleFontSize
 {
-  v2 = [(SBFloatyFolderView *)self floatyFolderConfiguration];
-  [v2 titleFontSize];
+  floatyFolderConfiguration = [(SBFloatyFolderView *)self floatyFolderConfiguration];
+  [floatyFolderConfiguration titleFontSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)fadeContentForMagnificationFraction:(double)a3
+- (void)fadeContentForMagnificationFraction:(double)fraction
 {
-  v5 = [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView backgroundView];
-  v6 = 1.0 - a3;
-  [v5 setAlpha:v6];
+  backgroundView = [(SBFloatyFolderBackgroundClipView *)self->_scrollClipView backgroundView];
+  v6 = 1.0 - fraction;
+  [backgroundView setAlpha:v6];
 
-  v7 = [(SBFolderView *)self pageControl];
-  [v7 setAlpha:v6];
+  pageControl = [(SBFolderView *)self pageControl];
+  [pageControl setAlpha:v6];
 
-  v8 = [(SBFolderView *)self _titleTextField];
-  [v8 setAlpha:v6];
+  _titleTextField = [(SBFolderView *)self _titleTextField];
+  [_titleTextField setAlpha:v6];
 }
 
-- (void)fadeContentForMinificationFraction:(double)a3
+- (void)fadeContentForMinificationFraction:(double)fraction
 {
-  v5 = [(SBFolderView *)self pageControl];
-  v6 = 1.0 - a3;
-  [v5 setAlpha:v6];
+  pageControl = [(SBFolderView *)self pageControl];
+  v6 = 1.0 - fraction;
+  [pageControl setAlpha:v6];
 
-  v7 = [(SBFolderView *)self _titleTextField];
-  [v7 setAlpha:v6];
+  _titleTextField = [(SBFolderView *)self _titleTextField];
+  [_titleTextField setAlpha:v6];
 }
 
-- (void)_setScrollViewNeedsToClipCorners:(BOOL)a3
+- (void)_setScrollViewNeedsToClipCorners:(BOOL)corners
 {
   v4 = 0.0;
-  if (a3)
+  if (corners)
   {
     [(SBFloatyFolderView *)self cornerRadius];
   }
@@ -473,33 +473,33 @@
   [(SBFloatyFolderBackgroundClipView *)scrollClipView _setContinuousCornerRadius:v4];
 }
 
-- (void)_updateScrollingState:(BOOL)a3
+- (void)_updateScrollingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5.receiver = self;
   v5.super_class = SBFloatyFolderView;
   [(SBFolderView *)&v5 _updateScrollingState:?];
-  [(SBFolderView *)self _updateScrollingInteractionIsScrolling:v3];
-  [(SBFloatyFolderView *)self _setScrollViewNeedsToClipCorners:v3];
+  [(SBFolderView *)self _updateScrollingInteractionIsScrolling:stateCopy];
+  [(SBFloatyFolderView *)self _setScrollViewNeedsToClipCorners:stateCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v5.receiver = self;
   v5.super_class = SBFloatyFolderView;
-  v4 = a3;
-  [(SBFolderView *)&v5 scrollViewDidScroll:v4];
-  [(SBFolderView *)self _scrollingInteractionScrollViewDidScroll:v4, v5.receiver, v5.super_class];
+  scrollCopy = scroll;
+  [(SBFolderView *)&v5 scrollViewDidScroll:scrollCopy];
+  [(SBFolderView *)self _scrollingInteractionScrollViewDidScroll:scrollCopy, v5.receiver, v5.super_class];
 }
 
-- (CGPoint)_scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)a4 translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9
+- (CGPoint)_scrollView:(id)view adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  [v12 contentSize];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  [viewCopy contentSize];
   v14 = v13;
-  [v12 bounds];
+  [viewCopy bounds];
   v16 = v15;
 
   if (x >= 0.0)
@@ -539,9 +539,9 @@
     [(SBFloatyFolderView *)self addGestureRecognizer:self->_tapGesture];
   }
 
-  v5 = [(SBHFolderSettings *)self->_folderSettings pinchToClose];
+  pinchToClose = [(SBHFolderSettings *)self->_folderSettings pinchToClose];
   pinchGesture = self->_pinchGesture;
-  if (v5)
+  if (pinchToClose)
   {
     if (!pinchGesture)
     {
@@ -576,9 +576,9 @@
   }
 }
 
-- (void)_handleOutsideTap:(id)a3
+- (void)_handleOutsideTap:(id)tap
 {
-  [a3 locationInView:self];
+  [tap locationInView:self];
   v5 = v4;
   [(SBFloatyFolderView *)self _frameForScalingView];
   v7 = v6;
@@ -587,34 +587,34 @@
   v13 = v12;
   if (![(SBFolderView *)self isEditing]|| (v16.origin.x = v7, v16.origin.y = v9, v16.size.width = v11, v16.size.height = v13, v5 >= CGRectGetMinY(v16)))
   {
-    v14 = [(SBFolderView *)self delegate];
-    [v14 folderViewShouldClose:self withPinchGesture:0];
+    delegate = [(SBFolderView *)self delegate];
+    [delegate folderViewShouldClose:self withPinchGesture:0];
   }
 }
 
-- (void)_handlePinchGesture:(id)a3
+- (void)_handlePinchGesture:(id)gesture
 {
-  v5 = a3;
-  if ([v5 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v4 = [(SBFolderView *)self delegate];
-    [v4 folderViewShouldClose:self withPinchGesture:v5];
+    delegate = [(SBFolderView *)self delegate];
+    [delegate folderViewShouldClose:self withPinchGesture:gestureCopy];
   }
 }
 
-- (void)_handleLongPressGesture:(id)a3
+- (void)_handleLongPressGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
-    v4 = [(SBFolderView *)self delegate];
-    [v4 folderViewShouldBeginEditing:self];
+    delegate = [(SBFolderView *)self delegate];
+    [delegate folderViewShouldBeginEditing:self];
   }
 }
 
-- (BOOL)_tapToCloseGestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)_tapToCloseGestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  [v5 locationInView:self];
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v7 = v6;
   v9 = v8;
   [(SBFloatyFolderView *)self _frameForScalingView];
@@ -627,7 +627,7 @@
 
   else
   {
-    v11 = [v5 view];
+    view = [touchCopy view];
     v12 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -637,21 +637,21 @@
   return v10 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_tapGesture == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v8 = touchCopy;
+  if (self->_tapGesture == recognizerCopy)
   {
-    LOBYTE(self) = [(SBFloatyFolderView *)self _tapToCloseGestureRecognizer:v6 shouldReceiveTouch:v7];
+    LOBYTE(self) = [(SBFloatyFolderView *)self _tapToCloseGestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
   }
 
-  else if (self->_longPressGesture == v6)
+  else if (self->_longPressGesture == recognizerCopy)
   {
-    v9 = [v7 view];
-    v10 = [(SBFolderView *)self _titleTextField];
-    if (v9 == v10)
+    view = [touchCopy view];
+    _titleTextField = [(SBFolderView *)self _titleTextField];
+    if (view == _titleTextField)
     {
       LODWORD(self) = ![(SBFolderView *)self isEditing];
     }
@@ -670,12 +670,12 @@
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = [a4 view];
-  v6 = [(SBFolderView *)self _titleTextField];
+  view = [gestureRecognizer view];
+  _titleTextField = [(SBFolderView *)self _titleTextField];
 
-  if (v5 == v6)
+  if (view == _titleTextField)
   {
     return ![(SBFolderView *)self isEditing];
   }
@@ -686,24 +686,24 @@
   }
 }
 
-- (void)iconFadeAnimator:(id)a3 wantsToApplyAlpha:(double)a4
+- (void)iconFadeAnimator:(id)animator wantsToApplyAlpha:(double)alpha
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SBFloatyFolderView_iconFadeAnimator_wantsToApplyAlpha___block_invoke;
   v7[3] = &__block_descriptor_33_e46_v24__0__SBFloatyFolderBackgroundClipView_8_B16l;
-  v8 = a4 > 0.0;
+  v8 = alpha > 0.0;
   [(SBFloatyFolderView *)self enumeratePageBackgroundViewsUsingBlock:v7];
-  if (a4 > 0.0)
+  if (alpha > 0.0)
   {
-    [(SBFloatyFolderView *)self setAlpha:a4];
+    [(SBFloatyFolderView *)self setAlpha:alpha];
   }
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__SBFloatyFolderView_iconFadeAnimator_wantsToApplyAlpha___block_invoke_2;
   v6[3] = &__block_descriptor_40_e28_v24__0__SBIconListView_8_B16l;
-  *&v6[4] = a4;
+  *&v6[4] = alpha;
   [(SBFolderView *)self enumerateIconListViewsUsingBlock:v6];
 }
 
@@ -713,26 +713,26 @@ void __57__SBFloatyFolderView_iconFadeAnimator_wantsToApplyAlpha___block_invoke(
   [v3 setUsesGlass:*(a1 + 32)];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_folderSettings == a3 && [a4 isEqualToString:@"pinchToClose"])
+  if (self->_folderSettings == settings && [key isEqualToString:@"pinchToClose"])
   {
 
     [(SBFloatyFolderView *)self _configureGesturesIfNecessary];
   }
 }
 
-- (id)accessibilityTintColorForBackgroundView:(id)a3
+- (id)accessibilityTintColorForBackgroundView:(id)view
 {
-  v4 = a3;
-  [v4 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 superview];
+  superview = [viewCopy superview];
 
-  [(SBFloatyFolderView *)self convertRect:v13 fromView:v6, v8, v10, v12];
+  [(SBFloatyFolderView *)self convertRect:superview fromView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -741,15 +741,15 @@ void __57__SBFloatyFolderView_iconFadeAnimator_wantsToApplyAlpha___block_invoke(
   return [(SBFolderView *)self accessibilityTintColorForRect:2 tintStyle:v15, v17, v19, v21];
 }
 
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = [(SBFloatyFolderView *)self titleScribbleInteraction];
+  interactionCopy = interaction;
+  titleScribbleInteraction = [(SBFloatyFolderView *)self titleScribbleInteraction];
 
-  if (v6 == v5)
+  if (titleScribbleInteraction == interactionCopy)
   {
-    v7 = [(SBFolderView *)self delegate];
-    [v7 folderViewShouldBeginEditing:self];
+    delegate = [(SBFolderView *)self delegate];
+    [delegate folderViewShouldBeginEditing:self];
   }
 
   return 1;

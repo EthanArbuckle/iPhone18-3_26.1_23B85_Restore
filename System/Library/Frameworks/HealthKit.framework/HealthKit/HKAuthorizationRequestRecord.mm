@@ -1,37 +1,37 @@
 @interface HKAuthorizationRequestRecord
 - (HKAuthorizationRequestRecord)init;
-- (HKAuthorizationRequestRecord)initWithCoder:(id)a3;
-- (HKAuthorizationRequestRecord)initWithSource:(id)a3 session:(id)a4 readTypes:(id)a5 writeTypes:(id)a6;
+- (HKAuthorizationRequestRecord)initWithCoder:(id)coder;
+- (HKAuthorizationRequestRecord)initWithSource:(id)source session:(id)session readTypes:(id)types writeTypes:(id)writeTypes;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAuthorizationRequestRecord
 
-- (HKAuthorizationRequestRecord)initWithSource:(id)a3 session:(id)a4 readTypes:(id)a5 writeTypes:(id)a6
+- (HKAuthorizationRequestRecord)initWithSource:(id)source session:(id)session readTypes:(id)types writeTypes:(id)writeTypes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sourceCopy = source;
+  sessionCopy = session;
+  typesCopy = types;
+  writeTypesCopy = writeTypes;
   v24.receiver = self;
   v24.super_class = HKAuthorizationRequestRecord;
   v14 = [(HKAuthorizationRequestRecord *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [sourceCopy copy];
     source = v14->_source;
     v14->_source = v15;
 
-    v17 = [v11 copy];
+    v17 = [sessionCopy copy];
     sessionIdentifier = v14->_sessionIdentifier;
     v14->_sessionIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [typesCopy copy];
     typesRequiringReadAuthorization = v14->_typesRequiringReadAuthorization;
     v14->_typesRequiringReadAuthorization = v19;
 
-    v21 = [v13 copy];
+    v21 = [writeTypesCopy copy];
     typesRequiringShareAuthorization = v14->_typesRequiringShareAuthorization;
     v14->_typesRequiringShareAuthorization = v21;
   }
@@ -49,30 +49,30 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   source = self->_source;
-  v5 = a3;
-  [v5 encodeObject:source forKey:@"source"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"session_identifier"];
-  [v5 encodeObject:self->_typesRequiringShareAuthorization forKey:@"share_types"];
-  [v5 encodeObject:self->_typesRequiringReadAuthorization forKey:@"read_types"];
+  coderCopy = coder;
+  [coderCopy encodeObject:source forKey:@"source"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"session_identifier"];
+  [coderCopy encodeObject:self->_typesRequiringShareAuthorization forKey:@"share_types"];
+  [coderCopy encodeObject:self->_typesRequiringReadAuthorization forKey:@"read_types"];
 }
 
-- (HKAuthorizationRequestRecord)initWithCoder:(id)a3
+- (HKAuthorizationRequestRecord)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = HKAuthorizationRequestRecord;
   v5 = [(HKAuthorizationRequestRecord *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     source = v5->_source;
     v5->_source = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session_identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session_identifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v8;
 
@@ -81,7 +81,7 @@
     v24[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"share_types"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"share_types"];
     typesRequiringShareAuthorization = v5->_typesRequiringShareAuthorization;
     v5->_typesRequiringShareAuthorization = v13;
 
@@ -90,7 +90,7 @@
     v23[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"read_types"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"read_types"];
     typesRequiringReadAuthorization = v5->_typesRequiringReadAuthorization;
     v5->_typesRequiringReadAuthorization = v18;
   }

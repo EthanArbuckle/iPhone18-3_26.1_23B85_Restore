@@ -2,8 +2,8 @@
 + (id)getSharedInstance;
 - (IptTrialExperimentsManager)init;
 - (void)notifyRegisteredClientsForExperimentEnd;
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3;
-- (void)readParametersFromPlist:(id)a3;
+- (void)notifyRegisteredClientsForExperimentStart:(id)start;
+- (void)readParametersFromPlist:(id)plist;
 - (void)subscribeToTrial;
 - (void)updateTreatment;
 @end
@@ -54,14 +54,14 @@ uint64_t __47__IptTrialExperimentsManager_getSharedInstance__block_invoke()
   return v2;
 }
 
-- (void)readParametersFromPlist:(id)a3
+- (void)readParametersFromPlist:(id)plist
 {
   v29 = *MEMORY[0x1E69E9840];
   v26 = 0;
   v27 = 0;
-  v20 = a3;
+  plistCopy = plist;
   IPTelephonyManager::getBambiClient(&v26);
-  if (!v20)
+  if (!plistCopy)
   {
     syslog(5, "%s: No active Experiment: IPTelephonyManager use default values %s", "IPTTrialExperimentsManager", "[IptTrialExperimentsManager readParametersFromPlist:]");
     v6 = v26;
@@ -72,7 +72,7 @@ uint64_t __47__IptTrialExperimentsManager_getSharedInstance__block_invoke()
   }
 
   v25 = 0;
-  v18 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v20 error:&v25];
+  v18 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:plistCopy error:&v25];
   v19 = v25;
   if ([v18 count])
   {
@@ -98,8 +98,8 @@ uint64_t __47__IptTrialExperimentsManager_getSharedInstance__block_invoke()
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = v7;
-    v8 = [v4 countByEnumeratingWithState:&v21 objects:v28 count:16];
+    localizedDescription = v7;
+    v8 = [localizedDescription countByEnumeratingWithState:&v21 objects:v28 count:16];
     if (v8)
     {
       v9 = *v22;
@@ -110,18 +110,18 @@ uint64_t __47__IptTrialExperimentsManager_getSharedInstance__block_invoke()
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(localizedDescription);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v4 objectForKeyedSubscript:v12];
-          v14 = [v13 BOOLValue];
+          v13 = [localizedDescription objectForKeyedSubscript:v12];
+          bOOLValue = [v13 BOOLValue];
 
           v15 = v12;
-          syslog(5, "%s: Value: %u for key: %s", "IPTTrialExperimentsManager", v14, [v12 cStringUsingEncoding:4]);
+          syslog(5, "%s: Value: %u for key: %s", "IPTTrialExperimentsManager", bOOLValue, [v12 cStringUsingEncoding:4]);
           if ([v12 isEqualToString:@"rcs_allow_libnetcore"])
           {
-            BambiClient::setAllowLibnetcoreForRcs(v10, v14);
+            BambiClient::setAllowLibnetcoreForRcs(v10, bOOLValue);
             v16 = 1;
           }
 
@@ -132,20 +132,20 @@ uint64_t __47__IptTrialExperimentsManager_getSharedInstance__block_invoke()
 
           if ([v12 isEqualToString:@"rcs_libnetcore_allow_tls_13"])
           {
-            BambiClient::setAllowTls13ForRcs(v10, v14);
+            BambiClient::setAllowTls13ForRcs(v10, bOOLValue);
             v16 = 1;
           }
 
           if ([v12 isEqualToString:@"rcs_libnetcore_allow_pq_tls"])
           {
-            BambiClient::setAllowTlsPQForRcs(v10, v14);
+            BambiClient::setAllowTlsPQForRcs(v10, bOOLValue);
             v16 = 1;
           }
 
           syslog(5, "%s: stackConfigChanged: %u", "IPTTrialExperimentsManager", v16);
         }
 
-        v8 = [v4 countByEnumeratingWithState:&v21 objects:v28 count:16];
+        v8 = [localizedDescription countByEnumeratingWithState:&v21 objects:v28 count:16];
       }
 
       while (v8);
@@ -154,9 +154,9 @@ uint64_t __47__IptTrialExperimentsManager_getSharedInstance__block_invoke()
 
   else
   {
-    v4 = [v19 localizedDescription];
-    v5 = v4;
-    syslog(5, "%s: readParametersFromPlist: Error reading from plist file: %s, %s", "IPTTrialExperimentsManager", [v4 cStringUsingEncoding:4], "-[IptTrialExperimentsManager readParametersFromPlist:]");
+    localizedDescription = [v19 localizedDescription];
+    v5 = localizedDescription;
+    syslog(5, "%s: readParametersFromPlist: Error reading from plist file: %s, %s", "IPTTrialExperimentsManager", [localizedDescription cStringUsingEncoding:4], "-[IptTrialExperimentsManager readParametersFromPlist:]");
   }
 
 LABEL_25:
@@ -169,13 +169,13 @@ LABEL_26:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3
+- (void)notifyRegisteredClientsForExperimentStart:(id)start
 {
-  v5 = a3;
-  v4 = [v5 absoluteString];
-  syslog(5, "%s: Experiment Start: set parameters from plist at %s, %s", "IPTTrialExperimentsManager", [v4 cStringUsingEncoding:4], "-[IptTrialExperimentsManager notifyRegisteredClientsForExperimentStart:]");
+  startCopy = start;
+  absoluteString = [startCopy absoluteString];
+  syslog(5, "%s: Experiment Start: set parameters from plist at %s, %s", "IPTTrialExperimentsManager", [absoluteString cStringUsingEncoding:4], "-[IptTrialExperimentsManager notifyRegisteredClientsForExperimentStart:]");
 
-  [(IptTrialExperimentsManager *)self readParametersFromPlist:v5];
+  [(IptTrialExperimentsManager *)self readParametersFromPlist:startCopy];
 }
 
 - (void)notifyRegisteredClientsForExperimentEnd
@@ -197,36 +197,36 @@ LABEL_26:
     goto LABEL_14;
   }
 
-  v4 = [v3 experimentId];
-  v5 = [v4 cStringUsingEncoding:4];
-  v6 = [v21 deploymentId];
-  v7 = [v21 treatmentId];
-  syslog(5, "%s: experimentIdentifiers are: experimentId: %s, deploymentId: %d, treatmentId: %s, %s", "IPTTrialExperimentsManager", v5, v6, [v7 cStringUsingEncoding:4], "-[IptTrialExperimentsManager updateTreatment]");
+  experimentId = [v3 experimentId];
+  v5 = [experimentId cStringUsingEncoding:4];
+  deploymentId = [v21 deploymentId];
+  treatmentId = [v21 treatmentId];
+  syslog(5, "%s: experimentIdentifiers are: experimentId: %s, deploymentId: %d, treatmentId: %s, %s", "IPTTrialExperimentsManager", v5, deploymentId, [treatmentId cStringUsingEncoding:4], "-[IptTrialExperimentsManager updateTreatment]");
 
   v8 = [(TRIClient *)self->trialClient levelForFactor:@"SWDefinedParamPlist" withNamespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 fileValue];
-    v11 = [v10 path];
-    if (v11)
+    fileValue = [v8 fileValue];
+    path = [fileValue path];
+    if (path)
     {
-      v12 = [v9 fileValue];
-      v13 = [v12 path];
-      v14 = [v13 length];
+      fileValue2 = [v9 fileValue];
+      path2 = [fileValue2 path];
+      v14 = [path2 length];
 
       if (v14)
       {
         v15 = MEMORY[0x1E695DFF8];
-        v16 = [v9 fileValue];
-        v17 = [v16 path];
-        v18 = [v15 fileURLWithPath:v17];
+        fileValue3 = [v9 fileValue];
+        path3 = [fileValue3 path];
+        v18 = [v15 fileURLWithPath:path3];
 
         if (v18)
         {
-          v19 = [v9 fileValue];
-          v20 = [v19 path];
-          syslog(5, "%s: activateTreatment: Trial Asset path: %s, %s", "IPTTrialExperimentsManager", [v20 cStringUsingEncoding:4], "-[IptTrialExperimentsManager updateTreatment]");
+          fileValue4 = [v9 fileValue];
+          path4 = [fileValue4 path];
+          syslog(5, "%s: activateTreatment: Trial Asset path: %s, %s", "IPTTrialExperimentsManager", [path4 cStringUsingEncoding:4], "-[IptTrialExperimentsManager updateTreatment]");
 
           [(IptTrialExperimentsManager *)self notifyRegisteredClientsForExperimentStart:v18];
         }
@@ -270,14 +270,14 @@ LABEL_14:
     v3 = objc_autoreleasePoolPush();
     objc_initWeak(&location, self);
     trialClient = self->trialClient;
-    v5 = [(IptTrialExperimentsManager *)self cellularProdExpQueue];
+    cellularProdExpQueue = [(IptTrialExperimentsManager *)self cellularProdExpQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__IptTrialExperimentsManager_subscribeToTrial__block_invoke;
     v7[3] = &unk_1E876A690;
     objc_copyWeak(&v8, &location);
     v7[4] = &v10;
-    v6 = [(TRIClient *)trialClient addUpdateHandlerForNamespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL" queue:v5 usingBlock:v7];
+    v6 = [(TRIClient *)trialClient addUpdateHandlerForNamespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL" queue:cellularProdExpQueue usingBlock:v7];
     if ((v11[3] & 1) == 0)
     {
       syslog(5, "%s: checkTreatmentUpdate: trialCallbackReceived : NO, %s", "IPTTrialExperimentsManager", "[IptTrialExperimentsManager subscribeToTrial]");

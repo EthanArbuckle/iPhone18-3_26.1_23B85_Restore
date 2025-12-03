@@ -1,17 +1,17 @@
 @interface NTKSeltzerCalendarEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)defaultOptionForDevice:(id)a3;
-+ (id)localizedNameForCalendar:(unint64_t)a3;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)defaultOptionForDevice:(id)device;
++ (id)localizedNameForCalendar:(unint64_t)calendar;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKSeltzerCalendarEditOption
 
-+ (id)defaultOptionForDevice:(id)a3
++ (id)defaultOptionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = NTKLunarCalendarID();
   if ([v4 isEqualToString:NSCalendarIdentifierHebrew])
   {
@@ -63,15 +63,15 @@
     v5 = 0;
   }
 
-  v6 = [NTKSeltzerCalendarEditOption optionWithCalendar:v5 forDevice:v3];
+  v6 = [NTKSeltzerCalendarEditOption optionWithCalendar:v5 forDevice:deviceCopy];
 
   return v6;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  v4 = a3;
-  if (_os_feature_enabled_impl() && ([v4 supportsPDRCapability:184644051] & 1) != 0)
+  deviceCopy = device;
+  if (_os_feature_enabled_impl() && ([deviceCopy supportsPDRCapability:184644051] & 1) != 0)
   {
     v5 = 9;
   }
@@ -86,35 +86,35 @@
   v8[2] = sub_8A78;
   v8[3] = &unk_10698;
   v8[4] = v5;
-  v8[5] = a1;
-  v6 = sub_8A78(v8, v4);
+  v8[5] = self;
+  v6 = sub_8A78(v8, deviceCopy);
 
   return v6;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 9)
+  if (value > 9)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_106E0 + a3);
+    return *(&off_106E0 + value);
   }
 }
 
-+ (id)localizedNameForCalendar:(unint64_t)a3
++ (id)localizedNameForCalendar:(unint64_t)calendar
 {
-  if (a3 > 9)
+  if (calendar > 9)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(&off_10730 + a3);
+    v3 = *(&off_10730 + calendar);
   }
 
   return [NTKSeltzerFaceBundle localizedStringForKey:v3 comment:@"calendar"];
@@ -123,9 +123,9 @@
 - (id)localizedName
 {
   v3 = objc_opt_class();
-  v4 = [(NTKSeltzerCalendarEditOption *)self calendar];
+  calendar = [(NTKSeltzerCalendarEditOption *)self calendar];
 
-  return [v3 localizedNameForCalendar:v4];
+  return [v3 localizedNameForCalendar:calendar];
 }
 
 - (id)_valueToFaceBundleStringDict

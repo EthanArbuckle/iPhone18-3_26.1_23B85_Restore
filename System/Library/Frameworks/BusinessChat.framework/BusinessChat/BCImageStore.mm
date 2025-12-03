@@ -1,20 +1,20 @@
 @interface BCImageStore
-- (BCImageStore)initWithArray:(id)a3;
-- (BCImageStore)initWithData:(id)a3;
-- (BCImageStore)initWithImages:(id)a3;
-- (id)generateImageDictionaryFromArray:(void *)a1;
+- (BCImageStore)initWithArray:(id)array;
+- (BCImageStore)initWithData:(id)data;
+- (BCImageStore)initWithImages:(id)images;
+- (id)generateImageDictionaryFromArray:(void *)array;
 @end
 
 @implementation BCImageStore
 
-- (BCImageStore)initWithData:(id)a3
+- (BCImageStore)initWithData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = LogCategory_Daemon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 description];
+    v7 = [dataCopy description];
     *buf = 138412290;
     v19 = v7;
     _os_log_impl(&dword_236EA0000, v6, OS_LOG_TYPE_DEFAULT, "BCImageStore: initWithData %@", buf, 0xCu);
@@ -25,17 +25,17 @@
   v8 = [(BCImageStore *)&v17 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v5 options:0 error:0];
+    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:0];
     v10 = [v9 objectForKeyedSubscript:@"images"];
     [(BCImageStore *)v8 setRawArray:v10];
     v11 = [BCImageStore generateImageDictionaryFromArray:v10];
     [(BCImageStore *)v8 setDictionary:v11];
 
-    objc_storeStrong(&v8->_data, a3);
+    objc_storeStrong(&v8->_data, data);
   }
 
-  v12 = [(BCImageStore *)v8 dictionary];
-  if (v12)
+  dictionary = [(BCImageStore *)v8 dictionary];
+  if (dictionary)
   {
     v13 = v8;
   }
@@ -51,19 +51,19 @@
   return v14;
 }
 
-- (id)generateImageDictionaryFromArray:(void *)a1
+- (id)generateImageDictionaryFromArray:(void *)array
 {
   v38 = *MEMORY[0x277D85DE8];
-  v1 = a1;
-  if (v1)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v28 = v1;
+    v28 = arrayCopy;
     v29 = objc_opt_new();
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v1;
+    obj = arrayCopy;
     v3 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v3)
     {
@@ -160,8 +160,8 @@
       while (v4);
     }
 
-    v24 = [v29 allKeys];
-    if ([v24 count])
+    allKeys = [v29 allKeys];
+    if ([allKeys count])
     {
       v25 = v29;
     }
@@ -173,7 +173,7 @@
 
     v2 = v25;
 
-    v1 = v28;
+    arrayCopy = v28;
   }
 
   else
@@ -186,15 +186,15 @@
   return v2;
 }
 
-- (BCImageStore)initWithArray:(id)a3
+- (BCImageStore)initWithArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = arrayCopy;
     _os_log_impl(&dword_236EA0000, v5, OS_LOG_TYPE_DEFAULT, "BCImageStore: initWithArray %@", buf, 0xCu);
   }
 
@@ -204,16 +204,16 @@
   v7 = v6;
   if (v6)
   {
-    [(BCImageStore *)v6 setRawArray:v4];
-    v8 = [BCImageStore generateImageDictionaryFromArray:v4];
+    [(BCImageStore *)v6 setRawArray:arrayCopy];
+    v8 = [BCImageStore generateImageDictionaryFromArray:arrayCopy];
     [(BCImageStore *)v7 setDictionary:v8];
 
     data = v7->_data;
     v7->_data = 0;
   }
 
-  v10 = [(BCImageStore *)v7 dictionary];
-  if (v10)
+  dictionary = [(BCImageStore *)v7 dictionary];
+  if (dictionary)
   {
     v11 = v7;
   }
@@ -229,15 +229,15 @@
   return v12;
 }
 
-- (BCImageStore)initWithImages:(id)a3
+- (BCImageStore)initWithImages:(id)images
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imagesCopy = images;
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = imagesCopy;
     _os_log_impl(&dword_236EA0000, v5, OS_LOG_TYPE_DEFAULT, "BCImageStore: initWithImages %@", buf, 0xCu);
   }
 
@@ -251,7 +251,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v4;
+    v8 = imagesCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v9)
     {
@@ -267,8 +267,8 @@
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 identifier];
-          [v7 setObject:v13 forKey:v14];
+          identifier = [v13 identifier];
+          [v7 setObject:v13 forKey:identifier];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];

@@ -1,20 +1,20 @@
 @interface NonRetainedObjectContainer
-- (NonRetainedObjectContainer)initWithObject:(id)a3;
+- (NonRetainedObjectContainer)initWithObject:(id)object;
 - (id)nonRetainedObject;
 @end
 
 @implementation NonRetainedObjectContainer
 
-- (NonRetainedObjectContainer)initWithObject:(id)a3
+- (NonRetainedObjectContainer)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = NonRetainedObjectContainer;
   v5 = [(NonRetainedObjectContainer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NonRetainedObjectContainer *)v5 setNonRetainedObject:v4];
+    [(NonRetainedObjectContainer *)v5 setNonRetainedObject:objectCopy];
   }
 
   return v6;

@@ -1,6 +1,6 @@
 @interface PGHighlightItemList
 + (id)timeSortDescriptors;
-+ (void)updateParentHighlightItemLists:(id)a3 withChildHighlightItems:(id)a4;
++ (void)updateParentHighlightItemLists:(id)lists withChildHighlightItems:(id)items;
 - (NSArray)extendedCuratedAssets;
 - (NSArray)sortedChildHighlightItems;
 - (NSArray)sortedHighlightItemModelObjects;
@@ -13,37 +13,37 @@
 - (NSSet)removedHighlightItems;
 - (NSString)description;
 - (NSString)uuid;
-- (PGHighlightItemList)initWithParentHighlightItem:(id)a3 childHighlightItems:(id)a4;
+- (PGHighlightItemList)initWithParentHighlightItem:(id)item childHighlightItems:(id)items;
 - (id)initAsNewList;
 - (unsigned)mixedSharingCompositionKeyAssetRelationship;
 - (unsigned)sharingComposition;
-- (unsigned)visibilityStateForHighlightFilter:(unsigned __int16)a3;
+- (unsigned)visibilityStateForHighlightFilter:(unsigned __int16)filter;
 - (void)_updateHighlightItemsOrdering;
-- (void)addHighlightItem:(id)a3;
-- (void)removeHighlightItem:(id)a3;
-- (void)setVisibilityState:(unsigned __int16)a3 forSharingFilter:(unsigned __int16)a4;
+- (void)addHighlightItem:(id)item;
+- (void)removeHighlightItem:(id)item;
+- (void)setVisibilityState:(unsigned __int16)state forSharingFilter:(unsigned __int16)filter;
 @end
 
 @implementation PGHighlightItemList
 
-- (void)setVisibilityState:(unsigned __int16)a3 forSharingFilter:(unsigned __int16)a4
+- (void)setVisibilityState:(unsigned __int16)state forSharingFilter:(unsigned __int16)filter
 {
-  if (a4 <= 2u)
+  if (filter <= 2u)
   {
-    *(&self->_visibilityStatePrivate + (a4 & 0x7FFF)) = a3;
+    *(&self->_visibilityStatePrivate + (filter & 0x7FFF)) = state;
   }
 }
 
-- (unsigned)visibilityStateForHighlightFilter:(unsigned __int16)a3
+- (unsigned)visibilityStateForHighlightFilter:(unsigned __int16)filter
 {
-  if (a3 > 2u)
+  if (filter > 2u)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->_visibilityStatePrivate + (a3 & 0x7FFF));
+    return *(&self->_visibilityStatePrivate + (filter & 0x7FFF));
   }
 }
 
@@ -62,8 +62,8 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   internalHighlightItems = self->_internalHighlightItems;
-  v4 = [objc_opt_class() timeSortDescriptors];
-  [(NSMutableOrderedSet *)internalHighlightItems sortUsingDescriptors:v4];
+  timeSortDescriptors = [objc_opt_class() timeSortDescriptors];
+  [(NSMutableOrderedSet *)internalHighlightItems sortUsingDescriptors:timeSortDescriptors];
 
   v25 = 0u;
   v26 = 0u;
@@ -86,25 +86,25 @@
 
         if ([*(*(&v23 + 1) + 8 * i) kind] != 3)
         {
-          v10 = [(NSMutableOrderedSet *)self->_internalHighlightItems firstObject];
-          v11 = [v10 startDate];
+          firstObject = [(NSMutableOrderedSet *)self->_internalHighlightItems firstObject];
+          startDate = [firstObject startDate];
           startDate = self->_startDate;
-          self->_startDate = v11;
+          self->_startDate = startDate;
 
-          v13 = [(NSMutableOrderedSet *)self->_internalHighlightItems lastObject];
-          v14 = [v13 endDate];
+          lastObject = [(NSMutableOrderedSet *)self->_internalHighlightItems lastObject];
+          endDate = [lastObject endDate];
           endDate = self->_endDate;
-          self->_endDate = v14;
+          self->_endDate = endDate;
 
-          v16 = [(NSMutableOrderedSet *)self->_internalHighlightItems firstObject];
-          v17 = [v16 localStartDate];
+          firstObject2 = [(NSMutableOrderedSet *)self->_internalHighlightItems firstObject];
+          localStartDate = [firstObject2 localStartDate];
           localStartDate = self->_localStartDate;
-          self->_localStartDate = v17;
+          self->_localStartDate = localStartDate;
 
-          v19 = [(NSMutableOrderedSet *)self->_internalHighlightItems lastObject];
-          v20 = [v19 localEndDate];
+          lastObject2 = [(NSMutableOrderedSet *)self->_internalHighlightItems lastObject];
+          localEndDate = [lastObject2 localEndDate];
           localEndDate = self->_localEndDate;
-          self->_localEndDate = v20;
+          self->_localEndDate = localEndDate;
 
           goto LABEL_11;
         }
@@ -125,40 +125,40 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeHighlightItem:(id)a3
+- (void)removeHighlightItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(NSMutableOrderedSet *)self->_internalHighlightItems containsObject:?])
   {
-    [(NSMutableOrderedSet *)self->_internalHighlightItems removeObject:v4];
-    if ([(NSMutableSet *)self->_internalAddedHighlightItems containsObject:v4])
+    [(NSMutableOrderedSet *)self->_internalHighlightItems removeObject:itemCopy];
+    if ([(NSMutableSet *)self->_internalAddedHighlightItems containsObject:itemCopy])
     {
-      [(NSMutableSet *)self->_internalAddedHighlightItems removeObject:v4];
+      [(NSMutableSet *)self->_internalAddedHighlightItems removeObject:itemCopy];
     }
 
     else
     {
-      [(NSMutableSet *)self->_internalRemovedHighlightItems addObject:v4];
+      [(NSMutableSet *)self->_internalRemovedHighlightItems addObject:itemCopy];
     }
 
     [(PGHighlightItemList *)self _updateHighlightItemsOrdering];
   }
 }
 
-- (void)addHighlightItem:(id)a3
+- (void)addHighlightItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (([(NSMutableOrderedSet *)self->_internalHighlightItems containsObject:?]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_internalHighlightItems addObject:v4];
-    if ([(NSMutableSet *)self->_internalRemovedHighlightItems containsObject:v4])
+    [(NSMutableOrderedSet *)self->_internalHighlightItems addObject:itemCopy];
+    if ([(NSMutableSet *)self->_internalRemovedHighlightItems containsObject:itemCopy])
     {
-      [(NSMutableSet *)self->_internalRemovedHighlightItems removeObject:v4];
+      [(NSMutableSet *)self->_internalRemovedHighlightItems removeObject:itemCopy];
     }
 
     else
     {
-      [(NSMutableSet *)self->_internalAddedHighlightItems addObject:v4];
+      [(NSMutableSet *)self->_internalAddedHighlightItems addObject:itemCopy];
     }
 
     [(PGHighlightItemList *)self _updateHighlightItemsOrdering];
@@ -181,8 +181,8 @@ LABEL_11:
 
 - (NSArray)sortedChildHighlightItems
 {
-  v2 = [(NSMutableOrderedSet *)self->_internalHighlightItems array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_internalHighlightItems array];
+  v3 = [array copy];
 
   return v3;
 }
@@ -191,16 +191,16 @@ LABEL_11:
 {
   if ([(PGHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PGHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 extendedCuratedAssets];
+    parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+    extendedCuratedAssets = [parentHighlightItem extendedCuratedAssets];
   }
 
   else
   {
-    v4 = self->_extendedCuratedAssets;
+    extendedCuratedAssets = self->_extendedCuratedAssets;
   }
 
-  return v4;
+  return extendedCuratedAssets;
 }
 
 - (unsigned)mixedSharingCompositionKeyAssetRelationship
@@ -210,10 +210,10 @@ LABEL_11:
     return self->_mixedSharingCompositionKeyAssetRelationship;
   }
 
-  v3 = [(PGHighlightItemList *)self parentHighlightItem];
-  v4 = [v3 mixedSharingCompositionKeyAssetRelationship];
+  parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+  mixedSharingCompositionKeyAssetRelationship = [parentHighlightItem mixedSharingCompositionKeyAssetRelationship];
 
-  return v4;
+  return mixedSharingCompositionKeyAssetRelationship;
 }
 
 - (NSArray)sortedHighlightItemModelObjects
@@ -240,12 +240,12 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 modelObject];
+        modelObject = [v9 modelObject];
 
-        if (v10)
+        if (modelObject)
         {
-          v11 = [v9 modelObject];
-          [v3 addObject:v11];
+          modelObject2 = [v9 modelObject];
+          [v3 addObject:modelObject2];
         }
       }
 
@@ -262,23 +262,23 @@ LABEL_11:
 
 - (NSString)uuid
 {
-  v2 = [(PGHighlightItemList *)self parentHighlightItem];
-  v3 = [v2 uuid];
+  parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+  uuid = [parentHighlightItem uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSDateComponents)localDateComponents
 {
-  v3 = [(PGHighlightItemList *)self startDate];
-  v4 = [(PGHighlightItemList *)self endDate];
-  [v4 timeIntervalSinceDate:v3];
-  v6 = [v3 dateByAddingTimeInterval:v5 * 0.5];
-  v7 = [(PGHighlightItemList *)self localStartDate];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  if (v7)
+  startDate = [(PGHighlightItemList *)self startDate];
+  endDate = [(PGHighlightItemList *)self endDate];
+  [endDate timeIntervalSinceDate:startDate];
+  v6 = [startDate dateByAddingTimeInterval:v5 * 0.5];
+  localStartDate = [(PGHighlightItemList *)self localStartDate];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  if (localStartDate)
   {
-    [v3 timeIntervalSinceDate:v7];
+    [startDate timeIntervalSinceDate:localStartDate];
     v10 = v9;
   }
 
@@ -288,7 +288,7 @@ LABEL_11:
   }
 
   v11 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:v10];
-  v12 = [v8 componentsInTimeZone:v11 fromDate:v6];
+  v12 = [currentCalendar componentsInTimeZone:v11 fromDate:v6];
 
   return v12;
 }
@@ -300,74 +300,74 @@ LABEL_11:
     return self->_sharingComposition;
   }
 
-  v3 = [(PGHighlightItemList *)self parentHighlightItem];
-  v4 = [v3 sharingComposition];
+  parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+  sharingComposition = [parentHighlightItem sharingComposition];
 
-  return v4;
+  return sharingComposition;
 }
 
 - (NSDate)localEndDate
 {
   if ([(PGHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PGHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 localEndDate];
+    parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+    localEndDate = [parentHighlightItem localEndDate];
   }
 
   else
   {
-    v4 = self->_localEndDate;
+    localEndDate = self->_localEndDate;
   }
 
-  return v4;
+  return localEndDate;
 }
 
 - (NSDate)localStartDate
 {
   if ([(PGHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PGHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 localStartDate];
+    parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+    localStartDate = [parentHighlightItem localStartDate];
   }
 
   else
   {
-    v4 = self->_localStartDate;
+    localStartDate = self->_localStartDate;
   }
 
-  return v4;
+  return localStartDate;
 }
 
 - (NSDate)endDate
 {
   if ([(PGHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PGHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 endDate];
+    parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+    endDate = [parentHighlightItem endDate];
   }
 
   else
   {
-    v4 = self->_endDate;
+    endDate = self->_endDate;
   }
 
-  return v4;
+  return endDate;
 }
 
 - (NSDate)startDate
 {
   if ([(PGHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PGHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 startDate];
+    parentHighlightItem = [(PGHighlightItemList *)self parentHighlightItem];
+    startDate = [parentHighlightItem startDate];
   }
 
   else
   {
-    v4 = self->_startDate;
+    startDate = self->_startDate;
   }
 
-  return v4;
+  return startDate;
 }
 
 - (id)initAsNewList
@@ -377,9 +377,9 @@ LABEL_11:
   v2 = [(PGHighlightItemList *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     internalHighlightItems = v2->_internalHighlightItems;
-    v2->_internalHighlightItems = v3;
+    v2->_internalHighlightItems = orderedSet;
 
     v5 = [MEMORY[0x277CBEB58] set];
     internalAddedHighlightItems = v2->_internalAddedHighlightItems;
@@ -393,22 +393,22 @@ LABEL_11:
   return v2;
 }
 
-- (PGHighlightItemList)initWithParentHighlightItem:(id)a3 childHighlightItems:(id)a4
+- (PGHighlightItemList)initWithParentHighlightItem:(id)item childHighlightItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  itemsCopy = items;
   v20.receiver = self;
   v20.super_class = PGHighlightItemList;
   v9 = [(PGHighlightItemList *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parentHighlightItem, a3);
-    v11 = [v7 modelObject];
+    objc_storeStrong(&v9->_parentHighlightItem, item);
+    modelObject = [itemCopy modelObject];
     modelObject = v10->_modelObject;
-    v10->_modelObject = v11;
+    v10->_modelObject = modelObject;
 
-    v13 = [MEMORY[0x277CBEB40] orderedSetWithArray:v8];
+    v13 = [MEMORY[0x277CBEB40] orderedSetWithArray:itemsCopy];
     internalHighlightItems = v10->_internalHighlightItems;
     v10->_internalHighlightItems = v13;
 
@@ -420,27 +420,27 @@ LABEL_11:
     internalRemovedHighlightItems = v10->_internalRemovedHighlightItems;
     v10->_internalRemovedHighlightItems = v17;
 
-    v10->_sharingComposition = [v7 sharingComposition];
-    v10->_kind = [v7 kind];
-    v10->_type = [v7 type];
-    v10->_category = [v7 category];
+    v10->_sharingComposition = [itemCopy sharingComposition];
+    v10->_kind = [itemCopy kind];
+    v10->_type = [itemCopy type];
+    v10->_category = [itemCopy category];
     [(PGHighlightItemList *)v10 _updateHighlightItemsOrdering];
   }
 
   return v10;
 }
 
-+ (void)updateParentHighlightItemLists:(id)a3 withChildHighlightItems:(id)a4
++ (void)updateParentHighlightItemLists:(id)lists withChildHighlightItems:(id)items
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  listsCopy = lists;
+  itemsCopy = items;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v9)
   {
@@ -456,8 +456,8 @@ LABEL_11:
         }
 
         v13 = *(*(&v43 + 1) + 8 * i);
-        v14 = [v13 uuid];
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        uuid = [v13 uuid];
+        [v7 setObject:v13 forKeyedSubscript:uuid];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -472,7 +472,7 @@ LABEL_11:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v5;
+  obj = listsCopy;
   v33 = [obj countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v33)
   {
@@ -487,20 +487,20 @@ LABEL_11:
         }
 
         v16 = *(*(&v39 + 1) + 8 * j);
-        v17 = [v16 internalAddedHighlightItems];
-        [v17 removeAllObjects];
+        internalAddedHighlightItems = [v16 internalAddedHighlightItems];
+        [internalAddedHighlightItems removeAllObjects];
 
-        v18 = [v16 internalRemovedHighlightItems];
-        [v18 removeAllObjects];
+        internalRemovedHighlightItems = [v16 internalRemovedHighlightItems];
+        [internalRemovedHighlightItems removeAllObjects];
 
         v34 = v16;
-        v19 = [v16 internalHighlightItems];
-        v20 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v19, "count")}];
+        internalHighlightItems = [v16 internalHighlightItems];
+        v20 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(internalHighlightItems, "count")}];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v21 = v19;
+        v21 = internalHighlightItems;
         v22 = [v21 countByEnumeratingWithState:&v35 objects:v47 count:16];
         if (v22)
         {
@@ -516,8 +516,8 @@ LABEL_11:
               }
 
               v26 = *(*(&v35 + 1) + 8 * k);
-              v27 = [v26 uuid];
-              v28 = [v7 objectForKeyedSubscript:v27];
+              uuid2 = [v26 uuid];
+              v28 = [v7 objectForKeyedSubscript:uuid2];
 
               if (!v28)
               {

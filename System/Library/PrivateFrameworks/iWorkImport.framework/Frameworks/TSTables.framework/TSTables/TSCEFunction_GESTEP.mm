@@ -1,23 +1,23 @@
 @interface TSCEFunction_GESTEP
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_GESTEP
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v39 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v39);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v39);
   v11 = v39;
-  v12 = *(*a5 + 8);
+  v12 = *(*arguments + 8);
   v38 = v11;
-  v14 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v12, v13, a3, a4, 1, &v38);
+  v14 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v12, v13, context, spec, 1, &v38);
   v15 = v38;
 
   if (v15)
   {
-    v19 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v15, v17, v18);
+    v19 = objc_msgSend_raiseErrorOrConvert_(context, v16, v15, v17, v18);
 LABEL_5:
     v26 = v19;
     goto LABEL_6;
@@ -32,9 +32,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v28 = objc_msgSend_functionName(a4, v20, v21, v22, v23);
+  v28 = objc_msgSend_functionName(spec, v20, v21, v22, v23);
   v32 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v29, v28, v30, v31);
-  v26 = objc_msgSend_raiseErrorOrConvert_(a3, v33, v32, v34, v35);
+  v26 = objc_msgSend_raiseErrorOrConvert_(context, v33, v32, v34, v35);
 
 LABEL_6:
 

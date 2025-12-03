@@ -1,20 +1,20 @@
 @interface TSWPassThroughView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation TSWPassThroughView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v12.receiver = self;
   v12.super_class = TSWPassThroughView;
   v8 = [TSWPassThroughView hitTest:"hitTest:withEvent:" withEvent:?];
   mDelegate = self->mDelegate;
   if (mDelegate)
   {
-    LOBYTE(v10) = [(TSWPassThroughViewDelegate *)mDelegate passthroughView:self shouldAcceptHitAtPoint:v8 onView:a4 withEvent:x, y];
+    LOBYTE(v10) = [(TSWPassThroughViewDelegate *)mDelegate passthroughView:self shouldAcceptHitAtPoint:v8 onView:event withEvent:x, y];
   }
 
   else

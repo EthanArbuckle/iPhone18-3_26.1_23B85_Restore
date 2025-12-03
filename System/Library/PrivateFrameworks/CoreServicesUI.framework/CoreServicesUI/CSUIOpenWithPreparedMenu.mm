@@ -1,7 +1,7 @@
 @interface CSUIOpenWithPreparedMenu
 - (CSUIBoundBundleInfo)representativeBundle;
 - (CSUIOpenWithPreparedMenu)init;
-- (CSUIOpenWithPreparedMenu)initWithBoundBundlesWrapper:(id)a3;
+- (CSUIOpenWithPreparedMenu)initWithBoundBundlesWrapper:(id)wrapper;
 @end
 
 @implementation CSUIOpenWithPreparedMenu
@@ -56,12 +56,12 @@ LABEL_6:
   return [(CSUIOpenWithPreparedMenu *)&v4 init];
 }
 
-- (CSUIOpenWithPreparedMenu)initWithBoundBundlesWrapper:(id)a3
+- (CSUIOpenWithPreparedMenu)initWithBoundBundlesWrapper:(id)wrapper
 {
-  *(&self->super.isa + OBJC_IVAR___CSUIOpenWithPreparedMenu_boundBundles) = *(a3 + OBJC_IVAR____TtCE14CoreServicesUICSo24CSUIOpenWithPreparedMenuP33_66079D085FF6FB5157D5A6D61FF9E78423BoundBundlesObjcWrapper_boundBundles);
-  v3 = *(a3 + OBJC_IVAR____TtCE14CoreServicesUICSo24CSUIOpenWithPreparedMenuP33_66079D085FF6FB5157D5A6D61FF9E78423BoundBundlesObjcWrapper_representativeBundleIndex + 8);
+  *(&self->super.isa + OBJC_IVAR___CSUIOpenWithPreparedMenu_boundBundles) = *(wrapper + OBJC_IVAR____TtCE14CoreServicesUICSo24CSUIOpenWithPreparedMenuP33_66079D085FF6FB5157D5A6D61FF9E78423BoundBundlesObjcWrapper_boundBundles);
+  v3 = *(wrapper + OBJC_IVAR____TtCE14CoreServicesUICSo24CSUIOpenWithPreparedMenuP33_66079D085FF6FB5157D5A6D61FF9E78423BoundBundlesObjcWrapper_representativeBundleIndex + 8);
   v4 = self + OBJC_IVAR___CSUIOpenWithPreparedMenu_representativeBundleIndex;
-  *v4 = *(a3 + OBJC_IVAR____TtCE14CoreServicesUICSo24CSUIOpenWithPreparedMenuP33_66079D085FF6FB5157D5A6D61FF9E78423BoundBundlesObjcWrapper_representativeBundleIndex);
+  *v4 = *(wrapper + OBJC_IVAR____TtCE14CoreServicesUICSo24CSUIOpenWithPreparedMenuP33_66079D085FF6FB5157D5A6D61FF9E78423BoundBundlesObjcWrapper_representativeBundleIndex);
   v4[8] = v3;
   v6.receiver = self;
   v6.super_class = CSUIOpenWithPreparedMenu;

@@ -1,27 +1,27 @@
 @interface MADHEICSAlphaSequenceTranscoder
-- (MADHEICSAlphaSequenceTranscoder)initWithSequenceData:(id)a3 maxDimension:(unint64_t)a4 qualityValue:(double)a5;
+- (MADHEICSAlphaSequenceTranscoder)initWithSequenceData:(id)data maxDimension:(unint64_t)dimension qualityValue:(double)value;
 - (id).cxx_construct;
 - (id)run;
-- (int)_addFrameToSequence:(int64_t)a3 basePixelBuffer:(__CVBuffer *)a4 alphaPixelBuffer:(__CVBuffer *)a5 pts:(id *)a6;
-- (int)_decodeFrameIndex:(unint64_t)a3 basePixelBuffer:(__CVBuffer *)a4 alphaPixelBuffer:(__CVBuffer *)a5 pts:(id *)a6;
+- (int)_addFrameToSequence:(int64_t)sequence basePixelBuffer:(__CVBuffer *)buffer alphaPixelBuffer:(__CVBuffer *)pixelBuffer pts:(id *)pts;
+- (int)_decodeFrameIndex:(unint64_t)index basePixelBuffer:(__CVBuffer *)buffer alphaPixelBuffer:(__CVBuffer *)pixelBuffer pts:(id *)pts;
 - (int)_setupTranscode;
 - (int)_transcode;
 @end
 
 @implementation MADHEICSAlphaSequenceTranscoder
 
-- (MADHEICSAlphaSequenceTranscoder)initWithSequenceData:(id)a3 maxDimension:(unint64_t)a4 qualityValue:(double)a5
+- (MADHEICSAlphaSequenceTranscoder)initWithSequenceData:(id)data maxDimension:(unint64_t)dimension qualityValue:(double)value
 {
-  v9 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = MADHEICSAlphaSequenceTranscoder;
   v10 = [(MADHEICSAlphaSequenceTranscoder *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sequenceData, a3);
-    v11->_maxDimension = a4;
-    v11->_qualityValue = a5;
+    objc_storeStrong(&v10->_sequenceData, data);
+    v11->_maxDimension = dimension;
+    v11->_qualityValue = value;
   }
 
   return v11;
@@ -138,7 +138,7 @@
   return started;
 }
 
-- (int)_decodeFrameIndex:(unint64_t)a3 basePixelBuffer:(__CVBuffer *)a4 alphaPixelBuffer:(__CVBuffer *)a5 pts:(id *)a6
+- (int)_decodeFrameIndex:(unint64_t)index basePixelBuffer:(__CVBuffer *)buffer alphaPixelBuffer:(__CVBuffer *)pixelBuffer pts:(id *)pts
 {
   v43[1] = *MEMORY[0x1E69E9840];
   v9 = VCPSignPostLog();
@@ -152,13 +152,13 @@
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "MADHEICSTranscode_DecodeFrame", "", &buf, 2u);
   }
 
-  v13 = [(NSArray *)self->_frameProperties objectAtIndexedSubscript:a3];
+  v13 = [(NSArray *)self->_frameProperties objectAtIndexedSubscript:index];
   v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E6991A98]];
   v15 = v14;
   if (v14)
   {
     CMTimeMakeFromDictionary(&buf, v14);
-    *a6 = buf;
+    *pts = buf;
     v16 = MEMORY[0x1E695DF90];
     v17 = *MEMORY[0x1E6991AE8];
     v42 = *MEMORY[0x1E6991AE8];
@@ -235,7 +235,7 @@
   return ImageForIndex;
 }
 
-- (int)_addFrameToSequence:(int64_t)a3 basePixelBuffer:(__CVBuffer *)a4 alphaPixelBuffer:(__CVBuffer *)a5 pts:(id *)a6
+- (int)_addFrameToSequence:(int64_t)sequence basePixelBuffer:(__CVBuffer *)buffer alphaPixelBuffer:(__CVBuffer *)pixelBuffer pts:(id *)pts
 {
   v45[6] = *MEMORY[0x1E69E9840];
   v8 = VCPSignPostLog();
@@ -286,8 +286,8 @@
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v22, "MADHEICSTranscode_EncodeBaseImage", "", buf, 2u);
   }
 
-  *buf = *&a6->var0;
-  var3 = a6->var3;
+  *buf = *&pts->var0;
+  var3 = pts->var3;
   v41 = 0;
   v25 = CMPhotoCompressionSessionAddImageToSequence();
   if (!v25)
@@ -349,10 +349,10 @@
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "MADHEICSTranscode_Transcode", "", buf, 2u);
   }
 
-  v7 = [(MADHEICSAlphaSequenceTranscoder *)self _setupTranscode];
-  if (v7)
+  _setupTranscode = [(MADHEICSAlphaSequenceTranscoder *)self _setupTranscode];
+  if (_setupTranscode)
   {
-    return v7;
+    return _setupTranscode;
   }
 
   *buf = 0;
@@ -371,8 +371,8 @@
     v9 = objc_autoreleasePoolPush();
     v21 = 0;
     cf = 0;
-    v7 = [(MADHEICSAlphaSequenceTranscoder *)self _decodeFrameIndex:v8 basePixelBuffer:&cf alphaPixelBuffer:&v21 pts:v23];
-    if (v7)
+    _setupTranscode = [(MADHEICSAlphaSequenceTranscoder *)self _decodeFrameIndex:v8 basePixelBuffer:&cf alphaPixelBuffer:&v21 pts:v23];
+    if (_setupTranscode)
     {
       goto LABEL_10;
     }
@@ -426,14 +426,14 @@ LABEL_11:
 
   while (v8 < self->_frameCount);
   dispatch_group_wait(self->_encodeGroup, 0xFFFFFFFFFFFFFFFFLL);
-  if (!v7)
+  if (!_setupTranscode)
   {
 LABEL_22:
-    v7 = *(v26 + 6);
-    if (!v7)
+    _setupTranscode = *(v26 + 6);
+    if (!_setupTranscode)
     {
-      v7 = CMPhotoCompressionSessionEndImageSequence();
-      if (!v7)
+      _setupTranscode = CMPhotoCompressionSessionEndImageSequence();
+      if (!_setupTranscode)
       {
         v13 = VCPSignPostLog();
         v14 = v13;
@@ -447,7 +447,7 @@ LABEL_22:
   }
 
   _Block_object_dispose(buf, 8);
-  return v7;
+  return _setupTranscode;
 }
 
 intptr_t __45__MADHEICSAlphaSequenceTranscoder__transcode__block_invoke(uint64_t a1)

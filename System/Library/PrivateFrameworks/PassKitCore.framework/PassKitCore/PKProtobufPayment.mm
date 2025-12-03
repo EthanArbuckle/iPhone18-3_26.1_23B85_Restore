@@ -1,12 +1,12 @@
 @interface PKProtobufPayment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPayment
@@ -17,131 +17,131 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPayment;
   v4 = [(PKProtobufPayment *)&v8 description];
-  v5 = [(PKProtobufPayment *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPayment *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   token = self->_token;
   if (token)
   {
-    v5 = [(PKProtobufPaymentToken *)token dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"token"];
+    dictionaryRepresentation = [(PKProtobufPaymentToken *)token dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"token"];
   }
 
   billingContact = self->_billingContact;
   if (billingContact)
   {
-    [v3 setObject:billingContact forKey:@"billingContact"];
+    [dictionary setObject:billingContact forKey:@"billingContact"];
   }
 
   shippingContact = self->_shippingContact;
   if (shippingContact)
   {
-    [v3 setObject:shippingContact forKey:@"shippingContact"];
+    [dictionary setObject:shippingContact forKey:@"shippingContact"];
   }
 
   shippingMethod = self->_shippingMethod;
   if (shippingMethod)
   {
-    v9 = [(PKProtobufShippingMethod *)shippingMethod dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"shippingMethod"];
+    dictionaryRepresentation2 = [(PKProtobufShippingMethod *)shippingMethod dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"shippingMethod"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_token)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_billingContact)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shippingContact)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shippingMethod)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_token)
   {
-    [v4 setToken:?];
-    v4 = v5;
+    [toCopy setToken:?];
+    toCopy = v5;
   }
 
   if (self->_billingContact)
   {
     [v5 setBillingContact:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shippingContact)
   {
     [v5 setShippingContact:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shippingMethod)
   {
     [v5 setShippingMethod:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKProtobufPaymentToken *)self->_token copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKProtobufPaymentToken *)self->_token copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSData *)self->_billingContact copyWithZone:a3];
+  v8 = [(NSData *)self->_billingContact copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_shippingContact copyWithZone:a3];
+  v10 = [(NSData *)self->_shippingContact copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(PKProtobufShippingMethod *)self->_shippingMethod copyWithZone:a3];
+  v12 = [(PKProtobufShippingMethod *)self->_shippingMethod copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((token = self->_token, !(token | v4[4])) || -[PKProtobufPaymentToken isEqual:](token, "isEqual:")) && ((billingContact = self->_billingContact, !(billingContact | v4[1])) || -[NSData isEqual:](billingContact, "isEqual:")) && ((shippingContact = self->_shippingContact, !(shippingContact | v4[2])) || -[NSData isEqual:](shippingContact, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((token = self->_token, !(token | equalCopy[4])) || -[PKProtobufPaymentToken isEqual:](token, "isEqual:")) && ((billingContact = self->_billingContact, !(billingContact | equalCopy[1])) || -[NSData isEqual:](billingContact, "isEqual:")) && ((shippingContact = self->_shippingContact, !(shippingContact | equalCopy[2])) || -[NSData isEqual:](shippingContact, "isEqual:")))
   {
     shippingMethod = self->_shippingMethod;
-    if (shippingMethod | v4[3])
+    if (shippingMethod | equalCopy[3])
     {
       v9 = [(PKProtobufShippingMethod *)shippingMethod isEqual:?];
     }
@@ -168,12 +168,12 @@
   return v4 ^ v5 ^ [(PKProtobufShippingMethod *)self->_shippingMethod hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   token = self->_token;
-  v9 = v4;
-  v6 = v4[4];
+  v9 = fromCopy;
+  v6 = fromCopy[4];
   if (token)
   {
     if (v6)

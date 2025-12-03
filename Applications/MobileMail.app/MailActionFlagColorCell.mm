@@ -1,26 +1,26 @@
 @interface MailActionFlagColorCell
-- (MailActionFlagColorCell)initWithFrame:(CGRect)a3;
+- (MailActionFlagColorCell)initWithFrame:(CGRect)frame;
 - (MailActionFlagColorCellDelegate)delegate;
 - (NSArray)buttons;
 - (NSArray)pointerRegions;
 - (id)_arrangedSubviewsRespectingLayoutDirection;
 - (id)_flagColorButtons;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)targetedPreviewForView:(id)a3;
-- (void)_buttonTapped:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)targetedPreviewForView:(id)view;
+- (void)_buttonTapped:(id)tapped;
 - (void)_setupViews;
-- (void)selectColor:(id)a3;
+- (void)selectColor:(id)color;
 - (void)updateConstraints;
 @end
 
 @implementation MailActionFlagColorCell
 
-- (MailActionFlagColorCell)initWithFrame:(CGRect)a3
+- (MailActionFlagColorCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MailActionFlagColorCell;
-  v3 = [(MailActionVerticalGroupedCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MailActionVerticalGroupedCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,21 +32,21 @@
 
 - (NSArray)buttons
 {
-  v2 = [(MailActionFlagColorCell *)self buttonPairs];
-  v3 = [v2 ef_map:&stru_10064F2B8];
+  buttonPairs = [(MailActionFlagColorCell *)self buttonPairs];
+  v3 = [buttonPairs ef_map:&stru_10064F2B8];
 
   return v3;
 }
 
 - (void)_setupViews
 {
-  v3 = [(MailActionFlagColorCell *)self contentView];
-  v4 = [(MailActionFlagColorCell *)self _flagColorButtons];
-  [(MailActionFlagColorCell *)self setButtonPairs:v4];
+  contentView = [(MailActionFlagColorCell *)self contentView];
+  _flagColorButtons = [(MailActionFlagColorCell *)self _flagColorButtons];
+  [(MailActionFlagColorCell *)self setButtonPairs:_flagColorButtons];
 
   v5 = +[UIStackView mf_equalSpacingHorizontalStackView];
   [v5 setAlignment:3];
-  [v3 addSubview:v5];
+  [contentView addSubview:v5];
   if ([EMInternalPreferences preferenceEnabled:7])
   {
     v6 = [[UIPointerInteraction alloc] initWithDelegate:self];
@@ -54,11 +54,11 @@
   }
 
   [(MailActionFlagColorCell *)self setStackView:v5];
-  v7 = [(MailActionFlagColorCell *)self buttons];
-  v32 = [v7 mutableCopy];
+  buttons = [(MailActionFlagColorCell *)self buttons];
+  v32 = [buttons mutableCopy];
 
   v8 = objc_opt_new();
-  v33 = [(MailActionCell *)self imageView];
+  imageView = [(MailActionCell *)self imageView];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -80,13 +80,13 @@
         v13 = *(*(&v34 + 1) + 8 * i);
         [v13 setTranslatesAutoresizingMaskIntoConstraints:{0, v32}];
         [v5 addArrangedSubview:v13];
-        v14 = [v13 widthAnchor];
-        v15 = [v14 constraintEqualToConstant:28.0];
+        widthAnchor = [v13 widthAnchor];
+        v15 = [widthAnchor constraintEqualToConstant:28.0];
         [v8 addObject:v15];
 
-        v16 = [v13 widthAnchor];
-        v17 = [v13 heightAnchor];
-        v18 = [v16 constraintEqualToAnchor:v17];
+        widthAnchor2 = [v13 widthAnchor];
+        heightAnchor = [v13 heightAnchor];
+        v18 = [widthAnchor2 constraintEqualToAnchor:heightAnchor];
         [v8 addObject:v18];
       }
 
@@ -96,23 +96,23 @@
     while (v10);
   }
 
-  v19 = [v9 firstObject];
-  v20 = [v19 leadingAnchor];
-  v21 = [v3 layoutMarginsGuide];
-  v22 = [v21 leadingAnchor];
-  [v3 layoutMargins];
-  v24 = [v20 constraintEqualToAnchor:v22 constant:v23];
+  firstObject = [v9 firstObject];
+  leadingAnchor = [firstObject leadingAnchor];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  [contentView layoutMargins];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v23];
   [v8 addObject:v24];
 
-  v25 = [v9 lastObject];
-  v26 = [v25 centerXAnchor];
-  v27 = [v33 centerXAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  lastObject = [v9 lastObject];
+  centerXAnchor = [lastObject centerXAnchor];
+  centerXAnchor2 = [imageView centerXAnchor];
+  v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v8 addObject:v28];
 
-  v29 = [v5 centerYAnchor];
-  v30 = [v3 centerYAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  centerYAnchor = [v5 centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v8 addObject:v31];
 
   [NSLayoutConstraint activateConstraints:v8];
@@ -140,11 +140,11 @@
   return v3;
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(MailActionFlagColorCell *)self buttons];
-  v6 = [v5 indexOfObject:v4];
+  tappedCopy = tapped;
+  buttons = [(MailActionFlagColorCell *)self buttons];
+  v6 = [buttons indexOfObject:tappedCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -163,27 +163,27 @@
 
   else
   {
-    v7 = [(MailActionFlagColorCell *)self delegate];
-    if (v7)
+    delegate = [(MailActionFlagColorCell *)self delegate];
+    if (delegate)
     {
-      v8 = [(MailActionFlagColorCell *)self buttonPairs];
-      v9 = [v8 objectAtIndexedSubscript:v6];
-      v10 = [v9 first];
+      buttonPairs = [(MailActionFlagColorCell *)self buttonPairs];
+      v9 = [buttonPairs objectAtIndexedSubscript:v6];
+      first = [v9 first];
 
-      [v7 mailActionFlagColorCell:self didTapOnFlagColor:v10];
+      [delegate mailActionFlagColorCell:self didTapOnFlagColor:first];
     }
   }
 }
 
-- (void)selectColor:(id)a3
+- (void)selectColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MailActionFlagColorCell *)self buttonPairs];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  buttonPairs = [(MailActionFlagColorCell *)self buttonPairs];
+  v7 = [buttonPairs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -194,14 +194,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(buttonPairs);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if (v5)
+        if (colorCopy)
         {
-          v3 = [*(*(&v13 + 1) + 8 * v9) first];
-          v11 = [v3 isEqualToNumber:v5];
+          first = [*(*(&v13 + 1) + 8 * v9) first];
+          v11 = [first isEqualToNumber:colorCopy];
         }
 
         else
@@ -209,10 +209,10 @@
           v11 = 0;
         }
 
-        v12 = [v10 second];
-        [v12 setSelected:v11];
+        second = [v10 second];
+        [second setSelected:v11];
 
-        if (v5)
+        if (colorCopy)
         {
         }
 
@@ -220,36 +220,36 @@
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [buttonPairs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
-  v7 = [(MailActionFlagColorCell *)self pointerRegions];
+  requestCopy = request;
+  pointerRegions = [(MailActionFlagColorCell *)self pointerRegions];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000C12DC;
   v11[3] = &unk_10064F308;
-  v8 = v6;
+  v8 = requestCopy;
   v12 = v8;
-  v9 = [v7 ef_firstObjectPassingTest:v11];
+  v9 = [pointerRegions ef_firstObjectPassingTest:v11];
 
   return v9;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [(MailActionFlagColorCell *)self pointerRegions];
-  v7 = [v6 indexOfObject:v5];
+  regionCopy = region;
+  pointerRegions = [(MailActionFlagColorCell *)self pointerRegions];
+  v7 = [pointerRegions indexOfObject:regionCopy];
 
-  v8 = [(MailActionFlagColorCell *)self _arrangedSubviewsRespectingLayoutDirection];
-  v9 = [v8 objectAtIndexedSubscript:v7];
+  _arrangedSubviewsRespectingLayoutDirection = [(MailActionFlagColorCell *)self _arrangedSubviewsRespectingLayoutDirection];
+  v9 = [_arrangedSubviewsRespectingLayoutDirection objectAtIndexedSubscript:v7];
   v10 = [(MailActionFlagColorCell *)self targetedPreviewForView:v9];
   v11 = [UIPointerLiftEffect effectWithPreview:v10];
   v12 = [UIPointerStyle styleWithEffect:v11 shape:0];
@@ -257,18 +257,18 @@
   return v12;
 }
 
-- (id)targetedPreviewForView:(id)a3
+- (id)targetedPreviewForView:(id)view
 {
-  v4 = a3;
-  v5 = [(MailActionFlagColorCell *)self delegate];
-  v6 = [v5 targetedPreviewContainer];
+  viewCopy = view;
+  delegate = [(MailActionFlagColorCell *)self delegate];
+  targetedPreviewContainer = [delegate targetedPreviewContainer];
 
-  if (v6)
+  if (targetedPreviewContainer)
   {
-    [v4 bounds];
+    [viewCopy bounds];
     UIRectGetCenter();
-    [v4 convertPoint:v6 toView:?];
-    v9 = [[UIPreviewTarget alloc] initWithContainer:v6 center:{v7, v8}];
+    [viewCopy convertPoint:targetedPreviewContainer toView:?];
+    v9 = [[UIPreviewTarget alloc] initWithContainer:targetedPreviewContainer center:{v7, v8}];
   }
 
   else
@@ -279,12 +279,12 @@
   v10 = objc_alloc_init(UIPreviewParameters);
   if (v9)
   {
-    v11 = [[UITargetedPreview alloc] initWithView:v4 parameters:v10 target:v9];
+    v11 = [[UITargetedPreview alloc] initWithView:viewCopy parameters:v10 target:v9];
   }
 
   else
   {
-    v11 = [[UITargetedPreview alloc] initWithView:v4 parameters:v10];
+    v11 = [[UITargetedPreview alloc] initWithView:viewCopy parameters:v10];
   }
 
   v12 = v11;
@@ -297,23 +297,23 @@
   pointerRegions = self->_pointerRegions;
   if (!pointerRegions)
   {
-    v36 = self;
-    v34 = [(MailActionFlagColorCell *)self stackView];
-    v35 = [(MailActionFlagColorCell *)v36 _arrangedSubviewsRespectingLayoutDirection];
-    v4 = [(MailActionFlagColorCell *)v36 stackView];
-    [v4 frame];
+    selfCopy = self;
+    stackView = [(MailActionFlagColorCell *)self stackView];
+    _arrangedSubviewsRespectingLayoutDirection = [(MailActionFlagColorCell *)selfCopy _arrangedSubviewsRespectingLayoutDirection];
+    stackView2 = [(MailActionFlagColorCell *)selfCopy stackView];
+    [stackView2 frame];
     Width = CGRectGetWidth(v48);
 
-    v6 = [(MailActionFlagColorCell *)v36 stackView];
-    [v6 frame];
+    stackView3 = [(MailActionFlagColorCell *)selfCopy stackView];
+    [stackView3 frame];
     Height = CGRectGetHeight(v49);
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = [v34 arrangedSubviews];
-    v9 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    arrangedSubviews = [stackView arrangedSubviews];
+    v9 = [arrangedSubviews countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v9)
     {
       v10 = *v42;
@@ -324,14 +324,14 @@
         {
           if (*v42 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           [*(*(&v41 + 1) + 8 * i) frame];
           v11 = v11 + CGRectGetWidth(v50);
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v9 = [arrangedSubviews countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v9);
@@ -342,13 +342,13 @@
       v11 = 0.0;
     }
 
-    v13 = [v35 count];
+    v13 = [_arrangedSubviewsRespectingLayoutDirection count];
     v14 = objc_alloc_init(NSMutableArray);
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = v35;
+    v15 = _arrangedSubviewsRespectingLayoutDirection;
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v16)
     {
@@ -365,9 +365,9 @@
           }
 
           v21 = *(*(&v37 + 1) + 8 * j);
-          v22 = [v15 firstObject];
-          v23 = v22;
-          if (v21 == v22)
+          firstObject = [v15 firstObject];
+          v23 = firstObject;
+          if (v21 == firstObject)
           {
 
 LABEL_20:
@@ -375,8 +375,8 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v24 = [v15 lastObject];
-          v25 = v21 == v24;
+          lastObject = [v15 lastObject];
+          v25 = v21 == lastObject;
 
           v26 = v17;
           if (v25)
@@ -389,8 +389,8 @@ LABEL_21:
           v27 = CGRectGetWidth(v51);
           v28 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"FlagColor-%lu", [v14 count]);
           v29 = v26 + v27;
-          v30 = [UIPointerRegion regionWithRect:v28 identifier:MaxX, 0.0, v29, Height];
-          [v14 addObject:v30];
+          height = [UIPointerRegion regionWithRect:v28 identifier:MaxX, 0.0, v29, Height];
+          [v14 addObject:height];
           v52.origin.y = 0.0;
           v52.origin.x = MaxX;
           v52.size.width = v29;
@@ -405,10 +405,10 @@ LABEL_21:
     }
 
     v31 = [v14 copy];
-    v32 = v36->_pointerRegions;
-    v36->_pointerRegions = v31;
+    v32 = selfCopy->_pointerRegions;
+    selfCopy->_pointerRegions = v31;
 
-    pointerRegions = v36->_pointerRegions;
+    pointerRegions = selfCopy->_pointerRegions;
   }
 
   return pointerRegions;
@@ -416,20 +416,20 @@ LABEL_21:
 
 - (id)_arrangedSubviewsRespectingLayoutDirection
 {
-  v3 = [(MailActionFlagColorCell *)self stackView];
-  v4 = [v3 arrangedSubviews];
+  stackView = [(MailActionFlagColorCell *)self stackView];
+  arrangedSubviews = [stackView arrangedSubviews];
 
-  v5 = [(MailActionFlagColorCell *)self traitCollection];
-  v6 = [v5 layoutDirection];
+  traitCollection = [(MailActionFlagColorCell *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v6 == 1)
+  if (layoutDirection == 1)
   {
-    v7 = [v4 ef_reverse];
+    ef_reverse = [arrangedSubviews ef_reverse];
 
-    v4 = v7;
+    arrangedSubviews = ef_reverse;
   }
 
-  return v4;
+  return arrangedSubviews;
 }
 
 - (void)updateConstraints

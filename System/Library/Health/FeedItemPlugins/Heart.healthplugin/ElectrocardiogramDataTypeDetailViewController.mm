@@ -1,20 +1,20 @@
 @interface ElectrocardiogramDataTypeDetailViewController
 - (BOOL)isPinned;
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithCoder:(id)a3;
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithDisplayType:(id)a3 profile:(id)a4 mode:(int64_t)a5;
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithStyle:(int64_t)a3;
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)a3;
-- (id)createDataProviderWithDisplayType:(id)a3 profile:(id)a4 mode:(int64_t)a5;
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithCoder:(id)coder;
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithDisplayType:(id)type profile:(id)profile mode:(int64_t)mode;
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithStyle:(int64_t)style;
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)styling;
+- (id)createDataProviderWithDisplayType:(id)type profile:(id)profile mode:(int64_t)mode;
 - (void)didSelectRegulatoryRow;
-- (void)setPinned:(BOOL)a3;
+- (void)setPinned:(BOOL)pinned;
 - (void)showAddDataVC;
 - (void)viewDidLoad;
 @end
 
 @implementation ElectrocardiogramDataTypeDetailViewController
 
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithCoder:(id)a3
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC5Heart45ElectrocardiogramDataTypeDetailViewController_consumedHealthExperienceStore;
   *v4 = 0u;
@@ -28,70 +28,70 @@
   return result;
 }
 
-- (id)createDataProviderWithDisplayType:(id)a3 profile:(id)a4 mode:(int64_t)a5
+- (id)createDataProviderWithDisplayType:(id)type profile:(id)profile mode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_29D7070AC(v8, v9, a5);
+  typeCopy = type;
+  profileCopy = profile;
+  selfCopy = self;
+  v11 = sub_29D7070AC(typeCopy, profileCopy, mode);
 
   return v11;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D707284();
 }
 
 - (BOOL)isPinned
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_29D70742C();
 
   return v3 & 1;
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  v4 = self;
-  sub_29D707630(a3);
+  selfCopy = self;
+  sub_29D707630(pinned);
 }
 
 - (void)showAddDataVC
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D7077E4();
 }
 
 - (void)didSelectRegulatoryRow
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D707D60();
 }
 
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithDisplayType:(id)a3 profile:(id)a4 mode:(int64_t)a5
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithDisplayType:(id)type profile:(id)profile mode:(int64_t)mode
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)a3
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)styling
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Heart45ElectrocardiogramDataTypeDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

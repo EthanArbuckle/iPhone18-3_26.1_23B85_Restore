@@ -1,13 +1,13 @@
 @interface CSSpeechUaapXPCConnection
-- (BOOL)_handleRegisterMultilingualUaapApp:(id)a3 withAssetFiles:(id)a4 error:(id *)a5;
-- (BOOL)_handleRegisterUaapApp:(id)a3 forLocale:(id)a4 withAssetFiles:(id)a5 error:(id *)a6;
-- (CSSpeechUaapXPCConnection)initWithConnection:(id)a3;
-- (void)_handleClientError:(id)a3;
-- (void)_handleClientMessage:(id)a3;
+- (BOOL)_handleRegisterMultilingualUaapApp:(id)app withAssetFiles:(id)files error:(id *)error;
+- (BOOL)_handleRegisterUaapApp:(id)app forLocale:(id)locale withAssetFiles:(id)files error:(id *)error;
+- (CSSpeechUaapXPCConnection)initWithConnection:(id)connection;
+- (void)_handleClientError:(id)error;
+- (void)_handleClientMessage:(id)message;
 - (void)_handleDatapackUpdate;
 - (void)activate;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation CSSpeechUaapXPCConnection
@@ -31,10 +31,10 @@
   sub_100061E10(0, 1, v4);
 }
 
-- (BOOL)_handleRegisterMultilingualUaapApp:(id)a3 withAssetFiles:(id)a4 error:(id *)a5
+- (BOOL)_handleRegisterMultilingualUaapApp:(id)app withAssetFiles:(id)files error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  appCopy = app;
+  filesCopy = files;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -51,16 +51,16 @@
   v14[3] = &unk_100251E88;
   v16 = &v24;
   v14[4] = self;
-  v10 = v8;
+  v10 = appCopy;
   v15 = v10;
   v17 = &v18;
-  [v9 enumerateKeysAndObjectsUsingBlock:v14];
-  if (a5)
+  [filesCopy enumerateKeysAndObjectsUsingBlock:v14];
+  if (error)
   {
     v11 = v19[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -72,19 +72,19 @@
   return v12;
 }
 
-- (BOOL)_handleRegisterUaapApp:(id)a3 forLocale:(id)a4 withAssetFiles:(id)a5 error:(id *)a6
+- (BOOL)_handleRegisterUaapApp:(id)app forLocale:(id)locale withAssetFiles:(id)files error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  appCopy = app;
+  localeCopy = locale;
+  filesCopy = files;
   if ((+[CSUtils supportsUnderstandingOnDevice]& 1) != 0)
   {
-    if (!v10)
+    if (!localeCopy)
     {
-      v10 = [CSUtils getSiriLanguageWithFallback:0];
+      localeCopy = [CSUtils getSiriLanguageWithFallback:0];
     }
 
-    v12 = sub_100060B30(v9, v10);
+    v12 = sub_100060B30(appCopy, localeCopy);
     v13 = +[NSFileManager defaultManager];
     [v13 removeItemAtPath:v12 error:0];
 
@@ -111,16 +111,16 @@
       v38[3] = &unk_100251E60;
       v39 = v12;
       v41 = &v49;
-      v17 = v9;
+      v17 = appCopy;
       v40 = v17;
       v42 = &v43;
-      [v11 enumerateObjectsUsingBlock:v38];
-      if (a6)
+      [filesCopy enumerateObjectsUsingBlock:v38];
+      if (error)
       {
         v18 = v44[5];
         if (v18)
         {
-          *a6 = v18;
+          *error = v18;
         }
       }
 
@@ -136,7 +136,7 @@
         v35 = v19;
         v37 = v35;
         v21 = v20;
-        v22 = v10;
+        v22 = localeCopy;
         v23 = v36;
         v24 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -175,17 +175,17 @@
       *buf = 136315650;
       *&buf[4] = "[CSSpeechUaapXPCConnection _handleRegisterUaapApp:forLocale:withAssetFiles:error:]";
       *&buf[12] = 2112;
-      *&buf[14] = v9;
+      *&buf[14] = appCopy;
       *&buf[22] = 2112;
       v60 = v16;
       _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%s Error while creating UaaP asset directory for %@: %@", buf, 0x20u);
-      if (!a6)
+      if (!error)
       {
         goto LABEL_18;
       }
     }
 
-    else if (!a6)
+    else if (!error)
     {
 LABEL_18:
       v30 = 0;
@@ -198,12 +198,12 @@ LABEL_19:
     v32 = [NSString stringWithFormat:@"Failed to create UaaP asset directory at %@: %@", v12, v16];
     v56 = v32;
     v33 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-    *a6 = [NSError errorWithDomain:@"com.apple.corespeech.uaap" code:2 userInfo:v33];
+    *error = [NSError errorWithDomain:@"com.apple.corespeech.uaap" code:2 userInfo:v33];
 
     goto LABEL_18;
   }
 
-  if (!a6)
+  if (!error)
   {
     v30 = 0;
     goto LABEL_21;
@@ -213,20 +213,20 @@ LABEL_19:
   v58 = @"UaaP is not supported on this device";
   v12 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
   [NSError errorWithDomain:@"com.apple.corespeech.uaap" code:3 userInfo:v12];
-  *a6 = v30 = 0;
+  *error = v30 = 0;
 LABEL_20:
 
 LABEL_21:
   return v30 & 1;
 }
 
-- (void)_handleClientMessage:(id)a3
+- (void)_handleClientMessage:(id)message
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "messageType");
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "messageType");
   if (uint64 - 1 < 2)
   {
-    v7 = xpc_dictionary_get_value(v4, "message");
+    v7 = xpc_dictionary_get_value(messageCopy, "message");
     if (v7)
     {
       v8 = v7;
@@ -256,20 +256,20 @@ LABEL_21:
           }
         }
 
-        v31 = xpc_dictionary_get_remote_connection(v4);
-        reply = xpc_dictionary_create_reply(v4);
+        v31 = xpc_dictionary_get_remote_connection(messageCopy);
+        reply = xpc_dictionary_create_reply(messageCopy);
         v41 = 0;
         v33 = [(CSSpeechUaapXPCConnection *)self _handleRegisterUaapApp:v10 forLocale:v12 withAssetFiles:v28 error:&v41];
         v34 = v41;
         v35 = v34;
         if ((v33 & 1) == 0)
         {
-          v36 = [v34 domain];
-          xpc_dictionary_set_string(reply, "errorDomain", [v36 UTF8String]);
+          domain = [v34 domain];
+          xpc_dictionary_set_string(reply, "errorDomain", [domain UTF8String]);
 
           xpc_dictionary_set_int64(reply, "errorCode", [v35 code]);
-          v37 = [v35 localizedDescription];
-          xpc_dictionary_set_string(reply, "errorMessage", [v37 UTF8String]);
+          localizedDescription = [v35 localizedDescription];
+          xpc_dictionary_set_string(reply, "errorMessage", [localizedDescription UTF8String]);
         }
 
         xpc_connection_send_message(v31, reply);
@@ -304,7 +304,7 @@ LABEL_21:
     *buf = 136315394;
     v43 = "[CSSpeechUaapXPCConnection _handleClientMessage:]";
     v44 = 2112;
-    v45 = v4;
+    v45 = messageCopy;
     v24 = "%s UaaP XPC connection received an invalid message: %@";
     v25 = v26;
     goto LABEL_22;
@@ -313,7 +313,7 @@ LABEL_21:
   v6 = uint64;
   if (uint64 == 3)
   {
-    v13 = xpc_dictionary_get_value(v4, "message");
+    v13 = xpc_dictionary_get_value(messageCopy, "message");
     if (v13)
     {
       v8 = v13;
@@ -329,20 +329,20 @@ LABEL_21:
         v15 = applier[3] = &unk_100251E38;
         v40 = v15;
         xpc_dictionary_apply(v12, applier);
-        v16 = xpc_dictionary_get_remote_connection(v4);
-        v17 = xpc_dictionary_create_reply(v4);
+        v16 = xpc_dictionary_get_remote_connection(messageCopy);
+        v17 = xpc_dictionary_create_reply(messageCopy);
         v38 = 0;
         v18 = [(CSSpeechUaapXPCConnection *)self _handleRegisterMultilingualUaapApp:v10 withAssetFiles:v15 error:&v38];
         v19 = v38;
         v20 = v19;
         if ((v18 & 1) == 0)
         {
-          v21 = [v19 domain];
-          xpc_dictionary_set_string(v17, "errorDomain", [v21 UTF8String]);
+          domain2 = [v19 domain];
+          xpc_dictionary_set_string(v17, "errorDomain", [domain2 UTF8String]);
 
           xpc_dictionary_set_int64(v17, "errorCode", [v20 code]);
-          v22 = [v20 localizedDescription];
-          xpc_dictionary_set_string(v17, "errorMessage", [v22 UTF8String]);
+          localizedDescription2 = [v20 localizedDescription];
+          xpc_dictionary_set_string(v17, "errorMessage", [localizedDescription2 UTF8String]);
         }
 
         xpc_connection_send_message(v16, v17);
@@ -392,16 +392,16 @@ LABEL_22:
 LABEL_33:
 }
 
-- (void)_handleClientError:(id)a3
+- (void)_handleClientError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_13;
   }
 
-  if (v4 == &_xpc_error_connection_invalid)
+  if (errorCopy == &_xpc_error_connection_invalid)
   {
     v9 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -445,16 +445,16 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   interruptionHandler = self->_interruptionHandler;
   self->_interruptionHandler = v4;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v4;
 }
@@ -474,16 +474,16 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (CSSpeechUaapXPCConnection)initWithConnection:(id)a3
+- (CSSpeechUaapXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = CSSpeechUaapXPCConnection;
   v6 = [(CSSpeechUaapXPCConnection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = dispatch_queue_create("com.apple.corespeechd.uaap-connection", 0);
     queue = v7->_queue;
     v7->_queue = v8;

@@ -1,18 +1,18 @@
 @interface AudioTrackDetailsViewController
-- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)didTapPlayPauseButton;
 - (void)didTapReadButton;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation AudioTrackDetailsViewController
 
-- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI231AudioTrackDetailsViewController_trackView;
   type metadata accessor for AudioTrackDetailsView();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI231AudioTrackDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -31,40 +31,40 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   AudioTrackDetailsViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   AudioTrackDetailsViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AudioTrackDetailsViewController.viewDidLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(AudioTrackDetailsViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(AudioTrackDetailsViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_219133710();
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = _s7NewsUI231AudioTrackDetailsViewControllerC012presentationG012forPresented10presenting6sourceSo014UIPresentationG0CSgSo06UIViewG0C_ALSgALtF_0(v8, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v12 = _s7NewsUI231AudioTrackDetailsViewControllerC012presentationG012forPresented10presenting6sourceSo014UIPresentationG0CSgSo06UIViewG0C_ALSgALtF_0(controllerCopy, viewController);
 
   return v12;
 }
@@ -80,9 +80,9 @@
   v6[2] = sub_218793E0C;
   v6[3] = &block_descriptor_19_1;
   v4 = _Block_copy(v6);
-  v5 = self;
+  selfCopy = self;
 
-  [(AudioTrackDetailsViewController *)v5 dismissViewControllerAnimated:1 completion:v4];
+  [(AudioTrackDetailsViewController *)selfCopy dismissViewControllerAnimated:1 completion:v4];
 
   _Block_release(v4);
 }
@@ -98,9 +98,9 @@
   v6[2] = sub_218793E0C;
   v6[3] = &block_descriptor_99;
   v4 = _Block_copy(v6);
-  v5 = self;
+  selfCopy = self;
 
-  [(AudioTrackDetailsViewController *)v5 dismissViewControllerAnimated:1 completion:v4];
+  [(AudioTrackDetailsViewController *)selfCopy dismissViewControllerAnimated:1 completion:v4];
 
   _Block_release(v4);
 }

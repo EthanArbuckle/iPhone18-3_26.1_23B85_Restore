@@ -1,32 +1,32 @@
 @interface RBPowerAssertionManager
-- (BOOL)_unitTest_hasPowerAssertionForProcess:(id)a3;
+- (BOOL)_unitTest_hasPowerAssertionForProcess:(id)process;
 - (BOOL)_unitTest_hasSystemPowerAssertion;
 - (NSString)debugDescription;
 - (NSString)stateCaptureTitle;
 - (RBPowerAssertionManager)init;
 - (RBPowerAssertionManagerDelegate)delegate;
-- (id)_unitTest_nameOfPowerAssertionForProcess:(id)a3;
+- (id)_unitTest_nameOfPowerAssertionForProcess:(id)process;
 - (id)_unitTest_nameOfPowerAssertionForSystem;
 - (uint64_t)_queue_invalidateAssertion:(uint64_t)result;
 - (void)_queue_didAcquireAssertion;
-- (void)_queue_updateProcessAssertion:(void *)a3 withState:;
+- (void)_queue_updateProcessAssertion:(void *)assertion withState:;
 - (void)_queue_willInvalidateAssertion;
-- (void)addProcess:(id)a3;
-- (void)applySystemState:(id)a3;
+- (void)addProcess:(id)process;
+- (void)applySystemState:(id)state;
 - (void)dealloc;
-- (void)didUpdateProcessStates:(id)a3;
-- (void)removeProcess:(id)a3;
-- (void)removeStateForProcessIdentity:(id)a3;
+- (void)didUpdateProcessStates:(id)states;
+- (void)removeProcess:(id)process;
+- (void)removeStateForProcessIdentity:(id)identity;
 @end
 
 @implementation RBPowerAssertionManager
 
 - (void)_queue_didAcquireAssertion
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
-    *(a1 + 32) = v2 + 1;
+    v2 = *(self + 32);
+    *(self + 32) = v2 + 1;
     if (!v2)
     {
       v3 = rbs_power_log();
@@ -35,27 +35,27 @@
         OUTLINED_FUNCTION_3(&dword_262485000, v4, v5, "Acquired first power assertion", v6, v7, v8, v9, 0);
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
-      [WeakRetained powerAssertionManagerDidPreventIdleSleep:a1];
+      WeakRetained = objc_loadWeakRetained((self + 48));
+      [WeakRetained powerAssertionManagerDidPreventIdleSleep:self];
     }
   }
 }
 
 - (void)_queue_willInvalidateAssertion
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
+    v2 = *(self + 32);
     if (!v2)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:sel__queue_willInvalidateAssertion object:a1 file:@"RBPowerAssertionManager.m" lineNumber:461 description:@"Unbalanced attempt to release a power assertion"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__queue_willInvalidateAssertion object:self file:@"RBPowerAssertionManager.m" lineNumber:461 description:@"Unbalanced attempt to release a power assertion"];
 
-      v2 = *(a1 + 32);
+      v2 = *(self + 32);
     }
 
     v3 = v2 - 1;
-    *(a1 + 32) = v3;
+    *(self + 32) = v3;
     if (!v3)
     {
       v4 = rbs_power_log();
@@ -64,8 +64,8 @@
         OUTLINED_FUNCTION_3(&dword_262485000, v5, v6, "Released last power assertion", v7, v8, v9, v10, 0);
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
-      [WeakRetained powerAssertionManagerDidAllowIdleSleep:a1];
+      WeakRetained = objc_loadWeakRetained((self + 48));
+      [WeakRetained powerAssertionManagerDidAllowIdleSleep:self];
     }
   }
 }
@@ -149,17 +149,17 @@
   return v9;
 }
 
-- (void)didUpdateProcessStates:(id)a3
+- (void)didUpdateProcessStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__RBPowerAssertionManager_didUpdateProcessStates___block_invoke;
   v7[3] = &unk_279B32B80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = statesCopy;
+  selfCopy = self;
+  v6 = statesCopy;
   dispatch_async(queue, v7);
 }
 
@@ -203,20 +203,20 @@ void __50__RBPowerAssertionManager_didUpdateProcessStates___block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateProcessAssertion:(void *)a3 withState:
+- (void)_queue_updateProcessAssertion:(void *)assertion withState:
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
       v5 = a2;
-      objc_setProperty_nonatomic_copy(v5, v6, a3, 48);
-      v7[4] = a1;
+      objc_setProperty_nonatomic_copy(v5, v6, assertion, 48);
+      v7[4] = self;
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __67__RBPowerAssertionManager__queue_updateProcessAssertion_withState___block_invoke;
       v8[3] = &unk_279B32CB0;
-      v8[4] = a1;
+      v8[4] = self;
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __67__RBPowerAssertionManager__queue_updateProcessAssertion_withState___block_invoke_2;
@@ -226,17 +226,17 @@ void __50__RBPowerAssertionManager_didUpdateProcessStates___block_invoke(uint64_
   }
 }
 
-- (void)removeStateForProcessIdentity:(id)a3
+- (void)removeStateForProcessIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__RBPowerAssertionManager_removeStateForProcessIdentity___block_invoke;
   v7[3] = &unk_279B32B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identityCopy;
+  v6 = identityCopy;
   dispatch_async(queue, v7);
 }
 
@@ -266,45 +266,45 @@ uint64_t __57__RBPowerAssertionManager_removeStateForProcessIdentity___block_inv
   return result;
 }
 
-- (void)applySystemState:(id)a3
+- (void)applySystemState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RBPowerAssertionManager_applySystemState___block_invoke;
   v7[3] = &unk_279B32B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addProcess:(id)a3
+- (void)addProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__RBPowerAssertionManager_addProcess___block_invoke;
   v7[3] = &unk_279B32B80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = processCopy;
+  selfCopy = self;
+  v6 = processCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeProcess:(id)a3
+- (void)removeProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__RBPowerAssertionManager_removeProcess___block_invoke;
   v7[3] = &unk_279B32B80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = processCopy;
+  selfCopy = self;
+  v6 = processCopy;
   dispatch_async(queue, v7);
 }
 
@@ -347,9 +347,9 @@ void __41__RBPowerAssertionManager_removeProcess___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)_unitTest_hasPowerAssertionForProcess:(id)a3
+- (BOOL)_unitTest_hasPowerAssertionForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -359,10 +359,10 @@ void __41__RBPowerAssertionManager_removeProcess___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __65__RBPowerAssertionManager__unitTest_hasPowerAssertionForProcess___block_invoke;
   block[3] = &unk_279B32D28;
-  v9 = v4;
+  v9 = processCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = processCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -392,9 +392,9 @@ void __41__RBPowerAssertionManager_removeProcess___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_unitTest_nameOfPowerAssertionForProcess:(id)a3
+- (id)_unitTest_nameOfPowerAssertionForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -406,10 +406,10 @@ void __41__RBPowerAssertionManager_removeProcess___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __68__RBPowerAssertionManager__unitTest_nameOfPowerAssertionForProcess___block_invoke;
   block[3] = &unk_279B32D28;
-  v10 = v4;
+  v10 = processCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = processCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

@@ -1,6 +1,6 @@
 @interface MXRoutingContextModificationMetrics
-- (MXRoutingContextModificationMetrics)initWithCorrelationID:(id)a3;
-- (MXRoutingContextModificationMetrics)initWithDictionary:(id)a3;
+- (MXRoutingContextModificationMetrics)initWithCorrelationID:(id)d;
+- (MXRoutingContextModificationMetrics)initWithDictionary:(id)dictionary;
 - (id)RTCDictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -9,14 +9,14 @@
 
 @implementation MXRoutingContextModificationMetrics
 
-- (MXRoutingContextModificationMetrics)initWithCorrelationID:(id)a3
+- (MXRoutingContextModificationMetrics)initWithCorrelationID:(id)d
 {
   v6.receiver = self;
   v6.super_class = MXRoutingContextModificationMetrics;
   v4 = [(MXRoutingContextModificationMetrics *)&v6 init];
   if (v4)
   {
-    v4->_correlationID = a3;
+    v4->_correlationID = d;
   }
 
   return v4;
@@ -31,14 +31,14 @@
 
 - (id)description
 {
-  v2 = [(MXRoutingContextModificationMetrics *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(MXRoutingContextModificationMetrics *)self dictionaryRepresentation];
 
-  return [v2 description];
+  return [dictionaryRepresentation description];
 }
 
-- (MXRoutingContextModificationMetrics)initWithDictionary:(id)a3
+- (MXRoutingContextModificationMetrics)initWithDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKey:@"CorrelationID"];
+  v5 = [dictionary objectForKey:@"CorrelationID"];
   v8.receiver = self;
   v8.super_class = MXRoutingContextModificationMetrics;
   v6 = [(MXRoutingContextModificationMetrics *)&v8 init];
@@ -47,14 +47,14 @@
     v6->_correlationID = v5;
   }
 
-  -[MXRoutingContextModificationMetrics setServerModificationStartedTimestamp:](v6, "setServerModificationStartedTimestamp:", [a3 objectForKey:@"ServerModificationStartedTimestamp"]);
-  -[MXRoutingContextModificationMetrics setServerModificationFinishedTimestamp:](v6, "setServerModificationFinishedTimestamp:", [a3 objectForKey:@"ServerModificationFinishedTimestamp"]);
-  -[MXRoutingContextModificationMetrics setClientModificationStartedTimestamp:](v6, "setClientModificationStartedTimestamp:", [a3 objectForKey:@"ClientModificationStartedTimestamp"]);
-  -[MXRoutingContextModificationMetrics setClientModificationFinishedTimestamp:](v6, "setClientModificationFinishedTimestamp:", [a3 objectForKey:@"ClientModificationFinishedTimestamp"]);
-  -[MXRoutingContextModificationMetrics setFigEndpointType:](v6, "setFigEndpointType:", [a3 objectForKey:@"EndpointType"]);
-  -[MXRoutingContextModificationMetrics setPreviousRouteDescriptors:](v6, "setPreviousRouteDescriptors:", [a3 objectForKey:@"PreviousRouteDescriptors"]);
-  -[MXRoutingContextModificationMetrics setCurrentRouteDescriptors:](v6, "setCurrentRouteDescriptors:", [a3 objectForKey:@"CurrentRouteDescriptors"]);
-  -[MXRoutingContextModificationMetrics setRouteChangeFailed:](v6, "setRouteChangeFailed:", [a3 objectForKey:@"RouteChangeSucceeded"]);
+  -[MXRoutingContextModificationMetrics setServerModificationStartedTimestamp:](v6, "setServerModificationStartedTimestamp:", [dictionary objectForKey:@"ServerModificationStartedTimestamp"]);
+  -[MXRoutingContextModificationMetrics setServerModificationFinishedTimestamp:](v6, "setServerModificationFinishedTimestamp:", [dictionary objectForKey:@"ServerModificationFinishedTimestamp"]);
+  -[MXRoutingContextModificationMetrics setClientModificationStartedTimestamp:](v6, "setClientModificationStartedTimestamp:", [dictionary objectForKey:@"ClientModificationStartedTimestamp"]);
+  -[MXRoutingContextModificationMetrics setClientModificationFinishedTimestamp:](v6, "setClientModificationFinishedTimestamp:", [dictionary objectForKey:@"ClientModificationFinishedTimestamp"]);
+  -[MXRoutingContextModificationMetrics setFigEndpointType:](v6, "setFigEndpointType:", [dictionary objectForKey:@"EndpointType"]);
+  -[MXRoutingContextModificationMetrics setPreviousRouteDescriptors:](v6, "setPreviousRouteDescriptors:", [dictionary objectForKey:@"PreviousRouteDescriptors"]);
+  -[MXRoutingContextModificationMetrics setCurrentRouteDescriptors:](v6, "setCurrentRouteDescriptors:", [dictionary objectForKey:@"CurrentRouteDescriptors"]);
+  -[MXRoutingContextModificationMetrics setRouteChangeFailed:](v6, "setRouteChangeFailed:", [dictionary objectForKey:@"RouteChangeSucceeded"]);
   return v6;
 }
 
@@ -77,16 +77,16 @@
 - (id)RTCDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self clientModificationStartedTimestamp] longLongValue];
-  v5 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self clientModificationFinishedTimestamp] longLongValue];
-  v6 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self serverModificationStartedTimestamp] longLongValue];
-  v7 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self serverModificationFinishedTimestamp] longLongValue];
-  v8 = (v5 - v4) / 0xF4240uLL;
-  v9 = (v7 - v6) / 0xF4240uLL;
-  v10 = (v5 - v7) / 0xF4240uLL;
+  longLongValue = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self clientModificationStartedTimestamp] longLongValue];
+  longLongValue2 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self clientModificationFinishedTimestamp] longLongValue];
+  longLongValue3 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self serverModificationStartedTimestamp] longLongValue];
+  longLongValue4 = [(NSNumber *)[(MXRoutingContextModificationMetrics *)self serverModificationFinishedTimestamp] longLongValue];
+  v8 = (longLongValue2 - longLongValue) / 0xF4240uLL;
+  v9 = (longLongValue4 - longLongValue3) / 0xF4240uLL;
+  v10 = (longLongValue2 - longLongValue4) / 0xF4240uLL;
   [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", v8), @"TotalRequestTime"}];
   [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", v9), @"TotalTimeSpentInServer"}];
-  [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", (v6 - v4) / 0xF4240uLL), @"TimeTakenForRequestToReachServer"}];
+  [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", (longLongValue3 - longLongValue) / 0xF4240uLL), @"TimeTakenForRequestToReachServer"}];
   [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", v10), @"TimeTakenToRunClientCallback"}];
   [v3 setValue:-[MXRoutingContextModificationMetrics routeChangeFailed](self forKey:{"routeChangeFailed"), @"MXErrorStatus"}];
 

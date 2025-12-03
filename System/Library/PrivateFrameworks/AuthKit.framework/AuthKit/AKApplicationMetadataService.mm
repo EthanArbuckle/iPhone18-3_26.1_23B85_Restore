@@ -1,31 +1,31 @@
 @interface AKApplicationMetadataService
 - (AKApplicationMetadataService)init;
-- (AKApplicationMetadataService)initWithServiceController:(id)a3;
-- (void)fetchAuthorizationHTMLResponseTemplateWithCompletion:(id)a3;
-- (void)performFetchPrimaryApplicationInformationForClientBundleID:(NSString *)a3 completion:(id)a4;
+- (AKApplicationMetadataService)initWithServiceController:(id)controller;
+- (void)fetchAuthorizationHTMLResponseTemplateWithCompletion:(id)completion;
+- (void)performFetchPrimaryApplicationInformationForClientBundleID:(NSString *)d completion:(id)completion;
 @end
 
 @implementation AKApplicationMetadataService
 
-- (AKApplicationMetadataService)initWithServiceController:(id)a3
+- (AKApplicationMetadataService)initWithServiceController:(id)controller
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___AKApplicationMetadataService_serviceController) = a3;
+  *(&self->super.isa + OBJC_IVAR___AKApplicationMetadataService_serviceController) = controller;
   v7.receiver = self;
   v7.super_class = ObjectType;
   swift_unknownObjectRetain();
   return [(AKApplicationMetadataService *)&v7 init];
 }
 
-- (void)performFetchPrimaryApplicationInformationForClientBundleID:(NSString *)a3 completion:(id)a4
+- (void)performFetchPrimaryApplicationInformationForClientBundleID:(NSString *)d completion:(id)completion
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = d;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -40,18 +40,18 @@
   v15[3] = 0;
   v15[4] = &unk_10029DA38;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029DA40, v15);
 }
 
-- (void)fetchAuthorizationHTMLResponseTemplateWithCompletion:(id)a3
+- (void)fetchAuthorizationHTMLResponseTemplateWithCompletion:(id)completion
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -67,7 +67,7 @@
   v13[3] = 0;
   v13[4] = &unk_10029C6A0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100244978(0, 0, v8, &unk_10029CEE0, v13);
 }
 

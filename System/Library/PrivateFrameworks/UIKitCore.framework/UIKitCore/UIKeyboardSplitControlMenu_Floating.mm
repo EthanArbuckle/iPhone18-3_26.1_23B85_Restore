@@ -1,6 +1,6 @@
 @interface UIKeyboardSplitControlMenu_Floating
 - (BOOL)visible;
-- (void)actionForMenu:(id)a3;
+- (void)actionForMenu:(id)menu;
 @end
 
 @implementation UIKeyboardSplitControlMenu_Floating
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (void)actionForMenu:(id)a3
+- (void)actionForMenu:(id)menu
 {
   [UIPeripheralHost setFloating:1 onCompletion:&__block_literal_global_392];
   v3 = *MEMORY[0x1E695EFF8];

@@ -2,10 +2,10 @@
 - (PXPlacesMapPipelineComponentProvider)pipelineComponentProvider;
 - (UIEdgeInsets)minimumEdgeInsets;
 - (_TtC7Journal19LocationPinRenderer)init;
-- (id)annotationForGeotaggables:(id)a3 initialCoordinate:(CLLocationCoordinate2D)a4;
-- (id)selectedGeotaggablesForRenderable:(id)a3 mapView:(id)a4;
-- (id)viewForAnnotation:(id)a3 andMapView:(id)a4;
-- (void)setPipelineComponentProvider:(id)a3;
+- (id)annotationForGeotaggables:(id)geotaggables initialCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)selectedGeotaggablesForRenderable:(id)renderable mapView:(id)view;
+- (id)viewForAnnotation:(id)annotation andMapView:(id)view;
+- (void)setPipelineComponentProvider:(id)provider;
 @end
 
 @implementation LocationPinRenderer
@@ -17,9 +17,9 @@
   return v2;
 }
 
-- (void)setPipelineComponentProvider:(id)a3
+- (void)setPipelineComponentProvider:(id)provider
 {
-  *(&self->super.isa + OBJC_IVAR____TtC7Journal19LocationPinRenderer_pipelineComponentProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC7Journal19LocationPinRenderer_pipelineComponentProvider) = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -47,33 +47,33 @@
   return result;
 }
 
-- (id)viewForAnnotation:(id)a3 andMapView:(id)a4
+- (id)viewForAnnotation:(id)annotation andMapView:(id)view
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100468B90(a3, v7);
+  viewCopy = view;
+  selfCopy = self;
+  v9 = sub_100468B90(annotation, viewCopy);
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (id)annotationForGeotaggables:(id)a3 initialCoordinate:(CLLocationCoordinate2D)a4
+- (id)annotationForGeotaggables:(id)geotaggables initialCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
-  v8 = self;
-  v9 = sub_100468D24(v7, latitude, longitude);
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  geotaggablesCopy = geotaggables;
+  selfCopy = self;
+  v9 = sub_100468D24(geotaggablesCopy, latitude, longitude);
 
   return v9;
 }
 
-- (id)selectedGeotaggablesForRenderable:(id)a3 mapView:(id)a4
+- (id)selectedGeotaggablesForRenderable:(id)renderable mapView:(id)view
 {
-  v4 = [a3 geotaggables];
+  geotaggables = [renderable geotaggables];
 
-  return v4;
+  return geotaggables;
 }
 
 @end

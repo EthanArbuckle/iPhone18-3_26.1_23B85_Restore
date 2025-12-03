@@ -1,5 +1,5 @@
 @interface PKSwitchSpinnerTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,12 +7,12 @@
 
 @implementation PKSwitchSpinnerTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSwitchSpinnerTableCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSwitchSpinnerTableCell" hasInstanceVariable:@"_switch" withType:"UISwitch"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSwitchSpinnerTableCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSwitchSpinnerTableCell" hasInstanceVariable:@"_switch" withType:"UISwitch"];
 }
 
 - (id)accessibilityLabel
@@ -26,9 +26,9 @@
 - (id)accessibilityValue
 {
   v2 = [(PKSwitchSpinnerTableCellAccessibility *)self safeValueForKey:@"_switch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint

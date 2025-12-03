@@ -1,11 +1,11 @@
 @interface BRContainersMonitor
-+ (BOOL)isContainerIDForeground:(id)a3;
-+ (id)bundleIDFromPrimaryIdentifier:(id)a3 secondaryIdentifier:(id)a4;
-+ (id)containerIDFromPrimaryIdentifier:(id)a3 secondaryIdentifier:(id)a4;
++ (BOOL)isContainerIDForeground:(id)foreground;
++ (id)bundleIDFromPrimaryIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier;
++ (id)containerIDFromPrimaryIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier;
 - (BRContainersMonitor)init;
-- (void)addObserver:(id)a3 forContainerID:(id)a4;
+- (void)addObserver:(id)observer forContainerID:(id)d;
 - (void)dealloc;
-- (void)removeObserver:(id)a3 forContainerID:(id)a4;
+- (void)removeObserver:(id)observer forContainerID:(id)d;
 @end
 
 @implementation BRContainersMonitor
@@ -49,11 +49,11 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)containerIDFromPrimaryIdentifier:(id)a3 secondaryIdentifier:(id)a4
++ (id)containerIDFromPrimaryIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  secondaryIdentifierCopy = secondaryIdentifier;
   memset(v14, 0, sizeof(v14));
   __brc_create_section(0, "+[BRContainersMonitor containerIDFromPrimaryIdentifier:secondaryIdentifier:]", 81, 0, v14);
   v7 = brc_bread_crumbs("+[BRContainersMonitor containerIDFromPrimaryIdentifier:secondaryIdentifier:]", 81);
@@ -63,17 +63,17 @@
     *buf = 134218754;
     v16 = v14[0];
     v17 = 2112;
-    v18 = v5;
+    v18 = identifierCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = secondaryIdentifierCopy;
     v21 = 2112;
     v22 = v7;
     _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx asking container ID for %@, %@%@", buf, 0x2Au);
   }
 
-  if ([v6 isEqualToString:@"com.apple.bird"])
+  if ([secondaryIdentifierCopy isEqualToString:@"com.apple.bird"])
   {
-    v9 = [@"com.apple.clouddocs." stringByAppendingString:v5];
+    v9 = [@"com.apple.clouddocs." stringByAppendingString:identifierCopy];
     v10 = brc_bread_crumbs("+[BRContainersMonitor containerIDFromPrimaryIdentifier:secondaryIdentifier:]", 87);
     v11 = brc_default_log(1, 0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -94,11 +94,11 @@
   return v9;
 }
 
-+ (id)bundleIDFromPrimaryIdentifier:(id)a3 secondaryIdentifier:(id)a4
++ (id)bundleIDFromPrimaryIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  secondaryIdentifierCopy = secondaryIdentifier;
   memset(v16, 0, sizeof(v16));
   __brc_create_section(0, "+[BRContainersMonitor bundleIDFromPrimaryIdentifier:secondaryIdentifier:]", 94, 0, v16);
   v8 = brc_bread_crumbs("+[BRContainersMonitor bundleIDFromPrimaryIdentifier:secondaryIdentifier:]", 94);
@@ -108,15 +108,15 @@
     *buf = 134218754;
     v18 = v16[0];
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = secondaryIdentifierCopy;
     v23 = 2112;
     v24 = v8;
     _os_log_debug_impl(&dword_1AE2A9000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx asking bundle ID for %@, %@%@", buf, 0x2Au);
   }
 
-  v10 = [a1 containerIDFromPrimaryIdentifier:v6 secondaryIdentifier:v7];
+  v10 = [self containerIDFromPrimaryIdentifier:identifierCopy secondaryIdentifier:secondaryIdentifierCopy];
   if (v10)
   {
     v11 = @"com.apple.bird";
@@ -135,9 +135,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = secondaryIdentifierCopy;
       v21 = 2112;
       v22 = v12;
       _os_log_fault_impl(&dword_1AE2A9000, v13, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: not a CloudDocs identifier pair (%@, %@)%@", buf, 0x20u);
@@ -152,11 +152,11 @@
   return v11;
 }
 
-- (void)addObserver:(id)a3 forContainerID:(id)a4
+- (void)addObserver:(id)observer forContainerID:(id)d
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dCopy = d;
   memset(v38, 0, sizeof(v38));
   __brc_create_section(0, "[BRContainersMonitor addObserver:forContainerID:]", 151, 0, v38);
   v8 = brc_bread_crumbs("[BRContainersMonitor addObserver:forContainerID:]", 151);
@@ -166,53 +166,53 @@
     *handler = 134218498;
     *&handler[4] = v38[0];
     *&handler[12] = 2112;
-    *&handler[14] = v7;
+    *&handler[14] = dCopy;
     *&handler[22] = 2112;
     *&handler[24] = v8;
     _os_log_debug_impl(&dword_1AE2A9000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx adding observer for %@%@", handler, 0x20u);
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   out_token = 0;
-  v11 = [(NSMutableDictionary *)v10->_observersByContainerID objectForKey:v7];
+  v11 = [(NSMutableDictionary *)selfCopy->_observersByContainerID objectForKey:dCopy];
   if (!v11)
   {
     v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    [(NSMutableDictionary *)v10->_observersByContainerID setObject:v11 forKey:v7];
+    [(NSMutableDictionary *)selfCopy->_observersByContainerID setObject:v11 forKey:dCopy];
   }
 
-  [v11 addObject:v6];
-  v12 = notifyNameWithPrefixedContainerID(v7);
+  [v11 addObject:observerCopy];
+  v12 = notifyNameWithPrefixedContainerID(dCopy);
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __50__BRContainersMonitor_addObserver_forContainerID___block_invoke;
   v34[3] = &unk_1E7A15540;
-  v34[4] = v10;
-  v13 = v7;
+  v34[4] = selfCopy;
+  v13 = dCopy;
   v35 = v13;
   v14 = v12;
   v36 = v14;
   v15 = MEMORY[0x1B26FEA90](v34);
   v16 = v14;
-  v17 = [v14 UTF8String];
-  v18 = v10->_queue;
+  uTF8String = [v14 UTF8String];
+  v18 = selfCopy->_queue;
   v19 = v15;
-  v20 = [MEMORY[0x1E69DF068] sharedManager];
-  v21 = [v20 br_currentPersonaID];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
 
   *handler = MEMORY[0x1E69E9820];
   *&handler[8] = 3221225472;
   *&handler[16] = __br_notify_register_dispatch_block_invoke_3;
   *&handler[24] = &unk_1E7A14940;
-  v22 = v21;
+  v22 = br_currentPersonaID;
   v40 = v22;
-  v42 = v17;
+  v42 = uTF8String;
   v23 = v19;
   v41 = v23;
-  notify_register_dispatch(v17, &out_token, v18, handler);
+  notify_register_dispatch(uTF8String, &out_token, v18, handler);
 
-  notifyTokenByContainerID = v10->_notifyTokenByContainerID;
+  notifyTokenByContainerID = selfCopy->_notifyTokenByContainerID;
   v25 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
   [(NSMutableDictionary *)notifyTokenByContainerID setObject:v25 forKey:v13];
 
@@ -229,7 +229,7 @@
     _os_log_debug_impl(&dword_1AE2A9000, v27, OS_LOG_TYPE_DEBUG, "[DEBUG] Registered token %d for %@%@", handler, 0x1Cu);
   }
 
-  queue = v10->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__BRContainersMonitor_addObserver_forContainerID___block_invoke_15;
@@ -239,7 +239,7 @@
   v29 = v23;
   dispatch_async(queue, block);
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   __brc_leave_section(v38);
 
   v30 = *MEMORY[0x1E69E9840];
@@ -327,14 +327,14 @@ void __50__BRContainersMonitor_addObserver_forContainerID___block_invoke(uint64_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3 forContainerID:(id)a4
+- (void)removeObserver:(id)observer forContainerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)v8->_observersByContainerID objectForKey:v7];
-  if (([v9 containsObject:v6] & 1) == 0)
+  observerCopy = observer;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableDictionary *)selfCopy->_observersByContainerID objectForKey:dCopy];
+  if (([v9 containsObject:observerCopy] & 1) == 0)
   {
     v12 = brc_bread_crumbs("[BRContainersMonitor removeObserver:forContainerID:]", 205);
     v13 = brc_default_log(0, 0);
@@ -344,30 +344,30 @@ void __50__BRContainersMonitor_addObserver_forContainerID___block_invoke(uint64_
     }
   }
 
-  [v9 removeObject:v6];
+  [v9 removeObject:observerCopy];
   if (![v9 count])
   {
-    [(NSMutableDictionary *)v8->_observersByContainerID removeObjectForKey:v7];
-    v10 = [(NSMutableDictionary *)v8->_notifyTokenByContainerID objectForKey:v7];
-    v11 = [v10 intValue];
+    [(NSMutableDictionary *)selfCopy->_observersByContainerID removeObjectForKey:dCopy];
+    v10 = [(NSMutableDictionary *)selfCopy->_notifyTokenByContainerID objectForKey:dCopy];
+    intValue = [v10 intValue];
 
-    notify_cancel(v11);
+    notify_cancel(intValue);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-+ (BOOL)isContainerIDForeground:(id)a3
++ (BOOL)isContainerIDForeground:(id)foreground
 {
-  v3 = a3;
-  if (![BRContainersMonitor isContainerID:v3])
+  foregroundCopy = foreground;
+  if (![BRContainersMonitor isContainerID:foregroundCopy])
   {
     +[BRContainersMonitor isContainerIDForeground:];
   }
 
   val = -1;
   v7 = 0;
-  v4 = notifyNameWithPrefixedContainerID(v3);
+  v4 = notifyNameWithPrefixedContainerID(foregroundCopy);
   brc_notify_register_check([v4 UTF8String], &val);
   if (notify_is_valid_token(val))
   {

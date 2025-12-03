@@ -1,7 +1,7 @@
 @interface AVCAudioPowerSpectrumChannel
 - (AVCAudioPowerSpectrumChannel)init;
-- (AVCAudioPowerSpectrumChannel)initWithCoder:(id)a3;
-- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)a3 binCount:(unsigned int)a4;
+- (AVCAudioPowerSpectrumChannel)initWithCoder:(id)coder;
+- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)bins binCount:(unsigned int)count;
 - (void)dealloc;
 @end
 
@@ -30,7 +30,7 @@
   [(AVCAudioPowerSpectrumChannel *)&v3 dealloc];
 }
 
-- (AVCAudioPowerSpectrumChannel)initWithCoder:(id)a3
+- (AVCAudioPowerSpectrumChannel)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -38,18 +38,18 @@
   v4 = [(AVCAudioPowerSpectrumChannel *)&v6 init];
   if (v4)
   {
-    v4->_bins = [a3 decodeObjectForKey:@"bins"];
+    v4->_bins = [coder decodeObjectForKey:@"bins"];
   }
 
   return v4;
 }
 
-- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)a3 binCount:(unsigned int)a4
+- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)bins binCount:(unsigned int)count
 {
-  if (a4)
+  if (count)
   {
     v6 = 0;
-    v7 = a4;
+    countCopy = count;
     do
     {
       if ([(NSMutableArray *)self->_bins count]<= v6)
@@ -58,23 +58,23 @@
         [(NSMutableArray *)self->_bins addObject:v8];
       }
 
-      [-[NSMutableArray objectAtIndexedSubscript:](self->_bins objectAtIndexedSubscript:{v6++), "assign:", a3++}];
+      [-[NSMutableArray objectAtIndexedSubscript:](self->_bins objectAtIndexedSubscript:{v6++), "assign:", bins++}];
     }
 
-    while (v7 != v6);
+    while (countCopy != v6);
   }
 
   else
   {
-    v7 = 0;
+    countCopy = 0;
   }
 
-  if ([(NSMutableArray *)self->_bins count]> v7)
+  if ([(NSMutableArray *)self->_bins count]> countCopy)
   {
-    v9 = [(NSMutableArray *)self->_bins count]- v7;
+    v9 = [(NSMutableArray *)self->_bins count]- countCopy;
     bins = self->_bins;
 
-    [(NSMutableArray *)bins removeObjectsInRange:v7, v9];
+    [(NSMutableArray *)bins removeObjectsInRange:countCopy, v9];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface ICSKeychainSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (ICSKeychainSpecifierProvider)initWithAccountManager:(id)a3;
+- (ICSKeychainSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
-- (id)_keychainSyncStateForSpecifier:(id)a3;
+- (id)_keychainSyncStateForSpecifier:(id)specifier;
 - (id)_specifierForKeychainSync;
 - (id)account;
 - (void)_keychainSyncStateDidChange;
@@ -13,16 +13,16 @@
 
 @implementation ICSKeychainSpecifierProvider
 
-- (ICSKeychainSpecifierProvider)initWithAccountManager:(id)a3
+- (ICSKeychainSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ICSKeychainSpecifierProvider;
   v6 = [(ICSKeychainSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
     v7->_keychainStatus = 0;
     v7->_keychainStatusFetchInProgress = 0;
     [(ICSKeychainSpecifierProvider *)v7 _registerForKeychainSyncStatusChangeNotification];
@@ -41,8 +41,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -53,11 +53,11 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICSKeychainSpecifierProvider *)self _specifierForKeychainSync];
-    v5 = v4;
-    if (v4)
+    _specifierForKeychainSync = [(ICSKeychainSpecifierProvider *)self _specifierForKeychainSync];
+    v5 = _specifierForKeychainSync;
+    if (_specifierForKeychainSync)
     {
-      v10[0] = v4;
+      v10[0] = _specifierForKeychainSync;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
       v7 = self->_specifiers;
       self->_specifiers = v6;
@@ -73,8 +73,8 @@
 
 - (id)_specifierForKeychainSync
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E40]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E40]];
 
   if (v4)
   {
@@ -98,9 +98,9 @@
   return v5;
 }
 
-- (id)_keychainSyncStateForSpecifier:(id)a3
+- (id)_keychainSyncStateForSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   keychainStatus = self->_keychainStatus;
   if (keychainStatus == 2)
   {

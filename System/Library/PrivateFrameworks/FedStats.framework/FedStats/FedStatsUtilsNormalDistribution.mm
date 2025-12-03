@@ -1,40 +1,40 @@
 @interface FedStatsUtilsNormalDistribution
 - (FedStatsUtilsNormalDistribution)init;
-- (FedStatsUtilsNormalDistribution)initWithMean:(double)a3;
-- (FedStatsUtilsNormalDistribution)initWithMean:(double)a3 standardDeviation:(double)a4;
-- (FedStatsUtilsNormalDistribution)initWithStandardDeviation:(double)a3;
+- (FedStatsUtilsNormalDistribution)initWithMean:(double)mean;
+- (FedStatsUtilsNormalDistribution)initWithMean:(double)mean standardDeviation:(double)deviation;
+- (FedStatsUtilsNormalDistribution)initWithStandardDeviation:(double)deviation;
 - (double)sample;
-- (double)sampleWithUnitNumberGenerator:(id)a3;
+- (double)sampleWithUnitNumberGenerator:(id)generator;
 - (double)variance;
 - (double)varianceOfSecondMoment;
 @end
 
 @implementation FedStatsUtilsNormalDistribution
 
-- (FedStatsUtilsNormalDistribution)initWithMean:(double)a3 standardDeviation:(double)a4
+- (FedStatsUtilsNormalDistribution)initWithMean:(double)mean standardDeviation:(double)deviation
 {
   v7.receiver = self;
   v7.super_class = FedStatsUtilsNormalDistribution;
   result = [(FedStatsUtilsNormalDistribution *)&v7 init];
   if (result)
   {
-    result->_mean = a3;
-    result->_standardDeviation = a4;
+    result->_mean = mean;
+    result->_standardDeviation = deviation;
   }
 
   return result;
 }
 
-- (FedStatsUtilsNormalDistribution)initWithMean:(double)a3
+- (FedStatsUtilsNormalDistribution)initWithMean:(double)mean
 {
-  v4 = [[FedStatsUtilsNormalDistribution alloc] initWithMean:a3 standardDeviation:1.0];
+  v4 = [[FedStatsUtilsNormalDistribution alloc] initWithMean:mean standardDeviation:1.0];
 
   return v4;
 }
 
-- (FedStatsUtilsNormalDistribution)initWithStandardDeviation:(double)a3
+- (FedStatsUtilsNormalDistribution)initWithStandardDeviation:(double)deviation
 {
-  v4 = [[FedStatsUtilsNormalDistribution alloc] initWithMean:0.0 standardDeviation:a3];
+  v4 = [[FedStatsUtilsNormalDistribution alloc] initWithMean:0.0 standardDeviation:deviation];
 
   return v4;
 }
@@ -46,12 +46,12 @@
   return v3;
 }
 
-- (double)sampleWithUnitNumberGenerator:(id)a3
+- (double)sampleWithUnitNumberGenerator:(id)generator
 {
-  v4 = a3;
-  [v4 sample];
+  generatorCopy = generator;
+  [generatorCopy sample];
   v6 = sqrt(log(v5) * -2.0);
-  [v4 sample];
+  [generatorCopy sample];
   v8 = v7;
 
   v9 = v6 * cos(v8 * 6.28318531);

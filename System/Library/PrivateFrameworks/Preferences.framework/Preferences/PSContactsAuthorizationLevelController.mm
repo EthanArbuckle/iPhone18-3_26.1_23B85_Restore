@@ -5,23 +5,23 @@
 - (id)_limitedAccessSectionSpecifiers;
 - (id)_parentTCCSpecifiers;
 - (id)_pickerUsageSectionSpecifiers;
-- (id)footerStringForSpecifiers:(id)a3;
+- (id)footerStringForSpecifiers:(id)specifiers;
 - (id)specifiers;
 - (uint64_t)dealloc;
 - (unint64_t)_currentTCCAuthorizationRight;
 - (void)_addLimitedAccessSection;
 - (void)_addPickerUsageSectionIfNeeded;
-- (void)_handleContactStoreDidChangeNotification:(id)a3;
-- (void)_handleUpgradePromptNotification:(id)a3;
+- (void)_handleContactStoreDidChangeNotification:(id)notification;
+- (void)_handleUpgradePromptNotification:(id)notification;
 - (void)_limitedAccessSectionSpecifiers;
 - (void)_presentContactsPickerForModifyingSelection;
 - (void)_removeLimitedAccessSectionIfPresent;
 - (void)_removePickerUsageSectionIfPresent;
-- (void)contactPicker:(Class)a3 didSelectContacts:(id)a4;
+- (void)contactPicker:(Class)picker didSelectContacts:(id)contacts;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateContactsCountSubtitleForSpecifier:(id)a3 contactsTCCAccess:(int)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateContactsCountSubtitleForSpecifier:(id)specifier contactsTCCAccess:(int)access;
 - (void)viewDidLoad;
 @end
 
@@ -32,19 +32,19 @@
   v5.receiver = self;
   v5.super_class = PSContactsAuthorizationLevelController;
   [(PSListItemsController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PSContactsPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PSContactsPrivacyUpgradePromptCompletedNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PSContactsPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PSContactsPrivacyUpgradePromptCompletedNotification" object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"PSContactsPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PSContactsPrivacyUpgradePromptCompletedNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -71,19 +71,19 @@
     _Unwind_Resume(v7);
   }
 
-  [v4 removeObserver:self name:*v5 object:0];
+  [defaultCenter2 removeObserver:self name:*v5 object:0];
 
   v8.receiver = self;
   v8.super_class = PSContactsAuthorizationLevelController;
   [(PSListItemsController *)&v8 dealloc];
 }
 
-- (void)_handleUpgradePromptNotification:(id)a3
+- (void)_handleUpgradePromptNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"PSContactsPrivacyUpgradePromptAppIdentifierKey"];
-  v6 = [(PSContactsAuthorizationLevelController *)self serviceKey];
-  v7 = [v5 isEqualToString:v6];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"PSContactsPrivacyUpgradePromptAppIdentifierKey"];
+  serviceKey = [(PSContactsAuthorizationLevelController *)self serviceKey];
+  v7 = [v5 isEqualToString:serviceKey];
 
   if (v7)
   {
@@ -97,11 +97,11 @@
   }
 }
 
-- (void)_handleContactStoreDidChangeNotification:(id)a3
+- (void)_handleContactStoreDidChangeNotification:(id)notification
 {
-  v4 = [(PSContactsAuthorizationLevelController *)self fullAccessSpecifier];
-  [(PSContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v4 contactsTCCAccess:2];
-  [(PSListController *)self reloadSpecifier:v4];
+  fullAccessSpecifier = [(PSContactsAuthorizationLevelController *)self fullAccessSpecifier];
+  [(PSContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:fullAccessSpecifier contactsTCCAccess:2];
+  [(PSListController *)self reloadSpecifier:fullAccessSpecifier];
 }
 
 - (unint64_t)_currentTCCAuthorizationRight
@@ -172,13 +172,13 @@ void __71__PSContactsAuthorizationLevelController__currentTCCAuthorizationRight_
   v39 = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = PSContactsAuthorizationLevelController;
-  v2 = [(PSListItemsController *)&v36 specifiers];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  specifiers = [(PSListItemsController *)&v36 specifiers];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(specifiers, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = v2;
+  v4 = specifiers;
   v5 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v5)
   {
@@ -195,10 +195,10 @@ void __71__PSContactsAuthorizationLevelController__currentTCCAuthorizationRight_
         v8 = *(*(&v32 + 1) + 8 * i);
         if (v8[7] == 3)
         {
-          v9 = [v8 identifier];
-          v10 = [v9 intValue];
+          identifier = [v8 identifier];
+          intValue = [identifier intValue];
 
-          if (v10 == 4)
+          if (intValue == 4)
           {
             LOBYTE(v5) = 1;
             goto LABEL_12;
@@ -239,11 +239,11 @@ LABEL_12:
         }
 
         v17 = *(*(&v28 + 1) + 8 * j);
-        v18 = [v17 identifier];
-        v19 = [v18 intValue];
+        identifier2 = [v17 identifier];
+        intValue2 = [identifier2 intValue];
 
         v20 = v17[7];
-        if (v20 != 3 || v19 != 4)
+        if (v20 != 3 || intValue2 != 4)
         {
           if (v20 == 3)
           {
@@ -255,12 +255,12 @@ LABEL_12:
             v22 = 1;
           }
 
-          if ((v22 & 1) != 0 || v19)
+          if ((v22 & 1) != 0 || intValue2)
           {
-            if (v20 == 3 && (v19 - 1) <= 1)
+            if (v20 == 3 && (intValue2 - 1) <= 1)
             {
               [v17 setProperty:objc_opt_class() forKey:@"cellClass"];
-              [(PSContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v17 contactsTCCAccess:v19];
+              [(PSContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v17 contactsTCCAccess:intValue2];
             }
           }
 
@@ -285,31 +285,31 @@ LABEL_12:
   return v25;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = PSContactsAuthorizationLevelController;
-  v4 = a3;
-  [(PSListController *)&v9 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"appBundleID", v9.receiver, v9.super_class}];
+  specifierCopy = specifier;
+  [(PSListController *)&v9 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"appBundleID", v9.receiver, v9.super_class}];
   serviceKey = self->_serviceKey;
   self->_serviceKey = v5;
 
-  v7 = [v4 propertyForKey:@"appLocalizedDisplayName"];
+  v7 = [specifierCopy propertyForKey:@"appLocalizedDisplayName"];
 
   displayName = self->_displayName;
   self->_displayName = v7;
 }
 
-- (id)footerStringForSpecifiers:(id)a3
+- (id)footerStringForSpecifiers:(id)specifiers
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -320,17 +320,17 @@ LABEL_12:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 values];
-        v10 = [v9 firstObject];
-        v11 = [v10 isEqual:&unk_1EFE65A00];
+        values = [v8 values];
+        firstObject = [values firstObject];
+        v11 = [firstObject isEqual:&unk_1EFE65A00];
 
-        v12 = [v8 values];
-        v13 = [v12 firstObject];
-        v14 = [v13 isEqual:&unk_1EFE65A18];
+        values2 = [v8 values];
+        firstObject2 = [values2 firstObject];
+        v14 = [firstObject2 isEqual:&unk_1EFE65A18];
 
         if ((v11 & 1) != 0 || v14)
         {
@@ -340,7 +340,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [specifiersCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -415,17 +415,17 @@ LABEL_12:
     self->_limitedAccessSectionSpecifiers = v7;
   }
 
-  v9 = [(PSContactsAuthorizationLevelController *)self _currentTCCAuthorizationRight];
-  if (v9 == 3)
+  _currentTCCAuthorizationRight = [(PSContactsAuthorizationLevelController *)self _currentTCCAuthorizationRight];
+  if (_currentTCCAuthorizationRight == 3)
   {
     v10 = self->_limitedAccessSectionSpecifiers;
   }
 
   else
   {
-    v11 = v9;
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    if (([v12 sf_isInternalInstall] & 1) != 0 || PSDiagnosticsAreEnabled())
+    v11 = _currentTCCAuthorizationRight;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if (([currentDevice sf_isInternalInstall] & 1) != 0 || PSDiagnosticsAreEnabled())
     {
       v13 = _PSLoggingFacility();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -440,11 +440,11 @@ LABEL_12:
   return v10;
 }
 
-- (void)updateContactsCountSubtitleForSpecifier:(id)a3 contactsTCCAccess:(int)a4
+- (void)updateContactsCountSubtitleForSpecifier:(id)specifier contactsTCCAccess:(int)access
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+  specifierCopy = specifier;
+  serviceKey = [(PSContactsAuthorizationLevelController *)self serviceKey];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -465,9 +465,9 @@ LABEL_12:
   _Block_object_dispose(&v23, 8);
   v10 = objc_alloc_init(v8);
   v11 = v10;
-  if (a4 == 1)
+  if (access == 1)
   {
-    v12 = [v10 getLimitedAccessContactsCountForBundle:v7];
+    v12 = [v10 getLimitedAccessContactsCountForBundle:serviceKey];
     if (v12)
     {
       v14 = 0;
@@ -478,7 +478,7 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = serviceKey;
       _os_log_impl(&dword_18B008000, v15, OS_LOG_TYPE_DEFAULT, "Error: unable to get contacts count from ContactStore for %@", &buf, 0xCu);
     }
 
@@ -486,7 +486,7 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (a4 != 2)
+  if (access != 2)
   {
     v14 = 0;
 LABEL_16:
@@ -516,12 +516,12 @@ LABEL_15:
 LABEL_17:
   v16 = v12;
 
-  if (a4 == 1)
+  if (access == 1)
   {
     if ([v16 longValue] < 1)
     {
       v21 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_LIMITEDACCESS_NOCONTACTS_COUNT_SECONDARY_LABEL");
-      [v6 setProperty:v21 forKey:@"cellSubtitleText"];
+      [specifierCopy setProperty:v21 forKey:@"cellSubtitleText"];
     }
 
     else
@@ -529,19 +529,19 @@ LABEL_17:
       v20 = MEMORY[0x1E696AEC0];
       v21 = PS_LocalizedStringForSystemPolicy(@"LIMITEDACCESS_CONTACTS_COUNT_SECONDARY_LABEL");
       v22 = [v20 localizedStringWithFormat:v21, objc_msgSend(v16, "longValue")];
-      [v6 setProperty:v22 forKey:@"cellSubtitleText"];
+      [specifierCopy setProperty:v22 forKey:@"cellSubtitleText"];
     }
 
     [(PSContactsAuthorizationLevelController *)self setLimitedAccessCount:v16];
-    [(PSContactsAuthorizationLevelController *)self setLimitedAccessSpecifier:v6];
+    [(PSContactsAuthorizationLevelController *)self setLimitedAccessSpecifier:specifierCopy];
   }
 
-  else if (a4 == 2)
+  else if (access == 2)
   {
     if ([v16 longValue] < 1)
     {
       v18 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_FULLACCESS_NOCONTACTS_COUNT_SECONDARY_LABEL");
-      [v6 setProperty:v18 forKey:@"cellSubtitleText"];
+      [specifierCopy setProperty:v18 forKey:@"cellSubtitleText"];
     }
 
     else
@@ -549,19 +549,19 @@ LABEL_17:
       v17 = MEMORY[0x1E696AEC0];
       v18 = PS_LocalizedStringForSystemPolicy(@"FULLACCESS_CONTACTS_COUNT_SECONDARY_LABEL");
       v19 = [v17 localizedStringWithFormat:v18, objc_msgSend(v16, "longValue")];
-      [v6 setProperty:v19 forKey:@"cellSubtitleText"];
+      [specifierCopy setProperty:v19 forKey:@"cellSubtitleText"];
     }
 
-    [(PSContactsAuthorizationLevelController *)self setFullAccessSpecifier:v6];
+    [(PSContactsAuthorizationLevelController *)self setFullAccessSpecifier:specifierCopy];
   }
 
-  [(PSListController *)self reloadSpecifier:v6];
+  [(PSListController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)contactPicker:(Class)a3 didSelectContacts:(id)a4
+- (void)contactPicker:(Class)picker didSelectContacts:(id)contacts
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [(PSContactsAuthorizationLevelController *)self limitedAccessSpecifier:a3];
+  v5 = [(PSContactsAuthorizationLevelController *)self limitedAccessSpecifier:picker];
   [(PSContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v5 contactsTCCAccess:1];
   [(PSListController *)self reloadSpecifier:v5];
   if (![(PSContactsAuthorizationLevelController *)self isAppLinkedWithContactsLimitedAccessSupportedSDK])
@@ -569,12 +569,12 @@ LABEL_17:
     v6 = _PSLoggingFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PSContactsAuthorizationLevelController *)self displayName];
-      v8 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+      displayName = [(PSContactsAuthorizationLevelController *)self displayName];
+      serviceKey = [(PSContactsAuthorizationLevelController *)self serviceKey];
       *buf = 138412546;
-      v28 = v7;
+      v28 = displayName;
       v29 = 2112;
-      v30 = v8;
+      v30 = serviceKey;
       _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "App %@(%@) is linked using SDK that doesn't support LimitedAccess for Contacts", buf, 0x16u);
     }
 
@@ -585,8 +585,8 @@ LABEL_17:
     }
 
     v10 = objc_alloc(MEMORY[0x1E69635D8]);
-    v11 = [(PSContactsAuthorizationLevelController *)self serviceKey];
-    v12 = [v10 initWithBundleIdentifier:v11 URL:0 personaUniqueString:0 personaType:4];
+    serviceKey2 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+    v12 = [v10 initWithBundleIdentifier:serviceKey2 URL:0 personaUniqueString:0 personaType:4];
 
     v13 = [MEMORY[0x1E69C75F0] identityForLSApplicationIdentity:v12];
     if (!v13)
@@ -600,12 +600,12 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v16 = [(PSContactsAuthorizationLevelController *)self displayName];
-      v24 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+      displayName2 = [(PSContactsAuthorizationLevelController *)self displayName];
+      serviceKey3 = [(PSContactsAuthorizationLevelController *)self serviceKey];
       *buf = 138412546;
-      v28 = v16;
+      v28 = displayName2;
       v29 = 2112;
-      v30 = v24;
+      v30 = serviceKey3;
       _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_DEFAULT, "Unable to get process identity for %@(%@)", buf, 0x16u);
 
 LABEL_20:
@@ -614,7 +614,7 @@ LABEL_20:
 
     v14 = [MEMORY[0x1E69C7610] predicateMatchingIdentity:v13];
     v15 = [objc_alloc(MEMORY[0x1E69C7660]) initWithPredicate:v14 context:v9];
-    v16 = v15;
+    displayName2 = v15;
     if (v15)
     {
       v26 = 0;
@@ -623,18 +623,18 @@ LABEL_20:
       v19 = v18;
       if (v17)
       {
-        v20 = _PSLoggingFacility();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        displayName4 = _PSLoggingFacility();
+        if (os_log_type_enabled(displayName4, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(PSContactsAuthorizationLevelController *)self displayName];
-          v22 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+          displayName3 = [(PSContactsAuthorizationLevelController *)self displayName];
+          serviceKey4 = [(PSContactsAuthorizationLevelController *)self serviceKey];
           *buf = 138412546;
-          v28 = v21;
+          v28 = displayName3;
           v29 = 2112;
-          v30 = v22;
+          v30 = serviceKey4;
           v23 = "Successfully terminated %@(%@)";
 LABEL_17:
-          _os_log_impl(&dword_18B008000, v20, OS_LOG_TYPE_DEFAULT, v23, buf, 0x16u);
+          _os_log_impl(&dword_18B008000, displayName4, OS_LOG_TYPE_DEFAULT, v23, buf, 0x16u);
 
           goto LABEL_18;
         }
@@ -644,15 +644,15 @@ LABEL_17:
 
       if ([v18 code]!= 3)
       {
-        v20 = _PSLoggingFacility();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        displayName4 = _PSLoggingFacility();
+        if (os_log_type_enabled(displayName4, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(PSContactsAuthorizationLevelController *)self displayName];
-          v22 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+          displayName3 = [(PSContactsAuthorizationLevelController *)self displayName];
+          serviceKey4 = [(PSContactsAuthorizationLevelController *)self serviceKey];
           *buf = 138412546;
-          v28 = v21;
+          v28 = displayName3;
           v29 = 2112;
-          v30 = v22;
+          v30 = serviceKey4;
           v23 = "Failed to kill %@(%@)";
           goto LABEL_17;
         }
@@ -666,12 +666,12 @@ LABEL_18:
       v19 = _PSLoggingFacility();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(PSContactsAuthorizationLevelController *)self displayName];
-        v25 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+        displayName4 = [(PSContactsAuthorizationLevelController *)self displayName];
+        serviceKey5 = [(PSContactsAuthorizationLevelController *)self serviceKey];
         *buf = 138412546;
-        v28 = v20;
+        v28 = displayName4;
         v29 = 2112;
-        v30 = v25;
+        v30 = serviceKey5;
         _os_log_impl(&dword_18B008000, v19, OS_LOG_TYPE_DEFAULT, "Unable to create terminate request for %@(%@)", buf, 0x16u);
 
         goto LABEL_18;
@@ -687,14 +687,14 @@ LABEL_23:
 - (BOOL)isAppLinkedWithContactsLimitedAccessSupportedSDK
 {
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(PSContactsAuthorizationLevelController *)self serviceKey];
+  serviceKey = [(PSContactsAuthorizationLevelController *)self serviceKey];
   v11 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v11];
+  v5 = [v3 initWithBundleIdentifier:serviceKey allowPlaceholder:0 error:&v11];
 
   if (v5 && ([v5 SDKVersion], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 SDKVersion];
-    v8 = [v7 compare:@"18.0" options:64];
+    sDKVersion = [v5 SDKVersion];
+    v8 = [sDKVersion compare:@"18.0" options:64];
 
     v9 = v8 < 2;
   }
@@ -712,20 +712,20 @@ LABEL_23:
   getCNLimitedAccessContactPickerViewControllerClass();
   if (objc_opt_class())
   {
-    v3 = [(PSContactsAuthorizationLevelController *)self limitedAccessCount];
-    v4 = [v3 longValue];
+    limitedAccessCount = [(PSContactsAuthorizationLevelController *)self limitedAccessCount];
+    longValue = [limitedAccessCount longValue];
 
     v5 = objc_alloc(getCNLimitedAccessContactPickerViewControllerClass());
-    v6 = [(PSContactsAuthorizationLevelController *)self displayName];
-    v7 = [(PSContactsAuthorizationLevelController *)self serviceKey];
-    if (v4 <= 0)
+    displayName = [(PSContactsAuthorizationLevelController *)self displayName];
+    serviceKey = [(PSContactsAuthorizationLevelController *)self serviceKey];
+    if (longValue <= 0)
     {
-      v8 = [v5 initDeltaPickerForAppName:v6 bundleId:v7];
+      v8 = [v5 initDeltaPickerForAppName:displayName bundleId:serviceKey];
     }
 
     else
     {
-      v8 = [v5 initSettingsPickerForAppName:v6 bundleId:v7];
+      v8 = [v5 initSettingsPickerForAppName:displayName bundleId:serviceKey];
     }
 
     v9 = v8;
@@ -761,74 +761,74 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->super.super._specifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->super.super._specifiers)
   {
-    v3 = [(PSContactsAuthorizationLevelController *)v2 _currentTCCAuthorizationRight];
-    v4 = [(PSListController *)v2 specifier];
-    v5 = [v4 propertyForKey:@"hasPickerInfo"];
-    v6 = [v5 BOOLValue];
-    if (v3 == 2)
+    _currentTCCAuthorizationRight = [(PSContactsAuthorizationLevelController *)selfCopy _currentTCCAuthorizationRight];
+    specifier = [(PSListController *)selfCopy specifier];
+    v5 = [specifier propertyForKey:@"hasPickerInfo"];
+    bOOLValue = [v5 BOOLValue];
+    if (_currentTCCAuthorizationRight == 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v6;
+      v7 = bOOLValue;
     }
 
-    v8 = [(PSListController *)v2 specifier];
-    v9 = [v8 propertyForKey:@"hasTCCOptions"];
-    v10 = [v9 BOOLValue];
+    specifier2 = [(PSListController *)selfCopy specifier];
+    v9 = [specifier2 propertyForKey:@"hasTCCOptions"];
+    bOOLValue2 = [v9 BOOLValue];
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v10)
+    if (bOOLValue2)
     {
-      v12 = [(PSContactsAuthorizationLevelController *)v2 _parentTCCSpecifiers];
-      [(NSArray *)v11 addObjectsFromArray:v12];
-      v13 = [v12 firstObject];
-      v14 = [(PSContactsAuthorizationLevelController *)v2 footerStringForSpecifiers:v11];
+      _parentTCCSpecifiers = [(PSContactsAuthorizationLevelController *)selfCopy _parentTCCSpecifiers];
+      [(NSArray *)v11 addObjectsFromArray:_parentTCCSpecifiers];
+      firstObject = [_parentTCCSpecifiers firstObject];
+      v14 = [(PSContactsAuthorizationLevelController *)selfCopy footerStringForSpecifiers:v11];
       if (v14)
       {
-        [v13 setProperty:v14 forKey:@"footerText"];
+        [firstObject setProperty:v14 forKey:@"footerText"];
       }
 
-      v15 = [(PSContactsAuthorizationLevelController *)v2 _limitedAccessSectionSpecifiers];
-      [(NSArray *)v11 addObjectsFromArray:v15];
+      _limitedAccessSectionSpecifiers = [(PSContactsAuthorizationLevelController *)selfCopy _limitedAccessSectionSpecifiers];
+      [(NSArray *)v11 addObjectsFromArray:_limitedAccessSectionSpecifiers];
     }
 
-    v16 = [(PSContactsAuthorizationLevelController *)v2 _pickerUsageSectionSpecifiers];
-    v17 = v16;
+    _pickerUsageSectionSpecifiers = [(PSContactsAuthorizationLevelController *)selfCopy _pickerUsageSectionSpecifiers];
+    v17 = _pickerUsageSectionSpecifiers;
     if (v7)
     {
-      if ((v10 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
-        v18 = [v16 firstObject];
+        firstObject2 = [_pickerUsageSectionSpecifiers firstObject];
         v19 = PS_LocalizedStringForSystemPolicy(@"CONTACTS_AUTH_HEADER");
-        [v18 setName:v19];
+        [firstObject2 setName:v19];
       }
 
       [(NSArray *)v11 addObjectsFromArray:v17];
     }
 
-    specifiers = v2->super.super._specifiers;
-    v2->super.super._specifiers = v11;
+    specifiers = selfCopy->super.super._specifiers;
+    selfCopy->super.super._specifiers = v11;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v21 = v2->super.super._specifiers;
+  v21 = selfCopy->super.super._specifiers;
 
   return v21;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSListController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PSListController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [(PSListController *)self specifierAtIndex:v8];
@@ -841,28 +841,28 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
       if (v12)
       {
         [v10 performButtonAction];
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       }
 
       else
       {
         v18.receiver = self;
         v18.super_class = PSContactsAuthorizationLevelController;
-        [(PSListItemsController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
-        v13 = [v10 values];
-        v14 = [v13 firstObject];
-        v15 = [v14 intValue];
+        [(PSListItemsController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+        values = [v10 values];
+        firstObject = [values firstObject];
+        intValue = [firstObject intValue];
 
-        if (v15 == 2)
+        if (intValue == 2)
         {
           [(PSContactsAuthorizationLevelController *)self _removeLimitedAccessSectionIfPresent];
           [(PSContactsAuthorizationLevelController *)self _removePickerUsageSectionIfPresent];
         }
 
-        else if (v15 == 1)
+        else if (intValue == 1)
         {
-          v16 = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
-          v17 = [(PSListController *)self containsSpecifier:v16];
+          firstObject2 = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
+          v17 = [(PSListController *)self containsSpecifier:firstObject2];
 
           if (!v17)
           {
@@ -886,8 +886,8 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
 {
   if ([(NSArray *)self->_pickerUsageSectionSpecifiers count]&& ([(NSArray *)self->_pickerUsageSectionSpecifiers firstObject], v3 = objc_claimAutoreleasedReturnValue(), v4 = [(PSListController *)self containsSpecifier:v3], v3, v4))
   {
-    v5 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
-    v6 = [(PSListController *)self indexOfSpecifier:v5];
+    firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+    v6 = [(PSListController *)self indexOfSpecifier:firstObject];
 
     limitedAccessSectionSpecifiers = self->_limitedAccessSectionSpecifiers;
 
@@ -904,8 +904,8 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
 
 - (void)_removeLimitedAccessSectionIfPresent
 {
-  v3 = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
-  v4 = [(PSListController *)self containsSpecifier:v3];
+  firstObject = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
+  v4 = [(PSListController *)self containsSpecifier:firstObject];
 
   if (v4)
   {
@@ -917,7 +917,7 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
 
 - (void)_addPickerUsageSectionIfNeeded
 {
-  v6 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+  firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
   if ([(PSListController *)self containsSpecifier:?])
   {
   }
@@ -938,8 +938,8 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
 
 - (void)_removePickerUsageSectionIfPresent
 {
-  v3 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
-  v4 = [(PSListController *)self containsSpecifier:v3];
+  firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+  v4 = [(PSListController *)self containsSpecifier:firstObject];
 
   if (v4)
   {
@@ -974,7 +974,7 @@ void __85__PSContactsAuthorizationLevelController__presentContactsPickerForModif
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_18B008000, a2, OS_LOG_TYPE_DEBUG, "Contacts: Empty specifier are returned, auth = %llu", &v2, 0xCu);
 }
 

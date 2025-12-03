@@ -1,6 +1,6 @@
 @interface SFApp
 + (id)fetchRequest;
-- (void)insertObject:(id)a3 inHasTypicalUsageAtIndex:(unint64_t)a4;
+- (void)insertObject:(id)object inHasTypicalUsageAtIndex:(unint64_t)index;
 @end
 
 @implementation SFApp
@@ -14,14 +14,14 @@
   return v4;
 }
 
-- (void)insertObject:(id)a3 inHasTypicalUsageAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inHasTypicalUsageAtIndex:(unint64_t)index
 {
   v6 = MEMORY[0x277CCAA78];
-  v7 = a3;
-  v9 = [[v6 alloc] initWithIndex:a4];
+  objectCopy = object;
+  v9 = [[v6 alloc] initWithIndex:index];
   [(SFApp *)self willChange:2 valuesAtIndexes:v9 forKey:@"hasTypicalUsage"];
   v8 = [(SFApp *)self primitiveValueForKey:@"hasTypicalUsage"];
-  [v8 insertObject:v7 atIndex:a4];
+  [v8 insertObject:objectCopy atIndex:index];
 
   [(SFApp *)self didChange:2 valuesAtIndexes:v9 forKey:@"hasTypicalUsage"];
 }

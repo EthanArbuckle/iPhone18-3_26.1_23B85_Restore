@@ -1,6 +1,6 @@
 @interface PGGraphSocialGroupsInsertion
-- (PGGraphSocialGroupsInsertion)initWithSocialGroupUUIDs:(id)a3;
-- (PGGraphSocialGroupsInsertion)initWithSocialGroups:(id)a3;
+- (PGGraphSocialGroupsInsertion)initWithSocialGroupUUIDs:(id)ds;
+- (PGGraphSocialGroupsInsertion)initWithSocialGroups:(id)groups;
 - (id)description;
 @end
 
@@ -17,16 +17,16 @@
   return v5;
 }
 
-- (PGGraphSocialGroupsInsertion)initWithSocialGroups:(id)a3
+- (PGGraphSocialGroupsInsertion)initWithSocialGroups:(id)groups
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  groupsCopy = groups;
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(groupsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = groupsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -42,8 +42,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) uuid];
-        [v6 addObject:v12];
+        uuid = [*(*(&v17 + 1) + 8 * v11) uuid];
+        [v6 addObject:uuid];
 
         ++v11;
       }
@@ -59,23 +59,23 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_socialGroups, a3);
+    objc_storeStrong(&v13->_socialGroups, groups);
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (PGGraphSocialGroupsInsertion)initWithSocialGroupUUIDs:(id)a3
+- (PGGraphSocialGroupsInsertion)initWithSocialGroupUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = PGGraphSocialGroupsInsertion;
   v6 = [(PGGraphSocialGroupsInsertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_socialGroupUUIDs, a3);
+    objc_storeStrong(&v6->_socialGroupUUIDs, ds);
   }
 
   return v7;

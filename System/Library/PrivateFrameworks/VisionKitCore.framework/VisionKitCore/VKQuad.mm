@@ -1,14 +1,14 @@
 @interface VKQuad
-+ (CATransform3D)transformToConvertLayer:(SEL)a3 intoQuad:(id)a4 frame:(id)a5;
-+ (CGPoint)vertexCentroidFromQuads:(id)a3;
-+ (id)quadFromCGRect:(CGRect)a3;
-+ (id)quadFromUnionOfQuads:(id)a3 baselineAngle:(double)a4;
++ (CATransform3D)transformToConvertLayer:(SEL)layer intoQuad:(id)quad frame:(id)frame;
++ (CGPoint)vertexCentroidFromQuads:(id)quads;
++ (id)quadFromCGRect:(CGRect)rect;
++ (id)quadFromUnionOfQuads:(id)quads baselineAngle:(double)angle;
 - (BOOL)containsIntersectingLines;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)intersectsQuad:(id)a3;
-- (BOOL)isCompletelyInsideRect:(CGRect)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGAffineTransform)rotationTransformAndBoundingBox:(SEL)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)intersectsQuad:(id)quad;
+- (BOOL)isCompletelyInsideRect:(CGRect)rect;
+- (BOOL)isEqual:(id)equal;
+- (CGAffineTransform)rotationTransformAndBoundingBox:(SEL)box;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
@@ -19,57 +19,57 @@
 - (NSArray)allPoints;
 - (NSString)summaryDescription;
 - (UIBezierPath)path;
-- (VKQuad)initWithBottomLeft:(CGPoint)a3 bottomRight:(CGPoint)a4 topLeft:(CGPoint)a5 topRight:(CGPoint)a6;
-- (VKQuad)initWithCRNormalizedQuad:(id)a3;
-- (VKQuad)initWithCoder:(id)a3;
-- (VKQuad)initWithDictionary:(id)a3;
-- (VKQuad)initWithPoints:(id)a3;
-- (VKQuad)initWithRect:(CGRect)a3;
-- (VKQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomLeft:(CGPoint)a5 bottomRight:(CGPoint)a6;
-- (VKQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6;
+- (VKQuad)initWithBottomLeft:(CGPoint)left bottomRight:(CGPoint)right topLeft:(CGPoint)topLeft topRight:(CGPoint)topRight;
+- (VKQuad)initWithCRNormalizedQuad:(id)quad;
+- (VKQuad)initWithCoder:(id)coder;
+- (VKQuad)initWithDictionary:(id)dictionary;
+- (VKQuad)initWithPoints:(id)points;
+- (VKQuad)initWithRect:(CGRect)rect;
+- (VKQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight;
+- (VKQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft;
 - (VKQuad)quadByAdjustingOrientation;
 - (VKQuadSideLength)sideLength;
 - (double)area;
 - (double)averagedAngleFromBottomAndTopEdges;
-- (double)distanceFromLine:(CGPoint *)a3 toPoint:(CGPoint)a4;
+- (double)distanceFromLine:(CGPoint *)line toPoint:(CGPoint)point;
 - (double)maxHeight;
-- (double)mininumDistanceToPoint:(CGPoint)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)mininumDistanceToPoint:(CGPoint)point;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)intersectionOfLineFrom:(CGPoint)a3 to:(CGPoint)a4 withLineFrom:(CGPoint)a5 to:(CGPoint)a6;
-- (id)normalizedQuadByConvertingFromView:(id)a3 toView:(id)a4 toViewSize:(CGSize)a5;
-- (id)normalizedQuadFromView:(id)a3;
-- (id)quadByConvertingFromNormalizedRectToView:(id)a3 contentsRect:(CGRect)a4;
-- (id)quadByConvertingFromView:(id)a3 toView:(id)a4 isNormalized:(BOOL)a5;
-- (id)quadByFlippingPointsWithSourceFrame:(CGRect)a3;
-- (id)quadFromAddingPoint:(CGPoint)a3;
-- (id)quadFromRotatingAroundCentroidWithAngle:(double)a3;
-- (id)quadFromRotatingAroundOriginWithAngle:(double)a3;
-- (id)quadFromSubtractingPoint:(CGPoint)a3;
-- (id)quadFromUnionWithQuad:(id)a3;
-- (id)quadMultipliedBySize:(CGSize)a3;
-- (id)subquadFromRect:(CGRect)a3;
+- (id)intersectionOfLineFrom:(CGPoint)from to:(CGPoint)to withLineFrom:(CGPoint)lineFrom to:(CGPoint)a6;
+- (id)normalizedQuadByConvertingFromView:(id)view toView:(id)toView toViewSize:(CGSize)size;
+- (id)normalizedQuadFromView:(id)view;
+- (id)quadByConvertingFromNormalizedRectToView:(id)view contentsRect:(CGRect)rect;
+- (id)quadByConvertingFromView:(id)view toView:(id)toView isNormalized:(BOOL)normalized;
+- (id)quadByFlippingPointsWithSourceFrame:(CGRect)frame;
+- (id)quadFromAddingPoint:(CGPoint)point;
+- (id)quadFromRotatingAroundCentroidWithAngle:(double)angle;
+- (id)quadFromRotatingAroundOriginWithAngle:(double)angle;
+- (id)quadFromSubtractingPoint:(CGPoint)point;
+- (id)quadFromUnionWithQuad:(id)quad;
+- (id)quadMultipliedBySize:(CGSize)size;
+- (id)subquadFromRect:(CGRect)rect;
 - (void)calcluateBoundingBox;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VKQuad
 
-+ (CATransform3D)transformToConvertLayer:(SEL)a3 intoQuad:(id)a4 frame:(id)a5
++ (CATransform3D)transformToConvertLayer:(SEL)layer intoQuad:(id)quad frame:(id)frame
 {
   v45[8] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  [v9 topLeft];
+  frameCopy = frame;
+  quadCopy = quad;
+  [frameCopy topLeft];
   v45[0] = v11;
   v45[1] = v12;
-  [v9 topRight];
+  [frameCopy topRight];
   v45[2] = v13;
   v45[3] = v14;
-  [v9 bottomRight];
+  [frameCopy bottomRight];
   v45[4] = v15;
   v45[5] = v16;
-  [v9 bottomLeft];
+  [frameCopy bottomLeft];
   v18 = v17;
   v20 = v19;
 
@@ -83,17 +83,17 @@
   *&retstr->m33 = 0u;
   *&retstr->m41 = 0u;
   *&retstr->m43 = 0u;
-  [v10 bounds];
+  [quadCopy bounds];
   v22 = v21;
   v24 = v23;
-  [v10 anchorPoint];
-  [v10 frame];
+  [quadCopy anchorPoint];
+  [quadCopy frame];
   v28 = v27;
   v30 = v29;
-  [v10 anchorPoint];
+  [quadCopy anchorPoint];
   v32 = v31;
   v34 = v33;
-  [v10 bounds];
+  [quadCopy bounds];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -106,16 +106,16 @@
   return result;
 }
 
-- (VKQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomLeft:(CGPoint)a5 bottomRight:(CGPoint)a6
+- (VKQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = bottomRight.y;
+  x = bottomRight.x;
+  v8 = bottomLeft.y;
+  v9 = bottomLeft.x;
+  v10 = right.y;
+  v11 = right.x;
+  v12 = left.y;
+  v13 = left.x;
   result = [(VKQuad *)self init];
   if (result)
   {
@@ -132,16 +132,16 @@
   return result;
 }
 
-- (VKQuad)initWithBottomLeft:(CGPoint)a3 bottomRight:(CGPoint)a4 topLeft:(CGPoint)a5 topRight:(CGPoint)a6
+- (VKQuad)initWithBottomLeft:(CGPoint)left bottomRight:(CGPoint)right topLeft:(CGPoint)topLeft topRight:(CGPoint)topRight
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = topRight.y;
+  x = topRight.x;
+  v8 = topLeft.y;
+  v9 = topLeft.x;
+  v10 = right.y;
+  v11 = right.x;
+  v12 = left.y;
+  v13 = left.x;
   result = [(VKQuad *)self init];
   if (result)
   {
@@ -158,16 +158,16 @@
   return result;
 }
 
-- (VKQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6
+- (VKQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = bottomLeft.y;
+  x = bottomLeft.x;
+  v8 = bottomRight.y;
+  v9 = bottomRight.x;
+  v10 = right.y;
+  v11 = right.x;
+  v12 = left.y;
+  v13 = left.x;
   result = [(VKQuad *)self init];
   if (result)
   {
@@ -184,13 +184,13 @@
   return result;
 }
 
-- (VKQuad)initWithRect:(CGRect)a3
+- (VKQuad)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -230,34 +230,34 @@
   return [(VKQuad *)self initWithBottomLeft:MinX bottomRight:MaxY topLeft:MaxX topRight:v8, v9, MinY, v11, v12];
 }
 
-- (VKQuad)initWithDictionary:(id)a3
+- (VKQuad)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"BL_X"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"BL_X"];
   [v5 doubleValue];
   v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"BL_Y"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"BL_Y"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"BR_X"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"BR_X"];
   [v11 doubleValue];
   v13 = v12;
-  v14 = [v4 objectForKeyedSubscript:@"BR_Y"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"BR_Y"];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [v4 objectForKeyedSubscript:@"TL_X"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"TL_X"];
   [v17 doubleValue];
   v19 = v18;
-  v20 = [v4 objectForKeyedSubscript:@"TL_Y"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"TL_Y"];
   [v20 doubleValue];
   v22 = v21;
 
-  v23 = [v4 objectForKeyedSubscript:@"TR_X"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"TR_X"];
   [v23 doubleValue];
   v25 = v24;
-  v26 = [v4 objectForKeyedSubscript:@"TR_Y"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"TR_Y"];
 
   [v26 doubleValue];
   v28 = v27;
@@ -265,95 +265,95 @@
   return [(VKQuad *)self initWithBottomLeft:v7 bottomRight:v10 topLeft:v13 topRight:v16, v19, v22, v25, v28];
 }
 
-- (VKQuad)initWithPoints:(id)a3
+- (VKQuad)initWithPoints:(id)points
 {
-  v4 = a3;
-  if ([v4 count] == 4)
+  pointsCopy = points;
+  if ([pointsCopy count] == 4)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [pointsCopy objectAtIndexedSubscript:0];
     [v5 vk_pointValue];
     v7 = v6;
     v9 = v8;
 
-    v10 = [v4 objectAtIndexedSubscript:1];
+    v10 = [pointsCopy objectAtIndexedSubscript:1];
     [v10 vk_pointValue];
     v12 = v11;
     v14 = v13;
 
-    v15 = [v4 objectAtIndexedSubscript:2];
+    v15 = [pointsCopy objectAtIndexedSubscript:2];
     [v15 vk_pointValue];
     v17 = v16;
     v19 = v18;
 
-    v20 = [v4 objectAtIndexedSubscript:3];
+    v20 = [pointsCopy objectAtIndexedSubscript:3];
     [v20 vk_pointValue];
     v22 = v21;
     v24 = v23;
 
     self = [(VKQuad *)self initWithBottomLeft:v17 bottomRight:v19 topLeft:v22 topRight:v24, v7, v9, v12, v14];
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)quadFromCGRect:(CGRect)a3
++ (id)quadFromCGRect:(CGRect)rect
 {
-  v3 = [[a1 alloc] initWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[self alloc] initWithRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return v3;
 }
 
-- (VKQuad)initWithCoder:(id)a3
+- (VKQuad)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"BL_X"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"BL_X"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"BL_Y"];
+  [coderCopy decodeDoubleForKey:@"BL_Y"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"BR_X"];
+  [coderCopy decodeDoubleForKey:@"BR_X"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"BR_Y"];
+  [coderCopy decodeDoubleForKey:@"BR_Y"];
   v12 = v11;
-  [v4 decodeDoubleForKey:@"TL_X"];
+  [coderCopy decodeDoubleForKey:@"TL_X"];
   v14 = v13;
-  [v4 decodeDoubleForKey:@"TL_Y"];
+  [coderCopy decodeDoubleForKey:@"TL_Y"];
   v16 = v15;
-  [v4 decodeDoubleForKey:@"TR_X"];
+  [coderCopy decodeDoubleForKey:@"TR_X"];
   v18 = v17;
-  [v4 decodeDoubleForKey:@"TR_Y"];
+  [coderCopy decodeDoubleForKey:@"TR_Y"];
   v20 = [(VKQuad *)self initWithBottomLeft:v6 bottomRight:v8 topLeft:v10 topRight:v12, v14, v16, v18, v19];
-  v21 = [v4 decodeIntegerForKey:@"LD"];
+  v21 = [coderCopy decodeIntegerForKey:@"LD"];
 
   [(VKQuad *)v20 setLayoutDirection:v21];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   [(VKQuad *)self bottomLeft];
-  [v8 encodeDouble:@"BL_X" forKey:?];
+  [coderCopy encodeDouble:@"BL_X" forKey:?];
   [(VKQuad *)self bottomLeft];
-  [v8 encodeDouble:@"BL_Y" forKey:v4];
+  [coderCopy encodeDouble:@"BL_Y" forKey:v4];
   [(VKQuad *)self bottomRight];
-  [v8 encodeDouble:@"BR_X" forKey:?];
+  [coderCopy encodeDouble:@"BR_X" forKey:?];
   [(VKQuad *)self bottomRight];
-  [v8 encodeDouble:@"BR_Y" forKey:v5];
+  [coderCopy encodeDouble:@"BR_Y" forKey:v5];
   [(VKQuad *)self topLeft];
-  [v8 encodeDouble:@"TL_X" forKey:?];
+  [coderCopy encodeDouble:@"TL_X" forKey:?];
   [(VKQuad *)self topLeft];
-  [v8 encodeDouble:@"TL_Y" forKey:v6];
+  [coderCopy encodeDouble:@"TL_Y" forKey:v6];
   [(VKQuad *)self topRight];
-  [v8 encodeDouble:@"TR_X" forKey:?];
+  [coderCopy encodeDouble:@"TR_X" forKey:?];
   [(VKQuad *)self topRight];
-  [v8 encodeDouble:@"TR_Y" forKey:v7];
-  [v8 encodeInteger:-[VKQuad layoutDirection](self forKey:{"layoutDirection"), @"LD"}];
+  [coderCopy encodeDouble:@"TR_Y" forKey:v7];
+  [coderCopy encodeInteger:-[VKQuad layoutDirection](self forKey:{"layoutDirection"), @"LD"}];
 }
 
 - (id)dictionaryRepresentation
@@ -575,29 +575,29 @@
   return result;
 }
 
-- (id)intersectionOfLineFrom:(CGPoint)a3 to:(CGPoint)a4 withLineFrom:(CGPoint)a5 to:(CGPoint)a6
+- (id)intersectionOfLineFrom:(CGPoint)from to:(CGPoint)to withLineFrom:(CGPoint)lineFrom to:(CGPoint)a6
 {
-  v8 = a4.x - a3.x;
-  v9 = a6.y - a5.y;
-  v10 = a4.y - a3.y;
-  v11 = a6.x - a5.x;
-  v12 = v8 * (a6.y - a5.y) - v10 * (a6.x - a5.x);
+  v8 = to.x - from.x;
+  v9 = a6.y - lineFrom.y;
+  v10 = to.y - from.y;
+  v11 = a6.x - lineFrom.x;
+  v12 = v8 * (a6.y - lineFrom.y) - v10 * (a6.x - lineFrom.x);
   v13 = 0;
-  if (v12 != 0.0 && ((v15 = a5.x - a3.x, v16 = a5.y - a3.y, v17 = ((a5.x - a3.x) * v9 - v16 * v11) / v12, v17 >= 0.0) ? (v18 = v17 <= 1.0) : (v18 = 0), v18 && ((v19 = (v15 * v10 - v16 * v8) / v12, v19 >= 0.0) ? (v20 = v19 <= 1.0) : (v20 = 0), v20)))
+  if (v12 != 0.0 && ((v15 = lineFrom.x - from.x, v16 = lineFrom.y - from.y, v17 = ((lineFrom.x - from.x) * v9 - v16 * v11) / v12, v17 >= 0.0) ? (v18 = v17 <= 1.0) : (v18 = 0), v18 && ((v19 = (v15 * v10 - v16 * v8) / v12, v19 >= 0.0) ? (v20 = v19 <= 1.0) : (v20 = 0), v20)))
   {
-    v13 = [MEMORY[0x1E696B098] vk_valueWithPoint:{a3.x + v17 * v8, a3.y + v17 * v10, v6}];
+    v13 = [MEMORY[0x1E696B098] vk_valueWithPoint:{from.x + v17 * v8, from.y + v17 * v10, v6}];
   }
 
   return v13;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v23 = *MEMORY[0x1E69E9840];
   v6 = 0;
-  if (VKMPointIsFinite(a3.x, a3.y))
+  if (VKMPointIsFinite(point.x, point.y))
   {
     v7 = 0;
     topLeft = self->_topLeft;
@@ -648,13 +648,13 @@
   return v6;
 }
 
-- (BOOL)intersectsQuad:(id)a3
+- (BOOL)intersectsQuad:(id)quad
 {
   v53[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  v6 = v4;
-  [(VKQuad *)v5 boundingBox];
+  quadCopy = quad;
+  selfCopy = self;
+  v6 = quadCopy;
+  [(VKQuad *)selfCopy boundingBox];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -670,16 +670,16 @@
   v54.size.height = v14;
   if (CGRectIntersectsRect(v54, v55))
   {
-    [(VKQuad *)v5 topLeft];
+    [(VKQuad *)selfCopy topLeft];
     v53[0] = v19;
     v53[1] = v20;
-    [(VKQuad *)v5 topRight];
+    [(VKQuad *)selfCopy topRight];
     v53[2] = v21;
     v53[3] = v22;
-    [(VKQuad *)v5 bottomRight];
+    [(VKQuad *)selfCopy bottomRight];
     v53[4] = v23;
     v53[5] = v24;
-    [(VKQuad *)v5 bottomLeft];
+    [(VKQuad *)selfCopy bottomLeft];
     v53[6] = v25;
     v53[7] = v26;
     [v6 topLeft];
@@ -695,10 +695,10 @@
     v33 = 0;
     v52[6] = v34;
     v52[7] = v35;
-    v45 = v5;
+    v45 = selfCopy;
     do
     {
-      if (-[VKQuad containsPoint:](v5, "containsPoint:", *&v52[v33], *&v52[v33 + 1], v45) || ([v6 containsPoint:{*&v53[v33], *&v53[v33 + 1]}] & 1) != 0)
+      if (-[VKQuad containsPoint:](selfCopy, "containsPoint:", *&v52[v33], *&v52[v33 + 1], v45) || ([v6 containsPoint:{*&v53[v33], *&v53[v33 + 1]}] & 1) != 0)
       {
         v46 = 1;
         goto LABEL_15;
@@ -739,7 +739,7 @@
 
     while (v36 != 4);
 LABEL_15:
-    v5 = v45;
+    selfCopy = v45;
     v43 = v46;
   }
 
@@ -751,12 +751,12 @@ LABEL_15:
   return v43 & 1;
 }
 
-- (BOOL)isCompletelyInsideRect:(CGRect)a3
+- (BOOL)isCompletelyInsideRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VKQuad *)self topLeft];
   v24.x = v8;
   v24.y = v9;
@@ -926,7 +926,7 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v11;
 }
 
-- (id)quadByFlippingPointsWithSourceFrame:(CGRect)a3
+- (id)quadByFlippingPointsWithSourceFrame:(CGRect)frame
 {
   [(VKQuad *)self topLeft];
   VKMFlipPoint();
@@ -987,16 +987,16 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (([(VKQuad *)self topLeft], v7 = v6, v9 = v8, [(VKQuad *)v5 topLeft], v7 == v11) ? (v12 = v9 == v10) : (v12 = 0), v12))
+  else if (equalCopy && (([(VKQuad *)self topLeft], v7 = v6, v9 = v8, [(VKQuad *)v5 topLeft], v7 == v11) ? (v12 = v9 == v10) : (v12 = 0), v12))
   {
     [(VKQuad *)self topRight];
     v16 = v15;
@@ -1019,8 +1019,8 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
         v13 = 0;
         if (v28 == v32 && v30 == v31)
         {
-          v33 = [(VKQuad *)self layoutDirection];
-          v13 = v33 == [(VKQuad *)v5 layoutDirection];
+          layoutDirection = [(VKQuad *)self layoutDirection];
+          v13 = layoutDirection == [(VKQuad *)v5 layoutDirection];
         }
       }
     }
@@ -1034,7 +1034,7 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(VKQuad *)self topLeft];
   v5 = v4;
@@ -1082,22 +1082,22 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return path;
 }
 
-- (id)quadByConvertingFromView:(id)a3 toView:(id)a4 isNormalized:(BOOL)a5
+- (id)quadByConvertingFromView:(id)view toView:(id)toView isNormalized:(BOOL)normalized
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [v8 bounds];
+  normalizedCopy = normalized;
+  viewCopy = view;
+  toViewCopy = toView;
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = self;
-  v17 = [v8 vk_isFlipped];
-  if (v17 != [v9 vk_isFlipped])
+  selfCopy = self;
+  vk_isFlipped = [viewCopy vk_isFlipped];
+  if (vk_isFlipped != [toViewCopy vk_isFlipped])
   {
-    v18 = [(VKQuad *)v16 copy];
+    v18 = [(VKQuad *)selfCopy copy];
 
-    if (v5)
+    if (normalizedCopy)
     {
       v19 = 0.0;
       v20 = 0.0;
@@ -1107,27 +1107,27 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
 
     else
     {
-      [v8 bounds];
+      [viewCopy bounds];
     }
 
-    v16 = [v18 quadByFlippingPointsWithSourceFrame:{v19, v20, v21, v22}];
+    selfCopy = [v18 quadByFlippingPointsWithSourceFrame:{v19, v20, v21, v22}];
   }
 
-  [(VKQuad *)v16 topLeft];
-  if (v5)
+  [(VKQuad *)selfCopy topLeft];
+  if (normalizedCopy)
   {
-    [v8 convertPoint:0 toView:{VKMPointFromNormalizedRect(v23, v24, v11, v13, v15)}];
+    [viewCopy convertPoint:0 toView:{VKMPointFromNormalizedRect(v23, v24, v11, v13, v15)}];
     v71 = v26;
     v72 = v25;
-    [(VKQuad *)v16 topRight];
-    [v8 convertPoint:0 toView:{VKMPointFromNormalizedRect(v27, v28, v11, v13, v15)}];
+    [(VKQuad *)selfCopy topRight];
+    [viewCopy convertPoint:0 toView:{VKMPointFromNormalizedRect(v27, v28, v11, v13, v15)}];
     v30 = v29;
     v32 = v31;
-    [(VKQuad *)v16 bottomRight];
-    [v8 convertPoint:0 toView:{VKMPointFromNormalizedRect(v33, v34, v11, v13, v15)}];
+    [(VKQuad *)selfCopy bottomRight];
+    [viewCopy convertPoint:0 toView:{VKMPointFromNormalizedRect(v33, v34, v11, v13, v15)}];
     v36 = v35;
     v38 = v37;
-    [(VKQuad *)v16 bottomLeft];
+    [(VKQuad *)selfCopy bottomLeft];
     v39 = v15;
     v41 = v71;
     v40 = v72;
@@ -1136,45 +1136,45 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
 
   else
   {
-    [v8 convertPoint:0 toView:?];
+    [viewCopy convertPoint:0 toView:?];
     v40 = v45;
     v41 = v46;
-    [(VKQuad *)v16 topRight];
-    [v8 convertPoint:0 toView:?];
+    [(VKQuad *)selfCopy topRight];
+    [viewCopy convertPoint:0 toView:?];
     v30 = v47;
     v32 = v48;
-    [(VKQuad *)v16 bottomRight];
-    [v8 convertPoint:0 toView:?];
+    [(VKQuad *)selfCopy bottomRight];
+    [viewCopy convertPoint:0 toView:?];
     v36 = v49;
     v38 = v50;
-    [(VKQuad *)v16 bottomLeft];
+    [(VKQuad *)selfCopy bottomLeft];
   }
 
-  [v8 convertPoint:0 toView:v44];
+  [viewCopy convertPoint:0 toView:v44];
   v52 = v51;
   v54 = v53;
-  [v9 convertPoint:0 fromView:{v40, v41}];
+  [toViewCopy convertPoint:0 fromView:{v40, v41}];
   v56 = v55;
   v58 = v57;
-  [v9 convertPoint:0 fromView:{v30, v32}];
+  [toViewCopy convertPoint:0 fromView:{v30, v32}];
   v60 = v59;
   v62 = v61;
-  [v9 convertPoint:0 fromView:{v36, v38}];
+  [toViewCopy convertPoint:0 fromView:{v36, v38}];
   v64 = v63;
   v66 = v65;
-  [v9 convertPoint:0 fromView:{v52, v54}];
+  [toViewCopy convertPoint:0 fromView:{v52, v54}];
   v69 = [[VKQuad alloc] initWithBottomLeft:v67 bottomRight:v68 topLeft:v64 topRight:v66, v56, v58, v60, v62];
 
   return v69;
 }
 
-- (id)quadByConvertingFromNormalizedRectToView:(id)a3 contentsRect:(CGRect)a4
+- (id)quadByConvertingFromNormalizedRectToView:(id)view contentsRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [a3 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [view bounds];
   VKMRectFromNormalizedSubrect(v9, v10, v11, v12, x, y, width, height);
   v14 = v13;
   v16 = v15;
@@ -1196,27 +1196,27 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v37;
 }
 
-- (id)normalizedQuadByConvertingFromView:(id)a3 toView:(id)a4 toViewSize:(CGSize)a5
+- (id)normalizedQuadByConvertingFromView:(id)view toView:(id)toView toViewSize:(CGSize)size
 {
-  width = a5.width;
+  width = size.width;
   v8 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
-  v10 = a4;
-  v11 = a3;
+  toViewCopy = toView;
+  viewCopy = view;
   [(VKQuad *)self topLeft];
-  [v11 convertPoint:v10 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   v13 = v12;
   v15 = v14;
   [(VKQuad *)self topRight];
-  [v11 convertPoint:v10 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   v17 = v16;
   v19 = v18;
   [(VKQuad *)self bottomRight];
-  [v11 convertPoint:v10 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   v40 = v21;
   v41 = v20;
   [(VKQuad *)self bottomLeft];
-  [v11 convertPoint:v10 toView:?];
+  [viewCopy convertPoint:toViewCopy toView:?];
   v36 = v23;
   v37 = v22;
 
@@ -1233,9 +1233,9 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v34;
 }
 
-- (id)normalizedQuadFromView:(id)a3
+- (id)normalizedQuadFromView:(id)view
 {
-  [a3 bounds];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1256,13 +1256,13 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v28;
 }
 
-- (id)subquadFromRect:(CGRect)a3
+- (id)subquadFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (VKMSizeIsEmptyOrHasNanOrInf(a3.size.width, a3.size.height))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (VKMSizeIsEmptyOrHasNanOrInf(rect.size.width, rect.size.height))
   {
     v8 = objc_alloc_init(VKQuad);
   }
@@ -1278,9 +1278,9 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v8;
 }
 
-- (id)quadFromAddingPoint:(CGPoint)a3
+- (id)quadFromAddingPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   [(VKQuad *)self topLeft];
   v7 = VKMAddPoints(v5, v6, x);
   v9 = v8;
@@ -1297,9 +1297,9 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v24;
 }
 
-- (id)quadFromSubtractingPoint:(CGPoint)a3
+- (id)quadFromSubtractingPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   [(VKQuad *)self topLeft];
   v7 = VKMSubtractPoints(v5, v6, x);
   v9 = v8;
@@ -1316,9 +1316,9 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v24;
 }
 
-- (id)quadMultipliedBySize:(CGSize)a3
+- (id)quadMultipliedBySize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   [(VKQuad *)self topLeft];
   v7 = VKMMultiplyPointBySize(v5, v6, width);
   v9 = v8;
@@ -1354,71 +1354,71 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (id)quadFromUnionWithQuad:(id)a3
+- (id)quadFromUnionWithQuad:(id)quad
 {
-  v4 = a3;
-  v5 = [(VKQuad *)self quadByAdjustingOrientation];
-  v6 = [v4 quadByAdjustingOrientation];
+  quadCopy = quad;
+  quadByAdjustingOrientation = [(VKQuad *)self quadByAdjustingOrientation];
+  quadByAdjustingOrientation2 = [quadCopy quadByAdjustingOrientation];
 
-  [v6 topLeft];
+  [quadByAdjustingOrientation2 topLeft];
   v8 = v7;
-  [v5 topLeft];
+  [quadByAdjustingOrientation topLeft];
   if (v8 >= v9)
   {
     v8 = v9;
   }
 
-  [v6 topLeft];
+  [quadByAdjustingOrientation2 topLeft];
   v11 = v10;
-  [v5 topLeft];
+  [quadByAdjustingOrientation topLeft];
   if (v11 >= v12)
   {
     v11 = v12;
   }
 
-  [v6 topRight];
+  [quadByAdjustingOrientation2 topRight];
   v14 = v13;
-  [v5 topRight];
+  [quadByAdjustingOrientation topRight];
   if (v14 < v15)
   {
     v14 = v15;
   }
 
-  [v6 topRight];
+  [quadByAdjustingOrientation2 topRight];
   v17 = v16;
-  [v5 topRight];
+  [quadByAdjustingOrientation topRight];
   if (v17 >= v18)
   {
     v17 = v18;
   }
 
-  [v6 bottomRight];
+  [quadByAdjustingOrientation2 bottomRight];
   v20 = v19;
-  [v5 bottomRight];
+  [quadByAdjustingOrientation bottomRight];
   if (v20 < v21)
   {
     v20 = v21;
   }
 
-  [v6 bottomRight];
+  [quadByAdjustingOrientation2 bottomRight];
   v23 = v22;
-  [v5 bottomRight];
+  [quadByAdjustingOrientation bottomRight];
   if (v23 < v24)
   {
     v23 = v24;
   }
 
-  [v6 bottomLeft];
+  [quadByAdjustingOrientation2 bottomLeft];
   v26 = v25;
-  [v5 bottomLeft];
+  [quadByAdjustingOrientation bottomLeft];
   if (v26 >= v27)
   {
     v26 = v27;
   }
 
-  [v6 bottomLeft];
+  [quadByAdjustingOrientation2 bottomLeft];
   v29 = v28;
-  [v5 bottomLeft];
+  [quadByAdjustingOrientation bottomLeft];
   if (v29 < v30)
   {
     v29 = v30;
@@ -1429,15 +1429,15 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return v31;
 }
 
-+ (id)quadFromUnionOfQuads:(id)a3 baselineAngle:(double)a4
++ (id)quadFromUnionOfQuads:(id)quads baselineAngle:(double)angle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  quadsCopy = quads;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [quadsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1449,10 +1449,10 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(quadsCopy);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) quadFromRotatingAroundOriginWithAngle:-a4];
+        v11 = [*(*(&v16 + 1) + 8 * i) quadFromRotatingAroundOriginWithAngle:-angle];
         v12 = v11;
         if (v8)
         {
@@ -1467,7 +1467,7 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [quadsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -1478,29 +1478,29 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
     v8 = 0;
   }
 
-  v14 = [v8 quadFromRotatingAroundOriginWithAngle:a4];
+  v14 = [v8 quadFromRotatingAroundOriginWithAngle:angle];
 
   return v14;
 }
 
-+ (CGPoint)vertexCentroidFromQuads:(id)a3
++ (CGPoint)vertexCentroidFromQuads:(id)quads
 {
-  v3 = a3;
-  if ([v3 count])
+  quadsCopy = quads;
+  if ([quadsCopy count])
   {
-    v4 = [v3 firstObject];
-    [v4 vertexCentroid];
+    firstObject = [quadsCopy firstObject];
+    [firstObject vertexCentroid];
     v6 = v5;
     v8 = v7;
 
-    if ([v3 count] >= 2)
+    if ([quadsCopy count] >= 2)
     {
-      if ([v3 count] >= 2)
+      if ([quadsCopy count] >= 2)
       {
         v9 = 1;
         do
         {
-          v10 = [v3 objectAtIndexedSubscript:v9];
+          v10 = [quadsCopy objectAtIndexedSubscript:v9];
           [v10 vertexCentroid];
           v6 = VKMAddPoints(v6, v8, v11);
           v8 = v12;
@@ -1508,10 +1508,10 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
           ++v9;
         }
 
-        while ([v3 count] > v9);
+        while ([quadsCopy count] > v9);
       }
 
-      v6 = VKMMultiplyPointScalar(v6, v8, 1.0 / [v3 count]);
+      v6 = VKMMultiplyPointScalar(v6, v8, 1.0 / [quadsCopy count]);
       v8 = v13;
     }
   }
@@ -1529,14 +1529,14 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (id)quadFromRotatingAroundCentroidWithAngle:(double)a3
+- (id)quadFromRotatingAroundCentroidWithAngle:(double)angle
 {
   [(VKQuad *)self vertexCentroid];
   v6 = v5;
   v8 = v7;
   memset(&v18, 0, sizeof(v18));
   CGAffineTransformMakeTranslation(&v18, -v5, -v7);
-  CGAffineTransformMakeRotation(&t2, a3);
+  CGAffineTransformMakeRotation(&t2, angle);
   t1 = v18;
   CGAffineTransformConcat(&v17, &t1, &t2);
   v18 = v17;
@@ -1544,13 +1544,13 @@ uint64_t __36__VKQuad_quadByAdjustingOrientation__block_invoke(uint64_t a1, void
   t1 = v18;
   CGAffineTransformConcat(&v17, &t1, &t2);
   v18 = v17;
-  v9 = [(VKQuad *)self allPoints];
+  allPoints = [(VKQuad *)self allPoints];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__VKQuad_quadFromRotatingAroundCentroidWithAngle___block_invoke;
   v13[3] = &__block_descriptor_80_e23__32__0__NSValue_8q16q24l;
   v14 = v18;
-  v10 = [v9 vk_map:v13];
+  v10 = [allPoints vk_map:v13];
 
   v11 = [[VKQuad alloc] initWithPoints:v10];
 
@@ -1566,17 +1566,17 @@ uint64_t __50__VKQuad_quadFromRotatingAroundCentroidWithAngle___block_invoke(flo
   return [v3 vk_valueWithPoint:*&v6];
 }
 
-- (id)quadFromRotatingAroundOriginWithAngle:(double)a3
+- (id)quadFromRotatingAroundOriginWithAngle:(double)angle
 {
   memset(&v10, 0, sizeof(v10));
-  CGAffineTransformMakeRotation(&v10, a3);
-  v4 = [(VKQuad *)self allPoints];
+  CGAffineTransformMakeRotation(&v10, angle);
+  allPoints = [(VKQuad *)self allPoints];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__VKQuad_quadFromRotatingAroundOriginWithAngle___block_invoke;
   v8[3] = &__block_descriptor_80_e23__32__0__NSValue_8q16q24l;
   v9 = v10;
-  v5 = [v4 vk_map:v8];
+  v5 = [allPoints vk_map:v8];
 
   v6 = [[VKQuad alloc] initWithPoints:v5];
 
@@ -1592,7 +1592,7 @@ uint64_t __48__VKQuad_quadFromRotatingAroundOriginWithAngle___block_invoke(float
   return [v3 vk_valueWithPoint:*&v6];
 }
 
-- (CGAffineTransform)rotationTransformAndBoundingBox:(SEL)a3
+- (CGAffineTransform)rotationTransformAndBoundingBox:(SEL)box
 {
   [(VKQuad *)self topLeft];
   v8 = v7;
@@ -1630,10 +1630,10 @@ uint64_t __48__VKQuad_quadFromRotatingAroundOriginWithAngle___block_invoke(float
   return CGAffineTransformMakeRotation(retstr, v22);
 }
 
-- (double)mininumDistanceToPoint:(CGPoint)a3
+- (double)mininumDistanceToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v32 = *MEMORY[0x1E69E9840];
   v6 = [(VKQuad *)self containsPoint:?];
   result = 0.0;
@@ -1687,11 +1687,11 @@ uint64_t __48__VKQuad_quadFromRotatingAroundOriginWithAngle___block_invoke(float
   return result;
 }
 
-- (double)distanceFromLine:(CGPoint *)a3 toPoint:(CGPoint)a4
+- (double)distanceFromLine:(CGPoint *)line toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = VKMNearestPointOnLineSegmentToPoint(&a3->x, a4.x, a4.y);
+  y = point.y;
+  x = point.x;
+  v6 = VKMNearestPointOnLineSegmentToPoint(&line->x, point.x, point.y);
 
   return VKMDistance(v6, v7, x, y);
 }
@@ -1732,19 +1732,19 @@ uint64_t __48__VKQuad_quadFromRotatingAroundOriginWithAngle___block_invoke(float
   return result;
 }
 
-- (VKQuad)initWithCRNormalizedQuad:(id)a3
+- (VKQuad)initWithCRNormalizedQuad:(id)quad
 {
-  v4 = a3;
-  [v4 bottomLeft];
+  quadCopy = quad;
+  [quadCopy bottomLeft];
   v6 = v5;
   v8 = v7;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v10 = v9;
   v12 = v11;
-  [v4 topLeft];
+  [quadCopy topLeft];
   v14 = v13;
   v16 = v15;
-  [v4 topRight];
+  [quadCopy topRight];
   v18 = v17;
   v20 = v19;
 

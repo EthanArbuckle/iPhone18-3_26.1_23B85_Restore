@@ -1,22 +1,22 @@
 @interface SGMicrodataItem
-- (SGMicrodataItem)initWithItemType:(id)a3 itemRef:(id)a4;
-- (void)resolveItemRefsWithDocument:(id)a3;
+- (SGMicrodataItem)initWithItemType:(id)type itemRef:(id)ref;
+- (void)resolveItemRefsWithDocument:(id)document;
 @end
 
 @implementation SGMicrodataItem
 
-- (SGMicrodataItem)initWithItemType:(id)a3 itemRef:(id)a4
+- (SGMicrodataItem)initWithItemType:(id)type itemRef:(id)ref
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  refCopy = ref;
   v14.receiver = self;
   v14.super_class = SGMicrodataItem;
   v9 = [(SGMicrodataItemScope *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemType, a3);
-    v11 = [v8 mutableCopy];
+    objc_storeStrong(&v9->_itemType, type);
+    v11 = [refCopy mutableCopy];
     itemRef = v10->_itemRef;
     v10->_itemRef = v11;
   }
@@ -24,10 +24,10 @@
   return v10;
 }
 
-- (void)resolveItemRefsWithDocument:(id)a3
+- (void)resolveItemRefsWithDocument:(id)document
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  documentCopy = document;
   if ([(NSMutableArray *)self->_itemRef count])
   {
     v24 = 0u;
@@ -50,19 +50,19 @@
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
-          v11 = [v4 htmlIds];
-          v12 = [v11 objectForKeyedSubscript:v10];
+          htmlIds = [documentCopy htmlIds];
+          v12 = [htmlIds objectForKeyedSubscript:v10];
 
           if (v12)
           {
             if (![(SGMicrodataItemScope *)self isReferencedBy:v12])
             {
               itemProps = self->super._itemProps;
-              v14 = [v12 itemProps];
-              [(NSMutableArray *)itemProps addObjectsFromArray:v14];
+              itemProps = [v12 itemProps];
+              [(NSMutableArray *)itemProps addObjectsFromArray:itemProps];
 
-              v15 = [(SGMicrodataItemScope *)self itemProps];
-              v16 = [v15 count];
+              itemProps2 = [(SGMicrodataItemScope *)self itemProps];
+              v16 = [itemProps2 count];
 
               if (v16 >= 0x3E8)
               {
@@ -85,13 +85,13 @@
 
 LABEL_14:
 
-    v17 = [(SGMicrodataItemScope *)self itemProps];
-    v18 = [v17 count];
+    itemProps3 = [(SGMicrodataItemScope *)self itemProps];
+    v18 = [itemProps3 count];
 
     if (v18 >= 0x3E9)
     {
-      v19 = [(SGMicrodataItemScope *)self itemProps];
-      v20 = [v19 count] - 1000;
+      itemProps4 = [(SGMicrodataItemScope *)self itemProps];
+      v20 = [itemProps4 count] - 1000;
 
       [(NSMutableArray *)self->super._itemProps removeObjectsInRange:1000, v20];
     }

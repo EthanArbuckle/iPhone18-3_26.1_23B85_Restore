@@ -3,8 +3,8 @@
 - (MTLDevice)device;
 - (NSString)clientID;
 - (__CFXWorld)world;
-- (void)registerVFX2AuthoringSystems:(BOOL)a3;
-- (void)setClientID:(id)a3;
+- (void)registerVFX2AuthoringSystems:(BOOL)systems;
+- (void)setClientID:(id)d;
 @end
 
 @implementation VFXSceneLoadOptions
@@ -46,9 +46,9 @@
   return v2;
 }
 
-- (void)setClientID:(id)a3
+- (void)setClientID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1AFDFCEF8();
   }
@@ -64,10 +64,10 @@
   v6[1] = v5;
 }
 
-- (void)registerVFX2AuthoringSystems:(BOOL)a3
+- (void)registerVFX2AuthoringSystems:(BOOL)systems
 {
   v3 = 2147517449;
-  if (a3)
+  if (systems)
   {
     v3 = 0x1008000840FLL;
   }

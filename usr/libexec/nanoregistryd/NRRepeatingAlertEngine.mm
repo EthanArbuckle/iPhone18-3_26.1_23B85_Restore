@@ -3,16 +3,16 @@
 + (id)sharedInstance;
 + (id)sharedUNUserNotificationCenter;
 - (id)initBase;
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5;
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block;
 - (void)_presentAlertsIfNeeded;
-- (void)addErrorCodeToPairingFailureAlert:(unint64_t)a3 withReasonString:(id)a4;
-- (void)clearUINotificationwithName:(id)a3;
-- (void)presentAlertIfEnabledWithName:(id)a3;
+- (void)addErrorCodeToPairingFailureAlert:(unint64_t)alert withReasonString:(id)string;
+- (void)clearUINotificationwithName:(id)name;
+- (void)presentAlertIfEnabledWithName:(id)name;
 - (void)presentAlertsIfNeeded;
 - (void)registerForNotifications;
-- (void)resetStateForAlertWithName:(id)a3;
+- (void)resetStateForAlertWithName:(id)name;
 - (void)resume;
-- (void)setEnabled:(BOOL)a3 withName:(id)a4 withDevice:(id)a5;
+- (void)setEnabled:(BOOL)enabled withName:(id)name withDevice:(id)device;
 - (void)sigTerm;
 @end
 
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000D3C84;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3A90 != -1)
   {
     dispatch_once(&qword_1001B3A90, block);
@@ -87,121 +87,121 @@
 {
   v2 = +[NSMutableDictionary dictionary];
   v3 = [[NRRepeatingAlertEngineItemLaunchBridge alloc] initWithName:@"PairedWatchIsIncompatible" strings:&off_100187F10 maxAcknowledgementCount:3 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:28800.0];
-  v4 = [(NRRepeatingAlertEngineItem *)v3 name];
-  [v2 setObject:v3 forKeyedSubscript:v4];
+  name = [(NRRepeatingAlertEngineItem *)v3 name];
+  [v2 setObject:v3 forKeyedSubscript:name];
 
   v5 = [[NRRepeatingAlertEngineItemLaunchBridgeToFaceGallery alloc] initWithName:@"PairedWatchWasUpdatedCheckoutFaceGallery" strings:&off_100187F28 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v6 = [(NRRepeatingAlertEngineItem *)v5 name];
-  [v2 setObject:v5 forKeyedSubscript:v6];
+  name2 = [(NRRepeatingAlertEngineItem *)v5 name];
+  [v2 setObject:v5 forKeyedSubscript:name2];
 
   v7 = [[NRRepeatingAlertEngineItemWatchDidNotReset alloc] initWithName:@"RepeatingAlertPairedWatchDidNotReset" strings:&off_100187F40 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v8 = [(NRRepeatingAlertEngineItem *)v7 name];
-  [v2 setObject:v7 forKeyedSubscript:v8];
+  name3 = [(NRRepeatingAlertEngineItem *)v7 name];
+  [v2 setObject:v7 forKeyedSubscript:name3];
 
   v9 = [[NRRepeatingAlertEngineItemMigrationFailed alloc] initWithName:@"MigrationFailed" strings:&off_100187F58 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v10 = [(NRRepeatingAlertEngineItem *)v9 name];
-  [v2 setObject:v9 forKeyedSubscript:v10];
+  name4 = [(NRRepeatingAlertEngineItem *)v9 name];
+  [v2 setObject:v9 forKeyedSubscript:name4];
 
   v11 = [[NRRepeatingAlertEngineItemMigrationFailedPermanentlyForThisWatch alloc] initWithName:@"MigrationFailedPermanentlyForThisWatch" strings:&off_100187F70 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v12 = [(NRRepeatingAlertEngineItem *)v11 name];
-  [v2 setObject:v11 forKeyedSubscript:v12];
+  name5 = [(NRRepeatingAlertEngineItem *)v11 name];
+  [v2 setObject:v11 forKeyedSubscript:name5];
 
   v13 = [[NRRepeatingAlertEngineItemMigrationSamePhone alloc] initWithName:@"SamePhone" strings:&off_100187F88 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v14 = [(NRRepeatingAlertEngineItem *)v13 name];
-  [v2 setObject:v13 forKeyedSubscript:v14];
+  name6 = [(NRRepeatingAlertEngineItem *)v13 name];
+  [v2 setObject:v13 forKeyedSubscript:name6];
 
   v15 = [[NRRepeatingAlertEngineItemStandAloneMode alloc] initWithName:@"StandAloneMode" strings:&off_100187FA0 maxAcknowledgementCount:1 reoccurrenceInterval:0 localizedStrings:0 userNotificationCenter:60.0];
-  v16 = [(NRRepeatingAlertEngineItem *)v15 name];
-  [v2 setObject:v15 forKeyedSubscript:v16];
+  name7 = [(NRRepeatingAlertEngineItem *)v15 name];
+  [v2 setObject:v15 forKeyedSubscript:name7];
 
   v17 = [[NRRepeatingAlertEngineItemStandAloneMode alloc] initWithName:@"HealthSyncSetupFailed" strings:&off_100187FB8 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v18 = [(NRRepeatingAlertEngineItem *)v17 name];
-  [v2 setObject:v17 forKeyedSubscript:v18];
+  name8 = [(NRRepeatingAlertEngineItem *)v17 name];
+  [v2 setObject:v17 forKeyedSubscript:name8];
 
   v19 = [NRRepeatingAlertEngineItemLaunchBridgeDeleteGraduationBackup alloc];
   v20 = +[NRRepeatingAlertEngine sharedUNUserNotificationCenter];
   v21 = [(NRRepeatingAlertEngineItem *)v19 initWithName:@"TinkerWatchFoundInAccount" strings:&off_100187FD0 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:v20 userNotificationCenter:60.0];
 
-  v22 = [(NRRepeatingAlertEngineItem *)v21 name];
-  [v2 setObject:v21 forKeyedSubscript:v22];
+  name9 = [(NRRepeatingAlertEngineItem *)v21 name];
+  [v2 setObject:v21 forKeyedSubscript:name9];
 
   v23 = [NRRepeatingAlertEngineItemLegalBackstopNotification alloc];
   v24 = +[NRRepeatingAlertEngine sharedUNUserNotificationCenter];
   v25 = [(NRRepeatingAlertEngineItem *)v23 initWithName:@"TinkerLegalBackstop" strings:&off_100187FE8 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:v24 userNotificationCenter:60.0];
 
-  v26 = [(NRRepeatingAlertEngineItem *)v25 name];
-  [v2 setObject:v25 forKeyedSubscript:v26];
+  name10 = [(NRRepeatingAlertEngineItem *)v25 name];
+  [v2 setObject:v25 forKeyedSubscript:name10];
 
   v27 = [[NRRepeatingAlertEngineItemWatchUnexpectedlyUnpaired alloc] initWithName:@"WatchUnexpectedlyUnpaired" strings:&off_100188000 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v28 = [(NRRepeatingAlertEngineItem *)v27 name];
-  [v2 setObject:v27 forKeyedSubscript:v28];
+  name11 = [(NRRepeatingAlertEngineItem *)v27 name];
+  [v2 setObject:v27 forKeyedSubscript:name11];
 
   v29 = [[NRRepeatingAlertEngineItemWatchUnexpectedlyUnpairedBridge alloc] initWithName:@"WatchUnexpectedlyUnpairedBridge" strings:&off_100188018 maxAcknowledgementCount:5 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:300.0];
-  v30 = [(NRRepeatingAlertEngineItem *)v29 name];
-  [v2 setObject:v29 forKeyedSubscript:v30];
+  name12 = [(NRRepeatingAlertEngineItem *)v29 name];
+  [v2 setObject:v29 forKeyedSubscript:name12];
 
   v31 = [[NRRepeatingAlertEngineItemWatchesUnpairedProhibited alloc] initWithName:@"WatchesUnpairedProhibited" strings:&off_100188030 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v32 = [(NRRepeatingAlertEngineItem *)v31 name];
-  [v2 setObject:v31 forKeyedSubscript:v32];
+  name13 = [(NRRepeatingAlertEngineItem *)v31 name];
+  [v2 setObject:v31 forKeyedSubscript:name13];
 
   v33 = [[NRRepeatingAlertEngineItemWatchesUnpairedProhibited alloc] initWithName:@"MigrationNotSupportedForMDMWatch" strings:&off_100188048 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v34 = [(NRRepeatingAlertEngineItem *)v33 name];
-  [v2 setObject:v33 forKeyedSubscript:v34];
+  name14 = [(NRRepeatingAlertEngineItem *)v33 name];
+  [v2 setObject:v33 forKeyedSubscript:name14];
 
   v35 = [[NRRepeatingAlertEngineItemInternalPairingFailed alloc] initWithName:@"InternalPairingFailed" strings:&off_100188060 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v36 = [(NRRepeatingAlertEngineItem *)v35 name];
-  [v2 setObject:v35 forKeyedSubscript:v36];
+  name15 = [(NRRepeatingAlertEngineItem *)v35 name];
+  [v2 setObject:v35 forKeyedSubscript:name15];
 
   v37 = [[NRRepeatingAlertEngineItemInternalMigrationFailed alloc] initWithName:@"InternalMigrationFailed" strings:&off_100188078 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v38 = [(NRRepeatingAlertEngineItem *)v37 name];
-  [v2 setObject:v37 forKeyedSubscript:v38];
+  name16 = [(NRRepeatingAlertEngineItem *)v37 name];
+  [v2 setObject:v37 forKeyedSubscript:name16];
 
   v39 = [[NRRepeatingAlertEngineItemLostIDSPairing alloc] initWithName:@"InternalIDSPairingLost" strings:&off_100188090 maxAcknowledgementCount:1 reoccurrenceInterval:1 localizedStrings:0 userNotificationCenter:60.0];
-  v40 = [(NRRepeatingAlertEngineItem *)v39 name];
-  [v2 setObject:v39 forKeyedSubscript:v40];
+  name17 = [(NRRepeatingAlertEngineItem *)v39 name];
+  [v2 setObject:v39 forKeyedSubscript:name17];
 
   return v2;
 }
 
-- (void)setEnabled:(BOOL)a3 withName:(id)a4 withDevice:(id)a5
+- (void)setEnabled:(BOOL)enabled withName:(id)name withDevice:(id)device
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  deviceCopy = device;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000D462C;
   v13[3] = &unk_100175CE0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a3;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = nameCopy;
+  enabledCopy = enabled;
+  v15 = deviceCopy;
+  v11 = deviceCopy;
+  v12 = nameCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)clearUINotificationwithName:(id)a3
+- (void)clearUINotificationwithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_items objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_items objectForKeyedSubscript:name];
   [v3 clearNotifications];
 }
 
-- (void)addErrorCodeToPairingFailureAlert:(unint64_t)a3 withReasonString:(id)a4
+- (void)addErrorCodeToPairingFailureAlert:(unint64_t)alert withReasonString:(id)string
 {
-  v6 = a4;
-  if (a3 && v6)
+  stringCopy = string;
+  if (alert && stringCopy)
   {
-    v16 = v6;
+    v16 = stringCopy;
     v7 = [(NSDictionary *)self->_items objectForKeyedSubscript:@"InternalPairingFailed"];
-    v8 = [v7 strings];
-    v9 = [v8 mutableCopy];
+    strings = [v7 strings];
+    v9 = [strings mutableCopy];
 
-    v10 = [NSString stringWithFormat:@"[Internal] Pairing Failed! Code: %lu", a3];
+    alert = [NSString stringWithFormat:@"[Internal] Pairing Failed! Code: %lu", alert];
     v11 = +[NSDate date];
     v12 = [NRTextFormattingUtilities dateFormatter:v11];
 
-    if (a3 == 3)
+    if (alert == 3)
     {
       [NSString stringWithFormat:@"Apple Watch setup timed out due to inactivity.\n\nThis was likely caused by the Watch app being backgrounded for 10 minutes during the setup flow. If this was the case, no radar is necessary. If this was not the case, file a radar to ‘Watch App & Pairing’. Include a sysdiagnose from 📱 & ⌚️.\nTime: %@", v12, v15];
     }
@@ -211,12 +211,12 @@
       [NSString stringWithFormat:@"File a Radar to 'Watch App & Pairing'. Include a sysdiagnose from 📱 & ⌚️.\n\nError: %@\nTime: %@", v16, v12];
     }
     v13 = ;
-    [v9 setObject:v10 atIndexedSubscript:0];
+    [v9 setObject:alert atIndexedSubscript:0];
     [v9 setObject:v13 atIndexedSubscript:1];
     v14 = [(NSDictionary *)self->_items objectForKeyedSubscript:@"InternalPairingFailed"];
     [v14 setStrings:v9];
 
-    v6 = v16;
+    stringCopy = v16;
   }
 }
 
@@ -237,8 +237,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSDictionary *)self->_items allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSDictionary *)self->_items allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -249,7 +249,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -259,7 +259,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -272,8 +272,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSDictionary *)self->_items allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSDictionary *)self->_items allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -285,7 +285,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v7 + 1) + 8 * v6) dismissAlertAsync];
@@ -293,30 +293,30 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)presentAlertIfEnabledWithName:(id)a3
+- (void)presentAlertIfEnabledWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D4C48;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)resetStateForAlertWithName:(id)a3
+- (void)resetStateForAlertWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -326,7 +326,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = nameCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Resetting alert %@", buf, 0xCu);
     }
   }
@@ -337,27 +337,27 @@
   v10[2] = sub_1000D4DE4;
   v10[3] = &unk_100175598;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = nameCopy;
+  v9 = nameCopy;
   dispatch_async(queue, v10);
 }
 
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   out_token = -1;
-  v10 = [v7 UTF8String];
-  if (v9)
+  uTF8String = [nameCopy UTF8String];
+  if (blockCopy)
   {
-    if (!notify_register_dispatch(v10, &out_token, v8, v9))
+    if (!notify_register_dispatch(uTF8String, &out_token, queueCopy, blockCopy))
     {
       goto LABEL_9;
     }
   }
 
-  else if (!notify_register_check(v10, &out_token))
+  else if (!notify_register_check(uTF8String, &out_token))
   {
     goto LABEL_9;
   }
@@ -371,7 +371,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v7;
+      v18 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Failed to register block and get notify token for %@", buf, 0xCu);
     }
   }

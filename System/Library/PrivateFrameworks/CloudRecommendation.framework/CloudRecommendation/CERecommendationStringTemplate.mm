@@ -1,24 +1,24 @@
 @interface CERecommendationStringTemplate
-- (CERecommendationStringTemplate)initWithCoder:(id)a3;
-- (CERecommendationStringTemplate)initWithDictionary:(id)a3;
+- (CERecommendationStringTemplate)initWithCoder:(id)coder;
+- (CERecommendationStringTemplate)initWithDictionary:(id)dictionary;
 - (NSDictionary)actionTitleTemplates;
 - (NSDictionary)messageTemplates;
 - (NSDictionary)subTitleTemplates;
 - (NSDictionary)titleTemplates;
-- (id)actionTitleTemplateForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)actionTitleTemplateForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)messageTemplateForKey:(id)a3;
-- (id)subTitleTemplateForKey:(id)a3;
-- (id)titleTemplateForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)messageTemplateForKey:(id)key;
+- (id)subTitleTemplateForKey:(id)key;
+- (id)titleTemplateForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CERecommendationStringTemplate
 
-- (CERecommendationStringTemplate)initWithDictionary:(id)a3
+- (CERecommendationStringTemplate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CERecommendationStringTemplate;
   v5 = [(CERecommendationStringTemplate *)&v20 init];
@@ -26,7 +26,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 objectForKeyedSubscript:@"title"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"message"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"message"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"actionTitle"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"actionTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,37 +105,37 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CERecommendationStringTemplate *)self titleTemplates];
-  v5 = [(CERecommendationStringTemplate *)self subTitleTemplates];
-  v6 = [(CERecommendationStringTemplate *)self messageTemplates];
-  v7 = [(CERecommendationStringTemplate *)self actionTitleTemplates];
-  v8 = [v3 stringWithFormat:@"titleTemplates: %@, subTitleTemplates: %@, messageTemplates: %@, actionTitleTemplates: %@", v4, v5, v6, v7];
+  titleTemplates = [(CERecommendationStringTemplate *)self titleTemplates];
+  subTitleTemplates = [(CERecommendationStringTemplate *)self subTitleTemplates];
+  messageTemplates = [(CERecommendationStringTemplate *)self messageTemplates];
+  actionTitleTemplates = [(CERecommendationStringTemplate *)self actionTitleTemplates];
+  v8 = [v3 stringWithFormat:@"titleTemplates: %@, subTitleTemplates: %@, messageTemplates: %@, actionTitleTemplates: %@", titleTemplates, subTitleTemplates, messageTemplates, actionTitleTemplates];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(CERecommendationStringTemplate);
   v5->_lock._os_unfair_lock_opaque = 0;
   os_unfair_lock_lock(&v5->_lock);
-  v6 = [(CERecommendationStringTemplate *)self titleTemplates];
-  v7 = [v6 copyWithZone:a3];
+  titleTemplates = [(CERecommendationStringTemplate *)self titleTemplates];
+  v7 = [titleTemplates copyWithZone:zone];
   titleTemplates = v5->_titleTemplates;
   v5->_titleTemplates = v7;
 
-  v9 = [(CERecommendationStringTemplate *)self subTitleTemplates];
-  v10 = [v9 copyWithZone:a3];
+  subTitleTemplates = [(CERecommendationStringTemplate *)self subTitleTemplates];
+  v10 = [subTitleTemplates copyWithZone:zone];
   subTitleTemplates = v5->_subTitleTemplates;
   v5->_subTitleTemplates = v10;
 
-  v12 = [(CERecommendationStringTemplate *)self messageTemplates];
-  v13 = [v12 copyWithZone:a3];
+  messageTemplates = [(CERecommendationStringTemplate *)self messageTemplates];
+  v13 = [messageTemplates copyWithZone:zone];
   messageTemplates = v5->_messageTemplates;
   v5->_messageTemplates = v13;
 
-  v15 = [(CERecommendationStringTemplate *)self actionTitleTemplates];
-  v16 = [v15 copyWithZone:a3];
+  actionTitleTemplates = [(CERecommendationStringTemplate *)self actionTitleTemplates];
+  v16 = [actionTitleTemplates copyWithZone:zone];
   actionTitleTemplates = v5->_actionTitleTemplates;
   v5->_actionTitleTemplates = v16;
 
@@ -143,25 +143,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CERecommendationStringTemplate *)self titleTemplates];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  titleTemplates = [(CERecommendationStringTemplate *)self titleTemplates];
+  [coderCopy encodeObject:titleTemplates forKey:@"title"];
 
-  v6 = [(CERecommendationStringTemplate *)self subTitleTemplates];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subTitleTemplates = [(CERecommendationStringTemplate *)self subTitleTemplates];
+  [coderCopy encodeObject:subTitleTemplates forKey:@"subtitle"];
 
-  v7 = [(CERecommendationStringTemplate *)self messageTemplates];
-  [v4 encodeObject:v7 forKey:@"message"];
+  messageTemplates = [(CERecommendationStringTemplate *)self messageTemplates];
+  [coderCopy encodeObject:messageTemplates forKey:@"message"];
 
-  v8 = [(CERecommendationStringTemplate *)self actionTitleTemplates];
-  [v4 encodeObject:v8 forKey:@"actionTitle"];
+  actionTitleTemplates = [(CERecommendationStringTemplate *)self actionTitleTemplates];
+  [coderCopy encodeObject:actionTitleTemplates forKey:@"actionTitle"];
 }
 
-- (CERecommendationStringTemplate)initWithCoder:(id)a3
+- (CERecommendationStringTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CERecommendationStringTemplate;
   v5 = [(CERecommendationStringTemplate *)&v20 init];
@@ -170,22 +170,22 @@
   {
     v5->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_opt_class();
-    v8 = [v4 decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"title"];
     titleTemplates = v6->_titleTemplates;
     v6->_titleTemplates = v8;
 
     v10 = objc_opt_class();
-    v11 = [v4 decodeDictionaryWithKeysOfClass:v10 objectsOfClass:objc_opt_class() forKey:@"subtitle"];
+    v11 = [coderCopy decodeDictionaryWithKeysOfClass:v10 objectsOfClass:objc_opt_class() forKey:@"subtitle"];
     subTitleTemplates = v6->_subTitleTemplates;
     v6->_subTitleTemplates = v11;
 
     v13 = objc_opt_class();
-    v14 = [v4 decodeDictionaryWithKeysOfClass:v13 objectsOfClass:objc_opt_class() forKey:@"message"];
+    v14 = [coderCopy decodeDictionaryWithKeysOfClass:v13 objectsOfClass:objc_opt_class() forKey:@"message"];
     messageTemplates = v6->_messageTemplates;
     v6->_messageTemplates = v14;
 
     v16 = objc_opt_class();
-    v17 = [v4 decodeDictionaryWithKeysOfClass:v16 objectsOfClass:objc_opt_class() forKey:@"actionTitle"];
+    v17 = [coderCopy decodeDictionaryWithKeysOfClass:v16 objectsOfClass:objc_opt_class() forKey:@"actionTitle"];
     actionTitleTemplates = v6->_actionTitleTemplates;
     v6->_actionTitleTemplates = v17;
   }
@@ -229,44 +229,44 @@
   return v3;
 }
 
-- (id)titleTemplateForKey:(id)a3
+- (id)titleTemplateForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSDictionary *)self->_titleTemplates valueForKey:v4];
+  v5 = [(NSDictionary *)self->_titleTemplates valueForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)subTitleTemplateForKey:(id)a3
+- (id)subTitleTemplateForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSDictionary *)self->_subTitleTemplates valueForKey:v4];
+  v5 = [(NSDictionary *)self->_subTitleTemplates valueForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)messageTemplateForKey:(id)a3
+- (id)messageTemplateForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSDictionary *)self->_messageTemplates valueForKey:v4];
+  v5 = [(NSDictionary *)self->_messageTemplates valueForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)actionTitleTemplateForKey:(id)a3
+- (id)actionTitleTemplateForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSDictionary *)self->_actionTitleTemplates valueForKey:v4];
+  v5 = [(NSDictionary *)self->_actionTitleTemplates valueForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 

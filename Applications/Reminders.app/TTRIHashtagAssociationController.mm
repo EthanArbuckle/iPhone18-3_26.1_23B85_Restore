@@ -1,15 +1,15 @@
 @interface TTRIHashtagAssociationController
 - (_TtC9Reminders32TTRIHashtagAssociationController)init;
-- (void)renameTagAlertTextFieldDidChange:(id)a3;
+- (void)renameTagAlertTextFieldDidChange:(id)change;
 @end
 
 @implementation TTRIHashtagAssociationController
 
-- (void)renameTagAlertTextFieldDidChange:(id)a3
+- (void)renameTagAlertTextFieldDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -18,7 +18,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1001AA8D4(v6);

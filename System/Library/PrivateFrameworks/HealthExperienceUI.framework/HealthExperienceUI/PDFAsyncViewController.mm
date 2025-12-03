@@ -1,7 +1,7 @@
 @interface PDFAsyncViewController
 - (Class)classForPage;
-- (_TtC18HealthExperienceUI22PDFAsyncViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapShare:(id)a3;
+- (_TtC18HealthExperienceUI22PDFAsyncViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapShare:(id)share;
 - (void)viewDidLoad;
 @end
 
@@ -9,14 +9,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA210E24();
 }
 
-- (void)didTapShare:(id)a3
+- (void)didTapShare:(id)share
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1BA2129C8(v5);
@@ -43,7 +43,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC18HealthExperienceUI22PDFAsyncViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI22PDFAsyncViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

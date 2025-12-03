@@ -1,21 +1,21 @@
 @interface NPKPeerPaymentNumberFormatter
-- (NPKPeerPaymentNumberFormatter)initWithCurrencyCode:(id)a3;
-- (id)stringFromNumber:(id)a3;
-- (void)setCurrencyCode:(id)a3;
+- (NPKPeerPaymentNumberFormatter)initWithCurrencyCode:(id)code;
+- (id)stringFromNumber:(id)number;
+- (void)setCurrencyCode:(id)code;
 @end
 
 @implementation NPKPeerPaymentNumberFormatter
 
-- (NPKPeerPaymentNumberFormatter)initWithCurrencyCode:(id)a3
+- (NPKPeerPaymentNumberFormatter)initWithCurrencyCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   v13.receiver = self;
   v13.super_class = NPKPeerPaymentNumberFormatter;
   v6 = [(NPKPeerPaymentNumberFormatter *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currencyCode, a3);
+    objc_storeStrong(&v6->_currencyCode, code);
     v8 = NPKPeerPaymentDecimalNumberFormatterForCurrencyCode();
     decimalNumberFormatter = v7->_decimalNumberFormatter;
     v7->_decimalNumberFormatter = v8;
@@ -28,21 +28,21 @@
   return v7;
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  if (self->_currencyCode != a3)
+  if (self->_currencyCode != code)
   {
     decimalNumberFormatter = self->_decimalNumberFormatter;
-    v6 = a3;
-    [(NSNumberFormatter *)decimalNumberFormatter setCurrencyCode:v6];
-    [(NSNumberFormatter *)self->_nonDecimalNumberFormatter setCurrencyCode:v6];
+    codeCopy = code;
+    [(NSNumberFormatter *)decimalNumberFormatter setCurrencyCode:codeCopy];
+    [(NSNumberFormatter *)self->_nonDecimalNumberFormatter setCurrencyCode:codeCopy];
   }
 }
 
-- (id)stringFromNumber:(id)a3
+- (id)stringFromNumber:(id)number
 {
-  v4 = a3;
-  HasDecimals = NPKPeerPaymentValueHasDecimals(v4);
+  numberCopy = number;
+  HasDecimals = NPKPeerPaymentValueHasDecimals(numberCopy);
   v6 = 16;
   if (HasDecimals)
   {
@@ -50,7 +50,7 @@
   }
 
   v7 = *(&self->super.isa + v6);
-  v8 = [v7 stringFromNumber:v4];
+  v8 = [v7 stringFromNumber:numberCopy];
 
   return v8;
 }

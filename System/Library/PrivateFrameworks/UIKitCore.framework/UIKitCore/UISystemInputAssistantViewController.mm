@@ -1,30 +1,30 @@
 @interface UISystemInputAssistantViewController
 + (BOOL)shouldShowSystemInputAssistantItems;
-+ (double)_defaultPreferredHeightForTraitCollection:(id)a3;
-+ (double)_defaultPreferredHeightForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4;
++ (double)_defaultPreferredHeightForTraitCollection:(id)collection;
++ (double)_defaultPreferredHeightForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation;
 + (double)floatingAssistantBottomPadding;
 + (int64_t)keyboardOrientation;
-- (BOOL)_allowedToShowBarButtonItemsInline:(id)a3;
-- (BOOL)_assistantItemsVisibleForResponder:(id)a3;
+- (BOOL)_allowedToShowBarButtonItemsInline:(id)inline;
+- (BOOL)_assistantItemsVisibleForResponder:(id)responder;
 - (BOOL)_canShowCenterBarButtonItem;
-- (BOOL)_centerPredictionViewVisibleForInputDelegate:(id)a3 inputViews:(id)a4;
+- (BOOL)_centerPredictionViewVisibleForInputDelegate:(id)delegate inputViews:(id)views;
 - (BOOL)_hasCustomCenterViewControllerWidth;
 - (BOOL)_hidesCenterViewForActiveWindowingMode;
 - (BOOL)_isAssistantPreferenceEnabled;
 - (BOOL)_isEmojiInputMode;
 - (BOOL)_shouldCheckItemsVisibility;
 - (BOOL)_shouldCollapseEmojiSearchView;
-- (BOOL)_shouldShowExpandableButtonBarItemsForResponder:(id)a3;
+- (BOOL)_shouldShowExpandableButtonBarItemsForResponder:(id)responder;
 - (BOOL)_usesCustomBackground;
 - (BOOL)isEmojiSearchResultsVisible;
 - (BOOL)isInputAssistantItemEmpty;
 - (BOOL)isVisibleWhenMinimized;
 - (BOOL)layoutHasBuiltinAssistantView;
-- (BOOL)shouldBeShownForInputDelegate:(id)a3 inputViews:(id)a4;
-- (BOOL)shouldShowEmojiSearchViewControllerForInputDelegate:(id)a3;
-- (BOOL)shouldUseCustomBackground:(id)a3;
+- (BOOL)shouldBeShownForInputDelegate:(id)delegate inputViews:(id)views;
+- (BOOL)shouldShowEmojiSearchViewControllerForInputDelegate:(id)delegate;
+- (BOOL)shouldUseCustomBackground:(id)background;
 - (BOOL)supportsCompactStyle;
-- (BOOL)updateFloatingAssistantRectEdge:(unint64_t)a3 position:(CGPoint)a4;
+- (BOOL)updateFloatingAssistantRectEdge:(unint64_t)edge position:(CGPoint)position;
 - (CGRect)barFrame;
 - (TUISystemInputAssistantLayout)compactAssistantViewLayout;
 - (TUISystemInputAssistantLayout)floatAssistantViewLayout;
@@ -37,80 +37,80 @@
 - (UITextInputAssistantItem)observedInputAssistantItem;
 - (UIView)popoverSourceView;
 - (UIViewController)expandedItemsController;
-- (double)_buttonBarWidthForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4;
-- (double)_centerViewWidthForTraitCollection:(id)a3;
-- (double)_centerViewWidthForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4;
-- (double)preferredHeightForTraitCollection:(id)a3;
-- (double)preferredHeightForTraitCollection:(id)a3 orientation:(int64_t)a4;
-- (id)UIAssistantItemForRTIAssistantItem:(id)a3;
-- (id)UIGroupsForRTIGroups:(id)a3;
+- (double)_buttonBarWidthForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation;
+- (double)_centerViewWidthForTraitCollection:(id)collection;
+- (double)_centerViewWidthForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation;
+- (double)preferredHeightForTraitCollection:(id)collection;
+- (double)preferredHeightForTraitCollection:(id)collection orientation:(int64_t)orientation;
+- (id)UIAssistantItemForRTIAssistantItem:(id)item;
+- (id)UIGroupsForRTIGroups:(id)groups;
 - (id)_currentInputDelegate;
-- (id)_customCenterBarButtonItem:(id)a3;
-- (id)_customCenterViewController:(id)a3;
+- (id)_customCenterBarButtonItem:(id)item;
+- (id)_customCenterViewController:(id)controller;
 - (id)_defaultTintColor;
 - (id)_emojiSearchField;
-- (id)_inputDelegateAsResponder:(id)a3;
-- (id)_popoverViewControllerForBarButtonItemGroup:(id)a3;
+- (id)_inputDelegateAsResponder:(id)responder;
+- (id)_popoverViewControllerForBarButtonItemGroup:(id)group;
 - (id)animatableElement;
 - (id)candidateViewController;
 - (id)compatibilityViewController;
 - (id)inputWindowController;
-- (id)layoutFromAssistantBarStyle:(int64_t)a3;
-- (id)placeholderItemOfWidth:(double)a3;
+- (id)layoutFromAssistantBarStyle:(int64_t)style;
+- (id)placeholderItemOfWidth:(double)width;
 - (id)predictionViewController;
-- (id)styleFromAssistantBarStyle:(int64_t)a3;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_beginObservingInputAssistantItemForRelevantItemChanges:(id)a3;
+- (id)styleFromAssistantBarStyle:(int64_t)style;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_beginObservingInputAssistantItemForRelevantItemChanges:(id)changes;
 - (void)_candidatesChanged;
 - (void)_collapseBarItems;
-- (void)_didChangePlacementOrInputSourceNotification:(id)a3;
-- (void)_didChangeTextEffectsRotationNotification:(id)a3;
+- (void)_didChangePlacementOrInputSourceNotification:(id)notification;
+- (void)_didChangeTextEffectsRotationNotification:(id)notification;
 - (void)_dismissEmojiSearch;
 - (void)_expandBarItems;
-- (void)_inputModeChanged:(id)a3;
-- (void)_keyboardDictationAvailabilityDidChangeNotification:(id)a3;
-- (void)_queueResponderChangedForNewResponder:(id)a3;
+- (void)_inputModeChanged:(id)changed;
+- (void)_keyboardDictationAvailabilityDidChangeNotification:(id)notification;
+- (void)_queueResponderChangedForNewResponder:(id)responder;
 - (void)_registerForAssistantViewNotifications;
-- (void)_responderCapabilitiesChangedNotification:(id)a3;
-- (void)_responderChangedNotification:(id)a3;
+- (void)_responderCapabilitiesChangedNotification:(id)notification;
+- (void)_responderChangedNotification:(id)notification;
 - (void)_showCandidates;
 - (void)_updateCenterViewWidthAndRenderConfig;
-- (void)_updateCenterViewWidthForInterfaceOrientation:(int64_t)a3;
+- (void)_updateCenterViewWidthForInterfaceOrientation:(int64_t)orientation;
 - (void)_updateLanguageIndicatorPointerInteractionAndImage;
-- (void)_updateSystemInputAssistantViewStylingForInputAssistantItem:(id)a3;
-- (void)_updateViewsForAssistantBarStyle:(int64_t)a3;
-- (void)_willChangePlacementNotification:(id)a3;
-- (void)_willChangeTextEffectsRotationNotification:(id)a3;
-- (void)_writingDirectionChanged:(id)a3;
-- (void)applyRemoteAssistantItem:(id)a3;
-- (void)autocorrectionController:(id)a3 didUpdateAutocorrectionList:(id)a4;
-- (void)automaticallySetCenterViewControllerBasedOnInputDelegate:(id)a3;
+- (void)_updateSystemInputAssistantViewStylingForInputAssistantItem:(id)item;
+- (void)_updateViewsForAssistantBarStyle:(int64_t)style;
+- (void)_willChangePlacementNotification:(id)notification;
+- (void)_willChangeTextEffectsRotationNotification:(id)notification;
+- (void)_writingDirectionChanged:(id)changed;
+- (void)applyRemoteAssistantItem:(id)item;
+- (void)autocorrectionController:(id)controller didUpdateAutocorrectionList:(id)list;
+- (void)automaticallySetCenterViewControllerBasedOnInputDelegate:(id)delegate;
 - (void)dealloc;
 - (void)dismissDictationMenuIfNeeded;
 - (void)dismissKeyboardItemIfNeeded;
 - (void)dismissLanguageIndicatorMenuIfNeeded;
-- (void)emojiSearchTextFieldDidBecomeActive:(id)a3;
-- (void)emojiSearchTextFieldDidBecomeInactive:(id)a3;
-- (void)emojiSearchTextFieldWillBecomeActive:(id)a3;
-- (void)emojiSearchTextFieldWillBecomeInactive:(id)a3;
-- (void)emojiSearchWillInsertEmoji:(id)a3 forSearchQuery:(id)a4;
+- (void)emojiSearchTextFieldDidBecomeActive:(id)active;
+- (void)emojiSearchTextFieldDidBecomeInactive:(id)inactive;
+- (void)emojiSearchTextFieldWillBecomeActive:(id)active;
+- (void)emojiSearchTextFieldWillBecomeInactive:(id)inactive;
+- (void)emojiSearchWillInsertEmoji:(id)emoji forSearchQuery:(id)query;
 - (void)loadView;
-- (void)maskInputAssistantView:(BOOL)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preferencesControllerChanged:(id)a3;
-- (void)prepareForFloating:(BOOL)a3;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)prepareTransition:(id)a3 animated:(BOOL)a4;
-- (void)setCenterViewController:(id)a3;
-- (void)setInputAssistantButtonItemsForResponder:(id)a3;
+- (void)maskInputAssistantView:(BOOL)view;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preferencesControllerChanged:(id)changed;
+- (void)prepareForFloating:(BOOL)floating;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)prepareTransition:(id)transition animated:(BOOL)animated;
+- (void)setCenterViewController:(id)controller;
+- (void)setInputAssistantButtonItemsForResponder:(id)responder;
 - (void)setNeedsValidation;
 - (void)setOverrideSafeAreaInsets;
-- (void)setRemoteAssistantViewInfo:(id)a3;
-- (void)showEmojiSearch:(BOOL)a3;
-- (void)systemInputAssistantView:(id)a3 wantsToShowCollapsedItemGroup:(id)a4 fromView:(id)a5;
-- (void)updateAssistantBarStyle:(int64_t)a3;
+- (void)setRemoteAssistantViewInfo:(id)info;
+- (void)showEmojiSearch:(BOOL)search;
+- (void)systemInputAssistantView:(id)view wantsToShowCollapsedItemGroup:(id)group fromView:(id)fromView;
+- (void)updateAssistantBarStyle:(int64_t)style;
 - (void)updateAssistantPreferences;
-- (void)updateCenterViewVisibilityStateForInputDelegate:(id)a3;
+- (void)updateCenterViewVisibilityStateForInputDelegate:(id)delegate;
 - (void)updateRemoteAssistantViewHidden;
 - (void)viewDidLoad;
 @end
@@ -120,10 +120,10 @@
 - (id)_currentInputDelegate
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 inputDelegateManager];
-  v4 = [v3 keyInputDelegate];
+  inputDelegateManager = [v2 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-  return v4;
+  return keyInputDelegate;
 }
 
 - (void)updateAssistantPreferences
@@ -177,25 +177,25 @@
 - (BOOL)_hidesCenterViewForActiveWindowingMode
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 useVisualModeWindowed];
+  visualModeManager = [v3 visualModeManager];
+  useVisualModeWindowed = [visualModeManager useVisualModeWindowed];
 
-  v6 = [(UIViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 traitCollection];
-  v9 = [v8 horizontalSizeClass] == 1;
+  view = [(UIViewController *)self view];
+  window = [view window];
+  traitCollection = [window traitCollection];
+  v9 = [traitCollection horizontalSizeClass] == 1;
 
-  return v9 & v5;
+  return v9 & useVisualModeWindowed;
 }
 
 - (BOOL)isInputAssistantItemEmpty
 {
-  v3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  if ([v3 isInputAssistantItemHidden])
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  if ([systemInputAssistantView isInputAssistantItemHidden])
   {
-    v4 = [(UISystemInputAssistantViewController *)self centerViewController];
-    v5 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-    v6 = [v4 isVisibleForInputDelegate:v5 inputViews:0] ^ 1;
+    centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+    _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    v6 = [centerViewController isVisibleForInputDelegate:_currentInputDelegate inputViews:0] ^ 1;
   }
 
   else
@@ -213,8 +213,8 @@
   v5 = assistantBarStyle > 1 || v3 == 1;
   if (v3 == 1 && assistantBarStyle <= 1)
   {
-    v6 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v5 = [v6 showsButtonBarItemsInline] ^ 1;
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    v5 = [systemInputAssistantView showsButtonBarItemsInline] ^ 1;
   }
 
   remoteAssistantView = self->_remoteAssistantView;
@@ -224,7 +224,7 @@
 
 - (void)setOverrideSafeAreaInsets
 {
-  v3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -238,11 +238,11 @@
     if ([v16 isMinimized] && (_UISolariumEnabled() & 1) != 0)
     {
       v17 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v18 = [v17 preferencesActions];
-      v19 = [v18 colorAdaptiveKeyboardEnabled];
+      preferencesActions = [v17 preferencesActions];
+      colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
 
       v14 = 0.0;
-      if (v19)
+      if (colorAdaptiveKeyboardEnabled)
       {
         [objc_opt_class() floatingAssistantBottomPadding];
         v15 = v20;
@@ -266,16 +266,16 @@ LABEL_12:
 
   if (!self->_assistantBarStyle)
   {
-    v21 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
     v14 = 0.0;
-    [v21 setSafeAreaInsets:{0.0, 0.0, 0.0, 0.0}];
+    [systemInputAssistantView2 setSafeAreaInsets:{0.0, 0.0, 0.0, 0.0}];
 
     goto LABEL_12;
   }
 
-  v5 = [(UISystemInputAssistantViewController *)self inputWindowController];
-  v6 = [v5 _window];
-  [v6 safeAreaInsets];
+  inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+  _window = [inputWindowController _window];
+  [_window safeAreaInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -283,8 +283,8 @@ LABEL_12:
 
   v15 = v12 - *&UIFloatingAssistantBottomMargin;
 LABEL_14:
-  v22 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v22 setOverrideSafeAreaInsets:{v8, v10, v15, v14}];
+  systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView3 setOverrideSafeAreaInsets:{v8, v10, v15, v14}];
 }
 
 - (BOOL)layoutHasBuiltinAssistantView
@@ -294,10 +294,10 @@ LABEL_14:
     goto LABEL_4;
   }
 
-  v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 _layout];
-  v5 = [v4 candidateList];
-  if (!v5)
+  emojiSearchViewController = +[UIKeyboardImpl activeInstance];
+  _layout = [emojiSearchViewController _layout];
+  candidateList = [_layout candidateList];
+  if (!candidateList)
   {
     LOBYTE(v8) = 0;
 LABEL_7:
@@ -305,15 +305,15 @@ LABEL_7:
     return v8;
   }
 
-  v6 = v5;
+  v6 = candidateList;
   v7 = +[UIKeyboardImpl isSplit];
 
   if (!v7)
   {
-    v3 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    v4 = [v3 emojiSearchView];
-    v9 = [v4 searchTextField];
-    v8 = [v9 isActive] ^ 1;
+    emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    _layout = [emojiSearchViewController emojiSearchView];
+    searchTextField = [_layout searchTextField];
+    v8 = [searchTextField isActive] ^ 1;
 
     goto LABEL_7;
   }
@@ -325,26 +325,26 @@ LABEL_4:
 
 - (BOOL)supportsCompactStyle
 {
-  v3 = [(UISystemInputAssistantViewController *)self centerViewController];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+  if (centerViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 allowsCompactAssistantBar];
+    allowsCompactAssistantBar = [centerViewController allowsCompactAssistantBar];
   }
 
   else
   {
-    v4 = 1;
+    allowsCompactAssistantBar = 1;
   }
 
-  v5 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-  v6 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v5];
+  _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+  v6 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:_currentInputDelegate];
 
   if (v6 && ([v6 _writingToolsWantsKeyboardSuppression] & 1) != 0)
   {
-    v4 = 0;
+    allowsCompactAssistantBar = 0;
   }
 
-  return v4;
+  return allowsCompactAssistantBar;
 }
 
 - (BOOL)_canShowCenterBarButtonItem
@@ -354,8 +354,8 @@ LABEL_4:
     return 1;
   }
 
-  v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-  v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v4];
+  _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+  v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:_currentInputDelegate];
 
   v6 = [(UISystemInputAssistantViewController *)self _allowedToShowBarButtonItemsInline:v5];
   return v6;
@@ -382,8 +382,8 @@ LABEL_4:
     v2->_hasCheckedPreferences = 0;
     v2->_currentlyCheckingPreferences = 0;
     [(UISystemInputAssistantViewController *)v2 updateAssistantPreferences];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_preferencesControllerChanged_ name:*MEMORY[0x1E69D9908] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_preferencesControllerChanged_ name:*MEMORY[0x1E69D9908] object:0];
   }
 
   return v2;
@@ -414,8 +414,8 @@ LABEL_4:
   [v6 setBackgroundVisible:0];
   [v6 setDelegate:self];
   [v6 setAccessibilityIdentifier:@"SystemInputAssistantView"];
-  v7 = [v6 layer];
-  [v7 addObserver:self forKeyPath:@"bounds" options:3 context:0];
+  layer = [v6 layer];
+  [layer addObserver:self forKeyPath:@"bounds" options:3 context:0];
 
   [(UISystemInputAssistantViewController *)self setAssistantViewCanAnimate:objc_opt_respondsToSelector() & 1];
   [(UIInputViewController *)self setView:v6];
@@ -424,36 +424,36 @@ LABEL_4:
 - (void)viewDidLoad
 {
   [(UISystemInputAssistantViewController *)self _registerForAssistantViewNotifications];
-  v5 = [(UIViewController *)self view];
-  v3 = [v5 _inheritedRenderConfig];
-  v4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v4 setRenderConfig:v3];
+  view = [(UIViewController *)self view];
+  _inheritedRenderConfig = [view _inheritedRenderConfig];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setRenderConfig:_inheritedRenderConfig];
 }
 
 - (void)_registerForAssistantViewNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__responderChangedNotification_ name:@"UITextInputResponderDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__responderCapabilitiesChangedNotification_ name:@"UITextInputResponderCapabilitiesChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__responderChangedNotification_ name:@"UIKeyboardLayoutDidChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__showCandidates name:@"UIKeyboardCandidatesAvailable" object:0];
-  [v3 addObserver:self selector:sel__collapseBarItems name:@"UIKeyboardPredictionsAvailable" object:0];
-  [v3 addObserver:self selector:sel__willChangeTextEffectsRotationNotification_ name:@"UITextEffectsWindowViewControllerWillRotateNotification" object:0];
-  [v3 addObserver:self selector:sel__didChangeTextEffectsRotationNotification_ name:@"UITextEffectsWindowViewControllerDidRotateNotification" object:0];
-  [v3 addObserver:self selector:sel__didChangePlacementOrInputSourceNotification_ name:@"UITextInputSourceDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__willChangePlacementNotification_ name:@"UIKeyboardWillChangeFrameNotification" object:0];
-  [v3 addObserver:self selector:sel__didChangePlacementOrInputSourceNotification_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
-  [v3 addObserver:self selector:sel__expandBarItems name:@"UIKeyboardShouldExpandAssistantBarItems" object:0];
-  [v3 addObserver:self selector:sel__applicationDidBecomeActiveNotification_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
-  [v3 addObserver:self selector:sel__candidatesChanged name:@"UIKeyboardCandidatesChanged" object:0];
-  [v3 addObserver:self selector:sel__inputModeChanged_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__writingDirectionChanged_ name:0x1EFB79210 object:0];
-  [v3 addObserver:self selector:sel__textDidChange name:@"UITextFieldTextDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__textDidChange name:@"UITextViewTextDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__willShowKeyboardSwitcher name:0x1EFB791F0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__responderChangedNotification_ name:@"UITextInputResponderDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__responderCapabilitiesChangedNotification_ name:@"UITextInputResponderCapabilitiesChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__responderChangedNotification_ name:@"UIKeyboardLayoutDidChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__showCandidates name:@"UIKeyboardCandidatesAvailable" object:0];
+  [defaultCenter addObserver:self selector:sel__collapseBarItems name:@"UIKeyboardPredictionsAvailable" object:0];
+  [defaultCenter addObserver:self selector:sel__willChangeTextEffectsRotationNotification_ name:@"UITextEffectsWindowViewControllerWillRotateNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__didChangeTextEffectsRotationNotification_ name:@"UITextEffectsWindowViewControllerDidRotateNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__didChangePlacementOrInputSourceNotification_ name:@"UITextInputSourceDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__willChangePlacementNotification_ name:@"UIKeyboardWillChangeFrameNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__didChangePlacementOrInputSourceNotification_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__expandBarItems name:@"UIKeyboardShouldExpandAssistantBarItems" object:0];
+  [defaultCenter addObserver:self selector:sel__applicationDidBecomeActiveNotification_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__candidatesChanged name:@"UIKeyboardCandidatesChanged" object:0];
+  [defaultCenter addObserver:self selector:sel__inputModeChanged_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__writingDirectionChanged_ name:0x1EFB79210 object:0];
+  [defaultCenter addObserver:self selector:sel__textDidChange name:@"UITextFieldTextDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__textDidChange name:@"UITextViewTextDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__willShowKeyboardSwitcher name:0x1EFB791F0 object:0];
   if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP") || +[UIKeyboard isKeyboardProcess])
   {
-    [v3 addObserver:self selector:sel__keyboardDictationAvailabilityDidChangeNotification_ name:@"UIKeyboardDictationAvailabilityDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardDictationAvailabilityDidChangeNotification_ name:@"UIKeyboardDictationAvailabilityDidChangeNotification" object:0];
   }
 }
 
@@ -462,36 +462,36 @@ LABEL_4:
   if (+[UIKeyboard inputUIOOP])
   {
     v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v4 = [v3 containerRootController];
+    containerRootController = [v3 containerRootController];
   }
 
   else
   {
-    v5 = [(UIViewController *)self view];
-    v4 = [v5 _rootInputWindowController];
+    view = [(UIViewController *)self view];
+    containerRootController = [view _rootInputWindowController];
 
-    if (v4)
+    if (containerRootController)
     {
       goto LABEL_6;
     }
 
     v3 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-    v6 = [v3 keyboardWindow];
-    v4 = [v6 rootViewController];
+    keyboardWindow = [v3 keyboardWindow];
+    containerRootController = [keyboardWindow rootViewController];
   }
 
 LABEL_6:
 
-  return v4;
+  return containerRootController;
 }
 
 - (BOOL)_isEmojiInputMode
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentInputMode];
-  v4 = [v3 isEmojiInputMode];
+  currentInputMode = [v2 currentInputMode];
+  isEmojiInputMode = [currentInputMode isEmojiInputMode];
 
-  return v4;
+  return isEmojiInputMode;
 }
 
 - (BOOL)_hasCustomCenterViewControllerWidth
@@ -515,8 +515,8 @@ LABEL_6:
   if (![(UISystemInputAssistantViewController *)self hasCheckedPreferences])
   {
     v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v4 = [v3 preferencesActions];
-    -[UISystemInputAssistantViewController setAssistantEnabledPreference:](self, "setAssistantEnabledPreference:", [v4 BOOLForPreferenceKey:*MEMORY[0x1E69D97F8]]);
+    preferencesActions = [v3 preferencesActions];
+    -[UISystemInputAssistantViewController setAssistantEnabledPreference:](self, "setAssistantEnabledPreference:", [preferencesActions BOOLForPreferenceKey:*MEMORY[0x1E69D97F8]]);
 
     [(UISystemInputAssistantViewController *)self setHasCheckedPreferences:1];
   }
@@ -535,9 +535,9 @@ LABEL_6:
   else
   {
     v3 = +[UIKeyboard activeKeyboard];
-    v4 = [v3 interfaceOrientation];
+    interfaceOrientation = [v3 interfaceOrientation];
 
-    return v4;
+    return interfaceOrientation;
   }
 }
 
@@ -617,17 +617,17 @@ void __66__UISystemInputAssistantViewController_updateAssistantPreferences__bloc
 
 - (id)predictionViewController
 {
-  v3 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+  predictiveViewController = [(UISystemInputAssistantViewController *)self predictiveViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
 LABEL_4:
-    v6 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+    predictiveViewController2 = [(UISystemInputAssistantViewController *)self predictiveViewController];
     goto LABEL_6;
   }
 
-  v4 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+  predictiveViewController3 = [(UISystemInputAssistantViewController *)self predictiveViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -636,20 +636,20 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v6 = 0;
+  predictiveViewController2 = 0;
 LABEL_6:
 
-  return v6;
+  return predictiveViewController2;
 }
 
 - (BOOL)isEmojiSearchResultsVisible
 {
-  v3 = [(UISystemInputAssistantViewController *)self centerViewController];
-  v4 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-  if (v3 == v4)
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  if (centerViewController == emojiSearchViewController)
   {
-    v6 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-    v5 = [v6 predictionViewVisible] ^ 1;
+    emojiSearchView = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+    v5 = [emojiSearchView predictionViewVisible] ^ 1;
   }
 
   else
@@ -669,9 +669,9 @@ LABEL_6:
 
 - (id)_defaultTintColor
 {
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v3 = [v2 renderConfig];
-  if ([v3 lightKeyboard])
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  renderConfig = [systemInputAssistantView renderConfig];
+  if ([renderConfig lightKeyboard])
   {
     +[UIColor blackColor];
   }
@@ -688,9 +688,9 @@ LABEL_6:
 - (void)_updateLanguageIndicatorPointerInteractionAndImage
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(UISystemInputAssistantViewController *)self inputWindowController];
-  v4 = [v3 placement];
-  v5 = UIAssistantViewPlacement(v4);
+  inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+  placement = [inputWindowController placement];
+  v5 = UIAssistantViewPlacement(placement);
 
   v21 = v5;
   v22 = [v5 isMemberOfClass:objc_opt_class()];
@@ -698,11 +698,11 @@ LABEL_6:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v7 = [v6 systemInputAssistantItem];
-  v8 = [v7 leadingBarButtonGroups];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  systemInputAssistantItem = [systemInputAssistantView systemInputAssistantItem];
+  leadingBarButtonGroups = [systemInputAssistantItem leadingBarButtonGroups];
 
-  v24 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v24 = [leadingBarButtonGroups countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v24)
   {
     v23 = *v30;
@@ -712,7 +712,7 @@ LABEL_6:
       {
         if (*v30 != v23)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(leadingBarButtonGroups);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
@@ -720,8 +720,8 @@ LABEL_6:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v11 = [v10 barButtonItems];
-        v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        barButtonItems = [v10 barButtonItems];
+        v12 = [barButtonItems countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v12)
         {
           v13 = v12;
@@ -732,20 +732,20 @@ LABEL_6:
             {
               if (*v26 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(barButtonItems);
               }
 
               v16 = *(*(&v25 + 1) + 8 * j);
               if ([v16 tag] == 1735287116)
               {
-                v17 = [v16 view];
+                view = [v16 view];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v19 = [v16 view];
-                  [v19 setPointerInteractionEnabled:v22 ^ 1u];
+                  view2 = [v16 view];
+                  [view2 setPointerInteractionEnabled:v22 ^ 1u];
 
                   v20 = +[UIAssistantBarButtonItemProvider languageIndicatorImage];
                   [v16 setImage:v20];
@@ -755,7 +755,7 @@ LABEL_6:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v13 = [barButtonItems countByEnumeratingWithState:&v25 objects:v33 count:16];
             if (v13)
             {
               continue;
@@ -768,7 +768,7 @@ LABEL_6:
 LABEL_17:
       }
 
-      v24 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v24 = [leadingBarButtonGroups countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v24);
@@ -778,25 +778,25 @@ LABEL_17:
 - (void)_updateCenterViewWidthAndRenderConfig
 {
   [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:+[UIKeyboardSceneDelegate interfaceOrientation]];
-  v5 = [(UIViewController *)self view];
-  v3 = [v5 _inheritedRenderConfig];
-  v4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v4 setRenderConfig:v3];
+  view = [(UIViewController *)self view];
+  _inheritedRenderConfig = [view _inheritedRenderConfig];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setRenderConfig:_inheritedRenderConfig];
 }
 
 - (id)animatableElement
 {
   if ([(UISystemInputAssistantViewController *)self assistantViewCanAnimate])
   {
-    v3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
   }
 
   else
   {
-    v3 = 0;
+    systemInputAssistantView = 0;
   }
 
-  return v3;
+  return systemInputAssistantView;
 }
 
 - (UIViewController)expandedItemsController
@@ -816,35 +816,35 @@ uint64_t __66__UISystemInputAssistantViewController_updateAssistantPreferences__
 
 - (void)_dismissEmojiSearch
 {
-  v3 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-  v4 = [v3 emojiSearchView];
-  v5 = [v4 searchTextField];
-  v6 = [v5 isActive];
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  emojiSearchView = [emojiSearchViewController emojiSearchView];
+  searchTextField = [emojiSearchView searchTextField];
+  isActive = [searchTextField isActive];
 
-  if (v6)
+  if (isActive)
   {
-    v7 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    v8 = [v7 emojiSearchView];
-    v9 = [v8 searchTextField];
-    [v9 resignFirstResponder];
+    emojiSearchViewController2 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchView2 = [emojiSearchViewController2 emojiSearchView];
+    searchTextField2 = [emojiSearchView2 searchTextField];
+    [searchTextField2 resignFirstResponder];
   }
 
   if (+[UIKeyboard isRemoteEmojiCollectionViewEnabled])
   {
-    v10 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController view];
-    [v10 _setLocalOverrideTraitCollection:0];
+    view = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController view];
+    [view _setLocalOverrideTraitCollection:0];
   }
 }
 
 - (void)dealloc
 {
   [(UISystemInputAssistantViewController *)self _beginObservingInputAssistantItemForRelevantItemChanges:0];
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 layer];
-  [v4 removeObserver:self forKeyPath:@"bounds"];
+  view = [(UIViewController *)self view];
+  layer = [view layer];
+  [layer removeObserver:self forKeyPath:@"bounds"];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
 
   v6.receiver = self;
   v6.super_class = UISystemInputAssistantViewController;
@@ -853,8 +853,8 @@ uint64_t __66__UISystemInputAssistantViewController_updateAssistantPreferences__
 
 - (CGRect)barFrame
 {
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v2 containerFrame];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView containerFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -871,27 +871,27 @@ uint64_t __66__UISystemInputAssistantViewController_updateAssistantPreferences__
   return result;
 }
 
-+ (double)_defaultPreferredHeightForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4
++ (double)_defaultPreferredHeightForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation
 {
   v109 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionCopy = collection;
   v6 = +[UIKeyboard activeKeyboard];
-  v7 = [v6 _rootInputWindowController];
-  v8 = [v7 placement];
-  v9 = UIAssistantViewPlacement(v8);
+  _rootInputWindowController = [v6 _rootInputWindowController];
+  placement = [_rootInputWindowController placement];
+  v9 = UIAssistantViewPlacement(placement);
 
   if (!v9 || ([v9 isFloating] & 1) == 0 && !objc_msgSend(v9, "isHiddenForFloatingTransition"))
   {
-    v11 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
     v12 = +[UIKeyboardImpl keyboardScreen];
-    v13 = [UIKBScreenTraits traitsWithScreen:v12 orientation:a4];
+    v13 = [UIKBScreenTraits traitsWithScreen:v12 orientation:orientation];
 
-    if (v11 == -1)
+    if (userInterfaceIdiom == -1)
     {
-      v11 = [v13 idiom];
+      userInterfaceIdiom = [v13 idiom];
     }
 
-    v14 = UIKeyboardComputeKeyboardIdiomFromScreenTraits(v13, v11, 0);
+    v14 = UIKeyboardComputeKeyboardIdiomFromScreenTraits(v13, userInterfaceIdiom, 0);
     if ((v14 - 23) < 4 || (v15 = v14, v14 == 1))
     {
       v16 = 1;
@@ -905,14 +905,14 @@ LABEL_11:
     if (![v13 idiom])
     {
       v18 = +[UIKeyboardImpl activeInstance];
-      v19 = [v18 isMinimized];
+      isMinimized = [v18 isMinimized];
 
-      if (v19)
+      if (isMinimized)
       {
         v20 = __103__UISystemInputAssistantViewController__defaultPreferredHeightForTraitCollection_interfaceOrientation___block_invoke(0);
         v21 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v22 = [v21 existingContainerWindow];
-        [v22 safeAreaInsets];
+        existingContainerWindow = [v21 existingContainerWindow];
+        [existingContainerWindow safeAreaInsets];
         v10 = v20 + v23;
 LABEL_16:
 
@@ -921,11 +921,11 @@ LABEL_16:
     }
 
     v24 = +[UIKeyboardImpl activeInstance];
-    v25 = [v24 shouldShowCandidateBar];
+    shouldShowCandidateBar = [v24 shouldShowCandidateBar];
 
-    if (!v25)
+    if (!shouldShowCandidateBar)
     {
-      if ((a4 - 3) <= 1)
+      if ((orientation - 3) <= 1)
       {
         v16 = 0;
         goto LABEL_10;
@@ -940,8 +940,8 @@ LABEL_16:
         }
 
         v21 = +[UIKeyboardPreferencesController sharedPreferencesController];
-        v22 = [v21 preferencesActions];
-        if ([v22 colorAdaptiveKeyboardEnabled])
+        existingContainerWindow = [v21 preferencesActions];
+        if ([existingContainerWindow colorAdaptiveKeyboardEnabled])
         {
           v10 = 44.0;
         }
@@ -963,8 +963,8 @@ LABEL_16:
       if (_UISolariumEnabled())
       {
         v48 = +[UIKeyboardPreferencesController sharedPreferencesController];
-        v49 = [v48 preferencesActions];
-        [v49 colorAdaptiveKeyboardEnabled];
+        preferencesActions = [v48 preferencesActions];
+        [preferencesActions colorAdaptiveKeyboardEnabled];
       }
 
       *&v50 = 44.0;
@@ -975,12 +975,12 @@ LABEL_44:
 
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
     v27 = +[UIKeyboardImpl activeInstance];
-    v28 = [v27 candidateController];
-    v29 = [v28 screenTraits];
-    v30 = [v29 idiom];
+    candidateController = [v27 candidateController];
+    screenTraits = [candidateController screenTraits];
+    idiom = [screenTraits idiom];
     if (!has_internal_diagnostics)
     {
-      if (v30 == 1)
+      if (idiom == 1)
       {
 LABEL_24:
 
@@ -993,53 +993,53 @@ LABEL_25:
 
         v38 = v37;
         v39 = +[UIKeyboardImpl activeInstance];
-        v40 = [v39 candidateController];
-        v41 = [v40 screenTraits];
+        candidateController2 = [v39 candidateController];
+        screenTraits2 = [candidateController2 screenTraits];
         *buf = 134218240;
         v106 = v15;
         v107 = 2048;
-        v108 = [v41 idiom];
+        idiom2 = [screenTraits2 idiom];
         _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_ERROR, "%ld != %ld", buf, 0x16u);
 
         goto LABEL_27;
       }
 
-      v99 = v28;
+      v99 = candidateController;
       v102 = v27;
       v31 = +[UIKeyboardImpl activeInstance];
-      v32 = [v31 candidateController];
-      v33 = [v32 screenTraits];
-      if ([v33 idiom] == 24)
+      candidateController3 = [v31 candidateController];
+      screenTraits3 = [candidateController3 screenTraits];
+      if ([screenTraits3 idiom] == 24)
       {
 LABEL_23:
 
-        v28 = v99;
+        candidateController = v99;
         v27 = v102;
         goto LABEL_24;
       }
 
-      v90 = v32;
+      v90 = candidateController3;
       v93 = v31;
-      v96 = v29;
+      v96 = screenTraits;
       v34 = +[UIKeyboardImpl activeInstance];
-      v35 = [v34 candidateController];
-      v36 = [v35 screenTraits];
-      if ([v36 idiom] == 25)
+      candidateController4 = [v34 candidateController];
+      screenTraits4 = [candidateController4 screenTraits];
+      if ([screenTraits4 idiom] == 25)
       {
 
         v31 = v93;
-        v29 = v96;
-        v32 = v90;
+        screenTraits = v96;
+        candidateController3 = v90;
         goto LABEL_23;
       }
 
-      v79 = v36;
-      v82 = v35;
+      v79 = screenTraits4;
+      v82 = candidateController4;
       v88 = v34;
       v76 = +[UIKeyboardImpl activeInstance];
-      v72 = [v76 candidateController];
-      v55 = [v72 screenTraits];
-      if ([v55 idiom] == 26)
+      candidateController5 = [v76 candidateController];
+      screenTraits5 = [candidateController5 screenTraits];
+      if ([screenTraits5 idiom] == 26)
       {
         v85 = 1;
       }
@@ -1047,9 +1047,9 @@ LABEL_23:
       else
       {
         v70 = +[UIKeyboardImpl activeInstance];
-        v65 = [v70 candidateController];
-        v66 = [v65 screenTraits];
-        v85 = [v66 idiom] == 23;
+        candidateController6 = [v70 candidateController];
+        screenTraits6 = [candidateController6 screenTraits];
+        v85 = [screenTraits6 idiom] == 23;
       }
 
       if (v85)
@@ -1059,9 +1059,9 @@ LABEL_23:
 
 LABEL_29:
       v42 = +[UIKeyboardImpl activeInstance];
-      v43 = [v42 candidateController];
-      v44 = [v43 screenTraits];
-      if ([v44 idiom] == 1)
+      candidateController7 = [v42 candidateController];
+      screenTraits7 = [candidateController7 screenTraits];
+      if ([screenTraits7 idiom] == 1)
       {
       }
 
@@ -1069,29 +1069,29 @@ LABEL_29:
       {
         v103 = v42;
         v45 = +[UIKeyboardImpl activeInstance];
-        v46 = [v45 candidateController];
-        v47 = [v46 screenTraits];
-        if ([v47 idiom] == 24)
+        candidateController8 = [v45 candidateController];
+        screenTraits8 = [candidateController8 screenTraits];
+        if ([screenTraits8 idiom] == 24)
         {
         }
 
         else
         {
-          v97 = v44;
-          v100 = v43;
+          v97 = screenTraits7;
+          v100 = candidateController7;
           v94 = v45;
           v51 = +[UIKeyboardImpl activeInstance];
-          v52 = [v51 candidateController];
-          v53 = [v52 screenTraits];
-          if ([v53 idiom] != 25)
+          candidateController9 = [v51 candidateController];
+          screenTraits9 = [candidateController9 screenTraits];
+          if ([screenTraits9 idiom] != 25)
           {
-            v81 = v53;
-            v84 = v52;
+            v81 = screenTraits9;
+            v84 = candidateController9;
             v91 = v51;
             v78 = +[UIKeyboardImpl activeInstance];
-            v75 = [v78 candidateController];
-            v54 = [v75 screenTraits];
-            if ([v54 idiom] == 26)
+            candidateController10 = [v78 candidateController];
+            screenTraits10 = [candidateController10 screenTraits];
+            if ([screenTraits10 idiom] == 26)
             {
               v87 = 1;
             }
@@ -1099,20 +1099,20 @@ LABEL_29:
             else
             {
               v73 = +[UIKeyboardImpl activeInstance];
-              v56 = [v73 candidateController];
-              v57 = [v56 screenTraits];
-              v87 = [v57 idiom] == 23;
+              candidateController11 = [v73 candidateController];
+              screenTraits11 = [candidateController11 screenTraits];
+              v87 = [screenTraits11 idiom] == 23;
             }
 
             if (!v87)
             {
               v58 = +[UIKeyboardImpl activeInstance];
-              v59 = [v58 candidateController];
-              [v59 candidateBarHeight];
+              candidateController12 = [v58 candidateController];
+              [candidateController12 candidateBarHeight];
               v61 = v60;
               v62 = +[UIKeyboardImpl activeInstance];
-              v63 = [v62 candidateController];
-              [v63 candidateBarEdgeInsetsForOrientation:a4];
+              candidateController13 = [v62 candidateController];
+              [candidateController13 candidateBarEdgeInsetsForOrientation:orientation];
               v10 = v61 + v64;
 
               goto LABEL_11;
@@ -1128,22 +1128,22 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    if (v30 != 1)
+    if (idiom != 1)
     {
       v104 = +[UIKeyboardImpl activeInstance];
-      v101 = [v104 candidateController];
-      v67 = [v101 screenTraits];
-      if ([v67 idiom] != 24)
+      candidateController14 = [v104 candidateController];
+      screenTraits12 = [candidateController14 screenTraits];
+      if ([screenTraits12 idiom] != 24)
       {
         v98 = +[UIKeyboardImpl activeInstance];
-        v95 = [v98 candidateController];
-        v92 = [v95 screenTraits];
-        if ([v92 idiom] != 25)
+        candidateController15 = [v98 candidateController];
+        screenTraits13 = [candidateController15 screenTraits];
+        if ([screenTraits13 idiom] != 25)
         {
           v89 = +[UIKeyboardImpl activeInstance];
-          v83 = [v89 candidateController];
-          v80 = [v83 screenTraits];
-          if ([v80 idiom] == 26)
+          candidateController16 = [v89 candidateController];
+          screenTraits14 = [candidateController16 screenTraits];
+          if ([screenTraits14 idiom] == 26)
           {
             v86 = 1;
           }
@@ -1151,9 +1151,9 @@ LABEL_43:
           else
           {
             v77 = +[UIKeyboardImpl activeInstance];
-            v74 = [v77 candidateController];
-            v71 = [v74 screenTraits];
-            v86 = [v71 idiom] == 23;
+            candidateController17 = [v77 candidateController];
+            screenTraits15 = [candidateController17 screenTraits];
+            v86 = [screenTraits15 idiom] == 23;
           }
 
           if (!v86)
@@ -1168,13 +1168,13 @@ LABEL_67:
             goto LABEL_28;
           }
 
-          v40 = +[UIKeyboardImpl activeInstance];
-          v68 = [v40 candidateController];
-          v69 = [v68 screenTraits];
+          candidateController2 = +[UIKeyboardImpl activeInstance];
+          v40CandidateController = [candidateController2 candidateController];
+          screenTraits16 = [v40CandidateController screenTraits];
           *buf = 134218240;
           v106 = v15;
           v107 = 2048;
-          v108 = [v69 idiom];
+          idiom2 = [screenTraits16 idiom];
           _os_log_fault_impl(&dword_188A29000, v39, OS_LOG_TYPE_FAULT, "%ld != %ld", buf, 0x16u);
 
 LABEL_27:
@@ -1286,38 +1286,38 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
   return v2;
 }
 
-+ (double)_defaultPreferredHeightForTraitCollection:(id)a3
++ (double)_defaultPreferredHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  [objc_opt_class() _defaultPreferredHeightForTraitCollection:v4 interfaceOrientation:{objc_msgSend(a1, "keyboardOrientation")}];
+  collectionCopy = collection;
+  [objc_opt_class() _defaultPreferredHeightForTraitCollection:collectionCopy interfaceOrientation:{objc_msgSend(self, "keyboardOrientation")}];
   v6 = v5;
 
   return v6;
 }
 
-- (id)_inputDelegateAsResponder:(id)a3
+- (id)_inputDelegateAsResponder:(id)responder
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  responderCopy = responder;
+  v4 = responderCopy;
+  if (responderCopy)
   {
-    v5 = v3;
-    if (([v3 __isKindOfUIResponder] & 1) == 0)
+    delegateAsResponder = responderCopy;
+    if (([responderCopy __isKindOfUIResponder] & 1) == 0)
     {
       v6 = +[UIKeyboardImpl activeInstance];
-      v5 = [v6 delegateAsResponder];
+      delegateAsResponder = [v6 delegateAsResponder];
     }
   }
 
   else
   {
-    v5 = 0;
+    delegateAsResponder = 0;
   }
 
-  return v5;
+  return delegateAsResponder;
 }
 
-- (void)preferencesControllerChanged:(id)a3
+- (void)preferencesControllerChanged:(id)changed
 {
   [(UISystemInputAssistantViewController *)self setHasCheckedPreferences:0];
 
@@ -1328,11 +1328,11 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
 {
   v2 = +[UIKeyboardImpl activeInstance];
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v5 visualModeManager];
-  v4 = [v3 useVisualModeWindowed];
+  visualModeManager = [v5 visualModeManager];
+  useVisualModeWindowed = [visualModeManager useVisualModeWindowed];
 
   LOBYTE(v5) = 0;
-  if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 && v4)
+  if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 && useVisualModeWindowed)
   {
     if ([v2 isMinimized])
     {
@@ -1348,12 +1348,12 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
   return v5;
 }
 
-- (BOOL)_assistantItemsVisibleForResponder:(id)a3
+- (BOOL)_assistantItemsVisibleForResponder:(id)responder
 {
-  v4 = a3;
-  if (([v4 _isDisplayingWritingToolsSessionInUCB] & 1) == 0)
+  responderCopy = responder;
+  if (([responderCopy _isDisplayingWritingToolsSessionInUCB] & 1) == 0)
   {
-    v6 = [(UISystemInputAssistantViewController *)self _isAssistantPreferenceEnabled];
+    _isAssistantPreferenceEnabled = [(UISystemInputAssistantViewController *)self _isAssistantPreferenceEnabled];
     v37[0] = 0;
     v37[1] = v37;
     v37[2] = 0x3032000000;
@@ -1365,11 +1365,11 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
     aBlock[2] = __75__UISystemInputAssistantViewController__assistantItemsVisibleForResponder___block_invoke;
     aBlock[3] = &unk_1E7106408;
     v36 = v37;
-    v7 = v4;
+    v7 = responderCopy;
     v35 = v7;
     v8 = _Block_copy(aBlock);
     v31 = v8;
-    if (v6)
+    if (_isAssistantPreferenceEnabled)
     {
       v9 = 1;
     }
@@ -1381,20 +1381,20 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
     }
 
     v11 = +[UIKeyboardImpl activeInstance];
-    v12 = [v11 _showsScribbleIconsInAssistantView];
+    _showsScribbleIconsInAssistantView = [v11 _showsScribbleIconsInAssistantView];
 
-    v13 = [(UISystemInputAssistantViewController *)self inputWindowController];
-    v14 = [v13 placement];
-    if ([v14 isFloating])
+    inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+    placement = [inputWindowController placement];
+    if ([placement isFloating])
     {
-      v15 = 1;
+      isHiddenForFloatingTransition = 1;
     }
 
     else
     {
-      v16 = [(UISystemInputAssistantViewController *)self inputWindowController];
-      v17 = [v16 placement];
-      v15 = [v17 isHiddenForFloatingTransition];
+      inputWindowController2 = [(UISystemInputAssistantViewController *)self inputWindowController];
+      placement2 = [inputWindowController2 placement];
+      isHiddenForFloatingTransition = [placement2 isHiddenForFloatingTransition];
     }
 
     if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 && +[UIKeyboard usesInputSystemUI])
@@ -1420,7 +1420,7 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
       if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
 
-        if (((v12 ^ 1) & v15) != 1)
+        if (((_showsScribbleIconsInAssistantView ^ 1) & isHiddenForFloatingTransition) != 1)
         {
           goto LABEL_21;
         }
@@ -1435,18 +1435,18 @@ double __103__UISystemInputAssistantViewController__defaultPreferredHeightForTra
 
 LABEL_21:
     v19 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v20 = [v19 visualModeManager];
-    v21 = [v20 useVisualModeWindowed];
+    visualModeManager = [v19 visualModeManager];
+    useVisualModeWindowed = [visualModeManager useVisualModeWindowed];
 
     if (!v9)
     {
       goto LABEL_26;
     }
 
-    if (v21)
+    if (useVisualModeWindowed)
     {
-      v22 = [v7 inputView];
-      if (v22)
+      inputView = [v7 inputView];
+      if (inputView)
       {
         v5 = 0;
 LABEL_39:
@@ -1456,9 +1456,9 @@ LABEL_39:
     }
 
     v23 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v24 = [v23 hasCustomInputViewController];
+    hasCustomInputViewController = [v23 hasCustomInputViewController];
 
-    if (v24)
+    if (hasCustomInputViewController)
     {
 LABEL_26:
       v5 = 0;
@@ -1477,14 +1477,14 @@ LABEL_40:
     v26 = v31[2]();
     if ([(UISystemInputAssistantViewController *)self _shouldCheckItemsVisibility])
     {
-      v27 = [v26 leadingBarButtonGroups];
-      if ((v25[2](v25, v27) & 1) == 0)
+      leadingBarButtonGroups = [v26 leadingBarButtonGroups];
+      if ((v25[2](v25, leadingBarButtonGroups) & 1) == 0)
       {
-        v28 = [v26 trailingBarButtonGroups];
-        if ((v25[2](v25, v28) & 1) == 0)
+        trailingBarButtonGroups = [v26 trailingBarButtonGroups];
+        if ((v25[2](v25, trailingBarButtonGroups) & 1) == 0)
         {
-          v29 = [v26 _centerBarButtonGroups];
-          v5 = v25[2](v25, v29);
+          _centerBarButtonGroups = [v26 _centerBarButtonGroups];
+          v5 = v25[2](v25, _centerBarButtonGroups);
 LABEL_36:
 
           goto LABEL_37;
@@ -1496,14 +1496,14 @@ LABEL_36:
 
     else
     {
-      v27 = [v26 leadingBarButtonGroups];
-      if (![v27 count])
+      leadingBarButtonGroups = [v26 leadingBarButtonGroups];
+      if (![leadingBarButtonGroups count])
       {
-        v28 = [v26 trailingBarButtonGroups];
-        if (![v28 count])
+        trailingBarButtonGroups = [v26 trailingBarButtonGroups];
+        if (![trailingBarButtonGroups count])
         {
-          v29 = [v26 _centerBarButtonGroups];
-          v5 = [v29 count] != 0;
+          _centerBarButtonGroups = [v26 _centerBarButtonGroups];
+          v5 = [_centerBarButtonGroups count] != 0;
           goto LABEL_36;
         }
 
@@ -1518,7 +1518,7 @@ LABEL_37:
     v5 = 1;
 LABEL_38:
 
-    v22 = v33;
+    inputView = v33;
     goto LABEL_39;
   }
 
@@ -1639,28 +1639,28 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)_centerPredictionViewVisibleForInputDelegate:(id)a3 inputViews:(id)a4
+- (BOOL)_centerPredictionViewVisibleForInputDelegate:(id)delegate inputViews:(id)views
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UISystemInputAssistantViewController *)self centerViewController];
+  delegateCopy = delegate;
+  viewsCopy = views;
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
 
-  if (!v8)
+  if (!centerViewController)
   {
-    [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:v6];
+    [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:delegateCopy];
   }
 
-  v9 = [(UISystemInputAssistantViewController *)self centerViewController];
+  centerViewController2 = [(UISystemInputAssistantViewController *)self centerViewController];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(UISystemInputAssistantViewController *)self centerViewController];
-    v11 = [v10 requiresKeyboard];
+    centerViewController3 = [(UISystemInputAssistantViewController *)self centerViewController];
+    requiresKeyboard = [centerViewController3 requiresKeyboard];
 
-    if (v11)
+    if (requiresKeyboard)
     {
-      v12 = [v7 keyboard];
+      keyboard = [viewsCopy keyboard];
 
-      if (!v12)
+      if (!keyboard)
       {
         goto LABEL_10;
       }
@@ -1671,8 +1671,8 @@ LABEL_13:
   {
   }
 
-  v13 = [(UISystemInputAssistantViewController *)self centerViewController];
-  v14 = [v13 isVisibleForInputDelegate:v6 inputViews:v7];
+  centerViewController4 = [(UISystemInputAssistantViewController *)self centerViewController];
+  v14 = [centerViewController4 isVisibleForInputDelegate:delegateCopy inputViews:viewsCopy];
 
   if (v14)
   {
@@ -1683,11 +1683,11 @@ LABEL_13:
 LABEL_10:
   if ([(UISystemInputAssistantViewController *)self _canShowCenterBarButtonItem])
   {
-    v16 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v6];
+    v16 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:delegateCopy];
     v17 = _UIResponderFindInputAssistantItem(v16);
 
-    v18 = [v17 _centerBarButtonGroups];
-    v15 = [v18 count] != 0;
+    _centerBarButtonGroups = [v17 _centerBarButtonGroups];
+    v15 = [_centerBarButtonGroups count] != 0;
   }
 
   else
@@ -1700,41 +1700,41 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)shouldBeShownForInputDelegate:(id)a3 inputViews:(id)a4
+- (BOOL)shouldBeShownForInputDelegate:(id)delegate inputViews:(id)views
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  delegateCopy = delegate;
+  viewsCopy = views;
+  inputViews = viewsCopy;
+  if (!delegateCopy)
   {
-    v6 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-    if (v8)
+    delegateCopy = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    if (inputViews)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v8 = [v16 inputViews];
+    inputViews = [v16 inputViews];
 
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!viewsCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
   v9 = +[UIKeyboardInputModeController sharedInputModeController];
-  v10 = [v9 currentInputMode];
+  currentInputMode = [v9 currentInputMode];
 
-  v11 = [v10 identifier];
-  v12 = [v11 containsString:@"dictation"];
+  identifier = [currentInputMode identifier];
+  v12 = [identifier containsString:@"dictation"];
 
-  v13 = [v10 isEmojiInputMode];
-  v14 = [v10 isSpecializedInputMode];
-  if (!v14)
+  isEmojiInputMode = [currentInputMode isEmojiInputMode];
+  isSpecializedInputMode = [currentInputMode isSpecializedInputMode];
+  if (!isSpecializedInputMode)
   {
     goto LABEL_6;
   }
@@ -1742,7 +1742,7 @@ LABEL_3:
   if ((+[UIKeyboard isMajelEnabled]& v12) != 1)
   {
     LOBYTE(v15) = 1;
-    if (!v13)
+    if (!isEmojiInputMode)
     {
       goto LABEL_20;
     }
@@ -1759,14 +1759,14 @@ LABEL_3:
   else
   {
 LABEL_6:
-    LOBYTE(v15) = v13;
+    LOBYTE(v15) = isEmojiInputMode;
     if (_os_feature_enabled_impl())
     {
-      v15 = +[UIKeyboard usesInputSystemUI]& v13;
-      if (!v14)
+      v15 = +[UIKeyboard usesInputSystemUI]& isEmojiInputMode;
+      if (!isSpecializedInputMode)
       {
 LABEL_8:
-        if (!v13)
+        if (!isEmojiInputMode)
         {
           goto LABEL_20;
         }
@@ -1775,29 +1775,29 @@ LABEL_8:
       }
     }
 
-    else if (!v14)
+    else if (!isSpecializedInputMode)
     {
       goto LABEL_8;
     }
   }
 
-  if (!v13)
+  if (!isEmojiInputMode)
   {
     goto LABEL_20;
   }
 
 LABEL_18:
-  v17 = [v8 keyboard];
-  if (v17)
+  keyboard = [inputViews keyboard];
+  if (keyboard)
   {
   }
 
   else
   {
-    v44 = [v8 inputAccessoryView];
-    if (v44)
+    inputAccessoryView = [inputViews inputAccessoryView];
+    if (inputAccessoryView)
     {
-      v45 = v44;
+      v45 = inputAccessoryView;
       v46 = +[UIKeyboard isRemoteEmojiCollectionViewEnabled];
 
       if (v46)
@@ -1811,7 +1811,7 @@ LABEL_20:
   if (+[UIKeyboard usesInputSystemUI])
   {
     v18 = +[UIKeyboardImpl activeInstance];
-    v19 = [v18 showingEmojiSearch];
+    showingEmojiSearch = [v18 showingEmojiSearch];
 
     goto LABEL_24;
   }
@@ -1828,10 +1828,10 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v19 = [v6 keyboardType] == 122;
+  showingEmojiSearch = [delegateCopy keyboardType] == 122;
 LABEL_24:
   v20 = (v12 ^ 1) & v15;
-  if (!v19)
+  if (!showingEmojiSearch)
   {
     v20 = v15;
   }
@@ -1842,64 +1842,64 @@ LABEL_24:
   }
 
 LABEL_29:
-  v21 = [(UISystemInputAssistantViewController *)self _centerPredictionViewVisibleForInputDelegate:v6 inputViews:v8];
+  v21 = [(UISystemInputAssistantViewController *)self _centerPredictionViewVisibleForInputDelegate:delegateCopy inputViews:inputViews];
   if (!v21 || (+[UIKeyboard activeKeyboard](UIKeyboard, "activeKeyboard"), v22 = objc_claimAutoreleasedReturnValue(), [v22 _rootInputWindowController], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "placement"), v24 = objc_claimAutoreleasedReturnValue(), UIAssistantViewPlacement(v24), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isFloating"), v25, v24, v23, v22, (v26 & 1) == 0))
   {
     v27 = +[UIKeyboardImpl activeInstance];
-    v28 = [v27 _shouldSuppressAssistantBar];
+    _shouldSuppressAssistantBar = [v27 _shouldSuppressAssistantBar];
 
-    if (v28)
+    if (_shouldSuppressAssistantBar)
     {
       goto LABEL_46;
     }
   }
 
-  if (([v6 conformsToProtocol:&unk_1EFE8B2D0] & 1) == 0 && (objc_msgSend(v6, "conformsToProtocol:", &unk_1F016C7B0) & 1) == 0 && !objc_msgSend(v6, "conformsToProtocol:", &unk_1F016C810))
+  if (([delegateCopy conformsToProtocol:&unk_1EFE8B2D0] & 1) == 0 && (objc_msgSend(delegateCopy, "conformsToProtocol:", &unk_1F016C7B0) & 1) == 0 && !objc_msgSend(delegateCopy, "conformsToProtocol:", &unk_1F016C810))
   {
     goto LABEL_46;
   }
 
   v29 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v30 = [v29 hideSystemInputAssistantView];
+  hideSystemInputAssistantView = [v29 hideSystemInputAssistantView];
 
-  if (v30)
+  if (hideSystemInputAssistantView)
   {
     goto LABEL_46;
   }
 
   v31 = +[UIKeyboardImpl activeInstance];
-  v32 = [v31 disableInputBars];
+  disableInputBars = [v31 disableInputBars];
 
-  if (v32)
+  if (disableInputBars)
   {
     goto LABEL_46;
   }
 
   v33 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v34 = [v33 visualModeManager];
-  v35 = [v34 useVisualModeWindowed];
+  visualModeManager = [v33 visualModeManager];
+  useVisualModeWindowed = [visualModeManager useVisualModeWindowed];
 
-  LODWORD(v34) = [(UISystemInputAssistantViewController *)self layoutHasBuiltinAssistantView];
+  LODWORD(visualModeManager) = [(UISystemInputAssistantViewController *)self layoutHasBuiltinAssistantView];
   v36 = +[UIKeyboardImpl activeInstance];
-  v37 = [v36 _showsScribbleIconsInAssistantView];
+  _showsScribbleIconsInAssistantView = [v36 _showsScribbleIconsInAssistantView];
 
-  if (v34)
+  if (visualModeManager)
   {
-    if ((v35 & 1) == 0 && !v37)
+    if ((useVisualModeWindowed & 1) == 0 && !_showsScribbleIconsInAssistantView)
     {
       goto LABEL_46;
     }
   }
 
-  v38 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v6];
+  v38 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:delegateCopy];
   v39 = [(UISystemInputAssistantViewController *)self _assistantItemsVisibleForResponder:v38];
 
-  v40 = [(UISystemInputAssistantViewController *)self inputWindowController];
-  v41 = [v40 placement];
-  v42 = UIAssistantViewPlacement(v41);
+  inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+  placement = [inputWindowController placement];
+  v42 = UIAssistantViewPlacement(placement);
 
   v43 = v21 || v39;
-  if ([v42 isFloatingAssistantView] && ((v43 | v35 & ~v37) & 1) == 0)
+  if ([v42 isFloatingAssistantView] && ((v43 | useVisualModeWindowed & ~_showsScribbleIconsInAssistantView) & 1) == 0)
   {
     LOBYTE(v43) = +[UIAssistantBarButtonItemProvider isKeyboardGroupVisible];
   }
@@ -1908,32 +1908,32 @@ LABEL_47:
   return v43;
 }
 
-- (BOOL)shouldShowEmojiSearchViewControllerForInputDelegate:(id)a3
+- (BOOL)shouldShowEmojiSearchViewControllerForInputDelegate:(id)delegate
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (_os_feature_enabled_impl() && !+[UIKeyboard usesInputSystemUI])
   {
-    if (!v4)
+    if (!delegateCopy)
     {
-      v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+      delegateCopy = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
     }
 
-    v7 = [(UISystemInputAssistantViewController *)self _isEmojiInputMode];
-    v8 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    v9 = [v8 emojiSearchView];
-    v10 = [v9 searchTextField];
-    v5 = [v10 isActive];
+    _isEmojiInputMode = [(UISystemInputAssistantViewController *)self _isEmojiInputMode];
+    emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchView = [emojiSearchViewController emojiSearchView];
+    searchTextField = [emojiSearchView searchTextField];
+    isActive = [searchTextField isActive];
 
-    if (v7)
+    if (_isEmojiInputMode)
     {
       v11 = +[UIKeyboardInputModeController sharedInputModeController];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v12 = [v11 activeInputModes];
-      v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      activeInputModes = [v11 activeInputModes];
+      v13 = [activeInputModes countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1944,17 +1944,17 @@ LABEL_47:
           {
             if (*v18 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(activeInputModes);
             }
 
             if ([*(*(&v17 + 1) + 8 * i) supportsEmojiSearch])
             {
-              v5 = 1;
+              isActive = 1;
               goto LABEL_18;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v14 = [activeInputModes countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v14)
           {
             continue;
@@ -1964,55 +1964,55 @@ LABEL_47:
         }
       }
 
-      v12 = [v11 currentSystemInputModeExcludingEmoji:1];
-      v5 = [v12 supportsEmojiSearch];
+      activeInputModes = [v11 currentSystemInputModeExcludingEmoji:1];
+      isActive = [activeInputModes supportsEmojiSearch];
 LABEL_18:
     }
   }
 
   else
   {
-    v5 = 0;
+    isActive = 0;
   }
 
-  return v5;
+  return isActive;
 }
 
 - (BOOL)_shouldCollapseEmojiSearchView
 {
-  v2 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-  v3 = [v2 emojiSearchView];
-  v4 = [v3 searchTextField];
-  v5 = [v4 isActive];
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  emojiSearchView = [emojiSearchViewController emojiSearchView];
+  searchTextField = [emojiSearchView searchTextField];
+  isActive = [searchTextField isActive];
 
-  return v5 ^ 1;
+  return isActive ^ 1;
 }
 
-- (double)preferredHeightForTraitCollection:(id)a3
+- (double)preferredHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  -[UISystemInputAssistantViewController preferredHeightForTraitCollection:orientation:](self, "preferredHeightForTraitCollection:orientation:", v4, [objc_opt_class() keyboardOrientation]);
+  collectionCopy = collection;
+  -[UISystemInputAssistantViewController preferredHeightForTraitCollection:orientation:](self, "preferredHeightForTraitCollection:orientation:", collectionCopy, [objc_opt_class() keyboardOrientation]);
   v6 = v5;
 
   return v6;
 }
 
-- (double)preferredHeightForTraitCollection:(id)a3 orientation:(int64_t)a4
+- (double)preferredHeightForTraitCollection:(id)collection orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [(UISystemInputAssistantViewController *)self centerViewController];
+  collectionCopy = collection;
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
 
-  if (!v7)
+  if (!centerViewController)
   {
-    v8 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-    [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:v8];
+    _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:_currentInputDelegate];
   }
 
-  v9 = [(UISystemInputAssistantViewController *)self centerViewController];
+  centerViewController2 = [(UISystemInputAssistantViewController *)self centerViewController];
 
-  if (!v9 || (-[UISystemInputAssistantViewController centerViewController](self, "centerViewController"), v10 = objc_claimAutoreleasedReturnValue(), [v10 preferredHeightForTraitCollection:v6], v12 = v11, v10, v12 == -1.0))
+  if (!centerViewController2 || (-[UISystemInputAssistantViewController centerViewController](self, "centerViewController"), v10 = objc_claimAutoreleasedReturnValue(), [v10 preferredHeightForTraitCollection:collectionCopy], v12 = v11, v10, v12 == -1.0))
   {
-    [objc_opt_class() _defaultPreferredHeightForTraitCollection:v6 interfaceOrientation:a4];
+    [objc_opt_class() _defaultPreferredHeightForTraitCollection:collectionCopy interfaceOrientation:orientation];
     v12 = v13;
   }
 
@@ -2034,12 +2034,12 @@ LABEL_18:
 
 - (void)_showCandidates
 {
-  v3 = [(UISystemInputAssistantViewController *)self candidateViewController];
+  candidateViewController = [(UISystemInputAssistantViewController *)self candidateViewController];
 
-  if (v3)
+  if (candidateViewController)
   {
-    v4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v4 setButtonBarItemsExpanded:0 animated:0];
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [systemInputAssistantView setButtonBarItemsExpanded:0 animated:0];
   }
 }
 
@@ -2047,86 +2047,86 @@ LABEL_18:
 {
   if ([(UISystemInputAssistantViewController *)self shouldShowEmojiSearchViewControllerForInputDelegate:0])
   {
-    v3 = [(UISystemInputAssistantViewController *)self candidateViewController];
+    candidateViewController = [(UISystemInputAssistantViewController *)self candidateViewController];
 
-    if (v3)
+    if (candidateViewController)
     {
       v4 = +[UIKeyboardImpl activeInstance];
-      v10 = [v4 candidateController];
+      candidateController = [v4 candidateController];
 
       v7 = 0;
-      if ([v10 hasCandidates])
+      if ([candidateController hasCandidates])
       {
         v5 = +[UIKeyboardImpl activeInstance];
-        v6 = [v5 hasMarkedText];
+        hasMarkedText = [v5 hasMarkedText];
 
-        if (v6)
+        if (hasMarkedText)
         {
           v7 = 1;
         }
       }
 
-      v8 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-      v9 = [v8 emojiSearchView];
-      [v9 setPredictionViewVisible:v7 animated:1];
+      emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+      emojiSearchView = [emojiSearchViewController emojiSearchView];
+      [emojiSearchView setPredictionViewVisible:v7 animated:1];
     }
   }
 }
 
-- (void)_inputModeChanged:(id)a3
+- (void)_inputModeChanged:(id)changed
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-  v6 = [v5 emojiSearchView];
-  v7 = [v6 searchTextField];
+  changedCopy = changed;
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  emojiSearchView = [emojiSearchViewController emojiSearchView];
+  searchTextField = [emojiSearchView searchTextField];
 
-  v8 = [v7 isActive];
+  isActive = [searchTextField isActive];
   if ([(UISystemInputAssistantViewController *)self _isEmojiInputMode])
   {
     [(UISystemInputAssistantViewController *)self _dismissEmojiSearch];
   }
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKey:@"UITextInputFromInputModeKey"];
+  userInfo = [changedCopy userInfo];
+  v10 = [userInfo objectForKey:@"UITextInputFromInputModeKey"];
 
-  if ([v10 isEmojiInputMode] & 1) == 0 && ((-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode") | v8))
+  if ([v10 isEmojiInputMode] & 1) == 0 && ((-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode") | isActive))
   {
     v19 = @"UIKeyboardSwitchToEmojiIsEmojiInputMode";
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode")}];
     v20[0] = v11;
-    v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+    defaultCenter3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"UIKeyboardSwitchToEmoji" object:0 userInfo:v12];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardSwitchToEmoji" object:0 userInfo:defaultCenter3];
 
-    v14 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    self->_isButtonBarItemsInlineVisible = [v14 showsButtonBarItemsInline];
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    self->_isButtonBarItemsInlineVisible = [systemInputAssistantView showsButtonBarItemsInline];
 
-    v15 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v15 setShowsButtonBarItemsInline:0];
+    systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [systemInputAssistantView2 setShowsButtonBarItemsInline:0];
 
 LABEL_12:
     goto LABEL_14;
   }
 
-  if ([v10 isEmojiInputMode] && ((-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode") | v8) & 1) == 0)
+  if ([v10 isEmojiInputMode] && ((-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode") | isActive) & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 postNotificationName:@"UIKeyboardSwitchedAwayFromEmoji" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"UIKeyboardSwitchedAwayFromEmoji" object:0];
 
     isButtonBarItemsInlineVisible = self->_isButtonBarItemsInlineVisible;
-    v18 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v18 setShowsButtonBarItemsInline:isButtonBarItemsInlineVisible];
+    systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [systemInputAssistantView3 setShowsButtonBarItemsInline:isButtonBarItemsInlineVisible];
 
     self->_postedSwitchFromEmojiNotification = 1;
     goto LABEL_14;
   }
 
-  if ([v10 isEmojiInputMode] && !-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode") && ((v8 ^ 1) & 1) == 0)
+  if ([v10 isEmojiInputMode] && !-[UISystemInputAssistantViewController _isEmojiInputMode](self, "_isEmojiInputMode") && ((isActive ^ 1) & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"UIKeyboardSwitchToEmojiSearch" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 postNotificationName:@"UIKeyboardSwitchToEmojiSearch" object:0];
     goto LABEL_12;
   }
 
@@ -2135,19 +2135,19 @@ LABEL_14:
   [(UISystemInputAssistantViewController *)self updateRemoteAssistantViewHidden];
 }
 
-- (void)_writingDirectionChanged:(id)a3
+- (void)_writingDirectionChanged:(id)changed
 {
-  v17 = a3;
+  changedCopy = changed;
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v5 = [v4 currentInputMode];
+  currentInputMode = [v4 currentInputMode];
 
-  if (([v5 isEmojiInputMode] & 1) == 0)
+  if (([currentInputMode isEmojiInputMode] & 1) == 0)
   {
-    v6 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-    v7 = [v6 searchTextField];
-    v8 = [v7 isActive];
+    emojiSearchView = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+    searchTextField = [emojiSearchView searchTextField];
+    isActive = [searchTextField isActive];
 
-    if (!v8)
+    if (!isActive)
     {
       if (!+[UIKeyboard isRemoteEmojiCollectionViewEnabled])
       {
@@ -2160,26 +2160,26 @@ LABEL_14:
 
   if (+[UIKeyboard isRemoteEmojiCollectionViewEnabled])
   {
-    v9 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-    v10 = [v9 searchTextField];
-    v11 = [v10 isActive];
+    emojiSearchView2 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+    searchTextField2 = [emojiSearchView2 searchTextField];
+    isActive2 = [searchTextField2 isActive];
 
-    if ((v11 & 1) == 0)
+    if ((isActive2 & 1) == 0)
     {
 LABEL_7:
-      v15 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController view];
-      [v15 _setLocalOverrideTraitCollection:0];
+      view = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController view];
+      [view _setLocalOverrideTraitCollection:0];
       goto LABEL_8;
     }
   }
 
-  v12 = [v17 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"writingDirection"];
-  v14 = [v13 intValue];
+  userInfo = [changedCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"writingDirection"];
+  intValue = [v13 intValue];
 
-  v15 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController view];
-  v16 = [UITraitCollection traitCollectionWithLayoutDirection:v14 == 1];
-  [v15 _setLocalOverrideTraitCollection:v16];
+  view = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController view];
+  v16 = [UITraitCollection traitCollectionWithLayoutDirection:intValue == 1];
+  [view _setLocalOverrideTraitCollection:v16];
 
 LABEL_8:
 LABEL_9:
@@ -2187,23 +2187,23 @@ LABEL_9:
 
 - (void)_expandBarItems
 {
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v2 setButtonBarItemsExpanded:1 animated:1];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setButtonBarItemsExpanded:1 animated:1];
 }
 
 - (void)_collapseBarItems
 {
-  v3 = [(UISystemInputAssistantViewController *)self predictionViewController];
-  if (v3)
+  predictionViewController = [(UISystemInputAssistantViewController *)self predictionViewController];
+  if (predictionViewController)
   {
-    v4 = v3;
-    v5 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v6 = [v5 centerViewHidden];
+    v4 = predictionViewController;
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    centerViewHidden = [systemInputAssistantView centerViewHidden];
 
-    if ((v6 & 1) == 0)
+    if ((centerViewHidden & 1) == 0)
     {
-      v7 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-      [v7 setButtonBarItemsExpanded:0 animated:1];
+      systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+      [systemInputAssistantView2 setButtonBarItemsExpanded:0 animated:1];
     }
   }
 }
@@ -2382,28 +2382,28 @@ LABEL_9:
   return compactStyle;
 }
 
-- (void)automaticallySetCenterViewControllerBasedOnInputDelegate:(id)a3
+- (void)automaticallySetCenterViewControllerBasedOnInputDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   objc_opt_class();
-  v5 = [(UISystemInputAssistantViewController *)self assistantBarStyle];
+  assistantBarStyle = [(UISystemInputAssistantViewController *)self assistantBarStyle];
   v6 = +[UIKeyboardImpl activeInstance];
-  v7 = [v6 suppressUpdateLayout];
+  suppressUpdateLayout = [v6 suppressUpdateLayout];
 
-  if ((v7 & 1) == 0)
+  if ((suppressUpdateLayout & 1) == 0)
   {
-    v8 = [(UISystemInputAssistantViewController *)self inputWindowController];
-    v9 = [v8 animationAwarePlacement];
-    v10 = UIAssistantViewPlacement(v9);
+    inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+    animationAwarePlacement = [inputWindowController animationAwarePlacement];
+    v10 = UIAssistantViewPlacement(animationAwarePlacement);
 
     if (([v10 showsInputOrAssistantViews] & 1) != 0 || objc_msgSend(v10, "isUndocked"))
     {
-      v5 = UIGetAssistantBarStyleFromPlacement(v10);
+      assistantBarStyle = UIGetAssistantBarStyleFromPlacement(v10);
     }
   }
 
-  v11 = [(UISystemInputAssistantViewController *)self _customCenterBarButtonItem:v4];
-  v12 = [(UISystemInputAssistantViewController *)self _customCenterViewController:v4];
+  v11 = [(UISystemInputAssistantViewController *)self _customCenterBarButtonItem:delegateCopy];
+  v12 = [(UISystemInputAssistantViewController *)self _customCenterViewController:delegateCopy];
   if (!v11)
   {
     if (+[UIKeyboard usesInputSystemUI]|| [(UISystemInputAssistantViewController *)self showsRemoteInputDashViewController])
@@ -2415,21 +2415,21 @@ LABEL_9:
     else
     {
       v56 = +[UIKeyboardImpl activeInstance];
-      v57 = [v56 showsCandidateBar];
+      showsCandidateBar = [v56 showsCandidateBar];
 
-      if ((v57 & 1) == 0)
+      if ((showsCandidateBar & 1) == 0)
       {
         v58 = +[UIKeyboardImpl activeInstance];
-        v59 = [v58 _layout];
-        v60 = [v59 hasCandidateKeys];
+        _layout = [v58 _layout];
+        hasCandidateKeys = [_layout hasCandidateKeys];
 
-        if ((v60 & 1) == 0)
+        if ((hasCandidateKeys & 1) == 0)
         {
           if (_os_feature_enabled_impl())
           {
             v61 = +[UIKeyboardInputModeController sharedInputModeController];
-            v62 = [v61 currentInputMode];
-            if ([v62 showsTransliterationCandidates])
+            currentInputMode = [v61 currentInputMode];
+            if ([currentInputMode showsTransliterationCandidates])
             {
               v63 = +[UIKeyboardImpl activeInstance];
               [v63 isMinimized];
@@ -2445,20 +2445,20 @@ LABEL_9:
   }
 
   v14 = objc_opt_class();
-  v15 = [(UISystemInputAssistantViewController *)self predictiveViewController];
-  if (!v15 || (v16 = v15, [(UISystemInputAssistantViewController *)self predictiveViewController], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_opt_class(), v17, v16, v18 != v14))
+  predictiveViewController = [(UISystemInputAssistantViewController *)self predictiveViewController];
+  if (!predictiveViewController || (v16 = predictiveViewController, [(UISystemInputAssistantViewController *)self predictiveViewController], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_opt_class(), v17, v16, v18 != v14))
   {
     v19 = NSStringFromClass(v14);
-    v20 = [(UISystemInputAssistantViewController *)self cachedPredictiveViewControllers];
-    v21 = [v20 objectForKey:v19];
+    cachedPredictiveViewControllers = [(UISystemInputAssistantViewController *)self cachedPredictiveViewControllers];
+    v21 = [cachedPredictiveViewControllers objectForKey:v19];
 
     if (!v21)
     {
       v21 = [[v14 alloc] initWithNibName:0 bundle:0];
       if (v21)
       {
-        v22 = [(UISystemInputAssistantViewController *)self cachedPredictiveViewControllers];
-        [v22 setObject:v21 forKey:v19];
+        cachedPredictiveViewControllers2 = [(UISystemInputAssistantViewController *)self cachedPredictiveViewControllers];
+        [cachedPredictiveViewControllers2 setObject:v21 forKey:v19];
       }
     }
 
@@ -2469,15 +2469,15 @@ LABEL_9:
     }
 
     [(UISystemInputAssistantViewController *)self setPredictiveViewController:v21];
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 postNotificationName:@"_uisavcccn" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_uisavcccn" object:0];
   }
 
-  if ([(UISystemInputAssistantViewController *)self shouldShowEmojiSearchViewControllerForInputDelegate:v4])
+  if ([(UISystemInputAssistantViewController *)self shouldShowEmojiSearchViewControllerForInputDelegate:delegateCopy])
   {
-    v24 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
 
-    if (!v24)
+    if (!emojiSearchViewController)
     {
       v65 = 0;
       v66 = &v65;
@@ -2500,43 +2500,43 @@ LABEL_9:
       v27 = [[v25 alloc] initWithNibName:0 bundle:0];
       [(UISystemInputAssistantViewController *)self setEmojiSearchViewController:v27];
 
-      v28 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-      [v28 setDelegate:self];
+      emojiSearchViewController2 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+      [emojiSearchViewController2 setDelegate:self];
     }
 
-    v29 = [(UISystemInputAssistantViewController *)self _shouldCollapseEmojiSearchView];
-    v30 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    v31 = [v30 emojiSearchView];
-    [v31 setCollapsed:v29];
+    _shouldCollapseEmojiSearchView = [(UISystemInputAssistantViewController *)self _shouldCollapseEmojiSearchView];
+    emojiSearchViewController3 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchView = [emojiSearchViewController3 emojiSearchView];
+    [emojiSearchView setCollapsed:_shouldCollapseEmojiSearchView];
 
-    v32 = [(UISystemInputAssistantViewController *)self predictiveViewController];
-    v33 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    [v33 setChildPredictionViewController:v32];
+    predictiveViewController2 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+    emojiSearchViewController4 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    [emojiSearchViewController4 setChildPredictionViewController:predictiveViewController2];
 
-    v34 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    [(UISystemInputAssistantViewController *)self setCenterViewController:v34];
+    emojiSearchViewController5 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    [(UISystemInputAssistantViewController *)self setCenterViewController:emojiSearchViewController5];
 
     v35 = +[UIKeyboardImpl activeInstance];
-    v36 = [v35 autocorrectionController];
-    [v36 addAutocorrectionObserver:self];
+    autocorrectionController = [v35 autocorrectionController];
+    [autocorrectionController addAutocorrectionObserver:self];
 
-    v37 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    v38 = [v37 emojiSearchView];
-    v39 = [v38 searchTextField];
-    [v39 setKeyboardType:122];
+    emojiSearchViewController6 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchView2 = [emojiSearchViewController6 emojiSearchView];
+    searchTextField = [emojiSearchView2 searchTextField];
+    [searchTextField setKeyboardType:122];
 
-    v40 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-    v41 = [v40 emojiSearchView];
-    v42 = [v41 searchTextField];
-    [v42 setReturnKeyType:9];
+    emojiSearchViewController7 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchView3 = [emojiSearchViewController7 emojiSearchView];
+    searchTextField2 = [emojiSearchView3 searchTextField];
+    [searchTextField2 setReturnKeyType:9];
 
     v11 = 0;
   }
 
   else
   {
-    v43 = [(UISystemInputAssistantViewController *)self centerViewController];
-    v44 = v43;
+    centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+    v44 = centerViewController;
     if (v12)
     {
 
@@ -2548,67 +2548,67 @@ LABEL_9:
 
     else
     {
-      v45 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+      predictiveViewController3 = [(UISystemInputAssistantViewController *)self predictiveViewController];
 
-      if (v44 != v45)
+      if (v44 != predictiveViewController3)
       {
         v46 = +[UIKeyboardImpl activeInstance];
-        v47 = [v46 autocorrectionController];
-        [v47 removeAutocorrectionObserver:self];
+        autocorrectionController2 = [v46 autocorrectionController];
+        [autocorrectionController2 removeAutocorrectionObserver:self];
 
-        v48 = [(UISystemInputAssistantViewController *)self predictiveViewController];
-        [(UISystemInputAssistantViewController *)self setCenterViewController:v48];
+        predictiveViewController4 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+        [(UISystemInputAssistantViewController *)self setCenterViewController:predictiveViewController4];
       }
     }
   }
 
-  v49 = [v11 customView];
-  if (v49)
+  customView = [v11 customView];
+  if (customView)
   {
-    v50 = v49;
-    v51 = [(UISystemInputAssistantViewController *)self compatibilityViewController];
-    v52 = [v51 customView];
-    v53 = [v11 customView];
+    v50 = customView;
+    compatibilityViewController = [(UISystemInputAssistantViewController *)self compatibilityViewController];
+    customView2 = [compatibilityViewController customView];
+    customView3 = [v11 customView];
 
-    if (v52 != v53)
+    if (customView2 != customView3)
     {
-      v54 = [v11 customView];
-      v55 = [(UISystemInputAssistantViewController *)self compatibilityViewController];
-      [v55 setCustomView:v54];
+      customView4 = [v11 customView];
+      compatibilityViewController2 = [(UISystemInputAssistantViewController *)self compatibilityViewController];
+      [compatibilityViewController2 setCustomView:customView4];
     }
   }
 
-  [(UISystemInputAssistantViewController *)self _updateViewsForAssistantBarStyle:v5];
-  [(UISystemInputAssistantViewController *)self updateCenterViewVisibilityStateForInputDelegate:v4];
-  [(UISystemInputAssistantViewController *)self updateAssistantBarStyle:v5];
+  [(UISystemInputAssistantViewController *)self _updateViewsForAssistantBarStyle:assistantBarStyle];
+  [(UISystemInputAssistantViewController *)self updateCenterViewVisibilityStateForInputDelegate:delegateCopy];
+  [(UISystemInputAssistantViewController *)self updateAssistantBarStyle:assistantBarStyle];
 }
 
-- (BOOL)updateFloatingAssistantRectEdge:(unint64_t)a3 position:(CGPoint)a4
+- (BOOL)updateFloatingAssistantRectEdge:(unint64_t)edge position:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v9 = [v8 layout];
+  y = position.y;
+  x = position.x;
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  layout = [systemInputAssistantView layout];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v12 = [v11 layout];
-    [v12 trackHorizontalMovement:{x, y}];
+    systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    layout2 = [systemInputAssistantView2 layout];
+    [layout2 trackHorizontalMovement:{x, y}];
 
-    v13 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v14 = [v13 layout];
-    [v14 setCurrentRectEdge:a3];
+    systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    layout3 = [systemInputAssistantView3 layout];
+    [layout3 setCurrentRectEdge:edge];
   }
 
   return v10 & 1;
 }
 
-- (void)prepareTransition:(id)a3 animated:(BOOL)a4
+- (void)prepareTransition:(id)transition animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = UIAssistantViewPlacement(a3);
+  animatedCopy = animated;
+  v6 = UIAssistantViewPlacement(transition);
   v7 = UIGetAssistantBarStyleFromPlacement(v6);
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -2619,12 +2619,12 @@ LABEL_9:
   v13[5] = v7;
   v8 = _Block_copy(v13);
   v9 = v8;
-  if (v4)
+  if (animatedCopy)
   {
     v10 = [(UISystemInputAssistantViewController *)self layoutFromAssistantBarStyle:v7];
     v11 = [(UISystemInputAssistantViewController *)self styleFromAssistantBarStyle:v7];
-    v12 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v12 transitionToLayout:v10 withStyle:v11 start:v9];
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [systemInputAssistantView transitionToLayout:v10 withStyle:v11 start:v9];
   }
 
   else
@@ -2643,36 +2643,36 @@ void __67__UISystemInputAssistantViewController_prepareTransition_animated___blo
   [v2 _updateSystemInputAssistantViewStylingForInputAssistantItem:v3];
 }
 
-- (void)_updateViewsForAssistantBarStyle:(int64_t)a3
+- (void)_updateViewsForAssistantBarStyle:(int64_t)style
 {
   v5 = [(UISystemInputAssistantViewController *)self layoutFromAssistantBarStyle:?];
-  v6 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v6 setLayout:v5];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setLayout:v5];
 
-  v7 = [(UISystemInputAssistantViewController *)self styleFromAssistantBarStyle:a3];
-  v8 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v8 setStyle:v7];
+  v7 = [(UISystemInputAssistantViewController *)self styleFromAssistantBarStyle:style];
+  systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView2 setStyle:v7];
 
-  v9 = [(UISystemInputAssistantViewController *)self centerViewController];
-  LOBYTE(v8) = objc_opt_respondsToSelector();
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+  LOBYTE(systemInputAssistantView2) = objc_opt_respondsToSelector();
 
-  if (v8)
+  if (systemInputAssistantView2)
   {
-    v10 = [(UISystemInputAssistantViewController *)self centerViewController];
-    [v10 setAssistantBarStyle:a3];
+    centerViewController2 = [(UISystemInputAssistantViewController *)self centerViewController];
+    [centerViewController2 setAssistantBarStyle:style];
   }
 }
 
-- (void)setCenterViewController:(id)a3
+- (void)setCenterViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   centerViewController = self->_centerViewController;
-  if (centerViewController != v5)
+  if (centerViewController != controllerCopy)
   {
-    v13 = v5;
+    v13 = controllerCopy;
     [(UIPredictiveViewController *)centerViewController removeFromParentViewController];
-    v7 = [(UIPredictiveViewController *)self->_centerViewController view];
-    [v7 removeFromSuperview];
+    view = [(UIPredictiveViewController *)self->_centerViewController view];
+    [view removeFromSuperview];
 
     emojiSearchViewController = self->_emojiSearchViewController;
     if (emojiSearchViewController != v13)
@@ -2680,71 +2680,71 @@ void __67__UISystemInputAssistantViewController_prepareTransition_animated___blo
       self->_emojiSearchViewController = 0;
     }
 
-    objc_storeStrong(&self->_centerViewController, a3);
+    objc_storeStrong(&self->_centerViewController, controller);
     if (v13)
     {
-      v9 = [(TUIEmojiSearchInputViewController *)v13 view];
-      [v9 removeFromSuperview];
+      view2 = [(TUIEmojiSearchInputViewController *)v13 view];
+      [view2 removeFromSuperview];
 
       [(UIViewController *)self addChildViewController:v13];
-      v10 = [(TUIEmojiSearchInputViewController *)v13 view];
-      v11 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-      [v11 setCenterView:v10];
+      view3 = [(TUIEmojiSearchInputViewController *)v13 view];
+      systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+      [systemInputAssistantView setCenterView:view3];
     }
 
     v12 = objc_opt_respondsToSelector();
-    v5 = v13;
+    controllerCopy = v13;
     if (v12)
     {
       [(TUIEmojiSearchInputViewController *)v13 setAssistantBarStyle:self->_assistantBarStyle];
-      v5 = v13;
+      controllerCopy = v13;
     }
   }
 }
 
-- (void)updateCenterViewVisibilityStateForInputDelegate:(id)a3
+- (void)updateCenterViewVisibilityStateForInputDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    delegateCopy = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
   }
 
-  v49 = v4;
-  v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v4];
+  v49 = delegateCopy;
+  v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:delegateCopy];
   v6 = +[UIKeyboard activeKeyboard];
-  v7 = [v6 _rootInputWindowController];
-  v8 = [v7 placement];
-  v9 = UIAssistantViewPlacement(v8);
+  _rootInputWindowController = [v6 _rootInputWindowController];
+  placement = [_rootInputWindowController placement];
+  v9 = UIAssistantViewPlacement(placement);
 
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v10 = [v9 isFloating];
+    isFloating = [v9 isFloating];
   }
 
   else
   {
-    v10 = 1;
+    isFloating = 1;
   }
 
   v11 = +[UIKeyboardImpl activeInstance];
   v12 = +[UIKeyboard activeKeyboard];
-  v13 = [v12 _rootInputWindowController];
-  v14 = [v13 isSplitting];
+  _rootInputWindowController2 = [v12 _rootInputWindowController];
+  isSplitting = [_rootInputWindowController2 isSplitting];
 
-  v15 = [v5 _disableAutomaticKeyboardUI];
-  v16 = [(UISystemInputAssistantViewController *)self centerViewController];
-  v17 = [v16 isVisibleForInputDelegate:v49 inputViews:0];
+  _disableAutomaticKeyboardUI = [v5 _disableAutomaticKeyboardUI];
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+  v17 = [centerViewController isVisibleForInputDelegate:v49 inputViews:0];
 
   isKindOfClass = 0;
-  if (+[UIKeyboard usesInputSystemUI]&& v10)
+  if (+[UIKeyboard usesInputSystemUI]&& isFloating)
   {
-    v19 = [(UISystemInputAssistantViewController *)self centerViewController];
+    centerViewController2 = [(UISystemInputAssistantViewController *)self centerViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v20 = [(UISystemInputAssistantViewController *)self _hidesCenterViewForActiveWindowingMode];
+  _hidesCenterViewForActiveWindowingMode = [(UISystemInputAssistantViewController *)self _hidesCenterViewForActiveWindowingMode];
   v21 = +[UIKeyboard usesInputSystemUI];
   if ((v21 & v17) == 1)
   {
@@ -2756,45 +2756,45 @@ void __67__UISystemInputAssistantViewController_prepareTransition_animated___blo
     LOBYTE(v22) = !v21 & v17;
   }
 
-  v23 = v14 | v15 | ~v22 | isKindOfClass | v20;
-  v24 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v25 = [v24 centerViewHidden];
+  v23 = isSplitting | _disableAutomaticKeyboardUI | ~v22 | isKindOfClass | _hidesCenterViewForActiveWindowingMode;
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  centerViewHidden = [systemInputAssistantView centerViewHidden];
 
-  v26 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
   v27 = v23 & 1;
-  [v26 setCenterViewHidden:v27];
+  [systemInputAssistantView2 setCenterViewHidden:v27];
 
-  if (v25 != v27)
+  if (centerViewHidden != v27)
   {
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    v29 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v28 postNotificationName:@"_uisavcvcn" object:v29];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [defaultCenter postNotificationName:@"_uisavcvcn" object:systemInputAssistantView3];
   }
 
-  v30 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  systemInputAssistantView4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
   v31 = objc_opt_respondsToSelector();
 
   if (v31)
   {
-    v32 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v32 setScrollEnabled:{+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") ^ 1}];
+    systemInputAssistantView5 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [systemInputAssistantView5 setScrollEnabled:{+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") ^ 1}];
   }
 
-  v33 = [(UIViewController *)self view];
-  v34 = [v33 _inheritedRenderConfig];
-  if (([v34 colorAdaptiveBackground] & 1) == 0)
+  view = [(UIViewController *)self view];
+  _inheritedRenderConfig = [view _inheritedRenderConfig];
+  if (([_inheritedRenderConfig colorAdaptiveBackground] & 1) == 0)
   {
 
     goto LABEL_21;
   }
 
-  v35 = [(UISystemInputAssistantViewController *)self centerViewController];
+  centerViewController3 = [(UISystemInputAssistantViewController *)self centerViewController];
   v36 = objc_opt_respondsToSelector();
 
   if (v36)
   {
-    v33 = [(UISystemInputAssistantViewController *)self centerViewController];
-    if (![v33 performSelector:sel_extendsFromKeyplane])
+    view = [(UISystemInputAssistantViewController *)self centerViewController];
+    if (![view performSelector:sel_extendsFromKeyplane])
     {
       v37 = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1;
 LABEL_22:
@@ -2812,38 +2812,38 @@ LABEL_24:
   [(UISystemInputAssistantViewController *)self maskInputAssistantView:v37];
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v38 = 1;
+    hidesExpandableButton = 1;
   }
 
   else
   {
-    v39 = [(UISystemInputAssistantViewController *)self centerViewController];
+    centerViewController4 = [(UISystemInputAssistantViewController *)self centerViewController];
     v40 = objc_opt_respondsToSelector();
 
     if (v40)
     {
-      v41 = [(UISystemInputAssistantViewController *)self centerViewController];
-      v38 = [v41 hidesExpandableButton];
+      centerViewController5 = [(UISystemInputAssistantViewController *)self centerViewController];
+      hidesExpandableButton = [centerViewController5 hidesExpandableButton];
     }
 
     else
     {
-      v38 = 0;
+      hidesExpandableButton = 0;
     }
   }
 
-  v42 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v42 setHidesExpandableButton:v38];
+  systemInputAssistantView6 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView6 setHidesExpandableButton:hidesExpandableButton];
 
   v43 = [(UISystemInputAssistantViewController *)self _shouldShowExpandableButtonBarItemsForResponder:v5];
-  v44 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v44 setShowsExpandableButtonBarItems:v43];
+  systemInputAssistantView7 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView7 setShowsExpandableButtonBarItems:v43];
 
-  v45 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v46 = [v45 showsExpandableButtonBarItems];
+  systemInputAssistantView8 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  showsExpandableButtonBarItems = [systemInputAssistantView8 showsExpandableButtonBarItems];
   v47 = +[UIKeyboardImpl activeInstance];
-  v48 = [v47 candidateController];
-  [v48 setReuseArrowButtonToExpandAssistantBarItems:v46];
+  candidateController = [v47 candidateController];
+  [candidateController setReuseArrowButtonToExpandAssistantBarItems:showsExpandableButtonBarItems];
 
   if ([(UISystemInputAssistantViewController *)self _hasCustomCenterViewControllerWidth])
   {
@@ -2851,36 +2851,36 @@ LABEL_24:
   }
 }
 
-- (void)setInputAssistantButtonItemsForResponder:(id)a3
+- (void)setInputAssistantButtonItemsForResponder:(id)responder
 {
-  v19 = a3;
+  responderCopy = responder;
   if ([(UISystemInputAssistantViewController *)self layoutHasBuiltinAssistantView])
   {
     [(UISystemInputAssistantViewController *)self _beginObservingInputAssistantItemForRelevantItemChanges:0];
     goto LABEL_25;
   }
 
-  if (v19)
+  if (responderCopy)
   {
-    v4 = _UIResponderFindInputAssistantItem(v19);
+    v4 = _UIResponderFindInputAssistantItem(responderCopy);
     if ([(UISystemInputAssistantViewController *)self _shouldCheckItemsVisibility])
     {
-      v5 = [v4 leadingBarButtonGroups];
-      __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForResponder___block_invoke(v5);
+      leadingBarButtonGroups = [v4 leadingBarButtonGroups];
+      __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForResponder___block_invoke(leadingBarButtonGroups);
 
-      v6 = [v4 trailingBarButtonGroups];
-      __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForResponder___block_invoke(v6);
+      trailingBarButtonGroups = [v4 trailingBarButtonGroups];
+      __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForResponder___block_invoke(trailingBarButtonGroups);
     }
 
-    if ([(UISystemInputAssistantViewController *)self _assistantItemsVisibleForResponder:v19])
+    if ([(UISystemInputAssistantViewController *)self _assistantItemsVisibleForResponder:responderCopy])
     {
-      v7 = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
+      remoteAssistantItem = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
 
-      if (v7)
+      if (remoteAssistantItem)
       {
-        v8 = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
+        remoteAssistantItem2 = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
 
-        v4 = v8;
+        v4 = remoteAssistantItem2;
       }
 
       if (!-[UISystemInputAssistantViewController _isAssistantPreferenceEnabled](self, "_isAssistantPreferenceEnabled") && [v4 allowsHidingShortcuts])
@@ -2889,8 +2889,8 @@ LABEL_24:
         v4 = 0;
       }
 
-      v9 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-      [v9 setInputAssistantItem:v4];
+      systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+      [systemInputAssistantView setInputAssistantItem:v4];
 
       [(UISystemInputAssistantViewController *)self _beginObservingInputAssistantItemForRelevantItemChanges:v4];
       [(UISystemInputAssistantViewController *)self _updateSystemInputAssistantViewStylingForInputAssistantItem:v4];
@@ -2904,15 +2904,15 @@ LABEL_24:
     if ([(UISystemInputAssistantViewController *)self _assistantItemsVisibleForResponder:0])
     {
 LABEL_14:
-      v10 = [(UISystemInputAssistantViewController *)self inputWindowController];
-      v11 = [v10 expectedPlacement];
-      v12 = UIAssistantViewPlacement(v11);
+      inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+      expectedPlacement = [inputWindowController expectedPlacement];
+      systemInputAssistantView4 = UIAssistantViewPlacement(expectedPlacement);
 
-      v13 = UIGetAssistantBarStyleFromPlacement(v12);
+      v13 = UIGetAssistantBarStyleFromPlacement(systemInputAssistantView4);
       if (self->_assistantBarStyle != v13)
       {
         v14 = v13;
-        if (([v12 showsInputOrAssistantViews] & 1) != 0 || objc_msgSend(v12, "isUndocked"))
+        if (([systemInputAssistantView4 showsInputOrAssistantViews] & 1) != 0 || objc_msgSend(systemInputAssistantView4, "isUndocked"))
         {
           [(UISystemInputAssistantViewController *)self _updateViewsForAssistantBarStyle:v14];
           self->_assistantBarStyle = v14;
@@ -2924,23 +2924,23 @@ LABEL_14:
       if ([objc_opt_class() shouldShowSystemInputAssistantItems])
       {
         v15 = [UIAssistantBarButtonItemProvider unmodifiableSystemAssistantItem:self->_assistantBarStyle];
-        v16 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-        [v16 setSystemInputAssistantItem:v15];
+        systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+        [systemInputAssistantView2 setSystemInputAssistantItem:v15];
       }
 
       goto LABEL_23;
     }
   }
 
-  v17 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v17 setInputAssistantItem:0 force:1];
+  systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView3 setInputAssistantItem:0 force:1];
 
-  v18 = [v19 _writingToolsInputDashboardViewController];
+  _writingToolsInputDashboardViewController = [responderCopy _writingToolsInputDashboardViewController];
 
-  if (v18)
+  if (_writingToolsInputDashboardViewController)
   {
-    v12 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    [v12 setSystemInputAssistantItem:0];
+    systemInputAssistantView4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    [systemInputAssistantView4 setSystemInputAssistantItem:0];
 LABEL_23:
   }
 
@@ -2994,8 +2994,8 @@ void __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForR
 
 - (void)setNeedsValidation
 {
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v2 setNeedsValidation];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setNeedsValidation];
 }
 
 - (void)dismissKeyboardItemIfNeeded
@@ -3012,12 +3012,12 @@ void __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForR
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v3 = [v2 systemInputAssistantItem];
-  v4 = [v3 leadingBarButtonGroups];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  systemInputAssistantItem = [systemInputAssistantView systemInputAssistantItem];
+  leadingBarButtonGroups = [systemInputAssistantItem leadingBarButtonGroups];
 
-  obj = v4;
-  v19 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  obj = leadingBarButtonGroups;
+  v19 = [leadingBarButtonGroups countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
     v18 = *v25;
@@ -3035,8 +3035,8 @@ void __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForR
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v7 = [v6 barButtonItems];
-        v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        barButtonItems = [v6 barButtonItems];
+        v8 = [barButtonItems countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v8)
         {
           v9 = v8;
@@ -3047,28 +3047,28 @@ void __81__UISystemInputAssistantViewController_setInputAssistantButtonItemsForR
             {
               if (*v21 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(barButtonItems);
               }
 
               v12 = *(*(&v20 + 1) + 8 * j);
               if ([v12 tag] == 1735287116)
               {
-                v13 = [v12 view];
+                view = [v12 view];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v15 = [v12 view];
-                  v16 = [v15 contextMenuInteraction];
-                  [v16 dismissMenu];
+                  view2 = [v12 view];
+                  contextMenuInteraction = [view2 contextMenuInteraction];
+                  [contextMenuInteraction dismissMenu];
 
                   goto LABEL_17;
                 }
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v9 = [barButtonItems countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v9)
             {
               continue;
@@ -3095,12 +3095,12 @@ LABEL_17:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v3 = [v2 systemInputAssistantItem];
-  v4 = [v3 trailingBarButtonGroups];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  systemInputAssistantItem = [systemInputAssistantView systemInputAssistantItem];
+  trailingBarButtonGroups = [systemInputAssistantItem trailingBarButtonGroups];
 
-  obj = v4;
-  v19 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  obj = trailingBarButtonGroups;
+  v19 = [trailingBarButtonGroups countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
     v18 = *v25;
@@ -3118,8 +3118,8 @@ LABEL_17:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v7 = [v6 barButtonItems];
-        v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        barButtonItems = [v6 barButtonItems];
+        v8 = [barButtonItems countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v8)
         {
           v9 = v8;
@@ -3130,28 +3130,28 @@ LABEL_17:
             {
               if (*v21 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(barButtonItems);
               }
 
               v12 = *(*(&v20 + 1) + 8 * j);
               if ([v12 tag] == 1944175551)
               {
-                v13 = [v12 view];
+                view = [v12 view];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v15 = [v12 view];
-                  v16 = [v15 contextMenuInteraction];
-                  [v16 dismissMenu];
+                  view2 = [v12 view];
+                  contextMenuInteraction = [view2 contextMenuInteraction];
+                  [contextMenuInteraction dismissMenu];
 
                   goto LABEL_17;
                 }
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v9 = [barButtonItems countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v9)
             {
               continue;
@@ -3171,14 +3171,14 @@ LABEL_17:
   }
 }
 
-- (void)setRemoteAssistantViewInfo:(id)a3
+- (void)setRemoteAssistantViewInfo:(id)info
 {
-  v33 = a3;
-  objc_storeStrong(&self->_remoteAssistantViewInfo, a3);
-  [v33 size];
+  infoCopy = info;
+  objc_storeStrong(&self->_remoteAssistantViewInfo, info);
+  [infoCopy size];
   v6 = v5;
   v8 = v7;
-  [v33 insets];
+  [infoCopy insets];
   v11 = v10;
   if (v9 <= 50.0)
   {
@@ -3190,12 +3190,12 @@ LABEL_17:
     v12 = 50.0;
   }
 
-  if ([v33 contextId])
+  if ([infoCopy contextId])
   {
     v13 = v11 + fmin(v8, 120.0);
-    v14 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v15 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-    v16 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v15];
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    v16 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:_currentInputDelegate];
 
     if ([(UISystemInputAssistantViewController *)self _shouldShowExpandableButtonBarItemsForResponder:v16])
     {
@@ -3208,14 +3208,14 @@ LABEL_17:
     }
 
     v18 = v13 + v12;
-    v19 = [v33 contextId];
-    v20 = [(_UILayerHostView *)self->_remoteAssistantView contextID];
+    contextId = [infoCopy contextId];
+    contextID = [(_UILayerHostView *)self->_remoteAssistantView contextID];
     v21 = MEMORY[0x1E695EFF8];
     v22 = -v11;
-    if (v19 != v20)
+    if (contextId != contextID)
     {
       [(UIView *)self->_remoteAssistantView removeFromSuperview];
-      v23 = -[_UILayerHostView initWithFrame:pid:contextID:]([_UILayerHostView alloc], "initWithFrame:pid:contextID:", [v33 processId], objc_msgSend(v33, "contextId"), 0.0, v22, v6, v18);
+      v23 = -[_UILayerHostView initWithFrame:pid:contextID:]([_UILayerHostView alloc], "initWithFrame:pid:contextID:", [infoCopy processId], objc_msgSend(infoCopy, "contextId"), 0.0, v22, v6, v18);
       remoteAssistantView = self->_remoteAssistantView;
       self->_remoteAssistantView = v23;
 
@@ -3233,16 +3233,16 @@ LABEL_17:
 
     if (v17)
     {
-      [v14 setSecondaryView:self->_remoteAssistantContainerView];
+      [systemInputAssistantView setSecondaryView:self->_remoteAssistantContainerView];
     }
 
     else
     {
-      v27 = [(UIView *)self->_remoteAssistantContainerView superview];
+      superview = [(UIView *)self->_remoteAssistantContainerView superview];
 
-      if (v27 != v14)
+      if (superview != systemInputAssistantView)
       {
-        [v14 insertSubview:self->_remoteAssistantContainerView atIndex:0];
+        [systemInputAssistantView insertSubview:self->_remoteAssistantContainerView atIndex:0];
       }
     }
 
@@ -3253,60 +3253,60 @@ LABEL_17:
       [(UIView *)self->_remoteAssistantView frame];
       [(UIView *)self->_remoteAssistantView setFrame:?];
       v30 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v31 = [v30 containerRootController];
-      [v31 updateViewSizingConstraints];
+      containerRootController = [v30 containerRootController];
+      [containerRootController updateViewSizingConstraints];
     }
   }
 
   else
   {
     [(UIView *)self->_remoteAssistantView removeFromSuperview];
-    v14 = self->_remoteAssistantView;
+    systemInputAssistantView = self->_remoteAssistantView;
     self->_remoteAssistantView = 0;
   }
 
   if (self->_remoteAssistantView)
   {
     [(UISystemInputAssistantViewController *)self updateRemoteAssistantViewHidden];
-    v32 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-    [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:v32];
+    _currentInputDelegate2 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:_currentInputDelegate2];
   }
 }
 
-- (void)applyRemoteAssistantItem:(id)a3
+- (void)applyRemoteAssistantItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UISystemInputAssistantViewController *)self UIAssistantItemForRTIAssistantItem:v4];
+  itemCopy = item;
+  v5 = [(UISystemInputAssistantViewController *)self UIAssistantItemForRTIAssistantItem:itemCopy];
   [(UISystemInputAssistantViewController *)self setRemoteAssistantItem:v5];
 
-  -[UISystemInputAssistantViewController setShowsRemoteInputDashViewController:](self, "setShowsRemoteInputDashViewController:", [v4 showsInputDashboardViewController]);
-  [v4 centerViewPreferredWidth];
+  -[UISystemInputAssistantViewController setShowsRemoteInputDashViewController:](self, "setShowsRemoteInputDashViewController:", [itemCopy showsInputDashboardViewController]);
+  [itemCopy centerViewPreferredWidth];
   v7 = v6;
 
   [(UISystemInputAssistantViewController *)self setRemoteCenterViewPreferredWidth:v7];
 }
 
-- (id)placeholderItemOfWidth:(double)a3
+- (id)placeholderItemOfWidth:(double)width
 {
   v4 = [UIBarButtonItem alloc];
   v5 = objc_alloc_init(UIView);
   v6 = [(UIBarButtonItem *)v4 initWithCustomView:v5];
 
-  [(UIBarButtonItem *)v6 setWidth:a3];
+  [(UIBarButtonItem *)v6 setWidth:width];
 
   return v6;
 }
 
-- (id)UIGroupsForRTIGroups:(id)a3
+- (id)UIGroupsForRTIGroups:(id)groups
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  groupsCopy = groups;
+  v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(groupsCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = groupsCopy;
   v5 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v5)
   {
@@ -3332,15 +3332,15 @@ LABEL_17:
         }
 
         v13 = objc_alloc(MEMORY[0x1E695DF70]);
-        v14 = [v8 itemWidths];
-        v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+        itemWidths = [v8 itemWidths];
+        v15 = [v13 initWithCapacity:{objc_msgSend(itemWidths, "count")}];
 
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v16 = [v8 itemWidths];
-        v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        itemWidths2 = [v8 itemWidths];
+        v17 = [itemWidths2 countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v17)
         {
           v18 = v17;
@@ -3351,7 +3351,7 @@ LABEL_17:
             {
               if (*v28 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(itemWidths2);
               }
 
               [*(*(&v27 + 1) + 8 * j) floatValue];
@@ -3359,7 +3359,7 @@ LABEL_17:
               [v15 addObject:v22];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v18 = [itemWidths2 countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v18);
@@ -3378,27 +3378,27 @@ LABEL_17:
   return v26;
 }
 
-- (id)UIAssistantItemForRTIAssistantItem:(id)a3
+- (id)UIAssistantItemForRTIAssistantItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
+    itemCopy = item;
     v5 = objc_alloc_init(UITextInputAssistantItem);
-    -[UITextInputAssistantItem _setShowsBarButtonItemsInline:](v5, "_setShowsBarButtonItemsInline:", [v4 showsBarButtonItemsInline]);
-    v6 = [v4 detachedTintColor];
-    [(UITextInputAssistantItem *)v5 _setDetachedTintColor:v6];
+    -[UITextInputAssistantItem _setShowsBarButtonItemsInline:](v5, "_setShowsBarButtonItemsInline:", [itemCopy showsBarButtonItemsInline]);
+    detachedTintColor = [itemCopy detachedTintColor];
+    [(UITextInputAssistantItem *)v5 _setDetachedTintColor:detachedTintColor];
 
-    v7 = [v4 detachedBackgroundColor];
-    [(UITextInputAssistantItem *)v5 _setDetachedBackgroundColor:v7];
+    detachedBackgroundColor = [itemCopy detachedBackgroundColor];
+    [(UITextInputAssistantItem *)v5 _setDetachedBackgroundColor:detachedBackgroundColor];
 
-    -[UITextInputAssistantItem _setVisibleWhenMinimized:](v5, "_setVisibleWhenMinimized:", [v4 visibleWhenMinimized]);
-    v8 = [v4 leadingBarButtonGroups];
-    v9 = [(UISystemInputAssistantViewController *)self UIGroupsForRTIGroups:v8];
+    -[UITextInputAssistantItem _setVisibleWhenMinimized:](v5, "_setVisibleWhenMinimized:", [itemCopy visibleWhenMinimized]);
+    leadingBarButtonGroups = [itemCopy leadingBarButtonGroups];
+    v9 = [(UISystemInputAssistantViewController *)self UIGroupsForRTIGroups:leadingBarButtonGroups];
     [(UITextInputAssistantItem *)v5 setLeadingBarButtonGroups:v9];
 
-    v10 = [v4 trailingBarButtonGroups];
+    trailingBarButtonGroups = [itemCopy trailingBarButtonGroups];
 
-    v11 = [(UISystemInputAssistantViewController *)self UIGroupsForRTIGroups:v10];
+    v11 = [(UISystemInputAssistantViewController *)self UIGroupsForRTIGroups:trailingBarButtonGroups];
     [(UITextInputAssistantItem *)v5 setTrailingBarButtonGroups:v11];
   }
 
@@ -3410,35 +3410,35 @@ LABEL_17:
   return v5;
 }
 
-- (void)_updateSystemInputAssistantViewStylingForInputAssistantItem:(id)a3
+- (void)_updateSystemInputAssistantViewStylingForInputAssistantItem:(id)item
 {
-  v21 = a3;
+  itemCopy = item;
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 inputViews];
+  inputViews = [v4 inputViews];
 
   v6 = +[UIKeyboardImpl activeInstance];
-  if ([v6 isMinimized] & 1) != 0 || (objc_msgSend(v5, "isCustomInputView"))
+  if ([v6 isMinimized] & 1) != 0 || (objc_msgSend(inputViews, "isCustomInputView"))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 inputView];
-    v7 = v8 == 0;
+    inputView = [inputViews inputView];
+    v7 = inputView == 0;
   }
 
   v9 = +[UIColor clearColor];
-  v10 = [(UISystemInputAssistantViewController *)self _defaultTintColor];
+  _defaultTintColor = [(UISystemInputAssistantViewController *)self _defaultTintColor];
   if (v7)
   {
-    v11 = [v21 _detachedTintColor];
+    _detachedTintColor = [itemCopy _detachedTintColor];
 
-    if (v11)
+    if (_detachedTintColor)
     {
-      v12 = [v21 _detachedTintColor];
+      _detachedTintColor2 = [itemCopy _detachedTintColor];
 
-      v10 = v12;
+      _defaultTintColor = _detachedTintColor2;
     }
 
     if (+[UIKeyboard usesInputSystemUI])
@@ -3446,22 +3446,22 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    v13 = [v21 _detachedBackgroundEffect];
+    _detachedBackgroundEffect = [itemCopy _detachedBackgroundEffect];
 
-    v7 = v13 != 0;
-    if (v13)
+    v7 = _detachedBackgroundEffect != 0;
+    if (_detachedBackgroundEffect)
     {
-      v14 = [v21 _detachedBackgroundEffect];
-      v15 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-      v16 = [v15 backdropView];
-      [v16 setEffect:v14];
+      _detachedBackgroundEffect2 = [itemCopy _detachedBackgroundEffect];
+      systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+      backdropView = [systemInputAssistantView backdropView];
+      [backdropView setEffect:_detachedBackgroundEffect2];
     }
 
     else
     {
-      v17 = [v21 _detachedBackgroundColor];
+      _detachedBackgroundColor = [itemCopy _detachedBackgroundColor];
 
-      if (!v17)
+      if (!_detachedBackgroundColor)
       {
 LABEL_9:
         v7 = 0;
@@ -3470,64 +3470,64 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      [v21 _detachedBackgroundColor];
-      v9 = v14 = v9;
+      [itemCopy _detachedBackgroundColor];
+      v9 = _detachedBackgroundEffect2 = v9;
     }
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  v18 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v18 setTintColor:v10];
+  systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView2 setTintColor:_defaultTintColor];
 
-  v19 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v19 setBackgroundColor:v9];
+  systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView3 setBackgroundColor:v9];
 
-  v20 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v20 setBackgroundVisible:v7];
+  systemInputAssistantView4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView4 setBackgroundVisible:v7];
 }
 
-- (BOOL)_allowedToShowBarButtonItemsInline:(id)a3
+- (BOOL)_allowedToShowBarButtonItemsInline:(id)inline
 {
-  v4 = [(UIViewController *)self view];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  view = [(UIViewController *)self view];
+  traitCollection = [view traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   if (os_variant_has_internal_diagnostics())
   {
     if ([(UISystemInputAssistantViewController *)self hasCheckedPreferences])
     {
-      v7 = [(UISystemInputAssistantViewController *)self assistantOniPhonePreference];
+      assistantOniPhonePreference = [(UISystemInputAssistantViewController *)self assistantOniPhonePreference];
     }
 
     else
     {
       v15 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v16 = [v15 preferencesActions];
-      v7 = [v16 BOOLForPreferenceKey:@"KeyboardAssistantOniPhone"];
+      preferencesActions = [v15 preferencesActions];
+      assistantOniPhonePreference = [preferencesActions BOOLForPreferenceKey:@"KeyboardAssistantOniPhone"];
     }
   }
 
   else
   {
-    v7 = 0;
+    assistantOniPhonePreference = 0;
   }
 
   if (+[UIKeyboard isKeyboardProcess])
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 inputSystemSourceSession];
-    v10 = [v9 documentTraits];
-    v11 = [v10 bundleId];
+    inputSystemSourceSession = [v8 inputSystemSourceSession];
+    documentTraits = [inputSystemSourceSession documentTraits];
+    bundleId = [documentTraits bundleId];
   }
 
   else
   {
-    v11 = _UIMainBundleIdentifier();
+    bundleId = _UIMainBundleIdentifier();
   }
 
-  v12 = v6 == 0;
+  v12 = userInterfaceIdiom == 0;
   if (v12)
   {
     v13 = 0;
@@ -3538,18 +3538,18 @@ LABEL_16:
     v13 = 1;
   }
 
-  if (((v13 | v7) & 1) == 0)
+  if (((v13 | assistantOniPhonePreference) & 1) == 0)
   {
-    v12 = [&unk_1EFE2BD70 containsObject:v11];
+    v12 = [&unk_1EFE2BD70 containsObject:bundleId];
   }
 
   return v12;
 }
 
-- (BOOL)_shouldShowExpandableButtonBarItemsForResponder:(id)a3
+- (BOOL)_shouldShowExpandableButtonBarItemsForResponder:(id)responder
 {
-  v4 = a3;
-  if (v4 && [(UISystemInputAssistantViewController *)self _allowedToShowBarButtonItemsInline:v4])
+  responderCopy = responder;
+  if (responderCopy && [(UISystemInputAssistantViewController *)self _allowedToShowBarButtonItemsInline:responderCopy])
   {
     if (+[UIKeyboard isInputSystemUI])
     {
@@ -3558,21 +3558,21 @@ LABEL_16:
 
     else
     {
-      _UIResponderFindInputAssistantItem(v4);
+      _UIResponderFindInputAssistantItem(responderCopy);
     }
     v6 = ;
     if ([v6 _showsBarButtonItemsInline])
     {
-      v7 = [v6 leadingBarButtonGroups];
-      if ([v7 count])
+      leadingBarButtonGroups = [v6 leadingBarButtonGroups];
+      if ([leadingBarButtonGroups count])
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [v6 trailingBarButtonGroups];
-        v5 = [v8 count] != 0;
+        trailingBarButtonGroups = [v6 trailingBarButtonGroups];
+        v5 = [trailingBarButtonGroups count] != 0;
       }
     }
 
@@ -3590,7 +3590,7 @@ LABEL_16:
   return v5;
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   v4 = +[UIPeripheralHost sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -3602,25 +3602,25 @@ LABEL_16:
   [v4 queueDelayedTask:v6 forKey:v5];
 }
 
-- (void)_willChangeTextEffectsRotationNotification:(id)a3
+- (void)_willChangeTextEffectsRotationNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"UITextEffectsWindow_toOrientation"];
-  v6 = [v5 integerValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"UITextEffectsWindow_toOrientation"];
+  integerValue = [v5 integerValue];
 
-  [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:v6];
+  [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:integerValue];
 }
 
-- (void)_didChangeTextEffectsRotationNotification:(id)a3
+- (void)_didChangeTextEffectsRotationNotification:(id)notification
 {
-  v3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v3 setNeedsValidation];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setNeedsValidation];
 }
 
-- (void)_beginObservingInputAssistantItemForRelevantItemChanges:(id)a3
+- (void)_beginObservingInputAssistantItemForRelevantItemChanges:(id)changes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   if (qword_1ED499E48 != -1)
   {
     dispatch_once(&qword_1ED499E48, &__block_literal_global_701);
@@ -3646,17 +3646,17 @@ LABEL_16:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
+        observedInputAssistantItem = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
 
-        if (v11)
+        if (observedInputAssistantItem)
         {
-          v12 = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
-          [v12 removeObserver:self forKeyPath:v10];
+          observedInputAssistantItem2 = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
+          [observedInputAssistantItem2 removeObserver:self forKeyPath:v10];
         }
 
-        if (v4)
+        if (changesCopy)
         {
-          [v4 addObserver:self forKeyPath:v10 options:3 context:0];
+          [changesCopy addObserver:self forKeyPath:v10 options:3 context:0];
         }
       }
 
@@ -3666,7 +3666,7 @@ LABEL_16:
     while (v7);
   }
 
-  [(UISystemInputAssistantViewController *)self setObservedInputAssistantItem:v4];
+  [(UISystemInputAssistantViewController *)self setObservedInputAssistantItem:changesCopy];
 }
 
 void __96__UISystemInputAssistantViewController__beginObservingInputAssistantItemForRelevantItemChanges___block_invoke()
@@ -3675,20 +3675,20 @@ void __96__UISystemInputAssistantViewController__beginObservingInputAssistantIte
   _MergedGlobals_17_1 = &unk_1EFE2BD88;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v39 = a3;
-  v8 = a5;
-  if ([v39 isEqualToString:@"bounds"])
+  pathCopy = path;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"bounds"])
   {
-    v9 = [v8 objectForKey:*MEMORY[0x1E696A4F0]];
+    v9 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     [v9 CGRectValue];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [v8 objectForKey:*MEMORY[0x1E696A500]];
+    v18 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
     [v18 CGRectValue];
     v20 = v19;
     v22 = v21;
@@ -3705,67 +3705,67 @@ void __96__UISystemInputAssistantViewController__beginObservingInputAssistantIte
     v42.size.height = v26;
     if (!CGRectEqualToRect(v41, v42))
     {
-      v27 = [(UIViewController *)self view];
-      v28 = [v27 window];
-      if (v28)
+      view = [(UIViewController *)self view];
+      window = [view window];
+      if (window)
       {
-        v29 = [(UIViewController *)self view];
-        v30 = [v29 window];
-        v31 = [v30 _toWindowOrientation];
+        view2 = [(UIViewController *)self view];
+        window2 = [view2 window];
+        _toWindowOrientation = [window2 _toWindowOrientation];
       }
 
       else
       {
-        v31 = [objc_opt_class() keyboardOrientation];
+        _toWindowOrientation = [objc_opt_class() keyboardOrientation];
       }
 
-      [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:v31];
+      [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:_toWindowOrientation];
     }
   }
 
   else
   {
-    if ([v39 isEqualToString:@"centerBarButtonGroups"])
+    if ([pathCopy isEqualToString:@"centerBarButtonGroups"])
     {
-      v32 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-      [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:v32];
+      _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+      [(UISystemInputAssistantViewController *)self automaticallySetCenterViewControllerBasedOnInputDelegate:_currentInputDelegate];
     }
 
     else
     {
-      v33 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-      [v33 setNeedsValidation];
+      systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+      [systemInputAssistantView setNeedsValidation];
 
-      v32 = [v8 objectForKey:*MEMORY[0x1E696A4F0]];
-      v34 = [v8 objectForKey:*MEMORY[0x1E696A500]];
-      if ([v39 hasSuffix:@"BarButtonGroups"] && (v34 != v32 || (objc_msgSend(v34, "isEqual:", v32) & 1) == 0))
+      _currentInputDelegate = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
+      v34 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
+      if ([pathCopy hasSuffix:@"BarButtonGroups"] && (v34 != _currentInputDelegate || (objc_msgSend(v34, "isEqual:", _currentInputDelegate) & 1) == 0))
       {
         v35 = +[UIKeyboardImpl activeInstance];
-        v36 = [v35 remoteTextInputPartner];
-        [v36 documentTraitsChanged];
+        remoteTextInputPartner = [v35 remoteTextInputPartner];
+        [remoteTextInputPartner documentTraitsChanged];
 
-        v37 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+        systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
         if (objc_opt_respondsToSelector())
         {
-          v38 = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
-          [v37 setInputAssistantItem:v38 force:1];
+          observedInputAssistantItem = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
+          [systemInputAssistantView2 setInputAssistantItem:observedInputAssistantItem force:1];
         }
       }
     }
   }
 }
 
-- (void)_willChangePlacementNotification:(id)a3
+- (void)_willChangePlacementNotification:(id)notification
 {
-  v4 = [(UISystemInputAssistantViewController *)self expandedItemsController];
-  v5 = [v4 presentingViewController];
+  expandedItemsController = [(UISystemInputAssistantViewController *)self expandedItemsController];
+  presentingViewController = [expandedItemsController presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v6 = [(UISystemInputAssistantViewController *)self expandedItemsController];
-    v7 = [v6 presentationController];
-    v8 = [v7 presentedView];
-    [v8 setHidden:1];
+    expandedItemsController2 = [(UISystemInputAssistantViewController *)self expandedItemsController];
+    presentationController = [expandedItemsController2 presentationController];
+    presentedView = [presentationController presentedView];
+    [presentedView setHidden:1];
 
     [(UIViewController *)self dismissViewControllerAnimated:0 completion:0];
   }
@@ -3775,29 +3775,29 @@ void __96__UISystemInputAssistantViewController__beginObservingInputAssistantIte
   [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:v9];
 }
 
-- (void)_didChangePlacementOrInputSourceNotification:(id)a3
+- (void)_didChangePlacementOrInputSourceNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [(UISystemInputAssistantViewController *)self inputWindowController];
-  v5 = [v4 isTransitioning];
+  notificationCopy = notification;
+  inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+  isTransitioning = [inputWindowController isTransitioning];
 
-  if ((v5 & 1) == 0)
+  if ((isTransitioning & 1) == 0)
   {
     [(UISystemInputAssistantViewController *)self updateCenterViewVisibilityStateForInputDelegate:0];
   }
 
-  v6 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v6 setNeedsValidation];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setNeedsValidation];
 
-  v7 = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
-  [(UISystemInputAssistantViewController *)self _updateSystemInputAssistantViewStylingForInputAssistantItem:v7];
+  observedInputAssistantItem = [(UISystemInputAssistantViewController *)self observedInputAssistantItem];
+  [(UISystemInputAssistantViewController *)self _updateSystemInputAssistantViewStylingForInputAssistantItem:observedInputAssistantItem];
 
   [(UISystemInputAssistantViewController *)self _updateLanguageIndicatorPointerInteractionAndImage];
   v8 = +[UIKeyboardImpl activeInstance];
   if ([v8 _shouldMinimizeForHardwareKeyboard])
   {
-    v9 = [v11 name];
-    v10 = [v9 isEqualToString:@"UITextInputSourceDidChangeNotification"];
+    name = [notificationCopy name];
+    v10 = [name isEqualToString:@"UITextInputSourceDidChangeNotification"];
 
     if (v10)
     {
@@ -3817,17 +3817,17 @@ void __85__UISystemInputAssistantViewController__didChangePlacementOrInputSource
   [v0 updateAssistantView];
 }
 
-- (void)_keyboardDictationAvailabilityDidChangeNotification:(id)a3
+- (void)_keyboardDictationAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v4 setNeedsValidation];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setNeedsValidation];
 
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v6 responder];
-  [(UISystemInputAssistantViewController *)self setInputAssistantButtonItemsForResponder:v5];
+  responder = [v6 responder];
+  [(UISystemInputAssistantViewController *)self setInputAssistantButtonItemsForResponder:responder];
 }
 
-- (double)_buttonBarWidthForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4
+- (double)_buttonBarWidthForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation
 {
   v5 = +[UIKeyboardImpl keyboardScreen];
   v6 = [UIKBScreenTraits traitsWithScreen:v5 orientation:1];
@@ -3845,7 +3845,7 @@ void __85__UISystemInputAssistantViewController__didChangePlacementOrInputSource
     v10 = v8;
   }
 
-  v11 = a4 - 3;
+  v11 = orientation - 3;
   if (v10 >= 1024.0)
   {
     v12 = v11 >= 2;
@@ -3881,42 +3881,42 @@ LABEL_12:
   return v15;
 }
 
-- (double)_centerViewWidthForTraitCollection:(id)a3
+- (double)_centerViewWidthForTraitCollection:(id)collection
 {
-  v4 = a3;
-  -[UISystemInputAssistantViewController _centerViewWidthForTraitCollection:interfaceOrientation:](self, "_centerViewWidthForTraitCollection:interfaceOrientation:", v4, [objc_opt_class() keyboardOrientation]);
+  collectionCopy = collection;
+  -[UISystemInputAssistantViewController _centerViewWidthForTraitCollection:interfaceOrientation:](self, "_centerViewWidthForTraitCollection:interfaceOrientation:", collectionCopy, [objc_opt_class() keyboardOrientation]);
   v6 = v5;
 
   return v6;
 }
 
-- (double)_centerViewWidthForTraitCollection:(id)a3 interfaceOrientation:(int64_t)a4
+- (double)_centerViewWidthForTraitCollection:(id)collection interfaceOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v8 = [v7 inputAssistantItem];
-  v9 = [v8 _centerBarButtonGroups];
+  collectionCopy = collection;
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  inputAssistantItem = [systemInputAssistantView inputAssistantItem];
+  _centerBarButtonGroups = [inputAssistantItem _centerBarButtonGroups];
 
   v10 = 0.0;
-  if ([v9 count])
+  if ([_centerBarButtonGroups count])
   {
-    v11 = [v9 firstObject];
-    v12 = [v11 barButtonItems];
-    v13 = [v12 count];
+    firstObject = [_centerBarButtonGroups firstObject];
+    barButtonItems = [firstObject barButtonItems];
+    v13 = [barButtonItems count];
 
     if (v13)
     {
-      v14 = [v9 firstObject];
-      v15 = [v14 barButtonItems];
-      v16 = [v15 firstObject];
+      firstObject2 = [_centerBarButtonGroups firstObject];
+      barButtonItems2 = [firstObject2 barButtonItems];
+      firstObject3 = [barButtonItems2 firstObject];
 
-      [v16 width];
+      [firstObject3 width];
       if (v17 <= 0.0)
       {
         goto LABEL_45;
       }
 
-      [v16 width];
+      [firstObject3 width];
       v10 = v18;
     }
   }
@@ -3924,7 +3924,7 @@ LABEL_12:
   if ([(UISystemInputAssistantViewController *)self _hasCustomCenterViewControllerWidth])
   {
     v19 = [(UISystemInputAssistantViewController *)self _customCenterViewController:0];
-    [v19 preferredWidthForTraitCollection:v6];
+    [v19 preferredWidthForTraitCollection:collectionCopy];
     if (v20 == -1.0)
     {
       v10 = 0.0;
@@ -3944,24 +3944,24 @@ LABEL_12:
   }
 
   v23 = +[UIKeyboardImpl keyboardScreen];
-  v16 = [UIKBScreenTraits traitsWithScreen:v23 orientation:a4];
+  firstObject3 = [UIKBScreenTraits traitsWithScreen:v23 orientation:orientation];
 
-  [(UISystemInputAssistantViewController *)self _buttonBarWidthForTraitCollection:v6 interfaceOrientation:a4];
+  [(UISystemInputAssistantViewController *)self _buttonBarWidthForTraitCollection:collectionCopy interfaceOrientation:orientation];
   v25 = v24;
-  v26 = [(UISystemInputAssistantViewController *)self inputWindowController];
-  v27 = [v26 expectedPlacement];
-  if ([v27 isFloatingAssistantView])
+  inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+  expectedPlacement = [inputWindowController expectedPlacement];
+  if ([expectedPlacement isFloatingAssistantView])
   {
   }
 
   else
   {
     v28 = +[UIKeyboardImpl activeInstance];
-    v29 = [v28 _showsScribbleIconsInAssistantView];
+    _showsScribbleIconsInAssistantView = [v28 _showsScribbleIconsInAssistantView];
 
-    if ((v29 & 1) == 0)
+    if ((_showsScribbleIconsInAssistantView & 1) == 0)
     {
-      [v16 assistantViewWidth];
+      [firstObject3 assistantViewWidth];
       v31 = v30 - v25;
       if (v10 > v31)
       {
@@ -3972,51 +3972,51 @@ LABEL_12:
 
   if (v10 == 0.0)
   {
-    v32 = [(UISystemInputAssistantViewController *)self inputWindowController];
-    v33 = [v32 expectedPlacement];
+    inputWindowController2 = [(UISystemInputAssistantViewController *)self inputWindowController];
+    expectedPlacement2 = [inputWindowController2 expectedPlacement];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v35 = [v33 isFloating];
+      isFloating = [expectedPlacement2 isFloating];
     }
 
     else
     {
-      v35 = 1;
+      isFloating = 1;
     }
 
-    v36 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v37 = [v36 showsExpandableButtonBarItems];
+    systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    showsExpandableButtonBarItems = [systemInputAssistantView2 showsExpandableButtonBarItems];
 
-    if (![v33 isFloatingAssistantView] || (v38 = 1.0, (objc_msgSend(v33, "isCompactAssistantView") & 1) == 0))
+    if (![expectedPlacement2 isFloatingAssistantView] || (v38 = 1.0, (objc_msgSend(expectedPlacement2, "isCompactAssistantView") & 1) == 0))
     {
-      if ([v33 isFloatingAssistantView])
+      if ([expectedPlacement2 isFloatingAssistantView])
       {
-        v39 = (a4 - 3) < 2;
+        v39 = (orientation - 3) < 2;
         v40 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
         if ([v40 wantsAssistantWhileSuppressingKeyboard])
         {
           v41 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-          v42 = [v41 disableBecomeFirstResponder];
+          disableBecomeFirstResponder = [v41 disableBecomeFirstResponder];
         }
 
         else
         {
-          v42 = 0;
+          disableBecomeFirstResponder = 0;
         }
 
         v38 = dbl_18A679D70[v39];
 
-        v43 = [(UIViewController *)self view];
-        v44 = [v43 window];
-        v45 = [v44 windowScene];
-        v46 = [v45 _enhancedWindowingEnabled];
+        view = [(UIViewController *)self view];
+        window = [view window];
+        windowScene = [window windowScene];
+        _enhancedWindowingEnabled = [windowScene _enhancedWindowingEnabled];
 
-        if (v46 && (v42 & 1) == 0)
+        if (_enhancedWindowingEnabled && (disableBecomeFirstResponder & 1) == 0)
         {
-          [v16 assistantViewWidth];
+          [firstObject3 assistantViewWidth];
           v48 = v47 - (v25 + v25);
           if (v38 < v48)
           {
@@ -4027,9 +4027,9 @@ LABEL_12:
         }
       }
 
-      else if ((v35 | isKindOfClass))
+      else if ((isFloating | isKindOfClass))
       {
-        if (v10 < 667.0 || ((a4 - 5) < 0xFFFFFFFFFFFFFFFELL) | v37 & 1)
+        if (v10 < 667.0 || ((orientation - 5) < 0xFFFFFFFFFFFFFFFELL) | showsExpandableButtonBarItems & 1)
         {
           v38 = v10;
         }
@@ -4037,9 +4037,9 @@ LABEL_12:
         else
         {
           v57 = +[UIKeyboardImpl activeInstance];
-          v58 = [v57 _layout];
-          v59 = [v58 currentKeyplane];
-          [v59 keyUnionFrame];
+          _layout = [v57 _layout];
+          currentKeyplane = [_layout currentKeyplane];
+          [currentKeyplane keyUnionFrame];
           v61 = v60;
 
           if (v61 <= 0.0)
@@ -4056,23 +4056,23 @@ LABEL_12:
 
       else
       {
-        v49 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-        v50 = [v49 emojiSearchView];
-        v51 = [v50 searchTextField];
-        v52 = [v51 isActive];
+        emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+        emojiSearchView = [emojiSearchViewController emojiSearchView];
+        searchTextField = [emojiSearchView searchTextField];
+        isActive = [searchTextField isActive];
 
-        v53 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-        v54 = [(UISystemInputAssistantViewController *)self centerViewController];
+        emojiSearchViewController2 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+        centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
 
-        if ((v52 & 1) != 0 || +[UIKeyboard isRemoteEmojiCollectionViewEnabled]&& v53 == v54)
+        if ((isActive & 1) != 0 || +[UIKeyboard isRemoteEmojiCollectionViewEnabled]&& emojiSearchViewController2 == centerViewController)
         {
-          [v16 keyboardWidth];
+          [firstObject3 keyboardWidth];
           v38 = v55;
         }
 
         else
         {
-          [v16 keyboardWidth];
+          [firstObject3 keyboardWidth];
           v38 = v56 - (v25 + v25);
         }
       }
@@ -4086,38 +4086,38 @@ LABEL_45:
   return v10;
 }
 
-- (void)_updateCenterViewWidthForInterfaceOrientation:(int64_t)a3
+- (void)_updateCenterViewWidthForInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(UISystemInputAssistantViewController *)self inputWindowController];
-  v6 = [v5 expectedPlacement];
-  v24 = UIAssistantViewPlacement(v6);
+  inputWindowController = [(UISystemInputAssistantViewController *)self inputWindowController];
+  expectedPlacement = [inputWindowController expectedPlacement];
+  v24 = UIAssistantViewPlacement(expectedPlacement);
 
-  v7 = [v24 isHiddenForFloatingTransition];
+  isHiddenForFloatingTransition = [v24 isHiddenForFloatingTransition];
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v8 = [v24 isFloating];
+    isFloating = [v24 isFloating];
   }
 
   else
   {
-    v8 = 1;
+    isFloating = 1;
   }
 
-  v9 = [(UISystemInputAssistantViewController *)self _isEmojiInputMode];
-  v10 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-  v11 = [v10 emojiSearchView];
-  v12 = [v11 searchTextField];
-  v13 = v9 | [v12 isActive];
+  _isEmojiInputMode = [(UISystemInputAssistantViewController *)self _isEmojiInputMode];
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  emojiSearchView = [emojiSearchViewController emojiSearchView];
+  searchTextField = [emojiSearchView searchTextField];
+  v13 = _isEmojiInputMode | [searchTextField isActive];
 
   if (v13 == 1)
   {
     v14 = v24;
-    if ((v8 & 1) == 0)
+    if ((isFloating & 1) == 0)
     {
       if ([v24 showsKeyboard])
       {
         v14 = v24;
-        if (!v7)
+        if (!isHiddenForFloatingTransition)
         {
           goto LABEL_13;
         }
@@ -4125,7 +4125,7 @@ LABEL_45:
         goto LABEL_12;
       }
 
-      if ([v24 showsInputOrAssistantViews] & 1) != 0 || (v15 = objc_msgSend(v24, "accessoryViewWillAppear"), v14 = v24, ((v15 | v7)))
+      if ([v24 showsInputOrAssistantViews] & 1) != 0 || (v15 = objc_msgSend(v24, "accessoryViewWillAppear"), v14 = v24, ((v15 | isHiddenForFloatingTransition)))
       {
 LABEL_12:
         [(UISystemInputAssistantViewController *)self _dismissEmojiSearch];
@@ -4141,49 +4141,49 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (((v8 | v7) & 1) != 0 || v13)
+  if (((isFloating | isHiddenForFloatingTransition) & 1) != 0 || v13)
   {
     if ([v14 isFloating])
     {
-      v7 = +[UIKeyboardImpl activeInstance];
-      v17 = [v7 _showsScribbleIconsInAssistantView];
+      isHiddenForFloatingTransition = +[UIKeyboardImpl activeInstance];
+      _showsScribbleIconsInAssistantView = [isHiddenForFloatingTransition _showsScribbleIconsInAssistantView];
       v16 = 1;
     }
 
     else
     {
       v16 = 0;
-      v17 = 0;
+      _showsScribbleIconsInAssistantView = 0;
     }
   }
 
   else
   {
     v16 = 0;
-    v17 = 1;
+    _showsScribbleIconsInAssistantView = 1;
   }
 
-  v18 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v18 setShowsButtonBarItemsInline:v17];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setShowsButtonBarItemsInline:_showsScribbleIconsInAssistantView];
 
   if (v16)
   {
   }
 
-  v19 = [(UIViewController *)self view];
-  v20 = [v19 traitCollection];
+  view = [(UIViewController *)self view];
+  traitCollection = [view traitCollection];
 
-  [(UISystemInputAssistantViewController *)self _centerViewWidthForTraitCollection:v20 interfaceOrientation:a3];
+  [(UISystemInputAssistantViewController *)self _centerViewWidthForTraitCollection:traitCollection interfaceOrientation:orientation];
   v22 = v21;
-  v23 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v23 setCenterViewWidth:v22];
+  systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView2 setCenterViewWidth:v22];
 
   [(UISystemInputAssistantViewController *)self updateRemoteAssistantViewHidden];
 }
 
-- (void)_queueResponderChangedForNewResponder:(id)a3
+- (void)_queueResponderChangedForNewResponder:(id)responder
 {
-  objc_storeWeak(&self->_pendingResponderForChangedNotification, a3);
+  objc_storeWeak(&self->_pendingResponderForChangedNotification, responder);
   if (!self->_pendingResponderChangedTimer)
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -4239,31 +4239,31 @@ void __78__UISystemInputAssistantViewController__queueResponderChangedForNewResp
   }
 }
 
-- (void)_responderChangedNotification:(id)a3
+- (void)_responderChangedNotification:(id)notification
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 valueForKey:@"UITextInputResponderCapabilitiesChangedInputResponderKey"];
-  if (!v4)
+  userInfo = [notification userInfo];
+  _currentInputDelegate = [userInfo valueForKey:@"UITextInputResponderCapabilitiesChangedInputResponderKey"];
+  if (!_currentInputDelegate)
   {
-    v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
   }
 
-  [(UISystemInputAssistantViewController *)self _queueResponderChangedForNewResponder:v4];
+  [(UISystemInputAssistantViewController *)self _queueResponderChangedForNewResponder:_currentInputDelegate];
 }
 
-- (void)_responderCapabilitiesChangedNotification:(id)a3
+- (void)_responderCapabilitiesChangedNotification:(id)notification
 {
-  v25 = a3;
-  v4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  [v4 setNeedsValidation];
+  notificationCopy = notification;
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  [systemInputAssistantView setNeedsValidation];
 
-  v5 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  if ([v5 showsExpandableButtonBarItems])
+  systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  if ([systemInputAssistantView2 showsExpandableButtonBarItems])
   {
-    v6 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v7 = [v6 centerViewHidden];
+    systemInputAssistantView3 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    centerViewHidden = [systemInputAssistantView3 centerViewHidden];
 
-    if (v7)
+    if (centerViewHidden)
     {
       goto LABEL_25;
     }
@@ -4272,9 +4272,9 @@ void __78__UISystemInputAssistantViewController__queueResponderChangedForNewResp
     if (+[UIKeyboard isKeyboardProcess])
     {
       v9 = +[UIKeyboardImpl activeInstance];
-      v10 = [v9 inputDelegateManager];
-      v11 = [v10 forwardingInputDelegate];
-      v12 = v11 == 0;
+      inputDelegateManager = [v9 inputDelegateManager];
+      forwardingInputDelegate = [inputDelegateManager forwardingInputDelegate];
+      v12 = forwardingInputDelegate == 0;
     }
 
     else
@@ -4282,46 +4282,46 @@ void __78__UISystemInputAssistantViewController__queueResponderChangedForNewResp
       v12 = 1;
     }
 
-    v13 = [v25 userInfo];
-    v5 = [v13 objectForKey:@"UITextInputResponderCapabilitiesChangedKeyboardOutputKey"];
+    userInfo = [notificationCopy userInfo];
+    systemInputAssistantView2 = [userInfo objectForKey:@"UITextInputResponderCapabilitiesChangedKeyboardOutputKey"];
 
-    v14 = [v25 userInfo];
-    v15 = [v14 objectForKey:@"UITextInputResponderCapabilitiesChangedSelectionDidChangeKey"];
-    v16 = [v15 BOOLValue];
+    userInfo2 = [notificationCopy userInfo];
+    v15 = [userInfo2 objectForKey:@"UITextInputResponderCapabilitiesChangedSelectionDidChangeKey"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v5)
+    if (systemInputAssistantView2)
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = v16;
+      v17 = bOOLValue;
     }
 
     if ((v17 | v8))
     {
-      if ((v16 | v8))
+      if ((bOOLValue | v8))
       {
         goto LABEL_17;
       }
 
-      if (![v5 deletionCount])
+      if (![systemInputAssistantView2 deletionCount])
       {
-        v18 = [v5 insertionText];
-        v19 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-        if (v18)
+        insertionText = [systemInputAssistantView2 insertionText];
+        newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+        if (insertionText)
         {
-          v16 = [v18 rangeOfCharacterFromSet:v19] != 0x7FFFFFFFFFFFFFFFLL;
+          bOOLValue = [insertionText rangeOfCharacterFromSet:newlineCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
         {
-          v16 = 0;
+          bOOLValue = 0;
         }
 
 LABEL_17:
-        if ((v12 & (v16 | v8)) == 1)
+        if ((v12 & (bOOLValue | v8)) == 1)
         {
           v20 = +[UIKeyboardImpl activeInstance];
           if ([v20 shouldCollapseButtonBarForFeedbackUI])
@@ -4332,8 +4332,8 @@ LABEL_17:
           else
           {
             v22 = +[UIKeyboardImpl activeInstance];
-            v23 = [v22 delegateAsResponder];
-            v21 = [v23 _shouldDisplayWritingToolsCandidateOptions] ^ 1;
+            delegateAsResponder = [v22 delegateAsResponder];
+            v21 = [delegateAsResponder _shouldDisplayWritingToolsCandidateOptions] ^ 1;
           }
         }
 
@@ -4342,39 +4342,39 @@ LABEL_17:
           v21 = 0;
         }
 
-        v24 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-        [v24 setButtonBarItemsExpanded:v21 animated:1];
+        systemInputAssistantView4 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+        [systemInputAssistantView4 setButtonBarItemsExpanded:v21 animated:1];
       }
     }
 
     else
     {
-      v5 = 0;
+      systemInputAssistantView2 = 0;
     }
   }
 
 LABEL_25:
 }
 
-- (id)_popoverViewControllerForBarButtonItemGroup:(id)a3
+- (id)_popoverViewControllerForBarButtonItemGroup:(id)group
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _expandStyle];
-  if (v5 == 1)
+  groupCopy = group;
+  _expandStyle = [groupCopy _expandStyle];
+  if (_expandStyle == 1)
   {
 LABEL_14:
-    v14 = [(UISystemInputAssistantViewController *)self popoverSourceView];
-    v15 = [v14 _lightStyleRenderConfig];
+    popoverSourceView = [(UISystemInputAssistantViewController *)self popoverSourceView];
+    _lightStyleRenderConfig = [popoverSourceView _lightStyleRenderConfig];
 
     v16 = [_UIButtonGroupViewController alloc];
-    v27 = v4;
+    v27 = groupCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
-    v18 = [(_UIButtonGroupViewController *)v16 initWithBarButtonItemGroups:v17 overLightKeyboard:v15];
+    v18 = [(_UIButtonGroupViewController *)v16 initWithBarButtonItemGroups:v17 overLightKeyboard:_lightStyleRenderConfig];
 
     v13 = v18;
     v19 = 0.2;
-    if (v15)
+    if (_lightStyleRenderConfig)
     {
       v19 = 1.0;
     }
@@ -4382,20 +4382,20 @@ LABEL_14:
     v20 = [UIColor colorWithWhite:v19 alpha:0.8];
     [(UIExpandedBarItemsTableViewController *)v13 setBackgroundColor:v20];
 
-    v21 = [(UISystemInputAssistantViewController *)self _defaultTintColor];
-    [(UIExpandedBarItemsTableViewController *)v13 setTintColor:v21];
+    _defaultTintColor = [(UISystemInputAssistantViewController *)self _defaultTintColor];
+    [(UIExpandedBarItemsTableViewController *)v13 setTintColor:_defaultTintColor];
   }
 
   else
   {
-    if (!v5)
+    if (!_expandStyle)
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v6 = [v4 barButtonItems];
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      barButtonItems = [groupCopy barButtonItems];
+      v7 = [barButtonItems countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v7)
       {
         v8 = v7;
@@ -4406,11 +4406,11 @@ LABEL_14:
           {
             if (*v24 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(barButtonItems);
             }
 
-            v11 = [*(*(&v23 + 1) + 8 * i) title];
-            v12 = [v11 length];
+            title = [*(*(&v23 + 1) + 8 * i) title];
+            v12 = [title length];
 
             if (!v12)
             {
@@ -4419,7 +4419,7 @@ LABEL_14:
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v8 = [barButtonItems countByEnumeratingWithState:&v23 objects:v28 count:16];
           if (v8)
           {
             continue;
@@ -4430,132 +4430,132 @@ LABEL_14:
       }
     }
 
-    v13 = [[UIExpandedBarItemsTableViewController alloc] initWithBarButtonGroup:v4];
+    v13 = [[UIExpandedBarItemsTableViewController alloc] initWithBarButtonGroup:groupCopy];
   }
 
   return v13;
 }
 
-- (void)systemInputAssistantView:(id)a3 wantsToShowCollapsedItemGroup:(id)a4 fromView:(id)a5
+- (void)systemInputAssistantView:(id)view wantsToShowCollapsedItemGroup:(id)group fromView:(id)fromView
 {
-  v7 = a4;
-  [(UISystemInputAssistantViewController *)self setPopoverSourceView:a5];
-  v9 = [(UISystemInputAssistantViewController *)self _popoverViewControllerForBarButtonItemGroup:v7];
+  groupCopy = group;
+  [(UISystemInputAssistantViewController *)self setPopoverSourceView:fromView];
+  v9 = [(UISystemInputAssistantViewController *)self _popoverViewControllerForBarButtonItemGroup:groupCopy];
 
   [v9 setModalPresentationStyle:7];
-  v8 = [v9 presentationController];
-  [v8 setDelegate:self];
+  presentationController = [v9 presentationController];
+  [presentationController setDelegate:self];
 
   [(UIViewController *)self presentViewController:v9 animated:1 completion:0];
   [(UISystemInputAssistantViewController *)self setExpandedItemsController:v9];
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v6 = a3;
-  v4 = [(UISystemInputAssistantViewController *)self popoverSourceView];
-  [v6 setSourceView:v4];
+  presentationCopy = presentation;
+  popoverSourceView = [(UISystemInputAssistantViewController *)self popoverSourceView];
+  [presentationCopy setSourceView:popoverSourceView];
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v5 = [(UISystemInputAssistantViewController *)self popoverSourceView];
-    [v5 bounds];
-    [v6 setSourceRect:?];
+    popoverSourceView2 = [(UISystemInputAssistantViewController *)self popoverSourceView];
+    [popoverSourceView2 bounds];
+    [presentationCopy setSourceRect:?];
   }
 
-  [v6 setPermittedArrowDirections:2];
+  [presentationCopy setPermittedArrowDirections:2];
 }
 
-- (void)emojiSearchTextFieldWillBecomeActive:(id)a3
+- (void)emojiSearchTextFieldWillBecomeActive:(id)active
 {
-  v4 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-  v3 = [v4 emojiSearchView];
-  [v3 setCollapsed:0];
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  emojiSearchView = [emojiSearchViewController emojiSearchView];
+  [emojiSearchView setCollapsed:0];
 }
 
-- (void)emojiSearchTextFieldDidBecomeActive:(id)a3
+- (void)emojiSearchTextFieldDidBecomeActive:(id)active
 {
   self->_postedSwitchFromEmojiNotification = 0;
-  v3 = a3;
+  activeCopy = active;
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  [v4 changePreferredEmojiSearchInputModeForInputDelegate:v3];
+  [v4 changePreferredEmojiSearchInputModeForInputDelegate:activeCopy];
 }
 
-- (void)emojiSearchTextFieldWillBecomeInactive:(id)a3
+- (void)emojiSearchTextFieldWillBecomeInactive:(id)inactive
 {
   v3 = +[UIKeyboardImpl sharedInstance];
   [v3 clearForwardingInputDelegateAndResign:0];
 }
 
-- (void)emojiSearchTextFieldDidBecomeInactive:(id)a3
+- (void)emojiSearchTextFieldDidBecomeInactive:(id)inactive
 {
   v4 = +[UIKeyboardImpl sharedInstance];
   [v4 updateAssistantView];
 
   if (!self->_postedSwitchFromEmojiNotification)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"UIKeyboardSwitchedAwayFromEmoji" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardSwitchedAwayFromEmoji" object:0];
 
     self->_postedSwitchFromEmojiNotification = 1;
   }
 }
 
-- (void)emojiSearchWillInsertEmoji:(id)a3 forSearchQuery:(id)a4
+- (void)emojiSearchWillInsertEmoji:(id)emoji forSearchQuery:(id)query
 {
-  v5 = a4;
-  v6 = a3;
+  queryCopy = query;
+  emojiCopy = emoji;
   v7 = +[UIKeyboardImpl activeInstance];
-  [v7 emojiSearchWillInsertEmoji:v6 forSearchQuery:v5];
+  [v7 emojiSearchWillInsertEmoji:emojiCopy forSearchQuery:queryCopy];
 }
 
-- (void)autocorrectionController:(id)a3 didUpdateAutocorrectionList:(id)a4
+- (void)autocorrectionController:(id)controller didUpdateAutocorrectionList:(id)list
 {
-  v10 = a4;
-  v5 = [(UISystemInputAssistantViewController *)self centerViewController];
-  v6 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+  listCopy = list;
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
+  emojiSearchViewController = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
 
-  if (v5 == v6)
+  if (centerViewController == emojiSearchViewController)
   {
-    v7 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+    emojiSearchViewController2 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
-      [v9 autocorrectionListDidBecomeAvailable:v10];
+      emojiSearchViewController3 = [(UISystemInputAssistantViewController *)self emojiSearchViewController];
+      [emojiSearchViewController3 autocorrectionListDidBecomeAvailable:listCopy];
     }
   }
 }
 
-- (id)layoutFromAssistantBarStyle:(int64_t)a3
+- (id)layoutFromAssistantBarStyle:(int64_t)style
 {
-  if ((a3 - 2) < 3)
+  if ((style - 2) < 3)
   {
-    v4 = [(UISystemInputAssistantViewController *)self compactAssistantViewLayout];
+    compactAssistantViewLayout = [(UISystemInputAssistantViewController *)self compactAssistantViewLayout];
 LABEL_5:
-    v5 = v4;
+    standardAssistantViewLayout = compactAssistantViewLayout;
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
-    v4 = [(UISystemInputAssistantViewController *)self floatAssistantViewLayout];
+    compactAssistantViewLayout = [(UISystemInputAssistantViewController *)self floatAssistantViewLayout];
     goto LABEL_5;
   }
 
-  v5 = [(UISystemInputAssistantViewController *)self standardAssistantViewLayout];
+  standardAssistantViewLayout = [(UISystemInputAssistantViewController *)self standardAssistantViewLayout];
   v7 = +[UIKeyboardImpl activeInstance];
   if ([v7 showsCandidateBar] && +[UIKeyboardImpl isSplit](UIKeyboardImpl, "isSplit"))
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 centerFilled];
+    centerFilled = [v8 centerFilled];
 
-    if ((v9 & 1) == 0)
+    if ((centerFilled & 1) == 0)
     {
-      v10 = [(UISystemInputAssistantViewController *)self splitAssistantViewLayout];
+      splitAssistantViewLayout = [(UISystemInputAssistantViewController *)self splitAssistantViewLayout];
 
-      v5 = v10;
+      standardAssistantViewLayout = splitAssistantViewLayout;
     }
   }
 
@@ -4565,14 +4565,14 @@ LABEL_5:
 
 LABEL_6:
 
-  return v5;
+  return standardAssistantViewLayout;
 }
 
-- (id)styleFromAssistantBarStyle:(int64_t)a3
+- (id)styleFromAssistantBarStyle:(int64_t)style
 {
-  if ((a3 - 2) >= 3)
+  if ((style - 2) >= 3)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       [(UISystemInputAssistantViewController *)self floatStyle];
     }
@@ -4581,25 +4581,25 @@ LABEL_6:
     {
       [(UISystemInputAssistantViewController *)self standardStyle];
     }
-    v3 = ;
+    compactStyle = ;
   }
 
   else
   {
-    v3 = [(UISystemInputAssistantViewController *)self compactStyle];
+    compactStyle = [(UISystemInputAssistantViewController *)self compactStyle];
   }
 
-  return v3;
+  return compactStyle;
 }
 
 + (double)floatingAssistantBottomPadding
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 visualModeManager];
-  v4 = [v3 useVisualModeWindowed];
+  visualModeManager = [v2 visualModeManager];
+  useVisualModeWindowed = [visualModeManager useVisualModeWindowed];
 
   result = 24.0;
-  if (v4)
+  if (useVisualModeWindowed)
   {
     return 22.0;
   }
@@ -4607,55 +4607,55 @@ LABEL_6:
   return result;
 }
 
-- (void)updateAssistantBarStyle:(int64_t)a3
+- (void)updateAssistantBarStyle:(int64_t)style
 {
-  v5 = (a3 - 2) <= 2 && (self->_assistantBarStyle - 2) < 3;
+  v5 = (style - 2) <= 2 && (self->_assistantBarStyle - 2) < 3;
   obj = [MEMORY[0x1E696B098] valueWithPointer:{-[UISystemInputAssistantViewController _currentInputDelegate](self, "_currentInputDelegate")}];
-  if (self->_assistantBarStyle != a3 || self->_isInputAssistantItemEmpty != [(UISystemInputAssistantViewController *)self isInputAssistantItemEmpty]|| self->_assistantBarStyle == 1 && ![(NSValue *)self->_currentInputDelegatePointerValue isEqualToValue:obj])
+  if (self->_assistantBarStyle != style || self->_isInputAssistantItemEmpty != [(UISystemInputAssistantViewController *)self isInputAssistantItemEmpty]|| self->_assistantBarStyle == 1 && ![(NSValue *)self->_currentInputDelegatePointerValue isEqualToValue:obj])
   {
     self->_isInputAssistantItemEmpty = [(UISystemInputAssistantViewController *)self isInputAssistantItemEmpty];
     if (!v5)
     {
       if ([objc_opt_class() shouldShowSystemInputAssistantItems])
       {
-        v6 = [UIAssistantBarButtonItemProvider unmodifiableSystemAssistantItem:a3];
-        v7 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-        [v7 setSystemInputAssistantItem:v6];
+        v6 = [UIAssistantBarButtonItemProvider unmodifiableSystemAssistantItem:style];
+        systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+        [systemInputAssistantView setSystemInputAssistantItem:v6];
       }
 
       [(UISystemInputAssistantViewController *)self _updateCenterViewWidthForInterfaceOrientation:+[UIKeyboardSceneDelegate interfaceOrientation]];
     }
 
-    self->_assistantBarStyle = a3;
+    self->_assistantBarStyle = style;
     [(UISystemInputAssistantViewController *)self setOverrideSafeAreaInsets];
     objc_storeStrong(&self->_currentInputDelegatePointerValue, obj);
     [(UISystemInputAssistantViewController *)self updateRemoteAssistantViewHidden];
   }
 }
 
-- (BOOL)shouldUseCustomBackground:(id)a3
+- (BOOL)shouldUseCustomBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = +[UIKeyboard keyboardBundleIdentifier];
   v6 = [v5 isEqualToString:@"com.apple.Playgrounds"];
 
   if (v6)
   {
-    if (!v4)
+    if (!backgroundCopy)
     {
-      v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+      backgroundCopy = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
     }
 
-    v7 = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
-    v8 = v7;
-    if (v7)
+    remoteAssistantItem = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
+    v8 = remoteAssistantItem;
+    if (remoteAssistantItem)
     {
-      v9 = v7;
+      v9 = remoteAssistantItem;
     }
 
     else
     {
-      v11 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v4];
+      v11 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:backgroundCopy];
       v9 = _UIResponderFindInputAssistantItem(v11);
     }
 
@@ -4672,114 +4672,114 @@ LABEL_6:
 
 - (BOOL)_usesCustomBackground
 {
-  v2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v3 = [v2 inputAssistantItem];
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  inputAssistantItem = [systemInputAssistantView inputAssistantItem];
 
-  LOBYTE(v2) = UIShouldUseCustomBackground(v3);
-  return v2;
+  LOBYTE(systemInputAssistantView) = UIShouldUseCustomBackground(inputAssistantItem);
+  return systemInputAssistantView;
 }
 
-- (id)_customCenterBarButtonItem:(id)a3
+- (id)_customCenterBarButtonItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    itemCopy = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
   }
 
   if ([(UISystemInputAssistantViewController *)self _canShowCenterBarButtonItem])
   {
-    v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v4];
+    v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:itemCopy];
     v6 = _UIResponderFindInputAssistantItem(v5);
 
-    v7 = [v6 _centerBarButtonGroups];
-    v8 = [v7 count];
+    _centerBarButtonGroups = [v6 _centerBarButtonGroups];
+    firstObject2 = [_centerBarButtonGroups count];
 
-    if (v8)
+    if (firstObject2)
     {
       v9 = +[UIKeyboardImpl activeInstance];
       if ([v9 showsCandidateBar] && (objc_msgSend(v9, "candidateController"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "hasCandidates"), v10, (v11 & 1) != 0))
       {
-        v8 = 0;
+        firstObject2 = 0;
       }
 
       else
       {
-        v12 = [v6 _centerBarButtonGroups];
-        v13 = [v12 firstObject];
-        v14 = [v13 barButtonItems];
-        v8 = [v14 firstObject];
+        _centerBarButtonGroups2 = [v6 _centerBarButtonGroups];
+        firstObject = [_centerBarButtonGroups2 firstObject];
+        barButtonItems = [firstObject barButtonItems];
+        firstObject2 = [barButtonItems firstObject];
       }
     }
   }
 
   else
   {
-    v8 = 0;
+    firstObject2 = 0;
   }
 
-  return v8;
+  return firstObject2;
 }
 
-- (id)_customCenterViewController:(id)a3
+- (id)_customCenterViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    controllerCopy = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
   }
 
-  v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v4];
+  v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 inputDashboardViewController];
+    inputDashboardViewController = [v5 inputDashboardViewController];
   }
 
   else
   {
-    v7 = 0;
+    inputDashboardViewController = 0;
   }
 
-  return v7;
+  return inputDashboardViewController;
 }
 
 - (BOOL)isVisibleWhenMinimized
 {
   if (+[UIKeyboard isInputSystemUI])
   {
-    v3 = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
+    remoteAssistantItem = [(UISystemInputAssistantViewController *)self remoteAssistantItem];
   }
 
   else
   {
-    v4 = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
-    v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:v4];
-    v3 = _UIResponderFindInputAssistantItem(v5);
+    _currentInputDelegate = [(UISystemInputAssistantViewController *)self _currentInputDelegate];
+    v5 = [(UISystemInputAssistantViewController *)self _inputDelegateAsResponder:_currentInputDelegate];
+    remoteAssistantItem = _UIResponderFindInputAssistantItem(v5);
   }
 
-  v6 = [v3 _isVisibleWhenMinimized];
+  _isVisibleWhenMinimized = [remoteAssistantItem _isVisibleWhenMinimized];
 
-  return v6;
+  return _isVisibleWhenMinimized;
 }
 
-- (void)maskInputAssistantView:(BOOL)a3
+- (void)maskInputAssistantView:(BOOL)view
 {
-  v3 = a3;
-  v10 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-  v5 = [v10 layer];
-  v6 = v5;
-  if (v3)
+  viewCopy = view;
+  systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+  layer = [systemInputAssistantView layer];
+  v6 = layer;
+  if (viewCopy)
   {
-    [v5 setMaskedCorners:3];
+    [layer setMaskedCorners:3];
 
-    v7 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:27.0];
+    systemInputAssistantView2 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    layer2 = [systemInputAssistantView2 layer];
+    [layer2 setCornerRadius:27.0];
 
-    v10 = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
-    v5 = [v10 layer];
-    v6 = v5;
+    systemInputAssistantView = [(UISystemInputAssistantViewController *)self systemInputAssistantView];
+    layer = [systemInputAssistantView layer];
+    v6 = layer;
     v9 = 1;
   }
 
@@ -4788,45 +4788,45 @@ LABEL_6:
     v9 = 0;
   }
 
-  [v5 setMasksToBounds:v9];
+  [layer setMasksToBounds:v9];
 }
 
 - (id)candidateViewController
 {
-  v3 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+  predictiveViewController = [(UISystemInputAssistantViewController *)self predictiveViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+    predictiveViewController2 = [(UISystemInputAssistantViewController *)self predictiveViewController];
   }
 
   else
   {
-    v5 = 0;
+    predictiveViewController2 = 0;
   }
 
-  return v5;
+  return predictiveViewController2;
 }
 
 - (id)compatibilityViewController
 {
-  v3 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+  predictiveViewController = [(UISystemInputAssistantViewController *)self predictiveViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UISystemInputAssistantViewController *)self predictiveViewController];
+    predictiveViewController2 = [(UISystemInputAssistantViewController *)self predictiveViewController];
   }
 
   else
   {
-    v5 = 0;
+    predictiveViewController2 = 0;
   }
 
-  return v5;
+  return predictiveViewController2;
 }
 
 - (UIView)popoverSourceView
@@ -4836,35 +4836,35 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)showEmojiSearch:(BOOL)a3
+- (void)showEmojiSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
-    v4 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-    [v4 setCollapsed:0];
+    emojiSearchView = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+    [emojiSearchView setCollapsed:0];
 
-    v7 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-    v5 = [v7 searchTextField];
-    [v5 becomeFirstResponder];
+    emojiSearchView2 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+    searchTextField = [emojiSearchView2 searchTextField];
+    [searchTextField becomeFirstResponder];
   }
 
   else
   {
-    v6 = [(UISystemInputAssistantViewController *)self _shouldCollapseEmojiSearchView];
-    v7 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-    [v7 setCollapsed:v6];
+    _shouldCollapseEmojiSearchView = [(UISystemInputAssistantViewController *)self _shouldCollapseEmojiSearchView];
+    emojiSearchView2 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+    [emojiSearchView2 setCollapsed:_shouldCollapseEmojiSearchView];
   }
 }
 
-- (void)prepareForFloating:(BOOL)a3
+- (void)prepareForFloating:(BOOL)floating
 {
-  v3 = a3;
-  v5 = [(UISystemInputAssistantViewController *)self centerViewController];
+  floatingCopy = floating;
+  centerViewController = [(UISystemInputAssistantViewController *)self centerViewController];
   emojiSearchViewController = self->_emojiSearchViewController;
 
-  if (v5 == emojiSearchViewController)
+  if (centerViewController == emojiSearchViewController)
   {
-    [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController setUsesFloatingStyle:v3];
+    [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController setUsesFloatingStyle:floatingCopy];
   }
 
   if (self->_remoteAssistantView)
@@ -4876,10 +4876,10 @@ LABEL_6:
 
 - (id)_emojiSearchField
 {
-  v2 = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
-  v3 = [v2 searchTextField];
+  emojiSearchView = [(TUIEmojiSearchInputViewController *)self->_emojiSearchViewController emojiSearchView];
+  searchTextField = [emojiSearchView searchTextField];
 
-  return v3;
+  return searchTextField;
 }
 
 @end

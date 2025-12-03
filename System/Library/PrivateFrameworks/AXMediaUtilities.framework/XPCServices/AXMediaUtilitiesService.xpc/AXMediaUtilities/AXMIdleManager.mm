@@ -1,8 +1,8 @@
 @interface AXMIdleManager
 - (AXMIdleManager)init;
 - (AXMIdleManagerDelegate)delegate;
-- (void)_queue_addActiveReason:(id)a3;
-- (void)_queue_removeActiveReason:(id)a3;
+- (void)_queue_addActiveReason:(id)reason;
+- (void)_queue_removeActiveReason:(id)reason;
 - (void)_queue_voiceOverActivityOccurred;
 - (void)voiceOverActivityOccurred;
 @end
@@ -61,26 +61,26 @@
   [(AXDispatchTimer *)queue_voiceOverActivityTimer afterDelay:v4 processBlock:0 cancelBlock:180.0];
 }
 
-- (void)_queue_addActiveReason:(id)a3
+- (void)_queue_addActiveReason:(id)reason
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_queue_activeReasons containsObject:v4])
+  reasonCopy = reason;
+  if ([(NSMutableArray *)self->_queue_activeReasons containsObject:reasonCopy])
   {
     v5 = AXMediaLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(AXMIdleManager *)v4 _queue_addActiveReason:v5];
+      [(AXMIdleManager *)reasonCopy _queue_addActiveReason:v5];
     }
   }
 
   v6 = [(NSMutableArray *)self->_queue_activeReasons count];
-  [(NSMutableArray *)self->_queue_activeReasons addObject:v4];
+  [(NSMutableArray *)self->_queue_activeReasons addObject:reasonCopy];
   v7 = AXMediaLogService();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     queue_activeReasons = self->_queue_activeReasons;
     v11 = 138412546;
-    v12 = v4;
+    v12 = reasonCopy;
     v13 = 2112;
     v14 = queue_activeReasons;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Added activeReason: '%@'. all:[%@]", &v11, 0x16u);
@@ -95,31 +95,31 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Will begin xpc transaction now", &v11, 2u);
     }
 
-    [v4 UTF8String];
+    [reasonCopy UTF8String];
     v10 = os_transaction_create();
     [(AXMIdleManager *)self setTransaction:v10];
   }
 }
 
-- (void)_queue_removeActiveReason:(id)a3
+- (void)_queue_removeActiveReason:(id)reason
 {
-  v4 = a3;
-  if (([(NSMutableArray *)self->_queue_activeReasons containsObject:v4]& 1) == 0)
+  reasonCopy = reason;
+  if (([(NSMutableArray *)self->_queue_activeReasons containsObject:reasonCopy]& 1) == 0)
   {
     v5 = AXMediaLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(AXMIdleManager *)v4 _queue_removeActiveReason:v5];
+      [(AXMIdleManager *)reasonCopy _queue_removeActiveReason:v5];
     }
   }
 
-  [(NSMutableArray *)self->_queue_activeReasons removeObject:v4];
+  [(NSMutableArray *)self->_queue_activeReasons removeObject:reasonCopy];
   v6 = AXMediaLogService();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     queue_activeReasons = self->_queue_activeReasons;
     *buf = 138412546;
-    v12 = v4;
+    v12 = reasonCopy;
     v13 = 2112;
     v14 = queue_activeReasons;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removed activeReason: '%@'. all:[%@]", buf, 0x16u);
@@ -135,13 +135,13 @@
     }
 
     self->_queue_transitioningToIdle = 1;
-    v9 = [(AXMIdleManager *)self delegate];
+    delegate = [(AXMIdleManager *)self delegate];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __44__AXMIdleManager__queue_removeActiveReason___block_invoke;
     v10[3] = &unk_100008268;
     v10[4] = self;
-    [v9 willBecomeIdle:self completion:v10];
+    [delegate willBecomeIdle:self completion:v10];
   }
 }
 

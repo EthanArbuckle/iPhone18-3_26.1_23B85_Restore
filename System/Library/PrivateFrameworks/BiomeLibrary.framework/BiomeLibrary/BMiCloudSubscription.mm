@@ -1,15 +1,15 @@
 @interface BMiCloudSubscription
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMiCloudSubscription)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMiCloudSubscription)initWithMlServerScore:(id)a3 totalQuota:(id)a4 totalUsed:(id)a5 totalAvailable:(id)a6 bundleQuotaInBytes:(id)a7 commerceQuotaInBytes:(id)a8 iCloudSubscriptionEventType:(int)a9 displayEntry:(int)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMiCloudSubscription)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMiCloudSubscription)initWithMlServerScore:(id)score totalQuota:(id)quota totalUsed:(id)used totalAvailable:(id)available bundleQuotaInBytes:(id)bytes commerceQuotaInBytes:(id)inBytes iCloudSubscriptionEventType:(int)type displayEntry:(int)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMiCloudSubscription
@@ -40,13 +40,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMiCloudSubscription hasMlServerScore](self, "hasMlServerScore") || [v5 hasMlServerScore])
     {
       if (![(BMiCloudSubscription *)self hasMlServerScore])
@@ -70,8 +70,8 @@
 
     if ((!-[BMiCloudSubscription hasTotalQuota](self, "hasTotalQuota") && ![v5 hasTotalQuota] || -[BMiCloudSubscription hasTotalQuota](self, "hasTotalQuota") && objc_msgSend(v5, "hasTotalQuota") && (v9 = -[BMiCloudSubscription totalQuota](self, "totalQuota"), v9 == objc_msgSend(v5, "totalQuota"))) && (!-[BMiCloudSubscription hasTotalUsed](self, "hasTotalUsed") && !objc_msgSend(v5, "hasTotalUsed") || -[BMiCloudSubscription hasTotalUsed](self, "hasTotalUsed") && objc_msgSend(v5, "hasTotalUsed") && (v10 = -[BMiCloudSubscription totalUsed](self, "totalUsed"), v10 == objc_msgSend(v5, "totalUsed"))) && (!-[BMiCloudSubscription hasTotalAvailable](self, "hasTotalAvailable") && !objc_msgSend(v5, "hasTotalAvailable") || -[BMiCloudSubscription hasTotalAvailable](self, "hasTotalAvailable") && objc_msgSend(v5, "hasTotalAvailable") && (v11 = -[BMiCloudSubscription totalAvailable](self, "totalAvailable"), v11 == objc_msgSend(v5, "totalAvailable"))) && (!-[BMiCloudSubscription hasBundleQuotaInBytes](self, "hasBundleQuotaInBytes") && !objc_msgSend(v5, "hasBundleQuotaInBytes") || -[BMiCloudSubscription hasBundleQuotaInBytes](self, "hasBundleQuotaInBytes") && objc_msgSend(v5, "hasBundleQuotaInBytes") && (v12 = -[BMiCloudSubscription bundleQuotaInBytes](self, "bundleQuotaInBytes"), v12 == objc_msgSend(v5, "bundleQuotaInBytes"))) && (!-[BMiCloudSubscription hasCommerceQuotaInBytes](self, "hasCommerceQuotaInBytes") && !objc_msgSend(v5, "hasCommerceQuotaInBytes") || -[BMiCloudSubscription hasCommerceQuotaInBytes](self, "hasCommerceQuotaInBytes") && objc_msgSend(v5, "hasCommerceQuotaInBytes") && (v13 = -[BMiCloudSubscription commerceQuotaInBytes](self, "commerceQuotaInBytes"), v13 == objc_msgSend(v5, "commerceQuotaInBytes"))) && (v14 = -[BMiCloudSubscription iCloudSubscriptionEventType](self, "iCloudSubscriptionEventType"), v14 == objc_msgSend(v5, "iCloudSubscriptionEventType")))
     {
-      v15 = [(BMiCloudSubscription *)self displayEntry];
-      v16 = v15 == [v5 displayEntry];
+      displayEntry = [(BMiCloudSubscription *)self displayEntry];
+      v16 = displayEntry == [v5 displayEntry];
     }
 
     else
@@ -158,74 +158,74 @@ LABEL_35:
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMiCloudSubscription iCloudSubscriptionEventType](self, "iCloudSubscriptionEventType")}];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMiCloudSubscription displayEntry](self, "displayEntry")}];
   v29[0] = @"mlServerScore";
-  v11 = v5;
+  null = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v30[0] = v11;
+  v24 = null;
+  v30[0] = null;
   v29[1] = @"totalQuota";
-  v12 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v12;
-  v30[1] = v12;
+  v23 = null2;
+  v30[1] = null2;
   v29[2] = @"totalUsed";
-  v13 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = v5;
-  v22 = v13;
-  v30[2] = v13;
+  v22 = null3;
+  v30[2] = null3;
   v29[3] = @"totalAvailable";
-  v14 = v28;
+  null4 = v28;
   if (!v28)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v25 = v6;
-  v30[3] = v14;
+  v30[3] = null4;
   v29[4] = @"bundleQuotaInBytes";
-  v15 = v27;
+  null5 = v27;
   if (!v27)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[4] = v15;
+  v30[4] = null5;
   v29[5] = @"commerceQuotaInBytes";
-  v16 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[5] = v16;
+  v30[5] = null6;
   v29[6] = @"iCloudSubscriptionEventType";
-  v17 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v17;
+  v30[6] = null7;
   v29[7] = @"displayEntry";
-  v18 = v10;
+  null8 = v10;
   if (!v10)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[7] = v18;
+  v30[7] = null8;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:8];
   if (v10)
   {
@@ -302,23 +302,23 @@ LABEL_46:
   return v19;
 }
 
-- (BMiCloudSubscription)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMiCloudSubscription)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v89[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"mlServerScore"];
-  v72 = a4;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"mlServerScore"];
+  errorCopy = error;
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"totalQuota"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"totalQuota"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v22 = 0;
@@ -335,7 +335,7 @@ LABEL_4:
         v11 = v26;
         v10 = 0;
         v22 = 0;
-        *v72 = [v27 initWithDomain:v24 code:2 userInfo:v26];
+        *errorCopy = [v27 initWithDomain:v24 code:2 userInfo:v26];
         goto LABEL_69;
       }
 
@@ -347,13 +347,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"totalUsed"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"totalUsed"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v25 = 0;
           v22 = 0;
@@ -375,7 +375,7 @@ LABEL_4:
         v35 = v33;
         v25 = 0;
         v22 = 0;
-        *v72 = [v71 initWithDomain:v34 code:2 userInfo:v33];
+        *errorCopy = [v71 initWithDomain:v34 code:2 userInfo:v33];
 LABEL_68:
 
 LABEL_69:
@@ -384,7 +384,7 @@ LABEL_69:
 
       v62 = v9;
       v12 = v7;
-      v13 = self;
+      selfCopy2 = self;
       v70 = v11;
     }
 
@@ -392,11 +392,11 @@ LABEL_69:
     {
       v62 = v9;
       v12 = v7;
-      v13 = self;
+      selfCopy2 = self;
       v70 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"totalAvailable"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"totalAvailable"];
     v60 = v11;
     v65 = v14;
     if (v14 && (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -404,12 +404,12 @@ LABEL_69:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v73 = 0;
           v22 = 0;
           v25 = v70;
-          self = v13;
+          self = selfCopy2;
           v7 = v12;
           v9 = v62;
           v35 = v65;
@@ -420,7 +420,7 @@ LABEL_69:
         v37 = v10;
         v38 = *MEMORY[0x1E698F240];
         v82 = *MEMORY[0x1E696A578];
-        v39 = a4;
+        errorCopy2 = error;
         v68 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"totalAvailable"];
         v83 = v68;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
@@ -430,9 +430,9 @@ LABEL_69:
         v10 = v37;
         v73 = 0;
         v22 = 0;
-        *v39 = [v40 initWithDomain:v41 code:2 userInfo:v16];
+        *errorCopy2 = [v40 initWithDomain:v41 code:2 userInfo:v16];
         v25 = v70;
-        self = v13;
+        self = selfCopy2;
         v7 = v12;
         v9 = v62;
         goto LABEL_67;
@@ -446,8 +446,8 @@ LABEL_69:
       v73 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"bundleQuotaInBytes"];
-    self = v13;
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"bundleQuotaInBytes"];
+    self = selfCopy2;
     v67 = v8;
     if (v16)
     {
@@ -459,7 +459,7 @@ LABEL_69:
         v9 = v62;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v72)
+          if (!errorCopy)
           {
             v68 = 0;
             v22 = 0;
@@ -479,7 +479,7 @@ LABEL_69:
           v10 = v43;
           v68 = 0;
           v22 = 0;
-          *v72 = [v45 initWithDomain:v46 code:2 userInfo:v17];
+          *errorCopy = [v45 initWithDomain:v46 code:2 userInfo:v17];
 LABEL_65:
 
           v8 = v67;
@@ -493,15 +493,15 @@ LABEL_67:
 
         v68 = v16;
 LABEL_24:
-        v17 = [v6 objectForKeyedSubscript:@"commerceQuotaInBytes"];
-        v69 = self;
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"commerceQuotaInBytes"];
+        selfCopy3 = self;
         v61 = v10;
         if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v72)
+            if (!errorCopy)
             {
               v66 = 0;
               v22 = 0;
@@ -516,7 +516,7 @@ LABEL_24:
             v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
             v66 = 0;
             v22 = 0;
-            *v72 = [v47 initWithDomain:v48 code:2 userInfo:v18];
+            *errorCopy = [v47 initWithDomain:v48 code:2 userInfo:v18];
             goto LABEL_64;
           }
 
@@ -528,7 +528,7 @@ LABEL_24:
           v66 = 0;
         }
 
-        v18 = [v6 objectForKeyedSubscript:@"iCloudSubscriptionEventType"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"iCloudSubscriptionEventType"];
         if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
@@ -542,7 +542,7 @@ LABEL_24:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v72)
+              if (!errorCopy)
               {
                 v19 = 0;
                 v22 = 0;
@@ -558,7 +558,7 @@ LABEL_24:
               v55 = [v63 initWithDomain:v54 code:2 userInfo:v49];
               v19 = 0;
               v22 = 0;
-              *v72 = v55;
+              *errorCopy = v55;
               goto LABEL_63;
             }
 
@@ -573,7 +573,7 @@ LABEL_24:
           v19 = 0;
         }
 
-        v49 = [v6 objectForKeyedSubscript:@"displayEntry"];
+        v49 = [dictionaryCopy objectForKeyedSubscript:@"displayEntry"];
         if (v49 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
@@ -587,7 +587,7 @@ LABEL_24:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (v72)
+              if (errorCopy)
               {
                 v64 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v59 = *MEMORY[0x1E698F240];
@@ -595,7 +595,7 @@ LABEL_24:
                 v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"displayEntry"];
                 v75 = v56;
                 v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
-                *v72 = [v64 initWithDomain:v59 code:2 userInfo:v57];
+                *errorCopy = [v64 initWithDomain:v59 code:2 userInfo:v57];
               }
 
               v50 = 0;
@@ -614,12 +614,12 @@ LABEL_24:
           v50 = 0;
         }
 
-        v22 = -[BMiCloudSubscription initWithMlServerScore:totalQuota:totalUsed:totalAvailable:bundleQuotaInBytes:commerceQuotaInBytes:iCloudSubscriptionEventType:displayEntry:](v69, "initWithMlServerScore:totalQuota:totalUsed:totalAvailable:bundleQuotaInBytes:commerceQuotaInBytes:iCloudSubscriptionEventType:displayEntry:", v67, v61, v70, v73, v68, v66, __PAIR64__([v50 intValue], objc_msgSend(v19, "intValue")));
-        v69 = v22;
+        v22 = -[BMiCloudSubscription initWithMlServerScore:totalQuota:totalUsed:totalAvailable:bundleQuotaInBytes:commerceQuotaInBytes:iCloudSubscriptionEventType:displayEntry:](selfCopy3, "initWithMlServerScore:totalQuota:totalUsed:totalAvailable:bundleQuotaInBytes:commerceQuotaInBytes:iCloudSubscriptionEventType:displayEntry:", v67, v61, v70, v73, v68, v66, __PAIR64__([v50 intValue], objc_msgSend(v19, "intValue")));
+        selfCopy3 = v22;
 LABEL_63:
 
 LABEL_64:
-        self = v69;
+        self = selfCopy3;
         v11 = v60;
         v10 = v61;
         goto LABEL_65;
@@ -645,7 +645,7 @@ LABEL_64:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = objc_alloc(MEMORY[0x1E696ABC0]);
     v21 = *MEMORY[0x1E698F240];
@@ -655,7 +655,7 @@ LABEL_64:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:&v88 count:1];
     v8 = 0;
     v22 = 0;
-    *v72 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+    *errorCopy = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_70:
 
     goto LABEL_71;
@@ -673,14 +673,14 @@ LABEL_71:
 {
   v3 = objc_opt_new();
   [(BMiCloudSubscription *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_hasMlServerScore)
   {
     mlServerScore = self->_mlServerScore;
@@ -723,9 +723,9 @@ LABEL_71:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v67.receiver = self;
   v67.super_class = BMiCloudSubscription;
   v5 = [(BMEventBase *)&v67 init];
@@ -734,12 +734,12 @@ LABEL_71:
     goto LABEL_132;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_130;
       }
@@ -750,18 +750,18 @@ LABEL_71:
       while (1)
       {
         LOBYTE(v68) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v68) & 0x7F) << v7;
@@ -779,9 +779,9 @@ LABEL_71:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_130;
       }
@@ -803,18 +803,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v68) = 0;
-            v47 = [v4 position] + 1;
-            if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 1, v48 <= objc_msgSend(v4, "length")))
+            v47 = [fromCopy position] + 1;
+            if (v47 >= [fromCopy position] && (v48 = objc_msgSend(fromCopy, "position") + 1, v48 <= objc_msgSend(fromCopy, "length")))
             {
-              v49 = [v4 data];
-              [v49 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v46 = (((LOBYTE(v68) & 0x7F) << v44) | v46);
@@ -832,7 +832,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -860,18 +860,18 @@ LABEL_100:
           while (1)
           {
             LOBYTE(v68) = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 = (((LOBYTE(v68) & 0x7F) << v23) | v25);
@@ -889,7 +889,7 @@ LABEL_100:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -916,18 +916,18 @@ LABEL_121:
         while (1)
         {
           LOBYTE(v68) = 0;
-          v58 = [v4 position] + 1;
-          if (v58 >= [v4 position] && (v59 = objc_msgSend(v4, "position") + 1, v59 <= objc_msgSend(v4, "length")))
+          v58 = [fromCopy position] + 1;
+          if (v58 >= [fromCopy position] && (v59 = objc_msgSend(fromCopy, "position") + 1, v59 <= objc_msgSend(fromCopy, "length")))
           {
-            v60 = [v4 data];
-            [v60 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v37 |= (LOBYTE(v68) & 0x7F) << v56;
@@ -944,7 +944,7 @@ LABEL_121:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v37 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v37 > 5)
         {
 LABEL_107:
           LODWORD(v37) = 0;
@@ -972,18 +972,18 @@ LABEL_95:
         while (1)
         {
           LOBYTE(v68) = 0;
-          v38 = [v4 position] + 1;
-          if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+          v38 = [fromCopy position] + 1;
+          if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
           {
-            v40 = [v4 data];
-            [v40 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v37 |= (LOBYTE(v68) & 0x7F) << v35;
@@ -1000,7 +1000,7 @@ LABEL_95:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v37 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v37 > 4)
         {
 LABEL_124:
           LODWORD(v37) = 0;
@@ -1011,8 +1011,8 @@ LABEL_124:
 
       *(&v5->super.super.isa + v62) = v37;
 LABEL_129:
-      v64 = [v4 position];
-      if (v64 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_130;
       }
@@ -1029,18 +1029,18 @@ LABEL_129:
         while (1)
         {
           LOBYTE(v68) = 0;
-          v53 = [v4 position] + 1;
-          if (v53 >= [v4 position] && (v54 = objc_msgSend(v4, "position") + 1, v54 <= objc_msgSend(v4, "length")))
+          v53 = [fromCopy position] + 1;
+          if (v53 >= [fromCopy position] && (v54 = objc_msgSend(fromCopy, "position") + 1, v54 <= objc_msgSend(fromCopy, "length")))
           {
-            v55 = [v4 data];
-            [v55 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v52 = (((LOBYTE(v68) & 0x7F) << v50) | v52);
@@ -1058,7 +1058,7 @@ LABEL_129:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v22 = 0;
         }
@@ -1086,18 +1086,18 @@ LABEL_104:
         while (1)
         {
           LOBYTE(v68) = 0;
-          v32 = [v4 position] + 1;
-          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+          v32 = [fromCopy position] + 1;
+          if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
           {
-            v34 = [v4 data];
-            [v34 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v31 = (((LOBYTE(v68) & 0x7F) << v29) | v31);
@@ -1115,7 +1115,7 @@ LABEL_104:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v22 = 0;
         }
@@ -1136,18 +1136,18 @@ LABEL_120:
       {
         v5->_hasMlServerScore = 1;
         v68 = 0.0;
-        v42 = [v4 position] + 8;
-        if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 8, v43 <= objc_msgSend(v4, "length")))
+        v42 = [fromCopy position] + 8;
+        if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 8, v43 <= objc_msgSend(fromCopy, "length")))
         {
-          v63 = [v4 data];
-          [v63 getBytes:&v68 range:{objc_msgSend(v4, "position"), 8}];
+          data8 = [fromCopy data];
+          [data8 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_mlServerScore = v68;
@@ -1166,18 +1166,18 @@ LABEL_120:
       while (1)
       {
         LOBYTE(v68) = 0;
-        v19 = [v4 position] + 1;
-        if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+        v19 = [fromCopy position] + 1;
+        if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
         {
-          v21 = [v4 data];
-          [v21 getBytes:&v68 range:{objc_msgSend(v4, "position"), 1}];
+          data9 = [fromCopy data];
+          [data9 getBytes:&v68 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v18 = (((LOBYTE(v68) & 0x7F) << v16) | v18);
@@ -1195,7 +1195,7 @@ LABEL_120:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v22 = 0;
       }
@@ -1213,7 +1213,7 @@ LABEL_112:
   }
 
 LABEL_130:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_131:
     v65 = 0;
@@ -1246,24 +1246,24 @@ LABEL_132:
   return v13;
 }
 
-- (BMiCloudSubscription)initWithMlServerScore:(id)a3 totalQuota:(id)a4 totalUsed:(id)a5 totalAvailable:(id)a6 bundleQuotaInBytes:(id)a7 commerceQuotaInBytes:(id)a8 iCloudSubscriptionEventType:(int)a9 displayEntry:(int)a10
+- (BMiCloudSubscription)initWithMlServerScore:(id)score totalQuota:(id)quota totalUsed:(id)used totalAvailable:(id)available bundleQuotaInBytes:(id)bytes commerceQuotaInBytes:(id)inBytes iCloudSubscriptionEventType:(int)type displayEntry:(int)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  scoreCopy = score;
+  quotaCopy = quota;
+  usedCopy = used;
+  availableCopy = available;
+  bytesCopy = bytes;
+  inBytesCopy = inBytes;
   v30.receiver = self;
   v30.super_class = BMiCloudSubscription;
   v22 = [(BMEventBase *)&v30 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v16)
+    if (scoreCopy)
     {
       v22->_hasMlServerScore = 1;
-      [v16 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -1273,73 +1273,73 @@ LABEL_132:
     }
 
     v22->_mlServerScore = v23;
-    if (v17)
+    if (quotaCopy)
     {
       v22->_hasTotalQuota = 1;
-      v24 = [v17 longLongValue];
+      longLongValue = [quotaCopy longLongValue];
     }
 
     else
     {
       v22->_hasTotalQuota = 0;
-      v24 = -1;
+      longLongValue = -1;
     }
 
-    v22->_totalQuota = v24;
-    if (v18)
+    v22->_totalQuota = longLongValue;
+    if (usedCopy)
     {
       v22->_hasTotalUsed = 1;
-      v25 = [v18 longLongValue];
+      longLongValue2 = [usedCopy longLongValue];
     }
 
     else
     {
       v22->_hasTotalUsed = 0;
-      v25 = -1;
+      longLongValue2 = -1;
     }
 
-    v22->_totalUsed = v25;
-    if (v19)
+    v22->_totalUsed = longLongValue2;
+    if (availableCopy)
     {
       v22->_hasTotalAvailable = 1;
-      v26 = [v19 longLongValue];
+      longLongValue3 = [availableCopy longLongValue];
     }
 
     else
     {
       v22->_hasTotalAvailable = 0;
-      v26 = -1;
+      longLongValue3 = -1;
     }
 
-    v22->_totalAvailable = v26;
-    if (v20)
+    v22->_totalAvailable = longLongValue3;
+    if (bytesCopy)
     {
       v22->_hasBundleQuotaInBytes = 1;
-      v27 = [v20 longLongValue];
+      longLongValue4 = [bytesCopy longLongValue];
     }
 
     else
     {
       v22->_hasBundleQuotaInBytes = 0;
-      v27 = -1;
+      longLongValue4 = -1;
     }
 
-    v22->_bundleQuotaInBytes = v27;
-    if (v21)
+    v22->_bundleQuotaInBytes = longLongValue4;
+    if (inBytesCopy)
     {
       v22->_hasCommerceQuotaInBytes = 1;
-      v28 = [v21 longLongValue];
+      longLongValue5 = [inBytesCopy longLongValue];
     }
 
     else
     {
       v22->_hasCommerceQuotaInBytes = 0;
-      v28 = -1;
+      longLongValue5 = -1;
     }
 
-    v22->_commerceQuotaInBytes = v28;
-    v22->_iCloudSubscriptionEventType = a9;
-    v22->_displayEntry = a10;
+    v22->_commerceQuotaInBytes = longLongValue5;
+    v22->_iCloudSubscriptionEventType = type;
+    v22->_displayEntry = entry;
   }
 
   return v22;
@@ -1371,9 +1371,9 @@ LABEL_132:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1381,8 +1381,8 @@ LABEL_132:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMiCloudSubscription alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,19 +1,19 @@
 @interface AMSMediaTokenServiceStore
 + (BOOL)_hasAppleGroupEnabled;
-- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)a3 keychainAccessGroup:(id)a4 patBasedToken:(BOOL)a5;
-- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)a3 keychainAccessGroup:(id)a4 usingAccessControlIdentifier:(BOOL)a5 patBasedToken:(BOOL)a6;
-- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)a3 keychainStore:(id)a4 patBasedToken:(BOOL)a5;
+- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)identifier keychainAccessGroup:(id)group patBasedToken:(BOOL)token;
+- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)identifier keychainAccessGroup:(id)group usingAccessControlIdentifier:(BOOL)controlIdentifier patBasedToken:(BOOL)token;
+- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)identifier keychainStore:(id)store patBasedToken:(BOOL)token;
 - (id)_mediaTokenChangedNotificationName;
 - (id)_mediaTokenFromUserDefaults;
 - (id)retrieveToken;
 - (void)_deleteMediaTokenFromUserDefaultsIfPresent;
-- (void)_mediaTokenChanged:(id)a3;
+- (void)_mediaTokenChanged:(id)changed;
 - (void)_setupKeychainNotifications;
 - (void)_teardownKeychainNotifications;
 - (void)dealloc;
 - (void)deleteToken;
-- (void)setKeychainAccessGroup:(id)a3;
-- (void)storeToken:(id)a3;
+- (void)setKeychainAccessGroup:(id)group;
+- (void)storeToken:(id)token;
 @end
 
 @implementation AMSMediaTokenServiceStore
@@ -30,25 +30,25 @@
 
 - (void)_setupKeychainNotifications
 {
-  v3 = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
-  if (v3)
+  _mediaTokenChangedNotificationName = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
+  if (_mediaTokenChangedNotificationName)
   {
-    v5 = v3;
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 addObserver:self selector:sel__mediaTokenChanged_ name:v5 object:0 suspensionBehavior:2];
+    v5 = _mediaTokenChangedNotificationName;
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__mediaTokenChanged_ name:v5 object:0 suspensionBehavior:2];
 
-    v3 = v5;
+    _mediaTokenChangedNotificationName = v5;
   }
 }
 
 - (id)_mediaTokenChangedNotificationName
 {
-  v3 = [(AMSMediaTokenServiceStore *)self _keychainAccessGroup];
-  if (v3)
+  _keychainAccessGroup = [(AMSMediaTokenServiceStore *)self _keychainAccessGroup];
+  if (_keychainAccessGroup)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
-    v6 = [v4 stringWithFormat:@"com.apple.AppleMediaServices.mediaTokenChanged.%@.%@", v3, v5];
+    clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+    v6 = [v4 stringWithFormat:@"com.apple.AppleMediaServices.mediaTokenChanged.%@.%@", _keychainAccessGroup, clientIdentifier];
   }
 
   else
@@ -80,34 +80,34 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
 {
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = self->_memoryMediaToken;
-  if (!v3)
+  retrieveToken = self->_memoryMediaToken;
+  if (!retrieveToken)
   {
-    v3 = [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore retrieveToken];
-    if (!v3)
+    retrieveToken = [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore retrieveToken];
+    if (!retrieveToken)
     {
       if (self->_patBasedToken)
       {
-        v3 = 0;
+        retrieveToken = 0;
       }
 
       else
       {
-        v3 = [(AMSMediaTokenServiceStore *)self _mediaTokenFromUserDefaults];
-        if (v3)
+        retrieveToken = [(AMSMediaTokenServiceStore *)self _mediaTokenFromUserDefaults];
+        if (retrieveToken)
         {
-          [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore storeToken:v3];
+          [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore storeToken:retrieveToken];
         }
       }
     }
 
     [(AMSMediaTokenServiceStore *)self _deleteMediaTokenFromUserDefaultsIfPresent];
-    objc_storeStrong(&self->_memoryMediaToken, v3);
+    objc_storeStrong(&self->_memoryMediaToken, retrieveToken);
   }
 
   os_unfair_lock_unlock(&self->_accessLock);
 
-  return v3;
+  return retrieveToken;
 }
 
 - (void)_deleteMediaTokenFromUserDefaultsIfPresent
@@ -118,8 +118,8 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
-    v5 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+    v6 = [v4 objectForKeyedSubscript:clientIdentifier];
 
     if (v6)
     {
@@ -129,22 +129,22 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+        clientIdentifier2 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
         v15 = 138543618;
         v16 = v9;
         v17 = 2114;
-        v18 = v11;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Removing previously stored media token from user defaults.", &v15, 0x16u);
+        v18 = clientIdentifier2;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Removing previously stored media token from user defaults.", &v15, 0x16u);
       }
 
       v12 = [v4 mutableCopy];
-      v13 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
-      [v12 setObject:0 forKeyedSubscript:v13];
+      clientIdentifier3 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+      [v12 setObject:0 forKeyedSubscript:clientIdentifier3];
 
       if ([v12 count])
       {
@@ -162,21 +162,21 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   }
 }
 
-- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)a3 keychainAccessGroup:(id)a4 patBasedToken:(BOOL)a5
+- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)identifier keychainAccessGroup:(id)group patBasedToken:(BOOL)token
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = AMSMediaTokenServiceStoreEffectiveKeychainAccessGroup(a4);
-  v10 = [[AMSMediaTokenServiceKeychainStore alloc] initWithClientIdentifier:v8 keychainAccessGroup:v9];
-  v11 = [(AMSMediaTokenServiceStore *)self initWithClientIdentifier:v8 keychainStore:v10 patBasedToken:v5];
+  tokenCopy = token;
+  identifierCopy = identifier;
+  v9 = AMSMediaTokenServiceStoreEffectiveKeychainAccessGroup(group);
+  v10 = [[AMSMediaTokenServiceKeychainStore alloc] initWithClientIdentifier:identifierCopy keychainAccessGroup:v9];
+  v11 = [(AMSMediaTokenServiceStore *)self initWithClientIdentifier:identifierCopy keychainStore:v10 patBasedToken:tokenCopy];
 
   return v11;
 }
 
-- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)a3 keychainStore:(id)a4 patBasedToken:(BOOL)a5
+- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)identifier keychainStore:(id)store patBasedToken:(BOOL)token
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v20.receiver = self;
   v20.super_class = AMSMediaTokenServiceStore;
   v10 = [(AMSMediaTokenServiceStore *)&v20 init];
@@ -184,20 +184,20 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   if (v10)
   {
     v10->_accessLock._os_unfair_lock_opaque = 0;
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     clientIdentifier = v11->_clientIdentifier;
     v11->_clientIdentifier = v12;
 
-    v14 = [v9 keychainAccessGroup];
+    keychainAccessGroup = [storeCopy keychainAccessGroup];
     keychainAccessGroup = v11->_keychainAccessGroup;
-    v11->_keychainAccessGroup = v14;
+    v11->_keychainAccessGroup = keychainAccessGroup;
 
-    objc_storeStrong(&v11->_keychainStore, a4);
-    v11->_patBasedToken = a5;
+    objc_storeStrong(&v11->_keychainStore, store);
+    v11->_patBasedToken = token;
     v16 = objc_opt_new();
-    v17 = [v16 UUIDString];
+    uUIDString = [v16 UUIDString];
     notificationObject = v11->_notificationObject;
-    v11->_notificationObject = v17;
+    v11->_notificationObject = uUIDString;
 
     [(AMSMediaTokenServiceStore *)v11 _setupKeychainNotifications];
   }
@@ -205,32 +205,32 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   return v11;
 }
 
-- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)a3 keychainAccessGroup:(id)a4 usingAccessControlIdentifier:(BOOL)a5 patBasedToken:(BOOL)a6
+- (AMSMediaTokenServiceStore)initWithClientIdentifier:(id)identifier keychainAccessGroup:(id)group usingAccessControlIdentifier:(BOOL)controlIdentifier patBasedToken:(BOOL)token
 {
-  result = [(AMSMediaTokenServiceStore *)self initWithClientIdentifier:a3 keychainAccessGroup:a4 patBasedToken:a6];
+  result = [(AMSMediaTokenServiceStore *)self initWithClientIdentifier:identifier keychainAccessGroup:group patBasedToken:token];
   if (result)
   {
-    result->_usingAccessControlIdentifier = a5;
+    result->_usingAccessControlIdentifier = controlIdentifier;
   }
 
   return result;
 }
 
-- (void)setKeychainAccessGroup:(id)a3
+- (void)setKeychainAccessGroup:(id)group
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock_with_options();
-  v5 = [(AMSMediaTokenServiceStore *)self _keychainAccessGroup];
+  _keychainAccessGroup = [(AMSMediaTokenServiceStore *)self _keychainAccessGroup];
   [(AMSMediaTokenServiceStore *)self _teardownKeychainNotifications];
-  v6 = [v4 copy];
+  v6 = [groupCopy copy];
 
   keychainAccessGroup = self->_keychainAccessGroup;
   self->_keychainAccessGroup = v6;
 
-  v8 = [(AMSMediaTokenServiceStore *)self _keychainAccessGroup];
-  [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore setKeychainAccessGroup:v8];
+  _keychainAccessGroup2 = [(AMSMediaTokenServiceStore *)self _keychainAccessGroup];
+  [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore setKeychainAccessGroup:_keychainAccessGroup2];
   memoryMediaToken = self->_memoryMediaToken;
   self->_memoryMediaToken = 0;
 
@@ -242,41 +242,41 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+    clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
     v15 = 138544130;
     v16 = v12;
     v17 = 2114;
-    v18 = v14;
+    v18 = clientIdentifier;
     v19 = 2112;
-    v20 = v5;
+    v20 = _keychainAccessGroup;
     v21 = 2112;
-    v22 = v8;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Changed keychain access group from %@ to %@.", &v15, 0x2Au);
+    v22 = _keychainAccessGroup2;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Changed keychain access group from %@ to %@.", &v15, 0x2Au);
   }
 }
 
-- (void)storeToken:(id)a3
+- (void)storeToken:(id)token
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  tokenCopy = token;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  objc_storeStrong(&self->_memoryMediaToken, a3);
-  if (([(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore storeToken:v5]& 1) != 0)
+  objc_storeStrong(&self->_memoryMediaToken, token);
+  if (([(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore storeToken:tokenCopy]& 1) != 0)
   {
     if (!self->_patBasedToken)
     {
       [(AMSMediaTokenServiceStore *)self _deleteMediaTokenFromUserDefaultsIfPresent];
     }
 
-    v6 = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
+    _mediaTokenChangedNotificationName = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
     os_unfair_lock_unlock(&self->_accessLock);
-    if (v6)
+    if (_mediaTokenChangedNotificationName)
     {
       v7 = +[AMSLogConfig sharedMediaConfig];
       if (!v7)
@@ -284,21 +284,21 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+        clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
         v13 = 138543618;
         v14 = v9;
         v15 = 2114;
-        v16 = v11;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting media token changed notification.", &v13, 0x16u);
+        v16 = clientIdentifier;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting media token changed notification.", &v13, 0x16u);
       }
 
-      v12 = [MEMORY[0x1E696ABB0] defaultCenter];
-      [v12 postNotificationName:v6 object:self->_notificationObject];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+      [defaultCenter postNotificationName:_mediaTokenChangedNotificationName object:self->_notificationObject];
     }
   }
 
@@ -316,17 +316,17 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   memoryMediaToken = self->_memoryMediaToken;
   self->_memoryMediaToken = 0;
 
-  v4 = [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore deleteToken];
+  deleteToken = [(AMSMediaTokenServiceKeychainStoreProtocol *)self->_keychainStore deleteToken];
   if (!self->_patBasedToken)
   {
     [(AMSMediaTokenServiceStore *)self _deleteMediaTokenFromUserDefaultsIfPresent];
   }
 
-  if (v4)
+  if (deleteToken)
   {
-    v5 = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
+    _mediaTokenChangedNotificationName = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
     os_unfair_lock_unlock(&self->_accessLock);
-    if (v5)
+    if (_mediaTokenChangedNotificationName)
     {
       v6 = +[AMSLogConfig sharedMediaConfig];
       if (!v6)
@@ -334,21 +334,21 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
         v6 = +[AMSLogConfig sharedConfig];
       }
 
-      v7 = [v6 OSLogObject];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v6 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v8 = objc_opt_class();
         v9 = v8;
-        v10 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+        clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
         v12 = 138543618;
         v13 = v8;
         v14 = 2114;
-        v15 = v10;
-        _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting media token changed notification.", &v12, 0x16u);
+        v15 = clientIdentifier;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting media token changed notification.", &v12, 0x16u);
       }
 
-      v11 = [MEMORY[0x1E696ABB0] defaultCenter];
-      [v11 postNotificationName:v5 object:self->_notificationObject];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+      [defaultCenter postNotificationName:_mediaTokenChangedNotificationName object:self->_notificationObject];
     }
   }
 
@@ -375,8 +375,8 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
-    v5 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+    v6 = [v4 objectForKeyedSubscript:clientIdentifier];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -392,21 +392,21 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
           v9 = +[AMSLogConfig sharedConfig];
         }
 
-        v10 = [v9 OSLogObject];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v9 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v21 = v8;
           v11 = objc_opt_class();
           v20 = v11;
-          v12 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+          clientIdentifier2 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
           *buf = 138543874;
           v24 = v11;
           v8 = v21;
           v25 = 2114;
-          v26 = v12;
+          v26 = clientIdentifier2;
           v27 = 2114;
           v28 = v21;
-          _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to unarchive media token data. Error: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to unarchive media token data. Error: %{public}@", buf, 0x20u);
         }
       }
 
@@ -416,19 +416,19 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v8;
         v16 = objc_opt_class();
         v17 = v16;
-        v18 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+        clientIdentifier3 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
         *buf = 138543618;
         v24 = v16;
         v8 = v15;
         v25 = 2114;
-        v26 = v18;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Returning media token loaded from user defaults.", buf, 0x16u);
+        v26 = clientIdentifier3;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Returning media token loaded from user defaults.", buf, 0x16u);
       }
     }
 
@@ -446,15 +446,15 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
   return v7;
 }
 
-- (void)_mediaTokenChanged:(id)a3
+- (void)_mediaTokenChanged:(id)changed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
-  v5 = [v4 object];
+  object = [changedCopy object];
 
-  LOBYTE(v4) = [v5 isEqualToString:self->_notificationObject];
-  if ((v4 & 1) == 0)
+  LOBYTE(changedCopy) = [object isEqualToString:self->_notificationObject];
+  if ((changedCopy & 1) == 0)
   {
     v6 = +[AMSLogConfig sharedMediaConfig];
     if (!v6)
@@ -462,17 +462,17 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [(AMSMediaTokenServiceStore *)self clientIdentifier];
+      clientIdentifier = [(AMSMediaTokenServiceStore *)self clientIdentifier];
       v12 = 138543618;
       v13 = v8;
       v14 = 2114;
-      v15 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received media token changed notification.", &v12, 0x16u);
+      v15 = clientIdentifier;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received media token changed notification.", &v12, 0x16u);
     }
 
     os_unfair_lock_lock_with_options();
@@ -485,14 +485,14 @@ void __50__AMSMediaTokenServiceStore__hasAppleGroupEnabled__block_invoke()
 
 - (void)_teardownKeychainNotifications
 {
-  v3 = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
-  if (v3)
+  _mediaTokenChangedNotificationName = [(AMSMediaTokenServiceStore *)self _mediaTokenChangedNotificationName];
+  if (_mediaTokenChangedNotificationName)
   {
-    v5 = v3;
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 removeObserver:self name:v5 object:0];
+    v5 = _mediaTokenChangedNotificationName;
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter removeObserver:self name:v5 object:0];
 
-    v3 = v5;
+    _mediaTokenChangedNotificationName = v5;
   }
 }
 

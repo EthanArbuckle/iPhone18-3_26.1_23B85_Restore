@@ -7,20 +7,20 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MPUMarqueeViewAccessibility *)self storedIsAccessibilityElement];
-  v4 = v3;
-  if (v3)
+  storedIsAccessibilityElement = [(MPUMarqueeViewAccessibility *)self storedIsAccessibilityElement];
+  v4 = storedIsAccessibilityElement;
+  if (storedIsAccessibilityElement)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [storedIsAccessibilityElement BOOLValue];
   }
 
   else
   {
-    v6 = [(MPUMarqueeViewAccessibility *)self accessibilityLabel];
-    v5 = [v6 length] != 0;
+    accessibilityLabel = [(MPUMarqueeViewAccessibility *)self accessibilityLabel];
+    bOOLValue = [accessibilityLabel length] != 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
@@ -31,8 +31,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subviews = [v2 subviews];
+  v4 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -44,21 +44,21 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v9 accessibilityLabel];
+          accessibilityLabel = [v9 accessibilityLabel];
           v10 = __UIAXStringForVariables();
 
           v7 = v10;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);

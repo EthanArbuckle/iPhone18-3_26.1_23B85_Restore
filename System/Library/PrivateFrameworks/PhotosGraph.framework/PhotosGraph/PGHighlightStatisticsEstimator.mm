@@ -1,29 +1,29 @@
 @interface PGHighlightStatisticsEstimator
-- (PGHighlightStatisticsEstimator)initWithWorkingContext:(id)a3;
-- (id)_collectDetailsForAggregations:(id)a3 inGraph:(id)a4 curationContext:(id)a5;
-- (id)_collectDetailsForTripsAndWeekends:(id)a3 inGraph:(id)a4 curationContext:(id)a5;
-- (id)_createHighlightEstimatesDictionaryWithCurationContext:(id)a3;
-- (id)_highlightEstimatesDescriptionWithData:(id)a3;
-- (id)_stringDescriptionForHomeWorkAggregations:(id)a3;
-- (id)_stringDescriptionForMomentsDetails:(id)a3;
-- (id)_stringDescriptionForTripWeekendDetails:(id)a3;
-- (id)highlightEstimatesDescriptionWithCurationContext:(id)a3;
-- (id)highlightEstimatesDictionaryWithCurationContext:(id)a3;
-- (unint64_t)_numberOfUtilityAssetsForAssetCollection:(id)a3;
+- (PGHighlightStatisticsEstimator)initWithWorkingContext:(id)context;
+- (id)_collectDetailsForAggregations:(id)aggregations inGraph:(id)graph curationContext:(id)context;
+- (id)_collectDetailsForTripsAndWeekends:(id)weekends inGraph:(id)graph curationContext:(id)context;
+- (id)_createHighlightEstimatesDictionaryWithCurationContext:(id)context;
+- (id)_highlightEstimatesDescriptionWithData:(id)data;
+- (id)_stringDescriptionForHomeWorkAggregations:(id)aggregations;
+- (id)_stringDescriptionForMomentsDetails:(id)details;
+- (id)_stringDescriptionForTripWeekendDetails:(id)details;
+- (id)highlightEstimatesDescriptionWithCurationContext:(id)context;
+- (id)highlightEstimatesDictionaryWithCurationContext:(id)context;
+- (unint64_t)_numberOfUtilityAssetsForAssetCollection:(id)collection;
 @end
 
 @implementation PGHighlightStatisticsEstimator
 
-- (id)_stringDescriptionForMomentsDetails:(id)a3
+- (id)_stringDescriptionForMomentsDetails:(id)details
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detailsCopy = details;
   v25 = [MEMORY[0x277CCAB68] stringWithString:@"\n\tmomentName\tassets\tcurated assets\tutility assets\tinteresting\tmeanings"];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = detailsCopy;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v4)
   {
@@ -41,18 +41,18 @@
         v8 = *(*(&v26 + 1) + 8 * i);
         v9 = [v8 objectForKeyedSubscript:@"name"];
         v10 = [v8 objectForKeyedSubscript:@"assetCount"];
-        v11 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
 
         v12 = [v8 objectForKeyedSubscript:@"curatedAssetCount"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v12 unsignedIntegerValue];
 
         v14 = [v8 objectForKeyedSubscript:@"utilityAssetCount"];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v14 unsignedIntegerValue];
 
         v16 = [v8 objectForKeyedSubscript:@"isInteresting"];
-        v17 = [v16 BOOLValue];
+        bOOLValue = [v16 BOOLValue];
         v18 = @"NO";
-        if (v17)
+        if (bOOLValue)
         {
           v18 = @"YES";
         }
@@ -62,7 +62,7 @@
         v20 = [v8 objectForKeyedSubscript:@"meanings"];
         v21 = [v20 componentsJoinedByString:{@", "}];
 
-        [v25 appendFormat:@"\n\t%@\t%lu\t%lu\t%lu\t%@\t%@", v9, v11, v13, v15, v19, v21];
+        [v25 appendFormat:@"\n\t%@\t%lu\t%lu\t%lu\t%@\t%@", v9, unsignedIntegerValue, unsignedIntegerValue2, unsignedIntegerValue3, v19, v21];
       }
 
       v5 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -76,17 +76,17 @@
   return v25;
 }
 
-- (id)_stringDescriptionForHomeWorkAggregations:(id)a3
+- (id)_stringDescriptionForHomeWorkAggregations:(id)aggregations
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  aggregationsCopy = aggregations;
   v28 = [MEMORY[0x277CCAB68] stringWithString:@"\n\t  aggregation identifier\t\t\tassets\tcurated assets\tutility assets\tmoments\tassets per moment"];
-  v26 = [v3 count];
+  v26 = [aggregationsCopy count];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = aggregationsCopy;
   v4 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {
@@ -106,24 +106,24 @@
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"name"];
         v12 = [v10 objectForKeyedSubscript:@"assetCount"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
         v14 = [v10 objectForKeyedSubscript:@"curatedAssetCount"];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
         v16 = [v10 objectForKeyedSubscript:@"aggregationAvgAssetCountPerMoment"];
         [v16 doubleValue];
         v18 = v17;
 
         v19 = [v10 objectForKeyedSubscript:@"momentCount"];
-        v20 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v19 unsignedIntegerValue];
 
         v21 = [v10 objectForKeyedSubscript:@"utilityAssetCount"];
-        v22 = [v21 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v21 unsignedIntegerValue];
 
-        v6 += v20;
-        v8 = v8 + v13;
-        [v28 appendFormat:@"\n\t- %@\t%lu\t%lu\t%lu\t%lu\t%.1f", v11, v13, v15, v22, v20, v18];
+        v6 += unsignedIntegerValue3;
+        v8 = v8 + unsignedIntegerValue;
+        [v28 appendFormat:@"\n\t- %@\t%lu\t%lu\t%lu\t%lu\t%.1f", v11, unsignedIntegerValue, unsignedIntegerValue2, unsignedIntegerValue4, unsignedIntegerValue3, v18];
       }
 
       v5 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -145,17 +145,17 @@
   return v23;
 }
 
-- (id)_stringDescriptionForTripWeekendDetails:(id)a3
+- (id)_stringDescriptionForTripWeekendDetails:(id)details
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detailsCopy = details;
   v4 = [MEMORY[0x277CCAB68] stringWithString:@"\n\tname\tassets\tcurated assets\tutility assets\tmoments"];
-  v23 = [v3 count];
+  v23 = [detailsCopy count];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v3;
+  obj = detailsCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -174,19 +174,19 @@
         v10 = *(*(&v25 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"name"];
         v12 = [v10 objectForKeyedSubscript:@"assetCount"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
         v14 = [v10 objectForKeyedSubscript:@"curatedAssetCount"];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
         v16 = [v10 objectForKeyedSubscript:@"utilityAssetCount"];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v16 unsignedIntegerValue];
 
         v18 = [v10 objectForKeyedSubscript:@"momentCount"];
-        v19 = [v18 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v18 unsignedIntegerValue];
 
-        [v4 appendFormat:@"\n\t%@\t%lu\t%lu\t%lu\t%lu", v11, v13, v15, v17, v19];
-        v8 = v8 + v13;
+        [v4 appendFormat:@"\n\t%@\t%lu\t%lu\t%lu\t%lu", v11, unsignedIntegerValue, unsignedIntegerValue2, unsignedIntegerValue3, unsignedIntegerValue4];
+        v8 = v8 + unsignedIntegerValue;
       }
 
       v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -207,23 +207,23 @@
   return v20;
 }
 
-- (id)_highlightEstimatesDescriptionWithData:(id)a3
+- (id)_highlightEstimatesDescriptionWithData:(id)data
 {
   v80 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = [v3 objectForKeyedSubscript:@"generalInfo"];
+  dataCopy = data;
+  string = [MEMORY[0x277CCAB68] string];
+  v5 = [dataCopy objectForKeyedSubscript:@"generalInfo"];
   v6 = [v5 objectForKeyedSubscript:@"assetCount"];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v8 = [v5 objectForKeyedSubscript:@"utilityAssetCount"];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
 
   v10 = [v5 objectForKeyedSubscript:@"momentCount"];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v10 unsignedIntegerValue];
 
   v12 = [v5 objectForKeyedSubscript:@"highlightCount"];
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue4 = [v12 unsignedIntegerValue];
 
   v14 = [v5 objectForKeyedSubscript:@"avgAssetCountPerMoment"];
   [v14 doubleValue];
@@ -234,21 +234,21 @@
   [v17 doubleValue];
   v19 = v18;
 
-  [v4 appendFormat:@"\nnumber of assets: %lu", v7];
-  [v4 appendFormat:@"\nnumber of utility assets: %lu", v9];
-  [v4 appendFormat:@"\nnumber of moments: %lu", v11];
-  [v4 appendFormat:@"\nnumber of highlights: %lu", v13];
-  [v4 appendFormat:@"\navg assets per moment: %f", v16];
-  v70 = v4;
-  [v4 appendFormat:@"\navg curated assets per moment: %f", v19];
+  [string appendFormat:@"\nnumber of assets: %lu", unsignedIntegerValue];
+  [string appendFormat:@"\nnumber of utility assets: %lu", unsignedIntegerValue2];
+  [string appendFormat:@"\nnumber of moments: %lu", unsignedIntegerValue3];
+  [string appendFormat:@"\nnumber of highlights: %lu", unsignedIntegerValue4];
+  [string appendFormat:@"\navg assets per moment: %f", v16];
+  v70 = string;
+  [string appendFormat:@"\navg curated assets per moment: %f", v19];
   v20 = [MEMORY[0x277CCAB68] stringWithString:@"\n\nmoments count per year:"];
   v21 = [MEMORY[0x277CCAB68] stringWithString:@"\n\navg assets per moment per year:"];
-  v22 = [v3 objectForKeyedSubscript:@"momentsByYear"];
-  v69 = v3;
-  v73 = [v3 objectForKeyedSubscript:@"avgAssetsPerMomentByYear"];
+  v22 = [dataCopy objectForKeyedSubscript:@"momentsByYear"];
+  v69 = dataCopy;
+  v73 = [dataCopy objectForKeyedSubscript:@"avgAssetsPerMomentByYear"];
   v74 = v22;
-  v23 = [v22 allKeys];
-  v24 = [v23 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v22 allKeys];
+  v24 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v77 = 0u;
   v78 = 0u;
@@ -272,9 +272,9 @@
 
         v29 = *(*(&v75 + 1) + 8 * i);
         v30 = [v74 objectForKeyedSubscript:v29];
-        v31 = [v30 unsignedIntegerValue];
+        unsignedIntegerValue5 = [v30 unsignedIntegerValue];
 
-        [v20 appendFormat:@"\n %@: %lu", v29, v31];
+        [v20 appendFormat:@"\n %@: %lu", v29, unsignedIntegerValue5];
         v32 = [v73 objectForKeyedSubscript:v29];
         [v32 doubleValue];
         v34 = v33;
@@ -339,17 +339,17 @@
   return v70;
 }
 
-- (id)_collectDetailsForAggregations:(id)a3 inGraph:(id)a4 curationContext:(id)a5
+- (id)_collectDetailsForAggregations:(id)aggregations inGraph:(id)graph curationContext:(id)context
 {
   v97 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v59 = a4;
-  v57 = a5;
-  v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v68 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-  v60 = v8;
-  v9 = [v8 allKeys];
-  v10 = [v9 sortedArrayUsingSelector:sel_localizedCompare_];
+  aggregationsCopy = aggregations;
+  graphCopy = graph;
+  contextCopy = context;
+  v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(aggregationsCopy, "count")}];
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  v60 = aggregationsCopy;
+  allKeys = [aggregationsCopy allKeys];
+  v10 = [allKeys sortedArrayUsingSelector:sel_localizedCompare_];
 
   v88 = 0u;
   v89 = 0u;
@@ -410,10 +410,10 @@
         [v15 count];
         v21 = v18;
         v22 = [v15 count];
-        v23 = [v59 momentsResultForMomentNodes:v15 inPhotoLibrary:v68 sortChronologically:0];
-        v73 = [MEMORY[0x277CBEB18] array];
-        v72 = [v68 librarySpecificFetchOptions];
-        [v72 setIncludeGuestAssets:1];
+        v23 = [graphCopy momentsResultForMomentNodes:v15 inPhotoLibrary:photoLibrary sortChronologically:0];
+        array = [MEMORY[0x277CBEB18] array];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+        [librarySpecificFetchOptions setIncludeGuestAssets:1];
         v80 = 0u;
         v81 = 0u;
         v78 = 0u;
@@ -440,9 +440,9 @@
 
               v28 = *(*(&v78 + 1) + 8 * j);
               v29 = objc_autoreleasePoolPush();
-              v30 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v28 options:v72];
-              v31 = [v30 fetchedObjects];
-              [v73 addObjectsFromArray:v31];
+              v30 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v28 options:librarySpecificFetchOptions];
+              fetchedObjects = [v30 fetchedObjects];
+              [array addObjectsFromArray:fetchedObjects];
 
               v76 = 0u;
               v77 = 0u;
@@ -489,20 +489,20 @@
         v37 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
         v92 = v37;
         v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v92 count:1];
-        [v73 sortUsingDescriptors:v38];
+        [array sortUsingDescriptors:v38];
 
-        v71 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssets:v73 title:0 identifier:0 photoLibrary:v68];
+        v71 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssets:array title:0 identifier:0 photoLibrary:photoLibrary];
         v63 = [[PGCurationOptions alloc] initWithDuration:2];
-        v39 = [(PGManagerWorkingContext *)self->_workingContext curationManager];
-        v40 = [v39 curatedAssetsForAssetCollection:v71 options:v63 curationContext:v57 progressBlock:0];
+        curationManager = [(PGManagerWorkingContext *)self->_workingContext curationManager];
+        v40 = [curationManager curatedAssetsForAssetCollection:v71 options:v63 curationContext:contextCopy progressBlock:0];
         v62 = [v40 count];
 
         v41 = MEMORY[0x277CCACA8];
-        v42 = [v65 firstObject];
-        v43 = [v42 name];
-        v44 = [v65 lastObject];
-        v45 = [v44 name];
-        v46 = [v41 stringWithFormat:@"%@ (%@ - %@)", v64, v43, v45];
+        firstObject = [v65 firstObject];
+        name = [firstObject name];
+        lastObject = [v65 lastObject];
+        name2 = [lastObject name];
+        v46 = [v41 stringWithFormat:@"%@ (%@ - %@)", v64, name, name2];
 
         v91[0] = v46;
         v90[0] = @"name";
@@ -540,24 +540,24 @@
   return v58;
 }
 
-- (id)_collectDetailsForTripsAndWeekends:(id)a3 inGraph:(id)a4 curationContext:(id)a5
+- (id)_collectDetailsForTripsAndWeekends:(id)weekends inGraph:(id)graph curationContext:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v46 = a5;
-  v47 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v45 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  weekendsCopy = weekends;
+  graphCopy = graph;
+  contextCopy = context;
+  v47 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(weekendsCopy, "count")}];
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
   v10 = [PGTitleGenerationContext alloc];
-  v11 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
-  v48 = v9;
-  v44 = [(PGTitleGenerationContext *)v10 initWithGraph:v9 serviceManager:v11];
+  serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+  v48 = graphCopy;
+  v44 = [(PGTitleGenerationContext *)v10 initWithGraph:graphCopy serviceManager:serviceManager];
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v8;
+  obj = weekendsCopy;
   v49 = [obj countByEnumeratingWithState:&v63 objects:v70 count:16];
   if (v49)
   {
@@ -574,34 +574,34 @@
         v13 = *(*(&v63 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
         v57 = [[PGHighlightTitleGenerator alloc] initWithCollection:v13 curatedAssetCollection:0 keyAsset:0 createVerboseTitle:0 titleGenerationContext:v44];
-        v14 = [(PGHighlightTitleGenerator *)v57 titleTuple];
-        v15 = [v14 title];
-        v16 = [v15 stringValue];
-        v17 = [v16 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
+        titleTuple = [(PGHighlightTitleGenerator *)v57 titleTuple];
+        title = [titleTuple title];
+        stringValue = [title stringValue];
+        v17 = [stringValue stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
 
-        v56 = v14;
-        v18 = [v14 subtitle];
-        v19 = [v18 stringValue];
+        v56 = titleTuple;
+        subtitle = [titleTuple subtitle];
+        stringValue2 = [subtitle stringValue];
 
-        v54 = v19;
+        v54 = stringValue2;
         v55 = v17;
-        v53 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@ – %@", v17, v19];
-        v20 = [v13 eventCollection];
-        v21 = [v20 eventMomentNodes];
-        v50 = [v21 numberOfAssets];
+        v53 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@ – %@", v17, stringValue2];
+        eventCollection = [v13 eventCollection];
+        eventMomentNodes = [eventCollection eventMomentNodes];
+        numberOfAssets = [eventMomentNodes numberOfAssets];
 
-        v22 = [v13 fetchAssetCollectionInPhotoLibrary:v45];
+        v22 = [v13 fetchAssetCollectionInPhotoLibrary:photoLibrary];
         v23 = +[PGCurationOptions defaultOptions];
-        v24 = [(PGManagerWorkingContext *)self->_workingContext curationManager];
+        curationManager = [(PGManagerWorkingContext *)self->_workingContext curationManager];
         v52 = v22;
-        v25 = [v24 curatedAssetsForAssetCollection:v22 options:v23 curationContext:v46 progressBlock:0];
+        v25 = [curationManager curatedAssetsForAssetCollection:v22 options:v23 curationContext:contextCopy progressBlock:0];
 
         v51 = v25;
         v26 = [v25 count];
-        v27 = [v13 eventEnrichmentMomentNodes];
-        v28 = [v27 temporarySet];
+        eventEnrichmentMomentNodes = [v13 eventEnrichmentMomentNodes];
+        temporarySet = [eventEnrichmentMomentNodes temporarySet];
 
-        v29 = [v48 momentsResultForMomentNodes:v28 inPhotoLibrary:v45 sortChronologically:0];
+        v29 = [v48 momentsResultForMomentNodes:temporarySet inPhotoLibrary:photoLibrary sortChronologically:0];
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
@@ -638,7 +638,7 @@
         v68[0] = v53;
         v67[0] = @"name";
         v67[1] = @"assetCount";
-        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v50];
+        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfAssets];
         v68[1] = v35;
         v67[2] = @"curatedAssetCount";
         v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v26];
@@ -647,7 +647,7 @@
         v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v32];
         v68[3] = v37;
         v67[4] = @"momentCount";
-        v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
+        v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(temporarySet, "count")}];
         v68[4] = v38;
         v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:v67 count:5];
 
@@ -666,18 +666,18 @@
   return v47;
 }
 
-- (unint64_t)_numberOfUtilityAssetsForAssetCollection:(id)a3
+- (unint64_t)_numberOfUtilityAssetsForAssetCollection:(id)collection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7 = +[PGCurationManager assetPropertySetsForCuration];
-  [v6 addFetchPropertySets:v7];
+  [librarySpecificFetchOptions addFetchPropertySets:v7];
 
-  [v6 setIncludeGuestAssets:1];
-  v8 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v4 options:v6];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v8 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -715,25 +715,25 @@
   return v11;
 }
 
-- (id)_createHighlightEstimatesDictionaryWithCurationContext:(id)a3
+- (id)_createHighlightEstimatesDictionaryWithCurationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__54617;
   v20 = __Block_byref_object_dispose__54618;
   v21 = 0;
-  v5 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
   workingContext = self->_workingContext;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __89__PGHighlightStatisticsEstimator__createHighlightEstimatesDictionaryWithCurationContext___block_invoke;
   v11[3] = &unk_278889308;
-  v7 = v5;
+  v7 = photoLibrary;
   v12 = v7;
-  v13 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = contextCopy;
   v14 = v8;
   v15 = &v16;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v11];
@@ -1075,20 +1075,20 @@ void __89__PGHighlightStatisticsEstimator__createHighlightEstimatesDictionaryWit
   }
 }
 
-- (id)highlightEstimatesDescriptionWithCurationContext:(id)a3
+- (id)highlightEstimatesDescriptionWithCurationContext:(id)context
 {
-  v4 = [(PGHighlightStatisticsEstimator *)self highlightEstimatesDictionaryWithCurationContext:a3];
+  v4 = [(PGHighlightStatisticsEstimator *)self highlightEstimatesDictionaryWithCurationContext:context];
   v5 = [(PGHighlightStatisticsEstimator *)self _highlightEstimatesDescriptionWithData:v4];
 
   return v5;
 }
 
-- (id)highlightEstimatesDictionaryWithCurationContext:(id)a3
+- (id)highlightEstimatesDictionaryWithCurationContext:(id)context
 {
   highlightEstimatesDictionary = self->_highlightEstimatesDictionary;
   if (!highlightEstimatesDictionary)
   {
-    v5 = [(PGHighlightStatisticsEstimator *)self _createHighlightEstimatesDictionaryWithCurationContext:a3];
+    v5 = [(PGHighlightStatisticsEstimator *)self _createHighlightEstimatesDictionaryWithCurationContext:context];
     v6 = self->_highlightEstimatesDictionary;
     self->_highlightEstimatesDictionary = v5;
 
@@ -1098,16 +1098,16 @@ void __89__PGHighlightStatisticsEstimator__createHighlightEstimatesDictionaryWit
   return highlightEstimatesDictionary;
 }
 
-- (PGHighlightStatisticsEstimator)initWithWorkingContext:(id)a3
+- (PGHighlightStatisticsEstimator)initWithWorkingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PGHighlightStatisticsEstimator;
   v6 = [(PGHighlightStatisticsEstimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workingContext, a3);
+    objc_storeStrong(&v6->_workingContext, context);
   }
 
   return v7;

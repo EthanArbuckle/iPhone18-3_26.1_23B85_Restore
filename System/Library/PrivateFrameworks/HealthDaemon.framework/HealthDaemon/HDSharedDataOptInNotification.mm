@@ -1,20 +1,20 @@
 @interface HDSharedDataOptInNotification
-- (HDSharedDataOptInNotification)initWithNotificationManager:(id)a3 guardianDisplayName:(id)a4;
+- (HDSharedDataOptInNotification)initWithNotificationManager:(id)manager guardianDisplayName:(id)name;
 - (id)body;
 - (id)title;
 @end
 
 @implementation HDSharedDataOptInNotification
 
-- (HDSharedDataOptInNotification)initWithNotificationManager:(id)a3 guardianDisplayName:(id)a4
+- (HDSharedDataOptInNotification)initWithNotificationManager:(id)manager guardianDisplayName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = HDSharedDataOptInNotification;
-  v7 = [(HDNanoHealthNotification *)&v11 initWithNotificationManager:a3];
+  v7 = [(HDNanoHealthNotification *)&v11 initWithNotificationManager:manager];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     guardianDisplayName = v7->_guardianDisplayName;
     v7->_guardianDisplayName = v8;
   }

@@ -1,10 +1,10 @@
 @interface _NSXPCQueryGenerationToken
-- (_NSXPCQueryGenerationToken)initWithCoder:(id)a3;
+- (_NSXPCQueryGenerationToken)initWithCoder:(id)coder;
 @end
 
 @implementation _NSXPCQueryGenerationToken
 
-- (_NSXPCQueryGenerationToken)initWithCoder:(id)a3
+- (_NSXPCQueryGenerationToken)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
@@ -18,10 +18,10 @@
 
   generationIdentifier = v4->super._generationIdentifier;
   storeIdentifier = v4->super._storeIdentifier;
-  v8 = [a3 delegate];
-  if (![a3 requiresSecureCoding])
+  delegate = [coder delegate];
+  if (![coder requiresSecureCoding])
   {
-    if (!v8)
+    if (!delegate)
     {
       goto LABEL_34;
     }
@@ -31,26 +31,26 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [a3 userInfo];
-    if (v9)
+    userInfo = [coder userInfo];
+    if (userInfo)
     {
-      v10 = v9;
-      v9 = [objc_msgSend(objc_msgSend(v9 valueForKey:{@"NSConnectionContext", "managedObjectContext"), "persistentStoreCoordinator"}];
-      if (v9)
+      v10 = userInfo;
+      userInfo = [objc_msgSend(objc_msgSend(userInfo valueForKey:{@"NSConnectionContext", "managedObjectContext"), "persistentStoreCoordinator"}];
+      if (userInfo)
       {
         goto LABEL_16;
       }
 
-      v9 = [v10 valueForKey:@"PSCKey"];
+      userInfo = [v10 valueForKey:@"PSCKey"];
     }
   }
 
   else
   {
-    v9 = 0;
+    userInfo = 0;
   }
 
-  if (!v9 && v8)
+  if (!userInfo && delegate)
   {
 LABEL_12:
     objc_opt_class();
@@ -65,10 +65,10 @@ LABEL_12:
       goto LABEL_34;
     }
 
-    v9 = [v8 _persistentStoreCoordinator];
+    userInfo = [delegate _persistentStoreCoordinator];
   }
 
-  if (v9)
+  if (userInfo)
   {
 LABEL_16:
     if (generationIdentifier)
@@ -83,12 +83,12 @@ LABEL_16:
 
     if (!v11)
     {
-      v12 = [v9 persistentStores];
+      persistentStores = [userInfo persistentStores];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v13 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v13 = [persistentStores countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v13)
       {
         v14 = v13;
@@ -99,7 +99,7 @@ LABEL_16:
           {
             if (*v26 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(persistentStores);
             }
 
             v17 = *(*(&v25 + 1) + 8 * i);
@@ -124,7 +124,7 @@ LABEL_16:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v14 = [persistentStores countByEnumeratingWithState:&v25 objects:v30 count:16];
           if (v14)
           {
             continue;

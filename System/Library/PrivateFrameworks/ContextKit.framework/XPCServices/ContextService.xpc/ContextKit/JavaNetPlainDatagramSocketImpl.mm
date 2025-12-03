@@ -1,18 +1,18 @@
 @interface JavaNetPlainDatagramSocketImpl
 - (int)getTimeToLive;
-- (int)peekDataWithJavaNetDatagramPacket:(id)a3;
-- (int)peekWithJavaNetInetAddress:(id)a3;
+- (int)peekDataWithJavaNetDatagramPacket:(id)packet;
+- (int)peekWithJavaNetInetAddress:(id)address;
 - (void)close;
 - (void)create;
 - (void)dealloc;
 - (void)disconnect;
-- (void)joinGroupWithJavaNetSocketAddress:(id)a3 withJavaNetNetworkInterface:(id)a4;
-- (void)joinWithJavaNetInetAddress:(id)a3;
-- (void)leaveGroupWithJavaNetSocketAddress:(id)a3 withJavaNetNetworkInterface:(id)a4;
-- (void)leaveWithJavaNetInetAddress:(id)a3;
-- (void)sendWithJavaNetDatagramPacket:(id)a3;
-- (void)setTimeToLiveWithInt:(int)a3;
-- (void)updatePacketRecvAddressWithJavaNetDatagramPacket:(id)a3;
+- (void)joinGroupWithJavaNetSocketAddress:(id)address withJavaNetNetworkInterface:(id)interface;
+- (void)joinWithJavaNetInetAddress:(id)address;
+- (void)leaveGroupWithJavaNetSocketAddress:(id)address withJavaNetNetworkInterface:(id)interface;
+- (void)leaveWithJavaNetInetAddress:(id)address;
+- (void)sendWithJavaNetDatagramPacket:(id)packet;
+- (void)setTimeToLiveWithInt:(int)int;
+- (void)updatePacketRecvAddressWithJavaNetDatagramPacket:(id)packet;
 @end
 
 @implementation JavaNetPlainDatagramSocketImpl
@@ -71,20 +71,20 @@
   return [v2 intValue];
 }
 
-- (void)joinWithJavaNetInetAddress:(id)a3
+- (void)joinWithJavaNetInetAddress:(id)address
 {
-  v4 = new_LibcoreIoStructGroupReq_initWithInt_withJavaNetInetAddress_(0, a3);
+  v4 = new_LibcoreIoStructGroupReq_initWithInt_withJavaNetInetAddress_(0, address);
 
   [(JavaNetPlainDatagramSocketImpl *)self setOptionWithInt:19 withId:v4];
 }
 
-- (void)joinGroupWithJavaNetSocketAddress:(id)a3 withJavaNetNetworkInterface:(id)a4
+- (void)joinGroupWithJavaNetSocketAddress:(id)address withJavaNetNetworkInterface:(id)interface
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (!a3)
+    if (!address)
     {
       JreThrowNullPointerException();
     }
@@ -94,26 +94,26 @@
       JreThrowClassCastException();
     }
 
-    v7 = sub_1002901B0([a3 getAddress], a4);
+    v7 = sub_1002901B0([address getAddress], interface);
 
     [(JavaNetPlainDatagramSocketImpl *)self setOptionWithInt:19 withId:v7];
   }
 }
 
-- (void)leaveWithJavaNetInetAddress:(id)a3
+- (void)leaveWithJavaNetInetAddress:(id)address
 {
-  v4 = new_LibcoreIoStructGroupReq_initWithInt_withJavaNetInetAddress_(0, a3);
+  v4 = new_LibcoreIoStructGroupReq_initWithInt_withJavaNetInetAddress_(0, address);
 
   [(JavaNetPlainDatagramSocketImpl *)self setOptionWithInt:20 withId:v4];
 }
 
-- (void)leaveGroupWithJavaNetSocketAddress:(id)a3 withJavaNetNetworkInterface:(id)a4
+- (void)leaveGroupWithJavaNetSocketAddress:(id)address withJavaNetNetworkInterface:(id)interface
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (!a3)
+    if (!address)
     {
       JreThrowNullPointerException();
     }
@@ -123,13 +123,13 @@
       JreThrowClassCastException();
     }
 
-    v7 = sub_1002901B0([a3 getAddress], a4);
+    v7 = sub_1002901B0([address getAddress], interface);
 
     [(JavaNetPlainDatagramSocketImpl *)self setOptionWithInt:20 withId:v7];
   }
 }
 
-- (int)peekWithJavaNetInetAddress:(id)a3
+- (int)peekWithJavaNetInetAddress:(id)address
 {
   if ((atomic_load_explicit(LibcoreUtilEmptyArray__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -138,51 +138,51 @@
 
   v5 = new_JavaNetDatagramPacket_initWithByteArray_withInt_(LibcoreUtilEmptyArray_BYTE_, 0);
   v6 = [(JavaNetPlainDatagramSocketImpl *)self peekDataWithJavaNetDatagramPacket:v5];
-  if (!a3 || (v7 = v6, (v8 = [(JavaNetDatagramPacket *)v5 getAddress]) == 0))
+  if (!address || (v7 = v6, (v8 = [(JavaNetDatagramPacket *)v5 getAddress]) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(a3 + 1, [v8 getAddress]);
+  JreStrongAssign(address + 1, [v8 getAddress]);
   return v7;
 }
 
-- (int)peekDataWithJavaNetDatagramPacket:(id)a3
+- (int)peekDataWithJavaNetDatagramPacket:(id)packet
 {
-  sub_10029049C(self, a3, 2);
-  if (!a3)
+  sub_10029049C(self, packet, 2);
+  if (!packet)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 getPort];
+  return [packet getPort];
 }
 
-- (void)sendWithJavaNetDatagramPacket:(id)a3
+- (void)sendWithJavaNetDatagramPacket:(id)packet
 {
   v5 = (&self->super.localPort_ + 1);
   v6 = atomic_load(&self->super.localPort_ + 4);
   if (v6)
   {
-    v7 = 0;
+    getPort = 0;
   }
 
   else
   {
-    if (!a3)
+    if (!packet)
     {
       goto LABEL_13;
     }
 
-    v7 = [a3 getPort];
+    getPort = [packet getPort];
   }
 
   v8 = atomic_load(v5);
   if (v8)
   {
-    if (a3)
+    if (packet)
     {
-      v9 = 0;
+      getAddress = 0;
       goto LABEL_10;
     }
 
@@ -190,24 +190,24 @@ LABEL_13:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!packet)
   {
     goto LABEL_13;
   }
 
-  v9 = [a3 getAddress];
+  getAddress = [packet getAddress];
 LABEL_10:
   fd = self->super.fd_;
-  v11 = [a3 getData];
-  v12 = [a3 getOffset];
-  v13 = [a3 getLength];
+  getData = [packet getData];
+  getOffset = [packet getOffset];
+  getLength = [packet getLength];
 
-  LibcoreIoIoBridge_sendtoWithJavaIoFileDescriptor_withByteArray_withInt_withInt_withInt_withJavaNetInetAddress_withInt_(fd, v11, v12, v13, 0, v9, v7);
+  LibcoreIoIoBridge_sendtoWithJavaIoFileDescriptor_withByteArray_withInt_withInt_withInt_withJavaNetInetAddress_withInt_(fd, getData, getOffset, getLength, 0, getAddress, getPort);
 }
 
-- (void)setTimeToLiveWithInt:(int)a3
+- (void)setTimeToLiveWithInt:(int)int
 {
-  v4 = JavaLangInteger_valueOfWithInt_(a3);
+  v4 = JavaLangInteger_valueOfWithInt_(int);
 
   [(JavaNetPlainDatagramSocketImpl *)self setOptionWithInt:17 withId:v4];
 }
@@ -237,17 +237,17 @@ LABEL_10:
   atomic_store(0, &self->super.localPort_ + 4);
 }
 
-- (void)updatePacketRecvAddressWithJavaNetDatagramPacket:(id)a3
+- (void)updatePacketRecvAddressWithJavaNetDatagramPacket:(id)packet
 {
-  if (!a3)
+  if (!packet)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 setAddressWithJavaNetInetAddress:self->guard_];
+  [packet setAddressWithJavaNetInetAddress:self->guard_];
   connectedAddress_low = LODWORD(self->connectedAddress_);
 
-  [a3 setPortWithInt:connectedAddress_low];
+  [packet setPortWithInt:connectedAddress_low];
 }
 
 @end

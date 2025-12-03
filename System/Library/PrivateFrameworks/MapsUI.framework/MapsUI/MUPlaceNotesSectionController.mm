@@ -3,12 +3,12 @@
 - (BOOL)hasContentBeforePersonalizedSuggestionArbitration;
 - (MULibraryAccessProviding)libraryAccessProvider;
 - (NSArray)sectionViews;
-- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)a3;
-- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)a3 userInfoProvider:(id)a4 libraryAccessProvider:(id)a5;
+- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)item;
+- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)item userInfoProvider:(id)provider libraryAccessProvider:(id)accessProvider;
 - (void)dealloc;
-- (void)libraryAccessProvider:(id)a3 placeNoteDidChange:(id)a4;
-- (void)libraryAccessProvider:(id)a3 savedStateOfPlaceDidChange:(BOOL)a4;
-- (void)setLibraryAccessProvider:(id)a3;
+- (void)libraryAccessProvider:(id)provider placeNoteDidChange:(id)change;
+- (void)libraryAccessProvider:(id)provider savedStateOfPlaceDidChange:(BOOL)change;
+- (void)setLibraryAccessProvider:(id)provider;
 @end
 
 @implementation MUPlaceNotesSectionController
@@ -23,21 +23,21 @@
   return v5;
 }
 
-- (void)setLibraryAccessProvider:(id)a3
+- (void)setLibraryAccessProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5667F98(a3);
+  selfCopy = self;
+  sub_1C5667F98(provider);
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)a3 userInfoProvider:(id)a4 libraryAccessProvider:(id)a5
+- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)item userInfoProvider:(id)provider libraryAccessProvider:(id)accessProvider
 {
-  v7 = a3;
+  itemCopy = item;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = sub_1C5668038(v7, a4, a5);
+  v8 = sub_1C5668038(itemCopy, provider, accessProvider);
 
   swift_unknownObjectRelease();
   return v8;
@@ -56,7 +56,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   v7.receiver = self;
@@ -92,24 +92,24 @@
 
 - (BOOL)hasContent
 {
-  v2 = self;
-  v3 = [(MUPlaceSectionController *)v2 personalizedSuggestionsArbiterDelegate];
-  if (v3)
+  selfCopy = self;
+  personalizedSuggestionsArbiterDelegate = [(MUPlaceSectionController *)selfCopy personalizedSuggestionsArbiterDelegate];
+  if (personalizedSuggestionsArbiterDelegate)
   {
-    v4 = [(MUPersonalizedSuggestionSectionArbiterDelegate *)v3 shouldShowPlaceNotesSection];
+    shouldShowPlaceNotesSection = [(MUPersonalizedSuggestionSectionArbiterDelegate *)personalizedSuggestionsArbiterDelegate shouldShowPlaceNotesSection];
     swift_unknownObjectRelease();
 
-    return v4;
+    return shouldShowPlaceNotesSection;
   }
 
   else
   {
-    v6 = *(v2 + OBJC_IVAR____TtC6MapsUI29MUPlaceNotesSectionController__sectionViews);
+    v6 = *(selfCopy + OBJC_IVAR____TtC6MapsUI29MUPlaceNotesSectionController__sectionViews);
     if (v6 >> 62)
     {
       if (v6 < 0)
       {
-        v8 = *(v2 + OBJC_IVAR____TtC6MapsUI29MUPlaceNotesSectionController__sectionViews);
+        v8 = *(selfCopy + OBJC_IVAR____TtC6MapsUI29MUPlaceNotesSectionController__sectionViews);
       }
 
       v7 = sub_1C584FB90();
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)libraryAccessProvider:(id)a3 placeNoteDidChange:(id)a4
+- (void)libraryAccessProvider:(id)provider placeNoteDidChange:(id)change
 {
-  if (a4)
+  if (change)
   {
     v5 = sub_1C584F660();
     v7 = v6;
@@ -139,20 +139,20 @@
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_1C56681C4(v5, v7);
   swift_unknownObjectRelease();
 }
 
-- (void)libraryAccessProvider:(id)a3 savedStateOfPlaceDidChange:(BOOL)a4
+- (void)libraryAccessProvider:(id)provider savedStateOfPlaceDidChange:(BOOL)change
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   _s6MapsUI29MUPlaceNotesSectionControllerC21libraryAccessProvider_26savedStateOfPlaceDidChangeySo09MULibraryH9Providing_p_SbtF_0();
   swift_unknownObjectRelease();
 }
 
-- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)a3
+- (_TtC6MapsUI29MUPlaceNotesSectionController)initWithMapItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

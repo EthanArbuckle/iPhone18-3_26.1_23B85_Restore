@@ -1,19 +1,19 @@
 @interface PHCountingLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
-- (_TtC13InCallService15PHCountingLayer)initWithLayer:(id)a3;
-- (id)actionForKey:(id)a3;
-- (void)setValue:(int64_t)a3;
++ (BOOL)needsDisplayForKey:(id)key;
+- (_TtC13InCallService15PHCountingLayer)initWithLayer:(id)layer;
+- (id)actionForKey:(id)key;
+- (void)setValue:(int64_t)value;
 @end
 
 @implementation PHCountingLayer
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
-  v4 = self;
-  sub_10017A54C(a3);
+  selfCopy = self;
+  sub_10017A54C(value);
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
@@ -22,17 +22,17 @@
   return v3 & 1;
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_10017A760(v4, v6);
 
   return v8;
 }
 
-- (_TtC13InCallService15PHCountingLayer)initWithLayer:(id)a3
+- (_TtC13InCallService15PHCountingLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

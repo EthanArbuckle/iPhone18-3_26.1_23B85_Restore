@@ -6,10 +6,10 @@
 
 - (id)_af_dialogIdentifier
 {
-  v1 = [a1 utteranceView];
-  v2 = [v1 dialogIdentifier];
+  utteranceView = [self utteranceView];
+  dialogIdentifier = [utteranceView dialogIdentifier];
 
-  return v2;
+  return dialogIdentifier;
 }
 
 @end

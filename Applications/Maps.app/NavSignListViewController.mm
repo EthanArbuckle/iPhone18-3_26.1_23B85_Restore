@@ -1,10 +1,10 @@
 @interface NavSignListViewController
 - (BOOL)_shouldShowDebugViewController;
 - (BOOL)hasElevationGraph;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (Class)cellClassForItemType:(unint64_t)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (Class)cellClassForItemType:(unint64_t)type;
 - (DirectionsElevationGraphView)graphView;
-- (NavSignListViewController)initWithSignDelegate:(id)a3;
+- (NavSignListViewController)initWithSignDelegate:(id)delegate;
 - (NavSignListViewControllerDelegate)signDelegate;
 - (NavigationDebugViewsController)debugViewController;
 - (RouteStepListDataSource)dataSource;
@@ -15,71 +15,71 @@
 - (double)footerBottomPosition;
 - (id)VIOEnabledHintLabel;
 - (id)_displayIndexPath;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (unint64_t)_displayStepIndex;
-- (unint64_t)_stateForItemIndex:(unint64_t)a3;
+- (unint64_t)_stateForItemIndex:(unint64_t)index;
 - (void)_applyCornerMask;
 - (void)_cancelReroute;
 - (void)_cleanupStepCountdowns;
-- (void)_didPan:(id)a3;
-- (void)_didTap:(id)a3;
-- (void)_handleNewRoute:(id)a3;
+- (void)_didPan:(id)pan;
+- (void)_didTap:(id)tap;
+- (void)_handleNewRoute:(id)route;
 - (void)_insertGraphView;
 - (void)_processSignUpdate;
 - (void)_reapplySignCountdown;
 - (void)_triggerSignListAnalytics;
-- (void)_updateActiveStepIndexAnimated:(BOOL)a3;
+- (void)_updateActiveStepIndexAnimated:(BOOL)animated;
 - (void)_updateCollectionViewBottomInset;
 - (void)_updateCurrentManeuverBackground;
 - (void)_updateGraphContainerTop;
 - (void)_updateGraphViewIfNeeded;
 - (void)_updateLaneGuidancePositioning;
-- (void)_updateLayoutProgressWithDuration:(double)a3 completion:(id)a4;
-- (void)_updateRoute:(id)a3;
+- (void)_updateLayoutProgressWithDuration:(double)duration completion:(id)completion;
+- (void)_updateRoute:(id)route;
 - (void)_updateSelectionBackgrounds;
-- (void)cell:(id)a3 setPressed:(BOOL)a4;
+- (void)cell:(id)cell setPressed:(BOOL)pressed;
 - (void)clearDragState;
-- (void)clearPartialExpansionAnimated:(BOOL)a3;
-- (void)clearSelectionAnimated:(BOOL)a3;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)clearPartialExpansionAnimated:(BOOL)animated;
+- (void)clearSelectionAnimated:(BOOL)animated;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)hideVIOLabel:(BOOL)a3;
+- (void)hideVIOLabel:(BOOL)label;
 - (void)loadView;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationServiceWillReroute:(id)a3;
-- (void)reloadDataSource:(id)a3;
-- (void)reloadStepIndices:(id)a3 forDataSource:(id)a4;
-- (void)reloadUIForDataSource:(id)a3;
-- (void)scrollToIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setActiveStepIndex:(unint64_t)a3;
-- (void)setCardWidth:(double)a3;
-- (void)setConnectedToCarPlay:(BOOL)a3 animated:(BOOL)a4;
-- (void)setCornerMask:(unint64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDebugViewControllerEnabled:(BOOL)a3;
-- (void)setDragging:(BOOL)a3;
-- (void)setExpandingCornerMaskingThreshold:(double)a3;
-- (void)setLaneGuidanceActive:(BOOL)a3;
-- (void)setLayoutProgress:(double)a3;
-- (void)setRoute:(id)a3;
-- (void)setSelectedStepIndex:(unint64_t)a3;
-- (void)setShowingSecondaryManeuver:(BOOL)a3;
-- (void)toggleExpansionAnimated:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationServiceWillReroute:(id)reroute;
+- (void)reloadDataSource:(id)source;
+- (void)reloadStepIndices:(id)indices forDataSource:(id)source;
+- (void)reloadUIForDataSource:(id)source;
+- (void)scrollToIndexPath:(id)path animated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setActiveStepIndex:(unint64_t)index;
+- (void)setCardWidth:(double)width;
+- (void)setConnectedToCarPlay:(BOOL)play animated:(BOOL)animated;
+- (void)setCornerMask:(unint64_t)mask;
+- (void)setCornerRadius:(double)radius;
+- (void)setDebugViewControllerEnabled:(BOOL)enabled;
+- (void)setDragging:(BOOL)dragging;
+- (void)setExpandingCornerMaskingThreshold:(double)threshold;
+- (void)setLaneGuidanceActive:(BOOL)active;
+- (void)setLayoutProgress:(double)progress;
+- (void)setRoute:(id)route;
+- (void)setSelectedStepIndex:(unint64_t)index;
+- (void)setShowingSecondaryManeuver:(BOOL)maneuver;
+- (void)toggleExpansionAnimated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFooterConstraints;
 - (void)updateHeightConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NavSignListViewController
@@ -90,14 +90,14 @@
   if (!dataSource)
   {
     v4 = [RouteStepListDataSource alloc];
-    v5 = [(NavSignListViewController *)self traitCollection];
-    v6 = [(RouteStepListDataSource *)v4 initWithTraitCollection:v5 options:8 metrics:self->_metrics context:1];
+    traitCollection = [(NavSignListViewController *)self traitCollection];
+    v6 = [(RouteStepListDataSource *)v4 initWithTraitCollection:traitCollection options:8 metrics:self->_metrics context:1];
     v7 = self->_dataSource;
     self->_dataSource = v6;
 
     [(RouteStepListDataSource *)self->_dataSource setDelegate:self];
-    v8 = [(NavSignListViewController *)self route];
-    [(RouteStepListDataSource *)self->_dataSource setRoute:v8];
+    route = [(NavSignListViewController *)self route];
+    [(RouteStepListDataSource *)self->_dataSource setRoute:route];
 
     [(RouteStepListDataSource *)self->_dataSource setActiveStepIndex:[(NavSignListViewController *)self activeStepIndex]];
     dataSource = self->_dataSource;
@@ -108,10 +108,10 @@
 
 - (void)_processSignUpdate
 {
-  v3 = [(NavSignListViewController *)self activeStepIndex];
-  v4 = [NSIndexPath indexPathForItem:v3 inSection:0];
-  v5 = [(NavSignListViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  activeStepIndex = [(NavSignListViewController *)self activeStepIndex];
+  v4 = [NSIndexPath indexPathForItem:activeStepIndex inSection:0];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:v4];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -122,9 +122,9 @@
     if (v9)
     {
       *buf = 134349314;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2112;
-      v24 = v6;
+      activeStepIndex2 = v6;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating cell content: %@", buf, 0x16u);
     }
 
@@ -136,17 +136,17 @@
     v16 = 3221225472;
     v17 = sub_1000807BC;
     v18 = &unk_101661A90;
-    v19 = self;
+    selfCopy2 = self;
     v20 = v4;
     [UIView performWithoutAnimation:&v15];
     v11 = NSStringFromSelector("collapsedHeight");
-    [(NavSignListViewController *)self didChangeValueForKey:v11, v15, v16, v17, v18, v19];
+    [(NavSignListViewController *)self didChangeValueForKey:v11, v15, v16, v17, v18, selfCopy2];
 
-    v12 = [(NavSignListViewController *)self dataSource];
-    v13 = [v12 items];
-    v14 = [v13 count] - 1;
+    dataSource = [(NavSignListViewController *)self dataSource];
+    items = [dataSource items];
+    v14 = [items count] - 1;
 
-    if (v3 == v14)
+    if (activeStepIndex == v14)
     {
       [(NavSignListViewController *)self _updateCollectionViewBottomInset];
     }
@@ -157,9 +157,9 @@
     if (v9)
     {
       *buf = 134349312;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2048;
-      v24 = [(NavSignListViewController *)self activeStepIndex];
+      activeStepIndex2 = [(NavSignListViewController *)self activeStepIndex];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Cell for active step index (%lu) is not a nav sign maneuver cell; ignoring sign update", buf, 0x16u);
     }
   }
@@ -169,8 +169,8 @@
 {
   [(NavSignListViewController *)self _collapsedSignHeight];
   v4 = v3;
-  v5 = [(NavSignListViewController *)self footerView];
-  [v5 minimumHeight];
+  footerView = [(NavSignListViewController *)self footerView];
+  [footerView minimumHeight];
   v7 = v6 + v4;
 
   return v7;
@@ -180,15 +180,15 @@
 {
   if (self->_isRerouting)
   {
-    v2 = 0;
+    _displayStepIndex = 0;
   }
 
   else
   {
-    v2 = [(NavSignListViewController *)self _displayStepIndex];
+    _displayStepIndex = [(NavSignListViewController *)self _displayStepIndex];
   }
 
-  v3 = [NSIndexPath indexPathForRow:v2 inSection:0];
+  v3 = [NSIndexPath indexPathForRow:_displayStepIndex inSection:0];
 
   return v3;
 }
@@ -202,9 +202,9 @@
 
 - (double)footerBottomPosition
 {
-  v3 = [(DirectionsElevationGraphView *)self->_graphView superview];
+  superview = [(DirectionsElevationGraphView *)self->_graphView superview];
 
-  if (v3)
+  if (superview)
   {
     [(NavSignListViewController *)self _graphTopPosition];
     v5 = v4 + 92.0;
@@ -217,8 +217,8 @@
 
   [(NSLayoutConstraint *)self->_containerViewHeightConstraint constant];
   v7 = v6;
-  v8 = [(NavSignListViewController *)self footerView];
-  [v8 currentHeight];
+  footerView = [(NavSignListViewController *)self footerView];
+  [footerView currentHeight];
   v10 = v7 + v5 + v9;
 
   return v10;
@@ -226,15 +226,15 @@
 
 - (double)_collapsedSignHeight
 {
-  v3 = [(NavSignListViewController *)self dataSource];
-  v4 = [v3 items];
-  v5 = [v4 count];
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
+  v5 = [items count];
 
   if (v5)
   {
-    v6 = [(NavSignListViewController *)self _displayIndexPath];
-    v7 = [(NavSignListViewController *)self collectionView];
-    [(NavSignListViewController *)self collectionView:v7 layout:0 sizeForItemAtIndexPath:v6];
+    _displayIndexPath = [(NavSignListViewController *)self _displayIndexPath];
+    collectionView = [(NavSignListViewController *)self collectionView];
+    [(NavSignListViewController *)self collectionView:collectionView layout:0 sizeForItemAtIndexPath:_displayIndexPath];
     height = v8;
   }
 
@@ -272,8 +272,8 @@
 
 - (BOOL)hasElevationGraph
 {
-  v2 = [(DirectionsElevationGraphView *)self->_graphView superview];
-  v3 = v2 != 0;
+  superview = [(DirectionsElevationGraphView *)self->_graphView superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -290,70 +290,70 @@
       if ([v5 simulationType] - 1 >= 4)
       {
         v7 = +[MNNavigationService sharedService];
-        v6 = [v7 isNavigatingFromTrace];
+        isNavigatingFromTrace = [v7 isNavigatingFromTrace];
       }
 
       else
       {
-        v6 = 1;
+        isNavigatingFromTrace = 1;
       }
     }
 
     else
     {
-      v6 = 0;
+      isNavigatingFromTrace = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    isNavigatingFromTrace = 0;
   }
 
-  return v6;
+  return isNavigatingFromTrace;
 }
 
-- (void)setDebugViewControllerEnabled:(BOOL)a3
+- (void)setDebugViewControllerEnabled:(BOOL)enabled
 {
-  if (self->_debugViewControllerEnabled != a3)
+  if (self->_debugViewControllerEnabled != enabled)
   {
-    self->_debugViewControllerEnabled = a3;
-    if (a3)
+    self->_debugViewControllerEnabled = enabled;
+    if (enabled)
     {
-      v4 = [(NavSignListViewController *)self debugViewController];
-      v5 = [v4 debugControlsView];
+      debugViewController = [(NavSignListViewController *)self debugViewController];
+      debugControlsView = [debugViewController debugControlsView];
 
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v6 = [(NavSignListViewController *)self view];
-      [v6 addSubview:v5];
+      [debugControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(NavSignListViewController *)self view];
+      [view addSubview:debugControlsView];
 
-      v7 = [(NavSignListViewController *)self collectionView];
-      [v7 layoutMargins];
+      collectionView = [(NavSignListViewController *)self collectionView];
+      [collectionView layoutMargins];
       v9 = v8;
       v11 = v10;
 
-      [v5 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+      [debugControlsView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
       v13 = v12;
-      v29 = [v5 leadingAnchor];
-      v28 = [(UIView *)self->_containerView leadingAnchor];
-      v27 = [v29 constraintEqualToAnchor:v28 constant:v9];
+      leadingAnchor = [debugControlsView leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+      v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v9];
       v30[0] = v27;
-      v26 = [v5 trailingAnchor];
-      v14 = [(UIView *)self->_containerView trailingAnchor];
-      v15 = [v26 constraintEqualToAnchor:v14 constant:-v11];
+      trailingAnchor = [debugControlsView trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v11];
       v30[1] = v15;
-      v16 = [v5 heightAnchor];
-      v17 = [v16 constraintEqualToConstant:v13];
+      heightAnchor = [debugControlsView heightAnchor];
+      v17 = [heightAnchor constraintEqualToConstant:v13];
       v30[2] = v17;
-      v18 = [v5 bottomAnchor];
-      v19 = [(NavSignFooterView *)self->_footerView topAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19 constant:-10.0];
+      bottomAnchor = [debugControlsView bottomAnchor];
+      topAnchor = [(NavSignFooterView *)self->_footerView topAnchor];
+      v20 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-10.0];
       v30[3] = v20;
       v21 = [NSArray arrayWithObjects:v30 count:4];
       [NSLayoutConstraint activateConstraints:v21];
 
-      v22 = [(NavSignListViewController *)self debugViewController];
-      [v22 didManuallyAddDebugViews];
+      debugViewController2 = [(NavSignListViewController *)self debugViewController];
+      [debugViewController2 didManuallyAddDebugViews];
     }
 
     else
@@ -361,8 +361,8 @@
       debugViewController = self->_debugViewController;
       if (debugViewController)
       {
-        v24 = [(NavigationDebugViewsController *)debugViewController debugControlsView];
-        [v24 removeFromSuperview];
+        debugControlsView2 = [(NavigationDebugViewsController *)debugViewController debugControlsView];
+        [debugControlsView2 removeFromSuperview];
 
         v25 = self->_debugViewController;
 
@@ -405,22 +405,22 @@
   [GEOAPPortal captureUserAction:v2 target:505 value:0];
 }
 
-- (void)scrollToIndexPath:(id)a3 animated:(BOOL)a4
+- (void)scrollToIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NavSignListViewController *)self collectionView];
-  v8 = [v7 collectionViewLayout];
-  v10 = [v8 layoutAttributesForItemAtIndexPath:v6];
+  animatedCopy = animated;
+  pathCopy = path;
+  collectionView = [(NavSignListViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  v10 = [collectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
 
-  v9 = [(NavSignListViewController *)self collectionView];
+  collectionView2 = [(NavSignListViewController *)self collectionView];
   [v10 frame];
-  [v9 setContentOffset:v4 animated:?];
+  [collectionView2 setContentOffset:animatedCopy animated:?];
 }
 
-- (void)toggleExpansionAnimated:(BOOL)a3
+- (void)toggleExpansionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   expanded = self->_expanded;
   self->_expanded = !expanded;
   v6 = 1.0;
@@ -430,44 +430,44 @@
   }
 
   [(NavSignListViewController *)self setLayoutProgress:v6];
-  v7 = [(NavSignListViewController *)self signDelegate];
-  [v7 signListHeightWillChangeAnimated:v3];
+  signDelegate = [(NavSignListViewController *)self signDelegate];
+  [signDelegate signListHeightWillChangeAnimated:animatedCopy];
 
   [(NavSignListViewController *)self hideVIOLabel:0];
-  v8 = [(NavSignListViewController *)self collectionView];
-  [(NavSignListViewController *)self scrollViewDidScroll:v8];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  [(NavSignListViewController *)self scrollViewDidScroll:collectionView];
 
   [(NavSignListViewController *)self _triggerSignListAnalytics];
   v9 = 0.25;
-  if (!v3)
+  if (!animatedCopy)
   {
     v9 = 0.0;
   }
 
   [(NavSignListViewController *)self _updateLayoutProgressWithDuration:0 completion:v9];
-  [(NavSignListViewController *)self _updateActiveStepIndexAnimated:v3];
+  [(NavSignListViewController *)self _updateActiveStepIndexAnimated:animatedCopy];
   if (!self->_expanded)
   {
     if ([(NavSignListViewController *)self selectedStepIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [(NavSignListViewController *)self signDelegate];
-      [v14 selectStep:0];
+      signDelegate2 = [(NavSignListViewController *)self signDelegate];
+      [signDelegate2 selectStep:0];
     }
 
     else
     {
-      v10 = [(NavSignListViewController *)self dataSource];
-      v11 = [v10 items];
-      v14 = [v11 objectAtIndexedSubscript:{-[NavSignListViewController selectedStepIndex](self, "selectedStepIndex")}];
+      dataSource = [(NavSignListViewController *)self dataSource];
+      items = [dataSource items];
+      signDelegate2 = [items objectAtIndexedSubscript:{-[NavSignListViewController selectedStepIndex](self, "selectedStepIndex")}];
 
-      v12 = [(NavSignListViewController *)self signDelegate];
-      v13 = [v14 step];
-      [v12 selectStep:v13];
+      signDelegate3 = [(NavSignListViewController *)self signDelegate];
+      step = [signDelegate2 step];
+      [signDelegate3 selectStep:step];
     }
   }
 }
 
-- (void)_didTap:(id)a3
+- (void)_didTap:(id)tap
 {
   if ([(NavSignListViewController *)self isConnectedToCarPlay])
   {
@@ -475,7 +475,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Ignoring tap gesture, CarPlay is connected", &v5, 0xCu);
     }
   }
@@ -487,31 +487,31 @@
   }
 }
 
-- (void)_didPan:(id)a3
+- (void)_didPan:(id)pan
 {
-  v4 = a3;
+  panCopy = pan;
   if ([(NavSignListViewController *)self isConnectedToCarPlay])
   {
     v5 = sub_100078974();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v27 = 134349056;
-      v28 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Ignoring pan gesture, CarPlay is connected", &v27, 0xCu);
     }
   }
 
   else
   {
-    v6 = [(NavSignListViewController *)self footerView];
-    [v4 translationInView:v6];
+    footerView = [(NavSignListViewController *)self footerView];
+    [panCopy translationInView:footerView];
     v8 = v7;
 
-    if ([v4 state] == 3)
+    if ([panCopy state] == 3)
     {
       [(NavSignListViewController *)self setDragging:0];
-      v9 = [(NavSignListViewController *)self footerView];
-      [v4 velocityInView:v9];
+      footerView2 = [(NavSignListViewController *)self footerView];
+      [panCopy velocityInView:footerView2];
       v11 = v10;
 
       v12 = v8 + v11 * 0.1;
@@ -542,11 +542,11 @@
       }
 
       v20 = v19 * 0.25;
-      v21 = [(NavSignListViewController *)self signDelegate];
-      [v21 signListHeightWillChangeAnimated:0];
+      signDelegate = [(NavSignListViewController *)self signDelegate];
+      [signDelegate signListHeightWillChangeAnimated:0];
 
-      v22 = [(NavSignListViewController *)self collectionView];
-      [(NavSignListViewController *)self scrollViewDidScroll:v22];
+      collectionView = [(NavSignListViewController *)self collectionView];
+      [(NavSignListViewController *)self scrollViewDidScroll:collectionView];
 
       [(NavSignListViewController *)self _updateLayoutProgressWithDuration:0 completion:v20];
       [(NavSignListViewController *)self _updateActiveStepIndexAnimated:0];
@@ -564,11 +564,11 @@
       }
 
       [(NavSignListViewController *)self setLayoutProgress:v8 / v24];
-      v25 = [(NavSignListViewController *)self signDelegate];
-      [v25 signListHeightWillChangeAnimated:0];
+      signDelegate2 = [(NavSignListViewController *)self signDelegate];
+      [signDelegate2 signListHeightWillChangeAnimated:0];
 
-      v26 = [(NavSignListViewController *)self collectionView];
-      [(NavSignListViewController *)self scrollViewDidScroll:v26];
+      collectionView2 = [(NavSignListViewController *)self collectionView];
+      [(NavSignListViewController *)self scrollViewDidScroll:collectionView2];
 
       [(NavSignListViewController *)self _updateLayoutProgressWithDuration:0 completion:0.0];
     }
@@ -579,17 +579,17 @@
 {
   if (self->_isRerouting)
   {
-    v3 = 0;
+    activeStepIndex = 0;
   }
 
   else
   {
-    v3 = [(NavSignListViewController *)self activeStepIndex];
+    activeStepIndex = [(NavSignListViewController *)self activeStepIndex];
   }
 
-  v11 = [NSIndexPath indexPathForRow:v3 inSection:0];
-  v4 = [(NavSignListViewController *)self collectionView];
-  v5 = [v4 cellForItemAtIndexPath:v11];
+  v11 = [NSIndexPath indexPathForRow:activeStepIndex inSection:0];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  v5 = [collectionView cellForItemAtIndexPath:v11];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -608,10 +608,10 @@
     }
   }
 
-  v6 = [(NavSignListViewController *)self traitCollection];
-  v7 = [v6 isLuminanceReduced];
+  traitCollection = [(NavSignListViewController *)self traitCollection];
+  isLuminanceReduced = [traitCollection isLuminanceReduced];
 
-  if ((v7 & 1) == 0)
+  if ((isLuminanceReduced & 1) == 0)
   {
     v8 = sub_1000808D8();
     [(NavSignListViewController *)self layoutProgress];
@@ -622,11 +622,11 @@
 
 - (double)_signContainerAvailableHeight
 {
-  v3 = [(NavSignListViewController *)self signDelegate];
-  [v3 signListAvailableHeight];
+  signDelegate = [(NavSignListViewController *)self signDelegate];
+  [signDelegate signListAvailableHeight];
   v5 = v4;
-  v6 = [(NavSignListViewController *)self footerView];
-  [v6 maximumHeight];
+  footerView = [(NavSignListViewController *)self footerView];
+  [footerView maximumHeight];
   v8 = v5 - v7;
 
   return v8;
@@ -635,28 +635,28 @@
 - (void)_insertGraphView
 {
   graphContainerView = self->_graphContainerView;
-  v4 = [(NavSignListViewController *)self graphView];
-  [(UIView *)graphContainerView addSubview:v4];
+  graphView = [(NavSignListViewController *)self graphView];
+  [(UIView *)graphContainerView addSubview:graphView];
 
   [(NavSignListViewController *)self _updateGraphContainerTop];
-  v20 = [(NavSignListViewController *)self graphView];
-  v19 = [v20 leadingAnchor];
-  v18 = [(UIView *)self->_graphContainerView leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18 constant:16.0];
+  graphView2 = [(NavSignListViewController *)self graphView];
+  leadingAnchor = [graphView2 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_graphContainerView leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v21[0] = v17;
-  v16 = [(NavSignListViewController *)self graphView];
-  v15 = [v16 trailingAnchor];
-  v5 = [(UIView *)self->_graphContainerView trailingAnchor];
-  v6 = [v15 constraintEqualToAnchor:v5 constant:-16.0];
+  graphView3 = [(NavSignListViewController *)self graphView];
+  trailingAnchor = [graphView3 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_graphContainerView trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v21[1] = v6;
-  v7 = [(NavSignListViewController *)self graphView];
-  v8 = [v7 topAnchor];
-  v9 = [(UIView *)self->_graphContainerView topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:16.0];
+  graphView4 = [(NavSignListViewController *)self graphView];
+  topAnchor = [graphView4 topAnchor];
+  topAnchor2 = [(UIView *)self->_graphContainerView topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v21[2] = v10;
-  v11 = [(NavSignListViewController *)self graphView];
-  v12 = [v11 heightAnchor];
-  v13 = [v12 constraintEqualToConstant:60.0];
+  graphView5 = [(NavSignListViewController *)self graphView];
+  heightAnchor = [graphView5 heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:60.0];
   v21[3] = v13;
   v14 = [NSArray arrayWithObjects:v21 count:4];
   [NSLayoutConstraint activateConstraints:v14];
@@ -664,10 +664,10 @@
 
 - (void)_updateGraphContainerTop
 {
-  v3 = [(DirectionsElevationGraphView *)self->_graphView superview];
+  superview = [(DirectionsElevationGraphView *)self->_graphView superview];
 
   graphContainerView = self->_graphContainerView;
-  if (v3)
+  if (superview)
   {
     [(UIView *)graphContainerView setAlpha:1.0];
     [(NavSignListViewController *)self _graphTopPosition];
@@ -686,12 +686,12 @@
 
 - (void)_updateGraphViewIfNeeded
 {
-  v3 = [(NavSignListViewController *)self route];
-  v4 = [v3 elevationProfile];
+  route = [(NavSignListViewController *)self route];
+  elevationProfile = [route elevationProfile];
 
-  v5 = [(DirectionsElevationGraphView *)self->_graphView superview];
-  v6 = v5;
-  if (v4)
+  superview = [(DirectionsElevationGraphView *)self->_graphView superview];
+  v6 = superview;
+  if (elevationProfile)
   {
 
     if (v6)
@@ -727,10 +727,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NavSignListViewController *)self collectionView];
-  v5 = [v4 indexPathsForVisibleItems];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -741,12 +741,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(NavSignListViewController *)self collectionView];
-        v12 = [v11 cellForItemAtIndexPath:v10];
+        collectionView2 = [(NavSignListViewController *)self collectionView];
+        v12 = [collectionView2 cellForItemAtIndexPath:v10];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -762,7 +762,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -771,23 +771,23 @@
 
 - (void)_cleanupStepCountdowns
 {
-  v3 = [(NavSignListViewController *)self dataSource];
-  v4 = [v3 items];
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
 
-  v5 = [(NavSignListViewController *)self activeStepIndex];
+  activeStepIndex = [(NavSignListViewController *)self activeStepIndex];
   v6 = objc_opt_new();
-  if ([v4 count])
+  if ([items count])
   {
     v7 = 0;
     do
     {
-      v8 = [v4 objectAtIndexedSubscript:v7];
+      v8 = [items objectAtIndexedSubscript:v7];
       v9 = v8;
-      if (v5 != v7)
+      if (activeStepIndex != v7)
       {
-        v10 = [v8 userInfo];
+        userInfo = [v8 userInfo];
 
-        if (v10)
+        if (userInfo)
         {
           v11 = [NSIndexPath indexPathForItem:v7 inSection:0];
           [v6 addObject:v11];
@@ -799,7 +799,7 @@
       ++v7;
     }
 
-    while (v7 < [v4 count]);
+    while (v7 < [items count]);
   }
 
   v22 = 0u;
@@ -823,8 +823,8 @@
         }
 
         v17 = *(*(&v20 + 1) + 8 * v16);
-        v18 = [(NavSignListViewController *)self collectionView];
-        v19 = [v18 cellForItemAtIndexPath:v17];
+        collectionView = [(NavSignListViewController *)self collectionView];
+        v19 = [collectionView cellForItemAtIndexPath:v17];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -847,17 +847,17 @@
 {
   [(NavSignListViewController *)self layoutProgress];
   v4 = v3;
-  v5 = [(NavSignListViewController *)self footerView];
-  [v5 setLayoutProgress:v4];
+  footerView = [(NavSignListViewController *)self footerView];
+  [footerView setLayoutProgress:v4];
 
-  v6 = [(NavSignListViewController *)self footerView];
-  [v6 currentHeight];
+  footerView2 = [(NavSignListViewController *)self footerView];
+  [footerView2 currentHeight];
   v8 = v7;
 
   [(NSLayoutConstraint *)self->_footerHeightConstraint setConstant:v8];
   [(NavSignListViewController *)self _updateGraphContainerTop];
-  v9 = [(DirectionsElevationGraphView *)self->_graphView superview];
-  if (v9)
+  superview = [(DirectionsElevationGraphView *)self->_graphView superview];
+  if (superview)
   {
     v10 = 92.0;
   }
@@ -877,8 +877,8 @@
   [(NSLayoutConstraint *)self->_gradientViewTopConstraint setConstant:v12];
   [(NavSignListViewController *)self layoutProgress];
   [(MUGradientView *)self->_gradientView setAlpha:?];
-  v17 = [(NavSignListViewController *)self signDelegate];
-  [v17 setSignListHeight:v16 + v8];
+  signDelegate = [(NavSignListViewController *)self signDelegate];
+  [signDelegate setSignListHeight:v16 + v8];
 
   if (self->_expanded)
   {
@@ -906,9 +906,9 @@
 
 - (void)_updateLaneGuidancePositioning
 {
-  v3 = [(NavSignListViewController *)self view];
-  v4 = [v3 superview];
-  [v4 layoutIfNeeded];
+  view = [(NavSignListViewController *)self view];
+  superview = [view superview];
+  [superview layoutIfNeeded];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -918,51 +918,51 @@
   [UIView animateWithDuration:117440512 delay:v5 options:0 animations:0.3 completion:0.0];
 }
 
-- (void)_updateLayoutProgressWithDuration:(double)a3 completion:(id)a4
+- (void)_updateLayoutProgressWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(NavSignListViewController *)self signDelegate];
-  v8 = [v7 blockToAnimateAlongWithSignHeightChanges];
+  completionCopy = completion;
+  signDelegate = [(NavSignListViewController *)self signDelegate];
+  blockToAnimateAlongWithSignHeightChanges = [signDelegate blockToAnimateAlongWithSignHeightChanges];
 
-  v9 = [(NavSignListViewController *)self view];
-  v10 = [v9 superview];
-  [v10 layoutIfNeeded];
+  view = [(NavSignListViewController *)self view];
+  superview = [view superview];
+  [superview layoutIfNeeded];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100683ABC;
   v15[3] = &unk_101661090;
   v15[4] = self;
-  v16 = v8;
+  v16 = blockToAnimateAlongWithSignHeightChanges;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100683B48;
   v13[3] = &unk_101655D58;
   v13[4] = self;
-  v14 = v6;
-  v11 = v6;
-  v12 = v8;
-  [UIView animateWithDuration:117440512 delay:v15 options:v13 animations:a3 completion:0.0];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  v12 = blockToAnimateAlongWithSignHeightChanges;
+  [UIView animateWithDuration:117440512 delay:v15 options:v13 animations:duration completion:0.0];
 }
 
-- (void)_updateActiveStepIndexAnimated:(BOOL)a3
+- (void)_updateActiveStepIndexAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NavSignListViewController *)self dataSource];
-  v6 = [v5 items];
-  v7 = [v6 count];
+  animatedCopy = animated;
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
+  v7 = [items count];
 
   if (v7)
   {
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 postNotificationName:@"MapsPPTGuidanceWillUpdateNotifcation" object:0];
 
-    v9 = [(NavSignListViewController *)self view];
-    v10 = [v9 superview];
-    [v10 layoutIfNeeded];
+    view = [(NavSignListViewController *)self view];
+    superview = [view superview];
+    [superview layoutIfNeeded];
 
-    v11 = [(NavSignListViewController *)self _displayIndexPath];
-    if (v3)
+    _displayIndexPath = [(NavSignListViewController *)self _displayIndexPath];
+    if (animatedCopy)
     {
       v12 = 0.25;
     }
@@ -977,42 +977,42 @@
     v15[2] = sub_100683D64;
     v15[3] = &unk_101661A90;
     v15[4] = self;
-    v16 = v11;
+    v16 = _displayIndexPath;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100683E94;
     v14[3] = &unk_101661738;
     v14[4] = self;
-    v13 = v11;
+    v13 = _displayIndexPath;
     [UIView animateWithDuration:117440512 delay:v15 options:v14 animations:v12 completion:0.0];
   }
 }
 
-- (void)_updateRoute:(id)a3
+- (void)_updateRoute:(id)route
 {
-  v4 = a3;
-  if (v4)
+  routeCopy = route;
+  if (routeCopy)
   {
-    v5 = v4;
+    route = routeCopy;
     v6 = sub_100078974();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 uniqueRouteID];
+      uniqueRouteID = [route uniqueRouteID];
       v16 = 134349314;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
-      v19 = v7;
+      v19 = uniqueRouteID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Updating route (%@) from navigation callback", &v16, 0x16u);
     }
 
-    [(NavSignListViewController *)self setRoute:v5];
+    [(NavSignListViewController *)self setRoute:route];
   }
 
   else
   {
     v8 = +[MNNavigationService sharedService];
     v9 = +[MNNavigationService sharedService];
-    v5 = [v9 route];
+    route = [v9 route];
 
     [v8 state];
     IsNavigating = MNNavigationServiceStateIsNavigating();
@@ -1020,7 +1020,7 @@
     v12 = v11;
     if (IsNavigating)
     {
-      v13 = v5 == 0;
+      v13 = route == 0;
     }
 
     else
@@ -1033,7 +1033,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v16 = 134349056;
-        v17 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[%{public}p] Skipped updating route from navigation service", &v16, 0xCu);
       }
     }
@@ -1042,24 +1042,24 @@
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v15 = [v5 uniqueRouteID];
+        uniqueRouteID2 = [route uniqueRouteID];
         v16 = 134349314;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2112;
-        v19 = v15;
+        v19 = uniqueRouteID2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Updating route (%@) from navigation service", &v16, 0x16u);
       }
 
-      [(NavSignListViewController *)self setRoute:v5];
+      [(NavSignListViewController *)self setRoute:route];
     }
   }
 }
 
-- (void)_handleNewRoute:(id)a3
+- (void)_handleNewRoute:(id)route
 {
   self->_isRerouting = 0;
   self->_selectedStepIndex = 0x7FFFFFFFFFFFFFFFLL;
-  [(NavSignListViewController *)self _updateRoute:a3];
+  [(NavSignListViewController *)self _updateRoute:route];
 
   [(NavSignListViewController *)self _updateCollectionViewBottomInset];
 }
@@ -1070,8 +1070,8 @@
   [(NavSignListViewController *)self willChangeValueForKey:v3];
 
   self->_isRerouting = 0;
-  v4 = [(NavSignListViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(NavSignListViewController *)self _updateActiveStepIndexAnimated:0];
   v5 = NSStringFromSelector("collapsedHeight");
@@ -1080,16 +1080,16 @@
   [(NavSignListViewController *)self _updateCollectionViewBottomInset];
 }
 
-- (void)navigationServiceWillReroute:(id)a3
+- (void)navigationServiceWillReroute:(id)reroute
 {
-  if ([a3 arrivalState] == 1)
+  if ([reroute arrivalState] == 1)
   {
     v4 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self willChangeValueForKey:v4];
 
     self->_isRerouting = 1;
-    v5 = [(NavSignListViewController *)self collectionView];
-    [v5 reloadData];
+    collectionView = [(NavSignListViewController *)self collectionView];
+    [collectionView reloadData];
 
     [(NavSignListViewController *)self _updateActiveStepIndexAnimated:1];
     v6 = NSStringFromSelector("collapsedHeight");
@@ -1099,19 +1099,19 @@
   }
 }
 
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   [(NavSignListViewController *)self setLaneGuidanceActive:0];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = self;
-  v6 = [(NavSignListViewController *)self dataSource];
-  v7 = [v6 items];
+  selfCopy = self;
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
 
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v8 = [items countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1122,81 +1122,81 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(items);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 userInfo];
+        userInfo = [v12 userInfo];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v15 = [v12 userInfo];
-          v16 = [v15 uniqueID];
-          v17 = v5;
-          if (!(v5 | v16) || (v18 = v17, v19 = [v16 isEqual:v17], v18, v16, v16, v19))
+          userInfo2 = [v12 userInfo];
+          uniqueID = [userInfo2 uniqueID];
+          v17 = idCopy;
+          if (!(idCopy | uniqueID) || (v18 = v17, v19 = [uniqueID isEqual:v17], v18, uniqueID, uniqueID, v19))
           {
             [v12 setUserInfo:0];
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v9 = [items countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v9);
   }
 
-  v20 = [(NavSignListViewController *)v26 activeStepIndex];
-  v21 = [(NavSignListViewController *)v26 dataSource];
-  v22 = [v21 items];
-  if (v20 >= [v22 count])
+  activeStepIndex = [(NavSignListViewController *)selfCopy activeStepIndex];
+  dataSource2 = [(NavSignListViewController *)selfCopy dataSource];
+  items2 = [dataSource2 items];
+  if (activeStepIndex >= [items2 count])
   {
     v25 = 0;
   }
 
   else
   {
-    v23 = [(NavSignListViewController *)v26 dataSource];
-    v24 = [v23 items];
-    v25 = [v24 objectAtIndexedSubscript:v20];
+    dataSource3 = [(NavSignListViewController *)selfCopy dataSource];
+    items3 = [dataSource3 items];
+    v25 = [items3 objectAtIndexedSubscript:activeStepIndex];
   }
 
-  [v25 setUserInfo:v26->_latestSignGuidance];
-  [(NavSignListViewController *)v26 _processSignUpdate];
+  [v25 setUserInfo:selfCopy->_latestSignGuidance];
+  [(NavSignListViewController *)selfCopy _processSignUpdate];
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
-  v32 = a4;
-  v5 = [v32 titles];
-  v6 = [v5 count];
+  directionsCopy = directions;
+  titles = [directionsCopy titles];
+  v6 = [titles count];
 
   if (v6)
   {
-    v7 = v32;
+    v7 = directionsCopy;
   }
 
   else
   {
     v31 = [MNGuidanceLaneInfo alloc];
-    v8 = [v32 uniqueID];
-    v9 = [v32 isForManeuver];
-    v10 = [v32 lanes];
-    v11 = [(MNGuidanceSignInfo *)self->_latestSignGuidance primarySign];
-    v12 = [v11 titles];
-    v13 = [v32 instructions];
-    v14 = [v32 variableOverrides];
-    v15 = [v32 distanceDetailLevel];
-    LODWORD(v30) = [v32 composedGuidanceEventIndex];
-    v29 = v15;
-    v16 = v8;
-    v17 = [v31 initWithID:v8 isForManeuver:v9 lanes:v10 titles:v12 instructions:v13 variableOverrides:v14 distanceDetailLevel:v29 composedGuidanceEventIndex:v30];
+    uniqueID = [directionsCopy uniqueID];
+    isForManeuver = [directionsCopy isForManeuver];
+    lanes = [directionsCopy lanes];
+    primarySign = [(MNGuidanceSignInfo *)self->_latestSignGuidance primarySign];
+    titles2 = [primarySign titles];
+    instructions = [directionsCopy instructions];
+    variableOverrides = [directionsCopy variableOverrides];
+    distanceDetailLevel = [directionsCopy distanceDetailLevel];
+    LODWORD(v30) = [directionsCopy composedGuidanceEventIndex];
+    v29 = distanceDetailLevel;
+    v16 = uniqueID;
+    v17 = [v31 initWithID:uniqueID isForManeuver:isForManeuver lanes:lanes titles:titles2 instructions:instructions variableOverrides:variableOverrides distanceDetailLevel:v29 composedGuidanceEventIndex:v30];
 
-    v18 = [(MNGuidanceSignInfo *)self->_latestSignGuidance primarySign];
-    v19 = [v18 primaryStrings];
-    [v17 setPrimaryStrings:v19];
+    primarySign2 = [(MNGuidanceSignInfo *)self->_latestSignGuidance primarySign];
+    primaryStrings = [primarySign2 primaryStrings];
+    [v17 setPrimaryStrings:primaryStrings];
 
     v7 = v17;
   }
@@ -1204,23 +1204,23 @@
   v33 = v7;
   objc_storeStrong(&self->_latestLaneInfo, v7);
   [(NavSignListViewController *)self setLaneGuidanceActive:1];
-  v20 = [(NavSignListViewController *)self activeStepIndex];
-  v21 = [(NavSignListViewController *)self dataSource];
-  v22 = [v21 items];
-  if (v20 >= [v22 count])
+  activeStepIndex = [(NavSignListViewController *)self activeStepIndex];
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
+  if (activeStepIndex >= [items count])
   {
     v25 = 0;
   }
 
   else
   {
-    v23 = [(NavSignListViewController *)self dataSource];
-    v24 = [v23 items];
-    v25 = [v24 objectAtIndexedSubscript:v20];
+    dataSource2 = [(NavSignListViewController *)self dataSource];
+    items2 = [dataSource2 items];
+    v25 = [items2 objectAtIndexedSubscript:activeStepIndex];
   }
 
-  v26 = [v25 userInfo];
-  if ([v33 isForManeuver] && (latestSignGuidance = self->_latestSignGuidance, v26 != latestSignGuidance) || (objc_msgSend(v33, "isForManeuver") & 1) == 0 && (v28 = objc_msgSend(v33, "isEqual:", v26), latestSignGuidance = v33, (v28 & 1) == 0))
+  userInfo = [v25 userInfo];
+  if ([v33 isForManeuver] && (latestSignGuidance = self->_latestSignGuidance, userInfo != latestSignGuidance) || (objc_msgSend(v33, "isForManeuver") & 1) == 0 && (v28 = objc_msgSend(v33, "isEqual:", userInfo), latestSignGuidance = v33, (v28 & 1) == 0))
   {
     [v25 setUserInfo:latestSignGuidance];
   }
@@ -1228,13 +1228,13 @@
   [(NavSignListViewController *)self _processSignUpdate];
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v15 = a5;
-  v7 = [(NavSignListViewController *)self route];
-  [v7 distance];
+  distanceCopy = distance;
+  route = [(NavSignListViewController *)self route];
+  [route distance];
   v9 = v8;
-  [v15 distanceRemainingToEndOfLeg];
+  [distanceCopy distanceRemainingToEndOfLeg];
   if (v9 < v10)
   {
     [(DirectionsElevationGraphView *)self->_graphView setNavigationProgress:0.0];
@@ -1242,24 +1242,24 @@
 
   else
   {
-    v11 = [(NavSignListViewController *)self route];
-    [v11 distance];
+    route2 = [(NavSignListViewController *)self route];
+    [route2 distance];
     v13 = v12;
-    [v15 distanceRemainingToEndOfLeg];
+    [distanceCopy distanceRemainingToEndOfLeg];
     [(DirectionsElevationGraphView *)self->_graphView setNavigationProgress:v13 - v14];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index
 {
-  v9 = [(NavSignListViewController *)self route:a3];
-  v10 = [v9 isWalkingOnlyTransitRoute];
+  v9 = [(NavSignListViewController *)self route:service];
+  isWalkingOnlyTransitRoute = [v9 isWalkingOnlyTransitRoute];
 
-  if (v10)
+  if (isWalkingOnlyTransitRoute)
   {
-    v11 = [(NavSignListViewController *)self dataSource];
-    v12 = [v11 items];
-    v13 = [v12 count];
+    dataSource = [(NavSignListViewController *)self dataSource];
+    items = [dataSource items];
+    v13 = [items count];
 
     if (!v13)
     {
@@ -1267,15 +1267,15 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v29 = 134349056;
-        v30 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}p] Our data source is empty; ignoring distance info update", &v29, 0xCu);
       }
 
       goto LABEL_18;
     }
 
-    v14 = [(NavSignListViewController *)self dataSource];
-    v15 = [v14 itemIndexForStepIndex:a6];
+    dataSource2 = [(NavSignListViewController *)self dataSource];
+    v15 = [dataSource2 itemIndexForStepIndex:index];
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1287,98 +1287,98 @@
       v16 = v15;
     }
 
-    v17 = [(NavSignListViewController *)self activeStepIndex];
+    activeStepIndex = [(NavSignListViewController *)self activeStepIndex];
     [(NavSignListViewController *)self setActiveStepIndex:v16];
-    v18 = [(NavSignListViewController *)self dataSource];
-    v19 = [v18 items];
-    v20 = [v19 objectAtIndexedSubscript:v16];
+    dataSource3 = [(NavSignListViewController *)self dataSource];
+    items2 = [dataSource3 items];
+    v20 = [items2 objectAtIndexedSubscript:v16];
 
     v21 = sub_100078974();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v20 userInfo];
+      userInfo = [v20 userInfo];
       v29 = 134349314;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
-      v32 = v22;
+      v32 = userInfo;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] Existing item user info: %@", &v29, 0x16u);
     }
 
-    v23 = [v20 userInfo];
+    userInfo2 = [v20 userInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v25 = [NSNumber numberWithDouble:a4];
+      v25 = [NSNumber numberWithDouble:maneuver];
       [v20 setUserInfo:v25];
 
       [v20 setState:2];
       [(NavSignListViewController *)self _processSignUpdate];
     }
 
-    if (v17 == v16)
+    if (activeStepIndex == v16)
     {
       if (self->_expanded || self->_layoutProgress > 0.0)
       {
-        v26 = [(NavSignListViewController *)self collectionView];
-        [(NavSignListViewController *)self scrollViewDidScroll:v26];
+        collectionView = [(NavSignListViewController *)self collectionView];
+        [(NavSignListViewController *)self scrollViewDidScroll:collectionView];
 
 LABEL_18:
         return;
       }
 
-      v27 = self;
+      selfCopy4 = self;
       v28 = 0;
     }
 
     else
     {
-      v27 = self;
+      selfCopy4 = self;
       v28 = 1;
     }
 
-    [(NavSignListViewController *)v27 _updateActiveStepIndexAnimated:v28];
+    [(NavSignListViewController *)selfCopy4 _updateActiveStepIndexAnimated:v28];
     goto LABEL_18;
   }
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  infoCopy = info;
   v8 = sub_100078974();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v36 = 134349314;
-    v37 = self;
+    selfCopy7 = self;
     v38 = 2112;
-    v39 = v7;
+    v39 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Got an updated sign info: %@", &v36, 0x16u);
   }
 
-  objc_storeStrong(&self->_latestSignGuidance, a4);
-  v9 = [(NavSignListViewController *)self dataSource];
-  v10 = [v9 items];
-  v11 = [v10 count];
+  objc_storeStrong(&self->_latestSignGuidance, info);
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
+  v11 = [items count];
 
   if (!v11)
   {
-    v21 = [v6 route];
-    v26 = [(NavSignListViewController *)self route];
-    v27 = [v6 navigationState];
+    route = [serviceCopy route];
+    route2 = [(NavSignListViewController *)self route];
+    navigationState = [serviceCopy navigationState];
     v28 = sub_100078974();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_INFO);
-    if (!v26 && v21 && v27 == 2)
+    if (!route2 && route && navigationState == 2)
     {
       if (v29)
       {
         v36 = 134349056;
-        v37 = self;
+        selfCopy7 = self;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}p] Our data source is empty; attempting to recover", &v36, 0xCu);
       }
 
-      [(NavSignListViewController *)self _handleNewRoute:v21];
+      [(NavSignListViewController *)self _handleNewRoute:route];
     }
 
     else
@@ -1386,7 +1386,7 @@ LABEL_18:
       if (v29)
       {
         v36 = 134349056;
-        v37 = self;
+        selfCopy7 = self;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}p] Our data source is empty; ignoring sign info update", &v36, 0xCu);
       }
     }
@@ -1394,114 +1394,114 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  v12 = [(NavSignListViewController *)self activeStepIndex];
-  v13 = [(NavSignListViewController *)self dataSource];
-  v14 = [v13 items];
-  v15 = [v14 count];
+  activeStepIndex = [(NavSignListViewController *)self activeStepIndex];
+  dataSource2 = [(NavSignListViewController *)self dataSource];
+  items2 = [dataSource2 items];
+  v15 = [items2 count];
 
-  if (v12 < v15)
+  if (activeStepIndex < v15)
   {
-    v16 = [(NavSignListViewController *)self dataSource];
-    v17 = [v16 itemIndexForStepIndex:{objc_msgSend(v7, "stepIndex")}];
+    dataSource3 = [(NavSignListViewController *)self dataSource];
+    v17 = [dataSource3 itemIndexForStepIndex:{objc_msgSend(infoCopy, "stepIndex")}];
 
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = 0;
     }
 
-    v18 = [(NavSignListViewController *)self activeStepIndex];
+    activeStepIndex2 = [(NavSignListViewController *)self activeStepIndex];
     [(NavSignListViewController *)self setActiveStepIndex:v17];
-    v19 = [(NavSignListViewController *)self dataSource];
-    v20 = [v19 items];
-    v21 = [v20 objectAtIndexedSubscript:v17];
+    dataSource4 = [(NavSignListViewController *)self dataSource];
+    items3 = [dataSource4 items];
+    route = [items3 objectAtIndexedSubscript:v17];
 
     v22 = sub_100078974();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v21 userInfo];
+      userInfo = [route userInfo];
       v36 = 134349314;
-      v37 = self;
+      selfCopy7 = self;
       v38 = 2112;
-      v39 = v23;
+      v39 = userInfo;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] Existing item user info: %@", &v36, 0x16u);
     }
 
-    v24 = [v21 userInfo];
+    userInfo2 = [route userInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      [v21 setUserInfo:v7];
-      [v21 setState:2];
+      [route setUserInfo:infoCopy];
+      [route setState:2];
       [(NavSignListViewController *)self _processSignUpdate];
     }
 
-    if (v18 == v17)
+    if (activeStepIndex2 == v17)
     {
       if (self->_expanded || self->_layoutProgress > 0.0)
       {
-        v26 = [(NavSignListViewController *)self collectionView];
-        [(NavSignListViewController *)self scrollViewDidScroll:v26];
+        route2 = [(NavSignListViewController *)self collectionView];
+        [(NavSignListViewController *)self scrollViewDidScroll:route2];
 LABEL_26:
 
         goto LABEL_29;
       }
 
-      v34 = self;
+      selfCopy6 = self;
       v35 = 0;
     }
 
     else
     {
-      v34 = self;
+      selfCopy6 = self;
       v35 = 1;
     }
 
-    [(NavSignListViewController *)v34 _updateActiveStepIndexAnimated:v35];
+    [(NavSignListViewController *)selfCopy6 _updateActiveStepIndexAnimated:v35];
     goto LABEL_29;
   }
 
-  v21 = sub_100078974();
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+  route = sub_100078974();
+  if (os_log_type_enabled(route, OS_LOG_TYPE_INFO))
   {
-    v30 = [(NavSignListViewController *)self activeStepIndex];
-    v31 = [(NavSignListViewController *)self dataSource];
-    v32 = [v31 items];
-    v33 = [v32 count];
+    activeStepIndex3 = [(NavSignListViewController *)self activeStepIndex];
+    dataSource5 = [(NavSignListViewController *)self dataSource];
+    items4 = [dataSource5 items];
+    v33 = [items4 count];
     v36 = 134349568;
-    v37 = self;
+    selfCopy7 = self;
     v38 = 2048;
-    v39 = v30;
+    v39 = activeStepIndex3;
     v40 = 2048;
     v41 = v33;
-    _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] The active step index (%lu) is larger than our data source items (%lu); ignoring sign info update", &v36, 0x20u);
+    _os_log_impl(&_mh_execute_header, route, OS_LOG_TYPE_INFO, "[%{public}p] The active step index (%lu) is larger than our data source items (%lu); ignoring sign info update", &v36, 0x20u);
   }
 
 LABEL_29:
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(NavSignListViewController *)self view];
-  v5 = [v4 window];
-  [v5 safeAreaInsets];
+  view = [(NavSignListViewController *)self view];
+  window = [view window];
+  [window safeAreaInsets];
   v6 = 20.0;
   if (v7 <= 20.0)
   {
-    v8 = [(NavSignListViewController *)self view];
-    v9 = [v8 window];
-    [v9 safeAreaInsets];
+    view2 = [(NavSignListViewController *)self view];
+    window2 = [view2 window];
+    [window2 safeAreaInsets];
     v6 = v10;
   }
 
-  v11 = [(NavSignListViewController *)self collectionView];
-  [v11 contentOffset];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  [collectionView contentOffset];
   v13 = v12;
 
   v21 = [NSIndexPath indexPathForItem:[(NavSignListViewController *)self activeStepIndex] inSection:0];
-  v14 = [(NavSignListViewController *)self collectionView];
-  v15 = [v14 cellForItemAtIndexPath:v21];
+  collectionView2 = [(NavSignListViewController *)self collectionView];
+  v15 = [collectionView2 cellForItemAtIndexPath:v21];
 
   v16 = 0.0;
   if (v15)
@@ -1531,15 +1531,15 @@ LABEL_29:
   }
 
   self->_activeStepFadeIn = v16;
-  v20 = [(NavSignListViewController *)self signDelegate];
-  [v20 signListDidScroll];
+  signDelegate = [(NavSignListViewController *)self signDelegate];
+  [signDelegate signListDidScroll];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
   computedWidth = self->_computedWidth;
   if (computedWidth)
   {
@@ -1559,11 +1559,11 @@ LABEL_29:
 
   else
   {
-    v15 = [(NavSignListViewController *)self dataSource];
-    v16 = [v15 items];
-    v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
+    dataSource = [(NavSignListViewController *)self dataSource];
+    items = [dataSource items];
+    v17 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v18 = [v17 cellClass];
+    cellClass = [v17 cellClass];
     if (qword_10195F520 != -1)
     {
       dispatch_once(&qword_10195F520, &stru_101657A70);
@@ -1575,7 +1575,7 @@ LABEL_29:
       v19 = 200.0;
     }
 
-    [v18 heightForItem:v17 width:cardWidth maximumHeight:v19];
+    [cellClass heightForItem:v17 width:cardWidth maximumHeight:v19];
     v21 = v20;
     if (qword_10195F520 != -1)
     {
@@ -1603,7 +1603,7 @@ LABEL_29:
 
     else
     {
-      v23 = [v17 cellClass];
+      cellClass2 = [v17 cellClass];
       if (qword_10195F520 != -1)
       {
         dispatch_once(&qword_10195F520, &stru_101657A70);
@@ -1615,7 +1615,7 @@ LABEL_29:
         v24 = 200.0;
       }
 
-      [v23 heightForItem:v17 width:cardWidth maximumHeight:v24];
+      [cellClass2 heightForItem:v17 width:cardWidth maximumHeight:v24];
       v14 = v25;
     }
   }
@@ -1627,14 +1627,14 @@ LABEL_29:
   return result;
 }
 
-- (unint64_t)_stateForItemIndex:(unint64_t)a3
+- (unint64_t)_stateForItemIndex:(unint64_t)index
 {
-  if ([(NavSignListViewController *)self activeStepIndex]> a3)
+  if ([(NavSignListViewController *)self activeStepIndex]> index)
   {
     return 0;
   }
 
-  if ([(NavSignListViewController *)self activeStepIndex]== a3)
+  if ([(NavSignListViewController *)self activeStepIndex]== index)
   {
     return 1;
   }
@@ -1642,40 +1642,40 @@ LABEL_29:
   return 2;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 row];
-    v10 = [(NavSignListViewController *)self dataSource];
-    v11 = [v10 items];
-    v12 = [v11 objectAtIndexedSubscript:v9];
+    v9 = [pathCopy row];
+    dataSource = [(NavSignListViewController *)self dataSource];
+    items = [dataSource items];
+    v12 = [items objectAtIndexedSubscript:v9];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1006855EC;
     v14[3] = &unk_10165EB08;
     v15 = v12;
-    v16 = self;
-    v17 = v7;
+    selfCopy = self;
+    v17 = cellCopy;
     v18 = v9;
     v13 = v12;
     [UIView performWithoutAnimation:v14];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   if (self->_isRerouting)
   {
-    v6 = a4;
-    v7 = a3;
+    pathCopy = path;
+    viewCopy = view;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+    v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
     [v10 startAnimating];
     [(NavSignListViewController *)self layoutProgress];
@@ -1684,15 +1684,15 @@ LABEL_29:
 
   else
   {
-    v11 = a4;
-    v12 = a3;
-    v13 = [v11 row];
-    v14 = [(NavSignListViewController *)self dataSource];
-    v15 = [v14 items];
-    v16 = [v15 objectAtIndexedSubscript:v13];
+    pathCopy2 = path;
+    viewCopy2 = view;
+    v13 = [pathCopy2 row];
+    dataSource = [(NavSignListViewController *)self dataSource];
+    items = [dataSource items];
+    v16 = [items objectAtIndexedSubscript:v13];
 
     v17 = NSStringFromClass([v16 cellClass]);
-    v18 = [v12 dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:v11];
+    v18 = [viewCopy2 dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:pathCopy2];
 
     [v16 setShowsHairline:{-[NavSignListViewController _showsHairlineForItemIndex:](self, "_showsHairlineForItemIndex:", v13)}];
     [v18 setItem:v16];
@@ -1723,23 +1723,23 @@ LABEL_29:
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if (self->_isRerouting)
   {
     return 1;
   }
 
-  v5 = [(NavSignListViewController *)self dataSource:a3];
-  v6 = [v5 items];
-  v7 = [v6 count];
+  v5 = [(NavSignListViewController *)self dataSource:view];
+  items = [v5 items];
+  v7 = [items count];
 
   return v7;
 }
 
-- (Class)cellClassForItemType:(unint64_t)a3
+- (Class)cellClassForItemType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = objc_opt_class();
   }
@@ -1755,8 +1755,8 @@ LABEL_29:
 - (void)_reapplySignCountdown
 {
   activeStepIndex = self->_activeStepIndex;
-  v4 = [(RouteStepListDataSource *)self->_dataSource items];
-  v5 = [v4 count];
+  items = [(RouteStepListDataSource *)self->_dataSource items];
+  v5 = [items count];
 
   if (activeStepIndex < v5)
   {
@@ -1766,38 +1766,38 @@ LABEL_29:
     }
 
     v9 = *p_latestSignGuidance;
-    v7 = [(RouteStepListDataSource *)self->_dataSource items];
-    v8 = [v7 objectAtIndexedSubscript:activeStepIndex];
+    items2 = [(RouteStepListDataSource *)self->_dataSource items];
+    v8 = [items2 objectAtIndexedSubscript:activeStepIndex];
     [v8 setUserInfo:v9];
   }
 }
 
-- (void)reloadStepIndices:(id)a3 forDataSource:(id)a4
+- (void)reloadStepIndices:(id)indices forDataSource:(id)source
 {
   if (!self->_isRerouting)
   {
-    v5 = a3;
+    indicesCopy = indices;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100685BA4;
     v8[3] = &unk_101656938;
     v9 = objc_opt_new();
     v6 = v9;
-    [v5 enumerateIndexesUsingBlock:v8];
+    [indicesCopy enumerateIndexesUsingBlock:v8];
 
-    v7 = [(NavSignListViewController *)self collectionView];
-    [v7 reloadItemsAtIndexPaths:v6];
+    collectionView = [(NavSignListViewController *)self collectionView];
+    [collectionView reloadItemsAtIndexPaths:v6];
   }
 }
 
-- (void)reloadUIForDataSource:(id)a3
+- (void)reloadUIForDataSource:(id)source
 {
   v4 = NSStringFromSelector("collapsedHeight");
   [(NavSignListViewController *)self willChangeValueForKey:v4];
 
   [(NavSignListViewController *)self _reapplySignCountdown];
-  v5 = [(NavSignListViewController *)self collectionView];
-  [v5 reloadData];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  [collectionView reloadData];
 
   v6 = NSStringFromSelector("collapsedHeight");
   [(NavSignListViewController *)self didChangeValueForKey:v6];
@@ -1805,14 +1805,14 @@ LABEL_29:
   [(NavSignListViewController *)self _updateActiveStepIndexAnimated:0];
 }
 
-- (void)reloadDataSource:(id)a3
+- (void)reloadDataSource:(id)source
 {
   v4 = NSStringFromSelector("collapsedHeight");
   [(NavSignListViewController *)self willChangeValueForKey:v4];
 
-  v5 = [(NavSignListViewController *)self dataSource];
+  dataSource = [(NavSignListViewController *)self dataSource];
   v6 = +[MNNavigationService sharedService];
-  v7 = [v5 itemIndexForStepIndex:{objc_msgSend(v6, "stepIndex")}];
+  v7 = [dataSource itemIndexForStepIndex:{objc_msgSend(v6, "stepIndex")}];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1826,8 +1826,8 @@ LABEL_29:
 
   self->_activeStepIndex = v8;
   [(NavSignListViewController *)self _reapplySignCountdown];
-  v9 = [(NavSignListViewController *)self collectionView];
-  [v9 reloadData];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(RouteStepListDataSource *)self->_dataSource setActiveStepIndex:self->_activeStepIndex];
   v10 = NSStringFromSelector("collapsedHeight");
@@ -1836,26 +1836,26 @@ LABEL_29:
   [(NavSignListViewController *)self _updateActiveStepIndexAnimated:0];
 }
 
-- (void)cell:(id)a3 setPressed:(BOOL)a4
+- (void)cell:(id)cell setPressed:(BOOL)pressed
 {
-  v6 = a3;
+  cellCopy = cell;
   if (GEOConfigGetBOOL() && self->_expanded)
   {
-    if (a4)
+    if (pressed)
     {
-      [v6 setSelectedWithLayoutProgress:1.0];
-      v7 = [(NavSignListViewController *)self collectionView];
-      v8 = [v7 indexPathForCell:v6];
+      [cellCopy setSelectedWithLayoutProgress:1.0];
+      collectionView = [(NavSignListViewController *)self collectionView];
+      v8 = [collectionView indexPathForCell:cellCopy];
 
       if (v8)
       {
         v9 = [v8 row];
         if (v9 != [(NavSignListViewController *)self activeStepIndex])
         {
-          v10 = self;
+          selfCopy3 = self;
           v11 = v9;
 LABEL_14:
-          [(NavSignListViewController *)v10 setSelectedStepIndex:v11];
+          [(NavSignListViewController *)selfCopy3 setSelectedStepIndex:v11];
 
           goto LABEL_15;
         }
@@ -1867,26 +1867,26 @@ LABEL_14:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           v15 = 134349314;
-          v16 = self;
+          selfCopy2 = self;
           v17 = 2112;
-          v18 = v6;
+          v18 = cellCopy;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}p] Selected cell: %@ but no indexPath available", &v15, 0x16u);
         }
       }
 
-      v10 = self;
+      selfCopy3 = self;
       v11 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_14;
     }
 
-    v12 = [v6 state];
+    state = [cellCopy state];
     v13 = 0.0;
-    if (v12 == 1)
+    if (state == 1)
     {
       v13 = 1.0;
     }
 
-    [v6 setSelectedWithLayoutProgress:v13];
+    [cellCopy setSelectedWithLayoutProgress:v13];
     [(NavSignListViewController *)self setSelectedStepIndex:0x7FFFFFFFFFFFFFFFLL];
   }
 
@@ -1895,31 +1895,31 @@ LABEL_15:
 
 - (void)_updateCollectionViewBottomInset
 {
-  v3 = [(NavSignListViewController *)self viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(NavSignListViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(NavSignListViewController *)self collectionView];
-    [v5 contentInset];
+    collectionView = [(NavSignListViewController *)self collectionView];
+    [collectionView contentInset];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(NavSignListViewController *)self collectionView];
-    [v12 frame];
+    collectionView2 = [(NavSignListViewController *)self collectionView];
+    [collectionView2 frame];
     Height = CGRectGetHeight(v18);
     [(NavSignListViewController *)self _lastSignHeight];
     v15 = Height - v14;
 
-    v16 = [(NavSignListViewController *)self collectionView];
-    [v16 setContentInset:{v7, v9, v15, v11}];
+    collectionView3 = [(NavSignListViewController *)self collectionView];
+    [collectionView3 setContentInset:{v7, v9, v15, v11}];
   }
 }
 
-- (void)clearPartialExpansionAnimated:(BOOL)a3
+- (void)clearPartialExpansionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(NavSignListViewController *)self isDragging])
   {
     [(NavSignListViewController *)self layoutProgress];
@@ -1937,7 +1937,7 @@ LABEL_15:
         if (v10)
         {
           *buf = 134349056;
-          v20 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Clearing partial expansion by force collapsing the list", buf, 0xCu);
         }
 
@@ -1950,7 +1950,7 @@ LABEL_15:
         if (v10)
         {
           *buf = 134349056;
-          v20 = self;
+          selfCopy2 = self;
           v12 = 1;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Clearing partial expansion by forcing full expansion", buf, 0xCu);
         }
@@ -1970,7 +1970,7 @@ LABEL_15:
       }
 
       v14 = v13 * 0.25;
-      if (v3)
+      if (animatedCopy)
       {
         v15 = v14;
       }
@@ -1980,15 +1980,15 @@ LABEL_15:
         v15 = 0.0;
       }
 
-      v16 = [(NavSignListViewController *)self signDelegate];
-      [v16 signListHeightWillChangeAnimated:v3];
+      signDelegate = [(NavSignListViewController *)self signDelegate];
+      [signDelegate signListHeightWillChangeAnimated:animatedCopy];
 
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10068626C;
       v17[3] = &unk_101661AE0;
       v17[4] = self;
-      v18 = v3;
+      v18 = animatedCopy;
       [(NavSignListViewController *)self _updateLayoutProgressWithDuration:v17 completion:v15];
     }
   }
@@ -2002,7 +2002,7 @@ LABEL_15:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v4 = 134349056;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "[%{public}p] Drag state was leaked as true! Removing...", &v4, 0xCu);
     }
 
@@ -2010,41 +2010,41 @@ LABEL_15:
   }
 }
 
-- (void)clearSelectionAnimated:(BOOL)a3
+- (void)clearSelectionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(NavSignListViewController *)self setSelectedStepIndex:0x7FFFFFFFFFFFFFFFLL];
 
-  [(NavSignListViewController *)self _updateActiveStepIndexAnimated:v3];
+  [(NavSignListViewController *)self _updateActiveStepIndexAnimated:animatedCopy];
 }
 
 - (void)updateFooterConstraints
 {
   if (self->_expanded)
   {
-    v8 = [(NavSignListViewController *)self signDelegate];
-    [v8 signListHeight];
+    signDelegate = [(NavSignListViewController *)self signDelegate];
+    [signDelegate signListHeight];
     v5 = v4;
-    v6 = [(NavSignListViewController *)self footerView];
-    [v6 currentHeight];
+    footerView = [(NavSignListViewController *)self footerView];
+    [footerView currentHeight];
     [(NSLayoutConstraint *)self->_containerViewHeightConstraint setConstant:v5 - v7];
   }
 }
 
-- (void)setLaneGuidanceActive:(BOOL)a3
+- (void)setLaneGuidanceActive:(BOOL)active
 {
-  if (self->_laneGuidanceActive != a3)
+  if (self->_laneGuidanceActive != active)
   {
-    self->_laneGuidanceActive = a3;
+    self->_laneGuidanceActive = active;
     [(NavSignListViewController *)self _updateLaneGuidancePositioning];
   }
 }
 
 - (double)_lastSignHeight
 {
-  v3 = [(NavSignListViewController *)self dataSource];
-  v4 = [v3 items];
-  v5 = [v4 count];
+  dataSource = [(NavSignListViewController *)self dataSource];
+  items = [dataSource items];
+  v5 = [items count];
 
   if (!v5)
   {
@@ -2058,39 +2058,39 @@ LABEL_15:
 
   else
   {
-    v8 = [(NavSignListViewController *)self dataSource];
-    v9 = [v8 items];
-    v6 = [v9 count] - 1;
+    dataSource2 = [(NavSignListViewController *)self dataSource];
+    items2 = [dataSource2 items];
+    v6 = [items2 count] - 1;
   }
 
   v10 = [NSIndexPath indexPathForRow:v6 inSection:0];
-  v11 = [(NavSignListViewController *)self collectionView];
-  [(NavSignListViewController *)self collectionView:v11 layout:0 sizeForItemAtIndexPath:v10];
+  collectionView = [(NavSignListViewController *)self collectionView];
+  [(NavSignListViewController *)self collectionView:collectionView layout:0 sizeForItemAtIndexPath:v10];
   v7 = v12;
 
   return v7;
 }
 
-- (void)setConnectedToCarPlay:(BOOL)a3 animated:(BOOL)a4
+- (void)setConnectedToCarPlay:(BOOL)play animated:(BOOL)animated
 {
-  if (self->_connectedToCarPlay != a3)
+  if (self->_connectedToCarPlay != play)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_connectedToCarPlay = a3;
+    animatedCopy = animated;
+    playCopy = play;
+    self->_connectedToCarPlay = play;
     v7 = sub_100078974();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134349312;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
-      v18 = v5;
+      v18 = playCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] setConnectedToCarPlay: %d", buf, 0x12u);
     }
 
-    if (self->_expanded != v5)
+    if (self->_expanded != playCopy)
     {
-      [(NavSignListViewController *)self toggleExpansionAnimated:v4];
+      [(NavSignListViewController *)self toggleExpansionAnimated:animatedCopy];
     }
 
     v8 = 0.0;
@@ -2098,13 +2098,13 @@ LABEL_15:
     v9 = _NSConcreteStackBlock;
     v11 = sub_100686708;
     v12 = &unk_101661AE0;
-    if (v4)
+    if (animatedCopy)
     {
       v8 = 0.25;
     }
 
-    v13 = self;
-    v14 = v5;
+    selfCopy2 = self;
+    v14 = playCopy;
     [UIView animateWithDuration:117440512 delay:&v9 options:0 animations:v8 completion:0.0];
     [(NavSignListViewController *)self setDebugViewControllerEnabled:[(NavSignListViewController *)self _shouldShowDebugViewController:v9]];
   }
@@ -2113,7 +2113,7 @@ LABEL_15:
 - (void)_applyCornerMask
 {
   cornerMask = self->_cornerMask;
-  v4 = [(NavSignListViewController *)self hasElevationGraph];
+  hasElevationGraph = [(NavSignListViewController *)self hasElevationGraph];
   v5 = self->_cornerMask;
   if (v5)
   {
@@ -2155,7 +2155,7 @@ LABEL_15:
     v9 = 0.0;
   }
 
-  if (v4)
+  if (hasElevationGraph)
   {
     layoutProgress = self->_layoutProgress;
     width = cornerRadius;
@@ -2179,8 +2179,8 @@ LABEL_15:
       }
     }
 
-    v13 = [(MUBlurView *)self->_backgroundView layer];
-    v14 = v13;
+    layer = [(MUBlurView *)self->_backgroundView layer];
+    v14 = layer;
     *&v21 = v8;
     *(&v21 + 1) = v8;
     *&v22 = v9;
@@ -2192,8 +2192,8 @@ LABEL_15:
 
   else
   {
-    v13 = [(MUBlurView *)self->_backgroundView layer];
-    v14 = v13;
+    layer = [(MUBlurView *)self->_backgroundView layer];
+    v14 = layer;
     *&v21 = v8;
     *(&v21 + 1) = v8;
     *&v22 = v9;
@@ -2204,7 +2204,7 @@ LABEL_15:
   }
 
   v26 = cornerRadius;
-  [v13 setCornerRadii:&v21];
+  [layer setCornerRadii:&v21];
 
   v15 = 0.0;
   if (cornerMask)
@@ -2251,54 +2251,54 @@ LABEL_15:
     v15 = self->_cornerRadius;
   }
 
-  v20 = [(MUBlurView *)self->_graphBackgroundView layer];
+  layer2 = [(MUBlurView *)self->_graphBackgroundView layer];
   v21 = 0u;
   v22 = 0u;
   v23 = v15;
   v24 = v15;
   v25 = v19;
   v26 = v19;
-  [v20 setCornerRadii:&v21];
+  [layer2 setCornerRadii:&v21];
 }
 
-- (void)setExpandingCornerMaskingThreshold:(double)a3
+- (void)setExpandingCornerMaskingThreshold:(double)threshold
 {
-  if (self->_expandingCornerMaskingThreshold != a3)
+  if (self->_expandingCornerMaskingThreshold != threshold)
   {
-    self->_expandingCornerMaskingThreshold = a3;
+    self->_expandingCornerMaskingThreshold = threshold;
     [(NavSignListViewController *)self _applyCornerMask];
   }
 }
 
-- (void)setCornerMask:(unint64_t)a3
+- (void)setCornerMask:(unint64_t)mask
 {
-  if (self->_cornerMask != a3)
+  if (self->_cornerMask != mask)
   {
-    self->_cornerMask = a3;
+    self->_cornerMask = mask;
     [(NavSignListViewController *)self _applyCornerMask];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (vabdd_f64(self->_cornerRadius, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_cornerRadius, radius) > 2.22044605e-16)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(NavSignListViewController *)self _applyCornerMask];
   }
 }
 
-- (void)setActiveStepIndex:(unint64_t)a3
+- (void)setActiveStepIndex:(unint64_t)index
 {
-  if (self->_activeStepIndex != a3)
+  if (self->_activeStepIndex != index)
   {
     v5 = sub_100078974();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 134349312;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
-      v13 = a3;
+      indexCopy = index;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating active step index: %lu", &v10, 0x16u);
     }
 
@@ -2307,45 +2307,45 @@ LABEL_15:
     [(NavSignListViewController *)self willChangeValueForKey:v7];
 
     self->_selectedStepIndex = 0x7FFFFFFFFFFFFFFFLL;
-    self->_activeStepIndex = a3;
-    [(RouteStepListDataSource *)self->_dataSource setActiveStepIndex:a3];
+    self->_activeStepIndex = index;
+    [(RouteStepListDataSource *)self->_dataSource setActiveStepIndex:index];
     v8 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self didChangeValueForKey:v8];
 
     if (selectedStepIndex != self->_selectedStepIndex)
     {
-      v9 = [(NavSignListViewController *)self signDelegate];
-      [v9 selectStep:0];
+      signDelegate = [(NavSignListViewController *)self signDelegate];
+      [signDelegate selectStep:0];
     }
   }
 }
 
-- (void)setSelectedStepIndex:(unint64_t)a3
+- (void)setSelectedStepIndex:(unint64_t)index
 {
-  if (self->_selectedStepIndex != a3)
+  if (self->_selectedStepIndex != index)
   {
     v5 = sub_100078974();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 134349312;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
-      v11 = a3;
+      indexCopy = index;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating selected step index: %lu", &v8, 0x16u);
     }
 
     v6 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self willChangeValueForKey:v6];
 
-    self->_selectedStepIndex = a3;
+    self->_selectedStepIndex = index;
     v7 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self didChangeValueForKey:v7];
   }
 }
 
-- (void)setLayoutProgress:(double)a3
+- (void)setLayoutProgress:(double)progress
 {
-  v3 = fmin(fmax(a3, 0.0), 1.0);
+  v3 = fmin(fmax(progress, 0.0), 1.0);
   if (vabdd_f64(self->_layoutProgress, v3) > 2.22044605e-16)
   {
     self->_layoutProgress = v3;
@@ -2365,9 +2365,9 @@ LABEL_15:
     [(UILabel *)self->_vioHintLabel setClipsToBounds:1];
     [(UILabel *)self->_vioHintLabel setNumberOfLines:0];
     [(UILabel *)self->_vioHintLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(NavSignListViewController *)self theme];
-    v7 = [v6 navSignMinorTextColor];
-    [(UILabel *)self->_vioHintLabel setTextColor:v7];
+    theme = [(NavSignListViewController *)self theme];
+    navSignMinorTextColor = [theme navSignMinorTextColor];
+    [(UILabel *)self->_vioHintLabel setTextColor:navSignMinorTextColor];
 
     [(UILabel *)self->_vioHintLabel setTextAlignment:1];
     v8 = [UIFont _maps_systemFontWithFixedSize:17.0];
@@ -2385,44 +2385,44 @@ LABEL_15:
   return vioHintLabel;
 }
 
-- (void)setDragging:(BOOL)a3
+- (void)setDragging:(BOOL)dragging
 {
-  if (self->_dragging != a3)
+  if (self->_dragging != dragging)
   {
-    v3 = a3;
+    draggingCopy = dragging;
     v5 = sub_100078974();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       dragging = self->_dragging;
       v7 = 134349568;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
-      v10 = dragging;
+      draggingCopy2 = dragging;
       v11 = 1024;
-      v12 = v3;
+      v12 = draggingCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Changing dragging from: %d to %d", &v7, 0x18u);
     }
 
-    self->_dragging = v3;
+    self->_dragging = draggingCopy;
   }
 }
 
-- (void)setCardWidth:(double)a3
+- (void)setCardWidth:(double)width
 {
-  if (vabdd_f64(a3, self->_cardWidth) > 2.22044605e-16)
+  if (vabdd_f64(width, self->_cardWidth) > 2.22044605e-16)
   {
-    self->_cardWidth = a3;
+    self->_cardWidth = width;
     computedWidth = self->_computedWidth;
     if (computedWidth)
     {
       [(NSNumber *)computedWidth cgFloatValue];
-      if (vabdd_f64(v6, a3) > 2.22044605e-16)
+      if (vabdd_f64(v6, width) > 2.22044605e-16)
       {
-        v7 = [(NavSignListViewController *)self view];
-        [v7 setNeedsLayout];
+        view = [(NavSignListViewController *)self view];
+        [view setNeedsLayout];
 
-        v8 = [(NavSignListViewController *)self view];
-        [v8 layoutIfNeeded];
+        view2 = [(NavSignListViewController *)self view];
+        [view2 layoutIfNeeded];
       }
     }
   }
@@ -2434,8 +2434,8 @@ LABEL_15:
   if (!graphView)
   {
     v4 = [DirectionsElevationGraphConfiguration alloc];
-    v5 = [(NavSignListViewController *)self traitCollection];
-    v6 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v4, "initWithUseType:userInterfaceIdiom:", 2, [v5 userInterfaceIdiom]);
+    traitCollection = [(NavSignListViewController *)self traitCollection];
+    v6 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v4, "initWithUseType:userInterfaceIdiom:", 2, [traitCollection userInterfaceIdiom]);
 
     v7 = [[DirectionsElevationGraphView alloc] initWithConfiguration:v6];
     v8 = self->_graphView;
@@ -2444,11 +2444,11 @@ LABEL_15:
     [(DirectionsElevationGraphView *)self->_graphView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DirectionsElevationGraphView *)self->_graphView setOverrideUserInterfaceStyle:2];
     v9 = self->_graphView;
-    v10 = [(NavSignListViewController *)self route];
-    v11 = [v10 elevationProfile];
-    v12 = [(NavSignListViewController *)self route];
-    [v12 distance];
-    [(DirectionsElevationGraphView *)v9 setElevationProfile:v11 routeLength:?];
+    route = [(NavSignListViewController *)self route];
+    elevationProfile = [route elevationProfile];
+    route2 = [(NavSignListViewController *)self route];
+    [route2 distance];
+    [(DirectionsElevationGraphView *)v9 setElevationProfile:elevationProfile routeLength:?];
 
     graphView = self->_graphView;
   }
@@ -2456,17 +2456,17 @@ LABEL_15:
   return graphView;
 }
 
-- (void)setShowingSecondaryManeuver:(BOOL)a3
+- (void)setShowingSecondaryManeuver:(BOOL)maneuver
 {
-  if (self->_showingSecondaryManeuver != a3)
+  if (self->_showingSecondaryManeuver != maneuver)
   {
-    v3 = a3;
+    maneuverCopy = maneuver;
     v5 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self willChangeValueForKey:v5];
 
-    self->_showingSecondaryManeuver = v3;
-    v6 = [(NavSignListViewController *)self footerView];
-    [v6 setShowingSecondaryManeuver:v3];
+    self->_showingSecondaryManeuver = maneuverCopy;
+    footerView = [(NavSignListViewController *)self footerView];
+    [footerView setShowingSecondaryManeuver:maneuverCopy];
 
     v7 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self didChangeValueForKey:v7];
@@ -2475,62 +2475,62 @@ LABEL_15:
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
     v6 = sub_100078974();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(GEOComposedRoute *)v5 uniqueRouteID];
+      uniqueRouteID = [(GEOComposedRoute *)routeCopy uniqueRouteID];
       v10 = 134349314;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v7;
+      v13 = uniqueRouteID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Got a new route: %@", &v10, 0x16u);
     }
 
-    objc_storeStrong(&self->_route, a3);
-    [(RouteStepListDataSource *)self->_dataSource setRoute:v5];
+    objc_storeStrong(&self->_route, route);
+    [(RouteStepListDataSource *)self->_dataSource setRoute:routeCopy];
     graphView = self->_graphView;
-    v9 = [(GEOComposedRoute *)v5 elevationProfile];
-    [(GEOComposedRoute *)v5 distance];
-    [(DirectionsElevationGraphView *)graphView setElevationProfile:v9 routeLength:?];
+    elevationProfile = [(GEOComposedRoute *)routeCopy elevationProfile];
+    [(GEOComposedRoute *)routeCopy distance];
+    [(DirectionsElevationGraphView *)graphView setElevationProfile:elevationProfile routeLength:?];
 
     [(DirectionsElevationGraphView *)self->_graphView setNavigationProgress:0.0];
     [(NavSignListViewController *)self _updateGraphViewIfNeeded];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = NavSignListViewController;
-  v4 = a3;
-  [(NavSignListViewController *)&v12 traitCollectionDidChange:v4];
-  v5 = [(NavSignListViewController *)self traitCollection];
-  v6 = sub_100017FE8(v4, v5);
+  changeCopy = change;
+  [(NavSignListViewController *)&v12 traitCollectionDidChange:changeCopy];
+  traitCollection = [(NavSignListViewController *)self traitCollection];
+  v6 = sub_100017FE8(changeCopy, traitCollection);
 
-  v7 = [(NavSignListViewController *)self traitCollection];
-  v8 = v7;
+  traitCollection2 = [(NavSignListViewController *)self traitCollection];
+  v8 = traitCollection2;
   if (v6)
   {
-    v9 = [v7 isLuminanceReduced];
+    isLuminanceReduced = [traitCollection2 isLuminanceReduced];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100687428;
     v10[3] = &unk_101661AE0;
-    v11 = v9;
+    v11 = isLuminanceReduced;
     v10[4] = self;
-    [UIView _maps_animateForAndromeda:v9 animations:v10];
+    [UIView _maps_animateForAndromeda:isLuminanceReduced animations:v10];
     [(NavSignListViewController *)self _updateSelectionBackgrounds];
   }
 
   else
   {
-    [(RouteStepListDataSource *)self->_dataSource setTraitCollection:v7];
+    [(RouteStepListDataSource *)self->_dataSource setTraitCollection:traitCollection2];
   }
 }
 
@@ -2572,37 +2572,37 @@ LABEL_5:
   v5.super_class = NavSignListViewController;
   [(NavSignListViewController *)&v5 viewSafeAreaInsetsDidChange];
   [(NavSignListViewController *)self updateHeightConstraints];
-  v3 = [(NavSignListViewController *)self footerView];
-  [v3 maximumHeight];
+  footerView = [(NavSignListViewController *)self footerView];
+  [footerView maximumHeight];
   [(NSLayoutConstraint *)self->_gradientViewBottomConstraint setConstant:-v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NavSignListViewController;
-  [(NavSignListViewController *)&v4 viewDidAppear:a3];
+  [(NavSignListViewController *)&v4 viewDidAppear:appear];
   [PPTNotificationCenter postNotificationIfNeededWithName:@"MapsTestingMapsRegionUpdatedWithGuidanceStep" object:self userInfo:0];
   [(NavSignListViewController *)self _applyCornerMask];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = NavSignListViewController;
   [(NavSignListViewController *)&v5 viewDidDisappear:?];
   [(NavSignListViewController *)self setDragging:0];
-  [(NavSignListViewController *)self clearPartialExpansionAnimated:v3];
+  [(NavSignListViewController *)self clearPartialExpansionAnimated:disappearCopy];
 }
 
-- (void)hideVIOLabel:(BOOL)a3
+- (void)hideVIOLabel:(BOOL)label
 {
   if (self->_vioHintLabelVisible)
   {
-    v3 = a3;
-    v5 = [(NavSignListViewController *)self signDelegate];
-    [v5 signListHeightWillChangeAnimated:v3];
+    labelCopy = label;
+    signDelegate = [(NavSignListViewController *)self signDelegate];
+    [signDelegate signListHeightWillChangeAnimated:labelCopy];
 
     v6 = NSStringFromSelector("collapsedHeight");
     [(NavSignListViewController *)self willChangeValueForKey:v6];
@@ -2617,15 +2617,15 @@ LABEL_5:
     [(UILabel *)self->_vioHintLabel frame];
     [(NSLayoutConstraint *)self->_vioHintLabelTopConstraint setConstant:-v9];
     [(NSLayoutConstraint *)self->_collectionViewTopConstraint setActive:0];
-    v10 = [(UICollectionView *)self->_collectionView topAnchor];
-    v11 = [(UIView *)self->_containerView topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    topAnchor = [(UICollectionView *)self->_collectionView topAnchor];
+    topAnchor2 = [(UIView *)self->_containerView topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     collectionViewTopConstraint = self->_collectionViewTopConstraint;
     self->_collectionViewTopConstraint = v12;
 
     [(NSLayoutConstraint *)self->_collectionViewTopConstraint setActive:1];
     objc_initWeak(&location, self);
-    if (v3)
+    if (labelCopy)
     {
       v14 = 0.5;
     }
@@ -2651,9 +2651,9 @@ LABEL_5:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v25.receiver = self;
   v25.super_class = NavSignListViewController;
   [(NavSignListViewController *)&v25 viewWillAppear:?];
@@ -2664,29 +2664,29 @@ LABEL_5:
     [v5 registerObserver:self];
 
     v6 = +[MNNavigationService sharedService];
-    v7 = [v6 route];
+    route = [v6 route];
 
     v8 = sub_100078974();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 name];
-      v10 = [v7 uniqueRouteID];
-      v11 = [v7 stepsCount];
+      name = [route name];
+      uniqueRouteID = [route uniqueRouteID];
+      stepsCount = [route stepsCount];
       *buf = 134349826;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = v9;
+      v29 = name;
       v30 = 2112;
-      v31 = v10;
+      v31 = uniqueRouteID;
       v32 = 2048;
-      v33 = v11;
+      v33 = stepsCount;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Setting up sign list with route %@ (%@) with steps %lu", buf, 0x2Au);
     }
 
-    [(NavSignListViewController *)self setRoute:v7];
-    v12 = [(NavSignListViewController *)self dataSource];
+    [(NavSignListViewController *)self setRoute:route];
+    dataSource = [(NavSignListViewController *)self dataSource];
     v13 = +[MNNavigationService sharedService];
-    v14 = [v12 itemIndexForStepIndex:{objc_msgSend(v13, "stepIndex")}];
+    v14 = [dataSource itemIndexForStepIndex:{objc_msgSend(v13, "stepIndex")}];
 
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -2700,8 +2700,8 @@ LABEL_5:
 
     [(NavSignListViewController *)self setActiveStepIndex:v15];
     expanded = self->_expanded;
-    v17 = [(NavSignListViewController *)self collectionView];
-    [v17 setScrollEnabled:expanded];
+    collectionView = [(NavSignListViewController *)self collectionView];
+    [collectionView setScrollEnabled:expanded];
 
     [(NavSignListViewController *)self _updateActiveStepIndexAnimated:0];
     [(NavSignListViewController *)self setDebugViewControllerEnabled:[(NavSignListViewController *)self _shouldShowDebugViewController]];
@@ -2726,7 +2726,7 @@ LABEL_5:
   }
 
   [(NavSignListViewController *)self setDragging:0];
-  [(NavSignListViewController *)self clearPartialExpansionAnimated:v3];
+  [(NavSignListViewController *)self clearPartialExpansionAnimated:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -2734,17 +2734,17 @@ LABEL_5:
   v188.receiver = self;
   v188.super_class = NavSignListViewController;
   [(NavSignListViewController *)&v188 viewDidLoad];
-  v3 = [(NavSignListViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setMasksToBounds:1];
+  view = [(NavSignListViewController *)self view];
+  layer = [view layer];
+  [layer setMasksToBounds:1];
 
-  v5 = [(NavSignListViewController *)self view];
-  [v5 setClipsToBounds:1];
+  view2 = [(NavSignListViewController *)self view];
+  [view2 setClipsToBounds:1];
 
   BOOL = GEOConfigGetBOOL();
-  LODWORD(v4) = _UISolariumEnabled();
+  LODWORD(layer) = _UISolariumEnabled();
   v7 = [MUBlurView alloc];
-  if (v4)
+  if (layer)
   {
     obj = [v7 initGlassBlurWithTintColor:0 glassStyle:BOOL];
     [obj setStyle:0];
@@ -2758,16 +2758,16 @@ LABEL_5:
 
   [obj setOverrideUserInterfaceStyle:2];
   [obj setClipsToBounds:1];
-  v8 = [obj layer];
-  [v8 setMasksToBounds:1];
+  layer2 = [obj layer];
+  [layer2 setMasksToBounds:1];
 
   v9 = sub_100A5FD30();
   [obj setNonBlurredColor:v9];
 
   [obj setBlurGroupName:@"NavSignBlur"];
   [obj setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(NavSignListViewController *)self view];
-  [v10 addSubview:obj];
+  view3 = [(NavSignListViewController *)self view];
+  [view3 addSubview:obj];
 
   objc_storeStrong(&self->_backgroundView, obj);
   v11 = objc_opt_new();
@@ -2781,12 +2781,12 @@ LABEL_5:
 
   [(UIView *)self->_graphContainerView setAccessibilityIdentifier:@"GraphContainerView"];
   [(UIView *)self->_graphContainerView _maps_applyGlassGroup];
-  v15 = [(NavSignListViewController *)self view];
-  [v15 addSubview:self->_graphContainerView];
+  view4 = [(NavSignListViewController *)self view];
+  [view4 addSubview:self->_graphContainerView];
 
-  LODWORD(v15) = _UISolariumEnabled();
+  LODWORD(view4) = _UISolariumEnabled();
   v16 = [MUBlurView alloc];
-  if (v15)
+  if (view4)
   {
     v17 = [v16 initGlassBlurWithTintColor:0 glassStyle:BOOL];
     v18 = 0;
@@ -2815,16 +2815,16 @@ LABEL_5:
 
   [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_containerView setClipsToBounds:1];
-  v23 = [(UIView *)self->_containerView layer];
-  [v23 setMasksToBounds:1];
+  layer3 = [(UIView *)self->_containerView layer];
+  [layer3 setMasksToBounds:1];
 
   [(UIView *)self->_containerView setAccessibilityIdentifier:@"NavSignListContainerView"];
   v24 = self->_containerView;
   v25 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_didTap:"];
   [(UIView *)v24 addGestureRecognizer:v25];
 
-  v26 = [(NavSignListViewController *)self view];
-  [v26 addSubview:self->_containerView];
+  view5 = [(NavSignListViewController *)self view];
+  [view5 addSubview:self->_containerView];
 
   v180 = objc_opt_new();
   [v180 setMinimumLineSpacing:0.0];
@@ -2868,8 +2868,8 @@ LABEL_5:
   [(MUGradientView *)self->_gradientView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUGradientView *)self->_gradientView setUserInteractionEnabled:0];
   [(MUGradientView *)self->_gradientView setClipsToBounds:1];
-  v43 = [(MUGradientView *)self->_gradientView layer];
-  [v43 setMasksToBounds:1];
+  layer4 = [(MUGradientView *)self->_gradientView layer];
+  [layer4 setMasksToBounds:1];
 
   v44 = sub_100A5FD30();
   v45 = [v44 colorWithAlphaComponent:0.0];
@@ -2890,9 +2890,9 @@ LABEL_5:
   v185[2] = sub_1006894D0;
   v185[3] = &unk_101661B98;
   objc_copyWeak(&v186, &location);
-  v51 = [(NavSignFooterView *)v50 initWithFrame:v185 action:CGRectZero.origin.x, y, width, height];
+  height = [(NavSignFooterView *)v50 initWithFrame:v185 action:CGRectZero.origin.x, y, width, height];
   footerView = self->_footerView;
-  self->_footerView = v51;
+  self->_footerView = height;
 
   [(NavSignFooterView *)self->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
   v53 = self->_footerView;
@@ -2903,48 +2903,48 @@ LABEL_5:
   v56 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"_didPan:"];
   [(NavSignFooterView *)v55 addGestureRecognizer:v56];
 
-  v57 = [(NavSignListViewController *)self view];
-  [v57 addSubview:self->_footerView];
+  view6 = [(NavSignListViewController *)self view];
+  [view6 addSubview:self->_footerView];
 
-  v58 = [(UICollectionView *)self->_collectionView topAnchor];
-  v59 = [(UIView *)self->_containerView topAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  topAnchor = [(UICollectionView *)self->_collectionView topAnchor];
+  topAnchor2 = [(UIView *)self->_containerView topAnchor];
+  v60 = [topAnchor constraintEqualToAnchor:topAnchor2];
   collectionViewTopConstraint = self->_collectionViewTopConstraint;
   self->_collectionViewTopConstraint = v60;
 
   v62 = +[MNNavigationService sharedService];
-  v179 = [v62 route];
+  route = [v62 route];
 
-  if (v179 && [v179 transportType] == 2 && +[VIOSessionTask isVIOModeEnabled](VIOSessionTask, "isVIOModeEnabled"))
+  if (route && [route transportType] == 2 && +[VIOSessionTask isVIOModeEnabled](VIOSessionTask, "isVIOModeEnabled"))
   {
     v63 = self->_containerView;
-    v64 = [(NavSignListViewController *)self VIOEnabledHintLabel];
-    [(UIView *)v63 addSubview:v64];
+    vIOEnabledHintLabel = [(NavSignListViewController *)self VIOEnabledHintLabel];
+    [(UIView *)v63 addSubview:vIOEnabledHintLabel];
 
     self->_vioHintLabelVisible = 1;
-    v65 = [(UILabel *)self->_vioHintLabel topAnchor];
-    v66 = [(UIView *)self->_containerView topAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66];
+    topAnchor3 = [(UILabel *)self->_vioHintLabel topAnchor];
+    topAnchor4 = [(UIView *)self->_containerView topAnchor];
+    v67 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     vioHintLabelTopConstraint = self->_vioHintLabelTopConstraint;
     self->_vioHintLabelTopConstraint = v67;
 
-    v69 = [(UICollectionView *)self->_collectionView topAnchor];
-    v70 = [(UILabel *)self->_vioHintLabel bottomAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70];
+    topAnchor5 = [(UICollectionView *)self->_collectionView topAnchor];
+    bottomAnchor = [(UILabel *)self->_vioHintLabel bottomAnchor];
+    v71 = [topAnchor5 constraintEqualToAnchor:bottomAnchor];
     v72 = self->_collectionViewTopConstraint;
     self->_collectionViewTopConstraint = v71;
 
     v190[0] = self->_vioHintLabelTopConstraint;
-    v177 = [(UILabel *)self->_vioHintLabel leadingAnchor];
-    v175 = [(UIView *)self->_containerView leadingAnchor];
-    v73 = [v177 constraintEqualToAnchor:v175 constant:8.0];
+    leadingAnchor = [(UILabel *)self->_vioHintLabel leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+    v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     v190[1] = v73;
-    v74 = [(UILabel *)self->_vioHintLabel trailingAnchor];
-    v75 = [(UIView *)self->_containerView trailingAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75 constant:-8.0];
+    trailingAnchor = [(UILabel *)self->_vioHintLabel trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+    v76 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     v190[2] = v76;
-    v77 = [(UILabel *)self->_vioHintLabel heightAnchor];
-    v78 = [v77 constraintGreaterThanOrEqualToConstant:30.0];
+    heightAnchor = [(UILabel *)self->_vioHintLabel heightAnchor];
+    v78 = [heightAnchor constraintGreaterThanOrEqualToConstant:30.0];
     v190[3] = v78;
     v136 = [NSArray arrayWithObjects:v190 count:4];
   }
@@ -2954,141 +2954,141 @@ LABEL_5:
     v136 = &__NSArray0__struct;
   }
 
-  v79 = [(UIView *)self->_graphContainerView topAnchor];
-  v80 = [(NavSignListViewController *)self view];
-  v81 = [v80 topAnchor];
-  v82 = [v79 constraintEqualToAnchor:v81 constant:-92.0];
+  topAnchor6 = [(UIView *)self->_graphContainerView topAnchor];
+  view7 = [(NavSignListViewController *)self view];
+  topAnchor7 = [view7 topAnchor];
+  v82 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:-92.0];
   graphTopConstraint = self->_graphTopConstraint;
   self->_graphTopConstraint = v82;
 
-  v84 = [(UIView *)self->_containerView heightAnchor];
-  v85 = [v84 constraintEqualToConstant:110.0];
+  heightAnchor2 = [(UIView *)self->_containerView heightAnchor];
+  v85 = [heightAnchor2 constraintEqualToConstant:110.0];
   containerViewHeightConstraint = self->_containerViewHeightConstraint;
   self->_containerViewHeightConstraint = v85;
 
   LODWORD(v87) = 1148829696;
   [(NSLayoutConstraint *)self->_containerViewHeightConstraint setPriority:v87];
-  v88 = [(MUGradientView *)self->_gradientView topAnchor];
-  v89 = [(UIView *)self->_containerView topAnchor];
-  v90 = [v88 constraintEqualToAnchor:v89 constant:110.0];
+  topAnchor8 = [(MUGradientView *)self->_gradientView topAnchor];
+  topAnchor9 = [(UIView *)self->_containerView topAnchor];
+  v90 = [topAnchor8 constraintEqualToAnchor:topAnchor9 constant:110.0];
   gradientViewTopConstraint = self->_gradientViewTopConstraint;
   self->_gradientViewTopConstraint = v90;
 
-  v92 = [(MUGradientView *)self->_gradientView bottomAnchor];
-  v93 = [(UICollectionView *)self->_collectionView bottomAnchor];
+  bottomAnchor2 = [(MUGradientView *)self->_gradientView bottomAnchor];
+  bottomAnchor3 = [(UICollectionView *)self->_collectionView bottomAnchor];
   [(NavSignFooterView *)self->_footerView maximumHeight];
-  v95 = [v92 constraintEqualToAnchor:v93 constant:-v94];
+  v95 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v94];
   gradientViewBottomConstraint = self->_gradientViewBottomConstraint;
   self->_gradientViewBottomConstraint = v95;
 
-  v97 = [(NavSignFooterView *)self->_footerView heightAnchor];
+  heightAnchor3 = [(NavSignFooterView *)self->_footerView heightAnchor];
   [(NavSignFooterView *)self->_footerView minimumHeight];
-  v98 = [v97 constraintEqualToConstant:?];
+  v98 = [heightAnchor3 constraintEqualToConstant:?];
   footerHeightConstraint = self->_footerHeightConstraint;
   self->_footerHeightConstraint = v98;
 
-  v176 = [(UIView *)self->_graphContainerView leadingAnchor];
-  v178 = [(NavSignListViewController *)self view];
-  v174 = [v178 leadingAnchor];
-  v173 = [v176 constraintEqualToAnchor:v174];
+  leadingAnchor3 = [(UIView *)self->_graphContainerView leadingAnchor];
+  view8 = [(NavSignListViewController *)self view];
+  leadingAnchor4 = [view8 leadingAnchor];
+  v173 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v189[0] = v173;
-  v171 = [(UIView *)self->_graphContainerView trailingAnchor];
-  v172 = [(NavSignListViewController *)self view];
-  v170 = [v172 trailingAnchor];
-  v169 = [v171 constraintEqualToAnchor:v170];
+  trailingAnchor3 = [(UIView *)self->_graphContainerView trailingAnchor];
+  view9 = [(NavSignListViewController *)self view];
+  trailingAnchor4 = [view9 trailingAnchor];
+  v169 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v100 = self->_graphTopConstraint;
   v189[1] = v169;
   v189[2] = v100;
-  v168 = [(UIView *)self->_graphContainerView heightAnchor];
-  v167 = [v168 constraintEqualToConstant:92.0];
+  heightAnchor4 = [(UIView *)self->_graphContainerView heightAnchor];
+  v167 = [heightAnchor4 constraintEqualToConstant:92.0];
   v189[3] = v167;
-  v166 = [(MUBlurView *)self->_graphBackgroundView leadingAnchor];
-  v165 = [(UIView *)self->_graphContainerView leadingAnchor];
-  v164 = [v166 constraintEqualToAnchor:v165];
+  leadingAnchor5 = [(MUBlurView *)self->_graphBackgroundView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_graphContainerView leadingAnchor];
+  v164 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v189[4] = v164;
-  v163 = [(MUBlurView *)self->_graphBackgroundView trailingAnchor];
-  v162 = [(UIView *)self->_graphContainerView trailingAnchor];
-  v161 = [v163 constraintEqualToAnchor:v162];
+  trailingAnchor5 = [(MUBlurView *)self->_graphBackgroundView trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_graphContainerView trailingAnchor];
+  v161 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v189[5] = v161;
-  v160 = [(MUBlurView *)self->_graphBackgroundView topAnchor];
-  v159 = [(UIView *)self->_graphContainerView topAnchor];
-  v158 = [v160 constraintEqualToAnchor:v159];
+  topAnchor10 = [(MUBlurView *)self->_graphBackgroundView topAnchor];
+  topAnchor11 = [(UIView *)self->_graphContainerView topAnchor];
+  v158 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
   v189[6] = v158;
-  v182 = [(MUBlurView *)self->_graphBackgroundView bottomAnchor];
-  v157 = [(UIView *)self->_graphContainerView bottomAnchor];
-  v156 = [v182 constraintEqualToAnchor:v157];
+  bottomAnchor4 = [(MUBlurView *)self->_graphBackgroundView bottomAnchor];
+  bottomAnchor5 = [(UIView *)self->_graphContainerView bottomAnchor];
+  v156 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v189[7] = v156;
-  v154 = [(UIView *)self->_containerView leadingAnchor];
-  v155 = [(NavSignListViewController *)self view];
-  v153 = [v155 leadingAnchor];
-  v152 = [v154 constraintEqualToAnchor:v153];
+  leadingAnchor7 = [(UIView *)self->_containerView leadingAnchor];
+  view10 = [(NavSignListViewController *)self view];
+  leadingAnchor8 = [view10 leadingAnchor];
+  v152 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v189[8] = v152;
-  v150 = [(UIView *)self->_containerView trailingAnchor];
-  v151 = [(NavSignListViewController *)self view];
-  v149 = [v151 trailingAnchor];
-  v148 = [v150 constraintEqualToAnchor:v149];
+  trailingAnchor7 = [(UIView *)self->_containerView trailingAnchor];
+  view11 = [(NavSignListViewController *)self view];
+  trailingAnchor8 = [view11 trailingAnchor];
+  v148 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v189[9] = v148;
-  v147 = [(UIView *)self->_containerView topAnchor];
-  v184 = [(UIView *)self->_graphContainerView bottomAnchor];
-  v146 = [v147 constraintEqualToAnchor:v184];
+  topAnchor12 = [(UIView *)self->_containerView topAnchor];
+  bottomAnchor6 = [(UIView *)self->_graphContainerView bottomAnchor];
+  v146 = [topAnchor12 constraintEqualToAnchor:bottomAnchor6];
   v101 = self->_containerViewHeightConstraint;
   v189[10] = v146;
   v189[11] = v101;
-  v145 = [obj leadingAnchor];
-  v144 = [(UIView *)self->_containerView leadingAnchor];
-  v143 = [v145 constraintEqualToAnchor:v144];
+  leadingAnchor9 = [obj leadingAnchor];
+  leadingAnchor10 = [(UIView *)self->_containerView leadingAnchor];
+  v143 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v189[12] = v143;
-  v142 = [obj trailingAnchor];
-  v141 = [(UIView *)self->_containerView trailingAnchor];
-  v140 = [v142 constraintEqualToAnchor:v141];
+  trailingAnchor9 = [obj trailingAnchor];
+  trailingAnchor10 = [(UIView *)self->_containerView trailingAnchor];
+  v140 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v189[13] = v140;
-  v139 = [obj topAnchor];
-  v138 = [(UIView *)self->_containerView topAnchor];
-  v137 = [v139 constraintEqualToAnchor:v138];
+  topAnchor13 = [obj topAnchor];
+  topAnchor14 = [(UIView *)self->_containerView topAnchor];
+  v137 = [topAnchor13 constraintEqualToAnchor:topAnchor14];
   v189[14] = v137;
-  v135 = [obj bottomAnchor];
-  v134 = [(NavSignFooterView *)self->_footerView bottomAnchor];
-  v133 = [v135 constraintEqualToAnchor:v134];
+  bottomAnchor7 = [obj bottomAnchor];
+  bottomAnchor8 = [(NavSignFooterView *)self->_footerView bottomAnchor];
+  v133 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v189[15] = v133;
-  v132 = [(UICollectionView *)self->_collectionView leadingAnchor];
-  v131 = [(UIView *)self->_containerView leadingAnchor];
-  v130 = [v132 constraintEqualToAnchor:v131];
+  leadingAnchor11 = [(UICollectionView *)self->_collectionView leadingAnchor];
+  leadingAnchor12 = [(UIView *)self->_containerView leadingAnchor];
+  v130 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v189[16] = v130;
-  v129 = [(UICollectionView *)self->_collectionView trailingAnchor];
-  v128 = [(UIView *)self->_containerView trailingAnchor];
-  v127 = [v129 constraintEqualToAnchor:v128];
+  trailingAnchor11 = [(UICollectionView *)self->_collectionView trailingAnchor];
+  trailingAnchor12 = [(UIView *)self->_containerView trailingAnchor];
+  v127 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v102 = self->_collectionViewTopConstraint;
   v189[17] = v127;
   v189[18] = v102;
-  v125 = [(UICollectionView *)self->_collectionView bottomAnchor];
-  v126 = [(NavSignListViewController *)self view];
-  v124 = [v126 bottomAnchor];
-  v123 = [v125 constraintEqualToAnchor:v124];
+  bottomAnchor9 = [(UICollectionView *)self->_collectionView bottomAnchor];
+  view12 = [(NavSignListViewController *)self view];
+  bottomAnchor10 = [view12 bottomAnchor];
+  v123 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v189[19] = v123;
-  v122 = [(MUGradientView *)self->_gradientView leadingAnchor];
-  v121 = [(UIView *)self->_containerView leadingAnchor];
-  v120 = [v122 constraintEqualToAnchor:v121];
+  leadingAnchor13 = [(MUGradientView *)self->_gradientView leadingAnchor];
+  leadingAnchor14 = [(UIView *)self->_containerView leadingAnchor];
+  v120 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
   v189[20] = v120;
-  v181 = [(MUGradientView *)self->_gradientView trailingAnchor];
-  v119 = [(UIView *)self->_containerView trailingAnchor];
-  v118 = [v181 constraintEqualToAnchor:v119];
+  trailingAnchor13 = [(MUGradientView *)self->_gradientView trailingAnchor];
+  trailingAnchor14 = [(UIView *)self->_containerView trailingAnchor];
+  v118 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
   v103 = self->_gradientViewTopConstraint;
   v189[21] = v118;
   v189[22] = v103;
   v189[23] = self->_gradientViewBottomConstraint;
-  v116 = [(NavSignFooterView *)self->_footerView leadingAnchor];
-  v117 = [(NavSignListViewController *)self view];
-  v115 = [v117 leadingAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  leadingAnchor15 = [(NavSignFooterView *)self->_footerView leadingAnchor];
+  view13 = [(NavSignListViewController *)self view];
+  leadingAnchor16 = [view13 leadingAnchor];
+  v114 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16];
   v189[24] = v114;
-  v104 = [(NavSignFooterView *)self->_footerView trailingAnchor];
-  v105 = [(NavSignListViewController *)self view];
-  v106 = [v105 trailingAnchor];
-  v107 = [v104 constraintEqualToAnchor:v106];
+  trailingAnchor15 = [(NavSignFooterView *)self->_footerView trailingAnchor];
+  view14 = [(NavSignListViewController *)self view];
+  trailingAnchor16 = [view14 trailingAnchor];
+  v107 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16];
   v189[25] = v107;
-  v108 = [(NavSignFooterView *)self->_footerView topAnchor];
-  v109 = [(UIView *)self->_containerView bottomAnchor];
-  v110 = [v108 constraintEqualToAnchor:v109];
+  topAnchor15 = [(NavSignFooterView *)self->_footerView topAnchor];
+  bottomAnchor11 = [(UIView *)self->_containerView bottomAnchor];
+  v110 = [topAnchor15 constraintEqualToAnchor:bottomAnchor11];
   v111 = self->_footerHeightConstraint;
   v189[26] = v110;
   v189[27] = v111;
@@ -3113,7 +3113,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -3122,9 +3122,9 @@ LABEL_5:
   [(NavSignListViewController *)&v4 dealloc];
 }
 
-- (NavSignListViewController)initWithSignDelegate:(id)a3
+- (NavSignListViewController)initWithSignDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = NavSignListViewController;
   v5 = [(NavSignListViewController *)&v12 initWithNibName:0 bundle:0];
@@ -3142,7 +3142,7 @@ LABEL_5:
     v8 = NSStringFromClass(v7);
     [(NavSignListViewController *)v5 setAccessibilityIdentifier:v8];
 
-    objc_storeWeak(&v5->_signDelegate, v4);
+    objc_storeWeak(&v5->_signDelegate, delegateCopy);
     v9 = +[RouteStepListMetrics navSignMetrics];
     metrics = v5->_metrics;
     v5->_metrics = v9;

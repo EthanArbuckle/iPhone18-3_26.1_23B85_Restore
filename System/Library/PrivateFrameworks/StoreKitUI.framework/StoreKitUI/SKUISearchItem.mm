@@ -1,13 +1,13 @@
 @interface SKUISearchItem
-- (SKUISearchItem)initWithLookupDictionary:(id)a3;
+- (SKUISearchItem)initWithLookupDictionary:(id)dictionary;
 @end
 
 @implementation SKUISearchItem
 
-- (SKUISearchItem)initWithLookupDictionary:(id)a3
+- (SKUISearchItem)initWithLookupDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISearchItem initWithLookupDictionary:];
@@ -15,11 +15,11 @@
 
   v41.receiver = self;
   v41.super_class = SKUISearchItem;
-  v5 = [(SKUIItem *)&v41 initWithLookupDictionary:v4];
+  v5 = [(SKUIItem *)&v41 initWithLookupDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = SKUIItemScreenshotsForDictionary(v4);
+    v7 = SKUIItemScreenshotsForDictionary(dictionaryCopy);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -57,7 +57,7 @@
     screenshots = v5->_screenshots;
     v5->_screenshots = v13;
 
-    v15 = [v4 objectForKey:@"childrenIds"];
+    v15 = [dictionaryCopy objectForKey:@"childrenIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,16 +65,16 @@
       childItemIdentifiers = v5->_childItemIdentifiers;
       v5->_childItemIdentifiers = v16;
 
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       loadedChildItems = v5->_loadedChildItems;
-      v5->_loadedChildItems = v18;
+      v5->_loadedChildItems = dictionary;
 
-      v20 = [v4 objectForKey:@"children"];
+      v20 = [dictionaryCopy objectForKey:@"children"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v30 = v15;
-        v31 = v4;
+        v31 = dictionaryCopy;
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
@@ -95,8 +95,8 @@
               }
 
               v25 = *(*(&v33 + 1) + 8 * j);
-              v26 = [v25 stringValue];
-              v27 = [v20 objectForKey:v26];
+              stringValue = [v25 stringValue];
+              v27 = [v20 objectForKey:stringValue];
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
         }
 
         v15 = v30;
-        v4 = v31;
+        dictionaryCopy = v31;
       }
     }
   }

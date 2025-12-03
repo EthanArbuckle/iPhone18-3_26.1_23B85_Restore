@@ -1,28 +1,28 @@
 @interface HKConceptRelationship
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKConcept)destination;
 - (HKConceptRelationship)init;
-- (HKConceptRelationship)initWithCoder:(id)a3;
-- (HKConceptRelationship)initWithType:(int64_t)a3 destination:(id)a4 weakDestination:(id)a5 version:(int64_t)a6 deleted:(BOOL)a7;
+- (HKConceptRelationship)initWithCoder:(id)coder;
+- (HKConceptRelationship)initWithType:(int64_t)type destination:(id)destination weakDestination:(id)weakDestination version:(int64_t)version deleted:(BOOL)deleted;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKConceptRelationship
 
-- (HKConceptRelationship)initWithType:(int64_t)a3 destination:(id)a4 weakDestination:(id)a5 version:(int64_t)a6 deleted:(BOOL)a7
+- (HKConceptRelationship)initWithType:(int64_t)type destination:(id)destination weakDestination:(id)weakDestination version:(int64_t)version deleted:(BOOL)deleted
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (!(v13 | v14))
+  destinationCopy = destination;
+  weakDestinationCopy = weakDestination;
+  v15 = weakDestinationCopy;
+  if (!(destinationCopy | weakDestinationCopy))
   {
     [HKConceptRelationship initWithType:a2 destination:self weakDestination:&v22 version:? deleted:?];
     goto LABEL_13;
   }
 
-  if (v13 && v14)
+  if (destinationCopy && weakDestinationCopy)
   {
     [HKConceptRelationship initWithType:a2 destination:self weakDestination:&v22 version:? deleted:?];
 LABEL_13:
@@ -34,10 +34,10 @@ LABEL_13:
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    if (v13)
+    v16->_type = type;
+    if (destinationCopy)
     {
-      v18 = [v13 copy];
+      v18 = [destinationCopy copy];
       destination = v17->_destination;
       v17->_destination = v18;
     }
@@ -47,8 +47,8 @@ LABEL_13:
       objc_storeWeak(&v16->_weakDestination, v15);
     }
 
-    v17->_version = a6;
-    v17->_deleted = a7;
+    v17->_version = version;
+    v17->_deleted = deleted;
   }
 
   return v17;
@@ -80,10 +80,10 @@ LABEL_13:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -93,24 +93,24 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_type == v5->_type)
       {
-        v6 = [(HKConceptRelationship *)self destination];
-        v7 = [(HKConceptRelationship *)v5 destination];
-        if (v6 == v7)
+        destination = [(HKConceptRelationship *)self destination];
+        destination2 = [(HKConceptRelationship *)v5 destination];
+        if (destination == destination2)
         {
           v11 = self->_version == v5->_version && self->_deleted == v5->_deleted;
         }
 
         else
         {
-          v8 = [(HKConceptRelationship *)v5 destination];
-          if (v8)
+          destination3 = [(HKConceptRelationship *)v5 destination];
+          if (destination3)
           {
-            v9 = [(HKConceptRelationship *)self destination];
-            v10 = [(HKConceptRelationship *)v5 destination];
-            v11 = [v9 isEqual:v10] && self->_version == v5->_version && self->_deleted == v5->_deleted;
+            destination4 = [(HKConceptRelationship *)self destination];
+            destination5 = [(HKConceptRelationship *)v5 destination];
+            v11 = [destination4 isEqual:destination5] && self->_version == v5->_version && self->_deleted == v5->_deleted;
           }
 
           else
@@ -138,21 +138,21 @@ LABEL_13:
 - (unint64_t)hash
 {
   type = self->_type;
-  v4 = [(HKConceptRelationship *)self destination];
-  v5 = [v4 hash] ^ type;
+  destination = [(HKConceptRelationship *)self destination];
+  v5 = [destination hash] ^ type;
   v6 = self->_version ^ self->_deleted;
 
   return v5 ^ v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:self->_type forKey:@"Type"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_type forKey:@"Type"];
   destination = self->_destination;
   if (destination)
   {
-    [v7 encodeObject:destination forKey:@"Destination"];
+    [coderCopy encodeObject:destination forKey:@"Destination"];
   }
 
   else
@@ -162,32 +162,32 @@ LABEL_13:
     if (WeakRetained)
     {
       v6 = objc_loadWeakRetained(&self->_weakDestination);
-      [v7 encodeObject:v6 forKey:@"WeakDestination"];
+      [coderCopy encodeObject:v6 forKey:@"WeakDestination"];
     }
   }
 
-  [v7 encodeInt64:self->_version forKey:@"Version"];
-  [v7 encodeBool:self->_deleted forKey:@"Deleted"];
+  [coderCopy encodeInt64:self->_version forKey:@"Version"];
+  [coderCopy encodeBool:self->_deleted forKey:@"Deleted"];
 }
 
-- (HKConceptRelationship)initWithCoder:(id)a3
+- (HKConceptRelationship)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKConceptRelationship;
   v5 = [(HKConceptRelationship *)&v10 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"Type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Destination"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"Type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Destination"];
     destination = v5->_destination;
     v5->_destination = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WeakDestination"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WeakDestination"];
     objc_storeWeak(&v5->_weakDestination, v8);
 
-    v5->_version = [v4 decodeInt64ForKey:@"Version"];
-    v5->_deleted = [v4 decodeBoolForKey:@"Deleted"];
+    v5->_version = [coderCopy decodeInt64ForKey:@"Version"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"Deleted"];
   }
 
   return v5;
@@ -208,12 +208,12 @@ LABEL_13:
     v6 = &stru_1F05FF230;
   }
 
-  v7 = [(HKConceptRelationship *)self destination];
-  v8 = [v7 identifier];
-  v9 = [v8 rawIdentifier];
+  destination = [(HKConceptRelationship *)self destination];
+  identifier = [destination identifier];
+  rawIdentifier = [identifier rawIdentifier];
   version = self->_version;
   v11 = HKStringFromBool(self->_deleted);
-  v12 = [v3 stringWithFormat:@"Concept Relationship: Type: %lld, %@Destination ID: %lld, Version: %lld, Deleted: %@", type, v6, v9, version, v11];
+  v12 = [v3 stringWithFormat:@"Concept Relationship: Type: %lld, %@Destination ID: %lld, Version: %lld, Deleted: %@", type, v6, rawIdentifier, version, v11];
 
   return v12;
 }

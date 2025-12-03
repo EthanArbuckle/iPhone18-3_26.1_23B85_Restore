@@ -1,6 +1,6 @@
 @interface SBWindowedAccessoryViewController
 - (SBWindowedAccessoryViewControllerDelegate)delegate;
-- (void)forceDetachWindowedAcessoryButtonTapped:(id)a3;
+- (void)forceDetachWindowedAcessoryButtonTapped:(id)tapped;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -26,10 +26,10 @@
   [(SBWindowedAccessoryViewController *)&v2 viewDidLoad];
 }
 
-- (void)forceDetachWindowedAcessoryButtonTapped:(id)a3
+- (void)forceDetachWindowedAcessoryButtonTapped:(id)tapped
 {
-  v4 = [(SBWindowedAccessoryViewController *)self delegate];
-  [v4 windowedAccessoryViewControllerForceDetachButtonTapped:self];
+  delegate = [(SBWindowedAccessoryViewController *)self delegate];
+  [delegate windowedAccessoryViewControllerForceDetachButtonTapped:self];
 }
 
 - (SBWindowedAccessoryViewControllerDelegate)delegate

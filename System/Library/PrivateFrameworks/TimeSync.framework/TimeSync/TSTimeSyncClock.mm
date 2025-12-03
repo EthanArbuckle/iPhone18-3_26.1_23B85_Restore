@@ -1,119 +1,119 @@
 @interface TSTimeSyncClock
-- (BOOL)convertFromDomainTime:(unint64_t *)a3 toMachAbsoluteTime:(unint64_t *)a4 withCount:(unsigned int)a5;
-- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)a3 toDomainTime:(unint64_t *)a4 withCount:(unsigned int)a5;
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7;
-- (TSTimeSyncClock)initWithClockIdentifier:(unint64_t)a3 translationClock:(id)a4;
-- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)a3;
-- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)a3;
-- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)a3;
-- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)a3;
+- (BOOL)convertFromDomainTime:(unint64_t *)time toMachAbsoluteTime:(unint64_t *)absoluteTime withCount:(unsigned int)count;
+- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)time toDomainTime:(unint64_t *)domainTime withCount:(unsigned int)count;
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error;
+- (TSTimeSyncClock)initWithClockIdentifier:(unint64_t)identifier translationClock:(id)clock;
+- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)interval;
+- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)time;
+- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)interval;
+- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)time;
 @end
 
 @implementation TSTimeSyncClock
 
-- (TSTimeSyncClock)initWithClockIdentifier:(unint64_t)a3 translationClock:(id)a4
+- (TSTimeSyncClock)initWithClockIdentifier:(unint64_t)identifier translationClock:(id)clock
 {
-  v7 = a4;
+  clockCopy = clock;
   v11.receiver = self;
   v11.super_class = TSTimeSyncClock;
-  v8 = [(TSClock *)&v11 initWithClockIdentifier:a3];
+  v8 = [(TSClock *)&v11 initWithClockIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_translationClock, a4);
+    objc_storeStrong(&v8->_translationClock, clock);
   }
 
   return v9;
 }
 
-- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)a3
+- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)time
 {
-  v4 = [(TSClock *)self->_translationClock convertFromMachAbsoluteToDomainTime:a3];
+  v4 = [(TSClock *)self->_translationClock convertFromMachAbsoluteToDomainTime:time];
   translationClock = self->_translationClock;
 
   return [(TSClock *)translationClock convertFromDomainToTimeSyncTime:v4];
 }
 
-- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)a3
+- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)time
 {
-  v4 = [(TSClock *)self->_translationClock convertFromTimeSyncToDomainTime:a3];
+  v4 = [(TSClock *)self->_translationClock convertFromTimeSyncToDomainTime:time];
   translationClock = self->_translationClock;
 
   return [(TSClock *)translationClock convertFromDomainToMachAbsoluteTime:v4];
 }
 
-- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)a3 toDomainTime:(unint64_t *)a4 withCount:(unsigned int)a5
+- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)time toDomainTime:(unint64_t *)domainTime withCount:(unsigned int)count
 {
-  if (a5)
+  if (count)
   {
-    v8 = a5;
+    countCopy = count;
     do
     {
-      v9 = *a3++;
-      *a4++ = [(TSClock *)self->_translationClock convertFromDomainToTimeSyncTime:[(TSClock *)self->_translationClock convertFromMachAbsoluteToDomainTime:v9]];
-      --v8;
+      v9 = *time++;
+      *domainTime++ = [(TSClock *)self->_translationClock convertFromDomainToTimeSyncTime:[(TSClock *)self->_translationClock convertFromMachAbsoluteToDomainTime:v9]];
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   return 1;
 }
 
-- (BOOL)convertFromDomainTime:(unint64_t *)a3 toMachAbsoluteTime:(unint64_t *)a4 withCount:(unsigned int)a5
+- (BOOL)convertFromDomainTime:(unint64_t *)time toMachAbsoluteTime:(unint64_t *)absoluteTime withCount:(unsigned int)count
 {
-  if (a5)
+  if (count)
   {
-    v8 = a5;
+    countCopy = count;
     do
     {
-      v9 = *a3++;
-      *a4++ = [(TSClock *)self->_translationClock convertFromDomainToMachAbsoluteTime:[(TSClock *)self->_translationClock convertFromTimeSyncToDomainTime:v9]];
-      --v8;
+      v9 = *time++;
+      *absoluteTime++ = [(TSClock *)self->_translationClock convertFromDomainToMachAbsoluteTime:[(TSClock *)self->_translationClock convertFromTimeSyncToDomainTime:v9]];
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   return 1;
 }
 
-- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)a3
+- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)interval
 {
-  v4 = [(TSClock *)self->_translationClock convertFromMachAbsoluteIntervalToDomainInterval:a3];
+  v4 = [(TSClock *)self->_translationClock convertFromMachAbsoluteIntervalToDomainInterval:interval];
   translationClock = self->_translationClock;
 
   return [(TSClock *)translationClock convertFromDomainIntervalToTimeSyncTimeInterval:v4];
 }
 
-- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)a3
+- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)interval
 {
-  v4 = [(TSClock *)self->_translationClock convertFromTimeSyncTimeIntervalToDomainInterval:a3];
+  v4 = [(TSClock *)self->_translationClock convertFromTimeSyncTimeIntervalToDomainInterval:interval];
   translationClock = self->_translationClock;
 
   return [(TSClock *)translationClock convertFromDomainIntervalToMachAbsoluteInterval:v4];
 }
 
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error
 {
-  if (a3)
+  if (numerator)
   {
-    *a3 = 1;
+    *numerator = 1;
   }
 
-  if (a4)
+  if (denominator)
   {
-    *a4 = 1;
+    *denominator = 1;
   }
 
-  if (a5)
+  if (anchor)
   {
-    *a5 = 0;
+    *anchor = 0;
   }
 
-  if (a6)
+  if (domainAnchor)
   {
-    *a6 = 0;
+    *domainAnchor = 0;
   }
 
   return 1;

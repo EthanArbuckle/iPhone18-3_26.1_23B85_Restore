@@ -1,37 +1,37 @@
 @interface MDLMeshProxy
-- (MDLMeshProxy)initWithCoder:(id)a3;
-- (MDLMeshProxy)initWithVertexBuffers:(id)a3 vertexCount:(unint64_t)a4 descriptor:(id)a5 submeshes:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (MDLMeshProxy)initWithCoder:(id)coder;
+- (MDLMeshProxy)initWithVertexBuffers:(id)buffers vertexCount:(unint64_t)count descriptor:(id)descriptor submeshes:(id)submeshes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MDLMeshProxy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  objc_msgSend_encodeObject_forKey_(v9, v4, self->super._allocator, @"allocator");
-  objc_msgSend_encodeInteger_forKey_(v9, v5, self->super._vertexCount, @"vertexCount");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->super._allocator, @"allocator");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, self->super._vertexCount, @"vertexCount");
   allocator = self->super._allocator;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_msgSend_encodeMeshBuffers_withCoder_forKey_(self->super._allocator, v7, self->super._vertexBuffers, v9, @"vertexBuffers");
+    objc_msgSend_encodeMeshBuffers_withCoder_forKey_(self->super._allocator, v7, self->super._vertexBuffers, coderCopy, @"vertexBuffers");
   }
 
-  objc_msgSend_encodeVertexDescriptorWithCoder_(self->super._vertexDescriptor, v7, v9);
-  objc_msgSend_encodeObject_forKey_(v9, v8, self->super._submeshes, @"submeshes");
+  objc_msgSend_encodeVertexDescriptorWithCoder_(self->super._vertexDescriptor, v7, coderCopy);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->super._submeshes, @"submeshes");
 }
 
-- (MDLMeshProxy)initWithCoder:(id)a3
+- (MDLMeshProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v10 = objc_msgSend_setWithObjects_(v5, v9, v6, v7, v8, 0);
   v11 = objc_opt_class();
-  v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"allocator");
+  v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"allocator");
   allocator = self->super._allocator;
   self->super._allocator = v13;
 
@@ -39,30 +39,30 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = objc_msgSend_decodeMeshBuffersWithCoder_forKey_(self->super._allocator, v16, v4, @"vertexBuffers");
+    v17 = objc_msgSend_decodeMeshBuffersWithCoder_forKey_(self->super._allocator, v16, coderCopy, @"vertexBuffers");
     vertexBuffers = self->super._vertexBuffers;
     self->super._vertexBuffers = v17;
   }
 
-  self->super._vertexCount = objc_msgSend_decodeIntegerForKey_(v4, v16, @"vertexCount");
-  v20 = objc_msgSend_decodeVertexDescriptorWithCoder_(MDLVertexDescriptor, v19, v4);
+  self->super._vertexCount = objc_msgSend_decodeIntegerForKey_(coderCopy, v16, @"vertexCount");
+  v20 = objc_msgSend_decodeVertexDescriptorWithCoder_(MDLVertexDescriptor, v19, coderCopy);
   vertexDescriptor = self->super._vertexDescriptor;
   self->super._vertexDescriptor = v20;
 
-  v23 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v22, v10, @"submeshes");
+  v23 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v22, v10, @"submeshes");
   submeshes = self->super._submeshes;
   self->super._submeshes = v23;
 
   return self;
 }
 
-- (MDLMeshProxy)initWithVertexBuffers:(id)a3 vertexCount:(unint64_t)a4 descriptor:(id)a5 submeshes:(id)a6
+- (MDLMeshProxy)initWithVertexBuffers:(id)buffers vertexCount:(unint64_t)count descriptor:(id)descriptor submeshes:(id)submeshes
 {
   v134 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v114 = a5;
-  v112 = v9;
-  v113 = a6;
+  buffersCopy = buffers;
+  descriptorCopy = descriptor;
+  v112 = buffersCopy;
+  submeshesCopy = submeshes;
   v130.receiver = self;
   v130.super_class = MDLMeshProxy;
   v116 = [(MDLObject *)&v130 init];
@@ -76,7 +76,7 @@
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v10 = v9;
+  v10 = buffersCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v126, v133, 16);
   if (!v14)
   {
@@ -118,8 +118,8 @@
   while (v14);
 LABEL_13:
 
-  v29 = v114;
-  if (!v114)
+  v29 = descriptorCopy;
+  if (!descriptorCopy)
   {
     v30 = MEMORY[0x277CBEAD8];
     v31 = objc_opt_class();
@@ -255,19 +255,19 @@ LABEL_13:
     *v89->super._anon_50 = _Q1;
     *&v89->super._anon_50[16] = 0u;
     objc_storeStrong(&v89->super._allocator, v56);
-    v90->super._vertexCount = a4;
+    v90->super._vertexCount = count;
     v96 = objc_alloc(MEMORY[0x277CBEB18]);
     v98 = objc_msgSend_initWithArray_(v96, v97, v54);
     vertexBuffers = v90->super._vertexBuffers;
     v90->super._vertexBuffers = v98;
 
     v100 = MEMORY[0x23EE7E350]();
-    v102 = objc_msgSend_copyWithZone_(v114, v101, v100);
+    v102 = objc_msgSend_copyWithZone_(descriptorCopy, v101, v100);
     vertexDescriptor = v90->super._vertexDescriptor;
     v90->super._vertexDescriptor = v102;
 
     v104 = objc_alloc(MEMORY[0x277CBEB18]);
-    v106 = objc_msgSend_initWithArray_(v104, v105, v113);
+    v106 = objc_msgSend_initWithArray_(v104, v105, submeshesCopy);
     submeshes = v90->super._submeshes;
     v90->super._submeshes = v106;
 

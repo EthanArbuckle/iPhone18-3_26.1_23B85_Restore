@@ -3,14 +3,14 @@
 - (BOOL)_isRunningInStoreDemoMode;
 - (BOOL)hasRestrictionsPasscode;
 - (MPRestrictionsMonitor)init;
-- (id)effectiveValueForSetting:(id)a3;
+- (id)effectiveValueForSetting:(id)setting;
 - (int64_t)maximumMovieRating;
 - (int64_t)maximumTVShowRating;
-- (void)_cacheValue:(id)a3 forSetting:(id)a4;
-- (void)_updateWithCanPostNotifications:(BOOL)a3;
+- (void)_cacheValue:(id)value forSetting:(id)setting;
+- (void)_updateWithCanPostNotifications:(BOOL)notifications;
 - (void)dealloc;
-- (void)handleAllowExplicitSettingDidChangeNotification:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)handleAllowExplicitSettingDidChangeNotification:(id)notification;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation MPRestrictionsMonitor
@@ -34,19 +34,19 @@
   v2 = [(MPRestrictionsMonitor *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
     v4 = *(v2 + 3);
-    *(v2 + 3) = v3;
+    *(v2 + 3) = mEMORY[0x1E69ADFB8];
 
     *(v2 + 2) = 0;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = *(v2 + 2);
-    *(v2 + 2) = v5;
+    *(v2 + 2) = dictionary;
 
     if (+[MPHomeMonitor isCurrentDeviceValidHomeAccessory])
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v2 selector:sel_handleAllowExplicitSettingDidChangeNotification_ name:@"MPHomeUserObserverUserAllowExplicitSettingsDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel_handleAllowExplicitSettingDidChangeNotification_ name:@"MPHomeUserObserverUserAllowExplicitSettingsDidChangeNotification" object:0];
     }
 
     *(v2 + 40) = vdupq_n_s64(0x3E8uLL);
@@ -81,10 +81,10 @@ void __50__MPRestrictionsMonitor_sharedRestrictionsMonitor__block_invoke()
   sharedRestrictionsMonitor___sharedInstance = v0;
 }
 
-- (void)_updateWithCanPostNotifications:(BOOL)a3
+- (void)_updateWithCanPostNotifications:(BOOL)notifications
 {
   v87 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notifications)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:8];
   }
@@ -95,23 +95,23 @@ void __50__MPRestrictionsMonitor_sharedRestrictionsMonitor__block_invoke()
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(MPRestrictionsMonitor *)self _isRunningInStoreDemoMode];
+  _isRunningInStoreDemoMode = [(MPRestrictionsMonitor *)self _isRunningInStoreDemoMode];
   v8 = os_log_create("com.apple.amp.mediaplayer", "Restrictions");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     connection = self->_connection;
     *buf = 138543874;
-    v79 = self;
+    selfCopy6 = self;
     v80 = 2114;
     v81 = connection;
     v82 = 1024;
-    LODWORD(v83) = v7;
+    LODWORD(v83) = _isRunningInStoreDemoMode;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "Beginning update for properties of %{public}@. _connection = %{public}@, isRunningInStoreDemoMode = %{BOOL}u", buf, 0x1Cu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = !v7;
-  if (self->_allowsDeletion == !v7)
+  v10 = !_isRunningInStoreDemoMode;
+  if (self->_allowsDeletion == !_isRunningInStoreDemoMode)
   {
     v11 = "Unchanged";
   }
@@ -130,7 +130,7 @@ void __50__MPRestrictionsMonitor_sharedRestrictionsMonitor__block_invoke()
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v79 = v11;
+    selfCopy6 = v11;
     v80 = 1024;
     LODWORD(v81) = v10;
     _os_log_impl(&dword_1A238D000, v13, OS_LOG_TYPE_DEFAULT, "%{public}s allowsDeletion = %{BOOL}u.", buf, 0x12u);
@@ -165,7 +165,7 @@ LABEL_13:
       }
 
       *buf = 138543618;
-      v79 = v16;
+      selfCopy6 = v16;
       v80 = 2114;
       v81 = v19;
       _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_DEFAULT, "Effective BOOL value for MCFeatureExplicitContentAllowed (%{public}@) = %{public}@.", buf, 0x16u);
@@ -189,7 +189,7 @@ LABEL_21:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v79 = v15;
+    selfCopy6 = v15;
     v80 = 1024;
     LODWORD(v81) = v14;
     _os_log_impl(&dword_1A238D000, v21, OS_LOG_TYPE_DEFAULT, "%{public}s allowsExplicitContent = %{BOOL}u.", buf, 0x12u);
@@ -211,7 +211,7 @@ LABEL_21:
     }
 
     *buf = 138543618;
-    v79 = v22;
+    selfCopy6 = v22;
     v80 = 2114;
     v81 = v25;
     _os_log_impl(&dword_1A238D000, v24, OS_LOG_TYPE_DEFAULT, "Effective BOOL value for MCFeatureAccountModificationAllowed (%{public}@) = %{public}@.", buf, 0x16u);
@@ -234,7 +234,7 @@ LABEL_21:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v79 = v27;
+    selfCopy6 = v27;
     v80 = 1024;
     LODWORD(v81) = v26;
     _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEFAULT, "%{public}s allowsAccountModification = %{BOOL}u.", buf, 0x12u);
@@ -256,7 +256,7 @@ LABEL_21:
     }
 
     *buf = 138543618;
-    v79 = v29;
+    selfCopy6 = v29;
     v80 = 2114;
     v81 = v32;
     _os_log_impl(&dword_1A238D000, v31, OS_LOG_TYPE_DEFAULT, "Effective BOOL value for MCFeatureMusicServiceAllowed (%{public}@) = %{public}@.", buf, 0x16u);
@@ -282,7 +282,7 @@ LABEL_21:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v79 = v34;
+    selfCopy6 = v34;
     v80 = 1024;
     LODWORD(v81) = v33;
     _os_log_impl(&dword_1A238D000, v36, OS_LOG_TYPE_DEFAULT, "%{public}s allowsMusicSubscription = %{BOOL}u.", buf, 0x12u);
@@ -304,7 +304,7 @@ LABEL_21:
     }
 
     *buf = 138543618;
-    v79 = v37;
+    selfCopy6 = v37;
     v80 = 2114;
     v81 = v40;
     _os_log_impl(&dword_1A238D000, v39, OS_LOG_TYPE_DEFAULT, "Effective BOOL value for MCFeatureRadioServiceAllowed (%{public}@) = %{public}@.", buf, 0x16u);
@@ -330,7 +330,7 @@ LABEL_21:
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v79 = v42;
+    selfCopy6 = v42;
     v80 = 1024;
     LODWORD(v81) = v41;
     _os_log_impl(&dword_1A238D000, v44, OS_LOG_TYPE_DEFAULT, "%{public}s allowsRadioService = %{BOOL}u.", buf, 0x12u);
@@ -352,7 +352,7 @@ LABEL_21:
     }
 
     *buf = 138543618;
-    v79 = v45;
+    selfCopy6 = v45;
     v80 = 2114;
     v81 = v48;
     _os_log_impl(&dword_1A238D000, v47, OS_LOG_TYPE_DEFAULT, "Effective BOOL value for MCFeatureMusicVideosAllowed (%{public}@) = %{public}@.", buf, 0x16u);
@@ -378,7 +378,7 @@ LABEL_21:
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v79 = v50;
+    selfCopy6 = v50;
     v80 = 1024;
     LODWORD(v81) = v49;
     _os_log_impl(&dword_1A238D000, v52, OS_LOG_TYPE_DEFAULT, "%{public}s allowsMusicVideos = %{BOOL}u.", buf, 0x12u);
@@ -428,7 +428,7 @@ LABEL_21:
     v63 = "properties";
     *buf = 138544130;
     v80 = 2048;
-    v79 = self;
+    selfCopy6 = self;
     if (v60 == 1)
     {
       v63 = "property";
@@ -452,7 +452,7 @@ LABEL_21:
     }
 
     *buf = 138543362;
-    v79 = self;
+    selfCopy6 = self;
     v64 = "Completed update for properties of %{public}@. All properties remained unchanged.";
     v65 = v61;
     v66 = 12;
@@ -466,7 +466,7 @@ LABEL_78:
   v69 = os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT);
   if (!v67)
   {
-    if (a3)
+    if (notifications)
     {
       if (!v69)
       {
@@ -474,7 +474,7 @@ LABEL_78:
       }
 
       *buf = 138543362;
-      v79 = self;
+      selfCopy6 = self;
       v71 = "%{public}@ : Completed posting notifications because there were no notifications to post.";
     }
 
@@ -486,7 +486,7 @@ LABEL_78:
       }
 
       *buf = 138543362;
-      v79 = self;
+      selfCopy6 = self;
       v71 = "%{public}@ : Skipping posting notifications because canPostNotifications = NO";
     }
 
@@ -497,7 +497,7 @@ LABEL_78:
   if (v69)
   {
     *buf = 138543618;
-    v79 = self;
+    selfCopy6 = self;
     v80 = 2048;
     v81 = v67;
     _os_log_impl(&dword_1A238D000, v68, OS_LOG_TYPE_DEFAULT, "%{public}@ : Posting %lu notifications", buf, 0x16u);
@@ -553,75 +553,75 @@ void __57__MPRestrictionsMonitor__updateWithCanPostNotifications___block_invoke(
   }
 }
 
-- (void)_cacheValue:(id)a3 forSetting:(id)a4
+- (void)_cacheValue:(id)value forSetting:(id)setting
 {
-  v8 = a3;
-  v6 = a4;
+  valueCopy = value;
+  settingCopy = setting;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = v8;
-  if (!v8)
+  null = valueCopy;
+  if (!valueCopy)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9 = v7;
-  [(NSMutableDictionary *)self->_cachedSettings setObject:v7 forKey:v6];
+  v9 = null;
+  [(NSMutableDictionary *)self->_cachedSettings setObject:null forKey:settingCopy];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   v8 = os_log_create("com.apple.amp.mediaplayer", "Restrictions");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = notificationCopy;
     v13 = 2114;
-    v14 = v7;
+    v14 = infoCopy;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ handling effective settings changed notification for %{public}@ with user info: %{public}@.", &v9, 0x20u);
   }
 
   [(MPRestrictionsMonitor *)self _updateWithCanPostNotifications:1];
 }
 
-- (void)handleAllowExplicitSettingDidChangeNotification:(id)a3
+- (void)handleAllowExplicitSettingDidChangeNotification:(id)notification
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.mediaplayer", "Restrictions");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ handling allow explicit setting did change notification for home monitor: %{public}@.", &v6, 0x16u);
   }
 
   [(MPRestrictionsMonitor *)self _updateWithCanPostNotifications:1];
 }
 
-- (id)effectiveValueForSetting:(id)a3
+- (id)effectiveValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_cachedSettings objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_cachedSettings objectForKey:settingCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v5 = [(MCProfileConnection *)self->_connection effectiveValueForSetting:v4];
+    v5 = [(MCProfileConnection *)self->_connection effectiveValueForSetting:settingCopy];
     os_unfair_lock_lock(&self->_lock);
-    [(MPRestrictionsMonitor *)self _cacheValue:v5 forSetting:v4];
+    [(MPRestrictionsMonitor *)self _cacheValue:v5 forSetting:settingCopy];
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x1E695DFB0] null];
-  v7 = [v5 isEqual:v6];
+  null = [MEMORY[0x1E695DFB0] null];
+  v7 = [v5 isEqual:null];
 
   if (v7)
   {
@@ -639,15 +639,15 @@ LABEL_5:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 1000;
+    integerValue = 1000;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)maximumTVShowRating
@@ -656,15 +656,15 @@ LABEL_5:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 1000;
+    integerValue = 1000;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)hasRestrictionsPasscode

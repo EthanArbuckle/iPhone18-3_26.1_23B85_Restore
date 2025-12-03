@@ -1,5 +1,5 @@
 @interface HDUserDomainConceptProcessor
-+ (BOOL)processUserDomainConceptsAfter:(int64_t)a3 transactionLimit:(int64_t)a4 outAnchor:(int64_t *)a5 outProcessedConceptsCount:(int64_t *)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9;
++ (BOOL)processUserDomainConceptsAfter:(int64_t)after transactionLimit:(int64_t)limit outAnchor:(int64_t *)anchor outProcessedConceptsCount:(int64_t *)count profile:(id)profile transaction:(id)transaction error:(id *)error;
 - (HDUserDomainConceptProcessor)init;
 @end
 
@@ -15,11 +15,11 @@
   return 0;
 }
 
-+ (BOOL)processUserDomainConceptsAfter:(int64_t)a3 transactionLimit:(int64_t)a4 outAnchor:(int64_t *)a5 outProcessedConceptsCount:(int64_t *)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9
++ (BOOL)processUserDomainConceptsAfter:(int64_t)after transactionLimit:(int64_t)limit outAnchor:(int64_t *)anchor outProcessedConceptsCount:(int64_t *)count profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v14 = a7;
-  v15 = a8;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v16 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"sync_anchor" entityClass:objc_opt_class() ascending:1];
   v41[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
@@ -27,38 +27,38 @@
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
-  v40 = a3;
+  afterCopy = after;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v18 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v18 = [MEMORY[0x277CCABB0] numberWithLongLong:after];
   v19 = HDUserDomainConceptEntityPredicateForConceptsWithAnchorAfter(v18);
 
-  v20 = [v14 userDomainConceptManager];
+  userDomainConceptManager = [profileCopy userDomainConceptManager];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __142__HDUserDomainConceptProcessor_processUserDomainConceptsAfter_transactionLimit_outAnchor_outProcessedConceptsCount_profile_transaction_error___block_invoke;
   v27[3] = &unk_27861AFA0;
-  v21 = v14;
+  v21 = profileCopy;
   v28 = v21;
-  v32 = a1;
-  v22 = v15;
+  selfCopy = self;
+  v22 = transactionCopy;
   v29 = v22;
   v30 = &v33;
   v31 = &v37;
-  v23 = [v20 enumerateUserDomainConceptsWithPredicate:v19 enumerationOptions:2 limit:a4 orderingTerms:v17 transaction:v22 error:a9 enumerationHandler:v27];
+  v23 = [userDomainConceptManager enumerateUserDomainConceptsWithPredicate:v19 enumerationOptions:2 limit:limit orderingTerms:v17 transaction:v22 error:error enumerationHandler:v27];
 
   if (v23)
   {
-    if (a6)
+    if (count)
     {
-      *a6 = v34[3];
+      *count = v34[3];
     }
 
-    if (a5)
+    if (anchor)
     {
-      *a5 = v38[3];
+      *anchor = v38[3];
     }
   }
 

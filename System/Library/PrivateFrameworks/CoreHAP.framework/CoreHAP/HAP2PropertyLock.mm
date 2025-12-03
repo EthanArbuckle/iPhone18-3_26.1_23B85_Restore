@@ -1,40 +1,40 @@
 @interface HAP2PropertyLock
-+ (HAP2PropertyLock)lockWithName:(id)a3;
-- (void)performReadingBlock:(id)a3;
-- (void)performWritingBlock:(id)a3;
++ (HAP2PropertyLock)lockWithName:(id)name;
+- (void)performReadingBlock:(id)block;
+- (void)performWritingBlock:(id)block;
 @end
 
 @implementation HAP2PropertyLock
 
-+ (HAP2PropertyLock)lockWithName:(id)a3
++ (HAP2PropertyLock)lockWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
-  v5 = [objc_alloc(objc_opt_class()) initWithLock:v4 name:v3];
+  v5 = [objc_alloc(objc_opt_class()) initWithLock:v4 name:nameCopy];
 
   return v5;
 }
 
-- (void)performWritingBlock:(id)a3
+- (void)performWritingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HAP2Lock *)self internalLock];
-  [v5 lockForWriting];
+  blockCopy = block;
+  internalLock = [(HAP2Lock *)self internalLock];
+  [internalLock lockForWriting];
 
-  [(HAP2Lock *)self _performBlock:v4 allowRecursive:0];
-  v6 = [(HAP2Lock *)self internalLock];
-  [v6 unlock];
+  [(HAP2Lock *)self _performBlock:blockCopy allowRecursive:0];
+  internalLock2 = [(HAP2Lock *)self internalLock];
+  [internalLock2 unlock];
 }
 
-- (void)performReadingBlock:(id)a3
+- (void)performReadingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HAP2Lock *)self internalLock];
-  [v5 lockForReading];
+  blockCopy = block;
+  internalLock = [(HAP2Lock *)self internalLock];
+  [internalLock lockForReading];
 
-  [(HAP2Lock *)self _performBlock:v4 allowRecursive:1];
-  v6 = [(HAP2Lock *)self internalLock];
-  [v6 unlock];
+  [(HAP2Lock *)self _performBlock:blockCopy allowRecursive:1];
+  internalLock2 = [(HAP2Lock *)self internalLock];
+  [internalLock2 unlock];
 }
 
 @end

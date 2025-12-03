@@ -1,8 +1,8 @@
 @interface PosterRackCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axScrollDown:(id)a3 scrollView:(id)a4;
-- (BOOL)_axScrollLeft:(BOOL)a3 pageControl:(id)a4 collectionView:(id)a5;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axScrollDown:(id)down scrollView:(id)view;
+- (BOOL)_axScrollLeft:(BOOL)left pageControl:(id)control collectionView:(id)view;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_axCollectionView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetPageControlValue;
@@ -11,30 +11,30 @@
 
 @implementation PosterRackCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"pageControl" withSwiftType:"Optional<UIPageControl>"];
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell"];
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftField:@"scrollView" withSwiftType:"Optional<UIScrollView>"];
-  [v3 validateClass:@"PosterBoard.PosterSectionRemovalView"];
-  [v3 validateClass:@"PosterBoard.PosterSectionRemovalView" hasSwiftField:@"deleteButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"layoutMode" withSwiftType:"PRUISSwitcherLayoutMode"];
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftFieldOfAnyClass:@"addPosterButton"];
-  [v3 validateClass:@"PosterBoard.PosterPair" hasSwiftField:@"localizedTitle" withSwiftType:"Optional<String>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"pageControl" withSwiftType:"Optional<UIPageControl>"];
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell"];
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftField:@"scrollView" withSwiftType:"Optional<UIScrollView>"];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionRemovalView"];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionRemovalView" hasSwiftField:@"deleteButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"layoutMode" withSwiftType:"PRUISSwitcherLayoutMode"];
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftFieldOfAnyClass:@"addPosterButton"];
+  [validationsCopy validateClass:@"PosterBoard.PosterPair" hasSwiftField:@"localizedTitle" withSwiftType:"Optional<String>"];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   objc_opt_class();
   v5 = [(PosterRackCollectionViewControllerAccessibility *)self safeSwiftValueForKey:@"pageControl"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
+  _axCollectionView = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
   objc_opt_class();
-  v8 = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
-  v9 = AXCenteredPosterCellInCollectionView(v8);
+  _axCollectionView2 = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
+  v9 = AXCenteredPosterCellInCollectionView(_axCollectionView2);
   v10 = [v9 safeSwiftValueForKey:@"scrollView"];
   v11 = __UIAccessibilityCastAsClass();
 
@@ -44,18 +44,18 @@
   if (v13 == 1)
   {
     v14 = 1;
-    if (a3 > 2)
+    if (scroll > 2)
     {
-      if (a3 == 3)
+      if (scroll == 3)
       {
         [v11 setContentOffset:1 animated:{0.0, 0.0}];
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
         goto LABEL_14;
       }
 
-      if (a3 == 4)
+      if (scroll == 4)
       {
-        v17 = [(PosterRackCollectionViewControllerAccessibility *)self _axScrollDown:v7 scrollView:v11];
+        v17 = [(PosterRackCollectionViewControllerAccessibility *)self _axScrollDown:_axCollectionView scrollView:v11];
 LABEL_12:
         v14 = v17;
       }
@@ -63,19 +63,19 @@ LABEL_12:
 
     else
     {
-      if (a3 == 1)
+      if (scroll == 1)
       {
-        v15 = self;
+        selfCopy2 = self;
         v16 = 0;
         goto LABEL_11;
       }
 
-      if (a3 == 2)
+      if (scroll == 2)
       {
-        v15 = self;
+        selfCopy2 = self;
         v16 = 1;
 LABEL_11:
-        v17 = [(PosterRackCollectionViewControllerAccessibility *)v15 _axScrollLeft:v16 pageControl:v6 collectionView:v7];
+        v17 = [(PosterRackCollectionViewControllerAccessibility *)selfCopy2 _axScrollLeft:v16 pageControl:v6 collectionView:_axCollectionView];
         goto LABEL_12;
       }
     }
@@ -100,8 +100,8 @@ LABEL_14:
   v4 = AXConvertToLayoutMode();
 
   v5 = v4 == 4;
-  v6 = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
-  [v6 setAccessibilityElementsHidden:v5];
+  _axCollectionView = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
+  [_axCollectionView setAccessibilityElementsHidden:v5];
 
   AXPerformBlockOnMainThreadAfterDelay();
 }
@@ -120,23 +120,23 @@ LABEL_14:
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 collectionView];
+  collectionView = [v2 collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (BOOL)_axScrollDown:(id)a3 scrollView:(id)a4
+- (BOOL)_axScrollDown:(id)down scrollView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = AXLockScreenPostersCount(v5);
+  downCopy = down;
+  viewCopy = view;
+  v7 = AXLockScreenPostersCount(downCopy);
   if (v7 != 1)
   {
-    [v6 contentSize];
+    [viewCopy contentSize];
     v9 = v8;
-    [v6 bounds];
-    [v6 setContentOffset:1 animated:{0.0, v9 - v10}];
-    v12 = v5;
+    [viewCopy bounds];
+    [viewCopy setContentOffset:1 animated:{0.0, v9 - v10}];
+    v12 = downCopy;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
@@ -201,16 +201,16 @@ LABEL_13:
   v8 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)_axScrollLeft:(BOOL)a3 pageControl:(id)a4 collectionView:(id)a5
+- (BOOL)_axScrollLeft:(BOOL)left pageControl:(id)control collectionView:(id)view
 {
-  if (a3)
+  if (left)
   {
-    [a4 accessibilityIncrement];
+    [control accessibilityIncrement];
   }
 
   else
   {
-    [a4 accessibilityDecrement];
+    [control accessibilityDecrement];
   }
 
   AXPerformBlockOnMainThreadAfterDelay();
@@ -231,10 +231,10 @@ void __92__PosterRackCollectionViewControllerAccessibility__axScrollLeft_pageCon
   v3 = [(PosterRackCollectionViewControllerAccessibility *)self safeSwiftValueForKey:@"pageControl"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 currentPage];
+  currentPage = [v4 currentPage];
   v6 = [v4 numberOfPages] - 1;
-  v7 = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
-  v8 = AXCenteredPosterCellInCollectionView(v7);
+  _axCollectionView = [(PosterRackCollectionViewControllerAccessibility *)self _axCollectionView];
+  v8 = AXCenteredPosterCellInCollectionView(_axCollectionView);
   v9 = [v8 safeSwiftStringForKey:@"localizedTitle"];
 
   if (v6 == 1)
@@ -244,7 +244,7 @@ void __92__PosterRackCollectionViewControllerAccessibility__axScrollLeft_pageCon
 
   else
   {
-    if (v5 >= v6)
+    if (currentPage >= v6)
     {
       v11 = 0;
       goto LABEL_7;

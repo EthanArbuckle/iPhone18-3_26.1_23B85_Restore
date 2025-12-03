@@ -1,8 +1,8 @@
 @interface SWCEnterpriseContext
 - (NSData)state;
 - (SWCEnterpriseContext)init;
-- (id)isApplicationIdentifierEligibleForManagedMode:(id)a3 error:(id *)a4;
-- (id)serviceSpecifiersForApplicationIdentifier:(id)a3 error:(id *)a4;
+- (id)isApplicationIdentifierEligibleForManagedMode:(id)mode error:(id *)error;
+- (id)serviceSpecifiersForApplicationIdentifier:(id)identifier error:(id *)error;
 - (void)_loadEnterpriseData;
 @end
 
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (id)serviceSpecifiersForApplicationIdentifier:(id)a3 error:(id *)a4
+- (id)serviceSpecifiersForApplicationIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   if (!self->_associatedDomains)
   {
     v12 = self->_highLevelError;
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -40,14 +40,14 @@
     goto LABEL_12;
   }
 
-  v9 = [v7 bundleIdentifier];
-  if (!v9)
+  bundleIdentifier = [identifierCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"SWCEnterpriseContext.mm" lineNumber:93 description:{@"Failed to get a string value from %@", v8}];
   }
 
-  v10 = [(NSDictionary *)self->_associatedDomains objectForKeyedSubscript:v9];
+  v10 = [(NSDictionary *)self->_associatedDomains objectForKeyedSubscript:bundleIdentifier];
   if (v10)
   {
     v17 = 0;
@@ -65,13 +65,13 @@
     v11 = &__NSArray0__struct;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_12:
     if (!v11)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -80,9 +80,9 @@ LABEL_14:
   return v11;
 }
 
-- (id)isApplicationIdentifierEligibleForManagedMode:(id)a3 error:(id *)a4
+- (id)isApplicationIdentifierEligibleForManagedMode:(id)mode error:(id *)error
 {
-  v7 = a3;
+  modeCopy = mode;
   v8 = _SWCDiagnosticStorage[1];
   if (v8 && self->_appleInternal)
   {
@@ -95,7 +95,7 @@ LABEL_14:
     if (!v9)
     {
       v11 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -104,21 +104,21 @@ LABEL_14:
     }
   }
 
-  v10 = [v7 bundleIdentifier];
-  if (!v10)
+  bundleIdentifier = [modeCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
     v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SWCEnterpriseContext.mm" lineNumber:142 description:{@"Failed to get a string value from %@", v7}];
+    [v13 handleFailureInMethod:a2 object:self file:@"SWCEnterpriseContext.mm" lineNumber:142 description:{@"Failed to get a string value from %@", modeCopy}];
   }
 
-  v11 = [NSNumber numberWithBool:[(NSSet *)v9 containsObject:v10]];
+  v11 = [NSNumber numberWithBool:[(NSSet *)v9 containsObject:bundleIdentifier]];
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
     if (!v11)
     {
-      *a4 = self->_highLevelError;
+      *error = self->_highLevelError;
     }
   }
 
@@ -140,8 +140,8 @@ LABEL_12:
 
     if ([(NSSet *)self->_managedModeAppIDs count])
     {
-      v5 = [(NSSet *)self->_managedModeAppIDs allObjects];
-      [v4 addObject:v5];
+      allObjects = [(NSSet *)self->_managedModeAppIDs allObjects];
+      [v4 addObject:allObjects];
     }
 
     v6 = [NSJSONSerialization dataWithJSONObject:v4 options:2 error:0];
@@ -179,12 +179,12 @@ LABEL_12:
 
   if (qword_100032528)
   {
-    v33 = [qword_100032528 sharedConnection];
-    v2 = [v33 associatedDomainsForManagedApps];
-    v3 = v2;
-    if (v2)
+    sharedConnection = [qword_100032528 sharedConnection];
+    associatedDomainsForManagedApps = [sharedConnection associatedDomainsForManagedApps];
+    v3 = associatedDomainsForManagedApps;
+    if (associatedDomainsForManagedApps)
     {
-      v32 = v2;
+      v32 = associatedDomainsForManagedApps;
       v4 = objc_alloc_init(NSMutableDictionary);
       v36 = objc_alloc_init(NSMutableSet);
       v40 = 0u;

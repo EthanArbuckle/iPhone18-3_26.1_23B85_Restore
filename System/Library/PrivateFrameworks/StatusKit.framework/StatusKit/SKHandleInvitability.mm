@@ -1,21 +1,21 @@
 @interface SKHandleInvitability
 + (id)logger;
-- (SKHandleInvitability)initWithCoder:(id)a3;
-- (SKHandleInvitability)initWithIsInvitable:(BOOL)a3 wasRemoved:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SKHandleInvitability)initWithCoder:(id)coder;
+- (SKHandleInvitability)initWithIsInvitable:(BOOL)invitable wasRemoved:(BOOL)removed;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKHandleInvitability
 
-- (SKHandleInvitability)initWithIsInvitable:(BOOL)a3 wasRemoved:(BOOL)a4
+- (SKHandleInvitability)initWithIsInvitable:(BOOL)invitable wasRemoved:(BOOL)removed
 {
   v7.receiver = self;
   v7.super_class = SKHandleInvitability;
   result = [(SKHandleInvitability *)&v7 init];
   if (result)
   {
-    result->_isInvitable = a3;
-    result->_wasRemoved = a4;
+    result->_isInvitable = invitable;
+    result->_wasRemoved = removed;
   }
 
   return result;
@@ -40,19 +40,19 @@ uint64_t __30__SKHandleInvitability_logger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isInvitable = self->_isInvitable;
-  v5 = a3;
-  [v5 encodeBool:isInvitable forKey:@"IsInvitable"];
-  [v5 encodeBool:self->_wasRemoved forKey:@"WasRemoved"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isInvitable forKey:@"IsInvitable"];
+  [coderCopy encodeBool:self->_wasRemoved forKey:@"WasRemoved"];
 }
 
-- (SKHandleInvitability)initWithCoder:(id)a3
+- (SKHandleInvitability)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"IsInvitable"];
-  v6 = [v4 decodeBoolForKey:@"WasRemoved"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"IsInvitable"];
+  v6 = [coderCopy decodeBoolForKey:@"WasRemoved"];
 
   return [(SKHandleInvitability *)self initWithIsInvitable:v5 wasRemoved:v6];
 }

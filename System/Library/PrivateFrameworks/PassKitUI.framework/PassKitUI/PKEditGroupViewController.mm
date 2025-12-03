@@ -1,45 +1,45 @@
 @interface PKEditGroupViewController
-- (PKEditGroupViewController)initWithGroup:(id)a3 existingGroupsController:(id)a4 style:(int64_t)a5 placeholders:(id)a6 isForWatch:(BOOL)a7 delegate:(id)a8;
-- (id)passAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)viewControllerForRowAtIndexPath:(id)a3;
+- (PKEditGroupViewController)initWithGroup:(id)group existingGroupsController:(id)controller style:(int64_t)style placeholders:(id)placeholders isForWatch:(BOOL)watch delegate:(id)delegate;
+- (id)passAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)viewControllerForRowAtIndexPath:(id)path;
 - (void)_deleteAllPassesInGroup;
 - (void)_deleteButtonPressed;
-- (void)_presentAlertForUpdatedExpressPass:(id)a3;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withPass:(id)a5;
+- (void)_presentAlertForUpdatedExpressPass:(id)pass;
+- (void)configureCell:(id)cell atIndexPath:(id)path withPass:(id)pass;
 - (void)dealloc;
-- (void)group:(id)a3 didInsertPass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6;
-- (void)group:(id)a3 didMovePassFromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
-- (void)group:(id)a3 didRemovePass:(id)a4 atIndex:(unint64_t)a5;
-- (void)group:(id)a3 didUpdatePass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6;
-- (void)prefetchItemsAtIndexPaths:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)group:(id)group didInsertPass:(id)pass withState:(id)state atIndex:(unint64_t)index;
+- (void)group:(id)group didMovePassFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)group:(id)group didRemovePass:(id)pass atIndex:(unint64_t)index;
+- (void)group:(id)group didUpdatePass:(id)pass withState:(id)state atIndex:(unint64_t)index;
+- (void)prefetchItemsAtIndexPaths:(id)paths;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKEditGroupViewController
 
-- (PKEditGroupViewController)initWithGroup:(id)a3 existingGroupsController:(id)a4 style:(int64_t)a5 placeholders:(id)a6 isForWatch:(BOOL)a7 delegate:(id)a8
+- (PKEditGroupViewController)initWithGroup:(id)group existingGroupsController:(id)controller style:(int64_t)style placeholders:(id)placeholders isForWatch:(BOOL)watch delegate:(id)delegate
 {
-  v9 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
+  watchCopy = watch;
+  groupCopy = group;
+  controllerCopy = controller;
+  placeholdersCopy = placeholders;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PKEditGroupViewController;
-  v19 = [(PKEditTableViewController *)&v25 initWithStyle:0 placeholders:v17 isForWatch:v9];
+  v19 = [(PKEditTableViewController *)&v25 initWithStyle:0 placeholders:placeholdersCopy isForWatch:watchCopy];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_group, a3);
-    v20->_isForWatch = v9;
-    [(PKEditTableViewController *)v20 setExistingGroupsController:v16];
-    [(PKEditTableViewController *)v20 setPlaceholders:v17];
+    objc_storeStrong(&v19->_group, group);
+    v20->_isForWatch = watchCopy;
+    [(PKEditTableViewController *)v20 setExistingGroupsController:controllerCopy];
+    [(PKEditTableViewController *)v20 setPlaceholders:placeholdersCopy];
     [(PKGroup *)v20->_group addGroupObserver:v20];
     viewingPass = v20->_viewingPass;
     v20->_viewingPass = 0;
@@ -47,8 +47,8 @@
     +[PKEditPassesTableViewCell imageSizeNeeded];
     v20->_imageSizeNeeded.width = v22;
     v20->_imageSizeNeeded.height = v23;
-    v20->_editStyle = a5;
-    objc_storeWeak(&v20->_delegate, v18);
+    v20->_editStyle = style;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
   }
 
   return v20;
@@ -68,25 +68,25 @@
   v30.receiver = self;
   v30.super_class = PKEditGroupViewController;
   [(PKEditTableViewController *)&v30 viewDidLoad];
-  v3 = [(PKEditGroupViewController *)self tableView];
+  tableView = [(PKEditGroupViewController *)self tableView];
   tableView = self->_tableView;
-  self->_tableView = v3;
+  self->_tableView = tableView;
 
   v5 = self->_tableView;
   +[PKEditPassesTableViewCell separatorInset];
   [(UITableView *)v5 setSeparatorInset:?];
-  v6 = [(PKGroup *)self->_group passes];
-  v7 = [v6 count];
-  v8 = [(PKEditTableViewController *)self visibleRowsCount];
-  v24 = v8;
-  if (v8 >= v7)
+  passes = [(PKGroup *)self->_group passes];
+  v7 = [passes count];
+  visibleRowsCount = [(PKEditTableViewController *)self visibleRowsCount];
+  v24 = visibleRowsCount;
+  if (visibleRowsCount >= v7)
   {
     v9 = v7;
   }
 
   else
   {
-    v9 = v8;
+    v9 = visibleRowsCount;
   }
 
   v26 = 0;
@@ -98,7 +98,7 @@
     v10 = 0;
     do
     {
-      v11 = [v6 objectAtIndex:v10];
+      v11 = [passes objectAtIndex:v10];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __40__PKEditGroupViewController_viewDidLoad__block_invoke;
@@ -132,7 +132,7 @@
 
     while (v14 > v9)
     {
-      v15 = [v6 objectAtIndex:v14];
+      v15 = [passes objectAtIndex:v14];
       [(PKEditTableViewController *)self preemptivelyCacheImagesForPass:v15 stacked:0];
 
       --v14;
@@ -148,8 +148,8 @@
     self->_deleteToolbarItem = v18;
 
     v20 = self->_deleteToolbarItem;
-    v21 = [MEMORY[0x1E69DC888] redColor];
-    [(UIBarButtonItem *)v20 setTintColor:v21];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UIBarButtonItem *)v20 setTintColor:redColor];
 
     v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
     flexibleSpace = self->_flexibleSpace;
@@ -169,13 +169,13 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKEditGroupViewController;
-  [(PKEditGroupViewController *)&v10 viewWillAppear:a3];
-  v4 = [(PKEditGroupViewController *)self navigationController];
+  [(PKEditGroupViewController *)&v10 viewWillAppear:appear];
+  navigationController = [(PKEditGroupViewController *)self navigationController];
   if (self->_editStyle == 1)
   {
     v5 = PKLocalizedString(&cfstr_PassGroupEditi.isa);
@@ -185,8 +185,8 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
   else
   {
     v5 = [(PKEditTableViewController *)self mostRecentPassInGroup:self->_group];
-    v6 = [v5 localizedDescription];
-    [(PKEditGroupViewController *)self setTitle:v6];
+    localizedDescription = [v5 localizedDescription];
+    [(PKEditGroupViewController *)self setTitle:localizedDescription];
   }
 
   viewingPass = self->_viewingPass;
@@ -200,15 +200,15 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
     [(PKEditGroupViewController *)self setToolbarItems:v9];
 
-    [v4 setToolbarHidden:0 animated:0];
+    [navigationController setToolbarHidden:0 animated:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKEditGroupViewController;
-  [(PKEditGroupViewController *)&v5 viewDidAppear:a3];
+  [(PKEditGroupViewController *)&v5 viewDidAppear:appear];
   if (([(PKEditTableViewController *)self performanceTest]| 2) == 3)
   {
     if ([(PKGroup *)self->_group passCount])
@@ -224,8 +224,8 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
   v3 = PKLocalizedString(&cfstr_RemoveSheetCan.isa);
   v4 = PKLocalizedString(&cfstr_PassEditingDel_2.isa, &cfstr_Lu.isa, [(PKGroup *)self->_group passCount]);
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v6 = [v5 popoverPresentationController];
-  [v6 setSourceItem:self->_deleteToolbarItem];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:self->_deleteToolbarItem];
 
   v7 = [MEMORY[0x1E69DC648] actionWithTitle:v3 style:1 handler:0];
   [v5 addAction:v7];
@@ -261,8 +261,8 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
   }
 
   deleteToolbarItem = self->_deleteToolbarItem;
-  v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIBarButtonItem *)deleteToolbarItem setTintColor:v9];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIBarButtonItem *)deleteToolbarItem setTintColor:tertiaryLabelColor];
 
   [(UIBarButtonItem *)self->_deleteToolbarItem setEnabled:0];
   if (self->_isForWatch)
@@ -275,53 +275,53 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
     [MEMORY[0x1E69B8A58] sharedInstance];
   }
   v11 = ;
-  v10 = [(PKGroup *)self->_group passes];
-  [v11 removePasses:v10];
+  passes = [(PKGroup *)self->_group passes];
+  [v11 removePasses:passes];
 }
 
-- (void)group:(id)a3 didUpdatePass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6
+- (void)group:(id)group didUpdatePass:(id)pass withState:(id)state atIndex:(unint64_t)index
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  [(PKEditTableViewController *)self clearImageCacheForPass:a4];
+  [(PKEditTableViewController *)self clearImageCacheForPass:pass];
   tableView = self->_tableView;
-  v9 = [MEMORY[0x1E696AC88] indexPathForRow:a6 inSection:0];
+  v9 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
   v11[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   [(UITableView *)tableView reloadRowsAtIndexPaths:v10 withRowAnimation:0];
 }
 
-- (void)group:(id)a3 didInsertPass:(id)a4 withState:(id)a5 atIndex:(unint64_t)a6
+- (void)group:(id)group didInsertPass:(id)pass withState:(id)state atIndex:(unint64_t)index
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  [(UITableView *)self->_tableView beginUpdates:a3];
+  [(UITableView *)self->_tableView beginUpdates:group];
   tableView = self->_tableView;
-  v9 = [MEMORY[0x1E696AC88] indexPathForRow:a6 inSection:0];
+  v9 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
   v12[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   [(UITableView *)tableView insertRowsAtIndexPaths:v10 withRowAnimation:2];
 
   [(UITableView *)self->_tableView endUpdates];
-  if (!a6 && self->_editStyle == 1)
+  if (!index && self->_editStyle == 1)
   {
     v11 = [(PKGroup *)self->_group passAtIndex:0];
     [(PKEditGroupViewController *)self _presentAlertForUpdatedExpressPass:v11];
   }
 }
 
-- (void)group:(id)a3 didRemovePass:(id)a4 atIndex:(unint64_t)a5
+- (void)group:(id)group didRemovePass:(id)pass atIndex:(unint64_t)index
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  [(PKEditTableViewController *)self clearImageCacheForPass:v7];
+  passCopy = pass;
+  [(PKEditTableViewController *)self clearImageCacheForPass:passCopy];
   [(UITableView *)self->_tableView beginUpdates];
   tableView = self->_tableView;
-  v9 = [MEMORY[0x1E696AC88] indexPathForRow:a5 inSection:0];
+  v9 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
   v19[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [(UITableView *)tableView deleteRowsAtIndexPaths:v10 withRowAnimation:2];
 
   [(UITableView *)self->_tableView endUpdates];
-  if (!a5)
+  if (!index)
   {
     v11 = [(PKGroup *)self->_group passAtIndex:0];
     if (v11)
@@ -330,9 +330,9 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
     }
   }
 
-  v12 = [v7 uniqueID];
-  v13 = [(PKPass *)self->_viewingPass uniqueID];
-  v14 = [v12 isEqualToString:v13];
+  uniqueID = [passCopy uniqueID];
+  uniqueID2 = [(PKPass *)self->_viewingPass uniqueID];
+  v14 = [uniqueID isEqualToString:uniqueID2];
 
   if (v14)
   {
@@ -343,16 +343,16 @@ void *__40__PKEditGroupViewController_viewDidLoad__block_invoke(void *result, do
     v18[3] = &unk_1E8010970;
     v18[4] = self;
     [MEMORY[0x1E6979518] setCompletionBlock:v18];
-    v15 = [(PKEditGroupViewController *)self navigationController];
-    v16 = [v15 popToViewController:self animated:1];
+    navigationController = [(PKEditGroupViewController *)self navigationController];
+    v16 = [navigationController popToViewController:self animated:1];
 
     [MEMORY[0x1E6979518] commit];
   }
 
   if ([(PKGroup *)self->_group passCount]== 1 && self->_editStyle == 1)
   {
-    v17 = [(PKEditGroupViewController *)self navigationController];
-    [v17 dismissViewControllerAnimated:1 completion:0];
+    navigationController2 = [(PKEditGroupViewController *)self navigationController];
+    [navigationController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -369,14 +369,14 @@ uint64_t __57__PKEditGroupViewController_group_didRemovePass_atIndex___block_inv
   return result;
 }
 
-- (void)group:(id)a3 didMovePassFromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
+- (void)group:(id)group didMovePassFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  if (a4 != a5)
+  if (index != toIndex)
   {
     [(UITableView *)self->_tableView beginUpdates];
     tableView = self->_tableView;
-    v10 = [MEMORY[0x1E696AC88] indexPathForRow:a4 inSection:0];
-    v11 = [MEMORY[0x1E696AC88] indexPathForRow:a5 inSection:0];
+    v10 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
+    v11 = [MEMORY[0x1E696AC88] indexPathForRow:toIndex inSection:0];
     [(UITableView *)tableView moveRowAtIndexPath:v10 toIndexPath:v11];
 
     v12 = self->_tableView;
@@ -385,66 +385,66 @@ uint64_t __57__PKEditGroupViewController_group_didRemovePass_atIndex___block_inv
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKEditTableViewController *)self tableView:a3 cellWithIdentifier:@"cellPassEditIdentifier"];
-  v8 = -[PKGroup passAtIndex:](self->_group, "passAtIndex:", [v6 row]);
-  [(PKEditGroupViewController *)self configureCell:v7 atIndexPath:v6 withPass:v8];
+  pathCopy = path;
+  v7 = [(PKEditTableViewController *)self tableView:view cellWithIdentifier:@"cellPassEditIdentifier"];
+  v8 = -[PKGroup passAtIndex:](self->_group, "passAtIndex:", [pathCopy row]);
+  [(PKEditGroupViewController *)self configureCell:v7 atIndexPath:pathCopy withPass:v8];
 
   return v7;
 }
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withPass:(id)a5
+- (void)configureCell:(id)cell atIndexPath:(id)path withPass:(id)pass
 {
-  v7 = a3;
-  v8 = a5;
+  cellCopy = cell;
+  passCopy = pass;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setPass:v8];
-    [(PKEditTableViewController *)self loadContentAndImageSetFromExistingPassForPass:v8];
+    [cellCopy setPass:passCopy];
+    [(PKEditTableViewController *)self loadContentAndImageSetFromExistingPassForPass:passCopy];
     editStyle = self->_editStyle;
-    v10 = [v7 textLabel];
+    textLabel = [cellCopy textLabel];
     if (editStyle == 1)
     {
-      v11 = [v8 fieldForKey:*MEMORY[0x1E69BC0D0]];
-      v12 = [v11 value];
-      [v10 setText:v12];
+      v11 = [passCopy fieldForKey:*MEMORY[0x1E69BC0D0]];
+      value = [v11 value];
+      [textLabel setText:value];
 
-      v13 = [v7 detailTextLabel];
-      v14 = [v8 localizedDescription];
-      [v13 setText:v14];
+      detailTextLabel = [cellCopy detailTextLabel];
+      localizedDescription = [passCopy localizedDescription];
+      [detailTextLabel setText:localizedDescription];
 
-      [v7 setShowsReorderControl:1];
-      [v7 setAccessoryType:0];
-      [v7 setEditingAccessoryType:0];
+      [cellCopy setShowsReorderControl:1];
+      [cellCopy setAccessoryType:0];
+      [cellCopy setEditingAccessoryType:0];
     }
 
     else
     {
-      v15 = [v8 localizedDescription];
-      [v10 setText:v15];
+      localizedDescription2 = [passCopy localizedDescription];
+      [textLabel setText:localizedDescription2];
 
-      v16 = [v8 ingestedDate];
+      ingestedDate = [passCopy ingestedDate];
       v17 = PKRelativeDateStringWithFullDateForUnits();
       v18 = PKLocalizedString(&cfstr_PassEditingAdd.isa, &cfstr_Lu_0.isa, 1, v17);
 
-      v19 = [v7 detailTextLabel];
-      v20 = [v18 pk_uppercaseFirstStringForPreferredLocale];
-      [v19 setText:v20];
+      detailTextLabel2 = [cellCopy detailTextLabel];
+      pk_uppercaseFirstStringForPreferredLocale = [v18 pk_uppercaseFirstStringForPreferredLocale];
+      [detailTextLabel2 setText:pk_uppercaseFirstStringForPreferredLocale];
 
-      [v7 setShowsReorderControl:0];
-      [v7 setAccessoryType:1];
-      [v7 setEditingAccessoryType:1];
+      [cellCopy setShowsReorderControl:0];
+      [cellCopy setAccessoryType:1];
+      [cellCopy setEditingAccessoryType:1];
     }
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __64__PKEditGroupViewController_configureCell_atIndexPath_withPass___block_invoke;
     v24[3] = &unk_1E8010AB0;
-    v25 = v7;
-    v26 = v8;
+    v25 = cellCopy;
+    v26 = passCopy;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __64__PKEditGroupViewController_configureCell_atIndexPath_withPass___block_invoke_2;
@@ -455,82 +455,82 @@ uint64_t __57__PKEditGroupViewController_group_didRemovePass_atIndex___block_inv
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   if (self->_editStyle == 1)
   {
-    v7 = a4;
-    [a3 deselectRowAtIndexPath:v7 animated:1];
-    v11 = [(PKEditGroupViewController *)self viewControllerForRowAtIndexPath:v7];
+    pathCopy = path;
+    [view deselectRowAtIndexPath:pathCopy animated:1];
+    v11 = [(PKEditGroupViewController *)self viewControllerForRowAtIndexPath:pathCopy];
 
     if (!self->_viewingPass)
     {
-      v8 = [v11 pass];
+      pass = [v11 pass];
       viewingPass = self->_viewingPass;
-      self->_viewingPass = v8;
+      self->_viewingPass = pass;
 
-      v10 = [(PKEditGroupViewController *)self navigationController];
-      [v10 pushViewController:v11 animated:1];
+      navigationController = [(PKEditGroupViewController *)self navigationController];
+      [navigationController pushViewController:v11 animated:1];
     }
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v6 = *MEMORY[0x1E69B9EA8];
-  v7 = a5;
+  pathCopy = path;
   MEMORY[0x1BFB41980](v6, 0);
-  v8 = [v7 row];
+  v8 = [pathCopy row];
 
   v13 = [(PKGroup *)self->_group passAtIndex:v8];
   if (self->_isForWatch)
   {
-    v9 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
-    v10 = [v9 _remoteLibrary];
-    [v10 removePass:v13];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
+    _remoteLibrary = [mEMORY[0x1E69B8A58] _remoteLibrary];
+    [_remoteLibrary removePass:v13];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69B8A58] sharedInstance];
-    [v9 removePass:v13];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    [mEMORY[0x1E69B8A58] removePass:v13];
   }
 
-  v11 = [(PKEditTableViewController *)self existingGroupsController];
-  v12 = [v13 uniqueID];
-  [v11 handleUserPassDelete:v12];
+  existingGroupsController = [(PKEditTableViewController *)self existingGroupsController];
+  uniqueID = [v13 uniqueID];
+  [existingGroupsController handleUserPassDelete:uniqueID];
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(PKEditGroupViewController *)self passAtIndexPath:v11];
-  v9 = [(PKEditTableViewController *)self existingGroupsController];
-  [v9 suppressRemoteUpdates:1];
-  [v9 movePass:v8 inGroup:self->_group toIndex:{objc_msgSend(v7, "row")}];
-  [v9 enableRemoteUpdates];
-  if (v11 != v7 && (![v7 row] && self->_editStyle == 1 || !objc_msgSend(v11, "row") && self->_editStyle == 1))
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v8 = [(PKEditGroupViewController *)self passAtIndexPath:pathCopy];
+  existingGroupsController = [(PKEditTableViewController *)self existingGroupsController];
+  [existingGroupsController suppressRemoteUpdates:1];
+  [existingGroupsController movePass:v8 inGroup:self->_group toIndex:{objc_msgSend(indexPathCopy, "row")}];
+  [existingGroupsController enableRemoteUpdates];
+  if (pathCopy != indexPathCopy && (![indexPathCopy row] && self->_editStyle == 1 || !objc_msgSend(pathCopy, "row") && self->_editStyle == 1))
   {
     v10 = [(PKGroup *)self->_group passAtIndex:0];
     [(PKEditGroupViewController *)self _presentAlertForUpdatedExpressPass:v10];
   }
 }
 
-- (void)_presentAlertForUpdatedExpressPass:(id)a3
+- (void)_presentAlertForUpdatedExpressPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
     v3 = MEMORY[0x1E695DF90];
-    v4 = a3;
+    passCopy = pass;
     v12 = objc_alloc_init(v3);
     v5 = MEMORY[0x1E695E118];
     [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69BC6B0]];
     [v12 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69BC6A8]];
-    v6 = [v4 fieldForKey:*MEMORY[0x1E69BC0D0]];
+    v6 = [passCopy fieldForKey:*MEMORY[0x1E69BC0D0]];
 
-    v7 = [v6 value];
-    v8 = PKLocalizedShareableCredentialString(&cfstr_SelectExpressP_3.isa, &stru_1F3BD5BF0.isa, v7);
+    value = [v6 value];
+    v8 = PKLocalizedShareableCredentialString(&cfstr_SelectExpressP_3.isa, &stru_1F3BD5BF0.isa, value);
     [v12 setObject:v8 forKeyedSubscript:*MEMORY[0x1E695EE58]];
 
     if (PKPearlIsAvailable())
@@ -553,20 +553,20 @@ uint64_t __57__PKEditGroupViewController_group_didRemovePass_atIndex___block_inv
   }
 }
 
-- (id)viewControllerForRowAtIndexPath:(id)a3
+- (id)viewControllerForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_editStyle != 1)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && self->_editStyle != 1)
   {
-    v7 = -[PKGroup passAtIndex:](self->_group, "passAtIndex:", [v4 row]);
+    v7 = -[PKGroup passAtIndex:](self->_group, "passAtIndex:", [pathCopy row]);
     v6 = [[PKEditSinglePassViewController alloc] initWithGroup:self->_group pass:v7];
-    v8 = [(PKEditTableViewController *)self performanceTest];
-    if (v8)
+    performanceTest = [(PKEditTableViewController *)self performanceTest];
+    if (performanceTest)
     {
-      [(PKEditSinglePassViewController *)v6 setPerformanceTest:v8];
-      v9 = [(PKEditTableViewController *)self performanceTestName];
-      [(PKEditSinglePassViewController *)v6 setPerformanceTestName:v9];
+      [(PKEditSinglePassViewController *)v6 setPerformanceTest:performanceTest];
+      performanceTestName = [(PKEditTableViewController *)self performanceTestName];
+      [(PKEditSinglePassViewController *)v6 setPerformanceTestName:performanceTestName];
     }
   }
 
@@ -578,27 +578,27 @@ uint64_t __57__PKEditGroupViewController_group_didRemovePass_atIndex___block_inv
   return v6;
 }
 
-- (id)passAtIndexPath:(id)a3
+- (id)passAtIndexPath:(id)path
 {
   group = self->_group;
-  v4 = [a3 row];
+  v4 = [path row];
 
   return [(PKGroup *)group passAtIndex:v4];
 }
 
-- (void)prefetchItemsAtIndexPaths:(id)a3
+- (void)prefetchItemsAtIndexPaths:(id)paths
 {
-  v10 = a3;
-  v4 = [(PKGroup *)self->_group passes];
-  v5 = [v10 count];
+  pathsCopy = paths;
+  passes = [(PKGroup *)self->_group passes];
+  v5 = [pathsCopy count];
   if (v5 - 1 >= 0)
   {
     v6 = v5;
     do
     {
-      v7 = [v10 objectAtIndex:--v6];
+      v7 = [pathsCopy objectAtIndex:--v6];
       v8 = [v7 row];
-      if ([v4 count] > v8)
+      if ([passes count] > v8)
       {
         v9 = -[PKGroup passAtIndex:](self->_group, "passAtIndex:", [v7 row]);
         [(PKEditTableViewController *)self loadContentAndImageSetFromExistingPassForPass:v9];

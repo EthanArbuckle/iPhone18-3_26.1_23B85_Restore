@@ -1,15 +1,15 @@
 @interface CCDEnrollmentUnenrollOperation
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4;
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data;
 @end
 
 @implementation CCDEnrollmentUnenrollOperation
 
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data
 {
-  v5 = a4;
-  if (a3 == 401)
+  dataCopy = data;
+  if (code == 401)
   {
-    v6 = [CCDError cloudConfigErrorInResponse:v5];
+    v6 = [CCDError cloudConfigErrorInResponse:dataCopy];
     v7 = v6;
     if (v6)
     {
@@ -26,9 +26,9 @@
 
   else
   {
-    if (a3 == 400)
+    if (code == 400)
     {
-      [CCDError cloudConfigErrorInResponse:v5];
+      [CCDError cloudConfigErrorInResponse:dataCopy];
     }
 
     else

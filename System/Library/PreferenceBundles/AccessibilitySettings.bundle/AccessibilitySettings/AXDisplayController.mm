@@ -1,22 +1,22 @@
 @interface AXDisplayController
 - (AXDisplayController)init;
-- (id)autoBrightnessEnabled:(id)a3;
-- (id)classicInvertEnabled:(id)a3;
-- (id)colorFiltersEnabled:(id)a3;
-- (id)grayscaleEnabled:(id)a3;
-- (id)pulseWidthMaximization:(id)a3;
+- (id)autoBrightnessEnabled:(id)enabled;
+- (id)classicInvertEnabled:(id)enabled;
+- (id)colorFiltersEnabled:(id)enabled;
+- (id)grayscaleEnabled:(id)enabled;
+- (id)pulseWidthMaximization:(id)maximization;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)whitePointEnabled:(id)a3;
-- (id)whitepointIntensity:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)whitePointEnabled:(id)enabled;
+- (id)whitepointIntensity:(id)intensity;
 - (void)_updateFilterOptionSpecifiers;
 - (void)reloadSpecifiers;
-- (void)setAutoBrightnessEnabled:(id)a3 specifier:(id)a4;
-- (void)setClassicInvertEnabled:(id)a3 specifier:(id)a4;
-- (void)setGrayscaleEnabled:(id)a3 specifier:(id)a4;
-- (void)setPulseWidthMaximization:(id)a3 specifier:(id)a4;
-- (void)setWhitePointEnabled:(id)a3 specifier:(id)a4;
-- (void)setWhitepointIntensity:(id)a3 specifier:(id)a4;
+- (void)setAutoBrightnessEnabled:(id)enabled specifier:(id)specifier;
+- (void)setClassicInvertEnabled:(id)enabled specifier:(id)specifier;
+- (void)setGrayscaleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPulseWidthMaximization:(id)maximization specifier:(id)specifier;
+- (void)setWhitePointEnabled:(id)enabled specifier:(id)specifier;
+- (void)setWhitepointIntensity:(id)intensity specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -129,10 +129,10 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
   v6.receiver = self;
   v6.super_class = AXDisplayController;
   [(AXDisplayController *)&v6 viewDidLoad];
-  v3 = [(AXDisplayController *)self table];
+  table = [(AXDisplayController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXWhitePointSliderCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -174,12 +174,12 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
       [v15 setProperty:&__kCFBooleanTrue forKey:v13];
       [v7 addObject:v15];
       v17 = +[AXSettings sharedInstance];
-      v18 = [v17 supportsAdvancedDisplayFilters];
+      supportsAdvancedDisplayFilters = [v17 supportsAdvancedDisplayFilters];
 
       v19 = +[PSSpecifier emptyGroupSpecifier];
 
       v52 = v12;
-      if (v18)
+      if (supportsAdvancedDisplayFilters)
       {
         v20 = settingsLocString(@"DISPLAY_FILTER_COLOR_DESCRIPTION", @"DisplayFilterSettings");
         [v19 setProperty:v20 forKey:v12];
@@ -212,14 +212,14 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
       [v7 addObject:v22];
       if (AXDeviceSupportsPulseWidthMaximization())
       {
-        v27 = [v9[5] emptyGroupSpecifier];
+        emptyGroupSpecifier = [v9[5] emptyGroupSpecifier];
 
         v28 = settingsLocString(@"PulseWidthMaximizationFooter", @"Accessibility-V54");
         v29 = v52;
-        [v27 setProperty:v28 forKey:v52];
+        [emptyGroupSpecifier setProperty:v28 forKey:v52];
 
-        [v27 setProperty:&__kCFBooleanTrue forKey:v13];
-        [v7 addObject:v27];
+        [emptyGroupSpecifier setProperty:&__kCFBooleanTrue forKey:v13];
+        [v7 addObject:emptyGroupSpecifier];
         v30 = v9[5];
         v31 = settingsLocString(@"PulseWidthMaximizationTitle", @"Accessibility-V54");
         v22 = [v30 preferenceSpecifierNamed:v31 target:self set:"setPulseWidthMaximization:specifier:" get:"pulseWidthMaximization:" detail:0 cell:6 edit:0];
@@ -234,13 +234,13 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
         v29 = v52;
       }
 
-      v32 = [v9[5] emptyGroupSpecifier];
+      emptyGroupSpecifier2 = [v9[5] emptyGroupSpecifier];
 
       v33 = settingsLocString(@"ReduceWhitePointFooterText", @"Accessibility");
-      [v32 setProperty:v33 forKey:v29];
+      [emptyGroupSpecifier2 setProperty:v33 forKey:v29];
 
-      [v32 setProperty:&__kCFBooleanTrue forKey:v13];
-      [v7 addObject:v32];
+      [emptyGroupSpecifier2 setProperty:&__kCFBooleanTrue forKey:v13];
+      [v7 addObject:emptyGroupSpecifier2];
       v34 = v9[5];
       v35 = settingsLocString(@"REDUCE_WHITE_POINT", @"Accessibility");
       v36 = [v34 preferenceSpecifierNamed:v35 target:self set:"setWhitePointEnabled:specifier:" get:"whitePointEnabled:" detail:0 cell:6 edit:0];
@@ -254,26 +254,26 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
       [v37 setProperty:objc_opt_class() forKey:PSCellClassKey];
       [v37 setProperty:&__kCFBooleanTrue forKey:v13];
       [(AXDisplayController *)self setReduceWhitePointIntensitySpecifier:v37];
-      v38 = [(AXDisplayController *)self reduceWhitePointSpecifier];
-      v39 = [(AXDisplayController *)self whitePointEnabled:v38];
-      v40 = [v39 BOOLValue];
+      reduceWhitePointSpecifier = [(AXDisplayController *)self reduceWhitePointSpecifier];
+      v39 = [(AXDisplayController *)self whitePointEnabled:reduceWhitePointSpecifier];
+      bOOLValue = [v39 BOOLValue];
 
-      if (v40)
+      if (bOOLValue)
       {
-        v41 = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
-        [v7 addObject:v41];
+        reduceWhitePointIntensitySpecifier = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
+        [v7 addObject:reduceWhitePointIntensitySpecifier];
       }
 
       if (MGGetBoolAnswer())
       {
-        v42 = [v9[5] emptyGroupSpecifier];
+        emptyGroupSpecifier3 = [v9[5] emptyGroupSpecifier];
 
         v43 = AXLocStringKeyForHomeButton();
         v44 = settingsLocString(v43, @"DisplayFilterSettings");
-        [v42 setProperty:v44 forKey:v52];
+        [emptyGroupSpecifier3 setProperty:v44 forKey:v52];
 
-        [v42 setProperty:&__kCFBooleanFalse forKey:v13];
-        [v7 addObject:v42];
+        [emptyGroupSpecifier3 setProperty:&__kCFBooleanFalse forKey:v13];
+        [v7 addObject:emptyGroupSpecifier3];
         v45 = v9[5];
         v46 = settingsLocString(@"AUTO_BRIGHTNESS", @"DisplayFilterSettings");
         v36 = [v45 preferenceSpecifierNamed:v46 target:self set:"setAutoBrightnessEnabled:specifier:" get:"autoBrightnessEnabled:" detail:0 cell:6 edit:0];
@@ -300,17 +300,17 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
   return v6;
 }
 
-- (void)setPulseWidthMaximization:(id)a3 specifier:(id)a4
+- (void)setPulseWidthMaximization:(id)maximization specifier:(id)specifier
 {
-  v5 = a3;
+  maximizationCopy = maximization;
   self->_lastPreferenceChange = CFAbsoluteTimeGetCurrent();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [maximizationCopy BOOLValue];
 
   v7 = +[AXSettings sharedInstance];
-  [v7 setPulseWidthMaximization:v6];
+  [v7 setPulseWidthMaximization:bOOLValue];
 }
 
-- (id)pulseWidthMaximization:(id)a3
+- (id)pulseWidthMaximization:(id)maximization
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 pulseWidthMaximization]);
@@ -328,47 +328,47 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
 
 - (void)_updateFilterOptionSpecifiers
 {
-  v3 = [(AXDisplayController *)self reduceWhitePointSpecifier];
-  v4 = [(AXDisplayController *)self whitePointEnabled:v3];
-  v5 = [v4 BOOLValue];
+  reduceWhitePointSpecifier = [(AXDisplayController *)self reduceWhitePointSpecifier];
+  v4 = [(AXDisplayController *)self whitePointEnabled:reduceWhitePointSpecifier];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [(AXDisplayController *)self specifiers];
-    v7 = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
-    v8 = [v6 containsObject:v7];
+    specifiers = [(AXDisplayController *)self specifiers];
+    reduceWhitePointIntensitySpecifier = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
+    v8 = [specifiers containsObject:reduceWhitePointIntensitySpecifier];
 
     if (v8)
     {
       return;
     }
 
-    v9 = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
+    reduceWhitePointIntensitySpecifier2 = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
     [AXDisplayController insertSpecifier:"insertSpecifier:afterSpecifierID:animated:" afterSpecifierID:? animated:?];
   }
 
   else
   {
-    v9 = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
+    reduceWhitePointIntensitySpecifier2 = [(AXDisplayController *)self reduceWhitePointIntensitySpecifier];
     [AXDisplayController removeSpecifier:"removeSpecifier:animated:" animated:?];
   }
 }
 
-- (id)grayscaleEnabled:(id)a3
+- (id)grayscaleEnabled:(id)enabled
 {
   v3 = _AXSGrayscaleEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setGrayscaleEnabled:(id)a3 specifier:(id)a4
+- (void)setGrayscaleEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSGrayscaleSetEnabled(v4);
+  __AXSGrayscaleSetEnabled(bOOLValue);
 }
 
-- (id)colorFiltersEnabled:(id)a3
+- (id)colorFiltersEnabled:(id)enabled
 {
   if (MADisplayFilterPrefGetCategoryEnabled())
   {
@@ -383,9 +383,9 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (void)setAutoBrightnessEnabled:(id)a3 specifier:(id)a4
+- (void)setAutoBrightnessEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   BKSDisplayBrightnessSetAutoBrightnessEnabled();
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v5 = kAXSAutoBrightnessChangedNotification;
@@ -393,76 +393,76 @@ void __27__AXDisplayController_init__block_invoke_4(uint64_t a1)
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v5, 0, 0, 1u);
 }
 
-- (id)autoBrightnessEnabled:(id)a3
+- (id)autoBrightnessEnabled:(id)enabled
 {
   v3 = _AXSAutoBrightnessEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setClassicInvertEnabled:(id)a3 specifier:(id)a4
+- (void)setClassicInvertEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   self->_lastPreferenceChange = CFAbsoluteTimeGetCurrent();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
   v7 = +[AXSettings sharedInstance];
-  [v7 setClassicInvertColors:v6];
+  [v7 setClassicInvertColors:bOOLValue];
 
   [(AXDisplayController *)self reloadSpecifierID:@"SMART_INVERT"];
 }
 
-- (id)classicInvertEnabled:(id)a3
+- (id)classicInvertEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 classicInvertColors];
+  classicInvertColors = [v3 classicInvertColors];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:classicInvertColors];
 }
 
-- (id)whitepointIntensity:(id)a3
+- (id)whitepointIntensity:(id)intensity
 {
   MADisplayFilterPrefGetReduceWhitePointIntensity();
 
   return [NSNumber numberWithDouble:?];
 }
 
-- (void)setWhitepointIntensity:(id)a3 specifier:(id)a4
+- (void)setWhitepointIntensity:(id)intensity specifier:(id)specifier
 {
-  v4 = [a3 floatValue];
+  floatValue = [intensity floatValue];
   v5.n128_f64[0] = v5.n128_f32[0];
 
-  _MADisplayFilterPrefSetReduceWhitePointIntensity(v4, v5);
+  _MADisplayFilterPrefSetReduceWhitePointIntensity(floatValue, v5);
 }
 
-- (id)whitePointEnabled:(id)a3
+- (id)whitePointEnabled:(id)enabled
 {
   v3 = _AXSReduceWhitePointEnabled() != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setWhitePointEnabled:(id)a3 specifier:(id)a4
+- (void)setWhitePointEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   _AXSSetReduceWhitePointEnabled();
 
   [(AXDisplayController *)self _updateFilterOptionSpecifiers];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = AXDisplayController;
-  v4 = [(AXDisplayController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:PSKeyNameKey];
+  v4 = [(AXDisplayController *)&v10 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:PSKeyNameKey];
   v7 = [v6 isEqualToString:@"OnOffLabels"];
 
   if (v7)
   {
-    v8 = [v4 control];
-    [v8 _setAlwaysShowsOnOffLabel:1];
+    control = [v4 control];
+    [control _setAlwaysShowsOnOffLabel:1];
   }
 
   return v4;

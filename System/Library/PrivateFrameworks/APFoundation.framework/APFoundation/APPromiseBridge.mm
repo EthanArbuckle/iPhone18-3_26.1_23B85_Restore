@@ -1,46 +1,46 @@
 @interface APPromiseBridge
 - (_TtC12APFoundation15APPromiseBridge)init;
-- (void)catch:(id)a3;
-- (void)raceWithTimeout:(double)a3 queue:(id)a4;
+- (void)catch:(id)catch;
+- (void)raceWithTimeout:(double)timeout queue:(id)queue;
 - (void)resolve;
-- (void)then:(id)a3;
+- (void)then:(id)then;
 @end
 
 @implementation APPromiseBridge
 
-- (void)then:(id)a3
+- (void)then:(id)then
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(then);
   _Block_copy(v4);
-  v5 = self;
-  sub_1BAF64348(v5, v4);
+  selfCopy = self;
+  sub_1BAF64348(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)catch:(id)a3
+- (void)catch:(id)catch
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(catch);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC12APFoundation15APPromiseBridge_promise);
   _Block_copy(v4);
-  v6 = self;
+  selfCopy = self;
   sub_1BAF4FA0C(v5, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)raceWithTimeout:(double)a3 queue:(id)a4
+- (void)raceWithTimeout:(double)timeout queue:(id)queue
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC12APFoundation15APPromiseBridge_promise);
-  v8 = a4;
-  v7 = self;
-  sub_1BAF63460(a4);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_1BAF63460(queue);
 }
 
 - (void)resolve
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC12APFoundation15APPromiseBridge_promise);
-  v3 = self;
+  selfCopy = self;
   sub_1BAF631D0();
 }
 

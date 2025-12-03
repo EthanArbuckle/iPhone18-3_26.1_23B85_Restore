@@ -1,6 +1,6 @@
 @interface TRIFBBoxedDouble
-- (BOOL)isEqual:(id)a3;
-- (TRIFBBoxedDouble)initWithVal:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (TRIFBBoxedDouble)initWithVal:(double)val;
 - (id)init_;
 - (unint64_t)hash;
 @end
@@ -23,13 +23,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,9 +55,9 @@
   return v11;
 }
 
-- (TRIFBBoxedDouble)initWithVal:(double)a3
+- (TRIFBBoxedDouble)initWithVal:(double)val
 {
-  v4 = [[TRIFBMutableBoxedDouble alloc] initWithVal:a3];
+  v4 = [[TRIFBMutableBoxedDouble alloc] initWithVal:val];
   p_super = &v4->super;
   if (v4)
   {

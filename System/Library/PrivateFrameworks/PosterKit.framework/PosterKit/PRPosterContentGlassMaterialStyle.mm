@@ -1,37 +1,37 @@
 @interface PRPosterContentGlassMaterialStyle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)nonVariatedIdentifier;
-- (void)applyStyleWithRenderer:(id)a3;
+- (void)applyStyleWithRenderer:(id)renderer;
 @end
 
 @implementation PRPosterContentGlassMaterialStyle
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
 - (NSString)nonVariatedIdentifier
 {
-  v2 = [(PRPosterContentGlassMaterialStyle *)self type];
+  type = [(PRPosterContentGlassMaterialStyle *)self type];
 
-  return _PRPosterContentStyleStringForType(v2);
+  return _PRPosterContentStyleStringForType(type);
 }
 
-- (void)applyStyleWithRenderer:(id)a3
+- (void)applyStyleWithRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 renderGlassMaterialStyle:self];
+    [rendererCopy renderGlassMaterialStyle:self];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface _TVInfoHeaderViewAccessibility
-+ (id)infoHeaderViewWithElement:(id)a3 existingView:(id)a4;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (id)infoHeaderViewWithElement:(id)element existingView:(id)view;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _TVInfoHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVInfoHeaderView" hasClassMethod:@"infoHeaderViewWithElement:existingView:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"_TVInfoHeaderView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVInfoHeaderView" hasClassMethod:@"infoHeaderViewWithElement:existingView:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"_TVInfoHeaderView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(_TVInfoHeaderViewAccessibility *)self safeValueForKey:@"headerView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,11 +31,11 @@
   [v3 setIsAccessibilityElement:0];
 }
 
-+ (id)infoHeaderViewWithElement:(id)a3 existingView:(id)a4
++ (id)infoHeaderViewWithElement:(id)element existingView:(id)view
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS____TVInfoHeaderViewAccessibility;
-  v4 = objc_msgSendSuper2(&v6, sel_infoHeaderViewWithElement_existingView_, a3, a4);
+  v4 = objc_msgSendSuper2(&v6, sel_infoHeaderViewWithElement_existingView_, element, view);
   [v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

@@ -1,12 +1,12 @@
 @interface EKEventMapDetailItem
 - (BOOL)_shouldShowMapView;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
 - (double)_mapHeight;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
-- (id)_mapRelatedViewConstraintsForMapRelatedView:(id)a3 inCell:(id)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)_animateMapIfNeededWithPresentingController:(id)a3 presentingView:(id)a4;
-- (void)_loadMapItem:(id)a3;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
+- (id)_mapRelatedViewConstraintsForMapRelatedView:(id)view inCell:(id)cell;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)_animateMapIfNeededWithPresentingController:(id)controller presentingView:(id)view;
+- (void)_loadMapItem:(id)item;
 - (void)_setupCell;
 - (void)_setupCellAsEmpty;
 - (void)_setupCellWithMapView;
@@ -19,13 +19,13 @@
 
 - (void)updateViewColors
 {
-  v3 = [(UIView *)self->_loadingView layer];
-  v4 = [MEMORY[0x1E69DC888] separatorColor];
-  [v3 setBorderColor:{objc_msgSend(v4, "CGColor")}];
+  layer = [(UIView *)self->_loadingView layer];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [layer setBorderColor:{objc_msgSend(separatorColor, "CGColor")}];
 
-  v6 = [(UIView *)self->_loadingView layer];
-  v5 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v6 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+  layer2 = [(UIView *)self->_loadingView layer];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [layer2 setBackgroundColor:{objc_msgSend(secondarySystemBackgroundColor, "CGColor")}];
 }
 
 - (void)reset
@@ -37,22 +37,22 @@
   self->_visibilityChanged = self->_shouldShowCell != [(EKEventMapDetailItem *)self _shouldShowMapView];
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  result = [(EKEventMapDetailItem *)self _shouldShowMapView:a3];
+  result = [(EKEventMapDetailItem *)self _shouldShowMapView:event];
   self->_shouldShowCell = result;
   return result;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
-  v6 = [(EKEventMapDetailItem *)self _shouldShowMapView:a3];
+  v6 = [(EKEventMapDetailItem *)self _shouldShowMapView:index];
   result = 0.0;
   if (v6)
   {
-    v8 = [(EKEventMapDetailItem *)self _mapHeight];
+    _mapHeight = [(EKEventMapDetailItem *)self _mapHeight];
     v10 = v9;
-    v11 = MEMORY[0x1D38B98D0](v8);
+    v11 = MEMORY[0x1D38B98D0](_mapHeight);
     v12 = 16.0;
     if (v11)
     {
@@ -73,12 +73,12 @@
   return result;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   if (!self->_cell)
   {
     oldCell = self->_oldCell;
-    if (oldCell && (location = self->_location) != 0 && (-[EKEvent preferredLocation](self->super._event, "preferredLocation", a3), v6 = objc_claimAutoreleasedReturnValue(), [v6 geoLocation], v7 = objc_claimAutoreleasedReturnValue(), -[CLLocation distanceFromLocation:](location, "distanceFromLocation:", v7), v9 = v8, v7, v6, oldCell = self->_oldCell, v9 < 2.0))
+    if (oldCell && (location = self->_location) != 0 && (-[EKEvent preferredLocation](self->super._event, "preferredLocation", index), v6 = objc_claimAutoreleasedReturnValue(), [v6 geoLocation], v7 = objc_claimAutoreleasedReturnValue(), -[CLLocation distanceFromLocation:](location, "distanceFromLocation:", v7), v9 = v8, v7, v6, oldCell = self->_oldCell, v9 < 2.0))
     {
       objc_storeStrong(&self->_cell, oldCell);
     }
@@ -99,12 +99,12 @@
 
 - (BOOL)_shouldShowMapView
 {
-  v3 = [(EKEvent *)self->super._event preferredLocation];
-  v4 = [v3 geoLocation];
-  if (v4)
+  preferredLocation = [(EKEvent *)self->super._event preferredLocation];
+  geoLocation = [preferredLocation geoLocation];
+  if (geoLocation)
   {
-    v5 = [(EKEvent *)self->super._event preferredLocation];
-    v6 = [v5 isPrediction] ^ 1;
+    preferredLocation2 = [(EKEvent *)self->super._event preferredLocation];
+    v6 = [preferredLocation2 isPrediction] ^ 1;
   }
 
   else
@@ -155,10 +155,10 @@ LABEL_4:
     [(EKEventMapCell *)self->_cell setDetailItem:self];
   }
 
-  v6 = [(EKEvent *)self->super._event preferredLocation];
-  v7 = [v6 geoLocation];
+  preferredLocation = [(EKEvent *)self->super._event preferredLocation];
+  geoLocation = [preferredLocation geoLocation];
   location = self->_location;
-  self->_location = v7;
+  self->_location = geoLocation;
 
   v9 = [objc_alloc(EKWeakLinkClass()) initWithFrame:{0.0, 0.0, 100.0, 100.0}];
   mapView = self->_mapView;
@@ -176,20 +176,20 @@ LABEL_4:
       v11 = 8.0;
     }
 
-    v12 = [(MKMapItemView *)self->_mapView layer];
-    [v12 setCornerRadius:v11];
+    layer = [(MKMapItemView *)self->_mapView layer];
+    [layer setCornerRadius:v11];
 
-    v13 = [(MKMapItemView *)self->_mapView layer];
+    layer2 = [(MKMapItemView *)self->_mapView layer];
     v14 = EKUIScaleFactor();
     CalRoundToScreenScale(1.0 / v14);
-    [v13 setBorderWidth:?];
+    [layer2 setBorderWidth:?];
 
-    v15 = [(MKMapItemView *)self->_mapView layer];
-    [v15 setMasksToBounds:1];
+    layer3 = [(MKMapItemView *)self->_mapView layer];
+    [layer3 setMasksToBounds:1];
 
-    v16 = [(MKMapItemView *)self->_mapView layer];
-    v17 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-    [v16 setBorderColor:{objc_msgSend(v17, "CGColor")}];
+    layer4 = [(MKMapItemView *)self->_mapView layer];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    [layer4 setBorderColor:{objc_msgSend(quaternaryLabelColor, "CGColor")}];
   }
 
   else
@@ -213,14 +213,14 @@ LABEL_4:
     v21 = 8.0;
   }
 
-  v22 = [(UIView *)self->_loadingView layer];
-  [v22 setCornerRadius:v21];
+  layer5 = [(UIView *)self->_loadingView layer];
+  [layer5 setCornerRadius:v21];
 
-  v23 = [(UIView *)self->_loadingView layer];
-  [v23 setBorderWidth:1.0 / EKUIScaleFactor()];
+  layer6 = [(UIView *)self->_loadingView layer];
+  [layer6 setBorderWidth:1.0 / EKUIScaleFactor()];
 
-  v24 = [(UIView *)self->_loadingView layer];
-  [v24 setMasksToBounds:1];
+  layer7 = [(UIView *)self->_loadingView layer];
+  [layer7 setMasksToBounds:1];
 
   [(UIView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(EKEventMapDetailItem *)self updateViewColors];
@@ -295,12 +295,12 @@ LABEL_4:
   [(EKEventMapCell *)v11 setMapViewSetup:0];
 }
 
-- (id)_mapRelatedViewConstraintsForMapRelatedView:(id)a3 inCell:(id)a4
+- (id)_mapRelatedViewConstraintsForMapRelatedView:(id)view inCell:(id)cell
 {
   v24[5] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696ACD8];
-  v7 = a4;
-  v8 = a3;
+  cellCopy = cell;
+  viewCopy = view;
   if (MEMORY[0x1D38B98D0]())
   {
     v9 = 0.0;
@@ -311,7 +311,7 @@ LABEL_4:
     v9 = 16.0;
   }
 
-  v10 = [v6 constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:v9];
+  v10 = [v6 constraintWithItem:viewCopy attribute:3 relatedBy:0 toItem:cellCopy attribute:3 multiplier:1.0 constant:v9];
   v11 = MEMORY[0x1E696ACD8];
   if (MEMORY[0x1D38B98D0]())
   {
@@ -323,9 +323,9 @@ LABEL_4:
     v12 = -25.0;
   }
 
-  v13 = [v11 constraintWithItem:v8 attribute:4 relatedBy:0 toItem:v7 attribute:4 multiplier:1.0 constant:v12];
+  v13 = [v11 constraintWithItem:viewCopy attribute:4 relatedBy:0 toItem:cellCopy attribute:4 multiplier:1.0 constant:v12];
   [(EKEventMapDetailItem *)self _mapHeight];
-  v15 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v14];
+  v15 = [MEMORY[0x1E696ACD8] constraintWithItem:viewCopy attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v14];
   v16 = MEMORY[0x1E696ACD8];
   if (MEMORY[0x1D38B98D0]())
   {
@@ -337,7 +337,7 @@ LABEL_4:
     v17 = 17;
   }
 
-  v18 = [v16 constraintWithItem:v8 attribute:5 relatedBy:0 toItem:v7 attribute:v17 multiplier:1.0 constant:0.0];
+  v18 = [v16 constraintWithItem:viewCopy attribute:5 relatedBy:0 toItem:cellCopy attribute:v17 multiplier:1.0 constant:0.0];
   v19 = MEMORY[0x1E696ACD8];
   if (MEMORY[0x1D38B98D0]())
   {
@@ -349,7 +349,7 @@ LABEL_4:
     v20 = 18;
   }
 
-  v21 = [v19 constraintWithItem:v8 attribute:6 relatedBy:0 toItem:v7 attribute:v20 multiplier:1.0 constant:0.0];
+  v21 = [v19 constraintWithItem:viewCopy attribute:6 relatedBy:0 toItem:cellCopy attribute:v20 multiplier:1.0 constant:0.0];
 
   v24[0] = v10;
   v24[1] = v13;
@@ -366,32 +366,32 @@ LABEL_4:
   v18 = *MEMORY[0x1E69E9840];
   [(MKMapItemView *)self->_mapView setAlpha:0.0];
   [(UIView *)self->_loadingView setAlpha:1.0];
-  v3 = [(EKEvent *)self->super._event preferredLocation];
+  preferredLocation = [(EKEvent *)self->super._event preferredLocation];
   v4 = EKWeakLinkClass();
-  v5 = [v3 mapKitHandle];
+  mapKitHandle = [preferredLocation mapKitHandle];
 
   v6 = kEKUILogHandle;
   v7 = os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (mapKitHandle)
   {
     if (v7)
     {
       v8 = v6;
-      v9 = [v3 mapKitHandle];
+      mapKitHandle2 = [preferredLocation mapKitHandle];
       *buf = 138412290;
-      v17 = v9;
+      v17 = mapKitHandle2;
       _os_log_impl(&dword_1D3400000, v8, OS_LOG_TYPE_INFO, "Found mapKitHandle, loading MKMapItemView with mapKitHandle: %@", buf, 0xCu);
     }
 
-    v10 = [v3 mapKitHandle];
+    mapKitHandle3 = [preferredLocation mapKitHandle];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __36__EKEventMapDetailItem_setupMapView__block_invoke;
     v13[3] = &unk_1E8442568;
     v15 = v4;
     v13[4] = self;
-    v14 = v3;
-    [v4 _mapItemFromHandle:v10 completionHandler:v13];
+    v14 = preferredLocation;
+    [v4 _mapItemFromHandle:mapKitHandle3 completionHandler:v13];
   }
 
   else
@@ -403,8 +403,8 @@ LABEL_4:
     }
 
     v11 = [[v4 alloc] initWithCLLocation:self->_location];
-    v12 = [v3 title];
-    [v11 setName:v12];
+    title = [preferredLocation title];
+    [v11 setName:title];
 
     [(EKEventMapDetailItem *)self _loadMapItem:v11];
   }
@@ -447,7 +447,7 @@ void __36__EKEventMapDetailItem_setupMapView__block_invoke(uint64_t a1, void *a2
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 }
 
-- (void)_loadMapItem:(id)a3
+- (void)_loadMapItem:(id)item
 {
   mapView = self->_mapView;
   v4[0] = MEMORY[0x1E69E9820];
@@ -455,7 +455,7 @@ void __36__EKEventMapDetailItem_setupMapView__block_invoke(uint64_t a1, void *a2
   v4[2] = __37__EKEventMapDetailItem__loadMapItem___block_invoke;
   v4[3] = &unk_1E8442590;
   v4[4] = self;
-  [(MKMapItemView *)mapView loadMapItem:a3 completionHandler:v4];
+  [(MKMapItemView *)mapView loadMapItem:item completionHandler:v4];
 }
 
 void __37__EKEventMapDetailItem__loadMapItem___block_invoke(uint64_t a1, void *a2)
@@ -547,19 +547,19 @@ void __37__EKEventMapDetailItem__loadMapItem___block_invoke_2(uint64_t a1)
 - (double)_mapHeight
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventDetailItem *)self delegate];
+  delegate = [(EKEventDetailItem *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(EKEventDetailItem *)self delegate];
-    v6 = [v5 eventDetailsScrollView];
+    delegate2 = [(EKEventDetailItem *)self delegate];
+    eventDetailsScrollView = [delegate2 eventDetailsScrollView];
 
-    [v6 bounds];
+    [eventDetailsScrollView bounds];
     Width = CGRectGetWidth(v18);
-    [v6 layoutMargins];
+    [eventDetailsScrollView layoutMargins];
     v9 = Width - v8;
-    [v6 layoutMargins];
+    [eventDetailsScrollView layoutMargins];
     v11 = (v9 - v10) * 0.4;
 LABEL_5:
 
@@ -570,11 +570,11 @@ LABEL_5:
   v11 = 0.0;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
   {
-    v6 = v12;
-    v13 = [(EKEventDetailItem *)self delegate];
+    eventDetailsScrollView = v12;
+    delegate3 = [(EKEventDetailItem *)self delegate];
     v15 = 138412290;
-    v16 = v13;
-    _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_ERROR, "Delegate [%@] does not respond to eventDetailsScrollView, so setting map height to 0.", &v15, 0xCu);
+    v16 = delegate3;
+    _os_log_impl(&dword_1D3400000, eventDetailsScrollView, OS_LOG_TYPE_ERROR, "Delegate [%@] does not respond to eventDetailsScrollView, so setting map height to 0.", &v15, 0xCu);
 
     goto LABEL_5;
   }
@@ -584,30 +584,30 @@ LABEL_6:
   return result;
 }
 
-- (void)_animateMapIfNeededWithPresentingController:(id)a3 presentingView:(id)a4
+- (void)_animateMapIfNeededWithPresentingController:(id)controller presentingView:(id)view
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   if (!self->_animationHasRan && ![(EKEventMapCell *)self->_cell currentlyLoading])
   {
-    [v7 bounds];
+    [viewCopy bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
     mapView = self->_mapView;
     [(MKMapItemView *)mapView bounds];
-    [(MKMapItemView *)mapView convertRect:v7 toView:?];
+    [(MKMapItemView *)mapView convertRect:viewCopy toView:?];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v6 navigationController];
-    v26 = [v25 toolbar];
+    navigationController = [controllerCopy navigationController];
+    toolbar = [navigationController toolbar];
 
-    [v26 bounds];
-    [v26 convertRect:v7 toView:?];
+    [toolbar bounds];
+    [toolbar convertRect:viewCopy toView:?];
     v27 = CGRectGetMinY(v38) - v11;
     if (v27 >= v15)
     {

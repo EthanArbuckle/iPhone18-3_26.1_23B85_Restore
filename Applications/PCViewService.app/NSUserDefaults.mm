@@ -6,105 +6,105 @@
 - (double)executeDistanceLarge;
 - (int64_t)updateRateBluetoothWatch;
 - (int64_t)updateRateExecuteWatch;
-- (void)setExecuteDistanceDefault:(double)a3;
-- (void)setExecuteDistanceLarge:(double)a3;
-- (void)setUpdateRateBluetoothWatch:(int64_t)a3;
-- (void)setUpdateRateExecuteWatch:(int64_t)a3;
+- (void)setExecuteDistanceDefault:(double)default;
+- (void)setExecuteDistanceLarge:(double)large;
+- (void)setUpdateRateBluetoothWatch:(int64_t)watch;
+- (void)setUpdateRateExecuteWatch:(int64_t)watch;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)forceKillProximitycontrold
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
 - (BOOL)forceKillPCViewService
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
 - (BOOL)transferToHomePod
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
 - (double)executeDistanceDefault
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v2 doubleForKey:v3];
+  [(NSUserDefaults *)selfCopy doubleForKey:v3];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setExecuteDistanceDefault:(double)a3
+- (void)setExecuteDistanceDefault:(double)default
 {
-  v5 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v5 setDouble:v4 forKey:a3];
+  [(NSUserDefaults *)selfCopy setDouble:v4 forKey:default];
 }
 
 - (double)executeDistanceLarge
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v2 doubleForKey:v3];
+  [(NSUserDefaults *)selfCopy doubleForKey:v3];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setExecuteDistanceLarge:(double)a3
+- (void)setExecuteDistanceLarge:(double)large
 {
-  v5 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v5 setDouble:v4 forKey:a3];
+  [(NSUserDefaults *)selfCopy setDouble:v4 forKey:large];
 }
 
 - (int64_t)updateRateBluetoothWatch
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 integerForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy integerForKey:v3];
 
   return v4;
 }
 
-- (void)setUpdateRateBluetoothWatch:(int64_t)a3
+- (void)setUpdateRateBluetoothWatch:(int64_t)watch
 {
-  v5 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v5 setInteger:a3 forKey:v4];
+  [(NSUserDefaults *)selfCopy setInteger:watch forKey:v4];
 }
 
 - (int64_t)updateRateExecuteWatch
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 integerForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy integerForKey:v3];
 
   return v4;
 }
 
-- (void)setUpdateRateExecuteWatch:(int64_t)a3
+- (void)setUpdateRateExecuteWatch:(int64_t)watch
 {
-  v5 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v5 setInteger:a3 forKey:v4];
+  [(NSUserDefaults *)selfCopy setInteger:watch forKey:v4];
 }
 
 @end

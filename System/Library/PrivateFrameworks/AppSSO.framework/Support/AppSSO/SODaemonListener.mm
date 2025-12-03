@@ -1,14 +1,14 @@
 @interface SODaemonListener
-- (SODaemonListener)initWithMachServiceName:(id)a3;
+- (SODaemonListener)initWithMachServiceName:(id)name;
 @end
 
 @implementation SODaemonListener
 
-- (SODaemonListener)initWithMachServiceName:(id)a3
+- (SODaemonListener)initWithMachServiceName:(id)name
 {
   v6.receiver = self;
   v6.super_class = SODaemonListener;
-  v3 = [(SODaemonListener *)&v6 initWithMachServiceName:a3];
+  v3 = [(SODaemonListener *)&v6 initWithMachServiceName:name];
   v4 = v3;
   if (v3)
   {

@@ -1,23 +1,23 @@
 @interface _UIKeyShortcutHUDCell
 - (BOOL)isBackgroundVisible;
-- (_UIKeyShortcutHUDCell)initWithFrame:(CGRect)a3;
+- (_UIKeyShortcutHUDCell)initWithFrame:(CGRect)frame;
 - (id)configurationState;
 - (id)defaultContentConfiguration;
-- (int64_t)_backgroundStyleForState:(id)a3;
+- (int64_t)_backgroundStyleForState:(id)state;
 - (void)prepareForReuse;
-- (void)setCategoryVisible:(BOOL)a3;
-- (void)setDrawsBackground:(BOOL)a3;
-- (void)setFlashing:(BOOL)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setCategoryVisible:(BOOL)visible;
+- (void)setDrawsBackground:(BOOL)background;
+- (void)setFlashing:(BOOL)flashing;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation _UIKeyShortcutHUDCell
 
-- (_UIKeyShortcutHUDCell)initWithFrame:(CGRect)a3
+- (_UIKeyShortcutHUDCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIKeyShortcutHUDCell;
-  v3 = [(UICollectionViewListCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewListCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,8 +33,8 @@
   v3 = [_UIKeyShortcutHUDCellConfigurationState alloc];
   v7.receiver = self;
   v7.super_class = _UIKeyShortcutHUDCell;
-  v4 = [(UICollectionViewCell *)&v7 configurationState];
-  v5 = [(_UIKeyShortcutHUDCellConfigurationState *)v3 initWithCellConfigurationState:v4];
+  configurationState = [(UICollectionViewCell *)&v7 configurationState];
+  v5 = [(_UIKeyShortcutHUDCellConfigurationState *)v3 initWithCellConfigurationState:configurationState];
 
   [(_UIKeyShortcutHUDCellConfigurationState *)v5 setFlashing:[(_UIKeyShortcutHUDCell *)self isFlashing]];
   [(_UIKeyShortcutHUDCellConfigurationState *)v5 setCategoryVisible:[(_UIKeyShortcutHUDCell *)self isCategoryVisible]];
@@ -43,29 +43,29 @@
   return v5;
 }
 
-- (void)setFlashing:(BOOL)a3
+- (void)setFlashing:(BOOL)flashing
 {
-  if (self->_flashing != a3)
+  if (self->_flashing != flashing)
   {
-    self->_flashing = a3;
+    self->_flashing = flashing;
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setCategoryVisible:(BOOL)a3
+- (void)setCategoryVisible:(BOOL)visible
 {
-  if (self->_categoryVisible != a3)
+  if (self->_categoryVisible != visible)
   {
-    self->_categoryVisible = a3;
+    self->_categoryVisible = visible;
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setDrawsBackground:(BOOL)a3
+- (void)setDrawsBackground:(BOOL)background
 {
-  if (self->_drawsBackground != a3)
+  if (self->_drawsBackground != background)
   {
-    self->_drawsBackground = a3;
+    self->_drawsBackground = background;
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
@@ -82,26 +82,26 @@
 
 - (BOOL)isBackgroundVisible
 {
-  v2 = self;
-  v3 = [(_UIKeyShortcutHUDCell *)self configurationState];
-  LOBYTE(v2) = [(_UIKeyShortcutHUDCell *)v2 _backgroundStyleForState:v3]!= 3;
+  selfCopy = self;
+  configurationState = [(_UIKeyShortcutHUDCell *)self configurationState];
+  LOBYTE(selfCopy) = [(_UIKeyShortcutHUDCell *)selfCopy _backgroundStyleForState:configurationState]!= 3;
 
-  return v2;
+  return selfCopy;
 }
 
-- (int64_t)_backgroundStyleForState:(id)a3
+- (int64_t)_backgroundStyleForState:(id)state
 {
-  v3 = a3;
-  if (([v3 isFlashing] & 1) != 0 || (objc_msgSend(v3, "isHighlighted") & 1) != 0 || objc_msgSend(v3, "isSelected"))
+  stateCopy = state;
+  if (([stateCopy isFlashing] & 1) != 0 || (objc_msgSend(stateCopy, "isHighlighted") & 1) != 0 || objc_msgSend(stateCopy, "isSelected"))
   {
-    if ([v3 isFlashing] & 1) == 0 && objc_msgSend(v3, "isHighlighted") && (objc_msgSend(v3, "isSelected"))
+    if ([stateCopy isFlashing] & 1) == 0 && objc_msgSend(stateCopy, "isHighlighted") && (objc_msgSend(stateCopy, "isSelected"))
     {
       v4 = 2;
     }
 
     else
     {
-      v4 = ![v3 isFlashing] || (objc_msgSend(v3, "isHighlighted") & 1) == 0 && (objc_msgSend(v3, "isSelected") & 1) == 0;
+      v4 = ![stateCopy isFlashing] || (objc_msgSend(stateCopy, "isHighlighted") & 1) == 0 && (objc_msgSend(stateCopy, "isSelected") & 1) == 0;
     }
   }
 
@@ -118,45 +118,45 @@
   v3 = +[UIKeyShortcutHUDMetrics currentMetrics];
   v13.receiver = self;
   v13.super_class = _UIKeyShortcutHUDCell;
-  v4 = [(UICollectionViewListCell *)&v13 defaultContentConfiguration];
-  v5 = [v4 textProperties];
-  v6 = [v3 standardHUDFont];
-  [v5 setFont:v6];
+  defaultContentConfiguration = [(UICollectionViewListCell *)&v13 defaultContentConfiguration];
+  textProperties = [defaultContentConfiguration textProperties];
+  standardHUDFont = [v3 standardHUDFont];
+  [textProperties setFont:standardHUDFont];
 
-  [v5 setAllowsDefaultTighteningForTruncation:1];
-  [v5 setAdjustsFontSizeToFitWidth:1];
-  [v5 setMinimumScaleFactor:0.5];
-  v7 = [v3 standardHUDTextColor];
-  [v5 setColor:v7];
+  [textProperties setAllowsDefaultTighteningForTruncation:1];
+  [textProperties setAdjustsFontSizeToFitWidth:1];
+  [textProperties setMinimumScaleFactor:0.5];
+  standardHUDTextColor = [v3 standardHUDTextColor];
+  [textProperties setColor:standardHUDTextColor];
 
-  [v5 setNumberOfLines:1];
+  [textProperties setNumberOfLines:1];
   [v3 shortcutTitleToSubtitleVerticalPadding];
-  [v4 setTextToSecondaryTextVerticalPadding:?];
-  v8 = [v4 secondaryTextProperties];
-  v9 = [v3 shortcutSubtitleFont];
-  [v8 setFont:v9];
+  [defaultContentConfiguration setTextToSecondaryTextVerticalPadding:?];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  shortcutSubtitleFont = [v3 shortcutSubtitleFont];
+  [secondaryTextProperties setFont:shortcutSubtitleFont];
 
-  [v8 setAllowsDefaultTighteningForTruncation:1];
-  [v8 setAdjustsFontSizeToFitWidth:1];
-  [v8 setMinimumScaleFactor:0.5];
-  v10 = [v3 shortcutSubtitleTextColor];
-  [v8 setColor:v10];
+  [secondaryTextProperties setAllowsDefaultTighteningForTruncation:1];
+  [secondaryTextProperties setAdjustsFontSizeToFitWidth:1];
+  [secondaryTextProperties setMinimumScaleFactor:0.5];
+  shortcutSubtitleTextColor = [v3 shortcutSubtitleTextColor];
+  [secondaryTextProperties setColor:shortcutSubtitleTextColor];
 
-  [v8 setNumberOfLines:1];
+  [secondaryTextProperties setNumberOfLines:1];
   [v3 menuCellHorizontalContentMargin];
-  [v4 setDirectionalLayoutMargins:{0.0, v11, 0.0, v11}];
+  [defaultContentConfiguration setDirectionalLayoutMargins:{0.0, v11, 0.0, v11}];
 
-  return v4;
+  return defaultContentConfiguration;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v12 = a3;
-  [v12 setFocused:0];
+  stateCopy = state;
+  [stateCopy setFocused:0];
   v4 = +[UIBackgroundConfiguration clearConfiguration];
-  v5 = [v4 updatedConfigurationForState:v12];
+  v5 = [v4 updatedConfigurationForState:stateCopy];
 
-  if ([v12 drawsBackground])
+  if ([stateCopy drawsBackground])
   {
     v6 = +[UIColor blackColor];
 LABEL_3:
@@ -169,7 +169,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(_UIKeyShortcutHUDCell *)self _backgroundStyleForState:v12];
+  v9 = [(_UIKeyShortcutHUDCell *)self _backgroundStyleForState:stateCopy];
   v6 = +[UIColor blackColor];
   if (v9 > 1)
   {

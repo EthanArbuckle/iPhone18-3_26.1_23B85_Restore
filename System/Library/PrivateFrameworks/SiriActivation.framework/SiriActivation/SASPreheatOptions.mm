@@ -1,37 +1,37 @@
 @interface SASPreheatOptions
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SASPreheatOptions)initWithBuilder:(id)a3;
-- (SASPreheatOptions)initWithCoder:(id)a3;
-- (SASPreheatOptions)initWithPreheatRequest:(id)a3 lockState:(unint64_t)a4;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SASPreheatOptions)initWithBuilder:(id)builder;
+- (SASPreheatOptions)initWithCoder:(id)coder;
+- (SASPreheatOptions)initWithPreheatRequest:(id)request lockState:(unint64_t)state;
 - (id)description;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SASPreheatOptions
 
-- (SASPreheatOptions)initWithBuilder:(id)a3
+- (SASPreheatOptions)initWithBuilder:(id)builder
 {
-  v4 = [SASPreheatOptions newWithBuilder:a3];
+  v4 = [SASPreheatOptions newWithBuilder:builder];
 
   return v4;
 }
 
-- (SASPreheatOptions)initWithPreheatRequest:(id)a3 lockState:(unint64_t)a4
+- (SASPreheatOptions)initWithPreheatRequest:(id)request lockState:(unint64_t)state
 {
-  v6 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = SASPreheatOptions;
   v7 = [(SASPreheatOptions *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [requestCopy copy];
     preheatRequest = v7->_preheatRequest;
     v7->_preheatRequest = v8;
 
-    v7->_lockState = a4;
+    v7->_lockState = state;
   }
 
   return v7;
@@ -70,10 +70,10 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -83,13 +83,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       lockState = self->_lockState;
       if (lockState == [(SASPreheatOptions *)v5 lockState])
       {
-        v7 = [(SASPreheatOptions *)v5 preheatRequest];
+        preheatRequest = [(SASPreheatOptions *)v5 preheatRequest];
         preheatRequest = self->_preheatRequest;
-        v9 = preheatRequest == v7 || [(SASPreheatRequest *)preheatRequest isEqual:v7];
+        v9 = preheatRequest == preheatRequest || [(SASPreheatRequest *)preheatRequest isEqual:preheatRequest];
       }
 
       else
@@ -107,57 +107,57 @@
   return v9;
 }
 
-- (SASPreheatOptions)initWithCoder:(id)a3
+- (SASPreheatOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatOptions::preheatRequest"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatOptions::lockState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatOptions::preheatRequest"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatOptions::lockState"];
 
-  v7 = [v6 unsignedIntegerValue];
-  v8 = [(SASPreheatOptions *)self initWithPreheatRequest:v5 lockState:v7];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  v8 = [(SASPreheatOptions *)self initWithPreheatRequest:v5 lockState:unsignedIntegerValue];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   preheatRequest = self->_preheatRequest;
-  v5 = a3;
-  [v5 encodeObject:preheatRequest forKey:@"SASPreheatOptions::preheatRequest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:preheatRequest forKey:@"SASPreheatOptions::preheatRequest"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_lockState];
-  [v5 encodeObject:v6 forKey:@"SASPreheatOptions::lockState"];
+  [coderCopy encodeObject:v6 forKey:@"SASPreheatOptions::lockState"];
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SASPreheatOptionsMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SASPreheatOptionsMutation *)v4 generate];
+  generate = [(_SASPreheatOptionsMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SASPreheatOptionsMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SASPreheatOptionsMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SASPreheatOptionsMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SASPreheatOptions *)self copy];
+    generate = [(SASPreheatOptions *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CNPropertyPlaceholderItem
-- (CNPropertyPlaceholderItem)initWithProperty:(id)a3;
+- (CNPropertyPlaceholderItem)initWithProperty:(id)property;
 - (NSString)title;
 @end
 
@@ -7,29 +7,29 @@
 
 - (NSString)title
 {
-  v2 = [(CNPropertyPlaceholderItem *)self property];
-  if ([v2 isEqualToString:@"birthdays"])
+  property = [(CNPropertyPlaceholderItem *)self property];
+  if ([property isEqualToString:@"birthdays"])
   {
     v3 = *MEMORY[0x1E695C1D0];
 
-    v2 = v3;
+    property = v3;
   }
 
-  v4 = CNUILocalizedStringForPropertyWithFormatKey(@"ADD_NEW_ITEM", v2);
+  v4 = CNUILocalizedStringForPropertyWithFormatKey(@"ADD_NEW_ITEM", property);
 
   return v4;
 }
 
-- (CNPropertyPlaceholderItem)initWithProperty:(id)a3
+- (CNPropertyPlaceholderItem)initWithProperty:(id)property
 {
-  v5 = a3;
+  propertyCopy = property;
   v9.receiver = self;
   v9.super_class = CNPropertyPlaceholderItem;
   v6 = [(CNPropertyPlaceholderItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_property, a3);
+    objc_storeStrong(&v6->_property, property);
   }
 
   return v7;

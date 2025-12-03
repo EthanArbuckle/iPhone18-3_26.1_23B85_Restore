@@ -1,79 +1,79 @@
 @interface HDDataSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)_predicateForDateIntervalStartDate:(void *)a3 endDate:;
-+ (id)_predicateForSyncSession:(id)a3;
-+ (id)_pruneSyncedObjectsUsingPredicate:(uint64_t)a3 limit:(void *)a4 profile:(uint64_t)a5 error:;
-+ (id)_pruningPredicateWithDate:(void *)a3 profile:(void *)a4 anchor:;
-+ (id)_pruningPredicateWithRestrictionPredicates:(char)a3 matchOnlyNilDatesWithoutShardInterval:;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)objectsFromCodableObjectsInCollection:(id)a3;
-+ (id)pruneSyncedObjectsThroughAnchor:(id)a3 limit:(unint64_t)a4 nowDate:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)pruneSyncedObjectsWithRestrictionPredicates:(id)a3 limit:(unint64_t)a4 nowDate:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)_predicateForDateIntervalStartDate:(void *)date endDate:;
++ (id)_predicateForSyncSession:(id)session;
++ (id)_pruneSyncedObjectsUsingPredicate:(uint64_t)predicate limit:(void *)limit profile:(uint64_t)profile error:;
++ (id)_pruningPredicateWithDate:(void *)date profile:(void *)profile anchor:;
++ (id)_pruningPredicateWithRestrictionPredicates:(char)predicates matchOnlyNilDatesWithoutShardInterval:;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)objectsFromCodableObjectsInCollection:(id)collection;
++ (id)pruneSyncedObjectsThroughAnchor:(id)anchor limit:(unint64_t)limit nowDate:(id)date profile:(id)profile error:(id *)error;
++ (id)pruneSyncedObjectsWithRestrictionPredicates:(id)predicates limit:(unint64_t)limit nowDate:(id)date profile:(id)profile error:(id *)error;
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDDataSyncEntity
 
-+ (id)_predicateForSyncSession:(id)a3
++ (id)_predicateForSyncSession:(id)session
 {
   v4 = MEMORY[0x277D10B28];
-  v5 = [a3 syncPredicate];
-  v6 = [v5 excludedSyncProvenances];
-  v7 = [v4 doesNotContainPredicateWithProperty:@"data_provenances.sync_provenance" values:v6];
+  syncPredicate = [session syncPredicate];
+  excludedSyncProvenances = [syncPredicate excludedSyncProvenances];
+  v7 = [v4 doesNotContainPredicateWithProperty:@"data_provenances.sync_provenance" values:excludedSyncProvenances];
 
-  v8 = [objc_msgSend(a1 "healthEntityClass")];
+  v8 = [objc_msgSend(self "healthEntityClass")];
   v9 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v7 otherPredicate:v8];
 
   return v9;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [a1 healthEntityClass];
-  v17 = [a1 _predicateForSyncSession:v15];
-  LOBYTE(a7) = [v16 generateSyncObjectsForSession:v15 syncEntityClass:a1 predicate:v17 syncAnchorRange:start profile:end messageHandler:v14 error:{v13, a7}];
+  end = range.end;
+  start = range.start;
+  handlerCopy = handler;
+  profileCopy = profile;
+  sessionCopy = session;
+  healthEntityClass = [self healthEntityClass];
+  v17 = [self _predicateForSyncSession:sessionCopy];
+  LOBYTE(error) = [healthEntityClass generateSyncObjectsForSession:sessionCopy syncEntityClass:self predicate:v17 syncAnchorRange:start profile:end messageHandler:profileCopy error:{handlerCopy, error}];
 
-  return a7;
+  return error;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a1 healthEntityClass];
-  v13 = [a1 _predicateForSyncSession:v11];
-  v14 = [v10 database];
+  profileCopy = profile;
+  sessionCopy = session;
+  healthEntityClass = [self healthEntityClass];
+  v13 = [self _predicateForSyncSession:sessionCopy];
+  database = [profileCopy database];
 
-  v15 = [v12 nextSyncAnchorWithStartAnchor:a4 predicate:v13 session:v11 healthDatabase:v14 error:a6];
+  v15 = [healthEntityClass nextSyncAnchorWithStartAnchor:anchor predicate:v13 session:sessionCopy healthDatabase:database error:error];
   return v15;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableObjectCollection alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableObjectCollection alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v11;
+  v14 = objectsCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -89,7 +89,7 @@ LABEL_3:
         objc_enumerationMutation(v14);
       }
 
-      if (![a1 _insertObjectsFromCodableObjectCollection:*(*(&v22 + 1) + 8 * v19) syncStore:v12 profile:v13 error:{a7, v22}])
+      if (![self _insertObjectsFromCodableObjectCollection:*(*(&v22 + 1) + 8 * v19) syncStore:storeCopy profile:profileCopy error:{error, v22}])
       {
         break;
       }
@@ -117,11 +117,11 @@ LABEL_9:
   return v18;
 }
 
-+ (id)objectsFromCodableObjectsInCollection:(id)a3
++ (id)objectsFromCodableObjectsInCollection:(id)collection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v4 = [objc_msgSend(a1 "healthEntityClass")];
+  collectionCopy = collection;
+  v4 = [objc_msgSend(self "healthEntityClass")];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   HKDefaultObjectValidationConfigurationIgnoringAllOptions();
   v19 = 0u;
@@ -147,7 +147,7 @@ LABEL_9:
         }
 
         v16 = *(*(&v19 + 1) + 8 * v10);
-        v17 = v15;
+        v17 = collectionCopy;
         v18 = v5;
         HKWithAutoreleasePool();
         v8 = v11;
@@ -206,12 +206,12 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return 1;
 }
 
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
   v5 = objc_opt_class();
-  if (a3 < 12)
+  if (version < 12)
   {
     v13 = v5;
     v14 = objc_opt_class();
@@ -238,13 +238,13 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return v10;
 }
 
-+ (id)pruneSyncedObjectsThroughAnchor:(id)a3 limit:(unint64_t)a4 nowDate:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)pruneSyncedObjectsThroughAnchor:(id)anchor limit:(unint64_t)limit nowDate:(id)date profile:(id)profile error:(id *)error
 {
-  v12 = a6;
-  v13 = [(HDDataSyncEntity *)a1 _pruningPredicateWithDate:a5 profile:v12 anchor:a3];
+  profileCopy = profile;
+  v13 = [(HDDataSyncEntity *)self _pruningPredicateWithDate:date profile:profileCopy anchor:anchor];
   if (v13)
   {
-    v14 = [(HDDataSyncEntity *)a1 _pruneSyncedObjectsUsingPredicate:v13 limit:a4 profile:v12 error:a7];
+    v14 = [(HDDataSyncEntity *)self _pruneSyncedObjectsUsingPredicate:v13 limit:limit profile:profileCopy error:error];
   }
 
   else
@@ -255,13 +255,13 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return v14;
 }
 
-+ (id)_pruningPredicateWithDate:(void *)a3 profile:(void *)a4 anchor:
++ (id)_pruningPredicateWithDate:(void *)date profile:(void *)profile anchor:
 {
-  v6 = a4;
-  v7 = a3;
+  profileCopy = profile;
+  dateCopy = date;
   v8 = a2;
   v9 = objc_opt_self();
-  v10 = [v9 _basePruningPredicateForDate:v8 profile:v7];
+  v10 = [v9 _basePruningPredicateForDate:v8 profile:dateCopy];
 
   if (v10)
   {
@@ -269,9 +269,9 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
     v12 = [v9 _predicateForSyncSession:0];
     v13 = [v11 compoundPredicateWithPredicate:v12 otherPredicate:v10];
 
-    if (v6)
+    if (profileCopy)
     {
-      v14 = HDDataEntityPredicateForObjectsAfterAnchor(v6);
+      v14 = HDDataEntityPredicateForObjectsAfterAnchor(profileCopy);
       v15 = MEMORY[0x277D10B70];
       v16 = [MEMORY[0x277D10B20] negatedPredicate:v14];
       v17 = [v15 compoundPredicateWithPredicate:v13 otherPredicate:v16];
@@ -288,19 +288,19 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return v13;
 }
 
-+ (id)_pruneSyncedObjectsUsingPredicate:(uint64_t)a3 limit:(void *)a4 profile:(uint64_t)a5 error:
++ (id)_pruneSyncedObjectsUsingPredicate:(uint64_t)predicate limit:(void *)limit profile:(uint64_t)profile error:
 {
-  v8 = a4;
+  limitCopy = limit;
   v9 = a2;
   v10 = objc_opt_self();
   v15 = 0;
-  v11 = [v8 dataManager];
+  dataManager = [limitCopy dataManager];
 
   LOBYTE(v14) = 0;
-  LODWORD(a5) = [v11 deleteDataObjectsOfClass:objc_msgSend(v10 predicate:"healthEntityClass") limit:v9 deletedSampleCount:a3 notifyObservers:&v15 generateDeletedObjects:0 userRequested:0 recursiveDeleteAuthorizationBlock:v14 error:{0, a5}];
+  LODWORD(profile) = [dataManager deleteDataObjectsOfClass:objc_msgSend(v10 predicate:"healthEntityClass") limit:v9 deletedSampleCount:predicate notifyObservers:&v15 generateDeletedObjects:0 userRequested:0 recursiveDeleteAuthorizationBlock:v14 error:{0, profile}];
 
   v12 = 0;
-  if (a5)
+  if (profile)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
   }
@@ -308,16 +308,16 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return v12;
 }
 
-+ (id)pruneSyncedObjectsWithRestrictionPredicates:(id)a3 limit:(unint64_t)a4 nowDate:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)pruneSyncedObjectsWithRestrictionPredicates:(id)predicates limit:(unint64_t)limit nowDate:(id)date profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = [(HDDataSyncEntity *)a1 _pruningPredicateWithDate:a5 profile:v13 anchor:0];
+  predicatesCopy = predicates;
+  profileCopy = profile;
+  v14 = [(HDDataSyncEntity *)self _pruningPredicateWithDate:date profile:profileCopy anchor:0];
   if (v14)
   {
-    v15 = [a1 _pruningPredicateWithRestrictionPredicates:v12];
+    v15 = [self _pruningPredicateWithRestrictionPredicates:predicatesCopy];
     v16 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v14 otherPredicate:v15];
-    v17 = [(HDDataSyncEntity *)a1 _pruneSyncedObjectsUsingPredicate:v16 limit:a4 profile:v13 error:a7];
+    v17 = [(HDDataSyncEntity *)self _pruneSyncedObjectsUsingPredicate:v16 limit:limit profile:profileCopy error:error];
   }
 
   else
@@ -328,10 +328,10 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return v17;
 }
 
-+ (id)_predicateForDateIntervalStartDate:(void *)a3 endDate:
++ (id)_predicateForDateIntervalStartDate:(void *)date endDate:
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = a2;
   objc_opt_self();
   v6 = HDSampleEntityPredicateForStartDate(4);
@@ -353,7 +353,7 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
   return v12;
 }
 
-+ (id)_pruningPredicateWithRestrictionPredicates:(char)a3 matchOnlyNilDatesWithoutShardInterval:
++ (id)_pruningPredicateWithRestrictionPredicates:(char)predicates matchOnlyNilDatesWithoutShardInterval:
 {
   v4 = a2;
   v5 = objc_opt_self();
@@ -364,7 +364,7 @@ uint64_t __58__HDDataSyncEntity_objectsFromCodableObjectsInCollection___block_in
     v10[2] = __101__HDDataSyncEntity__pruningPredicateWithRestrictionPredicates_matchOnlyNilDatesWithoutShardInterval___block_invoke;
     v10[3] = &__block_descriptor_41_e45__16__0__HDSamplePruningRestrictionPredicate_8l;
     v10[4] = v6;
-    v11 = a3;
+    predicatesCopy = predicates;
     v7 = [v4 hk_map:v10];
     v8 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v7];
   }

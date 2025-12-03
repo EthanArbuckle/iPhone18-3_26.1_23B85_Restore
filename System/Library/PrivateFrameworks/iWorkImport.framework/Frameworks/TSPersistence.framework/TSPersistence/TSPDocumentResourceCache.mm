@@ -1,9 +1,9 @@
 @interface TSPDocumentResourceCache
 + (id)sharedCache;
-- (TSPDocumentResourceCache)initWithURL:(id)a3;
-- (TSPDocumentResourceCache)initWithURL:(id)a3 documentResourceRegistry:(id)a4;
-- (id)fileURLForResourceInfo:(id)a3;
-- (id)fileURLInCacheForResourceInfo:(id)a3;
+- (TSPDocumentResourceCache)initWithURL:(id)l;
+- (TSPDocumentResourceCache)initWithURL:(id)l documentResourceRegistry:(id)registry;
+- (id)fileURLForResourceInfo:(id)info;
+- (id)fileURLInCacheForResourceInfo:(id)info;
 - (void)purgeLegacyCaches;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_276B00744;
   block[3] = &unk_27A6E4768;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A52B20 != -1)
   {
     dispatch_once(&qword_280A52B20, block);
@@ -26,33 +26,33 @@
   return v2;
 }
 
-- (TSPDocumentResourceCache)initWithURL:(id)a3
+- (TSPDocumentResourceCache)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v7 = objc_msgSend_sharedRegistry(TSPDocumentResourceRegistry, v5, v6);
-  v9 = objc_msgSend_initWithURL_documentResourceRegistry_(self, v8, v4, v7);
+  v9 = objc_msgSend_initWithURL_documentResourceRegistry_(self, v8, lCopy, v7);
 
   return v9;
 }
 
-- (TSPDocumentResourceCache)initWithURL:(id)a3 documentResourceRegistry:(id)a4
+- (TSPDocumentResourceCache)initWithURL:(id)l documentResourceRegistry:(id)registry
 {
-  v7 = a4;
+  registryCopy = registry;
   v11.receiver = self;
   v11.super_class = TSPDocumentResourceCache;
-  v8 = [(TSPFileResourceCache *)&v11 initWithURL:a3];
+  v8 = [(TSPFileResourceCache *)&v11 initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_documentResourceRegistry, a4);
+    objc_storeStrong(&v8->_documentResourceRegistry, registry);
   }
 
   return v9;
 }
 
-- (id)fileURLInCacheForResourceInfo:(id)a3
+- (id)fileURLInCacheForResourceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -86,10 +86,10 @@
   objc_msgSend_removeItemAtURL_error_(v13, v12, v11, 0);
 }
 
-- (id)fileURLForResourceInfo:(id)a3
+- (id)fileURLForResourceInfo:(id)info
 {
   v63[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

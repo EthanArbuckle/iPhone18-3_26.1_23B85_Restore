@@ -1,27 +1,27 @@
 @interface TKSmartCardSlotManager
 + (TKSmartCardSlotManager)defaultManager;
-- (BOOL)endNFCSlotWithError:(id *)a3;
+- (BOOL)endNFCSlotWithError:(id *)error;
 - (BOOL)isNFCSupported;
 - (BOOL)setupConnection;
-- (BOOL)updateNFCSlotMessageWithMessage:(id)a3 error:(id *)a4;
+- (BOOL)updateNFCSlotMessageWithMessage:(id)message error:(id *)error;
 - (NSArray)slotNames;
 - (TKSmartCardSlot)slotNamed:(NSString *)name;
-- (TKSmartCardSlotManager)initWithServer:(id)a3;
+- (TKSmartCardSlotManager)initWithServer:(id)server;
 - (id)_createAIDsValidationError;
 - (id)getValidAIDsFromCallingBundle;
-- (id)synchronous:(BOOL)a3 remoteSlotClientWithErrorHandler:(id)a4;
-- (void)createNFCSlotWithMessage:(id)a3 completion:(id)a4;
+- (id)synchronous:(BOOL)synchronous remoteSlotClientWithErrorHandler:(id)handler;
+- (void)createNFCSlotWithMessage:(id)message completion:(id)completion;
 - (void)dealloc;
 - (void)getSlotWithName:(NSString *)name reply:(void *)reply;
-- (void)setSlotWithName:(id)a3 endpoint:(id)a4 type:(id)a5 reply:(id)a6;
+- (void)setSlotWithName:(id)name endpoint:(id)endpoint type:(id)type reply:(id)reply;
 @end
 
 @implementation TKSmartCardSlotManager
 
 + (TKSmartCardSlotManager)defaultManager
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!defaultManager_manager)
   {
     v3 = objc_alloc_init(TKSmartCardSlotManager);
@@ -29,7 +29,7 @@
     defaultManager_manager = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = defaultManager_manager;
 
@@ -43,23 +43,23 @@ id __30__TKSmartCardSlotManager_init__block_invoke()
   return v0;
 }
 
-- (TKSmartCardSlotManager)initWithServer:(id)a3
+- (TKSmartCardSlotManager)initWithServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v13.receiver = self;
   v13.super_class = TKSmartCardSlotManager;
   v5 = [(TKSmartCardSlotManager *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     endpoints = v5->_endpoints;
-    v5->_endpoints = v6;
+    v5->_endpoints = dictionary;
 
     v8 = dispatch_queue_create(0, 0);
     slotNamesQueue = v5->_slotNamesQueue;
     v5->_slotNamesQueue = v8;
 
-    v10 = MEMORY[0x1E12D5690](v4);
+    v10 = MEMORY[0x1E12D5690](serverCopy);
     connectionToServer = v5->_connectionToServer;
     v5->_connectionToServer = v10;
 
@@ -226,16 +226,16 @@ uint64_t __41__TKSmartCardSlotManager_setupConnection__block_invoke_4(uint64_t a
 
 - (NSArray)slotNames
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_connection);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_connection);
 
   if (!WeakRetained)
   {
-    [(TKSmartCardSlotManager *)v2 setupConnection];
+    [(TKSmartCardSlotManager *)selfCopy setupConnection];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = 0;
   v9 = &v8;
@@ -243,12 +243,12 @@ uint64_t __41__TKSmartCardSlotManager_setupConnection__block_invoke_4(uint64_t a
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  slotNamesQueue = v2->_slotNamesQueue;
+  slotNamesQueue = selfCopy->_slotNamesQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__TKSmartCardSlotManager_slotNames__block_invoke;
   v7[3] = &unk_1E86B7060;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v7[5] = &v8;
   dispatch_sync(slotNamesQueue, v7);
   v5 = v9[5];
@@ -307,46 +307,46 @@ void __35__TKSmartCardSlotManager_slotNames__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSlotWithName:(id)a3 endpoint:(id)a4 type:(id)a5 reply:(id)a6
+- (void)setSlotWithName:(id)name endpoint:(id)endpoint type:(id)type reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  endpointCopy = endpoint;
+  typeCopy = type;
+  replyCopy = reply;
   v14 = TK_LOG_smartcard();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [TKSmartCardSlotManager setSlotWithName:endpoint:type:reply:];
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = NSStringFromSelector(sel_slotNames);
-  [(TKSmartCardSlotManager *)v15 willChangeValueForKey:v16];
+  [(TKSmartCardSlotManager *)selfCopy willChangeValueForKey:v16];
 
-  endpoints = v15->_endpoints;
-  if (v11)
+  endpoints = selfCopy->_endpoints;
+  if (endpointCopy)
   {
-    [(NSMutableDictionary *)endpoints setObject:v11 forKey:v10];
+    [(NSMutableDictionary *)endpoints setObject:endpointCopy forKey:nameCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)endpoints removeObjectForKey:v10];
+    [(NSMutableDictionary *)endpoints removeObjectForKey:nameCopy];
   }
 
-  slotNamesQueue = v15->_slotNamesQueue;
+  slotNamesQueue = selfCopy->_slotNamesQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__TKSmartCardSlotManager_setSlotWithName_endpoint_type_reply___block_invoke;
   block[3] = &unk_1E86B6FE8;
-  block[4] = v15;
+  block[4] = selfCopy;
   dispatch_sync(slotNamesQueue, block);
   v19 = NSStringFromSelector(sel_slotNames);
-  [(TKSmartCardSlotManager *)v15 didChangeValueForKey:v19];
+  [(TKSmartCardSlotManager *)selfCopy didChangeValueForKey:v19];
 
-  objc_sync_exit(v15);
-  v13[2](v13);
+  objc_sync_exit(selfCopy);
+  replyCopy[2](replyCopy);
 }
 
 void __62__TKSmartCardSlotManager_setSlotWithName_endpoint_type_reply___block_invoke(uint64_t a1)
@@ -360,29 +360,29 @@ void __62__TKSmartCardSlotManager_setSlotWithName_endpoint_type_reply___block_in
 {
   v6 = name;
   v7 = reply;
-  v8 = self;
-  objc_sync_enter(v8);
-  WeakRetained = objc_loadWeakRetained(&v8->_connection);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_connection);
 
   if (!WeakRetained)
   {
-    [(TKSmartCardSlotManager *)v8 setupConnection];
+    [(TKSmartCardSlotManager *)selfCopy setupConnection];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  v10 = objc_loadWeakRetained(&v8->_connection);
-  v11 = [v10 _queue];
+  v10 = objc_loadWeakRetained(&selfCopy->_connection);
+  _queue = [v10 _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__TKSmartCardSlotManager_getSlotWithName_reply___block_invoke;
   block[3] = &unk_1E86B70B0;
-  block[4] = v8;
+  block[4] = selfCopy;
   v15 = v6;
   v16 = v7;
   v12 = v7;
   v13 = v6;
-  dispatch_async(v11, block);
+  dispatch_async(_queue, block);
 }
 
 void __48__TKSmartCardSlotManager_getSlotWithName_reply___block_invoke(uint64_t a1)
@@ -427,16 +427,16 @@ uint64_t __48__TKSmartCardSlotManager_getSlotWithName_reply___block_invoke_2(uin
 - (TKSmartCardSlot)slotNamed:(NSString *)name
 {
   v4 = name;
-  v5 = self;
-  objc_sync_enter(v5);
-  WeakRetained = objc_loadWeakRetained(&v5->_connection);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_connection);
 
   if (!WeakRetained)
   {
-    [(TKSmartCardSlotManager *)v5 setupConnection];
+    [(TKSmartCardSlotManager *)selfCopy setupConnection];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v16 = 0;
   v17 = &v16;
@@ -444,17 +444,17 @@ uint64_t __48__TKSmartCardSlotManager_getSlotWithName_reply___block_invoke_2(uin
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
   v21 = 0;
-  v7 = objc_loadWeakRetained(&v5->_connection);
-  v8 = [v7 _queue];
+  v7 = objc_loadWeakRetained(&selfCopy->_connection);
+  _queue = [v7 _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__TKSmartCardSlotManager_slotNamed___block_invoke;
   block[3] = &unk_1E86B70D8;
   v15 = &v16;
-  block[4] = v5;
+  block[4] = selfCopy;
   v9 = v4;
   v14 = v9;
-  dispatch_sync(v8, block);
+  dispatch_sync(_queue, block);
 
   if (v17[5])
   {
@@ -482,19 +482,19 @@ uint64_t __36__TKSmartCardSlotManager_slotNamed___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)createNFCSlotWithMessage:(id)a3 completion:(id)a4
+- (void)createNFCSlotWithMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKSmartCardSlotManager *)self getValidAIDsFromCallingBundle];
-  if (v8)
+  messageCopy = message;
+  completionCopy = completion;
+  getValidAIDsFromCallingBundle = [(TKSmartCardSlotManager *)self getValidAIDsFromCallingBundle];
+  if (getValidAIDsFromCallingBundle)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __62__TKSmartCardSlotManager_createNFCSlotWithMessage_completion___block_invoke;
     v14[3] = &unk_1E86B7100;
     v14[4] = self;
-    v9 = v7;
+    v9 = completionCopy;
     v15 = v9;
     v10 = [(TKSmartCardSlotManager *)self synchronous:0 remoteSlotClientWithErrorHandler:v14];
     v12[0] = MEMORY[0x1E69E9820];
@@ -503,13 +503,13 @@ uint64_t __36__TKSmartCardSlotManager_slotNamed___block_invoke(void *a1)
     v12[3] = &unk_1E86B7128;
     v12[4] = self;
     v13 = v9;
-    [v10 startNFCSlotWithName:@"Built-in NFC Slot" uiSheetMessage:v6 supportedAppIdentifiers:v8 reply:v12];
+    [v10 startNFCSlotWithName:@"Built-in NFC Slot" uiSheetMessage:messageCopy supportedAppIdentifiers:getValidAIDsFromCallingBundle reply:v12];
   }
 
   else
   {
-    v11 = [(TKSmartCardSlotManager *)self _createAIDsValidationError];
-    (*(v7 + 2))(v7, 0, v11);
+    _createAIDsValidationError = [(TKSmartCardSlotManager *)self _createAIDsValidationError];
+    (*(completionCopy + 2))(completionCopy, 0, _createAIDsValidationError);
   }
 }
 
@@ -582,7 +582,7 @@ void __62__TKSmartCardSlotManager_createNFCSlotWithMessage_completion___block_in
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)endNFCSlotWithError:(id *)a3
+- (BOOL)endNFCSlotWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -609,9 +609,9 @@ void __62__TKSmartCardSlotManager_createNFCSlotWithMessage_completion___block_in
   v7[5] = &v15;
   [v4 endNFCSlotWithName:@"Built-in NFC Slot" reply:v7];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v5 = *(v16 + 24);
@@ -659,9 +659,9 @@ void __46__TKSmartCardSlotManager_endNFCSlotWithError___block_invoke_50(uint64_t
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)updateNFCSlotMessageWithMessage:(id)a3 error:(id *)a4
+- (BOOL)updateNFCSlotMessageWithMessage:(id)message error:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -686,11 +686,11 @@ void __46__TKSmartCardSlotManager_endNFCSlotWithError___block_invoke_50(uint64_t
   v10[3] = &unk_1E86B7178;
   v10[4] = &v18;
   v10[5] = &v12;
-  [v7 updateNFCSlotUIMessageWithMessage:v6 slotName:@"Built-in NFC Slot" reply:v10];
+  [v7 updateNFCSlotUIMessageWithMessage:messageCopy slotName:@"Built-in NFC Slot" reply:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v8 = *(v19 + 24);
@@ -792,31 +792,31 @@ void __40__TKSmartCardSlotManager_isNFCSupported__block_invoke_53(uint64_t a1, c
   *(*(*(a1 + 32) + 8) + 24) = a2;
 }
 
-- (id)synchronous:(BOOL)a3 remoteSlotClientWithErrorHandler:(id)a4
+- (id)synchronous:(BOOL)synchronous remoteSlotClientWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  WeakRetained = objc_loadWeakRetained(&v7->_connection);
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_connection);
 
   if (!WeakRetained)
   {
-    [(TKSmartCardSlotManager *)v7 setupConnection];
+    [(TKSmartCardSlotManager *)selfCopy setupConnection];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  v9 = objc_loadWeakRetained(&v7->_connection);
+  v9 = objc_loadWeakRetained(&selfCopy->_connection);
   v10 = v9;
-  if (v4)
+  if (synchronousCopy)
   {
-    [v9 synchronousRemoteObjectProxyWithErrorHandler:v6];
+    [v9 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v9 remoteObjectProxyWithErrorHandler:v6];
+    [v9 remoteObjectProxyWithErrorHandler:handlerCopy];
   }
   v11 = ;
 
@@ -833,10 +833,10 @@ void __40__TKSmartCardSlotManager_isNFCSupported__block_invoke_53(uint64_t a1, c
 
   else
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 infoDictionary];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
 
-    v3 = [v5 objectForKey:@"com.apple.developer.nfc.readersession.iso7816.select-identifiers"];
+    v3 = [infoDictionary objectForKey:@"com.apple.developer.nfc.readersession.iso7816.select-identifiers"];
 
     if (!v3)
     {

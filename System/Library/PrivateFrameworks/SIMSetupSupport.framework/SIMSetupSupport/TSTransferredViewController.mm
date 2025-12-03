@@ -1,6 +1,6 @@
 @interface TSTransferredViewController
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSTransferredViewController)initWithTransferredPlan:(id)a3;
+- (TSTransferredViewController)initWithTransferredPlan:(id)plan;
 - (void)_doneButtonTapped;
 - (void)_skipButtonTapped;
 - (void)viewDidLoad;
@@ -8,28 +8,28 @@
 
 @implementation TSTransferredViewController
 
-- (TSTransferredViewController)initWithTransferredPlan:(id)a3
+- (TSTransferredViewController)initWithTransferredPlan:(id)plan
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"planItem"];
-  v6 = [v5 phoneNumber];
-  v7 = [v6 formattedPhoneNumber];
+  planCopy = plan;
+  v5 = [planCopy objectForKeyedSubscript:@"planItem"];
+  phoneNumber = [v5 phoneNumber];
+  formattedPhoneNumber = [phoneNumber formattedPhoneNumber];
 
-  v8 = [v4 objectForKeyedSubscript:@"deviceInfo"];
-  v9 = [v8 deviceName];
+  v8 = [planCopy objectForKeyedSubscript:@"deviceInfo"];
+  deviceName = [v8 deviceName];
 
   v10 = _TSLogDomain();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(TSTransferredViewController *)v4 initWithTransferredPlan:v10];
+    [(TSTransferredViewController *)planCopy initWithTransferredPlan:v10];
   }
 
-  if ([v7 length])
+  if ([formattedPhoneNumber length])
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"PLAN_TRANSFERRED_DETAIL_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v14 = [v11 stringWithFormat:v13, v7];
+    v14 = [v11 stringWithFormat:v13, formattedPhoneNumber];
   }
 
   else
@@ -52,23 +52,23 @@
   v11.receiver = self;
   v11.super_class = TSTransferredViewController;
   [(TSOBWelcomeController *)&v11 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
-  [v3 addTarget:self action:sel__doneButtonTapped forControlEvents:64];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  v6 = [(TSTransferredViewController *)self buttonTray];
-  [v6 addButton:v3];
+  buttonTray = [(TSTransferredViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v7 = [MEMORY[0x277D37650] linkButton];
-  [v7 addTarget:self action:sel__skipButtonTapped forControlEvents:64];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton addTarget:self action:sel__skipButtonTapped forControlEvents:64];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"NOT_NOW" value:&stru_28753DF48 table:@"Localizable"];
-  [v7 setTitle:v9 forState:0];
+  [linkButton setTitle:v9 forState:0];
 
-  v10 = [(TSTransferredViewController *)self buttonTray];
-  [v10 addButton:v7];
+  buttonTray2 = [(TSTransferredViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
 - (void)_skipButtonTapped

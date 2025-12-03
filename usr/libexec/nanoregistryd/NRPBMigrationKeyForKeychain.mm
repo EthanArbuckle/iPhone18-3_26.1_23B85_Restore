@@ -1,10 +1,10 @@
 @interface NRPBMigrationKeyForKeychain
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBMigrationKeyForKeychain
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBMigrationKeyForKeychain;
   v3 = [(NRPBMigrationKeyForKeychain *)&v7 description];
-  v4 = [(NRPBMigrationKeyForKeychain *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBMigrationKeyForKeychain *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -39,28 +39,28 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     keyVersion = self->_keyVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -73,16 +73,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   key = self->_key;
-  if (key | *(v4 + 1))
+  if (key | *(equalCopy + 1))
   {
     if (![(NSData *)key isEqual:?])
     {
@@ -90,10 +90,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_keyVersion == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_keyVersion == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;

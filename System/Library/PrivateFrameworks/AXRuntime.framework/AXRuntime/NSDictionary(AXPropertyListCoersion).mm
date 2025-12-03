@@ -8,13 +8,13 @@
 - (id)_axRecursivelyPropertyListCoercedRepresentationWithError:()AXPropertyListCoersion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v16 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+  v16 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v2 = a1;
-  v3 = [v2 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v3 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v3)
   {
     goto LABEL_17;
@@ -28,16 +28,16 @@
     {
       if (*v19 != v15)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(selfCopy);
       }
 
       v6 = *(*(&v18 + 1) + 8 * i);
       v7 = objc_autoreleasePoolPush();
-      v8 = [v2 objectForKey:v6];
+      v8 = [selfCopy objectForKey:v6];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v6 _axDictionaryKeyReplacementRepresentation];
-        if (!v9)
+        _axDictionaryKeyReplacementRepresentation = [v6 _axDictionaryKeyReplacementRepresentation];
+        if (!_axDictionaryKeyReplacementRepresentation)
         {
 
           objc_autoreleasePoolPop(v7);
@@ -49,7 +49,7 @@
 
       else
       {
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v6];
+        _axDictionaryKeyReplacementRepresentation = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v6];
       }
 
       if (objc_opt_respondsToSelector())
@@ -70,12 +70,12 @@
 
       v10 = &stru_1F3E63FB0;
 LABEL_15:
-      [v16 setObject:v10 forKey:v9];
+      [v16 setObject:v10 forKey:_axDictionaryKeyReplacementRepresentation];
 
       objc_autoreleasePoolPop(v7);
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v4 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   }
 
   while (v4);
@@ -92,11 +92,11 @@ LABEL_18:
 {
   v33 = *MEMORY[0x1E69E9840];
   v31 = 0;
-  v4 = a1;
-  v5 = [v4 objectForKey:@"SmugType"];
+  selfCopy = self;
+  v5 = [selfCopy objectForKey:@"SmugType"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v6 = [v5 unsignedIntegerValue], v6 <= 9))
   {
-    v7 = (off_1F3E62268[v6])(v4, &v31);
+    v7 = (off_1F3E62268[v6])(selfCopy, &v31);
   }
 
   else
@@ -128,12 +128,12 @@ LABEL_18:
 
   else
   {
-    v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(selfCopy, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = [v4 keyEnumerator];
+    obj = [selfCopy keyEnumerator];
     v14 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v14)
     {
@@ -150,14 +150,14 @@ LABEL_18:
           }
 
           v18 = *(*(&v27 + 1) + 8 * i);
-          v19 = [v4 objectForKey:{v18, v25}];
-          v20 = [v18 _axReconstitutedRepresentationForDictionaryKeyReplacement];
-          if (!v20)
+          v19 = [selfCopy objectForKey:{v18, v25}];
+          _axReconstitutedRepresentationForDictionaryKeyReplacement = [v18 _axReconstitutedRepresentationForDictionaryKeyReplacement];
+          if (!_axReconstitutedRepresentationForDictionaryKeyReplacement)
           {
             goto LABEL_26;
           }
 
-          v21 = v20;
+          v21 = _axReconstitutedRepresentationForDictionaryKeyReplacement;
           v22 = a3;
           v23 = [v19 _axRecursivelyReconstitutedRepresentationFromPropertyListWithError:a3];
           if (!v23)

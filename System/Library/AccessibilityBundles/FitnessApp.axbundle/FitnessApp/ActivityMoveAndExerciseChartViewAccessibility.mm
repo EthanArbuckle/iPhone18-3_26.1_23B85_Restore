@@ -1,28 +1,28 @@
 @interface ActivityMoveAndExerciseChartViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ActivityMoveAndExerciseChartViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"moveAndExerciseChartPoints" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"moveAndExerciseChartMaxYValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"moveAndExerciseChartViewType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"accessibilityReloadData" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"moveAndExerciseChartPoints" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"moveAndExerciseChartMaxYValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"moveAndExerciseChartViewType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"FitnessApp.ActivityMoveAndExerciseChartView" hasInstanceMethod:@"accessibilityReloadData" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(ActivityMoveAndExerciseChartViewAccessibility *)self _accessibilityValueForKey:kUIAccessibilityStorageKeyChildren];
   if (!v3)
   {
     v37 = [NSMutableArray arrayWithCapacity:8];
-    [ActivityMoveAndExerciseChartViewAccessibility _accessibilitySetRetainedValue:v2 forKey:"_accessibilitySetRetainedValue:forKey:"];
+    [ActivityMoveAndExerciseChartViewAccessibility _accessibilitySetRetainedValue:selfCopy forKey:"_accessibilitySetRetainedValue:forKey:"];
     v36 = objc_alloc_init(NSDateIntervalFormatter);
     v4 = +[NSCalendar currentCalendar];
     v5 = +[NSDate date];
@@ -30,10 +30,10 @@
 
     objc_opt_class();
     v6 = __UIAccessibilityCastAsClass();
-    v7 = [(ActivityMoveAndExerciseChartViewAccessibility *)v2 _accessibilityGraphData];
-    v8 = v7;
+    _accessibilityGraphData = [(ActivityMoveAndExerciseChartViewAccessibility *)selfCopy _accessibilityGraphData];
+    v8 = _accessibilityGraphData;
     v38 = v6;
-    if (v6 && v7)
+    if (v6 && _accessibilityGraphData)
     {
       [v6 frame];
       v10 = v9;
@@ -44,7 +44,7 @@
       v15 = [v8 count];
       v16 = 0;
       v17 = rintf((v15 / 8));
-      v34 = v2;
+      v34 = selfCopy;
       do
       {
         v18 = v17 * v16;
@@ -69,7 +69,7 @@
           ++v18;
         }
 
-        v24 = [(ActivityMoveAndExerciseChartViewAccessibility *)v2 safeIntForKey:@"moveAndExerciseChartViewType"];
+        v24 = [(ActivityMoveAndExerciseChartViewAccessibility *)selfCopy safeIntForKey:@"moveAndExerciseChartViewType"];
         if (v24 - 1 >= 2)
         {
           if (v24)
@@ -111,14 +111,14 @@ LABEL_17:
         [v37 addObject:v32];
 
         ++v16;
-        v2 = v34;
+        selfCopy = v34;
       }
 
       while (v19 != 8);
     }
 
     v3 = v37;
-    [(ActivityMoveAndExerciseChartViewAccessibility *)v2 _accessibilitySetRetainedValue:v37 forKey:kUIAccessibilityStorageKeyChildren];
+    [(ActivityMoveAndExerciseChartViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v37 forKey:kUIAccessibilityStorageKeyChildren];
   }
 
   return v3;
@@ -133,17 +133,17 @@ LABEL_17:
   v4 = v3;
   if (v3 && [v3 count] && (objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = v4;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
-  [(ActivityMoveAndExerciseChartViewAccessibility *)v7 _accessibilitySetRetainedValue:v8 forKey:@"kAXDayViewCellGraphElements"];
+  [(ActivityMoveAndExerciseChartViewAccessibility *)selfCopy2 _accessibilitySetRetainedValue:v8 forKey:@"kAXDayViewCellGraphElements"];
   [(ActivityMoveAndExerciseChartViewAccessibility *)self _accessibilitySetRetainedValue:0 forKey:kUIAccessibilityStorageKeyChildren];
 }
 

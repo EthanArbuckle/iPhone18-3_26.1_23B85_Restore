@@ -1,11 +1,11 @@
 @interface UAFUsageAliasConfiguration
-+ (BOOL)isValid:(id)a3 assetSetManager:(id)a4 error:(id *)a5;
-+ (id)fromContentsOfURL:(id)a3 assetSetManager:(id)a4 error:(id *)a5;
++ (BOOL)isValid:(id)valid assetSetManager:(id)manager error:(id *)error;
++ (id)fromContentsOfURL:(id)l assetSetManager:(id)manager error:(id *)error;
 + (id)supportedFileVersions;
-- (BOOL)addDeprecatedValues:(id)a3;
-- (UAFUsageAliasConfiguration)initWithDictionary:(id)a3 assetSetManager:(id)a4;
-- (id)getAssetSetAssets:(id)a3 usageValue:(id)a4 withSource:(id)a5;
-- (id)getAssets:(id)a3 withSource:(id)a4;
+- (BOOL)addDeprecatedValues:(id)values;
+- (UAFUsageAliasConfiguration)initWithDictionary:(id)dictionary assetSetManager:(id)manager;
+- (id)getAssetSetAssets:(id)assets usageValue:(id)value withSource:(id)source;
+- (id)getAssets:(id)assets withSource:(id)source;
 @end
 
 @implementation UAFUsageAliasConfiguration
@@ -20,20 +20,20 @@
   return v2;
 }
 
-+ (BOOL)isValid:(id)a3 assetSetManager:(id)a4 error:(id *)a5
++ (BOOL)isValid:(id)valid assetSetManager:(id)manager error:(id *)error
 {
   v170 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  validCopy = valid;
+  managerCopy = manager;
   v9 = +[UAFUsageAliasConfiguration supportedFileVersions];
-  v10 = [UAFConfiguration isValid:v7 fileType:@"UsageAliasConfiguration" fileVersions:v9 error:a5];
+  v10 = [UAFConfiguration isValid:validCopy fileType:@"UsageAliasConfiguration" fileVersions:v9 error:error];
 
   if (!v10)
   {
     goto LABEL_59;
   }
 
-  if (![UAFConfiguration isValidValue:v7 key:@"UsageAliasName" kind:objc_opt_class() required:1 error:a5]|| ![UAFConfiguration isValidValue:v7 key:@"UsageAliasValues" kind:objc_opt_class() required:1 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"UsageAliasName" kind:objc_opt_class() required:1 error:error]|| ![UAFConfiguration isValidValue:validCopy key:@"UsageAliasValues" kind:objc_opt_class() required:1 error:error])
   {
     LOBYTE(v10) = 0;
     goto LABEL_59;
@@ -43,7 +43,7 @@
   v135 = 0u;
   v132 = 0u;
   v133 = 0u;
-  v11 = [v7 objectForKeyedSubscript:@"UsageAliasValues"];
+  v11 = [validCopy objectForKeyedSubscript:@"UsageAliasValues"];
   v12 = [v11 countByEnumeratingWithState:&v132 objects:v169 count:16];
   if (!v12)
   {
@@ -66,7 +66,7 @@
 
       v114 = v14;
       v15 = *(*(&v132 + 1) + 8 * v14);
-      v16 = [v7 objectForKeyedSubscript:@"UsageAliasValues"];
+      v16 = [validCopy objectForKeyedSubscript:@"UsageAliasValues"];
       v17 = [v16 objectForKeyedSubscript:v15];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -74,16 +74,16 @@
       v119 = v15;
       if ((isKindOfClass & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           v62 = MEMORY[0x1E696ABC0];
           v63 = *MEMORY[0x1E696A578];
-          if (*a5)
+          if (*error)
           {
             v167[0] = *MEMORY[0x1E696A578];
             v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UsageAliasValues entry for %@ is not expected kind %@", v15, objc_opt_class()];
             v167[1] = *MEMORY[0x1E696AA08];
-            v65 = *a5;
+            v65 = *error;
             v168[0] = v64;
             v168[1] = v65;
             v66 = MEMORY[0x1E695DF20];
@@ -104,7 +104,7 @@
           }
 
           v88 = [v66 dictionaryWithObjects:v67 forKeys:v68 count:v69];
-          *a5 = [v62 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v88];
+          *error = [v62 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v88];
 
           v15 = v119;
         }
@@ -129,21 +129,21 @@
         goto LABEL_77;
       }
 
-      v19 = [v7 objectForKeyedSubscript:@"UsageAliasValues"];
+      v19 = [validCopy objectForKeyedSubscript:@"UsageAliasValues"];
       v20 = [v19 objectForKeyedSubscript:v15];
 
       if (![v20 count])
       {
-        if (a5)
+        if (error)
         {
           v70 = MEMORY[0x1E696ABC0];
           v71 = *MEMORY[0x1E696A578];
-          if (*a5)
+          if (*error)
           {
             v163[0] = *MEMORY[0x1E696A578];
             v72 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UsageAliasValues asset sets for %@ has no values", v15];
             v163[1] = *MEMORY[0x1E696AA08];
-            v73 = *a5;
+            v73 = *error;
             v164[0] = v72;
             v164[1] = v73;
             v74 = MEMORY[0x1E695DF20];
@@ -164,7 +164,7 @@
           }
 
           v94 = [v74 dictionaryWithObjects:v75 forKeys:v76 count:v77];
-          *a5 = [v70 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v94];
+          *error = [v70 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v94];
 
           v15 = v119;
         }
@@ -222,18 +222,18 @@ LABEL_57:
 
             if ((v26 & 1) == 0)
             {
-              if (a5)
+              if (error)
               {
                 v78 = v20;
-                v79 = v8;
+                v79 = managerCopy;
                 v80 = MEMORY[0x1E696ABC0];
                 v81 = *MEMORY[0x1E696A578];
-                if (*a5)
+                if (*error)
                 {
                   v158[0] = *MEMORY[0x1E696A578];
                   v82 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UsageAliasValues usages for asset set %@ for value %@ is not expected kind %@", v24, v119, objc_opt_class()];
                   v158[1] = *MEMORY[0x1E696AA08];
-                  v83 = *a5;
+                  v83 = *error;
                   v159[0] = v82;
                   v159[1] = v83;
                   v84 = MEMORY[0x1E695DF20];
@@ -254,9 +254,9 @@ LABEL_57:
                 }
 
                 v102 = [v84 dictionaryWithObjects:v85 forKeys:v86 count:v87];
-                *a5 = [v80 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v102];
+                *error = [v80 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v102];
 
-                v8 = v79;
+                managerCopy = v79;
                 v20 = v78;
               }
 
@@ -307,16 +307,16 @@ LABEL_57:
 
                   if ((v35 & 1) == 0)
                   {
-                    if (a5)
+                    if (error)
                     {
                       v48 = MEMORY[0x1E696ABC0];
                       v49 = *MEMORY[0x1E696A578];
-                      if (*a5)
+                      if (*error)
                       {
                         v153[0] = *MEMORY[0x1E696A578];
                         v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UsageAliasValues usage value for usage %@ for asset set %@ for value %@ is not expected kind %@", v33, v118, v119, objc_opt_class()];
                         v153[1] = *MEMORY[0x1E696AA08];
-                        v51 = *a5;
+                        v51 = *error;
                         v154[0] = v50;
                         v154[1] = v51;
                         v52 = MEMORY[0x1E695DF20];
@@ -337,7 +337,7 @@ LABEL_57:
                       }
 
                       v56 = [v52 dictionaryWithObjects:v53 forKeys:v54 count:v55];
-                      *a5 = [v48 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v56];
+                      *error = [v48 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v56];
                     }
 
                     v57 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -374,22 +374,22 @@ LABEL_57:
               }
             }
 
-            if (v8)
+            if (managerCopy)
             {
               v36 = objc_autoreleasePoolPush();
-              v37 = [v8 getAssetSet:v118];
+              v37 = [managerCopy getAssetSet:v118];
               context = v36;
               if (v37)
               {
-                v38 = 0;
+                context = 0;
               }
 
               else
               {
-                v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UsageAliasValues asset set %@ for value %@ can't be found", v118, v15];
+                context = [MEMORY[0x1E696AEC0] stringWithFormat:@"UsageAliasValues asset set %@ for value %@ can't be found", v118, v15];
               }
 
-              v108 = v8;
+              v108 = managerCopy;
               v122 = 0u;
               v123 = 0u;
               v120 = 0u;
@@ -409,25 +409,25 @@ LABEL_31:
                     objc_enumerationMutation(obj);
                   }
 
-                  if (v38)
+                  if (context)
                   {
                     break;
                   }
 
                   v43 = *(*(&v120 + 1) + 8 * v42);
-                  v44 = [v37 usageTypes];
-                  v45 = [v44 containsObject:v43];
+                  usageTypes = [v37 usageTypes];
+                  v45 = [usageTypes containsObject:v43];
 
                   if (v45)
                   {
-                    v38 = 0;
+                    context = 0;
                   }
 
                   else
                   {
                     v46 = MEMORY[0x1E696AEC0];
-                    v47 = [v37 usageTypes];
-                    v38 = [v46 stringWithFormat:@"UsageAliasValues usage %@ in asset set %@ for value %@ not in valid usage types for set %@", v43, v118, v119, v47, context];
+                    usageTypes2 = [v37 usageTypes];
+                    context = [v46 stringWithFormat:@"UsageAliasValues usage %@ in asset set %@ for value %@ not in valid usage types for set %@", v43, v118, v119, usageTypes2, context];
                   }
 
                   if (v40 == ++v42)
@@ -444,21 +444,21 @@ LABEL_31:
               }
 
               objc_autoreleasePoolPop(context);
-              v8 = v108;
+              managerCopy = v108;
               v15 = v119;
-              if (v38)
+              if (context)
               {
-                if (a5)
+                if (error)
                 {
                   v95 = MEMORY[0x1E696ABC0];
                   v96 = *MEMORY[0x1E696A578];
-                  if (*a5)
+                  if (*error)
                   {
                     v138[0] = *MEMORY[0x1E696A578];
-                    v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v38];
+                    v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", context];
                     v138[1] = *MEMORY[0x1E696AA08];
                     v139[0] = v97;
-                    v139[1] = *a5;
+                    v139[1] = *error;
                     v98 = MEMORY[0x1E695DF20];
                     v99 = v139;
                     v100 = v138;
@@ -468,7 +468,7 @@ LABEL_31:
                   else
                   {
                     v136 = *MEMORY[0x1E696A578];
-                    v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v38];
+                    v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", context];
                     v137 = v97;
                     v98 = MEMORY[0x1E695DF20];
                     v99 = &v137;
@@ -477,9 +477,9 @@ LABEL_31:
                   }
 
                   v105 = [v98 dictionaryWithObjects:v99 forKeys:v100 count:v101];
-                  *a5 = [v95 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v105];
+                  *error = [v95 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v105];
 
-                  v8 = v108;
+                  managerCopy = v108;
                 }
 
                 v106 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -489,7 +489,7 @@ LABEL_31:
                   *buf = 136315394;
                   v142 = "+[UAFUsageAliasConfiguration isValid:assetSetManager:error:]";
                   v143 = 2112;
-                  v144 = v38;
+                  v144 = context;
                   _os_log_impl(&dword_1BCF2C000, v106, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
                 }
 
@@ -540,37 +540,37 @@ LABEL_59:
   return v10;
 }
 
-+ (id)fromContentsOfURL:(id)a3 assetSetManager:(id)a4 error:(id *)a5
++ (id)fromContentsOfURL:(id)l assetSetManager:(id)manager error:(id *)error
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  lCopy = l;
+  managerCopy = manager;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v35 = 0;
-  v9 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v7 error:&v35];
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v35];
   v10 = v35;
   v11 = v10;
-  if (a5)
+  if (error)
   {
     v12 = v10;
-    *a5 = v11;
+    *error = v11;
     if (v9)
     {
-      if (![UAFUsageAliasConfiguration isValid:v9 assetSetManager:v8 error:a5])
+      if (![UAFUsageAliasConfiguration isValid:v9 assetSetManager:managerCopy error:error])
       {
         v13 = MEMORY[0x1E696ABC0];
         v14 = *MEMORY[0x1E696A578];
-        if (*a5)
+        if (*error)
         {
           v38[0] = *MEMORY[0x1E696A578];
-          v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to validate UAFUsageAliasConfiguration dictionary from %@", v7];
+          lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to validate UAFUsageAliasConfiguration dictionary from %@", lCopy];
           v38[1] = *MEMORY[0x1E696AA08];
-          v39[0] = v15;
-          v39[1] = *a5;
+          v39[0] = lCopy;
+          v39[1] = *error;
           v16 = MEMORY[0x1E695DF20];
           v17 = v39;
           v18 = v38;
@@ -580,8 +580,8 @@ LABEL_59:
         else
         {
           v36 = *MEMORY[0x1E696A578];
-          v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to validate UAFUsageAliasConfiguration dictionary from %@", v7];
-          v37 = v15;
+          lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to validate UAFUsageAliasConfiguration dictionary from %@", lCopy];
+          v37 = lCopy;
           v16 = MEMORY[0x1E695DF20];
           v17 = &v37;
           v18 = &v36;
@@ -589,7 +589,7 @@ LABEL_59:
         }
 
         v32 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-        *a5 = [v13 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v32];
+        *error = [v13 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v32];
 
         goto LABEL_19;
       }
@@ -601,10 +601,10 @@ LABEL_59:
     if (v11)
     {
       v48[0] = *MEMORY[0x1E696A578];
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load UAFUsageAliasConfiguration dictionary from %@: %@", v7, v11];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load UAFUsageAliasConfiguration dictionary from %@: %@", lCopy, v11];
       v48[1] = *MEMORY[0x1E696AA08];
       v49[0] = v22;
-      v49[1] = *a5;
+      v49[1] = *error;
       v23 = MEMORY[0x1E695DF20];
       v24 = v49;
       v25 = v48;
@@ -614,7 +614,7 @@ LABEL_59:
     else
     {
       v46 = *MEMORY[0x1E696A578];
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load UAFUsageAliasConfiguration dictionary from %@: %@", v7, 0];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load UAFUsageAliasConfiguration dictionary from %@: %@", lCopy, 0];
       v47 = v22;
       v23 = MEMORY[0x1E695DF20];
       v24 = &v47;
@@ -623,12 +623,12 @@ LABEL_59:
     }
 
     v27 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:v26];
-    *a5 = [v21 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v27];
+    *error = [v21 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v27];
   }
 
   else if (v9)
   {
-    if (![UAFUsageAliasConfiguration isValid:v9 assetSetManager:v8 error:0])
+    if (![UAFUsageAliasConfiguration isValid:v9 assetSetManager:managerCopy error:0])
     {
 LABEL_19:
       v28 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -640,7 +640,7 @@ LABEL_19:
       *buf = 136315394;
       v41 = "+[UAFUsageAliasConfiguration fromContentsOfURL:assetSetManager:error:]";
       v42 = 2112;
-      v43 = v7;
+      v43 = lCopy;
       v29 = "%s Failed to validate UAFUsageAliasConfiguration dictionary from %@";
       v30 = v28;
       v31 = 22;
@@ -650,7 +650,7 @@ LABEL_25:
     }
 
 LABEL_10:
-    v20 = [[UAFUsageAliasConfiguration alloc] initWithDictionary:v9 assetSetManager:v8];
+    v20 = [[UAFUsageAliasConfiguration alloc] initWithDictionary:v9 assetSetManager:managerCopy];
     goto LABEL_21;
   }
 
@@ -660,7 +660,7 @@ LABEL_10:
     *buf = 136315650;
     v41 = "+[UAFUsageAliasConfiguration fromContentsOfURL:assetSetManager:error:]";
     v42 = 2112;
-    v43 = v7;
+    v43 = lCopy;
     v44 = 2112;
     v45 = v11;
     v29 = "%s Failed to load UAFUsageAliasConfiguration dictionary from %@: %@";
@@ -679,53 +679,53 @@ LABEL_21:
   return v20;
 }
 
-- (UAFUsageAliasConfiguration)initWithDictionary:(id)a3 assetSetManager:(id)a4
+- (UAFUsageAliasConfiguration)initWithDictionary:(id)dictionary assetSetManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = UAFUsageAliasConfiguration;
   v8 = [(UAFUsageAliasConfiguration *)&v15 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"UsageAliasName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"UsageAliasName"];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"UsageAliasValues"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"UsageAliasValues"];
     values = v8->_values;
     v8->_values = v11;
 
-    objc_storeStrong(&v8->_assetSetManager, a4);
+    objc_storeStrong(&v8->_assetSetManager, manager);
     v13 = v8;
   }
 
   return v8;
 }
 
-- (id)getAssetSetAssets:(id)a3 usageValue:(id)a4 withSource:(id)a5
+- (id)getAssetSetAssets:(id)assets usageValue:(id)value withSource:(id)source
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UAFUsageAliasConfiguration *)self values];
-  v12 = [v11 objectForKey:v9];
+  assetsCopy = assets;
+  valueCopy = value;
+  sourceCopy = source;
+  values = [(UAFUsageAliasConfiguration *)self values];
+  v12 = [values objectForKey:valueCopy];
 
   if (!v12)
   {
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(UAFUsageAliasConfiguration *)self name];
+      name = [(UAFUsageAliasConfiguration *)self name];
       v29 = 136315906;
       v30 = "[UAFUsageAliasConfiguration getAssetSetAssets:usageValue:withSource:]";
       v31 = 2112;
-      v32 = v10;
+      v32 = sourceCopy;
       v33 = 2112;
-      v34 = v9;
+      v34 = valueCopy;
       v35 = 2112;
-      v36 = v20;
+      v36 = name;
       v21 = "%s Can't get %@ assets: Unknown usage value %@ in usage alias %@";
       v22 = v15;
       v23 = 42;
@@ -739,20 +739,20 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [(UAFUsageAliasConfiguration *)self assetSetManager];
+  assetSetManager = [(UAFUsageAliasConfiguration *)self assetSetManager];
 
-  if (!v13)
+  if (!assetSetManager)
   {
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(UAFUsageAliasConfiguration *)self name];
+      name = [(UAFUsageAliasConfiguration *)self name];
       v29 = 136315650;
       v30 = "[UAFUsageAliasConfiguration getAssetSetAssets:usageValue:withSource:]";
       v31 = 2112;
-      v32 = v10;
+      v32 = sourceCopy;
       v33 = 2112;
-      v34 = v20;
+      v34 = name;
       v21 = "%s Can't get %@ assets: No asset manager present usage alias %@";
       v22 = v15;
       v23 = 32;
@@ -762,25 +762,25 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = [(UAFUsageAliasConfiguration *)self assetSetManager];
-  v15 = [v14 getAssetSet:v8];
+  assetSetManager2 = [(UAFUsageAliasConfiguration *)self assetSetManager];
+  v15 = [assetSetManager2 getAssetSet:assetsCopy];
 
   if (!v15)
   {
     v24 = UAFGetLogCategory(&UAFLogContextConfiguration);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(UAFUsageAliasConfiguration *)self name];
+      name2 = [(UAFUsageAliasConfiguration *)self name];
       v29 = 136316162;
       v30 = "[UAFUsageAliasConfiguration getAssetSetAssets:usageValue:withSource:]";
       v31 = 2112;
-      v32 = v10;
+      v32 = sourceCopy;
       v33 = 2112;
-      v34 = v9;
+      v34 = valueCopy;
       v35 = 2112;
-      v36 = v25;
+      v36 = name2;
       v37 = 2112;
-      v38 = v8;
+      v38 = assetsCopy;
       _os_log_impl(&dword_1BCF2C000, v24, OS_LOG_TYPE_DEFAULT, "%s Can't get %@ assets for usage value %@ in usage alias %@: Unable to get asset config for asset set %@", &v29, 0x34u);
     }
 
@@ -788,35 +788,35 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (![v10 isEqualToString:@"AutoAsset"])
+  if (![sourceCopy isEqualToString:@"AutoAsset"])
   {
-    if ([v10 isEqualToString:@"All"])
+    if ([sourceCopy isEqualToString:@"All"])
     {
-      v16 = [(UAFUsageAliasConfiguration *)self values];
-      v17 = [v16 objectForKeyedSubscript:v9];
-      v18 = [v17 objectForKeyedSubscript:v8];
+      values2 = [(UAFUsageAliasConfiguration *)self values];
+      v17 = [values2 objectForKeyedSubscript:valueCopy];
+      v18 = [v17 objectForKeyedSubscript:assetsCopy];
       v19 = [v15 getAssets:v18];
       goto LABEL_21;
     }
 
-    v20 = UAFGetLogCategory(&UAFLogContextConfiguration);
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    name = UAFGetLogCategory(&UAFLogContextConfiguration);
+    if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
     {
       v29 = 136315650;
       v30 = "[UAFUsageAliasConfiguration getAssetSetAssets:usageValue:withSource:]";
       v31 = 2112;
-      v32 = v10;
+      v32 = sourceCopy;
       v33 = 2112;
-      v34 = v8;
-      _os_log_error_impl(&dword_1BCF2C000, v20, OS_LOG_TYPE_ERROR, "%s Unknown asset source %@ for %@", &v29, 0x20u);
+      v34 = assetsCopy;
+      _os_log_error_impl(&dword_1BCF2C000, name, OS_LOG_TYPE_ERROR, "%s Unknown asset source %@ for %@", &v29, 0x20u);
     }
 
     goto LABEL_11;
   }
 
-  v16 = [(UAFUsageAliasConfiguration *)self values];
-  v17 = [v16 objectForKeyedSubscript:v9];
-  v18 = [v17 objectForKeyedSubscript:v8];
+  values2 = [(UAFUsageAliasConfiguration *)self values];
+  v17 = [values2 objectForKeyedSubscript:valueCopy];
+  v18 = [v17 objectForKeyedSubscript:assetsCopy];
   v19 = [v15 getAutoAssets:v18];
 LABEL_21:
   v26 = v19;
@@ -827,19 +827,19 @@ LABEL_16:
   return v26;
 }
 
-- (id)getAssets:(id)a3 withSource:(id)a4
+- (id)getAssets:(id)assets withSource:(id)source
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v23 = self;
-  v24 = a4;
+  assetsCopy = assets;
+  selfCopy = self;
+  sourceCopy = source;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [(UAFUsageAliasConfiguration *)self values];
-  v25 = v6;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  values = [(UAFUsageAliasConfiguration *)self values];
+  v25 = assetsCopy;
+  v8 = [values objectForKeyedSubscript:assetsCopy];
 
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
@@ -856,7 +856,7 @@ LABEL_16:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(UAFUsageAliasConfiguration *)v23 getAssetSetAssets:*(*(&v30 + 1) + 8 * i) usageValue:v25 withSource:v24];
+        v13 = [(UAFUsageAliasConfiguration *)selfCopy getAssetSetAssets:*(*(&v30 + 1) + 8 * i) usageValue:v25 withSource:sourceCopy];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -908,13 +908,13 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)addDeprecatedValues:(id)a3
+- (BOOL)addDeprecatedValues:(id)values
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   name = self->_name;
-  v6 = [v4 name];
-  LOBYTE(name) = [(NSString *)name isEqualToString:v6];
+  name = [valuesCopy name];
+  LOBYTE(name) = [(NSString *)name isEqualToString:name];
 
   if (name)
   {
@@ -923,7 +923,7 @@ LABEL_16:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    values = [v4 values];
+    values = [valuesCopy values];
     v9 = [values countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -957,8 +957,8 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          v15 = [v4 values];
-          v16 = [v15 objectForKeyedSubscript:v13];
+          values = [valuesCopy values];
+          v16 = [values objectForKeyedSubscript:v13];
           [v7 setObject:v16 forKeyedSubscript:v13];
         }
 
@@ -984,12 +984,12 @@ LABEL_17:
     v7 = UAFGetLogCategory(&UAFLogContextConfiguration);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v4 name];
+      name2 = [valuesCopy name];
       v23 = self->_name;
       *buf = 136315650;
       v30 = "[UAFUsageAliasConfiguration addDeprecatedValues:]";
       v31 = 2114;
-      v32 = v22;
+      v32 = name2;
       v33 = 2114;
       v34 = v23;
       _os_log_error_impl(&dword_1BCF2C000, v7, OS_LOG_TYPE_ERROR, "%s Cannot add deprecated values from %{public}@ to %{public}@", buf, 0x20u);

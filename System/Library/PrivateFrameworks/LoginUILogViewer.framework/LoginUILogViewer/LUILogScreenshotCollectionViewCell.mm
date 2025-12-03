@@ -1,20 +1,20 @@
 @interface LUILogScreenshotCollectionViewCell
-- (LUILogScreenshotCollectionViewCell)initWithFrame:(CGRect)a3;
+- (LUILogScreenshotCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)_createClearButton;
 - (id)_createScreenshotDateLabel;
 - (id)_createScreenshotImageView;
 - (void)_setup;
-- (void)clearButtonTapped:(id)a3;
+- (void)clearButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 @end
 
 @implementation LUILogScreenshotCollectionViewCell
 
-- (LUILogScreenshotCollectionViewCell)initWithFrame:(CGRect)a3
+- (LUILogScreenshotCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LUILogScreenshotCollectionViewCell;
-  v3 = [(LUILogScreenshotCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LUILogScreenshotCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,26 +26,26 @@
 
 - (void)_setup
 {
-  v3 = [(LUILogScreenshotCollectionViewCell *)self _createScreenshotImageView];
+  _createScreenshotImageView = [(LUILogScreenshotCollectionViewCell *)self _createScreenshotImageView];
   screenshotImageView = self->_screenshotImageView;
-  self->_screenshotImageView = v3;
+  self->_screenshotImageView = _createScreenshotImageView;
 
-  v5 = [(LUILogScreenshotCollectionViewCell *)self _createScreenshotDateLabel];
+  _createScreenshotDateLabel = [(LUILogScreenshotCollectionViewCell *)self _createScreenshotDateLabel];
   screenshotDateLabel = self->_screenshotDateLabel;
-  self->_screenshotDateLabel = v5;
+  self->_screenshotDateLabel = _createScreenshotDateLabel;
 
-  v7 = [(LUILogScreenshotCollectionViewCell *)self _createClearButton];
+  _createClearButton = [(LUILogScreenshotCollectionViewCell *)self _createClearButton];
   clearButton = self->_clearButton;
-  self->_clearButton = v7;
+  self->_clearButton = _createClearButton;
 
-  v9 = [(LUILogScreenshotCollectionViewCell *)self contentView];
-  [v9 addSubview:self->_screenshotImageView];
+  contentView = [(LUILogScreenshotCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_screenshotImageView];
 
-  v10 = [(LUILogScreenshotCollectionViewCell *)self contentView];
-  [v10 addSubview:self->_screenshotDateLabel];
+  contentView2 = [(LUILogScreenshotCollectionViewCell *)self contentView];
+  [contentView2 addSubview:self->_screenshotDateLabel];
 
-  v11 = [(LUILogScreenshotCollectionViewCell *)self contentView];
-  [v11 addSubview:self->_clearButton];
+  contentView3 = [(LUILogScreenshotCollectionViewCell *)self contentView];
+  [contentView3 addSubview:self->_clearButton];
 }
 
 - (void)layoutSubviews
@@ -80,8 +80,8 @@
 - (id)_createScreenshotDateLabel
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [v2 setTextColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v2 setTextColor:whiteColor];
 
   [v2 setTextAlignment:1];
 
@@ -96,14 +96,14 @@
   return v2;
 }
 
-- (void)clearButtonTapped:(id)a3
+- (void)clearButtonTapped:(id)tapped
 {
-  v4 = [(LUILogScreenshotCollectionViewCell *)self clearButtonAction];
+  clearButtonAction = [(LUILogScreenshotCollectionViewCell *)self clearButtonAction];
 
-  if (v4)
+  if (clearButtonAction)
   {
-    v5 = [(LUILogScreenshotCollectionViewCell *)self clearButtonAction];
-    v5[2]();
+    clearButtonAction2 = [(LUILogScreenshotCollectionViewCell *)self clearButtonAction];
+    clearButtonAction2[2]();
   }
 }
 

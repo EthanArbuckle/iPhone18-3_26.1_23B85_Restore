@@ -1,33 +1,33 @@
 @interface SUUIMenuPageComponent
 - (NSArray)allTitles;
-- (SUUIMenuPageComponent)initWithCustomPageContext:(id)a3;
-- (SUUIMenuPageComponent)initWithRoomSortData:(id)a3;
-- (SUUIMenuPageComponent)initWithViewElement:(id)a3;
-- (id)_componentWithContext:(id)a3;
-- (id)childComponentsForIndex:(int64_t)a3;
-- (id)sortURLForIndex:(int64_t)a3;
+- (SUUIMenuPageComponent)initWithCustomPageContext:(id)context;
+- (SUUIMenuPageComponent)initWithRoomSortData:(id)data;
+- (SUUIMenuPageComponent)initWithViewElement:(id)element;
+- (id)_componentWithContext:(id)context;
+- (id)childComponentsForIndex:(int64_t)index;
+- (id)sortURLForIndex:(int64_t)index;
 @end
 
 @implementation SUUIMenuPageComponent
 
-- (SUUIMenuPageComponent)initWithCustomPageContext:(id)a3
+- (SUUIMenuPageComponent)initWithCustomPageContext:(id)context
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v61.receiver = self;
   v61.super_class = SUUIMenuPageComponent;
-  v52 = [(SUUIPageComponent *)&v61 initWithCustomPageContext:v4];
+  v52 = [(SUUIPageComponent *)&v61 initWithCustomPageContext:contextCopy];
   if (v52)
   {
-    v5 = [v4 componentDictionary];
-    v6 = [v5 objectForKey:@"type"];
+    componentDictionary = [contextCopy componentDictionary];
+    v6 = [componentDictionary objectForKey:@"type"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 isEqualToString:@"popup"])
     {
       v52->_menuStyle = 1;
     }
 
-    v7 = [v5 objectForKey:@"moreTitle"];
+    v7 = [componentDictionary objectForKey:@"moreTitle"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -37,7 +37,7 @@
       v52->_titleForMoreItem = v8;
     }
 
-    v10 = [v5 objectForKey:@"title"];
+    v10 = [componentDictionary objectForKey:@"title"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -46,7 +46,7 @@
       menuTitle = v52->_menuTitle;
       v52->_menuTitle = v11;
 
-      v13 = [v5 objectForKey:@"titleSize"];
+      v13 = [componentDictionary objectForKey:@"titleSize"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -54,7 +54,7 @@
         v52->_menuTitleFontSize = v14;
       }
 
-      v10 = [v5 objectForKey:@"titleWeight"];
+      v10 = [componentDictionary objectForKey:@"titleWeight"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -63,11 +63,11 @@
       }
     }
 
-    v15 = [v5 objectForKey:@"children"];
+    v15 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v43 = v5;
+      v43 = componentDictionary;
       v50 = objc_alloc_init(MEMORY[0x277CCA940]);
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
       childrenComponents = v52->_childrenComponents;
@@ -87,7 +87,7 @@
       if (v48)
       {
         v21 = *v58;
-        v46 = v4;
+        v46 = contextCopy;
         v44 = *v58;
         v45 = v20;
         do
@@ -112,7 +112,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v28 = [v4 copy];
+                v28 = [contextCopy copy];
                 v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
                 v30 = v26;
                 v31 = v29;
@@ -147,12 +147,12 @@
                         v39 = v38;
                         if (v38)
                         {
-                          v40 = [v38 metricsElementName];
-                          if (v40)
+                          metricsElementName = [v38 metricsElementName];
+                          if (metricsElementName)
                           {
-                            [v39 _setMetricsLocationPosition:{objc_msgSend(v50, "countForObject:", v40)}];
+                            [v39 _setMetricsLocationPosition:{objc_msgSend(v50, "countForObject:", metricsElementName)}];
                             v34 = v51;
-                            [v50 addObject:v40];
+                            [v50 addObject:metricsElementName];
                           }
 
                           [v31 addObject:v39];
@@ -175,7 +175,7 @@
                   [(NSMutableArray *)v52->_titles addObject:v27];
                 }
 
-                v4 = v46;
+                contextCopy = v46;
                 v21 = v44;
                 v20 = v45;
                 v26 = v47;
@@ -192,7 +192,7 @@
         while (v48);
       }
 
-      v5 = v43;
+      componentDictionary = v43;
       v15 = v42;
     }
   }
@@ -200,9 +200,9 @@
   return v52;
 }
 
-- (SUUIMenuPageComponent)initWithRoomSortData:(id)a3
+- (SUUIMenuPageComponent)initWithRoomSortData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = SUUIMenuPageComponent;
   v5 = [(SUUIMenuPageComponent *)&v23 init];
@@ -220,7 +220,7 @@
     titles = v5->_titles;
     v5->_titles = v10;
 
-    v12 = [v4 objectForKey:@"defaultSort"];
+    v12 = [dataCopy objectForKey:@"defaultSort"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,7 +232,7 @@
       v13 = 0;
     }
 
-    v14 = [v4 objectForKey:@"sorts"];
+    v14 = [dataCopy objectForKey:@"sorts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -296,17 +296,17 @@ uint64_t __46__SUUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return MEMORY[0x2821F96F8](isKindOfClass, v6);
 }
 
-- (SUUIMenuPageComponent)initWithViewElement:(id)a3
+- (SUUIMenuPageComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIMenuPageComponent;
-  v5 = [(SUUIPageComponent *)&v10 initWithViewElement:v4];
+  v5 = [(SUUIPageComponent *)&v10 initWithViewElement:elementCopy];
   if (v5)
   {
-    v5->_defaultSelectedIndex = [v4 initialSelectedItemIndex];
-    v6 = [v4 segmentItemTitles];
-    v7 = [v6 mutableCopy];
+    v5->_defaultSelectedIndex = [elementCopy initialSelectedItemIndex];
+    segmentItemTitles = [elementCopy segmentItemTitles];
+    v7 = [segmentItemTitles mutableCopy];
     titles = v5->_titles;
     v5->_titles = v7;
   }
@@ -321,9 +321,9 @@ uint64_t __46__SUUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return v2;
 }
 
-- (id)childComponentsForIndex:(int64_t)a3
+- (id)childComponentsForIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_childrenComponents objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_childrenComponents objectAtIndex:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -334,12 +334,12 @@ uint64_t __46__SUUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return v3;
 }
 
-- (id)sortURLForIndex:(int64_t)a3
+- (id)sortURLForIndex:(int64_t)index
 {
   sortURLStrings = self->_sortURLStrings;
   if (sortURLStrings)
   {
-    v4 = [(NSMutableArray *)sortURLStrings objectAtIndex:a3];
+    v4 = [(NSMutableArray *)sortURLStrings objectAtIndex:index];
     v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
   }
 
@@ -351,16 +351,16 @@ uint64_t __46__SUUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return v5;
 }
 
-- (id)_componentWithContext:(id)a3
+- (id)_componentWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 componentDictionary];
-  v5 = [v4 objectForKey:@"type"];
+  contextCopy = context;
+  componentDictionary = [contextCopy componentDictionary];
+  v5 = [componentDictionary objectForKey:@"type"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = SUUIPageComponentTypeForBlockType(v5), (v7 = SUUIPageComponentClassForComponentType(v6)) != 0))
   {
-    v8 = [[v7 alloc] initWithCustomPageContext:v3];
+    v8 = [[v7 alloc] initWithCustomPageContext:contextCopy];
   }
 
   else

@@ -1,52 +1,52 @@
 @interface HNDTrackpadBorderView
-- (BOOL)pointOnBottomBorder:(CGPoint)a3;
-- (BOOL)pointOnLeftBorder:(CGPoint)a3;
-- (BOOL)pointOnRightBorder:(CGPoint)a3;
-- (BOOL)pointOnTopBorder:(CGPoint)a3;
-- (BOOL)pointOnTopLeftCorner:(CGPoint)a3;
-- (BOOL)pointWithinBounds:(CGPoint)a3 minX:(double)a4 maxX:(double)a5 minY:(double)a6 maxY:(double)a7;
-- (HNDTrackpadBorderView)initWithFrame:(CGRect)a3;
+- (BOOL)pointOnBottomBorder:(CGPoint)border;
+- (BOOL)pointOnLeftBorder:(CGPoint)border;
+- (BOOL)pointOnRightBorder:(CGPoint)border;
+- (BOOL)pointOnTopBorder:(CGPoint)border;
+- (BOOL)pointOnTopLeftCorner:(CGPoint)corner;
+- (BOOL)pointWithinBounds:(CGPoint)bounds minX:(double)x maxX:(double)maxX minY:(double)y maxY:(double)maxY;
+- (HNDTrackpadBorderView)initWithFrame:(CGRect)frame;
 - (HNDTrackpadBorderViewDelegate)delegate;
 - (id)getTrackpadColor;
 - (id)initialResizeIcon;
-- (unint64_t)borderLocationFromPoint:(CGPoint)a3;
+- (unint64_t)borderLocationFromPoint:(CGPoint)point;
 - (void)initSettings;
 - (void)registerForSettingsUpdates;
-- (void)resizeTrackpadWithDelta:(CGPoint)a3;
+- (void)resizeTrackpadWithDelta:(CGPoint)delta;
 - (void)updateFrameLayer;
-- (void)updateLeftBorderHeightWithDelta:(CGPoint)a3;
+- (void)updateLeftBorderHeightWithDelta:(CGPoint)delta;
 - (void)updateResizeIcon;
-- (void)updateTopBorderHeightWithDelta:(CGPoint)a3;
+- (void)updateTopBorderHeightWithDelta:(CGPoint)delta;
 - (void)updateTrackpadBorderWidth;
 @end
 
 @implementation HNDTrackpadBorderView
 
-- (HNDTrackpadBorderView)initWithFrame:(CGRect)a3
+- (HNDTrackpadBorderView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = HNDTrackpadBorderView;
-  v3 = [(HNDTrackpadBorderView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HNDTrackpadBorderView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = +[UIColor clearColor];
   [(HNDTrackpadBorderView *)v3 setBackgroundColor:v4];
 
   v5 = +[UIColor blackColor];
-  v6 = [v5 CGColor];
-  v7 = [(HNDTrackpadBorderView *)v3 layer];
-  [v7 setBorderColor:v6];
+  cGColor = [v5 CGColor];
+  layer = [(HNDTrackpadBorderView *)v3 layer];
+  [layer setBorderColor:cGColor];
 
-  v8 = [(HNDTrackpadBorderView *)v3 layer];
-  [v8 setBorderWidth:1.0];
+  layer2 = [(HNDTrackpadBorderView *)v3 layer];
+  [layer2 setBorderWidth:1.0];
 
-  v9 = [(HNDTrackpadBorderView *)v3 layer];
-  [v9 setCornerRadius:11.0];
+  layer3 = [(HNDTrackpadBorderView *)v3 layer];
+  [layer3 setCornerRadius:11.0];
 
   [(HNDTrackpadBorderView *)v3 setUserInteractionEnabled:1];
   [(HNDTrackpadBorderView *)v3 initSettings];
   [(HNDTrackpadBorderView *)v3 registerForSettingsUpdates];
-  v10 = [(HNDTrackpadBorderView *)v3 initialResizeIcon];
+  initialResizeIcon = [(HNDTrackpadBorderView *)v3 initialResizeIcon];
   resizeIconView = v3->_resizeIconView;
-  v3->_resizeIconView = v10;
+  v3->_resizeIconView = initialResizeIcon;
 
   [(HNDTrackpadBorderView *)v3 addSubview:v3->_resizeIconView];
   [(HNDTrackpadBorderView *)v3 frame];
@@ -58,8 +58,8 @@
 
 - (void)initSettings
 {
-  v3 = [(HNDTrackpadBorderView *)self getTrackpadColor];
-  [(HNDTrackpadBorderView *)self setColor:v3];
+  getTrackpadColor = [(HNDTrackpadBorderView *)self getTrackpadColor];
+  [(HNDTrackpadBorderView *)self setColor:getTrackpadColor];
 
   v4 = +[AXSettings sharedInstance];
   [v4 assistiveTouchVirtualTrackpadBorderWidth];
@@ -105,18 +105,18 @@
 
 - (void)updateFrameLayer
 {
-  v3 = [(HNDTrackpadBorderView *)self trackpadFrameLayer];
+  trackpadFrameLayer = [(HNDTrackpadBorderView *)self trackpadFrameLayer];
 
-  if (v3)
+  if (trackpadFrameLayer)
   {
-    v4 = [(HNDTrackpadBorderView *)self trackpadFrameLayer];
-    [v4 removeFromSuperlayer];
+    trackpadFrameLayer2 = [(HNDTrackpadBorderView *)self trackpadFrameLayer];
+    [trackpadFrameLayer2 removeFromSuperlayer];
   }
 
   [(HNDTrackpadBorderView *)self bounds];
   v12 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
-  v5 = [(HNDTrackpadBorderView *)self delegate];
-  [v5 trackpadViewFrame];
+  delegate = [(HNDTrackpadBorderView *)self delegate];
+  [delegate trackpadViewFrame];
   v6 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
 
   [v12 appendPath:v6];
@@ -125,13 +125,13 @@
   v8 = v12;
   [v7 setPath:{objc_msgSend(v12, "CGPath")}];
   [v7 setFillRule:kCAFillRuleEvenOdd];
-  v9 = [(HNDTrackpadBorderView *)self color];
+  color = [(HNDTrackpadBorderView *)self color];
   [(HNDTrackpadBorderView *)self opacity];
-  v10 = [v9 colorWithAlphaComponent:?];
+  v10 = [color colorWithAlphaComponent:?];
   [v7 setFillColor:{objc_msgSend(v10, "CGColor")}];
 
-  v11 = [(HNDTrackpadBorderView *)self layer];
-  [v11 insertSublayer:v7 atIndex:0];
+  layer = [(HNDTrackpadBorderView *)self layer];
+  [layer insertSublayer:v7 atIndex:0];
 
   [(HNDTrackpadBorderView *)self setTrackpadFrameLayer:v7];
 }
@@ -144,20 +144,20 @@
   v6 = v5 + v4 * -2.0;
   [(HNDTrackpadBorderView *)self frame];
   v8 = v7 + v4 * -2.0;
-  v9 = [(HNDTrackpadBorderView *)self delegate];
-  [v9 setTrackpadViewFrame:{v4, v4, v6, v8}];
+  delegate = [(HNDTrackpadBorderView *)self delegate];
+  [delegate setTrackpadViewFrame:{v4, v4, v6, v8}];
 }
 
-- (void)updateTopBorderHeightWithDelta:(CGPoint)a3
+- (void)updateTopBorderHeightWithDelta:(CGPoint)delta
 {
-  y = a3.y;
+  y = delta.y;
   [(HNDTrackpadBorderView *)self frame];
   v25 = v5;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HNDTrackpadBorderView *)self delegate];
-  [v12 trackpadViewFrame];
+  delegate = [(HNDTrackpadBorderView *)self delegate];
+  [delegate trackpadViewFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -170,8 +170,8 @@
     v23 = y + v7;
     if (v23 >= 0.0)
     {
-      v24 = [(HNDTrackpadBorderView *)self delegate];
-      [v24 setTrackpadViewFrame:{v14, v16, v18, v20 - y}];
+      delegate2 = [(HNDTrackpadBorderView *)self delegate];
+      [delegate2 setTrackpadViewFrame:{v14, v16, v18, v20 - y}];
 
       [(HNDTrackpadBorderView *)self setFrame:v25, v23, v9, v21];
 
@@ -180,16 +180,16 @@
   }
 }
 
-- (void)updateLeftBorderHeightWithDelta:(CGPoint)a3
+- (void)updateLeftBorderHeightWithDelta:(CGPoint)delta
 {
-  x = a3.x;
-  [(HNDTrackpadBorderView *)self frame:a3.x];
+  x = delta.x;
+  [(HNDTrackpadBorderView *)self frame:delta.x];
   v6 = v5;
   v25 = v7;
   v9 = v8;
   v11 = v10;
-  v12 = [(HNDTrackpadBorderView *)self delegate];
-  [v12 trackpadViewFrame];
+  delegate = [(HNDTrackpadBorderView *)self delegate];
+  [delegate trackpadViewFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -202,8 +202,8 @@
     v23 = x + v6;
     if (v23 >= 0.0)
     {
-      v24 = [(HNDTrackpadBorderView *)self delegate];
-      [v24 setTrackpadViewFrame:{v14, v16, v18 - x, v20}];
+      delegate2 = [(HNDTrackpadBorderView *)self delegate];
+      [delegate2 setTrackpadViewFrame:{v14, v16, v18 - x, v20}];
 
       [(HNDTrackpadBorderView *)self setFrame:v23, v25, v21, v11];
 
@@ -229,23 +229,23 @@
   [(HNDTrackpadBorderView *)self width];
   v4 = v3 * 0.5;
   v5 = v3 / 2.5;
-  v6 = [(HNDTrackpadBorderView *)self resizeIconView];
-  [v6 setFrame:{v5, v5, v4, v4}];
+  resizeIconView = [(HNDTrackpadBorderView *)self resizeIconView];
+  [resizeIconView setFrame:{v5, v5, v4, v4}];
 }
 
-- (void)resizeTrackpadWithDelta:(CGPoint)a3
+- (void)resizeTrackpadWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   [(HNDTrackpadBorderView *)self updateTopBorderHeightWithDelta:?];
 
   [(HNDTrackpadBorderView *)self updateLeftBorderHeightWithDelta:x, y];
 }
 
-- (unint64_t)borderLocationFromPoint:(CGPoint)a3
+- (unint64_t)borderLocationFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(HNDTrackpadBorderView *)self pointOnTopLeftCorner:?])
   {
     return 1;
@@ -274,10 +274,10 @@
   return 0;
 }
 
-- (BOOL)pointOnTopLeftCorner:(CGPoint)a3
+- (BOOL)pointOnTopLeftCorner:(CGPoint)corner
 {
-  y = a3.y;
-  x = a3.x;
+  y = corner.y;
+  x = corner.x;
   [(HNDTrackpadBorderView *)self width];
   v7 = v6;
   [(HNDTrackpadBorderView *)self width];
@@ -285,10 +285,10 @@
   return [(HNDTrackpadBorderView *)self pointWithinBounds:x minX:y maxX:-5.0 minY:v7 maxY:-5.0, v8];
 }
 
-- (BOOL)pointOnTopBorder:(CGPoint)a3
+- (BOOL)pointOnTopBorder:(CGPoint)border
 {
-  y = a3.y;
-  x = a3.x;
+  y = border.y;
+  x = border.x;
   [(HNDTrackpadBorderView *)self frame];
   v7 = v6;
   [(HNDTrackpadBorderView *)self width];
@@ -296,56 +296,56 @@
   return [(HNDTrackpadBorderView *)self pointWithinBounds:x minX:y maxX:0.0 minY:v7 maxY:0.0, v8];
 }
 
-- (BOOL)pointOnBottomBorder:(CGPoint)a3
+- (BOOL)pointOnBottomBorder:(CGPoint)border
 {
-  y = a3.y;
-  x = a3.x;
+  y = border.y;
+  x = border.x;
   [(HNDTrackpadBorderView *)self frame];
   v7 = v6;
   [(HNDTrackpadBorderView *)self width];
   v9 = v8;
-  v10 = [(HNDTrackpadBorderView *)self delegate];
-  [v10 trackpadViewFrame];
+  delegate = [(HNDTrackpadBorderView *)self delegate];
+  [delegate trackpadViewFrame];
   v12 = v11;
 
   return [(HNDTrackpadBorderView *)self pointWithinBounds:x minX:y maxX:0.0 minY:v7 maxY:v9 + v12, v12 + v9 * 2.0];
 }
 
-- (BOOL)pointOnLeftBorder:(CGPoint)a3
+- (BOOL)pointOnLeftBorder:(CGPoint)border
 {
-  y = a3.y;
-  x = a3.x;
+  y = border.y;
+  x = border.x;
   [(HNDTrackpadBorderView *)self frame];
   [(HNDTrackpadBorderView *)self width];
 
   return [HNDTrackpadBorderView pointWithinBounds:"pointWithinBounds:minX:maxX:minY:maxY:" minX:x maxX:y minY:0.0 maxY:?];
 }
 
-- (BOOL)pointOnRightBorder:(CGPoint)a3
+- (BOOL)pointOnRightBorder:(CGPoint)border
 {
-  y = a3.y;
-  x = a3.x;
+  y = border.y;
+  x = border.x;
   [(HNDTrackpadBorderView *)self frame];
   v7 = v6;
   [(HNDTrackpadBorderView *)self width];
   v9 = v8;
-  v10 = [(HNDTrackpadBorderView *)self delegate];
-  [v10 trackpadViewFrame];
+  delegate = [(HNDTrackpadBorderView *)self delegate];
+  [delegate trackpadViewFrame];
   v12 = v11;
 
   return [(HNDTrackpadBorderView *)self pointWithinBounds:x minX:y maxX:v9 + v12 minY:v12 + v9 * 2.0 maxY:v9, v7 - v9];
 }
 
-- (BOOL)pointWithinBounds:(CGPoint)a3 minX:(double)a4 maxX:(double)a5 minY:(double)a6 maxY:(double)a7
+- (BOOL)pointWithinBounds:(CGPoint)bounds minX:(double)x maxX:(double)maxX minY:(double)y maxY:(double)maxY
 {
-  if (a3.x < a4 || a3.x > a5)
+  if (bounds.x < x || bounds.x > maxX)
   {
     return 0;
   }
 
-  if (a3.y <= a7)
+  if (bounds.y <= maxY)
   {
-    return a3.y >= a6;
+    return bounds.y >= y;
   }
 
   return 0;
@@ -354,19 +354,19 @@
 - (id)getTrackpadColor
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchVirtualTrackpadBorderColor];
+  assistiveTouchVirtualTrackpadBorderColor = [v2 assistiveTouchVirtualTrackpadBorderColor];
 
-  if (v3 <= 2)
+  if (assistiveTouchVirtualTrackpadBorderColor <= 2)
   {
-    if (!v3)
+    if (!assistiveTouchVirtualTrackpadBorderColor)
     {
       v4 = +[UIColor systemGrayColor];
       goto LABEL_18;
     }
 
-    if (v3 != 1)
+    if (assistiveTouchVirtualTrackpadBorderColor != 1)
     {
-      if (v3 == 2)
+      if (assistiveTouchVirtualTrackpadBorderColor == 2)
       {
         v4 = +[UIColor systemBlueColor];
         goto LABEL_18;
@@ -382,9 +382,9 @@ LABEL_14:
 
   else
   {
-    if (v3 <= 4)
+    if (assistiveTouchVirtualTrackpadBorderColor <= 4)
     {
-      if (v3 == 3)
+      if (assistiveTouchVirtualTrackpadBorderColor == 3)
       {
         +[UIColor systemRedColor];
       }
@@ -397,9 +397,9 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    if (v3 != 5)
+    if (assistiveTouchVirtualTrackpadBorderColor != 5)
     {
-      if (v3 == 6)
+      if (assistiveTouchVirtualTrackpadBorderColor == 6)
       {
         v4 = +[UIColor systemOrangeColor];
         goto LABEL_18;

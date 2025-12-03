@@ -1,23 +1,23 @@
 @interface WISCLLocationManager
-+ (const)sAuthStatusAsString:(int)a3;
++ (const)sAuthStatusAsString:(int)string;
 - (BOOL)locationAllowed;
-- (BOOL)shouldUpdateLocation:(BOOL)a3;
+- (BOOL)shouldUpdateLocation:(BOOL)location;
 - (BOOL)startLocationUpdates;
 - (BOOL)stopLocationUpdates;
 - (WISCLLocationManager)init;
 - (id).cxx_construct;
-- (void)callAuthStatusCallback:(int)a3;
+- (void)callAuthStatusCallback:(int)callback;
 - (void)callOnLocationFailedCallback;
-- (void)callOnLocationUpdateCallback:(id)a3;
+- (void)callOnLocationUpdateCallback:(id)callback;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)onAuthStatusUpdateCallback:(function<void)(BOOL;
 - (void)onLocationFailureCallback:(function<void)(;
 - (void)onLocationUpdateCallback:(function<void (CLLocation *);
 - (void)prepareForShutdown;
-- (void)setDesiredLocationAccuracy:(double)a3;
+- (void)setDesiredLocationAccuracy:(double)accuracy;
 @end
 
 @implementation WISCLLocationManager
@@ -79,14 +79,14 @@
   [(WISCLLocationManager *)&v6 dealloc];
 }
 
-- (BOOL)shouldUpdateLocation:(BOOL)a3
+- (BOOL)shouldUpdateLocation:(BOOL)location
 {
-  v3 = a3;
+  locationCopy = location;
   v5 = +[CLLocationManager locationServicesEnabled];
   if (v5)
   {
     manager = self->_manager;
-    if (v3)
+    if (locationCopy)
     {
       [(CLLocationManager *)manager startUpdatingLocation];
       v7 = *(qword_1002DBE98 + 40);
@@ -186,56 +186,56 @@ LABEL_9:
   return v3;
 }
 
-- (void)setDesiredLocationAccuracy:(double)a3
+- (void)setDesiredLocationAccuracy:(double)accuracy
 {
-  v4 = self;
+  selfCopy = self;
   fObj = self->fQueue.fObj.fObj;
   operator new();
 }
 
 - (void)onAuthStatusUpdateCallback:(function<void)(BOOL
 {
-  v6 = self;
+  selfCopy = self;
   sub_100100BD8(&v7, a3);
   fObj = self->fQueue.fObj.fObj;
   operator new();
 }
 
-- (void)callAuthStatusCallback:(int)a3
+- (void)callAuthStatusCallback:(int)callback
 {
-  v4 = self;
+  selfCopy = self;
   fObj = self->fQueue.fObj.fObj;
   operator new();
 }
 
-+ (const)sAuthStatusAsString:(int)a3
++ (const)sAuthStatusAsString:(int)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return "Auth status is unknown";
   }
 
   else
   {
-    return off_1002B1E90[a3];
+    return off_1002B1E90[string];
   }
 }
 
 - (void)onLocationUpdateCallback:(function<void (CLLocation *)
 {
-  v6 = self;
+  selfCopy = self;
   sub_100100F20(&v7, a3);
   fObj = self->fQueue.fObj.fObj;
   operator new();
 }
 
-- (void)callOnLocationUpdateCallback:(id)a3
+- (void)callOnLocationUpdateCallback:(id)callback
 {
-  v4 = a3;
-  if (v4)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
-    v5 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = callbackCopy;
     fObj = self->fQueue.fObj.fObj;
     operator new();
   }
@@ -243,7 +243,7 @@ LABEL_9:
 
 - (void)onLocationFailureCallback:(function<void)(
 {
-  v6 = self;
+  selfCopy = self;
   sub_100101280(&v7, a3);
   fObj = self->fQueue.fObj.fObj;
   operator new();
@@ -251,30 +251,30 @@ LABEL_9:
 
 - (void)callOnLocationFailedCallback
 {
-  v3 = self;
+  selfCopy = self;
   fObj = self->fQueue.fObj.fObj;
   operator new();
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  authorizationStatus = [authorizationCopy authorizationStatus];
   v6 = *(qword_1002DBE98 + 40);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315138;
-    v8 = [WISCLLocationManager sAuthStatusAsString:v5];
+    v8 = [WISCLLocationManager sAuthStatusAsString:authorizationStatus];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "loc.mgr:#N Updated auth status from locationd %s", &v7, 0xCu);
   }
 
-  [(WISCLLocationManager *)self callAuthStatusCallback:v5];
+  [(WISCLLocationManager *)self callAuthStatusCallback:authorizationStatus];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = *(qword_1002DBE98 + 40);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,14 +282,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "loc.mgr:#N Updated location from locationd", v10, 2u);
   }
 
-  v9 = [v7 lastObject];
-  [(WISCLLocationManager *)self callOnLocationUpdateCallback:v9];
+  lastObject = [locationsCopy lastObject];
+  [(WISCLLocationManager *)self callOnLocationUpdateCallback:lastObject];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   v8 = *(qword_1002DBE98 + 40);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -298,9 +298,9 @@ LABEL_9:
   }
 
   v9 = dword_1002D85E0++;
-  if (v6 && v9 >= 3)
+  if (managerCopy && v9 >= 3)
   {
-    [v6 stopUpdatingLocation];
+    [managerCopy stopUpdatingLocation];
   }
 
   [(WISCLLocationManager *)self callOnLocationFailedCallback];

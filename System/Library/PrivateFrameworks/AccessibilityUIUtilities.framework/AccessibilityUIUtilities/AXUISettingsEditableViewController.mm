@@ -1,17 +1,17 @@
 @interface AXUISettingsEditableViewController
 - (id)specifiers;
 - (void)_configureEditButton;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXUISettingsEditableViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXUISettingsEditableViewController;
-  [(AXUISettingsEditableViewController *)&v4 viewWillAppear:a3];
+  [(AXUISettingsEditableViewController *)&v4 viewWillAppear:appear];
   [(AXUISettingsEditableViewController *)self _configureEditButton];
 }
 
@@ -21,9 +21,9 @@
   v4 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(AXUISettingsEditableViewController *)self makeSpecifiers];
+    makeSpecifiers = [(AXUISettingsEditableViewController *)self makeSpecifiers];
     v6 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.super.super.isa + v3) = makeSpecifiers;
 
     [(AXUISettingsEditableViewController *)self _configureEditButton];
     v4 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = [(AXUISettingsEditableViewController *)self specifierAtIndexPath:a5];
+    v7 = [(AXUISettingsEditableViewController *)self specifierAtIndexPath:path];
     [(AXUISettingsEditableViewController *)self removeDataForSpecifier:v7];
     [(AXUISettingsEditableViewController *)self removeSpecifier:v7 animated:1];
     if (![(AXUISettingsEditableViewController *)self canEditTable])

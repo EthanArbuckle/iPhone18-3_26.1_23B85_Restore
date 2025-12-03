@@ -113,7 +113,7 @@
   v31 = self->inputMaskImage;
   CGAffineTransformMakeTranslation(&v36, *&v4, *&v22);
   v32 = [(CIImage *)v31 imageByApplyingTransform:&v36];
-  v33 = [(CIDisintegrateWithMaskTransition *)self _kernel];
+  _kernel = [(CIDisintegrateWithMaskTransition *)self _kernel];
   inputTargetImage = self->inputTargetImage;
   v37[0] = self->inputImage;
   v37[1] = inputTargetImage;
@@ -122,7 +122,7 @@
   v37[4] = v30;
   v37[5] = v32;
   v37[6] = v24;
-  return [v33 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v37, 7), x, y, width, height}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v37, 7), x, y, width, height}];
 }
 
 @end

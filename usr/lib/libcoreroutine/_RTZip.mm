@@ -1,16 +1,16 @@
 @interface _RTZip
-- (_RTZip)initWithFirstInput:(id)a3 secondInput:(id)a4;
+- (_RTZip)initWithFirstInput:(id)input secondInput:(id)secondInput;
 - (id)zippedArray;
 @end
 
 @implementation _RTZip
 
-- (_RTZip)initWithFirstInput:(id)a3 secondInput:(id)a4
+- (_RTZip)initWithFirstInput:(id)input secondInput:(id)secondInput
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
-  if (v9 == [v8 count])
+  inputCopy = input;
+  secondInputCopy = secondInput;
+  v9 = [inputCopy count];
+  if (v9 == [secondInputCopy count])
   {
     v15.receiver = self;
     v15.super_class = _RTZip;
@@ -18,12 +18,12 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_firstInput, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v10->_firstInput, input);
+      objc_storeStrong(p_isa + 2, secondInput);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -35,10 +35,10 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: firstInput.count == secondInput.count", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)zippedArray

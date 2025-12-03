@@ -1,24 +1,24 @@
 @interface MBDataMigratorPlugin
-+ (BOOL)setUpMobileBackupPreferencesForBackgroundRestoreWithAccount:(id)a3 restoreSession:(id)a4 cloudFormatInfo:(id)a5 performanceStatistics:(id)a6 backupPolicy:(int64_t)a7 error:(id *)a8;
-- (id)_restoreDefaultsWithEngine:(id)a3;
-- (id)_setDMContextWithPolicy:(id)a3 engine:(id)a4;
-- (id)_updateMobileBackupPreferencesWithEngine:(id)a3;
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (id)preparingBackupWithEngine:(id)a3;
-- (void)_updateDeviceTransferInfoWithPlist:(id)a3;
++ (BOOL)setUpMobileBackupPreferencesForBackgroundRestoreWithAccount:(id)account restoreSession:(id)session cloudFormatInfo:(id)info performanceStatistics:(id)statistics backupPolicy:(int64_t)policy error:(id *)error;
+- (id)_restoreDefaultsWithEngine:(id)engine;
+- (id)_setDMContextWithPolicy:(id)policy engine:(id)engine;
+- (id)_updateMobileBackupPreferencesWithEngine:(id)engine;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (id)preparingBackupWithEngine:(id)engine;
+- (void)_updateDeviceTransferInfoWithPlist:(id)plist;
 @end
 
 @implementation MBDataMigratorPlugin
 
-- (id)preparingBackupWithEngine:(id)a3
+- (id)preparingBackupWithEngine:(id)engine
 {
-  v3 = a3;
-  if ([v3 backsUpPrimaryAccount])
+  engineCopy = engine;
+  if ([engineCopy backsUpPrimaryAccount])
   {
     v4 = +[MCProfileConnection sharedConnection];
-    v5 = [v4 isPasscodeSet];
-    v6 = [v3 properties];
-    [v6 setPasscodeSet:v5];
+    isPasscodeSet = [v4 isPasscodeSet];
+    properties = [engineCopy properties];
+    [properties setPasscodeSet:isPasscodeSet];
 
     v7 = +[NSFileManager defaultManager];
     if ([v7 fileExistsAtPath:@"/var/root/Library/Caches/Backup"])
@@ -54,11 +54,11 @@
   return 0;
 }
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MBDataMigratorPlugin *)self _updateMobileBackupPreferencesWithEngine:v7];
+  policyCopy = policy;
+  engineCopy = engine;
+  v8 = [(MBDataMigratorPlugin *)self _updateMobileBackupPreferencesWithEngine:engineCopy];
   if (v8)
   {
 LABEL_2:
@@ -66,12 +66,12 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  if ([v7 restoresPrimaryAccount])
+  if ([engineCopy restoresPrimaryAccount])
   {
-    v8 = [(MBDataMigratorPlugin *)self _setDMContextWithPolicy:v6 engine:v7];
+    v8 = [(MBDataMigratorPlugin *)self _setDMContextWithPolicy:policyCopy engine:engineCopy];
     if (!v8)
     {
-      v8 = [(MBDataMigratorPlugin *)self _restoreDefaultsWithEngine:v7];
+      v8 = [(MBDataMigratorPlugin *)self _restoreDefaultsWithEngine:engineCopy];
     }
 
     goto LABEL_2;
@@ -83,89 +83,89 @@ LABEL_3:
   return v9;
 }
 
-- (id)_setDMContextWithPolicy:(id)a3 engine:(id)a4
+- (id)_setDMContextWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 settingsContext];
-  v8 = [v6 properties];
-  v9 = [v8 deviceName];
-  v10 = [v5 isRestoringToSameDevice];
-  v44 = v9;
-  if (v10)
+  policyCopy = policy;
+  engineCopy = engine;
+  settingsContext = [engineCopy settingsContext];
+  properties = [engineCopy properties];
+  deviceName = [properties deviceName];
+  isRestoringToSameDevice = [policyCopy isRestoringToSameDevice];
+  v44 = deviceName;
+  if (isRestoringToSameDevice)
   {
     v48 = @"same device";
   }
 
   else
   {
-    v11 = [v8 productType];
-    v12 = [v8 deviceID];
-    v48 = [NSString stringWithFormat:@"%@ (%@ %@)", v9, v11, v12];
+    productType = [properties productType];
+    deviceID = [properties deviceID];
+    v48 = [NSString stringWithFormat:@"%@ (%@ %@)", deviceName, productType, deviceID];
   }
 
-  v13 = [v8 buildVersion];
-  v47 = [v8 date];
-  v14 = [v7 shouldPreserveSettings];
-  v15 = [v8 wasPasscodeSet];
-  v16 = [v6 isServiceEngine];
-  v17 = [v6 isDeviceTransferEngine];
-  v46 = v6;
-  if (v17)
+  buildVersion = [properties buildVersion];
+  date = [properties date];
+  shouldPreserveSettings = [settingsContext shouldPreserveSettings];
+  wasPasscodeSet = [properties wasPasscodeSet];
+  isServiceEngine = [engineCopy isServiceEngine];
+  isDeviceTransferEngine = [engineCopy isDeviceTransferEngine];
+  v46 = engineCopy;
+  if (isDeviceTransferEngine)
   {
-    v18 = 0;
+    isDriveEngine = 0;
   }
 
   else
   {
-    v18 = [v6 isDriveEngine];
+    isDriveEngine = [engineCopy isDriveEngine];
   }
 
-  v43 = [v8 buildVersion];
-  v42 = [v8 productType];
-  v45 = v7;
-  if (v17)
+  buildVersion2 = [properties buildVersion];
+  productType2 = [properties productType];
+  v45 = settingsContext;
+  if (isDeviceTransferEngine)
   {
-    if (v16)
+    if (isServiceEngine)
     {
       __assert_rtn("[MBDataMigratorPlugin _setDMContextWithPolicy:engine:]", "MBDataMigratorPlugin.m", 120, "!restoredFromCloudBackup");
     }
 
-    if (v18)
+    if (isDriveEngine)
     {
       __assert_rtn("[MBDataMigratorPlugin _setDMContextWithPolicy:engine:]", "MBDataMigratorPlugin.m", 121, "!restoredFromiTunesBackup");
     }
 
-    v19 = [NSString stringWithFormat:@"Restored from a %@ backup of %@ created using %@ at %@", @"D2D", v48, v13, v47];
+    v19 = [NSString stringWithFormat:@"Restored from a %@ backup of %@ created using %@ at %@", @"D2D", v48, buildVersion, date];
   }
 
   else
   {
-    if ((v16 & v18) == 1)
+    if ((isServiceEngine & isDriveEngine) == 1)
     {
       __assert_rtn("[MBDataMigratorPlugin _setDMContextWithPolicy:engine:]", "MBDataMigratorPlugin.m", 129, "!restoredFromCloudBackup || !restoredFromiTunesBackup");
     }
 
-    v40 = v10;
-    v20 = v5;
-    v21 = v14;
-    if (v16)
+    v40 = isRestoringToSameDevice;
+    v20 = policyCopy;
+    v21 = shouldPreserveSettings;
+    if (isServiceEngine)
     {
-      v22 = v15;
+      v22 = wasPasscodeSet;
       v23 = @"iCloud";
     }
 
     else
     {
-      if (!v18)
+      if (!isDriveEngine)
       {
         goto LABEL_38;
       }
 
-      v22 = v15;
-      v24 = [v8 encrypted];
+      v22 = wasPasscodeSet;
+      encrypted = [properties encrypted];
       v25 = @"unencrypted";
-      if (v24)
+      if (encrypted)
       {
         v25 = @"encrypted";
       }
@@ -178,13 +178,13 @@ LABEL_38:
       }
     }
 
-    v26 = [NSString stringWithFormat:@"Restored from an %@ backup of %@ created using %@ at %@", v23, v48, v13, v47];
+    v26 = [NSString stringWithFormat:@"Restored from an %@ backup of %@ created using %@ at %@", v23, v48, buildVersion, date];
 
     v19 = v26;
-    v15 = v22;
-    v14 = v21;
-    v5 = v20;
-    v10 = v40;
+    wasPasscodeSet = v22;
+    shouldPreserveSettings = v21;
+    policyCopy = v20;
+    isRestoringToSameDevice = v40;
   }
 
   if (!v19)
@@ -192,42 +192,42 @@ LABEL_38:
     __assert_rtn("[MBDataMigratorPlugin _setDMContextWithPolicy:engine:]", "MBDataMigratorPlugin.m", 141, "reason");
   }
 
-  v39 = v13;
-  v41 = v5;
+  v39 = buildVersion;
+  v41 = policyCopy;
   v51[0] = @"Reason";
   v51[1] = @"DidRestoreFromBackup";
   v38 = v19;
   v52[0] = v19;
   v52[1] = &__kCFBooleanTrue;
   v51[2] = @"DidMigrateBackupFromDifferentDevice";
-  v27 = [NSNumber numberWithInt:v10 ^ 1];
+  v27 = [NSNumber numberWithInt:isRestoringToSameDevice ^ 1];
   v52[2] = v27;
   v51[3] = @"ShouldPreserveSettingsAfterRestore";
-  v28 = [NSNumber numberWithBool:v14];
+  v28 = [NSNumber numberWithBool:shouldPreserveSettings];
   v52[3] = v28;
   v51[4] = @"WasPasscodeSetInBackup";
-  v29 = [NSNumber numberWithBool:v15];
+  v29 = [NSNumber numberWithBool:wasPasscodeSet];
   v52[4] = v29;
   v51[5] = @"RestoreFromBackupSourceiTunes";
-  v30 = [NSNumber numberWithBool:v18];
+  v30 = [NSNumber numberWithBool:isDriveEngine];
   v52[5] = v30;
   v51[6] = @"RestoreFromBackupSourceDeviceToDevice";
-  v31 = [NSNumber numberWithBool:v17];
+  v31 = [NSNumber numberWithBool:isDeviceTransferEngine];
   v52[6] = v31;
   v51[7] = @"DidRestoreFromCloudBackup";
-  v32 = [NSNumber numberWithBool:v16];
+  v32 = [NSNumber numberWithBool:isServiceEngine];
   v52[7] = v32;
   v33 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:8];
   v34 = [v33 mutableCopy];
 
-  if (v43)
+  if (buildVersion2)
   {
-    [v34 setObject:v43 forKeyedSubscript:@"RestoredBackupBuildVersion"];
+    [v34 setObject:buildVersion2 forKeyedSubscript:@"RestoredBackupBuildVersion"];
   }
 
-  if (v42)
+  if (productType2)
   {
-    [v34 setObject:v42 forKeyedSubscript:@"RestoredBackupProductType"];
+    [v34 setObject:productType2 forKeyedSubscript:@"RestoredBackupProductType"];
   }
 
   v35 = MBDeviceUUID();
@@ -241,7 +241,7 @@ LABEL_38:
     [v34 setObject:v44 forKeyedSubscript:@"RestoredBackupDeviceName"];
   }
 
-  if (v16 && [v46 backupPolicy] == 1)
+  if (isServiceEngine && [v46 backupPolicy] == 1)
   {
     [v34 setObject:&__kCFBooleanTrue forKeyedSubscript:@"RestoredBackupIsMegaBackup"];
   }
@@ -259,9 +259,9 @@ LABEL_38:
   return 0;
 }
 
-- (void)_updateDeviceTransferInfoWithPlist:(id)a3
+- (void)_updateDeviceTransferInfoWithPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   v4 = [MBPersona personalPersonaWithError:0];
   v5 = [v4 copyPreferencesValueForKey:@"DeviceTransferInfo" class:objc_opt_class()];
   v6 = v5;
@@ -283,7 +283,7 @@ LABEL_38:
       }
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"DeviceTransferInfo"];
+    [plistCopy setObject:v7 forKeyedSubscript:@"DeviceTransferInfo"];
     v13 = MBGetDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -297,24 +297,24 @@ LABEL_38:
   }
 }
 
-- (id)_updateMobileBackupPreferencesWithEngine:(id)a3
+- (id)_updateMobileBackupPreferencesWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 persona];
-  if (!v6)
+  persona = [engineCopy persona];
+  if (!persona)
   {
     __assert_rtn("[MBDataMigratorPlugin _updateMobileBackupPreferencesWithEngine:]", "MBDataMigratorPlugin.m", 197, "persona");
   }
 
-  v7 = v6;
-  v71 = v6;
-  v72 = v4;
-  v68 = self;
-  if ([v4 restoresPrimaryAccount])
+  v7 = persona;
+  v71 = persona;
+  v72 = engineCopy;
+  selfCopy = self;
+  if ([engineCopy restoresPrimaryAccount])
   {
-    v8 = [v7 userIncompleteRestoreDirectory];
-    v9 = [v8 stringByAppendingPathComponent:@"/var/mobile/Library/Preferences/com.apple.MobileBackup.plist"];
+    userIncompleteRestoreDirectory = [v7 userIncompleteRestoreDirectory];
+    v9 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/mobile/Library/Preferences/com.apple.MobileBackup.plist"];
 
     v10 = v9;
     v11 = [NSMutableDictionary dictionaryWithContentsOfFile:v10];
@@ -338,8 +338,8 @@ LABEL_38:
       _MBLog();
     }
 
-    v16 = [v7 sharedIncompleteRestoreDirectory];
-    v17 = [v16 stringByAppendingPathComponent:@"/var/root/Library/Preferences/com.apple.MobileBackup.plist"];
+    sharedIncompleteRestoreDirectory = [v7 sharedIncompleteRestoreDirectory];
+    v17 = [sharedIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/root/Library/Preferences/com.apple.MobileBackup.plist"];
 
     v18 = [NSMutableDictionary dictionaryWithContentsOfFile:v17];
     v74 = v17;
@@ -359,8 +359,8 @@ LABEL_38:
 
   else
   {
-    v13 = [v7 preferencesDirectory];
-    v14 = [v13 stringByAppendingPathComponent:@"com.apple.MobileBackup.plist"];
+    preferencesDirectory = [v7 preferencesDirectory];
+    v14 = [preferencesDirectory stringByAppendingPathComponent:@"com.apple.MobileBackup.plist"];
 
     v12 = [NSMutableDictionary dictionaryWithContentsOfFile:v14];
     v10 = v14;
@@ -387,14 +387,14 @@ LABEL_38:
     }
 
     v75 = +[NSMutableDictionary dictionary];
-    v21 = [v10 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
     v92[0] = NSFileOwnerAccountName;
     v92[1] = NSFileGroupOwnerAccountName;
     v93[0] = @"mobile";
     v93[1] = @"mobile";
     v22 = [NSDictionary dictionaryWithObjects:v93 forKeys:v92 count:2];
     v83 = 0;
-    v23 = [v5 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:v22 error:&v83];
+    v23 = [v5 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v22 error:&v83];
     v24 = v83;
 
     if ((v23 & 1) == 0)
@@ -409,19 +409,19 @@ LABEL_38:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v86 = v21;
+        v86 = stringByDeletingLastPathComponent;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Removing existing file at %@", buf, 0xCu);
-        v65 = v21;
+        v65 = stringByDeletingLastPathComponent;
         _MBLog();
       }
 
       v82 = v24;
-      v41 = [v5 removeItemAtPath:v21 error:&v82];
+      v41 = [v5 removeItemAtPath:stringByDeletingLastPathComponent error:&v82];
       v42 = v82;
 
       if ((v41 & 1) == 0)
       {
-        v52 = [MBError errorWithCode:1 error:v42 path:v21 format:@"Error removing file"];
+        v52 = [MBError errorWithCode:1 error:v42 path:stringByDeletingLastPathComponent format:@"Error removing file"];
         v34 = v71;
         v24 = v42;
         goto LABEL_75;
@@ -433,13 +433,13 @@ LABEL_38:
       v91[1] = @"mobile";
       v43 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:2];
       v81 = v42;
-      v44 = [v5 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:v43 error:&v81];
+      v44 = [v5 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v43 error:&v81];
       v24 = v81;
 
       if ((v44 & 1) == 0)
       {
 LABEL_50:
-        v52 = [MBError errorWithCode:1 error:v24 path:v21 format:@"Error creating directory", v65];
+        v52 = [MBError errorWithCode:1 error:v24 path:stringByDeletingLastPathComponent format:@"Error creating directory", v65];
         v34 = v71;
         v40 = v73;
         goto LABEL_75;
@@ -453,14 +453,14 @@ LABEL_50:
   }
 
 LABEL_17:
-  v21 = [NSSet setWithObjects:@"DebugContext", @"Options", @"DisabledDomains", @"AllowiTunesBackup", @"EnableBackupScheduling", @"BackupEnabledForMegaBackup", @"SyncSettingsEnabledForMegaBackup", @"BackupDomainsEnabledForMegaBackup", @"EnableBackupOnCellular", @"MegaBackupTurnOnAllAppsSync", @"MegaBackupTurnOniCloudBackup", @"SyncSettingsEnabledForMegaBackup", @"MegaBackupEntryPoint", @"MegaBackupFlowStartDate", @"EnterPrebuddyUIDateDelta", @"InitialMegaBackupStartDateDelta", @"InitialMegaBackupFinishedDateDelta", @"RestoreAfterMegaBackupDateDelta", @"RestoreFinishedAfterMegaBackupDateDelta", @"MegaBackupRefreshDelta", @"PrebuddyFlowStep", @"MegaBackupSourceDeviceUUID", 0];
+  stringByDeletingLastPathComponent = [NSSet setWithObjects:@"DebugContext", @"Options", @"DisabledDomains", @"AllowiTunesBackup", @"EnableBackupScheduling", @"BackupEnabledForMegaBackup", @"SyncSettingsEnabledForMegaBackup", @"BackupDomainsEnabledForMegaBackup", @"EnableBackupOnCellular", @"MegaBackupTurnOnAllAppsSync", @"MegaBackupTurnOniCloudBackup", @"SyncSettingsEnabledForMegaBackup", @"MegaBackupEntryPoint", @"MegaBackupFlowStartDate", @"EnterPrebuddyUIDateDelta", @"InitialMegaBackupStartDateDelta", @"InitialMegaBackupFinishedDateDelta", @"RestoreAfterMegaBackupDateDelta", @"RestoreFinishedAfterMegaBackupDateDelta", @"MegaBackupRefreshDelta", @"PrebuddyFlowStep", @"MegaBackupSourceDeviceUUID", 0];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v75 = v12;
-  v25 = [v12 allKeys];
-  v26 = [v25 countByEnumeratingWithState:&v77 objects:v89 count:16];
+  allKeys = [v12 allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v77 objects:v89 count:16];
   if (v26)
   {
     v27 = v26;
@@ -471,11 +471,11 @@ LABEL_17:
       {
         if (*v78 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allKeys);
         }
 
         v30 = *(*(&v77 + 1) + 8 * i);
-        v31 = [v21 containsObject:{v30, v66}];
+        v31 = [stringByDeletingLastPathComponent containsObject:{v30, v66}];
         v32 = MBGetDefaultLog();
         v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
         if (v31)
@@ -505,47 +505,47 @@ LABEL_17:
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v77 objects:v89 count:16];
+      v27 = [allKeys countByEnumeratingWithState:&v77 objects:v89 count:16];
     }
 
     while (v27);
   }
 
-  v4 = v72;
+  engineCopy = v72;
   v34 = v71;
   if ([v72 isCloudKitEngine])
   {
     if ([v72 conformsToProtocol:&OBJC_PROTOCOL___MBHasServiceAccount])
     {
-      v35 = [v72 serviceAccount];
+      serviceAccount = [v72 serviceAccount];
 
-      if (v35)
+      if (serviceAccount)
       {
         if ([v72 restoresPrimaryAccount])
         {
-          v36 = [v71 userIncompleteRestoreDirectory];
-          v37 = [v71 skippedFileRecordsPlistPath];
-          v38 = [v36 stringByAppendingPathComponent:v37];
+          userIncompleteRestoreDirectory2 = [v71 userIncompleteRestoreDirectory];
+          skippedFileRecordsPlistPath = [v71 skippedFileRecordsPlistPath];
+          skippedFileRecordsPlistPath2 = [userIncompleteRestoreDirectory2 stringByAppendingPathComponent:skippedFileRecordsPlistPath];
         }
 
         else
         {
-          v38 = [v71 skippedFileRecordsPlistPath];
+          skippedFileRecordsPlistPath2 = [v71 skippedFileRecordsPlistPath];
         }
 
-        if ([v70 fileExistsAtPath:{v38, v66}])
+        if ([v70 fileExistsAtPath:{skippedFileRecordsPlistPath2, v66}])
         {
           v45 = MBGetDefaultLog();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v86 = v38;
+            v86 = skippedFileRecordsPlistPath2;
             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Copying skipped file records plist (%@) to preferences", buf, 0xCu);
-            v67 = v38;
+            v67 = skippedFileRecordsPlistPath2;
             _MBLog();
           }
 
-          v46 = v38;
+          v46 = skippedFileRecordsPlistPath2;
           v47 = [NSData dataWithContentsOfFile:v46];
           if (v47)
           {
@@ -620,20 +620,20 @@ LABEL_17:
   [v57 setDate:v58];
 
   [v57 setWasCloudRestore:{objc_msgSend(v72, "isServiceEngine")}];
-  v59 = [v72 properties];
-  v60 = [v59 buildVersion];
-  [v57 setBackupBuildVersion:v60];
+  properties = [v72 properties];
+  buildVersion = [properties buildVersion];
+  [v57 setBackupBuildVersion:buildVersion];
 
   v61 = MBBuildVersion();
   [v57 setDeviceBuildVersion:v61];
 
-  v62 = [v57 dictionaryRepresentation];
-  [v75 setObject:v62 forKeyedSubscript:@"RestoreInfo"];
+  dictionaryRepresentation = [v57 dictionaryRepresentation];
+  [v75 setObject:dictionaryRepresentation forKeyedSubscript:@"RestoreInfo"];
 
   v5 = v70;
   if ([v72 isDeviceTransferEngine])
   {
-    [(MBDataMigratorPlugin *)v68 _updateDeviceTransferInfoWithPlist:v75];
+    [(MBDataMigratorPlugin *)selfCopy _updateDeviceTransferInfoWithPlist:v75];
   }
 
   v63 = MBGetDefaultLog();
@@ -662,11 +662,11 @@ LABEL_75:
   return v52;
 }
 
-- (id)_restoreDefaultsWithEngine:(id)a3
+- (id)_restoreDefaultsWithEngine:(id)engine
 {
-  v29 = a3;
-  v3 = [v29 persona];
-  v4 = [v3 copyPreferencesValueForKey:@"RestoredDefaults" class:objc_opt_class()];
+  engineCopy = engine;
+  persona = [engineCopy persona];
+  v4 = [persona copyPreferencesValueForKey:@"RestoredDefaults" class:objc_opt_class()];
 
   if (v4)
   {
@@ -727,9 +727,9 @@ LABEL_75:
               _MBLog();
             }
 
-            v19 = [v29 persona];
-            v20 = [v19 userRestoreDirectory];
-            v21 = [v20 stringByAppendingFormat:@"/var/mobile/Library/Preferences/%@.plist", v17];
+            persona2 = [engineCopy persona];
+            userRestoreDirectory = [persona2 userRestoreDirectory];
+            v21 = [userRestoreDirectory stringByAppendingFormat:@"/var/mobile/Library/Preferences/%@.plist", v17];
 
             v22 = [NSMutableDictionary dictionaryWithContentsOfFile:v21];
             if (!v22)
@@ -739,10 +739,10 @@ LABEL_75:
 
             [v22 setObject:v12 forKeyedSubscript:v16];
             [v22 writeToFile:v21 atomically:1];
-            v23 = [v21 fileSystemRepresentation];
+            fileSystemRepresentation = [v21 fileSystemRepresentation];
             v24 = MBMobileUID();
             v25 = MBMobileUID();
-            lchown(v23, v24, v25);
+            lchown(fileSystemRepresentation, v24, v25);
 
             v5 = v28;
             v9 = MBError_ptr;
@@ -765,30 +765,30 @@ LABEL_75:
   return 0;
 }
 
-+ (BOOL)setUpMobileBackupPreferencesForBackgroundRestoreWithAccount:(id)a3 restoreSession:(id)a4 cloudFormatInfo:(id)a5 performanceStatistics:(id)a6 backupPolicy:(int64_t)a7 error:(id *)a8
++ (BOOL)setUpMobileBackupPreferencesForBackgroundRestoreWithAccount:(id)account restoreSession:(id)session cloudFormatInfo:(id)info performanceStatistics:(id)statistics backupPolicy:(int64_t)policy error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13)
+  accountCopy = account;
+  sessionCopy = session;
+  infoCopy = info;
+  statisticsCopy = statistics;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBDataMigratorPlugin setUpMobileBackupPreferencesForBackgroundRestoreWithAccount:restoreSession:cloudFormatInfo:performanceStatistics:backupPolicy:error:]", "MBDataMigratorPlugin.m", 344, "account");
   }
 
-  v17 = v16;
-  v18 = [v13 persona];
-  if ([v18 isEnterprisePersona])
+  v17 = statisticsCopy;
+  persona = [accountCopy persona];
+  if ([persona isEnterprisePersona])
   {
-    [v18 setPreferencesValue:v15 forKey:@"RestoreCloudFormatInfo"];
-    v19 = [v14 propertyList];
-    [v18 setPreferencesValue:v19 forKey:@"RestoreSession"];
+    [persona setPreferencesValue:infoCopy forKey:@"RestoreCloudFormatInfo"];
+    propertyList = [sessionCopy propertyList];
+    [persona setPreferencesValue:propertyList forKey:@"RestoreSession"];
 
-    v20 = MBGetDefaultLog();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    userIncompleteRestoreDirectory = MBGetDefaultLog();
+    if (os_log_type_enabled(userIncompleteRestoreDirectory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Modified MobileBackup preferences at in-place for EDS Background Restore", buf, 2u);
+      _os_log_impl(&_mh_execute_header, userIncompleteRestoreDirectory, OS_LOG_TYPE_DEFAULT, "Modified MobileBackup preferences at in-place for EDS Background Restore", buf, 2u);
       _MBLog();
     }
 
@@ -797,14 +797,14 @@ LABEL_75:
 
   else
   {
-    v41 = a8;
-    v44 = v14;
-    v20 = [v18 userIncompleteRestoreDirectory];
-    v42 = [v20 stringByAppendingPathComponent:@"/var/mobile/Library/Preferences/com.apple.MobileBackup.plist"];
+    errorCopy = error;
+    v44 = sessionCopy;
+    userIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
+    v42 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/mobile/Library/Preferences/com.apple.MobileBackup.plist"];
     v22 = objc_opt_new();
     [v22 setObject:v17 forKeyedSubscript:@"ForegroundRestorePerformance"];
     v45 = 0;
-    v23 = [v18 getBooleanValueForKey:@"UseInheritBackupEndpoint" keyExists:&v45];
+    v23 = [persona getBooleanValueForKey:@"UseInheritBackupEndpoint" keyExists:&v45];
     if (v45)
     {
       v24 = [NSNumber numberWithUnsignedChar:v23];
@@ -813,27 +813,27 @@ LABEL_75:
 
     v43 = v17;
     v45 = 0;
-    v25 = [v18 getBooleanValueForKey:@"BackgroundRestoreTimeoutTTRInterval" keyExists:&v45];
+    v25 = [persona getBooleanValueForKey:@"BackgroundRestoreTimeoutTTRInterval" keyExists:&v45];
     if (v45)
     {
       v26 = [NSNumber numberWithInteger:v25];
       [v22 setObject:v26 forKeyedSubscript:@"BackgroundRestoreTimeoutTTRInterval"];
     }
 
-    v27 = [v18 copyPreferencesValueForKey:@"ForegroundRestoreCellularAccess" class:objc_opt_class()];
+    v27 = [persona copyPreferencesValueForKey:@"ForegroundRestoreCellularAccess" class:objc_opt_class()];
     if (v27)
     {
       [v22 setObject:v27 forKeyedSubscript:@"ForegroundRestoreCellularAccess"];
     }
 
-    v28 = [v18 copyPreferencesValueForKey:@"BackgroundRestoreCellularAccess" class:objc_opt_class()];
+    v28 = [persona copyPreferencesValueForKey:@"BackgroundRestoreCellularAccess" class:objc_opt_class()];
 
     if (v28)
     {
       [v22 setObject:v28 forKeyedSubscript:@"BackgroundRestoreCellularAccess"];
     }
 
-    if (a7 == 1)
+    if (policy == 1)
     {
       v29 = MBGetDefaultLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -844,28 +844,28 @@ LABEL_75:
       }
 
       [v22 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IsMegaBackupMode"];
-      v30 = [v18 copyPreferencesValueForKey:@"MegaBackupFlowStartDate" class:objc_opt_class()];
-      v31 = [v18 copyPreferencesValueForKey:@"RestoreFinishedAfterMegaBackupDateDelta" class:objc_opt_class()];
+      v30 = [persona copyPreferencesValueForKey:@"MegaBackupFlowStartDate" class:objc_opt_class()];
+      v31 = [persona copyPreferencesValueForKey:@"RestoreFinishedAfterMegaBackupDateDelta" class:objc_opt_class()];
       v32 = v31;
       if (v30 && !v31)
       {
         v33 = +[NSDate now];
         [v33 timeIntervalSinceDate:v30];
         v35 = [NSNumber numberWithInt:v34];
-        [v18 setPreferencesValue:v35 forKey:@"RestoreFinishedAfterMegaBackupDateDelta"];
+        [persona setPreferencesValue:v35 forKey:@"RestoreFinishedAfterMegaBackupDateDelta"];
       }
 
       v36 = +[MBCKManager sharedInstance];
-      [v36 submitMegaLifeCycleTelemetriesWithAccount:v13];
+      [v36 submitMegaLifeCycleTelemetriesWithAccount:accountCopy];
     }
 
-    [v22 setObject:v15 forKeyedSubscript:@"RestoreCloudFormatInfo"];
-    v14 = v44;
-    v37 = [v44 propertyList];
-    [v22 setObject:v37 forKeyedSubscript:@"RestoreSession"];
+    [v22 setObject:infoCopy forKeyedSubscript:@"RestoreCloudFormatInfo"];
+    sessionCopy = v44;
+    propertyList2 = [v44 propertyList];
+    [v22 setObject:propertyList2 forKeyedSubscript:@"RestoreSession"];
 
     v38 = +[NSFileManager defaultManager];
-    v21 = [v38 mb_savePlistAtPath:v42 addingItems:v22 removing:&off_1003E2270 error:v41];
+    v21 = [v38 mb_savePlistAtPath:v42 addingItems:v22 removing:&off_1003E2270 error:errorCopy];
 
     v17 = v43;
     if (v21)
@@ -879,7 +879,7 @@ LABEL_75:
         _MBLog();
       }
 
-      v14 = v44;
+      sessionCopy = v44;
     }
   }
 

@@ -17,22 +17,22 @@
 + (id)groupDirectory;
 + (id)historySettingsPath;
 + (id)historySyncedMarkerFile;
-+ (id)mapsApplicationContainerPathsWithInvalidationHandler:(id)a3;
++ (id)mapsApplicationContainerPathsWithInvalidationHandler:(id)handler;
 + (id)mapsDirectory;
 + (id)nanoDirectory;
 + (id)nanoHistorySettingsPath;
-+ (id)pathsAtLocation:(int64_t)a3;
++ (id)pathsAtLocation:(int64_t)location;
 + (id)pinsSettingsPath;
 + (id)reportAProblemDirectionsRecordingsPath;
 + (id)reportAProblemSearchRecordingsPath;
 + (id)routingAppLaunchRecordPath;
-- (BOOL)_deleteSyncedFileAtPath:(id)a3;
-- (BOOL)_shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:(id)a3;
+- (BOOL)_deleteSyncedFileAtPath:(id)path;
+- (BOOL)_shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:(id)path;
 - (BOOL)deleteFavoritesSyncedMarkerFile;
 - (BOOL)deleteHistorySyncedMarkerFile;
 - (BOOL)shouldSyncMergeFavoritesAfterCheckingOrCreatingMarkerFile;
 - (BOOL)shouldSyncMergeHistoryAfterCheckingOrCreatingMarkerFile;
-- (MSPMapsPaths)initWithLibraryDirectoryURL:(id)a3 groupLibraryURL:(id)a4 invalidationHandler:(id)a5;
+- (MSPMapsPaths)initWithLibraryDirectoryURL:(id)l groupLibraryURL:(id)rL invalidationHandler:(id)handler;
 - (NSString)bookmarksSettingsPath;
 - (NSString)cacheDirectory;
 - (NSString)directionsCachePath;
@@ -74,41 +74,41 @@
     goto LABEL_9;
   }
 
-  v6 = [v4 applicationState];
+  applicationState = [v4 applicationState];
 
-  if (!v6)
+  if (!applicationState)
   {
     goto LABEL_10;
   }
 
-  v7 = [v5 applicationState];
-  if (![v7 isInstalled])
+  applicationState2 = [v5 applicationState];
+  if (![applicationState2 isInstalled])
   {
     goto LABEL_8;
   }
 
-  v8 = [v5 applicationState];
-  if (([v8 isValid] & 1) == 0)
+  applicationState3 = [v5 applicationState];
+  if (([applicationState3 isValid] & 1) == 0)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v5 applicationState];
-  v10 = [v9 isRestricted];
+  applicationState4 = [v5 applicationState];
+  isRestricted = [applicationState4 isRestricted];
 
-  if ((v10 & 1) == 0)
+  if ((isRestricted & 1) == 0)
   {
-    v6 = [v5 dataContainerURL];
+    applicationState = [v5 dataContainerURL];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v6 = 0;
+  applicationState = 0;
 LABEL_10:
 
-  return v6;
+  return applicationState;
 }
 
 + (id)currentMapsGroupContainerURL
@@ -123,40 +123,40 @@ LABEL_10:
     goto LABEL_2;
   }
 
-  v7 = [v4 applicationState];
+  applicationState = [v4 applicationState];
 
-  if (!v7)
+  if (!applicationState)
   {
     goto LABEL_2;
   }
 
-  v8 = [v5 applicationState];
-  if (![v8 isInstalled])
+  applicationState2 = [v5 applicationState];
+  if (![applicationState2 isInstalled])
   {
 LABEL_9:
     v6 = 0;
     goto LABEL_10;
   }
 
-  v9 = [v5 applicationState];
-  if (([v9 isValid] & 1) == 0)
+  applicationState3 = [v5 applicationState];
+  if (([applicationState3 isValid] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v5 applicationState];
-  v11 = [v10 isRestricted];
+  applicationState4 = [v5 applicationState];
+  isRestricted = [applicationState4 isRestricted];
 
-  if (v11)
+  if (isRestricted)
   {
 LABEL_2:
     v6 = 0;
     goto LABEL_11;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v8 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
+  applicationState2 = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [applicationState2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
 LABEL_10:
 
 LABEL_11:
@@ -174,10 +174,10 @@ id __30__MSPMapsPaths_groupDirectory__block_invoke(uint64_t a1)
 
 - (NSString)homeDirectory
 {
-  v2 = [(NSURL *)self->_libraryURL URLByDeletingLastPathComponent];
-  v3 = [v2 path];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_libraryURL URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)groupDirectory
@@ -200,24 +200,24 @@ id __30__MSPMapsPaths_groupDirectory__block_invoke(uint64_t a1)
   return groupDirectory;
 }
 
-+ (id)mapsApplicationContainerPathsWithInvalidationHandler:(id)a3
++ (id)mapsApplicationContainerPathsWithInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 currentMapsApplicationContainerURL];
-  v6 = [a1 currentMapsGroupContainerURL];
+  handlerCopy = handler;
+  currentMapsApplicationContainerURL = [self currentMapsApplicationContainerURL];
+  currentMapsGroupContainerURL = [self currentMapsGroupContainerURL];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__MSPMapsPaths_mapsApplicationContainerPathsWithInvalidationHandler___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mapsApplicationContainerPathsWithInvalidationHandler__onceToken == -1)
   {
-    if (v5)
+    if (currentMapsApplicationContainerURL)
     {
 LABEL_3:
-      v7 = [v5 URLByAppendingPathComponent:@"Library" isDirectory:1];
-      v8 = [v6 URLByAppendingPathComponent:@"Library" isDirectory:1];
-      v9 = [[MSPMapsPaths alloc] initWithLibraryDirectoryURL:v7 groupLibraryURL:v8 invalidationHandler:v4];
+      v7 = [currentMapsApplicationContainerURL URLByAppendingPathComponent:@"Library" isDirectory:1];
+      v8 = [currentMapsGroupContainerURL URLByAppendingPathComponent:@"Library" isDirectory:1];
+      v9 = [[MSPMapsPaths alloc] initWithLibraryDirectoryURL:v7 groupLibraryURL:v8 invalidationHandler:handlerCopy];
 
       goto LABEL_6;
     }
@@ -226,7 +226,7 @@ LABEL_3:
   else
   {
     dispatch_once(&mapsApplicationContainerPathsWithInvalidationHandler__onceToken, block);
-    if (v5)
+    if (currentMapsApplicationContainerURL)
     {
       goto LABEL_3;
     }
@@ -248,17 +248,17 @@ void __69__MSPMapsPaths_mapsApplicationContainerPathsWithInvalidationHandler___b
   CFNotificationCenterAddObserver(v3, v4, MSPMapsPathsSourceApplicationsChangeCallback, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-+ (id)pathsAtLocation:(int64_t)a3
++ (id)pathsAtLocation:(int64_t)location
 {
-  if (a3)
+  if (location)
   {
-    if (a3 == 2)
+    if (location == 2)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __32__MSPMapsPaths_pathsAtLocation___block_invoke_2;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = a1;
+      block[4] = self;
       if (pathsAtLocation__onceToken_33 != -1)
       {
         dispatch_once(&pathsAtLocation__onceToken_33, block);
@@ -269,7 +269,7 @@ void __69__MSPMapsPaths_mapsApplicationContainerPathsWithInvalidationHandler___b
 
     else
     {
-      if (a3 != 1)
+      if (location != 1)
       {
         goto LABEL_14;
       }
@@ -278,7 +278,7 @@ void __69__MSPMapsPaths_mapsApplicationContainerPathsWithInvalidationHandler___b
       v7[1] = 3221225472;
       v7[2] = __32__MSPMapsPaths_pathsAtLocation___block_invoke;
       v7[3] = &__block_descriptor_40_e5_v8__0l;
-      v7[4] = a1;
+      v7[4] = self;
       if (pathsAtLocation__onceToken != -1)
       {
         dispatch_once(&pathsAtLocation__onceToken, v7);
@@ -294,7 +294,7 @@ void __69__MSPMapsPaths_mapsApplicationContainerPathsWithInvalidationHandler___b
     v5[1] = 3221225472;
     v5[2] = __32__MSPMapsPaths_pathsAtLocation___block_invoke_3;
     v5[3] = &__block_descriptor_40_e5_v8__0l;
-    v5[4] = a1;
+    v5[4] = self;
     if (pathsAtLocation__onceToken_35 != -1)
     {
       dispatch_once(&pathsAtLocation__onceToken_35, v5);
@@ -346,32 +346,32 @@ void __32__MSPMapsPaths_pathsAtLocation___block_invoke_3(uint64_t a1)
   pathsAtLocation__me_34 = v6;
 }
 
-- (MSPMapsPaths)initWithLibraryDirectoryURL:(id)a3 groupLibraryURL:(id)a4 invalidationHandler:(id)a5
+- (MSPMapsPaths)initWithLibraryDirectoryURL:(id)l groupLibraryURL:(id)rL invalidationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = MSPMapsPaths;
   v11 = [(MSPMapsPaths *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     libraryURL = v11->_libraryURL;
     v11->_libraryURL = v12;
 
-    v14 = [v9 copy];
+    v14 = [rLCopy copy];
     groupLibraryURL = v11->_groupLibraryURL;
     v11->_groupLibraryURL = v14;
 
-    v16 = [v10 copy];
+    v16 = [handlerCopy copy];
     invalidationHandler = v11->_invalidationHandler;
     v11->_invalidationHandler = v16;
 
     if (v11->_invalidationHandler)
     {
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v18 addObserver:v11 selector:sel__invalidate name:@"MSPMapsPathsAppContainerURLWasInvalidatedNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v11 selector:sel__invalidate name:@"MSPMapsPathsAppContainerURLWasInvalidatedNotification" object:0];
     }
   }
 
@@ -391,10 +391,10 @@ void __32__MSPMapsPaths_pathsAtLocation___block_invoke_3(uint64_t a1)
 
 + (id)mapsDirectory
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 mapsDirectory];
+  v2 = [self pathsAtLocation:0];
+  mapsDirectory = [v2 mapsDirectory];
 
-  return v3;
+  return mapsDirectory;
 }
 
 - (NSString)mapsDirectory
@@ -430,10 +430,10 @@ id __29__MSPMapsPaths_mapsDirectory__block_invoke(uint64_t a1)
 
 + (id)cacheDirectory
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 cacheDirectory];
+  v2 = [self pathsAtLocation:0];
+  cacheDirectory = [v2 cacheDirectory];
 
-  return v3;
+  return cacheDirectory;
 }
 
 - (NSString)cacheDirectory
@@ -469,18 +469,18 @@ id __30__MSPMapsPaths_cacheDirectory__block_invoke(uint64_t a1)
 
 + (id)groupDirectory
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 groupDirectory];
+  v2 = [self pathsAtLocation:0];
+  groupDirectory = [v2 groupDirectory];
 
-  return v3;
+  return groupDirectory;
 }
 
 + (id)nanoDirectory
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 nanoDirectory];
+  v2 = [self pathsAtLocation:0];
+  nanoDirectory = [v2 nanoDirectory];
 
-  return v3;
+  return nanoDirectory;
 }
 
 - (NSString)nanoDirectory
@@ -528,10 +528,10 @@ id __29__MSPMapsPaths_nanoDirectory__block_invoke()
 
 + (id)geoPinnedPlacesSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 geoPinnedPlacesSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  geoPinnedPlacesSettingsPath = [v2 geoPinnedPlacesSettingsPath];
 
-  return v3;
+  return geoPinnedPlacesSettingsPath;
 }
 
 - (NSString)geoPinnedPlacesSettingsPath
@@ -564,10 +564,10 @@ id __43__MSPMapsPaths_geoPinnedPlacesSettingsPath__block_invoke(uint64_t a1)
 
 + (id)geoCollectionsSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 geoCollectionsSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  geoCollectionsSettingsPath = [v2 geoCollectionsSettingsPath];
 
-  return v3;
+  return geoCollectionsSettingsPath;
 }
 
 - (NSString)geoCollectionsSettingsPath
@@ -600,10 +600,10 @@ id __42__MSPMapsPaths_geoCollectionsSettingsPath__block_invoke(uint64_t a1)
 
 + (id)bookmarksSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 bookmarksSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  bookmarksSettingsPath = [v2 bookmarksSettingsPath];
 
-  return v3;
+  return bookmarksSettingsPath;
 }
 
 - (NSString)bookmarksSettingsPath
@@ -636,10 +636,10 @@ id __37__MSPMapsPaths_bookmarksSettingsPath__block_invoke(uint64_t a1)
 
 + (id)geoBookmarksSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 geoBookmarksSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  geoBookmarksSettingsPath = [v2 geoBookmarksSettingsPath];
 
-  return v3;
+  return geoBookmarksSettingsPath;
 }
 
 - (NSString)geoBookmarksSettingsPath
@@ -672,10 +672,10 @@ id __40__MSPMapsPaths_geoBookmarksSettingsPath__block_invoke(uint64_t a1)
 
 + (id)directionsSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 directionsSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  directionsSettingsPath = [v2 directionsSettingsPath];
 
-  return v3;
+  return directionsSettingsPath;
 }
 
 - (NSString)directionsSettingsPath
@@ -708,10 +708,10 @@ id __38__MSPMapsPaths_directionsSettingsPath__block_invoke(uint64_t a1)
 
 + (id)historySettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 historySettingsPath];
+  v2 = [self pathsAtLocation:0];
+  historySettingsPath = [v2 historySettingsPath];
 
-  return v3;
+  return historySettingsPath;
 }
 
 - (NSString)historySettingsPath
@@ -744,10 +744,10 @@ id __35__MSPMapsPaths_historySettingsPath__block_invoke(uint64_t a1)
 
 + (id)geoHistorySettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 geoHistorySettingsPath];
+  v2 = [self pathsAtLocation:0];
+  geoHistorySettingsPath = [v2 geoHistorySettingsPath];
 
-  return v3;
+  return geoHistorySettingsPath;
 }
 
 - (NSString)geoHistorySettingsPath
@@ -780,10 +780,10 @@ id __38__MSPMapsPaths_geoHistorySettingsPath__block_invoke(uint64_t a1)
 
 + (id)nanoHistorySettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 nanoHistorySettingsPath];
+  v2 = [self pathsAtLocation:0];
+  nanoHistorySettingsPath = [v2 nanoHistorySettingsPath];
 
-  return v3;
+  return nanoHistorySettingsPath;
 }
 
 - (NSString)nanoHistorySettingsPath
@@ -816,10 +816,10 @@ id __39__MSPMapsPaths_nanoHistorySettingsPath__block_invoke(uint64_t a1)
 
 + (id)failedSearchesSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 failedSearchesSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  failedSearchesSettingsPath = [v2 failedSearchesSettingsPath];
 
-  return v3;
+  return failedSearchesSettingsPath;
 }
 
 - (NSString)failedSearchesSettingsPath
@@ -852,10 +852,10 @@ id __42__MSPMapsPaths_failedSearchesSettingsPath__block_invoke(uint64_t a1)
 
 + (id)failedGeoSearchesSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 failedGeoSearchesSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  failedGeoSearchesSettingsPath = [v2 failedGeoSearchesSettingsPath];
 
-  return v3;
+  return failedGeoSearchesSettingsPath;
 }
 
 - (NSString)failedGeoSearchesSettingsPath
@@ -888,10 +888,10 @@ id __45__MSPMapsPaths_failedGeoSearchesSettingsPath__block_invoke(uint64_t a1)
 
 + (id)failedDirectionsSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 failedDirectionsSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  failedDirectionsSettingsPath = [v2 failedDirectionsSettingsPath];
 
-  return v3;
+  return failedDirectionsSettingsPath;
 }
 
 - (NSString)failedDirectionsSettingsPath
@@ -924,10 +924,10 @@ id __44__MSPMapsPaths_failedDirectionsSettingsPath__block_invoke(uint64_t a1)
 
 + (id)failedGeoDirectionsSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 failedGeoDirectionsSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  failedGeoDirectionsSettingsPath = [v2 failedGeoDirectionsSettingsPath];
 
-  return v3;
+  return failedGeoDirectionsSettingsPath;
 }
 
 - (NSString)failedGeoDirectionsSettingsPath
@@ -960,10 +960,10 @@ id __47__MSPMapsPaths_failedGeoDirectionsSettingsPath__block_invoke(uint64_t a1)
 
 + (id)routingAppLaunchRecordPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 routingAppLaunchRecordPath];
+  v2 = [self pathsAtLocation:0];
+  routingAppLaunchRecordPath = [v2 routingAppLaunchRecordPath];
 
-  return v3;
+  return routingAppLaunchRecordPath;
 }
 
 - (NSString)routingAppLaunchRecordPath
@@ -996,10 +996,10 @@ id __42__MSPMapsPaths_routingAppLaunchRecordPath__block_invoke(uint64_t a1)
 
 + (id)directionsCachePath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 directionsCachePath];
+  v2 = [self pathsAtLocation:0];
+  directionsCachePath = [v2 directionsCachePath];
 
-  return v3;
+  return directionsCachePath;
 }
 
 - (NSString)directionsCachePath
@@ -1032,10 +1032,10 @@ id __35__MSPMapsPaths_directionsCachePath__block_invoke(uint64_t a1)
 
 + (id)pinsSettingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 pinsSettingsPath];
+  v2 = [self pathsAtLocation:0];
+  pinsSettingsPath = [v2 pinsSettingsPath];
 
-  return v3;
+  return pinsSettingsPath;
 }
 
 - (NSString)pinsSettingsPath
@@ -1068,10 +1068,10 @@ id __32__MSPMapsPaths_pinsSettingsPath__block_invoke(uint64_t a1)
 
 + (id)reportAProblemDirectionsRecordingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 reportAProblemDirectionsRecordingsPath];
+  v2 = [self pathsAtLocation:0];
+  reportAProblemDirectionsRecordingsPath = [v2 reportAProblemDirectionsRecordingsPath];
 
-  return v3;
+  return reportAProblemDirectionsRecordingsPath;
 }
 
 - (NSString)reportAProblemDirectionsRecordingsPath
@@ -1105,10 +1105,10 @@ id __54__MSPMapsPaths_reportAProblemDirectionsRecordingsPath__block_invoke(uint6
 
 + (id)reportAProblemSearchRecordingsPath
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 reportAProblemSearchRecordingsPath];
+  v2 = [self pathsAtLocation:0];
+  reportAProblemSearchRecordingsPath = [v2 reportAProblemSearchRecordingsPath];
 
-  return v3;
+  return reportAProblemSearchRecordingsPath;
 }
 
 - (NSString)reportAProblemSearchRecordingsPath
@@ -1142,10 +1142,10 @@ id __50__MSPMapsPaths_reportAProblemSearchRecordingsPath__block_invoke(uint64_t 
 
 + (id)favoritesSyncedMarkerFile
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 favoritesSyncedMarkerFile];
+  v2 = [self pathsAtLocation:0];
+  favoritesSyncedMarkerFile = [v2 favoritesSyncedMarkerFile];
 
-  return v3;
+  return favoritesSyncedMarkerFile;
 }
 
 - (NSString)favoritesSyncedMarkerFile
@@ -1178,10 +1178,10 @@ id __41__MSPMapsPaths_favoritesSyncedMarkerFile__block_invoke(uint64_t a1)
 
 + (id)historySyncedMarkerFile
 {
-  v2 = [a1 pathsAtLocation:0];
-  v3 = [v2 historySyncedMarkerFile];
+  v2 = [self pathsAtLocation:0];
+  historySyncedMarkerFile = [v2 historySyncedMarkerFile];
 
-  return v3;
+  return historySyncedMarkerFile;
 }
 
 - (NSString)historySyncedMarkerFile
@@ -1212,44 +1212,44 @@ id __39__MSPMapsPaths_historySyncedMarkerFile__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)_shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:(id)a3
+- (BOOL)_shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   v6 = [v5 checkResourceIsReachableAndReturnError:0];
   if ((v6 & 1) == 0)
   {
-    v7 = [v5 path];
-    v8 = [MEMORY[0x277CBEA90] data];
-    v9 = [v4 createFileAtPath:v7 contents:v8 attributes:0];
+    path = [v5 path];
+    data = [MEMORY[0x277CBEA90] data];
+    v9 = [defaultManager createFileAtPath:path contents:data attributes:0];
 
-    v10 = [v5 path];
-    v11 = MSPExcludePathFromBackup(v10);
+    path2 = [v5 path];
+    v11 = MSPExcludePathFromBackup(path2);
 
     if (!v9 || (v11 & 1) == 0)
     {
-      v12 = [v5 path];
-      [v4 removeItemAtPath:v12 error:0];
+      path3 = [v5 path];
+      [defaultManager removeItemAtPath:path3 error:0];
 
-      NSLog(&cfstr_CouldnTSetNoBa.isa, v3);
+      NSLog(&cfstr_CouldnTSetNoBa.isa, pathCopy);
     }
   }
 
   return v6 ^ 1;
 }
 
-- (BOOL)_deleteSyncedFileAtPath:(id)a3
+- (BOOL)_deleteSyncedFileAtPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
 
   if ([v6 checkResourceIsReachableAndReturnError:0])
   {
     v11 = 0;
-    v7 = [v5 removeItemAtURL:v6 error:&v11];
+    v7 = [defaultManager removeItemAtURL:v6 error:&v11];
     v8 = v11;
     v9 = v8;
     if (v8)
@@ -1268,38 +1268,38 @@ id __39__MSPMapsPaths_historySyncedMarkerFile__block_invoke(uint64_t a1)
 
 - (BOOL)shouldSyncMergeFavoritesAfterCheckingOrCreatingMarkerFile
 {
-  v2 = self;
-  v3 = [(MSPMapsPaths *)self favoritesSyncedMarkerFile];
-  LOBYTE(v2) = [(MSPMapsPaths *)v2 _shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:v3];
+  selfCopy = self;
+  favoritesSyncedMarkerFile = [(MSPMapsPaths *)self favoritesSyncedMarkerFile];
+  LOBYTE(selfCopy) = [(MSPMapsPaths *)selfCopy _shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:favoritesSyncedMarkerFile];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)deleteFavoritesSyncedMarkerFile
 {
-  v2 = self;
-  v3 = [(MSPMapsPaths *)self favoritesSyncedMarkerFile];
-  LOBYTE(v2) = [(MSPMapsPaths *)v2 _deleteSyncedFileAtPath:v3];
+  selfCopy = self;
+  favoritesSyncedMarkerFile = [(MSPMapsPaths *)self favoritesSyncedMarkerFile];
+  LOBYTE(selfCopy) = [(MSPMapsPaths *)selfCopy _deleteSyncedFileAtPath:favoritesSyncedMarkerFile];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)shouldSyncMergeHistoryAfterCheckingOrCreatingMarkerFile
 {
-  v2 = self;
-  v3 = [(MSPMapsPaths *)self historySyncedMarkerFile];
-  LOBYTE(v2) = [(MSPMapsPaths *)v2 _shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:v3];
+  selfCopy = self;
+  historySyncedMarkerFile = [(MSPMapsPaths *)self historySyncedMarkerFile];
+  LOBYTE(selfCopy) = [(MSPMapsPaths *)selfCopy _shouldSyncMergeAfterCheckingOrCreatingMarkerFileAtPath:historySyncedMarkerFile];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)deleteHistorySyncedMarkerFile
 {
-  v2 = self;
-  v3 = [(MSPMapsPaths *)self historySyncedMarkerFile];
-  LOBYTE(v2) = [(MSPMapsPaths *)v2 _deleteSyncedFileAtPath:v3];
+  selfCopy = self;
+  historySyncedMarkerFile = [(MSPMapsPaths *)self historySyncedMarkerFile];
+  LOBYTE(selfCopy) = [(MSPMapsPaths *)selfCopy _deleteSyncedFileAtPath:historySyncedMarkerFile];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

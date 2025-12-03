@@ -3,7 +3,7 @@
 - (CGPoint)modelPointerReferencePosition;
 - (CGRect)contentBounds;
 - (PUIDPointerState)init;
-- (id)_pointerStateCopyWithClass:(Class)a3;
+- (id)_pointerStateCopyWithClass:(Class)class;
 @end
 
 @implementation PUIDPointerState
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (id)_pointerStateCopyWithClass:(Class)a3
+- (id)_pointerStateCopyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {

@@ -1,22 +1,22 @@
 @interface SearchResultsImpressionMetadata
-- (SearchResultsImpressionMetadata)initWithResultIndex:(unint64_t)a3 businessId:(unint64_t)a4 localSearchProviderId:(unsigned int)a5 query:(id)a6;
+- (SearchResultsImpressionMetadata)initWithResultIndex:(unint64_t)index businessId:(unint64_t)id localSearchProviderId:(unsigned int)providerId query:(id)query;
 @end
 
 @implementation SearchResultsImpressionMetadata
 
-- (SearchResultsImpressionMetadata)initWithResultIndex:(unint64_t)a3 businessId:(unint64_t)a4 localSearchProviderId:(unsigned int)a5 query:(id)a6
+- (SearchResultsImpressionMetadata)initWithResultIndex:(unint64_t)index businessId:(unint64_t)id localSearchProviderId:(unsigned int)providerId query:(id)query
 {
-  v10 = a6;
+  queryCopy = query;
   v16.receiver = self;
   v16.super_class = SearchResultsImpressionMetadata;
   v11 = [(SearchResultsImpressionMetadata *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_resultIndex = a3;
-    v11->_businessId = a4;
-    v11->_localSearchProviderId = a5;
-    v13 = [v10 copy];
+    v11->_resultIndex = index;
+    v11->_businessId = id;
+    v11->_localSearchProviderId = providerId;
+    v13 = [queryCopy copy];
     query = v12->_query;
     v12->_query = v13;
 

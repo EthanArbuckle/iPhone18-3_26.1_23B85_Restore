@@ -1,6 +1,6 @@
 @interface MTRModeSelectClusterSemanticTagStruct
 - (MTRModeSelectClusterSemanticTagStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRModeSelectClusterSemanticTagStruct);
-  v5 = [(MTRModeSelectClusterSemanticTagStruct *)self mfgCode];
-  [(MTRModeSelectClusterSemanticTagStruct *)v4 setMfgCode:v5];
+  mfgCode = [(MTRModeSelectClusterSemanticTagStruct *)self mfgCode];
+  [(MTRModeSelectClusterSemanticTagStruct *)v4 setMfgCode:mfgCode];
 
-  v6 = [(MTRModeSelectClusterSemanticTagStruct *)self value];
-  [(MTRModeSelectClusterSemanticTagStruct *)v4 setValue:v6];
+  value = [(MTRModeSelectClusterSemanticTagStruct *)self value];
+  [(MTRModeSelectClusterSemanticTagStruct *)v4 setValue:value];
 
   return v4;
 }

@@ -1,13 +1,13 @@
 @interface PSUICellularPlanLabelListController
-- (id)createCustomUserLabelSpecifier:(BOOL)a3 planItem:(id)a4;
-- (id)getPlanCustomLabel:(id)a3;
+- (id)createCustomUserLabelSpecifier:(BOOL)specifier planItem:(id)item;
+- (id)getPlanCustomLabel:(id)label;
 - (id)specifiers;
 - (void)createCustomUserLabelGroupSpecifierIfNeeded;
 - (void)createLabelGroupSpecifierIfNeeded;
-- (void)setLabelAsSelectedLabel:(id)a3;
-- (void)setPlanCustomLabel:(id)a3 forSpecifier:(id)a4;
-- (void)updateNavigationBarTitle:(id)a3;
-- (void)userSelectedCustomUserLabel:(id)a3;
+- (void)setLabelAsSelectedLabel:(id)label;
+- (void)setPlanCustomLabel:(id)label forSpecifier:(id)specifier;
+- (void)updateNavigationBarTitle:(id)title;
+- (void)userSelectedCustomUserLabel:(id)label;
 @end
 
 @implementation PSUICellularPlanLabelListController
@@ -19,12 +19,12 @@
   if (!v3)
   {
     v40 = *MEMORY[0x277D3FC48];
-    v4 = [(PSUICellularPlanLabelListController *)self getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularPlanLabelListController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v53 = "[PSUICellularPlanLabelListController specifiers]";
-      _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s (re)loading specifiers", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s (re)loading specifiers", buf, 0xCu);
     }
 
     v5 = objc_opt_new();
@@ -34,13 +34,13 @@
       planReference = self->_planReference;
       self->_planReference = v6;
 
-      v8 = [(PSUICellularPlanLabelListController *)self getLogger];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICellularPlanLabelListController *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         v9 = self->_planReference;
         *buf = 138412290;
         v53 = v9;
-        _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "initializing label picker with plan reference: %@", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "initializing label picker with plan reference: %@", buf, 0xCu);
       }
     }
 
@@ -49,13 +49,13 @@
 
     [(PSUICellularPlanLabelListController *)self updateNavigationBarTitle:v11];
     v12 = +[PSUICellularPlanManagerCache sharedInstance];
-    v13 = [v12 predefinedLabels];
+    predefinedLabels = [v12 predefinedLabels];
     predefinedLabels = self->_predefinedLabels;
-    self->_predefinedLabels = v13;
+    self->_predefinedLabels = predefinedLabels;
 
     v43 = v11;
-    v15 = [v11 userLabel];
-    v46 = [v15 indexInPredefinedLabels:self->_predefinedLabels];
+    userLabel = [v11 userLabel];
+    v46 = [userLabel indexInPredefinedLabels:self->_predefinedLabels];
 
     [(PSUICellularPlanLabelListController *)self createLabelGroupSpecifierIfNeeded];
     [v5 addObject:self->_labelGroupSpecifier];
@@ -82,8 +82,8 @@
 
           v19 = *(*(&v47 + 1) + 8 * i);
           v20 = MEMORY[0x277D3FAD8];
-          v21 = [v19 label];
-          v22 = [v20 preferenceSpecifierNamed:v21 target:self set:0 get:0 detail:0 cell:3 edit:0];
+          label = [v19 label];
+          v22 = [v20 preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:3 edit:0];
 
           v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v19, "indexInPredefinedLabels:", self->_predefinedLabels)}];
           [v22 setProperty:v23 forKey:@"PSCellularPlanLabelIndexKey"];
@@ -93,9 +93,9 @@
           [v5 addObject:v22];
           if (v46 != -1)
           {
-            v24 = [v43 userLabel];
+            userLabel2 = [v43 userLabel];
             v25 = v5;
-            v26 = [v24 indexInPredefinedLabels:self->_predefinedLabels];
+            v26 = [userLabel2 indexInPredefinedLabels:self->_predefinedLabels];
             v27 = [v19 indexInPredefinedLabels:self->_predefinedLabels];
 
             v28 = v26 == v27;
@@ -125,10 +125,10 @@
     [v5 addObject:v33];
     if (v46 == -1)
     {
-      v34 = [v43 userLabel];
-      v35 = [v34 label];
+      userLabel3 = [v43 userLabel];
+      label2 = [userLabel3 label];
       validatedCustomLabelText = self->_validatedCustomLabelText;
-      self->_validatedCustomLabelText = v35;
+      self->_validatedCustomLabelText = label2;
 
       [(PSSpecifier *)self->_customUserLabelGroupSpecifier setProperty:v29 forKey:*MEMORY[0x277D40090]];
     }
@@ -145,22 +145,22 @@
   return v3;
 }
 
-- (void)updateNavigationBarTitle:(id)a3
+- (void)updateNavigationBarTitle:(id)title
 {
-  v11 = a3;
+  titleCopy = title;
   v4 = +[PSUICellularPlanManagerCache sharedInstance];
-  v5 = [v4 subscriptionContextForPlanItem:v11 cachedSubscriptionContexts:0];
+  v5 = [v4 subscriptionContextForPlanItem:titleCopy cachedSubscriptionContexts:0];
 
   if (v5)
   {
-    v6 = [v11 phoneNumber];
-    v7 = [v6 length];
+    phoneNumber = [titleCopy phoneNumber];
+    v7 = [phoneNumber length];
 
     if (v7)
     {
       v8 = +[PSUICoreTelephonyCallCache sharedInstance];
-      v9 = [v11 phoneNumber];
-      v10 = [v8 localizedPhoneNumber:v9 context:v5];
+      phoneNumber2 = [titleCopy phoneNumber];
+      v10 = [v8 localizedPhoneNumber:phoneNumber2 context:v5];
 
       if (v10)
       {
@@ -205,22 +205,22 @@
   }
 }
 
-- (id)createCustomUserLabelSpecifier:(BOOL)a3 planItem:(id)a4
+- (id)createCustomUserLabelSpecifier:(BOOL)specifier planItem:(id)item
 {
-  v4 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  itemCopy = item;
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [v7 localizedStringForKey:@"DEFAULT_CUSTOM_LABEL" value:&stru_287733598 table:@"Gemini-Gemini"];
+  userLabel2 = [v7 localizedStringForKey:@"DEFAULT_CUSTOM_LABEL" value:&stru_287733598 table:@"Gemini-Gemini"];
 
-  if (v4)
+  if (specifierCopy)
   {
-    v9 = [v6 userLabel];
-    v10 = [v9 label];
+    userLabel = [itemCopy userLabel];
+    label = [userLabel label];
 
-    v8 = [v6 userLabel];
-    v11 = [v8 label];
+    userLabel2 = [itemCopy userLabel];
+    label2 = [userLabel2 label];
     validatedCustomLabelText = self->_validatedCustomLabelText;
-    self->_validatedCustomLabelText = v11;
+    self->_validatedCustomLabelText = label2;
   }
 
   else
@@ -231,33 +231,33 @@
       goto LABEL_6;
     }
 
-    v10 = v13;
+    label = v13;
   }
 
-  v8 = v10;
+  userLabel2 = label;
 LABEL_6:
-  v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:userLabel2 target:self set:0 get:0 detail:0 cell:3 edit:0];
   [v14 setProperty:&unk_287748F78 forKey:*MEMORY[0x277D40078]];
   [v14 setButtonAction:sel_userSelectedCustomUserLabel_];
 
   return v14;
 }
 
-- (void)setLabelAsSelectedLabel:(id)a3
+- (void)setLabelAsSelectedLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = +[PSUICellularPlanManagerCache sharedInstance];
   v13 = [v5 planFromReference:self->_planReference];
 
-  v6 = [v4 propertyForKey:@"PSCellularPlanLabelIndexKey"];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [labelCopy propertyForKey:@"PSCellularPlanLabelIndexKey"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v8 = +[PSUICellularPlanManagerCache sharedInstance];
-  v9 = [(NSArray *)self->_predefinedLabels objectAtIndexedSubscript:v7];
+  v9 = [(NSArray *)self->_predefinedLabels objectAtIndexedSubscript:unsignedIntegerValue];
   [v8 setLabel:v9 forPlan:v13];
 
   v10 = *MEMORY[0x277D40090];
-  [(PSSpecifier *)self->_labelGroupSpecifier setProperty:v4 forKey:*MEMORY[0x277D40090]];
+  [(PSSpecifier *)self->_labelGroupSpecifier setProperty:labelCopy forKey:*MEMORY[0x277D40090]];
 
   v11 = [(PSSpecifier *)self->_customUserLabelGroupSpecifier propertyForKey:v10];
   v12 = [v11 propertyForKey:*MEMORY[0x277D40148]];
@@ -267,7 +267,7 @@ LABEL_6:
   [(PSUICellularPlanLabelListController *)self reloadSpecifiers];
 }
 
-- (id)getPlanCustomLabel:(id)a3
+- (id)getPlanCustomLabel:(id)label
 {
   validatedCustomLabelText = self->_validatedCustomLabelText;
   if (validatedCustomLabelText)
@@ -283,13 +283,13 @@ LABEL_6:
   return v5;
 }
 
-- (void)setPlanCustomLabel:(id)a3 forSpecifier:(id)a4
+- (void)setPlanCustomLabel:(id)label forSpecifier:(id)specifier
 {
-  v22 = a4;
+  specifierCopy = specifier;
   v6 = MEMORY[0x277CCA900];
-  v7 = a3;
-  v8 = [v6 whitespaceCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  labelCopy = label;
+  whitespaceCharacterSet = [v6 whitespaceCharacterSet];
+  v9 = [labelCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v9 length])
   {
@@ -325,7 +325,7 @@ LABEL_6:
     [v21 setChecked:0];
     [v21 setValue:0];
     [(PSSpecifier *)self->_labelGroupSpecifier setProperty:0 forKey:v19];
-    [(PSSpecifier *)self->_customUserLabelGroupSpecifier setProperty:v22 forKey:v19];
+    [(PSSpecifier *)self->_customUserLabelGroupSpecifier setProperty:specifierCopy forKey:v19];
   }
 
   else
@@ -337,9 +337,9 @@ LABEL_6:
   [(PSUICellularPlanLabelListController *)self reloadSpecifiers];
 }
 
-- (void)userSelectedCustomUserLabel:(id)a3
+- (void)userSelectedCustomUserLabel:(id)label
 {
-  v14 = a3;
+  labelCopy = label;
   if (!self->_validatedCustomLabelText)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -360,7 +360,7 @@ LABEL_6:
   [v13 setChecked:0];
   [v13 setValue:0];
   [(PSSpecifier *)self->_labelGroupSpecifier setProperty:0 forKey:v11];
-  [(PSSpecifier *)self->_customUserLabelGroupSpecifier setProperty:v14 forKey:v11];
+  [(PSSpecifier *)self->_customUserLabelGroupSpecifier setProperty:labelCopy forKey:v11];
   [(PSUICellularPlanLabelListController *)self reloadSpecifiers];
 }
 

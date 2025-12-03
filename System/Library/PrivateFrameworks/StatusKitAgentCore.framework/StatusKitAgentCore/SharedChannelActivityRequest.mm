@@ -1,50 +1,50 @@
 @interface SharedChannelActivityRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequest:(id)a3;
+- (int)StringAsRequest:(id)request;
 - (int)request;
 - (unint64_t)hash;
 - (void)clearOneofValuesForRequest;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setActivationRequest:(id)a3;
-- (void)setDeactivationRequest:(id)a3;
-- (void)setPollingRequest:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setActivationRequest:(id)request;
+- (void)setDeactivationRequest:(id)request;
+- (void)setPollingRequest:(id)request;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SharedChannelActivityRequest
 
-- (void)setActivationRequest:(id)a3
+- (void)setActivationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(SharedChannelActivityRequest *)self clearOneofValuesForRequest];
   *&self->_has |= 1u;
   self->_request = 1;
   activationRequest = self->_activationRequest;
-  self->_activationRequest = v4;
+  self->_activationRequest = requestCopy;
 }
 
-- (void)setDeactivationRequest:(id)a3
+- (void)setDeactivationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(SharedChannelActivityRequest *)self clearOneofValuesForRequest];
   *&self->_has |= 1u;
   self->_request = 2;
   deactivationRequest = self->_deactivationRequest;
-  self->_deactivationRequest = v4;
+  self->_deactivationRequest = requestCopy;
 }
 
-- (void)setPollingRequest:(id)a3
+- (void)setPollingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(SharedChannelActivityRequest *)self clearOneofValuesForRequest];
   *&self->_has |= 1u;
   self->_request = 3;
   pollingRequest = self->_pollingRequest;
-  self->_pollingRequest = v4;
+  self->_pollingRequest = requestCopy;
 }
 
 - (int)request
@@ -60,25 +60,25 @@
   }
 }
 
-- (int)StringAsRequest:(id)a3
+- (int)StringAsRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  requestCopy = request;
+  if ([requestCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"activation_request"])
+  else if ([requestCopy isEqualToString:@"activation_request"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"deactivation_request"])
+  else if ([requestCopy isEqualToString:@"deactivation_request"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"polling_request"])
+  else if ([requestCopy isEqualToString:@"polling_request"])
   {
     v4 = 3;
   }
@@ -111,34 +111,34 @@
   v8.receiver = self;
   v8.super_class = SharedChannelActivityRequest;
   v4 = [(SharedChannelActivityRequest *)&v8 description];
-  v5 = [(SharedChannelActivityRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SharedChannelActivityRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   activationRequest = self->_activationRequest;
   if (activationRequest)
   {
-    v5 = [(ChannelActivityActivationRequest *)activationRequest dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"activation_request"];
+    dictionaryRepresentation = [(ChannelActivityActivationRequest *)activationRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"activation_request"];
   }
 
   deactivationRequest = self->_deactivationRequest;
   if (deactivationRequest)
   {
-    v7 = [(ChannelActivityDeactivationRequest *)deactivationRequest dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"deactivation_request"];
+    dictionaryRepresentation2 = [(ChannelActivityDeactivationRequest *)deactivationRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"deactivation_request"];
   }
 
   pollingRequest = self->_pollingRequest;
   if (pollingRequest)
   {
-    v9 = [(ChannelActivityPollingRequest *)pollingRequest dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"polling_request"];
+    dictionaryRepresentation3 = [(ChannelActivityPollingRequest *)pollingRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"polling_request"];
   }
 
   if (*&self->_has)
@@ -154,67 +154,67 @@
       v11 = off_27843E078[request];
     }
 
-    [v3 setObject:v11 forKey:@"request"];
+    [dictionary setObject:v11 forKey:@"request"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_activationRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deactivationRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_pollingRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_request;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_request;
+    *(toCopy + 36) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_activationRequest)
   {
-    [v4 setActivationRequest:?];
-    v4 = v5;
+    [toCopy setActivationRequest:?];
+    toCopy = v5;
   }
 
   if (self->_deactivationRequest)
   {
     [v5 setDeactivationRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_pollingRequest)
   {
     [v5 setPollingRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -222,39 +222,39 @@
     *(v5 + 36) |= 1u;
   }
 
-  v7 = [(ChannelActivityActivationRequest *)self->_activationRequest copyWithZone:a3];
+  v7 = [(ChannelActivityActivationRequest *)self->_activationRequest copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(ChannelActivityDeactivationRequest *)self->_deactivationRequest copyWithZone:a3];
+  v9 = [(ChannelActivityDeactivationRequest *)self->_deactivationRequest copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(ChannelActivityPollingRequest *)self->_pollingRequest copyWithZone:a3];
+  v11 = [(ChannelActivityPollingRequest *)self->_pollingRequest copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_request != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_request != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -262,13 +262,13 @@ LABEL_13:
   }
 
   activationRequest = self->_activationRequest;
-  if (activationRequest | *(v4 + 1) && ![(ChannelActivityActivationRequest *)activationRequest isEqual:?])
+  if (activationRequest | *(equalCopy + 1) && ![(ChannelActivityActivationRequest *)activationRequest isEqual:?])
   {
     goto LABEL_13;
   }
 
   deactivationRequest = self->_deactivationRequest;
-  if (deactivationRequest | *(v4 + 2))
+  if (deactivationRequest | *(equalCopy + 2))
   {
     if (![(ChannelActivityDeactivationRequest *)deactivationRequest isEqual:?])
     {
@@ -277,7 +277,7 @@ LABEL_13:
   }
 
   pollingRequest = self->_pollingRequest;
-  if (pollingRequest | *(v4 + 3))
+  if (pollingRequest | *(equalCopy + 3))
   {
     v9 = [(ChannelActivityPollingRequest *)pollingRequest isEqual:?];
   }
@@ -309,13 +309,13 @@ LABEL_14:
   return v4 ^ v5 ^ [(ChannelActivityPollingRequest *)self->_pollingRequest hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 36))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 36))
   {
-    self->_request = *(v4 + 8);
+    self->_request = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 

@@ -1,7 +1,7 @@
 @interface HoverTextServiceAXUIService
 - (_TtC17HoverTextServices27HoverTextServiceAXUIService)init;
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 @end
 
 @implementation HoverTextServiceAXUIService
@@ -16,18 +16,18 @@
   return [(HoverTextServiceAXUIService *)&v3 init];
 }
 
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier
 {
-  v4 = [objc_opt_self() mainAccessQueue];
+  mainAccessQueue = [objc_opt_self() mainAccessQueue];
 
-  return v4;
+  return mainAccessQueue;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  sub_254610C2C(a3);
+  clientCopy = client;
+  selfCopy = self;
+  sub_254610C2C(client);
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface PHBrandedCallingSwitchSpecifier
-- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)a3 context:(id)a4;
-- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)a3 context:(id)a4 carrierName:(id)a5;
+- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)client context:(id)context;
+- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)client context:(id)context carrierName:(id)name;
 - (id)getBrandedCallingEnabled;
 - (void)getBrandedCallingEnabled;
-- (void)setBrandedCallingEnabled:(id)a3;
+- (void)setBrandedCallingEnabled:(id)enabled;
 @end
 
 @implementation PHBrandedCallingSwitchSpecifier
 
-- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)a3 context:(id)a4
+- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)client context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  contextCopy = context;
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"BRANDED_CALLING_SPECIFIER_TITLE" value:&stru_282D54710 table:@"CallDirectorySettings"];
   v17.receiver = self;
@@ -20,8 +20,8 @@
 
   if (v11)
   {
-    objc_storeStrong(&v11->_ctClient, a3);
-    objc_storeStrong(&v11->_context, a4);
+    objc_storeStrong(&v11->_ctClient, client);
+    objc_storeStrong(&v11->_context, context);
     v12 = objc_alloc_init(MEMORY[0x277D6EED8]);
     featureFlags = v11->_featureFlags;
     v11->_featureFlags = v12;
@@ -37,22 +37,22 @@
   return v11;
 }
 
-- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)a3 context:(id)a4 carrierName:(id)a5
+- (PHBrandedCallingSwitchSpecifier)initWithCoreTelephonyClient:(id)client context:(id)context carrierName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 label];
+  clientCopy = client;
+  contextCopy = context;
+  nameCopy = name;
+  label = [contextCopy label];
   v19.receiver = self;
   v19.super_class = PHBrandedCallingSwitchSpecifier;
-  v13 = [(PHBrandedCallingSwitchSpecifier *)&v19 initWithName:v12 target:self set:sel_setBrandedCallingEnabled_ get:sel_getBrandedCallingEnabled detail:0 cell:6 edit:0];
+  v13 = [(PHBrandedCallingSwitchSpecifier *)&v19 initWithName:label target:self set:sel_setBrandedCallingEnabled_ get:sel_getBrandedCallingEnabled detail:0 cell:6 edit:0];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_ctClient, a3);
-    objc_storeStrong(&v13->_context, a4);
+    objc_storeStrong(&v13->_ctClient, client);
+    objc_storeStrong(&v13->_context, context);
     [(PHBrandedCallingSwitchSpecifier *)v13 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [(PHBrandedCallingSwitchSpecifier *)v13 setProperty:v11 forKey:*MEMORY[0x277D40160]];
+    [(PHBrandedCallingSwitchSpecifier *)v13 setProperty:nameCopy forKey:*MEMORY[0x277D40160]];
     v14 = objc_alloc_init(MEMORY[0x277D6EED8]);
     featureFlags = v13->_featureFlags;
     v13->_featureFlags = v14;
@@ -71,15 +71,15 @@
 - (id)getBrandedCallingEnabled
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(PHBrandedCallingSwitchSpecifier *)self featureFlags];
-  v4 = [v3 deviceExpertMigrationEnabled];
+  featureFlags = [(PHBrandedCallingSwitchSpecifier *)self featureFlags];
+  deviceExpertMigrationEnabled = [featureFlags deviceExpertMigrationEnabled];
 
-  if (v4)
+  if (deviceExpertMigrationEnabled)
   {
     v5 = [(CTXPCServiceSubscriptionContext *)self->_context slotID]== 1;
     v6 = MEMORY[0x277CCABB0];
-    v7 = [(PHBrandedCallingSwitchSpecifier *)self configurationProvider];
-    v8 = [v6 numberWithBool:{objc_msgSend(v7, "isBrandedCallingEnabled:", v5)}];
+    configurationProvider = [(PHBrandedCallingSwitchSpecifier *)self configurationProvider];
+    v8 = [v6 numberWithBool:{objc_msgSend(configurationProvider, "isBrandedCallingEnabled:", v5)}];
   }
 
   else
@@ -130,20 +130,20 @@
   return v8;
 }
 
-- (void)setBrandedCallingEnabled:(id)a3
+- (void)setBrandedCallingEnabled:(id)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   if ([(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled])
   {
     v5 = [(CTXPCServiceSubscriptionContext *)self->_context slotID]== 1;
-    v6 = [(PHBrandedCallingSwitchSpecifier *)self configurationProvider];
-    [v6 setBrandedCallingEnabled:objc_msgSend(v4 primary:{"BOOLValue"), v5}];
+    configurationProvider = [(PHBrandedCallingSwitchSpecifier *)self configurationProvider];
+    [configurationProvider setBrandedCallingEnabled:objc_msgSend(enabledCopy primary:{"BOOLValue"), v5}];
   }
 
   else
   {
-    v7 = -[CoreTelephonyClient context:setCapability:enabled:with:](self->_ctClient, "context:setCapability:enabled:with:", self->_context, *MEMORY[0x277CC3808], [v4 BOOLValue], 0);
+    v7 = -[CoreTelephonyClient context:setCapability:enabled:with:](self->_ctClient, "context:setCapability:enabled:with:", self->_context, *MEMORY[0x277CC3808], [enabledCopy BOOLValue], 0);
     v8 = TPSLog();
     v9 = v8;
     if (v7)
@@ -157,9 +157,9 @@
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       context = self->_context;
-      v11 = [v4 BOOLValue];
+      bOOLValue = [enabledCopy BOOLValue];
       v12 = @"Off";
-      if (v11)
+      if (bOOLValue)
       {
         v12 = @"On";
       }
@@ -178,7 +178,7 @@
 - (void)getBrandedCallingEnabled
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_21B8E9000, a2, OS_LOG_TYPE_ERROR, "Failed to fetch state of branded calling for context: %@", &v4, 0xCu);

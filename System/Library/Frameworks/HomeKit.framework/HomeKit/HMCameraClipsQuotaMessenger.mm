@@ -1,8 +1,8 @@
 @interface HMCameraClipsQuotaMessenger
 + (NSUUID)UUID;
 + (id)logCategory;
-- (HMCameraClipsQuotaMessenger)initWithContext:(id)a3;
-- (void)fetchNamesForZonesWithCloudStorageEnabledWithCompletion:(id)a3;
+- (HMCameraClipsQuotaMessenger)initWithContext:(id)context;
+- (void)fetchNamesForZonesWithCloudStorageEnabledWithCompletion:(id)completion;
 @end
 
 @implementation HMCameraClipsQuotaMessenger
@@ -61,45 +61,45 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchNamesForZonesWithCloudStorageEnabledWithCompletion:(id)a3
+- (void)fetchNamesForZonesWithCloudStorageEnabledWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetching names for zones with cloud storage enabled"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v25 = v9;
     v26 = 2114;
-    v27 = v11;
+    v27 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching names for zones with cloud storage enabled", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [objc_opt_class() UUID];
-  v14 = [v12 initWithTarget:v13];
+  uUID = [objc_opt_class() UUID];
+  v14 = [v12 initWithTarget:uUID];
 
   v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCQMR.m.fetchNamesForZonesWithEnabledCloudStorage" destination:v14 payload:0];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __87__HMCameraClipsQuotaMessenger_fetchNamesForZonesWithCloudStorageEnabledWithCompletion___block_invoke;
   v21[3] = &unk_1E754E480;
-  v21[4] = v7;
+  v21[4] = selfCopy;
   v22 = v5;
-  v23 = v4;
-  v16 = v4;
+  v23 = completionCopy;
+  v16 = completionCopy;
   v17 = v5;
   [v15 setResponseHandler:v21];
-  v18 = [(HMCameraClipsQuotaMessenger *)v7 context];
-  v19 = [v18 messageDispatcher];
-  [v19 sendMessage:v15];
+  context = [(HMCameraClipsQuotaMessenger *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -169,19 +169,19 @@ void __87__HMCameraClipsQuotaMessenger_fetchNamesForZonesWithCloudStorageEnabled
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (HMCameraClipsQuotaMessenger)initWithContext:(id)a3
+- (HMCameraClipsQuotaMessenger)initWithContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v5;
+    v6 = contextCopy;
     v12.receiver = self;
     v12.super_class = HMCameraClipsQuotaMessenger;
     v7 = [(HMCameraClipsQuotaMessenger *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_context, a3);
+      objc_storeStrong(&v7->_context, context);
     }
 
     return v8;

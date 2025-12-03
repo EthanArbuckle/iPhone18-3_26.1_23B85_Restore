@@ -1,48 +1,48 @@
 @interface TSCHLegendNonStyle
-+ (float)defaultFloatValueForProperty:(int)a3;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultValueForProperty:(int)a3;
++ (float)defaultFloatValueForProperty:(int)property;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultValueForProperty:(int)property;
 + (id)imageFillProperties;
 + (id)properties;
-+ (int)defaultIntValueForProperty:(int)a3;
-+ (int)muxDefaultPropertyForSpecificProperty:(int)a3;
-- (TSCHLegendNonStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
++ (int)defaultIntValueForProperty:(int)property;
++ (int)muxDefaultPropertyForSpecificProperty:(int)property;
+- (TSCHLegendNonStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSCHLegendNonStyle
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(objc_opt_class());
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, v6, v7, v8, v3, 0, 0, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, v6, v7, v8, contextCopy, 0, 0, 0);
 
   return isVariation;
 }
 
-- (TSCHLegendNonStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6
+- (TSCHLegendNonStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation
 {
   v7.receiver = self;
   v7.super_class = TSCHLegendNonStyle;
-  return [(TSCHLegendNonStyle *)&v7 initWithContext:a3 name:a4 overridePropertyMap:a5 isVariation:a6];
+  return [(TSCHLegendNonStyle *)&v7 initWithContext:context name:name overridePropertyMap:map isVariation:variation];
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_messageType(v4, v5, v6, v7, v8) == 5017)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_messageType(unarchiverCopy, v5, v6, v7, v8) == 5017)
   {
-    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, unarchiverCopy);
   }
 
   else
   {
-    v13 = v4;
+    v13 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v18 = objc_msgSend_messageWithDescriptor_(v13, v14, v15, v16, v17, off_2812ED2B8[14]);
 
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, v6, v7, v8, sub_2762B9280, off_2812ED2B8[14]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, v6, v7, v8, sub_2762B9280, off_2812ED2B8[14]);
 
   *(v9 + 40) |= 1u;
   v10 = *(v9 + 48);
@@ -108,16 +108,16 @@
 
   v12.receiver = self;
   v12.super_class = TSCHLegendNonStyle;
-  [(TSCHLegendNonStyle *)&v12 saveToArchive:v10 archiver:v4];
+  [(TSCHLegendNonStyle *)&v12 saveToArchive:v10 archiver:archiverCopy];
   sub_27640EC14();
   google::protobuf::internal::ExtensionSet::MutableMessage();
 }
 
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, off_2812EE5D0[18]);
+  v9 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, off_2812EE5D0[18]);
 
   if (*(v9 + 24))
   {
@@ -131,17 +131,17 @@
 
   v14.receiver = self;
   v14.super_class = TSCHLegendNonStyle;
-  [(TSCHLegendNonStyle *)&v14 loadFromArchive:v10 unarchiver:v4];
+  [(TSCHLegendNonStyle *)&v14 loadFromArchive:v10 unarchiver:unarchiverCopy];
   v11 = objc_alloc_init(MEMORY[0x277D80AB8]);
   v12 = *MEMORY[0x277D80AF0];
   v13 = *(&self->super.super.super.super.isa + v12);
   *(&self->super.super.super.super.isa + v12) = v11;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (!v9)
@@ -185,7 +185,7 @@
   v63 = v9;
   v72 = v63;
   v74 = &v75;
-  v64 = v7;
+  v64 = contextCopy;
   v73 = v64;
   objc_msgSend_enumeratePropertiesUsingBlock_(v28, v65, v66, v67, v68, v71);
   v69 = v76[3];
@@ -194,9 +194,9 @@
   return v69;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v12 = objc_msgSend_copy(self, v8, v9, v10, v11);
@@ -216,7 +216,7 @@
   v55[4] = self;
   v46 = v7;
   v56 = v46;
-  v58 = a3;
+  fractionCopy = fraction;
   v47 = v12;
   v57 = v47;
   objc_msgSend_enumeratePropertiesUsingBlock_(v17, v48, v49, v50, v51, v55);
@@ -250,9 +250,9 @@
   return v3;
 }
 
-+ (int)defaultIntValueForProperty:(int)a3
++ (int)defaultIntValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A478A0 != -1)
   {
     sub_2764A7FE4();
@@ -267,15 +267,15 @@
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___TSCHLegendNonStyle;
     return objc_msgSendSuper2(&v14, sel_defaultIntValueForProperty_, v6);
   }
 }
 
-+ (float)defaultFloatValueForProperty:(int)a3
++ (float)defaultFloatValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A478B0 != -1)
   {
     sub_2764A7FF8();
@@ -290,7 +290,7 @@
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___TSCHLegendNonStyle;
     objc_msgSendSuper2(&v14, sel_defaultFloatValueForProperty_, v6);
   }
@@ -298,9 +298,9 @@
   return result;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A478C0 != -1)
   {
     sub_2764A800C();
@@ -313,7 +313,7 @@
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___TSCHLegendNonStyle;
     v12 = objc_msgSendSuper2(&v14, sel_defaultValueForProperty_, v6);
   }
@@ -321,17 +321,17 @@
   return v12;
 }
 
-+ (int)muxDefaultPropertyForSpecificProperty:(int)a3
++ (int)muxDefaultPropertyForSpecificProperty:(int)property
 {
   if (qword_280A478D0 != -1)
   {
     sub_2764A8020();
   }
 
-  result = objc_msgSend_containsKey_(qword_280A478C8, a2, v3, v4, v5, a3);
+  result = objc_msgSend_containsKey_(qword_280A478C8, a2, v3, v4, v5, property);
   if (result)
   {
-    return objc_msgSend_intForKey_(qword_280A478C8, v8, v9, v10, v11, a3);
+    return objc_msgSend_intForKey_(qword_280A478C8, v8, v9, v10, v11, property);
   }
 
   return result;

@@ -2,30 +2,30 @@
 - (BOOL)hasActiveNowPlayingClient;
 - (BOOL)hasActivePlayerClient;
 - (BOOL)isPlaying;
-- (MRDWatchRSECandidate)initWithOriginClient:(id)a3 namePrefix:(id)a4 isLocal:(BOOL)a5;
+- (MRDWatchRSECandidate)initWithOriginClient:(id)client namePrefix:(id)prefix isLocal:(BOOL)local;
 - (NSString)outputDeviceUID;
 @end
 
 @implementation MRDWatchRSECandidate
 
-- (MRDWatchRSECandidate)initWithOriginClient:(id)a3 namePrefix:(id)a4 isLocal:(BOOL)a5
+- (MRDWatchRSECandidate)initWithOriginClient:(id)client namePrefix:(id)prefix isLocal:(BOOL)local
 {
-  v9 = a3;
-  v10 = a4;
+  clientCopy = client;
+  prefixCopy = prefix;
   v18.receiver = self;
   v18.super_class = MRDWatchRSECandidate;
   v11 = [(MRDWatchRSECandidate *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_originClient, a3);
-    v13 = [(MRDNowPlayingOriginClient *)v12->_originClient deviceInfo];
-    v14 = [v13 name];
-    v15 = [NSString stringWithFormat:@"%@.%@", v10, v14];
+    objc_storeStrong(&v11->_originClient, client);
+    deviceInfo = [(MRDNowPlayingOriginClient *)v12->_originClient deviceInfo];
+    name = [deviceInfo name];
+    v15 = [NSString stringWithFormat:@"%@.%@", prefixCopy, name];
     name = v12->_name;
     v12->_name = v15;
 
-    v12->_isLocal = a5;
+    v12->_isLocal = local;
   }
 
   return v12;
@@ -35,42 +35,42 @@
 {
   if (self->_isLocal)
   {
-    v2 = 0;
+    deviceUID = 0;
   }
 
   else
   {
-    v3 = [(MRDNowPlayingOriginClient *)self->_originClient deviceInfo];
-    v2 = [v3 deviceUID];
+    deviceInfo = [(MRDNowPlayingOriginClient *)self->_originClient deviceInfo];
+    deviceUID = [deviceInfo deviceUID];
   }
 
-  return v2;
+  return deviceUID;
 }
 
 - (BOOL)hasActiveNowPlayingClient
 {
-  v2 = [(MRDNowPlayingOriginClient *)self->_originClient activeNowPlayingClient];
-  v3 = v2 != 0;
+  activeNowPlayingClient = [(MRDNowPlayingOriginClient *)self->_originClient activeNowPlayingClient];
+  v3 = activeNowPlayingClient != 0;
 
   return v3;
 }
 
 - (BOOL)hasActivePlayerClient
 {
-  v2 = [(MRDNowPlayingOriginClient *)self->_originClient activeNowPlayingClient];
-  v3 = [v2 activePlayerClient];
-  v4 = v3 != 0;
+  activeNowPlayingClient = [(MRDNowPlayingOriginClient *)self->_originClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  v4 = activePlayerClient != 0;
 
   return v4;
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(MRDNowPlayingOriginClient *)self->_originClient activeNowPlayingClient];
-  v3 = [v2 activePlayerClient];
-  v4 = [v3 isPlaying];
+  activeNowPlayingClient = [(MRDNowPlayingOriginClient *)self->_originClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  isPlaying = [activePlayerClient isPlaying];
 
-  return v4;
+  return isPlaying;
 }
 
 @end

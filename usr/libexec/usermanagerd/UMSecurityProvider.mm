@@ -1,12 +1,12 @@
 @interface UMSecurityProvider
-- (BOOL)deleteKeychainItemsForPersonaWithUUID:(id)a3 error:(id *)a4;
+- (BOOL)deleteKeychainItemsForPersonaWithUUID:(id)d error:(id *)error;
 @end
 
 @implementation UMSecurityProvider
 
-- (BOOL)deleteKeychainItemsForPersonaWithUUID:(id)a3 error:(id *)a4
+- (BOOL)deleteKeychainItemsForPersonaWithUUID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   if (qword_1000EB4E8 != -1)
   {
     sub_100098924();
@@ -44,7 +44,7 @@
     free(v10);
   }
 
-  v11 = v5;
+  v11 = dCopy;
   _SecKeychainDeleteMultiUser();
   if (qword_1000EB4E8 != -1)
   {
@@ -83,9 +83,9 @@
     free(v16);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;

@@ -1,17 +1,17 @@
 @interface CRXCEnrollmentBriefRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCEnrollmentBriefRecord)init;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCEnrollmentBriefRecord
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -20,7 +20,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCEnrollmentBriefRecord.isEqual(_:)(v8);
@@ -31,7 +31,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRXCEnrollmentBriefRecord.description.getter();
 
   v3 = sub_100081288();
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCEnrollmentBriefRecord.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCEnrollmentBriefRecord.encode(with:)(coderCopy);
 }
 
 - (CRXCEnrollmentBriefRecord)init

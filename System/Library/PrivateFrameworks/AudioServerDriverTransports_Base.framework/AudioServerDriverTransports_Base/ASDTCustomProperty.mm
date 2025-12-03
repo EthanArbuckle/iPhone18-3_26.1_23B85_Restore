@@ -1,27 +1,27 @@
 @interface ASDTCustomProperty
-+ (id)consolidatePList:(id)a3;
-+ (id)customPropertyForConfig:(id)a3;
-- (BOOL)checkAndSetPropertyValue:(id)a3;
++ (id)consolidatePList:(id)list;
++ (id)customPropertyForConfig:(id)config;
+- (BOOL)checkAndSetPropertyValue:(id)value;
 - (NSData)dataNoCopy;
 - (NSString)name;
 - (id)propertyName;
 - (id)propertyValue;
-- (int)checkPropertyValue:(id)a3;
-- (void)cachePropertyValue:(id)a3;
-- (void)doCachePropertyValue:(id)a3;
+- (int)checkPropertyValue:(id)value;
+- (void)cachePropertyValue:(id)value;
+- (void)doCachePropertyValue:(id)value;
 - (void)releasePropertyValueCache;
-- (void)setUseCache:(BOOL)a3;
+- (void)setUseCache:(BOOL)cache;
 @end
 
 @implementation ASDTCustomProperty
 
-+ (id)customPropertyForConfig:(id)a3
++ (id)customPropertyForConfig:(id)config
 {
-  v3 = a3;
-  v4 = [v3 asdtSubclass];
-  if ([(objc_class *)v4 isSubclassOfClass:objc_opt_class()]&& ([(objc_class *)v4 conformsToProtocol:&unk_2853557D8]& 1) != 0)
+  configCopy = config;
+  asdtSubclass = [configCopy asdtSubclass];
+  if ([(objc_class *)asdtSubclass isSubclassOfClass:objc_opt_class()]&& ([(objc_class *)asdtSubclass conformsToProtocol:&unk_2853557D8]& 1) != 0)
   {
-    v5 = [[v4 alloc] initWithConfig:v3];
+    v5 = [[asdtSubclass alloc] initWithConfig:configCopy];
   }
 
   else
@@ -29,7 +29,7 @@
     v6 = ASDTBaseLogType();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [ASDTCustomProperty customPropertyForConfig:v3];
+      [ASDTCustomProperty customPropertyForConfig:configCopy];
     }
 
     v5 = 0;
@@ -75,15 +75,15 @@
 
   if (([(ASDCustomProperty *)self selector]& 0xE0) != 0 && [(ASDCustomProperty *)self selector]<= 0x7Eu)
   {
-    v9 = [(ASDCustomProperty *)self selector];
+    selector = [(ASDCustomProperty *)self selector];
   }
 
   else
   {
-    v9 = 32;
+    selector = 32;
   }
 
-  v10 = [v3 stringWithFormat:@"%@(%c%c%c%c)", v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"%@(%c%c%c%c)", v5, v6, v7, v8, selector];
 
   return v10;
 }
@@ -93,9 +93,9 @@
   name = self->_name;
   if (!name)
   {
-    v4 = [(ASDTCustomProperty *)self propertyName];
+    propertyName = [(ASDTCustomProperty *)self propertyName];
     v5 = self->_name;
-    self->_name = v4;
+    self->_name = propertyName;
 
     name = self->_name;
   }
@@ -103,16 +103,16 @@
   return name;
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
-  v5 = [(ASDCustomProperty *)self propertyDataType];
-  if (v5 == 1667658612 || v5 == 1918990199)
+  valueCopy = value;
+  propertyDataType = [(ASDCustomProperty *)self propertyDataType];
+  if (propertyDataType == 1667658612 || propertyDataType == 1918990199)
   {
     goto LABEL_9;
   }
 
-  if (v5 != 1886155636)
+  if (propertyDataType != 1886155636)
   {
     goto LABEL_13;
   }
@@ -153,7 +153,7 @@ LABEL_10:
   if ([(ASDTCustomProperty *)self propertyValueWasCached])
   {
     propertyValue = self->_propertyValue;
-    if (!(v4 | propertyValue) || v4 && propertyValue && ([propertyValue isEqual:v4] & 1) != 0)
+    if (!(valueCopy | propertyValue) || valueCopy && propertyValue && ([propertyValue isEqual:valueCopy] & 1) != 0)
     {
       v7 = 1;
     }
@@ -164,26 +164,26 @@ LABEL_18:
   return v7;
 }
 
-- (void)doCachePropertyValue:(id)a3
+- (void)doCachePropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(ASDTCustomProperty *)self setPropertyValueWasCached:1];
   propertyValue = self->_propertyValue;
-  self->_propertyValue = v4;
+  self->_propertyValue = valueCopy;
 }
 
-- (void)cachePropertyValue:(id)a3
+- (void)cachePropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if ([(ASDTCustomProperty *)self cacheMode]== 2 || [(ASDTCustomProperty *)self cacheMode]== 1 && [(ASDTCustomProperty *)self useCache])
   {
-    if (v4)
+    if (valueCopy)
     {
-      v5 = [(ASDTCustomProperty *)self dataNoCopy];
+      dataNoCopy = [(ASDTCustomProperty *)self dataNoCopy];
 
-      if (v5 == v4)
+      if (dataNoCopy == valueCopy)
       {
-        v6 = [MEMORY[0x277CBEA90] dataWithData:v4];
+        v6 = [MEMORY[0x277CBEA90] dataWithData:valueCopy];
 
         if (!v6)
         {
@@ -195,11 +195,11 @@ LABEL_18:
         }
 
         [(ASDTCustomProperty *)self setDataNoCopy:0];
-        v4 = v6;
+        valueCopy = v6;
       }
     }
 
-    [(ASDTCustomProperty *)self doCachePropertyValue:v4];
+    [(ASDTCustomProperty *)self doCachePropertyValue:valueCopy];
   }
 }
 
@@ -214,10 +214,10 @@ LABEL_18:
   }
 }
 
-- (BOOL)checkAndSetPropertyValue:(id)a3
+- (BOOL)checkAndSetPropertyValue:(id)value
 {
-  v4 = a3;
-  v5 = [(ASDTCustomProperty *)self checkPropertyValue:v4];
+  valueCopy = value;
+  v5 = [(ASDTCustomProperty *)self checkPropertyValue:valueCopy];
   if (v5 == 1)
   {
     goto LABEL_14;
@@ -242,7 +242,7 @@ LABEL_18:
     v9 = NSStringFromSelector(sel_propertyValue);
     [(ASDTCustomProperty *)self willChangeValueForKey:v9];
 
-    LODWORD(v9) = [(ASDTCustomProperty *)self storePropertyValue:v4];
+    LODWORD(v9) = [(ASDTCustomProperty *)self storePropertyValue:valueCopy];
     v10 = NSStringFromSelector(sel_value);
     [(ASDTCustomProperty *)self didChangeValueForKey:v10];
 
@@ -254,11 +254,11 @@ LABEL_18:
       goto LABEL_9;
     }
 
-    v12 = [(ASDTCustomProperty *)self propertyChangeBlock];
-    v13 = v12;
-    if (v12)
+    propertyChangeBlock = [(ASDTCustomProperty *)self propertyChangeBlock];
+    v13 = propertyChangeBlock;
+    if (propertyChangeBlock)
     {
-      (*(v12 + 16))(v12, v4);
+      (*(propertyChangeBlock + 16))(propertyChangeBlock, valueCopy);
     }
 
     [(ASDCustomProperty *)self sendPropertyChangeNotification];
@@ -285,8 +285,8 @@ LABEL_15:
 
 - (id)propertyValue
 {
-  v3 = [(ASDTCustomProperty *)self cacheMode];
-  if (v3 == 1)
+  cacheMode = [(ASDTCustomProperty *)self cacheMode];
+  if (cacheMode == 1)
   {
     if (![(ASDTCustomProperty *)self useCache])
     {
@@ -294,37 +294,37 @@ LABEL_15:
     }
   }
 
-  else if (!v3)
+  else if (!cacheMode)
   {
 LABEL_3:
-    v4 = [(ASDTCustomProperty *)self retrievePropertyValue];
+    retrievePropertyValue = [(ASDTCustomProperty *)self retrievePropertyValue];
 LABEL_7:
-    v5 = v4;
+    retrievePropertyValue2 = retrievePropertyValue;
     goto LABEL_9;
   }
 
   if ([(ASDTCustomProperty *)self propertyValueWasCached])
   {
-    v4 = [(ASDTCustomProperty *)self cachedPropertyValue];
+    retrievePropertyValue = [(ASDTCustomProperty *)self cachedPropertyValue];
     goto LABEL_7;
   }
 
-  v5 = [(ASDTCustomProperty *)self retrievePropertyValue];
-  [(ASDTCustomProperty *)self cachePropertyValue:v5];
+  retrievePropertyValue2 = [(ASDTCustomProperty *)self retrievePropertyValue];
+  [(ASDTCustomProperty *)self cachePropertyValue:retrievePropertyValue2];
 LABEL_9:
 
-  return v5;
+  return retrievePropertyValue2;
 }
 
-- (void)setUseCache:(BOOL)a3
+- (void)setUseCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if ([(ASDTCustomProperty *)self cacheMode]== 1)
   {
-    if (v3)
+    if (cacheCopy)
     {
-      v5 = [(ASDTCustomProperty *)self retrievePropertyValue];
-      [(ASDTCustomProperty *)self doCachePropertyValue:v5];
+      retrievePropertyValue = [(ASDTCustomProperty *)self retrievePropertyValue];
+      [(ASDTCustomProperty *)self doCachePropertyValue:retrievePropertyValue];
     }
 
     else
@@ -333,30 +333,30 @@ LABEL_9:
     }
   }
 
-  self->_useCache = v3;
+  self->_useCache = cacheCopy;
 }
 
-+ (id)consolidatePList:(id)a3
++ (id)consolidatePList:(id)list
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v3;
-    if ([v3 count])
+    listCopy = listCopy;
+    if ([listCopy count])
     {
-      v4 = [v3 objectAtIndexedSubscript:0];
+      v4 = [listCopy objectAtIndexedSubscript:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v5 = v4;
-        v6 = [MEMORY[0x277CBEB28] dataWithCapacity:{-[NSObject count](v3, "count") * -[NSObject length](v5, "length")}];
+        v6 = [MEMORY[0x277CBEB28] dataWithCapacity:{-[NSObject count](listCopy, "count") * -[NSObject length](v5, "length")}];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v7 = v3;
+        v7 = listCopy;
         v8 = [v7 countByEnumeratingWithState:&v54 objects:v61 count:16];
         if (v8)
         {
@@ -423,7 +423,7 @@ LABEL_9:
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v5 = v3;
+          v5 = listCopy;
           v28 = [v5 countByEnumeratingWithState:&v42 objects:v58 count:16];
           if (v28)
           {
@@ -468,12 +468,12 @@ LABEL_61:
         }
 
         v14 = v4;
-        v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSObject count](v3, "count") * -[NSObject count](v14, "count")}];
+        v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSObject count](listCopy, "count") * -[NSObject count](v14, "count")}];
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v17 = v3;
+        v17 = listCopy;
         v18 = [v17 countByEnumeratingWithState:&v50 objects:v60 count:16];
         if (v18)
         {
@@ -578,10 +578,10 @@ LABEL_60:
       v5 = v6;
 LABEL_53:
 
-      v3 = v5;
+      listCopy = v5;
 LABEL_54:
-      v3 = v3;
-      v33 = v3;
+      listCopy = listCopy;
+      v33 = listCopy;
       goto LABEL_64;
     }
 

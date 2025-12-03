@@ -1,27 +1,27 @@
 @interface AMSUserNotificationAuthorizationOptions
-- (AMSUserNotificationAuthorizationOptions)initWithCoder:(id)a3;
-- (AMSUserNotificationAuthorizationOptions)initWithOptionsDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSUserNotificationAuthorizationOptions)initWithCoder:(id)coder;
+- (AMSUserNotificationAuthorizationOptions)initWithOptionsDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)optionsDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSUserNotificationAuthorizationOptions
 
-- (AMSUserNotificationAuthorizationOptions)initWithOptionsDictionary:(id)a3
+- (AMSUserNotificationAuthorizationOptions)initWithOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = AMSUserNotificationAuthorizationOptions;
   v5 = [(AMSUserNotificationAuthorizationOptions *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AMSUserNotificationAuthorizationOptionsAuthorizationOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AMSUserNotificationAuthorizationOptionsAuthorizationOptions"];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v4 objectForKeyedSubscript:@"AMSUserNotificationAuthorizationOptionsAuthorizationOptions"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"AMSUserNotificationAuthorizationOptionsAuthorizationOptions"];
       v5->_authorizationOptions = [v7 unsignedIntegerValue];
     }
 
@@ -30,7 +30,7 @@
       v5->_authorizationOptions = 38;
     }
 
-    metricsOverlay = [v4 objectForKeyedSubscript:@"AMSUserNotificationAuthorizationOptionsMetricsOverlay"];
+    metricsOverlay = [dictionaryCopy objectForKeyedSubscript:@"AMSUserNotificationAuthorizationOptionsMetricsOverlay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       if (!v9)
       {
 LABEL_10:
-        v10 = [v4 ams_objectForKey:@"AMSUserNotificationAuthorizationOptionsUserInitiated" defaultValue:MEMORY[0x1E695E110]];
+        v10 = [dictionaryCopy ams_objectForKey:@"AMSUserNotificationAuthorizationOptionsUserInitiated" defaultValue:MEMORY[0x1E695E110]];
         v5->_userInitiated = [v10 BOOLValue];
 
         goto LABEL_11;
@@ -63,32 +63,32 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyOptionsDictionary"];
+  coderCopy = coder;
+  optionsDictionary = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
+  [coderCopy encodeObject:optionsDictionary forKey:@"kCodingKeyOptionsDictionary"];
 }
 
-- (AMSUserNotificationAuthorizationOptions)initWithCoder:(id)a3
+- (AMSUserNotificationAuthorizationOptions)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [v4 ams_PLISTClasses];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"kCodingKeyOptionsDictionary"];
+  coderCopy = coder;
+  ams_PLISTClasses = [v4 ams_PLISTClasses];
+  v7 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses forKey:@"kCodingKeyOptionsDictionary"];
 
   if (v7)
   {
     self = [(AMSUserNotificationAuthorizationOptions *)self initWithOptionsDictionary:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)optionsDictionary
@@ -97,8 +97,8 @@ LABEL_11:
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AMSUserNotificationAuthorizationOptions authorizationOptions](self, "authorizationOptions")}];
   [v3 ams_setNullableObject:v4 forKey:@"AMSUserNotificationAuthorizationOptionsAuthorizationOptions"];
 
-  v5 = [(AMSUserNotificationAuthorizationOptions *)self metricsOverlay];
-  [v3 ams_setNullableObject:v5 forKey:@"AMSUserNotificationAuthorizationOptionsMetricsOverlay"];
+  metricsOverlay = [(AMSUserNotificationAuthorizationOptions *)self metricsOverlay];
+  [v3 ams_setNullableObject:metricsOverlay forKey:@"AMSUserNotificationAuthorizationOptionsMetricsOverlay"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSUserNotificationAuthorizationOptions userInitiated](self, "userInitiated")}];
   [v3 ams_setNullableObject:v6 forKey:@"AMSUserNotificationAuthorizationOptionsUserInitiated"];
@@ -110,19 +110,19 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
-  v4 = [self ams_generateDescriptionWithSubObjects:v3];
+  optionsDictionary = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
+  v4 = [self ams_generateDescriptionWithSubObjects:optionsDictionary];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
 
     if (!v5)
     {
@@ -130,27 +130,27 @@ LABEL_11:
       goto LABEL_6;
     }
 
-    v6 = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
-    v7 = [v5 optionsDictionary];
-    v8 = [v6 isEqualToDictionary:v7];
+    optionsDictionary = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
+    optionsDictionary2 = [v5 optionsDictionary];
+    v8 = [optionsDictionary isEqualToDictionary:optionsDictionary2];
   }
 
   else
   {
     v5 = 0;
     v8 = 0;
-    v6 = v4;
+    optionsDictionary = equalCopy;
   }
 
 LABEL_6:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  optionsDictionary = [(AMSUserNotificationAuthorizationOptions *)self optionsDictionary];
+  v6 = [optionsDictionary copy];
   v7 = [v4 initWithOptionsDictionary:v6];
 
   return v7;

@@ -1,26 +1,26 @@
 @interface SUUIGiftValidator
-- (SUUIGiftValidator)initWithValidationURL:(id)a3 clientContext:(id)a4;
-- (void)_finishValidationWithResponse:(id)a3 error:(id)a4 attemptNumber:(int64_t)a5 block:(id)a6;
-- (void)_validateWithBodyDictionary:(id)a3 completionBlock:(id)a4;
+- (SUUIGiftValidator)initWithValidationURL:(id)l clientContext:(id)context;
+- (void)_finishValidationWithResponse:(id)response error:(id)error attemptNumber:(int64_t)number block:(id)block;
+- (void)_validateWithBodyDictionary:(id)dictionary completionBlock:(id)block;
 - (void)cancelValidation;
-- (void)validateDonation:(id)a3 withCompletionBlock:(id)a4;
-- (void)validateGift:(id)a3 withCompletionBlock:(id)a4;
+- (void)validateDonation:(id)donation withCompletionBlock:(id)block;
+- (void)validateGift:(id)gift withCompletionBlock:(id)block;
 @end
 
 @implementation SUUIGiftValidator
 
-- (SUUIGiftValidator)initWithValidationURL:(id)a3 clientContext:(id)a4
+- (SUUIGiftValidator)initWithValidationURL:(id)l clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = SUUIGiftValidator;
   v8 = [(SUUIGiftValidator *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientContext, a4);
-    v10 = [v6 copy];
+    objc_storeStrong(&v8->_clientContext, context);
+    v10 = [lCopy copy];
     validationURL = v9->_validationURL;
     v9->_validationURL = v10;
   }
@@ -36,46 +36,46 @@
   self->_validationOperation = 0;
 }
 
-- (void)validateDonation:(id)a3 withCompletionBlock:(id)a4
+- (void)validateDonation:(id)donation withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 HTTPBodyDictionary];
-  [(SUUIGiftValidator *)self _validateWithBodyDictionary:v7 completionBlock:v6];
+  blockCopy = block;
+  hTTPBodyDictionary = [donation HTTPBodyDictionary];
+  [(SUUIGiftValidator *)self _validateWithBodyDictionary:hTTPBodyDictionary completionBlock:blockCopy];
 }
 
-- (void)validateGift:(id)a3 withCompletionBlock:(id)a4
+- (void)validateGift:(id)gift withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 HTTPBodyDictionary];
-  [(SUUIGiftValidator *)self _validateWithBodyDictionary:v7 completionBlock:v6];
+  blockCopy = block;
+  hTTPBodyDictionary = [gift HTTPBodyDictionary];
+  [(SUUIGiftValidator *)self _validateWithBodyDictionary:hTTPBodyDictionary completionBlock:blockCopy];
 }
 
-- (void)_finishValidationWithResponse:(id)a3 error:(id)a4 attemptNumber:(int64_t)a5 block:(id)a6
+- (void)_finishValidationWithResponse:(id)response error:(id)error attemptNumber:(int64_t)number block:(id)block
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (self->_validationCount == a5)
+  responseCopy = response;
+  errorCopy = error;
+  blockCopy = block;
+  if (self->_validationCount == number)
   {
     [(SSVLoadURLOperation *)self->_validationOperation setOutputBlock:0];
     validationOperation = self->_validationOperation;
     self->_validationOperation = 0;
 
-    if (v11)
+    if (blockCopy)
     {
-      v13 = [[SUUIGiftValidationResponse alloc] initWithValidationDictionary:v14];
-      v11[2](v11, v13, v10);
+      v13 = [[SUUIGiftValidationResponse alloc] initWithValidationDictionary:responseCopy];
+      blockCopy[2](blockCopy, v13, errorCopy);
     }
   }
 }
 
-- (void)_validateWithBodyDictionary:(id)a3 completionBlock:(id)a4
+- (void)_validateWithBodyDictionary:(id)dictionary completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  blockCopy = block;
   [(SUUIGiftValidator *)self cancelValidation];
   v24 = 0;
-  v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:0 error:&v24];
+  v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryCopy options:0 error:&v24];
   v9 = v24;
   if (v8)
   {
@@ -105,10 +105,10 @@
     v20[3] = &unk_2798FDE50;
     objc_copyWeak(v22, &location);
     v22[1] = v10;
-    v21 = v7;
+    v21 = blockCopy;
     [(SSVLoadURLOperation *)v18 setOutputBlock:v20];
-    v19 = [(SUUIGiftValidator *)self operationQueue];
-    [v19 addOperation:self->_validationOperation];
+    operationQueue = [(SUUIGiftValidator *)self operationQueue];
+    [operationQueue addOperation:self->_validationOperation];
 
     objc_destroyWeak(v22);
     objc_destroyWeak(&location);
@@ -116,7 +116,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(blockCopy + 2))(blockCopy, 0, v9);
   }
 }
 

@@ -1,11 +1,11 @@
 @interface _UISceneLayoutPreferencesCoordinator
-- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)d;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (_UISceneLayoutPreferencesCoordinatorDelegate)delegate;
 - (id)clientSettings;
-- (id)handlePrivateActions:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)handlePrivateActions:(id)actions;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UISceneLayoutPreferencesCoordinator
@@ -29,25 +29,25 @@
 
 - (id)clientSettings
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 scene];
-    v2 = [v1 clientSettings];
+    scene = [self scene];
+    clientSettings = [scene clientSettings];
   }
 
   else
   {
-    v2 = 0;
+    clientSettings = 0;
   }
 
-  return v2;
+  return clientSettings;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = [(_UISceneLayoutPreferencesCoordinator *)self clientSettings];
-  v5 = _UISceneLayoutPreferencesEvaluateSize(v4, width);
+  width = size.width;
+  clientSettings = [(_UISceneLayoutPreferencesCoordinator *)self clientSettings];
+  v5 = _UISceneLayoutPreferencesEvaluateSize(clientSettings, width);
   v7 = v6;
 
   v8 = v5;
@@ -57,15 +57,15 @@
   return result;
 }
 
-- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)a3
+- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)d
 {
   v5 = v3;
   v6 = v4;
-  v12 = [(_UISceneLayoutPreferencesCoordinator *)self clientSettings];
+  clientSettings = [(_UISceneLayoutPreferencesCoordinator *)self clientSettings];
   v7 = v5[1];
   v13[0] = *v5;
   v13[1] = v7;
-  _UISceneLayoutPreferencesEvaluateSize3D(v12, v13, v6);
+  _UISceneLayoutPreferencesEvaluateSize3D(clientSettings, v13, v6);
 
   result.var0.var3 = v11;
   result.var0.var2 = v10;
@@ -74,11 +74,11 @@
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  if (v4)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  if (delegateCopy)
   {
     *&self->_delegateConformance = *&self->_delegateConformance & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -105,36 +105,36 @@
   v8[3] = &unk_1E712A5E8;
   v8[4] = self;
   v6 = v8;
-  v7 = [(FBSSceneComponent *)self hostScene];
-  [v7 updateSettings:v6];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  [hostScene updateSettings:v6];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 settingsDiff];
-  v8 = [v7 ui_containsSettingsAffectingSceneLayoutPreferences];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  ui_containsSettingsAffectingSceneLayoutPreferences = [settingsDiff ui_containsSettingsAffectingSceneLayoutPreferences];
 
-  if (v8)
+  if (ui_containsSettingsAffectingSceneLayoutPreferences)
   {
-    v9 = [(_UISceneLayoutPreferencesCoordinator *)self delegate];
-    if (v9 && (*&self->_delegateConformance & 1) != 0)
+    delegate = [(_UISceneLayoutPreferencesCoordinator *)self delegate];
+    if (delegate && (*&self->_delegateConformance & 1) != 0)
     {
-      v10 = [v6 transitionContext];
-      [v9 layoutPreferencesCoordinator:self didUpdatePreferencesForScene:v11 transitionContext:v10];
+      transitionContext = [settingsCopy transitionContext];
+      [delegate layoutPreferencesCoordinator:self didUpdatePreferencesForScene:sceneCopy transitionContext:transitionContext];
     }
   }
 }
 
-- (id)handlePrivateActions:(id)a3
+- (id)handlePrivateActions:(id)actions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bs_filter:&__block_literal_global_699];
+  actionsCopy = actions;
+  v5 = [actionsCopy bs_filter:&__block_literal_global_699];
   if ([v5 count])
   {
-    v6 = v4;
+    v6 = actionsCopy;
     if (!self)
     {
 LABEL_21:
@@ -142,13 +142,13 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v7 = [(_UISceneLayoutPreferencesCoordinator *)self delegate];
-    if (v7 && (*&self->_delegateConformance & 2) != 0)
+    delegate = [(_UISceneLayoutPreferencesCoordinator *)self delegate];
+    if (delegate && (*&self->_delegateConformance & 2) != 0)
     {
-      v11 = [(FBSSceneComponent *)self hostScene];
-      v12 = [v11 uiSceneHostingController];
+      hostScene = [(FBSSceneComponent *)self hostScene];
+      uiSceneHostingController = [hostScene uiSceneHostingController];
 
-      if (!v12)
+      if (!uiSceneHostingController)
       {
         if ((*&self->_delegateConformance & 2) != 0)
         {
@@ -156,7 +156,7 @@ LABEL_21:
           [WeakRetained layoutPreferencesCoordinatorDidRecognizeDoubleTapInDraggableArea:self];
         }
 
-        v15 = [MEMORY[0x1E698E600] response];
+        response = [MEMORY[0x1E698E600] response];
         goto LABEL_11;
       }
 
@@ -165,7 +165,7 @@ LABEL_21:
       {
 LABEL_10:
         v14 = [MEMORY[0x1E696ABC0] errorWithDomain:0x1EFBA7390 code:0 userInfo:0];
-        v15 = [MEMORY[0x1E698E600] responseForError:v14];
+        response = [MEMORY[0x1E698E600] responseForError:v14];
 
 LABEL_11:
         v26 = 0u;
@@ -190,7 +190,7 @@ LABEL_11:
               v21 = *(*(&v24 + 1) + 8 * i);
               if ([v21 canSendResponse])
               {
-                [v21 sendResponse:v15];
+                [v21 sendResponse:response];
               }
             }
 

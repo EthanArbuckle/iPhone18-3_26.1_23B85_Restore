@@ -1,25 +1,25 @@
 @interface LPImage
-+ (id)_PDFImageNamed:(id)a3 template:(BOOL)a4;
-+ (id)_PNGImageNamed:(id)a3;
-+ (id)_PNGImageNamed:(id)a3 template:(BOOL)a4 properties:(id)a5;
-+ (id)_loadImageSubsampledToScreenSizeFromData:(id)a3;
-+ (id)_optionalSystemImageNamed:(id)a3 withSymbolConfiguration:(id)a4;
-+ (id)_systemImageNamed:(id)a3;
-+ (id)_systemImageNamed:(id)a3 withSymbolConfiguration:(id)a4;
++ (id)_PDFImageNamed:(id)named template:(BOOL)template;
++ (id)_PNGImageNamed:(id)named;
++ (id)_PNGImageNamed:(id)named template:(BOOL)template properties:(id)properties;
++ (id)_loadImageSubsampledToScreenSizeFromData:(id)data;
++ (id)_optionalSystemImageNamed:(id)named withSymbolConfiguration:(id)configuration;
++ (id)_systemImageNamed:(id)named;
++ (id)_systemImageNamed:(id)named withSymbolConfiguration:(id)configuration;
 - (BOOL)_canEncodeWithoutComputation;
 - (BOOL)_isAnimated;
 - (BOOL)_isFallbackIcon;
-- (BOOL)_isLowResolutionAsIconWithScaleFactor:(double)a3;
+- (BOOL)_isLowResolutionAsIconWithScaleFactor:(double)factor;
 - (BOOL)_isLowResolutionAsImage;
 - (BOOL)hasPlaceholderValueForAsynchronousLoad;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_pixelSize;
-- (LPImage)initWithCoder:(id)a3;
-- (LPImage)initWithData:(id)a3 MIMEType:(id)a4;
-- (LPImage)initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5;
-- (LPImage)initWithItemProvider:(id)a3 properties:(id)a4 placeholderImage:(id)a5;
-- (LPImage)initWithPlatformImage:(id)a3;
-- (LPImage)initWithPlatformImage:(id)a3 properties:(id)a4;
+- (LPImage)initWithCoder:(id)coder;
+- (LPImage)initWithData:(id)data MIMEType:(id)type;
+- (LPImage)initWithData:(id)data MIMEType:(id)type properties:(id)properties;
+- (LPImage)initWithItemProvider:(id)provider properties:(id)properties placeholderImage:(id)image;
+- (LPImage)initWithPlatformImage:(id)image;
+- (LPImage)initWithPlatformImage:(id)image properties:(id)properties;
 - (LPImageProperties)properties;
 - (NSData)data;
 - (NSItemProvider)_itemProvider;
@@ -28,83 +28,83 @@
 - (UIImage)platformImage;
 - (id)_asTemplate;
 - (id)_existingPlatformImage;
-- (id)_initWithCGImage:(CGImage *)a3;
-- (id)_initWithCGImage:(CGImage *)a3 properties:(id)a4;
-- (id)_initWithImage:(id)a3;
-- (id)_initWithImage:(id)a3 properties:(id)a4;
-- (id)_initWithPlatformImageGenerator:(id)a3 properties:(id)a4;
+- (id)_initWithCGImage:(CGImage *)image;
+- (id)_initWithCGImage:(CGImage *)image properties:(id)properties;
+- (id)_initWithImage:(id)image;
+- (id)_initWithImage:(id)image properties:(id)properties;
+- (id)_initWithPlatformImageGenerator:(id)generator properties:(id)properties;
 - (id)filledVariant;
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4;
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5;
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type;
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties;
 - (unint64_t)_encodedSize;
 - (unint64_t)hash;
 - (void)_computeDominantColorForProperties;
 - (void)_createDataFromPlatformImage;
 - (void)_ensureTransparentRegions;
 - (void)_mapDataFromFileURL;
-- (void)_synchronouslyDecodePlatformImageWithMaximumSize:(CGSize)a3;
+- (void)_synchronouslyDecodePlatformImageWithMaximumSize:(CGSize)size;
 - (void)_waitForAsynchronouslyLoadedImageIfNeeded;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadAsynchronouslyWithCompletionHandler:(id)a3;
-- (void)setFileURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadAsynchronouslyWithCompletionHandler:(id)handler;
+- (void)setFileURL:(id)l;
 @end
 
 @implementation LPImage
 
-- (id)_initWithImage:(id)a3
+- (id)_initWithImage:(id)image
 {
-  v4 = a3;
-  if (v4 && (v14.receiver = self, v14.super_class = LPImage, v5 = [(LPImage *)&v14 init], (self = v5) != 0))
+  imageCopy = image;
+  if (imageCopy && (v14.receiver = self, v14.super_class = LPImage, v5 = [(LPImage *)&v14 init], (self = v5) != 0))
   {
-    objc_storeStrong(&v5->_originalPlatformImage, *(v4 + 1));
-    objc_storeStrong(&self->_decodedPlatformImage, *(v4 + 2));
-    objc_storeStrong(&self->_platformImage, *(v4 + 17));
-    self->_isNonFallbackSymbolImage = *(v4 + 108);
-    v6 = [v4 _cachedAtomicData];
-    v7 = [v6 copy];
+    objc_storeStrong(&v5->_originalPlatformImage, *(imageCopy + 1));
+    objc_storeStrong(&self->_decodedPlatformImage, *(imageCopy + 2));
+    objc_storeStrong(&self->_platformImage, *(imageCopy + 17));
+    self->_isNonFallbackSymbolImage = *(imageCopy + 108);
+    _cachedAtomicData = [imageCopy _cachedAtomicData];
+    v7 = [_cachedAtomicData copy];
     [(LPImage *)self set_cachedAtomicData:v7];
 
-    v8 = [*(v4 + 3) copy];
+    v8 = [*(imageCopy + 3) copy];
     MIMEType = self->_MIMEType;
     self->_MIMEType = v8;
 
-    objc_storeStrong(&self->_fileURL, *(v4 + 18));
-    v10 = [*(v4 + 4) copy];
+    objc_storeStrong(&self->_fileURL, *(imageCopy + 18));
+    v10 = [*(imageCopy + 4) copy];
     properties = self->_properties;
     self->_properties = v10;
 
     self = self;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)_initWithImage:(id)a3 properties:(id)a4
+- (id)_initWithImage:(id)image properties:(id)properties
 {
-  v7 = a4;
-  v8 = [(LPImage *)self _initWithImage:a3];
+  propertiesCopy = properties;
+  v8 = [(LPImage *)self _initWithImage:image];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 4, a4);
+    objc_storeStrong(v8 + 4, properties);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (LPImage)initWithData:(id)a3 MIMEType:(id)a4
+- (LPImage)initWithData:(id)data MIMEType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v8 = objc_alloc_init(LPImageProperties);
-  v9 = [(LPImage *)self initWithData:v6 MIMEType:v7 properties:v8];
+  v9 = [(LPImage *)self initWithData:dataCopy MIMEType:typeCopy properties:v8];
 
   if (v9)
   {
@@ -114,29 +114,29 @@
   return v9;
 }
 
-- (LPImage)initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (LPImage)initWithData:(id)data MIMEType:(id)type properties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = LPImage;
   v11 = [(LPImage *)&v16 init];
   if (v11)
   {
-    if (!v8)
+    if (!dataCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPImage with nil data."];
     }
 
-    if (!v9)
+    if (!typeCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPImage with nil MIME type."];
     }
 
-    [(LPImage *)v11 set_cachedAtomicData:v8];
-    objc_storeStrong(&v11->_MIMEType, a4);
-    v12 = [v10 copy];
+    [(LPImage *)v11 set_cachedAtomicData:dataCopy];
+    objc_storeStrong(&v11->_MIMEType, type);
+    v12 = [propertiesCopy copy];
     properties = v11->_properties;
     v11->_properties = v12;
 
@@ -146,12 +146,12 @@
   return v11;
 }
 
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  typeCopy = type;
   v8 = objc_alloc_init(LPImageProperties);
-  v9 = [(LPImage *)self initByReferencingFileURL:v6 MIMEType:v7 properties:v8];
+  v9 = [(LPImage *)self initByReferencingFileURL:lCopy MIMEType:typeCopy properties:v8];
 
   if (v9)
   {
@@ -161,11 +161,11 @@
   return v9;
 }
 
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  typeCopy = type;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = LPImage;
   v11 = [(LPImage *)&v16 init];
@@ -174,26 +174,26 @@
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!lCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPImage with nil file URL."];
   }
 
-  if (!v9)
+  if (!typeCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPImage with nil MIME type."];
   }
 
-  if (([v8 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPImage with URL which is not a file URL."];
   }
 
-  if ([v8 checkResourceIsReachableAndReturnError:0])
+  if ([lCopy checkResourceIsReachableAndReturnError:0])
   {
-    [(LPImage *)v11 setFileURL:v8];
-    objc_storeStrong(&v11->_MIMEType, a4);
-    v12 = [v10 copy];
+    [(LPImage *)v11 setFileURL:lCopy];
+    objc_storeStrong(&v11->_MIMEType, type);
+    v12 = [propertiesCopy copy];
     properties = v11->_properties;
     v11->_properties = v12;
 
@@ -209,11 +209,11 @@ LABEL_10:
   return v14;
 }
 
-- (LPImage)initWithPlatformImage:(id)a3
+- (LPImage)initWithPlatformImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(LPImageProperties);
-  v6 = [(LPImage *)self initWithPlatformImage:v4 properties:v5];
+  v6 = [(LPImage *)self initWithPlatformImage:imageCopy properties:v5];
 
   if (v6)
   {
@@ -223,11 +223,11 @@ LABEL_10:
   return v6;
 }
 
-- (LPImage)initWithPlatformImage:(id)a3 properties:(id)a4
+- (LPImage)initWithPlatformImage:(id)image properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  imageCopy = image;
+  propertiesCopy = properties;
+  if (!imageCopy)
   {
     v12 = LPLogChannelImage();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -245,8 +245,8 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalPlatformImage, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_originalPlatformImage, image);
+    v11 = [propertiesCopy copy];
     self = v10->_properties;
     v10->_properties = v11;
 LABEL_7:
@@ -255,21 +255,21 @@ LABEL_7:
   return v10;
 }
 
-- (LPImage)initWithItemProvider:(id)a3 properties:(id)a4 placeholderImage:(id)a5
+- (LPImage)initWithItemProvider:(id)provider properties:(id)properties placeholderImage:(id)image
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  providerCopy = provider;
+  propertiesCopy = properties;
+  imageCopy = image;
+  v12 = imageCopy;
+  if (imageCopy)
   {
-    v13 = [v11 data];
-    v14 = [v12 MIMEType];
-    v15 = [(LPImage *)self initWithData:v13 MIMEType:v14];
+    data = [imageCopy data];
+    mIMEType = [v12 MIMEType];
+    v15 = [(LPImage *)self initWithData:data MIMEType:mIMEType];
 
-    v16 = [v12 properties];
+    properties = [v12 properties];
     placeholderProperties = v15->_placeholderProperties;
-    v15->_placeholderProperties = v16;
+    v15->_placeholderProperties = properties;
   }
 
   else
@@ -283,10 +283,10 @@ LABEL_7:
     }
   }
 
-  objc_storeStrong(&v15->_itemProvider, a3);
-  if (v10)
+  objc_storeStrong(&v15->_itemProvider, provider);
+  if (propertiesCopy)
   {
-    objc_storeStrong(&v15->_properties, a4);
+    objc_storeStrong(&v15->_properties, properties);
   }
 
 LABEL_6:
@@ -294,19 +294,19 @@ LABEL_6:
   return v15;
 }
 
-- (id)_initWithCGImage:(CGImage *)a3
+- (id)_initWithCGImage:(CGImage *)image
 {
   v5 = objc_alloc_init(LPImageProperties);
-  v6 = [(LPImage *)self _initWithCGImage:a3 properties:v5];
+  v6 = [(LPImage *)self _initWithCGImage:image properties:v5];
 
   return v6;
 }
 
-- (id)_initWithCGImage:(CGImage *)a3 properties:(id)a4
+- (id)_initWithCGImage:(CGImage *)image properties:(id)properties
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DCAB8] _lp_createImageWithCGImage:a3];
-  v8 = [(LPImage *)self initWithPlatformImage:v7 properties:v6];
+  propertiesCopy = properties;
+  v7 = [MEMORY[0x1E69DCAB8] _lp_createImageWithCGImage:image];
+  v8 = [(LPImage *)self initWithPlatformImage:v7 properties:propertiesCopy];
 
   if (v8)
   {
@@ -318,37 +318,37 @@ LABEL_6:
   return v8;
 }
 
-+ (id)_systemImageNamed:(id)a3
++ (id)_systemImageNamed:(id)named
 {
-  v3 = [LPImage _systemImageNamed:a3 withSymbolConfiguration:0];
+  v3 = [LPImage _systemImageNamed:named withSymbolConfiguration:0];
 
   return v3;
 }
 
-+ (id)_systemImageNamed:(id)a3 withSymbolConfiguration:(id)a4
++ (id)_systemImageNamed:(id)named withSymbolConfiguration:(id)configuration
 {
-  v4 = [a1 _optionalSystemImageNamed:a3 withSymbolConfiguration:a4];
+  v4 = [self _optionalSystemImageNamed:named withSymbolConfiguration:configuration];
 
   return v4;
 }
 
-+ (id)_optionalSystemImageNamed:(id)a3 withSymbolConfiguration:(id)a4
++ (id)_optionalSystemImageNamed:(id)named withSymbolConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DCAB8] _lp_systemImageNamed:v6];
+  namedCopy = named;
+  configurationCopy = configuration;
+  v8 = [MEMORY[0x1E69DCAB8] _lp_systemImageNamed:namedCopy];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (configurationCopy)
     {
-      v10 = [v8 _lp_imageByApplyingSymbolConfiguration:v7];
+      v10 = [v8 _lp_imageByApplyingSymbolConfiguration:configurationCopy];
 
       v9 = v10;
     }
 
     v11 = [[LPImage alloc] initWithPlatformImage:v9];
-    objc_storeStrong(&v11->_symbolName, a3);
+    objc_storeStrong(&v11->_symbolName, named);
   }
 
   else
@@ -359,24 +359,24 @@ LABEL_6:
   return v11;
 }
 
-- (id)_initWithPlatformImageGenerator:(id)a3 properties:(id)a4
+- (id)_initWithPlatformImageGenerator:(id)generator properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  generatorCopy = generator;
+  propertiesCopy = properties;
   v20.receiver = self;
   v20.super_class = LPImage;
   v8 = [(LPImage *)&v20 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [propertiesCopy copy];
     properties = v8->_properties;
     v8->_properties = v9;
 
     v11 = dispatch_group_create();
     [(LPImage *)v8 _setAsynchronousLoadGroup:v11];
 
-    v12 = [(LPImage *)v8 _asynchronousLoadGroup];
-    dispatch_group_enter(v12);
+    _asynchronousLoadGroup = [(LPImage *)v8 _asynchronousLoadGroup];
+    dispatch_group_enter(_asynchronousLoadGroup);
 
     if (asyncImageLoadingSerialRequestQueue_onceToken != -1)
     {
@@ -388,7 +388,7 @@ LABEL_6:
     v17[1] = 3221225472;
     v17[2] = __54__LPImage__initWithPlatformImageGenerator_properties___block_invoke;
     v17[3] = &unk_1E7A35428;
-    v19 = v6;
+    v19 = generatorCopy;
     v14 = v8;
     v18 = v14;
     dispatch_async(v13, v17);
@@ -462,20 +462,20 @@ void __54__LPImage__initWithPlatformImageGenerator_properties___block_invoke_3(u
 
 - (void)_computeDominantColorForProperties
 {
-  v3 = [(LPImage *)self platformImage];
-  v5 = [v3 _lp_dominantColors];
+  platformImage = [(LPImage *)self platformImage];
+  _lp_dominantColors = [platformImage _lp_dominantColors];
 
-  -[LPImageProperties setHasSingleDominantColor:](self->_properties, "setHasSingleDominantColor:", [v5 count] == 1);
-  v4 = [v5 firstObject];
-  [(LPImageProperties *)self->_properties setDominantColor:v4];
+  -[LPImageProperties setHasSingleDominantColor:](self->_properties, "setHasSingleDominantColor:", [_lp_dominantColors count] == 1);
+  firstObject = [_lp_dominantColors firstObject];
+  [(LPImageProperties *)self->_properties setDominantColor:firstObject];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = LPImage;
-  if (![(LPImage *)&v13 isEqual:v4])
+  if (![(LPImage *)&v13 isEqual:equalCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -484,25 +484,25 @@ void __54__LPImage__initWithPlatformImageGenerator_properties___block_invoke_3(u
       goto LABEL_17;
     }
 
-    v6 = v4;
+    v6 = equalCopy;
     if (objectsAreEqual(v6[1], self->_originalPlatformImage))
     {
-      v7 = [v6 _cachedAtomicData];
-      v8 = [(LPImage *)self _cachedAtomicData];
-      v9 = objectsAreEqual(v7, v8);
+      _cachedAtomicData = [v6 _cachedAtomicData];
+      _cachedAtomicData2 = [(LPImage *)self _cachedAtomicData];
+      v9 = objectsAreEqual(_cachedAtomicData, _cachedAtomicData2);
 
       if ((v9 & 1) != 0 && objectsAreEqual(v6[3], self->_MIMEType) && objectsAreEqual(v6[18], self->_fileURL) && objectsAreEqual(v6[4], self->_properties) && !v6[6] && !self->_itemProvider)
       {
-        v10 = [v6 _asynchronousLoadGroup];
-        if (v10)
+        _asynchronousLoadGroup = [v6 _asynchronousLoadGroup];
+        if (_asynchronousLoadGroup)
         {
         }
 
         else
         {
-          v11 = [(LPImage *)self _asynchronousLoadGroup];
+          _asynchronousLoadGroup2 = [(LPImage *)self _asynchronousLoadGroup];
 
-          if (!v11)
+          if (!_asynchronousLoadGroup2)
           {
             v5 = *(v6 + 108) == self->_isNonFallbackSymbolImage;
             goto LABEL_16;
@@ -525,8 +525,8 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(LPImage *)self _cachedAtomicData];
-  v4 = [v3 hash];
+  _cachedAtomicData = [(LPImage *)self _cachedAtomicData];
+  v4 = [_cachedAtomicData hash];
   v5 = [(NSString *)self->_MIMEType hash];
 
   return v5 ^ v4;
@@ -536,22 +536,22 @@ LABEL_17:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1AE886000, a2, OS_LOG_TYPE_FAULT, "LPImage<%p>: timed out in _waitForAsynchronouslyLoadedImageIfNeeded", &v2, 0xCu);
 }
 
-+ (id)_PNGImageNamed:(id)a3
++ (id)_PNGImageNamed:(id)named
 {
-  v3 = [a1 _PNGImageNamed:a3 template:0 properties:0];
+  v3 = [self _PNGImageNamed:named template:0 properties:0];
 
   return v3;
 }
 
-+ (id)_PNGImageNamed:(id)a3 template:(BOOL)a4 properties:(id)a5
++ (id)_PNGImageNamed:(id)named template:(BOOL)template properties:(id)properties
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  namedCopy = named;
+  propertiesCopy = properties;
   v9 = +[LPTestingOverrides forceImageLoadingScaleFactor];
   v23 = 0;
   v24 = &v23;
@@ -566,10 +566,10 @@ LABEL_17:
   v18[3] = &unk_1E7A355E0;
   v20 = &v23;
   v21 = v9;
-  v11 = v7;
+  v11 = namedCopy;
   v19 = v11;
-  v22 = a4;
-  v12 = [(LPImage *)v10 _initWithPlatformImageGenerator:v18 properties:v8];
+  templateCopy = template;
+  v12 = [(LPImage *)v10 _initWithPlatformImageGenerator:v18 properties:propertiesCopy];
   v13 = v24[5];
   v24[5] = v12;
 
@@ -630,10 +630,10 @@ void __46__LPImage__PNGImageNamed_template_properties___block_invoke(uint64_t a1
   v3[2](v3, v10);
 }
 
-+ (id)_PDFImageNamed:(id)a3 template:(BOOL)a4
++ (id)_PDFImageNamed:(id)named template:(BOOL)template
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  namedCopy = named;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -646,9 +646,9 @@ void __46__LPImage__PNGImageNamed_template_properties___block_invoke(uint64_t a1
   v14[2] = __35__LPImage__PDFImageNamed_template___block_invoke;
   v14[3] = &unk_1E7A35608;
   v16 = &v18;
-  v7 = v5;
+  v7 = namedCopy;
   v15 = v7;
-  v17 = a4;
+  templateCopy = template;
   v8 = [(LPImage *)v6 _initWithPlatformImageGenerator:v14 properties:0];
   v9 = v19[5];
   v19[5] = v8;
@@ -707,9 +707,9 @@ void __35__LPImage__PDFImageNamed_template___block_invoke(uint64_t a1, void *a2)
   v3[2](v3, v9);
 }
 
-- (LPImage)initWithCoder:(id)a3
+- (LPImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = LPImage;
   v5 = [(LPImage *)&v20 init];
@@ -718,14 +718,14 @@ void __35__LPImage__PDFImageNamed_template___block_invoke(uint64_t a1, void *a2)
     goto LABEL_11;
   }
 
-  if ([v4 _lp_coderType] == 1)
+  if ([coderCopy _lp_coderType] == 1)
   {
-    v6 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"platformImage"];
+    v6 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"platformImage"];
     originalPlatformImage = v5->_originalPlatformImage;
     v5->_originalPlatformImage = v6;
   }
 
-  v8 = [v4 _lp_strictlyDecodeNSDataForKey:@"data"];
+  v8 = [coderCopy _lp_strictlyDecodeNSDataForKey:@"data"];
   [(LPImage *)v5 set_cachedAtomicData:v8];
 
   if ([(LPImage *)v5 _isSubstitute])
@@ -733,8 +733,8 @@ void __35__LPImage__PDFImageNamed_template___block_invoke(uint64_t a1, void *a2)
     goto LABEL_8;
   }
 
-  v9 = [(LPImage *)v5 _cachedAtomicData];
-  if (![v9 length])
+  _cachedAtomicData = [(LPImage *)v5 _cachedAtomicData];
+  if (![_cachedAtomicData length])
   {
     v10 = v5->_originalPlatformImage;
 
@@ -749,7 +749,7 @@ LABEL_11:
   }
 
 LABEL_8:
-  v11 = [v4 _lp_strictlyDecodeNSStringForKey:@"MIMEType"];
+  v11 = [coderCopy _lp_strictlyDecodeNSStringForKey:@"MIMEType"];
   MIMEType = v5->_MIMEType;
   v5->_MIMEType = v11;
 
@@ -757,17 +757,17 @@ LABEL_8:
   properties = v5->_properties;
   v5->_properties = v13;
 
-  v15 = [v4 _lp_strictlyDecodeNSStringForKey:@"accessibilityText"];
+  v15 = [coderCopy _lp_strictlyDecodeNSStringForKey:@"accessibilityText"];
   [(LPImageProperties *)v5->_properties setAccessibilityText:v15];
 
-  v16 = [v4 _lp_strictlyDecodeColorForKey:@"overlaidTextColor"];
+  v16 = [coderCopy _lp_strictlyDecodeColorForKey:@"overlaidTextColor"];
   [(LPImageProperties *)v5->_properties setOverlaidTextColor:v16];
 
-  v17 = [v4 _lp_strictlyDecodeColorForKey:@"dominantColor"];
+  v17 = [coderCopy _lp_strictlyDecodeColorForKey:@"dominantColor"];
   [(LPImageProperties *)v5->_properties setDominantColor:v17];
 
-  -[LPImageProperties setHasSingleDominantColor:](v5->_properties, "setHasSingleDominantColor:", [v4 decodeBoolForKey:@"hasSingleDominantColor"]);
-  -[LPImageProperties setType:](v5->_properties, "setType:", [v4 decodeIntegerForKey:@"imageType"]);
+  -[LPImageProperties setHasSingleDominantColor:](v5->_properties, "setHasSingleDominantColor:", [coderCopy decodeBoolForKey:@"hasSingleDominantColor"]);
+  -[LPImageProperties setType:](v5->_properties, "setType:", [coderCopy decodeIntegerForKey:@"imageType"]);
   if ([(LPImageProperties *)v5->_properties type]>= 8)
   {
     [(LPImageProperties *)v5->_properties setType:0];
@@ -779,16 +779,16 @@ LABEL_12:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 _lp_coderType] == 1)
+  coderCopy = coder;
+  if ([coderCopy _lp_coderType] == 1)
   {
-    v5 = [(LPImage *)self _existingPlatformImage];
-    v6 = [v5 _lp_isSymbolImage];
-    if (v6)
+    _existingPlatformImage = [(LPImage *)self _existingPlatformImage];
+    _lp_isSymbolImage = [_existingPlatformImage _lp_isSymbolImage];
+    if (_lp_isSymbolImage)
     {
-      [v4 _lp_encodeObjectIfNotNil:v5 forKey:@"platformImage"];
+      [coderCopy _lp_encodeObjectIfNotNil:_existingPlatformImage forKey:@"platformImage"];
     }
   }
 
@@ -804,53 +804,53 @@ LABEL_12:
       }
     }
 
-    v6 = 0;
+    _lp_isSymbolImage = 0;
   }
 
-  if (((v6 | [(LPImage *)self _isSubstitute]) & 1) == 0)
+  if (((_lp_isSymbolImage | [(LPImage *)self _isSubstitute]) & 1) == 0)
   {
-    v8 = [(LPImage *)self data];
-    [v4 _lp_encodeObjectIfNotNil:v8 forKey:@"data"];
+    data = [(LPImage *)self data];
+    [coderCopy _lp_encodeObjectIfNotNil:data forKey:@"data"];
   }
 
-  [v4 _lp_encodeStringIfNotNil:self->_MIMEType forKey:@"MIMEType"];
-  v9 = [(LPImage *)self properties];
-  v10 = [v9 accessibilityText];
-  [v4 _lp_encodeStringIfNotNil:v10 forKey:@"accessibilityText"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_MIMEType forKey:@"MIMEType"];
+  properties = [(LPImage *)self properties];
+  accessibilityText = [properties accessibilityText];
+  [coderCopy _lp_encodeStringIfNotNil:accessibilityText forKey:@"accessibilityText"];
 
-  v11 = [v9 overlaidTextColor];
-  [v4 _lp_encodeColorIfNotNil:v11 forKey:@"overlaidTextColor"];
+  overlaidTextColor = [properties overlaidTextColor];
+  [coderCopy _lp_encodeColorIfNotNil:overlaidTextColor forKey:@"overlaidTextColor"];
 
-  v12 = [v9 dominantColor];
-  [v4 _lp_encodeColorIfNotNil:v12 forKey:@"dominantColor"];
+  dominantColor = [properties dominantColor];
+  [coderCopy _lp_encodeColorIfNotNil:dominantColor forKey:@"dominantColor"];
 
-  [v4 encodeBool:objc_msgSend(v9 forKey:{"hasSingleDominantColor"), @"hasSingleDominantColor"}];
-  [v4 encodeInteger:objc_msgSend(v9 forKey:{"type"), @"imageType"}];
+  [coderCopy encodeBool:objc_msgSend(properties forKey:{"hasSingleDominantColor"), @"hasSingleDominantColor"}];
+  [coderCopy encodeInteger:objc_msgSend(properties forKey:{"type"), @"imageType"}];
 }
 
 - (BOOL)_canEncodeWithoutComputation
 {
-  v3 = [(LPImage *)self _existingPlatformImage];
-  if ([v3 _lp_isSymbolImage])
+  _existingPlatformImage = [(LPImage *)self _existingPlatformImage];
+  if ([_existingPlatformImage _lp_isSymbolImage])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(LPImage *)self _cachedAtomicData];
-    v4 = v5 != 0;
+    _cachedAtomicData = [(LPImage *)self _cachedAtomicData];
+    v4 = _cachedAtomicData != 0;
   }
 
   return v4;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  v6 = a3;
-  if ([v6 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = v6;
+    v4 = lCopy;
   }
 
   else
@@ -862,11 +862,11 @@ LABEL_12:
   self->_fileURL = v4;
 }
 
-+ (id)_loadImageSubsampledToScreenSizeFromData:(id)a3
++ (id)_loadImageSubsampledToScreenSizeFromData:(id)data
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![(__CFData *)v3 length])
+  dataCopy = data;
+  if (![(__CFData *)dataCopy length])
   {
     v14 = 0;
     goto LABEL_14;
@@ -879,7 +879,7 @@ LABEL_12:
   v9 = v8;
   v10 = objc_alloc(MEMORY[0x1E695DF90]);
   v11 = [v10 initWithObjectsAndKeys:{MEMORY[0x1E695E118], *MEMORY[0x1E696E0E8], 0}];
-  v12 = [(__CFData *)v3 copy];
+  v12 = [(__CFData *)dataCopy copy];
 
   v13 = CGImageSourceCreateWithData(v12, v11);
   v14 = v13;
@@ -969,7 +969,7 @@ LABEL_12:
 
 LABEL_13:
 
-  v3 = v12;
+  dataCopy = v12;
 LABEL_14:
 
   return v14;
@@ -993,56 +993,56 @@ LABEL_14:
 
 - (UIImage)platformImage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(LPImage *)v2 _existingPlatformImage];
-  platformImage = v3;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _existingPlatformImage = [(LPImage *)selfCopy _existingPlatformImage];
+  platformImage = _existingPlatformImage;
+  if (!_existingPlatformImage)
   {
-    platformImage = v2->_platformImage;
+    platformImage = selfCopy->_platformImage;
     if (!platformImage)
     {
-      v5 = [(LPImage *)v2 data];
-      if (!v5)
+      data = [(LPImage *)selfCopy data];
+      if (!data)
       {
         goto LABEL_9;
       }
 
       if (+[LPSettings subsampleImagesToScreenSize])
       {
-        v6 = [LPImage _loadImageSubsampledToScreenSizeFromData:v5];
+        v6 = [LPImage _loadImageSubsampledToScreenSizeFromData:data];
       }
 
       else
       {
-        v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v5];
+        v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:data];
       }
 
-      v7 = v2->_platformImage;
-      v2->_platformImage = v6;
+      v7 = selfCopy->_platformImage;
+      selfCopy->_platformImage = v6;
 
-      platformImage = v2->_platformImage;
+      platformImage = selfCopy->_platformImage;
     }
   }
 
-  v5 = platformImage;
+  data = platformImage;
 LABEL_9:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return data;
 }
 
-- (void)_synchronouslyDecodePlatformImageWithMaximumSize:(CGSize)a3
+- (void)_synchronouslyDecodePlatformImageWithMaximumSize:(CGSize)size
 {
   v22[6] = *MEMORY[0x1E69E9840];
   if (!self->_decodedPlatformImage)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
     [(LPImage *)self _waitForAsynchronouslyLoadedImageIfNeeded];
-    v6 = [(LPImage *)self data];
-    if (v6)
+    data = [(LPImage *)self data];
+    if (data)
     {
       v7 = MEMORY[0x1E695E118];
       v8 = *MEMORY[0x1E696DFE8];
@@ -1063,26 +1063,26 @@ LABEL_9:
       v22[5] = v7;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:6];
 
-      v13 = CGImageSourceCreateWithData(v6, 0);
+      v13 = CGImageSourceCreateWithData(data, 0);
       v14 = v13;
       if (v13)
       {
         ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v13, 0, v12);
         if (ThumbnailAtIndex)
         {
-          v16 = self;
-          objc_sync_enter(v16);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
           v17 = [MEMORY[0x1E69DCAB8] _lp_createImageWithCGImage:ThumbnailAtIndex];
           decodedPlatformImage = self->_decodedPlatformImage;
           self->_decodedPlatformImage = v17;
 
-          originalPlatformImage = v16->_originalPlatformImage;
-          v16->_originalPlatformImage = 0;
+          originalPlatformImage = selfCopy->_originalPlatformImage;
+          selfCopy->_originalPlatformImage = 0;
 
-          platformImage = v16->_platformImage;
-          v16->_platformImage = 0;
+          platformImage = selfCopy->_platformImage;
+          selfCopy->_platformImage = 0;
 
-          objc_sync_exit(v16);
+          objc_sync_exit(selfCopy);
           CFRelease(v14);
           CGImageRelease(ThumbnailAtIndex);
         }
@@ -1098,9 +1098,9 @@ LABEL_9:
 
 - (NSData)data
 {
-  v3 = [(LPImage *)self _cachedAtomicData];
+  _cachedAtomicData = [(LPImage *)self _cachedAtomicData];
 
-  if (!v3)
+  if (!_cachedAtomicData)
   {
     [(LPImage *)self _waitForAsynchronouslyLoadedImageIfNeeded];
     if (self->_originalPlatformImage)
@@ -1161,10 +1161,10 @@ LABEL_5:
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(LPImage *)obj _cachedAtomicData];
+  _cachedAtomicData = [(LPImage *)obj _cachedAtomicData];
 
   v3 = obj;
-  if (!v2)
+  if (!_cachedAtomicData)
   {
     [(LPImage *)obj _waitForAsynchronouslyLoadedImageIfNeeded];
     v3 = obj;
@@ -1197,7 +1197,7 @@ LABEL_5:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AE886000, a2, OS_LOG_TYPE_ERROR, "LPImage: Failed to load data: %@", &v2, 0xCu);
 }
 
@@ -1212,8 +1212,8 @@ LABEL_5:
 
   else
   {
-    v4 = [(LPImage *)self data];
-    v5 = [v4 length];
+    data = [(LPImage *)self data];
+    v5 = [data length];
 
     return v5;
   }
@@ -1221,21 +1221,21 @@ LABEL_5:
 
 - (CGSize)_pixelSize
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_hasComputedPixelSize)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_hasComputedPixelSize)
   {
-    v3 = [(LPImage *)v2 platformImage];
-    [v3 _lp_pixelSize];
-    v2->_pixelSize.width = v4;
-    v2->_pixelSize.height = v5;
+    platformImage = [(LPImage *)selfCopy platformImage];
+    [platformImage _lp_pixelSize];
+    selfCopy->_pixelSize.width = v4;
+    selfCopy->_pixelSize.height = v5;
 
-    v2->_hasComputedPixelSize = 1;
+    selfCopy->_hasComputedPixelSize = 1;
   }
 
-  width = v2->_pixelSize.width;
-  height = v2->_pixelSize.height;
-  objc_sync_exit(v2);
+  width = selfCopy->_pixelSize.width;
+  height = selfCopy->_pixelSize.height;
+  objc_sync_exit(selfCopy);
 
   v8 = width;
   v9 = height;
@@ -1252,13 +1252,13 @@ LABEL_5:
   }
 
   self->_hasComputedIsAnimated = 1;
-  v3 = [(LPImage *)self MIMEType];
-  v4 = [LPMIMETypeRegistry isNonAnimatedMultiframeImageType:v3];
+  mIMEType = [(LPImage *)self MIMEType];
+  v4 = [LPMIMETypeRegistry isNonAnimatedMultiframeImageType:mIMEType];
 
   if (!v4)
   {
-    v6 = [(LPImage *)self data];
-    v7 = CGImageSourceCreateWithData(v6, MEMORY[0x1E695E0F8]);
+    data = [(LPImage *)self data];
+    v7 = CGImageSourceCreateWithData(data, MEMORY[0x1E695E0F8]);
 
     if (!v7)
     {
@@ -1277,20 +1277,20 @@ LABEL_5:
 
 - (NSString)_srcsetForRemoteURLs
 {
-  v3 = [(LPImage *)self _remoteURLsForEmailCompatibleOutput];
+  _remoteURLsForEmailCompatibleOutput = [(LPImage *)self _remoteURLsForEmailCompatibleOutput];
 
-  if (v3)
+  if (_remoteURLsForEmailCompatibleOutput)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v5 = [(LPImage *)self _remoteURLsForEmailCompatibleOutput];
+    _remoteURLsForEmailCompatibleOutput2 = [(LPImage *)self _remoteURLsForEmailCompatibleOutput];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __31__LPImage__srcsetForRemoteURLs__block_invoke;
     v12 = &unk_1E7A35630;
     v6 = v4;
     v13 = v6;
-    v14 = self;
-    [v5 enumerateObjectsUsingBlock:&v9];
+    selfCopy = self;
+    [_remoteURLsForEmailCompatibleOutput2 enumerateObjectsUsingBlock:&v9];
 
     v7 = [v6 copy];
   }
@@ -1330,15 +1330,15 @@ void __31__LPImage__srcsetForRemoteURLs__block_invoke(uint64_t a1, void *a2, uin
     return 0;
   }
 
-  v2 = [(LPImage *)self _cachedAtomicData];
-  v3 = v2 != 0;
+  _cachedAtomicData = [(LPImage *)self _cachedAtomicData];
+  v3 = _cachedAtomicData != 0;
 
   return v3;
 }
 
-- (void)loadAsynchronouslyWithCompletionHandler:(id)a3
+- (void)loadAsynchronouslyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   itemProviderLoadGroup = self->_itemProviderLoadGroup;
   if (!itemProviderLoadGroup)
   {
@@ -1362,8 +1362,8 @@ void __31__LPImage__srcsetForRemoteURLs__block_invoke(uint64_t a1, void *a2, uin
   block[2] = __51__LPImage_loadAsynchronouslyWithCompletionHandler___block_invoke_3;
   block[3] = &unk_1E7A356A0;
   block[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_group_notify(itemProviderLoadGroup, MEMORY[0x1E69E96A0], block);
 }
 
@@ -1425,10 +1425,10 @@ LABEL_6:
 
   else
   {
-    v5 = [(LPImage *)self data];
+    data = [(LPImage *)self data];
     v6 = MEMORY[0x1E696ACA0];
-    v7 = [(LPImage *)self MIMEType];
-    v3 = [v6 _lp_itemProviderWithData:v5 MIMEType:v7];
+    mIMEType = [(LPImage *)self MIMEType];
+    v3 = [v6 _lp_itemProviderWithData:data MIMEType:mIMEType];
   }
 
   return v3;
@@ -1436,25 +1436,25 @@ LABEL_6:
 
 - (id)_asTemplate
 {
-  v3 = [(LPImage *)self platformImage];
-  v4 = [v3 renderingMode];
+  platformImage = [(LPImage *)self platformImage];
+  renderingMode = [platformImage renderingMode];
 
-  if (v4 == 2)
+  if (renderingMode == 2)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(LPImage *)self platformImage];
-    v7 = [v6 imageWithRenderingMode:2];
+    platformImage2 = [(LPImage *)self platformImage];
+    v7 = [platformImage2 imageWithRenderingMode:2];
 
     v8 = [LPImage alloc];
-    v9 = [(LPImage *)self properties];
-    v5 = [(LPImage *)v8 initWithPlatformImage:v7 properties:v9];
+    properties = [(LPImage *)self properties];
+    selfCopy = [(LPImage *)v8 initWithPlatformImage:v7 properties:properties];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)_isFallbackIcon
@@ -1464,18 +1464,18 @@ LABEL_6:
     return self->_fallbackIcon;
   }
 
-  v3 = [(LPImage *)self platformImage];
-  v4 = [v3 _lp_isSymbolImage];
+  platformImage = [(LPImage *)self platformImage];
+  _lp_isSymbolImage = [platformImage _lp_isSymbolImage];
 
-  return (v4 & 1) != 0 || self->_fallbackIcon;
+  return (_lp_isSymbolImage & 1) != 0 || self->_fallbackIcon;
 }
 
 - (void)_ensureTransparentRegions
 {
   if (!self->_hasComputedTransparentRegions)
   {
-    v3 = [(LPImage *)self platformImage];
-    self->_transparentRegions = [v3 _lp_transparentRegions];
+    platformImage = [(LPImage *)self platformImage];
+    self->_transparentRegions = [platformImage _lp_transparentRegions];
 
     self->_hasComputedTransparentRegions = 1;
   }
@@ -1483,7 +1483,7 @@ LABEL_6:
 
 - (id)filledVariant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AE971D38();
 
   return v3;
@@ -1491,16 +1491,16 @@ LABEL_6:
 
 - (BOOL)_isLowResolutionAsImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AE971F8C();
 
   return v3;
 }
 
-- (BOOL)_isLowResolutionAsIconWithScaleFactor:(double)a3
+- (BOOL)_isLowResolutionAsIconWithScaleFactor:(double)factor
 {
-  v4 = self;
-  if ([(LPImage *)v4 _isFallbackIcon])
+  selfCopy = self;
+  if ([(LPImage *)selfCopy _isFallbackIcon])
   {
 
     return 0;
@@ -1508,12 +1508,12 @@ LABEL_6:
 
   else
   {
-    [(LPImage *)v4 _pixelSize];
+    [(LPImage *)selfCopy _pixelSize];
     v7 = v6;
     [objc_opt_self() largestIconSizeInPoints];
     v9 = v8;
 
-    return v7 < v9 * a3;
+    return v7 < v9 * factor;
   }
 }
 

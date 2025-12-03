@@ -3,11 +3,11 @@
 - (CGSize)slideSize;
 - (PDPresentation)init;
 - (id)description;
-- (id)notesMasterAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfSlide:(id)a3;
-- (unsigned)addBulletBlip:(id)a3;
-- (void)cacheGraphicStyleForDrawable:(id)a3 colorContext:(id)a4;
-- (void)cacheGraphicStylesForSlideBase:(id)a3;
+- (id)notesMasterAtIndex:(unint64_t)index;
+- (unint64_t)indexOfSlide:(id)slide;
+- (unsigned)addBulletBlip:(id)blip;
+- (void)cacheGraphicStyleForDrawable:(id)drawable colorContext:(id)context;
+- (void)cacheGraphicStylesForSlideBase:(id)base;
 - (void)ensureDefaultLayoutsForMasters;
 - (void)flushUnusedMastersAndLayouts;
 - (void)removeUnnecessaryOverrides;
@@ -60,34 +60,34 @@
   return result;
 }
 
-- (id)notesMasterAtIndex:(unint64_t)a3
+- (id)notesMasterAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->mNotesMasters count];
   if (v5)
   {
-    v5 = [(NSMutableArray *)self->mNotesMasters objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mNotesMasters objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (unint64_t)indexOfSlide:(id)a3
+- (unint64_t)indexOfSlide:(id)slide
 {
-  v4 = a3;
-  v5 = [(PDPresentation *)self slideCount];
-  if (v5)
+  slideCopy = slide;
+  slideCount = [(PDPresentation *)self slideCount];
+  if (slideCount)
   {
     v6 = 0;
     while (1)
     {
       v7 = [(PDPresentation *)self slideAtIndex:v6];
 
-      if (v7 == v4)
+      if (v7 == slideCopy)
       {
         break;
       }
 
-      if (v5 == ++v6)
+      if (slideCount == ++v6)
       {
         goto LABEL_5;
       }
@@ -103,10 +103,10 @@ LABEL_5:
   return v6;
 }
 
-- (unsigned)addBulletBlip:(id)a3
+- (unsigned)addBulletBlip:(id)blip
 {
-  v4 = a3;
-  [(NSMutableArray *)self->mBulletBlips addObject:v4];
+  blipCopy = blip;
+  [(NSMutableArray *)self->mBulletBlips addObject:blipCopy];
   LODWORD(self) = [(NSMutableArray *)self->mBulletBlips count];
 
   return self;
@@ -133,27 +133,27 @@ LABEL_5:
     }
 
     v5 = [(NSMutableArray *)self->mSlides objectAtIndex:i];
-    v6 = [v5 slideLayout];
-    v7 = [v6 slideMaster];
-    v8 = [(OITSUNoCopyDictionary *)v16 objectForKey:v7];
+    slideLayout = [v5 slideLayout];
+    slideMaster = [slideLayout slideMaster];
+    v8 = [(OITSUNoCopyDictionary *)v16 objectForKey:slideMaster];
     if (!v8)
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      [(OITSUNoCopyDictionary *)v16 setObject:v8 forUncopiedKey:v7];
+      [(OITSUNoCopyDictionary *)v16 setObject:v8 forUncopiedKey:slideMaster];
     }
 
-    [v8 addObject:v6];
+    [v8 addObject:slideLayout];
   }
 
-  v9 = [(OITSUNoCopyDictionary *)v16 allKeys];
-  [(NSMutableArray *)self->mSlideMasters setArray:v9];
-  for (j = 0; [v9 count] > j; ++j)
+  allKeys = [(OITSUNoCopyDictionary *)v16 allKeys];
+  [(NSMutableArray *)self->mSlideMasters setArray:allKeys];
+  for (j = 0; [allKeys count] > j; ++j)
   {
-    v11 = [v9 objectAtIndex:j];
+    v11 = [allKeys objectAtIndex:j];
     v12 = objc_alloc(MEMORY[0x277CBEB18]);
     v13 = [(OITSUNoCopyDictionary *)v16 objectForKey:v11];
-    v14 = [v13 allObjects];
-    v15 = [v12 initWithArray:v14];
+    allObjects = [v13 allObjects];
+    v15 = [v12 initWithArray:allObjects];
 
     [v11 setSlideLayouts:v15];
   }
@@ -186,8 +186,8 @@ LABEL_5:
           v7 = [[PDSlideLayout alloc] initWithSlideMaster:v6];
           [(PDSlideLayout *)v7 setSlideLayoutType:2];
           [(PDSlideChild *)v7 setShowMasterShapes:1];
-          v8 = [v6 placeholders];
-          [(PDSlideBase *)v7 setDrawables:v8];
+          placeholders = [v6 placeholders];
+          [(PDSlideBase *)v7 setDrawables:placeholders];
 
           [(PDSlideChild *)v7 setShowMasterPlaceholderAnimations:1];
           [v6 addSlideLayout:v7];
@@ -314,12 +314,12 @@ LABEL_5:
   return v2;
 }
 
-- (void)cacheGraphicStyleForDrawable:(id)a3 colorContext:(id)a4
+- (void)cacheGraphicStyleForDrawable:(id)drawable colorContext:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(OCDDocument *)self graphicStyleCache];
+  drawableCopy = drawable;
+  contextCopy = context;
+  graphicStyleCache = [(OCDDocument *)self graphicStyleCache];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -327,8 +327,8 @@ LABEL_5:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v9 = [v6 children];
-    v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    children = [drawableCopy children];
+    v10 = [children countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v10)
     {
       v11 = *v35;
@@ -338,13 +338,13 @@ LABEL_5:
         {
           if (*v35 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(children);
           }
 
-          [(PDPresentation *)self cacheGraphicStyleForDrawable:*(*(&v34 + 1) + 8 * i) colorContext:v7];
+          [(PDPresentation *)self cacheGraphicStyleForDrawable:*(*(&v34 + 1) + 8 * i) colorContext:contextCopy];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v10 = [children countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v10);
@@ -356,24 +356,24 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v6 clientData];
-    v14 = [v13 placeholder];
-    if (!v14)
+    clientData = [drawableCopy clientData];
+    placeholder = [clientData placeholder];
+    if (!placeholder)
     {
-      v15 = v6;
+      v15 = drawableCopy;
       v31 = v15;
-      v32 = v13;
-      v30 = [v15 shapeProperties];
-      v16 = [v15 type];
-      v17 = [v30 isTextBox];
-      if (v16 == 202)
+      v32 = clientData;
+      shapeProperties = [v15 shapeProperties];
+      type = [v15 type];
+      isTextBox = [shapeProperties isTextBox];
+      if (type == 202)
       {
         v18 = 1;
       }
 
       else
       {
-        v18 = v17;
+        v18 = isTextBox;
       }
 
       if (v18)
@@ -384,7 +384,7 @@ LABEL_5:
       else
       {
         v19 = 1;
-        if (v16 != 20 && v16 != 203)
+        if (type != 20 && type != 203)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -394,36 +394,36 @@ LABEL_5:
         }
       }
 
-      v33 = [v15 textBody];
-      v22 = [v33 textListStyle];
-      v23 = [v22 propertiesForListLevel:0];
+      textBody = [v15 textBody];
+      textListStyle = [textBody textListStyle];
+      v23 = [textListStyle propertiesForListLevel:0];
 
-      if ([v33 paragraphCount])
+      if ([textBody paragraphCount])
       {
-        v24 = [v33 paragraphAtIndex:0];
-        v25 = [v24 properties];
+        v24 = [textBody paragraphAtIndex:0];
+        properties = [v24 properties];
 
-        v26 = [v24 paragraphEndCharacterProperties];
+        paragraphEndCharacterProperties = [v24 paragraphEndCharacterProperties];
         if ([v24 textRunCount])
         {
           v27 = [v24 textRunAtIndex:0];
-          v28 = [v27 properties];
+          properties2 = [v27 properties];
 
-          v26 = v28;
+          paragraphEndCharacterProperties = properties2;
         }
 
-        v23 = v25;
+        v23 = properties;
       }
 
       else
       {
-        v26 = 0;
+        paragraphEndCharacterProperties = 0;
       }
 
-      v29 = [v33 properties];
-      [v8 cacheDrawablePropertiesOfCategory:v19 withGraphicProperties:v30 textBodyProperties:v29 paragraphProperties:v23 characterProperties:v26 colorContext:v7];
+      properties3 = [textBody properties];
+      [graphicStyleCache cacheDrawablePropertiesOfCategory:v19 withGraphicProperties:shapeProperties textBodyProperties:properties3 paragraphProperties:v23 characterProperties:paragraphEndCharacterProperties colorContext:contextCopy];
 
-      v13 = v32;
+      clientData = v32;
     }
 
     goto LABEL_36;
@@ -432,8 +432,8 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v6 imageProperties];
-    [v8 cacheDrawablePropertiesOfCategory:3 withGraphicProperties:v20 textBodyProperties:0 paragraphProperties:0 characterProperties:0 colorContext:v7];
+    imageProperties = [drawableCopy imageProperties];
+    [graphicStyleCache cacheDrawablePropertiesOfCategory:3 withGraphicProperties:imageProperties textBodyProperties:0 paragraphProperties:0 characterProperties:0 colorContext:contextCopy];
 LABEL_22:
 
     goto LABEL_36;
@@ -442,12 +442,12 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v6 drawableProperties];
-    v20 = [v21 style];
+    drawableProperties = [drawableCopy drawableProperties];
+    imageProperties = [drawableProperties style];
 
-    if (v20)
+    if (imageProperties)
     {
-      [v8 cacheTableStyle:v20];
+      [graphicStyleCache cacheTableStyle:imageProperties];
     }
 
     goto LABEL_22;
@@ -456,30 +456,30 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 cacheChartStyleId:{objc_msgSend(v6, "styleId")}];
+    [graphicStyleCache cacheChartStyleId:{objc_msgSend(drawableCopy, "styleId")}];
   }
 
 LABEL_36:
 }
 
-- (void)cacheGraphicStylesForSlideBase:(id)a3
+- (void)cacheGraphicStylesForSlideBase:(id)base
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  baseCopy = base;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [OADColorContext alloc];
-    v6 = [v4 colorScheme];
-    v7 = [v4 colorMap];
-    v8 = [(OADColorContext *)v5 initWithScheme:v6 map:v7 palette:0];
+    colorScheme = [baseCopy colorScheme];
+    colorMap = [baseCopy colorMap];
+    v8 = [(OADColorContext *)v5 initWithScheme:colorScheme map:colorMap palette:0];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v9 = [v4 drawables];
-    v10 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    drawables = [baseCopy drawables];
+    v10 = [drawables countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v10)
     {
       v11 = *v14;
@@ -490,14 +490,14 @@ LABEL_36:
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(drawables);
           }
 
           [(PDPresentation *)self cacheGraphicStyleForDrawable:*(*(&v13 + 1) + 8 * v12++) colorContext:v8];
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [drawables countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);

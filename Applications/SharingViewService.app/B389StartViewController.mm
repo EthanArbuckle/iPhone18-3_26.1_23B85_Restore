@@ -1,73 +1,73 @@
 @interface B389StartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC18SharingViewService23B389StartViewController)initWithMainController:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC18SharingViewService23B389StartViewController)initWithMainController:(id)controller;
 - (void)continuePressed;
 - (void)dismissPressed;
 - (void)handleTapOutside;
 - (void)transitionOutOfMulti;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation B389StartViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100052868(a3);
+  selfCopy = self;
+  sub_100052868(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10005586C(a3);
+  selfCopy = self;
+  sub_10005586C(appear);
 }
 
 - (void)transitionOutOfMulti
 {
-  v2 = self;
+  selfCopy = self;
   sub_100055B60();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000571A8(a3);
+  selfCopy = self;
+  sub_1000571A8(disappear);
 }
 
 - (void)dismissPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100057384();
 }
 
 - (void)continuePressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000573D4();
 }
 
 - (void)handleTapOutside
 {
-  v2 = self;
+  selfCopy = self;
   sub_100057800();
 }
 
-- (_TtC18SharingViewService23B389StartViewController)initWithMainController:(id)a3
+- (_TtC18SharingViewService23B389StartViewController)initWithMainController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_100066608(v3);
+  controllerCopy = controller;
+  v4 = sub_100066608(controllerCopy);
 
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100066718(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_100066718(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }

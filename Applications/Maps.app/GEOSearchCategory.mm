@@ -1,33 +1,33 @@
 @interface GEOSearchCategory
-- (CGColor)_maps_newSignificantColorForScreenScale:(double)a3;
-- (CGColor)_maps_newSignificantColorForScreenScale:(double)a3 isTouchBar:(BOOL)a4;
+- (CGColor)_maps_newSignificantColorForScreenScale:(double)scale;
+- (CGColor)_maps_newSignificantColorForScreenScale:(double)scale isTouchBar:(BOOL)bar;
 @end
 
 @implementation GEOSearchCategory
 
-- (CGColor)_maps_newSignificantColorForScreenScale:(double)a3 isTouchBar:(BOOL)a4
+- (CGColor)_maps_newSignificantColorForScreenScale:(double)scale isTouchBar:(BOOL)bar
 {
-  v4 = a4;
-  v6 = [(GEOSearchCategory *)self styleAttributes];
-  v7 = v6;
-  if (v4)
+  barCopy = bar;
+  styleAttributes = [(GEOSearchCategory *)self styleAttributes];
+  v7 = styleAttributes;
+  if (barCopy)
   {
-    v8 = [v6 copy];
+    v8 = [styleAttributes copy];
 
     v11 = 0x10001003FLL;
     [v8 replaceAttributes:&v11 count:1];
     v7 = v8;
   }
 
-  v9 = [MKIconManager newSignificantColorForStyleAttributes:v7 forScale:a3];
+  v9 = [MKIconManager newSignificantColorForStyleAttributes:v7 forScale:scale];
 
   return v9;
 }
 
-- (CGColor)_maps_newSignificantColorForScreenScale:(double)a3
+- (CGColor)_maps_newSignificantColorForScreenScale:(double)scale
 {
-  v4 = [(GEOSearchCategory *)self styleAttributes];
-  v5 = [MKIconManager newSignificantColorForStyleAttributes:v4 forScale:a3];
+  styleAttributes = [(GEOSearchCategory *)self styleAttributes];
+  v5 = [MKIconManager newSignificantColorForStyleAttributes:styleAttributes forScale:scale];
 
   return v5;
 }

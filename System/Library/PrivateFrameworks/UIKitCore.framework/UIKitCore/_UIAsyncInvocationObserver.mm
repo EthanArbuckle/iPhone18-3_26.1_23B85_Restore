@@ -1,8 +1,8 @@
 @interface _UIAsyncInvocationObserver
-+ (void)whenInvocationsCompleteForObservers:(id)a3 do:(id)a4;
++ (void)whenInvocationsCompleteForObservers:(id)observers do:(id)do;
 - (_UIAsyncInvocationObserver)init;
 - (void)_didCompleteInvocation;
-- (void)whenCompleteDo:(id)a3;
+- (void)whenCompleteDo:(id)do;
 @end
 
 @implementation _UIAsyncInvocationObserver
@@ -37,31 +37,31 @@
   dispatch_sync(completionQueueManagementQueue, block);
 }
 
-- (void)whenCompleteDo:(id)a3
+- (void)whenCompleteDo:(id)do
 {
-  v4 = a3;
+  doCopy = do;
   completionQueueManagementQueue = self->_completionQueueManagementQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45___UIAsyncInvocationObserver_whenCompleteDo___block_invoke;
   v7[3] = &unk_1E70F37C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = doCopy;
+  v6 = doCopy;
   dispatch_sync(completionQueueManagementQueue, v7);
 }
 
-+ (void)whenInvocationsCompleteForObservers:(id)a3 do:(id)a4
++ (void)whenInvocationsCompleteForObservers:(id)observers do:(id)do
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  observersCopy = observers;
+  doCopy = do;
   v7 = dispatch_semaphore_create(0);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v5;
+  v8 = observersCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -102,8 +102,8 @@
   v18[3] = &unk_1E70FCE28;
   v19 = v8;
   v20 = v7;
-  v21 = v6;
-  v15 = v6;
+  v21 = doCopy;
+  v15 = doCopy;
   v16 = v7;
   v17 = v8;
   dispatch_async(v14, v18);

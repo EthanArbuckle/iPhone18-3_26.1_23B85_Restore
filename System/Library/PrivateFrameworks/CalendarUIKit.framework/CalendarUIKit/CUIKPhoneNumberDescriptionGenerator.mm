@@ -1,8 +1,8 @@
 @interface CUIKPhoneNumberDescriptionGenerator
-+ (id)normalizedPhoneNumber:(id)a3;
++ (id)normalizedPhoneNumber:(id)number;
 + (id)sharedGenerator;
-- (id)formattedStringForPhoneNumber:(id)a3;
-- (id)formattedStringForTelURL:(id)a3;
+- (id)formattedStringForPhoneNumber:(id)number;
+- (id)formattedStringForTelURL:(id)l;
 @end
 
 @implementation CUIKPhoneNumberDescriptionGenerator
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __54__CUIKPhoneNumberDescriptionGenerator_sharedGenerator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGenerator_onceToken != -1)
   {
     dispatch_once(&sharedGenerator_onceToken, block);
@@ -33,13 +33,13 @@ uint64_t __54__CUIKPhoneNumberDescriptionGenerator_sharedGenerator__block_invoke
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)formattedStringForPhoneNumber:(id)a3
+- (id)formattedStringForPhoneNumber:(id)number
 {
-  v3 = a3;
-  v4 = [EKWeakLinkClass() defaultCountryCode];
-  v5 = v3;
+  numberCopy = number;
+  defaultCountryCode = [EKWeakLinkClass() defaultCountryCode];
+  v5 = numberCopy;
   v6 = EKWeakLinkSymbol();
-  v7 = v6(0, v5, v4);
+  v7 = v6(0, v5, defaultCountryCode);
   v8 = v5;
   if (v7)
   {
@@ -53,29 +53,29 @@ uint64_t __54__CUIKPhoneNumberDescriptionGenerator_sharedGenerator__block_invoke
   return v8;
 }
 
-- (id)formattedStringForTelURL:(id)a3
+- (id)formattedStringForTelURL:(id)l
 {
-  v4 = [a3 resourceSpecifier];
-  v5 = [v4 componentsSeparatedByString:@"?"];
-  v6 = [v5 firstObject];
+  resourceSpecifier = [l resourceSpecifier];
+  v5 = [resourceSpecifier componentsSeparatedByString:@"?"];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 lastPathComponent];
-  v8 = [v7 stringByRemovingPercentEncoding];
+  lastPathComponent = [firstObject lastPathComponent];
+  stringByRemovingPercentEncoding = [lastPathComponent stringByRemovingPercentEncoding];
 
-  v9 = [(CUIKPhoneNumberDescriptionGenerator *)self formattedStringForPhoneNumber:v8];
+  v9 = [(CUIKPhoneNumberDescriptionGenerator *)self formattedStringForPhoneNumber:stringByRemovingPercentEncoding];
 
   return v9;
 }
 
-+ (id)normalizedPhoneNumber:(id)a3
++ (id)normalizedPhoneNumber:(id)number
 {
-  v3 = a3;
-  v4 = PNCopyBestGuessCountryCodeForNumber();
-  if (!v4)
+  numberCopy = number;
+  lowercaseString = PNCopyBestGuessCountryCodeForNumber();
+  if (!lowercaseString)
   {
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v6 = [v5 objectForKey:*MEMORY[0x1E695D978]];
-    v4 = [v6 lowercaseString];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v6 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+    lowercaseString = [v6 lowercaseString];
   }
 
   v7 = PNCopyBestGuessNormalizedNumberForCountry();

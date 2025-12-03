@@ -1,18 +1,18 @@
 @interface SCATCustomizeMenuBaseController
 - (BOOL)_toggleShouldEnableAllMenuItems;
-- (BOOL)isItemEnabled:(id)a3;
+- (BOOL)isItemEnabled:(id)enabled;
 - (id)_nameForToggle;
-- (id)filterAndTrackMenuItemsMatchingBlock:(id)a3 allItems:(id)a4;
-- (id)itemAfterTogglingEnabledState:(id)a3;
+- (id)filterAndTrackMenuItemsMatchingBlock:(id)block allItems:(id)items;
+- (id)itemAfterTogglingEnabledState:(id)state;
 - (id)menuItemSpecifiersIncludingToggleButton;
-- (id)restorePreviouslyFilteredItemsToItems:(id)a3;
+- (id)restorePreviouslyFilteredItemsToItems:(id)items;
 - (id)specifiers;
-- (id)titleForItem:(id)a3;
-- (void)_toggleButtonTapped:(id)a3;
+- (id)titleForItem:(id)item;
+- (void)_toggleButtonTapped:(id)tapped;
 - (void)_updateToggleButtonName;
-- (void)selectRowForSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateElementsInTopLevelWithItems:(id)a3;
+- (void)selectRowForSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateElementsInTopLevelWithItems:(id)items;
 @end
 
 @implementation SCATCustomizeMenuBaseController
@@ -22,8 +22,8 @@
   v3 = +[NSMutableArray array];
   v4 = +[PSSpecifier emptyGroupSpecifier];
   [v3 addObject:v4];
-  v5 = [(SCATCustomizeMenuBaseController *)self _nameForToggle];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  _nameForToggle = [(SCATCustomizeMenuBaseController *)self _nameForToggle];
+  v6 = [PSSpecifier preferenceSpecifierNamed:_nameForToggle target:self set:0 get:0 detail:0 cell:13 edit:0];
   [v6 setProperty:&off_27A260 forKey:PSAlignmentKey];
   [v6 setIdentifier:@"ToggleButton"];
   [v6 setButtonAction:"_toggleButtonTapped:"];
@@ -31,29 +31,29 @@
   v7 = +[PSSpecifier emptyGroupSpecifier];
 
   [v3 addObject:v7];
-  v8 = [(AXReorderableCheckmarkListController *)self itemSpecifiers];
-  [v3 addObjectsFromArray:v8];
+  itemSpecifiers = [(AXReorderableCheckmarkListController *)self itemSpecifiers];
+  [v3 addObjectsFromArray:itemSpecifiers];
 
   return v3;
 }
 
-- (id)filterAndTrackMenuItemsMatchingBlock:(id)a3 allItems:(id)a4
+- (id)filterAndTrackMenuItemsMatchingBlock:(id)block allItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  itemsCopy = items;
   v8 = +[NSMutableDictionary dictionary];
   [(SCATCustomizeMenuBaseController *)self setHiddenIndexesToDictionaries:v8];
 
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __81__SCATCustomizeMenuBaseController_filterAndTrackMenuItemsMatchingBlock_allItems___block_invoke;
   v14[3] = &unk_2578F8;
-  v16 = v6;
+  v16 = blockCopy;
   v9 = v14[4] = self;
   v15 = v9;
-  v10 = v6;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v10 = blockCopy;
+  [itemsCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v9;
@@ -78,28 +78,28 @@ void __81__SCATCustomizeMenuBaseController_filterAndTrackMenuItemsMatchingBlock_
   }
 }
 
-- (id)restorePreviouslyFilteredItemsToItems:(id)a3
+- (id)restorePreviouslyFilteredItemsToItems:(id)items
 {
-  v5 = a3;
-  v6 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
+  itemsCopy = items;
+  hiddenIndexesToDictionaries = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
 
-  if (!v6)
+  if (!hiddenIndexesToDictionaries)
   {
     v22 = NSStringFromSelector(a2);
     _AXAssert();
   }
 
-  v7 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
-  v8 = [v7 count];
+  hiddenIndexesToDictionaries2 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
+  v8 = [hiddenIndexesToDictionaries2 count];
 
-  v9 = v5;
+  v9 = itemsCopy;
   if (v8)
   {
-    v10 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
-    v11 = [v10 allKeys];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_37];
+    hiddenIndexesToDictionaries3 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
+    allKeys = [hiddenIndexesToDictionaries3 allKeys];
+    v12 = [allKeys sortedArrayUsingComparator:&__block_literal_global_37];
 
-    v9 = [v5 mutableCopy];
+    v9 = [itemsCopy mutableCopy];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -120,8 +120,8 @@ void __81__SCATCustomizeMenuBaseController_filterAndTrackMenuItemsMatchingBlock_
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          v19 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
-          v20 = [v19 objectForKeyedSubscript:v18];
+          hiddenIndexesToDictionaries4 = [(SCATCustomizeMenuBaseController *)self hiddenIndexesToDictionaries];
+          v20 = [hiddenIndexesToDictionaries4 objectForKeyedSubscript:v18];
           [v9 insertObject:v20 atIndex:{objc_msgSend(v18, "unsignedIntegerValue")}];
         }
 
@@ -164,9 +164,9 @@ int64_t __73__SCATCustomizeMenuBaseController_restorePreviouslyFilteredItemsToIt
   v4 = *&self->super.AXUISettingsSetupCapableListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(SCATCustomizeMenuBaseController *)self menuItemSpecifiersIncludingToggleButton];
+    menuItemSpecifiersIncludingToggleButton = [(SCATCustomizeMenuBaseController *)self menuItemSpecifiersIncludingToggleButton];
     v6 = *&self->super.AXUISettingsSetupCapableListController_opaque[v3];
-    *&self->super.AXUISettingsSetupCapableListController_opaque[v3] = v5;
+    *&self->super.AXUISettingsSetupCapableListController_opaque[v3] = menuItemSpecifiersIncludingToggleButton;
 
     v4 = *&self->super.AXUISettingsSetupCapableListController_opaque[v3];
   }
@@ -196,8 +196,8 @@ int64_t __73__SCATCustomizeMenuBaseController_restorePreviouslyFilteredItemsToIt
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(AXReorderableCheckmarkListController *)self cachedItems];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  cachedItems = [(AXReorderableCheckmarkListController *)self cachedItems];
+  v4 = [cachedItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -208,7 +208,7 @@ int64_t __73__SCATCustomizeMenuBaseController_restorePreviouslyFilteredItemsToIt
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cachedItems);
         }
 
         if (![(SCATCustomizeMenuBaseController *)self isItemEnabled:*(*(&v10 + 1) + 8 * i)])
@@ -218,7 +218,7 @@ int64_t __73__SCATCustomizeMenuBaseController_restorePreviouslyFilteredItemsToIt
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [cachedItems countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -237,61 +237,61 @@ LABEL_11:
 - (void)_updateToggleButtonName
 {
   v4 = [(SCATCustomizeMenuBaseController *)self specifierForID:@"ToggleButton"];
-  v3 = [(SCATCustomizeMenuBaseController *)self _nameForToggle];
-  [v4 setName:v3];
+  _nameForToggle = [(SCATCustomizeMenuBaseController *)self _nameForToggle];
+  [v4 setName:_nameForToggle];
 
   [(SCATCustomizeMenuBaseController *)self reloadSpecifier:v4 animated:0];
 }
 
-- (void)_toggleButtonTapped:(id)a3
+- (void)_toggleButtonTapped:(id)tapped
 {
-  v4 = [(SCATCustomizeMenuBaseController *)self _toggleShouldEnableAllMenuItems];
-  v10 = [(AXReorderableCheckmarkListController *)self cachedItems];
-  v5 = [v10 count];
+  _toggleShouldEnableAllMenuItems = [(SCATCustomizeMenuBaseController *)self _toggleShouldEnableAllMenuItems];
+  cachedItems = [(AXReorderableCheckmarkListController *)self cachedItems];
+  v5 = [cachedItems count];
   if (v5)
   {
     v6 = v5;
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v10 objectAtIndexedSubscript:i];
-      if (v4 != [(SCATCustomizeMenuBaseController *)self isItemEnabled:v8])
+      v8 = [cachedItems objectAtIndexedSubscript:i];
+      if (_toggleShouldEnableAllMenuItems != [(SCATCustomizeMenuBaseController *)self isItemEnabled:v8])
       {
         v9 = [(SCATCustomizeMenuBaseController *)self itemAfterTogglingEnabledState:v8];
-        [v10 replaceObjectAtIndex:i withObject:v9];
+        [cachedItems replaceObjectAtIndex:i withObject:v9];
       }
     }
   }
 
-  [(AXReorderableCheckmarkListController *)self updateItemsInPreferences:v10];
+  [(AXReorderableCheckmarkListController *)self updateItemsInPreferences:cachedItems];
   [(SCATCustomizeMenuBaseController *)self reloadSpecifiers];
 }
 
-- (void)selectRowForSpecifier:(id)a3
+- (void)selectRowForSpecifier:(id)specifier
 {
-  v4 = [(SCATCustomizeMenuBaseController *)self indexPathForSpecifier:a3];
+  v4 = [(SCATCustomizeMenuBaseController *)self indexPathForSpecifier:specifier];
   [(SCATCustomizeMenuBaseController *)self tableView:*&self->super.AXUISettingsSetupCapableListController_opaque[OBJC_IVAR___PSListController__table] didSelectRowAtIndexPath:v4];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = SCATCustomizeMenuBaseController;
-  v6 = a4;
-  [(AXReorderableCheckmarkListController *)&v8 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(AXReorderableCheckmarkListController *)&v8 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  if (v7 == [(SCATCustomizeMenuBaseController *)self indexOfSectionForItems])
+  if (section == [(SCATCustomizeMenuBaseController *)self indexOfSectionForItems])
   {
     [(SCATCustomizeMenuBaseController *)self _updateToggleButtonName];
   }
 }
 
-- (void)updateElementsInTopLevelWithItems:(id)a3
+- (void)updateElementsInTopLevelWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 switchControlTopLevelMenuItems];
-  v7 = [NSMutableSet setWithArray:v6];
+  switchControlTopLevelMenuItems = [v5 switchControlTopLevelMenuItems];
+  v7 = [NSMutableSet setWithArray:switchControlTopLevelMenuItems];
 
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
@@ -299,7 +299,7 @@ LABEL_11:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v4;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v11)
   {
@@ -400,13 +400,13 @@ LABEL_11:
   }
 
   v30 = +[AXSettings sharedInstance];
-  v31 = [v7 allObjects];
-  [v30 setSwitchControlTopLevelMenuItems:v31];
+  allObjects = [v7 allObjects];
+  [v30 setSwitchControlTopLevelMenuItems:allObjects];
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v3 = [a3 objectForKeyedSubscript:AXSSwitchControlMenuItemTypeKey];
+  v3 = [item objectForKeyedSubscript:AXSSwitchControlMenuItemTypeKey];
   v4 = [@"CUSTOMIZE_MENU_" stringByAppendingString:v3];
   [v3 isEqualToString:AXSSwitchControlMenuItemGesturesForceTouch];
   v5 = AXParameterizedLocalizedString();
@@ -414,26 +414,26 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isItemEnabled:(id)a3
+- (BOOL)isItemEnabled:(id)enabled
 {
-  v3 = [a3 objectForKeyedSubscript:AXSSwitchControlMenuItemEnabledKey];
-  v4 = [v3 BOOLValue];
+  v3 = [enabled objectForKeyedSubscript:AXSSwitchControlMenuItemEnabledKey];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)itemAfterTogglingEnabledState:(id)a3
+- (id)itemAfterTogglingEnabledState:(id)state
 {
   v3 = AXSSwitchControlMenuItemEnabledKey;
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v5 BOOLValue];
+  stateCopy = state;
+  v5 = [stateCopy objectForKeyedSubscript:v3];
+  bOOLValue = [v5 BOOLValue];
 
   v11[0] = v3;
-  v7 = [NSNumber numberWithInt:v6 ^ 1];
+  v7 = [NSNumber numberWithInt:bOOLValue ^ 1];
   v12[0] = v7;
   v11[1] = AXSSwitchControlMenuItemTypeKey;
-  v8 = [v4 objectForKeyedSubscript:?];
+  v8 = [stateCopy objectForKeyedSubscript:?];
 
   v12[1] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];

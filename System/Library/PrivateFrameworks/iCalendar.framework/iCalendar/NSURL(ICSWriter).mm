@@ -7,8 +7,8 @@
 - (void)_ICSStringWithOptions:()ICSWriter appendingToString:
 {
   v6 = a4;
-  v7 = [a1 absoluteString];
-  iCalendarAppendStringToStringWithOptions(v7, v6, a3);
+  absoluteString = [self absoluteString];
+  iCalendarAppendStringToStringWithOptions(absoluteString, v6, a3);
 }
 
 @end

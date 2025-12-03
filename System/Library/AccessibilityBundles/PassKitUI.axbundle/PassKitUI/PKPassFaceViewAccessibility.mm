@@ -1,7 +1,7 @@
 @interface PKPassFaceViewAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)createBodyInvariantViews;
-- (void)setPass:(id)a3 colorProfile:(id)a4;
+- (void)setPass:(id)pass colorProfile:(id)profile;
 @end
 
 @implementation PKPassFaceViewAccessibility
@@ -41,11 +41,11 @@
   [v14 setIsAccessibilityElement:0];
 }
 
-- (void)setPass:(id)a3 colorProfile:(id)a4
+- (void)setPass:(id)pass colorProfile:(id)profile
 {
   v5.receiver = self;
   v5.super_class = PKPassFaceViewAccessibility;
-  [(PKPassFaceViewAccessibility *)&v5 setPass:a3 colorProfile:a4];
+  [(PKPassFaceViewAccessibility *)&v5 setPass:pass colorProfile:profile];
   [(PKPassFaceViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

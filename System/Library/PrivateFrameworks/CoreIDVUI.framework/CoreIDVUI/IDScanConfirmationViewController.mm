@@ -1,13 +1,13 @@
 @interface IDScanConfirmationViewController
-- (_TtC9CoreIDVUI32IDScanConfirmationViewController)initWithCoder:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9CoreIDVUI32IDScanConfirmationViewController)initWithCoder:(id)coder;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation IDScanConfirmationViewController
 
-- (_TtC9CoreIDVUI32IDScanConfirmationViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI32IDScanConfirmationViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9CoreIDVUI32IDScanConfirmationViewController_eligibilityHelper;
   type metadata accessor for IdentityProofingEligibilityHelper();
@@ -23,20 +23,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457C7390();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2457C7B84(a3);
+  selfCopy = self;
+  sub_2457C7B84(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2457C7DD8(a3);
+  selfCopy = self;
+  sub_2457C7DD8(disappear);
 }
 
 @end

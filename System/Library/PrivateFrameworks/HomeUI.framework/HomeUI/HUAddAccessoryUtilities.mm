@@ -7,8 +7,8 @@
 
 + (id)addAccessoryString
 {
-  v2 = [a1 addAccessoryLocalizationStringKey];
-  v3 = _HULocalizedStringWithDefaultValue(v2, v2, 1);
+  addAccessoryLocalizationStringKey = [self addAccessoryLocalizationStringKey];
+  v3 = _HULocalizedStringWithDefaultValue(addAccessoryLocalizationStringKey, addAccessoryLocalizationStringKey, 1);
 
   return v3;
 }

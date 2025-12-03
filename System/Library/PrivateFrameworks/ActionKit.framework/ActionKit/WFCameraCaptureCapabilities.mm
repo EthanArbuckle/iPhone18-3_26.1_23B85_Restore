@@ -1,17 +1,17 @@
 @interface WFCameraCaptureCapabilities
 + (WFCameraCaptureCapabilities)capabilities;
-- (BOOL)isSupportedMode:(int64_t)a3 withDevice:(int64_t)a4;
+- (BOOL)isSupportedMode:(int64_t)mode withDevice:(int64_t)device;
 - (WFCameraCaptureCapabilities)init;
 @end
 
 @implementation WFCameraCaptureCapabilities
 
-- (BOOL)isSupportedMode:(int64_t)a3 withDevice:(int64_t)a4
+- (BOOL)isSupportedMode:(int64_t)mode withDevice:(int64_t)device
 {
-  v6 = [(WFCameraCaptureCapabilities *)self capabilities];
-  LOBYTE(a4) = [v6 isSupportedMode:a3 withDevice:a4];
+  capabilities = [(WFCameraCaptureCapabilities *)self capabilities];
+  LOBYTE(device) = [capabilities isSupportedMode:mode withDevice:device];
 
-  return a4;
+  return device;
 }
 
 - (WFCameraCaptureCapabilities)init

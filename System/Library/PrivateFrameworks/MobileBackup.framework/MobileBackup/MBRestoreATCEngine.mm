@@ -1,84 +1,84 @@
 @interface MBRestoreATCEngine
-- (BOOL)fetcher:(id)a3 didReceiveAsset:(id)a4 path:(id)a5 error:(id *)a6;
-- (BOOL)runWithError:(id *)a3;
+- (BOOL)fetcher:(id)fetcher didReceiveAsset:(id)asset path:(id)path error:(id *)error;
+- (BOOL)runWithError:(id *)error;
 - (MBAssetFetchSummary)assetFetchSummary;
 - (MBPersona)persona;
-- (_TtC7backupd18MBRestoreATCEngine)initWithRootPath:(id)a3 policy:(id)a4 depot:(id)a5 fetcher:(id)a6 decrypter:(id)a7 plan:(id)a8 progress:(id)a9 verifier:(id)a10 logger:(id)a11 error:(id *)a12;
-- (_TtC7backupd18MBRestoreATCEngine)initWithSettingsContext:(id)a3 debugContext:(id)a4 domainManager:(id)a5;
-- (void)cleanUpOnceAfterError:(id)a3;
-- (void)fetcher:(id)a3 failedFetchingAsset:(id)a4 withFetchError:(id)a5;
+- (_TtC7backupd18MBRestoreATCEngine)initWithRootPath:(id)path policy:(id)policy depot:(id)depot fetcher:(id)fetcher decrypter:(id)decrypter plan:(id)plan progress:(id)progress verifier:(id)self0 logger:(id)self1 error:(id *)self2;
+- (_TtC7backupd18MBRestoreATCEngine)initWithSettingsContext:(id)context debugContext:(id)debugContext domainManager:(id)manager;
+- (void)cleanUpOnceAfterError:(id)error;
+- (void)fetcher:(id)fetcher failedFetchingAsset:(id)asset withFetchError:(id)error;
 @end
 
 @implementation MBRestoreATCEngine
 
-- (_TtC7backupd18MBRestoreATCEngine)initWithRootPath:(id)a3 policy:(id)a4 depot:(id)a5 fetcher:(id)a6 decrypter:(id)a7 plan:(id)a8 progress:(id)a9 verifier:(id)a10 logger:(id)a11 error:(id *)a12
+- (_TtC7backupd18MBRestoreATCEngine)initWithRootPath:(id)path policy:(id)policy depot:(id)depot fetcher:(id)fetcher decrypter:(id)decrypter plan:(id)plan progress:(id)progress verifier:(id)self0 logger:(id)self1 error:(id *)self2
 {
   v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
-  v20 = a4;
-  v21 = a5;
+  policyCopy = policy;
+  depotCopy = depot;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  return sub_10001E004(v17, v19, v20, v21, a6, a7, a8, a9, a10, a11);
+  progressCopy = progress;
+  verifierCopy = verifier;
+  loggerCopy = logger;
+  return sub_10001E004(v17, v19, policyCopy, depotCopy, fetcher, decrypter, plan, progress, verifier, logger);
 }
 
 - (MBPersona)persona
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC7backupd18MBRestoreATCEngine__policy) persona];
+  persona = [*(&self->super.super.super.isa + OBJC_IVAR____TtC7backupd18MBRestoreATCEngine__policy) persona];
 
-  return v2;
+  return persona;
 }
 
 - (MBAssetFetchSummary)assetFetchSummary
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC7backupd18MBRestoreATCEngine__fetcher) fetchSummary];
+  fetchSummary = [*(&self->super.super.super.isa + OBJC_IVAR____TtC7backupd18MBRestoreATCEngine__fetcher) fetchSummary];
 
-  return v2;
+  return fetchSummary;
 }
 
-- (BOOL)runWithError:(id *)a3
+- (BOOL)runWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_10001EA50();
 
   return 1;
 }
 
-- (void)cleanUpOnceAfterError:(id)a3
+- (void)cleanUpOnceAfterError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_10002133C(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_10002133C(error);
 }
 
-- (BOOL)fetcher:(id)a3 didReceiveAsset:(id)a4 path:(id)a5 error:(id *)a6
+- (BOOL)fetcher:(id)fetcher didReceiveAsset:(id)asset path:(id)path error:(id *)error
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   swift_unknownObjectRetain();
-  v11 = a4;
-  v12 = self;
-  sub_100022998(v11, v8, v10);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_100022998(assetCopy, v8, v10);
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (void)fetcher:(id)a3 failedFetchingAsset:(id)a4 withFetchError:(id)a5
+- (void)fetcher:(id)fetcher failedFetchingAsset:(id)asset withFetchError:(id)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v10 = a5;
-  v9 = self;
-  sub_100022E54(v8, v10);
+  assetCopy = asset;
+  errorCopy = error;
+  selfCopy = self;
+  sub_100022E54(assetCopy, errorCopy);
   swift_unknownObjectRelease();
 }
 
-- (_TtC7backupd18MBRestoreATCEngine)initWithSettingsContext:(id)a3 debugContext:(id)a4 domainManager:(id)a5
+- (_TtC7backupd18MBRestoreATCEngine)initWithSettingsContext:(id)context debugContext:(id)debugContext domainManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface _SVXDeactivationOptionsMutation
-- (_SVXDeactivationOptionsMutation)initWithBaseModel:(id)a3;
+- (_SVXDeactivationOptionsMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -43,16 +43,16 @@ LABEL_10:
   return v4;
 }
 
-- (_SVXDeactivationOptionsMutation)initWithBaseModel:(id)a3
+- (_SVXDeactivationOptionsMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeactivationOptionsMutation;
   v6 = [(_SVXDeactivationOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

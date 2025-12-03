@@ -1,33 +1,33 @@
 @interface CPLCloudKitFetchMasterAssetPairTask
-- (CPLCloudKitFetchMasterAssetPairTask)initWithController:(id)a3 scopedIdentifier:(id)a4 cloudKitScope:(id)a5 resourcesFolderURL:(id)a6 completionHandler:(id)a7;
-- (id)cloudKitScopeForScopeIdentifier:(id)a3;
-- (id)scopeIdentifierFromZoneID:(id)a3;
-- (id)scopedIdentifierForCKRecordID:(id)a3;
-- (void)_fetchRecordWithIdentifier:(id)a3 expectedClass:(Class)a4 currentUserRecordID:(id)a5 completionHandler:(id)a6;
+- (CPLCloudKitFetchMasterAssetPairTask)initWithController:(id)controller scopedIdentifier:(id)identifier cloudKitScope:(id)scope resourcesFolderURL:(id)l completionHandler:(id)handler;
+- (id)cloudKitScopeForScopeIdentifier:(id)identifier;
+- (id)scopeIdentifierFromZoneID:(id)d;
+- (id)scopedIdentifierForCKRecordID:(id)d;
+- (void)_fetchRecordWithIdentifier:(id)identifier expectedClass:(Class)class currentUserRecordID:(id)d completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitFetchMasterAssetPairTask
 
-- (CPLCloudKitFetchMasterAssetPairTask)initWithController:(id)a3 scopedIdentifier:(id)a4 cloudKitScope:(id)a5 resourcesFolderURL:(id)a6 completionHandler:(id)a7
+- (CPLCloudKitFetchMasterAssetPairTask)initWithController:(id)controller scopedIdentifier:(id)identifier cloudKitScope:(id)scope resourcesFolderURL:(id)l completionHandler:(id)handler
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  scopeCopy = scope;
+  lCopy = l;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = CPLCloudKitFetchMasterAssetPairTask;
-  v17 = [(CPLCloudKitTransportTask *)&v24 initWithController:a3];
+  v17 = [(CPLCloudKitTransportTask *)&v24 initWithController:controller];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_scopedIdentifier, a4);
-    objc_storeStrong(&v18->_cloudKitScope, a5);
-    v19 = [v15 copy];
+    objc_storeStrong(&v17->_scopedIdentifier, identifier);
+    objc_storeStrong(&v18->_cloudKitScope, scope);
+    v19 = [lCopy copy];
     resourcesFolderURL = v18->_resourcesFolderURL;
     v18->_resourcesFolderURL = v19;
 
-    v21 = [v16 copy];
+    v21 = [handlerCopy copy];
     completionHandler = v18->_completionHandler;
     v18->_completionHandler = v21;
   }
@@ -35,30 +35,30 @@
   return v18;
 }
 
-- (void)_fetchRecordWithIdentifier:(id)a3 expectedClass:(Class)a4 currentUserRecordID:(id)a5 completionHandler:(id)a6
+- (void)_fetchRecordWithIdentifier:(id)identifier expectedClass:(Class)class currentUserRecordID:(id)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(CPLCloudKitScope *)self->_cloudKitScope recordIDWithRecordName:v10];
+  identifierCopy = identifier;
+  dCopy = d;
+  handlerCopy = handler;
+  v13 = [(CPLCloudKitScope *)self->_cloudKitScope recordIDWithRecordName:identifierCopy];
   v27 = v13;
   v14 = [NSArray arrayWithObjects:&v27 count:1];
-  v15 = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
+  cloudKitScope = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100044B04;
   v20[3] = &unk_100274248;
-  v25 = v12;
-  v26 = a4;
+  v25 = handlerCopy;
+  classCopy = class;
   v21 = v13;
-  v22 = v10;
-  v23 = self;
-  v24 = v11;
-  v16 = v11;
-  v17 = v10;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v24 = dCopy;
+  v16 = dCopy;
+  v17 = identifierCopy;
   v18 = v13;
-  v19 = v12;
-  [(CPLCloudKitTransportTask *)self fetchRecordsWithIDs:v14 fetchResources:1 inScope:v15 completionHandler:v20];
+  v19 = handlerCopy;
+  [(CPLCloudKitTransportTask *)self fetchRecordsWithIDs:v14 fetchResources:1 inScope:cloudKitScope completionHandler:v20];
 }
 
 - (void)runOperations
@@ -71,62 +71,62 @@
   [(CPLCloudKitTransportTask *)self getUserRecordIDFetchIfNecessaryWithCompletionHandler:v2];
 }
 
-- (id)cloudKitScopeForScopeIdentifier:(id)a3
+- (id)cloudKitScopeForScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitFetchMasterAssetPairTask *)self scopedIdentifier];
-  v6 = [v5 scopeIdentifier];
-  v7 = [v4 isEqualToString:v6];
+  identifierCopy = identifier;
+  scopedIdentifier = [(CPLCloudKitFetchMasterAssetPairTask *)self scopedIdentifier];
+  scopeIdentifier = [scopedIdentifier scopeIdentifier];
+  v7 = [identifierCopy isEqualToString:scopeIdentifier];
 
   if (v7)
   {
-    v8 = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
+    cloudKitScope = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
   }
 
   else
   {
-    v8 = 0;
+    cloudKitScope = 0;
   }
 
-  return v8;
+  return cloudKitScope;
 }
 
-- (id)scopeIdentifierFromZoneID:(id)a3
+- (id)scopeIdentifierFromZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
-  v6 = [v5 zoneID];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  cloudKitScope = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
+  zoneID = [cloudKitScope zoneID];
+  v7 = [zoneID isEqual:dCopy];
 
   if (v7)
   {
-    v8 = [(CPLCloudKitFetchMasterAssetPairTask *)self scopedIdentifier];
-    v9 = [v8 scopeIdentifier];
+    scopedIdentifier = [(CPLCloudKitFetchMasterAssetPairTask *)self scopedIdentifier];
+    scopeIdentifier = [scopedIdentifier scopeIdentifier];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CPLCloudKitFetchMasterAssetPairTask;
-    v9 = [(CPLCloudKitTransportTask *)&v11 scopeIdentifierFromZoneID:v4];
+    scopeIdentifier = [(CPLCloudKitTransportTask *)&v11 scopeIdentifierFromZoneID:dCopy];
   }
 
-  return v9;
+  return scopeIdentifier;
 }
 
-- (id)scopedIdentifierForCKRecordID:(id)a3
+- (id)scopedIdentifierForCKRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 zoneID];
-  v6 = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
-  v7 = [v6 zoneID];
-  v8 = [v5 isEqual:v7];
+  dCopy = d;
+  zoneID = [dCopy zoneID];
+  cloudKitScope = [(CPLCloudKitFetchMasterAssetPairTask *)self cloudKitScope];
+  zoneID2 = [cloudKitScope zoneID];
+  v8 = [zoneID isEqual:zoneID2];
 
   if (v8)
   {
-    v9 = [(CPLCloudKitFetchMasterAssetPairTask *)self scopedIdentifier];
-    v10 = [v9 scopeIdentifier];
-    v11 = [v4 cpl_scopedIdentifierWithScopeIdentifier:v10];
+    scopedIdentifier = [(CPLCloudKitFetchMasterAssetPairTask *)self scopedIdentifier];
+    scopeIdentifier = [scopedIdentifier scopeIdentifier];
+    v11 = [dCopy cpl_scopedIdentifierWithScopeIdentifier:scopeIdentifier];
   }
 
   else

@@ -1,29 +1,29 @@
 @interface SBSystemApertureProvidedContentElement
-- (CGSize)_sizeForEdgeView:(id)a3 thatFits:(CGSize)a4 layoutMode:(int64_t)a5;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5;
+- (CGSize)_sizeForEdgeView:(id)view thatFits:(CGSize)fits layoutMode:(int64_t)mode;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets;
 - (SAElementHosting)elementHost;
 - (SAUILayoutHosting)layoutHost;
 - (SBSystemAperturePlatformElementHosting)platformElementHost;
-- (SBSystemApertureProvidedContentElement)initWithIdentifier:(id)a3 contentProvider:(id)a4;
+- (SBSystemApertureProvidedContentElement)initWithIdentifier:(id)identifier contentProvider:(id)provider;
 - (UIView)leadingView;
 - (UIView)minimalView;
 - (UIView)trailingView;
-- (double)_edgeSpacingWithConcentricPositioningIfNecessaryForView:(id)a3 withFrame:(CGRect)a4 inContainerView:(id)a5;
+- (double)_edgeSpacingWithConcentricPositioningIfNecessaryForView:(id)view withFrame:(CGRect)frame inContainerView:(id)containerView;
 - (id)_actionView;
 - (id)_primaryView;
 - (id)_secondaryView;
 - (id)elementDescription;
-- (void)addElementLayoutSpecifierObserver:(id)a3;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3;
-- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)a3;
-- (void)removeElementLayoutSpecifierObserver:(id)a3;
-- (void)setExpanding:(BOOL)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setPreviewing:(BOOL)a3;
-- (void)setProminent:(BOOL)a3;
-- (void)setUrgent:(BOOL)a3;
+- (void)addElementLayoutSpecifierObserver:(id)observer;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews;
+- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)provider;
+- (void)removeElementLayoutSpecifierObserver:(id)observer;
+- (void)setExpanding:(BOOL)expanding;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setPreviewing:(BOOL)previewing;
+- (void)setProminent:(BOOL)prominent;
+- (void)setUrgent:(BOOL)urgent;
 @end
 
 @implementation SBSystemApertureProvidedContentElement
@@ -40,11 +40,11 @@
   leadingView = self->_leadingView;
   if (!leadingView)
   {
-    v4 = [(SBUISystemApertureContentProviding *)self->_contentProvider leadingContentViewProvider];
-    [v4 setContentContainer:self];
-    v5 = [v4 providedView];
+    leadingContentViewProvider = [(SBUISystemApertureContentProviding *)self->_contentProvider leadingContentViewProvider];
+    [leadingContentViewProvider setContentContainer:self];
+    providedView = [leadingContentViewProvider providedView];
     v6 = self->_leadingView;
-    self->_leadingView = v5;
+    self->_leadingView = providedView;
 
     leadingView = self->_leadingView;
   }
@@ -57,11 +57,11 @@
   trailingView = self->_trailingView;
   if (!trailingView)
   {
-    v4 = [(SBUISystemApertureContentProviding *)self->_contentProvider trailingContentViewProvider];
-    [v4 setContentContainer:self];
-    v5 = [v4 providedView];
+    trailingContentViewProvider = [(SBUISystemApertureContentProviding *)self->_contentProvider trailingContentViewProvider];
+    [trailingContentViewProvider setContentContainer:self];
+    providedView = [trailingContentViewProvider providedView];
     v6 = self->_trailingView;
-    self->_trailingView = v5;
+    self->_trailingView = providedView;
 
     trailingView = self->_trailingView;
   }
@@ -74,11 +74,11 @@
   minimalView = self->_minimalView;
   if (!minimalView)
   {
-    v4 = [(SBUISystemApertureContentProviding *)self->_contentProvider minimalContentViewProvider];
-    [v4 setContentContainer:self];
-    v5 = [v4 providedView];
+    minimalContentViewProvider = [(SBUISystemApertureContentProviding *)self->_contentProvider minimalContentViewProvider];
+    [minimalContentViewProvider setContentContainer:self];
+    providedView = [minimalContentViewProvider providedView];
     v6 = self->_minimalView;
-    self->_minimalView = v5;
+    self->_minimalView = providedView;
 
     minimalView = self->_minimalView;
   }
@@ -103,11 +103,11 @@
   secondaryView = self->_secondaryView;
   if (!secondaryView)
   {
-    v4 = [(SBUISystemApertureContentProviding *)self->_contentProvider secondaryContentViewProvider];
-    [v4 setContentContainer:self];
-    v5 = [v4 providedView];
+    secondaryContentViewProvider = [(SBUISystemApertureContentProviding *)self->_contentProvider secondaryContentViewProvider];
+    [secondaryContentViewProvider setContentContainer:self];
+    providedView = [secondaryContentViewProvider providedView];
     v6 = self->_secondaryView;
-    self->_secondaryView = v5;
+    self->_secondaryView = providedView;
 
     secondaryView = self->_secondaryView;
   }
@@ -120,11 +120,11 @@
   actionView = self->_actionView;
   if (!actionView)
   {
-    v4 = [(SBUISystemApertureContentProviding *)self->_contentProvider actionContentViewProvider];
-    [v4 setContentContainer:self];
-    v5 = [v4 providedView];
+    actionContentViewProvider = [(SBUISystemApertureContentProviding *)self->_contentProvider actionContentViewProvider];
+    [actionContentViewProvider setContentContainer:self];
+    providedView = [actionContentViewProvider providedView];
     v6 = self->_actionView;
-    self->_actionView = v5;
+    self->_actionView = providedView;
 
     actionView = self->_actionView;
   }
@@ -137,11 +137,11 @@
   primaryView = self->_primaryView;
   if (!primaryView)
   {
-    v4 = [(SBUISystemApertureContentProviding *)self->_contentProvider primaryContentViewProvider];
-    [v4 setContentContainer:self];
-    v5 = [v4 providedView];
+    primaryContentViewProvider = [(SBUISystemApertureContentProviding *)self->_contentProvider primaryContentViewProvider];
+    [primaryContentViewProvider setContentContainer:self];
+    providedView = [primaryContentViewProvider providedView];
     v6 = self->_primaryView;
-    self->_primaryView = v5;
+    self->_primaryView = providedView;
 
     primaryView = self->_primaryView;
   }
@@ -149,14 +149,14 @@
   return primaryView;
 }
 
-- (SBSystemApertureProvidedContentElement)initWithIdentifier:(id)a3 contentProvider:(id)a4
+- (SBSystemApertureProvidedContentElement)initWithIdentifier:(id)identifier contentProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  providerCopy = provider;
+  v9 = providerCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -178,17 +178,17 @@ LABEL_3:
   v10 = [(SBSystemApertureProvidedContentElement *)&v20 init];
   if (v10)
   {
-    v11 = [v7 elementIdentifier];
-    v12 = [v11 copy];
+    elementIdentifier = [identifierCopy elementIdentifier];
+    v12 = [elementIdentifier copy];
     v13 = *(v10 + 8);
     *(v10 + 8) = v12;
 
-    v14 = [v7 clientIdentifier];
-    v15 = [v14 copy];
+    clientIdentifier = [identifierCopy clientIdentifier];
+    v15 = [clientIdentifier copy];
     v16 = *(v10 + 9);
     *(v10 + 9) = v15;
 
-    objc_storeStrong(v10 + 1, a4);
+    objc_storeStrong(v10 + 1, provider);
     *(v10 + 120) = vdupq_n_s64(3uLL);
     *(v10 + 17) = 3;
     v17 = [[SBSystemActionElementPreviewingCoordinator alloc] initWithElement:v10];
@@ -199,19 +199,19 @@ LABEL_3:
   return v10;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   v18 = *MEMORY[0x277D85DE8];
   layoutMode = self->_layoutMode;
-  if (layoutMode != a3)
+  if (layoutMode != mode)
   {
-    self->_layoutMode = a3;
+    self->_layoutMode = mode;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(NSHashTable *)self->_observers allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -223,20 +223,20 @@ LABEL_3:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v13 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            [v12 elementLayoutSpecifier:self layoutModeDidChange:layoutMode reason:a4];
+            [v12 elementLayoutSpecifier:self layoutModeDidChange:layoutMode reason:reason];
           }
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -246,15 +246,15 @@ LABEL_3:
   }
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && (self->_leadingView == v9 || self->_trailingView == v9 || self->_minimalView == v9))
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  v10 = viewCopy;
+  if (viewCopy && (self->_leadingView == viewCopy || self->_trailingView == viewCopy || self->_minimalView == viewCopy))
   {
-    [(SBSystemApertureProvidedContentElement *)self _sizeForEdgeView:v9 thatFits:a5 layoutMode:width, height];
+    [(SBSystemApertureProvidedContentElement *)self _sizeForEdgeView:viewCopy thatFits:mode layoutMode:width, height];
     v11 = v13;
     v12 = v14;
   }
@@ -272,16 +272,16 @@ LABEL_3:
   return result;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets
 {
   bottom = result.bottom;
-  if (a3 == 3)
+  if (mode == 3)
   {
-    leading = a5.leading;
+    leading = outsets.leading;
     top = result.top;
-    trailing = a5.trailing;
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 _referenceBounds];
+    trailing = outsets.trailing;
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v10 = v9 + -20.0;
 
     [(SBSystemApertureProvidedContentElement *)self horizontalSpacingBetweenLeadingAndCenter];
@@ -317,16 +317,16 @@ LABEL_3:
     }
 
     v31 = v26 - v30;
-    v32 = [(SBSystemApertureProvidedContentElement *)self _primaryView];
-    [v32 systemLayoutSizeFittingSize:{v31, 1.79769313e308}];
+    _primaryView = [(SBSystemApertureProvidedContentElement *)self _primaryView];
+    [_primaryView systemLayoutSizeFittingSize:{v31, 1.79769313e308}];
     v34 = v33;
 
-    v35 = [(SBSystemApertureProvidedContentElement *)self _secondaryView];
-    [v35 systemLayoutSizeFittingSize:{v31, 1.79769313e308}];
+    _secondaryView = [(SBSystemApertureProvidedContentElement *)self _secondaryView];
+    [_secondaryView systemLayoutSizeFittingSize:{v31, 1.79769313e308}];
     v37 = v36;
 
-    v38 = [(SBSystemApertureProvidedContentElement *)self _actionView];
-    [v38 systemLayoutSizeFittingSize:{v31, 1.79769313e308}];
+    _actionView = [(SBSystemApertureProvidedContentElement *)self _actionView];
+    [_actionView systemLayoutSizeFittingSize:{v31, 1.79769313e308}];
     v40 = v39;
     v42 = v41;
 
@@ -400,17 +400,17 @@ LABEL_3:
   return result;
 }
 
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   if ([(SBSystemApertureProvidedContentElement *)self layoutMode]== 3)
   {
-    v5 = [v4 effectiveUserInterfaceLayoutDirection];
-    v6 = [v4 traitCollection];
-    [v6 displayScale];
+    effectiveUserInterfaceLayoutDirection = [subviewsCopy effectiveUserInterfaceLayoutDirection];
+    traitCollection = [subviewsCopy traitCollection];
+    [traitCollection displayScale];
     v8 = v7;
 
-    [v4 bounds];
+    [subviewsCopy bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -481,7 +481,7 @@ LABEL_3:
     }
 
     v40 = 88;
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v40 = 96;
     }
@@ -491,7 +491,7 @@ LABEL_3:
     {
       [(SBSystemApertureProvidedContentElement *)self _sizeForEdgeView:v41 thatFits:3 layoutMode:v14, v16];
       BSRectWithSize();
-      [(SBSystemApertureProvidedContentElement *)self _edgeSpacingWithConcentricPositioningIfNecessaryForView:v41 withFrame:v4 inContainerView:?];
+      [(SBSystemApertureProvidedContentElement *)self _edgeSpacingWithConcentricPositioningIfNecessaryForView:v41 withFrame:subviewsCopy inContainerView:?];
       v193 = v201;
       v39 = v215;
       UIRectCenteredYInRectScale();
@@ -517,7 +517,7 @@ LABEL_3:
       width = v39;
     }
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       p_leadingView = &self->_leadingView;
     }
@@ -536,7 +536,7 @@ LABEL_3:
       v57 = v56;
       v59 = v58;
       v61 = v60;
-      [(SBSystemApertureProvidedContentElement *)self _edgeSpacingWithConcentricPositioningIfNecessaryForView:v53 withFrame:v4 inContainerView:?];
+      [(SBSystemApertureProvidedContentElement *)self _edgeSpacingWithConcentricPositioningIfNecessaryForView:v53 withFrame:subviewsCopy inContainerView:?];
       v232.origin.y = v207;
       v232.origin.x = v209;
       v232.size.width = v45;
@@ -593,7 +593,7 @@ LABEL_3:
       }
     }
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [(SBSystemApertureProvidedContentElement *)self horizontalSpacingBetweenTrailingAndCenter];
       [(SBSystemApertureProvidedContentElement *)self horizontalSpacingBetweenLeadingAndCenter];
@@ -775,8 +775,8 @@ LABEL_3:
     [(SBSystemApertureProvidedContentElement *)self verticalSpacingBetweenPrimaryAndSecondary];
     if (v70 && (v109 = v106 + v107 + v108, (BSFloatIsZero() & 1) == 0))
     {
-      v111 = [(UIView *)self->_primaryView traitCollection];
-      [v111 displayScale];
+      traitCollection2 = [(UIView *)self->_primaryView traitCollection];
+      [traitCollection2 displayScale];
       UIRectCenteredYInRectScale();
       v216 = v113;
       r2a = v112;
@@ -852,7 +852,7 @@ LABEL_3:
     v145 = v141;
     v146 = v142;
     v147 = v143;
-    if (v5 != 1)
+    if (effectiveUserInterfaceLayoutDirection != 1)
     {
       v140 = r2_16a;
       v141 = v135;
@@ -861,7 +861,7 @@ LABEL_3:
     }
 
     [(UIView *)self->_leadingView sb_setBoundsAndPositionFromFrame:v140, v141, v142, v143, v201];
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v148 = r2_16a;
     }
@@ -871,7 +871,7 @@ LABEL_3:
       v148 = v144;
     }
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v149 = v135;
     }
@@ -881,7 +881,7 @@ LABEL_3:
       v149 = v145;
     }
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v150 = v137;
     }
@@ -891,7 +891,7 @@ LABEL_3:
       v150 = v146;
     }
 
-    if (v5 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v151 = v139;
     }
@@ -902,20 +902,20 @@ LABEL_3:
     }
 
     [(UIView *)self->_trailingView sb_setBoundsAndPositionFromFrame:v148, v149, v150, v151];
-    v152 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-    [v152 sensorRegionSize];
+    mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+    [mEMORY[0x277D67E28] sensorRegionSize];
     v154 = v153;
     v156 = v155;
 
-    [v4 bounds];
+    [subviewsCopy bounds];
     v157 = fmax(CGRectGetWidth(v252) - v154, 0.0) * 0.5;
-    v158 = [(SBSystemApertureProvidedContentElement *)self _primaryView];
-    [v158 intrinsicContentSize];
+    _primaryView = [(SBSystemApertureProvidedContentElement *)self _primaryView];
+    [_primaryView intrinsicContentSize];
     v160 = v159;
     v162 = v161;
 
-    v163 = [(SBSystemApertureProvidedContentElement *)self dodgeSensorAreaOnIntrinsicContentSize];
-    if (v163)
+    dodgeSensorAreaOnIntrinsicContentSize = [(SBSystemApertureProvidedContentElement *)self dodgeSensorAreaOnIntrinsicContentSize];
+    if (dodgeSensorAreaOnIntrinsicContentSize)
     {
       v164 = v162;
     }
@@ -926,7 +926,7 @@ LABEL_3:
     }
 
     v165 = v217;
-    if (v163)
+    if (dodgeSensorAreaOnIntrinsicContentSize)
     {
       v166 = v160;
     }
@@ -945,7 +945,7 @@ LABEL_3:
     v259.size.height = v156;
     if (CGRectIntersectsRect(*(&v164 - 3), v259))
     {
-      [v4 bounds];
+      [subviewsCopy bounds];
       r2_16b = CGRectGetHeight(v253);
       v254.origin.x = r2a;
       v254.origin.y = v214;
@@ -1019,8 +1019,8 @@ LABEL_3:
     [MEMORY[0x277D75D18] performWithoutAnimation:v226];
   }
 
-  v181 = [(SBSystemApertureProvidedContentElement *)self _primaryView];
-  v182 = v181;
+  _primaryView2 = [(SBSystemApertureProvidedContentElement *)self _primaryView];
+  v182 = _primaryView2;
   if (self->_layoutMode >= 3)
   {
     v183 = 1.0;
@@ -1031,10 +1031,10 @@ LABEL_3:
     v183 = 0.0;
   }
 
-  [v181 setAlpha:v183];
+  [_primaryView2 setAlpha:v183];
 
-  v184 = [(SBSystemApertureProvidedContentElement *)self _secondaryView];
-  v185 = v184;
+  _secondaryView = [(SBSystemApertureProvidedContentElement *)self _secondaryView];
+  v185 = _secondaryView;
   if (self->_layoutMode >= 3)
   {
     v186 = 1.0;
@@ -1045,10 +1045,10 @@ LABEL_3:
     v186 = 0.0;
   }
 
-  [v184 setAlpha:v186];
+  [_secondaryView setAlpha:v186];
 
-  v187 = [(SBSystemApertureProvidedContentElement *)self _actionView];
-  v188 = v187;
+  _actionView = [(SBSystemApertureProvidedContentElement *)self _actionView];
+  v188 = _actionView;
   if (self->_layoutMode >= 3)
   {
     v189 = 1.0;
@@ -1059,10 +1059,10 @@ LABEL_3:
     v189 = 0.0;
   }
 
-  [v187 setAlpha:v189];
+  [_actionView setAlpha:v189];
 
-  v190 = [(SBSystemApertureProvidedContentElement *)self minimalView];
-  v191 = v190;
+  minimalView = [(SBSystemApertureProvidedContentElement *)self minimalView];
+  v191 = minimalView;
   if (self->_layoutMode == 1)
   {
     v192 = 1.0;
@@ -1073,7 +1073,7 @@ LABEL_3:
     v192 = 0.0;
   }
 
-  [v190 setAlpha:v192];
+  [minimalView setAlpha:v192];
 }
 
 uint64_t __83__SBSystemApertureProvidedContentElement_layoutHostContainerViewDidLayoutSubviews___block_invoke(uint64_t a1)
@@ -1089,20 +1089,20 @@ uint64_t __83__SBSystemApertureProvidedContentElement_layoutHostContainerViewDid
   return [v2 sb_setBoundsAndPositionFromFrame:{v3, v4, v5, v6}];
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   if (self->_layoutMode == 3)
   {
-    v9 = [(SBSystemApertureProvidedContentElement *)self _primaryView];
-    [v7 addSubview:v9];
+    _primaryView = [(SBSystemApertureProvidedContentElement *)self _primaryView];
+    [viewCopy addSubview:_primaryView];
 
-    v10 = [(SBSystemApertureProvidedContentElement *)self _secondaryView];
-    [v7 addSubview:v10];
+    _secondaryView = [(SBSystemApertureProvidedContentElement *)self _secondaryView];
+    [viewCopy addSubview:_secondaryView];
 
-    v11 = [(SBSystemApertureProvidedContentElement *)self _actionView];
-    [v7 addSubview:v11];
+    _actionView = [(SBSystemApertureProvidedContentElement *)self _actionView];
+    [viewCopy addSubview:_actionView];
   }
 
   objc_initWeak(&location, self);
@@ -1111,9 +1111,9 @@ uint64_t __83__SBSystemApertureProvidedContentElement_layoutHostContainerViewDid
   v13[2] = __116__SBSystemApertureProvidedContentElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke;
   v13[3] = &unk_2783BE8B8;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
+  v12 = viewCopy;
   v14 = v12;
-  [v8 animateAlongsideTransition:v13 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v13 completion:0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1125,30 +1125,30 @@ void __116__SBSystemApertureProvidedContentElement_contentProviderWillTransition
   [WeakRetained layoutHostContainerViewDidLayoutSubviews:*(a1 + 32)];
 }
 
-- (void)addElementLayoutSpecifierObserver:(id)a3
+- (void)addElementLayoutSpecifierObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeElementLayoutSpecifierObserver:(id)a3
+- (void)removeElementLayoutSpecifierObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -1158,57 +1158,57 @@ void __116__SBSystemApertureProvidedContentElement_contentProviderWillTransition
   }
 }
 
-- (void)setPreviewing:(BOOL)a3
+- (void)setPreviewing:(BOOL)previewing
 {
-  if (self->_previewing != a3)
+  if (self->_previewing != previewing)
   {
-    self->_previewing = a3;
+    self->_previewing = previewing;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setUrgent:(BOOL)a3
+- (void)setUrgent:(BOOL)urgent
 {
-  if (self->_urgent != a3)
+  if (self->_urgent != urgent)
   {
-    self->_urgent = a3;
+    self->_urgent = urgent;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setExpanding:(BOOL)a3
+- (void)setExpanding:(BOOL)expanding
 {
-  if (self->_expanding != a3)
+  if (self->_expanding != expanding)
   {
-    self->_expanding = a3;
+    self->_expanding = expanding;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setProminent:(BOOL)a3
+- (void)setProminent:(BOOL)prominent
 {
-  if (self->_prominent != a3)
+  if (self->_prominent != prominent)
   {
-    self->_prominent = a3;
+    self->_prominent = prominent;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
   }
 }
 
-- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)a3
+- (void)preferredContentSizeDidInvalidateForContentViewProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
 }
 
-- (double)_edgeSpacingWithConcentricPositioningIfNecessaryForView:(id)a3 withFrame:(CGRect)a4 inContainerView:(id)a5
+- (double)_edgeSpacingWithConcentricPositioningIfNecessaryForView:(id)view withFrame:(CGRect)frame inContainerView:(id)containerView
 {
-  height = a4.size.height;
-  v8 = a3;
-  v9 = a5;
-  if ((self->_leadingView == v8 || self->_trailingView == v8) && !self->_actionView && !self->_secondaryView && BSFloatApproximatelyEqualToFloat())
+  height = frame.size.height;
+  viewCopy = view;
+  containerViewCopy = containerView;
+  if ((self->_leadingView == viewCopy || self->_trailingView == viewCopy) && !self->_actionView && !self->_secondaryView && BSFloatApproximatelyEqualToFloat())
   {
-    [v9 frame];
+    [containerViewCopy frame];
     v11 = (v10 - height) * 0.5;
   }
 
@@ -1221,45 +1221,45 @@ void __116__SBSystemApertureProvidedContentElement_contentProviderWillTransition
   return v11;
 }
 
-- (CGSize)_sizeForEdgeView:(id)a3 thatFits:(CGSize)a4 layoutMode:(int64_t)a5
+- (CGSize)_sizeForEdgeView:(id)view thatFits:(CGSize)fits layoutMode:(int64_t)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  if (!v10)
+  height = fits.height;
+  width = fits.width;
+  viewCopy = view;
+  if (!viewCopy)
   {
     v15 = *MEMORY[0x277CBF3A8];
     v16 = *(MEMORY[0x277CBF3A8] + 8);
     goto LABEL_17;
   }
 
-  v11 = [(SBSystemApertureProvidedContentElement *)self leadingView];
-  if (v11 == v10)
+  leadingView = [(SBSystemApertureProvidedContentElement *)self leadingView];
+  if (leadingView == viewCopy)
   {
     goto LABEL_8;
   }
 
-  v12 = [(SBSystemApertureProvidedContentElement *)self trailingView];
-  v13 = v12;
-  if (v12 == v10)
+  trailingView = [(SBSystemApertureProvidedContentElement *)self trailingView];
+  v13 = trailingView;
+  if (trailingView == viewCopy)
   {
 
     goto LABEL_8;
   }
 
-  v14 = [(SBSystemApertureProvidedContentElement *)self minimalView];
+  minimalView = [(SBSystemApertureProvidedContentElement *)self minimalView];
 
-  if (v14 != v10)
+  if (minimalView != viewCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SBSystemApertureProvidedContentElement.m" lineNumber:520 description:@"Why are we trying to determine the edge-view size of a non-edge view?"];
+    leadingView = [MEMORY[0x277CCA890] currentHandler];
+    [leadingView handleFailureInMethod:a2 object:self file:@"SBSystemApertureProvidedContentElement.m" lineNumber:520 description:@"Why are we trying to determine the edge-view size of a non-edge view?"];
 LABEL_8:
   }
 
-  [v10 systemLayoutSizeFittingSize:{width, height}];
+  [viewCopy systemLayoutSizeFittingSize:{width, height}];
   v15 = v17;
   v16 = v18;
-  if (a5 == 3)
+  if (mode == 3)
   {
     v19 = 37.0;
   }
@@ -1275,9 +1275,9 @@ LABEL_8:
     v15 = v19;
   }
 
-  v20 = [(SBSystemApertureProvidedContentElement *)self minimalView];
+  minimalView2 = [(SBSystemApertureProvidedContentElement *)self minimalView];
 
-  if (v20 == v10)
+  if (minimalView2 == viewCopy)
   {
     BSSizeSwap();
     v15 = v21;

@@ -1,39 +1,39 @@
 @interface TSCEReferencesToDirty
-- (BOOL)flushDirtyReferencesForSeconds:(double)a3;
-- (BOOL)hasDirtyingToPerformForOwnerId:(unsigned __int16)a3;
+- (BOOL)flushDirtyReferencesForSeconds:(double)seconds;
+- (BOOL)hasDirtyingToPerformForOwnerId:(unsigned __int16)id;
 - (BOOL)hasPrecedentCountUpdatesPending;
 - (BOOL)isEmptyForDirtying;
-- (TSCEReferencesToDirty)initWithCalcEngine:(id)a3;
+- (TSCEReferencesToDirty)initWithCalcEngine:(id)engine;
 - (id).cxx_construct;
 - (unint64_t)numberOfInProgressCalcCellRef;
-- (void)_flushCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushDependentOnlyCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushDirtyOwnerIdsWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushInternalCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushRangeRefsWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)_flushUpdatePrecedentsCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5;
-- (void)addInProgressCalcCellRefs:(const void *)a3;
+- (void)_flushCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushDependentOnlyCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushDirtyOwnerIdsWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushInternalCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushRangeRefsWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)_flushUpdatePrecedentsCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout;
+- (void)addInProgressCalcCellRefs:(const void *)refs;
 - (void)clearInProgressCalcCellRefs;
 - (void)commonInit;
-- (void)dirtyAllCellsInOwner:(const TSKUIDStruct *)a3;
-- (void)dirtyAllCellsInOwnerId:(unsigned __int16)a3;
-- (void)dirtyCellRef:(const TSCECellRef *)a3;
-- (void)dirtyCellRefs:(const void *)a3;
-- (void)dirtyCellRefsInReferenceSet:(id)a3;
-- (void)dirtyCoords:(const void *)a3 inOwnerId:(unsigned __int16)a4;
-- (void)dirtyInternalCellRef:(const TSCEInternalCellReference *)a3;
-- (void)dirtyInternalCellRefs:(const void *)a3;
-- (void)dirtyInternalCellRefsVector:(const void *)a3;
-- (void)dirtyInternalRangeRef:(const TSCEInternalRangeReference *)a3;
-- (void)dirtyOnlyDependentsOfCellRef:(const TSCECellRef *)a3;
-- (void)dirtyRangeRef:(const TSCERangeRef *)a3;
+- (void)dirtyAllCellsInOwner:(const TSKUIDStruct *)owner;
+- (void)dirtyAllCellsInOwnerId:(unsigned __int16)id;
+- (void)dirtyCellRef:(const TSCECellRef *)ref;
+- (void)dirtyCellRefs:(const void *)refs;
+- (void)dirtyCellRefsInReferenceSet:(id)set;
+- (void)dirtyCoords:(const void *)coords inOwnerId:(unsigned __int16)id;
+- (void)dirtyInternalCellRef:(const TSCEInternalCellReference *)ref;
+- (void)dirtyInternalCellRefs:(const void *)refs;
+- (void)dirtyInternalCellRefsVector:(const void *)vector;
+- (void)dirtyInternalRangeRef:(const TSCEInternalRangeReference *)ref;
+- (void)dirtyOnlyDependentsOfCellRef:(const TSCECellRef *)ref;
+- (void)dirtyRangeRef:(const TSCERangeRef *)ref;
 - (void)flushCellDirtier;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCalculationEngine:(id)a3;
-- (void)setShouldCleanGraphForConsistencyViolation:(BOOL)a3;
-- (void)setShouldPerformDetectAndRepairConsistencyViolations:(BOOL)a3;
-- (void)updatePrecedentCountForCellRef:(const TSCEInternalCellReference *)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCalculationEngine:(id)engine;
+- (void)setShouldCleanGraphForConsistencyViolation:(BOOL)violation;
+- (void)setShouldPerformDetectAndRepairConsistencyViolations:(BOOL)violations;
+- (void)updatePrecedentCountForCellRef:(const TSCEInternalCellReference *)ref;
 - (void)willClose;
 @end
 
@@ -48,18 +48,18 @@
   __dmb(0xBu);
 }
 
-- (TSCEReferencesToDirty)initWithCalcEngine:(id)a3
+- (TSCEReferencesToDirty)initWithCalcEngine:(id)engine
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
+  engineCopy = engine;
+  v9 = objc_msgSend_context(engineCopy, v5, v6, v7, v8);
   v23.receiver = self;
   v23.super_class = TSCEReferencesToDirty;
   v10 = [(TSCEReferencesToDirty *)&v23 initWithContext:v9];
 
   if (v10)
   {
-    v10->_calcEngine = v4;
-    if (v4)
+    v10->_calcEngine = engineCopy;
+    if (engineCopy)
     {
       v11 = [TSCECellDirtier alloc];
       v16 = objc_msgSend_dependencyTracker(v10->_calcEngine, v12, v13, v14, v15);
@@ -81,13 +81,13 @@
   os_unfair_lock_unlock(&self->_dirtyingMutex);
 }
 
-- (void)setCalculationEngine:(id)a3
+- (void)setCalculationEngine:(id)engine
 {
-  v4 = a3;
-  v30 = v4;
-  if (v4)
+  engineCopy = engine;
+  v30 = engineCopy;
+  if (engineCopy)
   {
-    self->_calcEngine = v4;
+    self->_calcEngine = engineCopy;
     v8 = [TSCECellDirtier alloc];
     v13 = objc_msgSend_dependencyTracker(self->_calcEngine, v9, v10, v11, v12);
     v17 = objc_msgSend_initWithDependencyTracker_(v8, v14, v13, v15, v16);
@@ -107,18 +107,18 @@
   }
 }
 
-- (void)setShouldPerformDetectAndRepairConsistencyViolations:(BOOL)a3
+- (void)setShouldPerformDetectAndRepairConsistencyViolations:(BOOL)violations
 {
   os_unfair_lock_lock(&self->_dirtyingMutex);
-  self->_shouldPerformDetectAndRepairConsistencyViolations = a3;
+  self->_shouldPerformDetectAndRepairConsistencyViolations = violations;
 
   os_unfair_lock_unlock(&self->_dirtyingMutex);
 }
 
-- (void)setShouldCleanGraphForConsistencyViolation:(BOOL)a3
+- (void)setShouldCleanGraphForConsistencyViolation:(BOOL)violation
 {
   os_unfair_lock_lock(&self->_dirtyingMutex);
-  self->_shouldCleanGraphForConsistencyViolation = a3;
+  self->_shouldCleanGraphForConsistencyViolation = violation;
 
   os_unfair_lock_unlock(&self->_dirtyingMutex);
 }
@@ -139,13 +139,13 @@
   return v7;
 }
 
-- (void)dirtyAllCellsInOwner:(const TSKUIDStruct *)a3
+- (void)dirtyAllCellsInOwner:(const TSKUIDStruct *)owner
 {
-  v7 = objc_msgSend_dependencyTracker(self->_calcEngine, a2, a3, v3, v4);
+  v7 = objc_msgSend_dependencyTracker(self->_calcEngine, a2, owner, v3, v4);
   v26 = v7;
   if (v7)
   {
-    v11 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(v7, v8, a3, v9, v10);
+    v11 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(v7, v8, owner, v9, v10);
     objc_msgSend_dirtyAllCellsInOwnerId_(self, v12, v11, v13, v14);
   }
 
@@ -160,11 +160,11 @@
   }
 }
 
-- (void)dirtyAllCellsInOwnerId:(unsigned __int16)a3
+- (void)dirtyAllCellsInOwnerId:(unsigned __int16)id
 {
-  if (a3 != 0xFFFF)
+  if (id != 0xFFFF)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, id, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
     TSUIndexSet::addIndex(&self->_toDirtyOwnerIds);
 
@@ -172,87 +172,87 @@
   }
 }
 
-- (void)dirtyCellRef:(const TSCECellRef *)a3
+- (void)dirtyCellRef:(const TSCECellRef *)ref
 {
-  if ((*&a3->coordinate & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && *&a3->_tableUID != 0)
+  if ((*&ref->coordinate & 0xFFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL && *&ref->_tableUID != 0)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, ref, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    TSCECellRefSet::addCellRef(&self->_toDirtyCellRefs, a3);
+    TSCECellRefSet::addCellRef(&self->_toDirtyCellRefs, ref);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
 }
 
-- (void)dirtyInternalCellRef:(const TSCEInternalCellReference *)a3
+- (void)dirtyInternalCellRef:(const TSCEInternalCellReference *)ref
 {
-  if (a3->tableID != -1 && (*&a3->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
+  if (ref->tableID != -1 && (*&ref->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, ref, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    sub_2212DFCE8(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
+    sub_2212DFCE8(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, ref);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
 }
 
-- (void)dirtyOnlyDependentsOfCellRef:(const TSCECellRef *)a3
+- (void)dirtyOnlyDependentsOfCellRef:(const TSCECellRef *)ref
 {
-  v5 = *&a3->coordinate == 0x7FFFFFFF || (*&a3->coordinate & 0xFFFF00000000) == 0x7FFF00000000;
-  if (!v5 && *&a3->_tableUID != 0)
+  v5 = *&ref->coordinate == 0x7FFFFFFF || (*&ref->coordinate & 0xFFFF00000000) == 0x7FFF00000000;
+  if (!v5 && *&ref->_tableUID != 0)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, ref, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    TSCECellRefSet::addCellRef(&self->_toDirtyDependentsOnlyCellRefs, a3);
+    TSCECellRefSet::addCellRef(&self->_toDirtyDependentsOnlyCellRefs, ref);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
 }
 
-- (void)dirtyCoords:(const void *)a3 inOwnerId:(unsigned __int16)a4
+- (void)dirtyCoords:(const void *)coords inOwnerId:(unsigned __int16)id
 {
-  if (!TSCECellCoordSet::isEmpty(a3))
+  if (!TSCECellCoordSet::isEmpty(coords))
   {
     objc_msgSend_willModify(self, v7, v8, v9, v10);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    sub_2212DFD38(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a4, a3);
+    sub_2212DFD38(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, id, coords);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
 }
 
-- (void)dirtyCellRefs:(const void *)a3
+- (void)dirtyCellRefs:(const void *)refs
 {
-  if ((TSCECellRefSet::isEmpty(a3) & 1) == 0)
+  if ((TSCECellRefSet::isEmpty(refs) & 1) == 0)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    TSCECellRefSet::addCellRefs(&self->_toDirtyCellRefs, a3);
+    TSCECellRefSet::addCellRefs(&self->_toDirtyCellRefs, refs);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
 }
 
-- (void)dirtyInternalCellRefs:(const void *)a3
+- (void)dirtyInternalCellRefs:(const void *)refs
 {
-  if (!sub_2212E0280(a3))
+  if (!sub_2212E0280(refs))
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    sub_2212DFD90(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
+    sub_2212DFD90(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, refs);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
 }
 
-- (void)dirtyInternalCellRefsVector:(const void *)a3
+- (void)dirtyInternalCellRefsVector:(const void *)vector
 {
-  if (*(a3 + 1) != *a3)
+  if (*(vector + 1) != *vector)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, vector, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    v8 = *a3;
-    for (i = *(a3 + 1); v8 != i; v8 += 12)
+    v8 = *vector;
+    for (i = *(vector + 1); v8 != i; v8 += 12)
     {
       sub_2212DFCE8(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, v8);
     }
@@ -261,14 +261,14 @@
   }
 }
 
-- (void)dirtyCellRefsInReferenceSet:(id)a3
+- (void)dirtyCellRefsInReferenceSet:(id)set
 {
-  v8 = a3;
-  if (v8)
+  setCopy = set;
+  if (setCopy)
   {
     objc_msgSend_willModify(self, v4, v5, v6, v7);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    v13 = objc_msgSend_referenceSet(v8, v9, v10, v11, v12);
+    v13 = objc_msgSend_referenceSet(setCopy, v9, v10, v11, v12);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_2211CA91C;
@@ -279,13 +279,13 @@
   }
 }
 
-- (void)updatePrecedentCountForCellRef:(const TSCEInternalCellReference *)a3
+- (void)updatePrecedentCountForCellRef:(const TSCEInternalCellReference *)ref
 {
-  if (a3->tableID != -1 && (*&a3->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
+  if (ref->tableID != -1 && (*&ref->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, ref, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    sub_2212DFCE8(&self->_toUpdateDirtyPrecedentCountCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
+    sub_2212DFCE8(&self->_toUpdateDirtyPrecedentCountCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, ref);
 
     os_unfair_lock_unlock(&self->_dirtyingMutex);
   }
@@ -299,17 +299,17 @@
   return !v3;
 }
 
-- (void)dirtyRangeRef:(const TSCERangeRef *)a3
+- (void)dirtyRangeRef:(const TSCERangeRef *)ref
 {
-  v10 = objc_msgSend_dependencyTracker(self->_calcEngine, a2, a3, v3, v4);
+  v10 = objc_msgSend_dependencyTracker(self->_calcEngine, a2, ref, v3, v4);
   if (v10)
   {
-    if (TSCERangeRef::isValid(a3))
+    if (TSCERangeRef::isValid(ref))
     {
       v28[0] = 0;
       v28[1] = 0;
       v29 = 0;
-      objc_msgSend_internalRangeReferenceForRangeRef_(v10, v11, a3, v12, v13);
+      objc_msgSend_internalRangeReferenceForRangeRef_(v10, v11, ref, v12, v13);
       objc_msgSend_dirtyInternalRangeRef_(self, v14, v28, v15, v16);
     }
   }
@@ -325,34 +325,34 @@
   }
 }
 
-- (void)dirtyInternalRangeRef:(const TSCEInternalRangeReference *)a3
+- (void)dirtyInternalRangeRef:(const TSCEInternalRangeReference *)ref
 {
-  if (a3->var1 != -1)
+  if (ref->var1 != -1)
   {
-    bottomRight = a3->var0._bottomRight;
-    v7 = *&a3->var0._topLeft == 0x7FFFFFFF || (*&a3->var0._topLeft & 0xFFFF00000000) == 0x7FFF00000000;
+    bottomRight = ref->var0._bottomRight;
+    v7 = *&ref->var0._topLeft == 0x7FFFFFFF || (*&ref->var0._topLeft & 0xFFFF00000000) == 0x7FFF00000000;
     v8 = v7 || bottomRight.row == 0x7FFFFFFF;
-    if (!v8 && (*&bottomRight & 0xFFFF00000000) != 0x7FFF00000000 && WORD2(*&a3->var0._topLeft) <= bottomRight.column && *&a3->var0._topLeft <= bottomRight.row)
+    if (!v8 && (*&bottomRight & 0xFFFF00000000) != 0x7FFF00000000 && WORD2(*&ref->var0._topLeft) <= bottomRight.column && *&ref->var0._topLeft <= bottomRight.row)
     {
-      objc_msgSend_willModify(self, a2, a3, v3, v4);
+      objc_msgSend_willModify(self, a2, ref, v3, v4);
       os_unfair_lock_lock(&self->_dirtyingMutex);
-      sub_2211CAC20(&self->_toDirtyRangeRefs, a3);
+      sub_2211CAC20(&self->_toDirtyRangeRefs, ref);
 
       os_unfair_lock_unlock(&self->_dirtyingMutex);
     }
   }
 }
 
-- (BOOL)hasDirtyingToPerformForOwnerId:(unsigned __int16)a3
+- (BOOL)hasDirtyingToPerformForOwnerId:(unsigned __int16)id
 {
-  if (a3 == 0xFFFF)
+  if (id == 0xFFFF)
   {
     return 0;
   }
 
-  v3 = a3;
+  idCopy = id;
   os_unfair_lock_lock(&self->_dirtyingMutex);
-  if (TSUIndexSet::containsIndex(&self->_toDirtyOwnerIds) & 1) != 0 || (sub_2212E0070(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, v3))
+  if (TSUIndexSet::containsIndex(&self->_toDirtyOwnerIds) & 1) != 0 || (sub_2212E0070(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, idCopy))
   {
     v5 = 1;
   }
@@ -372,10 +372,10 @@
       do
       {
         var1 = v9[-1].var1;
-        v5 = var1 == v3;
+        v5 = var1 == idCopy;
       }
 
-      while (var1 != v3 && v9++ != end);
+      while (var1 != idCopy && v9++ != end);
     }
   }
 
@@ -383,11 +383,11 @@
   return v5;
 }
 
-- (void)_flushDirtyOwnerIdsWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushDirtyOwnerIdsWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v13 = a4;
-  if (v8)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy)
   {
     objc_msgSend_willModify(self, v9, v10, v11, v12);
     while (1)
@@ -404,17 +404,17 @@
       os_unfair_lock_unlock(&self->_dirtyingMutex);
       if (Index != 0xFFFFLL)
       {
-        objc_msgSend_allCellRefsInOwner_(v8, v16, Index, v18, v19);
+        objc_msgSend_allCellRefsInOwner_(trackerCopy, v16, Index, v18, v19);
         os_unfair_lock_lock(&self->_dirtyingMutex);
         sub_2212DFD90(&self->_toDirtyInternalCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, v21);
         os_unfair_lock_unlock(&self->_dirtyingMutex);
         sub_221122744(v21);
       }
 
-      if (v13 && v15)
+      if (timeCopy && v15)
       {
-        objc_msgSend_timeIntervalSinceNow(v13, v16, v17, v18, v19);
-        if (-v20 > a5)
+        objc_msgSend_timeIntervalSinceNow(timeCopy, v16, v17, v18, v19);
+        if (-v20 > timeout)
         {
           break;
         }
@@ -428,11 +428,11 @@
   }
 }
 
-- (void)_flushCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy)
   {
     os_unfair_lock_lock(&self->_dirtyingMutex);
     isEmpty = TSCECellRefSet::isEmpty(&self->_toDirtyCellRefs);
@@ -445,8 +445,8 @@
       v14[1] = 3221225472;
       v14[2] = sub_2211CB094;
       v14[3] = &unk_278460D28;
-      v15 = v7;
-      v16 = self;
+      v15 = trackerCopy;
+      selfCopy = self;
       TSCECellRefSet::enumerateOwnersUsingBlock(&self->_toDirtyCellRefs._coordsForOwnerUid.__tree_.__begin_node_, v14);
       TSCECellRefSet::clear(&self->_toDirtyCellRefs);
       os_unfair_lock_unlock(&self->_dirtyingMutex);
@@ -454,11 +454,11 @@
   }
 }
 
-- (void)_flushDependentOnlyCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushDependentOnlyCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy)
   {
     os_unfair_lock_lock(&self->_dirtyingMutex);
     isEmpty = TSCECellRefSet::isEmpty(&self->_toDirtyDependentsOnlyCellRefs);
@@ -466,7 +466,7 @@
     if ((isEmpty & 1) == 0)
     {
       objc_msgSend_willModify(self, v10, v11, v12, v13);
-      v18 = objc_msgSend_calcEngine(v7, v14, v15, v16, v17);
+      v18 = objc_msgSend_calcEngine(trackerCopy, v14, v15, v16, v17);
       objc_msgSend_beginBatchingGroupCellDirtying(v18, v19, v20, v21, v22);
 
       os_unfair_lock_lock(&self->_dirtyingMutex);
@@ -477,7 +477,7 @@
       v34 = 3221225472;
       v35 = sub_2211CB2B0;
       v36 = &unk_278460D78;
-      v23 = v7;
+      v23 = trackerCopy;
       v37 = v23;
       TSCECellRefSet::enumerateOwnersUsingBlock(&v38, &v33);
       v28 = objc_msgSend_calcEngine(v23, v24, v25, v26, v27, v33, v34, v35, v36);
@@ -488,11 +488,11 @@
   }
 }
 
-- (void)_flushRangeRefsWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushRangeRefsWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy)
   {
     v21 = 0;
     v22 = 0;
@@ -511,12 +511,12 @@
     {
       for (i = 1; ; ++i)
       {
-        objc_msgSend_markIntRangeRefAsDirty_(v8, v10, v13, v11, v12);
-        if (v9)
+        objc_msgSend_markIntRangeRefAsDirty_(trackerCopy, v10, v13, v11, v12);
+        if (timeCopy)
         {
-          objc_msgSend_timeIntervalSinceNow(v9, v10, v16, v11, v12);
+          objc_msgSend_timeIntervalSinceNow(timeCopy, v10, v16, v11, v12);
           v13 = (v13 + 20);
-          if (-v17 > a5 || v13 == v14)
+          if (-v17 > timeout || v13 == v14)
           {
 LABEL_15:
             v13 = v21;
@@ -560,10 +560,10 @@ LABEL_17:
   }
 }
 
-- (void)_flushInternalCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushInternalCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a4;
-  if (a3)
+  timeCopy = time;
+  if (tracker)
   {
     v42 = 0;
     v43 = &v42;
@@ -584,7 +584,7 @@ LABEL_17:
       v36 = 0x2020000000;
       v37 = 0;
       os_unfair_lock_lock(&self->_dirtyingMutex);
-      if (v8)
+      if (timeCopy)
       {
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
@@ -622,8 +622,8 @@ LABEL_17:
       v20[2] = sub_2211CBA30;
       v20[3] = &unk_278460DC8;
       v20[4] = self;
-      v24 = a5;
-      v12 = v8;
+      timeoutCopy = timeout;
+      v12 = timeCopy;
       v21 = v12;
       v22 = &v25;
       v23 = &v38;
@@ -638,13 +638,13 @@ LABEL_17:
       }
 
       v18 = v39;
-      if (v8)
+      if (timeCopy)
       {
         if ((v39[3] & 1) == 0)
         {
           objc_msgSend_timeIntervalSinceNow(v12, v14, v15, v16, v17);
           v18 = v39;
-          if (-v19 > a5)
+          if (-v19 > timeout)
           {
             *(v39 + 24) = 1;
           }
@@ -668,11 +668,11 @@ LABEL_17:
   }
 }
 
-- (void)_flushUpdatePrecedentsCellRefSetWithDepTracker:(id)a3 startTime:(id)a4 timeout:(double)a5
+- (void)_flushUpdatePrecedentsCellRefSetWithDepTracker:(id)tracker startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  trackerCopy = tracker;
+  timeCopy = time;
+  if (trackerCopy)
   {
     v25 = 0;
     v26 = &v25;
@@ -689,7 +689,7 @@ LABEL_17:
       v23 = 0x2020000000;
       v24 = 0;
       os_unfair_lock_lock(&self->_dirtyingMutex);
-      if (v9)
+      if (timeCopy)
       {
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -712,8 +712,8 @@ LABEL_17:
       }
 
       os_unfair_lock_unlock(&self->_dirtyingMutex);
-      objc_msgSend_updateNumberOfDirtyPrecedents_(v8, v12, (v26 + 6), v13, v14);
-      if (v9 == 0 || v10)
+      objc_msgSend_updateNumberOfDirtyPrecedents_(trackerCopy, v12, (v26 + 6), v13, v14);
+      if (timeCopy == 0 || v10)
       {
         if (v10)
         {
@@ -723,8 +723,8 @@ LABEL_17:
 
       else
       {
-        objc_msgSend_timeIntervalSinceNow(v9, v15, v16, v17, v18);
-        if (-v19 > a5)
+        objc_msgSend_timeIntervalSinceNow(timeCopy, v15, v16, v17, v18);
+        if (-v19 > timeout)
         {
 LABEL_11:
           _Block_object_dispose(&v21, 8);
@@ -740,7 +740,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)flushDirtyReferencesForSeconds:(double)a3
+- (BOOL)flushDirtyReferencesForSeconds:(double)seconds
 {
   os_unfair_lock_lock(&self->_dirtyingMutex);
   isDoneDirtying = objc_msgSend_isDoneDirtying(self->_cellRefDirtier, v5, v6, v7, v8);
@@ -799,7 +799,7 @@ LABEL_44:
       if ((v38 & 1) == 0)
       {
 LABEL_25:
-        if (a3 <= 0.0)
+        if (seconds <= 0.0)
         {
           v46 = 0;
         }
@@ -815,16 +815,16 @@ LABEL_25:
         v57[3] = &unk_278460DF0;
         v47 = v46;
         v58 = v47;
-        v59 = a3;
+        secondsCopy = seconds;
         v56 = MEMORY[0x223DA1C10](v57);
-        if ((isDoneDirtying & 1) == 0 && (objc_msgSend_dirtyCellsForSeconds_fromStartTime_(self->_cellRefDirtier, v48, v47, v50, v51, a3) & 1) == 0)
+        if ((isDoneDirtying & 1) == 0 && (objc_msgSend_dirtyCellsForSeconds_fromStartTime_(self->_cellRefDirtier, v48, v47, v50, v51, seconds) & 1) == 0)
         {
           goto LABEL_43;
         }
 
         if (v17)
         {
-          objc_msgSend__flushUpdatePrecedentsCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, a3);
+          objc_msgSend__flushUpdatePrecedentsCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, seconds);
           if (sub_2212E0238(&self->_toUpdateDirtyPrecedentCountCellRefs))
           {
             goto LABEL_43;
@@ -833,7 +833,7 @@ LABEL_25:
 
         if (v10)
         {
-          objc_msgSend__flushDirtyOwnerIdsWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, a3);
+          objc_msgSend__flushDirtyOwnerIdsWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, seconds);
           if (v56[2]())
           {
             goto LABEL_43;
@@ -842,7 +842,7 @@ LABEL_25:
 
         if ((isEmpty & 1) == 0)
         {
-          objc_msgSend__flushCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, a3);
+          objc_msgSend__flushCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, seconds);
           if (v56[2]())
           {
             goto LABEL_43;
@@ -851,7 +851,7 @@ LABEL_25:
 
         if ((v53 & 1) == 0)
         {
-          objc_msgSend__flushDependentOnlyCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, a3);
+          objc_msgSend__flushDependentOnlyCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, seconds);
           if (v56[2]())
           {
             goto LABEL_43;
@@ -871,14 +871,14 @@ LABEL_43:
 
         else
         {
-          objc_msgSend__flushRangeRefsWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, a3);
+          objc_msgSend__flushRangeRefsWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, seconds);
           if (v56[2]() & 1 | !v12)
           {
             goto LABEL_43;
           }
         }
 
-        objc_msgSend__flushInternalCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, a3);
+        objc_msgSend__flushInternalCellRefSetWithDepTracker_startTime_timeout_(self, v48, v25, v47, v51, seconds);
         goto LABEL_43;
       }
     }
@@ -911,14 +911,14 @@ LABEL_43:
   }
 }
 
-- (void)addInProgressCalcCellRefs:(const void *)a3
+- (void)addInProgressCalcCellRefs:(const void *)refs
 {
-  if (*a3 != *(a3 + 1))
+  if (*refs != *(refs + 1))
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, refs, v3, v4);
     os_unfair_lock_lock(&self->_dirtyingMutex);
-    v8 = *a3;
-    for (i = *(a3 + 1); v8 != i; v8 += 12)
+    v8 = *refs;
+    for (i = *(refs + 1); v8 != i; v8 += 12)
     {
       sub_2212DFCE8(&self->_calcCellsInProgress._coordsForOwnerId.__table_.__bucket_list_.__ptr_, v8);
     }
@@ -944,11 +944,11 @@ LABEL_43:
   os_unfair_lock_unlock(&self->_dirtyingMutex);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E2AC8[38], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E2AC8[38], v6, v7);
 
   v9 = *(v8 + 16);
   if (v9)
@@ -1010,11 +1010,11 @@ LABEL_43:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v29 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v29, v4, sub_2211CCCC4, off_2812E2AC8[38], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2211CCCC4, off_2812E2AC8[38], v5);
 
   os_unfair_lock_lock(&self->_dirtyingMutex);
   if (TSUIndexSet::count(&self->_toDirtyOwnerIds))

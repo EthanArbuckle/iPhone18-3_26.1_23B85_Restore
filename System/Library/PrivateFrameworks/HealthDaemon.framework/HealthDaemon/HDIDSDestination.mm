@@ -1,20 +1,20 @@
 @interface HDIDSDestination
-+ (id)initWithAllowedDeviceTypes:(id)a3;
++ (id)initWithAllowedDeviceTypes:(id)types;
 + (id)validHealthSoftwareDeviceTypes;
-- (HDIDSDestination)initWithDeviceFilterBlock:(id)a3;
+- (HDIDSDestination)initWithDeviceFilterBlock:(id)block;
 @end
 
 @implementation HDIDSDestination
 
-- (HDIDSDestination)initWithDeviceFilterBlock:(id)a3
+- (HDIDSDestination)initWithDeviceFilterBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = HDIDSDestination;
   v5 = [(HDIDSDestination *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     deviceFilterBlock = v5->_deviceFilterBlock;
     v5->_deviceFilterBlock = v6;
   }
@@ -22,16 +22,16 @@
   return v5;
 }
 
-+ (id)initWithAllowedDeviceTypes:(id)a3
++ (id)initWithAllowedDeviceTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc(objc_opt_class());
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__HDIDSDestination_initWithAllowedDeviceTypes___block_invoke;
   v8[3] = &unk_27862E1F8;
-  v9 = v3;
-  v5 = v3;
+  v9 = typesCopy;
+  v5 = typesCopy;
   v6 = [v4 initWithDeviceFilterBlock:v8];
 
   return v6;

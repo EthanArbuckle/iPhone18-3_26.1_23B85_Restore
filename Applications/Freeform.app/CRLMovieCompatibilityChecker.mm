@@ -1,44 +1,44 @@
 @interface CRLMovieCompatibilityChecker
-+ (BOOL)assetContainsProResVideoTracks:(id)a3;
-+ (BOOL)assetContainsVideoTracksWithAlpha:(id)a3;
-+ (BOOL)isPreset:(int64_t)a3 moreCompatibleThanAsset:(id)a4;
-+ (BOOL)p_doesAsset:(id)a3 containTrackWithMediaType:(id)a4 matchingCodecTypes:(id)a5;
-+ (BOOL)p_doesTrack:(id)a3 matchCodecTypes:(id)a4;
-+ (CGSize)maxPlayableVideoDimensionsForMediaCompatibilityConverterPreset:(int64_t)a3;
-+ (id)videoCodecsForMediaCompatibilityConverterPreset:(int64_t)a3;
-+ (int)maxPlayableAudioBitrateForMediaCompatibilityConverterPreset:(int64_t)a3;
-+ (int)maxPlayableVideoPixelsPerFrameForMediaCompatibilityConverterPreset:(int64_t)a3;
++ (BOOL)assetContainsProResVideoTracks:(id)tracks;
++ (BOOL)assetContainsVideoTracksWithAlpha:(id)alpha;
++ (BOOL)isPreset:(int64_t)preset moreCompatibleThanAsset:(id)asset;
++ (BOOL)p_doesAsset:(id)asset containTrackWithMediaType:(id)type matchingCodecTypes:(id)types;
++ (BOOL)p_doesTrack:(id)track matchCodecTypes:(id)types;
++ (CGSize)maxPlayableVideoDimensionsForMediaCompatibilityConverterPreset:(int64_t)preset;
++ (id)videoCodecsForMediaCompatibilityConverterPreset:(int64_t)preset;
++ (int)maxPlayableAudioBitrateForMediaCompatibilityConverterPreset:(int64_t)preset;
++ (int)maxPlayableVideoPixelsPerFrameForMediaCompatibilityConverterPreset:(int64_t)preset;
 - (BOOL)p_assetHasSupportedFileTypeOnAllDevices;
 - (BOOL)p_doesLoadedAssetHaveHEVCTracks;
 - (BOOL)p_doesLoadedAssetHaveProResTracks;
-- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)a3;
-- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3;
-- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3;
+- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)devices;
+- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices;
+- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices;
 - (BOOL)p_isLoadedAssetPlayableOnSupportedDevices;
-- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3;
-- (BOOL)p_isVideoTrackPlayableOnSupportedDevices:(id)a3;
+- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices;
+- (BOOL)p_isVideoTrackPlayableOnSupportedDevices:(id)devices;
 - (CRLMovieCompatibilityChecker)init;
-- (CRLMovieCompatibilityChecker)initWithData:(id)a3 asset:(id)a4;
+- (CRLMovieCompatibilityChecker)initWithData:(id)data asset:(id)asset;
 - (float)p_estimatedAudioAssetDataRate;
 - (float)p_estimatedAudioAssetDataRateUsingFileSize;
-- (float)p_estimatedDataRateForAudioTrack:(id)a3;
-- (float)p_estimatedDataRateUsingFormatDescriptionForAudioTrack:(id)a3;
-- (float)p_estimatedDataRateUsingTrackPropertiesForAudioTrack:(id)a3;
-- (id)p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:(opaqueCMFormatDescription *)a3 forAtomType:(id)a4;
-- (void)checkCompatibilityUpToLevel:(int64_t)a3 completionHandler:(id)a4;
-- (void)checkCustomCompatibilityWithConverterPreset:(int64_t)a3 completionHandler:(id)a4;
-- (void)p_checkCompatibilityOfAVAssetUpToLevel:(int64_t)a3 completionHandler:(id)a4;
-- (void)p_checkCustomCompatibilityWithVideoCodecTypes:(id)a3 maxPlayableVideoDimensions:(CGSize)a4 maxPlayableVideoPixelsPerFrame:(int)a5 maxAudioBitRate:(int)a6 completionHandler:(id)a7;
-- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)a3 actualLevel:(int64_t)a4 error:(id)a5 completionHandler:(id)a6;
+- (float)p_estimatedDataRateForAudioTrack:(id)track;
+- (float)p_estimatedDataRateUsingFormatDescriptionForAudioTrack:(id)track;
+- (float)p_estimatedDataRateUsingTrackPropertiesForAudioTrack:(id)track;
+- (id)p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:(opaqueCMFormatDescription *)description forAtomType:(id)type;
+- (void)checkCompatibilityUpToLevel:(int64_t)level completionHandler:(id)handler;
+- (void)checkCustomCompatibilityWithConverterPreset:(int64_t)preset completionHandler:(id)handler;
+- (void)p_checkCompatibilityOfAVAssetUpToLevel:(int64_t)level completionHandler:(id)handler;
+- (void)p_checkCustomCompatibilityWithVideoCodecTypes:(id)types maxPlayableVideoDimensions:(CGSize)dimensions maxPlayableVideoPixelsPerFrame:(int)frame maxAudioBitRate:(int)rate completionHandler:(id)handler;
+- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)level actualLevel:(int64_t)actualLevel error:(id)error completionHandler:(id)handler;
 @end
 
 @implementation CRLMovieCompatibilityChecker
 
-- (CRLMovieCompatibilityChecker)initWithData:(id)a3 asset:(id)a4
+- (CRLMovieCompatibilityChecker)initWithData:(id)data asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  assetCopy = asset;
+  if (!dataCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -73,19 +73,19 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    v14 = [v7 type];
-    v15 = [v14 identifier];
-    v13->_movieIsAnimatedImage = [CRLAnimatedGIFController canInitWithDataType:v15];
+    objc_storeStrong(&v12->_data, data);
+    type = [dataCopy type];
+    identifier = [type identifier];
+    v13->_movieIsAnimatedImage = [CRLAnimatedGIFController canInitWithDataType:identifier];
 
     if (!v13->_movieIsAnimatedImage)
     {
-      if (!v8)
+      if (!assetCopy)
       {
-        v8 = [v7 AVAssetAndReturnError:0];
+        assetCopy = [dataCopy AVAssetAndReturnError:0];
       }
 
-      objc_storeStrong(&v13->_asset, v8);
+      objc_storeStrong(&v13->_asset, assetCopy);
     }
   }
 
@@ -142,10 +142,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)checkCompatibilityUpToLevel:(int64_t)a3 completionHandler:(id)a4
+- (void)checkCompatibilityUpToLevel:(int64_t)level completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3 <= 1)
+  handlerCopy = handler;
+  if (level <= 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -176,77 +176,77 @@
 
   if (self->_movieIsAnimatedImage)
   {
-    v10 = self;
-    v11 = a3;
+    selfCopy2 = self;
+    levelCopy2 = level;
     v12 = 5;
 LABEL_17:
-    [(CRLMovieCompatibilityChecker *)v10 p_didFinishCheckingCompatibilityUpToLevel:v11 actualLevel:v12 error:0 completionHandler:v6];
+    [(CRLMovieCompatibilityChecker *)selfCopy2 p_didFinishCheckingCompatibilityUpToLevel:levelCopy2 actualLevel:v12 error:0 completionHandler:handlerCopy];
     goto LABEL_18;
   }
 
   if ([(CRLAsset *)self->_data needsDownload]|| !self->_asset)
   {
-    v10 = self;
-    v11 = a3;
+    selfCopy2 = self;
+    levelCopy2 = level;
     v12 = 0;
     goto LABEL_17;
   }
 
-  [(CRLMovieCompatibilityChecker *)self p_checkCompatibilityOfAVAssetUpToLevel:a3 completionHandler:v6];
+  [(CRLMovieCompatibilityChecker *)self p_checkCompatibilityOfAVAssetUpToLevel:level completionHandler:handlerCopy];
 LABEL_18:
 }
 
-- (void)p_checkCompatibilityOfAVAssetUpToLevel:(int64_t)a3 completionHandler:(id)a4
+- (void)p_checkCompatibilityOfAVAssetUpToLevel:(int64_t)level completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [AVAsset crl_playableKeysWithKeys:&off_1018E1C98];
   asset = self->_asset;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100330460;
   v10[3] = &unk_10183F0D0;
-  v11 = v6;
-  v12 = a3;
+  v11 = handlerCopy;
+  levelCopy = level;
   v10[4] = self;
-  v9 = v6;
+  v9 = handlerCopy;
   [(AVAsset *)asset loadValuesAsynchronouslyForKeys:v7 completionHandler:v10];
 }
 
-- (void)p_checkCustomCompatibilityWithVideoCodecTypes:(id)a3 maxPlayableVideoDimensions:(CGSize)a4 maxPlayableVideoPixelsPerFrame:(int)a5 maxAudioBitRate:(int)a6 completionHandler:(id)a7
+- (void)p_checkCustomCompatibilityWithVideoCodecTypes:(id)types maxPlayableVideoDimensions:(CGSize)dimensions maxPlayableVideoPixelsPerFrame:(int)frame maxAudioBitRate:(int)rate completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v15 = a7;
-  v13 = [a3 copy];
+  height = dimensions.height;
+  width = dimensions.width;
+  handlerCopy = handler;
+  v13 = [types copy];
   customPlayableVideoCodecTypes = self->_customPlayableVideoCodecTypes;
   self->_customPlayableVideoCodecTypes = v13;
 
   self->_customMaxPlayableVideoDimensions.width = width;
   self->_customMaxPlayableVideoDimensions.height = height;
-  self->_customMaxPlayableVideoPixelsPerFrame = a5;
-  self->_customMaxAudioBitRate = a6;
-  [(CRLMovieCompatibilityChecker *)self checkCompatibilityUpToLevel:6 completionHandler:v15];
+  self->_customMaxPlayableVideoPixelsPerFrame = frame;
+  self->_customMaxAudioBitRate = rate;
+  [(CRLMovieCompatibilityChecker *)self checkCompatibilityUpToLevel:6 completionHandler:handlerCopy];
 }
 
-- (void)checkCustomCompatibilityWithConverterPreset:(int64_t)a3 completionHandler:(id)a4
+- (void)checkCustomCompatibilityWithConverterPreset:(int64_t)preset completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3 > 1)
+  handlerCopy = handler;
+  if (preset > 1)
   {
     v10 = objc_opt_class();
-    v11 = [v10 videoCodecsForMediaCompatibilityConverterPreset:a3];
-    [v10 maxPlayableVideoDimensionsForMediaCompatibilityConverterPreset:a3];
+    v11 = [v10 videoCodecsForMediaCompatibilityConverterPreset:preset];
+    [v10 maxPlayableVideoDimensionsForMediaCompatibilityConverterPreset:preset];
     v13 = v12;
     v15 = v14;
-    v16 = [v10 maxPlayableVideoPixelsPerFrameForMediaCompatibilityConverterPreset:a3];
-    v17 = [v10 maxPlayableAudioBitrateForMediaCompatibilityConverterPreset:a3];
-    self->_wasConverterPresetMoreCompatibleThanAsset = [CRLMovieCompatibilityChecker isPreset:a3 moreCompatibleThanAsset:self->_asset];
-    [(CRLMovieCompatibilityChecker *)self p_checkCustomCompatibilityWithVideoCodecTypes:v11 maxPlayableVideoDimensions:v16 maxPlayableVideoPixelsPerFrame:v17 maxAudioBitRate:v6 completionHandler:v13, v15];
+    v16 = [v10 maxPlayableVideoPixelsPerFrameForMediaCompatibilityConverterPreset:preset];
+    v17 = [v10 maxPlayableAudioBitrateForMediaCompatibilityConverterPreset:preset];
+    self->_wasConverterPresetMoreCompatibleThanAsset = [CRLMovieCompatibilityChecker isPreset:preset moreCompatibleThanAsset:self->_asset];
+    [(CRLMovieCompatibilityChecker *)self p_checkCustomCompatibilityWithVideoCodecTypes:v11 maxPlayableVideoDimensions:v16 maxPlayableVideoPixelsPerFrame:v17 maxAudioBitRate:handlerCopy completionHandler:v13, v15];
   }
 
   else
   {
-    if (!a3)
+    if (!preset)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -276,36 +276,36 @@ LABEL_18:
     }
 
     self->_compatibilityLevel = 4;
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)a3 actualLevel:(int64_t)a4 error:(id)a5 completionHandler:(id)a6
+- (void)p_didFinishCheckingCompatibilityUpToLevel:(int64_t)level actualLevel:(int64_t)actualLevel error:(id)error completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  errorCopy = error;
+  handlerCopy = handler;
   if (![(CRLMovieCompatibilityChecker *)self isCancelled])
   {
-    if (a4 || !v10)
+    if (actualLevel || !errorCopy)
     {
-      if (a4 || v10)
+      if (actualLevel || errorCopy)
       {
 LABEL_11:
-        if (a4 >= a3)
+        if (actualLevel >= level)
         {
-          v17 = a3;
+          actualLevelCopy = level;
         }
 
         else
         {
-          v17 = a4;
+          actualLevelCopy = actualLevel;
         }
 
-        self->_compatibilityLevel = v17;
-        v18 = [v10 copy];
+        self->_compatibilityLevel = actualLevelCopy;
+        v18 = [errorCopy copy];
         error = self->_error;
         self->_error = v18;
 
@@ -318,43 +318,43 @@ LABEL_11:
       v21 = v15;
       v16 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
 
-      v10 = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainMediaCompatibility" code:100 userInfo:v16];
+      errorCopy = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainMediaCompatibility" code:100 userInfo:v16];
     }
 
-    else if ([v10 code] == -11828)
+    else if ([errorCopy code] == -11828)
     {
-      v12 = [v10 domain];
-      v13 = [v12 isEqualToString:AVFoundationErrorDomain];
+      domain = [errorCopy domain];
+      v13 = [domain isEqualToString:AVFoundationErrorDomain];
 
       if (v13)
       {
 
-        v10 = 0;
-        a4 = 1;
+        errorCopy = 0;
+        actualLevel = 1;
         goto LABEL_11;
       }
     }
 
-    a4 = 0;
+    actualLevel = 0;
     goto LABEL_11;
   }
 
 LABEL_15:
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2](v11);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-+ (BOOL)p_doesTrack:(id)a3 matchCodecTypes:(id)a4
++ (BOOL)p_doesTrack:(id)track matchCodecTypes:(id)types
 {
-  v5 = a4;
+  typesCopy = types;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 formatDescriptions];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  formatDescriptions = [track formatDescriptions];
+  v7 = [formatDescriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -364,11 +364,11 @@ LABEL_15:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         v10 = [NSNumber numberWithUnsignedInt:CMFormatDescriptionGetMediaSubType(*(*(&v13 + 1) + 8 * i))];
-        v11 = [v5 containsObject:v10];
+        v11 = [typesCopy containsObject:v10];
 
         if (v11)
         {
@@ -377,7 +377,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [formatDescriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -392,16 +392,16 @@ LABEL_11:
   return v7;
 }
 
-+ (BOOL)p_doesAsset:(id)a3 containTrackWithMediaType:(id)a4 matchingCodecTypes:(id)a5
++ (BOOL)p_doesAsset:(id)asset containTrackWithMediaType:(id)type matchingCodecTypes:(id)types
 {
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  typesCopy = types;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [a3 tracks];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  tracks = [asset tracks];
+  v11 = [tracks countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -412,16 +412,16 @@ LABEL_11:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(tracks);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
         if ([v15 isEnabled])
         {
-          v16 = [v15 mediaType];
-          if ([v16 isEqualToString:v8])
+          mediaType = [v15 mediaType];
+          if ([mediaType isEqualToString:typeCopy])
           {
-            v17 = [a1 p_doesTrack:v15 matchCodecTypes:v9];
+            v17 = [self p_doesTrack:v15 matchCodecTypes:typesCopy];
 
             if (v17)
             {
@@ -436,7 +436,7 @@ LABEL_11:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [tracks countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
@@ -448,14 +448,14 @@ LABEL_14:
   return v18;
 }
 
-+ (BOOL)assetContainsVideoTracksWithAlpha:(id)a3
++ (BOOL)assetContainsVideoTracksWithAlpha:(id)alpha
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 tracks];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  tracks = [alpha tracks];
+  v4 = [tracks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -466,7 +466,7 @@ LABEL_14:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tracks);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) hasMediaCharacteristic:AVMediaCharacteristicContainsAlphaChannel])
@@ -476,7 +476,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [tracks countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -492,30 +492,30 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)assetContainsProResVideoTracks:(id)a3
++ (BOOL)assetContainsProResVideoTracks:(id)tracks
 {
-  v4 = a3;
+  tracksCopy = tracks;
   v5 = +[AVAsset crl_codecTypesForProRes];
-  LOBYTE(a1) = [a1 p_doesAsset:v4 containTrackWithMediaType:AVMediaTypeVideo matchingCodecTypes:v5];
+  LOBYTE(self) = [self p_doesAsset:tracksCopy containTrackWithMediaType:AVMediaTypeVideo matchingCodecTypes:v5];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isPreset:(int64_t)a3 moreCompatibleThanAsset:(id)a4
++ (BOOL)isPreset:(int64_t)preset moreCompatibleThanAsset:(id)asset
 {
-  v6 = a4;
-  if (![v6 crl_containsVideoTracks])
+  assetCopy = asset;
+  if (![assetCopy crl_containsVideoTracks])
   {
     goto LABEL_8;
   }
 
-  if (!sub_100326828(a3))
+  if (!sub_100326828(preset))
   {
-    if (sub_100326840(a3))
+    if (sub_100326840(preset))
     {
-      if (([a1 assetContainsH264VideoTracks:v6] & 1) == 0)
+      if (([self assetContainsH264VideoTracks:assetCopy] & 1) == 0)
       {
-        v7 = [a1 assetContainsHEVCVideoTracks:v6];
+        v7 = [self assetContainsHEVCVideoTracks:assetCopy];
         goto LABEL_4;
       }
 
@@ -525,10 +525,10 @@ LABEL_9:
     }
 
 LABEL_8:
-    if (a3 >= 2)
+    if (preset >= 2)
     {
-      v9 = [a1 p_defaultPlayableAudioCodecTypes];
-      v8 = [a1 p_doesAsset:v6 containTrackWithMediaType:AVMediaTypeAudio matchingCodecTypes:v9] ^ 1;
+      p_defaultPlayableAudioCodecTypes = [self p_defaultPlayableAudioCodecTypes];
+      v8 = [self p_doesAsset:assetCopy containTrackWithMediaType:AVMediaTypeAudio matchingCodecTypes:p_defaultPlayableAudioCodecTypes] ^ 1;
 
       goto LABEL_11;
     }
@@ -536,7 +536,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [a1 assetContainsH264VideoTracks:v6];
+  v7 = [self assetContainsH264VideoTracks:assetCopy];
 LABEL_4:
   LOBYTE(v8) = v7 ^ 1;
 LABEL_11:
@@ -544,11 +544,11 @@ LABEL_11:
   return v8;
 }
 
-+ (id)videoCodecsForMediaCompatibilityConverterPreset:(int64_t)a3
++ (id)videoCodecsForMediaCompatibilityConverterPreset:(int64_t)preset
 {
-  if (a3 > 1)
+  if (preset > 1)
   {
-    if (sub_100326840(a3))
+    if (sub_100326840(preset))
     {
       v4 = &off_1018E2970;
     }
@@ -569,15 +569,15 @@ LABEL_11:
   return v3;
 }
 
-+ (CGSize)maxPlayableVideoDimensionsForMediaCompatibilityConverterPreset:(int64_t)a3
++ (CGSize)maxPlayableVideoDimensionsForMediaCompatibilityConverterPreset:(int64_t)preset
 {
-  if (a3 > 5)
+  if (preset > 5)
   {
     width = 568.0;
     height = 568.0;
   }
 
-  else if (((1 << a3) & 3) != 0)
+  else if (((1 << preset) & 3) != 0)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -586,7 +586,7 @@ LABEL_11:
   else
   {
     height = 1920.0;
-    if (((1 << a3) & 0x14) != 0)
+    if (((1 << preset) & 0x14) != 0)
     {
       width = 1920.0;
     }
@@ -596,7 +596,7 @@ LABEL_11:
       width = 3840.0;
     }
 
-    if (((1 << a3) & 0x14) == 0)
+    if (((1 << preset) & 0x14) == 0)
     {
       height = 3840.0;
     }
@@ -607,29 +607,29 @@ LABEL_11:
   return result;
 }
 
-+ (int)maxPlayableVideoPixelsPerFrameForMediaCompatibilityConverterPreset:(int64_t)a3
++ (int)maxPlayableVideoPixelsPerFrameForMediaCompatibilityConverterPreset:(int64_t)preset
 {
-  if ((a3 - 2) > 4)
+  if ((preset - 2) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_101464C88[a3 - 2];
+    return dword_101464C88[preset - 2];
   }
 }
 
-+ (int)maxPlayableAudioBitrateForMediaCompatibilityConverterPreset:(int64_t)a3
++ (int)maxPlayableAudioBitrateForMediaCompatibilityConverterPreset:(int64_t)preset
 {
-  if ((a3 - 2) > 4)
+  if ((preset - 2) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_101464C9C[a3 - 2];
+    return dword_101464C9C[preset - 2];
   }
 }
 
@@ -739,9 +739,9 @@ LABEL_11:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v24 = self;
-    v7 = [(AVAsset *)self->_asset tracks];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    selfCopy = self;
+    tracks = [(AVAsset *)self->_asset tracks];
+    v8 = [tracks countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
       v25 = 0;
@@ -754,14 +754,14 @@ LABEL_11:
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(tracks);
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
           if ([v12 isEnabled])
           {
-            v13 = [v12 mediaType];
-            if ([v6 containsObject:v13])
+            mediaType = [v12 mediaType];
+            if ([v6 containsObject:mediaType])
             {
               if (![v12 isSelfContained] || (objc_msgSend(v12, "formatDescriptions"), v14 = v9, v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v9 = v14, !v16))
               {
@@ -770,22 +770,22 @@ LABEL_11:
                 goto LABEL_31;
               }
 
-              if ([v13 isEqualToString:AVMediaTypeVideo])
+              if ([mediaType isEqualToString:AVMediaTypeVideo])
               {
-                v25 |= [(CRLMovieCompatibilityChecker *)v24 p_isVideoTrackPlayableOnSupportedDevices:v12];
+                v25 |= [(CRLMovieCompatibilityChecker *)selfCopy p_isVideoTrackPlayableOnSupportedDevices:v12];
                 LODWORD(v23) = 1;
               }
 
-              else if ([v13 isEqualToString:AVMediaTypeAudio])
+              else if ([mediaType isEqualToString:AVMediaTypeAudio])
               {
-                HIDWORD(v23) |= [(CRLMovieCompatibilityChecker *)v24 p_isAudioTrackPlayableOnAllDevices:v12];
+                HIDWORD(v23) |= [(CRLMovieCompatibilityChecker *)selfCopy p_isAudioTrackPlayableOnAllDevices:v12];
                 v9 = 1;
               }
             }
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v8 = [tracks countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v8)
         {
           continue;
@@ -810,10 +810,10 @@ LABEL_31:
     }
 
     v18 = v17 & (v20 | v8 ^ 1) & (v19 | v9 ^ 1);
-    if (v18 == 1 && (v19 & 1) != 0 && (v8 & 1) == 0 && v24->_customMaxAudioBitRate >= 1)
+    if (v18 == 1 && (v19 & 1) != 0 && (v8 & 1) == 0 && selfCopy->_customMaxAudioBitRate >= 1)
     {
-      [(CRLMovieCompatibilityChecker *)v24 p_estimatedAudioAssetDataRate];
-      LOBYTE(v18) = v21 <= v24->_customMaxAudioBitRate;
+      [(CRLMovieCompatibilityChecker *)selfCopy p_estimatedAudioAssetDataRate];
+      LOBYTE(v18) = v21 <= selfCopy->_customMaxAudioBitRate;
     }
   }
 
@@ -836,10 +836,10 @@ LABEL_31:
     if ([v6 isFileURL] && (v17[0] = 0, objc_msgSend(v6, "getResourceValue:forKey:error:", v17, NSURLTypeIdentifierKey, 0)))
     {
       v16 = v17[0];
-      v7 = [UTTypeAppleProtectedMPEG4Audio identifier];
-      v8 = [UTTypeMP3 identifier];
-      v9 = [UTTypeMPEG identifier];
-      v10 = [NSSet setWithObjects:AVFileTypeQuickTimeMovie, AVFileTypeMPEG4, AVFileTypeAppleM4V, AVFileTypeAppleM4A, @"public.3gpp", @"public.3gpp2", @"com.apple.itunes.audible", v7, AVFileTypeAIFF, AVFileTypeAIFC, AVFileTypeCoreAudioFormat, AVFileTypeWAVE, @"public.au-audio", v8, AVFileTypeAMR, v9, @"public.mpeg-2-video", @"public.mp2", @"public.mpeg-2-transport-stream", @"public.avi", 0];
+      identifier = [UTTypeAppleProtectedMPEG4Audio identifier];
+      identifier2 = [UTTypeMP3 identifier];
+      identifier3 = [UTTypeMPEG identifier];
+      v10 = [NSSet setWithObjects:AVFileTypeQuickTimeMovie, AVFileTypeMPEG4, AVFileTypeAppleM4V, AVFileTypeAppleM4A, @"public.3gpp", @"public.3gpp2", @"com.apple.itunes.audible", identifier, AVFileTypeAIFF, AVFileTypeAIFC, AVFileTypeCoreAudioFormat, AVFileTypeWAVE, @"public.au-audio", identifier2, AVFileTypeAMR, identifier3, @"public.mpeg-2-video", @"public.mp2", @"public.mpeg-2-transport-stream", @"public.avi", 0];
 
       v11 = [v10 containsObject:v16];
       if (v11)
@@ -849,9 +849,9 @@ LABEL_31:
 
       else
       {
-        v13 = [v6 pathExtension];
+        pathExtension = [v6 pathExtension];
         v14 = [NSSet setWithObjects:@"mqv", @"m4r", @"m1a", @"m2a", @"mpa", @"aac", @"adts", @"mod", @"vob", @"m2ts", @"m2t", @"mts", 0];
-        v12 = [v14 containsObject:v13];
+        v12 = [v14 containsObject:pathExtension];
       }
     }
 
@@ -869,10 +869,10 @@ LABEL_31:
   return v12;
 }
 
-- (BOOL)p_isVideoTrackPlayableOnSupportedDevices:(id)a3
+- (BOOL)p_isVideoTrackPlayableOnSupportedDevices:(id)devices
 {
-  v4 = a3;
-  if ([objc_opt_class() p_doesTrack:v4 matchCodecTypes:&off_1018E1D40] && (objc_msgSend(v4, "nominalFrameRate"), v5 <= 30.0))
+  devicesCopy = devices;
+  if ([objc_opt_class() p_doesTrack:devicesCopy matchCodecTypes:&off_1018E1D40] && (objc_msgSend(devicesCopy, "nominalFrameRate"), v5 <= 30.0))
   {
     LOBYTE(v21) = 1;
   }
@@ -886,8 +886,8 @@ LABEL_31:
 
     else
     {
-      v6 = [objc_opt_class() p_defaultPlayableVideoCodecTypes];
-      v26 = [NSSet setWithArray:v6];
+      p_defaultPlayableVideoCodecTypes = [objc_opt_class() p_defaultPlayableVideoCodecTypes];
+      v26 = [NSSet setWithArray:p_defaultPlayableVideoCodecTypes];
     }
 
     width = self->_customMaxPlayableVideoDimensions.width;
@@ -908,13 +908,13 @@ LABEL_31:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [v4 formatDescriptions];
+    obj = [devicesCopy formatDescriptions];
     v10 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v10)
     {
       v11 = v10;
       v12 = *v34;
-      v23 = v4;
+      v23 = devicesCopy;
       while (2)
       {
         for (i = 0; i != v11; i = i + 1)
@@ -934,7 +934,7 @@ LABEL_31:
 LABEL_43:
 
             LOBYTE(v21) = 0;
-            v4 = v23;
+            devicesCopy = v23;
             goto LABEL_46;
           }
 
@@ -969,7 +969,7 @@ LABEL_43:
         }
 
         v11 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
-        v4 = v23;
+        devicesCopy = v23;
         if (v11)
         {
           continue;
@@ -982,9 +982,9 @@ LABEL_43:
     v31 = 0u;
     v32 = 0u;
     v30 = 0u;
-    if (v4)
+    if (devicesCopy)
     {
-      [v4 preferredTransform];
+      [devicesCopy preferredTransform];
     }
 
     v27 = v30;
@@ -1009,31 +1009,31 @@ LABEL_46:
   return v21;
 }
 
-- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3
+- (BOOL)p_isH264VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices
 {
-  v4 = [(CRLMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:a3 forAtomType:@"avcC"];
-  v12 = v4 && [v4 length] >= 4 && (v6 = objc_msgSend(v5, "bytes"), v6[3] <= 0x29u) && ((v7 = v6[1] - 66, v8 = v7 > 0x22, v9 = (1 << v7) & 0x400000801, !v8) ? (v10 = v9 == 0) : (v10 = 1), !v10 && (v5, CMFormatDescriptionGetExtension(a3, kCVImageBufferFieldCountKey), v11 = v5 = v4;
+  v4 = [(CRLMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:devices forAtomType:@"avcC"];
+  v12 = v4 && [v4 length] >= 4 && (v6 = objc_msgSend(v5, "bytes"), v6[3] <= 0x29u) && ((v7 = v6[1] - 66, v8 = v7 > 0x22, v9 = (1 << v7) & 0x400000801, !v8) ? (v10 = v9 == 0) : (v10 = 1), !v10 && (v5, CMFormatDescriptionGetExtension(devices, kCVImageBufferFieldCountKey), v11 = v5 = v4;
 
   return v12;
 }
 
-- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3
+- (BOOL)p_isMPEG4VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices
 {
-  v3 = [(CRLMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:a3 forAtomType:@"esds"];
+  v3 = [(CRLMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:devices forAtomType:@"esds"];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_9;
   }
 
-  v5 = [v3 bytes];
+  bytes = [v3 bytes];
   v6 = [v4 length];
   if (v6 < 5)
   {
     goto LABEL_9;
   }
 
-  v7 = v5 + 2;
+  v7 = bytes + 2;
   v8 = 4;
   while (*(v7 - 2) || *(v7 - 1) || *v7 != 1 || v7[1] != 176)
   {
@@ -1075,21 +1075,21 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)a3
+- (BOOL)p_isH263VideoFormatPlayableOnAllDevices:(opaqueCMFormatDescription *)devices
 {
-  v3 = [(CRLMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:a3 forAtomType:@"d263"];
+  v3 = [(CRLMovieCompatibilityChecker *)self p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:devices forAtomType:@"d263"];
   v4 = v3;
   if (v3 && [v3 length] >= 7)
   {
-    v5 = [v4 bytes];
-    if (v5[6])
+    bytes = [v4 bytes];
+    if (bytes[6])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v5[5] >= 0x2Eu;
+      v6 = bytes[5] >= 0x2Eu;
     }
 
     v7 = !v6;
@@ -1103,14 +1103,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:(opaqueCMFormatDescription *)a3 forAtomType:(id)a4
+- (id)p_sampleDescriptionExtensionAto_dataFromVideoFormatDescription:(opaqueCMFormatDescription *)description forAtomType:(id)type
 {
-  v5 = a4;
-  v6 = CMFormatDescriptionGetExtension(a3, kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms);
+  typeCopy = type;
+  v6 = CMFormatDescriptionGetExtension(description, kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 objectForKeyedSubscript:v5];
+    v8 = [v6 objectForKeyedSubscript:typeCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1149,23 +1149,23 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)a3
+- (BOOL)p_isAudioTrackPlayableOnAllDevices:(id)devices
 {
-  v3 = a3;
-  v4 = [objc_opt_class() p_defaultPlayableAudioCodecTypes];
-  v5 = [NSSet setWithArray:v4];
+  devicesCopy = devices;
+  p_defaultPlayableAudioCodecTypes = [objc_opt_class() p_defaultPlayableAudioCodecTypes];
+  v5 = [NSSet setWithArray:p_defaultPlayableAudioCodecTypes];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v21 = v3;
-  v6 = [v3 formatDescriptions];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v21 = devicesCopy;
+  formatDescriptions = [devicesCopy formatDescriptions];
+  v7 = [formatDescriptions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
-    v9 = 0;
+    isEnabled = 0;
     v10 = *v23;
     do
     {
@@ -1174,39 +1174,39 @@ LABEL_10:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
         MediaSubType = CMFormatDescriptionGetMediaSubType(v12);
-        if ((v9 & 1) == 0 && (v14 = MediaSubType, +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", MediaSubType), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v5 containsObject:v15], v15, v16) && (StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v12)) != 0 && StreamBasicDescription->mChannelsPerFrame <= 6 && StreamBasicDescription->mSampleRate <= 48000.0)
+        if ((isEnabled & 1) == 0 && (v14 = MediaSubType, +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", MediaSubType), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v5 containsObject:v15], v15, v16) && (StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v12)) != 0 && StreamBasicDescription->mChannelsPerFrame <= 6 && StreamBasicDescription->mSampleRate <= 48000.0)
         {
           if (v14 == 1885430579 || v14 == 1633889587)
           {
-            v9 = [v21 isEnabled];
+            isEnabled = [v21 isEnabled];
           }
 
           else
           {
-            v9 = 0;
+            isEnabled = 0;
           }
         }
 
         else
         {
-          v9 = 1;
+          isEnabled = 1;
         }
 
         v11 = v11 + 1;
       }
 
       while (v8 != v11);
-      v18 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v18 = [formatDescriptions countByEnumeratingWithState:&v22 objects:v26 count:16];
       v8 = v18;
     }
 
     while (v18);
-    v19 = v9 ^ 1;
+    v19 = isEnabled ^ 1;
   }
 
   else
@@ -1317,7 +1317,7 @@ LABEL_27:
   v4 = sub_100014370(v3, self->_asset);
   v5 = [v4 URL];
 
-  v6 = [v5 crl_fileSize];
+  crl_fileSize = [v5 crl_fileSize];
   memset(&v12[1], 0, sizeof(CMTime));
   v7 = 0.0;
   asset = self->_asset;
@@ -1326,7 +1326,7 @@ LABEL_27:
     [(AVAsset *)asset duration];
     if ((v12[1].flags & 0x1D) == 1)
     {
-      v9 = 8 * v6;
+      v9 = 8 * crl_fileSize;
       v12[0] = v12[1];
       Seconds = CMTimeGetSeconds(v12);
       if (v9)
@@ -1342,35 +1342,35 @@ LABEL_27:
   return v7;
 }
 
-- (float)p_estimatedDataRateForAudioTrack:(id)a3
+- (float)p_estimatedDataRateForAudioTrack:(id)track
 {
-  v4 = a3;
-  [v4 estimatedDataRate];
+  trackCopy = track;
+  [trackCopy estimatedDataRate];
   if (v5 == 0.0)
   {
-    [(CRLMovieCompatibilityChecker *)self p_estimatedDataRateUsingTrackPropertiesForAudioTrack:v4];
+    [(CRLMovieCompatibilityChecker *)self p_estimatedDataRateUsingTrackPropertiesForAudioTrack:trackCopy];
   }
 
   v6 = v5;
   if (v5 == 0.0)
   {
-    [(CRLMovieCompatibilityChecker *)self p_estimatedDataRateUsingFormatDescriptionForAudioTrack:v4];
+    [(CRLMovieCompatibilityChecker *)self p_estimatedDataRateUsingFormatDescriptionForAudioTrack:trackCopy];
     v6 = v7;
   }
 
   return v6;
 }
 
-- (float)p_estimatedDataRateUsingTrackPropertiesForAudioTrack:(id)a3
+- (float)p_estimatedDataRateUsingTrackPropertiesForAudioTrack:(id)track
 {
-  v3 = a3;
-  v4 = [v3 totalSampleDataLength];
+  trackCopy = track;
+  totalSampleDataLength = [trackCopy totalSampleDataLength];
   memset(&v10, 0, sizeof(v10));
-  v5 = [v3 asset];
+  asset = [trackCopy asset];
 
-  if (v5)
+  if (asset)
   {
-    [v5 duration];
+    [asset duration];
   }
 
   else
@@ -1379,27 +1379,27 @@ LABEL_27:
   }
 
   v6 = 0.0;
-  if (v4 >= 1 && (v10.flags & 0x1D) == 1)
+  if (totalSampleDataLength >= 1 && (v10.flags & 0x1D) == 1)
   {
     v9 = v10;
     Seconds = CMTimeGetSeconds(&v9);
     if (Seconds > 0.0)
     {
-      return v4 * 8.0 / Seconds;
+      return totalSampleDataLength * 8.0 / Seconds;
     }
   }
 
   return v6;
 }
 
-- (float)p_estimatedDataRateUsingFormatDescriptionForAudioTrack:(id)a3
+- (float)p_estimatedDataRateUsingFormatDescriptionForAudioTrack:(id)track
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 formatDescriptions];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  formatDescriptions = [track formatDescriptions];
+  v4 = [formatDescriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1411,7 +1411,7 @@ LABEL_27:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(*(&v14 + 1) + 8 * i));
@@ -1432,7 +1432,7 @@ LABEL_27:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [formatDescriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);

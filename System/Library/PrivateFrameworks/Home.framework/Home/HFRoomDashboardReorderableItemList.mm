@@ -1,14 +1,14 @@
 @interface HFRoomDashboardReorderableItemList
-- (HFRoomDashboardReorderableItemList)initWithApplicationDataContainer:(id)a3 category:(id)a4;
+- (HFRoomDashboardReorderableItemList)initWithApplicationDataContainer:(id)container category:(id)category;
 @end
 
 @implementation HFRoomDashboardReorderableItemList
 
-- (HFRoomDashboardReorderableItemList)initWithApplicationDataContainer:(id)a3 category:(id)a4
+- (HFRoomDashboardReorderableItemList)initWithApplicationDataContainer:(id)container category:(id)category
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for RoomDashboardReorderableItemList();
-  return [(HFDashboardReorderableItemList *)&v7 initWithApplicationDataContainer:a3 category:a4];
+  return [(HFDashboardReorderableItemList *)&v7 initWithApplicationDataContainer:container category:category];
 }
 
 @end

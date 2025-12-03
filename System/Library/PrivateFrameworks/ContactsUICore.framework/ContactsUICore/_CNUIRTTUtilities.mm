@@ -1,23 +1,23 @@
 @interface _CNUIRTTUtilities
-- (BOOL)contactIsTTYContact:(id)a3;
+- (BOOL)contactIsTTYContact:(id)contact;
 - (BOOL)relayIsSupported;
 - (RTTTelephonyUtilities)utilityProvider;
-- (_CNUIRTTUtilities)initWithUtilityProvider:(id)a3;
+- (_CNUIRTTUtilities)initWithUtilityProvider:(id)provider;
 - (id)nts_lazyUtilityProvider;
 @end
 
 @implementation _CNUIRTTUtilities
 
-- (_CNUIRTTUtilities)initWithUtilityProvider:(id)a3
+- (_CNUIRTTUtilities)initWithUtilityProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = _CNUIRTTUtilities;
   v6 = [(_CNUIRTTUtilities *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_utilityProvider, a3);
+    objc_storeStrong(&v6->_utilityProvider, provider);
     v8 = v7;
   }
 
@@ -36,9 +36,9 @@
   utilityProvider = self->_utilityProvider;
   if (!utilityProvider)
   {
-    v4 = [(objc_class *)getRTTTelephonyUtilitiesClass() sharedUtilityProvider];
+    sharedUtilityProvider = [(objc_class *)getRTTTelephonyUtilitiesClass() sharedUtilityProvider];
     v5 = self->_utilityProvider;
-    self->_utilityProvider = v4;
+    self->_utilityProvider = sharedUtilityProvider;
 
     utilityProvider = self->_utilityProvider;
   }
@@ -46,21 +46,21 @@
   return utilityProvider;
 }
 
-- (BOOL)contactIsTTYContact:(id)a3
+- (BOOL)contactIsTTYContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(_CNUIRTTUtilities *)self utilityProvider];
-  v6 = [v5 contactIsTTYContact:v4];
+  contactCopy = contact;
+  utilityProvider = [(_CNUIRTTUtilities *)self utilityProvider];
+  v6 = [utilityProvider contactIsTTYContact:contactCopy];
 
   return v6;
 }
 
 - (BOOL)relayIsSupported
 {
-  v2 = [(_CNUIRTTUtilities *)self utilityProvider];
-  v3 = [v2 relayIsSupported];
+  utilityProvider = [(_CNUIRTTUtilities *)self utilityProvider];
+  relayIsSupported = [utilityProvider relayIsSupported];
 
-  return v3;
+  return relayIsSupported;
 }
 
 @end

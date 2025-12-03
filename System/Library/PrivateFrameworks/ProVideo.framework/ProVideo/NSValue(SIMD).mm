@@ -30,7 +30,7 @@
 + (id)valueWithSIMDFloat2:()SIMD
 {
   v3[1] = *MEMORY[0x277D85DE8];
-  *v3 = a1;
+  *v3 = self;
   v1 = [MEMORY[0x277CCAE60] valueWithBytes:v3 objCType:"[2f]"];
 
   return v1;
@@ -39,8 +39,8 @@
 + (id)valueWithSIMDFloat3:()SIMD
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = a1.n128_u64[0];
-  v4 = a1.n128_u32[2];
+  v3 = self.n128_u64[0];
+  v4 = self.n128_u32[2];
   v1 = [MEMORY[0x277CCAE60] valueWithBytes:&v3 objCType:"[3f]"];
 
   return v1;
@@ -49,8 +49,8 @@
 + (id)valueWithSIMDFloat4:()SIMD
 {
   v4 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v1 = [MEMORY[0x277CCAE60] valueWithBytes:&v3 objCType:"[4f]"];
+  selfCopy = self;
+  v1 = [MEMORY[0x277CCAE60] valueWithBytes:&selfCopy objCType:"[4f]"];
 
   return v1;
 }
@@ -84,8 +84,8 @@
 + (id)valueWithSIMDDouble2:()SIMD
 {
   v4 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v1 = [MEMORY[0x277CCAE60] valueWithBytes:&v3 objCType:"[2d]"];
+  selfCopy = self;
+  v1 = [MEMORY[0x277CCAE60] valueWithBytes:&selfCopy objCType:"[2d]"];
 
   return v1;
 }
@@ -131,9 +131,9 @@
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = vuzp1q_s32(vuzp2q_s32(a2, a3), a2);
-  *&v4 = vtrn1q_s32(a1, a2).u64[0];
-  *(&v4 + 1) = __PAIR64__(a1.u32[1], a3.u32[0]);
-  v3.i32[2] = a1.i32[2];
+  *&v4 = vtrn1q_s32(self, a2).u64[0];
+  *(&v4 + 1) = __PAIR64__(self.u32[1], a3.u32[0]);
+  v3.i32[2] = self.i32[2];
   v7[0] = v4;
   v7[1] = v3;
   v8 = a3.u32[2];
@@ -164,16 +164,16 @@
 
 + (id)valueWithSIMDFloat4x4:()SIMD
 {
-  *&v4 = vzip1q_s32(a1, a2).u64[0];
+  *&v4 = vzip1q_s32(self, a2).u64[0];
   *(&v4 + 1) = vextq_s8(a3, vzip1q_s32(*&a3, a4), 8uLL).i64[1];
-  *&v5 = vtrn2q_s32(a1, a2).u64[0];
+  *&v5 = vtrn2q_s32(self, a2).u64[0];
   *(&v5 + 1) = __PAIR64__(a4.u32[1], a3.u32[1]);
   v10 = *MEMORY[0x277D85DE8];
   v9[0] = v4;
   v9[1] = v5;
-  *&v4 = vzip2q_s32(a1, a2).u64[0];
+  *&v4 = vzip2q_s32(self, a2).u64[0];
   *(&v4 + 1) = __PAIR64__(a4.u32[2], a3.u32[2]);
-  *&v6 = vuzp2q_s32(vuzp2q_s32(a1, a2), a1).u64[0];
+  *&v6 = vuzp2q_s32(vuzp2q_s32(self, a2), self).u64[0];
   *(&v6 + 1) = __PAIR64__(a4.u32[3], a3.u32[3]);
   v9[2] = v4;
   v9[3] = v6;
@@ -215,7 +215,7 @@
   v3 = a3[1];
   v6[0] = *a3;
   v6[1] = v3;
-  v4 = [a1 valueWithSIMDDouble4:v6];
+  v4 = [self valueWithSIMDDouble4:v6];
 
   return v4;
 }
@@ -223,35 +223,35 @@
 - (double)SIMDFloat2Value
 {
   v2[1] = *MEMORY[0x277D85DE8];
-  [a1 getValue:v2 size:8];
+  [self getValue:v2 size:8];
   return *v2;
 }
 
 - (double)SIMDFloat3Value
 {
   v3 = *MEMORY[0x277D85DE8];
-  [a1 getValue:v2 size:12];
+  [self getValue:v2 size:12];
   return v2[0];
 }
 
 - (double)SIMDFloat4Value
 {
   v3 = *MEMORY[0x277D85DE8];
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return v2[0];
 }
 
 - (double)SIMDDouble2Value
 {
   v3 = *MEMORY[0x277D85DE8];
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return v2[0];
 }
 
 - (__n128)SIMDDouble3Value
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 getValue:&v5 size:24];
+  [self getValue:&v5 size:24];
   result = v5;
   v4.n128_u64[0] = v6;
   *a2 = v5;
@@ -262,14 +262,14 @@
 - (double)SIMDFloat3x3Value
 {
   v3 = *MEMORY[0x277D85DE8];
-  [a1 getValue:v2 size:36];
+  [self getValue:v2 size:36];
   return COERCE_DOUBLE(__PAIR64__(v2[3], v2[0]));
 }
 
 - (__n128)SIMDDouble3x3Value
 {
   v9[9] = *MEMORY[0x277D85DE8];
-  [a1 getValue:v9 size:72];
+  [self getValue:v9 size:72];
   result.n128_u64[0] = v9[0];
   *&v3 = v9[1];
   *&v4 = v9[2];
@@ -291,14 +291,14 @@
 - (double)SIMDFloat4x4Value
 {
   v4 = *MEMORY[0x277D85DE8];
-  [a1 getValue:&v2 size:64];
+  [self getValue:&v2 size:64];
   return COERCE_DOUBLE(__PAIR64__(v3, v2));
 }
 
 - (__n128)SIMDDouble4x4Value
 {
   v11[16] = *MEMORY[0x277D85DE8];
-  [a1 getValue:v11 size:128];
+  [self getValue:v11 size:128];
   result.n128_u64[0] = v11[0];
   *&v3 = v11[1];
   *&v4 = v11[2];
@@ -329,7 +329,7 @@
 - (double)SIMDQuatFValue
 {
   v3 = *MEMORY[0x277D85DE8];
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return v2[0];
 }
 

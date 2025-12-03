@@ -1,13 +1,13 @@
 @interface ReviewRatingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews16ReviewRatingView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews16ReviewRatingView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ReviewRatingView
 
-- (_TtC23ShelfKitCollectionViews16ReviewRatingView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews16ReviewRatingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews16ReviewRatingView_hasRTLTransformSet) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews16ReviewRatingView_rating) = 0;
@@ -18,19 +18,19 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_2B96A4(x, y, width, height);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_2BA184();
   v6 = v5;
 

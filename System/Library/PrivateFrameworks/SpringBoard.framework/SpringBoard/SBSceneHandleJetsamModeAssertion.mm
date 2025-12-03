@@ -1,15 +1,15 @@
 @interface SBSceneHandleJetsamModeAssertion
-- (SBSceneHandleJetsamModeAssertion)initWithReason:(id)a3 jetsamMode:(char)a4 invalidationBlock:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBSceneHandleJetsamModeAssertion)initWithReason:(id)reason jetsamMode:(char)mode invalidationBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBSceneHandleJetsamModeAssertion
 
-- (SBSceneHandleJetsamModeAssertion)initWithReason:(id)a3 jetsamMode:(char)a4 invalidationBlock:(id)a5
+- (SBSceneHandleJetsamModeAssertion)initWithReason:(id)reason jetsamMode:(char)mode invalidationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  reasonCopy = reason;
+  blockCopy = block;
+  if (!reasonCopy)
   {
     [SBSceneHandleJetsamModeAssertion initWithReason:a2 jetsamMode:self invalidationBlock:?];
   }
@@ -20,15 +20,15 @@
   v17[1] = 3221225472;
   v17[2] = __80__SBSceneHandleJetsamModeAssertion_initWithReason_jetsamMode_invalidationBlock___block_invoke;
   v17[3] = &unk_2783A8A70;
-  v18 = v10;
+  v18 = blockCopy;
   v16.receiver = self;
   v16.super_class = SBSceneHandleJetsamModeAssertion;
-  v13 = v10;
-  v14 = [(BSSimpleAssertion *)&v16 initWithIdentifier:v12 forReason:v9 invalidationBlock:v17];
+  v13 = blockCopy;
+  v14 = [(BSSimpleAssertion *)&v16 initWithIdentifier:v12 forReason:reasonCopy invalidationBlock:v17];
 
   if (v14)
   {
-    v14->_jetsamMode = a4;
+    v14->_jetsamMode = mode;
   }
 
   return v14;
@@ -71,11 +71,11 @@ void __80__SBSceneHandleJetsamModeAssertion_initWithReason_jetsamMode_invalidati
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBSceneHandleJetsamModeAssertion;
-  v4 = [(BSSimpleAssertion *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BSSimpleAssertion *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   [(SBSceneHandleJetsamModeAssertion *)self jetsamMode];
   v5 = NSStringFromFBSSceneJetsamMode();
   [v4 appendString:v5 withName:@"jetsamMode"];

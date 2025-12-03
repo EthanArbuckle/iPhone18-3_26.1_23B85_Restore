@@ -1,18 +1,18 @@
 @interface WFSpeakTextLanguagePickerParameterMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (id)availableLanguageCodes;
-- (void)migrateSpeakTextLanguageParameterInParametersDictionary:(id)a3;
+- (void)migrateSpeakTextLanguageParameterInParametersDictionary:(id)dictionary;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFSpeakTextLanguagePickerParameterMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1030"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1030"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.speaktext", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.speaktext", migrationCopy);
   }
 
   else
@@ -43,30 +43,30 @@
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 _speechVoicesIncludingSiri];
-  v5 = [v4 if_compactMap:&__block_literal_global_74447];
+  _speechVoicesIncludingSiri = [v2 _speechVoicesIncludingSiri];
+  v5 = [_speechVoicesIncludingSiri if_compactMap:&__block_literal_global_74447];
 
   return v5;
 }
 
-- (void)migrateSpeakTextLanguageParameterInParametersDictionary:(id)a3
+- (void)migrateSpeakTextLanguageParameterInParametersDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"WFSpeakTextLanguage"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"WFSpeakTextLanguage"];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(WFSpeakTextLanguagePickerParameterMigration *)self availableLanguageCodes];
-      if (([v6 containsObject:v5] & 1) == 0)
+      availableLanguageCodes = [(WFSpeakTextLanguagePickerParameterMigration *)self availableLanguageCodes];
+      if (([availableLanguageCodes containsObject:v5] & 1) == 0)
       {
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        obj = v6;
+        obj = availableLanguageCodes;
         v7 = [obj countByEnumeratingWithState:&v20 objects:v30 count:16];
         if (v7)
         {
@@ -104,8 +104,8 @@
               if ([v14 isEqualToString:v5])
               {
                 v16 = [(WFVariableSubstitutableParameterState *)[WFStringSubstitutableState alloc] initWithValue:v11];
-                v17 = [(WFVariableSubstitutableParameterState *)v16 serializedRepresentation];
-                [v4 setObject:v17 forKey:@"WFSpeakTextLanguage"];
+                serializedRepresentation = [(WFVariableSubstitutableParameterState *)v16 serializedRepresentation];
+                [dictionaryCopy setObject:serializedRepresentation forKey:@"WFSpeakTextLanguage"];
 
                 goto LABEL_18;
               }
@@ -121,9 +121,9 @@
           }
         }
 
-        v6 = obj;
+        availableLanguageCodes = obj;
 
-        [v4 removeObjectForKey:@"WFSpeakTextLanguage"];
+        [dictionaryCopy removeObjectForKey:@"WFSpeakTextLanguage"];
       }
 
 LABEL_18:
@@ -140,8 +140,8 @@ LABEL_18:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -153,17 +153,17 @@ LABEL_18:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKeyedSubscript:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKeyedSubscript:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"is.workflow.actions.speaktext"])
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           [(WFSpeakTextLanguagePickerParameterMigration *)self migrateSpeakTextLanguageParameterInParametersDictionary:v12];
         }
@@ -172,7 +172,7 @@ LABEL_18:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [actions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);

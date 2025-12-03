@@ -1,21 +1,21 @@
 @interface XavierGroupingService
-- (id)bestOfGroupFromFeedItems:(id)a3 scoreProfiles:(id)a4 configurationSet:(int64_t)a5 error:(id *)a6;
-- (id)bestOfGroupFromHeadlines:(id)a3 configurationSet:(int64_t)a4 error:(id *)a5;
+- (id)bestOfGroupFromFeedItems:(id)items scoreProfiles:(id)profiles configurationSet:(int64_t)set error:(id *)error;
+- (id)bestOfGroupFromHeadlines:(id)headlines configurationSet:(int64_t)set error:(id *)error;
 @end
 
 @implementation XavierGroupingService
 
-- (id)bestOfGroupFromHeadlines:(id)a3 configurationSet:(int64_t)a4 error:(id *)a5
+- (id)bestOfGroupFromHeadlines:(id)headlines configurationSet:(int64_t)set error:(id *)error
 {
   sub_1C6B0F7A8(0, &qword_1EDCE6570, &protocolRef_FCHeadlineProviding);
   v7 = sub_1C6D79780();
 
-  XavierGroupingService.bestOfGroup(fromHeadlines:configurationSet:)(v7, a4);
+  XavierGroupingService.bestOfGroup(fromHeadlines:configurationSet:)(v7, set);
 
-  if (a5)
+  if (error)
   {
     v8 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
   v9 = sub_1C6D79760();
@@ -23,18 +23,18 @@
   return v9;
 }
 
-- (id)bestOfGroupFromFeedItems:(id)a3 scoreProfiles:(id)a4 configurationSet:(int64_t)a5 error:(id *)a6
+- (id)bestOfGroupFromFeedItems:(id)items scoreProfiles:(id)profiles configurationSet:(int64_t)set error:(id *)error
 {
   sub_1C6B0F7A8(0, &qword_1EDCEA8E0, &protocolRef_FCFeedPersonalizingItem);
   v9 = sub_1C6D79780();
-  v10 = a4;
+  profilesCopy = profiles;
 
-  XavierGroupingService.bestOfGroup(fromFeedItems:scoreProfiles:configurationSet:)(v9, v10, a5);
+  XavierGroupingService.bestOfGroup(fromFeedItems:scoreProfiles:configurationSet:)(v9, profilesCopy, set);
 
-  if (a6)
+  if (error)
   {
     v11 = 0;
-    *a6 = 0;
+    *error = 0;
   }
 
   v12 = sub_1C6D79760();

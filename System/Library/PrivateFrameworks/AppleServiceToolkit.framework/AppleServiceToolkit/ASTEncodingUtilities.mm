@@ -1,15 +1,15 @@
 @interface ASTEncodingUtilities
-+ (id)MD5ForFileHandle:(id)a3;
-+ (id)SHA256HashForString:(id)a3;
-+ (id)jsonSerializeObject:(id)a3 error:(id *)a4;
-+ (id)parseJSONResponseWithData:(id)a3 error:(id *)a4;
++ (id)MD5ForFileHandle:(id)handle;
++ (id)SHA256HashForString:(id)string;
++ (id)jsonSerializeObject:(id)object error:(id *)error;
++ (id)parseJSONResponseWithData:(id)data error:(id *)error;
 @end
 
 @implementation ASTEncodingUtilities
 
-+ (id)parseJSONResponseWithData:(id)a3 error:(id *)a4
++ (id)parseJSONResponseWithData:(id)data error:(id *)error
 {
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:a4];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:error];
   if (v4)
   {
     objc_opt_class();
@@ -23,10 +23,10 @@
   return v4;
 }
 
-+ (id)jsonSerializeObject:(id)a3 error:(id *)a4
++ (id)jsonSerializeObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  if (![MEMORY[0x277CCAAA0] isValidJSONObject:v5] || (objc_msgSend(MEMORY[0x277CCAAA0], "dataWithJSONObject:options:error:", v5, 0, a4), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  objectCopy = object;
+  if (![MEMORY[0x277CCAAA0] isValidJSONObject:objectCopy] || (objc_msgSend(MEMORY[0x277CCAAA0], "dataWithJSONObject:options:error:", objectCopy, 0, error), (data = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -34,23 +34,23 @@
       +[ASTEncodingUtilities jsonSerializeObject:error:];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4001 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4001 userInfo:0];
     }
 
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  return v6;
+  return data;
 }
 
-+ (id)SHA256HashForString:(id)a3
++ (id)SHA256HashForString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     v7 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@
 
   *md = 0u;
   v13 = 0u;
-  v5 = [v3 UTF8String];
+  uTF8String = [stringCopy UTF8String];
   v6 = [v4 lengthOfBytesUsingEncoding:4];
   if ((v6 - 0x80000000) <= 0xFFFFFFFF80000000)
   {
@@ -79,7 +79,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v5)
+  if (!uTF8String)
   {
     v7 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -90,7 +90,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  CC_SHA256(v5, v6, md);
+  CC_SHA256(uTF8String, v6, md);
   v8 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {
@@ -104,24 +104,24 @@ LABEL_14:
   return v8;
 }
 
-+ (id)MD5ForFileHandle:(id)a3
++ (id)MD5ForFileHandle:(id)handle
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 offsetInFile];
-  [v3 seekToFileOffset:0];
+  handleCopy = handle;
+  offsetInFile = [handleCopy offsetInFile];
+  [handleCopy seekToFileOffset:0];
   memset(&c, 0, sizeof(c));
   CC_MD5_Init(&c);
   do
   {
-    v5 = [v3 readDataOfLength:0x10000];
+    v5 = [handleCopy readDataOfLength:0x10000];
     v6 = [v5 length];
     v7 = v5;
     CC_MD5_Update(&c, [v5 bytes], v6);
   }
 
   while (v6);
-  [v3 seekToFileOffset:v4];
+  [handleCopy seekToFileOffset:offsetInFile];
   CC_MD5_Final(md, &c);
   v8 = [MEMORY[0x277CCAB68] stringWithCapacity:32];
   for (i = 0; i != 16; ++i)

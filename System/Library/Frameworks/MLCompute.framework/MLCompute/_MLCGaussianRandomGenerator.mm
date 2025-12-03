@@ -1,26 +1,26 @@
 @interface _MLCGaussianRandomGenerator
 + (id)zeroMeanGaussianRandomGenerator;
-+ (id)zeroMeanGaussianRandomGeneratorWithSeed:(unint64_t)a3;
-- (_MLCGaussianRandomGenerator)initWithMean:(double)a3 scale:(double)a4 seeded:(BOOL)a5 seedValue:(unint64_t)a6;
++ (id)zeroMeanGaussianRandomGeneratorWithSeed:(unint64_t)seed;
+- (_MLCGaussianRandomGenerator)initWithMean:(double)mean scale:(double)scale seeded:(BOOL)seeded seedValue:(unint64_t)value;
 - (double)sample;
 @end
 
 @implementation _MLCGaussianRandomGenerator
 
-- (_MLCGaussianRandomGenerator)initWithMean:(double)a3 scale:(double)a4 seeded:(BOOL)a5 seedValue:(unint64_t)a6
+- (_MLCGaussianRandomGenerator)initWithMean:(double)mean scale:(double)scale seeded:(BOOL)seeded seedValue:(unint64_t)value
 {
-  v7 = a5;
+  seededCopy = seeded;
   v11.receiver = self;
   v11.super_class = _MLCGaussianRandomGenerator;
   result = [(_MLCGaussianRandomGenerator *)&v11 init];
   if (result)
   {
-    result->_mean = a3;
-    result->_scale = a4;
-    result->_seeded = v7;
-    if (v7)
+    result->_mean = mean;
+    result->_scale = scale;
+    result->_seeded = seededCopy;
+    if (seededCopy)
     {
-      result->_seedValue = a6;
+      result->_seedValue = value;
     }
   }
 
@@ -29,14 +29,14 @@
 
 + (id)zeroMeanGaussianRandomGenerator
 {
-  v2 = [[a1 alloc] initWithMean:0 scale:arc4random_uniform(0x40000000u) seeded:0.0 seedValue:1.0];
+  v2 = [[self alloc] initWithMean:0 scale:arc4random_uniform(0x40000000u) seeded:0.0 seedValue:1.0];
 
   return v2;
 }
 
-+ (id)zeroMeanGaussianRandomGeneratorWithSeed:(unint64_t)a3
++ (id)zeroMeanGaussianRandomGeneratorWithSeed:(unint64_t)seed
 {
-  v3 = [[a1 alloc] initWithMean:0 scale:a3 seeded:0.0 seedValue:1.0];
+  v3 = [[self alloc] initWithMean:0 scale:seed seeded:0.0 seedValue:1.0];
 
   return v3;
 }

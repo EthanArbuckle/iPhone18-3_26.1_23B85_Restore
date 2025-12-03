@@ -1,26 +1,26 @@
 @interface AMSCarrierLinkParams
-+ (id)_queryDictionaryFromString:(id)a3;
-- (AMSCarrierLinkParams)initWithCoder:(id)a3;
-- (AMSCarrierLinkParams)initWithString:(id)a3;
++ (id)_queryDictionaryFromString:(id)string;
+- (AMSCarrierLinkParams)initWithCoder:(id)coder;
+- (AMSCarrierLinkParams)initWithString:(id)string;
 - (NSString)adamId;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSCarrierLinkParams
 
-- (AMSCarrierLinkParams)initWithString:(id)a3
+- (AMSCarrierLinkParams)initWithString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = AMSCarrierLinkParams;
   v6 = [(AMSCarrierLinkParams *)&v10 init];
   if (v6)
   {
-    v7 = [objc_opt_class() _queryDictionaryFromString:v5];
+    v7 = [objc_opt_class() _queryDictionaryFromString:stringCopy];
     dictionary = v6->_dictionary;
     v6->_dictionary = v7;
 
-    objc_storeStrong(&v6->_linkParamsString, a3);
+    objc_storeStrong(&v6->_linkParamsString, string);
   }
 
   return v6;
@@ -28,8 +28,8 @@
 
 - (NSString)adamId
 {
-  v2 = [(AMSCarrierLinkParams *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"adamId"];
+  dictionary = [(AMSCarrierLinkParams *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"adamId"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -45,19 +45,19 @@
   return v4;
 }
 
-+ (id)_queryDictionaryFromString:(id)a3
++ (id)_queryDictionaryFromString:(id)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  [v4 setQuery:v3];
+  [v4 setQuery:stringCopy];
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 queryItems];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  queryItems = [v4 queryItems];
+  v7 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -68,16 +68,16 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(queryItems);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 value];
-        v13 = [v11 name];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        value = [v11 value];
+        name = [v11 name];
+        [v5 setObject:value forKeyedSubscript:name];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -88,30 +88,30 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSCarrierLinkParams *)self dictionary];
-  [v4 encodeObject:v5 forKey:@"dictionary"];
+  coderCopy = coder;
+  dictionary = [(AMSCarrierLinkParams *)self dictionary];
+  [coderCopy encodeObject:dictionary forKey:@"dictionary"];
 
-  v6 = [(AMSCarrierLinkParams *)self linkParamsString];
-  [v4 encodeObject:v6 forKey:@"linkParamsString"];
+  linkParamsString = [(AMSCarrierLinkParams *)self linkParamsString];
+  [coderCopy encodeObject:linkParamsString forKey:@"linkParamsString"];
 }
 
-- (AMSCarrierLinkParams)initWithCoder:(id)a3
+- (AMSCarrierLinkParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AMSCarrierLinkParams;
   v5 = [(AMSCarrierLinkParams *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"dictionary"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v7 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"dictionary"];
     dictionary = v5->_dictionary;
     v5->_dictionary = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkParamsString"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkParamsString"];
     linkParamsString = v5->_linkParamsString;
     v5->_linkParamsString = v9;
   }

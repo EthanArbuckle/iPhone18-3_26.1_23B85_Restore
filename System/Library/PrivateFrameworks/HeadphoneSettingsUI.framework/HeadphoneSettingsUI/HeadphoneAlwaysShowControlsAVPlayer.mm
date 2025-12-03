@@ -1,7 +1,7 @@
 @interface HeadphoneAlwaysShowControlsAVPlayer
 - (BOOL)showsPlaybackControls;
-- (_TtC19HeadphoneSettingsUI35HeadphoneAlwaysShowControlsAVPlayer)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setShowsPlaybackControls:(BOOL)a3;
+- (_TtC19HeadphoneSettingsUI35HeadphoneAlwaysShowControlsAVPlayer)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setShowsPlaybackControls:(BOOL)controls;
 - (void)viewDidLoad;
 @end
 
@@ -15,7 +15,7 @@
   return sub_1AC3090FC() & 1;
 }
 
-- (void)setShowsPlaybackControls:(BOOL)a3
+- (void)setShowsPlaybackControls:(BOOL)controls
 {
   MEMORY[0x1E69E5928](self);
   sub_1AC30910C();
@@ -30,15 +30,15 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI35HeadphoneAlwaysShowControlsAVPlayer)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19HeadphoneSettingsUI35HeadphoneAlwaysShowControlsAVPlayer)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     v6 = sub_1AC30A92C();
     v7 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v8 = v6;
     v9 = v7;
   }
@@ -49,7 +49,7 @@
     v9 = 0;
   }
 
-  return sub_1AC2AC41C(v8, v9, a4);
+  return sub_1AC2AC41C(v8, v9, bundle);
 }
 
 @end

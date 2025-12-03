@@ -1,10 +1,10 @@
 @interface SCNJitterer
-- (SCNJitterer)initWithDelegate:(id)a3;
+- (SCNJitterer)initWithDelegate:(id)delegate;
 - (void)dealloc;
 - (void)delegateWillDie;
 - (void)jitter;
 - (void)restart;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 - (void)stopIfNeeded;
 - (void)update;
 @end
@@ -69,7 +69,7 @@ void __27__SCNJitterer_stopIfNeeded__block_invoke(uint64_t a1)
   }
 }
 
-- (SCNJitterer)initWithDelegate:(id)a3
+- (SCNJitterer)initWithDelegate:(id)delegate
 {
   v10.receiver = self;
   v10.super_class = SCNJitterer;
@@ -77,7 +77,7 @@ void __27__SCNJitterer_stopIfNeeded__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_delegate, a3);
+    objc_storeWeak(&v4->_delegate, delegate);
     v5->_restartSourceIsSuspended = 1;
     v5->_state = 3;
     v9[0] = 0;
@@ -148,11 +148,11 @@ void __22__SCNJitterer_dealloc__block_invoke(uint64_t a1)
   dispatch_sync(v3, &__block_literal_global_12);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       self->_enabled = 1;
 

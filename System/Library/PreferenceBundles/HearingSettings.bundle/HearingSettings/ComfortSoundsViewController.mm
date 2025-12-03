@@ -1,24 +1,24 @@
 @interface ComfortSoundsViewController
 - (ComfortSoundsViewController)init;
-- (id)comfortSoundLevel:(id)a3;
-- (id)comfortSoundMixingLevel:(id)a3;
-- (id)comfortSoundsEnabled:(id)a3;
-- (id)mediaMixingEnabled:(id)a3;
-- (id)selectedComfortSound:(id)a3;
-- (id)selectedTimer:(id)a3;
-- (id)selectedTinnitusFilterMode:(id)a3;
-- (id)soundGroupValue:(id)a3;
+- (id)comfortSoundLevel:(id)level;
+- (id)comfortSoundMixingLevel:(id)level;
+- (id)comfortSoundsEnabled:(id)enabled;
+- (id)mediaMixingEnabled:(id)enabled;
+- (id)selectedComfortSound:(id)sound;
+- (id)selectedTimer:(id)timer;
+- (id)selectedTinnitusFilterMode:(id)mode;
+- (id)soundGroupValue:(id)value;
 - (id)specifiers;
-- (id)stopOnLockEnabled:(id)a3;
+- (id)stopOnLockEnabled:(id)enabled;
 - (void)_updateComfortSoundsButtonForOneness;
 - (void)dealloc;
-- (void)setComfortSoundLevel:(id)a3 specifier:(id)a4;
-- (void)setComfortSoundMixingLevel:(id)a3 specifier:(id)a4;
-- (void)setComfortSoundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setMediaMixingEnabled:(id)a3 specifier:(id)a4;
-- (void)setStopOnLockEnabled:(id)a3 specifier:(id)a4;
+- (void)setComfortSoundLevel:(id)level specifier:(id)specifier;
+- (void)setComfortSoundMixingLevel:(id)level specifier:(id)specifier;
+- (void)setComfortSoundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMediaMixingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setStopOnLockEnabled:(id)enabled specifier:(id)specifier;
 - (void)stopPlayingSample;
-- (void)toggleSample:(id)a3;
+- (void)toggleSample:(id)sample;
 - (void)viewDidLoad;
 - (void)willBecomeActive;
 - (void)willResignActive;
@@ -129,8 +129,8 @@
     v17 = [v15 initWithTargetSerialQueue:&_dispatch_main_q];
     [(ComfortSoundsViewController *)v2 setCountdownTimer:v17];
 
-    v18 = [(ComfortSoundsViewController *)v2 countdownTimer];
-    [v18 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    countdownTimer = [(ComfortSoundsViewController *)v2 countdownTimer];
+    [countdownTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v23);
@@ -187,8 +187,8 @@
     v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"setComfortSoundsEnabled:specifier:" get:"comfortSoundsEnabled:" detail:0 cell:6 edit:0];
 
     [v8 setIdentifier:@"CSFeatureToggleSpecID"];
-    v9 = [sub_5484() server];
-    LODWORD(v7) = [v9 isContinuitySessionActive];
+    server = [sub_5484() server];
+    LODWORD(v7) = [server isContinuitySessionActive];
 
     v10 = [NSNumber numberWithBool:v7 ^ 1];
     [v8 setProperty:v10 forKey:PSEnabledKey];
@@ -207,9 +207,9 @@
     [v4 addObject:v13];
     v14 = hearingLocString();
     v15 = +[HUComfortSoundsSettings sharedInstance];
-    v16 = [v15 selectedComfortSound];
-    v17 = [v16 localizedName];
-    v18 = [NSString stringWithFormat:v14, v17];
+    selectedComfortSound = [v15 selectedComfortSound];
+    localizedName = [selectedComfortSound localizedName];
+    v18 = [NSString stringWithFormat:v14, localizedName];
     v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:"setComfortSoundLevel:specifier:" get:"comfortSoundLevel:" detail:0 cell:5 edit:0];
 
     v20 = PSSliderIsContinuous;
@@ -306,15 +306,15 @@
   v9.receiver = self;
   v9.super_class = ComfortSoundsViewController;
   [(ComfortSoundsViewController *)&v9 viewDidLoad];
-  v3 = [(ComfortSoundsViewController *)self table];
+  table = [(ComfortSoundsViewController *)self table];
   v4 = objc_opt_class();
   v5 = +[HearingSettingsTitleValueSliderCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(ComfortSoundsViewController *)self table];
+  table2 = [(ComfortSoundsViewController *)self table];
   v7 = objc_opt_class();
   v8 = +[HearingSettingsCountdownCell cellReuseIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [table2 registerClass:v7 forCellReuseIdentifier:v8];
 }
 
 - (void)willResignActive
@@ -356,9 +356,9 @@
   }
 }
 
-- (void)toggleSample:(id)a3
+- (void)toggleSample:(id)sample
 {
-  v8 = a3;
+  sampleCopy = sample;
   if ([(ComfortSoundsViewController *)self playingSample])
   {
     [(ComfortSoundsViewController *)self stopPlayingSample];
@@ -378,19 +378,19 @@
 
     UIAccessibilityPostNotification(0x42Fu, &__kCFBooleanTrue);
     v7 = paLocString();
-    [v8 setName:v7];
+    [sampleCopy setName:v7];
 
-    [(ComfortSoundsViewController *)self reloadSpecifier:v8];
+    [(ComfortSoundsViewController *)self reloadSpecifier:sampleCopy];
   }
 }
 
-- (void)setComfortSoundsEnabled:(id)a3 specifier:(id)a4
+- (void)setComfortSoundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  [v6 setComfortSoundsEnabled:{objc_msgSend(v5, "BOOLValue")}];
+  [v6 setComfortSoundsEnabled:{objc_msgSend(enabledCopy, "BOOLValue")}];
 
-  LOBYTE(v6) = [v5 BOOLValue];
+  LOBYTE(v6) = [enabledCopy BOOLValue];
   if ((v6 & 1) == 0)
   {
 
@@ -398,7 +398,7 @@
   }
 }
 
-- (id)comfortSoundsEnabled:(id)a3
+- (id)comfortSoundsEnabled:(id)enabled
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 comfortSoundsEnabled]);
@@ -409,25 +409,25 @@
 - (void)_updateComfortSoundsButtonForOneness
 {
   v6 = [(ComfortSoundsViewController *)self specifierForID:@"CSFeatureToggleSpecID"];
-  v3 = [sub_5484() server];
-  v4 = [v3 isContinuitySessionActive];
+  server = [sub_5484() server];
+  isContinuitySessionActive = [server isContinuitySessionActive];
 
-  v5 = [NSNumber numberWithBool:v4 ^ 1];
+  v5 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   [v6 setProperty:v5 forKey:PSEnabledKey];
 
   [(ComfortSoundsViewController *)self reloadSpecifier:v6];
 }
 
-- (void)setMediaMixingEnabled:(id)a3 specifier:(id)a4
+- (void)setMediaMixingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setMixesWithMedia:v5];
+  [v6 setMixesWithMedia:bOOLValue];
 }
 
-- (id)mediaMixingEnabled:(id)a3
+- (id)mediaMixingEnabled:(id)enabled
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 mixesWithMedia]);
@@ -435,16 +435,16 @@
   return v4;
 }
 
-- (void)setStopOnLockEnabled:(id)a3 specifier:(id)a4
+- (void)setStopOnLockEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setStopsOnLock:v5];
+  [v6 setStopsOnLock:bOOLValue];
 }
 
-- (id)stopOnLockEnabled:(id)a3
+- (id)stopOnLockEnabled:(id)enabled
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 stopsOnLock]);
@@ -452,17 +452,17 @@
   return v4;
 }
 
-- (void)setComfortSoundLevel:(id)a3 specifier:(id)a4
+- (void)setComfortSoundLevel:(id)level specifier:(id)specifier
 {
-  v4 = a3;
+  levelCopy = level;
   v7 = +[HUComfortSoundsSettings sharedInstance];
-  [v4 doubleValue];
+  [levelCopy doubleValue];
   v6 = v5;
 
   [v7 setRelativeVolume:v6];
 }
 
-- (id)comfortSoundLevel:(id)a3
+- (id)comfortSoundLevel:(id)level
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   [v3 relativeVolume];
@@ -471,29 +471,29 @@
   return v4;
 }
 
-- (id)soundGroupValue:(id)a3
+- (id)soundGroupValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 selectedComfortSound];
+  selectedComfortSound = [v4 selectedComfortSound];
 
-  v6 = [v3 userInfo];
+  userInfo = [valueCopy userInfo];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [v6 soundGroup], v7 == objc_msgSend(v5, "soundGroup")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [userInfo soundGroup], v7 == objc_msgSend(selectedComfortSound, "soundGroup")))
   {
-    v8 = +[HUComfortSound defaultComfortSoundForGroup:](HUComfortSound, "defaultComfortSoundForGroup:", [v5 soundGroup]);
-    if ([v8 isEqual:v5] || (objc_msgSend(v8, "localizedName"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedName"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, v12))
+    v8 = +[HUComfortSound defaultComfortSoundForGroup:](HUComfortSound, "defaultComfortSoundForGroup:", [selectedComfortSound soundGroup]);
+    if ([v8 isEqual:selectedComfortSound] || (objc_msgSend(v8, "localizedName"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selectedComfortSound, "localizedName"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, v12))
     {
-      v13 = hearingLocString();
+      localizedName = hearingLocString();
     }
 
     else
     {
-      v13 = [v5 localizedName];
+      localizedName = [selectedComfortSound localizedName];
     }
 
-    v9 = v13;
+    v9 = localizedName;
   }
 
   else
@@ -504,17 +504,17 @@
   return v9;
 }
 
-- (void)setComfortSoundMixingLevel:(id)a3 specifier:(id)a4
+- (void)setComfortSoundMixingLevel:(id)level specifier:(id)specifier
 {
-  v4 = a3;
+  levelCopy = level;
   v7 = +[HUComfortSoundsSettings sharedInstance];
-  [v4 doubleValue];
+  [levelCopy doubleValue];
   v6 = v5;
 
   [v7 setMediaVolume:v6];
 }
 
-- (id)comfortSoundMixingLevel:(id)a3
+- (id)comfortSoundMixingLevel:(id)level
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   [v3 mediaVolume];
@@ -523,22 +523,22 @@
   return v4;
 }
 
-- (id)selectedComfortSound:(id)a3
+- (id)selectedComfortSound:(id)sound
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
-  v4 = [v3 selectedComfortSound];
-  v5 = [v4 localizedName];
+  selectedComfortSound = [v3 selectedComfortSound];
+  localizedName = [selectedComfortSound localizedName];
 
-  return v5;
+  return localizedName;
 }
 
-- (id)selectedTimer:(id)a3
+- (id)selectedTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = +[HUComfortSoundsSettings sharedInstance];
-  v6 = [v5 timerEnabled];
+  timerEnabled = [v5 timerEnabled];
 
-  if (!v6)
+  if (!timerEnabled)
   {
     v15 = comfortSoundsLocString();
     goto LABEL_12;
@@ -551,31 +551,31 @@
   v11 = v10;
 
   v12 = +[HUComfortSoundsSettings sharedInstance];
-  v13 = [v12 comfortSoundsEnabled];
+  comfortSoundsEnabled = [v12 comfortSoundsEnabled];
 
-  if (v13)
+  if (comfortSoundsEnabled)
   {
     v14 = v9 - v11;
     if (v9 - v11 > 0.0)
     {
       v15 = comfortSoundsCountdownString();
-      v16 = [(ComfortSoundsViewController *)self countdownTimer];
+      countdownTimer = [(ComfortSoundsViewController *)self countdownTimer];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_62D4;
       v22[3] = &unk_489F8;
       v22[4] = self;
-      v23 = v4;
-      [v16 afterDelay:v22 processBlock:1.0];
+      v23 = timerCopy;
+      [countdownTimer afterDelay:v22 processBlock:1.0];
 
       goto LABEL_12;
     }
   }
 
   v17 = +[HUComfortSoundsSettings sharedInstance];
-  v18 = [v17 timerOption];
+  timerOption = [v17 timerOption];
 
-  if (v18 == &dword_0 + 1)
+  if (timerOption == &dword_0 + 1)
   {
     v19 = +[HUComfortSoundsSettings sharedInstance];
     [v19 timerDurationInSeconds];
@@ -583,7 +583,7 @@
     goto LABEL_10;
   }
 
-  if (!v18)
+  if (!timerOption)
   {
     v19 = +[HUComfortSoundsSettings sharedInstance];
     [v19 timerEndInterval];
@@ -600,12 +600,12 @@ LABEL_12:
   return v15;
 }
 
-- (id)selectedTinnitusFilterMode:(id)a3
+- (id)selectedTinnitusFilterMode:(id)mode
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
-  v4 = [v3 tinnitusFilterEnabled];
+  tinnitusFilterEnabled = [v3 tinnitusFilterEnabled];
 
-  if (v4 && (+[HUComfortSoundsSettings sharedInstance](HUComfortSoundsSettings, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 tinnitusFilterMode], v5, v6 > 1))
+  if (tinnitusFilterEnabled && (+[HUComfortSoundsSettings sharedInstance](HUComfortSoundsSettings, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 tinnitusFilterMode], v5, v6 > 1))
   {
     v7 = &stru_49868;
   }

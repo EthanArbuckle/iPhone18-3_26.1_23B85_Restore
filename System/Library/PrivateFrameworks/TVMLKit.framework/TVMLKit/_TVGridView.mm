@@ -1,33 +1,33 @@
 @interface _TVGridView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)tv_sizeThatFits:(CGSize)a3 withContentInset:(UIEdgeInsets)a4;
-- (_TVGridView)initWithFrame:(CGRect)a3;
-- (_TVGridView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (void)setDelegate:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)tv_sizeThatFits:(CGSize)fits withContentInset:(UIEdgeInsets)inset;
+- (_TVGridView)initWithFrame:(CGRect)frame;
+- (_TVGridView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _TVGridView
 
-- (_TVGridView)initWithFrame:(CGRect)a3
+- (_TVGridView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_alloc_init(_TVCollectionViewFlowLayout);
   [(UICollectionViewFlowLayout *)v8 setScrollDirection:0];
   [(UICollectionViewFlowLayout *)v8 setMinimumInteritemSpacing:0.0];
   [(UICollectionViewFlowLayout *)v8 setMinimumLineSpacing:0.0];
-  v9 = [(_TVGridView *)self initWithFrame:v8 collectionViewLayout:x, y, width, height];
+  height = [(_TVGridView *)self initWithFrame:v8 collectionViewLayout:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (_TVGridView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TVGridView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = _TVGridView;
-  v4 = [(_TVCollectionView *)&v7 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_TVCollectionView *)&v7 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -42,21 +42,21 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = _TVGridView;
-  v4 = a3;
-  [(_TVCollectionView *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(_TVCollectionView *)&v6 setDelegate:delegateCopy];
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateRespondsToIndexPathForPreferredFocusedView = v5 & 1;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(_TVGridView *)self contentInset];
 
   [(_TVGridView *)self tv_sizeThatFits:width withContentInset:height, v6, v7, v8, v9];
@@ -65,12 +65,12 @@
   return result;
 }
 
-- (CGSize)tv_sizeThatFits:(CGSize)a3 withContentInset:(UIEdgeInsets)a4
+- (CGSize)tv_sizeThatFits:(CGSize)fits withContentInset:(UIEdgeInsets)inset
 {
-  bottom = a4.bottom;
-  top = a4.top;
-  width = a3.width;
-  v7 = a3.width - a4.left - a4.right;
+  bottom = inset.bottom;
+  top = inset.top;
+  width = fits.width;
+  v7 = fits.width - inset.left - inset.right;
   if (v7 >= 0.0)
   {
     v8 = v7;
@@ -81,8 +81,8 @@
     v8 = 0.0;
   }
 
-  v9 = [(_TVGridView *)self gridFlowLayout];
-  [v9 contentHeightThatFitsItemCount:0 expectedWidth:v8];
+  gridFlowLayout = [(_TVGridView *)self gridFlowLayout];
+  [gridFlowLayout contentHeightThatFitsItemCount:0 expectedWidth:v8];
   v11 = bottom + top + v10;
 
   v12 = width;

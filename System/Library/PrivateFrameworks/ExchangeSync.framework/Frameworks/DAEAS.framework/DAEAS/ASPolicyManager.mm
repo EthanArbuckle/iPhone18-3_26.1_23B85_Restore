@@ -1,12 +1,12 @@
 @interface ASPolicyManager
-- (ASPolicyManager)initWithAccount:(id)a3;
+- (ASPolicyManager)initWithAccount:(id)account;
 - (ASPolicyManagerDelegate)delegate;
 - (id)currentPolicyKey;
 @end
 
 @implementation ASPolicyManager
 
-- (ASPolicyManager)initWithAccount:(id)a3
+- (ASPolicyManager)initWithAccount:(id)account
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
@@ -22,15 +22,15 @@
 - (id)currentPolicyKey
 {
   v3 = [ASPerAccountPolicyData alloc];
-  v4 = [(ASPolicyManager *)self delegate];
-  v5 = [v4 accountPersistentUUID];
-  v6 = [(ASPerAccountPolicyData *)v3 initWithAccountPersistentUUID:v5];
+  delegate = [(ASPolicyManager *)self delegate];
+  accountPersistentUUID = [delegate accountPersistentUUID];
+  v6 = [(ASPerAccountPolicyData *)v3 initWithAccountPersistentUUID:accountPersistentUUID];
 
-  v7 = [(ASPerAccountPolicyData *)v6 policyKey];
-  v8 = v7;
-  if (v7)
+  policyKey = [(ASPerAccountPolicyData *)v6 policyKey];
+  v8 = policyKey;
+  if (policyKey)
   {
-    v9 = v7;
+    v9 = policyKey;
   }
 
   else

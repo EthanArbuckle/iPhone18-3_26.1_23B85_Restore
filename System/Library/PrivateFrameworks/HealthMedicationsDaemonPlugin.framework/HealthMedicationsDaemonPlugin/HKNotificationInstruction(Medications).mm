@@ -13,7 +13,7 @@
   v6 = MEMORY[0x277CBEAA8];
   v7 = a4;
   v8 = [v6 dateWithTimeIntervalSinceNow:43200.0];
-  v9 = [a1 initWithAction:a3 scheduleItemIdentifier:v7 expirationDate:v8];
+  v9 = [self initWithAction:a3 scheduleItemIdentifier:v7 expirationDate:v8];
 
   return v9;
 }
@@ -23,7 +23,7 @@
   v8 = MEMORY[0x277CCD6C0];
   v9 = a5;
   v10 = [v8 categoryIdentifierFromScheduleItemIdentifier:a4];
-  v11 = [a1 initWithAction:a3 categoryIdentifier:v10 expirationDate:v9];
+  v11 = [self initWithAction:a3 categoryIdentifier:v10 expirationDate:v9];
 
   return v11;
 }
@@ -31,8 +31,8 @@
 - (id)scheduleItemIdentifier
 {
   v1 = MEMORY[0x277CCD6C0];
-  v2 = [a1 categoryIdentifier];
-  v3 = [v1 scheduleItemIdentifierFromCategoryIdentifier:v2];
+  categoryIdentifier = [self categoryIdentifier];
+  v3 = [v1 scheduleItemIdentifierFromCategoryIdentifier:categoryIdentifier];
 
   return v3;
 }
@@ -47,13 +47,13 @@
 
 + (id)scheduleItemIdentifiersFromCategoryIdentifiers:()Medications
 {
-  v4 = [a3 allObjects];
+  allObjects = [a3 allObjects];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __89__HKNotificationInstruction_Medications__scheduleItemIdentifiersFromCategoryIdentifiers___block_invoke;
   v7[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v7[4] = a1;
-  v5 = [v4 hk_map:v7];
+  v7[4] = self;
+  v5 = [allObjects hk_map:v7];
 
   return v5;
 }

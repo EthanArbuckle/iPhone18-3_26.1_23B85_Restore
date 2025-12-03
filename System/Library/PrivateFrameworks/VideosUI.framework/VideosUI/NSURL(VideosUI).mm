@@ -12,8 +12,8 @@
 - (id)vui_parsedQueryParametersDictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v1 = [a1 query];
-  v2 = [v1 componentsSeparatedByString:@"&"];
+  query = [self query];
+  v2 = [query componentsSeparatedByString:@"&"];
 
   v3 = [v2 count];
   if (v3)
@@ -38,8 +38,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) stringByRemovingPercentEncoding];
-          v11 = [v10 componentsSeparatedByString:@"="];
+          stringByRemovingPercentEncoding = [*(*(&v16 + 1) + 8 * i) stringByRemovingPercentEncoding];
+          v11 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"="];
 
           if ([v11 count] == 2)
           {
@@ -70,7 +70,7 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   v6 = 0;
   if ([v4 length] && v5)
   {
@@ -92,8 +92,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) name];
-          v11 = [v10 caseInsensitiveCompare:v4];
+          name = [*(*(&v13 + 1) + 8 * i) name];
+          v11 = [name caseInsensitiveCompare:v4];
 
           if (!v11)
           {
@@ -122,15 +122,15 @@ LABEL_13:
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
+  selfCopy = self;
   if ([v6 length] && objc_msgSend(v7, "length"))
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v8 resolvingAgainstBaseURL:0];
+    v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:selfCopy resolvingAgainstBaseURL:0];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 percentEncodedQueryItems];
-      v12 = [v11 mutableCopy];
+      percentEncodedQueryItems = [v9 percentEncodedQueryItems];
+      v12 = [percentEncodedQueryItems mutableCopy];
 
       v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:v6 value:v7];
       if (!v12)
@@ -150,19 +150,19 @@ LABEL_13:
       {
         v16 = v14;
 
-        v8 = v16;
+        selfCopy = v16;
       }
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)vui_URLByAddingQueryParamsDictionary:()VideosUI
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -175,7 +175,7 @@ LABEL_13:
     do
     {
       v9 = 0;
-      v10 = v5;
+      v10 = selfCopy;
       do
       {
         if (*v15 != v8)
@@ -185,10 +185,10 @@ LABEL_13:
 
         v11 = *(*(&v14 + 1) + 8 * v9);
         v12 = [v4 objectForKeyedSubscript:v11];
-        v5 = [v10 vui_URLByAddingQueryParamWithName:v11 value:v12];
+        selfCopy = [v10 vui_URLByAddingQueryParamWithName:v11 value:v12];
 
         ++v9;
-        v10 = v5;
+        v10 = selfCopy;
       }
 
       while (v7 != v9);
@@ -198,23 +198,23 @@ LABEL_13:
     while (v7);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)vui_URLByRemovingQueryParamWithName:()VideosUI
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = a1;
-  v21 = v5;
+  selfCopy = self;
+  v21 = selfCopy;
   if ([v4 length])
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v5 resolvingAgainstBaseURL:0];
+    v6 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:selfCopy resolvingAgainstBaseURL:0];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 percentEncodedQueryItems];
-      v9 = [v8 mutableCopy];
+      percentEncodedQueryItems = [v6 percentEncodedQueryItems];
+      v9 = [percentEncodedQueryItems mutableCopy];
 
       if (!v9)
       {
@@ -240,8 +240,8 @@ LABEL_13:
             }
 
             v14 = *(*(&v22 + 1) + 8 * i);
-            v15 = [v14 name];
-            v16 = [v15 isEqualToString:v4];
+            name = [v14 name];
+            v16 = [name isEqualToString:v4];
 
             if (v16)
             {
@@ -274,13 +274,13 @@ LABEL_13:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
@@ -301,7 +301,7 @@ LABEL_13:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
+          stringValue = v11;
         }
 
         else
@@ -311,16 +311,16 @@ LABEL_13:
             goto LABEL_14;
           }
 
-          v12 = [v11 stringValue];
+          stringValue = [v11 stringValue];
         }
 
-        v13 = v12;
-        if (v12)
+        v13 = stringValue;
+        if (stringValue)
         {
-          v14 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:v10 value:v12];
+          v14 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:v10 value:stringValue];
           if (v14)
           {
-            [v16 addObject:v14];
+            [array addObject:v14];
           }
         }
 
@@ -333,7 +333,7 @@ LABEL_14:
     while (v7);
   }
 
-  return v16;
+  return array;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface CarrierSettingsStatusIndicator
 - (CarrierSettingsStatusIndicator)init;
-- (void)carrierBundleChange:(id)a3;
+- (void)carrierBundleChange:(id)change;
 - (void)createConnection;
-- (void)preferredDataSimChanged:(id)a3;
+- (void)preferredDataSimChanged:(id)changed;
 @end
 
 @implementation CarrierSettingsStatusIndicator
@@ -34,11 +34,11 @@
   v4 = [objc_alloc(MEMORY[0x277CC37B8]) initWithQueue:self->_queue];
   [(CarrierSettingsStatusIndicator *)self setCoreTelephonyClient:v4];
 
-  v5 = [(CarrierSettingsStatusIndicator *)self coreTelephonyClient];
-  [v5 setDelegate:self];
+  coreTelephonyClient = [(CarrierSettingsStatusIndicator *)self coreTelephonyClient];
+  [coreTelephonyClient setDelegate:self];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v4 = mysyslog_get_logger();
   v5 = _SC_syslog_os_log_mapping();
@@ -48,14 +48,14 @@
     _os_log_impl(&dword_277237000, v4, v5, "carrier bundle settings changed", buf, 2u);
   }
 
-  v6 = [(CarrierSettingsStatusIndicator *)self runloop];
-  v7 = [(CarrierSettingsStatusIndicator *)self runloopMode];
+  runloop = [(CarrierSettingsStatusIndicator *)self runloop];
+  runloopMode = [(CarrierSettingsStatusIndicator *)self runloopMode];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__CarrierSettingsStatusIndicator_carrierBundleChange___block_invoke;
   block[3] = &unk_27A714298;
   block[4] = self;
-  CFRunLoopPerformBlock(v6, v7, block);
+  CFRunLoopPerformBlock(runloop, runloopMode, block);
   CFRunLoopWakeUp([(CarrierSettingsStatusIndicator *)self runloop]);
 }
 
@@ -66,7 +66,7 @@ uint64_t __54__CarrierSettingsStatusIndicator_carrierBundleChange___block_invoke
   return v1();
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
   v4 = mysyslog_get_logger();
   v5 = _SC_syslog_os_log_mapping();
@@ -76,14 +76,14 @@ uint64_t __54__CarrierSettingsStatusIndicator_carrierBundleChange___block_invoke
     _os_log_impl(&dword_277237000, v4, v5, "user's data subscription preference changed", buf, 2u);
   }
 
-  v6 = [(CarrierSettingsStatusIndicator *)self runloop];
-  v7 = [(CarrierSettingsStatusIndicator *)self runloopMode];
+  runloop = [(CarrierSettingsStatusIndicator *)self runloop];
+  runloopMode = [(CarrierSettingsStatusIndicator *)self runloopMode];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CarrierSettingsStatusIndicator_preferredDataSimChanged___block_invoke;
   block[3] = &unk_27A714298;
   block[4] = self;
-  CFRunLoopPerformBlock(v6, v7, block);
+  CFRunLoopPerformBlock(runloop, runloopMode, block);
   CFRunLoopWakeUp([(CarrierSettingsStatusIndicator *)self runloop]);
 }
 

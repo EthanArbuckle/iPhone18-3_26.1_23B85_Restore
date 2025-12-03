@@ -1,20 +1,20 @@
 @interface DDMatchMoneyAmount
-- (DDMatchMoneyAmount)initWithDDScannerResult:(id)a3;
+- (DDMatchMoneyAmount)initWithDDScannerResult:(id)result;
 @end
 
 @implementation DDMatchMoneyAmount
 
-- (DDMatchMoneyAmount)initWithDDScannerResult:(id)a3
+- (DDMatchMoneyAmount)initWithDDScannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = DDMatchMoneyAmount;
-  v5 = [(DDMatch *)&v12 initWithDDScannerResult:v4];
+  v5 = [(DDMatch *)&v12 initWithDDScannerResult:resultCopy];
   if (v5)
   {
     v10 = 0;
     v11 = 0.0;
-    v6 = [v4 getMoneyAmount:&v11 currency:&v10];
+    v6 = [resultCopy getMoneyAmount:&v11 currency:&v10];
     v7 = v10;
     v8 = v10;
     if (v6)

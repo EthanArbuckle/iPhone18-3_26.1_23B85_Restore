@@ -1,14 +1,14 @@
 @interface VideosUI_RootSideBarControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation VideosUI_RootSideBarControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.RootSideBarController" hasSwiftField:@"delegate" withSwiftType:"Optional<RootSideBarControllerDelegate>"];
-  [v3 validateClass:@"VideosUI.RootSplitViewController" hasSwiftField:@"pillView" withSwiftType:"RootSideBarPillView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.RootSideBarController" hasSwiftField:@"delegate" withSwiftType:"Optional<RootSideBarControllerDelegate>"];
+  [validationsCopy validateClass:@"VideosUI.RootSplitViewController" hasSwiftField:@"pillView" withSwiftType:"RootSideBarPillView"];
 }
 
 @end

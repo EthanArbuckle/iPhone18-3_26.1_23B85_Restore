@@ -1,23 +1,23 @@
 @interface ECMessageBodyHTMLParser
-- (BOOL)_isMilestoneTagName:(id)a3;
+- (BOOL)_isMilestoneTagName:(id)name;
 - (BOOL)parse;
-- (ECMessageBodyHTMLParser)initWithHTML:(id)a3;
-- (void)_consumeNodesFromNode:(id)a3 upToNode:(id)a4;
+- (ECMessageBodyHTMLParser)initWithHTML:(id)l;
+- (void)_consumeNodesFromNode:(id)node upToNode:(id)toNode;
 - (void)_findBody;
 - (void)dealloc;
-- (void)didFindError:(id)a3;
+- (void)didFindError:(id)error;
 @end
 
 @implementation ECMessageBodyHTMLParser
 
-- (ECMessageBodyHTMLParser)initWithHTML:(id)a3
+- (ECMessageBodyHTMLParser)initWithHTML:(id)l
 {
   v7.receiver = self;
   v7.super_class = ECMessageBodyHTMLParser;
   v4 = [(ECMessageBodyParser *)&v7 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a3];
+    v5 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:l];
     v4->_scanner = v5;
     [(NSScanner *)v5 setCharactersToBeSkipped:0];
   }
@@ -32,37 +32,37 @@
   [(ECMessageBodyParser *)&v3 dealloc];
 }
 
-- (void)_consumeNodesFromNode:(id)a3 upToNode:(id)a4
+- (void)_consumeNodesFromNode:(id)node upToNode:(id)toNode
 {
   do
   {
-    if (a3 == a4)
+    if (node == toNode)
     {
       break;
     }
 
     v7 = objc_autoreleasePoolPush();
-    if ([a3 endLocation] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([node endLocation] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [a3 firstChild];
+      firstChild = [node firstChild];
     }
 
     else
     {
-      -[ECMessageBodyParser enqueueParagraphNode:withTagName:](self, "enqueueParagraphNode:withTagName:", a3, [a3 tagName]);
-      v8 = [a3 nextSibling];
-      if (!v8)
+      -[ECMessageBodyParser enqueueParagraphNode:withTagName:](self, "enqueueParagraphNode:withTagName:", node, [node tagName]);
+      firstChild = [node nextSibling];
+      if (!firstChild)
       {
         while (1)
         {
-          v8 = [a3 nextSibling];
-          if (v8)
+          firstChild = [node nextSibling];
+          if (firstChild)
           {
             break;
           }
 
-          a3 = [a3 parentNode];
-          if (!a3)
+          node = [node parentNode];
+          if (!node)
           {
             objc_autoreleasePoolPop(v7);
             goto LABEL_11;
@@ -71,29 +71,29 @@
       }
     }
 
-    a3 = v8;
+    node = firstChild;
     objc_autoreleasePoolPop(v7);
   }
 
-  while (a3);
+  while (node);
 LABEL_11:
 
   [(ECMessageBodyParser *)self flushParagraphNodes];
 }
 
-- (BOOL)_isMilestoneTagName:(id)a3
+- (BOOL)_isMilestoneTagName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  if ([a3 hasPrefix:@"!"])
+  if ([name hasPrefix:@"!"])
   {
     return 1;
   }
 
-  return [a3 caseInsensitiveCompare:@"br"] == 0;
+  return [name caseInsensitiveCompare:@"br"] == 0;
 }
 
 - (void)_findBody
@@ -136,7 +136,7 @@ LABEL_11:
       goto LABEL_91;
     }
 
-    v8 = [(NSScanner *)self->_scanner scanLocation];
+    scanLocation = [(NSScanner *)self->_scanner scanLocation];
     v9 = [(NSScanner *)self->_scanner scanUpToString:v7 intoString:0];
     v10 = v9;
     if (v9)
@@ -145,13 +145,13 @@ LABEL_11:
       v12 = v7;
       v13 = objc_alloc_init(_ECParsedHTMLText);
       [(_ECParsedHTMLNode *)v13 setHtmlString:[(NSScanner *)self->_scanner string]];
-      [(_ECParsedHTMLNode *)v13 setStartLocation:v8];
+      [(_ECParsedHTMLNode *)v13 setStartLocation:scanLocation];
       [(_ECParsedHTMLNode *)v13 setEndLocation:[(NSScanner *)self->_scanner scanLocation]];
       v14 = v6;
-      v15 = [v6 lastObject];
-      v16 = [v15 lastChild];
-      [v15 appendChild:v13];
-      if (-[ECMessageBodyParser isLandmarkTagName:](self, "isLandmarkTagName:", [v16 tagName]))
+      lastObject = [v6 lastObject];
+      lastChild = [lastObject lastChild];
+      [lastObject appendChild:v13];
+      if (-[ECMessageBodyParser isLandmarkTagName:](self, "isLandmarkTagName:", [lastChild tagName]))
       {
         [(ECMessageBodyHTMLParser *)self _consumeNodesFromNode:v4 upToNode:v13];
 
@@ -164,7 +164,7 @@ LABEL_11:
       v6 = v14;
     }
 
-    v17 = [(NSScanner *)self->_scanner scanLocation];
+    scanLocation2 = [(NSScanner *)self->_scanner scanLocation];
     if ([(NSScanner *)self->_scanner scanString:v7 intoString:0])
     {
       break;
@@ -213,7 +213,7 @@ LABEL_89:
   }
 
   v64 = v20;
-  v65 = v17;
+  v65 = scanLocation2;
   v66 = v6;
   v21 = 0x7FFFFFFFFFFFFFFFLL;
   while (1)
@@ -255,23 +255,23 @@ LABEL_87:
       }
     }
 
-    v26 = [(NSScanner *)self->_scanner scanLocation];
+    scanLocation3 = [(NSScanner *)self->_scanner scanLocation];
     if (v21 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_29;
     }
 
-    if (v26 - v21 >= 0x401)
+    if (scanLocation3 - v21 >= 0x401)
     {
       break;
     }
 
-    v26 = v21;
+    scanLocation3 = v21;
 LABEL_29:
-    v63 = v26;
-    v27 = [(NSScanner *)self->_scanner scanLocation];
+    v63 = scanLocation3;
+    scanLocation4 = [(NSScanner *)self->_scanner scanLocation];
     v80 = 0xAAAAAAAAAAAAAAAALL;
-    v28 = v27 - v65;
+    v28 = scanLocation4 - v65;
     *&v29 = 0xAAAAAAAAAAAAAAAALL;
     *(&v29 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v78 = v29;
@@ -285,11 +285,11 @@ LABEL_29:
     v70 = v29;
     v71 = v29;
     *buffer = v29;
-    v30 = [(NSScanner *)self->_scanner string];
-    theString[0] = v30;
+    string = [(NSScanner *)self->_scanner string];
+    theString[0] = string;
     *(&v78 + 1) = v65;
     *&v79 = v28;
-    theString[1] = CFStringGetCharactersPtr(v30);
+    theString[1] = CFStringGetCharactersPtr(string);
     if (theString[1])
     {
       CStringPtr = 0;
@@ -297,7 +297,7 @@ LABEL_29:
 
     else
     {
-      CStringPtr = CFStringGetCStringPtr(v30, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(string, 0x600u);
     }
 
     *&v78 = CStringPtr;
@@ -408,7 +408,7 @@ LABEL_40:
 LABEL_65:
   objc_autoreleasePoolPop(v22);
 LABEL_66:
-  v50 = [(NSScanner *)self->_scanner scanLocation];
+  scanLocation5 = [(NSScanner *)self->_scanner scanLocation];
   v51 = v81;
   if (v24)
   {
@@ -447,7 +447,7 @@ LABEL_74:
     [objc_msgSend(v66 "lastObject")];
     if (v52)
     {
-      [(_ECParsedHTMLNode *)v54 setEndLocation:v50];
+      [(_ECParsedHTMLNode *)v54 setEndLocation:scanLocation5];
     }
 
     else
@@ -478,14 +478,14 @@ LABEL_74:
       break;
     }
 
-    v55 = [v66 lastObject];
-    [v55 setEndLocation:v50];
-    v56 = [v55 tagName];
-    LODWORD(v55) = [v56 isEqualToString:v81];
+    lastObject2 = [v66 lastObject];
+    [lastObject2 setEndLocation:scanLocation5];
+    tagName = [lastObject2 tagName];
+    LODWORD(lastObject2) = [tagName isEqualToString:v81];
     [v66 removeLastObject];
   }
 
-  while (!v55);
+  while (!lastObject2);
   if ([v66 count] >= v67)
   {
     v7 = @"<";
@@ -517,11 +517,11 @@ uint64_t __32__ECMessageBodyHTMLParser_parse__block_invoke()
   return result;
 }
 
-- (void)didFindError:(id)a3
+- (void)didFindError:(id)error
 {
   v5.receiver = self;
   v5.super_class = ECMessageBodyHTMLParser;
-  [(ECMessageBodyParser *)&v5 didFindError:a3];
+  [(ECMessageBodyParser *)&v5 didFindError:error];
   v4 = _ef_log_ECMessageBodyParser();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {

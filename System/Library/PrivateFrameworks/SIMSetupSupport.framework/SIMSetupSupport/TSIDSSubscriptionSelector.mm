@@ -1,8 +1,8 @@
 @interface TSIDSSubscriptionSelector
 + (id)activeIMessageSlots;
 + (void)activeIMessageSlots;
-+ (void)doRegistrationForIMessage:(id)a3;
-+ (void)registerSlotsForIMessage:(id)a3;
++ (void)doRegistrationForIMessage:(id)message;
++ (void)registerSlotsForIMessage:(id)message;
 @end
 
 @implementation TSIDSSubscriptionSelector
@@ -22,12 +22,12 @@
       +[TSIDSSubscriptionSelector activeIMessageSlots];
     }
 
-    v6 = 0;
+    array = 0;
     goto LABEL_24;
   }
 
   v19 = v2;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -52,23 +52,23 @@
         objc_enumerationMutation(v7);
       }
 
-      v12 = [*(*(&v20 + 1) + 8 * v11) subscriptionSlot];
-      if (v12)
+      subscriptionSlot = [*(*(&v20 + 1) + 8 * v11) subscriptionSlot];
+      if (subscriptionSlot)
       {
-        if (v12 == 2)
+        if (subscriptionSlot == 2)
         {
-          v13 = v6;
+          v13 = array;
           v14 = &unk_287583D48;
         }
 
         else
         {
-          if (v12 != 1)
+          if (subscriptionSlot != 1)
           {
             goto LABEL_19;
           }
 
-          v13 = v6;
+          v13 = array;
           v14 = &unk_287583D30;
         }
 
@@ -107,21 +107,21 @@ LABEL_24:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-+ (void)registerSlotsForIMessage:(id)a3
++ (void)registerSlotsForIMessage:(id)message
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  messageCopy = message;
+  if ([messageCopy count])
   {
     v4 = dispatch_queue_create("iMessage Background", 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__TSIDSSubscriptionSelector_registerSlotsForIMessage___block_invoke;
     block[3] = &unk_279B44578;
-    v8 = v3;
+    v8 = messageCopy;
     dispatch_async(v4, block);
 
     v5 = v8;
@@ -141,10 +141,10 @@ LABEL_24:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)doRegistrationForIMessage:(id)a3
++ (void)doRegistrationForIMessage:(id)message
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v17 = objc_opt_new();
   v4 = [v17 selectedSubscriptionsWithError:0];
   v5 = [v4 mutableCopy];
@@ -158,7 +158,7 @@ LABEL_24:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = messageCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v7)
   {
@@ -174,8 +174,8 @@ LABEL_24:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) integerValue];
-        if ((v11 - 1) >= 2)
+        integerValue = [*(*(&v18 + 1) + 8 * v10) integerValue];
+        if ((integerValue - 1) >= 2)
         {
           v13 = _TSLogDomain();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -186,8 +186,8 @@ LABEL_24:
 
         else
         {
-          v12 = v11;
-          v13 = [MEMORY[0x277D18750] phoneSubscriptionWithSubscriptionSlot:v11];
+          v12 = integerValue;
+          v13 = [MEMORY[0x277D18750] phoneSubscriptionWithSubscriptionSlot:integerValue];
           if (v13)
           {
             [v5 addObject:v13];

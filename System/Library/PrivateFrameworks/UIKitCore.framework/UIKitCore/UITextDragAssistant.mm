@@ -1,74 +1,74 @@
 @interface UITextDragAssistant
-- (BOOL)_dragInteraction:(id)a3 competingGestureRecognizerShouldDelayLift:(id)a4;
-- (BOOL)_dragInteraction:(id)a3 shouldDelayCompetingGestureRecognizer:(id)a4;
-- (BOOL)_updateCurrentDropProposalInSession:(id)a3 usingRequest:(id)a4;
+- (BOOL)_dragInteraction:(id)interaction competingGestureRecognizerShouldDelayLift:(id)lift;
+- (BOOL)_dragInteraction:(id)interaction shouldDelayCompetingGestureRecognizer:(id)recognizer;
+- (BOOL)_updateCurrentDropProposalInSession:(id)session usingRequest:(id)request;
 - (BOOL)_viewHasOtherDragInteraction;
 - (BOOL)accessibilityCanDrag;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (UIDragInteraction)dragInteraction;
 - (UIDropInteraction)dropInteraction;
-- (UITextDragAssistant)initWithView:(id)a3 geometry:(id)a4;
+- (UITextDragAssistant)initWithView:(id)view geometry:(id)geometry;
 - (UITextDragSupporting)view;
 - (UITextDraggableGeometry)geometry;
 - (id)_accessibilityDraggableRanges;
-- (id)_closestPositionToPoint:(CGPoint)a3;
+- (id)_closestPositionToPoint:(CGPoint)point;
 - (id)_containerViewForDropPreviews;
 - (id)_containerViewForLiftPreviews;
-- (id)_dropRequestWithRange:(id)a3 suggestedProposal:(id)a4 inSession:(id)a5;
-- (id)_itemsForDraggedRange:(id)a3;
-- (id)_positionInSession:(id)a3;
-- (id)_previewForIrrelevantItemFromPreview:(id)a3;
-- (id)_previewForTopmostItem:(id)a3;
-- (id)_rangeInSession:(id)a3;
-- (id)_shrinkingPreview:(id)a3 toPosition:(id)a4;
-- (id)_suggestedProposalForRequest:(id)a3;
-- (id)_textPasteSelectableRangeForResult:(id)a3 fromRange:(id)a4;
-- (id)_textRangeForDraggingFromPoint:(CGPoint)a3;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (int64_t)_dataOwnerForSession:(id)a3 atPoint:(CGPoint)a4;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (void)_addDraggedTextRangeForItems:(id)a3 defaultRange:(id)a4;
+- (id)_dropRequestWithRange:(id)range suggestedProposal:(id)proposal inSession:(id)session;
+- (id)_itemsForDraggedRange:(id)range;
+- (id)_positionInSession:(id)session;
+- (id)_previewForIrrelevantItemFromPreview:(id)preview;
+- (id)_previewForTopmostItem:(id)item;
+- (id)_rangeInSession:(id)session;
+- (id)_shrinkingPreview:(id)preview toPosition:(id)position;
+- (id)_suggestedProposalForRequest:(id)request;
+- (id)_textPasteSelectableRangeForResult:(id)result fromRange:(id)range;
+- (id)_textRangeForDraggingFromPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (int64_t)_dataOwnerForSession:(id)session atPoint:(CGPoint)point;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (void)_addDraggedTextRangeForItems:(id)items defaultRange:(id)range;
 - (void)_applyOptionsToGeometry;
 - (void)_cleanupDrop;
 - (void)_clearDraggedTextRanges;
-- (void)_dropInteraction:(id)a3 delayedPreviewProviderForDroppingItem:(id)a4 previewProvider:(id)a5;
-- (void)_forDraggedTextRangesDo:(id)a3;
-- (void)_ghostDraggedTextRanges:(BOOL)a3;
-- (void)_initializeDragSession:(id)a3 withInteraction:(id)a4;
-- (void)_liftOrDrag:(int64_t)a3 didEndWithOperation:(unint64_t)a4;
-- (void)_performDropToRange:(id)a3 inSession:(id)a4;
-- (void)_performSameViewOperation:(id)a3;
-- (void)_prepareSameViewOperation:(unint64_t)a3 forItems:(id)a4 fromRanges:(id)a5 toRange:(id)a6;
-- (void)_restoreResponderIfNeededForOperation:(unint64_t)a3;
+- (void)_dropInteraction:(id)interaction delayedPreviewProviderForDroppingItem:(id)item previewProvider:(id)provider;
+- (void)_forDraggedTextRangesDo:(id)do;
+- (void)_ghostDraggedTextRanges:(BOOL)ranges;
+- (void)_initializeDragSession:(id)session withInteraction:(id)interaction;
+- (void)_liftOrDrag:(int64_t)drag didEndWithOperation:(unint64_t)operation;
+- (void)_performDropToRange:(id)range inSession:(id)session;
+- (void)_performSameViewOperation:(id)operation;
+- (void)_prepareSameViewOperation:(unint64_t)operation forItems:(id)items fromRanges:(id)ranges toRange:(id)range;
+- (void)_restoreResponderIfNeededForOperation:(unint64_t)operation;
 - (void)_stopObservingTextStorage;
 - (void)_textStorageDidProcessEditing;
-- (void)_updateDropCaretToRange:(id)a3 session:(id)a4;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionDidMove:(id)a4;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (void)_updateDropCaretToRange:(id)range session:(id)session;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionDidMove:(id)move;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 - (void)installDragInteractionIfNeeded;
 - (void)installDropInteractionIfNeeded;
 - (void)invalidateDropCaret;
-- (void)textPasteSessionDidEndPasting:(id)a3;
-- (void)textPasteSessionDidRevealPasteResult:(id)a3;
-- (void)textPasteSessionWillBeginPasting:(id)a3;
-- (void)textPasteSessionWillHidePasteResult:(id)a3;
+- (void)textPasteSessionDidEndPasting:(id)pasting;
+- (void)textPasteSessionDidRevealPasteResult:(id)result;
+- (void)textPasteSessionWillBeginPasting:(id)pasting;
+- (void)textPasteSessionWillHidePasteResult:(id)result;
 @end
 
 @implementation UITextDragAssistant
@@ -76,13 +76,13 @@
 - (BOOL)_viewHasOtherDragInteraction
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v4 = [WeakRetained interactions];
+  interactions = [WeakRetained interactions];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__UITextDragAssistant__viewHasOtherDragInteraction__block_invoke;
   v7[3] = &unk_1E7124788;
   v7[4] = self;
-  v5 = [v4 indexOfObjectPassingTest:v7];
+  v5 = [interactions indexOfObjectPassingTest:v7];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -130,11 +130,11 @@ uint64_t __51__UITextDragAssistant__viewHasOtherDragInteraction__block_invoke(ui
 - (void)_applyOptionsToGeometry
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v4 = [WeakRetained textDragOptions];
+  textDragOptions = [WeakRetained textDragOptions];
 
   geometry = self->_geometry;
 
-  [(UITextDraggableGeometry *)geometry setGeometryOptions:v4 & 1];
+  [(UITextDraggableGeometry *)geometry setGeometryOptions:textDragOptions & 1];
 }
 
 - (void)installDragInteractionIfNeeded
@@ -161,28 +161,28 @@ uint64_t __51__UITextDragAssistant__viewHasOtherDragInteraction__block_invoke(ui
   }
 }
 
-- (UITextDragAssistant)initWithView:(id)a3 geometry:(id)a4
+- (UITextDragAssistant)initWithView:(id)view geometry:(id)geometry
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  geometryCopy = geometry;
   v26.receiver = self;
   v26.super_class = UITextDragAssistant;
   v9 = [(UITextDragAssistant *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_view, v7);
-    v11 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v9->_view, viewCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     targetedPreviewProviders = v10->_targetedPreviewProviders;
-    v10->_targetedPreviewProviders = v11;
+    v10->_targetedPreviewProviders = weakToStrongObjectsMapTable;
 
-    v13 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     previewProviders = v10->_previewProviders;
-    v10->_previewProviders = v13;
+    v10->_previewProviders = weakToStrongObjectsMapTable2;
 
-    if (v8)
+    if (geometryCopy)
     {
-      objc_storeStrong(&v10->_geometry, a4);
+      objc_storeStrong(&v10->_geometry, geometry);
     }
 
     if (!v10->_geometry)
@@ -193,15 +193,15 @@ uint64_t __51__UITextDragAssistant__viewHasOtherDragInteraction__block_invoke(ui
       if (v16)
       {
         v17 = objc_loadWeakRetained(&v10->_view);
-        v18 = [v17 _textGeometry];
+        _textGeometry = [v17 _textGeometry];
         geometry = v10->_geometry;
-        v10->_geometry = v18;
+        v10->_geometry = _textGeometry;
       }
 
       if (!v10->_geometry)
       {
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v25 handleFailureInMethod:a2 object:v10 file:@"UITextDragAssistant.m" lineNumber:153 description:@"UITextDragAssistant can't be initialized without a geometry"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v10 file:@"UITextDragAssistant.m" lineNumber:153 description:@"UITextDragAssistant can't be initialized without a geometry"];
       }
     }
 
@@ -238,10 +238,10 @@ uint64_t __51__UITextDragAssistant__viewHasOtherDragInteraction__block_invoke(ui
   return v10;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDragSession = self->_currentDragSession;
   if (has_internal_diagnostics)
@@ -287,9 +287,9 @@ LABEL_3:
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_view);
-    v13 = [v12 isSelectable];
+    isSelectable = [v12 isSelectable];
 
-    if (!v13)
+    if (!isSelectable)
     {
       goto LABEL_12;
     }
@@ -301,9 +301,9 @@ LABEL_3:
   if (v15)
   {
     v16 = objc_loadWeakRetained(&self->_view);
-    v17 = [v16 _isInteractiveTextSelectionDisabled];
+    _isInteractiveTextSelectionDisabled = [v16 _isInteractiveTextSelectionDisabled];
 
-    if (v17)
+    if (_isInteractiveTextSelectionDisabled)
     {
       goto LABEL_12;
     }
@@ -312,7 +312,7 @@ LABEL_3:
   v18 = objc_loadWeakRetained(&self->_view);
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v18 _shouldObscureInput];
+    _shouldObscureInput = [v18 _shouldObscureInput];
   }
 
   else
@@ -323,10 +323,10 @@ LABEL_3:
       goto LABEL_14;
     }
 
-    v19 = [v18 isSecureTextEntry];
+    _shouldObscureInput = [v18 isSecureTextEntry];
   }
 
-  v20 = v19;
+  v20 = _shouldObscureInput;
 
   if (v20)
   {
@@ -337,32 +337,32 @@ LABEL_12:
 
 LABEL_14:
   v22 = objc_loadWeakRetained(&self->_view);
-  v23 = [v22 textDragDelegate];
+  textDragDelegate = [v22 textDragDelegate];
 
   v24 = objc_loadWeakRetained(&self->_view);
-  [v7 locationInView:v24];
+  [sessionCopy locationInView:v24];
   v25 = [(UITextDragAssistant *)self _textRangeForDraggingFromPoint:?];
 
-  if (v23 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v26 = objc_loadWeakRetained(&self->_view);
-    [v7 locationInView:v26];
+    [sessionCopy locationInView:v26];
     v28 = v27;
     v30 = v29;
 
     v31 = [(UITextDragAssistant *)self _closestPositionToPoint:v28, v30];
     v32 = objc_loadWeakRetained(&self->_view);
-    v33 = [v23 textDraggableView:v32 textRangeForDragFromPosition:v31 defaultRange:v25 session:v7];
+    v33 = [textDragDelegate textDraggableView:v32 textRangeForDragFromPosition:v31 defaultRange:v25 session:sessionCopy];
 
     if (v33)
     {
       v34 = objc_loadWeakRetained(&self->_view);
       v48 = objc_loadWeakRetained(&self->_view);
-      v47 = [v48 beginningOfDocument];
+      beginningOfDocument = [v48 beginningOfDocument];
       v49 = v31;
       v35 = objc_loadWeakRetained(&self->_view);
-      v36 = [v35 endOfDocument];
-      v37 = [v34 textRangeFromPosition:v47 toPosition:v36];
+      endOfDocument = [v35 endOfDocument];
+      v37 = [v34 textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
       v25 = [v34 _intersectionOfRange:v33 andRange:v37];
 
       v31 = v49;
@@ -377,26 +377,26 @@ LABEL_14:
   if (v25)
   {
     v21 = [(UITextDragAssistant *)self _itemsForDraggedRange:v25];
-    if (v23 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v38 = [[UITextDragRequest alloc] initWithRange:v25 inSession:v7];
+      v38 = [[UITextDragRequest alloc] initWithRange:v25 inSession:sessionCopy];
       [(UITextDragRequest *)v38 setSuggestedItems:v21];
       v39 = objc_loadWeakRetained(&self->_view);
-      v40 = [v39 selectedTextRange];
-      -[UITextDragRequest setSelected:](v38, "setSelected:", [v40 isEqual:v25]);
+      selectedTextRange = [v39 selectedTextRange];
+      -[UITextDragRequest setSelected:](v38, "setSelected:", [selectedTextRange isEqual:v25]);
 
       v41 = objc_loadWeakRetained(&self->_view);
-      v42 = [v23 textDraggableView:v41 itemsForDrag:v38];
+      v42 = [textDragDelegate textDraggableView:v41 itemsForDrag:v38];
 
-      v43 = [(UITextDragRequest *)v38 suggestedItems];
-      _UIDragStatisticsLogTextDelegateItems(v43, v42);
+      suggestedItems = [(UITextDragRequest *)v38 suggestedItems];
+      _UIDragStatisticsLogTextDelegateItems(suggestedItems, v42);
 
       v21 = v42;
     }
 
     if ([v21 count])
     {
-      [(UITextDragAssistant *)self _initializeDragSession:v7 withInteraction:v6];
+      [(UITextDragAssistant *)self _initializeDragSession:sessionCopy withInteraction:interactionCopy];
       [(UITextDragAssistant *)self _addDraggedTextRangeForItems:v21 defaultRange:v25];
     }
   }
@@ -411,12 +411,12 @@ LABEL_28:
   return v21;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  if (self->_currentDragSession != v8)
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
+  if (self->_currentDragSession != sessionCopy)
   {
     goto LABEL_2;
   }
@@ -424,7 +424,7 @@ LABEL_28:
   v10 = objc_loadWeakRetained(&self->_view);
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 _shouldObscureInput];
+    _shouldObscureInput = [v10 _shouldObscureInput];
   }
 
   else
@@ -435,10 +435,10 @@ LABEL_28:
       goto LABEL_10;
     }
 
-    v11 = [v10 isSecureTextEntry];
+    _shouldObscureInput = [v10 isSecureTextEntry];
   }
 
-  v12 = v11;
+  v12 = _shouldObscureInput;
 
   if (v12)
   {
@@ -453,21 +453,21 @@ LABEL_10:
   {
     v9 = [(UITextDragAssistant *)self _itemsForDraggedRange:v13];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v15 = [WeakRetained textDragDelegate];
+    textDragDelegate = [WeakRetained textDragDelegate];
 
-    if (v15 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v16 = [[UITextDragRequest alloc] initWithRange:v13 inSession:v8];
+      v16 = [[UITextDragRequest alloc] initWithRange:v13 inSession:sessionCopy];
       [(UITextDragRequest *)v16 setSuggestedItems:v9];
       v17 = objc_loadWeakRetained(&self->_view);
-      v18 = [v17 selectedTextRange];
-      -[UITextDragRequest setSelected:](v16, "setSelected:", [v18 isEqual:v13]);
+      selectedTextRange = [v17 selectedTextRange];
+      -[UITextDragRequest setSelected:](v16, "setSelected:", [selectedTextRange isEqual:v13]);
 
       v19 = objc_loadWeakRetained(&self->_view);
-      v20 = [v15 textDraggableView:v19 itemsForDrag:v16];
+      v20 = [textDragDelegate textDraggableView:v19 itemsForDrag:v16];
 
-      v21 = [(UITextDragRequest *)v16 suggestedItems];
-      _UIDragStatisticsLogTextDelegateItems(v21, v20);
+      suggestedItems = [(UITextDragRequest *)v16 suggestedItems];
+      _UIDragStatisticsLogTextDelegateItems(suggestedItems, v20);
 
       v9 = v20;
     }
@@ -488,12 +488,12 @@ LABEL_20:
   return v9;
 }
 
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (self->_currentDragSession && [v8 containsObject:?])
+  interactionCopy = interaction;
+  itemsCopy = items;
+  v9 = itemsCopy;
+  if (self->_currentDragSession && [itemsCopy containsObject:?])
   {
     v10 = self->_currentDragSession;
   }
@@ -506,26 +506,26 @@ LABEL_20:
   return v10;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSMapTable *)self->_targetedPreviewProviders objectForKey:v7];
+  itemCopy = item;
+  sessionCopy = session;
+  v9 = [(NSMapTable *)self->_targetedPreviewProviders objectForKey:itemCopy];
   if (v9)
   {
-    v10 = [(UITextDragAssistant *)self _containerViewForLiftPreviews];
-    v11 = (v9)[2](v9, v10, 1);
+    _containerViewForLiftPreviews = [(UITextDragAssistant *)self _containerViewForLiftPreviews];
+    v11 = (v9)[2](v9, _containerViewForLiftPreviews, 1);
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v10 = [WeakRetained textDragDelegate];
+    _containerViewForLiftPreviews = [WeakRetained textDragDelegate];
 
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (_containerViewForLiftPreviews && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v13 = objc_loadWeakRetained(&self->_view);
-      v11 = [v10 textDraggableView:v13 dragPreviewForLiftingItem:v7 session:v8];
+      v11 = [_containerViewForLiftPreviews textDraggableView:v13 dragPreviewForLiftingItem:itemCopy session:sessionCopy];
     }
 
     else
@@ -537,16 +537,16 @@ LABEL_20:
   return v11;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  animatorCopy = animator;
+  sessionCopy = session;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v16[3] = &unk_1E70F3590;
-  v11 = v8;
+  v11 = interactionCopy;
   v17 = v11;
   [UIView performWithoutAnimation:v16];
   [(UITextDragAssistant *)self _ghostDraggedTextRanges:1];
@@ -555,14 +555,14 @@ LABEL_20:
   v15[2] = __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke_2;
   v15[3] = &unk_1E70F5DB8;
   v15[4] = self;
-  [v9 addCompletion:v15];
+  [animatorCopy addCompletion:v15];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v13 = [WeakRetained textDragDelegate];
+  textDragDelegate = [WeakRetained textDragDelegate];
 
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v14 = objc_loadWeakRetained(&self->_view);
-    [v13 textDraggableView:v14 willAnimateLiftWithAnimator:v9 session:v10];
+    [textDragDelegate textDraggableView:v14 willAnimateLiftWithAnimator:animatorCopy session:sessionCopy];
   }
 }
 
@@ -590,12 +590,12 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v6 = a4;
+  itemCopy = item;
   if (*(&self->_flags + 2))
   {
-    v11 = 0;
+    window = 0;
   }
 
   else
@@ -606,30 +606,30 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_view);
-      v10 = [v9 willGenerateCancelPreview];
+      willGenerateCancelPreview = [v9 willGenerateCancelPreview];
     }
 
     else
     {
-      v10 = 0;
+      willGenerateCancelPreview = 0;
     }
 
-    v12 = [(NSMapTable *)self->_targetedPreviewProviders objectForKey:v6];
-    v13 = [(UITextDragAssistant *)self _containerViewForDropPreviews];
-    v14 = v13;
+    v12 = [(NSMapTable *)self->_targetedPreviewProviders objectForKey:itemCopy];
+    _containerViewForDropPreviews = [(UITextDragAssistant *)self _containerViewForDropPreviews];
+    v14 = _containerViewForDropPreviews;
     if (v12)
     {
-      v11 = [v13 window];
+      window = [_containerViewForDropPreviews window];
 
-      if (v11)
+      if (window)
       {
-        v11 = (v12)[2](v12, v14, 0);
+        window = (v12)[2](v12, v14, 0);
       }
     }
 
     else
     {
-      v11 = 0;
+      window = 0;
     }
 
     v15 = objc_loadWeakRetained(&self->_view);
@@ -638,22 +638,22 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
     if (v16)
     {
       v17 = objc_loadWeakRetained(&self->_view);
-      [v17 didGenerateCancelPreview:v10];
+      [v17 didGenerateCancelPreview:willGenerateCancelPreview];
     }
 
-    if (v11)
+    if (window)
     {
-      v18 = [v11 target];
-      v19 = [v18 container];
-      [v19 bounds];
+      target = [window target];
+      container = [target container];
+      [container bounds];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
 
-      [v11 size];
+      [window size];
       v29 = v28 / -3.0;
-      [v11 size];
+      [window size];
       v31 = v30 / -3.0;
       v43.origin.x = v21;
       v43.origin.y = v23;
@@ -664,8 +664,8 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
       y = v44.origin.y;
       width = v44.size.width;
       height = v44.size.height;
-      v36 = [v11 view];
-      [v36 frame];
+      view = [window view];
+      [view frame];
       v46.origin.x = v37;
       v46.origin.y = v38;
       v46.size.width = v39;
@@ -674,22 +674,22 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
       v45.origin.y = y;
       v45.size.width = width;
       v45.size.height = height;
-      LOBYTE(v19) = CGRectIntersectsRect(v45, v46);
+      LOBYTE(container) = CGRectIntersectsRect(v45, v46);
 
-      if ((v19 & 1) == 0)
+      if ((container & 1) == 0)
       {
 
-        v11 = 0;
+        window = 0;
       }
     }
   }
 
-  return v11;
+  return window;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   flags = self->_flags;
   if ((*&flags & 0x10) == 0)
   {
@@ -704,7 +704,7 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
       v11[2] = __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
       v11[3] = &unk_1E70F3590;
       v11[4] = self;
-      [v6 addAnimations:v11];
+      [animatorCopy addAnimations:v11];
     }
 
     v10[0] = MEMORY[0x1E69E9820];
@@ -712,7 +712,7 @@ void __75__UITextDragAssistant_dragInteraction_willAnimateLiftWithAnimator_sessi
     v10[2] = __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke_2;
     v10[3] = &unk_1E70F5DB8;
     v10[4] = self;
-    [v6 addCompletion:v10];
+    [animatorCopy addCompletion:v10];
   }
 }
 
@@ -730,10 +730,10 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
   return [v2 _clearDraggedTextRanges];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  beginCopy = begin;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDragSession = self->_currentDragSession;
   if (has_internal_diagnostics)
@@ -764,8 +764,8 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v5 items];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  items = [beginCopy items];
+  v9 = [items countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -776,7 +776,7 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(items);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
@@ -788,7 +788,7 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v10 = [items countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v10);
@@ -807,12 +807,12 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
   }
 
   v19 = objc_loadWeakRetained(&self->_view);
-  v20 = [v19 textDragDelegate];
+  textDragDelegate = [v19 textDragDelegate];
 
-  if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v21 = objc_loadWeakRetained(&self->_view);
-    [v20 textDraggableView:v21 dragSessionWillBegin:v5];
+    [textDragDelegate textDraggableView:v21 dragSessionWillBegin:beginCopy];
   }
 
   flags = self->_flags;
@@ -820,20 +820,20 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
   if ((*&flags & 0x8000) != 0)
   {
     v23 = objc_loadWeakRetained(&self->_view);
-    v24 = [v23 textStorage];
+    textStorage = [v23 textStorage];
 
-    if (v24)
+    if (textStorage)
     {
-      objc_storeWeak(&self->_observingStorage, v24);
-      v25 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v25 addObserver:self selector:sel__textStorageDidProcessEditing name:*off_1E70ECAC0 object:v24];
+      objc_storeWeak(&self->_observingStorage, textStorage);
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__textStorageDidProcessEditing name:*off_1E70ECAC0 object:textStorage];
     }
   }
 
   [(UITextDragAssistant *)self _ghostDraggedTextRanges:1];
 }
 
-- (void)dragInteraction:(id)a3 sessionDidMove:(id)a4
+- (void)dragInteraction:(id)interaction sessionDidMove:(id)move
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDragSession = self->_currentDragSession;
@@ -863,7 +863,7 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
   *&self->_flags &= ~4u;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDragSession = self->_currentDragSession;
@@ -891,9 +891,9 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
   }
 
   [(UITextDragAssistant *)self _stopObservingTextStorage];
-  if (a5 != 3 || self->_sameViewDropOperationResult)
+  if (operation != 3 || self->_sameViewDropOperationResult)
   {
-    if (!a5)
+    if (!operation)
     {
       return;
     }
@@ -909,7 +909,7 @@ uint64_t __74__UITextDragAssistant_dragInteraction_item_willAnimateCancelWithAni
     [(UITextDragAssistant *)self _forDraggedTextRangesDo:v11];
   }
 
-  [(UITextDragAssistant *)self _restoreResponderIfNeededForOperation:a5];
+  [(UITextDragAssistant *)self _restoreResponderIfNeededForOperation:operation];
 }
 
 void __68__UITextDragAssistant_dragInteraction_session_willEndWithOperation___block_invoke(uint64_t a1, void *a2)
@@ -923,9 +923,9 @@ void __68__UITextDragAssistant_dragInteraction_session_willEndWithOperation___bl
   [v6 deleteBackward];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v7 = a4;
+  sessionCopy = session;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDragSession = self->_currentDragSession;
   if (has_internal_diagnostics)
@@ -953,27 +953,27 @@ void __68__UITextDragAssistant_dragInteraction_session_willEndWithOperation___bl
 
   [(UITextDragAssistant *)self _stopObservingTextStorage];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v11 = [WeakRetained textDragDelegate];
+  textDragDelegate = [WeakRetained textDragDelegate];
 
-  if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v12 = objc_loadWeakRetained(&self->_view);
-    [v11 textDraggableView:v12 dragSessionDidEnd:v7 withOperation:a5];
+    [textDragDelegate textDraggableView:v12 dragSessionDidEnd:sessionCopy withOperation:operation];
   }
 
-  [(UITextDragAssistant *)self _liftOrDrag:0 didEndWithOperation:a5];
+  [(UITextDragAssistant *)self _liftOrDrag:0 didEndWithOperation:operation];
 }
 
-- (void)_liftOrDrag:(int64_t)a3 didEndWithOperation:(unint64_t)a4
+- (void)_liftOrDrag:(int64_t)drag didEndWithOperation:(unint64_t)operation
 {
   [(UITextDragAssistant *)self _clearDraggedTextRanges];
-  if (a4 >= 2 && !self->_sameViewDropOperationResult)
+  if (operation >= 2 && !self->_sameViewDropOperationResult)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained setSelectedTextRange:0];
   }
 
-  [(UITextDragAssistant *)self _restoreResponderIfNeededForOperation:a4];
+  [(UITextDragAssistant *)self _restoreResponderIfNeededForOperation:operation];
   currentDragSession = self->_currentDragSession;
   self->_currentDragSession = 0;
 
@@ -983,8 +983,8 @@ void __68__UITextDragAssistant_dragInteraction_session_willEndWithOperation___bl
   if ((*&self->_flags & 8) != 0)
   {
     v11 = objc_opt_new();
-    [v11 setDragTearoffOccured:a3 == 0];
-    if (a3 == 1)
+    [v11 setDragTearoffOccured:drag == 0];
+    if (drag == 1)
     {
       [v11 setLocation:{self->_initialDragLocation.x, self->_initialDragLocation.y}];
     }
@@ -996,21 +996,21 @@ void __68__UITextDragAssistant_dragInteraction_session_willEndWithOperation___bl
   }
 }
 
-- (BOOL)_dragInteraction:(id)a3 shouldDelayCompetingGestureRecognizer:(id)a4
+- (BOOL)_dragInteraction:(id)interaction shouldDelayCompetingGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v7 = [WeakRetained textDragDelegate];
+  textDragDelegate = [WeakRetained textDragDelegate];
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDragDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v8 = objc_loadWeakRetained(&self->_view);
-    LOBYTE(self) = [v7 _textDraggableView:v8 beginningDragShouldDelayCompetingGestureRecognizer:v5];
+    LOBYTE(self) = [textDragDelegate _textDraggableView:v8 beginningDragShouldDelayCompetingGestureRecognizer:recognizerCopy];
   }
 
   else
   {
-    if (![v5 _isGestureType:6])
+    if (![recognizerCopy _isGestureType:6])
     {
       LOBYTE(self) = 1;
       goto LABEL_8;
@@ -1024,16 +1024,16 @@ LABEL_8:
   return self;
 }
 
-- (BOOL)_dragInteraction:(id)a3 competingGestureRecognizerShouldDelayLift:(id)a4
+- (BOOL)_dragInteraction:(id)interaction competingGestureRecognizerShouldDelayLift:(id)lift
 {
-  v4 = a4;
-  v5 = [v4 view];
+  liftCopy = lift;
+  view = [liftCopy view];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 view];
-    v8 = [v7 gestureRecognizerShouldDelayLift:v4];
+    view2 = [liftCopy view];
+    v8 = [view2 gestureRecognizerShouldDelayLift:liftCopy];
   }
 
   else
@@ -1044,59 +1044,59 @@ LABEL_8:
   return v8;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [v5 locationInView:WeakRetained];
-  v7 = [(UITextDragAssistant *)self _dataOwnerForSession:v5 atPoint:?];
+  [sessionCopy locationInView:WeakRetained];
+  v7 = [(UITextDragAssistant *)self _dataOwnerForSession:sessionCopy atPoint:?];
 
   return v7;
 }
 
-- (int64_t)_dataOwnerForSession:(id)a3 atPoint:(CGPoint)a4
+- (int64_t)_dataOwnerForSession:(id)session atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v9 = [WeakRetained textDragDelegate];
+  textDragDelegate = [WeakRetained textDragDelegate];
 
   if (objc_opt_respondsToSelector())
   {
     v10 = [(UITextDragAssistant *)self _textRangeForDraggingFromPoint:x, y];
     if (v10)
     {
-      v11 = [[UITextDragRequest alloc] initWithRange:v10 inSession:v7];
+      v11 = [[UITextDragRequest alloc] initWithRange:v10 inSession:sessionCopy];
       v12 = objc_loadWeakRetained(&self->_view);
-      v13 = [v9 _textDraggableView:v12 dataOwnerForDrag:v11];
+      _dragDataOwner = [textDragDelegate _textDraggableView:v12 dataOwnerForDrag:v11];
     }
 
     else
     {
-      v13 = 0;
+      _dragDataOwner = 0;
     }
 
     goto LABEL_7;
   }
 
   v14 = objc_loadWeakRetained(&self->_view);
-  v13 = [v14 _dragDataOwner];
+  _dragDataOwner = [v14 _dragDataOwner];
 
-  if (!v13)
+  if (!_dragDataOwner)
   {
     v10 = objc_loadWeakRetained(&self->_view);
-    v13 = [v10 _dataOwnerForCopy];
+    _dragDataOwner = [v10 _dataOwnerForCopy];
 LABEL_7:
   }
 
-  return v13;
+  return _dragDataOwner;
 }
 
 - (BOOL)accessibilityCanDrag
 {
-  v2 = [(UITextDragAssistant *)self _accessibilityDraggableRanges];
-  v3 = [v2 count] != 0;
+  _accessibilityDraggableRanges = [(UITextDragAssistant *)self _accessibilityDraggableRanges];
+  v3 = [_accessibilityDraggableRanges count] != 0;
 
   return v3;
 }
@@ -1121,30 +1121,30 @@ LABEL_7:
 
   v8 = objc_opt_new();
   v9 = objc_loadWeakRetained(&self->_view);
-  v10 = [v9 isFirstResponder];
+  isFirstResponder = [v9 isFirstResponder];
 
-  if (v10)
+  if (isFirstResponder)
   {
     v11 = objc_loadWeakRetained(&self->_view);
-    v12 = [v11 selectedTextRange];
+    selectedTextRange = [v11 selectedTextRange];
 
-    if (v12)
+    if (selectedTextRange)
     {
-      if (([v12 isEmpty] & 1) == 0)
+      if (([selectedTextRange isEmpty] & 1) == 0)
       {
         v13 = objc_loadWeakRetained(&self->_view);
-        v14 = [v13 _range:v7 containsRange:v12];
+        v14 = [v13 _range:v7 containsRange:selectedTextRange];
 
         if (v14)
         {
-          [v8 addObject:v12];
+          [v8 addObject:selectedTextRange];
         }
       }
     }
   }
 
-  v15 = [(UITextDragAssistant *)self geometry];
-  v16 = [v15 textRangesForAttachmentsInTextRange:v7];
+  geometry = [(UITextDragAssistant *)self geometry];
+  v16 = [geometry textRangesForAttachmentsInTextRange:v7];
   [v8 addObjectsFromArray:v16];
 
   v17 = [v8 copy];
@@ -1165,32 +1165,32 @@ LABEL_7:
   if (WeakRetained)
   {
     v5 = WeakRetained;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*off_1E70ECAC0 object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*off_1E70ECAC0 object:v5];
 
     objc_storeWeak(&self->_observingStorage, 0);
     WeakRetained = v5;
   }
 }
 
-- (id)_textRangeForDraggingFromPoint:(CGPoint)a3
+- (id)_textRangeForDraggingFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v7 = [WeakRetained isFirstResponder];
+  isFirstResponder = [WeakRetained isFirstResponder];
 
-  if (v7)
+  if (isFirstResponder)
   {
     v8 = objc_loadWeakRetained(&self->_view);
-    v9 = [v8 selectedTextRange];
+    selectedTextRange = [v8 selectedTextRange];
 
-    if (v9)
+    if (selectedTextRange)
     {
-      if (([v9 isEmpty] & 1) == 0)
+      if (([selectedTextRange isEmpty] & 1) == 0)
       {
         v10 = objc_loadWeakRetained(&self->_view);
-        v11 = UITextRangeContainsPointInViewWithSlop(v10, v9, x, y, 4.0);
+        v11 = UITextRangeContainsPointInViewWithSlop(v10, selectedTextRange, x, y, 4.0);
 
         if (v11)
         {
@@ -1206,36 +1206,36 @@ LABEL_7:
 
   if (v14 && ([v14 isEmpty] & 1) == 0)
   {
-    v15 = [(UITextDragAssistant *)self geometry];
-    v9 = [v15 textRangeForAttachmentInTextRange:v14 atPoint:{x, y}];
+    geometry = [(UITextDragAssistant *)self geometry];
+    selectedTextRange = [geometry textRangeForAttachmentInTextRange:v14 atPoint:{x, y}];
   }
 
   else
   {
-    v9 = 0;
+    selectedTextRange = 0;
   }
 
 LABEL_11:
 
-  return v9;
+  return selectedTextRange;
 }
 
-- (void)_initializeDragSession:(id)a3 withInteraction:(id)a4
+- (void)_initializeDragSession:(id)session withInteraction:(id)interaction
 {
-  v5 = a3;
-  v18 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_currentDragSession, v5);
-  objc_storeStrong(&self->_currentDragInteraction, a4);
+  sessionCopy = session;
+  sessionCopy2 = session;
+  interactionCopy = interaction;
+  objc_storeStrong(&self->_currentDragSession, sessionCopy);
+  objc_storeStrong(&self->_currentDragInteraction, interaction);
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  LODWORD(v5) = [WeakRetained isFirstResponder];
+  LODWORD(sessionCopy) = [WeakRetained isFirstResponder];
 
-  if (v5)
+  if (sessionCopy)
   {
     v9 = objc_loadWeakRetained(&self->_view);
-    v10 = [v9 selectedTextRange];
+    selectedTextRange = [v9 selectedTextRange];
     initialDragSelectedRange = self->_initialDragSelectedRange;
-    self->_initialDragSelectedRange = v10;
+    self->_initialDragSelectedRange = selectedTextRange;
   }
 
   else
@@ -1245,7 +1245,7 @@ LABEL_11:
   }
 
   v12 = objc_loadWeakRetained(&self->_view);
-  [v18 locationInView:v12];
+  [sessionCopy2 locationInView:v12];
   self->_initialDragLocation.x = v13;
   self->_initialDragLocation.y = v14;
 
@@ -1267,9 +1267,9 @@ LABEL_11:
   self->_sameViewDropOperationResult = 0;
 }
 
-- (void)_restoreResponderIfNeededForOperation:(unint64_t)a3
+- (void)_restoreResponderIfNeededForOperation:(unint64_t)operation
 {
-  if (a3 <= 1 && (v4 = self->_initialDragSelectedRange) != 0)
+  if (operation <= 1 && (v4 = self->_initialDragSelectedRange) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained setSelectedTextRange:v4];
@@ -1284,26 +1284,26 @@ LABEL_11:
   }
 
   v7 = objc_loadWeakRetained(&self->_view);
-  v8 = [v7 window];
-  v9 = [v8 _firstResponder];
+  window = [v7 window];
+  _firstResponder = [window _firstResponder];
 
-  if (!v9)
+  if (!_firstResponder)
   {
     v10 = objc_loadWeakRetained(&self->_view);
     [v10 becomeFirstResponder];
   }
 }
 
-- (id)_itemsForDraggedRange:(id)a3
+- (id)_itemsForDraggedRange:(id)range
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITextDragAssistant *)self geometry];
-  v6 = [v5 draggableObjectsForTextRange:v4];
+  rangeCopy = range;
+  geometry = [(UITextDragAssistant *)self geometry];
+  v6 = [geometry draggableObjectsForTextRange:rangeCopy];
 
   if ([v6 count])
   {
-    v26 = v4;
+    v26 = rangeCopy;
     v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
     v29 = 0u;
     v30 = 0u;
@@ -1326,28 +1326,28 @@ LABEL_11:
           }
 
           v11 = *(*(&v29 + 1) + 8 * i);
-          v12 = [v11 itemProvider];
-          v13 = [[UIDragItem alloc] initWithItemProvider:v12];
-          v14 = [v11 range];
-          [(UIDragItem *)v13 _setDraggedTextRange:v14];
+          itemProvider = [v11 itemProvider];
+          v13 = [[UIDragItem alloc] initWithItemProvider:itemProvider];
+          range = [v11 range];
+          [(UIDragItem *)v13 _setDraggedTextRange:range];
 
-          v15 = [v11 targetedPreviewProvider];
+          targetedPreviewProvider = [v11 targetedPreviewProvider];
 
-          if (v15)
+          if (targetedPreviewProvider)
           {
             targetedPreviewProviders = self->_targetedPreviewProviders;
-            v17 = [v11 targetedPreviewProvider];
-            v18 = _Block_copy(v17);
+            targetedPreviewProvider2 = [v11 targetedPreviewProvider];
+            v18 = _Block_copy(targetedPreviewProvider2);
             [(NSMapTable *)targetedPreviewProviders setObject:v18 forKey:v13];
           }
 
-          v19 = [v11 previewProvider];
+          previewProvider = [v11 previewProvider];
 
-          if (v19)
+          if (previewProvider)
           {
             previewProviders = self->_previewProviders;
-            v21 = [v11 previewProvider];
-            v22 = _Block_copy(v21);
+            previewProvider2 = [v11 previewProvider];
+            v22 = _Block_copy(previewProvider2);
             [(NSMapTable *)previewProviders setObject:v22 forKey:v13];
           }
 
@@ -1362,7 +1362,7 @@ LABEL_11:
 
     v23 = [v28 copy];
     v6 = v25;
-    v4 = v26;
+    rangeCopy = v26;
   }
 
   else
@@ -1376,9 +1376,9 @@ LABEL_11:
 - (id)_containerViewForLiftPreviews
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v4 = [WeakRetained _window];
-  v5 = [v4 windowScene];
-  v6 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:v5];
+  _window = [WeakRetained _window];
+  windowScene = [_window windowScene];
+  v6 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:windowScene];
   v7 = v6;
   if (v6)
   {
@@ -1402,17 +1402,17 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)_addDraggedTextRangeForItems:(id)a3 defaultRange:(id)a4
+- (void)_addDraggedTextRangeForItems:(id)items defaultRange:(id)range
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  itemsCopy = items;
+  rangeCopy = range;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -1428,19 +1428,19 @@ LABEL_11:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 _draggedTextRange];
+        _draggedTextRange = [v14 _draggedTextRange];
 
-        if (!v15)
+        if (!_draggedTextRange)
         {
-          [v14 _setDraggedTextRange:v7];
+          [v14 _setDraggedTextRange:rangeCopy];
         }
 
-        v16 = [v14 _draggedTextRange];
+        _draggedTextRange2 = [v14 _draggedTextRange];
 
-        if (v16)
+        if (_draggedTextRange2)
         {
-          v17 = [v14 _draggedTextRange];
-          [v8 addObject:v17];
+          _draggedTextRange3 = [v14 _draggedTextRange];
+          [v8 addObject:_draggedTextRange3];
         }
       }
 
@@ -1465,10 +1465,10 @@ LABEL_11:
   self->_draggedTextRanges = v19;
 }
 
-- (void)_forDraggedTextRangesDo:(id)a3
+- (void)_forDraggedTextRangesDo:(id)do
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  doCopy = do;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1489,7 +1489,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        doCopy[2](doCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -1507,14 +1507,14 @@ LABEL_11:
   self->_draggedTextRanges = 0;
 }
 
-- (void)_ghostDraggedTextRanges:(BOOL)a3
+- (void)_ghostDraggedTextRanges:(BOOL)ranges
 {
   if (*&self->_flags)
   {
-    v3 = a3;
+    rangesCopy = ranges;
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained removeAllGhostedRanges];
-    if (v3)
+    if (rangesCopy)
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -1526,16 +1526,16 @@ LABEL_11:
   }
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  interactionCopy = interaction;
+  sessionCopy = session;
+  v8 = sessionCopy;
   currentDropSession = self->_currentDropSession;
   if (!currentDropSession)
   {
-    v11 = [(UIDropSession *)v7 items];
-    v12 = [v11 valueForKeyPath:@"itemProvider"];
+    items = [(UIDropSession *)sessionCopy items];
+    v12 = [items valueForKeyPath:@"itemProvider"];
 
     WeakRetained = objc_loadWeakRetained(&self->_view);
     v14 = [WeakRetained canPasteItemProviders:v12];
@@ -1543,15 +1543,15 @@ LABEL_11:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_view);
-      v16 = [v15 canBecomeDropResponder];
+      canBecomeDropResponder = [v15 canBecomeDropResponder];
 
-      if (v16)
+      if (canBecomeDropResponder)
       {
         *&self->_flags &= ~0x100u;
         v17 = objc_loadWeakRetained(&self->_view);
-        v18 = [v17 isEditable];
+        isEditable = [v17 isEditable];
 
-        if (v18)
+        if (isEditable)
         {
           goto LABEL_7;
         }
@@ -1562,13 +1562,13 @@ LABEL_11:
         if (v30)
         {
           v31 = objc_loadWeakRetained(&self->_view);
-          v32 = [v31 textDropDelegate];
+          textDropDelegate = [v31 textDropDelegate];
 
-          if (v32 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (textDropDelegate && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            v20 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:v8];
+            textDropDelegate2 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:v8];
             v33 = objc_loadWeakRetained(&self->_view);
-            v34 = [v32 textDroppableView:v33 willBecomeEditableForDrop:v20];
+            v34 = [textDropDelegate textDroppableView:v33 willBecomeEditableForDrop:textDropDelegate2];
 
             if (v34)
             {
@@ -1618,9 +1618,9 @@ LABEL_11:
 
 LABEL_7:
               v19 = objc_loadWeakRetained(&self->_view);
-              v20 = [v19 textDropDelegate];
+              textDropDelegate2 = [v19 textDropDelegate];
 
-              if (v20)
+              if (textDropDelegate2)
               {
                 if (objc_opt_respondsToSelector())
                 {
@@ -1714,7 +1714,7 @@ LABEL_56:
 
           else
           {
-            v20 = 0;
+            textDropDelegate2 = 0;
           }
 
           goto LABEL_56;
@@ -1728,7 +1728,7 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (currentDropSession == v7)
+  if (currentDropSession == sessionCopy)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1763,9 +1763,9 @@ LABEL_49:
   return v10;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v6 = a4;
+  enterCopy = enter;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDropSession = self->_currentDropSession;
   if (has_internal_diagnostics)
@@ -1793,27 +1793,27 @@ LABEL_49:
 
   *&self->_flags &= ~0x20000u;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v10 = [WeakRetained selectedTextRange];
+  selectedTextRange = [WeakRetained selectedTextRange];
   preDropSelectionRange = self->_preDropSelectionRange;
-  self->_preDropSelectionRange = v10;
+  self->_preDropSelectionRange = selectedTextRange;
 
-  objc_storeStrong(&self->_currentDropSession, a4);
+  objc_storeStrong(&self->_currentDropSession, enter);
   v12 = objc_loadWeakRetained(&self->_view);
   [v12 becomeDropResponder];
 
   v13 = objc_loadWeakRetained(&self->_view);
-  v14 = [v13 textDropDelegate];
+  textDropDelegate = [v13 textDropDelegate];
 
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDropDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v15 = objc_loadWeakRetained(&self->_view);
-    [v14 textDroppableView:v15 dropSessionDidEnter:v6];
+    [textDropDelegate textDroppableView:v15 dropSessionDidEnter:enterCopy];
   }
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDropSession = self->_currentDropSession;
   if (has_internal_diagnostics)
@@ -1840,23 +1840,23 @@ LABEL_49:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v9 = [WeakRetained textDropDelegate];
+  textDropDelegate = [WeakRetained textDropDelegate];
 
   flags = self->_flags;
   if ((*&flags & 0x800) != 0)
   {
-    v11 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:v5];
+    v11 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:updateCopy];
     v12 = objc_loadWeakRetained(&self->_view);
-    v13 = [v9 textDroppableView:v12 rangeForDrop:v11];
+    v13 = [textDropDelegate textDroppableView:v12 rangeForDrop:v11];
 
     if (v13)
     {
-      v14 = [v11 dropRange];
-      v15 = v14;
-      if (v13 == v14)
+      dropRange = [v11 dropRange];
+      v15 = dropRange;
+      if (v13 == dropRange)
       {
-        v20 = [v11 dropRange];
-        v21 = [v13 isEqual:v20];
+        dropRange2 = [v11 dropRange];
+        v21 = [v13 isEqual:dropRange2];
 
         if (v21)
         {
@@ -1869,10 +1869,10 @@ LABEL_49:
       }
 
       v22 = objc_loadWeakRetained(&self->_view);
-      v23 = [v22 _fullRange];
-      v24 = [v22 _intersectionOfRange:v13 andRange:v23];
+      _fullRange = [v22 _fullRange];
+      v24 = [v22 _intersectionOfRange:v13 andRange:_fullRange];
 
-      v25 = [(UITextDragAssistant *)self _dropRequestWithRange:v24 inSession:v5];
+      v25 = [(UITextDragAssistant *)self _dropRequestWithRange:v24 inSession:updateCopy];
       v13 = v24;
 LABEL_14:
 
@@ -1888,20 +1888,20 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v11 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:v5];
+    v11 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:updateCopy];
     v16 = objc_loadWeakRetained(&self->_view);
-    v13 = [v9 textDroppableView:v16 positionForDrop:v11];
+    v13 = [textDropDelegate textDroppableView:v16 positionForDrop:v11];
 
     if (v13)
     {
-      v17 = [v11 dropRange];
-      v18 = [v17 start];
-      v19 = v18;
-      if (v13 == v18)
+      dropRange3 = [v11 dropRange];
+      start = [dropRange3 start];
+      v19 = start;
+      if (v13 == start)
       {
-        v30 = [v11 dropRange];
-        v31 = [v30 start];
-        v32 = [v13 isEqual:v31];
+        dropRange4 = [v11 dropRange];
+        start2 = [dropRange4 start];
+        v32 = [v13 isEqual:start2];
 
         if (v32)
         {
@@ -1922,15 +1922,15 @@ LABEL_14:
       }
 
       v35 = objc_loadWeakRetained(&self->_view);
-      v36 = [v35 _fullRange];
-      v37 = [v35 _intersectionOfRange:v34 andRange:v36];
+      _fullRange2 = [v35 _fullRange];
+      v37 = [v35 _intersectionOfRange:v34 andRange:_fullRange2];
 
       if (!v37)
       {
         goto LABEL_15;
       }
 
-      v25 = [(UITextDragAssistant *)self _dropRequestWithRange:v37 inSession:v5];
+      v25 = [(UITextDragAssistant *)self _dropRequestWithRange:v37 inSession:updateCopy];
 
       v11 = v37;
       goto LABEL_14;
@@ -1940,15 +1940,15 @@ LABEL_14:
 LABEL_15:
 
 LABEL_16:
-  if ([(UITextDragAssistant *)self _updateCurrentDropProposalInSession:v5 usingRequest:v11])
+  if ([(UITextDragAssistant *)self _updateCurrentDropProposalInSession:updateCopy usingRequest:v11])
   {
-    [(UITextDragAssistant *)self _updateDropCaretToRange:self->_currentDropRange session:v5];
+    [(UITextDragAssistant *)self _updateDropCaretToRange:self->_currentDropRange session:updateCopy];
   }
 
   if ((*(&self->_flags + 1) & 4) != 0)
   {
     v26 = objc_loadWeakRetained(&self->_view);
-    [v9 textDroppableView:v26 dropSessionDidUpdate:v5];
+    [textDropDelegate textDroppableView:v26 dropSessionDidUpdate:updateCopy];
   }
 
   currentDropProposal = self->_currentDropProposal;
@@ -1957,40 +1957,40 @@ LABEL_16:
   return currentDropProposal;
 }
 
-- (id)_positionInSession:(id)a3
+- (id)_positionInSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [v4 locationInView:WeakRetained];
+  [sessionCopy locationInView:WeakRetained];
   v7 = v6;
   v9 = v8;
 
   return [(UITextDragAssistant *)self _closestPositionToPoint:v7, v9];
 }
 
-- (id)_rangeInSession:(id)a3
+- (id)_rangeInSession:(id)session
 {
-  v4 = [(UITextDragAssistant *)self _positionInSession:a3];
+  v4 = [(UITextDragAssistant *)self _positionInSession:session];
   WeakRetained = objc_loadWeakRetained(&self->_view);
   v6 = [WeakRetained textRangeFromPosition:v4 toPosition:v4];
 
   return v6;
 }
 
-- (BOOL)_updateCurrentDropProposalInSession:(id)a3 usingRequest:(id)a4
+- (BOOL)_updateCurrentDropProposalInSession:(id)session usingRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dropRange];
-  v9 = v8;
-  if (v8)
+  sessionCopy = session;
+  requestCopy = request;
+  dropRange = [requestCopy dropRange];
+  v9 = dropRange;
+  if (dropRange)
   {
-    v10 = v8;
+    v10 = dropRange;
   }
 
   else
   {
-    v10 = [(UITextDragAssistant *)self _rangeInSession:v6];
+    v10 = [(UITextDragAssistant *)self _rangeInSession:sessionCopy];
   }
 
   v11 = v10;
@@ -1999,21 +1999,21 @@ LABEL_16:
   if (self->_currentDropRange)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v14 = [(UITextRange *)self->_currentDropRange start];
-    v15 = [(UITextRange *)v11 start];
-    if ([WeakRetained comparePosition:v14 toPosition:v15])
+    start = [(UITextRange *)self->_currentDropRange start];
+    start2 = [(UITextRange *)v11 start];
+    if ([WeakRetained comparePosition:start toPosition:start2])
     {
     }
 
     else
     {
-      v39 = v6;
+      v39 = sessionCopy;
       v16 = objc_loadWeakRetained(&self->_view);
       v17 = [(UITextRange *)*p_currentDropRange end];
       v18 = [(UITextRange *)v11 end];
       v38 = [v16 comparePosition:v17 toPosition:v18];
 
-      v6 = v39;
+      sessionCopy = v39;
       if (!v38)
       {
         v36 = 0;
@@ -2022,33 +2022,33 @@ LABEL_16:
     }
   }
 
-  if (!v7)
+  if (!requestCopy)
   {
-    v7 = [(UITextDragAssistant *)self _dropRequestWithRange:v11 inSession:v6];
+    requestCopy = [(UITextDragAssistant *)self _dropRequestWithRange:v11 inSession:sessionCopy];
   }
 
   if ((*(&self->_flags + 1) & 2) != 0)
   {
     v21 = objc_loadWeakRetained(&self->_view);
-    v20 = [v21 textDropDelegate];
+    textDropDelegate = [v21 textDropDelegate];
 
     v22 = objc_loadWeakRetained(&self->_view);
-    v23 = [v20 textDroppableView:v22 proposalForDrop:v7];
+    v23 = [textDropDelegate textDroppableView:v22 proposalForDrop:requestCopy];
 
     if (v23)
     {
       v24 = [v23 copy];
 
       v25 = self->_currentDragSession;
-      v40 = v6;
-      v26 = v6;
-      v27 = [v26 localDragSession];
-      if (v27)
+      v40 = sessionCopy;
+      v26 = sessionCopy;
+      localDragSession = [v26 localDragSession];
+      if (localDragSession)
       {
-        v28 = v27;
-        v29 = [v26 localDragSession];
+        v28 = localDragSession;
+        localDragSession2 = [v26 localDragSession];
 
-        if (v29 == v25 && (*(&self->_flags + 2) & 1) != 0)
+        if (localDragSession2 == v25 && (*(&self->_flags + 2) & 1) != 0)
         {
           [(UIDropProposal *)v24 setOperation:2];
           [(UITextDropProposal *)v24 setUseFastSameViewOperations:0];
@@ -2063,22 +2063,22 @@ LABEL_16:
       self->_currentDropProposal = v24;
       v31 = v24;
 
-      v6 = v40;
+      sessionCopy = v40;
     }
 
     else
     {
-      v30 = [v7 suggestedProposal];
+      suggestedProposal = [requestCopy suggestedProposal];
       v31 = self->_currentDropProposal;
-      self->_currentDropProposal = v30;
+      self->_currentDropProposal = suggestedProposal;
     }
   }
 
   else
   {
-    v19 = [v7 suggestedProposal];
-    v20 = self->_currentDropProposal;
-    self->_currentDropProposal = v19;
+    suggestedProposal2 = [requestCopy suggestedProposal];
+    textDropDelegate = self->_currentDropProposal;
+    self->_currentDropProposal = suggestedProposal2;
   }
 
   if ([(UITextDropProposal *)self->_currentDropProposal dropAction]== UITextDropActionReplaceSelection)
@@ -2088,7 +2088,7 @@ LABEL_16:
     {
       if (![(UITextRange *)preDropSelectionRange isEmpty])
       {
-        v35 = self->_preDropSelectionRange;
+        _fullRange = self->_preDropSelectionRange;
         goto LABEL_27;
       }
     }
@@ -2097,12 +2097,12 @@ LABEL_16:
   if ([(UITextDropProposal *)self->_currentDropProposal dropAction]== UITextDropActionReplaceAll)
   {
     v34 = objc_loadWeakRetained(&self->_view);
-    v35 = [(UITextRange *)v34 _fullRange];
+    _fullRange = [(UITextRange *)v34 _fullRange];
 
     v11 = v34;
 LABEL_27:
 
-    v11 = v35;
+    v11 = _fullRange;
   }
 
   objc_storeStrong(p_currentDropRange, v11);
@@ -2112,9 +2112,9 @@ LABEL_29:
   return v36;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v5 = a4;
+  exitCopy = exit;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDropSession = self->_currentDropSession;
   if (has_internal_diagnostics)
@@ -2142,18 +2142,18 @@ LABEL_29:
 
   [(UITextDragAssistant *)self _cleanupDrop];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v9 = [WeakRetained textDropDelegate];
+  textDropDelegate = [WeakRetained textDropDelegate];
 
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDropDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v10 = objc_loadWeakRetained(&self->_view);
-    [v9 textDroppableView:v10 dropSessionDidExit:v5];
+    [textDropDelegate textDroppableView:v10 dropSessionDidExit:exitCopy];
   }
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = a4;
+  dropCopy = drop;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   currentDropSession = self->_currentDropSession;
   if (has_internal_diagnostics)
@@ -2180,11 +2180,11 @@ LABEL_29:
   }
 
   v8 = [(NSArray *)self->_draggedTextRanges copy];
-  [(UITextDragAssistant *)self _updateDropCaretToRange:0 session:v5];
+  [(UITextDragAssistant *)self _updateDropCaretToRange:0 session:dropCopy];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v10 = [WeakRetained isEditable];
+  isEditable = [WeakRetained isEditable];
 
-  if ((v10 & 1) == 0)
+  if ((isEditable & 1) == 0)
   {
     if (*(&self->_flags + 1))
     {
@@ -2209,9 +2209,9 @@ LABEL_29:
   *&self->_flags |= 0x20000u;
   [_UIKitDragAndDropStatistics incrementUIKitScalarValueBy:1 forKey:@"dropOnTextContent"];
   v12 = objc_loadWeakRetained(&self->_view);
-  v13 = [v12 textDropDelegate];
+  textDropDelegate = [v12 textDropDelegate];
 
-  if (v13)
+  if (textDropDelegate)
   {
     v14 = objc_opt_respondsToSelector();
   }
@@ -2232,7 +2232,7 @@ LABEL_29:
   }
 
   self->_flags = (v15 | *&self->_flags & 0xFFFBFFFF);
-  if ((v14 & 1) == 0 || (-[UITextDragAssistant _dropRequestWithRange:suggestedProposal:inSession:](self, "_dropRequestWithRange:suggestedProposal:inSession:", self->_currentDropRange, self->_currentDropProposal, v5), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_loadWeakRetained(&self->_view), [v13 textDroppableView:v17 willPerformDrop:v16], v17, v16, (*(&self->_flags + 2) & 4) != 0))
+  if ((v14 & 1) == 0 || (-[UITextDragAssistant _dropRequestWithRange:suggestedProposal:inSession:](self, "_dropRequestWithRange:suggestedProposal:inSession:", self->_currentDropRange, self->_currentDropProposal, dropCopy), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_loadWeakRetained(&self->_view), [textDropDelegate textDroppableView:v17 willPerformDrop:v16], v17, v16, (*(&self->_flags + 2) & 4) != 0))
   {
     sameViewDropOperation = self->_sameViewDropOperation;
     self->_sameViewDropOperation = 0;
@@ -2249,18 +2249,18 @@ LABEL_29:
     if ([(UITextDropProposal *)self->_currentDropProposal useFastSameViewOperations]&& (*&self->_flags & 2) != 0)
     {
       v22 = self->_currentDragSession;
-      v23 = v5;
-      v24 = [v23 localDragSession];
-      if (v24)
+      v23 = dropCopy;
+      localDragSession = [v23 localDragSession];
+      if (localDragSession)
       {
-        v25 = v24;
-        v26 = [v23 localDragSession];
+        v25 = localDragSession;
+        localDragSession2 = [v23 localDragSession];
 
-        if (v26 == v22)
+        if (localDragSession2 == v22)
         {
-          v27 = [(UIDropProposal *)self->_currentDropProposal operation];
-          v28 = [v23 items];
-          [(UITextDragAssistant *)self _prepareSameViewOperation:v27 forItems:v28 fromRanges:v8 toRange:self->_currentDropRange];
+          operation = [(UIDropProposal *)self->_currentDropProposal operation];
+          items = [v23 items];
+          [(UITextDragAssistant *)self _prepareSameViewOperation:operation forItems:items fromRanges:v8 toRange:self->_currentDropRange];
 
           goto LABEL_25;
         }
@@ -2273,10 +2273,10 @@ LABEL_29:
 
     if ([(UITextDropProposal *)self->_currentDropProposal dropProgressMode])
     {
-      [v5 setProgressIndicatorStyle:0];
+      [dropCopy setProgressIndicatorStyle:0];
     }
 
-    [(UITextDragAssistant *)self _performDropToRange:self->_currentDropRange inSession:v5];
+    [(UITextDragAssistant *)self _performDropToRange:self->_currentDropRange inSession:dropCopy];
   }
 
 LABEL_25:
@@ -2297,7 +2297,7 @@ void __51__UITextDragAssistant_dropInteraction_performDrop___block_invoke(uint64
   }
 }
 
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop
 {
   topmostDropItem = self->_topmostDropItem;
   self->_topmostDropItem = 0;
@@ -2328,28 +2328,28 @@ void __51__UITextDragAssistant_dropInteraction_performDrop___block_invoke(uint64
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v9 = a4;
+  endCopy = end;
   [(UITextDragAssistant *)self _cleanupDrop];
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained resignDropResponderWithDropPerformed:(*&self->_flags >> 17) & 1];
 
   v6 = objc_loadWeakRetained(&self->_view);
-  v7 = [v6 textDropDelegate];
+  textDropDelegate = [v6 textDropDelegate];
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (textDropDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v8 = objc_loadWeakRetained(&self->_view);
-    [v7 textDroppableView:v8 dropSessionDidEnd:v9];
+    [textDropDelegate textDroppableView:v8 dropSessionDidEnd:endCopy];
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  defaultCopy = default;
   if (self->_topmostDropPreview)
   {
     v11 = [(UITextDragAssistant *)self _previewForIrrelevantItemFromPreview:?];
@@ -2367,9 +2367,9 @@ void __51__UITextDragAssistant_dropInteraction_performDrop___block_invoke(uint64
       sameViewDropOperationResult = self->_sameViewDropOperationResult;
       if (sameViewDropOperationResult)
       {
-        v14 = [(UITextDraggableGeometrySameViewDropOperationResult *)sameViewDropOperationResult targetedPreviewProvider];
-        v15 = [(UITextDragAssistant *)self _containerViewForDropPreviews];
-        v11 = (v14)[2](v14, v15, 0);
+        targetedPreviewProvider = [(UITextDraggableGeometrySameViewDropOperationResult *)sameViewDropOperationResult targetedPreviewProvider];
+        _containerViewForDropPreviews = [(UITextDragAssistant *)self _containerViewForDropPreviews];
+        v11 = (targetedPreviewProvider)[2](targetedPreviewProvider, _containerViewForDropPreviews, 0);
 
         if (v11)
         {
@@ -2380,15 +2380,15 @@ void __51__UITextDragAssistant_dropInteraction_performDrop___block_invoke(uint64
 
     else
     {
-      v11 = [(UITextDragAssistant *)self _previewForTopmostItem:v9];
+      v11 = [(UITextDragAssistant *)self _previewForTopmostItem:itemCopy];
       if (v11)
       {
         goto LABEL_9;
       }
     }
 
-    v16 = [(UITextRange *)self->_currentDropRange start];
-    v11 = [(UITextDragAssistant *)self _shrinkingPreview:v10 toPosition:v16];
+    start = [(UITextRange *)self->_currentDropRange start];
+    v11 = [(UITextDragAssistant *)self _shrinkingPreview:defaultCopy toPosition:start];
   }
 
   else
@@ -2398,12 +2398,12 @@ void __51__UITextDragAssistant_dropInteraction_performDrop___block_invoke(uint64
 
 LABEL_9:
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v18 = [WeakRetained textDropDelegate];
+  textDropDelegate = [WeakRetained textDropDelegate];
 
   if (objc_opt_respondsToSelector())
   {
     v19 = objc_loadWeakRetained(&self->_view);
-    v20 = [v18 textDroppableView:v19 previewForDroppingAllItemsWithDefault:v11];
+    v20 = [textDropDelegate textDroppableView:v19 previewForDroppingAllItemsWithDefault:v11];
     v21 = v20;
     if (v20)
     {
@@ -2415,42 +2415,42 @@ LABEL_9:
       v22 = v11;
     }
 
-    v26 = v9;
-    v23 = v8;
+    v26 = itemCopy;
+    v23 = interactionCopy;
     v24 = v22;
 
     v11 = v24;
-    v8 = v23;
-    v9 = v26;
+    interactionCopy = v23;
+    itemCopy = v26;
   }
 
   objc_storeStrong(&self->_topmostDropPreview, v11);
-  objc_storeStrong(&self->_topmostDropItem, a4);
+  objc_storeStrong(&self->_topmostDropItem, item);
 
 LABEL_15:
 
   return v11;
 }
 
-- (void)_dropInteraction:(id)a3 delayedPreviewProviderForDroppingItem:(id)a4 previewProvider:(id)a5
+- (void)_dropInteraction:(id)interaction delayedPreviewProviderForDroppingItem:(id)item previewProvider:(id)provider
 {
-  if (self->_topmostDropItem == a4)
+  if (self->_topmostDropItem == item)
   {
-    v7 = _Block_copy(a5);
+    v7 = _Block_copy(provider);
     delayedPreviewProvider = self->_delayedPreviewProvider;
     self->_delayedPreviewProvider = v7;
   }
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  animatorCopy = animator;
   topmostDropItem = self->_topmostDropItem;
   if (topmostDropItem)
   {
-    v12 = topmostDropItem == v9;
+    v12 = topmostDropItem == itemCopy;
   }
 
   else
@@ -2472,7 +2472,7 @@ LABEL_15:
     v14[2] = __72__UITextDragAssistant_dropInteraction_item_willAnimateDropWithAnimator___block_invoke;
     v14[3] = &unk_1E70F5DB8;
     v14[4] = self;
-    [v10 addCompletion:v14];
+    [animatorCopy addCompletion:v14];
   }
 }
 
@@ -2497,61 +2497,61 @@ void __72__UITextDragAssistant_dropInteraction_item_willAnimateDropWithAnimator_
   }
 }
 
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v7 = [WeakRetained textDropDelegate];
+  textDropDelegate = [WeakRetained textDropDelegate];
 
-  if (v7)
+  if (textDropDelegate)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v10 = 0;
+      _dropDataOwner = 0;
       goto LABEL_8;
     }
 
-    v8 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:v5];
+    v8 = [(UITextDragAssistant *)self _dropRequestWithRange:0 inSession:sessionCopy];
     v9 = objc_loadWeakRetained(&self->_view);
-    v10 = [v7 _textDroppableView:v9 dataOwnerForDrop:v8];
+    _dropDataOwner = [textDropDelegate _textDroppableView:v9 dataOwnerForDrop:v8];
 
     goto LABEL_6;
   }
 
   v11 = objc_loadWeakRetained(&self->_view);
-  v10 = [v11 _dropDataOwner];
+  _dropDataOwner = [v11 _dropDataOwner];
 
-  if (!v10)
+  if (!_dropDataOwner)
   {
     v8 = objc_loadWeakRetained(&self->_view);
-    v10 = [v8 _dataOwnerForPaste];
+    _dropDataOwner = [v8 _dataOwnerForPaste];
 LABEL_6:
   }
 
 LABEL_8:
 
-  return v10;
+  return _dropDataOwner;
 }
 
-- (id)_dropRequestWithRange:(id)a3 suggestedProposal:(id)a4 inSession:(id)a5
+- (id)_dropRequestWithRange:(id)range suggestedProposal:(id)proposal inSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UITextDragAssistant *)self _positionInSession:v10];
-  if (!v8)
+  rangeCopy = range;
+  proposalCopy = proposal;
+  sessionCopy = session;
+  v11 = [(UITextDragAssistant *)self _positionInSession:sessionCopy];
+  if (!rangeCopy)
   {
-    v8 = [(UITextDragAssistant *)self _rangeInSession:v10];
+    rangeCopy = [(UITextDragAssistant *)self _rangeInSession:sessionCopy];
   }
 
-  v12 = [[UITextDropRequest alloc] initWithPosition:v11 range:v8 inSession:v10];
+  v12 = [[UITextDropRequest alloc] initWithPosition:v11 range:rangeCopy inSession:sessionCopy];
   v13 = self->_currentDragSession;
-  v14 = v10;
-  v15 = [v14 localDragSession];
-  if (v15)
+  v14 = sessionCopy;
+  localDragSession = [v14 localDragSession];
+  if (localDragSession)
   {
-    v16 = [v14 localDragSession];
-    v17 = v16 == v13;
+    localDragSession2 = [v14 localDragSession];
+    v17 = localDragSession2 == v13;
   }
 
   else
@@ -2560,9 +2560,9 @@ LABEL_8:
   }
 
   [(UITextDropRequest *)v12 setSameView:v17];
-  if (v9)
+  if (proposalCopy)
   {
-    [(UITextDropRequest *)v12 setSuggestedProposal:v9];
+    [(UITextDropRequest *)v12 setSuggestedProposal:proposalCopy];
   }
 
   else
@@ -2582,26 +2582,26 @@ LABEL_8:
   }
 }
 
-- (void)_updateDropCaretToRange:(id)a3 session:(id)a4
+- (void)_updateDropCaretToRange:(id)range session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v9 = [WeakRetained interactionAssistant];
-  [v9 setSelectionDisplayVisible:0];
+  interactionAssistant = [WeakRetained interactionAssistant];
+  [interactionAssistant setSelectionDisplayVisible:0];
 
   v10 = objc_loadWeakRetained(&self->_view);
-  v11 = [v10 interactionAssistant];
-  [v11 deactivateSelection];
+  interactionAssistant2 = [v10 interactionAssistant];
+  [interactionAssistant2 deactivateSelection];
 
   flags = self->_flags;
   if ((*&flags & 0x2000) != 0)
   {
     v18 = objc_loadWeakRetained(&self->_view);
-    v19 = [v18 textDropDelegate];
+    textDropDelegate = [v18 textDropDelegate];
 
     v20 = objc_loadWeakRetained(&self->_view);
-    v13 = [v19 textDroppableView:v20 dropSession:v7 willMoveCaretToRange:v6];
+    v13 = [textDropDelegate textDroppableView:v20 dropSession:sessionCopy willMoveCaretToRange:rangeCopy];
 
     if ((*&self->_flags & 0x4000) != 0)
     {
@@ -2616,17 +2616,17 @@ LABEL_8:
     {
 LABEL_3:
       v14 = objc_loadWeakRetained(&self->_view);
-      v15 = [v14 textDropDelegate];
+      textDropDelegate2 = [v14 textDropDelegate];
 
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __55__UITextDragAssistant__updateDropCaretToRange_session___block_invoke;
       v27[3] = &unk_1E70F6B40;
-      v28 = v15;
-      v29 = self;
-      v30 = v7;
-      v31 = v6;
-      v16 = v15;
+      v28 = textDropDelegate2;
+      selfCopy = self;
+      v30 = sessionCopy;
+      v31 = rangeCopy;
+      v16 = textDropDelegate2;
       v17 = _Block_copy(v27);
 
       goto LABEL_6;
@@ -2636,11 +2636,11 @@ LABEL_3:
   v17 = 0;
 LABEL_6:
   dropCaret = self->_dropCaret;
-  if (v6)
+  if (rangeCopy)
   {
     if (dropCaret)
     {
-      [(_UITextDragCaretView *)dropCaret updateToRange:v6 animations:0 completion:v17 animated:v13];
+      [(_UITextDragCaretView *)dropCaret updateToRange:rangeCopy animations:0 completion:v17 animated:v13];
     }
 
     else
@@ -2652,7 +2652,7 @@ LABEL_6:
       self->_dropCaret = v25;
 
       [(_UITextDragCaretView *)self->_dropCaret setRangesExcludeSelection:0];
-      [(_UITextDragCaretView *)self->_dropCaret insertAtRange:v6 animations:0 completion:v17 animated:v13];
+      [(_UITextDragCaretView *)self->_dropCaret insertAtRange:rangeCopy animations:0 completion:v17 animated:v13];
     }
   }
 
@@ -2671,22 +2671,22 @@ void __55__UITextDragAssistant__updateDropCaretToRange_session___block_invoke(vo
   [v2 textDroppableView:WeakRetained dropSession:a1[6] didMoveCaretToRange:a1[7]];
 }
 
-- (id)_suggestedProposalForRequest:(id)a3
+- (id)_suggestedProposalForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   flags = self->_flags;
   currentDropRange = self->_currentDropRange;
   currentDragSession = self->_currentDragSession;
-  v8 = [v4 dropSession];
+  dropSession = [requestCopy dropSession];
   v9 = currentDragSession;
-  v10 = [v8 localDragSession];
-  if (v10)
+  localDragSession = [dropSession localDragSession];
+  if (localDragSession)
   {
-    v11 = v10;
-    v12 = [v8 localDragSession];
+    v11 = localDragSession;
+    localDragSession2 = [dropSession localDragSession];
 
     v13 = 2;
-    if (v12 == v9 && (*&flags & 0x10000) == 0)
+    if (localDragSession2 == v9 && (*&flags & 0x10000) == 0)
     {
       if (currentDropRange)
       {
@@ -2700,7 +2700,7 @@ void __55__UITextDragAssistant__updateDropCaretToRange_session___block_invoke(vo
         v21[3] = &unk_1E71247B0;
         v23 = &v24;
         v21[4] = self;
-        v22 = v4;
+        v22 = requestCopy;
         [(UITextDragAssistant *)self _forDraggedTextRangesDo:v21];
         if (*(v25 + 24))
         {
@@ -2730,8 +2730,8 @@ void __55__UITextDragAssistant__updateDropCaretToRange_session___block_invoke(vo
 
   v14 = [[UITextDropProposal alloc] initWithDropOperation:v13];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v16 = [WeakRetained _fontForCaretSelection];
-  [v16 lineHeight];
+  _fontForCaretSelection = [WeakRetained _fontForCaretSelection];
+  [_fontForCaretSelection lineHeight];
   v18 = v17 + v17;
   v19 = objc_loadWeakRetained(&self->_view);
   [v19 bounds];
@@ -2768,13 +2768,13 @@ void __52__UITextDragAssistant__suggestedProposalForRequest___block_invoke(uint6
   if ((*(&self->_flags + 2) & 2) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v4 = [WeakRetained selectedTextRange];
-    if (v4)
+    selectedTextRange = [WeakRetained selectedTextRange];
+    if (selectedTextRange)
     {
-      v5 = v4;
+      v5 = selectedTextRange;
       v6 = objc_loadWeakRetained(&self->_view);
-      v7 = [v6 selectedTextRange];
-      v8 = [v7 isEqual:self->_preDropSelectionRange];
+      selectedTextRange2 = [v6 selectedTextRange];
+      v8 = [selectedTextRange2 isEqual:self->_preDropSelectionRange];
 
       if (v8)
       {
@@ -2805,10 +2805,10 @@ LABEL_7:
   self->_currentDropRange = 0;
 }
 
-- (void)_prepareSameViewOperation:(unint64_t)a3 forItems:(id)a4 fromRanges:(id)a5 toRange:(id)a6
+- (void)_prepareSameViewOperation:(unint64_t)operation forItems:(id)items fromRanges:(id)ranges toRange:(id)range
 {
-  v9 = a5;
-  v10 = a6;
+  rangesCopy = ranges;
+  rangeCopy = range;
   if ((*&self->_flags & 2) != 0)
   {
     v12 = self->_geometry;
@@ -2817,16 +2817,16 @@ LABEL_7:
     v23[2] = __77__UITextDragAssistant__prepareSameViewOperation_forItems_fromRanges_toRange___block_invoke;
     v23[3] = &unk_1E7124648;
     v23[4] = self;
-    v11 = [v9 sortedArrayUsingComparator:v23];
+    v11 = [rangesCopy sortedArrayUsingComparator:v23];
 
     v13 = [(UITextDraggableGeometry *)v12 attributedStringsForTextRanges:v11];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v15 = [WeakRetained pasteDelegate];
+    pasteDelegate = [WeakRetained pasteDelegate];
 
-    if (v15 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (pasteDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v16 = objc_loadWeakRetained(&self->_view);
-      v17 = [v15 textPasteConfigurationSupporting:v16 combineItemAttributedStrings:v13 forRange:v10];
+      v17 = [pasteDelegate textPasteConfigurationSupporting:v16 combineItemAttributedStrings:v13 forRange:rangeCopy];
     }
 
     else
@@ -2840,10 +2840,10 @@ LABEL_7:
     if (v18)
     {
       v19 = objc_opt_new();
-      [v19 setOperation:a3];
+      [v19 setOperation:operation];
       [v19 setText:v18];
       [v19 setSourceRanges:v11];
-      [v19 setTargetRange:v10];
+      [v19 setTargetRange:rangeCopy];
     }
 
     else
@@ -2861,7 +2861,7 @@ LABEL_7:
 
   else
   {
-    v11 = v9;
+    v11 = rangesCopy;
   }
 }
 
@@ -2879,16 +2879,16 @@ uint64_t __77__UITextDragAssistant__prepareSameViewOperation_forItems_fromRanges
   return v10;
 }
 
-- (void)_performSameViewOperation:(id)a3
+- (void)_performSameViewOperation:(id)operation
 {
-  if (a3 && (*&self->_flags & 2) != 0)
+  if (operation && (*&self->_flags & 2) != 0)
   {
-    v4 = a3;
+    operationCopy = operation;
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained droppingStarted];
 
-    v6 = [v4 operation];
-    if (v6 == 3 && (v7 = objc_loadWeakRetained(&self->_view), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
+    operation = [operationCopy operation];
+    if (operation == 3 && (v7 = objc_loadWeakRetained(&self->_view), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
     {
       v9 = objc_loadWeakRetained(&self->_view);
       [v9 contentOffsetForSameViewDrops];
@@ -2922,10 +2922,10 @@ uint64_t __77__UITextDragAssistant__prepareSameViewOperation_forItems_fromRanges
   }
 }
 
-- (void)_performDropToRange:(id)a3 inSession:(id)a4
+- (void)_performDropToRange:(id)range inSession:(id)session
 {
-  v14 = a3;
-  v6 = a4;
+  rangeCopy = range;
+  sessionCopy = session;
   dropPasteController = self->_dropPasteController;
   if (!dropPasteController)
   {
@@ -2938,16 +2938,16 @@ uint64_t __77__UITextDragAssistant__prepareSameViewOperation_forItems_fromRanges
     dropPasteController = self->_dropPasteController;
   }
 
-  v12 = [v6 items];
-  v13 = [(UITextPasteController *)dropPasteController beginDroppingItems:v12 toSelectedRange:v14 progressSupport:self animated:1 delegate:self];
+  items = [sessionCopy items];
+  v13 = [(UITextPasteController *)dropPasteController beginDroppingItems:items toSelectedRange:rangeCopy progressSupport:self animated:1 delegate:self];
   objc_storeWeak(&self->_dropPasteSession, v13);
 }
 
-- (id)_textPasteSelectableRangeForResult:(id)a3 fromRange:(id)a4
+- (id)_textPasteSelectableRangeForResult:(id)result fromRange:(id)range
 {
-  v6 = a4;
-  v7 = [a3 string];
-  v8 = [v7 length];
+  rangeCopy = range;
+  string = [result string];
+  v8 = [string length];
   if (v8 < 1)
   {
     v21 = 0;
@@ -2956,9 +2956,9 @@ uint64_t __77__UITextDragAssistant__prepareSameViewOperation_forItems_fromRanges
   else
   {
     v9 = v8;
-    v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
     v11 = 0;
-    while ([v10 characterIsMember:{objc_msgSend(v7, "characterAtIndex:", v11)}])
+    while ([whitespaceCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", v11)}])
     {
       if (v9 == ++v11)
       {
@@ -2974,14 +2974,14 @@ LABEL_6:
       v13 = v9-- < 1;
     }
 
-    while (!v13 && ([v10 characterIsMember:{objc_msgSend(v7, "characterAtIndex:", v9)}] & 1) != 0);
+    while (!v13 && ([whitespaceCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", v9)}] & 1) != 0);
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v15 = [v6 start];
-    v16 = [WeakRetained positionFromPosition:v15 offset:v11];
+    start = [rangeCopy start];
+    v16 = [WeakRetained positionFromPosition:start offset:v11];
 
     v17 = objc_loadWeakRetained(&self->_view);
-    v18 = [v6 start];
-    v19 = [v17 positionFromPosition:v18 offset:v12];
+    start2 = [rangeCopy start];
+    v19 = [v17 positionFromPosition:start2 offset:v12];
 
     v20 = objc_loadWeakRetained(&self->_view);
     v21 = [v20 textRangeFromPosition:v16 toPosition:v19];
@@ -2994,7 +2994,7 @@ LABEL_6:
 
   else
   {
-    v22 = v6;
+    v22 = rangeCopy;
   }
 
   v23 = v22;
@@ -3002,7 +3002,7 @@ LABEL_6:
   return v22;
 }
 
-- (void)textPasteSessionWillHidePasteResult:(id)a3
+- (void)textPasteSessionWillHidePasteResult:(id)result
 {
   delayedPreviewProvider = self->_delayedPreviewProvider;
   if (delayedPreviewProvider && self->_topmostDropItem)
@@ -3017,32 +3017,32 @@ LABEL_6:
   self->_delayedPreviewProvider = 0;
 }
 
-- (void)textPasteSessionDidRevealPasteResult:(id)a3
+- (void)textPasteSessionDidRevealPasteResult:(id)result
 {
   delayedPreviewProvider = self->_delayedPreviewProvider;
   self->_delayedPreviewProvider = 0;
 }
 
-- (void)textPasteSessionWillBeginPasting:(id)a3
+- (void)textPasteSessionWillBeginPasting:(id)pasting
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained droppingStarted];
 }
 
-- (void)textPasteSessionDidEndPasting:(id)a3
+- (void)textPasteSessionDidEndPasting:(id)pasting
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained droppingFinished];
 }
 
-- (id)_closestPositionToPoint:(CGPoint)a3
+- (id)_closestPositionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_loadWeakRetained(&self->_view);
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v8 = [WeakRetained textInputView];
-  [v6 convertPoint:v8 toView:{x, y}];
+  textInputView = [WeakRetained textInputView];
+  [v6 convertPoint:textInputView toView:{x, y}];
   v9 = [v6 closestPositionToPoint:?];
 
   return v9;
@@ -3056,61 +3056,61 @@ LABEL_6:
   return geometry;
 }
 
-- (id)_previewForIrrelevantItemFromPreview:(id)a3
+- (id)_previewForIrrelevantItemFromPreview:(id)preview
 {
-  v3 = a3;
-  v4 = [v3 target];
+  previewCopy = preview;
+  target = [previewCopy target];
   v5 = [UISnapshotView alloc];
-  v6 = [v3 view];
-  [v6 frame];
+  view = [previewCopy view];
+  [view frame];
   v7 = [(UISnapshotView *)v5 initWithFrame:?];
 
-  v8 = [v3 view];
-  [(UISnapshotView *)v7 captureSnapshotOfView:v8 withSnapshotType:1];
+  view2 = [previewCopy view];
+  [(UISnapshotView *)v7 captureSnapshotOfView:view2 withSnapshotType:1];
 
   v9 = objc_opt_new();
-  v10 = [v3 parameters];
-  v11 = [v10 backgroundColor];
-  [v9 setBackgroundColor:v11];
+  parameters = [previewCopy parameters];
+  backgroundColor = [parameters backgroundColor];
+  [v9 setBackgroundColor:backgroundColor];
 
-  v12 = [v3 parameters];
+  parameters2 = [previewCopy parameters];
 
-  v13 = [v12 visiblePath];
-  [v9 setVisiblePath:v13];
+  visiblePath = [parameters2 visiblePath];
+  [v9 setVisiblePath:visiblePath];
 
-  v14 = [[UITargetedDragPreview alloc] initWithView:v7 parameters:v9 target:v4];
+  v14 = [[UITargetedDragPreview alloc] initWithView:v7 parameters:v9 target:target];
 
   return v14;
 }
 
-- (id)_previewForTopmostItem:(id)a3
+- (id)_previewForTopmostItem:(id)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_dropPasteSession);
-  v5 = [WeakRetained pasteResult];
+  pasteResult = [WeakRetained pasteResult];
 
-  if (v5)
+  if (pasteResult)
   {
     v6 = objc_loadWeakRetained(&self->_dropPasteSession);
-    v7 = [v6 positionedPasteResult];
+    positionedPasteResult = [v6 positionedPasteResult];
 
-    v8 = [v7 position];
+    position = [positionedPasteResult position];
     v9 = objc_loadWeakRetained(&self->_view);
-    v10 = [v9 endOfDocument];
-    v11 = [v9 comparePosition:v8 toPosition:v10];
+    endOfDocument = [v9 endOfDocument];
+    v11 = [v9 comparePosition:position toPosition:endOfDocument];
 
     if (v11 == 1)
     {
       v12 = objc_loadWeakRetained(&self->_view);
-      v13 = [v12 endOfDocument];
+      endOfDocument2 = [v12 endOfDocument];
 
-      v8 = v13;
+      position = endOfDocument2;
     }
 
-    if (v8)
+    if (position)
     {
       v14 = objc_loadWeakRetained(&self->_view);
-      v15 = [v14 beginningOfDocument];
-      v16 = [v14 offsetFromPosition:v15 toPosition:v8];
+      beginningOfDocument = [v14 beginningOfDocument];
+      v16 = [v14 offsetFromPosition:beginningOfDocument toPosition:position];
     }
 
     else
@@ -3118,9 +3118,9 @@ LABEL_6:
       v16 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v18 = [v7 string];
-    v19 = v18;
-    if (v16 == 0x7FFFFFFFFFFFFFFFLL || ![v18 length])
+    string = [positionedPasteResult string];
+    v19 = string;
+    if (v16 == 0x7FFFFFFFFFFFFFFFLL || ![string length])
     {
       v17 = 0;
     }
@@ -3145,10 +3145,10 @@ LABEL_6:
       if (v25)
       {
         v26 = objc_loadWeakRetained(&self->_view);
-        v27 = [v26 selectedTextRange];
+        selectedTextRange = [v26 selectedTextRange];
 
         v28 = objc_loadWeakRetained(&self->_view);
-        v29 = [v28 textRangeFromPosition:v8 toPosition:v8];
+        v29 = [v28 textRangeFromPosition:position toPosition:position];
         v30 = objc_loadWeakRetained(&self->_view);
         [v30 setSelectedTextRange:v29];
 
@@ -3156,7 +3156,7 @@ LABEL_6:
         v32 = [v31 _attributedStringForInsertionOfAttributedString:v19];
 
         v33 = objc_loadWeakRetained(&self->_view);
-        [v33 setSelectedTextRange:v27];
+        [v33 setSelectedTextRange:selectedTextRange];
 
         v19 = v32;
       }
@@ -3165,9 +3165,9 @@ LABEL_6:
       v35 = objc_loadWeakRetained(&self->_view);
       v36 = [v35 _textRangeFromNSRange:{v16, v34}];
 
-      v37 = [(UITextDragAssistant *)self geometry];
-      v38 = [(UITextDragAssistant *)self _containerViewForDropPreviews];
-      v17 = [v37 previewForDroppingTextInRange:v36 toPosition:v8 inContainerView:v38];
+      geometry = [(UITextDragAssistant *)self geometry];
+      _containerViewForDropPreviews = [(UITextDragAssistant *)self _containerViewForDropPreviews];
+      v17 = [geometry previewForDroppingTextInRange:v36 toPosition:position inContainerView:_containerViewForDropPreviews];
     }
   }
 
@@ -3179,12 +3179,12 @@ LABEL_6:
   return v17;
 }
 
-- (id)_shrinkingPreview:(id)a3 toPosition:(id)a4
+- (id)_shrinkingPreview:(id)preview toPosition:(id)position
 {
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [WeakRetained caretRectForPosition:v7];
+  [WeakRetained caretRectForPosition:positionCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -3199,15 +3199,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v17 = [(UITextDragAssistant *)self _containerViewForDropPreviews];
+  _containerViewForDropPreviews = [(UITextDragAssistant *)self _containerViewForDropPreviews];
   v18 = objc_loadWeakRetained(&self->_view);
-  [v18 convertRect:v17 toView:{v10, v12, v14, v16}];
+  [v18 convertRect:_containerViewForDropPreviews toView:{v10, v12, v14, v16}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  [v6 size];
+  [previewCopy size];
   v29 = *(MEMORY[0x1E695EFD0] + 16);
   *&v35.a = *MEMORY[0x1E695EFD0];
   *&v35.c = v29;
@@ -3219,17 +3219,17 @@ LABEL_6:
 
   v30 = [UIDragPreviewTarget alloc];
   v34 = v35;
-  v31 = [(UIPreviewTarget *)v30 initWithContainer:v17 center:&v34 transform:v20 + v24 * 0.5, v22 + v26 * 0.5];
+  v31 = [(UIPreviewTarget *)v30 initWithContainer:_containerViewForDropPreviews center:&v34 transform:v20 + v24 * 0.5, v22 + v26 * 0.5];
 
   if (!v31)
   {
 LABEL_7:
-    v32 = v6;
+    v32 = previewCopy;
   }
 
   else
   {
-    v32 = [v6 retargetedPreviewWithTarget:v31];
+    v32 = [previewCopy retargetedPreviewWithTarget:v31];
   }
 
   return v32;

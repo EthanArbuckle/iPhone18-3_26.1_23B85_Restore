@@ -1,20 +1,20 @@
 @interface SKUIFloatingOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIFloatingOverlayView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIFloatingOverlayView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentView:(id)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SKUIFloatingOverlayView
 
-- (SKUIFloatingOverlayView)initWithFrame:(CGRect)a3
+- (SKUIFloatingOverlayView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIFloatingOverlayView initWithFrame:];
@@ -22,58 +22,58 @@
 
   v16.receiver = self;
   v16.super_class = SKUIFloatingOverlayView;
-  v8 = [(SKUIFloatingOverlayView *)&v16 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIFloatingOverlayView *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIFloatingOverlayView *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIFloatingOverlayView *)height setBackgroundColor:clearColor];
 
-    [(SKUIFloatingOverlayView *)v8 setClipsToBounds:1];
-    v10 = [(SKUIFloatingOverlayView *)v8 layer];
-    [v10 setCornerRadius:10.0];
+    [(SKUIFloatingOverlayView *)height setClipsToBounds:1];
+    layer = [(SKUIFloatingOverlayView *)height layer];
+    [layer setCornerRadius:10.0];
 
     v11 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2020];
-    v12 = [v11 inputSettings];
-    v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v14 = [v13 colorWithAlphaComponent:0.6];
-    [v12 setColorTint:v14];
+    inputSettings = [v11 inputSettings];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v14 = [systemBackgroundColor colorWithAlphaComponent:0.6];
+    [inputSettings setColorTint:v14];
 
     [v11 setAutoresizingMask:18];
-    [(SKUIFloatingOverlayView *)v8 bounds];
+    [(SKUIFloatingOverlayView *)height bounds];
     [v11 setFrame:?];
-    [(SKUIFloatingOverlayView *)v8 addSubview:v11];
+    [(SKUIFloatingOverlayView *)height addSubview:v11];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIFloatingOverlayView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  v9 = v5;
-  if (contentView != v5)
+  v9 = viewCopy;
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     v7 = self->_contentView;
     if (v7)
     {
-      v8 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v7 setBackgroundColor:v8];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v7 setBackgroundColor:clearColor];
 
       [(SKUIFloatingOverlayView *)self addSubview:self->_contentView];
     }
@@ -94,10 +94,10 @@
   [(UIView *)contentView setFrame:v7, v9, v11, v13];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIView *)self->_contentView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(UIView *)self->_contentView sizeThatFits:fits.width, fits.height];
   v6 = v5 + self->_contentInset.top + self->_contentInset.bottom;
   v7 = width;
   result.height = v6;

@@ -6,14 +6,14 @@
 
 - (id)description
 {
-  v3 = [(HKInteractiveChartBloodPressureOverlayData *)self overlayMode];
+  overlayMode = [(HKInteractiveChartBloodPressureOverlayData *)self overlayMode];
   v4 = @"unknown";
-  if (v3 == 2)
+  if (overlayMode == 2)
   {
     v4 = @"diastolic";
   }
 
-  if (v3 == 1)
+  if (overlayMode == 1)
   {
     v5 = @"systolic";
   }

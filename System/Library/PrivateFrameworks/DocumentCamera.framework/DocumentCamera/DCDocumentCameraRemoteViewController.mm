@@ -2,23 +2,23 @@
 + (id)exportedInterface;
 - (DCDocumentCameraPublicViewController)publicViewController;
 - (void)didCancel;
-- (void)didFailWithError:(id)a3;
-- (void)didFinishWithDocumentInfoCollection:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didFinishWithDocumentInfoCollection:(id)collection;
 - (void)dismiss;
 - (void)viewControllerWasDismissed;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewServicePreferredSizeDidChange:(CGSize)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewServicePreferredSizeDidChange:(CGSize)change;
 @end
 
 @implementation DCDocumentCameraRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(DCDocumentCameraRemoteViewController *)v4 viewServiceDidTerminateWithError:v5];
+    [(DCDocumentCameraRemoteViewController *)errorCopy viewServiceDidTerminateWithError:v5];
   }
 
   [(DCDocumentCameraRemoteViewController *)self dismiss];
@@ -38,46 +38,46 @@
   return v2;
 }
 
-- (void)viewServicePreferredSizeDidChange:(CGSize)a3
+- (void)viewServicePreferredSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(DCDocumentCameraRemoteViewController *)self publicViewController];
-  [v5 viewServicePreferredSizeDidChange:{width, height}];
+  height = change.height;
+  width = change.width;
+  publicViewController = [(DCDocumentCameraRemoteViewController *)self publicViewController];
+  [publicViewController viewServicePreferredSizeDidChange:{width, height}];
 }
 
 - (void)dismiss
 {
-  v2 = [(DCDocumentCameraRemoteViewController *)self publicViewController];
-  [v2 dismiss];
+  publicViewController = [(DCDocumentCameraRemoteViewController *)self publicViewController];
+  [publicViewController dismiss];
 }
 
 - (void)viewControllerWasDismissed
 {
-  v3 = [(DCDocumentCameraRemoteViewController *)self viewServiceViewController];
-  [v3 viewControllerWasDismissed];
+  viewServiceViewController = [(DCDocumentCameraRemoteViewController *)self viewServiceViewController];
+  [viewServiceViewController viewControllerWasDismissed];
 
   [(DCDocumentCameraRemoteViewController *)self setPublicViewController:0];
 }
 
 - (void)didCancel
 {
-  v2 = [(DCDocumentCameraRemoteViewController *)self publicViewController];
-  [v2 didCancel];
+  publicViewController = [(DCDocumentCameraRemoteViewController *)self publicViewController];
+  [publicViewController didCancel];
 }
 
-- (void)didFinishWithDocumentInfoCollection:(id)a3
+- (void)didFinishWithDocumentInfoCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(DCDocumentCameraRemoteViewController *)self publicViewController];
-  [v5 didFinishWithDocumentInfoCollection:v4];
+  collectionCopy = collection;
+  publicViewController = [(DCDocumentCameraRemoteViewController *)self publicViewController];
+  [publicViewController didFinishWithDocumentInfoCollection:collectionCopy];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(DCDocumentCameraRemoteViewController *)self publicViewController];
-  [v5 didFailWithError:v4];
+  errorCopy = error;
+  publicViewController = [(DCDocumentCameraRemoteViewController *)self publicViewController];
+  [publicViewController didFailWithError:errorCopy];
 }
 
 - (DCDocumentCameraPublicViewController)publicViewController

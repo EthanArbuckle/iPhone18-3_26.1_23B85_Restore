@@ -1,42 +1,42 @@
 @interface HKCloudSyncControl
 + (id)taskIdentifier;
-- (HKCloudSyncControl)initWithHealthStore:(id)a3;
+- (HKCloudSyncControl)initWithHealthStore:(id)store;
 - (id)defaultChangesSyncRequestForWatch;
-- (void)accountConfigurationDidChangeWithCompletion:(id)a3;
-- (void)cloudSyncEntityVersions:(id)a3;
-- (void)cloudSyncProtocolVersion:(id)a3;
-- (void)disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)a3;
-- (void)disableCloudSyncAndDeleteAllCloudDataWithProgress:(id)a3 completion:(id)a4;
-- (void)disableCloudSyncWithCompletion:(id)a3;
-- (void)enableCloudSyncWithCompletion:(id)a3;
-- (void)fetchCloudDescriptionWithProgress:(id)a3 useDescriptionForLogs:(BOOL)a4 prettyPrinted:(BOOL)a5 updateCacheAndPrepareForSync:(BOOL)a6 completion:(id)a7;
-- (void)fetchCloudSyncProgress:(id)a3 completion:(id)a4;
-- (void)fetchCloudSyncRequiredWithCompletion:(id)a3;
-- (void)fetchCloudSyncStatusWithCompletion:(id)a3;
-- (void)forceCloudResetWithProgress:(id)a3 completion:(id)a4;
-- (void)forceCloudSyncDataUploadForProfileWithCompletion:(id)a3;
-- (void)forceCloudSyncWithOptions:(unint64_t)a3 progress:(id)a4 completion:(id)a5;
-- (void)forceCloudSyncWithOptions:(unint64_t)a3 reason:(int64_t)a4 completion:(id)a5;
-- (void)oldestSampleStartDateInHealthDatabaseWithCompletion:(id)a3;
-- (void)recordsToCreate:(id)a3 recordsToDelete:(id)a4 completion:(id)a5;
-- (void)requestDataRefreshWithCompletion:(id)a3;
-- (void)syncWithRequest:(id)a3 reason:(id)a4 completion:(id)a5;
+- (void)accountConfigurationDidChangeWithCompletion:(id)completion;
+- (void)cloudSyncEntityVersions:(id)versions;
+- (void)cloudSyncProtocolVersion:(id)version;
+- (void)disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)completion;
+- (void)disableCloudSyncAndDeleteAllCloudDataWithProgress:(id)progress completion:(id)completion;
+- (void)disableCloudSyncWithCompletion:(id)completion;
+- (void)enableCloudSyncWithCompletion:(id)completion;
+- (void)fetchCloudDescriptionWithProgress:(id)progress useDescriptionForLogs:(BOOL)logs prettyPrinted:(BOOL)printed updateCacheAndPrepareForSync:(BOOL)sync completion:(id)completion;
+- (void)fetchCloudSyncProgress:(id)progress completion:(id)completion;
+- (void)fetchCloudSyncRequiredWithCompletion:(id)completion;
+- (void)fetchCloudSyncStatusWithCompletion:(id)completion;
+- (void)forceCloudResetWithProgress:(id)progress completion:(id)completion;
+- (void)forceCloudSyncDataUploadForProfileWithCompletion:(id)completion;
+- (void)forceCloudSyncWithOptions:(unint64_t)options progress:(id)progress completion:(id)completion;
+- (void)forceCloudSyncWithOptions:(unint64_t)options reason:(int64_t)reason completion:(id)completion;
+- (void)oldestSampleStartDateInHealthDatabaseWithCompletion:(id)completion;
+- (void)recordsToCreate:(id)create recordsToDelete:(id)delete completion:(id)completion;
+- (void)requestDataRefreshWithCompletion:(id)completion;
+- (void)syncWithRequest:(id)request reason:(id)reason completion:(id)completion;
 @end
 
 @implementation HKCloudSyncControl
 
-- (HKCloudSyncControl)initWithHealthStore:(id)a3
+- (HKCloudSyncControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKCloudSyncControl;
   v5 = [(HKCloudSyncControl *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -62,25 +62,25 @@
   return v4;
 }
 
-- (void)syncWithRequest:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)syncWithRequest:(id)request reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  requestCopy = request;
+  reasonCopy = reason;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl syncWithRequest:reason:completion:];
   }
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __56__HKCloudSyncControl_syncWithRequest_reason_completion___block_invoke;
   v18[3] = &unk_1E73807F0;
-  v19 = v8;
-  v20 = v9;
+  v19 = requestCopy;
+  v20 = reasonCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -88,28 +88,28 @@
   v16[3] = &unk_1E7376960;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = reasonCopy;
+  v15 = requestCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (void)forceCloudSyncWithOptions:(unint64_t)a3 reason:(int64_t)a4 completion:(id)a5
+- (void)forceCloudSyncWithOptions:(unint64_t)options reason:(int64_t)reason completion:(id)completion
 {
-  v8 = a5;
-  if (!v8)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl forceCloudSyncWithOptions:reason:completion:];
   }
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__HKCloudSyncControl_forceCloudSyncWithOptions_reason_completion___block_invoke;
   v14[3] = &unk_1E7380818;
-  v16 = a3;
-  v17 = a4;
+  optionsCopy = options;
+  reasonCopy = reason;
   v15 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -120,15 +120,15 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)forceCloudSyncDataUploadForProfileWithCompletion:(id)a3
+- (void)forceCloudSyncDataUploadForProfileWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl forceCloudSyncDataUploadForProfileWithCompletion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -145,15 +145,15 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)fetchCloudSyncRequiredWithCompletion:(id)a3
+- (void)fetchCloudSyncRequiredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__HKCloudSyncControl_fetchCloudSyncRequiredWithCompletion___block_invoke;
   v6[3] = &unk_1E7380868;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HKCloudSyncControl *)self fetchCloudSyncStatusWithCompletion:v6];
 }
 
@@ -181,10 +181,10 @@ void __59__HKCloudSyncControl_fetchCloudSyncRequiredWithCompletion___block_invok
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCloudSyncStatusWithCompletion:(id)a3
+- (void)fetchCloudSyncStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl fetchCloudSyncStatusWithCompletion:];
   }
@@ -194,7 +194,7 @@ void __59__HKCloudSyncControl_fetchCloudSyncRequiredWithCompletion___block_invok
   aBlock[2] = __57__HKCloudSyncControl_fetchCloudSyncStatusWithCompletion___block_invoke;
   aBlock[3] = &unk_1E73808B8;
   aBlock[4] = self;
-  v13 = v4;
+  v13 = completionCopy;
   v5 = _Block_copy(aBlock);
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -234,12 +234,12 @@ void __57__HKCloudSyncControl_fetchCloudSyncStatusWithCompletion___block_invoke(
   dispatch_async(v14, block);
 }
 
-- (void)fetchCloudSyncProgress:(id)a3 completion:(id)a4
+- (void)fetchCloudSyncProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  progressCopy = progress;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!progressCopy)
   {
     [HKCloudSyncControl fetchCloudSyncProgress:completion:];
     if (v8)
@@ -252,13 +252,13 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:v6];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:progressCopy];
 
   v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
 
@@ -293,25 +293,25 @@ uint64_t __56__HKCloudSyncControl_fetchCloudSyncProgress_completion___block_invo
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)forceCloudSyncWithOptions:(unint64_t)a3 progress:(id)a4 completion:(id)a5
+- (void)forceCloudSyncWithOptions:(unint64_t)options progress:(id)progress completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  progressCopy = progress;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl forceCloudSyncWithOptions:progress:completion:];
   }
 
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:v8];
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:progressCopy];
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v9];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__HKCloudSyncControl_forceCloudSyncWithOptions_progress_completion___block_invoke;
   v17[3] = &unk_1E7380908;
-  v20 = a3;
+  optionsCopy = options;
   v18 = v11;
   v19 = v10;
   v15[0] = MEMORY[0x1E69E9820];
@@ -338,18 +338,18 @@ uint64_t __68__HKCloudSyncControl_forceCloudSyncWithOptions_progress_completion_
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)forceCloudResetWithProgress:(id)a3 completion:(id)a4
+- (void)forceCloudResetWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  progressCopy = progress;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl forceCloudResetWithProgress:completion:];
   }
 
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:v6];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:progressCopy];
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
@@ -382,27 +382,27 @@ uint64_t __61__HKCloudSyncControl_forceCloudResetWithProgress_completion___block
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)fetchCloudDescriptionWithProgress:(id)a3 useDescriptionForLogs:(BOOL)a4 prettyPrinted:(BOOL)a5 updateCacheAndPrepareForSync:(BOOL)a6 completion:(id)a7
+- (void)fetchCloudDescriptionWithProgress:(id)progress useDescriptionForLogs:(BOOL)logs prettyPrinted:(BOOL)printed updateCacheAndPrepareForSync:(BOOL)sync completion:(id)completion
 {
-  v12 = a3;
-  v13 = a7;
-  if (!v13)
+  progressCopy = progress;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl fetchCloudDescriptionWithProgress:useDescriptionForLogs:prettyPrinted:updateCacheAndPrepareForSync:completion:];
   }
 
-  v14 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:v12];
+  v14 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:progressCopy];
 
-  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v13];
+  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __132__HKCloudSyncControl_fetchCloudDescriptionWithProgress_useDescriptionForLogs_prettyPrinted_updateCacheAndPrepareForSync_completion___block_invoke;
   v21[3] = &unk_1E7380930;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
+  logsCopy = logs;
+  printedCopy = printed;
+  syncCopy = sync;
   v22 = v15;
   v23 = v14;
   v19[0] = MEMORY[0x1E69E9820];
@@ -429,25 +429,25 @@ uint64_t __132__HKCloudSyncControl_fetchCloudDescriptionWithProgress_useDescript
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)recordsToCreate:(id)a3 recordsToDelete:(id)a4 completion:(id)a5
+- (void)recordsToCreate:(id)create recordsToDelete:(id)delete completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  createCopy = create;
+  deleteCopy = delete;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl recordsToCreate:recordsToDelete:completion:];
   }
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __65__HKCloudSyncControl_recordsToCreate_recordsToDelete_completion___block_invoke;
   v18[3] = &unk_1E73807F0;
-  v19 = v8;
-  v20 = v9;
+  v19 = createCopy;
+  v20 = deleteCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -455,23 +455,23 @@ uint64_t __132__HKCloudSyncControl_fetchCloudDescriptionWithProgress_useDescript
   v16[3] = &unk_1E7376960;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = deleteCopy;
+  v15 = createCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (void)disableCloudSyncAndDeleteAllCloudDataWithProgress:(id)a3 completion:(id)a4
+- (void)disableCloudSyncAndDeleteAllCloudDataWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  progressCopy = progress;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl disableCloudSyncAndDeleteAllCloudDataWithProgress:completion:];
   }
 
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:v6];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueProgressHandlerWithHandler:progressCopy];
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
@@ -504,15 +504,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)disableCloudSyncWithCompletion:(id)a3
+- (void)disableCloudSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl disableCloudSyncWithCompletion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -529,15 +529,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)enableCloudSyncWithCompletion:(id)a3
+- (void)enableCloudSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl enableCloudSyncWithCompletion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -554,15 +554,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)a3
+- (void)disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl disableCloudSyncAndDeleteAllCloudDataWithCompletion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -579,15 +579,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)accountConfigurationDidChangeWithCompletion:(id)a3
+- (void)accountConfigurationDidChangeWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl accountConfigurationDidChangeWithCompletion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -604,15 +604,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)oldestSampleStartDateInHealthDatabaseWithCompletion:(id)a3
+- (void)oldestSampleStartDateInHealthDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncControl oldestSampleStartDateInHealthDatabaseWithCompletion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -629,15 +629,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)cloudSyncProtocolVersion:(id)a3
+- (void)cloudSyncProtocolVersion:(id)version
 {
-  v4 = a3;
-  if (!v4)
+  versionCopy = version;
+  if (!versionCopy)
   {
     [HKCloudSyncControl cloudSyncProtocolVersion:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:versionCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -654,15 +654,15 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)cloudSyncEntityVersions:(id)a3
+- (void)cloudSyncEntityVersions:(id)versions
 {
-  v4 = a3;
-  if (!v4)
+  versionsCopy = versions;
+  if (!versionsCopy)
   {
     [HKCloudSyncControl cloudSyncEntityVersions:];
   }
 
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:versionsCopy];
 
   proxyProvider = self->_proxyProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -679,10 +679,10 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)requestDataRefreshWithCompletion:(id)a3
+- (void)requestDataRefreshWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_INFO))
@@ -690,13 +690,13 @@ uint64_t __83__HKCloudSyncControl_disableCloudSyncAndDeleteAllCloudDataWithProgr
     v7 = v6;
     v8 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v8;
     _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_INFO, "%{public}@ %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v5];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];

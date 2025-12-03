@@ -1,43 +1,43 @@
 @interface PUSlideshowViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (PUSlideshowViewController)initWithSession:(id)a3 mode:(unint64_t)a4;
+- (PUSlideshowViewController)initWithSession:(id)session mode:(unint64_t)mode;
 - (PUSlideshowViewControllerDelegate)delegate;
-- (id)ancestorViewOfInstance:(id)a3;
-- (id)contentViewControllerForAirPlayController:(id)a3;
+- (id)ancestorViewOfInstance:(id)instance;
+- (id)contentViewControllerForAirPlayController:(id)controller;
 - (id)visibleAssets;
-- (void)_airplayButtonTapped:(id)a3;
+- (void)_airplayButtonTapped:(id)tapped;
 - (void)_dismissSlideshow;
-- (void)_doneButtonTapped:(id)a3;
-- (void)_handleAppWillResignActiveNotification:(id)a3;
+- (void)_doneButtonTapped:(id)tapped;
+- (void)_handleAppWillResignActiveNotification:(id)notification;
 - (void)_handleStateChange;
-- (void)_installPresentationController:(id)a3;
+- (void)_installPresentationController:(id)controller;
 - (void)_invalidateSpec;
-- (void)_playerStateButtonTapped:(id)a3;
+- (void)_playerStateButtonTapped:(id)tapped;
 - (void)_removeCurrentPresentationController;
 - (void)_removeSlideshowSettingsViewController;
-- (void)_settingsButtonTapped:(id)a3;
+- (void)_settingsButtonTapped:(id)tapped;
 - (void)_setupChromeBar;
 - (void)_setupTapGesture;
-- (void)_tapGesture:(id)a3;
+- (void)_tapGesture:(id)gesture;
 - (void)_updateAirplayButton;
 - (void)_updateIfNeeded;
 - (void)_updatePlaceholder;
 - (void)_updatePlayerButton;
 - (void)_updateRouteObservation;
 - (void)_updateSpecIfNeeded;
-- (void)airPlayControllerRouteAvailabilityChanged:(id)a3;
-- (void)airPlayControllerScreenAvailabilityChanged:(id)a3;
+- (void)airPlayControllerRouteAvailabilityChanged:(id)changed;
+- (void)airPlayControllerScreenAvailabilityChanged:(id)changed;
 - (void)couchPotatoPlaybackFinished;
 - (void)dealloc;
 - (void)finishSession;
 - (void)loadView;
-- (void)slideshowSession:(id)a3 stopDisplayingPresentationViewController:(id)a4;
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)slideshowSession:(id)session stopDisplayingPresentationViewController:(id)controller;
+- (void)viewControllerSpec:(id)spec didChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewModel:(id)model didChange:(id)change;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -50,27 +50,27 @@
   return WeakRetained;
 }
 
-- (void)slideshowSession:(id)a3 stopDisplayingPresentationViewController:(id)a4
+- (void)slideshowSession:(id)session stopDisplayingPresentationViewController:(id)controller
 {
-  if (self->_currentPresentationController == a4)
+  if (self->_currentPresentationController == controller)
   {
     [(PUSlideshowViewController *)self _removeCurrentPresentationController];
   }
 }
 
-- (void)airPlayControllerRouteAvailabilityChanged:(id)a3
+- (void)airPlayControllerRouteAvailabilityChanged:(id)changed
 {
   [(PUSlideshowViewController *)self _invalidateSpec];
 
   [(PUSlideshowViewController *)self _updateIfNeeded];
 }
 
-- (void)airPlayControllerScreenAvailabilityChanged:(id)a3
+- (void)airPlayControllerScreenAvailabilityChanged:(id)changed
 {
-  if (![a3 screenAvailability])
+  if (![changed screenAvailability])
   {
-    v4 = [(PUSlideshowViewController *)self _secondScreenBrowser];
-    [v4 finishSession];
+    _secondScreenBrowser = [(PUSlideshowViewController *)self _secondScreenBrowser];
+    [_secondScreenBrowser finishSession];
 
     [(PUSlideshowViewController *)self _setSecondScreenBrowser:0];
   }
@@ -80,57 +80,57 @@
   [(PUSlideshowViewController *)self _updateIfNeeded];
 }
 
-- (id)contentViewControllerForAirPlayController:(id)a3
+- (id)contentViewControllerForAirPlayController:(id)controller
 {
-  v4 = [(PUSlideshowViewController *)self _secondScreenBrowser];
-  if (!v4)
+  _secondScreenBrowser = [(PUSlideshowViewController *)self _secondScreenBrowser];
+  if (!_secondScreenBrowser)
   {
-    v5 = [(PUSlideshowViewController *)self session];
-    v4 = [[PUSlideshowViewController alloc] initWithSession:v5 mode:1];
-    [(PUSlideshowViewController *)self _setSecondScreenBrowser:v4];
+    session = [(PUSlideshowViewController *)self session];
+    _secondScreenBrowser = [[PUSlideshowViewController alloc] initWithSession:session mode:1];
+    [(PUSlideshowViewController *)self _setSecondScreenBrowser:_secondScreenBrowser];
   }
 
-  return v4;
+  return _secondScreenBrowser;
 }
 
 - (void)couchPotatoPlaybackFinished
 {
-  v2 = [(PUSlideshowViewController *)self session];
-  v3 = [v2 viewModel];
+  session = [(PUSlideshowViewController *)self session];
+  viewModel = [session viewModel];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__PUSlideshowViewController_couchPotatoPlaybackFinished__block_invoke;
   v5[3] = &unk_1E7B80DD0;
-  v6 = v3;
-  v4 = v3;
+  v6 = viewModel;
+  v4 = viewModel;
   [v4 performChanges:v5];
 }
 
-- (id)ancestorViewOfInstance:(id)a3
+- (id)ancestorViewOfInstance:(id)instance
 {
-  v4 = a3;
-  v5 = [(PUSlideshowViewController *)self view];
-  v6 = [v5 superview];
+  instanceCopy = instance;
+  view = [(PUSlideshowViewController *)self view];
+  superview = [view superview];
 
-  if (v6 && v6 != v4)
+  if (superview && superview != instanceCopy)
   {
-    v7 = [v6 ancestorViewOfInstance:v4];
+    v7 = [superview ancestorViewOfInstance:instanceCopy];
 
-    v6 = v7;
+    superview = v7;
   }
 
-  return v6;
+  return superview;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_tapGestureRecognizer == a3 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_tapGestureRecognizer == recognizer && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    v8 = [v6 view];
-    v9 = [(PUSlideshowViewController *)self view];
-    v10 = [v8 ancestorViewOfInstance:v9];
+    view = [gestureRecognizerCopy view];
+    view2 = [(PUSlideshowViewController *)self view];
+    v10 = [view ancestorViewOfInstance:view2];
     v7 = v10 != 0;
   }
 
@@ -142,20 +142,20 @@
   return v7;
 }
 
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4
+- (void)viewControllerSpec:(id)spec didChange:(id)change
 {
-  v8 = a3;
-  v6 = a4;
-  if (self->_spec == v8)
+  specCopy = spec;
+  changeCopy = change;
+  if (self->_spec == specCopy)
   {
-    if ([v6 shouldShowChromeBarsChanged])
+    if ([changeCopy shouldShowChromeBarsChanged])
     {
       [(PUSlideshowViewController *)self _updateChromeVisibility];
-      if (![(PUSlideshowViewControllerSpec *)v8 isChromeVisible])
+      if (![(PUSlideshowViewControllerSpec *)specCopy isChromeVisible])
       {
-        v7 = [(PUSlideshowViewController *)self _slideshowSettingsViewController];
+        _slideshowSettingsViewController = [(PUSlideshowViewController *)self _slideshowSettingsViewController];
 
-        if (v7)
+        if (_slideshowSettingsViewController)
         {
           [(PUSlideshowViewController *)self _removeSlideshowSettingsViewController];
         }
@@ -164,17 +164,17 @@
       [(PUSlideshowViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
     }
 
-    if ([v6 shouldObserveAirplayRouteChanged])
+    if ([changeCopy shouldObserveAirplayRouteChanged])
     {
       [(PUSlideshowViewController *)self _updateRouteObservation];
     }
 
-    if ([v6 shouldShowAirplayButtonChanged])
+    if ([changeCopy shouldShowAirplayButtonChanged])
     {
       [(PUSlideshowViewController *)self _updateAirplayButton];
     }
 
-    if ([v6 shouldShowPlaceholderChanged])
+    if ([changeCopy shouldShowPlaceholderChanged])
     {
       [(PUSlideshowViewController *)self _updatePlaceholder];
     }
@@ -186,8 +186,8 @@
   if ([(PUSlideshowViewController *)self _needsUpdateSpec])
   {
     [(PUSlideshowViewController *)self _setNeedsUpdateSpec:0];
-    v3 = [(PUSlideshowSession *)self->_session viewModel];
-    v4 = [v3 wantsChromeVisible];
+    viewModel = [(PUSlideshowSession *)self->_session viewModel];
+    wantsChromeVisible = [viewModel wantsChromeVisible];
 
     v5 = +[PHAirPlayScreenController sharedInstance];
     v6 = [v5 screenAvailability] != 0;
@@ -201,7 +201,7 @@
     v10[2] = __48__PUSlideshowViewController__updateSpecIfNeeded__block_invoke;
     v10[3] = &unk_1E7B7FAF8;
     v10[4] = self;
-    v11 = v4;
+    v11 = wantsChromeVisible;
     v12 = v6;
     v13 = v8;
     [(PUViewControllerSpec *)spec performChanges:v10];
@@ -232,44 +232,44 @@ uint64_t __48__PUSlideshowViewController__updateSpecIfNeeded__block_invoke(uint6
     [(PUSlideshowViewController *)self _updateSpecIfNeeded];
     if ([(PUSlideshowViewController *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUSlideshowViewController.m" lineNumber:452 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowViewController.m" lineNumber:452 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
 - (void)_updatePlaceholder
 {
-  v3 = [(PUSlideshowViewControllerSpec *)self->_spec shouldShowPlaceholder];
-  v4 = [(PUSlideshowViewController *)self _slideshowPlaceholderView];
-  v5 = !v3;
-  if (v3 && !v4)
+  shouldShowPlaceholder = [(PUSlideshowViewControllerSpec *)self->_spec shouldShowPlaceholder];
+  _slideshowPlaceholderView = [(PUSlideshowViewController *)self _slideshowPlaceholderView];
+  v5 = !shouldShowPlaceholder;
+  if (shouldShowPlaceholder && !_slideshowPlaceholderView)
   {
     v6 = [[PHPlaceholderView alloc] initWithType:1];
-    v7 = [(PUSlideshowViewController *)self view];
-    [v7 bounds];
+    view = [(PUSlideshowViewController *)self view];
+    [view bounds];
     [(PHPlaceholderView *)v6 setFrame:?];
 
     [(PHPlaceholderView *)v6 setAutoresizingMask:18];
-    v8 = [(PUSlideshowViewController *)self view];
-    [v8 addSubview:v6];
+    view2 = [(PUSlideshowViewController *)self view];
+    [view2 addSubview:v6];
 
     v9 = v6;
 LABEL_8:
     [(PUSlideshowViewController *)self _setSlideshowPlaceHolderView:v6];
-    v4 = v9;
+    _slideshowPlaceholderView = v9;
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!_slideshowPlaceholderView)
   {
     v5 = 0;
   }
 
   if (v5 == 1)
   {
-    v9 = v4;
-    [(PHPlaceholderView *)v4 removeFromSuperview];
+    v9 = _slideshowPlaceholderView;
+    [(PHPlaceholderView *)_slideshowPlaceholderView removeFromSuperview];
     v6 = 0;
     goto LABEL_8;
   }
@@ -289,16 +289,16 @@ LABEL_9:
     v4 = 0;
   }
 
-  v3 = [(PUSlideshowViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4 animated:1];
+  navigationItem = [(PUSlideshowViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4 animated:1];
 }
 
 - (void)_updateRouteObservation
 {
-  v3 = [(PUSlideshowViewControllerSpec *)self->_spec shouldObserveAirplayRoute];
+  shouldObserveAirplayRoute = [(PUSlideshowViewControllerSpec *)self->_spec shouldObserveAirplayRoute];
   v4 = +[PHAirPlayScreenController sharedInstance];
   v5 = v4;
-  if (v3)
+  if (shouldObserveAirplayRoute)
   {
     [v4 registerRouteObserver:self];
   }
@@ -315,8 +315,8 @@ LABEL_9:
 
 - (void)_updatePlayerButton
 {
-  v7 = [(PUSlideshowSession *)self->_session viewModel];
-  if ([v7 currentState] == 2)
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
+  if ([viewModel currentState] == 2)
   {
     v3 = 18;
   }
@@ -327,29 +327,29 @@ LABEL_9:
   }
 
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:v3 target:self action:sel__playerStateButtonTapped_];
-  v5 = [(PUSlideshowViewController *)self toolbarItems];
-  v6 = [v5 mutableCopy];
+  toolbarItems = [(PUSlideshowViewController *)self toolbarItems];
+  v6 = [toolbarItems mutableCopy];
 
   [v6 replaceObjectAtIndex:self->_playerStateButtonItemIndex withObject:v4];
   [(PUSlideshowViewController *)self setToolbarItems:v6 animated:1];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a4;
+  changeCopy = change;
   session = self->_session;
-  v7 = a3;
-  v8 = [(PUSlideshowSession *)session viewModel];
+  modelCopy = model;
+  viewModel = [(PUSlideshowSession *)session viewModel];
 
-  if (v8 == v7)
+  if (viewModel == modelCopy)
   {
-    if ([v9 wantsChromeVisibleDidChange])
+    if ([changeCopy wantsChromeVisibleDidChange])
     {
       [(PUSlideshowViewController *)self _invalidateSpec];
       [(PUSlideshowViewController *)self _updateIfNeeded];
     }
 
-    if ([v9 currentStateDidChange])
+    if ([changeCopy currentStateDidChange])
     {
       [(PUSlideshowViewController *)self _handleStateChange];
     }
@@ -358,11 +358,11 @@ LABEL_9:
 
 - (void)_removeSlideshowSettingsViewController
 {
-  v3 = [(PUSlideshowViewController *)self presentedViewController];
-  v4 = [(PUSlideshowViewController *)self _slideshowSettingsViewController];
+  presentedViewController = [(PUSlideshowViewController *)self presentedViewController];
+  _slideshowSettingsViewController = [(PUSlideshowViewController *)self _slideshowSettingsViewController];
   v5 = _removeSlideshowSettingsViewController_isDismissing;
 
-  if (v3 == v4 && (v5 & 1) == 0)
+  if (presentedViewController == _slideshowSettingsViewController && (v5 & 1) == 0)
   {
     _removeSlideshowSettingsViewController_isDismissing = 1;
 
@@ -375,13 +375,13 @@ LABEL_9:
   currentPresentationController = self->_currentPresentationController;
   if (currentPresentationController)
   {
-    v4 = [(OKPresentationViewController *)currentPresentationController parentViewController];
+    parentViewController = [(OKPresentationViewController *)currentPresentationController parentViewController];
 
-    if (v4 == self)
+    if (parentViewController == self)
     {
       [(OKPresentationViewController *)self->_currentPresentationController willMoveToParentViewController:0];
-      v5 = [(OKPresentationViewController *)self->_currentPresentationController view];
-      [v5 removeFromSuperview];
+      view = [(OKPresentationViewController *)self->_currentPresentationController view];
+      [view removeFromSuperview];
 
       [(OKPresentationViewController *)self->_currentPresentationController removeFromParentViewController];
       v6 = self->_currentPresentationController;
@@ -395,20 +395,20 @@ LABEL_9:
   v36.receiver = self;
   v36.super_class = PUSlideshowViewController;
   [(PUSlideshowViewController *)&v36 viewWillLayoutSubviews];
-  v3 = [(PUSlideshowSession *)self->_session settingsViewModel];
-  v4 = [v3 preset];
+  settingsViewModel = [(PUSlideshowSession *)self->_session settingsViewModel];
+  preset = [settingsViewModel preset];
 
-  v5 = [v4 pluginIdentifier];
-  v6 = [v5 containsString:@"magazine"];
+  pluginIdentifier = [preset pluginIdentifier];
+  v6 = [pluginIdentifier containsString:@"magazine"];
 
   if (v6)
   {
-    v7 = [(PUSlideshowViewController *)self view];
-    v8 = [v7 window];
-    v9 = v8;
-    if (v8)
+    view = [(PUSlideshowViewController *)self view];
+    window = [view window];
+    v9 = window;
+    if (window)
     {
-      [v8 px_peripheryInsets];
+      [window px_peripheryInsets];
       v34 = v11;
       v35 = v10;
       v32 = v13;
@@ -417,9 +417,9 @@ LABEL_9:
 
     else
     {
-      v14 = [MEMORY[0x1E69DC668] sharedApplication];
-      v15 = [v14 px_firstKeyWindow];
-      [v15 px_peripheryInsets];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+      [px_firstKeyWindow px_peripheryInsets];
       v34 = v17;
       v35 = v16;
       v32 = v19;
@@ -432,46 +432,46 @@ LABEL_9:
     v21.f64[1] = v33;
     if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v21, *MEMORY[0x1E69DDCE0]), vceqq_f64(v20, *(MEMORY[0x1E69DDCE0] + 16))))) & 1) == 0)
     {
-      v22 = [(PUSlideshowViewController *)self view];
-      [v22 bounds];
+      view2 = [(PUSlideshowViewController *)self view];
+      [view2 bounds];
       v24 = v33 + v23;
       v26 = v35 + v25;
       v28 = v27 - (v33 + v32);
       v30 = v29 - (v35 + v34);
 
-      v31 = [(OKPresentationViewController *)self->_currentPresentationController view];
-      [v31 setBounds:{v24, v26, v28, v30}];
+      view3 = [(OKPresentationViewController *)self->_currentPresentationController view];
+      [view3 setBounds:{v24, v26, v28, v30}];
     }
   }
 }
 
-- (void)_installPresentationController:(id)a3
+- (void)_installPresentationController:(id)controller
 {
-  v5 = a3;
-  if (v5 && self->_currentPresentationController != v5)
+  controllerCopy = controller;
+  if (controllerCopy && self->_currentPresentationController != controllerCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_currentPresentationController, a3);
+    v13 = controllerCopy;
+    objc_storeStrong(&self->_currentPresentationController, controller);
     [(OKPresentationViewController *)self->_currentPresentationController setDelegate:self];
     [(PUSlideshowViewController *)self addChildViewController:self->_currentPresentationController];
-    v6 = [(OKPresentationViewController *)self->_currentPresentationController view];
-    v7 = [(PUSlideshowViewController *)self view];
-    [v7 bounds];
-    [v6 setFrame:?];
+    view = [(OKPresentationViewController *)self->_currentPresentationController view];
+    view2 = [(PUSlideshowViewController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
 
-    v8 = [(OKPresentationViewController *)self->_currentPresentationController view];
-    [v8 setAutoresizingMask:18];
+    view3 = [(OKPresentationViewController *)self->_currentPresentationController view];
+    [view3 setAutoresizingMask:18];
 
-    v9 = [(OKPresentationViewController *)self->_currentPresentationController view];
-    v10 = [MEMORY[0x1E69DC888] blackColor];
-    [v9 setBackgroundColor:v10];
+    view4 = [(OKPresentationViewController *)self->_currentPresentationController view];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [view4 setBackgroundColor:blackColor];
 
-    v11 = [(PUSlideshowViewController *)self view];
-    v12 = [(OKPresentationViewController *)self->_currentPresentationController view];
-    [v11 addSubview:v12];
+    view5 = [(PUSlideshowViewController *)self view];
+    view6 = [(OKPresentationViewController *)self->_currentPresentationController view];
+    [view5 addSubview:view6];
 
     [(OKPresentationViewController *)self->_currentPresentationController didMoveToParentViewController:self];
-    v5 = v13;
+    controllerCopy = v13;
   }
 }
 
@@ -483,9 +483,9 @@ LABEL_9:
   aBlock[3] = &unk_1E7B80DD0;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PUSlideshowViewController *)self presentedViewController];
+  presentedViewController = [(PUSlideshowViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -521,34 +521,34 @@ uint64_t __46__PUSlideshowViewController__dismissSlideshow__block_invoke(uint64_
 
 - (void)_handleStateChange
 {
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
-  v4 = [v3 currentState];
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
+  currentState = [viewModel currentState];
   [(PUSlideshowViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
-  if (v4 <= 3)
+  if (currentState <= 3)
   {
-    if (v4 == 1)
+    if (currentState == 1)
     {
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __47__PUSlideshowViewController__handleStateChange__block_invoke;
       v16[3] = &unk_1E7B80DD0;
-      v17 = v3;
+      v17 = viewModel;
       [v17 performChanges:v16];
       [(PUSlideshowSession *)self->_session updatePresentationViewController];
-      v6 = [(PUSlideshowSession *)self->_session viewModel];
+      viewModel2 = [(PUSlideshowSession *)self->_session viewModel];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __47__PUSlideshowViewController__handleStateChange__block_invoke_2;
       v14[3] = &unk_1E7B80DD0;
-      v15 = v6;
-      v7 = v6;
+      v15 = viewModel2;
+      v7 = viewModel2;
       [v7 performChanges:v14];
 
       v5 = v17;
       goto LABEL_14;
     }
 
-    if (v4 == 2)
+    if (currentState == 2)
     {
       [(OKPresentationViewController *)self->_currentPresentationController instantPlay];
       [(PUSlideshowViewController *)self _updatePlayerButton];
@@ -556,13 +556,13 @@ uint64_t __46__PUSlideshowViewController__dismissSlideshow__block_invoke(uint64_
       v12[1] = 3221225472;
       v12[2] = __47__PUSlideshowViewController__handleStateChange__block_invoke_3;
       v12[3] = &unk_1E7B80DD0;
-      v13 = v3;
+      v13 = viewModel;
       [v13 performChanges:v12];
       v5 = v13;
       goto LABEL_14;
     }
 
-    if (v4 != 3)
+    if (currentState != 3)
     {
       goto LABEL_15;
     }
@@ -574,7 +574,7 @@ LABEL_10:
     v10[1] = 3221225472;
     v10[2] = __47__PUSlideshowViewController__handleStateChange__block_invoke_4;
     v10[3] = &unk_1E7B80DD0;
-    v11 = v3;
+    v11 = viewModel;
     [v11 performChanges:v10];
     v5 = v11;
 LABEL_14:
@@ -582,14 +582,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  switch(v4)
+  switch(currentState)
   {
     case 4:
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __47__PUSlideshowViewController__handleStateChange__block_invoke_5;
       v8[3] = &unk_1E7B80DD0;
-      v9 = v3;
+      v9 = viewModel;
       [v9 performChanges:v8];
       v5 = v9;
       goto LABEL_14;
@@ -603,28 +603,28 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_handleAppWillResignActiveNotification:(id)a3
+- (void)_handleAppWillResignActiveNotification:(id)notification
 {
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__PUSlideshowViewController__handleAppWillResignActiveNotification___block_invoke;
   v5[3] = &unk_1E7B80DD0;
-  v6 = v3;
-  v4 = v3;
+  v6 = viewModel;
+  v4 = viewModel;
   [v4 performChanges:v5];
 }
 
-- (void)_settingsButtonTapped:(id)a3
+- (void)_settingsButtonTapped:(id)tapped
 {
-  v9 = a3;
-  v4 = [(PUSlideshowViewController *)self _slideshowSettingsViewController];
-  if (v4)
+  tappedCopy = tapped;
+  _slideshowSettingsViewController = [(PUSlideshowViewController *)self _slideshowSettingsViewController];
+  if (_slideshowSettingsViewController)
   {
-    v5 = v4;
-    v6 = [(PUSlideshowViewController *)self presentedViewController];
+    v5 = _slideshowSettingsViewController;
+    presentedViewController = [(PUSlideshowViewController *)self presentedViewController];
 
-    if (v6 == v5)
+    if (presentedViewController == v5)
     {
       goto LABEL_8;
     }
@@ -639,11 +639,11 @@ LABEL_15:
     [(PUSlideshowViewController *)self _setSlideshowSettingsViewController:v5];
   }
 
-  v8 = [v5 popoverPresentationController];
+  popoverPresentationController = [v5 popoverPresentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setBarButtonItem:v9];
+    [popoverPresentationController setBarButtonItem:tappedCopy];
   }
 
   [(PUSlideshowViewController *)self presentViewController:v5 animated:1 completion:0];
@@ -651,80 +651,80 @@ LABEL_15:
 LABEL_8:
 }
 
-- (void)_airplayButtonTapped:(id)a3
+- (void)_airplayButtonTapped:(id)tapped
 {
   v10 = objc_alloc_init(MEMORY[0x1E69DD6A8]);
-  v4 = [v10 popoverPresentationController];
-  v5 = [(PUSlideshowViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v4 setBarButtonItem:v6];
+  popoverPresentationController = [v10 popoverPresentationController];
+  navigationItem = [(PUSlideshowViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [popoverPresentationController setBarButtonItem:rightBarButtonItem];
 
-  v7 = [v10 popoverPresentationController];
-  v8 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [v7 setBackgroundColor:v8];
+  popoverPresentationController2 = [v10 popoverPresentationController];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [popoverPresentationController2 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
   [(PUSlideshowViewController *)self presentViewController:v10 animated:1 completion:0];
   v9 = +[PHAirPlayScreenController sharedInstance];
   [v9 notifyDidPresentAirPlayRoutesFromSlideshow];
 }
 
-- (void)_doneButtonTapped:(id)a3
+- (void)_doneButtonTapped:(id)tapped
 {
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__PUSlideshowViewController__doneButtonTapped___block_invoke;
   v5[3] = &unk_1E7B80DD0;
-  v6 = v3;
-  v4 = v3;
+  v6 = viewModel;
+  v4 = viewModel;
   [v4 performChanges:v5];
 }
 
-- (void)_tapGesture:(id)a3
+- (void)_tapGesture:(id)gesture
 {
   if (![(PUSlideshowViewControllerSpec *)self->_spec isAirplayScreenAvailable])
   {
-    v4 = [(PUSlideshowSession *)self->_session viewModel];
-    v5 = [v4 wantsChromeVisible];
+    viewModel = [(PUSlideshowSession *)self->_session viewModel];
+    wantsChromeVisible = [viewModel wantsChromeVisible];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__PUSlideshowViewController__tapGesture___block_invoke;
     v7[3] = &unk_1E7B7FF98;
-    v8 = v4;
-    v9 = v5;
-    v6 = v4;
+    v8 = viewModel;
+    v9 = wantsChromeVisible;
+    v6 = viewModel;
     [v6 performChanges:v7];
   }
 }
 
-- (void)_playerStateButtonTapped:(id)a3
+- (void)_playerStateButtonTapped:(id)tapped
 {
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
-  v4 = [v3 currentState];
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
+  currentState = [viewModel currentState];
   v5 = 2;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PUSlideshowViewController__playerStateButtonTapped___block_invoke;
   v7[3] = &unk_1E7B7FF70;
-  if (v4 == 2)
+  if (currentState == 2)
   {
     v5 = 3;
   }
 
-  v8 = v3;
+  v8 = viewModel;
   v9 = v5;
-  v6 = v3;
+  v6 = viewModel;
   [v6 performChanges:v7];
 }
 
 - (id)visibleAssets
 {
-  v2 = [(PUSlideshowSession *)self->_session presentationViewController];
-  v3 = [v2 visibleMediaObjects];
-  v4 = [v3 mutableCopy];
+  presentationViewController = [(PUSlideshowSession *)self->_session presentationViewController];
+  visibleMediaObjects = [presentationViewController visibleMediaObjects];
+  v4 = [visibleMediaObjects mutableCopy];
 
-  v5 = [MEMORY[0x1E695DFB0] null];
-  [v4 removeObjectIdenticalTo:v5];
+  null = [MEMORY[0x1E695DFB0] null];
+  [v4 removeObjectIdenticalTo:null];
 
   return v4;
 }
@@ -737,8 +737,8 @@ LABEL_8:
     [(UITapGestureRecognizer *)v3 setDelegate:self];
     [(UITapGestureRecognizer *)v3 setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)v3 setNumberOfTouchesRequired:1];
-    v4 = [(PUSlideshowViewController *)self view];
-    [v4 addGestureRecognizer:v3];
+    view = [(PUSlideshowViewController *)self view];
+    [view addGestureRecognizer:v3];
 
     tapGestureRecognizer = self->_tapGestureRecognizer;
     self->_tapGestureRecognizer = v3;
@@ -748,12 +748,12 @@ LABEL_8:
 - (void)_setupChromeBar
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PUSlideshowViewController *)self navigationItem];
+  navigationItem = [(PUSlideshowViewController *)self navigationItem];
   v4 = PULocalizedString(@"SLIDESHOW_TITLE");
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
-  v5 = [(PUSlideshowViewController *)self navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem2 = [(PUSlideshowViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
   v7 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -762,8 +762,8 @@ LABEL_8:
 
   v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:18 target:self action:sel__playerStateButtonTapped_];
   v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-  v12 = [(PUSlideshowViewController *)self navigationItem];
-  [v12 setLeftBarButtonItem:v6];
+  navigationItem3 = [(PUSlideshowViewController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:v6];
 
   v15[0] = v11;
   v15[1] = v10;
@@ -772,25 +772,25 @@ LABEL_8:
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:4];
   [(PUSlideshowViewController *)self setToolbarItems:v13];
 
-  v14 = [(PUSlideshowViewController *)self toolbarItems];
-  self->_playerStateButtonItemIndex = [v14 indexOfObject:v10];
+  toolbarItems = [(PUSlideshowViewController *)self toolbarItems];
+  self->_playerStateButtonItemIndex = [toolbarItems indexOfObject:v10];
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = self;
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
-  v4 = [v3 currentState];
-  LOBYTE(v2) = [(PUSlideshowViewControllerSpec *)v2->_spec shouldShowChromeBars];
+  selfCopy = self;
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
+  currentState = [viewModel currentState];
+  LOBYTE(selfCopy) = [(PUSlideshowViewControllerSpec *)selfCopy->_spec shouldShowChromeBars];
 
-  return (v4 == 2) & ~v2;
+  return (currentState == 2) & ~selfCopy;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PUSlideshowViewController;
-  [(PUSlideshowViewController *)&v5 viewDidAppear:a3];
+  [(PUSlideshowViewController *)&v5 viewDidAppear:appear];
   if ([(PUSlideshowViewControllerSpec *)self->_spec shouldRegisterToAirplay])
   {
     v4 = +[PHAirPlayScreenController sharedInstance];
@@ -806,9 +806,9 @@ LABEL_8:
   [(PUSlideshowViewController *)self _updateIfNeeded];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = PUSlideshowViewController;
   [(PUSlideshowViewController *)&v5 viewWillAppear:?];
@@ -817,14 +817,14 @@ LABEL_8:
     [(PUSlideshowSession *)self->_session registerSlideshowDisplayContext:self];
   }
 
-  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:v3];
+  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:appearCopy];
 }
 
 - (void)finishSession
 {
   [(PUSlideshowSession *)self->_session unregisterSlideshowDisplayContext:self];
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
-  [v3 unregisterChangeObserver:self];
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
+  [viewModel unregisterChangeObserver:self];
 
   [(PUViewControllerSpec *)self->_spec unregisterChangeObserver:self];
   if ([(PUSlideshowViewControllerSpec *)self->_spec shouldRegisterToAirplay])
@@ -838,8 +838,8 @@ LABEL_8:
 
   if ([(PUSlideshowViewControllerSpec *)self->_spec shouldPauseWhenAppResignsActive])
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x1E69DDBC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC8] object:0];
   }
 }
 
@@ -858,14 +858,14 @@ LABEL_8:
     [(PUSlideshowViewController *)self _setupTapGesture];
   }
 
-  v3 = [(PUSlideshowSession *)self->_session viewModel];
-  if (![v3 currentState])
+  viewModel = [(PUSlideshowSession *)self->_session viewModel];
+  if (![viewModel currentState])
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __40__PUSlideshowViewController_viewDidLoad__block_invoke;
     v4[3] = &unk_1E7B80DD0;
-    v5 = v3;
+    v5 = viewModel;
     [v5 performChanges:v4];
   }
 }
@@ -885,13 +885,13 @@ LABEL_8:
   [(PUSlideshowViewController *)&v3 dealloc];
 }
 
-- (PUSlideshowViewController)initWithSession:(id)a3 mode:(unint64_t)a4
+- (PUSlideshowViewController)initWithSession:(id)session mode:(unint64_t)mode
 {
-  v8 = a3;
-  if (!v8)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUSlideshowViewController.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"session"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowViewController.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"session"}];
   }
 
   v17.receiver = self;
@@ -900,20 +900,20 @@ LABEL_8:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    v10->_mode = a4;
-    v11 = [[PUSlideshowViewControllerSpec alloc] initWithMode:a4];
+    objc_storeStrong(&v9->_session, session);
+    v10->_mode = mode;
+    v11 = [[PUSlideshowViewControllerSpec alloc] initWithMode:mode];
     spec = v10->_spec;
     v10->_spec = v11;
 
     [(PUViewControllerSpec *)v10->_spec registerChangeObserver:v10];
-    v13 = [(PUSlideshowSession *)v10->_session viewModel];
-    [v13 registerChangeObserver:v10];
+    viewModel = [(PUSlideshowSession *)v10->_session viewModel];
+    [viewModel registerChangeObserver:v10];
 
     if ([(PUSlideshowViewControllerSpec *)v10->_spec shouldPauseWhenAppResignsActive])
     {
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 addObserver:v10 selector:sel__handleAppWillResignActiveNotification_ name:*MEMORY[0x1E69DDBC8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v10 selector:sel__handleAppWillResignActiveNotification_ name:*MEMORY[0x1E69DDBC8] object:0];
     }
   }
 

@@ -10,7 +10,7 @@
   if (!v3)
   {
     v18 = OBJC_IVAR___PSListController__specifiers;
-    v19 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(NSMutableArray);
     v25 = 0;
     v17 = [[FLFollowUpController alloc] initWithClientIdentifier:@"com.apple.Bridge"];
@@ -36,8 +36,8 @@
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
-          v11 = [v10 title];
-          v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0, v16];
+          title = [v10 title];
+          v12 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0, v16];
 
           [v12 setProperty:v10 forKey:@"FollowUpItemKey"];
           [v4 addObject:v12];
@@ -49,11 +49,11 @@
       while (v7);
     }
 
-    v13 = *&v19->BPSListController_opaque[v18];
-    *&v19->BPSListController_opaque[v18] = v4;
+    v13 = *&selfCopy->BPSListController_opaque[v18];
+    *&selfCopy->BPSListController_opaque[v18] = v4;
     v14 = v4;
 
-    v3 = *&v19->BPSListController_opaque[v18];
+    v3 = *&selfCopy->BPSListController_opaque[v18];
   }
 
   return v3;

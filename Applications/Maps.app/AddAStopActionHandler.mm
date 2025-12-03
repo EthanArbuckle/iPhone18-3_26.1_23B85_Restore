@@ -1,62 +1,62 @@
 @interface AddAStopActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation AddAStopActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  contextCopy = context;
   v7 = sub_100005610();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v5;
+    v20 = actionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Performing action: %@", &v19, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v5;
+    v8 = actionCopy;
     v9 = +[CarDisplayController sharedInstance];
-    v10 = [v9 isCarAppSceneHostingNavigation];
+    isCarAppSceneHostingNavigation = [v9 isCarAppSceneHostingNavigation];
 
-    if (v10)
+    if (isCarAppSceneHostingNavigation)
     {
       v11 = sub_100005610();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v8 mapItem];
-        v13 = [v12 name];
+        mapItem = [v8 mapItem];
+        name = [mapItem name];
         v19 = 138412290;
-        v20 = v13;
+        v20 = name;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CarDisplayController will detour to mapItem: %@", &v19, 0xCu);
       }
 
-      v14 = +[CarDisplayController sharedInstance];
-      v15 = [v8 mapItem];
-      [v14 detourToMapItem:v15];
+      appCoordinator = +[CarDisplayController sharedInstance];
+      mapItem2 = [v8 mapItem];
+      [appCoordinator detourToMapItem:mapItem2];
     }
 
     else
     {
-      v14 = [v6 appCoordinator];
+      appCoordinator = [contextCopy appCoordinator];
       v16 = sub_100005610();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v8 mapItem];
-        v18 = [v17 name];
+        mapItem3 = [v8 mapItem];
+        name2 = [mapItem3 name];
         v19 = 138543618;
-        v20 = v14;
+        v20 = appCoordinator;
         v21 = 2112;
-        v22 = v18;
+        v22 = name2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Coordinator: %{public}@ will detour to mapItem: %@", &v19, 0x16u);
       }
 
-      v15 = [v8 mapItem];
-      [v14 addStopWithMapItem:v15];
+      mapItem2 = [v8 mapItem];
+      [appCoordinator addStopWithMapItem:mapItem2];
     }
   }
 }

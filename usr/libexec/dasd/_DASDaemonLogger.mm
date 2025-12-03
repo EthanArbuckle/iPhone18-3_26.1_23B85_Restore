@@ -1,9 +1,9 @@
 @interface _DASDaemonLogger
 + (id)inferCarryStatusXPCCriteria;
-+ (id)logForCategory:(id)a3;
-+ (id)signpostForCategory:(id)a3;
-+ (unint64_t)makeIDForString:(id)a3 forLog:(id)a4;
-+ (unint64_t)removeIDForString:(id)a3;
++ (id)logForCategory:(id)category;
++ (id)signpostForCategory:(id)category;
++ (unint64_t)makeIDForString:(id)string forLog:(id)log;
++ (unint64_t)removeIDForString:(id)string;
 + (void)initialize;
 @end
 
@@ -17,30 +17,30 @@
   }
 }
 
-+ (id)logForCategory:(id)a3
++ (id)logForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   os_unfair_lock_lock(&dword_10020B800);
-  v4 = [qword_10020B7E8 objectForKeyedSubscript:v3];
+  v4 = [qword_10020B7E8 objectForKeyedSubscript:categoryCopy];
   if (!v4)
   {
-    v4 = os_log_create("com.apple.duetactivityscheduler", [v3 UTF8String]);
+    v4 = os_log_create("com.apple.duetactivityscheduler", [categoryCopy UTF8String]);
   }
 
-  [qword_10020B7E8 setObject:v4 forKeyedSubscript:v3];
+  [qword_10020B7E8 setObject:v4 forKeyedSubscript:categoryCopy];
   os_unfair_lock_unlock(&dword_10020B800);
 
   return v4;
 }
 
-+ (id)signpostForCategory:(id)a3
++ (id)signpostForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   os_unfair_lock_lock(&dword_10020B800);
-  v4 = [qword_10020B7F0 objectForKeyedSubscript:v3];
+  v4 = [qword_10020B7F0 objectForKeyedSubscript:categoryCopy];
   if (!v4)
   {
-    v4 = os_log_create("com.apple.dasd.signpost", [v3 UTF8String]);
+    v4 = os_log_create("com.apple.dasd.signpost", [categoryCopy UTF8String]);
   }
 
   os_unfair_lock_unlock(&dword_10020B800);
@@ -48,38 +48,38 @@
   return v4;
 }
 
-+ (unint64_t)makeIDForString:(id)a3 forLog:(id)a4
++ (unint64_t)makeIDForString:(id)string forLog:(id)log
 {
-  v5 = a3;
-  v6 = os_signpost_id_generate(a4);
+  stringCopy = string;
+  v6 = os_signpost_id_generate(log);
   os_unfair_lock_lock(&dword_10020B800);
   v7 = [NSNumber numberWithUnsignedLongLong:v6];
-  [qword_10020B7F8 setObject:v7 forKeyedSubscript:v5];
+  [qword_10020B7F8 setObject:v7 forKeyedSubscript:stringCopy];
 
   os_unfair_lock_unlock(&dword_10020B800);
   return v6;
 }
 
-+ (unint64_t)removeIDForString:(id)a3
++ (unint64_t)removeIDForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&dword_10020B800);
-  v4 = [qword_10020B7F8 objectForKeyedSubscript:v3];
+  v4 = [qword_10020B7F8 objectForKeyedSubscript:stringCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedLongLongValue];
-    [qword_10020B7F8 removeObjectForKey:v3];
+    unsignedLongLongValue = [v4 unsignedLongLongValue];
+    [qword_10020B7F8 removeObjectForKey:stringCopy];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
   os_unfair_lock_unlock(&dword_10020B800);
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 + (id)inferCarryStatusXPCCriteria

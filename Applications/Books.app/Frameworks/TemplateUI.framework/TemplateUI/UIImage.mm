@@ -1,18 +1,18 @@
 @interface UIImage
-+ (id)tui_imageWithCGImage:(CGImage *)a3;
++ (id)tui_imageWithCGImage:(CGImage *)image;
 - (BOOL)tui_isDeepColor;
-- (BOOL)tui_isMulticolorSymbolWithSymbolRenderingMode:(unint64_t)a3;
+- (BOOL)tui_isMulticolorSymbolWithSymbolRenderingMode:(unint64_t)mode;
 - (BOOL)tui_isWideGamut;
 - (CGImage)tui_CGImage;
-- (id)tui_imageMaskWithColor:(id)a3;
-- (id)tui_initWithCGImage:(CGImage *)a3 scale:(double)a4;
+- (id)tui_imageMaskWithColor:(id)color;
+- (id)tui_initWithCGImage:(CGImage *)image scale:(double)scale;
 @end
 
 @implementation UIImage
 
-- (id)tui_imageMaskWithColor:(id)a3
+- (id)tui_imageMaskWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   v8 = v7;
@@ -27,8 +27,8 @@
   v24 = v5;
   v25 = v7;
   v18[4] = self;
-  v19 = v4;
-  v9 = v4;
+  v19 = colorCopy;
+  v9 = colorCopy;
   v10 = objc_retainBlock(v18);
   v11 = +[UIGraphicsImageRendererFormat defaultFormat];
   v12 = [[UIGraphicsImageRenderer alloc] initWithSize:v11 format:{v6, v8}];
@@ -61,23 +61,23 @@
 
 - (BOOL)tui_isDeepColor
 {
-  v3 = [(UIImage *)self CGImage];
-  if (v3)
+  cGImage = [(UIImage *)self CGImage];
+  if (cGImage)
   {
-    LOBYTE(v3) = CGImageGetBitsPerPixel([(UIImage *)self CGImage]) == 64;
+    LOBYTE(cGImage) = CGImageGetBitsPerPixel([(UIImage *)self CGImage]) == 64;
   }
 
-  return v3;
+  return cGImage;
 }
 
-- (BOOL)tui_isMulticolorSymbolWithSymbolRenderingMode:(unint64_t)a3
+- (BOOL)tui_isMulticolorSymbolWithSymbolRenderingMode:(unint64_t)mode
 {
-  if (a3 - 1 < 2)
+  if (mode - 1 < 2)
   {
     return [(UIImage *)self _isHierarchicalColorSymbolImage];
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     return [(UIImage *)self _isMultiColorSymbolImage];
   }
@@ -85,23 +85,23 @@
   return 0;
 }
 
-+ (id)tui_imageWithCGImage:(CGImage *)a3
++ (id)tui_imageWithCGImage:(CGImage *)image
 {
-  v3 = [[UIImage alloc] initWithCGImage:a3];
+  v3 = [[UIImage alloc] initWithCGImage:image];
 
   return v3;
 }
 
 - (CGImage)tui_CGImage
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(UIImage *)v2 CGImage];
+  return [(UIImage *)selfCopy CGImage];
 }
 
-- (id)tui_initWithCGImage:(CGImage *)a3 scale:(double)a4
+- (id)tui_initWithCGImage:(CGImage *)image scale:(double)scale
 {
-  v4 = [[UIImage alloc] initWithCGImage:a3 scale:0 orientation:a4];
+  v4 = [[UIImage alloc] initWithCGImage:image scale:0 orientation:scale];
 
   return v4;
 }

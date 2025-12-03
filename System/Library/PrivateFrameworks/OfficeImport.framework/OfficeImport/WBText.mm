@@ -1,30 +1,30 @@
 @interface WBText
-+ (void)readBlocksFrom:(id)a3 textRun:(WrdTextRun *)a4 to:(id)a5;
-+ (void)readFrom:(id)a3 text:(id)a4 textRun:(WrdTextRun *)a5;
++ (void)readBlocksFrom:(id)from textRun:(WrdTextRun *)run to:(id)to;
++ (void)readFrom:(id)from text:(id)text textRun:(WrdTextRun *)run;
 @end
 
 @implementation WBText
 
-+ (void)readFrom:(id)a3 text:(id)a4 textRun:(WrdTextRun *)a5
++ (void)readFrom:(id)from text:(id)text textRun:(WrdTextRun *)run
 {
-  v9 = a3;
-  v8 = a4;
-  [a1 readBlocksFrom:v9 textRun:a5 to:v8];
+  fromCopy = from;
+  textCopy = text;
+  [self readBlocksFrom:fromCopy textRun:run to:textCopy];
 }
 
-+ (void)readBlocksFrom:(id)a3 textRun:(WrdTextRun *)a4 to:(id)a5
++ (void)readBlocksFrom:(id)from textRun:(WrdTextRun *)run to:(id)to
 {
-  v7 = a3;
-  v8 = a5;
-  var2 = a4->var2;
-  var3 = a4->var3;
+  fromCopy = from;
+  toCopy = to;
+  var2 = run->var2;
+  var3 = run->var3;
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [v8 tableNestingLevel];
+  tableNestingLevel = [toCopy tableNestingLevel];
   WrdParagraphTextRun::WrdParagraphTextRun(&v26);
-  v12 = [v8 textType];
+  textType = [toCopy textType];
   v13 = var3 + var2;
-  v14 = a4->var2;
-  v26.var1 = v12;
+  v14 = run->var2;
+  v26.var1 = textType;
   v26.var2 = v14;
   if (v14 >= var3 + var2)
   {
@@ -33,12 +33,12 @@
 
   else
   {
-    v15 = 0;
+    addParagraph = 0;
     v16 = 0;
     while (1)
     {
-      v17 = [v7 wrdReader];
-      (*(*v17 + 184))(v17, &v26);
+      wrdReader = [fromCopy wrdReader];
+      (*(*wrdReader + 184))(wrdReader, &v26);
       if (!v26.var3)
       {
 LABEL_21:
@@ -51,41 +51,41 @@ LABEL_21:
         v26.var3 = v13 - v26.var2;
       }
 
-      v18 = [v7 reportProgress];
-      [v7 setReportProgress:0];
-      if (v18)
+      reportProgress = [fromCopy reportProgress];
+      [fromCopy setReportProgress:0];
+      if (reportProgress)
       {
         [TCProgressContext setProgress:(v26.var3 + v26.var2)];
       }
 
       v19 = *(v26.var4 + 2);
-      if ((v19 & 2) != 0 && (*(v26.var4 + 294) & 1) != 0 && v12 != 4)
+      if ((v19 & 2) != 0 && (*(v26.var4 + 294) & 1) != 0 && textType != 4)
       {
         v23 = (v19 & 0x1000000000000) != 0 ? *(v26.var4 + 61) : 1;
-        if (v23 >= v11)
+        if (v23 >= tableNestingLevel)
         {
           WrdParagraphTextRun::clone(&v26);
         }
       }
 
-      v15 = [v8 addParagraph];
-      [WBParagraph readFrom:v7 textRun:&v26 paragraph:v15];
+      addParagraph = [toCopy addParagraph];
+      [WBParagraph readFrom:fromCopy textRun:&v26 paragraph:addParagraph];
       ++v16;
       HIDWORD(v20) = -858993459 * v16 + 429496728;
       LODWORD(v20) = HIDWORD(v20);
       if ((v20 >> 2) <= 0xCCCCCCC)
       {
-        v21 = [v7 cancelDelegate];
-        v22 = [v21 isCancelled];
+        cancelDelegate = [fromCopy cancelDelegate];
+        isCancelled = [cancelDelegate isCancelled];
 
-        if (v22)
+        if (isCancelled)
         {
           break;
         }
       }
 
-      v15 = 0;
-      [v7 setReportProgress:v18];
+      addParagraph = 0;
+      [fromCopy setReportProgress:reportProgress];
       v26.var2 += v26.var3;
       if (v26.var2 >= v13)
       {

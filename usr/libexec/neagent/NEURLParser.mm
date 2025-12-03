@@ -1,34 +1,34 @@
 @interface NEURLParser
-+ (id)matchingStringsForURL:(const char *)a3;
++ (id)matchingStringsForURL:(const char *)l;
 @end
 
 @implementation NEURLParser
 
-+ (id)matchingStringsForURL:(const char *)a3
++ (id)matchingStringsForURL:(const char *)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [NSURL alloc];
-    v5 = [NSString stringWithUTF8String:a3];
+    v5 = [NSString stringWithUTF8String:l];
     v6 = [v4 initWithString:v5];
 
-    v7 = [v6 pathComponents];
-    v8 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v7 count]);
+    pathComponents = [v6 pathComponents];
+    v8 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [pathComponents count]);
 
-    v9 = [v6 host];
+    host = [v6 host];
 
-    if (v9)
+    if (host)
     {
-      v63 = a3;
-      v10 = [v6 host];
-      if (([v10 hasPrefix:@"www."] & 1) == 0)
+      lCopy = l;
+      host2 = [v6 host];
+      if (([host2 hasPrefix:@"www."] & 1) == 0)
       {
-        v11 = [[NSString alloc] initWithFormat:@"%@%@", @"www.", v10];
+        v11 = [[NSString alloc] initWithFormat:@"%@%@", @"www.", host2];
 
-        v10 = v11;
+        host2 = v11;
       }
 
-      v12 = v10;
+      v12 = host2;
       objc_opt_self();
       v64 = v12;
       v65 = v6;
@@ -78,8 +78,8 @@
         v20 = 0;
       }
 
-      v21 = [v20 allObjects];
-      [v8 addObjectsFromArray:v21];
+      allObjects = [v20 allObjects];
+      [v8 addObjectsFromArray:allObjects];
 
       v22 = [v12 stringByReplacingOccurrencesOfString:@"www." withString:&stru_100024B20];
       if (v22)
@@ -153,12 +153,12 @@
         }
 
         v6 = v65;
-        v37 = [v65 query];
+        query = [v65 query];
 
-        if (v37)
+        if (query)
         {
-          v38 = [v65 query];
-          v39 = [NSString stringWithFormat:@"?%@", v38];
+          query2 = [v65 query];
+          v39 = [NSString stringWithFormat:@"?%@", query2];
 
           v40 = [v24 stringByAppendingString:v39];
 
@@ -176,7 +176,7 @@
             [v8 addObject:v44];
           }
 
-          v45 = v63;
+          v45 = lCopy;
           if (([v41 hasSuffix:@"/"] & 1) == 0)
           {
             v46 = [[NSString alloc] initWithFormat:@"%@%@", v41, @"/"];
@@ -188,15 +188,15 @@
         {
           v41 = v25;
           v40 = v24;
-          v45 = v63;
+          v45 = lCopy;
         }
 
-        v47 = [v65 fragment];
+        fragment = [v65 fragment];
 
-        if (v47)
+        if (fragment)
         {
-          v48 = [v65 fragment];
-          v49 = [NSString stringWithFormat:@"#%@", v48];
+          fragment2 = [v65 fragment];
+          v49 = [NSString stringWithFormat:@"#%@", fragment2];
 
           v50 = [v40 stringByAppendingString:v49];
 
@@ -241,12 +241,12 @@
 
         if (v8)
         {
-          v9 = [v8 copy];
+          host = [v8 copy];
         }
 
         else
         {
-          v9 = 0;
+          host = 0;
         }
 
         v22 = v61;
@@ -254,17 +254,17 @@
 
       else
       {
-        v9 = 0;
+        host = 0;
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    host = 0;
   }
 
-  return v9;
+  return host;
 }
 
 @end

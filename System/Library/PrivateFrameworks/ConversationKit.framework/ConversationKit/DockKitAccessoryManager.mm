@@ -1,24 +1,24 @@
 @interface DockKitAccessoryManager
-- (void)systemEventDataWithInfo:(id)a3 data:(id)a4;
-- (void)trackingSummaryDataWithInfo:(id)a3 data:(id)a4;
+- (void)systemEventDataWithInfo:(id)info data:(id)data;
+- (void)trackingSummaryDataWithInfo:(id)info data:(id)data;
 @end
 
 @implementation DockKitAccessoryManager
 
-- (void)systemEventDataWithInfo:(id)a3 data:(id)a4
+- (void)systemEventDataWithInfo:(id)info data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  dataCopy = data;
 
-  DockKitAccessoryManager.systemEventData(info:data:)(v7, v6);
+  DockKitAccessoryManager.systemEventData(info:data:)(v7, dataCopy);
 }
 
-- (void)trackingSummaryDataWithInfo:(id)a3 data:(id)a4
+- (void)trackingSummaryDataWithInfo:(id)info data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  dataCopy = data;
 
-  DockKitAccessoryManager.trackingSummaryData(info:data:)(v5);
+  DockKitAccessoryManager.trackingSummaryData(info:data:)(infoCopy);
 }
 
 @end

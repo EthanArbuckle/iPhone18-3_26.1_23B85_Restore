@@ -9,9 +9,9 @@
   v2 = [(NSString *)self dataUsingEncoding:4];
   CC_SHA1([v2 bytes], objc_msgSend(v2, "length"), md);
   v3 = [[NSUUID alloc] initWithUUIDBytes:md];
-  v4 = [v3 mt_base62String];
+  mt_base62String = [v3 mt_base62String];
 
-  return v4;
+  return mt_base62String;
 }
 
 @end

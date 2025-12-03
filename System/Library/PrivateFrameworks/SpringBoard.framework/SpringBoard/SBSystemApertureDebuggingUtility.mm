@@ -1,25 +1,25 @@
 @interface SBSystemApertureDebuggingUtility
 - (NSMutableArray)systemApertureModelStateDump;
-- (SBSystemApertureDebuggingUtility)initWithDelegate:(id)a3;
+- (SBSystemApertureDebuggingUtility)initWithDelegate:(id)delegate;
 - (SBSystemApertureDebuggingUtilityDelegate)delegate;
-- (id)_createRegisterBlockForElement:(id)a3;
-- (id)_repackageDictionaryDescribable:(id)a3;
+- (id)_createRegisterBlockForElement:(id)element;
+- (id)_repackageDictionaryDescribable:(id)describable;
 - (id)availableRecordableFlipBookElementIdentifiers;
-- (id)elementCoordinator:(id)a3 directoryForCapturingFlipBookElement:(id)a4;
-- (id)errorWithDescription:(id)a3;
-- (void)_collectPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6;
-- (void)_handleStreamBuddySessionForPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6;
-- (void)_observeAnimationFrames:(id)a3;
+- (id)elementCoordinator:(id)coordinator directoryForCapturingFlipBookElement:(id)element;
+- (id)errorWithDescription:(id)description;
+- (void)_collectPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration;
+- (void)_handleStreamBuddySessionForPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration;
+- (void)_observeAnimationFrames:(id)frames;
 - (void)_setupTestRecipe;
 - (void)clearBufferEntries;
-- (void)elementCoordinator:(id)a3 finishedCaptureOfElement:(id)a4 error:(id)a5;
-- (void)elementCoordinatorFinishedCapturing:(id)a3;
-- (void)initiateFlipBookRecordingForSecureFlipBookElement:(id)a3 withSecureElementCoordinator:(id)a4 withCompletion:(id)a5;
-- (void)setAnimationFrameRecording:(BOOL)a3;
-- (void)setSystemApertureUnderAutomationTesting:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
-- (void)streamBuddySession:(id)a3 connectionState:(int)a4 withError:(id)a5;
-- (void)updatedPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6;
+- (void)elementCoordinator:(id)coordinator finishedCaptureOfElement:(id)element error:(id)error;
+- (void)elementCoordinatorFinishedCapturing:(id)capturing;
+- (void)initiateFlipBookRecordingForSecureFlipBookElement:(id)element withSecureElementCoordinator:(id)coordinator withCompletion:(id)completion;
+- (void)setAnimationFrameRecording:(BOOL)recording;
+- (void)setSystemApertureUnderAutomationTesting:(BOOL)testing;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
+- (void)streamBuddySession:(id)session connectionState:(int)state withError:(id)error;
+- (void)updatedPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration;
 @end
 
 @implementation SBSystemApertureDebuggingUtility
@@ -32,9 +32,9 @@
   [(NSMutableArray *)bufferEntries removeAllObjects];
 }
 
-- (SBSystemApertureDebuggingUtility)initWithDelegate:(id)a3
+- (SBSystemApertureDebuggingUtility)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = SBSystemApertureDebuggingUtility;
   v5 = [(SBSystemApertureDebuggingUtility *)&v13 init];
@@ -45,7 +45,7 @@
     v5->_bufferEntries = v6;
 
     v5->_isAppleInternal = os_variant_has_internal_diagnostics();
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v8 = +[SBSystemApertureDomain rootSettings];
     settings = v5->_settings;
     v5->_settings = v8;
@@ -61,14 +61,14 @@
   return v5;
 }
 
-- (void)setAnimationFrameRecording:(BOOL)a3
+- (void)setAnimationFrameRecording:(BOOL)recording
 {
   v5 = dispatch_semaphore_create(0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__SBSystemApertureDebuggingUtility_setAnimationFrameRecording___block_invoke;
   block[3] = &unk_2783A97D8;
-  v10 = a3;
+  recordingCopy = recording;
   block[4] = self;
   v9 = v5;
   v6 = v5;
@@ -111,14 +111,14 @@ intptr_t __63__SBSystemApertureDebuggingUtility_setAnimationFrameRecording___blo
   return dispatch_semaphore_signal(v12);
 }
 
-- (void)setSystemApertureUnderAutomationTesting:(BOOL)a3
+- (void)setSystemApertureUnderAutomationTesting:(BOOL)testing
 {
   v5 = dispatch_semaphore_create(0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__SBSystemApertureDebuggingUtility_setSystemApertureUnderAutomationTesting___block_invoke;
   block[3] = &unk_2783A97D8;
-  v10 = a3;
+  testingCopy = testing;
   block[4] = self;
   v9 = v5;
   v6 = v5;
@@ -137,15 +137,15 @@ intptr_t __76__SBSystemApertureDebuggingUtility_setSystemApertureUnderAutomation
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)updatedPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6
+- (void)updatedPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  depictionCopy = depiction;
+  contextCopy = context;
+  preferencesCopy = preferences;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  self->_queryIteration = a6;
-  [(SBSystemApertureDebuggingUtility *)self _collectPreferences:v12 context:v11 withStackDepiction:v10 andQueryIteration:a6];
-  [(SBSystemApertureDebuggingUtility *)self _handleStreamBuddySessionForPreferences:v12 context:v11 withStackDepiction:v10 andQueryIteration:a6];
+  self->_queryIteration = iteration;
+  [(SBSystemApertureDebuggingUtility *)self _collectPreferences:preferencesCopy context:contextCopy withStackDepiction:depictionCopy andQueryIteration:iteration];
+  [(SBSystemApertureDebuggingUtility *)self _handleStreamBuddySessionForPreferences:preferencesCopy context:contextCopy withStackDepiction:depictionCopy andQueryIteration:iteration];
 }
 
 - (NSMutableArray)systemApertureModelStateDump
@@ -223,18 +223,18 @@ intptr_t __64__SBSystemApertureDebuggingUtility_systemApertureModelStateDump__bl
   return dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)initiateFlipBookRecordingForSecureFlipBookElement:(id)a3 withSecureElementCoordinator:(id)a4 withCompletion:(id)a5
+- (void)initiateFlipBookRecordingForSecureFlipBookElement:(id)element withSecureElementCoordinator:(id)coordinator withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v15 = v7;
+  elementCopy = element;
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
+  v15 = elementCopy;
   v17 = dispatch_semaphore_create(0);
-  v16 = v8;
+  v16 = coordinatorCopy;
   v10 = v17;
-  v11 = v8;
-  v12 = v9;
-  v13 = v7;
+  v11 = coordinatorCopy;
+  v12 = completionCopy;
+  v13 = elementCopy;
   BSDispatchMain();
   v14 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v10, v14);
@@ -270,18 +270,18 @@ void __130__SBSystemApertureDebuggingUtility_initiateFlipBookRecordingForSecureF
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (id)_createRegisterBlockForElement:(id)a3
+- (id)_createRegisterBlockForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (!_os_feature_enabled_impl())
   {
     v6 = 0;
     goto LABEL_20;
   }
 
-  if (([v4 isEqualToString:@"com.apple.springboard-prototype.flipbook.lock"] & 1) == 0)
+  if (([elementCopy isEqualToString:@"com.apple.springboard-prototype.flipbook.lock"] & 1) == 0)
   {
-    if ([v4 isEqualToString:@"com.apple.springboard-systemApertureElementIdentifierLock"])
+    if ([elementCopy isEqualToString:@"com.apple.springboard-systemApertureElementIdentifierLock"])
     {
       v7 = objc_opt_class();
       if (objc_opt_respondsToSelector())
@@ -298,7 +298,7 @@ LABEL_17:
       }
     }
 
-    else if ([v4 isEqualToString:@"com.apple.CoreAuthUI-LocalAuthentication"] && _os_feature_enabled_impl())
+    else if ([elementCopy isEqualToString:@"com.apple.CoreAuthUI-LocalAuthentication"] && _os_feature_enabled_impl())
     {
       v9 = objc_opt_class();
       if (objc_opt_respondsToSelector())
@@ -313,7 +313,7 @@ LABEL_17:
       }
     }
 
-    else if ([v4 isEqualToString:@"com.apple.PassbookUISceneService-WalletElement"])
+    else if ([elementCopy isEqualToString:@"com.apple.PassbookUISceneService-WalletElement"])
     {
       pkInvalidatableBlock = self->_pkInvalidatableBlock;
       if (pkInvalidatableBlock)
@@ -417,11 +417,11 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
   }
 }
 
-- (id)_repackageDictionaryDescribable:(id)a3
+- (id)_repackageDictionaryDescribable:(id)describable
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [a3 dictionaryDescription];
-  v4 = [v3 copy];
+  dictionaryDescription = [describable dictionaryDescription];
+  v4 = [dictionaryDescription copy];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
@@ -467,20 +467,20 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
   return v5;
 }
 
-- (void)_collectPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6
+- (void)_collectPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
+  preferencesCopy = preferences;
+  contextCopy = context;
+  depictionCopy = depiction;
   if (self->_isAppleInternal)
   {
     v12 = +[SBDefaults localDefaults];
-    v13 = [v12 systemApertureDefaults];
-    v14 = [v13 enableSystemApertureStateCollection];
+    systemApertureDefaults = [v12 systemApertureDefaults];
+    enableSystemApertureStateCollection = [systemApertureDefaults enableSystemApertureStateCollection];
 
-    if (v14)
+    if (enableSystemApertureStateCollection)
     {
-      v15 = [[SBSystemApertureDebuggingUtilityBufferEntry alloc] initWithQueryIteration:a6 preferences:v16 context:v10 stackDepiction:v11];
+      v15 = [[SBSystemApertureDebuggingUtilityBufferEntry alloc] initWithQueryIteration:iteration preferences:preferencesCopy context:contextCopy stackDepiction:depictionCopy];
       if ([(NSMutableArray *)self->_bufferEntries count]== 50 && ![(SBSystemApertureDebuggingUtility *)self isSystemApertureUnderAutomationTesting])
       {
         [(NSMutableArray *)self->_bufferEntries removeObjectAtIndex:0];
@@ -491,48 +491,48 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
   }
 }
 
-- (void)_handleStreamBuddySessionForPreferences:(id)a3 context:(id)a4 withStackDepiction:(id)a5 andQueryIteration:(unint64_t)a6
+- (void)_handleStreamBuddySessionForPreferences:(id)preferences context:(id)context withStackDepiction:(id)depiction andQueryIteration:(unint64_t)iteration
 {
   v19[4] = *MEMORY[0x277D85DE8];
   if (self->_streamBuddySession)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v14 = [v10 stringWithFormat:@"%lu", a6, @"queryIteration"];
+    depictionCopy = depiction;
+    contextCopy = context;
+    preferencesCopy = preferences;
+    v14 = [v10 stringWithFormat:@"%lu", iteration, @"queryIteration"];
     v19[0] = v14;
     v18[1] = @"SBSAPreferences";
-    v15 = [(SBSystemApertureDebuggingUtility *)self _repackageDictionaryDescribable:v13];
+    v15 = [(SBSystemApertureDebuggingUtility *)self _repackageDictionaryDescribable:preferencesCopy];
 
     v19[1] = v15;
     v18[2] = @"SBSAContext";
-    v16 = [(SBSystemApertureDebuggingUtility *)self _repackageDictionaryDescribable:v12];
+    v16 = [(SBSystemApertureDebuggingUtility *)self _repackageDictionaryDescribable:contextCopy];
 
     v18[3] = @"stackDepiction";
     v19[2] = v16;
-    v19[3] = v11;
+    v19[3] = depictionCopy;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
     [(SBStreamBuddySession *)self->_streamBuddySession sendSystemApertureStateDump:v17];
   }
 }
 
-- (id)errorWithDescription:(id)a3
+- (id)errorWithDescription:(id)description
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];
-  v10[0] = a3;
+  v10[0] = description;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  descriptionCopy = description;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [v3 errorWithDomain:@"SBSystemApertureDebuggingUtility" code:-1 userInfo:v6];
 
   return v7;
 }
 
-- (void)_observeAnimationFrames:(id)a3
+- (void)_observeAnimationFrames:(id)frames
 {
   v34 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -557,23 +557,23 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
         }
 
         v7 = *(*(&v27 + 1) + 8 * i);
-        v8 = [v7 elementViewController];
-        v9 = [v8 elementViewProvider];
-        v10 = [v9 element];
+        elementViewController = [v7 elementViewController];
+        elementViewProvider = [elementViewController elementViewProvider];
+        element = [elementViewProvider element];
 
-        if (v10)
+        if (element)
         {
-          v11 = [v10 elementIdentifier];
+          elementIdentifier = [element elementIdentifier];
           v12 = MEMORY[0x277CCAE60];
-          v13 = [v7 layer];
-          v14 = [v13 presentationLayer];
-          [v14 frame];
+          layer = [v7 layer];
+          presentationLayer = [layer presentationLayer];
+          [presentationLayer frame];
           v15 = [v12 valueWithRect:?];
 
           v16 = MEMORY[0x277CCABB0];
-          v17 = [v7 layer];
-          v18 = [v17 presentationLayer];
-          [v18 cornerRadius];
+          layer2 = [v7 layer];
+          presentationLayer2 = [layer2 presentationLayer];
+          [presentationLayer2 cornerRadius];
           *&v19 = v19;
           v20 = [v16 numberWithFloat:v19];
 
@@ -585,14 +585,14 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
           v31[2] = @"queryIteration";
           v32[2] = v21;
           v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:3];
-          v23 = [(NSMutableDictionary *)self->_animationFrameRecordings objectForKey:v11];
+          v23 = [(NSMutableDictionary *)self->_animationFrameRecordings objectForKey:elementIdentifier];
           if (!v23)
           {
             v23 = objc_opt_new();
           }
 
           [v23 addObject:v22];
-          [(NSMutableDictionary *)self->_animationFrameRecordings setObject:v23 forKey:v11];
+          [(NSMutableDictionary *)self->_animationFrameRecordings setObject:v23 forKey:elementIdentifier];
         }
       }
 
@@ -603,26 +603,26 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  if ([a4 isEqualToString:@"showQueryIterationLabel"])
+  if ([path isEqualToString:@"showQueryIterationLabel"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained systemApertureDebuggingUtility:self shouldCreateDebuggingLabel:{-[SBSystemApertureSettings showQueryIterationLabel](self->_settings, "showQueryIterationLabel")}];
   }
 }
 
-- (void)streamBuddySession:(id)a3 connectionState:(int)a4 withError:(id)a5
+- (void)streamBuddySession:(id)session connectionState:(int)state withError:(id)error
 {
-  v5 = *&a4;
+  v5 = *&state;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  errorCopy = error;
   v9 = SBLogStreamBuddy();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     v11 = SBStringFromStreamBuddyConnectionState(v5);
-    v12 = [v8 debugDescription];
+    v12 = [errorCopy debugDescription];
     v14 = 138412802;
     v15 = v10;
     v16 = 2112;
@@ -636,40 +636,40 @@ void __52__SBSystemApertureDebuggingUtility__setupTestRecipe__block_invoke(uint6
   [WeakRetained systemApertureDebuggingUtility:self updateUIForConnectionState:v5];
 }
 
-- (id)elementCoordinator:(id)a3 directoryForCapturingFlipBookElement:(id)a4
+- (id)elementCoordinator:(id)coordinator directoryForCapturingFlipBookElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   v6 = NSTemporaryDirectory();
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 clientIdentifier];
-  v9 = [v5 elementIdentifier];
+  clientIdentifier = [elementCopy clientIdentifier];
+  elementIdentifier = [elementCopy elementIdentifier];
 
-  v10 = [v7 stringWithFormat:@"%@-%@", v8, v9];
+  v10 = [v7 stringWithFormat:@"%@-%@", clientIdentifier, elementIdentifier];
 
   v11 = [v6 stringByAppendingPathComponent:v10];
-  v12 = [v11 stringByStandardizingPath];
+  stringByStandardizingPath = [v11 stringByStandardizingPath];
 
-  v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
-  [v14 createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:0];
+  v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:stringByStandardizingPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:stringByStandardizingPath];
+  [defaultManager createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:0];
 
   objc_storeStrong(&self->_flipBookRecordingDestinationURL, v13);
 
   return v13;
 }
 
-- (void)elementCoordinator:(id)a3 finishedCaptureOfElement:(id)a4 error:(id)a5
+- (void)elementCoordinator:(id)coordinator finishedCaptureOfElement:(id)element error:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   completionQueue = self->_completionQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SBSystemApertureDebuggingUtility_elementCoordinator_finishedCaptureOfElement_error___block_invoke;
   v9[3] = &unk_2783A92D8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(completionQueue, v9);
 }
 
@@ -701,7 +701,7 @@ void __86__SBSystemApertureDebuggingUtility_elementCoordinator_finishedCaptureOf
   }
 }
 
-- (void)elementCoordinatorFinishedCapturing:(id)a3
+- (void)elementCoordinatorFinishedCapturing:(id)capturing
 {
   completionQueue = self->_completionQueue;
   block[0] = MEMORY[0x277D85DD0];

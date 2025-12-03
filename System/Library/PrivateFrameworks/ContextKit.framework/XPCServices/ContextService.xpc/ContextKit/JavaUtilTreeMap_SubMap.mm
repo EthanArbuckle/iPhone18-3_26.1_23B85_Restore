@@ -1,5 +1,5 @@
 @interface JavaUtilTreeMap_SubMap
-- (JavaUtilTreeMap_SubMap)initWithJavaUtilTreeMap:(id)a3;
+- (JavaUtilTreeMap_SubMap)initWithJavaUtilTreeMap:(id)map;
 - (id)readResolve;
 - (void)dealloc;
 @end
@@ -48,9 +48,9 @@
   return v13;
 }
 
-- (JavaUtilTreeMap_SubMap)initWithJavaUtilTreeMap:(id)a3
+- (JavaUtilTreeMap_SubMap)initWithJavaUtilTreeMap:(id)map
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, map);
   JavaUtilAbstractMap_init(self, v4);
   return self;
 }

@@ -9,9 +9,9 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = [(HKSwitchTableViewCellAccessibility *)self safeValueForKey:@"_switch"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -31,9 +31,9 @@
 - (id)accessibilityValue
 {
   v2 = [(HKSwitchTableViewCellAccessibility *)self safeValueForKey:@"_switch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

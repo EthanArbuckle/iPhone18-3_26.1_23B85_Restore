@@ -1,16 +1,16 @@
 @interface CDMTokenizer
-+ (BOOL)registerTrialAsset:(id)a3;
-+ (BOOL)syncTrialAsset:(id)a3;
-+ (BOOL)trialAssetUpdate:(id)a3;
-+ (id)printableLocales:(id)a3;
-+ (id)tokenizerForLocale:(id)a3;
++ (BOOL)registerTrialAsset:(id)asset;
++ (BOOL)syncTrialAsset:(id)asset;
++ (BOOL)trialAssetUpdate:(id)update;
++ (id)printableLocales:(id)locales;
++ (id)tokenizerForLocale:(id)locale;
 + (void)analyzerFactory;
 + (void)normalizerFactory;
-+ (void)registerMorphunAssetsPathForLocale:(id)a3 withPath:(id)a4;
-- (CDMTokenizer)initWithLocale:(id)a3;
-- (CDMTokenizer)initWithLocale:(id)a3 maxTokens:(int)a4 maxInputSize:(int)a5;
++ (void)registerMorphunAssetsPathForLocale:(id)locale withPath:(id)path;
+- (CDMTokenizer)initWithLocale:(id)locale;
+- (CDMTokenizer)initWithLocale:(id)locale maxTokens:(int)tokens maxInputSize:(int)size;
 - (id).cxx_construct;
-- (id)createTokenChain:(id)a3;
+- (id)createTokenChain:(id)chain;
 @end
 
 @implementation CDMTokenizer
@@ -40,14 +40,14 @@
   return +[CDMTokenizer normalizerFactory]::factory;
 }
 
-- (id)createTokenChain:(id)a3
+- (id)createTokenChain:(id)chain
 {
-  v4 = a3;
-  v5 = v4;
+  chainCopy = chain;
+  v5 = chainCopy;
   memset(&v71, 0, sizeof(v71));
-  if (v4)
+  if (chainCopy)
   {
-    Length = CFStringGetLength(v4);
+    Length = CFStringGetLength(chainCopy);
     std::basic_string<char16_t>::resize(&v71, Length, v7);
     if ((v71.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -293,16 +293,16 @@
   return v67;
 }
 
-- (CDMTokenizer)initWithLocale:(id)a3 maxTokens:(int)a4 maxInputSize:(int)a5
+- (CDMTokenizer)initWithLocale:(id)locale maxTokens:(int)tokens maxInputSize:(int)size
 {
   v6 = *MEMORY[0x1E69E9840];
-  [a3 UTF8String];
+  [locale UTF8String];
   operator new();
 }
 
-- (CDMTokenizer)initWithLocale:(id)a3
+- (CDMTokenizer)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = CDMTokenizer;
   v5 = [(CDMTokenizer *)&v9 init];
@@ -312,19 +312,19 @@
     morphunForceUpdateQueue = v5->_morphunForceUpdateQueue;
     v5->_morphunForceUpdateQueue = v6;
 
-    v5 = [(CDMTokenizer *)v5 initWithLocale:v4 maxTokens:25 maxInputSize:4096];
+    v5 = [(CDMTokenizer *)v5 initWithLocale:localeCopy maxTokens:25 maxInputSize:4096];
   }
 
   return v5;
 }
 
-+ (BOOL)registerTrialAsset:(id)a3
++ (BOOL)registerTrialAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B2870] getAssetPathForLocale:v4];
-  if (v5 || ([a1 trialAssetUpdate:v4] & 1) != 0)
+  assetCopy = asset;
+  v5 = [MEMORY[0x1E69B2870] getAssetPathForLocale:assetCopy];
+  if (v5 || ([self trialAssetUpdate:assetCopy] & 1) != 0)
   {
-    v6 = [a1 syncTrialAsset:v4];
+    v6 = [self syncTrialAsset:assetCopy];
   }
 
   else
@@ -335,27 +335,27 @@
   return v6;
 }
 
-+ (void)registerMorphunAssetsPathForLocale:(id)a3 withPath:(id)a4
++ (void)registerMorphunAssetsPathForLocale:(id)locale withPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  localeCopy = locale;
+  pathCopy = path;
   v7 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v5 localeIdentifier];
+    localeIdentifier = [localeCopy localeIdentifier];
     *buf = 136315650;
     v29 = "+[CDMTokenizer registerMorphunAssetsPathForLocale:withPath:]";
     v30 = 2112;
-    v31 = v8;
+    v31 = localeIdentifier;
     v32 = 2112;
-    v33 = v6;
+    v33 = pathCopy;
     _os_log_impl(&dword_1DC287000, v7, OS_LOG_TYPE_INFO, "%s Attempting to register Morphun assets from Trial for locale: %@ with path: %@", buf, 0x20u);
   }
 
-  v9 = [v5 localeIdentifier];
-  v10 = v9;
-  std::string::basic_string[abi:ne200100]<0>(&v26, [v9 UTF8String]);
+  localeIdentifier2 = [localeCopy localeIdentifier];
+  v10 = localeIdentifier2;
+  std::string::basic_string[abi:ne200100]<0>(&v26, [localeIdentifier2 UTF8String]);
   v23 = 0;
   v24 = 0;
   v25 = 0;
@@ -366,8 +366,8 @@
   v18 = 0;
   v19 = 0;
   morphun::util::ULocale::ULocale();
-  v11 = v6;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v6 UTF8String]);
+  v11 = pathCopy;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [pathCopy UTF8String]);
   morphun::resources::DataRegistrationService::registerDataPathForLocale();
   if (v16 < 0)
   {
@@ -398,147 +398,147 @@
   v12 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v5 localeIdentifier];
+    localeIdentifier3 = [localeCopy localeIdentifier];
     *buf = 136315650;
     v29 = "+[CDMTokenizer registerMorphunAssetsPathForLocale:withPath:]";
     v30 = 2112;
-    v31 = v13;
+    v31 = localeIdentifier3;
     v32 = 2112;
-    v33 = v6;
+    v33 = pathCopy;
     _os_log_impl(&dword_1DC287000, v12, OS_LOG_TYPE_INFO, "%s Registered Morphun assets from Trial for locale: %@ with path: %@", buf, 0x20u);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)syncTrialAsset:(id)a3
++ (BOOL)syncTrialAsset:(id)asset
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v4 localeIdentifier];
+    localeIdentifier = [assetCopy localeIdentifier];
     *buf = 136315394;
     v25 = "+[CDMTokenizer syncTrialAsset:]";
     v26 = 2112;
-    v27 = v20;
+    v27 = localeIdentifier;
     _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s Issuing a blocking synchronous API call to get Morphun assets path using MorphunAssets for locale: %@.", buf, 0x16u);
   }
 
   v23 = 0;
-  v6 = [MEMORY[0x1E69B2870] getAssetPathForLocale:v4 withError:&v23];
+  v6 = [MEMORY[0x1E69B2870] getAssetPathForLocale:assetCopy withError:&v23];
   v7 = v23;
   v8 = v7;
   if (!v7)
   {
-    v10 = [v6 path];
-    if (v10)
+    path = [v6 path];
+    if (path)
     {
       v13 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v4 localeIdentifier];
+        localeIdentifier2 = [assetCopy localeIdentifier];
         *buf = 136315650;
         v25 = "+[CDMTokenizer syncTrialAsset:]";
         v26 = 2112;
-        v27 = v10;
+        v27 = path;
         v28 = 2112;
-        v29 = v14;
+        v29 = localeIdentifier2;
         _os_log_impl(&dword_1DC287000, v13, OS_LOG_TYPE_INFO, "%s MorphunAssets returns path: %@ for locale: %@", buf, 0x20u);
       }
 
-      [a1 registerMorphunAssetsPathForLocale:v4 withPath:v10];
+      [self registerMorphunAssetsPathForLocale:assetCopy withPath:path];
       goto LABEL_12;
     }
 
     v17 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v4 localeIdentifier];
+      localeIdentifier3 = [assetCopy localeIdentifier];
       *buf = 136315394;
       v25 = "+[CDMTokenizer syncTrialAsset:]";
       v26 = 2112;
-      v27 = v21;
+      v27 = localeIdentifier3;
       _os_log_error_impl(&dword_1DC287000, v17, OS_LOG_TYPE_ERROR, "%s [ERR]: CDM get nil Morphun assets path with no error returned from MorphunAssets for locale: %@.", buf, 0x16u);
     }
 
-    v10 = 0;
+    path = 0;
 LABEL_23:
     v11 = 0;
     goto LABEL_24;
   }
 
-  v9 = [v7 code];
-  if (!v9)
+  code = [v7 code];
+  if (!code)
   {
-    if ([MEMORY[0x1E69B2870] isLocaleEmbedded:v4])
+    if ([MEMORY[0x1E69B2870] isLocaleEmbedded:assetCopy])
     {
-      v10 = CDMOSLoggerForCategory(0);
+      path = CDMOSLoggerForCategory(0);
       v11 = 1;
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      if (!os_log_type_enabled(path, OS_LOG_TYPE_INFO))
       {
         goto LABEL_24;
       }
 
-      v15 = [v4 localeIdentifier];
+      localeIdentifier4 = [assetCopy localeIdentifier];
       *buf = 136315650;
       v25 = "+[CDMTokenizer syncTrialAsset:]";
       v26 = 2112;
       v27 = v8;
       v28 = 2112;
-      v29 = v15;
-      _os_log_impl(&dword_1DC287000, v10, OS_LOG_TYPE_INFO, "%s [WARN]: [Not Critical] CDM gets Morphun assets path with error: %@ for embedded locale: %@. Skip following code to register Morphun assets path.", buf, 0x20u);
+      v29 = localeIdentifier4;
+      _os_log_impl(&dword_1DC287000, path, OS_LOG_TYPE_INFO, "%s [WARN]: [Not Critical] CDM gets Morphun assets path with error: %@ for embedded locale: %@. Skip following code to register Morphun assets path.", buf, 0x20u);
 
       goto LABEL_12;
     }
 
-    v10 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    path = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v4 localeIdentifier];
+      localeIdentifier5 = [assetCopy localeIdentifier];
       *buf = 136315650;
       v25 = "+[CDMTokenizer syncTrialAsset:]";
       v26 = 2112;
       v27 = v8;
       v28 = 2112;
-      v29 = v22;
-      _os_log_error_impl(&dword_1DC287000, v10, OS_LOG_TYPE_ERROR, "%s [ERR]: CDM gets Morphun assets path with error: %@ for non-embedded locale: %@.", buf, 0x20u);
+      v29 = localeIdentifier5;
+      _os_log_error_impl(&dword_1DC287000, path, OS_LOG_TYPE_ERROR, "%s [ERR]: CDM gets Morphun assets path with error: %@ for non-embedded locale: %@.", buf, 0x20u);
     }
 
     goto LABEL_23;
   }
 
-  if (v9 != 1)
+  if (code != 1)
   {
-    v10 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    path = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v4 localeIdentifier];
+      localeIdentifier6 = [assetCopy localeIdentifier];
       *buf = 136315650;
       v25 = "+[CDMTokenizer syncTrialAsset:]";
       v26 = 2112;
       v27 = v8;
       v28 = 2112;
-      v29 = v16;
-      _os_log_error_impl(&dword_1DC287000, v10, OS_LOG_TYPE_ERROR, "%s [ERR]: CDM gets Morphun assets path with error: %@ for locale: %@.", buf, 0x20u);
+      v29 = localeIdentifier6;
+      _os_log_error_impl(&dword_1DC287000, path, OS_LOG_TYPE_ERROR, "%s [ERR]: CDM gets Morphun assets path with error: %@ for locale: %@.", buf, 0x20u);
     }
 
     goto LABEL_23;
   }
 
-  v10 = CDMOSLoggerForCategory(0);
+  path = CDMOSLoggerForCategory(0);
   v11 = 1;
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(path, OS_LOG_TYPE_INFO))
   {
-    v12 = [v4 localeIdentifier];
+    localeIdentifier7 = [assetCopy localeIdentifier];
     *buf = 136315650;
     v25 = "+[CDMTokenizer syncTrialAsset:]";
     v26 = 2112;
     v27 = v8;
     v28 = 2112;
-    v29 = v12;
-    _os_log_impl(&dword_1DC287000, v10, OS_LOG_TYPE_INFO, "%s [WARN]: CDM gets Morphun assets path with error: %@ for locale: %@. The error code indicates the locale is not supported by MorphunAssets. Skip following code to register Morphun assets path. Morphun will fallback to use assets provided by CoreFoundation / ICU.", buf, 0x20u);
+    v29 = localeIdentifier7;
+    _os_log_impl(&dword_1DC287000, path, OS_LOG_TYPE_INFO, "%s [WARN]: CDM gets Morphun assets path with error: %@ for locale: %@. The error code indicates the locale is not supported by MorphunAssets. Skip following code to register Morphun assets path. Morphun will fallback to use assets provided by CoreFoundation / ICU.", buf, 0x20u);
 
 LABEL_12:
     v11 = 1;
@@ -550,37 +550,37 @@ LABEL_24:
   return v11;
 }
 
-+ (BOOL)trialAssetUpdate:(id)a3
++ (BOOL)trialAssetUpdate:(id)update
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v4 localeIdentifier];
+    localeIdentifier = [updateCopy localeIdentifier];
     v23 = 136315394;
     v24 = "+[CDMTokenizer trialAssetUpdate:]";
     v25 = 2112;
-    v26 = v21;
+    v26 = localeIdentifier;
     _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s Triggering Morphun assets downloading via MorphunAssets API for locale: %@.", &v23, 0x16u);
   }
 
-  if ([MEMORY[0x1E69B2870] isLocaleDownloadSupported:v4])
+  if ([MEMORY[0x1E69B2870] isLocaleDownloadSupported:updateCopy])
   {
-    if ([MEMORY[0x1E69B2870] isLocaleEmbedded:v4])
+    if ([MEMORY[0x1E69B2870] isLocaleEmbedded:updateCopy])
     {
-      [MEMORY[0x1E69B2870] onDemandDownloadForLocale:v4 withProgress:0 withCompletion:0];
+      [MEMORY[0x1E69B2870] onDemandDownloadForLocale:updateCopy withProgress:0 withCompletion:0];
       v6 = CDMOSLoggerForCategory(0);
       v7 = 1;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v8 = [v4 localeIdentifier];
-        v9 = [MEMORY[0x1E69B2870] EmbeddedLocales];
-        v10 = [a1 printableLocales:v9];
+        localeIdentifier2 = [updateCopy localeIdentifier];
+        embeddedLocales = [MEMORY[0x1E69B2870] EmbeddedLocales];
+        v10 = [self printableLocales:embeddedLocales];
         v23 = 136315650;
         v24 = "+[CDMTokenizer trialAssetUpdate:]";
         v25 = 2112;
-        v26 = v8;
+        v26 = localeIdentifier2;
         v27 = 2112;
         v28[0] = v10;
         _os_log_impl(&dword_1DC287000, v6, OS_LOG_TYPE_INFO, "%s Issued an non-blocking Morphun Trial asset downloading for %@ as it's part of Morphun embedded locales: %@", &v23, 0x20u);
@@ -592,17 +592,17 @@ LABEL_9:
 
     else
     {
-      v6 = [MEMORY[0x1E69B2870] blockingOnDemandDownloadForLocale:v4 withTimeout:dispatch_time(0 withProgress:{180000000000), 0}];
+      v6 = [MEMORY[0x1E69B2870] blockingOnDemandDownloadForLocale:updateCopy withTimeout:dispatch_time(0 withProgress:{180000000000), 0}];
       v14 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v4 localeIdentifier];
-        v16 = [MEMORY[0x1E69B2870] EmbeddedLocales];
-        v17 = [a1 printableLocales:v16];
+        localeIdentifier3 = [updateCopy localeIdentifier];
+        embeddedLocales2 = [MEMORY[0x1E69B2870] EmbeddedLocales];
+        v17 = [self printableLocales:embeddedLocales2];
         v23 = 136315906;
         v24 = "+[CDMTokenizer trialAssetUpdate:]";
         v25 = 2112;
-        v26 = v15;
+        v26 = localeIdentifier3;
         v27 = 1024;
         LODWORD(v28[0]) = 180;
         WORD2(v28[0]) = 2112;
@@ -619,11 +619,11 @@ LABEL_9:
       v18 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v4 localeIdentifier];
+        localeIdentifier4 = [updateCopy localeIdentifier];
         v23 = 136315650;
         v24 = "+[CDMTokenizer trialAssetUpdate:]";
         v25 = 2112;
-        v26 = v22;
+        v26 = localeIdentifier4;
         v27 = 2112;
         v28[0] = v6;
         _os_log_error_impl(&dword_1DC287000, v18, OS_LOG_TYPE_ERROR, "%s [ERR]: Morphun Trial asset downloading timed out for: %@, with error: %@", &v23, 0x20u);
@@ -639,13 +639,13 @@ LABEL_9:
     v7 = 1;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v11 = [v4 localeIdentifier];
-      v12 = [MEMORY[0x1E69B2870] SupportedLocales];
-      v13 = [a1 printableLocales:v12];
+      localeIdentifier5 = [updateCopy localeIdentifier];
+      supportedLocales = [MEMORY[0x1E69B2870] SupportedLocales];
+      v13 = [self printableLocales:supportedLocales];
       v23 = 136315650;
       v24 = "+[CDMTokenizer trialAssetUpdate:]";
       v25 = 2112;
-      v26 = v11;
+      v26 = localeIdentifier5;
       v27 = 2112;
       v28[0] = v13;
       _os_log_impl(&dword_1DC287000, v6, OS_LOG_TYPE_INFO, "%s [WARN]: Current locale: %@ is NOT in MorphunAssets download supported list: %@. Return TRUE so that Morphun will fallback to use Morphun assets provided by CoreFoundation / ICU on device for this locale.", &v23, 0x20u);
@@ -659,17 +659,17 @@ LABEL_17:
   return v7;
 }
 
-+ (id)printableLocales:(id)a3
++ (id)printableLocales:(id)locales
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  localesCopy = locales;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(localesCopy, "count")}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__CDMTokenizer_printableLocales___block_invoke;
   v7[3] = &unk_1E862F8E0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [localesCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -681,10 +681,10 @@ void __33__CDMTokenizer_printableLocales___block_invoke(uint64_t a1, void *a2)
   [v2 addObject:?];
 }
 
-+ (id)tokenizerForLocale:(id)a3
++ (id)tokenizerForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [[CDMTokenizer alloc] initWithLocale:v3];
+  localeCopy = locale;
+  v4 = [[CDMTokenizer alloc] initWithLocale:localeCopy];
 
   return v4;
 }

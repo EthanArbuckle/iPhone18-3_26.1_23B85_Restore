@@ -1,26 +1,26 @@
 @interface SVXSayItChildTaskProvider
-- (id)createWithCommand:(id)a3 taskTracker:(id)a4 listenAfterSpeakingDisabled:(BOOL)a5;
+- (id)createWithCommand:(id)command taskTracker:(id)tracker listenAfterSpeakingDisabled:(BOOL)disabled;
 @end
 
 @implementation SVXSayItChildTaskProvider
 
-- (id)createWithCommand:(id)a3 taskTracker:(id)a4 listenAfterSpeakingDisabled:(BOOL)a5
+- (id)createWithCommand:(id)command taskTracker:(id)tracker listenAfterSpeakingDisabled:(BOOL)disabled
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  trackerCopy = tracker;
   v9 = mach_absolute_time();
-  v10 = [v8 context];
+  context = [trackerCopy context];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__SVXSayItChildTaskProvider_createWithCommand_taskTracker_listenAfterSpeakingDisabled___block_invoke;
   v15[3] = &unk_279C66DF0;
-  v16 = v7;
+  v16 = commandCopy;
   v17 = v9;
-  v18 = a5;
-  v11 = v7;
-  v12 = [v10 mutatedCopyWithMutator:v15];
+  disabledCopy = disabled;
+  v11 = commandCopy;
+  v12 = [context mutatedCopyWithMutator:v15];
 
-  v13 = [v8 beginChildWithContext:v12];
+  v13 = [trackerCopy beginChildWithContext:v12];
 
   return v13;
 }

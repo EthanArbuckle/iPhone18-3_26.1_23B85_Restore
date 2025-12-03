@@ -1,6 +1,6 @@
 @interface MDMBootstrapTokenUtilities
-+ (BOOL)validateBootstrapToken:(id)a3 error:(id *)a4;
-+ (BOOL)validateBootstrapTokenContext:(id)a3 error:(id *)a4;
++ (BOOL)validateBootstrapToken:(id)token error:(id *)error;
++ (BOOL)validateBootstrapTokenContext:(id)context error:(id *)error;
 + (id)_bootstrapTokenExists;
 + (id)_deleteBootstrapTokenFailedUnknown;
 + (id)_failedToCheckBootstrapTokenExistence;
@@ -9,31 +9,31 @@
 + (id)_generateBootstrapTokenFailed;
 + (id)_generateBootstrapTokenFailedUnknown;
 + (id)_generateTokenDataFailed;
-+ (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5;
-+ (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5;
-+ (void)deleteBootstrapTokenWithTokenContext:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5;
-+ (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-+ (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
++ (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler;
++ (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler;
++ (void)deleteBootstrapTokenWithTokenContext:(id)context devicePasscodeContext:(id)passcodeContext completionHandler:(id)handler;
++ (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
++ (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation MDMBootstrapTokenUtilities
 
-+ (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
++ (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = MDMCreateLAContextWithPasscodeData(a3);
-  v7 = [v8 externalizedContext];
-  [a1 generateBootstrapTokenWithDevicePasscodeContext:v7 completionHandler:v6];
+  handlerCopy = handler;
+  v8 = MDMCreateLAContextWithPasscodeData(passcode);
+  externalizedContext = [v8 externalizedContext];
+  [self generateBootstrapTokenWithDevicePasscodeContext:externalizedContext completionHandler:handlerCopy];
 }
 
-+ (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
++ (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D77BF8] sharedManager];
+  contextCopy = context;
+  handlerCopy = handler;
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
   v38 = 0;
-  v9 = [v8 checkBootstrapUserExistsWithError:&v38];
+  v9 = [mEMORY[0x277D77BF8] checkBootstrapUserExistsWithError:&v38];
   v10 = v38;
 
   if (v9)
@@ -45,8 +45,8 @@
       _os_log_impl(&dword_2561F5000, v11, OS_LOG_TYPE_DEFAULT, "Bootstrap token exists already. Returning...", buf, 2u);
     }
 
-    v12 = [a1 _bootstrapTokenExists];
-    v7[2](v7, 0, v12);
+    _bootstrapTokenExists = [self _bootstrapTokenExists];
+    handlerCopy[2](handlerCopy, 0, _bootstrapTokenExists);
 
     goto LABEL_38;
   }
@@ -56,9 +56,9 @@
     goto LABEL_9;
   }
 
-  v13 = [v10 code];
+  code = [v10 code];
   v14 = *DMCLogObjects();
-  if (v13 == 2)
+  if (code == 2)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -95,16 +95,16 @@ LABEL_9:
         }
       }
 
-      v20 = MDMCreateLAContextWithPasscodeData(v16);
-      v21 = [v20 externalizedContext];
+      _generateTokenDataFailed = MDMCreateLAContextWithPasscodeData(v16);
+      externalizedContext = [_generateTokenDataFailed externalizedContext];
 
-      if (v21)
+      if (externalizedContext)
       {
-        v22 = [MEMORY[0x277D77BF8] sharedManager];
-        v23 = [v20 externalizedContext];
-        v36 = v6;
+        mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+        externalizedContext2 = [_generateTokenDataFailed externalizedContext];
+        v36 = contextCopy;
         v37 = v10;
-        v24 = [v22 createBootstrapUserWithTokenInACMCredential:v23 withDevicePasscodeInACMCredential:v6 withError:&v37];
+        v24 = [mEMORY[0x277D77BF8]2 createBootstrapUserWithTokenInACMCredential:externalizedContext2 withDevicePasscodeInACMCredential:contextCopy withError:&v37];
         v25 = v37;
 
         if (v24)
@@ -116,9 +116,9 @@ LABEL_9:
             _os_log_impl(&dword_2561F5000, v26, OS_LOG_TYPE_DEBUG, "createBootstrapUserWithToken finished with no error", buf, 2u);
           }
 
-          (v7)[2](v7, v16, 0);
+          (handlerCopy)[2](handlerCopy, v16, 0);
           v10 = v25;
-          v6 = v36;
+          contextCopy = v36;
         }
 
         else
@@ -127,7 +127,7 @@ LABEL_9:
           v31 = os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
           if (v25)
           {
-            v6 = v36;
+            contextCopy = v36;
             if (v31)
             {
               *buf = 138543362;
@@ -135,23 +135,23 @@ LABEL_9:
               _os_log_impl(&dword_2561F5000, v30, OS_LOG_TYPE_ERROR, "Failed to generate bootstrap token with error: %{public}@", buf, 0xCu);
             }
 
-            v32 = [a1 _generateBootstrapTokenFailed];
-            v7[2](v7, 0, v32);
+            _generateBootstrapTokenFailed = [self _generateBootstrapTokenFailed];
+            handlerCopy[2](handlerCopy, 0, _generateBootstrapTokenFailed);
 
             v10 = v25;
           }
 
           else
           {
-            v6 = v36;
+            contextCopy = v36;
             if (v31)
             {
               *buf = 0;
               _os_log_impl(&dword_2561F5000, v30, OS_LOG_TYPE_ERROR, "Unknown reason for failing generating bootstrap token", buf, 2u);
             }
 
-            v33 = [a1 _generateBootstrapTokenFailedUnknown];
-            v7[2](v7, 0, v33);
+            _generateBootstrapTokenFailedUnknown = [self _generateBootstrapTokenFailedUnknown];
+            handlerCopy[2](handlerCopy, 0, _generateBootstrapTokenFailedUnknown);
 
             v10 = 0;
           }
@@ -167,8 +167,8 @@ LABEL_9:
           _os_log_impl(&dword_2561F5000, v28, OS_LOG_TYPE_ERROR, "Failed to generate token data context", buf, 2u);
         }
 
-        v29 = [a1 _generateBootstrapTokenContextFailed];
-        v7[2](v7, 0, v29);
+        _generateBootstrapTokenContextFailed = [self _generateBootstrapTokenContextFailed];
+        handlerCopy[2](handlerCopy, 0, _generateBootstrapTokenContextFailed);
       }
     }
 
@@ -181,8 +181,8 @@ LABEL_9:
         _os_log_impl(&dword_2561F5000, v27, OS_LOG_TYPE_ERROR, "Failed to generate token data", buf, 2u);
       }
 
-      v20 = [a1 _generateTokenDataFailed];
-      v7[2](v7, 0, v20);
+      _generateTokenDataFailed = [self _generateTokenDataFailed];
+      handlerCopy[2](handlerCopy, 0, _generateTokenDataFailed);
     }
 
     goto LABEL_38;
@@ -195,32 +195,32 @@ LABEL_9:
     _os_log_impl(&dword_2561F5000, v14, OS_LOG_TYPE_ERROR, "checkBootstrapUserExistsWithError failed with error: %{public}@.", buf, 0xCu);
   }
 
-  v7[2](v7, 0, v10);
+  handlerCopy[2](handlerCopy, 0, v10);
 LABEL_38:
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5
++ (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v11 = MDMCreateLAContextWithPasscodeData(a4);
-  v10 = [v11 externalizedContext];
-  [a1 deleteBootstrapTokenWithToken:v9 devicePasscodeContext:v10 completionHandler:v8];
+  handlerCopy = handler;
+  tokenCopy = token;
+  v11 = MDMCreateLAContextWithPasscodeData(passcode);
+  externalizedContext = [v11 externalizedContext];
+  [self deleteBootstrapTokenWithToken:tokenCopy devicePasscodeContext:externalizedContext completionHandler:handlerCopy];
 }
 
-+ (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5
++ (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = MDMCreateLAContextWithPasscodeData(a3);
-  v11 = [v10 externalizedContext];
+  contextCopy = context;
+  handlerCopy = handler;
+  v10 = MDMCreateLAContextWithPasscodeData(token);
+  externalizedContext = [v10 externalizedContext];
 
-  if (v11)
+  if (externalizedContext)
   {
-    v12 = [v10 externalizedContext];
-    [a1 deleteBootstrapTokenWithTokenContext:v12 devicePasscodeContext:v8 completionHandler:v9];
+    externalizedContext2 = [v10 externalizedContext];
+    [self deleteBootstrapTokenWithTokenContext:externalizedContext2 devicePasscodeContext:contextCopy completionHandler:handlerCopy];
   }
 
   else
@@ -232,26 +232,26 @@ LABEL_38:
       _os_log_impl(&dword_2561F5000, v13, OS_LOG_TYPE_ERROR, "Failed to generate token data context", v15, 2u);
     }
 
-    v14 = [a1 _generateBootstrapTokenContextFailed];
-    (*(v9 + 2))(v9, v14);
+    _generateBootstrapTokenContextFailed = [self _generateBootstrapTokenContextFailed];
+    (*(handlerCopy + 2))(handlerCopy, _generateBootstrapTokenContextFailed);
   }
 }
 
-+ (void)deleteBootstrapTokenWithTokenContext:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5
++ (void)deleteBootstrapTokenWithTokenContext:(id)context devicePasscodeContext:(id)passcodeContext completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277D77BF8];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 sharedManager];
+  passcodeContextCopy = passcodeContext;
+  contextCopy = context;
+  sharedManager = [v9 sharedManager];
   v19 = 0;
-  v13 = [v12 deleteBootstrapUserWithTokenInACMCredential:v11 withDevicePasscodeInACMCredential:v10 withError:&v19];
+  v13 = [sharedManager deleteBootstrapUserWithTokenInACMCredential:contextCopy withDevicePasscodeInACMCredential:passcodeContextCopy withError:&v19];
 
   v14 = v19;
   if (v13)
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -267,7 +267,7 @@ LABEL_38:
         _os_log_impl(&dword_2561F5000, v15, OS_LOG_TYPE_ERROR, "Failed to delete bootstrap token with error: %{public}@", buf, 0xCu);
       }
 
-      (v8)[2](v8, v14);
+      (handlerCopy)[2](handlerCopy, v14);
     }
 
     else
@@ -278,23 +278,23 @@ LABEL_38:
         _os_log_impl(&dword_2561F5000, v15, OS_LOG_TYPE_ERROR, "Unknown reason for failing deleting bootstrap token", buf, 2u);
       }
 
-      v18 = [a1 _deleteBootstrapTokenFailedUnknown];
-      (v8)[2](v8, v18);
+      _deleteBootstrapTokenFailedUnknown = [self _deleteBootstrapTokenFailedUnknown];
+      (handlerCopy)[2](handlerCopy, _deleteBootstrapTokenFailedUnknown);
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)validateBootstrapToken:(id)a3 error:(id *)a4
++ (BOOL)validateBootstrapToken:(id)token error:(id *)error
 {
-  v6 = MDMCreateLAContextWithPasscodeData(a3);
-  v7 = [v6 externalizedContext];
+  v6 = MDMCreateLAContextWithPasscodeData(token);
+  externalizedContext = [v6 externalizedContext];
 
-  if (v7)
+  if (externalizedContext)
   {
-    v8 = [v6 externalizedContext];
-    LOBYTE(a4) = [a1 validateBootstrapTokenContext:v8 error:a4];
+    externalizedContext2 = [v6 externalizedContext];
+    LOBYTE(error) = [self validateBootstrapTokenContext:externalizedContext2 error:error];
   }
 
   else
@@ -306,30 +306,30 @@ LABEL_38:
       _os_log_impl(&dword_2561F5000, v9, OS_LOG_TYPE_ERROR, "Failed to generate token data context", v12, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      v10 = [a1 _generateBootstrapTokenContextFailed];
-      if (v10)
+      _generateBootstrapTokenContextFailed = [self _generateBootstrapTokenContextFailed];
+      if (_generateBootstrapTokenContextFailed)
       {
-        v10 = v10;
-        *a4 = v10;
+        _generateBootstrapTokenContextFailed = _generateBootstrapTokenContextFailed;
+        *error = _generateBootstrapTokenContextFailed;
       }
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)validateBootstrapTokenContext:(id)a3 error:(id *)a4
++ (BOOL)validateBootstrapTokenContext:(id)context error:(id *)error
 {
   v5 = MEMORY[0x277D77BF8];
-  v6 = a3;
-  v7 = [v5 sharedManager];
-  LOBYTE(a4) = [v7 validateBootstrapUserWithTokenInACMCredential:v6 withError:a4];
+  contextCopy = context;
+  sharedManager = [v5 sharedManager];
+  LOBYTE(error) = [sharedManager validateBootstrapUserWithTokenInACMCredential:contextCopy withError:error];
 
-  return a4;
+  return error;
 }
 
 + (id)_generateTokenDataFailed

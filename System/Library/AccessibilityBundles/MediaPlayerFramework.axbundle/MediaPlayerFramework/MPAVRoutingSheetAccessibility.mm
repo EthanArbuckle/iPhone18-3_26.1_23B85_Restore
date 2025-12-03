@@ -1,18 +1,18 @@
 @interface MPAVRoutingSheetAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (MPAVRoutingSheetAccessibility)initWithAVItemType:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (MPAVRoutingSheetAccessibility)initWithAVItemType:(int64_t)type;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MPAVRoutingSheetAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPAVRoutingSheet" hasInstanceVariable:@"_dismissBackgroundButton" withType:"UIButton"];
-  [v3 validateClass:@"MPAVRoutingSheet" hasInstanceVariable:@"_dismissControlsViewButton" withType:"UIButton"];
-  [v3 validateClass:@"MPAVRoutingSheet" hasInstanceMethod:@"initWithAVItemType:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"MPAVRoutingSheet" hasInstanceMethod:@"dismiss" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPAVRoutingSheet" hasInstanceVariable:@"_dismissBackgroundButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MPAVRoutingSheet" hasInstanceVariable:@"_dismissControlsViewButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MPAVRoutingSheet" hasInstanceMethod:@"initWithAVItemType:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"MPAVRoutingSheet" hasInstanceMethod:@"dismiss" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,11 +27,11 @@
   [v4 setIsAccessibilityElement:0];
 }
 
-- (MPAVRoutingSheetAccessibility)initWithAVItemType:(int64_t)a3
+- (MPAVRoutingSheetAccessibility)initWithAVItemType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = MPAVRoutingSheetAccessibility;
-  v3 = [(MPAVRoutingSheetAccessibility *)&v5 initWithAVItemType:a3];
+  v3 = [(MPAVRoutingSheetAccessibility *)&v5 initWithAVItemType:type];
   [(MPAVRoutingSheetAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

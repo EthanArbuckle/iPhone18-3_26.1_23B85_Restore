@@ -1,7 +1,7 @@
 @interface MFMarkLibraryPurgeableActivityManager
 + (OS_os_log)log;
-+ (void)_registerLibraryPurgeableUpgraderRequiringClassA:(BOOL)a3;
-+ (void)scheduleIfNeededRequiringClassA:(id)a3;
++ (void)_registerLibraryPurgeableUpgraderRequiringClassA:(BOOL)a;
++ (void)scheduleIfNeededRequiringClassA:(id)a;
 @end
 
 @implementation MFMarkLibraryPurgeableActivityManager
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100071A3C;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185900 != -1)
   {
     dispatch_once(&qword_100185900, block);
@@ -23,9 +23,9 @@
   return v2;
 }
 
-+ (void)scheduleIfNeededRequiringClassA:(id)a3
++ (void)scheduleIfNeededRequiringClassA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   if (+[MFMarkLibraryPurgeableUpgrader isComplete])
   {
     v5 = +[MFMarkLibraryPurgeableActivityManager log];
@@ -35,7 +35,7 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Library purgeable upgrader has not been scheduled. (Not needed)", v7, 2u);
     }
 
-    [a1 _unregisterXPCActivity];
+    [self _unregisterXPCActivity];
   }
 
   else
@@ -47,11 +47,11 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Library purgeable upgrader has been scheduled.", buf, 2u);
     }
 
-    [a1 _registerLibraryPurgeableUpgraderRequiringClassA:v4[2](v4)];
+    [self _registerLibraryPurgeableUpgraderRequiringClassA:aCopy[2](aCopy)];
   }
 }
 
-+ (void)_registerLibraryPurgeableUpgraderRequiringClassA:(BOOL)a3
++ (void)_registerLibraryPurgeableUpgraderRequiringClassA:(BOOL)a
 {
   v5 = [MFMarkLibraryPurgeableUpgrader alloc];
   v6 = +[MailAccount allPurgeableMailboxUids];
@@ -61,14 +61,14 @@
   v14[1] = 3221225472;
   v14[2] = sub_100071D50;
   v14[3] = &unk_100158AD0;
-  v15 = a3;
+  aCopy = a;
   v8 = objc_retainBlock(v14);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100071E58;
   v11[3] = &unk_1001576B8;
   v12 = v7;
-  v13 = a1;
+  selfCopy = self;
   v9 = v7;
   v10 = objc_retainBlock(v11);
   ef_xpc_activity_register();

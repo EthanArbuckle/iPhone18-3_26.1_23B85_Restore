@@ -1,23 +1,23 @@
 @interface LyricsSharingAnimationController
 - (_TtC5Music32LyricsSharingAnimationController)init;
-- (id)interruptibleAnimatorForTransition:(id)a3;
+- (id)interruptibleAnimatorForTransition:(id)transition;
 @end
 
 @implementation LyricsSharingAnimationController
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   v5 = self->_UISheetAnimationController_opaque[OBJC_IVAR____TtC5Music32LyricsSharingAnimationController_didPrepareAnimations];
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   if ((v5 & 1) == 0)
   {
-    sub_10043F4BC(a3);
+    sub_10043F4BC(transition);
   }
 
-  v9.receiver = v6;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for LyricsSharingAnimationController();
-  v7 = [(LyricsSharingAnimationController *)&v9 interruptibleAnimatorForTransition:a3];
+  v7 = [(LyricsSharingAnimationController *)&v9 interruptibleAnimatorForTransition:transition];
   swift_unknownObjectRelease();
 
   return v7;

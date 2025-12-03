@@ -1,23 +1,23 @@
 @interface UMKPersonaProvider
-- (BOOL)allocatePersonaWithInfo:(id)a3 andPath:(id)a4 error:(id *)a5;
-- (BOOL)deallocatePersonaWithID:(unsigned int)a3 error:(id *)a4;
-- (id)infoForPersonaWithID:(unsigned int)a3 error:(id *)a4;
-- (id)infoForProcessWithPID:(int)a3 error:(id *)a4;
+- (BOOL)allocatePersonaWithInfo:(id)info andPath:(id)path error:(id *)error;
+- (BOOL)deallocatePersonaWithID:(unsigned int)d error:(id *)error;
+- (id)infoForPersonaWithID:(unsigned int)d error:(id *)error;
+- (id)infoForProcessWithPID:(int)d error:(id *)error;
 @end
 
 @implementation UMKPersonaProvider
 
-- (BOOL)allocatePersonaWithInfo:(id)a3 andPath:(id)a4 error:(id *)a5
+- (BOOL)allocatePersonaWithInfo:(id)info andPath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  infoCopy = info;
+  pathCopy = path;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   memset(v61, 0, 348);
-  v9 = sub_100076214(v7, v61);
+  v9 = sub_100076214(infoCopy, v61);
   if (!LODWORD(v61[0]))
   {
     if (qword_1000EB488 != -1)
@@ -61,13 +61,13 @@
       free(v18);
     }
 
-    if (a5)
+    if (error)
     {
       v33 = NSPOSIXErrorDomain;
       v34 = 22;
 LABEL_61:
       [NSError errorWithDomain:v33 code:v34 userInfo:0, v47, v48];
-      *a5 = v35 = 0;
+      *error = v35 = 0;
       goto LABEL_82;
     }
 
@@ -76,9 +76,9 @@ LABEL_66:
     goto LABEL_82;
   }
 
-  if (v8)
+  if (pathCopy)
   {
-    if (([v8 getCString:&v50 maxLength:1024 encoding:{4, v9}] & 1) == 0)
+    if (([pathCopy getCString:&v50 maxLength:1024 encoding:{4, v9}] & 1) == 0)
     {
       if (qword_1000EB488 != -1)
       {
@@ -102,7 +102,7 @@ LABEL_66:
         if (v25)
         {
           LODWORD(v49[0]) = 138543362;
-          *(v49 + 4) = v8;
+          *(v49 + 4) = pathCopy;
           v26 = _os_log_send_and_compose_impl();
           v27 = v26;
           if (v26)
@@ -119,9 +119,9 @@ LABEL_66:
         free(v27);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       }
 
       goto LABEL_66;
@@ -161,7 +161,7 @@ LABEL_66:
           v55 = 1024;
           v56 = DWORD2(v61[21]);
           v57 = 2114;
-          v58 = v8;
+          v58 = pathCopy;
           v59 = 1024;
           v60 = v10;
           LODWORD(v48) = 46;
@@ -232,7 +232,7 @@ LABEL_58:
 
 LABEL_59:
 
-    if (a5)
+    if (error)
     {
       v33 = NSPOSIXErrorDomain;
       v34 = v10;
@@ -242,7 +242,7 @@ LABEL_59:
     goto LABEL_66;
   }
 
-  if (sub_100001440(v7))
+  if (sub_100001440(infoCopy))
   {
     if (qword_1000EB488 != -1)
     {
@@ -262,7 +262,7 @@ LABEL_59:
       if (v29)
       {
         v30 = v28;
-        v31 = sub_100001440(v7);
+        v31 = sub_100001440(infoCopy);
         LODWORD(v50) = 67109376;
         HIDWORD(v50) = v31;
         v51 = 1024;
@@ -283,7 +283,7 @@ LABEL_59:
       free(v32);
     }
 
-    sub_10008BDA4(v7, 0);
+    sub_10008BDA4(infoCopy, 0);
   }
 
   if (qword_1000EB488 != -1)
@@ -309,10 +309,10 @@ LABEL_59:
     if (v38)
     {
       v39 = v36;
-      v40 = sub_100001440(v7);
-      v41 = sub_100001434(v7);
-      v43 = sub_100096040(v7, v42);
-      v44 = sub_100001660(v7);
+      v40 = sub_100001440(infoCopy);
+      v41 = sub_100001434(infoCopy);
+      v43 = sub_100096040(infoCopy, v42);
+      v44 = sub_100001660(infoCopy);
       LODWORD(v50) = 67109890;
       HIDWORD(v50) = v40;
       v51 = 1024;
@@ -343,11 +343,11 @@ LABEL_82:
   return v35;
 }
 
-- (BOOL)deallocatePersonaWithID:(unsigned int)a3 error:(id *)a4
+- (BOOL)deallocatePersonaWithID:(unsigned int)d error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v5 = kpersona_dealloc();
@@ -391,9 +391,9 @@ LABEL_82:
       free(v11);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:0];
     }
   }
 
@@ -440,11 +440,11 @@ LABEL_82:
   return v5 == 0;
 }
 
-- (id)infoForPersonaWithID:(unsigned int)a3 error:(id *)a4
+- (id)infoForPersonaWithID:(unsigned int)d error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   memset(&__src[1], 0, 344);
@@ -480,9 +480,9 @@ LABEL_82:
       if (v9)
       {
         LODWORD(__dst[0]) = 67109632;
-        HIDWORD(__dst[0]) = a3;
+        HIDWORD(__dst[0]) = d;
         LOWORD(__dst[1]) = 1024;
-        *(&__dst[1] + 2) = a3;
+        *(&__dst[1] + 2) = d;
         HIWORD(__dst[1]) = 1024;
         LODWORD(__dst[2]) = 3;
         goto LABEL_31;
@@ -517,9 +517,9 @@ LABEL_82:
       if (v22)
       {
         LODWORD(__dst[0]) = 67109632;
-        HIDWORD(__dst[0]) = a3;
+        HIDWORD(__dst[0]) = d;
         LOWORD(__dst[1]) = 1024;
-        *(&__dst[1] + 2) = a3;
+        *(&__dst[1] + 2) = d;
         HIWORD(__dst[1]) = 1024;
         LODWORD(__dst[2]) = v6;
 LABEL_31:
@@ -539,10 +539,10 @@ LABEL_43:
     free(v24);
 LABEL_44:
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:0];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -636,7 +636,7 @@ LABEL_44:
       if (v27)
       {
         LODWORD(v33) = 67109120;
-        HIDWORD(v33) = a3;
+        HIDWORD(v33) = d;
         v28 = _os_log_send_and_compose_impl();
         v29 = v28;
         if (v28)
@@ -653,9 +653,9 @@ LABEL_44:
       free(v29);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:34 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:34 userInfo:0];
     }
   }
 
@@ -664,11 +664,11 @@ LABEL_55:
   return v10;
 }
 
-- (id)infoForProcessWithPID:(int)a3 error:(id *)a4
+- (id)infoForProcessWithPID:(int)d error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   memset(&__src[1], 0, 344);
@@ -699,7 +699,7 @@ LABEL_55:
       if (v9)
       {
         LODWORD(__dst[0]) = 67109376;
-        HIDWORD(__dst[0]) = a3;
+        HIDWORD(__dst[0]) = d;
         LOWORD(__dst[1]) = 1024;
         *(&__dst[1] + 2) = v6;
         v10 = _os_log_send_and_compose_impl();
@@ -718,10 +718,10 @@ LABEL_55:
       free(v11);
     }
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -764,7 +764,7 @@ LABEL_55:
           v20 = sub_100096040(v12, v19);
           v21 = sub_100001660(v12);
           LODWORD(__dst[0]) = 67110146;
-          HIDWORD(__dst[0]) = a3;
+          HIDWORD(__dst[0]) = d;
           LOWORD(__dst[1]) = 1024;
           *(&__dst[1] + 2) = v17;
           HIWORD(__dst[1]) = 1024;
@@ -817,7 +817,7 @@ LABEL_55:
         if (v25)
         {
           LODWORD(v31) = 67109120;
-          HIDWORD(v31) = a3;
+          HIDWORD(v31) = d;
           v26 = _os_log_send_and_compose_impl();
           v27 = v26;
           if (v26)
@@ -834,9 +834,9 @@ LABEL_55:
         free(v27);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:34 userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:34 userInfo:0];
       }
     }
   }

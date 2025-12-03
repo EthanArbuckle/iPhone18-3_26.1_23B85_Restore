@@ -1,35 +1,35 @@
 @interface ETGLSketchRenderer
 + (void)warmupShaders;
 - (BOOL)resizeFromCachedLayer;
-- (CGImage)createRenderedFrameImageUsingAlpha:(BOOL)a3;
-- (ETGLSketchRenderer)initWithContext:(id)a3 andDrawable:(id)a4;
+- (CGImage)createRenderedFrameImageUsingAlpha:(BOOL)alpha;
+- (ETGLSketchRenderer)initWithContext:(id)context andDrawable:(id)drawable;
 - (ETGLSketchRendererDelegate)delegate;
-- (int)linkProgramWithVShader:(int)a3 FShader:(int)a4;
-- (int)loadOneShaderOfType:(unsigned int)a3 withCString:(const char *)a4 length:(int)a5;
+- (int)linkProgramWithVShader:(int)shader FShader:(int)fShader;
+- (int)loadOneShaderOfType:(unsigned int)type withCString:(const char *)string length:(int)length;
 - (void)_warmupShaders;
-- (void)animateOutWithCompletion:(id)a3;
-- (void)appendDualPointArray:(ETGLSketchRenderer *)self length:(SEL)a2 controlPoint:alternatePoints:alternateLength:alternateControlPoint:unitSize:segmentIndex:segmentCount:;
-- (void)appendPointArray:(ETGLSketchRenderer *)self length:(SEL)a2;
+- (void)animateOutWithCompletion:(id)completion;
+- (void)appendDualPointArray:(ETGLSketchRenderer *)self length:(SEL)length controlPoint:alternatePoints:alternateLength:alternateControlPoint:unitSize:segmentIndex:segmentCount:;
+- (void)appendPointArray:(ETGLSketchRenderer *)self length:(SEL)length;
 - (void)dealloc;
 - (void)erase;
 - (void)render;
 - (void)reset;
-- (void)setLineWidthScaleFactor:(double)a3;
-- (void)setupFBOs:(id)a3;
+- (void)setLineWidthScaleFactor:(double)factor;
+- (void)setupFBOs:(id)os;
 - (void)setupTexture;
 - (void)setupVAOs;
 - (void)updateGLWithCurrentTime;
-- (void)updateGLWithTime:(float)a3;
-- (void)updateVertexBufferWithVertexCount:(unint64_t)a3;
+- (void)updateGLWithTime:(float)time;
+- (void)updateVertexBufferWithVertexCount:(unint64_t)count;
 @end
 
 @implementation ETGLSketchRenderer
 
-- (ETGLSketchRenderer)initWithContext:(id)a3 andDrawable:(id)a4
+- (ETGLSketchRenderer)initWithContext:(id)context andDrawable:(id)drawable
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  drawableCopy = drawable;
   v14.receiver = self;
   v14.super_class = ETGLSketchRenderer;
   v8 = [(ETGLSketchRenderer *)&v14 init];
@@ -40,10 +40,10 @@
     *&v9->_allocatedWidth = 0;
     v9->_lineWidthScaleFactor = 1.0;
     v9->_cometScaleFactor = 1.0;
-    v9->_context = v6;
-    if (v7)
+    v9->_context = contextCopy;
+    if (drawableCopy)
     {
-      [(ETGLSketchRenderer *)v9 setupFBOs:v7];
+      [(ETGLSketchRenderer *)v9 setupFBOs:drawableCopy];
       [(ETGLSketchRenderer *)v9 setupVAOs];
     }
 
@@ -82,10 +82,10 @@
     self->_allVertices = 0;
   }
 
-  v4 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   context = self->_context;
 
-  if (v4 == context)
+  if (currentContext == context)
   {
     [MEMORY[0x277CD9388] setCurrentContext:0];
   }
@@ -95,16 +95,16 @@
   [(ETGLSketchRenderer *)&v6 dealloc];
 }
 
-- (void)animateOutWithCompletion:(id)a3
+- (void)animateOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __47__ETGLSketchRenderer_animateOutWithCompletion___block_invoke;
   v12[3] = &unk_278F7A318;
   objc_copyWeak(&v14, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v13 = v5;
   v6 = MEMORY[0x24C1E9BB0](v12);
   v7 = v6;
@@ -139,9 +139,9 @@ void __47__ETGLSketchRenderer_animateOutWithCompletion___block_invoke(uint64_t a
   [v3 setCompletionBlock:v4];
 }
 
-- (void)updateGLWithTime:(float)a3
+- (void)updateGLWithTime:(float)time
 {
-  self->_currentTimeClock = a3;
+  self->_currentTimeClock = time;
   if (![(ETGLSketchRenderer *)self isDying])
   {
     self->_deathTime = self->_currentTimeClock;
@@ -157,15 +157,15 @@ void __47__ETGLSketchRenderer_animateOutWithCompletion___block_invoke(uint64_t a
   }
 }
 
-- (void)setupFBOs:(id)a3
+- (void)setupFBOs:(id)os
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  osCopy = os;
   glGenFramebuffers(1, &self->_viewFramebuffer);
   glGenRenderbuffers(1, &self->_viewRenderbuffer);
   glBindFramebuffer(0x8D40u, self->_viewFramebuffer);
   glBindRenderbuffer(0x8D41u, self->_viewRenderbuffer);
-  [(EAGLContext *)self->_context renderbufferStorage:36161 fromDrawable:v4];
+  [(EAGLContext *)self->_context renderbufferStorage:36161 fromDrawable:osCopy];
   glFramebufferRenderbuffer(0x8D40u, 0x8CE0u, 0x8D41u, self->_viewRenderbuffer);
   *params = 0;
   glGetRenderbufferParameteriv(0x8D41u, 0x8D42u, &params[1]);
@@ -241,13 +241,13 @@ void __47__ETGLSketchRenderer_animateOutWithCompletion___block_invoke(uint64_t a
   glTexImage2D(0xDE1u, 0, 6403, 8, 8, 0, 0x1903u, 0x1401u, setupTexture_pixels);
 }
 
-- (int)loadOneShaderOfType:(unsigned int)a3 withCString:(const char *)a4 length:(int)a5
+- (int)loadOneShaderOfType:(unsigned int)type withCString:(const char *)string length:(int)length
 {
-  string = a4;
+  string = string;
   v8 = 0;
-  length = a5;
+  length = length;
   params = 0;
-  Shader = glCreateShader(a3);
+  Shader = glCreateShader(type);
   glShaderSource(Shader, 1, &string, &length);
   glCompileShader(Shader);
   glGetShaderiv(Shader, 0x8B81u, &params);
@@ -255,19 +255,19 @@ void __47__ETGLSketchRenderer_animateOutWithCompletion___block_invoke(uint64_t a
   return Shader;
 }
 
-- (int)linkProgramWithVShader:(int)a3 FShader:(int)a4
+- (int)linkProgramWithVShader:(int)shader FShader:(int)fShader
 {
   *params = 0;
   Program = glCreateProgram();
-  glAttachShader(Program, a3);
-  glAttachShader(Program, a4);
+  glAttachShader(Program, shader);
+  glAttachShader(Program, fShader);
   glLinkProgram(Program);
   glGetProgramiv(Program, 0x8B82u, params);
   glGetProgramiv(Program, 0x8B84u, &params[1]);
-  glDetachShader(Program, a3);
-  glDetachShader(Program, a4);
-  glDeleteShader(a3);
-  glDeleteShader(a4);
+  glDetachShader(Program, shader);
+  glDetachShader(Program, fShader);
+  glDeleteShader(shader);
+  glDeleteShader(fShader);
   return Program;
 }
 
@@ -425,7 +425,7 @@ LABEL_24:
   *&self->_deathTime = 0;
 }
 
-- (void)appendPointArray:(ETGLSketchRenderer *)self length:(SEL)a2
+- (void)appendPointArray:(ETGLSketchRenderer *)self length:(SEL)length
 {
   vertexBufferCount = self->_vertexBufferCount;
   v6 = vertexBufferCount + v3;
@@ -506,7 +506,7 @@ LABEL_24:
   [(ETGLSketchRenderer *)self updateVertexBufferWithVertexCount:v8, *&v37, *&v38];
 }
 
-- (void)appendDualPointArray:(ETGLSketchRenderer *)self length:(SEL)a2 controlPoint:alternatePoints:alternateLength:alternateControlPoint:unitSize:segmentIndex:segmentCount:
+- (void)appendDualPointArray:(ETGLSketchRenderer *)self length:(SEL)length controlPoint:alternatePoints:alternateLength:alternateControlPoint:unitSize:segmentIndex:segmentCount:
 {
   if (v5 == 1)
   {
@@ -636,11 +636,11 @@ LABEL_20:
   }
 }
 
-- (void)updateVertexBufferWithVertexCount:(unint64_t)a3
+- (void)updateVertexBufferWithVertexCount:(unint64_t)count
 {
-  v3 = a3;
+  countCopy = count;
   v12 = *MEMORY[0x277D85DE8];
-  glBufferSubData(0x8892u, 80 * self->_vertexBufferCount, 80 * a3, self->_allVertices + 80 * self->_vertexBufferCount);
+  glBufferSubData(0x8892u, 80 * self->_vertexBufferCount, 80 * count, self->_allVertices + 80 * self->_vertexBufferCount);
   Error = glGetError();
   if (Error)
   {
@@ -659,7 +659,7 @@ LABEL_20:
     }
   }
 
-  self->_vertexBufferCount += v3;
+  self->_vertexBufferCount += countCopy;
 }
 
 - (void)_warmupShaders
@@ -777,9 +777,9 @@ LABEL_20:
   }
 }
 
-- (CGImage)createRenderedFrameImageUsingAlpha:(BOOL)a3
+- (CGImage)createRenderedFrameImageUsingAlpha:(BOOL)alpha
 {
-  v3 = a3;
+  alphaCopy = alpha;
   v5 = 4 * self->_backingWidth;
   v6 = self->_backingHeight * v5;
   v7 = malloc_type_malloc(v6, 0x100004077774924uLL);
@@ -807,7 +807,7 @@ LABEL_20:
   free(v7);
   v14 = CGDataProviderCreateWithData(0, v8, v6, releasePixels);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  if (v3)
+  if (alphaCopy)
   {
     v16 = 1;
   }
@@ -967,17 +967,17 @@ LABEL_45:
   }
 }
 
-- (void)setLineWidthScaleFactor:(double)a3
+- (void)setLineWidthScaleFactor:(double)factor
 {
   v19 = *MEMORY[0x277D85DE8];
   lineWidthScaleFactor = self->_lineWidthScaleFactor;
-  self->_lineWidthScaleFactor = a3;
-  self->_cometScaleFactor = 1.0 / a3;
+  self->_lineWidthScaleFactor = factor;
+  self->_cometScaleFactor = 1.0 / factor;
   if (self->_vertexBufferCount >= 1)
   {
     v4 = 0;
     v5 = 0;
-    v6 = a3 / lineWidthScaleFactor;
+    v6 = factor / lineWidthScaleFactor;
     do
     {
       v7 = (self->_allVertices + v4);

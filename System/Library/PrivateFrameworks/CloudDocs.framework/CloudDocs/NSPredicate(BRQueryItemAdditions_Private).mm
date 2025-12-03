@@ -8,18 +8,18 @@
 
 - (uint64_t)_isContentTypeFolderComparisonPredicate
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
     if ([v2 predicateOperatorType] == 1100 || objc_msgSend(v2, "predicateOperatorType") == 1101)
     {
-      v3 = [v2 leftExpression];
-      if ([v3 br_isKeyPathExpression:*MEMORY[0x1E696A5C0]])
+      leftExpression = [v2 leftExpression];
+      if ([leftExpression br_isKeyPathExpression:*MEMORY[0x1E696A5C0]])
       {
-        v4 = [v2 rightExpression];
-        v5 = [v4 br_isConstantValueExpression:*MEMORY[0x1E69637D0]];
+        rightExpression = [v2 rightExpression];
+        v5 = [rightExpression br_isConstantValueExpression:*MEMORY[0x1E69637D0]];
       }
 
       else
@@ -45,8 +45,8 @@
 - (uint64_t)isFolderOnlyPredicate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  if ([v1 _isContentTypeFolderComparisonPredicate])
+  selfCopy = self;
+  if ([selfCopy _isContentTypeFolderComparisonPredicate])
   {
     v2 = 1;
   }
@@ -56,15 +56,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v1;
+      v3 = selfCopy;
       if ([v3 compoundPredicateType] == 1)
       {
         v11 = 0u;
         v12 = 0u;
         v9 = 0u;
         v10 = 0u;
-        v4 = [v3 subpredicates];
-        v2 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        subpredicates = [v3 subpredicates];
+        v2 = [subpredicates countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v2)
         {
           v5 = *v10;
@@ -74,7 +74,7 @@
             {
               if (*v10 != v5)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(subpredicates);
               }
 
               if ([*(*(&v9 + 1) + 8 * i) isFolderOnlyPredicate])
@@ -84,7 +84,7 @@
               }
             }
 
-            v2 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+            v2 = [subpredicates countByEnumeratingWithState:&v9 objects:v13 count:16];
             if (v2)
             {
               continue;
@@ -115,55 +115,55 @@ LABEL_17:
 
 - (id)extractSearchTermFromPredicate
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
     if ([v2 compoundPredicateType] == 2)
     {
-      v3 = [v2 subpredicates];
-      if ([v3 count] == 2 && (objc_msgSend(v3, "objectAtIndexedSubscript:", 0), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v5 = objc_opt_isKindOfClass(), v4, (v5 & 1) != 0))
+      subpredicates = [v2 subpredicates];
+      if ([subpredicates count] == 2 && (objc_msgSend(subpredicates, "objectAtIndexedSubscript:", 0), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v5 = objc_opt_isKindOfClass(), v4, (v5 & 1) != 0))
       {
-        v6 = [v3 objectAtIndexedSubscript:0];
+        v6 = [subpredicates objectAtIndexedSubscript:0];
         v7 = 0;
         if ([v6 predicateOperatorType] == 8)
         {
-          v8 = [v6 leftExpression];
+          leftExpression = [v6 leftExpression];
           v9 = *MEMORY[0x1E696A5E8];
-          if ([v8 br_isKeyPathExpression:*MEMORY[0x1E696A5E8]])
+          if ([leftExpression br_isKeyPathExpression:*MEMORY[0x1E696A5E8]])
           {
-            v10 = [v6 rightExpression];
-            if ([v10 expressionType])
+            rightExpression = [v6 rightExpression];
+            if ([rightExpression expressionType])
             {
               v7 = 0;
             }
 
             else
             {
-              v11 = [v10 constantValue];
-              v12 = [v3 objectAtIndexedSubscript:1];
+              constantValue = [rightExpression constantValue];
+              v12 = [subpredicates objectAtIndexedSubscript:1];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
-                v14 = [v3 objectAtIndexedSubscript:1];
+                v14 = [subpredicates objectAtIndexedSubscript:1];
                 if ([v14 predicateOperatorType] == 7)
                 {
-                  v15 = [v14 leftExpression];
+                  leftExpression2 = [v14 leftExpression];
 
-                  if ([v15 br_isKeyPathExpression:v9])
+                  if ([leftExpression2 br_isKeyPathExpression:v9])
                   {
-                    v16 = [v14 rightExpression];
+                    rightExpression2 = [v14 rightExpression];
 
                     v17 = MEMORY[0x1E696AEC0];
-                    v18 = [MEMORY[0x1E696AE70] escapedPatternForString:v11];
+                    v18 = [MEMORY[0x1E696AE70] escapedPatternForString:constantValue];
                     v19 = [v17 stringWithFormat:@"* %@*", v18];
 
-                    if ([v16 br_isConstantValueExpression:v19])
+                    if ([rightExpression2 br_isConstantValueExpression:v19])
                     {
-                      v7 = v11;
+                      v7 = constantValue;
                     }
 
                     else
@@ -171,7 +171,7 @@ LABEL_17:
                       v7 = 0;
                     }
 
-                    v10 = v16;
+                    rightExpression = rightExpression2;
                   }
 
                   else
@@ -183,10 +183,10 @@ LABEL_17:
                 else
                 {
                   v7 = 0;
-                  v15 = v8;
+                  leftExpression2 = leftExpression;
                 }
 
-                v8 = v15;
+                leftExpression = leftExpression2;
               }
 
               else

@@ -1,6 +1,6 @@
 @interface _PASDeviceIdentifier
 - (NSUUID)UUID;
-- (_PASDeviceIdentifier)initWithBasePath:(id)a3;
+- (_PASDeviceIdentifier)initWithBasePath:(id)path;
 - (void)reset;
 @end
 
@@ -36,9 +36,9 @@
     v4 = v3;
     if (read(v3, __buf, 0x10uLL) == 16)
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:__buf];
+      uUID2 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:__buf];
       close(v4);
-      if (v5)
+      if (uUID2)
       {
         goto LABEL_20;
       }
@@ -64,8 +64,8 @@
   if (*__error() == 2)
   {
 LABEL_12:
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    [v7 getUUIDBytes:__buf];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [uUID getUUIDBytes:__buf];
     v8 = open([(NSString *)self->_path UTF8String], 2561, 384);
     if (v8 < 0)
     {
@@ -84,7 +84,7 @@ LABEL_12:
         _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error writing device identifier file %@: [%i] %s", buf, 0x1Cu);
       }
 
-      v5 = 0;
+      uUID2 = 0;
     }
 
     else
@@ -104,7 +104,7 @@ LABEL_12:
         v11 = 0;
       }
 
-      v5 = v11;
+      uUID2 = v11;
     }
 
     goto LABEL_20;
@@ -125,22 +125,22 @@ LABEL_12:
     _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error opening device identifier file %@: [%i] %s", buf, 0x1Cu);
   }
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
 LABEL_20:
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return uUID2;
 }
 
-- (_PASDeviceIdentifier)initWithBasePath:(id)a3
+- (_PASDeviceIdentifier)initWithBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _PASDeviceIdentifier;
   v5 = [(_PASDeviceIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%u.uuid", v4, getuid()];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%u.uuid", pathCopy, getuid()];
     path = v5->_path;
     v5->_path = v6;
   }

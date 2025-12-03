@@ -1,14 +1,14 @@
 @interface SKUIProductPageDataConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
-- (id)productPageWithDictionary:(id)a3;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
+- (id)productPageWithDictionary:(id)dictionary;
 @end
 
 @implementation SKUIProductPageDataConsumer
 
-- (id)productPageWithDictionary:(id)a3
+- (id)productPageWithDictionary:(id)dictionary
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageDataConsumer productPageWithDictionary:];
@@ -21,8 +21,8 @@
   v55 = __Block_byref_object_copy__87;
   v56 = __Block_byref_object_dispose__87;
   v57 = 0;
-  v41 = [v3 objectForKey:@"storePlatformPrewarmDataKey"];
-  v40 = [v3 objectForKey:@"storePlatformData"];
+  v41 = [dictionaryCopy objectForKey:@"storePlatformPrewarmDataKey"];
+  v40 = [dictionaryCopy objectForKey:@"storePlatformData"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v40 objectForKey:v41], (v39 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -51,7 +51,7 @@
 
   if (v53[5])
   {
-    v38 = [v3 objectForKey:@"versionHistory"];
+    v38 = [dictionaryCopy objectForKey:@"versionHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [v53[5] _setVersionHistory:v5];
     }
 
-    v13 = [v3 objectForKey:@"topInAppPurchases"];
+    v13 = [dictionaryCopy objectForKey:@"topInAppPurchases"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,7 +143,7 @@
     [(SKUIProductPage *)v42 setItem:v53[5]];
   }
 
-  v21 = [v3 objectForKey:@"infoSection"];
+  v21 = [dictionaryCopy objectForKey:@"infoSection"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -154,8 +154,8 @@
     }
   }
 
-  v23 = [v3 objectForKey:@"customersAlsoBought"];
-  v24 = [v3 objectForKey:@"moreByThisDeveloper"];
+  v23 = [dictionaryCopy objectForKey:@"customersAlsoBought"];
+  v24 = [dictionaryCopy objectForKey:@"moreByThisDeveloper"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -183,7 +183,7 @@
     [(SKUIProductPage *)v42 setRelatedContentSwooshes:v25];
   }
 
-  v31 = [v3 objectForKey:@"reviewsUrlsData"];
+  v31 = [dictionaryCopy objectForKey:@"reviewsUrlsData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -191,12 +191,12 @@
     [(SKUIProductPage *)v42 setReviewConfiguration:v32];
   }
 
-  v33 = [objc_alloc(MEMORY[0x277D69B70]) initWithStorePlatformData:v3];
+  v33 = [objc_alloc(MEMORY[0x277D69B70]) initWithStorePlatformData:dictionaryCopy];
   [(SKUIProductPage *)v42 setMetricsConfiguration:v33];
   v34 = SSVGetMetricsPageDescriptionWithPlatformDictionary();
   [(SKUIProductPage *)v42 setMetricsPageDescription:v34];
 
-  v35 = [v3 objectForKey:@"uber"];
+  v35 = [dictionaryCopy objectForKey:@"uber"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -224,27 +224,27 @@ void __57__SKUIProductPageDataConsumer_productPageWithDictionary___block_invoke(
   *a4 = 1;
 }
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  responseCopy = response;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageDataConsumer objectForData:response:error:];
   }
 
-  v10 = [v9 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
   v11 = ISDictionaryValueForCaseInsensitiveString();
 
-  if (v11 || ([v9 MIMEType], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v11 || ([responseCopy MIMEType], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     if ([v11 rangeOfString:@"itml" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = objc_alloc_init(SKUIProductPage);
-      [(SKUIProductPage *)v14 setITMLData:v8];
-      [(SKUIProductPage *)v14 setITMLResponse:v9];
+      [(SKUIProductPage *)v14 setITMLData:dataCopy];
+      [(SKUIProductPage *)v14 setITMLResponse:responseCopy];
       v13 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -254,10 +254,10 @@ void __57__SKUIProductPageDataConsumer_productPageWithDictionary___block_invoke(
   }
 
   v19 = 0;
-  v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v19];
+  v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v19];
   v13 = v19;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (-[SKUIProductPageDataConsumer productPageWithDictionary:](self, "productPageWithDictionary:", v12), v14 = objc_claimAutoreleasedReturnValue(), [v9 URL], v15 = objc_claimAutoreleasedReturnValue(), -[SKUIProductPage setPageURL:](v14, "setPageURL:", v15), v15, !v14))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (-[SKUIProductPageDataConsumer productPageWithDictionary:](self, "productPageWithDictionary:", v12), v14 = objc_claimAutoreleasedReturnValue(), [responseCopy URL], v15 = objc_claimAutoreleasedReturnValue(), -[SKUIProductPage setPageURL:](v14, "setPageURL:", v15), v15, !v14))
   {
     if ([v11 isEqualToString:@"text/html"])
     {
@@ -273,13 +273,13 @@ void __57__SKUIProductPageDataConsumer_productPageWithDictionary___block_invoke(
     }
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_16:
     if (!v14)
     {
       v17 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 

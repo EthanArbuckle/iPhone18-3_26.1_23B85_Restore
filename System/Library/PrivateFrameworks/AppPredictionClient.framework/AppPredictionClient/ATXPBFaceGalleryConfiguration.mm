@@ -1,13 +1,13 @@
 @interface ATXPBFaceGalleryConfiguration
 + (uint64_t)sectionsType;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)sourceAsString:(__CFString *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)sourceAsString:(__CFString *)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)sectionsAtIndex:(id *)a1;
-- (uint64_t)StringAsSource:(uint64_t)a1;
-- (uint64_t)addSections:(uint64_t)a1;
+- (id)sectionsAtIndex:(id *)index;
+- (uint64_t)StringAsSource:(uint64_t)source;
+- (uint64_t)addSections:(uint64_t)sections;
 - (uint64_t)clearSections;
 - (uint64_t)hasSource;
 - (uint64_t)sections;
@@ -16,10 +16,10 @@
 - (uint64_t)setSource:(uint64_t)result;
 - (uint64_t)source;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setSections:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setSections:(uint64_t)sections;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBFaceGalleryConfiguration
@@ -37,8 +37,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBFaceGalleryConfiguration;
   v4 = [(ATXPBFaceGalleryConfiguration *)&v8 description];
-  v5 = [(ATXPBFaceGalleryConfiguration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBFaceGalleryConfiguration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -46,7 +46,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_sections count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_sections, "count")}];
@@ -69,8 +69,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -79,7 +79,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"sections"];
+    [dictionary setObject:v4 forKey:@"sections"];
   }
 
   if (*&self->_has)
@@ -103,16 +103,16 @@
       v12 = @"Unknown";
     }
 
-    [v3 setObject:v12 forKey:@"source"];
+    [dictionary setObject:v12 forKey:@"source"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -150,10 +150,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -174,7 +174,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [(ATXPBFaceGalleryConfiguration *)v5 addSections:v11];
 
         ++v10;
@@ -196,16 +196,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   sections = self->_sections;
-  if (sections | *(v4 + 1))
+  if (sections | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)sections isEqual:?])
     {
@@ -213,10 +213,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_source == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_source == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -257,21 +257,21 @@ LABEL_9:
   return result;
 }
 
-- (uint64_t)addSections:(uint64_t)a1
+- (uint64_t)addSections:(uint64_t)sections
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (sections)
   {
-    v5 = *(a1 + 8);
+    v5 = *(sections + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(sections + 8);
+      *(sections + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(sections + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -291,15 +291,15 @@ LABEL_9:
   return result;
 }
 
-- (id)sectionsAtIndex:(id *)a1
+- (id)sectionsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[1] objectAtIndex:a2];
+    index = [index[1] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)source
@@ -351,93 +351,93 @@ LABEL_9:
   return result;
 }
 
-- (__CFString)sourceAsString:(__CFString *)a1
+- (__CFString)sourceAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_11:
 
-    return a1;
+    return string;
   }
 
   if (a2)
   {
     if (a2 == 1)
     {
-      a1 = @"Proactive";
+      string = @"Proactive";
 
-      return a1;
+      return string;
     }
 
-    a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+    string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
     goto LABEL_11;
   }
 
-  a1 = @"Unknown";
+  string = @"Unknown";
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsSource:(uint64_t)a1
+- (uint64_t)StringAsSource:(uint64_t)source
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (source)
   {
     if ([v3 isEqualToString:@"Unknown"])
     {
-      a1 = 0;
+      source = 0;
     }
 
     else
     {
-      a1 = [v4 isEqualToString:@"Proactive"];
+      source = [v4 isEqualToString:@"Proactive"];
     }
   }
 
-  return a1;
+  return source;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
     v8 = v3;
-    if ([*(a1 + 8) count])
+    if ([*(to + 8) count])
     {
       if (v8)
       {
         [v8[1] removeAllObjects];
       }
 
-      v4 = [*(a1 + 8) count];
+      v4 = [*(to + 8) count];
       if (v4)
       {
         v5 = v4;
         for (i = 0; i != v5; ++i)
         {
-          v7 = [*(a1 + 8) objectAtIndex:i];
+          v7 = [*(to + 8) objectAtIndex:i];
           [(ATXPBFaceGalleryConfiguration *)v8 addSections:v7];
         }
       }
     }
 
     v3 = v8;
-    if (*(a1 + 20))
+    if (*(to + 20))
     {
-      *(v8 + 4) = *(a1 + 16);
+      *(v8 + 4) = *(to + 16);
       *(v8 + 20) |= 1u;
     }
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
     v12 = 0u;
     v13 = 0u;
@@ -459,7 +459,7 @@ LABEL_11:
             objc_enumerationMutation(v5);
           }
 
-          [(ATXPBFaceGalleryConfiguration *)a1 addSections:?];
+          [(ATXPBFaceGalleryConfiguration *)from addSections:?];
         }
 
         while (v7 != v9);
@@ -471,8 +471,8 @@ LABEL_11:
 
     if (*(v4 + 20))
     {
-      *(a1 + 16) = *(v4 + 4);
-      *(a1 + 20) |= 1u;
+      *(from + 16) = *(v4 + 4);
+      *(from + 20) |= 1u;
     }
   }
 }
@@ -487,11 +487,11 @@ LABEL_11:
   return result;
 }
 
-- (void)setSections:(uint64_t)a1
+- (void)setSections:(uint64_t)sections
 {
-  if (a1)
+  if (sections)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((sections + 8), a2);
   }
 }
 

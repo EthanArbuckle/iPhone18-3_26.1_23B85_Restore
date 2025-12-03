@@ -22,7 +22,7 @@
 
 - (id)cardSectionViewSource
 {
-  v1 = objc_getAssociatedObject(a1, sel_cardSectionViewSource);
+  v1 = objc_getAssociatedObject(self, sel_cardSectionViewSource);
   v2 = v1;
   if (v1)
   {
@@ -48,7 +48,7 @@
   objc_copyWeak(&v11, &location);
   v5 = MEMORY[0x2667524A0](v10);
   v9 = MEMORY[0x2667524A0](v5, v6, v7, v8);
-  objc_setAssociatedObject(a1, sel_cardSectionViewSource, v9, 0x303);
+  objc_setAssociatedObject(self, sel_cardSectionViewSource, v9, 0x303);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -56,7 +56,7 @@
 
 - (id)cardViewControllerDelegate
 {
-  v1 = objc_getAssociatedObject(a1, sel_cardViewControllerDelegate);
+  v1 = objc_getAssociatedObject(self, sel_cardViewControllerDelegate);
   v2 = v1;
   if (v1)
   {
@@ -82,7 +82,7 @@
   objc_copyWeak(&v11, &location);
   v5 = MEMORY[0x2667524A0](v10);
   v9 = MEMORY[0x2667524A0](v5, v6, v7, v8);
-  objc_setAssociatedObject(a1, sel_cardViewControllerDelegate, v9, 0x303);
+  objc_setAssociatedObject(self, sel_cardViewControllerDelegate, v9, 0x303);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -91,26 +91,26 @@
 - (void)presentViewController:()CRKCardViewControlling
 {
   v7 = a3;
-  v4 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [a1 cardViewControllerDelegate];
-    [v6 presentViewController:v7 forCardViewController:a1];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 presentViewController:v7 forCardViewController:self];
   }
 }
 
 - (void)willDismissViewController:()CRKCardViewControlling
 {
   v7 = a3;
-  v4 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [a1 cardViewControllerDelegate];
-    [v6 cardViewController:a1 willDismissViewController:v7];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardViewController:self willDismissViewController:v7];
   }
 }
 
@@ -129,7 +129,7 @@
       _os_log_impl(&dword_264EDF000, v5, OS_LOG_TYPE_INFO, "Started loading asynchronous card\n    Card: %@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __91__SearchUICardViewController_CRKCardViewControlling__presentViewControllerForCard_animate___block_invoke;
@@ -154,13 +154,13 @@
 
     v7 = objc_alloc_init(MEMORY[0x277CF9448]);
     [v7 setNextCard:v4];
-    v8 = [a1 cardViewControllerDelegate];
+    cardViewControllerDelegate = [self cardViewControllerDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [a1 cardViewControllerDelegate];
-      [v10 performNextCardCommand:v7 forCardViewController:a1];
+      cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+      [cardViewControllerDelegate2 performNextCardCommand:v7 forCardViewController:self];
     }
   }
 
@@ -171,13 +171,13 @@
 {
   v10 = a3;
   v6 = a4;
-  v7 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [a1 cardViewControllerDelegate];
-    [v9 cardSectionView:v10 willProcessEngagementFeedback:v6];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionView:v10 willProcessEngagementFeedback:v6];
   }
 }
 
@@ -192,17 +192,17 @@
     v13 = 138412546;
     v14 = v7;
     v15 = 2112;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Card section engaged with feedback: %@  from cardViewController %@ ", &v13, 0x16u);
   }
 
-  v9 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [a1 cardViewControllerDelegate];
-    [v11 userDidEngageCardSection:v6 withEngagementFeedback:v7];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 userDidEngageCardSection:v6 withEngagementFeedback:v7];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -218,17 +218,17 @@
     v10 = 138412546;
     v11 = v4;
     v12 = 2112;
-    v13 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_264EDF000, v5, OS_LOG_TYPE_INFO, "Command was performed with feedback: %@ from cardViewController %@ ", &v10, 0x16u);
   }
 
-  v6 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [a1 cardViewControllerDelegate];
-    [v8 commandWasPerformed:v4];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 commandWasPerformed:v4];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -238,13 +238,13 @@
 {
   v10 = a3;
   v6 = a4;
-  v7 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [a1 cardViewControllerDelegate];
-    [v9 cardViewDidAppearForCard:v10 withAppearanceFeedback:v6];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardViewDidAppearForCard:v10 withAppearanceFeedback:v6];
   }
 }
 
@@ -252,25 +252,25 @@
 {
   v10 = a3;
   v6 = a4;
-  v7 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [a1 cardViewControllerDelegate];
-    [v9 cardViewDidDisappearForCard:v10 withDisappearanceFeedback:v6];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardViewDidDisappearForCard:v10 withDisappearanceFeedback:v6];
   }
 }
 
 - (void)cardSectionViewDidInvalidateSizeForCardSection:()CRKCardViewControlling
 {
-  v2 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [a1 cardViewControllerDelegate];
-    [v4 cardViewControllerBoundsDidChange:a1];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardViewControllerBoundsDidChange:self];
   }
 }
 
@@ -285,17 +285,17 @@
     v13 = 138412546;
     v14 = v6;
     v15 = 2112;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Card section did report feedback: %@  from cardViewController %@ ", &v13, 0x16u);
   }
 
-  v9 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [a1 cardViewControllerDelegate];
-    [v11 userDidReportFeedback:v6 fromCardSection:v7];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 userDidReportFeedback:v6 fromCardSection:v7];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -312,17 +312,17 @@
     v13 = 138412546;
     v14 = v7;
     v15 = 2112;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Card section will appear : %@  from cardViewController %@ ", &v13, 0x16u);
   }
 
-  v9 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [a1 cardViewControllerDelegate];
-    [v11 cardSectionViewWillAppearForCardSection:v6 withAppearanceFeedback:v7];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionViewWillAppearForCardSection:v6 withAppearanceFeedback:v7];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -339,17 +339,17 @@
     v13 = 138412546;
     v14 = v7;
     v15 = 2112;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Card section did appear: %@  in cardViewController %@ ", &v13, 0x16u);
   }
 
-  v9 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [a1 cardViewControllerDelegate];
-    [v11 cardSectionViewDidAppearForCardSection:v6 withAppearanceFeedback:v7];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionViewDidAppearForCardSection:v6 withAppearanceFeedback:v7];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -366,17 +366,17 @@
     v13 = 138412546;
     v14 = v7;
     v15 = 2112;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Card section did disappear: %@  in cardViewController %@ ", &v13, 0x16u);
   }
 
-  v9 = [a1 cardViewControllerDelegate];
+  cardViewControllerDelegate = [self cardViewControllerDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [a1 cardViewControllerDelegate];
-    [v11 cardSectionViewDidDisappearForCardSection:v6 withDisappearanceFeedback:v7];
+    cardViewControllerDelegate2 = [self cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionViewDidDisappearForCardSection:v6 withDisappearanceFeedback:v7];
   }
 
   v12 = *MEMORY[0x277D85DE8];

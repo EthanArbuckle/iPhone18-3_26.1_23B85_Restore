@@ -2,7 +2,7 @@
 - (GKCollectionViewFlowLayout)init;
 - (GKCollectionViewFlowLayoutDelegate)delegate;
 - (NSArray)podList;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)prepareLayout;
 @end
 
@@ -28,17 +28,17 @@
   [(GKCollectionViewFlowLayout *)&v2 prepareLayout];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v82.receiver = self;
   v82.super_class = GKCollectionViewFlowLayout;
-  v4 = [(GKCollectionViewFlowLayout *)&v82 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(GKCollectionViewFlowLayout *)&v82 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v73 = [NSMutableArray arrayWithArray:v4];
   v5 = +[NSMutableDictionary dictionary];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained isManagingBackgroundColor];
+  isManagingBackgroundColor = [WeakRetained isManagingBackgroundColor];
 
-  if (v7)
+  if (isManagingBackgroundColor)
   {
     v67 = v4;
     v68 = v5;
@@ -63,34 +63,34 @@
           }
 
           v12 = *(*(&v78 + 1) + 8 * i);
-          v13 = [v12 indexPath];
-          v14 = [v13 section];
-          v15 = [(GKCollectionViewFlowLayout *)self podList];
-          v16 = [v15 count];
+          indexPath = [v12 indexPath];
+          section = [indexPath section];
+          podList = [(GKCollectionViewFlowLayout *)self podList];
+          v16 = [podList count];
 
-          if (v14 < v16)
+          if (section < v16)
           {
-            v17 = [(GKCollectionViewFlowLayout *)self podList];
-            v18 = [v17 objectAtIndex:{objc_msgSend(v13, "section")}];
+            podList2 = [(GKCollectionViewFlowLayout *)self podList];
+            v18 = [podList2 objectAtIndex:{objc_msgSend(indexPath, "section")}];
 
             if ([v18 viewCount])
             {
               v19 = [v18 viewAtIndex:0];
               if (([v19 isFullWidth] & 1) == 0)
               {
-                v20 = [v12 representedElementKind];
+                representedElementKind = [v12 representedElementKind];
 
-                if (!v20)
+                if (!representedElementKind)
                 {
-                  v21 = [v13 section];
+                  section2 = [indexPath section];
                   [v12 frame];
                   MinY = CGRectGetMinY(v86);
                   [v12 frame];
                   MaxY = CGRectGetMaxY(v87);
-                  v24 = [v68 allKeys];
-                  v69 = v21;
-                  v25 = [NSNumber numberWithInteger:v21];
-                  v26 = [v24 containsObject:v25];
+                  allKeys = [v68 allKeys];
+                  v69 = section2;
+                  v25 = [NSNumber numberWithInteger:section2];
+                  v26 = [allKeys containsObject:v25];
 
                   if (v26)
                   {
@@ -183,10 +183,10 @@
             [v51 floatValue];
             v53 = v52;
 
-            v54 = [v47 indexPath];
-            v55 = [GKCollectionViewFlowLayoutAttributes layoutAttributesForDecorationViewOfKind:@"sectionBackground" withIndexPath:v54];
+            indexPath2 = [v47 indexPath];
+            v55 = [GKCollectionViewFlowLayoutAttributes layoutAttributesForDecorationViewOfKind:@"sectionBackground" withIndexPath:indexPath2];
 
-            v56 = [v46 footerView];
+            footerView = [v46 footerView];
             [v46 edgeInsets];
             v58 = v50 - v57;
             [(GKCollectionViewFlowLayout *)self collectionViewContentSize];
@@ -195,7 +195,7 @@
             v62 = v53 - v50 + v61;
             [v46 edgeInsets];
             v64 = v62 + v63;
-            [v56 frame];
+            [footerView frame];
             [v55 setFrame:{0.0, v58, v60, v64 + v65}];
             [v55 setZIndex:{objc_msgSend(v47, "zIndex") - 1}];
             [v73 addObject:v55];

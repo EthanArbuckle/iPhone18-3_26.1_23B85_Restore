@@ -1,18 +1,18 @@
 @interface BMLocationVisit
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocationVisit)initWithDetectionDate:(id)a3 type:(int)a4 location:(id)a5 entryDate:(id)a6 exitDate:(id)a7 confidence:(id)a8 source:(int)a9 placeInference:(id)a10;
-- (BMLocationVisit)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMLocationVisit)initWithDetectionDate:(id)date type:(int)type location:(id)location entryDate:(id)entryDate exitDate:(id)exitDate confidence:(id)confidence source:(int)source placeInference:(id)self0;
+- (BMLocationVisit)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)detectionDate;
 - (NSDate)entryDate;
 - (NSDate)exitDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocationVisit
@@ -43,25 +43,25 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLocationVisit *)self detectionDate];
-    v7 = [v5 detectionDate];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    detectionDate = [(BMLocationVisit *)self detectionDate];
+    detectionDate2 = [v5 detectionDate];
+    v8 = detectionDate2;
+    if (detectionDate == detectionDate2)
     {
     }
 
     else
     {
-      v9 = [(BMLocationVisit *)self detectionDate];
-      v10 = [v5 detectionDate];
-      v11 = [v9 isEqual:v10];
+      detectionDate3 = [(BMLocationVisit *)self detectionDate];
+      detectionDate4 = [v5 detectionDate];
+      v11 = [detectionDate3 isEqual:detectionDate4];
 
       if (!v11)
       {
@@ -69,21 +69,21 @@
       }
     }
 
-    v13 = [(BMLocationVisit *)self type];
-    if (v13 == [v5 type])
+    type = [(BMLocationVisit *)self type];
+    if (type == [v5 type])
     {
-      v14 = [(BMLocationVisit *)self location];
-      v15 = [v5 location];
-      v16 = v15;
-      if (v14 == v15)
+      location = [(BMLocationVisit *)self location];
+      location2 = [v5 location];
+      v16 = location2;
+      if (location == location2)
       {
       }
 
       else
       {
-        v17 = [(BMLocationVisit *)self location];
-        v18 = [v5 location];
-        v19 = [v17 isEqual:v18];
+        location3 = [(BMLocationVisit *)self location];
+        location4 = [v5 location];
+        v19 = [location3 isEqual:location4];
 
         if (!v19)
         {
@@ -91,18 +91,18 @@
         }
       }
 
-      v20 = [(BMLocationVisit *)self entryDate];
-      v21 = [v5 entryDate];
-      v22 = v21;
-      if (v20 == v21)
+      entryDate = [(BMLocationVisit *)self entryDate];
+      entryDate2 = [v5 entryDate];
+      v22 = entryDate2;
+      if (entryDate == entryDate2)
       {
       }
 
       else
       {
-        v23 = [(BMLocationVisit *)self entryDate];
-        v24 = [v5 entryDate];
-        v25 = [v23 isEqual:v24];
+        entryDate3 = [(BMLocationVisit *)self entryDate];
+        entryDate4 = [v5 entryDate];
+        v25 = [entryDate3 isEqual:entryDate4];
 
         if (!v25)
         {
@@ -110,18 +110,18 @@
         }
       }
 
-      v26 = [(BMLocationVisit *)self exitDate];
-      v27 = [v5 exitDate];
-      v28 = v27;
-      if (v26 == v27)
+      exitDate = [(BMLocationVisit *)self exitDate];
+      exitDate2 = [v5 exitDate];
+      v28 = exitDate2;
+      if (exitDate == exitDate2)
       {
       }
 
       else
       {
-        v29 = [(BMLocationVisit *)self exitDate];
-        v30 = [v5 exitDate];
-        v31 = [v29 isEqual:v30];
+        exitDate3 = [(BMLocationVisit *)self exitDate];
+        exitDate4 = [v5 exitDate];
+        v31 = [exitDate3 isEqual:exitDate4];
 
         if (!v31)
         {
@@ -131,21 +131,21 @@
 
       if (!-[BMLocationVisit hasConfidence](self, "hasConfidence") && ![v5 hasConfidence] || -[BMLocationVisit hasConfidence](self, "hasConfidence") && objc_msgSend(v5, "hasConfidence") && (-[BMLocationVisit confidence](self, "confidence"), v33 = v32, objc_msgSend(v5, "confidence"), v33 == v34))
       {
-        v35 = [(BMLocationVisit *)self source];
-        if (v35 == [v5 source])
+        source = [(BMLocationVisit *)self source];
+        if (source == [v5 source])
         {
-          v36 = [(BMLocationVisit *)self placeInference];
-          v37 = [v5 placeInference];
-          if (v36 == v37)
+          placeInference = [(BMLocationVisit *)self placeInference];
+          placeInference2 = [v5 placeInference];
+          if (placeInference == placeInference2)
           {
             v12 = 1;
           }
 
           else
           {
-            v38 = [(BMLocationVisit *)self placeInference];
-            v39 = [v5 placeInference];
-            v12 = [v38 isEqual:v39];
+            placeInference3 = [(BMLocationVisit *)self placeInference];
+            placeInference4 = [v5 placeInference];
+            v12 = [placeInference3 isEqual:placeInference4];
           }
 
           goto LABEL_29;
@@ -220,12 +220,12 @@ LABEL_30:
 - (id)jsonDictionary
 {
   v42[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLocationVisit *)self detectionDate];
-  if (v3)
+  detectionDate = [(BMLocationVisit *)self detectionDate];
+  if (detectionDate)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMLocationVisit *)self detectionDate];
-    [v5 timeIntervalSince1970];
+    detectionDate2 = [(BMLocationVisit *)self detectionDate];
+    [detectionDate2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -235,15 +235,15 @@ LABEL_30:
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocationVisit type](self, "type")}];
-  v8 = [(BMLocationVisit *)self location];
-  v9 = [v8 jsonDictionary];
+  location = [(BMLocationVisit *)self location];
+  jsonDictionary = [location jsonDictionary];
 
-  v10 = [(BMLocationVisit *)self entryDate];
-  if (v10)
+  entryDate = [(BMLocationVisit *)self entryDate];
+  if (entryDate)
   {
     v11 = MEMORY[0x1E696AD98];
-    v12 = [(BMLocationVisit *)self entryDate];
-    [v12 timeIntervalSince1970];
+    entryDate2 = [(BMLocationVisit *)self entryDate];
+    [entryDate2 timeIntervalSince1970];
     v40 = [v11 numberWithDouble:?];
   }
 
@@ -252,12 +252,12 @@ LABEL_30:
     v40 = 0;
   }
 
-  v13 = [(BMLocationVisit *)self exitDate];
-  if (v13)
+  exitDate = [(BMLocationVisit *)self exitDate];
+  if (exitDate)
   {
     v14 = MEMORY[0x1E696AD98];
-    v15 = [(BMLocationVisit *)self exitDate];
-    [v15 timeIntervalSince1970];
+    exitDate2 = [(BMLocationVisit *)self exitDate];
+    [exitDate2 timeIntervalSince1970];
     v39 = [v14 numberWithDouble:?];
   }
 
@@ -280,81 +280,81 @@ LABEL_30:
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocationVisit source](self, "source")}];
-  v20 = [(BMLocationVisit *)self placeInference];
-  v21 = [v20 jsonDictionary];
+  placeInference = [(BMLocationVisit *)self placeInference];
+  jsonDictionary2 = [placeInference jsonDictionary];
 
   v41[0] = @"detectionDate";
-  v22 = v6;
+  null = v6;
   if (!v6)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v22;
-  v42[0] = v22;
+  v36 = null;
+  v42[0] = null;
   v41[1] = @"type";
-  v23 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v23;
-  v42[1] = v23;
+  v35 = null2;
+  v42[1] = null2;
   v41[2] = @"location";
-  v24 = v9;
-  if (!v9)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v38 = v6;
-  v34 = v24;
-  v42[2] = v24;
+  v34 = null3;
+  v42[2] = null3;
   v41[3] = @"entryDate";
-  v25 = v40;
+  null4 = v40;
   if (!v40)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v37 = v7;
-  v42[3] = v25;
+  v42[3] = null4;
   v41[4] = @"exitDate";
-  v26 = v39;
+  null5 = v39;
   if (!v39)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v9;
-  v42[4] = v26;
+  v27 = jsonDictionary;
+  v42[4] = null5;
   v41[5] = @"confidence";
-  v28 = v18;
+  null6 = v18;
   if (!v18)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42[5] = v28;
+  v42[5] = null6;
   v41[6] = @"source";
-  v29 = v19;
+  null7 = v19;
   if (!v19)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42[6] = v29;
+  v42[6] = null7;
   v41[7] = @"placeInference";
-  v30 = v21;
-  if (!v21)
+  null8 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42[7] = v30;
+  v42[7] = null8;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:8];
-  if (v21)
+  if (jsonDictionary2)
   {
     if (v19)
     {
@@ -429,16 +429,16 @@ LABEL_40:
   return v31;
 }
 
-- (BMLocationVisit)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocationVisit)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v122[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"detectionDate"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"detectionDate"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_9:
-    v15 = [v5 objectForKeyedSubscript:@"type"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v104 = v7;
     v102 = v15;
     if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -454,7 +454,7 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v17 = 0;
             v25 = 0;
@@ -472,7 +472,7 @@ LABEL_9:
           v6 = v65;
           v17 = 0;
           v25 = 0;
-          *a4 = [v64 initWithDomain:v68 code:2 userInfo:v67];
+          *error = [v64 initWithDomain:v68 code:2 userInfo:v67];
           v26 = v67;
           goto LABEL_88;
         }
@@ -488,13 +488,13 @@ LABEL_9:
       v17 = 0;
     }
 
-    v19 = [v5 objectForKeyedSubscript:@"location"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v25 = 0;
 LABEL_89:
@@ -518,7 +518,7 @@ LABEL_89:
         v47 = v41;
         v6 = v40;
         v26 = v45;
-        *a4 = [v39 initWithDomain:v47 code:2 userInfo:v46];
+        *error = [v39 initWithDomain:v47 code:2 userInfo:v46];
 
         v25 = 0;
         goto LABEL_87;
@@ -530,10 +530,10 @@ LABEL_89:
       v24 = v106;
       if (v24)
       {
-        if (a4)
+        if (error)
         {
           v24 = v24;
-          *a4 = v24;
+          *error = v24;
         }
 
         v25 = 0;
@@ -547,7 +547,7 @@ LABEL_89:
       v98 = 0;
     }
 
-    v20 = [v5 objectForKeyedSubscript:@"entryDate"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"entryDate"];
     if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -578,7 +578,7 @@ LABEL_89:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v101 = 0;
               v25 = 0;
@@ -600,7 +600,7 @@ LABEL_89:
             v17 = v82;
             v101 = 0;
             v25 = 0;
-            *a4 = [v84 initWithDomain:v85 code:2 userInfo:v73];
+            *error = [v84 initWithDomain:v85 code:2 userInfo:v73];
             v26 = v98;
 LABEL_85:
 
@@ -623,7 +623,7 @@ LABEL_88:
       v101 = 0;
     }
 
-    v21 = [v5 objectForKeyedSubscript:@"exitDate"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"exitDate"];
     v95 = v20;
     v96 = v21;
     if (!v21 || (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -653,14 +653,14 @@ LABEL_88:
         v100 = [v49 dateFromString:v22];
 
 LABEL_42:
-        v50 = [v5 objectForKeyedSubscript:@"confidence"];
+        v50 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
         v94 = v6;
         if (!v50 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v51 = self;
+          selfCopy3 = self;
           v99 = 0;
 LABEL_45:
-          v52 = [v5 objectForKeyedSubscript:@"source"];
+          v52 = [dictionaryCopy objectForKeyedSubscript:@"source"];
           v97 = v17;
           if (v52 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
@@ -675,7 +675,7 @@ LABEL_45:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v53 = 0;
                   v25 = 0;
@@ -692,7 +692,7 @@ LABEL_45:
                 v72 = [v70 initWithDomain:v71 code:2 userInfo:v55];
                 v53 = 0;
                 v25 = 0;
-                *a4 = v72;
+                *error = v72;
                 goto LABEL_79;
               }
 
@@ -705,17 +705,17 @@ LABEL_45:
             v53 = 0;
           }
 
-          v54 = [v5 objectForKeyedSubscript:@"placeInference"];
+          v54 = [dictionaryCopy objectForKeyedSubscript:@"placeInference"];
           if (!v54 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v55 = 0;
 LABEL_51:
-            v56 = [v97 intValue];
+            intValue = [v97 intValue];
             LODWORD(v90) = [v53 intValue];
-            v57 = v56;
+            v57 = intValue;
             v26 = v98;
-            v25 = [(BMLocationVisit *)v51 initWithDetectionDate:v7 type:v57 location:v98 entryDate:v101 exitDate:v100 confidence:v99 source:v90 placeInference:v55];
-            v51 = v25;
+            v25 = [(BMLocationVisit *)selfCopy3 initWithDetectionDate:v7 type:v57 location:v98 entryDate:v101 exitDate:v100 confidence:v99 source:v90 placeInference:v55];
+            selfCopy3 = v25;
 LABEL_80:
 
 LABEL_81:
@@ -736,10 +736,10 @@ LABEL_81:
               goto LABEL_51;
             }
 
-            if (a4)
+            if (error)
             {
               v59 = v59;
-              *a4 = v59;
+              *error = v59;
             }
 
             v25 = 0;
@@ -748,7 +748,7 @@ LABEL_81:
 
           else
           {
-            if (!a4)
+            if (!error)
             {
               v25 = 0;
               v26 = v98;
@@ -761,7 +761,7 @@ LABEL_81:
             v55 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"placeInference"];
             v108 = v55;
             v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-            *a4 = [v93 initWithDomain:v92 code:2 userInfo:v69];
+            *error = [v93 initWithDomain:v92 code:2 userInfo:v69];
 
             v25 = 0;
           }
@@ -774,14 +774,14 @@ LABEL_79:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v51 = self;
+          selfCopy3 = self;
           v99 = v50;
           goto LABEL_45;
         }
 
-        if (a4)
+        if (error)
         {
-          v51 = self;
+          selfCopy3 = self;
           v60 = v17;
           v61 = objc_alloc(MEMORY[0x1E696ABC0]);
           v62 = *MEMORY[0x1E698F240];
@@ -793,11 +793,11 @@ LABEL_79:
           v17 = v60;
           v99 = 0;
           v25 = 0;
-          *a4 = [v63 initWithDomain:v62 code:2 userInfo:v52];
+          *error = [v63 initWithDomain:v62 code:2 userInfo:v52];
           v26 = v98;
 LABEL_82:
 
-          self = v51;
+          self = selfCopy3;
           v6 = v94;
 LABEL_83:
           v20 = v95;
@@ -817,7 +817,7 @@ LABEL_102:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v100 = 0;
           v25 = 0;
@@ -836,7 +836,7 @@ LABEL_102:
         v17 = v87;
         v100 = 0;
         v25 = 0;
-        *a4 = [v86 initWithDomain:v89 code:2 userInfo:v50];
+        *error = [v86 initWithDomain:v89 code:2 userInfo:v50];
         goto LABEL_102;
       }
 
@@ -878,7 +878,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     v104 = 0;
     v25 = 0;
@@ -896,7 +896,7 @@ LABEL_6:
   v6 = v77;
   v104 = 0;
   v25 = 0;
-  *a4 = [v76 initWithDomain:v79 code:2 userInfo:v16];
+  *error = [v76 initWithDomain:v79 code:2 userInfo:v16];
 LABEL_90:
 
 LABEL_91:
@@ -908,14 +908,14 @@ LABEL_91:
 {
   v3 = objc_opt_new();
   [(BMLocationVisit *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_detectionDate)
   {
     raw_detectionDate = self->_raw_detectionDate;
@@ -927,7 +927,7 @@ LABEL_91:
   if (self->_location)
   {
     PBDataWriterPlaceMark();
-    [(BMLocationVisitLocation *)self->_location writeTo:v4];
+    [(BMLocationVisitLocation *)self->_location writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -954,14 +954,14 @@ LABEL_91:
   if (self->_placeInference)
   {
     PBDataWriterPlaceMark();
-    [(BMPlaceInference *)self->_placeInference writeTo:v4];
+    [(BMPlaceInference *)self->_placeInference writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMLocationVisit;
   v5 = [(BMEventBase *)&v49 init];
@@ -970,12 +970,12 @@ LABEL_91:
     goto LABEL_89;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -986,18 +986,18 @@ LABEL_91:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v50 & 0x7F) << v7;
@@ -1014,9 +1014,9 @@ LABEL_91:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1030,18 +1030,18 @@ LABEL_16:
           {
             v5->_hasRaw_exitDate = 1;
             v50 = 0;
-            v34 = [v4 position] + 8;
-            if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 8, v35 <= objc_msgSend(v4, "length")))
+            v34 = [fromCopy position] + 8;
+            if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 8, v35 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:&v50 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 = v50;
@@ -1057,18 +1057,18 @@ LABEL_16:
 
             v5->_hasConfidence = 1;
             v50 = 0;
-            v23 = [v4 position] + 8;
-            if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+            v23 = [fromCopy position] + 8;
+            if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:&v50 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 = v50;
@@ -1097,18 +1097,18 @@ LABEL_66:
           while (1)
           {
             LOBYTE(v50) = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v50 & 0x7F) << v27;
@@ -1125,7 +1125,7 @@ LABEL_66:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 3)
           {
 LABEL_74:
             LODWORD(v18) = 0;
@@ -1144,7 +1144,7 @@ LABEL_76:
           goto LABEL_88;
         }
 
-        v36 = [[BMPlaceInference alloc] initByReadFrom:v4];
+        v36 = [[BMPlaceInference alloc] initByReadFrom:fromCopy];
         if (!v36)
         {
           goto LABEL_88;
@@ -1161,18 +1161,18 @@ LABEL_76:
           {
             v5->_hasRaw_detectionDate = 1;
             v50 = 0;
-            v32 = [v4 position] + 8;
-            if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 8, v33 <= objc_msgSend(v4, "length")))
+            v32 = [fromCopy position] + 8;
+            if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 8, v33 <= objc_msgSend(fromCopy, "length")))
             {
-              v40 = [v4 data];
-              [v40 getBytes:&v50 range:{objc_msgSend(v4, "position"), 8}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 = v50;
@@ -1193,18 +1193,18 @@ LABEL_85:
           while (1)
           {
             LOBYTE(v50) = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v50 & 0x7F) << v16;
@@ -1221,7 +1221,7 @@ LABEL_85:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 3)
           {
 LABEL_70:
             LODWORD(v18) = 0;
@@ -1240,18 +1240,18 @@ LABEL_70:
 
           v5->_hasRaw_entryDate = 1;
           v50 = 0;
-          v25 = [v4 position] + 8;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 8;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v45 = [v4 data];
-            [v45 getBytes:&v50 range:{objc_msgSend(v4, "position"), 8}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v41 = v50;
@@ -1266,7 +1266,7 @@ LABEL_70:
           goto LABEL_88;
         }
 
-        v36 = [[BMLocationVisitLocation alloc] initByReadFrom:v4];
+        v36 = [[BMLocationVisitLocation alloc] initByReadFrom:fromCopy];
         if (!v36)
         {
           goto LABEL_88;
@@ -1280,13 +1280,13 @@ LABEL_70:
 
       PBReaderRecallMark();
 LABEL_86:
-      v46 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v46 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_88:
     v47 = 0;
@@ -1304,39 +1304,39 @@ LABEL_89:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMLocationVisit *)self detectionDate];
+  detectionDate = [(BMLocationVisit *)self detectionDate];
   v5 = BMLocationVisitTypeAsString([(BMLocationVisit *)self type]);
-  v6 = [(BMLocationVisit *)self location];
-  v7 = [(BMLocationVisit *)self entryDate];
-  v8 = [(BMLocationVisit *)self exitDate];
+  location = [(BMLocationVisit *)self location];
+  entryDate = [(BMLocationVisit *)self entryDate];
+  exitDate = [(BMLocationVisit *)self exitDate];
   v9 = MEMORY[0x1E696AD98];
   [(BMLocationVisit *)self confidence];
   v10 = [v9 numberWithDouble:?];
   v11 = BMLocationVisitSourceAsString([(BMLocationVisit *)self source]);
-  v12 = [(BMLocationVisit *)self placeInference];
-  v13 = [v3 initWithFormat:@"BMLocationVisit with detectionDate: %@, type: %@, location: %@, entryDate: %@, exitDate: %@, confidence: %@, source: %@, placeInference: %@", v4, v5, v6, v7, v8, v10, v11, v12];
+  placeInference = [(BMLocationVisit *)self placeInference];
+  v13 = [v3 initWithFormat:@"BMLocationVisit with detectionDate: %@, type: %@, location: %@, entryDate: %@, exitDate: %@, confidence: %@, source: %@, placeInference: %@", detectionDate, v5, location, entryDate, exitDate, v10, v11, placeInference];
 
   return v13;
 }
 
-- (BMLocationVisit)initWithDetectionDate:(id)a3 type:(int)a4 location:(id)a5 entryDate:(id)a6 exitDate:(id)a7 confidence:(id)a8 source:(int)a9 placeInference:(id)a10
+- (BMLocationVisit)initWithDetectionDate:(id)date type:(int)type location:(id)location entryDate:(id)entryDate exitDate:(id)exitDate confidence:(id)confidence source:(int)source placeInference:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  dateCopy = date;
+  locationCopy = location;
+  entryDateCopy = entryDate;
+  exitDateCopy = exitDate;
+  confidenceCopy = confidence;
+  inferenceCopy = inference;
   v28.receiver = self;
   v28.super_class = BMLocationVisit;
   v22 = [(BMEventBase *)&v28 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v16)
+    if (dateCopy)
     {
       v22->_hasRaw_detectionDate = 1;
-      [v16 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -1346,12 +1346,12 @@ LABEL_89:
     }
 
     v22->_raw_detectionDate = v23;
-    v22->_type = a4;
-    objc_storeStrong(&v22->_location, a5);
-    if (v18)
+    v22->_type = type;
+    objc_storeStrong(&v22->_location, location);
+    if (entryDateCopy)
     {
       v22->_hasRaw_entryDate = 1;
-      [v18 timeIntervalSince1970];
+      [entryDateCopy timeIntervalSince1970];
     }
 
     else
@@ -1361,10 +1361,10 @@ LABEL_89:
     }
 
     v22->_raw_entryDate = v24;
-    if (v19)
+    if (exitDateCopy)
     {
       v22->_hasRaw_exitDate = 1;
-      [v19 timeIntervalSince1970];
+      [exitDateCopy timeIntervalSince1970];
     }
 
     else
@@ -1374,10 +1374,10 @@ LABEL_89:
     }
 
     v22->_raw_exitDate = v25;
-    if (v20)
+    if (confidenceCopy)
     {
       v22->_hasConfidence = 1;
-      [v20 doubleValue];
+      [confidenceCopy doubleValue];
     }
 
     else
@@ -1387,8 +1387,8 @@ LABEL_89:
     }
 
     v22->_confidence = v26;
-    v22->_source = a9;
-    objc_storeStrong(&v22->_placeInference, a10);
+    v22->_source = source;
+    objc_storeStrong(&v22->_placeInference, inference);
   }
 
   return v22;
@@ -1440,9 +1440,9 @@ id __26__BMLocationVisit_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1450,8 +1450,8 @@ id __26__BMLocationVisit_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocationVisit alloc] initByReadFrom:v7];
     v4 = v8;

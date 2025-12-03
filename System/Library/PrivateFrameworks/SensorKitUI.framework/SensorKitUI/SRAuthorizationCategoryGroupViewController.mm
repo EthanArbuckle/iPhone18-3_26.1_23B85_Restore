@@ -1,17 +1,17 @@
 @interface SRAuthorizationCategoryGroupViewController
-- (BOOL)indexPathIsInWriterSection:(id)a3;
+- (BOOL)indexPathIsInWriterSection:(id)section;
 - (SRAuthorizationCategoryGroupViewController)init;
-- (id)serviceFromIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)serviceFromIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)readerAuthSectionStart;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (int64_t)usageSectionStart;
 - (int64_t)writerAuthSectionStart;
 - (void)dealloc;
 - (void)openPrivacy;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -79,37 +79,37 @@
     return [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]+ 1;
   }
 
-  v3 = [(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart];
-  return [(NSMutableDictionary *)[(SRAuthorizationCategoryGroupViewController *)self writerAuthState] count]+ v3;
+  writerAuthSectionStart = [(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart];
+  return [(NSMutableDictionary *)[(SRAuthorizationCategoryGroupViewController *)self writerAuthState] count]+ writerAuthSectionStart;
 }
 
-- (BOOL)indexPathIsInWriterSection:(id)a3
+- (BOOL)indexPathIsInWriterSection:(id)section
 {
-  v5 = [a3 section];
-  if (v5 < [(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart])
+  section = [section section];
+  if (section < [(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart])
   {
     return 0;
   }
 
-  v7 = [a3 section];
-  return v7 < [(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart];
+  section2 = [section section];
+  return section2 < [(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]== a4)
+  if ([(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]== section)
   {
     v6 = 31;
   }
 
-  else if ([(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart]== a4)
+  else if ([(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart]== section)
   {
     v6 = 32;
   }
 
   else
   {
-    if ([(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart]!= a4)
+    if ([(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart]!= section)
     {
       return 0;
     }
@@ -122,12 +122,12 @@
   return [v7 srui_localizedStringForCode:v6];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart];
+  usageSectionStart = [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart];
   v5 = [(NSMutableDictionary *)[(SRAuthorizationCategoryGroupViewController *)self writerAuthState] count];
   v6 = [(NSMutableDictionary *)[(SRAuthorizationCategoryGroupViewController *)self readerAuthState] count];
-  if (v4 == -1)
+  if (usageSectionStart == -1)
   {
     v7 = v5;
   }
@@ -140,19 +140,19 @@
   return v7 + v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]== a4)
+  if ([(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]== section)
   {
     return 1;
   }
 
-  if ([(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart]== a4)
+  if ([(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart]== section)
   {
     return 3;
   }
 
-  if ([(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart]<= a4)
+  if ([(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart]<= section)
   {
     return 3;
   }
@@ -160,20 +160,20 @@
   return 0;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = [a4 section];
-  v8 = [a4 row];
-  if (v7 == [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart])
+  section = [path section];
+  v8 = [path row];
+  if (section == [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart])
   {
     v9 = [SRAppUsageCell alloc];
     v10 = objc_opt_class();
     v11 = [(SRAppUsageCell *)v9 initWithStyle:0 reuseIdentifier:NSStringFromClass(v10)];
     [(UILabel *)[(SRAppUsageCell *)v11 label] setText:[(NSBundle *)[(SRAuthorizationCategoryGroupViewController *)self appBundle] sk_usageDescription]];
-    v12 = [(NSBundle *)[(SRAuthorizationCategoryGroupViewController *)self appBundle] srui_localizedPrivacyPolicyLinkTitle];
-    if (v12)
+    srui_localizedPrivacyPolicyLinkTitle = [(NSBundle *)[(SRAuthorizationCategoryGroupViewController *)self appBundle] srui_localizedPrivacyPolicyLinkTitle];
+    if (srui_localizedPrivacyPolicyLinkTitle)
     {
-      -[UIButton setTitle:forState:](-[SRAppUsageCell button](v11, "button"), "setTitle:forState:", [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", v12], 0);
+      -[UIButton setTitle:forState:](-[SRAppUsageCell button](v11, "button"), "setTitle:forState:", [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", srui_localizedPrivacyPolicyLinkTitle], 0);
       [(UIButton *)[(SRAppUsageCell *)v11 button] addTarget:self action:sel_openPrivacy forControlEvents:64];
       [(UIButton *)[(SRAppUsageCell *)v11 button] setAccessibilityTraits:*MEMORY[0x277D76570]];
       [(UILabel *)[(UIButton *)[(SRAppUsageCell *)v11 button] titleLabel] setLineBreakMode:0];
@@ -181,17 +181,17 @@
       [-[SRAuthorizationCategoryGroupViewController tableView](self "tableView")];
       v14 = v13;
       v16 = v15;
-      v17 = [(SRAppUsageCell *)v11 contentView];
+      contentView = [(SRAppUsageCell *)v11 contentView];
       v18 = 16.0;
 LABEL_4:
-      [v17 setLayoutMargins:{v18, v14, 16.0, v16}];
+      [contentView setLayoutMargins:{v18, v14, 16.0, v16}];
       return v11;
     }
 
     goto LABEL_14;
   }
 
-  v20 = [(SRAuthorizationCategoryGroupViewController *)self serviceFromIndexPath:a4];
+  v20 = [(SRAuthorizationCategoryGroupViewController *)self serviceFromIndexPath:path];
   if (!v20)
   {
 LABEL_14:
@@ -201,17 +201,17 @@ LABEL_14:
   }
 
   v21 = v20;
-  if ([(SRAuthorizationCategoryGroupViewController *)self indexPathIsInWriterSection:a4])
+  if ([(SRAuthorizationCategoryGroupViewController *)self indexPathIsInWriterSection:path])
   {
-    v22 = [(SRAuthorizationCategoryGroupViewController *)self writerAuthState];
+    writerAuthState = [(SRAuthorizationCategoryGroupViewController *)self writerAuthState];
   }
 
   else
   {
-    v22 = [(SRAuthorizationCategoryGroupViewController *)self readerAuthState];
+    writerAuthState = [(SRAuthorizationCategoryGroupViewController *)self readerAuthState];
   }
 
-  v23 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v21];
+  v23 = [(NSMutableDictionary *)writerAuthState objectForKeyedSubscript:v21];
   v24 = [SRAuthorizationGroup authorizationGroupWithServiceName:v21];
   if (v8 != 2)
   {
@@ -226,14 +226,14 @@ LABEL_14:
       [-[SRAuthorizationCategoryGroupViewController tableView](self "tableView")];
       v14 = v31;
       v16 = v32;
-      v17 = [(SRAppUsageCell *)v11 contentView];
+      contentView = [(SRAppUsageCell *)v11 contentView];
       v18 = 18.0;
       goto LABEL_4;
     }
 
     if (!v8)
     {
-      v11 = [SRAuthorizationCell authorizationCellForIndexPath:a4 title:[(SRAuthorizationGroup *)v24 localizedDisplayName] state:v23 delegate:self tableView:a3];
+      v11 = [SRAuthorizationCell authorizationCellForIndexPath:path title:[(SRAuthorizationGroup *)v24 localizedDisplayName] state:v23 delegate:self tableView:view];
       [-[SRAppUsageCell textLabel](v11 "textLabel")];
       return v11;
     }
@@ -243,35 +243,35 @@ LABEL_14:
 
   v33 = MEMORY[0x277D75B48];
 
-  return [v33 skui_tableViewCellForDataSample:a3];
+  return [v33 skui_tableViewCellForDataSample:view];
 }
 
-- (id)serviceFromIndexPath:(id)a3
+- (id)serviceFromIndexPath:(id)path
 {
   v5 = [(SRAuthorizationCategoryGroupViewController *)self indexPathIsInWriterSection:?];
-  v6 = [a3 section];
+  section = [path section];
   if (!v5)
   {
-    v7 = v6 - [(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart];
+    v7 = section - [(SRAuthorizationCategoryGroupViewController *)self readerAuthSectionStart];
     if (v7 < [(NSArray *)[(SRAuthorizationCategoryGroupViewController *)self sortedReaderAuthorizationServices] count])
     {
-      v8 = [(SRAuthorizationCategoryGroupViewController *)self sortedReaderAuthorizationServices];
+      sortedReaderAuthorizationServices = [(SRAuthorizationCategoryGroupViewController *)self sortedReaderAuthorizationServices];
       goto LABEL_6;
     }
 
     return 0;
   }
 
-  v7 = v6 - [(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart];
+  v7 = section - [(SRAuthorizationCategoryGroupViewController *)self writerAuthSectionStart];
   if (v7 >= [(NSArray *)[(SRAuthorizationCategoryGroupViewController *)self sortedWriterAuthorizationServices] count])
   {
     return 0;
   }
 
-  v8 = [(SRAuthorizationCategoryGroupViewController *)self sortedWriterAuthorizationServices];
+  sortedReaderAuthorizationServices = [(SRAuthorizationCategoryGroupViewController *)self sortedWriterAuthorizationServices];
 LABEL_6:
 
-  return [(NSArray *)v8 objectAtIndexedSubscript:v7];
+  return [(NSArray *)sortedReaderAuthorizationServices objectAtIndexedSubscript:v7];
 }
 
 uint64_t __92__SRAuthorizationCategoryGroupViewController_authorizationSwitchToggledWithValue_indexPath___block_invoke(uint64_t a1)
@@ -285,13 +285,13 @@ uint64_t __92__SRAuthorizationCategoryGroupViewController_authorizationSwitchTog
   return [Weak confirmAuthChangeForService:v4 value:v3 indexPath:v5 setOverride:v6];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = [a4 section];
-  v7 = [a4 row];
-  if (v6 != [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]&& v7 == 2)
+  section = [path section];
+  v7 = [path row];
+  if (section != [(SRAuthorizationCategoryGroupViewController *)self usageSectionStart]&& v7 == 2)
   {
-    v8 = [SRSampleViewController sampleViewControllerForAuthGroup:[SRAuthorizationGroup authorizationGroupWithServiceName:[(SRAuthorizationCategoryGroupViewController *)self serviceFromIndexPath:a4]]];
+    v8 = [SRSampleViewController sampleViewControllerForAuthGroup:[SRAuthorizationGroup authorizationGroupWithServiceName:[(SRAuthorizationCategoryGroupViewController *)self serviceFromIndexPath:path]]];
 
     [(UIViewController *)self sk_showViewController:v8 animated:1];
   }
@@ -299,10 +299,10 @@ uint64_t __92__SRAuthorizationCategoryGroupViewController_authorizationSwitchTog
 
 - (void)openPrivacy
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v4 = [(NSBundle *)[(SRAuthorizationCategoryGroupViewController *)self appBundle] sk_privacyURL];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  sk_privacyURL = [(NSBundle *)[(SRAuthorizationCategoryGroupViewController *)self appBundle] sk_privacyURL];
 
-  [v3 openURL:v4 withOptions:0];
+  [defaultWorkspace openURL:sk_privacyURL withOptions:0];
 }
 
 @end

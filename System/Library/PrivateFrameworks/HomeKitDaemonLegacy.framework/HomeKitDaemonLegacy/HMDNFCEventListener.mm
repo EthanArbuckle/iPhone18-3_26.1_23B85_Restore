@@ -1,7 +1,7 @@
 @interface HMDNFCEventListener
 + (id)logCategory;
-- (id)_createNFCEventStreamWithName:(id)a3 workQueue:(id)a4;
-- (void)nfcEventStream:(id)a3 didReceiveEvent:(id)a4;
+- (id)_createNFCEventStreamWithName:(id)name workQueue:(id)queue;
+- (void)nfcEventStream:(id)stream didReceiveEvent:(id)event;
 - (void)start;
 @end
 
@@ -29,37 +29,37 @@ uint64_t __34__HMDNFCEventListener_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)nfcEventStream:(id)a3 didReceiveEvent:(id)a4
+- (void)nfcEventStream:(id)stream didReceiveEvent:(id)event
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  eventCopy = event;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 name];
+    name = [streamCopy name];
     *buf = 138543874;
     v28 = v11;
     v29 = 2112;
-    v30 = v12;
+    v30 = name;
     v31 = 2112;
-    v32 = v7;
+    v32 = eventCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Received NFC payload from event stream %@: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   v25 = @"HMDNFCPayload";
-  v26 = v7;
+  v26 = eventCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-  v14 = [(HMDNFCEventListener *)v9 fieldEventStream];
+  fieldEventStream = [(HMDNFCEventListener *)selfCopy fieldEventStream];
 
-  if (v14 == v6)
+  if (fieldEventStream == streamCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v21 = v9;
+    v21 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -75,12 +75,12 @@ uint64_t __34__HMDNFCEventListener_logCategory__block_invoke()
     goto LABEL_11;
   }
 
-  v15 = [(HMDNFCEventListener *)v9 proxyCardEventStream];
+  proxyCardEventStream = [(HMDNFCEventListener *)selfCopy proxyCardEventStream];
 
-  if (v15 == v6)
+  if (proxyCardEventStream == streamCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -96,20 +96,20 @@ uint64_t __34__HMDNFCEventListener_logCategory__block_invoke()
 LABEL_11:
 
     objc_autoreleasePoolPop(v16);
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 postNotificationName:v20 object:v9 userInfo:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:v20 object:selfCopy userInfo:v13];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createNFCEventStreamWithName:(id)a3 workQueue:(id)a4
+- (id)_createNFCEventStreamWithName:(id)name workQueue:(id)queue
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -117,13 +117,13 @@ LABEL_11:
     v15 = 138543618;
     v16 = v11;
     v17 = 2112;
-    v18 = v6;
+    v18 = nameCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Initializing NFC event stream with name: %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [[HMDNFCEventStream alloc] initWithName:v6 workQueue:v7];
-  [(HMDNFCEventStream *)v12 setDelegate:v9];
+  v12 = [[HMDNFCEventStream alloc] initWithName:nameCopy workQueue:queueCopy];
+  [(HMDNFCEventStream *)v12 setDelegate:selfCopy];
   [(HMDNFCEventStream *)v12 start];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -135,7 +135,7 @@ LABEL_11:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -156,7 +156,7 @@ LABEL_11:
   v13[2] = __28__HMDNFCEventListener_start__block_invoke;
   v13[3] = &unk_279724468;
   v14 = v9;
-  v15 = v4;
+  v15 = selfCopy;
   v11 = v9;
   [v10 sharedHardwareManager:v13];
 

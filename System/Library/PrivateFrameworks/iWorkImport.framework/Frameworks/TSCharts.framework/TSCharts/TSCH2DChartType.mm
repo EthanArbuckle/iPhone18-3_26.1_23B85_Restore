@@ -1,15 +1,15 @@
 @interface TSCH2DChartType
 - (BOOL)supportsIndividualShadowRendering;
-- (id)animationDeliveryStylesForFilter:(id)a3;
+- (id)animationDeliveryStylesForFilter:(id)filter;
 @end
 
 @implementation TSCH2DChartType
 
-- (id)animationDeliveryStylesForFilter:(id)a3
+- (id)animationDeliveryStylesForFilter:(id)filter
 {
   v39.receiver = self;
   v39.super_class = TSCH2DChartType;
-  v4 = [(TSCHChartType *)&v39 animationDeliveryStylesForFilter:a3];
+  v4 = [(TSCHChartType *)&v39 animationDeliveryStylesForFilter:filter];
   v9 = objc_msgSend_mutableCopy(v4, v5, v6, v7, v8);
 
   objc_msgSend_addIndex_(v9, v10, v11, v12, v13, 0);

@@ -1,29 +1,29 @@
 @interface ISSegmentTintEffect
-- (ISSegmentTintEffect)initWithColor:(id)a3;
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4;
-- (void)prepareSegmentedImageFromImage:(id)a3;
+- (ISSegmentTintEffect)initWithColor:(id)color;
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage;
+- (void)prepareSegmentedImageFromImage:(id)image;
 @end
 
 @implementation ISSegmentTintEffect
 
-- (ISSegmentTintEffect)initWithColor:(id)a3
+- (ISSegmentTintEffect)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = ISSegmentTintEffect;
   v6 = [(ISSegmentTintEffect *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
   }
 
   return v7;
 }
 
-- (void)prepareSegmentedImageFromImage:(id)a3
+- (void)prepareSegmentedImageFromImage:(id)image
 {
-  v9 = a3;
+  imageCopy = image;
   v4 = +[ISDefaults sharedInstance];
   if (([(ISIconSegmentation *)v4 disableLegacyIconSegmentation]& 1) != 0)
   {
@@ -32,12 +32,12 @@ LABEL_2:
     goto LABEL_4;
   }
 
-  v5 = [(ISSegmentTintEffect *)self segmentedImage];
+  segmentedImage = [(ISSegmentTintEffect *)self segmentedImage];
 
-  if (!v5)
+  if (!segmentedImage)
   {
     v4 = [[ISIconSegmentation alloc] initWithIdiom:1];
-    v6 = -[ISIconSegmentation createTintableImageMaskWithCGImage:tintableOpacityImageMask:](v4, "createTintableImageMaskWithCGImage:tintableOpacityImageMask:", [v9 CGImage], 0);
+    v6 = -[ISIconSegmentation createTintableImageMaskWithCGImage:tintableOpacityImageMask:](v4, "createTintableImageMaskWithCGImage:tintableOpacityImageMask:", [imageCopy CGImage], 0);
     if (v6)
     {
       v7 = v6;
@@ -53,39 +53,39 @@ LABEL_2:
 LABEL_4:
 }
 
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  inputImageCopy = inputImage;
   v8 = objc_autoreleasePoolPush();
-  [(ISSegmentTintEffect *)self prepareSegmentedImageFromImage:v7];
-  v9 = [(ISSegmentTintEffect *)self segmentedImage];
+  [(ISSegmentTintEffect *)self prepareSegmentedImageFromImage:inputImageCopy];
+  segmentedImage = [(ISSegmentTintEffect *)self segmentedImage];
 
-  if (v9)
+  if (segmentedImage)
   {
     v10 = [ISTemplateTintEffect alloc];
-    v11 = [(ISSegmentTintEffect *)self color];
-    v12 = [(ISTemplateTintEffect *)v10 initWithColor:v11];
+    color = [(ISSegmentTintEffect *)self color];
+    v12 = [(ISTemplateTintEffect *)v10 initWithColor:color];
 
-    v13 = [(ISSegmentTintEffect *)self segmentedImage];
-    v14 = [(ISTemplateTintEffect *)v12 filterWithBackgroundImage:v6 inputImage:v13];
+    segmentedImage2 = [(ISSegmentTintEffect *)self segmentedImage];
+    v14 = [(ISTemplateTintEffect *)v12 filterWithBackgroundImage:imageCopy inputImage:segmentedImage2];
   }
 
   else
   {
-    v13 = objc_alloc_init(ISGreyscaleEffect);
-    v15 = [(ISGreyscaleEffect *)v13 filterWithBackgroundImage:v6 inputImage:v7];
+    segmentedImage2 = objc_alloc_init(ISGreyscaleEffect);
+    v15 = [(ISGreyscaleEffect *)segmentedImage2 filterWithBackgroundImage:imageCopy inputImage:inputImageCopy];
     v16 = [MEMORY[0x1E695F648] filterWithName:@"CIConstantColorGenerator"];
-    v17 = [(ISSegmentTintEffect *)self color];
-    v18 = [v17 ciColor];
-    [v16 setValue:v18 forKey:*MEMORY[0x1E695FA78]];
+    color2 = [(ISSegmentTintEffect *)self color];
+    ciColor = [color2 ciColor];
+    [v16 setValue:ciColor forKey:*MEMORY[0x1E695FA78]];
 
     v19 = [MEMORY[0x1E695F648] filterWithName:@"CIMultiplyCompositing"];
-    v20 = [v16 outputImage];
-    [v19 setValue:v20 forKey:*MEMORY[0x1E695FAB0]];
+    outputImage = [v16 outputImage];
+    [v19 setValue:outputImage forKey:*MEMORY[0x1E695FAB0]];
 
-    v21 = [v15 outputImage];
-    [v19 setValue:v21 forKey:*MEMORY[0x1E695FA48]];
+    outputImage2 = [v15 outputImage];
+    [v19 setValue:outputImage2 forKey:*MEMORY[0x1E695FA48]];
 
     v12 = v19;
     v14 = v12;

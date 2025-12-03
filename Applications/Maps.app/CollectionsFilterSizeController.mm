@@ -1,10 +1,10 @@
 @interface CollectionsFilterSizeController
-- (CGSize)sizeForFilter:(id)a3;
-- (CollectionsFilterSizeController)initWithCollectionsFilterDisplayStyle:(int64_t)a3 inContext:(int64_t)a4;
+- (CGSize)sizeForFilter:(id)filter;
+- (CollectionsFilterSizeController)initWithCollectionsFilterDisplayStyle:(int64_t)style inContext:(int64_t)context;
 - (UIEdgeInsets)filterPillInset;
 - (UIEdgeInsets)sectionInset;
 - (double)defaultHeight;
-- (double)minimumInterItemSpacingForSectionAtIndex:(int64_t)a3;
+- (double)minimumInterItemSpacingForSectionAtIndex:(int64_t)index;
 @end
 
 @implementation CollectionsFilterSizeController
@@ -44,7 +44,7 @@
   return v5 + v6 + defaultFilterHeight;
 }
 
-- (double)minimumInterItemSpacingForSectionAtIndex:(int64_t)a3
+- (double)minimumInterItemSpacingForSectionAtIndex:(int64_t)index
 {
   IsEnabled_Maps269 = MapsFeature_IsEnabled_Maps269();
   result = 10.0;
@@ -56,17 +56,17 @@
   return result;
 }
 
-- (CGSize)sizeForFilter:(id)a3
+- (CGSize)sizeForFilter:(id)filter
 {
   v22 = NSFontAttributeName;
-  v4 = a3;
-  v5 = [v4 filterFont];
-  v23 = v5;
+  filterCopy = filter;
+  filterFont = [filterCopy filterFont];
+  v23 = filterFont;
   v6 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
-  v7 = [v4 filterTitle];
+  filterTitle = [filterCopy filterTitle];
 
-  [v7 sizeWithAttributes:v6];
+  [filterTitle sizeWithAttributes:v6];
   v9 = v8;
   v11 = v10;
 
@@ -92,7 +92,7 @@
   return result;
 }
 
-- (CollectionsFilterSizeController)initWithCollectionsFilterDisplayStyle:(int64_t)a3 inContext:(int64_t)a4
+- (CollectionsFilterSizeController)initWithCollectionsFilterDisplayStyle:(int64_t)style inContext:(int64_t)context
 {
   v15.receiver = self;
   v15.super_class = CollectionsFilterSizeController;
@@ -100,10 +100,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_displayStyle = a3;
-    v6->_context = a4;
+    v6->_displayStyle = style;
+    v6->_context = context;
     v8 = 40.0;
-    if (a3 == 1)
+    if (style == 1)
     {
       v8 = 16.0;
     }
@@ -120,7 +120,7 @@
       [(CollectionsFilterSizeController *)v7 setFilterPillInset:15.0, 15.0, 15.0, 15.0];
     }
 
-    switch(a4)
+    switch(context)
     {
       case 2:
         [(CollectionsFilterSizeController *)v7 setDefaultFilterHeight:32.0];

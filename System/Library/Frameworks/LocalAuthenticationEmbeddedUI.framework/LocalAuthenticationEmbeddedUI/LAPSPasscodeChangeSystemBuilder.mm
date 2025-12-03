@@ -1,141 +1,141 @@
 @interface LAPSPasscodeChangeSystemBuilder
-+ (id)_decoratedSystem:(id)a3;
++ (id)_decoratedSystem:(id)system;
 + (id)_defaultSystemOptions;
 + (id)_passcodeStubbedSystem;
 + (id)_persistence;
 + (id)passcodeChangeSystem;
-+ (id)passcodeChangeSystemWithOptions:(id)a3;
-+ (id)passcodeChangeSystemWithPersistence:(id)a3;
-+ (id)passcodeChangeSystemWithPersistence:(id)a3 options:(id)a4;
++ (id)passcodeChangeSystemWithOptions:(id)options;
++ (id)passcodeChangeSystemWithPersistence:(id)persistence;
++ (id)passcodeChangeSystemWithPersistence:(id)persistence options:(id)options;
 + (id)passcodeRecoverySystem;
-+ (id)passcodeRecoverySystemWithPersistence:(id)a3;
++ (id)passcodeRecoverySystemWithPersistence:(id)persistence;
 + (id)passcodeRemovalSystem;
-+ (id)passcodeRemovalSystemWithPersistence:(id)a3;
++ (id)passcodeRemovalSystemWithPersistence:(id)persistence;
 + (id)passcodeVerificationSystem;
-+ (id)passcodeVerificationSystemWithPersistence:(id)a3;
++ (id)passcodeVerificationSystemWithPersistence:(id)persistence;
 @end
 
 @implementation LAPSPasscodeChangeSystemBuilder
 
 + (id)passcodeChangeSystem
 {
-  v3 = [a1 _defaultSystemOptions];
-  v4 = [a1 passcodeChangeSystemWithOptions:v3];
+  _defaultSystemOptions = [self _defaultSystemOptions];
+  v4 = [self passcodeChangeSystemWithOptions:_defaultSystemOptions];
 
   return v4;
 }
 
-+ (id)passcodeChangeSystemWithOptions:(id)a3
++ (id)passcodeChangeSystemWithOptions:(id)options
 {
-  v4 = a3;
-  if ([a1 _useStubbedAdapter])
+  optionsCopy = options;
+  if ([self _useStubbedAdapter])
   {
-    v5 = [a1 _passcodeStubbedSystem];
+    _passcodeStubbedSystem = [self _passcodeStubbedSystem];
   }
 
   else
   {
-    v6 = [a1 _persistence];
-    v5 = [a1 passcodeChangeSystemWithPersistence:v6 options:v4];
+    _persistence = [self _persistence];
+    _passcodeStubbedSystem = [self passcodeChangeSystemWithPersistence:_persistence options:optionsCopy];
   }
 
-  return v5;
+  return _passcodeStubbedSystem;
 }
 
 + (id)passcodeRecoverySystem
 {
-  if ([a1 _useStubbedAdapter])
+  if ([self _useStubbedAdapter])
   {
-    v3 = [a1 _passcodeStubbedSystem];
+    _passcodeStubbedSystem = [self _passcodeStubbedSystem];
   }
 
   else
   {
-    v4 = [a1 _persistence];
-    v3 = [a1 passcodeRecoverySystemWithPersistence:v4];
+    _persistence = [self _persistence];
+    _passcodeStubbedSystem = [self passcodeRecoverySystemWithPersistence:_persistence];
   }
 
-  return v3;
+  return _passcodeStubbedSystem;
 }
 
 + (id)passcodeRemovalSystem
 {
-  if ([a1 _useStubbedAdapter])
+  if ([self _useStubbedAdapter])
   {
-    v3 = [a1 _passcodeStubbedSystem];
+    _passcodeStubbedSystem = [self _passcodeStubbedSystem];
   }
 
   else
   {
-    v4 = [a1 _persistence];
-    v3 = [a1 passcodeRemovalSystemWithPersistence:v4];
+    _persistence = [self _persistence];
+    _passcodeStubbedSystem = [self passcodeRemovalSystemWithPersistence:_persistence];
   }
 
-  return v3;
+  return _passcodeStubbedSystem;
 }
 
 + (id)passcodeVerificationSystem
 {
-  if ([a1 _useStubbedAdapter])
+  if ([self _useStubbedAdapter])
   {
-    v3 = [a1 _passcodeStubbedSystem];
+    _passcodeStubbedSystem = [self _passcodeStubbedSystem];
   }
 
   else
   {
-    v4 = [a1 _persistence];
-    v3 = [a1 passcodeVerificationSystemWithPersistence:v4];
+    _persistence = [self _persistence];
+    _passcodeStubbedSystem = [self passcodeVerificationSystemWithPersistence:_persistence];
   }
 
-  return v3;
+  return _passcodeStubbedSystem;
 }
 
-+ (id)passcodeChangeSystemWithPersistence:(id)a3
++ (id)passcodeChangeSystemWithPersistence:(id)persistence
 {
-  v4 = a3;
-  v5 = [a1 _defaultSystemOptions];
-  v6 = [a1 passcodeChangeSystemWithPersistence:v4 options:v5];
+  persistenceCopy = persistence;
+  _defaultSystemOptions = [self _defaultSystemOptions];
+  v6 = [self passcodeChangeSystemWithPersistence:persistenceCopy options:_defaultSystemOptions];
 
   return v6;
 }
 
-+ (id)passcodeChangeSystemWithPersistence:(id)a3 options:(id)a4
++ (id)passcodeChangeSystemWithPersistence:(id)persistence options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LAPSPasscodeChangeSystemStandardAdapter alloc] initWithPersistence:v7 options:v6];
+  optionsCopy = options;
+  persistenceCopy = persistence;
+  v8 = [[LAPSPasscodeChangeSystemStandardAdapter alloc] initWithPersistence:persistenceCopy options:optionsCopy];
 
-  v9 = [a1 _decoratedSystem:v8];
+  v9 = [self _decoratedSystem:v8];
 
   return v9;
 }
 
-+ (id)passcodeRecoverySystemWithPersistence:(id)a3
++ (id)passcodeRecoverySystemWithPersistence:(id)persistence
 {
-  v4 = a3;
-  v5 = [[LAPSPasscodeChangeSystemRecoveryAdapter alloc] initWithPersistence:v4];
+  persistenceCopy = persistence;
+  v5 = [[LAPSPasscodeChangeSystemRecoveryAdapter alloc] initWithPersistence:persistenceCopy];
 
-  v6 = [a1 _decoratedSystem:v5];
+  v6 = [self _decoratedSystem:v5];
 
   return v6;
 }
 
-+ (id)passcodeRemovalSystemWithPersistence:(id)a3
++ (id)passcodeRemovalSystemWithPersistence:(id)persistence
 {
-  v4 = a3;
-  v5 = [[LAPSPasscodeChangeSystemRemovalAdapter alloc] initWithPersistence:v4];
+  persistenceCopy = persistence;
+  v5 = [[LAPSPasscodeChangeSystemRemovalAdapter alloc] initWithPersistence:persistenceCopy];
 
-  v6 = [a1 _decoratedSystem:v5];
+  v6 = [self _decoratedSystem:v5];
 
   return v6;
 }
 
-+ (id)passcodeVerificationSystemWithPersistence:(id)a3
++ (id)passcodeVerificationSystemWithPersistence:(id)persistence
 {
-  v4 = a3;
-  v5 = [[LAPSPasscodeChangeSystemVerificationAdapter alloc] initWithPersistence:v4];
+  persistenceCopy = persistence;
+  v5 = [[LAPSPasscodeChangeSystemVerificationAdapter alloc] initWithPersistence:persistenceCopy];
 
-  v6 = [a1 _decoratedSystem:v5];
+  v6 = [self _decoratedSystem:v5];
 
   return v6;
 }
@@ -154,10 +154,10 @@
   return v2;
 }
 
-+ (id)_decoratedSystem:(id)a3
++ (id)_decoratedSystem:(id)system
 {
-  v3 = a3;
-  v4 = [[LAPSPasscodeChangeSystemDispatchDecorator alloc] initWithSystem:v3];
+  systemCopy = system;
+  v4 = [[LAPSPasscodeChangeSystemDispatchDecorator alloc] initWithSystem:systemCopy];
 
   return v4;
 }

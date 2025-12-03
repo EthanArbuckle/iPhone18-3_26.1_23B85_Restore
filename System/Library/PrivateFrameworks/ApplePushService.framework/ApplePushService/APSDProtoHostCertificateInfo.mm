@@ -1,33 +1,33 @@
 @interface APSDProtoHostCertificateInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCertificates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCertificates:(id)certificates;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APSDProtoHostCertificateInfo
 
-- (void)addCertificates:(id)a3
+- (void)addCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   certificates = self->_certificates;
-  v8 = v4;
+  v8 = certificatesCopy;
   if (!certificates)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_certificates;
     self->_certificates = v6;
 
-    v4 = v8;
+    certificatesCopy = v8;
     certificates = self->_certificates;
   }
 
-  [(NSMutableArray *)certificates addObject:v4];
+  [(NSMutableArray *)certificates addObject:certificatesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = APSDProtoHostCertificateInfo;
   v3 = [(APSDProtoHostCertificateInfo *)&v7 description];
-  v4 = [(APSDProtoHostCertificateInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APSDProtoHostCertificateInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -66,9 +66,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -112,40 +112,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(APSDProtoHostCertificateInfo *)self certificatesCount])
   {
-    [v9 clearCertificates];
-    v4 = [(APSDProtoHostCertificateInfo *)self certificatesCount];
-    if (v4)
+    [toCopy clearCertificates];
+    certificatesCount = [(APSDProtoHostCertificateInfo *)self certificatesCount];
+    if (certificatesCount)
     {
-      v5 = v4;
+      v5 = certificatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APSDProtoHostCertificateInfo *)self certificatesAtIndex:i];
-        [v9 addCertificates:v7];
+        [toCopy addCertificates:v7];
       }
     }
   }
 
   if (self->_nonce)
   {
-    [v9 setNonce:?];
+    [toCopy setNonce:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_signature)
   {
-    [v9 setSignature:?];
-    v8 = v9;
+    [toCopy setSignature:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -166,7 +166,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) copyWithZone:{a3, v17}];
+        v11 = [*(*(&v17 + 1) + 8 * v10) copyWithZone:{zone, v17}];
         [v5 addCertificates:v11];
 
         v10 = v10 + 1;
@@ -179,24 +179,24 @@
     while (v8);
   }
 
-  v12 = [(NSData *)self->_nonce copyWithZone:a3];
+  v12 = [(NSData *)self->_nonce copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSData *)self->_signature copyWithZone:a3];
+  v14 = [(NSData *)self->_signature copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((certificates = self->_certificates, !(certificates | v4[1])) || -[NSMutableArray isEqual:](certificates, "isEqual:")) && ((nonce = self->_nonce, !(nonce | v4[2])) || -[NSData isEqual:](nonce, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((certificates = self->_certificates, !(certificates | equalCopy[1])) || -[NSMutableArray isEqual:](certificates, "isEqual:")) && ((nonce = self->_nonce, !(nonce | equalCopy[2])) || -[NSData isEqual:](nonce, "isEqual:")))
   {
     signature = self->_signature;
-    if (signature | v4[3])
+    if (signature | equalCopy[3])
     {
       v8 = [(NSData *)signature isEqual:?];
     }
@@ -222,14 +222,14 @@
   return v4 ^ [(NSData *)self->_signature hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -253,12 +253,12 @@
     while (v7);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(APSDProtoHostCertificateInfo *)self setNonce:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(APSDProtoHostCertificateInfo *)self setSignature:?];
   }

@@ -33,7 +33,7 @@
   [v15 setDistribution:4];
   [v15 setAlignment:3];
   [v15 setAxis:1];
-  [a1 setTitleView:v15];
+  [self setTitleView:v15];
 }
 
 @end

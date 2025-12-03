@@ -1,7 +1,7 @@
 @interface FBDisplayLayoutTransition
-+ (id)layoutForDisplayType:(int64_t)a3;
-+ (void)flushLayoutForDisplayType:(int64_t)a3;
-- (FBDisplayLayoutTransition)initWithDisplayType:(int64_t)a3 name:(id)a4;
++ (id)layoutForDisplayType:(int64_t)type;
++ (void)flushLayoutForDisplayType:(int64_t)type;
+- (FBDisplayLayoutTransition)initWithDisplayType:(int64_t)type name:(id)name;
 - (id)description;
 - (void)beginTransition;
 - (void)dealloc;
@@ -10,40 +10,40 @@
 
 @implementation FBDisplayLayoutTransition
 
-+ (id)layoutForDisplayType:(int64_t)a3
++ (id)layoutForDisplayType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    v3 = 0;
+    currentLayout = 0;
   }
 
   else
   {
     v4 = +[FBMainDisplayLayoutPublisher sharedInstance];
-    v3 = [v4 currentLayout];
+    currentLayout = [v4 currentLayout];
   }
 
-  return v3;
+  return currentLayout;
 }
 
-+ (void)flushLayoutForDisplayType:(int64_t)a3
++ (void)flushLayoutForDisplayType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = +[FBMainDisplayLayoutPublisher sharedInstance];
     [v4 flush];
   }
 }
 
-- (FBDisplayLayoutTransition)initWithDisplayType:(int64_t)a3 name:(id)a4
+- (FBDisplayLayoutTransition)initWithDisplayType:(int64_t)type name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = FBDisplayLayoutTransition;
   v7 = [(FBDisplayLayoutTransition *)&v14 init];
   if (v7)
   {
-    if (a3)
+    if (type)
     {
       v8 = 0;
     }
@@ -56,13 +56,13 @@
     publisher = v7->_publisher;
     v7->_publisher = v8;
 
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v10;
 
     transitionReason = v7->_transitionReason;
     v7->_transitionReason = 0;
-    v7->_displayType = a3;
+    v7->_displayType = type;
 
     *&v7->_interfaceOrientation = xmmword_1A8A71F30;
   }
@@ -75,7 +75,7 @@
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"object deallocated while in a transition"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -116,9 +116,9 @@
     v10 = [v3 appendInteger:backlightLevel withName:@"backlightLevel"];
   }
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (void)beginTransition

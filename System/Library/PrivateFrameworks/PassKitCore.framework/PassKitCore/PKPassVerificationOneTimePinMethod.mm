@@ -1,36 +1,36 @@
 @interface PKPassVerificationOneTimePinMethod
-- (PKPassVerificationOneTimePinMethod)initWithCoder:(id)a3;
-- (PKPassVerificationOneTimePinMethod)initWithDictionary:(id)a3;
-- (id)_initWithChannel:(id)a3;
+- (PKPassVerificationOneTimePinMethod)initWithCoder:(id)coder;
+- (PKPassVerificationOneTimePinMethod)initWithDictionary:(id)dictionary;
+- (id)_initWithChannel:(id)channel;
 - (id)legacyChannelRepresentation;
 - (id)supplementalTypeDescription;
 - (id)typeDescription;
-- (void)_appendDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationOneTimePinMethod
 
-- (PKPassVerificationOneTimePinMethod)initWithDictionary:(id)a3
+- (PKPassVerificationOneTimePinMethod)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"channel"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"channel"];
   v6 = PKPassVerificationOneTimePinChannelFromString(v5);
 
   if (v6)
   {
     v14.receiver = self;
     v14.super_class = PKPassVerificationOneTimePinMethod;
-    v7 = [(PKPassVerificationMethod *)&v14 _initWithType:1 dictionary:v4];
+    v7 = [(PKPassVerificationMethod *)&v14 _initWithType:1 dictionary:dictionaryCopy];
     v8 = v7;
     if (v7)
     {
       v7->_channel = v6;
-      v9 = [v4 PKStringForKey:@"sourceAddress"];
+      v9 = [dictionaryCopy PKStringForKey:@"sourceAddress"];
       sourceAddress = v8->_sourceAddress;
       v8->_sourceAddress = v9;
 
-      v11 = [v4 PKStringForKey:@"destinationAddress"];
+      v11 = [dictionaryCopy PKStringForKey:@"destinationAddress"];
       destinationAddress = v8->_destinationAddress;
       v8->_destinationAddress = v11;
     }
@@ -45,29 +45,29 @@
   return v8;
 }
 
-- (id)_initWithChannel:(id)a3
+- (id)_initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v13.receiver = self;
   v13.super_class = PKPassVerificationOneTimePinMethod;
-  v5 = [(PKPassVerificationMethod *)&v13 _initWithType:1 channel:v4];
+  v5 = [(PKPassVerificationMethod *)&v13 _initWithType:1 channel:channelCopy];
   if (v5)
   {
-    v6 = [v4 type];
+    type = [channelCopy type];
     v7 = 1;
-    if (v6 != 2)
+    if (type != 2)
     {
       v7 = 2;
     }
 
     v5[5] = v7;
-    v8 = [v4 sourceAddress];
+    sourceAddress = [channelCopy sourceAddress];
     v9 = v5[6];
-    v5[6] = v8;
+    v5[6] = sourceAddress;
 
-    v10 = [v4 contactPoint];
+    contactPoint = [channelCopy contactPoint];
     v11 = v5[7];
-    v5[7] = v10;
+    v5[7] = contactPoint;
   }
 
   return v5;
@@ -75,8 +75,8 @@
 
 - (id)legacyChannelRepresentation
 {
-  v3 = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
-  v4 = v3;
+  _legacyChannelRepresentation = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
+  v4 = _legacyChannelRepresentation;
   channel = self->_channel;
   if (channel)
   {
@@ -99,7 +99,7 @@ LABEL_7:
       v6 = 1;
     }
 
-    [v3 setType:v6];
+    [_legacyChannelRepresentation setType:v6];
     goto LABEL_7;
   }
 
@@ -172,22 +172,22 @@ LABEL_8:
   return v8;
 }
 
-- (PKPassVerificationOneTimePinMethod)initWithCoder:(id)a3
+- (PKPassVerificationOneTimePinMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassVerificationOneTimePinMethod;
-  v5 = [(PKPassVerificationMethod *)&v12 initWithCoder:v4];
+  v5 = [(PKPassVerificationMethod *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channel"];
     v5->_channel = PKPassVerificationOneTimePinChannelFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAddress"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAddress"];
     sourceAddress = v5->_sourceAddress;
     v5->_sourceAddress = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationAddress"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationAddress"];
     destinationAddress = v5->_destinationAddress;
     v5->_destinationAddress = v9;
   }
@@ -195,12 +195,12 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKPassVerificationOneTimePinMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPassVerificationMethod *)&v7 encodeWithCoder:coderCopy];
   channel = self->_channel;
   if (channel > 2)
   {
@@ -212,17 +212,17 @@ LABEL_8:
     v6 = off_1E79D88B8[channel];
   }
 
-  [v4 encodeObject:v6 forKey:{@"channel", v7.receiver, v7.super_class}];
-  [v4 encodeObject:self->_sourceAddress forKey:@"sourceAddress"];
-  [v4 encodeObject:self->_destinationAddress forKey:@"destinationAddress"];
+  [coderCopy encodeObject:v6 forKey:{@"channel", v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:self->_sourceAddress forKey:@"sourceAddress"];
+  [coderCopy encodeObject:self->_destinationAddress forKey:@"destinationAddress"];
 }
 
-- (void)_appendDescription:(id)a3
+- (void)_appendDescription:(id)description
 {
   v7.receiver = self;
   v7.super_class = PKPassVerificationOneTimePinMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v7 _appendDescription:v4];
+  descriptionCopy = description;
+  [(PKPassVerificationMethod *)&v7 _appendDescription:descriptionCopy];
   channel = self->_channel;
   if (channel > 2)
   {
@@ -234,9 +234,9 @@ LABEL_8:
     v6 = off_1E79D88B8[channel];
   }
 
-  [v4 appendFormat:@"channel: '%@'; ", v6];
-  [v4 appendFormat:@"sourceAddress: '%@'; ", self->_sourceAddress];
-  [v4 appendFormat:@"destinationAddress: '%@'; ", self->_destinationAddress];
+  [descriptionCopy appendFormat:@"channel: '%@'; ", v6];
+  [descriptionCopy appendFormat:@"sourceAddress: '%@'; ", self->_sourceAddress];
+  [descriptionCopy appendFormat:@"destinationAddress: '%@'; ", self->_destinationAddress];
 }
 
 @end

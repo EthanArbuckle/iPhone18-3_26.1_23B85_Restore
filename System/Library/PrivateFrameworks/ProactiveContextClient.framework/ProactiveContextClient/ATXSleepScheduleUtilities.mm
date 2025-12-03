@@ -1,24 +1,24 @@
 @interface ATXSleepScheduleUtilities
-+ (BOOL)isTime:(double)a3 betweenStartTime:(double)a4 endTime:(double)a5;
++ (BOOL)isTime:(double)time betweenStartTime:(double)startTime endTime:(double)endTime;
 @end
 
 @implementation ATXSleepScheduleUtilities
 
-+ (BOOL)isTime:(double)a3 betweenStartTime:(double)a4 endTime:(double)a5
++ (BOOL)isTime:(double)time betweenStartTime:(double)startTime endTime:(double)endTime
 {
-  v5 = a3 >= a4;
-  if (a5 > a3)
+  v5 = time >= startTime;
+  if (endTime > time)
   {
     v5 = 1;
   }
 
-  v6 = a4 <= a3;
-  if (a3 >= a5)
+  v6 = startTime <= time;
+  if (time >= endTime)
   {
     v6 = 0;
   }
 
-  if (a4 < a5)
+  if (startTime < endTime)
   {
     return v6;
   }

@@ -1,14 +1,14 @@
 @interface SiriRestaurantsOpenHoursCellAccessibility
-- (void)configureWithParsedOpenHoursInfo:(id)a3;
+- (void)configureWithParsedOpenHoursInfo:(id)info;
 @end
 
 @implementation SiriRestaurantsOpenHoursCellAccessibility
 
-- (void)configureWithParsedOpenHoursInfo:(id)a3
+- (void)configureWithParsedOpenHoursInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = SiriRestaurantsOpenHoursCellAccessibility;
-  [(SiriRestaurantsOpenHoursCellAccessibility *)&v9 configureWithParsedOpenHoursInfo:a3];
+  [(SiriRestaurantsOpenHoursCellAccessibility *)&v9 configureWithParsedOpenHoursInfo:info];
   v4 = [(SiriRestaurantsOpenHoursCellAccessibility *)self safeValueForKey:@"_dayRangeLabels"];
   v5 = [(SiriRestaurantsOpenHoursCellAccessibility *)self safeValueForKey:@"_hoursLabelPerRange"];
   if ([v4 count])

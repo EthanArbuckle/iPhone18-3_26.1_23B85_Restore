@@ -1,37 +1,37 @@
 @interface TSWPLayoutManager
-+ (void)fixColumnBoundsForTarget:(id)a3 storage:(id)a4 charIndex:(unint64_t)a5 firstColumnIndex:(unint64_t)a6 precedingHeight:(double)a7 height:(double)a8 alreadyHasMargins:(BOOL)a9 styleProvider:(id)a10 vertical:(BOOL)a11;
-- (BOOL)needsLayoutInColumn:(id)a3;
++ (void)fixColumnBoundsForTarget:(id)target storage:(id)storage charIndex:(unint64_t)index firstColumnIndex:(unint64_t)columnIndex precedingHeight:(double)height height:(double)a8 alreadyHasMargins:(BOOL)margins styleProvider:(id)self0 vertical:(BOOL)self1;
+- (BOOL)needsLayoutInColumn:(id)column;
 - (TSWPCTTypesetterCache)typesetterCache;
-- (TSWPLayoutManager)initWithStorage:(id)a3 owner:(id)a4;
+- (TSWPLayoutManager)initWithStorage:(id)storage owner:(id)owner;
 - (_NSRange)dirtyRange;
-- (double)layoutIntoTarget:(id)a3 withRange:(_NSRange)a4;
+- (double)layoutIntoTarget:(id)target withRange:(_NSRange)range;
 - (id)styleProvider;
-- (int)p_layoutConfigFlagsForTarget:(id)a3;
+- (int)p_layoutConfigFlagsForTarget:(id)target;
 - (void)clearOwner;
 - (void)dealloc;
-- (void)deflateTarget:(id)a3 intoHints:(void *)a4 childHints:(id)a5[2] anchoredAttachmentPositions:(id *)a6 topicNumbers:(void *)a7 layoutState:(void *)a8;
-- (void)destroyLayoutState:(void *)a3;
-- (void)inflateTarget:(id)a3 fromHints:(const void *)a4 childHint:(id)a5 anchoredAttachmentPositions:(id)a6 topicNumbers:(const void *)a7;
-- (void)layoutIntoTarget:(id)a3 withLayoutState:(void *)a4 outSync:(BOOL *)a5;
-- (void)layoutStateForLayoutTarget:(id)a3 afterHint:(id *)a4 childHint:(id)a5 topicNumbers:(const void *)a6 textIsVertical:(BOOL)a7;
+- (void)deflateTarget:(id)target intoHints:(void *)hints childHints:(id)childHints[2] anchoredAttachmentPositions:(id *)positions topicNumbers:(void *)numbers layoutState:(void *)state;
+- (void)destroyLayoutState:(void *)state;
+- (void)inflateTarget:(id)target fromHints:(const void *)hints childHint:(id)hint anchoredAttachmentPositions:(id)positions topicNumbers:(const void *)numbers;
+- (void)layoutIntoTarget:(id)target withLayoutState:(void *)state outSync:(BOOL *)sync;
+- (void)layoutStateForLayoutTarget:(id)target afterHint:(id *)hint childHint:(id)childHint topicNumbers:(const void *)numbers textIsVertical:(BOOL)vertical;
 - (void)resetTopicNumbers;
-- (void)storage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(int)a6;
-- (void)willRemoveAttachmentLayout:(id)a3;
+- (void)storage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind;
+- (void)willRemoveAttachmentLayout:(id)layout;
 @end
 
 @implementation TSWPLayoutManager
 
-- (TSWPLayoutManager)initWithStorage:(id)a3 owner:(id)a4
+- (TSWPLayoutManager)initWithStorage:(id)storage owner:(id)owner
 {
   v9.receiver = self;
   v9.super_class = TSWPLayoutManager;
   v6 = [(TSWPLayoutManager *)&v9 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_owner = a4;
-    v6->_storage = v7;
-    if ([a4 caresAboutStorageChanges])
+    storageCopy = storage;
+    v6->_owner = owner;
+    v6->_storage = storageCopy;
+    if ([owner caresAboutStorageChanges])
     {
       [(TSWPStorage *)v6->_storage addObserver:v6];
       v6->_isObservingStorage = 1;
@@ -66,9 +66,9 @@
 
 - (void)resetTopicNumbers
 {
-  v3 = [(TSWPLayoutManager *)self styleProvider];
+  styleProvider = [(TSWPLayoutManager *)self styleProvider];
 
-  TSWPTopicNumberHints::resetWithStyleProvider(&self->_cachedTopicNumbers, v3);
+  TSWPTopicNumberHints::resetWithStyleProvider(&self->_cachedTopicNumbers, styleProvider);
 }
 
 - (void)clearOwner
@@ -80,22 +80,22 @@
   }
 }
 
-- (void)storage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(int)a6
+- (void)storage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v12.location = self->_dirtyRange.location;
   if (v12.location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    self->_dirtyRange = a4;
-    self->_delta = a5;
+    self->_dirtyRange = range;
+    self->_delta = delta;
   }
 
   else
   {
-    if (a4.location + a4.length <= v12.location)
+    if (range.location + range.length <= v12.location)
     {
-      v12.location += a5;
+      v12.location += delta;
       self->_dirtyRange.location = v12.location;
       v12.length = self->_dirtyRange.length;
     }
@@ -103,18 +103,18 @@
     else
     {
       v12.length = self->_dirtyRange.length;
-      if (a4.location < v12.length + v12.location)
+      if (range.location < v12.length + v12.location)
       {
-        v12.length += a5;
+        v12.length += delta;
         self->_dirtyRange.length = v12.length;
       }
     }
 
-    self->_dirtyRange = NSUnionRange(v12, a4);
-    self->_delta += a5;
+    self->_dirtyRange = NSUnionRange(v12, range);
+    self->_delta += delta;
   }
 
-  if (a6 != 1 || a5 != length)
+  if (kind != 1 || delta != length)
   {
 LABEL_16:
     [(TSWPCTTypesetterCache *)self->_typesetterCache clearCache];
@@ -124,7 +124,7 @@ LABEL_16:
   if (location < location + length)
   {
     v13 = location;
-    while (!IsParagraphBreakingCharacter([a3 characterAtIndex:v13]))
+    while (!IsParagraphBreakingCharacter([storage characterAtIndex:v13]))
     {
       ++v13;
       if (!--length)
@@ -137,9 +137,9 @@ LABEL_16:
   }
 
 LABEL_14:
-  if (a3)
+  if (storage)
   {
-    [a3 paragraphEnumeratorAtCharIndex:location styleProvider:0];
+    [storage paragraphEnumeratorAtCharIndex:location styleProvider:0];
   }
 
   else
@@ -153,9 +153,9 @@ LABEL_17:
   [(TSWPLayoutOwner *)self->_owner layoutManagerNeedsLayout:self, *&v14.var0, *&v14.var2, *&v14.var4, *&v14.var6];
 }
 
-- (void)willRemoveAttachmentLayout:(id)a3
+- (void)willRemoveAttachmentLayout:(id)layout
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "info")];
+  v4 = [objc_msgSend(objc_msgSend(layout "info")];
   storage = self->_storage;
   if (storage)
   {
@@ -171,17 +171,17 @@ LABEL_17:
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v6);
 }
 
-- (BOOL)needsLayoutInColumn:(id)a3
+- (BOOL)needsLayoutInColumn:(id)column
 {
-  v4 = [a3 range];
+  range = [column range];
   v6 = 0;
   if (v5)
   {
     location = self->_dirtyRange.location;
     if (location <= 0x7FFFFFFFFFFFFFFELL)
     {
-      v8 = v4 + v5;
-      if (v4 + v5 && ((v9 = [(TSWPStorage *)self->_storage characterAtIndex:v8 - 1]- 4, v9 >= 0xC) || ((0x907u >> v9) & 1) == 0))
+      v8 = range + v5;
+      if (range + v5 && ((v9 = [(TSWPStorage *)self->_storage characterAtIndex:v8 - 1]- 4, v9 >= 0xC) || ((0x907u >> v9) & 1) == 0))
       {
         v11 = [-[TSWPLayoutManager styleProvider](self "styleProvider")];
         v12 = v11;
@@ -197,8 +197,8 @@ LABEL_17:
           v6 = 0;
           do
           {
-            v14 = [(TSWPLayoutManager *)self styleProvider];
-            if (![objc_msgSend(v14 paragraphStyleAtParIndex:-[TSWPStorage paragraphIndexAtCharIndex:](self->_storage effectiveRange:{"paragraphIndexAtCharIndex:", v15[0] - 1), v15), "intValueForProperty:", 90}])
+            styleProvider = [(TSWPLayoutManager *)self styleProvider];
+            if (![objc_msgSend(styleProvider paragraphStyleAtParIndex:-[TSWPStorage paragraphIndexAtCharIndex:](self->_storage effectiveRange:{"paragraphIndexAtCharIndex:", v15[0] - 1), v15), "intValueForProperty:", 90}])
             {
               break;
             }
@@ -220,47 +220,47 @@ LABEL_17:
   return v6;
 }
 
-- (void)layoutIntoTarget:(id)a3 withLayoutState:(void *)a4 outSync:(BOOL *)a5
+- (void)layoutIntoTarget:(id)target withLayoutState:(void *)state outSync:(BOOL *)sync
 {
   v9 = [(TSWPLayoutOwner *)self->_owner lineHintsForTarget:?];
   if (v9 && [v9 hints])
   {
-    if (a4)
+    if (state)
     {
-      [(TSWPLayoutManager *)self destroyLayoutState:a4];
+      [(TSWPLayoutManager *)self destroyLayoutState:state];
     }
 
     operator new();
   }
 
-  if (!a4)
+  if (!state)
   {
-    [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:a3];
+    [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:target];
     operator new();
   }
 
   TSWPTopicNumberHints::reset(&self->_cachedTopicNumbers);
   if (objc_opt_respondsToSelector())
   {
-    [a3 setAnchoredDrawablesForRelayout:{objc_msgSend(MEMORY[0x277CBEB18], "array")}];
-    v10 = TSWPLayoutChore::layoutIntoTarget(a4, a3, 1, a5);
-    [a3 setAnchoredDrawablesForRelayout:0];
+    [target setAnchoredDrawablesForRelayout:{objc_msgSend(MEMORY[0x277CBEB18], "array")}];
+    v10 = TSWPLayoutChore::layoutIntoTarget(state, target, 1, sync);
+    [target setAnchoredDrawablesForRelayout:0];
   }
 
   else
   {
-    v10 = TSWPLayoutChore::layoutIntoTarget(a4, a3, 1, a5);
+    v10 = TSWPLayoutChore::layoutIntoTarget(state, target, 1, sync);
   }
 
-  TSWPTopicNumberHints::operator=(&self->_cachedTopicNumbers, a4 + 17);
-  if ([objc_msgSend(a3 "columns")])
+  TSWPTopicNumberHints::operator=(&self->_cachedTopicNumbers, state + 17);
+  if ([objc_msgSend(target "columns")])
   {
     charIndex = self->_cachedTopicNumbers._charIndex;
-    if (charIndex != 0x7FFFFFFFFFFFFFFFLL && charIndex >= [objc_msgSend(objc_msgSend(a3 "columns")])
+    if (charIndex != 0x7FFFFFFFFFFFFFFFLL && charIndex >= [objc_msgSend(objc_msgSend(target "columns")])
     {
-      v12 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager layoutIntoTarget:withLayoutState:outSync:]"];
-      [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 311, @"topic numbers are out of sync with layout"}];
+      [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 311, @"topic numbers are out of sync with layout"}];
     }
   }
 
@@ -268,13 +268,13 @@ LABEL_17:
   {
     if (self->_dirtyRange.location != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [objc_msgSend(a3 "columns")];
+      v14 = [objc_msgSend(target "columns")];
       if (v14)
       {
-        v15 = [v14 range];
-        v17 = v15 + v16;
+        range = [v14 range];
+        v17 = range + v16;
         location = self->_dirtyRange.location;
-        if (v15 + v16 > location)
+        if (range + v16 > location)
         {
           v19 = self->_dirtyRange.length + location;
           if (v19 > v17)
@@ -288,7 +288,7 @@ LABEL_17:
             delta = self->_delta;
             self->_dirtyRange = xmmword_26CA637B0;
             self->_delta = 0;
-            TSWPLayoutChore::clearDelta(a4);
+            TSWPLayoutChore::clearDelta(state);
             [(TSWPLayoutOwner *)self->_owner layoutManager:self didClearDirtyRangeWithDelta:delta afterCharIndex:v19];
           }
         }
@@ -298,20 +298,20 @@ LABEL_17:
 
   else
   {
-    (*(*a4 + 8))(a4);
-    a4 = 0;
+    (*(*state + 8))(state);
+    state = 0;
     self->_dirtyRange.length = 0;
     *&self->_delta = xmmword_26CA66A30;
   }
 
-  return a4;
+  return state;
 }
 
-- (double)layoutIntoTarget:(id)a3 withRange:(_NSRange)a4
+- (double)layoutIntoTarget:(id)target withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  [a3 currentSize];
+  length = range.length;
+  location = range.location;
+  [target currentSize];
   v8 = length;
   v9 = location;
   if (location + length < [(TSWPStorage *)self->_storage length])
@@ -320,9 +320,9 @@ LABEL_17:
     v12 = v11;
     if (v10 + v11 <= location + length)
     {
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager layoutIntoTarget:withRange:]"];
-      [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 372, @"this isn't the next paragraph range"}];
+      [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 372, @"this isn't the next paragraph range"}];
     }
 
     v18.location = location;
@@ -336,57 +336,57 @@ LABEL_17:
 
   if (objc_opt_respondsToSelector())
   {
-    [a3 expandedRangeForLayoutRange:v9 styleProvider:{v8, -[TSWPLayoutManager styleProvider](self, "styleProvider")}];
+    [target expandedRangeForLayoutRange:v9 styleProvider:{v8, -[TSWPLayoutManager styleProvider](self, "styleProvider")}];
   }
 
   TSWPTopicNumberHints::TSWPTopicNumberHints(&v17, [(TSWPLayoutManager *)self styleProvider]);
-  [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:a3];
+  [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:target];
   operator new();
 }
 
-- (void)layoutStateForLayoutTarget:(id)a3 afterHint:(id *)a4 childHint:(id)a5 topicNumbers:(const void *)a6 textIsVertical:(BOOL)a7
+- (void)layoutStateForLayoutTarget:(id)target afterHint:(id *)hint childHint:(id)childHint topicNumbers:(const void *)numbers textIsVertical:(BOOL)vertical
 {
-  if (a4)
+  if (hint)
   {
-    [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:a3];
+    [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:target];
     operator new();
   }
 
-  v7 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager layoutStateForLayoutTarget:afterHint:childHint:topicNumbers:textIsVertical:]"];
-  [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 448, @"bad hint"}];
+  [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 448, @"bad hint"}];
   return 0;
 }
 
-+ (void)fixColumnBoundsForTarget:(id)a3 storage:(id)a4 charIndex:(unint64_t)a5 firstColumnIndex:(unint64_t)a6 precedingHeight:(double)a7 height:(double)a8 alreadyHasMargins:(BOOL)a9 styleProvider:(id)a10 vertical:(BOOL)a11
++ (void)fixColumnBoundsForTarget:(id)target storage:(id)storage charIndex:(unint64_t)index firstColumnIndex:(unint64_t)columnIndex precedingHeight:(double)height height:(double)a8 alreadyHasMargins:(BOOL)margins styleProvider:(id)self0 vertical:(BOOL)self1
 {
   v89 = *MEMORY[0x277D6C268];
-  v18 = [a3 columnMetricsForCharIndex:a5 outRange:&v89];
-  v19 = [v18 columnsAreLeftToRight];
+  v18 = [target columnMetricsForCharIndex:index outRange:&v89];
+  columnsAreLeftToRight = [v18 columnsAreLeftToRight];
   if (v18)
   {
-    v20 = [v18 columnCount];
+    columnCount = [v18 columnCount];
   }
 
   else
   {
-    v20 = 1;
+    columnCount = 1;
   }
 
-  v21 = v89 < a5 || a9;
+  v21 = v89 < index || margins;
   v83 = v21;
   v82 = +[TSWPPadding padding];
-  v84 = [a3 columns];
-  if (!v84)
+  columns = [target columns];
+  if (!columns)
   {
-    v22 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPLayoutManager fixColumnBoundsForTarget:storage:charIndex:firstColumnIndex:precedingHeight:height:alreadyHasMargins:styleProvider:vertical:]"];
-    [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 484, @"invalid nil value for '%s'", "columnsArray"}];
+    [currentHandler handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 484, @"invalid nil value for '%s'", "columnsArray"}];
   }
 
-  [a3 currentSize];
+  [target currentSize];
   v26 = v24;
-  if (a11)
+  if (vertical)
   {
     v24 = v25;
   }
@@ -406,18 +406,18 @@ LABEL_17:
     v30 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v81 = [v84 count];
-  if ([a4 allowsElementKind:32])
+  v81 = [columns count];
+  if ([storage allowsElementKind:32])
   {
-    v31 = [a3 pageNumber];
+    pageNumber = [target pageNumber];
   }
 
   else
   {
-    v31 = 0x7FFFFFFFFFFFFFFFLL;
+    pageNumber = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v32 = v20 + a6;
+  v32 = columnCount + columnIndex;
   v33 = v77 - TSDMultiplySizeScalar(v28, v30, 2.0);
   v35 = a8 - v34;
   v36 = 0.0;
@@ -441,7 +441,7 @@ LABEL_17:
     v38 = 0.0;
   }
 
-  if (a6)
+  if (columnIndex)
   {
     v39 = v83;
   }
@@ -451,25 +451,25 @@ LABEL_17:
     v39 = 1;
   }
 
-  v75 = v20 + a6;
+  v75 = columnCount + columnIndex;
   if ((v39 & 1) == 0)
   {
     objc_opt_class();
-    [objc_msgSend(a3 "columns")];
+    [objc_msgSend(target "columns")];
     v40 = TSUDynamicCast();
     if (!v40)
     {
-      v85 = [MEMORY[0x277D6C290] currentHandler];
-      v41 = a6;
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
+      columnIndexCopy = columnIndex;
       v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPLayoutManager fixColumnBoundsForTarget:storage:charIndex:firstColumnIndex:precedingHeight:height:alreadyHasMargins:styleProvider:vertical:]"];
       v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"];
       v44 = v42;
-      a6 = v41;
+      columnIndex = columnIndexCopy;
       v32 = v75;
-      [v85 handleFailureInFunction:v44 file:v43 lineNumber:519 description:{@"invalid nil value for '%s'", "column"}];
+      [currentHandler2 handleFailureInFunction:v44 file:v43 lineNumber:519 description:{@"invalid nil value for '%s'", "column"}];
     }
 
-    v45 = [objc_msgSend(a3 columnMetricsForCharIndex:objc_msgSend(v40 outRange:{"range"), 0), "layoutMargins"}];
+    v45 = [objc_msgSend(target columnMetricsForCharIndex:objc_msgSend(v40 outRange:{"range"), 0), "layoutMargins"}];
     if (v45)
     {
       [v45 bottomInset];
@@ -477,20 +477,20 @@ LABEL_17:
     }
   }
 
-  v80 = a6;
-  if (v32 > a6)
+  columnIndexCopy2 = columnIndex;
+  if (v32 > columnIndex)
   {
     v47 = 0;
-    v86 = v30 + a7;
+    v86 = v30 + height;
     v76 = v36;
     do
     {
       v88 = v37;
       v87 = 0;
-      v48 = [v18 layoutMargins];
-      if (v48)
+      layoutMargins = [v18 layoutMargins];
+      if (layoutMargins)
       {
-        v49 = v48;
+        v49 = layoutMargins;
       }
 
       else
@@ -498,7 +498,7 @@ LABEL_17:
         v49 = v82;
       }
 
-      if (a11)
+      if (vertical)
       {
         [v49 topInset];
         v51 = v78 - v50;
@@ -513,19 +513,19 @@ LABEL_17:
       }
 
       v54 = v51 - v52;
-      v55 = [a4 wpKind];
+      wpKind = [storage wpKind];
       v56 = fmax(v54, 36.0);
-      if (!v55)
+      if (!wpKind)
       {
         v54 = v56;
       }
 
-      if (a11)
+      if (vertical)
       {
         [v49 topInset];
       }
 
-      else if (v19)
+      else if (columnsAreLeftToRight)
       {
         [v49 leftInset];
       }
@@ -539,7 +539,7 @@ LABEL_17:
       if (v18)
       {
         [v18 positionForColumnIndex:v47 bodyWidth:&v88 outWidth:&v87 outGap:v54];
-        if (v19)
+        if (columnsAreLeftToRight)
         {
           goto LABEL_48;
         }
@@ -548,7 +548,7 @@ LABEL_17:
       else
       {
         v59 = 0.0;
-        if (v19)
+        if (columnsAreLeftToRight)
         {
 LABEL_48:
           v60 = v58 + v59;
@@ -558,15 +558,15 @@ LABEL_48:
 
       v60 = v54 - v58 - v59 - v88;
 LABEL_51:
-      v61 = [a4 wpKind];
+      wpKind2 = [storage wpKind];
       v62 = v88;
-      if (!v61)
+      if (!wpKind2)
       {
         v62 = fmax(v88, 18.0);
         v88 = v62;
-        if (v77 + (v20 * -18.0) < v60)
+        if (v77 + (columnCount * -18.0) < v60)
         {
-          v60 = v77 + (v20 * -18.0);
+          v60 = v77 + (columnCount * -18.0);
         }
       }
 
@@ -574,7 +574,7 @@ LABEL_51:
       v64 = v38;
       if ((v83 & 1) == 0)
       {
-        if (a11)
+        if (vertical)
         {
           [v49 rightInset];
         }
@@ -585,21 +585,21 @@ LABEL_51:
         }
 
         v63 = v86 + v36 + v65;
-        [a3 maxSize];
+        [target maxSize];
         v67 = v66;
         v90.origin.x = v60;
         v90.origin.y = v63;
         v90.size.width = v62;
         v90.size.height = v38;
         MaxY = CGRectGetMaxY(v90);
-        if (v80 || MaxY <= v67)
+        if (columnIndexCopy2 || MaxY <= v67)
         {
           v64 = v38;
         }
 
         else
         {
-          v69 = [a4 wpKind] == 0;
+          v69 = [storage wpKind] == 0;
           v70 = 36.0;
           v71 = v67 + -36.0;
           if (!v69 || v67 - v63 >= 36.0)
@@ -631,67 +631,67 @@ LABEL_51:
         }
       }
 
-      if (a6 >= v81)
+      if (columnIndex >= v81)
       {
-        v72 = [[TSWPColumn alloc] initWithStorage:a4 frameBounds:v60, v63, v62, v64];
-        [(TSWPColumn *)v72 setStyleProvider:a10];
-        [(TSWPColumn *)v72 setColumnIndex:a6];
-        [v84 addObject:v72];
+        v72 = [[TSWPColumn alloc] initWithStorage:storage frameBounds:v60, v63, v62, v64];
+        [(TSWPColumn *)v72 setStyleProvider:provider];
+        [(TSWPColumn *)v72 setColumnIndex:columnIndex];
+        [columns addObject:v72];
       }
 
       else
       {
-        v72 = [v84 objectAtIndexedSubscript:a6];
+        v72 = [columns objectAtIndexedSubscript:columnIndex];
         [(TSWPColumn *)v72 setWpBounds:v60, v63, v62, v64];
       }
 
-      -[TSWPColumn setTextIsVertical:](v72, "setTextIsVertical:", [a3 textIsVertical]);
-      [(TSWPColumn *)v72 setPageNumber:v31];
-      ++a6;
+      -[TSWPColumn setTextIsVertical:](v72, "setTextIsVertical:", [target textIsVertical]);
+      [(TSWPColumn *)v72 setPageNumber:pageNumber];
+      ++columnIndex;
       ++v47;
-      --v20;
+      --columnCount;
     }
 
-    while (v20);
+    while (columnCount);
   }
 
-  v73 = [a4 wpKind];
-  if (!v80 && v73)
+  wpKind3 = [storage wpKind];
+  if (!columnIndexCopy2 && wpKind3)
   {
-    v74 = [v84 count];
+    v74 = [columns count];
     if (v74 > v75)
     {
-      [v84 removeObjectsInRange:{v75, v74 - v75}];
+      [columns removeObjectsInRange:{v75, v74 - v75}];
     }
   }
 }
 
-- (void)deflateTarget:(id)a3 intoHints:(void *)a4 childHints:(id)a5[2] anchoredAttachmentPositions:(id *)a6 topicNumbers:(void *)a7 layoutState:(void *)a8
+- (void)deflateTarget:(id)target intoHints:(void *)hints childHints:(id)childHints[2] anchoredAttachmentPositions:(id *)positions topicNumbers:(void *)numbers layoutState:(void *)state
 {
   v79 = *MEMORY[0x277D85DE8];
-  v10 = [a3 columns];
-  v71 = [v10 count];
+  columns = [target columns];
+  v71 = [columns count];
   if (v71)
   {
     v11 = 0;
-    v73 = a4;
-    v70 = v10;
+    hintsCopy = hints;
+    v70 = columns;
     do
     {
-      v12 = [v10 objectAtIndexedSubscript:v11];
-      v13 = [a3 columnMetricsForCharIndex:objc_msgSend(v12 outRange:{"startCharIndex"), 0}];
+      v12 = [columns objectAtIndexedSubscript:v11];
+      v13 = [target columnMetricsForCharIndex:objc_msgSend(v12 outRange:{"startCharIndex"), 0}];
       if (v13)
       {
-        v14 = [v13 columnCount];
+        columnCount = [v13 columnCount];
       }
 
       else
       {
-        v14 = 1;
+        columnCount = 1;
       }
 
-      v11 += v14;
-      v15 = [v10 objectAtIndexedSubscript:v11 - 1];
+      v11 += columnCount;
+      v15 = [columns objectAtIndexedSubscript:v11 - 1];
       [v12 frameBounds];
       v17 = v16;
       v19 = v18;
@@ -700,53 +700,53 @@ LABEL_51:
       MaxX = CGRectGetMaxX(v82);
       [v12 frameBounds];
       MinX = CGRectGetMinX(v83);
-      v24 = [v12 startCharIndex];
-      v25 = [v15 startCharIndex];
-      v26 = [v15 characterCount];
-      if (v24 <= v26 + v25)
+      startCharIndex = [v12 startCharIndex];
+      startCharIndex2 = [v15 startCharIndex];
+      characterCount = [v15 characterCount];
+      if (startCharIndex <= characterCount + startCharIndex2)
       {
-        v27 = v26 + v25;
+        v27 = characterCount + startCharIndex2;
       }
 
       else
       {
-        v27 = v24;
+        v27 = startCharIndex;
       }
 
-      if (v24 >= v26 + v25)
+      if (startCharIndex >= characterCount + startCharIndex2)
       {
-        v28 = v26 + v25;
+        v28 = characterCount + startCharIndex2;
       }
 
       else
       {
-        v28 = v24;
+        v28 = startCharIndex;
       }
 
       v29 = v27 - v28;
-      v30 = [v12 anchoredRange];
+      anchoredRange = [v12 anchoredRange];
       v32 = v31;
       v81.location = [v15 anchoredRange];
       v81.length = v33;
-      v80.location = v30;
+      v80.location = anchoredRange;
       v80.length = v32;
       v34 = NSUnionRange(v80, v81);
-      v35 = [v15 nextWidowPullsDownFromCharIndex];
-      v36 = v35;
-      if ((v35 - v28 >= v27 - v28 || v35 < v28) && v35 != v27)
+      nextWidowPullsDownFromCharIndex = [v15 nextWidowPullsDownFromCharIndex];
+      v36 = nextWidowPullsDownFromCharIndex;
+      if ((nextWidowPullsDownFromCharIndex - v28 >= v27 - v28 || nextWidowPullsDownFromCharIndex < v28) && nextWidowPullsDownFromCharIndex != v27)
       {
-        v39 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager deflateTarget:intoHints:childHints:anchoredAttachmentPositions:topicNumbers:layoutState:]"];
-        [v39 handleFailureInFunction:v40 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 657, @"Bad widow location"}];
+        [currentHandler handleFailureInFunction:v40 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 657, @"Bad widow location"}];
       }
 
       v41 = MaxX - MinX;
-      v42 = v73[1];
-      v43 = v73[2];
+      v42 = hintsCopy[1];
+      v43 = hintsCopy[2];
       if (v42 >= v43)
       {
-        v45 = *v73;
-        v46 = v42 - *v73;
+        v45 = *hintsCopy;
+        v46 = v42 - *hintsCopy;
         v47 = 0xCCCCCCCCCCCCCCCDLL * (v46 >> 4) + 1;
         if (v47 > 0x333333333333333)
         {
@@ -766,7 +766,7 @@ LABEL_51:
 
         if (v47)
         {
-          std::__allocate_at_least[abi:nn200100]<std::allocator<TSWPTargetHint>>(v73, v47);
+          std::__allocate_at_least[abi:nn200100]<std::allocator<TSWPTargetHint>>(hintsCopy, v47);
         }
 
         v49 = 16 * (v46 >> 4);
@@ -778,15 +778,15 @@ LABEL_51:
         *(v49 + 40) = v29;
         *(v49 + 48) = v36;
         *(v49 + 56) = v34;
-        *(v49 + 72) = v14;
+        *(v49 + 72) = columnCount;
         v44 = v49 + 80;
         v50 = v49 - v46;
         memcpy((v49 - v46), v45, v46);
-        v51 = *v73;
-        *v73 = v50;
-        v73[1] = v44;
-        v73[2] = 0;
-        a4 = v73;
+        v51 = *hintsCopy;
+        *hintsCopy = v50;
+        hintsCopy[1] = v44;
+        hintsCopy[2] = 0;
+        hints = hintsCopy;
         if (v51)
         {
           operator delete(v51);
@@ -804,46 +804,46 @@ LABEL_51:
         *(v42 + 6) = v36;
         *(v42 + 56) = v34;
         v44 = (v42 + 80);
-        *(v42 + 9) = v14;
-        a4 = v73;
+        *(v42 + 9) = columnCount;
+        hints = hintsCopy;
       }
 
-      v10 = v70;
-      *(a4 + 1) = v44;
+      columns = v70;
+      *(hints + 1) = v44;
     }
 
     while (v11 < v71);
   }
 
-  *a5 = 0;
-  a5[1] = 0;
-  v52 = [v10 firstObject];
-  if ([v52 countLines])
+  *childHints = 0;
+  childHints[1] = 0;
+  firstObject = [columns firstObject];
+  if ([firstObject countLines])
   {
-    *a5 = TSWPLineFragment::hintForAttachmentLayout([v52 lineFragmentAtIndex:0]);
+    *childHints = TSWPLineFragment::hintForAttachmentLayout([firstObject lineFragmentAtIndex:0]);
   }
 
-  v53 = [v10 lastObject];
-  v54 = [v53 countLines];
-  if (v54)
+  lastObject = [columns lastObject];
+  countLines = [lastObject countLines];
+  if (countLines)
   {
-    v55 = [v53 lineFragmentAtIndex:v54 - 1];
+    v55 = [lastObject lineFragmentAtIndex:countLines - 1];
     if ((*(v55 + 25) & 1) == 0)
     {
-      a5[1] = TSWPLineFragment::hintForAttachmentLayout(v55);
+      childHints[1] = TSWPLineFragment::hintForAttachmentLayout(v55);
     }
   }
 
-  v56 = [a3 currentAnchoredDrawableLayouts];
-  v57 = [v56 count];
+  currentAnchoredDrawableLayouts = [target currentAnchoredDrawableLayouts];
+  v57 = [currentAnchoredDrawableLayouts count];
   if (v57)
   {
-    *a6 = [MEMORY[0x277D6C368] dictionaryWithCapacity:v57];
+    *positions = [MEMORY[0x277D6C368] dictionaryWithCapacity:v57];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v58 = [v56 countByEnumeratingWithState:&v74 objects:v78 count:16];
+    v58 = [currentAnchoredDrawableLayouts countByEnumeratingWithState:&v74 objects:v78 count:16];
     if (v58)
     {
       v59 = *v75;
@@ -853,17 +853,17 @@ LABEL_51:
         {
           if (*v75 != v59)
           {
-            objc_enumerationMutation(v56);
+            objc_enumerationMutation(currentAnchoredDrawableLayouts);
           }
 
           v61 = *(*(&v74 + 1) + 8 * i);
           v62 = [objc_msgSend(v61 "info")];
           v63 = MEMORY[0x277CCAE60];
           [v61 alignmentFrame];
-          [*a6 setObject:objc_msgSend(v63 forUncopiedKey:{"valueWithCGPoint:"), v62}];
+          [*positions setObject:objc_msgSend(v63 forUncopiedKey:{"valueWithCGPoint:"), v62}];
         }
 
-        v58 = [v56 countByEnumeratingWithState:&v74 objects:v78 count:16];
+        v58 = [currentAnchoredDrawableLayouts countByEnumeratingWithState:&v74 objects:v78 count:16];
       }
 
       while (v58);
@@ -873,38 +873,38 @@ LABEL_51:
   if (v71)
   {
     charIndex = self->_cachedTopicNumbers._charIndex;
-    if (charIndex != 0x7FFFFFFFFFFFFFFFLL && charIndex >= *(*a4 + 32))
+    if (charIndex != 0x7FFFFFFFFFFFFFFFLL && charIndex >= *(*hints + 32))
     {
-      v65 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager deflateTarget:intoHints:childHints:anchoredAttachmentPositions:topicNumbers:layoutState:]"];
-      [v65 handleFailureInFunction:v66 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 696, @"topic numbers are out of sync with layout"}];
+      [currentHandler2 handleFailureInFunction:v66 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 696, @"topic numbers are out of sync with layout"}];
     }
   }
 
-  TSWPTopicNumberHints::operator=(a7, &self->_cachedTopicNumbers);
+  TSWPTopicNumberHints::operator=(numbers, &self->_cachedTopicNumbers);
   TSWPTopicNumberHints::reset(&self->_cachedTopicNumbers);
 }
 
-- (void)inflateTarget:(id)a3 fromHints:(const void *)a4 childHint:(id)a5 anchoredAttachmentPositions:(id)a6 topicNumbers:(const void *)a7
+- (void)inflateTarget:(id)target fromHints:(const void *)hints childHint:(id)hint anchoredAttachmentPositions:(id)positions topicNumbers:(const void *)numbers
 {
   v29 = *MEMORY[0x277D85DE8];
-  if ([objc_msgSend(a3 "columns")])
+  if ([objc_msgSend(target "columns")])
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager inflateTarget:fromHints:childHint:anchoredAttachmentPositions:topicNumbers:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 706, @"Newly created target should have 0 columns"}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 706, @"Newly created target should have 0 columns"}];
   }
 
-  [a3 setAnchoredDrawablesForRelayout:{objc_msgSend(MEMORY[0x277CBEB18], "array")}];
-  [a3 columns];
-  [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:a3];
+  [target setAnchoredDrawablesForRelayout:{objc_msgSend(MEMORY[0x277CBEB18], "array")}];
+  [target columns];
+  [(TSWPLayoutManager *)self p_layoutConfigFlagsForTarget:target];
   [(TSWPStorage *)self->_storage wpKind];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [a6 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  allKeys = [positions allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
     v12 = *v25;
@@ -914,13 +914,13 @@ LABEL_51:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 drawable];
-        v16 = [a3 validatedLayoutForAnchoredDrawable:v15];
-        v17 = [a6 objectForKeyedSubscript:v14];
+        drawable = [v14 drawable];
+        v16 = [target validatedLayoutForAnchoredDrawable:drawable];
+        v17 = [positions objectForKeyedSubscript:v14];
         if (v17)
         {
           [v17 CGPointValue];
@@ -928,18 +928,18 @@ LABEL_51:
           [v16 setInterimPositionX:?];
           [v16 setInterimPositionY:v19];
           [v16 fixTransformFromInterimPosition];
-          [objc_msgSend(a3 "anchoredDrawablesForRelayout")];
+          [objc_msgSend(target "anchoredDrawablesForRelayout")];
         }
 
         else
         {
-          v20 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayoutManager inflateTarget:fromHints:childHint:anchoredAttachmentPositions:topicNumbers:]"];
-          [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 730, @"invalid nil value for '%s'", "value"}];
+          [currentHandler2 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayoutManager.mm"), 730, @"invalid nil value for '%s'", "value"}];
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
@@ -948,11 +948,11 @@ LABEL_51:
   operator new();
 }
 
-- (void)destroyLayoutState:(void *)a3
+- (void)destroyLayoutState:(void *)state
 {
-  if (a3)
+  if (state)
   {
-    (*(*a3 + 8))(a3);
+    (*(*state + 8))(state);
   }
 }
 
@@ -976,9 +976,9 @@ LABEL_51:
   return result;
 }
 
-- (int)p_layoutConfigFlagsForTarget:(id)a3
+- (int)p_layoutConfigFlagsForTarget:(id)target
 {
-  if ([a3 textIsVertical])
+  if ([target textIsVertical])
   {
     v4 = 16;
   }
@@ -988,17 +988,17 @@ LABEL_51:
     v4 = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [a3 allowsLastLineTruncation])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [target allowsLastLineTruncation])
   {
     v4 |= 0x20u;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![a3 allowsDescendersToClip])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![target allowsDescendersToClip])
   {
     v4 |= 4u;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [a3 pushAscendersIntoColumn])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [target pushAscendersIntoColumn])
   {
     return v4 | 0x40;
   }

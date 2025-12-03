@@ -12,10 +12,10 @@
 
 - (id)PK_enclosingScrollableScrollView
 {
-  v1 = [a1 superview];
-  if (v1)
+  superview = [self superview];
+  if (superview)
   {
-    v2 = v1;
+    v2 = superview;
     while (1)
     {
       objc_opt_class();
@@ -27,20 +27,20 @@
         }
       }
 
-      v1 = [v2 superview];
-      v2 = v1;
-      if (!v1)
+      superview = [v2 superview];
+      v2 = superview;
+      if (!superview)
       {
         goto LABEL_8;
       }
     }
 
-    v1 = v2;
+    superview = v2;
   }
 
 LABEL_8:
 
-  return v1;
+  return superview;
 }
 
 - (double)PK_convertRect:()PKAdditions toView:
@@ -49,35 +49,35 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = [a1 window];
+    selfCopy = [self window];
   }
 
-  v14 = v13;
+  v14 = selfCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v12;
+    window = v12;
   }
 
   else
   {
-    v15 = [v12 window];
+    window = [v12 window];
   }
 
-  v16 = v15;
-  v17 = a1;
+  v16 = window;
+  selfCopy2 = self;
   v18 = a2;
   v19 = a3;
   v20 = a4;
   v21 = a5;
   if (v14 != v16)
   {
-    [a1 convertRect:v14 toView:{a2, a3, a4, a5}];
+    [self convertRect:v14 toView:{a2, a3, a4, a5}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -86,8 +86,8 @@ LABEL_8:
     if (objc_opt_isKindOfClass())
     {
       v30 = MEMORY[0x1E69DD0A8];
-      v31 = [v14 windowScene];
-      v32 = [v30 activeTextEffectsWindowForWindowScene:v31];
+      windowScene = [v14 windowScene];
+      v32 = [v30 activeTextEffectsWindowForWindowScene:windowScene];
 
       if (v32 && v32 != v14)
       {
@@ -111,8 +111,8 @@ LABEL_8:
     if (objc_opt_isKindOfClass())
     {
       v46 = MEMORY[0x1E69DD0A8];
-      v47 = [v16 windowScene];
-      v48 = [v46 activeTextEffectsWindowForWindowScene:v47];
+      windowScene2 = [v16 windowScene];
+      v48 = [v46 activeTextEffectsWindowForWindowScene:windowScene2];
 
       if (v48)
       {
@@ -124,14 +124,14 @@ LABEL_8:
       }
     }
 
-    v17 = v16;
+    selfCopy2 = v16;
     v18 = v39;
     v19 = v41;
     v20 = v43;
     v21 = v45;
   }
 
-  [v17 convertRect:v12 toView:{v18, v19, v20, v21}];
+  [selfCopy2 convertRect:v12 toView:{v18, v19, v20, v21}];
   v54 = v53;
 
   return v54;
@@ -143,12 +143,12 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 PK_convertRect:v12 toView:{a2, a3, a4, a5}];
+    [self PK_convertRect:v12 toView:{a2, a3, a4, a5}];
   }
 
   else
   {
-    [v12 convertRect:a1 fromCoordinateSpace:{a2, a3, a4, a5}];
+    [v12 convertRect:self fromCoordinateSpace:{a2, a3, a4, a5}];
   }
 
   v14 = v13;
@@ -162,12 +162,12 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 PK_convertRect:v12 fromView:{a2, a3, a4, a5}];
+    [self PK_convertRect:v12 fromView:{a2, a3, a4, a5}];
   }
 
   else
   {
-    [v12 convertRect:a1 toCoordinateSpace:{a2, a3, a4, a5}];
+    [v12 convertRect:self toCoordinateSpace:{a2, a3, a4, a5}];
   }
 
   v14 = v13;
@@ -177,25 +177,25 @@ LABEL_8:
 
 - (id)pk_autoFadeOutShapeRectLayer
 {
-  v1 = [a1 pk_autoFadeOutShapePointLayer];
-  [v1 setBorderColor:{objc_msgSend(v1, "backgroundColor")}];
-  [v1 setBorderWidth:2.0];
-  v2 = [MEMORY[0x1E69DC888] clearColor];
-  [v1 setBackgroundColor:{objc_msgSend(v2, "CGColor")}];
+  pk_autoFadeOutShapePointLayer = [self pk_autoFadeOutShapePointLayer];
+  [pk_autoFadeOutShapePointLayer setBorderColor:{objc_msgSend(pk_autoFadeOutShapePointLayer, "backgroundColor")}];
+  [pk_autoFadeOutShapePointLayer setBorderWidth:2.0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [pk_autoFadeOutShapePointLayer setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  return v1;
+  return pk_autoFadeOutShapePointLayer;
 }
 
 - (id)pk_autoFadeOutShapePointLayer
 {
   v2 = objc_alloc_init(MEMORY[0x1E6979398]);
-  v3 = [MEMORY[0x1E69DC888] pk_randomColor];
-  v4 = [v3 colorWithAlphaComponent:0.8];
+  pk_randomColor = [MEMORY[0x1E69DC888] pk_randomColor];
+  v4 = [pk_randomColor colorWithAlphaComponent:0.8];
   [v2 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
 
   [v2 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 10.0, 10.0}];
-  v5 = [a1 layer];
-  [v5 addSublayer:v2];
+  layer = [self layer];
+  [layer addSublayer:v2];
 
   v6 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -212,30 +212,30 @@ LABEL_8:
 - (BOOL)PK_isBelowViewInDepth:()PKAdditions
 {
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   v6 = v4;
-  v7 = [v5 superview];
-  v8 = v7;
-  if (v6 && v7)
+  superview = [selfCopy superview];
+  superview2 = superview;
+  if (v6 && superview)
   {
-    while (([v6 isDescendantOfView:v8] & 1) == 0)
+    while (([v6 isDescendantOfView:superview2] & 1) == 0)
     {
-      v9 = v8;
+      v9 = superview2;
 
-      v8 = [v9 superview];
+      superview2 = [v9 superview];
 
-      v5 = v9;
-      if (!v8)
+      selfCopy = v9;
+      if (!superview2)
       {
         goto LABEL_7;
       }
     }
   }
 
-  v9 = v5;
+  v9 = selfCopy;
 LABEL_7:
-  v10 = [v6 superview];
-  if (!v10 || v10 == v8)
+  superview3 = [v6 superview];
+  if (!superview3 || superview3 == superview2)
   {
     v11 = v6;
   }
@@ -246,18 +246,18 @@ LABEL_7:
     do
     {
       v12 = v11;
-      v11 = v10;
+      v11 = superview3;
 
-      v10 = [v11 superview];
+      superview3 = [v11 superview];
     }
 
-    while (v10 && v10 != v8);
+    while (superview3 && superview3 != superview2);
   }
 
-  v13 = [v8 subviews];
-  v14 = [v13 indexOfObject:v9];
-  v15 = [v8 subviews];
-  v16 = v14 < [v15 indexOfObject:v11];
+  subviews = [superview2 subviews];
+  v14 = [subviews indexOfObject:v9];
+  subviews2 = [superview2 subviews];
+  v16 = v14 < [subviews2 indexOfObject:v11];
 
   return v16;
 }

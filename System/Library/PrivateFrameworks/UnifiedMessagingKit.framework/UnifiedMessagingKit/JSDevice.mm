@@ -7,7 +7,7 @@
 
 - (BOOL)isBundle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27058E09C();
 
   return v3 & 1;
@@ -15,7 +15,7 @@
 
 - (NSString)modelPartNumber
 {
-  v2 = self;
+  selfCopy = self;
   sub_27058E13C();
   v4 = v3;
 

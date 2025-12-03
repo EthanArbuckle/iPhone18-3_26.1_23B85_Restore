@@ -1,17 +1,17 @@
 @interface HUIconContentView
-+ (Class)iconContentViewClassForIconDescriptor:(id)a3;
-- (HUIconContentView)initWithFrame:(CGRect)a3;
++ (Class)iconContentViewClassForIconDescriptor:(id)descriptor;
+- (HUIconContentView)initWithFrame:(CGRect)frame;
 - (HUIconContentViewDelegate)delegate;
-- (void)_updateOverrideRenderingModeForSubviewsOfView:(id)a3;
-- (void)setAspectRatio:(double)a3;
-- (void)updateWithIconDescriptor:(id)a3 displayStyle:(unint64_t)a4 animated:(BOOL)a5;
+- (void)_updateOverrideRenderingModeForSubviewsOfView:(id)view;
+- (void)setAspectRatio:(double)ratio;
+- (void)updateWithIconDescriptor:(id)descriptor displayStyle:(unint64_t)style animated:(BOOL)animated;
 @end
 
 @implementation HUIconContentView
 
-+ (Class)iconContentViewClassForIconDescriptor:(id)a3
++ (Class)iconContentViewClassForIconDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -27,9 +27,9 @@
       else
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 && v3)
+        if ((objc_opt_isKindOfClass() & 1) == 0 && descriptorCopy)
         {
-          NSLog(&cfstr_NoIconViewClas.isa, v3);
+          NSLog(&cfstr_NoIconViewClas.isa, descriptorCopy);
         }
       }
     }
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (HUIconContentView)initWithFrame:(CGRect)a3
+- (HUIconContentView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = HUIconContentView;
-  result = [(HUIconContentView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(HUIconContentView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_aspectRatio = 1.0;
@@ -53,27 +53,27 @@
   return result;
 }
 
-- (void)updateWithIconDescriptor:(id)a3 displayStyle:(unint64_t)a4 animated:(BOOL)a5
+- (void)updateWithIconDescriptor:(id)descriptor displayStyle:(unint64_t)style animated:(BOOL)animated
 {
-  v7 = a3;
-  [(HUIconContentView *)self setIconDescriptor:v7];
-  [(HUIconContentView *)self setDisplayStyle:a4];
+  descriptorCopy = descriptor;
+  [(HUIconContentView *)self setIconDescriptor:descriptorCopy];
+  [(HUIconContentView *)self setDisplayStyle:style];
   if ([(HUIconContentView *)self effectiveUserInterfaceLayoutDirection]== 1 && [(HUIconContentView *)self shouldFlipForRTL])
   {
-    v8 = [v7 shouldForceLTR];
+    shouldForceLTR = [descriptorCopy shouldForceLTR];
   }
 
   else
   {
-    v8 = 1;
+    shouldForceLTR = 1;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 isSystemImage];
+    isSystemImage = [descriptorCopy isSystemImage];
     v10 = -1.0;
-    if (((v9 | v8) & 1) == 0)
+    if (((isSystemImage | shouldForceLTR) & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -82,7 +82,7 @@
   }
 
   v10 = -1.0;
-  if (v8)
+  if (shouldForceLTR)
   {
 LABEL_9:
     v10 = 1.0;
@@ -94,27 +94,27 @@ LABEL_10:
   [(HUIconContentView *)self setTransform:&v11];
 }
 
-- (void)setAspectRatio:(double)a3
+- (void)setAspectRatio:(double)ratio
 {
-  if (vabdd_f64(a3, self->_aspectRatio) > 0.00000011920929)
+  if (vabdd_f64(ratio, self->_aspectRatio) > 0.00000011920929)
   {
-    self->_aspectRatio = a3;
-    v4 = [(HUIconContentView *)self delegate];
-    [v4 iconContentView:self didChangeAspectRatio:self->_aspectRatio];
+    self->_aspectRatio = ratio;
+    delegate = [(HUIconContentView *)self delegate];
+    [delegate iconContentView:self didChangeAspectRatio:self->_aspectRatio];
 
     [(HUIconContentView *)self setNeedsLayout];
   }
 }
 
-- (void)_updateOverrideRenderingModeForSubviewsOfView:(id)a3
+- (void)_updateOverrideRenderingModeForSubviewsOfView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a3 subviews];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subviews = [view subviews];
+  v5 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -126,7 +126,7 @@ LABEL_10:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
@@ -135,8 +135,8 @@ LABEL_10:
         {
           v10 = v9;
           v11 = [(HUIconContentView *)self renderingModeForSubview:v10 suggestedRenderingMode:[(HUIconContentView *)self renderingMode]];
-          v12 = [v10 image];
-          v13 = [v12 imageWithRenderingMode:v11];
+          image = [v10 image];
+          v13 = [image imageWithRenderingMode:v11];
           [v10 setImage:v13];
         }
 
@@ -148,8 +148,8 @@ LABEL_10:
             goto LABEL_11;
           }
 
-          v12 = v9;
-          [v12 _setTextColorFollowsTintColor:{-[HUIconContentView renderingMode](self, "renderingMode") == 2}];
+          image = v9;
+          [image _setTextColorFollowsTintColor:{-[HUIconContentView renderingMode](self, "renderingMode") == 2}];
         }
 
 LABEL_11:
@@ -158,7 +158,7 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

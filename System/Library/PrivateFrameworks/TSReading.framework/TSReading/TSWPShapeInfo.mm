@@ -1,78 +1,78 @@
 @interface TSWPShapeInfo
 - (BOOL)displaysInstructionalText;
-- (BOOL)p_hasContentForRange:(_NSRange)a3;
-- (BOOL)p_hasListLabelOrContentForParagraphIndex:(unint64_t)a3;
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3 size:(id)a4;
+- (BOOL)p_hasContentForRange:(_NSRange)range;
+- (BOOL)p_hasListLabelOrContentForParagraphIndex:(unint64_t)index;
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry size:(id)size;
 - (CGPoint)autosizePositionOffset;
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 size:(CGSize)a4;
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry size:(CGSize)size;
 - (CGPoint)transformableObjectAnchorPoint;
 - (Class)layoutClass;
 - (Class)repClass;
 - (NSString)instructionalText;
 - (TSWPColumns)columns;
 - (TSWPPadding)padding;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 wpStorage:(id)a6;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style wpStorage:(id)storage;
 - (TSWPShapeStyle)tswpShapeStyle;
-- (double)pOffsetForParagraphAlignment:(CGSize)a3;
-- (double)pOffsetForVerticalAlignment:(CGSize)a3;
+- (double)pOffsetForParagraphAlignment:(CGSize)alignment;
+- (double)pOffsetForVerticalAlignment:(CGSize)alignment;
 - (id)childEnumerator;
 - (id)childInfos;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)presetKind;
 - (id)propertyMapForNewPreset;
 - (id)styleIdentifierTemplateForNewPreset;
 - (id)stylesForCopyStyle;
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4;
-- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)a3 byGlyphStyle:(int)a4 animationFilter:(id)a5;
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter;
+- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)style byGlyphStyle:(int)glyphStyle animationFilter:(id)filter;
 - (unint64_t)p_chunkCountForByBullet;
 - (unint64_t)p_chunkCountForByBulletGroup;
 - (unsigned)maxLineCount;
 - (unsigned)verticalAlignment;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)dealloc;
 - (void)fixPositionOfImportedAutosizedShape;
-- (void)processSelectedStoragesWithStatisticsController:(id)a3;
-- (void)setAllowsLastLineTruncation:(BOOL)a3;
-- (void)setContainedStorage:(id)a3;
-- (void)setContentWritingDirection:(int64_t)a3;
-- (void)setMaxLineCount:(unsigned int)a3;
-- (void)setShrinkTextToFit:(BOOL)a3;
-- (void)setTextIsVertical:(BOOL)a3;
-- (void)setVerticalAlignment:(unsigned int)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)processSelectedStoragesWithStatisticsController:(id)controller;
+- (void)setAllowsLastLineTruncation:(BOOL)truncation;
+- (void)setContainedStorage:(id)storage;
+- (void)setContentWritingDirection:(int64_t)direction;
+- (void)setMaxLineCount:(unsigned int)count;
+- (void)setShrinkTextToFit:(BOOL)fit;
+- (void)setTextIsVertical:(BOOL)vertical;
+- (void)setVerticalAlignment:(unsigned int)alignment;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPShapeInfo
 
-- (void)setContainedStorage:(id)a3
+- (void)setContainedStorage:(id)storage
 {
-  if (self->_containedStorage != a3)
+  if (self->_containedStorage != storage)
   {
-    if (!a3)
+    if (!storage)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeInfo setContainedStorage:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeInfo.mm"), 178, @"invalid nil value for '%s'", "inStorage"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeInfo.mm"), 178, @"invalid nil value for '%s'", "inStorage"}];
     }
 
     [(TSPObject *)self willModify];
     [(TSWPStorage *)self->_containedStorage clearBackPointerToParentInfoIfNeeded:self];
-    v7 = a3;
+    storageCopy = storage;
 
-    self->_containedStorage = a3;
+    self->_containedStorage = storage;
 
-    [a3 setParentInfo:self];
+    [storage setParentInfo:self];
   }
 }
 
-- (void)setAllowsLastLineTruncation:(BOOL)a3
+- (void)setAllowsLastLineTruncation:(BOOL)truncation
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:truncation];
 
   [(TSDStyledInfo *)self setBoxedValue:v4 forProperty:154];
 }
@@ -82,61 +82,61 @@
   result = [-[TSDShapeInfo style](self "style")];
   if (result)
   {
-    v4 = [(TSDShapeInfo *)self style];
+    style = [(TSDShapeInfo *)self style];
 
-    return [v4 intValueForProperty:155];
+    return [style intValueForProperty:155];
   }
 
   return result;
 }
 
-- (void)setMaxLineCount:(unsigned int)a3
+- (void)setMaxLineCount:(unsigned int)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&count];
 
   [(TSDStyledInfo *)self setBoxedValue:v4 forProperty:155];
 }
 
-- (void)setShrinkTextToFit:(BOOL)a3
+- (void)setShrinkTextToFit:(BOOL)fit
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:fit];
 
   [(TSDStyledInfo *)self setBoxedValue:v4 forProperty:152];
 }
 
-- (void)setTextIsVertical:(BOOL)a3
+- (void)setTextIsVertical:(BOOL)vertical
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:vertical];
 
   [(TSDStyledInfo *)self setBoxedValue:v4 forProperty:153];
 }
 
 - (unsigned)verticalAlignment
 {
-  v2 = [(TSDShapeInfo *)self style];
+  style = [(TSDShapeInfo *)self style];
 
-  return [v2 intValueForProperty:149];
+  return [style intValueForProperty:149];
 }
 
-- (void)setVerticalAlignment:(unsigned int)a3
+- (void)setVerticalAlignment:(unsigned int)alignment
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&alignment];
 
   [(TSDStyledInfo *)self setBoxedValue:v4 forProperty:149];
 }
 
 - (TSWPColumns)columns
 {
-  v2 = [(TSDShapeInfo *)self style];
+  style = [(TSDShapeInfo *)self style];
 
-  return [v2 valueForProperty:148];
+  return [style valueForProperty:148];
 }
 
 - (TSWPPadding)padding
 {
-  v2 = [(TSDShapeInfo *)self style];
+  style = [(TSDShapeInfo *)self style];
 
-  return [v2 valueForProperty:146];
+  return [style valueForProperty:146];
 }
 
 - (TSWPShapeStyle)tswpShapeStyle
@@ -147,12 +147,12 @@
   return TSUDynamicCast();
 }
 
-- (void)setContentWritingDirection:(int64_t)a3
+- (void)setContentWritingDirection:(int64_t)direction
 {
   containedStorage = self->_containedStorage;
-  v6 = [(TSWPStorage *)containedStorage range];
+  range = [(TSWPStorage *)containedStorage range];
 
-  [(TSWPStorage *)containedStorage setParagraphWritingDirection:a3 forCharRange:v6 undoTransaction:v5, 0];
+  [(TSWPStorage *)containedStorage setParagraphWritingDirection:direction forCharRange:range undoTransaction:v5, 0];
 }
 
 - (void)dealloc
@@ -165,45 +165,45 @@
   [(TSDShapeInfo *)&v3 dealloc];
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage
 {
   v11.receiver = self;
   v11.super_class = TSWPShapeInfo;
-  v8 = [(TSDShapeInfo *)&v11 initWithContext:a3 geometry:a4 style:a5 pathSource:a6];
+  v8 = [(TSDShapeInfo *)&v11 initWithContext:context geometry:geometry style:style pathSource:source];
   v9 = v8;
   if (v8)
   {
-    [(TSWPShapeInfo *)v8 setContainedStorage:a7];
+    [(TSWPShapeInfo *)v8 setContainedStorage:storage];
     [(TSWPShapeInfo *)v9 setTextUserEditable:1];
   }
 
   return v9;
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 wpStorage:(id)a6
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style wpStorage:(id)storage
 {
-  [a4 size];
+  [geometry size];
   v13 = [TSDScalarPathSource roundedRectangleWithScalar:0.0 naturalSize:v11, v12];
 
-  return [(TSWPShapeInfo *)self initWithContext:a3 geometry:a4 style:a5 pathSource:v13 wpStorage:a6];
+  return [(TSWPShapeInfo *)self initWithContext:context geometry:geometry style:style pathSource:v13 wpStorage:storage];
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source
 {
   objc_opt_class();
   v11 = TSUDynamicCast();
-  v12 = [a3 documentRoot];
-  v13 = [v11 defaultParagraphStyle];
-  if (!v13)
+  documentRoot = [context documentRoot];
+  defaultParagraphStyle = [v11 defaultParagraphStyle];
+  if (!defaultParagraphStyle)
   {
-    v14 = [objc_msgSend(a3 "documentRoot")];
+    v14 = [objc_msgSend(context "documentRoot")];
     objc_opt_class();
     [v14 presetOfKind:String index:0];
-    v13 = [TSUDynamicCast() defaultParagraphStyle];
+    defaultParagraphStyle = [TSUDynamicCast() defaultParagraphStyle];
   }
 
-  v15 = -[TSWPStorage initWithContext:string:kind:stylesheet:paragraphStyle:listStyle:section:columnStyle:]([TSWPStorage alloc], "initWithContext:string:kind:stylesheet:paragraphStyle:listStyle:section:columnStyle:", a3, 0, 3, [v12 stylesheet], v13, objc_msgSend(v13, "initialListStyle"), 0, 0);
-  v16 = [(TSWPShapeInfo *)self initWithContext:a3 geometry:a4 style:a5 pathSource:a6 wpStorage:v15];
+  v15 = -[TSWPStorage initWithContext:string:kind:stylesheet:paragraphStyle:listStyle:section:columnStyle:]([TSWPStorage alloc], "initWithContext:string:kind:stylesheet:paragraphStyle:listStyle:section:columnStyle:", context, 0, 3, [documentRoot stylesheet], defaultParagraphStyle, objc_msgSend(defaultParagraphStyle, "initialListStyle"), 0, 0);
+  v16 = [(TSWPShapeInfo *)self initWithContext:context geometry:geometry style:style pathSource:source wpStorage:v15];
 
   return v16;
 }
@@ -222,28 +222,28 @@
   return [v4 presetKind];
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  [a4 pushMappingContext:self];
+  [mapper pushMappingContext:self];
   v7.receiver = self;
   v7.super_class = TSWPShapeInfo;
-  [(TSDStyledInfo *)&v7 adoptStylesheet:a3 withMapper:a4];
-  [(TSWPStorage *)self->_containedStorage adoptStylesheet:a3 withMapper:a4];
-  [a4 popMappingContext:self];
+  [(TSDStyledInfo *)&v7 adoptStylesheet:stylesheet withMapper:mapper];
+  [(TSWPStorage *)self->_containedStorage adoptStylesheet:stylesheet withMapper:mapper];
+  [mapper popMappingContext:self];
 }
 
 - (BOOL)displaysInstructionalText
 {
-  v2 = [(TSWPShapeInfo *)self presetKind];
+  presetKind = [(TSWPShapeInfo *)self presetKind];
   v3 = String;
 
-  return [v2 isEqual:v3];
+  return [presetKind isEqual:v3];
 }
 
 - (NSString)instructionalText
 {
-  v2 = [(TSWPShapeInfo *)self presetKind];
-  if (![v2 isEqual:String])
+  presetKind = [(TSWPShapeInfo *)self presetKind];
+  if (![presetKind isEqual:String])
   {
     return &stru_287D36338;
   }
@@ -259,23 +259,23 @@
   return result;
 }
 
-- (double)pOffsetForParagraphAlignment:(CGSize)a3
+- (double)pOffsetForParagraphAlignment:(CGSize)alignment
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TSWPShapeInfo *)self containedStorage];
-  v7 = [(TSWPShapeInfo *)self textIsVertical];
+  height = alignment.height;
+  width = alignment.width;
+  containedStorage = [(TSWPShapeInfo *)self containedStorage];
+  textIsVertical = [(TSWPShapeInfo *)self textIsVertical];
   v8 = 0.0;
-  if ([(TSWPStorage *)v6 paragraphCount])
+  if ([(TSWPStorage *)containedStorage paragraphCount])
   {
-    v9 = [(TSWPStorage *)v6 paragraphStyleAtParIndex:0 effectiveRange:0];
+    v9 = [(TSWPStorage *)containedStorage paragraphStyleAtParIndex:0 effectiveRange:0];
     if (v9)
     {
       v10 = [v9 intValueForProperty:86];
       switch(v10)
       {
         case 1:
-          if (v7)
+          if (textIsVertical)
           {
             return height;
           }
@@ -286,7 +286,7 @@
           }
 
         case 2:
-          if (v7)
+          if (textIsVertical)
           {
             v13 = height;
           }
@@ -298,8 +298,8 @@
 
           return v13 * 0.5;
         case 4:
-          v11 = [(TSWPStorage *)v6 isWritingDirectionRightToLeftForParagraphAtParIndex:0];
-          if (v7)
+          v11 = [(TSWPStorage *)containedStorage isWritingDirectionRightToLeftForParagraphAtParIndex:0];
+          if (textIsVertical)
           {
             v12 = height;
           }
@@ -325,11 +325,11 @@
   return v8;
 }
 
-- (double)pOffsetForVerticalAlignment:(CGSize)a3
+- (double)pOffsetForVerticalAlignment:(CGSize)alignment
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TSWPShapeInfo *)self textIsVertical];
+  height = alignment.height;
+  width = alignment.width;
+  textIsVertical = [(TSWPShapeInfo *)self textIsVertical];
   objc_opt_class();
   [(TSDShapeInfo *)self style];
   v7 = TSUDynamicCast();
@@ -337,7 +337,7 @@
   {
 LABEL_7:
     result = 0.0;
-    if (v6)
+    if (textIsVertical)
     {
       return width;
     }
@@ -351,7 +351,7 @@ LABEL_7:
     if (v8 == 2)
     {
       result = 0.0;
-      if (!v6)
+      if (!textIsVertical)
       {
         return height;
       }
@@ -362,7 +362,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (textIsVertical)
   {
     v10 = width;
   }
@@ -375,18 +375,18 @@ LABEL_7:
   return v10 * 0.5;
 }
 
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 size:(CGSize)a4
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
-  v10 = [(TSWPShapeInfo *)self textIsVertical];
-  if ([a3 widthValid])
+  textIsVertical = [(TSWPShapeInfo *)self textIsVertical];
+  if ([geometry widthValid])
   {
-    if (([a3 heightValid] & 1) == 0)
+    if (([geometry heightValid] & 1) == 0)
     {
-      if (!v10)
+      if (!textIsVertical)
       {
         goto LABEL_9;
       }
@@ -398,11 +398,11 @@ LABEL_10:
     }
   }
 
-  else if (v10)
+  else if (textIsVertical)
   {
     [(TSWPShapeInfo *)self pOffsetForVerticalAlignment:width, height];
     v8 = v11;
-    if (([a3 heightValid] & 1) == 0)
+    if (([geometry heightValid] & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -412,7 +412,7 @@ LABEL_10:
   {
     [(TSWPShapeInfo *)self pOffsetForParagraphAlignment:width, height];
     v8 = v13;
-    if (([a3 heightValid] & 1) == 0)
+    if (([geometry heightValid] & 1) == 0)
     {
 LABEL_9:
       [(TSWPShapeInfo *)self pOffsetForVerticalAlignment:width, height];
@@ -427,18 +427,18 @@ LABEL_9:
   return result;
 }
 
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3 size:(id)a4
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry size:(id)size
 {
   height = a5.height;
   width = a5.width;
   v10 = *MEMORY[0x277CBF348];
   v11 = *(MEMORY[0x277CBF348] + 8);
-  v12 = [a4 widthValid];
-  v13 = [a4 heightValid];
+  widthValid = [size widthValid];
+  heightValid = [size heightValid];
   memset(&v19[1], 0, sizeof(CGAffineTransform));
-  if (a4)
+  if (size)
   {
-    if (v13)
+    if (heightValid)
     {
       v14 = height;
     }
@@ -448,7 +448,7 @@ LABEL_9:
       v14 = 0.0;
     }
 
-    if (v12)
+    if (widthValid)
     {
       v15 = width;
     }
@@ -458,10 +458,10 @@ LABEL_9:
       v15 = 0.0;
     }
 
-    [a4 transformBasedOnRect:{v10, v11, v15, v14}];
+    [size transformBasedOnRect:{v10, v11, v15, v14}];
   }
 
-  [(TSWPShapeInfo *)self autosizePositionOffsetForGeometry:a4 size:width, height];
+  [(TSWPShapeInfo *)self autosizePositionOffsetForGeometry:size size:width, height];
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
@@ -471,14 +471,14 @@ LABEL_9:
 
 - (CGPoint)autosizePositionOffset
 {
-  v3 = [(TSDDrawableInfo *)self geometry];
+  geometry = [(TSDDrawableInfo *)self geometry];
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
-  [(TSDInfoGeometry *)v3 size];
+  [(TSDInfoGeometry *)geometry size];
   if (self)
   {
-    [(TSWPShapeInfo *)self autosizedTransformForInfoGeometry:v3 size:?];
+    [(TSWPShapeInfo *)self autosizedTransformForInfoGeometry:geometry size:?];
   }
 
   else
@@ -488,7 +488,7 @@ LABEL_9:
     v12 = 0u;
   }
 
-  v4 = [(TSDInfoGeometry *)v3 mutableCopy];
+  v4 = [(TSDInfoGeometry *)geometry mutableCopy];
   [v4 setWidthValid:1];
   [v4 setHeightValid:1];
   v10 = 0u;
@@ -517,48 +517,48 @@ LABEL_9:
 
 - (void)fixPositionOfImportedAutosizedShape
 {
-  v3 = [(TSDDrawableInfo *)self geometry];
-  if (![(TSDInfoGeometry *)v3 widthValid]|| ![(TSDInfoGeometry *)v3 heightValid])
+  geometry = [(TSDDrawableInfo *)self geometry];
+  if (![(TSDInfoGeometry *)geometry widthValid]|| ![(TSDInfoGeometry *)geometry heightValid])
   {
     [(TSWPShapeInfo *)self autosizePositionOffset];
     v5 = v4;
-    v8 = [(TSDInfoGeometry *)v3 mutableCopy];
+    v8 = [(TSDInfoGeometry *)geometry mutableCopy];
     [v8 position];
     [v8 setPosition:{TSDAddPoints(v6, v7, v5)}];
     [(TSDShapeInfo *)self setGeometry:v8];
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
   v7.receiver = self;
   v7.super_class = TSWPShapeInfo;
   [TSDDrawableInfo willBeAddedToDocumentRoot:sel_willBeAddedToDocumentRoot_context_ context:?];
-  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] willBeAddedToDocumentRoot:a3 dolcContext:a4];
+  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] willBeAddedToDocumentRoot:root dolcContext:context];
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
   v7.receiver = self;
   v7.super_class = TSWPShapeInfo;
   [TSDDrawableInfo wasAddedToDocumentRoot:sel_wasAddedToDocumentRoot_context_ context:?];
-  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] wasAddedToDocumentRoot:a3 dolcContext:a4];
+  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] wasAddedToDocumentRoot:root dolcContext:context];
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v5.receiver = self;
   v5.super_class = TSWPShapeInfo;
   [(TSDDrawableInfo *)&v5 willBeRemovedFromDocumentRoot:?];
-  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] willBeRemovedFromDocumentRoot:a3];
+  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] willBeRemovedFromDocumentRoot:root];
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v5.receiver = self;
   v5.super_class = TSWPShapeInfo;
   [(TSDDrawableInfo *)&v5 wasRemovedFromDocumentRoot:?];
-  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] wasRemovedFromDocumentRoot:a3];
+  [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] wasRemovedFromDocumentRoot:root];
 }
 
 - (id)childEnumerator
@@ -614,14 +614,14 @@ LABEL_9:
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = TSWPShapeInfo;
   v5 = [(TSDShapeInfo *)&v8 copyWithContext:?];
   if (v5)
   {
-    v6 = [(TSWPStorage *)self->_containedStorage copyWithContext:a3];
+    v6 = [(TSWPStorage *)self->_containedStorage copyWithContext:context];
     v5[22] = v6;
     [v6 setParentInfo:v5];
     v5[24] = self->mLineHints;
@@ -642,14 +642,14 @@ LABEL_9:
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:1];
 }
 
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter
 {
-  v4 = a3;
+  localizedCopy = localized;
   v19.receiver = self;
   v19.super_class = TSWPShapeInfo;
-  v6 = [MEMORY[0x277CBEB18] arrayWithArray:{-[TSDDrawableInfo textureDeliveryStylesLocalized:animationFilter:](&v19, sel_textureDeliveryStylesLocalized_animationFilter_, a3, a4)}];
+  v6 = [MEMORY[0x277CBEB18] arrayWithArray:{-[TSDDrawableInfo textureDeliveryStylesLocalized:animationFilter:](&v19, sel_textureDeliveryStylesLocalized_animationFilter_, localized, filter)}];
   v7 = v6;
-  if (v4)
+  if (localizedCopy)
   {
     v18 = xmmword_26CA639B0;
     containedStorage = self->_containedStorage;
@@ -720,16 +720,16 @@ LABEL_9:
   [(TSDDrawableInfo *)&v12 transformableObjectAnchorPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(TSDDrawableInfo *)self geometry];
-  if (![(TSDInfoGeometry *)v7 widthValid])
+  geometry = [(TSDDrawableInfo *)self geometry];
+  if (![(TSDInfoGeometry *)geometry widthValid])
   {
-    [(TSDInfoGeometry *)v7 position];
+    [(TSDInfoGeometry *)geometry position];
     v4 = v8;
   }
 
-  if (![(TSDInfoGeometry *)v7 heightValid])
+  if (![(TSDInfoGeometry *)geometry heightValid])
   {
-    [(TSDInfoGeometry *)v7 position];
+    [(TSDInfoGeometry *)geometry position];
     v6 = v9;
   }
 
@@ -748,9 +748,9 @@ LABEL_9:
   v5 = [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] listStyleAtParIndex:0 effectiveRange:0];
   v6 = [v4 variationOfStyleMatchingStyle:v5 withNewParentStyle:{objc_msgSend(v5, "firstIdentifiedAncestor")}];
   v7 = [(TSWPStorage *)[(TSWPShapeInfo *)self containedStorage] paragraphStyleAtParIndex:0 effectiveRange:0];
-  v8 = [v7 fullPropertyMap];
-  [v8 setObject:v6 forProperty:108];
-  v9 = [v4 variationOfStyle:objc_msgSend(v7 propertyMap:{"firstIdentifiedAncestor"), v8}];
+  fullPropertyMap = [v7 fullPropertyMap];
+  [fullPropertyMap setObject:v6 forProperty:108];
+  v9 = [v4 variationOfStyle:objc_msgSend(v7 propertyMap:{"firstIdentifiedAncestor"), fullPropertyMap}];
   [v4 setIsLocked:1];
   [v3 setObject:v9 forProperty:212];
   return v3;
@@ -761,9 +761,9 @@ LABEL_9:
   objc_opt_class();
   [(TSDShapeInfo *)self pathSource];
   v3 = TSUDynamicCast();
-  v4 = [(TSWPShapeInfo *)self presetKind];
+  presetKind = [(TSWPShapeInfo *)self presetKind];
   v5 = String;
-  if (v4 != String)
+  if (presetKind != String)
   {
     if (!v3)
     {
@@ -797,19 +797,19 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)p_hasContentForRange:(_NSRange)a3
+- (BOOL)p_hasContentForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(TSWPShapeInfo *)self containedStorage];
+  length = range.length;
+  location = range.location;
+  containedStorage = [(TSWPShapeInfo *)self containedStorage];
   v6 = location + length;
   if (location >= location + length)
   {
     return 0;
   }
 
-  v7 = v5;
-  if (!IsWhitespaceCharacter([(TSWPStorage *)v5 characterAtIndex:location]))
+  v7 = containedStorage;
+  if (!IsWhitespaceCharacter([(TSWPStorage *)containedStorage characterAtIndex:location]))
   {
     return 1;
   }
@@ -833,15 +833,15 @@ LABEL_9:
   return v10 < v6;
 }
 
-- (BOOL)p_hasListLabelOrContentForParagraphIndex:(unint64_t)a3
+- (BOOL)p_hasListLabelOrContentForParagraphIndex:(unint64_t)index
 {
-  v5 = [(TSWPShapeInfo *)self containedStorage];
-  v6 = [(TSWPStorage *)v5 textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:a3];
+  containedStorage = [(TSWPShapeInfo *)self containedStorage];
+  v6 = [(TSWPStorage *)containedStorage textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:index];
   v8 = v7;
   v9 = 0;
-  if ([(TSWPStorage *)v5 paragraphHasListLabelAtCharIndex:v6]&& !v8)
+  if ([(TSWPStorage *)containedStorage paragraphHasListLabelAtCharIndex:v6]&& !v8)
   {
-    v9 = [(TSWPStorage *)v5 paragraphCount]- 1 == a3;
+    v9 = [(TSWPStorage *)containedStorage paragraphCount]- 1 == index;
   }
 
   return (v9 | [(TSWPShapeInfo *)self p_hasContentForRange:v6, v8]) & 1;
@@ -849,21 +849,21 @@ LABEL_9:
 
 - (unint64_t)p_chunkCountForByBullet
 {
-  v2 = [(TSWPShapeInfo *)self containedStorage];
+  containedStorage = [(TSWPShapeInfo *)self containedStorage];
 
-  return [(TSWPStorage *)v2 paragraphCount];
+  return [(TSWPStorage *)containedStorage paragraphCount];
 }
 
 - (unint64_t)p_chunkCountForByBulletGroup
 {
-  v2 = [(TSWPShapeInfo *)self containedStorage];
+  containedStorage = [(TSWPShapeInfo *)self containedStorage];
   v3 = 0;
-  if ([(TSWPStorage *)v2 paragraphCount])
+  if ([(TSWPStorage *)containedStorage paragraphCount])
   {
     v4 = 0;
     do
     {
-      if ([(TSWPStorage *)v2 paragraphLevelAtParIndex:v4])
+      if ([(TSWPStorage *)containedStorage paragraphLevelAtParIndex:v4])
       {
         v5 = v4 == 0;
       }
@@ -881,32 +881,32 @@ LABEL_9:
       ++v4;
     }
 
-    while (v4 < [(TSWPStorage *)v2 paragraphCount]);
+    while (v4 < [(TSWPStorage *)containedStorage paragraphCount]);
   }
 
   return v3;
 }
 
-- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)a3 byGlyphStyle:(int)a4 animationFilter:(id)a5
+- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)style byGlyphStyle:(int)glyphStyle animationFilter:(id)filter
 {
-  v8 = [(TSWPShapeInfo *)self containedStorage:a3];
-  if (a4 == 2)
+  v8 = [(TSWPShapeInfo *)self containedStorage:style];
+  if (glyphStyle == 2)
   {
     result = [(TSWPStorage *)v8 wordCount];
   }
 
-  else if (a4 == 1)
+  else if (glyphStyle == 1)
   {
     [(TSWPStorage *)v8 range];
     result = v9;
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     result = [(TSWPShapeInfo *)self p_chunkCountForByBulletGroup];
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  else if ((style & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     result = [(TSWPShapeInfo *)self p_chunkCountForByBullet];
   }
@@ -924,13 +924,13 @@ LABEL_9:
   return result;
 }
 
-- (void)processSelectedStoragesWithStatisticsController:(id)a3
+- (void)processSelectedStoragesWithStatisticsController:(id)controller
 {
-  v4 = [(TSWPShapeInfo *)self containedStorage];
-  if (v4)
+  containedStorage = [(TSWPShapeInfo *)self containedStorage];
+  if (containedStorage)
   {
 
-    [a3 processStorageForStatistics:v4 processSelection:0];
+    [controller processStorageForStatistics:containedStorage processSelection:0];
   }
 }
 

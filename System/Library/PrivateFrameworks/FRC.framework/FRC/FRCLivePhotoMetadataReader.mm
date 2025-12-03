@@ -1,11 +1,11 @@
 @interface FRCLivePhotoMetadataReader
 - (FRCLivePhotoMetadataReader)init;
-- (id)createMetadataAdaptorForAsset:(id)a3;
+- (id)createMetadataAdaptorForAsset:(id)asset;
 - (unint64_t)preParseMetadata;
-- (void)parseStillImageMetadata:(id)a3;
-- (void)printMetadata:(id)a3 withVideoFrame:(id)a4;
-- (void)printMetadataListWithVideoTimingInfo:(id)a3;
-- (void)readLivePhotoMetadataFromAsset:(id)a3;
+- (void)parseStillImageMetadata:(id)metadata;
+- (void)printMetadata:(id)metadata withVideoFrame:(id)frame;
+- (void)printMetadataListWithVideoTimingInfo:(id)info;
+- (void)readLivePhotoMetadataFromAsset:(id)asset;
 @end
 
 @implementation FRCLivePhotoMetadataReader
@@ -27,19 +27,19 @@
   v3 = MEMORY[0x277CC0898];
   self->_numberOfInterpolatedFrames = 0;
   self->_burstDropTime = *v3;
-  v4 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
-  if (v4)
+  nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
+  if (nextTimedMetadataGroup)
   {
-    v5 = v4;
+    v5 = nextTimedMetadataGroup;
     v6 = 0;
     while (1)
     {
-      v7 = [v5 items];
-      v8 = [v7 firstObject];
+      items = [v5 items];
+      firstObject = [items firstObject];
 
-      if (v8)
+      if (firstObject)
       {
-        [v8 duration];
+        [firstObject duration];
       }
 
       else
@@ -52,8 +52,8 @@
       v18 = v17;
       v17.value = 0;
       time2.value = 0;
-      v9 = [v8 value];
-      deserializeLivePhotoMetadata(v9, &v17, &time2);
+      value = [firstObject value];
+      deserializeLivePhotoMetadata(value, &v17, &time2);
 
       if (!v17.value)
       {
@@ -76,10 +76,10 @@
       free(v17.value);
       ++self->_totalFrames;
 
-      v12 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
+      nextTimedMetadataGroup2 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
 
-      v5 = v12;
-      if (!v12)
+      v5 = nextTimedMetadataGroup2;
+      if (!nextTimedMetadataGroup2)
       {
         goto LABEL_14;
       }
@@ -104,14 +104,14 @@ LABEL_14:
   return v6;
 }
 
-- (void)parseStillImageMetadata:(id)a3
+- (void)parseStillImageMetadata:(id)metadata
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   self->_stillImageTime = **&MEMORY[0x277CC0898];
   *&self->_stillImageTransformAvailable = 0;
-  v24 = v4;
-  [v4 tracksWithMediaType:*MEMORY[0x277CE5E70]];
+  v24 = metadataCopy;
+  [metadataCopy tracksWithMediaType:*MEMORY[0x277CE5E70]];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -122,7 +122,7 @@ LABEL_14:
     v6 = v5;
     v7 = *v31;
     v25 = *v31;
-    v26 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -133,8 +133,8 @@ LABEL_14:
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
-        v10 = [v9 formatDescriptions];
-        v11 = [v10 objectAtIndexedSubscript:0];
+        formatDescriptions = [v9 formatDescriptions];
+        v11 = [formatDescriptions objectAtIndexedSubscript:0];
 
         if (v11)
         {
@@ -144,30 +144,30 @@ LABEL_14:
             v13 = v9;
             v14 = [MEMORY[0x277CE6430] assetReaderTrackOutputWithTrack:v13 outputSettings:0];
             v15 = MEMORY[0x277CE6410];
-            v16 = [v13 asset];
-            v17 = [v15 assetReaderWithAsset:v16 error:0];
+            asset = [v13 asset];
+            v17 = [v15 assetReaderWithAsset:asset error:0];
 
             [v17 addOutput:v14];
             [v17 startReading];
-            v18 = [v14 copyNextSampleBuffer];
-            if (v18)
+            copyNextSampleBuffer = [v14 copyNextSampleBuffer];
+            if (copyNextSampleBuffer)
             {
-              v19 = v18;
+              copyNextSampleBuffer2 = copyNextSampleBuffer;
               v20 = 0;
               do
               {
-                if (CMSampleBufferGetNumSamples(v19))
+                if (CMSampleBufferGetNumSamples(copyNextSampleBuffer2))
                 {
-                  v21 = [objc_alloc(MEMORY[0x277CE6648]) initWithSampleBuffer:v19];
+                  v21 = [objc_alloc(MEMORY[0x277CE6648]) initWithSampleBuffer:copyNextSampleBuffer2];
 
                   v20 = v21;
                 }
 
-                CFRelease(v19);
-                v19 = [v14 copyNextSampleBuffer];
+                CFRelease(copyNextSampleBuffer2);
+                copyNextSampleBuffer2 = [v14 copyNextSampleBuffer];
               }
 
-              while (v19);
+              while (copyNextSampleBuffer2);
             }
 
             else
@@ -190,9 +190,9 @@ LABEL_14:
             }
 
             v7 = v25;
-            self = v26;
-            *&v26->_stillImageTime.value = v28;
-            v26->_stillImageTime.epoch = v29;
+            self = selfCopy;
+            *&selfCopy->_stillImageTime.value = v28;
+            selfCopy->_stillImageTime.epoch = v29;
           }
 
           if ([v12 containsObject:@"mdta/com.apple.quicktime.live-photo-still-image-transform"])
@@ -216,54 +216,54 @@ LABEL_14:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readLivePhotoMetadataFromAsset:(id)a3
+- (void)readLivePhotoMetadataFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = findIRAPs(v4);
+  assetCopy = asset;
+  v5 = findIRAPs(assetCopy);
   v6 = MEMORY[0x277CE6520];
-  v7 = [v4 metadata];
-  v8 = [v6 metadataItemsFromArray:v7 filteredByIdentifier:@"mdta/com.apple.quicktime.software"];
-  v9 = [v8 firstObject];
+  metadata = [assetCopy metadata];
+  v8 = [v6 metadataItemsFromArray:metadata filteredByIdentifier:@"mdta/com.apple.quicktime.software"];
+  firstObject = [v8 firstObject];
 
-  v10 = [v9 value];
-  [v10 floatValue];
+  value = [firstObject value];
+  [value floatValue];
   v12 = v11;
 
   v13 = MEMORY[0x277CE6520];
-  v14 = [v4 metadata];
-  v15 = [v13 metadataItemsFromArray:v14 filteredByIdentifier:@"mdta/com.apple.quicktime.model"];
-  v16 = [v15 firstObject];
+  metadata2 = [assetCopy metadata];
+  v15 = [v13 metadataItemsFromArray:metadata2 filteredByIdentifier:@"mdta/com.apple.quicktime.model"];
+  firstObject2 = [v15 firstObject];
 
   if (self->_printMetadata)
   {
     printf("OS Version : %.1f\n", v12);
-    v17 = [v16 value];
-    printf("Model      : %s\n", [v17 UTF8String]);
+    value2 = [firstObject2 value];
+    printf("Model      : %s\n", [value2 UTF8String]);
 
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     metadataList = self->_metadataList;
     self->_metadataList = v18;
   }
 
-  [(FRCLivePhotoMetadataReader *)self parseStillImageMetadata:v4];
-  v20 = [(FRCLivePhotoMetadataReader *)self createMetadataAdaptorForAsset:v4];
+  [(FRCLivePhotoMetadataReader *)self parseStillImageMetadata:assetCopy];
+  v20 = [(FRCLivePhotoMetadataReader *)self createMetadataAdaptorForAsset:assetCopy];
   metadataOutputAdaptor = self->_metadataOutputAdaptor;
   self->_metadataOutputAdaptor = v20;
 
   if (self->_metadataOutputAdaptor)
   {
-    v22 = [(FRCLivePhotoMetadataReader *)self preParseMetadata];
-    v23 = [(FRCLivePhotoMetadataReader *)self createMetadataAdaptorForAsset:v4];
+    preParseMetadata = [(FRCLivePhotoMetadataReader *)self preParseMetadata];
+    v23 = [(FRCLivePhotoMetadataReader *)self createMetadataAdaptorForAsset:assetCopy];
     v24 = self->_metadataOutputAdaptor;
     self->_metadataOutputAdaptor = v23;
 
     self->_frameIndex = 0;
     self->_recipe = 0;
     self->_numberOfDroppedFrames = 0;
-    v25 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
-    if (v25)
+    nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
+    if (nextTimedMetadataGroup)
     {
-      v26 = v25;
+      v26 = nextTimedMetadataGroup;
       while (1)
       {
         if (![v5 count])
@@ -273,11 +273,11 @@ LABEL_14:
 
         [v26 timeRange];
         time1 = v35;
-        v27 = [v5 firstObject];
-        v28 = v27;
-        if (v27)
+        firstObject3 = [v5 firstObject];
+        v28 = firstObject3;
+        if (firstObject3)
         {
-          [v27 time];
+          [firstObject3 time];
         }
 
         else
@@ -299,20 +299,20 @@ LABEL_11:
           v30 = 0;
         }
 
-        v31 = [v26 items];
-        v32 = [v31 firstObject];
+        items = [v26 items];
+        firstObject4 = [items firstObject];
 
-        if (![(FRCLivePhotoMetadataReader *)self processLivePhotoMetadataItem:v32 isIDR:v30 recipeAvailable:v22 != 0])
+        if (![(FRCLivePhotoMetadataReader *)self processLivePhotoMetadataItem:firstObject4 isIDR:v30 recipeAvailable:preParseMetadata != 0])
         {
           break;
         }
 
         ++self->_frameIndex;
 
-        v33 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
+        nextTimedMetadataGroup2 = [(AVAssetReaderOutputMetadataAdaptor *)self->_metadataOutputAdaptor nextTimedMetadataGroup];
 
-        v26 = v33;
-        if (!v33)
+        v26 = nextTimedMetadataGroup2;
+        if (!nextTimedMetadataGroup2)
         {
           goto LABEL_15;
         }
@@ -327,11 +327,11 @@ LABEL_15:
   }
 }
 
-- (id)createMetadataAdaptorForAsset:(id)a3
+- (id)createMetadataAdaptorForAsset:(id)asset
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 tracksWithMediaType:*MEMORY[0x277CE5E70]];
+  assetCopy = asset;
+  v4 = [assetCopy tracksWithMediaType:*MEMORY[0x277CE5E70]];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -356,8 +356,8 @@ LABEL_15:
       }
 
       v11 = *(*(&v23 + 1) + 8 * i);
-      v12 = [v11 formatDescriptions];
-      v13 = [v12 objectAtIndexedSubscript:0];
+      formatDescriptions = [v11 formatDescriptions];
+      v13 = [formatDescriptions objectAtIndexedSubscript:0];
 
       if (v13)
       {
@@ -378,8 +378,8 @@ LABEL_15:
   if (v7)
   {
     v16 = objc_alloc(MEMORY[0x277CE6410]);
-    v17 = [v7 asset];
-    v18 = [v16 initWithAsset:v17 error:0];
+    asset = [v7 asset];
+    v18 = [v16 initWithAsset:asset error:0];
 
     v19 = [MEMORY[0x277CE6430] assetReaderTrackOutputWithTrack:v7 outputSettings:0];
     if ([v18 canAddOutput:v19])
@@ -408,15 +408,15 @@ LABEL_15:
   return v20;
 }
 
-- (void)printMetadata:(id)a3 withVideoFrame:(id)a4
+- (void)printMetadata:(id)metadata withVideoFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  frameCopy = frame;
   memset(&v16, 0, sizeof(v16));
-  v8 = [v6 ptsInNanos] / 1000000000.0;
-  if (v6)
+  v8 = [metadataCopy ptsInNanos] / 1000000000.0;
+  if (metadataCopy)
   {
-    [v6 time];
+    [metadataCopy time];
     v9 = v14;
   }
 
@@ -429,17 +429,17 @@ LABEL_15:
   }
 
   CMTimeMakeWithSeconds(&v16, v8, v9);
-  if (![v6 frameIndex])
+  if (![metadataCopy frameIndex])
   {
-    self->_initialOriginalPTS = [v6 ptsInNanos];
+    self->_initialOriginalPTS = [metadataCopy ptsInNanos];
     self->_initialTime = v16;
   }
 
   if (self->_verbose)
   {
-    if (v7)
+    if (frameCopy)
     {
-      [v7 presentationTimeStamp];
+      [frameCopy presentationTimeStamp];
       printf("Video: %4lld");
     }
 
@@ -449,13 +449,13 @@ LABEL_15:
     }
   }
 
-  if (v6)
+  if (metadataCopy)
   {
     if (self->_verbose)
     {
-      if (v7)
+      if (frameCopy)
       {
-        [v7 presentationTimeStamp];
+        [frameCopy presentationTimeStamp];
       }
 
       else
@@ -463,7 +463,7 @@ LABEL_15:
         memset(&time1, 0, sizeof(time1));
       }
 
-      [v6 time];
+      [metadataCopy time];
       if (CMTimeCompare(&time1, &time2))
       {
         printf(" != ");
@@ -475,31 +475,31 @@ LABEL_15:
         printf("    ");
       }
 
-      [v6 time];
+      [metadataCopy time];
       printf("Metadata: %4lld ", v10);
-      [v6 ptsInNanos];
-      [v6 originalPTSInNanos];
+      [metadataCopy ptsInNanos];
+      [metadataCopy originalPTSInNanos];
       printf("\tPTSinNanos: %-15lld \tOriginalPTSinNanos: %-15lld ");
     }
 
     else
     {
-      [v6 time];
+      [metadataCopy time];
       printf("Time %4lld:");
     }
 
-    printf("\tinterpolated:%d", [v6 interpolated]);
-    if ([v6 sequenceAdjusterRecipe])
+    printf("\tinterpolated:%d", [metadataCopy interpolated]);
+    if ([metadataCopy sequenceAdjusterRecipe])
     {
-      printf("\trecipe:%ld  displacement:%ld", [v6 sequenceAdjusterRecipe], objc_msgSend(v6, "sequenceAdjusterDisplacement"));
+      printf("\trecipe:%ld  displacement:%ld", [metadataCopy sequenceAdjusterRecipe], objc_msgSend(metadataCopy, "sequenceAdjusterDisplacement"));
     }
 
-    if ([v6 noRecipeGap])
+    if ([metadataCopy noRecipeGap])
     {
       printf("\t*");
     }
 
-    if ([v6 isIDR])
+    if ([metadataCopy isIDR])
     {
       printf("\tIDR");
     }
@@ -508,14 +508,14 @@ LABEL_15:
   putchar(10);
 }
 
-- (void)printMetadataListWithVideoTimingInfo:(id)a3
+- (void)printMetadataListWithVideoTimingInfo:(id)info
 {
-  v12 = a3;
+  infoCopy = info;
   if ([(NSMutableArray *)self->_metadataList count])
   {
     v4 = [(NSMutableArray *)self->_metadataList count];
-    v5 = [(NSMutableArray *)v12 count];
-    metadataList = v12;
+    v5 = [(NSMutableArray *)infoCopy count];
+    metadataList = infoCopy;
     if (v4 > v5)
     {
       metadataList = self->_metadataList;
@@ -528,14 +528,14 @@ LABEL_15:
       for (i = 0; i != v8; ++i)
       {
         printf("[%3ld] ", i);
-        if (i >= [(NSMutableArray *)v12 count])
+        if (i >= [(NSMutableArray *)infoCopy count])
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = [(NSMutableArray *)v12 objectAtIndex:i];
+          v10 = [(NSMutableArray *)infoCopy objectAtIndex:i];
         }
 
         if (i >= [(NSMutableArray *)self->_metadataList count])

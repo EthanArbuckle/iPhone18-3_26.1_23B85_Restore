@@ -1,36 +1,36 @@
 @interface DAContainerProvider
-+ (id)providerWithAddressBook:(void *)a3;
-+ (id)providerWithContactStore:(id)a3;
-- (BOOL)setLastSyncDateForContainer:(id)a3;
++ (id)providerWithAddressBook:(void *)book;
++ (id)providerWithContactStore:(id)store;
+- (BOOL)setLastSyncDateForContainer:(id)container;
 - (id)allContainers;
-- (id)allContainersForAccountWithExternalIdentifier:(id)a3;
-- (id)containerWithExternalIdentifier:(id)a3 forAccountWithExternalIdentifier:(id)a4;
-- (id)createNewContainerWithType:(int)a3 name:(id)a4 externalIdentifier:(id)a5 constraintsPath:(id)a6 syncData:(id)a7 contentReadonly:(BOOL)a8 propertiesReadonly:(BOOL)a9 forAccount:(id)a10;
-- (void)mergeAllRecordsIntoContainer:(id)a3 shouldInsertChangeHistoryRecords:(BOOL)a4;
-- (void)setDefaultContainer:(id)a3 withLocalDBHelper:(id)a4 onlyIfNotSet:(BOOL)a5;
+- (id)allContainersForAccountWithExternalIdentifier:(id)identifier;
+- (id)containerWithExternalIdentifier:(id)identifier forAccountWithExternalIdentifier:(id)externalIdentifier;
+- (id)createNewContainerWithType:(int)type name:(id)name externalIdentifier:(id)identifier constraintsPath:(id)path syncData:(id)data contentReadonly:(BOOL)readonly propertiesReadonly:(BOOL)propertiesReadonly forAccount:(id)self0;
+- (void)mergeAllRecordsIntoContainer:(id)container shouldInsertChangeHistoryRecords:(BOOL)records;
+- (void)setDefaultContainer:(id)container withLocalDBHelper:(id)helper onlyIfNotSet:(BOOL)set;
 @end
 
 @implementation DAContainerProvider
 
-+ (id)providerWithContactStore:(id)a3
++ (id)providerWithContactStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_DAContactsContainerProvider alloc] initWithContactStore:v3];
+  storeCopy = store;
+  v4 = [[_DAContactsContainerProvider alloc] initWithContactStore:storeCopy];
 
   return v4;
 }
 
-+ (id)providerWithAddressBook:(void *)a3
++ (id)providerWithAddressBook:(void *)book
 {
-  v3 = [[_DAABLegacyContainerProvider alloc] initWithAddressBook:a3];
+  v3 = [[_DAABLegacyContainerProvider alloc] initWithAddressBook:book];
 
   return v3;
 }
 
-- (id)containerWithExternalIdentifier:(id)a3 forAccountWithExternalIdentifier:(id)a4
+- (id)containerWithExternalIdentifier:(id)identifier forAccountWithExternalIdentifier:(id)externalIdentifier
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  externalIdentifierCopy = externalIdentifier;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"containerWithExternalIdentifier:forAccountWithExternalIdentifier is abstract" userInfo:0];
   objc_exception_throw(v7);
 }
@@ -41,42 +41,42 @@
   objc_exception_throw(v2);
 }
 
-- (id)allContainersForAccountWithExternalIdentifier:(id)a3
+- (id)allContainersForAccountWithExternalIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"allContainersForAccountWithExternalIdentifier is abstract" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (id)createNewContainerWithType:(int)a3 name:(id)a4 externalIdentifier:(id)a5 constraintsPath:(id)a6 syncData:(id)a7 contentReadonly:(BOOL)a8 propertiesReadonly:(BOOL)a9 forAccount:(id)a10
+- (id)createNewContainerWithType:(int)type name:(id)name externalIdentifier:(id)identifier constraintsPath:(id)path syncData:(id)data contentReadonly:(BOOL)readonly propertiesReadonly:(BOOL)propertiesReadonly forAccount:(id)self0
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a10;
+  nameCopy = name;
+  identifierCopy = identifier;
+  pathCopy = path;
+  dataCopy = data;
+  accountCopy = account;
   v18 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"createNewContainerWithType is abstract" userInfo:0];
   objc_exception_throw(v18);
 }
 
-- (void)setDefaultContainer:(id)a3 withLocalDBHelper:(id)a4 onlyIfNotSet:(BOOL)a5
+- (void)setDefaultContainer:(id)container withLocalDBHelper:(id)helper onlyIfNotSet:(BOOL)set
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  helperCopy = helper;
   v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"setDefaultContainer:onlyIfNotSet: is abstract" userInfo:0];
   objc_exception_throw(v8);
 }
 
-- (BOOL)setLastSyncDateForContainer:(id)a3
+- (BOOL)setLastSyncDateForContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"setLastSyncDateForContainer: is abstract" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (void)mergeAllRecordsIntoContainer:(id)a3 shouldInsertChangeHistoryRecords:(BOOL)a4
+- (void)mergeAllRecordsIntoContainer:(id)container shouldInsertChangeHistoryRecords:(BOOL)records
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"mergeAllRecordIntoContainer: is abstract" userInfo:0];
   objc_exception_throw(v5);
 }

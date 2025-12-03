@@ -1,8 +1,8 @@
 @interface CrashPatternMatchResult
-- (BOOL)needsUrgentSubmitWithReport:(id)a3;
+- (BOOL)needsUrgentSubmitWithReport:(id)report;
 - (NSString)errorMessage;
 - (_TtC11ReportCrash23CrashPatternMatchResult)init;
-- (void)setErrorMessage:(id)a3;
+- (void)setErrorMessage:(id)message;
 @end
 
 @implementation CrashPatternMatchResult
@@ -25,9 +25,9 @@
   return v4;
 }
 
-- (void)setErrorMessage:(id)a3
+- (void)setErrorMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -44,10 +44,10 @@
   v6[1] = v5;
 }
 
-- (BOOL)needsUrgentSubmitWithReport:(id)a3
+- (BOOL)needsUrgentSubmitWithReport:(id)report
 {
-  v4 = a3;
-  v5 = self;
+  reportCopy = report;
+  selfCopy = self;
   LOBYTE(self) = sub_10002AB34();
 
   return self & 1;

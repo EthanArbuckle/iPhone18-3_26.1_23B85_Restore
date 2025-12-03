@@ -1,32 +1,32 @@
 @interface LKTFlowGPU
-+ (void)_computeScalingFactor:(id)a1 dst_tex:(SEL)a2 scale_xy_inv:(id)a3 coeff:(id)a4;
++ (void)_computeScalingFactor:(id)factor dst_tex:(SEL)dst_tex scale_xy_inv:(id)scale_xy_inv coeff:(id)coeff;
 - (CGSize)aux_size;
 - (CGSize)ref_size;
-- (id)newBufferWithPixelFormat:(unint64_t)a3 width:(int)a4 data:(const void *)a5;
-- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
-- (int)_computeFeaturesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
+- (id)newBufferWithPixelFormat:(unint64_t)format width:(int)width data:(const void *)data;
+- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
+- (int)_computeFeaturesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
 - (int)_computeOpticalFlow;
 - (int)_computeOpticalFlowBidirectional;
-- (int)_createImagePyramidWithCommandBuffer:(id)a3 in_tex:(id)a4 I_idx:(int)a5;
-- (int)_doNLRegularizationWithCommandBuffer:(id)a3 in_uv_tex:(id)a4 join_tex:(id)a5 w_tex:(id)a6 out_uv_tex:(id)a7;
-- (int)_doSolverWithCommandBuffer:(id)a3 scale:(int)a4 in_uv_tex:(id)a5 in_G0_tex:(id)a6 in_G1_tex:(id)a7 in_C0_tex:(id)a8 in_C1_tex:(id)a9 out_uv_tex:(id)a10 out_w_tex:(id)a11;
-- (int)_downscale2XWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5;
-- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)a3 in_uv0_tex:(id)a4 in_uv1_tex:(id)a5 out_uv_tex:(id)a6;
-- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)a3 in_uv_fwd_tex:(id)a4 in_uv_bwd_tex:(id)a5 out_kpt_buf:(id)a6 block_size:(int)a7 bidirectional_error:(float)a8 out_num_keypoints:(unsigned __int16 *)a9;
+- (int)_createImagePyramidWithCommandBuffer:(id)buffer in_tex:(id)in_tex I_idx:(int)i_idx;
+- (int)_doNLRegularizationWithCommandBuffer:(id)buffer in_uv_tex:(id)in_uv_tex join_tex:(id)join_tex w_tex:(id)w_tex out_uv_tex:(id)out_uv_tex;
+- (int)_doSolverWithCommandBuffer:(id)buffer scale:(int)scale in_uv_tex:(id)in_uv_tex in_G0_tex:(id)g0_tex in_G1_tex:(id)g1_tex in_C0_tex:(id)c0_tex in_C1_tex:(id)c1_tex out_uv_tex:(id)self0 out_w_tex:(id)self1;
+- (int)_downscale2XWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex;
+- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)buffer in_uv0_tex:(id)in_uv0_tex in_uv1_tex:(id)in_uv1_tex out_uv_tex:(id)out_uv_tex;
+- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)buffer in_uv_fwd_tex:(id)in_uv_fwd_tex in_uv_bwd_tex:(id)in_uv_bwd_tex out_kpt_buf:(id)out_kpt_buf block_size:(int)block_size bidirectional_error:(float)bidirectional_error out_num_keypoints:(unsigned __int16 *)out_num_keypoints;
 - (int)_setupBuffer;
-- (int)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4;
-- (int)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4;
-- (int)estimateFlowFromTexReference:(id)a3 target:(id)a4;
-- (int)estimateFlowStream:(__CVBuffer *)a3;
-- (int)estimateFlowStreamTex:(id)a3;
-- (int)setOutputTexUVForward:(id)a3 backward:(id)a4;
-- (int)setOutputUVForward:(__CVBuffer *)a3 backward:(__CVBuffer *)a4;
-- (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3;
-- (void)_initMemory:(int)a3 height:(int)a4 nscales:(int)a5;
+- (int)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex;
+- (int)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target;
+- (int)estimateFlowFromTexReference:(id)reference target:(id)target;
+- (int)estimateFlowStream:(__CVBuffer *)stream;
+- (int)estimateFlowStreamTex:(id)tex;
+- (int)setOutputTexUVForward:(id)forward backward:(id)backward;
+- (int)setOutputUVForward:(__CVBuffer *)forward backward:(__CVBuffer *)backward;
+- (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format;
+- (void)_initMemory:(int)memory height:(int)height nscales:(int)nscales;
 - (void)_setDefaultParameters;
 - (void)_setupPipelines;
 - (void)dealloc;
-- (void)setPreset:(int64_t)a3;
+- (void)setPreset:(int64_t)preset;
 - (void)waitUntilCompleted;
 @end
 
@@ -34,7 +34,7 @@
 
 - (void)_setupPipelines
 {
-  v2 = self;
+  selfCopy = self;
   v3 = 0;
   computePipelines = self->_computePipelines;
   v5 = &WritePixelBufferToFile_ptr;
@@ -44,16 +44,16 @@
   do
   {
     v9 = [objc_alloc(v5[92]) initWithUTF8String:v6[v3]];
-    v10 = [(FigMetalContext *)v2->_mtlContext computePipelineStateFor:v9 constants:0];
+    v10 = [(FigMetalContext *)selfCopy->_mtlContext computePipelineStateFor:v9 constants:0];
     objc_storeStrong(computePipelines, v10);
-    v11 = [v10 threadExecutionWidth];
-    maxThreadExecutionWidth = v2->_maxThreadExecutionWidth;
-    if (v11 > maxThreadExecutionWidth)
+    threadExecutionWidth = [v10 threadExecutionWidth];
+    maxThreadExecutionWidth = selfCopy->_maxThreadExecutionWidth;
+    if (threadExecutionWidth > maxThreadExecutionWidth)
     {
       maxThreadExecutionWidth = [v10 threadExecutionWidth];
     }
 
-    v2->_maxThreadExecutionWidth = maxThreadExecutionWidth;
+    selfCopy->_maxThreadExecutionWidth = maxThreadExecutionWidth;
     if (v7[13].superclass != -1)
     {
       sub_F844();
@@ -63,24 +63,24 @@
     if (os_log_type_enabled(isa, OS_LOG_TYPE_DEFAULT))
     {
       log = isa;
-      v14 = v2;
+      v14 = selfCopy;
       v15 = v8;
       v16 = v7;
       v17 = v6;
       v18 = v5;
-      v19 = [v10 threadExecutionWidth];
-      v20 = [v10 maxTotalThreadsPerThreadgroup];
+      threadExecutionWidth2 = [v10 threadExecutionWidth];
+      maxTotalThreadsPerThreadgroup = [v10 maxTotalThreadsPerThreadgroup];
       *buf = 138412802;
       v23 = v9;
       v24 = 1024;
-      v25 = v19;
+      v25 = threadExecutionWidth2;
       v5 = v18;
       v6 = v17;
       v7 = v16;
       v8 = v15;
-      v2 = v14;
+      selfCopy = v14;
       v26 = 1024;
-      v27 = v20;
+      v27 = maxTotalThreadsPerThreadgroup;
       _os_log_impl(&dword_0, log, OS_LOG_TYPE_DEFAULT, "%@::threadExecutionWidth = %d, maxTotalThreadsPerThreadgroup = %d", buf, 0x18u);
     }
 
@@ -138,8 +138,8 @@
             while (1)
             {
               v24 = v23;
-              v25 = [(FigMetalContext *)self->_mtlContext device];
-              v26 = [v25 newBufferWithLength:8 * v20 options:0];
+              device = [(FigMetalContext *)self->_mtlContext device];
+              v26 = [device newBufferWithLength:8 * v20 options:0];
               v27 = Adiagb_buf[v19];
               Adiagb_buf[v19] = v26;
 
@@ -148,8 +148,8 @@
                 break;
               }
 
-              v28 = [(FigMetalContext *)self->_mtlContext device];
-              v29 = [v28 newBufferWithLength:2 * v20 options:0];
+              device2 = [(FigMetalContext *)self->_mtlContext device];
+              v29 = [device2 newBufferWithLength:2 * v20 options:0];
               v30 = Ixy_buf[v19];
               Ixy_buf[v19] = v29;
 
@@ -178,8 +178,8 @@
               v19 = 1;
               if ((v24 & 1) == 0)
               {
-                v39 = [(FigMetalContext *)self->_mtlContext device];
-                v40 = [v39 newBufferWithLength:4 * v20 options:0];
+                device3 = [(FigMetalContext *)self->_mtlContext device];
+                v40 = [device3 newBufferWithLength:4 * v20 options:0];
                 idt_buf = self->_idt_buf;
                 self->_idt_buf = v40;
 
@@ -191,9 +191,9 @@
                 if (self->_nscales < 1)
                 {
 LABEL_24:
-                  v109 = [(LKTFlowGPU *)self newBufferWithPixelFormat:115 width:0x8000 data:0, v112];
+                  v112 = [(LKTFlowGPU *)self newBufferWithPixelFormat:115 width:0x8000 data:0, v112];
                   kpt_buf = self->_kpt_buf;
-                  self->_kpt_buf = v109;
+                  self->_kpt_buf = v112;
 
                   return 0;
                 }
@@ -302,8 +302,8 @@ LABEL_15:
                           {
                             v117 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:v119 height:v123 mipmapped:0];
                             [v117 setUsage:19];
-                            v99 = [(FigMetalContext *)self->_mtlContext device];
-                            v100 = [v99 newTextureWithDescriptor:v117];
+                            device4 = [(FigMetalContext *)self->_mtlContext device];
+                            v100 = [device4 newTextureWithDescriptor:v117];
                             v101 = (*I_tex)[v42];
                             (*I_tex)[v42] = v100;
 
@@ -314,8 +314,8 @@ LABEL_15:
                             v124 = sub_18E8(v119 % 2).n64_u64[0];
                             v120 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:v118 height:v121 mipmapped:0];
                             [v120 setUsage:19];
-                            v104 = [(FigMetalContext *)self->_mtlContext device];
-                            v105 = [v104 newTextureWithDescriptor:v120];
+                            device5 = [(FigMetalContext *)self->_mtlContext device];
+                            v105 = [device5 newTextureWithDescriptor:v120];
                             v106 = v113[v42];
                             v113[v42] = v105;
 
@@ -369,17 +369,17 @@ LABEL_15:
 
 - (void)waitUntilCompleted
 {
-  v2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v2 setLabel:@"LKT:waitUntilCompleted"];
-  [v2 commit];
-  [v2 waitUntilCompleted];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"LKT:waitUntilCompleted"];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
-- (void)setPreset:(int64_t)a3
+- (void)setPreset:(int64_t)preset
 {
-  if (a3 > 1)
+  if (preset > 1)
   {
-    switch(a3)
+    switch(preset)
     {
       case 2:
         v5 = 3;
@@ -402,9 +402,9 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (preset)
   {
-    if (a3 != 1)
+    if (preset != 1)
     {
       goto LABEL_15;
     }
@@ -419,15 +419,15 @@ LABEL_11:
   [(LKTFlowGPU *)self _setDefaultParameters];
 }
 
-- (int)setOutputTexUVForward:(id)a3 backward:(id)a4
+- (int)setOutputTexUVForward:(id)forward backward:(id)backward
 {
-  v7 = a3;
-  v8 = a4;
+  forwardCopy = forward;
+  backwardCopy = backward;
   p_uv_fwd_tex_user_ref = &self->_uv_fwd_tex_user_ref;
-  if (v7)
+  if (forwardCopy)
   {
-    objc_storeStrong(p_uv_fwd_tex_user_ref, a3);
-    objc_storeStrong(&self->_uv_bwd_tex_user_ref, a4);
+    objc_storeStrong(p_uv_fwd_tex_user_ref, forward);
+    objc_storeStrong(&self->_uv_bwd_tex_user_ref, backward);
     self->_isValid = 1;
   }
 
@@ -440,23 +440,23 @@ LABEL_11:
   return 0;
 }
 
-- (int)estimateFlowFromTexReference:(id)a3 target:(id)a4
+- (int)estimateFlowFromTexReference:(id)reference target:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  targetCopy = target;
   if (self->_isValid && !self->_streamFrameCount)
   {
-    v10 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [v10 setLabel:@"LKT::Pyramid"];
-    [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:v10 uv_tex:self->_uv_bwd_pxbuf[self->_nscales + 1]];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [commandBuffer setLabel:@"LKT::Pyramid"];
+    [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_bwd_pxbuf[self->_nscales + 1]];
     if ([(LKTFlowGPU *)self isBidirectional])
     {
-      [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:v10 uv_tex:self->_uv_fwd_tex[1][self->_nscales + 9]];
+      [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_fwd_tex[1][self->_nscales + 9]];
     }
 
-    [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:v10 in_tex:v6 I_idx:0];
-    [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:v10 in_tex:v7 I_idx:1];
-    [v10 commit];
+    [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_tex:referenceCopy I_idx:0];
+    [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_tex:targetCopy I_idx:1];
+    [commandBuffer commit];
 
     *&self->_current_frame_index = 0;
     if ([(LKTFlowGPU *)self isBidirectional])
@@ -480,7 +480,7 @@ LABEL_11:
   return v8;
 }
 
-- (int)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4
+- (int)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target
 {
   if (!self->_isValid)
   {
@@ -496,17 +496,17 @@ LABEL_11:
     return -12782;
   }
 
-  v14 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v14 setLabel:@"LKT::Pyramid"];
-  [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:v14 uv_tex:self->_uv_bwd_pxbuf[self->_nscales + 1]];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"LKT::Pyramid"];
+  [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_bwd_pxbuf[self->_nscales + 1]];
   if ([(LKTFlowGPU *)self isBidirectional])
   {
-    [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:v14 uv_tex:self->_uv_fwd_tex[1][self->_nscales + 9]];
+    [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_fwd_tex[1][self->_nscales + 9]];
   }
 
-  [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:v14 in_pixelbuf:a3 I_idx:0, v15, v16, v17, v18, v8, v9];
-  [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:v14 in_pixelbuf:a4 I_idx:1];
-  [v14 commit];
+  [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_pixelbuf:reference I_idx:0, v15, v16, v17, v18, v8, v9];
+  [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_pixelbuf:target I_idx:1];
+  [commandBuffer commit];
 
   *&self->_current_frame_index = 0;
   if ([(LKTFlowGPU *)self isBidirectional])
@@ -522,30 +522,30 @@ LABEL_11:
   return 0;
 }
 
-- (int)estimateFlowStream:(__CVBuffer *)a3
+- (int)estimateFlowStream:(__CVBuffer *)stream
 {
-  v3 = self;
-  v4 = [(FigMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:70 usage:7 plane:0];
-  LODWORD(v3) = [(LKTFlowGPU *)v3 estimateFlowStreamTex:v4];
+  selfCopy = self;
+  v4 = [(FigMetalContext *)self->_mtlContext bindPixelBufferToMTL2DTexture:stream pixelFormat:70 usage:7 plane:0];
+  LODWORD(selfCopy) = [(LKTFlowGPU *)selfCopy estimateFlowStreamTex:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (int)estimateFlowStreamTex:(id)a3
+- (int)estimateFlowStreamTex:(id)tex
 {
-  v4 = a3;
+  texCopy = tex;
   if (self->_isValid)
   {
-    v5 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [v5 setLabel:@"LKT::Pyramid"];
-    [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:v5 uv_tex:self->_uv_bwd_pxbuf[self->_nscales + 1]];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [commandBuffer setLabel:@"LKT::Pyramid"];
+    [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_bwd_pxbuf[self->_nscales + 1]];
     if ([(LKTFlowGPU *)self isBidirectional])
     {
-      [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:v5 uv_tex:self->_uv_fwd_tex[1][self->_nscales + 9]];
+      [(LKTFlowGPU *)self _zeroFlowWithCommandBuffer:commandBuffer uv_tex:self->_uv_fwd_tex[1][self->_nscales + 9]];
     }
 
-    [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:v5 in_tex:v4 I_idx:self->_current_frame_index];
-    [v5 commit];
+    [(LKTFlowGPU *)self _createImagePyramidWithCommandBuffer:commandBuffer in_tex:texCopy I_idx:self->_current_frame_index];
+    [commandBuffer commit];
 
     self->_current_frame_index ^= 1u;
     if (self->_streamFrameCount >= 1)
@@ -573,18 +573,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)_initMemory:(int)a3 height:(int)a4 nscales:(int)a5
+- (void)_initMemory:(int)memory height:(int)height nscales:(int)nscales
 {
   v6 = 0;
   self->_isValid = 0;
-  if (a3 >= 8 && a4 >= 8)
+  if (memory >= 8 && height >= 8)
   {
     v6 = 0;
-    v7 = a4;
-    v8 = a3;
+    heightCopy = height;
+    memoryCopy = memory;
     do
     {
-      v9 = (v8 & 1) + v8;
+      v9 = (memoryCopy & 1) + memoryCopy;
       if (v9 / 2 >= 0)
       {
         v10 = (v9 / 2) & 1;
@@ -595,7 +595,7 @@ LABEL_11:
         v10 = -((v9 / 2) & 1);
       }
 
-      v11 = (v7 & 1) + v7;
+      v11 = (heightCopy & 1) + heightCopy;
       if (v11 / 2 >= 0)
       {
         v12 = (v11 / 2) & 1;
@@ -607,30 +607,30 @@ LABEL_11:
       }
 
       v13 = v9 + 2 * v10 + 1;
-      v8 = v13 >> 1;
+      memoryCopy = v13 >> 1;
       v14 = v11 + 2 * v12 + 1;
-      v7 = v14 >> 1;
+      heightCopy = v14 >> 1;
       ++v6;
     }
 
     while (v13 >= 16 && v14 > 15);
   }
 
-  self->_ref_size.width = a3;
-  self->_ref_size.height = a4;
-  self->_aux_size.width = a3;
-  self->_aux_size.height = a4;
-  if (a5 >= 0)
+  self->_ref_size.width = memory;
+  self->_ref_size.height = height;
+  self->_aux_size.width = memory;
+  self->_aux_size.height = height;
+  if (nscales >= 0)
   {
-    v16 = a5;
+    nscalesCopy = nscales;
   }
 
   else
   {
-    v16 = v6;
+    nscalesCopy = v6;
   }
 
-  self->_nscales = v16;
+  self->_nscales = nscalesCopy;
   self->_maxThreadExecutionWidth = 0;
   self->_w_pxbuf = 0;
   *&self->_G0_pxbuf = 0u;
@@ -655,7 +655,7 @@ LABEL_11:
   v3 = (nscales - 1);
   if (nscales >= 1)
   {
-    v5 = 0;
+    commandBuffer = 0;
     v6 = 0;
     I_tex = self->_I_tex;
     G0_tex = self->_G0_tex;
@@ -670,18 +670,18 @@ LABEL_11:
     v8 = nscales - 1;
     do
     {
-      v9 = v5;
+      v9 = commandBuffer;
       v10 = I_tex[self->_current_frame_index][v3];
       v11 = I_tex[self->_current_frame_index ^ 1][v3];
-      v5 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
       v12 = [NSString stringWithFormat:@"LKT:ComputeFlow level %d", v3];
-      [v5 setLabel:v12];
+      [commandBuffer setLabel:v12];
 
-      [(LKTFlowGPU *)self _computeFeaturesWithCommandBuffer:v5 in_tex:v10 out_tex:G0_tex[v3]];
-      [(LKTFlowGPU *)self _computeFeaturesWithCommandBuffer:v5 in_tex:v11 out_tex:G1_tex[v3]];
-      [(LKTFlowGPU *)self _computeFeaturesDerivativesWithCommandBuffer:v5 in_tex:G0_tex[v3] out_tex:C0_tex[v3]];
-      [(LKTFlowGPU *)self _computeFeaturesDerivativesWithCommandBuffer:v5 in_tex:G1_tex[v3] out_tex:C1_tex[v3]];
+      [(LKTFlowGPU *)self _computeFeaturesWithCommandBuffer:commandBuffer in_tex:v10 out_tex:G0_tex[v3]];
+      [(LKTFlowGPU *)self _computeFeaturesWithCommandBuffer:commandBuffer in_tex:v11 out_tex:G1_tex[v3]];
+      [(LKTFlowGPU *)self _computeFeaturesDerivativesWithCommandBuffer:commandBuffer in_tex:G0_tex[v3] out_tex:C0_tex[v3]];
+      [(LKTFlowGPU *)self _computeFeaturesDerivativesWithCommandBuffer:commandBuffer in_tex:G1_tex[v3] out_tex:C1_tex[v3]];
       nwarpings = self->_nwarpings;
       if (nwarpings < 1)
       {
@@ -710,7 +710,7 @@ LABEL_11:
             v15 = v19;
           }
 
-          [(LKTFlowGPU *)self _doSolverWithCommandBuffer:v5 scale:v3 in_uv_tex:uv_fwd_tex[v6][v8] in_G0_tex:G0_tex[v3] in_G1_tex:G1_tex[v3] in_C0_tex:C0_tex[v3] in_C1_tex:C1_tex[v3] out_uv_tex:v18 out_w_tex:v15];
+          [(LKTFlowGPU *)self _doSolverWithCommandBuffer:commandBuffer scale:v3 in_uv_tex:uv_fwd_tex[v6][v8] in_G0_tex:G0_tex[v3] in_G1_tex:G1_tex[v3] in_C0_tex:C0_tex[v3] in_C1_tex:C1_tex[v3] out_uv_tex:v18 out_w_tex:v15];
           v6 ^= 1uLL;
 
           nwarpings = self->_nwarpings;
@@ -732,11 +732,11 @@ LABEL_11:
           v20 = p_uv_fwd_tex_user_ref;
         }
 
-        [(LKTFlowGPU *)self _doNLRegularizationWithCommandBuffer:v5 in_uv_tex:uv_fwd_u32_alias_tex[v6][v3] join_tex:I_u32_alias_tex[self->_current_frame_index][v3] w_tex:v15 out_uv_tex:*v20];
+        [(LKTFlowGPU *)self _doNLRegularizationWithCommandBuffer:commandBuffer in_uv_tex:uv_fwd_u32_alias_tex[v6][v3] join_tex:I_u32_alias_tex[self->_current_frame_index][v3] w_tex:v15 out_uv_tex:*v20];
         v6 ^= 1uLL;
       }
 
-      [v5 commit];
+      [commandBuffer commit];
     }
 
     while (v3-- > 0);
@@ -745,56 +745,56 @@ LABEL_11:
   return 0;
 }
 
-- (int)_createImagePyramidWithCommandBuffer:(id)a3 in_tex:(id)a4 I_idx:(int)a5
+- (int)_createImagePyramidWithCommandBuffer:(id)buffer in_tex:(id)in_tex I_idx:(int)i_idx
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  bufferCopy = buffer;
+  in_texCopy = in_tex;
+  v10 = in_texCopy;
   if (self->_needConversionBGRA2YUVA)
   {
-    v11 = [v8 computeCommandEncoder];
-    [v11 setComputePipelineState:self->_computePipelines[0]];
-    [v11 setTexture:v10 atIndex:0];
-    [v11 setTexture:self->_I_tex[a5][0] atIndex:1];
-    v12 = [(MTLComputePipelineState *)self->_computePipelines[0] threadExecutionWidth];
-    v13 = [(MTLComputePipelineState *)self->_computePipelines[0] maxTotalThreadsPerThreadgroup]/ v12;
-    v46 = ((v12 + [v10 width] - 1) / v12);
-    v47 = ((v13 + [v10 height] - 1) / v13);
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_computePipelines[0]];
+    [computeCommandEncoder setTexture:v10 atIndex:0];
+    [computeCommandEncoder setTexture:self->_I_tex[i_idx][0] atIndex:1];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelines[0] threadExecutionWidth];
+    v13 = [(MTLComputePipelineState *)self->_computePipelines[0] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+    width = ((threadExecutionWidth + [v10 width] - 1) / threadExecutionWidth);
+    height = ((v13 + [v10 height] - 1) / v13);
     v48 = 1;
-    *&v44 = v12;
+    *&v44 = threadExecutionWidth;
     *(&v44 + 1) = v13;
     v45 = 1;
-    [v11 dispatchThreadgroups:&v46 threadsPerThreadgroup:&v44];
-    [v11 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:&width threadsPerThreadgroup:&v44];
+    [computeCommandEncoder endEncoding];
   }
 
   else
   {
-    v42 = a5;
-    v14 = self->_I_tex[a5][0];
-    v43 = v9;
-    v15 = v9;
+    i_idxCopy = i_idx;
+    v14 = self->_I_tex[i_idx][0];
+    v43 = in_texCopy;
+    v15 = in_texCopy;
     v16 = v14;
-    v17 = v8;
+    v17 = bufferCopy;
     v18 = objc_opt_new();
     [v18 setNormalizedCoordinates:1];
     [v18 setMinFilter:1];
     [v18 setMagFilter:1];
-    v19 = [v15 device];
-    v20 = [v19 newSamplerStateWithDescriptor:v18];
+    device = [v15 device];
+    v20 = [device newSamplerStateWithDescriptor:v18];
 
-    v11 = v15;
+    computeCommandEncoder = v15;
     v21 = v16;
     v22 = v20;
     v23 = v17;
     if (!qword_1E218)
     {
       v24 = objc_opt_new();
-      v41 = [v11 device];
+      device2 = [computeCommandEncoder device];
       v25 = [NSString stringWithUTF8String:"#include <metal_stdlib>\nusing namespace metal\nkernel void copyTexture(texture2d<float, access::sample> inputTexture [[texture(0)]], \ntexture2d<float, access::write> outputTexture [[texture(1)]], \nsampler smp [[sampler(0)]], \nuint2 gid [[ thread_position_in_grid ]])\n{\n    float2 samplePos = (float2(gid) + 0.5) / float2(outputTexture.get_width(), outputTexture.get_height());\n    float4 color = inputTexture.sample(smp, samplePos);\n    outputTexture.write(color, gid);\n}"];;
       v49 = 0;
       v40 = v24;
-      v26 = [v41 newLibraryWithSource:v25 options:v24 error:&v49];
+      v26 = [device2 newLibraryWithSource:v25 options:v24 error:&v49];
       v27 = v49;
       v28 = qword_1E220;
       qword_1E220 = v26;
@@ -811,8 +811,8 @@ LABEL_11:
       }
 
       v30 = v29;
-      v31 = [v11 device];
-      v32 = [v31 newComputePipelineStateWithFunction:v30 error:0];
+      device3 = [computeCommandEncoder device];
+      v32 = [device3 newComputePipelineStateWithFunction:v30 error:0];
       v33 = qword_1E218;
       qword_1E218 = v32;
 
@@ -823,32 +823,32 @@ LABEL_11:
     }
 
     [v23 setLabel:@"copyTexture"];
-    v34 = [v23 computeCommandEncoder];
-    [v34 setComputePipelineState:qword_1E218];
-    [v34 setTexture:v11 atIndex:0];
-    [v34 setTexture:v21 atIndex:1];
-    [v34 setSamplerState:v22 atIndex:0];
-    v46 = [(MTLTexture *)v21 width];
-    v47 = [(MTLTexture *)v21 height];
+    computeCommandEncoder2 = [v23 computeCommandEncoder];
+    [computeCommandEncoder2 setComputePipelineState:qword_1E218];
+    [computeCommandEncoder2 setTexture:computeCommandEncoder atIndex:0];
+    [computeCommandEncoder2 setTexture:v21 atIndex:1];
+    [computeCommandEncoder2 setSamplerState:v22 atIndex:0];
+    width = [(MTLTexture *)v21 width];
+    height = [(MTLTexture *)v21 height];
     v48 = 1;
     v44 = xmmword_126B0;
     v45 = 1;
-    [v34 dispatchThreads:&v46 threadsPerThreadgroup:&v44];
-    [v34 endEncoding];
+    [computeCommandEncoder2 dispatchThreads:&width threadsPerThreadgroup:&v44];
+    [computeCommandEncoder2 endEncoding];
 
     v10 = v43;
-    a5 = v42;
+    i_idx = i_idxCopy;
   }
 
   if (self->_nscales >= 2)
   {
-    v35 = &self->_I_tex[a5][1];
+    v35 = &self->_I_tex[i_idx][1];
     v36 = 1;
     do
     {
       v37 = *v35;
       v38 = *(v35 - 1);
-      [(LKTFlowGPU *)self _downscale2XWithCommandBuffer:v8 in_tex:v38 out_tex:v37];
+      [(LKTFlowGPU *)self _downscale2XWithCommandBuffer:bufferCopy in_tex:v38 out_tex:v37];
 
       ++v36;
       ++v35;
@@ -860,223 +860,223 @@ LABEL_11:
   return 0;
 }
 
-- (int)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4
+- (int)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex
 {
-  v6 = a4;
-  v7 = [a3 computeCommandEncoder];
-  [v7 setComputePipelineState:self->_computePipelines[1]];
-  [v7 setTexture:v6 atIndex:0];
-  v8 = [(MTLComputePipelineState *)self->_computePipelines[1] threadExecutionWidth];
-  v9 = [(MTLComputePipelineState *)self->_computePipelines[1] maxTotalThreadsPerThreadgroup]/ v8;
-  v10 = (v8 + [v6 width] - 1) / v8;
-  LODWORD(self) = [v6 height];
+  uv_texCopy = uv_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[1]];
+  [computeCommandEncoder setTexture:uv_texCopy atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelines[1] threadExecutionWidth];
+  v9 = [(MTLComputePipelineState *)self->_computePipelines[1] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  v10 = (threadExecutionWidth + [uv_texCopy width] - 1) / threadExecutionWidth;
+  LODWORD(self) = [uv_texCopy height];
 
   v13[0] = v10;
   v13[1] = (v9 + self - 1) / v9;
   v13[2] = 1;
-  v12[0] = v8;
+  v12[0] = threadExecutionWidth;
   v12[1] = v9;
   v12[2] = 1;
-  [v7 dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
-  [v7 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:v12];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_downscale2XWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (int)_downscale2XWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_computePipelines[2]];
-  [v10 setTexture:v9 atIndex:0];
+  out_texCopy = out_tex;
+  in_texCopy = in_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[2]];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  LODWORD(a3) = [(MTLComputePipelineState *)self->_computePipelines[2] threadExecutionWidth];
-  v11 = [(MTLComputePipelineState *)self->_computePipelines[2] maxTotalThreadsPerThreadgroup]/ a3;
-  v12 = (a3 + [v8 width] - 1) / a3;
-  LODWORD(self) = [v8 height];
+  [computeCommandEncoder setTexture:out_texCopy atIndex:1];
+  LODWORD(buffer) = [(MTLComputePipelineState *)self->_computePipelines[2] threadExecutionWidth];
+  v11 = [(MTLComputePipelineState *)self->_computePipelines[2] maxTotalThreadsPerThreadgroup]/ buffer;
+  v12 = (buffer + [out_texCopy width] - 1) / buffer;
+  LODWORD(self) = [out_texCopy height];
 
   v15[0] = v12;
   v15[1] = (v11 + self - 1) / v11;
   v15[2] = 1;
-  v14[0] = a3;
+  v14[0] = buffer;
   v14[1] = v11;
   v14[2] = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:v14];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:v14];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_computeFeaturesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (int)_computeFeaturesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_computePipelines[3]];
-  [v10 setTexture:v9 atIndex:0];
-  [v10 setTexture:v8 atIndex:1];
+  out_texCopy = out_tex;
+  in_texCopy = in_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[3]];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:out_texCopy atIndex:1];
 
-  LODWORD(a3) = [(MTLComputePipelineState *)self->_computePipelines[3] threadExecutionWidth];
-  LODWORD(v8) = [(MTLComputePipelineState *)self->_computePipelines[3] maxTotalThreadsPerThreadgroup]/ a3;
-  v11 = (a3 + [v9 width] - 1) / a3;
-  LODWORD(self) = [v9 height];
+  LODWORD(buffer) = [(MTLComputePipelineState *)self->_computePipelines[3] threadExecutionWidth];
+  LODWORD(out_texCopy) = [(MTLComputePipelineState *)self->_computePipelines[3] maxTotalThreadsPerThreadgroup]/ buffer;
+  v11 = (buffer + [in_texCopy width] - 1) / buffer;
+  LODWORD(self) = [in_texCopy height];
 
   v14[0] = v11;
-  v14[1] = (v8 + self - 1) / v8;
+  v14[1] = (out_texCopy + self - 1) / out_texCopy;
   v14[2] = 1;
-  v13[0] = a3;
-  v13[1] = v8;
+  v13[0] = buffer;
+  v13[1] = out_texCopy;
   v13[2] = 1;
-  [v10 dispatchThreadgroups:v14 threadsPerThreadgroup:v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v14 threadsPerThreadgroup:v13];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 in_tex:(id)a4 out_tex:(id)a5
+- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer in_tex:(id)in_tex out_tex:(id)out_tex
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_computePipelines[4]];
-  [v10 setTexture:v9 atIndex:0];
-  [v10 setTexture:v8 atIndex:1];
+  out_texCopy = out_tex;
+  in_texCopy = in_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[4]];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:out_texCopy atIndex:1];
 
-  LODWORD(a3) = [(MTLComputePipelineState *)self->_computePipelines[4] threadExecutionWidth];
-  LODWORD(v8) = [(MTLComputePipelineState *)self->_computePipelines[4] maxTotalThreadsPerThreadgroup]/ a3;
-  v11 = (a3 + [v9 width] - 1) / a3;
-  LODWORD(self) = [v9 height];
+  LODWORD(buffer) = [(MTLComputePipelineState *)self->_computePipelines[4] threadExecutionWidth];
+  LODWORD(out_texCopy) = [(MTLComputePipelineState *)self->_computePipelines[4] maxTotalThreadsPerThreadgroup]/ buffer;
+  v11 = (buffer + [in_texCopy width] - 1) / buffer;
+  LODWORD(self) = [in_texCopy height];
 
   v14[0] = v11;
-  v14[1] = (v8 + self - 1) / v8;
+  v14[1] = (out_texCopy + self - 1) / out_texCopy;
   v14[2] = 1;
-  v13[0] = a3;
-  v13[1] = v8;
+  v13[0] = buffer;
+  v13[1] = out_texCopy;
   v13[2] = 1;
-  [v10 dispatchThreadgroups:v14 threadsPerThreadgroup:v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v14 threadsPerThreadgroup:v13];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_doSolverWithCommandBuffer:(id)a3 scale:(int)a4 in_uv_tex:(id)a5 in_G0_tex:(id)a6 in_G1_tex:(id)a7 in_C0_tex:(id)a8 in_C1_tex:(id)a9 out_uv_tex:(id)a10 out_w_tex:(id)a11
+- (int)_doSolverWithCommandBuffer:(id)buffer scale:(int)scale in_uv_tex:(id)in_uv_tex in_G0_tex:(id)g0_tex in_G1_tex:(id)g1_tex in_C0_tex:(id)c0_tex in_C1_tex:(id)c1_tex out_uv_tex:(id)self0 out_w_tex:(id)self1
 {
-  v41 = a11;
-  v17 = a10;
-  v39 = a9;
-  v38 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
-  LODWORD(a3) = [v17 width];
-  v22 = [v17 height];
-  v40 = a3 - 1;
-  LODWORD(a6) = (a3 - 1 + self->_maxThreadExecutionWidth) / self->_maxThreadExecutionWidth * self->_maxThreadExecutionWidth;
+  out_w_texCopy = out_w_tex;
+  out_uv_texCopy = out_uv_tex;
+  c1_texCopy = c1_tex;
+  c0_texCopy = c0_tex;
+  g1_texCopy = g1_tex;
+  g0_texCopy = g0_tex;
+  in_uv_texCopy = in_uv_tex;
+  bufferCopy = buffer;
+  LODWORD(buffer) = [out_uv_texCopy width];
+  height = [out_uv_texCopy height];
+  v40 = buffer - 1;
+  LODWORD(g0_tex) = (buffer - 1 + self->_maxThreadExecutionWidth) / self->_maxThreadExecutionWidth * self->_maxThreadExecutionWidth;
   v55[0] = 1065353216;
   __asm { FMOV            V0.2S, #1.0 }
 
   v54 = _D0;
-  [LKTFlowGPU _computeScalingFactor:v20 dst_tex:v17 scale_xy_inv:&v54 coeff:v55];
-  v48[0] = a3;
-  v48[1] = v22;
-  v49 = a6;
+  [LKTFlowGPU _computeScalingFactor:in_uv_texCopy dst_tex:out_uv_texCopy scale_xy_inv:&v54 coeff:v55];
+  v48[0] = buffer;
+  v48[1] = height;
+  g0_texCopy2 = g0_tex;
   v50 = v54;
   v51 = 0;
   v28 = v55;
   v29 = vld1_dup_f32(v28);
   v52 = v29;
   v53 = 0;
-  v30 = [v21 computeCommandEncoder];
-  [v30 setComputePipelineState:self->_computePipelines[5]];
-  [v30 setTexture:v20 atIndex:0];
-  [v30 setTexture:v19 atIndex:1];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[5]];
+  [computeCommandEncoder setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:g0_texCopy atIndex:1];
 
-  [v30 setTexture:v18 atIndex:2];
-  [v30 setTexture:v38 atIndex:3];
+  [computeCommandEncoder setTexture:g1_texCopy atIndex:2];
+  [computeCommandEncoder setTexture:c0_texCopy atIndex:3];
 
-  [v30 setTexture:v39 atIndex:4];
-  [v30 setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
-  [v30 setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
-  [v30 setBuffer:self->_idt_buf offset:0 atIndex:2];
-  [v30 setBytes:v48 length:48 atIndex:3];
-  LODWORD(v19) = [(MTLComputePipelineState *)self->_computePipelines[5] threadExecutionWidth];
-  v31 = [(MTLComputePipelineState *)self->_computePipelines[5] maxTotalThreadsPerThreadgroup];
-  v45 = (v40 + v19) / v19;
-  v46 = (v22 - 1 + v31 / v19) / (v31 / v19);
+  [computeCommandEncoder setTexture:c1_texCopy atIndex:4];
+  [computeCommandEncoder setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_idt_buf offset:0 atIndex:2];
+  [computeCommandEncoder setBytes:v48 length:48 atIndex:3];
+  LODWORD(g0_texCopy) = [(MTLComputePipelineState *)self->_computePipelines[5] threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computePipelines[5] maxTotalThreadsPerThreadgroup];
+  v45 = (v40 + g0_texCopy) / g0_texCopy;
+  v46 = (height - 1 + maxTotalThreadsPerThreadgroup / g0_texCopy) / (maxTotalThreadsPerThreadgroup / g0_texCopy);
   v47 = 1;
-  v42 = v19;
-  v43 = v31 / v19;
+  v42 = g0_texCopy;
+  v43 = maxTotalThreadsPerThreadgroup / g0_texCopy;
   v44 = 1;
-  [v30 dispatchThreadgroups:&v45 threadsPerThreadgroup:&v42];
-  [v30 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v45 threadsPerThreadgroup:&v42];
+  [computeCommandEncoder endEncoding];
 
-  v32 = v21;
-  v33 = [v21 computeCommandEncoder];
-  [v33 setComputePipelineState:self->_computePipelines[6]];
-  [v33 setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
-  [v33 setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
-  [v33 setBuffer:self->_Adiagb_buf[1] offset:0 atIndex:2];
-  [v33 setBuffer:self->_Ixy_buf[1] offset:0 atIndex:3];
-  [v33 setBytes:v48 length:48 atIndex:4];
-  LODWORD(v19) = [(MTLComputePipelineState *)self->_computePipelines[6] threadExecutionWidth];
-  v34 = [(MTLComputePipelineState *)self->_computePipelines[6] maxTotalThreadsPerThreadgroup];
-  v45 = (v40 + v19) / v19;
-  v46 = (v22 - 1 + v34 / v19) / (v34 / v19);
+  v32 = bufferCopy;
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder2 setComputePipelineState:self->_computePipelines[6]];
+  [computeCommandEncoder2 setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
+  [computeCommandEncoder2 setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
+  [computeCommandEncoder2 setBuffer:self->_Adiagb_buf[1] offset:0 atIndex:2];
+  [computeCommandEncoder2 setBuffer:self->_Ixy_buf[1] offset:0 atIndex:3];
+  [computeCommandEncoder2 setBytes:v48 length:48 atIndex:4];
+  LODWORD(g0_texCopy) = [(MTLComputePipelineState *)self->_computePipelines[6] threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup2 = [(MTLComputePipelineState *)self->_computePipelines[6] maxTotalThreadsPerThreadgroup];
+  v45 = (v40 + g0_texCopy) / g0_texCopy;
+  v46 = (height - 1 + maxTotalThreadsPerThreadgroup2 / g0_texCopy) / (maxTotalThreadsPerThreadgroup2 / g0_texCopy);
   v47 = 1;
-  v42 = v19;
-  v43 = v34 / v19;
+  v42 = g0_texCopy;
+  v43 = maxTotalThreadsPerThreadgroup2 / g0_texCopy;
   v44 = 1;
-  [v33 dispatchThreadgroups:&v45 threadsPerThreadgroup:&v42];
-  [v33 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v45 threadsPerThreadgroup:&v42];
+  [computeCommandEncoder2 endEncoding];
 
-  v35 = [v32 computeCommandEncoder];
+  computeCommandEncoder3 = [v32 computeCommandEncoder];
 
-  [v35 setComputePipelineState:self->_computePipelines[7]];
-  [v35 setBuffer:self->_Adiagb_buf[1] offset:0 atIndex:0];
-  [v35 setBuffer:self->_Ixy_buf[1] offset:0 atIndex:1];
-  [v35 setBuffer:self->_idt_buf offset:0 atIndex:2];
-  [v35 setTexture:v20 atIndex:0];
+  [computeCommandEncoder3 setComputePipelineState:self->_computePipelines[7]];
+  [computeCommandEncoder3 setBuffer:self->_Adiagb_buf[1] offset:0 atIndex:0];
+  [computeCommandEncoder3 setBuffer:self->_Ixy_buf[1] offset:0 atIndex:1];
+  [computeCommandEncoder3 setBuffer:self->_idt_buf offset:0 atIndex:2];
+  [computeCommandEncoder3 setTexture:in_uv_texCopy atIndex:0];
 
-  [v35 setTexture:v17 atIndex:1];
-  [v35 setTexture:v41 atIndex:2];
+  [computeCommandEncoder3 setTexture:out_uv_texCopy atIndex:1];
+  [computeCommandEncoder3 setTexture:out_w_texCopy atIndex:2];
 
-  [v35 setBytes:v48 length:48 atIndex:3];
-  LODWORD(v19) = [(MTLComputePipelineState *)self->_computePipelines[7] threadExecutionWidth];
-  v36 = [(MTLComputePipelineState *)self->_computePipelines[7] maxTotalThreadsPerThreadgroup];
-  v45 = (v40 + v19) / v19;
-  v46 = (v22 - 1 + v36 / v19) / (v36 / v19);
+  [computeCommandEncoder3 setBytes:v48 length:48 atIndex:3];
+  LODWORD(g0_texCopy) = [(MTLComputePipelineState *)self->_computePipelines[7] threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup3 = [(MTLComputePipelineState *)self->_computePipelines[7] maxTotalThreadsPerThreadgroup];
+  v45 = (v40 + g0_texCopy) / g0_texCopy;
+  v46 = (height - 1 + maxTotalThreadsPerThreadgroup3 / g0_texCopy) / (maxTotalThreadsPerThreadgroup3 / g0_texCopy);
   v47 = 1;
-  v42 = v19;
-  v43 = v36 / v19;
+  v42 = g0_texCopy;
+  v43 = maxTotalThreadsPerThreadgroup3 / g0_texCopy;
   v44 = 1;
-  [v35 dispatchThreadgroups:&v45 threadsPerThreadgroup:&v42];
-  [v35 endEncoding];
+  [computeCommandEncoder3 dispatchThreadgroups:&v45 threadsPerThreadgroup:&v42];
+  [computeCommandEncoder3 endEncoding];
 
   return 0;
 }
 
-- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)a3 in_uv0_tex:(id)a4 in_uv1_tex:(id)a5 out_uv_tex:(id)a6
+- (int)_enqueueFlowConsistencyWithCommandBuffer:(id)buffer in_uv0_tex:(id)in_uv0_tex in_uv1_tex:(id)in_uv1_tex out_uv_tex:(id)out_uv_tex
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  LODWORD(a5) = [v10 width];
-  v14 = [v10 height];
+  out_uv_texCopy = out_uv_tex;
+  in_uv1_texCopy = in_uv1_tex;
+  in_uv0_texCopy = in_uv0_tex;
+  bufferCopy = buffer;
+  LODWORD(in_uv1_tex) = [out_uv_texCopy width];
+  height = [out_uv_texCopy height];
   __asm { FMOV            V0.2S, #1.0 }
 
   v36 = _D0;
   v37 = _D0;
   v35 = 1065353216;
   v34 = 1065353216;
-  [LKTFlowGPU _computeScalingFactor:v12 dst_tex:v10 scale_xy_inv:&v37 coeff:&v35];
-  [LKTFlowGPU _computeScalingFactor:v11 dst_tex:v10 scale_xy_inv:&v36 coeff:&v34];
+  [LKTFlowGPU _computeScalingFactor:in_uv0_texCopy dst_tex:out_uv_texCopy scale_xy_inv:&v37 coeff:&v35];
+  [LKTFlowGPU _computeScalingFactor:in_uv1_texCopy dst_tex:out_uv_texCopy scale_xy_inv:&v36 coeff:&v34];
   v29 = 0;
-  v28[0] = a5;
-  v28[1] = v14;
+  v28[0] = in_uv1_tex;
+  v28[1] = height;
   v30 = v37;
   v31 = v36;
   v20 = &v35;
@@ -1084,34 +1084,34 @@ LABEL_11:
   v22 = vld1_dup_f32(&v34);
   v32 = v21;
   v33 = v22;
-  v23 = [v13 computeCommandEncoder];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v23 setComputePipelineState:self->_computePipelines[8]];
-  [v23 setTexture:v12 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[8]];
+  [computeCommandEncoder setTexture:in_uv0_texCopy atIndex:0];
 
-  [v23 setTexture:v11 atIndex:1];
-  [v23 setTexture:v10 atIndex:2];
-  [v23 setBytes:v28 length:48 atIndex:0];
-  LODWORD(v11) = [(MTLComputePipelineState *)self->_computePipelines[8] threadExecutionWidth];
-  LODWORD(v13) = [(MTLComputePipelineState *)self->_computePipelines[8] maxTotalThreadsPerThreadgroup]/ v11;
-  v24 = (v11 + [v10 width] - 1) / v11;
-  LODWORD(self) = [v10 height];
+  [computeCommandEncoder setTexture:in_uv1_texCopy atIndex:1];
+  [computeCommandEncoder setTexture:out_uv_texCopy atIndex:2];
+  [computeCommandEncoder setBytes:v28 length:48 atIndex:0];
+  LODWORD(in_uv1_texCopy) = [(MTLComputePipelineState *)self->_computePipelines[8] threadExecutionWidth];
+  LODWORD(bufferCopy) = [(MTLComputePipelineState *)self->_computePipelines[8] maxTotalThreadsPerThreadgroup]/ in_uv1_texCopy;
+  v24 = (in_uv1_texCopy + [out_uv_texCopy width] - 1) / in_uv1_texCopy;
+  LODWORD(self) = [out_uv_texCopy height];
 
   v27[0] = v24;
-  v27[1] = (v13 + self - 1) / v13;
+  v27[1] = (bufferCopy + self - 1) / bufferCopy;
   v27[2] = 1;
-  v26[0] = v11;
-  v26[1] = v13;
+  v26[0] = in_uv1_texCopy;
+  v26[1] = bufferCopy;
   v26[2] = 1;
-  [v23 dispatchThreadgroups:v27 threadsPerThreadgroup:v26];
-  [v23 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v27 threadsPerThreadgroup:v26];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_doNLRegularizationWithCommandBuffer:(id)a3 in_uv_tex:(id)a4 join_tex:(id)a5 w_tex:(id)a6 out_uv_tex:(id)a7
+- (int)_doNLRegularizationWithCommandBuffer:(id)buffer in_uv_tex:(id)in_uv_tex join_tex:(id)join_tex w_tex:(id)w_tex out_uv_tex:(id)out_uv_tex
 {
-  v12 = self;
+  selfCopy = self;
   v28[1] = 0;
   v7.i64[0] = *&self->_nlreg_sigma_l;
   v28[0] = *&self->_nlreg_radius;
@@ -1122,52 +1122,52 @@ LABEL_11:
   v19 = vdivq_f32(_Q1, v13);
   v19.i32[2] = v19.i32[1];
   v29 = v19;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = [a3 computeCommandEncoder];
-  [v24 setComputePipelineState:v12->_computePipelines[10]];
-  [v24 setTexture:v23 atIndex:0];
-  [v24 setTexture:v22 atIndex:1];
+  out_uv_texCopy = out_uv_tex;
+  w_texCopy = w_tex;
+  join_texCopy = join_tex;
+  in_uv_texCopy = in_uv_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:selfCopy->_computePipelines[10]];
+  [computeCommandEncoder setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:join_texCopy atIndex:1];
 
-  [v24 setTexture:v21 atIndex:2];
-  [v24 setTexture:v20 atIndex:3];
+  [computeCommandEncoder setTexture:w_texCopy atIndex:2];
+  [computeCommandEncoder setTexture:out_uv_texCopy atIndex:3];
 
-  [v24 setBytes:v28 length:32 atIndex:0];
-  LODWORD(v20) = [(MTLComputePipelineState *)v12->_computePipelines[10] threadExecutionWidth];
-  LODWORD(a3) = [(MTLComputePipelineState *)v12->_computePipelines[10] maxTotalThreadsPerThreadgroup]/ v20;
-  LODWORD(v21) = (v20 + [v23 width] / 2 - 1) / v20;
-  LODWORD(v12) = [v23 height];
+  [computeCommandEncoder setBytes:v28 length:32 atIndex:0];
+  LODWORD(out_uv_texCopy) = [(MTLComputePipelineState *)selfCopy->_computePipelines[10] threadExecutionWidth];
+  LODWORD(buffer) = [(MTLComputePipelineState *)selfCopy->_computePipelines[10] maxTotalThreadsPerThreadgroup]/ out_uv_texCopy;
+  LODWORD(w_texCopy) = (out_uv_texCopy + [in_uv_texCopy width] / 2 - 1) / out_uv_texCopy;
+  LODWORD(selfCopy) = [in_uv_texCopy height];
 
-  v27[0] = v21;
-  v27[1] = (a3 + v12 / 2 - 1) / a3;
+  v27[0] = w_texCopy;
+  v27[1] = (buffer + selfCopy / 2 - 1) / buffer;
   v27[2] = 1;
-  v26[0] = v20;
-  v26[1] = a3;
+  v26[0] = out_uv_texCopy;
+  v26[1] = buffer;
   v26[2] = 1;
-  [v24 dispatchThreadgroups:v27 threadsPerThreadgroup:v26];
-  [v24 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v27 threadsPerThreadgroup:v26];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-+ (void)_computeScalingFactor:(id)a1 dst_tex:(SEL)a2 scale_xy_inv:(id)a3 coeff:(id)a4
++ (void)_computeScalingFactor:(id)factor dst_tex:(SEL)dst_tex scale_xy_inv:(id)scale_xy_inv coeff:(id)coeff
 {
   v6 = v5;
   v7 = v4;
-  v25 = a3;
-  v9 = a4;
-  v10 = [v9 width];
-  v11 = v10 / [v25 width];
-  v12 = [v9 height];
-  v13 = [v25 height];
+  scale_xy_invCopy = scale_xy_inv;
+  coeffCopy = coeff;
+  width = [coeffCopy width];
+  v11 = width / [scale_xy_invCopy width];
+  height = [coeffCopy height];
+  height2 = [scale_xy_invCopy height];
   LODWORD(v14) = 1.5;
-  *&v15 = v12 / v13;
+  *&v15 = height / height2;
   if (v11 <= 1.5 || *&v15 <= 1.5)
   {
-    v17 = [v9 width];
-    if (v17 != [v25 width] || (v18 = objc_msgSend(v9, "height"), v18 != objc_msgSend(v25, "height")))
+    width2 = [coeffCopy width];
+    if (width2 != [scale_xy_invCopy width] || (v18 = objc_msgSend(coeffCopy, "height"), v18 != objc_msgSend(scale_xy_invCopy, "height")))
     {
       sub_F8F0();
     }
@@ -1187,19 +1187,19 @@ LABEL_11:
   *v7 = _D0;
 }
 
-- (id)newBufferWithPixelFormat:(unint64_t)a3 width:(int)a4 data:(const void *)a5
+- (id)newBufferWithPixelFormat:(unint64_t)format width:(int)width data:(const void *)data
 {
-  v7 = [(LKTFlowGPU *)self bytesPerPixelForTextureFormat:a3]* a4;
-  v8 = [(FigMetalContext *)self->_mtlContext device];
-  v9 = v8;
-  if (a5)
+  v7 = [(LKTFlowGPU *)self bytesPerPixelForTextureFormat:format]* width;
+  device = [(FigMetalContext *)self->_mtlContext device];
+  v9 = device;
+  if (data)
   {
-    v10 = [v8 newBufferWithBytes:a5 length:v7 options:0];
+    v10 = [device newBufferWithBytes:data length:v7 options:0];
   }
 
   else
   {
-    v10 = [v8 newBufferWithLength:v7 options:0];
+    v10 = [device newBufferWithLength:v7 options:0];
   }
 
   v11 = v10;
@@ -1207,10 +1207,10 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3
+- (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format
 {
-  v5 = a3 - 62;
-  if (a3 - 62 <= 0x3F)
+  v5 = format - 62;
+  if (format - 62 <= 0x3F)
   {
     if (((1 << v5) & 0xF00C1F0FLL) != 0)
     {
@@ -1228,19 +1228,19 @@ LABEL_11:
     }
   }
 
-  if (a3 <= 0x3C)
+  if (format <= 0x3C)
   {
-    if (((1 << a3) & 0x80743D00000) != 0)
+    if (((1 << format) & 0x80743D00000) != 0)
     {
       return 2;
     }
 
-    if (((1 << a3) & 0x7402) != 0)
+    if (((1 << format) & 0x7402) != 0)
     {
       return 1;
     }
 
-    if (((1 << a3) & 0x10E0000000000000) != 0)
+    if (((1 << format) & 0x10E0000000000000) != 0)
     {
       return 4;
     }
@@ -1281,12 +1281,12 @@ LABEL_11:
   return result;
 }
 
-- (int)setOutputUVForward:(__CVBuffer *)a3 backward:(__CVBuffer *)a4
+- (int)setOutputUVForward:(__CVBuffer *)forward backward:(__CVBuffer *)backward
 {
-  if (a3)
+  if (forward)
   {
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetHeight(a3);
+    CVPixelBufferGetWidth(forward);
+    CVPixelBufferGetHeight(forward);
     mtlContext = self->_mtlContext;
     v8 = sub_BF00();
     v10 = [v9 bindPixelBufferToMTL2DTexture:v8 pixelFormat:? usage:? textureSize:? plane:?];
@@ -1298,7 +1298,7 @@ LABEL_11:
       return -12786;
     }
 
-    if (a4)
+    if (backward)
     {
       v12 = self->_mtlContext;
       v13 = sub_BF00();
@@ -1335,15 +1335,15 @@ LABEL_11:
 
 - (int)_computeOpticalFlowBidirectional
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_nscales - 1;
   uv_fwd_tex = self->_uv_fwd_tex;
   v55 = self->_uv_fwd_tex[0][v3];
-  uv_bwd_tex = v2->_uv_bwd_tex;
-  v4 = v2->_uv_bwd_tex[0][v3];
-  if (v2->_uv_bwd_tex_user_ref)
+  uv_bwd_tex = selfCopy->_uv_bwd_tex;
+  v4 = selfCopy->_uv_bwd_tex[0][v3];
+  if (selfCopy->_uv_bwd_tex_user_ref)
   {
-    nscales = v2->_nscales;
+    nscales = selfCopy->_nscales;
     if (nscales < 1)
     {
       v6 = 0;
@@ -1353,14 +1353,14 @@ LABEL_11:
     {
       v6 = 0;
       v7 = 0;
-      I_tex = v2->_I_tex;
-      G1_tex = v2->_G1_tex;
-      G0_tex = v2->_G0_tex;
-      C1_tex = v2->_C1_tex;
-      C0_tex = v2->_C0_tex;
-      p_uv_fwd_tex_user_ref = &v2->_uv_fwd_tex_user_ref;
-      p_uv_bwd_tex_user_ref = &v2->_uv_bwd_tex_user_ref;
-      v36 = v2->_uv_bwd_tex[1];
+      I_tex = selfCopy->_I_tex;
+      G1_tex = selfCopy->_G1_tex;
+      G0_tex = selfCopy->_G0_tex;
+      C1_tex = selfCopy->_C1_tex;
+      C0_tex = selfCopy->_C0_tex;
+      p_uv_fwd_tex_user_ref = &selfCopy->_uv_fwd_tex_user_ref;
+      p_uv_bwd_tex_user_ref = &selfCopy->_uv_bwd_tex_user_ref;
+      v36 = selfCopy->_uv_bwd_tex[1];
       v43 = v3;
       v42 = v3;
       do
@@ -1368,22 +1368,22 @@ LABEL_11:
         v8 = v6;
         v35 = nscales;
         v9 = nscales - 1;
-        v10 = I_tex[v2->_current_frame_index][v9];
-        v11 = I_tex[v2->_current_frame_index ^ 1][v9];
-        v12 = [(MTLCommandQueue *)v2->_commandQueue commandBuffer];
+        v10 = I_tex[selfCopy->_current_frame_index][v9];
+        v11 = I_tex[selfCopy->_current_frame_index ^ 1][v9];
+        commandBuffer = [(MTLCommandQueue *)selfCopy->_commandQueue commandBuffer];
 
         v13 = [NSString stringWithFormat:@"LKT:ComputeFlow level %d", v9];
-        [v12 setLabel:v13];
+        [commandBuffer setLabel:v13];
 
         v34 = v10;
-        [(LKTFlowGPU *)v2 _computeFeaturesWithCommandBuffer:v12 in_tex:v10 out_tex:G0_tex[v9]];
+        [(LKTFlowGPU *)selfCopy _computeFeaturesWithCommandBuffer:commandBuffer in_tex:v10 out_tex:G0_tex[v9]];
         v33 = v11;
-        [(LKTFlowGPU *)v2 _computeFeaturesWithCommandBuffer:v12 in_tex:v11 out_tex:G1_tex[v9]];
-        [(LKTFlowGPU *)v2 _computeFeaturesDerivativesWithCommandBuffer:v12 in_tex:G0_tex[v9] out_tex:C0_tex[v9]];
-        v49 = v12;
-        [(LKTFlowGPU *)v2 _computeFeaturesDerivativesWithCommandBuffer:v12 in_tex:G1_tex[v9] out_tex:C1_tex[v9]];
+        [(LKTFlowGPU *)selfCopy _computeFeaturesWithCommandBuffer:commandBuffer in_tex:v11 out_tex:G1_tex[v9]];
+        [(LKTFlowGPU *)selfCopy _computeFeaturesDerivativesWithCommandBuffer:commandBuffer in_tex:G0_tex[v9] out_tex:C0_tex[v9]];
+        v49 = commandBuffer;
+        [(LKTFlowGPU *)selfCopy _computeFeaturesDerivativesWithCommandBuffer:commandBuffer in_tex:G1_tex[v9] out_tex:C1_tex[v9]];
         v48 = v9;
-        if (v2->_nwarpings >= 1)
+        if (selfCopy->_nwarpings >= 1)
         {
           v14 = 0;
           v40 = &(*uv_bwd_tex)[v9];
@@ -1407,7 +1407,7 @@ LABEL_11:
 
               else
               {
-                v27 = v14 + 3 <= v2->_nwarpings;
+                v27 = v14 + 3 <= selfCopy->_nwarpings;
               }
 
               v28 = &v26[v48];
@@ -1417,7 +1417,7 @@ LABEL_11:
               }
 
               v29 = *v28;
-              v22 = v2;
+              v22 = selfCopy;
               v23 = v4;
               v24 = v29;
 
@@ -1442,7 +1442,7 @@ LABEL_11:
 
               else
               {
-                v19 = v14 + 3 <= v2->_nwarpings;
+                v19 = v14 + 3 <= selfCopy->_nwarpings;
               }
 
               v20 = p_uv_bwd_tex_user_ref;
@@ -1452,7 +1452,7 @@ LABEL_11:
               }
 
               v21 = *v20;
-              v22 = v2;
+              v22 = selfCopy;
               v23 = v55;
               v24 = v21;
 
@@ -1468,7 +1468,7 @@ LABEL_11:
 
             ++v14;
             v4 = v50;
-            v2 = v22;
+            selfCopy = v22;
             v7 = v54;
           }
 
@@ -1496,19 +1496,19 @@ LABEL_11:
   return v30;
 }
 
-- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)a3 in_uv_fwd_tex:(id)a4 in_uv_bwd_tex:(id)a5 out_kpt_buf:(id)a6 block_size:(int)a7 bidirectional_error:(float)a8 out_num_keypoints:(unsigned __int16 *)a9
+- (int)_enqueueKeypointsFromFlowWithCommandBuffer:(id)buffer in_uv_fwd_tex:(id)in_uv_fwd_tex in_uv_bwd_tex:(id)in_uv_bwd_tex out_kpt_buf:(id)out_kpt_buf block_size:(int)block_size bidirectional_error:(float)bidirectional_error out_num_keypoints:(unsigned __int16 *)out_num_keypoints
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a3;
-  v20 = [v16 width] / a7;
-  v21 = [v16 height] / a7;
-  v29 = a7;
+  in_uv_fwd_texCopy = in_uv_fwd_tex;
+  in_uv_bwd_texCopy = in_uv_bwd_tex;
+  out_kpt_bufCopy = out_kpt_buf;
+  bufferCopy = buffer;
+  v20 = [in_uv_fwd_texCopy width] / block_size;
+  v21 = [in_uv_fwd_texCopy height] / block_size;
+  block_sizeCopy = block_size;
   v31 = v21;
   v30 = v20;
-  v32 = LODWORD(a8);
-  v22 = [v19 computeCommandEncoder];
+  v32 = LODWORD(bidirectional_error);
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
   if (v21 * v20 > 0x8000)
   {
@@ -1517,23 +1517,23 @@ LABEL_11:
 
   else
   {
-    [v22 setComputePipelineState:self->_computePipelines[9]];
-    [v22 setTexture:v16 atIndex:0];
-    [v22 setTexture:v17 atIndex:1];
-    [v22 setBuffer:v18 offset:0 atIndex:0];
-    [v22 setBytes:&v29 length:16 atIndex:1];
-    v23 = [(MTLComputePipelineState *)self->_computePipelines[9] threadExecutionWidth];
-    v24 = [(MTLComputePipelineState *)self->_computePipelines[9] maxTotalThreadsPerThreadgroup];
-    v28[0] = (v20 + v23 - 1) / v23;
-    v28[1] = (v21 + v24 / v23 - 1) / (v24 / v23);
+    [computeCommandEncoder setComputePipelineState:self->_computePipelines[9]];
+    [computeCommandEncoder setTexture:in_uv_fwd_texCopy atIndex:0];
+    [computeCommandEncoder setTexture:in_uv_bwd_texCopy atIndex:1];
+    [computeCommandEncoder setBuffer:out_kpt_bufCopy offset:0 atIndex:0];
+    [computeCommandEncoder setBytes:&block_sizeCopy length:16 atIndex:1];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelines[9] threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computePipelines[9] maxTotalThreadsPerThreadgroup];
+    v28[0] = (v20 + threadExecutionWidth - 1) / threadExecutionWidth;
+    v28[1] = (v21 + maxTotalThreadsPerThreadgroup / threadExecutionWidth - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     v28[2] = 1;
-    v27[0] = v23;
-    v27[1] = v24 / v23;
+    v27[0] = threadExecutionWidth;
+    v27[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v27[2] = 1;
-    [v22 dispatchThreadgroups:v28 threadsPerThreadgroup:v27];
-    [v22 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v28 threadsPerThreadgroup:v27];
+    [computeCommandEncoder endEncoding];
     v25 = 0;
-    *a9 = v21 * v20;
+    *out_num_keypoints = v21 * v20;
   }
 
   return v25;

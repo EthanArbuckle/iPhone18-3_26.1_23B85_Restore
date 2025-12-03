@@ -2,8 +2,8 @@
 - (STUIStatusBarImageView)cameraView;
 - (STUIStatusBarImageView)locationView;
 - (STUIStatusBarImageView)microphoneView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_cameraView;
 - (void)_create_locationView;
 - (void)_create_microphoneView;
@@ -11,144 +11,144 @@
 
 @implementation STUIStatusBarPrivacyItem
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v46[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v43.receiver = self;
   v43.super_class = STUIStatusBarPrivacyItem;
-  v8 = [(STUIStatusBarItem *)&v43 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(STUIStatusBarItem *)&v43 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v7 identifier];
-    v10 = [objc_opt_class() externalCameraDisplayIdentifier];
+    identifier = [itemCopy identifier];
+    externalCameraDisplayIdentifier = [objc_opt_class() externalCameraDisplayIdentifier];
 
-    if (v9 == v10)
+    if (identifier == externalCameraDisplayIdentifier)
     {
-      if ([v7 isEnabled])
+      if ([itemCopy isEnabled])
       {
-        v18 = [v6 data];
-        v19 = [v18 externalPrivacyEntry];
-        if ([v19 isEnabled])
+        data = [updateCopy data];
+        externalPrivacyEntry = [data externalPrivacyEntry];
+        if ([externalPrivacyEntry isEnabled])
         {
-          v20 = [v6 data];
-          v21 = [v20 externalPrivacyEntry];
-          [v7 setEnabled:{objc_msgSend(v21, "camera")}];
+          data2 = [updateCopy data];
+          externalPrivacyEntry2 = [data2 externalPrivacyEntry];
+          [itemCopy setEnabled:{objc_msgSend(externalPrivacyEntry2, "camera")}];
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
       }
 
       else
       {
-        [v7 setEnabled:0];
+        [itemCopy setEnabled:0];
       }
 
-      if ([v7 isEnabled])
+      if ([itemCopy isEnabled])
       {
         v33 = MEMORY[0x277D755D0];
-        v34 = [MEMORY[0x277D75348] labelColor];
-        v46[0] = v34;
-        v35 = [MEMORY[0x277D75348] systemGreenColor];
-        v46[1] = v35;
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        v46[0] = labelColor;
+        systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+        v46[1] = systemGreenColor;
         v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:2];
         v30 = [v33 configurationWithPaletteColors:v36];
 
         v31 = [MEMORY[0x277D755B8] _systemImageNamed:@"video.circle.fill" withConfiguration:v30];
-        v32 = [(STUIStatusBarPrivacyItem *)self cameraView];
+        cameraView = [(STUIStatusBarPrivacyItem *)self cameraView];
         goto LABEL_28;
       }
     }
 
     else
     {
-      v11 = [v7 identifier];
-      v12 = [objc_opt_class() externalMicrophoneDisplayIdentifier];
+      identifier2 = [itemCopy identifier];
+      externalMicrophoneDisplayIdentifier = [objc_opt_class() externalMicrophoneDisplayIdentifier];
 
-      v13 = [v7 isEnabled];
-      if (v11 == v12)
+      isEnabled = [itemCopy isEnabled];
+      if (identifier2 == externalMicrophoneDisplayIdentifier)
       {
-        if (v13)
+        if (isEnabled)
         {
-          v22 = [v6 data];
-          v23 = [v22 externalPrivacyEntry];
-          if ([v23 isEnabled])
+          data3 = [updateCopy data];
+          externalPrivacyEntry3 = [data3 externalPrivacyEntry];
+          if ([externalPrivacyEntry3 isEnabled])
           {
-            v24 = [v6 data];
-            v25 = [v24 externalPrivacyEntry];
-            [v7 setEnabled:{objc_msgSend(v25, "microphone")}];
+            data4 = [updateCopy data];
+            externalPrivacyEntry4 = [data4 externalPrivacyEntry];
+            [itemCopy setEnabled:{objc_msgSend(externalPrivacyEntry4, "microphone")}];
           }
 
           else
           {
-            [v7 setEnabled:0];
+            [itemCopy setEnabled:0];
           }
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
           v37 = MEMORY[0x277D755D0];
-          v38 = [MEMORY[0x277D75348] labelColor];
-          v45[0] = v38;
-          v39 = [MEMORY[0x277D75348] systemOrangeColor];
-          v45[1] = v39;
+          labelColor2 = [MEMORY[0x277D75348] labelColor];
+          v45[0] = labelColor2;
+          systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+          v45[1] = systemOrangeColor;
           v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
           v30 = [v37 configurationWithPaletteColors:v40];
 
           v31 = [MEMORY[0x277D755B8] _systemImageNamed:@"microphone.circle.fill" withConfiguration:v30];
-          v32 = [(STUIStatusBarPrivacyItem *)self microphoneView];
+          cameraView = [(STUIStatusBarPrivacyItem *)self microphoneView];
           goto LABEL_28;
         }
       }
 
       else
       {
-        if (v13)
+        if (isEnabled)
         {
-          v14 = [v6 data];
-          v15 = [v14 externalPrivacyEntry];
-          if ([v15 isEnabled])
+          data5 = [updateCopy data];
+          externalPrivacyEntry5 = [data5 externalPrivacyEntry];
+          if ([externalPrivacyEntry5 isEnabled])
           {
-            v16 = [v6 data];
-            v17 = [v16 externalPrivacyEntry];
-            [v7 setEnabled:{objc_msgSend(v17, "location")}];
+            data6 = [updateCopy data];
+            externalPrivacyEntry6 = [data6 externalPrivacyEntry];
+            [itemCopy setEnabled:{objc_msgSend(externalPrivacyEntry6, "location")}];
           }
 
           else
           {
-            [v7 setEnabled:0];
+            [itemCopy setEnabled:0];
           }
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
           v26 = MEMORY[0x277D755D0];
-          v27 = [MEMORY[0x277D75348] labelColor];
-          v44[0] = v27;
-          v28 = [MEMORY[0x277D75348] systemBlueColor];
-          v44[1] = v28;
+          labelColor3 = [MEMORY[0x277D75348] labelColor];
+          v44[0] = labelColor3;
+          systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+          v44[1] = systemBlueColor;
           v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
           v30 = [v26 configurationWithPaletteColors:v29];
 
           v31 = [MEMORY[0x277D755B8] _systemImageNamed:@"location.circle.fill" withConfiguration:v30];
-          v32 = [(STUIStatusBarPrivacyItem *)self locationView];
+          cameraView = [(STUIStatusBarPrivacyItem *)self locationView];
 LABEL_28:
-          v41 = v32;
-          [v32 setImage:v31];
+          v41 = cameraView;
+          [cameraView setImage:v31];
         }
       }
     }
@@ -223,21 +223,21 @@ LABEL_28:
   MEMORY[0x2821F96F8](v4, locationView);
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() externalCameraDisplayIdentifier];
+  identifierCopy = identifier;
+  externalCameraDisplayIdentifier = [objc_opt_class() externalCameraDisplayIdentifier];
 
-  if (v5 == v4)
+  if (externalCameraDisplayIdentifier == identifierCopy)
   {
-    v7 = [(STUIStatusBarPrivacyItem *)self cameraView];
+    cameraView = [(STUIStatusBarPrivacyItem *)self cameraView];
   }
 
   else
   {
-    v6 = [objc_opt_class() externalMicrophoneDisplayIdentifier];
+    externalMicrophoneDisplayIdentifier = [objc_opt_class() externalMicrophoneDisplayIdentifier];
 
-    if (v6 == v4)
+    if (externalMicrophoneDisplayIdentifier == identifierCopy)
     {
       [(STUIStatusBarPrivacyItem *)self microphoneView];
     }
@@ -246,10 +246,10 @@ LABEL_28:
     {
       [(STUIStatusBarPrivacyItem *)self locationView];
     }
-    v7 = ;
+    cameraView = ;
   }
 
-  v8 = v7;
+  v8 = cameraView;
 
   return v8;
 }

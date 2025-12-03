@@ -1,30 +1,30 @@
 @interface IMAVDaemonController
 + (id)sharedInstance;
-- (BOOL)__isLocalObjectValidOnQueue:(id)a3;
-- (BOOL)__isRemoteObjectValidOnQueue:(id)a3;
-- (BOOL)_makeConnectionWithCompletionBlock:(id)a3;
-- (BOOL)addListenerID:(id)a3;
-- (BOOL)hasListenerForID:(id)a3;
+- (BOOL)__isLocalObjectValidOnQueue:(id)queue;
+- (BOOL)__isRemoteObjectValidOnQueue:(id)queue;
+- (BOOL)_makeConnectionWithCompletionBlock:(id)block;
+- (BOOL)addListenerID:(id)d;
+- (BOOL)hasListenerForID:(id)d;
 - (BOOL)isConnected;
 - (BOOL)isConnecting;
 - (BOOL)localObjectExists;
 - (BOOL)remoteObjectExists;
-- (BOOL)removeListenerID:(id)a3;
+- (BOOL)removeListenerID:(id)d;
 - (IMAVDaemonController)init;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)_cleanUpConnection;
 - (void)_connectToDaemon;
 - (void)_disconnectFromDaemon;
 - (void)_listenerSetUpdated;
 - (void)_localObjectCleanup;
-- (void)_localObjectDiedNotification:(id)a3;
+- (void)_localObjectDiedNotification:(id)notification;
 - (void)_noteSetupComplete;
 - (void)_remoteObjectCleanup;
-- (void)_remoteObjectDiedNotification:(id)a3;
+- (void)_remoteObjectDiedNotification:(id)notification;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)localObjectDiedNotification:(id)a3;
-- (void)remoteObjectDiedNotification:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)localObjectDiedNotification:(id)notification;
+- (void)remoteObjectDiedNotification:(id)notification;
 @end
 
 @implementation IMAVDaemonController
@@ -126,9 +126,9 @@
   [(IMAVDaemonController *)&v9 dealloc];
 }
 
-- (BOOL)__isLocalObjectValidOnQueue:(id)a3
+- (BOOL)__isLocalObjectValidOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -141,9 +141,9 @@
   v9[5] = &v10;
   v5 = MEMORY[0x259C18E10](v9);
   v6 = v5;
-  if (v4)
+  if (queueCopy)
   {
-    dispatch_sync(v4, v5);
+    dispatch_sync(queueCopy, v5);
   }
 
   else
@@ -157,9 +157,9 @@
   return v7;
 }
 
-- (BOOL)__isRemoteObjectValidOnQueue:(id)a3
+- (BOOL)__isRemoteObjectValidOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -172,9 +172,9 @@
   v9[5] = &v10;
   v5 = MEMORY[0x259C18E10](v9);
   v6 = v5;
-  if (v4)
+  if (queueCopy)
   {
-    dispatch_sync(v4, v5);
+    dispatch_sync(queueCopy, v5);
   }
 
   else
@@ -367,39 +367,39 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (BOOL)addListenerID:(id)a3
+- (BOOL)addListenerID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = dCopy;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "Request to add listener with ID: %@", buf, 0xCu);
   }
 
-  v13 = objc_msgSend_length(v4, v6, v7, v8, v9);
-  if (v13 && (objc_msgSend_hasListenerForID_(self, v10, v4, v11, v12) & 1) == 0)
+  v13 = objc_msgSend_length(dCopy, v6, v7, v8, v9);
+  if (v13 && (objc_msgSend_hasListenerForID_(self, v10, dCopy, v11, v12) & 1) == 0)
   {
     listenerLockQueue = self->_listenerLockQueue;
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = sub_25477B5F8;
     v24 = &unk_2797832F0;
-    v25 = self;
-    v26 = v4;
+    selfCopy = self;
+    v26 = dCopy;
     dispatch_sync(listenerLockQueue, &v21);
-    objc_msgSend__listenerSetUpdated(self, v15, v16, v17, v18, v21, v22, v23, v24, v25);
+    objc_msgSend__listenerSetUpdated(self, v15, v16, v17, v18, v21, v22, v23, v24, selfCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v13 != 0;
 }
 
-- (BOOL)hasListenerForID:(id)a3
+- (BOOL)hasListenerForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -409,10 +409,10 @@
   block[1] = 3221225472;
   block[2] = sub_25477B7A0;
   block[3] = &unk_279783A38;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(listenerLockQueue, block);
   LOBYTE(listenerLockQueue) = *(v12 + 24);
 
@@ -420,19 +420,19 @@
   return listenerLockQueue;
 }
 
-- (BOOL)removeListenerID:(id)a3
+- (BOOL)removeListenerID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "Request to remove listener with ID: %@", &buf, 0xCu);
   }
 
-  if (objc_msgSend_length(v4, v6, v7, v8, v9))
+  if (objc_msgSend_length(dCopy, v6, v7, v8, v9))
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -444,7 +444,7 @@
     block[2] = sub_25477B964;
     block[3] = &unk_279783A60;
     block[4] = self;
-    v19 = v4;
+    v19 = dCopy;
     p_buf = &buf;
     dispatch_sync(listenerLockQueue, block);
     objc_msgSend__listenerSetUpdated(self, v11, v12, v13, v14);
@@ -462,10 +462,10 @@
   return v15 & 1;
 }
 
-- (BOOL)_makeConnectionWithCompletionBlock:(id)a3
+- (BOOL)_makeConnectionWithCompletionBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v9 = objc_msgSend_sharedInstance(MEMORY[0x277D192A8], v5, v6, v7, v8);
   IsShuttingDown = objc_msgSend_systemIsShuttingDown(v9, v10, v11, v12, v13);
 
@@ -560,9 +560,9 @@ LABEL_8:
 
       if (objc_msgSend_remoteObjectExists(self, v49, v50, v51, v52))
       {
-        if (v4)
+        if (blockCopy)
         {
-          v4[2](v4);
+          blockCopy[2](blockCopy);
         }
       }
 
@@ -576,7 +576,7 @@ LABEL_8:
         block[4] = self;
         v35 = v35;
         v58 = v35;
-        v59 = v4;
+        v59 = blockCopy;
         dispatch_sync(localObjectLockQueue, block);
 
         if (qword_27F610700 != -1)
@@ -722,7 +722,7 @@ LABEL_8:
   objc_msgSend__cleanUpConnection(self, v4, v5, v6, v7);
 }
 
-- (void)_localObjectDiedNotification:(id)a3
+- (void)_localObjectDiedNotification:(id)notification
 {
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -736,7 +736,7 @@ LABEL_8:
   byte_27F610708 = 0;
 }
 
-- (void)_remoteObjectDiedNotification:(id)a3
+- (void)_remoteObjectDiedNotification:(id)notification
 {
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -762,9 +762,9 @@ LABEL_8:
   }
 }
 
-- (void)localObjectDiedNotification:(id)a3
+- (void)localObjectDiedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -776,12 +776,12 @@ LABEL_8:
   objc_msgSend__noteDisconnected(v10, v11, v12, v13, v14);
 
   byte_27F610708 = 1;
-  objc_msgSend_performSelectorOnMainThread_withObject_waitUntilDone_(self, v15, sel__localObjectDiedNotification_, v4, 0);
+  objc_msgSend_performSelectorOnMainThread_withObject_waitUntilDone_(self, v15, sel__localObjectDiedNotification_, notificationCopy, 0);
 }
 
-- (void)remoteObjectDiedNotification:(id)a3
+- (void)remoteObjectDiedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v9 = objc_msgSend_listener(self, v5, v6, v7, v8);
   objc_msgSend__noteDisconnected(v9, v10, v11, v12, v13);
 
@@ -794,32 +794,32 @@ LABEL_8:
       _os_log_impl(&dword_254743000, v14, OS_LOG_TYPE_DEFAULT, "Disconnected from agent (remote)...", v16, 2u);
     }
 
-    objc_msgSend_performSelectorOnMainThread_withObject_waitUntilDone_(self, v15, sel__remoteObjectDiedNotification_, v4, 0);
+    objc_msgSend_performSelectorOnMainThread_withObject_waitUntilDone_(self, v15, sel__remoteObjectDiedNotification_, notificationCopy, 0);
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  types = protocol_getMethodDescription(&unk_28669DFF8, a3, 1, 1).types;
+  types = protocol_getMethodDescription(&unk_28669DFF8, selector, 1, 1).types;
   v6 = MEMORY[0x277CBEB08];
 
   return MEMORY[0x2821F9670](v6, sel_signatureWithObjCTypes_, types, v4, v5);
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   if (objc_msgSend_isConnected(self, v5, v6, v7, v8))
   {
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = sub_25477CF78;
     v20 = &unk_2797832F0;
-    v21 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = invocationCopy;
     v22 = v9;
     v10 = MEMORY[0x259C18E10](&v17);
-    objc_msgSend_retainArguments(v9, v11, v12, v13, v14, v17, v18, v19, v20, v21);
+    objc_msgSend_retainArguments(v9, v11, v12, v13, v14, v17, v18, v19, v20, selfCopy);
     dispatch_async(self->_remoteMessageQueue, v10);
 
     v15 = v22;
@@ -835,8 +835,8 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_25477CE94;
     block[3] = &unk_2797832F0;
-    v24 = v4;
-    v25 = self;
+    v24 = invocationCopy;
+    selfCopy2 = self;
     dispatch_sync(remoteDaemonLockQueue, block);
     v15 = v24;
     goto LABEL_5;

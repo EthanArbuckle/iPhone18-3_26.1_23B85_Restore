@@ -1,19 +1,19 @@
 @interface CKDAssetTokenRequestOperation
-- (CKDAssetTokenRequestOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDAssetTokenRequestOperation)initWithOperationInfo:(id)info container:(id)container;
 - (void)main;
 @end
 
 @implementation CKDAssetTokenRequestOperation
 
-- (CKDAssetTokenRequestOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDAssetTokenRequestOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDAssetTokenRequestOperation;
-  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_assetTokenRequest(v6, v7, v8);
+    v10 = objc_msgSend_assetTokenRequest(infoCopy, v7, v8);
     assetTokenRequest = v9->_assetTokenRequest;
     v9->_assetTokenRequest = v10;
   }

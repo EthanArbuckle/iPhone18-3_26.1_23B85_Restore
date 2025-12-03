@@ -1,7 +1,7 @@
 @interface ADEspressoInferenceDescriptor
-- (ADEspressoInferenceDescriptor)initWithUrl:(id)a3 layoutNames:(id)a4;
+- (ADEspressoInferenceDescriptor)initWithUrl:(id)url layoutNames:(id)names;
 - (NSString)configurationName;
-- (id)configurationNameForLayout:(unint64_t)a3;
+- (id)configurationNameForLayout:(unint64_t)layout;
 @end
 
 @implementation ADEspressoInferenceDescriptor
@@ -10,8 +10,8 @@
 {
   if ([(NSDictionary *)self->_layoutNames count]== 1)
   {
-    v3 = [(NSDictionary *)self->_layoutNames allValues];
-    v4 = [v3 objectAtIndexedSubscript:0];
+    allValues = [(NSDictionary *)self->_layoutNames allValues];
+    v4 = [allValues objectAtIndexedSubscript:0];
   }
 
   else
@@ -28,27 +28,27 @@
   return v4;
 }
 
-- (id)configurationNameForLayout:(unint64_t)a3
+- (id)configurationNameForLayout:(unint64_t)layout
 {
   layoutNames = self->_layoutNames;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:layout];
   v5 = [(NSDictionary *)layoutNames objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (ADEspressoInferenceDescriptor)initWithUrl:(id)a3 layoutNames:(id)a4
+- (ADEspressoInferenceDescriptor)initWithUrl:(id)url layoutNames:(id)names
 {
-  v7 = a3;
-  v8 = a4;
+  urlCopy = url;
+  namesCopy = names;
   v12.receiver = self;
   v12.super_class = ADEspressoInferenceDescriptor;
   v9 = [(ADEspressoInferenceDescriptor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_networkURL, a3);
-    objc_storeStrong(&v10->_layoutNames, a4);
+    objc_storeStrong(&v9->_networkURL, url);
+    objc_storeStrong(&v10->_layoutNames, names);
   }
 
   return v10;

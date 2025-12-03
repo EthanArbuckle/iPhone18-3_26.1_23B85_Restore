@@ -1,5 +1,5 @@
 @interface CTXPCGetOperatorNameResponse
-- (CTXPCGetOperatorNameResponse)initWithOperatorName:(id)a3;
+- (CTXPCGetOperatorNameResponse)initWithOperatorName:(id)name;
 - (NSString)operatorName;
 @end
 
@@ -7,19 +7,19 @@
 
 - (NSString)operatorName
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"operatorName"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"operatorName"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
 }
 
-- (CTXPCGetOperatorNameResponse)initWithOperatorName:(id)a3
+- (CTXPCGetOperatorNameResponse)initWithOperatorName:(id)name
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v10 = @"operatorName";
-  v11[0] = v4;
+  v11[0] = nameCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetOperatorNameResponse;

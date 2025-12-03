@@ -1,7 +1,7 @@
 @interface EVRoutingFeatureDiscoverySource
-- (BOOL)_shouldShowVehicleCombination:(id)a3;
+- (BOOL)_shouldShowVehicleCombination:(id)combination;
 - (BOOL)isAvailable;
-- (EVRoutingFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4;
+- (EVRoutingFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate;
 - (FeatureDiscoveryModel)model;
 - (FeatureDiscoverySourceDelegate)delegate;
 - (void)_didSelectModel;
@@ -10,10 +10,10 @@
 - (void)_loadUpairedVehicles;
 - (void)_markCurrentVehicleCombinationAsViewed;
 - (void)_reloadAvailability;
-- (void)setAvailable:(BOOL)a3;
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4;
-- (void)setUnpairedVehicles:(id)a3;
-- (void)virtualGarage:(id)a3 didUpdateUnpairedVehicles:(id)a4;
+- (void)setAvailable:(BOOL)available;
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection;
+- (void)setUnpairedVehicles:(id)vehicles;
+- (void)virtualGarage:(id)garage didUpdateUnpairedVehicles:(id)vehicles;
 @end
 
 @implementation EVRoutingFeatureDiscoverySource
@@ -54,9 +54,9 @@
   return WeakRetained;
 }
 
-- (void)virtualGarage:(id)a3 didUpdateUnpairedVehicles:(id)a4
+- (void)virtualGarage:(id)garage didUpdateUnpairedVehicles:(id)vehicles
 {
-  v5 = a4;
+  vehiclesCopy = vehicles;
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
   block[0] = _NSConcreteStackBlock;
@@ -64,8 +64,8 @@
   block[2] = sub_100F5EF58;
   block[3] = &unk_101661340;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = vehiclesCopy;
+  v7 = vehiclesCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v10);
@@ -90,12 +90,12 @@
   sub_100F359AC(v5);
 }
 
-- (BOOL)_shouldShowVehicleCombination:(id)a3
+- (BOOL)_shouldShowVehicleCombination:(id)combination
 {
-  v3 = a3;
-  if ([v3 count])
+  combinationCopy = combination;
+  if ([combinationCopy count])
   {
-    v4 = sub_100021DB0(v3, &stru_10165E3C0);
+    v4 = sub_100021DB0(combinationCopy, &stru_10165E3C0);
     v5 = [v4 sortedArrayUsingComparator:&stru_10165E400];
     v6 = [v5 componentsJoinedByString:@"_"];
   }
@@ -157,18 +157,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setUnpairedVehicles:(id)a3
+- (void)setUnpairedVehicles:(id)vehicles
 {
-  v5 = a3;
+  vehiclesCopy = vehicles;
   v6 = self->_unpairedVehicles;
-  v7 = v5;
+  v7 = vehiclesCopy;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_unpairedVehicles, a3);
+      objc_storeStrong(&self->_unpairedVehicles, vehicles);
       v9 = sub_100022C48();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
@@ -180,7 +180,7 @@
           {
             v28 = v9;
             v29 = v7;
-            v30 = self;
+            selfCopy = self;
             v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
             v31 = 0u;
             v32 = 0u;
@@ -251,7 +251,7 @@ LABEL_23:
                 v26 = [NSString stringWithFormat:@"<%p> [%@]", v13, v25];
 
                 v7 = v29;
-                self = v30;
+                self = selfCopy;
                 v11 = v27;
                 v9 = v28;
                 goto LABEL_26;
@@ -281,10 +281,10 @@ LABEL_26:
 
 - (FeatureDiscoveryModel)model
 {
-  v3 = [(EVRoutingFeatureDiscoverySource *)self isAvailable];
+  isAvailable = [(EVRoutingFeatureDiscoverySource *)self isAvailable];
   v4 = sub_10006250C();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (isAvailable)
   {
     if (v5)
     {
@@ -297,9 +297,9 @@ LABEL_26:
     v6 = self->_unpairedVehicles;
     if ([(NSArray *)v6 count]== 1)
     {
-      v7 = [(NSArray *)v6 firstObject];
-      v8 = [v7 pairedAppIdentifier];
-      v9 = v8 != 0;
+      firstObject = [(NSArray *)v6 firstObject];
+      pairedAppIdentifier = [firstObject pairedAppIdentifier];
+      v9 = pairedAppIdentifier != 0;
     }
 
     else
@@ -319,12 +319,12 @@ LABEL_26:
 
     if ((v9 | v11) == 1)
     {
-      v12 = [(NSArray *)v6 firstObject];
-      v13 = [v12 pairedAppIdentifier];
+      firstObject2 = [(NSArray *)v6 firstObject];
+      pairedAppIdentifier2 = [firstObject2 pairedAppIdentifier];
 
       v14 = +[UIScreen mainScreen];
       [v14 scale];
-      v15 = [UIImage _applicationIconImageForBundleIdentifier:v13 format:0 scale:?];
+      v15 = [UIImage _applicationIconImageForBundleIdentifier:pairedAppIdentifier2 format:0 scale:?];
     }
 
     else
@@ -340,18 +340,18 @@ LABEL_26:
     {
       if ([(NSArray *)v19 count]== 1 || sub_100F353B8(v19))
       {
-        v20 = [(NSArray *)v19 firstObject];
-        v21 = [v20 iapIdentifier];
-        if (v21 && ([v20 siriIntentsIdentifier], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, !v22))
+        firstObject3 = [(NSArray *)v19 firstObject];
+        iapIdentifier = [firstObject3 iapIdentifier];
+        if (iapIdentifier && ([firstObject3 siriIntentsIdentifier], v22 = objc_claimAutoreleasedReturnValue(), v22, iapIdentifier, !v22))
         {
           v28 = +[NSBundle mainBundle];
           v24 = [v28 localizedStringForKey:@"Try EV action button with single vehicle (CarPlay) [Action value:Route Planning table:{Feature Discovery, EV]", @"localized string not found", 0}];
 
-          v25 = [v20 manufacturer];
-          v26 = v25;
-          if (!v25)
+          manufacturer = [firstObject3 manufacturer];
+          displayName = manufacturer;
+          if (!manufacturer)
           {
-            v26 = [v20 displayName];
+            displayName = [firstObject3 displayName];
           }
         }
 
@@ -360,26 +360,26 @@ LABEL_26:
           v23 = +[NSBundle mainBundle];
           v24 = [v23 localizedStringForKey:@"Try EV action button with single vehicle (SiriIntents) [Action value:Route Planning table:{Feature Discovery, EV]", @"localized string not found", 0}];
 
-          v25 = [v20 manufacturer];
-          v26 = v25;
-          if (!v25)
+          manufacturer = [firstObject3 manufacturer];
+          displayName = manufacturer;
+          if (!manufacturer)
           {
-            v26 = [v20 displayName];
+            displayName = [firstObject3 displayName];
           }
         }
 
-        v27 = [NSString stringWithFormat:v24, v26];
-        if (!v25)
+        v27 = [NSString stringWithFormat:v24, displayName];
+        if (!manufacturer)
         {
 
-          v25 = 0;
+          manufacturer = 0;
         }
       }
 
       else
       {
-        v20 = +[NSBundle mainBundle];
-        v27 = [v20 localizedStringForKey:@"Try EV action button with multiple vehicles [Action value:Route Planning table:{Feature Discovery, EV]", @"localized string not found", 0}];
+        firstObject3 = +[NSBundle mainBundle];
+        v27 = [firstObject3 localizedStringForKey:@"Try EV action button with multiple vehicles [Action value:Route Planning table:{Feature Discovery, EV]", @"localized string not found", 0}];
       }
     }
 
@@ -426,7 +426,7 @@ LABEL_26:
   return v10;
 }
 
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection
 {
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -435,13 +435,13 @@ LABEL_26:
   block[2] = sub_100F6012C;
   block[3] = &unk_10165FBC0;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = type;
   dispatch_async(isolationQueue, block);
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
 }
 
-- (void)setAvailable:(BOOL)a3
+- (void)setAvailable:(BOOL)available
 {
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -450,7 +450,7 @@ LABEL_26:
   block[2] = sub_100F60244;
   block[3] = &unk_101661368;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  availableCopy = available;
   dispatch_async(isolationQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -475,28 +475,28 @@ LABEL_26:
   return v3;
 }
 
-- (EVRoutingFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4
+- (EVRoutingFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = EVRoutingFeatureDiscoverySource;
   v7 = [(EVRoutingFeatureDiscoverySource *)&v21 init];
   v8 = v7;
   if (v7)
   {
-    v7->_priority = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_priority = priority;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = [NSString stringWithFormat:@"com.apple.maps.featurediscovery.evrouting.isolation.%p", v8];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     isolationQueue = v8->_isolationQueue;
     v8->_isolationQueue = v12;
 
     v14 = [NSString stringWithFormat:@"com.apple.maps.featurediscovery.evrouting.callback.%p", v8];
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String2, v16);
     callbackQueue = v8->_callbackQueue;
     v8->_callbackQueue = v17;
 

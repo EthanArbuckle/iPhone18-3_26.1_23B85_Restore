@@ -1,32 +1,32 @@
 @interface DMCRMConfigurationsViewController
-- (DMCRMConfigurationsViewController)initWithRMConfigurationsSpecifierProvider:(id)a3 scope:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_rmConfigsChanged:(id)a3;
+- (DMCRMConfigurationsViewController)initWithRMConfigurationsSpecifierProvider:(id)provider scope:(int64_t)scope;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_rmConfigsChanged:(id)changed;
 - (void)_setSections;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation DMCRMConfigurationsViewController
 
-- (DMCRMConfigurationsViewController)initWithRMConfigurationsSpecifierProvider:(id)a3 scope:(int64_t)a4
+- (DMCRMConfigurationsViewController)initWithRMConfigurationsSpecifierProvider:(id)provider scope:(int64_t)scope
 {
-  v6 = a3;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = DMCRMConfigurationsViewController;
   v7 = [(DMCProfileTableViewController *)&v18 initWithStyle:2];
   if (v7)
   {
-    v8 = [MEMORY[0x277D03538] isSharediPad];
+    isSharediPad = [MEMORY[0x277D03538] isSharediPad];
     v9 = @"DMC_USER_CONFIGURATIONS_TITLE";
-    if (a4 == 1)
+    if (scope == 1)
     {
       v9 = @"DMC_DEVICE_CONFIGURATIONS_TITLE";
     }
 
-    if (v8)
+    if (isSharediPad)
     {
       v10 = v9;
     }
@@ -45,14 +45,14 @@
     v16.receiver = v7;
     v16.super_class = DMCRMConfigurationsViewController;
     [(DMCProfileTableViewController *)&v16 reloadTableOnContentSizeCategoryChange];
-    [(DMCRMConfigurationsViewController *)v7 setRmSpecifierProvider:v6];
-    v12 = [(DMCRMConfigurationsViewController *)v7 rmSpecifierProvider];
-    v13 = [(DMCRMConfigurationsViewController *)v7 tableView];
-    [v12 registerCustomCellClassesInTableView:v13];
+    [(DMCRMConfigurationsViewController *)v7 setRmSpecifierProvider:providerCopy];
+    rmSpecifierProvider = [(DMCRMConfigurationsViewController *)v7 rmSpecifierProvider];
+    tableView = [(DMCRMConfigurationsViewController *)v7 tableView];
+    [rmSpecifierProvider registerCustomCellClassesInTableView:tableView];
 
     [(DMCRMConfigurationsViewController *)v7 _setSections];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v7 selector:sel__rmConfigsChanged_ name:@"RMConfigurationsSpecifiersDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__rmConfigsChanged_ name:@"RMConfigurationsSpecifiersDidChangeNotification" object:0];
   }
 
   return v7;
@@ -60,17 +60,17 @@
 
 - (void)_setSections
 {
-  v3 = [(DMCRMConfigurationsViewController *)self rmSpecifierProvider];
-  v4 = [(DMCRMConfigurationsViewController *)self tableView];
-  v5 = [v3 tableSectionCellsForSpecifiersInTableView:v4];
+  rmSpecifierProvider = [(DMCRMConfigurationsViewController *)self rmSpecifierProvider];
+  tableView = [(DMCRMConfigurationsViewController *)self tableView];
+  v5 = [rmSpecifierProvider tableSectionCellsForSpecifiersInTableView:tableView];
   [(DMCRMConfigurationsViewController *)self setRmTableSectionCells:v5];
 
-  v7 = [(DMCRMConfigurationsViewController *)self rmSpecifierProvider];
-  v6 = [v7 sectionTitles];
-  [(DMCRMConfigurationsViewController *)self setRmSectionTitles:v6];
+  rmSpecifierProvider2 = [(DMCRMConfigurationsViewController *)self rmSpecifierProvider];
+  sectionTitles = [rmSpecifierProvider2 sectionTitles];
+  [(DMCRMConfigurationsViewController *)self setRmSectionTitles:sectionTitles];
 }
 
-- (void)_rmConfigsChanged:(id)a3
+- (void)_rmConfigsChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -97,59 +97,59 @@ void __55__DMCRMConfigurationsViewController__rmConfigsChanged___block_invoke(ui
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
-  v4 = [v3 count];
+  rmTableSectionCells = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
+  v4 = [rmTableSectionCells count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  rmTableSectionCells = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
+  v6 = [rmTableSectionCells objectAtIndexedSubscript:section];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(DMCRMConfigurationsViewController *)self rmSectionTitles];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  rmSectionTitles = [(DMCRMConfigurationsViewController *)self rmSectionTitles];
+  v6 = [rmSectionTitles objectAtIndexedSubscript:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-  v8 = [v5 row];
+  pathCopy = path;
+  rmTableSectionCells = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
+  v7 = [rmTableSectionCells objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v9, "section")}];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
-  v8 = [v7 detailViewController];
+  pathCopy = path;
+  rmTableSectionCells = [(DMCRMConfigurationsViewController *)self rmTableSectionCells];
+  v6 = [rmTableSectionCells objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  detailViewController = [v7 detailViewController];
 
-  if (v8)
+  if (detailViewController)
   {
-    [(UIViewController *)self dmc_pushViewController:v8 animated:1];
+    [(UIViewController *)self dmc_pushViewController:detailViewController animated:1];
   }
 
   else
   {
-    NSLog(&cfstr_Dmcrmconfigura.isa, v9);
+    NSLog(&cfstr_Dmcrmconfigura.isa, pathCopy);
   }
 }
 

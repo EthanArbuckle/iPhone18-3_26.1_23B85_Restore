@@ -1,24 +1,24 @@
 @interface IDSBTLink
-- (IDSBTLink)initWithPipe:(id)a3 useSkywalkChannel:(BOOL)a4 withDeviceUniqueID:(id)a5 cbuuid:(id)a6;
+- (IDSBTLink)initWithPipe:(id)pipe useSkywalkChannel:(BOOL)channel withDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (IDSLinkDelegate)alternateDelegate;
 - (IDSLinkDelegate)delegate;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4;
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)_dumpLogs:(double)a3 isDownstream:(BOOL)a4;
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link;
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)_dumpLogs:(double)logs isDownstream:(BOOL)downstream;
 - (void)_localDetectedCorruption;
 - (void)_processIncomingPacket;
 - (void)_processOutgoingPacket;
 - (void)_resetMagnetCorruptionMetrics;
 - (void)_submitMagnetCorruptionMetricsToAWD;
 - (void)dealloc;
-- (void)flushBuffer:(unint64_t)a3;
-- (void)injectFakePacket:(id *)a3;
+- (void)flushBuffer:(unint64_t)buffer;
+- (void)injectFakePacket:(id *)packet;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)remoteDetectedCorruption;
 - (void)start;
-- (void)suspendLink:(BOOL)a3;
+- (void)suspendLink:(BOOL)link;
 @end
 
 @implementation IDSBTLink
@@ -35,29 +35,29 @@
   return v8;
 }
 
-- (IDSBTLink)initWithPipe:(id)a3 useSkywalkChannel:(BOOL)a4 withDeviceUniqueID:(id)a5 cbuuid:(id)a6
+- (IDSBTLink)initWithPipe:(id)pipe useSkywalkChannel:(BOOL)channel withDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  pipeCopy = pipe;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v34.receiver = self;
   v34.super_class = IDSBTLink;
   v14 = [(IDSBTLink *)&v34 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pipe, a3);
+    objc_storeStrong(&v14->_pipe, pipe);
     *buffer = -1;
-    if (v8)
+    if (channelCopy)
     {
-      v16 = [v11 channel];
+      channel = [pipeCopy channel];
       v17 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         pipe = v15->_pipe;
         *buf = 134218242;
-        *v36 = v16;
+        *v36 = channel;
         *&v36[8] = 2112;
         *&v36[10] = pipe;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "retrieved os channel %p from pipe %@", buf, 0x16u);
@@ -67,19 +67,19 @@
       {
         if (_IDSShouldLogTransport())
         {
-          v30 = v16;
+          v30 = channel;
           v31 = v15->_pipe;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v30 = v16;
+            v30 = channel;
             v31 = v15->_pipe;
             _IDSLogV();
           }
         }
       }
 
-      if (v16)
+      if (channel)
       {
         goto LABEL_19;
       }
@@ -126,7 +126,7 @@ LABEL_19:
         v15->_dataChannel = IDSOSDataChannelCreate();
         v15->_dataChannelPendingTx = 0;
         objc_storeStrong(&v15->_cbuuid, kIDSDefaultPairedDeviceID);
-        objc_storeStrong(&v15->_deviceUniqueID, a5);
+        objc_storeStrong(&v15->_deviceUniqueID, d);
         v15->_state = 2;
         if (qword_100CBF5D0 != -1)
         {
@@ -135,8 +135,8 @@ LABEL_19:
 
         v15->_previousReportTime = *&qword_100CBF5D8 * mach_continuous_time();
         *&v15->_remoteHostAwake = 1;
-        v24 = [v11 peer];
-        [v24 addObserver:v15 forKeyPath:@"hostState" options:0 context:0];
+        peer = [pipeCopy peer];
+        [peer addObserver:v15 forKeyPath:@"hostState" options:0 context:0];
 
         goto LABEL_22;
       }
@@ -235,8 +235,8 @@ LABEL_36:
     }
   }
 
-  v5 = [(CBScalablePipe *)self->_pipe peer];
-  [v5 removeObserver:self forKeyPath:@"hostState" context:0];
+  peer = [(CBScalablePipe *)self->_pipe peer];
+  [peer removeObserver:self forKeyPath:@"hostState" context:0];
 
   v6 = self->_pipe;
   self->_pipe = 0;
@@ -279,9 +279,9 @@ LABEL_36:
   [(IDSBTLink *)self _dumpLogs:1 isDownstream:v3];
 }
 
-- (void)_dumpLogs:(double)a3 isDownstream:(BOOL)a4
+- (void)_dumpLogs:(double)logs isDownstream:(BOOL)downstream
 {
-  if (a4)
+  if (downstream)
   {
     v5 = 200;
   }
@@ -291,7 +291,7 @@ LABEL_36:
     v5 = 208;
   }
 
-  if (a3 - *(&self->super.isa + v5) > 60.0)
+  if (logs - *(&self->super.isa + v5) > 60.0)
   {
     if (IMGetDomainBoolForKey())
     {
@@ -302,7 +302,7 @@ LABEL_36:
       v13[1] = v8;
       v13[2] = v8;
       v13[0] = v8;
-      snprintf(v13, 0x50uLL, "/bin/cp /dev/uart.log /tmp/uart-%.06f.log", a3);
+      snprintf(v13, 0x50uLL, "/bin/cp /dev/uart.log /tmp/uart-%.06f.log", logs);
       IMPerformSystem();
       v9 = dispatch_time(0, 5000000000);
       v10 = im_primary_queue();
@@ -310,7 +310,7 @@ LABEL_36:
       block[1] = 3221225472;
       block[2] = sub_1006DD79C;
       block[3] = &unk_100BDFD48;
-      v16 = a4;
+      downstreamCopy = downstream;
       dispatch_after(v9, v10, block);
     }
 
@@ -351,7 +351,7 @@ LABEL_36:
     }
 
     IMSubmitSimpleAWDMetric();
-    *(&self->super.isa + v5) = a3;
+    *(&self->super.isa + v5) = logs;
   }
 }
 
@@ -457,20 +457,20 @@ LABEL_36:
   }
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ([v9 isEqualToString:self->_cbuuid] & 1) == 0)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v10 = cbuuidCopy;
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
     _IDSLinkPacketBufferRelease();
     v12 = 10;
     goto LABEL_10;
   }
 
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = buffer->var0;
+  if (!buffer->var0)
   {
     _IDSLinkPacketBufferRelease();
     v12 = 9;
@@ -494,20 +494,20 @@ LABEL_36:
   {
     v15 = bufferChecksum();
     IDSLinkPacketBufferAddBufferStart();
-    *a3->var0 = v14;
-    a3->var0[1] = HIBYTE(v15);
-    a3->var0[2] = v15;
+    *buffer->var0 = v14;
+    buffer->var0[1] = HIBYTE(v15);
+    buffer->var0[2] = v15;
   }
 
-  var2 = a3->var2;
+  var2 = buffer->var2;
   if (var2 > 127)
   {
     v18 = (var2 >> 8) | 0xFFFFFF80;
-    if (var2 + 2 <= a3->var1)
+    if (var2 + 2 <= buffer->var1)
     {
       IDSLinkPacketBufferAddBufferStart();
-      *a3->var0 = v18;
-      a3->var0[1] = var2;
+      *buffer->var0 = v18;
+      buffer->var0[1] = var2;
     }
 
     else
@@ -515,35 +515,35 @@ LABEL_36:
       v19 = _IDSLinkPacketBufferCreate();
       *v19->var0 = v18;
       v19->var0[1] = var2;
-      memcpy(v19->var0 + 2, a3->var0, var2);
+      memcpy(v19->var0 + 2, buffer->var0, var2);
       v19->var2 = var2 + 2;
       _IDSLinkPacketBufferRelease();
-      a3 = v19;
+      buffer = v19;
     }
   }
 
   else
   {
-    v17 = a3->var0--;
-    a3->var2 = var2 + 1;
+    v17 = buffer->var0--;
+    buffer->var2 = var2 + 1;
     *(v17 - 1) = var2;
   }
 
-  a3->var3 = a3->var2;
-  a3->var9 = 1;
+  buffer->var3 = buffer->var2;
+  buffer->var9 = 1;
   v20 = IDSOSDataChannelWrite();
   v21 = *__error();
   v22 = +[IDSFoundationLog BTLink];
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = a3->var2;
-    var26 = a3->var26;
+    v23 = buffer->var2;
+    var26 = buffer->var26;
     if (!var26)
     {
       var26 = 42;
     }
 
-    var27 = a3->var27;
+    var27 = buffer->var27;
     *buf = 67110144;
     v31 = v20;
     v32 = 1024;
@@ -570,13 +570,13 @@ LABEL_6:
     v27 = +[IDSFoundationLog BTLink];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = a3->var26;
+      v28 = buffer->var26;
       if (!v28)
       {
         v28 = 42;
       }
 
-      v29 = a3->var27;
+      v29 = buffer->var27;
       *buf = 67109632;
       v31 = v21;
       v32 = 1024;
@@ -598,10 +598,10 @@ LABEL_6:
   else
   {
     IDSLinkPacketBufferAddBufferStart();
-    if (!a3->var2)
+    if (!buffer->var2)
     {
       v26 = vdupq_n_s64(1uLL);
-      v26.i64[0] = a3->var3;
+      v26.i64[0] = buffer->var3;
       *&self->_totalBytesSent = vaddq_s64(*&self->_totalBytesSent, v26);
       _IDSLinkPacketBufferRelease();
       if ((v14 & 0x20) != 0)
@@ -614,7 +614,7 @@ LABEL_6:
     }
   }
 
-  self->_currentOutgoingPacket = a3;
+  self->_currentOutgoingPacket = buffer;
   if (self->_writeSuspended)
   {
     IDSOSDataChannelFd();
@@ -628,34 +628,34 @@ LABEL_10:
   return v12;
 }
 
-- (void)flushBuffer:(unint64_t)a3
+- (void)flushBuffer:(unint64_t)buffer
 {
-  if (a3 >= 2)
+  if (buffer >= 2)
   {
     sub_1009335C0();
   }
 
-  v4 = a3 == 0;
+  v4 = buffer == 0;
   p_dataChannelPendingTx = &self->_dataChannelPendingTx;
   dataChannel = self->_dataChannel;
 
   _IDSOSDataChannelSync(dataChannel, v4, p_dataChannelPendingTx);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(CBScalablePipe *)self->_pipe peer];
-  v13 = v12;
-  if (v12)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  peer = [(CBScalablePipe *)self->_pipe peer];
+  v13 = peer;
+  if (peer)
   {
-    if ([v12 hostState])
+    if ([peer hostState])
     {
-      v14 = [v13 hostState];
-      v15 = v14 != 1;
-      if (v14 == 1)
+      hostState = [v13 hostState];
+      v15 = hostState != 1;
+      if (hostState == 1)
       {
         v16 = @"asleep";
       }
@@ -1583,7 +1583,7 @@ LABEL_28:
   }
 }
 
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link
 {
   if (self->_previousReportTime == 0.0)
   {
@@ -1593,7 +1593,7 @@ LABEL_28:
   else
   {
     state = self->_state;
-    if (a4)
+    if (link)
     {
       v7 = 42;
     }
@@ -1628,7 +1628,7 @@ LABEL_28:
     v9 = [NSString stringWithFormat:@"%c Magnet    (%s) Tx %6llu pkts %@B %@bps     %6llu pkts %@B\n                        Rx %6llu pkts %@B %@bps     %6llu pkts %@B\n", v23, v22, v21, v10, v11, totalPacketsSent, v13, v14, v15, v16, totalPacketsReceived, v18];
   }
 
-  self->_previousReportTime = a3;
+  self->_previousReportTime = report;
   v19 = *&self->_totalBytesReceived;
   *&self->_previousBytesSent = *&self->_totalBytesSent;
   *&self->_previousBytesReceived = v19;
@@ -1636,9 +1636,9 @@ LABEL_28:
   return v9;
 }
 
-- (void)suspendLink:(BOOL)a3
+- (void)suspendLink:(BOOL)link
 {
-  if (a3)
+  if (link)
   {
     if (!self->_linkSuspended)
     {
@@ -1705,7 +1705,7 @@ LABEL_28:
   }
 }
 
-- (void)injectFakePacket:(id *)a3
+- (void)injectFakePacket:(id *)packet
 {
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1726,7 +1726,7 @@ LABEL_28:
     }
   }
 
-  self->_currentIncomingPacket = a3;
+  self->_currentIncomingPacket = packet;
   [(IDSBTLink *)self _processIncomingPacket];
 }
 

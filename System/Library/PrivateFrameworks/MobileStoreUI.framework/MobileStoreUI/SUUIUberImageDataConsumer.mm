@@ -1,26 +1,26 @@
 @interface SUUIUberImageDataConsumer
-- (id)imageForImage:(id)a3;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SUUIUberImageDataConsumer
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   v6 = v5;
-  [v4 size];
+  [imageCopy size];
   v8 = v7;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
   v39.width = v6;
   v39.height = v8;
   UIGraphicsBeginImageContextWithOptions(v39, 1, v11);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  [v4 drawInRect:{0.0, 0.0, v6, v8}];
+  [imageCopy drawInRect:{0.0, 0.0, v6, v8}];
   if (self->_backgroundColor)
   {
     c = CurrentContext;
@@ -45,19 +45,19 @@
     values[3] = v21;
     v22 = CFArrayCreate(0, values, 4, MEMORY[0x277CBF128]);
     v23 = CGGradientCreateWithColors(DeviceRGB, v22, locations);
-    [v4 size];
+    [imageCopy size];
     v25 = v24;
-    v26 = [MEMORY[0x277D75418] currentDevice];
-    v27 = [v26 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v28 = 70.0;
-    if ((v27 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v28 = 30.0;
     }
 
     v29 = v25 - v28;
-    [v4 size];
+    [imageCopy size];
     v41.y = v30;
     v40.x = 0.0;
     v41.x = 0.0;

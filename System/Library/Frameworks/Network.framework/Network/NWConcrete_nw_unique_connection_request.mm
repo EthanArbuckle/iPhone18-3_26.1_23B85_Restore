@@ -9,8 +9,8 @@
 - (NSString)description
 {
   v42 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
     v24 = __nwlog_obj();
     *buf = 136446210;
@@ -84,9 +84,9 @@ LABEL_48:
     goto LABEL_50;
   }
 
-  v3 = v2;
+  v3 = selfCopy;
   memset(out, 0, 37);
-  uuid_unparse(v2->uuid, out);
+  uuid_unparse(selfCopy->uuid, out);
   connection = v3->connection;
   if (connection)
   {
@@ -248,7 +248,7 @@ LABEL_51:
   *buf = 136446466;
   v20 = "[NWConcrete_nw_unique_connection_request dealloc]";
   v21 = 2114;
-  v22 = self;
+  selfCopy5 = self;
   v15 = 22;
   v14 = buf;
   v7 = _os_log_send_and_compose_impl();
@@ -268,7 +268,7 @@ LABEL_51:
         *buf = 136446466;
         v20 = "[NWConcrete_nw_unique_connection_request dealloc]";
         v21 = 2114;
-        v22 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_181A37000, v8, v9, "%{public}s Dealloc of %{public}@ with requestCompletionBlock present", buf, 0x16u);
       }
     }
@@ -288,7 +288,7 @@ LABEL_51:
           *buf = 136446722;
           v20 = "[NWConcrete_nw_unique_connection_request dealloc]";
           v21 = 2114;
-          v22 = self;
+          selfCopy5 = self;
           v23 = 2082;
           v24 = backtrace_string;
           _os_log_impl(&dword_181A37000, v8, v11, "%{public}s Dealloc of %{public}@ with requestCompletionBlock present, dumping backtrace:%{public}s", buf, 0x20u);
@@ -308,7 +308,7 @@ LABEL_51:
         *buf = 136446466;
         v20 = "[NWConcrete_nw_unique_connection_request dealloc]";
         v21 = 2114;
-        v22 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_181A37000, v8, v11, "%{public}s Dealloc of %{public}@ with requestCompletionBlock present, no backtrace", buf, 0x16u);
       }
     }
@@ -324,7 +324,7 @@ LABEL_51:
         *buf = 136446466;
         v20 = "[NWConcrete_nw_unique_connection_request dealloc]";
         v21 = 2114;
-        v22 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_181A37000, v8, v13, "%{public}s Dealloc of %{public}@ with requestCompletionBlock present, backtrace limit exceeded", buf, 0x16u);
       }
     }

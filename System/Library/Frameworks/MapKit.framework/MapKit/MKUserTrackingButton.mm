@@ -3,78 +3,78 @@
 - (CGSize)intrinsicContentSize;
 - (MKMapView)mapView;
 - (MKUserTrackingButton)init;
-- (MKUserTrackingButton)initWithFrame:(CGRect)a3;
-- (MKUserTrackingButton)initWithFrame:(CGRect)a3 button:(id)a4;
-- (void)_setControlSize:(unint64_t)a3;
-- (void)addInteraction:(id)a3;
+- (MKUserTrackingButton)initWithFrame:(CGRect)frame;
+- (MKUserTrackingButton)initWithFrame:(CGRect)frame button:(id)button;
+- (void)_setControlSize:(unint64_t)size;
+- (void)addInteraction:(id)interaction;
 - (void)layoutSubviews;
-- (void)removeInteraction:(id)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
+- (void)removeInteraction:(id)interaction;
+- (void)setBackgroundStyle:(unint64_t)style;
 - (void)setMapView:(MKMapView *)mapView;
 @end
 
 @implementation MKUserTrackingButton
 
-- (void)removeInteraction:(id)a3
+- (void)removeInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     WeakRetained = objc_loadWeakRetained(&self->_button);
-    [WeakRetained removeInteraction:v4];
+    [WeakRetained removeInteraction:interactionCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MKUserTrackingButton;
-    [(MKUserTrackingButton *)&v6 removeInteraction:v4];
+    [(MKUserTrackingButton *)&v6 removeInteraction:interactionCopy];
   }
 }
 
-- (void)addInteraction:(id)a3
+- (void)addInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     WeakRetained = objc_loadWeakRetained(&self->_button);
-    [WeakRetained addInteraction:v4];
+    [WeakRetained addInteraction:interactionCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MKUserTrackingButton;
-    [(MKUserTrackingButton *)&v6 addInteraction:v4];
+    [(MKUserTrackingButton *)&v6 addInteraction:interactionCopy];
   }
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
-    if (a3)
+    self->_backgroundStyle = style;
+    if (style)
     {
       v4 = +[MKSystemController sharedInstance];
-      v5 = [v4 isGlassEnabled];
+      isGlassEnabled = [v4 isGlassEnabled];
 
-      if ((v5 & 1) == 0)
+      if ((isGlassEnabled & 1) == 0)
       {
-        v6 = [(MKUserTrackingButton *)self layer];
+        layer = [(MKUserTrackingButton *)self layer];
         LODWORD(v7) = 1.0;
-        [v6 setShadowOpacity:v7];
+        [layer setShadowOpacity:v7];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_button);
       [WeakRetained _setSelectsWhenTracking:0];
 
       v9 = +[MKSystemController sharedInstance];
-      v10 = [v9 isGlassEnabled];
+      isGlassEnabled2 = [v9 isGlassEnabled];
 
-      if ((v10 & 1) == 0 && !self->_effectView)
+      if ((isGlassEnabled2 & 1) == 0 && !self->_effectView)
       {
         v11 = objc_alloc(MEMORY[0x1E69DD298]);
         v12 = [v11 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -85,15 +85,15 @@
         [(UIVisualEffectView *)self->_effectView setEffect:v14];
 
         [(UIVisualEffectView *)self->_effectView setUserInteractionEnabled:0];
-        v15 = [(UIVisualEffectView *)self->_effectView layer];
-        [v15 setMasksToBounds:1];
+        layer2 = [(UIVisualEffectView *)self->_effectView layer];
+        [layer2 setMasksToBounds:1];
       }
 
       [(MKUserTrackingButton *)self invalidateIntrinsicContentSize];
       v16 = +[MKSystemController sharedInstance];
-      v17 = [v16 isGlassEnabled];
+      isGlassEnabled3 = [v16 isGlassEnabled];
 
-      if (v17)
+      if (isGlassEnabled3)
       {
         [(MKUserTrackingButton *)self _mapkit_setGlassBackground];
       }
@@ -112,9 +112,9 @@
       [v18 _setSelectsWhenTracking:1];
 
       v19 = +[MKSystemController sharedInstance];
-      v20 = [v19 isGlassEnabled];
+      isGlassEnabled4 = [v19 isGlassEnabled];
 
-      if (v20)
+      if (isGlassEnabled4)
       {
         [(MKUserTrackingButton *)self _mapkit_clearGlassBackground];
       }
@@ -126,24 +126,24 @@
 
       [(MKUserTrackingButton *)self invalidateIntrinsicContentSize];
       v21 = +[MKSystemController sharedInstance];
-      v22 = [v21 isGlassEnabled];
+      isGlassEnabled5 = [v21 isGlassEnabled];
 
-      if ((v22 & 1) == 0)
+      if ((isGlassEnabled5 & 1) == 0)
       {
-        v23 = [(MKUserTrackingButton *)self layer];
-        [v23 setShadowOpacity:0.0];
+        layer3 = [(MKUserTrackingButton *)self layer];
+        [layer3 setShadowOpacity:0.0];
       }
     }
   }
 }
 
-- (void)_setControlSize:(unint64_t)a3
+- (void)_setControlSize:(unint64_t)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     WeakRetained = objc_loadWeakRetained(&self->_button);
-    [WeakRetained setControlSize:a3];
+    [WeakRetained setControlSize:size];
 
     [(MKUserTrackingButton *)self invalidateIntrinsicContentSize];
   }
@@ -168,16 +168,16 @@
   {
     [(MKUserTrackingButton *)self bounds];
     v12 = CGRectGetWidth(v34) * 0.5;
-    v13 = [(MKUserTrackingButton *)self layer];
-    [v13 setCornerRadius:v12];
+    layer = [(MKUserTrackingButton *)self layer];
+    [layer setCornerRadius:v12];
 
-    v14 = [(UIVisualEffectView *)self->_effectView layer];
-    [v14 setCornerRadius:v12];
+    layer2 = [(UIVisualEffectView *)self->_effectView layer];
+    [layer2 setCornerRadius:v12];
 
     v15 = +[MKSystemController sharedInstance];
-    v16 = [v15 isGlassEnabled];
+    isGlassEnabled = [v15 isGlassEnabled];
 
-    if (v16)
+    if (isGlassEnabled)
     {
       return;
     }
@@ -209,8 +209,8 @@
     v21 = v20;
   }
 
-  v22 = [(MKUserTrackingButton *)self layer];
-  [v22 setCornerRadius:v21];
+  layer3 = [(MKUserTrackingButton *)self layer];
+  [layer3 setCornerRadius:v21];
 
   v23 = self->_controlSize;
   if (v23 == 1)
@@ -233,22 +233,22 @@
     v25 = v24;
   }
 
-  v26 = [(UIVisualEffectView *)self->_effectView layer];
-  [v26 setCornerRadius:v25];
+  layer4 = [(UIVisualEffectView *)self->_effectView layer];
+  [layer4 setCornerRadius:v25];
 
   v27 = +[MKSystemController sharedInstance];
-  v28 = [v27 isGlassEnabled];
+  isGlassEnabled2 = [v27 isGlassEnabled];
 
-  if ((v28 & 1) == 0)
+  if ((isGlassEnabled2 & 1) == 0)
   {
     v29 = MEMORY[0x1E69DC728];
     [(MKUserTrackingButton *)self bounds];
     v18 = [v29 bezierPathWithRoundedRect:? cornerRadius:?];
 LABEL_18:
     v30 = v18;
-    v31 = [v18 CGPath];
-    v32 = [(MKUserTrackingButton *)self layer];
-    [v32 setShadowPath:v31];
+    cGPath = [v18 CGPath];
+    layer5 = [(MKUserTrackingButton *)self layer];
+    [layer5 setShadowPath:cGPath];
   }
 }
 
@@ -286,9 +286,9 @@ LABEL_11:
   }
 
 LABEL_12:
-  v6 = [(MKUserTrackingButton *)self backgroundStyle];
+  backgroundStyle = [(MKUserTrackingButton *)self backgroundStyle];
   v7 = v4;
-  if (v6 == 2)
+  if (backgroundStyle == 2)
   {
     goto LABEL_20;
   }
@@ -345,67 +345,67 @@ LABEL_20:
   return v4;
 }
 
-- (MKUserTrackingButton)initWithFrame:(CGRect)a3
+- (MKUserTrackingButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [_MKUserTrackingButton buttonWithMapView:0];
-  v9 = [(MKUserTrackingButton *)self initWithFrame:v8 button:x, y, width, height];
+  height = [(MKUserTrackingButton *)self initWithFrame:v8 button:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (MKUserTrackingButton)initWithFrame:(CGRect)a3 button:(id)a4
+- (MKUserTrackingButton)initWithFrame:(CGRect)frame button:(id)button
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  buttonCopy = button;
   v27.receiver = self;
   v27.super_class = MKUserTrackingButton;
-  v10 = [(MKUserTrackingButton *)&v27 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(MKUserTrackingButton *)&v27 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v10->_controlSize = 1;
-    v12 = objc_storeWeak(&v10->_button, v9);
-    [v9 setControlSize:1];
+    height->_controlSize = 1;
+    v12 = objc_storeWeak(&height->_button, buttonCopy);
+    [buttonCopy setControlSize:1];
 
     WeakRetained = objc_loadWeakRetained(&v11->_button);
     [(MKUserTrackingButton *)v11 addSubview:WeakRetained];
 
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKUserTrackingButton *)v11 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKUserTrackingButton *)v11 setBackgroundColor:clearColor];
 
     [(MKUserTrackingButton *)v11 setNeedsLayout];
     v15 = +[MKUsageCounter sharedCounter];
     [v15 count:4];
 
     v16 = +[MKSystemController sharedInstance];
-    v17 = [v16 isGlassEnabled];
+    isGlassEnabled = [v16 isGlassEnabled];
 
-    if ((v17 & 1) == 0)
+    if ((isGlassEnabled & 1) == 0)
     {
-      v18 = [(MKUserTrackingButton *)v11 layer];
-      [v18 setShadowRadius:8.0];
+      layer = [(MKUserTrackingButton *)v11 layer];
+      [layer setShadowRadius:8.0];
 
-      v19 = [(MKUserTrackingButton *)v11 layer];
-      [v19 setShadowOffset:{0.0, 2.0}];
+      layer2 = [(MKUserTrackingButton *)v11 layer];
+      [layer2 setShadowOffset:{0.0, 2.0}];
 
-      v20 = [MEMORY[0x1E69DC888] blackColor];
-      v21 = [v20 colorWithAlphaComponent:0.0799999982];
-      v22 = [v21 CGColor];
-      v23 = [(MKUserTrackingButton *)v11 layer];
-      [v23 setShadowColor:v22];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v21 = [blackColor colorWithAlphaComponent:0.0799999982];
+      cGColor = [v21 CGColor];
+      layer3 = [(MKUserTrackingButton *)v11 layer];
+      [layer3 setShadowColor:cGColor];
 
-      v24 = [(MKUserTrackingButton *)v11 layer];
-      [v24 setShadowOpacity:0.0];
+      layer4 = [(MKUserTrackingButton *)v11 layer];
+      [layer4 setShadowOpacity:0.0];
 
-      v25 = [(MKUserTrackingButton *)v11 layer];
-      [v25 setMasksToBounds:0];
+      layer5 = [(MKUserTrackingButton *)v11 layer];
+      [layer5 setMasksToBounds:0];
     }
   }
 
@@ -422,15 +422,15 @@ LABEL_20:
 - (MKMapView)mapView
 {
   WeakRetained = objc_loadWeakRetained(&self->_button);
-  v3 = [WeakRetained mapView];
+  mapView = [WeakRetained mapView];
 
-  return v3;
+  return mapView;
 }
 
 + (MKUserTrackingButton)userTrackingButtonWithMapView:(MKMapView *)mapView
 {
   v4 = mapView;
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   [v5 setMapView:v4];
 
   return v5;

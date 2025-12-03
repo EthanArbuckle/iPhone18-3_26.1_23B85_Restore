@@ -1,13 +1,13 @@
 @interface SVXSpeechSynthesisWordTiming
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXSpeechSynthesisWordTiming)initWithCoder:(id)a3;
-- (SVXSpeechSynthesisWordTiming)initWithRange:(_NSRange)a3 timeInterval:(double)a4;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXSpeechSynthesisWordTiming)initWithCoder:(id)coder;
+- (SVXSpeechSynthesisWordTiming)initWithRange:(_NSRange)range timeInterval:(double)interval;
 - (_NSRange)range;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXSpeechSynthesisWordTiming
@@ -21,38 +21,38 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCAE60];
   location = self->_range.location;
   length = self->_range.length;
-  v7 = a3;
+  coderCopy = coder;
   v8 = [v4 valueWithRange:{location, length}];
-  [v7 encodeObject:v8 forKey:@"SVXSpeechSynthesisWordTiming::range"];
+  [coderCopy encodeObject:v8 forKey:@"SVXSpeechSynthesisWordTiming::range"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeInterval];
-  [v7 encodeObject:v9 forKey:@"SVXSpeechSynthesisWordTiming::timeInterval"];
+  [coderCopy encodeObject:v9 forKey:@"SVXSpeechSynthesisWordTiming::timeInterval"];
 }
 
-- (SVXSpeechSynthesisWordTiming)initWithCoder:(id)a3
+- (SVXSpeechSynthesisWordTiming)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisWordTiming::range"];
-  v6 = [v5 rangeValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisWordTiming::range"];
+  rangeValue = [v5 rangeValue];
   v8 = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisWordTiming::timeInterval"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisWordTiming::timeInterval"];
 
   [v9 doubleValue];
   v11 = v10;
 
-  return [(SVXSpeechSynthesisWordTiming *)self initWithRange:v6 timeInterval:v8, v11];
+  return [(SVXSpeechSynthesisWordTiming *)self initWithRange:rangeValue timeInterval:v8, v11];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v7 = 0;
       if (self->_range.location == [(SVXSpeechSynthesisWordTiming *)v5 range]&& self->_range.length == v6)
       {
@@ -91,7 +91,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v9.receiver = self;
@@ -103,10 +103,10 @@
   return v7;
 }
 
-- (SVXSpeechSynthesisWordTiming)initWithRange:(_NSRange)a3 timeInterval:(double)a4
+- (SVXSpeechSynthesisWordTiming)initWithRange:(_NSRange)range timeInterval:(double)interval
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8.receiver = self;
   v8.super_class = SVXSpeechSynthesisWordTiming;
   result = [(SVXSpeechSynthesisWordTiming *)&v8 init];
@@ -114,42 +114,42 @@
   {
     result->_range.location = location;
     result->_range.length = length;
-    result->_timeInterval = a4;
+    result->_timeInterval = interval;
   }
 
   return result;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXSpeechSynthesisWordTimingMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXSpeechSynthesisWordTimingMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXSpeechSynthesisWordTimingMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXSpeechSynthesisWordTiming *)self copy];
+    generate = [(SVXSpeechSynthesisWordTiming *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXSpeechSynthesisWordTimingMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXSpeechSynthesisWordTimingMutation *)v4 generate];
+  generate = [(_SVXSpeechSynthesisWordTimingMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

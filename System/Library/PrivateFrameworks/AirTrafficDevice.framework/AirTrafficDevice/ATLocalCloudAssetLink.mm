@@ -1,17 +1,17 @@
 @interface ATLocalCloudAssetLink
 - (ATAssetLinkDelegate)delegate;
-- (ATLocalCloudAssetLink)initWithMessageLink:(id)a3;
-- (BOOL)canEnqueueAsset:(id)a3;
+- (ATLocalCloudAssetLink)initWithMessageLink:(id)link;
+- (BOOL)canEnqueueAsset:(id)asset;
 - (BOOL)open;
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4;
-- (void)_finishAsset:(id)a3 withError:(id)a4;
-- (void)_handleLocalCloudDownloadResponse:(id)a3;
+- (id)enqueueAssets:(id)assets force:(BOOL)force;
+- (void)_finishAsset:(id)asset withError:(id)error;
+- (void)_handleLocalCloudDownloadResponse:(id)response;
 - (void)_requestNextDownload;
-- (void)cancelAssets:(id)a3;
+- (void)cancelAssets:(id)assets;
 - (void)close;
 - (void)dealloc;
-- (void)messageLinkWasInitialized:(id)a3;
-- (void)prioritizeAsset:(id)a3;
+- (void)messageLinkWasInitialized:(id)initialized;
+- (void)prioritizeAsset:(id)asset;
 @end
 
 @implementation ATLocalCloudAssetLink
@@ -133,17 +133,17 @@ uint64_t __45__ATLocalCloudAssetLink__requestNextDownload__block_invoke_3(uint64
   return [*(a1 + 40) _requestNextDownload];
 }
 
-- (void)_handleLocalCloudDownloadResponse:(id)a3
+- (void)_handleLocalCloudDownloadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ATLocalCloudAssetLink__handleLocalCloudDownloadResponse___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = responseCopy;
+  selfCopy = self;
+  v6 = responseCopy;
   dispatch_async(queue, v7);
 }
 
@@ -303,20 +303,20 @@ LABEL_8:
 LABEL_20:
 }
 
-- (void)_finishAsset:(id)a3 withError:(id)a4
+- (void)_finishAsset:(id)asset withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  errorCopy = error;
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ATLocalCloudAssetLink__finishAsset_withError___block_invoke;
   block[3] = &unk_2784E59B0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v9 = errorCopy;
+  v10 = assetCopy;
   dispatch_async(callbackQueue, block);
 }
 
@@ -339,25 +339,25 @@ uint64_t __48__ATLocalCloudAssetLink__finishAsset_withError___block_invoke(id *a
   return [v9 _requestNextDownload];
 }
 
-- (void)messageLinkWasInitialized:(id)a3
+- (void)messageLinkWasInitialized:(id)initialized
 {
-  v4 = [MEMORY[0x277CE53F0] sharedInstance];
-  [v4 addAssetLink:self];
+  mEMORY[0x277CE53F0] = [MEMORY[0x277CE53F0] sharedInstance];
+  [mEMORY[0x277CE53F0] addAssetLink:self];
 
   [(ATLocalCloudAssetLink *)self open];
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ATLocalCloudAssetLink_prioritizeAsset___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -376,17 +376,17 @@ uint64_t __41__ATLocalCloudAssetLink_prioritizeAsset___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)cancelAssets:(id)a3
+- (void)cancelAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ATLocalCloudAssetLink_cancelAssets___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetsCopy;
+  selfCopy = self;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -503,27 +503,27 @@ void __38__ATLocalCloudAssetLink_cancelAssets___block_invoke_2(void *a1)
   }
 }
 
-- (BOOL)canEnqueueAsset:(id)a3
+- (BOOL)canEnqueueAsset:(id)asset
 {
-  v4 = a3;
-  if (!-[ATLegacyMessageLink hostSupportsLocalCloudDownloads](self->_messageLink, "hostSupportsLocalCloudDownloads") || ![v4 isDownload])
+  assetCopy = asset;
+  if (!-[ATLegacyMessageLink hostSupportsLocalCloudDownloads](self->_messageLink, "hostSupportsLocalCloudDownloads") || ![assetCopy isDownload])
   {
     goto LABEL_7;
   }
 
-  v5 = [v4 storeInfo];
-  v6 = [v5 cloudDSID];
-  if (![v6 longLongValue])
+  storeInfo = [assetCopy storeInfo];
+  cloudDSID = [storeInfo cloudDSID];
+  if (![cloudDSID longLongValue])
   {
 
     goto LABEL_7;
   }
 
-  v7 = [v4 storeInfo];
-  v8 = [v7 sagaID];
-  v9 = [v8 longLongValue];
+  storeInfo2 = [assetCopy storeInfo];
+  sagaID = [storeInfo2 sagaID];
+  longLongValue = [sagaID longLongValue];
 
-  if (!v9)
+  if (!longLongValue)
   {
 LABEL_7:
     v10 = 0;
@@ -536,24 +536,24 @@ LABEL_8:
   return v10;
 }
 
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4
+- (id)enqueueAssets:(id)assets force:(BOOL)force
 {
-  v5 = a3;
+  assetsCopy = assets;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__4938;
   v17 = __Block_byref_object_dispose__4939;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ATLocalCloudAssetLink_enqueueAssets_force___block_invoke;
   block[3] = &unk_2784E5988;
   block[4] = self;
-  v11 = v5;
+  v11 = assetsCopy;
   v12 = &v13;
-  v7 = v5;
+  v7 = assetsCopy;
   dispatch_sync(queue, block);
   v8 = v14[5];
 
@@ -765,9 +765,9 @@ void __29__ATLocalCloudAssetLink_open__block_invoke_3(uint64_t a1)
   [(ATLocalCloudAssetLink *)&v2 dealloc];
 }
 
-- (ATLocalCloudAssetLink)initWithMessageLink:(id)a3
+- (ATLocalCloudAssetLink)initWithMessageLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   v16.receiver = self;
   v16.super_class = ATLocalCloudAssetLink;
   v6 = [(ATLocalCloudAssetLink *)&v16 init];
@@ -781,11 +781,11 @@ void __29__ATLocalCloudAssetLink_open__block_invoke_3(uint64_t a1)
     callbackQueue = v6->_callbackQueue;
     v6->_callbackQueue = v9;
 
-    objc_storeStrong(&v6->_messageLink, a3);
+    objc_storeStrong(&v6->_messageLink, link);
     [(ATConcreteMessageLink *)v6->_messageLink addObserver:v6];
-    v11 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     queuedAssets = v6->_queuedAssets;
-    v6->_queuedAssets = v11;
+    v6->_queuedAssets = orderedSet;
 
     v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
     activeRequests = v6->_activeRequests;

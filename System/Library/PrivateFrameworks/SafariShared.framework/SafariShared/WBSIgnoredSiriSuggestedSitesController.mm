@@ -1,27 +1,27 @@
 @interface WBSIgnoredSiriSuggestedSitesController
 + (WBSIgnoredSiriSuggestedSitesController)sharedController;
 + (id)_databaseURL;
-- (WBSIgnoredSiriSuggestedSitesController)initWithDatabaseURL:(id)a3;
+- (WBSIgnoredSiriSuggestedSitesController)initWithDatabaseURL:(id)l;
 - (id)databaseController;
 - (void)_pruneIgnoredSiriSuggestedSitesIfNeeded;
-- (void)addIgnoredSiriSuggestedSiteWithURLString:(id)a3 inProfile:(id)a4 withQuery:(id)a5 visitedURLString:(id)a6;
+- (void)addIgnoredSiriSuggestedSiteWithURLString:(id)string inProfile:(id)profile withQuery:(id)query visitedURLString:(id)lString;
 - (void)dealloc;
-- (void)getIgnoredSiriSuggestedSitesURLStringsInProfile:(id)a3 withQuery:(id)a4 completionHandler:(id)a5;
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3;
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3 afterDate:(id)a4;
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3 query:(id)a4;
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3 visitedURLHost:(id)a4 completionHandler:(id)a5;
-- (void)removeIgnoredSiriSuggestedSitesWithURLHost:(id)a3 inProfile:(id)a4;
-- (void)updateTimestampsOfIgnoredSiriSuggestedSitesInProfile:(id)a3 query:(id)a4 visitedURLString:(id)a5;
+- (void)getIgnoredSiriSuggestedSitesURLStringsInProfile:(id)profile withQuery:(id)query completionHandler:(id)handler;
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile;
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile afterDate:(id)date;
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile query:(id)query;
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile visitedURLHost:(id)host completionHandler:(id)handler;
+- (void)removeIgnoredSiriSuggestedSitesWithURLHost:(id)host inProfile:(id)profile;
+- (void)updateTimestampsOfIgnoredSiriSuggestedSitesInProfile:(id)profile query:(id)query visitedURLString:(id)string;
 @end
 
 @implementation WBSIgnoredSiriSuggestedSitesController
 
 + (id)_databaseURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_settingsDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"IgnoredSiriSuggestedSites.db" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v4 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"IgnoredSiriSuggestedSites.db" isDirectory:0];
 
   return v4;
 }
@@ -45,26 +45,26 @@ void __58__WBSIgnoredSiriSuggestedSitesController_sharedController__block_invoke
   +[WBSIgnoredSiriSuggestedSitesController sharedController]::controller = v0;
 }
 
-- (WBSIgnoredSiriSuggestedSitesController)initWithDatabaseURL:(id)a3
+- (WBSIgnoredSiriSuggestedSitesController)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = WBSIgnoredSiriSuggestedSitesController;
   v5 = [(WBSIgnoredSiriSuggestedSitesController *)&v17 init];
   if (v5)
   {
     v6 = [WBSIgnoredSiriSuggestedSitesDatabaseController alloc];
-    v7 = v4;
-    if (!v4)
+    _databaseURL = lCopy;
+    if (!lCopy)
     {
-      v7 = [objc_opt_class() _databaseURL];
+      _databaseURL = [objc_opt_class() _databaseURL];
     }
 
-    v8 = [(WBSSQLiteStore *)v6 initWithURL:v7];
+    v8 = [(WBSSQLiteStore *)v6 initWithURL:_databaseURL];
     databaseController = v5->_databaseController;
     v5->_databaseController = v8;
 
-    if (!v4)
+    if (!lCopy)
     {
     }
 
@@ -73,7 +73,7 @@ void __58__WBSIgnoredSiriSuggestedSitesController_sharedController__block_invoke
     v14[1] = 3221225472;
     v14[2] = __62__WBSIgnoredSiriSuggestedSitesController_initWithDatabaseURL___block_invoke;
     v14[3] = &unk_1E7FC84E0;
-    v15 = v4;
+    v15 = lCopy;
     v11 = v5;
     v16 = v11;
     [(WBSSQLiteStore *)v10 openAndCheckIntegrity:1 createIfNeeded:1 fallBackToMemoryStoreIfError:0 lockingPolicy:0 completionHandler:v14];
@@ -127,78 +127,78 @@ void __62__WBSIgnoredSiriSuggestedSitesController_initWithDatabaseURL___block_in
   return databaseController;
 }
 
-- (void)addIgnoredSiriSuggestedSiteWithURLString:(id)a3 inProfile:(id)a4 withQuery:(id)a5 visitedURLString:(id)a6
+- (void)addIgnoredSiriSuggestedSiteWithURLString:(id)string inProfile:(id)profile withQuery:(id)query visitedURLString:(id)lString
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v13 addIgnoredSiriSuggestedSiteWithURLString:v14 inProfile:v10 withQuery:v11 visitedURLString:v12];
+  stringCopy = string;
+  profileCopy = profile;
+  queryCopy = query;
+  lStringCopy = lString;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController addIgnoredSiriSuggestedSiteWithURLString:stringCopy inProfile:profileCopy withQuery:queryCopy visitedURLString:lStringCopy];
 }
 
-- (void)updateTimestampsOfIgnoredSiriSuggestedSitesInProfile:(id)a3 query:(id)a4 visitedURLString:(id)a5
+- (void)updateTimestampsOfIgnoredSiriSuggestedSitesInProfile:(id)profile query:(id)query visitedURLString:(id)string
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v10 updateTimestampsOfIgnoredSiriSuggestedSitesInProfile:v11 query:v8 visitedURLString:v9];
+  profileCopy = profile;
+  queryCopy = query;
+  stringCopy = string;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController updateTimestampsOfIgnoredSiriSuggestedSitesInProfile:profileCopy query:queryCopy visitedURLString:stringCopy];
 }
 
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile
 {
-  v5 = a3;
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  [(WBSIgnoredSiriSuggestedSitesController *)self removeIgnoredSiriSuggestedSitesInProfile:v5 afterDate:v4];
+  profileCopy = profile;
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [(WBSIgnoredSiriSuggestedSitesController *)self removeIgnoredSiriSuggestedSitesInProfile:profileCopy afterDate:distantPast];
 }
 
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3 afterDate:(id)a4
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile afterDate:(id)date
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v7 removeIgnoredSiriSuggestedSitesInProfile:v8 afterDate:v6];
+  profileCopy = profile;
+  dateCopy = date;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController removeIgnoredSiriSuggestedSitesInProfile:profileCopy afterDate:dateCopy];
 }
 
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3 query:(id)a4
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile query:(id)query
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v7 removeIgnoredSiriSuggestedSitesInProfile:v8 query:v6];
+  profileCopy = profile;
+  queryCopy = query;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController removeIgnoredSiriSuggestedSitesInProfile:profileCopy query:queryCopy];
 }
 
-- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)a3 visitedURLHost:(id)a4 completionHandler:(id)a5
+- (void)removeIgnoredSiriSuggestedSitesInProfile:(id)profile visitedURLHost:(id)host completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v10 removeIgnoredSiriSuggestedSitesInProfile:v11 visitedURLHost:v8 completionHandler:v9];
+  profileCopy = profile;
+  hostCopy = host;
+  handlerCopy = handler;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController removeIgnoredSiriSuggestedSitesInProfile:profileCopy visitedURLHost:hostCopy completionHandler:handlerCopy];
 }
 
-- (void)removeIgnoredSiriSuggestedSitesWithURLHost:(id)a3 inProfile:(id)a4
+- (void)removeIgnoredSiriSuggestedSitesWithURLHost:(id)host inProfile:(id)profile
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v7 removeIgnoredSiriSuggestedSitesWithURLHost:v8 inProfile:v6];
+  hostCopy = host;
+  profileCopy = profile;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController removeIgnoredSiriSuggestedSitesWithURLHost:hostCopy inProfile:profileCopy];
 }
 
-- (void)getIgnoredSiriSuggestedSitesURLStringsInProfile:(id)a3 withQuery:(id)a4 completionHandler:(id)a5
+- (void)getIgnoredSiriSuggestedSitesURLStringsInProfile:(id)profile withQuery:(id)query completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
-  [v10 getIgnoredSiriSuggestedSitesURLStringsInProfile:v11 withQuery:v8 completionHandler:v9];
+  profileCopy = profile;
+  queryCopy = query;
+  handlerCopy = handler;
+  databaseController = [(WBSIgnoredSiriSuggestedSitesController *)self databaseController];
+  [databaseController getIgnoredSiriSuggestedSitesURLStringsInProfile:profileCopy withQuery:queryCopy completionHandler:handlerCopy];
 }
 
 - (void)_pruneIgnoredSiriSuggestedSitesIfNeeded
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v3 doubleForKey:@"WBSDebugIgnoredSiriSuggestedSitesPruningTimeIntervalOverride"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults doubleForKey:@"WBSDebugIgnoredSiriSuggestedSitesPruningTimeIntervalOverride"];
   v5 = v4;
 
   if (([MEMORY[0x1E69C8880] isInternalInstall] & (v5 != 0.0)) != 0)

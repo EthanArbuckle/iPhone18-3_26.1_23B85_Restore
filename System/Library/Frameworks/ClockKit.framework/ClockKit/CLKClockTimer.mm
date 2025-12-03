@@ -1,27 +1,27 @@
 @interface CLKClockTimer
 + (CLKClockTimer)sharedInstance;
 + (id)now;
-- (CLKClockTimer)initWithIdentifier:(id)a3;
-- (double)_timeUntilNextHighAccuracyEventFromHour:(int64_t)a3 minute:(int64_t)a4 second:(int64_t)a5 nanosecond:(int64_t)a6;
+- (CLKClockTimer)initWithIdentifier:(id)identifier;
+- (double)_timeUntilNextHighAccuracyEventFromHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second nanosecond:(int64_t)nanosecond;
 - (double)_timeUntilNextHighAccuracyEventFromNow;
-- (id)_nextTokenWithUpdateFrequency:(int64_t)a3 wantsCommit:(BOOL)a4 wantsHighAccuracy:(BOOL)a5 identificationLog:(id)a6 handler:(id)a7;
-- (id)start15fpsUpdatesWithHandler:(id)a3 identificationLog:(id)a4;
-- (id)start30fpsUpdatesWithHandler:(id)a3 identificationLog:(id)a4;
-- (id)start60fpsUpdatesWithHandler:(id)a3 identificationLog:(id)a4;
-- (id)startMinuteUpdatesWithHandler:(id)a3 identificationLog:(id)a4;
-- (id)startSecondUpdatesWithHandler:(id)a3 identificationLog:(id)a4;
-- (id)startUpdatesWithUpdateFrequency:(int64_t)a3 withHandler:(id)a4 identificationLog:(id)a5;
+- (id)_nextTokenWithUpdateFrequency:(int64_t)frequency wantsCommit:(BOOL)commit wantsHighAccuracy:(BOOL)accuracy identificationLog:(id)log handler:(id)handler;
+- (id)start15fpsUpdatesWithHandler:(id)handler identificationLog:(id)log;
+- (id)start30fpsUpdatesWithHandler:(id)handler identificationLog:(id)log;
+- (id)start60fpsUpdatesWithHandler:(id)handler identificationLog:(id)log;
+- (id)startMinuteUpdatesWithHandler:(id)handler identificationLog:(id)log;
+- (id)startSecondUpdatesWithHandler:(id)handler identificationLog:(id)log;
+- (id)startUpdatesWithUpdateFrequency:(int64_t)frequency withHandler:(id)handler identificationLog:(id)log;
 - (int64_t)_minimumPossibleUpdateFrequency;
 - (void)_cancelWaitTimer;
 - (void)_createDisplayLinkIfNeeded;
 - (void)_handleTimePassed;
 - (void)_maybeClearLastSeenTimeComponents;
-- (void)_setDisplayLinkFrameInterval:(int64_t)a3;
+- (void)_setDisplayLinkFrameInterval:(int64_t)interval;
 - (void)_updateDisplayLink;
-- (void)_updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:(double)a3 withMinimumUpdateFrequency:(int64_t)a4;
+- (void)_updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:(double)event withMinimumUpdateFrequency:(int64_t)frequency;
 - (void)_updateIsPermittedToRun;
 - (void)dealloc;
-- (void)stopUpdatesForToken:(id)a3;
+- (void)stopUpdatesForToken:(id)token;
 @end
 
 @implementation CLKClockTimer
@@ -53,24 +53,24 @@ uint64_t __31__CLKClockTimer_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    date = v2;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v5 = v4;
+  v5 = date;
 
   v6 = [v5 dateByAddingTimeInterval:0.05];
 
   return v6;
 }
 
-- (CLKClockTimer)initWithIdentifier:(id)a3
+- (CLKClockTimer)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CLKClockTimer;
   v5 = [(CLKClockTimer *)&v19 init];
@@ -78,18 +78,18 @@ uint64_t __31__CLKClockTimer_sharedInstance__block_invoke()
   {
     for (i = 16; i != 56; i += 8)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = *&v5[i];
-      *&v5[i] = v7;
+      *&v5[i] = weakObjectsHashTable;
     }
 
-    v9 = [v4 copy];
+    v9 = [identifierCopy copy];
     v10 = *(v5 + 21);
     *(v5 + 21) = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v12 = *(v5 + 7);
-    *(v5 + 7) = v11;
+    *(v5 + 7) = weakObjectsHashTable2;
 
     *(v5 + 15) = 0x7FFFFFFFFFFFFFFFLL;
     v13.f64[0] = NAN;
@@ -97,14 +97,14 @@ uint64_t __31__CLKClockTimer_sharedInstance__block_invoke()
     v14 = vnegq_f64(v13);
     *(v5 + 104) = v14;
     *(v5 + 88) = v14;
-    v15 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     v16 = *(v5 + 19);
-    *(v5 + 19) = v15;
+    *(v5 + 19) = autoupdatingCurrentCalendar;
 
     v5[160] = 0;
     *(v5 + 32) = 16843008;
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v5 selector:sel__handleTimePassed name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleTimePassed name:*MEMORY[0x277D766F0] object:0];
   }
 
   return v5;
@@ -117,12 +117,12 @@ uint64_t __31__CLKClockTimer_sharedInstance__block_invoke()
   [(CLKClockTimer *)&v2 dealloc];
 }
 
-- (id)startUpdatesWithUpdateFrequency:(int64_t)a3 withHandler:(id)a4 identificationLog:(id)a5
+- (id)startUpdatesWithUpdateFrequency:(int64_t)frequency withHandler:(id)handler identificationLog:(id)log
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 >= 2)
+  if (frequency >= 2)
   {
-    if (a3 == 5)
+    if (frequency == 5)
     {
       v9 = 0;
       goto LABEL_9;
@@ -136,17 +136,17 @@ uint64_t __31__CLKClockTimer_sharedInstance__block_invoke()
     v8 = 1;
   }
 
-  v9 = [(CLKClockTimer *)self _nextTokenWithUpdateFrequency:a3 wantsCommit:0 wantsHighAccuracy:v8 identificationLog:a5 handler:a4];
-  v10 = self->_handlersByUpdateFrequency[a3];
+  v9 = [(CLKClockTimer *)self _nextTokenWithUpdateFrequency:frequency wantsCommit:0 wantsHighAccuracy:v8 identificationLog:log handler:handler];
+  v10 = self->_handlersByUpdateFrequency[frequency];
   [(NSHashTable *)v10 addObject:v9];
   [(NSHashTable *)self->_allHandlers addObject:v9];
   v11 = CLKLoggingObjectForDomain(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(CLKClockTimer *)self identifier];
+    identifier = [(CLKClockTimer *)self identifier];
     v13 = [(NSHashTable *)self->_allHandlers count];
     v15 = 138412802;
-    v16 = v12;
+    v16 = identifier;
     v17 = 2080;
     v18 = "[CLKClockTimer startUpdatesWithUpdateFrequency:withHandler:identificationLog:]";
     v19 = 2048;
@@ -160,23 +160,23 @@ LABEL_9:
   return v9;
 }
 
-- (void)stopUpdatesForToken:(id)a3
+- (void)stopUpdatesForToken:(id)token
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setIsActive:0];
-  [v4 setHandler:0];
-  [v4 setLog:0];
-  -[NSHashTable removeObject:](self->_handlersByUpdateFrequency[[v4 updateFrequency]], "removeObject:", v4);
-  [(NSHashTable *)self->_allHandlers removeObject:v4];
+  tokenCopy = token;
+  [tokenCopy setIsActive:0];
+  [tokenCopy setHandler:0];
+  [tokenCopy setLog:0];
+  -[NSHashTable removeObject:](self->_handlersByUpdateFrequency[[tokenCopy updateFrequency]], "removeObject:", tokenCopy);
+  [(NSHashTable *)self->_allHandlers removeObject:tokenCopy];
 
   v5 = CLKLoggingObjectForDomain(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CLKClockTimer *)self identifier];
+    identifier = [(CLKClockTimer *)self identifier];
     v7 = [(NSHashTable *)self->_allHandlers count];
     v8 = 138412802;
-    v9 = v6;
+    v9 = identifier;
     v10 = 2080;
     v11 = "[CLKClockTimer stopUpdatesForToken:]";
     v12 = 2048;
@@ -188,23 +188,23 @@ LABEL_9:
   [(CLKClockTimer *)self _maybeClearLastSeenTimeComponents];
 }
 
-- (id)_nextTokenWithUpdateFrequency:(int64_t)a3 wantsCommit:(BOOL)a4 wantsHighAccuracy:(BOOL)a5 identificationLog:(id)a6 handler:(id)a7
+- (id)_nextTokenWithUpdateFrequency:(int64_t)frequency wantsCommit:(BOOL)commit wantsHighAccuracy:(BOOL)accuracy identificationLog:(id)log handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a6;
-  v13 = a7;
+  accuracyCopy = accuracy;
+  commitCopy = commit;
+  logCopy = log;
+  handlerCopy = handler;
   v14 = [[CLKClockTimerToken alloc] initWithID:self->_nextToken++];
-  if (!v12)
+  if (!logCopy)
   {
-    v12 = [&__block_literal_global_90 copy];
+    logCopy = [&__block_literal_global_90 copy];
   }
 
-  [(CLKClockTimerToken *)v14 setWantsCommit:v9];
-  [(CLKClockTimerToken *)v14 setWantsHighAccuracy:v8];
-  [(CLKClockTimerToken *)v14 setUpdateFrequency:a3];
-  [(CLKClockTimerToken *)v14 setLog:v12];
-  [(CLKClockTimerToken *)v14 setHandler:v13];
+  [(CLKClockTimerToken *)v14 setWantsCommit:commitCopy];
+  [(CLKClockTimerToken *)v14 setWantsHighAccuracy:accuracyCopy];
+  [(CLKClockTimerToken *)v14 setUpdateFrequency:frequency];
+  [(CLKClockTimerToken *)v14 setLog:logCopy];
+  [(CLKClockTimerToken *)v14 setHandler:handlerCopy];
 
   [(CLKClockTimerToken *)v14 setIsActive:1];
   [(CLKClockTimerToken *)v14 setOwner:self];
@@ -212,16 +212,16 @@ LABEL_9:
   return v14;
 }
 
-- (id)startMinuteUpdatesWithHandler:(id)a3 identificationLog:(id)a4
+- (id)startMinuteUpdatesWithHandler:(id)handler identificationLog:(id)log
 {
-  v6 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__CLKClockTimer_startMinuteUpdatesWithHandler_identificationLog___block_invoke;
   v10[3] = &unk_278A1F600;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:0 withHandler:v10 identificationLog:a4];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:0 withHandler:v10 identificationLog:log];
 
   return v8;
 }
@@ -232,16 +232,16 @@ void __65__CLKClockTimer_startMinuteUpdatesWithHandler_identificationLog___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)startSecondUpdatesWithHandler:(id)a3 identificationLog:(id)a4
+- (id)startSecondUpdatesWithHandler:(id)handler identificationLog:(id)log
 {
-  v6 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__CLKClockTimer_startSecondUpdatesWithHandler_identificationLog___block_invoke;
   v10[3] = &unk_278A1F600;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:1 withHandler:v10 identificationLog:a4];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:1 withHandler:v10 identificationLog:log];
 
   return v8;
 }
@@ -252,16 +252,16 @@ void __65__CLKClockTimer_startSecondUpdatesWithHandler_identificationLog___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)start15fpsUpdatesWithHandler:(id)a3 identificationLog:(id)a4
+- (id)start15fpsUpdatesWithHandler:(id)handler identificationLog:(id)log
 {
-  v6 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__CLKClockTimer_start15fpsUpdatesWithHandler_identificationLog___block_invoke;
   v10[3] = &unk_278A1F600;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:2 withHandler:v10 identificationLog:a4];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:2 withHandler:v10 identificationLog:log];
 
   return v8;
 }
@@ -272,16 +272,16 @@ void __64__CLKClockTimer_start15fpsUpdatesWithHandler_identificationLog___block_
   (*(*(a1 + 32) + 16))(*(a3 + 32));
 }
 
-- (id)start30fpsUpdatesWithHandler:(id)a3 identificationLog:(id)a4
+- (id)start30fpsUpdatesWithHandler:(id)handler identificationLog:(id)log
 {
-  v6 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__CLKClockTimer_start30fpsUpdatesWithHandler_identificationLog___block_invoke;
   v10[3] = &unk_278A1F600;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:3 withHandler:v10 identificationLog:a4];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:3 withHandler:v10 identificationLog:log];
 
   return v8;
 }
@@ -292,16 +292,16 @@ void __64__CLKClockTimer_start30fpsUpdatesWithHandler_identificationLog___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)start60fpsUpdatesWithHandler:(id)a3 identificationLog:(id)a4
+- (id)start60fpsUpdatesWithHandler:(id)handler identificationLog:(id)log
 {
-  v6 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__CLKClockTimer_start60fpsUpdatesWithHandler_identificationLog___block_invoke;
   v10[3] = &unk_278A1F600;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:4 withHandler:v10 identificationLog:a4];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(CLKClockTimer *)self startUpdatesWithUpdateFrequency:4 withHandler:v10 identificationLog:log];
 
   return v8;
 }
@@ -337,14 +337,14 @@ void __64__CLKClockTimer_start60fpsUpdatesWithHandler_identificationLog___block_
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (double)_timeUntilNextHighAccuracyEventFromHour:(int64_t)a3 minute:(int64_t)a4 second:(int64_t)a5 nanosecond:(int64_t)a6
+- (double)_timeUntilNextHighAccuracyEventFromHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second nanosecond:(int64_t)nanosecond
 {
-  v8 = a6 / -1000000000.0 + 1.0;
-  if (![(NSHashTable *)self->_handlersByUpdateFrequency[1] count:a3])
+  v8 = nanosecond / -1000000000.0 + 1.0;
+  if (![(NSHashTable *)self->_handlersByUpdateFrequency[1] count:hour])
   {
     if ([(NSHashTable *)self->_handlersByUpdateFrequency[0] count])
     {
-      return v8 + (59 - a5);
+      return v8 + (59 - second);
     }
 
     else
@@ -393,33 +393,33 @@ void __64__CLKClockTimer_start60fpsUpdatesWithHandler_identificationLog___block_
     self->_displayLink = v4;
 
     v6 = self->_displayLink;
-    v7 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 }
 
-- (void)_setDisplayLinkFrameInterval:(int64_t)a3
+- (void)_setDisplayLinkFrameInterval:(int64_t)interval
 {
   [(CLKClockTimer *)self _createDisplayLinkIfNeeded];
-  if ([(CADisplayLink *)self->_displayLink frameInterval]!= a3)
+  if ([(CADisplayLink *)self->_displayLink frameInterval]!= interval)
   {
-    [(CADisplayLink *)self->_displayLink setFrameInterval:a3];
+    [(CADisplayLink *)self->_displayLink setFrameInterval:interval];
 
     kdebug_trace();
   }
 }
 
-- (void)_updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:(double)a3 withMinimumUpdateFrequency:(int64_t)a4
+- (void)_updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:(double)event withMinimumUpdateFrequency:(int64_t)frequency
 {
   if (self->_permittedToRun && [(CLKClockTimer *)self _hasHandlers])
   {
     v7 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (frequency != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = CLKClockTimerFrameIntervalForUpdateFrequency[a4];
+      v7 = CLKClockTimerFrameIntervalForUpdateFrequency[frequency];
     }
 
-    if (a3 <= 0.0833333333)
+    if (event <= 0.0833333333)
     {
       [(CLKClockTimer *)self _cancelWaitTimer];
       v7 = 1;
@@ -427,10 +427,10 @@ void __64__CLKClockTimer_start60fpsUpdatesWithHandler_identificationLog___block_
 
     else
     {
-      if (a3 != INFINITY && v7 != 1)
+      if (event != INFINITY && v7 != 1)
       {
         v8 = +[CLKClockTimer now];
-        v9 = a3 + -0.05 + -0.0166666667;
+        v9 = event + -0.05 + -0.0166666667;
         v10 = [v8 dateByAddingTimeInterval:v9];
         v11 = v10;
         if (!self->_waitTimerScheduledFireTime || ([v10 timeIntervalSinceDate:?], fabs(v12) > 0.0166666667))
@@ -496,9 +496,9 @@ void __97__CLKClockTimer__updateDisplayLinkWithTimeUntilNextHighAccuracyEvent_wi
 {
   [(CLKClockTimer *)self _timeUntilNextHighAccuracyEventFromNow];
   v4 = v3;
-  v5 = [(CLKClockTimer *)self _minimumPossibleUpdateFrequency];
+  _minimumPossibleUpdateFrequency = [(CLKClockTimer *)self _minimumPossibleUpdateFrequency];
 
-  [(CLKClockTimer *)self _updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:v5 withMinimumUpdateFrequency:v4];
+  [(CLKClockTimer *)self _updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:_minimumPossibleUpdateFrequency withMinimumUpdateFrequency:v4];
 }
 
 - (void)_maybeClearLastSeenTimeComponents
@@ -551,7 +551,7 @@ LABEL_13:
   v70 = 0x7FFFFFFFFFFFFFFFLL;
   v67 = 0x7FFFFFFFFFFFFFFFLL;
   v68 = 0x7FFFFFFFFFFFFFFFLL;
-  v2 = self;
+  selfCopy3 = self;
   [(NSDate *)self->_lastNow timeIntervalSinceReferenceDate];
   v4 = v3;
   [obj timeIntervalSinceReferenceDate];
@@ -562,7 +562,7 @@ LABEL_13:
     v9 = v68;
     v11 = v69;
     v10 = v70;
-    v2 = self;
+    selfCopy3 = self;
     lastHour = self->_lastHour;
     lastMinute = self->_lastMinute;
     lastSecond = self->_lastSecond;
@@ -591,8 +591,8 @@ LABEL_13:
   v18 = !v17;
   v19 = !v17 || v9 != lastSecond;
   v49 = v16;
-  v20 = vmovn_s64(vmvnq_s8(vceqq_s64(*&v2->_last15fps, v16)));
-  v17 = v2->_last60fps == v15;
+  v20 = vmovn_s64(vmvnq_s8(vceqq_s64(*&selfCopy3->_last15fps, v16)));
+  v17 = selfCopy3->_last60fps == v15;
   v66[2] = (v20.i8[0] | v19) & 1;
   v41 = __PAIR64__(v18, v19);
   v66[0] = v18;
@@ -604,8 +604,8 @@ LABEL_13:
   {
     if (v66[v14] == 1)
     {
-      v22 = [(NSHashTable *)v2->_handlersByUpdateFrequency[v14] count]!= 0;
-      v2 = self;
+      v22 = [(NSHashTable *)selfCopy3->_handlersByUpdateFrequency[v14] count]!= 0;
+      selfCopy3 = self;
     }
 
     else
@@ -620,7 +620,7 @@ LABEL_13:
   while (v14 != 5);
   objc_storeStrong(&self->_lastNow, obj);
   v23 = v69;
-  v24 = self;
+  selfCopy5 = self;
   self->_lastHour = v70;
   self->_lastMinute = v23;
   self->_lastSecond = v68;
@@ -664,7 +664,7 @@ LABEL_13:
           v33 = *(*(&v62 + 1) + 8 * i);
           if ((v26 & (1 << [v33 updateFrequency])) != 0)
           {
-            v34 = [v33 wantsCommit];
+            wantsCommit = [v33 wantsCommit];
             v56[0] = MEMORY[0x277D85DD0];
             v56[1] = 3254779904;
             v56[2] = __34__CLKClockTimer__handleTimePassed__block_invoke;
@@ -679,7 +679,7 @@ LABEL_13:
             v35 = MEMORY[0x2383C4AF0](v56);
             [v48 addObject:v35];
 
-            v29 |= v34;
+            v29 |= wantsCommit;
           }
         }
 
@@ -742,10 +742,10 @@ LABEL_13:
       [MEMORY[0x277CD9FF0] commit];
     }
 
-    v24 = self;
+    selfCopy5 = self;
   }
 
-  [CLKClockTimer _timeUntilNextHighAccuracyEventFromHour:v24 minute:"_timeUntilNextHighAccuracyEventFromHour:minute:second:nanosecond:" second:v41 nanosecond:?];
+  [CLKClockTimer _timeUntilNextHighAccuracyEventFromHour:selfCopy5 minute:"_timeUntilNextHighAccuracyEventFromHour:minute:second:nanosecond:" second:v41 nanosecond:?];
   [(CLKClockTimer *)self _updateDisplayLinkWithTimeUntilNextHighAccuracyEvent:[(CLKClockTimer *)self _minimumPossibleUpdateFrequency] withMinimumUpdateFrequency:v40];
 }
 
@@ -781,13 +781,13 @@ void __34__CLKClockTimer__handleTimePassed__block_invoke(uint64_t a1)
       v18 = CLKLoggingObjectForDomain(2);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(CLKClockTimer *)self identifier];
+        identifier = [(CLKClockTimer *)self identifier];
         v20 = [(NSHashTable *)self->_allHandlers count];
         isForeground = self->_isForeground;
         backlightOn = self->_backlightOn;
         ignoreScreenState = self->_ignoreScreenState;
         v24 = 138413826;
-        v25 = v19;
+        v25 = identifier;
         v26 = 2080;
         v27 = "[CLKClockTimer _updateIsPermittedToRun]";
         v28 = 2048;
@@ -812,13 +812,13 @@ void __34__CLKClockTimer__handleTimePassed__block_invoke(uint64_t a1)
       v12 = CLKLoggingObjectForDomain(2);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(CLKClockTimer *)self identifier];
+        identifier2 = [(CLKClockTimer *)self identifier];
         v14 = [(NSHashTable *)self->_allHandlers count];
         v15 = self->_isForeground;
         v16 = self->_backlightOn;
         v17 = self->_ignoreScreenState;
         v24 = 138413826;
-        v25 = v13;
+        v25 = identifier2;
         v26 = 2080;
         v27 = "[CLKClockTimer _updateIsPermittedToRun]";
         v28 = 2048;
@@ -846,13 +846,13 @@ void __34__CLKClockTimer__handleTimePassed__block_invoke(uint64_t a1)
     v6 = CLKLoggingObjectForDomain(2);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CLKClockTimer *)self identifier];
+      identifier3 = [(CLKClockTimer *)self identifier];
       v8 = [(NSHashTable *)self->_allHandlers count];
       v9 = self->_isForeground;
       v10 = self->_backlightOn;
       v11 = self->_ignoreScreenState;
       v24 = 138413826;
-      v25 = v7;
+      v25 = identifier3;
       v26 = 2080;
       v27 = "[CLKClockTimer _updateIsPermittedToRun]";
       v28 = 2048;

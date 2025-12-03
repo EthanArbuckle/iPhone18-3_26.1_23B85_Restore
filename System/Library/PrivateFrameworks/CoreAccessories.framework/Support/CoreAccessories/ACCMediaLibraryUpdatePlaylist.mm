@@ -1,29 +1,29 @@
 @interface ACCMediaLibraryUpdatePlaylist
-- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)a3 dict:(id)a4;
-- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)a3 persistentID:(unint64_t)a4 revision:(id)a5;
+- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)library dict:(id)dict;
+- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)library persistentID:(unint64_t)d revision:(id)revision;
 - (id)copyDict;
 - (id)debugDescription;
 - (id)description;
-- (void)fillStruct:(id *)a3;
-- (void)setContentStyle:(int)a3;
-- (void)setPersistentID:(unint64_t)a3;
+- (void)fillStruct:(id *)struct;
+- (void)setContentStyle:(int)style;
+- (void)setPersistentID:(unint64_t)d;
 @end
 
 @implementation ACCMediaLibraryUpdatePlaylist
 
-- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)a3 persistentID:(unint64_t)a4 revision:(id)a5
+- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)library persistentID:(unint64_t)d revision:(id)revision
 {
-  v9 = a3;
-  v10 = a5;
+  libraryCopy = library;
+  revisionCopy = revision;
   v16.receiver = self;
   v16.super_class = ACCMediaLibraryUpdatePlaylist;
   v11 = [(ACCMediaLibraryUpdatePlaylist *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaLibraryUID, a3);
-    objc_storeStrong(&v12->_revision, a5);
-    v12->_persistentID = a4;
+    objc_storeStrong(&v11->_mediaLibraryUID, library);
+    objc_storeStrong(&v12->_revision, revision);
+    v12->_persistentID = d;
     v12->_validMask = 1;
     name = v12->_name;
     v12->_name = 0;
@@ -39,17 +39,17 @@
   return v12;
 }
 
-- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)a3 dict:(id)a4
+- (ACCMediaLibraryUpdatePlaylist)initWithMediaLibrary:(id)library dict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  dictCopy = dict;
   v44.receiver = self;
   v44.super_class = ACCMediaLibraryUpdatePlaylist;
   v9 = [(ACCMediaLibraryUpdatePlaylist *)&v44 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaLibraryUID, a3);
+    objc_storeStrong(&v9->_mediaLibraryUID, library);
     revision = v10->_revision;
     v10->_revision = &stru_10022D360;
 
@@ -65,67 +65,67 @@
     v10->_radioStationOrdering = 0;
 
     v10->_validMask = 0;
-    v14 = [v8 objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
+    v14 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
 
     if (v14)
     {
-      v15 = [v8 objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
+      v15 = [dictCopy objectForKey:@"ACCMediaLibraryUpdateRevisionKey"];
       v16 = v10->_revision;
       v10->_revision = v15;
     }
 
-    v17 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistPersistentID"];
+    v17 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistPersistentID"];
 
     if (v17)
     {
-      v18 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistPersistentID"];
+      v18 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistPersistentID"];
       v10->_persistentID = [v18 unsignedLongLongValue];
 
       v10->_validMask |= 1uLL;
     }
 
-    v19 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistName"];
+    v19 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistName"];
 
     if (v19)
     {
-      v20 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistName"];
+      v20 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistName"];
       v21 = v10->_name;
       v10->_name = v20;
 
       v10->_validMask |= 2uLL;
     }
 
-    v22 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistParentPersistentID"];
+    v22 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistParentPersistentID"];
 
     if (v22)
     {
-      v23 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistParentPersistentID"];
+      v23 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistParentPersistentID"];
       v10->_parentPersistentID = [v23 unsignedLongLongValue];
 
       v10->_validMask |= 4uLL;
     }
 
-    v24 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsFolder"];
+    v24 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsFolder"];
 
     if (v24)
     {
-      v25 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsFolder"];
+      v25 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsFolder"];
       v10->_folder = [v25 unsignedCharValue] != 0;
 
       v10->_validMask |= 0x10uLL;
     }
 
-    v26 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsGeniusMix"];
+    v26 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsGeniusMix"];
 
     if (v26)
     {
-      v27 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsGeniusMix"];
+      v27 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsGeniusMix"];
       v10->_geniusMix = [v27 unsignedCharValue] != 0;
 
       v10->_validMask |= 8uLL;
     }
 
-    v28 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistContentStyle"];
+    v28 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistContentStyle"];
 
     if (v28)
     {
@@ -148,7 +148,7 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         contentStyle = v10->_contentStyle;
-        v32 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistContentStyle"];
+        v32 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistContentStyle"];
         *buf = 138412802;
         v46 = v10;
         v47 = 1024;
@@ -158,37 +158,37 @@
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%@ contentStyle %d->%@", buf, 0x1Cu);
       }
 
-      v33 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistContentStyle"];
+      v33 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistContentStyle"];
       v10->_contentStyle = [v33 unsignedCharValue];
 
       v10->_validMask |= 0x20uLL;
     }
 
-    v34 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsRadioStation"];
+    v34 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsRadioStation"];
 
     if (v34)
     {
-      v35 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsRadioStation"];
+      v35 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsRadioStation"];
       v10->_radioStation = [v35 unsignedCharValue] != 0;
 
       v10->_validMask |= 0x40uLL;
     }
 
-    v36 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsSmartPlaylist"];
+    v36 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsSmartPlaylist"];
 
     if (v36)
     {
-      v37 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistIsSmartPlaylist"];
+      v37 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistIsSmartPlaylist"];
       v10->_smartPlaylist = [v37 unsignedCharValue] != 0;
 
       v10->_validMask |= 0x100uLL;
     }
 
-    v38 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistRadioStationOrdering"];
+    v38 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistRadioStationOrdering"];
 
     if (v38)
     {
-      v39 = [v8 objectForKey:@"ACCMediaLibraryUpdatePlaylistRadioStationOrdering"];
+      v39 = [dictCopy objectForKey:@"ACCMediaLibraryUpdatePlaylistRadioStationOrdering"];
       v10->_radioStationOrdering = [v39 unsignedShortValue];
 
       v10->_validMask |= 0x200uLL;
@@ -275,8 +275,8 @@
 - (id)debugDescription
 {
   v3 = [(ACCMediaLibraryUpdatePlaylist *)self description];
-  v4 = [(ACCMediaLibraryUpdatePlaylist *)self copyDict];
-  v5 = [NSString stringWithFormat:@"%@\n    %@", v3, v4];
+  copyDict = [(ACCMediaLibraryUpdatePlaylist *)self copyDict];
+  v5 = [NSString stringWithFormat:@"%@\n    %@", v3, copyDict];
 
   return v5;
 }
@@ -422,11 +422,11 @@ LABEL_12:
   return v4;
 }
 
-- (void)fillStruct:(id *)a3
+- (void)fillStruct:(id *)struct
 {
-  *&a3->var4 = 0;
-  *&a3->var0 = 0u;
-  *&a3->var2 = 0u;
+  *&struct->var4 = 0;
+  *&struct->var0 = 0u;
+  *&struct->var2 = 0u;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -461,8 +461,8 @@ LABEL_12:
   validMask = self->_validMask;
   if (validMask)
   {
-    a3->var1 = self->_persistentID;
-    a3->var0 |= 1u;
+    struct->var1 = self->_persistentID;
+    struct->var0 |= 1u;
     validMask = self->_validMask;
     if ((validMask & 2) == 0)
     {
@@ -488,8 +488,8 @@ LABEL_13:
     validMask = self->_validMask;
   }
 
-  a3->var2 = name;
-  a3->var0 |= 2u;
+  struct->var2 = name;
+  struct->var0 |= 2u;
   if ((validMask & 4) == 0)
   {
 LABEL_14:
@@ -502,8 +502,8 @@ LABEL_14:
   }
 
 LABEL_26:
-  a3->var3 = self->_parentPersistentID;
-  a3->var0 |= 4u;
+  struct->var3 = self->_parentPersistentID;
+  struct->var0 |= 4u;
   validMask = self->_validMask;
   if ((validMask & 8) == 0)
   {
@@ -517,8 +517,8 @@ LABEL_15:
   }
 
 LABEL_27:
-  a3->var4 = self->_geniusMix;
-  a3->var0 |= 8u;
+  struct->var4 = self->_geniusMix;
+  struct->var0 |= 8u;
   if ((validMask & 0x10) == 0)
   {
 LABEL_16:
@@ -531,8 +531,8 @@ LABEL_16:
   }
 
 LABEL_28:
-  a3->var5 = self->_folder;
-  a3->var0 |= 0x10u;
+  struct->var5 = self->_folder;
+  struct->var0 |= 0x10u;
   if ((validMask & 0x20) == 0)
   {
 LABEL_17:
@@ -545,8 +545,8 @@ LABEL_17:
   }
 
 LABEL_29:
-  a3->var6 = self->_contentStyle;
-  a3->var0 |= 0x20u;
+  struct->var6 = self->_contentStyle;
+  struct->var0 |= 0x20u;
   if ((validMask & 0x40) == 0)
   {
 LABEL_18:
@@ -559,8 +559,8 @@ LABEL_18:
   }
 
 LABEL_30:
-  a3->var7 = self->_radioStation;
-  a3->var0 |= 0x40u;
+  struct->var7 = self->_radioStation;
+  struct->var0 |= 0x40u;
   if ((validMask & 0x100) == 0)
   {
 LABEL_19:
@@ -573,26 +573,26 @@ LABEL_19:
   }
 
 LABEL_31:
-  a3->var8 = self->_smartPlaylist;
-  a3->var0 |= 0x100u;
+  struct->var8 = self->_smartPlaylist;
+  struct->var0 |= 0x100u;
   if ((validMask & 0x200) == 0)
   {
     return;
   }
 
 LABEL_20:
-  a3->var9 = self->_radioStationOrdering;
-  a3->var0 |= 0x200u;
+  struct->var9 = self->_radioStationOrdering;
+  struct->var0 |= 0x200u;
 }
 
-- (void)setPersistentID:(unint64_t)a3
+- (void)setPersistentID:(unint64_t)d
 {
   v3 = self->_validMask | 1;
-  self->_persistentID = a3;
+  self->_persistentID = d;
   self->_validMask = v3;
 }
 
-- (void)setContentStyle:(int)a3
+- (void)setContentStyle:(int)style
 {
   if (gLogObjects)
   {
@@ -622,10 +622,10 @@ LABEL_20:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCMediaLibraryUpdatePlaylist *)self setContentStyle:a3, v7];
+    [(ACCMediaLibraryUpdatePlaylist *)self setContentStyle:style, v7];
   }
 
-  self->_contentStyle = a3;
+  self->_contentStyle = style;
   self->_validMask |= 0x20uLL;
 }
 

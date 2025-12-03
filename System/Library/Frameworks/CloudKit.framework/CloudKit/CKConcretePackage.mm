@@ -1,28 +1,28 @@
 @interface CKConcretePackage
-+ (id)packageForBundleID:(id)a3 error:(id *)a4;
-+ (id)packageWithPackageRef:(id)a3;
-- (CKConcretePackage)initWithCoder:(id)a3;
-- (CKConcretePackage)initWithSQLitePackageRef:(id)a3;
++ (id)packageForBundleID:(id)d error:(id *)error;
++ (id)packageWithPackageRef:(id)ref;
+- (CKConcretePackage)initWithCoder:(id)coder;
+- (CKConcretePackage)initWithSQLitePackageRef:(id)ref;
 - (CKRecord)record;
 - (NSIndexSet)downloadItemIndices;
 - (id)UUID;
 - (id)description;
 - (id)packageDatabase;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssetTransferOptions:(id)a3;
-- (void)setDownloadItemIndices:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssetTransferOptions:(id)options;
+- (void)setDownloadItemIndices:(id)indices;
 @end
 
 @implementation CKConcretePackage
 
-+ (id)packageWithPackageRef:(id)a3
++ (id)packageWithPackageRef:(id)ref
 {
-  if (a3)
+  if (ref)
   {
-    v3 = a3;
+    refCopy = ref;
     v4 = [CKConcretePackage alloc];
-    v6 = objc_msgSend_initWithSQLitePackageRef_(v4, v5, v3);
+    v6 = objc_msgSend_initWithSQLitePackageRef_(v4, v5, refCopy);
   }
 
   else
@@ -33,10 +33,10 @@
   return v6;
 }
 
-+ (id)packageForBundleID:(id)a3 error:(id *)a4
++ (id)packageForBundleID:(id)d error:(id *)error
 {
-  v5 = objc_msgSend_packageDatabaseForBundleID_error_(CKPackageDatabase, a2, a3);
-  v7 = objc_msgSend_newPackage_(v5, v6, a4);
+  v5 = objc_msgSend_packageDatabaseForBundleID_error_(CKPackageDatabase, a2, d);
+  v7 = objc_msgSend_newPackage_(v5, v6, error);
   if (v7)
   {
     v8 = [CKConcretePackage alloc];
@@ -51,19 +51,19 @@
   return v10;
 }
 
-- (CKConcretePackage)initWithSQLitePackageRef:(id)a3
+- (CKConcretePackage)initWithSQLitePackageRef:(id)ref
 {
-  v5 = a3;
+  refCopy = ref;
   v13.receiver = self;
   v13.super_class = CKConcretePackage;
   v6 = [(CKConcretePackage *)&v13 init];
   v7 = v6;
-  if (v5)
+  if (refCopy)
   {
     if (v6)
     {
-      objc_storeStrong(&v6->_sqlitePackageRef, a3);
-      v10 = objc_msgSend_sqlitePackage(v5, v8, v9);
+      objc_storeStrong(&v6->_sqlitePackageRef, ref);
+      v10 = objc_msgSend_sqlitePackage(refCopy, v8, v9);
       sqlitePackage = v7->_sqlitePackage;
       v7->_sqlitePackage = v10;
     }
@@ -112,16 +112,16 @@
   return v3;
 }
 
-- (void)setAssetTransferOptions:(id)a3
+- (void)setAssetTransferOptions:(id)options
 {
   sqlitePackage = self->_sqlitePackage;
-  v6 = objc_msgSend_copy(a3, a2, a3);
+  v6 = objc_msgSend_copy(options, a2, options);
   v5 = objc_msgSend_setAssetTransferOptions_(sqlitePackage, v4, v6);
 }
 
-- (void)setDownloadItemIndices:(id)a3
+- (void)setDownloadItemIndices:(id)indices
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(indices, a2, indices);
   downloadItemIndices = self->_downloadItemIndices;
   self->_downloadItemIndices = v4;
 
@@ -141,13 +141,13 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CKConcretePackage;
-  [(CKPackage *)&v31 encodeWithCoder:v4];
+  [(CKPackage *)&v31 encodeWithCoder:coderCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -164,7 +164,7 @@
   v10 = v30;
   if (v8)
   {
-    objc_msgSend_encodeObject_forKey_(v4, v9, v8, @"anchor");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"anchor");
     if (v7)
     {
       if (ck_log_initialization_predicate != -1)
@@ -227,18 +227,18 @@ LABEL_20:
       _os_log_error_impl(&dword_1883EA000, v23, OS_LOG_TYPE_ERROR, "Failed to encode package with ID=%{public}@: %{public}@", buf, 0x16u);
     }
 
-    objc_msgSend_encodeObject_forKey_(v4, v19, v10, @"error");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v19, v10, @"error");
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (CKConcretePackage)initWithCoder:(id)a3
+- (CKConcretePackage)initWithCoder:(id)coder
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"error");
+  v7 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"error");
   if (v7)
   {
     v8 = v7;
@@ -255,13 +255,13 @@ LABEL_20:
       _os_log_error_impl(&dword_1883EA000, v9, OS_LOG_TYPE_ERROR, "Failed to decode package due to encode error: %{public}@", buf, 0xCu);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"anchor");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"anchor");
     v34 = 0;
     v15 = objc_msgSend_packageFromAnchor_error_(CKPackageDatabase, v14, v13, &v34);
     v8 = v34;
@@ -312,11 +312,11 @@ LABEL_20:
 
     self = v17;
 
-    v10 = self;
+    selfCopy = self;
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy;
 }
 
 - (id)UUID

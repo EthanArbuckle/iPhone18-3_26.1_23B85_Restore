@@ -1,79 +1,79 @@
 @interface NEKEventStore
-- (BOOL)_shouldSendEvent:(id)a3;
-- (BOOL)_shouldSendReminder:(id)a3;
-- (BOOL)_updateCalendar:(id)a3 withCalendarWrapper:(id)a4;
-- (BOOL)_updateSource:(id)a3 withSourceWrapper:(id)a4 store:(id)a5;
-- (BOOL)hasRowMappingForEntity:(id)a3;
-- (BOOL)shouldSendEntity:(id)a3;
-- (BOOL)updateEvent:(id)a3 identifier:(id)a4 eventStore:(id)a5 occurrenceDate:(id)a6 participationStatus:(int64_t)a7 masterIdentifier:(id)a8 isMaster:(BOOL)a9;
-- (BOOL)updateMasterEvent:(id)a3 masterIdentifier:(id)a4 calendarIdentifier:(id)a5 masterParticipationStatus:(int64_t)a6 detachedEvents:(id)a7;
-- (NEKEventStore)initWithEnvironment:(id)a3;
+- (BOOL)_shouldSendEvent:(id)event;
+- (BOOL)_shouldSendReminder:(id)reminder;
+- (BOOL)_updateCalendar:(id)calendar withCalendarWrapper:(id)wrapper;
+- (BOOL)_updateSource:(id)source withSourceWrapper:(id)wrapper store:(id)store;
+- (BOOL)hasRowMappingForEntity:(id)entity;
+- (BOOL)shouldSendEntity:(id)entity;
+- (BOOL)updateEvent:(id)event identifier:(id)identifier eventStore:(id)store occurrenceDate:(id)date participationStatus:(int64_t)status masterIdentifier:(id)masterIdentifier isMaster:(BOOL)master;
+- (BOOL)updateMasterEvent:(id)event masterIdentifier:(id)identifier calendarIdentifier:(id)calendarIdentifier masterParticipationStatus:(int64_t)status detachedEvents:(id)events;
+- (NEKEventStore)initWithEnvironment:(id)environment;
 - (NEKRecordMap)recordMap;
 - (NEKSeenMap)seenMap;
-- (id)_ICSLogTestForWrapper:(id)a3;
-- (id)_createCalendarForWrapper:(id)a3 store:(id)a4;
-- (id)_createSourceForWrapper:(id)a3 store:(id)a4;
-- (id)_filterOutInvalidICSWrappers:(id)a3 store:(id)a4 calendars:(id *)a5;
-- (id)_identifierInRowMapping:(id)a3;
-- (id)calendarIdentifierInRowMappingForEventOrTask:(id)a3;
-- (id)calendarIdentifierInRowMappingForRecordIDRef:(id)a3;
-- (id)detacheesForIdentifierCreatingIfNeeded:(id)a3 detachedEventMap:(id)a4;
-- (id)freshEventStoreFor:(id)a3;
-- (id)identifierInRowMappingForEventOrTask:(id)a3;
-- (id)identifierInRowMappingForRecordIDRef:(id)a3;
-- (void)ICSWrappersForChangeSet:(id)a3 pipe:(id)a4;
+- (id)_ICSLogTestForWrapper:(id)wrapper;
+- (id)_createCalendarForWrapper:(id)wrapper store:(id)store;
+- (id)_createSourceForWrapper:(id)wrapper store:(id)store;
+- (id)_filterOutInvalidICSWrappers:(id)wrappers store:(id)store calendars:(id *)calendars;
+- (id)_identifierInRowMapping:(id)mapping;
+- (id)calendarIdentifierInRowMappingForEventOrTask:(id)task;
+- (id)calendarIdentifierInRowMappingForRecordIDRef:(id)ref;
+- (id)detacheesForIdentifierCreatingIfNeeded:(id)needed detachedEventMap:(id)map;
+- (id)freshEventStoreFor:(id)for;
+- (id)identifierInRowMappingForEventOrTask:(id)task;
+- (id)identifierInRowMappingForRecordIDRef:(id)ref;
+- (void)ICSWrappersForChangeSet:(id)set pipe:(id)pipe;
 - (void)_commitPendingRecordMapChanges;
-- (void)_deleteAndLogEvent:(id)a3 identifier:(id)a4 store:(id)a5;
-- (void)_deleteCalendarItemsInICSWrapperFromOldCalendar:(id)a3 store:(id)a4;
-- (void)_deleteCalendarItemsMovedToCalendar:(id)a3 inICSWrapper:(id)a4;
-- (void)_deleteCalendarWithIdentifier:(id)a3 store:(id)a4;
-- (void)_deleteDetachedCalendarItemsFromOldCalendar:(id)a3 deletedEvents:(id)a4;
-- (void)_deleteEventWithIdentifier:(id)a3 calendarIdentifier:(id)a4 store:(id)a5;
-- (void)_deleteReminderWithIdentifier:(id)a3 calendarIdentifier:(id)a4 store:(id)a5;
-- (void)_deleteSourceWithIdentifier:(id)a3 store:(id)a4;
-- (void)_didCreateEntity:(id)a3;
-- (void)_processArrayOfArrayOfICSWrappers:(id)a3 batchWrappers:(id)a4 session:(id)a5;
-- (void)_processUpdateFromWatch:(id)a3 calendar:(id)a4 store:(id)a5;
-- (void)_processUpdateWithICS:(id)a3 store:(id)a4 calendar:(id)a5 resultWrappers:(id)a6 resultCalendars:(id)a7;
-- (void)_pushSource:(id)a3 wrapper:(id)a4 intoPipe:(id)a5;
-- (void)_removeIdentifierForDeletedEntity:(id)a3;
+- (void)_deleteAndLogEvent:(id)event identifier:(id)identifier store:(id)store;
+- (void)_deleteCalendarItemsInICSWrapperFromOldCalendar:(id)calendar store:(id)store;
+- (void)_deleteCalendarItemsMovedToCalendar:(id)calendar inICSWrapper:(id)wrapper;
+- (void)_deleteCalendarWithIdentifier:(id)identifier store:(id)store;
+- (void)_deleteDetachedCalendarItemsFromOldCalendar:(id)calendar deletedEvents:(id)events;
+- (void)_deleteEventWithIdentifier:(id)identifier calendarIdentifier:(id)calendarIdentifier store:(id)store;
+- (void)_deleteReminderWithIdentifier:(id)identifier calendarIdentifier:(id)calendarIdentifier store:(id)store;
+- (void)_deleteSourceWithIdentifier:(id)identifier store:(id)store;
+- (void)_didCreateEntity:(id)entity;
+- (void)_processArrayOfArrayOfICSWrappers:(id)wrappers batchWrappers:(id)batchWrappers session:(id)session;
+- (void)_processUpdateFromWatch:(id)watch calendar:(id)calendar store:(id)store;
+- (void)_processUpdateWithICS:(id)s store:(id)store calendar:(id)calendar resultWrappers:(id)wrappers resultCalendars:(id)calendars;
+- (void)_pushSource:(id)source wrapper:(id)wrapper intoPipe:(id)pipe;
+- (void)_removeIdentifierForDeletedEntity:(id)entity;
 - (void)_sendChangesIfAvailable;
-- (void)_sendDefaultCalendarsIfNeededInPipe:(id)a3 setDefaultEventCalendar:(BOOL)a4 setDefaultTaskCalendar:(BOOL)a5 defaultEventCalendar:(id)a6 defaultTaskCalendar:(id)a7;
-- (void)addAttendeeEvents:(id)a3;
-- (void)applySidePropertiesToEntity:(id)a3 withWrapper:(id)a4 session:(id)a5;
-- (void)calendarWrappersForChangeSet:(id)a3 pipe:(id)a4;
-- (void)deleteItem:(id)a3 store:(id)a4;
-- (void)deleteItemWithIdentifier:(id)a3 store:(id)a4;
-- (void)deletionWrappersForChangeSet:(id)a3 skipSourceDeletions:(BOOL)a4 pipe:(id)a5;
-- (void)deletionWrappersForSourceAggregator:(id)a3 pipe:(id)a4;
+- (void)_sendDefaultCalendarsIfNeededInPipe:(id)pipe setDefaultEventCalendar:(BOOL)calendar setDefaultTaskCalendar:(BOOL)taskCalendar defaultEventCalendar:(id)eventCalendar defaultTaskCalendar:(id)defaultTaskCalendar;
+- (void)addAttendeeEvents:(id)events;
+- (void)applySidePropertiesToEntity:(id)entity withWrapper:(id)wrapper session:(id)session;
+- (void)calendarWrappersForChangeSet:(id)set pipe:(id)pipe;
+- (void)deleteItem:(id)item store:(id)store;
+- (void)deleteItemWithIdentifier:(id)identifier store:(id)store;
+- (void)deletionWrappersForChangeSet:(id)set skipSourceDeletions:(BOOL)deletions pipe:(id)pipe;
+- (void)deletionWrappersForSourceAggregator:(id)aggregator pipe:(id)pipe;
 - (void)endMappingEntities;
-- (void)getDefaultTaskCalendar:(id *)a3 defaultEventCalendar:(id *)a4 store:(id)a5;
-- (void)handleCalendarEventWithUniqueIdentifierFromGizmo:(id)a3 calendar:(id)a4 wrapper:(id)a5 detachedEventMap:(id)a6;
-- (void)handleCalendarTaskWithUniqueIdentifierFromGizmo:(id)a3 calendar:(id)a4 wrapper:(id)a5;
-- (void)handleNewEntity:(id)a3 withWrapper:(id)a4 session:(id)a5;
-- (void)handleUpdatedItemFromGizmo:(id)a3 type:(int64_t)a4 withWrapper:(id)a5 identifier:(id)a6;
-- (void)performUpdateWithICSWrappers:(id)a3 store:(id)a4 session:(id)a5;
+- (void)getDefaultTaskCalendar:(id *)calendar defaultEventCalendar:(id *)eventCalendar store:(id)store;
+- (void)handleCalendarEventWithUniqueIdentifierFromGizmo:(id)gizmo calendar:(id)calendar wrapper:(id)wrapper detachedEventMap:(id)map;
+- (void)handleCalendarTaskWithUniqueIdentifierFromGizmo:(id)gizmo calendar:(id)calendar wrapper:(id)wrapper;
+- (void)handleNewEntity:(id)entity withWrapper:(id)wrapper session:(id)session;
+- (void)handleUpdatedItemFromGizmo:(id)gizmo type:(int64_t)type withWrapper:(id)wrapper identifier:(id)identifier;
+- (void)performUpdateWithICSWrappers:(id)wrappers store:(id)store session:(id)session;
 - (void)purgeRecordMap;
-- (void)removeIdentifiersForDeletedRecordIDs:(id)a3;
-- (void)saveEventStore:(id)a3;
+- (void)removeIdentifiersForDeletedRecordIDs:(id)ds;
+- (void)saveEventStore:(id)store;
 - (void)startMappingEntities;
-- (void)storeWrappersForSourceAggregator:(id)a3 pipe:(id)a4;
+- (void)storeWrappersForSourceAggregator:(id)aggregator pipe:(id)pipe;
 - (void)sweepSeenMap;
-- (void)updateCalendar:(id)a3 store:(id)a4;
-- (void)updateICS:(id)a3 store:(id)a4 session:(id)a5;
-- (void)updateInvitationStatusForCalendarItem:(id)a3 identifier:(id)a4 withWrapper:(id)a5 session:(id)a6;
-- (void)updateRowMappingForEntity:(id)a3;
-- (void)updateSelfAttendeeForCalendarItem:(id)a3 identifier:(id)a4 withWrapper:(id)a5;
-- (void)updateSource:(id)a3 store:(id)a4;
+- (void)updateCalendar:(id)calendar store:(id)store;
+- (void)updateICS:(id)s store:(id)store session:(id)session;
+- (void)updateInvitationStatusForCalendarItem:(id)item identifier:(id)identifier withWrapper:(id)wrapper session:(id)session;
+- (void)updateRowMappingForEntity:(id)entity;
+- (void)updateSelfAttendeeForCalendarItem:(id)item identifier:(id)identifier withWrapper:(id)wrapper;
+- (void)updateSource:(id)source store:(id)store;
 @end
 
 @implementation NEKEventStore
 
-- (NEKEventStore)initWithEnvironment:(id)a3
+- (NEKEventStore)initWithEnvironment:(id)environment
 {
   v14.receiver = self;
   v14.super_class = NEKEventStore;
-  v3 = [(NEKStore *)&v14 initWithEnvironment:a3];
+  v3 = [(NEKStore *)&v14 initWithEnvironment:environment];
   if (v3)
   {
     v4 = sub_100004B98("com.apple.eventkitsync.nekeventstore");
@@ -81,8 +81,8 @@
     v3->_queue = v4;
 
     v6 = v3->_queue;
-    v7 = [(NEKStore *)v3 environment];
-    v8 = [NEKChangeObserver changeObserverForEventWithQueue:v6 databaseController:v3 environment:v7];
+    environment = [(NEKStore *)v3 environment];
+    v8 = [NEKChangeObserver changeObserverForEventWithQueue:v6 databaseController:v3 environment:environment];
     [(NEKStore *)v3 setChangeObserver:v8];
 
     v9 = objc_alloc_init(NSMutableArray);
@@ -100,42 +100,42 @@
 
 - (NEKRecordMap)recordMap
 {
-  v2 = [(NEKStore *)self environment];
-  v3 = [v2 recordMap];
+  environment = [(NEKStore *)self environment];
+  recordMap = [environment recordMap];
 
-  return v3;
+  return recordMap;
 }
 
 - (NEKSeenMap)seenMap
 {
-  v2 = [(NEKStore *)self environment];
-  v3 = [v2 seenMap];
+  environment = [(NEKStore *)self environment];
+  seenMap = [environment seenMap];
 
-  return v3;
+  return seenMap;
 }
 
-- (id)freshEventStoreFor:(id)a3
+- (id)freshEventStoreFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = [EKChangeTrackingClientId alloc];
-  v6 = [(NEKStore *)self environment];
-  v7 = [v6 clientName];
-  v8 = [v5 initWithCustomClientId:v7];
+  environment = [(NEKStore *)self environment];
+  clientName = [environment clientName];
+  v8 = [v5 initWithCustomClientId:clientName];
 
-  v9 = [EKEventStore eks_eventOnlyStoreIgnoringExternalChangesFor:v4 withClientId:v8];
+  v9 = [EKEventStore eks_eventOnlyStoreIgnoringExternalChangesFor:forCopy withClientId:v8];
 
   return v9;
 }
 
-- (void)saveEventStore:(id)a3
+- (void)saveEventStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = os_transaction_create();
   v6 = objc_alloc_init(NDTPerf);
   kdebug_trace();
   v7 = objc_autoreleasePoolPush();
   v12 = 0;
-  [v4 commit:&v12];
+  [storeCopy commit:&v12];
   v8 = v12;
   objc_autoreleasePoolPop(v7);
   kdebug_trace();
@@ -171,20 +171,20 @@
 
 - (void)purgeRecordMap
 {
-  v2 = [(NEKEventStore *)self recordMap];
-  [v2 removeAllRecords];
+  recordMap = [(NEKEventStore *)self recordMap];
+  [recordMap removeAllRecords];
 }
 
-- (void)getDefaultTaskCalendar:(id *)a3 defaultEventCalendar:(id *)a4 store:(id)a5
+- (void)getDefaultTaskCalendar:(id *)calendar defaultEventCalendar:(id *)eventCalendar store:(id)store
 {
-  if (a3)
+  if (calendar)
   {
-    v8 = a5;
-    v9 = [v8 defaultCalendarForNewReminders];
-    v10 = [(NEKStore *)self environment];
-    v11 = [v10 isReminderKitEnabled];
+    storeCopy = store;
+    defaultCalendarForNewReminders = [storeCopy defaultCalendarForNewReminders];
+    environment = [(NEKStore *)self environment];
+    isReminderKitEnabled = [environment isReminderKitEnabled];
 
-    if (v11)
+    if (isReminderKitEnabled)
     {
       v12 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -192,39 +192,39 @@
         sub_10006F908(v12);
       }
 
-      v9 = 0;
+      defaultCalendarForNewReminders = 0;
     }
 
-    v13 = [v8 defaultCalendarForNewEvents];
-    v14 = [v8 defaultLocalCalendar];
+    defaultCalendarForNewEvents = [storeCopy defaultCalendarForNewEvents];
+    defaultLocalCalendar = [storeCopy defaultLocalCalendar];
 
-    if (v14)
+    if (defaultLocalCalendar)
     {
-      if ([v9 isEqual:v14])
+      if ([defaultCalendarForNewReminders isEqual:defaultLocalCalendar])
       {
 
-        v9 = 0;
+        defaultCalendarForNewReminders = 0;
       }
 
-      if ([v13 isEqual:v14])
+      if ([defaultCalendarForNewEvents isEqual:defaultLocalCalendar])
       {
 
-        v13 = 0;
+        defaultCalendarForNewEvents = 0;
       }
     }
 
-    v15 = v9;
-    *a3 = v9;
-    v16 = v13;
-    *a4 = v13;
+    v15 = defaultCalendarForNewReminders;
+    *calendar = defaultCalendarForNewReminders;
+    v16 = defaultCalendarForNewEvents;
+    *eventCalendar = defaultCalendarForNewEvents;
   }
 }
 
-- (BOOL)_shouldSendEvent:(id)a3
+- (BOOL)_shouldSendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 uniqueId];
-  v6 = [v5 copy];
+  eventCopy = event;
+  uniqueId = [eventCopy uniqueId];
+  v6 = [uniqueId copy];
 
   if (!v6)
   {
@@ -236,24 +236,24 @@
     goto LABEL_8;
   }
 
-  if (![v4 isPhantom])
+  if (![eventCopy isPhantom])
   {
-    if ([v4 isDetached])
+    if ([eventCopy isDetached])
     {
-      v11 = [v4 originalItem];
-      v12 = v11;
-      if (v11)
+      originalItem = [eventCopy originalItem];
+      v12 = originalItem;
+      if (originalItem)
       {
-        v13 = [v11 uniqueId];
-        v14 = [v13 copy];
+        uniqueId2 = [originalItem uniqueId];
+        v14 = [uniqueId2 copy];
 
         v15 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v16 = v15;
-          v17 = [v4 eks_debugDesc];
+          eks_debugDesc = [eventCopy eks_debugDesc];
           v34 = 138543874;
-          v35 = v17;
+          v35 = eks_debugDesc;
           v36 = 2114;
           v37 = v6;
           v38 = 2114;
@@ -268,9 +268,9 @@
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           v19 = v18;
-          v20 = [v4 eks_debugDesc];
+          eks_debugDesc2 = [eventCopy eks_debugDesc];
           v34 = 138543618;
-          v35 = v20;
+          v35 = eks_debugDesc2;
           v36 = 2114;
           v37 = v6;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "_shouldSendEvent: Entity with summary %{public}@ identifier %{public}@ is detached, but can't get master, so using the actual detached event", &v34, 0x16u);
@@ -282,12 +282,12 @@
       v6 = v14;
     }
 
-    v21 = [v4 calendar];
-    v22 = v21;
-    if (v21)
+    calendar = [eventCopy calendar];
+    v22 = calendar;
+    if (calendar)
     {
-      v23 = [v21 calendarIdentifier];
-      v24 = [v23 copy];
+      calendarIdentifier = [calendar calendarIdentifier];
+      v24 = [calendarIdentifier copy];
 
       if (v24)
       {
@@ -308,9 +308,9 @@
             if (v28)
             {
               v29 = v27;
-              v30 = [v4 eks_debugDesc];
+              eks_debugDesc3 = [eventCopy eks_debugDesc];
               v34 = 138543874;
-              v35 = v30;
+              v35 = eks_debugDesc3;
               v36 = 2114;
               v37 = v6;
               v38 = 2114;
@@ -325,9 +325,9 @@
           if (v28)
           {
             v31 = v27;
-            v32 = [v4 eks_debugDesc];
+            eks_debugDesc4 = [eventCopy eks_debugDesc];
             v34 = 138543874;
-            v35 = v32;
+            v35 = eks_debugDesc4;
             v36 = 2114;
             v37 = v6;
             v38 = 2114;
@@ -370,9 +370,9 @@ LABEL_39:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v4 eks_debugDesc];
+    eks_debugDesc5 = [eventCopy eks_debugDesc];
     v34 = 138543618;
-    v35 = v9;
+    v35 = eks_debugDesc5;
     v36 = 2114;
     v37 = v6;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Entity with summary %{public}@ identifier %{public}@ is a phantom master.  Ignoring.", &v34, 0x16u);
@@ -385,35 +385,35 @@ LABEL_40:
   return v10;
 }
 
-- (BOOL)_shouldSendReminder:(id)a3
+- (BOOL)_shouldSendReminder:(id)reminder
 {
   v4 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [a3 eks_debugDesc];
+    eks_debugDesc = [reminder eks_debugDesc];
     v8 = 138543362;
-    v9 = v6;
+    v9 = eks_debugDesc;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Selecting reminder %{public}@", &v8, 0xCu);
   }
 
   return 1;
 }
 
-- (BOOL)shouldSendEntity:(id)a3
+- (BOOL)shouldSendEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = [v5 entityType];
+  entityCopy = entity;
+  objectID = [entityCopy objectID];
+  entityType = [objectID entityType];
 
-  if (v6 == 2)
+  if (entityType == 2)
   {
-    v7 = [(NEKEventStore *)self _shouldSendEvent:v4];
+    v7 = [(NEKEventStore *)self _shouldSendEvent:entityCopy];
   }
 
   else
   {
-    v7 = [(NEKEventStore *)self _shouldSendReminder:v4];
+    v7 = [(NEKEventStore *)self _shouldSendReminder:entityCopy];
   }
 
   v8 = v7;
@@ -437,57 +437,57 @@ LABEL_40:
   _objc_release_x1();
 }
 
-- (void)updateSource:(id)a3 store:(id)a4
+- (void)updateSource:(id)source store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  storeCopy = store;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018044;
   block[3] = &unk_1000B4D58;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = sourceCopy;
+  v13 = storeCopy;
+  selfCopy = self;
+  v9 = storeCopy;
+  v10 = sourceCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)updateCalendar:(id)a3 store:(id)a4
+- (void)updateCalendar:(id)calendar store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 calendarIdentifier];
+  calendarCopy = calendar;
+  storeCopy = store;
+  calendarIdentifier = [calendarCopy calendarIdentifier];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = sub_100018888;
   v19[4] = sub_100018898;
-  v20 = [v7 calendarWithIdentifier:v8];
+  v20 = [storeCopy calendarWithIdentifier:calendarIdentifier];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000188A0;
   block[3] = &unk_1000B5048;
-  v17 = v8;
+  v17 = calendarIdentifier;
   v18 = v19;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v14 = calendarCopy;
+  selfCopy = self;
+  v16 = storeCopy;
+  v10 = calendarIdentifier;
+  v11 = storeCopy;
+  v12 = calendarCopy;
   dispatch_sync(queue, block);
 
   _Block_object_dispose(v19, 8);
 }
 
-- (void)updateICS:(id)a3 store:(id)a4 session:(id)a5
+- (void)updateICS:(id)s store:(id)store session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sCopy = s;
+  storeCopy = store;
+  sessionCopy = session;
   v11 = os_transaction_create();
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -495,21 +495,21 @@ LABEL_40:
   block[2] = sub_100018C10;
   block[3] = &unk_1000B5070;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = sCopy;
+  v19 = storeCopy;
+  v20 = sessionCopy;
   v21 = v11;
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = sessionCopy;
+  v15 = storeCopy;
+  v16 = sCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)deleteItemWithIdentifier:(id)a3 store:(id)a4
+- (void)deleteItemWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v8 = os_transaction_create();
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
@@ -517,57 +517,57 @@ LABEL_40:
   v13[2] = sub_100018D10;
   v13[3] = &unk_1000B5098;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = storeCopy;
   v16 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = storeCopy;
+  v12 = identifierCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)deleteItem:(id)a3 store:(id)a4
+- (void)deleteItem:(id)item store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectIdentifier];
-  v9 = [v6 type];
-  if (v9 <= 2)
+  itemCopy = item;
+  storeCopy = store;
+  objectIdentifier = [itemCopy objectIdentifier];
+  type = [itemCopy type];
+  if (type <= 2)
   {
-    if (v9 == 1)
+    if (type == 1)
     {
-      [(NEKEventStore *)self _deleteSourceWithIdentifier:v8 store:v7];
+      [(NEKEventStore *)self _deleteSourceWithIdentifier:objectIdentifier store:storeCopy];
     }
 
-    else if (v9 == 2)
+    else if (type == 2)
     {
-      [(NEKEventStore *)self _deleteCalendarWithIdentifier:v8 store:v7];
+      [(NEKEventStore *)self _deleteCalendarWithIdentifier:objectIdentifier store:storeCopy];
     }
 
     goto LABEL_14;
   }
 
-  if (v9 != 3)
+  if (type != 3)
   {
-    if (v9 != 4)
+    if (type != 4)
     {
       goto LABEL_14;
     }
 
-    v10 = [v6 calendarIdentifier];
-    [(NEKEventStore *)self _deleteEventWithIdentifier:v8 calendarIdentifier:v10 store:v7];
+    calendarIdentifier = [itemCopy calendarIdentifier];
+    [(NEKEventStore *)self _deleteEventWithIdentifier:objectIdentifier calendarIdentifier:calendarIdentifier store:storeCopy];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v11 = [(NEKStore *)self environment];
-  v12 = [v11 isReminderKitEnabled];
+  environment = [(NEKStore *)self environment];
+  isReminderKitEnabled = [environment isReminderKitEnabled];
 
-  if ((v12 & 1) == 0)
+  if ((isReminderKitEnabled & 1) == 0)
   {
-    v10 = [v6 calendarIdentifier];
-    [(NEKEventStore *)self _deleteReminderWithIdentifier:v8 calendarIdentifier:v10 store:v7];
+    calendarIdentifier = [itemCopy calendarIdentifier];
+    [(NEKEventStore *)self _deleteReminderWithIdentifier:objectIdentifier calendarIdentifier:calendarIdentifier store:storeCopy];
     goto LABEL_13;
   }
 
@@ -575,35 +575,35 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v6 identifier];
+    identifier = [itemCopy identifier];
     v16 = 136446466;
     v17 = "[NEKEventStore deleteItem:store:]";
     v18 = 2114;
-    v19 = v15;
+    v19 = identifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s: Ignoring EventKit code path for reminder with identifier: [%{public}@]", &v16, 0x16u);
   }
 
 LABEL_14:
 }
 
-- (void)handleNewEntity:(id)a3 withWrapper:(id)a4 session:(id)a5
+- (void)handleNewEntity:(id)entity withWrapper:(id)wrapper session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectID];
-  if ([v11 entityType] != 2)
+  entityCopy = entity;
+  wrapperCopy = wrapper;
+  sessionCopy = session;
+  objectID = [entityCopy objectID];
+  if ([objectID entityType] != 2)
   {
 
     goto LABEL_6;
   }
 
-  v12 = [v8 isPhantom];
+  isPhantom = [entityCopy isPhantom];
 
-  if (!v12)
+  if (!isPhantom)
   {
 LABEL_6:
-    [(NEKEventStore *)self applySidePropertiesToEntity:v8 withWrapper:v9 session:v10];
+    [(NEKEventStore *)self applySidePropertiesToEntity:entityCopy withWrapper:wrapperCopy session:sessionCopy];
     goto LABEL_7;
   }
 
@@ -611,45 +611,45 @@ LABEL_6:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v8 uniqueId];
+    uniqueId = [entityCopy uniqueId];
     v18 = 136446466;
     v19 = "[NEKEventStore handleNewEntity:withWrapper:session:]";
     v20 = 2114;
-    v21 = v15;
+    v21 = uniqueId;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s: Ignoring sidecar data for phantom master with identifier: [%{public}@]", &v18, 0x16u);
   }
 
 LABEL_7:
-  v16 = [v8 objectID];
-  v17 = v16;
-  if (v16)
+  objectID2 = [entityCopy objectID];
+  v17 = objectID2;
+  if (objectID2)
   {
-    if ([v16 isTemporary])
+    if ([objectID2 isTemporary])
     {
-      [(NEKEventStore *)self _didCreateEntity:v8];
+      [(NEKEventStore *)self _didCreateEntity:entityCopy];
     }
 
     else
     {
-      [(NEKEventStore *)self updateRowMappingForEntity:v8];
+      [(NEKEventStore *)self updateRowMappingForEntity:entityCopy];
     }
   }
 }
 
-- (void)handleUpdatedItemFromGizmo:(id)a3 type:(int64_t)a4 withWrapper:(id)a5 identifier:(id)a6
+- (void)handleUpdatedItemFromGizmo:(id)gizmo type:(int64_t)type withWrapper:(id)wrapper identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 eventStore];
-  if (a4 == 3)
+  gizmoCopy = gizmo;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  eventStore = [gizmoCopy eventStore];
+  if (type == 3)
   {
-    v23 = [(NEKStore *)self environment];
-    v24 = [v23 isReminderKitEnabled];
+    environment = [(NEKStore *)self environment];
+    isReminderKitEnabled = [environment isReminderKitEnabled];
 
-    if ((v24 & 1) == 0)
+    if ((isReminderKitEnabled & 1) == 0)
     {
-      v14 = v10;
+      v14 = gizmoCopy;
       v26 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
@@ -658,25 +658,25 @@ LABEL_7:
         *buf = 138543618;
         *v36 = v28;
         *&v36[8] = 2114;
-        *&v36[10] = v12;
+        *&v36[10] = identifierCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Handling updated task from gizmo with summary %{public}@ and identifier %{public}@", buf, 0x16u);
       }
 
-      if (![v11 isTaskCompleted])
+      if (![wrapperCopy isTaskCompleted])
       {
         goto LABEL_30;
       }
 
-      [v11 taskCompletionDate];
-      v18 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      [v14 setCompletionDate:v18];
+      [wrapperCopy taskCompletionDate];
+      selfAttendee = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
+      [v14 setCompletionDate:selfAttendee];
       v29 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        *v36 = v12;
+        *v36 = identifierCopy;
         *&v36[8] = 2114;
-        *&v36[10] = v18;
+        *&v36[10] = selfAttendee;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Task with identifier %{public}@ is completed, completion date is %{public}@", buf, 0x16u);
       }
 
@@ -689,34 +689,34 @@ LABEL_7:
       *buf = 136446466;
       *v36 = "[NEKEventStore handleUpdatedItemFromGizmo:type:withWrapper:identifier:]";
       *&v36[8] = 2114;
-      *&v36[10] = v12;
+      *&v36[10] = identifierCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}s: Ignoring EventKit code path for reminder with identifier: [%{public}@]", buf, 0x16u);
     }
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
-    v14 = v10;
+    v14 = gizmoCopy;
     v15 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v14 eks_debugDesc];
+      eks_debugDesc = [v14 eks_debugDesc];
       *buf = 138543618;
-      *v36 = v17;
+      *v36 = eks_debugDesc;
       *&v36[8] = 2114;
-      *&v36[10] = v12;
+      *&v36[10] = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Handling updated event from gizmo with summary %{public}@ and identifier %{public}@", buf, 0x16u);
     }
 
-    v18 = [v14 selfAttendee];
-    if (!v18)
+    selfAttendee = [v14 selfAttendee];
+    if (!selfAttendee)
     {
       goto LABEL_29;
     }
 
-    v19 = [v11 attendeeStatusForIdentifier:v12];
-    if (v19 != [v18 participantStatus])
+    v19 = [wrapperCopy attendeeStatusForIdentifier:identifierCopy];
+    if (v19 != [selfAttendee participantStatus])
     {
       [v14 setParticipationStatus:v19];
       v30 = *(qword_1000D18A8 + 8);
@@ -725,7 +725,7 @@ LABEL_7:
         *buf = 67109378;
         *v36 = v19;
         *&v36[4] = 2114;
-        *&v36[6] = v12;
+        *&v36[6] = identifierCopy;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Set self attendee status to 0x%08x for event with identifier %{public}@", buf, 0x12u);
       }
 
@@ -738,7 +738,7 @@ LABEL_7:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *v36 = v12;
+        *v36 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Set invitation status to none for event with identifier %{public}@", buf, 0xCu);
       }
 
@@ -755,7 +755,7 @@ LABEL_7:
       }
 
       v34 = 0;
-      [v13 saveEvent:v14 span:v33 commit:1 error:&v34];
+      [eventStore saveEvent:v14 span:v33 commit:1 error:&v34];
       v21 = v34;
       objc_autoreleasePoolPop(v32);
       if (v21 && os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
@@ -770,11 +770,11 @@ LABEL_7:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = v20;
-      v22 = [v11 attendeeStatusForIdentifier:v12];
+      v22 = [wrapperCopy attendeeStatusForIdentifier:identifierCopy];
       *buf = 67109378;
       *v36 = v22;
       *&v36[4] = 2114;
-      *&v36[6] = v12;
+      *&v36[6] = identifierCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "No need to set attendee status, synced value is the same as existing value: 0x%08x for event with identifier %{public}@", buf, 0x12u);
 LABEL_28:
     }
@@ -785,24 +785,24 @@ LABEL_30:
   }
 }
 
-- (BOOL)updateEvent:(id)a3 identifier:(id)a4 eventStore:(id)a5 occurrenceDate:(id)a6 participationStatus:(int64_t)a7 masterIdentifier:(id)a8 isMaster:(BOOL)a9
+- (BOOL)updateEvent:(id)event identifier:(id)identifier eventStore:(id)store occurrenceDate:(id)date participationStatus:(int64_t)status masterIdentifier:(id)masterIdentifier isMaster:(BOOL)master
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if ([v14 participationStatus] == a7)
+  eventCopy = event;
+  identifierCopy = identifier;
+  storeCopy = store;
+  dateCopy = date;
+  masterIdentifierCopy = masterIdentifier;
+  if ([eventCopy participationStatus] == status)
   {
     v19 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v14 externalID];
+      externalID = [eventCopy externalID];
       *buf = 138543618;
-      v33 = v15;
+      v33 = identifierCopy;
       v34 = 2114;
-      v35 = v21;
+      v35 = externalID;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Participant status did not change. No need to save event with identifier %{public}@, externalID is %{public}@", buf, 0x16u);
     }
 
@@ -811,21 +811,21 @@ LABEL_30:
 
   else
   {
-    [v14 setParticipationStatus:a7];
-    if (a7 >= 2)
+    [eventCopy setParticipationStatus:status];
+    if (status >= 2)
     {
-      [v14 setInvitationStatus:0];
+      [eventCopy setInvitationStatus:0];
       v23 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v33 = v15;
+        v33 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Set invitation status to none for event with identifier %{public}@", buf, 0xCu);
       }
     }
 
     v24 = objc_autoreleasePoolPush();
-    if (a9)
+    if (master)
     {
       v25 = 2;
     }
@@ -836,7 +836,7 @@ LABEL_30:
     }
 
     v31 = 0;
-    v22 = [v16 saveEvent:v14 span:v25 commit:0 error:&v31];
+    v22 = [storeCopy saveEvent:eventCopy span:v25 commit:0 error:&v31];
     v26 = v31;
     objc_autoreleasePoolPop(v24);
     v27 = *(qword_1000D18A8 + 8);
@@ -845,11 +845,11 @@ LABEL_30:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v28 = v27;
-        v29 = [v14 externalID];
+        externalID2 = [eventCopy externalID];
         *buf = 138543618;
-        v33 = v15;
+        v33 = identifierCopy;
         v34 = 2114;
-        v35 = v29;
+        v35 = externalID2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Saved event with identifier %{public}@, externalID is %{public}@", buf, 0x16u);
       }
     }
@@ -863,30 +863,30 @@ LABEL_30:
   return v22;
 }
 
-- (BOOL)updateMasterEvent:(id)a3 masterIdentifier:(id)a4 calendarIdentifier:(id)a5 masterParticipationStatus:(int64_t)a6 detachedEvents:(id)a7
+- (BOOL)updateMasterEvent:(id)event masterIdentifier:(id)identifier calendarIdentifier:(id)calendarIdentifier masterParticipationStatus:(int64_t)status detachedEvents:(id)events
 {
-  v11 = a3;
-  v12 = a4;
-  v76 = a5;
-  v13 = a7;
+  eventCopy = event;
+  identifierCopy = identifier;
+  calendarIdentifierCopy = calendarIdentifier;
+  eventsCopy = events;
   v14 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = sub_10002CDF8([v11 title]);
+    v16 = sub_10002CDF8([eventCopy title]);
     *buf = 67109634;
-    *v101 = a6;
+    *v101 = status;
     *&v101[4] = 2114;
     *&v101[6] = v16;
     *&v101[14] = 2114;
-    *&v101[16] = v12;
+    *&v101[16] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Handling updated master event from gizmo with participationStatus %d, summary %{public}@, and identifier %{public}@", buf, 0x1Cu);
   }
 
-  v17 = [v11 objectID];
-  v18 = [v17 rowID];
+  objectID = [eventCopy objectID];
+  rowID = [objectID rowID];
 
-  if (v18 == -1)
+  if (rowID == -1)
   {
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
     {
@@ -898,14 +898,14 @@ LABEL_30:
 
   else
   {
-    v73 = v11;
+    v73 = eventCopy;
     v19 = [EKEventStore eks_eventOnlyStoreFor:@"updateMasterEvent:blah..."];
-    v78 = [NSNumber numberWithInt:v18];
-    v74 = v13;
-    v83 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v13 count]);
+    v78 = [NSNumber numberWithInt:rowID];
+    v74 = eventsCopy;
+    v83 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [eventsCopy count]);
     v81 = v19;
-    v77 = v12;
-    [v19 calendarItemsWithExternalIdentifier:v12];
+    v77 = identifierCopy;
+    [v19 calendarItemsWithExternalIdentifier:identifierCopy];
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
@@ -929,30 +929,30 @@ LABEL_6:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v26 = v25;
-          v27 = [v24 eks_debugDesc];
-          v28 = [v24 calendarItemExternalIdentifier];
+          eks_debugDesc = [v24 eks_debugDesc];
+          calendarItemExternalIdentifier = [v24 calendarItemExternalIdentifier];
           *buf = 138543618;
-          *v101 = v27;
+          *v101 = eks_debugDesc;
           *&v101[8] = 2114;
-          *&v101[10] = v28;
+          *&v101[10] = calendarItemExternalIdentifier;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Checking for calendar match for event %{public}@ with identifier %{public}@", buf, 0x16u);
         }
 
-        v29 = [v24 calendar];
+        calendar = [v24 calendar];
         v30 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v30;
-          v32 = [v29 calendarIdentifier];
+          calendarIdentifier = [calendar calendarIdentifier];
           *buf = 138543618;
-          *v101 = v76;
+          *v101 = calendarIdentifierCopy;
           *&v101[8] = 2114;
-          *&v101[10] = v32;
+          *&v101[10] = calendarIdentifier;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Checking for match on calendar, we want %{public}@, calendarIdentifier is %{public}@", buf, 0x16u);
         }
 
-        v33 = [v29 calendarIdentifier];
-        v34 = [v33 isEqualToString:v76];
+        calendarIdentifier2 = [calendar calendarIdentifier];
+        v34 = [calendarIdentifier2 isEqualToString:calendarIdentifierCopy];
 
         if (v34)
         {
@@ -979,31 +979,31 @@ LABEL_6:
       }
 
       v36 = *(qword_1000D18A8 + 8);
-      v12 = v77;
+      identifierCopy = v77;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         v37 = v36;
-        v38 = [v35 eks_debugDesc];
+        eks_debugDesc2 = [v35 eks_debugDesc];
         *buf = 67109634;
-        *v101 = a6;
+        *v101 = status;
         *&v101[4] = 2114;
-        *&v101[6] = v38;
+        *&v101[6] = eks_debugDesc2;
         *&v101[14] = 2114;
         *&v101[16] = v77;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Handling master event from gizmo with participation status %d, summary %{public}@, and identifier %{public}@", buf, 0x1Cu);
       }
 
-      v39 = [v73 startDate];
+      startDate = [v73 startDate];
       LOBYTE(v70) = 1;
-      [(NEKEventStore *)self updateEvent:v35 identifier:v77 eventStore:v81 occurrenceDate:v39 participationStatus:a6 masterIdentifier:v77 isMaster:v70];
+      [(NEKEventStore *)self updateEvent:v35 identifier:v77 eventStore:v81 occurrenceDate:startDate participationStatus:status masterIdentifier:v77 isMaster:v70];
 
       v72 = v35;
-      v40 = [v35 detachedItems];
+      detachedItems = [v35 detachedItems];
       v89 = 0u;
       v90 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v41 = [v40 countByEnumeratingWithState:&v89 objects:v98 count:16];
+      v41 = [detachedItems countByEnumeratingWithState:&v89 objects:v98 count:16];
       if (v41)
       {
         v42 = v41;
@@ -1014,15 +1014,15 @@ LABEL_6:
           {
             if (*v90 != v43)
             {
-              objc_enumerationMutation(v40);
+              objc_enumerationMutation(detachedItems);
             }
 
             v45 = *(*(&v89 + 1) + 8 * i);
-            v46 = [v45 originalStartDate];
-            [v83 setObject:v45 forKey:v46];
+            originalStartDate = [v45 originalStartDate];
+            [v83 setObject:v45 forKey:originalStartDate];
           }
 
-          v42 = [v40 countByEnumeratingWithState:&v89 objects:v98 count:16];
+          v42 = [detachedItems countByEnumeratingWithState:&v89 objects:v98 count:16];
         }
 
         while (v42);
@@ -1036,7 +1036,7 @@ LABEL_6:
 LABEL_16:
 
 LABEL_28:
-      v12 = v77;
+      identifierCopy = v77;
       if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
       {
         sub_10006FF64();
@@ -1067,14 +1067,14 @@ LABEL_28:
           v50 = *(*(&v85 + 1) + 8 * j);
           v51 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v50 longLongValue]);
           [v51 timeIntervalSinceReferenceDate];
-          v53 = [NSString stringWithFormat:@"%@%@%llu", v12, @"/RID=", v52];
+          v53 = [NSString stringWithFormat:@"%@%@%llu", identifierCopy, @"/RID=", v52];
           v54 = [v48 objectForKeyedSubscript:v50];
           v55 = [v83 objectForKey:v51];
-          v56 = [v55 persistentObject];
+          persistentObject = [v55 persistentObject];
 
           v57 = *(qword_1000D18A8 + 8);
           v58 = os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT);
-          if (v56)
+          if (persistentObject)
           {
             if (v58)
             {
@@ -1082,7 +1082,7 @@ LABEL_28:
               _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Using existing detached event", buf, 2u);
             }
 
-            v59 = [[EKEvent alloc] initWithPersistentObject:v56 occurrenceDate:0];
+            v59 = [[EKEvent alloc] initWithPersistentObject:persistentObject occurrenceDate:0];
           }
 
           else
@@ -1103,31 +1103,31 @@ LABEL_28:
             if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
             {
               v62 = v61;
-              v63 = [v54 intValue];
-              v64 = [v60 eks_debugDesc];
+              intValue = [v54 intValue];
+              eks_debugDesc3 = [v60 eks_debugDesc];
               *buf = 67109634;
-              *v101 = v63;
+              *v101 = intValue;
               *&v101[4] = 2114;
-              *&v101[6] = v64;
+              *&v101[6] = eks_debugDesc3;
               *&v101[14] = 2114;
               *&v101[16] = v53;
               _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Handling updated detached event from gizmo with participation status %d, summary %{public}@, and identifier %{public}@.", buf, 0x1Cu);
 
-              v12 = v77;
+              identifierCopy = v77;
             }
 
             LOBYTE(v71) = 0;
-            -[NEKEventStore updateEvent:identifier:eventStore:occurrenceDate:participationStatus:masterIdentifier:isMaster:](self, "updateEvent:identifier:eventStore:occurrenceDate:participationStatus:masterIdentifier:isMaster:", v60, v53, v81, v51, [v54 intValue], v12, v71);
+            -[NEKEventStore updateEvent:identifier:eventStore:occurrenceDate:participationStatus:masterIdentifier:isMaster:](self, "updateEvent:identifier:eventStore:occurrenceDate:participationStatus:masterIdentifier:isMaster:", v60, v53, v81, v51, [v54 intValue], identifierCopy, v71);
           }
 
           else if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
           {
             v65 = v61;
-            v66 = [v54 intValue];
+            intValue2 = [v54 intValue];
             *buf = 138543618;
             *v101 = v53;
             *&v101[8] = 1024;
-            *&v101[10] = v66;
+            *&v101[10] = intValue2;
             _os_log_error_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "Failed to get/create event with identifier %{public}@ to set attendee status %d, skipping event", buf, 0x12u);
           }
         }
@@ -1146,40 +1146,40 @@ LABEL_28:
       sub_10006FFCC();
     }
 
-    v11 = v73;
-    v13 = v74;
+    eventCopy = v73;
+    eventsCopy = v74;
   }
 
   return v67;
 }
 
-- (id)detacheesForIdentifierCreatingIfNeeded:(id)a3 detachedEventMap:(id)a4
+- (id)detacheesForIdentifierCreatingIfNeeded:(id)needed detachedEventMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  neededCopy = needed;
+  mapCopy = map;
+  v7 = [mapCopy objectForKeyedSubscript:neededCopy];
   if (!v7)
   {
     v7 = +[NSMutableDictionary dictionary];
-    [v6 setObject:v7 forKey:v5];
+    [mapCopy setObject:v7 forKey:neededCopy];
   }
 
   return v7;
 }
 
-- (void)handleCalendarEventWithUniqueIdentifierFromGizmo:(id)a3 calendar:(id)a4 wrapper:(id)a5 detachedEventMap:(id)a6
+- (void)handleCalendarEventWithUniqueIdentifierFromGizmo:(id)gizmo calendar:(id)calendar wrapper:(id)wrapper detachedEventMap:(id)map
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 eventStore];
-  v15 = [v14 eventWithUniqueId:v10];
+  gizmoCopy = gizmo;
+  calendarCopy = calendar;
+  wrapperCopy = wrapper;
+  mapCopy = map;
+  eventStore = [calendarCopy eventStore];
+  v15 = [eventStore eventWithUniqueId:gizmoCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 calendar];
-    v18 = [v17 isEqual:v11];
+    calendar = [v15 calendar];
+    v18 = [calendar isEqual:calendarCopy];
 
     if ((v18 & 1) == 0)
     {
@@ -1197,55 +1197,55 @@ LABEL_28:
       {
         if (([v16 isPhantom] & 1) == 0)
         {
-          v25 = [(NEKEventStore *)self detacheesForIdentifierCreatingIfNeeded:v10 detachedEventMap:v13];
+          v25 = [(NEKEventStore *)self detacheesForIdentifierCreatingIfNeeded:gizmoCopy detachedEventMap:mapCopy];
         }
       }
 
       else
       {
-        [(NEKEventStore *)self handleUpdatedItemFromGizmo:v16 type:2 withWrapper:v12 identifier:v10];
+        [(NEKEventStore *)self handleUpdatedItemFromGizmo:v16 type:2 withWrapper:wrapperCopy identifier:gizmoCopy];
       }
 
       goto LABEL_20;
     }
   }
 
-  v19 = [v10 componentsSeparatedByString:@"/RID="];
+  v19 = [gizmoCopy componentsSeparatedByString:@"/RID="];
   if ([v19 count] == 2)
   {
-    v30 = self;
-    v32 = v13;
+    selfCopy = self;
+    v32 = mapCopy;
     v20 = [v19 objectAtIndexedSubscript:0];
     v21 = [v19 objectAtIndexedSubscript:1];
-    v33 = v11;
+    v33 = calendarCopy;
     v22 = [NSArray arrayWithObjects:&v33 count:1];
-    v23 = [v14 eventsWithExternalIdentifier:v20 inCalendars:v22];
+    v23 = [eventStore eventsWithExternalIdentifier:v20 inCalendars:v22];
 
     if ([v23 count])
     {
       v24 = [v23 objectAtIndexedSubscript:0];
       if ([v24 isPhantom])
       {
-        [(NEKEventStore *)v30 handleUpdatedItemFromGizmo:v16 type:2 withWrapper:v12 identifier:v10];
+        [(NEKEventStore *)selfCopy handleUpdatedItemFromGizmo:v16 type:2 withWrapper:wrapperCopy identifier:gizmoCopy];
       }
 
       else
       {
         v29 = v20;
-        [(NEKEventStore *)v30 detacheesForIdentifierCreatingIfNeeded:v20 detachedEventMap:v32];
+        [(NEKEventStore *)selfCopy detacheesForIdentifierCreatingIfNeeded:v20 detachedEventMap:v32];
         v27 = v31 = v24;
-        v28 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v12 attendeeStatusForIdentifier:v10]);
+        v28 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [wrapperCopy attendeeStatusForIdentifier:gizmoCopy]);
         [v27 setObject:v28 forKey:v21];
 
         v20 = v29;
         v24 = v31;
       }
 
-      v13 = v32;
+      mapCopy = v32;
       goto LABEL_20;
     }
 
-    v13 = v32;
+    mapCopy = v32;
   }
 
   else
@@ -1255,21 +1255,21 @@ LABEL_28:
   v26 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
-    sub_100070108(v10, v26, v12);
+    sub_100070108(gizmoCopy, v26, wrapperCopy);
   }
 
 LABEL_20:
 }
 
-- (void)handleCalendarTaskWithUniqueIdentifierFromGizmo:(id)a3 calendar:(id)a4 wrapper:(id)a5
+- (void)handleCalendarTaskWithUniqueIdentifierFromGizmo:(id)gizmo calendar:(id)calendar wrapper:(id)wrapper
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NEKStore *)self environment];
-  v12 = [v11 isReminderKitEnabled];
+  gizmoCopy = gizmo;
+  calendarCopy = calendar;
+  wrapperCopy = wrapper;
+  environment = [(NEKStore *)self environment];
+  isReminderKitEnabled = [environment isReminderKitEnabled];
 
-  if (v12)
+  if (isReminderKitEnabled)
   {
     v13 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1277,22 +1277,22 @@ LABEL_20:
       v19 = 136446466;
       v20 = "[NEKEventStore handleCalendarTaskWithUniqueIdentifierFromGizmo:calendar:wrapper:]";
       v21 = 2114;
-      v22 = v8;
+      v22 = gizmoCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s: Ignoring EventKit code path for reminder with identifier: [%{public}@]", &v19, 0x16u);
     }
   }
 
   else
   {
-    v14 = [v9 eventStore];
-    v23 = v9;
+    eventStore = [calendarCopy eventStore];
+    v23 = calendarCopy;
     v15 = [NSArray arrayWithObjects:&v23 count:1];
-    v16 = [v14 remindersWithExternalIdentifier:v8 inCalendars:v15];
+    v16 = [eventStore remindersWithExternalIdentifier:gizmoCopy inCalendars:v15];
     v17 = [v16 objectAtIndexedSubscript:0];
 
     if (v17)
     {
-      [(NEKEventStore *)self handleUpdatedItemFromGizmo:v17 type:3 withWrapper:v10 identifier:v8];
+      [(NEKEventStore *)self handleUpdatedItemFromGizmo:v17 type:3 withWrapper:wrapperCopy identifier:gizmoCopy];
     }
 
     else
@@ -1300,23 +1300,23 @@ LABEL_20:
       v18 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        sub_1000701CC(v8, v18, v10);
+        sub_1000701CC(gizmoCopy, v18, wrapperCopy);
       }
     }
   }
 }
 
-- (id)_filterOutInvalidICSWrappers:(id)a3 store:(id)a4 calendars:(id *)a5
+- (id)_filterOutInvalidICSWrappers:(id)wrappers store:(id)store calendars:(id *)calendars
 {
-  v6 = a3;
-  v7 = a4;
-  v29 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
-  v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  wrappersCopy = wrappers;
+  storeCopy = store;
+  v29 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(wrappersCopy, "count")}];
+  v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(wrappersCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
+  obj = wrappersCopy;
   v8 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v8)
   {
@@ -1341,9 +1341,9 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received ICS wrapper: %{public}@", buf, 0xCu);
         }
 
-        v15 = [v12 ICSData];
+        iCSData = [v12 ICSData];
 
-        if (v15)
+        if (iCSData)
         {
           v16 = *(qword_1000D18B0 + 8);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1358,16 +1358,16 @@ LABEL_20:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v17;
-            v19 = [v12 lzfseICSData];
-            v20 = [v19 base64EncodedStringWithOptions:0];
+            lzfseICSData = [v12 lzfseICSData];
+            v20 = [lzfseICSData base64EncodedStringWithOptions:0];
             *buf = 138412290;
             v39 = v20;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "recv LZFSE: <<!%@!>>", buf, 0xCu);
           }
         }
 
-        v21 = [v12 calendarIdentifier];
-        v22 = [NEKCalendarID calendarInStore:v7 withNEKCalendarID:v21];
+        calendarIdentifier = [v12 calendarIdentifier];
+        v22 = [NEKCalendarID calendarInStore:storeCopy withNEKCalendarID:calendarIdentifier];
 
         if (v22)
         {
@@ -1393,9 +1393,9 @@ LABEL_20:
     while (v9);
   }
 
-  if (a5)
+  if (calendars)
   {
-    *a5 = [v29 copy];
+    *calendars = [v29 copy];
   }
 
   v24 = [v28 copy];
@@ -1403,18 +1403,18 @@ LABEL_20:
   return v24;
 }
 
-- (void)_processUpdateFromWatch:(id)a3 calendar:(id)a4 store:(id)a5
+- (void)_processUpdateFromWatch:(id)watch calendar:(id)calendar store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
+  watchCopy = watch;
+  calendarCopy = calendar;
+  storeCopy = store;
   v9 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 objectIdentifier];
+    objectIdentifier = [watchCopy objectIdentifier];
     *buf = 138543362;
-    v43 = v11;
+    v43 = objectIdentifier;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Processing update from the watch, main identifier is %{public}@", buf, 0xCu);
   }
 
@@ -1423,9 +1423,9 @@ LABEL_20:
   v37[1] = 3221225472;
   v37[2] = sub_10001B088;
   v37[3] = &unk_1000B50C0;
-  v38 = v7;
-  v39 = self;
-  v30 = v8;
+  v38 = watchCopy;
+  selfCopy = self;
+  v30 = calendarCopy;
   v40 = v30;
   v13 = v12;
   v41 = v13;
@@ -1457,23 +1457,23 @@ LABEL_20:
         v19 = [v14 objectForKeyedSubscript:v18];
         v46 = v30;
         v20 = [NSArray arrayWithObjects:&v46 count:1];
-        v21 = [v31 calendarItemsWithExternalIdentifier:v18 inCalendars:v20];
-        v22 = [v21 firstObject];
+        v21 = [storeCopy calendarItemsWithExternalIdentifier:v18 inCalendars:v20];
+        firstObject = [v21 firstObject];
 
-        if (v22)
+        if (firstObject)
         {
           if ([v19 count])
           {
-            v23 = [v28 calendarIdentifier];
-            v24 = [v23 identifier];
+            calendarIdentifier = [v28 calendarIdentifier];
+            identifier = [calendarIdentifier identifier];
             v16 = v26;
-            -[NEKEventStore updateMasterEvent:masterIdentifier:calendarIdentifier:masterParticipationStatus:detachedEvents:](self, "updateMasterEvent:masterIdentifier:calendarIdentifier:masterParticipationStatus:detachedEvents:", v22, v18, v24, [v28 attendeeStatusForIdentifier:v18], v19);
+            -[NEKEventStore updateMasterEvent:masterIdentifier:calendarIdentifier:masterParticipationStatus:detachedEvents:](self, "updateMasterEvent:masterIdentifier:calendarIdentifier:masterParticipationStatus:detachedEvents:", firstObject, v18, identifier, [v28 attendeeStatusForIdentifier:v18], v19);
 LABEL_11:
 
             goto LABEL_15;
           }
 
-          [(NEKEventStore *)self handleUpdatedItemFromGizmo:v22 type:2 withWrapper:v28 identifier:v18];
+          [(NEKEventStore *)self handleUpdatedItemFromGizmo:firstObject type:2 withWrapper:v28 identifier:v18];
         }
 
         else
@@ -1481,13 +1481,13 @@ LABEL_11:
           v25 = *(qword_1000D18A8 + 8);
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v23 = v25;
-            v24 = [v28 calendarIdentifier];
+            calendarIdentifier = v25;
+            identifier = [v28 calendarIdentifier];
             *buf = 138543618;
             v43 = v18;
             v44 = 2114;
-            v45 = v24;
-            _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "No calendar item found for main event in recurring series with identifier %{public}@ in calendar with identifier %{public}@", buf, 0x16u);
+            v45 = identifier;
+            _os_log_error_impl(&_mh_execute_header, calendarIdentifier, OS_LOG_TYPE_ERROR, "No calendar item found for main event in recurring series with identifier %{public}@ in calendar with identifier %{public}@", buf, 0x16u);
             goto LABEL_11;
           }
         }
@@ -1506,50 +1506,50 @@ LABEL_15:
   }
 }
 
-- (void)_processUpdateWithICS:(id)a3 store:(id)a4 calendar:(id)a5 resultWrappers:(id)a6 resultCalendars:(id)a7
+- (void)_processUpdateWithICS:(id)s store:(id)store calendar:(id)calendar resultWrappers:(id)wrappers resultCalendars:(id)calendars
 {
-  v12 = a3;
-  v71 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  sCopy = s;
+  storeCopy = store;
+  calendarCopy = calendar;
+  wrappersCopy = wrappers;
+  calendarsCopy = calendars;
   v16 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = [v12 nuevoIdentifier];
+    nuevoIdentifier = [sCopy nuevoIdentifier];
     *buf = 138543362;
-    v78 = v18;
+    v78 = nuevoIdentifier;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Processing add/update from companion, or a new record from the watch, id = %{public}@", buf, 0xCu);
   }
 
-  v19 = [v12 oldIdentifier];
-  if (v19)
+  oldIdentifier = [sCopy oldIdentifier];
+  if (oldIdentifier)
   {
-    v20 = v19;
-    v21 = [v12 nuevoIdentifier];
-    if (!v21)
+    v20 = oldIdentifier;
+    nuevoIdentifier2 = [sCopy nuevoIdentifier];
+    if (!nuevoIdentifier2)
     {
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    v22 = v21;
-    [v12 oldIdentifier];
+    v22 = nuevoIdentifier2;
+    [sCopy oldIdentifier];
     v23 = v69 = self;
-    [v12 nuevoIdentifier];
-    v24 = v70 = v15;
+    [sCopy nuevoIdentifier];
+    v24 = v70 = calendarsCopy;
     v25 = [v23 isEqualToString:v24];
 
-    v15 = v70;
+    calendarsCopy = v70;
     self = v69;
 
     if ((v25 & 1) == 0)
     {
-      v67 = v14;
-      v68 = v13;
-      [v71 sources];
+      v67 = wrappersCopy;
+      v68 = calendarCopy;
+      [storeCopy sources];
       v73 = 0u;
       v74 = 0u;
       v75 = 0u;
@@ -1570,16 +1570,16 @@ LABEL_23:
 
             v30 = *(*(&v73 + 1) + 8 * i);
             v31 = objc_autoreleasePoolPush();
-            v32 = [v12 oldIdentifier];
-            v33 = [v30 allCalendars];
-            v34 = [v33 allObjects];
-            v35 = [v71 eventsWithExternalIdentifier:v32 inCalendars:v34];
+            oldIdentifier2 = [sCopy oldIdentifier];
+            allCalendars = [v30 allCalendars];
+            allObjects = [allCalendars allObjects];
+            v35 = [storeCopy eventsWithExternalIdentifier:oldIdentifier2 inCalendars:allObjects];
 
             if (v35 && [v35 count])
             {
               v36 = [v35 objectAtIndexedSubscript:0];
               v72 = 0;
-              [v71 removeEvent:v36 span:objc_msgSend(v36 error:{"isMasterOrDetachedOccurrence"), &v72}];
+              [storeCopy removeEvent:v36 span:objc_msgSend(v36 error:{"isMasterOrDetachedOccurrence"), &v72}];
               v37 = v72;
               if (v37 && os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
               {
@@ -1591,12 +1591,12 @@ LABEL_23:
               {
                 v39 = v37;
                 v40 = v38;
-                v41 = [v12 oldIdentifier];
-                v42 = [v12 nuevoIdentifier];
+                oldIdentifier3 = [sCopy oldIdentifier];
+                nuevoIdentifier3 = [sCopy nuevoIdentifier];
                 *buf = 138543618;
-                v78 = v41;
+                v78 = oldIdentifier3;
                 v79 = 2114;
-                v80 = v42;
+                v80 = nuevoIdentifier3;
                 _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Item ID remapping complete: %{public}@ => %{public}@", buf, 0x16u);
 
                 v37 = v39;
@@ -1621,31 +1621,31 @@ LABEL_23:
 
 LABEL_22:
 
-      v14 = v67;
-      v13 = v68;
+      wrappersCopy = v67;
+      calendarCopy = v68;
       self = v69;
-      v15 = v70;
+      calendarsCopy = v70;
       goto LABEL_23;
     }
   }
 
 LABEL_24:
-  v43 = [v12 oldCalendarIdentifier];
-  if (!v43)
+  oldCalendarIdentifier = [sCopy oldCalendarIdentifier];
+  if (!oldCalendarIdentifier)
   {
     goto LABEL_29;
   }
 
-  v44 = v43;
-  v45 = [v12 calendarIdentifier];
-  v46 = [v45 identifier];
+  v44 = oldCalendarIdentifier;
+  calendarIdentifier = [sCopy calendarIdentifier];
+  identifier = [calendarIdentifier identifier];
 
-  if (v46)
+  if (identifier)
   {
-    v47 = [v12 oldCalendarIdentifier];
-    v48 = [v12 calendarIdentifier];
-    v49 = [v48 identifier];
-    v50 = [v47 isEqualToString:v49];
+    oldCalendarIdentifier2 = [sCopy oldCalendarIdentifier];
+    calendarIdentifier2 = [sCopy calendarIdentifier];
+    identifier2 = [calendarIdentifier2 identifier];
+    v50 = [oldCalendarIdentifier2 isEqualToString:identifier2];
 
     v51 = *(qword_1000D18A8 + 8);
     v52 = os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT);
@@ -1654,10 +1654,10 @@ LABEL_24:
       if (v52)
       {
         v53 = v51;
-        v54 = [v12 calendarIdentifier];
-        v55 = [v54 identifier];
+        calendarIdentifier3 = [sCopy calendarIdentifier];
+        identifier3 = [calendarIdentifier3 identifier];
         *buf = 138543362;
-        v78 = v55;
+        v78 = identifier3;
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "Calendars match, so event didn't move: calendar id = %{public}@", buf, 0xCu);
       }
     }
@@ -1667,17 +1667,17 @@ LABEL_24:
       if (v52)
       {
         v63 = v51;
-        v64 = [v12 oldCalendarIdentifier];
-        v65 = [v12 calendarIdentifier];
-        v66 = [v65 identifier];
+        oldCalendarIdentifier3 = [sCopy oldCalendarIdentifier];
+        calendarIdentifier4 = [sCopy calendarIdentifier];
+        identifier4 = [calendarIdentifier4 identifier];
         *buf = 138543618;
-        v78 = v64;
+        v78 = oldCalendarIdentifier3;
         v79 = 2114;
-        v80 = v66;
+        v80 = identifier4;
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "Calendars don't match, so deleting from old calendar: old calendar id = %{public}@, current calendar id = %{public}@", buf, 0x16u);
       }
 
-      [(NEKEventStore *)self _deleteCalendarItemsInICSWrapperFromOldCalendar:v12 store:v71];
+      [(NEKEventStore *)self _deleteCalendarItemsInICSWrapperFromOldCalendar:sCopy store:storeCopy];
     }
   }
 
@@ -1688,10 +1688,10 @@ LABEL_29:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       v57 = v56;
-      v58 = [v12 title];
-      v59 = sub_10002CDF8(v58);
-      v60 = [v12 calendarIdentifier];
-      [v60 identifier];
+      title = [sCopy title];
+      v59 = sub_10002CDF8(title);
+      calendarIdentifier5 = [sCopy calendarIdentifier];
+      [calendarIdentifier5 identifier];
       v62 = v61 = self;
       *buf = 138543618;
       v78 = v59;
@@ -1702,21 +1702,21 @@ LABEL_29:
       self = v61;
     }
 
-    [(NEKEventStore *)self _deleteCalendarItemsMovedToCalendar:v13 inICSWrapper:v12];
+    [(NEKEventStore *)self _deleteCalendarItemsMovedToCalendar:calendarCopy inICSWrapper:sCopy];
   }
 
-  [v14 addObject:v12];
-  [v15 addObject:v13];
+  [wrappersCopy addObject:sCopy];
+  [calendarsCopy addObject:calendarCopy];
 }
 
-- (void)_processArrayOfArrayOfICSWrappers:(id)a3 batchWrappers:(id)a4 session:(id)a5
+- (void)_processArrayOfArrayOfICSWrappers:(id)wrappers batchWrappers:(id)batchWrappers session:(id)session
 {
-  v8 = a3;
-  v44 = a4;
-  v9 = a5;
-  v10 = v8;
-  v11 = v9;
-  if ([v8 count])
+  wrappersCopy = wrappers;
+  batchWrappersCopy = batchWrappers;
+  sessionCopy = session;
+  v10 = wrappersCopy;
+  v11 = sessionCopy;
+  if ([wrappersCopy count])
   {
     v12 = 0;
     v13 = &qword_1000D18A8;
@@ -1726,7 +1726,7 @@ LABEL_29:
     do
     {
       v45 = objc_autoreleasePoolPush();
-      v16 = [v44 objectAtIndex:v12];
+      v16 = [batchWrappersCopy objectAtIndex:v12];
       v46 = v12;
       v17 = [v10 objectAtIndex:v12];
       v60 = 0u;
@@ -1767,22 +1767,22 @@ LABEL_29:
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
                   v25 = v24;
-                  v26 = [v51 eks_debugDesc];
-                  v27 = [v51 uniqueId];
+                  eks_debugDesc = [v51 eks_debugDesc];
+                  uniqueId = [v51 uniqueId];
                   *buf = 138543618;
-                  v66 = v26;
+                  v66 = eks_debugDesc;
                   v67 = 2114;
-                  v68 = v27;
+                  v68 = uniqueId;
                   _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "We have a recurring event %{public}@ and identifier %{public}@, checking to see if any detached events need attention", buf, 0x16u);
                 }
 
-                v28 = [v51 detachedItems];
+                detachedItems = [v51 detachedItems];
                 v56 = 0u;
                 v57 = 0u;
                 v58 = 0u;
                 v59 = 0u;
-                v55 = v28;
-                v29 = [v28 countByEnumeratingWithState:&v56 objects:v64 count:16];
+                v55 = detachedItems;
+                v29 = [detachedItems countByEnumeratingWithState:&v56 objects:v64 count:16];
                 if (v29)
                 {
                   v30 = v29;
@@ -1861,22 +1861,22 @@ LABEL_29:
   }
 }
 
-- (void)performUpdateWithICSWrappers:(id)a3 store:(id)a4 session:(id)a5
+- (void)performUpdateWithICSWrappers:(id)wrappers store:(id)store session:(id)session
 {
-  v7 = a3;
-  v49 = a4;
-  v45 = a5;
+  wrappersCopy = wrappers;
+  storeCopy = store;
+  sessionCopy = session;
   v8 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 67109120;
-    LODWORD(v60) = [v7 count];
+    LODWORD(v60) = [wrappersCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "performUpdateWithICSWrappers received %d items", buf, 8u);
   }
 
   v58 = 0;
-  v10 = [(NEKEventStore *)self _filterOutInvalidICSWrappers:v7 store:v49 calendars:&v58];
+  v10 = [(NEKEventStore *)self _filterOutInvalidICSWrappers:wrappersCopy store:storeCopy calendars:&v58];
   v11 = v58;
 
   v12 = [v10 count];
@@ -1906,23 +1906,23 @@ LABEL_29:
         v19 = *(*(&v54 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
         v21 = [v11 objectAtIndexedSubscript:v16];
-        v22 = [v19 ICSData];
-        if (v22)
+        iCSData = [v19 ICSData];
+        if (iCSData)
         {
 
 LABEL_11:
-          [(NEKEventStore *)self _processUpdateWithICS:v19 store:v49 calendar:v21 resultWrappers:v13 resultCalendars:v47];
+          [(NEKEventStore *)self _processUpdateWithICS:v19 store:storeCopy calendar:v21 resultWrappers:v13 resultCalendars:v47];
           goto LABEL_12;
         }
 
-        v23 = [v19 lzfseICSData];
+        lzfseICSData = [v19 lzfseICSData];
 
-        if (v23)
+        if (lzfseICSData)
         {
           goto LABEL_11;
         }
 
-        [(NEKEventStore *)self _processUpdateFromWatch:v19 calendar:v21 store:v49];
+        [(NEKEventStore *)self _processUpdateFromWatch:v19 calendar:v21 store:storeCopy];
 LABEL_12:
 
         objc_autoreleasePoolPop(v20);
@@ -1961,9 +1961,9 @@ LABEL_12:
         }
 
         v33 = *(*(&v50 + 1) + 8 * i);
-        v34 = [v33 lzfseICSData];
+        lzfseICSData2 = [v33 lzfseICSData];
 
-        if (v34)
+        if (lzfseICSData2)
         {
           ++v30;
           [v33 lzfseICSData];
@@ -2009,7 +2009,7 @@ LABEL_12:
         v40 = 2147483776;
       }
 
-      v41 = [v49 importICSData:v25 intoCalendars:v47 options:v40];
+      v41 = [storeCopy importICSData:v25 intoCalendars:v47 options:v40];
       kdebug_trace();
       v42 = CFAbsoluteTimeGetCurrent();
       v43 = *(qword_1000D18A8 + 8);
@@ -2020,7 +2020,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "ICS Import: %fs #perf", buf, 0xCu);
       }
 
-      [(NEKEventStore *)self _processArrayOfArrayOfICSWrappers:v41 batchWrappers:v26 session:v45];
+      [(NEKEventStore *)self _processArrayOfArrayOfICSWrappers:v41 batchWrappers:v26 session:sessionCopy];
     }
 
     else
@@ -2034,26 +2034,26 @@ LABEL_12:
   }
 }
 
-- (void)_deleteDetachedCalendarItemsFromOldCalendar:(id)a3 deletedEvents:(id)a4
+- (void)_deleteDetachedCalendarItemsFromOldCalendar:(id)calendar deletedEvents:(id)events
 {
-  v5 = a3;
-  if ([v5 hasRecurrenceRules])
+  calendarCopy = calendar;
+  if ([calendarCopy hasRecurrenceRules])
   {
     v6 = &qword_1000D18A8;
     v7 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = sub_10002CDF8([v5 title]);
-      v10 = [v5 uniqueId];
+      v9 = sub_10002CDF8([calendarCopy title]);
+      uniqueId = [calendarCopy uniqueId];
       *buf = 138543618;
       v33 = v9;
       v34 = 2114;
-      v35 = v10;
+      v35 = uniqueId;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "We have a recurring event with summary %{public}@ and identifier %{public}@, deleting all detached events too, since they have also moved calendars", buf, 0x16u);
     }
 
-    [v5 detachedItems];
+    [calendarCopy detachedItems];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -2091,9 +2091,9 @@ LABEL_12:
             v6 = v20;
           }
 
-          v22 = [v5 eventStore];
+          eventStore = [calendarCopy eventStore];
           v26 = 0;
-          [v22 removeEvent:v16 span:0 error:&v26];
+          [eventStore removeEvent:v16 span:0 error:&v26];
           v23 = v26;
 
           [(NEKEventStore *)self _removeIdentifierForDeletedEntity:v16];
@@ -2107,14 +2107,14 @@ LABEL_12:
   }
 }
 
-- (void)_deleteCalendarItemsInICSWrapperFromOldCalendar:(id)a3 store:(id)a4
+- (void)_deleteCalendarItemsInICSWrapperFromOldCalendar:(id)calendar store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 oldCalendarIdentifier];
-  if (v8)
+  calendarCopy = calendar;
+  storeCopy = store;
+  oldCalendarIdentifier = [calendarCopy oldCalendarIdentifier];
+  if (oldCalendarIdentifier)
   {
-    v9 = [v7 calendarWithIdentifier:v8];
+    v9 = [storeCopy calendarWithIdentifier:oldCalendarIdentifier];
     if (v9)
     {
       v11[0] = _NSConcreteStackBlock;
@@ -2122,11 +2122,11 @@ LABEL_12:
       v11[2] = sub_10001C658;
       v11[3] = &unk_1000B50E8;
       v12 = objc_alloc_init(NSMutableSet);
-      v13 = v8;
-      v14 = v6;
-      v15 = v7;
+      v13 = oldCalendarIdentifier;
+      v14 = calendarCopy;
+      v15 = storeCopy;
       v16 = v9;
-      v17 = self;
+      selfCopy = self;
       v10 = v12;
       [v14 enumerateCalendarItemIdentifiersUsingBlock:v11];
     }
@@ -2138,71 +2138,71 @@ LABEL_12:
   }
 }
 
-- (void)_deleteCalendarItemsMovedToCalendar:(id)a3 inICSWrapper:(id)a4
+- (void)_deleteCalendarItemsMovedToCalendar:(id)calendar inICSWrapper:(id)wrapper
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001CA40;
   v8[3] = &unk_1000B5110;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v6 = v10;
-  v7 = v9;
+  calendarCopy = calendar;
+  wrapperCopy = wrapper;
+  selfCopy = self;
+  v6 = wrapperCopy;
+  v7 = calendarCopy;
   [v6 enumerateCalendarItemIdentifiersUsingBlock:v8];
 }
 
-- (void)applySidePropertiesToEntity:(id)a3 withWrapper:(id)a4 session:(id)a5
+- (void)applySidePropertiesToEntity:(id)entity withWrapper:(id)wrapper session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entityCopy = entity;
+  wrapperCopy = wrapper;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
-    v12 = [v11 uniqueId];
+    v11 = entityCopy;
+    uniqueId = [v11 uniqueId];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v13 = v11;
-      v14 = [v13 uniqueId];
-      v15 = [v9 hasPropertiesForIdentifier:v14];
+      uniqueId2 = [v13 uniqueId];
+      v15 = [wrapperCopy hasPropertiesForIdentifier:uniqueId2];
 
       if ((v15 & 1) == 0)
       {
-        v50 = self;
-        v51 = v10;
-        v16 = [v9 startDateMap];
-        v17 = [v13 startDate];
-        v18 = [v16 objectForKeyedSubscript:v17];
+        selfCopy = self;
+        v51 = sessionCopy;
+        startDateMap = [wrapperCopy startDateMap];
+        startDate = [v13 startDate];
+        v18 = [startDateMap objectForKeyedSubscript:startDate];
         if (v18)
         {
           v19 = *(qword_1000D18A8 + 8);
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             v20 = v19;
-            v49 = [v13 uniqueId];
+            uniqueId3 = [v13 uniqueId];
             *buf = 138543618;
-            *v54 = v49;
+            *v54 = uniqueId3;
             *&v54[8] = 2114;
             *&v54[10] = v18;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Changing event id from %{public}@ to %{public}@", buf, 0x16u);
           }
 
-          [v13 setUniqueId:{v18, v49}];
+          [v13 setUniqueId:{v18, uniqueId3}];
           v21 = v18;
 
-          v12 = v21;
+          uniqueId = v21;
         }
 
-        self = v50;
-        v10 = v51;
+        self = selfCopy;
+        sessionCopy = v51;
       }
     }
 
-    [(NEKEventStore *)self updateSelfAttendeeForCalendarItem:v11 identifier:v12 withWrapper:v9];
-    v22 = [v9 externalIDForIdentifier:v12];
+    [(NEKEventStore *)self updateSelfAttendeeForCalendarItem:v11 identifier:uniqueId withWrapper:wrapperCopy];
+    v22 = [wrapperCopy externalIDForIdentifier:uniqueId];
     v23 = *(qword_1000D18A8 + 8);
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
     if (v22)
@@ -2212,7 +2212,7 @@ LABEL_12:
         *buf = 138543618;
         *v54 = v22;
         *&v54[8] = 2114;
-        *&v54[10] = v12;
+        *&v54[10] = uniqueId;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "setting externalID %{public}@ for event with identifier %{public}@", buf, 0x16u);
       }
 
@@ -2222,7 +2222,7 @@ LABEL_12:
     else if (v24)
     {
       *buf = 138543362;
-      *v54 = v12;
+      *v54 = uniqueId;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "No externalID in metadata for event with identifier %{public}@", buf, 0xCu);
     }
 
@@ -2232,8 +2232,8 @@ LABEL_12:
     v27 = v26;
     if (isKindOfClass)
     {
-      v28 = self;
-      v29 = [v9 dateChangedForIdentifier:v12];
+      selfCopy2 = self;
+      v29 = [wrapperCopy dateChangedForIdentifier:uniqueId];
       if (v29 != [v27 dateChanged])
       {
         [v27 setDateChanged:v29];
@@ -2243,12 +2243,12 @@ LABEL_12:
           *buf = 67109378;
           *v54 = v29;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Changed date changed flag to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      v31 = [v9 timeChangedForIdentifier:v12];
+      v31 = [wrapperCopy timeChangedForIdentifier:uniqueId];
       if (v31 != [v27 timeChanged])
       {
         [v27 setTimeChanged:v31];
@@ -2258,12 +2258,12 @@ LABEL_12:
           *buf = 67109378;
           *v54 = v31;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Changed time changed flag to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      v33 = [v9 titleChangedForIdentifier:v12];
+      v33 = [wrapperCopy titleChangedForIdentifier:uniqueId];
       if (v33 != [v27 titleChanged])
       {
         [v27 setTitleChanged:v33];
@@ -2273,12 +2273,12 @@ LABEL_12:
           *buf = 67109378;
           *v54 = v33;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Changed title changed flag to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      v35 = [v9 locationChangedForIdentifier:v12];
+      v35 = [wrapperCopy locationChangedForIdentifier:uniqueId];
       if (v35 != [v27 locationChanged])
       {
         [v27 setLocationChanged:v35];
@@ -2288,12 +2288,12 @@ LABEL_12:
           *buf = 67109378;
           *v54 = v35;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Changed location changed flag to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      v37 = [v9 attendeeCommentForIdentifier:v12];
+      v37 = [wrapperCopy attendeeCommentForIdentifier:uniqueId];
       if (v37 != [v27 attendeeComment])
       {
         [v27 setAttendeeComment:v37];
@@ -2303,12 +2303,12 @@ LABEL_12:
           *buf = 67109378;
           *v54 = v37;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Changed attendee comment changed flag to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      v39 = [v9 attendeeStatusFlagForIdentifier:v12];
+      v39 = [wrapperCopy attendeeStatusFlagForIdentifier:uniqueId];
       if (v39 != [v27 attendeeStatus])
       {
         [v27 setAttendeeStatus:v39];
@@ -2318,31 +2318,31 @@ LABEL_12:
           *buf = 67109378;
           *v54 = v39;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Changed attendee status changed flag to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      v41 = [v9 locationPredictionStateForIdentifier:v12];
-      v42 = [v41 unsignedIntegerValue];
+      v41 = [wrapperCopy locationPredictionStateForIdentifier:uniqueId];
+      unsignedIntegerValue = [v41 unsignedIntegerValue];
 
-      if (v42 != [v27 locationPredictionState])
+      if (unsignedIntegerValue != [v27 locationPredictionState])
       {
-        [v27 setLocationPredictionState:v42];
+        [v27 setLocationPredictionState:unsignedIntegerValue];
         v43 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109378;
-          *v54 = v42;
+          *v54 = unsignedIntegerValue;
           *&v54[4] = 2114;
-          *&v54[6] = v12;
+          *&v54[6] = uniqueId;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Setting location prediction state to %d for event %{public}@", buf, 0x12u);
         }
       }
 
-      [(NEKEventStore *)v28 updateInvitationStatusForCalendarItem:v27 identifier:v12 withWrapper:v9 session:v10];
+      [(NEKEventStore *)selfCopy2 updateInvitationStatusForCalendarItem:v27 identifier:uniqueId withWrapper:wrapperCopy session:sessionCopy];
       v44 = objc_autoreleasePoolPush();
-      v45 = [v27 eventStore];
+      eventStore = [v27 eventStore];
       if ([v27 isMasterOrDetachedOccurrence])
       {
         v46 = 2;
@@ -2354,7 +2354,7 @@ LABEL_12:
       }
 
       v52 = 0;
-      [v45 saveEvent:v27 span:v46 error:&v52];
+      [eventStore saveEvent:v27 span:v46 error:&v52];
       v47 = v52;
 
       objc_autoreleasePoolPop(v44);
@@ -2363,26 +2363,26 @@ LABEL_12:
         sub_100070728();
       }
 
-      v48 = v27;
+      eventStore2 = v27;
     }
 
     else
     {
-      v48 = [v26 eventStore];
-      [v48 saveReminder:v27 error:0];
+      eventStore2 = [v26 eventStore];
+      [eventStore2 saveReminder:v27 error:0];
       v47 = v27;
     }
   }
 }
 
-- (void)updateSelfAttendeeForCalendarItem:(id)a3 identifier:(id)a4 withWrapper:(id)a5
+- (void)updateSelfAttendeeForCalendarItem:(id)item identifier:(id)identifier withWrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 selfAttendeeEmailForIdentifier:v8];
-  v11 = [v9 selfAttendeeUUIDForIdentifier:v8];
-  v60 = [v7 eventStore];
+  itemCopy = item;
+  identifierCopy = identifier;
+  wrapperCopy = wrapper;
+  v10 = [wrapperCopy selfAttendeeEmailForIdentifier:identifierCopy];
+  v11 = [wrapperCopy selfAttendeeUUIDForIdentifier:identifierCopy];
+  eventStore = [itemCopy eventStore];
   v12 = *(qword_1000D18A8 + 8);
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
   if (v10 | v11)
@@ -2392,23 +2392,23 @@ LABEL_12:
       v14 = v12;
       v15 = sub_10002CDF8(v10);
       sub_10002CDF8(v11);
-      v17 = v16 = v9;
+      v17 = v16 = wrapperCopy;
       *buf = 138543874;
       *v69 = v15;
       *&v69[8] = 2114;
       v70 = v17;
       v71 = 2114;
-      v72 = v8;
+      v72 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Self attendee email is %{public}@, and uuid is %{public}@ for event with identifier %{public}@", buf, 0x20u);
 
-      v9 = v16;
+      wrapperCopy = v16;
     }
 
-    v18 = [v7 attendees];
-    v19 = v18;
-    if (v18)
+    attendees = [itemCopy attendees];
+    v19 = attendees;
+    if (attendees)
     {
-      v54 = [v18 count];
+      v54 = [attendees count];
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
@@ -2419,9 +2419,9 @@ LABEL_12:
       {
         v21 = v20;
         v22 = *v64;
-        v52 = v8;
-        v53 = v7;
-        v55 = v9;
+        v52 = identifierCopy;
+        v53 = itemCopy;
+        v55 = wrapperCopy;
         v50 = v19;
         while (2)
         {
@@ -2433,9 +2433,9 @@ LABEL_12:
             }
 
             v24 = *(*(&v63 + 1) + 8 * i);
-            v25 = [v24 emailAddress];
+            emailAddress = [v24 emailAddress];
             v26 = [v24 URL];
-            if (([v10 isEqualToString:v25] & 1) != 0 || (objc_msgSend(v26, "absoluteString"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v11, "isEqualToString:", v27), v27, v28))
+            if (([v10 isEqualToString:emailAddress] & 1) != 0 || (objc_msgSend(v26, "absoluteString"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v11, "isEqualToString:", v27), v27, v28))
             {
               [v53 setSelfAttendee:v24];
               v30 = *(qword_1000D18A8 + 8);
@@ -2454,9 +2454,9 @@ LABEL_12:
               }
 
               v29 = 1;
-              v8 = v52;
-              v7 = v53;
-              v9 = v55;
+              identifierCopy = v52;
+              itemCopy = v53;
+              wrapperCopy = v55;
               v19 = v50;
               goto LABEL_23;
             }
@@ -2464,9 +2464,9 @@ LABEL_12:
 
           v21 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
           v29 = 0;
-          v8 = v52;
-          v7 = v53;
-          v9 = v55;
+          identifierCopy = v52;
+          itemCopy = v53;
+          wrapperCopy = v55;
           v19 = v50;
           if (v21)
           {
@@ -2497,7 +2497,7 @@ LABEL_23:
     if (v13)
     {
       *buf = 138543362;
-      *v69 = v8;
+      *v69 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No self attendee email in wrapper for event with identifier %{public}@", buf, 0xCu);
     }
 
@@ -2505,8 +2505,8 @@ LABEL_23:
     v29 = 0;
   }
 
-  v34 = [v7 organizer];
-  if (!v34)
+  organizer = [itemCopy organizer];
+  if (!organizer)
   {
 LABEL_31:
     v35 = v10;
@@ -2519,9 +2519,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v35 = [v9 selfOrganizerEmailForIdentifier:v8];
+  v35 = [wrapperCopy selfOrganizerEmailForIdentifier:identifierCopy];
 
-  v36 = [v9 selfOrganizerUUIDForIdentifier:v8];
+  v36 = [wrapperCopy selfOrganizerUUIDForIdentifier:identifierCopy];
 
   if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2530,26 +2530,26 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v56 = v9;
-  v37 = v7;
-  v38 = [v34 emailAddress];
-  v39 = [v34 URL];
+  v56 = wrapperCopy;
+  v37 = itemCopy;
+  emailAddress2 = [organizer emailAddress];
+  v39 = [organizer URL];
   v40 = v39;
   if (v39)
   {
-    v41 = [v39 absoluteString];
+    absoluteString = [v39 absoluteString];
   }
 
   else
   {
-    v41 = 0;
+    absoluteString = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && (v38 && ([v35 isEqualToString:v38] & 1) != 0 || v41 && objc_msgSend(v36, "isEqualToString:", v41)))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && (emailAddress2 && ([v35 isEqualToString:emailAddress2] & 1) != 0 || absoluteString && objc_msgSend(v36, "isEqualToString:", absoluteString)))
   {
-    [v34 setCurrentUser:1];
-    [v37 setOrganizer:v34];
+    [organizer setCurrentUser:1];
+    [v37 setOrganizer:organizer];
     v48 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
@@ -2557,7 +2557,7 @@ LABEL_31:
       v51 = sub_10002CDF8(v35);
       v49 = sub_10002CDF8(v36);
       *buf = 138543874;
-      *v69 = v8;
+      *v69 = identifierCopy;
       *&v69[8] = 2114;
       v70 = v51;
       v71 = 2114;
@@ -2565,15 +2565,15 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, obja, OS_LOG_TYPE_DEFAULT, "Determined user is organizer for event with identifier %{public}@, email = %{public}@, address = %{public}@", buf, 0x20u);
     }
 
-    v7 = v37;
-    v9 = v56;
+    itemCopy = v37;
+    wrapperCopy = v56;
   }
 
   else
   {
 
-    v7 = v37;
-    v9 = v56;
+    itemCopy = v37;
+    wrapperCopy = v56;
     if ((v29 & 1) == 0)
     {
       goto LABEL_44;
@@ -2585,8 +2585,8 @@ LABEL_32:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v57 = v9;
-    v43 = v7;
+    v57 = wrapperCopy;
+    v43 = itemCopy;
     if ([v43 isMasterOrDetachedOccurrence])
     {
       v44 = 3;
@@ -2609,16 +2609,16 @@ LABEL_32:
 
     v62 = 0;
     v46 = &v62;
-    [v60 saveEvent:v43 span:v44 error:&v62];
+    [eventStore saveEvent:v43 span:v44 error:&v62];
 
-    v9 = v57;
+    wrapperCopy = v57;
   }
 
   else
   {
     v61 = 0;
     v46 = &v61;
-    [v60 saveReminder:v7 error:&v61];
+    [eventStore saveReminder:itemCopy error:&v61];
   }
 
   v47 = *v46;
@@ -2631,17 +2631,17 @@ LABEL_32:
 LABEL_44:
 }
 
-- (void)updateInvitationStatusForCalendarItem:(id)a3 identifier:(id)a4 withWrapper:(id)a5 session:(id)a6
+- (void)updateInvitationStatusForCalendarItem:(id)item identifier:(id)identifier withWrapper:(id)wrapper session:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  identifierCopy = identifier;
+  wrapperCopy = wrapper;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 invitationStatusForIdentifier:v11];
-    v15 = [v12 properInvitationStatusForIdentifier:v11];
+    v14 = [wrapperCopy invitationStatusForIdentifier:identifierCopy];
+    v15 = [wrapperCopy properInvitationStatusForIdentifier:identifierCopy];
     if (v15)
     {
       v16 = v15;
@@ -2664,7 +2664,7 @@ LABEL_44:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v34 = v11;
+          v34 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "No invitation status in wrapper for event with identifier %{public}@", buf, 0xCu);
         }
 
@@ -2677,17 +2677,17 @@ LABEL_44:
     }
 
     LODWORD(v18) = [v14 intValue];
-    if (([v13 isResetSync] & 1) == 0)
+    if (([sessionCopy isResetSync] & 1) == 0)
     {
       if (v18 == 3)
       {
         dispatch_assert_queue_V2(self->_queue);
-        v19 = [v10 eks_cacheKey];
-        v28 = [(NSMutableDictionary *)self->_alertSupressionCache objectForKeyedSubscript:v19];
+        eks_cacheKey = [itemCopy eks_cacheKey];
+        v28 = [(NSMutableDictionary *)self->_alertSupressionCache objectForKeyedSubscript:eks_cacheKey];
 
         +[NSDate timeIntervalSinceReferenceDate];
         v21 = [NSNumber numberWithDouble:v20 + 28800.0 + -1.0];
-        [(NSMutableDictionary *)self->_alertSupressionCache setObject:v21 forKeyedSubscript:v19];
+        [(NSMutableDictionary *)self->_alertSupressionCache setObject:v21 forKeyedSubscript:eks_cacheKey];
 
         objc_initWeak(&location, self);
         v22 = dispatch_time(0, 28800000000000);
@@ -2697,7 +2697,7 @@ LABEL_44:
         block[2] = sub_10001E13C;
         block[3] = &unk_1000B5138;
         objc_copyWeak(&v31, &location);
-        v24 = v19;
+        v24 = eks_cacheKey;
         v30 = v24;
         dispatch_after(v22, queue, block);
         if (v28)
@@ -2735,22 +2735,22 @@ LABEL_44:
         *buf = 138543618;
         v34 = v14;
         v35 = 2114;
-        v36 = v11;
+        v36 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Setting invitation status %{public}@ for event with identifier %{public}@", buf, 0x16u);
       }
 
-      [v10 setInvitationStatus:v18];
+      [itemCopy setInvitationStatus:v18];
     }
 
 LABEL_23:
   }
 }
 
-- (void)addAttendeeEvents:(id)a3
+- (void)addAttendeeEvents:(id)events
 {
-  v5 = a3;
-  v6 = [v5 updates];
-  v7 = [NSMutableSet setWithArray:v6];
+  eventsCopy = events;
+  updates = [eventsCopy updates];
+  v7 = [NSMutableSet setWithArray:updates];
 
   v8 = [NEKStoreRoller alloc];
   v9 = NSStringFromSelector(a2);
@@ -2765,21 +2765,21 @@ LABEL_23:
   v20 = v7;
   v12 = v7;
   v13 = v10;
-  [v5 enumerateForChangeType:3 forEntitiesOfClass:v11 withBlock:&v15];
-  v14 = [v12 allObjects];
-  [v5 setUpdates:v14];
+  [eventsCopy enumerateForChangeType:3 forEntitiesOfClass:v11 withBlock:&v15];
+  allObjects = [v12 allObjects];
+  [eventsCopy setUpdates:allObjects];
 }
 
-- (void)storeWrappersForSourceAggregator:(id)a3 pipe:(id)a4
+- (void)storeWrappersForSourceAggregator:(id)aggregator pipe:(id)pipe
 {
-  v6 = a3;
-  v7 = a4;
+  aggregatorCopy = aggregator;
+  pipeCopy = pipe;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v6 insertedSources];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  insertedSources = [aggregatorCopy insertedSources];
+  v9 = [insertedSources countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2790,15 +2790,15 @@ LABEL_23:
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(insertedSources);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
         v14 = [(NEKEventStore *)self wrapperForSource:v13 nekChangeType:1];
-        [(NEKEventStore *)self _pushSource:v13 wrapper:v14 intoPipe:v7];
+        [(NEKEventStore *)self _pushSource:v13 wrapper:v14 intoPipe:pipeCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [insertedSources countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v10);
@@ -2808,8 +2808,8 @@ LABEL_23:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = [v6 updatedSources];
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  updatedSources = [aggregatorCopy updatedSources];
+  v16 = [updatedSources countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -2820,56 +2820,56 @@ LABEL_23:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(updatedSources);
         }
 
         v20 = *(*(&v22 + 1) + 8 * j);
         v21 = [(NEKEventStore *)self wrapperForSource:v20 nekChangeType:2];
-        [(NEKEventStore *)self _pushSource:v20 wrapper:v21 intoPipe:v7];
+        [(NEKEventStore *)self _pushSource:v20 wrapper:v21 intoPipe:pipeCopy];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v17 = [updatedSources countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)_pushSource:(id)a3 wrapper:(id)a4 intoPipe:(id)a5
+- (void)_pushSource:(id)source wrapper:(id)wrapper intoPipe:(id)pipe
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  sourceCopy = source;
+  wrapperCopy = wrapper;
+  pipeCopy = pipe;
+  if (wrapperCopy)
   {
-    if (([v8 allowsEvents] & 1) != 0 || (objc_msgSend(v8, "allowsTasks") & 1) == 0)
+    if (([sourceCopy allowsEvents] & 1) != 0 || (objc_msgSend(sourceCopy, "allowsTasks") & 1) == 0)
     {
-      [(NEKEventStore *)self updateRowMappingForEntity:v8];
+      [(NEKEventStore *)self updateRowMappingForEntity:sourceCopy];
     }
 
     v11 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       log = v11;
-      v12 = [v9 attributes];
-      v13 = [v12 accountPersistentID];
-      v14 = [v9 attributes];
-      v15 = [v14 isLocalStore];
-      v16 = [v9 attributes];
-      v17 = [v16 allowsEvents];
-      v18 = [v9 attributes];
+      attributes = [wrapperCopy attributes];
+      accountPersistentID = [attributes accountPersistentID];
+      attributes2 = [wrapperCopy attributes];
+      isLocalStore = [attributes2 isLocalStore];
+      attributes3 = [wrapperCopy attributes];
+      allowsEvents = [attributes3 allowsEvents];
+      attributes4 = [wrapperCopy attributes];
       *buf = 138544130;
-      v21 = v13;
+      v21 = accountPersistentID;
       v22 = 1024;
-      v23 = v15;
+      v23 = isLocalStore;
       v24 = 1024;
-      v25 = v17;
+      v25 = allowsEvents;
       v26 = 1024;
-      v27 = [v18 allowsTasks];
+      allowsTasks = [attributes4 allowsTasks];
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Sending source wrapper accountPersistentID=%{public}@ isLocalStore=%d events=%d tasks=%d", buf, 0x1Eu);
     }
 
-    [v10 push:v9];
+    [pipeCopy push:wrapperCopy];
   }
 
   else if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
@@ -2878,33 +2878,33 @@ LABEL_23:
   }
 }
 
-- (void)calendarWrappersForChangeSet:(id)a3 pipe:(id)a4
+- (void)calendarWrappersForChangeSet:(id)set pipe:(id)pipe
 {
-  v7 = a4;
-  v8 = a3;
+  pipeCopy = pipe;
+  setCopy = set;
   v9 = NSStringFromSelector(a2);
   v10 = [(NEKEventStore *)self freshEventStoreFor:v9];
 
-  [(NEKEventStore *)self _calendarWrappersForChangeSet:v8 pipe:v7 store:v10 nekChangeType:1];
-  [(NEKEventStore *)self _calendarWrappersForChangeSet:v8 pipe:v7 store:v10 nekChangeType:2];
+  [(NEKEventStore *)self _calendarWrappersForChangeSet:setCopy pipe:pipeCopy store:v10 nekChangeType:1];
+  [(NEKEventStore *)self _calendarWrappersForChangeSet:setCopy pipe:pipeCopy store:v10 nekChangeType:2];
 }
 
-- (void)_sendDefaultCalendarsIfNeededInPipe:(id)a3 setDefaultEventCalendar:(BOOL)a4 setDefaultTaskCalendar:(BOOL)a5 defaultEventCalendar:(id)a6 defaultTaskCalendar:(id)a7
+- (void)_sendDefaultCalendarsIfNeededInPipe:(id)pipe setDefaultEventCalendar:(BOOL)calendar setDefaultTaskCalendar:(BOOL)taskCalendar defaultEventCalendar:(id)eventCalendar defaultTaskCalendar:(id)defaultTaskCalendar
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  pipeCopy = pipe;
+  eventCalendarCopy = eventCalendar;
+  defaultTaskCalendarCopy = defaultTaskCalendar;
   v15 = 0;
   v16 = 0;
-  if (v14 && !a5)
+  if (defaultTaskCalendarCopy && !taskCalendar)
   {
-    v17 = [(NEKEventStore *)self wrapperForCalendar:v14 nekChangeType:0 useAttributes:0];
+    v17 = [(NEKEventStore *)self wrapperForCalendar:defaultTaskCalendarCopy nekChangeType:0 useAttributes:0];
     v15 = v17;
     if (v17)
     {
       [v17 setIsDefaultTaskCalendar:1];
-      v16 = v14 == v13;
-      if (v14 == v13)
+      v16 = defaultTaskCalendarCopy == eventCalendarCopy;
+      if (defaultTaskCalendarCopy == eventCalendarCopy)
       {
         [v15 setIsDefaultEventCalendar:1];
         v18 = *(qword_1000D18A8 + 8);
@@ -2915,17 +2915,17 @@ LABEL_23:
         }
       }
 
-      [v12 push:v15];
+      [pipeCopy push:v15];
       v19 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = sub_10002CDF8([v14 title]);
-        v22 = [v14 calendarIdentifier];
+        v21 = sub_10002CDF8([defaultTaskCalendarCopy title]);
+        calendarIdentifier = [defaultTaskCalendarCopy calendarIdentifier];
         v28 = 138543618;
         v29 = v21;
         v30 = 2114;
-        v31 = v22;
+        v31 = calendarIdentifier;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Marking default task calendar in wrapper to calendar with name %{public}@, identifier %{public}@", &v28, 0x16u);
       }
     }
@@ -2936,44 +2936,44 @@ LABEL_23:
     }
   }
 
-  if (!v13 || a4 || v16)
+  if (!eventCalendarCopy || calendar || v16)
   {
     v23 = v15;
   }
 
   else
   {
-    v23 = [(NEKEventStore *)self wrapperForCalendar:v13 nekChangeType:0 useAttributes:0];
+    v23 = [(NEKEventStore *)self wrapperForCalendar:eventCalendarCopy nekChangeType:0 useAttributes:0];
 
     if (v23)
     {
       [v23 setIsDefaultEventCalendar:1];
-      [v12 push:v23];
+      [pipeCopy push:v23];
       v24 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v25 = v24;
-        v26 = sub_10002CDF8([v13 title]);
-        v27 = [v13 calendarIdentifier];
+        v26 = sub_10002CDF8([eventCalendarCopy title]);
+        calendarIdentifier2 = [eventCalendarCopy calendarIdentifier];
         v28 = 138543618;
         v29 = v26;
         v30 = 2114;
-        v31 = v27;
+        v31 = calendarIdentifier2;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Marking default event calendar in wrapper to calendar with name %{public}@, identifier %{public}@", &v28, 0x16u);
       }
     }
   }
 }
 
-- (void)ICSWrappersForChangeSet:(id)a3 pipe:(id)a4
+- (void)ICSWrappersForChangeSet:(id)set pipe:(id)pipe
 {
-  v6 = a4;
-  v7 = a3;
+  pipeCopy = pipe;
+  setCopy = set;
   [(NEKEventStore *)self startMappingEntities];
   v8 = [NEKSyncWindow alloc];
-  v9 = [(NEKStore *)self environment];
-  v10 = [v9 tinyStore];
-  v11 = [(NEKSyncWindow *)v8 initForFullSync:0 tinyStore:v10];
+  environment = [(NEKStore *)self environment];
+  tinyStore = [environment tinyStore];
+  v11 = [(NEKSyncWindow *)v8 initForFullSync:0 tinyStore:tinyStore];
 
   v12 = [[NEKStoreRoller alloc] initWithEventStore:self cause:@"ICSWrappers:Inserts"];
   v13 = objc_opt_class();
@@ -2984,11 +2984,11 @@ LABEL_23:
   v32 = v12;
   v14 = v11;
   v33 = v14;
-  v34 = self;
-  v15 = v6;
+  selfCopy = self;
+  v15 = pipeCopy;
   v35 = v15;
   v16 = v12;
-  [v7 enumerateForChangeType:1 forEntitiesOfClass:v13 withBlock:v31];
+  [setCopy enumerateForChangeType:1 forEntitiesOfClass:v13 withBlock:v31];
   v17 = [NEKStoreRoller alloc];
 
   v18 = [(NEKStoreRoller *)v17 initWithEventStore:self cause:@"ICSWrappers:Updates"];
@@ -2998,27 +2998,27 @@ LABEL_23:
   v25 = sub_10001F7B0;
   v26 = &unk_1000B51B0;
   v27 = v18;
-  v28 = self;
+  selfCopy2 = self;
   v29 = v14;
   v30 = v15;
   v20 = v15;
   v21 = v14;
   v22 = v18;
-  [v7 enumerateForChangeType:2 forEntitiesOfClass:v19 withBlock:&v23];
+  [setCopy enumerateForChangeType:2 forEntitiesOfClass:v19 withBlock:&v23];
 
   [(NEKEventStore *)self endMappingEntities:v23];
 }
 
-- (void)deletionWrappersForChangeSet:(id)a3 skipSourceDeletions:(BOOL)a4 pipe:(id)a5
+- (void)deletionWrappersForChangeSet:(id)set skipSourceDeletions:(BOOL)deletions pipe:(id)pipe
 {
-  v5 = a4;
-  v8 = a5;
+  deletionsCopy = deletions;
+  pipeCopy = pipe;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [a3 deletes];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  deletes = [set deletes];
+  v10 = [deletes countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v10)
   {
     v12 = v10;
@@ -3031,11 +3031,11 @@ LABEL_23:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(deletes);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        if (!v5 || [*(*(&v20 + 1) + 8 * i) entityType] != 6)
+        if (!deletionsCopy || [*(*(&v20 + 1) + 8 * i) entityType] != 6)
         {
           v16 = [NEKDeletionWrapper deletionWrapperForRecordID:v15 eventStore:self, v19];
           if (v16)
@@ -3048,7 +3048,7 @@ LABEL_23:
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Deletion wrapper: %@", buf, 0xCu);
             }
 
-            if (([v8 push:v16] & 1) == 0)
+            if (([pipeCopy push:v16] & 1) == 0)
             {
 
               goto LABEL_20;
@@ -3068,7 +3068,7 @@ LABEL_23:
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v12 = [deletes countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v12);
@@ -3077,15 +3077,15 @@ LABEL_23:
 LABEL_20:
 }
 
-- (void)deletionWrappersForSourceAggregator:(id)a3 pipe:(id)a4
+- (void)deletionWrappersForSourceAggregator:(id)aggregator pipe:(id)pipe
 {
-  v5 = a4;
+  pipeCopy = pipe;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 deletedSourcesIDs];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  deletedSourcesIDs = [aggregator deletedSourcesIDs];
+  v7 = [deletedSourcesIDs countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v7)
   {
     v9 = v7;
@@ -3098,7 +3098,7 @@ LABEL_20:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(deletedSourcesIDs);
         }
 
         v12 = [NEKDeletionWrapper deletionWrapperForSourceID:*(*(&v15 + 1) + 8 * i), v14];
@@ -3112,7 +3112,7 @@ LABEL_20:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Deletion wrapper for source: %@", buf, 0xCu);
           }
 
-          if (![v5 push:v12])
+          if (![pipeCopy push:v12])
           {
 
             goto LABEL_14;
@@ -3120,7 +3120,7 @@ LABEL_20:
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v9 = [deletedSourcesIDs countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -3133,13 +3133,13 @@ LABEL_20:
 LABEL_14:
 }
 
-- (id)_identifierInRowMapping:(id)a3
+- (id)_identifierInRowMapping:(id)mapping
 {
-  v4 = [a3 objectID];
-  if (v4)
+  objectID = [mapping objectID];
+  if (objectID)
   {
-    v5 = [(NEKEventStore *)self recordMap];
-    v6 = [v5 identifierForRecordID:v4];
+    recordMap = [(NEKEventStore *)self recordMap];
+    v6 = [recordMap identifierForRecordID:objectID];
   }
 
   else
@@ -3150,10 +3150,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)identifierInRowMappingForEventOrTask:(id)a3
+- (id)identifierInRowMappingForEventOrTask:(id)task
 {
-  v4 = a3;
-  v5 = [(NEKEventStore *)self _identifierInRowMapping:v4];
+  taskCopy = task;
+  v5 = [(NEKEventStore *)self _identifierInRowMapping:taskCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -3169,13 +3169,13 @@ LABEL_14:
   return v5;
 }
 
-- (id)calendarIdentifierInRowMappingForEventOrTask:(id)a3
+- (id)calendarIdentifierInRowMappingForEventOrTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = [(NEKEventStore *)self _identifierInRowMapping:v4];
+    v5 = [(NEKEventStore *)self _identifierInRowMapping:taskCopy];
     v6 = [v5 componentsSeparatedByString:@"::"];
     if ([v6 count] < 2)
     {
@@ -3196,13 +3196,13 @@ LABEL_14:
   return v7;
 }
 
-- (id)identifierInRowMappingForRecordIDRef:(id)a3
+- (id)identifierInRowMappingForRecordIDRef:(id)ref
 {
-  v4 = a3;
-  v5 = [(NEKEventStore *)self recordMap];
-  v6 = [v5 identifierForRecordID:v4];
+  refCopy = ref;
+  recordMap = [(NEKEventStore *)self recordMap];
+  v6 = [recordMap identifierForRecordID:refCopy];
 
-  if ([v4 entityType] == 2 || objc_msgSend(v4, "entityType") == 3)
+  if ([refCopy entityType] == 2 || objc_msgSend(refCopy, "entityType") == 3)
   {
     v7 = [v6 componentsSeparatedByString:@"::"];
     if ([v7 count])
@@ -3216,13 +3216,13 @@ LABEL_14:
   return v6;
 }
 
-- (id)calendarIdentifierInRowMappingForRecordIDRef:(id)a3
+- (id)calendarIdentifierInRowMappingForRecordIDRef:(id)ref
 {
-  v4 = a3;
-  if ([v4 entityType] == 2 || objc_msgSend(v4, "entityType") == 3)
+  refCopy = ref;
+  if ([refCopy entityType] == 2 || objc_msgSend(refCopy, "entityType") == 3)
   {
-    v5 = [(NEKEventStore *)self recordMap];
-    v6 = [v5 identifierForRecordID:v4];
+    recordMap = [(NEKEventStore *)self recordMap];
+    v6 = [recordMap identifierForRecordID:refCopy];
 
     v7 = [v6 componentsSeparatedByString:@"::"];
     if ([v7 count] < 2)
@@ -3244,52 +3244,52 @@ LABEL_14:
   return v8;
 }
 
-- (void)updateRowMappingForEntity:(id)a3
+- (void)updateRowMappingForEntity:(id)entity
 {
-  v4 = a3;
-  if (v4)
+  entityCopy = entity;
+  if (entityCopy)
   {
-    v14 = v4;
+    v14 = entityCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = v14;
-      v6 = [v5 location];
-      v7 = [v5 title];
-      v8 = [v5 startDate];
+      location = [v5 location];
+      title = [v5 title];
+      startDate = [v5 startDate];
 
-      [v8 timeIntervalSinceReferenceDate];
+      [startDate timeIntervalSinceReferenceDate];
       v10 = v9;
     }
 
     else
     {
-      v7 = 0;
-      v6 = 0;
+      title = 0;
+      location = 0;
       v10 = 0.0;
     }
 
-    v11 = [v14 objectID];
-    if (v11)
+    objectID = [v14 objectID];
+    if (objectID)
     {
-      v12 = [v14 eks_compoundIdentifier];
-      v13 = [(NEKEventStore *)self recordMap];
-      [v13 setIdentifier:v12 masterRowID:-1 summary:v7 location:v6 startTime:v11 forRecordID:v10];
+      eks_compoundIdentifier = [v14 eks_compoundIdentifier];
+      recordMap = [(NEKEventStore *)self recordMap];
+      [recordMap setIdentifier:eks_compoundIdentifier masterRowID:-1 summary:title location:location startTime:objectID forRecordID:v10];
     }
 
-    v4 = v14;
+    entityCopy = v14;
   }
 }
 
-- (BOOL)hasRowMappingForEntity:(id)a3
+- (BOOL)hasRowMappingForEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  if (v5)
+  entityCopy = entity;
+  objectID = [entityCopy objectID];
+  if (objectID)
   {
-    v6 = [v4 eks_compoundIdentifier];
-    v7 = [(NEKEventStore *)self recordMap];
-    v8 = [v7 isIdentifierPresent:v6 forRecordID:v5];
+    eks_compoundIdentifier = [entityCopy eks_compoundIdentifier];
+    recordMap = [(NEKEventStore *)self recordMap];
+    v8 = [recordMap isIdentifierPresent:eks_compoundIdentifier forRecordID:objectID];
 
     if (v8)
     {
@@ -3298,9 +3298,9 @@ LABEL_14:
 
     else
     {
-      v10 = [(NEKEventStore *)self recordMap];
-      v11 = sub_1000624F8(v4);
-      v9 = [v10 isIdentifierPresent:v11 forRecordID:v5];
+      recordMap2 = [(NEKEventStore *)self recordMap];
+      v11 = sub_1000624F8(entityCopy);
+      v9 = [recordMap2 isIdentifierPresent:v11 forRecordID:objectID];
     }
   }
 
@@ -3312,27 +3312,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)_removeIdentifierForDeletedEntity:(id)a3
+- (void)_removeIdentifierForDeletedEntity:(id)entity
 {
-  v4 = [a3 objectID];
-  if (v4)
+  objectID = [entity objectID];
+  if (objectID)
   {
-    v6 = v4;
-    v5 = [(NEKEventStore *)self recordMap];
-    [v5 deleteIdentifierForRecordID:v6];
+    v6 = objectID;
+    recordMap = [(NEKEventStore *)self recordMap];
+    [recordMap deleteIdentifierForRecordID:v6];
 
-    v4 = v6;
+    objectID = v6;
   }
 }
 
-- (void)removeIdentifiersForDeletedRecordIDs:(id)a3
+- (void)removeIdentifiersForDeletedRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3344,18 +3344,18 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(NEKEventStore *)self recordMap];
-        [v10 deleteIdentifierForRecordID:v9];
+        recordMap = [(NEKEventStore *)self recordMap];
+        [recordMap deleteIdentifierForRecordID:v9];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3402,28 +3402,28 @@ LABEL_14:
 
 - (void)sweepSeenMap
 {
-  v2 = [(NEKEventStore *)self seenMap];
-  [v2 sweep];
+  seenMap = [(NEKEventStore *)self seenMap];
+  [seenMap sweep];
 }
 
-- (void)_didCreateEntity:(id)a3
+- (void)_didCreateEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   os_unfair_lock_lock(&self->_createdEntitiesLock);
-  [(NSMutableArray *)self->_createdEntities addObject:v4];
+  [(NSMutableArray *)self->_createdEntities addObject:entityCopy];
 
   os_unfair_lock_unlock(&self->_createdEntitiesLock);
 }
 
-- (void)_deleteSourceWithIdentifier:(id)a3 store:(id)a4
+- (void)_deleteSourceWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 sourceWithIdentifier:v6];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v8 = [storeCopy sourceWithIdentifier:identifierCopy];
   if (v8)
   {
     v11 = 0;
-    [v7 removeSource:v8 commit:0 error:&v11];
+    [storeCopy removeSource:v8 commit:0 error:&v11];
     v9 = v11;
     v10 = *(qword_1000D18A8 + 8);
     if (v9)
@@ -3439,11 +3439,11 @@ LABEL_14:
       if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v13 = v6;
+        v13 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Deleted source with identifier %{public}@", buf, 0xCu);
       }
 
-      [(NEKEventStore *)self saveEventStore:v7];
+      [(NEKEventStore *)self saveEventStore:storeCopy];
     }
   }
 
@@ -3453,15 +3453,15 @@ LABEL_14:
   }
 }
 
-- (void)_deleteCalendarWithIdentifier:(id)a3 store:(id)a4
+- (void)_deleteCalendarWithIdentifier:(id)identifier store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 calendarWithIdentifier:v6];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v8 = [storeCopy calendarWithIdentifier:identifierCopy];
   if (v8)
   {
     v11 = 0;
-    [v7 removeCalendar:v8 commit:0 error:&v11];
+    [storeCopy removeCalendar:v8 commit:0 error:&v11];
     v9 = v11;
     v10 = *(qword_1000D18A8 + 8);
     if (v9)
@@ -3477,11 +3477,11 @@ LABEL_14:
       if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v13 = v6;
+        v13 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Deleted calendar with identifier %{public}@", buf, 0xCu);
       }
 
-      [(NEKEventStore *)self saveEventStore:v7];
+      [(NEKEventStore *)self saveEventStore:storeCopy];
     }
   }
 
@@ -3491,29 +3491,29 @@ LABEL_14:
   }
 }
 
-- (void)_deleteAndLogEvent:(id)a3 identifier:(id)a4 store:(id)a5
+- (void)_deleteAndLogEvent:(id)event identifier:(id)identifier store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectID];
-  if (([v7 hasRecurrenceRules] & 1) != 0 || objc_msgSend(v7, "isPhantom"))
+  eventCopy = event;
+  identifierCopy = identifier;
+  storeCopy = store;
+  objectID = [eventCopy objectID];
+  if (([eventCopy hasRecurrenceRules] & 1) != 0 || objc_msgSend(eventCopy, "isPhantom"))
   {
     v11 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = v8;
+      v22 = identifierCopy;
       v23 = 2114;
-      v24 = v10;
+      v24 = objectID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Deleting event (span future) with identifier %{public}@, recordID %{public}@", buf, 0x16u);
     }
 
     v20 = 0;
     v12 = &v20;
     v13 = &v20;
-    v14 = v9;
-    v15 = v7;
+    v14 = storeCopy;
+    v15 = eventCopy;
     v16 = 1;
   }
 
@@ -3523,17 +3523,17 @@ LABEL_14:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = v8;
+      v22 = identifierCopy;
       v23 = 2114;
-      v24 = v10;
+      v24 = objectID;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Deleting event (span single) with identifier %{public}@, recordID %{public}@", buf, 0x16u);
     }
 
     v19 = 0;
     v12 = &v19;
     v13 = &v19;
-    v14 = v9;
-    v15 = v7;
+    v14 = storeCopy;
+    v15 = eventCopy;
     v16 = 0;
   }
 
@@ -3545,26 +3545,26 @@ LABEL_14:
   }
 }
 
-- (void)_deleteEventWithIdentifier:(id)a3 calendarIdentifier:(id)a4 store:(id)a5
+- (void)_deleteEventWithIdentifier:(id)identifier calendarIdentifier:(id)calendarIdentifier store:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && ([v10 calendarWithIdentifier:v9], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  calendarIdentifierCopy = calendarIdentifier;
+  storeCopy = store;
+  v11 = storeCopy;
+  if (calendarIdentifierCopy && ([storeCopy calendarWithIdentifier:calendarIdentifierCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543618;
-      v20 = v8;
+      v20 = identifierCopy;
       v21 = 2114;
-      v22 = v9;
+      v22 = calendarIdentifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Deleting event with identifier %{public}@, from calendar with identifier %{public}@", &v19, 0x16u);
     }
 
-    v15 = [v11 calendarItemsWithUniqueIdentifier:v8 inCalendar:v13];
+    v15 = [v11 calendarItemsWithUniqueIdentifier:identifierCopy inCalendar:v13];
   }
 
   else
@@ -3573,11 +3573,11 @@ LABEL_14:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v8;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Deleting event with identifier %{public}@, from any calendar, old mapping didn't send calendar to delete from so falling back to old code", &v19, 0xCu);
     }
 
-    v15 = [v11 calendarItemsWithUniqueIdentifier:v8 inCalendar:0];
+    v15 = [v11 calendarItemsWithUniqueIdentifier:identifierCopy inCalendar:0];
   }
 
   if ([v15 count] == 1)
@@ -3586,7 +3586,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NEKEventStore *)self _deleteAndLogEvent:v17 identifier:v8 store:v11];
+      [(NEKEventStore *)self _deleteAndLogEvent:v17 identifier:identifierCopy store:v11];
     }
 
     else if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
@@ -3601,27 +3601,27 @@ LABEL_14:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v8;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "No event exists for %{public}@", &v19, 0xCu);
     }
   }
 }
 
-- (void)_deleteReminderWithIdentifier:(id)a3 calendarIdentifier:(id)a4 store:(id)a5
+- (void)_deleteReminderWithIdentifier:(id)identifier calendarIdentifier:(id)calendarIdentifier store:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  identifierCopy = identifier;
+  calendarIdentifierCopy = calendarIdentifier;
+  storeCopy = store;
+  v11 = storeCopy;
+  if (calendarIdentifierCopy)
   {
-    v12 = [v10 calendarWithIdentifier:v9];
+    v12 = [storeCopy calendarWithIdentifier:calendarIdentifierCopy];
     v13 = v12;
     if (v12)
     {
       v22 = v12;
       v14 = [NSArray arrayWithObjects:&v22 count:1];
-      v15 = [v11 remindersWithExternalIdentifier:v8 inCalendars:v14];
+      v15 = [v11 remindersWithExternalIdentifier:identifierCopy inCalendars:v14];
 
       if (v15 && [v15 count])
       {
@@ -3658,60 +3658,60 @@ LABEL_14:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v8;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "No reminder exists for %{public}@", buf, 0xCu);
   }
 
 LABEL_14:
 }
 
-- (BOOL)_updateSource:(id)a3 withSourceWrapper:(id)a4 store:(id)a5
+- (BOOL)_updateSource:(id)source withSourceWrapper:(id)wrapper store:(id)store
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 attributes];
-  v10 = [NEKSourceAttributes configureSource:v8 inStore:v7 withAttributes:v9];
+  storeCopy = store;
+  sourceCopy = source;
+  attributes = [wrapper attributes];
+  v10 = [NEKSourceAttributes configureSource:sourceCopy inStore:storeCopy withAttributes:attributes];
 
   return v10;
 }
 
-- (id)_createSourceForWrapper:(id)a3 store:(id)a4
+- (id)_createSourceForWrapper:(id)wrapper store:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [EKSource sourceWithEventStore:v5];
-  v8 = [v6 attributes];
+  storeCopy = store;
+  wrapperCopy = wrapper;
+  v7 = [EKSource sourceWithEventStore:storeCopy];
+  attributes = [wrapperCopy attributes];
 
-  [NEKSourceAttributes configureSource:v7 inStore:v5 withAttributes:v8];
+  [NEKSourceAttributes configureSource:v7 inStore:storeCopy withAttributes:attributes];
 
   return v7;
 }
 
-- (BOOL)_updateCalendar:(id)a3 withCalendarWrapper:(id)a4
+- (BOOL)_updateCalendar:(id)calendar withCalendarWrapper:(id)wrapper
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 attributes];
-  v9 = v8;
-  if (v8 && [v8 didCalendarChange:v6])
+  calendarCopy = calendar;
+  wrapperCopy = wrapper;
+  attributes = [wrapperCopy attributes];
+  v9 = attributes;
+  if (attributes && [attributes didCalendarChange:calendarCopy])
   {
     v10 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v7 attributes];
-      v13 = [v12 title];
-      v14 = sub_10002CDF8(v13);
-      v15 = [v7 calendarIdentifier];
+      attributes2 = [wrapperCopy attributes];
+      title = [attributes2 title];
+      v14 = sub_10002CDF8(title);
+      calendarIdentifier = [wrapperCopy calendarIdentifier];
       v24 = 138543618;
       v25 = v14;
       v26 = 2114;
-      v27 = v15;
+      v27 = calendarIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating calendar with title %{public}@, identifier %{public}@", &v24, 0x16u);
     }
 
-    v16 = [v6 eventStore];
-    [NEKCalendarAttributes configureCalendar:v6 inDatabase:v16 withAttributes:v9];
+    eventStore = [calendarCopy eventStore];
+    [NEKCalendarAttributes configureCalendar:calendarCopy inDatabase:eventStore withAttributes:v9];
 
     v17 = 1;
   }
@@ -3722,49 +3722,49 @@ LABEL_14:
   }
 
   v18 = [NEKSourceID alloc];
-  v19 = [v6 source];
-  v20 = [(NEKSourceID *)v18 initWithSource:v19];
+  source = [calendarCopy source];
+  v20 = [(NEKSourceID *)v18 initWithSource:source];
 
-  v21 = [v7 storeIdentifier];
-  [(NEKSourceID *)v20 isEqualToNEKSourceID:v21];
+  storeIdentifier = [wrapperCopy storeIdentifier];
+  [(NEKSourceID *)v20 isEqualToNEKSourceID:storeIdentifier];
 
-  v22 = [v6 eventStore];
-  LOBYTE(v21) = [(NEKEventStore *)self _checkAndSetDefaultCalendar:v6 calendarWrapper:v7 store:v22];
+  eventStore2 = [calendarCopy eventStore];
+  LOBYTE(storeIdentifier) = [(NEKEventStore *)self _checkAndSetDefaultCalendar:calendarCopy calendarWrapper:wrapperCopy store:eventStore2];
 
-  [(NEKEventStore *)self _didCreateEntity:v6];
-  return v17 | v21;
+  [(NEKEventStore *)self _didCreateEntity:calendarCopy];
+  return v17 | storeIdentifier;
 }
 
-- (id)_createCalendarForWrapper:(id)a3 store:(id)a4
+- (id)_createCalendarForWrapper:(id)wrapper store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 attributes];
-  v9 = v8;
-  if (!v8)
+  wrapperCopy = wrapper;
+  storeCopy = store;
+  attributes = [wrapperCopy attributes];
+  v9 = attributes;
+  if (!attributes)
   {
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v6 calendarIdentifier];
-      v17 = [v6 storeIdentifier];
+      calendarIdentifier = [wrapperCopy calendarIdentifier];
+      storeIdentifier = [wrapperCopy storeIdentifier];
       v32 = 138543618;
-      v33 = v16;
+      v33 = calendarIdentifier;
       v34 = 2114;
-      v35 = v17;
+      v35 = storeIdentifier;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Asked to set a nonexistent calendar as the default. Ignoring. Calendar identifier = %{public}@, store identifier = %{public}@", &v32, 0x16u);
     }
 
     goto LABEL_25;
   }
 
-  if ([v8 supportedEntityTypes] == 3)
+  if ([attributes supportedEntityTypes] == 3)
   {
-    v10 = [(NEKStore *)self environment];
-    v11 = [v10 isReminderKitEnabled];
+    environment = [(NEKStore *)self environment];
+    isReminderKitEnabled = [environment isReminderKitEnabled];
 
-    if (v11)
+    if (isReminderKitEnabled)
     {
       v12 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -3782,7 +3782,7 @@ LABEL_14:
       v13 = 3;
     }
 
-    v19 = [EKCalendar calendarForEntityTypes:v13 eventStore:v7];
+    v19 = [EKCalendar calendarForEntityTypes:v13 eventStore:storeCopy];
     goto LABEL_14;
   }
 
@@ -3790,10 +3790,10 @@ LABEL_14:
   {
     if ([v9 supportedEntityTypes] == 2)
     {
-      v28 = [(NEKStore *)self environment];
-      v29 = [v28 isReminderKitEnabled];
+      environment2 = [(NEKStore *)self environment];
+      isReminderKitEnabled2 = [environment2 isReminderKitEnabled];
 
-      if ((v29 & 1) == 0)
+      if ((isReminderKitEnabled2 & 1) == 0)
       {
         v18 = 1;
         goto LABEL_11;
@@ -3815,14 +3815,14 @@ LABEL_25:
 
   v18 = 0;
 LABEL_11:
-  v19 = [EKCalendar calendarForEntityType:v18 eventStore:v7];
+  v19 = [EKCalendar calendarForEntityType:v18 eventStore:storeCopy];
 LABEL_14:
   v20 = v19;
-  [NEKCalendarAttributes configureCalendar:v19 inDatabase:v7 withAttributes:v9];
-  v21 = [v6 storeIdentifier];
-  v22 = [NEKSourceID eventSourceForDatabase:v7 identifier:v21];
+  [NEKCalendarAttributes configureCalendar:v19 inDatabase:storeCopy withAttributes:v9];
+  storeIdentifier2 = [wrapperCopy storeIdentifier];
+  localSource = [NEKSourceID eventSourceForDatabase:storeCopy identifier:storeIdentifier2];
 
-  if (!v22)
+  if (!localSource)
   {
     v23 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3830,21 +3830,21 @@ LABEL_14:
       sub_100070D2C(v23);
     }
 
-    v22 = [v7 localSource];
+    localSource = [storeCopy localSource];
   }
 
-  [v20 setSource:v22];
+  [v20 setSource:localSource];
   [(NEKEventStore *)self _didCreateEntity:v20];
   v24 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v25 = v24;
     v26 = sub_10002CDF8([v20 title]);
-    v27 = [v20 calendarIdentifier];
+    calendarIdentifier2 = [v20 calendarIdentifier];
     v32 = 138543618;
     v33 = v26;
     v34 = 2114;
-    v35 = v27;
+    v35 = calendarIdentifier2;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Created calendar with title %{public}@, identifier %{public}@", &v32, 0x16u);
   }
 
@@ -3853,21 +3853,21 @@ LABEL_26:
   return v20;
 }
 
-- (id)_ICSLogTestForWrapper:(id)a3
+- (id)_ICSLogTestForWrapper:(id)wrapper
 {
-  v3 = a3;
+  wrapperCopy = wrapper;
   v4 = [NSString alloc];
-  v5 = [v3 ICSData];
+  iCSData = [wrapperCopy ICSData];
 
-  v6 = [v4 initWithData:v5 encoding:4];
+  v6 = [v4 initWithData:iCSData encoding:4];
 
   return v6;
 }
 
 - (void)_sendChangesIfAvailable
 {
-  v2 = [(NEKStore *)self changeObserver];
-  [v2 _sendChangesIfAvailable];
+  changeObserver = [(NEKStore *)self changeObserver];
+  [changeObserver _sendChangesIfAvailable];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SUPreviewOverlayView
-- (SUPreviewOverlayView)initWithFrame:(CGRect)a3;
+- (SUPreviewOverlayView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setStorePageView:(id)a3;
+- (void)setStorePageView:(id)view;
 @end
 
 @implementation SUPreviewOverlayView
 
-- (SUPreviewOverlayView)initWithFrame:(CGRect)a3
+- (SUPreviewOverlayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUPreviewOverlayView;
-  v3 = [(SUPreviewOverlayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUPreviewOverlayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     -[SUPreviewOverlayView setBackgroundColor:](v3, "setBackgroundColor:", [MEMORY[0x1E69DC888] clearColor]);
@@ -63,16 +63,16 @@
   }
 }
 
-- (void)setStorePageView:(id)a3
+- (void)setStorePageView:(id)view
 {
   storePageView = self->_storePageView;
-  if (storePageView != a3)
+  if (storePageView != view)
   {
     [(UIView *)storePageView removeFromSuperview];
 
-    v6 = a3;
-    self->_storePageView = v6;
-    [(SUPreviewOverlayView *)self insertSubview:v6 atIndex:0];
+    viewCopy = view;
+    self->_storePageView = viewCopy;
+    [(SUPreviewOverlayView *)self insertSubview:viewCopy atIndex:0];
 
     [(SUPreviewOverlayView *)self setNeedsLayout];
   }

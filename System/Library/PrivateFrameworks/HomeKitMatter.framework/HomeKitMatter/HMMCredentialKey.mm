@@ -1,40 +1,40 @@
 @interface HMMCredentialKey
-- (BOOL)isEqual:(id)a3;
-- (HMMCredentialKey)initWithCredentialParams:(id)a3;
-- (HMMCredentialKey)initWithCredentialType:(id)a3 andCredentialIndex:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMMCredentialKey)initWithCredentialParams:(id)params;
+- (HMMCredentialKey)initWithCredentialType:(id)type andCredentialIndex:(id)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)credentialStruct;
 - (unint64_t)hash;
 @end
 
 @implementation HMMCredentialKey
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMMCredentialKey allocWithZone:?]];
-  v5 = [(HMMCredentialKey *)self credentialType];
-  [(HMMCredentialKey *)v4 setCredentialType:v5];
+  credentialType = [(HMMCredentialKey *)self credentialType];
+  [(HMMCredentialKey *)v4 setCredentialType:credentialType];
 
-  v6 = [(HMMCredentialKey *)self credentialIndex];
-  [(HMMCredentialKey *)v4 setCredentialIndex:v6];
+  credentialIndex = [(HMMCredentialKey *)self credentialIndex];
+  [(HMMCredentialKey *)v4 setCredentialIndex:credentialIndex];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMMCredentialKey *)self credentialType];
-  v4 = [v3 hash];
-  v5 = [(HMMCredentialKey *)self credentialIndex];
-  v6 = [v5 hash];
+  credentialType = [(HMMCredentialKey *)self credentialType];
+  v4 = [credentialType hash];
+  credentialIndex = [(HMMCredentialKey *)self credentialIndex];
+  v6 = [credentialIndex hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -44,14 +44,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMMCredentialKey *)self credentialType];
-      v7 = [(HMMCredentialKey *)v5 credentialType];
-      if ([v6 isEqualToNumber:v7])
+      v5 = equalCopy;
+      credentialType = [(HMMCredentialKey *)self credentialType];
+      credentialType2 = [(HMMCredentialKey *)v5 credentialType];
+      if ([credentialType isEqualToNumber:credentialType2])
       {
-        v8 = [(HMMCredentialKey *)self credentialIndex];
-        v9 = [(HMMCredentialKey *)v5 credentialIndex];
-        v10 = [v8 isEqualToNumber:v9];
+        credentialIndex = [(HMMCredentialKey *)self credentialIndex];
+        credentialIndex2 = [(HMMCredentialKey *)v5 credentialIndex];
+        v10 = [credentialIndex isEqualToNumber:credentialIndex2];
       }
 
       else
@@ -72,39 +72,39 @@
 - (id)credentialStruct
 {
   v3 = objc_opt_new();
-  v4 = [(HMMCredentialKey *)self credentialType];
-  [v3 setCredentialType:v4];
+  credentialType = [(HMMCredentialKey *)self credentialType];
+  [v3 setCredentialType:credentialType];
 
-  v5 = [(HMMCredentialKey *)self credentialIndex];
-  [v3 setCredentialIndex:v5];
+  credentialIndex = [(HMMCredentialKey *)self credentialIndex];
+  [v3 setCredentialIndex:credentialIndex];
 
   return v3;
 }
 
-- (HMMCredentialKey)initWithCredentialType:(id)a3 andCredentialIndex:(id)a4
+- (HMMCredentialKey)initWithCredentialType:(id)type andCredentialIndex:(id)index
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  indexCopy = index;
   v12.receiver = self;
   v12.super_class = HMMCredentialKey;
   v9 = [(HMMCredentialKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_credentialType, a3);
-    objc_storeStrong(&v10->_credentialIndex, a4);
+    objc_storeStrong(&v9->_credentialType, type);
+    objc_storeStrong(&v10->_credentialIndex, index);
   }
 
   return v10;
 }
 
-- (HMMCredentialKey)initWithCredentialParams:(id)a3
+- (HMMCredentialKey)initWithCredentialParams:(id)params
 {
-  v4 = a3;
-  v5 = [v4 credentialType];
-  v6 = [v4 credentialIndex];
+  paramsCopy = params;
+  credentialType = [paramsCopy credentialType];
+  credentialIndex = [paramsCopy credentialIndex];
 
-  v7 = [(HMMCredentialKey *)self initWithCredentialType:v5 andCredentialIndex:v6];
+  v7 = [(HMMCredentialKey *)self initWithCredentialType:credentialType andCredentialIndex:credentialIndex];
   return v7;
 }
 

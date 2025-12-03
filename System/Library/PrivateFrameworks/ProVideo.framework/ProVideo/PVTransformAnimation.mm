@@ -1,43 +1,43 @@
 @interface PVTransformAnimation
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atLocalTime:(id *)a4 outInfo:(PVTransformAnimationInfo *)a5;
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atLocalTime:(id *)a4 renderSize:(CGSize)a5 contentMode:(int)a6 invertY:(BOOL)a7 outInfo:(PVTransformAnimationInfo *)a8;
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atTime:(id *)a4 outInfo:(PVTransformAnimationInfo *)a5;
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atTime:(id *)a4 renderSize:(CGSize)a5 contentMode:(int)a6 invertY:(BOOL)a7 outInfo:(PVTransformAnimationInfo *)a8;
++ (BOOL)getTransformInfoFromAnimation:(id)animation atLocalTime:(id *)time outInfo:(PVTransformAnimationInfo *)info;
++ (BOOL)getTransformInfoFromAnimation:(id)animation atLocalTime:(id *)time renderSize:(CGSize)size contentMode:(int)mode invertY:(BOOL)y outInfo:(PVTransformAnimationInfo *)info;
++ (BOOL)getTransformInfoFromAnimation:(id)animation atTime:(id *)time outInfo:(PVTransformAnimationInfo *)info;
++ (BOOL)getTransformInfoFromAnimation:(id)animation atTime:(id *)time renderSize:(CGSize)size contentMode:(int)mode invertY:(BOOL)y outInfo:(PVTransformAnimationInfo *)info;
 - ($948BFCBB2DDE7F94AFEDE1DD48437795)presentationTimeRange;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)basisForRenderSize:(CGSize)a3 contentMode:(int)a4;
-- (CGSize)basisForRenderSize:(CGSize)result contentMode:(int)a4 invertY:(BOOL)a5;
-- (PVTransformAnimation)initWithAnimation:(id)a3 liveTransform:(PVTransformAnimationInfo *)a4 presentationTimeRange:(id *)a5;
-- (PVTransformAnimation)initWithAnimation:(id)a3 simplify:(BOOL)a4 tolerance:(double)a5 smoothness:(unsigned int)a6;
-- (PVTransformAnimation)initWithAnimationInfo:(PVTransformAnimationInfo *)a3;
-- (PVTransformAnimation)initWithCoder:(id)a3;
-- (PVTransformAnimation)initWithLiveTransform:(PVTransformAnimationInfo *)a3;
-- (PVTransformAnimationInfo)transformInfoAtLocalTime:(SEL)a3;
-- (PVTransformAnimationInfo)transformInfoAtTime:(SEL)a3;
-- (id)animationInfoFromData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataFromAnimationInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)basisForRenderSize:(CGSize)result contentMode:(int)mode invertY:(BOOL)y;
+- (CGSize)basisForRenderSize:(CGSize)size contentMode:(int)mode;
+- (PVTransformAnimation)initWithAnimation:(id)animation liveTransform:(PVTransformAnimationInfo *)transform presentationTimeRange:(id *)range;
+- (PVTransformAnimation)initWithAnimation:(id)animation simplify:(BOOL)simplify tolerance:(double)tolerance smoothness:(unsigned int)smoothness;
+- (PVTransformAnimation)initWithAnimationInfo:(PVTransformAnimationInfo *)info;
+- (PVTransformAnimation)initWithCoder:(id)coder;
+- (PVTransformAnimation)initWithLiveTransform:(PVTransformAnimationInfo *)transform;
+- (PVTransformAnimationInfo)transformInfoAtLocalTime:(SEL)time;
+- (PVTransformAnimationInfo)transformInfoAtTime:(SEL)time;
+- (id)animationInfoFromData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataFromAnimationInfo:(id)info;
 - (id)description;
 - (unint64_t)hash;
-- (void)_commonInit:(id)a3 liveTransform:(PVTransformAnimationInfo *)a4 presentationTimeRange:(id *)a5;
+- (void)_commonInit:(id)init liveTransform:(PVTransformAnimationInfo *)transform presentationTimeRange:(id *)range;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPresentationTimeRange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPresentationTimeRange:(id *)range;
 @end
 
 @implementation PVTransformAnimation
 
-- (PVTransformAnimation)initWithAnimation:(id)a3 simplify:(BOOL)a4 tolerance:(double)a5 smoothness:(unsigned int)a6
+- (PVTransformAnimation)initWithAnimation:(id)animation simplify:(BOOL)simplify tolerance:(double)tolerance smoothness:(unsigned int)smoothness
 {
-  v6 = a4;
+  simplifyCopy = simplify;
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  animationCopy = animation;
   v13.receiver = self;
   v13.super_class = PVTransformAnimation;
   v11 = [(PVTransformAnimation *)&v13 init];
   if (v11)
   {
-    if (v6 && [v8 count])
+    if (simplifyCopy && [animationCopy count])
     {
       operator new();
     }
@@ -46,20 +46,20 @@
     time1[0] = *MEMORY[0x277CC08C8];
     time1[1] = v9;
     time1[2] = *(MEMORY[0x277CC08C8] + 32);
-    [(PVTransformAnimation *)v11 _commonInit:v8 liveTransform:0 presentationTimeRange:time1];
+    [(PVTransformAnimation *)v11 _commonInit:animationCopy liveTransform:0 presentationTimeRange:time1];
   }
 
   return v11;
 }
 
-- (PVTransformAnimation)initWithAnimationInfo:(PVTransformAnimationInfo *)a3
+- (PVTransformAnimation)initWithAnimationInfo:(PVTransformAnimationInfo *)info
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = *&a3->time.epoch;
-  v10[0] = *&a3->time.value;
+  v4 = *&info->time.epoch;
+  v10[0] = *&info->time.value;
   v10[1] = v4;
-  v10[2] = *&a3->translation.y;
-  rotation = a3->rotation;
+  v10[2] = *&info->translation.y;
+  rotation = info->rotation;
   v5 = [MEMORY[0x277CCAE60] valueWithPVTransformAnimationInfo:v10];
   v6 = [PVTransformAnimation alloc];
   v12[0] = v5;
@@ -69,7 +69,7 @@
   return v8;
 }
 
-- (PVTransformAnimation)initWithLiveTransform:(PVTransformAnimationInfo *)a3
+- (PVTransformAnimation)initWithLiveTransform:(PVTransformAnimationInfo *)transform
 {
   v9.receiver = self;
   v9.super_class = PVTransformAnimation;
@@ -81,31 +81,31 @@
     v8[0] = *MEMORY[0x277CC08C8];
     v8[1] = v6;
     v8[2] = *(MEMORY[0x277CC08C8] + 32);
-    [(PVTransformAnimation *)v4 _commonInit:0 liveTransform:a3 presentationTimeRange:v8];
+    [(PVTransformAnimation *)v4 _commonInit:0 liveTransform:transform presentationTimeRange:v8];
   }
 
   return v5;
 }
 
-- (PVTransformAnimation)initWithAnimation:(id)a3 liveTransform:(PVTransformAnimationInfo *)a4 presentationTimeRange:(id *)a5
+- (PVTransformAnimation)initWithAnimation:(id)animation liveTransform:(PVTransformAnimationInfo *)transform presentationTimeRange:(id *)range
 {
-  v8 = a3;
-  if (a4)
+  animationCopy = animation;
+  if (transform)
   {
-    v9 = [(PVTransformAnimation *)self initWithLiveTransform:a4];
+    v9 = [(PVTransformAnimation *)self initWithLiveTransform:transform];
   }
 
   else
   {
-    v9 = [(PVTransformAnimation *)self initWithAnimation:v8];
+    v9 = [(PVTransformAnimation *)self initWithAnimation:animationCopy];
   }
 
   v10 = v9;
   if (v9)
   {
-    v11 = *&a5->var0.var0;
-    v12 = *&a5->var1.var1;
-    *&v9->_presentationTimeRange.start.epoch = *&a5->var0.var3;
+    v11 = *&range->var0.var0;
+    v12 = *&range->var1.var1;
+    *&v9->_presentationTimeRange.start.epoch = *&range->var0.var3;
     *&v9->_presentationTimeRange.duration.timescale = v12;
     *&v9->_presentationTimeRange.start.value = v11;
   }
@@ -113,13 +113,13 @@
   return v10;
 }
 
-- (void)_commonInit:(id)a3 liveTransform:(PVTransformAnimationInfo *)a4 presentationTimeRange:(id *)a5
+- (void)_commonInit:(id)init liveTransform:(PVTransformAnimationInfo *)transform presentationTimeRange:(id *)range
 {
-  objc_storeStrong(&self->_animationData, a3);
-  self->_liveTransform = a4;
-  v8 = *&a5->var0.var0;
-  v9 = *&a5->var1.var1;
-  *&self->_presentationTimeRange.start.epoch = *&a5->var0.var3;
+  objc_storeStrong(&self->_animationData, init);
+  self->_liveTransform = transform;
+  v8 = *&range->var0.var0;
+  v9 = *&range->var1.var1;
+  *&self->_presentationTimeRange.start.epoch = *&range->var0.var3;
   *&self->_presentationTimeRange.duration.timescale = v9;
   *&self->_presentationTimeRange.start.value = v8;
 }
@@ -131,7 +131,7 @@
   [(PVTransformAnimation *)&v2 dealloc];
 }
 
-- (PVTransformAnimationInfo)transformInfoAtTime:(SEL)a3
+- (PVTransformAnimationInfo)transformInfoAtTime:(SEL)time
 {
   v44 = *MEMORY[0x277D85DE8];
   retstr->translation.x = 0.0;
@@ -149,15 +149,15 @@
     return self;
   }
 
-  v8 = self;
+  selfCopy = self;
   p_epoch = &self->time.epoch;
   v10 = [self->time.epoch count];
-  v11 = [*p_epoch firstObject];
-  v23 = v11;
-  v25 = [*p_epoch lastObject];
-  if (v11)
+  firstObject = [*p_epoch firstObject];
+  v23 = firstObject;
+  lastObject = [*p_epoch lastObject];
+  if (firstObject)
   {
-    [v11 PVTransformAnimationInfoValue];
+    [firstObject PVTransformAnimationInfoValue];
   }
 
   else
@@ -173,11 +173,11 @@
   v42 = v34;
   time2 = **&MEMORY[0x277CC08F0];
   v12 = CMTimeCompare(time1, &time2);
-  if ((BYTE4(v8->scale) & 1) != 0 && (v8[1].time.flags & 1) != 0 && !v8[1].time.epoch && (v8[1].time.value & 0x8000000000000000) == 0)
+  if ((BYTE4(selfCopy->scale) & 1) != 0 && (selfCopy[1].time.flags & 1) != 0 && !selfCopy[1].time.epoch && (selfCopy[1].time.value & 0x8000000000000000) == 0)
   {
     *&time2.value = v39;
     time2.epoch = v40;
-    rhs = *&v8->translation.y;
+    rhs = *&selfCopy->translation.y;
     CMTimeAdd(time1, &time2, &rhs);
     v39 = *time1;
     *&v40 = *&time1[16];
@@ -187,7 +187,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v8->time.epoch;
+  obj = selfCopy->time.epoch;
   v13 = [obj countByEnumeratingWithState:&v26 objects:v43 count:16];
   if (!v13)
   {
@@ -225,10 +225,10 @@
       *&retstr->time.epoch = v18;
       *&retstr->translation.y = v33;
       retstr->rotation = v34;
-      if ((BYTE4(v8->scale) & 1) != 0 && (v8[1].time.flags & 1) != 0 && !v8[1].time.epoch && (v8[1].time.value & 0x8000000000000000) == 0)
+      if ((BYTE4(selfCopy->scale) & 1) != 0 && (selfCopy[1].time.flags & 1) != 0 && !selfCopy[1].time.epoch && (selfCopy[1].time.value & 0x8000000000000000) == 0)
       {
         time2 = retstr->time;
-        rhs = *&v8->translation.y;
+        rhs = *&selfCopy->translation.y;
         CMTimeAdd(time1, &time2, &rhs);
         *&retstr->time.value = *time1;
         retstr->time.epoch = *&time1[16];
@@ -240,11 +240,11 @@
         *&retstr->time.value = *&a4->var0;
         retstr->time.epoch = a4->var3;
 LABEL_44:
-        v11 = v23;
+        firstObject = v23;
         goto LABEL_45;
       }
 
-      if (v17 == v25)
+      if (v17 == lastObject)
       {
         goto LABEL_44;
       }
@@ -269,7 +269,7 @@ LABEL_44:
         goto LABEL_44;
       }
 
-      v19 = [v8->time.epoch objectAtIndex:{objc_msgSend(v8->time.epoch, "indexOfObject:", v17) + 1}];
+      v19 = [selfCopy->time.epoch objectAtIndex:{objc_msgSend(selfCopy->time.epoch, "indexOfObject:", v17) + 1}];
 
       v14 = v19;
       if (v19)
@@ -288,11 +288,11 @@ LABEL_44:
       v36 = *&time1[16];
       v37 = v33;
       v38 = v34;
-      if ((BYTE4(v8->scale) & 1) != 0 && (v8[1].time.flags & 1) != 0 && !v8[1].time.epoch && (v8[1].time.value & 0x8000000000000000) == 0)
+      if ((BYTE4(selfCopy->scale) & 1) != 0 && (selfCopy[1].time.flags & 1) != 0 && !selfCopy[1].time.epoch && (selfCopy[1].time.value & 0x8000000000000000) == 0)
       {
         *&time2.value = v35;
         time2.epoch = v36;
-        rhs = *&v8->translation.y;
+        rhs = *&selfCopy->translation.y;
         CMTimeAdd(time1, &time2, &rhs);
         v35 = *time1;
         *&v36 = *&time1[16];
@@ -315,7 +315,7 @@ LABEL_44:
     }
 
     v13 = [obj countByEnumeratingWithState:&v26 objects:v43 count:16];
-    v11 = v23;
+    firstObject = v23;
     if (v13)
     {
       continue;
@@ -329,7 +329,7 @@ LABEL_45:
   return self;
 }
 
-- (PVTransformAnimationInfo)transformInfoAtLocalTime:(SEL)a3
+- (PVTransformAnimationInfo)transformInfoAtLocalTime:(SEL)time
 {
   v29 = *MEMORY[0x277D85DE8];
   retstr->translation.x = 0.0;
@@ -348,13 +348,13 @@ LABEL_45:
 
   else
   {
-    v8 = self;
+    selfCopy = self;
     v9 = [self->time.epoch count];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = v8->time.epoch;
+    v10 = selfCopy->time.epoch;
     v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
@@ -404,8 +404,8 @@ LABEL_45:
           time2 = *a4;
           if (CMTimeCompare(time1, &time2) >= 1)
           {
-            v16 = [v8->time.epoch firstObject];
-            v17 = v14 == v16;
+            firstObject = [selfCopy->time.epoch firstObject];
+            v17 = v14 == firstObject;
 
             if (!v17)
             {
@@ -442,17 +442,17 @@ LABEL_20:
   return self;
 }
 
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atTime:(id *)a4 outInfo:(PVTransformAnimationInfo *)a5
++ (BOOL)getTransformInfoFromAnimation:(id)animation atTime:(id *)time outInfo:(PVTransformAnimationInfo *)info
 {
-  v7 = a3;
-  v8 = v7;
+  animationCopy = animation;
+  v8 = animationCopy;
   v23 = *MEMORY[0x277CC08F0];
   v24 = *(MEMORY[0x277CC08F0] + 16);
-  if (v7)
+  if (animationCopy)
   {
-    v15 = *&a4->var0;
-    var3 = a4->var3;
-    [v7 transformInfoAtTime:&v15];
+    v15 = *&time->var0;
+    var3 = time->var3;
+    [animationCopy transformInfoAtTime:&v15];
     v23 = v17;
     v24 = v18;
     v10 = v19;
@@ -475,30 +475,30 @@ LABEL_20:
     v10 = 0.0;
   }
 
-  if (a5)
+  if (info)
   {
-    *&a5->time.value = v23;
-    a5->time.epoch = v24;
-    a5->translation.x = v10;
-    a5->translation.y = v9;
-    a5->scale = v11;
-    a5->rotation = v12;
+    *&info->time.value = v23;
+    info->time.epoch = v24;
+    info->translation.x = v10;
+    info->translation.y = v9;
+    info->scale = v11;
+    info->rotation = v12;
   }
 
   return v13;
 }
 
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atLocalTime:(id *)a4 outInfo:(PVTransformAnimationInfo *)a5
++ (BOOL)getTransformInfoFromAnimation:(id)animation atLocalTime:(id *)time outInfo:(PVTransformAnimationInfo *)info
 {
-  v7 = a3;
-  v8 = v7;
+  animationCopy = animation;
+  v8 = animationCopy;
   v23 = *MEMORY[0x277CC08F0];
   v24 = *(MEMORY[0x277CC08F0] + 16);
-  if (v7)
+  if (animationCopy)
   {
-    v15 = *&a4->var0;
-    var3 = a4->var3;
-    [v7 transformInfoAtLocalTime:&v15];
+    v15 = *&time->var0;
+    var3 = time->var3;
+    [animationCopy transformInfoAtLocalTime:&v15];
     v23 = v17;
     v24 = v18;
     v10 = v19;
@@ -521,72 +521,72 @@ LABEL_20:
     v10 = 0.0;
   }
 
-  if (a5)
+  if (info)
   {
-    *&a5->time.value = v23;
-    a5->time.epoch = v24;
-    a5->translation.x = v10;
-    a5->translation.y = v9;
-    a5->scale = v11;
-    a5->rotation = v12;
+    *&info->time.value = v23;
+    info->time.epoch = v24;
+    info->translation.x = v10;
+    info->translation.y = v9;
+    info->scale = v11;
+    info->rotation = v12;
   }
 
   return v13;
 }
 
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atTime:(id *)a4 renderSize:(CGSize)a5 contentMode:(int)a6 invertY:(BOOL)a7 outInfo:(PVTransformAnimationInfo *)a8
++ (BOOL)getTransformInfoFromAnimation:(id)animation atTime:(id *)time renderSize:(CGSize)size contentMode:(int)mode invertY:(BOOL)y outInfo:(PVTransformAnimationInfo *)info
 {
-  v9 = a7;
-  v10 = *&a6;
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v21 = *a4;
-  v16 = [a1 getTransformInfoFromAnimation:v15 atTime:&v21 outInfo:a8];
+  yCopy = y;
+  v10 = *&mode;
+  height = size.height;
+  width = size.width;
+  animationCopy = animation;
+  v21 = *time;
+  v16 = [self getTransformInfoFromAnimation:animationCopy atTime:&v21 outInfo:info];
   v17 = v16 ^ 1;
-  if (!a8)
+  if (!info)
   {
     v17 = 1;
   }
 
   if ((v17 & 1) == 0)
   {
-    [v15 basisForRenderSize:v10 contentMode:v9 invertY:{width, height}];
+    [animationCopy basisForRenderSize:v10 contentMode:yCopy invertY:{width, height}];
     v19.f64[1] = v18;
-    a8->translation = vmulq_f64(v19, a8->translation);
+    info->translation = vmulq_f64(v19, info->translation);
   }
 
   return v16;
 }
 
-+ (BOOL)getTransformInfoFromAnimation:(id)a3 atLocalTime:(id *)a4 renderSize:(CGSize)a5 contentMode:(int)a6 invertY:(BOOL)a7 outInfo:(PVTransformAnimationInfo *)a8
++ (BOOL)getTransformInfoFromAnimation:(id)animation atLocalTime:(id *)time renderSize:(CGSize)size contentMode:(int)mode invertY:(BOOL)y outInfo:(PVTransformAnimationInfo *)info
 {
-  v9 = a7;
-  v10 = *&a6;
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v21 = *a4;
-  v16 = [a1 getTransformInfoFromAnimation:v15 atLocalTime:&v21 outInfo:a8];
+  yCopy = y;
+  v10 = *&mode;
+  height = size.height;
+  width = size.width;
+  animationCopy = animation;
+  v21 = *time;
+  v16 = [self getTransformInfoFromAnimation:animationCopy atLocalTime:&v21 outInfo:info];
   v17 = v16 ^ 1;
-  if (!a8)
+  if (!info)
   {
     v17 = 1;
   }
 
   if ((v17 & 1) == 0)
   {
-    [v15 basisForRenderSize:v10 contentMode:v9 invertY:{width, height}];
+    [animationCopy basisForRenderSize:v10 contentMode:yCopy invertY:{width, height}];
     v19.f64[1] = v18;
-    a8->translation = vmulq_f64(v19, a8->translation);
+    info->translation = vmulq_f64(v19, info->translation);
   }
 
   return v16;
 }
 
-- (PVTransformAnimation)initWithCoder:(id)a3
+- (PVTransformAnimation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([PVTransformAnimation initWithCoder:]::onceToken != -1)
   {
     [PVTransformAnimation initWithCoder:];
@@ -596,10 +596,10 @@ LABEL_20:
 
   if (v5)
   {
-    v6 = [v4 decodeIntForKey:@"PVTransformAnimation_CodingVersion"];
+    v6 = [coderCopy decodeIntForKey:@"PVTransformAnimation_CodingVersion"];
     if (v6 >= 1)
     {
-      v7 = [v4 decodeObjectOfClasses:-[PVTransformAnimation initWithCoder:]::whitelist forKey:@"PVTransformAnimation_AnimationData"];
+      v7 = [coderCopy decodeObjectOfClasses:-[PVTransformAnimation initWithCoder:]::whitelist forKey:@"PVTransformAnimation_AnimationData"];
       v8 = [(PVTransformAnimation *)v5 animationInfoFromData:v7];
       animationData = v5->_animationData;
       v5->_animationData = v8;
@@ -610,7 +610,7 @@ LABEL_20:
       v13 = objc_opt_class();
       v14 = [v10 setWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
       v22 = 0;
-      v15 = [v4 decodeTopLevelObjectOfClasses:v14 forKey:@"PVTransformAnimation_PresentationTimeRange" error:&v22];
+      v15 = [coderCopy decodeTopLevelObjectOfClasses:v14 forKey:@"PVTransformAnimation_PresentationTimeRange" error:&v22];
       v16 = v22;
 
       if (v15)
@@ -625,7 +625,7 @@ LABEL_20:
 
       if (v6 != 1)
       {
-        [v4 decodeDoubleForKey:@"PVTransformAnimation_AspectRatio"];
+        [coderCopy decodeDoubleForKey:@"PVTransformAnimation_AspectRatio"];
         v5->_aspectRatio = v19;
       }
     }
@@ -646,28 +646,28 @@ void __38__PVTransformAnimation_initWithCoder___block_invoke()
   [PVTransformAnimation initWithCoder:]::whitelist = v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:2 forKey:@"PVTransformAnimation_CodingVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:2 forKey:@"PVTransformAnimation_CodingVersion"];
   v5 = [(PVTransformAnimation *)self dataFromAnimationInfo:self->_animationData];
-  [v4 encodeObject:v5 forKey:@"PVTransformAnimation_AnimationData"];
+  [coderCopy encodeObject:v5 forKey:@"PVTransformAnimation_AnimationData"];
 
   v6 = *&self->_presentationTimeRange.start.epoch;
   *&v8.start.value = *&self->_presentationTimeRange.start.value;
   *&v8.start.epoch = v6;
   *&v8.duration.timescale = *&self->_presentationTimeRange.duration.timescale;
   v7 = CMTimeRangeCopyAsDictionary(&v8, *MEMORY[0x277CBECE8]);
-  [v4 encodeObject:v7 forKey:@"PVTransformAnimation_PresentationTimeRange"];
-  [v4 encodeDouble:@"PVTransformAnimation_AspectRatio" forKey:self->_aspectRatio];
+  [coderCopy encodeObject:v7 forKey:@"PVTransformAnimation_PresentationTimeRange"];
+  [coderCopy encodeDouble:@"PVTransformAnimation_AspectRatio" forKey:self->_aspectRatio];
 }
 
-- (id)animationInfoFromData:(id)a3
+- (id)animationInfoFromData:(id)data
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v20 = v3;
-  if (v3 && [v3 count])
+  dataCopy = data;
+  v20 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v20, "count")}];
     v32 = 0u;
@@ -737,12 +737,12 @@ void __38__PVTransformAnimation_initWithCoder___block_invoke()
   return v4;
 }
 
-- (id)dataFromAnimationInfo:(id)a3
+- (id)dataFromAnimationInfo:(id)info
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v14 = v3;
-  if (v3 && [v3 count])
+  infoCopy = info;
+  v14 = infoCopy;
+  if (infoCopy && [infoCopy count])
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v14, "count")}];
     v24 = 0u;
@@ -782,8 +782,8 @@ void __38__PVTransformAnimation_initWithCoder___block_invoke()
           v11 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
           [v11 encodeObject:v10 forKey:v7];
           [v11 finishEncoding];
-          v12 = [v11 encodedData];
-          [v4 addObject:v12];
+          encodedData = [v11 encodedData];
+          [v4 addObject:encodedData];
         }
 
         v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -801,12 +801,12 @@ void __38__PVTransformAnimation_initWithCoder___block_invoke()
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   animationData = self->_animationData;
   if (animationData)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](animationData, "count", a3)}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](animationData, "count", zone)}];
     v6 = self->_animationData;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = *"";
@@ -845,26 +845,26 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
   [v2 addObject:?];
 }
 
-- (CGSize)basisForRenderSize:(CGSize)a3 contentMode:(int)a4
+- (CGSize)basisForRenderSize:(CGSize)size contentMode:(int)mode
 {
-  [(PVTransformAnimation *)self basisForRenderSize:*&a4 contentMode:0 invertY:a3.width, a3.height];
+  [(PVTransformAnimation *)self basisForRenderSize:*&mode contentMode:0 invertY:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)basisForRenderSize:(CGSize)result contentMode:(int)a4 invertY:(BOOL)a5
+- (CGSize)basisForRenderSize:(CGSize)result contentMode:(int)mode invertY:(BOOL)y
 {
-  if (a4)
+  if (mode)
   {
-    if (a4 != 3)
+    if (mode != 3)
     {
       aspectRatio = self->_aspectRatio;
       if (fabs(aspectRatio) >= 0.0000001)
       {
-        if (a4 <= 2)
+        if (mode <= 2)
         {
-          if (a4 == 1)
+          if (mode == 1)
           {
             if (result.width <= result.height)
             {
@@ -888,7 +888,7 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
             result.height = height;
           }
 
-          else if (a4 == 2)
+          else if (mode == 2)
           {
             v6 = result.width / aspectRatio;
             if (v6 <= result.height)
@@ -906,7 +906,7 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
           }
         }
 
-        else if (a4 == 13)
+        else if (mode == 13)
         {
           result.height = result.width / aspectRatio;
         }
@@ -914,7 +914,7 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
         else
         {
           result.width = result.height * aspectRatio;
-          if (a4 != 14)
+          if (mode != 14)
           {
             result.width = self->_aspectRatio;
             result.height = 1.0;
@@ -924,7 +924,7 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
     }
   }
 
-  if (a5)
+  if (y)
   {
     result.height = -result.height;
   }
@@ -932,16 +932,16 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_7;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_11;
@@ -956,8 +956,8 @@ void __37__PVTransformAnimation_copyWithZone___block_invoke(uint64_t a1, void *a
     if (vabdd_f64(aspectRatio, v8) < 0.0001 && (v9 = *&self->_presentationTimeRange.start.epoch, *&range1.start.value = *&self->_presentationTimeRange.start.value, *&range1.start.epoch = v9, *&range1.duration.timescale = *&self->_presentationTimeRange.duration.timescale, [(PVTransformAnimation *)v6 presentationTimeRange], CMTimeRangeEqual(&range1, &v14)))
     {
       animationData = self->_animationData;
-      v11 = [(PVTransformAnimation *)v6 animationData];
-      v12 = [(NSArray *)animationData isEqualToArray:v11];
+      animationData = [(PVTransformAnimation *)v6 animationData];
+      v12 = [(NSArray *)animationData isEqualToArray:animationData];
     }
 
     else
@@ -1093,11 +1093,11 @@ void __35__PVTransformAnimation_description__block_invoke(uint64_t a1, void *a2)
   return self;
 }
 
-- (void)setPresentationTimeRange:(id *)a3
+- (void)setPresentationTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_presentationTimeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_presentationTimeRange.start.epoch = *&range->var0.var3;
   *&self->_presentationTimeRange.duration.timescale = v4;
   *&self->_presentationTimeRange.start.value = v3;
 }

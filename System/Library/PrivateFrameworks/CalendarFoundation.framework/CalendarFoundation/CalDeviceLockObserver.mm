@@ -2,34 +2,34 @@
 + (BOOL)hasBeenUnlockedSinceBoot;
 + (void)hasBeenUnlockedSinceBoot;
 - (BOOL)hasBeenUnlockedSinceBoot;
-- (CalDeviceLockObserver)initWithStateChangedCallback:(id)a3;
+- (CalDeviceLockObserver)initWithStateChangedCallback:(id)callback;
 - (void)_notificationReceived;
 @end
 
 @implementation CalDeviceLockObserver
 
-- (CalDeviceLockObserver)initWithStateChangedCallback:(id)a3
+- (CalDeviceLockObserver)initWithStateChangedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v16.receiver = self;
   v16.super_class = CalDeviceLockObserver;
   v5 = [(CalDeviceLockObserver *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    [(CalDeviceLockObserver *)v5 setStateChangedCallback:v4];
+    [(CalDeviceLockObserver *)v5 setStateChangedCallback:callbackCopy];
     v7 = objc_opt_class();
     v8 = CalGenerateQualifiedIdentifierWithClassAndSubdomain(v7, @"work");
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
 
-    v10 = dispatch_queue_create(v9, 0);
+    v10 = dispatch_queue_create(uTF8String, 0);
     [(CalDeviceLockObserver *)v6 setWorkQueue:v10];
 
     v11 = objc_opt_class();
     v12 = CalGenerateQualifiedIdentifierWithClassAndSubdomain(v11, @"callback");
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
 
-    v14 = dispatch_queue_create(v13, MEMORY[0x1E69E96A8]);
+    v14 = dispatch_queue_create(uTF8String2, MEMORY[0x1E69E96A8]);
     [(CalDeviceLockObserver *)v6 setCallbackQueue:v14];
   }
 
@@ -39,8 +39,8 @@
 - (void)_notificationReceived
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 notificationListener];
-  v8 = [v1 notificationName];
+  notificationListener = [self notificationListener];
+  notificationName = [notificationListener notificationName];
   OUTLINED_FUNCTION_5();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
 
@@ -87,23 +87,23 @@ void __46__CalDeviceLockObserver__notificationReceived__block_invoke(uint64_t a1
 
 - (BOOL)hasBeenUnlockedSinceBoot
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CalDeviceLockObserver *)self workQueue];
+  workQueue = [(CalDeviceLockObserver *)self workQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__CalDeviceLockObserver_hasBeenUnlockedSinceBoot__block_invoke;
   v5[3] = &unk_1E7EC6ED8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __49__CalDeviceLockObserver_hasBeenUnlockedSinceBoot__block_invoke(uint64_t a1)
@@ -219,7 +219,7 @@ void __49__CalDeviceLockObserver_hasBeenUnlockedSinceBoot__block_invoke_cold_2(u
 + (void)hasBeenUnlockedSinceBoot
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD98] numberWithInt:a1];
+  v3 = [MEMORY[0x1E696AD98] numberWithInt:self];
   v5 = 138412290;
   v6 = v3;
   _os_log_error_impl(&dword_1B990D000, a2, OS_LOG_TYPE_ERROR, "Received an error when calling MKBDeviceUnlockedSinceBoot().  Error code: [%@]", &v5, 0xCu);

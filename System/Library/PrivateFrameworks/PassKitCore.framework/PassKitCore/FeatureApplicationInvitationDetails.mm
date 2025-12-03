@@ -1,113 +1,113 @@
 @interface FeatureApplicationInvitationDetails
 + (id)_propertySettersForFeatureApplicationInvitationDetails;
-+ (id)_propertyValuesForFeatureApplicationInvitationDetails:(id)a3;
-+ (id)featureApplicationInvitationDetailsForApplicationPID:(id)a3 inDatabase:(id)a4;
-+ (id)insertFeatureApplicationInvitationDetails:(id)a3 forApplicationPID:(id)a4 inDatabase:(id)a5;
-+ (void)deleteFeatureApplicationInvitationDetailsForApplicationPID:(id)a3 inDatabase:(id)a4;
-+ (void)updateFeatureApplicationInvitationDetails:(id)a3 forApplicationPID:(id)a4 inDatabase:(id)a5;
-- (FeatureApplicationInvitationDetails)initWithFeatureApplicationInvitationDetails:(id)a3 forApplicationPID:(id)a4 inDatabase:(id)a5;
++ (id)_propertyValuesForFeatureApplicationInvitationDetails:(id)details;
++ (id)featureApplicationInvitationDetailsForApplicationPID:(id)d inDatabase:(id)database;
++ (id)insertFeatureApplicationInvitationDetails:(id)details forApplicationPID:(id)d inDatabase:(id)database;
++ (void)deleteFeatureApplicationInvitationDetailsForApplicationPID:(id)d inDatabase:(id)database;
++ (void)updateFeatureApplicationInvitationDetails:(id)details forApplicationPID:(id)d inDatabase:(id)database;
+- (FeatureApplicationInvitationDetails)initWithFeatureApplicationInvitationDetails:(id)details forApplicationPID:(id)d inDatabase:(id)database;
 - (id)featureApplicationInvitationDetails;
-- (void)updateWithFeatureApplicationInvitationDetails:(id)a3;
+- (void)updateWithFeatureApplicationInvitationDetails:(id)details;
 @end
 
 @implementation FeatureApplicationInvitationDetails
 
-- (FeatureApplicationInvitationDetails)initWithFeatureApplicationInvitationDetails:(id)a3 forApplicationPID:(id)a4 inDatabase:(id)a5
+- (FeatureApplicationInvitationDetails)initWithFeatureApplicationInvitationDetails:(id)details forApplicationPID:(id)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _propertyValuesForFeatureApplicationInvitationDetails:v10];
+  databaseCopy = database;
+  dCopy = d;
+  detailsCopy = details;
+  v11 = [objc_opt_class() _propertyValuesForFeatureApplicationInvitationDetails:detailsCopy];
 
   v12 = [v11 mutableCopy];
-  [v12 setObjectOrNull:v9 forKey:@"a"];
+  [v12 setObjectOrNull:dCopy forKey:@"a"];
 
-  v13 = [(SQLiteEntity *)self initWithPropertyValues:v12 inDatabase:v8];
+  v13 = [(SQLiteEntity *)self initWithPropertyValues:v12 inDatabase:databaseCopy];
   return v13;
 }
 
-+ (id)insertFeatureApplicationInvitationDetails:(id)a3 forApplicationPID:(id)a4 inDatabase:(id)a5
++ (id)insertFeatureApplicationInvitationDetails:(id)details forApplicationPID:(id)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithFeatureApplicationInvitationDetails:v10 forApplicationPID:v9 inDatabase:v8];
+  databaseCopy = database;
+  dCopy = d;
+  detailsCopy = details;
+  v11 = [[self alloc] initWithFeatureApplicationInvitationDetails:detailsCopy forApplicationPID:dCopy inDatabase:databaseCopy];
 
   return v11;
 }
 
-+ (void)deleteFeatureApplicationInvitationDetailsForApplicationPID:(id)a3 inDatabase:(id)a4
++ (void)deleteFeatureApplicationInvitationDetailsForApplicationPID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForApplicationPID:a3];
-  v7 = [a1 anyInDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForApplicationPID:d];
+  v7 = [self anyInDatabase:databaseCopy predicate:v8];
 
   [v7 deleteFromDatabase];
 }
 
-+ (id)featureApplicationInvitationDetailsForApplicationPID:(id)a3 inDatabase:(id)a4
++ (id)featureApplicationInvitationDetailsForApplicationPID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForApplicationPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForApplicationPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 featureApplicationInvitationDetails];
+  featureApplicationInvitationDetails = [v8 featureApplicationInvitationDetails];
 
-  return v9;
+  return featureApplicationInvitationDetails;
 }
 
-+ (void)updateFeatureApplicationInvitationDetails:(id)a3 forApplicationPID:(id)a4 inDatabase:(id)a5
++ (void)updateFeatureApplicationInvitationDetails:(id)details forApplicationPID:(id)d inDatabase:(id)database
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 _predicateForApplicationPID:v8];
-  v11 = [a1 anyInDatabase:v9 predicate:v10];
+  detailsCopy = details;
+  dCopy = d;
+  databaseCopy = database;
+  v10 = [self _predicateForApplicationPID:dCopy];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (v11)
   {
-    [v11 updateWithFeatureApplicationInvitationDetails:v13];
+    [v11 updateWithFeatureApplicationInvitationDetails:detailsCopy];
   }
 
   else
   {
-    v12 = [a1 insertFeatureApplicationInvitationDetails:v13 forApplicationPID:v8 inDatabase:v9];
+    v12 = [self insertFeatureApplicationInvitationDetails:detailsCopy forApplicationPID:dCopy inDatabase:databaseCopy];
   }
 }
 
-- (void)updateWithFeatureApplicationInvitationDetails:(id)a3
+- (void)updateWithFeatureApplicationInvitationDetails:(id)details
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _propertyValuesForFeatureApplicationInvitationDetails:v4];
+  detailsCopy = details;
+  v5 = [objc_opt_class() _propertyValuesForFeatureApplicationInvitationDetails:detailsCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (id)_propertyValuesForFeatureApplicationInvitationDetails:(id)a3
++ (id)_propertyValuesForFeatureApplicationInvitationDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 accountUserAltDSID];
-  [v4 setObjectOrNull:v5 forKey:@"b"];
+  accountUserAltDSID = [detailsCopy accountUserAltDSID];
+  [v4 setObjectOrNull:accountUserAltDSID forKey:@"b"];
 
-  v6 = [v3 originatorAltDSID];
-  [v4 setObjectOrNull:v6 forKey:@"c"];
+  originatorAltDSID = [detailsCopy originatorAltDSID];
+  [v4 setObjectOrNull:originatorAltDSID forKey:@"c"];
 
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 accountUserAccessLevel]);
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [detailsCopy accountUserAccessLevel]);
   [v4 setObjectOrNull:v7 forKey:@"d"];
 
-  v8 = [v3 originatorFirstName];
-  [v4 setObjectOrNull:v8 forKey:@"e"];
+  originatorFirstName = [detailsCopy originatorFirstName];
+  [v4 setObjectOrNull:originatorFirstName forKey:@"e"];
 
-  v9 = [v3 originatorLastName];
-  [v4 setObjectOrNull:v9 forKey:@"f"];
+  originatorLastName = [detailsCopy originatorLastName];
+  [v4 setObjectOrNull:originatorLastName forKey:@"f"];
 
-  v10 = [v3 accountUserFirstName];
-  [v4 setObjectOrNull:v10 forKey:@"g"];
+  accountUserFirstName = [detailsCopy accountUserFirstName];
+  [v4 setObjectOrNull:accountUserFirstName forKey:@"g"];
 
-  v11 = [v3 accountUserLastName];
+  accountUserLastName = [detailsCopy accountUserLastName];
 
-  [v4 setObjectOrNull:v11 forKey:@"h"];
+  [v4 setObjectOrNull:accountUserLastName forKey:@"h"];
   v12 = [v4 copy];
 
   return v12;
@@ -137,18 +137,18 @@
 - (id)featureApplicationInvitationDetails
 {
   v3 = objc_alloc_init(PKFeatureApplicationInvitationDetails);
-  v4 = [objc_opt_class() _propertySettersForFeatureApplicationInvitationDetails];
-  v5 = [v4 allKeys];
+  _propertySettersForFeatureApplicationInvitationDetails = [objc_opt_class() _propertySettersForFeatureApplicationInvitationDetails];
+  allKeys = [_propertySettersForFeatureApplicationInvitationDetails allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10009E03C;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForFeatureApplicationInvitationDetails;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForFeatureApplicationInvitationDetails;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

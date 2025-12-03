@@ -1,6 +1,6 @@
 @interface CIImageProcessorOutput
 - (CGColorSpace)workingColorSpace;
-- (CIImageProcessorOutput)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 onlyMetal:(BOOL)a8 context:(void *)a9 tileTask:(void *)a10;
+- (CIImageProcessorOutput)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds onlyMetal:(BOOL)metal context:(void *)context tileTask:(void *)self0;
 - (MTLCommandBuffer)metalCommandBuffer;
 - (MTLTexture)metalTexture;
 - (__IOSurface)surface;
@@ -9,27 +9,27 @@
 - (void)baseAddress;
 - (void)dealloc;
 - (void)metalTexture;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation CIImageProcessorOutput
 
-- (CIImageProcessorOutput)initWithSurface:(__IOSurface *)a3 texture:(void *)a4 digest:(unint64_t)a5 allowSRGB:(BOOL)a6 bounds:(CGRect)a7 onlyMetal:(BOOL)a8 context:(void *)a9 tileTask:(void *)a10
+- (CIImageProcessorOutput)initWithSurface:(__IOSurface *)surface texture:(void *)texture digest:(unint64_t)digest allowSRGB:(BOOL)b bounds:(CGRect)bounds onlyMetal:(BOOL)metal context:(void *)context tileTask:(void *)self0
 {
-  if (a3 | a4)
+  if (surface | texture)
   {
     v22.receiver = self;
     v22.super_class = CIImageProcessorOutput;
-    v19 = [CIImageProcessorInOut initWithSurface:sel_initWithSurface_texture_digest_allowSRGB_bounds_onlyMetal_context_ texture:a7.origin.x digest:a7.origin.y allowSRGB:a7.size.width bounds:a7.size.height onlyMetal:? context:?];
+    v19 = [CIImageProcessorInOut initWithSurface:sel_initWithSurface_texture_digest_allowSRGB_bounds_onlyMetal_context_ texture:bounds.origin.x digest:bounds.origin.y allowSRGB:bounds.size.width bounds:bounds.size.height onlyMetal:? context:?];
     if (v19)
     {
-      v20 = a10;
-      if (a10)
+      taskCopy = task;
+      if (task)
       {
-        v20 = CI::Object::ref(a10);
+        taskCopy = CI::Object::ref(task);
       }
 
-      v19->_task = v20;
+      v19->_task = taskCopy;
     }
   }
 
@@ -189,11 +189,11 @@ LABEL_8:
   }
 
   v6 = (*(*context + 16))(context);
-  v7 = [(CIImageProcessorInOut *)self device];
+  device = [(CIImageProcessorInOut *)self device];
   if (v6 != 84)
   {
     {
-      v18 = v7;
+      v18 = device;
       {
         singletonMTLCommandQueue(objc_object  {objcproto9MTLDevice}*)::commandQueue = CIMetalCommandQueueCreate("com.apple.CoreImage", v18);
       }
@@ -203,7 +203,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = CIMetalCommandQueueCreate("com.apple.CoreImage", v7);
+  v8 = CIMetalCommandQueueCreate("com.apple.CoreImage", device);
   self->_cmdBuffer = CIMetalCommandBufferCreate("com.apple.CoreImage", v8, 0, 0);
   CFRelease(v8);
   cmdBuffer = self->_cmdBuffer;
@@ -278,14 +278,14 @@ LABEL_9:
   return metalContext;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  if (a3)
+  if (error)
   {
     task = self->_task;
     if (task)
     {
-      CI::TileTask::setCommandBufferError(task, a3);
+      CI::TileTask::setCommandBufferError(task, error);
     }
   }
 }

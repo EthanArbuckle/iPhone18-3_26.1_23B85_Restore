@@ -1,8 +1,8 @@
 @interface AASettingsTelemetry
 + (id)sharedInstance;
 - (AASettingsTelemetry)init;
-- (void)_sendSettingsChanges:(id)a3 device:(id)a4;
-- (void)sendSettingsChanges:(id)a3 device:(id)a4;
+- (void)_sendSettingsChanges:(id)changes device:(id)device;
+- (void)sendSettingsChanges:(id)changes device:(id)device;
 @end
 
 @implementation AASettingsTelemetry
@@ -46,102 +46,102 @@ uint64_t __37__AASettingsTelemetry_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)sendSettingsChanges:(id)a3 device:(id)a4
+- (void)sendSettingsChanges:(id)changes device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__AASettingsTelemetry_sendSettingsChanges_device___block_invoke;
   block[3] = &unk_278CDDDF0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changesCopy;
+  v13 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = changesCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_sendSettingsChanges:(id)a3 device:(id)a4
+- (void)_sendSettingsChanges:(id)changes device:(id)device
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && v6)
+  changesCopy = changes;
+  deviceCopy = device;
+  if (changesCopy && deviceCopy)
   {
-    if ([v7 acceptReplyPlayPauseConfig])
+    if ([changesCopy acceptReplyPlayPauseConfig])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 acceptReplyPlayPauseConfig], @"HeadGesturesAccept", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy acceptReplyPlayPauseConfig], @"HeadGesturesAccept", deviceCopy);
     }
 
-    if ([v7 allowTemporaryManagedPairing])
+    if ([changesCopy allowTemporaryManagedPairing])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 allowTemporaryManagedPairing], @"TemporaryManagedPairing", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy allowTemporaryManagedPairing], @"TemporaryManagedPairing", deviceCopy);
     }
 
-    if ([v7 autoANCStrength])
+    if ([changesCopy autoANCStrength])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 autoANCStrength], @"AdaptiveTransparency", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy autoANCStrength], @"AdaptiveTransparency", deviceCopy);
     }
 
-    if ([v7 changeDynamicEndOfChargeState])
+    if ([changesCopy changeDynamicEndOfChargeState])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 changeDynamicEndOfChargeState], @"BatteryDEOC", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy changeDynamicEndOfChargeState], @"BatteryDEOC", deviceCopy);
     }
 
-    if ([v7 changeOptimizedBatteryChargingState])
+    if ([changesCopy changeOptimizedBatteryChargingState])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 changeOptimizedBatteryChargingState], @"BatteryOBC", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy changeOptimizedBatteryChargingState], @"BatteryOBC", deviceCopy);
     }
 
-    if ([v7 declineDismissSkipConfig])
+    if ([changesCopy declineDismissSkipConfig])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 declineDismissSkipConfig], @"HeadGesturesDecline", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy declineDismissSkipConfig], @"HeadGesturesDecline", deviceCopy);
     }
 
-    if ([v7 enableChargingReminder])
+    if ([changesCopy enableChargingReminder])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 enableChargingReminder], @"BatteryChargingReminder", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enableChargingReminder], @"BatteryChargingReminder", deviceCopy);
     }
 
-    if ([v7 enableHearingAidGainSwipe])
+    if ([changesCopy enableHearingAidGainSwipe])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 enableHearingAidGainSwipe], @"HearingAidGainSwipe", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enableHearingAidGainSwipe], @"HearingAidGainSwipe", deviceCopy);
     }
 
-    if ([v7 enableHearingProtectionPPE])
+    if ([changesCopy enableHearingProtectionPPE])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 enableHearingProtectionPPE], @"HearingProtectionPPE", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enableHearingProtectionPPE], @"HearingProtectionPPE", deviceCopy);
     }
 
-    if ([v7 allowHealthKitDataWrite])
+    if ([changesCopy allowHealthKitDataWrite])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 allowHealthKitDataWrite], @"HeartRate", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy allowHealthKitDataWrite], @"HeartRate", deviceCopy);
     }
 
-    if ([v7 enableSleepDetection])
+    if ([changesCopy enableSleepDetection])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 enableSleepDetection], @"PauseMediaWhenSleep", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enableSleepDetection], @"PauseMediaWhenSleep", deviceCopy);
     }
 
-    if ([v7 headGestureToggle])
+    if ([changesCopy headGestureToggle])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 headGestureToggle], @"HeadGestureToggle", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy headGestureToggle], @"HeadGestureToggle", deviceCopy);
     }
 
-    if ([v7 hearingAidEnrolled])
+    if ([changesCopy hearingAidEnrolled])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 hearingAidEnrolled], @"HearingAidEnrolled", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy hearingAidEnrolled], @"HearingAidEnrolled", deviceCopy);
     }
 
-    if ([v7 hearingAidToggle])
+    if ([changesCopy hearingAidToggle])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 hearingAidToggle], @"HearingAidToggle", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy hearingAidToggle], @"HearingAidToggle", deviceCopy);
     }
 
-    if ([v7 remoteCameraControlConfig])
+    if ([changesCopy remoteCameraControlConfig])
     {
-      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v7 remoteCameraControlConfig], @"CameraControl", v6);
+      -[AASettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy remoteCameraControlConfig], @"CameraControl", deviceCopy);
     }
   }
 

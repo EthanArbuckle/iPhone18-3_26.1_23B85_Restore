@@ -1,14 +1,14 @@
 @interface SYRejectedVersion
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)supportedVersionsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)supportedVersionsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYRejectedVersion
@@ -21,20 +21,20 @@
   [(SYRejectedVersion *)&v3 dealloc];
 }
 
-- (unsigned)supportedVersionsAtIndex:(unint64_t)a3
+- (unsigned)supportedVersionsAtIndex:(unint64_t)index
 {
   p_supportedVersions = &self->_supportedVersions;
   count = self->_supportedVersions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_supportedVersions->list[a3];
+  return p_supportedVersions->list[index];
 }
 
 - (id)description
@@ -43,43 +43,43 @@
   v8.receiver = self;
   v8.super_class = SYRejectedVersion;
   v4 = [(SYRejectedVersion *)&v8 description];
-  v5 = [(SYRejectedVersion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYRejectedVersion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   inReplyTo = self->_inReplyTo;
   if (inReplyTo)
   {
-    [v3 setObject:inReplyTo forKey:@"inReplyTo"];
+    [dictionary setObject:inReplyTo forKey:@"inReplyTo"];
   }
 
   v7 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v7 forKey:@"supportedVersions"];
+  [dictionary setObject:v7 forKey:@"supportedVersions"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYRejectedVersion writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteSubmessage();
   if (!self->_inReplyTo)
   {
@@ -102,34 +102,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
-  [v7 setHeader:self->_header];
-  [v7 setInReplyTo:self->_inReplyTo];
+  toCopy = to;
+  [toCopy setHeader:self->_header];
+  [toCopy setInReplyTo:self->_inReplyTo];
   if ([(SYRejectedVersion *)self supportedVersionsCount])
   {
-    [v7 clearSupportedVersions];
-    v4 = [(SYRejectedVersion *)self supportedVersionsCount];
-    if (v4)
+    [toCopy clearSupportedVersions];
+    supportedVersionsCount = [(SYRejectedVersion *)self supportedVersionsCount];
+    if (supportedVersionsCount)
     {
-      v5 = v4;
+      v5 = supportedVersionsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addSupportedVersions:{-[SYRejectedVersion supportedVersionsAtIndex:](self, "supportedVersionsAtIndex:", i)}];
+        [toCopy addSupportedVersions:{-[SYRejectedVersion supportedVersionsAtIndex:](self, "supportedVersionsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_inReplyTo copyWithZone:a3];
+  v8 = [(NSString *)self->_inReplyTo copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -137,10 +137,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[4])) || -[SYMessageHeader isEqual:](header, "isEqual:")) && ((inReplyTo = self->_inReplyTo, !(inReplyTo | v4[5])) || -[NSString isEqual:](inReplyTo, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[4])) || -[SYMessageHeader isEqual:](header, "isEqual:")) && ((inReplyTo = self->_inReplyTo, !(inReplyTo | equalCopy[5])) || -[NSString isEqual:](inReplyTo, "isEqual:")))
   {
     IsEqual = PBRepeatedUInt32IsEqual();
   }
@@ -160,12 +160,12 @@
   return v4 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = v4[4];
-  v10 = v4;
+  v6 = fromCopy[4];
+  v10 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -186,18 +186,18 @@
     [(SYRejectedVersion *)self setHeader:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(SYRejectedVersion *)self setInReplyTo:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v7 = [v4 supportedVersionsCount];
-  if (v7)
+  supportedVersionsCount = [fromCopy supportedVersionsCount];
+  if (supportedVersionsCount)
   {
-    v8 = v7;
+    v8 = supportedVersionsCount;
     for (i = 0; i != v8; ++i)
     {
       -[SYRejectedVersion addSupportedVersions:](self, "addSupportedVersions:", [v10 supportedVersionsAtIndex:i]);

@@ -1,53 +1,53 @@
 @interface VFXREDrawCallContextImpl
-- (BOOL)constantOffsetAndSize:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
+- (BOOL)constantOffsetAndSize:(int)size :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
 - (BOOL)depthOnly;
 - (BOOL)enableClipping;
 - (BOOL)isDrawingDepthOnly;
 - (BOOL)useDitherFade;
 - (VFXRenderTargetInfo)renderTargetInfo;
 - (VFXStencilInfo)stencilInfo;
-- (const)constantData:(int)a3;
+- (const)constantData:(int)data;
 - (id).cxx_construct;
-- (id)buffer:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
-- (id)texture:(int)a3 :(id)a4;
+- (id)buffer:(int)buffer :(id)a4 :(int64_t *)a5 :(int64_t *)a6;
+- (id)texture:(int)texture :(id)a4;
 - (int)portalClippingMode;
 - (int)renderPassOptions;
 - (int)systemTreatmentsRenderOptions;
 - (int64_t)statsDrawcallCount;
 - (int64_t)statsPrimitiveCount;
 - (int64_t)statsVertexCount;
-- (void)setLateLatchingPatchHandler:(id)a3;
-- (void)setStatsDrawcallCount:(int64_t)a3;
-- (void)setStatsPrimitiveCount:(int64_t)a3;
-- (void)setStatsVertexCount:(int64_t)a3;
-- (void)set_stencilInfo:(StencilInfo *)a3;
+- (void)setLateLatchingPatchHandler:(id)handler;
+- (void)setStatsDrawcallCount:(int64_t)count;
+- (void)setStatsPrimitiveCount:(int64_t)count;
+- (void)setStatsVertexCount:(int64_t)count;
+- (void)set_stencilInfo:(StencilInfo *)info;
 @end
 
 @implementation VFXREDrawCallContextImpl
 
-- (id)texture:(int)a3 :(id)a4
+- (id)texture:(int)texture :(id)a4
 {
   v6 = a4;
-  v7 = [(VFXREDrawCallContextImpl *)self _textureTable];
-  v8 = v7;
+  _textureTable = [(VFXREDrawCallContextImpl *)self _textureTable];
+  v8 = _textureTable;
   var10 = 0;
-  if (a3 > 3)
+  if (texture > 3)
   {
-    if (a3 > 5)
+    if (texture > 5)
     {
-      if (a3 == 6)
+      if (texture == 6)
       {
-        var9 = v7->var0.var0.var9;
-        v51 = [v6 UTF8String];
-        if (v51)
+        var9 = _textureTable->var0.var0.var9;
+        uTF8String = [v6 UTF8String];
+        if (uTF8String)
         {
-          v52 = *v51;
-          if (*v51)
+          v52 = *uTF8String;
+          if (*uTF8String)
           {
-            v53 = v51[1];
+            v53 = uTF8String[1];
             if (v53)
             {
-              v54 = (v51 + 2);
+              v54 = (uTF8String + 2);
               do
               {
                 v52 = 31 * v52 + v53;
@@ -78,27 +78,27 @@
         goto LABEL_86;
       }
 
-      if (a3 != 7)
+      if (texture != 7)
       {
         goto LABEL_87;
       }
 
-      var10 = v7->var0.var0.var10;
+      var10 = _textureTable->var0.var0.var10;
       if (!var10)
       {
         goto LABEL_87;
       }
 
-      v27 = [v6 UTF8String];
-      if (v27)
+      uTF8String2 = [v6 UTF8String];
+      if (uTF8String2)
       {
-        v28 = *v27;
-        if (*v27)
+        v28 = *uTF8String2;
+        if (*uTF8String2)
         {
-          v29 = v27[1];
+          v29 = uTF8String2[1];
           if (v29)
           {
-            v30 = (v27 + 2);
+            v30 = (uTF8String2 + 2);
             do
             {
               v28 = 31 * v28 + v29;
@@ -130,19 +130,19 @@
 
     else
     {
-      if (a3 == 4)
+      if (texture == 4)
       {
-        var4 = v7->var0.var0.var4;
-        v39 = [v6 UTF8String];
-        if (v39)
+        var4 = _textureTable->var0.var0.var4;
+        uTF8String3 = [v6 UTF8String];
+        if (uTF8String3)
         {
-          v40 = *v39;
-          if (*v39)
+          v40 = *uTF8String3;
+          if (*uTF8String3)
           {
-            v41 = v39[1];
+            v41 = uTF8String3[1];
             if (v41)
             {
-              v42 = (v39 + 2);
+              v42 = (uTF8String3 + 2);
               do
               {
                 v40 = 31 * v40 + v41;
@@ -173,22 +173,22 @@
         goto LABEL_86;
       }
 
-      var10 = v7->var0.var0.var5;
+      var10 = _textureTable->var0.var0.var5;
       if (!var10)
       {
         goto LABEL_87;
       }
 
-      v16 = [v6 UTF8String];
-      if (v16)
+      uTF8String4 = [v6 UTF8String];
+      if (uTF8String4)
       {
-        v17 = *v16;
-        if (*v16)
+        v17 = *uTF8String4;
+        if (*uTF8String4)
         {
-          v18 = v16[1];
+          v18 = uTF8String4[1];
           if (v18)
           {
-            v19 = (v16 + 2);
+            v19 = (uTF8String4 + 2);
             do
             {
               v17 = 31 * v17 + v18;
@@ -221,26 +221,26 @@
 
   else
   {
-    if (a3 <= 1)
+    if (texture <= 1)
     {
-      if (a3)
+      if (texture)
       {
-        if (a3 != 1)
+        if (texture != 1)
         {
           goto LABEL_87;
         }
 
-        var1 = v7->var0.var0.var1;
-        v11 = [v6 UTF8String];
-        if (v11)
+        var1 = _textureTable->var0.var0.var1;
+        uTF8String5 = [v6 UTF8String];
+        if (uTF8String5)
         {
-          v12 = *v11;
-          if (*v11)
+          v12 = *uTF8String5;
+          if (*uTF8String5)
           {
-            v13 = v11[1];
+            v13 = uTF8String5[1];
             if (v13)
             {
-              v14 = (v11 + 2);
+              v14 = (uTF8String5 + 2);
               do
               {
                 v12 = 31 * v12 + v13;
@@ -271,17 +271,17 @@
 
       else
       {
-        var0 = v7->var0.var0.var0;
-        v33 = [v6 UTF8String];
-        if (v33)
+        var0 = _textureTable->var0.var0.var0;
+        uTF8String6 = [v6 UTF8String];
+        if (uTF8String6)
         {
-          v34 = *v33;
-          if (*v33)
+          v34 = *uTF8String6;
+          if (*uTF8String6)
           {
-            v35 = v33[1];
+            v35 = uTF8String6[1];
             if (v35)
             {
-              v36 = (v33 + 2);
+              v36 = (uTF8String6 + 2);
               do
               {
                 v34 = 31 * v34 + v35;
@@ -315,19 +315,19 @@ LABEL_86:
       goto LABEL_87;
     }
 
-    if (a3 == 2)
+    if (texture == 2)
     {
-      var2 = v7->var0.var0.var2;
-      v45 = [v6 UTF8String];
-      if (v45)
+      var2 = _textureTable->var0.var0.var2;
+      uTF8String7 = [v6 UTF8String];
+      if (uTF8String7)
       {
-        v46 = *v45;
-        if (*v45)
+        v46 = *uTF8String7;
+        if (*uTF8String7)
         {
-          v47 = v45[1];
+          v47 = uTF8String7[1];
           if (v47)
           {
-            v48 = (v45 + 2);
+            v48 = (uTF8String7 + 2);
             do
             {
               v46 = 31 * v46 + v47;
@@ -358,17 +358,17 @@ LABEL_86:
       goto LABEL_86;
     }
 
-    var3 = v7->var0.var0.var3;
-    v22 = [v6 UTF8String];
-    if (v22)
+    var3 = _textureTable->var0.var0.var3;
+    uTF8String8 = [v6 UTF8String];
+    if (uTF8String8)
     {
-      v23 = *v22;
-      if (*v22)
+      v23 = *uTF8String8;
+      if (*uTF8String8)
       {
-        v24 = v22[1];
+        v24 = uTF8String8[1];
         if (v24)
         {
-          v25 = (v22 + 2);
+          v25 = (uTF8String8 + 2);
           do
           {
             v23 = 31 * v23 + v24;
@@ -411,32 +411,32 @@ LABEL_87:
   return var10;
 }
 
-- (id)buffer:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6
+- (id)buffer:(int)buffer :(id)a4 :(int64_t *)a5 :(int64_t *)a6
 {
   v10 = a4;
-  v11 = [(VFXREDrawCallContextImpl *)self _bufferTable];
-  if (a3 > 7)
+  _bufferTable = [(VFXREDrawCallContextImpl *)self _bufferTable];
+  if (buffer > 7)
   {
     goto LABEL_12;
   }
 
-  v12 = v11 + qword_1E30A1F80[a3];
+  v12 = _bufferTable + qword_1E30A1F80[buffer];
   v13 = *(v12 + 40);
   if (!v13)
   {
     goto LABEL_12;
   }
 
-  v14 = [v10 UTF8String];
-  if (v14)
+  uTF8String = [v10 UTF8String];
+  if (uTF8String)
   {
-    v15 = *v14;
-    if (*v14)
+    v15 = *uTF8String;
+    if (*uTF8String)
     {
-      v16 = v14[1];
+      v16 = uTF8String[1];
       if (v16)
       {
-        v17 = (v14 + 2);
+        v17 = (uTF8String + 2);
         do
         {
           v15 = 31 * v15 + v16;
@@ -476,71 +476,71 @@ LABEL_12:
   return v20;
 }
 
-- (const)constantData:(int)a3
+- (const)constantData:(int)data
 {
-  if (a3 <= 7)
+  if (data <= 7)
   {
-    if (a3 == 1)
+    if (data == 1)
     {
-      v3 = [(VFXREDrawCallContextImpl *)self _constantTable];
+      _constantTable = [(VFXREDrawCallContextImpl *)self _constantTable];
       goto LABEL_12;
     }
 
-    if (a3 == 5)
+    if (data == 5)
     {
-      v3 = [(VFXREDrawCallContextImpl *)self _constantTable]+ 48;
+      _constantTable = [(VFXREDrawCallContextImpl *)self _constantTable]+ 48;
       goto LABEL_12;
     }
 
     return 0;
   }
 
-  if (a3 == 8)
+  if (data == 8)
   {
-    v3 = [(VFXREDrawCallContextImpl *)self _constantTable]+ 8;
+    _constantTable = [(VFXREDrawCallContextImpl *)self _constantTable]+ 8;
     goto LABEL_12;
   }
 
-  if (a3 == 9)
+  if (data == 9)
   {
-    v3 = [(VFXREDrawCallContextImpl *)self _constantTable]+ 16;
+    _constantTable = [(VFXREDrawCallContextImpl *)self _constantTable]+ 16;
     goto LABEL_12;
   }
 
-  if (a3 != 10)
+  if (data != 10)
   {
     return 0;
   }
 
-  v3 = [(VFXREDrawCallContextImpl *)self _constantTable]+ 24;
+  _constantTable = [(VFXREDrawCallContextImpl *)self _constantTable]+ 24;
 LABEL_12:
-  v4 = *(**v3 + 16);
+  v4 = *(**_constantTable + 16);
 
   return v4();
 }
 
-- (BOOL)constantOffsetAndSize:(int)a3 :(id)a4 :(int64_t *)a5 :(int64_t *)a6
+- (BOOL)constantOffsetAndSize:(int)size :(id)a4 :(int64_t *)a5 :(int64_t *)a6
 {
   v10 = a4;
   v11 = 0;
-  if (a3 <= 7)
+  if (size <= 7)
   {
-    if (a3 == 1)
+    if (size == 1)
     {
       v12 = *[(VFXREDrawCallContextImpl *)self _constantTable];
-      v30 = [v10 UTF8String];
-      if (v30)
+      uTF8String = [v10 UTF8String];
+      if (uTF8String)
       {
-        v14 = *v30;
-        if (!*v30)
+        v14 = *uTF8String;
+        if (!*uTF8String)
         {
           goto LABEL_38;
         }
 
-        v31 = v30[1];
+        v31 = uTF8String[1];
         if (v31)
         {
-          v32 = (v30 + 2);
+          v32 = (uTF8String + 2);
           do
           {
             v14 = 31 * v14 + v31;
@@ -557,25 +557,25 @@ LABEL_12:
 
     else
     {
-      if (a3 != 5)
+      if (size != 5)
       {
         goto LABEL_41;
       }
 
       v12 = *([(VFXREDrawCallContextImpl *)self _constantTable]+ 48);
-      v18 = [v10 UTF8String];
-      if (v18)
+      uTF8String2 = [v10 UTF8String];
+      if (uTF8String2)
       {
-        v14 = *v18;
-        if (!*v18)
+        v14 = *uTF8String2;
+        if (!*uTF8String2)
         {
           goto LABEL_38;
         }
 
-        v19 = v18[1];
+        v19 = uTF8String2[1];
         if (v19)
         {
-          v20 = (v18 + 2);
+          v20 = (uTF8String2 + 2);
           do
           {
             v14 = 31 * v14 + v19;
@@ -593,23 +593,23 @@ LABEL_12:
 
   else
   {
-    switch(a3)
+    switch(size)
     {
       case 8:
         v12 = *([(VFXREDrawCallContextImpl *)self _constantTable]+ 8);
-        v22 = [v10 UTF8String];
-        if (v22)
+        uTF8String3 = [v10 UTF8String];
+        if (uTF8String3)
         {
-          v14 = *v22;
-          if (!*v22)
+          v14 = *uTF8String3;
+          if (!*uTF8String3)
           {
             goto LABEL_38;
           }
 
-          v23 = v22[1];
+          v23 = uTF8String3[1];
           if (v23)
           {
-            v24 = (v22 + 2);
+            v24 = (uTF8String3 + 2);
             do
             {
               v14 = 31 * v14 + v23;
@@ -626,19 +626,19 @@ LABEL_12:
         break;
       case 9:
         v12 = *([(VFXREDrawCallContextImpl *)self _constantTable]+ 16);
-        v26 = [v10 UTF8String];
-        if (v26)
+        uTF8String4 = [v10 UTF8String];
+        if (uTF8String4)
         {
-          v14 = *v26;
-          if (!*v26)
+          v14 = *uTF8String4;
+          if (!*uTF8String4)
           {
             goto LABEL_38;
           }
 
-          v27 = v26[1];
+          v27 = uTF8String4[1];
           if (v27)
           {
-            v28 = (v26 + 2);
+            v28 = (uTF8String4 + 2);
             do
             {
               v14 = 31 * v14 + v27;
@@ -655,19 +655,19 @@ LABEL_12:
         break;
       case 10:
         v12 = *([(VFXREDrawCallContextImpl *)self _constantTable]+ 24);
-        v13 = [v10 UTF8String];
-        if (v13)
+        uTF8String5 = [v10 UTF8String];
+        if (uTF8String5)
         {
-          v14 = *v13;
-          if (!*v13)
+          v14 = *uTF8String5;
+          if (!*uTF8String5)
           {
             goto LABEL_38;
           }
 
-          v15 = v13[1];
+          v15 = uTF8String5[1];
           if (v15)
           {
-            v16 = (v13 + 2);
+            v16 = (uTF8String5 + 2);
             do
             {
               v14 = 31 * v14 + v15;
@@ -710,12 +710,12 @@ LABEL_41:
   return v11;
 }
 
-- (void)setLateLatchingPatchHandler:(id)a3
+- (void)setLateLatchingPatchHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(VFXREDrawCallContextImpl *)self _patchHandler])
   {
-    re::PatchHandler::setHandler([(VFXREDrawCallContextImpl *)self _patchHandler], v4);
+    re::PatchHandler::setHandler([(VFXREDrawCallContextImpl *)self _patchHandler], handlerCopy);
   }
 }
 
@@ -785,24 +785,24 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
 
 - (BOOL)useDitherFade
 {
-  v3 = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
-  if (v3)
+  _dynamicFunctionConstants = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
+  if (_dynamicFunctionConstants)
   {
-    LOWORD(v3) = *([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 88) & 1;
+    LOWORD(_dynamicFunctionConstants) = *([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 88) & 1;
   }
 
-  return v3;
+  return _dynamicFunctionConstants;
 }
 
 - (BOOL)enableClipping
 {
-  v3 = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
-  if (v3)
+  _dynamicFunctionConstants = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
+  if (_dynamicFunctionConstants)
   {
-    LODWORD(v3) = (*([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 88) >> 1) & 1;
+    LODWORD(_dynamicFunctionConstants) = (*([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 88) >> 1) & 1;
   }
 
-  return v3;
+  return _dynamicFunctionConstants;
 }
 
 - (int)renderPassOptions
@@ -840,18 +840,18 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
     return 0;
   }
 
-  v3 = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
-  v4 = (*(v3 + 44) >> 1) & 1 | (4 * (v3[11] & 1)) & 0xFFFFFFDF | (32 * ((*(v3 + 44) >> 2) & 1));
-  if (*v3)
+  _dynamicFunctionConstants = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
+  v4 = (*(_dynamicFunctionConstants + 44) >> 1) & 1 | (4 * (_dynamicFunctionConstants[11] & 1)) & 0xFFFFFFDF | (32 * ((*(_dynamicFunctionConstants + 44) >> 2) & 1));
+  if (*_dynamicFunctionConstants)
   {
   }
 
-  v5 = v3[1];
+  v5 = _dynamicFunctionConstants[1];
   if (v5)
   {
   }
 
-  v6 = v3[2];
+  v6 = _dynamicFunctionConstants[2];
   if (v6)
   {
   }
@@ -867,17 +867,17 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
     __cxa_guard_release(&qword_1EE1B8658);
   }
 
-  v3 = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
-  if (v3)
+  _dynamicFunctionConstants = [(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
+  if (_dynamicFunctionConstants)
   {
     v4 = *[(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants];
-    if ((!v4 || (v9 = qword_1EE1B8650, v3 = re::HashBrown<re::WeakStringID,re::IndexAndProtectionOptions,re::Hash<re::WeakStringID>,re::EqualTo<re::WeakStringID>,re::Hash<re::IndexAndProtectionOptions>,false>::find(v4, &v9), v3 == -1)) && ((v4 = *([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 8)) == 0 || (v9 = qword_1EE1B8650, v3 = re::HashBrown<re::WeakStringID,re::IndexAndProtectionOptions,re::Hash<re::WeakStringID>,re::EqualTo<re::WeakStringID>,re::Hash<re::IndexAndProtectionOptions>,false>::find(v4, &v9), v3 == -1)))
+    if ((!v4 || (v9 = qword_1EE1B8650, _dynamicFunctionConstants = re::HashBrown<re::WeakStringID,re::IndexAndProtectionOptions,re::Hash<re::WeakStringID>,re::EqualTo<re::WeakStringID>,re::Hash<re::IndexAndProtectionOptions>,false>::find(v4, &v9), _dynamicFunctionConstants == -1)) && ((v4 = *([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 8)) == 0 || (v9 = qword_1EE1B8650, _dynamicFunctionConstants = re::HashBrown<re::WeakStringID,re::IndexAndProtectionOptions,re::Hash<re::WeakStringID>,re::EqualTo<re::WeakStringID>,re::Hash<re::IndexAndProtectionOptions>,false>::find(v4, &v9), _dynamicFunctionConstants == -1)))
     {
       v6 = *([(VFXREDrawCallContextImpl *)self _dynamicFunctionConstants]+ 16);
-      if (!v6 || (v9 = qword_1EE1B8650, v3 = re::HashBrown<re::WeakStringID,re::IndexAndProtectionOptions,re::Hash<re::WeakStringID>,re::EqualTo<re::WeakStringID>,re::Hash<re::IndexAndProtectionOptions>,false>::find(v6, &v9), v3 == -1))
+      if (!v6 || (v9 = qword_1EE1B8650, _dynamicFunctionConstants = re::HashBrown<re::WeakStringID,re::IndexAndProtectionOptions,re::Hash<re::WeakStringID>,re::EqualTo<re::WeakStringID>,re::Hash<re::IndexAndProtectionOptions>,false>::find(v6, &v9), _dynamicFunctionConstants == -1))
       {
-        LODWORD(v3) = 0;
-        return v3;
+        LODWORD(_dynamicFunctionConstants) = 0;
+        return _dynamicFunctionConstants;
       }
 
       v5 = v6[1];
@@ -888,10 +888,10 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
       v5 = v4[1];
     }
 
-    LODWORD(v3) = *(v5 + 16 * v3 + 8);
+    LODWORD(_dynamicFunctionConstants) = *(v5 + 16 * _dynamicFunctionConstants + 8);
   }
 
-  return v3;
+  return _dynamicFunctionConstants;
 }
 
 - (BOOL)depthOnly
@@ -920,13 +920,13 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
   return result;
 }
 
-- (void)setStatsVertexCount:(int64_t)a3
+- (void)setStatsVertexCount:(int64_t)count
 {
-  v3 = a3;
-  v4 = [(VFXREDrawCallContextImpl *)self _meshStats];
-  if (v4)
+  countCopy = count;
+  _meshStats = [(VFXREDrawCallContextImpl *)self _meshStats];
+  if (_meshStats)
   {
-    v4->var16 = v3;
+    _meshStats->var16 = countCopy;
   }
 }
 
@@ -941,13 +941,13 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
   return result;
 }
 
-- (void)setStatsPrimitiveCount:(int64_t)a3
+- (void)setStatsPrimitiveCount:(int64_t)count
 {
-  v3 = a3;
-  v4 = [(VFXREDrawCallContextImpl *)self _meshStats];
-  if (v4)
+  countCopy = count;
+  _meshStats = [(VFXREDrawCallContextImpl *)self _meshStats];
+  if (_meshStats)
   {
-    v4->var15 = v3;
+    _meshStats->var15 = countCopy;
   }
 }
 
@@ -962,20 +962,20 @@ id __39__VFXREDrawCallContextImpl_stencilInfo__block_invoke(unsigned __int8 *a1)
   return result;
 }
 
-- (void)setStatsDrawcallCount:(int64_t)a3
+- (void)setStatsDrawcallCount:(int64_t)count
 {
-  v3 = a3;
-  v4 = [(VFXREDrawCallContextImpl *)self _meshStats];
-  if (v4)
+  countCopy = count;
+  _meshStats = [(VFXREDrawCallContextImpl *)self _meshStats];
+  if (_meshStats)
   {
-    v4->var14 = v3;
+    _meshStats->var14 = countCopy;
   }
 }
 
-- (void)set_stencilInfo:(StencilInfo *)a3
+- (void)set_stencilInfo:(StencilInfo *)info
 {
-  state = a3->state;
-  self->__stencilInfo.referenceValue = a3->referenceValue;
+  state = info->state;
+  self->__stencilInfo.referenceValue = info->referenceValue;
   self->__stencilInfo.state = state;
 }
 

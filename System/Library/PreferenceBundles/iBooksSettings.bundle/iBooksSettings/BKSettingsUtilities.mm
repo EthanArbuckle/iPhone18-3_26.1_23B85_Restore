@@ -1,66 +1,66 @@
 @interface BKSettingsUtilities
-+ (id)linkListPreferenceSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6 titles:(id)a7 values:(id)a8 readFromAppGroupContainer:(BOOL)a9;
-+ (id)linkListPreferenceSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6 titles:(id)a7 values:(id)a8 syncToWatch:(BOOL)a9;
-+ (id)standardButtonSpecifierNamed:(id)a3 target:(id)a4 selector:(SEL)a5;
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 readFromAppGroupContainer:(BOOL)a9 set:(SEL)a10 get:(SEL)a11;
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 readFromAppGroupContainer:(BOOL)a9 syncToWatch:(BOOL)a10;
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 syncToWatch:(BOOL)a9;
-+ (id)subtitleSwitchSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6;
++ (id)linkListPreferenceSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value titles:(id)titles values:(id)values readFromAppGroupContainer:(BOOL)container;
++ (id)linkListPreferenceSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value titles:(id)titles values:(id)values syncToWatch:(BOOL)watch;
++ (id)standardButtonSpecifierNamed:(id)named target:(id)target selector:(SEL)selector;
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value readFromAppGroupContainer:(BOOL)container set:(SEL)self0 get:(SEL)self1;
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value readFromAppGroupContainer:(BOOL)container syncToWatch:(BOOL)self0;
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value syncToWatch:(BOOL)watch;
++ (id)subtitleSwitchSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value;
 @end
 
 @implementation BKSettingsUtilities
 
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 syncToWatch:(BOOL)a9
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value syncToWatch:(BOOL)watch
 {
-  BYTE1(v10) = a9;
+  BYTE1(v10) = watch;
   LOBYTE(v10) = 0;
-  return [a1 standardPreferenceSpecifierNamed:a3 target:a4 cell:a5 detail:a6 keyName:a7 defaultValue:a8 readFromAppGroupContainer:v10 syncToWatch:?];
+  return [self standardPreferenceSpecifierNamed:named target:target cell:cell detail:detail keyName:name defaultValue:value readFromAppGroupContainer:v10 syncToWatch:?];
 }
 
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 readFromAppGroupContainer:(BOOL)a9 syncToWatch:(BOOL)a10
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value readFromAppGroupContainer:(BOOL)container syncToWatch:(BOOL)self0
 {
   v10 = &selRef_bk_setAndSyncPreferenceToWatch_specifier_;
-  if (!a10)
+  if (!watch)
   {
     v10 = &selRef_setPreferenceValue_specifier_;
   }
 
-  LOBYTE(v12) = a9;
-  return [a1 standardPreferenceSpecifierNamed:a3 target:a4 cell:a5 detail:a6 keyName:a7 defaultValue:a8 readFromAppGroupContainer:v12 set:*v10 get:"readPreferenceValue:"];
+  LOBYTE(v12) = container;
+  return [self standardPreferenceSpecifierNamed:named target:target cell:cell detail:detail keyName:name defaultValue:value readFromAppGroupContainer:v12 set:*v10 get:"readPreferenceValue:"];
 }
 
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 readFromAppGroupContainer:(BOOL)a9 set:(SEL)a10 get:(SEL)a11
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value readFromAppGroupContainer:(BOOL)container set:(SEL)self0 get:(SEL)self1
 {
-  if (a10)
+  if (set)
   {
-    v16 = a10;
+    setCopy = set;
   }
 
   else
   {
-    v16 = "setPreferenceValue:specifier:";
+    setCopy = "setPreferenceValue:specifier:";
   }
 
-  if (a11)
+  if (get)
   {
-    v17 = a11;
+    getCopy = get;
   }
 
   else
   {
-    v17 = "readPreferenceValue:";
+    getCopy = "readPreferenceValue:";
   }
 
-  v18 = a8;
-  v19 = a7;
-  v20 = [PSSpecifier preferenceSpecifierNamed:a3 target:a4 set:v16 get:v17 detail:a6 cell:a5 edit:0];
-  [v20 setObject:v19 forKeyedSubscript:PSKeyNameKey];
+  valueCopy = value;
+  nameCopy = name;
+  v20 = [PSSpecifier preferenceSpecifierNamed:named target:target set:setCopy get:getCopy detail:detail cell:cell edit:0];
+  [v20 setObject:nameCopy forKeyedSubscript:PSKeyNameKey];
 
-  [v20 setObject:v18 forKeyedSubscript:PSDefaultValueKey];
+  [v20 setObject:valueCopy forKeyedSubscript:PSDefaultValueKey];
   [v20 setObject:@"com.apple.iBooks" forKeyedSubscript:PSDefaultsKey];
   v21 = PSContainerBundleIDKey;
   [v20 setObject:@"com.apple.iBooks" forKeyedSubscript:PSContainerBundleIDKey];
-  if (a9)
+  if (container)
   {
     [v20 setObject:@"group.com.apple.iBooks" forKeyedSubscript:PSAppGroupBundleIDKey];
     [v20 setObject:@"group.com.apple.iBooks" forKeyedSubscript:v21];
@@ -69,51 +69,51 @@
   return v20;
 }
 
-+ (id)subtitleSwitchSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6
++ (id)subtitleSwitchSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value
 {
   LOBYTE(v8) = 0;
-  v6 = [a1 standardPreferenceSpecifierNamed:a3 target:a4 cell:6 detail:0 keyName:a5 defaultValue:a6 syncToWatch:v8];
+  v6 = [self standardPreferenceSpecifierNamed:named target:target cell:6 detail:0 keyName:name defaultValue:value syncToWatch:v8];
   [v6 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
 
   return v6;
 }
 
-+ (id)standardButtonSpecifierNamed:(id)a3 target:(id)a4 selector:(SEL)a5
++ (id)standardButtonSpecifierNamed:(id)named target:(id)target selector:(SEL)selector
 {
-  v6 = [PSSpecifier preferenceSpecifierNamed:a3 target:a4 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:13 edit:0];
-  [v6 setButtonAction:a5];
+  v6 = [PSSpecifier preferenceSpecifierNamed:named target:target set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:13 edit:0];
+  [v6 setButtonAction:selector];
 
   return v6;
 }
 
-+ (id)linkListPreferenceSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6 titles:(id)a7 values:(id)a8 syncToWatch:(BOOL)a9
++ (id)linkListPreferenceSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value titles:(id)titles values:(id)values syncToWatch:(BOOL)watch
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  LOBYTE(v23) = a9;
-  v21 = [a1 standardPreferenceSpecifierNamed:v20 target:v19 cell:2 detail:objc_opt_class() keyName:v18 defaultValue:v17 syncToWatch:v23];
+  valuesCopy = values;
+  titlesCopy = titles;
+  valueCopy = value;
+  nameCopy = name;
+  targetCopy = target;
+  namedCopy = named;
+  LOBYTE(v23) = watch;
+  v21 = [self standardPreferenceSpecifierNamed:namedCopy target:targetCopy cell:2 detail:objc_opt_class() keyName:nameCopy defaultValue:valueCopy syncToWatch:v23];
 
-  [v21 setValues:v15 titles:v16];
+  [v21 setValues:valuesCopy titles:titlesCopy];
 
   return v21;
 }
 
-+ (id)linkListPreferenceSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6 titles:(id)a7 values:(id)a8 readFromAppGroupContainer:(BOOL)a9
++ (id)linkListPreferenceSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value titles:(id)titles values:(id)values readFromAppGroupContainer:(BOOL)container
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  LOWORD(v23) = a9;
-  v21 = [a1 standardPreferenceSpecifierNamed:v20 target:v19 cell:2 detail:objc_opt_class() keyName:v18 defaultValue:v17 readFromAppGroupContainer:v23 syncToWatch:?];
+  valuesCopy = values;
+  titlesCopy = titles;
+  valueCopy = value;
+  nameCopy = name;
+  targetCopy = target;
+  namedCopy = named;
+  LOWORD(v23) = container;
+  v21 = [self standardPreferenceSpecifierNamed:namedCopy target:targetCopy cell:2 detail:objc_opt_class() keyName:nameCopy defaultValue:valueCopy readFromAppGroupContainer:v23 syncToWatch:?];
 
-  [v21 setValues:v15 titles:v16];
+  [v21 setValues:valuesCopy titles:titlesCopy];
 
   return v21;
 }

@@ -1,14 +1,14 @@
 @interface VKARWalkingFeature
-- (BOOL)isEqual:(id)a3;
-- (VKARWalkingFeature)initWithType:(int64_t)a3 intraFeaturePriority:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VKARWalkingFeature)initWithType:(int64_t)type intraFeaturePriority:(unint64_t)priority;
 @end
 
 @implementation VKARWalkingFeature
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -18,7 +18,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       type = self->_type;
       if (type == [(VKARWalkingFeature *)v7 type])
       {
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (VKARWalkingFeature)initWithType:(int64_t)a3 intraFeaturePriority:(unint64_t)a4
+- (VKARWalkingFeature)initWithType:(int64_t)type intraFeaturePriority:(unint64_t)priority
 {
   v10.receiver = self;
   v10.super_class = VKARWalkingFeature;
@@ -49,8 +49,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    v6->_intraFeaturePriority = a4;
+    v6->_type = type;
+    v6->_intraFeaturePriority = priority;
     v8 = v6;
   }
 

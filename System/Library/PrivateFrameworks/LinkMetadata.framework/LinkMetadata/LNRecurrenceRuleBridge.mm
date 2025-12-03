@@ -1,8 +1,8 @@
 @interface LNRecurrenceRuleBridge
-- (BOOL)isEqual:(id)a3;
-- (LNRecurrenceRuleBridge)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNRecurrenceRuleBridge)initWithData:(id)data;
 - (NSData)data;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNRecurrenceRuleBridge
@@ -17,27 +17,27 @@
   return v5;
 }
 
-- (LNRecurrenceRuleBridge)initWithData:(id)a3
+- (LNRecurrenceRuleBridge)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_18F09330C();
   v6 = v5;
 
   return LNRecurrenceRuleBridge.init(data:)(v4, v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  LNRecurrenceRuleBridge.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  LNRecurrenceRuleBridge.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18F093FAC();
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LNRecurrenceRuleBridge.isEqual(_:)(v8);

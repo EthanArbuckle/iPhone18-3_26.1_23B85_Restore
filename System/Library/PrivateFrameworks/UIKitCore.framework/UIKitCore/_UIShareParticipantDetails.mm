@@ -1,36 +1,36 @@
 @interface _UIShareParticipantDetails
-- (_UIShareParticipantDetails)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIShareParticipantDetails)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIShareParticipantDetails
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   detailText = self->_detailText;
-  v5 = a3;
-  [v5 encodeObject:detailText forKey:@"deta"];
-  [v5 encodeObject:self->_participantID forKey:@"part"];
-  [v5 encodeObject:self->_participantColor forKey:@"colo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:detailText forKey:@"deta"];
+  [coderCopy encodeObject:self->_participantID forKey:@"part"];
+  [coderCopy encodeObject:self->_participantColor forKey:@"colo"];
 }
 
-- (_UIShareParticipantDetails)initWithCoder:(id)a3
+- (_UIShareParticipantDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _UIShareParticipantDetails;
   v5 = [(_UIShareParticipantDetails *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deta"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deta"];
     detailText = v5->_detailText;
     v5->_detailText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"part"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"part"];
     participantID = v5->_participantID;
     v5->_participantID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colo"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colo"];
     participantColor = v5->_participantColor;
     v5->_participantColor = v10;
   }

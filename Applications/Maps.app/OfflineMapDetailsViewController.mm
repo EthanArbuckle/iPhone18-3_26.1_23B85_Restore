@@ -1,26 +1,26 @@
 @interface OfflineMapDetailsViewController
-- (OfflineMapDetailsViewController)initWithSubscriptionInfo:(id)a3;
+- (OfflineMapDetailsViewController)initWithSubscriptionInfo:(id)info;
 - (OfflineMapsManagementActionCoordination)delegate;
 - (void)_dismiss;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)_updateActiveWatchSection:(BOOL)a3;
-- (void)_updateCurrentSubscriptionInfo:(id)a3;
+- (void)_updateActiveWatchSection:(BOOL)section;
+- (void)_updateCurrentSubscriptionInfo:(id)info;
 - (void)didDismissByGesture;
-- (void)lastUpdatedDateDidChange:(id)a3;
-- (void)lastUpdatedDateForPairedDeviceDidChange:(id)a3;
-- (void)offlineMapDetailsActionSectionControllerDidSelectAddToPairedDevice:(id)a3;
-- (void)offlineMapDetailsActionSectionControllerDidSelectDeleteMap:(id)a3;
-- (void)offlineMapDetailsActionSectionControllerDidSelectDownloadNowOnPairedDevice:(id)a3;
-- (void)offlineMapDetailsActionSectionControllerDidSelectPauseDownload:(id)a3;
-- (void)offlineMapDetailsActionSectionControllerDidSelectRemoveFromPairedDevice:(id)a3;
-- (void)offlineMapDetailsActionSectionControllerDidSelectRenameMap:(id)a3 completionHandler:(id)a4;
-- (void)offlineMapDetailsActionSectionControllerDidSelectResizeMap:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setSubscriptionInfo:(id)a3;
+- (void)lastUpdatedDateDidChange:(id)change;
+- (void)lastUpdatedDateForPairedDeviceDidChange:(id)change;
+- (void)offlineMapDetailsActionSectionControllerDidSelectAddToPairedDevice:(id)device;
+- (void)offlineMapDetailsActionSectionControllerDidSelectDeleteMap:(id)map;
+- (void)offlineMapDetailsActionSectionControllerDidSelectDownloadNowOnPairedDevice:(id)device;
+- (void)offlineMapDetailsActionSectionControllerDidSelectPauseDownload:(id)download;
+- (void)offlineMapDetailsActionSectionControllerDidSelectRemoveFromPairedDevice:(id)device;
+- (void)offlineMapDetailsActionSectionControllerDidSelectRenameMap:(id)map completionHandler:(id)handler;
+- (void)offlineMapDetailsActionSectionControllerDidSelectResizeMap:(id)map;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setSubscriptionInfo:(id)info;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation OfflineMapDetailsViewController
@@ -32,58 +32,58 @@
   return WeakRetained;
 }
 
-- (void)lastUpdatedDateForPairedDeviceDidChange:(id)a3
+- (void)lastUpdatedDateForPairedDeviceDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-  [v5 setLastUpdatedDate:v4];
+  changeCopy = change;
+  activeWatchDetailsController = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+  [activeWatchDetailsController setLastUpdatedDate:changeCopy];
 }
 
-- (void)lastUpdatedDateDidChange:(id)a3
+- (void)lastUpdatedDateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-  [v5 setLastUpdatedDate:v4];
+  changeCopy = change;
+  currentDeviceDetailsController = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+  [currentDeviceDetailsController setLastUpdatedDate:changeCopy];
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectDownloadNowOnPairedDevice:(id)a3
+- (void)offlineMapDetailsActionSectionControllerDidSelectDownloadNowOnPairedDevice:(id)device
 {
-  v4 = a3;
-  v7 = [(OfflineMapDetailsViewController *)self subscriptionManager];
-  v5 = [v4 subscription];
+  deviceCopy = device;
+  subscriptionManager = [(OfflineMapDetailsViewController *)self subscriptionManager];
+  subscription = [deviceCopy subscription];
 
-  v6 = [v5 identifier];
-  [v7 startDownloadForPairedDeviceSubscriptionIdentifier:v6 mode:1];
+  identifier = [subscription identifier];
+  [subscriptionManager startDownloadForPairedDeviceSubscriptionIdentifier:identifier mode:1];
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectRemoveFromPairedDevice:(id)a3
+- (void)offlineMapDetailsActionSectionControllerDidSelectRemoveFromPairedDevice:(id)device
 {
-  v28 = a3;
-  v4 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-  v5 = [v4 subscription];
-  v6 = [v5 displayName];
-  if ([v6 length])
+  deviceCopy = device;
+  subscriptionInfo = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+  subscription = [subscriptionInfo subscription];
+  displayName = [subscription displayName];
+  if ([displayName length])
   {
-    v7 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v8 = [v7 subscription];
-    v9 = [v8 displayName];
+    subscriptionInfo2 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    subscription2 = [subscriptionInfo2 subscription];
+    displayName2 = [subscription2 displayName];
   }
 
   else
   {
-    v7 = +[NSBundle mainBundle];
-    v9 = [v7 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfo2 = +[NSBundle mainBundle];
+    displayName2 = [subscriptionInfo2 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
   }
 
   v10 = +[NRPairedDeviceRegistry sharedInstance];
-  v11 = [v10 getActivePairedDevice];
+  getActivePairedDevice = [v10 getActivePairedDevice];
 
-  v26 = v11;
-  v12 = [v11 valueForProperty:NRDevicePropertyName];
+  v26 = getActivePairedDevice;
+  v12 = [getActivePairedDevice valueForProperty:NRDevicePropertyName];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"REMOVE_OFFLINE_MAP_FROM_PAIRED_DEVICE_CONFIRMATION_MESSAGE" value:@"localized string not found" table:@"Offline"];
-  v27 = v9;
-  v15 = [NSString localizedStringWithFormat:v14, v9, v12];
+  v27 = displayName2;
+  v15 = [NSString localizedStringWithFormat:v14, displayName2, v12];
 
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"REMOVE_OFFLINE_MAP_FROM_PAIRED_DEVICE_CONFIRMATION_TITLE" value:@"localized string not found" table:@"Offline"];
@@ -102,7 +102,7 @@
   v29[2] = sub_100DA25E8;
   v29[3] = &unk_1016540D8;
   objc_copyWeak(&v31, &location);
-  v24 = v28;
+  v24 = deviceCopy;
   v30 = v24;
   v25 = [UIAlertAction actionWithTitle:v23 style:2 handler:v29];
 
@@ -114,73 +114,73 @@
   objc_destroyWeak(&location);
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectAddToPairedDevice:(id)a3
+- (void)offlineMapDetailsActionSectionControllerDidSelectAddToPairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(OfflineMapDetailsViewController *)self subscriptionManager];
-  v6 = [v4 subscription];
-  v7 = [v6 identifier];
+  deviceCopy = device;
+  subscriptionManager = [(OfflineMapDetailsViewController *)self subscriptionManager];
+  subscription = [deviceCopy subscription];
+  identifier = [subscription identifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100DA2894;
   v9[3] = &unk_10165F7B8;
-  v10 = v4;
-  v8 = v4;
-  [v5 setSubscriptionWithIdentifier:v7 shouldSyncToPairedDevice:1 callbackQueue:&_dispatch_main_q completionHandler:v9];
+  v10 = deviceCopy;
+  v8 = deviceCopy;
+  [subscriptionManager setSubscriptionWithIdentifier:identifier shouldSyncToPairedDevice:1 callbackQueue:&_dispatch_main_q completionHandler:v9];
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectPauseDownload:(id)a3
+- (void)offlineMapDetailsActionSectionControllerDidSelectPauseDownload:(id)download
 {
-  v4 = a3;
-  v7 = [(OfflineMapDetailsViewController *)self subscriptionManager];
-  v5 = [v4 subscription];
+  downloadCopy = download;
+  subscriptionManager = [(OfflineMapDetailsViewController *)self subscriptionManager];
+  subscription = [downloadCopy subscription];
 
-  v6 = [v5 identifier];
-  [v7 cancelDownloadForSubscriptionIdentifier:v6];
+  identifier = [subscription identifier];
+  [subscriptionManager cancelDownloadForSubscriptionIdentifier:identifier];
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectResizeMap:(id)a3
+- (void)offlineMapDetailsActionSectionControllerDidSelectResizeMap:(id)map
 {
-  v4 = a3;
-  v5 = [(OfflineMapDetailsViewController *)self delegate];
-  [v5 presentOfflineMapRegionSelectorForSubscriptionInfo:v4];
+  mapCopy = map;
+  delegate = [(OfflineMapDetailsViewController *)self delegate];
+  [delegate presentOfflineMapRegionSelectorForSubscriptionInfo:mapCopy];
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectRenameMap:(id)a3 completionHandler:(id)a4
+- (void)offlineMapDetailsActionSectionControllerDidSelectRenameMap:(id)map completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(OfflineMapDetailsViewController *)self delegate];
-  [v8 presentRenameOfflineMapForSubscriptionInfo:v7 completionHandler:v6];
+  handlerCopy = handler;
+  mapCopy = map;
+  delegate = [(OfflineMapDetailsViewController *)self delegate];
+  [delegate presentRenameOfflineMapForSubscriptionInfo:mapCopy completionHandler:handlerCopy];
 }
 
-- (void)offlineMapDetailsActionSectionControllerDidSelectDeleteMap:(id)a3
+- (void)offlineMapDetailsActionSectionControllerDidSelectDeleteMap:(id)map
 {
-  v4 = a3;
-  v5 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-  v6 = [v5 subscription];
-  v7 = [v6 displayName];
-  if ([v7 length])
+  mapCopy = map;
+  subscriptionInfo = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+  subscription = [subscriptionInfo subscription];
+  displayName = [subscription displayName];
+  if ([displayName length])
   {
-    v8 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v9 = [v8 subscription];
-    v10 = [v9 displayName];
+    subscriptionInfo2 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    subscription2 = [subscriptionInfo2 subscription];
+    displayName2 = [subscription2 displayName];
   }
 
   else
   {
-    v8 = +[NSBundle mainBundle];
-    v10 = [v8 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfo2 = +[NSBundle mainBundle];
+    displayName2 = [subscriptionInfo2 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
   }
 
-  v33 = v4;
-  v11 = [v4 pairedDeviceState];
+  v33 = mapCopy;
+  pairedDeviceState = [mapCopy pairedDeviceState];
 
-  if (!v11 || (+[NRPairedDeviceRegistry sharedInstance](NRPairedDeviceRegistry, "sharedInstance"), v12 = objc_claimAutoreleasedReturnValue(), [v12 getActivePairedDevice], v13 = objc_claimAutoreleasedReturnValue(), v12, !v13) || (objc_msgSend(v13, "valueForProperty:", NRDevicePropertyName), v14 = objc_claimAutoreleasedReturnValue(), +[NSBundle mainBundle](NSBundle, "mainBundle"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "localizedStringForKey:value:table:", @"DELETE_OFFLINE_MAP_CONFIRMATION_MESSAGE_PAIRED_DEVICE", @"localized string not found", @"Offline"), v16 = objc_claimAutoreleasedReturnValue(), +[UIDevice currentDevice](UIDevice, "currentDevice"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "name"), v18 = v10, v19 = objc_claimAutoreleasedReturnValue(), +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v16, v18, v19, v14), v20 = objc_claimAutoreleasedReturnValue(), v19, v10 = v18, v17, v16, v15, v14, v13, !v20))
+  if (!pairedDeviceState || (+[NRPairedDeviceRegistry sharedInstance](NRPairedDeviceRegistry, "sharedInstance"), v12 = objc_claimAutoreleasedReturnValue(), [v12 getActivePairedDevice], v13 = objc_claimAutoreleasedReturnValue(), v12, !v13) || (objc_msgSend(v13, "valueForProperty:", NRDevicePropertyName), v14 = objc_claimAutoreleasedReturnValue(), +[NSBundle mainBundle](NSBundle, "mainBundle"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "localizedStringForKey:value:table:", @"DELETE_OFFLINE_MAP_CONFIRMATION_MESSAGE_PAIRED_DEVICE", @"localized string not found", @"Offline"), v16 = objc_claimAutoreleasedReturnValue(), +[UIDevice currentDevice](UIDevice, "currentDevice"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "name"), v18 = displayName2, v19 = objc_claimAutoreleasedReturnValue(), +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v16, v18, v19, v14), v20 = objc_claimAutoreleasedReturnValue(), v19, displayName2 = v18, v17, v16, v15, v14, v13, !v20))
   {
     v21 = +[NSBundle mainBundle];
     v22 = [v21 localizedStringForKey:@"DELETE_OFFLINE_MAP_CONFIRMATION_MESSAGE" value:@"localized string not found" table:@"Offline"];
-    v20 = [NSString localizedStringWithFormat:v22, v10];
+    v20 = [NSString localizedStringWithFormat:v22, displayName2];
   }
 
   v23 = +[NSBundle mainBundle];
@@ -212,33 +212,33 @@
   objc_destroyWeak(&location);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v16 = a3;
-  [v16 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v5 = v4;
-  if (v4 > 0.0 != [v16 clipsToBounds])
+  if (v4 > 0.0 != [scrollCopy clipsToBounds])
   {
-    [v16 setClipsToBounds:v5 > 0.0];
+    [scrollCopy setClipsToBounds:v5 > 0.0];
   }
 
-  [v16 contentOffset];
+  [scrollCopy contentOffset];
   v7 = v6;
-  v8 = [(OfflineMapDetailsViewController *)self detailsSectionController];
-  v9 = [v8 sectionView];
-  [v9 frame];
+  detailsSectionController = [(OfflineMapDetailsViewController *)self detailsSectionController];
+  sectionView = [detailsSectionController sectionView];
+  [sectionView frame];
   MinY = CGRectGetMinY(v18);
-  v11 = [(OfflineMapDetailsViewController *)self detailsSectionController];
-  [v11 regionNameBottomOffsetFromTop];
+  detailsSectionController2 = [(OfflineMapDetailsViewController *)self detailsSectionController];
+  [detailsSectionController2 regionNameBottomOffsetFromTop];
   v13 = v12 + MinY;
 
-  v14 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  LODWORD(v9) = [v14 showTitle];
+  titleHeaderView = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  LODWORD(sectionView) = [titleHeaderView showTitle];
 
-  if (v7 >= v13 != v9)
+  if (v7 >= v13 != sectionView)
   {
-    v15 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-    [v15 setShowTitle:v7 >= v13];
+    titleHeaderView2 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+    [titleHeaderView2 setShowTitle:v7 >= v13];
   }
 }
 
@@ -250,66 +250,66 @@
   [(ContaineeViewController *)&v3 didDismissByGesture];
 }
 
-- (void)setSubscriptionInfo:(id)a3
+- (void)setSubscriptionInfo:(id)info
 {
-  v6 = a3;
-  if (self->_subscriptionInfo != v6)
+  infoCopy = info;
+  if (self->_subscriptionInfo != infoCopy)
   {
-    v22 = v6;
-    objc_storeStrong(&self->_subscriptionInfo, a3);
-    v7 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v8 = [v7 subscription];
-    v9 = [v8 displayName];
-    v10 = [v9 length];
+    v22 = infoCopy;
+    objc_storeStrong(&self->_subscriptionInfo, info);
+    subscriptionInfo = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    subscription = [subscriptionInfo subscription];
+    displayName = [subscription displayName];
+    v10 = [displayName length];
     if (v10)
     {
-      v11 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-      v3 = [v11 subscription];
-      [v3 displayName];
+      subscriptionInfo2 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+      subscription2 = [subscriptionInfo2 subscription];
+      [subscription2 displayName];
     }
 
     else
     {
-      v11 = +[NSBundle mainBundle];
-      [v11 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+      subscriptionInfo2 = +[NSBundle mainBundle];
+      [subscriptionInfo2 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
     }
     v12 = ;
-    v13 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-    [v13 setTitle:v12];
+    titleHeaderView = [(OfflineMapDetailsViewController *)self titleHeaderView];
+    [titleHeaderView setTitle:v12];
 
     if (v10)
     {
 
-      v12 = v3;
+      v12 = subscription2;
     }
 
-    v14 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v15 = [(OfflineMapDetailsViewController *)self detailsSectionController];
-    [v15 setSubscriptionInfo:v14];
+    subscriptionInfo3 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    detailsSectionController = [(OfflineMapDetailsViewController *)self detailsSectionController];
+    [detailsSectionController setSubscriptionInfo:subscriptionInfo3];
 
-    v16 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v17 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-    [v17 setSubscriptionInfo:v16];
+    subscriptionInfo4 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    currentDeviceDetailsController = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+    [currentDeviceDetailsController setSubscriptionInfo:subscriptionInfo4];
 
-    v18 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v19 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-    [v19 setSubscriptionInfo:v18];
+    subscriptionInfo5 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    activeWatchDetailsController = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+    [activeWatchDetailsController setSubscriptionInfo:subscriptionInfo5];
 
-    v20 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v21 = [(OfflineMapDetailsViewController *)self footerSectionController];
-    [v21 setSubscriptionInfo:v20];
+    subscriptionInfo6 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    footerSectionController = [(OfflineMapDetailsViewController *)self footerSectionController];
+    [footerSectionController setSubscriptionInfo:subscriptionInfo6];
 
-    v6 = v22;
+    infoCopy = v22;
   }
 }
 
-- (void)_updateCurrentSubscriptionInfo:(id)a3
+- (void)_updateCurrentSubscriptionInfo:(id)info
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = a3;
+  obj = info;
   v3 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v3)
   {
@@ -325,12 +325,12 @@
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
-        v8 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-        v9 = [v8 subscription];
-        v10 = [v9 identifier];
-        v11 = [v7 subscription];
-        v12 = [v11 identifier];
-        v13 = [v10 isEqualToString:v12];
+        subscriptionInfo = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+        subscription = [subscriptionInfo subscription];
+        identifier = [subscription identifier];
+        subscription2 = [v7 subscription];
+        identifier2 = [subscription2 identifier];
+        v13 = [identifier isEqualToString:identifier2];
 
         if (v13)
         {
@@ -354,85 +354,85 @@ LABEL_11:
 
 - (void)_dismiss
 {
-  v2 = [(OfflineMapDetailsViewController *)self delegate];
-  [v2 closeOfflineMapDetails];
+  delegate = [(OfflineMapDetailsViewController *)self delegate];
+  [delegate closeOfflineMapDetails];
 }
 
 - (void)_setupConstraints
 {
-  v43 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  v41 = [v43 topAnchor];
-  v42 = [(ContaineeViewController *)self headerView];
-  v40 = [v42 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  titleHeaderView = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  topAnchor = [titleHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[0] = v39;
-  v38 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  v36 = [v38 leadingAnchor];
-  v37 = [(ContaineeViewController *)self headerView];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  titleHeaderView2 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  leadingAnchor = [titleHeaderView2 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[1] = v34;
-  v33 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  v31 = [v33 trailingAnchor];
-  v32 = [(ContaineeViewController *)self headerView];
-  v30 = [v32 trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  titleHeaderView3 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  trailingAnchor = [titleHeaderView3 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[2] = v29;
-  v28 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  v26 = [v28 bottomAnchor];
-  v27 = [(ContaineeViewController *)self headerView];
-  v25 = [v27 bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  titleHeaderView4 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  bottomAnchor = [titleHeaderView4 bottomAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView4 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[3] = v24;
-  v23 = [(OfflineMapDetailsViewController *)self contentStackView];
-  v21 = [v23 topAnchor];
-  v22 = [(ContaineeViewController *)self contentView];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  contentStackView = [(OfflineMapDetailsViewController *)self contentStackView];
+  topAnchor3 = [contentStackView topAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor4 = [contentView topAnchor];
+  v19 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v44[4] = v19;
-  v18 = [(OfflineMapDetailsViewController *)self contentStackView];
-  v16 = [v18 leadingAnchor];
-  v17 = [(ContaineeViewController *)self contentView];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  contentStackView2 = [(OfflineMapDetailsViewController *)self contentStackView];
+  leadingAnchor3 = [contentStackView2 leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView2 leadingAnchor];
+  v14 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v44[5] = v14;
-  v13 = [(OfflineMapDetailsViewController *)self contentStackView];
-  v3 = [v13 trailingAnchor];
-  v4 = [(ContaineeViewController *)self contentView];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  contentStackView3 = [(OfflineMapDetailsViewController *)self contentStackView];
+  trailingAnchor3 = [contentStackView3 trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView3 trailingAnchor];
+  v6 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v44[6] = v6;
-  v7 = [(OfflineMapDetailsViewController *)self contentStackView];
-  v8 = [v7 bottomAnchor];
-  v9 = [(ContaineeViewController *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  contentStackView4 = [(OfflineMapDetailsViewController *)self contentStackView];
+  bottomAnchor3 = [contentStackView4 bottomAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor4 = [contentView4 bottomAnchor];
+  v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v44[7] = v11;
   v12 = [NSArray arrayWithObjects:v44 count:8];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (void)_updateActiveWatchSection:(BOOL)a3
+- (void)_updateActiveWatchSection:(BOOL)section
 {
-  v3 = a3;
-  if (a3)
+  sectionCopy = section;
+  if (section)
   {
-    v5 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+    activeWatchDetailsController = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
 
-    if (v5)
+    if (activeWatchDetailsController)
     {
       contentStackView = self->_contentStackView;
-      v7 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-      v8 = [v7 sectionView];
-      [(MUScrollableStackView *)contentStackView removeArrangedSubview:v8];
+      activeWatchDetailsController2 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+      sectionView = [activeWatchDetailsController2 sectionView];
+      [(MUScrollableStackView *)contentStackView removeArrangedSubview:sectionView];
     }
 
     if ((MapsFeature_IsEnabled_StandaloneWatchOffline() & 1) == 0)
     {
       v9 = self->_contentStackView;
-      v10 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-      v11 = [v10 sectionView];
-      [(MUScrollableStackView *)v9 setCustomSpacing:v11 afterView:3.40282347e38];
+      currentDeviceDetailsController = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+      sectionView2 = [currentDeviceDetailsController sectionView];
+      [(MUScrollableStackView *)v9 setCustomSpacing:sectionView2 afterView:3.40282347e38];
 
 LABEL_11:
 
@@ -447,50 +447,50 @@ LABEL_11:
   }
 
   v12 = +[NRPairedDeviceRegistry sharedInstance];
-  v35 = [v12 getActivePairedDeviceExcludingAltAccount];
+  getActivePairedDeviceExcludingAltAccount = [v12 getActivePairedDeviceExcludingAltAccount];
 
-  if (v35 && (v13 = [[NSUUID alloc] initWithUUIDString:@"3B512C1E-F8D5-4FE7-B109-1AD8EF7F924D"], v14 = objc_msgSend(v35, "supportsCapability:", v13), v13, v14))
+  if (getActivePairedDeviceExcludingAltAccount && (v13 = [[NSUUID alloc] initWithUUIDString:@"3B512C1E-F8D5-4FE7-B109-1AD8EF7F924D"], v14 = objc_msgSend(getActivePairedDeviceExcludingAltAccount, "supportsCapability:", v13), v13, v14))
   {
     v15 = [OfflineMapPairedDeviceDetailsSectionController alloc];
-    v16 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v17 = [(OfflineMapPairedDeviceDetailsSectionController *)v15 initWithSubscriptionInfo:v16 device:v35];
+    subscriptionInfo = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    v17 = [(OfflineMapPairedDeviceDetailsSectionController *)v15 initWithSubscriptionInfo:subscriptionInfo device:getActivePairedDeviceExcludingAltAccount];
     [(OfflineMapDetailsViewController *)self setActiveWatchDetailsController:v17];
 
-    v18 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-    [v18 setActionDelegate:self];
+    activeWatchDetailsController3 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+    [activeWatchDetailsController3 setActionDelegate:self];
 
     v19 = +[MapsOfflineUIHelper sharedHelper];
-    v20 = [v19 lastUpdatedDateForPairedDevice];
-    v21 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-    [v21 setLastUpdatedDate:v20];
+    lastUpdatedDateForPairedDevice = [v19 lastUpdatedDateForPairedDevice];
+    activeWatchDetailsController4 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+    [activeWatchDetailsController4 setLastUpdatedDate:lastUpdatedDateForPairedDevice];
 
-    if (v3)
+    if (sectionCopy)
     {
-      v22 = [(MUScrollableStackView *)self->_contentStackView arrangedSubviews];
-      v23 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-      v24 = [v23 sectionView];
-      v25 = [v22 indexOfObject:v24];
+      arrangedSubviews = [(MUScrollableStackView *)self->_contentStackView arrangedSubviews];
+      currentDeviceDetailsController2 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+      sectionView3 = [currentDeviceDetailsController2 sectionView];
+      v25 = [arrangedSubviews indexOfObject:sectionView3];
 
       v26 = self->_contentStackView;
-      v27 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-      v28 = [v27 sectionView];
-      [(MUScrollableStackView *)v26 insertArrangedSubview:v28 atIndex:v25 + 1];
+      activeWatchDetailsController5 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+      sectionView4 = [activeWatchDetailsController5 sectionView];
+      [(MUScrollableStackView *)v26 insertArrangedSubview:sectionView4 atIndex:v25 + 1];
 
       v29 = self->_contentStackView;
-      v30 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-      v31 = [v30 sectionView];
-      [(MUScrollableStackView *)v29 setCustomSpacing:v31 afterView:24.0];
+      currentDeviceDetailsController3 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+      sectionView5 = [currentDeviceDetailsController3 sectionView];
+      [(MUScrollableStackView *)v29 setCustomSpacing:sectionView5 afterView:24.0];
     }
   }
 
   else
   {
-    if (v3)
+    if (sectionCopy)
     {
       v32 = self->_contentStackView;
-      v33 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-      v34 = [v33 sectionView];
-      [(MUScrollableStackView *)v32 setCustomSpacing:v34 afterView:3.40282347e38];
+      currentDeviceDetailsController4 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+      sectionView6 = [currentDeviceDetailsController4 sectionView];
+      [(MUScrollableStackView *)v32 setCustomSpacing:sectionView6 afterView:3.40282347e38];
     }
 
     [(OfflineMapDetailsViewController *)self setActiveWatchDetailsController:0];
@@ -499,134 +499,134 @@ LABEL_11:
 
 - (void)_setupViews
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setPresentedModally:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setPresentedModally:1];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setTakesAvailableHeight:1];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setTakesAvailableHeight:1];
 
   v6 = +[UIColor clearColor];
-  v7 = [(OfflineMapDetailsViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  view = [(OfflineMapDetailsViewController *)self view];
+  [view setBackgroundColor:v6];
 
   v8 = [_TtC4Maps22MapsSubtitleHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v12 = [(MapsSubtitleHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(OfflineMapDetailsViewController *)self setTitleHeaderView:v12];
+  height = [(MapsSubtitleHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(OfflineMapDetailsViewController *)self setTitleHeaderView:height];
 
-  v13 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleHeaderView = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  [titleHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-  v15 = [v14 subscription];
-  v16 = [v15 displayName];
-  v17 = [v16 length];
+  subscriptionInfo = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+  subscription = [subscriptionInfo subscription];
+  displayName = [subscription displayName];
+  v17 = [displayName length];
   if (v17)
   {
-    v18 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-    v2 = [v18 subscription];
-    [v2 displayName];
+    subscriptionInfo2 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+    subscription2 = [subscriptionInfo2 subscription];
+    [subscription2 displayName];
   }
 
   else
   {
-    v18 = +[NSBundle mainBundle];
-    [v18 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfo2 = +[NSBundle mainBundle];
+    [subscriptionInfo2 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
   }
   v19 = ;
-  v20 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  [v20 setTitle:v19];
+  titleHeaderView2 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  [titleHeaderView2 setTitle:v19];
 
   if (v17)
   {
 
-    v19 = v2;
+    v19 = subscription2;
   }
 
-  v21 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  [v21 setDelegate:self];
+  titleHeaderView3 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  [titleHeaderView3 setDelegate:self];
 
-  v22 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  [v22 setTrailingButtons:&off_1016EDA78];
+  titleHeaderView4 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  [titleHeaderView4 setTrailingButtons:&off_1016EDA78];
 
-  v23 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  [v23 setShowTitle:0];
+  titleHeaderView5 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  [titleHeaderView5 setShowTitle:0];
 
-  v24 = [(ContaineeViewController *)self headerView];
-  v25 = [(OfflineMapDetailsViewController *)self titleHeaderView];
-  [v24 addSubview:v25];
+  headerView = [(ContaineeViewController *)self headerView];
+  titleHeaderView6 = [(OfflineMapDetailsViewController *)self titleHeaderView];
+  [headerView addSubview:titleHeaderView6];
 
   v26 = [[MUScrollableStackView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(OfflineMapDetailsViewController *)self setContentStackView:v26];
 
-  v27 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentStackView = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v28 setSpacing:16.0];
+  contentStackView2 = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentStackView2 setSpacing:16.0];
 
-  v29 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v29 setAlwaysBounceVertical:1];
+  contentStackView3 = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentStackView3 setAlwaysBounceVertical:1];
 
-  v30 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v30 setScrollEnabled:1];
+  contentStackView4 = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentStackView4 setScrollEnabled:1];
 
-  v31 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v31 setDelegate:self];
+  contentStackView5 = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentStackView5 setDelegate:self];
 
-  v32 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v32 setClipsToBounds:0];
+  contentStackView6 = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentStackView6 setClipsToBounds:0];
 
-  v33 = [(ContaineeViewController *)self contentView];
-  v34 = [(OfflineMapDetailsViewController *)self contentStackView];
-  [v33 addSubview:v34];
+  contentView = [(ContaineeViewController *)self contentView];
+  contentStackView7 = [(OfflineMapDetailsViewController *)self contentStackView];
+  [contentView addSubview:contentStackView7];
 
   v35 = [[NSMutableArray alloc] initWithCapacity:2];
   v36 = [OfflineMapDetailsSectionController alloc];
-  v37 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-  v38 = [(OfflineMapDetailsSectionController *)v36 initWithSubscriptionInfo:v37];
+  subscriptionInfo3 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+  v38 = [(OfflineMapDetailsSectionController *)v36 initWithSubscriptionInfo:subscriptionInfo3];
   [(OfflineMapDetailsViewController *)self setDetailsSectionController:v38];
 
-  v39 = [(OfflineMapDetailsViewController *)self detailsSectionController];
-  [v39 setActionDelegate:self];
+  detailsSectionController = [(OfflineMapDetailsViewController *)self detailsSectionController];
+  [detailsSectionController setActionDelegate:self];
 
-  v40 = [(OfflineMapDetailsViewController *)self detailsSectionController];
-  [v35 addObject:v40];
+  detailsSectionController2 = [(OfflineMapDetailsViewController *)self detailsSectionController];
+  [v35 addObject:detailsSectionController2];
 
   v41 = [OfflineMapDeviceDetailsSectionController alloc];
-  v42 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-  v43 = [(OfflineMapDeviceDetailsSectionController *)v41 initWithSubscriptionInfo:v42];
+  subscriptionInfo4 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+  v43 = [(OfflineMapDeviceDetailsSectionController *)v41 initWithSubscriptionInfo:subscriptionInfo4];
   [(OfflineMapDetailsViewController *)self setCurrentDeviceDetailsController:v43];
 
   v44 = +[MapsOfflineUIHelper sharedHelper];
-  v45 = [v44 lastUpdatedDate];
-  v46 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-  [v46 setLastUpdatedDate:v45];
+  lastUpdatedDate = [v44 lastUpdatedDate];
+  currentDeviceDetailsController = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+  [currentDeviceDetailsController setLastUpdatedDate:lastUpdatedDate];
 
-  v47 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-  [v35 addObject:v47];
+  currentDeviceDetailsController2 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+  [v35 addObject:currentDeviceDetailsController2];
 
   [(OfflineMapDetailsViewController *)self _updateActiveWatchSection:0];
-  v48 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+  activeWatchDetailsController = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
 
-  if (v48)
+  if (activeWatchDetailsController)
   {
-    v49 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
-    [v35 addObject:v49];
+    activeWatchDetailsController2 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+    [v35 addObject:activeWatchDetailsController2];
   }
 
   v50 = [OfflineMapFooterActionsSectionController alloc];
-  v51 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
-  v52 = [(OfflineMapFooterActionsSectionController *)v50 initWithSubscriptionInfo:v51];
+  subscriptionInfo5 = [(OfflineMapDetailsViewController *)self subscriptionInfo];
+  v52 = [(OfflineMapFooterActionsSectionController *)v50 initWithSubscriptionInfo:subscriptionInfo5];
   [(OfflineMapDetailsViewController *)self setFooterSectionController:v52];
 
-  v53 = [(OfflineMapDetailsViewController *)self footerSectionController];
-  [v53 setActionDelegate:self];
+  footerSectionController = [(OfflineMapDetailsViewController *)self footerSectionController];
+  [footerSectionController setActionDelegate:self];
 
-  v54 = [(OfflineMapDetailsViewController *)self footerSectionController];
-  [v35 addObject:v54];
+  footerSectionController2 = [(OfflineMapDetailsViewController *)self footerSectionController];
+  [v35 addObject:footerSectionController2];
 
   v102 = 0u;
   v103 = 0u;
@@ -648,8 +648,8 @@ LABEL_11:
         }
 
         contentStackView = self->_contentStackView;
-        v61 = [*(*(&v100 + 1) + 8 * i) sectionView];
-        [(MUScrollableStackView *)contentStackView addArrangedSubview:v61];
+        sectionView = [*(*(&v100 + 1) + 8 * i) sectionView];
+        [(MUScrollableStackView *)contentStackView addArrangedSubview:sectionView];
       }
 
       v57 = [v55 countByEnumeratingWithState:&v100 objects:v105 count:16];
@@ -658,14 +658,14 @@ LABEL_11:
     while (v57);
   }
 
-  v62 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
+  activeWatchDetailsController3 = [(OfflineMapDetailsViewController *)self activeWatchDetailsController];
 
-  if (v62)
+  if (activeWatchDetailsController3)
   {
     v63 = self->_contentStackView;
-    v64 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
-    v65 = [v64 sectionView];
-    [(MUScrollableStackView *)v63 setCustomSpacing:v65 afterView:24.0];
+    currentDeviceDetailsController3 = [(OfflineMapDetailsViewController *)self currentDeviceDetailsController];
+    sectionView2 = [currentDeviceDetailsController3 sectionView];
+    [(MUScrollableStackView *)v63 setCustomSpacing:sectionView2 afterView:24.0];
   }
 
   if (GEOConfigGetBOOL())
@@ -675,76 +675,76 @@ LABEL_11:
     [(OfflineMapDetailsViewController *)self setLegalDisclaimerLabel:v67];
 
     v68 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote compatibleWithTraitCollection:0];
-    v69 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    [v69 setFont:v68];
+    legalDisclaimerLabel = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    [legalDisclaimerLabel setFont:v68];
 
     v70 = +[UIColor secondaryLabelColor];
-    v71 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    [v71 setTextColor:v70];
+    legalDisclaimerLabel2 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    [legalDisclaimerLabel2 setTextColor:v70];
 
-    v72 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    [v72 setNumberOfLines:0];
+    legalDisclaimerLabel3 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    [legalDisclaimerLabel3 setNumberOfLines:0];
 
     v73 = +[NSBundle mainBundle];
     v74 = [v73 localizedStringForKey:@"REGION_DETAILS_FOOTER_TEXT" value:@"localized string not found" table:@"Offline"];
-    v75 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    [v75 setText:v74];
+    legalDisclaimerLabel4 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    [legalDisclaimerLabel4 setText:v74];
 
-    v76 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    [v76 setTranslatesAutoresizingMaskIntoConstraints:0];
+    legalDisclaimerLabel5 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    [legalDisclaimerLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v77 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    [v66 addSubview:v77];
+    legalDisclaimerLabel6 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    [v66 addSubview:legalDisclaimerLabel6];
 
-    v99 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    v98 = [v99 topAnchor];
-    v97 = [v66 topAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97];
+    legalDisclaimerLabel7 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    topAnchor = [legalDisclaimerLabel7 topAnchor];
+    topAnchor2 = [v66 topAnchor];
+    v96 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v104[0] = v96;
-    v95 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    v94 = [v95 leadingAnchor];
-    v93 = [v66 leadingAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93 constant:32.0];
+    legalDisclaimerLabel8 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    leadingAnchor = [legalDisclaimerLabel8 leadingAnchor];
+    leadingAnchor2 = [v66 leadingAnchor];
+    v92 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:32.0];
     v104[1] = v92;
-    v90 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    v89 = [v90 trailingAnchor];
+    legalDisclaimerLabel9 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    trailingAnchor = [legalDisclaimerLabel9 trailingAnchor];
     v78 = v66;
     v91 = v66;
-    v79 = [v66 trailingAnchor];
-    v80 = [v89 constraintEqualToAnchor:v79 constant:-32.0];
+    trailingAnchor2 = [v66 trailingAnchor];
+    v80 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-32.0];
     v104[2] = v80;
-    v81 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
-    v82 = [v81 bottomAnchor];
-    v83 = [v78 bottomAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83];
+    legalDisclaimerLabel10 = [(OfflineMapDetailsViewController *)self legalDisclaimerLabel];
+    bottomAnchor = [legalDisclaimerLabel10 bottomAnchor];
+    bottomAnchor2 = [v78 bottomAnchor];
+    v84 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v104[3] = v84;
     v85 = [NSArray arrayWithObjects:v104 count:4];
     [NSLayoutConstraint activateConstraints:v85];
 
     [(MUScrollableStackView *)self->_contentStackView addArrangedSubview:v91];
     v86 = self->_contentStackView;
-    v87 = [v55 lastObject];
-    v88 = [v87 sectionView];
-    [(MUScrollableStackView *)v86 setCustomSpacing:v88 afterView:8.0];
+    lastObject = [v55 lastObject];
+    sectionView3 = [lastObject sectionView];
+    [(MUScrollableStackView *)v86 setCustomSpacing:sectionView3 afterView:8.0];
   }
 
   [(OfflineMapDetailsViewController *)self setAccessibilityIdentifier:@"OfflineMapDetailsView"];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = OfflineMapDetailsViewController;
-  [(ContaineeViewController *)&v5 viewWillDisappear:a3];
+  [(ContaineeViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[MapsOfflineUIHelper sharedHelper];
   [v4 removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = OfflineMapDetailsViewController;
-  [(ContaineeViewController *)&v5 viewWillAppear:a3];
+  [(ContaineeViewController *)&v5 viewWillAppear:appear];
   v4 = +[MapsOfflineUIHelper sharedHelper];
   [v4 addObserver:self];
 }
@@ -758,16 +758,16 @@ LABEL_11:
   [(OfflineMapDetailsViewController *)self _setupConstraints];
 }
 
-- (OfflineMapDetailsViewController)initWithSubscriptionInfo:(id)a3
+- (OfflineMapDetailsViewController)initWithSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = OfflineMapDetailsViewController;
   v6 = [(OfflineMapDetailsViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionInfo, a3);
+    objc_storeStrong(&v6->_subscriptionInfo, info);
     v8 = objc_alloc_init(GEOMapDataSubscriptionManager);
     [(OfflineMapDetailsViewController *)v7 setSubscriptionManager:v8];
   }

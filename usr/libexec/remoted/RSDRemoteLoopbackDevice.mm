@@ -2,8 +2,8 @@
 - (BOOL)connectable;
 - (const)local_address;
 - (const)remote_address;
-- (int)connectToService:(char *)a3 withTcpOption:(id *)a4;
-- (int)listenForService:(char *)a3 port:(char *)a4;
+- (int)connectToService:(char *)service withTcpOption:(id *)option;
+- (int)listenForService:(char *)service port:(char *)port;
 - (unint64_t)tlsRequirement;
 - (unsigned)interface_index;
 @end
@@ -80,7 +80,7 @@
   return result;
 }
 
-- (int)listenForService:(char *)a3 port:(char *)a4
+- (int)listenForService:(char *)service port:(char *)port
 {
   v5 = socket(2, 1, 0);
   if (v5 == -1)
@@ -145,11 +145,11 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@> Bound to localhost:%d", buf, 0x12u);
   }
 
-  asprintf(a4, "%d", v7);
+  asprintf(port, "%d", v7);
   return v6;
 }
 
-- (int)connectToService:(char *)a3 withTcpOption:(id *)a4
+- (int)connectToService:(char *)service withTcpOption:(id *)option
 {
   if (byte_1000646A0 == 1)
   {
@@ -186,13 +186,13 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v8 = strtol(a3, 0, 0);
+  v8 = strtol(service, 0, 0);
   if ((v8 - 0x10000) <= 0xFFFFFFFFFFFF0000)
   {
     v9 = qword_100064680;
     if (os_log_type_enabled(qword_100064680, OS_LOG_TYPE_ERROR))
     {
-      sub_10004433C(a3, v9);
+      sub_10004433C(service, v9);
     }
 
 LABEL_19:
@@ -225,7 +225,7 @@ LABEL_19:
     *buf = 138543618;
     v17 = qword_100064688;
     v18 = 2080;
-    v19 = a3;
+    serviceCopy = service;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@> connectx(2) succeeded to %s", buf, 0x16u);
   }
 

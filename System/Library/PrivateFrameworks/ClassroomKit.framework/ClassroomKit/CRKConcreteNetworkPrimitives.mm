@@ -1,5 +1,5 @@
 @interface CRKConcreteNetworkPrimitives
-+ (id)makePathMonitorForInterfaceType:(int)a3;
++ (id)makePathMonitorForInterfaceType:(int)type;
 - (id)ethernetNetworkPathMonitor;
 - (id)wifiNetworkPathMonitor;
 @end
@@ -20,9 +20,9 @@
   return [v2 makePathMonitorForInterfaceType:3];
 }
 
-+ (id)makePathMonitorForInterfaceType:(int)a3
++ (id)makePathMonitorForInterfaceType:(int)type
 {
-  v3 = nw_path_monitor_create_with_type(a3);
+  v3 = nw_path_monitor_create_with_type(type);
   if (v3)
   {
     v4 = [[CRKConcreteNetworkPathMonitor alloc] initWithUnderlyingPathMonitor:v3];

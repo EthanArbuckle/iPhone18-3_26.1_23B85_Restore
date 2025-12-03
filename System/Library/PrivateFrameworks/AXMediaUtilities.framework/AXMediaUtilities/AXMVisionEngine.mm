@@ -1,71 +1,71 @@
 @interface AXMVisionEngine
-- (AXMVisionEngine)initWithCoder:(id)a3;
-- (AXMVisionEngine)initWithIdentifier:(id)a3;
-- (BOOL)_queue_activeEvaluationNodesExclusivelyUseVisionFramework:(id)a3;
-- (BOOL)_queue_nodeIdentifierExists:(id)a3;
-- (BOOL)_queue_shouldContinueWithoutResultHandlers:(id)a3;
-- (BOOL)_queue_shouldEvaluateNode:(id)a3 withOptions:(id)a4;
-- (BOOL)canAddEvaluationNode:(id)a3;
-- (BOOL)canAddEvaluationNodeClass:(Class)a3;
-- (BOOL)canAddSourceNode:(id)a3;
-- (BOOL)canAddSourceNodeClass:(Class)a3;
-- (BOOL)engineWillAcceptTiggerWithSource:(id)a3;
+- (AXMVisionEngine)initWithCoder:(id)coder;
+- (AXMVisionEngine)initWithIdentifier:(id)identifier;
+- (BOOL)_queue_activeEvaluationNodesExclusivelyUseVisionFramework:(id)framework;
+- (BOOL)_queue_nodeIdentifierExists:(id)exists;
+- (BOOL)_queue_shouldContinueWithoutResultHandlers:(id)handlers;
+- (BOOL)_queue_shouldEvaluateNode:(id)node withOptions:(id)options;
+- (BOOL)canAddEvaluationNode:(id)node;
+- (BOOL)canAddEvaluationNodeClass:(Class)class;
+- (BOOL)canAddSourceNode:(id)node;
+- (BOOL)canAddSourceNodeClass:(Class)class;
+- (BOOL)engineWillAcceptTiggerWithSource:(id)source;
 - (BOOL)isCachingEnabled;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEngine:(id)a3;
-- (BOOL)nodeIdentifierExists:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEngine:(id)engine;
+- (BOOL)nodeIdentifierExists:(id)exists;
 - (NSArray)evaluationNodes;
 - (NSArray)sourceNodes;
-- (id)_queue_activeEvaluationNodesForOptions:(id)a3 applyPriorityScheduling:(BOOL)a4 prioritySchedulingAllowMultipleNodeExecution:(BOOL)a5;
-- (id)_queue_evaluationNodeWithIdentifier:(id)a3;
-- (id)_queue_makeUniqueIdentifierForNode:(Class)a3;
-- (id)_queue_sourceNodeWithIdentifier:(id)a3;
+- (id)_queue_activeEvaluationNodesForOptions:(id)options applyPriorityScheduling:(BOOL)scheduling prioritySchedulingAllowMultipleNodeExecution:(BOOL)execution;
+- (id)_queue_evaluationNodeWithIdentifier:(id)identifier;
+- (id)_queue_makeUniqueIdentifierForNode:(Class)node;
+- (id)_queue_sourceNodeWithIdentifier:(id)identifier;
 - (id)axmDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)evaluationNodeWithIdentifier:(id)a3;
-- (id)makeUniqueIdentifierForNode:(Class)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)evaluationNodeWithIdentifier:(id)identifier;
+- (id)makeUniqueIdentifierForNode:(Class)node;
 - (id)resultHandlers;
-- (id)sourceNodeWithIdentifier:(id)a3;
+- (id)sourceNodeWithIdentifier:(id)identifier;
 - (int64_t)cacheSize;
 - (unint64_t)hash;
 - (void)_commonInit;
-- (void)_invokeFullQueueResultHandlersForContext:(id)a3;
-- (void)_invokeResultHandlers:(id)a3 withError:(id)a4;
-- (void)_invokeResultHandlers:(id)a3 withResult:(id)a4;
-- (void)_queue_addResultHandler:(id)a3;
-- (void)_queue_evaluateWithSource:(id)a3 context:(id)a4;
-- (void)_queue_handleEvaluatedContext:(id)a3 result:(id)a4 error:(id)a5;
-- (void)_queue_logEvaluatedResult:(id)a3;
-- (void)_queue_remotelyEvaluateWithSource:(id)a3 context:(id)a4;
-- (void)_queue_removeResultHandler:(id)a3;
-- (void)addEvaluationNode:(id)a3;
-- (void)addResultHandler:(id)a3;
-- (void)addSourceNode:(id)a3;
-- (void)addSourceNodes:(id)a3 evaluationNodes:(id)a4;
-- (void)axMediaUtilitiesService:(id)a3 eventOccurred:(int64_t)a4;
-- (void)axmAppendRecursiveDescription:(id)a3 withIndentation:(int64_t)a4;
-- (void)dispatcher:(id)a3 handleTask:(id)a4;
-- (void)enableResultCachingWithCacheSize:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)insertEvaluationNode:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSourceNode:(id)a3 atIndex:(int64_t)a4;
+- (void)_invokeFullQueueResultHandlersForContext:(id)context;
+- (void)_invokeResultHandlers:(id)handlers withError:(id)error;
+- (void)_invokeResultHandlers:(id)handlers withResult:(id)result;
+- (void)_queue_addResultHandler:(id)handler;
+- (void)_queue_evaluateWithSource:(id)source context:(id)context;
+- (void)_queue_handleEvaluatedContext:(id)context result:(id)result error:(id)error;
+- (void)_queue_logEvaluatedResult:(id)result;
+- (void)_queue_remotelyEvaluateWithSource:(id)source context:(id)context;
+- (void)_queue_removeResultHandler:(id)handler;
+- (void)addEvaluationNode:(id)node;
+- (void)addResultHandler:(id)handler;
+- (void)addSourceNode:(id)node;
+- (void)addSourceNodes:(id)nodes evaluationNodes:(id)evaluationNodes;
+- (void)axMediaUtilitiesService:(id)service eventOccurred:(int64_t)occurred;
+- (void)axmAppendRecursiveDescription:(id)description withIndentation:(int64_t)indentation;
+- (void)dispatcher:(id)dispatcher handleTask:(id)task;
+- (void)enableResultCachingWithCacheSize:(int64_t)size;
+- (void)encodeWithCoder:(id)coder;
+- (void)insertEvaluationNode:(id)node atIndex:(int64_t)index;
+- (void)insertSourceNode:(id)node atIndex:(int64_t)index;
 - (void)prewarmEngine;
-- (void)purgeResources:(id)a3;
+- (void)purgeResources:(id)resources;
 - (void)removeAllEvaluationNodes;
 - (void)removeAllResultHandlers;
 - (void)removeAllSourceNodes;
-- (void)removeEvaluationNode:(id)a3;
-- (void)removeResultHandler:(id)a3;
-- (void)removeSourceNode:(id)a3;
-- (void)triggerWithSource:(id)a3 context:(id)a4;
-- (void)updateEngineConfiguration:(id)a3;
+- (void)removeEvaluationNode:(id)node;
+- (void)removeResultHandler:(id)handler;
+- (void)removeSourceNode:(id)node;
+- (void)triggerWithSource:(id)source context:(id)context;
+- (void)updateEngineConfiguration:(id)configuration;
 @end
 
 @implementation AXMVisionEngine
 
-- (AXMVisionEngine)initWithIdentifier:(id)a3
+- (AXMVisionEngine)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = AXMVisionEngine;
   v5 = [(AXMVisionEngine *)&v8 init];
@@ -73,7 +73,7 @@
   if (v5)
   {
     [(AXMVisionEngine *)v5 _commonInit];
-    [(AXMVisionEngine *)v6 setIdentifier:v4];
+    [(AXMVisionEngine *)v6 setIdentifier:identifierCopy];
   }
 
   return v6;
@@ -86,17 +86,17 @@
   queue = self->_queue;
   self->_queue = v4;
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   queue_sourceNodes = self->_queue_sourceNodes;
-  self->_queue_sourceNodes = v6;
+  self->_queue_sourceNodes = array;
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   queue_evaluationNodes = self->_queue_evaluationNodes;
-  self->_queue_evaluationNodes = v8;
+  self->_queue_evaluationNodes = array2;
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   queue_resultHandlers = self->_queue_resultHandlers;
-  self->_queue_resultHandlers = v10;
+  self->_queue_resultHandlers = array3;
 
   v12 = [(AXMVisionEngineNode *)[AXMImageRegistrationNode alloc] initWithIdentifier:@"AXMImgRegistration"];
   queue_imageRegistrationNode = self->_queue_imageRegistrationNode;
@@ -107,8 +107,8 @@
     v14 = objc_alloc_init(AXMService);
     [(AXMVisionEngine *)self setAxMediaUtilsService:v14];
 
-    v15 = [(AXMVisionEngine *)self axMediaUtilsService];
-    [v15 setDelegate:self];
+    axMediaUtilsService = [(AXMVisionEngine *)self axMediaUtilsService];
+    [axMediaUtilsService setDelegate:self];
   }
 
   *&self->_maximumQueueSize = xmmword_1AE451720;
@@ -119,10 +119,10 @@
   [(AXMVisionEngine *)self setSequenceRequestManager:v17];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -130,30 +130,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXMVisionEngine *)self isEqualToEngine:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXMVisionEngine *)self isEqualToEngine:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToEngine:(id)a3
+- (BOOL)isEqualToEngine:(id)engine
 {
-  v4 = a3;
-  if (v4)
+  engineCopy = engine;
+  if (engineCopy)
   {
-    v5 = [(AXMVisionEngine *)self identifier];
-    v6 = [v4 identifier];
-    if ([v5 isEqualToString:v6])
+    identifier = [(AXMVisionEngine *)self identifier];
+    identifier2 = [engineCopy identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v7 = [(AXMVisionEngine *)self sourceNodes];
-      v8 = [v7 count];
-      v9 = [v4 sourceNodes];
-      if (v8 == [v9 count])
+      sourceNodes = [(AXMVisionEngine *)self sourceNodes];
+      v8 = [sourceNodes count];
+      sourceNodes2 = [engineCopy sourceNodes];
+      if (v8 == [sourceNodes2 count])
       {
-        v10 = [(AXMVisionEngine *)self evaluationNodes];
-        v11 = [v10 count];
-        v12 = [v4 evaluationNodes];
-        v13 = v11 == [v12 count];
+        evaluationNodes = [(AXMVisionEngine *)self evaluationNodes];
+        v11 = [evaluationNodes count];
+        evaluationNodes2 = [engineCopy evaluationNodes];
+        v13 = v11 == [evaluationNodes2 count];
       }
 
       else
@@ -178,17 +178,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AXMVisionEngine *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(AXMVisionEngine *)self sourceNodes];
-  v6 = [v5 count] ^ v4;
-  v7 = [(AXMVisionEngine *)self evaluationNodes];
-  v8 = [v7 count];
+  identifier = [(AXMVisionEngine *)self identifier];
+  v4 = [identifier hash];
+  sourceNodes = [(AXMVisionEngine *)self sourceNodes];
+  v6 = [sourceNodes count] ^ v4;
+  evaluationNodes = [(AXMVisionEngine *)self evaluationNodes];
+  v8 = [evaluationNodes count];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -196,10 +196,10 @@
   return v4;
 }
 
-- (AXMVisionEngine)initWithCoder:(id)a3
+- (AXMVisionEngine)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = AXMVisionEngine;
   v5 = [(AXMVisionEngine *)&v29 init];
@@ -207,20 +207,20 @@
   if (v5)
   {
     [(AXMVisionEngine *)v5 _commonInit];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     [(AXMVisionEngine *)v6 setIdentifier:v7];
 
-    -[AXMVisionEngine setMaximumQueueSize:](v6, "setMaximumQueueSize:", [v4 decodeIntegerForKey:@"QueueSize"]);
-    -[AXMVisionEngine setDiagnosticsEnabled:](v6, "setDiagnosticsEnabled:", [v4 decodeBoolForKey:@"diagnosticsEnabled"]);
-    -[AXMVisionEngine setPrioritySchedulingEnabled:](v6, "setPrioritySchedulingEnabled:", [v4 decodeBoolForKey:@"prioritySchedulingEnabled"]);
-    -[AXMVisionEngine setPrioritySchedulingAllowMultipleNodeExecution:](v6, "setPrioritySchedulingAllowMultipleNodeExecution:", [v4 decodeBoolForKey:@"prioritySchedulingAllowMultipleNodeExecution"]);
-    -[AXMVisionEngine setThresholdPriority:](v6, "setThresholdPriority:", [v4 decodeIntegerForKey:@"thresholdPriority"]);
+    -[AXMVisionEngine setMaximumQueueSize:](v6, "setMaximumQueueSize:", [coderCopy decodeIntegerForKey:@"QueueSize"]);
+    -[AXMVisionEngine setDiagnosticsEnabled:](v6, "setDiagnosticsEnabled:", [coderCopy decodeBoolForKey:@"diagnosticsEnabled"]);
+    -[AXMVisionEngine setPrioritySchedulingEnabled:](v6, "setPrioritySchedulingEnabled:", [coderCopy decodeBoolForKey:@"prioritySchedulingEnabled"]);
+    -[AXMVisionEngine setPrioritySchedulingAllowMultipleNodeExecution:](v6, "setPrioritySchedulingAllowMultipleNodeExecution:", [coderCopy decodeBoolForKey:@"prioritySchedulingAllowMultipleNodeExecution"]);
+    -[AXMVisionEngine setThresholdPriority:](v6, "setThresholdPriority:", [coderCopy decodeIntegerForKey:@"thresholdPriority"]);
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
     v8 = AXMSecureCodingClasses();
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"SourceNodes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"SourceNodes"];
 
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v10)
@@ -252,7 +252,7 @@
     v21 = 0u;
     v22 = 0u;
     v14 = AXMSecureCodingClasses();
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:{@"EvaluationNodes", 0}];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:{@"EvaluationNodes", 0}];
 
     v16 = [v15 countByEnumeratingWithState:&v21 objects:v30 count:16];
     if (v16)
@@ -283,32 +283,32 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(AXMVisionEngine *)self identifier];
-  [v7 encodeObject:v4 forKey:@"Identifier"];
+  coderCopy = coder;
+  identifier = [(AXMVisionEngine *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 
-  v5 = [(AXMVisionEngine *)self sourceNodes];
-  [v7 encodeObject:v5 forKey:@"SourceNodes"];
+  sourceNodes = [(AXMVisionEngine *)self sourceNodes];
+  [coderCopy encodeObject:sourceNodes forKey:@"SourceNodes"];
 
-  v6 = [(AXMVisionEngine *)self evaluationNodes];
-  [v7 encodeObject:v6 forKey:@"EvaluationNodes"];
+  evaluationNodes = [(AXMVisionEngine *)self evaluationNodes];
+  [coderCopy encodeObject:evaluationNodes forKey:@"EvaluationNodes"];
 
-  [v7 encodeInteger:-[AXMVisionEngine maximumQueueSize](self forKey:{"maximumQueueSize"), @"QueueSize"}];
-  [v7 encodeBool:-[AXMVisionEngine areDiagnosticsEnabled](self forKey:{"areDiagnosticsEnabled"), @"diagnosticsEnabled"}];
-  [v7 encodeBool:-[AXMVisionEngine prioritySchedulingEnabled](self forKey:{"prioritySchedulingEnabled"), @"prioritySchedulingEnabled"}];
-  [v7 encodeBool:-[AXMVisionEngine prioritySchedulingAllowMultipleNodeExecution](self forKey:{"prioritySchedulingAllowMultipleNodeExecution"), @"prioritySchedulingAllowMultipleNodeExecution"}];
-  [v7 encodeInteger:-[AXMVisionEngine thresholdPriority](self forKey:{"thresholdPriority"), @"thresholdPriority"}];
+  [coderCopy encodeInteger:-[AXMVisionEngine maximumQueueSize](self forKey:{"maximumQueueSize"), @"QueueSize"}];
+  [coderCopy encodeBool:-[AXMVisionEngine areDiagnosticsEnabled](self forKey:{"areDiagnosticsEnabled"), @"diagnosticsEnabled"}];
+  [coderCopy encodeBool:-[AXMVisionEngine prioritySchedulingEnabled](self forKey:{"prioritySchedulingEnabled"), @"prioritySchedulingEnabled"}];
+  [coderCopy encodeBool:-[AXMVisionEngine prioritySchedulingAllowMultipleNodeExecution](self forKey:{"prioritySchedulingAllowMultipleNodeExecution"), @"prioritySchedulingAllowMultipleNodeExecution"}];
+  [coderCopy encodeInteger:-[AXMVisionEngine thresholdPriority](self forKey:{"thresholdPriority"), @"thresholdPriority"}];
 }
 
-- (BOOL)_queue_shouldContinueWithoutResultHandlers:(id)a3
+- (BOOL)_queue_shouldContinueWithoutResultHandlers:(id)handlers
 {
-  v4 = a3;
+  handlersCopy = handlers;
   if ([(AXMVisionEngine *)self isCachingEnabled])
   {
-    v5 = [v4 cacheKey];
-    v6 = v5 != 0;
+    cacheKey = [handlersCopy cacheKey];
+    v6 = cacheKey != 0;
   }
 
   else
@@ -319,16 +319,16 @@
   return v6;
 }
 
-- (void)_queue_remotelyEvaluateWithSource:(id)a3 context:(id)a4
+- (void)_queue_remotelyEvaluateWithSource:(id)source context:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  contextCopy = context;
   v8 = AXMediaLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = sourceCopy;
     _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_INFO, "Queueing remote evaluation of %@", buf, 0xCu);
   }
 
@@ -350,9 +350,9 @@
   v14[2] = __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_invoke;
   v14[3] = &unk_1E7A1CE90;
   v14[4] = self;
-  v12 = v6;
+  v12 = sourceCopy;
   v15 = v12;
-  v13 = v7;
+  v13 = contextCopy;
   v16 = v13;
   v17 = v10;
   dispatch_async(v11, v14);
@@ -417,14 +417,14 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
   dispatch_async(v11, v14);
 }
 
-- (BOOL)_queue_shouldEvaluateNode:(id)a3 withOptions:(id)a4
+- (BOOL)_queue_shouldEvaluateNode:(id)node withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  optionsCopy = options;
   v7 = 0;
-  if ([v5 shouldEvaluate:v6])
+  if ([nodeCopy shouldEvaluate:optionsCopy])
   {
-    if ([v6 detectText] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectScenes") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectObjects") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectNSFW") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectSignificantEvents") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectModelClassifications") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectCaptions") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectFaces") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectTraits") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectHorizon") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectRectangles") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectProminentObjects") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectIconClass") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectBrailleEdges") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectAXElements") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectAesthetics") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectMADCaptions") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectMADScenes") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectMADFace") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v6, "detectMADText") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([optionsCopy detectText] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectScenes") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectObjects") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectNSFW") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectSignificantEvents") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectModelClassifications") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectCaptions") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectFaces") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectTraits") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectHorizon") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectRectangles") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectProminentObjects") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectIconClass") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectBrailleEdges") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectAXElements") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectAesthetics") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectMADCaptions") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectMADScenes") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectMADFace") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(optionsCopy, "detectMADText") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = 1;
     }
@@ -433,13 +433,13 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
   return v7;
 }
 
-- (id)_queue_activeEvaluationNodesForOptions:(id)a3 applyPriorityScheduling:(BOOL)a4 prioritySchedulingAllowMultipleNodeExecution:(BOOL)a5
+- (id)_queue_activeEvaluationNodesForOptions:(id)options applyPriorityScheduling:(BOOL)scheduling prioritySchedulingAllowMultipleNodeExecution:(BOOL)execution
 {
-  v33 = a5;
-  v5 = a4;
+  executionCopy = execution;
+  schedulingCopy = scheduling;
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -460,9 +460,9 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
-        if ([v14 isEnabled] && -[AXMVisionEngine _queue_shouldEvaluateNode:withOptions:](self, "_queue_shouldEvaluateNode:withOptions:", v14, v7))
+        if ([v14 isEnabled] && -[AXMVisionEngine _queue_shouldEvaluateNode:withOptions:](self, "_queue_shouldEvaluateNode:withOptions:", v14, optionsCopy))
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -472,15 +472,15 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
     while (v11);
   }
 
-  if (v5)
+  if (schedulingCopy)
   {
-    v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array, "count")}];
     v15 = AXMediaLogEnginePriority();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(AXMVisionEngine *)self thresholdPriority];
+      thresholdPriority = [(AXMVisionEngine *)self thresholdPriority];
       *buf = 134217984;
-      v43 = v16;
+      v43 = thresholdPriority;
       _os_log_impl(&dword_1AE37B000, v15, OS_LOG_TYPE_DEFAULT, "engine threshold priority: %ld", buf, 0xCu);
     }
 
@@ -488,7 +488,7 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v17 = v8;
+    v17 = array;
     v18 = [v17 countByEnumeratingWithState:&v34 objects:v48 count:16];
     if (v18)
     {
@@ -509,29 +509,29 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
           v24 = AXMediaLogEnginePriority();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [objc_opt_class() title];
-            v26 = [v23 effectivePriority];
+            title = [objc_opt_class() title];
+            effectivePriority = [v23 effectivePriority];
             *buf = 134218498;
             v43 = v23;
             v44 = 2112;
-            v45 = v25;
+            v45 = title;
             v46 = 2048;
-            v47 = v26;
+            v47 = effectivePriority;
             _os_log_impl(&dword_1AE37B000, v24, OS_LOG_TYPE_DEFAULT, "   node <%p> :'%@'. boosted priority:%ld", buf, 0x20u);
           }
 
-          v27 = [v23 effectivePriority];
-          if (v27 >= [(AXMVisionEngine *)self thresholdPriority])
+          effectivePriority2 = [v23 effectivePriority];
+          if (effectivePriority2 >= [(AXMVisionEngine *)self thresholdPriority])
           {
-            if (v33)
+            if (executionCopy)
             {
               [v32 addObject:v23];
             }
 
             else if (v20)
             {
-              v28 = [v23 effectivePriority];
-              if (v28 > [v20 effectivePriority])
+              effectivePriority3 = [v23 effectivePriority];
+              if (effectivePriority3 > [v20 effectivePriority])
               {
                 v29 = v23;
 
@@ -551,7 +551,7 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
 
       while (v19);
 
-      if (!v33 && v20)
+      if (!executionCopy && v20)
       {
         [v32 addObject:v20];
       }
@@ -564,43 +564,43 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
     }
 
     [v32 enumerateObjectsUsingBlock:&__block_literal_global_5];
-    v8 = v32;
+    array = v32;
 
     v30 = AXMediaLogEnginePriority();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = v8;
+      v43 = array;
       _os_log_impl(&dword_1AE37B000, v30, OS_LOG_TYPE_DEFAULT, "highest priority node(s): %@", buf, 0xCu);
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (void)_queue_logEvaluatedResult:(id)a3
+- (void)_queue_logEvaluatedResult:(id)result
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  resultCopy = result;
+  v4 = resultCopy;
+  if (resultCopy)
   {
-    v5 = [v3 features];
+    features = [resultCopy features];
 
-    if (v5)
+    if (features)
     {
-      v6 = [v4 features];
-      v7 = [v6 count];
+      features2 = [v4 features];
+      v7 = [features2 count];
 
       if (v7)
       {
-        v8 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v9 = [v4 features];
-        v10 = [v9 countByEnumeratingWithState:&v30 objects:v37 count:16];
+        features3 = [v4 features];
+        v10 = [features3 countByEnumeratingWithState:&v30 objects:v37 count:16];
         if (v10)
         {
           v11 = v10;
@@ -611,17 +611,17 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
             {
               if (*v31 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(features3);
               }
 
               v14 = [*(*(&v30 + 1) + 8 * i) description];
               if (v14)
               {
-                [v8 addObject:v14];
+                [array addObject:v14];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v30 objects:v37 count:16];
+            v11 = [features3 countByEnumeratingWithState:&v30 objects:v37 count:16];
           }
 
           while (v11);
@@ -643,7 +643,7 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v17 = v8;
+        v17 = array;
         v18 = [v17 countByEnumeratingWithState:&v26 objects:v36 count:16];
         if (v18)
         {
@@ -717,15 +717,15 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
   }
 }
 
-- (BOOL)_queue_activeEvaluationNodesExclusivelyUseVisionFramework:(id)a3
+- (BOOL)_queue_activeEvaluationNodesExclusivelyUseVisionFramework:(id)framework
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  frameworkCopy = framework;
+  v4 = [frameworkCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -736,7 +736,7 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(frameworkCopy);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) requiresVisionFramework])
@@ -746,7 +746,7 @@ void __61__AXMVisionEngine__queue_remotelyEvaluateWithSource_context___block_inv
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [frameworkCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -762,17 +762,17 @@ LABEL_11:
   return v8;
 }
 
-- (void)_queue_evaluateWithSource:(id)a3 context:(id)a4
+- (void)_queue_evaluateWithSource:(id)source context:(id)context
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  contextCopy = context;
   v8 = objc_autoreleasePoolPush();
   group = dispatch_group_create();
-  if (([v7 sourceProvidesResults] & 1) == 0)
+  if (([contextCopy sourceProvidesResults] & 1) == 0)
   {
-    v9 = [v7 analysisOptions];
-    v10 = [(AXMVisionEngine *)self _queue_activeEvaluationNodesForOptions:v9 applyPriorityScheduling:[(AXMVisionEngine *)self prioritySchedulingEnabled] prioritySchedulingAllowMultipleNodeExecution:[(AXMVisionEngine *)self prioritySchedulingAllowMultipleNodeExecution]];
+    analysisOptions = [contextCopy analysisOptions];
+    v10 = [(AXMVisionEngine *)self _queue_activeEvaluationNodesForOptions:analysisOptions applyPriorityScheduling:[(AXMVisionEngine *)self prioritySchedulingEnabled] prioritySchedulingAllowMultipleNodeExecution:[(AXMVisionEngine *)self prioritySchedulingAllowMultipleNodeExecution]];
 
     if (-[AXMVisionEngine prioritySchedulingEnabled](self, "prioritySchedulingEnabled") && !-[AXMVisionEngine prioritySchedulingAllowMultipleNodeExecution](self, "prioritySchedulingAllowMultipleNodeExecution") && [v10 count] >= 2)
     {
@@ -788,9 +788,9 @@ LABEL_11:
       v12 = AXMediaLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v7 analysisOptions];
+        analysisOptions2 = [contextCopy analysisOptions];
         *buf = 138412290;
-        v52 = v13;
+        v52 = analysisOptions2;
         _os_log_impl(&dword_1AE37B000, v12, OS_LOG_TYPE_INFO, "Will begin image evaluation. %@", buf, 0xCu);
       }
 
@@ -801,13 +801,13 @@ LABEL_11:
       block[1] = 3221225472;
       block[2] = __53__AXMVisionEngine__queue_evaluateWithSource_context___block_invoke_99;
       block[3] = &unk_1E7A1CE40;
-      v15 = v7;
+      v15 = contextCopy;
       v46 = v15;
-      v47 = self;
+      selfCopy = self;
       v16 = v10;
       v48 = v16;
-      v27 = v6;
-      v49 = v6;
+      v27 = sourceCopy;
+      v49 = sourceCopy;
       dispatch_group_async(group, queue, block);
       if ([(AXMVisionEngine *)self imageRegistrationFilteringEnabled])
       {
@@ -818,7 +818,7 @@ LABEL_11:
         v41[3] = &unk_1E7A1CF48;
         v44 = &__block_literal_global_93;
         v42 = v15;
-        v43 = self;
+        selfCopy2 = self;
         dispatch_group_async(group, v17, v41);
       }
 
@@ -861,7 +861,7 @@ LABEL_11:
       }
 
       v8 = v26;
-      v6 = v27;
+      sourceCopy = v27;
     }
   }
 
@@ -870,9 +870,9 @@ LABEL_11:
   v30[1] = 3221225472;
   v30[2] = __53__AXMVisionEngine__queue_evaluateWithSource_context___block_invoke_103;
   v30[3] = &unk_1E7A1CB30;
-  v25 = v7;
+  v25 = contextCopy;
   v31 = v25;
-  v32 = self;
+  selfCopy3 = self;
   dispatch_group_notify(group, v24, v30);
 
   objc_autoreleasePoolPop(v8);
@@ -1034,28 +1034,28 @@ void __53__AXMVisionEngine__queue_evaluateWithSource_context___block_invoke_103(
   [v5 _queue_handleEvaluatedContext:v4 result:v8 error:v7];
 }
 
-- (void)_queue_handleEvaluatedContext:(id)a3 result:(id)a4 error:(id)a5
+- (void)_queue_handleEvaluatedContext:(id)context result:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 didFinishProcessingContext];
+  contextCopy = context;
+  resultCopy = result;
+  errorCopy = error;
+  [contextCopy didFinishProcessingContext];
   if ([(AXMVisionEngine *)self isCachingEnabled])
   {
-    v11 = [v8 cacheKey];
+    cacheKey = [contextCopy cacheKey];
 
-    if (v11)
+    if (cacheKey)
     {
-      v12 = [(AXMVisionEngine *)self cache];
-      v13 = [v8 cacheKey];
-      [v12 setResult:v9 forKey:v13];
+      cache = [(AXMVisionEngine *)self cache];
+      cacheKey2 = [contextCopy cacheKey];
+      [cache setResult:resultCopy forKey:cacheKey2];
     }
   }
 
-  v14 = [v9 features];
-  v15 = [v14 count];
+  features = [resultCopy features];
+  v15 = [features count];
 
-  if (v10)
+  if (errorCopy)
   {
     v16 = AXMediaLogCommon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1063,14 +1063,14 @@ void __53__AXMVisionEngine__queue_evaluateWithSource_context___block_invoke_103(
       [AXMVisionEngine _queue_handleEvaluatedContext:result:error:];
     }
 
-    v17 = [v8 resultHandlers];
-    [(AXMVisionEngine *)self _invokeResultHandlers:v17 withError:v10];
+    resultHandlers = [contextCopy resultHandlers];
+    [(AXMVisionEngine *)self _invokeResultHandlers:resultHandlers withError:errorCopy];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  if (v15 > 0 || [v8 shouldCallCompletionHandlersForEmptyResultSet])
+  if (v15 > 0 || [contextCopy shouldCallCompletionHandlersForEmptyResultSet])
   {
     v18 = AXMediaLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1078,13 +1078,13 @@ LABEL_13:
       [AXMVisionEngine _queue_handleEvaluatedContext:result:error:];
     }
 
-    v17 = [v8 resultHandlers];
-    [(AXMVisionEngine *)self _invokeResultHandlers:v17 withResult:v9];
+    resultHandlers = [contextCopy resultHandlers];
+    [(AXMVisionEngine *)self _invokeResultHandlers:resultHandlers withResult:resultCopy];
     goto LABEL_13;
   }
 
 LABEL_14:
-  [(AXMTask *)self->_queue_currentTask markAsComplete:v10 == 0];
+  [(AXMTask *)self->_queue_currentTask markAsComplete:errorCopy == 0];
   queue_currentTask = self->_queue_currentTask;
   self->_queue_currentTask = 0;
 }
@@ -1119,35 +1119,35 @@ void __30__AXMVisionEngine_sourceNodes__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)canAddSourceNode:(id)a3
+- (BOOL)canAddSourceNode:(id)node
 {
   v3 = objc_opt_class();
 
   return [v3 isSupported];
 }
 
-- (BOOL)canAddSourceNodeClass:(Class)a3
+- (BOOL)canAddSourceNodeClass:(Class)class
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(objc_class *)a3 isSupported];
+  return [(objc_class *)class isSupported];
 }
 
-- (void)addSourceNode:(id)a3
+- (void)addSourceNode:(id)node
 {
-  v4 = a3;
-  if ([(AXMVisionEngine *)self canAddSourceNode:v4])
+  nodeCopy = node;
+  if ([(AXMVisionEngine *)self canAddSourceNode:nodeCopy])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __33__AXMVisionEngine_addSourceNode___block_invoke;
     v7[3] = &unk_1E7A1CB30;
-    v8 = v4;
-    v9 = self;
+    v8 = nodeCopy;
+    selfCopy = self;
     dispatch_sync(queue, v7);
     v6 = v8;
   }
@@ -1177,19 +1177,19 @@ uint64_t __33__AXMVisionEngine_addSourceNode___block_invoke(uint64_t a1)
   return [*(*(a1 + 40) + 16) addObject:*(a1 + 32)];
 }
 
-- (void)insertSourceNode:(id)a3 atIndex:(int64_t)a4
+- (void)insertSourceNode:(id)node atIndex:(int64_t)index
 {
-  v6 = a3;
-  if ([(AXMVisionEngine *)self canAddSourceNode:v6])
+  nodeCopy = node;
+  if ([(AXMVisionEngine *)self canAddSourceNode:nodeCopy])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__AXMVisionEngine_insertSourceNode_atIndex___block_invoke;
     block[3] = &unk_1E7A1CF98;
-    v10 = v6;
-    v11 = self;
-    v12 = a4;
+    v10 = nodeCopy;
+    selfCopy = self;
+    indexCopy = index;
     dispatch_sync(queue, block);
     v8 = v10;
   }
@@ -1219,17 +1219,17 @@ uint64_t __44__AXMVisionEngine_insertSourceNode_atIndex___block_invoke(uint64_t 
   return [*(*(a1 + 40) + 16) insertObject:*(a1 + 32) atIndex:*(a1 + 48)];
 }
 
-- (void)removeSourceNode:(id)a3
+- (void)removeSourceNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__AXMVisionEngine_removeSourceNode___block_invoke;
   v7[3] = &unk_1E7A1CB30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = nodeCopy;
+  selfCopy = self;
+  v6 = nodeCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1319,35 +1319,35 @@ void __34__AXMVisionEngine_evaluationNodes__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)canAddEvaluationNode:(id)a3
+- (BOOL)canAddEvaluationNode:(id)node
 {
   v3 = objc_opt_class();
 
   return [v3 isSupported];
 }
 
-- (BOOL)canAddEvaluationNodeClass:(Class)a3
+- (BOOL)canAddEvaluationNodeClass:(Class)class
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(objc_class *)a3 isSupported];
+  return [(objc_class *)class isSupported];
 }
 
-- (void)addEvaluationNode:(id)a3
+- (void)addEvaluationNode:(id)node
 {
-  v4 = a3;
-  if ([(AXMVisionEngine *)self canAddEvaluationNode:v4])
+  nodeCopy = node;
+  if ([(AXMVisionEngine *)self canAddEvaluationNode:nodeCopy])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37__AXMVisionEngine_addEvaluationNode___block_invoke;
     v7[3] = &unk_1E7A1CB30;
-    v8 = v4;
-    v9 = self;
+    v8 = nodeCopy;
+    selfCopy = self;
     dispatch_sync(queue, v7);
     v6 = v8;
   }
@@ -1389,19 +1389,19 @@ uint64_t __37__AXMVisionEngine_addEvaluationNode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)insertEvaluationNode:(id)a3 atIndex:(int64_t)a4
+- (void)insertEvaluationNode:(id)node atIndex:(int64_t)index
 {
-  v6 = a3;
-  if ([(AXMVisionEngine *)self canAddEvaluationNode:v6])
+  nodeCopy = node;
+  if ([(AXMVisionEngine *)self canAddEvaluationNode:nodeCopy])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__AXMVisionEngine_insertEvaluationNode_atIndex___block_invoke;
     block[3] = &unk_1E7A1CF98;
-    v10 = v6;
-    v11 = self;
-    v12 = a4;
+    v10 = nodeCopy;
+    selfCopy = self;
+    indexCopy = index;
     dispatch_sync(queue, block);
     v8 = v10;
   }
@@ -1431,17 +1431,17 @@ uint64_t __48__AXMVisionEngine_insertEvaluationNode_atIndex___block_invoke(uint6
   return [*(*(a1 + 40) + 24) insertObject:*(a1 + 32) atIndex:*(a1 + 48)];
 }
 
-- (void)removeEvaluationNode:(id)a3
+- (void)removeEvaluationNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__AXMVisionEngine_removeEvaluationNode___block_invoke;
   v7[3] = &unk_1E7A1CB30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = nodeCopy;
+  selfCopy = self;
+  v6 = nodeCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1501,16 +1501,16 @@ uint64_t __43__AXMVisionEngine_removeAllEvaluationNodes__block_invoke(uint64_t a
   return [*(*(a1 + 32) + 24) removeAllObjects];
 }
 
-- (void)addSourceNodes:(id)a3 evaluationNodes:(id)a4
+- (void)addSourceNodes:(id)nodes evaluationNodes:(id)evaluationNodes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  evaluationNodesCopy = evaluationNodes;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v8 = [nodesCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1522,14 +1522,14 @@ uint64_t __43__AXMVisionEngine_removeAllEvaluationNodes__block_invoke(uint64_t a
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nodesCopy);
         }
 
         [(AXMVisionEngine *)self addSourceNode:*(*(&v21 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [nodesCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -1539,7 +1539,7 @@ uint64_t __43__AXMVisionEngine_removeAllEvaluationNodes__block_invoke(uint64_t a
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v7;
+  v12 = evaluationNodesCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
@@ -1566,9 +1566,9 @@ uint64_t __43__AXMVisionEngine_removeAllEvaluationNodes__block_invoke(uint64_t a
   }
 }
 
-- (id)sourceNodeWithIdentifier:(id)a3
+- (id)sourceNodeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1580,10 +1580,10 @@ uint64_t __43__AXMVisionEngine_removeAllEvaluationNodes__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __44__AXMVisionEngine_sourceNodeWithIdentifier___block_invoke;
   block[3] = &unk_1E7A1CFC0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -1600,9 +1600,9 @@ void __44__AXMVisionEngine_sourceNodeWithIdentifier___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)evaluationNodeWithIdentifier:(id)a3
+- (id)evaluationNodeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1614,10 +1614,10 @@ void __44__AXMVisionEngine_sourceNodeWithIdentifier___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __48__AXMVisionEngine_evaluationNodeWithIdentifier___block_invoke;
   block[3] = &unk_1E7A1CFC0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -1634,10 +1634,10 @@ void __48__AXMVisionEngine_evaluationNodeWithIdentifier___block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (id)_queue_sourceNodeWithIdentifier:(id)a3
+- (id)_queue_sourceNodeWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1657,8 +1657,8 @@ void __48__AXMVisionEngine_evaluationNodeWithIdentifier___block_invoke(uint64_t 
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1682,10 +1682,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_queue_evaluationNodeWithIdentifier:(id)a3
+- (id)_queue_evaluationNodeWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1705,8 +1705,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1730,7 +1730,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)makeUniqueIdentifierForNode:(Class)a3
+- (id)makeUniqueIdentifierForNode:(Class)node
 {
   v7 = 0;
   v8 = &v7;
@@ -1745,7 +1745,7 @@ LABEL_11:
   block[3] = &unk_1E7A1CFE8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = node;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1761,9 +1761,9 @@ void __47__AXMVisionEngine_makeUniqueIdentifierForNode___block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-- (id)_queue_makeUniqueIdentifierForNode:(Class)a3
+- (id)_queue_makeUniqueIdentifierForNode:(Class)node
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(node);
   v5 = [v4 stringByReplacingOccurrencesOfString:@"AXM" withString:&stru_1F23EA908];
   v6 = [v5 stringByReplacingOccurrencesOfString:@"Node" withString:&stru_1F23EA908];
 
@@ -1782,9 +1782,9 @@ void __47__AXMVisionEngine_makeUniqueIdentifierForNode___block_invoke(uint64_t a
   return v7;
 }
 
-- (BOOL)nodeIdentifierExists:(id)a3
+- (BOOL)nodeIdentifierExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1794,10 +1794,10 @@ void __47__AXMVisionEngine_makeUniqueIdentifierForNode___block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __40__AXMVisionEngine_nodeIdentifierExists___block_invoke;
   block[3] = &unk_1E7A1CFC0;
-  v9 = v4;
+  v9 = existsCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = existsCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -1812,10 +1812,10 @@ uint64_t __40__AXMVisionEngine_nodeIdentifierExists___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_queue_nodeIdentifierExists:(id)a3
+- (BOOL)_queue_nodeIdentifierExists:(id)exists
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  existsCopy = exists;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1835,8 +1835,8 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [*(*(&v22 + 1) + 8 * v9) identifier];
-      v11 = [v10 isEqualToString:v4];
+      identifier = [*(*(&v22 + 1) + 8 * v9) identifier];
+      v11 = [identifier isEqualToString:existsCopy];
 
       if (v11)
       {
@@ -1874,8 +1874,8 @@ LABEL_11:
         objc_enumerationMutation(v5);
       }
 
-      v15 = [*(*(&v18 + 1) + 8 * v14) identifier];
-      v16 = [v15 isEqualToString:v4];
+      identifier2 = [*(*(&v18 + 1) + 8 * v14) identifier];
+      v16 = [identifier2 isEqualToString:existsCopy];
 
       if (v16)
       {
@@ -1933,11 +1933,11 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)addResultHandler:(id)a3
+- (void)addResultHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1945,23 +1945,23 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
     v7[2] = __36__AXMVisionEngine_addResultHandler___block_invoke;
     v7[3] = &unk_1E7A1C678;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)_queue_addResultHandler:(id)a3
+- (void)_queue_addResultHandler:(id)handler
 {
   queue_resultHandlers = self->_queue_resultHandlers;
-  v4 = MEMORY[0x1B2700900](a3, a2);
+  v4 = MEMORY[0x1B2700900](handler, a2);
   [(NSMutableArray *)queue_resultHandlers addObject:v4];
 }
 
-- (void)removeResultHandler:(id)a3
+- (void)removeResultHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1969,15 +1969,15 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
     v7[2] = __39__AXMVisionEngine_removeResultHandler___block_invoke;
     v7[3] = &unk_1E7A1C678;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)_queue_removeResultHandler:(id)a3
+- (void)_queue_removeResultHandler:(id)handler
 {
   queue_resultHandlers = self->_queue_resultHandlers;
-  v4 = MEMORY[0x1B2700900](a3, a2);
+  v4 = MEMORY[0x1B2700900](handler, a2);
   [(NSMutableArray *)queue_resultHandlers removeObject:v4];
 }
 
@@ -1992,16 +1992,16 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
   dispatch_sync(queue, block);
 }
 
-- (void)_invokeResultHandlers:(id)a3 withError:(id)a4
+- (void)_invokeResultHandlers:(id)handlers withError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  handlersCopy = handlers;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [handlersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2013,30 +2013,30 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(handlersCopy);
         }
 
         (*(*(*(&v11 + 1) + 8 * v10++) + 16))();
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [handlersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_invokeResultHandlers:(id)a3 withResult:(id)a4
+- (void)_invokeResultHandlers:(id)handlers withResult:(id)result
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  handlersCopy = handlers;
+  resultCopy = result;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [handlersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2048,14 +2048,14 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(handlersCopy);
         }
 
         (*(*(*(&v11 + 1) + 8 * v10++) + 16))();
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [handlersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -2064,30 +2064,30 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
 
 - (BOOL)isCachingEnabled
 {
-  v2 = [(AXMVisionEngine *)self cache];
-  v3 = v2 != 0;
+  cache = [(AXMVisionEngine *)self cache];
+  v3 = cache != 0;
 
   return v3;
 }
 
 - (int64_t)cacheSize
 {
-  v2 = [(AXMVisionEngine *)self cache];
-  v3 = [v2 cacheSize];
+  cache = [(AXMVisionEngine *)self cache];
+  cacheSize = [cache cacheSize];
 
-  return v3;
+  return cacheSize;
 }
 
-- (void)enableResultCachingWithCacheSize:(int64_t)a3
+- (void)enableResultCachingWithCacheSize:(int64_t)size
 {
-  v4 = [[AXMVisionEngineCache alloc] initWithCacheSize:a3];
+  v4 = [[AXMVisionEngineCache alloc] initWithCacheSize:size];
   [(AXMVisionEngine *)self setCache:v4];
 }
 
-- (void)updateEngineConfiguration:(id)a3
+- (void)updateEngineConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v5 = dispatch_get_global_queue(2, 0);
     v6[0] = MEMORY[0x1E69E9820];
@@ -2095,7 +2095,7 @@ void __33__AXMVisionEngine_resultHandlers__block_invoke(uint64_t a1)
     v6[2] = __45__AXMVisionEngine_updateEngineConfiguration___block_invoke;
     v6[3] = &unk_1E7A1D010;
     v6[4] = self;
-    v7 = v4;
+    v7 = configurationCopy;
     dispatch_async(v5, v6);
   }
 }
@@ -2136,12 +2136,12 @@ void __45__AXMVisionEngine_updateEngineConfiguration___block_invoke_3(uint64_t a
   dispatch_async(v2, &__block_literal_global_121);
 }
 
-- (void)purgeResources:(id)a3
+- (void)purgeResources:(id)resources
 {
-  v4 = a3;
-  if (!v4)
+  resourcesCopy = resources;
+  if (!resourcesCopy)
   {
-    v4 = [&__block_literal_global_123 copy];
+    resourcesCopy = [&__block_literal_global_123 copy];
   }
 
   queue = self->_queue;
@@ -2150,8 +2150,8 @@ void __45__AXMVisionEngine_updateEngineConfiguration___block_invoke_3(uint64_t a
   v7[2] = __34__AXMVisionEngine_purgeResources___block_invoke_2;
   v7[3] = &unk_1E7A1C678;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resourcesCopy;
+  v6 = resourcesCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2352,7 +2352,7 @@ LABEL_25:
   maximumQueueSize = self->_maximumQueueSize;
   thresholdPriority = self->_thresholdPriority;
   identifier = self->_identifier;
-  v10 = [(AXMVisionEngine *)self cacheSize];
+  cacheSize = [(AXMVisionEngine *)self cacheSize];
   if ([(AXMVisionEngine *)self areDiagnosticsEnabled])
   {
     v11 = @"Y";
@@ -2363,28 +2363,28 @@ LABEL_25:
     v11 = @"N";
   }
 
-  v12 = [v3 stringWithFormat:@"%@<%p>: ID:'%@' [PriorSched:%@ threshhold:%lu] maxQueueSize:%ld cacheSize:%ld metrics:%@", v5, self, identifier, v6, thresholdPriority, maximumQueueSize, v10, v11];
+  v12 = [v3 stringWithFormat:@"%@<%p>: ID:'%@' [PriorSched:%@ threshhold:%lu] maxQueueSize:%ld cacheSize:%ld metrics:%@", v5, self, identifier, v6, thresholdPriority, maximumQueueSize, cacheSize, v11];
 
   return v12;
 }
 
-- (void)axmAppendRecursiveDescription:(id)a3 withIndentation:(int64_t)a4
+- (void)axmAppendRecursiveDescription:(id)description withIndentation:(int64_t)indentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD60] axmIndentationString:a4];
-  v8 = [(AXMVisionEngine *)self axmDescription];
-  [v6 appendFormat:@"%@%@\n", v7, v8];
+  descriptionCopy = description;
+  v7 = [MEMORY[0x1E696AD60] axmIndentationString:indentation];
+  axmDescription = [(AXMVisionEngine *)self axmDescription];
+  [descriptionCopy appendFormat:@"%@%@\n", v7, axmDescription];
 
-  v9 = [(AXMVisionEngine *)self sourceNodes];
-  if ([v9 count])
+  sourceNodes = [(AXMVisionEngine *)self sourceNodes];
+  if ([sourceNodes count])
   {
-    [v6 appendFormat:@"%@Source Nodes:\n", v7];
+    [descriptionCopy appendFormat:@"%@Source Nodes:\n", v7];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v9;
+    v10 = sourceNodes;
     v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v11)
     {
@@ -2400,7 +2400,7 @@ LABEL_25:
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v25 + 1) + 8 * v14++) axmAppendRecursiveDescription:v6 withIndentation:a4 + 1];
+          [*(*(&v25 + 1) + 8 * v14++) axmAppendRecursiveDescription:descriptionCopy withIndentation:indentation + 1];
         }
 
         while (v12 != v14);
@@ -2411,15 +2411,15 @@ LABEL_25:
     }
   }
 
-  v15 = [(AXMVisionEngine *)self evaluationNodes];
-  if ([v15 count])
+  evaluationNodes = [(AXMVisionEngine *)self evaluationNodes];
+  if ([evaluationNodes count])
   {
-    [v6 appendFormat:@"%@Evaluation Nodes:\n", v7];
+    [descriptionCopy appendFormat:@"%@Evaluation Nodes:\n", v7];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v15;
+    v16 = evaluationNodes;
     v17 = [v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v17)
     {
@@ -2435,7 +2435,7 @@ LABEL_25:
             objc_enumerationMutation(v16);
           }
 
-          [*(*(&v21 + 1) + 8 * v20++) axmAppendRecursiveDescription:v6 withIndentation:a4 + 1];
+          [*(*(&v21 + 1) + 8 * v20++) axmAppendRecursiveDescription:descriptionCopy withIndentation:indentation + 1];
         }
 
         while (v18 != v20);
@@ -2447,17 +2447,17 @@ LABEL_25:
   }
 }
 
-- (void)dispatcher:(id)a3 handleTask:(id)a4
+- (void)dispatcher:(id)dispatcher handleTask:(id)task
 {
-  v5 = a4;
+  taskCopy = task;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__AXMVisionEngine_dispatcher_handleTask___block_invoke;
   v8[3] = &unk_1E7A1CB30;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
   dispatch_async(queue, v8);
 }
 
@@ -2514,7 +2514,7 @@ void __41__AXMVisionEngine_dispatcher_handleTask___block_invoke(uint64_t a1)
 LABEL_13:
 }
 
-- (void)axMediaUtilitiesService:(id)a3 eventOccurred:(int64_t)a4
+- (void)axMediaUtilitiesService:(id)service eventOccurred:(int64_t)occurred
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -2522,7 +2522,7 @@ LABEL_13:
   v5[2] = __57__AXMVisionEngine_axMediaUtilitiesService_eventOccurred___block_invoke;
   v5[3] = &unk_1E7A1D060;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = occurred;
   dispatch_async(queue, v5);
 }
 
@@ -2557,52 +2557,52 @@ void __57__AXMVisionEngine_axMediaUtilitiesService_eventOccurred___block_invoke(
   }
 }
 
-- (void)triggerWithSource:(id)a3 context:(id)a4
+- (void)triggerWithSource:(id)source context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  contextCopy = context;
   v8 = objc_autoreleasePoolPush();
-  if (v7)
+  if (contextCopy)
   {
-    if (v6)
+    if (sourceCopy)
     {
-      if (([v7 sourceProvidesResults] & 1) == 0)
+      if (([contextCopy sourceProvidesResults] & 1) == 0)
       {
-        v9 = [(AXMVisionEngine *)self maximumQueueSize];
-        v10 = [(AXMVisionEngine *)self taskDispatcher];
-        v11 = v10;
-        if (v9)
+        maximumQueueSize = [(AXMVisionEngine *)self maximumQueueSize];
+        taskDispatcher = [(AXMVisionEngine *)self taskDispatcher];
+        v11 = taskDispatcher;
+        if (maximumQueueSize)
         {
-          v12 = [v10 count];
-          v13 = [(AXMVisionEngine *)self maximumQueueSize];
+          v12 = [taskDispatcher count];
+          maximumQueueSize2 = [(AXMVisionEngine *)self maximumQueueSize];
 
-          if (v12 >= v13)
+          if (v12 >= maximumQueueSize2)
           {
             v14 = AXMediaLogCommon();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v35 = [(AXMVisionEngine *)self maximumQueueSize];
+              maximumQueueSize3 = [(AXMVisionEngine *)self maximumQueueSize];
               _os_log_impl(&dword_1AE37B000, v14, OS_LOG_TYPE_DEFAULT, "AXMVisionEngine: ignoring task since queue is full (maximumQueueSize = %ld)", buf, 0xCu);
             }
 
-            [(AXMVisionEngine *)self _invokeFullQueueResultHandlersForContext:v7];
+            [(AXMVisionEngine *)self _invokeFullQueueResultHandlersForContext:contextCopy];
             goto LABEL_29;
           }
         }
 
         else
         {
-          v28 = v7;
-          v29 = v6;
-          v17 = [v10 unscheduleAllTasks];
+          v28 = contextCopy;
+          v29 = sourceCopy;
+          unscheduleAllTasks = [taskDispatcher unscheduleAllTasks];
 
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v18 = v17;
+          v18 = unscheduleAllTasks;
           v19 = [v18 countByEnumeratingWithState:&v30 objects:v36 count:16];
           if (v19)
           {
@@ -2618,11 +2618,11 @@ void __57__AXMVisionEngine_axMediaUtilitiesService_eventOccurred___block_invoke(
                 }
 
                 v23 = *(*(&v30 + 1) + 8 * i);
-                v24 = [v23 context];
-                if ([v24 sourceProvidesResults])
+                context = [v23 context];
+                if ([context sourceProvidesResults])
                 {
-                  v25 = [(AXMVisionEngine *)self taskDispatcher];
-                  [v25 scheduleTask:v23];
+                  taskDispatcher2 = [(AXMVisionEngine *)self taskDispatcher];
+                  [taskDispatcher2 scheduleTask:v23];
                 }
 
                 else
@@ -2634,9 +2634,9 @@ void __57__AXMVisionEngine_axMediaUtilitiesService_eventOccurred___block_invoke(
                     _os_log_impl(&dword_1AE37B000, v26, OS_LOG_TYPE_DEFAULT, "AXMVisionEngine: canceling queued task to replace with newer incoming task", buf, 2u);
                   }
 
-                  v25 = [v23 context];
+                  taskDispatcher2 = [v23 context];
 
-                  [(AXMVisionEngine *)self _invokeFullQueueResultHandlersForContext:v25];
+                  [(AXMVisionEngine *)self _invokeFullQueueResultHandlersForContext:taskDispatcher2];
                 }
               }
 
@@ -2646,14 +2646,14 @@ void __57__AXMVisionEngine_axMediaUtilitiesService_eventOccurred___block_invoke(
             while (v20);
           }
 
-          v7 = v28;
-          v6 = v29;
+          contextCopy = v28;
+          sourceCopy = v29;
         }
       }
 
-      v16 = [_AXMVisionEngineAnalysisTask itemWithSource:v6 context:v7];
-      v27 = [(AXMVisionEngine *)self taskDispatcher];
-      [v27 scheduleTask:v16];
+      v16 = [_AXMVisionEngineAnalysisTask itemWithSource:sourceCopy context:contextCopy];
+      taskDispatcher3 = [(AXMVisionEngine *)self taskDispatcher];
+      [taskDispatcher3 scheduleTask:v16];
 
 LABEL_28:
       goto LABEL_29;
@@ -2675,7 +2675,7 @@ LABEL_12:
     [AXMVisionEngine triggerWithSource:context:];
   }
 
-  if (!v6)
+  if (!sourceCopy)
   {
     goto LABEL_12;
   }
@@ -2684,24 +2684,24 @@ LABEL_29:
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)_invokeFullQueueResultHandlersForContext:(id)a3
+- (void)_invokeFullQueueResultHandlersForContext:(id)context
 {
-  v14 = a3;
-  if ([v14 shouldCallCompletionHandlersForEngineBusyError])
+  contextCopy = context;
+  if ([contextCopy shouldCallCompletionHandlersForEngineBusyError])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [v14 resultHandlers];
-    [v4 addObjectsFromArray:v5];
+    array = [MEMORY[0x1E695DF70] array];
+    resultHandlers = [contextCopy resultHandlers];
+    [array addObjectsFromArray:resultHandlers];
 
     v12 = _AXMMakeError(1, @"Engine queue is at capacity", v6, v7, v8, v9, v10, v11, v13);
-    [(AXMVisionEngine *)self _invokeResultHandlers:v4 withError:v12];
+    [(AXMVisionEngine *)self _invokeResultHandlers:array withError:v12];
   }
 }
 
-- (BOOL)engineWillAcceptTiggerWithSource:(id)a3
+- (BOOL)engineWillAcceptTiggerWithSource:(id)source
 {
-  v4 = [(AXMVisionEngine *)self taskDispatcher];
-  v5 = [v4 count];
+  taskDispatcher = [(AXMVisionEngine *)self taskDispatcher];
+  v5 = [taskDispatcher count];
   v6 = v5 < [(AXMVisionEngine *)self maximumQueueSize]|| [(AXMVisionEngine *)self maximumQueueSize]== 0;
 
   return v6;

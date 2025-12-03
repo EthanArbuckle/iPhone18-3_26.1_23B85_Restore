@@ -1,41 +1,41 @@
 @interface BMSiriTaskAggregationDimensions
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriTaskAggregationDimensions)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriTaskAggregationDimensions)initWithProductArea:(int)a3 siriInputLocale:(id)a4 systemLocale:(id)a5 countryCode:(id)a6 deviceType:(id)a7 systemBuild:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriTaskAggregationDimensions)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriTaskAggregationDimensions)initWithProductArea:(int)area siriInputLocale:(id)locale systemLocale:(id)systemLocale countryCode:(id)code deviceType:(id)type systemBuild:(id)build;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriTaskAggregationDimensions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriTaskAggregationDimensions *)self productArea];
-    if (v6 == [v5 productArea])
+    v5 = equalCopy;
+    productArea = [(BMSiriTaskAggregationDimensions *)self productArea];
+    if (productArea == [v5 productArea])
     {
-      v7 = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
-      v8 = [v5 siriInputLocale];
-      v9 = v8;
-      if (v7 == v8)
+      siriInputLocale = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
+      siriInputLocale2 = [v5 siriInputLocale];
+      v9 = siriInputLocale2;
+      if (siriInputLocale == siriInputLocale2)
       {
       }
 
       else
       {
-        v10 = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
-        v11 = [v5 siriInputLocale];
-        v12 = [v10 isEqual:v11];
+        siriInputLocale3 = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
+        siriInputLocale4 = [v5 siriInputLocale];
+        v12 = [siriInputLocale3 isEqual:siriInputLocale4];
 
         if (!v12)
         {
@@ -43,18 +43,18 @@
         }
       }
 
-      v14 = [(BMSiriTaskAggregationDimensions *)self systemLocale];
-      v15 = [v5 systemLocale];
-      v16 = v15;
-      if (v14 == v15)
+      systemLocale = [(BMSiriTaskAggregationDimensions *)self systemLocale];
+      systemLocale2 = [v5 systemLocale];
+      v16 = systemLocale2;
+      if (systemLocale == systemLocale2)
       {
       }
 
       else
       {
-        v17 = [(BMSiriTaskAggregationDimensions *)self systemLocale];
-        v18 = [v5 systemLocale];
-        v19 = [v17 isEqual:v18];
+        systemLocale3 = [(BMSiriTaskAggregationDimensions *)self systemLocale];
+        systemLocale4 = [v5 systemLocale];
+        v19 = [systemLocale3 isEqual:systemLocale4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMSiriTaskAggregationDimensions *)self countryCode];
-      v21 = [v5 countryCode];
-      v22 = v21;
-      if (v20 == v21)
+      countryCode = [(BMSiriTaskAggregationDimensions *)self countryCode];
+      countryCode2 = [v5 countryCode];
+      v22 = countryCode2;
+      if (countryCode == countryCode2)
       {
       }
 
       else
       {
-        v23 = [(BMSiriTaskAggregationDimensions *)self countryCode];
-        v24 = [v5 countryCode];
-        v25 = [v23 isEqual:v24];
+        countryCode3 = [(BMSiriTaskAggregationDimensions *)self countryCode];
+        countryCode4 = [v5 countryCode];
+        v25 = [countryCode3 isEqual:countryCode4];
 
         if (!v25)
         {
@@ -81,18 +81,18 @@
         }
       }
 
-      v26 = [(BMSiriTaskAggregationDimensions *)self deviceType];
-      v27 = [v5 deviceType];
-      v28 = v27;
-      if (v26 == v27)
+      deviceType = [(BMSiriTaskAggregationDimensions *)self deviceType];
+      deviceType2 = [v5 deviceType];
+      v28 = deviceType2;
+      if (deviceType == deviceType2)
       {
       }
 
       else
       {
-        v29 = [(BMSiriTaskAggregationDimensions *)self deviceType];
-        v30 = [v5 deviceType];
-        v31 = [v29 isEqual:v30];
+        deviceType3 = [(BMSiriTaskAggregationDimensions *)self deviceType];
+        deviceType4 = [v5 deviceType];
+        v31 = [deviceType3 isEqual:deviceType4];
 
         if (!v31)
         {
@@ -100,18 +100,18 @@
         }
       }
 
-      v33 = [(BMSiriTaskAggregationDimensions *)self systemBuild];
-      v34 = [v5 systemBuild];
-      if (v33 == v34)
+      systemBuild = [(BMSiriTaskAggregationDimensions *)self systemBuild];
+      systemBuild2 = [v5 systemBuild];
+      if (systemBuild == systemBuild2)
       {
         v13 = 1;
       }
 
       else
       {
-        v35 = [(BMSiriTaskAggregationDimensions *)self systemBuild];
-        v36 = [v5 systemBuild];
-        v13 = [v35 isEqual:v36];
+        systemBuild3 = [(BMSiriTaskAggregationDimensions *)self systemBuild];
+        systemBuild4 = [v5 systemBuild];
+        v13 = [systemBuild3 isEqual:systemBuild4];
       }
 
       goto LABEL_19;
@@ -134,73 +134,73 @@ LABEL_20:
 {
   v23[6] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriTaskAggregationDimensions productArea](self, "productArea")}];
-  v4 = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
-  v5 = [(BMSiriTaskAggregationDimensions *)self systemLocale];
-  v6 = [(BMSiriTaskAggregationDimensions *)self countryCode];
-  v7 = [(BMSiriTaskAggregationDimensions *)self deviceType];
-  v8 = [(BMSiriTaskAggregationDimensions *)self systemBuild];
+  siriInputLocale = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
+  systemLocale = [(BMSiriTaskAggregationDimensions *)self systemLocale];
+  countryCode = [(BMSiriTaskAggregationDimensions *)self countryCode];
+  deviceType = [(BMSiriTaskAggregationDimensions *)self deviceType];
+  systemBuild = [(BMSiriTaskAggregationDimensions *)self systemBuild];
   v22[0] = @"productArea";
-  v9 = v3;
+  null = v3;
   if (!v3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v23[0] = v9;
+  v20 = null;
+  v23[0] = null;
   v22[1] = @"siriInputLocale";
-  v10 = v4;
-  if (!v4)
+  null2 = siriInputLocale;
+  if (!siriInputLocale)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"systemLocale";
-  v11 = v5;
-  if (!v5)
+  null3 = systemLocale;
+  if (!systemLocale)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v3;
-  v23[2] = v11;
+  v23[2] = null3;
   v22[3] = @"countryCode";
-  v12 = v6;
-  if (!v6)
+  null4 = countryCode;
+  if (!countryCode)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"deviceType";
-  v13 = v7;
-  if (!v7)
+  null5 = deviceType;
+  if (!deviceType)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"systemBuild";
-  v14 = v8;
-  if (!v8)
+  null6 = systemBuild;
+  if (!systemBuild)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
-  if (v8)
+  if (systemBuild)
   {
-    if (v7)
+    if (deviceType)
     {
       goto LABEL_15;
     }
 
 LABEL_23:
 
-    if (v6)
+    if (countryCode)
     {
       goto LABEL_16;
     }
@@ -208,13 +208,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!deviceType)
   {
     goto LABEL_23;
   }
 
 LABEL_15:
-  if (v6)
+  if (countryCode)
   {
     goto LABEL_16;
   }
@@ -222,9 +222,9 @@ LABEL_15:
 LABEL_24:
 
 LABEL_16:
-  if (v5)
+  if (systemLocale)
   {
-    if (v4)
+    if (siriInputLocale)
     {
       goto LABEL_18;
     }
@@ -239,7 +239,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v4)
+  if (!siriInputLocale)
   {
     goto LABEL_26;
   }
@@ -258,23 +258,23 @@ LABEL_19:
   return v15;
 }
 
-- (BMSiriTaskAggregationDimensions)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriTaskAggregationDimensions)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"productArea"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"productArea"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"siriInputLocale"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     v54 = v10;
     if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v22 = 0;
@@ -283,7 +283,7 @@ LABEL_9:
 
         v23 = v8;
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v25 = a4;
+        errorCopy = error;
         v26 = *MEMORY[0x1E698F240];
         v64 = *MEMORY[0x1E696A578];
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"siriInputLocale"];
@@ -292,7 +292,7 @@ LABEL_9:
         v27 = v24;
         v8 = v23;
         v22 = 0;
-        *v25 = [v27 initWithDomain:v26 code:2 userInfo:v13];
+        *errorCopy = [v27 initWithDomain:v26 code:2 userInfo:v13];
         v12 = 0;
         goto LABEL_52;
       }
@@ -305,7 +305,7 @@ LABEL_9:
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"systemLocale"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"systemLocale"];
     v51 = v7;
     v52 = v12;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -313,7 +313,7 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v14 = 0;
           v22 = 0;
@@ -322,7 +322,7 @@ LABEL_9:
 
         v28 = v8;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v30 = a4;
+        errorCopy2 = error;
         v31 = *MEMORY[0x1E698F240];
         v62 = *MEMORY[0x1E696A578];
         v55 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"systemLocale"];
@@ -332,7 +332,7 @@ LABEL_9:
         v8 = v28;
         v14 = 0;
         v22 = 0;
-        *v30 = [v32 initWithDomain:v31 code:2 userInfo:v15];
+        *errorCopy2 = [v32 initWithDomain:v31 code:2 userInfo:v15];
         goto LABEL_58;
       }
 
@@ -344,9 +344,9 @@ LABEL_9:
       v14 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"countryCode"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
     v53 = v8;
-    v16 = a4;
+    errorCopy3 = error;
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v55 = 0;
@@ -358,11 +358,11 @@ LABEL_9:
     {
       v55 = v15;
 LABEL_18:
-      v17 = [v6 objectForKeyedSubscript:@"deviceType"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
       v50 = v14;
       if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v18 = self;
+        selfCopy3 = self;
         v19 = 0;
         goto LABEL_21;
       }
@@ -370,20 +370,20 @@ LABEL_18:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = self;
+        selfCopy3 = self;
         v19 = v17;
 LABEL_21:
-        v20 = [v6 objectForKeyedSubscript:@"systemBuild"];
+        v20 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
         if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v21 = 0;
 LABEL_24:
           v12 = v52;
-          v22 = -[BMSiriTaskAggregationDimensions initWithProductArea:siriInputLocale:systemLocale:countryCode:deviceType:systemBuild:](v18, "initWithProductArea:siriInputLocale:systemLocale:countryCode:deviceType:systemBuild:", [v53 intValue], v52, v50, v55, v19, v21);
-          v18 = v22;
+          v22 = -[BMSiriTaskAggregationDimensions initWithProductArea:siriInputLocale:systemLocale:countryCode:deviceType:systemBuild:](selfCopy3, "initWithProductArea:siriInputLocale:systemLocale:countryCode:deviceType:systemBuild:", [v53 intValue], v52, v50, v55, v19, v21);
+          selfCopy3 = v22;
 LABEL_49:
 
-          self = v18;
+          self = selfCopy3;
           v14 = v50;
 LABEL_50:
 
@@ -404,7 +404,7 @@ LABEL_52:
           goto LABEL_24;
         }
 
-        if (v16)
+        if (errorCopy3)
         {
           v49 = objc_alloc(MEMORY[0x1E696ABC0]);
           v47 = *MEMORY[0x1E698F240];
@@ -412,7 +412,7 @@ LABEL_52:
           v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"systemBuild"];
           v57 = v43;
           v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-          *v16 = [v49 initWithDomain:v47 code:2 userInfo:v44];
+          *errorCopy3 = [v49 initWithDomain:v47 code:2 userInfo:v44];
         }
 
         v21 = 0;
@@ -422,9 +422,9 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      if (v16)
+      if (errorCopy3)
       {
-        v18 = self;
+        selfCopy3 = self;
         v48 = objc_alloc(MEMORY[0x1E696ABC0]);
         v37 = *MEMORY[0x1E698F240];
         v58 = *MEMORY[0x1E696A578];
@@ -434,7 +434,7 @@ LABEL_48:
         v38 = [v48 initWithDomain:v37 code:2 userInfo:v20];
         v19 = 0;
         v22 = 0;
-        *v16 = v38;
+        *errorCopy3 = v38;
         goto LABEL_48;
       }
 
@@ -445,7 +445,7 @@ LABEL_60:
       goto LABEL_50;
     }
 
-    if (a4)
+    if (error)
     {
       v33 = objc_alloc(MEMORY[0x1E696ABC0]);
       v34 = v14;
@@ -458,7 +458,7 @@ LABEL_60:
       v14 = v34;
       v55 = 0;
       v22 = 0;
-      *v16 = [v33 initWithDomain:v36 code:2 userInfo:v17];
+      *errorCopy3 = [v33 initWithDomain:v36 code:2 userInfo:v17];
       goto LABEL_60;
     }
 
@@ -485,7 +485,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v22 = 0;
@@ -493,7 +493,7 @@ LABEL_8:
   }
 
   v39 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v40 = a4;
+  errorCopy4 = error;
   v41 = *MEMORY[0x1E698F240];
   v66 = *MEMORY[0x1E696A578];
   v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"productArea"];
@@ -502,7 +502,7 @@ LABEL_8:
   v42 = [v39 initWithDomain:v41 code:2 userInfo:v11];
   v8 = 0;
   v22 = 0;
-  *v40 = v42;
+  *errorCopy4 = v42;
 LABEL_53:
 
 LABEL_54:
@@ -514,16 +514,16 @@ LABEL_54:
 {
   v3 = objc_opt_new();
   [(BMSiriTaskAggregationDimensions *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   productArea = self->_productArea;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_siriInputLocale)
   {
@@ -555,9 +555,9 @@ LABEL_54:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMSiriTaskAggregationDimensions;
   v5 = [(BMEventBase *)&v29 init];
@@ -566,12 +566,12 @@ LABEL_54:
     goto LABEL_50;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -582,18 +582,18 @@ LABEL_54:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -610,9 +610,9 @@ LABEL_54:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -656,18 +656,18 @@ LABEL_37:
             while (1)
             {
               v30 = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v30 & 0x7F) << v18;
@@ -683,7 +683,7 @@ LABEL_37:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 3)
             {
 LABEL_46:
               LODWORD(v20) = 0;
@@ -708,13 +708,13 @@ LABEL_46:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_42:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_49:
     v27 = 0;
@@ -733,35 +733,35 @@ LABEL_50:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMSiriTaskAggregationDimensionsSiriProductAreaAsString([(BMSiriTaskAggregationDimensions *)self productArea]);
-  v5 = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
-  v6 = [(BMSiriTaskAggregationDimensions *)self systemLocale];
-  v7 = [(BMSiriTaskAggregationDimensions *)self countryCode];
-  v8 = [(BMSiriTaskAggregationDimensions *)self deviceType];
-  v9 = [(BMSiriTaskAggregationDimensions *)self systemBuild];
-  v10 = [v3 initWithFormat:@"BMSiriTaskAggregationDimensions with productArea: %@, siriInputLocale: %@, systemLocale: %@, countryCode: %@, deviceType: %@, systemBuild: %@", v4, v5, v6, v7, v8, v9];
+  siriInputLocale = [(BMSiriTaskAggregationDimensions *)self siriInputLocale];
+  systemLocale = [(BMSiriTaskAggregationDimensions *)self systemLocale];
+  countryCode = [(BMSiriTaskAggregationDimensions *)self countryCode];
+  deviceType = [(BMSiriTaskAggregationDimensions *)self deviceType];
+  systemBuild = [(BMSiriTaskAggregationDimensions *)self systemBuild];
+  v10 = [v3 initWithFormat:@"BMSiriTaskAggregationDimensions with productArea: %@, siriInputLocale: %@, systemLocale: %@, countryCode: %@, deviceType: %@, systemBuild: %@", v4, siriInputLocale, systemLocale, countryCode, deviceType, systemBuild];
 
   return v10;
 }
 
-- (BMSiriTaskAggregationDimensions)initWithProductArea:(int)a3 siriInputLocale:(id)a4 systemLocale:(id)a5 countryCode:(id)a6 deviceType:(id)a7 systemBuild:(id)a8
+- (BMSiriTaskAggregationDimensions)initWithProductArea:(int)area siriInputLocale:(id)locale systemLocale:(id)systemLocale countryCode:(id)code deviceType:(id)type systemBuild:(id)build
 {
-  v21 = a4;
-  v20 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  localeCopy = locale;
+  systemLocaleCopy = systemLocale;
+  codeCopy = code;
+  typeCopy = type;
+  buildCopy = build;
   v22.receiver = self;
   v22.super_class = BMSiriTaskAggregationDimensions;
   v18 = [(BMEventBase *)&v22 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    v18->_productArea = a3;
-    objc_storeStrong(&v18->_siriInputLocale, a4);
-    objc_storeStrong(&v18->_systemLocale, a5);
-    objc_storeStrong(&v18->_countryCode, a6);
-    objc_storeStrong(&v18->_deviceType, a7);
-    objc_storeStrong(&v18->_systemBuild, a8);
+    v18->_productArea = area;
+    objc_storeStrong(&v18->_siriInputLocale, locale);
+    objc_storeStrong(&v18->_systemLocale, systemLocale);
+    objc_storeStrong(&v18->_countryCode, code);
+    objc_storeStrong(&v18->_deviceType, type);
+    objc_storeStrong(&v18->_systemBuild, build);
   }
 
   return v18;
@@ -811,9 +811,9 @@ LABEL_50:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -821,8 +821,8 @@ LABEL_50:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriTaskAggregationDimensions alloc] initByReadFrom:v7];
     v4 = v8;

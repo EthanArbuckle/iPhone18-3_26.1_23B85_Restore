@@ -4,13 +4,13 @@
 + (id)sharedInstance;
 - (_UISceneKeyboardProxyLayerForwardingManager)init;
 - (id)_init;
-- (id)_newStateMachineWithPresentationEnvironment:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_newStateMachineWithPresentationEnvironment:(id)environment;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_updateKeyboardLayersForPresentationEnvironment:(id)a3;
-- (void)presentationEnvironmentDidInvalidate:(id)a3;
-- (void)trackPresentationEnvironment:(id)a3;
+- (void)_updateKeyboardLayersForPresentationEnvironment:(id)environment;
+- (void)presentationEnvironmentDidInvalidate:(id)invalidate;
+- (void)trackPresentationEnvironment:(id)environment;
 @end
 
 @implementation _UISceneKeyboardProxyLayerForwardingManager
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __61___UISceneKeyboardProxyLayerForwardingManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49CB88 != -1)
   {
     dispatch_once(&qword_1ED49CB88, block);
@@ -59,31 +59,31 @@
 
 - (_UISceneKeyboardProxyLayerForwardingManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingManager.m" lineNumber:28 description:@"-[_UISceneKeyboardProxyLayerForwardingManager init] is unavailable."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingManager.m" lineNumber:28 description:@"-[_UISceneKeyboardProxyLayerForwardingManager init] is unavailable."];
 
   return [(_UISceneKeyboardProxyLayerForwardingManager *)self _init];
 }
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"_UISceneKeyboardProxyLayerForwardingManager.m" lineNumber:33 description:@"+[_UISceneKeyboardProxyLayerForwardingManager new] is unavailable."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingManager.m" lineNumber:33 description:@"+[_UISceneKeyboardProxyLayerForwardingManager new] is unavailable."];
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
 
   return [v5 _init];
 }
 
-- (void)trackPresentationEnvironment:(id)a3
+- (void)trackPresentationEnvironment:(id)environment
 {
-  v4 = a3;
-  if (v4)
+  environmentCopy = environment;
+  if (environmentCopy)
   {
-    v7 = v4;
-    v5 = [(NSMapTable *)self->_mapEnvironmentToKeyboardForwardingStateMachine objectForKey:v4];
+    v7 = environmentCopy;
+    v5 = [(NSMapTable *)self->_mapEnvironmentToKeyboardForwardingStateMachine objectForKey:environmentCopy];
 
-    v4 = v7;
+    environmentCopy = v7;
     if (!v5)
     {
       [v7 addObserver:self];
@@ -91,61 +91,61 @@
       [(NSMapTable *)self->_mapEnvironmentToKeyboardForwardingStateMachine setObject:v6 forKey:v7];
       [(_UISceneKeyboardProxyLayerForwardingManager *)self _updateKeyboardLayersForPresentationEnvironment:v7];
 
-      v4 = v7;
+      environmentCopy = v7;
     }
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UISceneKeyboardProxyLayerForwardingManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UISceneKeyboardProxyLayerForwardingManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UISceneKeyboardProxyLayerForwardingManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UISceneKeyboardProxyLayerForwardingManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_UISceneKeyboardProxyLayerForwardingManager *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_mapEnvironmentToKeyboardForwardingStateMachine withName:@"presentationEnvironmentToStateMachineMap"];
+  succinctDescriptionBuilder = [(_UISceneKeyboardProxyLayerForwardingManager *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_mapEnvironmentToKeyboardForwardingStateMachine withName:@"presentationEnvironmentToStateMachineMap"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)presentationEnvironmentDidInvalidate:(id)a3
+- (void)presentationEnvironmentDidInvalidate:(id)invalidate
 {
-  v5 = a3;
-  v4 = [(_UISceneKeyboardProxyLayerForwardingManager *)self _stateMachineForPresentationEnvironment:v5];
+  invalidateCopy = invalidate;
+  v4 = [(_UISceneKeyboardProxyLayerForwardingManager *)self _stateMachineForPresentationEnvironment:invalidateCopy];
   [v4 noteKeyboardLayersBeingTracked:0];
 
-  [(NSMapTable *)self->_mapEnvironmentToKeyboardForwardingStateMachine removeObjectForKey:v5];
-  [v5 removeObserver:self];
+  [(NSMapTable *)self->_mapEnvironmentToKeyboardForwardingStateMachine removeObjectForKey:invalidateCopy];
+  [invalidateCopy removeObserver:self];
 }
 
-- (id)_newStateMachineWithPresentationEnvironment:(id)a3
+- (id)_newStateMachineWithPresentationEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = [[_UISceneKeyboardProxyLayerForwardingStateMachine alloc] initWithPresentationEnvironment:v3];
+  environmentCopy = environment;
+  v4 = [[_UISceneKeyboardProxyLayerForwardingStateMachine alloc] initWithPresentationEnvironment:environmentCopy];
 
   return v4;
 }
 
-- (void)_updateKeyboardLayersForPresentationEnvironment:(id)a3
+- (void)_updateKeyboardLayersForPresentationEnvironment:(id)environment
 {
   mapEnvironmentToKeyboardForwardingStateMachine = self->_mapEnvironmentToKeyboardForwardingStateMachine;
-  v4 = a3;
-  v6 = [(NSMapTable *)mapEnvironmentToKeyboardForwardingStateMachine objectForKey:v4];
-  v5 = [v4 keyboardLayers];
+  environmentCopy = environment;
+  v6 = [(NSMapTable *)mapEnvironmentToKeyboardForwardingStateMachine objectForKey:environmentCopy];
+  keyboardLayers = [environmentCopy keyboardLayers];
 
-  [v6 noteKeyboardLayersBeingTracked:v5];
+  [v6 noteKeyboardLayersBeingTracked:keyboardLayers];
 }
 
 @end

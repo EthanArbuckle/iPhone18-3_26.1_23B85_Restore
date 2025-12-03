@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchBlendedTermQuery_Builder
-- (id)addWithOrgApacheLuceneIndexTerm:(id)a3 withFloat:(float)a4 withOrgApacheLuceneIndexTermContext:(id)a5;
+- (id)addWithOrgApacheLuceneIndexTerm:(id)term withFloat:(float)float withOrgApacheLuceneIndexTermContext:(id)context;
 - (id)build;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchBlendedTermQuery_Builder
 
-- (id)addWithOrgApacheLuceneIndexTerm:(id)a3 withFloat:(float)a4 withOrgApacheLuceneIndexTermContext:(id)a5
+- (id)addWithOrgApacheLuceneIndexTerm:(id)term withFloat:(float)float withOrgApacheLuceneIndexTermContext:(id)context
 {
   numTerms = self->numTerms_;
   if (numTerms >= OrgApacheLuceneSearchBooleanQuery_getMaxClauseCount())
@@ -28,15 +28,15 @@
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!term)
   {
     goto LABEL_9;
   }
 
   v33 = self->numTerms_;
-  v34 = [a3 field];
-  v35 = OrgApacheLuceneUtilBytesRef_deepCopyOfWithOrgApacheLuceneUtilBytesRef_([a3 bytes]);
-  v36 = new_OrgApacheLuceneIndexTerm_initWithNSString_withOrgApacheLuceneUtilBytesRef_(v34, v35);
+  field = [term field];
+  v35 = OrgApacheLuceneUtilBytesRef_deepCopyOfWithOrgApacheLuceneUtilBytesRef_([term bytes]);
+  v36 = new_OrgApacheLuceneIndexTerm_initWithNSString_withOrgApacheLuceneUtilBytesRef_(field, v35);
   IOSObjectArray_SetAndConsume(terms, v33, v36);
   boosts = self->boosts_;
   if (!boosts)
@@ -51,14 +51,14 @@
     IOSArray_throwOutOfBoundsWithMsg(size, v38);
   }
 
-  *(&boosts->super.size_ + v38 + 1) = a4;
+  *(&boosts->super.size_ + v38 + 1) = float;
   if (!*p_contexts)
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(*p_contexts, self->numTerms_, a5);
+  IOSObjectArray_Set(*p_contexts, self->numTerms_, context);
   ++self->numTerms_;
   return self;
 }

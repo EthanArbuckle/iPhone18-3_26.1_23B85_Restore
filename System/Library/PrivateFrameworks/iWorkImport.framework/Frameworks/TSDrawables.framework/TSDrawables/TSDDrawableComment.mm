@@ -4,25 +4,25 @@
 - (NSDate)date;
 - (NSString)description;
 - (NSString)parentUUID;
-- (TSDDrawableComment)initWithParent:(id)a3 storage:(id)a4;
+- (TSDDrawableComment)initWithParent:(id)parent storage:(id)storage;
 - (TSDDrawableInfo)parent;
 - (TSKAnnotationAuthor)author;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)commentWillBeAddedToDocumentRoot;
-- (void)setAuthor:(id)a3;
-- (void)setStorage:(id)a3;
+- (void)setAuthor:(id)author;
+- (void)setStorage:(id)storage;
 @end
 
 @implementation TSDDrawableComment
 
-- (TSDDrawableComment)initWithParent:(id)a3 storage:(id)a4
+- (TSDDrawableComment)initWithParent:(id)parent storage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6)
+  parentCopy = parent;
+  storageCopy = storage;
+  v9 = storageCopy;
+  if (parentCopy)
   {
-    if (v7)
+    if (storageCopy)
     {
       goto LABEL_3;
     }
@@ -55,8 +55,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_parent, v6);
-    objc_storeStrong(&v11->mStorage, a4);
+    objc_storeWeak(&v10->_parent, parentCopy);
+    objc_storeStrong(&v11->mStorage, storage);
   }
 
   return v11;
@@ -71,26 +71,26 @@ LABEL_3:
   return v9;
 }
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
-  v5 = a3;
-  if (self->mStorage != v5)
+  storageCopy = storage;
+  if (self->mStorage != storageCopy)
   {
-    v15 = v5;
+    v15 = storageCopy;
     v8 = objc_msgSend_parent(self, v6, v7);
     objc_msgSend_willModify(v8, v9, v10);
 
     v13 = objc_msgSend_parent(self, v11, v12);
     objc_msgSend_willChangeProperty_(v13, v14, 550);
 
-    objc_storeStrong(&self->mStorage, a3);
-    v5 = v15;
+    objc_storeStrong(&self->mStorage, storage);
+    storageCopy = v15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_storage(self, a2, a3);
+  v4 = objc_msgSend_storage(self, a2, zone);
   v7 = objc_msgSend_storage(self, v5, v6);
   v10 = objc_msgSend_context(v7, v8, v9);
   v12 = objc_msgSend_copyWithContext_(v4, v11, v10);
@@ -119,11 +119,11 @@ LABEL_3:
   return v6;
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v4 = a3;
+  authorCopy = author;
   v10 = objc_msgSend_storage(self, v5, v6);
-  v8 = objc_msgSend_copyWithAuthor_(v10, v7, v4);
+  v8 = objc_msgSend_copyWithAuthor_(v10, v7, authorCopy);
 
   objc_msgSend_setStorage_(self, v9, v8);
 }

@@ -1,11 +1,11 @@
 @interface DisclosureDataSource
-- (void)assetsUpdated:(id)a3 availability:(int64_t)a4;
-- (void)localeUpdated:(id)a3;
+- (void)assetsUpdated:(id)updated availability:(int64_t)availability;
+- (void)localeUpdated:(id)updated;
 @end
 
 @implementation DisclosureDataSource
 
-- (void)localeUpdated:(id)a3
+- (void)localeUpdated:(id)updated
 {
   v3 = type metadata accessor for Locale();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   (*(v4 + 8))(v8, v3);
 }
 
-- (void)assetsUpdated:(id)a3 availability:(int64_t)a4
+- (void)assetsUpdated:(id)updated availability:(int64_t)availability
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 

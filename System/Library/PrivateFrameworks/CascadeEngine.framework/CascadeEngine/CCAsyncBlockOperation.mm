@@ -2,7 +2,7 @@
 - (BOOL)isCancelled;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (CCAsyncBlockOperation)initWithPersonaIdentifier:(id)a3 asyncOperationBlock:(id)a4;
+- (CCAsyncBlockOperation)initWithPersonaIdentifier:(id)identifier asyncOperationBlock:(id)block;
 - (void)cancel;
 - (void)complete;
 - (void)start;
@@ -10,23 +10,23 @@
 
 @implementation CCAsyncBlockOperation
 
-- (CCAsyncBlockOperation)initWithPersonaIdentifier:(id)a3 asyncOperationBlock:(id)a4
+- (CCAsyncBlockOperation)initWithPersonaIdentifier:(id)identifier asyncOperationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = CCAsyncBlockOperation;
   v9 = [(CCAsyncBlockOperation *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [blockCopy copy];
     block = v9->_block;
     v9->_block = v10;
 
     v9->_executing = 0;
     v9->_finished = 0;
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_personaIdentifier, a3);
+    objc_storeStrong(&v9->_personaIdentifier, identifier);
   }
 
   return v9;

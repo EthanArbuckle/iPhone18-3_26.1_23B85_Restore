@@ -1,6 +1,6 @@
 @interface MCMAnalytics
 + (MCMAnalytics)sharedInstance;
-- (void)recordAmbiguousPersonaRequestWithIdentifier:(id)a3 proxiedIdentifier:(id)a4 proximateIdentifier:(id)a5 explicitPersonaType:(int)a6 legacyPersonaPolicy:(BOOL)a7 propagationFailed:(BOOL)a8 containerClass:(unint64_t)a9;
+- (void)recordAmbiguousPersonaRequestWithIdentifier:(id)identifier proxiedIdentifier:(id)proxiedIdentifier proximateIdentifier:(id)proximateIdentifier explicitPersonaType:(int)type legacyPersonaPolicy:(BOOL)policy propagationFailed:(BOOL)failed containerClass:(unint64_t)class;
 @end
 
 @implementation MCMAnalytics
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (void)recordAmbiguousPersonaRequestWithIdentifier:(id)a3 proxiedIdentifier:(id)a4 proximateIdentifier:(id)a5 explicitPersonaType:(int)a6 legacyPersonaPolicy:(BOOL)a7 propagationFailed:(BOOL)a8 containerClass:(unint64_t)a9
+- (void)recordAmbiguousPersonaRequestWithIdentifier:(id)identifier proxiedIdentifier:(id)proxiedIdentifier proximateIdentifier:(id)proximateIdentifier explicitPersonaType:(int)type legacyPersonaPolicy:(BOOL)policy propagationFailed:(BOOL)failed containerClass:(unint64_t)class
 {
-  v22 = a7;
-  if (a3)
+  policyCopy = policy;
+  if (identifier)
   {
     v12 = sub_1DF3B0DCC();
     v14 = v13;
@@ -36,8 +36,8 @@
   v17 = v16;
   v18 = sub_1DF3B0DCC();
   v20 = v19;
-  v21 = self;
-  sub_1DF2E2F1C(v12, v14, v15, v17, v18, v20, a6, v22, a8, a9);
+  selfCopy = self;
+  sub_1DF2E2F1C(v12, v14, v15, v17, v18, v20, type, policyCopy, failed, class);
 }
 
 @end

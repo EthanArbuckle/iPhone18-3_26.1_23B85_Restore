@@ -1,33 +1,33 @@
 @interface SGMIMetricsMailAttachmentHistogram
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCategory:(id)a3;
+- (int)StringAsCategory:(id)category;
 - (int)category;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount128KBTo512KB:(BOOL)a3;
-- (void)setHasCount32KBTo128KB:(BOOL)a3;
-- (void)setHasCount512KBTo2MB:(BOOL)a3;
-- (void)setHasCount8KBTo32KB:(BOOL)a3;
-- (void)setHasCountOver2MB:(BOOL)a3;
-- (void)setHasCountUpTo8KB:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount128KBTo512KB:(BOOL)b;
+- (void)setHasCount32KBTo128KB:(BOOL)b;
+- (void)setHasCount512KBTo2MB:(BOOL)b;
+- (void)setHasCount8KBTo32KB:(BOOL)b;
+- (void)setHasCountOver2MB:(BOOL)b;
+- (void)setHasCountUpTo8KB:(BOOL)b;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsMailAttachmentHistogram
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_category = *(v4 + 2);
+    self->_category = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -40,14 +40,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x40) == 0)
+  else if ((*(fromCopy + 36) & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_countUpTo8KB = *(v4 + 8);
+  self->_countUpTo8KB = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -60,9 +60,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_count8KBTo32KB = *(v4 + 6);
+  self->_count8KBTo32KB = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -75,9 +75,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_count32KBTo128KB = *(v4 + 4);
+  self->_count32KBTo128KB = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -90,9 +90,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_count128KBTo512KB = *(v4 + 3);
+  self->_count128KBTo512KB = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -105,12 +105,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_count512KBTo2MB = *(v4 + 5);
+  self->_count512KBTo2MB = *(fromCopy + 5);
   *&self->_has |= 8u;
-  if ((*(v4 + 36) & 0x20) != 0)
+  if ((*(fromCopy + 36) & 0x20) != 0)
   {
 LABEL_8:
-    self->_countOver2MB = *(v4 + 7);
+    self->_countOver2MB = *(fromCopy + 7);
     *&self->_has |= 0x20u;
   }
 
@@ -213,23 +213,23 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_category != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_category != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_36:
     v5 = 0;
@@ -238,73 +238,73 @@ LABEL_36:
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 36) & 0x40) == 0 || self->_countUpTo8KB != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x40) == 0 || self->_countUpTo8KB != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x40) != 0)
+  else if ((*(equalCopy + 36) & 0x40) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_count8KBTo32KB != *(v4 + 6))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_count8KBTo32KB != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_count32KBTo128KB != *(v4 + 4))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_count32KBTo128KB != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_count128KBTo512KB != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_count128KBTo512KB != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_count512KBTo2MB != *(v4 + 5))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_count512KBTo2MB != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_36;
   }
 
-  v5 = (*(v4 + 36) & 0x20) == 0;
+  v5 = (*(equalCopy + 36) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_countOver2MB != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_countOver2MB != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
@@ -317,9 +317,9 @@ LABEL_37:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -416,14 +416,14 @@ LABEL_8:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_category;
-    *(v4 + 36) |= 1u;
+    toCopy[2] = self->_category;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -442,8 +442,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[8] = self->_countUpTo8KB;
-  *(v4 + 36) |= 0x40u;
+  toCopy[8] = self->_countUpTo8KB;
+  *(toCopy + 36) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -457,8 +457,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v4[6] = self->_count8KBTo32KB;
-  *(v4 + 36) |= 0x10u;
+  toCopy[6] = self->_count8KBTo32KB;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -472,8 +472,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v4[4] = self->_count32KBTo128KB;
-  *(v4 + 36) |= 4u;
+  toCopy[4] = self->_count32KBTo128KB;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -487,8 +487,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v4[3] = self->_count128KBTo512KB;
-  *(v4 + 36) |= 2u;
+  toCopy[3] = self->_count128KBTo512KB;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -502,21 +502,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  v4[5] = self->_count512KBTo2MB;
-  *(v4 + 36) |= 8u;
+  toCopy[5] = self->_count512KBTo2MB;
+  *(toCopy + 36) |= 8u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    v4[7] = self->_countOver2MB;
-    *(v4 + 36) |= 0x20u;
+    toCopy[7] = self->_countOver2MB;
+    *(toCopy + 36) |= 0x20u;
   }
 
 LABEL_9:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -614,7 +614,7 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
@@ -629,7 +629,7 @@ LABEL_9:
       v6 = off_27894EBC8[category];
     }
 
-    [v3 setObject:v6 forKey:@"category"];
+    [dictionary setObject:v6 forKey:@"category"];
 
     has = self->_has;
   }
@@ -637,7 +637,7 @@ LABEL_9:
   if ((has & 0x40) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_countUpTo8KB];
-    [v3 setObject:v9 forKey:@"countUpTo8KB"];
+    [dictionary setObject:v9 forKey:@"countUpTo8KB"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -658,7 +658,7 @@ LABEL_8:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count8KBTo32KB];
-  [v3 setObject:v10 forKey:@"count8KBTo32KB"];
+  [dictionary setObject:v10 forKey:@"count8KBTo32KB"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -674,7 +674,7 @@ LABEL_9:
 
 LABEL_18:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count32KBTo128KB];
-  [v3 setObject:v11 forKey:@"count32KBTo128KB"];
+  [dictionary setObject:v11 forKey:@"count32KBTo128KB"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -690,7 +690,7 @@ LABEL_10:
 
 LABEL_19:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count128KBTo512KB];
-  [v3 setObject:v12 forKey:@"count128KBTo512KB"];
+  [dictionary setObject:v12 forKey:@"count128KBTo512KB"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -706,18 +706,18 @@ LABEL_11:
 
 LABEL_20:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count512KBTo2MB];
-  [v3 setObject:v13 forKey:@"count512KBTo2MB"];
+  [dictionary setObject:v13 forKey:@"count512KBTo2MB"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_12:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_countOver2MB];
-    [v3 setObject:v7 forKey:@"countOver2MB"];
+    [dictionary setObject:v7 forKey:@"countOver2MB"];
   }
 
 LABEL_13:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -726,15 +726,15 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = SGMIMetricsMailAttachmentHistogram;
   v4 = [(SGMIMetricsMailAttachmentHistogram *)&v8 description];
-  v5 = [(SGMIMetricsMailAttachmentHistogram *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsMailAttachmentHistogram *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasCountOver2MB:(BOOL)a3
+- (void)setHasCountOver2MB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 32;
   }
@@ -747,9 +747,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasCount512KBTo2MB:(BOOL)a3
+- (void)setHasCount512KBTo2MB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 8;
   }
@@ -762,9 +762,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCount128KBTo512KB:(BOOL)a3
+- (void)setHasCount128KBTo512KB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 2;
   }
@@ -777,9 +777,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCount32KBTo128KB:(BOOL)a3
+- (void)setHasCount32KBTo128KB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 4;
   }
@@ -792,9 +792,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCount8KBTo32KB:(BOOL)a3
+- (void)setHasCount8KBTo32KB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 16;
   }
@@ -807,9 +807,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCountUpTo8KB:(BOOL)a3
+- (void)setHasCountUpTo8KB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 64;
   }
@@ -822,20 +822,20 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsCategory:(id)a3
+- (int)StringAsCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Application"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"Application"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Media"])
+  else if ([categoryCopy isEqualToString:@"Media"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Others"])
+  else if ([categoryCopy isEqualToString:@"Others"])
   {
     v4 = 2;
   }

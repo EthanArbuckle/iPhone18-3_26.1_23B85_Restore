@@ -1,47 +1,47 @@
 @interface ISAnimatedImagePlayer
 - (BOOL)_anyDestinationIsReady;
 - (BOOL)_shouldAnimate;
-- (ISAnimatedImagePlayer)initWithAnimatedImage:(id)a3;
+- (ISAnimatedImagePlayer)initWithAnimatedImage:(id)image;
 - (void)_notifyDestinationsOfAnimationEnd;
 - (void)_notifyDestinationsOfAnimationStart;
 - (void)_notifyDestinationsOfFrameChange;
 - (void)_resetAnimationState;
 - (void)_seekToBeginning;
-- (void)_setCurrentFrame:(CGImage *)a3;
-- (void)animationTimerFired:(double)a3;
+- (void)_setCurrentFrame:(CGImage *)frame;
+- (void)animationTimerFired:(double)fired;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)registerDestination:(id)a3;
-- (void)setDisplayedFrameIndex:(unint64_t)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)unregisterDestination:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)registerDestination:(id)destination;
+- (void)setDisplayedFrameIndex:(unint64_t)index;
+- (void)setPlaying:(BOOL)playing;
+- (void)unregisterDestination:(id)destination;
 - (void)updateAnimation;
 @end
 
 @implementation ISAnimatedImagePlayer
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
   if ([(ISAnimatedImagePlayer *)self _shouldAnimate])
   {
     if (!self->_hasStartedAnimating)
     {
       self->_timeAccumulator = 0.0;
-      self->_previousFrameTime = a3;
+      self->_previousFrameTime = fired;
       self->_hasStartedAnimating = 1;
     }
 
     [(PFAnimatedImage *)self->_image frameDelayAtIndex:self->_displayedFrameIndex];
     v6 = v5;
-    v7 = [(PFAnimatedImage *)self->_image frameCache];
-    v8 = [v7 frameAtIndexIfReady:self->_displayedFrameIndex];
+    frameCache = [(PFAnimatedImage *)self->_image frameCache];
+    v8 = [frameCache frameAtIndexIfReady:self->_displayedFrameIndex];
 
     if (v8)
     {
       [(ISAnimatedImagePlayer *)self _setCurrentFrame:v8];
-      timeAccumulator = self->_timeAccumulator + a3 - self->_previousFrameTime;
+      timeAccumulator = self->_timeAccumulator + fired - self->_previousFrameTime;
       self->_timeAccumulator = timeAccumulator;
-      self->_previousFrameTime = a3;
+      self->_previousFrameTime = fired;
       if (timeAccumulator >= fmax(v6 + 1.0, 5.0))
       {
         self->_timeAccumulator = 0.0;
@@ -108,11 +108,11 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (a4)
+  if (change)
   {
-    [a3 timestamp];
+    [observable timestamp];
 
     [(ISAnimatedImagePlayer *)self animationTimerFired:?];
   }
@@ -120,9 +120,9 @@
 
 - (void)updateAnimation
 {
-  v3 = [(ISAnimatedImagePlayer *)self _shouldAnimate];
+  _shouldAnimate = [(ISAnimatedImagePlayer *)self _shouldAnimate];
   timer = self->_timer;
-  if (v3)
+  if (_shouldAnimate)
   {
     if (!timer)
     {
@@ -164,8 +164,8 @@
     return 0;
   }
 
-  v4 = [(PFAnimatedImage *)image frameCount];
-  v5 = self->_playing && v4 >= 2;
+  frameCount = [(PFAnimatedImage *)image frameCount];
+  v5 = self->_playing && frameCount >= 2;
   if (!v5 || self->_hasFinishedAnimating)
   {
     return 0;
@@ -174,35 +174,35 @@
   return [(ISAnimatedImagePlayer *)self _anyDestinationIsReady];
 }
 
-- (void)setDisplayedFrameIndex:(unint64_t)a3
+- (void)setDisplayedFrameIndex:(unint64_t)index
 {
-  if (self->_displayedFrameIndex != a3)
+  if (self->_displayedFrameIndex != index)
   {
-    self->_displayedFrameIndex = a3;
-    v5 = [(PFAnimatedImage *)self->_image frameCache];
-    -[ISAnimatedImagePlayer _setCurrentFrame:](self, "_setCurrentFrame:", [v5 frameAtIndex:self->_displayedFrameIndex]);
+    self->_displayedFrameIndex = index;
+    frameCache = [(PFAnimatedImage *)self->_image frameCache];
+    -[ISAnimatedImagePlayer _setCurrentFrame:](self, "_setCurrentFrame:", [frameCache frameAtIndex:self->_displayedFrameIndex]);
     [(ISAnimatedImagePlayer *)self _resetAnimationState];
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
+    self->_playing = playing;
     [(ISAnimatedImagePlayer *)self _resetAnimationState];
 
     [(ISAnimatedImagePlayer *)self updateAnimation];
   }
 }
 
-- (void)_setCurrentFrame:(CGImage *)a3
+- (void)_setCurrentFrame:(CGImage *)frame
 {
-  if (self->_currentImage != a3)
+  if (self->_currentImage != frame)
   {
-    CGImageRetain(a3);
+    CGImageRetain(frame);
     CGImageRelease(self->_currentImage);
-    self->_currentImage = a3;
+    self->_currentImage = frame;
 
     [(ISAnimatedImagePlayer *)self _notifyDestinationsOfFrameChange];
   }
@@ -214,9 +214,9 @@
   if (!image)
   {
 LABEL_4:
-    v5 = [(PFAnimatedImage *)image frameCache];
+    frameCache = [(PFAnimatedImage *)image frameCache];
     self->_displayedFrameIndex = 0;
-    -[ISAnimatedImagePlayer _setCurrentFrame:](self, "_setCurrentFrame:", [v5 frameAtIndex:0]);
+    -[ISAnimatedImagePlayer _setCurrentFrame:](self, "_setCurrentFrame:", [frameCache frameAtIndex:0]);
     [(ISAnimatedImagePlayer *)self _resetAnimationState];
 
     return;
@@ -402,19 +402,19 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterDestination:(id)a3
+- (void)unregisterDestination:(id)destination
 {
-  [(NSHashTable *)self->_weakDestinations removeObject:a3];
+  [(NSHashTable *)self->_weakDestinations removeObject:destination];
 
   [(ISAnimatedImagePlayer *)self updateAnimation];
 }
 
-- (void)registerDestination:(id)a3
+- (void)registerDestination:(id)destination
 {
   weakDestinations = self->_weakDestinations;
-  v5 = a3;
-  [(NSHashTable *)weakDestinations addObject:v5];
-  [v5 animatedImagePlayerFrameDidChange:self];
+  destinationCopy = destination;
+  [(NSHashTable *)weakDestinations addObject:destinationCopy];
+  [destinationCopy animatedImagePlayerFrameDidChange:self];
 
   [(ISAnimatedImagePlayer *)self updateAnimation];
 }
@@ -429,19 +429,19 @@ LABEL_11:
   [(ISAnimatedImagePlayer *)&v3 dealloc];
 }
 
-- (ISAnimatedImagePlayer)initWithAnimatedImage:(id)a3
+- (ISAnimatedImagePlayer)initWithAnimatedImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = ISAnimatedImagePlayer;
   v6 = [(ISAnimatedImagePlayer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_image, image);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     weakDestinations = v7->_weakDestinations;
-    v7->_weakDestinations = v8;
+    v7->_weakDestinations = weakObjectsHashTable;
 
     v7->_allowFrameDrops = 1;
     [(ISAnimatedImagePlayer *)v7 _seekToBeginning];

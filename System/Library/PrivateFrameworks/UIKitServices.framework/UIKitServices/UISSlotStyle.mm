@@ -1,100 +1,100 @@
 @interface UISSlotStyle
-+ (id)slotStyleWithAccessibilityButtonShapes:(unint64_t)a3 accessibilityContrast:(unint64_t)a4 displayRange:(unint64_t)a5 displayScale:(unsigned __int8)a6 layoutDirection:(unint64_t)a7 legibilityWeight:(unint64_t)a8 localization:(id)a9 preferredContentSizeCategory:(unint64_t)a10 tintColor:(CGColor *)a11 userInterfaceIdiom:(unint64_t)a12 userInterfaceStyle:(unint64_t)a13;
-- (BOOL)isEqual:(id)a3;
++ (id)slotStyleWithAccessibilityButtonShapes:(unint64_t)shapes accessibilityContrast:(unint64_t)contrast displayRange:(unint64_t)range displayScale:(unsigned __int8)scale layoutDirection:(unint64_t)direction legibilityWeight:(unint64_t)weight localization:(id)localization preferredContentSizeCategory:(unint64_t)self0 tintColor:(CGColor *)self1 userInterfaceIdiom:(unint64_t)self2 userInterfaceStyle:(unint64_t)self3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)assetAppearanceNames;
-- (UISSlotStyle)initWithAccessibilityButtonShapes:(unint64_t)a3 accessibilityContrast:(unint64_t)a4 displayRange:(unint64_t)a5 displayScale:(unsigned __int8)a6 layoutDirection:(unint64_t)a7 legibilityWeight:(unint64_t)a8 localization:(id)a9 preferredContentSizeCategory:(unint64_t)a10 tintColor:(CGColor *)a11 userInterfaceIdiom:(unint64_t)a12 userInterfaceStyle:(unint64_t)a13 textStylePlatform:(unint64_t)a14;
-- (UISSlotStyle)initWithCoder:(id)a3;
-- (UISSlotStyle)initWithStyle:(id)a3;
+- (UISSlotStyle)initWithAccessibilityButtonShapes:(unint64_t)shapes accessibilityContrast:(unint64_t)contrast displayRange:(unint64_t)range displayScale:(unsigned __int8)scale layoutDirection:(unint64_t)direction legibilityWeight:(unint64_t)weight localization:(id)localization preferredContentSizeCategory:(unint64_t)self0 tintColor:(CGColor *)self1 userInterfaceIdiom:(unint64_t)self2 userInterfaceStyle:(unint64_t)self3 textStylePlatform:(unint64_t)self4;
+- (UISSlotStyle)initWithCoder:(id)coder;
+- (UISSlotStyle)initWithStyle:(id)style;
 - (__CFString)fontContentSizeCategory;
-- (__CTFont)newFontForTextStyle:(__CFString *)a3 attributes:(__CFDictionary *)a4;
-- (id)assetGlyphWithName:(id)a3 glyphSize:(int64_t)a4 glyphWeight:(int64_t)a5 glyphPointSize:(double)a6;
-- (id)assetGlyphWithName:(id)a3 glyphSize:(int64_t)a4 textStyle:(__CFString *)a5;
-- (id)copyWithChangeBlock:(id)a3;
+- (__CTFont)newFontForTextStyle:(__CFString *)style attributes:(__CFDictionary *)attributes;
+- (id)assetGlyphWithName:(id)name glyphSize:(int64_t)size glyphWeight:(int64_t)weight glyphPointSize:(double)pointSize;
+- (id)assetGlyphWithName:(id)name glyphSize:(int64_t)size textStyle:(__CFString *)style;
+- (id)copyWithChangeBlock:(id)block;
 - (int64_t)assetDeviceIdiom;
 - (int64_t)assetLayoutDirection;
-- (unint64_t)gradeWithOnlyFails:(unint64_t)a3 allowedLocalizations:(id)a4;
+- (unint64_t)gradeWithOnlyFails:(unint64_t)fails allowedLocalizations:(id)localizations;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISSlotStyle
 
-+ (id)slotStyleWithAccessibilityButtonShapes:(unint64_t)a3 accessibilityContrast:(unint64_t)a4 displayRange:(unint64_t)a5 displayScale:(unsigned __int8)a6 layoutDirection:(unint64_t)a7 legibilityWeight:(unint64_t)a8 localization:(id)a9 preferredContentSizeCategory:(unint64_t)a10 tintColor:(CGColor *)a11 userInterfaceIdiom:(unint64_t)a12 userInterfaceStyle:(unint64_t)a13
++ (id)slotStyleWithAccessibilityButtonShapes:(unint64_t)shapes accessibilityContrast:(unint64_t)contrast displayRange:(unint64_t)range displayScale:(unsigned __int8)scale layoutDirection:(unint64_t)direction legibilityWeight:(unint64_t)weight localization:(id)localization preferredContentSizeCategory:(unint64_t)self0 tintColor:(CGColor *)self1 userInterfaceIdiom:(unint64_t)self2 userInterfaceStyle:(unint64_t)self3
 {
-  v15 = a6;
-  v19 = a9;
-  v20 = [[UISSlotStyle alloc] initWithAccessibilityButtonShapes:a3 accessibilityContrast:a4 displayRange:a5 displayScale:v15 layoutDirection:a7 legibilityWeight:a8 localization:v19 preferredContentSizeCategory:a10 tintColor:a11 userInterfaceIdiom:a12 userInterfaceStyle:a13 textStylePlatform:0xFFFFFFFFLL];
+  scaleCopy = scale;
+  localizationCopy = localization;
+  v20 = [[UISSlotStyle alloc] initWithAccessibilityButtonShapes:shapes accessibilityContrast:contrast displayRange:range displayScale:scaleCopy layoutDirection:direction legibilityWeight:weight localization:localizationCopy preferredContentSizeCategory:category tintColor:color userInterfaceIdiom:idiom userInterfaceStyle:style textStylePlatform:0xFFFFFFFFLL];
 
   return v20;
 }
 
-- (UISSlotStyle)initWithAccessibilityButtonShapes:(unint64_t)a3 accessibilityContrast:(unint64_t)a4 displayRange:(unint64_t)a5 displayScale:(unsigned __int8)a6 layoutDirection:(unint64_t)a7 legibilityWeight:(unint64_t)a8 localization:(id)a9 preferredContentSizeCategory:(unint64_t)a10 tintColor:(CGColor *)a11 userInterfaceIdiom:(unint64_t)a12 userInterfaceStyle:(unint64_t)a13 textStylePlatform:(unint64_t)a14
+- (UISSlotStyle)initWithAccessibilityButtonShapes:(unint64_t)shapes accessibilityContrast:(unint64_t)contrast displayRange:(unint64_t)range displayScale:(unsigned __int8)scale layoutDirection:(unint64_t)direction legibilityWeight:(unint64_t)weight localization:(id)localization preferredContentSizeCategory:(unint64_t)self0 tintColor:(CGColor *)self1 userInterfaceIdiom:(unint64_t)self2 userInterfaceStyle:(unint64_t)self3 textStylePlatform:(unint64_t)self4
 {
-  v14 = a8;
-  v15 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v21 = a9;
+  weightCopy = weight;
+  directionCopy = direction;
+  rangeCopy = range;
+  contrastCopy = contrast;
+  shapesCopy = shapes;
+  localizationCopy = localization;
   v26.receiver = self;
   v26.super_class = UISSlotStyle;
   v22 = [(UISSlotStyle *)&v26 init];
   if (v22)
   {
-    v23 = [v21 copy];
+    v23 = [localizationCopy copy];
     localization = v22->_localization;
     v22->_localization = v23;
 
-    v22->_tintColor = CGColorRetain(a11);
-    v22->_fields.all = v19 & 1 | (2 * (v18 & 1)) & 3 | (4 * (v17 & 3)) & 0xF | (16 * (a6 & 7)) & 0x7F | ((v15 & 1) << 7) | ((v14 & 1) << 8) & 0xE1FF | ((a10 & 0xF) << 9) | ((a12 & 7) << 13) | ((a13 & 1) << 16) | ((a14 & 7) << 17) | v22->_fields.all & 0xFFF00000;
+    v22->_tintColor = CGColorRetain(color);
+    v22->_fields.all = shapesCopy & 1 | (2 * (contrastCopy & 1)) & 3 | (4 * (rangeCopy & 3)) & 0xF | (16 * (scale & 7)) & 0x7F | ((directionCopy & 1) << 7) | ((weightCopy & 1) << 8) & 0xE1FF | ((category & 0xF) << 9) | ((idiom & 7) << 13) | ((style & 1) << 16) | ((platform & 7) << 17) | v22->_fields.all & 0xFFF00000;
   }
 
   return v22;
 }
 
-- (UISSlotStyle)initWithStyle:(id)a3
+- (UISSlotStyle)initWithStyle:(id)style
 {
-  v3 = a3;
-  v17 = [v3 accessibilityButtonShapes];
-  v16 = [v3 accessibilityContrast];
-  v15 = [v3 displayRange];
-  v4 = [v3 displayScale];
-  v5 = [v3 layoutDirection];
-  v6 = [v3 legibilityWeight];
-  v7 = [v3 localization];
-  v8 = [v3 preferredContentSizeCategory];
-  v9 = [v3 tintColor];
-  v10 = [v3 userInterfaceIdiom];
-  v11 = [v3 userInterfaceStyle];
-  v12 = [v3 textStylePlatform];
+  styleCopy = style;
+  accessibilityButtonShapes = [styleCopy accessibilityButtonShapes];
+  accessibilityContrast = [styleCopy accessibilityContrast];
+  displayRange = [styleCopy displayRange];
+  displayScale = [styleCopy displayScale];
+  layoutDirection = [styleCopy layoutDirection];
+  legibilityWeight = [styleCopy legibilityWeight];
+  localization = [styleCopy localization];
+  preferredContentSizeCategory = [styleCopy preferredContentSizeCategory];
+  tintColor = [styleCopy tintColor];
+  userInterfaceIdiom = [styleCopy userInterfaceIdiom];
+  userInterfaceStyle = [styleCopy userInterfaceStyle];
+  textStylePlatform = [styleCopy textStylePlatform];
 
-  v13 = [(UISSlotStyle *)self initWithAccessibilityButtonShapes:v17 accessibilityContrast:v16 displayRange:v15 displayScale:v4 layoutDirection:v5 legibilityWeight:v6 localization:v7 preferredContentSizeCategory:v8 tintColor:v9 userInterfaceIdiom:v10 userInterfaceStyle:v11 textStylePlatform:v12];
+  v13 = [(UISSlotStyle *)self initWithAccessibilityButtonShapes:accessibilityButtonShapes accessibilityContrast:accessibilityContrast displayRange:displayRange displayScale:displayScale layoutDirection:layoutDirection legibilityWeight:legibilityWeight localization:localization preferredContentSizeCategory:preferredContentSizeCategory tintColor:tintColor userInterfaceIdiom:userInterfaceIdiom userInterfaceStyle:userInterfaceStyle textStylePlatform:textStylePlatform];
   return v13;
 }
 
-- (UISSlotStyle)initWithCoder:(id)a3
+- (UISSlotStyle)initWithCoder:(id)coder
 {
   components[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UISSlotStyle;
   v5 = [(UISSlotStyle *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localization"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localization"];
     localization = v5->_localization;
     v5->_localization = v6;
 
-    v5->_fields.all = [v4 decodeIntegerForKey:@"fieldsAll"];
+    v5->_fields.all = [coderCopy decodeIntegerForKey:@"fieldsAll"];
     v8 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F110]);
-    [v4 decodeDoubleForKey:@"tintColorRed"];
+    [coderCopy decodeDoubleForKey:@"tintColorRed"];
     components[0] = v9;
-    [v4 decodeDoubleForKey:@"tintColorGreen"];
+    [coderCopy decodeDoubleForKey:@"tintColorGreen"];
     components[1] = v10;
-    [v4 decodeDoubleForKey:@"tintColorBlue"];
+    [coderCopy decodeDoubleForKey:@"tintColorBlue"];
     components[2] = v11;
-    [v4 decodeDoubleForKey:@"tintColorAlpha"];
+    [coderCopy decodeDoubleForKey:@"tintColorAlpha"];
     components[3] = v12;
     v5->_tintColor = CGColorCreate(v8, components);
     CGColorSpaceRelease(v8);
@@ -111,18 +111,18 @@
   [(UISSlotStyle *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6[4] = *MEMORY[0x1E69E9840];
   localization = self->_localization;
-  v5 = a3;
-  [v5 encodeObject:localization forKey:@"localization"];
-  [v5 encodeInteger:self->_fields.all forKey:@"fieldsAll"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localization forKey:@"localization"];
+  [coderCopy encodeInteger:self->_fields.all forKey:@"fieldsAll"];
   UISGetColorSRGBComponents(self->_tintColor, v6);
-  [v5 encodeDouble:@"tintColorRed" forKey:v6[0]];
-  [v5 encodeDouble:@"tintColorGreen" forKey:v6[1]];
-  [v5 encodeDouble:@"tintColorBlue" forKey:v6[2]];
-  [v5 encodeDouble:@"tintColorAlpha" forKey:v6[3]];
+  [coderCopy encodeDouble:@"tintColorRed" forKey:v6[0]];
+  [coderCopy encodeDouble:@"tintColorGreen" forKey:v6[1]];
+  [coderCopy encodeDouble:@"tintColorBlue" forKey:v6[2]];
+  [coderCopy encodeDouble:@"tintColorAlpha" forKey:v6[3]];
 }
 
 - (unint64_t)hash
@@ -132,11 +132,11 @@
   return v4 ^ CFHash(self->_tintColor);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && self->_fields.all == *(v4 + 6) && ((localization = self->_localization, localization == *(v4 + 1)) || [(NSString *)localization isEqual:?]) && CGColorEqualToColor(self->_tintColor, *(v4 + 2));
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && self->_fields.all == *(equalCopy + 6) && ((localization = self->_localization, localization == *(equalCopy + 1)) || [(NSString *)localization isEqual:?]) && CGColorEqualToColor(self->_tintColor, *(equalCopy + 2));
 
   return v6;
 }
@@ -151,13 +151,13 @@
       return result;
     }
 
-    v4 = [(UISSlotStyle *)self userInterfaceStyle];
-    if (!v4)
+    userInterfaceStyle = [(UISSlotStyle *)self userInterfaceStyle];
+    if (!userInterfaceStyle)
     {
       return &unk_1F0A84550;
     }
 
-    if (v4 == 1)
+    if (userInterfaceStyle == 1)
     {
       return &unk_1F0A84568;
     }
@@ -176,15 +176,15 @@
 
 - (int64_t)assetDeviceIdiom
 {
-  v2 = [(UISSlotStyle *)self userInterfaceIdiom];
-  if (v2 > 7)
+  userInterfaceIdiom = [(UISSlotStyle *)self userInterfaceIdiom];
+  if (userInterfaceIdiom > 7)
   {
     return 7;
   }
 
   else
   {
-    return qword_196019040[v2];
+    return qword_196019040[userInterfaceIdiom];
   }
 }
 
@@ -289,47 +289,47 @@
   return *v3;
 }
 
-- (id)assetGlyphWithName:(id)a3 glyphSize:(int64_t)a4 glyphWeight:(int64_t)a5 glyphPointSize:(double)a6
+- (id)assetGlyphWithName:(id)name glyphSize:(int64_t)size glyphWeight:(int64_t)weight glyphPointSize:(double)pointSize
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  nameCopy = name;
   if (_MergedGlobals_10 != -1)
   {
     dispatch_once(&_MergedGlobals_10, &__block_literal_global_6);
   }
 
-  v11 = [MEMORY[0x1E69C8710] infoForName:v10 allowsPrivate:1 locale:0];
+  v11 = [MEMORY[0x1E69C8710] infoForName:nameCopy allowsPrivate:1 locale:0];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 name];
+    name = [v11 name];
 
-    v14 = [v12 bundleType];
+    bundleType = [v12 bundleType];
     v15 = &qword_1ED51BF50;
-    if (v14 == 1)
+    if (bundleType == 1)
     {
       v15 = &qword_1ED51BF58;
     }
 
     v16 = *v15;
-    v17 = [(UISSlotStyle *)self legibilityWeight];
-    v18 = 7;
-    if (a5 < 7)
+    legibilityWeight = [(UISSlotStyle *)self legibilityWeight];
+    weightCopy = 7;
+    if (weight < 7)
     {
-      v18 = a5;
+      weightCopy = weight;
     }
 
-    v19 = v18 + 2;
+    v19 = weightCopy + 2;
     v32 = 0u;
     v33 = 0u;
-    if (v17 == 1)
+    if (legibilityWeight == 1)
     {
-      v20 = v19;
+      weightCopy2 = v19;
     }
 
     else
     {
-      v20 = a5;
+      weightCopy2 = weight;
     }
 
     v34 = 0uLL;
@@ -352,7 +352,7 @@
 
           v25 = *(*(&v32 + 1) + 8 * i);
           [(UISSlotStyle *)self assetScaleFactor];
-          v27 = [v16 namedVectorGlyphWithName:v13 scaleFactor:-[UISSlotStyle assetDeviceIdiom](self deviceIdiom:"assetDeviceIdiom") layoutDirection:-[UISSlotStyle assetLayoutDirection](self glyphSize:"assetLayoutDirection") glyphWeight:a4 glyphPointSize:v20 appearanceName:{v25, v26, a6}];
+          v27 = [v16 namedVectorGlyphWithName:name scaleFactor:-[UISSlotStyle assetDeviceIdiom](self deviceIdiom:"assetDeviceIdiom") layoutDirection:-[UISSlotStyle assetLayoutDirection](self glyphSize:"assetLayoutDirection") glyphWeight:size glyphPointSize:weightCopy2 appearanceName:{v25, v26, pointSize}];
           if (v27)
           {
             v28 = v27;
@@ -383,7 +383,7 @@ LABEL_21:
   else
   {
     v28 = 0;
-    v13 = v10;
+    name = nameCopy;
   }
 
   return v28;
@@ -404,9 +404,9 @@ void __85__UISSlotStyle_Convenience__assetGlyphWithName_glyphSize_glyphWeight_gl
   qword_1ED51BF58 = v5;
 }
 
-- (id)assetGlyphWithName:(id)a3 glyphSize:(int64_t)a4 textStyle:(__CFString *)a5
+- (id)assetGlyphWithName:(id)name glyphSize:(int64_t)size textStyle:(__CFString *)style
 {
-  v7 = a3;
+  nameCopy = name;
   [(UISSlotStyle *)self fontContentSizeCategory];
   CTFontDescriptorGetTextStyleSize();
   for (i = 0; i != 9; ++i)
@@ -417,16 +417,16 @@ void __85__UISSlotStyle_Convenience__assetGlyphWithName_glyphSize_glyphWeight_gl
     }
   }
 
-  v9 = [UISSlotStyle assetGlyphWithName:"assetGlyphWithName:glyphSize:glyphWeight:glyphPointSize:" glyphSize:v7 glyphWeight:a4 glyphPointSize:?];
+  v9 = [UISSlotStyle assetGlyphWithName:"assetGlyphWithName:glyphSize:glyphWeight:glyphPointSize:" glyphSize:nameCopy glyphWeight:size glyphPointSize:?];
 
   return v9;
 }
 
-- (id)copyWithChangeBlock:(id)a3
+- (id)copyWithChangeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(UISSlotStyle *)[UISMutableSlotStyle alloc] initWithStyle:self];
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
 
   if (v5)
   {
@@ -437,14 +437,14 @@ void __85__UISSlotStyle_Convenience__assetGlyphWithName_glyphSize_glyphWeight_gl
   return v5;
 }
 
-- (unint64_t)gradeWithOnlyFails:(unint64_t)a3 allowedLocalizations:(id)a4
+- (unint64_t)gradeWithOnlyFails:(unint64_t)fails allowedLocalizations:(id)localizations
 {
-  v6 = a4;
+  localizationsCopy = localizations;
   v7 = 0;
   v8 = 1;
   do
   {
-    if ((v8 & a3) == 0)
+    if ((v8 & fails) == 0)
     {
       goto LABEL_33;
     }
@@ -471,7 +471,7 @@ void __85__UISSlotStyle_Convenience__assetGlyphWithName_glyphSize_glyphWeight_gl
       {
         if (v8 == 128)
         {
-          v9 = [(UISSlotStyle *)self userInterfaceStyle];
+          userInterfaceStyle = [(UISSlotStyle *)self userInterfaceStyle];
           goto LABEL_31;
         }
 
@@ -492,8 +492,8 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        v11 = [(UISSlotStyle *)self localization];
-        v12 = [v6 containsObject:v11];
+        localization = [(UISSlotStyle *)self localization];
+        v12 = [localizationsCopy containsObject:localization];
 
         if ((v12 & 1) == 0)
         {
@@ -506,7 +506,7 @@ LABEL_32:
     {
       if (v8 == 1)
       {
-        v9 = [(UISSlotStyle *)self accessibilityContrast];
+        userInterfaceStyle = [(UISSlotStyle *)self accessibilityContrast];
         goto LABEL_31;
       }
 
@@ -522,7 +522,7 @@ LABEL_32:
       {
         if (v8 == 8)
         {
-          v9 = [(UISSlotStyle *)self layoutDirection];
+          userInterfaceStyle = [(UISSlotStyle *)self layoutDirection];
         }
 
         else
@@ -532,11 +532,11 @@ LABEL_32:
             goto LABEL_33;
           }
 
-          v9 = [(UISSlotStyle *)self legibilityWeight];
+          userInterfaceStyle = [(UISSlotStyle *)self legibilityWeight];
         }
 
 LABEL_31:
-        if (v9 <= 1)
+        if (userInterfaceStyle <= 1)
         {
           goto LABEL_33;
         }
@@ -560,13 +560,13 @@ LABEL_33:
   return v7;
 }
 
-- (__CTFont)newFontForTextStyle:(__CFString *)a3 attributes:(__CFDictionary *)a4
+- (__CTFont)newFontForTextStyle:(__CFString *)style attributes:(__CFDictionary *)attributes
 {
   v5 = *MEMORY[0x1E695E480];
-  if (a4)
+  if (attributes)
   {
-    Count = CFDictionaryGetCount(a4);
-    MutableCopy = CFDictionaryCreateMutableCopy(v5, Count + 2, a4);
+    Count = CFDictionaryGetCount(attributes);
+    MutableCopy = CFDictionaryCreateMutableCopy(v5, Count + 2, attributes);
   }
 
   else

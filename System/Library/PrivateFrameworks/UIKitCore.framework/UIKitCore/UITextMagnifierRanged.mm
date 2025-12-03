@@ -1,16 +1,16 @@
 @interface UITextMagnifierRanged
 + (id)sharedRangedMagnifier;
 - (BOOL)terminalPointPlacedCarefully;
-- (CGPoint)adjustMagnificationPoint:(CGPoint)a3;
-- (CGPoint)clipPoint:(CGPoint)a3 inRect:(CGRect)a4;
-- (CGRect)caretRectClosestToPoint:(CGPoint)a3;
+- (CGPoint)adjustMagnificationPoint:(CGPoint)point;
+- (CGPoint)clipPoint:(CGPoint)point inRect:(CGRect)rect;
+- (CGRect)caretRectClosestToPoint:(CGPoint)point;
 - (UITextMagnifierRanged)initWithFrame;
 - (int)horizontalMovement;
-- (int)horizontalMovementAtTime:(double)a3;
-- (void)beginMagnifyingTarget:(id)a3 text:(id)a4 magnificationPoint:(CGPoint)a5 offset:(CGPoint)a6 animated:(BOOL)a7;
-- (void)setIsHorizontal:(BOOL)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
-- (void)stopMagnifying:(BOOL)a3;
+- (int)horizontalMovementAtTime:(double)time;
+- (void)beginMagnifyingTarget:(id)target text:(id)text magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setIsHorizontal:(BOOL)horizontal;
+- (void)setMagnificationPoint:(CGPoint)point;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrameAndOffset;
 - (void)zoomDownAnimation;
 - (void)zoomUpAnimation;
@@ -21,8 +21,8 @@
 + (id)sharedRangedMagnifier
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  v4 = [v3 BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
+  preferencesActions = [v2 preferencesActions];
+  v4 = [preferencesActions BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
 
   if (v4)
   {
@@ -34,9 +34,9 @@
     v6 = SharedInstance_0;
     if (!SharedInstance_0)
     {
-      v7 = [[UITextMagnifierRanged alloc] initWithFrame];
+      initWithFrame = [[UITextMagnifierRanged alloc] initWithFrame];
       v8 = SharedInstance_0;
-      SharedInstance_0 = v7;
+      SharedInstance_0 = initWithFrame;
 
       v6 = SharedInstance_0;
     }
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (void)setIsHorizontal:(BOOL)a3
+- (void)setIsHorizontal:(BOOL)horizontal
 {
-  self->_isHorizontal = a3;
+  self->_isHorizontal = horizontal;
   if (!self->_isAnimating)
   {
     [(UITextMagnifierRanged *)self updateFrameAndOffset];
@@ -78,10 +78,10 @@
   [(UIView *)autoscrollRenderer update];
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6.receiver = self;
   v6.super_class = UITextMagnifierRanged;
   [(UITextMagnifier *)&v6 setMagnificationPoint:?];
@@ -95,7 +95,7 @@
   return v4 < 20.0 && v3;
 }
 
-- (int)horizontalMovementAtTime:(double)a3
+- (int)horizontalMovementAtTime:(double)time
 {
   [(UITextMagnifierTimeWeightedPoint *)self->super._weightedPoint distanceCoveredInInterval:3.40282347e38];
   v5 = v4;
@@ -263,9 +263,9 @@ void __42__UITextMagnifierRanged_zoomDownAnimation__block_invoke_2(uint64_t a1)
   [(UIView *)self setSize:v3, v4];
   if (self->super._target)
   {
-    v5 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     [(UITextMagnifier *)self magnificationPoint];
-    [v5 convertPoint:self->super._target fromView:?];
+    [superview convertPoint:self->super._target fromView:?];
     x = v6;
     y = v8;
   }
@@ -319,15 +319,15 @@ void __42__UITextMagnifierRanged_zoomDownAnimation__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)beginMagnifyingTarget:(id)a3 text:(id)a4 magnificationPoint:(CGPoint)a5 offset:(CGPoint)a6 animated:(BOOL)a7
+- (void)beginMagnifyingTarget:(id)target text:(id)text magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v7 = a7;
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  v14 = a4;
-  v15 = a3;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v10 = point.y;
+  v11 = point.x;
+  textCopy = text;
+  targetCopy = target;
   v16 = +[UITextMagnifierCaret sharedCaretMagnifier];
   [v16 stopMagnifying:0];
 
@@ -340,26 +340,26 @@ void __42__UITextMagnifierRanged_zoomDownAnimation__block_invoke_2(uint64_t a1)
   self->_touchOffsetFromMagnificationPoint = v17;
   v18.receiver = self;
   v18.super_class = UITextMagnifierRanged;
-  [(UITextMagnifier *)&v18 beginMagnifyingTarget:v15 text:v14 magnificationPoint:v7 offset:v11 animated:v10, x, y];
+  [(UITextMagnifier *)&v18 beginMagnifyingTarget:targetCopy text:textCopy magnificationPoint:animatedCopy offset:v11 animated:v10, x, y];
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
   v4.receiver = self;
   v4.super_class = UITextMagnifierRanged;
-  [(UITextMagnifier *)&v4 stopMagnifying:a3];
+  [(UITextMagnifier *)&v4 stopMagnifying:magnifying];
   self->_touchOffsetFromMagnificationPoint = 0.0;
 }
 
-- (CGPoint)clipPoint:(CGPoint)a3 inRect:(CGRect)a4
+- (CGPoint)clipPoint:(CGPoint)point inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  if (a3.x >= CGRectGetMinX(a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = point.y;
+  v9 = point.x;
+  if (point.x >= CGRectGetMinX(rect))
   {
     v16.origin.x = x;
     v16.origin.y = y;
@@ -426,24 +426,24 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)caretRectClosestToPoint:(CGPoint)a3
+- (CGRect)caretRectClosestToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextMagnifier *)self text];
+  y = point.y;
+  x = point.x;
+  text = [(UITextMagnifier *)self text];
   v8 = *MEMORY[0x1E695F050];
   v7 = *(MEMORY[0x1E695F050] + 8);
   v9 = *(MEMORY[0x1E695F050] + 16);
   v10 = *(MEMORY[0x1E695F050] + 24);
-  v11 = [v6 _usesAsynchronousProtocol];
-  v12 = [v6 selectedTextRange];
-  v13 = v12;
-  if (!v11)
+  _usesAsynchronousProtocol = [text _usesAsynchronousProtocol];
+  selectedTextRange = [text selectedTextRange];
+  v13 = selectedTextRange;
+  if (!_usesAsynchronousProtocol)
   {
-    if (v12)
+    if (selectedTextRange)
     {
-      v30 = [v6 selectedTextRange];
-      v31 = [v6 closestPositionToPoint:v30 withinRange:{x, y}];
+      selectedTextRange2 = [text selectedTextRange];
+      v31 = [text closestPositionToPoint:selectedTextRange2 withinRange:{x, y}];
 
       if (!v31)
       {
@@ -455,14 +455,14 @@ LABEL_12:
 
     else
     {
-      v31 = [v6 closestPositionToPoint:{x, y}];
+      v31 = [text closestPositionToPoint:{x, y}];
       if (!v31)
       {
         goto LABEL_12;
       }
     }
 
-    [v6 caretRectForPosition:v31];
+    [text caretRectForPosition:v31];
     v8 = v32;
     v7 = v33;
     v9 = v34;
@@ -474,16 +474,16 @@ LABEL_12:
   v41 = v9;
   v42 = v7;
   v43 = v8;
-  v14 = [v12 start];
-  [v6 caretRectForPosition:v14];
+  start = [selectedTextRange start];
+  [text caretRectForPosition:start];
   v8 = v15;
   v7 = v16;
   v44 = v18;
   v45 = v17;
 
-  v19 = [v6 selectedTextRange];
-  v20 = [v19 end];
-  [v6 caretRectForPosition:v20];
+  selectedTextRange3 = [text selectedTextRange];
+  v20 = [selectedTextRange3 end];
+  [text caretRectForPosition:v20];
   v22 = v21;
   v24 = v23;
   v9 = v25;
@@ -535,19 +535,19 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)adjustMagnificationPoint:(CGPoint)a3
+- (CGPoint)adjustMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextMagnifier *)self text];
-  v7 = [v6 textInputView];
+  y = point.y;
+  x = point.x;
+  text = [(UITextMagnifier *)self text];
+  textInputView = [text textInputView];
 
-  [v7 convertPoint:self->super._target fromView:{x, y}];
+  [textInputView convertPoint:self->super._target fromView:{x, y}];
   v9 = v8;
   v11 = v10;
-  if (v7)
+  if (textInputView)
   {
-    [v7 bounds];
+    [textInputView bounds];
     [(UITextMagnifierRanged *)self clipPoint:v9 inRect:v11, v12, v13, v14, v15];
     v9 = v16;
     v11 = v17;
@@ -571,7 +571,7 @@ LABEL_13:
     }
   }
 
-  [v7 convertPoint:self->super._target toView:{v9, v11}];
+  [textInputView convertPoint:self->super._target toView:{v9, v11}];
   v23 = v22;
   v25 = v24;
 

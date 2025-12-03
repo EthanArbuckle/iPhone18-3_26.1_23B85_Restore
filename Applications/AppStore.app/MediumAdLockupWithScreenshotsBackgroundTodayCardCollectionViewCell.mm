@@ -2,7 +2,7 @@
 - (NSArray)accessibilityElements;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityElements:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation MediumAdLockupWithScreenshotsBackgroundTodayCardCollectionViewCell
@@ -31,7 +31,7 @@
   sub_10002849C(&qword_1009701B0);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_1007B10D0;
-  v4 = self;
+  selfCopy = self;
   v5 = sub_100344F64();
   v6 = *&v5[OBJC_IVAR____TtC8AppStore43MediumAdLockupWithScreenshotsBackgroundView_lockupView];
 
@@ -43,18 +43,18 @@
   return v7.super.isa;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5.super.isa = 0;
   }
 

@@ -1,19 +1,19 @@
 @interface NILocation
-- (BOOL)isEqual:(id)a3;
-- (NILocation)initWithCoder:(id)a3;
-- (NILocation)initWithTimestamp:(id)a3 latitude:(double)a4 longitude:(double)a5 altitude:(double)a6 ellipsoidalAltitude:(double)a7 horizontalAccuracy:(double)a8 verticalAccuracy:(double)a9 speed:(double)a10 speedAccuracy:(double)a11 course:(double)a12 courseAccuracy:(double)a13 floor:(int64_t)a14 locationType:(int64_t)a15 signalEnvironment:(int64_t)a16;
+- (BOOL)isEqual:(id)equal;
+- (NILocation)initWithCoder:(id)coder;
+- (NILocation)initWithTimestamp:(id)timestamp latitude:(double)latitude longitude:(double)longitude altitude:(double)altitude ellipsoidalAltitude:(double)ellipsoidalAltitude horizontalAccuracy:(double)accuracy verticalAccuracy:(double)verticalAccuracy speed:(double)self0 speedAccuracy:(double)self1 course:(double)self2 courseAccuracy:(double)self3 floor:(int64_t)self4 locationType:(int64_t)self5 signalEnvironment:(int64_t)self6;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NILocation
 
-- (NILocation)initWithTimestamp:(id)a3 latitude:(double)a4 longitude:(double)a5 altitude:(double)a6 ellipsoidalAltitude:(double)a7 horizontalAccuracy:(double)a8 verticalAccuracy:(double)a9 speed:(double)a10 speedAccuracy:(double)a11 course:(double)a12 courseAccuracy:(double)a13 floor:(int64_t)a14 locationType:(int64_t)a15 signalEnvironment:(int64_t)a16
+- (NILocation)initWithTimestamp:(id)timestamp latitude:(double)latitude longitude:(double)longitude altitude:(double)altitude ellipsoidalAltitude:(double)ellipsoidalAltitude horizontalAccuracy:(double)accuracy verticalAccuracy:(double)verticalAccuracy speed:(double)self0 speedAccuracy:(double)self1 course:(double)self2 courseAccuracy:(double)self3 floor:(int64_t)self4 locationType:(int64_t)self5 signalEnvironment:(int64_t)self6
 {
-  v28 = a3;
-  if (!v28)
+  timestampCopy = timestamp;
+  if (!timestampCopy)
   {
     __assert_rtn("[NILocation initWithTimestamp:latitude:longitude:altitude:ellipsoidalAltitude:horizontalAccuracy:verticalAccuracy:speed:speedAccuracy:course:courseAccuracy:floor:locationType:signalEnvironment:]", "NILocation.mm", 37, "timestamp");
   }
@@ -23,73 +23,73 @@
   v29 = [(NILocation *)&v33 init];
   if (v29)
   {
-    v30 = [v28 copy];
+    v30 = [timestampCopy copy];
     timestamp = v29->_timestamp;
     v29->_timestamp = v30;
 
-    v29->_latitude = a4;
-    v29->_longitude = a5;
-    v29->_altitude = a6;
-    v29->_ellipsoidalAltitude = a7;
-    v29->_horizontalAccuracy = a8;
-    v29->_verticalAccuracy = a9;
-    v29->_speed = a10;
-    v29->_speedAccuracy = a11;
-    v29->_course = a12;
-    v29->_courseAccuracy = a13;
-    v29->_floor = a14;
-    v29->_locationType = a15;
-    v29->_signalEnvironment = a16;
+    v29->_latitude = latitude;
+    v29->_longitude = longitude;
+    v29->_altitude = altitude;
+    v29->_ellipsoidalAltitude = ellipsoidalAltitude;
+    v29->_horizontalAccuracy = accuracy;
+    v29->_verticalAccuracy = verticalAccuracy;
+    v29->_speed = speed;
+    v29->_speedAccuracy = speedAccuracy;
+    v29->_course = course;
+    v29->_courseAccuracy = courseAccuracy;
+    v29->_floor = floor;
+    v29->_locationType = type;
+    v29->_signalEnvironment = environment;
   }
 
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v4 encodeDouble:@"latitude" forKey:self->_latitude];
-  [v4 encodeDouble:@"longitude" forKey:self->_longitude];
-  [v4 encodeDouble:@"altitude" forKey:self->_altitude];
-  [v4 encodeDouble:@"ellipsoidalAltitude" forKey:self->_ellipsoidalAltitude];
-  [v4 encodeDouble:@"horizontalAccuracy" forKey:self->_horizontalAccuracy];
-  [v4 encodeDouble:@"verticalAccuracy" forKey:self->_verticalAccuracy];
-  [v4 encodeDouble:@"speed" forKey:self->_speed];
-  [v4 encodeDouble:@"speedAccuracy" forKey:self->_speedAccuracy];
-  [v4 encodeDouble:@"course" forKey:self->_course];
-  [v4 encodeDouble:@"courseAccuracy" forKey:self->_courseAccuracy];
-  [v4 encodeInteger:self->_floor forKey:@"floor"];
-  [v4 encodeInteger:self->_locationType forKey:@"locationType"];
-  [v4 encodeInteger:self->_signalEnvironment forKey:@"signalEnvironment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeDouble:@"latitude" forKey:self->_latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"altitude" forKey:self->_altitude];
+  [coderCopy encodeDouble:@"ellipsoidalAltitude" forKey:self->_ellipsoidalAltitude];
+  [coderCopy encodeDouble:@"horizontalAccuracy" forKey:self->_horizontalAccuracy];
+  [coderCopy encodeDouble:@"verticalAccuracy" forKey:self->_verticalAccuracy];
+  [coderCopy encodeDouble:@"speed" forKey:self->_speed];
+  [coderCopy encodeDouble:@"speedAccuracy" forKey:self->_speedAccuracy];
+  [coderCopy encodeDouble:@"course" forKey:self->_course];
+  [coderCopy encodeDouble:@"courseAccuracy" forKey:self->_courseAccuracy];
+  [coderCopy encodeInteger:self->_floor forKey:@"floor"];
+  [coderCopy encodeInteger:self->_locationType forKey:@"locationType"];
+  [coderCopy encodeInteger:self->_signalEnvironment forKey:@"signalEnvironment"];
 }
 
-- (NILocation)initWithCoder:(id)a3
+- (NILocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v4 decodeDoubleForKey:@"latitude"];
+    [coderCopy decodeDoubleForKey:@"latitude"];
     v26 = v6;
-    [v4 decodeDoubleForKey:@"longitude"];
+    [coderCopy decodeDoubleForKey:@"longitude"];
     v25 = v7;
-    [v4 decodeDoubleForKey:@"altitude"];
+    [coderCopy decodeDoubleForKey:@"altitude"];
     v9 = v8;
-    [v4 decodeDoubleForKey:@"ellipsoidalAltitude"];
+    [coderCopy decodeDoubleForKey:@"ellipsoidalAltitude"];
     v11 = v10;
-    [v4 decodeDoubleForKey:@"horizontalAccuracy"];
+    [coderCopy decodeDoubleForKey:@"horizontalAccuracy"];
     v13 = v12;
-    [v4 decodeDoubleForKey:@"verticalAccuracy"];
+    [coderCopy decodeDoubleForKey:@"verticalAccuracy"];
     v15 = v14;
-    [v4 decodeDoubleForKey:@"speed"];
+    [coderCopy decodeDoubleForKey:@"speed"];
     v17 = v16;
-    [v4 decodeDoubleForKey:@"speedAccuracy"];
+    [coderCopy decodeDoubleForKey:@"speedAccuracy"];
     v19 = v18;
-    [v4 decodeDoubleForKey:@"course"];
+    [coderCopy decodeDoubleForKey:@"course"];
     v21 = v20;
-    [v4 decodeDoubleForKey:@"courseAccuracy"];
-    v23 = -[NILocation initWithTimestamp:latitude:longitude:altitude:ellipsoidalAltitude:horizontalAccuracy:verticalAccuracy:speed:speedAccuracy:course:courseAccuracy:floor:locationType:signalEnvironment:]([NILocation alloc], "initWithTimestamp:latitude:longitude:altitude:ellipsoidalAltitude:horizontalAccuracy:verticalAccuracy:speed:speedAccuracy:course:courseAccuracy:floor:locationType:signalEnvironment:", v5, [v4 decodeIntegerForKey:@"floor"], objc_msgSend(v4, "decodeIntegerForKey:", @"locationType"), objc_msgSend(v4, "decodeIntegerForKey:", @"signalEnvironment"), v26, v25, v9, v11, v13, v15, v17, v19, v21, v22);
+    [coderCopy decodeDoubleForKey:@"courseAccuracy"];
+    v23 = -[NILocation initWithTimestamp:latitude:longitude:altitude:ellipsoidalAltitude:horizontalAccuracy:verticalAccuracy:speed:speedAccuracy:course:courseAccuracy:floor:locationType:signalEnvironment:]([NILocation alloc], "initWithTimestamp:latitude:longitude:altitude:ellipsoidalAltitude:horizontalAccuracy:verticalAccuracy:speed:speedAccuracy:course:courseAccuracy:floor:locationType:signalEnvironment:", v5, [coderCopy decodeIntegerForKey:@"floor"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"locationType"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"signalEnvironment"), v26, v25, v9, v11, v13, v15, v17, v19, v21, v22);
   }
 
   else
@@ -100,13 +100,13 @@
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -119,9 +119,9 @@ LABEL_29:
     timestamp = self->_timestamp;
     if (!timestamp)
     {
-      v8 = [(NILocation *)v5 timestamp];
+      timestamp = [(NILocation *)v5 timestamp];
 
-      if (!v8)
+      if (!timestamp)
       {
         v11 = 0;
 LABEL_7:
@@ -156,11 +156,11 @@ LABEL_7:
         [(NILocation *)v6 courseAccuracy];
         v40 = v29;
         floor = self->_floor;
-        v31 = [(NILocation *)v6 floor];
+        floor = [(NILocation *)v6 floor];
         locationType = self->_locationType;
-        v33 = [(NILocation *)v6 locationType];
+        locationType = [(NILocation *)v6 locationType];
         signalEnvironment = self->_signalEnvironment;
-        v35 = [(NILocation *)v6 signalEnvironment];
+        signalEnvironment = [(NILocation *)v6 signalEnvironment];
         v36 = 0;
         if (latitude == v14)
         {
@@ -172,9 +172,9 @@ LABEL_7:
           v37 = 1;
         }
 
-        if ((v37 & 1) == 0 && longitude == v17 && altitude == v20 && ellipsoidalAltitude == v23 && horizontalAccuracy == v50 && verticalAccuracy == v48 && speed == v46 && speedAccuracy == v44 && course == v42 && courseAccuracy == v40 && floor == v31)
+        if ((v37 & 1) == 0 && longitude == v17 && altitude == v20 && ellipsoidalAltitude == v23 && horizontalAccuracy == v50 && verticalAccuracy == v48 && speed == v46 && speedAccuracy == v44 && course == v42 && courseAccuracy == v40 && floor == floor)
         {
-          v36 = locationType == v33 && signalEnvironment == v35;
+          v36 = locationType == locationType && signalEnvironment == signalEnvironment;
         }
 
         goto LABEL_29;
@@ -183,8 +183,8 @@ LABEL_7:
       timestamp = self->_timestamp;
     }
 
-    v9 = [(NILocation *)v6 timestamp];
-    v10 = [(NSDate *)timestamp isEqual:v9];
+    timestamp2 = [(NILocation *)v6 timestamp];
+    v10 = [(NSDate *)timestamp isEqual:timestamp2];
 
     v11 = v10 ^ 1;
     goto LABEL_7;
@@ -244,8 +244,8 @@ LABEL_30:
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NILocation *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NILocation *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }

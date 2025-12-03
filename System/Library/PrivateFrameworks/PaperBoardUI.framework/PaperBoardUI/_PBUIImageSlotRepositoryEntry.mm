@@ -1,7 +1,7 @@
 @interface _PBUIImageSlotRepositoryEntry
 - (CGSize)size;
 - (IOSurface)ioSurface;
-- (void)_setBlockSet:(CGImageBlockSet *)a3;
+- (void)_setBlockSet:(CGImageBlockSet *)set;
 - (void)dealloc;
 @end
 
@@ -44,13 +44,13 @@
   return ioSurface;
 }
 
-- (void)_setBlockSet:(CGImageBlockSet *)a3
+- (void)_setBlockSet:(CGImageBlockSet *)set
 {
   blockSet = self->_blockSet;
-  if (blockSet != a3)
+  if (blockSet != set)
   {
     CGImageBlockSetRetain();
-    self->_blockSet = a3;
+    self->_blockSet = set;
     if (blockSet)
     {
 

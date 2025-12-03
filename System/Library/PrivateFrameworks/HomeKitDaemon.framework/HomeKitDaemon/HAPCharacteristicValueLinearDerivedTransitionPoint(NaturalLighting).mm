@@ -8,14 +8,14 @@
 
 - (unint64_t)colorTemperatureForBrightness:()NaturalLighting
 {
-  v5 = [a1 scale];
-  v6 = [v5 value];
-  [v6 floatValue];
+  scale = [self scale];
+  value = [scale value];
+  [value floatValue];
   v8 = v7;
   v9 = a3;
-  v10 = [a1 offset];
-  v11 = [v10 value];
-  [v11 floatValue];
+  offset = [self offset];
+  value2 = [offset value];
+  [value2 floatValue];
   v13 = llroundf(v12 + (v8 * v9));
 
   return v13;
@@ -25,51 +25,51 @@
 {
   v11 = a4;
   v12 = a3;
-  v13 = [v12 scale];
-  v14 = [v13 value];
-  [v14 floatValue];
+  scale = [v12 scale];
+  value = [scale value];
+  [value floatValue];
   v16 = v15;
-  v17 = [v12 offset];
-  v18 = [v17 value];
-  [v18 floatValue];
+  offset = [v12 offset];
+  value2 = [offset value];
+  [value2 floatValue];
   v20 = v19 + (v16 * a6);
 
-  v21 = [v12 scale];
-  v22 = [v21 value];
-  [v22 floatValue];
+  scale2 = [v12 scale];
+  value3 = [scale2 value];
+  [value3 floatValue];
   v24 = v23;
-  v25 = [v12 offset];
+  offset2 = [v12 offset];
 
-  v26 = [v25 value];
-  [v26 floatValue];
+  value4 = [offset2 value];
+  [value4 floatValue];
   v28 = v27 + (v24 * a7);
 
-  v29 = [v11 scale];
-  v30 = [v29 value];
-  [v30 floatValue];
+  scale3 = [v11 scale];
+  value5 = [scale3 value];
+  [value5 floatValue];
   v32 = v31;
-  v33 = [v11 offset];
-  v34 = [v33 value];
-  [v34 floatValue];
+  offset3 = [v11 offset];
+  value6 = [offset3 value];
+  [value6 floatValue];
   v36 = v35 + (v32 * a6);
 
-  v37 = [v11 scale];
-  v38 = [v37 value];
-  [v38 floatValue];
+  scale4 = [v11 scale];
+  value7 = [scale4 value];
+  [value7 floatValue];
   v40 = v39;
-  v41 = [v11 offset];
-  v42 = [v41 value];
-  [v42 floatValue];
+  offset4 = [v11 offset];
+  value8 = [offset4 value];
+  [value8 floatValue];
   v44 = v43 + (v40 * a7);
 
-  v45 = [v11 targetCompletionDuration];
+  targetCompletionDuration = [v11 targetCompletionDuration];
 
-  v46 = [v45 value];
-  v47 = [v46 unsignedLongLongValue];
+  value9 = [targetCompletionDuration value];
+  unsignedLongLongValue = [value9 unsignedLongLongValue];
 
   v48 = MEMORY[0x277CFEAA0];
 
-  return [v48 transitionPointWithMinimumBrightness:a6 minimumBrightnessColorTemperature:(v20 + (((v36 - v20) / v47) * a5)) maximumBrightness:a7 maximumBrightnessColorTemperature:(v28 + (((v44 - v28) / v47) * a5)) targetCompletionDuration:0];
+  return [v48 transitionPointWithMinimumBrightness:a6 minimumBrightnessColorTemperature:(v20 + (((v36 - v20) / unsignedLongLongValue) * a5)) maximumBrightness:a7 maximumBrightnessColorTemperature:(v28 + (((v44 - v28) / unsignedLongLongValue) * a5)) targetCompletionDuration:0];
 }
 
 + (id)transitionPointWithMinimumBrightness:()NaturalLighting minimumBrightnessColorTemperature:maximumBrightness:maximumBrightnessColorTemperature:targetCompletionDuration:

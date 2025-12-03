@@ -1,26 +1,26 @@
 @interface MSSSharedLibrarySettingsController
-- (MSSSharedLibrarySettingsController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_subtitleForParticipantSpecifier:(id)a3;
+- (MSSSharedLibrarySettingsController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_subtitleForParticipantSpecifier:(id)specifier;
 - (id)deepLinkURL;
-- (id)deletionNotificationEnabledSpecifier:(id)a3;
+- (id)deletionNotificationEnabledSpecifier:(id)specifier;
 - (id)pathComponentsLocalizedResource;
 - (id)specifiers;
-- (id)valueForCameraSpecifier:(id)a3;
-- (id)valueForSuggestionsSpecifier:(id)a3;
+- (id)valueForCameraSpecifier:(id)specifier;
+- (id)valueForSuggestionsSpecifier:(id)specifier;
 - (void)_beginObservingPhotosAppPrefs;
-- (void)_didSelectAddParticipantSpecifier:(id)a3;
-- (void)_didSelectExitLibrarySpecifier:(id)a3;
-- (void)_didSelectParticipantSpecifier:(id)a3;
-- (void)_didSelectSuggestionsSpecifier:(id)a3;
-- (void)_handleDidAddParticipantsWithEmailAddresses:(id)a3 phoneNumbers:(id)a4 success:(BOOL)a5 error:(id)a6;
+- (void)_didSelectAddParticipantSpecifier:(id)specifier;
+- (void)_didSelectExitLibrarySpecifier:(id)specifier;
+- (void)_didSelectParticipantSpecifier:(id)specifier;
+- (void)_didSelectSuggestionsSpecifier:(id)specifier;
+- (void)_handleDidAddParticipantsWithEmailAddresses:(id)addresses phoneNumbers:(id)numbers success:(BOOL)success error:(id)error;
 - (void)_stopObservingPhotosAppPrefs;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoRecipientViewController:(id)a3 didCompleteWithRecipients:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoRecipientViewController:(id)controller didCompleteWithRecipients:(id)recipients;
 - (void)reloadSpecifiers;
-- (void)setDeletionNotificationEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setParentController:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setDeletionNotificationEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setParentController:(id)controller;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation MSSSharedLibrarySettingsController
@@ -29,8 +29,8 @@
 {
   v3 = +[MSSSettingsUtilities photosMainPaneLocalizedResource];
   v7[0] = v3;
-  v4 = [(MSSSharedLibrarySettingsController *)self paneTitleLocalizedResource];
-  v7[1] = v4;
+  paneTitleLocalizedResource = [(MSSSharedLibrarySettingsController *)self paneTitleLocalizedResource];
+  v7[1] = paneTitleLocalizedResource;
   v5 = [NSArray arrayWithObjects:v7 count:2];
 
   return v5;
@@ -58,31 +58,31 @@
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_1731C, @"com.apple.mobileslideshow.PreferenceChanged", 0, CFNotificationSuspensionBehaviorCoalesce);
 }
 
-- (void)_handleDidAddParticipantsWithEmailAddresses:(id)a3 phoneNumbers:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)_handleDidAddParticipantsWithEmailAddresses:(id)addresses phoneNumbers:(id)numbers success:(BOOL)success error:(id)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(MSSSharedLibrarySettingsController *)self statusProvider];
-  v14 = [v13 sharedLibrary];
+  successCopy = success;
+  addressesCopy = addresses;
+  numbersCopy = numbers;
+  errorCopy = error;
+  statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
+  sharedLibrary = [statusProvider sharedLibrary];
 
-  if (v14)
+  if (sharedLibrary)
   {
     v15 = [PXViewControllerPresenter defaultPresenterWithViewController:self];
-    if ([v14 isInLocalMode])
+    if ([sharedLibrary isInLocalMode])
     {
       PXSharedLibraryHandleInvitationForLocalMode();
     }
 
-    else if (v7)
+    else if (successCopy)
     {
       PXSharedLibrarySendInvitation();
     }
 
     else
     {
-      v17 = [v14 sourceLibraryInfo];
+      sourceLibraryInfo = [sharedLibrary sourceLibraryInfo];
       PXHandleErrorAddingParticipants();
     }
   }
@@ -98,16 +98,16 @@
   }
 }
 
-- (void)photoRecipientViewController:(id)a3 didCompleteWithRecipients:(id)a4
+- (void)photoRecipientViewController:(id)controller didCompleteWithRecipients:(id)recipients
 {
-  v4 = a4;
+  recipientsCopy = recipients;
   v5 = objc_alloc_init(NSMutableArray);
   v22 = objc_alloc_init(NSMutableArray);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = recipientsCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
@@ -124,22 +124,22 @@
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
-        v12 = [v11 contact];
-        v13 = [v11 emailAddressString];
-        v14 = [v11 phoneNumberString];
-        if ([v13 length])
+        contact = [v11 contact];
+        emailAddressString = [v11 emailAddressString];
+        phoneNumberString = [v11 phoneNumberString];
+        if ([emailAddressString length])
         {
           v15 = v5;
-          v16 = v13;
+          v16 = emailAddressString;
 LABEL_10:
           [v15 addObject:v16];
           goto LABEL_11;
         }
 
-        if ([v14 length])
+        if ([phoneNumberString length])
         {
           v15 = v22;
-          v16 = v14;
+          v16 = phoneNumberString;
           goto LABEL_10;
         }
 
@@ -149,7 +149,7 @@ LABEL_10:
           *buf = 138412546;
           v31 = v11;
           v32 = 2112;
-          v33 = v12;
+          v33 = contact;
           _os_log_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "No invite address string for recipient: %@ contact: %@", buf, 0x16u);
         }
 
@@ -177,11 +177,11 @@ LABEL_11:
   [(MSSSharedLibrarySettingsController *)self dismissViewControllerAnimated:1 completion:v23];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (off_33430 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (off_33430 != context)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"MSSSharedLibrarySettingsController.m" lineNumber:299 description:@"Code which should be unreachable has been reached"];
@@ -189,28 +189,28 @@ LABEL_11:
     abort();
   }
 
-  if ((v6 & 0x30) != 0)
+  if ((changeCopy & 0x30) != 0)
   {
-    v13 = v9;
-    v10 = [(MSSSharedLibrarySettingsController *)self statusProvider];
+    v13 = observableCopy;
+    statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
     ShouldDisplaySettings = PXSharedLibraryShouldDisplaySettings();
 
-    v9 = v13;
+    observableCopy = v13;
     if (ShouldDisplaySettings)
     {
       [(MSSSharedLibrarySettingsController *)self reloadSpecifiers];
-      v9 = v13;
+      observableCopy = v13;
     }
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  cellCopy = cell;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = cellCopy;
   }
 
   else
@@ -218,25 +218,25 @@ LABEL_11:
     v8 = 0;
   }
 
-  v9 = [v8 specifier];
-  if (v9)
+  specifier = [v8 specifier];
+  if (specifier)
   {
     PXSizeMakeSquare();
     v11 = v10;
     v13 = v12;
-    [v6 px_screenScale];
+    [viewCopy px_screenScale];
     v15 = v14;
-    v16 = [v6 effectiveUserInterfaceLayoutDirection] == &dword_0 + 1;
-    v17 = [v9 objectForKeyedSubscript:@"SharedLibraryParticipant"];
-    v18 = [v17 imageProvider];
+    v16 = [viewCopy effectiveUserInterfaceLayoutDirection] == &dword_0 + 1;
+    v17 = [specifier objectForKeyedSubscript:@"SharedLibraryParticipant"];
+    imageProvider = [v17 imageProvider];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_17C70;
     v19[3] = &unk_2D2E8;
-    v20 = v9;
+    v20 = specifier;
     v21 = v8;
-    v22 = v7;
-    [v18 requestImageWithTargetSize:v16 displayScale:v19 isRTL:v11 completionHandler:{v13, v15}];
+    v22 = cellCopy;
+    [imageProvider requestImageWithTargetSize:v16 displayScale:v19 isRTL:v11 completionHandler:{v13, v15}];
   }
 }
 
@@ -250,7 +250,7 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = self;
+  selfCopy = self;
   obj = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
@@ -272,9 +272,9 @@ LABEL_11:
         if (v12)
         {
           v13 = [v11 objectForKeyedSubscript:v9];
-          v14 = v5->_participantImageCache;
-          v15 = [v12 localIdentifier];
-          [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
+          v14 = selfCopy->_participantImageCache;
+          localIdentifier = [v12 localIdentifier];
+          [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:localIdentifier];
         }
       }
 
@@ -284,11 +284,11 @@ LABEL_11:
     while (v7);
   }
 
-  v18.receiver = v5;
+  v18.receiver = selfCopy;
   v18.super_class = MSSSharedLibrarySettingsController;
   [(MSSSharedLibrarySettingsController *)&v18 reloadSpecifiers];
-  v16 = v5->_participantImageCache;
-  v5->_participantImageCache = 0;
+  v16 = selfCopy->_participantImageCache;
+  selfCopy->_participantImageCache = 0;
 }
 
 - (id)specifiers
@@ -297,11 +297,11 @@ LABEL_11:
   if (!v3)
   {
     v50 = OBJC_IVAR___PSListController__specifiers;
-    v64 = self;
-    v4 = [(MSSSharedLibrarySettingsController *)self statusProvider];
+    selfCopy = self;
+    statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
     v5 = objc_opt_new();
-    v62 = v4;
-    v6 = [v4 sharedLibrary];
+    v62 = statusProvider;
+    sharedLibrary = [statusProvider sharedLibrary];
     PXLocalizedSharedLibraryString();
     v49 = v7 = &PXAssertGetLog_ptr;
     v8 = [PSSpecifier groupSpecifierWithID:@"SharedLibraryParticipantsGroup" name:?];
@@ -313,8 +313,8 @@ LABEL_11:
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v51 = v6;
-    obj = [v6 participants];
+    v51 = sharedLibrary;
+    obj = [sharedLibrary participants];
     v9 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
     if (v9)
     {
@@ -335,17 +335,17 @@ LABEL_11:
           v12 = *(*(&v66 + 1) + 8 * i);
           v13 = PXSharedLibraryAnnotatedDisplayNameForParticipant();
           v14 = v7;
-          v15 = [v7[262] preferenceSpecifierNamed:v13 target:v64 set:0 get:"_subtitleForParticipantSpecifier:" detail:0 cell:2 edit:0];
+          v15 = [v7[262] preferenceSpecifierNamed:v13 target:selfCopy set:0 get:"_subtitleForParticipantSpecifier:" detail:0 cell:2 edit:0];
           [v15 setControllerLoadAction:"_didSelectParticipantSpecifier:"];
           [v15 setObject:&__kCFBooleanTrue forKeyedSubscript:v58];
           [v15 setObject:objc_opt_class() forKeyedSubscript:v56];
-          participantImageCache = v64->_participantImageCache;
-          v17 = [v12 localIdentifier];
-          v18 = [(NSMutableDictionary *)participantImageCache objectForKeyedSubscript:v17];
+          participantImageCache = selfCopy->_participantImageCache;
+          localIdentifier = [v12 localIdentifier];
+          v18 = [(NSMutableDictionary *)participantImageCache objectForKeyedSubscript:localIdentifier];
           defaultParticipantImage = v18;
           if (!v18)
           {
-            defaultParticipantImage = v64->_defaultParticipantImage;
+            defaultParticipantImage = selfCopy->_defaultParticipantImage;
           }
 
           [v15 setObject:defaultParticipantImage forKeyedSubscript:v54];
@@ -367,17 +367,17 @@ LABEL_11:
     if ([v51 canEditParticipants])
     {
       v21 = PXLocalizedSharedLibraryString();
-      v22 = v64;
-      v23 = [v7[262] preferenceSpecifierNamed:v21 target:v64 set:0 get:0 detail:0 cell:13 edit:0];
+      v22 = selfCopy;
+      v23 = [v7[262] preferenceSpecifierNamed:v21 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
       [v23 setButtonAction:"_didSelectAddParticipantSpecifier:"];
       v24 = PSAllowMultilineTitleKey;
       [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:PSAllowMultilineTitleKey];
       [v23 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
-      [v23 setObject:v64->_addParticipantImage forKeyedSubscript:PSIconImageKey];
-      v25 = [v51 participants];
-      v26 = [v25 count];
-      v27 = [NSNumber numberWithInt:v26 <= PXSharedLibraryParticipantsMaxCount];
-      [v23 setObject:v27 forKeyedSubscript:PSEnabledKey];
+      [v23 setObject:selfCopy->_addParticipantImage forKeyedSubscript:PSIconImageKey];
+      participants = [v51 participants];
+      v26 = [participants count];
+      pXSharedLibraryParticipantsMaxCount = [NSNumber numberWithInt:v26 <= PXSharedLibraryParticipantsMaxCount];
+      [v23 setObject:pXSharedLibraryParticipantsMaxCount forKeyedSubscript:PSEnabledKey];
 
       [v52 addObject:v23];
       v20 = v52;
@@ -386,7 +386,7 @@ LABEL_11:
     else
     {
       v24 = PSAllowMultilineTitleKey;
-      v22 = v64;
+      v22 = selfCopy;
     }
 
     v65 = [v7[262] groupSpecifierWithID:@"SharedLibraryOptionsGroup"];
@@ -401,12 +401,12 @@ LABEL_11:
     [v29 setObject:&__kCFBooleanTrue forKeyedSubscript:v24];
     [v52 addObject:v29];
     v57 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.mobileslideshow"];
-    v55 = [v57 notificationSettings];
-    v30 = [v55 authorizationStatus];
+    notificationSettings = [v57 notificationSettings];
+    authorizationStatus = [notificationSettings authorizationStatus];
     [v7[262] groupSpecifierWithID:@"SharedLibraryDeletionNotificationGroup"];
     v32 = v31 = v7;
     PXLocalizedSharedLibraryString();
-    if (v30 == &dword_0 + 1)
+    if (authorizationStatus == &dword_0 + 1)
       v33 = {;
       v34 = PSFooterTextGroupKey;
       [v32 setObject:v33 forKeyedSubscript:PSFooterTextGroupKey];
@@ -469,46 +469,46 @@ LABEL_11:
   return v3;
 }
 
-- (id)valueForCameraSpecifier:(id)a3
+- (id)valueForCameraSpecifier:(id)specifier
 {
   IsCameraSharingEnabled = PXPreferencesIsCameraSharingEnabled();
 
   return SettingsBaseStringForSwitchValue(IsCameraSharingEnabled);
 }
 
-- (id)deletionNotificationEnabledSpecifier:(id)a3
+- (id)deletionNotificationEnabledSpecifier:(id)specifier
 {
   IsSharedLibraryDeletionNotificationEnabled = PXPreferencesIsSharedLibraryDeletionNotificationEnabled();
 
   return [NSNumber numberWithBool:IsSharedLibraryDeletionNotificationEnabled];
 }
 
-- (void)setDeletionNotificationEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setDeletionNotificationEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _PXPreferencesSetSharedLibraryDeletionNotificationEnabled(v4);
+  _PXPreferencesSetSharedLibraryDeletionNotificationEnabled(bOOLValue);
 }
 
-- (id)valueForSuggestionsSpecifier:(id)a3
+- (id)valueForSuggestionsSpecifier:(id)specifier
 {
   IsSharedLibrarySuggestionsEnabled = PXPreferencesIsSharedLibrarySuggestionsEnabled();
 
   return SettingsBaseStringForSwitchValue(IsSharedLibrarySuggestionsEnabled);
 }
 
-- (void)_didSelectExitLibrarySpecifier:(id)a3
+- (void)_didSelectExitLibrarySpecifier:(id)specifier
 {
   v5 = [PXViewControllerPresenter defaultPresenterWithViewController:self];
-  v4 = [(MSSSharedLibrarySettingsController *)self statusProvider];
+  statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
   PXSharedLibraryExitSharedLibraryOrPreview();
 }
 
-- (void)_didSelectSuggestionsSpecifier:(id)a3
+- (void)_didSelectSuggestionsSpecifier:(id)specifier
 {
   v4 = [PXSharedLibrarySuggestionsSettingsViewController alloc];
-  v5 = [(MSSSharedLibrarySettingsController *)self statusProvider];
-  v7 = [v4 initWithSharedLibraryStatusProvider:v5];
+  statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
+  v7 = [v4 initWithSharedLibraryStatusProvider:statusProvider];
 
   v6 = PXLocalizedSharedLibraryString();
   [v7 setTitle:v6];
@@ -516,19 +516,19 @@ LABEL_11:
   [(MSSSharedLibrarySettingsController *)self showController:v7];
 }
 
-- (void)_didSelectAddParticipantSpecifier:(id)a3
+- (void)_didSelectAddParticipantSpecifier:(id)specifier
 {
-  v4 = [(MSSSharedLibrarySettingsController *)self statusProvider];
-  v14 = [v4 sharedLibrary];
+  statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
+  sharedLibrary = [statusProvider sharedLibrary];
 
   v5 = PXLocalizedSharedLibraryString();
   v6 = PXLocalizedSharedLibraryString();
-  v7 = [v14 participants];
+  participants = [sharedLibrary participants];
   v8 = PXMap();
 
   v9 = PXSharedLibraryParticipantsMaxCount;
-  v10 = [v14 participants];
-  v11 = ~[v10 count];
+  participants2 = [sharedLibrary participants];
+  v11 = ~[participants2 count];
 
   v12 = [NSSet setWithArray:v8];
   v13 = [PXPhotoRecipientViewController recipientPickerViewControllerWithTitle:v5 toLabel:v6 usedAddresses:v12 maxRecipients:v9 + v11 verificationType:1 delegate:self];
@@ -536,24 +536,24 @@ LABEL_11:
   [(MSSSharedLibrarySettingsController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_didSelectParticipantSpecifier:(id)a3
+- (void)_didSelectParticipantSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"SharedLibraryParticipant"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy objectForKeyedSubscript:@"SharedLibraryParticipant"];
   if (v5)
   {
     v6 = [PXSharedLibraryParticipantActionCoordinator alloc];
-    v7 = [(MSSSharedLibrarySettingsController *)self statusProvider];
-    v8 = [v7 sharedLibrary];
-    v9 = [v6 initWithParticipant:v5 sharedLibrary:v8];
+    statusProvider = [(MSSSharedLibrarySettingsController *)self statusProvider];
+    sharedLibrary = [statusProvider sharedLibrary];
+    v9 = [v6 initWithParticipant:v5 sharedLibrary:sharedLibrary];
     currentParticipantActionCoordinator = self->_currentParticipantActionCoordinator;
     self->_currentParticipantActionCoordinator = v9;
 
-    v11 = [(MSSSharedLibrarySettingsController *)self navigationItem];
-    [v11 setBackButtonDisplayMode:1];
+    navigationItem = [(MSSSharedLibrarySettingsController *)self navigationItem];
+    [navigationItem setBackButtonDisplayMode:1];
 
-    v12 = [(PXSharedLibraryParticipantActionCoordinator *)self->_currentParticipantActionCoordinator actionViewController];
-    [(MSSSharedLibrarySettingsController *)self showController:v12];
+    actionViewController = [(PXSharedLibraryParticipantActionCoordinator *)self->_currentParticipantActionCoordinator actionViewController];
+    [(MSSSharedLibrarySettingsController *)self showController:actionViewController];
   }
 
   else
@@ -562,15 +562,15 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = specifierCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "No participant available in specifier %@", &v14, 0xCu);
     }
   }
 }
 
-- (id)_subtitleForParticipantSpecifier:(id)a3
+- (id)_subtitleForParticipantSpecifier:(id)specifier
 {
-  v3 = [a3 objectForKeyedSubscript:@"SharedLibraryParticipant"];
+  v3 = [specifier objectForKeyedSubscript:@"SharedLibraryParticipant"];
   if (v3)
   {
     v4 = PXSharedLibrarySettingsSubtitleForParticipant();
@@ -584,13 +584,13 @@ LABEL_11:
   return v4;
 }
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = OBJC_IVAR___PSViewController__parentController;
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
 
-  if (WeakRetained != v5)
+  if (WeakRetained != controllerCopy)
   {
     v8 = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
 
@@ -603,20 +603,20 @@ LABEL_11:
 
     v20.receiver = self;
     v20.super_class = MSSSharedLibrarySettingsController;
-    [(MSSSharedLibrarySettingsController *)&v20 setParentController:v5];
+    [(MSSSharedLibrarySettingsController *)&v20 setParentController:controllerCopy];
     v10 = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
 
     if (v10)
     {
-      v11 = v5;
+      v11 = controllerCopy;
       if (v11)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
 LABEL_7:
-          v12 = [v11 systemPhotoLibrary];
-          v13 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v12];
+          systemPhotoLibrary = [v11 systemPhotoLibrary];
+          v13 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:systemPhotoLibrary];
           v14 = self->_statusProvider;
           self->_statusProvider = v13;
 
@@ -627,8 +627,8 @@ LABEL_7:
         v15 = +[NSAssertionHandler currentHandler];
         v18 = objc_opt_class();
         v17 = NSStringFromClass(v18);
-        v19 = [v11 px_descriptionForAssertionMessage];
-        [v15 handleFailureInMethod:a2 object:self file:@"MSSSharedLibrarySettingsController.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parentController", v17, v19}];
+        px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+        [v15 handleFailureInMethod:a2 object:self file:@"MSSSharedLibrarySettingsController.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parentController", v17, px_descriptionForAssertionMessage}];
       }
 
       else
@@ -654,11 +654,11 @@ LABEL_8:
   [(MSSSharedLibrarySettingsController *)&v3 dealloc];
 }
 
-- (MSSSharedLibrarySettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (MSSSharedLibrarySettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v22.receiver = self;
   v22.super_class = MSSSharedLibrarySettingsController;
-  v4 = [(MSSSharedLibrarySettingsController *)&v22 initWithNibName:a3 bundle:a4];
+  v4 = [(MSSSharedLibrarySettingsController *)&v22 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = PXLocalizedSharedLibraryString();

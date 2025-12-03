@@ -1,18 +1,18 @@
 @interface PREditingPickerImageCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axLabelForSymbolName:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axLabelForSymbolName:(id)name;
 - (id)accessibilityLabel;
 @end
 
 @implementation PREditingPickerImageCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingPickerImageCellView" hasInstanceMethod:@"contentImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImageView" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingPickerImageCellView" hasInstanceMethod:@"contentImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImageView" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -20,8 +20,8 @@
   v3 = [(PREditingPickerImageCellViewAccessibility *)self safeValueForKey:@"contentImageView"];
   v11.receiver = self;
   v11.super_class = PREditingPickerImageCellViewAccessibility;
-  v4 = [(PREditingPickerImageCellViewAccessibility *)&v11 accessibilityLabel];
-  if ([v4 length])
+  accessibilityLabel = [(PREditingPickerImageCellViewAccessibility *)&v11 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
     v5 = 1;
   }
@@ -39,27 +39,27 @@
 
     v9 = [(PREditingPickerImageCellViewAccessibility *)self _axLabelForSymbolName:v8];
 
-    v4 = v9;
+    accessibilityLabel = v9;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
-- (id)_axLabelForSymbolName:(id)a3
+- (id)_axLabelForSymbolName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"banner.horizontal.filled.top.iphone"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"banner.horizontal.filled.top.iphone"])
   {
     goto LABEL_2;
   }
 
-  if ([v3 isEqualToString:@"banner.vertical.filled.topright.iphone"] || objc_msgSend(v3, "isEqualToString:", @"textbox.vertical.filled.topright.iphone") || objc_msgSend(v3, "isEqualToString:", @"textbox.vertical.filled.topright.ipad") || objc_msgSend(v3, "isEqualToString:", @"textbox.vertical.filled.topright.ipad.landscape"))
+  if ([nameCopy isEqualToString:@"banner.vertical.filled.topright.iphone"] || objc_msgSend(nameCopy, "isEqualToString:", @"textbox.vertical.filled.topright.iphone") || objc_msgSend(nameCopy, "isEqualToString:", @"textbox.vertical.filled.topright.ipad") || objc_msgSend(nameCopy, "isEqualToString:", @"textbox.vertical.filled.topright.ipad.landscape"))
   {
     v4 = @"title.layout.vertical";
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"textbox.horizontal.filled.top.iphone"] || objc_msgSend(v3, "isEqualToString:", @"textbox.horizontal.filled.top.ipad") || objc_msgSend(v3, "isEqualToString:", @"textbox.horizontal.filled.top.ipad.landscape"))
+  if ([nameCopy isEqualToString:@"textbox.horizontal.filled.top.iphone"] || objc_msgSend(nameCopy, "isEqualToString:", @"textbox.horizontal.filled.top.ipad") || objc_msgSend(nameCopy, "isEqualToString:", @"textbox.horizontal.filled.top.ipad.landscape"))
   {
 LABEL_2:
     v4 = @"title.layout.horizontal";

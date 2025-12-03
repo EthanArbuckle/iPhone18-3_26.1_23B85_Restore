@@ -1,44 +1,44 @@
 @interface _SBIconProgressFractionTransition
-+ (id)newTransitionToFraction:(double)a3;
-- (BOOL)isCompleteWithView:(id)a3;
-- (void)_updateView:(id)a3 forDisplayedFraction:(double)a4;
-- (void)updateView:(id)a3 withElapsedTime:(double)a4;
++ (id)newTransitionToFraction:(double)fraction;
+- (BOOL)isCompleteWithView:(id)view;
+- (void)_updateView:(id)view forDisplayedFraction:(double)fraction;
+- (void)updateView:(id)view withElapsedTime:(double)time;
 @end
 
 @implementation _SBIconProgressFractionTransition
 
-+ (id)newTransitionToFraction:(double)a3
++ (id)newTransitionToFraction:(double)fraction
 {
-  v4 = objc_alloc_init(a1);
-  [v4 updateToFraction:a3];
+  v4 = objc_alloc_init(self);
+  [v4 updateToFraction:fraction];
   return v4;
 }
 
-- (void)updateView:(id)a3 withElapsedTime:(double)a4
+- (void)updateView:(id)view withElapsedTime:(double)time
 {
-  v5 = a4 * 0.3;
-  v8 = a3;
-  [v8 displayedFraction];
+  v5 = time * 0.3;
+  viewCopy = view;
+  [viewCopy displayedFraction];
   targetFraction = v5 + v6;
   if (self->_targetFraction < targetFraction)
   {
     targetFraction = self->_targetFraction;
   }
 
-  [(_SBIconProgressFractionTransition *)self _updateView:v8 forDisplayedFraction:targetFraction];
+  [(_SBIconProgressFractionTransition *)self _updateView:viewCopy forDisplayedFraction:targetFraction];
 }
 
-- (void)_updateView:(id)a3 forDisplayedFraction:(double)a4
+- (void)_updateView:(id)view forDisplayedFraction:(double)fraction
 {
-  v5 = a3;
-  [v5 setDisplayedFraction:a4];
-  [v5 circleBoundingRect];
-  [v5 setNeedsDisplayInRect:?];
+  viewCopy = view;
+  [viewCopy setDisplayedFraction:fraction];
+  [viewCopy circleBoundingRect];
+  [viewCopy setNeedsDisplayInRect:?];
 }
 
-- (BOOL)isCompleteWithView:(id)a3
+- (BOOL)isCompleteWithView:(id)view
 {
-  [a3 displayedFraction];
+  [view displayedFraction];
 
   return BSFloatEqualToFloat();
 }

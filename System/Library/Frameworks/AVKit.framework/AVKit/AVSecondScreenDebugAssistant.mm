@@ -5,12 +5,12 @@
 - (id)_currentDisplay;
 - (id)_currentEnabledVideoTrack;
 - (id)_currentVideoDynamicRange;
-- (void)_actuallyUpdateDebugLabelTextWithCurrentResolution:(id)a3 currentVideoDynamicRange:(id)a4;
+- (void)_actuallyUpdateDebugLabelTextWithCurrentResolution:(id)resolution currentVideoDynamicRange:(id)range;
 - (void)_updateDebugLabelText;
 - (void)dealloc;
-- (void)setDebugText:(id)a3;
-- (void)setScene:(id)a3;
-- (void)setSecondScreenViewController:(id)a3;
+- (void)setDebugText:(id)text;
+- (void)setScene:(id)scene;
+- (void)setSecondScreenViewController:(id)controller;
 @end
 
 @implementation AVSecondScreenDebugAssistant
@@ -29,17 +29,17 @@
   return WeakRetained;
 }
 
-- (void)_actuallyUpdateDebugLabelTextWithCurrentResolution:(id)a3 currentVideoDynamicRange:(id)a4
+- (void)_actuallyUpdateDebugLabelTextWithCurrentResolution:(id)resolution currentVideoDynamicRange:(id)range
 {
   v71[9] = *MEMORY[0x1E69E9840];
-  v67 = a4;
-  v65 = a3;
-  v6 = [(AVSecondScreenDebugAssistant *)self player];
-  v7 = [v6 currentItem];
-  v8 = [v7 asset];
-  v9 = [v8 preferredDisplayCriteria];
+  rangeCopy = range;
+  resolutionCopy = resolution;
+  player = [(AVSecondScreenDebugAssistant *)self player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
+  preferredDisplayCriteria = [asset preferredDisplayCriteria];
 
-  v10 = [v9 videoDynamicRange] - 1;
+  v10 = [preferredDisplayCriteria videoDynamicRange] - 1;
   if (v10 > 7)
   {
     v11 = @"Unknown";
@@ -51,23 +51,23 @@
   }
 
   v64 = v11;
-  v12 = [(AVSecondScreenDebugAssistant *)self player];
-  v13 = [v12 currentItem];
-  v14 = [v13 asset];
-  [v14 maximumVideoResolution];
+  player2 = [(AVSecondScreenDebugAssistant *)self player];
+  currentItem2 = [player2 currentItem];
+  asset2 = [currentItem2 asset];
+  [asset2 maximumVideoResolution];
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.0fx%0.f", v15, v16];
 
   v18 = MEMORY[0x1E696AEC0];
-  [v9 refreshRate];
+  [preferredDisplayCriteria refreshRate];
   v20 = [v18 stringWithFormat:@"%.0f", v19];
-  if (!v9)
+  if (!preferredDisplayCriteria)
   {
 
     v20 = @"Unknown";
     v17 = @"Unknown";
   }
 
-  v69 = v9;
+  v69 = preferredDisplayCriteria;
   v70 = v20;
   if ([(__CFString *)v17 isEqualToString:@"0x0"])
   {
@@ -76,56 +76,56 @@
   }
 
   v58 = v17;
-  v21 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
-  v22 = [v21 currentMode];
-  v23 = [v22 hdrMode];
-  v63 = v23;
+  debugInfoDisplay = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
+  currentMode = [debugInfoDisplay currentMode];
+  hdrMode = [currentMode hdrMode];
+  v63 = hdrMode;
 
-  v24 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
-  v25 = [v24 currentMode];
-  v26 = [v25 width];
-  v27 = [(AVSecondScreenDebugAssistant *)self _currentDisplay];
-  v28 = [v27 currentMode];
-  v29 = [v28 height];
-  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.0fx%0.f", *&v26, v29];
+  debugInfoDisplay2 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
+  currentMode2 = [debugInfoDisplay2 currentMode];
+  width = [currentMode2 width];
+  _currentDisplay = [(AVSecondScreenDebugAssistant *)self _currentDisplay];
+  currentMode3 = [_currentDisplay currentMode];
+  height = [currentMode3 height];
+  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.0fx%0.f", *&width, height];
   v62 = v30;
 
   v31 = MEMORY[0x1E696AEC0];
-  v32 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
-  v33 = [v32 currentMode];
-  [v33 refreshRate];
+  debugInfoDisplay3 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
+  currentMode4 = [debugInfoDisplay3 currentMode];
+  [currentMode4 refreshRate];
   v35 = [v31 stringWithFormat:@"%0.f", v34];
   v61 = v35;
 
-  v36 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
-  v37 = [v36 preferences];
-  v38 = [v37 preferredHdrMode];
-  v39 = v38;
+  debugInfoDisplay4 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
+  preferences = [debugInfoDisplay4 preferences];
+  preferredHdrMode = [preferences preferredHdrMode];
+  v39 = preferredHdrMode;
   v40 = @"Dolby";
-  if (v38)
+  if (preferredHdrMode)
   {
-    v40 = v38;
+    v40 = preferredHdrMode;
   }
 
   v41 = v40;
 
-  v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Current Display Mode: %@ %@ @ %@Hz", v30, v23, v35];
+  v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Current Display Mode: %@ %@ @ %@Hz", v30, hdrMode, v35];
   v71[0] = v60;
   v71[1] = @"--------";
-  v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Current Variant: %@ %@", v65, v67];
+  rangeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Current Variant: %@ %@", resolutionCopy, rangeCopy];
 
-  v71[2] = v59;
+  v71[2] = rangeCopy;
   v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Best Variant: %@ %@", v17, v64];
   v71[3] = v68;
   v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Preferred Refresh Rate: %@Hz", v70];
   v71[4] = v66;
   v71[5] = @"--------";
   v42 = MEMORY[0x1E696AEC0];
-  v43 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
-  v44 = [v43 preferences];
-  v45 = [v44 matchContent];
+  debugInfoDisplay5 = [(AVSecondScreenDebugAssistant *)self debugInfoDisplay];
+  preferences2 = [debugInfoDisplay5 preferences];
+  matchContent = [preferences2 matchContent];
   v46 = @"Disabled";
-  if (v45)
+  if (matchContent)
   {
     v46 = @"Enabled";
   }
@@ -135,10 +135,10 @@
   v71[6] = v47;
   v71[7] = @"--------";
   v48 = MEMORY[0x1E696AEC0];
-  v49 = [(AVSecondScreenDebugAssistant *)self scene];
-  v50 = [v49 avkit_asWindowScene];
-  v51 = [v50 screen];
-  [v51 nativeBounds];
+  scene = [(AVSecondScreenDebugAssistant *)self scene];
+  avkit_asWindowScene = [scene avkit_asWindowScene];
+  screen = [avkit_asWindowScene screen];
+  [screen nativeBounds];
   v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.0fx%0.f", v52, v53];
   v55 = [v48 stringWithFormat:@"UIScreen.nativeBounds.size: %@", v54];
   v71[8] = v55;
@@ -150,20 +150,20 @@
 
 - (void)_updateDebugLabelText
 {
-  v3 = [(AVSecondScreenDebugAssistant *)self _currentEnabledVideoTrack];
-  v4 = [v3 assetTrack];
-  if ([v4 statusOfValueForKey:@"formatDescriptions" error:0] == 2)
+  _currentEnabledVideoTrack = [(AVSecondScreenDebugAssistant *)self _currentEnabledVideoTrack];
+  assetTrack = [_currentEnabledVideoTrack assetTrack];
+  if ([assetTrack statusOfValueForKey:@"formatDescriptions" error:0] == 2)
   {
-    v5 = [v3 assetTrack];
-    v6 = [v5 statusOfValueForKey:@"naturalSize" error:0];
+    assetTrack2 = [_currentEnabledVideoTrack assetTrack];
+    v6 = [assetTrack2 statusOfValueForKey:@"naturalSize" error:0];
 
     if (v6 == 2)
     {
-      v7 = [v3 assetTrack];
-      [v7 naturalSize];
+      assetTrack3 = [_currentEnabledVideoTrack assetTrack];
+      [assetTrack3 naturalSize];
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.0fx%0.f", v8, v9];
 
-      v11 = [(AVSecondScreenDebugAssistant *)self _currentVideoDynamicRange];
+      _currentVideoDynamicRange = [(AVSecondScreenDebugAssistant *)self _currentVideoDynamicRange];
       goto LABEL_8;
     }
   }
@@ -172,22 +172,22 @@
   {
   }
 
-  if (v3)
+  if (_currentEnabledVideoTrack)
   {
-    v12 = [v3 assetTrack];
+    assetTrack4 = [_currentEnabledVideoTrack assetTrack];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke;
     v13[3] = &unk_1E7209FB0;
-    v14 = v3;
-    v15 = self;
-    [v12 loadValuesAsynchronouslyForKeys:&unk_1EFF12ED8 completionHandler:v13];
+    v14 = _currentEnabledVideoTrack;
+    selfCopy = self;
+    [assetTrack4 loadValuesAsynchronouslyForKeys:&unk_1EFF12ED8 completionHandler:v13];
   }
 
-  v11 = @"Unknown";
+  _currentVideoDynamicRange = @"Unknown";
   v10 = @"Unknown";
 LABEL_8:
-  [(AVSecondScreenDebugAssistant *)self _actuallyUpdateDebugLabelTextWithCurrentResolution:v10 currentVideoDynamicRange:v11];
+  [(AVSecondScreenDebugAssistant *)self _actuallyUpdateDebugLabelTextWithCurrentResolution:v10 currentVideoDynamicRange:_currentVideoDynamicRange];
 }
 
 void __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke(uint64_t a1)
@@ -223,9 +223,9 @@ void __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke_2(ui
 - (id)_currentVideoDynamicRange
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSecondScreenDebugAssistant *)self _currentEnabledVideoTrack];
-  v4 = [v3 assetTrack];
-  v5 = [v4 statusOfValueForKey:@"formatDescriptions" error:0];
+  _currentEnabledVideoTrack = [(AVSecondScreenDebugAssistant *)self _currentEnabledVideoTrack];
+  assetTrack = [_currentEnabledVideoTrack assetTrack];
+  v5 = [assetTrack statusOfValueForKey:@"formatDescriptions" error:0];
 
   if (v5 == 2)
   {
@@ -233,10 +233,10 @@ void __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke_2(ui
     v18 = 0u;
     v16 = 0u;
     v6 = [(AVSecondScreenDebugAssistant *)self _currentEnabledVideoTrack:0];
-    v7 = [v6 assetTrack];
-    v8 = [v7 formatDescriptions];
+    assetTrack2 = [v6 assetTrack];
+    formatDescriptions = [assetTrack2 formatDescriptions];
 
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [formatDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -248,7 +248,7 @@ void __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke_2(ui
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(formatDescriptions);
           }
 
           if (VideoDynamicRange <= CMVideoFormatDescriptionGetVideoDynamicRange())
@@ -257,7 +257,7 @@ void __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke_2(ui
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [formatDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -299,12 +299,12 @@ void __53__AVSecondScreenDebugAssistant__updateDebugLabelText__block_invoke_2(ui
         }
 
         v6 = *(*(&v17 + 1) + 8 * i);
-        v7 = [v6 uniqueId];
-        v8 = [(AVSecondScreenDebugAssistant *)self scene];
-        v9 = [v8 avkit_asWindowScene];
-        v10 = [v9 screen];
-        v11 = [v10 _displayID];
-        v12 = [v7 isEqual:v11];
+        uniqueId = [v6 uniqueId];
+        scene = [(AVSecondScreenDebugAssistant *)self scene];
+        avkit_asWindowScene = [scene avkit_asWindowScene];
+        screen = [avkit_asWindowScene screen];
+        _displayID = [screen _displayID];
+        v12 = [uniqueId isEqual:_displayID];
 
         if (v12)
         {
@@ -336,11 +336,11 @@ LABEL_11:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(AVSecondScreenDebugAssistant *)self player];
-  v3 = [v2 currentItem];
-  v4 = [v3 tracks];
+  player = [(AVSecondScreenDebugAssistant *)self player];
+  currentItem = [player currentItem];
+  tracks = [currentItem tracks];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -352,15 +352,15 @@ LABEL_11:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracks);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 isEnabled])
         {
-          v11 = [v10 assetTrack];
-          v12 = [v11 mediaType];
-          v13 = [v12 isEqualToString:v8];
+          assetTrack = [v10 assetTrack];
+          mediaType = [assetTrack mediaType];
+          v13 = [mediaType isEqualToString:v8];
 
           if (v13)
           {
@@ -370,7 +370,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -386,44 +386,44 @@ LABEL_12:
   return v14;
 }
 
-- (void)setSecondScreenViewController:(id)a3
+- (void)setSecondScreenViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_secondScreenViewController);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_secondScreenViewController, obj);
-    v5 = [(AVSecondScreenDebugAssistant *)self debugText];
-    [obj setDebugText:v5];
+    debugText = [(AVSecondScreenDebugAssistant *)self debugText];
+    [obj setDebugText:debugText];
   }
 }
 
-- (void)setDebugText:(id)a3
+- (void)setDebugText:(id)text
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_debugText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_debugText] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [textCopy copy];
     debugText = self->_debugText;
     self->_debugText = v4;
 
-    v6 = [(AVSecondScreenDebugAssistant *)self secondScreenViewController];
-    [v6 setDebugText:self->_debugText];
+    secondScreenViewController = [(AVSecondScreenDebugAssistant *)self secondScreenViewController];
+    [secondScreenViewController setDebugText:self->_debugText];
   }
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_scene, obj);
-    v6 = [(AVSecondScreenDebugAssistant *)self _currentDisplay];
-    [(AVSecondScreenDebugAssistant *)self setDebugInfoDisplay:v6];
+    _currentDisplay = [(AVSecondScreenDebugAssistant *)self _currentDisplay];
+    [(AVSecondScreenDebugAssistant *)self setDebugInfoDisplay:_currentDisplay];
 
     v5 = obj;
   }
@@ -431,8 +431,8 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [(AVSecondScreenDebugAssistant *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVSecondScreenDebugAssistant *)self observationController];
+  [observationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVSecondScreenDebugAssistant;

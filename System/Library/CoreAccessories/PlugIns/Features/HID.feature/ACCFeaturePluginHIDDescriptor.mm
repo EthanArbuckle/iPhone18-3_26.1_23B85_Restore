@@ -1,22 +1,22 @@
 @interface ACCFeaturePluginHIDDescriptor
-- (ACCFeaturePluginHIDDescriptor)initWithDecriptorInfo:(id)a3 sendOutReport:(id)a4 sendGetReport:(id)a5 sendComponentUpdate:(id)a6;
-- (BOOL)handleGetReportResponse:(unsigned __int8)a3 reportID:(unsigned __int8)a4 report:(id)a5;
-- (BOOL)handleInReport:(id)a3;
-- (BOOL)handleOutReport:(id)a3;
+- (ACCFeaturePluginHIDDescriptor)initWithDecriptorInfo:(id)info sendOutReport:(id)report sendGetReport:(id)getReport sendComponentUpdate:(id)update;
+- (BOOL)handleGetReportResponse:(unsigned __int8)response reportID:(unsigned __int8)d report:(id)report;
+- (BOOL)handleInReport:(id)report;
+- (BOOL)handleOutReport:(id)report;
 - (void)dealloc;
 - (void)removeDescriptor;
-- (void)startHIDEventSystemListener:(id)a3;
+- (void)startHIDEventSystemListener:(id)listener;
 @end
 
 @implementation ACCFeaturePluginHIDDescriptor
 
-- (ACCFeaturePluginHIDDescriptor)initWithDecriptorInfo:(id)a3 sendOutReport:(id)a4 sendGetReport:(id)a5 sendComponentUpdate:(id)a6
+- (ACCFeaturePluginHIDDescriptor)initWithDecriptorInfo:(id)info sendOutReport:(id)report sendGetReport:(id)getReport sendComponentUpdate:(id)update
 {
   v106 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  reportCopy = report;
+  getReportCopy = getReport;
+  updateCopy = update;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 1;
@@ -48,7 +48,7 @@
     *buf = 136315394;
     v103 = "[ACCFeaturePluginHIDDescriptor initWithDecriptorInfo:sendOutReport:sendGetReport:sendComponentUpdate:]";
     v104 = 2112;
-    v105 = v10;
+    v105 = infoCopy;
     _os_log_impl(&dword_2335CB000, v16, OS_LOG_TYPE_DEFAULT, "%s: descriptorInfo %@ ", buf, 0x16u);
   }
 
@@ -64,127 +64,127 @@
     *(v18 + 104) = v19;
 
     *(v18 + 10) = 0;
-    v21 = [MEMORY[0x277CCAD78] UUID];
-    v22 = [v21 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v23 = *(v18 + 24);
-    *(v18 + 24) = v22;
+    *(v18 + 24) = uUIDString;
 
     v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
     if (v24)
     {
       v25 = [MEMORY[0x277CCABB0] numberWithInt:0];
-      v26 = [v10 objectForKey:v25];
+      v26 = [infoCopy objectForKey:v25];
 
       if (v26)
       {
         v27 = [MEMORY[0x277CCABB0] numberWithInt:0];
-        v28 = [v10 objectForKey:v27];
+        v28 = [infoCopy objectForKey:v27];
         [v24 setObject:v28 forKey:@"Transport"];
       }
 
       v29 = [MEMORY[0x277CCABB0] numberWithInt:1];
-      v30 = [v10 objectForKey:v29];
+      v30 = [infoCopy objectForKey:v29];
 
       if (v30)
       {
         v31 = [MEMORY[0x277CCABB0] numberWithInt:1];
-        v32 = [v10 objectForKey:v31];
+        v32 = [infoCopy objectForKey:v31];
         [v24 setObject:v32 forKey:@"VendorID"];
       }
 
       v33 = [MEMORY[0x277CCABB0] numberWithInt:2];
-      v34 = [v10 objectForKey:v33];
+      v34 = [infoCopy objectForKey:v33];
 
       if (v34)
       {
         v35 = [MEMORY[0x277CCABB0] numberWithInt:2];
-        v36 = [v10 objectForKey:v35];
+        v36 = [infoCopy objectForKey:v35];
         [v24 setObject:v36 forKey:@"ProductID"];
       }
 
       v37 = [MEMORY[0x277CCABB0] numberWithInt:3];
-      v38 = [v10 objectForKey:v37];
+      v38 = [infoCopy objectForKey:v37];
 
       if (v38)
       {
         v39 = [MEMORY[0x277CCABB0] numberWithInt:3];
-        v40 = [v10 objectForKey:v39];
+        v40 = [infoCopy objectForKey:v39];
         [v24 setObject:v40 forKey:@"VersionNumber"];
       }
 
       v41 = [MEMORY[0x277CCABB0] numberWithInt:4];
-      v42 = [v10 objectForKey:v41];
+      v42 = [infoCopy objectForKey:v41];
 
       if (v42)
       {
         v43 = [MEMORY[0x277CCABB0] numberWithInt:4];
-        v44 = [v10 objectForKey:v43];
+        v44 = [infoCopy objectForKey:v43];
         [v24 setObject:v44 forKey:@"Manufacturer"];
       }
 
       v45 = [MEMORY[0x277CCABB0] numberWithInt:12];
-      v46 = [v10 objectForKey:v45];
+      v46 = [infoCopy objectForKey:v45];
 
       if (v46)
       {
         v47 = [MEMORY[0x277CCABB0] numberWithInt:12];
-        v48 = [v10 objectForKey:v47];
+        v48 = [infoCopy objectForKey:v47];
         [v24 setObject:v48 forKey:@"Product"];
       }
 
       v49 = [MEMORY[0x277CCABB0] numberWithInt:6];
-      v50 = [v10 objectForKey:v49];
+      v50 = [infoCopy objectForKey:v49];
 
       if (v50)
       {
         v51 = [MEMORY[0x277CCABB0] numberWithInt:6];
-        v52 = [v10 objectForKey:v51];
+        v52 = [infoCopy objectForKey:v51];
         [v24 setObject:v52 forKey:@"SerialNumber"];
       }
 
       v53 = [MEMORY[0x277CCABB0] numberWithInt:7];
-      v54 = [v10 objectForKey:v53];
+      v54 = [infoCopy objectForKey:v53];
 
       if (v54)
       {
         v55 = [MEMORY[0x277CCABB0] numberWithInt:7];
-        v56 = [v10 objectForKey:v55];
+        v56 = [infoCopy objectForKey:v55];
         [v24 setObject:v56 forKey:@"CountryCode"];
       }
 
       v57 = [MEMORY[0x277CCABB0] numberWithInt:9];
-      v58 = [v10 objectForKey:v57];
+      v58 = [infoCopy objectForKey:v57];
 
       if (v58)
       {
         v59 = [MEMORY[0x277CCABB0] numberWithInt:9];
-        v60 = [v10 objectForKey:v59];
+        v60 = [infoCopy objectForKey:v59];
         [v24 setObject:v60 forKey:@"ReportDescriptor"];
       }
 
       v61 = [MEMORY[0x277CCABB0] numberWithInt:10];
-      v62 = [v10 objectForKey:v61];
+      v62 = [infoCopy objectForKey:v61];
 
       if (v62)
       {
         v63 = [MEMORY[0x277CCABB0] numberWithInt:10];
-        v64 = [v10 objectForKey:v63];
+        v64 = [infoCopy objectForKey:v63];
         [v24 setObject:v64 forKey:@"IAPHIDAccessoryCategory"];
       }
 
       v65 = [MEMORY[0x277CCABB0] numberWithInt:11];
-      v66 = [v10 objectForKey:v65];
+      v66 = [infoCopy objectForKey:v65];
 
       if (v66)
       {
         v67 = [MEMORY[0x277CCABB0] numberWithInt:11];
-        v68 = [v10 objectForKey:v67];
+        v68 = [infoCopy objectForKey:v67];
         [v24 setObject:v68 forKey:@"Authenticated"];
       }
 
       [v24 setObject:*(v18 + 24) forKey:@"PhysicalDeviceUniqueID"];
       v69 = [MEMORY[0x277CCABB0] numberWithInt:12];
-      v70 = [v10 objectForKey:v69];
+      v70 = [infoCopy objectForKey:v69];
 
       if (v70)
       {
@@ -234,15 +234,15 @@
         getReportSemaphore = v78->_getReportSemaphore;
         v78->_getReportSemaphore = v86;
 
-        v88 = MEMORY[0x2383A6230](v11);
+        v88 = MEMORY[0x2383A6230](reportCopy);
         sendOutReport = v78->_sendOutReport;
         v78->_sendOutReport = v88;
 
-        v90 = MEMORY[0x2383A6230](v12);
+        v90 = MEMORY[0x2383A6230](getReportCopy);
         sendGetReport = v78->_sendGetReport;
         v78->_sendGetReport = v90;
 
-        v92 = MEMORY[0x2383A6230](v13);
+        v92 = MEMORY[0x2383A6230](updateCopy);
         sendComponentUpdate = v78->_sendComponentUpdate;
         v78->_sendComponentUpdate = v92;
       }
@@ -374,15 +374,15 @@ _BYTE *__103__ACCFeaturePluginHIDDescriptor_initWithDecriptorInfo_sendOutReport_
   [(ACCFeaturePluginHIDDescriptor *)&v2 dealloc];
 }
 
-- (void)startHIDEventSystemListener:(id)a3
+- (void)startHIDEventSystemListener:(id)listener
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  listenerCopy = listener;
+  v5 = listenerCopy;
   if (!self->_hidEventSystemClientRef)
   {
     v19 = @"PhysicalDeviceUniqueID";
-    v20[0] = v4;
+    v20[0] = listenerCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v7 = *MEMORY[0x277CBECE8];
     self->_hidEventSystemClientRef = IOHIDEventSystemClientCreate();
@@ -424,15 +424,15 @@ _BYTE *__103__ACCFeaturePluginHIDDescriptor_initWithDecriptorInfo_sendOutReport_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleInReport:(id)a3
+- (BOOL)handleInReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   if (!self->_isReady)
   {
     initialReportCache = self->_initialReportCache;
     if (initialReportCache)
     {
-      [(NSMutableArray *)initialReportCache addObject:v4];
+      [(NSMutableArray *)initialReportCache addObject:reportCopy];
     }
 
     else
@@ -473,8 +473,8 @@ _BYTE *__103__ACCFeaturePluginHIDDescriptor_initWithDecriptorInfo_sendOutReport_
   }
 
   [(ACCFeaturePluginHIDDescriptor *)self deviceRef];
-  [v4 bytes];
-  [v4 length];
+  [reportCopy bytes];
+  [reportCopy length];
   if (IOHIDUserDeviceHandleReport())
   {
     if (gLogObjects && gNumLogObjects >= 1)
@@ -509,31 +509,31 @@ LABEL_27:
   return v7;
 }
 
-- (BOOL)handleOutReport:(id)a3
+- (BOOL)handleOutReport:(id)report
 {
-  if (a3)
+  if (report)
   {
-    v5 = a3;
-    v6 = [(ACCFeaturePluginHIDDescriptor *)self sendOutReport];
-    v7 = [(ACCFeaturePluginHIDDescriptor *)self hidDeviceUUIDStr];
-    (v6)[2](v6, v7, v5);
+    reportCopy = report;
+    sendOutReport = [(ACCFeaturePluginHIDDescriptor *)self sendOutReport];
+    hidDeviceUUIDStr = [(ACCFeaturePluginHIDDescriptor *)self hidDeviceUUIDStr];
+    (sendOutReport)[2](sendOutReport, hidDeviceUUIDStr, reportCopy);
   }
 
-  return a3 != 0;
+  return report != 0;
 }
 
-- (BOOL)handleGetReportResponse:(unsigned __int8)a3 reportID:(unsigned __int8)a4 report:(id)a5
+- (BOOL)handleGetReportResponse:(unsigned __int8)response reportID:(unsigned __int8)d report:(id)report
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if ([(ACCFeaturePluginHIDDescriptor *)self getReportType]== v6 && [(ACCFeaturePluginHIDDescriptor *)self getReportID]== v5 && ([(ACCFeaturePluginHIDDescriptor *)self getReportBuffer], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  dCopy = d;
+  responseCopy = response;
+  reportCopy = report;
+  if ([(ACCFeaturePluginHIDDescriptor *)self getReportType]== responseCopy && [(ACCFeaturePluginHIDDescriptor *)self getReportID]== dCopy && ([(ACCFeaturePluginHIDDescriptor *)self getReportBuffer], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     [(ACCFeaturePluginHIDDescriptor *)self setGetReportResult:0];
-    v10 = [(ACCFeaturePluginHIDDescriptor *)self getReportBuffer];
-    v11 = [v10 length];
+    getReportBuffer = [(ACCFeaturePluginHIDDescriptor *)self getReportBuffer];
+    v11 = [getReportBuffer length];
 
-    v12 = [v8 length];
+    v12 = [reportCopy length];
     if (v11 >= v12)
     {
       v13 = v12;
@@ -544,14 +544,14 @@ LABEL_27:
       v13 = v11;
     }
 
-    v14 = [(ACCFeaturePluginHIDDescriptor *)self getReportBuffer];
-    memcpy([v14 mutableBytes], objc_msgSend(v8, "bytes"), v13);
+    getReportBuffer2 = [(ACCFeaturePluginHIDDescriptor *)self getReportBuffer];
+    memcpy([getReportBuffer2 mutableBytes], objc_msgSend(reportCopy, "bytes"), v13);
 
-    v15 = [(ACCFeaturePluginHIDDescriptor *)self getReportBuffer];
-    [v15 setLength:v13];
+    getReportBuffer3 = [(ACCFeaturePluginHIDDescriptor *)self getReportBuffer];
+    [getReportBuffer3 setLength:v13];
 
-    v16 = [(ACCFeaturePluginHIDDescriptor *)self getReportSemaphore];
-    dispatch_semaphore_signal(v16);
+    getReportSemaphore = [(ACCFeaturePluginHIDDescriptor *)self getReportSemaphore];
+    dispatch_semaphore_signal(getReportSemaphore);
 
     v17 = 1;
   }

@@ -2,7 +2,7 @@
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToBayArea;
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToCupertino;
 - ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToTokyo;
-- (void)_mapstest_jumpToCoords:(id)a3 pitch:(double)a4 yaw:(double)a5 altitudeIsRegionSize:(BOOL)a6;
+- (void)_mapstest_jumpToCoords:(id)coords pitch:(double)pitch yaw:(double)yaw altitudeIsRegionSize:(BOOL)size;
 @end
 
 @implementation VKMapView
@@ -55,12 +55,12 @@
   return result;
 }
 
-- (void)_mapstest_jumpToCoords:(id)a3 pitch:(double)a4 yaw:(double)a5 altitudeIsRegionSize:(BOOL)a6
+- (void)_mapstest_jumpToCoords:(id)coords pitch:(double)pitch yaw:(double)yaw altitudeIsRegionSize:(BOOL)size
 {
-  if (a6)
+  if (size)
   {
-    v9 = [GEOMapRegion _mapstest_mapRegionAtCenterLocation:a3.var0, a3.var1, a3.var2];
-    [(VKMapView *)self setMapRegion:v9 pitch:a4 yaw:a5];
+    v9 = [GEOMapRegion _mapstest_mapRegionAtCenterLocation:coords.var0, coords.var1, coords.var2];
+    [(VKMapView *)self setMapRegion:v9 pitch:pitch yaw:yaw];
   }
 
   else

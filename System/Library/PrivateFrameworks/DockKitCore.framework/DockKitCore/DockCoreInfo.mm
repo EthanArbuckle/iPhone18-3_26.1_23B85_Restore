@@ -2,10 +2,10 @@
 - (NSString)name;
 - (NSUUID)identifier;
 - (_TtC11DockKitCore12DockCoreInfo)init;
-- (_TtC11DockKitCore12DockCoreInfo)initWithCoder:(id)a3;
-- (_TtC11DockKitCore12DockCoreInfo)initWithType:(int64_t)a3 name:(id)a4 identifier:(id)a5;
+- (_TtC11DockKitCore12DockCoreInfo)initWithCoder:(id)coder;
+- (_TtC11DockKitCore12DockCoreInfo)initWithType:(int64_t)type name:(id)name identifier:(id)identifier;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DockCoreInfo
@@ -49,7 +49,7 @@
   return [(DockCoreInfo *)&v10 init];
 }
 
-- (_TtC11DockKitCore12DockCoreInfo)initWithType:(int64_t)a3 name:(id)a4 identifier:(id)a5
+- (_TtC11DockKitCore12DockCoreInfo)initWithType:(int64_t)type name:(id)name identifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   v8 = sub_224627188();
@@ -59,7 +59,7 @@
   v12 = sub_224627CD8();
   v14 = v13;
   sub_224627168();
-  *(self + OBJC_IVAR____TtC11DockKitCore12DockCoreInfo_type) = a3;
+  *(self + OBJC_IVAR____TtC11DockKitCore12DockCoreInfo_type) = type;
   v15 = (self + OBJC_IVAR____TtC11DockKitCore12DockCoreInfo_name);
   *v15 = v12;
   v15[1] = v14;
@@ -71,16 +71,16 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  DockCoreInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  DockCoreInfo.encode(with:)(coderCopy);
 }
 
-- (_TtC11DockKitCore12DockCoreInfo)initWithCoder:(id)a3
+- (_TtC11DockKitCore12DockCoreInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_22452DA80();
 
   return v4;
@@ -92,7 +92,7 @@
   MEMORY[0x22AA51BF0](*(self + OBJC_IVAR____TtC11DockKitCore12DockCoreInfo_type));
   sub_224627188();
   sub_224534E68(&qword_27D0C8C60, 255, MEMORY[0x277CC95F0]);
-  v3 = self;
+  selfCopy = self;
   sub_224627C88();
   v4 = sub_2246287B8();
 

@@ -1,34 +1,34 @@
 @interface NLXSchemaCDMSiriVocabularySpanDataTier1
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithDictionary:(id)a3;
-- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasPriorScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasPriorScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMSiriVocabularySpanDataTier1
 
-- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithDictionary:(id)a3
+- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = NLXSchemaCDMSiriVocabularySpanDataTier1;
   v5 = [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"priorOrdinality"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"priorOrdinality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMSiriVocabularySpanDataTier1 setPriorOrdinality:](v5, "setPriorOrdinality:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"priorScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"priorScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,30 +42,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithJSON:(id)a3
+- (NLXSchemaCDMSiriVocabularySpanDataTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -78,12 +78,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMSiriVocabularySpanDataTier1 priorOrdinality](self, "priorOrdinality")}];
-    [v3 setObject:v5 forKeyedSubscript:@"priorOrdinality"];
+    [dictionary setObject:v5 forKeyedSubscript:@"priorOrdinality"];
 
     has = self->_has;
   }
@@ -93,12 +93,12 @@
     v6 = MEMORY[0x1E696AD98];
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self priorScore];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"priorScore"];
+    [dictionary setObject:v7 forKeyedSubscript:@"priorScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -151,16 +151,16 @@ LABEL_3:
   return v8 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_9;
@@ -169,19 +169,19 @@ LABEL_3:
   if (*&has)
   {
     priorOrdinality = self->_priorOrdinality;
-    if (priorOrdinality != [v4 priorOrdinality])
+    if (priorOrdinality != [equalCopy priorOrdinality])
     {
       goto LABEL_9;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (priorScore = self->_priorScore, [v4 priorScore], priorScore == v10))
+    if (!v8 || (priorScore = self->_priorScore, [equalCopy priorScore], priorScore == v10))
     {
       v11 = 1;
       goto LABEL_10;
@@ -195,28 +195,28 @@ LABEL_10:
   return v11;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasPriorScore:(BOOL)a3
+- (void)setHasPriorScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -229,37 +229,37 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = NLXSchemaCDMSiriVocabularySpanDataTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorOrdinality];
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorScore];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorOrdinality];
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorScore];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorOrdinality];
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorScore];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorOrdinality];
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorScore];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorOrdinality];
     [(NLXSchemaCDMSiriVocabularySpanDataTier1 *)self deletePriorScore];

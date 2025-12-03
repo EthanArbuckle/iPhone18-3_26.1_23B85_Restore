@@ -1,47 +1,47 @@
 @interface TVRUIDirectionalControlView
-- (BOOL)_isArrowView:(id)a3;
-- (TVRUIDirectionalControlView)initWithStyleProvider:(id)a3;
+- (BOOL)_isArrowView:(id)view;
+- (TVRUIDirectionalControlView)initWithStyleProvider:(id)provider;
 - (UIView)highlightedView;
 - (_TVRUIEventDelegate)eventDelegate;
 - (double)centerCornerRadius;
 - (double)centerEdgeLength;
-- (id)_createDirectionalImageViewWithImageName:(id)a3;
-- (id)_directionalViewForTouchLocation:(CGPoint)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (int64_t)_buttonTypeForLocation:(CGPoint)a3;
+- (id)_createDirectionalImageViewWithImageName:(id)name;
+- (id)_directionalViewForTouchLocation:(CGPoint)location;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (int64_t)_buttonTypeForLocation:(CGPoint)location;
 - (void)_configureGesture;
-- (void)_configureLongPressGesture:(id)a3;
-- (void)_highlightArrowView:(id)a3;
-- (void)_highlightView:(id)a3 enabled:(BOOL)a4;
+- (void)_configureLongPressGesture:(id)gesture;
+- (void)_highlightArrowView:(id)view;
+- (void)_highlightView:(id)view enabled:(BOOL)enabled;
 - (void)_sendSelectButtonPressBegan;
 - (void)_sendSelectButtonPressEnded;
-- (void)_unhighlightArrowView:(id)a3;
+- (void)_unhighlightArrowView:(id)view;
 - (void)_unhighlightView;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setOffsetDirectionalPad:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setOffsetDirectionalPad:(BOOL)pad;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TVRUIDirectionalControlView
 
-- (TVRUIDirectionalControlView)initWithStyleProvider:(id)a3
+- (TVRUIDirectionalControlView)initWithStyleProvider:(id)provider
 {
   v45[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v44.receiver = self;
   v44.super_class = TVRUIDirectionalControlView;
   v6 = [(TVRUIDirectionalControlView *)&v44 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleProvider, a3);
-    v8 = [(TVRUIStyleProvider *)v7->_styleProvider touchpadBackgroundColor];
-    [(TVRUIDirectionalControlView *)v7 setBackgroundColor:v8];
+    objc_storeStrong(&v6->_styleProvider, provider);
+    touchpadBackgroundColor = [(TVRUIStyleProvider *)v7->_styleProvider touchpadBackgroundColor];
+    [(TVRUIDirectionalControlView *)v7 setBackgroundColor:touchpadBackgroundColor];
 
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
     tapHandlingSquareWrapperView = v7->_tapHandlingSquareWrapperView;
@@ -73,23 +73,23 @@
     selectIndicator = v7->_selectIndicator;
     v7->_selectIndicator = v21;
 
-    v23 = [(TVRUIDirectionalControlView *)v7 styleProvider];
-    [v23 directionalPadSelectButtonBorderWidth];
+    styleProvider = [(TVRUIDirectionalControlView *)v7 styleProvider];
+    [styleProvider directionalPadSelectButtonBorderWidth];
     v25 = v24;
-    v26 = [(UIView *)v7->_selectIndicator layer];
-    [v26 setBorderWidth:v25];
+    layer = [(UIView *)v7->_selectIndicator layer];
+    [layer setBorderWidth:v25];
 
-    v27 = [(TVRUIDirectionalControlView *)v7 styleProvider];
-    v28 = [v27 directionalPadSelectButtonBorderColor];
-    v29 = [v28 CGColor];
-    v30 = [(UIView *)v7->_selectIndicator layer];
-    [v30 setBorderColor:v29];
+    styleProvider2 = [(TVRUIDirectionalControlView *)v7 styleProvider];
+    directionalPadSelectButtonBorderColor = [styleProvider2 directionalPadSelectButtonBorderColor];
+    cGColor = [directionalPadSelectButtonBorderColor CGColor];
+    layer2 = [(UIView *)v7->_selectIndicator layer];
+    [layer2 setBorderColor:cGColor];
 
     [(UIView *)v7->_selectIndicator setAlpha:0.6];
     [(TVRUIDirectionalControlView *)v7 centerCornerRadius];
     v32 = v31;
-    v33 = [(UIView *)v7->_selectIndicator layer];
-    [v33 setCornerRadius:v32];
+    layer3 = [(UIView *)v7->_selectIndicator layer];
+    [layer3 setCornerRadius:v32];
 
     v45[0] = v7->_upImageView;
     v45[1] = v7->_rightImageView;
@@ -173,15 +173,15 @@
     v46.size.width = v8;
     v46.size.height = v10;
     v22 = CGRectGetHeight(v46);
-    v23 = [(TVRUIDirectionalControlView *)self styleProvider];
-    [v23 mediaControlsViewHeight];
+    styleProvider = [(TVRUIDirectionalControlView *)self styleProvider];
+    [styleProvider mediaControlsViewHeight];
     v25 = v22 - v24;
 
     v26 = v25 * 0.5;
-    v27 = [(TVRUIDirectionalControlView *)self styleProvider];
-    v28 = [v27 isSmallDevice];
+    styleProvider2 = [(TVRUIDirectionalControlView *)self styleProvider];
+    isSmallDevice = [styleProvider2 isSmallDevice];
 
-    if (v28)
+    if (isSmallDevice)
     {
       rect = v20;
       v29 = _TVRUIViewControllerLog();
@@ -191,8 +191,8 @@
         _os_log_impl(&dword_26CFEB000, v29, OS_LOG_TYPE_DEFAULT, "Showing the directional controls on a small device so adjusting the insets to ensure the controls fit.", buf, 2u);
       }
 
-      v30 = [(TVRUIDirectionalControlView *)self styleProvider];
-      [v30 directionalPadInsetForSmallDevices];
+      styleProvider3 = [(TVRUIDirectionalControlView *)self styleProvider];
+      [styleProvider3 directionalPadInsetForSmallDevices];
       v32 = v31;
       v34 = v33;
 
@@ -232,20 +232,20 @@
   [(UIImageView *)self->_rightImageView setFrame:_TVRImageFrameForDirectionalImage_0(self->_rightImageView, 8, x, y, v39, v20)];
 }
 
-- (void)setOffsetDirectionalPad:(BOOL)a3
+- (void)setOffsetDirectionalPad:(BOOL)pad
 {
-  if (self->_offsetDirectionalPad != a3)
+  if (self->_offsetDirectionalPad != pad)
   {
     v9[9] = v3;
     v9[10] = v4;
-    self->_offsetDirectionalPad = a3;
-    v6 = [(TVRUIDirectionalControlView *)self window];
-    if (v6)
+    self->_offsetDirectionalPad = pad;
+    window = [(TVRUIDirectionalControlView *)self window];
+    if (window)
     {
-      v7 = v6;
-      v8 = [(TVRUIDirectionalControlView *)self superview];
+      v7 = window;
+      superview = [(TVRUIDirectionalControlView *)self superview];
 
-      if (v8)
+      if (superview)
       {
         v9[0] = MEMORY[0x277D85DD0];
         v9[1] = 3221225472;
@@ -290,24 +290,24 @@ uint64_t __55__TVRUIDirectionalControlView_setOffsetDirectionalPad___block_invok
   return result;
 }
 
-- (BOOL)_isArrowView:(id)a3
+- (BOOL)_isArrowView:(id)view
 {
-  v4 = a3;
-  v5 = self->_upImageView == v4 || self->_downImageView == v4 || self->_leftImageView == v4 || self->_rightImageView == v4;
+  viewCopy = view;
+  v5 = self->_upImageView == viewCopy || self->_downImageView == viewCopy || self->_leftImageView == viewCopy || self->_rightImageView == viewCopy;
 
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = TVRUIDirectionalControlView;
-  v6 = a3;
-  [(TVRUIDirectionalControlView *)&v15 touchesBegan:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  beganCopy = began;
+  [(TVRUIDirectionalControlView *)&v15 touchesBegan:beganCopy withEvent:event];
+  anyObject = [beganCopy anyObject];
 
-  v8 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-  [v7 locationInView:v8];
+  tapHandlingSquareWrapperView = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+  [anyObject locationInView:tapHandlingSquareWrapperView];
   v10 = v9;
   v12 = v11;
 
@@ -329,19 +329,19 @@ uint64_t __55__TVRUIDirectionalControlView_setOffsetDirectionalPad___block_invok
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVRUIDirectionalControlView;
-  [(TVRUIDirectionalControlView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(TVRUIDirectionalControlView *)&v5 touchesEnded:ended withEvent:event];
   [(TVRUIDirectionalControlView *)self _unhighlightView];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVRUIDirectionalControlView;
-  [(TVRUIDirectionalControlView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(TVRUIDirectionalControlView *)&v5 touchesCancelled:cancelled withEvent:event];
   [(TVRUIDirectionalControlView *)self _unhighlightView];
 }
 
@@ -374,19 +374,19 @@ LABEL_6:
   objc_storeWeak(&self->_highlightedView, 0);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
-  v7 = [(TVRUIDirectionalControlView *)self interactionViews];
+  requestCopy = request;
+  interactionViews = [(TVRUIDirectionalControlView *)self interactionViews];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __81__TVRUIDirectionalControlView_pointerInteraction_regionForRequest_defaultRegion___block_invoke;
   v24[3] = &unk_279D888C0;
   v24[4] = self;
   v26 = 0x403E000000000000;
-  v8 = v6;
+  v8 = requestCopy;
   v25 = v8;
-  v9 = [v7 indexOfObjectPassingTest:v24];
+  v9 = [interactionViews indexOfObjectPassingTest:v24];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -395,8 +395,8 @@ LABEL_6:
 
   else
   {
-    v11 = [(TVRUIDirectionalControlView *)self interactionViews];
-    v12 = [v11 objectAtIndexedSubscript:v9];
+    interactionViews2 = [(TVRUIDirectionalControlView *)self interactionViews];
+    v12 = [interactionViews2 objectAtIndexedSubscript:v9];
 
     [v12 bounds];
     v29 = CGRectInset(v28, -30.0, -30.0);
@@ -449,11 +449,11 @@ BOOL __81__TVRUIDirectionalControlView_pointerInteraction_regionForRequest_defau
   return CGRectContainsPoint(*&v29, *&v26);
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [a4 identifier];
-  v6 = [(TVRUIDirectionalControlView *)self interactionViews];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "integerValue")}];
+  identifier = [region identifier];
+  interactionViews = [(TVRUIDirectionalControlView *)self interactionViews];
+  v7 = [interactionViews objectAtIndexedSubscript:{objc_msgSend(identifier, "integerValue")}];
 
   [(UIImageView *)v7 bounds];
   Width = CGRectGetWidth(v23);
@@ -513,12 +513,12 @@ LABEL_14:
   return v12;
 }
 
-- (id)_createDirectionalImageViewWithImageName:(id)a3
+- (id)_createDirectionalImageViewWithImageName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:v5 compatibleWithTraitCollection:0];
+  v6 = [MEMORY[0x277D755B8] imageNamed:nameCopy inBundle:v5 compatibleWithTraitCollection:0];
 
   v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v6];
   [v7 setAlpha:0.6];
@@ -526,14 +526,14 @@ LABEL_14:
   return v7;
 }
 
-- (id)_directionalViewForTouchLocation:(CGPoint)a3
+- (id)_directionalViewForTouchLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   p_selectIndicator = &self->_selectIndicator;
   selectIndicator = self->_selectIndicator;
-  v8 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-  [(UIView *)selectIndicator convertPoint:v8 fromView:x, y];
+  tapHandlingSquareWrapperView = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+  [(UIView *)selectIndicator convertPoint:tapHandlingSquareWrapperView fromView:x, y];
   v10 = v9;
   v12 = v11;
 
@@ -545,8 +545,8 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v13 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-  [v13 bounds];
+  tapHandlingSquareWrapperView2 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+  [tapHandlingSquareWrapperView2 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -597,37 +597,37 @@ LABEL_14:
   return v25;
 }
 
-- (void)_highlightView:(id)a3 enabled:(BOOL)a4
+- (void)_highlightView:(id)view enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
+  enabledCopy = enabled;
+  viewCopy = view;
   selectIndicator = self->_selectIndicator;
-  v9 = v6;
-  if (selectIndicator == v6 || (selectIndicator = self->_upImageView, selectIndicator == v6) || (selectIndicator = self->_downImageView, selectIndicator == v6) || (selectIndicator = self->_rightImageView, selectIndicator == v6) || (selectIndicator = self->_leftImageView, selectIndicator == v6))
+  v9 = viewCopy;
+  if (selectIndicator == viewCopy || (selectIndicator = self->_upImageView, selectIndicator == viewCopy) || (selectIndicator = self->_downImageView, selectIndicator == viewCopy) || (selectIndicator = self->_rightImageView, selectIndicator == viewCopy) || (selectIndicator = self->_leftImageView, selectIndicator == viewCopy))
   {
     v8 = 0.6;
-    if (v4)
+    if (enabledCopy)
     {
       v8 = 1.0;
     }
 
     selectIndicator = [(UIImageView *)selectIndicator setAlpha:v8];
-    v6 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](selectIndicator, v6);
+  MEMORY[0x2821F96F8](selectIndicator, viewCopy);
 }
 
-- (void)_highlightArrowView:(id)a3
+- (void)_highlightArrowView:(id)view
 {
-  v4 = a3;
-  v5 = [(TVRUIDirectionalControlView *)self unhighlightAnimator];
-  v6 = [v5 isRunning];
+  viewCopy = view;
+  unhighlightAnimator = [(TVRUIDirectionalControlView *)self unhighlightAnimator];
+  isRunning = [unhighlightAnimator isRunning];
 
-  if (v6)
+  if (isRunning)
   {
-    v7 = [(TVRUIDirectionalControlView *)self unhighlightAnimator];
-    [v7 stopAnimation:1];
+    unhighlightAnimator2 = [(TVRUIDirectionalControlView *)self unhighlightAnimator];
+    [unhighlightAnimator2 stopAnimation:1];
   }
 
   v8 = objc_alloc(MEMORY[0x277D75D40]);
@@ -635,13 +635,13 @@ LABEL_14:
   v12[1] = 3221225472;
   v12[2] = __51__TVRUIDirectionalControlView__highlightArrowView___block_invoke;
   v12[3] = &unk_279D87C20;
-  v13 = v4;
-  v9 = v4;
+  v13 = viewCopy;
+  v9 = viewCopy;
   v10 = [v8 initWithDuration:3 curve:v12 animations:0.12];
   [(TVRUIDirectionalControlView *)self setHighlightAnimator:v10];
 
-  v11 = [(TVRUIDirectionalControlView *)self highlightAnimator];
-  [v11 startAnimation];
+  highlightAnimator = [(TVRUIDirectionalControlView *)self highlightAnimator];
+  [highlightAnimator startAnimation];
 }
 
 uint64_t __51__TVRUIDirectionalControlView__highlightArrowView___block_invoke(uint64_t a1)
@@ -659,16 +659,16 @@ uint64_t __51__TVRUIDirectionalControlView__highlightArrowView___block_invoke(ui
   return result;
 }
 
-- (void)_unhighlightArrowView:(id)a3
+- (void)_unhighlightArrowView:(id)view
 {
-  v4 = a3;
-  v5 = [(TVRUIDirectionalControlView *)self highlightAnimator];
-  v6 = [v5 isRunning];
+  viewCopy = view;
+  highlightAnimator = [(TVRUIDirectionalControlView *)self highlightAnimator];
+  isRunning = [highlightAnimator isRunning];
 
-  if (v6)
+  if (isRunning)
   {
-    v7 = [(TVRUIDirectionalControlView *)self highlightAnimator];
-    [v7 stopAnimation:1];
+    highlightAnimator2 = [(TVRUIDirectionalControlView *)self highlightAnimator];
+    [highlightAnimator2 stopAnimation:1];
   }
 
   v8 = objc_alloc(MEMORY[0x277D75D40]);
@@ -676,13 +676,13 @@ uint64_t __51__TVRUIDirectionalControlView__highlightArrowView___block_invoke(ui
   v12[1] = 3221225472;
   v12[2] = __53__TVRUIDirectionalControlView__unhighlightArrowView___block_invoke;
   v12[3] = &unk_279D87C20;
-  v13 = v4;
-  v9 = v4;
+  v13 = viewCopy;
+  v9 = viewCopy;
   v10 = [v8 initWithDuration:2 curve:v12 animations:0.25];
   [(TVRUIDirectionalControlView *)self setUnhighlightAnimator:v10];
 
-  v11 = [(TVRUIDirectionalControlView *)self unhighlightAnimator];
-  [v11 startAnimation];
+  unhighlightAnimator = [(TVRUIDirectionalControlView *)self unhighlightAnimator];
+  [unhighlightAnimator startAnimation];
 }
 
 uint64_t __53__TVRUIDirectionalControlView__unhighlightArrowView___block_invoke(uint64_t a1)
@@ -711,44 +711,44 @@ uint64_t __53__TVRUIDirectionalControlView__unhighlightArrowView___block_invoke(
   [(TVRUIDirectionalControlView *)self addGestureRecognizer:v3];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v5 = [(TVRUIDirectionalControlView *)self eventDelegate];
-    if (v5)
+    eventDelegate = [(TVRUIDirectionalControlView *)self eventDelegate];
+    if (eventDelegate)
     {
-      v6 = v5;
-      v7 = [(TVRUIDirectionalControlView *)self eventDelegate];
+      v6 = eventDelegate;
+      eventDelegate2 = [(TVRUIDirectionalControlView *)self eventDelegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
         [(TVRButtonHaptic *)self->_haptic userInteractionBegan];
-        [v4 locationInView:self];
+        [tapCopy locationInView:self];
         v10 = v9;
         v12 = v11;
-        v13 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-        [v13 frame];
+        tapHandlingSquareWrapperView = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+        [tapHandlingSquareWrapperView frame];
         v34.x = v10;
         v34.y = v12;
         v14 = CGRectContainsPoint(v35, v34);
 
         if (v14)
         {
-          v15 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-          [v4 locationInView:v15];
+          tapHandlingSquareWrapperView2 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+          [tapCopy locationInView:tapHandlingSquareWrapperView2];
           v16 = [(TVRUIDirectionalControlView *)self _buttonTypeForLocation:?];
 
           v17 = [TVRUIButtonEvent createButtonEvent:1 buttonType:v16];
-          v18 = [(TVRUIDirectionalControlView *)self eventDelegate];
-          [v18 generatedButtonEvent:v17];
+          eventDelegate3 = [(TVRUIDirectionalControlView *)self eventDelegate];
+          [eventDelegate3 generatedButtonEvent:v17];
 
           v19 = [TVRUIButtonEvent createButtonEvent:2 buttonType:v16];
-          v20 = [(TVRUIDirectionalControlView *)self eventDelegate];
-          [v20 generatedButtonEvent:v19];
+          eventDelegate4 = [(TVRUIDirectionalControlView *)self eventDelegate];
+          [eventDelegate4 generatedButtonEvent:v19];
 
           v21 = _TVRUIViewControllerLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -777,12 +777,12 @@ LABEL_14:
         if (v12 >= v25 * 0.5)
         {
           v17 = [TVRUIButtonEvent createButtonEvent:1 buttonType:13];
-          v28 = [(TVRUIDirectionalControlView *)self eventDelegate];
-          [v28 generatedButtonEvent:v17];
+          eventDelegate5 = [(TVRUIDirectionalControlView *)self eventDelegate];
+          [eventDelegate5 generatedButtonEvent:v17];
 
           v19 = [TVRUIButtonEvent createButtonEvent:2 buttonType:13];
-          v29 = [(TVRUIDirectionalControlView *)self eventDelegate];
-          [v29 generatedButtonEvent:v19];
+          eventDelegate6 = [(TVRUIDirectionalControlView *)self eventDelegate];
+          [eventDelegate6 generatedButtonEvent:v19];
 
           v21 = _TVRUIViewControllerLog();
           if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -797,12 +797,12 @@ LABEL_14:
         else
         {
           v17 = [TVRUIButtonEvent createButtonEvent:1 buttonType:12];
-          v26 = [(TVRUIDirectionalControlView *)self eventDelegate];
-          [v26 generatedButtonEvent:v17];
+          eventDelegate7 = [(TVRUIDirectionalControlView *)self eventDelegate];
+          [eventDelegate7 generatedButtonEvent:v17];
 
           v19 = [TVRUIButtonEvent createButtonEvent:2 buttonType:12];
-          v27 = [(TVRUIDirectionalControlView *)self eventDelegate];
-          [v27 generatedButtonEvent:v19];
+          eventDelegate8 = [(TVRUIDirectionalControlView *)self eventDelegate];
+          [eventDelegate8 generatedButtonEvent:v19];
 
           v21 = _TVRUIViewControllerLog();
           if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -824,13 +824,13 @@ LABEL_14:
 LABEL_15:
 }
 
-- (int64_t)_buttonTypeForLocation:(CGPoint)a3
+- (int64_t)_buttonTypeForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   selectIndicator = self->_selectIndicator;
-  v7 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-  [(UIView *)selectIndicator convertPoint:v7 fromView:x, y];
+  tapHandlingSquareWrapperView = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+  [(UIView *)selectIndicator convertPoint:tapHandlingSquareWrapperView fromView:x, y];
   v9 = v8;
   v11 = v10;
 
@@ -842,8 +842,8 @@ LABEL_15:
     return 1;
   }
 
-  v13 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
-  [v13 bounds];
+  tapHandlingSquareWrapperView2 = [(TVRUIDirectionalControlView *)self tapHandlingSquareWrapperView];
+  [tapHandlingSquareWrapperView2 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -883,27 +883,27 @@ LABEL_15:
   return 14;
 }
 
-- (void)_configureLongPressGesture:(id)a3
+- (void)_configureLongPressGesture:(id)gesture
 {
   v4 = MEMORY[0x277D75708];
-  v5 = a3;
+  gestureCopy = gesture;
   v6 = [[v4 alloc] initWithTarget:self action:sel_handleLongPress_];
   [v6 setMinimumPressDuration:0.3];
   [v6 setCancelsTouchesInView:1];
   [v6 setDelaysTouchesBegan:0];
   [v6 setDelaysTouchesEnded:0];
-  [v5 addGestureRecognizer:v6];
+  [gestureCopy addGestureRecognizer:v6];
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     [(TVRUIDirectionalControlView *)self _sendSelectButtonPressBegan];
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  else if ([pressCopy state] == 3 || objc_msgSend(pressCopy, "state") == 4)
   {
     [(TVRUIDirectionalControlView *)self _sendSelectButtonPressEnded];
   }
@@ -912,15 +912,15 @@ LABEL_15:
 - (void)_sendSelectButtonPressBegan
 {
   v4 = [TVRUIButtonEvent createButtonEvent:1 buttonType:1];
-  v3 = [(TVRUIDirectionalControlView *)self eventDelegate];
-  [v3 generatedButtonEvent:v4];
+  eventDelegate = [(TVRUIDirectionalControlView *)self eventDelegate];
+  [eventDelegate generatedButtonEvent:v4];
 }
 
 - (void)_sendSelectButtonPressEnded
 {
   v4 = [TVRUIButtonEvent createButtonEvent:2 buttonType:1];
-  v3 = [(TVRUIDirectionalControlView *)self eventDelegate];
-  [v3 generatedButtonEvent:v4];
+  eventDelegate = [(TVRUIDirectionalControlView *)self eventDelegate];
+  [eventDelegate generatedButtonEvent:v4];
 }
 
 - (_TVRUIEventDelegate)eventDelegate

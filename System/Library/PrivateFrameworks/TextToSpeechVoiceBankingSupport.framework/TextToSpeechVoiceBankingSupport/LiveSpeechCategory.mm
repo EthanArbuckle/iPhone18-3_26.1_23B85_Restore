@@ -1,12 +1,12 @@
 @interface LiveSpeechCategory
-+ (id)addCategoryWithName:(id)a3 symbol:(id)a4 error:(id *)a5;
-+ (id)categoryForID:(id)a3;
++ (id)addCategoryWithName:(id)name symbol:(id)symbol error:(id *)error;
++ (id)categoryForID:(id)d;
 + (id)makeEmptyCategory;
-+ (id)observeChanges:(id)a3;
-+ (void)deleteCategory:(id)a3;
-+ (void)deleteCategoryWithID:(id)a3;
-- (BOOL)addPhrase:(id)a3 inputID:(id)a4 error:(id *)a5;
-- (BOOL)deletePhrase:(id)a3 error:(id *)a4;
++ (id)observeChanges:(id)changes;
++ (void)deleteCategory:(id)category;
++ (void)deleteCategoryWithID:(id)d;
+- (BOOL)addPhrase:(id)phrase inputID:(id)d error:(id *)error;
+- (BOOL)deletePhrase:(id)phrase error:(id *)error;
 - (BOOL)isRecents;
 - (BOOL)isSaved;
 - (LiveSpeechCategory)init;
@@ -34,8 +34,8 @@
 
 - (BOOL)isSaved
 {
-  v2 = self;
-  v3 = [(LiveSpeechCategory *)v2 categoryID];
+  selfCopy = self;
+  categoryID = [(LiveSpeechCategory *)selfCopy categoryID];
   v4 = sub_23328D98C();
   v6 = v5;
 
@@ -55,8 +55,8 @@
 
 - (BOOL)isRecents
 {
-  v2 = self;
-  v3 = [(LiveSpeechCategory *)v2 categoryID];
+  selfCopy = self;
+  categoryID = [(LiveSpeechCategory *)selfCopy categoryID];
   v4 = sub_23328D98C();
   v6 = v5;
 
@@ -76,7 +76,7 @@
 
 - (NSString)localizedName
 {
-  v2 = self;
+  selfCopy = self;
   sub_2331F1030();
 
   v3 = sub_23328D95C();
@@ -86,7 +86,7 @@
 
 - (id)phrases
 {
-  v2 = self;
+  selfCopy = self;
   sub_2331F11B4();
 
   type metadata accessor for LiveSpeechPhrase(v3);
@@ -95,14 +95,14 @@
   return v4;
 }
 
-- (BOOL)addPhrase:(id)a3 inputID:(id)a4 error:(id *)a5
+- (BOOL)addPhrase:(id)phrase inputID:(id)d error:(id *)error
 {
   v7 = sub_23328D98C();
   v9 = v8;
-  if (a4)
+  if (d)
   {
     v10 = sub_23328D98C();
-    a4 = v11;
+    d = v11;
   }
 
   else
@@ -110,17 +110,17 @@
     v10 = 0;
   }
 
-  v12 = self;
-  sub_2331F14CC(v7, v9, v10, a4);
+  selfCopy = self;
+  sub_2331F14CC(v7, v9, v10, d);
 
   return 1;
 }
 
-- (BOOL)deletePhrase:(id)a3 error:(id *)a4
+- (BOOL)deletePhrase:(id)phrase error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_2331F24E8(v5);
+  phraseCopy = phrase;
+  selfCopy = self;
+  sub_2331F24E8(phraseCopy);
 
   return 1;
 }
@@ -132,7 +132,7 @@
   return v2;
 }
 
-+ (id)categoryForID:(id)a3
++ (id)categoryForID:(id)d
 {
   v3 = sub_23328D98C();
   v5 = sub_2331F5C38(v3, v4);
@@ -140,7 +140,7 @@
   return v5;
 }
 
-+ (id)addCategoryWithName:(id)a3 symbol:(id)a4 error:(id *)a5
++ (id)addCategoryWithName:(id)name symbol:(id)symbol error:(id *)error
 {
   v5 = sub_23328D98C();
   v7 = v6;
@@ -150,28 +150,28 @@
   return v10;
 }
 
-+ (void)deleteCategory:(id)a3
++ (void)deleteCategory:(id)category
 {
-  v5 = a3;
-  v4 = [v5 categoryID];
-  if (!v4)
+  categoryCopy = category;
+  categoryID = [categoryCopy categoryID];
+  if (!categoryID)
   {
     sub_23328D98C();
-    v4 = sub_23328D95C();
+    categoryID = sub_23328D95C();
   }
 
-  [a1 deleteCategoryWithID_];
+  [self deleteCategoryWithID_];
 }
 
-+ (void)deleteCategoryWithID:(id)a3
++ (void)deleteCategoryWithID:(id)d
 {
   v3 = sub_23328D98C();
   sub_2331F68B8(v3, v4);
 }
 
-+ (id)observeChanges:(id)a3
++ (id)observeChanges:(id)changes
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(changes);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   if (qword_27DDF8160 != -1)

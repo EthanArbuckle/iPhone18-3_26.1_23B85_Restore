@@ -4,9 +4,9 @@
 - (id)_init;
 - (void)emergencyCallInitiated;
 - (void)kappaWasRequested;
-- (void)sosFlow:(id)a3 didChangeToState:(int64_t)a4;
-- (void)startFreshSOSFlowWithTriggerMechanism:(int64_t)a3;
-- (void)startSOSFlowWithTriggerMechanism:(int64_t)a3;
+- (void)sosFlow:(id)flow didChangeToState:(int64_t)state;
+- (void)startFreshSOSFlowWithTriggerMechanism:(int64_t)mechanism;
+- (void)startSOSFlowWithTriggerMechanism:(int64_t)mechanism;
 @end
 
 @implementation SOSFlowManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __32__SOSFlowManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -69,23 +69,23 @@ uint64_t __32__SOSFlowManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)kappaWasRequested
 {
-  v2 = [(SOSFlowManager *)self activeSOSFlow];
-  [v2 handleSOSFlowEvent:12 withMetaData:0];
+  activeSOSFlow = [(SOSFlowManager *)self activeSOSFlow];
+  [activeSOSFlow handleSOSFlowEvent:12 withMetaData:0];
 }
 
 - (void)emergencyCallInitiated
 {
-  v2 = [(SOSFlowManager *)self activeSOSFlow];
-  [v2 handleSOSFlowEvent:13 withMetaData:0];
+  activeSOSFlow = [(SOSFlowManager *)self activeSOSFlow];
+  [activeSOSFlow handleSOSFlowEvent:13 withMetaData:0];
 }
 
-- (void)startSOSFlowWithTriggerMechanism:(int64_t)a3
+- (void)startSOSFlowWithTriggerMechanism:(int64_t)mechanism
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = SOSStringForSOSTriggerMechanism(a3);
+    v6 = SOSStringForSOSTriggerMechanism(mechanism);
     v8 = 136315394;
     v9 = "[SOSFlowManager startSOSFlowWithTriggerMechanism:]";
     v10 = 2112;
@@ -93,11 +93,11 @@ uint64_t __32__SOSFlowManager_sharedInstance__block_invoke(uint64_t a1)
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "%s: Starting SOSFlow with trigger: %@", &v8, 0x16u);
   }
 
-  [(SOSFlowManager *)self startFreshSOSFlowWithTriggerMechanism:a3];
+  [(SOSFlowManager *)self startFreshSOSFlowWithTriggerMechanism:mechanism];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startFreshSOSFlowWithTriggerMechanism:(int64_t)a3
+- (void)startFreshSOSFlowWithTriggerMechanism:(int64_t)mechanism
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = sos_default_log();
@@ -108,37 +108,37 @@ uint64_t __32__SOSFlowManager_sharedInstance__block_invoke(uint64_t a1)
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "%s: Starting a fresh SOSFlow", &v16, 0xCu);
   }
 
-  v6 = [(SOSFlowManager *)self activeSOSFlow];
+  activeSOSFlow = [(SOSFlowManager *)self activeSOSFlow];
 
-  if (v6)
+  if (activeSOSFlow)
   {
-    v7 = [(SOSFlowManager *)self activeSOSFlow];
-    [v7 removeObserver:self];
+    activeSOSFlow2 = [(SOSFlowManager *)self activeSOSFlow];
+    [activeSOSFlow2 removeObserver:self];
   }
 
-  v8 = [[SOSFlow alloc] initWithTriggerMechanism:a3 healthStore:self->_healthStore];
+  v8 = [[SOSFlow alloc] initWithTriggerMechanism:mechanism healthStore:self->_healthStore];
   [(SOSFlowManager *)self setActiveSOSFlow:v8];
 
-  v9 = [(SOSFlowManager *)self activeSOSFlow];
-  [v9 addObserver:self];
+  activeSOSFlow3 = [(SOSFlowManager *)self activeSOSFlow];
+  [activeSOSFlow3 addObserver:self];
 
   v10 = MEMORY[0x277CBEAC0];
-  v11 = [(SOSFlowManager *)self activeSOSFlow];
-  v12 = [v10 dictionaryWithObject:v11 forKey:@"activeSOSFlow"];
+  activeSOSFlow4 = [(SOSFlowManager *)self activeSOSFlow];
+  v12 = [v10 dictionaryWithObject:activeSOSFlow4 forKey:@"activeSOSFlow"];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 postNotificationName:@"SOSFlowWillStartNotification" object:0 userInfo:v12];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SOSFlowWillStartNotification" object:0 userInfo:v12];
 
-  v14 = [(SOSFlowManager *)self activeSOSFlow];
-  [v14 handleSOSFlowEvent:0 withMetaData:0];
+  activeSOSFlow5 = [(SOSFlowManager *)self activeSOSFlow];
+  [activeSOSFlow5 handleSOSFlowEvent:0 withMetaData:0];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sosFlow:(id)a3 didChangeToState:(int64_t)a4
+- (void)sosFlow:(id)flow didChangeToState:(int64_t)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  if ([SOSFlow isTerminalState:a4])
+  if ([SOSFlow isTerminalState:state])
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -148,8 +148,8 @@ uint64_t __32__SOSFlowManager_sharedInstance__block_invoke(uint64_t a1)
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "%s: SOSFlow reached terminal state, tearing down", &v8, 0xCu);
     }
 
-    v6 = [(SOSFlowManager *)self activeSOSFlow];
-    [v6 removeObserver:self];
+    activeSOSFlow = [(SOSFlowManager *)self activeSOSFlow];
+    [activeSOSFlow removeObserver:self];
 
     [(SOSFlowManager *)self setActiveSOSFlow:0];
   }

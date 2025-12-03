@@ -1,24 +1,24 @@
 @interface HUAnnounceSetupViewController
-- (HUAnnounceSetupViewController)initWithHome:(id)a3 step:(unint64_t)a4;
+- (HUAnnounceSetupViewController)initWithHome:(id)home step:(unint64_t)step;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (void)continuePressed:(id)a3;
+- (void)continuePressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAnnounceSetupViewController
 
-- (HUAnnounceSetupViewController)initWithHome:(id)a3 step:(unint64_t)a4
+- (HUAnnounceSetupViewController)initWithHome:(id)home step:(unint64_t)step
 {
-  v6 = a3;
+  homeCopy = home;
   v7 = 2;
-  if (a4 == 1)
+  if (step == 1)
   {
     v8 = @"HUOnboardingAnnounceNotifications_Detail";
     v9 = @"HUOnboardingAnnounceNotifications_Title";
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (step == 2)
   {
     v8 = @"HUOnboardingAnnounceAccessControl_Detail";
     v7 = 3;
@@ -36,9 +36,9 @@ LABEL_7:
   aBlock[1] = 3221225472;
   aBlock[2] = __51__HUAnnounceSetupViewController_initWithHome_step___block_invoke_3;
   aBlock[3] = &unk_277DBA558;
-  v20 = v6;
+  v20 = homeCopy;
   v21 = v7;
-  v12 = v6;
+  v12 = homeCopy;
   v13 = _Block_copy(aBlock);
   v14 = [[HUSimpleItemModuleTableViewController alloc] initWithTableViewStyle:1 moduleCreator:v13 moduleControllerBuilder:&__block_literal_global_16_2];
   v18.receiver = self;
@@ -47,7 +47,7 @@ LABEL_7:
   v16 = v15;
   if (v15)
   {
-    v15->_step = a4;
+    v15->_step = step;
   }
 
   return v16;
@@ -73,15 +73,15 @@ HUAnnounceSettingsItemModuleController *__51__HUAnnounceSetupViewController_init
   return v3;
 }
 
-- (void)continuePressed:(id)a3
+- (void)continuePressed:(id)pressed
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUAnnounceSetupViewController *)self delegate];
+  delegate = [(HUAnnounceSetupViewController *)self delegate];
   v7 = @"announceSetupStep";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HUAnnounceSetupViewController step](self, "step")}];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [v4 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (void)viewDidLoad
@@ -90,19 +90,19 @@ HUAnnounceSettingsItemModuleController *__51__HUAnnounceSetupViewController_init
   v11.receiver = self;
   v11.super_class = HUAnnounceSetupViewController;
   [(HUItemTableOBWelcomeController *)&v11 viewDidLoad];
-  v4 = [(HUAnnounceSetupViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_282493030];
+  headerView = [(HUAnnounceSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493030];
 
-  v6 = [MEMORY[0x277D37618] boldButton];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = _HULocalizedStringWithDefaultValue(@"HUOnboardingAnnounce_ContinueButton", @"HUOnboardingAnnounce_ContinueButton", 1);
-  [v6 setTitle:v7 forState:0];
+  [boldButton setTitle:v7 forState:0];
 
-  [v6 setAccessibilityIdentifier:@"Home.OnboardingView.AnnounceSetUp.ContinueButton"];
-  [v6 addTarget:self action:sel_continuePressed_ forControlEvents:64];
-  v8 = [(HUAnnounceSetupViewController *)self buttonTray];
-  [v8 addButton:v6];
+  [boldButton setAccessibilityIdentifier:@"Home.OnboardingView.AnnounceSetUp.ContinueButton"];
+  [boldButton addTarget:self action:sel_continuePressed_ forControlEvents:64];
+  buttonTray = [(HUAnnounceSetupViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   [(HUAnnounceSetupViewController *)self setModalInPresentation:1];
   v9 = HFLogForCategory();
@@ -110,7 +110,7 @@ HUAnnounceSettingsItemModuleController *__51__HUAnnounceSetupViewController_init
   {
     v10 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v10;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: ATVC", buf, 0x16u);

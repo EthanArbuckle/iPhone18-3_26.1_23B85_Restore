@@ -1,49 +1,49 @@
 @interface CRNPagingScrollTestParameters
 - (CGRect)scrollingBounds;
-- (CRNPagingScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 amplitude:(double)a6 direction:(int64_t)a7 iterationDuration:(double)a8 useFlicks:(BOOL)a9 completionHandler:(id)a10;
+- (CRNPagingScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds amplitude:(double)amplitude direction:(int64_t)direction iterationDuration:(double)duration useFlicks:(BOOL)flicks completionHandler:(id)self0;
 - (RCPSyntheticEventStream)eventStream;
 - (id)composerBlock;
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6;
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration;
 @end
 
 @implementation CRNPagingScrollTestParameters
 
-- (CRNPagingScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 amplitude:(double)a6 direction:(int64_t)a7 iterationDuration:(double)a8 useFlicks:(BOOL)a9 completionHandler:(id)a10
+- (CRNPagingScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds amplitude:(double)amplitude direction:(int64_t)direction iterationDuration:(double)duration useFlicks:(BOOL)flicks completionHandler:(id)self0
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v21 = a3;
-  v22 = a10;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nameCopy = name;
+  handlerCopy = handler;
   v32.receiver = self;
   v32.super_class = CRNPagingScrollTestParameters;
   v23 = [(CRNPagingScrollTestParameters *)&v32 init];
   if (v23)
   {
-    v24 = [v21 copy];
+    v24 = [nameCopy copy];
     testName = v23->_testName;
     v23->_testName = v24;
 
-    v23->_iterations = a4;
+    v23->_iterations = iterations;
     v23->_scrollingBounds.origin.x = x;
     v23->_scrollingBounds.origin.y = y;
     v23->_scrollingBounds.size.width = width;
     v23->_scrollingBounds.size.height = height;
-    v23->_amplitude = a6;
-    v23->_useFlicks = a9;
-    v23->_direction = a7;
-    v23->_iterationDuration = a8;
-    v26 = MEMORY[0x24C1B6890](v22);
+    v23->_amplitude = amplitude;
+    v23->_useFlicks = flicks;
+    v23->_direction = direction;
+    v23->_iterationDuration = duration;
+    v26 = MEMORY[0x24C1B6890](handlerCopy);
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v26;
 
-    if (a7 == 6 || a7 == 5)
+    if (direction == 6 || direction == 5)
     {
-      v28 = [MEMORY[0x277D75128] sharedApplication];
-      v29 = [v28 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
       v30 = 1;
-      if (v29)
+      if (userInterfaceLayoutDirection)
       {
         v30 = 2;
       }
@@ -53,7 +53,7 @@
 
     else
     {
-      v23->_realDirection = a7;
+      v23->_realDirection = direction;
     }
   }
 
@@ -135,22 +135,22 @@ LABEL_11:
   }
 }
 
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = a3;
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  composerCopy = composer;
   if ([(CRNPagingScrollTestParameters *)self useFlicks])
   {
-    [v12 sendFlickWithStartPoint:v10 endPoint:v9 duration:{x, y, 0.5}];
-    [v12 advanceTime:a6 + -0.5];
+    [composerCopy sendFlickWithStartPoint:v10 endPoint:v9 duration:{x, y, 0.5}];
+    [composerCopy advanceTime:duration + -0.5];
   }
 
   else
   {
-    [v12 dragWithStartPoint:v10 endPoint:v9 duration:{x, y, a6}];
+    [composerCopy dragWithStartPoint:v10 endPoint:v9 duration:{x, y, duration}];
   }
 }
 
@@ -176,8 +176,8 @@ LABEL_11:
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [(CRNPagingScrollTestParameters *)self composerBlock];
-    v6 = [v3 eventStreamWithEventActions:v5];
+    composerBlock = [(CRNPagingScrollTestParameters *)self composerBlock];
+    v6 = [v3 eventStreamWithEventActions:composerBlock];
   }
 
   else

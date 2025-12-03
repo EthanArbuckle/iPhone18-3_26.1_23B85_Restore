@@ -1,34 +1,34 @@
 @interface WFDropboxAppAuthorizationSession
-- (BOOL)resumeSessionWithURL:(id)a3;
-- (WFDropboxAppAuthorizationSession)initWithClientID:(id)a3 completionHandler:(id)a4;
+- (BOOL)resumeSessionWithURL:(id)l;
+- (WFDropboxAppAuthorizationSession)initWithClientID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation WFDropboxAppAuthorizationSession
 
-- (BOOL)resumeSessionWithURL:(id)a3
+- (BOOL)resumeSessionWithURL:(id)l
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFDropboxAppAuthorizationSession *)self completionHandler];
-  if (!v5)
+  lCopy = l;
+  completionHandler = [(WFDropboxAppAuthorizationSession *)self completionHandler];
+  if (!completionHandler)
   {
     goto LABEL_16;
   }
 
-  v6 = [(WFDropboxAppAuthorizationSession *)self successURI];
-  v7 = [v4 wfo_isEqualToRedirectURI:v6];
+  successURI = [(WFDropboxAppAuthorizationSession *)self successURI];
+  v7 = [lCopy wfo_isEqualToRedirectURI:successURI];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCACE0] componentsWithURL:v4 resolvingAgainstBaseURL:0];
+    v8 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     v9 = objc_opt_new();
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v38 = v8;
-    v10 = [v8 queryItems];
-    v11 = [v10 countByEnumeratingWithState:&v39 objects:v51 count:16];
+    queryItems = [v8 queryItems];
+    v11 = [queryItems countByEnumeratingWithState:&v39 objects:v51 count:16];
     if (v11)
     {
       v12 = v11;
@@ -39,24 +39,24 @@
         {
           if (*v40 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(queryItems);
           }
 
           v15 = *(*(&v39 + 1) + 8 * i);
-          v16 = [v15 value];
-          v17 = [v15 name];
-          [v9 setValue:v16 forKey:v17];
+          value = [v15 value];
+          name = [v15 name];
+          [v9 setValue:value forKey:name];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v39 objects:v51 count:16];
+        v12 = [queryItems countByEnumeratingWithState:&v39 objects:v51 count:16];
       }
 
       while (v12);
     }
 
     v18 = [v9 objectForKeyedSubscript:@"state"];
-    v19 = [(WFDropboxAppAuthorizationSession *)self state];
-    v20 = [v18 isEqualToString:v19];
+    state = [(WFDropboxAppAuthorizationSession *)self state];
+    v20 = [v18 isEqualToString:state];
 
     if ((v20 & 1) == 0)
     {
@@ -66,7 +66,7 @@
       v29 = 1;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
       v32 = [v30 errorWithDomain:@"WFOAuth2ErrorDomain" code:200 userInfo:v31];
-      (v5)[2](v5, 0, v32);
+      (completionHandler)[2](completionHandler, 0, v32);
 
       goto LABEL_19;
     }
@@ -79,7 +79,7 @@
       v48 = @"The oauth_token_secret parameter on the received callback was missing.";
       v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       v35 = [v33 errorWithDomain:@"WFOAuth2ErrorDomain" code:200 userInfo:v34];
-      (v5)[2](v5, 0, v35);
+      (completionHandler)[2](completionHandler, 0, v35);
 
       v29 = 1;
       goto LABEL_19;
@@ -90,14 +90,14 @@
     v46 = v21;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v24 = [(WFOAuth2Credential *)v22 initWithResponseObject:v23];
-    (v5)[2](v5, v24, 0);
+    (completionHandler)[2](completionHandler, v24, 0);
 
     v25 = v38;
     goto LABEL_15;
   }
 
-  v26 = [(WFDropboxAppAuthorizationSession *)self cancelURI];
-  v27 = [v4 wfo_isEqualToRedirectURI:v26];
+  cancelURI = [(WFDropboxAppAuthorizationSession *)self cancelURI];
+  v27 = [lCopy wfo_isEqualToRedirectURI:cancelURI];
 
   if (!v27)
   {
@@ -111,7 +111,7 @@ LABEL_16:
   v44 = @"The user cancelled the request.";
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
   v9 = [v28 errorWithDomain:@"WFOAuth2ErrorDomain" code:106 userInfo:v25];
-  (v5)[2](v5, 0, v9);
+  (completionHandler)[2](completionHandler, 0, v9);
 LABEL_15:
 
   [(WFDropboxAppAuthorizationSession *)self setCompletionHandler:0];
@@ -122,15 +122,15 @@ LABEL_19:
   return v29;
 }
 
-- (WFDropboxAppAuthorizationSession)initWithClientID:(id)a3 completionHandler:(id)a4
+- (WFDropboxAppAuthorizationSession)initWithClientID:(id)d completionHandler:(id)handler
 {
   v53[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (dCopy)
   {
-    if (v9)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -138,8 +138,8 @@ LABEL_19:
 
   else
   {
-    v44 = [MEMORY[0x277CCA890] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"WFDropboxAppAuthorizationSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"clientID"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDropboxAppAuthorizationSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"clientID"}];
 
     if (v10)
     {
@@ -147,8 +147,8 @@ LABEL_19:
     }
   }
 
-  v45 = [MEMORY[0x277CCA890] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"WFDropboxAppAuthorizationSession.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDropboxAppAuthorizationSession.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v51.receiver = self;
@@ -157,13 +157,13 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    v46 = v8;
-    objc_storeStrong(&v11->_clientID, a3);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v14 stringByReplacingOccurrencesOfString:@"-" withString:&stru_2850323E8];
-    v16 = [v15 lowercaseString];
-    v17 = [@"oauth2:" stringByAppendingString:v16];
+    v46 = dCopy;
+    objc_storeStrong(&v11->_clientID, d);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_2850323E8];
+    lowercaseString = [v15 lowercaseString];
+    v17 = [@"oauth2:" stringByAppendingString:lowercaseString];
     state = v12->_state;
     v12->_state = v17;
 
@@ -233,7 +233,7 @@ LABEL_3:
     v12->_authorizationURLs = v34;
 
     v41 = v12;
-    v8 = v46;
+    dCopy = v46;
   }
 
   v42 = *MEMORY[0x277D85DE8];

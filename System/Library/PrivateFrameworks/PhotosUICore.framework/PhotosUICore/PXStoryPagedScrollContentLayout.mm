@@ -1,10 +1,10 @@
 @interface PXStoryPagedScrollContentLayout
-- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)a3 visibleRect:(CGRect)a4;
+- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)position visibleRect:(CGRect)rect;
 - (PXStoryPagedScrollContentLayout)init;
-- (PXStoryPagedScrollContentLayout)initWithModel:(id)a3;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)createAnchorForScrollingToPosition:(id *)a3;
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (PXStoryPagedScrollContentLayout)initWithModel:(id)model;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)createAnchorForScrollingToPosition:(id *)position;
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_invalidateContent;
 - (void)_invalidateDisplayedTimeline;
 - (void)_invalidatePages;
@@ -13,55 +13,55 @@
 - (void)_updateDisplayedTimeline;
 - (void)_updatePages;
 - (void)_updatePresentedScrollPosition;
-- (void)adjustScrollTargetContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)adjustScrollTargetContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)setDisplayedTimeline:(id)a3;
-- (void)setInterpageSpacing:(double)a3;
-- (void)setNumberOfPages:(int64_t)a3;
-- (void)setPresentedScrollPosition:(id *)a3;
+- (void)setDisplayedTimeline:(id)timeline;
+- (void)setInterpageSpacing:(double)spacing;
+- (void)setNumberOfPages:(int64_t)pages;
+- (void)setPresentedScrollPosition:(id *)position;
 - (void)update;
 - (void)visibleRectDidChange;
 @end
 
 @implementation PXStoryPagedScrollContentLayout
 
-- (void)setPresentedScrollPosition:(id *)a3
+- (void)setPresentedScrollPosition:(id *)position
 {
-  var2 = a3->var2;
-  *&self->_presentedScrollPosition.firstSegmentIdentifier = *&a3->var0;
+  var2 = position->var2;
+  *&self->_presentedScrollPosition.firstSegmentIdentifier = *&position->var0;
   self->_presentedScrollPosition.secondSegmentIdentifier = var2;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ModelObservationContext_193289 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ModelObservationContext_193289 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryPagedScrollContentLayout.m" lineNumber:258 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPagedScrollContentLayout.m" lineNumber:258 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v9;
-  if ((v6 & 0x10) != 0)
+  v11 = observableCopy;
+  if ((changeCopy & 0x10) != 0)
   {
     [(PXStoryPagedScrollContentLayout *)self _invalidateDisplayedTimeline];
-    v9 = v11;
+    observableCopy = v11;
   }
 
-  if ((v6 & 0x2000) != 0)
+  if ((changeCopy & 0x2000) != 0)
   {
     [(PXStoryPagedScrollContentLayout *)self _invalidatePages];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = modf(a3 / 10.0, &__y);
+  v4 = modf(index / 10.0, &__y);
   v5 = MEMORY[0x1E69DC888];
 
   return [v5 colorWithHue:v4 saturation:1.0 brightness:1.0 alpha:0.3];
@@ -73,13 +73,13 @@
   CGRectGetMinX(v5);
   [(PXStoryPagedScrollContentLayout *)self presentedPageWidth];
   [(PXStoryPagedScrollContentLayout *)self interpageSpacing];
-  v3 = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
-  if ([v3 numberOfSegments] > 1)
+  displayedTimeline = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
+  if ([displayedTimeline numberOfSegments] > 1)
   {
     PXClamp();
   }
 
-  v4[0] = [v3 firstSegmentIdentifier];
+  v4[0] = [displayedTimeline firstSegmentIdentifier];
   v4[1] = 0;
   v4[2] = 0;
   [(PXStoryPagedScrollContentLayout *)self setPresentedScrollPosition:v4];
@@ -89,9 +89,9 @@
 {
   if (self->_postUpdateFlags.isPerformingUpdate && (self->_postUpdateFlags.updated & 0x400) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout _invalidatePresentedScrollPosition]"];
-    [v2 handleFailureInFunction:v3 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:218 description:{@"invalidating %lu after it already has been updated", 1024}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:218 description:{@"invalidating %lu after it already has been updated", 1024}];
 
     abort();
   }
@@ -106,7 +106,7 @@
   v6 = v5;
   [(PXStoryPagedScrollContentLayout *)self interpageSpacing];
   v8 = v7;
-  v9 = [(PXStoryPagedScrollContentLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXStoryPagedScrollContentLayout *)self localNumberOfSprites];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PXStoryPagedScrollContentLayout__updateContent__block_invoke;
@@ -114,7 +114,7 @@
   *&v10[5] = v4;
   *&v10[6] = v6;
   v10[4] = self;
-  [(PXStoryPagedScrollContentLayout *)self modifySpritesInRange:v9 << 32 state:v10];
+  [(PXStoryPagedScrollContentLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v10];
   [(PXStoryPagedScrollContentLayout *)self setPresentedPageWidth:v4];
   [(PXStoryPagedScrollContentLayout *)self setContentSize:-(v8 - [(PXStoryPagedScrollContentLayout *)self numberOfPages]* (v4 + v8)), v6];
 }
@@ -135,9 +135,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:200 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:200 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -161,12 +161,12 @@ LABEL_5:
 
 - (void)_updatePages
 {
-  v3 = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
-  -[PXStoryPagedScrollContentLayout setNumberOfPages:](self, "setNumberOfPages:", [v3 numberOfSegments]);
+  displayedTimeline = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
+  -[PXStoryPagedScrollContentLayout setNumberOfPages:](self, "setNumberOfPages:", [displayedTimeline numberOfSegments]);
 
-  v5 = [(PXStoryPagedScrollContentLayout *)self model];
-  v4 = [v5 layoutSpec];
-  [v4 interpageSpacing];
+  model = [(PXStoryPagedScrollContentLayout *)self model];
+  layoutSpec = [model layoutSpec];
+  [layoutSpec interpageSpacing];
   [(PXStoryPagedScrollContentLayout *)self setInterpageSpacing:?];
 }
 
@@ -186,9 +186,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout _invalidatePages]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:191 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:191 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -212,9 +212,9 @@ LABEL_5:
 
 - (void)_updateDisplayedTimeline
 {
-  v4 = [(PXStoryPagedScrollContentLayout *)self model];
-  v3 = [v4 timeline];
-  [(PXStoryPagedScrollContentLayout *)self setDisplayedTimeline:v3];
+  model = [(PXStoryPagedScrollContentLayout *)self model];
+  timeline = [model timeline];
+  [(PXStoryPagedScrollContentLayout *)self setDisplayedTimeline:timeline];
 }
 
 - (void)_invalidateDisplayedTimeline
@@ -233,9 +233,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout _invalidateDisplayedTimeline]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:183 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:183 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -266,9 +266,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout update]"];
-      [v9 handleFailureInFunction:v10 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v10 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -281,9 +281,9 @@ LABEL_5:
       [(PXStoryPagedScrollContentLayout *)self _updateDisplayedTimeline];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout update]"];
-        [v11 handleFailureInFunction:v12 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v12 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -297,9 +297,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v14 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -314,9 +314,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v6)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:173 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v16 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:173 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -330,9 +330,9 @@ LABEL_5:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v18 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
       v8 = p_postUpdateFlags->needsUpdate;
     }
@@ -349,27 +349,27 @@ LABEL_5:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v8)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryPagedScrollContentLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:179 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v20 file:@"PXStoryPagedScrollContentLayout.m" lineNumber:179 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 }
 
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v7 = a3;
-  v8 = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
+  referenceCopy = reference;
+  displayedTimeline = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
   objc_opt_class();
   v9 = -1;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v8)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && displayedTimeline)
   {
     v15 = 0;
     v16 = 0.0;
     v17 = 0;
-    if (v7)
+    if (referenceCopy)
     {
-      [v7 scrollPosition];
+      [referenceCopy scrollPosition];
       v10 = v16;
     }
 
@@ -395,35 +395,35 @@ LABEL_5:
       v12 = &v17;
     }
 
-    v9 = [v8 indexOfSegmentWithIdentifier:*v12];
+    v9 = [displayedTimeline indexOfSegmentWithIdentifier:*v12];
   }
 
-  v13 = v7;
-  *a5 = v7;
+  v13 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v9;
 }
 
-- (void)adjustScrollTargetContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4
+- (void)adjustScrollTargetContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity
 {
   [(PXStoryPagedScrollContentLayout *)self presentedPageWidth];
   [(PXStoryPagedScrollContentLayout *)self interpageSpacing];
   PXFloatRoundInDirection();
 }
 
-- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)a3 visibleRect:(CGRect)a4
+- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)position visibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = MEMORY[0x1E695EFF8];
-  v11 = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
-  var1 = a3->var1;
+  displayedTimeline = [(PXStoryPagedScrollContentLayout *)self displayedTimeline];
+  var1 = position->var1;
   v13 = 1.0 - var1;
   if (var1 <= 0.5)
   {
-    v13 = a3->var1;
+    v13 = position->var1;
   }
 
   if (v13 != 0.0)
@@ -432,13 +432,13 @@ LABEL_5:
   }
 
   v14 = v10[1];
-  p_var2 = &a3->var2;
+  p_var2 = &position->var2;
   if (var1 <= 0.5)
   {
-    p_var2 = a3;
+    p_var2 = position;
   }
 
-  v16 = [v11 indexOfSegmentWithIdentifier:p_var2->var0];
+  v16 = [displayedTimeline indexOfSegmentWithIdentifier:p_var2->var0];
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = *v10;
@@ -465,7 +465,7 @@ LABEL_5:
   return result;
 }
 
-- (id)createAnchorForScrollingToPosition:(id *)a3
+- (id)createAnchorForScrollingToPosition:(id *)position
 {
   objc_initWeak(&location, self);
   v5 = [(PXStoryPagedScrollContentLayout *)self spriteReferenceForSpriteIndex:self->_firstPageSpriteIndex];
@@ -474,7 +474,7 @@ LABEL_5:
   v8[2] = __70__PXStoryPagedScrollContentLayout_createAnchorForScrollingToPosition___block_invoke;
   v8[3] = &unk_1E7742130;
   objc_copyWeak(&v9, &location);
-  v10 = *a3;
+  v10 = *position;
   v6 = [(PXStoryPagedScrollContentLayout *)self createAnchorForScrollingSpriteForSpriteReference:v5 toScrollPosition:8 padding:v8 customOffset:*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
   objc_destroyWeak(&v9);
 
@@ -510,52 +510,52 @@ double __70__PXStoryPagedScrollContentLayout_createAnchorForScrollingToPosition_
   [(PXStoryPagedScrollContentLayout *)self _invalidateContent];
 }
 
-- (void)setInterpageSpacing:(double)a3
+- (void)setInterpageSpacing:(double)spacing
 {
-  if (self->_interpageSpacing != a3)
+  if (self->_interpageSpacing != spacing)
   {
-    self->_interpageSpacing = a3;
+    self->_interpageSpacing = spacing;
     [(PXStoryPagedScrollContentLayout *)self _invalidateContent];
   }
 }
 
-- (void)setNumberOfPages:(int64_t)a3
+- (void)setNumberOfPages:(int64_t)pages
 {
-  if (self->_numberOfPages != a3)
+  if (self->_numberOfPages != pages)
   {
-    self->_numberOfPages = a3;
+    self->_numberOfPages = pages;
     [(PXStoryPagedScrollContentLayout *)self _invalidateContent];
   }
 }
 
-- (void)setDisplayedTimeline:(id)a3
+- (void)setDisplayedTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displayedTimeline != v5)
+  timelineCopy = timeline;
+  v6 = timelineCopy;
+  if (self->_displayedTimeline != timelineCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryTimeline *)v5 isEqual:?];
+    v8 = timelineCopy;
+    v7 = [(PXStoryTimeline *)timelineCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displayedTimeline, a3);
+      objc_storeStrong(&self->_displayedTimeline, timeline);
       [(PXStoryPagedScrollContentLayout *)self _invalidatePages];
       v6 = v8;
     }
   }
 }
 
-- (PXStoryPagedScrollContentLayout)initWithModel:(id)a3
+- (PXStoryPagedScrollContentLayout)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryPagedScrollContentLayout;
   v6 = [(PXStoryPagedScrollContentLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(PXStoryModel *)v7->_model registerChangeObserver:v7 context:ModelObservationContext_193289];
     [(PXStoryPagedScrollContentLayout *)v7 setContentSource:v7];
     v7->_firstPageSpriteIndex = 0;
@@ -568,8 +568,8 @@ double __70__PXStoryPagedScrollContentLayout_createAnchorForScrollingToPosition_
 
 - (PXStoryPagedScrollContentLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPagedScrollContentLayout.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXStoryPagedScrollContentLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPagedScrollContentLayout.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXStoryPagedScrollContentLayout init]"}];
 
   abort();
 }

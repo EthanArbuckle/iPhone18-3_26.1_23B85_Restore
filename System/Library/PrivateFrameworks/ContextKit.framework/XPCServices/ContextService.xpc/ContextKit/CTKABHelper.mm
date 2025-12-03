@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = +[NSUserDefaults standardUserDefaults];
     [v3 removeObjectForKey:@"com.apple.proactive.refId"];
@@ -17,8 +17,8 @@
     v5 = qword_100557220;
     qword_100557220 = v4;
 
-    v6 = [a1 refId];
-    qword_100557228 = [a1 _computeIndex];
+    refId = [self refId];
+    qword_100557228 = [self _computeIndex];
   }
 }
 
@@ -27,10 +27,10 @@
   v2 = qword_100557230;
   if (!qword_100557230)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     objc_storeStrong(&qword_100557230, qword_100557220);
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
 
     v2 = qword_100557230;
   }
@@ -42,11 +42,11 @@
 
 + (unint64_t)_computeIndex
 {
-  v2 = [a1 refId];
-  v3 = v2;
-  if (v2)
+  refId = [self refId];
+  v3 = refId;
+  if (refId)
   {
-    [v2 getUUIDBytes:v6];
+    [refId getUUIDBytes:v6];
     v4 = v6[1] ^ v6[0];
   }
 

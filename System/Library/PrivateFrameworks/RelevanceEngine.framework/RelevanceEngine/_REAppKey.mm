@@ -1,33 +1,33 @@
 @interface _REAppKey
-- (BOOL)isEqual:(id)a3;
-- (_REAppKey)initWithIdentifier:(id)a3 remote:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_REAppKey)initWithIdentifier:(id)identifier remote:(BOOL)remote;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _REAppKey
 
-- (_REAppKey)initWithIdentifier:(id)a3 remote:(BOOL)a4
+- (_REAppKey)initWithIdentifier:(id)identifier remote:(BOOL)remote
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = _REAppKey;
   v7 = [(_REAppKey *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_remote = a4;
+    v7->_remote = remote;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = v7;
@@ -70,9 +70,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   remote = self->_remote;
 

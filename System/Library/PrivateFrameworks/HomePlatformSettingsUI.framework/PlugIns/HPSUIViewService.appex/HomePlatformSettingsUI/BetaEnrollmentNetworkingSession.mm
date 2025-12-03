@@ -1,42 +1,42 @@
 @interface BetaEnrollmentNetworkingSession
-- (void)channel:(id)a3 didAddProducer:(id)a4;
-- (void)channel:(id)a3 didFailToAddProducerWithSubTopic:(id)a4 error:(id)a5;
-- (void)producer:(COMessageSessionProducer *)a3 shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)a4 completionHandler:(id)a5;
-- (void)producer:(id)a3 didFailToStartSessionWithMember:(id)a4 error:(id)a5;
-- (void)producer:(id)a3 didStartSession:(id)a4 member:(id)a5 response:(id)a6;
-- (void)producer:(id)a3 didStopSession:(id)a4 initiator:(id)a5 notice:(id)a6 error:(id)a7;
+- (void)channel:(id)channel didAddProducer:(id)producer;
+- (void)channel:(id)channel didFailToAddProducerWithSubTopic:(id)topic error:(id)error;
+- (void)producer:(COMessageSessionProducer *)producer shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)member completionHandler:(id)handler;
+- (void)producer:(id)producer didFailToStartSessionWithMember:(id)member error:(id)error;
+- (void)producer:(id)producer didStartSession:(id)session member:(id)member response:(id)response;
+- (void)producer:(id)producer didStopSession:(id)session initiator:(id)initiator notice:(id)notice error:(id)error;
 @end
 
 @implementation BetaEnrollmentNetworkingSession
 
-- (void)channel:(id)a3 didAddProducer:(id)a4
+- (void)channel:(id)channel didAddProducer:(id)producer
 {
-  v5 = a3;
-  v6 = a4;
+  channelCopy = channel;
+  producerCopy = producer;
 
-  sub_100041208(v5, v6);
+  sub_100041208(channelCopy, producerCopy);
 }
 
-- (void)channel:(id)a3 didFailToAddProducerWithSubTopic:(id)a4 error:(id)a5
+- (void)channel:(id)channel didFailToAddProducerWithSubTopic:(id)topic error:(id)error
 {
   v7 = sub_10008715C();
   v9 = v8;
-  v10 = a3;
-  v11 = a5;
+  channelCopy = channel;
+  errorCopy = error;
 
-  sub_10004133C(v10, v7, v9);
+  sub_10004133C(channelCopy, v7, v9);
 }
 
-- (void)producer:(id)a3 didFailToStartSessionWithMember:(id)a4 error:(id)a5
+- (void)producer:(id)producer didFailToStartSessionWithMember:(id)member error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  producerCopy = producer;
+  memberCopy = member;
+  errorCopy = error;
 
-  sub_100041568(v7, v8);
+  sub_100041568(producerCopy, memberCopy);
 }
 
-- (void)producer:(id)a3 didStartSession:(id)a4 member:(id)a5 response:(id)a6
+- (void)producer:(id)producer didStartSession:(id)session member:(id)member response:(id)response
 {
   v11 = sub_100001EEC(&qword_1000AEDC0, &qword_100088E40);
   v12 = *(*(v11 - 8) + 64);
@@ -48,19 +48,19 @@
   v16[2] = 0;
   v16[3] = 0;
   v16[4] = self;
-  v16[5] = a3;
-  v16[6] = a4;
-  v16[7] = a5;
-  v16[8] = a6;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
+  v16[5] = producer;
+  v16[6] = session;
+  v16[7] = member;
+  v16[8] = response;
+  producerCopy = producer;
+  sessionCopy = session;
+  memberCopy = member;
+  responseCopy = response;
 
   sub_100016C64(0, 0, v14, &unk_10008B168, v16);
 }
 
-- (void)producer:(id)a3 didStopSession:(id)a4 initiator:(id)a5 notice:(id)a6 error:(id)a7
+- (void)producer:(id)producer didStopSession:(id)session initiator:(id)initiator notice:(id)notice error:(id)error
 {
   v13 = sub_100001EEC(&qword_1000AEDC0, &qword_100088E40);
   v14 = *(*(v13 - 8) + 64);
@@ -72,30 +72,30 @@
   v18[2] = 0;
   v18[3] = 0;
   v18[4] = self;
-  v18[5] = a3;
-  v18[6] = a4;
-  v18[7] = a5;
-  v18[8] = a6;
-  v18[9] = a7;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
+  v18[5] = producer;
+  v18[6] = session;
+  v18[7] = initiator;
+  v18[8] = notice;
+  v18[9] = error;
+  producerCopy = producer;
+  sessionCopy = session;
+  initiatorCopy = initiator;
+  noticeCopy = notice;
 
-  v23 = a7;
+  errorCopy = error;
   sub_100016C64(0, 0, v16, &unk_10008B158, v18);
 }
 
-- (void)producer:(COMessageSessionProducer *)a3 shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)a4 completionHandler:(id)a5
+- (void)producer:(COMessageSessionProducer *)producer shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)member completionHandler:(id)handler
 {
   v9 = sub_100001EEC(&qword_1000AEDC0, &qword_100088E40);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = producer;
+  v14[3] = member;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_10008742C();
@@ -110,8 +110,8 @@
   v17[3] = 0;
   v17[4] = &unk_100089CC8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  producerCopy = producer;
+  memberCopy = member;
 
   sub_100040A24(0, 0, v12, &unk_100089CD0, v17);
 }

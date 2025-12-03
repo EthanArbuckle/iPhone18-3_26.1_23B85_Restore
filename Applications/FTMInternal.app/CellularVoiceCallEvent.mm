@@ -1,16 +1,16 @@
 @interface CellularVoiceCallEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAntenna:(id)a3;
-- (int)StringAsCallEvent:(id)a3;
-- (int)StringAsDirection:(id)a3;
-- (int)StringAsEndStatus:(id)a3;
-- (int)StringAsSetupDirection:(id)a3;
-- (int)StringAsSetupSysMode:(id)a3;
-- (int)StringAsSysModeO:(id)a3;
-- (int)StringAsTypeOfCall:(id)a3;
+- (int)StringAsAntenna:(id)antenna;
+- (int)StringAsCallEvent:(id)event;
+- (int)StringAsDirection:(id)direction;
+- (int)StringAsEndStatus:(id)status;
+- (int)StringAsSetupDirection:(id)direction;
+- (int)StringAsSetupSysMode:(id)mode;
+- (int)StringAsSysModeO:(id)o;
+- (int)StringAsTypeOfCall:(id)call;
 - (int)antenna;
 - (int)callEvent;
 - (int)direction;
@@ -20,82 +20,82 @@
 - (int)sysModeO;
 - (int)typeOfCall;
 - (unint64_t)hash;
-- (unsigned)delayCntAtIndex:(unint64_t)a3;
-- (void)addCapEvent:(id)a3;
-- (void)addHcStat:(id)a3;
-- (void)addRbData:(id)a3;
-- (void)addRfMeasInfo:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)delayCntAtIndex:(unint64_t)index;
+- (void)addCapEvent:(id)event;
+- (void)addHcStat:(id)stat;
+- (void)addRbData:(id)data;
+- (void)addRfMeasInfo:(id)info;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccessoryAttached:(BOOL)a3;
-- (void)setHasAccessoryAttachedBitmap:(BOOL)a3;
-- (void)setHasAntenna:(BOOL)a3;
-- (void)setHasAppCallId:(BOOL)a3;
-- (void)setHasAudioQosDetectWinLenSec:(BOOL)a3;
-- (void)setHasAudioQualityThresholdPpt:(BOOL)a3;
-- (void)setHasBadAudioQuality:(BOOL)a3;
-- (void)setHasBand:(BOOL)a3;
-- (void)setHasBarredFromSib1:(BOOL)a3;
-- (void)setHasBarredFromSib2:(BOOL)a3;
-- (void)setHasCallConnectDur:(BOOL)a3;
-- (void)setHasCallDuration:(BOOL)a3;
-- (void)setHasCallEvent:(BOOL)a3;
-- (void)setHasCallSetupTimeMs:(BOOL)a3;
-- (void)setHasCellId:(BOOL)a3;
-- (void)setHasDedicatedBrInactiveToEndMs:(BOOL)a3;
-- (void)setHasDirection:(BOOL)a3;
-- (void)setHasDrxOn:(BOOL)a3;
-- (void)setHasDueToHandover:(BOOL)a3;
-- (void)setHasEndStatus:(BOOL)a3;
-- (void)setHasEventId:(BOOL)a3;
-- (void)setHasFrErasurePpt:(BOOL)a3;
-- (void)setHasHoAltSeqNum:(BOOL)a3;
-- (void)setHasHstState:(BOOL)a3;
-- (void)setHasIsAltStart:(BOOL)a3;
-- (void)setHasLac:(BOOL)a3;
-- (void)setHasLastMotionState:(BOOL)a3;
-- (void)setHasLastRsrp:(BOOL)a3;
-- (void)setHasLastRssi:(BOOL)a3;
-- (void)setHasLastXSec:(BOOL)a3;
-- (void)setHasLastXSecDlMrab:(BOOL)a3;
-- (void)setHasLastXSecUlMrab:(BOOL)a3;
-- (void)setHasMcc:(BOOL)a3;
-- (void)setHasMnc:(BOOL)a3;
-- (void)setHasMsSinceLastMotionState:(BOOL)a3;
-- (void)setHasMsgId:(BOOL)a3;
-- (void)setHasMtplInPoint1Db:(BOOL)a3;
-- (void)setHasNidO:(BOOL)a3;
-- (void)setHasNumCps:(BOOL)a3;
-- (void)setHasNumEnqdSilencePkt:(BOOL)a3;
-- (void)setHasNumEnqdSpeechPkt:(BOOL)a3;
-- (void)setHasNumLostPkt:(BOOL)a3;
-- (void)setHasNumMissedSpeechPkt:(BOOL)a3;
-- (void)setHasNumMncDigits:(BOOL)a3;
-- (void)setHasNumPlayedSpeechPkt:(BOOL)a3;
-- (void)setHasNumRecvdSilencePkt:(BOOL)a3;
-- (void)setHasNumRecvdSpeechPkt:(BOOL)a3;
-- (void)setHasNumSpeechQempty:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasNumUflwSilencePkt:(BOOL)a3;
-- (void)setHasNumUflwSpeechPkt:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasResponseCode:(BOOL)a3;
-- (void)setHasRfChannel:(BOOL)a3;
-- (void)setHasRrcRelCause:(BOOL)a3;
-- (void)setHasRtpPktLossPpt:(BOOL)a3;
-- (void)setHasSetupDirection:(BOOL)a3;
-- (void)setHasSetupSysMode:(BOOL)a3;
-- (void)setHasSidO:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasSysModeO:(BOOL)a3;
-- (void)setHasTbMs:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTsAccuracyHour:(BOOL)a3;
-- (void)setHasTypeOfCall:(BOOL)a3;
-- (void)setHasUflwPktPpt:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccessoryAttached:(BOOL)attached;
+- (void)setHasAccessoryAttachedBitmap:(BOOL)bitmap;
+- (void)setHasAntenna:(BOOL)antenna;
+- (void)setHasAppCallId:(BOOL)id;
+- (void)setHasAudioQosDetectWinLenSec:(BOOL)sec;
+- (void)setHasAudioQualityThresholdPpt:(BOOL)ppt;
+- (void)setHasBadAudioQuality:(BOOL)quality;
+- (void)setHasBand:(BOOL)band;
+- (void)setHasBarredFromSib1:(BOOL)sib1;
+- (void)setHasBarredFromSib2:(BOOL)sib2;
+- (void)setHasCallConnectDur:(BOOL)dur;
+- (void)setHasCallDuration:(BOOL)duration;
+- (void)setHasCallEvent:(BOOL)event;
+- (void)setHasCallSetupTimeMs:(BOOL)ms;
+- (void)setHasCellId:(BOOL)id;
+- (void)setHasDedicatedBrInactiveToEndMs:(BOOL)ms;
+- (void)setHasDirection:(BOOL)direction;
+- (void)setHasDrxOn:(BOOL)on;
+- (void)setHasDueToHandover:(BOOL)handover;
+- (void)setHasEndStatus:(BOOL)status;
+- (void)setHasEventId:(BOOL)id;
+- (void)setHasFrErasurePpt:(BOOL)ppt;
+- (void)setHasHoAltSeqNum:(BOOL)num;
+- (void)setHasHstState:(BOOL)state;
+- (void)setHasIsAltStart:(BOOL)start;
+- (void)setHasLac:(BOOL)lac;
+- (void)setHasLastMotionState:(BOOL)state;
+- (void)setHasLastRsrp:(BOOL)rsrp;
+- (void)setHasLastRssi:(BOOL)rssi;
+- (void)setHasLastXSec:(BOOL)sec;
+- (void)setHasLastXSecDlMrab:(BOOL)mrab;
+- (void)setHasLastXSecUlMrab:(BOOL)mrab;
+- (void)setHasMcc:(BOOL)mcc;
+- (void)setHasMnc:(BOOL)mnc;
+- (void)setHasMsSinceLastMotionState:(BOOL)state;
+- (void)setHasMsgId:(BOOL)id;
+- (void)setHasMtplInPoint1Db:(BOOL)db;
+- (void)setHasNidO:(BOOL)o;
+- (void)setHasNumCps:(BOOL)cps;
+- (void)setHasNumEnqdSilencePkt:(BOOL)pkt;
+- (void)setHasNumEnqdSpeechPkt:(BOOL)pkt;
+- (void)setHasNumLostPkt:(BOOL)pkt;
+- (void)setHasNumMissedSpeechPkt:(BOOL)pkt;
+- (void)setHasNumMncDigits:(BOOL)digits;
+- (void)setHasNumPlayedSpeechPkt:(BOOL)pkt;
+- (void)setHasNumRecvdSilencePkt:(BOOL)pkt;
+- (void)setHasNumRecvdSpeechPkt:(BOOL)pkt;
+- (void)setHasNumSpeechQempty:(BOOL)qempty;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasNumUflwSilencePkt:(BOOL)pkt;
+- (void)setHasNumUflwSpeechPkt:(BOOL)pkt;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasResponseCode:(BOOL)code;
+- (void)setHasRfChannel:(BOOL)channel;
+- (void)setHasRrcRelCause:(BOOL)cause;
+- (void)setHasRtpPktLossPpt:(BOOL)ppt;
+- (void)setHasSetupDirection:(BOOL)direction;
+- (void)setHasSetupSysMode:(BOOL)mode;
+- (void)setHasSidO:(BOOL)o;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasSysModeO:(BOOL)o;
+- (void)setHasTbMs:(BOOL)ms;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTsAccuracyHour:(BOOL)hour;
+- (void)setHasTypeOfCall:(BOOL)call;
+- (void)setHasUflwPktPpt:(BOOL)ppt;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularVoiceCallEvent
@@ -108,10 +108,10 @@
   [(CellularVoiceCallEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 2;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -132,10 +132,10 @@
   }
 }
 
-- (void)setHasCallEvent:(BOOL)a3
+- (void)setHasCallEvent:(BOOL)event
 {
   v3 = 1024;
-  if (!a3)
+  if (!event)
   {
     v3 = 0;
   }
@@ -143,30 +143,30 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (int)StringAsCallEvent:(id)a3
+- (int)StringAsCallEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VOICE_CALL_START"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"VOICE_CALL_START"])
   {
     v4 = 430;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_RING"])
+  else if ([eventCopy isEqualToString:@"VOICE_CALL_RING"])
   {
     v4 = 431;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_CONNECT"])
+  else if ([eventCopy isEqualToString:@"VOICE_CALL_CONNECT"])
   {
     v4 = 432;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_CANCEL"])
+  else if ([eventCopy isEqualToString:@"VOICE_CALL_CANCEL"])
   {
     v4 = 433;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_END"])
+  else if ([eventCopy isEqualToString:@"VOICE_CALL_END"])
   {
     v4 = 434;
   }
@@ -192,10 +192,10 @@
   }
 }
 
-- (void)setHasDirection:(BOOL)a3
+- (void)setHasDirection:(BOOL)direction
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!direction)
   {
     v3 = 0;
   }
@@ -203,20 +203,20 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (int)StringAsDirection:(id)a3
+- (int)StringAsDirection:(id)direction
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VOICE_CALL_DIRECTION_MT"])
+  directionCopy = direction;
+  if ([directionCopy isEqualToString:@"VOICE_CALL_DIRECTION_MT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_DIRECTION_MO"])
+  else if ([directionCopy isEqualToString:@"VOICE_CALL_DIRECTION_MO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_DIRECTION_UNKNOWN"])
+  else if ([directionCopy isEqualToString:@"VOICE_CALL_DIRECTION_UNKNOWN"])
   {
     v4 = 2;
   }
@@ -229,9 +229,9 @@
   return v4;
 }
 
-- (void)setHasIsAltStart:(BOOL)a3
+- (void)setHasIsAltStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 4;
   }
@@ -244,10 +244,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xFB | v3;
 }
 
-- (void)setHasHoAltSeqNum:(BOOL)a3
+- (void)setHasHoAltSeqNum:(BOOL)num
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!num)
   {
     v3 = 0;
   }
@@ -255,10 +255,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasDrxOn:(BOOL)a3
+- (void)setHasDrxOn:(BOOL)on
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!on)
   {
     v3 = 0;
   }
@@ -279,10 +279,10 @@
   }
 }
 
-- (void)setHasEndStatus:(BOOL)a3
+- (void)setHasEndStatus:(BOOL)status
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -290,30 +290,30 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (int)StringAsEndStatus:(id)a3
+- (int)StringAsEndStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VOICE_CALL_END_NORMAL"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"VOICE_CALL_END_NORMAL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_END_BY_CANCEL"])
+  else if ([statusCopy isEqualToString:@"VOICE_CALL_END_BY_CANCEL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_END_BY_TIMEOUT"])
+  else if ([statusCopy isEqualToString:@"VOICE_CALL_END_BY_TIMEOUT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_END_ABNORMAL"])
+  else if ([statusCopy isEqualToString:@"VOICE_CALL_END_ABNORMAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_END_TO_ALT"])
+  else if ([statusCopy isEqualToString:@"VOICE_CALL_END_TO_ALT"])
   {
     v4 = 4;
   }
@@ -326,10 +326,10 @@
   return v4;
 }
 
-- (void)setHasRrcRelCause:(BOOL)a3
+- (void)setHasRrcRelCause:(BOOL)cause
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!cause)
   {
     v3 = 0;
   }
@@ -337,10 +337,10 @@
   *&self->_has = *&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallDuration:(BOOL)a3
+- (void)setHasCallDuration:(BOOL)duration
 {
   v3 = 512;
-  if (!a3)
+  if (!duration)
   {
     v3 = 0;
   }
@@ -361,10 +361,10 @@
   }
 }
 
-- (void)setHasAntenna:(BOOL)a3
+- (void)setHasAntenna:(BOOL)antenna
 {
   v3 = 8;
-  if (!a3)
+  if (!antenna)
   {
     v3 = 0;
   }
@@ -372,25 +372,25 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (int)StringAsAntenna:(id)a3
+- (int)StringAsAntenna:(id)antenna
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ARTD_ANT0"])
+  antennaCopy = antenna;
+  if ([antennaCopy isEqualToString:@"ARTD_ANT0"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ARTD_ANT1"])
+  else if ([antennaCopy isEqualToString:@"ARTD_ANT1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ARTD_ANT2"])
+  else if ([antennaCopy isEqualToString:@"ARTD_ANT2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ARTD_ANT3"])
+  else if ([antennaCopy isEqualToString:@"ARTD_ANT3"])
   {
     v4 = 3;
   }
@@ -403,9 +403,9 @@
   return v4;
 }
 
-- (void)setHasDueToHandover:(BOOL)a3
+- (void)setHasDueToHandover:(BOOL)handover
 {
-  if (a3)
+  if (handover)
   {
     v3 = 2;
   }
@@ -418,10 +418,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xFD | v3;
 }
 
-- (void)setHasCellId:(BOOL)a3
+- (void)setHasCellId:(BOOL)id
 {
   v3 = 4096;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -429,10 +429,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasNumMncDigits:(BOOL)a3
+- (void)setHasNumMncDigits:(BOOL)digits
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!digits)
   {
     v3 = 0;
   }
@@ -440,10 +440,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasMcc:(BOOL)a3
+- (void)setHasMcc:(BOOL)mcc
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!mcc)
   {
     v3 = 0;
   }
@@ -451,10 +451,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasMnc:(BOOL)a3
+- (void)setHasMnc:(BOOL)mnc
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!mnc)
   {
     v3 = 0;
   }
@@ -462,10 +462,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasLac:(BOOL)a3
+- (void)setHasLac:(BOOL)lac
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!lac)
   {
     v3 = 0;
   }
@@ -473,10 +473,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasBand:(BOOL)a3
+- (void)setHasBand:(BOOL)band
 {
   v3 = 128;
-  if (!a3)
+  if (!band)
   {
     v3 = 0;
   }
@@ -484,10 +484,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasRfChannel:(BOOL)a3
+- (void)setHasRfChannel:(BOOL)channel
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!channel)
   {
     v3 = 0;
   }
@@ -495,10 +495,10 @@
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTsAccuracyHour:(BOOL)a3
+- (void)setHasTsAccuracyHour:(BOOL)hour
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!hour)
   {
     v3 = 0;
   }
@@ -506,10 +506,10 @@
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAccessoryAttached:(BOOL)a3
+- (void)setHasAccessoryAttached:(BOOL)attached
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!attached)
   {
     v3 = 0;
   }
@@ -517,10 +517,10 @@
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAccessoryAttachedBitmap:(BOOL)a3
+- (void)setHasAccessoryAttachedBitmap:(BOOL)bitmap
 {
   v3 = 4;
-  if (!a3)
+  if (!bitmap)
   {
     v3 = 0;
   }
@@ -541,10 +541,10 @@
   }
 }
 
-- (void)setHasSetupSysMode:(BOOL)a3
+- (void)setHasSetupSysMode:(BOOL)mode
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -552,75 +552,75 @@
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsSetupSysMode:(id)a3
+- (int)StringAsSetupSysMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_NO_SRV"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"SYS_MODE_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE_V2"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_LTE_V2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_CDMA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_HDR"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_HDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WCDMA"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_WCDMA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_EHRPD"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_EHRPD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GW"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WLAN"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_WLAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GWL"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GWL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_UMTS"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA_HDR"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_CDMA_HDR"])
   {
     v4 = 15;
   }
@@ -646,10 +646,10 @@
   }
 }
 
-- (void)setHasSetupDirection:(BOOL)a3
+- (void)setHasSetupDirection:(BOOL)direction
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!direction)
   {
     v3 = 0;
   }
@@ -657,20 +657,20 @@
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsSetupDirection:(id)a3
+- (int)StringAsSetupDirection:(id)direction
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VOICE_CALL_DIRECTION_MT"])
+  directionCopy = direction;
+  if ([directionCopy isEqualToString:@"VOICE_CALL_DIRECTION_MT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_DIRECTION_MO"])
+  else if ([directionCopy isEqualToString:@"VOICE_CALL_DIRECTION_MO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"VOICE_CALL_DIRECTION_UNKNOWN"])
+  else if ([directionCopy isEqualToString:@"VOICE_CALL_DIRECTION_UNKNOWN"])
   {
     v4 = 2;
   }
@@ -683,10 +683,10 @@
   return v4;
 }
 
-- (void)setHasCallSetupTimeMs:(BOOL)a3
+- (void)setHasCallSetupTimeMs:(BOOL)ms
 {
   v3 = 2048;
-  if (!a3)
+  if (!ms)
   {
     v3 = 0;
   }
@@ -694,10 +694,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasMtplInPoint1Db:(BOOL)a3
+- (void)setHasMtplInPoint1Db:(BOOL)db
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!db)
   {
     v3 = 0;
   }
@@ -705,28 +705,28 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)addCapEvent:(id)a3
+- (void)addCapEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   capEvents = self->_capEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!capEvents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_capEvents;
     self->_capEvents = v6;
 
-    v4 = v8;
+    eventCopy = v8;
     capEvents = self->_capEvents;
   }
 
-  [(NSMutableArray *)capEvents addObject:v4];
+  [(NSMutableArray *)capEvents addObject:eventCopy];
 }
 
-- (void)setHasLastXSec:(BOOL)a3
+- (void)setHasLastXSec:(BOOL)sec
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!sec)
   {
     v3 = 0;
   }
@@ -734,9 +734,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasLastXSecUlMrab:(BOOL)a3
+- (void)setHasLastXSecUlMrab:(BOOL)mrab
 {
-  if (a3)
+  if (mrab)
   {
     v3 = 16;
   }
@@ -749,9 +749,9 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xEF | v3;
 }
 
-- (void)setHasLastXSecDlMrab:(BOOL)a3
+- (void)setHasLastXSecDlMrab:(BOOL)mrab
 {
-  if (a3)
+  if (mrab)
   {
     v3 = 8;
   }
@@ -764,28 +764,28 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xF7 | v3;
 }
 
-- (void)addRbData:(id)a3
+- (void)addRbData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   rbDatas = self->_rbDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!rbDatas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rbDatas;
     self->_rbDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     rbDatas = self->_rbDatas;
   }
 
-  [(NSMutableArray *)rbDatas addObject:v4];
+  [(NSMutableArray *)rbDatas addObject:dataCopy];
 }
 
-- (void)setHasMsgId:(BOOL)a3
+- (void)setHasMsgId:(BOOL)id
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -793,10 +793,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasEventId:(BOOL)a3
+- (void)setHasEventId:(BOOL)id
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -804,10 +804,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasResponseCode:(BOOL)a3
+- (void)setHasResponseCode:(BOOL)code
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -815,10 +815,10 @@
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallConnectDur:(BOOL)a3
+- (void)setHasCallConnectDur:(BOOL)dur
 {
   v3 = 256;
-  if (!a3)
+  if (!dur)
   {
     v3 = 0;
   }
@@ -826,10 +826,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasTbMs:(BOOL)a3
+- (void)setHasTbMs:(BOOL)ms
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!ms)
   {
     v3 = 0;
   }
@@ -837,28 +837,28 @@
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)addHcStat:(id)a3
+- (void)addHcStat:(id)stat
 {
-  v4 = a3;
+  statCopy = stat;
   hcStats = self->_hcStats;
-  v8 = v4;
+  v8 = statCopy;
   if (!hcStats)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_hcStats;
     self->_hcStats = v6;
 
-    v4 = v8;
+    statCopy = v8;
     hcStats = self->_hcStats;
   }
 
-  [(NSMutableArray *)hcStats addObject:v4];
+  [(NSMutableArray *)hcStats addObject:statCopy];
 }
 
-- (void)setHasNumRecvdSpeechPkt:(BOOL)a3
+- (void)setHasNumRecvdSpeechPkt:(BOOL)pkt
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -866,10 +866,10 @@
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumRecvdSilencePkt:(BOOL)a3
+- (void)setHasNumRecvdSilencePkt:(BOOL)pkt
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -877,10 +877,10 @@
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumLostPkt:(BOOL)a3
+- (void)setHasNumLostPkt:(BOOL)pkt
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -888,10 +888,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasNumUflwSpeechPkt:(BOOL)a3
+- (void)setHasNumUflwSpeechPkt:(BOOL)pkt
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -899,10 +899,10 @@
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumUflwSilencePkt:(BOOL)a3
+- (void)setHasNumUflwSilencePkt:(BOOL)pkt
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -910,10 +910,10 @@
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumEnqdSpeechPkt:(BOOL)a3
+- (void)setHasNumEnqdSpeechPkt:(BOOL)pkt
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -921,10 +921,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumEnqdSilencePkt:(BOOL)a3
+- (void)setHasNumEnqdSilencePkt:(BOOL)pkt
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -932,10 +932,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumPlayedSpeechPkt:(BOOL)a3
+- (void)setHasNumPlayedSpeechPkt:(BOOL)pkt
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -943,10 +943,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumMissedSpeechPkt:(BOOL)a3
+- (void)setHasNumMissedSpeechPkt:(BOOL)pkt
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!pkt)
   {
     v3 = 0;
   }
@@ -954,10 +954,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumSpeechQempty:(BOOL)a3
+- (void)setHasNumSpeechQempty:(BOOL)qempty
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!qempty)
   {
     v3 = 0;
   }
@@ -965,10 +965,10 @@
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppCallId:(BOOL)a3
+- (void)setHasAppCallId:(BOOL)id
 {
   v3 = 16;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -976,24 +976,24 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (unsigned)delayCntAtIndex:(unint64_t)a3
+- (unsigned)delayCntAtIndex:(unint64_t)index
 {
   p_delayCnts = &self->_delayCnts;
   count = self->_delayCnts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_delayCnts->list[a3];
+  return p_delayCnts->list[index];
 }
 
-- (void)setHasDedicatedBrInactiveToEndMs:(BOOL)a3
+- (void)setHasDedicatedBrInactiveToEndMs:(BOOL)ms
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!ms)
   {
     v3 = 0;
   }
@@ -1001,10 +1001,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasRtpPktLossPpt:(BOOL)a3
+- (void)setHasRtpPktLossPpt:(BOOL)ppt
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!ppt)
   {
     v3 = 0;
   }
@@ -1012,10 +1012,10 @@
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasUflwPktPpt:(BOOL)a3
+- (void)setHasUflwPktPpt:(BOOL)ppt
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!ppt)
   {
     v3 = 0;
   }
@@ -1023,10 +1023,10 @@
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFrErasurePpt:(BOOL)a3
+- (void)setHasFrErasurePpt:(BOOL)ppt
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!ppt)
   {
     v3 = 0;
   }
@@ -1034,10 +1034,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasBadAudioQuality:(BOOL)a3
+- (void)setHasBadAudioQuality:(BOOL)quality
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!quality)
   {
     v3 = 0;
   }
@@ -1045,10 +1045,10 @@
   *&self->_has = *&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAudioQualityThresholdPpt:(BOOL)a3
+- (void)setHasAudioQualityThresholdPpt:(BOOL)ppt
 {
   v3 = 64;
-  if (!a3)
+  if (!ppt)
   {
     v3 = 0;
   }
@@ -1056,10 +1056,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasAudioQosDetectWinLenSec:(BOOL)a3
+- (void)setHasAudioQosDetectWinLenSec:(BOOL)sec
 {
   v3 = 32;
-  if (!a3)
+  if (!sec)
   {
     v3 = 0;
   }
@@ -1067,28 +1067,28 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)addRfMeasInfo:(id)a3
+- (void)addRfMeasInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   rfMeasInfos = self->_rfMeasInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!rfMeasInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rfMeasInfos;
     self->_rfMeasInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     rfMeasInfos = self->_rfMeasInfos;
   }
 
-  [(NSMutableArray *)rfMeasInfos addObject:v4];
+  [(NSMutableArray *)rfMeasInfos addObject:infoCopy];
 }
 
-- (void)setHasHstState:(BOOL)a3
+- (void)setHasHstState:(BOOL)state
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -1096,10 +1096,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!pref)
   {
     v3 = 0;
   }
@@ -1107,10 +1107,10 @@
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!subs)
   {
     v3 = 0;
   }
@@ -1118,10 +1118,10 @@
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNumCps:(BOOL)a3
+- (void)setHasNumCps:(BOOL)cps
 {
   v3 = &_mh_execute_header;
-  if (!a3)
+  if (!cps)
   {
     v3 = 0;
   }
@@ -1142,10 +1142,10 @@
   }
 }
 
-- (void)setHasSysModeO:(BOOL)a3
+- (void)setHasSysModeO:(BOOL)o
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -1153,75 +1153,75 @@
   *&self->_has = *&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsSysModeO:(id)a3
+- (int)StringAsSysModeO:(id)o
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_NO_SRV"])
+  oCopy = o;
+  if ([oCopy isEqualToString:@"SYS_MODE_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE_V2"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_LTE_V2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_CDMA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_HDR"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_HDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WCDMA"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_WCDMA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_EHRPD"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_EHRPD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GW"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_GW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WLAN"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_WLAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GWL"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_GWL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_UMTS"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA_HDR"])
+  else if ([oCopy isEqualToString:@"SYS_MODE_CDMA_HDR"])
   {
     v4 = 15;
   }
@@ -1234,10 +1234,10 @@
   return v4;
 }
 
-- (void)setHasSidO:(BOOL)a3
+- (void)setHasSidO:(BOOL)o
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -1245,10 +1245,10 @@
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasNidO:(BOOL)a3
+- (void)setHasNidO:(BOOL)o
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -1256,10 +1256,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasLastRssi:(BOOL)a3
+- (void)setHasLastRssi:(BOOL)rssi
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!rssi)
   {
     v3 = 0;
   }
@@ -1267,10 +1267,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasLastRsrp:(BOOL)a3
+- (void)setHasLastRsrp:(BOOL)rsrp
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!rsrp)
   {
     v3 = 0;
   }
@@ -1278,10 +1278,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasBarredFromSib1:(BOOL)a3
+- (void)setHasBarredFromSib1:(BOOL)sib1
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!sib1)
   {
     v3 = 0;
   }
@@ -1289,10 +1289,10 @@
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasBarredFromSib2:(BOOL)a3
+- (void)setHasBarredFromSib2:(BOOL)sib2
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!sib2)
   {
     v3 = 0;
   }
@@ -1300,10 +1300,10 @@
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasLastMotionState:(BOOL)a3
+- (void)setHasLastMotionState:(BOOL)state
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -1311,10 +1311,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasMsSinceLastMotionState:(BOOL)a3
+- (void)setHasMsSinceLastMotionState:(BOOL)state
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -1322,10 +1322,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -1333,10 +1333,10 @@
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -1357,10 +1357,10 @@
   }
 }
 
-- (void)setHasTypeOfCall:(BOOL)a3
+- (void)setHasTypeOfCall:(BOOL)call
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!call)
   {
     v3 = 0;
   }
@@ -1368,30 +1368,30 @@
   *&self->_has = *&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsTypeOfCall:(id)a3
+- (int)StringAsTypeOfCall:(id)call
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VoNR"])
+  callCopy = call;
+  if ([callCopy isEqualToString:@"VoNR"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VoLTE"])
+  else if ([callCopy isEqualToString:@"VoLTE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EPSFB"])
+  else if ([callCopy isEqualToString:@"EPSFB"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VoNR_VoLTE"])
+  else if ([callCopy isEqualToString:@"VoNR_VoLTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"OTHER"])
+  else if ([callCopy isEqualToString:@"OTHER"])
   {
     v4 = 4;
   }
@@ -1409,8 +1409,8 @@
   v7.receiver = self;
   v7.super_class = CellularVoiceCallEvent;
   v3 = [(CellularVoiceCallEvent *)&v7 description];
-  v4 = [(CellularVoiceCallEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularVoiceCallEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1832,8 +1832,8 @@ LABEL_56:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v140 + 1) + 8 * i) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation = [*(*(&v140 + 1) + 8 * i) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v140 objects:v147 count:16];
@@ -1888,8 +1888,8 @@ LABEL_56:
             objc_enumerationMutation(v39);
           }
 
-          v44 = [*(*(&v136 + 1) + 8 * j) dictionaryRepresentation];
-          [v38 addObject:v44];
+          dictionaryRepresentation2 = [*(*(&v136 + 1) + 8 * j) dictionaryRepresentation];
+          [v38 addObject:dictionaryRepresentation2];
         }
 
         v41 = [(NSMutableArray *)v39 countByEnumeratingWithState:&v136 objects:v146 count:16];
@@ -1990,8 +1990,8 @@ LABEL_86:
             objc_enumerationMutation(v48);
           }
 
-          v53 = [*(*(&v132 + 1) + 8 * k) dictionaryRepresentation];
-          [v47 addObject:v53];
+          dictionaryRepresentation3 = [*(*(&v132 + 1) + 8 * k) dictionaryRepresentation];
+          [v47 addObject:dictionaryRepresentation3];
         }
 
         v50 = [(NSMutableArray *)v48 countByEnumeratingWithState:&v132 objects:v145 count:16];
@@ -2178,8 +2178,8 @@ LABEL_107:
   lastAudioQualityCnt = self->_lastAudioQualityCnt;
   if (lastAudioQualityCnt)
   {
-    v59 = [lastAudioQualityCnt dictionaryRepresentation];
-    [v3 setObject:v59 forKey:@"last_audio_quality_cnt"];
+    dictionaryRepresentation4 = [lastAudioQualityCnt dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"last_audio_quality_cnt"];
   }
 
   v60 = *p_has;
@@ -2287,8 +2287,8 @@ LABEL_118:
             objc_enumerationMutation(v63);
           }
 
-          v68 = [*(*(&v128 + 1) + 8 * m) dictionaryRepresentation];
-          [v62 addObject:v68];
+          dictionaryRepresentation5 = [*(*(&v128 + 1) + 8 * m) dictionaryRepresentation];
+          [v62 addObject:dictionaryRepresentation5];
         }
 
         v65 = [(NSMutableArray *)v63 countByEnumeratingWithState:&v128 objects:v144 count:16];
@@ -2572,9 +2572,9 @@ LABEL_150:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if ((has & 2) != 0)
@@ -3572,48 +3572,48 @@ LABEL_126:
 LABEL_127:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_timestamp;
-    v4[48] |= 2uLL;
+    toCopy[5] = self->_timestamp;
+    toCopy[48] |= 2uLL;
     has = self->_has;
   }
 
   if ((has & 0x400) != 0)
   {
-    *(v4 + 20) = self->_callEvent;
-    v4[48] |= 0x400uLL;
+    *(toCopy + 20) = self->_callEvent;
+    toCopy[48] |= 0x400uLL;
   }
 
-  v37 = v4;
+  v37 = toCopy;
   if (self->_callId)
   {
-    [v4 setCallId:?];
-    v4 = v37;
+    [toCopy setCallId:?];
+    toCopy = v37;
   }
 
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
-    *(v4 + 30) = self->_direction;
-    v4[48] |= 0x4000uLL;
+    *(toCopy + 30) = self->_direction;
+    toCopy[48] |= 0x4000uLL;
   }
 
   if ((*(&self->_has + 8) & 4) != 0)
   {
-    *(v4 + 378) = self->_isAltStart;
-    *(v4 + 392) |= 4u;
+    *(toCopy + 378) = self->_isAltStart;
+    *(toCopy + 392) |= 4u;
   }
 
   v7 = *p_has;
   if ((*p_has & 0x80000) != 0)
   {
-    *(v4 + 38) = self->_hoAltSeqNum;
-    v4[48] |= 0x80000uLL;
+    *(toCopy + 38) = self->_hoAltSeqNum;
+    toCopy[48] |= 0x80000uLL;
     v7 = self->_has;
     if ((v7 & 0x8000) == 0)
     {
@@ -3632,8 +3632,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 31) = self->_drxOn;
-  v4[48] |= 0x8000uLL;
+  *(toCopy + 31) = self->_drxOn;
+  toCopy[48] |= 0x8000uLL;
   v7 = self->_has;
   if ((v7 & 0x10000) == 0)
   {
@@ -3647,8 +3647,8 @@ LABEL_14:
   }
 
 LABEL_121:
-  *(v4 + 32) = self->_endStatus;
-  v4[48] |= 0x10000uLL;
+  *(toCopy + 32) = self->_endStatus;
+  toCopy[48] |= 0x10000uLL;
   v7 = self->_has;
   if ((v7 & 0x1000000000000) == 0)
   {
@@ -3662,8 +3662,8 @@ LABEL_15:
   }
 
 LABEL_122:
-  *(v4 + 78) = self->_rrcRelCause;
-  v4[48] |= 0x1000000000000uLL;
+  *(toCopy + 78) = self->_rrcRelCause;
+  toCopy[48] |= 0x1000000000000uLL;
   v7 = self->_has;
   if ((v7 & 0x200) == 0)
   {
@@ -3677,39 +3677,39 @@ LABEL_16:
   }
 
 LABEL_123:
-  *(v4 + 19) = self->_callDuration;
-  v4[48] |= 0x200uLL;
+  *(toCopy + 19) = self->_callDuration;
+  toCopy[48] |= 0x200uLL;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_17:
-    *(v4 + 13) = self->_antenna;
-    v4[48] |= 8uLL;
+    *(toCopy + 13) = self->_antenna;
+    toCopy[48] |= 8uLL;
   }
 
 LABEL_18:
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    *(v4 + 377) = self->_dueToHandover;
-    *(v4 + 392) |= 2u;
+    *(toCopy + 377) = self->_dueToHandover;
+    *(toCopy + 392) |= 2u;
   }
 
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
-    *(v4 + 28) = self->_cellId;
-    v4[48] |= 0x1000uLL;
+    *(toCopy + 28) = self->_cellId;
+    toCopy[48] |= 0x1000uLL;
   }
 
   if (self->_simHplmn)
   {
     [v37 setSimHplmn:?];
-    v4 = v37;
+    toCopy = v37;
   }
 
   v8 = *p_has;
   if ((*p_has & 0x2000000000) != 0)
   {
-    *(v4 + 59) = self->_numMncDigits;
-    v4[48] |= 0x2000000000uLL;
+    *(toCopy + 59) = self->_numMncDigits;
+    toCopy[48] |= 0x2000000000uLL;
     v8 = self->_has;
     if ((v8 & 0x4000000) == 0)
     {
@@ -3728,8 +3728,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  *(v4 + 48) = self->_mcc;
-  v4[48] |= 0x4000000uLL;
+  *(toCopy + 48) = self->_mcc;
+  toCopy[48] |= 0x4000000uLL;
   v8 = self->_has;
   if ((v8 & 0x8000000) == 0)
   {
@@ -3743,8 +3743,8 @@ LABEL_27:
   }
 
 LABEL_127:
-  *(v4 + 49) = self->_mnc;
-  v4[48] |= 0x8000000uLL;
+  *(toCopy + 49) = self->_mnc;
+  toCopy[48] |= 0x8000000uLL;
   v8 = self->_has;
   if ((v8 & 0x200000) == 0)
   {
@@ -3758,8 +3758,8 @@ LABEL_28:
   }
 
 LABEL_128:
-  *(v4 + 40) = self->_lac;
-  v4[48] |= 0x200000uLL;
+  *(toCopy + 40) = self->_lac;
+  toCopy[48] |= 0x200000uLL;
   v8 = self->_has;
   if ((v8 & 0x80) == 0)
   {
@@ -3773,8 +3773,8 @@ LABEL_29:
   }
 
 LABEL_129:
-  *(v4 + 17) = self->_band;
-  v4[48] |= 0x80uLL;
+  *(toCopy + 17) = self->_band;
+  toCopy[48] |= 0x80uLL;
   v8 = self->_has;
   if ((v8 & 0x800000000000) == 0)
   {
@@ -3788,8 +3788,8 @@ LABEL_30:
   }
 
 LABEL_130:
-  *(v4 + 75) = self->_rfChannel;
-  v4[48] |= 0x800000000000uLL;
+  *(toCopy + 75) = self->_rfChannel;
+  toCopy[48] |= 0x800000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x100000000000000) == 0)
   {
@@ -3803,8 +3803,8 @@ LABEL_31:
   }
 
 LABEL_131:
-  *(v4 + 89) = self->_tsAccuracyHour;
-  v4[48] |= 0x100000000000000uLL;
+  *(toCopy + 89) = self->_tsAccuracyHour;
+  toCopy[48] |= 0x100000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x1000000000000000) == 0)
   {
@@ -3818,8 +3818,8 @@ LABEL_32:
   }
 
 LABEL_132:
-  *(v4 + 372) = self->_accessoryAttached;
-  v4[48] |= 0x1000000000000000uLL;
+  *(toCopy + 372) = self->_accessoryAttached;
+  toCopy[48] |= 0x1000000000000000uLL;
   v8 = self->_has;
   if ((v8 & 4) == 0)
   {
@@ -3833,8 +3833,8 @@ LABEL_33:
   }
 
 LABEL_133:
-  *(v4 + 12) = self->_accessoryAttachedBitmap;
-  v4[48] |= 4uLL;
+  *(toCopy + 12) = self->_accessoryAttachedBitmap;
+  toCopy[48] |= 4uLL;
   v8 = self->_has;
   if ((v8 & 0x8000000000000) == 0)
   {
@@ -3848,8 +3848,8 @@ LABEL_34:
   }
 
 LABEL_134:
-  *(v4 + 81) = self->_setupSysMode;
-  v4[48] |= 0x8000000000000uLL;
+  *(toCopy + 81) = self->_setupSysMode;
+  toCopy[48] |= 0x8000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x4000000000000) == 0)
   {
@@ -3860,8 +3860,8 @@ LABEL_35:
     }
 
 LABEL_136:
-    *(v4 + 24) = self->_callSetupTimeMs;
-    v4[48] |= 0x800uLL;
+    *(toCopy + 24) = self->_callSetupTimeMs;
+    toCopy[48] |= 0x800uLL;
     if ((*&self->_has & 0x40000000) == 0)
     {
       goto LABEL_38;
@@ -3871,8 +3871,8 @@ LABEL_136:
   }
 
 LABEL_135:
-  *(v4 + 80) = self->_setupDirection;
-  v4[48] |= 0x4000000000000uLL;
+  *(toCopy + 80) = self->_setupDirection;
+  toCopy[48] |= 0x4000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x800) != 0)
   {
@@ -3883,18 +3883,18 @@ LABEL_36:
   if ((v8 & 0x40000000) != 0)
   {
 LABEL_37:
-    *(v4 + 52) = self->_mtplInPoint1Db;
-    v4[48] |= 0x40000000uLL;
+    *(toCopy + 52) = self->_mtplInPoint1Db;
+    toCopy[48] |= 0x40000000uLL;
   }
 
 LABEL_38:
   if ([(CellularVoiceCallEvent *)self capEventsCount])
   {
     [v37 clearCapEvents];
-    v9 = [(CellularVoiceCallEvent *)self capEventsCount];
-    if (v9)
+    capEventsCount = [(CellularVoiceCallEvent *)self capEventsCount];
+    if (capEventsCount)
     {
-      v10 = v9;
+      v10 = capEventsCount;
       for (i = 0; i != v10; ++i)
       {
         v12 = [(CellularVoiceCallEvent *)self capEventAtIndex:i];
@@ -3926,10 +3926,10 @@ LABEL_38:
   if ([(CellularVoiceCallEvent *)self rbDatasCount])
   {
     [v37 clearRbDatas];
-    v14 = [(CellularVoiceCallEvent *)self rbDatasCount];
-    if (v14)
+    rbDatasCount = [(CellularVoiceCallEvent *)self rbDatasCount];
+    if (rbDatasCount)
     {
-      v15 = v14;
+      v15 = rbDatasCount;
       for (j = 0; j != v15; ++j)
       {
         v17 = [(CellularVoiceCallEvent *)self rbDataAtIndex:j];
@@ -4004,10 +4004,10 @@ LABEL_58:
   if ([(CellularVoiceCallEvent *)self hcStatsCount])
   {
     [v37 clearHcStats];
-    v19 = [(CellularVoiceCallEvent *)self hcStatsCount];
-    if (v19)
+    hcStatsCount = [(CellularVoiceCallEvent *)self hcStatsCount];
+    if (hcStatsCount)
     {
-      v20 = v19;
+      v20 = hcStatsCount;
       for (k = 0; k != v20; ++k)
       {
         v22 = [(CellularVoiceCallEvent *)self hcStatAtIndex:k];
@@ -4172,10 +4172,10 @@ LABEL_74:
   if ([(CellularVoiceCallEvent *)self delayCntsCount])
   {
     [v37 clearDelayCnts];
-    v24 = [(CellularVoiceCallEvent *)self delayCntsCount];
-    if (v24)
+    delayCntsCount = [(CellularVoiceCallEvent *)self delayCntsCount];
+    if (delayCntsCount)
     {
-      v25 = v24;
+      v25 = delayCntsCount;
       for (m = 0; m != v25; ++m)
       {
         [v37 addDelayCnt:{-[CellularVoiceCallEvent delayCntAtIndex:](self, "delayCntAtIndex:", m)}];
@@ -4277,10 +4277,10 @@ LABEL_89:
   if ([(CellularVoiceCallEvent *)self rfMeasInfosCount])
   {
     [v37 clearRfMeasInfos];
-    v29 = [(CellularVoiceCallEvent *)self rfMeasInfosCount];
-    if (v29)
+    rfMeasInfosCount = [(CellularVoiceCallEvent *)self rfMeasInfosCount];
+    if (rfMeasInfosCount)
     {
-      v30 = v29;
+      v30 = rfMeasInfosCount;
       for (n = 0; n != v30; ++n)
       {
         v32 = [(CellularVoiceCallEvent *)self rfMeasInfoAtIndex:n];
@@ -4524,9 +4524,9 @@ LABEL_115:
 LABEL_116:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   p_has = &self->_has;
   has = self->_has;
@@ -4543,7 +4543,7 @@ LABEL_116:
     v5[48] |= 0x400uLL;
   }
 
-  v9 = [(NSString *)self->_callId copyWithZone:a3];
+  v9 = [(NSString *)self->_callId copyWithZone:zone];
   v10 = v6[11];
   v6[11] = v9;
 
@@ -4649,7 +4649,7 @@ LABEL_16:
     v6[48] |= 0x1000uLL;
   }
 
-  v12 = [(NSData *)self->_simHplmn copyWithZone:a3];
+  v12 = [(NSData *)self->_simHplmn copyWithZone:zone];
   v13 = v6[42];
   v6[42] = v12;
 
@@ -4855,7 +4855,7 @@ LABEL_34:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v64 + 1) + 8 * i) copyWithZone:a3];
+        v20 = [*(*(&v64 + 1) + 8 * i) copyWithZone:zone];
         [v6 addCapEvent:v20];
       }
 
@@ -4904,7 +4904,7 @@ LABEL_34:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v60 + 1) + 8 * j) copyWithZone:a3];
+        v27 = [*(*(&v60 + 1) + 8 * j) copyWithZone:zone];
         [v6 addRbData:v27];
       }
 
@@ -4996,7 +4996,7 @@ LABEL_60:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v56 + 1) + 8 * k) copyWithZone:a3];
+        v34 = [*(*(&v56 + 1) + 8 * k) copyWithZone:zone];
         [v6 addHcStat:v34];
       }
 
@@ -5166,7 +5166,7 @@ LABEL_79:
     v6[48] |= 0x2000uLL;
   }
 
-  v36 = [self->_lastAudioQualityCnt copyWithZone:a3];
+  v36 = [self->_lastAudioQualityCnt copyWithZone:zone];
   v37 = v6[21];
   v6[21] = v36;
 
@@ -5267,7 +5267,7 @@ LABEL_88:
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v52 + 1) + 8 * m) copyWithZone:{a3, v52}];
+        v44 = [*(*(&v52 + 1) + 8 * m) copyWithZone:{zone, v52}];
         [v6 addRfMeasInfo:v44];
       }
 
@@ -5370,7 +5370,7 @@ LABEL_102:
   }
 
 LABEL_103:
-  v46 = [(NSData *)self->_plmnO copyWithZone:a3, v52];
+  v46 = [(NSData *)self->_plmnO copyWithZone:zone, v52];
   v47 = v6[34];
   v6[34] = v46;
 
@@ -5512,21 +5512,21 @@ LABEL_116:
   return v50;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_397;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 48;
-  v8 = v4[48];
+  v7 = equalCopy + 48;
+  v8 = equalCopy[48];
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_timestamp != v4[5])
+    if ((v8 & 2) == 0 || self->_timestamp != equalCopy[5])
     {
       goto LABEL_397;
     }
@@ -5539,7 +5539,7 @@ LABEL_116:
 
   if ((has & 0x400) != 0)
   {
-    if ((v8 & 0x400) == 0 || self->_callEvent != *(v4 + 20))
+    if ((v8 & 0x400) == 0 || self->_callEvent != *(equalCopy + 20))
     {
       goto LABEL_397;
     }
@@ -5551,7 +5551,7 @@ LABEL_116:
   }
 
   callId = self->_callId;
-  if (callId | v4[11])
+  if (callId | equalCopy[11])
   {
     if (![(NSString *)callId isEqual:?])
     {
@@ -5564,7 +5564,7 @@ LABEL_116:
   v10 = *v7;
   if ((has & 0x4000) != 0)
   {
-    if ((v10 & 0x4000) == 0 || self->_direction != *(v4 + 30))
+    if ((v10 & 0x4000) == 0 || self->_direction != *(equalCopy + 30))
     {
       goto LABEL_397;
     }
@@ -5575,37 +5575,37 @@ LABEL_116:
     goto LABEL_397;
   }
 
-  v11 = *(v4 + 392);
+  v11 = *(equalCopy + 392);
   if ((*(&self->_has + 8) & 4) != 0)
   {
-    if ((v4[49] & 4) == 0)
+    if ((equalCopy[49] & 4) == 0)
     {
       goto LABEL_397;
     }
 
-    v12 = *(v4 + 378);
+    v12 = *(equalCopy + 378);
     if (self->_isAltStart)
     {
-      if ((*(v4 + 378) & 1) == 0)
+      if ((*(equalCopy + 378) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 378))
+    else if (*(equalCopy + 378))
     {
       goto LABEL_397;
     }
   }
 
-  else if ((v4[49] & 4) != 0)
+  else if ((equalCopy[49] & 4) != 0)
   {
     goto LABEL_397;
   }
 
   if ((has & 0x80000) != 0)
   {
-    if ((v10 & 0x80000) == 0 || self->_hoAltSeqNum != *(v4 + 38))
+    if ((v10 & 0x80000) == 0 || self->_hoAltSeqNum != *(equalCopy + 38))
     {
       goto LABEL_397;
     }
@@ -5618,7 +5618,7 @@ LABEL_116:
 
   if ((has & 0x8000) != 0)
   {
-    if ((v10 & 0x8000) == 0 || self->_drxOn != *(v4 + 31))
+    if ((v10 & 0x8000) == 0 || self->_drxOn != *(equalCopy + 31))
     {
       goto LABEL_397;
     }
@@ -5631,7 +5631,7 @@ LABEL_116:
 
   if ((has & 0x10000) != 0)
   {
-    if ((v10 & 0x10000) == 0 || self->_endStatus != *(v4 + 32))
+    if ((v10 & 0x10000) == 0 || self->_endStatus != *(equalCopy + 32))
     {
       goto LABEL_397;
     }
@@ -5644,7 +5644,7 @@ LABEL_116:
 
   if ((has & 0x1000000000000) != 0)
   {
-    if ((v10 & 0x1000000000000) == 0 || self->_rrcRelCause != *(v4 + 78))
+    if ((v10 & 0x1000000000000) == 0 || self->_rrcRelCause != *(equalCopy + 78))
     {
       goto LABEL_397;
     }
@@ -5657,7 +5657,7 @@ LABEL_116:
 
   if ((has & 0x200) != 0)
   {
-    if ((v10 & 0x200) == 0 || self->_callDuration != *(v4 + 19))
+    if ((v10 & 0x200) == 0 || self->_callDuration != *(equalCopy + 19))
     {
       goto LABEL_397;
     }
@@ -5670,7 +5670,7 @@ LABEL_116:
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_antenna != *(v4 + 13))
+    if ((v10 & 8) == 0 || self->_antenna != *(equalCopy + 13))
     {
       goto LABEL_397;
     }
@@ -5683,34 +5683,34 @@ LABEL_116:
 
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    if ((v4[49] & 2) == 0)
+    if ((equalCopy[49] & 2) == 0)
     {
       goto LABEL_397;
     }
 
-    v13 = *(v4 + 377);
+    v13 = *(equalCopy + 377);
     if (self->_dueToHandover)
     {
-      if ((*(v4 + 377) & 1) == 0)
+      if ((*(equalCopy + 377) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 377))
+    else if (*(equalCopy + 377))
     {
       goto LABEL_397;
     }
   }
 
-  else if ((v4[49] & 2) != 0)
+  else if ((equalCopy[49] & 2) != 0)
   {
     goto LABEL_397;
   }
 
   if ((has & 0x1000) != 0)
   {
-    if ((v10 & 0x1000) == 0 || self->_cellId != *(v4 + 28))
+    if ((v10 & 0x1000) == 0 || self->_cellId != *(equalCopy + 28))
     {
       goto LABEL_397;
     }
@@ -5722,7 +5722,7 @@ LABEL_116:
   }
 
   simHplmn = self->_simHplmn;
-  if (simHplmn | v4[42])
+  if (simHplmn | equalCopy[42])
   {
     if (![(NSData *)simHplmn isEqual:?])
     {
@@ -5735,7 +5735,7 @@ LABEL_116:
   v15 = *v7;
   if ((has & 0x2000000000) != 0)
   {
-    if ((v15 & 0x2000000000) == 0 || self->_numMncDigits != *(v4 + 59))
+    if ((v15 & 0x2000000000) == 0 || self->_numMncDigits != *(equalCopy + 59))
     {
       goto LABEL_397;
     }
@@ -5748,7 +5748,7 @@ LABEL_116:
 
   if ((has & 0x4000000) != 0)
   {
-    if ((v15 & 0x4000000) == 0 || self->_mcc != *(v4 + 48))
+    if ((v15 & 0x4000000) == 0 || self->_mcc != *(equalCopy + 48))
     {
       goto LABEL_397;
     }
@@ -5761,7 +5761,7 @@ LABEL_116:
 
   if ((has & 0x8000000) != 0)
   {
-    if ((v15 & 0x8000000) == 0 || self->_mnc != *(v4 + 49))
+    if ((v15 & 0x8000000) == 0 || self->_mnc != *(equalCopy + 49))
     {
       goto LABEL_397;
     }
@@ -5774,7 +5774,7 @@ LABEL_116:
 
   if ((has & 0x200000) != 0)
   {
-    if ((v15 & 0x200000) == 0 || self->_lac != *(v4 + 40))
+    if ((v15 & 0x200000) == 0 || self->_lac != *(equalCopy + 40))
     {
       goto LABEL_397;
     }
@@ -5787,7 +5787,7 @@ LABEL_116:
 
   if ((has & 0x80) != 0)
   {
-    if ((v15 & 0x80) == 0 || self->_band != *(v4 + 17))
+    if ((v15 & 0x80) == 0 || self->_band != *(equalCopy + 17))
     {
       goto LABEL_397;
     }
@@ -5800,7 +5800,7 @@ LABEL_116:
 
   if ((has & 0x800000000000) != 0)
   {
-    if ((v15 & 0x800000000000) == 0 || self->_rfChannel != *(v4 + 75))
+    if ((v15 & 0x800000000000) == 0 || self->_rfChannel != *(equalCopy + 75))
     {
       goto LABEL_397;
     }
@@ -5813,7 +5813,7 @@ LABEL_116:
 
   if ((has & 0x100000000000000) != 0)
   {
-    if ((v15 & 0x100000000000000) == 0 || self->_tsAccuracyHour != *(v4 + 89))
+    if ((v15 & 0x100000000000000) == 0 || self->_tsAccuracyHour != *(equalCopy + 89))
     {
       goto LABEL_397;
     }
@@ -5831,16 +5831,16 @@ LABEL_116:
       goto LABEL_397;
     }
 
-    v16 = *(v4 + 372);
+    v16 = *(equalCopy + 372);
     if (self->_accessoryAttached)
     {
-      if ((*(v4 + 372) & 1) == 0)
+      if ((*(equalCopy + 372) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 372))
+    else if (*(equalCopy + 372))
     {
       goto LABEL_397;
     }
@@ -5853,7 +5853,7 @@ LABEL_116:
 
   if ((has & 4) != 0)
   {
-    if ((v15 & 4) == 0 || self->_accessoryAttachedBitmap != *(v4 + 12))
+    if ((v15 & 4) == 0 || self->_accessoryAttachedBitmap != *(equalCopy + 12))
     {
       goto LABEL_397;
     }
@@ -5866,7 +5866,7 @@ LABEL_116:
 
   if ((has & 0x8000000000000) != 0)
   {
-    if ((v15 & 0x8000000000000) == 0 || self->_setupSysMode != *(v4 + 81))
+    if ((v15 & 0x8000000000000) == 0 || self->_setupSysMode != *(equalCopy + 81))
     {
       goto LABEL_397;
     }
@@ -5879,7 +5879,7 @@ LABEL_116:
 
   if ((has & 0x4000000000000) != 0)
   {
-    if ((v15 & 0x4000000000000) == 0 || self->_setupDirection != *(v4 + 80))
+    if ((v15 & 0x4000000000000) == 0 || self->_setupDirection != *(equalCopy + 80))
     {
       goto LABEL_397;
     }
@@ -5892,7 +5892,7 @@ LABEL_116:
 
   if ((has & 0x800) != 0)
   {
-    if ((v15 & 0x800) == 0 || self->_callSetupTimeMs != *(v4 + 24))
+    if ((v15 & 0x800) == 0 || self->_callSetupTimeMs != *(equalCopy + 24))
     {
       goto LABEL_397;
     }
@@ -5905,7 +5905,7 @@ LABEL_116:
 
   if ((has & 0x40000000) != 0)
   {
-    if ((v15 & 0x40000000) == 0 || self->_mtplInPoint1Db != *(v4 + 52))
+    if ((v15 & 0x40000000) == 0 || self->_mtplInPoint1Db != *(equalCopy + 52))
     {
       goto LABEL_397;
     }
@@ -5917,7 +5917,7 @@ LABEL_116:
   }
 
   capEvents = self->_capEvents;
-  if (capEvents | v4[13])
+  if (capEvents | equalCopy[13])
   {
     if (![(NSMutableArray *)capEvents isEqual:?])
     {
@@ -5930,7 +5930,7 @@ LABEL_116:
   v18 = *v7;
   if ((has & 0x2000000) != 0)
   {
-    if ((v18 & 0x2000000) == 0 || self->_lastXSec != *(v4 + 47))
+    if ((v18 & 0x2000000) == 0 || self->_lastXSec != *(equalCopy + 47))
     {
       goto LABEL_397;
     }
@@ -5941,63 +5941,63 @@ LABEL_116:
     goto LABEL_397;
   }
 
-  v19 = *(v4 + 392);
+  v19 = *(equalCopy + 392);
   if ((*(&self->_has + 8) & 0x10) != 0)
   {
-    if ((v4[49] & 0x10) == 0)
+    if ((equalCopy[49] & 0x10) == 0)
     {
       goto LABEL_397;
     }
 
-    v20 = *(v4 + 380);
+    v20 = *(equalCopy + 380);
     if (self->_lastXSecUlMrab)
     {
-      if ((*(v4 + 380) & 1) == 0)
+      if ((*(equalCopy + 380) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 380))
+    else if (*(equalCopy + 380))
     {
       goto LABEL_397;
     }
   }
 
-  else if ((v4[49] & 0x10) != 0)
+  else if ((equalCopy[49] & 0x10) != 0)
   {
     goto LABEL_397;
   }
 
   if ((*(&self->_has + 8) & 8) != 0)
   {
-    if ((v4[49] & 8) == 0)
+    if ((equalCopy[49] & 8) == 0)
     {
       goto LABEL_397;
     }
 
-    v21 = *(v4 + 379);
+    v21 = *(equalCopy + 379);
     if (self->_lastXSecDlMrab)
     {
-      if ((*(v4 + 379) & 1) == 0)
+      if ((*(equalCopy + 379) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 379))
+    else if (*(equalCopy + 379))
     {
       goto LABEL_397;
     }
   }
 
-  else if ((v4[49] & 8) != 0)
+  else if ((equalCopy[49] & 8) != 0)
   {
     goto LABEL_397;
   }
 
   rbDatas = self->_rbDatas;
-  if (rbDatas | v4[36])
+  if (rbDatas | equalCopy[36])
   {
     if (![(NSMutableArray *)rbDatas isEqual:?])
     {
@@ -6010,7 +6010,7 @@ LABEL_116:
   v23 = *v7;
   if ((has & 0x20000000) != 0)
   {
-    if ((v23 & 0x20000000) == 0 || self->_msgId != *(v4 + 51))
+    if ((v23 & 0x20000000) == 0 || self->_msgId != *(equalCopy + 51))
     {
       goto LABEL_397;
     }
@@ -6023,7 +6023,7 @@ LABEL_116:
 
   if ((has & 0x20000) != 0)
   {
-    if ((v23 & 0x20000) == 0 || self->_eventId != *(v4 + 33))
+    if ((v23 & 0x20000) == 0 || self->_eventId != *(equalCopy + 33))
     {
       goto LABEL_397;
     }
@@ -6036,7 +6036,7 @@ LABEL_116:
 
   if ((has & 0x400000000000) != 0)
   {
-    if ((v23 & 0x400000000000) == 0 || self->_responseCode != *(v4 + 74))
+    if ((v23 & 0x400000000000) == 0 || self->_responseCode != *(equalCopy + 74))
     {
       goto LABEL_397;
     }
@@ -6049,7 +6049,7 @@ LABEL_116:
 
   if ((has & 0x100) != 0)
   {
-    if ((v23 & 0x100) == 0 || self->_callConnectDur != *(v4 + 18))
+    if ((v23 & 0x100) == 0 || self->_callConnectDur != *(equalCopy + 18))
     {
       goto LABEL_397;
     }
@@ -6062,7 +6062,7 @@ LABEL_116:
 
   if ((has & 0x80000000000000) != 0)
   {
-    if ((v23 & 0x80000000000000) == 0 || self->_tbMs != *(v4 + 88))
+    if ((v23 & 0x80000000000000) == 0 || self->_tbMs != *(equalCopy + 88))
     {
       goto LABEL_397;
     }
@@ -6074,7 +6074,7 @@ LABEL_116:
   }
 
   hcStats = self->_hcStats;
-  if (hcStats | v4[18])
+  if (hcStats | equalCopy[18])
   {
     if (![(NSMutableArray *)hcStats isEqual:?])
     {
@@ -6087,7 +6087,7 @@ LABEL_116:
   v25 = *v7;
   if ((has & 0x10000000000) != 0)
   {
-    if ((v25 & 0x10000000000) == 0 || self->_numRecvdSpeechPkt != *(v4 + 62))
+    if ((v25 & 0x10000000000) == 0 || self->_numRecvdSpeechPkt != *(equalCopy + 62))
     {
       goto LABEL_397;
     }
@@ -6100,7 +6100,7 @@ LABEL_116:
 
   if ((has & 0x8000000000) != 0)
   {
-    if ((v25 & 0x8000000000) == 0 || self->_numRecvdSilencePkt != *(v4 + 61))
+    if ((v25 & 0x8000000000) == 0 || self->_numRecvdSilencePkt != *(equalCopy + 61))
     {
       goto LABEL_397;
     }
@@ -6113,7 +6113,7 @@ LABEL_116:
 
   if ((has & 0x800000000) != 0)
   {
-    if ((v25 & 0x800000000) == 0 || self->_numLostPkt != *(v4 + 57))
+    if ((v25 & 0x800000000) == 0 || self->_numLostPkt != *(equalCopy + 57))
     {
       goto LABEL_397;
     }
@@ -6126,7 +6126,7 @@ LABEL_116:
 
   if ((has & 0x100000000000) != 0)
   {
-    if ((v25 & 0x100000000000) == 0 || self->_numUflwSpeechPkt != *(v4 + 66))
+    if ((v25 & 0x100000000000) == 0 || self->_numUflwSpeechPkt != *(equalCopy + 66))
     {
       goto LABEL_397;
     }
@@ -6139,7 +6139,7 @@ LABEL_116:
 
   if ((has & 0x80000000000) != 0)
   {
-    if ((v25 & 0x80000000000) == 0 || self->_numUflwSilencePkt != *(v4 + 65))
+    if ((v25 & 0x80000000000) == 0 || self->_numUflwSilencePkt != *(equalCopy + 65))
     {
       goto LABEL_397;
     }
@@ -6152,7 +6152,7 @@ LABEL_116:
 
   if ((has & 0x400000000) != 0)
   {
-    if ((v25 & 0x400000000) == 0 || self->_numEnqdSpeechPkt != *(v4 + 56))
+    if ((v25 & 0x400000000) == 0 || self->_numEnqdSpeechPkt != *(equalCopy + 56))
     {
       goto LABEL_397;
     }
@@ -6165,7 +6165,7 @@ LABEL_116:
 
   if ((has & 0x200000000) != 0)
   {
-    if ((v25 & 0x200000000) == 0 || self->_numEnqdSilencePkt != *(v4 + 55))
+    if ((v25 & 0x200000000) == 0 || self->_numEnqdSilencePkt != *(equalCopy + 55))
     {
       goto LABEL_397;
     }
@@ -6178,7 +6178,7 @@ LABEL_116:
 
   if ((has & 0x4000000000) != 0)
   {
-    if ((v25 & 0x4000000000) == 0 || self->_numPlayedSpeechPkt != *(v4 + 60))
+    if ((v25 & 0x4000000000) == 0 || self->_numPlayedSpeechPkt != *(equalCopy + 60))
     {
       goto LABEL_397;
     }
@@ -6191,7 +6191,7 @@ LABEL_116:
 
   if ((has & 0x1000000000) != 0)
   {
-    if ((v25 & 0x1000000000) == 0 || self->_numMissedSpeechPkt != *(v4 + 58))
+    if ((v25 & 0x1000000000) == 0 || self->_numMissedSpeechPkt != *(equalCopy + 58))
     {
       goto LABEL_397;
     }
@@ -6204,7 +6204,7 @@ LABEL_116:
 
   if ((has & 0x20000000000) != 0)
   {
-    if ((v25 & 0x20000000000) == 0 || self->_numSpeechQempty != *(v4 + 63))
+    if ((v25 & 0x20000000000) == 0 || self->_numSpeechQempty != *(equalCopy + 63))
     {
       goto LABEL_397;
     }
@@ -6217,7 +6217,7 @@ LABEL_116:
 
   if ((has & 0x10) != 0)
   {
-    if ((v25 & 0x10) == 0 || self->_appCallId != *(v4 + 14))
+    if ((v25 & 0x10) == 0 || self->_appCallId != *(equalCopy + 14))
     {
       goto LABEL_397;
     }
@@ -6239,7 +6239,7 @@ LABEL_397:
   v27 = *v7;
   if ((*p_has & 0x2000) != 0)
   {
-    if ((v27 & 0x2000) == 0 || self->_dedicatedBrInactiveToEndMs != *(v4 + 29))
+    if ((v27 & 0x2000) == 0 || self->_dedicatedBrInactiveToEndMs != *(equalCopy + 29))
     {
       goto LABEL_397;
     }
@@ -6251,7 +6251,7 @@ LABEL_397:
   }
 
   lastAudioQualityCnt = self->_lastAudioQualityCnt;
-  if (lastAudioQualityCnt | v4[21])
+  if (lastAudioQualityCnt | equalCopy[21])
   {
     if (![lastAudioQualityCnt isEqual:?])
     {
@@ -6264,7 +6264,7 @@ LABEL_397:
   v29 = *v7;
   if ((v26 & 0x2000000000000) != 0)
   {
-    if ((v29 & 0x2000000000000) == 0 || self->_rtpPktLossPpt != *(v4 + 79))
+    if ((v29 & 0x2000000000000) == 0 || self->_rtpPktLossPpt != *(equalCopy + 79))
     {
       goto LABEL_397;
     }
@@ -6277,7 +6277,7 @@ LABEL_397:
 
   if ((v26 & 0x400000000000000) != 0)
   {
-    if ((v29 & 0x400000000000000) == 0 || self->_uflwPktPpt != *(v4 + 91))
+    if ((v29 & 0x400000000000000) == 0 || self->_uflwPktPpt != *(equalCopy + 91))
     {
       goto LABEL_397;
     }
@@ -6290,7 +6290,7 @@ LABEL_397:
 
   if ((v26 & 0x40000) != 0)
   {
-    if ((v29 & 0x40000) == 0 || self->_frErasurePpt != *(v4 + 34))
+    if ((v29 & 0x40000) == 0 || self->_frErasurePpt != *(equalCopy + 34))
     {
       goto LABEL_397;
     }
@@ -6308,16 +6308,16 @@ LABEL_397:
       goto LABEL_397;
     }
 
-    v30 = *(v4 + 373);
+    v30 = *(equalCopy + 373);
     if (self->_badAudioQuality)
     {
-      if ((*(v4 + 373) & 1) == 0)
+      if ((*(equalCopy + 373) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 373))
+    else if (*(equalCopy + 373))
     {
       goto LABEL_397;
     }
@@ -6330,7 +6330,7 @@ LABEL_397:
 
   if ((v26 & 0x40) != 0)
   {
-    if ((v29 & 0x40) == 0 || self->_audioQualityThresholdPpt != *(v4 + 16))
+    if ((v29 & 0x40) == 0 || self->_audioQualityThresholdPpt != *(equalCopy + 16))
     {
       goto LABEL_397;
     }
@@ -6343,7 +6343,7 @@ LABEL_397:
 
   if ((v26 & 0x20) != 0)
   {
-    if ((v29 & 0x20) == 0 || self->_audioQosDetectWinLenSec != *(v4 + 15))
+    if ((v29 & 0x20) == 0 || self->_audioQosDetectWinLenSec != *(equalCopy + 15))
     {
       goto LABEL_397;
     }
@@ -6355,7 +6355,7 @@ LABEL_397:
   }
 
   rfMeasInfos = self->_rfMeasInfos;
-  if (rfMeasInfos | v4[38])
+  if (rfMeasInfos | equalCopy[38])
   {
     if (![(NSMutableArray *)rfMeasInfos isEqual:?])
     {
@@ -6368,7 +6368,7 @@ LABEL_397:
   v32 = *v7;
   if ((v26 & 0x100000) != 0)
   {
-    if ((v32 & 0x100000) == 0 || self->_hstState != *(v4 + 39))
+    if ((v32 & 0x100000) == 0 || self->_hstState != *(equalCopy + 39))
     {
       goto LABEL_397;
     }
@@ -6381,7 +6381,7 @@ LABEL_397:
 
   if ((v26 & 0x200000000000) != 0)
   {
-    if ((v32 & 0x200000000000) == 0 || self->_psPref != *(v4 + 70))
+    if ((v32 & 0x200000000000) == 0 || self->_psPref != *(equalCopy + 70))
     {
       goto LABEL_397;
     }
@@ -6394,7 +6394,7 @@ LABEL_397:
 
   if ((v26 & 0x40000000000) != 0)
   {
-    if ((v32 & 0x40000000000) == 0 || self->_numSubs != *(v4 + 64))
+    if ((v32 & 0x40000000000) == 0 || self->_numSubs != *(equalCopy + 64))
     {
       goto LABEL_397;
     }
@@ -6407,7 +6407,7 @@ LABEL_397:
 
   if ((v26 & 0x100000000) != 0)
   {
-    if ((v32 & 0x100000000) == 0 || self->_numCps != *(v4 + 54))
+    if ((v32 & 0x100000000) == 0 || self->_numCps != *(equalCopy + 54))
     {
       goto LABEL_397;
     }
@@ -6420,7 +6420,7 @@ LABEL_397:
 
   if ((v26 & 0x40000000000000) != 0)
   {
-    if ((v32 & 0x40000000000000) == 0 || self->_sysModeO != *(v4 + 87))
+    if ((v32 & 0x40000000000000) == 0 || self->_sysModeO != *(equalCopy + 87))
     {
       goto LABEL_397;
     }
@@ -6433,7 +6433,7 @@ LABEL_397:
 
   if ((v26 & 0x10000000000000) != 0)
   {
-    if ((v32 & 0x10000000000000) == 0 || self->_sidO != *(v4 + 82))
+    if ((v32 & 0x10000000000000) == 0 || self->_sidO != *(equalCopy + 82))
     {
       goto LABEL_397;
     }
@@ -6446,7 +6446,7 @@ LABEL_397:
 
   if ((v26 & 0x80000000) != 0)
   {
-    if ((v32 & 0x80000000) == 0 || self->_nidO != *(v4 + 53))
+    if ((v32 & 0x80000000) == 0 || self->_nidO != *(equalCopy + 53))
     {
       goto LABEL_397;
     }
@@ -6458,7 +6458,7 @@ LABEL_397:
   }
 
   plmnO = self->_plmnO;
-  if (plmnO | v4[34])
+  if (plmnO | equalCopy[34])
   {
     if (![(NSData *)plmnO isEqual:?])
     {
@@ -6471,7 +6471,7 @@ LABEL_397:
   v34 = *v7;
   if ((v26 & 0x1000000) != 0)
   {
-    if ((v34 & 0x1000000) == 0 || self->_lastRssi != *(v4 + 46))
+    if ((v34 & 0x1000000) == 0 || self->_lastRssi != *(equalCopy + 46))
     {
       goto LABEL_397;
     }
@@ -6484,7 +6484,7 @@ LABEL_397:
 
   if ((v26 & 0x800000) != 0)
   {
-    if ((v34 & 0x800000) == 0 || self->_lastRsrp != *(v4 + 45))
+    if ((v34 & 0x800000) == 0 || self->_lastRsrp != *(equalCopy + 45))
     {
       goto LABEL_397;
     }
@@ -6502,16 +6502,16 @@ LABEL_397:
       goto LABEL_397;
     }
 
-    v35 = *(v4 + 374);
+    v35 = *(equalCopy + 374);
     if (self->_barredFromSib1)
     {
-      if ((*(v4 + 374) & 1) == 0)
+      if ((*(equalCopy + 374) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 374))
+    else if (*(equalCopy + 374))
     {
       goto LABEL_397;
     }
@@ -6529,16 +6529,16 @@ LABEL_397:
       goto LABEL_397;
     }
 
-    v36 = *(v4 + 375);
+    v36 = *(equalCopy + 375);
     if (self->_barredFromSib2)
     {
-      if ((*(v4 + 375) & 1) == 0)
+      if ((*(equalCopy + 375) & 1) == 0)
       {
         goto LABEL_397;
       }
     }
 
-    else if (*(v4 + 375))
+    else if (*(equalCopy + 375))
     {
       goto LABEL_397;
     }
@@ -6549,18 +6549,18 @@ LABEL_397:
     goto LABEL_397;
   }
 
-  v37 = *(v4 + 392);
+  v37 = *(equalCopy + 392);
   if ((*(&self->_has + 8) & 1) == 0)
   {
     goto LABEL_366;
   }
 
-  if ((v4[49] & 1) == 0)
+  if ((equalCopy[49] & 1) == 0)
   {
     goto LABEL_397;
   }
 
-  v37 = *(v4 + 376);
+  v37 = *(equalCopy + 376);
   if (!self->_connectionRejected)
   {
 LABEL_366:
@@ -6572,7 +6572,7 @@ LABEL_366:
     goto LABEL_397;
   }
 
-  if ((v4[47] & 1) == 0)
+  if ((equalCopy[47] & 1) == 0)
   {
     goto LABEL_397;
   }
@@ -6580,7 +6580,7 @@ LABEL_366:
 LABEL_367:
   if ((v26 & 0x400000) != 0)
   {
-    if ((v34 & 0x400000) == 0 || self->_lastMotionState != *(v4 + 44))
+    if ((v34 & 0x400000) == 0 || self->_lastMotionState != *(equalCopy + 44))
     {
       goto LABEL_397;
     }
@@ -6593,7 +6593,7 @@ LABEL_367:
 
   if ((v26 & 0x10000000) != 0)
   {
-    if ((v34 & 0x10000000) == 0 || self->_msSinceLastMotionState != *(v4 + 50))
+    if ((v34 & 0x10000000) == 0 || self->_msSinceLastMotionState != *(equalCopy + 50))
     {
       goto LABEL_397;
     }
@@ -6606,7 +6606,7 @@ LABEL_367:
 
   if ((v26 & 0x800000000000000) != 0)
   {
-    if ((v34 & 0x800000000000000) == 0 || self->_version != *(v4 + 92))
+    if ((v34 & 0x800000000000000) == 0 || self->_version != *(equalCopy + 92))
     {
       goto LABEL_397;
     }
@@ -6619,7 +6619,7 @@ LABEL_367:
 
   if ((v26 & 0x20000000000000) != 0)
   {
-    if ((v34 & 0x20000000000000) == 0 || self->_subsId != *(v4 + 86))
+    if ((v34 & 0x20000000000000) == 0 || self->_subsId != *(equalCopy + 86))
     {
       goto LABEL_397;
     }
@@ -6632,7 +6632,7 @@ LABEL_367:
 
   if ((v26 & 0x200000000000000) != 0)
   {
-    if ((v34 & 0x200000000000000) == 0 || self->_typeOfCall != *(v4 + 90))
+    if ((v34 & 0x200000000000000) == 0 || self->_typeOfCall != *(equalCopy + 90))
     {
       goto LABEL_397;
     }
@@ -6645,7 +6645,7 @@ LABEL_367:
 
   if (v26)
   {
-    if ((v34 & 1) == 0 || self->_nr5gCellId != v4[4])
+    if ((v34 & 1) == 0 || self->_nr5gCellId != equalCopy[4])
     {
       goto LABEL_397;
     }
@@ -7579,26 +7579,26 @@ LABEL_144:
   return v90 ^ v91 ^ v88 ^ v87 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v89 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 + 384;
-  v7 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = fromCopy + 384;
+  v7 = *(fromCopy + 48);
   if ((v7 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 5);
+    self->_timestamp = *(fromCopy + 5);
     *&self->_has |= 2uLL;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
   }
 
   if ((v7 & 0x400) != 0)
   {
-    self->_callEvent = *(v4 + 20);
+    self->_callEvent = *(fromCopy + 20);
     *&self->_has |= 0x400uLL;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(CellularVoiceCallEvent *)self setCallId:?];
   }
@@ -8213,10 +8213,10 @@ LABEL_82:
   }
 
 LABEL_83:
-  v28 = [v5 delayCntsCount];
-  if (v28)
+  delayCntsCount = [v5 delayCntsCount];
+  if (delayCntsCount)
   {
-    v29 = v28;
+    v29 = delayCntsCount;
     for (m = 0; m != v29; ++m)
     {
       -[CellularVoiceCallEvent addDelayCnt:](self, "addDelayCnt:", [v5 delayCntAtIndex:m]);

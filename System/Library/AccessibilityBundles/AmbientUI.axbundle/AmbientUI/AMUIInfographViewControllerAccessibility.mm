@@ -1,24 +1,24 @@
 @interface AMUIInfographViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_showLaunchConfirmationForApplicationWithBundleIdentifier:(id)a3 withActions:(id)a4 iconView:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_showLaunchConfirmationForApplicationWithBundleIdentifier:(id)identifier withActions:(id)actions iconView:(id)view;
 @end
 
 @implementation AMUIInfographViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AMUIInfographViewController" hasInstanceMethod:@"launchConfirmationView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AMUIInfographViewController" hasInstanceMethod:@"_showLaunchConfirmationForApplicationWithBundleIdentifier:withActions:iconView:" withFullSignature:{"v", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AMUIInfographViewController" hasInstanceMethod:@"launchConfirmationView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AMUIInfographViewController" hasInstanceMethod:@"_showLaunchConfirmationForApplicationWithBundleIdentifier:withActions:iconView:" withFullSignature:{"v", "@", "@", "@", 0}];
 }
 
-- (void)_showLaunchConfirmationForApplicationWithBundleIdentifier:(id)a3 withActions:(id)a4 iconView:(id)a5
+- (void)_showLaunchConfirmationForApplicationWithBundleIdentifier:(id)identifier withActions:(id)actions iconView:(id)view
 {
-  v8 = a5;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = AMUIInfographViewControllerAccessibility;
-  [(AMUIInfographViewControllerAccessibility *)&v12 _showLaunchConfirmationForApplicationWithBundleIdentifier:a3 withActions:a4 iconView:v8];
-  if (v8)
+  [(AMUIInfographViewControllerAccessibility *)&v12 _showLaunchConfirmationForApplicationWithBundleIdentifier:identifier withActions:actions iconView:viewCopy];
+  if (viewCopy)
   {
     v9 = [(AMUIInfographViewControllerAccessibility *)self safeValueForKey:@"launchConfirmationView"];
     [v9 setIsAccessibilityElementBlock:&__block_literal_global_0];
@@ -26,7 +26,7 @@
     v10[1] = 3221225472;
     v10[2] = __123__AMUIInfographViewControllerAccessibility__showLaunchConfirmationForApplicationWithBundleIdentifier_withActions_iconView___block_invoke_2;
     v10[3] = &unk_29F29CB68;
-    v11 = v8;
+    v11 = viewCopy;
     [v9 setAccessibilityLabelBlock:v10];
   }
 }

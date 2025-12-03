@@ -1,48 +1,48 @@
 @interface WebSheetRemoteAlertPresentationViewController
 - (void)_willAppearInRemoteViewController;
-- (void)dismissPresentationController:(BOOL)a3;
+- (void)dismissPresentationController:(BOOL)controller;
 - (void)handleHomeButtonPressed;
 @end
 
 @implementation WebSheetRemoteAlertPresentationViewController
 
-- (void)dismissPresentationController:(BOOL)a3
+- (void)dismissPresentationController:(BOOL)controller
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000022A8;
   v3[3] = &unk_100008350;
   v3[4] = self;
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
 - (void)handleHomeButtonPressed
 {
-  v2 = [(WebSheetRemoteAlertPresentationViewController *)self presentedViewController];
-  if (v2)
+  presentedViewController = [(WebSheetRemoteAlertPresentationViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v2 dismissViewController:1];
+      [presentedViewController dismissViewController:1];
     }
   }
 }
 
 - (void)_willAppearInRemoteViewController
 {
-  v5 = [(WebSheetRemoteAlertPresentationViewController *)self _remoteViewControllerProxy];
-  [v5 setDesiredHardwareButtonEvents:16];
-  [v5 setSwipeDismissalStyle:1];
-  [v5 setLaunchingInterfaceOrientation:{objc_msgSend(UIApp, "activeInterfaceOrientation")}];
-  [v5 setAllowsAlertStacking:1];
-  [v5 setAllowsBanners:1];
-  [v5 setShouldDisableFadeInAnimation:1];
+  _remoteViewControllerProxy = [(WebSheetRemoteAlertPresentationViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:1];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:{objc_msgSend(UIApp, "activeInterfaceOrientation")}];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setShouldDisableFadeInAnimation:1];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
 
-  [v4 setRemotePresentationController:self];
+  [delegate setRemotePresentationController:self];
 }
 
 @end

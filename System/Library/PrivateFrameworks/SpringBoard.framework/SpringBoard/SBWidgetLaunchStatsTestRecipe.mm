@@ -6,8 +6,8 @@
 
 - (void)handleVolumeIncrease
 {
-  v2 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v2 postNotificationName:@"DuetWidgetLaunchStatsUpdate" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"DuetWidgetLaunchStatsUpdate" object:0];
 }
 
 @end

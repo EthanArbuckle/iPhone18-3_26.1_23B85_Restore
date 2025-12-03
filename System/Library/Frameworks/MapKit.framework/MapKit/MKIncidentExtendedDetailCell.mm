@@ -1,5 +1,5 @@
 @interface MKIncidentExtendedDetailCell
-- (MKIncidentExtendedDetailCell)initWithReuseIdentifier:(id)a3;
+- (MKIncidentExtendedDetailCell)initWithReuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
@@ -13,27 +13,27 @@
   [(MKIncidentDetailContentView *)self->_incidentContentView reset];
 }
 
-- (MKIncidentExtendedDetailCell)initWithReuseIdentifier:(id)a3
+- (MKIncidentExtendedDetailCell)initWithReuseIdentifier:(id)identifier
 {
   v33[4] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = MKIncidentExtendedDetailCell;
-  v3 = [(MKIncidentExtendedDetailCell *)&v32 initWithStyle:0 reuseIdentifier:a3];
+  v3 = [(MKIncidentExtendedDetailCell *)&v32 initWithStyle:0 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MKIncidentExtendedDetailCell *)v3 contentView];
-    [v5 setOpaque:0];
+    contentView = [(MKIncidentExtendedDetailCell *)v3 contentView];
+    [contentView setOpaque:0];
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKIncidentExtendedDetailCell *)v4 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKIncidentExtendedDetailCell *)v4 setBackgroundColor:clearColor];
 
     [(MKIncidentExtendedDetailCell *)v4 setOpaque:0];
     [(MKIncidentExtendedDetailCell *)v4 setSelectionStyle:0];
     [(MKIncidentExtendedDetailCell *)v4 setAccessibilityIdentifier:@"MKIncidentExtendedDetailCell"];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v8 = [(MKIncidentExtendedDetailCell *)v4 contentView];
-    [v8 setBackgroundColor:v7];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    contentView2 = [(MKIncidentExtendedDetailCell *)v4 contentView];
+    [contentView2 setBackgroundColor:clearColor2];
 
     v9 = [MKIncidentDetailContentView alloc];
     v10 = [(MKIncidentDetailContentView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -41,29 +41,29 @@
     v4->_incidentContentView = v10;
 
     [(MKIncidentDetailContentView *)v4->_incidentContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(MKIncidentExtendedDetailCell *)v4 contentView];
-    [v12 addSubview:v4->_incidentContentView];
+    contentView3 = [(MKIncidentExtendedDetailCell *)v4 contentView];
+    [contentView3 addSubview:v4->_incidentContentView];
 
     v24 = MEMORY[0x1E696ACD8];
-    v30 = [(MKIncidentDetailContentView *)v4->_incidentContentView leadingAnchor];
-    v31 = [(MKIncidentExtendedDetailCell *)v4 contentView];
-    v29 = [v31 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [(MKIncidentDetailContentView *)v4->_incidentContentView leadingAnchor];
+    contentView4 = [(MKIncidentExtendedDetailCell *)v4 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[0] = v28;
-    v26 = [(MKIncidentDetailContentView *)v4->_incidentContentView trailingAnchor];
-    v27 = [(MKIncidentExtendedDetailCell *)v4 contentView];
-    v25 = [v27 trailingAnchor];
-    v23 = [v26 constraintEqualToAnchor:v25];
+    trailingAnchor = [(MKIncidentDetailContentView *)v4->_incidentContentView trailingAnchor];
+    contentView5 = [(MKIncidentExtendedDetailCell *)v4 contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[1] = v23;
-    v13 = [(MKIncidentDetailContentView *)v4->_incidentContentView topAnchor];
-    v14 = [(MKIncidentExtendedDetailCell *)v4 contentView];
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    topAnchor = [(MKIncidentDetailContentView *)v4->_incidentContentView topAnchor];
+    contentView6 = [(MKIncidentExtendedDetailCell *)v4 contentView];
+    topAnchor2 = [contentView6 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v33[2] = v16;
-    v17 = [(MKIncidentDetailContentView *)v4->_incidentContentView bottomAnchor];
-    v18 = [(MKIncidentExtendedDetailCell *)v4 contentView];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    bottomAnchor = [(MKIncidentDetailContentView *)v4->_incidentContentView bottomAnchor];
+    contentView7 = [(MKIncidentExtendedDetailCell *)v4 contentView];
+    bottomAnchor2 = [contentView7 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v33[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v24 activateConstraints:v21];

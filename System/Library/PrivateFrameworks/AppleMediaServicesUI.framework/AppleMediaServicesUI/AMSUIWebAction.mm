@@ -1,8 +1,8 @@
 @interface AMSUIWebAction
-- (AMSUIWebAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebAction)initWithJSObject:(id)object context:(id)context;
 - (NSString)presentingSceneBundleIdentifier;
 - (NSString)presentingSceneIdentifier;
-- (id)_initWithContext:(id)a3;
+- (id)_initWithContext:(id)context;
 - (id)presentingSceneBundleIdentifierPromise;
 - (id)presentingSceneIdentifierPromise;
 - (id)runAction;
@@ -10,14 +10,14 @@
 
 @implementation AMSUIWebAction
 
-- (AMSUIWebAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSUIWebAction *)self _initWithContext:v7];
+  objectCopy = object;
+  contextCopy = context;
+  v8 = [(AMSUIWebAction *)self _initWithContext:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"actionEvent"];
+    v9 = [objectCopy objectForKeyedSubscript:@"actionEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,12 +31,12 @@
 
     if (v10)
     {
-      v11 = [[AMSUIWebMetricsEvent alloc] initWithJSObject:v10 context:v7];
+      v11 = [[AMSUIWebMetricsEvent alloc] initWithJSObject:v10 context:contextCopy];
       actionEvent = v8->_actionEvent;
       v8->_actionEvent = &v11->super;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"acceptedResponseVersions"];
+    v13 = [objectCopy objectForKeyedSubscript:@"acceptedResponseVersions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,16 +57,16 @@
   return v8;
 }
 
-- (id)_initWithContext:(id)a3
+- (id)_initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AMSUIWebAction;
   v6 = [(AMSUIWebAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -74,14 +74,14 @@
 
 - (id)runAction
 {
-  v3 = [(AMSUIWebAction *)self actionEvent];
+  actionEvent = [(AMSUIWebAction *)self actionEvent];
 
-  if (v3)
+  if (actionEvent)
   {
-    v4 = [(AMSUIWebAction *)self context];
-    v5 = [v4 metrics];
-    v6 = [(AMSUIWebAction *)self actionEvent];
-    [v5 enqueueEvent:v6];
+    context = [(AMSUIWebAction *)self context];
+    metrics = [context metrics];
+    actionEvent2 = [(AMSUIWebAction *)self actionEvent];
+    [metrics enqueueEvent:actionEvent2];
   }
 
   v7 = MEMORY[0x1E698CAD0];
@@ -94,18 +94,18 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(AMSUIWebAction *)self context];
-  v4 = [v3 clientInfo];
-  v5 = [v4 bundleIdentifier];
+  context = [(AMSUIWebAction *)self context];
+  clientInfo = [context clientInfo];
+  bundleIdentifier = [clientInfo bundleIdentifier];
 
-  v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v6)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -121,23 +121,23 @@
     {
       [v9 stringWithFormat:@"%@: ", v10];
     }
-    v12 = ;
+    selfCopy = ;
     v13 = AMSHashIfNeeded();
     *buf = 138543618;
-    v17 = v12;
+    v17 = selfCopy;
     v18 = 2114;
     v19 = v13;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Using scene bundle identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Using scene bundle identifier: %{public}@", buf, 0x16u);
     if (v8)
     {
 
-      v12 = self;
+      selfCopy = self;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (id)presentingSceneBundleIdentifierPromise
@@ -189,25 +189,25 @@ void __56__AMSUIWebAction_presentingSceneBundleIdentifierPromise__block_invoke(u
 {
   v38 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = [(AMSUIWebAction *)self context];
-  v5 = [v4 flowController];
-  v6 = [v5 currentContainer];
-  v7 = [v6 view];
-  v8 = [v7 window];
-  v9 = [v8 windowScene];
-  v10 = [v9 session];
-  v11 = [v10 persistentIdentifier];
+  context = [(AMSUIWebAction *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
+  view = [currentContainer view];
+  window = [view window];
+  windowScene = [window windowScene];
+  session = [windowScene session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  if (v11)
+  if (persistentIdentifier)
   {
-    v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v12)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v14 = AMSLogKey();
       v15 = MEMORY[0x1E696AEC0];
@@ -227,14 +227,14 @@ void __56__AMSUIWebAction_presentingSceneBundleIdentifierPromise__block_invoke(u
       }
       v18 = ;
       v19 = AMSHashIfNeeded();
-      v5 = AMSHashIfNeeded();
+      flowController = AMSHashIfNeeded();
       *buf = 138543874;
       v33 = v18;
       v34 = 2114;
       v35 = v19;
       v36 = 2114;
-      v37 = v5;
-      _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Found scene identifier %{public}@ in %{public}@", buf, 0x20u);
+      v37 = flowController;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Found scene identifier %{public}@ in %{public}@", buf, 0x20u);
       if (v14)
       {
 
@@ -245,14 +245,14 @@ void __56__AMSUIWebAction_presentingSceneBundleIdentifierPromise__block_invoke(u
     }
   }
 
-  v20 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v20)
+  mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968]2)
   {
-    v20 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v22 = AMSLogKey();
     v23 = MEMORY[0x1E696AEC0];
@@ -260,8 +260,8 @@ void __56__AMSUIWebAction_presentingSceneBundleIdentifierPromise__block_invoke(u
     if (v22)
     {
       v25 = AMSLogKey();
-      v5 = NSStringFromSelector(a2);
-      [v23 stringWithFormat:@"%@: [%@] %@ ", v24, v25, v5];
+      flowController = NSStringFromSelector(a2);
+      [v23 stringWithFormat:@"%@: [%@] %@ ", v24, v25, flowController];
     }
 
     else
@@ -275,17 +275,17 @@ void __56__AMSUIWebAction_presentingSceneBundleIdentifierPromise__block_invoke(u
     v33 = v26;
     v34 = 2114;
     v35 = v27;
-    _os_log_impl(&dword_1BB036000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@Using scene identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Using scene identifier: %{public}@", buf, 0x16u);
     if (v22)
     {
 
-      v26 = v5;
+      v26 = flowController;
     }
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return persistentIdentifier;
 }
 
 - (id)presentingSceneIdentifierPromise

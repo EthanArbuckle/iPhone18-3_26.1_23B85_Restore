@@ -1,12 +1,12 @@
 @interface MailIntelligencePETMailIntelligenceAnalysisEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MailIntelligencePETMailIntelligenceAnalysisEvent
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = MailIntelligencePETMailIntelligenceAnalysisEvent;
   v4 = [(MailIntelligencePETMailIntelligenceAnalysisEvent *)&v8 description];
-  v5 = [(MailIntelligencePETMailIntelligenceAnalysisEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MailIntelligencePETMailIntelligenceAnalysisEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   collectionId = self->_collectionId;
   if (collectionId)
   {
-    [v3 setObject:collectionId forKey:@"collectionId"];
+    [dictionary setObject:collectionId forKey:@"collectionId"];
   }
 
   sessionId = self->_sessionId;
@@ -45,8 +45,8 @@
   contactEvents = self->_contactEvents;
   if (contactEvents)
   {
-    v9 = [(MailIntelligencePETContactEvents *)contactEvents dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"contactEvents"];
+    dictionaryRepresentation = [(MailIntelligencePETContactEvents *)contactEvents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"contactEvents"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_mailIntelligenceUserId];
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (!self->_collectionId)
   {
     [MailIntelligencePETMailIntelligenceAnalysisEvent writeTo:];
@@ -82,30 +82,30 @@
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   collectionId = self->_collectionId;
-  v5 = a3;
-  [v5 setCollectionId:collectionId];
-  [v5 setSessionId:self->_sessionId];
-  *(v5 + 4) = self->_batch;
-  [v5 setContactEvents:self->_contactEvents];
-  *(v5 + 1) = self->_mailIntelligenceUserId;
+  toCopy = to;
+  [toCopy setCollectionId:collectionId];
+  [toCopy setSessionId:self->_sessionId];
+  *(toCopy + 4) = self->_batch;
+  [toCopy setContactEvents:self->_contactEvents];
+  *(toCopy + 1) = self->_mailIntelligenceUserId;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_collectionId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_collectionId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionId copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
   *(v5 + 16) = self->_batch;
-  v10 = [(MailIntelligencePETContactEvents *)self->_contactEvents copyWithZone:a3];
+  v10 = [(MailIntelligencePETContactEvents *)self->_contactEvents copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -113,10 +113,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v8 = [v4 isMemberOfClass:objc_opt_class()] && ((collectionId = self->_collectionId, !(collectionId | *(v4 + 3))) || -[NSString isEqual:](collectionId, "isEqual:")) && ((sessionId = self->_sessionId, !(sessionId | *(v4 + 5))) || -[NSString isEqual:](sessionId, "isEqual:")) && self->_batch == *(v4 + 4) && ((contactEvents = self->_contactEvents, !(contactEvents | *(v4 + 4))) || -[MailIntelligencePETContactEvents isEqual:](contactEvents, "isEqual:")) && self->_mailIntelligenceUserId == *(v4 + 1);
+  equalCopy = equal;
+  v8 = [equalCopy isMemberOfClass:objc_opt_class()] && ((collectionId = self->_collectionId, !(collectionId | *(equalCopy + 3))) || -[NSString isEqual:](collectionId, "isEqual:")) && ((sessionId = self->_sessionId, !(sessionId | *(equalCopy + 5))) || -[NSString isEqual:](sessionId, "isEqual:")) && self->_batch == *(equalCopy + 4) && ((contactEvents = self->_contactEvents, !(contactEvents | *(equalCopy + 4))) || -[MailIntelligencePETContactEvents isEqual:](contactEvents, "isEqual:")) && self->_mailIntelligenceUserId == *(equalCopy + 1);
 
   return v8;
 }
@@ -129,25 +129,25 @@
   return v4 ^ [(MailIntelligencePETContactEvents *)self->_contactEvents hash]^ v5 ^ (2654435761u * self->_mailIntelligenceUserId);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(MailIntelligencePETMailIntelligenceAnalysisEvent *)self setCollectionId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(MailIntelligencePETMailIntelligenceAnalysisEvent *)self setSessionId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  self->_batch = *(v4 + 4);
+  self->_batch = *(fromCopy + 4);
   contactEvents = self->_contactEvents;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (contactEvents)
   {
     if (!v6)
@@ -168,11 +168,11 @@
     contactEvents = [(MailIntelligencePETMailIntelligenceAnalysisEvent *)self setContactEvents:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_11:
-  self->_mailIntelligenceUserId = *(v4 + 1);
+  self->_mailIntelligenceUserId = *(fromCopy + 1);
 
-  MEMORY[0x1EEE66BB8](contactEvents, v4);
+  MEMORY[0x1EEE66BB8](contactEvents, fromCopy);
 }
 
 @end

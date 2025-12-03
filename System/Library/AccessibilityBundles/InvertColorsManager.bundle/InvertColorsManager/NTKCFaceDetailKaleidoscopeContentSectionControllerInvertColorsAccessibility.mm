@@ -16,8 +16,8 @@
 - (void)_accessibilityLoadInvertColors
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:AX_BridgeBundleName];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:AX_BridgeBundleName];
 
   if (v5)
   {
@@ -25,10 +25,10 @@
     v6 = [(NTKCFaceDetailKaleidoscopeContentSectionControllerInvertColorsAccessibility *)self safeValueForKey:@"parentViewController"];
     v7 = __UIAccessibilityCastAsClass();
 
-    v8 = [v7 view];
-    v9 = [v8 window];
-    v10 = [v9 layer];
-    [AXInvertColorsAppHelper toggleInvertColors:v10];
+    view = [v7 view];
+    window = [view window];
+    layer = [window layer];
+    [AXInvertColorsAppHelper toggleInvertColors:layer];
   }
 }
 

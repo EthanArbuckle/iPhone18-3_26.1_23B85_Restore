@@ -1,10 +1,10 @@
 @interface FPSharedCache
-+ (id)sharedCacheForDyldSnapshot:(dyld_process_snapshot_s *)a3;
++ (id)sharedCacheForDyldSnapshot:(dyld_process_snapshot_s *)snapshot;
 @end
 
 @implementation FPSharedCache
 
-+ (id)sharedCacheForDyldSnapshot:(dyld_process_snapshot_s *)a3
++ (id)sharedCacheForDyldSnapshot:(dyld_process_snapshot_s *)snapshot
 {
   v22[2] = *MEMORY[0x29EDCA608];
   if (dyld_process_snapshot_get_shared_cache() && (dyld_shared_cache_is_mapped_private() & 1) == 0)

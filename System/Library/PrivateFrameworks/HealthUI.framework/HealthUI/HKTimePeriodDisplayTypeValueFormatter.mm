@@ -1,57 +1,57 @@
 @interface HKTimePeriodDisplayTypeValueFormatter
-- (id)attributedStringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8;
-- (id)attributedStringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9;
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unit:(id)a6 unitController:(id)a7 valueFont:(id)a8 unitFont:(id)a9 formatForChart:(BOOL)a10;
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unit:(id)a6 unitController:(id)a7 valueFont:(id)a8 unitFont:(id)a9 formatForChart:(BOOL)a10 usePerDayFormatting:(BOOL)a11;
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9;
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9 usePerDayFormatting:(BOOL)a10;
+- (id)attributedStringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont;
+- (id)attributedStringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart;
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)self0;
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)self0 usePerDayFormatting:(BOOL)self1;
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart;
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart usePerDayFormatting:(BOOL)self0;
 @end
 
 @implementation HKTimePeriodDisplayTypeValueFormatter
 
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart
 {
-  v12 = a4;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [v17 unitForDisplayType:v18];
-  LOBYTE(v23) = a9;
-  v21 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:v19 roundToHours:v12 displayType:v18 unit:v20 unitController:v17 valueFont:v16 unitFont:v15 formatForChart:v23];
+  hoursCopy = hours;
+  unitFontCopy = unitFont;
+  fontCopy = font;
+  controllerCopy = controller;
+  typeCopy = type;
+  valueCopy = value;
+  v20 = [controllerCopy unitForDisplayType:typeCopy];
+  LOBYTE(v23) = chart;
+  v21 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:valueCopy roundToHours:hoursCopy displayType:typeCopy unit:v20 unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v23];
 
   return v21;
 }
 
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9 usePerDayFormatting:(BOOL)a10
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart usePerDayFormatting:(BOOL)self0
 {
-  v13 = a4;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a3;
-  v21 = [v18 unitForDisplayType:v19];
-  LOWORD(v24) = __PAIR16__(a10, a9);
-  v22 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:v20 roundToHours:v13 displayType:v19 unit:v21 unitController:v18 valueFont:v17 unitFont:v16 formatForChart:v24 usePerDayFormatting:?];
+  hoursCopy = hours;
+  unitFontCopy = unitFont;
+  fontCopy = font;
+  controllerCopy = controller;
+  typeCopy = type;
+  valueCopy = value;
+  v21 = [controllerCopy unitForDisplayType:typeCopy];
+  LOWORD(v24) = __PAIR16__(formatting, chart);
+  v22 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:valueCopy roundToHours:hoursCopy displayType:typeCopy unit:v21 unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v24 usePerDayFormatting:?];
 
   return v22;
 }
 
-- (id)attributedStringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8
+- (id)attributedStringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v16)
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  fontCopy = font;
+  unitFontCopy = unitFont;
+  if (unitCopy)
   {
-    v20 = [MEMORY[0x1E696C510] secondUnit];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
 
-    if (v20 != v16)
+    if (secondUnit != unitCopy)
     {
       _HKInitializeLogging();
       v21 = HKLogInfrastructure();
@@ -63,24 +63,24 @@
   }
 
   LOBYTE(v24) = 1;
-  v22 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:v14 roundToHours:0 displayType:v15 unit:v16 unitController:v17 valueFont:v18 unitFont:v19 formatForChart:v24];
+  v22 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:valueCopy roundToHours:0 displayType:typeCopy unit:unitCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v24];
 
   return v22;
 }
 
-- (id)attributedStringFromValue:(id)a3 displayType:(id)a4 unit:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9
+- (id)attributedStringFromValue:(id)value displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v17)
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  fontCopy = font;
+  unitFontCopy = unitFont;
+  if (unitCopy)
   {
-    v21 = [MEMORY[0x1E696C510] secondUnit];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
 
-    if (v21 != v17)
+    if (secondUnit != unitCopy)
     {
       _HKInitializeLogging();
       v22 = HKLogInfrastructure();
@@ -91,26 +91,26 @@
     }
   }
 
-  LOBYTE(v25) = a9;
-  v23 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:v15 roundToHours:0 displayType:v16 unit:v17 unitController:v18 valueFont:v19 unitFont:v20 formatForChart:v25];
+  LOBYTE(v25) = chart;
+  v23 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:valueCopy roundToHours:0 displayType:typeCopy unit:unitCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v25];
 
   return v23;
 }
 
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unit:(id)a6 unitController:(id)a7 valueFont:(id)a8 unitFont:(id)a9 formatForChart:(BOOL)a10
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)self0
 {
-  v14 = a4;
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v18)
+  hoursCopy = hours;
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  fontCopy = font;
+  unitFontCopy = unitFont;
+  if (unitCopy)
   {
-    v22 = [MEMORY[0x1E696C510] secondUnit];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
 
-    if (v22 != v18)
+    if (secondUnit != unitCopy)
     {
       _HKInitializeLogging();
       v23 = HKLogInfrastructure();
@@ -121,25 +121,25 @@
     }
   }
 
-  LOWORD(v26) = a10;
-  v24 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:v16 roundToHours:v14 displayType:v17 unit:v18 unitController:v19 valueFont:v20 unitFont:v21 formatForChart:v26 usePerDayFormatting:?];
+  LOWORD(v26) = chart;
+  v24 = [(HKTimePeriodDisplayTypeValueFormatter *)self attributedStringFromValue:valueCopy roundToHours:hoursCopy displayType:typeCopy unit:unitCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v26 usePerDayFormatting:?];
 
   return v24;
 }
 
-- (id)attributedStringFromValue:(id)a3 roundToHours:(BOOL)a4 displayType:(id)a5 unit:(id)a6 unitController:(id)a7 valueFont:(id)a8 unitFont:(id)a9 formatForChart:(BOOL)a10 usePerDayFormatting:(BOOL)a11
+- (id)attributedStringFromValue:(id)value roundToHours:(BOOL)hours displayType:(id)type unit:(id)unit unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)self0 usePerDayFormatting:(BOOL)self1
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v69 = a8;
-  v19 = a9;
-  if (v17)
+  valueCopy = value;
+  typeCopy = type;
+  unitCopy = unit;
+  controllerCopy = controller;
+  fontCopy = font;
+  unitFontCopy = unitFont;
+  if (unitCopy)
   {
-    v20 = [MEMORY[0x1E696C510] secondUnit];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
 
-    if (v20 != v17)
+    if (secondUnit != unitCopy)
     {
       _HKInitializeLogging();
       v21 = HKLogInfrastructure();
@@ -150,18 +150,18 @@
     }
   }
 
-  v22 = [v16 presentation];
-  [v22 useSecondsWhenDisplayingDuration];
+  presentation = [typeCopy presentation];
+  [presentation useSecondsWhenDisplayingDuration];
 
-  [v15 doubleValue];
-  v67 = v15;
-  v64 = v18;
-  v65 = v17;
+  [valueCopy doubleValue];
+  v67 = valueCopy;
+  v64 = controllerCopy;
+  v65 = unitCopy;
   HKSeparateTimeIntervalComponents();
-  v23 = [v16 presentation];
-  [v23 useSecondsWhenDisplayingDuration];
+  presentation2 = [typeCopy presentation];
+  [presentation2 useSecondsWhenDisplayingDuration];
 
-  v71 = v19;
+  v71 = unitFontCopy;
   v68 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = HKIntegerFormatter();
   v25 = [MEMORY[0x1E696AD98] numberWithInteger:0];
@@ -172,19 +172,19 @@
   v29 = [v28 localizedStringForKey:@"MINUTES_PAIR_MEDIUM" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v30 = [v27 localizedStringWithFormat:v29, v26];
 
-  v31 = v69;
+  v31 = fontCopy;
   v32 = [v30 stringByReplacingOccurrencesOfString:@" " withString:@"\uFFFC"];
 
   [v68 addObject:v32];
   v33 = [v68 count];
-  v66 = v16;
+  v66 = typeCopy;
   switch(v33)
   {
     case 3:
       v41 = MEMORY[0x1E696AEC0];
       v42 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v36 = v42;
-      if (a11)
+      if (formatting)
       {
         v43 = @"TIME_DISPLAY_3_DAY";
       }
@@ -198,15 +198,15 @@
       v46 = [v68 objectAtIndexedSubscript:0];
       v48 = [v68 objectAtIndexedSubscript:1];
       v49 = [v68 objectAtIndexedSubscript:2];
-      v44 = [v41 localizedStringWithFormat:v45, v46, v48, v49, v18, v65, v66, v67];
+      v44 = [v41 localizedStringWithFormat:v45, v46, v48, v49, controllerCopy, v65, v66, v67];
 
-      v31 = v69;
+      v31 = fontCopy;
       break;
     case 2:
       v38 = MEMORY[0x1E696AEC0];
       v39 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v36 = v39;
-      if (a11)
+      if (formatting)
       {
         v40 = @"TIME_DISPLAY_2_DAY";
       }
@@ -226,7 +226,7 @@
       v34 = MEMORY[0x1E696AEC0];
       v35 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v36 = v35;
-      if (a11)
+      if (formatting)
       {
         v37 = @"TIME_DISPLAY_1_DAY";
       }
@@ -246,10 +246,10 @@
   }
 
 LABEL_23:
-  v50 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
   v51 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v44];
-  v70 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v52 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
   v53 = [(__CFString *)v44 length];
   if (v53 >= 1)
   {
@@ -259,15 +259,15 @@ LABEL_23:
     v58 = *MEMORY[0x1E69DB650];
     do
     {
-      if ([v50 characterIsMember:{-[__CFString characterAtIndex:](v44, "characterAtIndex:", v56)}])
+      if ([decimalDigitCharacterSet characterIsMember:{-[__CFString characterAtIndex:](v44, "characterAtIndex:", v56)}])
       {
         if (v31)
         {
           [v51 addAttribute:v57 value:v31 range:{v56, 1}];
         }
 
-        v54 = v70;
-        if (!a10)
+        v54 = hk_chartLollipopValueColor;
+        if (!chart)
         {
           goto LABEL_30;
         }
@@ -280,8 +280,8 @@ LABEL_23:
           [v51 addAttribute:v57 value:v71 range:{v56, 1}];
         }
 
-        v54 = v52;
-        if (!a10)
+        v54 = hk_chartLollipopLabelColor;
+        if (!chart)
         {
           goto LABEL_30;
         }
@@ -301,8 +301,8 @@ LABEL_30:
     v60 = 0;
     do
     {
-      v61 = [v51 string];
-      v62 = [v61 characterAtIndex:v60];
+      string = [v51 string];
+      v62 = [string characterAtIndex:v60];
 
       if (v62 == 65532)
       {

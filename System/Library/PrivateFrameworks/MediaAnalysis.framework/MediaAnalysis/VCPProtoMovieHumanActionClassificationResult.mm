@@ -1,25 +1,25 @@
 @interface VCPProtoMovieHumanActionClassificationResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)addClassification:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassification:(id)classification;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieHumanActionClassificationResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v18, 0, sizeof(v18));
-  CMTimeRangeMakeFromDictionary(&v18, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v18, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"humanBounds"];
   v6 = [v4 objectForKeyedSubscript:@"humanActions"];
   v7 = [v4 objectForKeyedSubscript:@"faceIdentifier"];
@@ -91,11 +91,11 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(VCPProtoMovieHumanActionClassificationResult *)self bounds];
-  [v4 rectValue];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  bounds = [(VCPProtoMovieHumanActionClassificationResult *)self bounds];
+  [bounds rectValue];
   v5 = NSStringFromRect(v24);
-  [v3 setObject:v5 forKeyedSubscript:@"humanBounds"];
+  [dictionary setObject:v5 forKeyedSubscript:@"humanBounds"];
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[VCPProtoMovieHumanActionClassificationResult classificationsCount](self, "classificationsCount")}];
   for (i = 0; i < [(VCPProtoMovieHumanActionClassificationResult *)self classificationsCount]; ++i)
@@ -105,34 +105,34 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
     [v8 confidence];
     v10 = [v9 numberWithFloat:?];
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v8, "identifier")}];
-    v12 = [v11 stringValue];
-    [v6 setObject:v10 forKey:v12];
+    stringValue = [v11 stringValue];
+    [v6 setObject:v10 forKey:stringValue];
   }
 
-  [v3 setObject:v6 forKeyedSubscript:@"humanActions"];
+  [dictionary setObject:v6 forKeyedSubscript:@"humanActions"];
   if ([(VCPProtoMovieHumanActionClassificationResult *)self hasFaceId])
   {
-    v13 = [(VCPProtoMovieHumanActionClassificationResult *)self faceId];
-    [v3 setObject:v13 forKeyedSubscript:@"faceIdentifier"];
+    faceId = [(VCPProtoMovieHumanActionClassificationResult *)self faceId];
+    [dictionary setObject:faceId forKeyedSubscript:@"faceIdentifier"];
   }
 
   if ([(VCPProtoMovieHumanActionClassificationResult *)self hasThumbnailID])
   {
-    v14 = [(VCPProtoMovieHumanActionClassificationResult *)self thumbnailID];
-    [v3 setObject:v14 forKeyedSubscript:@"thumbnailID"];
+    thumbnailID = [(VCPProtoMovieHumanActionClassificationResult *)self thumbnailID];
+    [dictionary setObject:thumbnailID forKeyedSubscript:@"thumbnailID"];
   }
 
   if ([(VCPProtoMovieHumanActionClassificationResult *)self hasTorsoprint])
   {
-    v15 = [(VCPProtoMovieHumanActionClassificationResult *)self torsoprint];
-    [v3 setObject:v15 forKeyedSubscript:@"torsoPrint"];
+    torsoprint = [(VCPProtoMovieHumanActionClassificationResult *)self torsoprint];
+    [dictionary setObject:torsoprint forKeyedSubscript:@"torsoPrint"];
   }
 
-  v16 = [(VCPProtoMovieHumanActionClassificationResult *)self timeRange];
-  v17 = v16;
-  if (v16)
+  timeRange = [(VCPProtoMovieHumanActionClassificationResult *)self timeRange];
+  v17 = timeRange;
+  if (timeRange)
   {
-    [v16 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -144,27 +144,27 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
   v18 = CMTimeRangeCopyAsDictionary(&range, 0);
   v19 = [(__CFDictionary *)v18 mutableCopy];
 
-  [v19 setObject:v3 forKeyedSubscript:@"attributes"];
+  [v19 setObject:dictionary forKeyedSubscript:@"attributes"];
 
   return v19;
 }
 
-- (void)addClassification:(id)a3
+- (void)addClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   classifications = self->_classifications;
-  v8 = v4;
+  v8 = classificationCopy;
   if (!classifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_classifications;
     self->_classifications = v6;
 
-    v4 = v8;
+    classificationCopy = v8;
     classifications = self->_classifications;
   }
 
-  [(NSMutableArray *)classifications addObject:v4];
+  [(NSMutableArray *)classifications addObject:classificationCopy];
 }
 
 - (id)description
@@ -173,8 +173,8 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
   v8.receiver = self;
   v8.super_class = VCPProtoMovieHumanActionClassificationResult;
   v4 = [(VCPProtoMovieHumanActionClassificationResult *)&v8 description];
-  v5 = [(VCPProtoMovieHumanActionClassificationResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieHumanActionClassificationResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -182,19 +182,19 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v7 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"bounds"];
+    dictionaryRepresentation2 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"bounds"];
   }
 
   if ([(NSMutableArray *)self->_classifications count])
@@ -219,8 +219,8 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -229,34 +229,34 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"classification"];
+    [dictionary setObject:v8 forKey:@"classification"];
   }
 
   faceId = self->_faceId;
   if (faceId)
   {
-    [v3 setObject:faceId forKey:@"faceId"];
+    [dictionary setObject:faceId forKey:@"faceId"];
   }
 
   torsoprint = self->_torsoprint;
   if (torsoprint)
   {
-    [v3 setObject:torsoprint forKey:@"torsoprint"];
+    [dictionary setObject:torsoprint forKey:@"torsoprint"];
   }
 
   thumbnailID = self->_thumbnailID;
   if (thumbnailID)
   {
-    [v3 setObject:thumbnailID forKey:@"thumbnailID"];
+    [dictionary setObject:thumbnailID forKey:@"thumbnailID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteSubmessage();
   v12 = 0u;
@@ -306,54 +306,54 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
-  [v9 setTimeRange:self->_timeRange];
-  [v9 setBounds:self->_bounds];
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
+  [toCopy setBounds:self->_bounds];
   if ([(VCPProtoMovieHumanActionClassificationResult *)self classificationsCount])
   {
-    [v9 clearClassifications];
-    v4 = [(VCPProtoMovieHumanActionClassificationResult *)self classificationsCount];
-    if (v4)
+    [toCopy clearClassifications];
+    classificationsCount = [(VCPProtoMovieHumanActionClassificationResult *)self classificationsCount];
+    if (classificationsCount)
     {
-      v5 = v4;
+      v5 = classificationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoMovieHumanActionClassificationResult *)self classificationAtIndex:i];
-        [v9 addClassification:v7];
+        [toCopy addClassification:v7];
       }
     }
   }
 
   if (self->_faceId)
   {
-    [v9 setFaceId:?];
+    [toCopy setFaceId:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_torsoprint)
   {
-    [v9 setTorsoprint:?];
-    v8 = v9;
+    [toCopy setTorsoprint:?];
+    v8 = toCopy;
   }
 
   if (self->_thumbnailID)
   {
-    [v9 setThumbnailID:?];
-    v8 = v9;
+    [toCopy setThumbnailID:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -377,7 +377,7 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v23 + 1) + 8 * v14) copyWithZone:{a3, v23}];
+        v15 = [*(*(&v23 + 1) + 8 * v14) copyWithZone:{zone, v23}];
         [v5 addClassification:v15];
 
         ++v14;
@@ -390,28 +390,28 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
     while (v12);
   }
 
-  v16 = [(NSString *)self->_faceId copyWithZone:a3];
+  v16 = [(NSString *)self->_faceId copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
-  v18 = [(NSData *)self->_torsoprint copyWithZone:a3];
+  v18 = [(NSData *)self->_torsoprint copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
-  v20 = [(NSString *)self->_thumbnailID copyWithZone:a3];
+  v20 = [(NSString *)self->_thumbnailID copyWithZone:zone];
   v21 = v5[4];
   v5[4] = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[5])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && ((bounds = self->_bounds, !(bounds | v4[1])) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && ((classifications = self->_classifications, !(classifications | v4[2])) || -[NSMutableArray isEqual:](classifications, "isEqual:")) && ((faceId = self->_faceId, !(faceId | v4[3])) || -[NSString isEqual:](faceId, "isEqual:")) && ((torsoprint = self->_torsoprint, !(torsoprint | v4[6])) || -[NSData isEqual:](torsoprint, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[5])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && ((bounds = self->_bounds, !(bounds | equalCopy[1])) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && ((classifications = self->_classifications, !(classifications | equalCopy[2])) || -[NSMutableArray isEqual:](classifications, "isEqual:")) && ((faceId = self->_faceId, !(faceId | equalCopy[3])) || -[NSString isEqual:](faceId, "isEqual:")) && ((torsoprint = self->_torsoprint, !(torsoprint | equalCopy[6])) || -[NSData isEqual:](torsoprint, "isEqual:")))
   {
     thumbnailID = self->_thumbnailID;
-    if (thumbnailID | v4[4])
+    if (thumbnailID | equalCopy[4])
     {
       v11 = [(NSString *)thumbnailID isEqual:?];
     }
@@ -440,12 +440,12 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
   return v6 ^ v7 ^ [(NSString *)self->_thumbnailID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (timeRange)
   {
     if (v6)
@@ -460,7 +460,7 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
   }
 
   bounds = self->_bounds;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (bounds)
   {
     if (v8)
@@ -478,7 +478,7 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -502,17 +502,17 @@ void __93__VCPProtoMovieHumanActionClassificationResult_LegacyConversion__result
     while (v11);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(VCPProtoMovieHumanActionClassificationResult *)self setFaceId:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(VCPProtoMovieHumanActionClassificationResult *)self setTorsoprint:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(VCPProtoMovieHumanActionClassificationResult *)self setThumbnailID:?];
   }

@@ -1,58 +1,58 @@
 @interface RouteMiddleStepLabelListView
-+ (id)stringsForRoute:(id)a3 step:(id)a4 tableMode:(BOOL)a5 isPrinting:(BOOL)a6 forAccessibility:(BOOL)a7;
++ (id)stringsForRoute:(id)route step:(id)step tableMode:(BOOL)mode isPrinting:(BOOL)printing forAccessibility:(BOOL)accessibility;
 @end
 
 @implementation RouteMiddleStepLabelListView
 
-+ (id)stringsForRoute:(id)a3 step:(id)a4 tableMode:(BOOL)a5 isPrinting:(BOOL)a6 forAccessibility:(BOOL)a7
++ (id)stringsForRoute:(id)route step:(id)step tableMode:(BOOL)mode isPrinting:(BOOL)printing forAccessibility:(BOOL)accessibility
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  if ([v12 transportType] == 1)
+  printingCopy = printing;
+  routeCopy = route;
+  stepCopy = step;
+  if ([routeCopy transportType] == 1)
   {
     v14 = &__NSArray0__struct;
     goto LABEL_60;
   }
 
-  v72 = a5;
-  v15 = sub_100F5C4B8(v13, v12);
-  v16 = [v12 legIndexForStepIndex:{objc_msgSend(v13, "stepIndex")}];
-  v17 = [v12 legs];
-  if (v16 >= [v17 count])
+  modeCopy = mode;
+  v15 = sub_100F5C4B8(stepCopy, routeCopy);
+  v16 = [routeCopy legIndexForStepIndex:{objc_msgSend(stepCopy, "stepIndex")}];
+  legs = [routeCopy legs];
+  if (v16 >= [legs count])
   {
     v19 = 0;
   }
 
   else
   {
-    v18 = [v12 legs];
-    v19 = [v18 objectAtIndexedSubscript:v16];
+    legs2 = [routeCopy legs];
+    v19 = [legs2 objectAtIndexedSubscript:v16];
   }
 
-  v20 = [v19 destination];
-  v21 = [v20 chargingInfo];
+  destination = [v19 destination];
+  chargingInfo = [destination chargingInfo];
 
-  if (!v15 || v21)
+  if (!v15 || chargingInfo)
   {
-    v28 = [v13 contentsForContext:{objc_msgSend(a1, "_instructionsContext")}];
+    v28 = [stepCopy contentsForContext:{objc_msgSend(self, "_instructionsContext")}];
     v71 = [v28 stringForDistance:-1.0];
-    v73 = [v13 notice];
-    v29 = [v73 length];
+    notice = [stepCopy notice];
+    v29 = [notice length];
     v68 = v28;
-    if (v8 && (v30 = [v13 stepIndex], v30 >= 2))
+    if (printingCopy && (v30 = [stepCopy stepIndex], v30 >= 2))
     {
       v31 = v30;
       v32 = v29;
-      v33 = [v12 steps];
-      v34 = [v33 objectAtIndexedSubscript:v31 - 1];
+      steps = [routeCopy steps];
+      v34 = [steps objectAtIndexedSubscript:v31 - 1];
 
-      v35 = [v34 geoStep];
-      v36 = [v35 expectedTime];
+      geoStep = [v34 geoStep];
+      expectedTime = [geoStep expectedTime];
 
-      if (v36)
+      if (expectedTime)
       {
-        v37 = [NSString _navigation_stringWithSeconds:v36 abbreviated:1];
+        v37 = [NSString _navigation_stringWithSeconds:expectedTime abbreviated:1];
         v69 = [NSString stringWithFormat:@" (%@)", v37];
       }
 
@@ -69,18 +69,18 @@
       v69 = &stru_1016631F0;
     }
 
-    v38 = [v13 transportType];
-    v39 = [v13 chargingStationInfo];
+    transportType = [stepCopy transportType];
+    chargingStationInfo = [stepCopy chargingStationInfo];
     v67 = v19;
-    if ([v13 isStartOrResumeStep])
+    if ([stepCopy isStartOrResumeStep])
     {
-      v40 = 0;
+      directionsListAddress = 0;
       v70 = 0;
 LABEL_23:
       v41 = v68;
 LABEL_35:
       v52 = 1;
-      if (v40)
+      if (directionsListAddress)
       {
         v52 = 2;
       }
@@ -96,49 +96,49 @@ LABEL_35:
       }
 
       v54 = [NSMutableArray arrayWithCapacity:v53];
-      if (v40)
+      if (directionsListAddress)
       {
-        if (v8)
+        if (printingCopy)
         {
           v55 = [[UIColor alloc] initWithRed:0.254901961 green:0.435294118 blue:0.658823529 alpha:1.0];
           [v54 addObject:v55];
         }
 
-        [v54 addObject:v40];
+        [v54 addObject:directionsListAddress];
       }
 
-      if (v8)
+      if (printingCopy)
       {
         v56 = +[UIColor darkGrayColor];
         [v54 addObject:v56];
       }
 
-      v57 = [v41 instruction];
-      if ([v13 transportType] == 4 && !v57)
+      instruction = [v41 instruction];
+      if ([stepCopy transportType] == 4 && !instruction)
       {
         v58 = +[NSBundle mainBundle];
-        v57 = [v58 localizedStringForKey:@"Navigation_DirectionsForUnknownTransport" value:@"localized string not found" table:0];
+        instruction = [v58 localizedStringForKey:@"Navigation_DirectionsForUnknownTransport" value:@"localized string not found" table:0];
       }
 
-      if (v57)
+      if (instruction)
       {
         v59 = 0;
-        if (v40 && !v72)
+        if (directionsListAddress && !modeCopy)
         {
           v59 = [v54 count];
         }
 
-        [v54 insertObject:v57 atIndex:v59];
+        [v54 insertObject:instruction atIndex:v59];
       }
 
       if (v29)
       {
-        [v54 addObject:v73];
+        [v54 addObject:notice];
       }
 
-      if (v39)
+      if (chargingStationInfo)
       {
-        [v39 batteryPercentageAfterCharging];
+        [chargingStationInfo batteryPercentageAfterCharging];
         v60 = [GEOComposedRouteEVChargingStationInfo chargeToStringForChargePercentage:?];
         [v54 addObject:v60];
       }
@@ -149,47 +149,47 @@ LABEL_35:
       goto LABEL_59;
     }
 
-    if (a7)
+    if (accessibility)
     {
-      v42 = [v13 accessibilityDistance];
+      accessibilityDistance = [stepCopy accessibilityDistance];
     }
 
     else
     {
-      v42 = v71;
+      accessibilityDistance = v71;
     }
 
-    v70 = v42;
-    if (v39)
+    v70 = accessibilityDistance;
+    if (chargingStationInfo)
     {
       v66 = v29;
-      [v39 chargingTime];
+      [chargingStationInfo chargingTime];
       v44 = [NSString _navigation_stringWithSeconds:v43 abbreviated:1];
       v45 = +[NSBundle mainBundle];
       v46 = v45;
       if (v44)
       {
         v47 = [v45 localizedStringForKey:@"Directions_Driving_EV" value:@"localized string not found" table:0];
-        v48 = [v39 name];
-        [NSString stringWithFormat:v47, v44, v48];
+        name = [chargingStationInfo name];
+        [NSString stringWithFormat:v47, v44, name];
       }
 
       else
       {
         v47 = [v45 localizedStringForKey:@"Directions_Driving_EV_no_charge_time" value:@"localized string not found" table:0];
-        v48 = [v39 name];
-        [NSString stringWithFormat:v47, v48, v65];
+        name = [chargingStationInfo name];
+        [NSString stringWithFormat:v47, name, v65];
       }
-      v40 = ;
+      directionsListAddress = ;
 
       v41 = v68;
       v29 = v66;
       goto LABEL_35;
     }
 
-    if (v38 == 2)
+    if (transportType == 2)
     {
-      if (v8)
+      if (printingCopy)
       {
         v49 = +[NSBundle mainBundle];
         v50 = v49;
@@ -199,14 +199,14 @@ LABEL_66:
         v63 = v62 = v29;
         v65 = v69;
 LABEL_71:
-        v40 = [NSString stringWithFormat:v63, v70, v65];
+        directionsListAddress = [NSString stringWithFormat:v63, v70, v65];
 
         v29 = v62;
         goto LABEL_23;
       }
 
       v41 = v68;
-      if (a7 || ![v68 hasServerContent])
+      if (accessibility || ![v68 hasServerContent])
       {
         v50 = +[NSBundle mainBundle];
         [v50 localizedStringForKey:@"Walk %@ then" value:@"localized string not found" table:0];
@@ -218,12 +218,12 @@ LABEL_71:
     else
     {
       v41 = v68;
-      if (v8)
+      if (printingCopy)
       {
-        if (![v13 stepIndex])
+        if (![stepCopy stepIndex])
         {
-          v64 = [v12 origin];
-          v40 = [v64 directionsListAddress];
+          origin = [routeCopy origin];
+          directionsListAddress = [origin directionsListAddress];
 
           goto LABEL_35;
         }
@@ -235,34 +235,34 @@ LABEL_71:
       }
     }
 
-    v40 = v70;
-    v70 = v40;
+    directionsListAddress = v70;
+    v70 = directionsListAddress;
     goto LABEL_35;
   }
 
-  v22 = [v19 destinationListInstructionString];
-  if (![v22 length])
+  destinationListInstructionString = [v19 destinationListInstructionString];
+  if (![destinationListInstructionString length])
   {
     v23 = +[NSBundle mainBundle];
     v24 = [v23 localizedStringForKey:@"Arrive [Directions Step]" value:@"localized string not found" table:0];
 
-    v22 = v24;
+    destinationListInstructionString = v24;
   }
 
-  v25 = [v15 singleLineAddress];
-  v26 = [v25 length];
+  singleLineAddress = [v15 singleLineAddress];
+  v26 = [singleLineAddress length];
 
   if (v26)
   {
-    v75[0] = v22;
-    v27 = [v15 singleLineAddress];
-    v75[1] = v27;
+    v75[0] = destinationListInstructionString;
+    singleLineAddress2 = [v15 singleLineAddress];
+    v75[1] = singleLineAddress2;
     v14 = [NSArray arrayWithObjects:v75 count:2];
   }
 
   else
   {
-    v74 = v22;
+    v74 = destinationListInstructionString;
     v14 = [NSArray arrayWithObjects:&v74 count:1];
   }
 

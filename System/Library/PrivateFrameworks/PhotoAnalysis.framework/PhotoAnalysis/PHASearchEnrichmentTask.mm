@@ -1,8 +1,8 @@
 @interface PHASearchEnrichmentTask
-- (BOOL)shouldRunIncrementallyWithGraphManager:(id)a3 incrementalChange:(id)a4 timeIntervalSinceNonIncrementalRun:(double)a5;
+- (BOOL)shouldRunIncrementallyWithGraphManager:(id)manager incrementalChange:(id)change timeIntervalSinceNonIncrementalRun:(double)run;
 - (id)enrichmentProcessor;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHASearchEnrichmentTask
@@ -14,9 +14,9 @@
   return v2;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHASearchEnrichmentTask timeoutFatal:]", "PHASearchEnrichmentTask.m", 72, "NO");
   }
@@ -28,30 +28,30 @@
   }
 }
 
-- (BOOL)shouldRunIncrementallyWithGraphManager:(id)a3 incrementalChange:(id)a4 timeIntervalSinceNonIncrementalRun:(double)a5
+- (BOOL)shouldRunIncrementallyWithGraphManager:(id)manager incrementalChange:(id)change timeIntervalSinceNonIncrementalRun:(double)run
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [v6 timeIntervalSinceLastGraphFullRebuild];
+  managerCopy = manager;
+  [managerCopy timeIntervalSinceLastGraphFullRebuild];
   v8 = v7;
-  if (v7 < a5)
+  if (v7 < run)
   {
     v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v7];
-    v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-a5];
-    v11 = [v6 workingContext];
-    v12 = [v11 loggingConnection];
+    v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-run];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
       v15 = v9;
       v16 = 2112;
       v17 = v10;
-      _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_INFO, "PHASearchEnrichmentTask should not run incrementally, graph was fully rebuilt recently: %@, last search non incremental run: %@", &v14, 0x16u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "PHASearchEnrichmentTask should not run incrementally, graph was fully rebuilt recently: %@, last search non incremental run: %@", &v14, 0x16u);
     }
   }
 
-  return v8 >= a5;
+  return v8 >= run;
 }
 
 - (id)taskClassDependencies

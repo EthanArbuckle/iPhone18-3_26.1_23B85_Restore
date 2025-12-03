@@ -10,10 +10,10 @@
   v2 = objc_alloc_init(OTConfigurationContext);
   [v2 setContext:OTDefaultContext];
   v3 = objc_alloc_init(ACAccountStore);
-  v4 = [v3 aa_primaryAppleAccount];
-  v5 = [v4 aa_altDSID];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
 
-  [v2 setAltDSID:v5];
+  [v2 setAltDSID:aa_altDSID];
   v6 = [[OTClique alloc] initWithContextData:v2];
   v11 = 0;
   v7 = [v6 fetchUserControllableViewsSyncingEnabled:&v11];
@@ -32,11 +32,11 @@
 
 - (void)isKeychainSyncEnabled
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_0, v3, OS_LOG_TYPE_ERROR, "Failed to read keychain sync status with error: %{public}@", &v5, 0xCu);
+  v6 = safari_privacyPreservingDescription;
+  _os_log_error_impl(&dword_0, selfCopy, OS_LOG_TYPE_ERROR, "Failed to read keychain sync status with error: %{public}@", &v5, 0xCu);
 }
 
 @end

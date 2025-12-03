@@ -1,17 +1,17 @@
 @interface TRANSITPbRegionPreloadMarket
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTiles:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addTiles:(id)tiles;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNorthWestLongitude:(BOOL)a3;
-- (void)setHasSouthEastLatitude:(BOOL)a3;
-- (void)setHasSouthEastLongitude:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNorthWestLongitude:(BOOL)longitude;
+- (void)setHasSouthEastLatitude:(BOOL)latitude;
+- (void)setHasSouthEastLongitude:(BOOL)longitude;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TRANSITPbRegionPreloadMarket
@@ -24,9 +24,9 @@
   [(TRANSITPbRegionPreloadMarket *)&v3 dealloc];
 }
 
-- (void)setHasNorthWestLongitude:(BOOL)a3
+- (void)setHasNorthWestLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSouthEastLatitude:(BOOL)a3
+- (void)setHasSouthEastLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 4;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSouthEastLongitude:(BOOL)a3
+- (void)setHasSouthEastLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 8;
   }
@@ -69,7 +69,7 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addTiles:(id)a3
+- (void)addTiles:(id)tiles
 {
   tiles = self->_tiles;
   if (!tiles)
@@ -78,7 +78,7 @@
     self->_tiles = tiles;
   }
 
-  [(NSMutableArray *)tiles addObject:a3];
+  [(NSMutableArray *)tiles addObject:tiles];
 }
 
 - (id)description
@@ -172,7 +172,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -247,13 +247,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = *&self->_northWestLatitude;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = *&self->_northWestLatitude;
+    *(to + 48) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -264,8 +264,8 @@ LABEL_3:
       }
 
 LABEL_13:
-      *(a3 + 3) = *&self->_southEastLatitude;
-      *(a3 + 48) |= 4u;
+      *(to + 3) = *&self->_southEastLatitude;
+      *(to + 48) |= 4u;
       if ((*&self->_has & 8) == 0)
       {
         goto LABEL_6;
@@ -280,8 +280,8 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = *&self->_northWestLongitude;
-  *(a3 + 48) |= 2u;
+  *(to + 2) = *&self->_northWestLongitude;
+  *(to + 48) |= 2u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -292,29 +292,29 @@ LABEL_4:
   if ((has & 8) != 0)
   {
 LABEL_5:
-    *(a3 + 4) = *&self->_southEastLongitude;
-    *(a3 + 48) |= 8u;
+    *(to + 4) = *&self->_southEastLongitude;
+    *(to + 48) |= 8u;
   }
 
 LABEL_6:
   if ([(TRANSITPbRegionPreloadMarket *)self tilesCount])
   {
-    [a3 clearTiles];
-    v6 = [(TRANSITPbRegionPreloadMarket *)self tilesCount];
-    if (v6)
+    [to clearTiles];
+    tilesCount = [(TRANSITPbRegionPreloadMarket *)self tilesCount];
+    if (tilesCount)
     {
-      v7 = v6;
+      v7 = tilesCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addTiles:{-[TRANSITPbRegionPreloadMarket tilesAtIndex:](self, "tilesAtIndex:", i)}];
+        [to addTiles:{-[TRANSITPbRegionPreloadMarket tilesAtIndex:](self, "tilesAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -383,7 +383,7 @@ LABEL_6:
           objc_enumerationMutation(tiles);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v6 addTiles:v13];
       }
 
@@ -396,20 +396,20 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_northWestLatitude != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_northWestLatitude != *(equal + 1))
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -418,45 +418,45 @@ LABEL_24:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_northWestLongitude != *(a3 + 2))
+      if ((*(equal + 48) & 2) == 0 || self->_northWestLongitude != *(equal + 2))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
       goto LABEL_24;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_southEastLatitude != *(a3 + 3))
+      if ((*(equal + 48) & 4) == 0 || self->_southEastLatitude != *(equal + 3))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 4) != 0)
+    else if ((*(equal + 48) & 4) != 0)
     {
       goto LABEL_24;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_southEastLongitude != *(a3 + 4))
+      if ((*(equal + 48) & 8) == 0 || self->_southEastLongitude != *(equal + 4))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 8) != 0)
+    else if ((*(equal + 48) & 8) != 0)
     {
       goto LABEL_24;
     }
 
     tiles = self->_tiles;
-    if (tiles | *(a3 + 5))
+    if (tiles | *(equal + 5))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)tiles isEqual:?];
@@ -611,14 +611,14 @@ LABEL_24:
   return v12 ^ v8 ^ v16 ^ v20 ^ [(NSMutableArray *)self->_tiles hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if (v4)
   {
-    self->_northWestLatitude = *(a3 + 1);
+    self->_northWestLatitude = *(from + 1);
     *&self->_has |= 1u;
-    v4 = *(a3 + 48);
+    v4 = *(from + 48);
     if ((v4 & 2) == 0)
     {
 LABEL_3:
@@ -631,14 +631,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 48) & 2) == 0)
+  else if ((*(from + 48) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_northWestLongitude = *(a3 + 2);
+  self->_northWestLongitude = *(from + 2);
   *&self->_has |= 2u;
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if ((v4 & 4) == 0)
   {
 LABEL_4:
@@ -651,12 +651,12 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_southEastLatitude = *(a3 + 3);
+  self->_southEastLatitude = *(from + 3);
   *&self->_has |= 4u;
-  if ((*(a3 + 48) & 8) != 0)
+  if ((*(from + 48) & 8) != 0)
   {
 LABEL_5:
-    self->_southEastLongitude = *(a3 + 4);
+    self->_southEastLongitude = *(from + 4);
     *&self->_has |= 8u;
   }
 
@@ -665,7 +665,7 @@ LABEL_6:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(a3 + 5);
+  v5 = *(from + 5);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

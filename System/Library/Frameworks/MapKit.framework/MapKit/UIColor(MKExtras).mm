@@ -13,13 +13,13 @@
   v20 = 0.0;
   v17 = 0.0;
   v18 = 0.0;
-  if ([a1 getRed:&v20 green:&v19 blue:&v18 alpha:&v17])
+  if ([self getRed:&v20 green:&v19 blue:&v18 alpha:&v17])
   {
     goto LABEL_4;
   }
 
   v16 = 0.0;
-  if ([a1 getWhite:&v16 alpha:&v17])
+  if ([self getWhite:&v16 alpha:&v17])
   {
     v18 = v16;
     v19 = v16;
@@ -34,7 +34,7 @@ LABEL_4:
     v9 = v17;
     LODWORD(v4) = vcvtas_u32_f32(v9 * 255.0);
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%.2x%.2x%.2x%.2x", v6, v2, v3, v4];
-    v11 = [v10 uppercaseString];
+    uppercaseString = [v10 uppercaseString];
 
     goto LABEL_5;
   }
@@ -42,20 +42,20 @@ LABEL_4:
   v14 = 0.0;
   v15 = 0.0;
   v13 = 0.0;
-  if ([a1 getHue:&v15 saturation:&v14 brightness:&v13 alpha:&v17] && (objc_msgSend(MEMORY[0x1E69DC888], "_maps_getRed:green:blue:fromHue:saturation:value:", &v20, &v19, &v18, v15, v14, v13) & 1) != 0)
+  if ([self getHue:&v15 saturation:&v14 brightness:&v13 alpha:&v17] && (objc_msgSend(MEMORY[0x1E69DC888], "_maps_getRed:green:blue:fromHue:saturation:value:", &v20, &v19, &v18, v15, v14, v13) & 1) != 0)
   {
     goto LABEL_4;
   }
 
-  v11 = 0;
+  uppercaseString = 0;
 LABEL_5:
 
-  return v11;
+  return uppercaseString;
 }
 
 + (uint64_t)_maps_getRed:()MKExtras green:blue:fromHue:saturation:value:
 {
-  v10 = a1 * 360.0;
+  v10 = self * 360.0;
   v11 = *a2.i64 * a3;
   a2.i32[1] = 1078853632;
   v12 = v10 / 60.0;
@@ -163,17 +163,17 @@ LABEL_8:
     v20 = 0.0;
     v18 = 0.0;
     v6 = [v5 substringWithRange:{0, 2, 0}];
-    v7 = [a1 _getColorComponent:&v20 fromSubString:v6];
+    v7 = [self _getColorComponent:&v20 fromSubString:v6];
 
     if (v7)
     {
       v8 = [v5 substringWithRange:{2, 2}];
-      v9 = [a1 _getColorComponent:&v19 fromSubString:v8];
+      v9 = [self _getColorComponent:&v19 fromSubString:v8];
 
       if (v9)
       {
         v10 = [v5 substringWithRange:{4, 2}];
-        v11 = [a1 _getColorComponent:&v18 fromSubString:v10];
+        v11 = [self _getColorComponent:&v18 fromSubString:v10];
 
         if (v11)
         {
@@ -187,7 +187,7 @@ LABEL_10:
           }
 
           v14 = [v5 substringWithRange:{6, 2}];
-          v15 = [a1 _getColorComponent:&v17 fromSubString:v14];
+          v15 = [self _getColorComponent:&v17 fromSubString:v14];
 
           if (v15)
           {

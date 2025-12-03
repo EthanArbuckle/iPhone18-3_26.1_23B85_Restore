@@ -1,25 +1,25 @@
 @interface ORCHSchemaORCHClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHClientEventMetadata)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHClientEventMetadata)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHClientEventMetadata
 
-- (ORCHSchemaORCHClientEventMetadata)initWithDictionary:(id)a3
+- (ORCHSchemaORCHClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ORCHSchemaORCHClientEventMetadata;
   v5 = [(ORCHSchemaORCHClientEventMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ORCHSchemaORCHClientEventMetadata *)v5 setRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHClientEventMetadata)initWithJSON:(id)a3
+- (ORCHSchemaORCHClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requestId)
   {
-    v4 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    requestId = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
+    dictionaryRepresentation = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"requestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v7 = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
+    v8 = [resultCandidateId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"resultCandidateId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  requestId = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
+  requestId2 = [equalCopy requestId];
+  if ((requestId != 0) == (requestId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
-  if (v7)
+  requestId3 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
+  if (requestId3)
   {
-    v8 = v7;
-    v9 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
-    v10 = [v4 requestId];
-    v11 = [v9 isEqual:v10];
+    v8 = requestId3;
+    requestId4 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
+    requestId5 = [equalCopy requestId];
+    v11 = [requestId4 isEqual:requestId5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) != (v6 == 0))
+  requestId = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
+  requestId2 = [equalCopy resultCandidateId];
+  if ((requestId != 0) != (requestId2 == 0))
   {
-    v12 = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
-    if (!v12)
+    resultCandidateId = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
+    if (!resultCandidateId)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (v16)
     {
@@ -175,36 +175,36 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
+  toCopy = to;
+  requestId = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
 
-  if (v4)
+  if (requestId)
   {
-    v5 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
+    requestId2 = [(ORCHSchemaORCHClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
+  resultCandidateId = [(ORCHSchemaORCHClientEventMetadata *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ORCHSchemaORCHClientEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ORCHSchemaORCHClientEventMetadata *)self requestId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ORCHSchemaORCHClientEventMetadata *)self deleteRequestId];
   }

@@ -1,24 +1,24 @@
 @interface NSMutableIndexSet
-- (void)_addRangeToArray:(_NSRange)a3;
+- (void)_addRangeToArray:(_NSRange)array;
 - (void)_convertToUsingRanges;
-- (void)_ensureRangeCapacity:(unint64_t)a3;
-- (void)_incrementBy:(unint64_t)a3 startingAtIndex:(unint64_t)a4;
-- (void)_insertRange:(_NSRange)a3 inArrayAtIndex:(unint64_t)a4;
-- (void)_mergeOverlappingRangesStartingAtIndex:(unint64_t)a3;
-- (void)_removeAndDecrementBy:(unint64_t)a3 startingAtIndex:(unint64_t)a4;
-- (void)_removeRangeInArrayAtIndex:(unint64_t)a3;
-- (void)_replaceRangeInArrayAtIndex:(unint64_t)a3 withRange:(_NSRange)a4;
+- (void)_ensureRangeCapacity:(unint64_t)capacity;
+- (void)_incrementBy:(unint64_t)by startingAtIndex:(unint64_t)index;
+- (void)_insertRange:(_NSRange)range inArrayAtIndex:(unint64_t)index;
+- (void)_mergeOverlappingRangesStartingAtIndex:(unint64_t)index;
+- (void)_removeAndDecrementBy:(unint64_t)by startingAtIndex:(unint64_t)index;
+- (void)_removeRangeInArrayAtIndex:(unint64_t)index;
+- (void)_replaceRangeInArrayAtIndex:(unint64_t)index withRange:(_NSRange)range;
 - (void)addIndex:(NSUInteger)value;
 - (void)addIndexes:(NSIndexSet *)indexSet;
-- (void)addIndexes:(const unint64_t *)a3 count:(unint64_t)a4;
+- (void)addIndexes:(const unint64_t *)indexes count:(unint64_t)count;
 - (void)addIndexesInRange:(NSRange)range;
-- (void)addIndexesWithBitfield:(unint64_t)a3;
+- (void)addIndexesWithBitfield:(unint64_t)bitfield;
 - (void)removeAllIndexes;
 - (void)removeIndex:(NSUInteger)value;
 - (void)removeIndexes:(NSIndexSet *)indexSet;
 - (void)removeIndexesInRange:(NSRange)range;
-- (void)removeIndexesInRange:(_NSRange)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (void)removeIndexesWithOptions:(unint64_t)a3 passingTest:(id)a4;
+- (void)removeIndexesInRange:(_NSRange)range options:(unint64_t)options passingTest:(id)test;
+- (void)removeIndexesWithOptions:(unint64_t)options passingTest:(id)test;
 - (void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta;
 @end
 
@@ -138,7 +138,7 @@ LABEL_11:
   }
 }
 
-- (void)_ensureRangeCapacity:(unint64_t)a3
+- (void)_ensureRangeCapacity:(unint64_t)capacity
 {
   indexSetFlags = self->super._indexSetFlags;
   if (*&indexSetFlags)
@@ -151,24 +151,24 @@ LABEL_11:
     v5 = *self->super._internal._singleRange._range.location;
   }
 
-  if (v5 < a3)
+  if (v5 < capacity)
   {
-    if (a3 == 1)
+    if (capacity == 1)
     {
       self->super._indexSetFlags = (*&indexSetFlags | 1);
     }
 
     else
     {
-      v6 = 2 * v5;
-      if (v6 <= a3)
+      capacityCopy = 2 * v5;
+      if (capacityCopy <= capacity)
       {
-        v6 = a3;
+        capacityCopy = capacity;
       }
 
-      if (a3 >= 4)
+      if (capacity >= 4)
       {
-        v7 = v6;
+        v7 = capacityCopy;
       }
 
       else
@@ -284,19 +284,19 @@ LABEL_11:
   }
 }
 
-- (void)_addRangeToArray:(_NSRange)a3
+- (void)_addRangeToArray:(_NSRange)array
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(NSIndexSet *)self rangeCount];
+  length = array.length;
+  location = array.location;
+  rangeCount = [(NSIndexSet *)self rangeCount];
 
-  [(NSMutableIndexSet *)self _insertRange:location inArrayAtIndex:length, v6];
+  [(NSMutableIndexSet *)self _insertRange:location inArrayAtIndex:length, rangeCount];
 }
 
-- (void)_insertRange:(_NSRange)a3 inArrayAtIndex:(unint64_t)a4
+- (void)_insertRange:(_NSRange)range inArrayAtIndex:(unint64_t)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ((self & 0x8000000000000000) == 0)
   {
     indexSetFlags = self->super._indexSetFlags;
@@ -359,9 +359,9 @@ LABEL_15:
   }
 
 LABEL_18:
-  if (v11 < a4)
+  if (v11 < index)
   {
-    v29 = [NSString stringWithFormat:@"Index %ld out of range bounds [0...%ld]", a4, v11];
+    v29 = [NSString stringWithFormat:@"Index %ld out of range bounds [0...%ld]", index, v11];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v29 userInfo:0]);
   }
 
@@ -369,7 +369,7 @@ LABEL_18:
   p_internal = &self->super._internal;
   if (*&self->super._indexSetFlags)
   {
-    v23 = &p_internal[a4];
+    v23 = &p_internal[index];
     v23->_singleRange._range.location = location;
     v23->_singleRange._range.length = length;
   }
@@ -381,9 +381,9 @@ LABEL_18:
     v15 = *(p_internal->_singleRange._range.location + 8);
     v17 = *(p_internal->_singleRange._range.location + 24);
     v18 = v17 + v15;
-    if (v15 - a4 > a4 && v17 != 0 || v16 == v18)
+    if (v15 - index > index && v17 != 0 || v16 == v18)
     {
-      if (v15 == a4)
+      if (v15 == index)
       {
         if (v17 <= 1)
         {
@@ -395,16 +395,16 @@ LABEL_18:
           v21 = v17 >> 1;
         }
 
-        memmove(&v14[2 * v17 + 8 + -2 * v21], &v14[2 * v17 + 8], 16 * a4);
+        memmove(&v14[2 * v17 + 8 + -2 * v21], &v14[2 * v17 + 8], 16 * index);
         v14 = p_internal->_singleRange._range.location;
         v22 = *(p_internal->_singleRange._range.location + 24) - v21;
       }
 
       else
       {
-        if (a4)
+        if (index)
         {
-          memmove(&v14[2 * v17 + 6], &v14[2 * v17 + 8], 16 * a4);
+          memmove(&v14[2 * v17 + 6], &v14[2 * v17 + 8], 16 * index);
           v14 = p_internal->_singleRange._range.location;
           v17 = *(p_internal->_singleRange._range.location + 24);
         }
@@ -415,11 +415,11 @@ LABEL_18:
       v14[3] = v22;
     }
 
-    else if (a4)
+    else if (index)
     {
-      if (v15 != a4)
+      if (v15 != index)
       {
-        memmove(&v14[2 * v17 + 10 + 2 * a4], &v14[2 * v17 + 8 + 2 * a4], 16 * (v15 - a4));
+        memmove(&v14[2 * v17 + 10 + 2 * index], &v14[2 * v17 + 8 + 2 * index], 16 * (v15 - index));
       }
     }
 
@@ -447,7 +447,7 @@ LABEL_18:
       v27 = (p_internal->_singleRange._range.location + 16 * *(p_internal->_singleRange._range.location + 24) + 64);
     }
 
-    v28 = &v27[a4];
+    v28 = &v27[index];
     v28->_singleRange._range.location = location;
     v28->_singleRange._range.length = length;
     atomic_store(0, (p_internal->_singleRange._range.location + 56));
@@ -456,7 +456,7 @@ LABEL_18:
   }
 }
 
-- (void)_removeRangeInArrayAtIndex:(unint64_t)a3
+- (void)_removeRangeInArrayAtIndex:(unint64_t)index
 {
   if ((self & 0x8000000000000000) == 0)
   {
@@ -520,10 +520,10 @@ LABEL_15:
   }
 
 LABEL_18:
-  if (location < a3)
+  if (location < index)
   {
-    v15 = [NSString stringWithFormat:@"Index %ld out of range bounds [0...%ld]", a3, location];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v15 userInfo:0]);
+    location = [NSString stringWithFormat:@"Index %ld out of range bounds [0...%ld]", index, location];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:location userInfo:0]);
   }
 
   if (*&self->super._indexSetFlags)
@@ -536,10 +536,10 @@ LABEL_18:
     v9 = self->super._internal._singleRange._range.location;
     v10 = *(v9 + 24);
     v11 = (v9 + 16 * v10 + 64);
-    v12 = &v11[16 * a3];
+    v12 = &v11[16 * index];
     v13 = *(v12 + 1);
-    v14 = *(v9 + 8) + ~a3;
-    if (v14 <= a3)
+    v14 = *(v9 + 8) + ~index;
+    if (v14 <= index)
     {
       if (v14)
       {
@@ -549,9 +549,9 @@ LABEL_18:
 
     else
     {
-      if (a3)
+      if (index)
       {
-        memmove((v9 + 16 * v10 + 80), v11, 16 * a3);
+        memmove((v9 + 16 * v10 + 80), v11, 16 * index);
         v9 = self->super._internal._singleRange._range.location;
         v10 = *(v9 + 24);
       }
@@ -565,7 +565,7 @@ LABEL_18:
   }
 }
 
-- (void)_replaceRangeInArrayAtIndex:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)_replaceRangeInArrayAtIndex:(unint64_t)index withRange:(_NSRange)range
 {
   if ((self & 0x8000000000000000) != 0)
   {
@@ -623,7 +623,7 @@ LABEL_18:
   if (*&self->super._indexSetFlags)
   {
     location = 1;
-    if (a4.length)
+    if (range.length)
     {
       goto LABEL_18;
     }
@@ -633,12 +633,12 @@ LABEL_18:
 
   location = *(self->super._internal._singleRange._range.location + 8);
 LABEL_17:
-  if (a4.length)
+  if (range.length)
   {
 LABEL_18:
-    if (location < a3)
+    if (location < index)
     {
-      v15 = [NSString stringWithFormat:@"Index %ld out of range bounds [0...%ld]", a4.location, a3, location, v4, v5];
+      v15 = [NSString stringWithFormat:@"Index %ld out of range bounds [0...%ld]", range.location, index, location, v4, v5];
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v15 userInfo:0]);
     }
 
@@ -649,14 +649,14 @@ LABEL_18:
       v12 = (p_internal->_singleRange._range.location + 16 * *(p_internal->_singleRange._range.location + 24) + 64);
     }
 
-    p_range = &v12[a3]._singleRange._range;
+    p_range = &v12[index]._singleRange._range;
     length = p_range->length;
-    *p_range = a4;
+    *p_range = range;
     if ((*&self->super._indexSetFlags & 1) == 0)
     {
       atomic_store(0, (p_internal->_singleRange._range.location + 56));
       *(p_internal->_singleRange._range.location + 16) -= length;
-      *(p_internal->_singleRange._range.location + 16) += a4.length;
+      *(p_internal->_singleRange._range.location + 16) += range.length;
     }
 
     return;
@@ -664,7 +664,7 @@ LABEL_18:
 
 LABEL_25:
 
-  [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:a3, a4.location];
+  [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:index, range.location];
 }
 
 - (void)addIndexes:(NSIndexSet *)indexSet
@@ -811,10 +811,10 @@ LABEL_37:
 
   else
   {
-    v10 = [(NSIndexSet *)indexSet firstIndex];
-    if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [(NSIndexSet *)indexSet firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)indexSet indexGreaterThanIndex:i])
+      for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)indexSet indexGreaterThanIndex:i])
       {
         [(NSMutableIndexSet *)self addIndex:i];
       }
@@ -822,18 +822,18 @@ LABEL_37:
   }
 }
 
-- (void)addIndexes:(const unint64_t *)a3 count:(unint64_t)a4
+- (void)addIndexes:(const unint64_t *)indexes count:(unint64_t)count
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (count)
   {
     if ((*&self->super._indexSetFlags & 2) != 0)
     {
       v12 = 0;
-      v13 = a4;
+      countCopy = count;
       do
       {
-        v14 = a3[v13 - 1];
+        v14 = indexes[countCopy - 1];
         if (v14 > 0x3F)
         {
           if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -847,17 +847,17 @@ LABEL_37:
           v12 |= 1 << v14;
         }
 
-        --v13;
+        --countCopy;
       }
 
-      while (v13);
+      while (countCopy);
       self->super._internal._singleRange._range.location |= v12;
     }
 
     else
     {
 LABEL_3:
-      v5 = _NSGroupIndexesIntoSimpleRanges(a3, a4);
+      v5 = _NSGroupIndexesIntoSimpleRanges(indexes, count);
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
@@ -876,8 +876,8 @@ LABEL_3:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v16 + 1) + 8 * i) rangeValue];
-            [(NSMutableIndexSet *)self addIndexesInRange:v10, v11];
+            rangeValue = [*(*(&v16 + 1) + 8 * i) rangeValue];
+            [(NSMutableIndexSet *)self addIndexesInRange:rangeValue, v11];
           }
 
           v7 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -889,11 +889,11 @@ LABEL_3:
   }
 }
 
-- (void)addIndexesWithBitfield:(unint64_t)a3
+- (void)addIndexesWithBitfield:(unint64_t)bitfield
 {
   if ((*&self->super._indexSetFlags & 2) != 0)
   {
-    self->super._internal._singleRange._range.location |= a3;
+    self->super._internal._singleRange._range.location |= bitfield;
   }
 
   else
@@ -913,10 +913,10 @@ LABEL_3:
     }
 
     v9 = v8 + v7;
-    while (((-1 << v6) & a3) != 0)
+    while (((-1 << v6) & bitfield) != 0)
     {
-      v10 = __clz(__rbit64((-1 << v6) & a3));
-      v6 = __clz(__rbit64((-1 << v10) & ~a3));
+      v10 = __clz(__rbit64((-1 << v6) & bitfield));
+      v6 = __clz(__rbit64((-1 << v10) & ~bitfield));
       if (__CFADD__(v9++, 1))
       {
         ++v5;
@@ -1089,10 +1089,10 @@ LABEL_40:
 
       else
       {
-        v10 = [(NSIndexSet *)indexSet firstIndex];
-        if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+        firstIndex = [(NSIndexSet *)indexSet firstIndex];
+        if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)indexSet indexGreaterThanIndex:i])
+          for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSIndexSet *)indexSet indexGreaterThanIndex:i])
           {
             [(NSMutableIndexSet *)self removeIndex:i];
           }
@@ -1102,30 +1102,30 @@ LABEL_40:
   }
 }
 
-- (void)removeIndexesWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (void)removeIndexesWithOptions:(unint64_t)options passingTest:(id)test
 {
   v10 = *MEMORY[0x1E69E9840];
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v6 = a3 & 0xFFFFFFFFFFFFFFFELL;
+    optionsCopy = options & 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
   {
-    v6 = a3;
+    optionsCopy = options;
   }
 
-  __NSIndexSetParameterCheckIterate(self, a2, a4, v6, 0, 0x7FFFFFFFFFFFFFFEuLL);
+  __NSIndexSetParameterCheckIterate(self, a2, test, optionsCopy, 0, 0x7FFFFFFFFFFFFFFEuLL);
   v7 = objc_alloc_init(NSMutableIndexSet);
   v9 = 0;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__NSMutableIndexSet_removeIndexesWithOptions_passingTest___block_invoke;
   v8[3] = &unk_1E69F4020;
-  v8[5] = a4;
+  v8[5] = test;
   v8[6] = &v9;
   v8[4] = v7;
-  __NSIndexSetEnumerate(self, v6, 0, 0x7FFFFFFFFFFFFFFELL, v8);
+  __NSIndexSetEnumerate(self, optionsCopy, 0, 0x7FFFFFFFFFFFFFFELL, v8);
   [(NSMutableIndexSet *)self removeIndexes:v7];
 }
 
@@ -1141,32 +1141,32 @@ void __58__NSMutableIndexSet_removeIndexesWithOptions_passingTest___block_invoke
   }
 }
 
-- (void)removeIndexesInRange:(_NSRange)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (void)removeIndexesInRange:(_NSRange)range options:(unint64_t)options passingTest:(id)test
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13 = *MEMORY[0x1E69E9840];
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v9 = a4 & 0xF7FFFFFFFFFFFFFELL;
+    optionsCopy = options & 0xF7FFFFFFFFFFFFFELL;
   }
 
   else
   {
-    v9 = a4;
+    optionsCopy = options;
   }
 
-  __NSIndexSetParameterCheckIterate(self, a2, a5, v9 | 0x800000000000000, a3.location, a3.length);
+  __NSIndexSetParameterCheckIterate(self, a2, test, optionsCopy | 0x800000000000000, range.location, range.length);
   v10 = objc_alloc_init(NSMutableIndexSet);
   v12 = 0;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__NSMutableIndexSet_removeIndexesInRange_options_passingTest___block_invoke;
   v11[3] = &unk_1E69F4020;
-  v11[5] = a5;
+  v11[5] = test;
   v11[6] = &v12;
   v11[4] = v10;
-  __NSIndexSetEnumerate(self, v9 | 0x800000000000000, location, length, v11);
+  __NSIndexSetEnumerate(self, optionsCopy | 0x800000000000000, location, length, v11);
   [(NSMutableIndexSet *)self removeIndexes:v10];
 }
 
@@ -1182,7 +1182,7 @@ void __62__NSMutableIndexSet_removeIndexesInRange_options_passingTest___block_in
   }
 }
 
-- (void)_mergeOverlappingRangesStartingAtIndex:(unint64_t)a3
+- (void)_mergeOverlappingRangesStartingAtIndex:(unint64_t)index
 {
   p_internal = &self->super._internal;
   v6 = self & 0xC000000000000007;
@@ -1257,7 +1257,7 @@ LABEL_17:
           }
 
           v18 = p_internal;
-          if (a3 >= v17)
+          if (index >= v17)
           {
             return;
           }
@@ -1269,7 +1269,7 @@ LABEL_17:
         v20 = *(p_internal->_singleRange._range.location + 8);
         if (!v20)
         {
-          if (a3 == -1)
+          if (index == -1)
           {
             return;
           }
@@ -1300,7 +1300,7 @@ LABEL_40:
       v19 = v20 - 1;
     }
 
-    if (a3 >= v19)
+    if (index >= v19)
     {
       return;
     }
@@ -1314,8 +1314,8 @@ LABEL_44:
     }
 
 LABEL_45:
-    v22 = *(v18 + 16 * a3);
-    v23 = (v18 + 16 * (a3 + 1));
+    v22 = *(v18 + 16 * index);
+    v23 = (v18 + 16 * (index + 1));
     v24 = vaddvq_s64(v22);
     if (v24 < *v23)
     {
@@ -1325,12 +1325,12 @@ LABEL_45:
     v25 = v23[1] + *v23;
     if (v24 < v25)
     {
-      [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:a3 withRange:*(v18 + 16 * a3), v25 - v22.i64[0]];
-      [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:++a3];
+      [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:index withRange:*(v18 + 16 * index), v25 - v22.i64[0]];
+      [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:++index];
       continue;
     }
 
-    [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:a3 + 1];
+    [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:index + 1];
   }
 
   v8 = *v7;
@@ -1767,9 +1767,9 @@ LABEL_31:
   }
 }
 
-- (void)_incrementBy:(unint64_t)a3 startingAtIndex:(unint64_t)a4
+- (void)_incrementBy:(unint64_t)by startingAtIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!by)
   {
     return;
   }
@@ -1822,20 +1822,20 @@ LABEL_31:
 
   if (*&self->super._indexSetFlags)
   {
-    if (a4 <= 0x7FFFFFFFFFFFFFFELL)
+    if (index <= 0x7FFFFFFFFFFFFFFELL)
     {
       v14 = 0;
       p_internal = &self->super._internal;
 LABEL_22:
-      if (a3 + p_internal[v14]._singleRange._range.location + p_internal[v14]._singleRange._range.length - 1 >= 0x7FFFFFFFFFFFFFFFLL)
+      if (by + p_internal[v14]._singleRange._range.location + p_internal[v14]._singleRange._range.length - 1 >= 0x7FFFFFFFFFFFFFFFLL)
       {
-        v28 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Incrementing by %ld would push last index beyond maximum index value of NSNotFound - 1", _NSMethodExceptionProem(self, a2), a3), 0}];
+        v28 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Incrementing by %ld would push last index beyond maximum index value of NSNotFound - 1", _NSMethodExceptionProem(self, a2), by), 0}];
         objc_exception_throw(v28);
       }
     }
   }
 
-  else if (a4 <= 0x7FFFFFFFFFFFFFFELL)
+  else if (index <= 0x7FFFFFFFFFFFFFFELL)
   {
     location = self->super._internal._singleRange._range.location;
     v12 = *(location + 8);
@@ -1848,7 +1848,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  v15 = [(NSIndexSet *)self _indexOfRangeAfterOrContainingIndex:a4];
+  v15 = [(NSIndexSet *)self _indexOfRangeAfterOrContainingIndex:index];
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return;
@@ -1864,7 +1864,7 @@ LABEL_23:
 
   v19 = &v18[v15];
   v31 = v19->_singleRange._range.location;
-  if (v19->_singleRange._range.location >= a4)
+  if (v19->_singleRange._range.location >= index)
   {
     v29 = 0;
     v30 = 0;
@@ -1872,9 +1872,9 @@ LABEL_23:
 
   else
   {
-    v30 = v19->_singleRange._range.location - a4 + v19->_singleRange._range.length;
-    v29 = a4 + a3;
-    [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:v15 withRange:v19->_singleRange._range.location, a4 - v19->_singleRange._range.location];
+    v30 = v19->_singleRange._range.location - index + v19->_singleRange._range.length;
+    v29 = index + by;
+    [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:v15 withRange:v19->_singleRange._range.location, index - v19->_singleRange._range.location];
     ++v16;
   }
 
@@ -1933,7 +1933,7 @@ LABEL_47:
       v27 = (v17->_singleRange._range.location + 16 * *(v17->_singleRange._range.location + 24) + 64);
     }
 
-    [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:v16++ withRange:v27[v20]._singleRange._range.location + a3, v27[v20]._singleRange._range.length];
+    [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:v16++ withRange:v27[v20]._singleRange._range.location + by, v27[v20]._singleRange._range.length];
     ++v20;
     if ((self & 0x8000000000000000) == 0)
     {
@@ -1965,21 +1965,21 @@ LABEL_30:
     }
   }
 
-  if (v31 < a4)
+  if (v31 < index)
   {
 
     [(NSMutableIndexSet *)self addIndexesInRange:v29, v30];
   }
 }
 
-- (void)_removeAndDecrementBy:(unint64_t)a3 startingAtIndex:(unint64_t)a4
+- (void)_removeAndDecrementBy:(unint64_t)by startingAtIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!by)
   {
     return;
   }
 
-  v7 = [(NSIndexSet *)self _indexOfRangeAfterOrContainingIndex:a4];
+  v7 = [(NSIndexSet *)self _indexOfRangeAfterOrContainingIndex:index];
   v8 = v7;
   v9 = v7;
   if (v7)
@@ -1998,15 +1998,15 @@ LABEL_30:
     p_location = &p_internal[v7]._singleRange._range.location;
     v13 = *p_location;
     v12 = p_location[1];
-    v15 = a4 >= v13;
-    v14 = a4 - v13;
+    v15 = index >= v13;
+    v14 = index - v13;
     v15 = !v15 || v14 >= v12;
     v16 = v15;
     v9 = v7 - v16;
   }
 
   v34 = v9;
-  v17 = a3 + a4 - 1;
+  v17 = by + index - 1;
   v18 = &self->super._internal;
   v19 = MEMORY[0x1E69E5910];
   while (1)
@@ -2097,12 +2097,12 @@ LABEL_33:
     v29 = v17 - v26->_singleRange._range.location;
     if (!v15)
     {
-      v27 -= a3;
+      v27 -= by;
       goto LABEL_53;
     }
 
     v30 = v27 + length - 1;
-    if (v27 >= a4 && v30 <= v17)
+    if (v27 >= index && v30 <= v17)
     {
 LABEL_44:
       [(NSMutableIndexSet *)self _removeRangeInArrayAtIndex:v8, v34];
@@ -2110,11 +2110,11 @@ LABEL_44:
 
     else
     {
-      if (v27 <= a4 && v17 <= v30)
+      if (v27 <= index && v17 <= v30)
       {
-        v32 = a3;
+        byCopy = by;
 LABEL_46:
-        length -= v32;
+        length -= byCopy;
 LABEL_53:
         [(NSMutableIndexSet *)self _replaceRangeInArrayAtIndex:v8 withRange:v27, length, v34];
         goto LABEL_54;
@@ -2126,20 +2126,20 @@ LABEL_53:
         length -= v31;
         if (length)
         {
-          v27 = v27 - a3 + v31;
+          v27 = v27 - by + v31;
           goto LABEL_53;
         }
 
         goto LABEL_44;
       }
 
-      if (v27 <= a4)
+      if (v27 <= index)
       {
-        v33 = v30 - a4;
-        if (v30 >= a4)
+        v33 = v30 - index;
+        if (v30 >= index)
         {
           v15 = __CFADD__(v33, 1);
-          v32 = v33 + 1;
+          byCopy = v33 + 1;
           if (!v15)
           {
             goto LABEL_46;

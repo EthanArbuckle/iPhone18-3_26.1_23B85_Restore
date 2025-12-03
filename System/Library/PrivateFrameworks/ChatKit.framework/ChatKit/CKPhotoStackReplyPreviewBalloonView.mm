@@ -15,10 +15,10 @@
 
 - (void)updateContentAlpha
 {
-  v3 = [(CKPhotoStackReplyPreviewBalloonView *)self traitCollection];
-  v4 = [v3 isTranscriptBackgroundActive];
+  traitCollection = [(CKPhotoStackReplyPreviewBalloonView *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  if (v4)
+  if (isTranscriptBackgroundActive)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 replyPreviewBalloonImageAlpha];

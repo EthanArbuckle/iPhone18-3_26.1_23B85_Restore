@@ -2,22 +2,22 @@
 + (id)indexingString;
 + (id)sectionTitle;
 + (id)supportedCellClasses;
-- (BOOL)handleSelectionForResult:(id)a3;
-- (BOOL)shouldStartMenuInteractionForResult:(id)a3;
+- (BOOL)handleSelectionForResult:(id)result;
+- (BOOL)shouldStartMenuInteractionForResult:(id)result;
 - (CKLocationSearchController)init;
 - (double)interGroupSpacing;
-- (id)_activityItemProviderForResult:(id)a3;
-- (id)_mapItemForResult:(id)a3;
-- (id)additionalMenuElementsForResult:(id)a3;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5;
-- (id)itemProviderForSearchResult:(id)a3;
-- (id)layoutGroupWithEnvironment:(id)a3;
-- (id)previewViewControllerForResult:(id)a3;
-- (id)reuseIdentifierForIndex:(int64_t)a3;
-- (id)urlForQueryResult:(id)a3;
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5;
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4;
+- (id)_activityItemProviderForResult:(id)result;
+- (id)_mapItemForResult:(id)result;
+- (id)additionalMenuElementsForResult:(id)result;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind;
+- (id)itemProviderForSearchResult:(id)result;
+- (id)layoutGroupWithEnvironment:(id)environment;
+- (id)previewViewControllerForResult:(id)result;
+- (id)reuseIdentifierForIndex:(int64_t)index;
+- (id)urlForQueryResult:(id)result;
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth;
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path;
 @end
 
 @implementation CKLocationSearchController
@@ -38,10 +38,10 @@
   return v3;
 }
 
-- (id)reuseIdentifierForIndex:(int64_t)a3
+- (id)reuseIdentifierForIndex:(int64_t)index
 {
-  v4 = [(CKSearchController *)self results];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  results = [(CKSearchController *)self results];
+  v5 = [results objectAtIndexedSubscript:index];
   v6 = [CKSpotlightQueryResultUtilities indexDomainForResult:v5];
 
   v7 = [v6 isEqualToString:@"attachmentDomain"];
@@ -51,9 +51,9 @@
     v8 = off_1E72E5020;
   }
 
-  v9 = [(__objc2_class *)*v8 reuseIdentifier];
+  reuseIdentifier = [(__objc2_class *)*v8 reuseIdentifier];
 
-  return v9;
+  return reuseIdentifier;
 }
 
 + (id)indexingString
@@ -83,57 +83,57 @@
   return v4;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKSearchController *)self results];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
-  v13 = [v12 item];
+  identifierCopy = identifier;
+  pathCopy = path;
+  viewCopy = view;
+  results = [(CKSearchController *)self results];
+  v12 = [results objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  item = [v12 item];
 
-  v14 = [CKSpotlightQueryResultUtilities indexDomainForItem:v13];
+  v14 = [CKSpotlightQueryResultUtilities indexDomainForItem:item];
   if ([v14 isEqualToString:@"attachmentDomain"])
   {
-    v19 = self;
-    v15 = &v19;
+    selfCopy = self;
+    v15 = &selfCopy;
   }
 
   else
   {
-    v18 = self;
-    v15 = &v18;
+    selfCopy2 = self;
+    v15 = &selfCopy2;
   }
 
   v15[1] = CKLocationSearchController;
-  v16 = objc_msgSendSuper2(v15, sel_cellForItemInCollectionView_atIndexPath_withIdentifier_, v10, v9, v8, v18);
+  v16 = objc_msgSendSuper2(v15, sel_cellForItemInCollectionView_atIndexPath_withIdentifier_, viewCopy, pathCopy, identifierCopy, selfCopy2);
 
   return v16;
 }
 
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
   v11 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
-  v12 = [v9 isEqualToString:v11];
+  v12 = [kindCopy isEqualToString:v11];
 
   if (v12)
   {
     v13 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
     v14 = +[CKDetailsSearchResultsFooterCell reuseIdentifier];
-    v15 = [v10 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:pathCopy];
 
     v16 = MEMORY[0x1E696AEC0];
     v17 = CKFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"SEE_ALL_LOCATIONS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v19 = [v16 stringWithFormat:v18];
 
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v22 = @"\u200F";
     }
@@ -146,31 +146,31 @@
     v23 = [(__CFString *)v22 stringByAppendingString:v19];
 
     [v15 setTitle:v23];
-    v24 = [objc_opt_class() sectionIdentifier];
-    [v15 setSectionIdentifier:v24];
+    sectionIdentifier = [objc_opt_class() sectionIdentifier];
+    [v15 setSectionIdentifier:sectionIdentifier];
   }
 
   else
   {
     v25 = +[CKSearchAvatarSupplementryView supplementaryViewType];
     v26 = +[CKSearchAvatarSupplementryView reuseIdentifier];
-    v15 = [v10 dequeueReusableSupplementaryViewOfKind:v25 withReuseIdentifier:v26 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v25 withReuseIdentifier:v26 forIndexPath:pathCopy];
 
-    v27 = [v8 row];
-    v28 = [(CKSearchController *)self results];
-    v29 = [v28 count];
+    v27 = [pathCopy row];
+    results = [(CKSearchController *)self results];
+    v29 = [results count];
 
     if (v27 >= v29)
     {
       goto LABEL_9;
     }
 
-    v30 = [(CKSearchController *)self results];
-    v24 = [v30 objectAtIndex:{objc_msgSend(v8, "row")}];
+    results2 = [(CKSearchController *)self results];
+    sectionIdentifier = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v31 = [CKSpotlightQueryResultUtilities contactForResult:v24];
+    v31 = [CKSpotlightQueryResultUtilities contactForResult:sectionIdentifier];
     [v15 setContact:v31];
-    [v15 setAssociatedResult:v24];
+    [v15 setAssociatedResult:sectionIdentifier];
     [v15 setParentContentType:1];
   }
 
@@ -179,14 +179,14 @@ LABEL_9:
   return v15;
 }
 
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v16 = v6;
-  v8 = [v7 row];
-  v9 = [(CKSearchController *)self results];
-  v10 = [v9 count];
+  neededCopy = needed;
+  pathCopy = path;
+  v16 = neededCopy;
+  v8 = [pathCopy row];
+  results = [(CKSearchController *)self results];
+  v10 = [results count];
 
   if (v8 >= v10)
   {
@@ -195,11 +195,11 @@ LABEL_9:
 
   else
   {
-    v11 = [(CKSearchController *)self results];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    results2 = [(CKSearchController *)self results];
+    v12 = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v13 = [v16 associatedResult];
-    v14 = [v12 isEqual:v13];
+    associatedResult = [v16 associatedResult];
+    v14 = [v12 isEqual:associatedResult];
 
     if ((v14 & 1) == 0)
     {
@@ -211,7 +211,7 @@ LABEL_9:
   }
 }
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v33 = 0;
@@ -238,8 +238,8 @@ LABEL_9:
     v14 = [v12 absoluteDimension:?];
 
     v15 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v14 heightDimension:v14];
-    v16 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-    if (v16 == 1)
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection == 1)
     {
       v17 = 3;
     }
@@ -250,7 +250,7 @@ LABEL_9:
     }
 
     v18 = -8.0;
-    if (v16 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v18 = 8.0;
     }
@@ -280,18 +280,18 @@ LABEL_9:
   return v28;
 }
 
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth
 {
   if (CKIsRunningInMacCatalyst())
   {
-    if (a3)
+    if (width)
     {
-      *a3 = 0.5;
+      *width = 0.5;
     }
 
-    if (a4)
+    if (count)
     {
-      *a4 = 2;
+      *count = 2;
     }
   }
 
@@ -299,23 +299,23 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = CKLocationSearchController;
-    [(CKMessageTypeSearchController *)&v9 fractionalWidth:a3 count:a4 forLayoutWidth:a5];
+    [(CKMessageTypeSearchController *)&v9 fractionalWidth:width count:count forLayoutWidth:layoutWidth];
   }
 }
 
-- (BOOL)shouldStartMenuInteractionForResult:(id)a3
+- (BOOL)shouldStartMenuInteractionForResult:(id)result
 {
-  v3 = [(CKLocationSearchController *)self _mapItemForResult:a3];
+  v3 = [(CKLocationSearchController *)self _mapItemForResult:result];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)previewViewControllerForResult:(id)a3
+- (id)previewViewControllerForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = MEMORY[0x193AF5EC0](@"MUPlaceViewController", @"MapsUI");
-  v6 = [(CKLocationSearchController *)self _mapItemForResult:v4];
+  v6 = [(CKLocationSearchController *)self _mapItemForResult:resultCopy];
 
   v7 = 0;
   if (v5 && v6)
@@ -326,25 +326,25 @@ LABEL_9:
   return v7;
 }
 
-- (id)_activityItemProviderForResult:(id)a3
+- (id)_activityItemProviderForResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CKSearchController *)self delegate];
-  v6 = [v5 containerTraitCollectionForController:self];
+  resultCopy = result;
+  delegate = [(CKSearchController *)self delegate];
+  v6 = [delegate containerTraitCollectionForController:self];
 
   v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v8 = [v7 cachedMapPreviewForQueryResult:v4 traitCollection:v6];
+  v8 = [v7 cachedMapPreviewForQueryResult:resultCopy traitCollection:v6];
 
   if (v8)
   {
-    v9 = [v4 item];
-    v10 = [v9 attributeSet];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
 
-    v11 = [v10 contentURL];
-    v12 = [v11 lastPathComponent];
-    v13 = [v10 __ck_spotlightItemSnippet];
+    contentURL = [attributeSet contentURL];
+    lastPathComponent = [contentURL lastPathComponent];
+    __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
     v14 = objc_alloc_init(MEMORY[0x1E696EC58]);
-    [v14 setName:v13];
+    [v14 setName:__ck_spotlightItemSnippet];
     v15 = IMUTITypeForFilename();
     [v14 setType:v15];
 
@@ -353,7 +353,7 @@ LABEL_9:
 
     v17 = objc_alloc_init(MEMORY[0x1E696ECA0]);
     [v17 setSpecialization:v14];
-    v18 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:v11 metadata:v17];
+    v18 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:contentURL metadata:v17];
   }
 
   else
@@ -364,10 +364,10 @@ LABEL_9:
   return v18;
 }
 
-- (id)additionalMenuElementsForResult:(id)a3
+- (id)additionalMenuElementsForResult:(id)result
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKLocationSearchController *)self _mapItemForResult:a3];
+  v3 = [(CKLocationSearchController *)self _mapItemForResult:result];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"mappin.and.ellipse"];
@@ -393,9 +393,9 @@ LABEL_9:
   return v9;
 }
 
-- (id)_mapItemForResult:(id)a3
+- (id)_mapItemForResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = MEMORY[0x193AF5EC0](@"MKPlacemark", @"MapKit");
   v5 = MEMORY[0x193AF5EC0](@"MKMapItem", @"MapKit");
   v6 = v5;
@@ -406,47 +406,47 @@ LABEL_9:
       [CKLocationSearchController _mapItemForResult:];
     }
 
-    v7 = [v3 item];
-    v8 = [v7 attributeSet];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
 
-    v9 = [v8 latitude];
-    v10 = [v8 longitude];
-    v11 = v10;
-    if (v9 && v10)
+    latitude = [attributeSet latitude];
+    longitude = [attributeSet longitude];
+    v11 = longitude;
+    if (latitude && longitude)
     {
-      v12 = [v8 latitude];
-      [v12 floatValue];
+      latitude2 = [attributeSet latitude];
+      [latitude2 floatValue];
       v14 = v13;
 
-      v15 = [v8 longitude];
-      [v15 floatValue];
+      longitude2 = [attributeSet longitude];
+      [longitude2 floatValue];
       v17 = v16;
 
       v18 = _mapItemForResult___CLLocationCoordinate2DMake(v14, v17);
       v20 = [[v4 alloc] initWithCoordinate:{v18, v19}];
       v21 = [[v6 alloc] initWithPlacemark:v20];
-      v22 = [v8 __ck_spotlightItemSnippet];
+      __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
       v23 = CKFrameworkBundle();
       v24 = [v23 localizedStringForKey:@"Current Location" value:&stru_1F04268F8 table:@"ChatKit"];
-      v25 = [v22 isEqualToString:v24];
+      v25 = [__ck_spotlightItemSnippet isEqualToString:v24];
 
       if (v25)
       {
-        v39 = [v8 __ck_itemContentCreationDate];
+        __ck_itemContentCreationDate = [attributeSet __ck_itemContentCreationDate];
         v26 = +[CKUIBehavior sharedBehaviors];
-        v38 = [v26 locationRelativeDateFormatter];
+        locationRelativeDateFormatter = [v26 locationRelativeDateFormatter];
 
-        v27 = [v38 stringFromDate:v39];
+        v27 = [locationRelativeDateFormatter stringFromDate:__ck_itemContentCreationDate];
         v28 = MEMORY[0x1E696AEC0];
         v29 = CKFrameworkBundle();
         [v29 localizedStringForKey:@"LOCATION_FOOTER_DETAILS_VIEW" value:&stru_1F04268F8 table:@"ChatKit"];
         v30 = v40 = v20;
         v31 = [v28 stringWithFormat:v30, v27];
 
-        v32 = [MEMORY[0x1E69DC668] sharedApplication];
-        v33 = [v32 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-        if (v33 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v34 = @"\u200F";
         }
@@ -458,11 +458,11 @@ LABEL_9:
 
         v35 = [(__CFString *)v34 stringByAppendingString:v31];
 
-        v22 = v35;
+        __ck_spotlightItemSnippet = v35;
         v20 = v40;
       }
 
-      [v21 setName:v22];
+      [v21 setName:__ck_spotlightItemSnippet];
     }
 
     else
@@ -479,8 +479,8 @@ LABEL_9:
 
   else
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    attributeSet = IMLogHandleForCategory();
+    if (os_log_type_enabled(attributeSet, OS_LOG_TYPE_ERROR))
     {
       [CKLocationSearchController _mapItemForResult:];
     }
@@ -498,33 +498,33 @@ void *__48__CKLocationSearchController__mapItemForResult___block_invoke()
   return result;
 }
 
-- (id)urlForQueryResult:(id)a3
+- (id)urlForQueryResult:(id)result
 {
-  v3 = a3;
-  [CKSpotlightQueryResultUtilities coordinateForResult:v3];
+  resultCopy = result;
+  [CKSpotlightQueryResultUtilities coordinateForResult:resultCopy];
   v5 = v4;
   v7 = v6;
-  v8 = [v3 item];
+  item = [resultCopy item];
 
-  v9 = [v8 attributeSet];
-  v10 = [v9 __ck_spotlightItemSnippet];
+  attributeSet = [item attributeSet];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
 
-  v11 = [MEMORY[0x1E695DFF8] __ck_appleMapsURLForCoordinate:v10 coordinateName:{v5, v7}];
+  v11 = [MEMORY[0x1E695DFF8] __ck_appleMapsURLForCoordinate:__ck_spotlightItemSnippet coordinateName:{v5, v7}];
 
   return v11;
 }
 
-- (BOOL)handleSelectionForResult:(id)a3
+- (BOOL)handleSelectionForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (CKIsRunningInMacCatalyst())
   {
-    v5 = [(CKLocationSearchController *)self urlForQueryResult:v4];
+    v5 = [(CKLocationSearchController *)self urlForQueryResult:resultCopy];
     v6 = v5 != 0;
     if (v5)
     {
-      v7 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v7 openURL:v5 withCompletionHandler:0];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] openURL:v5 withCompletionHandler:0];
     }
   }
 
@@ -536,20 +536,20 @@ void *__48__CKLocationSearchController__mapItemForResult___block_invoke()
   return v6;
 }
 
-- (id)itemProviderForSearchResult:(id)a3
+- (id)itemProviderForSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy)
   {
-    v6 = [v4 item];
-    v7 = [v6 attributeSet];
-    v8 = [v7 contentURL];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
+    contentURL = [attributeSet contentURL];
 
-    if (v8)
+    if (contentURL)
     {
       v9 = [(CKLocationSearchController *)self urlForQueryResult:v5];
-      v10 = [MEMORY[0x1E696ACA0] __ck_itemProviderForAppleMapsCoordinateURL:v9 vCardURL:v8];
+      v10 = [MEMORY[0x1E696ACA0] __ck_itemProviderForAppleMapsCoordinateURL:v9 vCardURL:contentURL];
       v11 = v10;
       if (v10)
       {
@@ -580,10 +580,10 @@ void *__48__CKLocationSearchController__mapItemForResult___block_invoke()
 
   else
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    contentURL = IMLogHandleForCategory();
+    if (os_log_type_enabled(contentURL, OS_LOG_TYPE_ERROR))
     {
-      [(CKLocationSearchController *)v8 itemProviderForSearchResult:v13, v14, v15, v16, v17, v18, v19];
+      [(CKLocationSearchController *)contentURL itemProviderForSearchResult:v13, v14, v15, v16, v17, v18, v19];
     }
 
     v11 = 0;

@@ -1,50 +1,50 @@
 @interface CKKSKeychainViewState
-- (BOOL)isEqual:(id)a3;
-- (CKKSKeychainViewState)initWithZoneID:(id)a3 forContextID:(id)a4 ckksManagedView:(BOOL)a5 priorityView:(BOOL)a6 notifyViewChangedScheduler:(id)a7 notifyViewReadyScheduler:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (CKKSKeychainViewState)initWithZoneID:(id)d forContextID:(id)iD ckksManagedView:(BOOL)view priorityView:(BOOL)priorityView notifyViewChangedScheduler:(id)scheduler notifyViewReadyScheduler:(id)readyScheduler;
 - (NSDictionary)keyHierarchyConditions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)armReadyNotification;
 - (void)launchComplete;
-- (void)setViewKeyHierarchyState:(id)a3;
+- (void)setViewKeyHierarchyState:(id)state;
 @end
 
 @implementation CKKSKeychainViewState
 
 - (unint64_t)hash
 {
-  v3 = [(CKKSKeychainViewState *)self zoneName];
-  v4 = [v3 hash];
-  v5 = [(CKKSKeychainViewState *)self contextID];
-  v6 = [v5 hash];
+  zoneName = [(CKKSKeychainViewState *)self zoneName];
+  v4 = [zoneName hash];
+  contextID = [(CKKSKeychainViewState *)self contextID];
+  v6 = [contextID hash];
 
   return v6 ^ v4;
 }
 
 - (void)armReadyNotification
 {
-  v3 = [(CKKSKeychainViewState *)self queue];
+  queue = [(CKKSKeychainViewState *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D55A8;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)launchComplete
 {
-  v3 = [(CKKSKeychainViewState *)self launch];
-  [v3 launch];
+  launch = [(CKKSKeychainViewState *)self launch];
+  [launch launch];
 
-  v4 = [(CKKSKeychainViewState *)self queue];
+  queue = [(CKKSKeychainViewState *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D5654;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 }
 
 - (NSDictionary)keyHierarchyConditions
@@ -55,14 +55,14 @@
   v10 = sub_1001D57E8;
   v11 = sub_1001D57F8;
   v12 = 0;
-  v3 = [(CKKSKeychainViewState *)self queue];
+  queue = [(CKKSKeychainViewState *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001D5800;
   v6[3] = &unk_100344E90;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -70,39 +70,39 @@
   return v4;
 }
 
-- (void)setViewKeyHierarchyState:(id)a3
+- (void)setViewKeyHierarchyState:(id)state
 {
-  v5 = a3;
-  v6 = [(CKKSKeychainViewState *)self queue];
+  stateCopy = state;
+  queue = [(CKKSKeychainViewState *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D5920;
   block[3] = &unk_100345100;
-  v9 = v5;
-  v10 = self;
+  v9 = stateCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_sync(v6, block);
+  v7 = stateCopy;
+  dispatch_sync(queue, block);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKKSKeychainViewState *)self zoneName];
-    v7 = [v5 zoneName];
-    if ([v6 isEqualToString:v7] && (v8 = -[CKKSKeychainViewState ckksManagedView](self, "ckksManagedView"), v8 == objc_msgSend(v5, "ckksManagedView")))
+    v5 = equalCopy;
+    zoneName = [(CKKSKeychainViewState *)self zoneName];
+    zoneName2 = [v5 zoneName];
+    if ([zoneName isEqualToString:zoneName2] && (v8 = -[CKKSKeychainViewState ckksManagedView](self, "ckksManagedView"), v8 == objc_msgSend(v5, "ckksManagedView")))
     {
-      v10 = [(CKKSKeychainViewState *)self viewKeyHierarchyState];
-      v11 = [v5 viewKeyHierarchyState];
-      if ([v10 isEqualToString:v11])
+      viewKeyHierarchyState = [(CKKSKeychainViewState *)self viewKeyHierarchyState];
+      viewKeyHierarchyState2 = [v5 viewKeyHierarchyState];
+      if ([viewKeyHierarchyState isEqualToString:viewKeyHierarchyState2])
       {
-        v12 = [(CKKSKeychainViewState *)self contextID];
-        v13 = [v5 contextID];
-        v9 = [v12 isEqualToString:v13];
+        contextID = [(CKKSKeychainViewState *)self contextID];
+        contextID2 = [v5 contextID];
+        v9 = [contextID isEqualToString:contextID2];
       }
 
       else
@@ -125,27 +125,27 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKKSKeychainViewState alloc];
-  v5 = [(CKKSKeychainViewState *)self zoneID];
-  v6 = [(CKKSKeychainViewState *)self contextID];
-  v7 = [(CKKSKeychainViewState *)self ckksManagedView];
-  v8 = [(CKKSKeychainViewState *)self priorityView];
-  v9 = [(CKKSKeychainViewState *)self notifyViewReadyScheduler];
-  v10 = [(CKKSKeychainViewState *)self notifyViewReadyScheduler];
-  v11 = [(CKKSKeychainViewState *)v4 initWithZoneID:v5 forContextID:v6 ckksManagedView:v7 priorityView:v8 notifyViewChangedScheduler:v9 notifyViewReadyScheduler:v10];
+  zoneID = [(CKKSKeychainViewState *)self zoneID];
+  contextID = [(CKKSKeychainViewState *)self contextID];
+  ckksManagedView = [(CKKSKeychainViewState *)self ckksManagedView];
+  priorityView = [(CKKSKeychainViewState *)self priorityView];
+  notifyViewReadyScheduler = [(CKKSKeychainViewState *)self notifyViewReadyScheduler];
+  notifyViewReadyScheduler2 = [(CKKSKeychainViewState *)self notifyViewReadyScheduler];
+  v11 = [(CKKSKeychainViewState *)v4 initWithZoneID:zoneID forContextID:contextID ckksManagedView:ckksManagedView priorityView:priorityView notifyViewChangedScheduler:notifyViewReadyScheduler notifyViewReadyScheduler:notifyViewReadyScheduler2];
 
-  v12 = [(CKKSKeychainViewState *)self viewKeyHierarchyState];
-  [(CKKSKeychainViewState *)v11 setViewKeyHierarchyState:v12];
+  viewKeyHierarchyState = [(CKKSKeychainViewState *)self viewKeyHierarchyState];
+  [(CKKSKeychainViewState *)v11 setViewKeyHierarchyState:viewKeyHierarchyState];
 
   return v11;
 }
 
 - (id)description
 {
-  v3 = [(CKKSKeychainViewState *)self contextID];
-  v4 = [(CKKSKeychainViewState *)self zoneName];
+  contextID = [(CKKSKeychainViewState *)self contextID];
+  zoneName = [(CKKSKeychainViewState *)self zoneName];
   if ([(CKKSKeychainViewState *)self ckksManagedView])
   {
     v5 = @"ckks";
@@ -156,31 +156,31 @@
     v5 = @"ext";
   }
 
-  v6 = [(CKKSKeychainViewState *)self viewKeyHierarchyState];
-  v7 = [NSString stringWithFormat:@"<CKKSKeychainViewState(%@): %@(%@), %@>", v3, v4, v5, v6];
+  viewKeyHierarchyState = [(CKKSKeychainViewState *)self viewKeyHierarchyState];
+  v7 = [NSString stringWithFormat:@"<CKKSKeychainViewState(%@): %@(%@), %@>", contextID, zoneName, v5, viewKeyHierarchyState];
 
   return v7;
 }
 
-- (CKKSKeychainViewState)initWithZoneID:(id)a3 forContextID:(id)a4 ckksManagedView:(BOOL)a5 priorityView:(BOOL)a6 notifyViewChangedScheduler:(id)a7 notifyViewReadyScheduler:(id)a8
+- (CKKSKeychainViewState)initWithZoneID:(id)d forContextID:(id)iD ckksManagedView:(BOOL)view priorityView:(BOOL)priorityView notifyViewChangedScheduler:(id)scheduler notifyViewReadyScheduler:(id)readyScheduler
 {
-  v15 = a3;
-  v34 = a4;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  schedulerCopy = scheduler;
+  readySchedulerCopy = readyScheduler;
   v37.receiver = self;
   v37.super_class = CKKSKeychainViewState;
   v18 = [(CKKSKeychainViewState *)&v37 init];
   if (v18)
   {
-    v19 = [v15 zoneName];
+    zoneName = [dCopy zoneName];
     zoneName = v18->_zoneName;
-    v18->_zoneName = v19;
+    v18->_zoneName = zoneName;
 
-    objc_storeStrong(&v18->_zoneID, a3);
-    objc_storeStrong(&v18->_contextID, a4);
-    v18->_priorityView = a6;
-    v18->_ckksManagedView = a5;
+    objc_storeStrong(&v18->_zoneID, d);
+    objc_storeStrong(&v18->_contextID, iD);
+    v18->_priorityView = priorityView;
+    v18->_ckksManagedView = view;
     v21 = dispatch_queue_create("key-state", 0);
     queue = v18->_queue;
     v18->_queue = v21;
@@ -189,8 +189,8 @@
     operationQueue = v18->_operationQueue;
     v18->_operationQueue = v23;
 
-    objc_storeStrong(&v18->_notifyViewChangedScheduler, a7);
-    objc_storeStrong(&v18->_notifyViewReadyScheduler, a8);
+    objc_storeStrong(&v18->_notifyViewChangedScheduler, scheduler);
+    objc_storeStrong(&v18->_notifyViewReadyScheduler, readyScheduler);
     if (qword_10039DEA8 != -1)
     {
       dispatch_once(&qword_10039DEA8, &stru_100337208);
@@ -215,8 +215,8 @@
     v28->_launch = v29;
 
     v31 = v28->_launch;
-    v32 = [v15 zoneName];
-    [(SecLaunchSequence *)v31 addAttribute:@"view" value:v32];
+    zoneName2 = [dCopy zoneName];
+    [(SecLaunchSequence *)v31 addAttribute:@"view" value:zoneName2];
 
     v28->_readyNotificationArmed = 0;
   }

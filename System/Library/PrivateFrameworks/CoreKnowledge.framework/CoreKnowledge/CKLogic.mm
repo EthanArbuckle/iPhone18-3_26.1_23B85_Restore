@@ -1,6 +1,6 @@
 @interface CKLogic
 - (NSString)identifier;
-- (id)and:(id)a3;
+- (id)and:(id)and;
 - (int64_t)hash;
 @end
 
@@ -8,7 +8,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C86C17B8();
 
   return v3;
@@ -16,7 +16,7 @@
 
 - (NSString)identifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C86C1AD0();
 
   v3 = sub_1C86F8EEC();
@@ -24,10 +24,10 @@
   return v3;
 }
 
-- (id)and:(id)a3
+- (id)and:(id)and
 {
-  v4 = a3;
-  v5 = self;
+  andCopy = and;
+  selfCopy = self;
   v6 = sub_1C86C21E0();
 
   return v6;

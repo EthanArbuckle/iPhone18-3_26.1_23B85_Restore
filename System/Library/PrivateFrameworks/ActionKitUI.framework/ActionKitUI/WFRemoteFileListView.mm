@@ -1,22 +1,22 @@
 @interface WFRemoteFileListView
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (CGRect)frameOfCellAtPoint:(CGPoint)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (CGRect)frameOfCellAtPoint:(CGPoint)point;
 - (UIEdgeInsets)contentInset;
 - (UIEdgeInsets)verticalScrollIndicatorInsets;
-- (WFRemoteFileListView)initWithFrame:(CGRect)a3 collation:(id)a4;
+- (WFRemoteFileListView)initWithFrame:(CGRect)frame collation:(id)collation;
 - (WFRemoteFileListViewDelegate)delegate;
-- (id)cellAtPoint:(CGPoint)a3;
-- (id)fileAtPoint:(CGPoint)a3;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (void)setFiles:(id)a3;
-- (void)setFilesBySection:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCheckmarkForFile:(id)a3;
+- (id)cellAtPoint:(CGPoint)point;
+- (id)fileAtPoint:(CGPoint)point;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (void)setFiles:(id)files;
+- (void)setFilesBySection:(id)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCheckmarkForFile:(id)file;
 @end
 
 @implementation WFRemoteFileListView
@@ -28,72 +28,72 @@
   return WeakRetained;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFRemoteFileListView *)self filesBySection];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "section")}];
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  filesBySection = [(WFRemoteFileListView *)self filesBySection];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+  v10 = [filesBySection objectForKeyedSubscript:v9];
+  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v11 = [(WFRemoteFileListView *)self delegate];
-  [v11 fileListView:self didSelectFile:v12];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  delegate = [(WFRemoteFileListView *)self delegate];
+  [delegate fileListView:self didSelectFile:v12];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WFRemoteFileListView *)self filesBySection];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "section")}];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v5 row];
+  pathCopy = path;
+  filesBySection = [(WFRemoteFileListView *)self filesBySection];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+  v8 = [filesBySection objectForKeyedSubscript:v7];
+  v9 = [pathCopy row];
 
   v10 = [v8 objectAtIndexedSubscript:v9];
 
-  v11 = [(WFRemoteFileListView *)self delegate];
-  LOBYTE(self) = [v11 fileListView:self shouldSelectFile:v10];
+  delegate = [(WFRemoteFileListView *)self delegate];
+  LOBYTE(self) = [delegate fileListView:self shouldSelectFile:v10];
 
   return self;
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  if (!a5)
+  if (!index)
   {
-    v7 = a3;
-    v8 = [v7 tableHeaderView];
-    [v8 frame];
-    [v7 scrollRectToVisible:0 animated:?];
+    viewCopy = view;
+    tableHeaderView = [viewCopy tableHeaderView];
+    [tableHeaderView frame];
+    [viewCopy scrollRectToVisible:0 animated:?];
   }
 
-  v9 = [(WFRemoteFileListView *)self collation:a3];
-  v10 = [v9 sectionForSectionIndexTitleAtIndex:a5] - 1;
+  v9 = [(WFRemoteFileListView *)self collation:view];
+  v10 = [v9 sectionForSectionIndexTitleAtIndex:index] - 1;
 
   return v10;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
-  v3 = [(WFRemoteFileListView *)self collation];
-  v4 = [v3 sectionTitles];
+  collation = [(WFRemoteFileListView *)self collation];
+  sectionTitles = [collation sectionTitles];
 
-  return v4;
+  return sectionTitles;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(WFRemoteFileListView *)self filesBySection];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  filesBySection = [(WFRemoteFileListView *)self filesBySection];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:section];
+  v8 = [filesBySection objectForKeyedSubscript:v7];
   v9 = [v8 count];
 
   if (v9)
   {
-    v10 = [(WFRemoteFileListView *)self collation];
-    v11 = [v10 sectionTitles];
-    v12 = [v11 objectAtIndex:a4];
+    collation = [(WFRemoteFileListView *)self collation];
+    sectionTitles = [collation sectionTitles];
+    v12 = [sectionTitles objectAtIndex:section];
   }
 
   else
@@ -104,75 +104,75 @@
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFRemoteFileListView *)self filesBySection];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  filesBySection = [(WFRemoteFileListView *)self filesBySection];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:section];
+  v7 = [filesBySection objectForKeyedSubscript:v6];
   v8 = [v7 count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFRemoteFileListView *)self filesBySection];
-  v4 = [v3 allKeys];
-  v5 = [v4 valueForKeyPath:@"@max.self"];
-  v6 = [v5 integerValue];
+  filesBySection = [(WFRemoteFileListView *)self filesBySection];
+  allKeys = [filesBySection allKeys];
+  v5 = [allKeys valueForKeyPath:@"@max.self"];
+  integerValue = [v5 integerValue];
 
-  return v6 + 1;
+  return integerValue + 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WFRemoteFileCellReuseIdentifier" forIndexPath:v6];
-  v8 = [(WFRemoteFileListView *)self filesBySection];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "section")}];
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WFRemoteFileCellReuseIdentifier" forIndexPath:pathCopy];
+  filesBySection = [(WFRemoteFileListView *)self filesBySection];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+  v10 = [filesBySection objectForKeyedSubscript:v9];
+  v11 = [pathCopy row];
 
   v12 = [v10 objectAtIndexedSubscript:v11];
 
-  v13 = [(WFRemoteFileListView *)self delegate];
-  v14 = [v13 fileListView:self shouldDisplayCheckmarkForFile:v12];
+  delegate = [(WFRemoteFileListView *)self delegate];
+  v14 = [delegate fileListView:self shouldDisplayCheckmarkForFile:v12];
 
-  v15 = [(WFRemoteFileListView *)self dateFormatter];
-  [v7 setFile:v12 checked:v14 dateFormatter:v15];
+  dateFormatter = [(WFRemoteFileListView *)self dateFormatter];
+  [v7 setFile:v12 checked:v14 dateFormatter:dateFormatter];
 
   return v7;
 }
 
-- (void)setFilesBySection:(id)a3
+- (void)setFilesBySection:(id)section
 {
   filesBySection = self->_filesBySection;
-  v5 = a3;
-  LOBYTE(filesBySection) = [(NSDictionary *)filesBySection isEqualToDictionary:v5];
-  v6 = [v5 copy];
+  sectionCopy = section;
+  LOBYTE(filesBySection) = [(NSDictionary *)filesBySection isEqualToDictionary:sectionCopy];
+  v6 = [sectionCopy copy];
 
   v7 = self->_filesBySection;
   self->_filesBySection = v6;
 
   if ((filesBySection & 1) == 0)
   {
-    v8 = [(WFRemoteFileListView *)self tableView];
-    [v8 reloadData];
+    tableView = [(WFRemoteFileListView *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (id)fileAtPoint:(CGPoint)a3
+- (id)fileAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(WFRemoteFileListView *)self tableView];
-  [v6 convertPoint:self fromView:{x, y}];
-  v7 = [v6 indexPathForRowAtPoint:?];
+  y = point.y;
+  x = point.x;
+  tableView = [(WFRemoteFileListView *)self tableView];
+  [tableView convertPoint:self fromView:{x, y}];
+  v7 = [tableView indexPathForRowAtPoint:?];
   if (v7)
   {
-    v8 = [(WFRemoteFileListView *)self filesBySection];
+    filesBySection = [(WFRemoteFileListView *)self filesBySection];
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "section")}];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v10 = [filesBySection objectForKeyedSubscript:v9];
     v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
   }
 
@@ -184,29 +184,29 @@
   return v11;
 }
 
-- (id)cellAtPoint:(CGPoint)a3
+- (id)cellAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(WFRemoteFileListView *)self tableView];
-  [v6 convertPoint:self fromView:{x, y}];
-  v7 = [v6 indexPathForRowAtPoint:?];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  y = point.y;
+  x = point.x;
+  tableView = [(WFRemoteFileListView *)self tableView];
+  [tableView convertPoint:self fromView:{x, y}];
+  v7 = [tableView indexPathForRowAtPoint:?];
+  v8 = [tableView cellForRowAtIndexPath:v7];
 
   return v8;
 }
 
-- (CGRect)frameOfCellAtPoint:(CGPoint)a3
+- (CGRect)frameOfCellAtPoint:(CGPoint)point
 {
-  v4 = [(WFRemoteFileListView *)self cellAtPoint:a3.x, a3.y];
+  v4 = [(WFRemoteFileListView *)self cellAtPoint:point.x, point.y];
   [v4 frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(WFRemoteFileListView *)self tableView];
-  [(WFRemoteFileListView *)self convertRect:v13 fromView:v6, v8, v10, v12];
+  tableView = [(WFRemoteFileListView *)self tableView];
+  [(WFRemoteFileListView *)self convertRect:tableView fromView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -223,19 +223,19 @@
   return result;
 }
 
-- (void)updateCheckmarkForFile:(id)a3
+- (void)updateCheckmarkForFile:(id)file
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(WFRemoteFileListView *)self tableView];
-  v6 = [v5 indexPathsForVisibleRows];
+  tableView = [(WFRemoteFileListView *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  obj = indexPathsForVisibleRows;
+  v7 = [indexPathsForVisibleRows countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -250,21 +250,21 @@
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [(WFRemoteFileListView *)self filesBySection];
+        filesBySection = [(WFRemoteFileListView *)self filesBySection];
         v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "section")}];
-        v14 = [v12 objectForKeyedSubscript:v13];
+        v14 = [filesBySection objectForKeyedSubscript:v13];
         v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v11, "row")}];
 
-        if ([v4 isEqual:v15])
+        if ([fileCopy isEqual:v15])
         {
-          v16 = [(WFRemoteFileListView *)self tableView];
-          v17 = [v16 cellForRowAtIndexPath:v11];
+          tableView2 = [(WFRemoteFileListView *)self tableView];
+          v17 = [tableView2 cellForRowAtIndexPath:v11];
 
-          v18 = [(WFRemoteFileListView *)self delegate];
-          v19 = [v18 fileListView:self shouldDisplayCheckmarkForFile:v15];
+          delegate = [(WFRemoteFileListView *)self delegate];
+          v19 = [delegate fileListView:self shouldDisplayCheckmarkForFile:v15];
 
-          v20 = [(WFRemoteFileListView *)self dateFormatter];
-          [v17 setFile:v15 checked:v19 dateFormatter:v20];
+          dateFormatter = [(WFRemoteFileListView *)self dateFormatter];
+          [v17 setFile:v15 checked:v19 dateFormatter:dateFormatter];
 
           goto LABEL_11;
         }
@@ -285,21 +285,21 @@ LABEL_11:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFiles:(id)a3
+- (void)setFiles:(id)files
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFRemoteFileListView *)self collation];
-  if (v5)
+  filesCopy = files;
+  collation = [(WFRemoteFileListView *)self collation];
+  if (collation)
   {
-    v27 = self;
+    selfCopy = self;
     v6 = objc_opt_new();
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v28 = v4;
-    obj = v4;
+    v28 = filesCopy;
+    obj = filesCopy;
     v7 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v7)
     {
@@ -315,7 +315,7 @@ LABEL_11:
           }
 
           v11 = *(*(&v34 + 1) + 8 * i);
-          v12 = [v5 sectionForObject:v11 collationStringSelector:sel_wfName];
+          v12 = [collation sectionForObject:v11 collationStringSelector:sel_wfName];
           v13 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
           v14 = [v6 objectForKeyedSubscript:v13];
 
@@ -357,7 +357,7 @@ LABEL_11:
 
           v22 = *(*(&v30 + 1) + 8 * j);
           v23 = [v17 objectForKeyedSubscript:v22];
-          v24 = [v5 sortedArrayFromArray:v23 collationStringSelector:sel_wfName];
+          v24 = [collation sortedArrayFromArray:v23 collationStringSelector:sel_wfName];
           [v16 setObject:v24 forKeyedSubscript:v22];
         }
 
@@ -367,14 +367,14 @@ LABEL_11:
       while (v19);
     }
 
-    [(WFRemoteFileListView *)v27 setFilesBySection:v16];
-    v4 = v28;
+    [(WFRemoteFileListView *)selfCopy setFilesBySection:v16];
+    filesCopy = v28;
   }
 
-  else if (v4)
+  else if (filesCopy)
   {
     v40 = &unk_2850AB3C0;
-    v41[0] = v4;
+    v41[0] = filesCopy;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     [(WFRemoteFileListView *)self setFilesBySection:v25];
   }
@@ -407,47 +407,47 @@ LABEL_11:
   return result;
 }
 
-- (WFRemoteFileListView)initWithFrame:(CGRect)a3 collation:(id)a4
+- (WFRemoteFileListView)initWithFrame:(CGRect)frame collation:(id)collation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  collationCopy = collation;
   v21.receiver = self;
   v21.super_class = WFRemoteFileListView;
-  v11 = [(WFRemoteFileListView *)&v21 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(WFRemoteFileListView *)&v21 initWithFrame:x, y, width, height];
+  if (height)
   {
     v12 = objc_alloc(MEMORY[0x277D75B40]);
-    [(WFRemoteFileListView *)v11 bounds];
+    [(WFRemoteFileListView *)height bounds];
     v13 = [v12 initWithFrame:0 style:?];
-    tableView = v11->_tableView;
-    v11->_tableView = v13;
+    tableView = height->_tableView;
+    height->_tableView = v13;
 
-    [(UITableView *)v11->_tableView setAutoresizingMask:18];
-    [(UITableView *)v11->_tableView setDelegate:v11];
-    [(UITableView *)v11->_tableView setDataSource:v11];
-    [(UITableView *)v11->_tableView setRowHeight:*MEMORY[0x277D76F30]];
-    [(UITableView *)v11->_tableView setEstimatedRowHeight:44.0];
-    [(WFRemoteFileListView *)v11 addSubview:v11->_tableView];
-    [(UITableView *)v11->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WFRemoteFileCellReuseIdentifier"];
-    objc_storeStrong(&v11->_collation, a4);
+    [(UITableView *)height->_tableView setAutoresizingMask:18];
+    [(UITableView *)height->_tableView setDelegate:height];
+    [(UITableView *)height->_tableView setDataSource:height];
+    [(UITableView *)height->_tableView setRowHeight:*MEMORY[0x277D76F30]];
+    [(UITableView *)height->_tableView setEstimatedRowHeight:44.0];
+    [(WFRemoteFileListView *)height addSubview:height->_tableView];
+    [(UITableView *)height->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WFRemoteFileCellReuseIdentifier"];
+    objc_storeStrong(&height->_collation, collation);
     v15 = objc_opt_new();
-    filesBySection = v11->_filesBySection;
-    v11->_filesBySection = v15;
+    filesBySection = height->_filesBySection;
+    height->_filesBySection = v15;
 
     v17 = objc_alloc_init(MEMORY[0x277CCA968]);
-    dateFormatter = v11->_dateFormatter;
-    v11->_dateFormatter = v17;
+    dateFormatter = height->_dateFormatter;
+    height->_dateFormatter = v17;
 
-    [(NSDateFormatter *)v11->_dateFormatter setDateStyle:1];
-    [(NSDateFormatter *)v11->_dateFormatter setTimeStyle:1];
-    [(NSDateFormatter *)v11->_dateFormatter setDoesRelativeDateFormatting:1];
-    v19 = v11;
+    [(NSDateFormatter *)height->_dateFormatter setDateStyle:1];
+    [(NSDateFormatter *)height->_dateFormatter setTimeStyle:1];
+    [(NSDateFormatter *)height->_dateFormatter setDoesRelativeDateFormatting:1];
+    v19 = height;
   }
 
-  return v11;
+  return height;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface AMSUIBannerAppearance
 - (AMSUIBannerAppearance)init;
-- (AMSUIBannerAppearance)initWithDictionary:(id)a3;
+- (AMSUIBannerAppearance)initWithDictionary:(id)dictionary;
 @end
 
 @implementation AMSUIBannerAppearance
@@ -19,85 +19,85 @@
   return result;
 }
 
-- (AMSUIBannerAppearance)initWithDictionary:(id)a3
+- (AMSUIBannerAppearance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = AMSUIBannerAppearance;
-  v5 = [(AMSUIAppearance *)&v43 initWithDictionary:v4];
+  v5 = [(AMSUIAppearance *)&v43 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [AMSUIAppearance _accessoryButtonBackgroundColorWithDictionary:v4];
+    v6 = [AMSUIAppearance _accessoryButtonBackgroundColorWithDictionary:dictionaryCopy];
     accessoryButtonBackgroundColor = v5->_accessoryButtonBackgroundColor;
     v5->_accessoryButtonBackgroundColor = v6;
 
-    v8 = [AMSUIAppearance _accessoryButtonColorWithDictionary:v4];
+    v8 = [AMSUIAppearance _accessoryButtonColorWithDictionary:dictionaryCopy];
     accessoryButtonColor = v5->_accessoryButtonColor;
     v5->_accessoryButtonColor = v8;
 
-    v10 = [AMSUIAppearance _accessoryButtonFontWithDictionary:v4];
+    v10 = [AMSUIAppearance _accessoryButtonFontWithDictionary:dictionaryCopy];
     accessoryButtonFont = v5->_accessoryButtonFont;
     v5->_accessoryButtonFont = v10;
 
-    v12 = [AMSUIAppearance _accessorySecondaryButtonBackgroundColorWithDictionary:v4];
+    v12 = [AMSUIAppearance _accessorySecondaryButtonBackgroundColorWithDictionary:dictionaryCopy];
     accessorySecondaryButtonBackgroundColor = v5->_accessorySecondaryButtonBackgroundColor;
     v5->_accessorySecondaryButtonBackgroundColor = v12;
 
-    v14 = [AMSUIAppearance _accessorySecondaryButtonColorWithDictionary:v4];
+    v14 = [AMSUIAppearance _accessorySecondaryButtonColorWithDictionary:dictionaryCopy];
     accessorySecondaryButtonColor = v5->_accessorySecondaryButtonColor;
     v5->_accessorySecondaryButtonColor = v14;
 
-    v16 = [AMSUIAppearance _accessorySecondaryButtonFontWithDictionary:v4];
+    v16 = [AMSUIAppearance _accessorySecondaryButtonFontWithDictionary:dictionaryCopy];
     accessorySecondaryButtonFont = v5->_accessorySecondaryButtonFont;
     v5->_accessorySecondaryButtonFont = v16;
 
-    v18 = [AMSUIAppearance _backgroundColorWithDictionary:v4];
+    v18 = [AMSUIAppearance _backgroundColorWithDictionary:dictionaryCopy];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v18;
 
-    v20 = [AMSUIAppearance _backgroundImageWithDictionary:v4];
+    v20 = [AMSUIAppearance _backgroundImageWithDictionary:dictionaryCopy];
     backgroundImage = v5->_backgroundImage;
     v5->_backgroundImage = v20;
 
-    v22 = [AMSUIAppearance _footerButtonBackgroundColorWithDictionary:v4];
+    v22 = [AMSUIAppearance _footerButtonBackgroundColorWithDictionary:dictionaryCopy];
     footerButtonBackgroundColor = v5->_footerButtonBackgroundColor;
     v5->_footerButtonBackgroundColor = v22;
 
-    v24 = [AMSUIAppearance _footerButtonColorWithDictionary:v4];
+    v24 = [AMSUIAppearance _footerButtonColorWithDictionary:dictionaryCopy];
     footerButtonColor = v5->_footerButtonColor;
     v5->_footerButtonColor = v24;
 
-    v26 = [AMSUIAppearance _footerButtonFontWithDictionary:v4];
+    v26 = [AMSUIAppearance _footerButtonFontWithDictionary:dictionaryCopy];
     footerButtonFont = v5->_footerButtonFont;
     v5->_footerButtonFont = v26;
 
-    v5->_iconAnimationPlayCount = [AMSUIAppearance _iconAnimationPlayCount:v4];
-    v28 = [AMSUIAppearance _imageSymbolConfigurationWithDictionary:v4];
+    v5->_iconAnimationPlayCount = [AMSUIAppearance _iconAnimationPlayCount:dictionaryCopy];
+    v28 = [AMSUIAppearance _imageSymbolConfigurationWithDictionary:dictionaryCopy];
     imageSymbolConfiguration = v5->_imageSymbolConfiguration;
     v5->_imageSymbolConfiguration = v28;
 
-    v30 = [AMSUIAppearance _imageTintColorWithDictionary:v4];
+    v30 = [AMSUIAppearance _imageTintColorWithDictionary:dictionaryCopy];
     imageTintColor = v5->_imageTintColor;
     v5->_imageTintColor = v30;
 
-    v32 = [AMSUIAppearance _messageFontWithDictionary:v4];
+    v32 = [AMSUIAppearance _messageFontWithDictionary:dictionaryCopy];
     messageFont = v5->_messageFont;
     v5->_messageFont = v32;
 
-    v34 = [AMSUIAppearance _messageTextColorWithDictionary:v4];
+    v34 = [AMSUIAppearance _messageTextColorWithDictionary:dictionaryCopy];
     messageTextColor = v5->_messageTextColor;
     v5->_messageTextColor = v34;
 
-    v5->_primaryImageRenderingMode = [AMSUIAppearance _primaryImageRenderingModeWithDictionary:v4];
-    v36 = [AMSUIAppearance _separatorColorWithDictionary:v4];
+    v5->_primaryImageRenderingMode = [AMSUIAppearance _primaryImageRenderingModeWithDictionary:dictionaryCopy];
+    v36 = [AMSUIAppearance _separatorColorWithDictionary:dictionaryCopy];
     separatorColor = v5->_separatorColor;
     v5->_separatorColor = v36;
 
-    v38 = [AMSUIAppearance _titleFontWithDictionary:v4];
+    v38 = [AMSUIAppearance _titleFontWithDictionary:dictionaryCopy];
     titleFont = v5->_titleFont;
     v5->_titleFont = v38;
 
-    v40 = [AMSUIAppearance _titleTextColorWithDictionary:v4];
+    v40 = [AMSUIAppearance _titleTextColorWithDictionary:dictionaryCopy];
     titleTextColor = v5->_titleTextColor;
     v5->_titleTextColor = v40;
   }

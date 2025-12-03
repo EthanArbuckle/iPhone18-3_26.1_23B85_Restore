@@ -1,25 +1,25 @@
 @interface PHASEXPCDictionaryWrapper
-+ (id)wrapperWithDictionary:(id)a3;
-- (PHASEXPCDictionaryWrapper)initWithCoder:(id)a3;
-- (PHASEXPCDictionaryWrapper)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)wrapperWithDictionary:(id)dictionary;
+- (PHASEXPCDictionaryWrapper)initWithCoder:(id)coder;
+- (PHASEXPCDictionaryWrapper)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHASEXPCDictionaryWrapper
 
-+ (id)wrapperWithDictionary:(id)a3
++ (id)wrapperWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[PHASEXPCDictionaryWrapper alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[PHASEXPCDictionaryWrapper alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-- (PHASEXPCDictionaryWrapper)initWithDictionary:(id)a3
+- (PHASEXPCDictionaryWrapper)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && MEMORY[0x23EE87350](v5) == MEMORY[0x277D86468])
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (dictionaryCopy && MEMORY[0x23EE87350](dictionaryCopy) == MEMORY[0x277D86468])
   {
     v11.receiver = self;
     v11.super_class = PHASEXPCDictionaryWrapper;
@@ -27,51 +27,51 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_dictionary, a3);
+      objc_storeStrong(&v8->_dictionary, dictionary);
     }
 
     self = v9;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PHASEXPCDictionaryWrapper)initWithCoder:(id)a3
+- (PHASEXPCDictionaryWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"dictionary"];
+    v5 = [coderCopy decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"dictionary"];
     self = [(PHASEXPCDictionaryWrapper *)self initWithDictionary:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     dictionary = self->_dictionary;
     if (dictionary)
     {
-      [v5 encodeXPCObject:dictionary forKey:@"dictionary"];
+      [coderCopy encodeXPCObject:dictionary forKey:@"dictionary"];
     }
   }
 }

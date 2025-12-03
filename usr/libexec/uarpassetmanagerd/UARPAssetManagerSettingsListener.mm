@@ -1,80 +1,80 @@
 @interface UARPAssetManagerSettingsListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcConnectionHasEntitlement:(id)a3;
-- (UARPAssetManagerSettingsListener)initWithController:(id)a3 dispatchQueue:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement;
+- (UARPAssetManagerSettingsListener)initWithController:(id)controller dispatchQueue:(id)queue;
 - (void)dealloc;
-- (void)settingsChangedForSerialNumber:(id)a3;
+- (void)settingsChangedForSerialNumber:(id)number;
 @end
 
 @implementation UARPAssetManagerSettingsListener
 
-- (UARPAssetManagerSettingsListener)initWithController:(id)a3 dispatchQueue:(id)a4
+- (UARPAssetManagerSettingsListener)initWithController:(id)controller dispatchQueue:(id)queue
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v4 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, queue);
+  v4 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v4;
   v12.super_class = UARPAssetManagerSettingsListener;
-  v15 = [(UARPAssetManagerSettingsListener *)&v12 init];
-  objc_storeStrong(&v15, v15);
-  if (v15)
+  selfCopy = [(UARPAssetManagerSettingsListener *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v15->_controller, location[0]);
-    objc_storeStrong(&v15->_internalQueue, v13);
+    objc_storeStrong(&selfCopy->_controller, location[0]);
+    objc_storeStrong(&selfCopy->_internalQueue, v13);
     v5 = os_log_create("com.apple.accessoryupdater.uarp", "observer");
-    xpcLog = v15->_xpcLog;
-    v15->_xpcLog = v5;
+    xpcLog = selfCopy->_xpcLog;
+    selfCopy->_xpcLog = v5;
 
     v7 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.uarpassetmanager.settings"];
-    listener = v15->_listener;
-    v15->_listener = v7;
+    listener = selfCopy->_listener;
+    selfCopy->_listener = v7;
 
-    [(NSXPCListener *)v15->_listener setDelegate:v15];
-    [(NSXPCListener *)v15->_listener resume];
+    [(NSXPCListener *)selfCopy->_listener setDelegate:selfCopy];
+    [(NSXPCListener *)selfCopy->_listener resume];
   }
 
-  v10 = v15;
+  v10 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(NSXPCListener *)self->_listener invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = UARPAssetManagerSettingsListener;
   [(UARPAssetManagerSettingsListener *)&v2 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, connection);
   v15 = 0;
   v16 = &v15;
   v17 = 0x20000000;
   v18 = 32;
   v19 = 0;
-  queue = v22->_internalQueue;
+  queue = selfCopy->_internalQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = __71__UARPAssetManagerSettingsListener_listener_shouldAcceptNewConnection___block_invoke;
   v12 = &unk_100035D80;
-  v13 = v22;
+  v13 = selfCopy;
   v14[0] = v20;
   v14[1] = &v15;
   dispatch_sync(queue, &v8);
@@ -177,12 +177,12 @@ void __71__UARPAssetManagerSettingsListener_listener_shouldAcceptNewConnection__
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)xpcConnectionHasEntitlement:(id)a3
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, entitlement);
   v6 = [location[0] valueForEntitlement:@"com.apple.accessoryupdater.launchauhelper.entitled"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 1 && [v6 BOOLValue] == 1)
@@ -193,7 +193,7 @@ void __71__UARPAssetManagerSettingsListener_listener_shouldAcceptNewConnection__
 
   else
   {
-    oslog = v8->_xpcLog;
+    oslog = selfCopy->_xpcLog;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       __os_log_helper_16_0_1_4_0(v10, [location[0] processIdentifier]);
@@ -210,13 +210,13 @@ void __71__UARPAssetManagerSettingsListener_listener_shouldAcceptNewConnection__
   return v9 & 1;
 }
 
-- (void)settingsChangedForSerialNumber:(id)a3
+- (void)settingsChangedForSerialNumber:(id)number
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UARPAssetManagerController *)v4->_controller settingsChangedForSerialNumber:location[0]];
+  objc_storeStrong(location, number);
+  [(UARPAssetManagerController *)selfCopy->_controller settingsChangedForSerialNumber:location[0]];
   objc_storeStrong(location, 0);
 }
 

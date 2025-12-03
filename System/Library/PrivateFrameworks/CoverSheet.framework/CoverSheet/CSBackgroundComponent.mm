@@ -1,7 +1,7 @@
 @interface CSBackgroundComponent
 - (CSBackgroundComponent)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setStyle:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setStyle:(id)style;
 @end
 
 @implementation CSBackgroundComponent
@@ -20,24 +20,24 @@
   return v3;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v6 = a3;
-  v4 = [(CSComponent *)self value];
+  styleCopy = style;
+  value = [(CSComponent *)self value];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = styleCopy;
+  if (value != styleCopy)
   {
-    [(CSComponent *)self setValue:v6];
-    v5 = v6;
+    [(CSComponent *)self setValue:styleCopy];
+    v5 = styleCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CSBackgroundComponent;
-  v4 = [(CSComponent *)&v6 copyWithZone:a3];
+  v4 = [(CSComponent *)&v6 copyWithZone:zone];
   [(CSBackgroundComponent *)self transitionProgress];
   [v4 setTransitionProgress:?];
   return v4;

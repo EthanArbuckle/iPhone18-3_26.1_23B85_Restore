@@ -1,57 +1,57 @@
 @interface _UIIntelligenceEdgeLightEffect
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage;
+- (BOOL)isEqual:(id)equal;
 - (_UIIntelligenceEdgeLightEffect)init;
-- (_UIIntelligenceEdgeLightEffect)initWithCoder:(id)a3;
-- (_UIIntelligenceEdgeLightEffect)initWithLightSource:(id)a3 radius:(double)a4 region:(unint64_t)a5;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (_UIIntelligenceEdgeLightEffect)initWithCoder:(id)coder;
+- (_UIIntelligenceEdgeLightEffect)initWithLightSource:(id)source radius:(double)radius region:(unint64_t)region;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation _UIIntelligenceEdgeLightEffect
 
-- (_UIIntelligenceEdgeLightEffect)initWithLightSource:(id)a3 radius:(double)a4 region:(unint64_t)a5
+- (_UIIntelligenceEdgeLightEffect)initWithLightSource:(id)source radius:(double)radius region:(unint64_t)region
 {
-  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_lightSource) = a3;
-  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_region) = a5;
-  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_radius) = a4;
+  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_lightSource) = source;
+  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_region) = region;
+  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_radius) = radius;
   *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_activationTransitionDirection) = 0;
   *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceEdgeLightEffect_deactivationTransitionDirection) = 0;
   v7.receiver = self;
   v7.super_class = _UIIntelligenceEdgeLightEffect;
-  v5 = a3;
+  sourceCopy = source;
   return [(_UIIntelligenceEdgeLightEffect *)&v7 init];
 }
 
-- (_UIIntelligenceEdgeLightEffect)initWithCoder:(id)a3
+- (_UIIntelligenceEdgeLightEffect)initWithCoder:(id)coder
 {
   type metadata accessor for _UIIntelligenceEdgeLightEffect(self);
   swift_deallocPartialClassInstance();
   return 0;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  _UIIntelligenceEdgeLightEffect._update(_:for:usage:)(v8, v9, a5);
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  selfCopy = self;
+  _UIIntelligenceEdgeLightEffect._update(_:for:usage:)(descriptorCopy, environmentCopy, usage);
 }
 
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  LOBYTE(a5) = _UIIntelligenceEdgeLightEffect._needsUpdateForTransition(from:to:usage:)(a3, a4, a5);
+  environmentCopy = environment;
+  toEnvironmentCopy = toEnvironment;
+  selfCopy = self;
+  LOBYTE(usage) = _UIIntelligenceEdgeLightEffect._needsUpdateForTransition(from:to:usage:)(environment, toEnvironment, usage);
 
-  return a5 & 1;
+  return usage & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -60,7 +60,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _UIIntelligenceEdgeLightEffect.isEqual(_:)(v8);

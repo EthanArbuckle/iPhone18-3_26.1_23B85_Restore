@@ -1,11 +1,11 @@
 @interface CRKURLResources
-- (CRKURLResources)initWithResources:(id)a3;
+- (CRKURLResources)initWithResources:(id)resources;
 - (NSDate)lastModificationDate;
 - (NSNumber)documentIdentifier;
 - (NSNumber)isDirectory;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)immutableResources;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)mutableResources;
 - (id)underlyingResources;
 - (unint64_t)size;
@@ -13,15 +13,15 @@
 
 @implementation CRKURLResources
 
-- (CRKURLResources)initWithResources:(id)a3
+- (CRKURLResources)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = CRKURLResources;
   v5 = [(CRKURLResources *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [resourcesCopy mutableCopy];
     resources = v5->_resources;
     v5->_resources = v6;
   }
@@ -31,16 +31,16 @@
 
 - (id)underlyingResources
 {
-  v2 = [(CRKURLResources *)self resources];
-  v3 = [v2 copy];
+  resources = [(CRKURLResources *)self resources];
+  v3 = [resources copy];
 
   return v3;
 }
 
 - (NSNumber)isDirectory
 {
-  v2 = [(CRKURLResources *)self resources];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBE868]];
+  resources = [(CRKURLResources *)self resources];
+  v3 = [resources objectForKeyedSubscript:*MEMORY[0x277CBE868]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -60,8 +60,8 @@
 
 - (NSNumber)documentIdentifier
 {
-  v2 = [(CRKURLResources *)self resources];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBE7C8]];
+  resources = [(CRKURLResources *)self resources];
+  v3 = [resources objectForKeyedSubscript:*MEMORY[0x277CBE7C8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -81,8 +81,8 @@
 
 - (NSDate)lastModificationDate
 {
-  v2 = [(CRKURLResources *)self resources];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBE7B0]];
+  resources = [(CRKURLResources *)self resources];
+  v3 = [resources objectForKeyedSubscript:*MEMORY[0x277CBE7B0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -102,8 +102,8 @@
 
 - (unint64_t)size
 {
-  v2 = [(CRKURLResources *)self resources];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBE838]];
+  resources = [(CRKURLResources *)self resources];
+  v3 = [resources objectForKeyedSubscript:*MEMORY[0x277CBE838]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -118,24 +118,24 @@
 
   v5 = v4;
 
-  v6 = [v5 unsignedLongValue];
-  return v6;
+  unsignedLongValue = [v5 unsignedLongValue];
+  return unsignedLongValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRKURLResources alloc];
-  v5 = [(CRKURLResources *)self resources];
-  v6 = [(CRKURLResources *)v4 initWithResources:v5];
+  resources = [(CRKURLResources *)self resources];
+  v6 = [(CRKURLResources *)v4 initWithResources:resources];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRKMutableURLResources alloc];
-  v5 = [(CRKURLResources *)self resources];
-  v6 = [(CRKURLResources *)v4 initWithResources:v5];
+  resources = [(CRKURLResources *)self resources];
+  v6 = [(CRKURLResources *)v4 initWithResources:resources];
 
   return v6;
 }

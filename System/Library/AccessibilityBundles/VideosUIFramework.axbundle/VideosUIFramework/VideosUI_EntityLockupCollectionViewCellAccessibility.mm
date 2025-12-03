@@ -1,15 +1,15 @@
 @interface VideosUI_EntityLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VideosUI_EntityLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.EntityLockupCollectionViewCell" hasSwiftField:@"titleLabel" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.EntityLockupCollectionViewCell" hasSwiftField:@"subtitleLabel" withSwiftType:"Optional<VUILabel>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.EntityLockupCollectionViewCell" hasSwiftField:@"titleLabel" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.EntityLockupCollectionViewCell" hasSwiftField:@"subtitleLabel" withSwiftType:"Optional<VUILabel>"];
 }
 
 - (id)accessibilityLabel
@@ -18,13 +18,13 @@
   v3 = [(VideosUI_EntityLockupCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
   objc_opt_class();
   v6 = [(VideosUI_EntityLockupCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"subtitleLabel"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
 
   v9 = __UIAXStringForVariables();
 

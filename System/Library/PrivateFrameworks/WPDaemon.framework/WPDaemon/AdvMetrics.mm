@@ -1,70 +1,70 @@
 @interface AdvMetrics
-- (unint64_t)droppedAdvCountforType:(unsigned __int8)a3 by:(unsigned __int8)a4;
-- (unint64_t)totalAdvCountforType:(unsigned __int8)a3;
-- (unint64_t)totalDroppedAdvCountforType:(unsigned __int8)a3;
-- (void)incrementDroppedAdvCountforType:(unsigned __int8)a3 by:(unsigned __int8)a4;
-- (void)incrementTotalAdvCountforType:(unsigned __int8)a3;
-- (void)incrementTotalDroppedAdvCountforType:(unsigned __int8)a3;
+- (unint64_t)droppedAdvCountforType:(unsigned __int8)type by:(unsigned __int8)by;
+- (unint64_t)totalAdvCountforType:(unsigned __int8)type;
+- (unint64_t)totalDroppedAdvCountforType:(unsigned __int8)type;
+- (void)incrementDroppedAdvCountforType:(unsigned __int8)type by:(unsigned __int8)by;
+- (void)incrementTotalAdvCountforType:(unsigned __int8)type;
+- (void)incrementTotalDroppedAdvCountforType:(unsigned __int8)type;
 - (void)resetAllCounters;
 @end
 
 @implementation AdvMetrics
 
-- (void)incrementTotalAdvCountforType:(unsigned __int8)a3
+- (void)incrementTotalAdvCountforType:(unsigned __int8)type
 {
-  if ((a3 - 1) <= 0x1A)
+  if ((type - 1) <= 0x1A)
   {
-    ++self->totalAdvCount[a3];
+    ++self->totalAdvCount[type];
   }
 }
 
-- (unint64_t)totalAdvCountforType:(unsigned __int8)a3
+- (unint64_t)totalAdvCountforType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 0x1A)
+  if ((type - 1) > 0x1A)
   {
     return 0;
   }
 
   else
   {
-    return self->totalAdvCount[a3];
+    return self->totalAdvCount[type];
   }
 }
 
-- (void)incrementTotalDroppedAdvCountforType:(unsigned __int8)a3
+- (void)incrementTotalDroppedAdvCountforType:(unsigned __int8)type
 {
-  if ((a3 - 1) <= 0x1A)
+  if ((type - 1) <= 0x1A)
   {
-    ++self->totalDroppedAdvCount[a3];
+    ++self->totalDroppedAdvCount[type];
   }
 }
 
-- (unint64_t)totalDroppedAdvCountforType:(unsigned __int8)a3
+- (unint64_t)totalDroppedAdvCountforType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 0x1A)
+  if ((type - 1) > 0x1A)
   {
     return 0;
   }
 
   else
   {
-    return self->totalDroppedAdvCount[a3];
+    return self->totalDroppedAdvCount[type];
   }
 }
 
-- (void)incrementDroppedAdvCountforType:(unsigned __int8)a3 by:(unsigned __int8)a4
+- (void)incrementDroppedAdvCountforType:(unsigned __int8)type by:(unsigned __int8)by
 {
-  if ((a3 - 1) <= 0x1A && (a4 - 1) <= 0x1A)
+  if ((type - 1) <= 0x1A && (by - 1) <= 0x1A)
   {
-    v5 = self + 224 * a3 + 8 * a4;
+    v5 = self + 224 * type + 8 * by;
     ++*(v5 + 57);
   }
 }
 
-- (unint64_t)droppedAdvCountforType:(unsigned __int8)a3 by:(unsigned __int8)a4
+- (unint64_t)droppedAdvCountforType:(unsigned __int8)type by:(unsigned __int8)by
 {
-  v4 = a4 - 1;
-  if ((a3 - 1) <= 0x1A)
+  v4 = by - 1;
+  if ((type - 1) <= 0x1A)
   {
     v5 = v4 >= 0x1A;
     v6 = v4 == 26;
@@ -83,7 +83,7 @@
 
   else
   {
-    return self->droppedAdvCount[a3][a4];
+    return self->droppedAdvCount[type][by];
   }
 }
 

@@ -8,11 +8,11 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 windowScene];
+  windowScene = [v2 windowScene];
 
-  if (v3)
+  if (windowScene)
   {
-    v4 = [v3 activationState] != 0;
+    v4 = [windowScene activationState] != 0;
   }
 
   else

@@ -1,24 +1,24 @@
 @interface _IMMemoryCacheItem
-+ (id)cacheItemWithItem:(id)a3 key:(id)a4 cost:(unint64_t)a5;
++ (id)cacheItemWithItem:(id)item key:(id)key cost:(unint64_t)cost;
 @end
 
 @implementation _IMMemoryCacheItem
 
-+ (id)cacheItemWithItem:(id)a3 key:(id)a4 cost:(unint64_t)a5
++ (id)cacheItemWithItem:(id)item key:(id)key cost:(unint64_t)cost
 {
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  itemCopy = item;
   v9 = objc_opt_new();
-  if (!a5)
+  if (!cost)
   {
-    NSLog(&cfstr_AddingCostZero.isa, v7);
+    NSLog(&cfstr_AddingCostZero.isa, keyCopy);
   }
 
-  [v9 setItem:v8];
-  [v9 setCost:a5];
+  [v9 setItem:itemCopy];
+  [v9 setCost:cost];
   [v9 setTimeStamp:mach_absolute_time()];
-  [v9 setKey:v7];
-  v10 = [v8 conformsToProtocol:&unk_282D11098];
+  [v9 setKey:keyCopy];
+  v10 = [itemCopy conformsToProtocol:&unk_282D11098];
 
   [v9 setConformsToProtocol:v10];
 

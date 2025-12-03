@@ -1,55 +1,55 @@
 @interface PUPickerSearchBar
 - (CGSize)intrinsicContentSize;
-- (PUPickerSearchBar)initWithPhotoLibrary:(id)a3 searchHandler:(id)a4 searchContextualVideoThumbnailHandler:(id)a5 scopeHandler:(id)a6;
-- (void)updateContainerFromPickerConfiguration:(id)a3;
-- (void)updateContainerFromSuggestion:(id)a3;
-- (void)updateIsEditing:(BOOL)a3;
-- (void)updateSearchText:(id)a3;
+- (PUPickerSearchBar)initWithPhotoLibrary:(id)library searchHandler:(id)handler searchContextualVideoThumbnailHandler:(id)thumbnailHandler scopeHandler:(id)scopeHandler;
+- (void)updateContainerFromPickerConfiguration:(id)configuration;
+- (void)updateContainerFromSuggestion:(id)suggestion;
+- (void)updateIsEditing:(BOOL)editing;
+- (void)updateSearchText:(id)text;
 @end
 
 @implementation PUPickerSearchBar
 
-- (PUPickerSearchBar)initWithPhotoLibrary:(id)a3 searchHandler:(id)a4 searchContextualVideoThumbnailHandler:(id)a5 scopeHandler:(id)a6
+- (PUPickerSearchBar)initWithPhotoLibrary:(id)library searchHandler:(id)handler searchContextualVideoThumbnailHandler:(id)thumbnailHandler scopeHandler:(id)scopeHandler
 {
-  v9 = _Block_copy(a4);
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
+  v10 = _Block_copy(thumbnailHandler);
+  v11 = _Block_copy(scopeHandler);
   *(swift_allocObject() + 16) = v9;
   *(swift_allocObject() + 16) = v10;
   *(swift_allocObject() + 16) = v11;
-  return sub_1B3810438(a3);
+  return sub_1B3810438(library);
 }
 
-- (void)updateSearchText:(id)a3
+- (void)updateSearchText:(id)text
 {
-  v4 = a3;
-  v5 = self;
+  textCopy = text;
+  selfCopy = self;
   sub_1B3810D2C();
 }
 
-- (void)updateContainerFromSuggestion:(id)a3
+- (void)updateContainerFromSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B3810DC4(v4);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  sub_1B3810DC4(suggestionCopy);
 }
 
-- (void)updateContainerFromPickerConfiguration:(id)a3
+- (void)updateContainerFromPickerConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B3810E9C(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1B3810E9C(configurationCopy);
 }
 
-- (void)updateIsEditing:(BOOL)a3
+- (void)updateIsEditing:(BOOL)editing
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B3810FA8();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3811110();
   v4 = v3;
   v6 = v5;

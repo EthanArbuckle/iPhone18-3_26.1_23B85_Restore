@@ -1,23 +1,23 @@
 @interface VUIActionActivateCarrierOffer
-- (VUIActionActivateCarrierOffer)initWithContextData:(id)a3;
+- (VUIActionActivateCarrierOffer)initWithContextData:(id)data;
 - (id)_configurePreflightManager;
-- (void)_activateOfferWithCompletionHandler:(id)a3;
-- (void)_handleActivationSuccessWithCompletionHandler:(id)a3;
-- (void)_notifyDidEndActivationWithError:(id)a3;
+- (void)_activateOfferWithCompletionHandler:(id)handler;
+- (void)_handleActivationSuccessWithCompletionHandler:(id)handler;
+- (void)_notifyDidEndActivationWithError:(id)error;
 - (void)_notifyDidStartActivation;
-- (void)_showUIConfirmationForSubTransactionWithCompletion:(id)a3;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
-- (void)handleEngagementRequest:(id)a3 completion:(id)a4;
-- (void)handleSuccessfulActivationHelper:(id)a3;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)_showUIConfirmationForSubTransactionWithCompletion:(id)completion;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
+- (void)handleEngagementRequest:(id)request completion:(id)completion;
+- (void)handleSuccessfulActivationHelper:(id)helper;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionActivateCarrierOffer
 
-- (VUIActionActivateCarrierOffer)initWithContextData:(id)a3
+- (VUIActionActivateCarrierOffer)initWithContextData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = VUIActionActivateCarrierOffer;
   v5 = [(VUIActionActivateCarrierOffer *)&v19 init];
@@ -30,23 +30,23 @@
       _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - create", v18, 2u);
     }
 
-    v7 = [v4 vui_stringForKey:@"linkParams"];
+    v7 = [dataCopy vui_stringForKey:@"linkParams"];
     linkParams = v5->_linkParams;
     v5->_linkParams = v7;
 
-    v9 = [v4 vui_stringForKey:@"productCode"];
+    v9 = [dataCopy vui_stringForKey:@"productCode"];
     productCode = v5->_productCode;
     v5->_productCode = v9;
 
-    v11 = [v4 vui_dictionaryForKey:@"additionalParams"];
+    v11 = [dataCopy vui_dictionaryForKey:@"additionalParams"];
     additionalParams = v5->_additionalParams;
     v5->_additionalParams = v11;
 
-    v13 = [v4 vui_stringForKey:@"notificationTitle"];
+    v13 = [dataCopy vui_stringForKey:@"notificationTitle"];
     notificationTitle = v5->_notificationTitle;
     v5->_notificationTitle = v13;
 
-    v15 = [v4 vui_stringForKey:@"notificationBody"];
+    v15 = [dataCopy vui_stringForKey:@"notificationBody"];
     notificationBody = v5->_notificationBody;
     v5->_notificationBody = v15;
   }
@@ -54,9 +54,9 @@
   return v5;
 }
 
-- (void)_activateOfferWithCompletionHandler:(id)a3
+- (void)_activateOfferWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,19 +64,19 @@
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - activating offer...", buf, 2u);
   }
 
-  v6 = [MEMORY[0x1E69D5920] activeAccount];
-  v7 = [MEMORY[0x1E698C870] createBagForSubProfile];
-  v8 = [objc_alloc(MEMORY[0x1E698C870]) initWithAccount:v6 bag:v7 linkParams:self->_linkParams productCode:self->_productCode];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  createBagForSubProfile = [MEMORY[0x1E698C870] createBagForSubProfile];
+  v8 = [objc_alloc(MEMORY[0x1E698C870]) initWithAccount:activeAccount bag:createBagForSubProfile linkParams:self->_linkParams productCode:self->_productCode];
   [v8 setAdditionalLinkingParameters:self->_additionalParams];
   [v8 setDelegate:self];
-  v9 = [v8 perform];
+  perform = [v8 perform];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__VUIActionActivateCarrierOffer__activateOfferWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E8730510;
-  v12 = v4;
-  v10 = v4;
-  [v9 addFinishBlock:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [perform addFinishBlock:v11];
 }
 
 void __69__VUIActionActivateCarrierOffer__activateOfferWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -111,9 +111,9 @@ void __69__VUIActionActivateCarrierOffer__activateOfferWithCompletionHandler___b
   v9();
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -121,15 +121,15 @@ void __69__VUIActionActivateCarrierOffer__activateOfferWithCompletionHandler___b
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - performing action...", buf, 2u);
   }
 
-  v7 = [(VUIActionActivateCarrierOffer *)self _configurePreflightManager];
+  _configurePreflightManager = [(VUIActionActivateCarrierOffer *)self _configurePreflightManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__VUIActionActivateCarrierOffer_performWithTargetResponder_completionHandler___block_invoke;
   v9[3] = &unk_1E8730588;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  [v7 preflightWithOptions:1 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [_configurePreflightManager preflightWithOptions:1 completion:v9];
 }
 
 void __78__VUIActionActivateCarrierOffer_performWithTargetResponder_completionHandler___block_invoke(uint64_t a1, char a2)
@@ -237,9 +237,9 @@ uint64_t __78__VUIActionActivateCarrierOffer_performWithTargetResponder_completi
   return result;
 }
 
-- (void)_handleActivationSuccessWithCompletionHandler:(id)a3
+- (void)_handleActivationSuccessWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   if (_os_feature_enabled_impl())
   {
@@ -249,28 +249,28 @@ uint64_t __78__VUIActionActivateCarrierOffer_performWithTargetResponder_completi
     v12[3] = &unk_1E87305B0;
     v5 = &v14;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = handlerCopy;
     [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:1 completion:v12];
     v6 = &v13;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69E1508] sharedInstance];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __79__VUIActionActivateCarrierOffer__handleActivationSuccessWithCompletionHandler___block_invoke_39;
     v9[3] = &unk_1E87305D8;
     v5 = &v11;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
-    [v7 fetchConfigurationWithOptions:0 cachePolicy:3 queryParameters:0 completion:v9];
+    v10 = handlerCopy;
+    [mEMORY[0x1E69E1508] fetchConfigurationWithOptions:0 cachePolicy:3 queryParameters:0 completion:v9];
     v6 = &v10;
   }
 
   objc_destroyWeak(v5);
-  v8 = [MEMORY[0x1E69E15E8] sharedInstance];
-  [v8 fetchSubscriptionData:1 completion:&__block_literal_global_49];
+  mEMORY[0x1E69E15E8] = [MEMORY[0x1E69E15E8] sharedInstance];
+  [mEMORY[0x1E69E15E8] fetchSubscriptionData:1 completion:&__block_literal_global_49];
 
   objc_destroyWeak(&location);
 }
@@ -337,16 +337,16 @@ LABEL_6:
   }
 }
 
-- (void)handleSuccessfulActivationHelper:(id)a3
+- (void)handleSuccessfulActivationHelper:(id)helper
 {
-  v4 = a3;
+  helperCopy = helper;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __66__VUIActionActivateCarrierOffer_handleSuccessfulActivationHelper___block_invoke;
   v9 = &unk_1E872E828;
   objc_copyWeak(&v11, &location);
-  v5 = v4;
+  v5 = helperCopy;
   v10 = v5;
   v6 = v7;
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -392,28 +392,28 @@ void __66__VUIActionActivateCarrierOffer_handleSuccessfulActivationHelper___bloc
   }
 }
 
-- (void)handleEngagementRequest:(id)a3 completion:(id)a4
+- (void)handleEngagementRequest:(id)request completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 logKey];
+    logKey = [requestCopy logKey];
     *buf = 138412290;
-    v18 = v8;
+    v18 = logKey;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - handle engagement request: %@", buf, 0xCu);
   }
 
   v12 = MEMORY[0x1E69E9820];
   v13 = __68__VUIActionActivateCarrierOffer_handleEngagementRequest_completion___block_invoke;
   v14 = &unk_1E872E580;
-  v15 = v5;
-  v16 = v6;
+  v15 = requestCopy;
+  v16 = completionCopy;
   v9 = MEMORY[0x1E696AF00];
-  v10 = v6;
-  v11 = v5;
+  v10 = completionCopy;
+  v11 = requestCopy;
   if ([v9 isMainThread])
   {
     v13(&v12);
@@ -446,28 +446,28 @@ void __68__VUIActionActivateCarrierOffer_handleEngagementRequest_completion___bl
   }
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 logKey];
+    logKey = [requestCopy logKey];
     *buf = 138412290;
-    v18 = v8;
+    v18 = logKey;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - handle auth request: %@", buf, 0xCu);
   }
 
   v12 = MEMORY[0x1E69E9820];
   v13 = __70__VUIActionActivateCarrierOffer_handleAuthenticateRequest_completion___block_invoke;
   v14 = &unk_1E872E580;
-  v15 = v5;
-  v16 = v6;
+  v15 = requestCopy;
+  v16 = completionCopy;
   v9 = MEMORY[0x1E696AF00];
-  v10 = v6;
-  v11 = v5;
+  v10 = completionCopy;
+  v11 = requestCopy;
   if ([v9 isMainThread])
   {
     v13(&v12);
@@ -527,28 +527,28 @@ void __70__VUIActionActivateCarrierOffer_handleAuthenticateRequest_completion___
   }
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 logKey];
+    logKey = [requestCopy logKey];
     *buf = 138412290;
-    v18 = v8;
+    v18 = logKey;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - handle dialog request: %@", buf, 0xCu);
   }
 
   v12 = MEMORY[0x1E69E9820];
   v13 = __64__VUIActionActivateCarrierOffer_handleDialogRequest_completion___block_invoke;
   v14 = &unk_1E872E580;
-  v15 = v5;
-  v16 = v6;
+  v15 = requestCopy;
+  v16 = completionCopy;
   v9 = MEMORY[0x1E696AF00];
-  v10 = v6;
-  v11 = v5;
+  v10 = completionCopy;
+  v11 = requestCopy;
   if ([v9 isMainThread])
   {
     v13(&v12);
@@ -636,14 +636,14 @@ void __64__VUIActionActivateCarrierOffer_handleDialogRequest_completion___block_
   return v2;
 }
 
-- (void)_showUIConfirmationForSubTransactionWithCompletion:(id)a3
+- (void)_showUIConfirmationForSubTransactionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VUIActionActivateCarrierOffer *)self notificationTitle];
-  v6 = [v5 copy];
+  completionCopy = completion;
+  notificationTitle = [(VUIActionActivateCarrierOffer *)self notificationTitle];
+  v6 = [notificationTitle copy];
 
-  v7 = [(VUIActionActivateCarrierOffer *)self notificationBody];
-  v8 = [v7 copy];
+  notificationBody = [(VUIActionActivateCarrierOffer *)self notificationBody];
+  v8 = [notificationBody copy];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -651,9 +651,9 @@ void __64__VUIActionActivateCarrierOffer_handleDialogRequest_completion___block_
   v15 = &unk_1E872DF40;
   v16 = v6;
   v17 = v8;
-  v18 = v4;
+  v18 = completionCopy;
   v9 = MEMORY[0x1E696AF00];
-  v10 = v4;
+  v10 = completionCopy;
   v11 = v8;
   v12 = v6;
   if ([v9 isMainThread])
@@ -670,53 +670,53 @@ void __64__VUIActionActivateCarrierOffer_handleDialogRequest_completion___block_
 - (void)_notifyDidStartActivation
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIActionActivateCarrierOffer *)self linkParams];
+  linkParams = [(VUIActionActivateCarrierOffer *)self linkParams];
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v2;
+    v10 = linkParams;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - notify start, linkParams: %@", buf, 0xCu);
   }
 
   v4 = +[VUIPurchaser sharedInstance];
-  [v4 rememberPurchasing:v2];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [v4 rememberPurchasing:linkParams];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = @"TransactionID";
-  v8 = v2;
+  v8 = linkParams;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  [v5 postNotificationName:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0 userInfo:v6];
 }
 
-- (void)_notifyDidEndActivationWithError:(id)a3
+- (void)_notifyDidEndActivationWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIActionActivateCarrierOffer *)self linkParams];
-  v6 = [(VUIActionActivateCarrierOffer *)self canonicalID];
+  errorCopy = error;
+  linkParams = [(VUIActionActivateCarrierOffer *)self linkParams];
+  canonicalID = [(VUIActionActivateCarrierOffer *)self canonicalID];
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = v5;
+    v12 = linkParams;
     v13 = 2112;
-    v14 = v6;
+    v14 = canonicalID;
     v15 = 2112;
-    v16 = v4;
+    v16 = errorCopy;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "ActivateCarrierOffer - notify end, linkParams: %@, canonicalID: %@, error:%@", &v11, 0x20u);
   }
 
   v8 = +[VUIPurchaser sharedInstance];
-  [v8 forgetPurchasing:v5];
+  [v8 forgetPurchasing:linkParams];
   v9 = objc_opt_new();
-  [v9 setObject:v5 forKeyedSubscript:@"TransactionID"];
-  if (v4)
+  [v9 setObject:linkParams forKeyedSubscript:@"TransactionID"];
+  if (errorCopy)
   {
-    [v9 setObject:v4 forKeyedSubscript:@"Error"];
+    [v9 setObject:errorCopy forKeyedSubscript:@"Error"];
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"VUISubscribeRequestDidFinishNotification" object:0 userInfo:v9];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUISubscribeRequestDidFinishNotification" object:0 userInfo:v9];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface PXRemoveLibrarySharingSuggestionAction
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXRemoveLibrarySharingSuggestionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
-  PXSharedLibraryAddSharingSuggestions(v5, v4);
+  undoCopy = undo;
+  assets = [(PXAssetsAction *)self assets];
+  PXSharedLibraryAddSharingSuggestions(assets, undoCopy);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
-  PXSharedLibraryRemoveSharingSuggestions(v5, v4);
+  actionCopy = action;
+  assets = [(PXAssetsAction *)self assets];
+  PXSharedLibraryRemoveSharingSuggestions(assets, actionCopy);
 }
 
 @end

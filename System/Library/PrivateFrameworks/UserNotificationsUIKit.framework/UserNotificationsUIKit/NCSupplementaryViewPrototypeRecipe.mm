@@ -1,23 +1,23 @@
 @interface NCSupplementaryViewPrototypeRecipe
 + (id)_sharedInstance;
-+ (void)registerRecipeWithDelegate:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
++ (void)registerRecipeWithDelegate:(id)delegate;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (NCSupplementaryViewPrototypeRecipe)init;
 - (NCSupplementaryViewPrototypeRecipeDelegate)delegate;
-- (id)_mostRecentDateForGroupingIdentifier:(id)a3;
-- (id)_supplementaryViewsTestRecipeWithDelegate:(id)a3;
-- (int64_t)_compareByAgeForViewController:(id)a3 otherViewController:(id)a4;
-- (unint64_t)prototypeRecipeViewController:(id)a3 requestsCountForGroupWithIdentifier:(id)a4;
+- (id)_mostRecentDateForGroupingIdentifier:(id)identifier;
+- (id)_supplementaryViewsTestRecipeWithDelegate:(id)delegate;
+- (int64_t)_compareByAgeForViewController:(id)controller otherViewController:(id)viewController;
+- (unint64_t)prototypeRecipeViewController:(id)controller requestsCountForGroupWithIdentifier:(id)identifier;
 - (void)_presentSupplementaryViewController;
-- (void)_registerRecipeWithDelegate:(id)a3;
-- (void)_setSortComparatorsForContainer:(id)a3;
-- (void)_updateGroupLastModifiedDateForViewController:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)recipeMenuViewController:(id)a3 requestsInsertContentViewController:(id)a4;
-- (void)requestsInsertForPrototypeRecipeViewController:(id)a3;
-- (void)requestsRemovalForPrototypeRecipeViewController:(id)a3;
-- (void)requestsUpdateForPrototypeRecipeViewController:(id)a3;
-- (void)requestsUpdatePositionIfNeededForPrototypeRecipeViewController:(id)a3;
+- (void)_registerRecipeWithDelegate:(id)delegate;
+- (void)_setSortComparatorsForContainer:(id)container;
+- (void)_updateGroupLastModifiedDateForViewController:(id)controller;
+- (void)forwardInvocation:(id)invocation;
+- (void)recipeMenuViewController:(id)controller requestsInsertContentViewController:(id)viewController;
+- (void)requestsInsertForPrototypeRecipeViewController:(id)controller;
+- (void)requestsRemovalForPrototypeRecipeViewController:(id)controller;
+- (void)requestsUpdateForPrototypeRecipeViewController:(id)controller;
+- (void)requestsUpdatePositionIfNeededForPrototypeRecipeViewController:(id)controller;
 @end
 
 @implementation NCSupplementaryViewPrototypeRecipe
@@ -57,14 +57,14 @@ uint64_t __53__NCSupplementaryViewPrototypeRecipe__sharedInstance__block_invoke(
   return MEMORY[0x2821F96F8](v0);
 }
 
-+ (void)registerRecipeWithDelegate:(id)a3
++ (void)registerRecipeWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _sharedInstance];
-  [v4 _registerRecipeWithDelegate:v3];
+  delegateCopy = delegate;
+  _sharedInstance = [objc_opt_class() _sharedInstance];
+  [_sharedInstance _registerRecipeWithDelegate:delegateCopy];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = NCSupplementaryViewPrototypeRecipe;
@@ -73,7 +73,7 @@ uint64_t __53__NCSupplementaryViewPrototypeRecipe__sharedInstance__block_invoke(
     v5 = 1;
   }
 
-  else if ([NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:a3])
+  else if ([NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:selector])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -87,111 +87,111 @@ uint64_t __53__NCSupplementaryViewPrototypeRecipe__sharedInstance__block_invoke(
   return v5 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (+[NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:](NCNotificationStructuredListUtilities, "isNotificationListComponentDelegateMethod:", [v4 selector]))
+  invocationCopy = invocation;
+  if (+[NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:](NCNotificationStructuredListUtilities, "isNotificationListComponentDelegateMethod:", [invocationCopy selector]))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v4 invokeWithTarget:WeakRetained];
+      [invocationCopy invokeWithTarget:WeakRetained];
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = NCSupplementaryViewPrototypeRecipe;
-      [(NCSupplementaryViewPrototypeRecipe *)&v6 forwardInvocation:v4];
+      [(NCSupplementaryViewPrototypeRecipe *)&v6 forwardInvocation:invocationCopy];
     }
   }
 }
 
-- (void)requestsRemovalForPrototypeRecipeViewController:(id)a3
+- (void)requestsRemovalForPrototypeRecipeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  [v5 removeSupplementaryViewController:v4];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  [testRecipeSupplementaryViewsContainer removeSupplementaryViewController:controllerCopy];
 }
 
-- (void)requestsUpdateForPrototypeRecipeViewController:(id)a3
+- (void)requestsUpdateForPrototypeRecipeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  v6 = [v4 configuration];
-  [v5 updateSupplementaryViewController:v4 withConfiguration:v6];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  configuration = [controllerCopy configuration];
+  [testRecipeSupplementaryViewsContainer updateSupplementaryViewController:controllerCopy withConfiguration:configuration];
 }
 
-- (void)requestsInsertForPrototypeRecipeViewController:(id)a3
+- (void)requestsInsertForPrototypeRecipeViewController:(id)controller
 {
-  v4 = a3;
-  [(NCSupplementaryViewPrototypeRecipe *)self _updateGroupLastModifiedDateForViewController:v4];
+  controllerCopy = controller;
+  [(NCSupplementaryViewPrototypeRecipe *)self _updateGroupLastModifiedDateForViewController:controllerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  v6 = [v4 configuration];
-  [v5 insertSupplementaryViewController:v4 withConfiguration:v6];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  configuration = [controllerCopy configuration];
+  [testRecipeSupplementaryViewsContainer insertSupplementaryViewController:controllerCopy withConfiguration:configuration];
 }
 
-- (void)requestsUpdatePositionIfNeededForPrototypeRecipeViewController:(id)a3
+- (void)requestsUpdatePositionIfNeededForPrototypeRecipeViewController:(id)controller
 {
-  v4 = a3;
-  [(NCSupplementaryViewPrototypeRecipe *)self _updateGroupLastModifiedDateForViewController:v4];
+  controllerCopy = controller;
+  [(NCSupplementaryViewPrototypeRecipe *)self _updateGroupLastModifiedDateForViewController:controllerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  [v5 updatePositionIfNeededForSupplementaryViewController:v4];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  [testRecipeSupplementaryViewsContainer updatePositionIfNeededForSupplementaryViewController:controllerCopy];
 }
 
-- (unint64_t)prototypeRecipeViewController:(id)a3 requestsCountForGroupWithIdentifier:(id)a4
+- (unint64_t)prototypeRecipeViewController:(id)controller requestsCountForGroupWithIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  v8 = [v7 supplementaryViewControllersByGroupingIdentifiers];
-  v9 = [v8 objectForKey:v5];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  supplementaryViewControllersByGroupingIdentifiers = [testRecipeSupplementaryViewsContainer supplementaryViewControllersByGroupingIdentifiers];
+  v9 = [supplementaryViewControllersByGroupingIdentifiers objectForKey:identifierCopy];
 
   v10 = [v9 count];
   return v10;
 }
 
-- (void)recipeMenuViewController:(id)a3 requestsInsertContentViewController:(id)a4
+- (void)recipeMenuViewController:(id)controller requestsInsertContentViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  v7 = [v5 configuration];
-  [v6 insertSupplementaryViewController:v5 withConfiguration:v7];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  configuration = [viewControllerCopy configuration];
+  [testRecipeSupplementaryViewsContainer insertSupplementaryViewController:viewControllerCopy withConfiguration:configuration];
 }
 
-- (void)_registerRecipeWithDelegate:(id)a3
+- (void)_registerRecipeWithDelegate:(id)delegate
 {
-  v4 = a3;
-  [(NCSupplementaryViewPrototypeRecipe *)self setDelegate:v4];
-  v7 = [(NCSupplementaryViewPrototypeRecipe *)self _supplementaryViewsTestRecipeWithDelegate:v4];
+  delegateCopy = delegate;
+  [(NCSupplementaryViewPrototypeRecipe *)self setDelegate:delegateCopy];
+  v7 = [(NCSupplementaryViewPrototypeRecipe *)self _supplementaryViewsTestRecipeWithDelegate:delegateCopy];
 
   [(PTDomain *)NCUNUIKitPrototypeDomain registerTestRecipe:v7];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained testRecipeSupplementaryViewsContainer];
-  [(NCSupplementaryViewPrototypeRecipe *)self _setSortComparatorsForContainer:v6];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
+  [(NCSupplementaryViewPrototypeRecipe *)self _setSortComparatorsForContainer:testRecipeSupplementaryViewsContainer];
 }
 
-- (void)_setSortComparatorsForContainer:(id)a3
+- (void)_setSortComparatorsForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__NCSupplementaryViewPrototypeRecipe__setSortComparatorsForContainer___block_invoke;
   v7[3] = &unk_278372FC8;
   objc_copyWeak(&v8, &location);
-  [v4 setViewControllerSortComparator:v7];
+  [containerCopy setViewControllerSortComparator:v7];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__NCSupplementaryViewPrototypeRecipe__setSortComparatorsForContainer___block_invoke_2;
   v5[3] = &unk_278372FF0;
   objc_copyWeak(&v6, &location);
-  [v4 setGroupSortComparator:v5];
+  [containerCopy setGroupSortComparator:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -262,19 +262,19 @@ uint64_t __70__NCSupplementaryViewPrototypeRecipe__setSortComparatorsForContaine
   return v7;
 }
 
-- (id)_mostRecentDateForGroupingIdentifier:(id)a3
+- (id)_mostRecentDateForGroupingIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained testRecipeSupplementaryViewsContainer];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 supplementaryViewControllersByGroupingIdentifiers];
-  v8 = [v7 objectForKey:v4];
+  supplementaryViewControllersByGroupingIdentifiers = [testRecipeSupplementaryViewsContainer supplementaryViewControllersByGroupingIdentifiers];
+  v8 = [supplementaryViewControllersByGroupingIdentifiers objectForKey:identifierCopy];
 
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v9)
@@ -297,9 +297,9 @@ LABEL_14:
         objc_enumerationMutation(v8);
       }
 
-      v14 = [*(*(&v18 + 1) + 8 * i) dateModified];
-      v15 = v14;
-      if (!v11 || [v14 compare:v11] == 1)
+      dateModified = [*(*(&v18 + 1) + 8 * i) dateModified];
+      v15 = dateModified;
+      if (!v11 || [dateModified compare:v11] == 1)
       {
         v16 = v15;
 
@@ -322,38 +322,38 @@ LABEL_15:
   return v11;
 }
 
-- (int64_t)_compareByAgeForViewController:(id)a3 otherViewController:(id)a4
+- (int64_t)_compareByAgeForViewController:(id)controller otherViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [a3 dateModified];
-  v7 = [v5 dateModified];
+  viewControllerCopy = viewController;
+  dateModified = [controller dateModified];
+  dateModified2 = [viewControllerCopy dateModified];
 
-  v8 = [v6 compare:v7];
+  v8 = [dateModified compare:dateModified2];
   return v8;
 }
 
 - (void)_presentSupplementaryViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained testRecipeSupplementaryViewsContainer];
+  testRecipeSupplementaryViewsContainer = [WeakRetained testRecipeSupplementaryViewsContainer];
 
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [v4 supplementaryViewControllers];
+  supplementaryViewControllers = [testRecipeSupplementaryViewsContainer supplementaryViewControllers];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__NCSupplementaryViewPrototypeRecipe__presentSupplementaryViewController__block_invoke;
   v8[3] = &unk_278373018;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [supplementaryViewControllers enumerateObjectsUsingBlock:v8];
 
   if ((v10[3] & 1) == 0)
   {
     v6 = objc_alloc_init(NCSupplementaryViewPrototypeRecipeMenuViewController);
-    v7 = [(NCSupplementaryViewPrototypeRecipeViewController *)v6 configuration];
-    [v4 insertSupplementaryViewController:v6 withConfiguration:v7];
+    configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)v6 configuration];
+    [testRecipeSupplementaryViewsContainer insertSupplementaryViewController:v6 withConfiguration:configuration];
 
     [(NCSupplementaryViewPrototypeRecipeViewController *)v6 setDelegate:self];
   }
@@ -371,23 +371,23 @@ void __73__NCSupplementaryViewPrototypeRecipe__presentSupplementaryViewControlle
   *a4 = *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (void)_updateGroupLastModifiedDateForViewController:(id)a3
+- (void)_updateGroupLastModifiedDateForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 configuration];
-  v10 = [v5 groupingIdentifier];
+  controllerCopy = controller;
+  configuration = [controllerCopy configuration];
+  groupingIdentifier = [configuration groupingIdentifier];
 
-  v6 = [v4 dateModified];
+  dateModified = [controllerCopy dateModified];
 
-  if (v10 && v6)
+  if (groupingIdentifier && dateModified)
   {
     v7 = [(NSMutableDictionary *)self->_lastModifiedDatesByGroupingIdentifiers objectForKey:?];
-    v8 = v6;
+    v8 = dateModified;
     if (v7)
     {
-      if ([v6 compare:v7] == 1)
+      if ([dateModified compare:v7] == 1)
       {
-        v8 = v6;
+        v8 = dateModified;
       }
 
       else
@@ -398,15 +398,15 @@ void __73__NCSupplementaryViewPrototypeRecipe__presentSupplementaryViewControlle
 
     v9 = v8;
 
-    [(NSMutableDictionary *)self->_lastModifiedDatesByGroupingIdentifiers setObject:v9 forKey:v10];
-    v6 = v9;
+    [(NSMutableDictionary *)self->_lastModifiedDatesByGroupingIdentifiers setObject:v9 forKey:groupingIdentifier];
+    dateModified = v9;
   }
 }
 
-- (id)_supplementaryViewsTestRecipeWithDelegate:(id)a3
+- (id)_supplementaryViewsTestRecipeWithDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  delegateCopy = delegate;
+  objc_initWeak(&location, delegateCopy);
   v5 = MEMORY[0x277D431D0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;

@@ -3,37 +3,37 @@
 + (NSSet)laTeXTrigonometricSet;
 + (NSSet)nonTrigFunctionSet;
 + (NSSet)trigonometricSet;
-+ (id)localizedSymbolsTrie:(id)a3;
++ (id)localizedSymbolsTrie:(id)trie;
 + (id)nonWhitespaceLanguageSet;
 + (id)punctuationSet;
 + (id)symbolSet;
-+ (id)tokenizerWithUnits:(id)a3;
-+ (int)displayNameExponent:(id)a3;
-+ (void)_addSymbols:(id)a3 normalized:(id)a4 tokenType:(unint64_t)a5 isLaTeX:(BOOL)a6 trie:(id)a7;
-+ (void)addLocalizedSymbols:(id)a3 locales:(id)a4;
-+ (void)addSymbols:(id)a3;
-+ (void)addUnits:(id)a3 builtIn:(BOOL)a4;
++ (id)tokenizerWithUnits:(id)units;
++ (int)displayNameExponent:(id)exponent;
++ (void)_addSymbols:(id)symbols normalized:(id)normalized tokenType:(unint64_t)type isLaTeX:(BOOL)x trie:(id)trie;
++ (void)addLocalizedSymbols:(id)symbols locales:(id)locales;
++ (void)addSymbols:(id)symbols;
++ (void)addUnits:(id)units builtIn:(BOOL)in;
 + (void)loadPunctuationSet;
 + (void)loadSymbolSet;
 - ($0F7EB6B36CDCC9CA6BC7BE76F6527CA8)singleLetterVariables;
-- (CalculateTokenizer)initWithUnits:(id)a3;
+- (CalculateTokenizer)initWithUnits:(id)units;
 - (_NSRange)range;
 - (id)nextToken;
 - (id)peekNonWhitespaceToken;
 - (id)peekToken;
-- (id)peekTokenAtOffset:(int64_t)a3;
+- (id)peekTokenAtOffset:(int64_t)offset;
 - (void)_findNextToken;
 - (void)_loadIfNeeded;
-- (void)addDeclaredVariable:(id)a3;
-- (void)addVariable:(id)a3;
+- (void)addDeclaredVariable:(id)variable;
+- (void)addVariable:(id)variable;
 - (void)dealloc;
 - (void)reset;
-- (void)setGraphableVariable:(id)a3;
-- (void)setLocales:(id)a3;
-- (void)setRange:(_NSRange)a3;
-- (void)setSingleLetterVariables:(id *)a3;
-- (void)setString:(id)a3;
-- (void)setVariables:(id)a3;
+- (void)setGraphableVariable:(id)variable;
+- (void)setLocales:(id)locales;
+- (void)setRange:(_NSRange)range;
+- (void)setSingleLetterVariables:(id *)variables;
+- (void)setString:(id)string;
+- (void)setVariables:(id)variables;
 - (void)update;
 @end
 
@@ -41,35 +41,35 @@
 
 - (id)nextToken
 {
-  v3 = [(CalculateTokenizer *)self peekToken];
-  if (v3)
+  peekToken = [(CalculateTokenizer *)self peekToken];
+  if (peekToken)
   {
-    v4 = [(CalculateTokenizer *)self peekTokens];
-    [v4 removeObjectAtIndex:0];
+    peekTokens = [(CalculateTokenizer *)self peekTokens];
+    [peekTokens removeObjectAtIndex:0];
   }
 
-  [(CalculateTokenizer *)self setLastToken:v3];
+  [(CalculateTokenizer *)self setLastToken:peekToken];
 
-  return v3;
+  return peekToken;
 }
 
 - (id)peekToken
 {
-  v3 = [(CalculateTokenizer *)self peekTokens];
-  v4 = [v3 count];
+  peekTokens = [(CalculateTokenizer *)self peekTokens];
+  v4 = [peekTokens count];
 
   if (!v4)
   {
     [(CalculateTokenizer *)self _findNextToken];
   }
 
-  v5 = [(CalculateTokenizer *)self peekTokens];
-  v6 = [v5 count];
+  peekTokens2 = [(CalculateTokenizer *)self peekTokens];
+  v6 = [peekTokens2 count];
 
   if (v6)
   {
-    v7 = [(CalculateTokenizer *)self peekTokens];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    peekTokens3 = [(CalculateTokenizer *)self peekTokens];
+    v8 = [peekTokens3 objectAtIndexedSubscript:0];
   }
 
   else
@@ -82,28 +82,28 @@
 
 - (void)_findNextToken
 {
-  v2 = self;
+  selfCopy = self;
   v261 = *MEMORY[0x1E69E9840];
   if (self->_needsUpdate)
   {
     [(CalculateTokenizer *)self update];
   }
 
-  v3 = [(CalculateTokenizer *)v2 peekIndex];
-  if (v3 >= [(CalculateTokenizer *)v2 stringLength])
+  peekIndex = [(CalculateTokenizer *)selfCopy peekIndex];
+  if (peekIndex >= [(CalculateTokenizer *)selfCopy stringLength])
   {
     goto LABEL_100;
   }
 
-  for (i = v2; ; [(CalculateTokenizer *)i setWordBreakIndicesIndex:[(CalculateTokenizer *)i wordBreakIndicesIndex]+ 1])
+  for (i = selfCopy; ; [(CalculateTokenizer *)i setWordBreakIndicesIndex:[(CalculateTokenizer *)i wordBreakIndicesIndex]+ 1])
   {
-    v4 = [(CalculateTokenizer *)v2 wordBreakIndices];
-    v5 = [v4 objectAtIndexedSubscript:{-[CalculateTokenizer wordBreakIndicesIndex](i, "wordBreakIndicesIndex")}];
-    v6 = [v5 intValue];
-    v2 = i;
-    v7 = [(CalculateTokenizer *)i peekIndex];
+    wordBreakIndices = [(CalculateTokenizer *)selfCopy wordBreakIndices];
+    v5 = [wordBreakIndices objectAtIndexedSubscript:{-[CalculateTokenizer wordBreakIndicesIndex](i, "wordBreakIndicesIndex")}];
+    intValue = [v5 intValue];
+    selfCopy = i;
+    peekIndex2 = [(CalculateTokenizer *)i peekIndex];
 
-    if (v7 < v6)
+    if (peekIndex2 < intValue)
     {
       break;
     }
@@ -127,15 +127,15 @@
   aBlock[5] = &v251;
   aBlock[6] = &v247;
   v155 = _Block_copy(aBlock);
-  v152 = [(CalculateTokenizer *)i stringLength];
-  v157 = [(CalculateTokenizer *)i peekIndex];
-  v8 = [(CalculateTokenizer *)i wordBreakIndices];
-  v9 = [v8 objectAtIndexedSubscript:{-[CalculateTokenizer wordBreakIndicesIndex](i, "wordBreakIndicesIndex")}];
-  v10 = [v9 intValue];
+  stringLength = [(CalculateTokenizer *)i stringLength];
+  peekIndex3 = [(CalculateTokenizer *)i peekIndex];
+  wordBreakIndices2 = [(CalculateTokenizer *)i wordBreakIndices];
+  v9 = [wordBreakIndices2 objectAtIndexedSubscript:{-[CalculateTokenizer wordBreakIndicesIndex](i, "wordBreakIndicesIndex")}];
+  intValue2 = [v9 intValue];
 
-  v156 = v10;
+  v156 = intValue2;
   v11 = i;
-  if (!i->_prevToken && (([(NSString *)i->_string characterAtIndex:v157]& 0xFFDF) - 65) <= 0x19u)
+  if (!i->_prevToken && (([(NSString *)i->_string characterAtIndex:peekIndex3]& 0xFFDF) - 65) <= 0x19u)
   {
     *&v257 = 0;
     *(&v257 + 1) = &v257;
@@ -145,18 +145,18 @@
     v240 = &v239;
     v241 = 0x2020000000;
     LOBYTE(v242) = 0;
-    v12 = [(CalculateTokenizer *)i string];
+    string = [(CalculateTokenizer *)i string];
     v245[0] = MEMORY[0x1E69E9820];
     v245[1] = 3221225472;
     v245[2] = __36__CalculateTokenizer__findNextToken__block_invoke_2;
     v245[3] = &unk_1E815C9B8;
     v245[4] = &v257;
     v245[5] = &v239;
-    [Trie enumerateCharactersInKey:v12 range:v10 usingBlock:v152 - v10, v245];
+    [Trie enumerateCharactersInKey:string range:intValue2 usingBlock:stringLength - intValue2, v245];
 
     if (*(*(&v257 + 1) + 24) == 1 && *(v240 + 24) == 1)
     {
-      v13 = (*(v155 + 2))(v155, 39, v10, 0, 0);
+      v13 = (*(v155 + 2))(v155, 39, intValue2, 0, 0);
       _Block_object_dispose(&v239, 8);
       _Block_object_dispose(&v257, 8);
       goto LABEL_99;
@@ -167,19 +167,19 @@
     v11 = i;
   }
 
-  v154 = v10 - v157;
-  if (v10 <= v157 || v154 != 1 && v154 > v11->_variableBufferLength && v154 > v11->_graphableVariableLength || (([(NSString *)v11->_string characterAtIndex:v157]& 0xFFDF) - 65) > 0x19u)
+  v154 = intValue2 - peekIndex3;
+  if (intValue2 <= peekIndex3 || v154 != 1 && v154 > v11->_variableBufferLength && v154 > v11->_graphableVariableLength || (([(NSString *)v11->_string characterAtIndex:peekIndex3]& 0xFFDF) - 65) > 0x19u)
   {
     goto LABEL_69;
   }
 
   if (v154 == 1 || v154 <= v11->_variableBufferLength || v154 <= v11->_graphableVariableLength)
   {
-    v14 = [(NSString *)v11->_string substringWithRange:v157];
-    v15 = [v14 lowercaseString];
+    v14 = [(NSString *)v11->_string substringWithRange:peekIndex3];
+    lowercaseString = [v14 lowercaseString];
 
     p_isa = &i->super.isa;
-    v17 = [(NSDictionary *)i->_variables objectForKey:v15];
+    v17 = [(NSDictionary *)i->_variables objectForKey:lowercaseString];
     if (v17)
     {
 
@@ -196,7 +196,7 @@
 
     else
     {
-      v19 = [(NSMutableSet *)i->_lowercasedVariables containsObject:v15];
+      v19 = [(NSMutableSet *)i->_lowercasedVariables containsObject:lowercaseString];
       graphableVariable = i->_graphableVariable;
       if (!graphableVariable)
       {
@@ -210,7 +210,7 @@
       }
     }
 
-    v20 = [(NSString *)graphableVariable caseInsensitiveCompare:v15];
+    v20 = [(NSString *)graphableVariable caseInsensitiveCompare:lowercaseString];
     *(v248 + 24) = v20 == 0;
     if (v19)
     {
@@ -219,7 +219,7 @@
 
     if (!v20)
     {
-      v21 = [p_isa[4] substringWithRange:{v157, v154}];
+      v21 = [p_isa[4] substringWithRange:{peekIndex3, v154}];
       v22 = v252[5];
       v252[5] = v21;
 
@@ -231,7 +231,7 @@
     }
 
 LABEL_31:
-    if ([v15 isEqualToString:@"x"])
+    if ([lowercaseString isEqualToString:@"x"])
     {
       if ((v248[3] & 1) == 0)
       {
@@ -242,13 +242,13 @@ LABEL_31:
 LABEL_33:
       v23 = 39;
 LABEL_34:
-      v24 = (*(v155 + 2))(v155, v23, v10, 0, 0);
+      v24 = (*(v155 + 2))(v155, v23, intValue2, 0, 0);
       if ([v24 isMaybeX])
       {
         [p_isa _findNextToken];
-        v25 = [p_isa[18] lastObject];
-        v26 = v25;
-        if (!v25 || [v25 tokenType] == 1)
+        lastObject = [p_isa[18] lastObject];
+        v26 = lastObject;
+        if (!lastObject || [lastObject tokenType] == 1)
         {
           [p_isa _findNextToken];
         }
@@ -274,7 +274,7 @@ LABEL_34:
   v258 = 0u;
   variableBuffer = v11->_variableBuffer;
   v30 = 1;
-  v31 = v10 - v157;
+  v31 = intValue2 - peekIndex3;
   v32 = 1;
   while (1)
   {
@@ -357,7 +357,7 @@ LABEL_59:
   else if (!v32 && v27 <= 0)
   {
 LABEL_64:
-    v43 = v157 + 1;
+    v43 = peekIndex3 + 1;
     do
     {
       v44 = (*(v155 + 2))(v155, 39, v43++, 0, 0);
@@ -396,11 +396,11 @@ LABEL_69:
     v231 = 0x3032000000;
     v232 = __Block_byref_object_copy__886;
     v233 = __Block_byref_object_dispose__887;
-    v48 = [(CalculateTokenizer *)i trie];
-    v49 = v48;
-    if (v48)
+    trie = [(CalculateTokenizer *)i trie];
+    v49 = trie;
+    if (trie)
     {
-      v50 = [*(v48 + 32) copy];
+      v50 = [*(trie + 32) copy];
     }
 
     else
@@ -413,12 +413,12 @@ LABEL_69:
     v196 = 0;
     v197 = &v196;
     v198 = 0x2020000000;
-    v199 = [(CalculateTokenizer *)i wordBreakIndicesIndex];
+    wordBreakIndicesIndex = [(CalculateTokenizer *)i wordBreakIndicesIndex];
     v184 = 0;
     v185 = &v184;
     v186 = 0x2020000000;
-    v187 = v10;
-    v51 = [(CalculateTokenizer *)i string];
+    v187 = intValue2;
+    string2 = [(CalculateTokenizer *)i string];
     v227[0] = MEMORY[0x1E69E9820];
     v227[1] = 3221225472;
     v227[2] = __36__CalculateTokenizer__findNextToken__block_invoke_3;
@@ -430,12 +430,12 @@ LABEL_69:
     v227[7] = &v257;
     v227[8] = &v235;
     v227[9] = &v184;
-    v227[11] = v157;
+    v227[11] = peekIndex3;
     v227[10] = &v196;
-    [Trie enumerateCharactersInKey:v51 range:v157 usingBlock:v152 - v157, v227];
+    [Trie enumerateCharactersInKey:string2 range:peekIndex3 usingBlock:stringLength - peekIndex3, v227];
 
-    v52 = [*(*(&v257 + 1) + 40) ranks];
-    if ([v52 count] != 1)
+    ranks = [*(*(&v257 + 1) + 40) ranks];
+    if ([ranks count] != 1)
     {
 
 LABEL_76:
@@ -474,10 +474,10 @@ LABEL_79:
   {
     if ([*(*(&v257 + 1) + 40) tokenType] != 2 && objc_msgSend(*(*(&v257 + 1) + 40), "tokenType") != 35)
     {
-      v67 = [*(*(&v257 + 1) + 40) tokenType];
-      v68 = (*(v155 + 2))(v155, v67, v236[3], 0, 0);
-      v69 = [*(*(&v257 + 1) + 40) normalized];
-      [v68 setNormalizedText:v69];
+      tokenType = [*(*(&v257 + 1) + 40) tokenType];
+      v68 = (*(v155 + 2))(v155, tokenType, v236[3], 0, 0);
+      normalized = [*(*(&v257 + 1) + 40) normalized];
+      [v68 setNormalizedText:normalized];
 
       goto LABEL_98;
     }
@@ -487,20 +487,20 @@ LABEL_79:
       goto LABEL_148;
     }
 
-    v59 = [*(*(&v257 + 1) + 40) ranks];
-    v60 = [v59 count];
+    ranks2 = [*(*(&v257 + 1) + 40) ranks];
+    v60 = [ranks2 count];
 
     v61 = v236[3];
     v55 = i;
-    if (v61 >= v152)
+    if (v61 >= stringLength)
     {
       goto LABEL_147;
     }
 
     while (1)
     {
-      v62 = [(CalculateTokenizer *)v55 string];
-      v63 = [v62 characterAtIndex:v61];
+      string3 = [(CalculateTokenizer *)v55 string];
+      v63 = [string3 characterAtIndex:v61];
 
       v55 = i;
       if (v63 == 95)
@@ -513,7 +513,7 @@ LABEL_79:
         break;
       }
 
-      if (v152 == ++v61)
+      if (stringLength == ++v61)
       {
         goto LABEL_147;
       }
@@ -527,13 +527,13 @@ LABEL_147:
 LABEL_148:
         if (!v252[5] && v154 == 1)
         {
-          v109 = [(NSString *)v55->_string substringWithRange:v157, 1];
+          v109 = [(NSString *)v55->_string substringWithRange:peekIndex3, 1];
           v110 = v252[5];
           v252[5] = v109;
 
           v111 = v252[5];
-          v112 = [MEMORY[0x1E696AB08] letterCharacterSet];
-          LODWORD(v111) = [v111 rangeOfCharacterFromSet:v112] == 0x7FFFFFFFFFFFFFFFLL;
+          letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+          LODWORD(v111) = [v111 rangeOfCharacterFromSet:letterCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
 
           if (v111)
           {
@@ -549,35 +549,35 @@ LABEL_148:
 
 LABEL_153:
     v115 = (*(v155 + 2))(v155, 35, v236[3], 0, 0);
-    v116 = [*(*(&v257 + 1) + 40) normalized];
-    [v115 setNormalizedText:v116];
+    normalized2 = [*(*(&v257 + 1) + 40) normalized];
+    [v115 setNormalizedText:normalized2];
 
     goto LABEL_98;
   }
 
-  v56 = [v240[5] length] + v157;
+  v56 = [v240[5] length] + peekIndex3;
   v223 = 0;
   v224 = &v223;
   v225 = 0x2020000000;
   v226 = v56;
   if ([v240[5] rangeOfCharacterFromSet:newlineSet] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v58 = 32;
+    tokenType2 = 32;
     goto LABEL_96;
   }
 
   if ([v240[5] rangeOfCharacterFromSet:whitespaceSet] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v64 = [(CalculateTokenizer *)i string];
+    string4 = [(CalculateTokenizer *)i string];
     v222[0] = MEMORY[0x1E69E9820];
     v222[1] = 3221225472;
     v222[2] = __36__CalculateTokenizer__findNextToken__block_invoke_4;
     v222[3] = &unk_1E815CA08;
     v222[4] = &v223;
-    [Trie enumerateCharactersInKey:v64 range:v157 usingBlock:v154, v222];
+    [Trie enumerateCharactersInKey:string4 range:peekIndex3 usingBlock:v154, v222];
 
     v56 = v224[3];
-    v58 = 1;
+    tokenType2 = 1;
     goto LABEL_96;
   }
 
@@ -599,7 +599,7 @@ LABEL_153:
   v72 = v71;
   if (v71)
   {
-    v73 = [v71 integerValue];
+    integerValue = [v71 integerValue];
   }
 
   else if ([v70 rangeOfCharacterFromSet:symbolSet] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v70, "rangeOfCharacterFromSet:", hebrewSet) == 0x7FFFFFFFFFFFFFFFLL)
@@ -608,27 +608,27 @@ LABEL_153:
     {
       if ([v70 rangeOfCharacterFromSet:superscriptSet] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v73 = 1;
+        integerValue = 1;
       }
 
       else
       {
-        v73 = 4;
+        integerValue = 4;
       }
     }
 
     else
     {
-      v73 = 3;
+      integerValue = 3;
     }
   }
 
   else
   {
-    v73 = 2;
+    integerValue = 2;
   }
 
-  v221 = v73;
+  v221 = integerValue;
   v214 = 0;
   v215 = &v214;
   v216 = 0x2020000000;
@@ -669,7 +669,7 @@ LABEL_153:
   v196 = 0;
   v197 = &v196;
   v198 = 0x3032000000;
-  v199 = __Block_byref_object_copy__886;
+  wordBreakIndicesIndex = __Block_byref_object_copy__886;
   v200 = __Block_byref_object_dispose__887;
   v201 = 0;
   if (i->_normalizeNumbers)
@@ -730,7 +730,7 @@ LABEL_153:
   }
 
   v224[3] = v56;
-  v81 = [(CalculateTokenizer *)v74 string];
+  string5 = [(CalculateTokenizer *)v74 string];
   v161[0] = MEMORY[0x1E69E9820];
   v161[1] = 3221225472;
   v161[2] = __36__CalculateTokenizer__findNextToken__block_invoke_5;
@@ -753,9 +753,9 @@ LABEL_153:
   v175 = &v184;
   v176 = &v223;
   v177 = &v178;
-  [Trie enumerateCharactersInKey:v81 range:v56 usingBlock:v152 - v56, v161];
+  [Trie enumerateCharactersInKey:string5 range:v56 usingBlock:stringLength - v56, v161];
 
-  if (v224[3] == v157 + 1 && [v240[5] isEqualToString:@"."])
+  if (v224[3] == peekIndex3 + 1 && [v240[5] isEqualToString:@"."])
   {
     v83 = (*(v155 + 2))(v155, 6, v224[3], v240[5], 0);
     goto LABEL_173;
@@ -777,14 +777,14 @@ LABEL_153:
     goto LABEL_174;
   }
 
-  v85 = [(CalculateTokenizer *)i lastToken];
-  if (!v85)
+  lastToken = [(CalculateTokenizer *)i lastToken];
+  if (!lastToken)
   {
     goto LABEL_162;
   }
 
-  v86 = [(CalculateTokenizer *)i lastToken];
-  v87 = [v86 tokenType] == 2;
+  lastToken2 = [(CalculateTokenizer *)i lastToken];
+  v87 = [lastToken2 tokenType] == 2;
 
   if (!v87)
   {
@@ -797,10 +797,10 @@ LABEL_153:
   v88 = i;
   while (2)
   {
-    v89 = [(CalculateTokenizer *)v88 lastToken];
-    v90 = [v89 ranks];
-    v91 = [v90 ranks];
-    v151 = [v91 count];
+    lastToken3 = [(CalculateTokenizer *)v88 lastToken];
+    ranks3 = [lastToken3 ranks];
+    v90Ranks = [ranks3 ranks];
+    v151 = [v90Ranks count];
 
     if (v151 <= v153)
     {
@@ -808,10 +808,10 @@ LABEL_153:
       goto LABEL_155;
     }
 
-    v92 = [(CalculateTokenizer *)i lastToken];
-    v93 = [v92 ranks];
-    v94 = [v93 ranks];
-    v95 = [v94 objectAtIndexedSubscript:v153];
+    lastToken4 = [(CalculateTokenizer *)i lastToken];
+    ranks4 = [lastToken4 ranks];
+    v93Ranks = [ranks4 ranks];
+    v95 = [v93Ranks objectAtIndexedSubscript:v153];
     v96 = [v95 unitID] < 1;
 
     if (v96)
@@ -819,16 +819,16 @@ LABEL_153:
       goto LABEL_143;
     }
 
-    v97 = [(CalculateTokenizer *)i unitsInfo];
-    v98 = [(CalculateTokenizer *)i lastToken];
-    v99 = [v98 ranks];
-    v100 = [v99 ranks];
-    v101 = [v100 objectAtIndexedSubscript:v153];
-    v102 = [v97 objectAtIndexedSubscript:{objc_msgSend(v101, "unitID")}];
-    v103 = [v102 typeInfo];
-    v104 = [v103 isCurrency];
+    unitsInfo = [(CalculateTokenizer *)i unitsInfo];
+    lastToken5 = [(CalculateTokenizer *)i lastToken];
+    ranks5 = [lastToken5 ranks];
+    v99Ranks = [ranks5 ranks];
+    v101 = [v99Ranks objectAtIndexedSubscript:v153];
+    v102 = [unitsInfo objectAtIndexedSubscript:{objc_msgSend(v101, "unitID")}];
+    typeInfo = [v102 typeInfo];
+    isCurrency = [typeInfo isCurrency];
 
-    if (!v104)
+    if (!isCurrency)
     {
       v150 = 1;
 LABEL_143:
@@ -842,9 +842,9 @@ LABEL_143:
       goto LABEL_155;
     }
 
-    v105 = [(CalculateTokenizer *)i string];
-    v106 = [(CalculateTokenizer *)i peekIndex];
-    v107 = [v105 substringWithRange:{v106, v224[3] - -[CalculateTokenizer peekIndex](i, "peekIndex")}];
+    string6 = [(CalculateTokenizer *)i string];
+    peekIndex4 = [(CalculateTokenizer *)i peekIndex];
+    v107 = [string6 substringWithRange:{peekIndex4, v224[3] - -[CalculateTokenizer peekIndex](i, "peekIndex")}];
 
     v88 = i;
     if ([v107 isEqualToString:@"2"] & 1) != 0 || (objc_msgSend(v107, "isEqualToString:", @"3"))
@@ -861,13 +861,13 @@ LABEL_144:
 
   v149 = v107;
 LABEL_155:
-  v117 = [(CalculateTokenizer *)v88 lastToken];
-  v118 = [v117 text];
-  v119 = [(CalculateTokenizer *)i lastToken];
-  v120 = [v119 text];
-  v121 = [v118 substringFromIndex:{objc_msgSend(v120, "length") - 1}];
+  lastToken6 = [(CalculateTokenizer *)v88 lastToken];
+  text = [lastToken6 text];
+  lastToken7 = [(CalculateTokenizer *)i lastToken];
+  text2 = [lastToken7 text];
+  peekTokens = [text substringFromIndex:{objc_msgSend(text2, "length") - 1}];
 
-  if ([v121 rangeOfCharacterFromSet:symbolSet] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([peekTokens rangeOfCharacterFromSet:symbolSet] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v122 = 0;
 LABEL_164:
@@ -877,14 +877,14 @@ LABEL_164:
   }
 
   v122 = 0;
-  if ([v121 rangeOfCharacterFromSet:punctuationSet] != 0x7FFFFFFFFFFFFFFFLL || v151 > v153)
+  if ([peekTokens rangeOfCharacterFromSet:punctuationSet] != 0x7FFFFFFFFFFFFFFFLL || v151 > v153)
   {
     goto LABEL_164;
   }
 
-  v123 = [(CalculateTokenizer *)i string];
-  v124 = [(CalculateTokenizer *)i peekIndex];
-  v125 = [v123 substringWithRange:{v124, v224[3] - -[CalculateTokenizer peekIndex](i, "peekIndex")}];
+  string7 = [(CalculateTokenizer *)i string];
+  peekIndex5 = [(CalculateTokenizer *)i peekIndex];
+  v125 = [string7 substringWithRange:{peekIndex5, v224[3] - -[CalculateTokenizer peekIndex](i, "peekIndex")}];
 
   if (([v125 isEqualToString:@"2"] & 1) == 0 && !objc_msgSend(v125, "isEqualToString:", @"3"))
   {
@@ -897,9 +897,9 @@ LABEL_164:
 
   if (v149)
   {
-    v121 = [(CalculateTokenizer *)i peekTokens];
+    peekTokens = [(CalculateTokenizer *)i peekTokens];
     v126 = [CalculateToken tokenWithType:11 range:[(CalculateTokenizer *)i peekIndex] text:0 ranks:@"^", 0];
-    [v121 addObject:v126];
+    [peekTokens addObject:v126];
 
     v122 = v149;
     goto LABEL_164;
@@ -920,7 +920,7 @@ LABEL_165:
 
   if (v191[6] >= 1 && v179[3] > v224[3])
   {
-    v131 = [(CalculateTokenizer *)i string];
+    string8 = [(CalculateTokenizer *)i string];
     v132 = v224[3];
     v133 = v179[3] - v132;
     v159[0] = MEMORY[0x1E69E9820];
@@ -930,7 +930,7 @@ LABEL_165:
     v159[4] = i;
     v134 = v155;
     v160 = v134;
-    [Trie enumerateCharactersInKey:v131 range:v132 usingBlock:v133, v159];
+    [Trie enumerateCharactersInKey:string8 range:v132 usingBlock:v133, v159];
 
     v135 = v179[3];
     if (v135 > [(CalculateTokenizer *)i peekIndex])
@@ -966,7 +966,7 @@ LABEL_175:
     v137 = *(*(&v257 + 1) + 40);
     if (v137 && [v137 tokenType] == 33)
     {
-      v58 = [*(*(&v257 + 1) + 40) tokenType];
+      tokenType2 = [*(*(&v257 + 1) + 40) tokenType];
       v56 = v236[3];
       goto LABEL_96;
     }
@@ -1017,15 +1017,15 @@ LABEL_190:
 LABEL_184:
       if (!v252[5])
       {
-        v142 = [(NSString *)i->_string substringWithRange:v157, v154];
+        v154 = [(NSString *)i->_string substringWithRange:peekIndex3, v154];
         v143 = v252[5];
-        v252[5] = v142;
+        v252[5] = v154;
       }
 
-      v58 = 52;
+      tokenType2 = 52;
       v56 = v156;
 LABEL_96:
-      v65 = (*(v155 + 2))(v155, v58, v56, 0, 0);
+      v65 = (*(v155 + 2))(v155, tokenType2, v56, 0, 0);
     }
   }
 
@@ -1052,23 +1052,23 @@ LABEL_100:
   {
     self->_needsUpdate = 0;
     [(CalculateTokenizer *)self _loadIfNeeded];
-    v3 = [(CalculateTokenizer *)self wordBreakIndices];
-    [v3 removeAllObjects];
+    wordBreakIndices = [(CalculateTokenizer *)self wordBreakIndices];
+    [wordBreakIndices removeAllObjects];
 
-    v4 = [(CalculateTokenizer *)self locales];
-    if (![v4 count])
+    locales = [(CalculateTokenizer *)self locales];
+    if (![locales count])
     {
       v5 = +[Localize systemLocales];
 
-      v4 = v5;
+      locales = v5;
     }
 
-    v6 = [v4 firstObject];
+    firstObject = [locales firstObject];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v7 = v4;
+    v7 = locales;
     v8 = [v7 countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v8)
     {
@@ -1088,7 +1088,7 @@ LABEL_100:
           {
             v13 = v12;
 
-            v6 = v13;
+            firstObject = v13;
             goto LABEL_14;
           }
         }
@@ -1108,26 +1108,26 @@ LABEL_14:
     v14 = self->_numberFormatter;
     if (!v14)
     {
-      v15 = [v7 firstObject];
-      v14 = [CalculateResult performSelector:sel_defaultNumberFormatter_ withObject:v15];
+      firstObject2 = [v7 firstObject];
+      v14 = [CalculateResult performSelector:sel_defaultNumberFormatter_ withObject:firstObject2];
     }
 
-    v16 = [(NSNumberFormatter *)v14 groupingSeparator];
+    groupingSeparator = [(NSNumberFormatter *)v14 groupingSeparator];
     groupingSeparator = self->_groupingSeparator;
-    self->_groupingSeparator = v16;
+    self->_groupingSeparator = groupingSeparator;
 
-    v18 = [(NSNumberFormatter *)v14 decimalSeparator];
+    decimalSeparator = [(NSNumberFormatter *)v14 decimalSeparator];
     decimalSeparator = self->_decimalSeparator;
-    self->_decimalSeparator = v18;
+    self->_decimalSeparator = decimalSeparator;
 
-    v20 = [(NSNumberFormatter *)v14 currencyGroupingSeparator];
+    currencyGroupingSeparator = [(NSNumberFormatter *)v14 currencyGroupingSeparator];
     currencyGroupingSeparator = self->_currencyGroupingSeparator;
-    self->_currencyGroupingSeparator = v20;
+    self->_currencyGroupingSeparator = currencyGroupingSeparator;
 
     v43 = v14;
-    v22 = [(NSNumberFormatter *)v14 currencyDecimalSeparator];
+    currencyDecimalSeparator = [(NSNumberFormatter *)v14 currencyDecimalSeparator];
     currencyDecimalSeparator = self->_currencyDecimalSeparator;
-    self->_currencyDecimalSeparator = v22;
+    self->_currencyDecimalSeparator = currencyDecimalSeparator;
 
     v24 = objc_opt_new();
     localizedGroupingSet = self->_localizedGroupingSet;
@@ -1183,12 +1183,12 @@ LABEL_14:
     }
 
     v28 = *MEMORY[0x1E695E480];
-    v29 = [(CalculateTokenizer *)self string];
+    string = [(CalculateTokenizer *)self string];
     v51.location = self->_startIndex;
     v51.length = self->_stringLength - v51.location;
-    v30 = CFStringTokenizerCreate(v28, v29, v51, 0, v6);
+    v30 = CFStringTokenizerCreate(v28, string, v51, 0, firstObject);
 
-    v31 = [(CalculateTokenizer *)self startIndex];
+    startIndex = [(CalculateTokenizer *)self startIndex];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __28__CalculateTokenizer_update__block_invoke;
@@ -1197,31 +1197,31 @@ LABEL_14:
     v32 = _Block_copy(aBlock);
     while (CFStringTokenizerAdvanceToNextToken(v30))
     {
-      v33 = [(CalculateTokenizer *)self stringLength];
+      stringLength = [(CalculateTokenizer *)self stringLength];
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v30);
       if (CurrentTokenRange.location != -1)
       {
-        v33 = CurrentTokenRange.location + CurrentTokenRange.length;
+        stringLength = CurrentTokenRange.location + CurrentTokenRange.length;
       }
 
-      v32[2](v32, v31, v33);
-      v31 = v33;
+      v32[2](v32, startIndex, stringLength);
+      startIndex = stringLength;
     }
 
-    v35 = [(CalculateTokenizer *)self wordBreakIndices];
-    if ([v35 count])
+    wordBreakIndices2 = [(CalculateTokenizer *)self wordBreakIndices];
+    if ([wordBreakIndices2 count])
     {
       [(CalculateTokenizer *)self wordBreakIndices];
-      v36 = v42 = v6;
+      v36 = v42 = firstObject;
       [v36 lastObject];
       v38 = v37 = v7;
-      v41 = [v38 intValue];
-      v39 = [(CalculateTokenizer *)self stringLength];
+      intValue = [v38 intValue];
+      stringLength2 = [(CalculateTokenizer *)self stringLength];
 
       v7 = v37;
-      v6 = v42;
+      firstObject = v42;
 
-      if (v39 <= v41)
+      if (stringLength2 <= intValue)
       {
         goto LABEL_49;
       }
@@ -1231,7 +1231,7 @@ LABEL_14:
     {
     }
 
-    v32[2](v32, v31, [(CalculateTokenizer *)self stringLength]);
+    v32[2](v32, startIndex, [(CalculateTokenizer *)self stringLength]);
 LABEL_49:
     CFRelease(v30);
     [(CalculateTokenizer *)self reset];
@@ -1609,10 +1609,10 @@ void __28__CalculateTokenizer_update__block_invoke(uint64_t a1, uint64_t a2, uin
   [(CalculateTokenizer *)&v4 dealloc];
 }
 
-- (void)setSingleLetterVariables:(id *)a3
+- (void)setSingleLetterVariables:(id *)variables
 {
-  v3 = *&a3->var0[16];
-  *self->_singleLetterVariables.letters = *a3->var0;
+  v3 = *&variables->var0[16];
+  *self->_singleLetterVariables.letters = *variables->var0;
   *&self->_singleLetterVariables.letters[16] = v3;
 }
 
@@ -1626,15 +1626,15 @@ void __28__CalculateTokenizer_update__block_invoke(uint64_t a1, uint64_t a2, uin
 
 - (id)peekNonWhitespaceToken
 {
-  v3 = [(CalculateTokenizer *)self peekToken];
-  if ([v3 tokenType] == 1)
+  peekToken = [(CalculateTokenizer *)self peekToken];
+  if ([peekToken tokenType] == 1)
   {
     v4 = [(CalculateTokenizer *)self peekTokenAtOffset:1];
   }
 
   else
   {
-    v4 = v3;
+    v4 = peekToken;
   }
 
   v5 = v4;
@@ -1642,14 +1642,14 @@ void __28__CalculateTokenizer_update__block_invoke(uint64_t a1, uint64_t a2, uin
   return v5;
 }
 
-- (id)peekTokenAtOffset:(int64_t)a3
+- (id)peekTokenAtOffset:(int64_t)offset
 {
-  v5 = [(CalculateTokenizer *)self peekTokens];
-  v6 = [v5 count];
+  peekTokens = [(CalculateTokenizer *)self peekTokens];
+  v6 = [peekTokens count];
 
-  if (v6 <= a3)
+  if (v6 <= offset)
   {
-    v7 = a3 - v6 + 1;
+    v7 = offset - v6 + 1;
     do
     {
       [(CalculateTokenizer *)self _findNextToken];
@@ -1659,15 +1659,15 @@ void __28__CalculateTokenizer_update__block_invoke(uint64_t a1, uint64_t a2, uin
     while (v7);
   }
 
-  if (a3 < 0 || (-[CalculateTokenizer peekTokens](self, "peekTokens"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v9 <= a3))
+  if (offset < 0 || (-[CalculateTokenizer peekTokens](self, "peekTokens"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v9 <= offset))
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [(CalculateTokenizer *)self peekTokens];
-    v11 = [v10 objectAtIndexedSubscript:a3];
+    peekTokens2 = [(CalculateTokenizer *)self peekTokens];
+    v11 = [peekTokens2 objectAtIndexedSubscript:offset];
   }
 
   return v11;
@@ -2269,10 +2269,10 @@ id __36__CalculateTokenizer__findNextToken__block_invoke_6(uint64_t a1, void *a2
   return result;
 }
 
-- (void)setLocales:(id)a3
+- (void)setLocales:(id)locales
 {
   self->_needsUpdate = 1;
-  objc_storeStrong(&self->_locales, a3);
+  objc_storeStrong(&self->_locales, locales);
 
   [(CalculateTokenizer *)self setTrie:0];
 }
@@ -2330,15 +2330,15 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   *(v8 + 24) = v7;
 }
 
-- (void)setVariables:(id)a3
+- (void)setVariables:(id)variables
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  variablesCopy = variables;
   self->_needsUpdate = 1;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = variablesCopy;
   }
 
   else
@@ -2401,11 +2401,11 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDeclaredVariable:(id)a3
+- (void)addDeclaredVariable:(id)variable
 {
   if (self->_findDeclaredVariables)
   {
-    v11 = [a3 lowercaseString];
+    lowercaseString = [variable lowercaseString];
     [(CalculateTokenizer *)self addVariable:?];
     lowercasedVariables = self->_lowercasedVariables;
     if (!lowercasedVariables)
@@ -2417,7 +2417,7 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
       lowercasedVariables = self->_lowercasedVariables;
     }
 
-    [(NSMutableSet *)lowercasedVariables addObject:v11];
+    [(NSMutableSet *)lowercasedVariables addObject:lowercaseString];
     declaredVariables = self->_declaredVariables;
     if (!declaredVariables)
     {
@@ -2428,25 +2428,25 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
       declaredVariables = self->_declaredVariables;
     }
 
-    [(NSSet *)declaredVariables addObject:v11];
+    [(NSSet *)declaredVariables addObject:lowercaseString];
   }
 }
 
-- (void)addVariable:(id)a3
+- (void)addVariable:(id)variable
 {
-  v18 = a3;
-  v4 = [v18 length] + 1;
+  variableCopy = variable;
+  v4 = [variableCopy length] + 1;
   variableBufferLength = self->_variableBufferLength;
   if (v4 > variableBufferLength)
   {
     self->_variableBufferLength = v4;
   }
 
-  v6 = [v18 length] == 1;
-  v7 = v18;
+  v6 = [variableCopy length] == 1;
+  v7 = variableCopy;
   if (v6)
   {
-    v8 = [v18 characterAtIndex:0];
+    v8 = [variableCopy characterAtIndex:0];
     v9 = (v8 - 97);
     if (v9 <= 0x19 || (v9 = (v8 - 65), v9 <= 0x19))
     {
@@ -2459,15 +2459,15 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
     }
 
     v11 = self->_singleLetterVariables.count + 1;
-    v7 = v18;
+    v7 = variableCopy;
     if (self->_variableBufferLength < v11)
     {
       self->_variableBufferLength = v11;
     }
   }
 
-  v12 = [v7 lowercaseString];
-  if (([v18 isEqualToString:v12] & 1) == 0)
+  lowercaseString = [v7 lowercaseString];
+  if (([variableCopy isEqualToString:lowercaseString] & 1) == 0)
   {
     lowercasedVariables = self->_lowercasedVariables;
     if (!lowercasedVariables)
@@ -2479,7 +2479,7 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
       lowercasedVariables = self->_lowercasedVariables;
     }
 
-    [(NSMutableSet *)lowercasedVariables addObject:v12];
+    [(NSMutableSet *)lowercasedVariables addObject:lowercaseString];
   }
 
   v16 = self->_variableBufferLength;
@@ -2493,20 +2493,20 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   }
 }
 
-- (void)setGraphableVariable:(id)a3
+- (void)setGraphableVariable:(id)variable
 {
-  objc_storeStrong(&self->_graphableVariable, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_graphableVariable, variable);
+  variableCopy = variable;
   v6 = [(NSString *)self->_graphableVariable length];
 
   self->_graphableVariableLength = v6;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
   self->_needsUpdate = 1;
-  self->_stringLength = a3.location + a3.length;
-  self->_startIndex = a3.location;
+  self->_stringLength = range.location + range.length;
+  self->_startIndex = range.location;
 }
 
 - (_NSRange)range
@@ -2518,27 +2518,27 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   return result;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   self->_needsUpdate = 1;
-  objc_storeStrong(&self->_string, a3);
-  v5 = a3;
-  v6 = [v5 length];
+  objc_storeStrong(&self->_string, string);
+  stringCopy = string;
+  v6 = [stringCopy length];
 
   self->_stringLength = v6;
   self->_startIndex = 0;
 }
 
-- (CalculateTokenizer)initWithUnits:(id)a3
+- (CalculateTokenizer)initWithUnits:(id)units
 {
-  v5 = a3;
+  unitsCopy = units;
   v13.receiver = self;
   v13.super_class = CalculateTokenizer;
   v6 = [(CalculateTokenizer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_unitsInfo, a3);
+    objc_storeStrong(&v6->_unitsInfo, units);
     v8 = objc_opt_new();
     peekTokens = v7->_peekTokens;
     v7->_peekTokens = v8;
@@ -2554,10 +2554,10 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   return v7;
 }
 
-+ (int)displayNameExponent:(id)a3
++ (int)displayNameExponent:(id)exponent
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@"2"] & 1) != 0 || (objc_msgSend(v3, "hasSuffix:", @"²"))
+  exponentCopy = exponent;
+  if ([exponentCopy hasSuffix:@"2"] & 1) != 0 || (objc_msgSend(exponentCopy, "hasSuffix:", @"²"))
   {
     v4 = 2;
   }
@@ -2565,9 +2565,9 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   else
   {
     v4 = 3;
-    if (([v3 hasSuffix:@"3"] & 1) == 0)
+    if (([exponentCopy hasSuffix:@"3"] & 1) == 0)
     {
-      if ([v3 hasSuffix:@"³"])
+      if ([exponentCopy hasSuffix:@"³"])
       {
         v4 = 3;
       }
@@ -2582,10 +2582,10 @@ void __28__CalculateTokenizer_update__block_invoke_2(uint64_t a1, void *a2, uint
   return v4;
 }
 
-+ (id)tokenizerWithUnits:(id)a3
++ (id)tokenizerWithUnits:(id)units
 {
-  v3 = a3;
-  v4 = [[CalculateTokenizer alloc] initWithUnits:v3];
+  unitsCopy = units;
+  v4 = [[CalculateTokenizer alloc] initWithUnits:unitsCopy];
 
   return v4;
 }
@@ -2609,17 +2609,17 @@ uint64_t __38__CalculateTokenizer_trigonometricSet__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)addUnits:(id)a3 builtIn:(BOOL)a4
++ (void)addUnits:(id)units builtIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  unitsCopy = units;
   v6 = +[UnitsInfo converterUnits];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __39__CalculateTokenizer_addUnits_builtIn___block_invoke;
   aBlock[3] = &unk_1E815C8F0;
-  v7 = v5;
+  v7 = unitsCopy;
   v26 = v7;
   v8 = v6;
   v27 = v8;
@@ -2637,7 +2637,7 @@ uint64_t __38__CalculateTokenizer_trigonometricSet__block_invoke()
   }
 
   v12 = v11[2];
-  if (v4)
+  if (inCopy)
   {
     v12(v11, @"degree", addUnits_builtIn__circ, 0.6);
   }
@@ -2744,23 +2744,23 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
   addUnits_builtIn__dollarCountries = &unk_1F419A6D8;
 }
 
-+ (void)addSymbols:(id)a3
++ (void)addSymbols:(id)symbols
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  symbolsCopy = symbols;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __33__CalculateTokenizer_addSymbols___block_invoke;
   aBlock[3] = &unk_1E815C8A0;
-  v37 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = symbolsCopy;
   v36 = v5;
   v6 = _Block_copy(aBlock);
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __33__CalculateTokenizer_addSymbols___block_invoke_2;
   v32[3] = &unk_1E815C8C8;
-  v34 = a1;
+  selfCopy2 = self;
   v7 = v5;
   v33 = v7;
   v8 = _Block_copy(v32);
@@ -2768,7 +2768,7 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
   v29[1] = 3221225472;
   v29[2] = __33__CalculateTokenizer_addSymbols___block_invoke_3;
   v29[3] = &unk_1E815C8A0;
-  v31 = a1;
+  selfCopy3 = self;
   v24 = v7;
   v30 = v24;
   v23 = _Block_copy(v29);
@@ -2805,16 +2805,16 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
   v6[2](v6, 25, &unk_1F419A390);
   v6[2](v6, 26, &unk_1F419A3A8);
   v9 = +[CalculateTokenizer nonTrigFunctionSet];
-  v10 = [v9 allObjects];
-  v6[2](v6, 35, v10);
+  allObjects = [v9 allObjects];
+  v6[2](v6, 35, allObjects);
 
   v6[2](v6, 35, &unk_1F419A3C0);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [&unk_1F419A7A8 allKeys];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v38 count:16];
+  allKeys = [&unk_1F419A7A8 allKeys];
+  v12 = [allKeys countByEnumeratingWithState:&v25 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2825,7 +2825,7 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
@@ -2833,7 +2833,7 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
         v8[2](v8, 35, v16, v17);
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v38 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v25 objects:v38 count:16];
     }
 
     while (v13);
@@ -2846,12 +2846,12 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
   v23[2](v23, 12, &unk_1F419A510);
   v23[2](v23, 37, &unk_1F419A528);
   v18 = +[CalculateTokenizer laTeXNonTrigFunctionSet];
-  v19 = [v18 allObjects];
-  v23[2](v23, 35, v19);
+  allObjects2 = [v18 allObjects];
+  v23[2](v23, 35, allObjects2);
 
   v20 = +[CalculateTokenizer laTeXTrigonometricSet];
-  v21 = [v20 allObjects];
-  v23[2](v23, 35, v21);
+  allObjects3 = [v20 allObjects];
+  v23[2](v23, 35, allObjects3);
 
   v23[2](v23, 40, &unk_1F419A540);
   v23[2](v23, 51, &unk_1F419A558);
@@ -2872,32 +2872,32 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_addSymbols:(id)a3 normalized:(id)a4 tokenType:(unint64_t)a5 isLaTeX:(BOOL)a6 trie:(id)a7
++ (void)_addSymbols:(id)symbols normalized:(id)normalized tokenType:(unint64_t)type isLaTeX:(BOOL)x trie:(id)trie
 {
-  v36 = a6;
+  xCopy = x;
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  symbolsCopy = symbols;
+  normalizedCopy = normalized;
+  trieCopy = trie;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v10;
-  v13 = [v10 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  obj = symbolsCopy;
+  v13 = [symbolsCopy countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
-    v15 = v36;
-    if (a5 != 35)
+    v15 = xCopy;
+    if (type != 35)
     {
       v15 = 1;
     }
 
     v35 = v15;
     v34 = *v38;
-    v32 = v12;
-    v29 = a5;
+    v32 = trieCopy;
+    typeCopy = type;
     do
     {
       v16 = 0;
@@ -2910,19 +2910,19 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
         }
 
         v17 = *(*(&v37 + 1) + 8 * v16);
-        v18 = [(Trie *)v12 objectForKeyedSubscript:v17];
+        v18 = [(Trie *)trieCopy objectForKeyedSubscript:v17];
         if (!v18)
         {
           v18 = [UnitRanks unitRanksWithUnitsInfo:0];
-          [(Trie *)v12 setObject:v18 forKeyedSubscript:v17];
+          [(Trie *)trieCopy setObject:v18 forKeyedSubscript:v17];
         }
 
         v19 = [UnitRank alloc];
         LODWORD(v20) = -1.0;
         v21 = [(UnitRank *)v19 initWithUnitID:0 rank:0 locale:v20];
-        [(UnitRank *)v21 setTokenType:a5];
-        [(UnitRank *)v21 setIsLaTeX:v36];
-        [(UnitRank *)v21 setNormalized:v11];
+        [(UnitRank *)v21 setTokenType:type];
+        [(UnitRank *)v21 setIsLaTeX:xCopy];
+        [(UnitRank *)v21 setNormalized:normalizedCopy];
         [v18 addUnitRank:v21];
         if ((v35 & 1) == 0)
         {
@@ -2931,9 +2931,9 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
             v22 = [v17 stringByReplacingOccurrencesOfString:@"_" withString:&stru_1F418FCD8];
             v42 = v22;
             v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
-            v24 = v12;
+            v24 = trieCopy;
             v25 = v23;
-            [a1 _addSymbols:v23 normalized:v11 tokenType:35 isLaTeX:0 trie:v24];
+            [self _addSymbols:v23 normalized:normalizedCopy tokenType:35 isLaTeX:0 trie:v24];
           }
 
           else
@@ -2950,13 +2950,13 @@ void __39__CalculateTokenizer_addUnits_builtIn___block_invoke_3()
             v26 = [v17 stringByReplacingOccurrencesOfString:@"^-1" withString:@"⁻¹"];
             v41[2] = v26;
             v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
-            [a1 _addSymbols:v27 normalized:v11 tokenType:35 isLaTeX:0 trie:v32];
+            [self _addSymbols:v27 normalized:normalizedCopy tokenType:35 isLaTeX:0 trie:v32];
 
-            a5 = v29;
+            type = typeCopy;
           }
 
           v14 = v31;
-          v12 = v32;
+          trieCopy = v32;
         }
 
 LABEL_16:
@@ -2974,17 +2974,17 @@ LABEL_16:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addLocalizedSymbols:(id)a3 locales:(id)a4
++ (void)addLocalizedSymbols:(id)symbols locales:(id)locales
 {
-  v6 = a3;
+  symbolsCopy = symbols;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__CalculateTokenizer_addLocalizedSymbols_locales___block_invoke;
   v8[3] = &unk_1E815C878;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [Localize enumerateLocales:a4 withBlock:v8];
+  v9 = symbolsCopy;
+  selfCopy = self;
+  v7 = symbolsCopy;
+  [Localize enumerateLocales:locales withBlock:v8];
 }
 
 void __50__CalculateTokenizer_addLocalizedSymbols_locales___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3068,22 +3068,22 @@ void __50__CalculateTokenizer_addLocalizedSymbols_locales___block_invoke(uint64_
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)localizedSymbolsTrie:(id)a3
++ (id)localizedSymbolsTrie:(id)trie
 {
-  v3 = a3;
+  trieCopy = trie;
   if (localizedSymbolsTrie__onceToken != -1)
   {
     dispatch_once(&localizedSymbolsTrie__onceToken, &__block_literal_global_164);
   }
 
-  v4 = [Localize keyForLocales:v3];
+  v4 = [Localize keyForLocales:trieCopy];
   [localizedSymbolsTrie__lock lock];
   v5 = [localizedSymbolsTrie__tries objectForKey:v4];
   if (!v5)
   {
     v5 = objc_opt_new();
     [CalculateTokenizer addSymbols:v5];
-    [CalculateTokenizer addLocalizedSymbols:v5 locales:v3];
+    [CalculateTokenizer addLocalizedSymbols:v5 locales:trieCopy];
     [localizedSymbolsTrie__tries setObject:v5 forKey:v4];
   }
 
@@ -3141,7 +3141,7 @@ void __46__CalculateTokenizer_nonWhitespaceLanguageSet__block_invoke()
 
 + (id)punctuationSet
 {
-  [a1 loadPunctuationSet];
+  [self loadPunctuationSet];
   v2 = punctuationSet;
 
   return v2;
@@ -3149,7 +3149,7 @@ void __46__CalculateTokenizer_nonWhitespaceLanguageSet__block_invoke()
 
 + (id)symbolSet
 {
-  [a1 loadSymbolSet];
+  [self loadSymbolSet];
   v2 = symbolSet;
 
   return v2;

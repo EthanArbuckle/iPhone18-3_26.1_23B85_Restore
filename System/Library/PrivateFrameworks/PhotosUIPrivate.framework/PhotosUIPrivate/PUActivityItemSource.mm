@@ -1,49 +1,49 @@
 @interface PUActivityItemSource
-+ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)a3;
++ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)type;
 + (OS_os_log)activityItemSourceLog;
-+ (id)_basicTypeIdentifierForAsset:(id)a3;
++ (id)_basicTypeIdentifierForAsset:(id)asset;
 + (id)_exportResultHandlingQueue;
-+ (id)_sharingErrorWithCode:(int64_t)a3 underlyingError:(id)a4 localizedDescription:(id)a5 additionalInfo:(id)a6;
-+ (void)_deleteOutputDirectoryURL:(id)a3 forSharingUUID:(id)a4;
++ (id)_sharingErrorWithCode:(int64_t)code underlyingError:(id)error localizedDescription:(id)description additionalInfo:(id)info;
++ (void)_deleteOutputDirectoryURL:(id)l forSharingUUID:(id)d;
 - ($9D9B13A340AA60ED2DD68408BD7D962F)sharingPreferences;
-- (BOOL)_copyResourceAtURL:(id)a3 toURL:(id)a4 shouldMove:(BOOL)a5;
-- (PUActivityItemSource)initWithAsset:(id)a3 sharingPreferences:(id)a4;
+- (BOOL)_copyResourceAtURL:(id)l toURL:(id)rL shouldMove:(BOOL)move;
+- (PUActivityItemSource)initWithAsset:(id)asset sharingPreferences:(id)preferences;
 - (id)_activityOperationQueueForExplicitRunning;
-- (id)_createManagedURLForResourceAtURL:(id)a3 shouldMove:(BOOL)a4 forType:(int64_t)a5;
-- (id)_generateURLForType:(int64_t)a3 withPathExtension:(id)a4 preferredFilename:(id)a5;
-- (id)_itemForActivityType:(id)a3;
-- (id)_newOperationForActivityType:(id)a3;
-- (id)_newPasteboardItemProviderForURL:(id)a3;
+- (id)_createManagedURLForResourceAtURL:(id)l shouldMove:(BOOL)move forType:(int64_t)type;
+- (id)_generateURLForType:(int64_t)type withPathExtension:(id)extension preferredFilename:(id)filename;
+- (id)_itemForActivityType:(id)type;
+- (id)_newOperationForActivityType:(id)type;
+- (id)_newPasteboardItemProviderForURL:(id)l;
 - (id)_outboundResourcesDirectoryURL;
-- (id)_resourceURLForType:(int64_t)a3;
-- (id)_runOnDemandExportForAsset:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
-- (id)_runOnDemandSingleFileExportForAsset:(id)a3 withOptions:(id)a4 completionHandler:(id)a5;
+- (id)_resourceURLForType:(int64_t)type;
+- (id)_runOnDemandExportForAsset:(id)asset withOptions:(id)options completionHandler:(id)handler;
+- (id)_runOnDemandSingleFileExportForAsset:(id)asset withOptions:(id)options completionHandler:(id)handler;
 - (id)_sharingVariants;
-- (id)_uniformTypeIdentifierForActivityType:(id)a3;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageDataForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerApplicationExtensionItem:(id)a3;
-- (id)activityViewControllerOperation:(id)a3;
-- (void)_beginObservingExportRequest:(id)a3 withProgressHandler:(id)a4;
-- (void)_fetchAlternateWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (void)_fetchImageWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (void)_fetchLivePhotoWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
+- (id)_uniformTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageDataForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerApplicationExtensionItem:(id)item;
+- (id)activityViewControllerOperation:(id)operation;
+- (void)_beginObservingExportRequest:(id)request withProgressHandler:(id)handler;
+- (void)_fetchAlternateWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_fetchImageWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_fetchLivePhotoWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)_fetchSharingVariants;
-- (void)_fetchVideoWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
+- (void)_fetchVideoWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)_resetState;
-- (void)_runExportRequestWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (void)_setExportProgress:(id)a3;
-- (void)_setResourceURL:(id)a3 forType:(int64_t)a4;
+- (void)_runExportRequestWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_setExportProgress:(id)progress;
+- (void)_setResourceURL:(id)l forType:(int64_t)type;
 - (void)_stopObservingExportRequest;
-- (void)activityItemSourceOperation:(id)a3 prepareItemForActivityType:(id)a4;
-- (void)assetExportRequest:(id)a3 didChangeToState:(unint64_t)a4 fromState:(unint64_t)a5;
+- (void)activityItemSourceOperation:(id)operation prepareItemForActivityType:(id)type;
+- (void)assetExportRequest:(id)request didChangeToState:(unint64_t)state fromState:(unint64_t)fromState;
 - (void)cancel;
-- (void)cleanUpExportedFilesImmediately:(BOOL)a3;
+- (void)cleanUpExportedFilesImmediately:(BOOL)immediately;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)runWithActivityType:(id)a3;
-- (void)setSharingPreferences:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)runWithActivityType:(id)type;
+- (void)setSharingPreferences:(id)preferences;
+- (void)setState:(unint64_t)state;
 - (void)signalAnchorCompletion;
 @end
 
@@ -64,15 +64,15 @@
   return result;
 }
 
-- (void)cleanUpExportedFilesImmediately:(BOOL)a3
+- (void)cleanUpExportedFilesImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v23 = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self->_sharingURLs removeAllObjects];
-  v5 = [(PUActivityItemSource *)self _outboundResourcesDirectoryURL];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  _outboundResourcesDirectoryURL = [(PUActivityItemSource *)self _outboundResourcesDirectoryURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [_outboundResourcesDirectoryURL path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if (v8)
   {
@@ -90,12 +90,12 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __56__PUActivityItemSource_cleanUpExportedFilesImmediately___block_invoke;
     aBlock[3] = &unk_1E7B80C38;
-    v19 = v5;
+    v19 = _outboundResourcesDirectoryURL;
     v12 = v11;
     v20 = v12;
     v13 = _Block_copy(aBlock);
     v14 = v13;
-    if (v3)
+    if (immediatelyCopy)
     {
       (*(v13 + 2))(v13);
     }
@@ -113,15 +113,15 @@
   }
 }
 
-- (void)_setResourceURL:(id)a3 forType:(int64_t)a4
+- (void)_setResourceURL:(id)l forType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   sharingURLs = self->_sharingURLs;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v9 = [(NSMutableDictionary *)sharingURLs objectForKeyedSubscript:v8];
 
-  if (v6 && v9)
+  if (lCopy && v9)
   {
     v10 = PLShareSheetGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -130,41 +130,41 @@
       v14 = 138544130;
       v15 = sharingUUID;
       v16 = 2048;
-      v17 = a4;
+      typeCopy = type;
       v18 = 2112;
       v19 = v9;
       v20 = 2112;
-      v21 = v6;
+      v21 = lCopy;
       _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Overwriting sharing URL of type: %lu from %@ to %@", &v14, 0x2Au);
     }
   }
 
   v12 = self->_sharingURLs;
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableDictionary *)v12 setObject:v6 forKeyedSubscript:v13];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [(NSMutableDictionary *)v12 setObject:lCopy forKeyedSubscript:v13];
 }
 
-- (id)_resourceURLForType:(int64_t)a3
+- (id)_resourceURLForType:(int64_t)type
 {
   sharingURLs = self->_sharingURLs;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)sharingURLs objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)_createManagedURLForResourceAtURL:(id)a3 shouldMove:(BOOL)a4 forType:(int64_t)a5
+- (id)_createManagedURLForResourceAtURL:(id)l shouldMove:(BOOL)move forType:(int64_t)type
 {
-  v6 = a4;
+  moveCopy = move;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 pathExtension];
-  v10 = [v8 lastPathComponent];
-  v11 = [v10 stringByDeletingPathExtension];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v12 = [(PUActivityItemSource *)self _generateURLForType:a5 withPathExtension:v9 preferredFilename:v11];
-  v13 = v8;
-  if ([(PUActivityItemSource *)self _copyResourceAtURL:v13 toURL:v12 shouldMove:v6])
+  v12 = [(PUActivityItemSource *)self _generateURLForType:type withPathExtension:pathExtension preferredFilename:stringByDeletingPathExtension];
+  v13 = lCopy;
+  if ([(PUActivityItemSource *)self _copyResourceAtURL:v13 toURL:v12 shouldMove:moveCopy])
   {
     v14 = v12;
   }
@@ -180,7 +180,7 @@
       v20 = 2112;
       v21 = v13;
       v22 = 2048;
-      v23 = a5;
+      typeCopy = type;
       v24 = 2112;
       v25 = v12;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Failed to clone the URL (%@) for type %lu to outgoing temp (%@). Falling back to original URL which may cause failures in clients", &v18, 0x2Au);
@@ -192,17 +192,17 @@
   return v14;
 }
 
-- (BOOL)_copyResourceAtURL:(id)a3 toURL:(id)a4 shouldMove:(BOOL)a5
+- (BOOL)_copyResourceAtURL:(id)l toURL:(id)rL shouldMove:(BOOL)move
 {
-  v5 = a5;
+  moveCopy = move;
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 path];
-  v11 = [v10 stringByDeletingLastPathComponent];
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  rLCopy = rL;
+  path = [rLCopy path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v33 = 0;
-  v13 = [v12 createDirectoryIfNeededAtPath:v11 error:&v33];
+  v13 = [defaultManager createDirectoryIfNeededAtPath:stringByDeletingLastPathComponent error:&v33];
   v14 = v33;
 
   if ((v13 & 1) == 0)
@@ -214,7 +214,7 @@
       *buf = 138543874;
       v35 = sharingUUID;
       v36 = 2112;
-      v37 = v11;
+      v37 = stringByDeletingLastPathComponent;
       v38 = 2112;
       v39 = v14;
       _os_log_impl(&dword_1B36F3000, v23, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Failed to create temporary outbound directory for sharing asset at %@: %@", buf, 0x20u);
@@ -223,8 +223,8 @@
     goto LABEL_18;
   }
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [v15 removeItemAtURL:v9 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v16 = [defaultManager2 removeItemAtURL:rLCopy error:0];
 
   if (v16)
   {
@@ -235,17 +235,17 @@
       *buf = 138543618;
       v35 = v18;
       v36 = 2112;
-      v37 = v9;
+      v37 = rLCopy;
       _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Removed existing file at %@. This may indicate an error", buf, 0x16u);
     }
   }
 
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = v19;
-  if (v5)
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v20 = defaultManager3;
+  if (moveCopy)
   {
     v32 = v14;
-    v21 = [v19 moveItemAtURL:v8 toURL:v9 error:&v32];
+    v21 = [defaultManager3 moveItemAtURL:lCopy toURL:rLCopy error:&v32];
     v22 = v32;
 
     if ((v21 & 1) == 0)
@@ -257,9 +257,9 @@
         *buf = 138544130;
         v35 = v24;
         v36 = 2112;
-        v37 = v8;
+        v37 = lCopy;
         v38 = 2112;
-        v39 = v9;
+        v39 = rLCopy;
         v40 = 2112;
         v41 = v22;
         v25 = "[Item: %{public}@] Failed to move resource at %@ to %@: %@";
@@ -275,7 +275,7 @@ LABEL_16:
   else
   {
     v31 = v14;
-    v27 = [v19 copyItemAtURL:v8 toURL:v9 error:&v31];
+    v27 = [defaultManager3 copyItemAtURL:lCopy toURL:rLCopy error:&v31];
     v22 = v31;
 
     if ((v27 & 1) == 0)
@@ -287,9 +287,9 @@ LABEL_16:
         *buf = 138544130;
         v35 = v29;
         v36 = 2112;
-        v37 = v8;
+        v37 = lCopy;
         v38 = 2112;
-        v39 = v9;
+        v39 = rLCopy;
         v40 = 2112;
         v41 = v22;
         v25 = "[Item: %{public}@] Failed to copy resource at %@ to %@: %@";
@@ -312,28 +312,28 @@ LABEL_19:
   return v28;
 }
 
-- (id)_generateURLForType:(int64_t)a3 withPathExtension:(id)a4 preferredFilename:(id)a5
+- (id)_generateURLForType:(int64_t)type withPathExtension:(id)extension preferredFilename:(id)filename
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  extensionCopy = extension;
+  filenameCopy = filename;
   if (self->_assetOriginalFilenameBase)
   {
     goto LABEL_10;
   }
 
   [(PHAsset *)self->_asset fetchPropertySetsIfNeeded];
-  v10 = [(PHAsset *)self->_asset originalMetadataProperties];
-  v11 = [v10 originalFilename];
+  originalMetadataProperties = [(PHAsset *)self->_asset originalMetadataProperties];
+  originalFilename = [originalMetadataProperties originalFilename];
 
-  if ([v11 length])
+  if ([originalFilename length])
   {
-    v12 = [v11 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
   }
 
   else
   {
-    if ([v9 length])
+    if ([filenameCopy length])
     {
       v14 = PLShareSheetGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -342,16 +342,16 @@ LABEL_19:
         v35 = 138543618;
         v36 = sharingUUID;
         v37 = 2114;
-        v38 = v9;
+        typeCopy = filenameCopy;
         _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Asset does not have valid originalFilename, going with preferredFilename: %{public}@", &v35, 0x16u);
       }
 
-      objc_storeStrong(&self->_assetOriginalFilenameBase, a5);
+      objc_storeStrong(&self->_assetOriginalFilenameBase, filename);
       goto LABEL_9;
     }
 
-    v27 = [(PHAsset *)self->_asset filename];
-    v28 = [v27 length];
+    filename = [(PHAsset *)self->_asset filename];
+    v28 = [filename length];
 
     v29 = PLShareSheetGetLog();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
@@ -360,15 +360,15 @@ LABEL_19:
       if (v30)
       {
         v31 = self->_sharingUUID;
-        v32 = [(PHAsset *)self->_asset filename];
+        filename2 = [(PHAsset *)self->_asset filename];
         v35 = 138543618;
         v36 = v31;
         v37 = 2114;
-        v38 = v32;
+        typeCopy = filename2;
         _os_log_impl(&dword_1B36F3000, v29, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Asset does not have valid originalFilename, going with library filename: %{public}@", &v35, 0x16u);
       }
 
-      v12 = [(PHAsset *)self->_asset filename];
+      stringByDeletingPathExtension = [(PHAsset *)self->_asset filename];
     }
 
     else
@@ -376,31 +376,31 @@ LABEL_19:
       if (v30)
       {
         v33 = self->_sharingUUID;
-        v34 = [(PHAsset *)self->_asset uuid];
+        uuid = [(PHAsset *)self->_asset uuid];
         v35 = 138543618;
         v36 = v33;
         v37 = 2114;
-        v38 = v34;
+        typeCopy = uuid;
         _os_log_impl(&dword_1B36F3000, v29, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Asset does not have valid originalFilename, going with UUID: %{public}@", &v35, 0x16u);
       }
 
-      v12 = [(PHAsset *)self->_asset uuid];
+      stringByDeletingPathExtension = [(PHAsset *)self->_asset uuid];
     }
   }
 
   assetOriginalFilenameBase = self->_assetOriginalFilenameBase;
-  self->_assetOriginalFilenameBase = v12;
+  self->_assetOriginalFilenameBase = stringByDeletingPathExtension;
 
 LABEL_9:
 LABEL_10:
-  if (a3 <= 5 && (((1 << a3) & 0x2D) == 0 ? ((v17 = 0, a3 != 1) ? (v16 = @"Alternate") : (v16 = @"Compatible")) : (v16 = 0, v17 = 1), [(NSString *)self->_assetOriginalFilenameBase stringByAppendingPathExtension:v8], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (type <= 5 && (((1 << type) & 0x2D) == 0 ? ((v17 = 0, type != 1) ? (v16 = @"Alternate") : (v16 = @"Compatible")) : (v16 = 0, v17 = 1), [(NSString *)self->_assetOriginalFilenameBase stringByAppendingPathExtension:extensionCopy], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v19 = v18;
-    v20 = [(PUActivityItemSource *)self _outboundResourcesDirectoryURL];
-    v21 = v20;
+    _outboundResourcesDirectoryURL = [(PUActivityItemSource *)self _outboundResourcesDirectoryURL];
+    v21 = _outboundResourcesDirectoryURL;
     if ((v17 & 1) == 0)
     {
-      v22 = [v20 URLByAppendingPathComponent:v16];
+      v22 = [_outboundResourcesDirectoryURL URLByAppendingPathComponent:v16];
 
       v21 = v22;
     }
@@ -418,11 +418,11 @@ LABEL_10:
       v35 = 138544386;
       v36 = v24;
       v37 = 2048;
-      v38 = a3;
+      typeCopy = type;
       v39 = 2114;
-      v40 = v8;
+      v40 = extensionCopy;
       v41 = 2114;
-      v42 = v9;
+      v42 = filenameCopy;
       v43 = 2114;
       v44 = asset;
       _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Could not generate a valid URL for a PUActivityItemSource resource type %ld, with path extension: %{public}@, preferred filename: %{public}@ for asset: %{public}@", &v35, 0x34u);
@@ -436,8 +436,8 @@ LABEL_10:
 
 - (id)_outboundResourcesDirectoryURL
 {
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v4 = [v3 privateDirectoryWithSubType:2 createIfNeeded:1 error:0];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v4 = [systemLibraryPathManager privateDirectoryWithSubType:2 createIfNeeded:1 error:0];
 
   v5 = [v4 stringByAppendingPathComponent:self->_sharingUUID];
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
@@ -445,9 +445,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)activityViewControllerOperation:(id)a3
+- (id)activityViewControllerOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if ([(PUActivityItemSource *)self shouldSkipPreparation])
   {
     if ([(PUActivityItemSource *)self shouldAnchorPreparation])
@@ -467,29 +467,29 @@ LABEL_10:
 
   else
   {
-    v8 = [v4 activity];
-    v9 = [v8 activityType];
-    v7 = [(PUActivityItemSource *)self _newOperationForActivityType:v9];
+    activity = [operationCopy activity];
+    activityType = [activity activityType];
+    v7 = [(PUActivityItemSource *)self _newOperationForActivityType:activityType];
   }
 
   return v7;
 }
 
-- (id)activityViewControllerApplicationExtensionItem:(id)a3
+- (id)activityViewControllerApplicationExtensionItem:(id)item
 {
   v104 = *MEMORY[0x1E69E9840];
-  val = a3;
+  val = item;
   v4 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithItem:0 typeIdentifier:0];
-  v5 = [(PUActivityItemSource *)self asset];
-  v6 = [(PUActivityItemSource *)self sharingPreferences];
+  asset = [(PUActivityItemSource *)self asset];
+  sharingPreferences = [(PUActivityItemSource *)self sharingPreferences];
   v46 = v7;
-  v51 = [v5 localIdentifier];
-  v8 = [val activity];
-  v53 = [v8 activityType];
+  localIdentifier = [asset localIdentifier];
+  activity = [val activity];
+  activityType = [activity activityType];
 
   v52 = self->_sharingUUID;
   v9 = objc_opt_class();
-  v10 = [v9 supportsAssetLocalIdentifierForActivityType:v53];
+  v10 = [v9 supportsAssetLocalIdentifierForActivityType:activityType];
   objc_initWeak(&location, self);
   objc_initWeak(&from, val);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -499,10 +499,10 @@ LABEL_10:
   aBlock[4] = self;
   aBlock[5] = v9;
   v50 = _Block_copy(aBlock);
-  v11 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v12 = [v11 onlyRegisterSingleItemProviderRepresentation];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  onlyRegisterSingleItemProviderRepresentation = [mEMORY[0x1E69C3A18] onlyRegisterSingleItemProviderRepresentation];
 
-  v49 = [(PUActivityItemSource *)self activityViewController:val dataTypeIdentifierForActivityType:v53];
+  v49 = [(PUActivityItemSource *)self activityViewController:val dataTypeIdentifierForActivityType:activityType];
   if (v49)
   {
     v88[0] = MEMORY[0x1E69E9820];
@@ -512,8 +512,8 @@ LABEL_10:
     objc_copyWeak(&v92, &location);
     objc_copyWeak(&v93, &from);
     v94 = v10;
-    v89 = v51;
-    v13 = v53;
+    v89 = localIdentifier;
+    v13 = activityType;
     v90 = v13;
     v48 = v50;
     v91 = v48;
@@ -521,9 +521,9 @@ LABEL_10:
 
     objc_destroyWeak(&v93);
     objc_destroyWeak(&v92);
-    v14 = [v5 playbackStyle];
-    v15 = [v5 isMediaSubtype:8];
-    if (v14 == 3)
+    playbackStyle = [asset playbackStyle];
+    v15 = [asset isMediaSubtype:8];
+    if (playbackStyle == 3)
     {
       v16 = v15;
     }
@@ -533,19 +533,19 @@ LABEL_10:
       v16 = 0;
     }
 
-    if (!(v6 & 1 | ((v16 & 1 | (v15 ^ v16) & (v6 >> 40) & 1) == 0) | v12 & 1))
+    if (!(sharingPreferences & 1 | ((v16 & 1 | (v15 ^ v16) & (sharingPreferences >> 40) & 1) == 0) | onlyRegisterSingleItemProviderRepresentation & 1))
     {
-      v17 = [*MEMORY[0x1E6982E80] identifier];
+      identifier = [*MEMORY[0x1E6982E80] identifier];
       v85[0] = MEMORY[0x1E69E9820];
       v85[1] = 3221225472;
       v85[2] = __71__PUActivityItemSource_activityViewControllerApplicationExtensionItem___block_invoke_358;
       v85[3] = &unk_1E7B74340;
-      v86 = v5;
+      v86 = asset;
       v87 = v52;
-      [v4 registerItemForTypeIdentifier:v17 loadHandler:v85];
+      [v4 registerItemForTypeIdentifier:identifier loadHandler:v85];
     }
 
-    if ((-[PUActivityItemSource sharingPreferences](self, "sharingPreferences") & 1) == 0 && v13 && !(v12 & 1 | (([v13 isEqualToString:*MEMORY[0x1E69C3DF0]] & 1) == 0)))
+    if ((-[PUActivityItemSource sharingPreferences](self, "sharingPreferences") & 1) == 0 && v13 && !(onlyRegisterSingleItemProviderRepresentation & 1 | (([v13 isEqualToString:*MEMORY[0x1E69C3DF0]] & 1) == 0)))
     {
       v18 = PLShareSheetGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -558,43 +558,43 @@ LABEL_10:
         _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] NSItemProvider: Registering with item provider as asset bundle for activity: %{public}@.", buf, 0x16u);
       }
 
-      v20 = [MEMORY[0x1E69C0668] contentType];
-      v21 = [v20 identifier];
+      contentType = [MEMORY[0x1E69C0668] contentType];
+      identifier2 = [contentType identifier];
       v80[0] = MEMORY[0x1E69E9820];
       v80[1] = 3221225472;
       v80[2] = __71__PUActivityItemSource_activityViewControllerApplicationExtensionItem___block_invoke_366;
       v80[3] = &unk_1E7B74390;
       objc_copyWeak(&v84, &location);
       v81 = v52;
-      v82 = v5;
+      v82 = asset;
       v83 = v48;
-      [v4 registerItemForTypeIdentifier:v21 loadHandler:v80];
+      [v4 registerItemForTypeIdentifier:identifier2 loadHandler:v80];
 
       objc_destroyWeak(&v84);
     }
 
-    v22 = [(PUActivityItemSource *)self _sharingVariants];
-    v47 = [v22 objectForKeyedSubscript:&unk_1F2B7DA30];
+    _sharingVariants = [(PUActivityItemSource *)self _sharingVariants];
+    v47 = [_sharingVariants objectForKeyedSubscript:&unk_1F2B7DA30];
     if (v47)
     {
-      v23 = [v4 registeredTypeIdentifiers];
-      v24 = [v23 containsObject:v47];
+      registeredTypeIdentifiers = [v4 registeredTypeIdentifiers];
+      v24 = [registeredTypeIdentifiers containsObject:v47];
 
-      if (((v24 | v12) & 1) == 0)
+      if (((v24 | onlyRegisterSingleItemProviderRepresentation) & 1) == 0)
       {
         v25 = objc_alloc_init(MEMORY[0x1E69786B0]);
         [v25 setVariant:1];
-        [v25 setShouldStripLocation:(v6 >> 8) & 1];
-        [v25 setShouldStripCaption:(v6 >> 16) & 1];
-        [v25 setShouldStripAccessibilityDescription:(v6 >> 24) & 1];
-        if ((PHAssetExportRequestPassthroughConversionIsSupportedByType() & 1) != 0 || ([MEMORY[0x1E69786A8] exportRequestForAsset:v5 variants:v22 error:0], v26 = objc_claimAutoreleasedReturnValue(), buf[0] = 0, objc_msgSend(v26, "preflightExportWithOptions:assetAvailability:isProcessingRequired:fileURLs:info:", v25, 0, buf, 0, 0), v27 = buf[0], v26, (v27 & 1) == 0))
+        [v25 setShouldStripLocation:(sharingPreferences >> 8) & 1];
+        [v25 setShouldStripCaption:(sharingPreferences >> 16) & 1];
+        [v25 setShouldStripAccessibilityDescription:(sharingPreferences >> 24) & 1];
+        if ((PHAssetExportRequestPassthroughConversionIsSupportedByType() & 1) != 0 || ([MEMORY[0x1E69786A8] exportRequestForAsset:asset variants:_sharingVariants error:0], v26 = objc_claimAutoreleasedReturnValue(), buf[0] = 0, objc_msgSend(v26, "preflightExportWithOptions:assetAvailability:isProcessingRequired:fileURLs:info:", v25, 0, buf, 0, 0), v27 = buf[0], v26, (v27 & 1) == 0))
         {
           v74[0] = MEMORY[0x1E69E9820];
           v74[1] = 3221225472;
           v74[2] = __71__PUActivityItemSource_activityViewControllerApplicationExtensionItem___block_invoke_375;
           v74[3] = &unk_1E7B743B8;
           objc_copyWeak(&v79, &location);
-          v75 = v5;
+          v75 = asset;
           v76 = v25;
           v77 = v52;
           v78 = v48;
@@ -618,22 +618,22 @@ LABEL_10:
       }
     }
 
-    v31 = [v22 objectForKeyedSubscript:&unk_1F2B7DA18];
+    v31 = [_sharingVariants objectForKeyedSubscript:&unk_1F2B7DA18];
     if (v31)
     {
-      v32 = [v4 registeredTypeIdentifiers];
-      v33 = [v32 containsObject:v31];
+      registeredTypeIdentifiers2 = [v4 registeredTypeIdentifiers];
+      v33 = [registeredTypeIdentifiers2 containsObject:v31];
 
-      if (((v33 | v12) & 1) == 0)
+      if (((v33 | onlyRegisterSingleItemProviderRepresentation) & 1) == 0)
       {
         v69[0] = MEMORY[0x1E69E9820];
         v69[1] = 3221225472;
         v69[2] = __71__PUActivityItemSource_activityViewControllerApplicationExtensionItem___block_invoke_378;
         v69[3] = &unk_1E7B743E0;
         objc_copyWeak(v73, &location);
-        v73[1] = v6;
+        v73[1] = sharingPreferences;
         v73[2] = v46;
-        v70 = v5;
+        v70 = asset;
         v71 = v52;
         v72 = v48;
         [v4 registerItemForTypeIdentifier:v31 loadHandler:v69];
@@ -642,7 +642,7 @@ LABEL_10:
       }
     }
 
-    v34 = [v22 objectForKeyedSubscript:&unk_1F2B7DA00];
+    v34 = [_sharingVariants objectForKeyedSubscript:&unk_1F2B7DA00];
     v35 = v34;
     if (v13)
     {
@@ -659,7 +659,7 @@ LABEL_10:
       if (!v34)
       {
 LABEL_34:
-        if (!(v12 & 1 | (([v5 isVideo] & 1) == 0)))
+        if (!(onlyRegisterSingleItemProviderRepresentation & 1 | (([asset isVideo] & 1) == 0)))
         {
           v39 = PLShareSheetGetLog();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -677,7 +677,7 @@ LABEL_34:
           v59[3] = &unk_1E7B74430;
           v60 = v52;
           objc_copyWeak(&v63, &location);
-          v61 = v5;
+          v61 = asset;
           v62 = v48;
           [v4 registerObjectOfClass:v41 visibility:0 loadHandler:v59];
 
@@ -696,11 +696,11 @@ LABEL_34:
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
           v43 = self->_sharingUUID;
-          v44 = [v4 registeredTypeIdentifiers];
+          registeredTypeIdentifiers3 = [v4 registeredTypeIdentifiers];
           *buf = 138543618;
           v99 = v43;
           v100 = 2114;
-          v101 = v44;
+          v101 = registeredTypeIdentifiers3;
           _os_log_impl(&dword_1B36F3000, v42, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] NSItemProvider: Registered type identifiers (in order): %{public}@", buf, 0x16u);
         }
 
@@ -712,17 +712,17 @@ LABEL_34:
       }
     }
 
-    v37 = [v4 registeredTypeIdentifiers];
-    v38 = [v37 containsObject:v35];
+    registeredTypeIdentifiers4 = [v4 registeredTypeIdentifiers];
+    v38 = [registeredTypeIdentifiers4 containsObject:v35];
 
-    if (((v38 | v36 | v12) & 1) == 0)
+    if (((v38 | v36 | onlyRegisterSingleItemProviderRepresentation) & 1) == 0)
     {
       v64[0] = MEMORY[0x1E69E9820];
       v64[1] = 3221225472;
       v64[2] = __71__PUActivityItemSource_activityViewControllerApplicationExtensionItem___block_invoke_380;
       v64[3] = &unk_1E7B74390;
       objc_copyWeak(&v68, &location);
-      v65 = v5;
+      v65 = asset;
       v66 = v52;
       v67 = v48;
       [v4 registerItemForTypeIdentifier:v35 loadHandler:v64];
@@ -733,17 +733,17 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v22 = PLShareSheetGetLog();
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
+  _sharingVariants = PLShareSheetGetLog();
+  if (os_log_type_enabled(_sharingVariants, OS_LOG_TYPE_FAULT))
   {
     v29 = self->_sharingUUID;
     *buf = 138543874;
     v99 = v29;
     v100 = 2114;
-    v101 = v51;
+    v101 = localIdentifier;
     v102 = 2112;
-    v103 = v53;
-    _os_log_impl(&dword_1B36F3000, v22, OS_LOG_TYPE_FAULT, "[Item: %{public}@] No type identifier for asset: %{public}@ activity type: %@", buf, 0x20u);
+    v103 = activityType;
+    _os_log_impl(&dword_1B36F3000, _sharingVariants, OS_LOG_TYPE_FAULT, "[Item: %{public}@] No type identifier for asset: %{public}@ activity type: %@", buf, 0x20u);
   }
 
   v30 = 0;
@@ -1343,16 +1343,16 @@ void __71__PUActivityItemSource_activityViewControllerApplicationExtensionItem__
   }
 }
 
-- (id)_runOnDemandSingleFileExportForAsset:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (id)_runOnDemandSingleFileExportForAsset:(id)asset withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__PUActivityItemSource__runOnDemandSingleFileExportForAsset_withOptions_completionHandler___block_invoke;
   v12[3] = &unk_1E7B742A0;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(PUActivityItemSource *)self _runOnDemandExportForAsset:a3 withOptions:a4 completionHandler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [(PUActivityItemSource *)self _runOnDemandExportForAsset:asset withOptions:options completionHandler:v12];
 
   return v10;
 }
@@ -1377,15 +1377,15 @@ void __91__PUActivityItemSource__runOnDemandSingleFileExportForAsset_withOptions
   v11(v10, v9, v6);
 }
 
-- (id)_runOnDemandExportForAsset:(id)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (id)_runOnDemandExportForAsset:(id)asset withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v19 = 0;
-    v11 = [MEMORY[0x1E69786A8] exportRequestForAsset:v8 error:&v19];
+    v11 = [MEMORY[0x1E69786A8] exportRequestForAsset:assetCopy error:&v19];
     v12 = v19;
     if (v11)
     {
@@ -1397,9 +1397,9 @@ void __91__PUActivityItemSource__runOnDemandSingleFileExportForAsset_withOptions
       v15[3] = &unk_1E7B74278;
       v15[4] = self;
       objc_copyWeak(&v17, &location);
-      v16 = v10;
-      [v11 exportWithOptions:v9 completionHandler:v15];
-      v13 = [v11 progress];
+      v16 = handlerCopy;
+      [v11 exportWithOptions:optionsCopy completionHandler:v15];
+      progress = [v11 progress];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -1407,17 +1407,17 @@ void __91__PUActivityItemSource__runOnDemandSingleFileExportForAsset_withOptions
 
     else
     {
-      (*(v10 + 2))(v10, 0, v12);
-      v13 = 0;
+      (*(handlerCopy + 2))(handlerCopy, 0, v12);
+      progress = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    progress = 0;
   }
 
-  return v13;
+  return progress;
 }
 
 void __81__PUActivityItemSource__runOnDemandExportForAsset_withOptions_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1445,13 +1445,13 @@ void __81__PUActivityItemSource__runOnDemandExportForAsset_withOptions_completio
   }
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageDataForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageDataForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   PLPhysicalScreenScale();
   v12 = v11;
   v13 = objc_alloc_init(MEMORY[0x1E6978868]);
@@ -1489,7 +1489,7 @@ void __81__PUActivityItemSource__runOnDemandExportForAsset_withOptions_completio
   v27 = __Block_byref_object_copy__2314;
   *&v28 = __Block_byref_object_dispose__2315;
   *(&v28 + 1) = 0;
-  v21 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v22 = self->_asset;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -1497,7 +1497,7 @@ void __81__PUActivityItemSource__runOnDemandExportForAsset_withOptions_completio
   v25[3] = &unk_1E7B74250;
   v25[4] = self;
   v25[5] = buf;
-  [v21 requestImageForAsset:v22 targetSize:1 contentMode:v13 options:v25 resultHandler:{v15, v16}];
+  [defaultManager requestImageForAsset:v22 targetSize:1 contentMode:v13 options:v25 resultHandler:{v15, v16}];
   v23 = *(*&buf[8] + 40);
 
   _Block_object_dispose(buf, 8);
@@ -1562,36 +1562,36 @@ LABEL_6:
 LABEL_8:
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  typeCopy = type;
+  v7 = typeCopy;
+  if (typeCopy)
   {
-    v8 = v6;
+    activityType = typeCopy;
   }
 
   else
   {
-    v9 = [a3 activity];
-    v8 = [v9 activityType];
+    activity = [controller activity];
+    activityType = [activity activityType];
   }
 
-  v10 = [(PUActivityItemSource *)self _uniformTypeIdentifierForActivityType:v8];
+  v10 = [(PUActivityItemSource *)self _uniformTypeIdentifierForActivityType:activityType];
 
   return v10;
 }
 
-- (void)assetExportRequest:(id)a3 didChangeToState:(unint64_t)a4 fromState:(unint64_t)a5
+- (void)assetExportRequest:(id)request didChangeToState:(unint64_t)state fromState:(unint64_t)fromState
 {
-  if (a4)
+  if (state)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __70__PUActivityItemSource_assetExportRequest_didChangeToState_fromState___block_invoke;
     v5[3] = &__block_descriptor_40_e39_v16__0___PUMutableActivityItemSource__8l;
-    v5[4] = a4;
-    [(PUActivityItemSource *)self performChanges:v5, a4, a5];
+    v5[4] = state;
+    [(PUActivityItemSource *)self performChanges:v5, state, fromState];
   }
 }
 
@@ -1610,9 +1610,9 @@ uint64_t __70__PUActivityItemSource_assetExportRequest_didChangeToState_fromStat
   return [a2 setState:v2];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &PUActivityItemSourceProgressContext)
+  if (context == &PUActivityItemSourceProgressContext)
   {
     px_dispatch_on_main_queue();
   }
@@ -1621,7 +1621,7 @@ uint64_t __70__PUActivityItemSource_assetExportRequest_didChangeToState_fromStat
   {
     v6.receiver = self;
     v6.super_class = PUActivityItemSource;
-    [(PUActivityItemSource *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PUActivityItemSource *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -1654,51 +1654,51 @@ void __71__PUActivityItemSource_observeValueForKeyPath_ofObject_change_context__
 
 - (void)_stopObservingExportRequest
 {
-  v3 = [(PUActivityItemSource *)self _assetExportRequest];
-  [v3 setDelegate:0];
+  _assetExportRequest = [(PUActivityItemSource *)self _assetExportRequest];
+  [_assetExportRequest setDelegate:0];
   [(PUActivityItemSource *)self _setAssetExportRequest:0];
   [(PUActivityItemSource *)self _setExportProgress:0];
   [(PUActivityItemSource *)self _setExportProgressHandler:0];
 }
 
-- (void)_beginObservingExportRequest:(id)a3 withProgressHandler:(id)a4
+- (void)_beginObservingExportRequest:(id)request withProgressHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 progress];
-  [(PUActivityItemSource *)self _setAssetExportRequest:v7];
-  [(PUActivityItemSource *)self _setExportProgressHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  progress = [requestCopy progress];
+  [(PUActivityItemSource *)self _setAssetExportRequest:requestCopy];
+  [(PUActivityItemSource *)self _setExportProgressHandler:handlerCopy];
 
-  [(PUActivityItemSource *)self _setExportProgress:v8];
-  [v7 setDelegate:self];
+  [(PUActivityItemSource *)self _setExportProgress:progress];
+  [requestCopy setDelegate:self];
 }
 
-- (id)_itemForActivityType:(id)a3
+- (id)_itemForActivityType:(id)type
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUActivityItemSource *)self exportConfiguration];
-  v6 = [v5 outputType];
-  switch(v6)
+  typeCopy = type;
+  exportConfiguration = [(PUActivityItemSource *)self exportConfiguration];
+  outputType = [exportConfiguration outputType];
+  switch(outputType)
   {
     case 3:
-      v7 = [(PUActivityItemSource *)self asset];
+      asset = [(PUActivityItemSource *)self asset];
       goto LABEL_7;
     case 2:
-      v7 = [(PUActivityItemSource *)self _assetsLibraryURL];
+      asset = [(PUActivityItemSource *)self _assetsLibraryURL];
       goto LABEL_7;
     case 1:
-      v7 = [(PUActivityItemSource *)self _pasteboardItemProvider];
+      asset = [(PUActivityItemSource *)self _pasteboardItemProvider];
 LABEL_7:
-      v8 = v7;
+      v8 = asset;
       goto LABEL_30;
   }
 
-  v9 = [v5 assetExportKind];
-  v10 = v9;
-  if (v9 != 3)
+  assetExportKind = [exportConfiguration assetExportKind];
+  v10 = assetExportKind;
+  if (assetExportKind != 3)
   {
-    if (v9 != 4)
+    if (assetExportKind != 4)
     {
       v8 = 0;
       goto LABEL_13;
@@ -1709,15 +1709,15 @@ LABEL_7:
 
   v8 = [(PUActivityItemSource *)self _resourceURLForType:v10];
 LABEL_13:
-  v11 = [v5 assetExportRequestOptions];
-  if ([v11 shouldExportUnmodifiedOriginalResources])
+  assetExportRequestOptions = [exportConfiguration assetExportRequestOptions];
+  if ([assetExportRequestOptions shouldExportUnmodifiedOriginalResources])
   {
-    if ([v4 isEqualToString:*MEMORY[0x1E69C3DA0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69C3DA0]])
     {
-      v12 = [(PUActivityItemSource *)self asset];
-      v13 = [v12 canPlayPhotoIris];
+      asset2 = [(PUActivityItemSource *)self asset];
+      canPlayPhotoIris = [asset2 canPlayPhotoIris];
 
-      if (v13)
+      if (canPlayPhotoIris)
       {
         v14 = [(PUActivityItemSource *)self _resourceURLForType:0];
         v15 = [(PUActivityItemSource *)self _resourceURLForType:2];
@@ -1734,10 +1734,10 @@ LABEL_13:
     }
   }
 
-  v18 = [v11 variant];
-  if (v8 || v18 != 3)
+  variant = [assetExportRequestOptions variant];
+  if (v8 || variant != 3)
   {
-    if (v8 || v18 != 2)
+    if (v8 || variant != 2)
     {
       goto LABEL_27;
     }
@@ -1762,33 +1762,33 @@ LABEL_30:
   return v8;
 }
 
-- (void)_fetchAlternateWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)_fetchAlternateWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() activityItemSourceLog];
-  v15 = [(PUActivityItemSource *)self signpostId];
-  v16 = v14;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  typeCopy = type;
+  optionsCopy = options;
+  activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+  signpostId = [(PUActivityItemSource *)self signpostId];
+  v16 = activityItemSourceLog;
   v17 = v16;
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "FetchItemAlternate", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "FetchItemAlternate", " enableTelemetry=YES ", buf, 2u);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __101__PUActivityItemSource__fetchAlternateWithOptions_forActivityType_progressHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7B74208;
-  v23 = v10;
-  v24 = v15;
+  v23 = completionHandlerCopy;
+  v24 = signpostId;
   v22 = v17;
-  v18 = v10;
+  v18 = completionHandlerCopy;
   v19 = v17;
   v20 = _Block_copy(aBlock);
-  [(PUActivityItemSource *)self _runExportRequestWithOptions:v13 forActivityType:v12 progressHandler:v11 completionHandler:v20];
+  [(PUActivityItemSource *)self _runExportRequestWithOptions:optionsCopy forActivityType:typeCopy progressHandler:handlerCopy completionHandler:v20];
 }
 
 void __101__PUActivityItemSource__fetchAlternateWithOptions_forActivityType_progressHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -1811,33 +1811,33 @@ void __101__PUActivityItemSource__fetchAlternateWithOptions_forActivityType_prog
   }
 }
 
-- (void)_fetchLivePhotoWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)_fetchLivePhotoWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() activityItemSourceLog];
-  v15 = [(PUActivityItemSource *)self signpostId];
-  v16 = v14;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  typeCopy = type;
+  optionsCopy = options;
+  activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+  signpostId = [(PUActivityItemSource *)self signpostId];
+  v16 = activityItemSourceLog;
   v17 = v16;
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "FetchItemLivePhoto", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "FetchItemLivePhoto", " enableTelemetry=YES ", buf, 2u);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __101__PUActivityItemSource__fetchLivePhotoWithOptions_forActivityType_progressHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7B74208;
-  v23 = v10;
-  v24 = v15;
+  v23 = completionHandlerCopy;
+  v24 = signpostId;
   v22 = v17;
-  v18 = v10;
+  v18 = completionHandlerCopy;
   v19 = v17;
   v20 = _Block_copy(aBlock);
-  [(PUActivityItemSource *)self _runExportRequestWithOptions:v13 forActivityType:v12 progressHandler:v11 completionHandler:v20];
+  [(PUActivityItemSource *)self _runExportRequestWithOptions:optionsCopy forActivityType:typeCopy progressHandler:handlerCopy completionHandler:v20];
 }
 
 void __101__PUActivityItemSource__fetchLivePhotoWithOptions_forActivityType_progressHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -1860,33 +1860,33 @@ void __101__PUActivityItemSource__fetchLivePhotoWithOptions_forActivityType_prog
   }
 }
 
-- (void)_fetchVideoWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)_fetchVideoWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() activityItemSourceLog];
-  v15 = [(PUActivityItemSource *)self signpostId];
-  v16 = v14;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  typeCopy = type;
+  optionsCopy = options;
+  activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+  signpostId = [(PUActivityItemSource *)self signpostId];
+  v16 = activityItemSourceLog;
   v17 = v16;
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "FetchItemVideo", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "FetchItemVideo", " enableTelemetry=YES ", buf, 2u);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__PUActivityItemSource__fetchVideoWithOptions_forActivityType_progressHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7B74208;
-  v23 = v10;
-  v24 = v15;
+  v23 = completionHandlerCopy;
+  v24 = signpostId;
   v22 = v17;
-  v18 = v10;
+  v18 = completionHandlerCopy;
   v19 = v17;
   v20 = _Block_copy(aBlock);
-  [(PUActivityItemSource *)self _runExportRequestWithOptions:v13 forActivityType:v12 progressHandler:v11 completionHandler:v20];
+  [(PUActivityItemSource *)self _runExportRequestWithOptions:optionsCopy forActivityType:typeCopy progressHandler:handlerCopy completionHandler:v20];
 }
 
 void __97__PUActivityItemSource__fetchVideoWithOptions_forActivityType_progressHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -1909,33 +1909,33 @@ void __97__PUActivityItemSource__fetchVideoWithOptions_forActivityType_progressH
   }
 }
 
-- (void)_fetchImageWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)_fetchImageWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() activityItemSourceLog];
-  v15 = [(PUActivityItemSource *)self signpostId];
-  v16 = v14;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  typeCopy = type;
+  optionsCopy = options;
+  activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+  signpostId = [(PUActivityItemSource *)self signpostId];
+  v16 = activityItemSourceLog;
   v17 = v16;
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "FetchItemImage", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "FetchItemImage", " enableTelemetry=YES ", buf, 2u);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7B74208;
-  v23 = v10;
-  v24 = v15;
+  v23 = completionHandlerCopy;
+  v24 = signpostId;
   v22 = v17;
-  v18 = v10;
+  v18 = completionHandlerCopy;
   v19 = v17;
   v20 = _Block_copy(aBlock);
-  [(PUActivityItemSource *)self _runExportRequestWithOptions:v13 forActivityType:v12 progressHandler:v11 completionHandler:v20];
+  [(PUActivityItemSource *)self _runExportRequestWithOptions:optionsCopy forActivityType:typeCopy progressHandler:handlerCopy completionHandler:v20];
 }
 
 void __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -1958,13 +1958,13 @@ void __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressH
   }
 }
 
-- (void)_runExportRequestWithOptions:(id)a3 forActivityType:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)_runExportRequestWithOptions:(id)options forActivityType:(id)type progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  optionsCopy = options;
+  typeCopy = type;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   asset = self->_asset;
   cachedSharingVariants = self->_cachedSharingVariants;
   v30 = 0;
@@ -1973,10 +1973,10 @@ void __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressH
   if (v16)
   {
     [v16 setShouldSendTimingIntervalsToAnalytics:{-[PUActivityItemSource shouldSendAnalyticsInterval](self, "shouldSendAnalyticsInterval")}];
-    [v16 setAnalyticsActivityType:v11];
-    v18 = [v16 variants];
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "variant")}];
-    v20 = [v18 objectForKeyedSubscript:v19];
+    [v16 setAnalyticsActivityType:typeCopy];
+    variants = [v16 variants];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(optionsCopy, "variant")}];
+    v20 = [variants objectForKeyedSubscript:v19];
     v21 = v20 == 0;
 
     if (v21)
@@ -1990,11 +1990,11 @@ void __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressH
         _os_log_impl(&dword_1B36F3000, v22, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Requested variant unavailable for sharing, using current", buf, 0xCu);
       }
 
-      [v10 setVariant:1];
+      [optionsCopy setVariant:1];
     }
 
-    v24 = [v10 variant];
-    [(PUActivityItemSource *)self _beginObservingExportRequest:v16 withProgressHandler:v12];
+    variant = [optionsCopy variant];
+    [(PUActivityItemSource *)self _beginObservingExportRequest:v16 withProgressHandler:handlerCopy];
     objc_initWeak(buf, self);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -2002,9 +2002,9 @@ void __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressH
     v27[3] = &unk_1E7B741E0;
     objc_copyWeak(v29, buf);
     v27[4] = self;
-    v28 = v13;
-    v29[1] = v24;
-    [v16 exportWithOptions:v10 completionHandler:v27];
+    v28 = completionHandlerCopy;
+    v29[1] = variant;
+    [v16 exportWithOptions:optionsCopy completionHandler:v27];
 
     objc_destroyWeak(v29);
     objc_destroyWeak(buf);
@@ -2023,7 +2023,7 @@ void __97__PUActivityItemSource__fetchImageWithOptions_forActivityType_progressH
       _os_log_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Failed to create PHAssetExportRequest: %@", buf, 0x16u);
     }
 
-    (*(v13 + 2))(v13, 0, v17, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v17, 0);
   }
 }
 
@@ -2066,30 +2066,30 @@ LABEL_7:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)activityItemSourceOperation:(id)a3 prepareItemForActivityType:(id)a4
+- (void)activityItemSourceOperation:(id)operation prepareItemForActivityType:(id)type
 {
   v235 = *MEMORY[0x1E69E9840];
-  v158 = a3;
-  v167 = a4;
+  operationCopy = operation;
+  typeCopy = type;
   [(PUActivityItemSource *)self setLastPreparationError:0];
-  v6 = [objc_opt_class() activityItemSourceLog];
-  v7 = [(PUActivityItemSource *)self signpostId];
-  v8 = v6;
+  activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+  signpostId = [(PUActivityItemSource *)self signpostId];
+  v8 = activityItemSourceLog;
   v9 = v8;
-  spid = v7;
-  v141 = v7 - 1;
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+  spid = signpostId;
+  v141 = signpostId - 1;
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PrepareItem", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v9, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "PrepareItem", " enableTelemetry=YES ", buf, 2u);
   }
 
   v166 = v9;
 
-  v156 = [(PHAsset *)self->_asset uuid];
+  uuid = [(PHAsset *)self->_asset uuid];
   [(PHAsset *)self->_asset fetchPropertySetsIfNeeded];
-  v10 = [(PHAsset *)self->_asset originalMetadataProperties];
-  v160 = [v10 originalFilename];
+  originalMetadataProperties = [(PHAsset *)self->_asset originalMetadataProperties];
+  originalFilename = [originalMetadataProperties originalFilename];
 
   v155 = [MEMORY[0x1E6978630] descriptionForMediaType:{-[PHAsset mediaType](self->_asset, "mediaType")}];
   v154 = [MEMORY[0x1E6978630] descriptionForMediaSubtypes:{-[PHAsset mediaSubtypes](self->_asset, "mediaSubtypes")}];
@@ -2098,17 +2098,17 @@ LABEL_7:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     sharingUUID = self->_sharingUUID;
-    v13 = [(__CFString *)v160 length];
+    v13 = [(__CFString *)originalFilename length];
     v14 = @"<Missing>";
     *buf = 138544898;
     if (v13)
     {
-      v14 = v160;
+      v14 = originalFilename;
     }
 
     v210 = sharingUUID;
     v211 = 2114;
-    v212 = v156;
+    v212 = uuid;
     v213 = 2114;
     v214 = v155;
     v215 = 2114;
@@ -2118,24 +2118,24 @@ LABEL_7:
     v219 = 2114;
     v220 = v14;
     v221 = 2114;
-    v222 = v167;
+    v222 = typeCopy;
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Preparing asset %{public}@ (Type: %{public}@, Subtypes: %{public}@, Playback style: %{public}@, Primary Filename: %{public}@) for sharing to activity type: %{public}@", buf, 0x48u);
   }
 
-  v15 = [(PUActivityItemSource *)self sharingPreferences];
+  sharingPreferences = [(PUActivityItemSource *)self sharingPreferences];
   v146 = v16;
-  v147 = v15;
-  v157 = [(PUActivityItemSource *)self _sharingVariants];
-  v169 = [[PUActivityItemSourceConfiguration alloc] initWithAsset:self->_asset availableSharingVariants:v157 activityType:v167 preferences:v147, v146];
-  v168 = [(PUActivityItemSourceConfiguration *)v169 assetExportRequestOptions];
-  [v168 setShouldBundleComplexAssetResources:1];
-  v17 = [objc_opt_class() _exportResultHandlingQueue];
-  [v168 setResultHandlerQueue:v17];
+  v147 = sharingPreferences;
+  _sharingVariants = [(PUActivityItemSource *)self _sharingVariants];
+  v146 = [[PUActivityItemSourceConfiguration alloc] initWithAsset:self->_asset availableSharingVariants:_sharingVariants activityType:typeCopy preferences:v147, v146];
+  assetExportRequestOptions = [(PUActivityItemSourceConfiguration *)v146 assetExportRequestOptions];
+  [assetExportRequestOptions setShouldBundleComplexAssetResources:1];
+  _exportResultHandlingQueue = [objc_opt_class() _exportResultHandlingQueue];
+  [assetExportRequestOptions setResultHandlerQueue:_exportResultHandlingQueue];
 
-  v18 = [(PUActivityItemSource *)self exportConfiguration];
-  v165 = [v18 activityType];
+  exportConfiguration = [(PUActivityItemSource *)self exportConfiguration];
+  activityType = [exportConfiguration activityType];
 
-  if (v165 && ([v165 isEqualToString:v167] & 1) == 0)
+  if (activityType && ([activityType isEqualToString:typeCopy] & 1) == 0)
   {
     v19 = PLShareSheetGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2144,18 +2144,18 @@ LABEL_7:
       *buf = 138543874;
       v210 = v20;
       v211 = 2114;
-      v212 = v167;
+      v212 = typeCopy;
       v213 = 2114;
-      v214 = v165;
+      v214 = activityType;
       _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Re-using activity item source for activity type: %{public}@ (Previously: %{public}@)", buf, 0x20u);
     }
   }
 
-  v21 = [(PUActivityItemSource *)self exportConfiguration];
-  if (v21)
+  exportConfiguration2 = [(PUActivityItemSource *)self exportConfiguration];
+  if (exportConfiguration2)
   {
-    v22 = [(PUActivityItemSource *)self exportConfiguration];
-    v23 = [v22 isEqual:v169];
+    exportConfiguration3 = [(PUActivityItemSource *)self exportConfiguration];
+    v23 = [exportConfiguration3 isEqual:v146];
 
     if ((v23 & 1) == 0)
     {
@@ -2166,9 +2166,9 @@ LABEL_7:
         *buf = 138543874;
         v210 = v25;
         v211 = 2114;
-        v212 = v167;
+        v212 = typeCopy;
         v213 = 2114;
-        v214 = v165;
+        v214 = activityType;
         _os_log_impl(&dword_1B36F3000, v24, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Export configuration (for activity %{public}@) does not match previous export configuration (for activity %{public}@). Deleting already-exported files.", buf, 0x20u);
       }
 
@@ -2176,34 +2176,34 @@ LABEL_7:
     }
   }
 
-  [(PUActivityItemSource *)self setExportConfiguration:v169];
-  v26 = [(PUActivityItemSourceConfiguration *)v169 requiresAssetExport];
-  v27 = [v168 variant];
-  v28 = [v168 variant];
-  v29 = v28;
+  [(PUActivityItemSource *)self setExportConfiguration:v146];
+  requiresAssetExport = [(PUActivityItemSourceConfiguration *)v146 requiresAssetExport];
+  variant = [assetExportRequestOptions variant];
+  variant2 = [assetExportRequestOptions variant];
+  v29 = variant2;
   v203 = 0;
   v204 = &v203;
-  if (v27 == 3)
+  if (variant == 3)
   {
     v30 = 4;
   }
 
   else
   {
-    v30 = v28 == 2;
+    v30 = variant2 == 2;
   }
 
   v205 = 0x2020000000;
   v206 = v30;
   v134 = v30;
-  if (v26)
+  if (requiresAssetExport)
   {
     v31 = [(PUActivityItemSource *)self _resourceURLForType:?];
     if (v31)
     {
-      v32 = [MEMORY[0x1E696AC08] defaultManager];
-      v33 = [v31 path];
-      v140 = [v32 fileExistsAtPath:v33];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v31 path];
+      v140 = [defaultManager fileExistsAtPath:path];
     }
 
     else
@@ -2217,17 +2217,17 @@ LABEL_7:
     v140 = 1;
   }
 
-  v34 = [(PUActivityItemSourceConfiguration *)v169 assetExportKind];
+  assetExportKind = [(PUActivityItemSourceConfiguration *)v146 assetExportKind];
   v199 = 0;
   v200 = &v199;
   v201 = 0x2020000000;
-  v137 = v34 == 3;
-  if (v34 == 3)
+  v137 = assetExportKind == 3;
+  if (assetExportKind == 3)
   {
     v35 = [(PUActivityItemSource *)self _resourceURLForType:3];
     v36 = v35 == 0;
 
-    v34 = 3;
+    assetExportKind = 3;
   }
 
   else
@@ -2239,9 +2239,9 @@ LABEL_7:
   v195 = 0;
   v196 = &v195;
   v197 = 0x2020000000;
-  v145 = v34;
-  v136 = v34 == 4;
-  if (v34 == 4)
+  v145 = assetExportKind;
+  v136 = assetExportKind == 4;
+  if (assetExportKind == 4)
   {
     v37 = [(PUActivityItemSource *)self _resourceURLForType:5];
     v38 = v37 == 0;
@@ -2253,11 +2253,11 @@ LABEL_7:
   }
 
   v198 = v38;
-  v39 = [(PUActivityItemSourceConfiguration *)v169 outputType];
-  if (v39 == 2)
+  outputType = [(PUActivityItemSourceConfiguration *)v146 outputType];
+  if (outputType == 2)
   {
-    v40 = [(PUActivityItemSource *)self _assetsLibraryURL];
-    v139 = v40 != 0;
+    _assetsLibraryURL = [(PUActivityItemSource *)self _assetsLibraryURL];
+    v139 = _assetsLibraryURL != 0;
 
     if (v139)
     {
@@ -2276,15 +2276,15 @@ LABEL_7:
     v41 = @"NO";
   }
 
-  v135 = [v168 shouldExportUnmodifiedOriginalResources];
+  shouldExportUnmodifiedOriginalResources = [assetExportRequestOptions shouldExportUnmodifiedOriginalResources];
   v189 = 0;
   v190 = &v189;
   v191 = 0x3032000000;
   v192 = __Block_byref_object_copy__2314;
   v193 = __Block_byref_object_dispose__2315;
   v194 = 0;
-  v152 = [PUActivityItemSourceConfiguration descriptionForOutputType:[(PUActivityItemSourceConfiguration *)v169 outputType]];
-  v151 = [PUActivityItemSourceConfiguration descriptionForAssetExportKind:[(PUActivityItemSourceConfiguration *)v169 assetExportKind]];
+  v152 = [PUActivityItemSourceConfiguration descriptionForOutputType:[(PUActivityItemSourceConfiguration *)v146 outputType]];
+  v151 = [PUActivityItemSourceConfiguration descriptionForAssetExportKind:[(PUActivityItemSourceConfiguration *)v146 assetExportKind]];
   if (v29 == 2)
   {
     v42 = @"Compatible (HEIC/HEVC to JPG/MOV)";
@@ -2295,7 +2295,7 @@ LABEL_7:
     v42 = @"Primary (original format)";
   }
 
-  if (v26)
+  if (requiresAssetExport)
   {
     v43 = @"YES";
     if (!v140)
@@ -2318,7 +2318,7 @@ LABEL_7:
   {
     v148 = self->_sharingUUID;
     v46 = @"NO";
-    if (v26)
+    if (requiresAssetExport)
     {
       v46 = @"YES";
     }
@@ -2327,7 +2327,7 @@ LABEL_7:
 
     v161 = v47;
     v48 = @"Alternate (for auto-loops to GIF)";
-    if (v27 != 3)
+    if (variant != 3)
     {
       v48 = v42;
     }
@@ -2386,7 +2386,7 @@ LABEL_7:
       }
     }
 
-    v58 = v39 == 2;
+    v58 = outputType == 2;
     v59 = v57;
 
     v60 = v59;
@@ -2406,7 +2406,7 @@ LABEL_7:
     v64 = v41;
 
     v65 = v64;
-    if ([v168 flattenSlomoVideos])
+    if ([assetExportRequestOptions flattenSlomoVideos])
     {
       v66 = @"YES";
     }
@@ -2448,12 +2448,12 @@ LABEL_7:
     _os_log_impl(&dword_1B36F3000, v45, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Preparation pre-flight - Output type: %@ (requires asset export: %@), as kind: %@, in format: %@ (file already exported: %@) - should create Live Photo bundle: %@ (already created: %@) - should create asset bundle: %@ (already created: %@) should set AssetsLibrary URL: %@ (already set: %@) - will flatten slo-mo video: %@", buf, 0x84u);
   }
 
-  v144 = [v158 semaphore];
-  v69 = [(PUActivityItemSource *)self progressHandler];
-  v164 = [(PUActivityItemSource *)self completionHandler];
-  v162 = [(PUActivityItemSource *)self postCompletionHandler];
-  v149 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v70 = [v149 allowFallbacksWhilePreparing];
+  semaphore = [operationCopy semaphore];
+  progressHandler = [(PUActivityItemSource *)self progressHandler];
+  completionHandler = [(PUActivityItemSource *)self completionHandler];
+  postCompletionHandler = [(PUActivityItemSource *)self postCompletionHandler];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  allowFallbacksWhilePreparing = [mEMORY[0x1E69C3A18] allowFallbacksWhilePreparing];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__PUActivityItemSource_activityItemSourceOperation_prepareItemForActivityType___block_invoke;
@@ -2461,26 +2461,26 @@ LABEL_7:
   aBlock[4] = self;
   v187 = &v189;
   v188 = a2;
-  v71 = v158;
+  v71 = operationCopy;
   v185 = v71;
-  v159 = v69;
+  v159 = progressHandler;
   v186 = v159;
   v72 = _Block_copy(aBlock);
-  v73 = [(PUActivityItemSourceConfiguration *)v169 maxFileSizeLimit];
+  maxFileSizeLimit = [(PUActivityItemSourceConfiguration *)v146 maxFileSizeLimit];
   if (!v190[5])
   {
-    v74 = v73;
+    v74 = maxFileSizeLimit;
     if (([v71 pu_isCancelled] & 1) == 0)
     {
-      v75 = [v71 isCancelled];
-      v76 = v74 ? v75 : 1;
+      isCancelled = [v71 isCancelled];
+      v76 = v74 ? isCancelled : 1;
       if ((v76 & 1) == 0)
       {
         [(PHAsset *)self->_asset fetchPropertySetsIfNeeded];
-        v77 = [(PHAsset *)self->_asset originalMetadataProperties];
-        v78 = [v77 originalFilesize];
+        originalMetadataProperties2 = [(PHAsset *)self->_asset originalMetadataProperties];
+        originalFilesize = [originalMetadataProperties2 originalFilesize];
 
-        if ((v78 > v74) | [v149 simulateMaxFilesizeLimitForGIFsInSharedAlbumsError] & 1)
+        if ((originalFilesize > v74) | [mEMORY[0x1E69C3A18] simulateMaxFilesizeLimitForGIFsInSharedAlbumsError] & 1)
         {
           v79 = PLShareSheetGetLog();
           if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
@@ -2489,7 +2489,7 @@ LABEL_7:
             *buf = 138543874;
             v210 = v80;
             v211 = 2048;
-            v212 = v78;
+            v212 = originalFilesize;
             v213 = 2048;
             v214 = v74;
             _os_log_impl(&dword_1B36F3000, v79, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Attempted to share an asset that exceeds the filesize limit, %lu > %lu", buf, 0x20u);
@@ -2524,17 +2524,17 @@ LABEL_7:
     v170[3] = &unk_1E7B74198;
     v175 = &v189;
     v171 = v71;
-    v172 = v149;
-    v173 = self;
+    v172 = mEMORY[0x1E69C3A18];
+    selfCopy = self;
     v176 = &v203;
     v177 = &v195;
     v181 = v137;
     v182 = v136;
-    v183 = v135;
+    v183 = shouldExportUnmodifiedOriginalResources;
     v178 = &v199;
     v179 = v147;
     v180 = v146;
-    v85 = v144;
+    v85 = semaphore;
     v174 = v85;
     v86 = _Block_copy(v170);
     switch(v145)
@@ -2547,11 +2547,11 @@ LABEL_7:
           *buf = 138543618;
           v210 = v90;
           v211 = 2112;
-          v212 = v167;
+          v212 = typeCopy;
           _os_log_impl(&dword_1B36F3000, v89, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Fetching video for activity type: %@", buf, 0x16u);
         }
 
-        [(PUActivityItemSource *)self _fetchVideoWithOptions:v168 forActivityType:v167 progressHandler:v72 completionHandler:v86];
+        [(PUActivityItemSource *)self _fetchVideoWithOptions:assetExportRequestOptions forActivityType:typeCopy progressHandler:v72 completionHandler:v86];
         break;
       case 5:
         v87 = PLShareSheetGetLog();
@@ -2561,11 +2561,11 @@ LABEL_7:
           *buf = 138543618;
           v210 = v88;
           v211 = 2112;
-          v212 = v167;
+          v212 = typeCopy;
           _os_log_impl(&dword_1B36F3000, v87, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Fetching auto-looping image as GIF for activity type: %@", buf, 0x16u);
         }
 
-        [(PUActivityItemSource *)self _fetchAlternateWithOptions:v168 forActivityType:v167 progressHandler:v72 completionHandler:v86];
+        [(PUActivityItemSource *)self _fetchAlternateWithOptions:assetExportRequestOptions forActivityType:typeCopy progressHandler:v72 completionHandler:v86];
         break;
       case 3:
         v91 = PLShareSheetGetLog();
@@ -2575,11 +2575,11 @@ LABEL_7:
           *buf = 138543618;
           v210 = v92;
           v211 = 2112;
-          v212 = v167;
+          v212 = typeCopy;
           _os_log_impl(&dword_1B36F3000, v91, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Fetching live photo bundle for activity type: %@", buf, 0x16u);
         }
 
-        [(PUActivityItemSource *)self _fetchLivePhotoWithOptions:v168 forActivityType:v167 progressHandler:v72 completionHandler:v86];
+        [(PUActivityItemSource *)self _fetchLivePhotoWithOptions:assetExportRequestOptions forActivityType:typeCopy progressHandler:v72 completionHandler:v86];
         break;
       default:
         v93 = PLShareSheetGetLog();
@@ -2589,11 +2589,11 @@ LABEL_7:
           *buf = 138543618;
           v210 = v94;
           v211 = 2112;
-          v212 = v167;
+          v212 = typeCopy;
           _os_log_impl(&dword_1B36F3000, v93, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Fetching image for activity type: %@", buf, 0x16u);
         }
 
-        [(PUActivityItemSource *)self _fetchImageWithOptions:v168 forActivityType:v167 progressHandler:v72 completionHandler:v86];
+        [(PUActivityItemSource *)self _fetchImageWithOptions:assetExportRequestOptions forActivityType:typeCopy progressHandler:v72 completionHandler:v86];
         break;
     }
 
@@ -2602,8 +2602,8 @@ LABEL_7:
 
   if (!v190[5] && ([v71 pu_isCancelled] & 1) == 0 && ((objc_msgSend(v71, "isCancelled") | v139) & 1) == 0)
   {
-    v95 = [(PHAsset *)self->_asset ALAssetURL];
-    if (v95)
+    aLAssetURL = [(PHAsset *)self->_asset ALAssetURL];
+    if (aLAssetURL)
     {
       v96 = PLShareSheetGetLog();
       if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
@@ -2614,12 +2614,12 @@ LABEL_7:
         _os_log_impl(&dword_1B36F3000, v96, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Setting assets library URL for sharing.", buf, 0xCu);
       }
 
-      [(PUActivityItemSource *)self _setAssetsLibraryURL:v95];
+      [(PUActivityItemSource *)self _setAssetsLibraryURL:aLAssetURL];
     }
 
     else
     {
-      if (v70)
+      if (allowFallbacksWhilePreparing)
       {
         v98 = PLShareSheetGetLog();
         if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
@@ -2649,7 +2649,7 @@ LABEL_7:
     }
   }
 
-  if (!v190[5] && ([v71 pu_isCancelled] & 1) == 0 && (objc_msgSend(v71, "isCancelled") & 1) == 0 && -[PUActivityItemSourceConfiguration outputType](v169, "outputType") == 1)
+  if (!v190[5] && ([v71 pu_isCancelled] & 1) == 0 && (objc_msgSend(v71, "isCancelled") & 1) == 0 && -[PUActivityItemSourceConfiguration outputType](v146, "outputType") == 1)
   {
     v103 = PLShareSheetGetLog();
     if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
@@ -2693,24 +2693,24 @@ LABEL_7:
   [(PUActivityItemSource *)self performChanges:&__block_literal_global_334];
   if ([v71 pu_isCancelled])
   {
-    v111 = 1;
+    isCancelled2 = 1;
   }
 
   else
   {
-    v111 = [v71 isCancelled];
+    isCancelled2 = [v71 isCancelled];
   }
 
-  if (v164)
+  if (completionHandler)
   {
-    v112 = [(PUActivityItemSource *)self _itemForActivityType:v167];
+    v112 = [(PUActivityItemSource *)self _itemForActivityType:typeCopy];
     if (!v112 && !v190[5] && ([v71 pu_isCancelled] & 1) == 0 && (objc_msgSend(v71, "isCancelled") & 1) == 0)
     {
       v113 = MEMORY[0x1E696AEC0];
-      v114 = [(PHAsset *)self->_asset uuid];
-      v115 = [v113 stringWithFormat:@"Preparation failed (nil item) for activityType: %@, asset: %@", v167, v114];
+      uuid2 = [(PHAsset *)self->_asset uuid];
+      v114 = [v113 stringWithFormat:@"Preparation failed (nil item) for activityType: %@, asset: %@", typeCopy, uuid2];
 
-      v116 = [objc_opt_class() _sharingErrorWithCode:-100 underlyingError:0 localizedDescription:v115 additionalInfo:0];
+      v116 = [objc_opt_class() _sharingErrorWithCode:-100 underlyingError:0 localizedDescription:v114 additionalInfo:0];
       v117 = v190[5];
       v190[5] = v116;
 
@@ -2721,7 +2721,7 @@ LABEL_7:
         *buf = 138543618;
         v210 = v119;
         v211 = 2114;
-        v212 = v156;
+        v212 = uuid;
         _os_log_impl(&dword_1B36F3000, v118, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Finished sharing preparation for asset %{public}@ with no errors or cancellation, but the item is nil. Will fail with generic error.", buf, 0x16u);
       }
     }
@@ -2731,12 +2731,12 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v122 = [v112 path];
+      path2 = [v112 path];
     }
 
     else
     {
-      v122 = 0;
+      path2 = 0;
     }
 
     v123 = PLShareSheetGetLog();
@@ -2744,7 +2744,7 @@ LABEL_7:
     {
       v124 = self->_sharingUUID;
       v125 = @"YES";
-      if (!v111)
+      if (!isCancelled2)
       {
         v125 = @"NO";
       }
@@ -2756,23 +2756,23 @@ LABEL_7:
       *buf = 138544642;
       v210 = v124;
       v211 = 2114;
-      v212 = v156;
+      v212 = uuid;
       v213 = 2112;
       v214 = v127;
       v215 = 2114;
       v216 = v121;
       v217 = 2114;
-      v218 = v122;
+      v218 = path2;
       v219 = 2112;
       v220 = v128;
       _os_log_impl(&dword_1B36F3000, v123, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Preparation completed for asset %{public}@ (Cancelled: %@), final item is of type %{public}@ (path: %{public}@), with error: %@", buf, 0x3Eu);
     }
 
     [(PUActivityItemSource *)self setLastPreparationError:v190[5]];
-    (v164)[2](v164, v112, v111, v190[5]);
+    (completionHandler)[2](completionHandler, v112, isCancelled2, v190[5]);
   }
 
-  if (v111)
+  if (isCancelled2)
   {
     v129 = v166;
     if (v141 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -2790,11 +2790,11 @@ LABEL_162:
 
   else
   {
-    v132 = [(PUActivityItemSource *)self lastPreparationError];
+    lastPreparationError = [(PUActivityItemSource *)self lastPreparationError];
 
     v133 = v166;
     v130 = v133;
-    if (v132)
+    if (lastPreparationError)
     {
       if (v141 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v133))
       {
@@ -2812,9 +2812,9 @@ LABEL_162:
     }
   }
 
-  if (v162)
+  if (postCompletionHandler)
   {
-    v162[2]();
+    postCompletionHandler[2]();
   }
 
   [(PUActivityItemSource *)self setPostCompletionHandler:0];
@@ -3127,58 +3127,58 @@ LABEL_57:
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (id)_newPasteboardItemProviderForURL:(id)a3
+- (id)_newPasteboardItemProviderForURL:(id)l
 {
   v4 = *MEMORY[0x1E69CDA90];
-  v5 = a3;
+  lCopy = l;
   v6 = [(PUActivityItemSource *)self _uniformTypeIdentifierForActivityType:v4];
-  v7 = [MEMORY[0x1E69DCD50] px_newPasteboardItemProviderForAsset:self->_asset fileURL:v5 utiType:v6];
+  v7 = [MEMORY[0x1E69DCD50] px_newPasteboardItemProviderForAsset:self->_asset fileURL:lCopy utiType:v6];
 
   return v7;
 }
 
-- (id)_newOperationForActivityType:(id)a3
+- (id)_newOperationForActivityType:(id)type
 {
-  v5 = a3;
-  v6 = [[PUActivityItemSourceOperation alloc] initWithDelegate:self activityType:v5];
+  typeCopy = type;
+  v6 = [[PUActivityItemSourceOperation alloc] initWithDelegate:self activityType:typeCopy];
 
   currentOperation = self->_currentOperation;
   if (currentOperation && [(PUActivityItemSourceOperation *)currentOperation isExecuting])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:490 description:@"expect only one running operation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:490 description:@"expect only one running operation"];
   }
 
   objc_storeStrong(&self->_currentOperation, v6);
   return v6;
 }
 
-- (id)_uniformTypeIdentifierForActivityType:(id)a3
+- (id)_uniformTypeIdentifierForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v6 = [v5 provideGenericTypeIdentifiersForNilActivityTypes];
+  typeCopy = type;
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  provideGenericTypeIdentifiersForNilActivityTypes = [mEMORY[0x1E69C3A18] provideGenericTypeIdentifiersForNilActivityTypes];
 
-  if (!v4 && v6)
+  if (!typeCopy && provideGenericTypeIdentifiersForNilActivityTypes)
   {
     v7 = [objc_opt_class() _basicTypeIdentifierForAsset:self->_asset];
     goto LABEL_24;
   }
 
-  v8 = [(PUActivityItemSource *)self _sharingVariants];
+  _sharingVariants = [(PUActivityItemSource *)self _sharingVariants];
   v9 = self->_asset;
   v10 = v9;
-  if (v8)
+  if (_sharingVariants)
   {
     [(PUActivityItemSource *)self sharingPreferences];
     v12 = v11;
-    v13 = [(PUActivityItemSource *)self sharingPreferences];
-    if (v4)
+    sharingPreferences = [(PUActivityItemSource *)self sharingPreferences];
+    if (typeCopy)
     {
       [(PUActivityItemSource *)self sharingPreferences];
-      v15 = [PUActivityItemSourceConfiguration shouldProvideCompatibleFormatForActivityType:v4 forAsset:v10 inPreferredExportFormat:v14 withAvailableSharingVariants:v8];
+      v15 = [PUActivityItemSourceConfiguration shouldProvideCompatibleFormatForActivityType:typeCopy forAsset:v10 inPreferredExportFormat:v14 withAvailableSharingVariants:_sharingVariants];
       [(PUActivityItemSource *)self sharingPreferences];
-      v17 = [PUActivityItemSourceConfiguration shouldProvideAlternateVariantForActivityType:v4 forAsset:v10 inPreferredExportFormat:v16 withAvailableSharingVariants:v8];
+      v17 = [PUActivityItemSourceConfiguration shouldProvideAlternateVariantForActivityType:typeCopy forAsset:v10 inPreferredExportFormat:v16 withAvailableSharingVariants:_sharingVariants];
       v7 = 0;
       if (v12)
       {
@@ -3190,17 +3190,17 @@ LABEL_57:
         v18 = v15;
       }
 
-      v19 = (v13 & 0x10000000000) == 0 && v18;
-      if ((v13 & 0x10000000000) == 0 && v17)
+      v19 = (sharingPreferences & 0x10000000000) == 0 && v18;
+      if ((sharingPreferences & 0x10000000000) == 0 && v17)
       {
-        v7 = [v8 objectForKeyedSubscript:&unk_1F2B7DA00];
+        v7 = [_sharingVariants objectForKeyedSubscript:&unk_1F2B7DA00];
       }
     }
 
     else
     {
       v7 = 0;
-      v19 = (v13 & 0x10000000000 | v12 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+      v19 = (sharingPreferences & 0x10000000000 | v12 & 0xFFFFFFFFFFFFFFFDLL) == 0;
     }
 
     if (v19)
@@ -3215,7 +3215,7 @@ LABEL_57:
 
     if (v21)
     {
-      v7 = [v8 objectForKeyedSubscript:&unk_1F2B7DA18];
+      v7 = [_sharingVariants objectForKeyedSubscript:&unk_1F2B7DA18];
     }
 
     if (v7)
@@ -3223,15 +3223,15 @@ LABEL_57:
       goto LABEL_23;
     }
 
-    v20 = [v8 objectForKeyedSubscript:&unk_1F2B7DA30];
+    uniformTypeIdentifier = [_sharingVariants objectForKeyedSubscript:&unk_1F2B7DA30];
   }
 
   else
   {
-    v20 = [(PHAsset *)v9 uniformTypeIdentifier];
+    uniformTypeIdentifier = [(PHAsset *)v9 uniformTypeIdentifier];
   }
 
-  v7 = v20;
+  v7 = uniformTypeIdentifier;
 LABEL_23:
 
 LABEL_24:
@@ -3258,24 +3258,24 @@ LABEL_24:
   v26 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:360 description:@"expect main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:360 description:@"expect main thread"];
   }
 
   v4 = PLShareSheetGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     sharingUUID = self->_sharingUUID;
-    v6 = [(PHAsset *)self->_asset uuid];
+    uuid = [(PHAsset *)self->_asset uuid];
     v22 = 138543618;
     v23 = sharingUUID;
     v24 = 2114;
-    v25 = v6;
+    v25 = uuid;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Cancelling item for asset: %{public}@", &v22, 0x16u);
   }
 
-  v7 = [(PUActivityItemSource *)self _exportProgress];
-  [v7 cancel];
+  _exportProgress = [(PUActivityItemSource *)self _exportProgress];
+  [_exportProgress cancel];
 
   currentOperation = self->_currentOperation;
   if (currentOperation)
@@ -3296,17 +3296,17 @@ LABEL_24:
 
     if ([(PUActivityItemSourceOperation *)self->_currentOperation isExecuting])
     {
-      v12 = [(PUActivityItemSourceOperation *)self->_currentOperation semaphore];
-      dispatch_semaphore_signal(v12);
+      semaphore = [(PUActivityItemSourceOperation *)self->_currentOperation semaphore];
+      dispatch_semaphore_signal(semaphore);
     }
 
     else
     {
-      v12 = [(PUActivityItemSource *)self completionHandler];
-      if (v12)
+      semaphore = [(PUActivityItemSource *)self completionHandler];
+      if (semaphore)
       {
         [(PUActivityItemSource *)self setCompletionHandler:0];
-        (*(v12 + 16))(v12, 0, 1, 0);
+        (*(semaphore + 16))(semaphore, 0, 1, 0);
       }
     }
   }
@@ -3328,14 +3328,14 @@ LABEL_24:
     }
   }
 
-  v17 = [objc_opt_class() activityItemSourceLog];
-  v18 = [(PUActivityItemSource *)self signpostId];
-  v19 = v17;
+  activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+  signpostId = [(PUActivityItemSource *)self signpostId];
+  v19 = activityItemSourceLog;
   v20 = v19;
-  if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
     LOWORD(v22) = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v20, OS_SIGNPOST_EVENT, v18, "PrepareItemCancelled", " enableTelemetry=YES ", &v22, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B36F3000, v20, OS_SIGNPOST_EVENT, signpostId, "PrepareItemCancelled", " enableTelemetry=YES ", &v22, 2u);
   }
 }
 
@@ -3343,20 +3343,20 @@ LABEL_24:
 {
   if ([(NSMutableSet *)self->_onDemandExports count])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:345 description:{@"On-demand exports was not empty when state was reset on activity item source: %@", self->_sharingUUID}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:345 description:{@"On-demand exports was not empty when state was reset on activity item source: %@", self->_sharingUUID}];
   }
 
   if (self->__exportProgress)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:346 description:{@"Export progress was not nil when state was reset on activity item source: %@", self->_sharingUUID}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:346 description:{@"Export progress was not nil when state was reset on activity item source: %@", self->_sharingUUID}];
   }
 
   if (self->__exportProgressHandler)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:347 description:{@"Export progress handler was not nil when state was reset on activity item source: %@", self->_sharingUUID}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:347 description:{@"Export progress handler was not nil when state was reset on activity item source: %@", self->_sharingUUID}];
   }
 
   [(PUActivityItemSource *)self cleanUpExportedFiles];
@@ -3369,7 +3369,7 @@ LABEL_24:
   [(PUActivityItemSource *)self _setAssetsLibraryURL:0];
 }
 
-- (void)setSharingPreferences:(id)a3
+- (void)setSharingPreferences:(id)preferences
 {
   externalIsolation = self->_externalIsolation;
   block[0] = MEMORY[0x1E69E9820];
@@ -3377,7 +3377,7 @@ LABEL_24:
   block[2] = __46__PUActivityItemSource_setSharingPreferences___block_invoke;
   block[3] = &unk_1E7B7C518;
   block[4] = self;
-  v5 = a3;
+  preferencesCopy = preferences;
   dispatch_sync(externalIsolation, block);
 }
 
@@ -3433,7 +3433,7 @@ uint64_t __46__PUActivityItemSource_setSharingPreferences___block_invoke(uint64_
   return result;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3441,7 +3441,7 @@ uint64_t __46__PUActivityItemSource_setSharingPreferences___block_invoke(uint64_
   v4[2] = __33__PUActivityItemSource_setState___block_invoke;
   v4[3] = &unk_1E7B7FF70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -3494,20 +3494,20 @@ uint64_t __33__PUActivityItemSource_setState___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_setExportProgress:(id)a3
+- (void)_setExportProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   exportProgress = self->__exportProgress;
-  if (exportProgress != v5)
+  if (exportProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)exportProgress removeObserver:self forKeyPath:@"fractionCompleted" context:&PUActivityItemSourceProgressContext];
-    objc_storeStrong(&self->__exportProgress, a3);
+    objc_storeStrong(&self->__exportProgress, progress);
     exportProgress = [(NSProgress *)self->__exportProgress addObserver:self forKeyPath:@"fractionCompleted" options:4 context:&PUActivityItemSourceProgressContext];
-    v5 = v7;
+    progressCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](exportProgress, v5);
+  MEMORY[0x1EEE66BB8](exportProgress, progressCopy);
 }
 
 - (void)_fetchSharingVariants
@@ -3515,14 +3515,14 @@ uint64_t __33__PUActivityItemSource_setState___block_invoke(uint64_t result)
   v23 = *MEMORY[0x1E69E9840];
   if (!self->_fetchSharingVariantsSemaphore)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"_fetchSharingVariantsSemaphore"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"_fetchSharingVariantsSemaphore"}];
   }
 
   if (self->_cachedSharingVariants)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"!_cachedSharingVariants"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUActivityItemSource.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"!_cachedSharingVariants"}];
   }
 
   asset = self->_asset;
@@ -3539,11 +3539,11 @@ uint64_t __33__PUActivityItemSource_setState___block_invoke(uint64_t result)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       sharingUUID = self->_sharingUUID;
-      v11 = [(PHAsset *)self->_asset uuid];
+      uuid = [(PHAsset *)self->_asset uuid];
       *buf = 138543874;
       v18 = sharingUUID;
       v19 = 2114;
-      v20 = v11;
+      v20 = uuid;
       v21 = 2112;
       v22 = v7;
       _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Failed to fetch sharing variants for asset: %{public}@, error: %@", buf, 0x20u);
@@ -3551,11 +3551,11 @@ uint64_t __33__PUActivityItemSource_setState___block_invoke(uint64_t result)
   }
 
   dispatch_semaphore_signal(self->_fetchSharingVariantsSemaphore);
-  v12 = [(PUActivityItemSource *)self ppt_didFetchSharingVariantsHandler];
-  v13 = v12;
-  if (v12)
+  ppt_didFetchSharingVariantsHandler = [(PUActivityItemSource *)self ppt_didFetchSharingVariantsHandler];
+  v13 = ppt_didFetchSharingVariantsHandler;
+  if (ppt_didFetchSharingVariantsHandler)
   {
-    (*(v12 + 16))(v12);
+    (*(ppt_didFetchSharingVariantsHandler + 16))(ppt_didFetchSharingVariantsHandler);
   }
 }
 
@@ -3576,11 +3576,11 @@ uint64_t __33__PUActivityItemSource_setState___block_invoke(uint64_t result)
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         sharingUUID = self->_sharingUUID;
-        v9 = [(PHAsset *)self->_asset uuid];
+        uuid = [(PHAsset *)self->_asset uuid];
         v12 = 138543618;
         v13 = sharingUUID;
         v14 = 2114;
-        v15 = v9;
+        v15 = uuid;
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "[Item: %{public}@] Timed out fetching sharing variants for asset: %{public}@", &v12, 0x16u);
       }
     }
@@ -3591,11 +3591,11 @@ uint64_t __33__PUActivityItemSource_setState___block_invoke(uint64_t result)
   return cachedSharingVariants;
 }
 
-- (void)runWithActivityType:(id)a3
+- (void)runWithActivityType:(id)type
 {
-  v5 = [(PUActivityItemSource *)self _newOperationForActivityType:a3];
-  v4 = [(PUActivityItemSource *)self _activityOperationQueueForExplicitRunning];
-  [v4 addOperation:v5];
+  v5 = [(PUActivityItemSource *)self _newOperationForActivityType:type];
+  _activityOperationQueueForExplicitRunning = [(PUActivityItemSource *)self _activityOperationQueueForExplicitRunning];
+  [_activityOperationQueueForExplicitRunning addOperation:v5];
 }
 
 - (id)_activityOperationQueueForExplicitRunning
@@ -3643,18 +3643,18 @@ uint64_t __65__PUActivityItemSource__activityOperationQueueForExplicitRunning__b
   [(PUActivityItemSource *)&v5 dealloc];
 }
 
-- (PUActivityItemSource)initWithAsset:(id)a3 sharingPreferences:(id)a4
+- (PUActivityItemSource)initWithAsset:(id)asset sharingPreferences:(id)preferences
 {
-  var6 = a4.var6;
-  v5 = *&a4.var0;
-  v8 = a3;
+  var6 = preferences.var6;
+  v5 = *&preferences.var0;
+  assetCopy = asset;
   v34.receiver = self;
   v34.super_class = PUActivityItemSource;
   v9 = [(PUActivityItemSource *)&v34 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
+    objc_storeStrong(&v9->_asset, asset);
     *&v10->_sharingPreferences.excludeLiveness = v5;
     v10->_sharingPreferences.preferredExportFormat = var6;
     v10->_state = 0;
@@ -3662,9 +3662,9 @@ uint64_t __65__PUActivityItemSource__activityOperationQueueForExplicitRunning__b
     sharingURLs = v10->_sharingURLs;
     v10->_sharingURLs = v11;
 
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v14 copy];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [uUIDString copy];
     sharingUUID = v10->_sharingUUID;
     v10->_sharingUUID = v15;
 
@@ -3672,8 +3672,8 @@ uint64_t __65__PUActivityItemSource__activityOperationQueueForExplicitRunning__b
     onDemandExports = v10->_onDemandExports;
     v10->_onDemandExports = v17;
 
-    v19 = [objc_opt_class() activityItemSourceLog];
-    v10->_signpostId = os_signpost_id_make_with_pointer(v19, v10->_sharingUUID);
+    activityItemSourceLog = [objc_opt_class() activityItemSourceLog];
+    v10->_signpostId = os_signpost_id_make_with_pointer(activityItemSourceLog, v10->_sharingUUID);
 
     v20 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v21 = dispatch_queue_create("com.apple.PUActivityItemSource.isolationQueue", v20);
@@ -3747,33 +3747,33 @@ uint64_t __45__PUActivityItemSource_activityItemSourceLog__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (void)_deleteOutputDirectoryURL:(id)a3 forSharingUUID:(id)a4
++ (void)_deleteOutputDirectoryURL:(id)l forSharingUUID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  dCopy = d;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v19 = 0;
-  v8 = [v7 removeItemAtURL:v5 error:&v19];
+  v8 = [defaultManager removeItemAtURL:lCopy error:&v19];
   v9 = v19;
 
   if (!v8)
   {
-    v11 = [v9 userInfo];
-    v10 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [v9 userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    v12 = [v10 domain];
-    if ([v12 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v10 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v13 = [v10 code];
+      code = [v10 code];
 
-      if (v13 == 2)
+      if (code == 2)
       {
         v14 = PLShareSheetGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v21 = v6;
+          v21 = dCopy;
           v15 = "[Item: %{public}@] Outbound resources directory was not created or was already deleted, so no exported files to clean up";
           v16 = v14;
           v17 = OS_LOG_TYPE_DEFAULT;
@@ -3795,7 +3795,7 @@ LABEL_11:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = v6;
+      v21 = dCopy;
       v22 = 2114;
       v23 = v9;
       v15 = "[Item: %{public}@] Failed to clean up outbound resources directory: %{public}@";
@@ -3814,26 +3814,26 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = v6;
+    v21 = dCopy;
     v22 = 2114;
-    v23 = v5;
+    v23 = lCopy;
     _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_DEFAULT, "[Item: %{public}@] Cleaned up outbound resources directory: %{public}@", buf, 0x16u);
   }
 
 LABEL_13:
 }
 
-+ (id)_basicTypeIdentifierForAsset:(id)a3
++ (id)_basicTypeIdentifierForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 mediaType];
-  v5 = 0;
+  assetCopy = asset;
+  mediaType = [assetCopy mediaType];
+  identifier = 0;
   v6 = MEMORY[0x1E6982EE8];
-  if (v4 > 1)
+  if (mediaType > 1)
   {
-    if (v4 != 2)
+    if (mediaType != 2)
     {
-      if (v4 != 3)
+      if (mediaType != 3)
       {
         goto LABEL_12;
       }
@@ -3842,14 +3842,14 @@ LABEL_13:
     }
   }
 
-  else if (v4)
+  else if (mediaType)
   {
-    if (v4 != 1)
+    if (mediaType != 1)
     {
       goto LABEL_12;
     }
 
-    if (![v3 canPlayLoopingVideo])
+    if (![assetCopy canPlayLoopingVideo])
     {
       v6 = MEMORY[0x1E6982E30];
     }
@@ -3860,10 +3860,10 @@ LABEL_13:
     v6 = MEMORY[0x1E6982D60];
   }
 
-  v5 = [*v6 identifier];
+  identifier = [*v6 identifier];
 LABEL_12:
 
-  return v5;
+  return identifier;
 }
 
 + (id)_exportResultHandlingQueue
@@ -3888,44 +3888,44 @@ void __50__PUActivityItemSource__exportResultHandlingQueue__block_invoke()
   _exportResultHandlingQueue_resultHandlingQueue = v1;
 }
 
-+ (id)_sharingErrorWithCode:(int64_t)a3 underlyingError:(id)a4 localizedDescription:(id)a5 additionalInfo:(id)a6
++ (id)_sharingErrorWithCode:(int64_t)code underlyingError:(id)error localizedDescription:(id)description additionalInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = v12;
-  if (v9)
+  errorCopy = error;
+  descriptionCopy = description;
+  infoCopy = info;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v13 = dictionary;
+  if (errorCopy)
   {
-    [v12 setObject:v9 forKey:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
   }
 
-  if (v10)
+  if (descriptionCopy)
   {
-    [v13 setObject:v10 forKey:*MEMORY[0x1E696A578]];
+    [v13 setObject:descriptionCopy forKey:*MEMORY[0x1E696A578]];
   }
 
-  if (v11)
+  if (infoCopy)
   {
-    [v13 addEntriesFromDictionary:v11];
+    [v13 addEntriesFromDictionary:infoCopy];
   }
 
-  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69C3CB0] code:a3 userInfo:v13];
+  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69C3CB0] code:code userInfo:v13];
 
   return v14;
 }
 
-+ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)a3
++ (BOOL)supportsAssetLocalIdentifierForActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C3E58]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69C3E58]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69C3D48]];
+    v4 = [typeCopy isEqualToString:*MEMORY[0x1E69C3D48]];
   }
 
   return v4;

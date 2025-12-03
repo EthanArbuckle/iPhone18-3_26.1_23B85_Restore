@@ -1,16 +1,16 @@
 @interface _NTKBundleBundleComplicationLoader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateBundles:(id)a3;
-- (void)_loadClassesUsingBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateBundles:(id)bundles;
+- (void)_loadClassesUsingBlock:(id)block;
 @end
 
 @implementation _NTKBundleBundleComplicationLoader
 
-- (void)_enumerateBundles:(id)a3
+- (void)_enumerateBundles:(id)bundles
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bundlesCopy = bundles;
   if (self->_urls)
   {
     if (_enumerateBundles__onceToken_1 != -1)
@@ -43,7 +43,7 @@
           v12[1] = 3221225472;
           v12[2] = __56___NTKBundleBundleComplicationLoader__enumerateBundles___block_invoke_2;
           v12[3] = &unk_278782058;
-          v13 = v4;
+          v13 = bundlesCopy;
           [v10 enumerateBundlesFromDirectoryURL:v9 enumerator:v12];
         }
 
@@ -55,22 +55,22 @@
   }
 }
 
-- (void)_loadClassesUsingBlock:(id)a3
+- (void)_loadClassesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61___NTKBundleBundleComplicationLoader__loadClassesUsingBlock___block_invoke;
   v6[3] = &unk_2787826C8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(_NTKBundleBundleComplicationLoader *)self _enumerateBundles:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -80,7 +80,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = NTKEqualObjects(self->_urls, v4->_urls);
+      v5 = NTKEqualObjects(self->_urls, equalCopy->_urls);
     }
 
     else
@@ -92,9 +92,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setUrls:self->_urls];
   return v4;
 }

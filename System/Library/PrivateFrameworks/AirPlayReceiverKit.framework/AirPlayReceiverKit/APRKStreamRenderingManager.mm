@@ -1,55 +1,55 @@
 @interface APRKStreamRenderingManager
-+ (BOOL)setAdvertisingAccessMode:(unint64_t)a3 withError:(id *)a4;
++ (BOOL)setAdvertisingAccessMode:(unint64_t)mode withError:(id *)error;
 + (id)sharedInstance;
 + (unint64_t)getAdvertisingAccessMode;
-+ (void)setListeningForAlternateBonjourBrowsing:(BOOL)a3;
++ (void)setListeningForAlternateBonjourBrowsing:(BOOL)browsing;
 - (APRKStreamRenderingManager)init;
 - (APRKStreamRenderingManagerDelegate)delegate;
-- (BOOL)_isPermittedClient:(id)a3;
+- (BOOL)_isPermittedClient:(id)client;
 - (BOOL)isAirPlayReceiverSupported;
-- (BOOL)isAllowedToProceedForClientWithName:(id)a3 clientID:(id)a4;
-- (CGSize)_customDisplaySizeFromPrefsWithDefault:(CGSize)a3;
-- (CGSize)_customDisplaySizeMaxFromPrefsWithDefault:(CGSize)a3;
-- (__CFString)_getHDRModeString:(unint64_t)a3;
-- (id)_rendererForUniqueIDInternal:(id)a3;
+- (BOOL)isAllowedToProceedForClientWithName:(id)name clientID:(id)d;
+- (CGSize)_customDisplaySizeFromPrefsWithDefault:(CGSize)default;
+- (CGSize)_customDisplaySizeMaxFromPrefsWithDefault:(CGSize)default;
+- (__CFString)_getHDRModeString:(unint64_t)string;
+- (id)_rendererForUniqueIDInternal:(id)internal;
 - (id)activeRenderers;
 - (id)allClientNames;
 - (id)allRenderers;
 - (id)assistedInfoForAWDL;
 - (id)assistedInfoForDiscovery;
-- (id)assistedInfoForIPAddress:(id)a3;
-- (id)assistedInfoForMode:(unint64_t)a3 options:(id)a4;
-- (id)createStreamRendererWithUniqueID:(id)a3 clientName:(id)a4 UIController:(OpaqueAPReceiverUIController *)a5;
-- (id)ensureUniqueClientName:(id)a3;
-- (id)rendererForUniqueID:(id)a3;
-- (int)_startReceiverServerWithSupportedModesMask:(unint64_t)a3;
+- (id)assistedInfoForIPAddress:(id)address;
+- (id)assistedInfoForMode:(unint64_t)mode options:(id)options;
+- (id)createStreamRendererWithUniqueID:(id)d clientName:(id)name UIController:(OpaqueAPReceiverUIController *)controller;
+- (id)ensureUniqueClientName:(id)name;
+- (id)rendererForUniqueID:(id)d;
+- (int)_startReceiverServerWithSupportedModesMask:(unint64_t)mask;
 - (int)forcePINRefresh;
 - (int)stopReceiverServer;
-- (unint64_t)_customDisplayHDRModeFromPrefsWithDefault:(unint64_t)a3;
+- (unint64_t)_customDisplayHDRModeFromPrefsWithDefault:(unint64_t)default;
 - (unint64_t)activeRenderersCount;
-- (void)_addPermittedClient:(id)a3;
+- (void)_addPermittedClient:(id)client;
 - (void)_initPermittedClients;
-- (void)_setPTPClockEnabled:(BOOL)a3;
+- (void)_setPTPClockEnabled:(BOOL)enabled;
 - (void)_setRandomPassword;
 - (void)processHideGlobalPasscodePromptRequest;
-- (void)processShowGlobalPasscodePromptRequest:(id)a3 withClientName:(id)a4;
-- (void)removeRendererWithUniqueID:(id)a3;
-- (void)serverPropertyForKey:(__CFString *)a3;
-- (void)setAltAdvertisingEnabled:(BOOL)a3;
-- (void)setAssistedModeEnabled:(BOOL)a3;
-- (void)setCustomDisplaySizeMax:(CGSize)a3;
-- (void)setDemoModeEnabled:(BOOL)a3;
-- (void)setDisplayHDRMode:(unint64_t)a3;
-- (void)setEnableMixingMediaAudio:(BOOL)a3;
-- (void)setForcePermissionDialog:(BOOL)a3;
-- (void)setForwardFrameUserData:(BOOL)a3;
-- (void)setOptimizeAudioRenderingLatency:(BOOL)a3;
-- (void)setPreemptionPolicy:(unint64_t)a3;
-- (void)setServerProperty:(void *)a3 forKey:(__CFString *)a4;
-- (void)setShouldForwardLayers:(BOOL)a3;
-- (void)setSupportsSenderUIEvents:(BOOL)a3;
-- (void)setUseCALayerForMirroring:(BOOL)a3;
-- (void)setUsesHomeKitIntegration:(BOOL)a3;
+- (void)processShowGlobalPasscodePromptRequest:(id)request withClientName:(id)name;
+- (void)removeRendererWithUniqueID:(id)d;
+- (void)serverPropertyForKey:(__CFString *)key;
+- (void)setAltAdvertisingEnabled:(BOOL)enabled;
+- (void)setAssistedModeEnabled:(BOOL)enabled;
+- (void)setCustomDisplaySizeMax:(CGSize)max;
+- (void)setDemoModeEnabled:(BOOL)enabled;
+- (void)setDisplayHDRMode:(unint64_t)mode;
+- (void)setEnableMixingMediaAudio:(BOOL)audio;
+- (void)setForcePermissionDialog:(BOOL)dialog;
+- (void)setForwardFrameUserData:(BOOL)data;
+- (void)setOptimizeAudioRenderingLatency:(BOOL)latency;
+- (void)setPreemptionPolicy:(unint64_t)policy;
+- (void)setServerProperty:(void *)property forKey:(__CFString *)key;
+- (void)setShouldForwardLayers:(BOOL)layers;
+- (void)setSupportsSenderUIEvents:(BOOL)events;
+- (void)setUseCALayerForMirroring:(BOOL)mirroring;
+- (void)setUsesHomeKitIntegration:(BOOL)integration;
 @end
 
 @implementation APRKStreamRenderingManager
@@ -85,11 +85,11 @@ uint64_t __44__APRKStreamRenderingManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (BOOL)setAdvertisingAccessMode:(unint64_t)a3 withError:(id *)a4
++ (BOOL)setAdvertisingAccessMode:(unint64_t)mode withError:(id *)error
 {
   if (+[APRKStreamRenderingManager getAppHasSetAdvertisingAccessModeEntitlement])
   {
-    if (!a3 || a3 == 3 || a3 == 1)
+    if (!mode || mode == 3 || mode == 1)
     {
       v6 = APSSettingsSetInt64();
       if (v6)
@@ -139,9 +139,9 @@ uint64_t __44__APRKStreamRenderingManager_sharedInstance__block_invoke()
     v8 = -6773;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v8 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v8 userInfo:0];
   }
 
 LABEL_9:
@@ -187,7 +187,7 @@ LABEL_9:
   return -1;
 }
 
-+ (void)setListeningForAlternateBonjourBrowsing:(BOOL)a3
++ (void)setListeningForAlternateBonjourBrowsing:(BOOL)browsing
 {
   if (APSSettingsSetInt64() && gLogCategory_AirPlayReceiverKit <= 90 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
@@ -195,7 +195,7 @@ LABEL_9:
   }
 
   APSSettingsSynchronize();
-  if (a3)
+  if (browsing)
   {
     if (gLogCategory_AirPlayReceiverKit > 50)
     {
@@ -254,9 +254,9 @@ LABEL_18:
   if (v2)
   {
     v2->_server = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     serverProperties = v3->_serverProperties;
-    v3->_serverProperties = v4;
+    v3->_serverProperties = dictionary;
 
     *&v3->_useCALayerForMirroring = 1;
     v3->_supportRemoteControl = 0;
@@ -348,11 +348,11 @@ LABEL_18:
   return v5;
 }
 
-- (id)rendererForUniqueID:(id)a3
+- (id)rendererForUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -367,7 +367,7 @@ LABEL_18:
     block[3] = &unk_278C627D8;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_sync(isolationQueue, block);
     v7 = v13[5];
 
@@ -502,15 +502,15 @@ void __44__APRKStreamRenderingManager_allClientNames__block_invoke_2(uint64_t a1
   return v4;
 }
 
-- (void)setServerProperty:(void *)a3 forKey:(__CFString *)a4
+- (void)setServerProperty:(void *)property forKey:(__CFString *)key
 {
   serverProperties = self->_serverProperties;
-  if (!a3)
+  if (!property)
   {
-    a3 = *MEMORY[0x277CBEEE8];
+    property = *MEMORY[0x277CBEEE8];
   }
 
-  CFDictionarySetValue(serverProperties, a4, a3);
+  CFDictionarySetValue(serverProperties, key, property);
   if (self->_server)
   {
     AirPlayReceiverServerSetProperty();
@@ -521,9 +521,9 @@ void __44__APRKStreamRenderingManager_allClientNames__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)serverPropertyForKey:(__CFString *)a3
+- (void)serverPropertyForKey:(__CFString *)key
 {
-  result = CFDictionaryGetValue(self->_serverProperties, a3);
+  result = CFDictionaryGetValue(self->_serverProperties, key);
   if (result == *MEMORY[0x277CBEEE8])
   {
     return 0;
@@ -532,10 +532,10 @@ void __44__APRKStreamRenderingManager_allClientNames__block_invoke_2(uint64_t a1
   return result;
 }
 
-- (void)setPreemptionPolicy:(unint64_t)a3
+- (void)setPreemptionPolicy:(unint64_t)policy
 {
-  preemptionPolicy = a3;
-  self->_preemptionPolicy = a3;
+  preemptionPolicy = policy;
+  self->_preemptionPolicy = policy;
   if (gLogCategory_AirPlayReceiverKit <= 30)
   {
     if (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize())
@@ -566,35 +566,35 @@ LABEL_11:
   [(APRKStreamRenderingManager *)self setServerProperty:v6 forKey:@"denyInterruptions"];
 }
 
-- (void)setUseCALayerForMirroring:(BOOL)a3
+- (void)setUseCALayerForMirroring:(BOOL)mirroring
 {
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKStreamRenderingManager setUseCALayerForMirroring:];
   }
 
-  self->_useCALayerForMirroring = a3;
+  self->_useCALayerForMirroring = mirroring;
 }
 
-- (void)setOptimizeAudioRenderingLatency:(BOOL)a3
+- (void)setOptimizeAudioRenderingLatency:(BOOL)latency
 {
-  self->_optimizeAudioRenderingLatency = a3;
+  self->_optimizeAudioRenderingLatency = latency;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 }
 
-- (void)setEnableMixingMediaAudio:(BOOL)a3
+- (void)setEnableMixingMediaAudio:(BOOL)audio
 {
-  self->_enableMixingMediaAudio = a3;
+  self->_enableMixingMediaAudio = audio;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKStreamRenderingManager setEnableMixingMediaAudio:];
   }
 }
 
-- (void)setCustomDisplaySizeMax:(CGSize)a3
+- (void)setCustomDisplaySizeMax:(CGSize)max
 {
   APSGetMaxSizePreservingAspectRatio();
   self->_customDisplaySizeMax.width = width;
@@ -618,7 +618,7 @@ LABEL_11:
   }
 }
 
-- (void)setDisplayHDRMode:(unint64_t)a3
+- (void)setDisplayHDRMode:(unint64_t)mode
 {
   v5 = [(APRKStreamRenderingManager *)self _getHDRModeString:?];
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
@@ -626,14 +626,14 @@ LABEL_11:
     [APRKStreamRenderingManager setDisplayHDRMode:];
   }
 
-  self->_displayHDRMode = a3;
+  self->_displayHDRMode = mode;
 
   [(APRKStreamRenderingManager *)self setServerProperty:v5 forKey:@"displayHDRMode"];
 }
 
-- (void)setUsesHomeKitIntegration:(BOOL)a3
+- (void)setUsesHomeKitIntegration:(BOOL)integration
 {
-  v3 = a3;
+  integrationCopy = integration;
   if (IsAppleInternalBuild())
   {
     IntWithDefault = APSSettingsGetIntWithDefault();
@@ -644,11 +644,11 @@ LABEL_11:
 
     else
     {
-      v6 = v3;
+      v6 = integrationCopy;
     }
 
     self->_usesHomeKitIntegration = v6;
-    if (v3 && IntWithDefault)
+    if (integrationCopy && IntWithDefault)
     {
       if (gLogCategory_AirPlayReceiverKit > 50)
       {
@@ -664,7 +664,7 @@ LABEL_11:
 
   else
   {
-    self->_usesHomeKitIntegration = v3;
+    self->_usesHomeKitIntegration = integrationCopy;
   }
 
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
@@ -673,10 +673,10 @@ LABEL_11:
   }
 }
 
-- (void)setDemoModeEnabled:(BOOL)a3
+- (void)setDemoModeEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -684,10 +684,10 @@ LABEL_11:
   [(APRKStreamRenderingManager *)self setServerProperty:*v3 forKey:@"screenDemoMode"];
 }
 
-- (void)setForwardFrameUserData:(BOOL)a3
+- (void)setForwardFrameUserData:(BOOL)data
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!data)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -695,10 +695,10 @@ LABEL_11:
   [(APRKStreamRenderingManager *)self setServerProperty:*v3 forKey:@"forwardFrameUserData"];
 }
 
-- (void)setSupportsSenderUIEvents:(BOOL)a3
+- (void)setSupportsSenderUIEvents:(BOOL)events
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!events)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -763,18 +763,18 @@ uint64_t __56__APRKStreamRenderingManager_isAirPlayReceiverSupported__block_invo
   return result;
 }
 
-- (void)setAltAdvertisingEnabled:(BOOL)a3
+- (void)setAltAdvertisingEnabled:(BOOL)enabled
 {
-  self->_altAdvertisingEnabled = a3;
+  self->_altAdvertisingEnabled = enabled;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 }
 
-- (void)setAssistedModeEnabled:(BOOL)a3
+- (void)setAssistedModeEnabled:(BOOL)enabled
 {
-  self->_assistedModeEnabled = a3;
+  self->_assistedModeEnabled = enabled;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -854,9 +854,9 @@ LABEL_10:
   return v4;
 }
 
-- (id)assistedInfoForIPAddress:(id)a3
+- (id)assistedInfoForIPAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v16 = 0;
   if (!self->_assistedModeEnabled)
   {
@@ -885,21 +885,21 @@ LABEL_28:
   v5 = AirPlayReceiverServerCopyProperty();
   v6 = [v5 mutableCopy];
   v7 = AirPlayReceiverServerCopyProperty();
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
-  if (v8 <= 0)
+  if (intValue <= 0)
   {
     [APRKStreamRenderingManager assistedInfoForIPAddress:];
     v11 = 0;
     goto LABEL_28;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:v8];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
   [v6 setObject:v9 forKey:@"NetworkPort"];
 
   [v6 setObject:self->_passwordString forKey:@"AuthString"];
-  [v6 setObject:v4 forKey:@"NetworkAddress"];
-  if ([v4 containsString:@"%awdl"])
+  [v6 setObject:addressCopy forKey:@"NetworkAddress"];
+  if ([addressCopy containsString:@"%awdl"])
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v6 setObject:v10 forKey:@"IsP2P"];
@@ -1025,25 +1025,25 @@ LABEL_14:
   return v8;
 }
 
-- (id)assistedInfoForMode:(unint64_t)a3 options:(id)a4
+- (id)assistedInfoForMode:(unint64_t)mode options:(id)options
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  optionsCopy = options;
+  v7 = optionsCopy;
+  if (mode == 2)
   {
-    v11 = [(APRKStreamRenderingManager *)self assistedInfoForDiscovery];
+    assistedInfoForDiscovery = [(APRKStreamRenderingManager *)self assistedInfoForDiscovery];
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v11 = [(APRKStreamRenderingManager *)self assistedInfoForAWDL];
+    assistedInfoForDiscovery = [(APRKStreamRenderingManager *)self assistedInfoForAWDL];
 LABEL_9:
-    v10 = v11;
+    v10 = assistedInfoForDiscovery;
     goto LABEL_14;
   }
 
-  if (a3)
+  if (mode)
   {
     if (gLogCategory_AirPlayReceiverKit <= 50 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
     {
@@ -1055,9 +1055,9 @@ LABEL_9:
 
   else
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v8 = [v6 objectForKey:@"IPAddress"];
+      v8 = [optionsCopy objectForKey:@"IPAddress"];
 
       if (v8)
       {
@@ -1083,11 +1083,11 @@ LABEL_14:
   return v10;
 }
 
-- (void)setForcePermissionDialog:(BOOL)a3
+- (void)setForcePermissionDialog:(BOOL)dialog
 {
-  self->_forcePermissionDialog = a3;
+  self->_forcePermissionDialog = dialog;
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!dialog)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -1095,15 +1095,15 @@ LABEL_14:
   [(APRKStreamRenderingManager *)self setServerProperty:*v3 forKey:@"forcePermissionDialog"];
 }
 
-- (id)ensureUniqueClientName:(id)a3
+- (id)ensureUniqueClientName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  v6 = nameCopy;
+  if (nameCopy)
   {
-    v6 = v4;
+    v6 = nameCopy;
     if (self->_useUniqueClientName)
     {
       v19 = 0u;
@@ -1129,8 +1129,8 @@ LABEL_6:
               objc_enumerationMutation(v7);
             }
 
-            v14 = [*(*(&v17 + 1) + 8 * v13) managedClientName];
-            v15 = [v14 isEqualToString:v11];
+            managedClientName = [*(*(&v17 + 1) + 8 * v13) managedClientName];
+            v15 = [managedClientName isEqualToString:v11];
 
             if (v15)
             {
@@ -1186,10 +1186,10 @@ LABEL_16:
   return v6;
 }
 
-- (id)createStreamRendererWithUniqueID:(id)a3 clientName:(id)a4 UIController:(OpaqueAPReceiverUIController *)a5
+- (id)createStreamRendererWithUniqueID:(id)d clientName:(id)name UIController:(OpaqueAPReceiverUIController *)controller
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1200,7 +1200,7 @@ LABEL_16:
   v10 = AirPlayReceiverServerGetDispatchQueue();
   CFObjectControlAsync();
 
-  if (v8)
+  if (dCopy)
   {
     isolationQueue = self->_isolationQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1209,9 +1209,9 @@ LABEL_16:
     block[3] = &unk_278C62CC8;
     v17 = &v19;
     block[4] = self;
-    v15 = v8;
-    v16 = v9;
-    v18 = a5;
+    v15 = dCopy;
+    v16 = nameCopy;
+    controllerCopy = controller;
     dispatch_sync(isolationQueue, block);
   }
 
@@ -1269,11 +1269,11 @@ void __87__APRKStreamRenderingManager_createStreamRendererWithUniqueID_clientNam
   [v2 didStartStreamingWithRenderer:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)removeRendererWithUniqueID:(id)a3
+- (void)removeRendererWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12[0] = 0;
     v12[1] = v12;
@@ -1288,7 +1288,7 @@ void __87__APRKStreamRenderingManager_createStreamRendererWithUniqueID_clientNam
     block[3] = &unk_278C627D8;
     v11 = v12;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_sync(isolationQueue, block);
     delegateQueue = self->_delegateQueue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1339,30 +1339,30 @@ void __57__APRKStreamRenderingManager_removeRendererWithUniqueID___block_invoke_
   [v2 didStopStreamingWithRenderer:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)setShouldForwardLayers:(BOOL)a3
+- (void)setShouldForwardLayers:(BOOL)layers
 {
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKStreamRenderingManager setShouldForwardLayers:];
   }
 
-  self->_shouldForwardLayers = a3;
+  self->_shouldForwardLayers = layers;
 }
 
-- (void)processShowGlobalPasscodePromptRequest:(id)a3 withClientName:(id)a4
+- (void)processShowGlobalPasscodePromptRequest:(id)request withClientName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  nameCopy = name;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__APRKStreamRenderingManager_processShowGlobalPasscodePromptRequest_withClientName___block_invoke;
   block[3] = &unk_278C628F0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = nameCopy;
+  v13 = requestCopy;
+  v9 = requestCopy;
+  v10 = nameCopy;
   dispatch_async(delegateQueue, block);
 }
 
@@ -1413,16 +1413,16 @@ void __68__APRKStreamRenderingManager_processHideGlobalPasscodePromptRequest__bl
   }
 }
 
-- (BOOL)isAllowedToProceedForClientWithName:(id)a3 clientID:(id)a4
+- (BOOL)isAllowedToProceedForClientWithName:(id)name clientID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   if (self->_permissionEnabled)
   {
-    v8 = [(APRKStreamRenderingManager *)self delegate];
+    delegate = [(APRKStreamRenderingManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(APRKStreamRenderingManager *)self _isPermittedClient:v7];
+      v9 = [(APRKStreamRenderingManager *)self _isPermittedClient:dCopy];
 
       if (!v9)
       {
@@ -1431,7 +1431,7 @@ void __68__APRKStreamRenderingManager_processHideGlobalPasscodePromptRequest__bl
         v37 = &v36;
         v38 = 0x2020000000;
         v39 = 0;
-        v11 = [MEMORY[0x277CCAD78] UUID];
+        uUID = [MEMORY[0x277CCAD78] UUID];
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_clientID___block_invoke;
@@ -1446,9 +1446,9 @@ void __68__APRKStreamRenderingManager_processHideGlobalPasscodePromptRequest__bl
         block[2] = __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_clientID___block_invoke_2;
         block[3] = &unk_278C62D18;
         block[4] = self;
-        v15 = v6;
+        v15 = nameCopy;
         v30 = v15;
-        v16 = v11;
+        v16 = uUID;
         v31 = v16;
         v17 = v13;
         v32 = v17;
@@ -1468,12 +1468,12 @@ void __68__APRKStreamRenderingManager_processHideGlobalPasscodePromptRequest__bl
         {
           if (gLogCategory_AirPlayReceiverKit <= 50 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
           {
-            v25 = [(APRKStreamRenderingManager *)self delegate];
+            delegate2 = [(APRKStreamRenderingManager *)self delegate];
             v26 = v15;
             LogPrintF();
           }
 
-          v22 = [(APRKStreamRenderingManager *)self delegate:v25];
+          v22 = [(APRKStreamRenderingManager *)self delegate:delegate2];
           v23 = objc_opt_respondsToSelector();
 
           if (v23)
@@ -1491,7 +1491,7 @@ void __68__APRKStreamRenderingManager_processHideGlobalPasscodePromptRequest__bl
 
         else if (*(v37 + 24) == 1)
         {
-          [(APRKStreamRenderingManager *)self _addPermittedClient:v7];
+          [(APRKStreamRenderingManager *)self _addPermittedClient:dCopy];
           v20 = 1;
 LABEL_24:
 
@@ -1541,9 +1541,9 @@ void __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_client
   [v2 shouldCancelPermissionRequestWithRequestID:*(a1 + 40)];
 }
 
-- (__CFString)_getHDRModeString:(unint64_t)a3
+- (__CFString)_getHDRModeString:(unint64_t)string
 {
-  switch(a3)
+  switch(string)
   {
     case 3uLL:
       v3 = MEMORY[0x277CD6528];
@@ -1559,7 +1559,7 @@ void __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_client
   return 0;
 }
 
-- (int)_startReceiverServerWithSupportedModesMask:(unint64_t)a3
+- (int)_startReceiverServerWithSupportedModesMask:(unint64_t)mask
 {
   v54 = *MEMORY[0x277D85DE8];
   valuePtr = UIControllerCreate;
@@ -1625,9 +1625,9 @@ void __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_client
     CFDictionarySetValue(Mutable, *MEMORY[0x277CE9E70], v24);
   }
 
-  if (a3)
+  if (mask)
   {
-    self->_supportedModesMask = a3;
+    self->_supportedModesMask = mask;
     v25 = APSFeaturesCreateMutable();
     if (!v25)
     {
@@ -1637,7 +1637,7 @@ void __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_client
     }
 
     v26 = v25;
-    if ((a3 & 1) == 0)
+    if ((mask & 1) == 0)
     {
       if (gLogCategory_AirPlayReceiverKit <= 10 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
       {
@@ -1647,7 +1647,7 @@ void __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_client
       APSFeaturesSetFeature();
     }
 
-    if ((a3 & 3) == 0)
+    if ((mask & 3) == 0)
     {
       if (gLogCategory_AirPlayReceiverKit <= 10 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
       {
@@ -1657,7 +1657,7 @@ void __75__APRKStreamRenderingManager_isAllowedToProceedForClientWithName_client
       APSFeaturesSetFeature();
     }
 
-    if ((a3 & 4) == 0)
+    if ((mask & 4) == 0)
     {
       if (gLogCategory_AirPlayReceiverKit <= 10 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
       {
@@ -1885,9 +1885,9 @@ void __73__APRKStreamRenderingManager__startReceiverServerWithSupportedModesMask
   [v2 postNotificationName:@"APRKAlternateBonjourBrowsingEnabled" object:*(a1 + 32)];
 }
 
-- (id)_rendererForUniqueIDInternal:(id)a3
+- (id)_rendererForUniqueIDInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1899,7 +1899,7 @@ void __73__APRKStreamRenderingManager__startReceiverServerWithSupportedModesMask
   v9[1] = 3221225472;
   v9[2] = __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invoke;
   v9[3] = &unk_278C62D68;
-  v6 = v4;
+  v6 = internalCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)renderersArray enumerateObjectsUsingBlock:v9];
@@ -1923,10 +1923,10 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
   }
 }
 
-- (void)_setPTPClockEnabled:(BOOL)a3
+- (void)_setPTPClockEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -1934,10 +1934,10 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
   [(APRKStreamRenderingManager *)self setServerProperty:*v3 forKey:@"usePTPClock"];
 }
 
-- (CGSize)_customDisplaySizeFromPrefsWithDefault:(CGSize)a3
+- (CGSize)_customDisplaySizeFromPrefsWithDefault:(CGSize)default
 {
-  height = a3.height;
-  width = a3.width;
+  height = default.height;
+  width = default.width;
   IntWithDefault = APSSettingsGetIntWithDefault();
   v6 = APSSettingsGetIntWithDefault();
   if (IntWithDefault > 0 || v6 >= 1)
@@ -1968,10 +1968,10 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
   return result;
 }
 
-- (CGSize)_customDisplaySizeMaxFromPrefsWithDefault:(CGSize)a3
+- (CGSize)_customDisplaySizeMaxFromPrefsWithDefault:(CGSize)default
 {
-  height = a3.height;
-  width = a3.width;
+  height = default.height;
+  width = default.width;
   IntWithDefault = APSSettingsGetIntWithDefault();
   v6 = APSSettingsGetIntWithDefault();
   if (IntWithDefault > 0 || v6 >= 1)
@@ -2002,7 +2002,7 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
   return result;
 }
 
-- (unint64_t)_customDisplayHDRModeFromPrefsWithDefault:(unint64_t)a3
+- (unint64_t)_customDisplayHDRModeFromPrefsWithDefault:(unint64_t)default
 {
   CFStringGetTypeID();
   v5 = APSSettingsCopyValueEx();
@@ -2011,17 +2011,17 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
     v6 = v5;
     if (CFEqual(v5, *MEMORY[0x277CD6538]))
     {
-      a3 = 1;
+      default = 1;
     }
 
     else if (CFEqual(v6, *MEMORY[0x277CD6530]))
     {
-      a3 = 2;
+      default = 2;
     }
 
     else if (CFEqual(v6, *MEMORY[0x277CD6528]))
     {
-      a3 = 3;
+      default = 3;
     }
 
     else
@@ -2031,7 +2031,7 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
         [APRKStreamRenderingManager _customDisplayHDRModeFromPrefsWithDefault:];
       }
 
-      a3 = 0;
+      default = 0;
     }
 
     CFRelease(v6);
@@ -2039,10 +2039,10 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
 
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
-    [(APRKStreamRenderingManager *)a3 _customDisplayHDRModeFromPrefsWithDefault:?];
+    [(APRKStreamRenderingManager *)default _customDisplayHDRModeFromPrefsWithDefault:?];
   }
 
-  return a3;
+  return default;
 }
 
 - (void)_initPermittedClients
@@ -2051,9 +2051,9 @@ void __59__APRKStreamRenderingManager__rendererForUniqueIDInternal___block_invok
   {
     handler[7] = v2;
     handler[8] = v3;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     permittedClients = self->_permittedClients;
-    self->_permittedClients = v5;
+    self->_permittedClients = dictionary;
 
     v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_permittedClientsQueue);
     permissionGrantTimer = self->_permissionGrantTimer;
@@ -2083,16 +2083,16 @@ uint64_t __51__APRKStreamRenderingManager__initPermittedClients__block_invoke(ui
   return [v2 removeAllObjects];
 }
 
-- (BOOL)_isPermittedClient:(id)a3
+- (BOOL)_isPermittedClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
+  clientCopy = client;
+  v5 = clientCopy;
   v6 = 0;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if (v4 && !self->_forcePermissionDialog)
+  if (clientCopy && !self->_forcePermissionDialog)
   {
     permittedClientsQueue = self->_permittedClientsQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2100,7 +2100,7 @@ uint64_t __51__APRKStreamRenderingManager__initPermittedClients__block_invoke(ui
     block[2] = __49__APRKStreamRenderingManager__isPermittedClient___block_invoke;
     block[3] = &unk_278C62D90;
     block[4] = self;
-    v10 = v4;
+    v10 = clientCopy;
     v11 = &v12;
     dispatch_sync(permittedClientsQueue, block);
 
@@ -2138,11 +2138,11 @@ void __49__APRKStreamRenderingManager__isPermittedClient___block_invoke(uint64_t
   }
 }
 
-- (void)_addPermittedClient:(id)a3
+- (void)_addPermittedClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
     permittedClientsQueue = self->_permittedClientsQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -2150,7 +2150,7 @@ void __49__APRKStreamRenderingManager__isPermittedClient___block_invoke(uint64_t
     v7[2] = __50__APRKStreamRenderingManager__addPermittedClient___block_invoke;
     v7[3] = &unk_278C62788;
     v7[4] = self;
-    v8 = v4;
+    v8 = clientCopy;
     dispatch_sync(permittedClientsQueue, v7);
   }
 }
@@ -2178,10 +2178,10 @@ void __50__APRKStreamRenderingManager__addPermittedClient___block_invoke(uint64_
 {
   if (self->_server)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     passwordString = self->_passwordString;
-    self->_passwordString = v4;
+    self->_passwordString = uUIDString;
 
     if (AirPlayReceiverServerSetProperty())
     {

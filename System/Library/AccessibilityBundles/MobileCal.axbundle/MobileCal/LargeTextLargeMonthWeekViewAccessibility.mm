@@ -1,14 +1,14 @@
 @interface LargeTextLargeMonthWeekViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation LargeTextLargeMonthWeekViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = LargeTextLargeMonthWeekViewAccessibility;
-  v4 = [(LargeTextLargeMonthWeekViewAccessibility *)&v7 _accessibilityHitTest:a4 withEvent:a3.x, a3.y];
+  v4 = [(LargeTextLargeMonthWeekViewAccessibility *)&v7 _accessibilityHitTest:event withEvent:test.x, test.y];
   [v4 _accessibilityVisibleFrame];
   if (CGRectIsEmpty(v9))
   {

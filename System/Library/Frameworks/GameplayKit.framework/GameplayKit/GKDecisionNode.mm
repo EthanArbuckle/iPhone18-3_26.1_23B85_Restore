@@ -2,29 +2,29 @@
 - (GKDecisionNode)createBranchWithPredicate:(NSPredicate *)predicate attribute:(id)attribute;
 - (GKDecisionNode)createBranchWithValue:(NSNumber *)value attribute:(id)attribute;
 - (GKDecisionNode)createBranchWithWeight:(NSInteger)weight attribute:(id)attribute;
-- (GKDecisionNode)initWithNode:(void *)a3 tree:(id)a4;
+- (GKDecisionNode)initWithNode:(void *)node tree:(id)tree;
 - (id)attribute;
 - (id)branches;
-- (id)createChildWithAttribute:(id)a3 randomSource:(id)a4 withBranch:(id)a5;
-- (id)getNodeAtBranch:(id)a3;
+- (id)createChildWithAttribute:(id)attribute randomSource:(id)source withBranch:(id)branch;
+- (id)getNodeAtBranch:(id)branch;
 - (void)dealloc;
-- (void)setAttribute:(id)a3;
+- (void)setAttribute:(id)attribute;
 @end
 
 @implementation GKDecisionNode
 
-- (GKDecisionNode)initWithNode:(void *)a3 tree:(id)a4
+- (GKDecisionNode)initWithNode:(void *)node tree:(id)tree
 {
-  v6 = a4;
+  treeCopy = tree;
   v10.receiver = self;
   v10.super_class = GKDecisionNode;
   v7 = [(GKDecisionNode *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_node = a3;
-    objc_storeStrong(a3 + 10, v7);
-    objc_storeWeak(&v8->_tree, v6);
+    v7->_node = node;
+    objc_storeStrong(node + 10, v7);
+    objc_storeWeak(&v8->_tree, treeCopy);
   }
 
   return v8;
@@ -58,15 +58,15 @@
   return v3;
 }
 
-- (void)setAttribute:(id)a3
+- (void)setAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   node = self->_node;
   if (node)
   {
-    v7 = v5;
-    objc_storeStrong(node + 6, a3);
-    v5 = v7;
+    v7 = attributeCopy;
+    objc_storeStrong(node + 6, attribute);
+    attributeCopy = v7;
   }
 }
 
@@ -86,15 +86,15 @@
   return v4;
 }
 
-- (id)createChildWithAttribute:(id)a3 randomSource:(id)a4 withBranch:(id)a5
+- (id)createChildWithAttribute:(id)attribute randomSource:(id)source withBranch:(id)branch
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  attributeCopy = attribute;
+  sourceCopy = source;
+  branchCopy = branch;
   node = self->_node;
   if (!node)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create new child with branch: %@ and attribute: %@ from nil node.", v11, v9];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create new child with branch: %@ and attribute: %@ from nil node.", branchCopy, attributeCopy];
     v37 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v37);
   }
@@ -104,21 +104,21 @@
     [**node superclass];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create child for node type: %@, with branch: %@", objc_msgSend(**self->_node, "superclass"), v11];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create child for node type: %@, with branch: %@", objc_msgSend(**self->_node, "superclass"), branchCopy];
       v38 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v38);
     }
 
     node = self->_node;
     v13 = node[8];
-    if (!v10 && v13)
+    if (!sourceCopy && v13)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create child for random node type with branch: %@", v11];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create child for random node type with branch: %@", branchCopy];
       v39 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v39);
     }
 
-    if (v10 && !v13)
+    if (sourceCopy && !v13)
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"GKDecisionTree: Cannot create child for node type: %@ with random branch", objc_msgSend(**node, "superclass")];
       v40 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
@@ -126,22 +126,22 @@
     }
   }
 
-  if (v10)
+  if (sourceCopy)
   {
     if (node[8])
     {
       v14 = [GKRandomDistribution alloc];
-      v15 = [*(self->_node + 8) highestValue];
-      v16 = [v11 integerValue] + v15;
+      highestValue = [*(self->_node + 8) highestValue];
+      integerValue = [branchCopy integerValue] + highestValue;
     }
 
     else
     {
       v14 = [GKRandomDistribution alloc];
-      v16 = [v11 integerValue];
+      integerValue = [branchCopy integerValue];
     }
 
-    v24 = [(GKRandomDistribution *)v14 initWithRandomSource:v10 lowestValue:0 highestValue:v16];
+    v24 = [(GKRandomDistribution *)v14 initWithRandomSource:sourceCopy lowestValue:0 highestValue:integerValue];
     v25 = self->_node;
     v26 = v25[8];
     v25[8] = v24;
@@ -161,7 +161,7 @@
   v21 = 0;
   do
   {
-    v22 = [v11 isEqual:v17[v19]];
+    v22 = [branchCopy isEqual:v17[v19]];
     v23 = self->_node;
     v17 = *v23;
     if (v22)
@@ -180,9 +180,9 @@ LABEL_19:
     operator new();
   }
 
-  objc_storeStrong(v21 + 6, a3);
+  objc_storeStrong(v21 + 6, attribute);
   v27 = self->_node;
-  v28 = v11;
+  v28 = branchCopy;
   *&v41 = v28;
   *(&v41 + 1) = v21;
   v29 = v27[1];
@@ -229,9 +229,9 @@ LABEL_19:
 {
   v6 = attribute;
   WeakRetained = objc_loadWeakRetained(&self->_tree);
-  v8 = [WeakRetained randomSource];
+  randomSource = [WeakRetained randomSource];
 
-  if (!v8)
+  if (!randomSource)
   {
     v9 = +[GKRandomSource sharedRandom];
     v10 = objc_loadWeakRetained(&self->_tree);
@@ -239,16 +239,16 @@ LABEL_19:
   }
 
   v11 = objc_loadWeakRetained(&self->_tree);
-  v12 = [v11 randomSource];
+  randomSource2 = [v11 randomSource];
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:weight];
-  v14 = [(GKDecisionNode *)self createChildWithAttribute:v6 randomSource:v12 withBranch:v13];
+  v14 = [(GKDecisionNode *)self createChildWithAttribute:v6 randomSource:randomSource2 withBranch:v13];
 
   return v14;
 }
 
-- (id)getNodeAtBranch:(id)a3
+- (id)getNodeAtBranch:(id)branch
 {
-  v4 = a3;
+  branchCopy = branch;
   node = self->_node;
   v6 = *node;
   v7 = node[1];
@@ -260,7 +260,7 @@ LABEL_4:
 
   else
   {
-    while (![*v6 isEqual:v4])
+    while (![*v6 isEqual:branchCopy])
     {
       v6 += 16;
       if (v6 == v7)

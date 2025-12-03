@@ -1,15 +1,15 @@
 @interface NPKApplicationStateListener
 - (NPKApplicationStateListener)init;
-- (unint64_t)_applicationStateWithLSApplicationState:(id)a3;
+- (unint64_t)_applicationStateWithLSApplicationState:(id)state;
 - (unint64_t)cachedAppState;
-- (void)_handleApplicationChangeNotificationWithWorkspaceApplicationProxies:(id)a3 newStateResolver:(id)a4;
-- (void)_retrieveAppState:(id)a3;
-- (void)_updateStateWithNewState:(unint64_t)a3 completion:(id)a4;
-- (void)appState:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
+- (void)_handleApplicationChangeNotificationWithWorkspaceApplicationProxies:(id)proxies newStateResolver:(id)resolver;
+- (void)_retrieveAppState:(id)state;
+- (void)_updateStateWithNewState:(unint64_t)state completion:(id)completion;
+- (void)appState:(id)state;
+- (void)applicationStateDidChange:(id)change;
 - (void)prewarm;
-- (void)registerObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NPKApplicationStateListener
@@ -49,7 +49,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: [NPKApplicationStateListener] %p Prewarming app state", buf, 0xCu);
     }
   }
@@ -75,7 +75,7 @@
   v14[1] = 3221225472;
   v15 = __45__NPKApplicationStateListener_cachedAppState__block_invoke;
   v16 = &unk_279944FE8;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   v3 = v14;
   os_unfair_lock_lock(&self->_appStateLock);
@@ -102,7 +102,7 @@
       }
 
       *buf = 134218242;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = v8;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: [NPKApplicationStateListener] %p Getting cached app state. State: %@", buf, 0x16u);
@@ -127,11 +127,11 @@
   return v9;
 }
 
-- (void)appState:(id)a3
+- (void)appState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
     internalClassQueue = self->_internalClassQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -139,42 +139,42 @@
     v7[2] = __40__NPKApplicationStateListener_appState___block_invoke;
     v7[3] = &unk_279945530;
     v7[4] = self;
-    v8 = v4;
+    v8 = stateCopy;
     dispatch_async(internalClassQueue, v7);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  [(NPKObserverManager *)self->_observerManager registerObserver:a3];
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v4 addObserver:self];
+  [(NPKObserverManager *)self->_observerManager registerObserver:observer];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NPKObserverManager *)self->_observerManager unregisterObserver:a3];
+  [(NPKObserverManager *)self->_observerManager unregisterObserver:observer];
   if (![(NPKObserverManager *)self->_observerManager hasObservers])
   {
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v4 removeObserver:self];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace removeObserver:self];
   }
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__NPKApplicationStateListener_applicationStateDidChange___block_invoke;
   v3[3] = &unk_2799485A0;
   v3[4] = self;
-  [(NPKApplicationStateListener *)self _handleApplicationChangeNotificationWithWorkspaceApplicationProxies:a3 newStateResolver:v3];
+  [(NPKApplicationStateListener *)self _handleApplicationChangeNotificationWithWorkspaceApplicationProxies:change newStateResolver:v3];
 }
 
-- (void)_retrieveAppState:(id)a3
+- (void)_retrieveAppState:(id)state
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -184,7 +184,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: [NPKApplicationStateListener] %p Retrieving application record.", buf, 0xCu);
     }
   }
@@ -206,7 +206,7 @@
       {
         v15 = NSStringFromBOOL();
         *buf = 134218754;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2112;
         v23 = v9;
         v24 = 2112;
@@ -218,23 +218,23 @@
     }
   }
 
-  v16 = [v10 applicationState];
-  v17 = [(NPKApplicationStateListener *)self _applicationStateWithLSApplicationState:v16];
+  applicationState = [v10 applicationState];
+  v17 = [(NPKApplicationStateListener *)self _applicationStateWithLSApplicationState:applicationState];
 
-  [(NPKApplicationStateListener *)self _updateStateWithNewState:v17 completion:v4];
+  [(NPKApplicationStateListener *)self _updateStateWithNewState:v17 completion:stateCopy];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleApplicationChangeNotificationWithWorkspaceApplicationProxies:(id)a3 newStateResolver:(id)a4
+- (void)_handleApplicationChangeNotificationWithWorkspaceApplicationProxies:(id)proxies newStateResolver:(id)resolver
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  proxiesCopy = proxies;
+  resolverCopy = resolver;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = proxiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v9)
   {
@@ -251,13 +251,13 @@
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [v14 bundleIdentifier];
-        v16 = [v15 isEqualToString:v12];
+        bundleIdentifier = [v14 bundleIdentifier];
+        v16 = [bundleIdentifier isEqualToString:v12];
 
         if (v16)
         {
-          v17 = [v14 appState];
-          v18 = v7[2](v7, v17);
+          appState = [v14 appState];
+          v18 = resolverCopy[2](resolverCopy, appState);
 
           v19 = pk_Payment_log();
           v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
@@ -267,8 +267,8 @@
             v21 = pk_Payment_log();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v14 appState];
-              v23 = v22;
+              appState2 = [v14 appState];
+              v23 = appState2;
               if ((v18 - 1) > 2)
               {
                 v24 = @"Unknown";
@@ -280,9 +280,9 @@
               }
 
               *buf = 134218498;
-              v33 = self;
+              selfCopy = self;
               v34 = 2112;
-              v35 = v22;
+              v35 = appState2;
               v36 = 2112;
               v37 = v24;
               _os_log_impl(&dword_25B300000, v21, OS_LOG_TYPE_DEFAULT, "Notice: [NPKApplicationStateListener] %p Received NanoPassbook LS app state change notification. App Proxy state: %@, resolved state to %@", buf, 0x20u);
@@ -362,16 +362,16 @@ void __116__NPKApplicationStateListener__handleApplicationChangeNotificationWith
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_applicationStateWithLSApplicationState:(id)a3
+- (unint64_t)_applicationStateWithLSApplicationState:(id)state
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stateCopy = state;
+  v4 = stateCopy;
+  if (stateCopy)
   {
-    v5 = [v3 isInstalled];
-    v6 = [v4 isRestricted];
+    isInstalled = [stateCopy isInstalled];
+    isRestricted = [v4 isRestricted];
     v7 = 1;
-    if (v6)
+    if (isRestricted)
     {
       v7 = 2;
     }
@@ -379,11 +379,11 @@ void __116__NPKApplicationStateListener__handleApplicationChangeNotificationWith
 
   else
   {
-    v5 = PKPassbookIsCurrentlyDeletedByUser() == 0;
+    isInstalled = PKPassbookIsCurrentlyDeletedByUser() == 0;
     v7 = 1;
   }
 
-  if (v5)
+  if (isInstalled)
   {
     v8 = v7;
   }
@@ -396,9 +396,9 @@ void __116__NPKApplicationStateListener__handleApplicationChangeNotificationWith
   return v8;
 }
 
-- (void)_updateStateWithNewState:(unint64_t)a3 completion:(id)a4
+- (void)_updateStateWithNewState:(unint64_t)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -407,20 +407,20 @@ void __116__NPKApplicationStateListener__handleApplicationChangeNotificationWith
   v10[1] = 3221225472;
   v11 = __67__NPKApplicationStateListener__updateStateWithNewState_completion___block_invoke;
   v12 = &unk_279948610;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
-  v15 = a3;
+  stateCopy = state;
   v7 = v10;
   os_unfair_lock_lock(&self->_appStateLock);
   v11(v7);
 
   os_unfair_lock_unlock(&self->_appStateLock);
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, a3);
+    completionCopy[2](completionCopy, state);
   }
 
-  if (v17[3] != a3)
+  if (v17[3] != state)
   {
     observerManager = self->_observerManager;
     v9[0] = MEMORY[0x277D85DD0];
@@ -429,7 +429,7 @@ void __116__NPKApplicationStateListener__handleApplicationChangeNotificationWith
     v9[3] = &unk_279948638;
     v9[4] = self;
     v9[5] = &v16;
-    v9[6] = a3;
+    v9[6] = state;
     [(NPKObserverManager *)observerManager enumerateObserversUsingBlock:v9];
   }
 

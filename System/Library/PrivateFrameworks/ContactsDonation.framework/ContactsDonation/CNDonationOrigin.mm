@@ -1,49 +1,49 @@
 @interface CNDonationOrigin
-+ (id)originWithUpdatedDonationIdentifier:(id)a3 fromOrigin:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CNDonationOrigin)initWithBundleIdentifier:(id)a3 donationIdentifier:(id)a4 clusterIdentifier:(id)a5 donationDate:(id)a6 expirationDate:(id)a7;
-- (CNDonationOrigin)initWithCoder:(id)a3;
-- (CNDonationOrigin)initWithDonationOrigin:(id)a3;
-- (CNDonationOrigin)initWithPropertyListRepresentation:(id)a3;
++ (id)originWithUpdatedDonationIdentifier:(id)identifier fromOrigin:(id)origin;
+- (BOOL)isEqual:(id)equal;
+- (CNDonationOrigin)initWithBundleIdentifier:(id)identifier donationIdentifier:(id)donationIdentifier clusterIdentifier:(id)clusterIdentifier donationDate:(id)date expirationDate:(id)expirationDate;
+- (CNDonationOrigin)initWithCoder:(id)coder;
+- (CNDonationOrigin)initWithDonationOrigin:(id)origin;
+- (CNDonationOrigin)initWithPropertyListRepresentation:(id)representation;
 - (NSDictionary)propertyListRepresentation;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNDonationOrigin
 
-- (CNDonationOrigin)initWithDonationOrigin:(id)a3
+- (CNDonationOrigin)initWithDonationOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v4 donationIdentifier];
-  v7 = [v4 clusterIdentifier];
-  v8 = [v4 donationDate];
-  v9 = [v4 expirationDate];
+  originCopy = origin;
+  bundleIdentifier = [originCopy bundleIdentifier];
+  donationIdentifier = [originCopy donationIdentifier];
+  clusterIdentifier = [originCopy clusterIdentifier];
+  donationDate = [originCopy donationDate];
+  expirationDate = [originCopy expirationDate];
 
-  v10 = [(CNDonationOrigin *)self initWithBundleIdentifier:v5 donationIdentifier:v6 clusterIdentifier:v7 donationDate:v8 expirationDate:v9];
+  v10 = [(CNDonationOrigin *)self initWithBundleIdentifier:bundleIdentifier donationIdentifier:donationIdentifier clusterIdentifier:clusterIdentifier donationDate:donationDate expirationDate:expirationDate];
   return v10;
 }
 
-+ (id)originWithUpdatedDonationIdentifier:(id)a3 fromOrigin:(id)a4
++ (id)originWithUpdatedDonationIdentifier:(id)identifier fromOrigin:(id)origin
 {
-  v5 = a3;
-  v6 = [a4 mutableCopy];
-  [v6 setDonationIdentifier:v5];
+  identifierCopy = identifier;
+  v6 = [origin mutableCopy];
+  [v6 setDonationIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (CNDonationOrigin)initWithBundleIdentifier:(id)a3 donationIdentifier:(id)a4 clusterIdentifier:(id)a5 donationDate:(id)a6 expirationDate:(id)a7
+- (CNDonationOrigin)initWithBundleIdentifier:(id)identifier donationIdentifier:(id)donationIdentifier clusterIdentifier:(id)clusterIdentifier donationDate:(id)date expirationDate:(id)expirationDate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  identifierCopy = identifier;
+  donationIdentifierCopy = donationIdentifier;
+  clusterIdentifierCopy = clusterIdentifier;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  if (identifierCopy)
   {
     goto LABEL_5;
   }
@@ -57,7 +57,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0, OS_LOG_TYPE_FAULT))
   {
     [CNDonationOrigin initWithBundleIdentifier:v17 donationIdentifier:? clusterIdentifier:? donationDate:? expirationDate:?];
-    if (v13)
+    if (donationIdentifierCopy)
     {
       goto LABEL_10;
     }
@@ -66,7 +66,7 @@
   else
   {
 LABEL_5:
-    if (v13)
+    if (donationIdentifierCopy)
     {
       goto LABEL_10;
     }
@@ -84,9 +84,9 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (v15)
+  if (dateCopy)
   {
-    if (v16)
+    if (expirationDateCopy)
     {
       goto LABEL_12;
     }
@@ -94,31 +94,31 @@ LABEL_10:
 
   else
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
-    if (v16)
+    dateCopy = [MEMORY[0x277CBEAA8] date];
+    if (expirationDateCopy)
     {
       goto LABEL_12;
     }
   }
 
-  v16 = [v15 dateByAddingTimeInterval:2419200.0];
+  expirationDateCopy = [dateCopy dateByAddingTimeInterval:2419200.0];
 LABEL_12:
   v32.receiver = self;
   v32.super_class = CNDonationOrigin;
   v19 = [(CNDonationOrigin *)&v32 init];
   if (v19)
   {
-    v20 = [v12 copy];
+    v20 = [identifierCopy copy];
     bundleIdentifier = v19->_bundleIdentifier;
     v19->_bundleIdentifier = v20;
 
-    v22 = [v13 copy];
+    v22 = [donationIdentifierCopy copy];
     donationIdentifier = v19->_donationIdentifier;
     v19->_donationIdentifier = v22;
 
-    if (v14)
+    if (clusterIdentifierCopy)
     {
-      v24 = [v14 copy];
+      v24 = [clusterIdentifierCopy copy];
     }
 
     else
@@ -129,11 +129,11 @@ LABEL_12:
     clusterIdentifier = v19->_clusterIdentifier;
     v19->_clusterIdentifier = &v24->isa;
 
-    v26 = [v15 copy];
+    v26 = [dateCopy copy];
     donationDate = v19->_donationDate;
     v19->_donationDate = v26;
 
-    v28 = [v16 copy];
+    v28 = [expirationDateCopy copy];
     expirationDate = v19->_expirationDate;
     v19->_expirationDate = v28;
 
@@ -146,43 +146,43 @@ LABEL_12:
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(CNDonationOrigin *)self bundleIdentifier];
-  v5 = [v3 appendName:@"bundleIdentifier" object:v4];
+  bundleIdentifier = [(CNDonationOrigin *)self bundleIdentifier];
+  v5 = [v3 appendName:@"bundleIdentifier" object:bundleIdentifier];
 
-  v6 = [(CNDonationOrigin *)self donationIdentifier];
-  v7 = [v3 appendName:@"donationIdentifier" object:v6];
+  donationIdentifier = [(CNDonationOrigin *)self donationIdentifier];
+  v7 = [v3 appendName:@"donationIdentifier" object:donationIdentifier];
 
-  v8 = [(CNDonationOrigin *)self clusterIdentifier];
-  v9 = [v3 appendName:@"clusterIdentifier" object:v8];
+  clusterIdentifier = [(CNDonationOrigin *)self clusterIdentifier];
+  v9 = [v3 appendName:@"clusterIdentifier" object:clusterIdentifier];
 
-  v10 = [(CNDonationOrigin *)self donationDate];
-  v11 = [v3 appendName:@"donationDate" object:v10];
+  donationDate = [(CNDonationOrigin *)self donationDate];
+  v11 = [v3 appendName:@"donationDate" object:donationDate];
 
-  v12 = [(CNDonationOrigin *)self expirationDate];
-  v13 = [v3 appendName:@"expirationDate" object:v12];
+  expirationDate = [(CNDonationOrigin *)self expirationDate];
+  v13 = [v3 appendName:@"expirationDate" object:expirationDate];
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNMutableDonationOrigin alloc];
 
   return [(CNDonationOrigin *)v4 initWithDonationOrigin:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CFBE18];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __28__CNDonationOrigin_isEqual___block_invoke;
   v23[3] = &unk_2785698D8;
   v23[4] = self;
-  v24 = v4;
+  v24 = equalCopy;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __28__CNDonationOrigin_isEqual___block_invoke_2;
@@ -352,35 +352,35 @@ uint64_t __24__CNDonationOrigin_hash__block_invoke_5(uint64_t a1)
   return v3;
 }
 
-- (CNDonationOrigin)initWithCoder:(id)a3
+- (CNDonationOrigin)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_donationIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clusterIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_donationDate"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_expirationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_donationIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clusterIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_donationDate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_expirationDate"];
 
   v10 = [(CNDonationOrigin *)self initWithBundleIdentifier:v5 donationIdentifier:v6 clusterIdentifier:v7 donationDate:v8 expirationDate:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"_bundleIdentifier"];
-  [v5 encodeObject:self->_donationIdentifier forKey:@"_donationIdentifier"];
-  [v5 encodeObject:self->_clusterIdentifier forKey:@"_clusterIdentifier"];
-  [v5 encodeObject:self->_donationDate forKey:@"_donationDate"];
-  [v5 encodeObject:self->_expirationDate forKey:@"_expirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"_bundleIdentifier"];
+  [coderCopy encodeObject:self->_donationIdentifier forKey:@"_donationIdentifier"];
+  [coderCopy encodeObject:self->_clusterIdentifier forKey:@"_clusterIdentifier"];
+  [coderCopy encodeObject:self->_donationDate forKey:@"_donationDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"_expirationDate"];
 }
 
-- (CNDonationOrigin)initWithPropertyListRepresentation:(id)a3
+- (CNDonationOrigin)initWithPropertyListRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:CNDonationOriginBundleIdentifierKey];
+  v4 = [representationCopy objectForKeyedSubscript:CNDonationOriginBundleIdentifierKey];
   v22 = v4;
   if (objc_opt_isKindOfClass())
   {
@@ -394,7 +394,7 @@ uint64_t __24__CNDonationOrigin_hash__block_invoke_5(uint64_t a1)
 
   v6 = v5;
   objc_opt_class();
-  v7 = [v3 objectForKeyedSubscript:CNDonationOriginDonationIdentifierKey];
+  v7 = [representationCopy objectForKeyedSubscript:CNDonationOriginDonationIdentifierKey];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -407,7 +407,7 @@ uint64_t __24__CNDonationOrigin_hash__block_invoke_5(uint64_t a1)
 
   v9 = v8;
   objc_opt_class();
-  v10 = [v3 objectForKeyedSubscript:CNDonationOriginClusterIdentifierKey];
+  v10 = [representationCopy objectForKeyedSubscript:CNDonationOriginClusterIdentifierKey];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -420,7 +420,7 @@ uint64_t __24__CNDonationOrigin_hash__block_invoke_5(uint64_t a1)
 
   v12 = v11;
   objc_opt_class();
-  v13 = [v3 objectForKeyedSubscript:CNDonationOriginDonationDateKey];
+  v13 = [representationCopy objectForKeyedSubscript:CNDonationOriginDonationDateKey];
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -433,7 +433,7 @@ uint64_t __24__CNDonationOrigin_hash__block_invoke_5(uint64_t a1)
 
   v15 = v14;
   objc_opt_class();
-  v16 = [v3 objectForKeyedSubscript:CNDonationOriginExpirationDateKey];
+  v16 = [representationCopy objectForKeyedSubscript:CNDonationOriginExpirationDateKey];
 
   if (objc_opt_isKindOfClass())
   {
@@ -455,26 +455,26 @@ uint64_t __24__CNDonationOrigin_hash__block_invoke_5(uint64_t a1)
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
   [v3 setObject:&unk_2838DF388 forKeyedSubscript:CNDonationOriginPlistEncodingVersionKey];
-  v4 = [(CNDonationOrigin *)self bundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:CNDonationOriginBundleIdentifierKey];
+  bundleIdentifier = [(CNDonationOrigin *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:CNDonationOriginBundleIdentifierKey];
 
-  v5 = [(CNDonationOrigin *)self donationIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:CNDonationOriginDonationIdentifierKey];
+  donationIdentifier = [(CNDonationOrigin *)self donationIdentifier];
+  [v3 setObject:donationIdentifier forKeyedSubscript:CNDonationOriginDonationIdentifierKey];
 
-  v6 = [(CNDonationOrigin *)self clusterIdentifier];
-  v7 = [v6 length];
+  clusterIdentifier = [(CNDonationOrigin *)self clusterIdentifier];
+  v7 = [clusterIdentifier length];
 
   if (v7)
   {
-    v8 = [(CNDonationOrigin *)self clusterIdentifier];
-    [v3 setObject:v8 forKeyedSubscript:CNDonationOriginClusterIdentifierKey];
+    clusterIdentifier2 = [(CNDonationOrigin *)self clusterIdentifier];
+    [v3 setObject:clusterIdentifier2 forKeyedSubscript:CNDonationOriginClusterIdentifierKey];
   }
 
-  v9 = [(CNDonationOrigin *)self donationDate];
-  [v3 setObject:v9 forKeyedSubscript:CNDonationOriginDonationDateKey];
+  donationDate = [(CNDonationOrigin *)self donationDate];
+  [v3 setObject:donationDate forKeyedSubscript:CNDonationOriginDonationDateKey];
 
-  v10 = [(CNDonationOrigin *)self expirationDate];
-  [v3 setObject:v10 forKeyedSubscript:CNDonationOriginExpirationDateKey];
+  expirationDate = [(CNDonationOrigin *)self expirationDate];
+  [v3 setObject:expirationDate forKeyedSubscript:CNDonationOriginExpirationDateKey];
 
   return v3;
 }

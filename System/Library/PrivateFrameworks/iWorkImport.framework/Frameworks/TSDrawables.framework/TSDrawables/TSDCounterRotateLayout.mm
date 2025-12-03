@@ -1,10 +1,10 @@
 @interface TSDCounterRotateLayout
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3;
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable;
 - (BOOL)supportsFlipping;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
 - (CGSize)minimumSize;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)descendentWrappables;
 - (id)reliedOnLayouts;
 - (id)visibleGeometries;
@@ -21,9 +21,9 @@
   return v6;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
-  v4 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3);
+  v4 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, layout);
   objc_opt_class();
   v7 = objc_msgSend_parent(self, v5, v6);
   v8 = TSUCheckedDynamicCast();
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v5 = objc_msgSend_children(self, a2, a3);
+  v5 = objc_msgSend_children(self, a2, transform);
   v8 = objc_msgSend_firstObject(v5, v6, v7);
 
   if (!v8)
@@ -52,10 +52,10 @@
   }
 
   objc_msgSend_transform(self, v9, v10);
-  v18 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v18 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v18;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v34, &t1, &t2);
   objc_msgSend_baseFrameForFrameForCullingWithAdditionalTransform_(v8, v19, &v34);
   v21 = v20;
@@ -273,10 +273,10 @@
   return v5;
 }
 
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable
 {
-  v4 = a3;
-  v7 = objc_msgSend_parent(v4, v5, v6);
+  wrappableCopy = wrappable;
+  v7 = objc_msgSend_parent(wrappableCopy, v5, v6);
 
   if (v7 == self)
   {
@@ -292,7 +292,7 @@
 
     if (v11)
     {
-      v13 = objc_msgSend_descendentWrappablesContainsWrappable_(v11, v12, v4, &unk_2885A2AF0);
+      v13 = objc_msgSend_descendentWrappablesContainsWrappable_(v11, v12, wrappableCopy, &unk_2885A2AF0);
     }
 
     else

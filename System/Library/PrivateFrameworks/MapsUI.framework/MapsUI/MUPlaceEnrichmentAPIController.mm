@@ -4,19 +4,19 @@
 - (id)initInternal;
 - (id)placeEnrichmentData;
 - (void)cancelFetchingPlaceEnrichment;
-- (void)configureWithMapItem:(id)a3 traits:(id)a4;
-- (void)fetchPlaceEnrichment:(id)a3;
-- (void)registerObserver:(id)a3;
+- (void)configureWithMapItem:(id)item traits:(id)traits;
+- (void)fetchPlaceEnrichment:(id)enrichment;
+- (void)registerObserver:(id)observer;
 - (void)resetConfiguration;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MUPlaceEnrichmentAPIController
 
 - (id)placeEnrichmentData
 {
-  v2 = [(MUPlaceEnrichmentAPIController *)self enrichmentData];
-  v3 = [v2 copy];
+  enrichmentData = [(MUPlaceEnrichmentAPIController *)self enrichmentData];
+  v3 = [enrichmentData copy];
 
   return v3;
 }
@@ -30,28 +30,28 @@
     _os_log_impl(&dword_1C5620000, v3, OS_LOG_TYPE_DEBUG, "Cancelling ticket to fetch enrichnment data.", v5, 2u);
   }
 
-  v4 = [(MUPlaceEnrichmentAPIController *)self ticket];
-  [v4 cancel];
+  ticket = [(MUPlaceEnrichmentAPIController *)self ticket];
+  [ticket cancel];
 }
 
-- (void)fetchPlaceEnrichment:(id)a3
+- (void)fetchPlaceEnrichment:(id)enrichment
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enrichmentCopy = enrichment;
   if (self->_state)
   {
-    v5 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-    v6 = [v5 _enrichmentInfo];
+    mapItem = [(MUPlaceEnrichmentAPIController *)self mapItem];
+    _enrichmentInfo = [mapItem _enrichmentInfo];
 
-    if (v6)
+    if (_enrichmentInfo)
     {
-      v7 = [MEMORY[0x1E696F298] sharedService];
-      v8 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-      v9 = [v8 _enrichmentInfo];
-      v10 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-      v11 = [v10 _identifier];
-      v12 = [(MUPlaceEnrichmentAPIController *)self traits];
-      v13 = [v7 ticketForPlaceEnrichmentWithEnrichmentInfo:v9 mapsIdentifier:v11 traits:v12];
+      mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+      mapItem2 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+      _enrichmentInfo2 = [mapItem2 _enrichmentInfo];
+      mapItem3 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+      _identifier = [mapItem3 _identifier];
+      traits = [(MUPlaceEnrichmentAPIController *)self traits];
+      v13 = [mEMORY[0x1E696F298] ticketForPlaceEnrichmentWithEnrichmentInfo:_enrichmentInfo2 mapsIdentifier:_identifier traits:traits];
       [(MUPlaceEnrichmentAPIController *)self setTicket:v13];
 
       objc_initWeak(&location, self);
@@ -70,26 +70,26 @@
       v18 = MUGetMUPlaceEnrichmentAPIControllerLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-        v20 = [v19 _identifier];
-        v21 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-        v22 = [v21 _enrichmentInfo];
+        mapItem4 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+        _identifier2 = [mapItem4 _identifier];
+        mapItem5 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+        _enrichmentInfo3 = [mapItem5 _enrichmentInfo];
         *buf = 138412546;
-        v40 = v20;
+        v40 = _identifier2;
         v41 = 2112;
-        v42 = v22;
+        v42 = _enrichmentInfo3;
         _os_log_impl(&dword_1C5620000, v18, OS_LOG_TYPE_DEBUG, "Fetching enrichment data for identifier: %@ using enrichment info: %@", buf, 0x16u);
       }
 
-      v23 = [(MUPlaceEnrichmentAPIController *)self ticket];
+      ticket = [(MUPlaceEnrichmentAPIController *)self ticket];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __55__MUPlaceEnrichmentAPIController_fetchPlaceEnrichment___block_invoke;
       v35[3] = &unk_1E8219CA0;
       v37[1] = v15;
       objc_copyWeak(v37, &location);
-      v36 = v4;
-      [v23 submitWithHandler:v35 networkActivity:0];
+      v36 = enrichmentCopy;
+      [ticket submitWithHandler:v35 networkActivity:0];
 
       objc_destroyWeak(v37);
       objc_destroyWeak(&location);
@@ -100,10 +100,10 @@
       v25 = MUGetMUPlaceEnrichmentAPIControllerLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-        v27 = [v26 _identifier];
+        mapItem6 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+        _identifier3 = [mapItem6 _identifier];
         *buf = 138412290;
-        v40 = v27;
+        v40 = _identifier3;
         _os_log_impl(&dword_1C5620000, v25, OS_LOG_TYPE_ERROR, "Enrichment Info missing for map item: %@", buf, 0xCu);
       }
 
@@ -112,22 +112,22 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
         observers = self->_observers;
-        v30 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-        v31 = [v30 _identifier];
+        mapItem7 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+        _identifier4 = [mapItem7 _identifier];
         *buf = 138412546;
         v40 = observers;
         v41 = 2112;
-        v42 = v31;
+        v42 = _identifier4;
         _os_log_impl(&dword_1C5620000, v28, OS_LOG_TYPE_DEBUG, "Notifying observers: %@ missing enrichment info for mapItem: %@", buf, 0x16u);
       }
 
       v32 = self->_observers;
-      v33 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-      [(GEOObserverHashTable *)v32 placeEnrichmentAPIContollerDidFetchEnrichmentData:0 forMapItem:v33];
+      mapItem8 = [(MUPlaceEnrichmentAPIController *)self mapItem];
+      [(GEOObserverHashTable *)v32 placeEnrichmentAPIContollerDidFetchEnrichmentData:0 forMapItem:mapItem8];
 
-      if (v4)
+      if (enrichmentCopy)
       {
-        v4[2](v4);
+        enrichmentCopy[2](enrichmentCopy);
       }
     }
   }
@@ -273,35 +273,35 @@ uint64_t __55__MUPlaceEnrichmentAPIController_fetchPlaceEnrichment___block_invok
   return result;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MUGetMUPlaceEnrichmentAPIControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_DEBUG, "MUPlaceEnrichmentAPIController removing observer: %@", &v7, 0xCu);
   }
 
-  [(GEOObserverHashTable *)self->_observers unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_observers unregisterObserver:observerCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = MUGetMUPlaceEnrichmentAPIControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_DEBUG, "MUPlaceEnrichmentAPIController adding observer: %@", &v7, 0xCu);
   }
 
-  [(GEOObserverHashTable *)self->_observers registerObserver:v4];
+  [(GEOObserverHashTable *)self->_observers registerObserver:observerCopy];
   v6 = *MEMORY[0x1E69E9840];
 }
 
@@ -311,8 +311,8 @@ uint64_t __55__MUPlaceEnrichmentAPIController_fetchPlaceEnrichment___block_invok
   v3 = MUGetMUPlaceEnrichmentAPIControllerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MKMapItem *)self->_mapItem _identifier];
-    v5 = v4;
+    _identifier = [(MKMapItem *)self->_mapItem _identifier];
+    v5 = _identifier;
     v6 = self->_state - 1;
     if (v6 > 3)
     {
@@ -325,7 +325,7 @@ uint64_t __55__MUPlaceEnrichmentAPIController_fetchPlaceEnrichment___block_invok
     }
 
     v10 = 138412546;
-    v11 = v4;
+    v11 = _identifier;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_1C5620000, v3, OS_LOG_TYPE_DEBUG, "Resetting current state. Identifier: %@. State: %@", &v10, 0x16u);
@@ -342,37 +342,37 @@ uint64_t __55__MUPlaceEnrichmentAPIController_fetchPlaceEnrichment___block_invok
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MUPlaceEnrichmentAPIController *)self mapItem];
-  v5 = [v4 _muid];
-  v6 = [(MUPlaceEnrichmentAPIController *)self enrichmentData];
-  v7 = [v6 enrichmentEntities];
-  v8 = [v7 firstObject];
-  v9 = [v3 stringWithFormat:@"API Controller has mapItem: %llu and enrichment data: %@", v5, v8];
+  mapItem = [(MUPlaceEnrichmentAPIController *)self mapItem];
+  _muid = [mapItem _muid];
+  enrichmentData = [(MUPlaceEnrichmentAPIController *)self enrichmentData];
+  enrichmentEntities = [enrichmentData enrichmentEntities];
+  firstObject = [enrichmentEntities firstObject];
+  v9 = [v3 stringWithFormat:@"API Controller has mapItem: %llu and enrichment data: %@", _muid, firstObject];
 
   return v9;
 }
 
-- (void)configureWithMapItem:(id)a3 traits:(id)a4
+- (void)configureWithMapItem:(id)item traits:(id)traits
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([(MKMapItem *)self->_mapItem isEqual:v7]& 1) == 0)
+  itemCopy = item;
+  traitsCopy = traits;
+  if (([(MKMapItem *)self->_mapItem isEqual:itemCopy]& 1) == 0)
   {
     v9 = MUGetMUPlaceEnrichmentAPIControllerLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v7 _identifier];
+      _identifier = [itemCopy _identifier];
       v13 = 138412290;
-      v14 = v10;
+      v14 = _identifier;
       _os_log_impl(&dword_1C5620000, v9, OS_LOG_TYPE_DEBUG, "Configuring API Controller. Identifier: %@", &v13, 0xCu);
     }
 
-    objc_storeStrong(&self->_mapItem, a3);
+    objc_storeStrong(&self->_mapItem, item);
   }
 
   traits = self->_traits;
-  self->_traits = v8;
+  self->_traits = traitsCopy;
 
   self->_state = 1;
   v12 = *MEMORY[0x1E69E9840];

@@ -1,18 +1,18 @@
 @interface TUIImageLayer
 - (TUIFeedControllerHosting)feedControllerHost;
-- (void)configWithContentsScale:(double)a3 resource:(id)a4 load:(unint64_t)a5 cornerRadius:(double)a6 cornerCurve:(id)a7 fallbackColor:(id)a8 contentsGravity:(id)a9 crossfadesContents:(BOOL)a10 opacity:(double)a11;
+- (void)configWithContentsScale:(double)scale resource:(id)resource load:(unint64_t)load cornerRadius:(double)radius cornerCurve:(id)curve fallbackColor:(id)color contentsGravity:(id)gravity crossfadesContents:(BOOL)self0 opacity:(double)self1;
 - (void)dealloc;
-- (void)imageResourceDidChangeImage:(id)a3;
-- (void)layerDidBecomeVisible:(BOOL)a3;
-- (void)updateBoundsAndContent:(BOOL)a3;
-- (void)updateContentAllowCrossfade:(BOOL)a3;
+- (void)imageResourceDidChangeImage:(id)image;
+- (void)layerDidBecomeVisible:(BOOL)visible;
+- (void)updateBoundsAndContent:(BOOL)content;
+- (void)updateContentAllowCrossfade:(BOOL)crossfade;
 @end
 
 @implementation TUIImageLayer
 
-- (void)updateBoundsAndContent:(BOOL)a3
+- (void)updateBoundsAndContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   p_contentSize = &self->_contentSize;
   width = self->_contentSize.width;
   height = self->_contentSize.height;
@@ -20,12 +20,12 @@
   v9 = v8;
   v11 = v10;
   v12 = +[_TUIAnimationState currentState];
-  v13 = [v12 shouldCaptureCALayerAnimations];
+  shouldCaptureCALayerAnimations = [v12 shouldCaptureCALayerAnimations];
   if (width == v9 && height == v11)
   {
-    if (v3)
+    if (contentCopy)
     {
-      [(TUIImageLayer *)self updateContentAllowCrossfade:v13];
+      [(TUIImageLayer *)self updateContentAllowCrossfade:shouldCaptureCALayerAnimations];
     }
   }
 
@@ -33,7 +33,7 @@
   {
     p_contentSize->width = v9;
     p_contentSize->height = v11;
-    if (v13)
+    if (shouldCaptureCALayerAnimations)
     {
       v15 = width / v9;
       v16 = 1.0;
@@ -93,13 +93,13 @@
   }
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v33.receiver = self;
   v33.super_class = TUIImageLayer;
   [(TUIImageLayer *)&v33 layerDidBecomeVisible:?];
-  if (v3)
+  if (visibleCopy)
   {
     flags = self->_flags;
     if ((flags & 1) == 0)
@@ -120,12 +120,12 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_feedControllerHost);
-    v7 = [WeakRetained hostingContainerView];
+    hostingContainerView = [WeakRetained hostingContainerView];
 
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
+    window = [hostingContainerView window];
+    windowScene = [window windowScene];
 
-    if (byte_2E6898 == 1 && v9 && [v9 activationState] == &dword_0 + 2 && (-[TUIImageLayer bounds](self, "bounds"), v11 = v10, v13 = v12, v15 = v14, v17 = v16, objc_msgSend(v7, "layer"), v18 = objc_claimAutoreleasedReturnValue(), -[TUIImageLayer convertRect:toLayer:](self, "convertRect:toLayer:", v18, v11, v13, v15, v17), v20 = v19, v22 = v21, v24 = v23, v26 = v25, v18, objc_msgSend(v7, "layer"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "bounds"), v36.origin.x = v20, v36.origin.y = v22, v36.size.width = v24, v36.size.height = v26, v28 = CGRectIntersectsRect(v35, v36), v27, v28))
+    if (byte_2E6898 == 1 && windowScene && [windowScene activationState] == &dword_0 + 2 && (-[TUIImageLayer bounds](self, "bounds"), v11 = v10, v13 = v12, v15 = v14, v17 = v16, objc_msgSend(hostingContainerView, "layer"), v18 = objc_claimAutoreleasedReturnValue(), -[TUIImageLayer convertRect:toLayer:](self, "convertRect:toLayer:", v18, v11, v13, v15, v17), v20 = v19, v22 = v21, v24 = v23, v26 = v25, v18, objc_msgSend(hostingContainerView, "layer"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "bounds"), v36.origin.x = v20, v36.origin.y = v22, v36.size.width = v24, v36.size.height = v26, v28 = CGRectIntersectsRect(v35, v36), v27, v28))
     {
       v29 = TUIImageCacheLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -158,13 +158,13 @@
   }
 }
 
-- (void)configWithContentsScale:(double)a3 resource:(id)a4 load:(unint64_t)a5 cornerRadius:(double)a6 cornerCurve:(id)a7 fallbackColor:(id)a8 contentsGravity:(id)a9 crossfadesContents:(BOOL)a10 opacity:(double)a11
+- (void)configWithContentsScale:(double)scale resource:(id)resource load:(unint64_t)load cornerRadius:(double)radius cornerCurve:(id)curve fallbackColor:(id)color contentsGravity:(id)gravity crossfadesContents:(BOOL)self0 opacity:(double)self1
 {
-  v32 = a10;
-  v19 = a4;
-  v35 = a7;
-  v34 = a8;
-  v20 = a9;
+  contentsCopy = contents;
+  resourceCopy = resource;
+  curveCopy = curve;
+  colorCopy = color;
+  gravityCopy = gravity;
   if (!self->_contentLayer)
   {
     v21 = +[_TUIImplicitAnimationLayer layer];
@@ -184,12 +184,12 @@
     [(CALayer *)self->_wrapperLayer setSublayers:v26];
   }
 
-  objc_storeStrong(&self->_fallbackColor, a8);
-  [(CALayer *)self->_contentLayer setCornerRadius:a6];
-  [(CALayer *)self->_contentLayer setCornerCurve:v35];
-  if (a6 <= 0.0)
+  objc_storeStrong(&self->_fallbackColor, color);
+  [(CALayer *)self->_contentLayer setCornerRadius:radius];
+  [(CALayer *)self->_contentLayer setCornerCurve:curveCopy];
+  if (radius <= 0.0)
   {
-    v27 = [v20 isEqualToString:kCAGravityResize] ^ 1;
+    v27 = [gravityCopy isEqualToString:kCAGravityResize] ^ 1;
   }
 
   else
@@ -198,18 +198,18 @@
   }
 
   [(CALayer *)self->_contentLayer setMasksToBounds:v27];
-  [(CALayer *)self->_contentLayer setContentsGravity:v20];
-  [(TUIImageLayer *)self setRasterizationScale:a3];
-  [(TUIImageLayer *)self setContentsScale:a3];
-  *&v28 = a11;
+  [(CALayer *)self->_contentLayer setContentsGravity:gravityCopy];
+  [(TUIImageLayer *)self setRasterizationScale:scale];
+  [(TUIImageLayer *)self setContentsScale:scale];
+  *&v28 = opacity;
   [(TUIImageLayer *)self setOpacity:v28];
   [(TUIImageLayer *)self setBackgroundColor:[(UIColor *)self->_fallbackColor CGColor]];
-  [(TUIImageLayer *)self setCornerRadius:a6];
+  [(TUIImageLayer *)self setCornerRadius:radius];
   resource = self->_resource;
-  if (resource != v19)
+  if (resource != resourceCopy)
   {
-    v30 = resource;
-    objc_storeStrong(&self->_resource, a4);
+    resourceCopy2 = resource;
+    objc_storeStrong(&self->_resource, resource);
     [(TUIImageResource *)self->_resource addObserver:self];
     [(TUIImageResource *)self->_resource addInterest];
     if (*&self->_flags)
@@ -217,21 +217,21 @@
       [(TUIImageResource *)self->_resource addNonVolatileInterest];
       if (*&self->_flags)
       {
-        [(TUIImageResource *)v30 removeNonVolatileInterest];
+        [(TUIImageResource *)resourceCopy2 removeNonVolatileInterest];
       }
     }
 
-    [(TUIImageResource *)v30 removeInterest];
-    [(TUIImageResource *)v30 removeObserver:self];
+    [(TUIImageResource *)resourceCopy2 removeInterest];
+    [(TUIImageResource *)resourceCopy2 removeObserver:self];
   }
 
-  [(TUIImageLayer *)self updateBoundsAndContent:resource != v19];
-  if (a5 == 1)
+  [(TUIImageLayer *)self updateBoundsAndContent:resource != resourceCopy];
+  if (load == 1)
   {
-    v31 = [(TUIImageResource *)self->_resource loadImage];
+    loadImage = [(TUIImageResource *)self->_resource loadImage];
   }
 
-  [(TUIImageLayer *)self setCrossfadesContents:v32];
+  [(TUIImageLayer *)self setCrossfadesContents:contentsCopy];
 }
 
 - (void)dealloc
@@ -248,9 +248,9 @@
   [(TUIImageLayer *)&v3 dealloc];
 }
 
-- (void)updateContentAllowCrossfade:(BOOL)a3
+- (void)updateContentAllowCrossfade:(BOOL)crossfade
 {
-  v3 = a3;
+  crossfadeCopy = crossfade;
   v5 = [(TUIImageResource *)self->_resource imageContentWithOptions:1];
   v43 = v5;
   if (v5)
@@ -289,8 +289,8 @@
       v19 = CGRectGetHeight(v46) / v21;
     }
 
-    v22 = [v43 image];
-    v23 = [v22 layerContents];
+    image = [v43 image];
+    layerContents = [image layerContents];
     v24 = width + v40 * v20;
     v25 = height + (v42 + v41) * v19;
 
@@ -307,12 +307,12 @@
     }
 
     v28 = CGPointZero.y;
-    v29 = [(CALayer *)self->_contentLayer contents];
-    if (v3)
+    contents = [(CALayer *)self->_contentLayer contents];
+    if (crossfadeCopy)
     {
-      v30 = [(TUIImageLayer *)self crossfadesContents];
-      v31 = v29 ? v30 : 0;
-      if (v31 == 1 && v23 && v29 != v23)
+      crossfadesContents = [(TUIImageLayer *)self crossfadesContents];
+      v31 = contents ? crossfadesContents : 0;
+      if (v31 == 1 && layerContents && contents != layerContents)
       {
         +[CATransaction begin];
         [CATransaction setDisableActions:1];
@@ -324,12 +324,12 @@
 
         [(CALayer *)v32 cornerRadius];
         [(CALayer *)self->_contentLayer setCornerRadius:?];
-        v35 = [(CALayer *)v32 cornerCurve];
-        [(CALayer *)self->_contentLayer setCornerCurve:v35];
+        cornerCurve = [(CALayer *)v32 cornerCurve];
+        [(CALayer *)self->_contentLayer setCornerCurve:cornerCurve];
 
         [(CALayer *)self->_contentLayer setMasksToBounds:[(CALayer *)v32 masksToBounds]];
-        v36 = [(CALayer *)v32 contentsGravity];
-        [(CALayer *)self->_contentLayer setContentsGravity:v36];
+        contentsGravity = [(CALayer *)v32 contentsGravity];
+        [(CALayer *)self->_contentLayer setContentsGravity:contentsGravity];
 
         [(CALayer *)self->_contentLayer setMasksToBounds:[(CALayer *)v32 masksToBounds]];
         [(CALayer *)self->_wrapperLayer addSublayer:self->_contentLayer];
@@ -348,7 +348,7 @@
     [CATransaction setDisableActions:1];
     [(TUIImageLayer *)self setBackgroundColor:0];
     [(CALayer *)self->_contentLayer setAnchorPoint:v27, v26];
-    [(CALayer *)self->_contentLayer setContents:v23];
+    [(CALayer *)self->_contentLayer setContents:layerContents];
     [(CALayer *)self->_contentLayer setBounds:CGPointZero.x, v28, v24, v25];
     +[CATransaction commit];
   }
@@ -365,15 +365,15 @@
   }
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1781D4;
   v5[3] = &unk_25F7C8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  imageCopy = image;
+  selfCopy = self;
+  v4 = imageCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

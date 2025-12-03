@@ -1,80 +1,80 @@
 @interface TSCEEvaluationContext
-+ (id)contextForCalcEngine:(id)a3 containingTable:(const TSKUIDStruct *)a4 containingCell:(TSUCellCoord)a5;
-+ (id)contextForCalcEngine:(id)a3 containingTable:(const TSKUIDStruct *)a4 containingCell:(TSUCellCoord)a5 inArrayMode:(BOOL)a6;
-+ (id)newDateConversionOfString:(id)a3 context:(id)a4;
++ (id)contextForCalcEngine:(id)engine containingTable:(const TSKUIDStruct *)table containingCell:(TSUCellCoord)cell;
++ (id)contextForCalcEngine:(id)engine containingTable:(const TSKUIDStruct *)table containingCell:(TSUCellCoord)cell inArrayMode:(BOOL)mode;
++ (id)newDateConversionOfString:(id)string context:(id)context;
 - (BOOL)evaluationAborted;
-- (BOOL)insideFunctor:(unint64_t)a3;
+- (BOOL)insideFunctor:(unint64_t)functor;
 - (TSCECellRef)containingCellRef;
-- (TSCEEvaluationContext)initWithCalcEngine:(id)a3 containingTable:(const TSKUIDStruct *)a4 containingCell:(TSUCellCoord)a5 inArrayMode:(BOOL)a6;
+- (TSCEEvaluationContext)initWithCalcEngine:(id)engine containingTable:(const TSKUIDStruct *)table containingCell:(TSUCellCoord)cell inArrayMode:(BOOL)mode;
 - (TSCERandGenerator)randGenerator;
 - (TSKUIDStruct)containingRowUid;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadArgumentsForFunction:(id)a3 arguments:(void *)a4 numArgs:(unint64_t)a5;
-- (id)newDateConversionOfString:(id)a3;
-- (id)raiseErrorOrConvert:(id)a3;
-- (id)unwrapThunk:(id)a3;
-- (id)unwrapThunk:(id)a3 takeSideEffects:(BOOL)a4;
-- (void)addCalculatedPrecedent:(const TSCEAnyRef *)a3;
-- (void)addCalculatedPrecedentForCategoryRef:(id)a3;
-- (void)addCalculatedPrecedents:(const void *)a3;
-- (void)addDateConversionOfString:(id)a3 toDateValue:(id)a4;
-- (void)addDynamicPrecedent:(id)a3;
-- (void)addRemoteDataSpecifierInterestedIn:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadArgumentsForFunction:(id)function arguments:(void *)arguments numArgs:(unint64_t)args;
+- (id)newDateConversionOfString:(id)string;
+- (id)raiseErrorOrConvert:(id)convert;
+- (id)unwrapThunk:(id)thunk;
+- (id)unwrapThunk:(id)thunk takeSideEffects:(BOOL)effects;
+- (void)addCalculatedPrecedent:(const TSCEAnyRef *)precedent;
+- (void)addCalculatedPrecedentForCategoryRef:(id)ref;
+- (void)addCalculatedPrecedents:(const void *)precedents;
+- (void)addDateConversionOfString:(id)string toDateValue:(id)value;
+- (void)addDynamicPrecedent:(id)precedent;
+- (void)addRemoteDataSpecifierInterestedIn:(id)in;
 - (void)clearAllWarnings;
-- (void)copyWarningsFrom:(id)a3;
+- (void)copyWarningsFrom:(id)from;
 - (void)dealloc;
-- (void)enteringFunctor:(unint64_t)a3;
-- (void)exitingFunctor:(unint64_t)a3;
-- (void)reportWarning:(id)a3;
-- (void)runBlockUnlessAborted:(id)a3;
-- (void)takeSideEffectsFrom:(id)a3;
+- (void)enteringFunctor:(unint64_t)functor;
+- (void)exitingFunctor:(unint64_t)functor;
+- (void)reportWarning:(id)warning;
+- (void)runBlockUnlessAborted:(id)aborted;
+- (void)takeSideEffectsFrom:(id)from;
 @end
 
 @implementation TSCEEvaluationContext
 
-+ (id)contextForCalcEngine:(id)a3 containingTable:(const TSKUIDStruct *)a4 containingCell:(TSUCellCoord)a5
++ (id)contextForCalcEngine:(id)engine containingTable:(const TSKUIDStruct *)table containingCell:(TSUCellCoord)cell
 {
-  v7 = a3;
+  engineCopy = engine;
   v8 = [TSCEEvaluationContext alloc];
-  v10 = objc_msgSend_initWithCalcEngine_containingTable_containingCell_inArrayMode_(v8, v9, v7, a4, *&a5, 1);
+  v10 = objc_msgSend_initWithCalcEngine_containingTable_containingCell_inArrayMode_(v8, v9, engineCopy, table, *&cell, 1);
 
   return v10;
 }
 
-+ (id)contextForCalcEngine:(id)a3 containingTable:(const TSKUIDStruct *)a4 containingCell:(TSUCellCoord)a5 inArrayMode:(BOOL)a6
++ (id)contextForCalcEngine:(id)engine containingTable:(const TSKUIDStruct *)table containingCell:(TSUCellCoord)cell inArrayMode:(BOOL)mode
 {
-  v6 = a6;
-  v9 = a3;
+  modeCopy = mode;
+  engineCopy = engine;
   v10 = [TSCEEvaluationContext alloc];
-  v12 = objc_msgSend_initWithCalcEngine_containingTable_containingCell_inArrayMode_(v10, v11, v9, a4, *&a5, v6);
+  v12 = objc_msgSend_initWithCalcEngine_containingTable_containingCell_inArrayMode_(v10, v11, engineCopy, table, *&cell, modeCopy);
 
   return v12;
 }
 
-- (TSCEEvaluationContext)initWithCalcEngine:(id)a3 containingTable:(const TSKUIDStruct *)a4 containingCell:(TSUCellCoord)a5 inArrayMode:(BOOL)a6
+- (TSCEEvaluationContext)initWithCalcEngine:(id)engine containingTable:(const TSKUIDStruct *)table containingCell:(TSUCellCoord)cell inArrayMode:(BOOL)mode
 {
-  v10 = a3;
+  engineCopy = engine;
   v30.receiver = self;
   v30.super_class = TSCEEvaluationContext;
   v11 = [(TSCEEvaluationContext *)&v30 init];
   v16 = v11;
   if (v11)
   {
-    v11->_calcEngine = v10;
-    v17 = objc_msgSend_documentLocale(v10, v12, v13, v14, v15);
+    v11->_calcEngine = engineCopy;
+    v17 = objc_msgSend_documentLocale(engineCopy, v12, v13, v14, v15);
     locale = v16->_locale;
     v16->_locale = v17;
 
-    v16->_inArrayMode = a6;
+    v16->_inArrayMode = mode;
     *&v16->_suppressCycleCheck = 0;
     *&v16->_wantsCalculatedPrecedents = 257;
     v16->_hasWarnings = 0;
     warnings = v16->_warnings;
     v16->_warnings = 0;
 
-    v16->_containingTable = *a4;
-    v16->_containingCell = a5;
+    v16->_containingTable = *table;
+    v16->_containingCell = cell;
     TSCESymbolTable::TSCESymbolTable(&v29, v16->_locale);
     TSCESymbolTable::operator=(&v16->_symbolTable, &v29);
     p_tableUuidRefs = &v29._tableUuidRefs;
@@ -90,9 +90,9 @@
     valueBindingEnvironment = v16->_valueBindingEnvironment;
     v16->_valueBindingEnvironment = v21;
 
-    if (v10)
+    if (engineCopy)
     {
-      objc_msgSend_emptyReferenceSet(v10, v23, v24, v25, v26);
+      objc_msgSend_emptyReferenceSet(engineCopy, v23, v24, v25, v26);
     }
 
     else
@@ -125,7 +125,7 @@
   [(TSCEEvaluationContext *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v6 = objc_msgSend_initWithCalcEngine_containingTable_containingCell_inArrayMode_(v4, v5, self->_calcEngine, &self->_containingTable, *&self->_containingCell, self->_inArrayMode);
@@ -189,10 +189,10 @@
   objc_msgSend_removeAllObjects(warnings, v6, v7, v8, v9);
 }
 
-- (void)reportWarning:(id)a3
+- (void)reportWarning:(id)warning
 {
-  v11 = a3;
-  if (v11)
+  warningCopy = warning;
+  if (warningCopy)
   {
     if (!self->_warnings)
     {
@@ -210,16 +210,16 @@
 
     if (self->_insideFunctorStack.__begin_ == self->_insideFunctorStack.__end_)
     {
-      objc_msgSend_addObject_(self->_warnings, v4, v11, v5, v6);
+      objc_msgSend_addObject_(self->_warnings, v4, warningCopy, v5, v6);
     }
 
-    objc_msgSend_addObject_(self->_localWarnings, v4, v11, v5, v6);
+    objc_msgSend_addObject_(self->_localWarnings, v4, warningCopy, v5, v6);
   }
 }
 
-- (void)copyWarningsFrom:(id)a3
+- (void)copyWarningsFrom:(id)from
 {
-  v14 = *(a3 + 9);
+  v14 = *(from + 9);
   if (objc_msgSend_count(v14, v4, v5, v6, v7))
   {
     warnings = self->_warnings;
@@ -270,13 +270,13 @@
   return result;
 }
 
-- (void)addDynamicPrecedent:(id)a3
+- (void)addDynamicPrecedent:(id)precedent
 {
-  v4 = a3;
-  v9 = objc_msgSend_nativeType(v4, v5, v6, v7, v8);
+  precedentCopy = precedent;
+  v9 = objc_msgSend_nativeType(precedentCopy, v5, v6, v7, v8);
   if (v9 == 6)
   {
-    v18 = objc_msgSend_asReferenceValue(v4, v10, v11, v12, v13);
+    v18 = objc_msgSend_asReferenceValue(precedentCopy, v10, v11, v12, v13);
     v17 = v18;
     if (v18)
     {
@@ -289,7 +289,7 @@
 
   if (v9 == 14)
   {
-    v17 = objc_msgSend_asCategoryRef(v4, v10, v11, v12, v13);
+    v17 = objc_msgSend_asCategoryRef(precedentCopy, v10, v11, v12, v13);
     if (v17)
     {
       objc_msgSend_addCalculatedPrecedentForCategoryRef_(self, v14, v17, v15, v16);
@@ -302,29 +302,29 @@ LABEL_9:
 
   if (v9 == 16)
   {
-    objc_msgSend_asValueGridValue(v4, v10, v11, v12, v13);
+    objc_msgSend_asValueGridValue(precedentCopy, v10, v11, v12, v13);
   }
 
 LABEL_10:
 }
 
-- (void)addCalculatedPrecedent:(const TSCEAnyRef *)a3
+- (void)addCalculatedPrecedent:(const TSCEAnyRef *)precedent
 {
-  if (TSCEAnyRef::isRangeValid(a3))
+  if (TSCEAnyRef::isRangeValid(precedent))
   {
 
-    TSCEReferenceSet::insertAnyRef(&self->_calculatedPrecedents, a3, v5, v6, v7);
+    TSCEReferenceSet::insertAnyRef(&self->_calculatedPrecedents, precedent, v5, v6, v7);
   }
 }
 
-- (void)addCalculatedPrecedentForCategoryRef:(id)a3
+- (void)addCalculatedPrecedentForCategoryRef:(id)ref
 {
-  v4 = a3;
-  v9 = objc_msgSend_groupByUid(v4, v5, v6, v7, v8);
+  refCopy = ref;
+  v9 = objc_msgSend_groupByUid(refCopy, v5, v6, v7, v8);
   if (v9 | v10)
   {
-    TSCEReferenceSet::insertRef(&self->_calculatedPrecedents, v4);
-    v15 = objc_msgSend_copy(v4, v11, v12, v13, v14);
+    TSCEReferenceSet::insertRef(&self->_calculatedPrecedents, refCopy);
+    v15 = objc_msgSend_copy(refCopy, v11, v12, v13, v14);
     v54 = 0;
     v55 = 0;
     v20 = objc_msgSend_calcEngine(self, v16, v17, v18, v19);
@@ -375,34 +375,34 @@ LABEL_10:
   }
 }
 
-- (void)addCalculatedPrecedents:(const void *)a3
+- (void)addCalculatedPrecedents:(const void *)precedents
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2212A7FA4;
   v3[3] = &unk_278460D78;
   v3[4] = self;
-  TSCECellRefSet::enumerateOwnersUsingBlock(a3, v3);
+  TSCECellRefSet::enumerateOwnersUsingBlock(precedents, v3);
 }
 
-- (void)takeSideEffectsFrom:(id)a3
+- (void)takeSideEffectsFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_2212A8278;
   v18[3] = &unk_278461F90;
   v18[4] = self;
-  TSCEReferenceSet::forallRefs((v4 + 37), v18);
-  objc_msgSend_copyWarningsFrom_(self, v5, v4, v6, v7);
-  if (self->_shouldPickupRemoteDataInterests && *(v4 + 288) == 1)
+  TSCEReferenceSet::forallRefs((fromCopy + 37), v18);
+  objc_msgSend_copyWarningsFrom_(self, v5, fromCopy, v6, v7);
+  if (self->_shouldPickupRemoteDataInterests && *(fromCopy + 288) == 1)
   {
-    v12 = objc_msgSend_remoteDataKeysInterestedIn(v4, v8, v9, v10, v11);
+    v12 = objc_msgSend_remoteDataKeysInterestedIn(fromCopy, v8, v9, v10, v11);
 
     if (v12)
     {
       remoteDataKeysInterestedIn = self->_remoteDataKeysInterestedIn;
-      v17 = v4[35];
+      v17 = fromCopy[35];
       if (remoteDataKeysInterestedIn)
       {
         if (remoteDataKeysInterestedIn != v17)
@@ -413,32 +413,32 @@ LABEL_10:
 
       else
       {
-        objc_storeStrong(&self->_remoteDataKeysInterestedIn, v4[35]);
+        objc_storeStrong(&self->_remoteDataKeysInterestedIn, fromCopy[35]);
       }
     }
   }
 }
 
-- (id)unwrapThunk:(id)a3 takeSideEffects:(BOOL)a4
+- (id)unwrapThunk:(id)thunk takeSideEffects:(BOOL)effects
 {
-  v4 = a4;
-  v6 = a3;
-  if (objc_msgSend_isThunk(v6, v7, v8, v9, v10))
+  effectsCopy = effects;
+  thunkCopy = thunk;
+  if (objc_msgSend_isThunk(thunkCopy, v7, v8, v9, v10))
   {
-    v15 = objc_msgSend_asThunkValue(v6, v11, v12, v13, v14);
+    v15 = objc_msgSend_asThunkValue(thunkCopy, v11, v12, v13, v14);
     v20 = objc_msgSend_ast(v15, v16, v17, v18, v19);
     v25 = objc_msgSend_copy(self, v21, v22, v23, v24);
     v30 = sub_221250CB8(v20, v25, 0);
-    if (v4)
+    if (effectsCopy)
     {
       objc_msgSend_takeSideEffectsFrom_(self, v26, v25, v28, v29);
-      v35 = objc_msgSend_warnings(v6, v31, v32, v33, v34);
+      v35 = objc_msgSend_warnings(thunkCopy, v31, v32, v33, v34);
       objc_msgSend_attachWarnings_(v30, v36, v35, v37, v38);
     }
 
     if (objc_msgSend_isThunk(v30, v26, v27, v28, v29))
     {
-      v41 = objc_msgSend_unwrapThunk_takeSideEffects_(self, v39, v30, v4, v40);
+      v41 = objc_msgSend_unwrapThunk_takeSideEffects_(self, v39, v30, effectsCopy, v40);
     }
 
     else
@@ -451,24 +451,24 @@ LABEL_10:
 
   else
   {
-    v42 = v6;
+    v42 = thunkCopy;
   }
 
   return v42;
 }
 
-- (id)unwrapThunk:(id)a3
+- (id)unwrapThunk:(id)thunk
 {
-  v4 = objc_msgSend_unwrapThunk_takeSideEffects_(self, a2, a3, 1, v3);
+  v4 = objc_msgSend_unwrapThunk_takeSideEffects_(self, a2, thunk, 1, v3);
 
   return v4;
 }
 
-- (void)addRemoteDataSpecifierInterestedIn:(id)a3
+- (void)addRemoteDataSpecifierInterestedIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   remoteDataKeysInterestedIn = self->_remoteDataKeysInterestedIn;
-  v10 = v4;
+  v10 = inCopy;
   if (!remoteDataKeysInterestedIn)
   {
     v8 = objc_alloc_init(TSCERemoteDataSpecifierSet);
@@ -476,13 +476,13 @@ LABEL_10:
     self->_remoteDataKeysInterestedIn = v8;
 
     remoteDataKeysInterestedIn = self->_remoteDataKeysInterestedIn;
-    v4 = v10;
+    inCopy = v10;
   }
 
-  objc_msgSend_insertSpecifier_(remoteDataKeysInterestedIn, v4, v4, v5, v6);
+  objc_msgSend_insertSpecifier_(remoteDataKeysInterestedIn, inCopy, inCopy, v5, v6);
 }
 
-- (void)enteringFunctor:(unint64_t)a3
+- (void)enteringFunctor:(unint64_t)functor
 {
   end = self->_insideFunctorStack.__end_;
   cap = self->_insideFunctorStack.__cap_;
@@ -518,7 +518,7 @@ LABEL_10:
     v15 = end - begin;
     v16 = (8 * v10);
     v17 = (8 * v10 - 8 * v15);
-    *v16 = a3;
+    *v16 = functor;
     v7 = v16 + 1;
     memcpy(v17, begin, v9);
     v18 = self->_insideFunctorStack.__begin_;
@@ -533,14 +533,14 @@ LABEL_10:
 
   else
   {
-    *end = a3;
+    *end = functor;
     v7 = end + 1;
   }
 
   self->_insideFunctorStack.__end_ = v7;
 }
 
-- (void)exitingFunctor:(unint64_t)a3
+- (void)exitingFunctor:(unint64_t)functor
 {
   begin = self->_insideFunctorStack.__begin_;
   end = self->_insideFunctorStack.__end_;
@@ -560,7 +560,7 @@ LABEL_10:
   {
     v20 = *(end - 1);
     self->_insideFunctorStack.__end_ = end - 1;
-    if (v20 != a3)
+    if (v20 != functor)
     {
       v21 = MEMORY[0x277D81150];
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEEvaluationContext exitingFunctor:]", v3, v4);
@@ -574,7 +574,7 @@ LABEL_10:
   }
 }
 
-- (BOOL)insideFunctor:(unint64_t)a3
+- (BOOL)insideFunctor:(unint64_t)functor
 {
   begin = self->_insideFunctorStack.__begin_;
   end = self->_insideFunctorStack.__end_;
@@ -587,10 +587,10 @@ LABEL_10:
   do
   {
     v6 = *(v5 - 1);
-    result = v6 == a3;
+    result = v6 == functor;
   }
 
-  while (v6 != a3 && v5++ != end);
+  while (v6 != functor && v5++ != end);
   return result;
 }
 
@@ -610,9 +610,9 @@ LABEL_10:
   return result;
 }
 
-- (id)raiseErrorOrConvert:(id)a3
+- (id)raiseErrorOrConvert:(id)convert
 {
-  v5 = objc_msgSend_errorValue_(TSCEErrorValue, a2, a3, v3, v4);
+  v5 = objc_msgSend_errorValue_(TSCEErrorValue, a2, convert, v3, v4);
 
   return v5;
 }
@@ -630,10 +630,10 @@ LABEL_10:
   }
 }
 
-- (void)runBlockUnlessAborted:(id)a3
+- (void)runBlockUnlessAborted:(id)aborted
 {
-  v4 = a3;
-  v5 = v4;
+  abortedCopy = aborted;
+  v5 = abortedCopy;
   if (self->_allowAbort)
   {
     v9 = dispatch_group_create();
@@ -670,37 +670,37 @@ LABEL_10:
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(abortedCopy + 2))(abortedCopy);
   }
 }
 
-- (id)loadArgumentsForFunction:(id)a3 arguments:(void *)a4 numArgs:(unint64_t)a5
+- (id)loadArgumentsForFunction:(id)function arguments:(void *)arguments numArgs:(unint64_t)args
 {
-  if (objc_msgSend_evaluationAborted(self, a2, a3, a4, a5))
+  if (objc_msgSend_evaluationAborted(self, a2, function, arguments, args))
   {
     v13 = objc_msgSend_evaluationStack(self, v9, v10, v11, v12);
-    TSCEEvaluationStack::setArgumentCount(v13, a5);
+    TSCEEvaluationStack::setArgumentCount(v13, args);
     v18 = objc_msgSend_evaluationStack(self, v14, v15, v16, v17);
     TSCEEvaluationStack::clearArgument(v18, v19, v20, v21, v22);
     v27 = objc_msgSend_abortError(TSCEError, v23, v24, v25, v26);
     goto LABEL_34;
   }
 
-  v28 = *a4;
-  for (i = *(a4 + 1); i != v28; i -= 8)
+  v28 = *arguments;
+  for (i = *(arguments + 1); i != v28; i -= 8)
   {
     v30 = *(i - 8);
   }
 
-  *(a4 + 1) = v28;
+  *(arguments + 1) = v28;
   v31 = objc_msgSend_evaluationStack(self, v9, v10, v11, v12);
-  TSCEEvaluationStack::setArgumentCount(v31, a5);
-  v36 = objc_msgSend_minArguments(a3, v32, v33, v34, v35);
-  v41 = objc_msgSend_maxArguments(a3, v37, v38, v39, v40);
-  if (v36 > a5 || v41 < a5)
+  TSCEEvaluationStack::setArgumentCount(v31, args);
+  v36 = objc_msgSend_minArguments(function, v32, v33, v34, v35);
+  v41 = objc_msgSend_maxArguments(function, v37, v38, v39, v40);
+  if (v36 > args || v41 < args)
   {
-    v46 = objc_msgSend_functionName(a3, v42, v43, v44, v45);
-    v27 = objc_msgSend_wrongNumberOfArgumentsErrorForFunctionName_provided_(TSCEError, v47, v46, a5, v48);
+    v46 = objc_msgSend_functionName(function, v42, v43, v44, v45);
+    v27 = objc_msgSend_wrongNumberOfArgumentsErrorForFunctionName_provided_(TSCEError, v47, v46, args, v48);
 
     if (v27)
     {
@@ -708,7 +708,7 @@ LABEL_10:
     }
   }
 
-  if (!a5)
+  if (!args)
   {
 LABEL_30:
     v27 = 0;
@@ -716,17 +716,17 @@ LABEL_30:
   }
 
   v49 = 0;
-  v115 = a5 - 1;
+  v115 = args - 1;
   while (1)
   {
-    v50 = objc_msgSend_argumentSpecForIndex_numArgs_(a3, v42, v49, a5, v45, v115);
+    v50 = objc_msgSend_argumentSpecForIndex_numArgs_(function, v42, v49, args, v45, v115);
     v55 = v50;
     v116 = 0;
     if (v50 && objc_msgSend_accessorMode(v50, v51, v52, v53, v54) == 4)
     {
       v56 = objc_msgSend_evaluationStack(self, v51, v52, v53, v54);
       v61 = objc_msgSend_argumentType(v55, v57, v58, v59, v60);
-      v62 = TSCEEvaluationStack::valueForArgumentAtIndexRepeatingMode(v56, v49, a3, self, v55, v61, a5);
+      v62 = TSCEEvaluationStack::valueForArgumentAtIndexRepeatingMode(v56, v49, function, self, v55, v61, args);
       v49 = v115;
     }
 
@@ -741,7 +741,7 @@ LABEL_30:
 
     if (objc_msgSend_isFunctorValue(v116, v65, v66, v67, v68))
     {
-      if ((objc_msgSend_acceptsFunctorAtIndex_numArgs_(a3, v69, v49, a5, v72) & 1) == 0)
+      if ((objc_msgSend_acceptsFunctorAtIndex_numArgs_(function, v69, v49, args, v72) & 1) == 0)
       {
         break;
       }
@@ -782,7 +782,7 @@ LABEL_26:
     v103 = 1;
     v102 = 1;
 LABEL_28:
-    v104 = objc_msgSend_functionName(a3, v88, v89, v90, v91);
+    v104 = objc_msgSend_functionName(function, v88, v89, v90, v91);
     v27 = objc_msgSend_checkForTooLargeArrayNumColumns_numRows_functionName_(TSCEError, v105, v102, v103, v104);
 
     if (v27)
@@ -790,15 +790,15 @@ LABEL_28:
       goto LABEL_32;
     }
 
-    sub_221179A54(a4, &v116);
+    sub_221179A54(arguments, &v116);
 
-    if (++v49 >= a5)
+    if (++v49 >= args)
     {
       goto LABEL_30;
     }
   }
 
-  v106 = objc_msgSend_functionName(a3, v69, v70, v71, v72);
+  v106 = objc_msgSend_functionName(function, v69, v70, v71, v72);
   v27 = objc_msgSend_cannotAcceptLambdaError_argIndex_(TSCEError, v107, v106, (v49 + 1), v108);
 
 LABEL_32:
@@ -810,15 +810,15 @@ LABEL_34:
   return v27;
 }
 
-- (void)addDateConversionOfString:(id)a3 toDateValue:(id)a4
+- (void)addDateConversionOfString:(id)string toDateValue:(id)value
 {
-  v13 = a3;
-  v10 = a4;
-  if (v13)
+  stringCopy = string;
+  valueCopy = value;
+  if (stringCopy)
   {
     if (self->_recentConversions)
     {
-      if (!v10)
+      if (!valueCopy)
       {
         goto LABEL_6;
       }
@@ -830,32 +830,32 @@ LABEL_34:
       recentConversions = self->_recentConversions;
       self->_recentConversions = v11;
 
-      if (!v10)
+      if (!valueCopy)
       {
 LABEL_6:
-        v10 = objc_msgSend_null(MEMORY[0x277CBEB68], v6, v7, v8, v9);
+        valueCopy = objc_msgSend_null(MEMORY[0x277CBEB68], v6, v7, v8, v9);
       }
     }
 
-    objc_msgSend_setObject_forKey_(self->_recentConversions, v6, v10, v13, v9);
+    objc_msgSend_setObject_forKey_(self->_recentConversions, v6, valueCopy, stringCopy, v9);
   }
 }
 
-- (id)newDateConversionOfString:(id)a3
+- (id)newDateConversionOfString:(id)string
 {
-  v7 = a3;
-  if (!v7)
+  stringCopy = string;
+  if (!stringCopy)
   {
     goto LABEL_7;
   }
 
-  v12 = objc_msgSend_objectForKey_(self->_recentConversions, v4, v7, v5, v6);
+  v12 = objc_msgSend_objectForKey_(self->_recentConversions, v4, stringCopy, v5, v6);
   if (!v12)
   {
     v15 = objc_msgSend_locale(self, v8, v9, v10, v11);
     v14 = TSUCreateDateFromString();
 
-    objc_msgSend_addDateConversionOfString_toDateValue_(self, v16, v7, v14, v17);
+    objc_msgSend_addDateConversionOfString_toDateValue_(self, v16, stringCopy, v14, v17);
     goto LABEL_8;
   }
 
@@ -875,14 +875,14 @@ LABEL_8:
   return v14;
 }
 
-+ (id)newDateConversionOfString:(id)a3 context:(id)a4
++ (id)newDateConversionOfString:(id)string context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v10 = v6;
-  if (v6)
+  stringCopy = string;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (contextCopy)
   {
-    v11 = objc_msgSend_newDateConversionOfString_(v6, v7, v5, v8, v9);
+    v11 = objc_msgSend_newDateConversionOfString_(contextCopy, v7, stringCopy, v8, v9);
   }
 
   else
@@ -893,7 +893,7 @@ LABEL_8:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v18, v13, v17, 680, 0, "Should not have reached this point with a NULL context - you are lucky you are getting any date at all.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
-    if (v5)
+    if (stringCopy)
     {
       v27 = objc_msgSend_currentLocale(MEMORY[0x277D81228], v23, v24, v25, v26);
       v11 = TSUCreateDateFromString();

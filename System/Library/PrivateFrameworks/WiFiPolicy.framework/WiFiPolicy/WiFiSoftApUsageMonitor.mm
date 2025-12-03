@@ -3,13 +3,13 @@
 - (WiFiSoftApUsageMonitor)init;
 - (id)statsDictionary;
 - (void)initStats;
-- (void)initStats:(id)a3;
+- (void)initStats:(id)stats;
 - (void)persistStats;
 - (void)resetStats;
 - (void)resetStatsInternal;
-- (void)statsDictionaryInternal:(id)a3;
-- (void)updateStats:(id)a3;
-- (void)updateStatsInternal:(id)a3;
+- (void)statsDictionaryInternal:(id)internal;
+- (void)updateStats:(id)stats;
+- (void)updateStatsInternal:(id)internal;
 @end
 
 @implementation WiFiSoftApUsageMonitor
@@ -69,15 +69,15 @@ uint64_t __40__WiFiSoftApUsageMonitor_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)initStats:(id)a3
+- (void)initStats:(id)stats
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 keyEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  statsCopy = stats;
+  keyEnumerator = [statsCopy keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v6;
+    v8 = nextObject;
     v9 = 0;
     v10 = MEMORY[0x277D86220];
     *&v7 = 136315394;
@@ -85,15 +85,15 @@ uint64_t __40__WiFiSoftApUsageMonitor_sharedInstance__block_invoke()
     while (1)
     {
       v11 = v9;
-      v12 = [v8 stringValue];
-      v9 = [v4 objectForKey:v12];
+      stringValue = [v8 stringValue];
+      v9 = [statsCopy objectForKey:stringValue];
 
       if (v9)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v12 isEqualToString:@"OldestActiveTime"])
+          if ([stringValue isEqualToString:@"OldestActiveTime"])
           {
             objc_storeStrong(&self->_softApOldestActiveTime, v9);
           }
@@ -104,67 +104,67 @@ uint64_t __40__WiFiSoftApUsageMonitor_sharedInstance__block_invoke()
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v12 isEqualToString:@"StatsValid"])
+          if ([stringValue isEqualToString:@"StatsValid"])
           {
             self->_statsValid = [v9 BOOLValue];
           }
 
-          else if ([v12 isEqualToString:@"MaximizeCompatibilityEnabled"])
+          else if ([stringValue isEqualToString:@"MaximizeCompatibilityEnabled"])
           {
             self->_compatibilityEnabled = [v9 BOOLValue];
           }
 
-          else if ([v12 isEqualToString:@"MaximizeCompatibilityToggled"])
+          else if ([stringValue isEqualToString:@"MaximizeCompatibilityToggled"])
           {
             self->_compatibilityToggled = [v9 BOOLValue];
           }
 
           else
           {
-            v16 = [v9 unsignedLongValue];
-            if ([v12 isEqualToString:@"SoftApUpCount"])
+            unsignedLongValue = [v9 unsignedLongValue];
+            if ([stringValue isEqualToString:@"SoftApUpCount"])
             {
-              self->_softApUpCount = v16;
+              self->_softApUpCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"NoClientConnectedSessionCount"])
+            else if ([stringValue isEqualToString:@"NoClientConnectedSessionCount"])
             {
-              self->_noClientConnectedSessionCount = v16;
+              self->_noClientConnectedSessionCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"OnlyAppleClientConnectedSessionCount"])
+            else if ([stringValue isEqualToString:@"OnlyAppleClientConnectedSessionCount"])
             {
-              self->_onlyAppleClientConnectedSessionCount = v16;
+              self->_onlyAppleClientConnectedSessionCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"OnlyOtherClientConnectedSessionCount"])
+            else if ([stringValue isEqualToString:@"OnlyOtherClientConnectedSessionCount"])
             {
-              self->_onlyOtherClientConnectedSessionCount = v16;
+              self->_onlyOtherClientConnectedSessionCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"MixClientConnectedSessionCount"])
+            else if ([stringValue isEqualToString:@"MixClientConnectedSessionCount"])
             {
-              self->_mixClientConnectedSessionCount = v16;
+              self->_mixClientConnectedSessionCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"AppleClientConnectCount"])
+            else if ([stringValue isEqualToString:@"AppleClientConnectCount"])
             {
-              self->_appleClientConnectCount = v16;
+              self->_appleClientConnectCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"OtherClientConnectCount"])
+            else if ([stringValue isEqualToString:@"OtherClientConnectCount"])
             {
-              self->_otherClientConnectCount = v16;
+              self->_otherClientConnectCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"24GHzSessionCount"])
+            else if ([stringValue isEqualToString:@"24GHzSessionCount"])
             {
-              self->_twoFourGHzSessionCount = v16;
+              self->_twoFourGHzSessionCount = unsignedLongValue;
             }
 
-            else if ([v12 isEqualToString:@"5GHzSessionCount"])
+            else if ([stringValue isEqualToString:@"5GHzSessionCount"])
             {
-              self->_fiveGHzSessionCount = v16;
+              self->_fiveGHzSessionCount = unsignedLongValue;
             }
           }
 
@@ -176,7 +176,7 @@ uint64_t __40__WiFiSoftApUsageMonitor_sharedInstance__block_invoke()
           *buf = v18;
           *&buf[4] = "[WiFiSoftApUsageMonitor initStats:]";
           *&buf[12] = 2112;
-          *&buf[14] = v12;
+          *&buf[14] = stringValue;
           v13 = v10;
           v14 = "%s: unexpected value for %@";
           goto LABEL_14;
@@ -188,7 +188,7 @@ uint64_t __40__WiFiSoftApUsageMonitor_sharedInstance__block_invoke()
         *buf = v18;
         *&buf[4] = "[WiFiSoftApUsageMonitor initStats:]";
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = stringValue;
         v13 = v10;
         v14 = "%s: value is null for %@";
 LABEL_14:
@@ -197,10 +197,10 @@ LABEL_14:
 
 LABEL_15:
 
-      v15 = [v5 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v8 = v15;
-      if (!v15)
+      v8 = nextObject2;
+      if (!nextObject2)
       {
 
         break;
@@ -213,20 +213,20 @@ LABEL_15:
 
 - (void)initStats
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v4 dictionaryForKey:@"WiFiHotspotUsageHistory"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"WiFiHotspotUsageHistory"];
   if (v3)
   {
     [(WiFiSoftApUsageMonitor *)self initStats:v3];
   }
 }
 
-- (void)updateStatsInternal:(id)a3
+- (void)updateStatsInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   compatibilityEnabled = self->_compatibilityEnabled;
-  v20 = v4;
-  v6 = [v4 objectForKey:@"MaximizeCompatibilityEnabled"];
+  v20 = internalCopy;
+  v6 = [internalCopy objectForKey:@"MaximizeCompatibilityEnabled"];
   if (v6)
   {
     objc_opt_class();
@@ -262,9 +262,9 @@ LABEL_15:
 
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [v9 unsignedLongValue];
-    self->_appleClientConnectCount += v10;
-    v11 = v10 == 0;
+    unsignedLongValue = [v9 unsignedLongValue];
+    self->_appleClientConnectCount += unsignedLongValue;
+    v11 = unsignedLongValue == 0;
   }
 
   else
@@ -276,9 +276,9 @@ LABEL_15:
 
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = [v12 unsignedLongValue];
-    self->_otherClientConnectCount += v13;
-    v14 = v13 != 0;
+    unsignedLongValue2 = [v12 unsignedLongValue];
+    self->_otherClientConnectCount += unsignedLongValue2;
+    v14 = unsignedLongValue2 != 0;
   }
 
   else
@@ -337,17 +337,17 @@ LABEL_15:
   self->_statsValid = 1;
 }
 
-- (void)updateStats:(id)a3
+- (void)updateStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__WiFiSoftApUsageMonitor_updateStats___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statsCopy;
+  v6 = statsCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -384,13 +384,13 @@ uint64_t __38__WiFiSoftApUsageMonitor_updateStats___block_invoke(uint64_t a1)
   dispatch_sync(internalQueue, block);
 }
 
-- (void)statsDictionaryInternal:(id)a3
+- (void)statsDictionaryInternal:(id)internal
 {
-  v4 = a3;
-  v18 = v4;
+  internalCopy = internal;
+  v18 = internalCopy;
   if (self->_statsValid)
   {
-    [v4 setObject:self->_softApOldestActiveTime forKeyedSubscript:@"OldestActiveTime"];
+    [internalCopy setObject:self->_softApOldestActiveTime forKeyedSubscript:@"OldestActiveTime"];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_softApUpCount];
     [v18 setObject:v5 forKeyedSubscript:@"SoftApUpCount"];
 
@@ -440,8 +440,8 @@ uint64_t __38__WiFiSoftApUsageMonitor_updateStats___block_invoke(uint64_t a1)
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(WiFiSoftApUsageMonitor *)self statsDictionaryInternal:v4];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 setObject:v4 forKey:@"WiFiHotspotUsageHistory"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:v4 forKey:@"WiFiHotspotUsageHistory"];
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface MPSNDArrayMatrixMultiplication
 - (BOOL)advanceAutoTuneIteration;
-- (MPSNDArrayMatrixMultiplication)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayMatrixMultiplication)initWithDevice:(id)a3 sourceCount:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4;
-- (id)encodePreProcessingToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArray:(id *)a6 kernelDAGObject:(id *)a7;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
-- (unint64_t)kernelDimensionalityForSourceArrays:(id)a3 destinationArrays:(id)a4 kernelDAGObject:(id)a5;
+- (MPSNDArrayMatrixMultiplication)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayMatrixMultiplication)initWithDevice:(id)device sourceCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state;
+- (id)encodePreProcessingToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays destinationArray:(id *)array kernelDAGObject:(id *)object;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
+- (unint64_t)kernelDimensionalityForSourceArrays:(id)arrays destinationArrays:(id)destinationArrays kernelDAGObject:(id)object;
 - (void)clearAutoTuningParameters;
 - (void)dealloc;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 normScaleArray:(id)a6 resultState:(id)a7 destinationArray:(id)a8 kernelDAGObject:(id)a9;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAutoTuningParameters:(void *)a3;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays normScaleArray:(id)array resultState:(id)state destinationArray:(id)destinationArray kernelDAGObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAutoTuningParameters:(void *)parameters;
 @end
 
 @implementation MPSNDArrayMatrixMultiplication
 
-- (unint64_t)kernelDimensionalityForSourceArrays:(id)a3 destinationArrays:(id)a4 kernelDAGObject:(id)a5
+- (unint64_t)kernelDimensionalityForSourceArrays:(id)arrays destinationArrays:(id)destinationArrays kernelDAGObject:(id)object
 {
-  v5 = a5;
-  if (!a5 || (v9 = [a5 graph], v10 = **(v9 + 64), (v11 = *(*(v9 + 64) + 8) - v10) == 0))
+  objectCopy = object;
+  if (!object || (v9 = [object graph], v10 = **(v9 + 64), (v11 = *(*(v9 + 64) + 8) - v10) == 0))
   {
 LABEL_8:
-    v14 = [v5 graph];
-    v15 = *(v14 + 64);
+    graph = [objectCopy graph];
+    v15 = *(graph + 64);
     v16 = *v15;
     v17 = v15[1];
     if (*v15 == v17)
@@ -33,10 +33,10 @@ LABEL_8:
 
     else
     {
-      v18 = v14;
-      v197 = a4;
-      v198 = v5;
-      v19 = self;
+      v18 = graph;
+      destinationArraysCopy = destinationArrays;
+      v198 = objectCopy;
+      selfCopy = self;
       v20 = 0;
       v21 = -1;
       v22 = -1;
@@ -72,9 +72,9 @@ LABEL_8:
       if (v21 == -1)
       {
         v21 = 0;
-        self = v19;
-        a4 = v197;
-        v5 = v198;
+        self = selfCopy;
+        destinationArrays = destinationArraysCopy;
+        objectCopy = v198;
         if (!MTLReportFailureTypeEnabled())
         {
           goto LABEL_25;
@@ -83,9 +83,9 @@ LABEL_8:
         goto LABEL_24;
       }
 
-      self = v19;
-      a4 = v197;
-      v5 = v198;
+      self = selfCopy;
+      destinationArrays = destinationArraysCopy;
+      objectCopy = v198;
       if (v23 != -1)
       {
         goto LABEL_26;
@@ -98,8 +98,8 @@ LABEL_25:
       v23 = 0;
       v22 = 0;
 LABEL_26:
-      v27 = [a3 objectAtIndexedSubscript:{v21, v197, v198}];
-      v28 = [a3 objectAtIndexedSubscript:v23];
+      v27 = [arrays objectAtIndexedSubscript:{v21, destinationArraysCopy, v198}];
+      v28 = [arrays objectAtIndexedSubscript:v23];
       if (v22 == -1)
       {
         v29 = 0;
@@ -107,10 +107,10 @@ LABEL_26:
 
       else
       {
-        v29 = [a3 objectAtIndexedSubscript:v22];
+        v29 = [arrays objectAtIndexedSubscript:v22];
       }
 
-      v30 = [a4 objectAtIndexedSubscript:0];
+      v30 = [destinationArrays objectAtIndexedSubscript:0];
       v31 = *MEMORY[0x277CD7350];
       v32 = *(&self->super.super.super.super.isa + v31);
       v33 = MEMORY[0x277CD7410];
@@ -254,9 +254,9 @@ LABEL_85:
           }
 
           v71 = v30;
-          v72 = [v5 graph];
-          v73 = **(v72 + 56);
-          if (*(*(v72 + 56) + 8) == v73)
+          graph2 = [objectCopy graph];
+          v73 = **(graph2 + 56);
+          if (*(*(graph2 + 56) + 8) == v73)
           {
             std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
           }
@@ -268,10 +268,10 @@ LABEL_85:
             std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
           }
 
-          v76 = self;
+          selfCopy2 = self;
           v77 = *v74;
-          v78 = [v5 finalOp];
-          if ((*(*v78 + 16))(v78) && *(v77 + 8) == 268435488)
+          finalOp = [objectCopy finalOp];
+          if ((*(*finalOp + 16))(finalOp) && *(v77 + 8) == 268435488)
           {
             v79 = *v33;
             v80 = *(v27 + v79);
@@ -770,7 +770,7 @@ LABEL_112:
                                 if (v193 == v194 * *(v199 + (v116 & 0xF)) && (v86 && v88 || (*(v29 + *MEMORY[0x277CD73C8]) >> 3) * v178 == *(v29 + *MEMORY[0x277CD7400])))
                                 {
 LABEL_157:
-                                  if ((*(&v76->super.super.super.super.isa + v31))[368] < 11)
+                                  if ((*(&selfCopy2->super.super.super.super.isa + v31))[368] < 11)
                                   {
                                     return 3;
                                   }
@@ -831,11 +831,11 @@ LABEL_24:
   return result;
 }
 
-- (MPSNDArrayMatrixMultiplication)initWithDevice:(id)a3 sourceCount:(unint64_t)a4
+- (MPSNDArrayMatrixMultiplication)initWithDevice:(id)device sourceCount:(unint64_t)count
 {
   v16.receiver = self;
   v16.super_class = MPSNDArrayMatrixMultiplication;
-  v5 = [(MPSNDArrayMultiaryKernel *)&v16 initWithDevice:a3 sourceCount:a4];
+  v5 = [(MPSNDArrayMultiaryKernel *)&v16 initWithDevice:device sourceCount:count];
   v6 = v5;
   if (!v5)
   {
@@ -878,29 +878,29 @@ LABEL_4:
 LABEL_5:
   if (((*(&v6->super.super.super.super.isa + v7))[368] - 25) <= 0xFFFFFFF8)
   {
-    v6->_mmul = [objc_alloc(MEMORY[0x277CD75E0]) initWithDevice:a3 transposeLeft:0 transposeRight:0 resultRows:0 resultColumns:0 interiorColumns:0 alpha:1.0 beta:1.0];
+    v6->_mmul = [objc_alloc(MEMORY[0x277CD75E0]) initWithDevice:device transposeLeft:0 transposeRight:0 resultRows:0 resultColumns:0 interiorColumns:0 alpha:1.0 beta:1.0];
   }
 
-  v11 = [[MPSNDArrayIdentity alloc] initWithDevice:a3];
+  v11 = [[MPSNDArrayIdentity alloc] initWithDevice:device];
   v6->_identity = v11;
   *(&v11->super.super.super.super.super.isa + *v10) = (*(&v11->super.super.super.super.super.isa + *v10) | 1);
   v6->_normFusionDescriptor = 0;
   v6->_normScaleArray = 0;
   v12 = [MPSNDArrayStitchedReductionRMSNorm alloc];
   LODWORD(v13) = 897988541;
-  v6->_rmsKernel = [(MPSNDArrayStitchedReductionRMSNorm *)v12 initWithDevice:a3 axis:0 epsilon:v13];
-  v6->_softmaxKernel = [[MPSNDArrayStitchedReductionSoftmax alloc] initWithDevice:a3 axis:0];
+  v6->_rmsKernel = [(MPSNDArrayStitchedReductionRMSNorm *)v12 initWithDevice:device axis:0 epsilon:v13];
+  v6->_softmaxKernel = [[MPSNDArrayStitchedReductionSoftmax alloc] initWithDevice:device axis:0];
   v6->_autoTuneIteration = -1;
   v6->_nextAutoTuneIteration = -1;
   v6->_logNextAutoTuneParams = 0;
   return v6;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state
 {
   v108[16] = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectAtIndexedSubscript:{0, a4}];
-  v6 = [a3 objectAtIndexedSubscript:1];
+  v5 = [arrays objectAtIndexedSubscript:{0, state}];
+  v6 = [arrays objectAtIndexedSubscript:1];
   v7 = 0;
   v8 = *MEMORY[0x277CD73D8];
   v9 = v5 + v8;
@@ -1276,29 +1276,29 @@ LABEL_5:
 
   v108[15] = v72;
   v73 = MEMORY[0x277CD7268];
-  v74 = [a3 objectAtIndexedSubscript:0];
+  v74 = [arrays objectAtIndexedSubscript:0];
   v75 = *(v74 + *MEMORY[0x277CD73C8]);
-  v76 = [a3 objectAtIndexedSubscript:0];
+  v76 = [arrays objectAtIndexedSubscript:0];
   result = [v73 descriptorWithDataType:v75 dimensionCount:*(v76 + *MEMORY[0x277CD73F0]) dimensionSizes:v108];
   v78 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (MPSNDArrayMatrixMultiplication)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayMatrixMultiplication)initWithCoder:(id)coder device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayMatrixMultiplication;
   v6 = [MPSNDArrayMultiaryKernel initWithCoder:sel_initWithCoder_device_ device:?];
   if (v6)
   {
-    [a3 decodeDoubleForKey:@"MPSNDArrayMatrixMultiplication.alpha"];
+    [coder decodeDoubleForKey:@"MPSNDArrayMatrixMultiplication.alpha"];
     v6->_alpha = v7;
-    [a3 decodeDoubleForKey:@"MPSNDArrayMatrixMultiplication.beta"];
+    [coder decodeDoubleForKey:@"MPSNDArrayMatrixMultiplication.beta"];
     v6->_beta = v8;
     v6->super._encode = EncodeArrayMultiply;
     v6->super.super._encodeData = v6;
-    v6->_mmul = [objc_alloc(MEMORY[0x277CD75E0]) initWithDevice:a4 transposeLeft:0 transposeRight:0 resultRows:0 resultColumns:0 interiorColumns:0 alpha:1.0 beta:1.0];
-    v9 = [[MPSNDArrayIdentity alloc] initWithDevice:a4];
+    v6->_mmul = [objc_alloc(MEMORY[0x277CD75E0]) initWithDevice:device transposeLeft:0 transposeRight:0 resultRows:0 resultColumns:0 interiorColumns:0 alpha:1.0 beta:1.0];
+    v9 = [[MPSNDArrayIdentity alloc] initWithDevice:device];
     v6->_identity = v9;
     *(&v9->super.super.super.super.super.isa + *MEMORY[0x277CD7378]) = (*(&v9->super.super.super.super.super.isa + *MEMORY[0x277CD7378]) | 1);
   }
@@ -1306,16 +1306,16 @@ LABEL_5:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayMatrixMultiplication;
   [(MPSNDArrayMultiaryBase *)&v5 encodeWithCoder:?];
-  [a3 encodeDouble:@"MPSNDArrayMatrixMultiplication.alpha" forKey:self->_alpha];
-  [a3 encodeDouble:@"MPSNDArrayMatrixMultiplication.beta" forKey:self->_beta];
+  [coder encodeDouble:@"MPSNDArrayMatrixMultiplication.alpha" forKey:self->_alpha];
+  [coder encodeDouble:@"MPSNDArrayMatrixMultiplication.beta" forKey:self->_beta];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSNDArrayMatrixMultiplication;
@@ -1327,8 +1327,8 @@ LABEL_5:
     self->super._encode = EncodeArrayMultiply;
     self->super.super._encodeData = self;
     v8 = result;
-    *(result + 18) = [(MPSMatrixMultiplication *)self->_mmul copyWithZone:a3 device:a4];
-    v9 = [(MPSNDArrayIdentity *)self->_identity copyWithZone:a3 device:a4];
+    *(result + 18) = [(MPSMatrixMultiplication *)self->_mmul copyWithZone:zone device:device];
+    v9 = [(MPSNDArrayIdentity *)self->_identity copyWithZone:zone device:device];
     result = v8;
     v8[19] = v9;
   }
@@ -1354,13 +1354,13 @@ LABEL_5:
   [(MPSNDArrayMultiaryBase *)&v5 dealloc];
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v73.receiver = self;
   v73.super_class = MPSNDArrayMatrixMultiplication;
-  v9 = [(MPSNDArrayMultiaryBase *)&v73 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7];
-  v10 = [a6 graph];
-  v11 = *(v10 + 64);
+  v9 = [(MPSNDArrayMultiaryBase *)&v73 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state];
+  graph = [object graph];
+  v11 = *(graph + 64);
   v12 = *v11;
   v13 = v11[1];
   if (*v11 == v13)
@@ -1370,7 +1370,7 @@ LABEL_5:
 
   else
   {
-    v14 = v10;
+    v14 = graph;
     v15 = 0;
     v16 = -1;
     v17 = -1;
@@ -1424,8 +1424,8 @@ LABEL_15:
 LABEL_16:
   v17 = 0;
 LABEL_17:
-  v20 = [a3 objectAtIndexedSubscript:v16];
-  v21 = [a3 objectAtIndexedSubscript:v17];
+  v20 = [arrays objectAtIndexedSubscript:v16];
+  v21 = [arrays objectAtIndexedSubscript:v17];
   v22 = v21;
   v23 = *MEMORY[0x277CD73D8];
   v24 = *(v20 + v23);
@@ -1434,11 +1434,11 @@ LABEL_17:
   v26 = BYTE1(*(v21 + v23));
   v27 = *MEMORY[0x277CD7410];
   v28 = *(v20 + v27 + 4 * (WORD1(*(v20 + v23)) & 0xF));
-  v29 = *(a4 + v27);
-  v30 = *(a4 + v27 + 16);
-  v31 = *(a4 + v27 + 48);
-  v32 = *(a4 + v23);
-  v70 = *(a4 + v27 + 32);
+  v29 = *(destArrays + v27);
+  v30 = *(destArrays + v27 + 16);
+  v31 = *(destArrays + v27 + 48);
+  v32 = *(destArrays + v23);
+  v70 = *(destArrays + v27 + 32);
   v71 = v31;
   v69[0] = v29;
   v69[1] = v30;
@@ -1464,11 +1464,11 @@ LABEL_17:
   v66 = v28;
   v38 = v33 * v28 * v34;
   v39 = (v38 * v36);
-  if ((*(a4 + *MEMORY[0x277CD73C8]) & 0xFFF8) == 0x20)
+  if ((*(destArrays + *MEMORY[0x277CD73C8]) & 0xFFF8) == 0x20)
   {
     [v9 setFloat32Ops:v39];
     [v9 setFloat16Ops:0.0];
-    if (*(a5 + 33) != 0.0)
+    if (*(kernel + 33) != 0.0)
     {
       [v9 float32Ops];
       [v9 setFloat32Ops:v40 + v38];
@@ -1479,7 +1479,7 @@ LABEL_17:
   {
     [v9 setFloat16Ops:v39];
     [v9 setFloat32Ops:0.0];
-    if (*(a5 + 33) != 0.0)
+    if (*(kernel + 33) != 0.0)
     {
       [v9 float16Ops];
       [v9 setFloat16Ops:v41 + v38];
@@ -1498,9 +1498,9 @@ LABEL_17:
   v51 = MPSGetDataTypeName();
   v52 = *(v22 + *v37);
   v53 = MPSGetDataTypeName();
-  v54 = *(a4 + *v37);
+  v54 = *(destArrays + *v37);
   v55 = MPSGetDataTypeName();
-  MPSKernel_LogInfo(a5, 2uLL, "Matrix Multiply: M=%lu, N=%lu, K=%lu, Batch Size: %lu, transposeA=%d, transposeB=%d, A Datatype: %s, B Datatype: %s C Datatype: %s\t", v65, v34, v36, v66, v24 > v25, v64 > v26, v51, v53, v55);
+  MPSKernel_LogInfo(kernel, 2uLL, "Matrix Multiply: M=%lu, N=%lu, K=%lu, Batch Size: %lu, transposeA=%d, transposeB=%d, A Datatype: %s, B Datatype: %s C Datatype: %s\t", v65, v34, v36, v66, v24 > v25, v64 > v26, v51, v53, v55);
   [v9 float16Ops];
   v57 = v56;
   [v9 float32Ops];
@@ -1508,13 +1508,13 @@ LABEL_17:
   [v9 deviceMemoryBytesRead];
   v61 = v60;
   [v9 deviceMemoryBytesWrite];
-  MPSKernel_LogInfo(a5, 2uLL, "Matrix Multiply: f16Ops=%f, f32Ops=%f, BytesRead=%f, BytesWritten=%f, OpsPerByte=%f\n", v57, v59, v61, v62, v50);
+  MPSKernel_LogInfo(kernel, 2uLL, "Matrix Multiply: f16Ops=%f, f32Ops=%f, BytesRead=%f, BytesWritten=%f, OpsPerByte=%f\n", v57, v59, v61, v62, v50);
   return v9;
 }
 
-- (id)encodePreProcessingToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArray:(id *)a6 kernelDAGObject:(id *)a7
+- (id)encodePreProcessingToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays destinationArray:(id *)array kernelDAGObject:(id *)object
 {
-  v7 = MEMORY[0x28223BE20](self, a2, a3, a4, a5, a6, a7);
+  v7 = MEMORY[0x28223BE20](self, a2, encoder, buffer, arrays, array, object);
   v303 = v8;
   v314 = v9;
   v308 = v10;
@@ -1523,8 +1523,8 @@ LABEL_17:
   v394[3] = *MEMORY[0x277D85DE8];
   v14 = *v13;
   CoreOpNumberOfInputs = MPSKernelDAG::GetCoreOpNumberOfInputs([*v13 graph]);
-  v16 = [v14 finalOp];
-  v17 = (*(*v16 + 16))(v16);
+  finalOp = [v14 finalOp];
+  v17 = (*(*finalOp + 16))(finalOp);
   v316 = v12;
   v311 = *MEMORY[0x277CD7350];
   v18 = [MPSNDArrayMatrixMultiplication supportsPostfixForDevice:*(v12 + v311)];
@@ -1542,9 +1542,9 @@ LABEL_17:
   }
 
   v305 = v17 ^ 1;
-  v21 = [v14 graph];
-  v22 = v21;
-  v23 = *(v21 + 64);
+  graph = [v14 graph];
+  v22 = graph;
+  v23 = *(graph + 64);
   v24 = *v23;
   v25 = v23[1];
   if (*v23 == v25)
@@ -1607,8 +1607,8 @@ LABEL_17:
   {
     v35 = *v303;
     v36 = *(v316 + v311);
-    v37 = [*(v316 + 184) normFusionType];
-    v38 = [*(v316 + 184) isLeftFused];
+    normFusionType = [*(v316 + 184) normFusionType];
+    isLeftFused = [*(v316 + 184) isLeftFused];
     if (!v36 || (*(v36 + 1477) & 4) == 0 || *(v36 + 1472) < 11)
     {
       goto LABEL_35;
@@ -1748,7 +1748,7 @@ LABEL_268:
             v278 = v276;
           }
 
-          if (v37 == 1)
+          if (normFusionType == 1)
           {
             if (v278 == v242)
             {
@@ -1760,7 +1760,7 @@ LABEL_268:
               v279 = v277 <= BYTE1(v277);
             }
 
-            v281 = v38 == (v278 == v242) || v278 > 7;
+            v281 = isLeftFused == (v278 == v242) || v278 > 7;
             if (!v281 && v279)
             {
               goto LABEL_61;
@@ -1781,7 +1781,7 @@ LABEL_268:
 
             v282 = v278 == v242;
             v283 = v278 < 8 && v280;
-            if (v38 != v282 && !v283)
+            if (isLeftFused != v282 && !v283)
             {
               goto LABEL_61;
             }
@@ -1805,12 +1805,12 @@ LABEL_35:
           v393[0] = v39;
           v393[1] = v40;
           [MEMORY[0x277CBEA60] arrayWithObjects:v393 count:2];
-          v41 = [*(v316 + 184) isLeftFused];
+          isLeftFused2 = [*(v316 + 184) isLeftFused];
           v42 = *([v14 graph] + 56);
           v43 = *v42;
           if (v42[1] != *v42)
           {
-            v44 = v41 ^ 1u;
+            v44 = isLeftFused2 ^ 1u;
             v46 = *(*v43 + 8);
             v45 = *v46;
             if (v44 < (v46[1] - *v46) >> 3)
@@ -1866,12 +1866,12 @@ LABEL_35:
 
         v392 = v39;
         v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v392 count:1];
-        v55 = [v39 descriptor];
-        v56 = [MEMORY[0x277CD72B8] temporaryNDArrayWithCommandBuffer:v308 descriptor:v55];
-        v57 = [*(v316 + 184) isLeftFused];
-        v58 = [*(v316 + 184) normFusionType];
-        v59 = v57 ^ 1u;
-        if (v58 == 2)
+        descriptor = [v39 descriptor];
+        v56 = [MEMORY[0x277CD72B8] temporaryNDArrayWithCommandBuffer:v308 descriptor:descriptor];
+        isLeftFused3 = [*(v316 + 184) isLeftFused];
+        normFusionType2 = [*(v316 + 184) normFusionType];
+        v59 = isLeftFused3 ^ 1u;
+        if (normFusionType2 == 2)
         {
           v60 = (v316 + 240);
           [*(v316 + 240) setAxis:v59];
@@ -1881,19 +1881,19 @@ LABEL_35:
 
         else
         {
-          if (v58 != 1)
+          if (normFusionType2 != 1)
           {
 LABEL_56:
-            v61 = [*(v316 + 184) isLeftFused];
+            isLeftFused4 = [*(v316 + 184) isLeftFused];
             v62 = v307;
-            if (!v61)
+            if (!isLeftFused4)
             {
               v62 = v56;
             }
 
             v307 = v62;
             v63 = v309;
-            if (v61)
+            if (isLeftFused4)
             {
               v63 = v56;
             }
@@ -2103,9 +2103,9 @@ LABEL_125:
   [v315 setObject:v99 atIndexedSubscript:v28];
 LABEL_126:
   v314 = [MEMORY[0x277CBEA60] arrayWithArray:v315];
-  v100 = [v14 graph];
-  v101 = **(v100 + 56);
-  if (*(*(v100 + 56) + 8) == v101)
+  graph2 = [v14 graph];
+  v101 = **(graph2 + 56);
+  if (*(*(graph2 + 56) + 8) == v101)
   {
     std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
   }
@@ -2864,9 +2864,9 @@ LABEL_332:
         if ([v314 count])
         {
           v297 = [v295 objectAtIndexedSubscript:0];
-          v298 = [v14 graph];
-          v299 = **(***(v298 + 56) + 8);
-          if ((*(*(***(v298 + 56) + 8) + 8) - v299) >> 3)
+          graph3 = [v14 graph];
+          v299 = **(***(graph3 + 56) + 8);
+          if ((*(*(***(graph3 + 56) + 8) + 8) - v299) >> 3)
           {
             reshapeTensor(*v299, v297);
           }
@@ -2960,7 +2960,7 @@ LABEL_363:
   return v314;
 }
 
-- (void)setAutoTuningParameters:(void *)a3
+- (void)setAutoTuningParameters:(void *)parameters
 {
   free(self->_autoTuningParams);
   autoTuningTarget = self->_autoTuningTarget;
@@ -2976,10 +2976,10 @@ LABEL_10:
     {
       v14 = malloc_type_malloc(0x3CuLL, 0x1000040C2DCA394uLL);
       self->_autoTuningParams = v14;
-      v16 = *(a3 + 1);
-      v15 = *(a3 + 2);
-      v17 = *a3;
-      *(v14 + 44) = *(a3 + 44);
+      v16 = *(parameters + 1);
+      v15 = *(parameters + 2);
+      v17 = *parameters;
+      *(v14 + 44) = *(parameters + 44);
       v14[1] = v16;
       v14[2] = v15;
       *v14 = v17;
@@ -2990,9 +2990,9 @@ LABEL_10:
     {
       v10 = malloc_type_malloc(0x2CuLL, 0x1000040D4159EFEuLL);
       self->_autoTuningParams = v10;
-      v11 = *(a3 + 28);
-      v12 = *(a3 + 1);
-      *v10 = *a3;
+      v11 = *(parameters + 28);
+      v12 = *(parameters + 1);
+      *v10 = *parameters;
       v10[1] = v12;
       *(v10 + 28) = v11;
       return;
@@ -3023,21 +3023,21 @@ LABEL_3:
 LABEL_13:
     v13 = malloc_type_malloc(0x20uLL, 0x1000040C2192D5FuLL);
     self->_autoTuningParams = v13;
-    *v13 = *a3;
-    *(v13 + 2) = *(a3 + 2);
-    *(v13 + 6) = *(a3 + 6);
-    *(v13 + 28) = *(a3 + 28);
-    *(v13 + 29) = *(a3 + 29);
+    *v13 = *parameters;
+    *(v13 + 2) = *(parameters + 2);
+    *(v13 + 6) = *(parameters + 6);
+    *(v13 + 28) = *(parameters + 28);
+    *(v13 + 29) = *(parameters + 29);
     return;
   }
 
   v6 = malloc_type_malloc(0x44uLL, 0x100004069DB8102uLL);
   self->_autoTuningParams = v6;
-  *v6 = *a3;
-  v8 = *(a3 + 2);
-  v7 = *(a3 + 3);
-  v9 = *(a3 + 1);
-  *(v6 + 16) = *(a3 + 16);
+  *v6 = *parameters;
+  v8 = *(parameters + 2);
+  v7 = *(parameters + 3);
+  v9 = *(parameters + 1);
+  *(v6 + 16) = *(parameters + 16);
   v6[2] = v8;
   v6[3] = v7;
   v6[1] = v9;
@@ -3062,36 +3062,36 @@ LABEL_13:
   return nextAutoTuneIteration > 0;
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 normScaleArray:(id)a6 resultState:(id)a7 destinationArray:(id)a8 kernelDAGObject:(id)a9
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArrays:(id)arrays normScaleArray:(id)array resultState:(id)state destinationArray:(id)destinationArray kernelDAGObject:(id)object
 {
-  self->_normScaleArray = a6;
-  if (a6)
+  self->_normScaleArray = array;
+  if (array)
   {
-    v12 = a5;
-    v13 = a4;
-    v14 = a3;
-    [a6 dataType];
-    v15 = [(MPSNDArray *)self->_normScaleArray dataType];
-    a3 = v14;
-    a4 = v13;
-    a5 = v12;
-    if (v15 != MPSDataTypeFloat16)
+    arraysCopy = arrays;
+    bufferCopy = buffer;
+    encoderCopy = encoder;
+    [array dataType];
+    dataType = [(MPSNDArray *)self->_normScaleArray dataType];
+    encoder = encoderCopy;
+    buffer = bufferCopy;
+    arrays = arraysCopy;
+    if (dataType != MPSDataTypeFloat16)
     {
       v16 = MTLReportFailureTypeEnabled();
-      a3 = v14;
-      a4 = v13;
-      a5 = v12;
+      encoder = encoderCopy;
+      buffer = bufferCopy;
+      arrays = arraysCopy;
       if (v16)
       {
         MTLReportFailure();
-        a3 = v14;
-        a4 = v13;
-        a5 = v12;
+        encoder = encoderCopy;
+        buffer = bufferCopy;
+        arrays = arraysCopy;
       }
     }
   }
 
-  [(MPSNDArrayMultiaryKernel *)self encodeToCommandEncoder:a3 commandBuffer:a4 sourceArrays:a5 resultState:a7 destinationArray:a8 kernelDAGObject:a9];
+  [(MPSNDArrayMultiaryKernel *)self encodeToCommandEncoder:encoder commandBuffer:buffer sourceArrays:arrays resultState:state destinationArray:destinationArray kernelDAGObject:object];
 }
 
 @end

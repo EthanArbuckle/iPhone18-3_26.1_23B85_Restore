@@ -1,38 +1,38 @@
 @interface StatusBarOverlayWindow
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithFrame:(CGRect)a3;
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithFrame:(CGRect)frame;
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation StatusBarOverlayWindow
 
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow_interactionView) = 0;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(StatusBarOverlayWindow *)&v11 initWithFrame:x, y, width, height];
-  [(StatusBarOverlayWindow *)v9 setWindowLevel:UIWindowLevelStatusBar];
-  [(StatusBarOverlayWindow *)v9 _setWindowControlsStatusBarOrientation:0];
+  height = [(StatusBarOverlayWindow *)&v11 initWithFrame:x, y, width, height];
+  [(StatusBarOverlayWindow *)height setWindowLevel:UIWindowLevelStatusBar];
+  [(StatusBarOverlayWindow *)height _setWindowControlsStatusBarOrientation:0];
 
-  return v9;
+  return height;
 }
 
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow_interactionView) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(StatusBarOverlayWindow *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(StatusBarOverlayWindow *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {
@@ -41,7 +41,7 @@
   return v7;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow_interactionView);
   if (!v4)
@@ -49,26 +49,26 @@
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  selfCopy = self;
   v10 = v4;
-  [(StatusBarOverlayWindow *)v9 convertPoint:v10 toCoordinateSpace:x, y];
-  v11 = [v10 pointInside:v8 withEvent:?];
+  [(StatusBarOverlayWindow *)selfCopy convertPoint:v10 toCoordinateSpace:x, y];
+  v11 = [v10 pointInside:eventCopy withEvent:?];
 
   return v11;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(StatusBarOverlayWindow *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(StatusBarOverlayWindow *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -91,7 +91,7 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithWindowScene:(id)a3
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B422StatusBarOverlayWindow)initWithWindowScene:(id)scene
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

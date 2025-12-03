@@ -1,114 +1,114 @@
 @interface VCMediaNegotiationBlobV2StreamGroupPayload
-+ (BOOL)isDefaultPayloadConfig:(id)a3 index:(unsigned int)a4 rtpSampleRate:(unsigned int)a5 streamGroupID:(unsigned int)a6;
++ (BOOL)isDefaultPayloadConfig:(id)config index:(unsigned int)index rtpSampleRate:(unsigned int)rate streamGroupID:(unsigned int)d;
 + (id)defaultDataCodecConfig;
 + (id)defaultFTXTCodecConfig;
 + (id)defaultMoCapConfig;
-+ (id)defaultPayloadConfigurationsForStreamGroupID:(unsigned int)a3;
-+ (id)rtcpFlagStringWithPayloadConfig:(id)a3;
-+ (int)negotiationPackedRtpSampleRateWithRTPSampleRate:(unsigned int)a3;
-+ (int64_t)codecTypeWithNegotiationCodecType:(unsigned int)a3;
-+ (unsigned)cipherSuiteWithNegotiationCipherSuite:(unsigned int)a3;
-+ (unsigned)defaultRTPSampleRateForStreamGroupID:(unsigned int)a3;
-+ (unsigned)negotiationCipherSuiteWithCipherSuite:(unsigned int)a3;
-+ (unsigned)negotiationCodecTypeWithCodecType:(int64_t)a3;
-+ (unsigned)rtcpFlagsWithPayloadConfig:(id)a3;
-+ (unsigned)rtpSampleRateWithNegotiationPackedSampleRate:(int)a3;
-+ (void)printWithLogFile:(void *)a3 prefix:(id)a4 payloadConfig:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)a3 index:(unsigned int)a4 rtpSampleRate:(unsigned int)a5 streamGroupID:(unsigned int)a6;
-- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)a3 rtpSampleRate:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)defaultPayloadConfigurationsForStreamGroupID:(unsigned int)d;
++ (id)rtcpFlagStringWithPayloadConfig:(id)config;
++ (int)negotiationPackedRtpSampleRateWithRTPSampleRate:(unsigned int)rate;
++ (int64_t)codecTypeWithNegotiationCodecType:(unsigned int)type;
++ (unsigned)cipherSuiteWithNegotiationCipherSuite:(unsigned int)suite;
++ (unsigned)defaultRTPSampleRateForStreamGroupID:(unsigned int)d;
++ (unsigned)negotiationCipherSuiteWithCipherSuite:(unsigned int)suite;
++ (unsigned)negotiationCodecTypeWithCodecType:(int64_t)type;
++ (unsigned)rtcpFlagsWithPayloadConfig:(id)config;
++ (unsigned)rtpSampleRateWithNegotiationPackedSampleRate:(int)rate;
++ (void)printWithLogFile:(void *)file prefix:(id)prefix payloadConfig:(id)config;
+- (BOOL)isEqual:(id)equal;
+- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)config index:(unsigned int)index rtpSampleRate:(unsigned int)rate streamGroupID:(unsigned int)d;
+- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)config rtpSampleRate:(unsigned int)rate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)newCompactPayloadWithPayloadConfig:(id)a3 rtpSampleRate:(unsigned int)a4;
-- (id)payloadConfigurationWithPayloadConfig:(id)a3;
-- (id)payloadConfigurationWithStreamGroupID:(unsigned int)a3 index:(unsigned int)a4;
+- (id)newCompactPayloadWithPayloadConfig:(id)config rtpSampleRate:(unsigned int)rate;
+- (id)payloadConfigurationWithPayloadConfig:(id)config;
+- (id)payloadConfigurationWithStreamGroupID:(unsigned int)d index:(unsigned int)index;
 - (unint64_t)hash;
-- (unsigned)rtpSampleRateWithStreamGroupID:(unsigned int)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)rtpSampleRateWithStreamGroupID:(unsigned int)d;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)getStreamGroupPayload:(tagStreamGroupPayload *)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCodecType:(BOOL)a3;
-- (void)setHasEncoderUsage:(BOOL)a3;
-- (void)setHasMediaFlags:(BOOL)a3;
-- (void)setHasPTime:(BOOL)a3;
-- (void)setHasProfileLevelId:(BOOL)a3;
-- (void)setHasRtcpFlags:(BOOL)a3;
-- (void)setHasRtpPayload:(BOOL)a3;
-- (void)setHasRtpSampleRate:(BOOL)a3;
-- (void)setNegotiationPackedPayloadWithStreamGroupPayload:(tagStreamGroupPayload *)a3;
-- (void)writeTo:(id)a3;
+- (void)getStreamGroupPayload:(tagStreamGroupPayload *)payload;
+- (void)mergeFrom:(id)from;
+- (void)setHasCodecType:(BOOL)type;
+- (void)setHasEncoderUsage:(BOOL)usage;
+- (void)setHasMediaFlags:(BOOL)flags;
+- (void)setHasPTime:(BOOL)time;
+- (void)setHasProfileLevelId:(BOOL)id;
+- (void)setHasRtcpFlags:(BOOL)flags;
+- (void)setHasRtpPayload:(BOOL)payload;
+- (void)setHasRtpSampleRate:(BOOL)rate;
+- (void)setNegotiationPackedPayloadWithStreamGroupPayload:(tagStreamGroupPayload *)payload;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2StreamGroupPayload
 
 + (id)defaultFTXTCodecConfig
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setCodecType:102];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setRtpPayload:100];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setH264PacketizationMode:1];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setCipherSuite:3];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setEncoderUsage:4];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
-  return v2;
+  return array;
 }
 
 + (id)defaultDataCodecConfig
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setCodecType:102];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setRtpPayload:110];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setH264PacketizationMode:1];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setCipherSuite:3];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
-  return v2;
+  return array;
 }
 
 + (id)defaultMoCapConfig
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setCodecType:301];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setRtpPayload:124];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setH264PacketizationMode:1];
   [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v3 setCipherSuite:3];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
-  return v2;
+  return array;
 }
 
-+ (id)defaultPayloadConfigurationsForStreamGroupID:(unsigned int)a3
++ (id)defaultPayloadConfigurationsForStreamGroupID:(unsigned int)d
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (a3 > 1835623281)
+  array = [MEMORY[0x1E695DF70] array];
+  if (d > 1835623281)
   {
-    if (a3 <= 1935897188)
+    if (d <= 1935897188)
     {
-      if (a3 == 1835623282)
+      if (d == 1835623282)
       {
         v11 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v11 setCodecType:4];
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v11 setPTime:20];
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v11 setCipherSuite:3];
-        [v4 addObject:v11];
+        [array addObject:v11];
 
         v12 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v12 setCodecType:9];
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v12 setPTime:20];
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v12 setCipherSuite:3];
-        [v4 addObject:v12];
+        [array addObject:v12];
 
         v13 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v13 setCodecType:8];
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v13 setPTime:20];
         [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v13 setCipherSuite:3];
-        [v4 addObject:v13];
+        [array addObject:v13];
 
         if (+[VCHardwareSettings deviceClass]== 8)
         {
@@ -117,12 +117,12 @@
           [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v14 setRtpPayload:101];
           [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v14 setPTime:10];
           [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v14 setCipherSuite:3];
-          [v4 addObject:v14];
+          [array addObject:v14];
         }
 
         if (!VCFeatureFlagManager_UseAudioCodecACC24ForGFT())
         {
-          return v4;
+          return array;
         }
 
         v5 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
@@ -132,19 +132,19 @@
         goto LABEL_11;
       }
 
-      if (a3 != 1835623287)
+      if (d != 1835623287)
       {
-        return v4;
+        return array;
       }
 
       goto LABEL_19;
     }
 
-    if (a3 != 1935897189)
+    if (d != 1935897189)
     {
-      if (a3 != 1936290409)
+      if (d != 1936290409)
       {
-        if (a3 == 1937339233)
+        if (d == 1937339233)
         {
           v5 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
           [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v5 setCodecType:16];
@@ -155,10 +155,10 @@ LABEL_11:
           v8 = 3;
 LABEL_24:
           [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v7 setCipherSuite:v8];
-          [v4 addObject:v5];
+          [array addObject:v5];
         }
 
-        return v4;
+        return array;
       }
 
 LABEL_19:
@@ -169,7 +169,7 @@ LABEL_19:
       [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v10 setUseInBandFEC:0];
       [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v10 setRtcpSREnabled:1];
       [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v10 setCipherSuite:2];
-      [v4 addObject:v10];
+      [array addObject:v10];
 
       v5 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
       [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v5 setCodecType:11];
@@ -188,7 +188,7 @@ LABEL_10:
     [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v6 setRtpPayload:123];
     [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v6 setH264PacketizationMode:1];
     [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v6 setCipherSuite:3];
-    [v4 addObject:v6];
+    [array addObject:v6];
 
     v5 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
     [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v5 setCodecType:102];
@@ -197,9 +197,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 > 1667329398)
+  if (d > 1667329398)
   {
-    if (a3 == 1667329399)
+    if (d == 1667329399)
     {
       v5 = objc_alloc_init(VCMediaNegotiatorStreamGroupCodecConfiguration);
       [(VCMediaNegotiatorStreamGroupCodecConfiguration *)v5 setCodecType:100];
@@ -215,9 +215,9 @@ LABEL_10:
       goto LABEL_24;
     }
 
-    if (a3 != 1718909044)
+    if (d != 1718909044)
     {
-      return v4;
+      return array;
     }
 
     return +[VCMediaNegotiationBlobV2StreamGroupPayload defaultFTXTCodecConfig];
@@ -225,11 +225,11 @@ LABEL_10:
 
   else
   {
-    if (a3 != 1650745716)
+    if (d != 1650745716)
     {
-      if (a3 != 1667329381)
+      if (d != 1667329381)
       {
-        return v4;
+        return array;
       }
 
       goto LABEL_10;
@@ -239,13 +239,13 @@ LABEL_10:
   }
 }
 
-+ (unsigned)defaultRTPSampleRateForStreamGroupID:(unsigned int)a3
++ (unsigned)defaultRTPSampleRateForStreamGroupID:(unsigned int)d
 {
-  if (a3 <= 1835623281)
+  if (d <= 1835623281)
   {
-    if (a3 > 1667329398)
+    if (d > 1667329398)
     {
-      if (a3 == 1667329399)
+      if (d == 1667329399)
       {
         return 90000;
       }
@@ -255,7 +255,7 @@ LABEL_10:
 
     else
     {
-      if (a3 == 1650745716)
+      if (d == 1650745716)
       {
         return 24000;
       }
@@ -263,7 +263,7 @@ LABEL_10:
       v5 = 1667329381;
     }
 
-    if (a3 != v5)
+    if (d != v5)
     {
       return 0;
     }
@@ -272,13 +272,13 @@ LABEL_10:
   }
 
   result = 48000;
-  if (a3 <= 1935897188)
+  if (d <= 1935897188)
   {
-    if (a3 != 1835623282)
+    if (d != 1835623282)
     {
       v4 = 1835623287;
 LABEL_15:
-      if (a3 == v4)
+      if (d == v4)
       {
         return result;
       }
@@ -289,7 +289,7 @@ LABEL_15:
     return 24000;
   }
 
-  if (a3 != 1935897189 && a3 != 1936290409)
+  if (d != 1935897189 && d != 1936290409)
   {
     v4 = 1937339233;
     goto LABEL_15;
@@ -298,16 +298,16 @@ LABEL_15:
   return result;
 }
 
-+ (BOOL)isDefaultPayloadConfig:(id)a3 index:(unsigned int)a4 rtpSampleRate:(unsigned int)a5 streamGroupID:(unsigned int)a6
++ (BOOL)isDefaultPayloadConfig:(id)config index:(unsigned int)index rtpSampleRate:(unsigned int)rate streamGroupID:(unsigned int)d
 {
-  v6 = *&a6;
-  v10 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:*&a6];
-  if ([v10 count] <= a4)
+  v6 = *&d;
+  v10 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:*&d];
+  if ([v10 count] <= index)
   {
     goto LABEL_20;
   }
 
-  v11 = [v10 objectAtIndex:a4];
+  v11 = [v10 objectAtIndex:index];
   if (!v11)
   {
     return v11;
@@ -315,31 +315,31 @@ LABEL_15:
 
   v12 = v11;
   v13 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultRTPSampleRateForStreamGroupID:v6];
-  v14 = [v12 codecType];
-  if (v14 != [a3 codecType] || (v15 = objc_msgSend(v12, "rtpPayload"), v15 != objc_msgSend(a3, "rtpPayload")) || (v16 = objc_msgSend(v12, "pTime"), v16 != objc_msgSend(a3, "pTime")) || (v17 = objc_msgSend(v12, "rtcpRTPFB_GNACKEnabled"), v17 != objc_msgSend(a3, "rtcpRTPFB_GNACKEnabled")) || (v18 = objc_msgSend(v12, "rtcpPSFB_PLIEnabled"), v18 != objc_msgSend(a3, "rtcpPSFB_PLIEnabled")) || (v19 = objc_msgSend(v12, "rtcpPSFB_FIREnabled"), v19 != objc_msgSend(a3, "rtcpPSFB_FIREnabled")) || (v20 = objc_msgSend(v12, "rtcpSREnabled"), v20 != objc_msgSend(a3, "rtcpSREnabled")) || (v21 = objc_msgSend(v12, "H264LevelAsymmetryAllowed"), v21 != objc_msgSend(a3, "H264LevelAsymmetryAllowed")) || (v22 = objc_msgSend(v12, "H264PacketizationMode"), v22 != objc_msgSend(a3, "H264PacketizationMode")) || (v23 = objc_msgSend(v12, "useInBandFEC"), v23 != objc_msgSend(a3, "useInBandFEC")) || (v24 = objc_msgSend(v12, "profileLevelId"), v24 != objc_msgSend(a3, "profileLevelId")))
+  codecType = [v12 codecType];
+  if (codecType != [config codecType] || (v15 = objc_msgSend(v12, "rtpPayload"), v15 != objc_msgSend(config, "rtpPayload")) || (v16 = objc_msgSend(v12, "pTime"), v16 != objc_msgSend(config, "pTime")) || (v17 = objc_msgSend(v12, "rtcpRTPFB_GNACKEnabled"), v17 != objc_msgSend(config, "rtcpRTPFB_GNACKEnabled")) || (v18 = objc_msgSend(v12, "rtcpPSFB_PLIEnabled"), v18 != objc_msgSend(config, "rtcpPSFB_PLIEnabled")) || (v19 = objc_msgSend(v12, "rtcpPSFB_FIREnabled"), v19 != objc_msgSend(config, "rtcpPSFB_FIREnabled")) || (v20 = objc_msgSend(v12, "rtcpSREnabled"), v20 != objc_msgSend(config, "rtcpSREnabled")) || (v21 = objc_msgSend(v12, "H264LevelAsymmetryAllowed"), v21 != objc_msgSend(config, "H264LevelAsymmetryAllowed")) || (v22 = objc_msgSend(v12, "H264PacketizationMode"), v22 != objc_msgSend(config, "H264PacketizationMode")) || (v23 = objc_msgSend(v12, "useInBandFEC"), v23 != objc_msgSend(config, "useInBandFEC")) || (v24 = objc_msgSend(v12, "profileLevelId"), v24 != objc_msgSend(config, "profileLevelId")))
   {
 LABEL_20:
     LOBYTE(v11) = 0;
     return v11;
   }
 
-  v25 = [v12 cipherSuite];
-  LOBYTE(v11) = v25 == [a3 cipherSuite] && v13 == a5;
+  cipherSuite = [v12 cipherSuite];
+  LOBYTE(v11) = cipherSuite == [config cipherSuite] && v13 == rate;
   return v11;
 }
 
-+ (unsigned)negotiationCodecTypeWithCodecType:(int64_t)a3
++ (unsigned)negotiationCodecTypeWithCodecType:(int64_t)type
 {
-  if (a3 <= 15)
+  if (type <= 15)
   {
-    if (a3 <= 8)
+    if (type <= 8)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         return 8;
       }
 
-      if (a3 == 8)
+      if (type == 8)
       {
         return 7;
       }
@@ -347,7 +347,7 @@ LABEL_20:
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 9:
           return 9;
@@ -359,9 +359,9 @@ LABEL_20:
     }
   }
 
-  else if (a3 > 101)
+  else if (type > 101)
   {
-    switch(a3)
+    switch(type)
     {
       case 301:
         return 10;
@@ -374,7 +374,7 @@ LABEL_20:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 16:
         return 5;
@@ -388,23 +388,23 @@ LABEL_20:
   return 0;
 }
 
-+ (int64_t)codecTypeWithNegotiationCodecType:(unsigned int)a3
++ (int64_t)codecTypeWithNegotiationCodecType:(unsigned int)type
 {
-  if (a3 - 1 > 0xB)
+  if (type - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD4F7E8[a3 - 1];
+    return qword_1DBD4F7E8[type - 1];
   }
 }
 
-+ (unsigned)rtcpFlagsWithPayloadConfig:(id)a3
++ (unsigned)rtcpFlagsWithPayloadConfig:(id)config
 {
-  v4 = [a3 rtcpPSFB_PLIEnabled];
-  if ([a3 rtcpPSFB_FIREnabled])
+  rtcpPSFB_PLIEnabled = [config rtcpPSFB_PLIEnabled];
+  if ([config rtcpPSFB_FIREnabled])
   {
     v5 = 2;
   }
@@ -414,8 +414,8 @@ LABEL_20:
     v5 = 0;
   }
 
-  v6 = v5 | v4;
-  if ([a3 rtcpSREnabled])
+  v6 = v5 | rtcpPSFB_PLIEnabled;
+  if ([config rtcpSREnabled])
   {
     v7 = 4;
   }
@@ -428,10 +428,10 @@ LABEL_20:
   return v6 | v7;
 }
 
-+ (id)rtcpFlagStringWithPayloadConfig:(id)a3
++ (id)rtcpFlagStringWithPayloadConfig:(id)config
 {
-  v3 = [VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:a3];
-  v4 = [MEMORY[0x1E695DF70] array];
+  v3 = [VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:config];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = 1;
   do
   {
@@ -447,7 +447,7 @@ LABEL_20:
         v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v5];
       }
 
-      [v4 addObject:v6];
+      [array addObject:v6];
     }
 
     v7 = v5 >= 4;
@@ -456,14 +456,14 @@ LABEL_20:
 
   while (!v7);
 
-  return [v4 componentsJoinedByString:{@", "}];
+  return [array componentsJoinedByString:{@", "}];
 }
 
-+ (unsigned)negotiationCipherSuiteWithCipherSuite:(unsigned int)a3
++ (unsigned)negotiationCipherSuiteWithCipherSuite:(unsigned int)suite
 {
-  if (a3 < 4)
+  if (suite < 4)
   {
-    return a3 + 1;
+    return suite + 1;
   }
 
   else
@@ -472,24 +472,24 @@ LABEL_20:
   }
 }
 
-+ (unsigned)cipherSuiteWithNegotiationCipherSuite:(unsigned int)a3
++ (unsigned)cipherSuiteWithNegotiationCipherSuite:(unsigned int)suite
 {
-  if (a3 - 1 >= 4)
+  if (suite - 1 >= 4)
   {
     return -1;
   }
 
   else
   {
-    return a3 - 1;
+    return suite - 1;
   }
 }
 
-- (void)setNegotiationPackedPayloadWithStreamGroupPayload:(tagStreamGroupPayload *)a3
+- (void)setNegotiationPackedPayloadWithStreamGroupPayload:(tagStreamGroupPayload *)payload
 {
-  if (a3)
+  if (payload)
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:10];
+    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:payload length:10];
     if (!-[VCMediaNegotiationBlobV2StreamGroupPayload packedPayload](self, "packedPayload") || ([v4 isEqualToData:{-[VCMediaNegotiationBlobV2StreamGroupPayload packedPayload](self, "packedPayload")}] & 1) == 0)
     {
 
@@ -498,28 +498,28 @@ LABEL_20:
   }
 }
 
-- (void)getStreamGroupPayload:(tagStreamGroupPayload *)a3
+- (void)getStreamGroupPayload:(tagStreamGroupPayload *)payload
 {
-  if (a3)
+  if (payload)
   {
-    v4 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)self packedPayload];
+    packedPayload = [(VCMediaNegotiationBlobV2StreamGroupPayload *)self packedPayload];
 
-    [(NSData *)v4 getBytes:a3 length:10];
+    [(NSData *)packedPayload getBytes:payload length:10];
   }
 }
 
-+ (int)negotiationPackedRtpSampleRateWithRTPSampleRate:(unsigned int)a3
++ (int)negotiationPackedRtpSampleRateWithRTPSampleRate:(unsigned int)rate
 {
-  if (a3 > 31999)
+  if (rate > 31999)
   {
-    if (a3 > 47999)
+    if (rate > 47999)
     {
-      if (a3 == 48000)
+      if (rate == 48000)
       {
         return 7;
       }
 
-      if (a3 == 90000)
+      if (rate == 90000)
       {
         return 8;
       }
@@ -527,26 +527,26 @@ LABEL_20:
 
     else
     {
-      if (a3 == 32000)
+      if (rate == 32000)
       {
         return 5;
       }
 
-      if (a3 == 44100)
+      if (rate == 44100)
       {
         return 6;
       }
     }
   }
 
-  else if (a3 > 22049)
+  else if (rate > 22049)
   {
-    if (a3 == 22050)
+    if (rate == 22050)
     {
       return 3;
     }
 
-    if (a3 == 24000)
+    if (rate == 24000)
     {
       return 4;
     }
@@ -554,12 +554,12 @@ LABEL_20:
 
   else
   {
-    if (a3 == 8000)
+    if (rate == 8000)
     {
       return 1;
     }
 
-    if (a3 == 16000)
+    if (rate == 16000)
     {
       return 2;
     }
@@ -568,23 +568,23 @@ LABEL_20:
   return 0;
 }
 
-+ (unsigned)rtpSampleRateWithNegotiationPackedSampleRate:(int)a3
++ (unsigned)rtpSampleRateWithNegotiationPackedSampleRate:(int)rate
 {
-  if ((a3 - 1) > 7)
+  if ((rate - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return dword_1DBD4F848[a3 - 1];
+    return dword_1DBD4F848[rate - 1];
   }
 }
 
-- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)a3 rtpSampleRate:(unsigned int)a4
+- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)config rtpSampleRate:(unsigned int)rate
 {
-  v4 = *&a4;
-  if (!a3)
+  v4 = *&rate;
+  if (!config)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -599,7 +599,7 @@ LABEL_20:
   v8 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)self init];
   if (v8)
   {
-    v9 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [a3 codecType]);
+    v9 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [config codecType]);
     if (v9)
     {
       v10 = v9;
@@ -608,40 +608,40 @@ LABEL_20:
         [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 setCodecType:v10];
       }
 
-      v11 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 rtpPayload];
-      if (v11 != [a3 rtpPayload])
+      rtpPayload = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 rtpPayload];
+      if (rtpPayload != [config rtpPayload])
       {
-        -[VCMediaNegotiationBlobV2StreamGroupPayload setRtpPayload:](v8, "setRtpPayload:", [a3 rtpPayload]);
+        -[VCMediaNegotiationBlobV2StreamGroupPayload setRtpPayload:](v8, "setRtpPayload:", [config rtpPayload]);
       }
 
-      v12 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 pTime];
-      if ([a3 pTime] != v12)
+      pTime = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 pTime];
+      if ([config pTime] != pTime)
       {
-        -[VCMediaNegotiationBlobV2StreamGroupPayload setPTime:](v8, "setPTime:", [a3 pTime]);
+        -[VCMediaNegotiationBlobV2StreamGroupPayload setPTime:](v8, "setPTime:", [config pTime]);
       }
 
-      v13 = [VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:a3];
+      v13 = [VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:config];
       if ([(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 rtcpFlags]!= v13)
       {
         [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 setRtcpFlags:v13];
       }
 
-      v14 = [VCMediaNegotiationBlobV2StreamGroupPayload mediaFlagsWithPayloadConfig:a3];
+      v14 = [VCMediaNegotiationBlobV2StreamGroupPayload mediaFlagsWithPayloadConfig:config];
       if ([(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 mediaFlags]!= v14)
       {
         [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 setMediaFlags:v14];
       }
 
-      v15 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 profileLevelId];
-      if ([a3 profileLevelId] != v15)
+      profileLevelId = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 profileLevelId];
+      if ([config profileLevelId] != profileLevelId)
       {
-        -[VCMediaNegotiationBlobV2StreamGroupPayload setProfileLevelId:](v8, "setProfileLevelId:", [a3 profileLevelId]);
+        -[VCMediaNegotiationBlobV2StreamGroupPayload setProfileLevelId:](v8, "setProfileLevelId:", [config profileLevelId]);
       }
 
-      v16 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 encoderUsage];
-      if (v16 != [a3 encoderUsage])
+      encoderUsage = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 encoderUsage];
+      if (encoderUsage != [config encoderUsage])
       {
-        -[VCMediaNegotiationBlobV2StreamGroupPayload setEncoderUsage:](v8, "setEncoderUsage:", [a3 encoderUsage]);
+        -[VCMediaNegotiationBlobV2StreamGroupPayload setEncoderUsage:](v8, "setEncoderUsage:", [config encoderUsage]);
       }
 
       if ([(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 rtpSampleRate]!= v4)
@@ -649,7 +649,7 @@ LABEL_20:
         [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 setRtpSampleRate:v4];
       }
 
-      v17 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [a3 cipherSuite]);
+      v17 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [config cipherSuite]);
       if (v17 != -1)
       {
         v18 = v17;
@@ -658,7 +658,7 @@ LABEL_20:
           [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 setCipherSuite:v18];
         }
 
-        v19 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 newCompactPayloadWithPayloadConfig:a3 rtpSampleRate:v4];
+        v19 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)v8 newCompactPayloadWithPayloadConfig:config rtpSampleRate:v4];
         if (v19 && (v20 = [-[VCMediaNegotiationBlobV2StreamGroupPayload data](v8 "data")], v20 > objc_msgSend(-[VCMediaNegotiationBlobV2StreamGroupPayload data](v19, "data"), "length")))
         {
 
@@ -672,12 +672,12 @@ LABEL_20:
         return v8;
       }
 
-      [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:a3 rtpSampleRate:?];
+      [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:config rtpSampleRate:?];
     }
 
     else
     {
-      [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:a3 rtpSampleRate:?];
+      [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:config rtpSampleRate:?];
     }
 
     return 0;
@@ -686,9 +686,9 @@ LABEL_20:
   return v8;
 }
 
-- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)a3 index:(unsigned int)a4 rtpSampleRate:(unsigned int)a5 streamGroupID:(unsigned int)a6
+- (VCMediaNegotiationBlobV2StreamGroupPayload)initWithPayloadConfig:(id)config index:(unsigned int)index rtpSampleRate:(unsigned int)rate streamGroupID:(unsigned int)d
 {
-  if (!a3)
+  if (!config)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -702,12 +702,12 @@ LABEL_20:
     goto LABEL_39;
   }
 
-  v7 = *&a6;
-  v8 = *&a5;
-  v11 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:*&a6];
-  if ([v11 count] > a4)
+  v7 = *&d;
+  v8 = *&rate;
+  v11 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:*&d];
+  if ([v11 count] > index)
   {
-    v12 = [v11 objectAtIndex:a4];
+    v12 = [v11 objectAtIndex:index];
     if (v12)
     {
       v13 = v12;
@@ -717,51 +717,51 @@ LABEL_20:
         return self;
       }
 
-      v14 = [v13 H264PacketizationMode];
-      if (v14 == [a3 H264PacketizationMode])
+      h264PacketizationMode = [v13 H264PacketizationMode];
+      if (h264PacketizationMode == [config H264PacketizationMode])
       {
-        v15 = [v13 H264LevelAsymmetryAllowed];
-        if (v15 == [a3 H264LevelAsymmetryAllowed])
+        h264LevelAsymmetryAllowed = [v13 H264LevelAsymmetryAllowed];
+        if (h264LevelAsymmetryAllowed == [config H264LevelAsymmetryAllowed])
         {
           v16 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultRTPSampleRateForStreamGroupID:v7];
-          v17 = [v13 codecType];
-          if (v17 == [a3 codecType])
+          codecType = [v13 codecType];
+          if (codecType == [config codecType])
           {
 LABEL_10:
-            v19 = [v13 rtpPayload];
-            if (v19 != [a3 rtpPayload])
+            rtpPayload = [v13 rtpPayload];
+            if (rtpPayload != [config rtpPayload])
             {
-              -[VCMediaNegotiationBlobV2StreamGroupPayload setRtpPayload:](self, "setRtpPayload:", [a3 rtpPayload]);
+              -[VCMediaNegotiationBlobV2StreamGroupPayload setRtpPayload:](self, "setRtpPayload:", [config rtpPayload]);
             }
 
-            v20 = [v13 pTime];
-            if (v20 != [a3 pTime])
+            pTime = [v13 pTime];
+            if (pTime != [config pTime])
             {
-              -[VCMediaNegotiationBlobV2StreamGroupPayload setPTime:](self, "setPTime:", [a3 pTime]);
+              -[VCMediaNegotiationBlobV2StreamGroupPayload setPTime:](self, "setPTime:", [config pTime]);
             }
 
-            v21 = [v13 rtcpRTPFB_GNACKEnabled];
-            if (v21 != [a3 rtcpRTPFB_GNACKEnabled] || (v22 = objc_msgSend(v13, "rtcpPSFB_PLIEnabled"), v22 != objc_msgSend(a3, "rtcpPSFB_PLIEnabled")) || (v23 = objc_msgSend(v13, "rtcpPSFB_FIREnabled"), v23 != objc_msgSend(a3, "rtcpPSFB_FIREnabled")) || (v24 = objc_msgSend(v13, "rtcpSREnabled"), v24 != objc_msgSend(a3, "rtcpSREnabled")))
+            rtcpRTPFB_GNACKEnabled = [v13 rtcpRTPFB_GNACKEnabled];
+            if (rtcpRTPFB_GNACKEnabled != [config rtcpRTPFB_GNACKEnabled] || (v22 = objc_msgSend(v13, "rtcpPSFB_PLIEnabled"), v22 != objc_msgSend(config, "rtcpPSFB_PLIEnabled")) || (v23 = objc_msgSend(v13, "rtcpPSFB_FIREnabled"), v23 != objc_msgSend(config, "rtcpPSFB_FIREnabled")) || (v24 = objc_msgSend(v13, "rtcpSREnabled"), v24 != objc_msgSend(config, "rtcpSREnabled")))
             {
-              [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setRtcpFlags:[VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:a3]];
+              [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setRtcpFlags:[VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:config]];
             }
 
-            v25 = [v13 useInBandFEC];
-            if (v25 != [a3 useInBandFEC])
+            useInBandFEC = [v13 useInBandFEC];
+            if (useInBandFEC != [config useInBandFEC])
             {
-              [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setMediaFlags:[VCMediaNegotiationBlobV2StreamGroupPayload mediaFlagsWithPayloadConfig:a3]];
+              [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setMediaFlags:[VCMediaNegotiationBlobV2StreamGroupPayload mediaFlagsWithPayloadConfig:config]];
             }
 
-            v26 = [v13 profileLevelId];
-            if (v26 != [a3 profileLevelId])
+            profileLevelId = [v13 profileLevelId];
+            if (profileLevelId != [config profileLevelId])
             {
-              -[VCMediaNegotiationBlobV2StreamGroupPayload setProfileLevelId:](self, "setProfileLevelId:", [a3 profileLevelId]);
+              -[VCMediaNegotiationBlobV2StreamGroupPayload setProfileLevelId:](self, "setProfileLevelId:", [config profileLevelId]);
             }
 
-            v27 = [v13 encoderUsage];
-            if (v27 != [a3 encoderUsage])
+            encoderUsage = [v13 encoderUsage];
+            if (encoderUsage != [config encoderUsage])
             {
-              -[VCMediaNegotiationBlobV2StreamGroupPayload setEncoderUsage:](self, "setEncoderUsage:", [a3 encoderUsage]);
+              -[VCMediaNegotiationBlobV2StreamGroupPayload setEncoderUsage:](self, "setEncoderUsage:", [config encoderUsage]);
             }
 
             if (v16 != v8)
@@ -769,18 +769,18 @@ LABEL_10:
               [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setRtpSampleRate:v8];
             }
 
-            v28 = [v13 cipherSuite];
-            if (v28 == [a3 cipherSuite])
+            cipherSuite = [v13 cipherSuite];
+            if (cipherSuite == [config cipherSuite])
             {
               goto LABEL_30;
             }
 
-            v29 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [a3 cipherSuite]);
+            v29 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [config cipherSuite]);
             if (v29 != -1)
             {
               [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setCipherSuite:v29];
 LABEL_30:
-              v30 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)self newCompactPayloadWithPayloadConfig:a3 rtpSampleRate:v8];
+              v30 = [(VCMediaNegotiationBlobV2StreamGroupPayload *)self newCompactPayloadWithPayloadConfig:config rtpSampleRate:v8];
               if (v30 && (v31 = [-[VCMediaNegotiationBlobV2StreamGroupPayload data](self "data")], v31 > objc_msgSend(-[VCMediaNegotiationBlobV2StreamGroupPayload data](v30, "data"), "length")))
               {
 
@@ -794,29 +794,29 @@ LABEL_30:
               return self;
             }
 
-            [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:a3 index:? rtpSampleRate:? streamGroupID:?];
+            [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:config index:? rtpSampleRate:? streamGroupID:?];
             goto LABEL_39;
           }
 
-          v18 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [a3 codecType]);
+          v18 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [config codecType]);
           if (v18)
           {
             [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setCodecType:v18];
             goto LABEL_10;
           }
 
-          [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:a3 index:? rtpSampleRate:? streamGroupID:?];
+          [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:config index:? rtpSampleRate:? streamGroupID:?];
         }
 
         else
         {
-          [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:a3 index:? rtpSampleRate:? streamGroupID:?];
+          [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:config index:? rtpSampleRate:? streamGroupID:?];
         }
       }
 
       else
       {
-        [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:a3 index:? rtpSampleRate:? streamGroupID:?];
+        [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) initWithPayloadConfig:config index:? rtpSampleRate:? streamGroupID:?];
       }
 
 LABEL_39:
@@ -825,16 +825,16 @@ LABEL_39:
     }
   }
 
-  return [(VCMediaNegotiationBlobV2StreamGroupPayload *)self initWithPayloadConfig:a3 rtpSampleRate:v8];
+  return [(VCMediaNegotiationBlobV2StreamGroupPayload *)self initWithPayloadConfig:config rtpSampleRate:v8];
 }
 
-- (id)newCompactPayloadWithPayloadConfig:(id)a3 rtpSampleRate:(unsigned int)a4
+- (id)newCompactPayloadWithPayloadConfig:(id)config rtpSampleRate:(unsigned int)rate
 {
-  v4 = *&a4;
+  v4 = *&rate;
   v19 = *MEMORY[0x1E69E9840];
-  v17 = 0;
+  encoderUsage = 0;
   v16 = 0;
-  v6 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [a3 codecType]);
+  v6 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [config codecType]);
   v7 = v6;
   if (v6 >= 0x100)
   {
@@ -843,14 +843,14 @@ LABEL_39:
   }
 
   v15[0] = v6;
-  if ([a3 rtpPayload] >= 0x100)
+  if ([config rtpPayload] >= 0x100)
   {
-    [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:a3 rtpSampleRate:?];
+    [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:config rtpSampleRate:?];
     return v18;
   }
 
-  v15[1] = [a3 rtpPayload];
-  v8 = [VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:a3];
+  v15[1] = [config rtpPayload];
+  v8 = [VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagsWithPayloadConfig:config];
   if (v8 >= 0x100)
   {
     [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:rtpSampleRate:];
@@ -872,7 +872,7 @@ LABEL_39:
   }
 
   v15[3] = v9;
-  v10 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [a3 cipherSuite]);
+  v10 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [config cipherSuite]);
   if (v10 >= 0x100)
   {
     [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:rtpSampleRate:];
@@ -882,7 +882,7 @@ LABEL_39:
   v15[4] = v10;
   if ([VCMediaNegotiationBlobV2StreamGroupPayload isNegotiationCodecTypeAudio:v7])
   {
-    v11 = [VCMediaNegotiationBlobV2StreamGroupPayload mediaFlagsWithPayloadConfig:a3];
+    v11 = [VCMediaNegotiationBlobV2StreamGroupPayload mediaFlagsWithPayloadConfig:config];
     if (v11 >= 0x100)
     {
       [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:rtpSampleRate:];
@@ -890,19 +890,19 @@ LABEL_39:
     }
 
     BYTE1(v16) = v11;
-    if (!+[VCMediaNegotiationBlobV2StreamGroupPayload isPTimePackable:](VCMediaNegotiationBlobV2StreamGroupPayload, "isPTimePackable:", [a3 pTime]))
+    if (!+[VCMediaNegotiationBlobV2StreamGroupPayload isPTimePackable:](VCMediaNegotiationBlobV2StreamGroupPayload, "isPTimePackable:", [config pTime]))
     {
-      [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:a3 rtpSampleRate:?];
+      [VCMediaNegotiationBlobV2StreamGroupPayload(Utils) newCompactPayloadWithPayloadConfig:config rtpSampleRate:?];
       return v18;
     }
 
-    LOBYTE(v16) = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationPackedPTimeWithPTime:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationPackedPTimeWithPTime:", [a3 pTime]);
+    LOBYTE(v16) = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationPackedPTimeWithPTime:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationPackedPTimeWithPTime:", [config pTime]);
   }
 
   else
   {
-    v16 = bswap32([a3 profileLevelId]);
-    v17 = [a3 encoderUsage];
+    v16 = bswap32([config profileLevelId]);
+    encoderUsage = [config encoderUsage];
   }
 
   v12 = objc_alloc_init(VCMediaNegotiationBlobV2StreamGroupPayload);
@@ -917,10 +917,10 @@ LABEL_39:
   return v13;
 }
 
-- (unsigned)rtpSampleRateWithStreamGroupID:(unsigned int)a3
+- (unsigned)rtpSampleRateWithStreamGroupID:(unsigned int)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultRTPSampleRateForStreamGroupID:*&a3];
+  v4 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultRTPSampleRateForStreamGroupID:*&d];
   if ([(VCMediaNegotiationBlobV2StreamGroupPayload *)self hasPackedPayload])
   {
     v7 = 0;
@@ -937,10 +937,10 @@ LABEL_39:
   return v4;
 }
 
-- (id)payloadConfigurationWithStreamGroupID:(unsigned int)a3 index:(unsigned int)a4
+- (id)payloadConfigurationWithStreamGroupID:(unsigned int)d index:(unsigned int)index
 {
-  v6 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:*&a3];
-  if ([v6 count] > a4 && (v7 = objc_msgSend(v6, "objectAtIndex:", a4)) != 0)
+  v6 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:*&d];
+  if ([v6 count] > index && (v7 = objc_msgSend(v6, "objectAtIndex:", index)) != 0)
   {
     v8 = v7;
     v9 = 1;
@@ -1014,52 +1014,52 @@ LABEL_39:
   }
 }
 
-- (id)payloadConfigurationWithPayloadConfig:(id)a3
+- (id)payloadConfigurationWithPayloadConfig:(id)config
 {
   v6[2] = *MEMORY[0x1E69E9840];
   memset(v6, 0, 10);
   [(VCMediaNegotiationBlobV2StreamGroupPayload *)self getStreamGroupPayload:v6];
-  [a3 setCodecType:{+[VCMediaNegotiationBlobV2StreamGroupPayload codecTypeWithNegotiationCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "codecTypeWithNegotiationCodecType:", LOBYTE(v6[0]))}];
-  [a3 setRtpPayload:BYTE1(v6[0])];
-  [a3 setRtcpPSFB_PLIEnabled:BYTE2(v6[0]) & 1];
-  [a3 setRtcpPSFB_FIREnabled:(BYTE2(v6[0]) >> 1) & 1];
-  [a3 setRtcpSREnabled:(BYTE2(v6[0]) >> 2) & 1];
-  [a3 setCipherSuite:{+[VCMediaNegotiationBlobV2StreamGroupPayload cipherSuiteWithNegotiationCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "cipherSuiteWithNegotiationCipherSuite:", BYTE4(v6[0]))}];
+  [config setCodecType:{+[VCMediaNegotiationBlobV2StreamGroupPayload codecTypeWithNegotiationCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "codecTypeWithNegotiationCodecType:", LOBYTE(v6[0]))}];
+  [config setRtpPayload:BYTE1(v6[0])];
+  [config setRtcpPSFB_PLIEnabled:BYTE2(v6[0]) & 1];
+  [config setRtcpPSFB_FIREnabled:(BYTE2(v6[0]) >> 1) & 1];
+  [config setRtcpSREnabled:(BYTE2(v6[0]) >> 2) & 1];
+  [config setCipherSuite:{+[VCMediaNegotiationBlobV2StreamGroupPayload cipherSuiteWithNegotiationCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "cipherSuiteWithNegotiationCipherSuite:", BYTE4(v6[0]))}];
   if ([VCMediaNegotiationBlobV2StreamGroupPayload isNegotiationCodecTypeAudio:LOBYTE(v6[0])])
   {
-    [a3 setPTime:{+[VCMediaNegotiationBlobV2StreamGroupPayload pTimeWithNegotiationPackedPTime:](VCMediaNegotiationBlobV2StreamGroupPayload, "pTimeWithNegotiationPackedPTime:", BYTE5(v6[0]))}];
-    [a3 setUseInBandFEC:BYTE6(v6[0]) & 1];
+    [config setPTime:{+[VCMediaNegotiationBlobV2StreamGroupPayload pTimeWithNegotiationPackedPTime:](VCMediaNegotiationBlobV2StreamGroupPayload, "pTimeWithNegotiationPackedPTime:", BYTE5(v6[0]))}];
+    [config setUseInBandFEC:BYTE6(v6[0]) & 1];
   }
 
   else
   {
-    [a3 setProfileLevelId:bswap32(*(v6 + 5))];
-    [a3 setEncoderUsage:BYTE1(v6[1])];
-    if ([a3 codecType] == 100)
+    [config setProfileLevelId:bswap32(*(v6 + 5))];
+    [config setEncoderUsage:BYTE1(v6[1])];
+    if ([config codecType] == 100)
     {
-      [a3 setH264LevelAsymmetryAllowed:1];
-      [a3 setH264PacketizationMode:1];
+      [config setH264LevelAsymmetryAllowed:1];
+      [config setH264PacketizationMode:1];
     }
   }
 
-  [a3 setSerializedSize:{objc_msgSend(-[VCMediaNegotiationBlobV2StreamGroupPayload data](self, "data"), "length")}];
-  return a3;
+  [config setSerializedSize:{objc_msgSend(-[VCMediaNegotiationBlobV2StreamGroupPayload data](self, "data"), "length")}];
+  return config;
 }
 
-+ (void)printWithLogFile:(void *)a3 prefix:(id)a4 payloadConfig:(id)a5
++ (void)printWithLogFile:(void *)file prefix:(id)prefix payloadConfig:(id)config
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(a5, "serializedSize"), a4];
-  [v7 appendString:@"Payload config:"];
-  if (!a5)
+  prefix = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(config, "serializedSize"), prefix];
+  [prefix appendString:@"Payload config:"];
+  if (!config)
   {
     v12 = @" <failed to decode>";
 LABEL_20:
-    [v7 appendFormat:v12, v22];
+    [prefix appendFormat:v12, encoderUsage];
     goto LABEL_21;
   }
 
-  v8 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [a5 codecType]);
+  v8 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCodecTypeWithCodecType:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCodecTypeWithCodecType:", [config codecType]);
   if (v8 < 0xD && ((0x17FFu >> v8) & 1) != 0)
   {
     v9 = off_1E85F90B0[v8];
@@ -1070,29 +1070,29 @@ LABEL_20:
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
   }
 
-  [v7 appendFormat:@" CodecType=%@", v9];
-  if ([a5 rtpPayload])
+  [prefix appendFormat:@" CodecType=%@", v9];
+  if ([config rtpPayload])
   {
-    [v7 appendFormat:@" RTPPayload=%u", objc_msgSend(a5, "rtpPayload")];
+    [prefix appendFormat:@" RTPPayload=%u", objc_msgSend(config, "rtpPayload")];
   }
 
-  if ([a5 pTime])
+  if ([config pTime])
   {
-    [v7 appendFormat:@" pTime=%lu", objc_msgSend(a5, "pTime")];
+    [prefix appendFormat:@" pTime=%lu", objc_msgSend(config, "pTime")];
   }
 
-  [v7 appendFormat:@" rtcpFlags=[%@]", +[VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagStringWithPayloadConfig:](VCMediaNegotiationBlobV2StreamGroupPayload, "rtcpFlagStringWithPayloadConfig:", a5)];
-  if ([a5 useInBandFEC])
+  [prefix appendFormat:@" rtcpFlags=[%@]", +[VCMediaNegotiationBlobV2StreamGroupPayload rtcpFlagStringWithPayloadConfig:](VCMediaNegotiationBlobV2StreamGroupPayload, "rtcpFlagStringWithPayloadConfig:", config)];
+  if ([config useInBandFEC])
   {
-    [v7 appendFormat:@" useInBandFEC=1"];
+    [prefix appendFormat:@" useInBandFEC=1"];
   }
 
-  if ([a5 profileLevelId])
+  if ([config profileLevelId])
   {
-    [v7 appendFormat:@" profileLevelID=%lx", objc_msgSend(a5, "profileLevelId")];
+    [prefix appendFormat:@" profileLevelID=%lx", objc_msgSend(config, "profileLevelId")];
   }
 
-  v10 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [a5 cipherSuite]);
+  v10 = +[VCMediaNegotiationBlobV2StreamGroupPayload negotiationCipherSuiteWithCipherSuite:](VCMediaNegotiationBlobV2StreamGroupPayload, "negotiationCipherSuiteWithCipherSuite:", [config cipherSuite]);
   if ((v10 - 1) >= 4)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
@@ -1103,17 +1103,17 @@ LABEL_20:
     v11 = off_1E85F9118[(v10 - 1)];
   }
 
-  [v7 appendFormat:@" cipherSuite=%@", v11];
-  if ([a5 encoderUsage])
+  [prefix appendFormat:@" cipherSuite=%@", v11];
+  if ([config encoderUsage])
   {
-    v22 = [a5 encoderUsage];
+    encoderUsage = [config encoderUsage];
     v12 = @" encoderUsage=%u";
     goto LABEL_20;
   }
 
 LABEL_21:
-  v13 = [v7 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "%s\n", v14, v15, v16, v17, v18, v19, v13);
+  uTF8String = [prefix UTF8String];
+  VRLogfilePrintWithTimestamp(file, "%s\n", v14, v15, v16, v17, v18, v19, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v20 = VRTraceErrorLogLevelToCSTR();
@@ -1127,7 +1127,7 @@ LABEL_21:
       v27 = 1024;
       v28 = 887;
       v29 = 2112;
-      v30 = v7;
+      v30 = prefix;
       _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@", buf, 0x26u);
     }
   }
@@ -1142,9 +1142,9 @@ LABEL_21:
   [(VCMediaNegotiationBlobV2StreamGroupPayload *)&v3 dealloc];
 }
 
-- (void)setHasCodecType:(BOOL)a3
+- (void)setHasCodecType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1157,9 +1157,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRtpPayload:(BOOL)a3
+- (void)setHasRtpPayload:(BOOL)payload
 {
-  if (a3)
+  if (payload)
   {
     v3 = 128;
   }
@@ -1172,9 +1172,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPTime:(BOOL)a3
+- (void)setHasPTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 16;
   }
@@ -1187,9 +1187,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRtcpFlags:(BOOL)a3
+- (void)setHasRtcpFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 64;
   }
@@ -1202,9 +1202,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasMediaFlags:(BOOL)a3
+- (void)setHasMediaFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 8;
   }
@@ -1217,9 +1217,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasProfileLevelId:(BOOL)a3
+- (void)setHasProfileLevelId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -1232,9 +1232,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRtpSampleRate:(BOOL)a3
+- (void)setHasRtpSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 256;
   }
@@ -1247,9 +1247,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEncoderUsage:(BOOL)a3
+- (void)setHasEncoderUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 4;
   }
@@ -1272,11 +1272,11 @@ LABEL_21:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_codecType), @"codecType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_codecType), @"codecType"}];
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -1295,7 +1295,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpPayload), @"rtpPayload"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpPayload), @"rtpPayload"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1309,7 +1309,7 @@ LABEL_4:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_pTime), @"pTime"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_pTime), @"pTime"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1323,7 +1323,7 @@ LABEL_5:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtcpFlags), @"rtcpFlags"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtcpFlags), @"rtcpFlags"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1337,7 +1337,7 @@ LABEL_6:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_mediaFlags), @"mediaFlags"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_mediaFlags), @"mediaFlags"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1351,7 +1351,7 @@ LABEL_7:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_profileLevelId), @"profileLevelId"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_profileLevelId), @"profileLevelId"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1365,29 +1365,29 @@ LABEL_8:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSampleRate), @"rtpSampleRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSampleRate), @"rtpSampleRate"}];
   if (*&self->_has)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cipherSuite), @"cipherSuite"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cipherSuite), @"cipherSuite"}];
   }
 
 LABEL_10:
   packedPayload = self->_packedPayload;
   if (packedPayload)
   {
-    [v3 setObject:packedPayload forKey:@"packedPayload"];
+    [dictionary setObject:packedPayload forKey:@"packedPayload"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_encoderUsage), @"encoderUsage"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_encoderUsage), @"encoderUsage"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -1501,13 +1501,13 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_codecType;
-    *(a3 + 28) |= 2u;
+    *(to + 3) = self->_codecType;
+    *(to + 28) |= 2u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -1526,8 +1526,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 12) = self->_rtpPayload;
-  *(a3 + 28) |= 0x80u;
+  *(to + 12) = self->_rtpPayload;
+  *(to + 28) |= 0x80u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1541,8 +1541,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(a3 + 6) = self->_pTime;
-  *(a3 + 28) |= 0x10u;
+  *(to + 6) = self->_pTime;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1556,8 +1556,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(a3 + 11) = self->_rtcpFlags;
-  *(a3 + 28) |= 0x40u;
+  *(to + 11) = self->_rtcpFlags;
+  *(to + 28) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1571,8 +1571,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(a3 + 5) = self->_mediaFlags;
-  *(a3 + 28) |= 8u;
+  *(to + 5) = self->_mediaFlags;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1586,8 +1586,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(a3 + 10) = self->_profileLevelId;
-  *(a3 + 28) |= 0x20u;
+  *(to + 10) = self->_profileLevelId;
+  *(to + 28) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1601,31 +1601,31 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(a3 + 13) = self->_rtpSampleRate;
-  *(a3 + 28) |= 0x100u;
+  *(to + 13) = self->_rtpSampleRate;
+  *(to + 28) |= 0x100u;
   if (*&self->_has)
   {
 LABEL_9:
-    *(a3 + 2) = self->_cipherSuite;
-    *(a3 + 28) |= 1u;
+    *(to + 2) = self->_cipherSuite;
+    *(to + 28) |= 1u;
   }
 
 LABEL_10:
   if (self->_packedPayload)
   {
-    [a3 setPackedPayload:?];
+    [to setPackedPayload:?];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 4) = self->_encoderUsage;
-    *(a3 + 28) |= 4u;
+    *(to + 4) = self->_encoderUsage;
+    *(to + 28) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -1736,7 +1736,7 @@ LABEL_9:
 
 LABEL_10:
 
-  *(v6 + 32) = [(NSData *)self->_packedPayload copyWithZone:a3];
+  *(v6 + 32) = [(NSData *)self->_packedPayload copyWithZone:zone];
   if ((*&self->_has & 4) != 0)
   {
     *(v6 + 16) = self->_encoderUsage;
@@ -1746,16 +1746,16 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_codecType != *(a3 + 3))
+      if ((v7 & 2) == 0 || self->_codecType != *(equal + 3))
       {
         goto LABEL_49;
       }
@@ -1770,7 +1770,7 @@ LABEL_49:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_rtpPayload != *(a3 + 12))
+      if ((v7 & 0x80) == 0 || self->_rtpPayload != *(equal + 12))
       {
         goto LABEL_49;
       }
@@ -1783,7 +1783,7 @@ LABEL_49:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_pTime != *(a3 + 6))
+      if ((v7 & 0x10) == 0 || self->_pTime != *(equal + 6))
       {
         goto LABEL_49;
       }
@@ -1796,7 +1796,7 @@ LABEL_49:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_rtcpFlags != *(a3 + 11))
+      if ((v7 & 0x40) == 0 || self->_rtcpFlags != *(equal + 11))
       {
         goto LABEL_49;
       }
@@ -1809,7 +1809,7 @@ LABEL_49:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_mediaFlags != *(a3 + 5))
+      if ((v7 & 8) == 0 || self->_mediaFlags != *(equal + 5))
       {
         goto LABEL_49;
       }
@@ -1822,7 +1822,7 @@ LABEL_49:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_profileLevelId != *(a3 + 10))
+      if ((v7 & 0x20) == 0 || self->_profileLevelId != *(equal + 10))
       {
         goto LABEL_49;
       }
@@ -1835,20 +1835,20 @@ LABEL_49:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 28) & 0x100) == 0 || self->_rtpSampleRate != *(a3 + 13))
+      if ((*(equal + 28) & 0x100) == 0 || self->_rtpSampleRate != *(equal + 13))
       {
         goto LABEL_49;
       }
     }
 
-    else if ((*(a3 + 28) & 0x100) != 0)
+    else if ((*(equal + 28) & 0x100) != 0)
     {
       goto LABEL_49;
     }
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_cipherSuite != *(a3 + 2))
+      if ((v7 & 1) == 0 || self->_cipherSuite != *(equal + 2))
       {
         goto LABEL_49;
       }
@@ -1860,7 +1860,7 @@ LABEL_49:
     }
 
     packedPayload = self->_packedPayload;
-    if (packedPayload | *(a3 + 4))
+    if (packedPayload | *(equal + 4))
     {
       v5 = [(NSData *)packedPayload isEqual:?];
       if (!v5)
@@ -1871,11 +1871,11 @@ LABEL_49:
       has = self->_has;
     }
 
-    v9 = *(a3 + 28);
+    v9 = *(equal + 28);
     LOBYTE(v5) = (v9 & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_encoderUsage != *(a3 + 4))
+      if ((v9 & 4) == 0 || self->_encoderUsage != *(equal + 4))
       {
         goto LABEL_49;
       }
@@ -2010,14 +2010,14 @@ LABEL_18:
   return v4 ^ v14 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 2) != 0)
   {
-    self->_codecType = *(a3 + 3);
+    self->_codecType = *(from + 3);
     *&self->_has |= 2u;
-    v5 = *(a3 + 28);
+    v5 = *(from + 28);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -2035,9 +2035,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_rtpPayload = *(a3 + 12);
+  self->_rtpPayload = *(from + 12);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -2050,9 +2050,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_pTime = *(a3 + 6);
+  self->_pTime = *(from + 6);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x40) == 0)
   {
 LABEL_5:
@@ -2065,9 +2065,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_rtcpFlags = *(a3 + 11);
+  self->_rtcpFlags = *(from + 11);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -2080,9 +2080,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_mediaFlags = *(a3 + 5);
+  self->_mediaFlags = *(from + 5);
   *&self->_has |= 8u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -2095,9 +2095,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_profileLevelId = *(a3 + 10);
+  self->_profileLevelId = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -2110,24 +2110,24 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_rtpSampleRate = *(a3 + 13);
+  self->_rtpSampleRate = *(from + 13);
   *&self->_has |= 0x100u;
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
 LABEL_9:
-    self->_cipherSuite = *(a3 + 2);
+    self->_cipherSuite = *(from + 2);
     *&self->_has |= 1u;
   }
 
 LABEL_10:
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(VCMediaNegotiationBlobV2StreamGroupPayload *)self setPackedPayload:?];
   }
 
-  if ((*(a3 + 28) & 4) != 0)
+  if ((*(from + 28) & 4) != 0)
   {
-    self->_encoderUsage = *(a3 + 4);
+    self->_encoderUsage = *(from + 4);
     *&self->_has |= 4u;
   }
 }

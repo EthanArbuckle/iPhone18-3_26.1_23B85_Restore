@@ -4,38 +4,38 @@
 + (BOOL)hasHadPairedCyclingSpeedSensors;
 + (id)shared;
 - (BOOL)hideBluetoothPowerAlert;
-- (BOOL)testAndSetPeripheral:(id)a3 forTag:(id)a4 existingValueCheck:(id)a5 valueSetting:(id)a6;
+- (BOOL)testAndSetPeripheral:(id)peripheral forTag:(id)tag existingValueCheck:(id)check valueSetting:(id)setting;
 - (FIBluetoothSensorLookup)init;
 - (void)_queueCheckForPeripherals;
-- (void)_queueSpinUpBTCheck:(int64_t)a3;
+- (void)_queueSpinUpBTCheck:(int64_t)check;
 - (void)_spinUpCheck;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation FIBluetoothSensorLookup
 
 + (BOOL)hasHadPairedCyclingSpeedSensors
 {
-  v2 = [a1 shared];
-  v3 = [v2 hasHadPairedCyclingSpeedSensors];
+  shared = [self shared];
+  hasHadPairedCyclingSpeedSensors = [shared hasHadPairedCyclingSpeedSensors];
 
-  return v3;
+  return hasHadPairedCyclingSpeedSensors;
 }
 
 + (BOOL)hasHadPairedCyclingCadenceSensors
 {
-  v2 = [a1 shared];
-  v3 = [v2 hasHadPairedCyclingCadenceSensors];
+  shared = [self shared];
+  hasHadPairedCyclingCadenceSensors = [shared hasHadPairedCyclingCadenceSensors];
 
-  return v3;
+  return hasHadPairedCyclingCadenceSensors;
 }
 
 + (BOOL)hasHadPairedCyclingPowerSensors
 {
-  v2 = [a1 shared];
-  v3 = [v2 hasHadPairedCyclingPowerSensors];
+  shared = [self shared];
+  hasHadPairedCyclingPowerSensors = [shared hasHadPairedCyclingPowerSensors];
 
-  return v3;
+  return hasHadPairedCyclingPowerSensors;
 }
 
 + (id)shared
@@ -75,8 +75,8 @@ uint64_t __33__FIBluetoothSensorLookup_shared__block_invoke()
 
 - (BOOL)hideBluetoothPowerAlert
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"CyclingHideBluetoothPowerAlert"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"CyclingHideBluetoothPowerAlert"];
 
   return v3;
 }
@@ -84,13 +84,13 @@ uint64_t __33__FIBluetoothSensorLookup_shared__block_invoke()
 - (void)_spinUpCheck
 {
   objc_initWeak(&location, self);
-  v3 = [(FIBluetoothSensorLookup *)self queue];
+  queue = [(FIBluetoothSensorLookup *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__FIBluetoothSensorLookup__spinUpCheck__block_invoke;
   v4[3] = &unk_2790051E8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -102,16 +102,16 @@ void __39__FIBluetoothSensorLookup__spinUpCheck__block_invoke(uint64_t a1)
   [WeakRetained _queueSpinUpBTCheck:7];
 }
 
-- (void)_queueSpinUpBTCheck:(int64_t)a3
+- (void)_queueSpinUpBTCheck:(int64_t)check
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v5 = [(FIBluetoothSensorLookup *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(FIBluetoothSensorLookup *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(FIBluetoothSensorLookup *)self setPendingTypes:[(FIBluetoothSensorLookup *)self pendingTypes]| a3];
-  v6 = [(FIBluetoothSensorLookup *)self centralManager];
+  [(FIBluetoothSensorLookup *)self setPendingTypes:[(FIBluetoothSensorLookup *)self pendingTypes]| check];
+  centralManager = [(FIBluetoothSensorLookup *)self centralManager];
 
-  if (!v6)
+  if (!centralManager)
   {
     _HKInitializeLogging();
     v10 = MEMORY[0x277CCC330];
@@ -143,21 +143,21 @@ void __39__FIBluetoothSensorLookup__spinUpCheck__block_invoke(uint64_t a1)
     }
 
     v17 = objc_alloc(MEMORY[0x277CBDFF8]);
-    v18 = [(FIBluetoothSensorLookup *)self queue];
+    queue2 = [(FIBluetoothSensorLookup *)self queue];
     v24 = *MEMORY[0x277CBDD98];
     v19 = [MEMORY[0x277CCABB0] numberWithBool:v15];
     v25[0] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v21 = [v17 initWithDelegate:self queue:v18 options:v20];
+    v21 = [v17 initWithDelegate:self queue:queue2 options:v20];
     [(FIBluetoothSensorLookup *)self setCentralManager:v21];
 
     goto LABEL_15;
   }
 
-  v7 = [(FIBluetoothSensorLookup *)self centralManager];
-  v8 = [v7 state];
+  centralManager2 = [(FIBluetoothSensorLookup *)self centralManager];
+  state = [centralManager2 state];
 
-  if (v8 != 5)
+  if (state != 5)
   {
     _HKInitializeLogging();
     v16 = *MEMORY[0x277CCC330];
@@ -177,14 +177,14 @@ LABEL_15:
   [(FIBluetoothSensorLookup *)self _queueCheckForPeripherals];
 }
 
-- (BOOL)testAndSetPeripheral:(id)a3 forTag:(id)a4 existingValueCheck:(id)a5 valueSetting:(id)a6
+- (BOOL)testAndSetPeripheral:(id)peripheral forTag:(id)tag existingValueCheck:(id)check valueSetting:(id)setting
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (![v9 hasTag:v10])
+  peripheralCopy = peripheral;
+  tagCopy = tag;
+  checkCopy = check;
+  settingCopy = setting;
+  if (![peripheralCopy hasTag:tagCopy])
   {
     goto LABEL_5;
   }
@@ -194,16 +194,16 @@ LABEL_15:
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v10;
+    v18 = tagCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = peripheralCopy;
     _os_log_impl(&dword_24B35E000, v13, OS_LOG_TYPE_DEFAULT, "[Bluetooth] Did find %@ peripheral %@", &v17, 0x16u);
   }
 
-  if ((v11[2](v11) & 1) == 0)
+  if ((checkCopy[2](checkCopy) & 1) == 0)
   {
     v14 = 1;
-    v12[2](v12, 1);
+    settingCopy[2](settingCopy, 1);
   }
 
   else
@@ -218,23 +218,23 @@ LABEL_5:
 
 - (void)_queueCheckForPeripherals
 {
-  v3 = [(FIBluetoothSensorLookup *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(FIBluetoothSensorLookup *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(FIBluetoothSensorLookup *)self pendingTypes];
+  pendingTypes = [(FIBluetoothSensorLookup *)self pendingTypes];
   [(FIBluetoothSensorLookup *)self setPendingTypes:0];
-  v5 = [(FIBluetoothSensorLookup *)self centralManager];
+  centralManager = [(FIBluetoothSensorLookup *)self centralManager];
 
-  if (v5)
+  if (centralManager)
   {
-    v6 = [(FIBluetoothSensorLookup *)self centralManager];
+    centralManager2 = [(FIBluetoothSensorLookup *)self centralManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __52__FIBluetoothSensorLookup__queueCheckForPeripherals__block_invoke;
     v8[3] = &unk_279005250;
     v8[4] = self;
-    v8[5] = v4;
-    [v6 retrievePeripheralsWithCustomProperties:&unk_285E6B0D0 completion:v8];
+    v8[5] = pendingTypes;
+    [centralManager2 retrievePeripheralsWithCustomProperties:&unk_285E6B0D0 completion:v8];
   }
 
   else
@@ -368,14 +368,14 @@ LABEL_26:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [(FIBluetoothSensorLookup *)self queue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  queue = [(FIBluetoothSensorLookup *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 state];
-  if (v6 == 5)
+  state = [stateCopy state];
+  if (state == 5)
   {
 
     [(FIBluetoothSensorLookup *)self _queueCheckForPeripherals];

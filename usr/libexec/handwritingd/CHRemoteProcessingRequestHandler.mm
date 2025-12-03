@@ -1,18 +1,18 @@
 @interface CHRemoteProcessingRequestHandler
-- (CHRemoteProcessingRequestHandler)initWithServerQueue:(id)a3 lowPriorityQueue:(id)a4 highPriorityQueue:(id)a5;
+- (CHRemoteProcessingRequestHandler)initWithServerQueue:(id)queue lowPriorityQueue:(id)priorityQueue highPriorityQueue:(id)highPriorityQueue;
 @end
 
 @implementation CHRemoteProcessingRequestHandler
 
-- (CHRemoteProcessingRequestHandler)initWithServerQueue:(id)a3 lowPriorityQueue:(id)a4 highPriorityQueue:(id)a5
+- (CHRemoteProcessingRequestHandler)initWithServerQueue:(id)queue lowPriorityQueue:(id)priorityQueue highPriorityQueue:(id)highPriorityQueue
 {
   v8.receiver = self;
   v8.super_class = CHRemoteProcessingRequestHandler;
-  result = [(CHRemoteBasicRequestHandler *)&v8 initWithServerQueue:a3];
+  result = [(CHRemoteBasicRequestHandler *)&v8 initWithServerQueue:queue];
   if (result)
   {
-    result->_lowPriorityQueue = a4;
-    result->_highPriorityQueue = a5;
+    result->_lowPriorityQueue = priorityQueue;
+    result->_highPriorityQueue = highPriorityQueue;
   }
 
   return result;

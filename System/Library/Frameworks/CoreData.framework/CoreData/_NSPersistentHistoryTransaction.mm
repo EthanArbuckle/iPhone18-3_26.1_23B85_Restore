@@ -1,13 +1,13 @@
 @interface _NSPersistentHistoryTransaction
-- (_NSPersistentHistoryTransaction)initWithCoder:(id)a3;
-- (_NSPersistentHistoryTransaction)initWithDictionary:(id)a3 andObjectID:(id)a4;
+- (_NSPersistentHistoryTransaction)initWithCoder:(id)coder;
+- (_NSPersistentHistoryTransaction)initWithDictionary:(id)dictionary andObjectID:(id)d;
 - (id)initialQueryGenerationToken;
 - (id)objectIDNotification;
 - (id)postQueryGenerationToken;
 - (id)token;
 - (void)_setChanges:(void *)result;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSPersistentHistoryTransaction
@@ -40,73 +40,73 @@
   [(_NSPersistentHistoryTransaction *)&v3 dealloc];
 }
 
-- (_NSPersistentHistoryTransaction)initWithDictionary:(id)a3 andObjectID:(id)a4
+- (_NSPersistentHistoryTransaction)initWithDictionary:(id)dictionary andObjectID:(id)d
 {
-  v7 = [a4 _referenceData64];
-  v8 = [a3 objectForKey:@"AUTHORTS"];
+  _referenceData64 = [d _referenceData64];
+  v8 = [dictionary objectForKey:@"AUTHORTS"];
   if (!v8)
   {
-    v8 = [a3 objectForKey:@"AUTHOR"];
+    v8 = [dictionary objectForKey:@"AUTHOR"];
   }
 
-  v9 = [a3 objectForKey:@"BUNDLEIDTS"];
+  v9 = [dictionary objectForKey:@"BUNDLEIDTS"];
   if (!v9)
   {
-    v9 = [a3 objectForKey:@"BUNDLEID"];
+    v9 = [dictionary objectForKey:@"BUNDLEID"];
   }
 
-  v10 = [a3 objectForKey:@"CONTEXTNAMETS"];
+  v10 = [dictionary objectForKey:@"CONTEXTNAMETS"];
   if (!v10)
   {
-    v10 = [a3 objectForKey:@"CONTEXTNAME"];
+    v10 = [dictionary objectForKey:@"CONTEXTNAME"];
   }
 
-  v11 = [a3 objectForKey:@"PROCESSIDTS"];
+  v11 = [dictionary objectForKey:@"PROCESSIDTS"];
   if (!v11)
   {
-    v11 = [a3 objectForKey:@"PROCESSID"];
+    v11 = [dictionary objectForKey:@"PROCESSID"];
   }
 
-  v12 = [a3 objectForKey:@"QUERYGEN"];
-  [objc_msgSend(a3 objectForKey:{@"TIMESTAMP", "doubleValue"}];
+  v12 = [dictionary objectForKey:@"QUERYGEN"];
+  [objc_msgSend(dictionary objectForKey:{@"TIMESTAMP", "doubleValue"}];
   v14 = v13;
   v20.receiver = self;
   v20.super_class = _NSPersistentHistoryTransaction;
   v15 = [(_NSPersistentHistoryTransaction *)&v20 init];
   if (v15)
   {
-    v16 = [a4 persistentStore];
-    v17 = v16;
-    if (v16)
+    persistentStore = [d persistentStore];
+    v17 = persistentStore;
+    if (persistentStore)
     {
-      v18 = atomic_load(v16 + 1);
+      v18 = atomic_load(persistentStore + 1);
       if ([v18 _isDeallocating])
       {
-        v16 = 0;
+        persistentStore = 0;
       }
 
       else
       {
-        v16 = v18;
+        persistentStore = v18;
       }
     }
 
-    v15->_coordinator = v16;
+    v15->_coordinator = persistentStore;
     v15->_storeID = [objc_msgSend(v17 "identifier")];
-    v15->_rowIdentifier = v7;
+    v15->_rowIdentifier = _referenceData64;
     v15->_timestamp = v14;
     v15->_bundleID = v9;
     v15->_processID = v11;
     v15->_contextName = v10;
     v15->_author = v8;
     v15->_queryGeneration = v12;
-    v15->_backingObjectID = a4;
+    v15->_backingObjectID = d;
   }
 
   return v15;
 }
 
-- (_NSPersistentHistoryTransaction)initWithCoder:(id)a3
+- (_NSPersistentHistoryTransaction)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -115,16 +115,16 @@
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v4->_storeID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionStoreID"];
-    v4->_rowIdentifier = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSPersistentHistoryTransactionRowID", "longLongValue"}];
-    [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSPersistentHistoryTransactionTimestamp", "doubleValue"}];
+    v4->_storeID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionStoreID"];
+    v4->_rowIdentifier = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSPersistentHistoryTransactionRowID", "longLongValue"}];
+    [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSPersistentHistoryTransactionTimestamp", "doubleValue"}];
     v4->_timestamp = v6;
-    v4->_changes = [a3 decodeObjectOfClasses:+[_PFRoutines historyChangesArrayClassesForSecureCoding]() forKey:@"NSPersistentHistoryTransactionChangeSet"];
-    v4->_bundleID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionBundleID"];
-    v4->_processID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionProcessID"];
-    v4->_contextName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionContextName"];
-    v4->_author = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionAuthor"];
-    v4->_queryGeneration = [a3 decodeObjectOfClasses:+[_PFRoutines historyQueryGenDataClassesForSecureCoding]() forKey:@"NSPersistentHistoryTransactionQueryGen"];
+    v4->_changes = [coder decodeObjectOfClasses:+[_PFRoutines historyChangesArrayClassesForSecureCoding]() forKey:@"NSPersistentHistoryTransactionChangeSet"];
+    v4->_bundleID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionBundleID"];
+    v4->_processID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionProcessID"];
+    v4->_contextName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionContextName"];
+    v4->_author = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPersistentHistoryTransactionAuthor"];
+    v4->_queryGeneration = [coder decodeObjectOfClasses:+[_PFRoutines historyQueryGenDataClassesForSecureCoding]() forKey:@"NSPersistentHistoryTransactionQueryGen"];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
@@ -160,18 +160,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_autoreleasePoolPush();
-  [a3 encodeObject:self->_storeID forKey:@"NSPersistentHistoryTransactionStoreID"];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_rowIdentifier), @"NSPersistentHistoryTransactionRowID"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", self->_timestamp), @"NSPersistentHistoryTransactionTimestamp"}];
-  [a3 encodeObject:self->_changes forKey:@"NSPersistentHistoryTransactionChangeSet"];
-  [a3 encodeObject:self->_bundleID forKey:@"NSPersistentHistoryTransactionBundleID"];
-  [a3 encodeObject:self->_processID forKey:@"NSPersistentHistoryTransactionProcessID"];
-  [a3 encodeObject:self->_contextName forKey:@"NSPersistentHistoryTransactionContextName"];
-  [a3 encodeObject:self->_author forKey:@"NSPersistentHistoryTransactionAuthor"];
-  [a3 encodeObject:self->_queryGeneration forKey:@"NSPersistentHistoryTransactionQueryGen"];
+  [coder encodeObject:self->_storeID forKey:@"NSPersistentHistoryTransactionStoreID"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_rowIdentifier), @"NSPersistentHistoryTransactionRowID"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", self->_timestamp), @"NSPersistentHistoryTransactionTimestamp"}];
+  [coder encodeObject:self->_changes forKey:@"NSPersistentHistoryTransactionChangeSet"];
+  [coder encodeObject:self->_bundleID forKey:@"NSPersistentHistoryTransactionBundleID"];
+  [coder encodeObject:self->_processID forKey:@"NSPersistentHistoryTransactionProcessID"];
+  [coder encodeObject:self->_contextName forKey:@"NSPersistentHistoryTransactionContextName"];
+  [coder encodeObject:self->_author forKey:@"NSPersistentHistoryTransactionAuthor"];
+  [coder encodeObject:self->_queryGeneration forKey:@"NSPersistentHistoryTransactionQueryGen"];
 
   objc_autoreleasePoolPop(v5);
 }
@@ -200,19 +200,19 @@
     return 0;
   }
 
-  v3 = [(NSManagedObjectID *)self->_backingObjectID persistentStore];
+  persistentStore = [(NSManagedObjectID *)self->_backingObjectID persistentStore];
   queryGeneration = self->_queryGeneration;
   if ([(NSData *)queryGeneration isNSData])
   {
     queryGeneration = [[_PFSQLiteSnapshotWrapper alloc] initWithData:?];
   }
 
-  if (v3)
+  if (persistentStore)
   {
     v5 = [_NSQueryGenerationToken alloc];
     if (v5)
     {
-      v5 = [(_NSQueryGenerationToken *)v5 initWithValue:v3 store:0 freeValueOnDealloc:?];
+      v5 = [(_NSQueryGenerationToken *)v5 initWithValue:persistentStore store:0 freeValueOnDealloc:?];
     }
   }
 
@@ -228,10 +228,10 @@
 {
   if (self)
   {
-    v3 = [(NSManagedObjectID *)self->_backingObjectID persistentStore];
-    if (v3)
+    persistentStore = [(NSManagedObjectID *)self->_backingObjectID persistentStore];
+    if (persistentStore)
     {
-      if ((BYTE1(v3[1]._modelMap) & 0x40) != 0)
+      if ((BYTE1(persistentStore[1]._modelMap) & 0x40) != 0)
       {
         return 0;
       }
@@ -288,24 +288,24 @@
       }
 
       v12 = *(*(&v21 + 1) + 8 * i);
-      v13 = [v12 changedObjectID];
-      v14 = [v12 changeType];
+      changedObjectID = [v12 changedObjectID];
+      changeType = [v12 changeType];
       v15 = v4;
-      if (!v14)
+      if (!changeType)
       {
         goto LABEL_12;
       }
 
-      if (v14 == 2)
+      if (changeType == 2)
       {
         v15 = v6;
 LABEL_12:
-        [v15 addObject:v13];
+        [v15 addObject:changedObjectID];
         continue;
       }
 
       v15 = v5;
-      if (v14 == 1)
+      if (changeType == 1)
       {
         goto LABEL_12;
       }

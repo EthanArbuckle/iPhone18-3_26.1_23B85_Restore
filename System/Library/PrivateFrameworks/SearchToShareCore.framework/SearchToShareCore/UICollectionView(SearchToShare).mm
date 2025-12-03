@@ -8,13 +8,13 @@
 {
   v4 = a3;
   v14 = 0;
-  v5 = [a1 numberOfSections];
-  if (v5)
+  numberOfSections = [self numberOfSections];
+  if (numberOfSections)
   {
-    v6 = v5;
+    v6 = numberOfSections;
     for (i = 0; i != v6; ++i)
     {
-      v8 = [a1 numberOfItemsInSection:i];
+      v8 = [self numberOfItemsInSection:i];
       if (v8)
       {
         v9 = v8;

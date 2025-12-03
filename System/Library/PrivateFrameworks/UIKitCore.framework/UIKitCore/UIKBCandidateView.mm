@@ -1,32 +1,32 @@
 @interface UIKBCandidateView
 - (BOOL)isTenKey;
-- (UIKBCandidateView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
+- (UIKBCandidateView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
 - (id)candidateList;
 - (void)clearCandidateKey;
 - (void)dealloc;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 - (void)updateCandidateKey;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
 @end
 
 @implementation UIKBCandidateView
 
-- (UIKBCandidateView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBCandidateView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  keyplaneCopy = keyplane;
   v17.receiver = self;
   v17.super_class = UIKBCandidateView;
-  v12 = [(UIKBKeyView *)&v17 initWithFrame:v11 keyplane:a5 key:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(UIKBKeyView *)&v17 initWithFrame:keyplaneCopy keyplane:key key:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(UIView *)v12 setEnabled:1];
+    [(UIView *)height setEnabled:1];
     [(UIView *)v13 setOpaque:0];
-    -[UIKBCandidateView setVisualStyling:](v13, "setVisualStyling:", [v11 visualStyling]);
+    -[UIKBCandidateView setVisualStyling:](v13, "setVisualStyling:", [keyplaneCopy visualStyling]);
     if ([(UIKBCandidateView *)v13 isTenKey])
     {
       v15[0] = MEMORY[0x1E69E9820];
@@ -49,57 +49,57 @@
   [(UIKBKeyView *)&v3 dealloc];
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
-  [(UIKBCandidateView *)self clearCandidateKey:a3];
+  [(UIKBCandidateView *)self clearCandidateKey:keyplane];
 
   [(UIKBCandidateView *)self updateCandidateKey];
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if ([(UIKBCandidateView *)self isTenKey])
   {
-    v5 = [(UIKBKeyView *)self screenTraits];
-    if ([v5 idiom] == 1)
+    screenTraits = [(UIKBKeyView *)self screenTraits];
+    if ([screenTraits idiom] == 1)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v6 = [(UIKBKeyView *)self screenTraits];
-    if ([v6 idiom] == 24)
+    screenTraits2 = [(UIKBKeyView *)self screenTraits];
+    if ([screenTraits2 idiom] == 24)
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v7 = [(UIKBKeyView *)self screenTraits];
-    if ([v7 idiom] == 25)
+    screenTraits3 = [(UIKBKeyView *)self screenTraits];
+    if ([screenTraits3 idiom] == 25)
     {
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    v8 = [(UIKBKeyView *)self screenTraits];
-    if ([v8 idiom] == 26)
+    screenTraits4 = [(UIKBKeyView *)self screenTraits];
+    if ([screenTraits4 idiom] == 26)
     {
 
       goto LABEL_7;
     }
 
-    v9 = [(UIKBKeyView *)self screenTraits];
-    v10 = [v9 idiom];
+    screenTraits5 = [(UIKBKeyView *)self screenTraits];
+    idiom = [screenTraits5 idiom];
 
-    if (v10 != 23)
+    if (idiom != 23)
     {
       v11.receiver = self;
       v11.super_class = UIKBCandidateView;
-      [(UIKBKeyView *)&v11 displayLayer:v4];
+      [(UIKBKeyView *)&v11 displayLayer:layerCopy];
     }
   }
 
@@ -109,72 +109,72 @@ LABEL_10:
 - (id)candidateList
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 candidateController];
+  candidateController = [v2 candidateController];
 
-  return v3;
+  return candidateController;
 }
 
 - (BOOL)isTenKey
 {
   v2 = [(UIKBKeyView *)self key];
-  v3 = [v2 rendering];
+  rendering = [v2 rendering];
 
-  return (v3 < 0x23) & (0x600000002uLL >> v3);
+  return (rendering < 0x23) & (0x600000002uLL >> rendering);
 }
 
 - (void)updateCandidateKey
 {
-  v3 = [(UIKBKeyView *)self factory];
+  factory = [(UIKBKeyView *)self factory];
   v4 = [(UIKBKeyView *)self key];
-  v5 = [(UIKBKeyView *)self keyplane];
-  v55 = [v3 traitsForKey:v4 onKeyplane:v5];
+  keyplane = [(UIKBKeyView *)self keyplane];
+  v55 = [factory traitsForKey:v4 onKeyplane:keyplane];
 
-  v6 = [v55 geometry];
-  [v6 roundRectRadius];
+  geometry = [v55 geometry];
+  [geometry roundRectRadius];
   v8 = v7;
 
-  v9 = [v55 geometry];
-  v10 = [v9 roundRectCorners];
+  geometry2 = [v55 geometry];
+  roundRectCorners = [geometry2 roundRectCorners];
 
-  v11 = [v55 geometry];
-  [v11 frame];
+  geometry3 = [v55 geometry];
+  [geometry3 frame];
   MinY = CGRectGetMinY(v57);
-  v13 = [v55 geometry];
-  [v13 paddedFrame];
+  geometry4 = [v55 geometry];
+  [geometry4 paddedFrame];
   v14 = MinY - CGRectGetMinY(v58);
 
-  v15 = [v55 geometry];
-  [v15 frame];
+  geometry5 = [v55 geometry];
+  [geometry5 frame];
   MaxX = CGRectGetMaxX(v59);
-  v17 = [v55 geometry];
-  [v17 paddedFrame];
+  geometry6 = [v55 geometry];
+  [geometry6 paddedFrame];
   v18 = MaxX - CGRectGetMaxX(v60);
 
-  v19 = [v55 geometry];
-  [v19 frame];
+  geometry7 = [v55 geometry];
+  [geometry7 frame];
   MaxY = CGRectGetMaxY(v61);
-  v21 = [v55 geometry];
-  [v21 paddedFrame];
+  geometry8 = [v55 geometry];
+  [geometry8 paddedFrame];
   v22 = MaxY - CGRectGetMaxY(v62);
 
-  v23 = [v55 geometry];
-  [v23 frame];
+  geometry9 = [v55 geometry];
+  [geometry9 frame];
   MinX = CGRectGetMinX(v63);
-  v25 = [v55 geometry];
-  [v25 paddedFrame];
+  geometry10 = [v55 geometry];
+  [geometry10 paddedFrame];
   v26 = MinX - CGRectGetMinX(v64);
 
   v27 = +[UIKeyboardImpl activeInstance];
-  v28 = [v27 candidateController];
+  candidateController = [v27 candidateController];
 
   [(UIView *)self bounds];
   v30 = v29 - v26;
   v32 = v31 - (v18 - v26);
   v34 = v33 - v14;
   v36 = v35 - (v22 - v14);
-  v37 = [(UIKBCandidateView *)self candidateKey];
+  candidateKey = [(UIKBCandidateView *)self candidateKey];
 
-  if (!v37)
+  if (!candidateKey)
   {
     if (([(UIKBCandidateView *)self visualStyling]& 0x3F) == 1 && ([(UIKBCandidateView *)self visualStyling]& 0x80) != 0)
     {
@@ -201,60 +201,60 @@ LABEL_10:
       v39 = off_1E70E9FD0;
     }
 
-    v41 = [(__objc2_class *)*v39 configuration];
+    configuration = [(__objc2_class *)*v39 configuration];
 
-    v42 = [v28 newCandidateKeyWithFrame:v41 configuration:{v30, v34, v32, v36}];
+    v42 = [candidateController newCandidateKeyWithFrame:configuration configuration:{v30, v34, v32, v36}];
     [(UIKBCandidateView *)self setCandidateKey:v42];
   }
 
-  v43 = [(UIKBCandidateView *)self candidateKey];
-  v44 = [v43 superview];
+  candidateKey2 = [(UIKBCandidateView *)self candidateKey];
+  superview = [candidateKey2 superview];
 
-  if (v44 != self)
+  if (superview != self)
   {
-    v45 = [(UIKBCandidateView *)self candidateKey];
-    [v45 removeFromSuperview];
+    candidateKey3 = [(UIKBCandidateView *)self candidateKey];
+    [candidateKey3 removeFromSuperview];
 
-    v46 = [(UIKBCandidateView *)self candidateKey];
-    [v46 setHidden:0];
+    candidateKey4 = [(UIKBCandidateView *)self candidateKey];
+    [candidateKey4 setHidden:0];
 
-    v47 = [(UIKBCandidateView *)self candidateKey];
-    [(UIView *)self addSubview:v47];
+    candidateKey5 = [(UIKBCandidateView *)self candidateKey];
+    [(UIView *)self addSubview:candidateKey5];
   }
 
-  v48 = [(UIKBCandidateView *)self candidateKey];
-  [v48 setFrame:{v30, v34, v32, v36}];
+  candidateKey6 = [(UIKBCandidateView *)self candidateKey];
+  [candidateKey6 setFrame:{v30, v34, v32, v36}];
 
-  v49 = [(UIKBCandidateView *)self candidateKey];
-  [v49 setAutoresizingMask:18];
+  candidateKey7 = [(UIKBCandidateView *)self candidateKey];
+  [candidateKey7 setAutoresizingMask:18];
 
-  v50 = [(UIKBCandidateView *)self candidateKey];
-  [v50 _setContinuousCornerRadius:v8];
+  candidateKey8 = [(UIKBCandidateView *)self candidateKey];
+  [candidateKey8 _setContinuousCornerRadius:v8];
 
-  v51 = [(UIKBCandidateView *)self candidateKey];
-  v52 = [v51 layer];
-  [v52 setMaskedCorners:v10 & 0xF];
+  candidateKey9 = [(UIKBCandidateView *)self candidateKey];
+  layer = [candidateKey9 layer];
+  [layer setMaskedCorners:roundRectCorners & 0xF];
 
-  v53 = [(UIKBCandidateView *)self candidateKey];
-  v54 = [v53 layer];
-  [v54 setMasksToBounds:1];
+  candidateKey10 = [(UIKBCandidateView *)self candidateKey];
+  layer2 = [candidateKey10 layer];
+  [layer2 setMasksToBounds:1];
 
-  [v28 setActiveCandidateViewType:1];
-  [v28 updateStates];
+  [candidateController setActiveCandidateViewType:1];
+  [candidateController updateStates];
 }
 
 - (void)clearCandidateKey
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v7 = [v3 candidateController];
+  candidateController = [v3 candidateController];
 
-  v4 = [v7 candidateKey];
-  v5 = [v4 superview];
+  candidateKey = [candidateController candidateKey];
+  superview = [candidateKey superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
-    v6 = [v7 candidateKey];
-    [v6 removeFromSuperview];
+    candidateKey2 = [candidateController candidateKey];
+    [candidateKey2 removeFromSuperview];
   }
 }
 

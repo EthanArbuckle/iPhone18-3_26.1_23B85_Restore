@@ -6,40 +6,40 @@
 + (id)toggledOffLiveBadgeTheme;
 + (id)toggledOnLiveBadgeTheme;
 - (PXUIInteractiveBadgeTheme)init;
-- (PXUIInteractiveBadgeTheme)initWithIsToggledOn:(BOOL)a3 isActionable:(BOOL)a4 isDisabled:(BOOL)a5 capsuleStyle:(BOOL)a6;
+- (PXUIInteractiveBadgeTheme)initWithIsToggledOn:(BOOL)on isActionable:(BOOL)actionable isDisabled:(BOOL)disabled capsuleStyle:(BOOL)style;
 @end
 
 @implementation PXUIInteractiveBadgeTheme
 
 - (PXUIInteractiveBadgeTheme)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXUIBadgeTheme.m" lineNumber:249 description:{@"%s is not available as initializer", "-[PXUIInteractiveBadgeTheme init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIBadgeTheme.m" lineNumber:249 description:{@"%s is not available as initializer", "-[PXUIInteractiveBadgeTheme init]"}];
 
   abort();
 }
 
-- (PXUIInteractiveBadgeTheme)initWithIsToggledOn:(BOOL)a3 isActionable:(BOOL)a4 isDisabled:(BOOL)a5 capsuleStyle:(BOOL)a6
+- (PXUIInteractiveBadgeTheme)initWithIsToggledOn:(BOOL)on isActionable:(BOOL)actionable isDisabled:(BOOL)disabled capsuleStyle:(BOOL)style
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  styleCopy = style;
+  disabledCopy = disabled;
+  actionableCopy = actionable;
+  onCopy = on;
   v31.receiver = self;
   v31.super_class = PXUIInteractiveBadgeTheme;
   v10 = [(PXUIInteractiveBadgeTheme *)&v31 init];
   if (v10)
   {
     v11 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
-    if (v8)
+    if (actionableCopy)
     {
-      v12 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
       v13 = 11.0;
     }
 
     else
     {
-      if (v9)
+      if (onCopy)
       {
         [MEMORY[0x1E69DC888] systemBlueColor];
       }
@@ -50,7 +50,7 @@
       }
       v14 = ;
       v15 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:1];
-      v12 = [v14 resolvedColorWithTraitCollection:v15];
+      labelColor = [v14 resolvedColorWithTraitCollection:v15];
 
       v13 = 3.0;
     }
@@ -59,7 +59,7 @@
     imageConfiguration = v10->_imageConfiguration;
     v10->_imageConfiguration = v16;
 
-    if (v7)
+    if (disabledCopy)
     {
       v18 = 0.600000024;
     }
@@ -70,7 +70,7 @@
     }
 
     v10->_imageAlpha = v18;
-    if (v7)
+    if (disabledCopy)
     {
       v19 = 0.800000012;
     }
@@ -80,14 +80,14 @@
       v19 = 1.0;
     }
 
-    objc_storeStrong(&v10->_imageTintColor, v12);
-    objc_storeStrong(&v10->_afterLabelImageTintColor, v12);
+    objc_storeStrong(&v10->_imageTintColor, labelColor);
+    objc_storeStrong(&v10->_afterLabelImageTintColor, labelColor);
     imageCompositingFilter = v10->_imageCompositingFilter;
     v10->_imageCompositingFilter = 0;
 
     objc_storeStrong(&v10->_labelFont, v11);
     v10->_labelAlpha = v18;
-    objc_storeStrong(&v10->_labelTextColor, v12);
+    objc_storeStrong(&v10->_labelTextColor, labelColor);
     labelCompositingFilter = v10->_labelCompositingFilter;
     v10->_labelCompositingFilter = 0;
 
@@ -95,22 +95,22 @@
     backgroundViewClass = v10->_backgroundViewClass;
     v10->_backgroundViewClass = v22;
 
-    v24 = 0;
+    whiteColor = 0;
     v10->_backgroundCornerRadius = v13;
     v10->_backgroundBorderWidth = 0.0;
     v10->_backgroundAlpha = v19;
-    if (v6)
+    if (styleCopy)
     {
-      v24 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
     backgroundColor = v10->_backgroundColor;
-    v10->_backgroundColor = v24;
+    v10->_backgroundColor = whiteColor;
 
     backgroundBorderColor = v10->_backgroundBorderColor;
     v10->_backgroundBorderColor = 0;
 
-    if (v8)
+    if (actionableCopy)
     {
       v27 = 9;
     }

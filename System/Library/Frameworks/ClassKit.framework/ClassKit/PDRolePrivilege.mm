@@ -1,60 +1,60 @@
 @interface PDRolePrivilege
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (PDDatabaseValue)identityValue;
-- (PDRolePrivilege)initWithDatabaseRow:(id)a3;
+- (PDRolePrivilege)initWithDatabaseRow:(id)row;
 - (id)dictionaryRepresentation;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDRolePrivilege
 
-- (PDRolePrivilege)initWithDatabaseRow:(id)a3
+- (PDRolePrivilege)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = sub_10016D778(v4, @"roleID");
-  v6 = sub_10016D778(v4, @"privilegeName");
+  rowCopy = row;
+  v5 = sub_10016D778(rowCopy, @"roleID");
+  v6 = sub_10016D778(rowCopy, @"privilegeName");
 
   v7 = sub_10016FBE8(self, v5, v6);
   return v7;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v6 = a3;
-  v4 = [(PDRolePrivilege *)self identityValue];
-  sub_1000982FC(v6, v4, @"identity");
+  toCopy = to;
+  identityValue = [(PDRolePrivilege *)self identityValue];
+  sub_1000982FC(toCopy, identityValue, @"identity");
 
   if (self)
   {
-    sub_1000982FC(v6, self->_roleID, @"roleID");
+    sub_1000982FC(toCopy, self->_roleID, @"roleID");
     privilegeName = self->_privilegeName;
   }
 
   else
   {
-    sub_1000982FC(v6, 0, @"roleID");
+    sub_1000982FC(toCopy, 0, @"roleID");
     privilegeName = 0;
   }
 
-  sub_1000982FC(v6, privilegeName, @"privilegeName");
+  sub_1000982FC(toCopy, privilegeName, @"privilegeName");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDRolePrivilege(   identity text not null,    roleID text not null,    privilegeName text not null,    foreign key (roleID) references CLSRole(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDRolePrivilege_identity on PDRolePrivilege (identity)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDRolePrivilege_roleID on PDRolePrivilege (roleID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDRolePrivilege_privilegeName on PDRolePrivilege (privilegeName)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDRolePrivilege(   identity text not null,    roleID text not null,    privilegeName text not null,    foreign key (roleID) references CLSRole(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDRolePrivilege_identity on PDRolePrivilege (identity)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDRolePrivilege_roleID on PDRolePrivilege (roleID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDRolePrivilege_privilegeName on PDRolePrivilege (privilegeName)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_9:
 
@@ -75,10 +75,10 @@ LABEL_9:
     privilegeName = 0;
   }
 
-  v5 = [NSString stringWithFormat:@"%@/%@", v3, privilegeName];
-  v6 = [v5 sha224];
+  privilegeName = [NSString stringWithFormat:@"%@/%@", v3, privilegeName];
+  sha224 = [privilegeName sha224];
 
-  return v6;
+  return sha224;
 }
 
 - (id)dictionaryRepresentation

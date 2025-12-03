@@ -1,8 +1,8 @@
 @interface ATXInformationFeatureWeights
 - (ATXInformationFeatureWeights)init;
-- (double)defaultWeightForFeatureName:(unint64_t)a3;
-- (double)weightForFeatureName:(unint64_t)a3 widgetExtensionBundleId:(id)a4 widgetKind:(id)a5;
-- (id)widgetIdentifierForWidgetExtensionBundleId:(id)a3 widgetKind:(id)a4;
+- (double)defaultWeightForFeatureName:(unint64_t)name;
+- (double)weightForFeatureName:(unint64_t)name widgetExtensionBundleId:(id)id widgetKind:(id)kind;
+- (id)widgetIdentifierForWidgetExtensionBundleId:(id)id widgetKind:(id)kind;
 @end
 
 @implementation ATXInformationFeatureWeights
@@ -22,17 +22,17 @@
   return v2;
 }
 
-- (double)weightForFeatureName:(unint64_t)a3 widgetExtensionBundleId:(id)a4 widgetKind:(id)a5
+- (double)weightForFeatureName:(unint64_t)name widgetExtensionBundleId:(id)id widgetKind:(id)kind
 {
   if (!self->_weights)
   {
     return 0.0;
   }
 
-  v8 = a5;
-  v9 = a4;
-  v10 = [ATXInformationFeatureSetBuilder stringForInfoSuggestionFeature:a3];
-  v11 = [(ATXInformationFeatureWeights *)self widgetIdentifierForWidgetExtensionBundleId:v9 widgetKind:v8];
+  kindCopy = kind;
+  idCopy = id;
+  v10 = [ATXInformationFeatureSetBuilder stringForInfoSuggestionFeature:name];
+  v11 = [(ATXInformationFeatureWeights *)self widgetIdentifierForWidgetExtensionBundleId:idCopy widgetKind:kindCopy];
 
   v12 = [(NSDictionary *)self->_weights objectForKeyedSubscript:v11];
   v13 = v12;
@@ -48,7 +48,7 @@
     [v15 doubleValue];
     if (v16 == 0.0)
     {
-      [(ATXInformationFeatureWeights *)self defaultWeightForFeatureName:a3];
+      [(ATXInformationFeatureWeights *)self defaultWeightForFeatureName:name];
     }
   }
 
@@ -57,25 +57,25 @@
   return v17;
 }
 
-- (id)widgetIdentifierForWidgetExtensionBundleId:(id)a3 widgetKind:(id)a4
+- (id)widgetIdentifierForWidgetExtensionBundleId:(id)id widgetKind:(id)kind
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFormat:@"%@:%@", v7, v6];
+  kindCopy = kind;
+  idCopy = id;
+  kindCopy = [[v5 alloc] initWithFormat:@"%@:%@", idCopy, kindCopy];
 
-  return v8;
+  return kindCopy;
 }
 
-- (double)defaultWeightForFeatureName:(unint64_t)a3
+- (double)defaultWeightForFeatureName:(unint64_t)name
 {
-  if (a3 < 0xB)
+  if (name < 0xB)
   {
-    return dbl_226872418[a3];
+    return dbl_226872418[name];
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"ATXInformationFeatureWeights.m" lineNumber:82 description:@"Unknown value for ATXInfoSuggestionFeatureName"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXInformationFeatureWeights.m" lineNumber:82 description:@"Unknown value for ATXInfoSuggestionFeatureName"];
 
   return result;
 }

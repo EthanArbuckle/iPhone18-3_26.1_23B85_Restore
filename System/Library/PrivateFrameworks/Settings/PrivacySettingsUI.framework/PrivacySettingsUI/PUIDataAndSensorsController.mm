@@ -1,7 +1,7 @@
 @interface PUIDataAndSensorsController
 + (BOOL)shouldShowDataAndSensors;
 - (id)specifiers;
-- (void)appSpecifierWasTapped:(id)a3;
+- (void)appSpecifierWasTapped:(id)tapped;
 - (void)provideNavigationDonations;
 @end
 
@@ -9,8 +9,8 @@
 
 + (BOOL)shouldShowDataAndSensors
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isChinaRegionCellularDevice])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isChinaRegionCellularDevice])
   {
     v3 = PUIAllApplicationsSupportingDisclosureReview();
     v4 = [v3 count] != 0;
@@ -28,11 +28,11 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"DATA_AND_SENSORS" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"DATA_AND_SENSORS" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -49,7 +49,7 @@
   if (!v3)
   {
     v21 = *MEMORY[0x277D3FC48];
-    v27 = self;
+    selfCopy = self;
     v26 = objc_opt_new();
     v29 = 0u;
     v30 = 0u;
@@ -94,15 +94,15 @@
           else
           {
             v13 = MEMORY[0x277D3FAD8];
-            v14 = [v10 localizedName];
-            v12 = [v13 preferenceSpecifierNamed:v14 target:v27 set:0 get:0 detail:0 cell:2 edit:0];
+            localizedName = [v10 localizedName];
+            v12 = [v13 preferenceSpecifierNamed:localizedName target:selfCopy set:0 get:0 detail:0 cell:2 edit:0];
 
             [v12 setButtonAction:sel_appSpecifierWasTapped_];
             v15 = MEMORY[0x277CBEC38];
             [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v25];
             [v12 setObject:v15 forKeyedSubscript:v24];
-            v16 = [v10 bundleIdentifier];
-            [v12 setObject:v16 forKeyedSubscript:v23];
+            bundleIdentifier = [v10 bundleIdentifier];
+            [v12 setObject:bundleIdentifier forKeyedSubscript:v23];
 
             [v12 setObject:v9 forKeyedSubscript:v22];
             [v26 addObject:v12];
@@ -117,10 +117,10 @@
 
     [v26 sortUsingComparator:&__block_literal_global_7];
     v17 = [v26 copy];
-    v18 = *(&v27->super.super.super.super.super.isa + v21);
-    *(&v27->super.super.super.super.super.isa + v21) = v17;
+    v18 = *(&selfCopy->super.super.super.super.super.isa + v21);
+    *(&selfCopy->super.super.super.super.super.isa + v21) = v17;
 
-    v3 = *(&v27->super.super.super.super.super.isa + v21);
+    v3 = *(&selfCopy->super.super.super.super.super.isa + v21);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -138,10 +138,10 @@ uint64_t __41__PUIDataAndSensorsController_specifiers__block_invoke(uint64_t a1,
   return v7;
 }
 
-- (void)appSpecifierWasTapped:(id)a3
+- (void)appSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D401A8]];
+  tappedCopy = tapped;
+  v5 = [tappedCopy objectForKeyedSubscript:*MEMORY[0x277D401A8]];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;

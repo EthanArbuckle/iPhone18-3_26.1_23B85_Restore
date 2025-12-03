@@ -1,5 +1,5 @@
 @interface SWSession
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SWSession)init;
 @end
 
@@ -12,24 +12,24 @@
   v2 = [(SWSession *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(SWSession *)self identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(SWSession *)self identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else

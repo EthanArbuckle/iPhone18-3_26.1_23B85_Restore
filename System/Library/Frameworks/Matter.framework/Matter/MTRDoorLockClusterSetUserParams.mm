@@ -1,8 +1,8 @@
 @interface MTRDoorLockClusterSetUserParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDoorLockClusterSetUserParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -47,35 +47,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterSetUserParams);
-  v5 = [(MTRDoorLockClusterSetUserParams *)self operationType];
-  [(MTRDoorLockClusterSetUserParams *)v4 setOperationType:v5];
+  operationType = [(MTRDoorLockClusterSetUserParams *)self operationType];
+  [(MTRDoorLockClusterSetUserParams *)v4 setOperationType:operationType];
 
-  v6 = [(MTRDoorLockClusterSetUserParams *)self userIndex];
-  [(MTRDoorLockClusterSetUserParams *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterSetUserParams *)self userIndex];
+  [(MTRDoorLockClusterSetUserParams *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterSetUserParams *)self userName];
-  [(MTRDoorLockClusterSetUserParams *)v4 setUserName:v7];
+  userName = [(MTRDoorLockClusterSetUserParams *)self userName];
+  [(MTRDoorLockClusterSetUserParams *)v4 setUserName:userName];
 
-  v8 = [(MTRDoorLockClusterSetUserParams *)self userUniqueID];
-  [(MTRDoorLockClusterSetUserParams *)v4 setUserUniqueID:v8];
+  userUniqueID = [(MTRDoorLockClusterSetUserParams *)self userUniqueID];
+  [(MTRDoorLockClusterSetUserParams *)v4 setUserUniqueID:userUniqueID];
 
-  v9 = [(MTRDoorLockClusterSetUserParams *)self userStatus];
-  [(MTRDoorLockClusterSetUserParams *)v4 setUserStatus:v9];
+  userStatus = [(MTRDoorLockClusterSetUserParams *)self userStatus];
+  [(MTRDoorLockClusterSetUserParams *)v4 setUserStatus:userStatus];
 
-  v10 = [(MTRDoorLockClusterSetUserParams *)self userType];
-  [(MTRDoorLockClusterSetUserParams *)v4 setUserType:v10];
+  userType = [(MTRDoorLockClusterSetUserParams *)self userType];
+  [(MTRDoorLockClusterSetUserParams *)v4 setUserType:userType];
 
-  v11 = [(MTRDoorLockClusterSetUserParams *)self credentialRule];
-  [(MTRDoorLockClusterSetUserParams *)v4 setCredentialRule:v11];
+  credentialRule = [(MTRDoorLockClusterSetUserParams *)self credentialRule];
+  [(MTRDoorLockClusterSetUserParams *)v4 setCredentialRule:credentialRule];
 
-  v12 = [(MTRDoorLockClusterSetUserParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterSetUserParams *)v4 setTimedInvokeTimeoutMs:v12];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterSetUserParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterSetUserParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v13 = [(MTRDoorLockClusterSetUserParams *)self serverSideProcessingTimeout];
-  [(MTRDoorLockClusterSetUserParams *)v4 setServerSideProcessingTimeout:v13];
+  serverSideProcessingTimeout = [(MTRDoorLockClusterSetUserParams *)self serverSideProcessingTimeout];
+  [(MTRDoorLockClusterSetUserParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -90,72 +90,72 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v33[0] = 0;
-  v34 = 0;
+  unsignedShortValue = 0;
   LOBYTE(v35) = 0;
   v36 = 0;
-  LOBYTE(v37) = 0;
+  LOBYTE(unsignedIntValue) = 0;
   v38 = 0;
   v39 = 0;
   v40 = 0;
   v32[0] = 0;
   v32[1] = 0;
   v31 = v32;
-  v5 = [(MTRDoorLockClusterSetUserParams *)self operationType];
-  v33[0] = [v5 unsignedCharValue];
+  operationType = [(MTRDoorLockClusterSetUserParams *)self operationType];
+  v33[0] = [operationType unsignedCharValue];
 
-  v6 = [(MTRDoorLockClusterSetUserParams *)self userIndex];
-  v34 = [v6 unsignedShortValue];
+  userIndex = [(MTRDoorLockClusterSetUserParams *)self userIndex];
+  unsignedShortValue = [userIndex unsignedShortValue];
 
-  v7 = [(MTRDoorLockClusterSetUserParams *)self userName];
+  userName = [(MTRDoorLockClusterSetUserParams *)self userName];
 
-  if (v7)
+  if (userName)
   {
     v35 = 0uLL;
     v36 = 1;
-    v8 = [(MTRDoorLockClusterSetUserParams *)self userName];
-    sub_238DB9BD8(v25, [v8 UTF8String], objc_msgSend(v8, "lengthOfBytesUsingEncoding:", 4));
+    userName2 = [(MTRDoorLockClusterSetUserParams *)self userName];
+    sub_238DB9BD8(v25, [userName2 UTF8String], objc_msgSend(userName2, "lengthOfBytesUsingEncoding:", 4));
 
     v35 = v25[0];
   }
 
-  v9 = [(MTRDoorLockClusterSetUserParams *)self userUniqueID];
+  userUniqueID = [(MTRDoorLockClusterSetUserParams *)self userUniqueID];
 
-  if (v9)
+  if (userUniqueID)
   {
-    v37 = 0;
+    unsignedIntValue = 0;
     v38 = 1;
-    v10 = [(MTRDoorLockClusterSetUserParams *)self userUniqueID];
-    v37 = [v10 unsignedIntValue];
+    userUniqueID2 = [(MTRDoorLockClusterSetUserParams *)self userUniqueID];
+    unsignedIntValue = [userUniqueID2 unsignedIntValue];
   }
 
-  v11 = [(MTRDoorLockClusterSetUserParams *)self userStatus];
+  userStatus = [(MTRDoorLockClusterSetUserParams *)self userStatus];
 
-  if (v11)
+  if (userStatus)
   {
     LOWORD(v39) = 256;
-    v12 = [(MTRDoorLockClusterSetUserParams *)self userStatus];
-    LOBYTE(v39) = [v12 unsignedCharValue];
+    userStatus2 = [(MTRDoorLockClusterSetUserParams *)self userStatus];
+    LOBYTE(v39) = [userStatus2 unsignedCharValue];
   }
 
-  v13 = [(MTRDoorLockClusterSetUserParams *)self userType];
+  userType = [(MTRDoorLockClusterSetUserParams *)self userType];
 
-  if (v13)
+  if (userType)
   {
     HIWORD(v39) = 256;
-    v14 = [(MTRDoorLockClusterSetUserParams *)self userType];
-    BYTE2(v39) = [v14 unsignedCharValue];
+    userType2 = [(MTRDoorLockClusterSetUserParams *)self userType];
+    BYTE2(v39) = [userType2 unsignedCharValue];
   }
 
-  v15 = [(MTRDoorLockClusterSetUserParams *)self credentialRule];
+  credentialRule = [(MTRDoorLockClusterSetUserParams *)self credentialRule];
 
-  if (v15)
+  if (credentialRule)
   {
     v40 = 256;
-    v16 = [(MTRDoorLockClusterSetUserParams *)self credentialRule];
-    LOBYTE(v40) = [v16 unsignedCharValue];
+    credentialRule2 = [(MTRDoorLockClusterSetUserParams *)self credentialRule];
+    LOBYTE(v40) = [credentialRule2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v30);
@@ -177,8 +177,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v30);
-      v17 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v30);
+      v17 = sub_2393C7114(reader, 21, 256);
       v20 = v24;
       v19 = v17;
     }
@@ -206,19 +206,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDoorLockClusterSetUserParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -229,7 +229,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x505200000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

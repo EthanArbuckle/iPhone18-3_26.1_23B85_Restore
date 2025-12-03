@@ -1,19 +1,19 @@
 @interface TSPDataMetadata
-- (id)copyWithContext:(id)a3;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
-- (void)setFallbackColor:(id)a3;
+- (id)copyWithContext:(id)context;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
+- (void)setFallbackColor:(id)color;
 @end
 
 @implementation TSPDataMetadata
 
-- (void)setFallbackColor:(id)a3
+- (void)setFallbackColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   fallbackColor = self->_fallbackColor;
-  v16 = v4;
+  v16 = colorCopy;
   v7 = fallbackColor;
   v8 = v16;
   if (v16 | v7)
@@ -33,11 +33,11 @@
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [TSPDataMetadata alloc];
-  v9 = objc_msgSend_initWithContext_(v5, v6, v4);
+  v9 = objc_msgSend_initWithContext_(v5, v6, contextCopy);
   if (v9)
   {
     v10 = objc_msgSend_copy(self->_fallbackColor, v7, v8);
@@ -48,52 +48,52 @@
   return v9;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&unk_2812FBBF0, 0);
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812FBC48[32]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812FBC48[32]);
 
-  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  if (*(a3 + 16))
+  if (*(message + 16))
   {
-    v6 = TSPTSUColorCreateFromMessage(*(a3 + 3));
+    v6 = TSPTSUColorCreateFromMessage(*(message + 3));
     fallbackColor = self->_fallbackColor;
     self->_fallbackColor = v6;
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&unk_2812FBBF0, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276A46364, off_2812FBC48[32]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276A46364, off_2812FBC48[32]);
 
-  objc_msgSend_saveToMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v9 = a4;
+  archiverCopy = archiver;
   fallbackColor = self->_fallbackColor;
   if (fallbackColor)
   {
-    *(a3 + 4) |= 1u;
-    v7 = *(a3 + 3);
+    *(message + 4) |= 1u;
+    v7 = *(message + 3);
     if (!v7)
     {
-      v8 = *(a3 + 1);
+      v8 = *(message + 1);
       if (v8)
       {
         v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v7 = google::protobuf::Arena::CreateMaybeMessage<TSP::Color>(v8);
-      *(a3 + 3) = v7;
+      *(message + 3) = v7;
     }
 
     TSPTSUColorCopyToMessage(fallbackColor, v7);

@@ -1,31 +1,31 @@
 @interface MODataDumpFormatter
-- (MODataDumpFormatter)initWithEvents:(id)a3 bundles:(id)a4 ranking:(id)a5 settings:(id)a6 configManager:(id)a7;
+- (MODataDumpFormatter)initWithEvents:(id)events bundles:(id)bundles ranking:(id)ranking settings:(id)settings configManager:(id)manager;
 - (id)extractJSONPayload;
-- (void)_saveToDictionary:(id)a3 object:(id)a4 forKey:(id)a5;
+- (void)_saveToDictionary:(id)dictionary object:(id)object forKey:(id)key;
 @end
 
 @implementation MODataDumpFormatter
 
-- (MODataDumpFormatter)initWithEvents:(id)a3 bundles:(id)a4 ranking:(id)a5 settings:(id)a6 configManager:(id)a7
+- (MODataDumpFormatter)initWithEvents:(id)events bundles:(id)bundles ranking:(id)ranking settings:(id)settings configManager:(id)manager
 {
-  v28 = a3;
-  v26 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  eventsCopy = events;
+  bundlesCopy = bundles;
+  rankingCopy = ranking;
+  settingsCopy = settings;
+  managerCopy = manager;
+  if (managerCopy)
   {
     v30.receiver = self;
     v30.super_class = MODataDumpFormatter;
-    v17 = [(MODataDumpFormatter *)&v30 init:v26];
+    v17 = [(MODataDumpFormatter *)&v30 init:bundlesCopy];
     v18 = v17;
     if (v17)
     {
-      objc_storeStrong(&v17->_events, a3);
-      objc_storeStrong(&v18->_bundles, a4);
-      objc_storeStrong(&v18->_ranking, a5);
-      objc_storeStrong(&v18->_settings, a6);
-      objc_storeStrong(&v18->_configManager, a7);
+      objc_storeStrong(&v17->_events, events);
+      objc_storeStrong(&v18->_bundles, bundles);
+      objc_storeStrong(&v18->_ranking, ranking);
+      objc_storeStrong(&v18->_settings, settings);
+      objc_storeStrong(&v18->_configManager, manager);
       v19 = [(NSDictionary *)v18->_settings objectForKey:@"kMODataWithoutRandomization"];
       v18->_persistWithoutRandomization = [v19 BOOLValue];
 
@@ -35,7 +35,7 @@
     }
 
     self = v18;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
@@ -46,13 +46,13 @@
       [MODataDumpFormatter initWithEvents:v23 bundles:? ranking:? settings:? configManager:?];
     }
 
-    v24 = [NSAssertionHandler currentHandler:v26];
+    v24 = [NSAssertionHandler currentHandler:bundlesCopy];
     [v24 handleFailureInMethod:a2 object:self file:@"MODataDumpFormatter.m" lineNumber:58 description:@"Invalid parameter not satisfying: configManager"];
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)extractJSONPayload
@@ -195,13 +195,13 @@
   return v33;
 }
 
-- (void)_saveToDictionary:(id)a3 object:(id)a4 forKey:(id)a5
+- (void)_saveToDictionary:(id)dictionary object:(id)object forKey:(id)key
 {
-  if (a4)
+  if (object)
   {
-    if (a5)
+    if (key)
     {
-      [a3 setObject:a4 forKey:a5];
+      [dictionary setObject:object forKey:key];
     }
   }
 }

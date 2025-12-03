@@ -1,14 +1,14 @@
 @interface SKUIITunesPassConfiguration
-- (SKUIITunesPassConfiguration)initWithITunesPassDictionary:(id)a3 clientContext:(id)a4;
+- (SKUIITunesPassConfiguration)initWithITunesPassDictionary:(id)dictionary clientContext:(id)context;
 - (id)learnMoreAlertView;
 @end
 
 @implementation SKUIITunesPassConfiguration
 
-- (SKUIITunesPassConfiguration)initWithITunesPassDictionary:(id)a3 clientContext:(id)a4
+- (SKUIITunesPassConfiguration)initWithITunesPassDictionary:(id)dictionary clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
     v8 = MEMORY[0x277D86220];
@@ -25,7 +25,7 @@
 
   if (v10)
   {
-    v11 = [v6 objectForKey:@"learnMoreAlert"];
+    v11 = [dictionaryCopy objectForKey:@"learnMoreAlert"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       }
     }
 
-    v24 = [v6 objectForKey:@"learnMore"];
+    v24 = [dictionaryCopy objectForKey:@"learnMore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
       }
     }
 
-    v40 = [v6 objectForKey:@"lockup"];
+    v40 = [dictionaryCopy objectForKey:@"lockup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -159,7 +159,7 @@
 
     if (!v10->_dialogLearnMoreButton)
     {
-      v50 = v7;
+      v50 = contextCopy;
       v51 = @"Redeem";
       if (v50)
       {
@@ -178,7 +178,7 @@
 
     if (!v10->_dialogMessage)
     {
-      v54 = v7;
+      v54 = contextCopy;
       v55 = @"Redeem";
       if (v54)
       {
@@ -197,7 +197,7 @@
 
     if (!v10->_dialogNotNowButton)
     {
-      v58 = v7;
+      v58 = contextCopy;
       v59 = @"Redeem";
       if (v58)
       {
@@ -216,7 +216,7 @@
 
     if (!v10->_dialogTitle)
     {
-      v62 = v7;
+      v62 = contextCopy;
       v63 = @"Redeem";
       if (v62)
       {
@@ -235,7 +235,7 @@
 
     if (!v10->_learnMoreAddPassButtonTitle)
     {
-      v66 = v7;
+      v66 = contextCopy;
       v67 = @"Redeem";
       if (v66)
       {
@@ -254,7 +254,7 @@
 
     if (!v10->_learnMoreDoneButtonTitle)
     {
-      v70 = v7;
+      v70 = contextCopy;
       v71 = @"Redeem";
       if (v70)
       {
@@ -273,7 +273,7 @@
 
     if (!v10->_learnMoreExplanation)
     {
-      v74 = v7;
+      v74 = contextCopy;
       v75 = @"Redeem";
       if (v74)
       {
@@ -292,7 +292,7 @@
 
     if (!v10->_learnMoreTitle)
     {
-      v78 = v7;
+      v78 = contextCopy;
       v79 = @"Redeem";
       if (v78)
       {
@@ -311,7 +311,7 @@
 
     if (!v10->_learnMoreViewPassButtonTitle)
     {
-      v82 = v7;
+      v82 = contextCopy;
       v83 = @"Redeem";
       if (v82)
       {
@@ -330,7 +330,7 @@
 
     if (!v10->_lockupDescription)
     {
-      v86 = v7;
+      v86 = contextCopy;
       v87 = @"Redeem";
       if (v86)
       {
@@ -349,7 +349,7 @@
 
     if (!v10->_lockupLearnMoreLinkTitle)
     {
-      v90 = v7;
+      v90 = contextCopy;
       v91 = @"Redeem";
       if (v90)
       {
@@ -368,7 +368,7 @@
 
     if (!v10->_lockupTitle)
     {
-      v94 = v7;
+      v94 = contextCopy;
       v95 = @"Redeem";
       if (v94)
       {

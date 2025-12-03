@@ -1,22 +1,22 @@
 @interface ComponentUltraWideBand
 - (id)arrowChipId;
 - (id)arrowChipUniqueId;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentUltraWideBand
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = ComponentUltraWideBand;
-  v4 = a3;
-  [(ComponentBase *)&v7 populateAttributes:v4];
+  attributesCopy = attributes;
+  [(ComponentBase *)&v7 populateAttributes:attributesCopy];
   v5 = [(ComponentUltraWideBand *)self arrowChipUniqueId:v7.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"arrowUniqueChipID"];
+  [attributesCopy setObject:v5 forKeyedSubscript:@"arrowUniqueChipID"];
 
-  v6 = [(ComponentUltraWideBand *)self arrowChipId];
-  [v4 setObject:v6 forKeyedSubscript:@"arrowChipID"];
+  arrowChipId = [(ComponentUltraWideBand *)self arrowChipId];
+  [attributesCopy setObject:arrowChipId forKeyedSubscript:@"arrowChipID"];
 }
 
 - (id)arrowChipUniqueId

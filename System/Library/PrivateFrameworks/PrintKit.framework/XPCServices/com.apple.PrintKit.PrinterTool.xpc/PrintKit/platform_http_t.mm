@@ -1,48 +1,48 @@
 @interface platform_http_t
-- (id)createTransactionResult:(id)a3 response:(id)a4 data:(id)a5;
+- (id)createTransactionResult:(id)result response:(id)response data:(id)data;
 - (id)finishStreamedIPPRequest;
-- (id)httpResponseForError:(id)a3;
-- (id)makeTask:(id)a3 forRequest:(const Real_IPP_Message *)a4;
-- (id)sendSingleIPPRequest:(const Real_IPP_Message *)a3;
-- (id)startStreamedIPPRequest:(const Real_IPP_Message *)a3;
-- (int64_t)writeIPPDocumentPayload:(const char *)a3 length:(unint64_t)a4;
-- (platform_http_t)initWithURL:(id)a3 session:(id)a4;
-- (void)_streamedTaskCompleted:(id)a3 response:(id)a4 data:(id)a5;
+- (id)httpResponseForError:(id)error;
+- (id)makeTask:(id)task forRequest:(const Real_IPP_Message *)request;
+- (id)sendSingleIPPRequest:(const Real_IPP_Message *)request;
+- (id)startStreamedIPPRequest:(const Real_IPP_Message *)request;
+- (int64_t)writeIPPDocumentPayload:(const char *)payload length:(unint64_t)length;
+- (platform_http_t)initWithURL:(id)l session:(id)session;
+- (void)_streamedTaskCompleted:(id)completed response:(id)response data:(id)data;
 - (void)_teardownTask;
-- (void)sendSingleIPPRequest:(const Real_IPP_Message *)a3 completionHandler:(id)a4;
+- (void)sendSingleIPPRequest:(const Real_IPP_Message *)request completionHandler:(id)handler;
 @end
 
 @implementation platform_http_t
 
-- (platform_http_t)initWithURL:(id)a3 session:(id)a4
+- (platform_http_t)initWithURL:(id)l session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  sessionCopy = session;
   v12.receiver = self;
   v12.super_class = platform_http_t;
   v9 = [(platform_http_t *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_session, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_session, session);
   }
 
   return v10;
 }
 
-- (id)makeTask:(id)a3 forRequest:(const Real_IPP_Message *)a4
+- (id)makeTask:(id)task forRequest:(const Real_IPP_Message *)request
 {
-  v6 = a3;
-  v7 = [[IPPSessionTransaction alloc] initWithURL:self->_url ippRequest:a4->var1 session:self->_session];
-  v8 = [NSString stringWithFormat:@"%@(%@)", self->_logLeader, v6];
-  [(IPPSessionTransaction *)v7 prependLogLeader:v8];
+  taskCopy = task;
+  v7 = [[IPPSessionTransaction alloc] initWithURL:self->_url ippRequest:request->var1 session:self->_session];
+  taskCopy = [NSString stringWithFormat:@"%@(%@)", self->_logLeader, taskCopy];
+  [(IPPSessionTransaction *)v7 prependLogLeader:taskCopy];
 
   add = atomic_fetch_add(dword_1000C4B58, 1u);
   self->_seq = add;
-  v10 = [NSString stringWithFormat:@"<platform_http(%p) seq %d, %@>", self, add, v6];
+  taskCopy2 = [NSString stringWithFormat:@"<platform_http(%p) seq %d, %@>", self, add, taskCopy];
   logLeader = self->_logLeader;
-  self->_logLeader = v10;
+  self->_logLeader = taskCopy2;
 
   [(IPPSessionTransaction *)v7 prependLogLeader:self->_logLeader];
   if (self->_trust_callback)
@@ -72,12 +72,12 @@
   v15[3] = &unk_100095538;
   objc_copyWeak(&v16, &location);
   [(IPPSessionTransaction *)v7 setBoundInterfaceSet_callback:v15];
-  v12 = [(IPPSession *)self->_session controlLogging];
+  controlLogging = [(IPPSession *)self->_session controlLogging];
 
-  if (v12)
+  if (controlLogging)
   {
-    v13 = [(IPPSession *)self->_session controlLogging];
-    [v13 preserveRequest:a4->var1 forSequence:self->_seq];
+    controlLogging2 = [(IPPSession *)self->_session controlLogging];
+    [controlLogging2 preserveRequest:request->var1 forSequence:self->_seq];
   }
 
   objc_destroyWeak(&v16);
@@ -86,33 +86,33 @@
   return v7;
 }
 
-- (void)sendSingleIPPRequest:(const Real_IPP_Message *)a3 completionHandler:(id)a4
+- (void)sendSingleIPPRequest:(const Real_IPP_Message *)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(platform_http_t *)self makeTask:@"single" forRequest:a3];
+  handlerCopy = handler;
+  v7 = [(platform_http_t *)self makeTask:@"single" forRequest:request];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100009388;
   v12 = &unk_100095560;
-  v13 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = handlerCopy;
   v14 = v8;
   [v7 setTransactionCompletedCallback:&v9];
-  [(platform_http_t *)self debugLogIPP:"SEND_IPP" ipp:a3->var1, v9, v10, v11, v12, v13];
+  [(platform_http_t *)self debugLogIPP:"SEND_IPP" ipp:request->var1, v9, v10, v11, v12, selfCopy];
   [v7 start];
 }
 
-- (id)sendSingleIPPRequest:(const Real_IPP_Message *)a3
+- (id)sendSingleIPPRequest:(const Real_IPP_Message *)request
 {
-  v4 = self;
-  if (object_isClass(v4))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [NSString stringWithUTF8String:"[platform_http_t sendSingleIPPRequest:]"];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "[platform_http_t sendSingleIPPRequest:]"];
+    [NSString stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "[platform_http_t sendSingleIPPRequest:]"];
   }
   v5 = ;
 
@@ -120,18 +120,18 @@
   v8[1] = 3221225472;
   v8[2] = sub_100009714;
   v8[3] = &unk_100095588;
-  v8[4] = v4;
-  v8[5] = a3;
+  v8[4] = selfCopy;
+  v8[5] = request;
   v6 = sub_1000095D0(v5, v8, 30.0);
 
   return v6;
 }
 
-- (id)httpResponseForError:(id)a3
+- (id)httpResponseForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:NSURLErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:NSURLErrorDomain];
 
   if (!v6)
   {
@@ -139,13 +139,13 @@
     goto LABEL_9;
   }
 
-  v7 = [v4 code];
+  code = [errorCopy code];
   v8 = 1;
-  if (v7 <= -1013)
+  if (code <= -1013)
   {
-    if ((v7 + 1206) >= 7)
+    if ((code + 1206) >= 7)
     {
-      if (v7 == -1013)
+      if (code == -1013)
       {
         v8 = 3;
       }
@@ -159,14 +159,14 @@
     goto LABEL_9;
   }
 
-  if (v7 > -1002)
+  if (code > -1002)
   {
-    if (v7 == -1001)
+    if (code == -1001)
     {
       goto LABEL_8;
     }
 
-    if (v7 == -999)
+    if (code == -999)
     {
       if (self->_userCanceledAuth)
       {
@@ -182,14 +182,14 @@
 
   else
   {
-    if ((v7 + 1006) < 4)
+    if ((code + 1006) < 4)
     {
 LABEL_8:
       v8 = 5;
       goto LABEL_9;
     }
 
-    if (v7 == -1012)
+    if (code == -1012)
     {
       v8 = 6;
     }
@@ -201,7 +201,7 @@ LABEL_9:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = v4;
+    v13 = errorCopy;
     v14 = 2114;
     v15 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "transport error: %{public}@ => %{public}@", &v12, 0x16u);
@@ -220,25 +220,25 @@ LABEL_9:
   self->_streamedTaskFinishedSemaphore = 0;
 }
 
-- (id)createTransactionResult:(id)a3 response:(id)a4 data:(id)a5
+- (id)createTransactionResult:(id)result response:(id)response data:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  resultCopy = result;
+  responseCopy = response;
+  dataCopy = data;
+  if (!responseCopy)
   {
-    v22 = [(platform_http_t *)self httpResponseForError:v8];
-    v23 = [v8 domain];
-    v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"transport %@/%d", v23, [v8 code]);
+    v22 = [(platform_http_t *)self httpResponseForError:resultCopy];
+    domain = [resultCopy domain];
+    v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"transport %@/%d", domain, [resultCopy code]);
 
     goto LABEL_22;
   }
 
-  v11 = [v9 statusCode];
-  if (v11 != 200)
+  statusCode = [responseCopy statusCode];
+  if (statusCode != 200)
   {
     v24 = [http_ipp_response_t alloc];
-    if ((v11 - 500) >= 0x64)
+    if ((statusCode - 500) >= 0x64)
     {
       v25 = 1;
     }
@@ -248,12 +248,12 @@ LABEL_9:
       v25 = 5;
     }
 
-    if (v11 == 401)
+    if (statusCode == 401)
     {
       v25 = 3;
     }
 
-    if (v11 == 100)
+    if (statusCode == 100)
     {
       v26 = 2;
     }
@@ -264,17 +264,17 @@ LABEL_9:
     }
 
     v22 = [(http_ipp_response_t *)v24 initWithTransportStatus:v26];
-    v27 = [NSString stringWithFormat:@"http statusCode: %d", v11];
+    v27 = [NSString stringWithFormat:@"http statusCode: %d", statusCode];
     goto LABEL_21;
   }
 
-  v12 = v10;
-  v13 = [v9 valueForHTTPHeaderField:@"Content-Type"];
+  v12 = dataCopy;
+  v13 = [responseCopy valueForHTTPHeaderField:@"Content-Type"];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 lowercaseString];
-    v16 = [v15 hasPrefix:@"application/ipp"];
+    lowercaseString = [v13 lowercaseString];
+    v16 = [lowercaseString hasPrefix:@"application/ipp"];
 
     if (v16)
     {
@@ -336,17 +336,17 @@ LABEL_21:
 LABEL_30:
   v28 = [[http_ipp_response_t alloc] initWithTransportStatus:1];
 LABEL_31:
-  v32 = [(IPPSession *)self->_session controlLogging];
+  controlLogging = [(IPPSession *)self->_session controlLogging];
 
-  if (v32)
+  if (controlLogging)
   {
-    v33 = [(http_ipp_response_t *)v28 ippResponse];
+    ippResponse = [(http_ipp_response_t *)v28 ippResponse];
 
-    if (v33)
+    if (ippResponse)
     {
-      v34 = [(IPPSession *)self->_session controlLogging];
-      v35 = [(http_ipp_response_t *)v28 ippResponse];
-      [v34 preserveResponse:v35 forSequence:self->_seq];
+      controlLogging2 = [(IPPSession *)self->_session controlLogging];
+      ippResponse2 = [(http_ipp_response_t *)v28 ippResponse];
+      [controlLogging2 preserveResponse:ippResponse2 forSequence:self->_seq];
     }
 
     else
@@ -356,20 +356,20 @@ LABEL_31:
         v21 = @"Unknown";
       }
 
-      v34 = [(IPPSession *)self->_session controlLogging];
-      [v34 preserveResponseFailure:v21 forSequence:self->_seq];
+      controlLogging2 = [(IPPSession *)self->_session controlLogging];
+      [controlLogging2 preserveResponseFailure:v21 forSequence:self->_seq];
     }
   }
 
   return v28;
 }
 
-- (void)_streamedTaskCompleted:(id)a3 response:(id)a4 data:(id)a5
+- (void)_streamedTaskCompleted:(id)completed response:(id)response data:(id)data
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(platform_http_t *)self createTransactionResult:v13 response:v8 data:v9];
+  completedCopy = completed;
+  responseCopy = response;
+  dataCopy = data;
+  v10 = [(platform_http_t *)self createTransactionResult:completedCopy response:responseCopy data:dataCopy];
   streamedTaskResponse = self->_streamedTaskResponse;
   self->_streamedTaskResponse = v10;
 
@@ -377,9 +377,9 @@ LABEL_31:
   self->_streamedTask = 0;
 }
 
-- (id)startStreamedIPPRequest:(const Real_IPP_Message *)a3
+- (id)startStreamedIPPRequest:(const Real_IPP_Message *)request
 {
-  v5 = [(platform_http_t *)self makeTask:@"streamed" forRequest:a3];
+  v5 = [(platform_http_t *)self makeTask:@"streamed" forRequest:request];
   streamedTask = self->_streamedTask;
   self->_streamedTask = v5;
 
@@ -410,14 +410,14 @@ LABEL_31:
   v12 = v11;
   v21 = v12;
   [(IPPSessionTransaction *)self->_streamedTask setTransactionCompletedCallback:&v17];
-  [(platform_http_t *)self debugLogIPP:"SEND_IPP" ipp:a3->var1, v17, v18, v19, v20];
+  [(platform_http_t *)self debugLogIPP:"SEND_IPP" ipp:request->var1, v17, v18, v19, v20];
   [(IPPSessionTransaction *)self->_streamedTask start];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  v13 = [(IPPSessionTransaction *)self->_streamedTask transportError];
-  if (v13)
+  transportError = [(IPPSessionTransaction *)self->_streamedTask transportError];
+  if (transportError)
   {
     [(platform_http_t *)self _teardownTask];
-    v14 = [(platform_http_t *)self httpResponseForError:v13];
+    v14 = [(platform_http_t *)self httpResponseForError:transportError];
   }
 
   else
@@ -433,12 +433,12 @@ LABEL_31:
   return v15;
 }
 
-- (int64_t)writeIPPDocumentPayload:(const char *)a3 length:(unint64_t)a4
+- (int64_t)writeIPPDocumentPayload:(const char *)payload length:(unint64_t)length
 {
   streamedTask = self->_streamedTask;
-  if (!streamedTask || (v6 = a4, [(IPPSessionTransaction *)streamedTask writeDocumentDataBlocking:a3 length:?], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (!streamedTask || (v6 = length, [(IPPSessionTransaction *)streamedTask writeDocumentDataBlocking:payload length:?], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    [(platform_http_t *)self _teardownTask:a3];
+    [(platform_http_t *)self _teardownTask:payload];
     return -1;
   }
 
@@ -466,8 +466,8 @@ LABEL_31:
 
   if (![(http_ipp_response_t *)streamedTaskResponse transportStatus])
   {
-    v7 = [(http_ipp_response_t *)self->_streamedTaskResponse ippResponse];
-    [(platform_http_t *)self debugLogIPP:"RECV_IPP" ipp:v7];
+    ippResponse = [(http_ipp_response_t *)self->_streamedTaskResponse ippResponse];
+    [(platform_http_t *)self debugLogIPP:"RECV_IPP" ipp:ippResponse];
   }
 
   [(IPPSessionTransaction *)self->_streamedTask invalidate];

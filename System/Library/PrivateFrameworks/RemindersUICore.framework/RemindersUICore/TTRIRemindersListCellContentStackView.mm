@@ -1,16 +1,16 @@
 @interface TTRIRemindersListCellContentStackView
-- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithArrangedSubviews:(id)a3;
-- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithArrangedSubviews:(id)subviews;
+- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TTRIRemindersListCellContentStackView
 
-- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore37TTRIRemindersListCellContentStackView_superviewBottomLayoutMarginToCompensate) = 0;
   v9 = OBJC_IVAR____TtC15RemindersUICore37TTRIRemindersListCellContentStackView_subviewInfos;
@@ -23,9 +23,9 @@
   return [(TTRNoAnimationContainerStackView *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore37TTRIRemindersListCellContentStackView)initWithArrangedSubviews:(id)subviews
 {
-  if (a3)
+  if (subviews)
   {
     sub_21D114EC8();
     v3 = sub_21DBFA5EC();

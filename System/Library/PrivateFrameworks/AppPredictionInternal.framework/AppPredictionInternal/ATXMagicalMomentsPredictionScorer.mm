@@ -1,15 +1,15 @@
 @interface ATXMagicalMomentsPredictionScorer
-- (ATXMagicalMomentsPredictionScorer)initWithCorrelatedEvents:(id)a3 andGlobalAppLaunchCountedSet:(id)a4;
+- (ATXMagicalMomentsPredictionScorer)initWithCorrelatedEvents:(id)events andGlobalAppLaunchCountedSet:(id)set;
 - (BOOL)subExpertCanMakeHighConfidencePredictions;
-- (BOOL)subExpertCanMakeHighConfidencePredictionsForBundleId:(id)a3;
+- (BOOL)subExpertCanMakeHighConfidencePredictionsForBundleId:(id)id;
 - (BOOL)subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions;
 - (BOOL)subExpertHasObservedEnoughLaunchesForOneAppToMakePredictions;
 - (BOOL)subExpertHasWitnessedEnoughRelevantAppLaunches;
 - (double)scalingFactorFromTopPrediction;
 - (id)generatePredictions;
 - (id)getPredictionsFromFinalConfidences;
-- (id)relevanceScoreForBundleId:(id)a3;
-- (id)startOfDayForDate:(id)a3;
+- (id)relevanceScoreForBundleId:(id)id;
+- (id)startOfDayForDate:(id)date;
 - (void)computeModelConfidences;
 - (void)computeRelevanceScoresForAllRelevantBundleIds;
 - (void)computeTimeDecayedCumulativeScores;
@@ -21,12 +21,12 @@
 
 @implementation ATXMagicalMomentsPredictionScorer
 
-- (ATXMagicalMomentsPredictionScorer)initWithCorrelatedEvents:(id)a3 andGlobalAppLaunchCountedSet:(id)a4
+- (ATXMagicalMomentsPredictionScorer)initWithCorrelatedEvents:(id)events andGlobalAppLaunchCountedSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8 && [v7 count] && objc_msgSend(v9, "count"))
+  eventsCopy = events;
+  setCopy = set;
+  v9 = setCopy;
+  if (eventsCopy && setCopy && [eventsCopy count] && objc_msgSend(v9, "count"))
   {
     v15.receiver = self;
     v15.super_class = ATXMagicalMomentsPredictionScorer;
@@ -34,12 +34,12 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_globalAppLaunches, a4);
-      objc_storeStrong(p_isa + 1, a3);
+      objc_storeStrong(&v10->_globalAppLaunches, set);
+      objc_storeStrong(p_isa + 1, events);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,10 +51,10 @@
       _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_INFO, "Attempted to initialize a Magical Moments Prediction Scorer without passing global app launch counts or relevant correlated events. Nothing to predict for this sub-expert!", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)computeRelevanceScoresForAllRelevantBundleIds
@@ -154,34 +154,34 @@
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 firstEvent];
-        v17 = [v16 startDate];
-        v18 = [(ATXMagicalMomentsPredictionScorer *)self startOfDayForDate:v17];
+        firstEvent = [v15 firstEvent];
+        startDate = [firstEvent startDate];
+        v18 = [(ATXMagicalMomentsPredictionScorer *)self startOfDayForDate:startDate];
 
         [(NSMutableOrderedSet *)self->_dateSetForDecay addObject:v18];
         v19 = self->_relevantAppLaunches;
-        v20 = [v15 secondEvent];
-        v21 = [v20 identifier];
-        [(NSCountedSet *)v19 addObject:v21];
+        secondEvent = [v15 secondEvent];
+        identifier = [secondEvent identifier];
+        [(NSCountedSet *)v19 addObject:identifier];
 
-        v22 = [v15 secondEvent];
-        v23 = [v22 identifier];
-        v24 = [v9 objectForKeyedSubscript:v23];
+        secondEvent2 = [v15 secondEvent];
+        identifier2 = [secondEvent2 identifier];
+        v24 = [v9 objectForKeyedSubscript:identifier2];
 
         if (!v24)
         {
           v25 = objc_opt_new();
-          v26 = [v15 secondEvent];
-          v27 = [v26 identifier];
-          [v9 setObject:v25 forKeyedSubscript:v27];
+          secondEvent3 = [v15 secondEvent];
+          identifier3 = [secondEvent3 identifier];
+          [v9 setObject:v25 forKeyedSubscript:identifier3];
         }
 
-        v28 = [v15 secondEvent];
-        v29 = [v28 identifier];
-        v30 = [v9 objectForKeyedSubscript:v29];
-        v31 = [v15 firstEvent];
-        v32 = [v31 startDate];
-        [v30 addObject:v32];
+        secondEvent4 = [v15 secondEvent];
+        identifier4 = [secondEvent4 identifier];
+        v30 = [v9 objectForKeyedSubscript:identifier4];
+        firstEvent2 = [v15 firstEvent];
+        startDate2 = [firstEvent2 startDate];
+        [v30 addObject:startDate2];
       }
 
       v13 = [(NSArray *)obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -308,12 +308,12 @@ LABEL_15:
 
 LABEL_7:
 
-    LOBYTE(v4) = 1;
-    return v4;
+    LOBYTE(subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions) = 1;
+    return subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions;
   }
 
-  v4 = [(ATXMagicalMomentsPredictionScorer *)self subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions];
-  if (v4)
+  subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions = [(ATXMagicalMomentsPredictionScorer *)self subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions];
+  if (subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions)
   {
     v3 = __atxlog_handle_default();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -324,7 +324,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  return v4;
+  return subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions;
 }
 
 - (BOOL)subExpertCanMakeHighConfidencePredictions
@@ -340,7 +340,7 @@ LABEL_7:
       v11 = 134218240;
       v12 = v5;
       v13 = 2048;
-      v14 = [(ATXMagicalMomentsPredictionScorer *)self minimumNumberOfDaysOfObservationsRequiredForSubExpertToMakePredictions];
+      minimumNumberOfDaysOfObservationsRequiredForSubExpertToMakePredictions = [(ATXMagicalMomentsPredictionScorer *)self minimumNumberOfDaysOfObservationsRequiredForSubExpertToMakePredictions];
       v6 = "ATXMM: Subexpert has only been observed on %lu unique days. Minimum days required is %lu.";
       v7 = v4;
       v8 = 22;
@@ -376,15 +376,15 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)subExpertCanMakeHighConfidencePredictionsForBundleId:(id)a3
+- (BOOL)subExpertCanMakeHighConfidencePredictionsForBundleId:(id)id
 {
   relevantAppLaunches = self->_relevantAppLaunches;
-  v5 = a3;
-  v6 = [(NSCountedSet *)relevantAppLaunches countForObject:v5];
-  v7 = [(NSCountedSet *)self->_globalAppLaunches countForObject:v5];
-  v8 = [(NSMutableDictionary *)self->_numUniqueAnchorOccurrencesPerCandidate objectForKey:v5];
+  idCopy = id;
+  v6 = [(NSCountedSet *)relevantAppLaunches countForObject:idCopy];
+  v7 = [(NSCountedSet *)self->_globalAppLaunches countForObject:idCopy];
+  v8 = [(NSMutableDictionary *)self->_numUniqueAnchorOccurrencesPerCandidate objectForKey:idCopy];
 
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   if (v7 < [(ATXMagicalMomentsPredictionScorer *)self minimumNumberOfGlobalObservationsOfBundleIdForMMScoring])
   {
     v10 = __atxlog_handle_default();
@@ -409,7 +409,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v9 < [(ATXMagicalMomentsPredictionScorer *)self minimumNumberOfUniqueAnchorOccurrencesForBundleIdForMMScoring])
+  if (unsignedIntegerValue < [(ATXMagicalMomentsPredictionScorer *)self minimumNumberOfUniqueAnchorOccurrencesForBundleIdForMMScoring])
   {
     v10 = __atxlog_handle_default();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -423,13 +423,13 @@ LABEL_10:
   return 1;
 }
 
-- (id)relevanceScoreForBundleId:(id)a3
+- (id)relevanceScoreForBundleId:(id)id
 {
   relevantAppLaunches = self->_relevantAppLaunches;
-  v5 = a3;
-  v6 = [(NSCountedSet *)relevantAppLaunches countForObject:v5];
-  v7 = v6 / [(NSCountedSet *)self->_globalAppLaunches countForObject:v5];
-  v8 = [(ATXMagicalMomentsPredictionScorer *)self subExpertCanMakeHighConfidencePredictionsForBundleId:v5];
+  idCopy = id;
+  v6 = [(NSCountedSet *)relevantAppLaunches countForObject:idCopy];
+  v7 = v6 / [(NSCountedSet *)self->_globalAppLaunches countForObject:idCopy];
+  v8 = [(ATXMagicalMomentsPredictionScorer *)self subExpertCanMakeHighConfidencePredictionsForBundleId:idCopy];
 
   if (!v8)
   {
@@ -460,7 +460,7 @@ LABEL_10:
   if (self->_finalPredictionConfidences)
   {
 LABEL_16:
-    v11 = [(ATXMagicalMomentsPredictionScorer *)self getPredictionsFromFinalConfidences];
+    getPredictionsFromFinalConfidences = [(ATXMagicalMomentsPredictionScorer *)self getPredictionsFromFinalConfidences];
     goto LABEL_17;
   }
 
@@ -477,10 +477,10 @@ LABEL_16:
     [ATXMagicalMomentsPredictionScorer generatePredictions];
   }
 
-  v5 = [(ATXMagicalMomentsPredictionScorer *)self subExpertCanMakeHighConfidencePredictions];
+  subExpertCanMakeHighConfidencePredictions = [(ATXMagicalMomentsPredictionScorer *)self subExpertCanMakeHighConfidencePredictions];
   v6 = __atxlog_handle_default();
   v7 = v6;
-  if (v5)
+  if (subExpertCanMakeHighConfidencePredictions)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -517,10 +517,10 @@ LABEL_16:
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_INFO, "ATXMM: Failed to meet quality control criteria. Nothing to predict for this sub-expert!", v13, 2u);
   }
 
-  v11 = MEMORY[0x277CBEBF8];
+  getPredictionsFromFinalConfidences = MEMORY[0x277CBEBF8];
 LABEL_17:
 
-  return v11;
+  return getPredictionsFromFinalConfidences;
 }
 
 - (void)computeTimeDecayedCumulativeScores
@@ -552,51 +552,51 @@ LABEL_17:
           }
 
           v9 = *(*(&v61 + 1) + 8 * i);
-          v10 = [v9 firstEvent];
-          v11 = [v10 startDate];
-          v12 = [(ATXMagicalMomentsPredictionScorer *)self startOfDayForDate:v11];
+          firstEvent = [v9 firstEvent];
+          startDate = [firstEvent startDate];
+          v12 = [(ATXMagicalMomentsPredictionScorer *)self startOfDayForDate:startDate];
 
           v13 = [(NSMutableOrderedSet *)self->_dateSetForDecay indexOfObject:v12];
           relevanceWeightsByIdentifier = self->_relevanceWeightsByIdentifier;
-          v15 = [v9 secondEvent];
-          v16 = [v15 identifier];
-          v17 = [(NSMutableDictionary *)relevanceWeightsByIdentifier objectForKeyedSubscript:v16];
+          secondEvent = [v9 secondEvent];
+          identifier = [secondEvent identifier];
+          v17 = [(NSMutableDictionary *)relevanceWeightsByIdentifier objectForKeyedSubscript:identifier];
           [v17 doubleValue];
           v19 = v18;
           v20 = pow(0.99, v13);
 
           v21 = self->_cumulativeScoresWithDecayedWeightsByIdentifier;
-          v22 = [v9 secondEvent];
-          v23 = [v22 identifier];
-          v24 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:v23];
+          secondEvent2 = [v9 secondEvent];
+          identifier2 = [secondEvent2 identifier];
+          v24 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:identifier2];
 
           if (!v24)
           {
             v25 = self->_cumulativeScoresWithDecayedWeightsByIdentifier;
-            v26 = [v9 secondEvent];
-            v27 = [v26 identifier];
-            [(NSMutableDictionary *)v25 setObject:&unk_283A55F10 forKeyedSubscript:v27];
+            secondEvent3 = [v9 secondEvent];
+            identifier3 = [secondEvent3 identifier];
+            [(NSMutableDictionary *)v25 setObject:&unk_283A55F10 forKeyedSubscript:identifier3];
           }
 
           v28 = self->_cumulativeScoresWithDecayedWeightsByIdentifier;
-          v29 = [v9 secondEvent];
-          v30 = [v29 identifier];
-          v31 = [(NSMutableDictionary *)v28 objectForKeyedSubscript:v30];
+          secondEvent4 = [v9 secondEvent];
+          identifier4 = [secondEvent4 identifier];
+          v31 = [(NSMutableDictionary *)v28 objectForKeyedSubscript:identifier4];
           [v31 doubleValue];
           v33 = v20 * v19 + v32;
 
           v34 = [MEMORY[0x277CCABB0] numberWithDouble:v33];
           v35 = self->_cumulativeScoresWithDecayedWeightsByIdentifier;
-          v36 = [v9 secondEvent];
-          v37 = [v36 identifier];
-          [(NSMutableDictionary *)v35 setObject:v34 forKeyedSubscript:v37];
+          secondEvent5 = [v9 secondEvent];
+          identifier5 = [secondEvent5 identifier];
+          [(NSMutableDictionary *)v35 setObject:v34 forKeyedSubscript:identifier5];
 
           if (!self->_topScoringIdentifier || (-[NSMutableDictionary objectForKeyedSubscript:](self->_cumulativeScoresWithDecayedWeightsByIdentifier, "objectForKeyedSubscript:"), v38 = objc_claimAutoreleasedReturnValue(), [v38 doubleValue], v40 = v39, v38, v33 > v40))
           {
-            v41 = [v9 secondEvent];
-            v42 = [v41 identifier];
+            secondEvent6 = [v9 secondEvent];
+            identifier6 = [secondEvent6 identifier];
             topScoringIdentifier = self->_topScoringIdentifier;
-            self->_topScoringIdentifier = v42;
+            self->_topScoringIdentifier = identifier6;
           }
         }
 
@@ -828,13 +828,13 @@ LABEL_17:
   return v3;
 }
 
-- (id)startOfDayForDate:(id)a3
+- (id)startOfDayForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
+  dateCopy = date;
   v5 = [v3 alloc];
   v6 = [v5 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v7 = [v6 startOfDayForDate:v4];
+  v7 = [v6 startOfDayForDate:dateCopy];
 
   return v7;
 }
@@ -850,7 +850,7 @@ LABEL_17:
 - (void)subExpertHasObservedEnoughLaunchesForMultipleAppsToMakePredictions
 {
   v12 = *MEMORY[0x277D85DE8];
-  [*a1 count];
+  [*self count];
   v3 = *a2;
   OUTLINED_FUNCTION_3_8();
   OUTLINED_FUNCTION_1_5(&dword_2263AA000, v4, v5, "ATXMM: %lu bundleIds observed for this subexpert with %lu total relevant launches, making the expert eligible for training/prediction.", v6, v7, v8, v9, v11);

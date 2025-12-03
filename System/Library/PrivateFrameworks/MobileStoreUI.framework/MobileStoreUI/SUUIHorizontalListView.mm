@@ -1,43 +1,43 @@
 @interface SUUIHorizontalListView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (double)_elementSpacingForViewElement:(id)a3;
-+ (double)_lineSpacingForLineElements:(id)a3;
-+ (double)_lineSpacingForViewElement:(id)a3;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForButtonText:(id)a3 type:(int64_t)a4 style:(id)a5 context:(id)a6;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForMenuItem:(id)a3 context:(id)a4;
-+ (id)_linesWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (double)_elementSpacingForViewElement:(id)element;
++ (double)_lineSpacingForLineElements:(id)elements;
++ (double)_lineSpacingForViewElement:(id)element;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForButtonText:(id)text type:(int64_t)type style:(id)style context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_attributedStringForMenuItem:(id)item context:(id)context;
++ (id)_linesWithViewElement:(id)element width:(double)width context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (CGRect)hitRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIHorizontalListView)initWithFrame:(CGRect)a3;
-- (id)_viewElementForView:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIHorizontalListView)initWithFrame:(CGRect)frame;
+- (id)_viewElementForView:(id)view;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)_destroyMenuPopover;
-- (void)_imageTapAction:(id)a3;
-- (void)_menuButtonAction:(id)a3;
+- (void)_imageTapAction:(id)action;
+- (void)_menuButtonAction:(id)action;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4;
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index;
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SUUIHorizontalListView
 
-- (SUUIHorizontalListView)initWithFrame:(CGRect)a3
+- (SUUIHorizontalListView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SUUIHorizontalListView;
-  v3 = [(SUUIViewReuseView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [(SUUIViewReuseView *)v3 registerClass:objc_opt_class() forViewWithReuseIdentifier:@"vlockup"];
@@ -54,10 +54,10 @@
   [(SUUIViewReuseView *)&v3 dealloc];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -66,15 +66,15 @@
   v11[1] = 3221225472;
   v11[2] = __73__SUUIHorizontalListView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 uint64_t __73__SUUIHorizontalListView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -84,10 +84,10 @@ uint64_t __73__SUUIHorizontalListView_prefetchResourcesForViewElement_reason_con
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3010000000;
@@ -101,13 +101,13 @@ uint64_t __73__SUUIHorizontalListView_prefetchResourcesForViewElement_reason_con
   v21[1] = 3221225472;
   v21[2] = __62__SUUIHorizontalListView_preferredSizeForViewElement_context___block_invoke;
   v21[3] = &unk_2798F80B8;
-  v7 = v6;
+  v7 = contextCopy;
   v22 = v7;
   v23 = &v29;
   v24 = &v25;
-  [v5 enumerateChildrenUsingBlock:v21];
-  v8 = [v5 style];
-  [v8 elementPadding];
+  [elementCopy enumerateChildrenUsingBlock:v21];
+  style = [elementCopy style];
+  [style elementPadding];
   v10 = v9;
   v12 = v11;
 
@@ -190,22 +190,22 @@ LABEL_9:
 LABEL_11:
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__SUUIHorizontalListView_requestLayoutForViewElement_width_context___block_invoke;
   v13[3] = &unk_2798F5E78;
-  v16 = a4;
-  v17 = a1;
-  v14 = v10;
-  v15 = v8;
-  v11 = v8;
-  v12 = v10;
-  [v9 enumerateChildrenUsingBlock:v13];
+  widthCopy = width;
+  selfCopy = self;
+  v14 = labelLayoutCache;
+  v15 = contextCopy;
+  v11 = contextCopy;
+  v12 = labelLayoutCache;
+  [elementCopy enumerateChildrenUsingBlock:v13];
 }
 
 uint64_t __68__SUUIHorizontalListView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -300,10 +300,10 @@ LABEL_24:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3010000000;
@@ -321,16 +321,16 @@ LABEL_24:
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  v10 = [a1 _linesWithViewElement:v8 width:v9 context:a3];
+  v10 = [self _linesWithViewElement:elementCopy width:contextCopy context:width];
   v11 = [v10 count];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __64__SUUIHorizontalListView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v28 = &unk_2798F80E0;
   v30 = &v37;
-  v34 = a1;
-  v35 = a3;
-  v12 = v9;
+  selfCopy = self;
+  widthCopy = width;
+  v12 = contextCopy;
   v29 = v12;
   v31 = &v45;
   v32 = &v49;
@@ -348,13 +348,13 @@ LABEL_24:
     }
   }
 
-  if (*(v38 + 24) == 1 && v50[4] < a3)
+  if (*(v38 + 24) == 1 && v50[4] < width)
   {
-    v50[4] = a3;
+    v50[4] = width;
   }
 
-  v15 = [v8 style];
-  [v15 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   v17 = v16;
   v19 = v18;
 
@@ -455,30 +455,30 @@ void __64__SUUIHorizontalListView_sizeThatFitsWidth_viewElement_context___block_
   *(*(*(a1 + 56) + 8) + 40) = v10 + *(*(*(a1 + 56) + 8) + 40);
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   [(NSMutableArray *)self->_artworkRequestPassthroughViews removeAllObjects];
   self->_elementSpacing = 0.0;
-  v10 = [objc_opt_class() _linesWithViewElement:v8 width:v9 context:a4];
+  v10 = [objc_opt_class() _linesWithViewElement:elementCopy width:contextCopy context:width];
   lines = self->_lines;
   self->_lines = v10;
 
   listElement = self->_listElement;
-  self->_listElement = v8;
-  v13 = v8;
+  self->_listElement = elementCopy;
+  v13 = elementCopy;
 
   self->_useBigHitTarget = 0;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __62__SUUIHorizontalListView_reloadWithViewElement_width_context___block_invoke;
   v22[3] = &unk_2798F8108;
-  v24 = a4;
+  widthCopy = width;
   v22[4] = self;
-  v23 = v9;
-  v14 = v9;
+  v23 = contextCopy;
+  v14 = contextCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v22];
   p_bigHitInsets = &self->_bigHitInsets;
   if (self->_useBigHitTarget)
@@ -773,27 +773,27 @@ LABEL_61:
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIHorizontalListView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v8 = a4;
-  v9 = a5;
-  v28 = v8;
-  v31 = [v8 requestIdentifier];
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  v28 = requestCopy;
+  requestIdentifier = [requestCopy requestIdentifier];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -816,20 +816,20 @@ LABEL_61:
 
         v15 = *(*(&v36 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v31)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = [v15 imageView];
-            [v19 setImage:v29];
+            imageView = [v15 imageView];
+            [imageView setImage:imageCopy];
           }
 
           else
           {
-            [v15 setImage:v29];
+            [v15 setImage:imageCopy];
           }
 
           v12 = 1;
@@ -858,7 +858,7 @@ LABEL_61:
     v22 = v21;
     v23 = *v33;
     v25 = v28;
-    v24 = v29;
+    v24 = imageCopy;
     do
     {
       for (j = 0; j != v22; ++j)
@@ -868,7 +868,7 @@ LABEL_61:
           objc_enumerationMutation(v20);
         }
 
-        v12 |= [*(*(&v32 + 1) + 8 * j) setImage:v29 forArtworkRequest:v28 context:v9];
+        v12 |= [*(*(&v32 + 1) + 8 * j) setImage:imageCopy forArtworkRequest:v28 context:contextCopy];
       }
 
       v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -880,17 +880,17 @@ LABEL_61:
   else
   {
     v25 = v28;
-    v24 = v29;
+    v24 = imageCopy;
   }
 
   return v12 & 1;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SUUIViewElement *)self->_listElement flattenedChildren];
-  v6 = [(SUUIViewReuseView *)self allExistingViews];
+  identifierCopy = identifier;
+  flattenedChildren = [(SUUIViewElement *)self->_listElement flattenedChildren];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -901,12 +901,12 @@ LABEL_61:
   v11[1] = 3221225472;
   v11[2] = __51__SUUIHorizontalListView_viewForElementIdentifier___block_invoke;
   v11[3] = &unk_2798F6E20;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v6;
+  v8 = allExistingViews;
   v13 = v8;
   v14 = &v15;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [flattenedChildren enumerateObjectsUsingBlock:v11];
   v9 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -1003,9 +1003,9 @@ LABEL_13:
   v84.receiver = self;
   v84.super_class = SUUIHorizontalListView;
   [(SUUIHorizontalListView *)&v84 layoutSubviews];
-  v3 = [(SUUIViewReuseView *)self allExistingViews];
-  v4 = [(SUUIListViewElement *)self->_listElement style];
-  v62 = [v4 elementAlignment];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
+  style = [(SUUIListViewElement *)self->_listElement style];
+  elementAlignment = [style elementAlignment];
 
   [(SUUIHorizontalListView *)self bounds];
   v69 = v6;
@@ -1073,7 +1073,7 @@ LABEL_13:
 
               else
               {
-                v25 = [v3 objectAtIndex:v23];
+                v25 = [allExistingViews objectAtIndex:v23];
                 [v25 sizeThatFits:{v67, v66}];
                 v27 = v26;
                 v29 = v28;
@@ -1140,12 +1140,12 @@ LABEL_13:
           }
         }
 
-        if (v62 == 3)
+        if (elementAlignment == 3)
         {
           left = v71 - v21 - self->_contentInset.right;
         }
 
-        else if (v62 == 2)
+        else if (elementAlignment == 2)
         {
           v40 = (v71 - v21) * 0.5;
           left = floorf(v40);
@@ -1178,17 +1178,17 @@ LABEL_13:
 
               else
               {
-                v48 = [v3 objectAtIndex:v11];
+                v48 = [allExistingViews objectAtIndex:v11];
                 [v48 frame];
                 v50 = v49;
                 v52 = v51;
-                v53 = [v46 style];
-                v54 = [v53 elementPosition];
+                style2 = [v46 style];
+                elementPosition = [style2 elementPosition];
 
                 v55 = top;
-                if (v54 <= 9)
+                if (elementPosition <= 9)
                 {
-                  if (((1 << v54) & 0x33) != 0)
+                  if (((1 << elementPosition) & 0x33) != 0)
                   {
                     v56 = top + (v22 - v52) * 0.5;
                     v55 = roundf(v56);
@@ -1197,7 +1197,7 @@ LABEL_13:
                   else
                   {
                     v55 = top;
-                    if (((1 << v54) & 0x308) != 0)
+                    if (((1 << elementPosition) & 0x308) != 0)
                     {
                       v55 = top + v22 - v52;
                     }
@@ -1238,10 +1238,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   if (self->_useBigHitTarget)
   {
     [(SUUIHorizontalListView *)self hitRect];
@@ -1255,21 +1255,21 @@ LABEL_13:
   {
     v13.receiver = self;
     v13.super_class = SUUIHorizontalListView;
-    return [(SUUIHorizontalListView *)&v13 pointInside:a4 withEvent:a3.x, a3.y];
+    return [(SUUIHorizontalListView *)&v13 pointInside:event withEvent:inside.x, inside.y];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v58 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v6 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v40 = self;
+  selfCopy = self;
   obj = self->_lines;
   v43 = [(NSArray *)obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   v7 = 0;
@@ -1326,7 +1326,7 @@ LABEL_13:
 
               else
               {
-                v24 = [v6 objectAtIndex:v9];
+                v24 = [allExistingViews objectAtIndex:v9];
                 [v24 sizeThatFits:{width, 1.79769313e308}];
                 v26 = v25;
                 v28 = v27;
@@ -1402,8 +1402,8 @@ LABEL_13:
     width = v32;
   }
 
-  v33 = [(SUUIListViewElement *)v40->_listElement style];
-  [v33 elementPadding];
+  style = [(SUUIListViewElement *)selfCopy->_listElement style];
+  [style elementPadding];
   v35 = v34;
   v37 = v36;
 
@@ -1414,45 +1414,45 @@ LABEL_13:
   return result;
 }
 
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index
 {
   if (self->_focusedMenuButton)
   {
     v6 = [(SUUIHorizontalListView *)self _viewElementForView:?];
-    [v6 dispatchEventOfType:2 forItemAtIndex:a4];
+    [v6 dispatchEventOfType:2 forItemAtIndex:index];
     [(SUUIHorizontalListView *)self _destroyMenuPopover];
   }
 }
 
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view
 {
-  [(UIControl *)self->_focusedMenuButton frame:a3];
-  a4->origin.x = v6;
-  a4->origin.y = v7;
-  a4->size.width = v8;
-  a4->size.height = v9;
+  [(UIControl *)self->_focusedMenuButton frame:popover];
+  rect->origin.x = v6;
+  rect->origin.y = v7;
+  rect->size.width = v8;
+  rect->size.height = v9;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIViewElement *)self->_listElement flattenedChildren];
-  v6 = [(SUUIViewReuseView *)self allExistingViews];
-  v7 = [v6 indexOfObjectIdenticalTo:v4];
+  actionCopy = action;
+  flattenedChildren = [(SUUIViewElement *)self->_listElement flattenedChildren];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
+  v7 = [allExistingViews indexOfObjectIdenticalTo:actionCopy];
 
-  if (v7 < [v5 count])
+  if (v7 < [flattenedChildren count])
   {
-    v8 = [v5 objectAtIndex:v7];
+    v8 = [flattenedChildren objectAtIndex:v7];
     if (SUUIIKViewElementTypeIsButton([v8 elementType]))
     {
       v9 = SUUICollectionViewCellForView(self);
       v10 = SUUICollectionViewForView(v9);
-      v11 = [v10 delegate];
+      delegate = [v10 delegate];
       if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v20 = [v10 indexPathForCell:v9];
-        [v11 collectionView:v10 didConfirmButtonElement:v8 withClickInfo:0 forItemAtIndexPath:v20];
+        [delegate collectionView:v10 didConfirmButtonElement:v8 withClickInfo:0 forItemAtIndexPath:v20];
       }
 
       else
@@ -1461,7 +1461,7 @@ LABEL_13:
         if (objc_opt_isKindOfClass())
         {
           v21 = v9;
-          v12 = v4;
+          v12 = actionCopy;
           v13 = MEMORY[0x277CBEB38];
           v22[0] = @"toggled";
           v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "isToggled")}];
@@ -1474,12 +1474,12 @@ LABEL_13:
           v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
           v17 = [v13 dictionaryWithDictionary:v16];
 
-          v18 = [v12 toggleItemIdentifier];
+          toggleItemIdentifier = [v12 toggleItemIdentifier];
 
-          if (v18)
+          if (toggleItemIdentifier)
           {
-            v19 = [v12 toggleItemIdentifier];
-            [v17 setObject:v19 forKey:@"toggleId"];
+            toggleItemIdentifier2 = [v12 toggleItemIdentifier];
+            [v17 setObject:toggleItemIdentifier2 forKey:@"toggleId"];
           }
 
           v9 = v21;
@@ -1496,25 +1496,25 @@ LABEL_13:
   }
 }
 
-- (void)_imageTapAction:(id)a3
+- (void)_imageTapAction:(id)action
 {
   listElement = self->_listElement;
-  v5 = a3;
-  v10 = [(SUUIViewElement *)listElement flattenedChildren];
-  v6 = [(SUUIViewReuseView *)self allExistingViews];
-  v7 = [v5 view];
+  actionCopy = action;
+  flattenedChildren = [(SUUIViewElement *)listElement flattenedChildren];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
+  view = [actionCopy view];
 
-  v8 = [v6 indexOfObjectIdenticalTo:v7];
-  if (v8 < [v10 count])
+  v8 = [allExistingViews indexOfObjectIdenticalTo:view];
+  if (v8 < [flattenedChildren count])
   {
-    v9 = [v10 objectAtIndex:v8];
+    v9 = [flattenedChildren objectAtIndex:v8];
     [v9 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
 
-- (void)_menuButtonAction:(id)a3
+- (void)_menuButtonAction:(id)action
 {
-  v23 = a3;
+  actionCopy = action;
   popoverController = self->_popoverController;
   if (popoverController)
   {
@@ -1527,13 +1527,13 @@ LABEL_13:
     self->_popoverController = 0;
   }
 
-  v8 = [(SUUIHorizontalListView *)self _viewElementForView:v23];
+  v8 = [(SUUIHorizontalListView *)self _viewElementForView:actionCopy];
   if (v8)
   {
-    objc_storeStrong(&self->_focusedMenuButton, a3);
+    objc_storeStrong(&self->_focusedMenuButton, action);
     v9 = [SUUIMenuPopoverController alloc];
-    v10 = [v8 menuItemTitles];
-    v11 = -[SUUIMenuPopoverController initWithMenuTitles:selectedIndex:](v9, "initWithMenuTitles:selectedIndex:", v10, [v8 selectedItemIndex]);
+    menuItemTitles = [v8 menuItemTitles];
+    v11 = -[SUUIMenuPopoverController initWithMenuTitles:selectedIndex:](v9, "initWithMenuTitles:selectedIndex:", menuItemTitles, [v8 selectedItemIndex]);
     v12 = self->_popoverController;
     self->_popoverController = v11;
 
@@ -1544,41 +1544,41 @@ LABEL_13:
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UIControl *)self->_focusedMenuButton superview];
-    [(SUUIMenuPopoverController *)v13 presentFromRect:v22 inView:15 permittedArrowDirections:1 animated:v15, v17, v19, v21];
+    superview = [(UIControl *)self->_focusedMenuButton superview];
+    [(SUUIMenuPopoverController *)v13 presentFromRect:superview inView:15 permittedArrowDirections:1 animated:v15, v17, v19, v21];
   }
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buttonText];
-  v9 = [v6 buttonViewType];
-  v10 = [v6 buttonTitleStyle];
-  if (v10)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonText = [buttonCopy buttonText];
+  buttonViewType = [buttonCopy buttonViewType];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  if (buttonTitleStyle)
   {
-    v11 = [a1 _attributedStringForButtonText:v8 type:v9 style:v10 context:v7];
+    v11 = [self _attributedStringForButtonText:buttonText type:buttonViewType style:buttonTitleStyle context:contextCopy];
   }
 
   else
   {
-    v12 = [v6 style];
-    v11 = [a1 _attributedStringForButtonText:v8 type:v9 style:v12 context:v7];
+    style = [buttonCopy style];
+    v11 = [self _attributedStringForButtonText:buttonText type:buttonViewType style:style context:contextCopy];
   }
 
   return v11;
 }
 
-+ (id)_attributedStringForButtonText:(id)a3 type:(int64_t)a4 style:(id)a5 context:(id)a6
++ (id)_attributedStringForButtonText:(id)text type:(int64_t)type style:(id)style context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = SUUIViewElementFontWithStyle(v10);
+  textCopy = text;
+  styleCopy = style;
+  contextCopy = context;
+  v12 = SUUIViewElementFontWithStyle(styleCopy);
   if (!v12)
   {
-    if (a4)
+    if (type)
     {
       v13 = 5;
     }
@@ -1591,62 +1591,62 @@ LABEL_13:
     v12 = SUUIFontPreferredFontForTextStyle(v13);
   }
 
-  v14 = [v11 tintColor];
-  v15 = SUUIViewElementPlainColorWithStyle(v10, v14);
+  tintColor = [contextCopy tintColor];
+  blackColor = SUUIViewElementPlainColorWithStyle(styleCopy, tintColor);
 
-  if (!v15)
+  if (!blackColor)
   {
-    v15 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v16 = [v9 attributedStringWithDefaultFont:v12 foregroundColor:v15 style:v10];
+  v16 = [textCopy attributedStringWithDefaultFont:v12 foregroundColor:blackColor style:styleCopy];
 
   return v16;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontPreferredFontForTextStyle(5);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v12;
 }
 
-+ (id)_attributedStringForMenuItem:(id)a3 context:(id)a4
++ (id)_attributedStringForMenuItem:(id)item context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 itemText];
-  v9 = [v7 style];
+  contextCopy = context;
+  itemCopy = item;
+  itemText = [itemCopy itemText];
+  style = [itemCopy style];
 
-  v10 = [a1 _attributedStringForButtonText:v8 type:0 style:v9 context:v6];
+  v10 = [self _attributedStringForButtonText:itemText type:0 style:style context:contextCopy];
 
   return v10;
 }
 
-+ (double)_elementSpacingForViewElement:(id)a3
++ (double)_elementSpacingForViewElement:(id)element
 {
-  v3 = [a3 elementType];
+  elementType = [element elementType];
   result = 5.0;
-  v5 = v3 - 8;
-  if ((v3 - 8) <= 0x3A)
+  v5 = elementType - 8;
+  if ((elementType - 8) <= 0x3A)
   {
     if (((1 << v5) & 0x40000000030) != 0)
     {
@@ -1658,18 +1658,18 @@ LABEL_13:
       return result;
     }
 
-    if (v3 == 66)
+    if (elementType == 66)
     {
       return 10.0;
     }
   }
 
-  if (v3 == 152)
+  if (elementType == 152)
   {
     return result;
   }
 
-  if (v3 != 141)
+  if (elementType != 141)
   {
     return 8.0;
   }
@@ -1677,15 +1677,15 @@ LABEL_13:
   return 20.0;
 }
 
-+ (double)_lineSpacingForLineElements:(id)a3
++ (double)_lineSpacingForLineElements:(id)elements
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementsCopy = elements;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [elementsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1697,17 +1697,17 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elementsCopy);
         }
 
-        [a1 _lineSpacingForViewElement:*(*(&v12 + 1) + 8 * i)];
+        [self _lineSpacingForViewElement:*(*(&v12 + 1) + 8 * i)];
         if (v8 < v10)
         {
           v8 = v10;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [elementsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1721,13 +1721,13 @@ LABEL_13:
   return v8;
 }
 
-+ (double)_lineSpacingForViewElement:(id)a3
++ (double)_lineSpacingForViewElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 elementType];
-  if (v4 == 66)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  if (elementType == 66)
   {
-    v7 = [v3 firstChildForElementType:138];
+    v7 = [elementCopy firstChildForElementType:138];
     if (v7)
     {
       v6 = 15.0;
@@ -1742,12 +1742,12 @@ LABEL_13:
   else
   {
     v5 = 0.0;
-    if (v4 == 8)
+    if (elementType == 8)
     {
       v5 = 5.0;
     }
 
-    if (v4 == 49)
+    if (elementType == 49)
     {
       v6 = 5.0;
     }
@@ -1761,15 +1761,15 @@ LABEL_13:
   return v6;
 }
 
-+ (id)_linesWithViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (id)_linesWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v10 = objc_alloc_init(SUUIViewElementHorizontalLayout);
-  [(SUUIViewElementHorizontalLayout *)v10 setLayoutWidth:a4];
-  v11 = [v8 style];
-  -[SUUIViewElementHorizontalLayout setMaximumElementsPerLine:](v10, "setMaximumElementsPerLine:", [v11 columnCount]);
-  -[SUUIViewElementHorizontalLayout setMaximumLines:](v10, "setMaximumLines:", [v11 maxTextLines]);
+  [(SUUIViewElementHorizontalLayout *)v10 setLayoutWidth:width];
+  style = [elementCopy style];
+  -[SUUIViewElementHorizontalLayout setMaximumElementsPerLine:](v10, "setMaximumElementsPerLine:", [style columnCount]);
+  -[SUUIViewElementHorizontalLayout setMaximumLines:](v10, "setMaximumLines:", [style maxTextLines]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0;
   v26 = &v25;
@@ -1780,18 +1780,18 @@ LABEL_13:
   v21[2] = __62__SUUIHorizontalListView__linesWithViewElement_width_context___block_invoke;
   v21[3] = &unk_2798F76C8;
   v23 = &v25;
-  v24 = a1;
+  selfCopy = self;
   v13 = v12;
   v22 = v13;
-  [v8 enumerateChildrenUsingBlock:v21];
+  [elementCopy enumerateChildrenUsingBlock:v21];
   [(SUUIViewElementHorizontalLayout *)v10 setElementSpacing:v26[3]];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__SUUIHorizontalListView__linesWithViewElement_width_context___block_invoke_2;
   v17[3] = &unk_2798F8130;
-  v19 = a1;
-  v20 = a4;
-  v14 = v9;
+  selfCopy2 = self;
+  widthCopy = width;
+  v14 = contextCopy;
   v18 = v14;
   v15 = [(SUUIViewElementHorizontalLayout *)v10 layoutViewElements:v13 usingSizingBlock:v17];
 
@@ -1815,26 +1815,26 @@ void __62__SUUIHorizontalListView__linesWithViewElement_width_context___block_in
   [*(a1 + 32) addObject:v6];
 }
 
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 elementType] == 66)
+  elementCopy = element;
+  contextCopy = context;
+  if ([elementCopy elementType] == 66)
   {
-    [SUUIVerticalLockupView sizeThatFitsWidth:v7 viewElement:v8 context:a4];
+    [SUUIVerticalLockupView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
     v10 = v9;
     v12 = v11;
-    v13 = [v7 firstChildForElementType:49];
+    v13 = [elementCopy firstChildForElementType:49];
     if (v13)
     {
-      [v8 sizeForViewElement:v13 width:a4];
+      [contextCopy sizeForViewElement:v13 width:width];
       v10 = v14;
     }
   }
 
   else
   {
-    [v8 sizeForViewElement:v7 width:a4];
+    [contextCopy sizeForViewElement:elementCopy width:width];
     v10 = v15;
     v12 = v16;
   }
@@ -1856,22 +1856,22 @@ void __62__SUUIHorizontalListView__linesWithViewElement_width_context___block_in
   self->_popoverController = 0;
 }
 
-- (id)_viewElementForView:(id)a3
+- (id)_viewElementForView:(id)view
 {
   listElement = self->_listElement;
-  v5 = a3;
-  v6 = [(SUUIViewElement *)listElement flattenedChildren];
-  v7 = [(SUUIViewReuseView *)self allExistingViews];
-  v8 = [v7 indexOfObjectIdenticalTo:v5];
+  viewCopy = view;
+  flattenedChildren = [(SUUIViewElement *)listElement flattenedChildren];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
+  v8 = [allExistingViews indexOfObjectIdenticalTo:viewCopy];
 
-  if (v8 >= [v6 count])
+  if (v8 >= [flattenedChildren count])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v6 objectAtIndex:v8];
+    v9 = [flattenedChildren objectAtIndex:v8];
   }
 
   return v9;

@@ -1,39 +1,39 @@
 @interface PKPaintAreaView
-- (BOOL)beginDrawingAtPoint:(id *)a3 surface:(id)a4 locationInView:(CGPoint)a5 inputType:(int64_t)a6;
+- (BOOL)beginDrawingAtPoint:(id *)point surface:(id)surface locationInView:(CGPoint)view inputType:(int64_t)type;
 - (CGAffineTransform)strokeTransform;
-- (CGPoint)applyTransformToTouchLocation:(CGPoint)a3;
-- (CGPoint)applyTransformToTouchLocation:(CGPoint)a3 previousPoint:(CGPoint)a4 newSurface:(id *)a5;
-- (PKPaintAreaView)initWithCoder:(id)a3;
-- (PKPaintAreaView)initWithFrame:(CGRect)a3;
+- (CGPoint)applyTransformToTouchLocation:(CGPoint)location;
+- (CGPoint)applyTransformToTouchLocation:(CGPoint)location previousPoint:(CGPoint)point newSurface:(id *)surface;
+- (PKPaintAreaView)initWithCoder:(id)coder;
+- (PKPaintAreaView)initWithFrame:(CGRect)frame;
 - (PKPaintAreaViewDelegate)delegate;
 - (id)_rendererController;
-- (id)hitSurface:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)shapeDrawingControllerRendererController:(id)a3;
+- (id)hitSurface:(CGPoint)surface;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)shapeDrawingControllerRendererController:(id)controller;
 - (void)_commonInit;
-- (void)_drawingBegan:(id *)a3 locationInView:(CGPoint)a4 inputType:(int64_t)a5;
-- (void)_endAlternativeStrokeIfNecessaryAccepted:(BOOL)a3;
-- (void)checkAnimationsDidEndAtTime:(double)a3;
-- (void)drawingBegan:(id)a3;
+- (void)_drawingBegan:(id *)began locationInView:(CGPoint)view inputType:(int64_t)type;
+- (void)_endAlternativeStrokeIfNecessaryAccepted:(BOOL)accepted;
+- (void)checkAnimationsDidEndAtTime:(double)time;
+- (void)drawingBegan:(id)began;
 - (void)drawingCancelled;
 - (void)drawingEnded;
-- (void)drawingEstimatedPropertiesUpdated:(id)a3;
-- (void)drawingMoved:(id)a3 withEvent:(id)a4;
-- (void)drawingMovedToPoint:(id *)a3 locationInView:(CGPoint)a4;
-- (void)shapeDrawingControllerShapeDetectionCancelled:(id)a3;
-- (void)shapeDrawingControllerShapeGestureDetected:(id)a3 isFastGesture:(BOOL)a4;
-- (void)switchToNewPaintSurface:(id)a3;
-- (void)vsync:(double)a3;
+- (void)drawingEstimatedPropertiesUpdated:(id)updated;
+- (void)drawingMoved:(id)moved withEvent:(id)event;
+- (void)drawingMovedToPoint:(id *)point locationInView:(CGPoint)view;
+- (void)shapeDrawingControllerShapeDetectionCancelled:(id)cancelled;
+- (void)shapeDrawingControllerShapeGestureDetected:(id)detected isFastGesture:(BOOL)gesture;
+- (void)switchToNewPaintSurface:(id)surface;
+- (void)vsync:(double)vsync;
 @end
 
 @implementation PKPaintAreaView
 
-- (PKPaintAreaView)initWithCoder:(id)a3
+- (PKPaintAreaView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPaintAreaView;
-  v5 = [(PKPaintAreaView *)&v8 initWithCoder:v4];
+  v5 = [(PKPaintAreaView *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -45,12 +45,12 @@
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   liveSurfaces = self->_liveSurfaces;
-  self->_liveSurfaces = v3;
+  self->_liveSurfaces = array;
 
-  v5 = [MEMORY[0x1E69DC888] greenColor];
-  v6 = [PKInk inkWithType:@"com.apple.ink.pen" color:v5 weight:0.5 azimuth:0.0];
+  greenColor = [MEMORY[0x1E69DC888] greenColor];
+  v6 = [PKInk inkWithType:@"com.apple.ink.pen" color:greenColor weight:0.5 azimuth:0.0];
   v7 = [PKTool _toolWithInk:v6];
   tool = self->_tool;
   self->_tool = v7;
@@ -73,11 +73,11 @@
   }
 }
 
-- (PKPaintAreaView)initWithFrame:(CGRect)a3
+- (PKPaintAreaView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKPaintAreaView;
-  v3 = [(PKPaintAreaView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaintAreaView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -87,15 +87,15 @@
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PKPaintAreaView *)self drawingDisabled];
-  if (v7)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  drawingDisabled = [(PKPaintAreaView *)self drawingDisabled];
+  if (eventCopy)
   {
-    v9 = v8;
+    v9 = drawingDisabled;
   }
 
   else
@@ -108,13 +108,13 @@
     goto LABEL_21;
   }
 
-  if (![v7 _hidEvent])
+  if (![eventCopy _hidEvent])
   {
     goto LABEL_21;
   }
 
-  v10 = [v7 PK_isEventFromPencil];
-  if ((([(PKPaintAreaView *)self fingerDrawingEnabled]| v10) & 1) == 0)
+  pK_isEventFromPencil = [eventCopy PK_isEventFromPencil];
+  if ((([(PKPaintAreaView *)self fingerDrawingEnabled]| pK_isEventFromPencil) & 1) == 0)
   {
     goto LABEL_21;
   }
@@ -122,20 +122,20 @@
   currentPaintSurfaceObject = self->_currentPaintSurfaceObject;
   if (currentPaintSurfaceObject && ([(PKPaintAreaViewSurface *)currentPaintSurfaceObject isDrawing]|| [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isErasingObjects]))
   {
-    v12 = self;
+    selfCopy = self;
     goto LABEL_22;
   }
 
   if (![(PKPaintAreaView *)self canAddStroke])
   {
 LABEL_21:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
   v20.receiver = self;
   v20.super_class = PKPaintAreaView;
-  v13 = [(PKPaintAreaView *)&v20 hitTest:v7 withEvent:x, y];
+  v13 = [(PKPaintAreaView *)&v20 hitTest:eventCopy withEvent:x, y];
   if (v13 != self || [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isDrawing])
   {
     goto LABEL_29;
@@ -158,23 +158,23 @@ LABEL_28:
 
 LABEL_29:
     v13 = v13;
-    v12 = v13;
+    selfCopy = v13;
     goto LABEL_30;
   }
 
-  v18 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject surface];
+  surface = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject surface];
 
-  if (v14 == v18)
+  if (v14 == surface)
   {
     goto LABEL_26;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_30:
 
 LABEL_22:
 
-  return v12;
+  return selfCopy;
 }
 
 - (CGAffineTransform)strokeTransform
@@ -193,9 +193,9 @@ LABEL_22:
   return result;
 }
 
-- (void)switchToNewPaintSurface:(id)a3
+- (void)switchToNewPaintSurface:(id)surface
 {
-  v14 = a3;
+  surfaceCopy = surface;
   if ([(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isDrawing])
   {
     [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingEndedWithDetectedShape:0 completionBlock:0];
@@ -204,10 +204,10 @@ LABEL_22:
   currentPaintSurfaceObject = self->_currentPaintSurfaceObject;
   if (currentPaintSurfaceObject)
   {
-    v5 = [(PKPaintAreaViewSurface *)currentPaintSurfaceObject drawingController];
-    if (v5)
+    drawingController = [(PKPaintAreaViewSurface *)currentPaintSurfaceObject drawingController];
+    if (drawingController)
     {
-      v6 = v5[48];
+      v6 = drawingController[48];
 
       if ((v6 & 1) == 0)
       {
@@ -226,13 +226,13 @@ LABEL_22:
   }
 
 LABEL_8:
-  v8 = [(PKPaintAreaView *)self delegate];
+  delegate = [(PKPaintAreaView *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(PKPaintAreaView *)self delegate];
-    v11 = [v10 paintAreaView:self dispatchQueueForSurface:v14];
+    delegate2 = [(PKPaintAreaView *)self delegate];
+    v11 = [delegate2 paintAreaView:self dispatchQueueForSurface:surfaceCopy];
   }
 
   else
@@ -240,46 +240,46 @@ LABEL_8:
     v11 = 0;
   }
 
-  v12 = [[PKPaintAreaViewSurface alloc] initWithPaintSurface:v14 dispatchQueue:v11 device:self->_device];
+  v12 = [[PKPaintAreaViewSurface alloc] initWithPaintSurface:surfaceCopy dispatchQueue:v11 device:self->_device];
   v13 = self->_currentPaintSurfaceObject;
   self->_currentPaintSurfaceObject = v12;
 
   [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject setPaintAreaView:self];
 }
 
-- (id)hitSurface:(CGPoint)a3
+- (id)hitSurface:(CGPoint)surface
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKPaintAreaView *)self delegate];
-  v7 = [v6 paintAreaView:self surfaceAtLocation:{x, y}];
+  y = surface.y;
+  x = surface.x;
+  delegate = [(PKPaintAreaView *)self delegate];
+  v7 = [delegate paintAreaView:self surfaceAtLocation:{x, y}];
 
   return v7;
 }
 
-- (CGPoint)applyTransformToTouchLocation:(CGPoint)a3
+- (CGPoint)applyTransformToTouchLocation:(CGPoint)location
 {
-  [(PKPaintAreaView *)self applyTransformToTouchLocation:0 previousPoint:a3.x newSurface:a3.y, NAN, NAN];
+  [(PKPaintAreaView *)self applyTransformToTouchLocation:0 previousPoint:location.x newSurface:location.y, NAN, NAN];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)applyTransformToTouchLocation:(CGPoint)a3 previousPoint:(CGPoint)a4 newSurface:(id *)a5
+- (CGPoint)applyTransformToTouchLocation:(CGPoint)location previousPoint:(CGPoint)point newSurface:(id *)surface
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if (self->_currentPaintSurfaceObject)
   {
-    v8 = a4.y;
-    v9 = a4.x;
-    v11 = [(PKPaintAreaView *)self delegate];
-    v12 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject surface];
-    [v11 paintAreaView:self transformLocation:v12 surface:a5 newSurface:{x, y}];
+    v8 = point.y;
+    v9 = point.x;
+    delegate = [(PKPaintAreaView *)self delegate];
+    surface = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject surface];
+    [delegate paintAreaView:self transformLocation:surface surface:surface newSurface:{x, y}];
     x = v13;
     y = v14;
 
-    if (a5 && *a5)
+    if (surface && *surface)
     {
       v9 = NAN;
       v8 = NAN;
@@ -304,7 +304,7 @@ LABEL_8:
   return result;
 }
 
-- (void)_endAlternativeStrokeIfNecessaryAccepted:(BOOL)a3
+- (void)_endAlternativeStrokeIfNecessaryAccepted:(BOOL)accepted
 {
   alternativeStrokesAnimation = self->_alternativeStrokesAnimation;
   if (alternativeStrokesAnimation)
@@ -312,18 +312,18 @@ LABEL_8:
     if (alternativeStrokesAnimation->_crossFadeStartTime == 0.0)
     {
       alternativeStrokesAnimation->_crossFadeStartTime = CACurrentMediaTime();
-      alternativeStrokesAnimation->_accepted = a3;
+      alternativeStrokesAnimation->_accepted = accepted;
     }
   }
 }
 
 - (id)_rendererController
 {
-  v2 = [(PKPaintAreaView *)self _drawingController];
-  v3 = v2;
-  if (v2)
+  _drawingController = [(PKPaintAreaView *)self _drawingController];
+  v3 = _drawingController;
+  if (_drawingController)
   {
-    v4 = *(v2 + 64);
+    v4 = *(_drawingController + 64);
   }
 
   else
@@ -336,7 +336,7 @@ LABEL_8:
   return v4;
 }
 
-- (void)checkAnimationsDidEndAtTime:(double)a3
+- (void)checkAnimationsDidEndAtTime:(double)time
 {
   [(PKPaintAreaView *)self liveAnimationStartTime];
   if (v5 != 0.0)
@@ -344,7 +344,7 @@ LABEL_8:
     alternativeStrokesAnimation = self->_alternativeStrokesAnimation;
     if (alternativeStrokesAnimation)
     {
-      if (alternativeStrokesAnimation->_forceDone || (crossFadeStartTime = alternativeStrokesAnimation->_crossFadeStartTime, crossFadeStartTime > 0.0) && crossFadeStartTime + alternativeStrokesAnimation->_fadeDuration <= a3)
+      if (alternativeStrokesAnimation->_forceDone || (crossFadeStartTime = alternativeStrokesAnimation->_crossFadeStartTime, crossFadeStartTime > 0.0) && crossFadeStartTime + alternativeStrokesAnimation->_fadeDuration <= time)
       {
         self->_alternativeStrokesAnimation = 0;
       }
@@ -352,7 +352,7 @@ LABEL_8:
   }
 }
 
-- (void)vsync:(double)a3
+- (void)vsync:(double)vsync
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = CACurrentMediaTime();
@@ -360,20 +360,20 @@ LABEL_8:
   {
     [(PKPaintAreaView *)self liveAnimationStartTime];
     v7 = v6;
-    v8 = [(PKPaintAreaView *)self _rendererController];
-    [(PKMetalRendererController *)v8 setLiveStrokeElapsedTime:?];
+    _rendererController = [(PKPaintAreaView *)self _rendererController];
+    [(PKMetalRendererController *)_rendererController setLiveStrokeElapsedTime:?];
   }
 
-  v9 = [(PKPaintAreaView *)self shapeDrawingController];
-  v10 = v9;
-  if (v9)
+  shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+  v10 = shapeDrawingController;
+  if (shapeDrawingController)
   {
-    [(PKShapeDrawingController *)v9 _checkDetectedStroke];
+    [(PKShapeDrawingController *)shapeDrawingController _checkDetectedStroke];
   }
 
   if (self->_alternativeStrokesAnimation)
   {
-    v11 = [(PKPaintAreaView *)self _rendererController];
+    _rendererController2 = [(PKPaintAreaView *)self _rendererController];
     alternativeStrokesAnimation = self->_alternativeStrokesAnimation;
     if (alternativeStrokesAnimation)
     {
@@ -384,7 +384,7 @@ LABEL_8:
     v14 = self->_alternativeStrokesAnimation;
     v15 = [(PKAlternativeStrokesAnimation *)v14 alphaAtTime:v5];
     v16 = [(PKAlternativeStrokesAnimation *)v14 originalStrokeAlphaAtTime:v5];
-    [(PKMetalRendererController *)v11 setAlternativeStrokes:v13 alpha:v15 originalStrokeAlpha:v16];
+    [(PKMetalRendererController *)_rendererController2 setAlternativeStrokes:v13 alpha:v15 originalStrokeAlpha:v16];
   }
 
   v26 = 0u;
@@ -406,10 +406,10 @@ LABEL_8:
         }
 
         v21 = *(*(&v24 + 1) + 8 * i);
-        v22 = [v21 drawingController];
-        if (v22 && (v23 = v22[48], v22, (v23 & 1) != 0))
+        drawingController = [v21 drawingController];
+        if (drawingController && (v23 = drawingController[48], drawingController, (v23 & 1) != 0))
         {
-          [v21 vsync:a3];
+          [v21 vsync:vsync];
         }
 
         else
@@ -424,17 +424,17 @@ LABEL_8:
     while (v18);
   }
 
-  [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject vsync:a3];
+  [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject vsync:vsync];
   [(PKPaintAreaView *)self checkAnimationsDidEndAtTime:v5];
 }
 
-- (void)_drawingBegan:(id *)a3 locationInView:(CGPoint)a4 inputType:(int64_t)a5
+- (void)_drawingBegan:(id *)began locationInView:(CGPoint)view inputType:(int64_t)type
 {
-  y = a4.y;
-  x = a4.x;
+  y = view.y;
+  x = view.x;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v10 = [(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties];
+    activeInputProperties = [(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties];
     currentPaintSurfaceObject = self->_currentPaintSurfaceObject;
     if (currentPaintSurfaceObject)
     {
@@ -444,38 +444,38 @@ LABEL_8:
       {
         [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject setPreviousPoint:?];
         v14 = self->_currentPaintSurfaceObject;
-        v15 = *&a3->var13;
-        v26[6] = *&a3->var11;
+        v15 = *&began->var13;
+        v26[6] = *&began->var11;
         v26[7] = v15;
-        var15 = a3->var15;
-        v16 = *&a3->var5;
-        v26[2] = *&a3->var3;
+        var15 = began->var15;
+        v16 = *&began->var5;
+        v26[2] = *&began->var3;
         v26[3] = v16;
-        v17 = *&a3->var9;
-        v26[4] = *&a3->var7;
+        v17 = *&began->var9;
+        v26[4] = *&began->var7;
         v26[5] = v17;
-        v18 = *&a3->var1;
-        v26[0] = a3->var0;
+        v18 = *&began->var1;
+        v26[0] = began->var0;
         v26[1] = v18;
-        [(PKPaintAreaViewSurface *)v14 drawingBegan:v26 activeInputProperties:v10 inputType:a5];
-        v19 = [(PKPaintAreaView *)self tool];
-        v20 = [v19 ink];
+        [(PKPaintAreaViewSurface *)v14 drawingBegan:v26 activeInputProperties:activeInputProperties inputType:type];
+        tool = [(PKPaintAreaView *)self tool];
+        v20 = [tool ink];
 
         if (![v20 _isStrokeGeneratingInk] || (objc_msgSend(v20, "_isHandwritingInk") & 1) != 0)
         {
           goto LABEL_19;
         }
 
-        v21 = [(PKPaintAreaView *)self shapeDrawingController];
-        if (v21)
+        shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+        if (shapeDrawingController)
         {
-          if (v21[192] == 1)
+          if (shapeDrawingController[192] == 1)
           {
           }
 
           else
           {
-            v24 = v21[193];
+            v24 = shapeDrawingController[193];
 
             if (v24 != 1)
             {
@@ -485,13 +485,13 @@ LABEL_19:
             }
           }
 
-          v25 = [(PKPaintAreaView *)self shapeDrawingController];
-          [(PKShapeDrawingController *)v25 beginStrokeAtPoint:y];
+          shapeDrawingController2 = [(PKPaintAreaView *)self shapeDrawingController];
+          [(PKShapeDrawingController *)shapeDrawingController2 beginStrokeAtPoint:y];
         }
 
         else
         {
-          v25 = 0;
+          shapeDrawingController2 = 0;
         }
 
         goto LABEL_19;
@@ -511,76 +511,76 @@ LABEL_19:
   }
 }
 
-- (BOOL)beginDrawingAtPoint:(id *)a3 surface:(id)a4 locationInView:(CGPoint)a5 inputType:(int64_t)a6
+- (BOOL)beginDrawingAtPoint:(id *)point surface:(id)surface locationInView:(CGPoint)view inputType:(int64_t)type
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a4;
-  v12 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject surface];
+  y = view.y;
+  x = view.x;
+  surfaceCopy = surface;
+  surface = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject surface];
 
-  if (v12 != v11)
+  if (surface != surfaceCopy)
   {
-    [(PKPaintAreaView *)self switchToNewPaintSurface:v11];
+    [(PKPaintAreaView *)self switchToNewPaintSurface:surfaceCopy];
   }
 
-  v13 = *&a3->var13;
-  v18[6] = *&a3->var11;
+  v13 = *&point->var13;
+  v18[6] = *&point->var11;
   v18[7] = v13;
-  var15 = a3->var15;
-  v14 = *&a3->var5;
-  v18[2] = *&a3->var3;
+  var15 = point->var15;
+  v14 = *&point->var5;
+  v18[2] = *&point->var3;
   v18[3] = v14;
-  v15 = *&a3->var9;
-  v18[4] = *&a3->var7;
+  v15 = *&point->var9;
+  v18[4] = *&point->var7;
   v18[5] = v15;
-  v16 = *&a3->var1;
-  v18[0] = a3->var0;
+  v16 = *&point->var1;
+  v18[0] = point->var0;
   v18[1] = v16;
-  [(PKPaintAreaView *)self _drawingBegan:v18 locationInView:a6 inputType:x, y];
+  [(PKPaintAreaView *)self _drawingBegan:v18 locationInView:type inputType:x, y];
 
   return 1;
 }
 
-- (void)drawingMovedToPoint:(id *)a3 locationInView:(CGPoint)a4
+- (void)drawingMovedToPoint:(id *)point locationInView:(CGPoint)view
 {
-  v6 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isErasingObjects:a4.x];
+  v6 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isErasingObjects:view.x];
   currentPaintSurfaceObject = self->_currentPaintSurfaceObject;
   if (v6)
   {
-    x = a3->var0.var0.x;
-    y = a3->var0.var0.y;
+    x = point->var0.var0.x;
+    y = point->var0.var0.y;
 
     [(PKPaintAreaViewSurface *)currentPaintSurfaceObject eraserMovedToLocation:x, y];
   }
 
   else
   {
-    v10 = [(PKPaintAreaViewSurface *)currentPaintSurfaceObject drawingController];
-    v11 = [(PKController *)v10 inputController];
-    v12 = *&a3->var13;
-    v16[6] = *&a3->var11;
+    drawingController = [(PKPaintAreaViewSurface *)currentPaintSurfaceObject drawingController];
+    inputController = [(PKController *)drawingController inputController];
+    v12 = *&point->var13;
+    v16[6] = *&point->var11;
     v16[7] = v12;
-    var15 = a3->var15;
-    v13 = *&a3->var5;
-    v16[2] = *&a3->var3;
+    var15 = point->var15;
+    v13 = *&point->var5;
+    v16[2] = *&point->var3;
     v16[3] = v13;
-    v14 = *&a3->var9;
-    v16[4] = *&a3->var7;
+    v14 = *&point->var9;
+    v16[4] = *&point->var7;
     v16[5] = v14;
-    v15 = *&a3->var1;
-    v16[0] = a3->var0;
+    v15 = *&point->var1;
+    v16[0] = point->var0;
     v16[1] = v15;
-    [v11 addPoint:v16];
+    [inputController addPoint:v16];
   }
 }
 
 - (void)drawingEnded
 {
-  v3 = [(PKPaintAreaView *)self shapeDrawingController];
-  v4 = v3;
-  if (v3)
+  shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+  v4 = shapeDrawingController;
+  if (shapeDrawingController)
   {
-    v5 = *(v3 + 208);
+    v5 = *(shapeDrawingController + 208);
   }
 
   else
@@ -590,8 +590,8 @@ LABEL_19:
 
   v6 = v5;
 
-  v7 = [(PKPaintAreaView *)self shapeDrawingController];
-  [(PKShapeDrawingController *)v7 resetStroke];
+  shapeDrawingController2 = [(PKPaintAreaView *)self shapeDrawingController];
+  [(PKShapeDrawingController *)shapeDrawingController2 resetStroke];
 
   [(PKPaintAreaView *)self _endAlternativeStrokeIfNecessaryAccepted:v6 != 0];
   currentPaintSurfaceObject = self->_currentPaintSurfaceObject;
@@ -610,10 +610,10 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
   *(v1 + 416) = 0;
 }
 
-- (void)drawingBegan:(id)a3
+- (void)drawingBegan:(id)began
 {
-  v4 = a3;
-  [v4 preciseLocationInView:self];
+  beganCopy = began;
+  [beganCopy preciseLocationInView:self];
   v6 = v5;
   v8 = v7;
   [(PKPaintAreaView *)self applyTransformToTouchLocation:?];
@@ -626,8 +626,8 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  [(PKInputPointUtility *)self drawingInputPoint:v4 view:0 touch:[(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties] predicted:&v14 activeInputProperties:v9, v10];
-  v11 = [v4 type] == 2;
+  [(PKInputPointUtility *)self drawingInputPoint:beganCopy view:0 touch:[(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties] predicted:&v14 activeInputProperties:v9, v10];
+  v11 = [beganCopy type] == 2;
   v12[6] = v20;
   v12[7] = v21;
   v13 = v22;
@@ -640,19 +640,19 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
   [(PKPaintAreaView *)self _drawingBegan:v12 locationInView:v11 inputType:v6, v8];
 }
 
-- (void)drawingMoved:(id)a3 withEvent:(id)a4
+- (void)drawingMoved:(id)moved withEvent:(id)event
 {
   v122 = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v76 = a4;
-  v6 = [(PKPaintAreaView *)self switchSurfacesDuringStrokes];
+  movedCopy = moved;
+  eventCopy = event;
+  switchSurfacesDuringStrokes = [(PKPaintAreaView *)self switchSurfacesDuringStrokes];
   if ([(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isErasingObjects])
   {
-    [v77 preciseLocationInView:self];
+    [movedCopy preciseLocationInView:self];
     v8 = v7;
     v10 = v9;
     [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject previousPoint];
-    if (v6)
+    if (switchSurfacesDuringStrokes)
     {
       v13 = &v119;
     }
@@ -662,7 +662,7 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
       v13 = 0;
     }
 
-    if (v6)
+    if (switchSurfacesDuringStrokes)
     {
       v119 = 0;
     }
@@ -670,7 +670,7 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
     [(PKPaintAreaView *)self applyTransformToTouchLocation:v13 previousPoint:v8 newSurface:v10, v11, v12];
     v15 = v14;
     v17 = v16;
-    if (v6 && (v18 = v119) != 0)
+    if (switchSurfacesDuringStrokes && (v18 = v119) != 0)
     {
       v19 = v18;
       [(PKPaintAreaView *)self switchToNewPaintSurface:v18];
@@ -686,10 +686,10 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
     goto LABEL_73;
   }
 
-  v21 = [v76 coalescedTouchesForTouch:v77];
+  v21 = [eventCopy coalescedTouchesForTouch:movedCopy];
   v22 = [v21 count];
 
-  v23 = [v76 predictedTouchesForTouch:v77];
+  v23 = [eventCopy predictedTouchesForTouch:movedCopy];
   v24 = v23;
   if (v23)
   {
@@ -709,18 +709,18 @@ void __31__PKPaintAreaView_drawingEnded__block_invoke(uint64_t a1)
   v116 = 0;
   v118 = 0;
   std::vector<PKInputPoint>::reserve(&v116, v22);
-  v26 = [(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties];
+  activeInputProperties = [(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties];
   v114 = 0u;
   v115 = 0u;
-  v78 = [v77 type] == 2;
+  v78 = [movedCopy type] == 2;
   v112 = 0u;
   v113 = 0u;
-  obj = [v76 coalescedTouchesForTouch:v77];
+  obj = [eventCopy coalescedTouchesForTouch:movedCopy];
   v27 = [obj countByEnumeratingWithState:&v112 objects:v121 count:16];
   if (v27)
   {
     v28 = &v111;
-    if (!v6)
+    if (!switchSurfacesDuringStrokes)
     {
       v28 = 0;
     }
@@ -742,7 +742,7 @@ LABEL_18:
       v33 = v32;
       v35 = v34;
       [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject previousPoint];
-      if (v6)
+      if (switchSurfacesDuringStrokes)
       {
         v111 = 0;
       }
@@ -750,7 +750,7 @@ LABEL_18:
       [(PKPaintAreaView *)self applyTransformToTouchLocation:v79 previousPoint:v33 newSurface:v35, v36, v37];
       v39 = v38;
       v41 = v40;
-      if (v6)
+      if (switchSurfacesDuringStrokes)
       {
         v42 = v111;
         if (v42)
@@ -758,13 +758,13 @@ LABEL_18:
           v43 = v42;
           if (v117 != v116)
           {
-            v44 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
-            v45 = [(PKController *)v44 inputController];
+            drawingController = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
+            inputController = [(PKController *)drawingController inputController];
             __p = 0;
             v109 = 0;
             v110 = 0;
             std::vector<PKInputPoint>::__init_with_size[abi:ne200100]<PKInputPoint*,PKInputPoint*>(&__p, v116, v117, 0xF0F0F0F0F0F0F0F1 * ((v117 - v116) >> 3));
-            [v45 addPoints:&__p];
+            [inputController addPoints:&__p];
             if (__p)
             {
               v109 = __p;
@@ -786,7 +786,7 @@ LABEL_18:
             v102 = 0u;
             v99 = 0u;
             v100 = 0u;
-            [(PKInputPointUtility *)self drawingInputPoint:v31 view:0 touch:v26 predicted:&v99 activeInputProperties:v39, v41];
+            [(PKInputPointUtility *)self drawingInputPoint:v31 view:0 touch:activeInputProperties predicted:&v99 activeInputProperties:v39, v41];
             v95 = v104;
             v96 = v105;
             v97 = v106;
@@ -797,7 +797,7 @@ LABEL_18:
             v91 = v100;
             v92 = v101;
             v90 = v99;
-            [(PKPaintAreaViewSurface *)currentPaintSurfaceObject drawingBegan:&v90 activeInputProperties:v26 inputType:v78];
+            [(PKPaintAreaViewSurface *)currentPaintSurfaceObject drawingBegan:&v90 activeInputProperties:activeInputProperties inputType:v78];
           }
 
           goto LABEL_45;
@@ -827,7 +827,7 @@ LABEL_18:
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        [(PKInputPointUtility *)self drawingInputPoint:v31 view:0 touch:v26 predicted:&v99 activeInputProperties:v39, v41];
+        [(PKInputPointUtility *)self drawingInputPoint:v31 view:0 touch:activeInputProperties predicted:&v99 activeInputProperties:v39, v41];
         v95 = v104;
         v96 = v105;
         v97 = v106;
@@ -838,7 +838,7 @@ LABEL_18:
         v91 = v100;
         v92 = v101;
         v90 = v99;
-        [(PKPaintAreaViewSurface *)v58 drawingBegan:&v90 activeInputProperties:v26 inputType:v78];
+        [(PKPaintAreaViewSurface *)v58 drawingBegan:&v90 activeInputProperties:activeInputProperties inputType:v78];
         goto LABEL_44;
       }
 
@@ -855,22 +855,22 @@ LABEL_18:
       [(PKInputPointUtility *)self drawingInputPoint:v31 view:0 touch:[(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties] predicted:&v99 activeInputProperties:v39, v41];
       std::vector<PKInputPoint>::push_back[abi:ne200100](&v116, &v99);
       [v81 addObject:v31];
-      v50 = [(PKPaintAreaView *)self shapeDrawingController];
-      if (!v50)
+      shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+      if (!shapeDrawingController)
       {
         break;
       }
 
-      v51 = v50[2] == v50[1];
+      v51 = shapeDrawingController[2] == shapeDrawingController[1];
 
       if (!v51)
       {
-        v52 = [(PKPaintAreaView *)self window];
-        [v77 locationInView:v52];
+        window = [(PKPaintAreaView *)self window];
+        [movedCopy locationInView:window];
         v54 = v53;
         v56 = v55;
 
-        v57 = [(PKPaintAreaView *)self shapeDrawingController];
+        shapeDrawingController2 = [(PKPaintAreaView *)self shapeDrawingController];
         v95 = v104;
         v96 = v105;
         v97 = v106;
@@ -880,7 +880,7 @@ LABEL_18:
         v91 = v100;
         v92 = v101;
         v90 = v99;
-        [(PKShapeDrawingController *)v57 addStrokePoint:v54 inputPoint:v56];
+        [(PKShapeDrawingController *)shapeDrawingController2 addStrokePoint:v54 inputPoint:v56];
 LABEL_42:
       }
 
@@ -900,7 +900,7 @@ LABEL_45:
       }
     }
 
-    v57 = 0;
+    shapeDrawingController2 = 0;
     goto LABEL_42;
   }
 
@@ -958,13 +958,13 @@ LABEL_66:
   v72 = v116;
   if (v117 != v116)
   {
-    v73 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
-    v74 = [(PKController *)v73 inputController];
+    drawingController2 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
+    inputController2 = [(PKController *)drawingController2 inputController];
     v83 = 0;
     v84 = 0;
     v85 = 0;
     std::vector<PKInputPoint>::__init_with_size[abi:ne200100]<PKInputPoint*,PKInputPoint*>(&v83, v116, v117, 0xF0F0F0F0F0F0F0F1 * ((v117 - v116) >> 3));
-    [v74 addPoints:&v83];
+    [inputController2 addPoints:&v83];
     if (v83)
     {
       v84 = v83;
@@ -986,8 +986,8 @@ LABEL_73:
 
 - (void)drawingCancelled
 {
-  v4 = [(PKPaintAreaView *)self shapeDrawingController];
-  [(PKShapeDrawingController *)v4 resetStroke];
+  shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+  [(PKShapeDrawingController *)shapeDrawingController resetStroke];
 
   [(PKPaintAreaView *)self _endAlternativeStrokeIfNecessaryAccepted:0];
   currentPaintSurfaceObject = self->_currentPaintSurfaceObject;
@@ -997,17 +997,17 @@ LABEL_73:
   [(PKPaintAreaViewSurface *)v5 drawingCancelled];
 }
 
-- (void)drawingEstimatedPropertiesUpdated:(id)a3
+- (void)drawingEstimatedPropertiesUpdated:(id)updated
 {
   v33 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  updatedCopy = updated;
   if ([(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject isDrawing]|| ([(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4[48], v4, (v5 & 1) != 0))
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = v16;
+    v6 = updatedCopy;
     v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v7)
     {
@@ -1036,8 +1036,8 @@ LABEL_73:
             v19 = 0u;
             v20 = 0u;
             [(PKInputPointUtility *)self drawingInputPoint:v10 view:0 touch:[(PKDrawingGestureRecognizer *)self->_drawingGestureRecognizer activeInputProperties] predicted:&v19 activeInputProperties:v11, v12];
-            v14 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
-            v15 = [(PKController *)v14 inputController];
+            drawingController = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
+            inputController = [(PKController *)drawingController inputController];
             v17[6] = v25;
             v17[7] = v26;
             v18 = v27;
@@ -1047,7 +1047,7 @@ LABEL_73:
             v17[5] = v24;
             v17[0] = v19;
             v17[1] = v20;
-            [v15 drawingUpdatePoint:v17];
+            [inputController drawingUpdatePoint:v17];
           }
         }
 
@@ -1059,13 +1059,13 @@ LABEL_73:
   }
 }
 
-- (id)shapeDrawingControllerRendererController:(id)a3
+- (id)shapeDrawingControllerRendererController:(id)controller
 {
-  v3 = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
-  v4 = v3;
-  if (v3)
+  drawingController = [(PKPaintAreaViewSurface *)self->_currentPaintSurfaceObject drawingController];
+  v4 = drawingController;
+  if (drawingController)
   {
-    v5 = *(v3 + 64);
+    v5 = *(drawingController + 64);
   }
 
   else
@@ -1078,14 +1078,14 @@ LABEL_73:
   return v5;
 }
 
-- (void)shapeDrawingControllerShapeGestureDetected:(id)a3 isFastGesture:(BOOL)a4
+- (void)shapeDrawingControllerShapeGestureDetected:(id)detected isFastGesture:(BOOL)gesture
 {
-  v5 = [(PKPaintAreaView *)self shapeDrawingController:a3];
-  v6 = [(PKPaintAreaView *)self shapeDrawingController];
-  v7 = v6;
-  if (v6)
+  v5 = [(PKPaintAreaView *)self shapeDrawingController:detected];
+  shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+  v7 = shapeDrawingController;
+  if (shapeDrawingController)
   {
-    [(PKAveragePointGenerator *)*(v6 + 120) currentInputPoint];
+    [(PKAveragePointGenerator *)*(shapeDrawingController + 120) currentInputPoint];
   }
 
   else
@@ -1111,12 +1111,12 @@ LABEL_73:
     }
 
     v11 = [PKAlternativeStrokesAnimation alloc];
-    v12 = [v8 strokes];
-    v13 = [(PKAlternativeStrokesAnimation *)&v11->super.isa initWithStrokes:v12 shape:v8 startTime:v9 fadeDuration:0.15];
+    strokes = [v8 strokes];
+    v13 = [(PKAlternativeStrokesAnimation *)&v11->super.isa initWithStrokes:strokes shape:v8 startTime:v9 fadeDuration:0.15];
     [(PKPaintAreaView *)self setAlternativeStrokesAnimation:v13];
 
-    v14 = [(PKPaintAreaView *)self shapeDrawingController];
-    [(PKShapeDrawingController *)v14 setDetectedShape:v8];
+    shapeDrawingController2 = [(PKPaintAreaView *)self shapeDrawingController];
+    [(PKShapeDrawingController *)shapeDrawingController2 setDetectedShape:v8];
   }
 }
 
@@ -1129,10 +1129,10 @@ id __76__PKPaintAreaView_shapeDrawingControllerShapeGestureDetected_isFastGestur
   return v3;
 }
 
-- (void)shapeDrawingControllerShapeDetectionCancelled:(id)a3
+- (void)shapeDrawingControllerShapeDetectionCancelled:(id)cancelled
 {
-  v4 = [(PKPaintAreaView *)self shapeDrawingController];
-  [(PKShapeDrawingController *)v4 setDetectedShape:?];
+  shapeDrawingController = [(PKPaintAreaView *)self shapeDrawingController];
+  [(PKShapeDrawingController *)shapeDrawingController setDetectedShape:?];
 
   [(PKPaintAreaView *)self _endAlternativeStrokeIfNecessaryAccepted:0];
 }

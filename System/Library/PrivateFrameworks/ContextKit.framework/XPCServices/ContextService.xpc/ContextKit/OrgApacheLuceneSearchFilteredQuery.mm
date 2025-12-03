@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchFilteredQuery
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (id)toStringWithNSString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchFilteredQuery
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   v4 = new_OrgApacheLuceneSearchBooleanQuery_Builder_init();
   v5 = *(&self->super.boost_ + 1);
@@ -32,20 +32,20 @@
   }
 
   [(OrgApacheLuceneSearchBooleanQuery_Builder *)v4 addWithOrgApacheLuceneSearchQuery:v7 withOrgApacheLuceneSearchBooleanClause_OccurEnum:qword_100557BA0];
-  v8 = [(OrgApacheLuceneSearchBooleanQuery_Builder *)v4 build];
-  if (!v8)
+  build = [(OrgApacheLuceneSearchBooleanQuery_Builder *)v4 build];
+  if (!build)
   {
 LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
+  v9 = build;
   [(OrgApacheLuceneSearchQuery *)self getBoost];
   [v9 setBoostWithFloat:?];
   return v9;
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v5 = new_JavaLangStringBuilder_init();
   -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", @"filtered(");
@@ -55,7 +55,7 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [v6 toStringWithNSString:a3]);
+  -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [v6 toStringWithNSString:string]);
   [(JavaLangStringBuilder *)v5 appendWithNSString:@"->"]);
   [(JavaLangStringBuilder *)v5 appendWithId:*(&self->query_ + 4)];
   [(OrgApacheLuceneSearchQuery *)self getBoost];
@@ -64,9 +64,9 @@ LABEL_8:
   return [(JavaLangStringBuilder *)v5 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -78,7 +78,7 @@ LABEL_8:
   if (v5)
   {
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_13;
     }
@@ -88,7 +88,7 @@ LABEL_8:
       JreThrowClassCastException();
     }
 
-    v6 = *(a3 + 12);
+    v6 = *(equal + 12);
     if (!v6)
     {
       goto LABEL_13;
@@ -100,7 +100,7 @@ LABEL_8:
       return v5;
     }
 
-    v7 = *(a3 + 20);
+    v7 = *(equal + 20);
     if (!v7)
     {
       goto LABEL_13;
@@ -112,7 +112,7 @@ LABEL_8:
       return v5;
     }
 
-    v8 = *(a3 + 28);
+    v8 = *(equal + 28);
     if (!v8)
     {
 LABEL_13:
@@ -149,7 +149,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneSearchFilteredQuery_RANDOM_ACCESS_FILTER_STRATEGY_, [OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterStrategy alloc]);
     JreStrongAssignAndConsume(&OrgApacheLuceneSearchFilteredQuery_LEAP_FROG_FILTER_FIRST_STRATEGY_, [OrgApacheLuceneSearchFilteredQuery__1 alloc]);

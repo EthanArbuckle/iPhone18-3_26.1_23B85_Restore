@@ -1,17 +1,17 @@
 @interface MFMailboxPushStateService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFMailboxPushStateService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  original = a3;
+  original = message;
   v10 = xpc_dictionary_get_value(original, [_MSMailServiceArguments UTF8String]);
   if (!v10)
   {
     v27 = +[NSAssertionHandler currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"MFAccountsService.m" lineNumber:262 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
+    [v27 handleFailureInMethod:a2 object:self file:@"MFAccountsService.m" lineNumber:262 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
   }
 
   v28 = xpc_dictionary_get_value(v10, [MSAccountsArgumentAccountUniqueIdentifiers UTF8String]);
@@ -21,7 +21,7 @@
   v14 = _CFXPCCreateCFObjectFromXPCObject();
 
   v15 = xpc_dictionary_get_value(v10, [MSAccountsArgumentMailboxPushState UTF8String]);
-  v16 = a5;
+  objectCopy = object;
   v17 = _CFXPCCreateCFObjectFromXPCObject();
 
   v18 = [MailAccount accountWithUniqueId:v12];
@@ -60,7 +60,7 @@ LABEL_8:
     reply = xpc_dictionary_create_reply(original);
     xpc_dictionary_set_BOOL(reply, [MSAccountsResultSuccess UTF8String], 1);
     v24 = reply;
-    *v16 = reply;
+    *objectCopy = reply;
 
     goto LABEL_15;
   }
@@ -72,10 +72,10 @@ LABEL_8:
   }
 
 LABEL_13:
-  if (a6)
+  if (error)
   {
     v25 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
 LABEL_15:

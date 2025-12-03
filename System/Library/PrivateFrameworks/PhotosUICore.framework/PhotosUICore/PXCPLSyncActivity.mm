@@ -3,24 +3,24 @@
 - (PXCPLSyncActivity)init;
 - (id)_init;
 - (void)_queue_subscribeToSyncProgress;
-- (void)_setSyncProgress:(id)a3;
-- (void)_setSyncProgressState:(unint64_t)a3;
+- (void)_setSyncProgress:(id)progress;
+- (void)_setSyncProgressState:(unint64_t)state;
 - (void)_unsubscribeFromSyncProgress;
 - (void)_updateIsSyncing;
 - (void)_updateSyncProgressState;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setIsSyncing:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setIsSyncing:(BOOL)syncing;
 @end
 
 @implementation PXCPLSyncActivity
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_CPLSyncProgressStateObservationContext == a6)
+  if (_CPLSyncProgressStateObservationContext == context)
   {
 
-    [(PXCPLSyncActivity *)self _updateSyncProgressState:a3];
+    [(PXCPLSyncActivity *)self _updateSyncProgressState:path];
   }
 
   else
@@ -29,15 +29,15 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = PXCPLSyncActivity;
-    [(PXCPLSyncActivity *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PXCPLSyncActivity *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_updateSyncProgressState
 {
-  v3 = [(NSProgress *)self->_syncProgress userInfo];
+  userInfo = [(NSProgress *)self->_syncProgress userInfo];
   v4 = getCPLSyncProgressStateKey();
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [userInfo objectForKeyedSubscript:v4];
 
   -[PXCPLSyncActivity _setSyncProgressState:](self, "_setSyncProgressState:", [v5 unsignedIntegerValue]);
 }
@@ -64,7 +64,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Unsubscribe from sync progress", &v9, 0xCu);
   }
 
@@ -78,7 +78,7 @@
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v9 = 138543618;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2048;
       v12 = v7 - v5;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Unsubscribed in: %f s", &v9, 0x16u);
@@ -95,8 +95,8 @@
   dispatch_assert_queue_V2(self->_serialQueue);
   if (self->_syncProgressSubscriber)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXCPLSyncActivity.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"!_syncProgressSubscriber"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLSyncActivity.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"!_syncProgressSubscriber"}];
   }
 
   v4 = PLUserStatusGetLog();
@@ -138,9 +138,9 @@
   _Block_object_dispose(&v23, 8);
   if (!v8)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCPLLibraryIdentifierSystemLibrary(void)"];
-    [v18 handleFailureInFunction:v19 file:@"PXCPLSyncActivity.m" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v19 file:@"PXCPLSyncActivity.m" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -212,12 +212,12 @@ void __51__PXCPLSyncActivity__queue_subscribeToSyncProgress__block_invoke_25(uin
   [v4 _setSyncProgress:0];
 }
 
-- (void)_setSyncProgressState:(unint64_t)a3
+- (void)_setSyncProgressState:(unint64_t)state
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_syncProgressState != a3)
+  if (self->_syncProgressState != state)
   {
-    self->_syncProgressState = a3;
+    self->_syncProgressState = state;
     v4 = PLUserStatusGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -233,7 +233,7 @@ void __51__PXCPLSyncActivity__queue_subscribeToSyncProgress__block_invoke_25(uin
       }
 
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = v6;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ Sync progress state changed:%@", &v7, 0x16u);
@@ -243,9 +243,9 @@ void __51__PXCPLSyncActivity__queue_subscribeToSyncProgress__block_invoke_25(uin
   }
 }
 
-- (void)_setSyncProgress:(id)a3
+- (void)_setSyncProgress:(id)progress
 {
-  v11 = a3;
+  progressCopy = progress;
   v5 = MEMORY[0x1E696AEC0];
   v6 = NSStringFromSelector(sel_userInfo);
   v7 = getCPLSyncProgressStateKey();
@@ -257,7 +257,7 @@ void __51__PXCPLSyncActivity__queue_subscribeToSyncProgress__block_invoke_25(uin
     [(NSProgress *)syncProgress removeObserver:self forKeyPath:v8 context:_CPLSyncProgressStateObservationContext];
   }
 
-  objc_storeStrong(&self->_syncProgress, a3);
+  objc_storeStrong(&self->_syncProgress, progress);
   v10 = self->_syncProgress;
   if (v10)
   {
@@ -270,18 +270,18 @@ void __51__PXCPLSyncActivity__queue_subscribeToSyncProgress__block_invoke_25(uin
   }
 }
 
-- (void)setIsSyncing:(BOOL)a3
+- (void)setIsSyncing:(BOOL)syncing
 {
-  v3 = a3;
+  syncingCopy = syncing;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_isSyncing != v3)
+  if (self->_isSyncing != syncingCopy)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __34__PXCPLSyncActivity_setIsSyncing___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = v3;
+    v6 = syncingCopy;
     [(PXCPLSyncActivity *)self performChanges:v5];
   }
 }
@@ -347,8 +347,8 @@ void __26__PXCPLSyncActivity__init__block_invoke(uint64_t a1)
 
 - (PXCPLSyncActivity)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLSyncActivity.m" lineNumber:74 description:{@"%s is not available as initializer", "-[PXCPLSyncActivity init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLSyncActivity.m" lineNumber:74 description:{@"%s is not available as initializer", "-[PXCPLSyncActivity init]"}];
 
   abort();
 }

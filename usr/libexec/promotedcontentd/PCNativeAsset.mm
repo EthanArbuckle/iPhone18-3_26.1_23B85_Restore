@@ -1,31 +1,31 @@
 @interface PCNativeAsset
-- (id)initWithAsset:(id)a3;
+- (id)initWithAsset:(id)asset;
 @end
 
 @implementation PCNativeAsset
 
-- (id)initWithAsset:(id)a3
+- (id)initWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [(PCNativeAsset *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (assetCopy && v5)
   {
-    v7 = [v4 name];
-    [(PCNativeAsset *)v6 setName:v7];
+    name = [assetCopy name];
+    [(PCNativeAsset *)v6 setName:name];
 
-    -[PCNativeAsset setLocation:](v6, "setLocation:", [v4 location]);
-    -[PCNativeAsset setAdamID:](v6, "setAdamID:", [v4 adamId]);
-    v8 = [v4 treatment];
-    [(PCNativeAsset *)v6 setTreatment:v8];
+    -[PCNativeAsset setLocation:](v6, "setLocation:", [assetCopy location]);
+    -[PCNativeAsset setAdamID:](v6, "setAdamID:", [assetCopy adamId]);
+    treatment = [assetCopy treatment];
+    [(PCNativeAsset *)v6 setTreatment:treatment];
 
     v9 = +[NSMutableArray array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v4 assetInfos];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    assetInfos = [assetCopy assetInfos];
+    v11 = [assetInfos countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -37,7 +37,7 @@
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(assetInfos);
           }
 
           v15 = [[PCNativeAssetInfo alloc] initWithAssetInfo:*(*(&v18 + 1) + 8 * v14)];
@@ -47,7 +47,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [assetInfos countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);

@@ -1,9 +1,9 @@
 @interface MonthWorkoutIndicator
-+ (id)filledWorkoutCircleWithSize:(CGSize)a3;
++ (id)filledWorkoutCircleWithSize:(CGSize)size;
 + (id)fitnessColors;
 - (MonthWorkoutIndicator)init;
 - (void)layoutSublayers;
-- (void)setHasWorkout:(BOOL)a3;
+- (void)setHasWorkout:(BOOL)workout;
 @end
 
 @implementation MonthWorkoutIndicator
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (void)setHasWorkout:(BOOL)a3
+- (void)setHasWorkout:(BOOL)workout
 {
-  self->_hasWorkout = a3;
+  self->_hasWorkout = workout;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [(CALayer *)self->_backgroundLayer setHidden:!self->_hasWorkout];
@@ -49,14 +49,14 @@
   -[CALayer setContents:](self->_backgroundLayer, "setContents:", [v6 CGImage]);
 }
 
-+ (id)filledWorkoutCircleWithSize:(CGSize)a3
++ (id)filledWorkoutCircleWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (*&xmmword_1008F9968 != a3.width || *(&xmmword_1008F9968 + 1) != a3.height)
+  height = size.height;
+  width = size.width;
+  if (*&xmmword_1008F9968 != size.width || *(&xmmword_1008F9968 + 1) != size.height)
   {
-    xmmword_1008F9968 = a3;
-    UIGraphicsBeginImageContextWithOptions(a3, 0, 0.0);
+    xmmword_1008F9968 = size;
+    UIGraphicsBeginImageContextWithOptions(size, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     v20.origin.x = 0.0;
     v20.origin.y = 0.0;
@@ -70,10 +70,10 @@
     MidY = CGRectGetMidY(v21);
     CGContextAddArc(CurrentContext, MidX, MidY, (width + -1.0) * 0.5, 0.0, 6.28318531, 1);
     CGContextClip(CurrentContext);
-    v9 = [objc_opt_class() fitnessColors];
-    v10 = [v9 gradientLightColor];
-    v11 = [v9 gradientDarkColor];
-    v12 = [ARUIMetricColors newGradientForStartColor:v10 endColor:v11];
+    fitnessColors = [objc_opt_class() fitnessColors];
+    gradientLightColor = [fitnessColors gradientLightColor];
+    gradientDarkColor = [fitnessColors gradientDarkColor];
+    v12 = [ARUIMetricColors newGradientForStartColor:gradientLightColor endColor:gradientDarkColor];
 
     v18.y = 0.0;
     v18.x = width * 0.5;

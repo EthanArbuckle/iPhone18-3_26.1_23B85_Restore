@@ -1,20 +1,20 @@
 @interface Intents
 - (_TtC9appstored7Intents)init;
-- (id)intentUsageWithDateInterval:(id)a3 logKey:(id)a4;
+- (id)intentUsageWithDateInterval:(id)interval logKey:(id)key;
 @end
 
 @implementation Intents
 
-- (id)intentUsageWithDateInterval:(id)a3 logKey:(id)a4
+- (id)intentUsageWithDateInterval:(id)interval logKey:(id)key
 {
   v6 = type metadata accessor for DateInterval();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a4;
-  v11 = self;
-  sub_10018A99C(v9, v10);
+  keyCopy = key;
+  selfCopy = self;
+  sub_10018A99C(v9, keyCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);

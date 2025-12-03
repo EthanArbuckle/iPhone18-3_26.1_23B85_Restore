@@ -4,17 +4,17 @@
 - (id).cxx_construct;
 - (unint64_t)groupedManeuverCount;
 - (void)_notifyObserversStateChanged;
-- (void)addPointToFrame:(id)a3 ofType:(unint64_t)a4;
-- (void)addRouteToFrame:(id)a3 divergenceCoord:(PolylineCoordinate)a4 convergenceCoord:(PolylineCoordinate)a5;
-- (void)clearPointsToFrameOfType:(unint64_t)a3;
-- (void)enumerateAdditionalRoutesToFrameUsingBlock:(id)a3;
-- (void)enumeratePointsToFrameOfType:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumeratePointsToFrameUsingBlock:(id)a3;
-- (void)setCurrentStepIndex:(unint64_t)a3;
-- (void)setDebugFlags:(unint64_t)a3;
-- (void)setNavigationCameraHeadingOverride:(unint64_t)a3;
-- (void)setRouteMatch:(id)a3;
-- (void)updateWithNewRoute:(id)a3 currentStepIndex:(unint64_t)a4;
+- (void)addPointToFrame:(id)frame ofType:(unint64_t)type;
+- (void)addRouteToFrame:(id)frame divergenceCoord:(PolylineCoordinate)coord convergenceCoord:(PolylineCoordinate)convergenceCoord;
+- (void)clearPointsToFrameOfType:(unint64_t)type;
+- (void)enumerateAdditionalRoutesToFrameUsingBlock:(id)block;
+- (void)enumeratePointsToFrameOfType:(unint64_t)type usingBlock:(id)block;
+- (void)enumeratePointsToFrameUsingBlock:(id)block;
+- (void)setCurrentStepIndex:(unint64_t)index;
+- (void)setDebugFlags:(unint64_t)flags;
+- (void)setNavigationCameraHeadingOverride:(unint64_t)override;
+- (void)setRouteMatch:(id)match;
+- (void)updateWithNewRoute:(id)route currentStepIndex:(unint64_t)index;
 @end
 
 @implementation VKNavContext
@@ -62,7 +62,7 @@
     operator delete(v44.__r_.__value_.__l.__data_);
   }
 
-  v4 = [v2 route];
+  route = [v2 route];
   std::string::basic_string[abi:nn200100]<0>(&__p, "Route");
   ChildNode = gdc::DebugTreeNode::createChildNode(retstr, &__p);
   gdc::DebugTreeNode::DebugTreeNode(&v44, ChildNode);
@@ -72,7 +72,7 @@
   }
 
   std::string::basic_string[abi:nn200100]<0>(&__p, "Route");
-  gdc::DebugTreeValue::DebugTreeValue(v41, v4 != 0);
+  gdc::DebugTreeValue::DebugTreeValue(v41, route != 0);
   gdc::DebugTreeNode::addProperty(&v44, &__p, v41);
   if (v43 < 0)
   {
@@ -82,19 +82,19 @@
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(__p.__r_.__value_.__l.__data_);
-    if (!v4)
+    if (!route)
     {
       goto LABEL_23;
     }
   }
 
-  else if (!v4)
+  else if (!route)
   {
     goto LABEL_23;
   }
 
   std::string::basic_string[abi:nn200100]<0>(&__p, "Steps");
-  gdc::DebugTreeValue::DebugTreeValue(v38, [v4 stepsCount]);
+  gdc::DebugTreeValue::DebugTreeValue(v38, [route stepsCount]);
   gdc::DebugTreeNode::addProperty(&v44, &__p, v38);
   if (v40 < 0)
   {
@@ -141,9 +141,9 @@ LABEL_23:
     operator delete(v15);
   }
 
-  v7 = [v2 routeMatch];
+  routeMatch = [v2 routeMatch];
   std::string::basic_string[abi:nn200100]<0>(&v15, "RouteMatch");
-  gdc::DebugTreeValue::DebugTreeValue(v24, v7 != 0);
+  gdc::DebugTreeValue::DebugTreeValue(v24, routeMatch != 0);
   gdc::DebugTreeNode::addProperty(&__p, &v15, v24);
   if (v26 < 0)
   {
@@ -153,19 +153,19 @@ LABEL_23:
   if (SHIBYTE(v16) < 0)
   {
     operator delete(v15);
-    if (!v7)
+    if (!routeMatch)
     {
       goto LABEL_39;
     }
   }
 
-  else if (!v7)
+  else if (!routeMatch)
   {
     goto LABEL_39;
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v15, "isGoodMatch");
-  gdc::DebugTreeValue::DebugTreeValue(v21, [v7 isGoodMatch]);
+  gdc::DebugTreeValue::DebugTreeValue(v21, [routeMatch isGoodMatch]);
   gdc::DebugTreeNode::addProperty(&__p, &v15, v21);
   if (v23 < 0)
   {
@@ -178,7 +178,7 @@ LABEL_23:
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v15, "Step");
-  gdc::DebugTreeValue::DebugTreeValue(v18, [v7 stepIndex]);
+  gdc::DebugTreeValue::DebugTreeValue(v18, [routeMatch stepIndex]);
   gdc::DebugTreeNode::addProperty(&__p, &v15, v18);
   if (v20 < 0)
   {
@@ -258,12 +258,12 @@ LABEL_39:
   return self;
 }
 
-- (void)setDebugFlags:(unint64_t)a3
+- (void)setDebugFlags:(unint64_t)flags
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_debugFlags != a3)
+  if (self->_debugFlags != flags)
   {
-    self->_debugFlags = a3;
+    self->_debugFlags = flags;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
@@ -295,30 +295,30 @@ LABEL_39:
   }
 }
 
-- (void)enumerateAdditionalRoutesToFrameUsingBlock:(id)a3
+- (void)enumerateAdditionalRoutesToFrameUsingBlock:(id)block
 {
-  v7 = a3;
-  if (v7)
+  blockCopy = block;
+  if (blockCopy)
   {
     begin = self->_additionalRoutesToFrame.__begin_;
     for (i = self->_additionalRoutesToFrame.__end_; begin != i; begin = (begin + 40))
     {
       v6 = *(begin + 1);
-      (*(v7 + 2))(v7, v6, *(begin + 3), *(begin + 4));
+      (*(blockCopy + 2))(blockCopy, v6, *(begin + 3), *(begin + 4));
     }
   }
 }
 
-- (void)addRouteToFrame:(id)a3 divergenceCoord:(PolylineCoordinate)a4 convergenceCoord:(PolylineCoordinate)a5
+- (void)addRouteToFrame:(id)frame divergenceCoord:(PolylineCoordinate)coord convergenceCoord:(PolylineCoordinate)convergenceCoord
 {
   v31 = *MEMORY[0x1E69E9840];
   v28 = &unk_1F2A4C308;
   v29 = 0;
   *&v30 = 0xBF80000000000000;
   *(&v30 + 1) = 0xBF80000000000000;
-  geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v28, a3);
-  *&v30 = a4;
-  *(&v30 + 1) = a5;
+  geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v28, frame);
+  *&v30 = coord;
+  *(&v30 + 1) = convergenceCoord;
   end = self->_additionalRoutesToFrame.__end_;
   cap = self->_additionalRoutesToFrame.__cap_;
   if (end >= cap)
@@ -418,12 +418,12 @@ LABEL_39:
   v28 = &unk_1F2A4C308;
 }
 
-- (void)setNavigationCameraHeadingOverride:(unint64_t)a3
+- (void)setNavigationCameraHeadingOverride:(unint64_t)override
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_navigationCameraHeadingOverride != a3)
+  if (self->_navigationCameraHeadingOverride != override)
   {
-    self->_navigationCameraHeadingOverride = a3;
+    self->_navigationCameraHeadingOverride = override;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
@@ -455,36 +455,36 @@ LABEL_39:
   }
 }
 
-- (void)enumeratePointsToFrameUsingBlock:(id)a3
+- (void)enumeratePointsToFrameUsingBlock:(id)block
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     begin = self->_pointsToFrame.__begin_;
     for (i = self->_pointsToFrame.__end_; begin != i; begin = (begin + 32))
     {
-      v6[2](v6, *(begin + 3), *begin, *(begin + 1), *(begin + 2));
+      blockCopy[2](blockCopy, *(begin + 3), *begin, *(begin + 1), *(begin + 2));
     }
   }
 }
 
-- (void)enumeratePointsToFrameOfType:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumeratePointsToFrameOfType:(unint64_t)type usingBlock:(id)block
 {
-  v8 = a4;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
     begin = self->_pointsToFrame.__begin_;
     for (i = self->_pointsToFrame.__end_; begin != i; begin = (begin + 32))
     {
-      if (*(begin + 3) == a3)
+      if (*(begin + 3) == type)
       {
-        v8[2](*begin, *(begin + 1), *(begin + 2));
+        blockCopy[2](*begin, *(begin + 1), *(begin + 2));
       }
     }
   }
 }
 
-- (void)addPointToFrame:(id)a3 ofType:(unint64_t)a4
+- (void)addPointToFrame:(id)frame ofType:(unint64_t)type
 {
   end = self->_pointsToFrame.__end_;
   cap = self->_pointsToFrame.__cap_;
@@ -527,8 +527,8 @@ LABEL_39:
 
     v15 = v11;
     v16 = 32 * v11;
-    *v16 = a3;
-    *(v16 + 24) = a4;
+    *v16 = frame;
+    *(v16 + 24) = type;
     v8 = (32 * v11 + 32);
     v17 = (v16 - 32 * v15);
     memcpy(v17, begin, v10);
@@ -543,21 +543,21 @@ LABEL_39:
 
   else
   {
-    *end = a3;
+    *end = frame;
     v8 = (end + 32);
-    *(end + 3) = a4;
+    *(end + 3) = type;
   }
 
   self->_pointsToFrame.__end_ = v8;
 }
 
-- (void)clearPointsToFrameOfType:(unint64_t)a3
+- (void)clearPointsToFrameOfType:(unint64_t)type
 {
   begin = self->_pointsToFrame.__begin_;
   end = self->_pointsToFrame.__end_;
   if (begin != end)
   {
-    while (*(begin + 3) != a3)
+    while (*(begin + 3) != type)
     {
       begin = (begin + 32);
       if (begin == end)
@@ -573,7 +573,7 @@ LABEL_39:
       {
         do
         {
-          if (*(v5 + 3) != a3)
+          if (*(v5 + 3) != type)
           {
             v6 = *(v5 + 1);
             *begin = *v5;
@@ -611,41 +611,41 @@ LABEL_39:
   }
 
   v5 = [(NSArray *)self->_groupedManeuverCounts objectAtIndexedSubscript:self->_currentStepIndex];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setCurrentStepIndex:(unint64_t)a3
+- (void)setCurrentStepIndex:(unint64_t)index
 {
-  if (self->_currentStepIndex != a3)
+  if (self->_currentStepIndex != index)
   {
-    self->_currentStepIndex = a3;
+    self->_currentStepIndex = index;
     [(VKNavContext *)self _notifyObserversStateChanged];
   }
 }
 
-- (void)setRouteMatch:(id)a3
+- (void)setRouteMatch:(id)match
 {
-  v5 = a3;
-  if (self->_routeMatch != v5)
+  matchCopy = match;
+  if (self->_routeMatch != matchCopy)
   {
-    objc_storeStrong(&self->_routeMatch, a3);
+    objc_storeStrong(&self->_routeMatch, match);
     [(VKNavContext *)self _notifyObserversStateChanged];
   }
 }
 
-- (void)updateWithNewRoute:(id)a3 currentStepIndex:(unint64_t)a4
+- (void)updateWithNewRoute:(id)route currentStepIndex:(unint64_t)index
 {
-  v9 = a3;
-  if (self->_route != v9)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
     [(VKNavContext *)self clearAdditionalRoutesToFrame];
     routeMatch = self->_routeMatch;
     self->_routeMatch = 0;
 
-    objc_storeStrong(&self->_route, a3);
-    self->_currentStepIndex = a4;
+    objc_storeStrong(&self->_route, route);
+    self->_currentStepIndex = index;
     groupedManeuverCounts = self->_groupedManeuverCounts;
     self->_groupedManeuverCounts = 0;
 

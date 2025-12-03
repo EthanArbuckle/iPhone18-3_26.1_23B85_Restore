@@ -1,27 +1,27 @@
 @interface PKAccountReport
-- (BOOL)isEqual:(id)a3;
-- (PKAccountReport)initWithAccountIdentifier:(id)a3 reportType:(unint64_t)a4;
-- (PKAccountReport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountReport)initWithAccountIdentifier:(id)identifier reportType:(unint64_t)type;
+- (PKAccountReport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountReport
 
-- (PKAccountReport)initWithAccountIdentifier:(id)a3 reportType:(unint64_t)a4
+- (PKAccountReport)initWithAccountIdentifier:(id)identifier reportType:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PKAccountReport;
   v8 = [(PKAccountReport *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accountIdentifier, a3);
-    v9->_reportType = a4;
+    objc_storeStrong(&v8->_accountIdentifier, identifier);
+    v9->_reportType = type;
   }
 
   return v9;
@@ -49,42 +49,42 @@
   return v7;
 }
 
-- (PKAccountReport)initWithCoder:(id)a3
+- (PKAccountReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKAccountReport;
   v5 = [(PKAccountReport *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v5->_reportType = [v4 decodeIntegerForKey:@"reportType"];
+    v5->_reportType = [coderCopy decodeIntegerForKey:@"reportType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountIdentifier = self->_accountIdentifier;
-  v5 = a3;
-  [v5 encodeObject:accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeInteger:self->_reportType forKey:@"reportType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeInteger:self->_reportType forKey:@"reportType"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v5 = v4[1];
+  v5 = equalCopy[1];
   v6 = self->_accountIdentifier;
   v7 = v5;
   v8 = v7;
@@ -110,7 +110,7 @@ LABEL_10:
     }
   }
 
-  v10 = self->_reportType == v4[2];
+  v10 = self->_reportType == equalCopy[2];
 LABEL_11:
 
   return v10;
@@ -118,9 +118,9 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_accountIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_reportType - v4 + 32 * v4;
 
   return v5;
@@ -147,10 +147,10 @@ LABEL_11:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

@@ -1,36 +1,36 @@
 @interface MTLLoader
-+ (BOOL)ReadHashTable:(unint64_t)a3 begin:(unsigned int)a4 end:(unsigned int)a5 hashList:(void *)a6 reader:(id)a7 errorHandler:(id)a8 handler:(id)a9;
-+ (BOOL)airNTMachOEmpty:(uint64_t)a3 type:;
-+ (BOOL)deserializeHashesFromAIRNTHeaderAtOffset:(unint64_t)a3 headerSize:(unint64_t)a4 singleHeaderExpected:(BOOL)a5 reader:(id)a6 errorHandler:(id)a7 handler:(id)a8;
-+ (BOOL)deserializeObjectFromAIRNTHeaderAtSection:(id *)a3 reader:(id)a4 errorHandler:(id)a5 handler:(id)a6;
-+ (BOOL)deserializePipelinesFromAIRNTAtSection:(id *)a3 reader:(id)a4 errorHandler:(id)a5 handler:(id)a6;
-+ (_DWORD)deserializeAIRNTToolsVersionForSlice:(uint64_t)a3 sliceOffset:(uint64_t)a4 version:(uint64_t)a5 reader:;
-+ (_DWORD)readMachOHeader:(uint64_t)a3 type:;
-+ (uint64_t)canonicalURL:(uint64_t)a1;
-+ (uint64_t)deserializeAirntMachOContainerWithHandler:(uint64_t)a3 objectHandler:(uint64_t)a4 pipelineHandler:(uint64_t)a5 errorHandler:(uint64_t)a6 reader:;
-+ (uint64_t)deserializeMachOContainerWithHandler:(uint64_t)a3 reader:;
-+ (uint64_t)deserializeMachOContainerWithHandlerInternal:(int)a3 expectAIRNTFormat:(uint64_t)a4 objectHandler:(uint64_t)a5 pipelineHandler:(uint64_t)a6 errorHandler:(uint64_t)a7 reader:;
-+ (uint64_t)deserializeMachOWrapperWithType:(uint64_t)a3 payloadHandler:(uint64_t)a4 reader:;
-+ (uint64_t)deserializeUniversalBinaryHeaderWithHandler:(uint64_t)a3 reader:(uint64_t)a4 bytes:;
-+ (uint64_t)machOConformsToAIRNTFormat:(uint64_t)a3 type:;
-+ (uint64_t)readLoadCommands:(unsigned int)a3 ncmds:(uint64_t)a4 sizeofcmds:(uint64_t)a5 handler:;
-+ (uint64_t)serializeMachOContainerWithSlice:(uint64_t)a1 payload:(uint64_t)a2 count:(uint64_t)a3 writer:(unsigned int)a4;
-+ (uint64_t)serializePaddingForOffset:(uint64_t)a3 writer:;
-+ (uint64_t)serializeUniversalBinaryHeaderWithSlice:(_DWORD *)a3 offset:(_DWORD *)a4 length:(unsigned int)a5 count:(uint64_t)a6 writer:;
-+ (uint64_t)sliceIDForAIR:(uint64_t)a1;
-+ (unint64_t)serializeMachOContainerWithSlice:(unint64_t *)result payload:(unint64_t *)a2 count:(uint64_t)a3 writer:(char)a4;
-+ (unint64_t)sliceIDForDevice:(void *)a3 andDriverVersion:;
-+ (unint64_t)sliceIDForDevice:(void *)a3 legacyDriverVersion:(_DWORD *)a4 airntDriverVersion:;
-+ (void)serializeMachOWrapperWithType:(uint64_t)a1 slice:(uint64_t)a2 payload:(uint64_t)a3 writer:(uint64_t)a4;
++ (BOOL)ReadHashTable:(unint64_t)table begin:(unsigned int)begin end:(unsigned int)end hashList:(void *)list reader:(id)reader errorHandler:(id)handler handler:(id)a9;
++ (BOOL)airNTMachOEmpty:(uint64_t)empty type:;
++ (BOOL)deserializeHashesFromAIRNTHeaderAtOffset:(unint64_t)offset headerSize:(unint64_t)size singleHeaderExpected:(BOOL)expected reader:(id)reader errorHandler:(id)handler handler:(id)a8;
++ (BOOL)deserializeObjectFromAIRNTHeaderAtSection:(id *)section reader:(id)reader errorHandler:(id)handler handler:(id)a6;
++ (BOOL)deserializePipelinesFromAIRNTAtSection:(id *)section reader:(id)reader errorHandler:(id)handler handler:(id)a6;
++ (_DWORD)deserializeAIRNTToolsVersionForSlice:(uint64_t)slice sliceOffset:(uint64_t)offset version:(uint64_t)version reader:;
++ (_DWORD)readMachOHeader:(uint64_t)header type:;
++ (uint64_t)canonicalURL:(uint64_t)l;
++ (uint64_t)deserializeAirntMachOContainerWithHandler:(uint64_t)handler objectHandler:(uint64_t)objectHandler pipelineHandler:(uint64_t)pipelineHandler errorHandler:(uint64_t)errorHandler reader:;
++ (uint64_t)deserializeMachOContainerWithHandler:(uint64_t)handler reader:;
++ (uint64_t)deserializeMachOContainerWithHandlerInternal:(int)internal expectAIRNTFormat:(uint64_t)format objectHandler:(uint64_t)handler pipelineHandler:(uint64_t)pipelineHandler errorHandler:(uint64_t)errorHandler reader:;
++ (uint64_t)deserializeMachOWrapperWithType:(uint64_t)type payloadHandler:(uint64_t)handler reader:;
++ (uint64_t)deserializeUniversalBinaryHeaderWithHandler:(uint64_t)handler reader:(uint64_t)reader bytes:;
++ (uint64_t)machOConformsToAIRNTFormat:(uint64_t)format type:;
++ (uint64_t)readLoadCommands:(unsigned int)commands ncmds:(uint64_t)ncmds sizeofcmds:(uint64_t)sizeofcmds handler:;
++ (uint64_t)serializeMachOContainerWithSlice:(uint64_t)slice payload:(uint64_t)payload count:(uint64_t)count writer:(unsigned int)writer;
++ (uint64_t)serializePaddingForOffset:(uint64_t)offset writer:;
++ (uint64_t)serializeUniversalBinaryHeaderWithSlice:(_DWORD *)slice offset:(_DWORD *)offset length:(unsigned int)length count:(uint64_t)count writer:;
++ (uint64_t)sliceIDForAIR:(uint64_t)r;
++ (unint64_t)serializeMachOContainerWithSlice:(unint64_t *)result payload:(unint64_t *)payload count:(uint64_t)count writer:(char)writer;
++ (unint64_t)sliceIDForDevice:(void *)device andDriverVersion:;
++ (unint64_t)sliceIDForDevice:(void *)device legacyDriverVersion:(_DWORD *)version airntDriverVersion:;
++ (void)serializeMachOWrapperWithType:(uint64_t)type slice:(uint64_t)slice payload:(uint64_t)payload writer:(uint64_t)writer;
 - (MTLLoader)init;
 - (id).cxx_construct;
-- (id)loadLibrariesWithDevice:(_MTLFunction *)a3 function:(void *)a4 insertLibraries:(uint64_t)a5 options:(id *)a6 error:;
-- (uint64_t)associateLoadedFile:(uint64_t)a3 withObject:;
-- (uint64_t)loadFileWithURL:(NSError *)a3 error:(NSString *)a4 errorDomain:(uint64_t)a5 invalidFileErrorCode:;
+- (id)loadLibrariesWithDevice:(_MTLFunction *)device function:(void *)function insertLibraries:(uint64_t)libraries options:(id *)options error:;
+- (uint64_t)associateLoadedFile:(uint64_t)file withObject:;
+- (uint64_t)loadFileWithURL:(NSError *)l error:(NSString *)error errorDomain:(uint64_t)domain invalidFileErrorCode:;
 - (void)dealloc;
-- (void)disassociateLoadedFile:(uint64_t)a1 withObject:(MTLLoadedFile *)a2;
-- (void)executeBlockForLoadedFile:(int)a3 withAssociatedObject:(dispatch_block_t)block block:;
-- (void)releaseLoadedFile:(uint64_t)a1;
+- (void)disassociateLoadedFile:(uint64_t)file withObject:(MTLLoadedFile *)object;
+- (void)executeBlockForLoadedFile:(int)file withAssociatedObject:(dispatch_block_t)block block:;
+- (void)releaseLoadedFile:(uint64_t)file;
 @end
 
 @implementation MTLLoader
@@ -72,11 +72,11 @@
   return v2;
 }
 
-+ (BOOL)ReadHashTable:(unint64_t)a3 begin:(unsigned int)a4 end:(unsigned int)a5 hashList:(void *)a6 reader:(id)a7 errorHandler:(id)a8 handler:(id)a9
++ (BOOL)ReadHashTable:(unint64_t)table begin:(unsigned int)begin end:(unsigned int)end hashList:(void *)list reader:(id)reader errorHandler:(id)handler handler:(id)a9
 {
-  v10 = a7;
-  v15 = (*(a7 + 2))(a7, a3, 8);
-  if (v15 || (v16 = (*(a8 + 2))(a8, 0)) != 0)
+  readerCopy = reader;
+  v15 = (*(reader + 2))(reader, table, 8);
+  if (v15 || (v16 = (*(handler + 2))(handler, 0)) != 0)
   {
     v17 = *v15;
     if (!v17)
@@ -87,35 +87,35 @@ LABEL_35:
     }
 
     v62 = v17 << 7;
-    v63 = a3 + 8;
-    v18 = v10[2](v10);
-    if (v18 || (v16 = (*(a8 + 2))(a8, 1)) != 0)
+    v63 = table + 8;
+    v18 = readerCopy[2](readerCopy);
+    if (v18 || (v16 = (*(handler + 2))(handler, 1)) != 0)
     {
-      if (a5 | a4)
+      if (end | begin)
       {
-        v19 = a5;
+        endCopy = end;
       }
 
       else
       {
-        v19 = v17;
+        endCopy = v17;
       }
 
-      if (v19 > a4)
+      if (endCopy > begin)
       {
-        v61 = v10;
-        v20 = a4;
+        v61 = readerCopy;
+        beginCopy = begin;
         while (1)
         {
-          v21 = v18 + (v20 << 7);
-          v22 = *(a6 + 1);
+          v21 = v18 + (beginCopy << 7);
+          v22 = *(list + 1);
           if ((*(v21 + 108) & 0x3FFFFFFF) != 0)
           {
-            v23 = malloc_type_malloc(96 * ((v22 - *a6) >> 3) + 96, 0x1000040E0EAB150uLL);
-            v24 = malloc_type_malloc(12 * ((*(a6 + 1) - *a6) >> 3) + 12, 0x100004052888210uLL);
+            v23 = malloc_type_malloc(96 * ((v22 - *list) >> 3) + 96, 0x1000040E0EAB150uLL);
+            v24 = malloc_type_malloc(12 * ((*(list + 1) - *list) >> 3) + 12, 0x100004052888210uLL);
             v25 = v24;
-            v26 = *a6;
-            if (*(a6 + 1) == *a6)
+            v26 = *list;
+            if (*(list + 1) == *list)
             {
               v28 = 0;
             }
@@ -134,19 +134,19 @@ LABEL_35:
                 *(v31 + 1) = v32;
                 v33 = v28 + 1;
                 v34 = &v23[32 * v33];
-                v35 = *(*a6 + 8 * v27);
+                v35 = *(*list + 8 * v27);
                 v36 = *(v35 + 48);
                 *v34 = *(v35 + 32);
                 *(v34 + 1) = v36;
                 v37 = v28 + 2;
-                v38 = *(*a6 + 8 * v27);
+                v38 = *(*list + 8 * v27);
                 v39 = &v23[32 * v37];
                 v40 = *(v38 + 80);
                 *v39 = *(v38 + 64);
                 *(v39 + 1) = v40;
-                v26 = *a6;
-                v41 = *(a6 + 1);
-                v42 = *(*a6 + 8 * v27);
+                v26 = *list;
+                v41 = *(list + 1);
+                v42 = *(*list + 8 * v27);
                 *(v24 + v28) = v42[24];
                 *(v24 + v33) = v42[25];
                 *(v24 + v37) = v42[26];
@@ -181,16 +181,16 @@ LABEL_35:
 
           else
           {
-            v43 = *(a6 + 2);
+            v43 = *(list + 2);
             if (v22 >= v43)
             {
-              v53 = (v22 - *a6) >> 3;
+              v53 = (v22 - *list) >> 3;
               if ((v53 + 1) >> 61)
               {
                 std::vector<std::pair<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>>::__throw_length_error[abi:ne200100]();
               }
 
-              v54 = v43 - *a6;
+              v54 = v43 - *list;
               v55 = v54 >> 2;
               if (v54 >> 2 <= (v53 + 1))
               {
@@ -209,24 +209,24 @@ LABEL_35:
 
               if (v56)
               {
-                std::__allocate_at_least[abi:ne200100]<std::allocator<MTLUINT256_t const*>>(a6, v56);
+                std::__allocate_at_least[abi:ne200100]<std::allocator<MTLUINT256_t const*>>(list, v56);
               }
 
               *(8 * v53) = v21;
               v44 = 8 * v53 + 8;
-              v57 = *(a6 + 1) - *a6;
+              v57 = *(list + 1) - *list;
               v58 = (8 * v53 - v57);
-              memcpy(v58, *a6, v57);
-              v59 = *a6;
-              *a6 = v58;
-              *(a6 + 1) = v44;
-              *(a6 + 2) = 0;
+              memcpy(v58, *list, v57);
+              v59 = *list;
+              *list = v58;
+              *(list + 1) = v44;
+              *(list + 2) = 0;
               if (v59)
               {
                 operator delete(v59);
               }
 
-              v10 = v61;
+              readerCopy = v61;
             }
 
             else
@@ -235,21 +235,21 @@ LABEL_35:
               v44 = (v22 + 1);
             }
 
-            *(a6 + 1) = v44;
-            if (([a1 ReadHashTable:v62 + v63 begin:*(v21 + 112) end:*(v21 + 116) hashList:a6 reader:v10 errorHandler:a8 handler:a9] & 1) == 0)
+            *(list + 1) = v44;
+            if (([self ReadHashTable:v62 + v63 begin:*(v21 + 112) end:*(v21 + 116) hashList:list reader:readerCopy errorHandler:handler handler:a9] & 1) == 0)
             {
-              *(a6 + 1) -= 8;
-              v16 = (*(a8 + 2))(a8, 1);
+              *(list + 1) -= 8;
+              v16 = (*(handler + 2))(handler, 1);
               if (!v16)
               {
                 return v16;
               }
             }
 
-            *(a6 + 1) -= 8;
+            *(list + 1) -= 8;
           }
 
-          if (++v20 == v19)
+          if (++beginCopy == endCopy)
           {
             goto LABEL_35;
           }
@@ -263,14 +263,14 @@ LABEL_35:
   return v16;
 }
 
-+ (BOOL)deserializeHashesFromAIRNTHeaderAtOffset:(unint64_t)a3 headerSize:(unint64_t)a4 singleHeaderExpected:(BOOL)a5 reader:(id)a6 errorHandler:(id)a7 handler:(id)a8
++ (BOOL)deserializeHashesFromAIRNTHeaderAtOffset:(unint64_t)offset headerSize:(unint64_t)size singleHeaderExpected:(BOOL)expected reader:(id)reader errorHandler:(id)handler handler:(id)a8
 {
-  v10 = a5;
-  v12 = (*(a6 + 2))(a6, a3, a4);
+  expectedCopy = expected;
+  v12 = (*(reader + 2))(reader, offset, size);
   v13 = v12;
-  if (!v10)
+  if (!expectedCopy)
   {
-    if (v12 || (*(a7 + 2))(a7, 0))
+    if (v12 || (*(handler + 2))(handler, 0))
     {
       v15 = 8;
       v14 = v13;
@@ -280,7 +280,7 @@ LABEL_35:
     return 0;
   }
 
-  if (!v12 && !(*(a7 + 2))(a7, 0))
+  if (!v12 && !(*(handler + 2))(handler, 0))
   {
     return 0;
   }
@@ -301,24 +301,24 @@ LABEL_8:
 
   if (!v17)
   {
-    return [a1 ReadHashTable:a8 begin:? end:? hashList:? reader:? errorHandler:? handler:?];
+    return [self ReadHashTable:a8 begin:? end:? hashList:? reader:? errorHandler:? handler:?];
   }
 
-  (*(a7 + 2))(a7, 3);
+  (*(handler + 2))(handler, 3);
   return 1;
 }
 
-+ (BOOL)deserializeObjectFromAIRNTHeaderAtSection:(id *)a3 reader:(id)a4 errorHandler:(id)a5 handler:(id)a6
++ (BOOL)deserializeObjectFromAIRNTHeaderAtSection:(id *)section reader:(id)reader errorHandler:(id)handler handler:(id)a6
 {
-  v8 = a4;
-  if (!a3->var1)
+  readerCopy = reader;
+  if (!section->var1)
   {
-    if (!a3[3].var1)
+    if (!section[3].var1)
     {
       goto LABEL_17;
     }
 
-    v19 = (*(a4 + 2))(a4, a3[3].var0);
+    v19 = (*(reader + 2))(reader, section[3].var0);
     if (!v19)
     {
       goto LABEL_17;
@@ -326,16 +326,16 @@ LABEL_8:
 
     v36 = *(v19 + 8);
     v37 = *v19;
-    v20 = v8[2](v8, a3[8].var0, a3[8].var1);
+    v20 = readerCopy[2](readerCopy, section[8].var0, section[8].var1);
     if (!v20)
     {
       goto LABEL_17;
     }
 
-    v21 = v8;
+    v21 = readerCopy;
     v39 = *v20;
     v17 = *(v20 + 8);
-    v22 = v8[2](v8, a3[2].var0, a3[2].var1);
+    v22 = readerCopy[2](readerCopy, section[2].var0, section[2].var1);
     if (!v22)
     {
       goto LABEL_17;
@@ -343,7 +343,7 @@ LABEL_8:
 
     v23 = *v22;
     v24 = *(v22 + 8);
-    v25 = v21[2](v21, a3[7].var0, a3[7].var1);
+    v25 = v21[2](v21, section[7].var0, section[7].var1);
     if (!v25)
     {
       goto LABEL_17;
@@ -354,8 +354,8 @@ LABEL_8:
     v40 = a6;
     v13 = *v25;
     v14 = v25[1];
-    v8 = v21;
-    v26 = v21[2](v21, a3[1].var0, a3[1].var1);
+    readerCopy = v21;
+    v26 = v21[2](v21, section[1].var0, section[1].var1);
     if (!v26)
     {
       goto LABEL_17;
@@ -363,9 +363,9 @@ LABEL_8:
 
     v16 = *v26;
     v18 = *(v26 + 8);
-    if (a3[4].var1)
+    if (section[4].var1)
     {
-      v27 = (v8[2])(v8, a3[4].var0);
+      v27 = (readerCopy[2])(readerCopy, section[4].var0);
       if (!v27)
       {
         goto LABEL_17;
@@ -386,7 +386,7 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  v10 = (*(a4 + 2))(a4, a3->var0);
+  v10 = (*(reader + 2))(reader, section->var0);
   if (!v10)
   {
 LABEL_17:
@@ -411,23 +411,23 @@ LABEL_4:
   v35 = v12;
   if (!v12)
   {
-    (*(a5 + 2))(a5, 3);
+    (*(handler + 2))(handler, 3);
   }
 
-  v8[2](v8, v15, 40 * v17);
-  v38 = v8[2](v8, v43, 56 * v42);
-  v8[2](v8, v16, 40 * v18);
-  v8[2](v8, v13, v14);
+  readerCopy[2](readerCopy, v15, 40 * v17);
+  v38 = readerCopy[2](readerCopy, v43, 56 * v42);
+  readerCopy[2](readerCopy, v16, 40 * v18);
+  readerCopy[2](readerCopy, v13, v14);
   if (v11)
   {
-    v8[2](v8, v41, 24 * v11);
+    readerCopy[2](readerCopy, v41, 24 * v11);
   }
 
   v29 = v35;
   if (v35)
   {
-    v30 = v8[2](v8, v37, 36uLL);
-    if (v30 || (v31 = (*(a5 + 2))(a5, 5), v30 = 0, v31))
+    v30 = readerCopy[2](readerCopy, v37, 36uLL);
+    if (v30 || (v31 = (*(handler + 2))(handler, 5), v30 = 0, v31))
     {
       v32 = *(v38 + 56 * *(v30 + 4) + 48);
       if ((v32 & 0x20) == 0)
@@ -460,11 +460,11 @@ LABEL_4:
   return v28 & 1;
 }
 
-+ (BOOL)deserializePipelinesFromAIRNTAtSection:(id *)a3 reader:(id)a4 errorHandler:(id)a5 handler:(id)a6
++ (BOOL)deserializePipelinesFromAIRNTAtSection:(id *)section reader:(id)reader errorHandler:(id)handler handler:(id)a6
 {
-  if (a3->var1)
+  if (section->var1)
   {
-    v9 = (*(a4 + 2))(a4, a3->var0);
+    v9 = (*(reader + 2))(reader, section->var0);
     if (!v9)
     {
       return v9;
@@ -479,7 +479,7 @@ LABEL_4:
 
   else
   {
-    var1 = a3[5].var1;
+    var1 = section[5].var1;
     if (!var1)
     {
       v12 = 0;
@@ -488,10 +488,10 @@ LABEL_4:
       goto LABEL_11;
     }
 
-    v15 = (*(a4 + 2))(a4, a3[5].var0);
+    v15 = (*(reader + 2))(reader, section[5].var0);
     if (!v15)
     {
-      LODWORD(v9) = (*(a5 + 2))(a5, 10);
+      LODWORD(v9) = (*(handler + 2))(handler, 10);
       if (!v9)
       {
         return v9;
@@ -500,7 +500,7 @@ LABEL_4:
 
     v11 = *(v15 + 8);
     v12 = *v15;
-    v9 = (*(a4 + 2))(a4, a3[7].var0, a3[7].var1);
+    v9 = (*(reader + 2))(reader, section[7].var0, section[7].var1);
     if (!v9)
     {
       return v9;
@@ -512,8 +512,8 @@ LABEL_4:
   v16 = *v9;
   var1 = *v13;
 LABEL_11:
-  (*(a4 + 2))(a4, v16, var1);
-  (*(a4 + 2))(a4, v12, 4 * v11);
+  (*(reader + 2))(reader, v16, var1);
+  (*(reader + 2))(reader, v12, 4 * v11);
   if (v11)
   {
     operator new();
@@ -536,24 +536,24 @@ LABEL_11:
   [(MTLLoader *)&v4 dealloc];
 }
 
-- (id)loadLibrariesWithDevice:(_MTLFunction *)a3 function:(void *)a4 insertLibraries:(uint64_t)a5 options:(id *)a6 error:
+- (id)loadLibrariesWithDevice:(_MTLFunction *)device function:(void *)function insertLibraries:(uint64_t)libraries options:(id *)options error:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v12 = objc_autoreleasePoolPush();
-  v17[0] = *(a1 + 8);
+  v17[0] = *(self + 8);
   v17[1] = a2;
   v18 = 0u;
   v19 = 0u;
   memset(v20, 0, 25);
-  LoaderContext::setInsertLibraries(v17, a4);
-  if (LoaderContext::load(v17, a3, a5, a6))
+  LoaderContext::setInsertLibraries(v17, function);
+  if (LoaderContext::load(v17, device, libraries, options))
   {
-    v13 = LoaderContext::finish(v17, a5, a6);
-    if (!a6)
+    v13 = LoaderContext::finish(v17, libraries, options);
+    if (!options)
     {
       goto LABEL_9;
     }
@@ -562,7 +562,7 @@ LABEL_11:
   else
   {
     v13 = 0;
-    if (!a6)
+    if (!options)
     {
 LABEL_9:
       v21 = v20;
@@ -577,11 +577,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v14 = *a6;
+  v14 = *options;
   v21 = v20;
   std::vector<std::unique_ptr<LoaderContext::Image>>::__destroy_vector::operator()[abi:ne200100](&v21);
   objc_autoreleasePoolPop(v12);
-  v15 = *a6;
+  v15 = *options;
   return 0;
 }
 
@@ -609,23 +609,23 @@ void *__44__MTLLoader_associateLoadedFile_withObject___block_invoke(void *a1)
   return result;
 }
 
-+ (uint64_t)canonicalURL:(uint64_t)a1
++ (uint64_t)canonicalURL:(uint64_t)l
 {
   objc_opt_self();
   v3 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:a2 isDirectory:0];
-  v4 = [v3 standardizedURL];
+  standardizedURL = [v3 standardizedURL];
 
-  return v4;
+  return standardizedURL;
 }
 
-+ (unint64_t)sliceIDForDevice:(void *)a3 legacyDriverVersion:(_DWORD *)a4 airntDriverVersion:
++ (unint64_t)sliceIDForDevice:(void *)device legacyDriverVersion:(_DWORD *)version airntDriverVersion:
 {
   objc_opt_self();
   v7 = objc_autoreleasePoolPush();
-  v15 = [a2 targetDeviceArchitecture];
-  if (v15)
+  targetDeviceArchitecture = [a2 targetDeviceArchitecture];
+  if (targetDeviceArchitecture)
   {
-    if (!a3)
+    if (!device)
     {
       goto LABEL_4;
     }
@@ -634,32 +634,32 @@ void *__44__MTLLoader_associateLoadedFile_withObject___block_invoke(void *a1)
   }
 
   [(MTLLoader *)0 sliceIDForDevice:v8 legacyDriverVersion:v9 airntDriverVersion:v10, v11, v12, v13, v14, v19];
-  if (a3)
+  if (device)
   {
 LABEL_3:
-    *a3 = [v15 driverVersion];
+    *device = [targetDeviceArchitecture driverVersion];
   }
 
 LABEL_4:
-  if (a4)
+  if (version)
   {
-    *a4 = [v15 versionCombined];
+    *version = [targetDeviceArchitecture versionCombined];
   }
 
-  v16 = [v15 cpuType];
-  v17 = [v15 subType];
+  cpuType = [targetDeviceArchitecture cpuType];
+  subType = [targetDeviceArchitecture subType];
   objc_autoreleasePoolPop(v7);
-  return v16 | (v17 << 32);
+  return cpuType | (subType << 32);
 }
 
-+ (unint64_t)sliceIDForDevice:(void *)a3 andDriverVersion:
++ (unint64_t)sliceIDForDevice:(void *)device andDriverVersion:
 {
   objc_opt_self();
 
-  return [MTLLoader sliceIDForDevice:a2 legacyDriverVersion:a3 airntDriverVersion:0];
+  return [MTLLoader sliceIDForDevice:a2 legacyDriverVersion:device airntDriverVersion:0];
 }
 
-+ (uint64_t)sliceIDForAIR:(uint64_t)a1
++ (uint64_t)sliceIDForAIR:(uint64_t)r
 {
   v3 = 16777239;
   objc_opt_self();
@@ -672,12 +672,12 @@ LABEL_4:
   return v3;
 }
 
-+ (_DWORD)readMachOHeader:(uint64_t)a3 type:
++ (_DWORD)readMachOHeader:(uint64_t)header type:
 {
   objc_opt_self();
   v5 = (*(a2 + 16))(a2, 0, 32);
   v6 = v5;
-  if (a3)
+  if (header)
   {
     if ((validateMachHeader(v5, 6) & 1) != 0 || validateMachHeader(v6, 14))
     {
@@ -695,13 +695,13 @@ LABEL_4:
   return v6;
 }
 
-+ (uint64_t)readLoadCommands:(unsigned int)a3 ncmds:(uint64_t)a4 sizeofcmds:(uint64_t)a5 handler:
++ (uint64_t)readLoadCommands:(unsigned int)commands ncmds:(uint64_t)ncmds sizeofcmds:(uint64_t)sizeofcmds handler:
 {
   objc_opt_self();
-  v9 = (*(a2 + 16))(a2, 32, a4);
+  v9 = (*(a2 + 16))(a2, 32, ncmds);
   if (v9)
   {
-    v10 = a3 == 0;
+    v10 = commands == 0;
   }
 
   else
@@ -713,28 +713,28 @@ LABEL_4:
   {
     v12 = v9;
     v13 = 0;
-    v14 = a4;
+    ncmdsCopy = ncmds;
     v15 = v9;
-    while (v14 >= 8)
+    while (ncmdsCopy >= 8)
     {
       v16 = v15[1];
-      if (v14 < v16)
+      if (ncmdsCopy < v16)
       {
         break;
       }
 
       if (*v15 == 49)
       {
-        (*(a5 + 16))(a5, v15, v13, v14);
+        (*(sizeofcmds + 16))(sizeofcmds, v15, v13, ncmdsCopy);
         v16 = v15[1];
       }
 
       v15 = (v15 + v16);
-      v14 = v14 - v16;
+      ncmdsCopy = ncmdsCopy - v16;
       v13 = (v13 + 1);
-      if (a3 == v13)
+      if (commands == v13)
       {
-        if (a4 < 8)
+        if (ncmds < 8)
         {
           return 0;
         }
@@ -744,14 +744,14 @@ LABEL_4:
         while (1)
         {
           v19 = *(v12 + 4);
-          if (a4 < v19)
+          if (ncmds < v19)
           {
             break;
           }
 
           if (v18)
           {
-            v18 = (*(a5 + 16))(a5, v12, v17, a4);
+            v18 = (*(sizeofcmds + 16))(sizeofcmds, v12, v17, ncmds);
             v19 = *(v12 + 4);
           }
 
@@ -761,12 +761,12 @@ LABEL_4:
           }
 
           v17 = (v17 + 1);
-          v20 = v17 >= a3;
-          if (v17 < a3)
+          v20 = v17 >= commands;
+          if (v17 < commands)
           {
             v12 += v19;
-            a4 = a4 - v19;
-            if (a4 > 7)
+            ncmds = ncmds - v19;
+            if (ncmds > 7)
             {
               continue;
             }
@@ -784,14 +784,14 @@ LABEL_4:
   return 0;
 }
 
-+ (BOOL)airNTMachOEmpty:(uint64_t)a3 type:
++ (BOOL)airNTMachOEmpty:(uint64_t)empty type:
 {
   objc_opt_self();
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v5 = [MTLLoader readMachOHeader:a2 type:a3];
+  v5 = [MTLLoader readMachOHeader:a2 type:empty];
   if (!v5)
   {
     v11 = 0;
@@ -880,14 +880,14 @@ uint64_t __34__MTLLoader_airNTMachOEmpty_type___block_invoke(uint64_t a1, _DWORD
   return 1;
 }
 
-+ (uint64_t)machOConformsToAIRNTFormat:(uint64_t)a3 type:
++ (uint64_t)machOConformsToAIRNTFormat:(uint64_t)format type:
 {
   objc_opt_self();
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [MTLLoader readMachOHeader:a2 type:a3];
+  v5 = [MTLLoader readMachOHeader:a2 type:format];
   if (v5 && (v6 = v5[4], v7 = v5[5], v10[0] = MEMORY[0x1E69E9820], v10[1] = 3221225472, v10[2] = __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke, v10[3] = &unk_1E6EEBC80, v10[4] = &v11, [MTLLoader readLoadCommands:a2 ncmds:v6 sizeofcmds:v7 handler:v10]))
   {
     v8 = *(v12 + 24);
@@ -915,11 +915,11 @@ uint64_t __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke(uint64_t
   return 1;
 }
 
-+ (uint64_t)deserializeMachOWrapperWithType:(uint64_t)a3 payloadHandler:(uint64_t)a4 reader:
++ (uint64_t)deserializeMachOWrapperWithType:(uint64_t)type payloadHandler:(uint64_t)handler reader:
 {
   v123 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v7 = [MTLLoader readMachOHeader:a4 type:a2];
+  v7 = [MTLLoader readMachOHeader:handler type:a2];
   if (!v7)
   {
     v12 = 0;
@@ -929,7 +929,7 @@ uint64_t __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke(uint64_t
   v44 = v7[5];
   v45 = v7[4];
   v42 = *(v7 + 1);
-  v43 = a3;
+  typeCopy = type;
   v99 = 0;
   v100 = &v99;
   v101 = 0x4812000000;
@@ -1016,14 +1016,14 @@ uint64_t __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke(uint64_t
   v48[11] = &v60;
   v48[12] = &v86;
   v48[13] = &v78;
-  v48[4] = a4;
+  v48[4] = handler;
   v48[5] = &v99;
   v48[14] = &v74;
   v48[15] = &v82;
   v48[17] = &v49;
   v48[18] = a2;
   v48[16] = &v70;
-  if (([MTLLoader readLoadCommands:a4 ncmds:v45 sizeofcmds:v44 handler:v48]& 1) == 0 || a2 == 1 && !v111[13] || *(v65 + 24) != 1 || !v100[6])
+  if (([MTLLoader readLoadCommands:handler ncmds:v45 sizeofcmds:v44 handler:v48]& 1) == 0 || a2 == 1 && !v111[13] || *(v65 + 24) != 1 || !v100[6])
   {
     goto LABEL_44;
   }
@@ -1042,7 +1042,7 @@ uint64_t __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke(uint64_t
         v46[2] = __67__MTLLoader_deserializeMachOWrapperWithType_payloadHandler_reader___block_invoke_3;
         v46[3] = &unk_1E6EEBCF0;
         v46[4] = &v110;
-        v11 = [MTLLoader deserializeObjectFromAIRNTHeaderAtSection:v10 reader:a4 errorHandler:&__block_literal_global_18 handler:v46];
+        v11 = [MTLLoader deserializeObjectFromAIRNTHeaderAtSection:v10 reader:handler errorHandler:&__block_literal_global_18 handler:v46];
         if (v8)
         {
           goto LABEL_30;
@@ -1070,7 +1070,7 @@ uint64_t __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke(uint64_t
   if (v71[3])
   {
     v13 = v57[3] - 56;
-    v14 = (*(a4 + 16))(a4, 56, v13);
+    v14 = (*(handler + 16))(handler, 56, v13);
     if (!v14)
     {
       goto LABEL_44;
@@ -1095,7 +1095,7 @@ uint64_t __45__MTLLoader_machOConformsToAIRNTFormat_type___block_invoke(uint64_t
   {
     if (v91[7] >= 0x20)
     {
-      v19 = (*(a4 + 16))(a4);
+      v19 = (*(handler + 16))(handler);
       if (v19)
       {
         v20 = v111;
@@ -1147,7 +1147,7 @@ LABEL_30:
           v25 = v111;
         }
 
-        v12 = (*(v43 + 16))(v43, v42, v25 + 6, v100[6], v100[7], v57[3]);
+        v12 = (*(typeCopy + 16))(typeCopy, v42, v25 + 6, v100[6], v100[7], v57[3]);
         v37 = v111;
         v38 = v111[6];
         if (v38)
@@ -1552,10 +1552,10 @@ uint64_t __67__MTLLoader_deserializeMachOWrapperWithType_payloadHandler_reader__
   return 1;
 }
 
-+ (_DWORD)deserializeAIRNTToolsVersionForSlice:(uint64_t)a3 sliceOffset:(uint64_t)a4 version:(uint64_t)a5 reader:
++ (_DWORD)deserializeAIRNTToolsVersionForSlice:(uint64_t)slice sliceOffset:(uint64_t)offset version:(uint64_t)version reader:
 {
   objc_opt_self();
-  result = (*(a5 + 16))(a5, 0, 32);
+  result = (*(version + 16))(version, 0, 32);
   if (result)
   {
     if (*result == -17958193 && ((v8 = result[1], (v8 - 16777235) <= 4) ? (v9 = v8 == 16777238) : (v9 = 1), v9 ? (v10 = v8 == -1) : (v10 = 1), v10 && ((v11 = result[3], v12 = v11 > 0xE, v13 = (1 << v11) & 0x6144, !v12) ? (v14 = v13 == 0) : (v14 = 1), !v14)))
@@ -1566,8 +1566,8 @@ uint64_t __67__MTLLoader_deserializeMachOWrapperWithType_payloadHandler_reader__
       v17[1] = 3221225472;
       v17[2] = __77__MTLLoader_deserializeAIRNTToolsVersionForSlice_sliceOffset_version_reader___block_invoke;
       v17[3] = &__block_descriptor_40_e32_B24__0r__load_command_II_8I16I20l;
-      v17[4] = a4;
-      return [MTLLoader readLoadCommands:a5 ncmds:v15 sizeofcmds:v16 handler:v17];
+      v17[4] = offset;
+      return [MTLLoader readLoadCommands:version ncmds:v15 sizeofcmds:v16 handler:v17];
     }
 
     else
@@ -1633,11 +1633,11 @@ LABEL_9:
   return 0;
 }
 
-+ (uint64_t)deserializeMachOContainerWithHandlerInternal:(int)a3 expectAIRNTFormat:(uint64_t)a4 objectHandler:(uint64_t)a5 pipelineHandler:(uint64_t)a6 errorHandler:(uint64_t)a7 reader:
++ (uint64_t)deserializeMachOContainerWithHandlerInternal:(int)internal expectAIRNTFormat:(uint64_t)format objectHandler:(uint64_t)handler pipelineHandler:(uint64_t)pipelineHandler errorHandler:(uint64_t)errorHandler reader:
 {
   v143 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v13 = (*(a7 + 16))(a7, 0, 32);
+  v13 = (*(errorHandler + 16))(errorHandler, 0, 32);
   if (!v13 || *v13 != -17958193)
   {
     goto LABEL_54;
@@ -1657,11 +1657,11 @@ LABEL_9:
     if (v17 != 13)
     {
 LABEL_54:
-      LOBYTE(a3) = 0;
+      LOBYTE(internal) = 0;
       goto LABEL_55;
     }
 
-    if (!a3)
+    if (!internal)
     {
       goto LABEL_55;
     }
@@ -1755,22 +1755,22 @@ LABEL_54:
   v80[13] = &v107;
   v80[14] = &v120;
   v80[15] = &v111;
-  if (([MTLLoader readLoadCommands:a7 ncmds:v19 sizeofcmds:v20 handler:v80]& 1) == 0)
+  if (([MTLLoader readLoadCommands:errorHandler ncmds:v19 sizeofcmds:v20 handler:v80]& 1) == 0)
   {
     goto LABEL_118;
   }
 
-  if (a3)
+  if (internal)
   {
     v21 = *(v99[6] + 8);
-    a3 = 1;
+    internal = 1;
     v22 = 2;
     while (1)
     {
       v23 = v99[6];
       if (v21)
       {
-        if ((a3 & 1) == 0)
+        if ((internal & 1) == 0)
         {
           goto LABEL_118;
         }
@@ -1782,8 +1782,8 @@ LABEL_54:
       {
         v24 = &v23[v22 - 1];
         v25 = v23[v22];
-        v26 = (v25 != 6) & a3;
-        if (v25 != 6 || ((a3 ^ 1) & 1) != 0)
+        v26 = (v25 != 6) & internal;
+        if (v25 != 6 || ((internal ^ 1) & 1) != 0)
         {
           goto LABEL_29;
         }
@@ -1800,7 +1800,7 @@ LABEL_54:
       v77[4] = a2;
       v78 = v14;
       v79 = v70;
-      v26 = [MTLLoader deserializeHashesFromAIRNTHeaderAtOffset:v27 headerSize:v28 singleHeaderExpected:v21 != 0 reader:a7 errorHandler:a6 handler:v77];
+      v26 = [MTLLoader deserializeHashesFromAIRNTHeaderAtOffset:v27 headerSize:v28 singleHeaderExpected:v21 != 0 reader:errorHandler errorHandler:pipelineHandler handler:v77];
       if (v21)
       {
         if (!v26)
@@ -1826,8 +1826,8 @@ LABEL_35:
       v76[1] = 3221225472;
       v76[2] = __126__MTLLoader_deserializeMachOContainerWithHandlerInternal_expectAIRNTFormat_objectHandler_pipelineHandler_errorHandler_reader___block_invoke_3;
       v76[3] = &unk_1E6EEBD88;
-      v76[4] = a4;
-      v30 = [MTLLoader deserializeObjectFromAIRNTHeaderAtSection:v23 reader:a7 errorHandler:a6 handler:v76];
+      v76[4] = format;
+      v30 = [MTLLoader deserializeObjectFromAIRNTHeaderAtSection:v23 reader:errorHandler errorHandler:pipelineHandler handler:v76];
       if (v21)
       {
         if (!v30)
@@ -1846,7 +1846,7 @@ LABEL_39:
       v31 = v25 != 5;
       if (!v15 || v30 == 0)
       {
-        a3 = v31 & v30;
+        internal = v31 & v30;
         goto LABEL_46;
       }
 
@@ -1855,12 +1855,12 @@ LABEL_45:
       v75[1] = 3221225472;
       v75[2] = __126__MTLLoader_deserializeMachOContainerWithHandlerInternal_expectAIRNTFormat_objectHandler_pipelineHandler_errorHandler_reader___block_invoke_4;
       v75[3] = &unk_1E6EEBD88;
-      v75[4] = a5;
-      a3 = [MTLLoader deserializePipelinesFromAIRNTAtSection:v23 reader:a7 errorHandler:a6 handler:v75];
+      v75[4] = handler;
+      internal = [MTLLoader deserializePipelinesFromAIRNTAtSection:v23 reader:errorHandler errorHandler:pipelineHandler handler:v75];
 LABEL_46:
       if (!v21)
       {
-        if (a3)
+        if (internal)
         {
           v15 = v22 == 26;
           v22 += 3;
@@ -1916,7 +1916,7 @@ LABEL_46:
           v72 = 0;
           v73 = 0;
           std::vector<nlist_64>::reserve(&__p, v38);
-          v39 = (*(a7 + 16))(a7, v121[6], v121[7]);
+          v39 = (*(errorHandler + 16))(errorHandler, v121[6], v121[7]);
           if (!v39)
           {
             goto LABEL_122;
@@ -1986,14 +1986,14 @@ LABEL_46:
             while (v40 < *(v108 + 6));
           }
 
-          v48 = (*(a7 + 16))(a7, v112[6], v112[7]);
+          v48 = (*(errorHandler + 16))(errorHandler, v112[6], v112[7]);
           if (v48)
           {
             v49 = __p;
             v50 = v72;
             if (__p != v72)
             {
-              LOBYTE(a3) = 1;
+              LOBYTE(internal) = 1;
               v51 = v14 | (v70 << 32);
               while (1)
               {
@@ -2075,14 +2075,14 @@ LABEL_112:
                       bzero(&v142[v59], 32 - v59);
                     }
 
-                    if (a3)
+                    if (internal)
                     {
-                      LOBYTE(a3) = (*(a2 + 16))(a2, v51, v86[3], 1, v142, &v74, v59, *(v49 + 1) - v130[3] + v52[6], 0, 0, 0);
+                      LOBYTE(internal) = (*(a2 + 16))(a2, v51, v86[3], 1, v142, &v74, v59, *(v49 + 1) - v130[3] + v52[6], 0, 0, 0);
                     }
 
                     else
                     {
-                      LOBYTE(a3) = 0;
+                      LOBYTE(internal) = 0;
                     }
                   }
                 }
@@ -2095,13 +2095,13 @@ LABEL_112:
               }
             }
 
-            LOBYTE(a3) = 1;
+            LOBYTE(internal) = 1;
           }
 
           else
           {
 LABEL_122:
-            LOBYTE(a3) = 0;
+            LOBYTE(internal) = 0;
           }
 
 LABEL_123:
@@ -2117,13 +2117,13 @@ LABEL_123:
     }
 
 LABEL_118:
-    LOBYTE(a3) = 0;
+    LOBYTE(internal) = 0;
     goto LABEL_119;
   }
 
   v35 = (*(a2 + 16))(a2, v14 | (v70 << 32), v86[3], 1, &+[MTLLoader deserializeMachOContainerWithHandlerInternal:expectAIRNTFormat:objectHandler:pipelineHandler:errorHandler:reader:]::dummy, &v74, 0, 0, v82[3], 0, 0);
 LABEL_69:
-  LOBYTE(a3) = v35;
+  LOBYTE(internal) = v35;
 LABEL_119:
   _Block_object_dispose(&v81, 8);
   _Block_object_dispose(&v85, 8);
@@ -2147,7 +2147,7 @@ LABEL_119:
   _Block_object_dispose(&v133, 8);
 LABEL_55:
   v33 = *MEMORY[0x1E69E9840];
-  return a3 & 1;
+  return internal & 1;
 }
 
 uint64_t __126__MTLLoader_deserializeMachOContainerWithHandlerInternal_expectAIRNTFormat_objectHandler_pipelineHandler_errorHandler_reader___block_invoke(void *a1, uint64_t a2, uint64_t a3, unsigned int a4)
@@ -2399,7 +2399,7 @@ uint64_t __126__MTLLoader_deserializeMachOContainerWithHandlerInternal_expectAIR
   }
 }
 
-+ (uint64_t)deserializeMachOContainerWithHandler:(uint64_t)a3 reader:
++ (uint64_t)deserializeMachOContainerWithHandler:(uint64_t)handler reader:
 {
   objc_opt_self();
   v6[0] = MEMORY[0x1E69E9820];
@@ -2407,7 +2407,7 @@ uint64_t __126__MTLLoader_deserializeMachOContainerWithHandlerInternal_expectAIR
   v6[2] = __57__MTLLoader_deserializeMachOContainerWithHandler_reader___block_invoke;
   v6[3] = &unk_1E6EEBDB0;
   v6[4] = a2;
-  return [MTLLoader deserializeMachOContainerWithHandlerInternal:v6 expectAIRNTFormat:0 objectHandler:0 pipelineHandler:0 errorHandler:&__block_literal_global_85 reader:a3];
+  return [MTLLoader deserializeMachOContainerWithHandlerInternal:v6 expectAIRNTFormat:0 objectHandler:0 pipelineHandler:0 errorHandler:&__block_literal_global_85 reader:handler];
 }
 
 uint64_t __57__MTLLoader_deserializeMachOContainerWithHandler_reader___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, unsigned int a4)
@@ -2423,7 +2423,7 @@ uint64_t __57__MTLLoader_deserializeMachOContainerWithHandler_reader___block_inv
   }
 }
 
-+ (uint64_t)deserializeAirntMachOContainerWithHandler:(uint64_t)a3 objectHandler:(uint64_t)a4 pipelineHandler:(uint64_t)a5 errorHandler:(uint64_t)a6 reader:
++ (uint64_t)deserializeAirntMachOContainerWithHandler:(uint64_t)handler objectHandler:(uint64_t)objectHandler pipelineHandler:(uint64_t)pipelineHandler errorHandler:(uint64_t)errorHandler reader:
 {
   objc_opt_self();
   v12[0] = MEMORY[0x1E69E9820];
@@ -2431,7 +2431,7 @@ uint64_t __57__MTLLoader_deserializeMachOContainerWithHandler_reader___block_inv
   v12[2] = __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandler_pipelineHandler_errorHandler_reader___block_invoke;
   v12[3] = &unk_1E6EEBDB0;
   v12[4] = a2;
-  return [MTLLoader deserializeMachOContainerWithHandlerInternal:v12 expectAIRNTFormat:1 objectHandler:a3 pipelineHandler:a4 errorHandler:a5 reader:a6];
+  return [MTLLoader deserializeMachOContainerWithHandlerInternal:v12 expectAIRNTFormat:1 objectHandler:handler pipelineHandler:objectHandler errorHandler:pipelineHandler reader:errorHandler];
 }
 
 uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandler_pipelineHandler_errorHandler_reader___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, int a7)
@@ -2447,10 +2447,10 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
   }
 }
 
-+ (uint64_t)deserializeUniversalBinaryHeaderWithHandler:(uint64_t)a3 reader:(uint64_t)a4 bytes:
++ (uint64_t)deserializeUniversalBinaryHeaderWithHandler:(uint64_t)handler reader:(uint64_t)reader bytes:
 {
   objc_opt_self();
-  result = (*(a3 + 16))(a3, 0, 8);
+  result = (*(handler + 16))(handler, 0, 8);
   if (!result)
   {
     return result;
@@ -2463,10 +2463,10 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
   {
     if (v9 == -17958193)
     {
-      v16 = *((*(a3 + 16))(a3, 0, 28) + 4);
+      v16 = *((*(handler + 16))(handler, 0, 28) + 4);
       v17 = *(a2 + 16);
 
-      return v17(a2, v16, 0, a4);
+      return v17(a2, v16, 0, reader);
     }
 
     if (v9 != 1112298573)
@@ -2474,7 +2474,7 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
       return result;
     }
 
-    (*(a2 + 16))(a2, 16777239, 0, a4);
+    (*(a2 + 16))(a2, 16777239, 0, reader);
     return 1;
   }
 
@@ -2486,7 +2486,7 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
     {
       for (i = 8; ; i += 20)
       {
-        result = (*(a3 + 16))(a3, i, 20);
+        result = (*(handler + 16))(handler, i, 20);
         if (!result)
         {
           break;
@@ -2524,7 +2524,7 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
   v14 = 8;
   do
   {
-    result = (*(a3 + 16))(a3, v14, 32);
+    result = (*(handler + 16))(handler, v14, 32);
     if (!result)
     {
       break;
@@ -2546,21 +2546,21 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
   return result;
 }
 
-+ (void)serializeMachOWrapperWithType:(uint64_t)a1 slice:(uint64_t)a2 payload:(uint64_t)a3 writer:(uint64_t)a4
++ (void)serializeMachOWrapperWithType:(uint64_t)type slice:(uint64_t)slice payload:(uint64_t)payload writer:(uint64_t)writer
 {
   v36 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   memset(&v30, 0, sizeof(v30));
-  if (a2 == 1)
+  if (slice == 1)
   {
-    v6 = *(a4 + 56);
+    v6 = *(writer + 56);
     v7 = [v6 lengthOfBytesUsingEncoding:4];
     __src = 13;
     __src_4 = (v7 & 0xFFFFFFF8) + 32;
     v33 = xmmword_185DE2230;
     std::vector<char>::__insert_with_size[abi:ne200100]<char const*,char const*>(&v30, v30.__end_, &__src, &v34, 24);
-    v8 = [v6 UTF8String];
-    std::vector<char>::__insert_with_size[abi:ne200100]<char const*,char const*>(&v30, v30.__end_, v8, &v8[v7], v7);
+    uTF8String = [v6 UTF8String];
+    std::vector<char>::__insert_with_size[abi:ne200100]<char const*,char const*>(&v30, v30.__end_, uTF8String, &uTF8String[v7], v7);
     v9 = (LODWORD(v30.__end_) - LODWORD(v30.__begin_) + 8) & 0xFFFFFFF8;
     __x[0] = 0;
     if (v9 <= v30.__end_ - v30.__begin_)
@@ -2588,7 +2588,7 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = *(a4 + 64);
+  v10 = *(writer + 64);
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v11)
   {
@@ -2610,8 +2610,8 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
         __src_4 = (v15 & 0xFFFFFFF8) + 32;
         v33 = xmmword_185DE2230;
         std::vector<char>::__insert_with_size[abi:ne200100]<char const*,char const*>(&v30, v30.__end_, &__src, &v34, 24);
-        v16 = [v14 UTF8String];
-        std::vector<char>::__insert_with_size[abi:ne200100]<char const*,char const*>(&v30, v30.__end_, v16, &v16[v15], v15);
+        uTF8String2 = [v14 UTF8String];
+        std::vector<char>::__insert_with_size[abi:ne200100]<char const*,char const*>(&v30, v30.__end_, uTF8String2, &uTF8String2[v15], v15);
         v17 = (LODWORD(v30.__end_) - LODWORD(v30.__begin_) + 8) & 0xFFFFFFF8;
         __x[0] = 0;
         if (v17 <= v30.__end_ - v30.__begin_)
@@ -2646,28 +2646,28 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
   operator new();
 }
 
-+ (uint64_t)serializeMachOContainerWithSlice:(uint64_t)a1 payload:(uint64_t)a2 count:(uint64_t)a3 writer:(unsigned int)a4
++ (uint64_t)serializeMachOContainerWithSlice:(uint64_t)slice payload:(uint64_t)payload count:(uint64_t)count writer:(unsigned int)writer
 {
   v45[37] = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (a3 && a4 && ((a2 - 16777235) <= 4 && a2 != 16777238 || a2 == -1))
+  if (count && writer && ((payload - 16777235) <= 4 && payload != 16777238 || payload == -1))
   {
-    v7 = a4 - 1;
-    if (a4 == 1)
+    v7 = writer - 1;
+    if (writer == 1)
     {
       v8 = *MEMORY[0x1E69E9840];
 
-      [MTLLoader serializeMachOWrapperWithType:0 slice:a2 payload:a3 writer:?];
+      [MTLLoader serializeMachOWrapperWithType:0 slice:payload payload:count writer:?];
     }
 
     __p = 0;
     v43 = 0;
-    v9 = a4;
+    writerCopy = writer;
     v44 = 0;
-    std::vector<MTLLoaderMachOPayload const*>::reserve(&__p, a4);
-    v39 = a2;
+    std::vector<MTLLoaderMachOPayload const*>::reserve(&__p, writer);
+    payloadCopy = payload;
     v10 = v43;
-    v11 = a4;
+    writerCopy2 = writer;
     do
     {
       if (v10 >= v44)
@@ -2699,7 +2699,7 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
           std::__allocate_at_least[abi:ne200100]<std::allocator<MTLUINT256_t const*>>(&__p, v14);
         }
 
-        *(8 * v12) = a3;
+        *(8 * v12) = count;
         v10 = (8 * v12 + 8);
         v15 = (8 * v12 - (v43 - __p));
         memcpy(v15, __p, v43 - __p);
@@ -2715,15 +2715,15 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
 
       else
       {
-        *v10++ = a3;
+        *v10++ = count;
       }
 
       v43 = v10;
-      a3 += 112;
-      --v11;
+      count += 112;
+      --writerCopy2;
     }
 
-    while (v11);
+    while (writerCopy2);
     v17 = 126 - 2 * __clz((v10 - __p) >> 3);
     if (v10 == __p)
     {
@@ -2756,7 +2756,7 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
 
         memset(&v41, 0, sizeof(v41));
         v29 = (2 * v28) | 1u;
-        std::vector<unsigned char>::__append(&v41, v9 * v29 + 1);
+        std::vector<unsigned char>::__append(&v41, writerCopy * v29 + 1);
         v30 = 0;
         begin = v41.__begin_;
         *v41.__begin_ = 32;
@@ -2783,15 +2783,15 @@ uint64_t __105__MTLLoader_deserializeAirntMachOContainerWithHandler_objectHandle
 
           ++v30;
           v32 += v29;
-          if (v30 == v9)
+          if (v30 == writerCopy)
           {
             memset(&v40, 0, sizeof(v40));
-            std::vector<unsigned char>::reserve(&v40, 16 * v9);
+            std::vector<unsigned char>::reserve(&v40, 16 * writerCopy);
             v45[0] = 0;
             v45[1] = v45;
             v45[2] = 0x2020000000;
             v45[3] = 0;
-            [MTLLoader serializeMachOWrapperWithType:0 slice:v39 payload:*__p writer:?];
+            [MTLLoader serializeMachOWrapperWithType:0 slice:payloadCopy payload:*__p writer:?];
           }
         }
       }
@@ -2837,24 +2837,24 @@ LABEL_34:
   return 0;
 }
 
-+ (uint64_t)serializeUniversalBinaryHeaderWithSlice:(_DWORD *)a3 offset:(_DWORD *)a4 length:(unsigned int)a5 count:(uint64_t)a6 writer:
++ (uint64_t)serializeUniversalBinaryHeaderWithSlice:(_DWORD *)slice offset:(_DWORD *)offset length:(unsigned int)length count:(uint64_t)count writer:
 {
   objc_opt_self();
-  if (a5)
+  if (length)
   {
-    if (a5 == 1)
+    if (length == 1)
     {
       return 1;
     }
 
     v26[0] = -1095041334;
-    v26[1] = bswap32(a5);
-    LODWORD(result) = (*(a6 + 16))(a6, v26, 8);
-    v12 = a5;
-    v13 = 20 * a5 + 8;
+    v26[1] = bswap32(length);
+    LODWORD(result) = (*(count + 16))(count, v26, 8);
+    lengthCopy = length;
+    v13 = 20 * length + 8;
     v14 = (a2 + 4);
-    v15 = a4;
-    v16 = a3;
+    offsetCopy = offset;
+    sliceCopy = slice;
     while (1)
     {
       v17 = *(v14 - 1);
@@ -2863,45 +2863,45 @@ LABEL_34:
         return 0;
       }
 
-      v20 = (a3 == 0) & result;
-      if (a3 && ((result ^ 1) & 1) == 0)
+      v20 = (slice == 0) & result;
+      if (slice && ((result ^ 1) & 1) == 0)
       {
-        v20 = v16[1] == 0;
+        v20 = sliceCopy[1] == 0;
       }
 
-      v21 = (a4 == 0) & v20;
-      if (a4 && v20)
+      v21 = (offset == 0) & v20;
+      if (offset && v20)
       {
-        v21 = v15[1] == 0;
+        v21 = offsetCopy[1] == 0;
       }
 
       v22 = bswap32(*v14);
       v25[0] = bswap32(v17);
       v25[1] = v22;
-      v23 = a3 ? *v16 : 0;
+      v23 = slice ? *sliceCopy : 0;
       v25[2] = bswap32(v23);
-      v24 = a4 ? *v15 : 0;
+      v24 = offset ? *offsetCopy : 0;
       v25[3] = bswap32(v24);
       v25[4] = 50331648;
-      if (a3)
+      if (slice)
       {
-        if (*v16 < v13)
+        if (*sliceCopy < v13)
         {
           return 0;
         }
       }
 
-      if (a4 && !*v15)
+      if (offset && !*offsetCopy)
       {
         return 0;
       }
 
-      if (a3)
+      if (slice)
       {
-        if ((((*v16 & 7) == 0) & v21) == 0)
+        if ((((*sliceCopy & 7) == 0) & v21) == 0)
         {
           result = 0;
-          if ((*v16 & 7) != 0)
+          if ((*sliceCopy & 7) != 0)
           {
             return result;
           }
@@ -2916,12 +2916,12 @@ LABEL_34:
         goto LABEL_36;
       }
 
-      result = (*(a6 + 16))(a6, v25, 20);
+      result = (*(count + 16))(count, v25, 20);
 LABEL_36:
-      v16 += 2;
-      v15 += 2;
+      sliceCopy += 2;
+      offsetCopy += 2;
       v14 += 2;
-      if (!--v12)
+      if (!--lengthCopy)
       {
         return result;
       }
@@ -2931,7 +2931,7 @@ LABEL_36:
   return 0;
 }
 
-+ (uint64_t)serializePaddingForOffset:(uint64_t)a3 writer:
++ (uint64_t)serializePaddingForOffset:(uint64_t)offset writer:
 {
   objc_opt_self();
   v5 = (a2 + 7) & 0xFFFFFFF8;
@@ -2940,12 +2940,12 @@ LABEL_36:
     return 1;
   }
 
-  v6 = *(a3 + 16);
+  v6 = *(offset + 16);
 
-  return v6(a3, &+[MTLLoader serializePaddingForOffset:writer:]::kPadding, v5 - a2);
+  return v6(offset, &+[MTLLoader serializePaddingForOffset:writer:]::kPadding, v5 - a2);
 }
 
-+ (unint64_t)serializeMachOContainerWithSlice:(unint64_t *)result payload:(unint64_t *)a2 count:(uint64_t)a3 writer:(char)a4
++ (unint64_t)serializeMachOContainerWithSlice:(unint64_t *)result payload:(unint64_t *)payload count:(uint64_t)count writer:(char)writer
 {
   v7 = result;
   while (2)
@@ -2958,7 +2958,7 @@ LABEL_36:
         while (1)
         {
           v7 = v8;
-          v9 = a2 - v8;
+          v9 = payload - v8;
           if (v9 > 2)
           {
             switch(v9)
@@ -2983,7 +2983,7 @@ LABEL_36:
                   v182 = 1;
                 }
 
-                v253 = *(a2 - 1);
+                v253 = *(payload - 1);
                 v254 = bswap64(v253[1]);
                 v255 = bswap64(v179[1]);
                 if (v254 == v255 && (v254 = bswap64(v253[2]), v255 = bswap64(v179[2]), v254 == v255) && (v254 = bswap64(v253[3]), v255 = bswap64(v179[3]), v254 == v255) && (v254 = bswap64(v253[4]), v255 = bswap64(v179[4]), v254 == v255))
@@ -3012,7 +3012,7 @@ LABEL_36:
                   {
                     *v8 = v179;
                     v8[1] = v178;
-                    v270 = *(a2 - 1);
+                    v270 = *(payload - 1);
                     v271 = bswap64(v270[1]);
                     v272 = bswap64(v178[1]);
                     if (v271 == v272 && (v271 = bswap64(v270[2]), v272 = bswap64(v178[2]), v271 == v272) && (v271 = bswap64(v270[3]), v272 = bswap64(v178[3]), v271 == v272) && (v271 = bswap64(v270[4]), v272 = bswap64(v178[4]), v271 == v272))
@@ -3038,7 +3038,7 @@ LABEL_36:
                     v8[1] = v270;
                   }
 
-                  *(a2 - 1) = v178;
+                  *(payload - 1) = v178;
                   return result;
                 }
 
@@ -3048,7 +3048,7 @@ LABEL_36:
                 }
 
                 v8[1] = v253;
-                *(a2 - 1) = v179;
+                *(payload - 1) = v179;
                 v257 = *v8;
                 v248 = v8[1];
                 v258 = bswap64(v248[1]);
@@ -3082,10 +3082,10 @@ LABEL_565:
                 return result;
               case 4:
 
-                return std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**,0>(v8, v8 + 1, v8 + 2, a2 - 1);
+                return std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**,0>(v8, v8 + 1, v8 + 2, payload - 1);
               case 5:
                 result = std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**,0>(v8, v8 + 1, v8 + 2, v8 + 3);
-                v168 = *(a2 - 1);
+                v168 = *(payload - 1);
                 v169 = v8[3];
                 v170 = bswap64(v168[1]);
                 v171 = bswap64(v169[1]);
@@ -3110,7 +3110,7 @@ LABEL_565:
                 }
 
                 v8[3] = v168;
-                *(a2 - 1) = v169;
+                *(payload - 1) = v169;
                 v249 = v8[2];
                 v248 = v8[3];
                 v250 = bswap64(v248[1]);
@@ -3207,7 +3207,7 @@ LABEL_582:
 
             if (v9 == 2)
             {
-              v173 = *(a2 - 1);
+              v173 = *(payload - 1);
               v174 = *v8;
               v175 = bswap64(v173[1]);
               v176 = bswap64((*v8)[1]);
@@ -3229,7 +3229,7 @@ LABEL_582:
               if (v177 < 0)
               {
                 *v8 = v173;
-                *(a2 - 1) = v174;
+                *(payload - 1) = v174;
               }
 
               return result;
@@ -3239,8 +3239,8 @@ LABEL_582:
           if (v9 <= 23)
           {
             v183 = v8 + 1;
-            v185 = v8 == a2 || v183 == a2;
-            if (a4)
+            v185 = v8 == payload || v183 == payload;
+            if (writer)
             {
               if (!v185)
               {
@@ -3303,7 +3303,7 @@ LABEL_401:
                   v186 += 8;
                 }
 
-                while (v187 + 1 != a2);
+                while (v187 + 1 != payload);
               }
             }
 
@@ -3354,15 +3354,15 @@ LABEL_401:
                 v183 = v7 + 1;
               }
 
-              while (v7 + 1 != a2);
+              while (v7 + 1 != payload);
             }
 
             return result;
           }
 
-          if (!a3)
+          if (!count)
           {
-            if (v8 != a2)
+            if (v8 != payload)
             {
               v198 = (v9 - 2) >> 1;
               v199 = v198;
@@ -3553,15 +3553,15 @@ LABEL_445:
                 }
 
                 while (v222 <= ((v9 - 2) >> 1));
-                if (v226 == --a2)
+                if (v226 == --payload)
                 {
                   *v226 = v223;
                 }
 
                 else
                 {
-                  *v226 = *a2;
-                  *a2 = v223;
+                  *v226 = *payload;
+                  *payload = v223;
                   v234 = (v226 - v8 + 8) >> 3;
                   v235 = v234 < 2;
                   v236 = v234 - 2;
@@ -3631,7 +3631,7 @@ LABEL_484:
 
           v10 = &v8[v9 >> 1];
           v11 = v10;
-          v12 = *(a2 - 1);
+          v12 = *(payload - 1);
           if (v9 >= 0x81)
           {
             v13 = *v10;
@@ -3669,7 +3669,7 @@ LABEL_31:
 
                 *v8 = v13;
                 *v10 = v14;
-                v26 = *(a2 - 1);
+                v26 = *(payload - 1);
                 v27 = bswap64(v26[1]);
                 v28 = bswap64(v14[1]);
                 if (v27 == v28 && (v27 = bswap64(v26[2]), v28 = bswap64(v14[2]), v27 == v28) && (v27 = bswap64(v26[3]), v28 = bswap64(v14[3]), v27 == v28) && (v27 = bswap64(v26[4]), v28 = bswap64(v14[4]), v27 == v28))
@@ -3691,7 +3691,7 @@ LABEL_31:
                 {
                   *v10 = v26;
 LABEL_92:
-                  *(a2 - 1) = v14;
+                  *(payload - 1) = v14;
                 }
 
 LABEL_93:
@@ -3715,7 +3715,7 @@ LABEL_93:
                   v52 = 1;
                 }
 
-                v53 = *(a2 - 2);
+                v53 = *(payload - 2);
                 v54 = bswap64(v53[1]);
                 v55 = bswap64(v48[1]);
                 if (v54 == v55 && (v54 = bswap64(v53[2]), v55 = bswap64(v48[2]), v54 == v55) && (v54 = bswap64(v53[3]), v55 = bswap64(v48[3]), v54 == v55) && (v54 = bswap64(v53[4]), v55 = bswap64(v48[4]), v54 == v55))
@@ -3732,7 +3732,7 @@ LABEL_106:
 
                     v8[1] = v48;
                     *v47 = v49;
-                    v57 = *(a2 - 2);
+                    v57 = *(payload - 2);
                     v58 = bswap64(v57[1]);
                     v59 = bswap64(v49[1]);
                     if (v58 == v59 && (v58 = bswap64(v57[2]), v59 = bswap64(v49[2]), v58 == v59) && (v58 = bswap64(v57[3]), v59 = bswap64(v49[3]), v58 == v59) && (v58 = bswap64(v57[4]), v59 = bswap64(v49[4]), v58 == v59))
@@ -3754,7 +3754,7 @@ LABEL_106:
                     {
                       *v47 = v57;
 LABEL_135:
-                      *(a2 - 2) = v49;
+                      *(payload - 2) = v49;
                     }
 
 LABEL_136:
@@ -3779,7 +3779,7 @@ LABEL_136:
                       v72 = 1;
                     }
 
-                    v73 = *(a2 - 3);
+                    v73 = *(payload - 3);
                     v74 = bswap64(v73[1]);
                     v75 = bswap64(v67[1]);
                     if (v74 == v75 && (v74 = bswap64(v73[2]), v75 = bswap64(v67[2]), v74 == v75) && (v74 = bswap64(v73[3]), v75 = bswap64(v67[3]), v74 == v75) && (v74 = bswap64(v73[4]), v75 = bswap64(v67[4]), v74 == v75))
@@ -3796,7 +3796,7 @@ LABEL_149:
 
                         v8[2] = v67;
                         *v66 = v69;
-                        v77 = *(a2 - 3);
+                        v77 = *(payload - 3);
                         v78 = bswap64(v77[1]);
                         v79 = bswap64(v69[1]);
                         if (v78 == v79 && (v78 = bswap64(v77[2]), v79 = bswap64(v69[2]), v78 == v79) && (v78 = bswap64(v77[3]), v79 = bswap64(v69[3]), v78 == v79) && (v78 = bswap64(v77[4]), v79 = bswap64(v69[4]), v78 == v79))
@@ -3818,7 +3818,7 @@ LABEL_149:
                         {
                           *v66 = v77;
 LABEL_176:
-                          *(a2 - 3) = v69;
+                          *(payload - 3) = v69;
                         }
 
 LABEL_177:
@@ -3969,7 +3969,7 @@ LABEL_216:
                     if (v76 < 0)
                     {
                       *v66 = v73;
-                      *(a2 - 3) = v67;
+                      *(payload - 3) = v67;
                       v81 = *v66;
                       v82 = v8[2];
                       v83 = bswap64((*v66)[1]);
@@ -4024,7 +4024,7 @@ LABEL_170:
                 if (v56 < 0)
                 {
                   *v47 = v53;
-                  *(a2 - 2) = v48;
+                  *(payload - 2) = v48;
                   v61 = *v47;
                   v62 = v8[1];
                   v63 = bswap64((*v47)[1]);
@@ -4079,7 +4079,7 @@ LABEL_127:
             if (v25 < 0)
             {
               *v10 = v12;
-              *(a2 - 1) = v13;
+              *(payload - 1) = v13;
               v37 = *v10;
               v38 = *v8;
               v39 = bswap64((*v10)[1]);
@@ -4171,7 +4171,7 @@ LABEL_65:
               if (v32 < 0)
               {
                 *v8 = v12;
-                *(a2 - 1) = v18;
+                *(payload - 1) = v18;
                 v42 = *v8;
                 v43 = *v11;
                 v44 = bswap64((*v8)[1]);
@@ -4213,7 +4213,7 @@ LABEL_86:
 
           *v11 = v18;
           *v8 = v19;
-          v33 = *(a2 - 1);
+          v33 = *(payload - 1);
           v34 = bswap64(v33[1]);
           v35 = bswap64(v19[1]);
           if (v34 == v35 && (v34 = bswap64(v33[2]), v35 = bswap64(v19[2]), v34 == v35) && (v34 = bswap64(v33[3]), v35 = bswap64(v19[3]), v34 == v35) && (v34 = bswap64(v33[4]), v35 = bswap64(v19[4]), v34 == v35))
@@ -4235,13 +4235,13 @@ LABEL_86:
           {
             *v8 = v33;
 LABEL_133:
-            *(a2 - 1) = v19;
+            *(payload - 1) = v19;
           }
 
 LABEL_218:
-          --a3;
+          --count;
           v102 = *v8;
-          if (a4)
+          if (writer)
           {
             break;
           }
@@ -4272,7 +4272,7 @@ LABEL_224:
             break;
           }
 
-          v137 = *(a2 - 1);
+          v137 = *(payload - 1);
           v138 = bswap64(v102[1]);
           v139 = bswap64(v137[1]);
           if (v138 == v139 && (v138 = bswap64(v102[2]), v139 = bswap64(v137[2]), v138 == v139) && (v138 = bswap64(v102[3]), v139 = bswap64(v137[3]), v138 == v139) && (v138 = bswap64(v102[4]), v139 = bswap64(v137[4]), v138 == v139))
@@ -4345,7 +4345,7 @@ LABEL_224:
             do
             {
               v8 = v141;
-              if (v141 >= a2)
+              if (v141 >= payload)
               {
                 break;
               }
@@ -4377,13 +4377,13 @@ LABEL_304:
             while ((v145 & 0x80000000) == 0);
           }
 
-          v151 = a2;
-          if (v8 < a2)
+          payloadCopy2 = payload;
+          if (v8 < payload)
           {
-            v151 = a2;
+            payloadCopy2 = payload;
             do
             {
-              v153 = *--v151;
+              v153 = *--payloadCopy2;
               v152 = v153;
               v154 = bswap64(v102[1]);
               v155 = bswap64(v153[1]);
@@ -4413,14 +4413,14 @@ LABEL_304:
             while (v156 < 0);
           }
 
-          if (v8 < v151)
+          if (v8 < payloadCopy2)
           {
             v157 = *v8;
-            v158 = *v151;
+            v158 = *payloadCopy2;
             do
             {
               *v8 = v158;
-              *v151 = v157;
+              *payloadCopy2 = v157;
               do
               {
                 do
@@ -4468,7 +4468,7 @@ LABEL_304:
               while ((v162 & 0x80000000) == 0);
               do
               {
-                v164 = *--v151;
+                v164 = *--payloadCopy2;
                 v158 = v164;
                 v165 = bswap64(v102[1]);
                 v166 = bswap64(v164[1]);
@@ -4498,7 +4498,7 @@ LABEL_304:
               while (v163 < 0);
             }
 
-            while (v8 < v151);
+            while (v8 < payloadCopy2);
           }
 
           v167 = v8 - 1;
@@ -4507,7 +4507,7 @@ LABEL_304:
             *v7 = *v167;
           }
 
-          a4 = 0;
+          writer = 0;
           *v167 = v102;
         }
 
@@ -4537,13 +4537,13 @@ LABEL_304:
 
         while (v111 < 0);
         v112 = &v8[v107];
-        v113 = a2;
+        payloadCopy4 = payload;
         if (v107 == 1)
         {
-          v113 = a2;
-          while (v112 < v113)
+          payloadCopy4 = payload;
+          while (v112 < payloadCopy4)
           {
-            v120 = *--v113;
+            v120 = *--payloadCopy4;
             v119 = v120;
             v121 = bswap64(v120[1]);
             v122 = bswap64(v102[1]);
@@ -4581,7 +4581,7 @@ LABEL_304:
           {
             do
             {
-              v115 = *--v113;
+              v115 = *--payloadCopy4;
               v114 = v115;
               v116 = bswap64(v115[1]);
               v117 = bswap64(v102[1]);
@@ -4623,16 +4623,16 @@ LABEL_304:
           while ((v118 & 0x80000000) == 0);
         }
 
-        if (v112 >= v113)
+        if (v112 >= payloadCopy4)
         {
           v135 = v112 - 1;
         }
 
         else
         {
-          v124 = *v113;
+          v124 = *payloadCopy4;
           v125 = v112;
-          v126 = v113;
+          v126 = payloadCopy4;
           do
           {
             *v125 = v124;
@@ -4724,20 +4724,20 @@ LABEL_304:
         }
 
         *v135 = v102;
-        if (v112 >= v113)
+        if (v112 >= payloadCopy4)
         {
           break;
         }
 
 LABEL_287:
-        result = std::__introsort<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**,false>(v7, v135, a3, a4 & 1);
-        a4 = 0;
+        result = std::__introsort<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**,false>(v7, v135, count, writer & 1);
+        writer = 0;
         v8 = v135 + 1;
       }
 
       v136 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**>(v8, v135);
       v8 = v135 + 1;
-      result = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**>(v135 + 1, a2);
+      result = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[MTLLoader serializeMachOContainerWithSlice:payload:count:writer:]::$_2 &,MTLLoaderMachOPayload const**>(v135 + 1, payload);
       if (result)
       {
         break;
@@ -4749,7 +4749,7 @@ LABEL_287:
       }
     }
 
-    a2 = v135;
+    payload = v135;
     if (!v136)
     {
       continue;
@@ -4759,41 +4759,41 @@ LABEL_287:
   }
 }
 
-- (uint64_t)loadFileWithURL:(NSError *)a3 error:(NSString *)a4 errorDomain:(uint64_t)a5 invalidFileErrorCode:
+- (uint64_t)loadFileWithURL:(NSError *)l error:(NSString *)error errorDomain:(uint64_t)domain invalidFileErrorCode:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   if (!a2)
   {
-    if (a3)
+    if (l)
     {
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is nil" forKey:*MEMORY[0x1E696A578]];
       v9 = objc_alloc(MEMORY[0x1E696ABC0]);
-      *a3 = [v9 initWithDomain:*MEMORY[0x1E696A978] code:-1100 userInfo:v8];
+      *l = [v9 initWithDomain:*MEMORY[0x1E696A978] code:-1100 userInfo:v8];
     }
 
     return 0;
   }
 
-  v6 = *(a1 + 8);
+  v6 = *(self + 8);
 
-  return LoaderGlobalState::loadFile(v6, a2, a3, a4, a5);
+  return LoaderGlobalState::loadFile(v6, a2, l, error, domain);
 }
 
-- (void)releaseLoadedFile:(uint64_t)a1
+- (void)releaseLoadedFile:(uint64_t)file
 {
-  if (a1)
+  if (file)
   {
-    LoaderGlobalState::releaseFile(*(a1 + 8), a2);
+    LoaderGlobalState::releaseFile(*(file + 8), a2);
   }
 }
 
-- (uint64_t)associateLoadedFile:(uint64_t)a3 withObject:
+- (uint64_t)associateLoadedFile:(uint64_t)file withObject:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -4804,14 +4804,14 @@ LABEL_287:
   v10 = __Block_byref_object_copy__7;
   v11 = __Block_byref_object_dispose__7;
   v12 = 0;
-  v3 = *(a1 + 16);
+  v3 = *(self + 16);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__MTLLoader_associateLoadedFile_withObject___block_invoke;
   v6[3] = &unk_1E6EEBC30;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = a2;
-  v6[6] = a3;
+  v6[6] = file;
   v6[7] = &v7;
   dispatch_sync(v3, v6);
   v4 = v8[5];
@@ -4819,22 +4819,22 @@ LABEL_287:
   return v4;
 }
 
-- (void)disassociateLoadedFile:(uint64_t)a1 withObject:(MTLLoadedFile *)a2
+- (void)disassociateLoadedFile:(uint64_t)file withObject:(MTLLoadedFile *)object
 {
-  v4 = a2;
-  if (a1)
+  objectCopy = object;
+  if (file)
   {
-    v3 = std::__hash_table<std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>,std::__unordered_map_hasher<MTLFunctionStitchingFunctionNode *,std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>,std::hash<MTLFunctionStitchingFunctionNode *>,std::equal_to<MTLFunctionStitchingFunctionNode *>,true>,std::__unordered_map_equal<MTLFunctionStitchingFunctionNode *,std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>,std::equal_to<MTLFunctionStitchingFunctionNode *>,std::hash<MTLFunctionStitchingFunctionNode *>,true>,std::allocator<std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>>>::find<MTLFunctionStitchingFunctionNode *>((a1 + 24), &v4);
-    std::__hash_table<std::__hash_value_type<MTLLoadedFile *,objc_object *>,std::__unordered_map_hasher<MTLLoadedFile *,std::__hash_value_type<MTLLoadedFile *,objc_object *>,std::hash<MTLLoadedFile *>,std::equal_to<MTLLoadedFile *>,true>,std::__unordered_map_equal<MTLLoadedFile *,std::__hash_value_type<MTLLoadedFile *,objc_object *>,std::equal_to<MTLLoadedFile *>,std::hash<MTLLoadedFile *>,true>,std::allocator<std::__hash_value_type<MTLLoadedFile *,objc_object *>>>::erase((a1 + 24), v3);
-    LoaderGlobalState::releaseFile(*(a1 + 8), v4);
+    v3 = std::__hash_table<std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>,std::__unordered_map_hasher<MTLFunctionStitchingFunctionNode *,std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>,std::hash<MTLFunctionStitchingFunctionNode *>,std::equal_to<MTLFunctionStitchingFunctionNode *>,true>,std::__unordered_map_equal<MTLFunctionStitchingFunctionNode *,std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>,std::equal_to<MTLFunctionStitchingFunctionNode *>,std::hash<MTLFunctionStitchingFunctionNode *>,true>,std::allocator<std::__hash_value_type<MTLFunctionStitchingFunctionNode *,unsigned long>>>::find<MTLFunctionStitchingFunctionNode *>((file + 24), &objectCopy);
+    std::__hash_table<std::__hash_value_type<MTLLoadedFile *,objc_object *>,std::__unordered_map_hasher<MTLLoadedFile *,std::__hash_value_type<MTLLoadedFile *,objc_object *>,std::hash<MTLLoadedFile *>,std::equal_to<MTLLoadedFile *>,true>,std::__unordered_map_equal<MTLLoadedFile *,std::__hash_value_type<MTLLoadedFile *,objc_object *>,std::equal_to<MTLLoadedFile *>,std::hash<MTLLoadedFile *>,true>,std::allocator<std::__hash_value_type<MTLLoadedFile *,objc_object *>>>::erase((file + 24), v3);
+    LoaderGlobalState::releaseFile(*(file + 8), objectCopy);
   }
 }
 
-- (void)executeBlockForLoadedFile:(int)a3 withAssociatedObject:(dispatch_block_t)block block:
+- (void)executeBlockForLoadedFile:(int)file withAssociatedObject:(dispatch_block_t)block block:
 {
-  if (a1)
+  if (self)
   {
-    dispatch_sync(*(a1 + 16), block);
+    dispatch_sync(*(self + 16), block);
   }
 }
 

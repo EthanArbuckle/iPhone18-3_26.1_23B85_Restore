@@ -1,13 +1,13 @@
 @interface RSSceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation RSSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  sceneCopy = scene;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -15,16 +15,16 @@
     [v26 handleFailureInMethod:a2 object:self file:@"RSSceneDelegate.m" lineNumber:52 description:@"Connecting scene is not a window scene!"];
   }
 
-  v10 = [v9 userActivities];
-  v11 = [v10 anyObject];
+  userActivities = [optionsCopy userActivities];
+  anyObject = [userActivities anyObject];
 
-  v12 = [v8 _FBSScene];
-  v13 = [v12 hostHandle];
-  v14 = [v13 auditToken];
+  _FBSScene = [sceneCopy _FBSScene];
+  hostHandle = [_FBSScene hostHandle];
+  auditToken = [hostHandle auditToken];
 
-  if (v14)
+  if (auditToken)
   {
-    [v14 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -51,8 +51,8 @@
   v18 = 0;
 LABEL_11:
 
-  v19 = [v11 activityType];
-  if ([v19 isEqualToString:@"RSInputRoutingActivityType"])
+  activityType = [anyObject activityType];
+  if ([activityType isEqualToString:@"RSInputRoutingActivityType"])
   {
     v20 = [_TtC19AVKitRoutingService32RSInputRoutePickerViewController createWithClientIdentifier:v18];
   }
@@ -63,15 +63,15 @@ LABEL_11:
   }
 
   v21 = v20;
-  v22 = v8;
+  v22 = sceneCopy;
   v23 = [[UIWindow alloc] initWithWindowScene:v22];
 
   [(RSSceneDelegate *)self setWindow:v23];
-  v24 = [(RSSceneDelegate *)self window];
-  [v24 setRootViewController:v21];
+  window = [(RSSceneDelegate *)self window];
+  [window setRootViewController:v21];
 
-  v25 = [(RSSceneDelegate *)self window];
-  [v25 makeKeyAndVisible];
+  window2 = [(RSSceneDelegate *)self window];
+  [window2 makeKeyAndVisible];
 }
 
 @end

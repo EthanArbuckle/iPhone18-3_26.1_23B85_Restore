@@ -1,11 +1,11 @@
 @interface DataProviderKeyWrapper
-- (DataProviderKeyWrapper)initWithKey:(const void *)a3;
+- (DataProviderKeyWrapper)initWithKey:(const void *)key;
 - (NSString)description;
 @end
 
 @implementation DataProviderKeyWrapper
 
-- (DataProviderKeyWrapper)initWithKey:(const void *)a3
+- (DataProviderKeyWrapper)initWithKey:(const void *)key
 {
   v9.receiver = self;
   v9.super_class = DataProviderKeyWrapper;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_layer = *a3;
-    v6 = [NSData dataWithBytes:*(a3 + 1) length:*(a3 + 2) - *(a3 + 1)];
+    v4->_layer = *key;
+    v6 = [NSData dataWithBytes:*(key + 1) length:*(key + 2) - *(key + 1)];
     serviceKey = v5->_serviceKey;
     v5->_serviceKey = v6;
   }

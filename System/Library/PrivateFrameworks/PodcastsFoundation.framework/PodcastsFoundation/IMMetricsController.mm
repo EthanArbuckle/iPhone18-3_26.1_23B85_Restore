@@ -1,10 +1,10 @@
 @interface IMMetricsController
 + (id)queue;
-- (IMMetricsController)initWithTopic:(id)a3;
+- (IMMetricsController)initWithTopic:(id)topic;
 - (id)flushImmediately;
-- (void)addAdditionalFieldsToEvent:(id)a3 completion:(id)a4;
-- (void)getMetricsController:(id)a3;
-- (void)recordEvent:(id)a3;
+- (void)addAdditionalFieldsToEvent:(id)event completion:(id)completion;
+- (void)getMetricsController:(id)controller;
+- (void)recordEvent:(id)event;
 @end
 
 @implementation IMMetricsController
@@ -29,16 +29,16 @@ void __28__IMMetricsController_queue__block_invoke()
   queue_queue = v0;
 }
 
-- (IMMetricsController)initWithTopic:(id)a3
+- (IMMetricsController)initWithTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   v8.receiver = self;
   v8.super_class = IMMetricsController;
   v5 = [(IMMetricsController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IMMetricsController *)v5 setTopic:v4];
+    [(IMMetricsController *)v5 setTopic:topicCopy];
     [(IMMetricsController *)v6 setIsLoading:0];
     [(IMMetricsController *)v6 setShouldIgnoreDNU:0];
     [(IMMetricsController *)v6 setShouldSuppressUserInfo:0];
@@ -49,9 +49,9 @@ void __28__IMMetricsController_queue__block_invoke()
 
 - (id)flushImmediately
 {
-  v3 = [(IMMetricsController *)self metricsController];
+  metricsController = [(IMMetricsController *)self metricsController];
 
-  if (v3)
+  if (metricsController)
   {
     v4 = objc_alloc_init(MEMORY[0x1E698CAD0]);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -69,8 +69,8 @@ void __28__IMMetricsController_queue__block_invoke()
     v13 = v6;
     v7 = v6;
     v8 = _Block_copy(v12);
-    v9 = [objc_opt_class() queue];
-    dispatch_async(v9, v8);
+    queue = [objc_opt_class() queue];
+    dispatch_async(queue, v8);
 
     v10 = v5;
   }
@@ -162,16 +162,16 @@ LABEL_6:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordEvent:(id)a3
+- (void)recordEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__IMMetricsController_recordEvent___block_invoke;
   v6[3] = &unk_1E8569E40;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = eventCopy;
+  selfCopy = self;
+  v5 = eventCopy;
   [(IMMetricsController *)self getMetricsController:v6];
 }
 
@@ -200,18 +200,18 @@ void __35__IMMetricsController_recordEvent___block_invoke(uint64_t a1, void *a2)
   [v9 addAdditionalFieldsToEvent:v8 completion:v12];
 }
 
-- (void)addAdditionalFieldsToEvent:(id)a3 completion:(id)a4
+- (void)addAdditionalFieldsToEvent:(id)event completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = +[IMNetworkObserver sharedInstance];
-  v9 = [v8 connectionTypeHeader];
+  connectionTypeHeader = [v8 connectionTypeHeader];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = connectionTypeHeader;
   }
 
   else
@@ -221,8 +221,8 @@ void __35__IMMetricsController_recordEvent___block_invoke(uint64_t a1, void *a2)
 
   [v7 setObject:v10 forKey:@"connection"];
   v11 = MEMORY[0x1E698CBB8];
-  v12 = [MEMORY[0x1E698CAC8] currentProcess];
-  v13 = [v11 userAgentForProcessInfo:v12];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  v13 = [v11 userAgentForProcessInfo:currentProcess];
 
   if ([v13 length])
   {
@@ -230,19 +230,19 @@ void __35__IMMetricsController_recordEvent___block_invoke(uint64_t a1, void *a2)
   }
 
   v14 = +[IMURLBag sharedInstance];
-  v15 = [v14 metricsDictionary];
-  v16 = [objc_opt_class() queue];
+  metricsDictionary = [v14 metricsDictionary];
+  queue = [objc_opt_class() queue];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __61__IMMetricsController_addAdditionalFieldsToEvent_completion___block_invoke;
   v20[3] = &unk_1E8569E90;
-  v21 = v5;
+  v21 = eventCopy;
   v22 = v7;
-  v23 = v6;
-  v17 = v6;
+  v23 = completionCopy;
+  v17 = completionCopy;
   v18 = v7;
-  v19 = v5;
-  [v15 asyncValueOnQueue:v16 withCompletion:v20];
+  v19 = eventCopy;
+  [metricsDictionary asyncValueOnQueue:queue withCompletion:v20];
 }
 
 void __61__IMMetricsController_addAdditionalFieldsToEvent_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -337,27 +337,27 @@ void __61__IMMetricsController_addAdditionalFieldsToEvent_completion___block_inv
   }
 }
 
-- (void)getMetricsController:(id)a3
+- (void)getMetricsController:(id)controller
 {
-  v4 = a3;
-  v5 = [(IMMetricsController *)self metricsController];
+  controllerCopy = controller;
+  metricsController = [(IMMetricsController *)self metricsController];
 
-  if (v5)
+  if (metricsController)
   {
-    v6 = [(IMMetricsController *)self metricsController];
-    v4[2](v4, v6);
+    metricsController2 = [(IMMetricsController *)self metricsController];
+    controllerCopy[2](controllerCopy, metricsController2);
   }
 
   else
   {
-    v7 = [objc_opt_class() queue];
+    queue = [objc_opt_class() queue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __44__IMMetricsController_getMetricsController___block_invoke;
     v8[3] = &unk_1E85692C8;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v7, v8);
+    v9 = controllerCopy;
+    dispatch_async(queue, v8);
   }
 }
 

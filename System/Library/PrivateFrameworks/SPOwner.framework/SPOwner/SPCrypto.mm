@@ -1,40 +1,40 @@
 @interface SPCrypto
-+ (_CCECCryptor)diversifyKey:(id)a3 entropyData:(id)a4;
-+ (_CCECCryptor)importKey:(id)a3 fromFormat:(unsigned int)a4;
-+ (id)antiTrackingKeyFromSharedSecretKey:(id)a3;
-+ (id)compactKey:(id)a3;
-+ (id)deriveKeyWithKeyData:(id)a3 sharedData:(id)a4 keyLength:(unint64_t)a5;
-+ (id)deriveWithPublicKey:(id)a3 sharedSecretKey:(id *)a4;
-+ (id)exportKey:(_CCECCryptor *)a3 toFormat:(unsigned int)a4;
-+ (id)ratchetSharedSecretKey:(id)a3 ratchetCount:(unint64_t)a4;
-+ (void)generateTokensWithPublicKey:(id)a3 sharedSecretKey:(id)a4 initialRatchetsToSkip:(unint64_t)a5 ratchetStep:(id)a6;
++ (_CCECCryptor)diversifyKey:(id)key entropyData:(id)data;
++ (_CCECCryptor)importKey:(id)key fromFormat:(unsigned int)format;
++ (id)antiTrackingKeyFromSharedSecretKey:(id)key;
++ (id)compactKey:(id)key;
++ (id)deriveKeyWithKeyData:(id)data sharedData:(id)sharedData keyLength:(unint64_t)length;
++ (id)deriveWithPublicKey:(id)key sharedSecretKey:(id *)secretKey;
++ (id)exportKey:(_CCECCryptor *)key toFormat:(unsigned int)format;
++ (id)ratchetSharedSecretKey:(id)key ratchetCount:(unint64_t)count;
++ (void)generateTokensWithPublicKey:(id)key sharedSecretKey:(id)secretKey initialRatchetsToSkip:(unint64_t)skip ratchetStep:(id)step;
 @end
 
 @implementation SPCrypto
 
-+ (void)generateTokensWithPublicKey:(id)a3 sharedSecretKey:(id)a4 initialRatchetsToSkip:(unint64_t)a5 ratchetStep:(id)a6
++ (void)generateTokensWithPublicKey:(id)key sharedSecretKey:(id)secretKey initialRatchetsToSkip:(unint64_t)skip ratchetStep:(id)step
 {
-  v9 = a3;
-  v10 = a6;
+  keyCopy = key;
+  stepCopy = step;
   v15 = 0;
-  v11 = [SPCrypto ratchetSharedSecretKey:a4 ratchetCount:a5];
+  v11 = [SPCrypto ratchetSharedSecretKey:secretKey ratchetCount:skip];
   do
   {
     v12 = v11;
     v14 = v11;
-    v13 = [SPCrypto deriveWithPublicKey:v9 sharedSecretKey:&v14];
+    v13 = [SPCrypto deriveWithPublicKey:keyCopy sharedSecretKey:&v14];
     v11 = v14;
 
-    v10[2](v10, v11, v13, &v15);
+    stepCopy[2](stepCopy, v11, v13, &v15);
   }
 
   while (!v15);
 }
 
-+ (id)compactKey:(id)a3
++ (id)compactKey:(id)key
 {
-  v3 = a3;
-  if ([v3 length] == 57 && (v4 = +[SPCrypto importKey:fromFormat:](SPCrypto, "importKey:fromFormat:", v3, 0)) != 0)
+  keyCopy = key;
+  if ([keyCopy length] == 57 && (v4 = +[SPCrypto importKey:fromFormat:](SPCrypto, "importKey:fromFormat:", keyCopy, 0)) != 0)
   {
     v5 = v4;
     v6 = [SPCrypto exportKey:v4 toFormat:2];
@@ -49,11 +49,11 @@
   return v6;
 }
 
-+ (_CCECCryptor)importKey:(id)a3 fromFormat:(unsigned int)a4
++ (_CCECCryptor)importKey:(id)key fromFormat:(unsigned int)format
 {
-  v4 = a3;
-  [v4 bytes];
-  [v4 length];
+  keyCopy = key;
+  [keyCopy bytes];
+  [keyCopy length];
 
   v5 = CCECCryptorImportKey();
   if (!v5)
@@ -71,7 +71,7 @@
   return 0;
 }
 
-+ (id)exportKey:(_CCECCryptor *)a3 toFormat:(unsigned int)a4
++ (id)exportKey:(_CCECCryptor *)key toFormat:(unsigned int)format
 {
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:57];
   [v4 mutableBytes];
@@ -97,13 +97,13 @@
   return v14;
 }
 
-+ (_CCECCryptor)diversifyKey:(id)a3 entropyData:(id)a4
++ (_CCECCryptor)diversifyKey:(id)key entropyData:(id)data
 {
-  v5 = a4;
-  v6 = [SPCrypto importKey:a3 fromFormat:0];
+  dataCopy = data;
+  v6 = [SPCrypto importKey:key fromFormat:0];
   if (v6)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [dataCopy mutableCopy];
     [v7 mutableBytes];
     [v7 length];
     v8 = CCECCryptorTwinDiversifyKey();
@@ -128,25 +128,25 @@
   return v6;
 }
 
-+ (id)antiTrackingKeyFromSharedSecretKey:(id)a3
++ (id)antiTrackingKeyFromSharedSecretKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [@"diversify" dataUsingEncoding:4];
-  v5 = [SPCrypto deriveKeyWithKeyData:v3 sharedData:v4 keyLength:72];
+  v5 = [SPCrypto deriveKeyWithKeyData:keyCopy sharedData:v4 keyLength:72];
 
   return v5;
 }
 
-+ (id)deriveKeyWithKeyData:(id)a3 sharedData:(id)a4 keyLength:(unint64_t)a5
++ (id)deriveKeyWithKeyData:(id)data sharedData:(id)sharedData keyLength:(unint64_t)length
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = MEMORY[0x277CBEB28];
-  v9 = a4;
-  v10 = [[v8 alloc] initWithLength:a5];
-  [v9 bytes];
-  [v9 length];
+  sharedDataCopy = sharedData;
+  v10 = [[v8 alloc] initWithLength:length];
+  [sharedDataCopy bytes];
+  [sharedDataCopy length];
 
-  if (CCKDFParametersCreateAnsiX963() || ([v7 bytes], objc_msgSend(v7, "length"), objc_msgSend(v10, "mutableBytes"), objc_msgSend(v10, "length"), CCDeriveKey()))
+  if (CCKDFParametersCreateAnsiX963() || ([dataCopy bytes], objc_msgSend(dataCopy, "length"), objc_msgSend(v10, "mutableBytes"), objc_msgSend(v10, "length"), CCDeriveKey()))
   {
     v11 = 0;
   }
@@ -159,14 +159,14 @@
   return v11;
 }
 
-+ (id)ratchetSharedSecretKey:(id)a3 ratchetCount:(unint64_t)a4
++ (id)ratchetSharedSecretKey:(id)key ratchetCount:(unint64_t)count
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [@"update" dataUsingEncoding:4];
-  v7 = v5;
-  if (a4)
+  v7 = keyCopy;
+  if (count)
   {
-    v7 = v5;
+    v7 = keyCopy;
     do
     {
       v8 = objc_autoreleasePoolPush();
@@ -188,27 +188,27 @@
       }
 
       objc_autoreleasePoolPop(v8);
-      --a4;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
   return v7;
 }
 
-+ (id)deriveWithPublicKey:(id)a3 sharedSecretKey:(id *)a4
++ (id)deriveWithPublicKey:(id)key sharedSecretKey:(id *)secretKey
 {
-  v5 = a3;
-  v6 = [SPCrypto ratchetSharedSecretKey:*a4 ratchetCount:1];
+  keyCopy = key;
+  v6 = [SPCrypto ratchetSharedSecretKey:*secretKey ratchetCount:1];
   v7 = [SPCrypto antiTrackingKeyFromSharedSecretKey:v6];
-  if (v7 && (v8 = [SPCrypto diversifyKey:v5 entropyData:v7]) != 0)
+  if (v7 && (v8 = [SPCrypto diversifyKey:keyCopy entropyData:v7]) != 0)
   {
     v9 = v8;
     v10 = [SPCrypto exportKey:v8 toFormat:0];
     MEMORY[0x2667376D0](v9);
     v11 = v6;
-    *a4 = v6;
+    *secretKey = v6;
   }
 
   else

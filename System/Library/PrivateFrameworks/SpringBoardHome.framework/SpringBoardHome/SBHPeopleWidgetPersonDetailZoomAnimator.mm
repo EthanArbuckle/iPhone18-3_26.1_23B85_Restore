@@ -2,10 +2,10 @@
 - (CGRect)sourceContentFrameInMatchMoveViewSpace;
 - (CGRect)targetContentFrameInMatchMoveViewSpace;
 - (SBHPeopleWidgetPersonDetailZoomAnimator)init;
-- (void)_configureForEndpoint:(int64_t)a3 context:(id)a4 inMode:(int64_t)a5 completion:(id)a6;
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5;
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4;
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4;
+- (void)_configureForEndpoint:(int64_t)endpoint context:(id)context inMode:(int64_t)mode completion:(id)completion;
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion;
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context;
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context;
 @end
 
 @implementation SBHPeopleWidgetPersonDetailZoomAnimator
@@ -20,87 +20,87 @@
   {
     v2->_currentEndpoint = -1;
     v4 = +[SBHHomeScreenDomain rootSettings];
-    v5 = [v4 widgetSettings];
-    v6 = [v5 personDetailInteractionSettings];
+    widgetSettings = [v4 widgetSettings];
+    personDetailInteractionSettings = [widgetSettings personDetailInteractionSettings];
     settings = v3->_settings;
-    v3->_settings = v6;
+    v3->_settings = personDetailInteractionSettings;
   }
 
   return v3;
 }
 
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v5 = [a4 userInfo];
-  v6 = [v5 containerView];
-  v7 = [v5 sourceView];
-  v8 = [v5 targetView];
-  [v5 sourceContentFrame];
+  userInfo = [context userInfo];
+  containerView = [userInfo containerView];
+  sourceView = [userInfo sourceView];
+  targetView = [userInfo targetView];
+  [userInfo sourceContentFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v5 homeScreenContentFrame];
+  [userInfo homeScreenContentFrame];
   v21 = [[SBHTouchPassThroughView alloc] initWithFrame:v17, v18, v19, v20];
   [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setMatchMoveView:v21];
-  [v6 addSubview:v21];
-  [v5 targetContentFrame];
+  [containerView addSubview:v21];
+  [userInfo targetContentFrame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [v6 traitCollection];
-  [v30 displayScale];
+  traitCollection = [containerView traitCollection];
+  [traitCollection displayScale];
   v72 = v31;
 
-  [v6 convertRect:v21 toView:{v23, v25, v27, v29}];
+  [containerView convertRect:v21 toView:{v23, v25, v27, v29}];
   [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setTargetContentFrameInMatchMoveViewSpace:?];
-  [v6 convertRect:v21 toView:{v10, v12, v14, v16}];
+  [containerView convertRect:v21 toView:{v10, v12, v14, v16}];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
   [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setSourceContentFrameInMatchMoveViewSpace:?];
   v40 = [[SBHTouchPassThroughView alloc] initWithFrame:v33, v35, v37, v39];
-  v74 = self;
+  selfCopy = self;
   [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setSourceContainerView:v40];
-  v41 = [v5 platterView];
+  platterView = [userInfo platterView];
   BSRectWithSize();
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  [v41 setFrame:?];
-  [(SBHTouchPassThroughView *)v40 addSubview:v41];
-  [v41 addSubview:v7];
-  [v7 setFrame:{v43, v45, v47, v49}];
-  [v5 sourceContentCornerRadius];
-  [v41 _setContinuousCornerRadius:?];
+  [platterView setFrame:?];
+  [(SBHTouchPassThroughView *)v40 addSubview:platterView];
+  [platterView addSubview:sourceView];
+  [sourceView setFrame:{v43, v45, v47, v49}];
+  [userInfo sourceContentCornerRadius];
+  [platterView _setContinuousCornerRadius:?];
   [(SBHTouchPassThroughView *)v21 addSubview:v40];
   BSRectWithSize();
-  [v8 setFrame:?];
-  [v8 _setContinuousCornerRadius:0.0];
-  v75 = v8;
-  [v7 prepareToCrossfadeImageWithView:v8 options:2];
-  [v7 setIconLabelAlpha:0.0];
-  v50 = [v5 referenceView];
-  [v50 setIconImageAlpha:0.0];
-  [v50 bounds];
-  [v7 convertRect:v6 toView:?];
+  [targetView setFrame:?];
+  [targetView _setContinuousCornerRadius:0.0];
+  v75 = targetView;
+  [sourceView prepareToCrossfadeImageWithView:targetView options:2];
+  [sourceView setIconLabelAlpha:0.0];
+  referenceView = [userInfo referenceView];
+  [referenceView setIconImageAlpha:0.0];
+  [referenceView bounds];
+  [sourceView convertRect:containerView toView:?];
   v52 = v51;
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  v59 = [MEMORY[0x1E69793B8] animation];
-  v60 = [v50 layer];
-  [v59 setSourceLayer:v60];
+  animation = [MEMORY[0x1E69793B8] animation];
+  layer = [referenceView layer];
+  [animation setSourceLayer:layer];
 
-  [v59 setDuration:INFINITY];
-  [v59 setFillMode:*MEMORY[0x1E69797E0]];
-  [v59 setRemovedOnCompletion:0];
-  [v59 setAppliesY:1];
-  [v59 setAppliesX:1];
+  [animation setDuration:INFINITY];
+  [animation setFillMode:*MEMORY[0x1E69797E0]];
+  [animation setRemovedOnCompletion:0];
+  [animation setAppliesY:1];
+  [animation setAppliesX:1];
   UIRectGetCenter();
   UIPointRoundToScale();
   v62 = v61;
@@ -119,39 +119,39 @@
   v66 = [MEMORY[0x1E696B098] valueWithBytes:v79 objCType:"{CGPoint=dd}"];
   v80[0] = v66;
   v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:1];
-  [v59 setSourcePoints:v67];
+  [animation setSourcePoints:v67];
 
-  v68 = [(SBHTouchPassThroughView *)v21 layer];
-  v69 = [v68 animationForKey:@"SBHPersonDetailZoomMatchMoveAnimation"];
+  layer2 = [(SBHTouchPassThroughView *)v21 layer];
+  v69 = [layer2 animationForKey:@"SBHPersonDetailZoomMatchMoveAnimation"];
 
   if (v69)
   {
-    [v68 removeAnimationForKey:@"SBHPersonDetailZoomMatchMoveAnimation"];
+    [layer2 removeAnimationForKey:@"SBHPersonDetailZoomMatchMoveAnimation"];
   }
 
-  [v68 addAnimation:v59 forKey:{@"SBHPersonDetailZoomMatchMoveAnimation", v72}];
+  [layer2 addAnimation:animation forKey:{@"SBHPersonDetailZoomMatchMoveAnimation", v72}];
   v70 = MEMORY[0x1E69DD250];
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
   v76[2] = __84__SBHPeopleWidgetPersonDetailZoomAnimator_prepareToAnimateFromEndpoint_withContext___block_invoke;
   v76[3] = &unk_1E808A090;
-  v77 = v5;
-  v78 = a3;
-  v76[4] = v74;
-  v71 = v5;
+  v77 = userInfo;
+  endpointCopy = endpoint;
+  v76[4] = selfCopy;
+  v71 = userInfo;
   [v70 performWithoutAnimation:v76];
 }
 
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 userInfo];
-  v11 = [v9 wantsAnimation];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  wantsAnimation = [contextCopy wantsAnimation];
 
-  if (v11)
+  if (wantsAnimation)
   {
-    [(SBHPeopleWidgetPersonDetailZoomAnimator *)self _configureForEndpoint:a3 context:v10 inMode:3 completion:v8];
+    [(SBHPeopleWidgetPersonDetailZoomAnimator *)self _configureForEndpoint:endpoint context:userInfo inMode:3 completion:completionCopy];
   }
 
   else
@@ -162,99 +162,99 @@
     v13[2] = __84__SBHPeopleWidgetPersonDetailZoomAnimator_animateToEndpoint_withContext_completion___block_invoke;
     v13[3] = &unk_1E808A8D0;
     v13[4] = self;
-    v16 = a3;
-    v14 = v10;
-    v15 = v8;
+    endpointCopy = endpoint;
+    v14 = userInfo;
+    v15 = completionCopy;
     [v12 performWithoutAnimation:v13];
   }
 }
 
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  v6 = [a4 userInfo];
-  v7 = [v6 sourceView];
-  [v7 cleanupAfterCrossfade];
+  userInfo = [context userInfo];
+  sourceView = [userInfo sourceView];
+  [sourceView cleanupAfterCrossfade];
   v8 = *(MEMORY[0x1E695EFD0] + 16);
   v15[0] = *MEMORY[0x1E695EFD0];
   v15[1] = v8;
   v15[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v7 setTransform:v15];
-  v9 = [v6 platterView];
-  v10 = [v6 targetView];
-  if (a3)
+  [sourceView setTransform:v15];
+  platterView = [userInfo platterView];
+  targetView = [userInfo targetView];
+  if (endpoint)
   {
-    v11 = [v6 containerView];
-    [v11 addSubview:v9];
+    containerView = [userInfo containerView];
+    [containerView addSubview:platterView];
 
-    [v6 targetContentFrame];
-    [v9 setFrame:?];
-    [v9 addSubview:v10];
-    [v9 bounds];
-    [v10 setFrame:?];
-    [v6 targetContentCornerRadius];
-    [v9 _setContinuousCornerRadius:?];
+    [userInfo targetContentFrame];
+    [platterView setFrame:?];
+    [platterView addSubview:targetView];
+    [platterView bounds];
+    [targetView setFrame:?];
+    [userInfo targetContentCornerRadius];
+    [platterView _setContinuousCornerRadius:?];
   }
 
   else
   {
-    [v7 setIcon:0];
-    [v10 removeFromSuperview];
-    [v9 removeFromSuperview];
+    [sourceView setIcon:0];
+    [targetView removeFromSuperview];
+    [platterView removeFromSuperview];
   }
 
-  [v7 removeFromSuperview];
-  v12 = [(SBHPeopleWidgetPersonDetailZoomAnimator *)self matchMoveView];
-  v13 = [v12 layer];
-  [v13 removeAnimationForKey:@"SBHPersonDetailZoomMatchMoveAnimation"];
+  [sourceView removeFromSuperview];
+  matchMoveView = [(SBHPeopleWidgetPersonDetailZoomAnimator *)self matchMoveView];
+  layer = [matchMoveView layer];
+  [layer removeAnimationForKey:@"SBHPersonDetailZoomMatchMoveAnimation"];
 
-  v14 = [(SBHPeopleWidgetPersonDetailZoomAnimator *)self matchMoveView];
-  [v14 removeFromSuperview];
+  matchMoveView2 = [(SBHPeopleWidgetPersonDetailZoomAnimator *)self matchMoveView];
+  [matchMoveView2 removeFromSuperview];
 
   [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setMatchMoveView:0];
 }
 
-- (void)_configureForEndpoint:(int64_t)a3 context:(id)a4 inMode:(int64_t)a5 completion:(id)a6
+- (void)_configureForEndpoint:(int64_t)endpoint context:(id)context inMode:(int64_t)mode completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  if ([(SBHPeopleWidgetPersonDetailZoomAnimator *)self currentEndpoint]== a3)
+  contextCopy = context;
+  completionCopy = completion;
+  if ([(SBHPeopleWidgetPersonDetailZoomAnimator *)self currentEndpoint]== endpoint)
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setCurrentEndpoint:a3];
-    v12 = [(SBHPeopleWidgetPersonDetailZoomAnimator *)self settings];
-    v13 = [v12 zoomAnimationSettings];
-    v14 = [v12 fadeOutAnimationSettings];
+    [(SBHPeopleWidgetPersonDetailZoomAnimator *)self setCurrentEndpoint:endpoint];
+    settings = [(SBHPeopleWidgetPersonDetailZoomAnimator *)self settings];
+    zoomAnimationSettings = [settings zoomAnimationSettings];
+    fadeOutAnimationSettings = [settings fadeOutAnimationSettings];
     v29 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v13 setFrameRateRange:1114121 highFrameRateReason:{*&v29.minimum, *&v29.maximum, *&v29.preferred}];
+    [zoomAnimationSettings setFrameRateRange:1114121 highFrameRateReason:{*&v29.minimum, *&v29.maximum, *&v29.preferred}];
     v30 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v14 setFrameRateRange:1114121 highFrameRateReason:{*&v30.minimum, *&v30.maximum, *&v30.preferred}];
+    [fadeOutAnimationSettings setFrameRateRange:1114121 highFrameRateReason:{*&v30.minimum, *&v30.maximum, *&v30.preferred}];
     v15 = MEMORY[0x1E69D3F80];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __91__SBHPeopleWidgetPersonDetailZoomAnimator__configureForEndpoint_context_inMode_completion___block_invoke;
     v21[3] = &unk_1E808A970;
-    v27 = a3;
-    v22 = v10;
-    v23 = v13;
-    v24 = self;
-    v25 = v12;
-    v28 = a5;
-    v26 = v14;
+    endpointCopy = endpoint;
+    v22 = contextCopy;
+    v23 = zoomAnimationSettings;
+    selfCopy = self;
+    v25 = settings;
+    modeCopy = mode;
+    v26 = fadeOutAnimationSettings;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __91__SBHPeopleWidgetPersonDetailZoomAnimator__configureForEndpoint_context_inMode_completion___block_invoke_6;
     v19[3] = &unk_1E808A998;
-    v20 = v11;
-    v16 = v14;
-    v17 = v12;
-    v18 = v13;
+    v20 = completionCopy;
+    v16 = fadeOutAnimationSettings;
+    v17 = settings;
+    v18 = zoomAnimationSettings;
     [v15 perform:v21 finalCompletion:v19];
   }
 }

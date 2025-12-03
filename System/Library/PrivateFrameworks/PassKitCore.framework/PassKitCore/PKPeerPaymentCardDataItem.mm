@@ -1,8 +1,8 @@
 @interface PKPeerPaymentCardDataItem
-- (BOOL)_validateAccountResolutionsWithError:(id *)a3 errorStatus:(int64_t *)a4;
-- (BOOL)_validateInsufficientBalanceWithError:(id *)a3 errorStatus:(int64_t *)a4;
-- (BOOL)_validateTransferLimitsWithError:(id *)a3 errorStatus:(int64_t *)a4;
-- (BOOL)isValidWithError:(id *)a3 errorStatus:(int64_t *)a4;
+- (BOOL)_validateAccountResolutionsWithError:(id *)error errorStatus:(int64_t *)status;
+- (BOOL)_validateInsufficientBalanceWithError:(id *)error errorStatus:(int64_t *)status;
+- (BOOL)_validateTransferLimitsWithError:(id *)error errorStatus:(int64_t *)status;
+- (BOOL)isValidWithError:(id *)error errorStatus:(int64_t *)status;
 - (BOOL)shouldShowDisclosure;
 - (PKPaymentPass)pass;
 - (PKPeerPaymentQuote)quote;
@@ -12,10 +12,10 @@
 
 - (PKPeerPaymentQuote)quote
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 peerPaymentQuote];
+  model = [(PKPaymentDataItem *)self model];
+  peerPaymentQuote = [model peerPaymentQuote];
 
-  return v3;
+  return peerPaymentQuote;
 }
 
 - (PKPaymentPass)pass
@@ -24,14 +24,14 @@
   pass = self->_pass;
   if (!pass)
   {
-    v4 = [(PKPaymentDataItem *)self model];
-    v5 = [v4 library];
+    model = [(PKPaymentDataItem *)self model];
+    library = [model library];
 
-    v6 = [v5 peerPaymentPassUniqueID];
-    v7 = [v5 passWithUniqueID:v6];
-    v8 = [v7 paymentPass];
+    peerPaymentPassUniqueID = [library peerPaymentPassUniqueID];
+    v7 = [library passWithUniqueID:peerPaymentPassUniqueID];
+    paymentPass = [v7 paymentPass];
     v9 = self->_pass;
-    self->_pass = v8;
+    self->_pass = paymentPass;
 
     if (!self->_pass)
     {
@@ -39,7 +39,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = peerPaymentPassUniqueID;
         _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Unable to find peer payment pass with uniqueID: %@", &v12, 0xCu);
       }
     }
@@ -50,38 +50,38 @@
   return pass;
 }
 
-- (BOOL)isValidWithError:(id *)a3 errorStatus:(int64_t *)a4
+- (BOOL)isValidWithError:(id *)error errorStatus:(int64_t *)status
 {
-  if (![PKPeerPaymentCardDataItem _validateAccountResolutionsWithError:"_validateAccountResolutionsWithError:errorStatus:" errorStatus:?]|| ![(PKPeerPaymentCardDataItem *)self _validateTransferLimitsWithError:a3 errorStatus:a4])
+  if (![PKPeerPaymentCardDataItem _validateAccountResolutionsWithError:"_validateAccountResolutionsWithError:errorStatus:" errorStatus:?]|| ![(PKPeerPaymentCardDataItem *)self _validateTransferLimitsWithError:error errorStatus:status])
   {
     return 0;
   }
 
-  return [(PKPeerPaymentCardDataItem *)self _validateInsufficientBalanceWithError:a3 errorStatus:a4];
+  return [(PKPeerPaymentCardDataItem *)self _validateInsufficientBalanceWithError:error errorStatus:status];
 }
 
-- (BOOL)_validateInsufficientBalanceWithError:(id *)a3 errorStatus:(int64_t *)a4
+- (BOOL)_validateInsufficientBalanceWithError:(id *)error errorStatus:(int64_t *)status
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v7 = [(PKPaymentDataItem *)self model];
-  v8 = [v7 paymentRequest];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
 
-  v9 = [v8 accountServiceTransferRequest];
-  v10 = v9;
-  if (!v9 || [v9 transferType] != 2)
+  accountServiceTransferRequest = [paymentRequest accountServiceTransferRequest];
+  v10 = accountServiceTransferRequest;
+  if (!accountServiceTransferRequest || [accountServiceTransferRequest transferType] != 2)
   {
     goto LABEL_6;
   }
 
-  v11 = [(PKPaymentDataItem *)self model];
-  v12 = [v11 peerPaymentAccount];
-  v13 = [v12 currentBalance];
+  model2 = [(PKPaymentDataItem *)self model];
+  peerPaymentAccount = [model2 peerPaymentAccount];
+  currentBalance = [peerPaymentAccount currentBalance];
 
-  v14 = [v13 currency];
-  v15 = [v8 currencyCode];
-  v16 = [v14 caseInsensitiveCompare:v15];
+  currency = [currentBalance currency];
+  currencyCode = [paymentRequest currencyCode];
+  v16 = [currency caseInsensitiveCompare:currencyCode];
 
-  if (v16 || ([v13 amount], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "_transactionAmount"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "compare:", v18), v18, v17, v19 != -1))
+  if (v16 || ([currentBalance amount], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(paymentRequest, "_transactionAmount"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "compare:", v18), v18, v17, v19 != -1))
   {
 
 LABEL_6:
@@ -89,7 +89,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a3)
+  if (error)
   {
     v22 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr.isa, 0);
     v23 = MEMORY[0x1E696ABC0];
@@ -99,12 +99,12 @@ LABEL_6:
     v27[0] = v22;
     v27[1] = v22;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    *a3 = [v23 errorWithDomain:@"PKPassKitErrorDomain" code:-3009 userInfo:v25];
+    *error = [v23 errorWithDomain:@"PKPassKitErrorDomain" code:-3009 userInfo:v25];
   }
 
-  if (a4)
+  if (status)
   {
-    *a4 = 5;
+    *status = 5;
   }
 
   v20 = 0;
@@ -113,53 +113,53 @@ LABEL_7:
   return v20;
 }
 
-- (BOOL)_validateTransferLimitsWithError:(id *)a3 errorStatus:(int64_t *)a4
+- (BOOL)_validateTransferLimitsWithError:(id *)error errorStatus:(int64_t *)status
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v7 = [(PKPaymentDataItem *)self model];
-  v8 = [v7 paymentRequest];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
 
-  v9 = [v8 accountServiceTransferRequest];
-  v10 = v9;
-  if (!v9)
+  accountServiceTransferRequest = [paymentRequest accountServiceTransferRequest];
+  v10 = accountServiceTransferRequest;
+  if (!accountServiceTransferRequest)
   {
     goto LABEL_21;
   }
 
-  v11 = [v9 account];
-  v12 = [v10 transferType];
-  if (v12 >= 2)
+  account = [accountServiceTransferRequest account];
+  transferType = [v10 transferType];
+  if (transferType >= 2)
   {
-    if (v12 == 3)
+    if (transferType == 3)
     {
-      v13 = [v11 oneTimeWithdrawalWithAppleCashFeatureDescriptor];
+      oneTimeWithdrawalWithAppleCashFeatureDescriptor = [account oneTimeWithdrawalWithAppleCashFeatureDescriptor];
     }
 
     else
     {
-      if (v12 != 2)
+      if (transferType != 2)
       {
         v14 = 0;
 LABEL_9:
-        v15 = [(PKPaymentDataItem *)self model];
-        v16 = [v15 peerPaymentAccount];
-        v17 = [v16 currentBalance];
-        v18 = [v17 currency];
+        model2 = [(PKPaymentDataItem *)self model];
+        peerPaymentAccount = [model2 peerPaymentAccount];
+        currentBalance = [peerPaymentAccount currentBalance];
+        currency = [currentBalance currency];
 
-        v19 = [v8 currencyCode];
-        v20 = [v18 caseInsensitiveCompare:v19];
+        currencyCode = [paymentRequest currencyCode];
+        v20 = [currency caseInsensitiveCompare:currencyCode];
 
         if (!v14 || v20)
         {
           goto LABEL_28;
         }
 
-        v21 = [v8 _transactionAmount];
-        v22 = [v14 minimumAmount];
-        v23 = [v14 maximumAmount];
-        if (v22 && [v21 compare:v22] == -1)
+        _transactionAmount = [paymentRequest _transactionAmount];
+        minimumAmount = [v14 minimumAmount];
+        maximumAmount = [v14 maximumAmount];
+        if (minimumAmount && [_transactionAmount compare:minimumAmount] == -1)
         {
-          if (a3)
+          if (error)
           {
             v28 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_0.isa, 0);
             v34 = MEMORY[0x1E696ABC0];
@@ -170,10 +170,10 @@ LABEL_9:
             v40[0] = v28;
             v40[1] = v28;
             v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-            *a3 = [v34 errorWithDomain:@"PKPassKitErrorDomain" code:-3016 userInfo:v32];
+            *error = [v34 errorWithDomain:@"PKPassKitErrorDomain" code:-3016 userInfo:v32];
           }
 
-          if (!a4)
+          if (!status)
           {
             goto LABEL_27;
           }
@@ -182,9 +182,9 @@ LABEL_9:
           goto LABEL_26;
         }
 
-        if (v23 && [v21 compare:v23] == 1)
+        if (maximumAmount && [_transactionAmount compare:maximumAmount] == 1)
         {
-          if (a3)
+          if (error)
           {
             v24 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_1.isa, 0);
             v33 = MEMORY[0x1E696ABC0];
@@ -195,17 +195,17 @@ LABEL_9:
             v38[0] = v24;
             v38[1] = v24;
             v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
-            *a3 = [v33 errorWithDomain:@"PKPassKitErrorDomain" code:-3015 userInfo:v31];
+            *error = [v33 errorWithDomain:@"PKPassKitErrorDomain" code:-3015 userInfo:v31];
           }
 
-          if (!a4)
+          if (!status)
           {
             goto LABEL_27;
           }
 
           v26 = 6;
 LABEL_26:
-          *a4 = v26;
+          *status = v26;
 LABEL_27:
 
 LABEL_28:
@@ -216,10 +216,10 @@ LABEL_28:
         goto LABEL_20;
       }
 
-      v13 = [v11 oneTimeDepositWithAppleCashFeatureDescriptor];
+      oneTimeWithdrawalWithAppleCashFeatureDescriptor = [account oneTimeDepositWithAppleCashFeatureDescriptor];
     }
 
-    v14 = v13;
+    v14 = oneTimeWithdrawalWithAppleCashFeatureDescriptor;
     goto LABEL_9;
   }
 
@@ -232,24 +232,24 @@ LABEL_29:
   return v27;
 }
 
-- (BOOL)_validateAccountResolutionsWithError:(id *)a3 errorStatus:(int64_t *)a4
+- (BOOL)_validateAccountResolutionsWithError:(id *)error errorStatus:(int64_t *)status
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = [(PKPaymentDataItem *)self model];
-  v7 = [v6 paymentRequest];
-  v8 = [v7 accountServiceTransferRequest];
-  if ([v8 transferType] >= 2)
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  accountServiceTransferRequest = [paymentRequest accountServiceTransferRequest];
+  if ([accountServiceTransferRequest transferType] >= 2)
   {
-    v10 = [v6 peerPaymentAccount];
-    v11 = [v6 peerPaymentPass];
-    v12 = v11;
+    peerPaymentAccount = [model peerPaymentAccount];
+    peerPaymentPass = [model peerPaymentPass];
+    v12 = peerPaymentPass;
     v9 = 1;
-    if (v10 && v11)
+    if (peerPaymentAccount && peerPaymentPass)
     {
-      v13 = PKPeerPaymentNeedsResolutionToPerformAccountServicePayments(v10, v11);
+      v13 = PKPeerPaymentNeedsResolutionToPerformAccountServicePayments(peerPaymentAccount, peerPaymentPass);
       if (v13)
       {
-        if (a3)
+        if (error)
         {
           v14 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_2.isa, 0);
           v18 = MEMORY[0x1E696ABC0];
@@ -259,12 +259,12 @@ LABEL_29:
           v20[0] = v14;
           v20[1] = v14;
           v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-          *a3 = [v18 errorWithDomain:@"PKPassKitErrorDomain" code:-3017 userInfo:v16];
+          *error = [v18 errorWithDomain:@"PKPassKitErrorDomain" code:-3017 userInfo:v16];
         }
 
-        if (a4)
+        if (status)
         {
-          *a4 = 8;
+          *status = 8;
         }
       }
 
@@ -282,17 +282,17 @@ LABEL_29:
 
 - (BOOL)shouldShowDisclosure
 {
-  v3 = [(PKPaymentDataItem *)self model];
-  v4 = [v3 paymentRequest];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
 
-  v5 = [v4 requestType];
-  if ([v4 isPeerPaymentRequest])
+  requestType = [paymentRequest requestType];
+  if ([paymentRequest isPeerPaymentRequest])
   {
-    v6 = [(PKPeerPaymentCardDataItem *)self quote];
-    v7 = [v6 firstQuoteItemOfType:2];
+    quote = [(PKPeerPaymentCardDataItem *)self quote];
+    v7 = [quote firstQuoteItemOfType:2];
     if (v7)
     {
-      v8 = [v6 firstQuoteItemOfType:1];
+      v8 = [quote firstQuoteItemOfType:1];
       v9 = v8 == 0;
     }
 
@@ -301,10 +301,10 @@ LABEL_29:
       v9 = 0;
     }
 
-    v10 = [(PKPaymentDataItem *)self model];
-    if ([v10 supportsPreservePeerPaymentBalance])
+    model2 = [(PKPaymentDataItem *)self model];
+    if ([model2 supportsPreservePeerPaymentBalance])
     {
-      v12 = [v6 hasRecipient] & v9;
+      v12 = [quote hasRecipient] & v9;
     }
 
     else
@@ -315,17 +315,17 @@ LABEL_29:
     goto LABEL_12;
   }
 
-  if (v5 == 2)
+  if (requestType == 2)
   {
-    v6 = [v4 paymentSummaryItems];
-    if ([v6 count] != 1)
+    quote = [paymentRequest paymentSummaryItems];
+    if ([quote count] != 1)
     {
       LOBYTE(v12) = 0;
       goto LABEL_13;
     }
 
-    v10 = [(PKPaymentDataItem *)self model];
-    v11 = [v10 itemForType:9];
+    model2 = [(PKPaymentDataItem *)self model];
+    v11 = [model2 itemForType:9];
     LOBYTE(v12) = v11 == 0;
 
 LABEL_12:

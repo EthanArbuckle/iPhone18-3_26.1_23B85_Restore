@@ -6,12 +6,12 @@
 - (NSString)recognizerContentTypeDescription;
 - (NSString)recognizerRecognitionModeDescription;
 - (id)description;
-- (void)recordConfigurationForRecognizer:(id)a3 options:(id)a4;
-- (void)recordInputDrawing:(id)a3;
-- (void)recordInsightRequest:(id)a3;
-- (void)recordMathResult:(id)a3;
-- (void)recordPrincipalPoints:(id)a3;
-- (void)recordTextResult:(id)a3 recognitionError:(id)a4;
+- (void)recordConfigurationForRecognizer:(id)recognizer options:(id)options;
+- (void)recordInputDrawing:(id)drawing;
+- (void)recordInsightRequest:(id)request;
+- (void)recordMathResult:(id)result;
+- (void)recordPrincipalPoints:(id)points;
+- (void)recordTextResult:(id)result recognitionError:(id)error;
 @end
 
 @implementation CHRecognitionInsight
@@ -188,112 +188,112 @@
   return result;
 }
 
-- (void)recordInsightRequest:(id)a3
+- (void)recordInsightRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (self)
   {
-    objc_storeStrong(&self->_insightRequest, a3);
+    objc_storeStrong(&self->_insightRequest, request);
   }
 }
 
-- (void)recordConfigurationForRecognizer:(id)a3 options:(id)a4
+- (void)recordConfigurationForRecognizer:(id)recognizer options:(id)options
 {
-  v65 = a3;
-  v6 = a4;
-  v13 = objc_msgSend_locale(v65, v7, v8, v9, v10, v11);
+  recognizerCopy = recognizer;
+  optionsCopy = options;
+  v13 = objc_msgSend_locale(recognizerCopy, v7, v8, v9, v10, v11);
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v12, v13, 32);
   }
 
-  v19 = objc_msgSend_recognitionMode(v65, v14, v15, v16, v17, v18);
+  v19 = objc_msgSend_recognitionMode(recognizerCopy, v14, v15, v16, v17, v18);
   if (self)
   {
     self->_recognizerRecognitionMode = v19;
   }
 
-  v25 = objc_msgSend_contentType(v65, v20, v21, v22, v23, v24);
+  v25 = objc_msgSend_contentType(recognizerCopy, v20, v21, v22, v23, v24);
   if (self)
   {
     self->_recognizerContentType = v25;
   }
 
-  v31 = objc_msgSend_autoCapitalizationMode(v65, v26, v27, v28, v29, v30);
+  v31 = objc_msgSend_autoCapitalizationMode(recognizerCopy, v26, v27, v28, v29, v30);
   if (self)
   {
     self->_autoCapitalizationMode = v31;
   }
 
-  v37 = objc_msgSend_autoCorrectionMode(v65, v32, v33, v34, v35, v36);
+  v37 = objc_msgSend_autoCorrectionMode(recognizerCopy, v32, v33, v34, v35, v36);
   if (self)
   {
     self->_autoCorrectionMode = v37;
   }
 
-  v43 = objc_msgSend_baseWritingDirection(v65, v38, v39, v40, v41, v42);
+  v43 = objc_msgSend_baseWritingDirection(recognizerCopy, v38, v39, v40, v41, v42);
   if (self)
   {
     *&self->_baseWritingDirection = v43;
   }
 
-  v50 = objc_msgSend_activeCharacterSet(v65, v44, v45, v46, v47, v48);
+  v50 = objc_msgSend_activeCharacterSet(recognizerCopy, v44, v45, v46, v47, v48);
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v49, v50, 48);
   }
 
-  v56 = objc_msgSend_maxRecognitionResultCount(v65, v51, v52, v53, v54, v55);
+  v56 = objc_msgSend_maxRecognitionResultCount(recognizerCopy, v51, v52, v53, v54, v55);
   if (self)
   {
     self->_recognizerMaxRecognitionResultCount = v56;
   }
 
-  objc_msgSend_minimumDrawingSize(v65, v57, v58, v59, v60, v61);
+  objc_msgSend_minimumDrawingSize(recognizerCopy, v57, v58, v59, v60, v61);
   if (self)
   {
     self->_recognizerMinimumDrawingSize.width = v63;
     self->_recognizerMinimumDrawingSize.height = v64;
-    objc_setProperty_nonatomic_copy(self, v62, v6, 56);
+    objc_setProperty_nonatomic_copy(self, v62, optionsCopy, 56);
   }
 }
 
-- (void)recordInputDrawing:(id)a3
+- (void)recordInputDrawing:(id)drawing
 {
-  v24 = a3;
-  objc_msgSend_bounds(v24, v4, v5, v6, v7, v8);
+  drawingCopy = drawing;
+  objc_msgSend_bounds(drawingCopy, v4, v5, v6, v7, v8);
   v10 = v9;
-  objc_msgSend_bounds(v24, v11, v12, v13, v14, v15);
-  v23 = objc_msgSend_drawingTransformedWithTranslation_scaleFactor_(v24, v17, v18, v19, v20, v21, -v10, -v16, 1.0);
+  objc_msgSend_bounds(drawingCopy, v11, v12, v13, v14, v15);
+  v23 = objc_msgSend_drawingTransformedWithTranslation_scaleFactor_(drawingCopy, v17, v18, v19, v20, v21, -v10, -v16, 1.0);
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v22, v23, 80);
   }
 }
 
-- (void)recordPrincipalPoints:(id)a3
+- (void)recordPrincipalPoints:(id)points
 {
-  newValue = objc_msgSend_copy(a3, a2, a3, v3, v4, v5);
+  newValue = objc_msgSend_copy(points, a2, points, v3, v4, v5);
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v7, newValue, 72);
   }
 }
 
-- (void)recordTextResult:(id)a3 recognitionError:(id)a4
+- (void)recordTextResult:(id)result recognitionError:(id)error
 {
-  newValue = a3;
-  v7 = a4;
+  newValue = result;
+  errorCopy = error;
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v6, newValue, 88);
-    objc_setProperty_nonatomic_copy(self, v8, v7, 96);
+    objc_setProperty_nonatomic_copy(self, v8, errorCopy, 96);
   }
 }
 
-- (void)recordMathResult:(id)a3
+- (void)recordMathResult:(id)result
 {
-  newValue = a3;
+  newValue = result;
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v4, newValue, 104);

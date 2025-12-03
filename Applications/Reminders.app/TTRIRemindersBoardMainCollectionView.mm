@@ -1,6 +1,6 @@
 @interface TTRIRemindersBoardMainCollectionView
-- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithCoder:(id)a3;
-- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithCoder:(id)coder;
+- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)safeAreaInsetsDidChange;
 @end
 
@@ -16,27 +16,27 @@
   sub_1005F56E4();
 }
 
-- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainCollectionView____lazy_storage___insetsUpdater) = 0;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  return [(TTRIRemindersBoardMainCollectionView *)&v12 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(TTRIRemindersBoardMainCollectionView *)&v12 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
-- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithCoder:(id)a3
+- (_TtC9Reminders36TTRIRemindersBoardMainCollectionView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainCollectionView____lazy_storage___insetsUpdater) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(TTRIRemindersBoardMainCollectionView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(TTRIRemindersBoardMainCollectionView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

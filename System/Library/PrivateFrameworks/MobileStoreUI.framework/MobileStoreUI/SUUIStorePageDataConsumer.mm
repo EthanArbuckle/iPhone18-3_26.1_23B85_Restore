@@ -1,17 +1,17 @@
 @interface SUUIStorePageDataConsumer
 - (SUUIStorePageDataConsumer)init;
-- (id)_artistPageComponentsForDictionary:(id)a3 items:(id)a4;
-- (id)_backgroundArtworkWithDictionary:(id)a3;
-- (id)_bannerRoomComponentsForDictionary:(id)a3 items:(id)a4;
-- (id)_customPageComponentsForDictionary:(id)a3 items:(id)a4;
-- (id)_groupingPageComponentsForDictionary:(id)a3 items:(id)a4;
-- (id)_multiRoomComponentsForDictionary:(id)a3 items:(id)a4;
-- (id)_newCustomPageComponentForBlockType:(id)a3 context:(id)a4;
-- (id)_newFeaturedContentComponentForKind:(int64_t)a3 context:(id)a4;
-- (id)_newPageComponentContextWithDictionary:(id)a3;
-- (id)_roomComponentsForDictionary:(id)a3 items:(id)a4 gridType:(int64_t)a5;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
-- (id)storePageWithDictionary:(id)a3 response:(id)a4;
+- (id)_artistPageComponentsForDictionary:(id)dictionary items:(id)items;
+- (id)_backgroundArtworkWithDictionary:(id)dictionary;
+- (id)_bannerRoomComponentsForDictionary:(id)dictionary items:(id)items;
+- (id)_customPageComponentsForDictionary:(id)dictionary items:(id)items;
+- (id)_groupingPageComponentsForDictionary:(id)dictionary items:(id)items;
+- (id)_multiRoomComponentsForDictionary:(id)dictionary items:(id)items;
+- (id)_newCustomPageComponentForBlockType:(id)type context:(id)context;
+- (id)_newFeaturedContentComponentForKind:(int64_t)kind context:(id)context;
+- (id)_newPageComponentContextWithDictionary:(id)dictionary;
+- (id)_roomComponentsForDictionary:(id)dictionary items:(id)items gridType:(int64_t)type;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
+- (id)storePageWithDictionary:(id)dictionary response:(id)response;
 @end
 
 @implementation SUUIStorePageDataConsumer
@@ -29,15 +29,15 @@
   return v2;
 }
 
-- (id)storePageWithDictionary:(id)a3 response:(id)a4
+- (id)storePageWithDictionary:(id)dictionary response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  responseCopy = response;
   v8 = objc_alloc_init([(SUUIStorePageDataConsumer *)self storePageClass]);
-  v9 = [v7 URL];
+  v9 = [responseCopy URL];
   [v8 setPageURL:v9];
 
-  v10 = [v6 objectForKey:@"pageType"];
+  v10 = [dictionaryCopy objectForKey:@"pageType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,11 +53,11 @@
   if (SUUIStorePageTypeIsProductPage(v11))
   {
     v12 = +[(SSVURLDataConsumer *)SUUIProductPageDataConsumer];
-    v13 = [v12 productPageWithDictionary:v6];
+    v13 = [v12 productPageWithDictionary:dictionaryCopy];
 
     if (v13)
     {
-      v14 = [v7 URL];
+      v14 = [responseCopy URL];
       [v13 setDefaultPageFragment:SUUIProductPageFragmentWithURL(v14)];
 
       [v8 setProductPage:v13];
@@ -65,8 +65,8 @@
     }
   }
 
-  v48 = v7;
-  v15 = [v6 objectForKey:@"pageTitle"];
+  v48 = responseCopy;
+  v15 = [dictionaryCopy objectForKey:@"pageTitle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -74,7 +74,7 @@
     [v8 setTitle:v15];
   }
 
-  v16 = [(SUUIStorePageDataConsumer *)self _backgroundArtworkWithDictionary:v6];
+  v16 = [(SUUIStorePageDataConsumer *)self _backgroundArtworkWithDictionary:dictionaryCopy];
   v17 = [v16 URL];
 
   if (v17)
@@ -83,12 +83,12 @@
   }
 
   v47 = v16;
-  v46 = [objc_alloc(MEMORY[0x277D69B70]) initWithStorePlatformData:v6];
+  v46 = [objc_alloc(MEMORY[0x277D69B70]) initWithStorePlatformData:dictionaryCopy];
   [v8 setMetricsConfiguration:?];
   v18 = SSVGetMetricsPageDescriptionWithPlatformDictionary();
   [v8 setMetricsPageDescription:v18];
 
-  v19 = [v6 objectForKey:@"uber"];
+  v19 = [dictionaryCopy objectForKey:@"uber"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v19 count] && (v20 = -[SUUIUber initWithUberDictionary:]([SUUIUber alloc], "initWithUberDictionary:", v19)) != 0)
@@ -102,7 +102,7 @@
     v49 = 0;
   }
 
-  v21 = [v6 objectForKey:@"artist"];
+  v21 = [dictionaryCopy objectForKey:@"artist"];
   objc_opt_class();
   v45 = v21;
   if (objc_opt_isKindOfClass())
@@ -127,11 +127,11 @@
     v22 = v19;
   }
 
-  v23 = [v6 objectForKey:@"storePlatfromData"];
+  v23 = [dictionaryCopy objectForKey:@"storePlatfromData"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [v6 objectForKey:@"storePlatformData"];
+    v24 = [dictionaryCopy objectForKey:@"storePlatformData"];
 
     v23 = v24;
   }
@@ -139,7 +139,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v6 objectForKey:@"storePlatformPrewarmDataKey"];
+    v10 = [dictionaryCopy objectForKey:@"storePlatformPrewarmDataKey"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -170,32 +170,32 @@
     {
       if ([(__CFString *)v11 isEqualToString:@"multiroom"])
       {
-        v29 = [(SUUIStorePageDataConsumer *)self _multiRoomComponentsForDictionary:v6 items:v26];
+        v29 = [(SUUIStorePageDataConsumer *)self _multiRoomComponentsForDictionary:dictionaryCopy items:v26];
         goto LABEL_43;
       }
 
       if ([(__CFString *)v11 isEqualToString:@"artist"])
       {
-        v29 = [(SUUIStorePageDataConsumer *)self _artistPageComponentsForDictionary:v6 items:v26];
+        v29 = [(SUUIStorePageDataConsumer *)self _artistPageComponentsForDictionary:dictionaryCopy items:v26];
         goto LABEL_43;
       }
 
       if ([(__CFString *)v11 isEqualToString:@"bannerRoom"])
       {
-        v29 = [(SUUIStorePageDataConsumer *)self _bannerRoomComponentsForDictionary:v6 items:v26];
+        v29 = [(SUUIStorePageDataConsumer *)self _bannerRoomComponentsForDictionary:dictionaryCopy items:v26];
         goto LABEL_43;
       }
 
       if ([(__CFString *)v11 isEqualToString:@"custom"])
       {
-        v29 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:v6 items:v26];
+        v29 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:dictionaryCopy items:v26];
         goto LABEL_43;
       }
 
       if ([(__CFString *)v11 isEqualToString:@"trailerRoom"])
       {
-        v30 = self;
-        v31 = v6;
+        selfCopy2 = self;
+        v31 = dictionaryCopy;
         v32 = v26;
         v33 = 5;
         goto LABEL_34;
@@ -208,25 +208,25 @@
       }
     }
 
-    v30 = self;
-    v31 = v6;
+    selfCopy2 = self;
+    v31 = dictionaryCopy;
     v32 = v26;
     v33 = 0;
 LABEL_34:
-    v29 = [(SUUIStorePageDataConsumer *)v30 _roomComponentsForDictionary:v31 items:v32 gridType:v33];
+    v29 = [(SUUIStorePageDataConsumer *)selfCopy2 _roomComponentsForDictionary:v31 items:v32 gridType:v33];
     goto LABEL_43;
   }
 
-  v29 = [(SUUIStorePageDataConsumer *)self _groupingPageComponentsForDictionary:v6 items:v26];
+  v29 = [(SUUIStorePageDataConsumer *)self _groupingPageComponentsForDictionary:dictionaryCopy items:v26];
 LABEL_43:
   v34 = v29;
 LABEL_44:
   v44 = v26;
-  v35 = [(SUUIUber *)v27 artworkProvider];
-  if ([v35 hasArtwork])
+  artworkProvider = [(SUUIUber *)v27 artworkProvider];
+  if ([artworkProvider hasArtwork])
   {
     v36 = 1;
-    v37 = [[SUUIMediaComponent alloc] initWithArtworkProvider:v35 appearance:1];
+    v37 = [[SUUIMediaComponent alloc] initWithArtworkProvider:artworkProvider appearance:1];
     [v34 insertObject:v37 atIndex:0];
   }
 
@@ -235,10 +235,10 @@ LABEL_44:
     v36 = 0;
   }
 
-  v38 = [(SUUIUber *)v27 text];
-  if ([v38 length])
+  text = [(SUUIUber *)v27 text];
+  if ([text length])
   {
-    v39 = [[SUUIEditorialComponent alloc] initWithUberText:v38];
+    v39 = [[SUUIEditorialComponent alloc] initWithUberText:text];
     [v34 insertObject:v39 atIndex:v36];
   }
 
@@ -251,10 +251,10 @@ LABEL_44:
   v51 = v40;
   v52 = v8;
   v41 = v40;
-  [v6 enumerateKeysAndObjectsUsingBlock:v50];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v50];
 
   v13 = v47;
-  v7 = v48;
+  responseCopy = v48;
 LABEL_50:
 
   v42 = v8;
@@ -271,16 +271,16 @@ void __62__SUUIStorePageDataConsumer_storePageWithDictionary_response___block_in
   }
 }
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  dataCopy = data;
+  responseCopy = response;
+  v10 = responseCopy;
+  if (!dataCopy)
   {
     v14 = 0;
     v15 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -288,13 +288,13 @@ void __62__SUUIStorePageDataConsumer_storePageWithDictionary_response___block_in
     goto LABEL_12;
   }
 
-  v11 = [v9 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
   v12 = ISDictionaryValueForCaseInsensitiveString();
 
   if ((v12 || ([v10 MIMEType], (v12 = objc_claimAutoreleasedReturnValue()) != 0)) && objc_msgSend(v12, "rangeOfString:options:", @"itml", 1) != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = objc_alloc_init(SUUIStorePage);
-    [(SUUIStorePage *)v15 setITMLData:v8];
+    [(SUUIStorePage *)v15 setITMLData:dataCopy];
     [(SUUIStorePage *)v15 setITMLResponse:v10];
     [(SUUIStorePage *)v15 setPageType:@"itml"];
     v14 = 0;
@@ -303,7 +303,7 @@ void __62__SUUIStorePageDataConsumer_storePageWithDictionary_response___block_in
   else
   {
     v18 = 0;
-    v13 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v18];
+    v13 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v18];
     v14 = v18;
     objc_opt_class();
     v15 = 0;
@@ -313,13 +313,13 @@ void __62__SUUIStorePageDataConsumer_storePageWithDictionary_response___block_in
     }
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_12:
     if (!v15)
     {
       v16 = v14;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -328,27 +328,27 @@ LABEL_14:
   return v15;
 }
 
-- (id)_artistPageComponentsForDictionary:(id)a3 items:(id)a4
+- (id)_artistPageComponentsForDictionary:(id)dictionary items:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:v6 items:v7];
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:dictionaryCopy items:itemsCopy];
   if ([v9 count])
   {
-    [v8 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
   }
 
-  v10 = [v6 objectForKey:@"contentData"];
+  v10 = [dictionaryCopy objectForKey:@"contentData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:v6];
-    [v11 setItems:v7];
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:dictionaryCopy];
+    [v11 setItems:itemsCopy];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v13)
+    if (userInterfaceIdiom)
     {
       v14 = [v10 objectForKey:@"iPadSoftware"];
       objc_opt_class();
@@ -356,7 +356,7 @@ LABEL_14:
       {
         [v11 setComponentDictionary:v14];
         v15 = [[SUUISwooshPageComponent alloc] initWithFeaturedContentContext:v11 kind:260];
-        [v8 addObject:v15];
+        [array addObject:v15];
       }
 
       v16 = [v10 objectForKey:@"mobileSoftwareBundles"];
@@ -365,7 +365,7 @@ LABEL_14:
       {
         [v11 setComponentDictionary:v16];
         v17 = [[SUUIGridComponent alloc] initWithFeaturedContentContext:v11 kind:0];
-        [v8 addObject:v17];
+        [array addObject:v17];
       }
 
       v18 = [v10 objectForKey:@"iPhoneSoftware"];
@@ -374,7 +374,7 @@ LABEL_14:
       {
         [v11 setComponentDictionary:v18];
         v19 = [[SUUISwooshPageComponent alloc] initWithFeaturedContentContext:v11 kind:260];
-        [v8 addObject:v19];
+        [array addObject:v19];
       }
     }
 
@@ -386,7 +386,7 @@ LABEL_14:
       {
         [v11 setComponentDictionary:v14];
         v20 = [[SUUIGridComponent alloc] initWithFeaturedContentContext:v11 kind:0];
-        [v8 addObject:v20];
+        [array addObject:v20];
       }
 
       v16 = [v10 objectForKey:@"mobileSoftwareBundles"];
@@ -398,20 +398,20 @@ LABEL_14:
 
       [v11 setComponentDictionary:v16];
       v18 = [[SUUIGridComponent alloc] initWithFeaturedContentContext:v11 kind:0];
-      [v8 addObject:v18];
+      [array addObject:v18];
     }
 
 LABEL_16:
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_backgroundArtworkWithDictionary:(id)a3
+- (id)_backgroundArtworkWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"backgroundImage"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"backgroundImage"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -420,7 +420,7 @@ LABEL_16:
 
   else
   {
-    v6 = [v3 objectForKey:@"blocks"];
+    v6 = [dictionaryCopy objectForKey:@"blocks"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -504,27 +504,27 @@ LABEL_22:
   return v5;
 }
 
-- (id)_bannerRoomComponentsForDictionary:(id)a3 items:(id)a4
+- (id)_bannerRoomComponentsForDictionary:(id)dictionary items:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:v6 items:v7];
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:dictionaryCopy items:itemsCopy];
   if ([v9 count])
   {
-    [v8 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
   }
 
-  v10 = [v6 objectForKey:@"contents"];
+  v10 = [dictionaryCopy objectForKey:@"contents"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:v6];
-    v25 = v6;
-    [v11 setComponentDictionary:v6];
-    v24 = v7;
-    [v11 setItems:v7];
+    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:dictionaryCopy];
+    v25 = dictionaryCopy;
+    [v11 setComponentDictionary:dictionaryCopy];
+    v24 = itemsCopy;
+    [v11 setItems:itemsCopy];
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v26 = 0u;
     v27 = 0u;
@@ -567,27 +567,27 @@ LABEL_22:
     }
 
     v21 = [[SUUIGridComponent alloc] initWithBrickItems:v12];
-    [v8 addObject:v21];
+    [array addObject:v21];
 
-    v6 = v25;
-    v7 = v24;
+    dictionaryCopy = v25;
+    itemsCopy = v24;
     v10 = v23;
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_customPageComponentsForDictionary:(id)a3 items:(id)a4
+- (id)_customPageComponentsForDictionary:(id)dictionary items:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 objectForKey:@"customBlocks"];
+  v7 = [dictionaryCopy objectForKey:@"customBlocks"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v9 = v7;
-  if ((isKindOfClass & 1) != 0 || ([v5 objectForKey:@"children"], v10 = objc_claimAutoreleasedReturnValue(), v9 = v5, !v10))
+  if ((isKindOfClass & 1) != 0 || ([dictionaryCopy objectForKey:@"children"], v10 = objc_claimAutoreleasedReturnValue(), v9 = dictionaryCopy, !v10))
   {
     v10 = [v9 objectForKey:@"blocks"];
   }
@@ -596,9 +596,9 @@ LABEL_22:
   if (objc_opt_isKindOfClass())
   {
     v22 = v7;
-    v23 = v5;
-    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:v5];
-    [v11 setItems:v6];
+    v23 = dictionaryCopy;
+    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:dictionaryCopy];
+    [v11 setItems:itemsCopy];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -643,7 +643,7 @@ LABEL_22:
       while (v14);
     }
 
-    v5 = v23;
+    dictionaryCopy = v23;
     v10 = v21;
     v7 = v22;
   }
@@ -651,20 +651,20 @@ LABEL_22:
   return v24;
 }
 
-- (id)_groupingPageComponentsForDictionary:(id)a3 items:(id)a4
+- (id)_groupingPageComponentsForDictionary:(id)dictionary items:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v28 = self;
-  v8 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:v6];
-  [v8 setItems:v7];
-  v9 = [v6 objectForKey:@"fcStructure"];
+  selfCopy = self;
+  v8 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:dictionaryCopy];
+  [v8 setItems:itemsCopy];
+  v9 = [dictionaryCopy objectForKey:@"fcStructure"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v7;
-    v27 = v6;
+    v26 = itemsCopy;
+    v27 = dictionaryCopy;
     v25 = v9;
     v24 = [v9 objectForKey:@"model"];
     v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v24, 0}];
@@ -679,7 +679,7 @@ LABEL_22:
         if (objc_opt_isKindOfClass())
         {
           v15 = [v14 objectForKey:@"fcKind"];
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ([v8 setComponentDictionary:v14], (v16 = -[SUUIStorePageDataConsumer _newFeaturedContentComponentForKind:context:](v28, "_newFeaturedContentComponentForKind:context:", objc_msgSend(v15, "integerValue"), v8)) != 0))
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ([v8 setComponentDictionary:v14], (v16 = -[SUUIStorePageDataConsumer _newFeaturedContentComponentForKind:context:](selfCopy, "_newFeaturedContentComponentForKind:context:", objc_msgSend(v15, "integerValue"), v8)) != 0))
           {
             v17 = v16;
             [v29 addObject:v16];
@@ -700,18 +700,18 @@ LABEL_22:
       }
     }
 
-    v7 = v26;
-    v6 = v27;
+    itemsCopy = v26;
+    dictionaryCopy = v27;
     v9 = v25;
   }
 
-  v19 = [v6 objectForKey:@"subtitle"];
+  v19 = [dictionaryCopy objectForKey:@"subtitle"];
   if (!v19)
   {
-    v20 = [v6 objectForKey:@"isAgeBandGrouping"];
+    v20 = [dictionaryCopy objectForKey:@"isAgeBandGrouping"];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v20 BOOLValue])
     {
-      v19 = [v6 objectForKey:@"ageBandGroupingTitle"];
+      v19 = [dictionaryCopy objectForKey:@"ageBandGroupingTitle"];
     }
 
     else
@@ -738,7 +738,7 @@ LABEL_22:
     _Block_object_dispose(&v31, 8);
   }
 
-  [v8 setComponentDictionary:v6];
+  [v8 setComponentDictionary:dictionaryCopy];
   v22 = [[SUUIAccountButtonsComponent alloc] initWithFeaturedContentContext:v8 kind:0];
   [v29 addObject:v22];
 
@@ -757,25 +757,25 @@ uint64_t __72__SUUIStorePageDataConsumer__groupingPageComponentsForDictionary_it
   return result;
 }
 
-- (id)_multiRoomComponentsForDictionary:(id)a3 items:(id)a4
+- (id)_multiRoomComponentsForDictionary:(id)dictionary items:(id)items
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:v6 items:v7];
+  v9 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:dictionaryCopy items:itemsCopy];
   if ([v9 count])
   {
     [v8 addObjectsFromArray:v9];
   }
 
-  v10 = [v6 objectForKey:@"segments"];
+  v10 = [dictionaryCopy objectForKey:@"segments"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = v6;
-    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:v6];
-    [v11 setItems:v7];
+    v20 = dictionaryCopy;
+    v11 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:dictionaryCopy];
+    [v11 setItems:itemsCopy];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -811,20 +811,20 @@ uint64_t __72__SUUIStorePageDataConsumer__groupingPageComponentsForDictionary_it
       while (v14);
     }
 
-    v6 = v20;
+    dictionaryCopy = v20;
   }
 
   return v8;
 }
 
-- (id)_newCustomPageComponentForBlockType:(id)a3 context:(id)a4
+- (id)_newCustomPageComponentForBlockType:(id)type context:(id)context
 {
-  v5 = a4;
-  v6 = SUUIPageComponentTypeForBlockType(a3);
+  contextCopy = context;
+  v6 = SUUIPageComponentTypeForBlockType(type);
   v7 = SUUIPageComponentClassForComponentType(v6);
   if (v7)
   {
-    v8 = [[v7 alloc] initWithCustomPageContext:v5];
+    v8 = [[v7 alloc] initWithCustomPageContext:contextCopy];
   }
 
   else
@@ -835,14 +835,14 @@ uint64_t __72__SUUIStorePageDataConsumer__groupingPageComponentsForDictionary_it
   return v8;
 }
 
-- (id)_newFeaturedContentComponentForKind:(int64_t)a3 context:(id)a4
+- (id)_newFeaturedContentComponentForKind:(int64_t)kind context:(id)context
 {
-  v5 = a4;
-  v6 = SUUIPageComponentTypeForFeaturedContentKind(a3);
+  contextCopy = context;
+  v6 = SUUIPageComponentTypeForFeaturedContentKind(kind);
   v7 = SUUIPageComponentClassForComponentType(v6);
   if (v7)
   {
-    v8 = [[v7 alloc] initWithFeaturedContentContext:v5 kind:a3];
+    v8 = [[v7 alloc] initWithFeaturedContentContext:contextCopy kind:kind];
   }
 
   else
@@ -853,18 +853,18 @@ uint64_t __72__SUUIStorePageDataConsumer__groupingPageComponentsForDictionary_it
   return v8;
 }
 
-- (id)_newPageComponentContextWithDictionary:(id)a3
+- (id)_newPageComponentContextWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SUUIPageComponentContext);
-  v5 = [v3 objectForKey:@"storePlatformProfilesMap"];
+  v5 = [dictionaryCopy objectForKey:@"storePlatformProfilesMap"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUUIPageComponentContext *)v4 setPlatformKeyProfileOverrides:v5];
   }
 
-  v6 = [v3 objectForKey:@"unAvailableContentIds"];
+  v6 = [dictionaryCopy objectForKey:@"unAvailableContentIds"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -874,19 +874,19 @@ uint64_t __72__SUUIStorePageDataConsumer__groupingPageComponentsForDictionary_it
   return v4;
 }
 
-- (id)_roomComponentsForDictionary:(id)a3 items:(id)a4 gridType:(int64_t)a5
+- (id)_roomComponentsForDictionary:(id)dictionary items:(id)items gridType:(int64_t)type
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  itemsCopy = items;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:v8 items:v9];
+  v11 = [(SUUIStorePageDataConsumer *)self _customPageComponentsForDictionary:dictionaryCopy items:itemsCopy];
   if ([v11 count])
   {
     [v10 addObjectsFromArray:v11];
   }
 
-  v12 = [v8 objectForKey:@"sortData"];
+  v12 = [dictionaryCopy objectForKey:@"sortData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -898,10 +898,10 @@ uint64_t __72__SUUIStorePageDataConsumer__groupingPageComponentsForDictionary_it
     v13 = 0;
   }
 
-  v14 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:v8];
-  [v14 setComponentDictionary:v8];
-  [v14 setItems:v9];
-  v15 = [[SUUIGridComponent alloc] initWithRoomContext:v14 gridType:a5];
+  v14 = [(SUUIStorePageDataConsumer *)self _newPageComponentContextWithDictionary:dictionaryCopy];
+  [v14 setComponentDictionary:dictionaryCopy];
+  [v14 setItems:itemsCopy];
+  v15 = [[SUUIGridComponent alloc] initWithRoomContext:v14 gridType:type];
   v16 = v15;
   if (v15)
   {

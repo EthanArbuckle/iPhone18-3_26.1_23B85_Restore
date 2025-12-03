@@ -1,47 +1,47 @@
 @interface ICNoteTimelineController
-+ (id)adjustedDateForReferenceDate:(id)a3;
-+ (id)invitationsTimelineSectionIdentifierWithTitle:(id)a3 referenceDate:(id)a4;
-+ (id)pinnedTimelineSectionIdentifierWithTitle:(id)a3 referenceDate:(id)a4;
-+ (id)sanitizedDatesForDates:(id)a3 referenceDate:(id)a4;
-+ (id)timelineSectionIdentifierForNoteObjectID:(id)a3 date:(id)a4 referenceDate:(id)a5;
-+ (id)timelineSectionIdentifierForNoteObjectID:(id)a3 date:(id)a4 sectionIdentifiersToManagedObjectIDs:(id)a5;
-+ (id)timelineSectionsForNoteObjectIDs:(id)a3 dates:(id)a4 referenceDate:(id)a5 direction:(int64_t)a6;
++ (id)adjustedDateForReferenceDate:(id)date;
++ (id)invitationsTimelineSectionIdentifierWithTitle:(id)title referenceDate:(id)date;
++ (id)pinnedTimelineSectionIdentifierWithTitle:(id)title referenceDate:(id)date;
++ (id)sanitizedDatesForDates:(id)dates referenceDate:(id)date;
++ (id)timelineSectionIdentifierForNoteObjectID:(id)d date:(id)date referenceDate:(id)referenceDate;
++ (id)timelineSectionIdentifierForNoteObjectID:(id)d date:(id)date sectionIdentifiersToManagedObjectIDs:(id)ds;
++ (id)timelineSectionsForNoteObjectIDs:(id)ds dates:(id)dates referenceDate:(id)date direction:(int64_t)direction;
 @end
 
 @implementation ICNoteTimelineController
 
-+ (id)timelineSectionsForNoteObjectIDs:(id)a3 dates:(id)a4 referenceDate:(id)a5 direction:(int64_t)a6
++ (id)timelineSectionsForNoteObjectIDs:(id)ds dates:(id)dates referenceDate:(id)date direction:(int64_t)direction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10 && v11 && (v13 = [v10 count], v13 == objc_msgSend(v11, "count")))
+  dsCopy = ds;
+  datesCopy = dates;
+  dateCopy = date;
+  if (dsCopy && datesCopy && (v13 = [dsCopy count], v13 == objc_msgSend(datesCopy, "count")))
   {
-    v14 = [a1 adjustedDateForReferenceDate:v12];
-    v15 = [a1 sanitizedDatesForDates:v11 referenceDate:v14];
-    if (a6 == 1)
+    v14 = [self adjustedDateForReferenceDate:dateCopy];
+    v15 = [self sanitizedDatesForDates:datesCopy referenceDate:v14];
+    if (direction == 1)
     {
-      v16 = [v10 reverseObjectEnumerator];
-      v17 = [v16 allObjects];
+      reverseObjectEnumerator = [dsCopy reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v18 = [v15 reverseObjectEnumerator];
-      v19 = [v18 allObjects];
+      reverseObjectEnumerator2 = [v15 reverseObjectEnumerator];
+      allObjects2 = [reverseObjectEnumerator2 allObjects];
     }
 
     else
     {
-      v17 = v10;
-      v19 = v15;
+      allObjects = dsCopy;
+      allObjects2 = v15;
     }
 
-    v22 = [_TtC7NotesUI32ICNoteTimelineControllerInternal ascendingTimelineSectionsForNoteObjectIds:v17 dates:v19 referenceDate:v14 direction:a6];
+    v22 = [_TtC7NotesUI32ICNoteTimelineControllerInternal ascendingTimelineSectionsForNoteObjectIds:allObjects dates:allObjects2 referenceDate:v14 direction:direction];
     v23 = v22;
-    if (a6 == 1)
+    if (direction == 1)
     {
-      v24 = [v22 reverseObjectEnumerator];
-      v25 = [v24 allObjects];
+      reverseObjectEnumerator3 = [v22 reverseObjectEnumerator];
+      allObjects3 = [reverseObjectEnumerator3 allObjects];
 
-      v23 = v25;
+      v23 = allObjects3;
     }
 
     v26 = MEMORY[0x1E695E0F0];
@@ -67,23 +67,23 @@
   return v21;
 }
 
-+ (id)timelineSectionIdentifierForNoteObjectID:(id)a3 date:(id)a4 sectionIdentifiersToManagedObjectIDs:(id)a5
++ (id)timelineSectionIdentifierForNoteObjectID:(id)d date:(id)date sectionIdentifiersToManagedObjectIDs:(id)ds
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dateCopy = date;
+  dsCopy = ds;
   v11 = [MEMORY[0x1E695DF00] now];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = [v10 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  allKeys = [dsCopy allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v13)
   {
     v14 = v13;
-    v25 = a1;
+    selfCopy = self;
     v15 = *v27;
     while (2)
     {
@@ -91,21 +91,21 @@
       {
         if (*v27 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v17 referenceDate];
+          referenceDate = [v17 referenceDate];
 
-          v11 = v18;
+          v11 = referenceDate;
           goto LABEL_11;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v14)
       {
         continue;
@@ -115,76 +115,76 @@
     }
 
 LABEL_11:
-    a1 = v25;
+    self = selfCopy;
   }
 
-  v31 = v8;
+  v31 = dCopy;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-  v30 = v9;
+  v30 = dateCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-  v21 = [a1 timelineSectionsForNoteObjectIDs:v19 dates:v20 referenceDate:v11 direction:0];
-  v22 = [v21 firstObject];
-  v23 = [v22 identifier];
+  v21 = [self timelineSectionsForNoteObjectIDs:v19 dates:v20 referenceDate:v11 direction:0];
+  firstObject = [v21 firstObject];
+  identifier = [firstObject identifier];
 
-  return v23;
+  return identifier;
 }
 
-+ (id)timelineSectionIdentifierForNoteObjectID:(id)a3 date:(id)a4 referenceDate:(id)a5
++ (id)timelineSectionIdentifierForNoteObjectID:(id)d date:(id)date referenceDate:(id)referenceDate
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v19[0] = a3;
+  v19[0] = d;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  referenceDateCopy = referenceDate;
+  dateCopy = date;
+  dCopy = d;
   v12 = [v8 arrayWithObjects:v19 count:1];
-  v18 = v10;
+  v18 = dateCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
 
-  v14 = [a1 timelineSectionsForNoteObjectIDs:v12 dates:v13 referenceDate:v9 direction:0];
+  v14 = [self timelineSectionsForNoteObjectIDs:v12 dates:v13 referenceDate:referenceDateCopy direction:0];
 
-  v15 = [v14 firstObject];
-  v16 = [v15 identifier];
+  firstObject = [v14 firstObject];
+  identifier = [firstObject identifier];
 
-  return v16;
+  return identifier;
 }
 
-+ (id)invitationsTimelineSectionIdentifierWithTitle:(id)a3 referenceDate:(id)a4
++ (id)invitationsTimelineSectionIdentifierWithTitle:(id)title referenceDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  titleCopy = title;
   v8 = [ICNoteTimelineSectionIdentifier alloc];
-  v9 = [a1 adjustedDateForReferenceDate:v6];
+  v9 = [self adjustedDateForReferenceDate:dateCopy];
 
-  v10 = [(ICNoteTimelineSectionIdentifier *)v8 initWithTimelineSectionType:0 referenceDate:v9 title:v7 sortOrder:0];
+  v10 = [(ICNoteTimelineSectionIdentifier *)v8 initWithTimelineSectionType:0 referenceDate:v9 title:titleCopy sortOrder:0];
 
   return v10;
 }
 
-+ (id)pinnedTimelineSectionIdentifierWithTitle:(id)a3 referenceDate:(id)a4
++ (id)pinnedTimelineSectionIdentifierWithTitle:(id)title referenceDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  titleCopy = title;
   v8 = [ICNoteTimelineSectionIdentifier alloc];
-  v9 = [a1 adjustedDateForReferenceDate:v6];
+  v9 = [self adjustedDateForReferenceDate:dateCopy];
 
-  v10 = [(ICNoteTimelineSectionIdentifier *)v8 initWithTimelineSectionType:1 referenceDate:v9 title:v7 sortOrder:0];
+  v10 = [(ICNoteTimelineSectionIdentifier *)v8 initWithTimelineSectionType:1 referenceDate:v9 title:titleCopy sortOrder:0];
 
   return v10;
 }
 
-+ (id)adjustedDateForReferenceDate:(id)a3
++ (id)adjustedDateForReferenceDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (!dateCopy)
   {
     v4 = [MEMORY[0x1E695DF00] now];
   }
 
   objc_opt_class();
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 objectForKey:@"dateForTimelineGroups"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"dateForTimelineGroups"];
   v7 = ICDynamicCast();
 
   if (v7)
@@ -197,25 +197,25 @@ LABEL_11:
   return v4;
 }
 
-+ (id)sanitizedDatesForDates:(id)a3 referenceDate:(id)a4
++ (id)sanitizedDatesForDates:(id)dates referenceDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  datesCopy = dates;
+  dateCopy = date;
+  if ([datesCopy count])
   {
     v12[0] = 0;
     v12[1] = v12;
     v12[2] = 0x3032000000;
     v12[3] = __Block_byref_object_copy__5;
     v12[4] = __Block_byref_object_dispose__5;
-    v13 = [v5 ic_objectPassingTest:&__block_literal_global_8];
+    v13 = [datesCopy ic_objectPassingTest:&__block_literal_global_8];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __65__ICNoteTimelineController_sanitizedDatesForDates_referenceDate___block_invoke_2;
     v9[3] = &unk_1E8469688;
     v11 = v12;
-    v10 = v6;
-    v7 = [v5 ic_map:v9];
+    v10 = dateCopy;
+    v7 = [datesCopy ic_map:v9];
 
     _Block_object_dispose(v12, 8);
   }

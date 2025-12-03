@@ -1,13 +1,13 @@
 @interface GKRelayBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
 @end
 
 @implementation GKRelayBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -27,12 +27,12 @@
   v12[1] = 3221225472;
   v12[2] = sub_100181194;
   v12[3] = &unk_100361770;
-  v11 = v6;
+  v11 = notificationCopy;
   v13 = v11;
-  [a1 performAsync:v12];
-  if (v7)
+  [self performAsync:v12];
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 

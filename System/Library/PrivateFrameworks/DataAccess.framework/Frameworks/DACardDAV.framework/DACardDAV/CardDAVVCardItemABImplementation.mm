@@ -1,68 +1,68 @@
 @interface CardDAVVCardItemABImplementation
-- (BOOL)deleteFromContainer:(void *)a3;
-- (BOOL)deleteFromContainer:(void *)a3 account:(id)a4;
-- (BOOL)loadLocalItemWithAccount:(id)a3;
-- (BOOL)saveIfGroupWithLocalObject:(id)a3 toContainer:(id)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7;
-- (CardDAVVCardItemABImplementation)initWithABRecord:(void *)a3 addressBook:(void *)a4 outNeedsDBSave:(BOOL *)a5 maxImageSize:(int64_t)a6 maxResourceSize:(int64_t)a7 inContainerWithURL:(id)a8 afterImageSyncFailed:(BOOL)a9;
-- (CardDAVVCardItemABImplementation)initWithURL:(id)a3 eTag:(id)a4 dataPayload:(id)a5 inContainerWithURL:(id)a6 withAccountInfoProvider:(id)a7;
+- (BOOL)deleteFromContainer:(void *)container;
+- (BOOL)deleteFromContainer:(void *)container account:(id)account;
+- (BOOL)loadLocalItemWithAccount:(id)account;
+- (BOOL)saveIfGroupWithLocalObject:(id)object toContainer:(id)container shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account;
+- (CardDAVVCardItemABImplementation)initWithABRecord:(void *)record addressBook:(void *)book outNeedsDBSave:(BOOL *)save maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize inContainerWithURL:(id)l afterImageSyncFailed:(BOOL)failed;
+- (CardDAVVCardItemABImplementation)initWithURL:(id)l eTag:(id)tag dataPayload:(id)payload inContainerWithURL:(id)rL withAccountInfoProvider:(id)provider;
 - (id)cardDAVRecordItem;
 - (id)convertToDAContactSearchResultElement;
-- (id)createOrphanedABRecordFromParsedVCardOutRecordType:(unsigned int *)a3;
-- (unint64_t)saveWithLocalObject:(id)a3 toContainer:(id)a4 containerURL:(id)a5 shouldMergeProperties:(BOOL)a6 outMergeDidChooseLocalProperties:(BOOL *)a7 account:(id)a8 shouldSaveGroups:(BOOL)a9;
+- (id)createOrphanedABRecordFromParsedVCardOutRecordType:(unsigned int *)type;
+- (unint64_t)saveWithLocalObject:(id)object toContainer:(id)container containerURL:(id)l shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account shouldSaveGroups:(BOOL)groups;
 - (void)dealloc;
-- (void)setLocalItem:(void *)a3;
+- (void)setLocalItem:(void *)item;
 @end
 
 @implementation CardDAVVCardItemABImplementation
 
-- (CardDAVVCardItemABImplementation)initWithURL:(id)a3 eTag:(id)a4 dataPayload:(id)a5 inContainerWithURL:(id)a6 withAccountInfoProvider:(id)a7
+- (CardDAVVCardItemABImplementation)initWithURL:(id)l eTag:(id)tag dataPayload:(id)payload inContainerWithURL:(id)rL withAccountInfoProvider:(id)provider
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  tagCopy = tag;
+  payloadCopy = payload;
+  rLCopy = rL;
+  providerCopy = provider;
   v35.receiver = self;
   v35.super_class = CardDAVVCardItemABImplementation;
   v18 = [(CardDAVVCardItemABImplementation *)&v35 init];
   v19 = v18;
   if (v18)
   {
-    [(CardDAVVCardItemABImplementation *)v18 setDataPayload:v15];
-    [(CardDAVVCardItemABImplementation *)v19 setServerID:v13];
-    [(CardDAVVCardItemABImplementation *)v19 setSyncKey:v14];
+    [(CardDAVVCardItemABImplementation *)v18 setDataPayload:payloadCopy];
+    [(CardDAVVCardItemABImplementation *)v19 setServerID:lCopy];
+    [(CardDAVVCardItemABImplementation *)v19 setSyncKey:tagCopy];
     [(CardDAVVCardItemABImplementation *)v19 setAbRecordType:0xFFFFFFFFLL];
-    if (v16)
+    if (rLCopy)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        [CardDAVVCardItemABImplementation initWithURL:a2 eTag:v19 dataPayload:v17 inContainerWithURL:? withAccountInfoProvider:?];
+        [CardDAVVCardItemABImplementation initWithURL:a2 eTag:v19 dataPayload:providerCopy inContainerWithURL:? withAccountInfoProvider:?];
       }
 
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        [CardDAVVCardItemABImplementation initWithURL:a2 eTag:v19 dataPayload:v17 inContainerWithURL:? withAccountInfoProvider:?];
+        [CardDAVVCardItemABImplementation initWithURL:a2 eTag:v19 dataPayload:providerCopy inContainerWithURL:? withAccountInfoProvider:?];
       }
 
-      v20 = v17;
-      v21 = [v20 databaseHelper];
-      v22 = [v21 abDBThrowOnNil:0];
+      v20 = providerCopy;
+      databaseHelper = [v20 databaseHelper];
+      v22 = [databaseHelper abDBThrowOnNil:0];
 
       if (v22)
       {
-        v23 = [v20 homeURL];
-        v24 = [v16 da_leastInfoStringRepresentationRelativeToParentURL:v23];
+        homeURL = [v20 homeURL];
+        v24 = [rLCopy da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
-        v25 = [v20 accountID];
+        accountID = [v20 accountID];
         v34 = v24;
         v26 = ABAddressBookCopySourceWithAccountAndExternalIdentifiers();
 
         if (v26)
         {
-          v33 = v13;
+          v33 = lCopy;
           ABSourceSetShouldIgnoreCapabilitiesRestrictions();
-          v27 = [(CardDAVVCardItemABImplementation *)v19 serverID];
-          v28 = [v27 da_leastInfoStringRepresentationRelativeToParentURL:v16];
+          serverID = [(CardDAVVCardItemABImplementation *)v19 serverID];
+          v28 = [serverID da_leastInfoStringRepresentationRelativeToParentURL:rLCopy];
 
           v29 = ABAddressBookCopyArrayOfAllPeopleWithExternalIdentifierInSource();
           if ([v29 count])
@@ -83,7 +83,7 @@
 
           CFRelease(v26);
 
-          v13 = v33;
+          lCopy = v33;
         }
       }
     }
@@ -92,23 +92,23 @@
   return v19;
 }
 
-- (CardDAVVCardItemABImplementation)initWithABRecord:(void *)a3 addressBook:(void *)a4 outNeedsDBSave:(BOOL *)a5 maxImageSize:(int64_t)a6 maxResourceSize:(int64_t)a7 inContainerWithURL:(id)a8 afterImageSyncFailed:(BOOL)a9
+- (CardDAVVCardItemABImplementation)initWithABRecord:(void *)record addressBook:(void *)book outNeedsDBSave:(BOOL *)save maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize inContainerWithURL:(id)l afterImageSyncFailed:(BOOL)failed
 {
   v73 = *MEMORY[0x277D85DE8];
-  v12 = a8;
-  if (a5)
+  lCopy = l;
+  if (save)
   {
-    *a5 = 0;
+    *save = 0;
   }
 
-  v59 = a5;
+  saveCopy = save;
   v70.receiver = self;
   v70.super_class = CardDAVVCardItemABImplementation;
   v13 = [(CardDAVVCardItemABImplementation *)&v70 init];
   if (v13)
   {
-    [(CardDAVVCardItemABImplementation *)v13 setAbRecordType:ABRecordGetRecordType(a3)];
-    [(CardDAVVCardItemABImplementation *)v13 setLocalItem:a3];
+    [(CardDAVVCardItemABImplementation *)v13 setAbRecordType:ABRecordGetRecordType(record)];
+    [(CardDAVVCardItemABImplementation *)v13 setLocalItem:record];
     v14 = 0;
     property = *MEMORY[0x277CE97E0];
     v63 = *MEMORY[0x277CE97D8];
@@ -120,9 +120,9 @@
     allocator = *MEMORY[0x277CBECE8];
     while (1)
     {
-      v15 = [(CardDAVVCardItemABImplementation *)v13 abRecordType];
+      abRecordType = [(CardDAVVCardItemABImplementation *)v13 abRecordType];
       abRecord = v13->_abRecord;
-      if (!v15)
+      if (!abRecordType)
       {
         break;
       }
@@ -134,7 +134,7 @@
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v12];
+        v20 = [v18 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
         [(CardDAVVCardItemABImplementation *)v13 setServerID:v20];
         goto LABEL_33;
       }
@@ -149,23 +149,23 @@ LABEL_35:
       v41 = [MEMORY[0x277CE9778] copyVCardRepresentationOfRecord:v13->_abRecord withPhoto:v27 extraPhotoParameters:v26];
       [(CardDAVVCardItemABImplementation *)v13 setDataPayload:v41];
 
-      v42 = [(CardDAVVCardItemABImplementation *)v13 dataPayload];
+      dataPayload = [(CardDAVVCardItemABImplementation *)v13 dataPayload];
 
-      if (!v42)
+      if (!dataPayload)
       {
         goto LABEL_44;
       }
 
-      v43 = [(CardDAVVCardItemABImplementation *)v13 dataPayload];
-      v44 = [v43 length];
+      dataPayload2 = [(CardDAVVCardItemABImplementation *)v13 dataPayload];
+      v44 = [dataPayload2 length];
 
-      if (!(v14 & 1 | (v44 <= a7)))
+      if (!(v14 & 1 | (v44 <= resourceSize)))
       {
         v45 = [v27 length];
         v14 = 0;
         if (v27)
         {
-          if (v45 > v44 - a7)
+          if (v45 > v44 - resourceSize)
           {
             [(CardDAVVCardItemABImplementation *)v13 setDataPayload:0, v49];
             [(CardDAVVCardItemABImplementation *)v13 setClientID:0];
@@ -176,9 +176,9 @@ LABEL_35:
         }
       }
 
-      v46 = [(CardDAVVCardItemABImplementation *)v13 dataPayload];
+      dataPayload3 = [(CardDAVVCardItemABImplementation *)v13 dataPayload];
 
-      if (v46)
+      if (dataPayload3)
       {
 LABEL_44:
 
@@ -193,19 +193,19 @@ LABEL_44:
     v19 = v22;
     if (v22)
     {
-      v23 = [v22 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v12];
+      v23 = [v22 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
       [(CardDAVVCardItemABImplementation *)v13 setServerID:v23];
     }
 
     v24 = ABRecordCopyValue(v13->_abRecord, v60);
     v20 = v24;
-    if (a9)
+    if (failed)
     {
-      v25 = [MEMORY[0x277CBEAA8] date];
-      ABRecordSetValue(v13->_abRecord, v60, v25, 0);
-      if (v59)
+      date = [MEMORY[0x277CBEAA8] date];
+      ABRecordSetValue(v13->_abRecord, v60, date, 0);
+      if (saveCopy)
       {
-        *v59 = 1;
+        *saveCopy = 1;
       }
     }
 
@@ -227,9 +227,9 @@ LABEL_44:
           ABRecordSetValue(v13->_abRecord, v58, v29, 0);
         }
 
-        if (v59)
+        if (saveCopy)
         {
-          *v59 = 1;
+          *saveCopy = 1;
         }
       }
 
@@ -262,12 +262,12 @@ LABEL_44:
           v54 = v36;
           v52 = v68;
           v51 = HIDWORD(v67);
-          v37 = v12;
+          v37 = lCopy;
           v38 = v67;
           [(__CFData *)v35 base64EncodedStringWithOptions:0];
           v39 = v55 = v29;
           v50 = v38;
-          v12 = v37;
+          lCopy = v37;
           v26 = [v54 initWithFormat:@"X-ABCROP-RECTANGLE=ABClipRect_1&%d&%d&%d&%d&%@", v53, v52, v51, v50, v39];
 
           v29 = v55;
@@ -312,43 +312,43 @@ LABEL_45:
 
 - (id)cardDAVRecordItem
 {
-  v3 = [(CardDAVVCardItemABImplementation *)self abRecord];
-  if (v3)
+  abRecord = [(CardDAVVCardItemABImplementation *)self abRecord];
+  if (abRecord)
   {
     if ([(CardDAVVCardItemABImplementation *)self abRecordType])
     {
       if ([(CardDAVVCardItemABImplementation *)self abRecordType]== 1)
       {
-        v3 = [[DAABLegacyGroup alloc] initWithGroup:[(CardDAVVCardItemABImplementation *)self abRecord]];
+        abRecord = [[DAABLegacyGroup alloc] initWithGroup:[(CardDAVVCardItemABImplementation *)self abRecord]];
       }
 
       else
       {
-        v3 = 0;
+        abRecord = 0;
       }
     }
 
     else
     {
-      v3 = [[DAABLegacyContact alloc] initWithABPerson:[(CardDAVVCardItemABImplementation *)self abRecord]];
+      abRecord = [[DAABLegacyContact alloc] initWithABPerson:[(CardDAVVCardItemABImplementation *)self abRecord]];
     }
   }
 
-  return v3;
+  return abRecord;
 }
 
-- (unint64_t)saveWithLocalObject:(id)a3 toContainer:(id)a4 containerURL:(id)a5 shouldMergeProperties:(BOOL)a6 outMergeDidChooseLocalProperties:(BOOL *)a7 account:(id)a8 shouldSaveGroups:(BOOL)a9
+- (unint64_t)saveWithLocalObject:(id)object toContainer:(id)container containerURL:(id)l shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account shouldSaveGroups:(BOOL)groups
 {
-  v10 = a6;
+  propertiesCopy = properties;
   v121 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = [v18 databaseHelper];
-  v20 = [v19 abDB];
+  objectCopy = object;
+  containerCopy = container;
+  lCopy = l;
+  accountCopy = account;
+  databaseHelper = [accountCopy databaseHelper];
+  abDB = [databaseHelper abDB];
 
-  if (!v20)
+  if (!abDB)
   {
     v25 = DALoggingwithCategory();
     v26 = *(MEMORY[0x277D03988] + 3);
@@ -362,33 +362,33 @@ LABEL_45:
     goto LABEL_116;
   }
 
-  v117 = self;
-  v21 = v18;
+  selfCopy = self;
+  v21 = accountCopy;
   v113 = a2;
-  v22 = v17;
-  if ([v15 isContact])
+  v22 = lCopy;
+  if ([objectCopy isContact])
   {
-    v23 = v16;
-    v24 = [v15 asPerson];
+    v23 = containerCopy;
+    asPerson = [objectCopy asPerson];
   }
 
   else
   {
-    v23 = v16;
-    if (![v15 isGroup])
+    v23 = containerCopy;
+    if (![objectCopy isGroup])
     {
       v28 = 0;
       goto LABEL_11;
     }
 
-    v24 = [v15 asABGroup];
+    asPerson = [objectCopy asABGroup];
   }
 
-  v28 = v24;
+  v28 = asPerson;
 LABEL_11:
-  if (v15)
+  if (objectCopy)
   {
-    v29 = v10;
+    v29 = propertiesCopy;
   }
 
   else
@@ -397,50 +397,50 @@ LABEL_11:
   }
 
   v115 = v29;
-  v30 = !v10;
+  v30 = !propertiesCopy;
   if ([v21 supportsWallpaperSync])
   {
     v30 |= 2uLL;
   }
 
   v31 = objc_alloc(MEMORY[0x277CE9780]);
-  v32 = [(CardDAVVCardItemABImplementation *)self dataPayload];
-  v33 = [v31 initWithData:v32 importOptions:v30];
+  dataPayload = [(CardDAVVCardItemABImplementation *)self dataPayload];
+  v33 = [v31 initWithData:dataPayload importOptions:v30];
 
-  if (v15)
+  if (objectCopy)
   {
     v34 = v33;
-    [(CardDAVVCardItemABImplementation *)self setCardDAVRecordItem:v15];
-    v16 = v23;
-    if ([v15 isContact])
+    [(CardDAVVCardItemABImplementation *)self setCardDAVRecordItem:objectCopy];
+    containerCopy = v23;
+    if ([objectCopy isContact])
     {
-      v35 = v15;
-      -[CardDAVVCardItemABImplementation setLocalItem:](self, "setLocalItem:", [v15 asPerson]);
-      v17 = v22;
+      v35 = objectCopy;
+      -[CardDAVVCardItemABImplementation setLocalItem:](self, "setLocalItem:", [objectCopy asPerson]);
+      lCopy = v22;
     }
 
     else
     {
-      v17 = v22;
-      v35 = v15;
-      if ([v15 isGroup])
+      lCopy = v22;
+      v35 = objectCopy;
+      if ([objectCopy isGroup])
       {
-        -[CardDAVVCardItemABImplementation setLocalItem:](self, "setLocalItem:", [v15 asABGroup]);
+        -[CardDAVVCardItemABImplementation setLocalItem:](self, "setLocalItem:", [objectCopy asABGroup]);
       }
 
       else
       {
-        v42 = [MEMORY[0x277CCA890] currentHandler];
-        [v42 handleFailureInMethod:v113 object:self file:@"CardDAVVCardItemABImplementation.m" lineNumber:330 description:@"Error: unrecognized record type"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:v113 object:self file:@"CardDAVVCardItemABImplementation.m" lineNumber:330 description:@"Error: unrecognized record type"];
       }
     }
 
-    v18 = v21;
+    accountCopy = v21;
     v43 = v28;
-    if (!a9 && [(CardDAVVCardItemABImplementation *)self abRecordType]== 1)
+    if (!groups && [(CardDAVVCardItemABImplementation *)self abRecordType]== 1)
     {
       v27 = 2;
-      v15 = v35;
+      objectCopy = v35;
       v25 = v34;
       goto LABEL_116;
     }
@@ -469,13 +469,13 @@ LABEL_11:
     }
 
     v45 = v44;
-    v15 = v35;
-    v46 = [v25 localRecordHasAdditionalProperties];
+    objectCopy = v35;
+    localRecordHasAdditionalProperties = [v25 localRecordHasAdditionalProperties];
 LABEL_42:
     if ([(CardDAVVCardItemABImplementation *)self abRecordType])
     {
 LABEL_101:
-      if ((v115 & v46) == 1)
+      if ((v115 & localRecordHasAdditionalProperties) == 1)
       {
         if ([(CardDAVVCardItemABImplementation *)self abRecordType])
         {
@@ -492,9 +492,9 @@ LABEL_101:
 
       else
       {
-        v88 = [(CardDAVVCardItemABImplementation *)self syncKey];
+        syncKey = [(CardDAVVCardItemABImplementation *)self syncKey];
 
-        if (v88)
+        if (syncKey)
         {
           if ([(CardDAVVCardItemABImplementation *)self abRecordType])
           {
@@ -507,21 +507,21 @@ LABEL_101:
           }
 
           v90 = *v89;
-          v91 = [(CardDAVVCardItemABImplementation *)self syncKey];
-          ABRecordSetValue(v43, v90, v91, 0);
+          syncKey2 = [(CardDAVVCardItemABImplementation *)self syncKey];
+          ABRecordSetValue(v43, v90, syncKey2, 0);
         }
       }
 
-      v92 = [(CardDAVVCardItemABImplementation *)self serverID];
+      serverID = [(CardDAVVCardItemABImplementation *)self serverID];
 
-      if (v92)
+      if (serverID)
       {
-        v93 = [(CardDAVVCardItemABImplementation *)self serverID];
-        v94 = [v93 da_leastInfoStringRepresentationRelativeToParentURL:v17];
+        serverID2 = [(CardDAVVCardItemABImplementation *)self serverID];
+        v94 = [serverID2 da_leastInfoStringRepresentationRelativeToParentURL:lCopy];
 
-        v95 = [(CardDAVVCardItemABImplementation *)self abRecordType];
+        abRecordType = [(CardDAVVCardItemABImplementation *)self abRecordType];
         v96 = MEMORY[0x277CE9890];
-        if (v95)
+        if (abRecordType)
         {
           v96 = MEMORY[0x277CE97D8];
         }
@@ -529,21 +529,21 @@ LABEL_101:
         ABRecordSetValue(v43, *v96, v94, 0);
       }
 
-      [v18 _massageAddedOrModifiedVCard:self];
+      [accountCopy _massageAddedOrModifiedVCard:self];
       v27 = v45;
 
       goto LABEL_116;
     }
 
     v108 = v45;
-    v107 = v16;
-    v47 = v18;
+    v107 = containerCopy;
+    v47 = accountCopy;
     v48 = v116;
     v111 = v25;
     property = *MEMORY[0x277CE98E0];
     v49 = ABRecordCopyValue(v43, *MEMORY[0x277CE98E0]);
     persona = v43;
-    v106 = v46;
+    v106 = localRecordHasAdditionalProperties;
     if (v48 != 0) == (v49 != 0) && (!v48 || ([v48 isEqualToString:v49]))
     {
 LABEL_79:
@@ -557,7 +557,7 @@ LABEL_79:
         goto LABEL_100;
       }
 
-      v112 = v15;
+      v112 = objectCopy;
       v74 = MEMORY[0x277CE9A60];
       propertya = v70;
       if (v73 && ([MEMORY[0x277CBEBC0] URLWithString:v73], (v75 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -618,15 +618,15 @@ LABEL_79:
       v108 &= ABRecordSetValue(persona, v86, v77, 0);
       ABRecordSetValue(persona, v72, v73, 0);
 LABEL_99:
-      v15 = v112;
+      objectCopy = v112;
       v70 = propertya;
 
-      self = v117;
+      self = selfCopy;
       v43 = persona;
 LABEL_100:
-      v46 = v106;
+      localRecordHasAdditionalProperties = v106;
 
-      v16 = v107;
+      containerCopy = v107;
       v45 = v108;
       goto LABEL_101;
     }
@@ -665,20 +665,20 @@ LABEL_67:
           ABPersonRemoveImageData(persona, 0);
           if ([v52 length])
           {
-            v63 = [v111 lastCropRectChecksum];
-            if ([v63 length])
+            lastCropRectChecksum = [v111 lastCropRectChecksum];
+            if ([lastCropRectChecksum length])
             {
               CC_MD5([v52 bytes], objc_msgSend(v52, "length"), buf);
               v64 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:buf length:16];
-              if ([v64 isEqualToData:v63])
+              if ([v64 isEqualToData:lastCropRectChecksum])
               {
                 HIDWORD(v99) = [v111 lastCropRectX];
                 LODWORD(v99) = [v111 lastCropRectY];
-                v65 = [v111 lastCropRectWidth];
-                v66 = [v111 lastCropRectHeight];
-                if (v65)
+                lastCropRectWidth = [v111 lastCropRectWidth];
+                lastCropRectHeight = [v111 lastCropRectHeight];
+                if (lastCropRectWidth)
                 {
-                  if (v66)
+                  if (lastCropRectHeight)
                   {
                     v67 = v64;
                     v68 = persona;
@@ -730,7 +730,7 @@ LABEL_78:
     goto LABEL_67;
   }
 
-  v16 = v23;
+  containerCopy = v23;
   v25 = v33;
   v36 = -[NSObject createRecordInSource:outRecordType:](v33, "createRecordInSource:outRecordType:", [v23 asSource], &self->_abRecordType);
   self->_abRecord = v36;
@@ -741,15 +741,15 @@ LABEL_78:
     if (abRecord)
     {
       person = v22;
-      v18 = v21;
-      if (a9)
+      accountCopy = v21;
+      if (groups)
       {
         goto LABEL_55;
       }
 
-      v38 = [(CardDAVVCardItemABImplementation *)self abRecordType];
+      abRecordType2 = [(CardDAVVCardItemABImplementation *)self abRecordType];
       abRecord = self->_abRecord;
-      if (v38 == 1)
+      if (abRecordType2 == 1)
       {
         if (abRecord)
         {
@@ -758,15 +758,15 @@ LABEL_78:
 
         self->_abRecord = 0;
         v27 = 2;
-        v17 = person;
-        v15 = 0;
+        lCopy = person;
+        objectCopy = 0;
         goto LABEL_116;
       }
 
       if (abRecord)
       {
 LABEL_55:
-        ABAddressBookAddRecord(v20, abRecord, 0);
+        ABAddressBookAddRecord(abDB, abRecord, 0);
         v43 = self->_abRecord;
         v45 = 1;
       }
@@ -785,14 +785,14 @@ LABEL_55:
 
         v114 = 0;
         v116 = 0;
-        v46 = 0;
-        v17 = person;
-        v15 = 0;
+        localRecordHasAdditionalProperties = 0;
+        lCopy = person;
+        objectCopy = 0;
       }
 
       else
       {
-        v17 = person;
+        lCopy = person;
         if (!abRecordType)
         {
           v59 = [[DAABLegacyContact alloc] initWithABPerson:self->_abRecord];
@@ -801,8 +801,8 @@ LABEL_55:
 
         v114 = 0;
         v116 = 0;
-        v46 = 0;
-        v15 = 0;
+        localRecordHasAdditionalProperties = 0;
+        objectCopy = 0;
       }
 
       goto LABEL_42;
@@ -811,52 +811,52 @@ LABEL_55:
 
   v39 = DALoggingwithCategory();
   v40 = *(MEMORY[0x277D03988] + 3);
-  v17 = v22;
+  lCopy = v22;
   if (os_log_type_enabled(v39, v40))
   {
-    v41 = [(CardDAVVCardItemABImplementation *)self dataPayload];
+    dataPayload2 = [(CardDAVVCardItemABImplementation *)self dataPayload];
     *buf = 138412290;
-    v120 = v41;
+    v120 = dataPayload2;
     _os_log_impl(&dword_24850D000, v39, v40, "Unable to parse the contact with this data %@", buf, 0xCu);
   }
 
   v27 = 0;
-  v18 = v21;
-  v15 = 0;
+  accountCopy = v21;
+  objectCopy = 0;
 LABEL_116:
 
   v97 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (BOOL)saveIfGroupWithLocalObject:(id)a3 toContainer:(id)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7
+- (BOOL)saveIfGroupWithLocalObject:(id)object toContainer:(id)container shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account
 {
-  v8 = a5;
+  propertiesCopy = properties;
   v91 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v75 = a4;
-  v13 = a7;
-  v14 = v12;
-  v15 = v13;
-  v74 = self;
-  if ([v12 isContact])
+  objectCopy = object;
+  containerCopy = container;
+  accountCopy = account;
+  v14 = objectCopy;
+  v15 = accountCopy;
+  selfCopy = self;
+  if ([objectCopy isContact])
   {
     if ([(CardDAVVCardItemABImplementation *)self abRecordType])
     {
       [CardDAVVCardItemABImplementation saveIfGroupWithLocalObject:a2 toContainer:self shouldMergeProperties:? outMergeDidChooseLocalProperties:? account:?];
     }
 
-    v16 = [v12 asPerson];
+    asPerson = [objectCopy asPerson];
   }
 
   else
   {
-    v17 = [v12 isGroup];
-    v18 = [(CardDAVVCardItemABImplementation *)self abRecordType];
-    if (!v17)
+    isGroup = [objectCopy isGroup];
+    abRecordType = [(CardDAVVCardItemABImplementation *)self abRecordType];
+    if (!isGroup)
     {
-      v14 = v12;
-      if (v18 != 1)
+      v14 = objectCopy;
+      if (abRecordType != 1)
       {
         v20 = 0;
         abRecord = 0;
@@ -868,16 +868,16 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (v18 != 1)
+    if (abRecordType != 1)
     {
       [CardDAVVCardItemABImplementation saveIfGroupWithLocalObject:a2 toContainer:self shouldMergeProperties:? outMergeDidChooseLocalProperties:? account:?];
     }
 
-    v14 = v12;
-    v16 = [v12 asABGroup];
+    v14 = objectCopy;
+    asPerson = [objectCopy asABGroup];
   }
 
-  abRecord = v16;
+  abRecord = asPerson;
   if ([(CardDAVVCardItemABImplementation *)self abRecordType]!= 1)
   {
     v20 = 0;
@@ -891,7 +891,7 @@ LABEL_15:
 
 LABEL_16:
   v66 = v14;
-  if (v8)
+  if (propertiesCopy)
   {
     v20 = objc_opt_new();
   }
@@ -909,7 +909,7 @@ LABEL_16:
     {
       v23 = [(__CFArray *)v21 objectAtIndexedSubscript:v22];
 
-      if (v8)
+      if (propertiesCopy)
       {
         v24 = [MEMORY[0x277CCABB0] numberWithInt:ABRecordGetRecordID(v23)];
         [v20 addObject:v24];
@@ -971,7 +971,7 @@ LABEL_26:
 
     v76 = *v83;
     v73 = v33;
-    v69 = v8;
+    v69 = propertiesCopy;
     v68 = v20;
     do
     {
@@ -987,12 +987,12 @@ LABEL_26:
         if (v36 > [@"urn:uuid:" length] && !objc_msgSend(v35, "compare:options:range:", @"urn:uuid:", 1, 0, objc_msgSend(@"urn:uuid:", "length")))
         {
           v37 = [v35 substringFromIndex:{objc_msgSend(@"urn:uuid:", "length")}];
-          v38 = [(CardDAVVCardItemABImplementation *)self UUIDToPersonCache];
+          uUIDToPersonCache = [(CardDAVVCardItemABImplementation *)self UUIDToPersonCache];
 
-          if (v38)
+          if (uUIDToPersonCache)
           {
-            v39 = [(CardDAVVCardItemABImplementation *)self UUIDToPersonCache];
-            v40 = [v39 objectForKeyedSubscript:v37];
+            uUIDToPersonCache2 = [(CardDAVVCardItemABImplementation *)self UUIDToPersonCache];
+            v40 = [uUIDToPersonCache2 objectForKeyedSubscript:v37];
 
             if ([v40 count])
             {
@@ -1019,8 +1019,8 @@ LABEL_26:
                     }
 
                     v47 = *(*(&v78 + 1) + 8 * j);
-                    v48 = [v15 databaseHelper];
-                    PersonWithRecordID = ABAddressBookGetPersonWithRecordID([v48 abDB], objc_msgSend(v47, "intValue"));
+                    databaseHelper = [v15 databaseHelper];
+                    PersonWithRecordID = ABAddressBookGetPersonWithRecordID([databaseHelper abDB], objc_msgSend(v47, "intValue"));
 
                     if (PersonWithRecordID)
                     {
@@ -1034,7 +1034,7 @@ LABEL_26:
                 while (v44);
               }
 
-              v8 = v69;
+              propertiesCopy = v69;
               abRecord = record;
               v40 = v71;
               v20 = v68;
@@ -1042,9 +1042,9 @@ LABEL_26:
             }
           }
 
-          v50 = [v15 databaseHelper];
-          [v50 abDB];
-          [v75 asSource];
+          databaseHelper2 = [v15 databaseHelper];
+          [databaseHelper2 abDB];
+          [containerCopy asSource];
           v51 = v37;
           v52 = ABAddressBookCopyArrayOfAllPeopleWithExternalUUIDInSource();
 
@@ -1055,7 +1055,7 @@ LABEL_26:
             {
               v54 = [v52 objectAtIndexedSubscript:v53];
 
-              if (v8)
+              if (propertiesCopy)
               {
                 v55 = [MEMORY[0x277CCABB0] numberWithInt:ABRecordGetRecordID(v54)];
                 [v20 removeObject:v55];
@@ -1069,7 +1069,7 @@ LABEL_26:
           }
 
           v33 = v73;
-          self = v74;
+          self = selfCopy;
         }
       }
 
@@ -1101,7 +1101,7 @@ LABEL_62:
   v57 = v63;
 LABEL_63:
 
-  if (v8 && [v20 count])
+  if (propertiesCopy && [v20 count])
   {
     v58 = ABGroupCopyCompositeName();
     v59 = DALoggingwithCategory();
@@ -1128,17 +1128,17 @@ LABEL_71:
   return 1;
 }
 
-- (void)setLocalItem:(void *)a3
+- (void)setLocalItem:(void *)item
 {
   abRecord = self->_abRecord;
-  if (abRecord != a3)
+  if (abRecord != item)
   {
     if (abRecord)
     {
       CFRelease(abRecord);
     }
 
-    self->_abRecord = a3;
+    self->_abRecord = item;
     [(CardDAVVCardItemABImplementation *)self setAbRecordType:ABRecordGetRecordType([(CardDAVVCardItemABImplementation *)self abRecord])];
     v6 = self->_abRecord;
     if (v6)
@@ -1149,22 +1149,22 @@ LABEL_71:
   }
 }
 
-- (BOOL)loadLocalItemWithAccount:(id)a3
+- (BOOL)loadLocalItemWithAccount:(id)account
 {
-  v4 = [a3 databaseHelper];
-  v5 = [v4 abDB];
+  databaseHelper = [account databaseHelper];
+  abDB = [databaseHelper abDB];
 
-  v6 = [(CardDAVVCardItemABImplementation *)self abRecordType];
-  v7 = [(CardDAVVCardItemABImplementation *)self clientID];
-  v8 = [v7 intValue];
-  if (v6)
+  abRecordType = [(CardDAVVCardItemABImplementation *)self abRecordType];
+  clientID = [(CardDAVVCardItemABImplementation *)self clientID];
+  intValue = [clientID intValue];
+  if (abRecordType)
   {
-    GroupWithRecordID = ABAddressBookGetGroupWithRecordID(v5, v8);
+    GroupWithRecordID = ABAddressBookGetGroupWithRecordID(abDB, intValue);
   }
 
   else
   {
-    GroupWithRecordID = ABAddressBookGetPersonWithRecordID(v5, v8);
+    GroupWithRecordID = ABAddressBookGetPersonWithRecordID(abDB, intValue);
   }
 
   v10 = GroupWithRecordID;
@@ -1178,45 +1178,45 @@ LABEL_71:
   return 1;
 }
 
-- (BOOL)deleteFromContainer:(void *)a3
+- (BOOL)deleteFromContainer:(void *)container
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CardDAVVCardItemABImplementation.m" lineNumber:619 description:{@"Please read CardDAVVCardItem.h, and try again"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CardDAVVCardItemABImplementation.m" lineNumber:619 description:{@"Please read CardDAVVCardItem.h, and try again"}];
 
   return 0;
 }
 
-- (BOOL)deleteFromContainer:(void *)a3 account:(id)a4
+- (BOOL)deleteFromContainer:(void *)container account:(id)account
 {
   if (!self->_abRecord)
   {
     return 0;
   }
 
-  v5 = [a4 databaseHelper];
-  ABAddressBookRemoveRecord([v5 abDB], self->_abRecord, 0);
+  databaseHelper = [account databaseHelper];
+  ABAddressBookRemoveRecord([databaseHelper abDB], self->_abRecord, 0);
 
   return self->_abRecord != 0;
 }
 
-- (id)createOrphanedABRecordFromParsedVCardOutRecordType:(unsigned int *)a3
+- (id)createOrphanedABRecordFromParsedVCardOutRecordType:(unsigned int *)type
 {
-  v5 = [(CardDAVVCardItemABImplementation *)self dataPayload];
+  dataPayload = [(CardDAVVCardItemABImplementation *)self dataPayload];
 
-  if (!v5 || (v6 = objc_alloc(MEMORY[0x277CE9780]), -[CardDAVVCardItemABImplementation dataPayload](self, "dataPayload"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 initWithData:v7], v7, v9 = objc_msgSend(v8, "createRecordInSource:outRecordType:", 0, a3), v8, !v9))
+  if (!dataPayload || (v6 = objc_alloc(MEMORY[0x277CE9780]), -[CardDAVVCardItemABImplementation dataPayload](self, "dataPayload"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 initWithData:v7], v7, v9 = objc_msgSend(v8, "createRecordInSource:outRecordType:", 0, type), v8, !v9))
   {
     v11 = 0;
     goto LABEL_11;
   }
 
-  if (*a3 == 1)
+  if (*type == 1)
   {
     v10 = [[DAABLegacyGroup alloc] initWithGroup:v9];
   }
 
   else
   {
-    if (*a3)
+    if (*type)
     {
       v11 = 0;
       goto LABEL_10;
@@ -1237,8 +1237,8 @@ LABEL_11:
 {
   v59 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CE9780]);
-  v4 = [(CardDAVVCardItemABImplementation *)self dataPayload];
-  v5 = [v3 initWithData:v4];
+  dataPayload = [(CardDAVVCardItemABImplementation *)self dataPayload];
+  v5 = [v3 initWithData:dataPayload];
 
   v6 = [v5 createRecordInSource:0 outRecordType:&self->_abRecordType];
   if (v6)
@@ -1431,8 +1431,8 @@ LABEL_11:
     v8 = 0;
   }
 
-  v42 = [v8 emailAddress];
-  [v8 setIdentifierOnServer:v42];
+  emailAddress = [v8 emailAddress];
+  [v8 setIdentifierOnServer:emailAddress];
 
   v43 = *MEMORY[0x277D85DE8];
 

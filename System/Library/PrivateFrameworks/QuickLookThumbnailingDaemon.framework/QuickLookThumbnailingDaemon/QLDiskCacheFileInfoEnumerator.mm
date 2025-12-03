@@ -1,17 +1,17 @@
 @interface QLDiskCacheFileInfoEnumerator
-- (QLDiskCacheFileInfoEnumerator)initWithDiskCache:(id)a3 forUbiquitousFiles:(BOOL)a4 extraInfo:(BOOL)a5;
+- (QLDiskCacheFileInfoEnumerator)initWithDiskCache:(id)cache forUbiquitousFiles:(BOOL)files extraInfo:(BOOL)info;
 - (id)nextFileInfo;
 @end
 
 @implementation QLDiskCacheFileInfoEnumerator
 
-- (QLDiskCacheFileInfoEnumerator)initWithDiskCache:(id)a3 forUbiquitousFiles:(BOOL)a4 extraInfo:(BOOL)a5
+- (QLDiskCacheFileInfoEnumerator)initWithDiskCache:(id)cache forUbiquitousFiles:(BOOL)files extraInfo:(BOOL)info
 {
-  result = [(QLDiskCacheEnumerator *)self initWithDiskCache:a3];
+  result = [(QLDiskCacheEnumerator *)self initWithDiskCache:cache];
   if (result)
   {
-    result->_ubiquitous = a4;
-    result->_extraInfo = a5;
+    result->_ubiquitous = files;
+    result->_extraInfo = info;
   }
 
   return result;
@@ -25,8 +25,8 @@
   indexEnumerator = self->_indexEnumerator;
   if (!indexEnumerator)
   {
-    v4 = [(QLDiskCache *)self->super._diskCache indexDatabase];
-    v5 = [v4 enumeratorForAllUbiquitousFiles:self->_ubiquitous withExtraInfo:self->_extraInfo];
+    indexDatabase = [(QLDiskCache *)self->super._diskCache indexDatabase];
+    v5 = [indexDatabase enumeratorForAllUbiquitousFiles:self->_ubiquitous withExtraInfo:self->_extraInfo];
     v6 = self->_indexEnumerator;
     self->_indexEnumerator = v5;
 

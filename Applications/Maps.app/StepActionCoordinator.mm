@@ -1,6 +1,6 @@
 @interface StepActionCoordinator
 - (AppCoordinator)appCoordinator;
-- (BOOL)canSelectVKLabelMarker:(id)a3;
+- (BOOL)canSelectVKLabelMarker:(id)marker;
 - (BOOL)isAuthorizedForPreciseLocation;
 - (BOOL)pptTestCanUpdateTrayLayout;
 - (BOOL)pptTestHasNextStep;
@@ -10,34 +10,34 @@
 - (NavTrayViewController)trayContaineeViewController;
 - (PlaceCardViewController)placeCardViewController;
 - (RouteStepListViewController)directionsStepsViewController;
-- (StepActionCoordinator)initWithContainerViewController:(id)a3;
+- (StepActionCoordinator)initWithContainerViewController:(id)controller;
 - (StepContainerViewController)containerViewController;
-- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)a3;
+- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)c;
 - (int)currentUITargetForAnalytics;
 - (int64_t)displayedViewMode;
 - (int64_t)pptTestCurrentStepIndex;
-- (unint64_t)originalLayoutForViewController:(id)a3;
-- (void)_presentAdvisory:(id)a3;
-- (void)_presentIncidents:(id)a3;
-- (void)_presentPlaceCardViewControllerForMapItem:(id)a3 modally:(BOOL)a4;
+- (unint64_t)originalLayoutForViewController:(id)controller;
+- (void)_presentAdvisory:(id)advisory;
+- (void)_presentIncidents:(id)incidents;
+- (void)_presentPlaceCardViewControllerForMapItem:(id)item modally:(BOOL)modally;
 - (void)_presentRouteDetailsVC;
-- (void)_shareRoute:(id)a3 sourceView:(id)a4;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)deselectVKLabelMarker:(id)a3;
-- (void)directionsStepsList:(id)a3 didTapRowForRouteStep:(id)a4;
-- (void)directionsStepsListDidTapRAPButton:(id)a3;
-- (void)directionsStepsListDidTapShareButton:(id)a3;
-- (void)placeCardViewController:(id)a3 openURL:(id)a4;
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4;
+- (void)_shareRoute:(id)route sourceView:(id)view;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)deselectVKLabelMarker:(id)marker;
+- (void)directionsStepsList:(id)list didTapRowForRouteStep:(id)step;
+- (void)directionsStepsListDidTapRAPButton:(id)button;
+- (void)directionsStepsListDidTapShareButton:(id)button;
+- (void)placeCardViewController:(id)controller openURL:(id)l;
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type;
 - (void)pptTestMoveToNextStep;
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4;
-- (void)pressedEndWithSender:(id)a3;
-- (void)pressedViewWaypoint:(id)a3;
-- (void)selectVKLabelMarker:(id)a3;
-- (void)setAppCoordinator:(id)a3;
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated;
+- (void)pressedEndWithSender:(id)sender;
+- (void)pressedViewWaypoint:(id)waypoint;
+- (void)selectVKLabelMarker:(id)marker;
+- (void)setAppCoordinator:(id)coordinator;
 - (void)showVLF;
-- (void)viewController:(id)a3 showOverview:(BOOL)a4 zoomToMapRegion:(BOOL)a5;
-- (void)viewControllerPresentTray:(id)a3;
+- (void)viewController:(id)controller showOverview:(BOOL)overview zoomToMapRegion:(BOOL)region;
+- (void)viewControllerPresentTray:(id)tray;
 @end
 
 @implementation StepActionCoordinator
@@ -58,77 +58,77 @@
 
 - (BOOL)pptTestMoveToBoardStep
 {
-  v2 = [(StepActionCoordinator *)self containerViewController];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  if ([containerViewController conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
   {
-    v3 = [v2 pptTestMoveToBoardStep];
+    pptTestMoveToBoardStep = [containerViewController pptTestMoveToBoardStep];
   }
 
   else
   {
-    v3 = 0;
+    pptTestMoveToBoardStep = 0;
   }
 
-  return v3;
+  return pptTestMoveToBoardStep;
 }
 
 - (void)pptTestMoveToNextStep
 {
-  v2 = [(StepActionCoordinator *)self containerViewController];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  if ([containerViewController conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
   {
-    [v2 pptTestMoveToNextStep];
+    [containerViewController pptTestMoveToNextStep];
   }
 }
 
 - (BOOL)pptTestHasNextStep
 {
-  v2 = [(StepActionCoordinator *)self containerViewController];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  if ([containerViewController conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
   {
-    v3 = [v2 pptTestHasNextStep];
+    pptTestHasNextStep = [containerViewController pptTestHasNextStep];
   }
 
   else
   {
-    v3 = 0;
+    pptTestHasNextStep = 0;
   }
 
-  return v3;
+  return pptTestHasNextStep;
 }
 
 - (int64_t)pptTestCurrentStepIndex
 {
-  v2 = [(StepActionCoordinator *)self containerViewController];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  if ([containerViewController conformsToProtocol:&OBJC_PROTOCOL___PPTTestGuidanceStepProtocol])
   {
-    v3 = [v2 pptTestCurrentStepIndex];
+    pptTestCurrentStepIndex = [containerViewController pptTestCurrentStepIndex];
   }
 
   else
   {
-    v3 = 0;
+    pptTestCurrentStepIndex = 0;
   }
 
-  return v3;
+  return pptTestCurrentStepIndex;
 }
 
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type
 {
-  if ((a4 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    v5 = a3;
+    animatedCopy = animated;
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    [WeakRetained popLastViewControllerAnimated:v5];
+    [WeakRetained popLastViewControllerAnimated:animatedCopy];
   }
 }
 
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 < 3)
+  animatedCopy = animated;
+  if (layout < 3)
   {
-    v6 = a3 + 1;
+    v6 = layout + 1;
   }
 
   else
@@ -137,17 +137,17 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v8 = [WeakRetained containeeLayout];
+  containeeLayout = [WeakRetained containeeLayout];
 
-  if (v8 == v6)
+  if (containeeLayout == v6)
   {
     v14[0] = @"ContainerLayout";
     v9 = [NSNumber numberWithUnsignedInteger:v6];
     v14[1] = @"ContainerContainee";
     v15[0] = v9;
     v10 = objc_loadWeakRetained(&self->_containerViewController);
-    v11 = [v10 currentViewController];
-    v15[1] = v11;
+    currentViewController = [v10 currentViewController];
+    v15[1] = currentViewController;
     v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayLayoutDidUpdateNotification" object:self userInfo:v12];
   }
@@ -155,7 +155,7 @@
   else
   {
     v13 = objc_loadWeakRetained(&self->_containerViewController);
-    [v13 setLayoutIfSupported:v6 animated:v4];
+    [v13 setLayoutIfSupported:v6 animated:animatedCopy];
   }
 }
 
@@ -179,8 +179,8 @@
 - (int)currentUITargetForAnalytics
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained route];
-  v4 = [v3 transportType] - 1;
+  route = [WeakRetained route];
+  v4 = [route transportType] - 1;
   if (v4 > 5)
   {
     v5 = 608;
@@ -194,69 +194,69 @@
   return v5;
 }
 
-- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)a3
+- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)c
 {
   v3 = objc_alloc_init(MKMapView);
 
   return v3;
 }
 
-- (void)placeCardViewController:(id)a3 openURL:(id)a4
+- (void)placeCardViewController:(id)controller openURL:(id)l
 {
-  v4 = a4;
+  lCopy = l;
   v5 = +[MKSystemController sharedInstance];
-  [v5 openURL:v4 completionHandler:0];
+  [v5 openURL:lCopy completionHandler:0];
 }
 
-- (void)_presentPlaceCardViewControllerForMapItem:(id)a3 modally:(BOOL)a4
+- (void)_presentPlaceCardViewControllerForMapItem:(id)item modally:(BOOL)modally
 {
-  v4 = a4;
-  v6 = a3;
-  v17 = [[PlaceCardItem alloc] initWithMapItem:v6];
+  modallyCopy = modally;
+  itemCopy = item;
+  v17 = [[PlaceCardItem alloc] initWithMapItem:itemCopy];
 
-  v7 = [(StepActionCoordinator *)self containerViewController];
-  v8 = [v7 currentViewController];
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0 || (-[StepActionCoordinator containerViewController](self, "containerViewController"), v10 = objc_claimAutoreleasedReturnValue(), [v10 currentViewController], v11 = objc_claimAutoreleasedReturnValue(), v10, objc_msgSend(v11, "placeCardItem"), v12 = objc_claimAutoreleasedReturnValue(), v13 = -[PlaceCardItem isEqual:](v17, "isEqual:", v12), v12, v11, (v13 & 1) == 0))
   {
-    v14 = [(StepActionCoordinator *)self placeCardViewController];
-    [v14 resetState];
-    [v14 setPlaceCardItem:v17 withHistory:0];
-    v15 = [v14 cardPresentationController];
-    [v15 setPresentedModally:v4];
+    placeCardViewController = [(StepActionCoordinator *)self placeCardViewController];
+    [placeCardViewController resetState];
+    [placeCardViewController setPlaceCardItem:v17 withHistory:0];
+    cardPresentationController = [placeCardViewController cardPresentationController];
+    [cardPresentationController setPresentedModally:modallyCopy];
 
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    [WeakRetained presentController:v14];
+    [WeakRetained presentController:placeCardViewController];
   }
 }
 
-- (void)_presentAdvisory:(id)a3
+- (void)_presentAdvisory:(id)advisory
 {
-  v4 = a3;
+  advisoryCopy = advisory;
   v10 = objc_alloc_init(MapsIncidentsViewController);
   v5 = [[ModalContaineeViewController alloc] initWithChildViewController:v10];
-  v6 = [(MapsIncidentsViewController *)v10 navigationItem];
-  v7 = [v6 title];
-  v8 = [(ModalContaineeViewController *)v5 headerView];
-  [v8 setTitle:v7];
+  navigationItem = [(MapsIncidentsViewController *)v10 navigationItem];
+  title = [navigationItem title];
+  headerView = [(ModalContaineeViewController *)v5 headerView];
+  [headerView setTitle:title];
 
-  [(MapsIncidentsViewController *)v10 setAdvisory:v4];
+  [(MapsIncidentsViewController *)v10 setAdvisory:advisoryCopy];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v5];
 }
 
-- (void)_presentIncidents:(id)a3
+- (void)_presentIncidents:(id)incidents
 {
-  v4 = a3;
-  v10 = [[MapsIncidentsViewController alloc] initWithTransitIncidents:v4];
+  incidentsCopy = incidents;
+  v10 = [[MapsIncidentsViewController alloc] initWithTransitIncidents:incidentsCopy];
 
   v5 = [[ModalContaineeViewController alloc] initWithChildViewController:v10];
-  v6 = [(MapsIncidentsViewController *)v10 navigationItem];
-  v7 = [v6 title];
-  v8 = [(ModalContaineeViewController *)v5 headerView];
-  [v8 setTitle:v7];
+  navigationItem = [(MapsIncidentsViewController *)v10 navigationItem];
+  title = [navigationItem title];
+  headerView = [(ModalContaineeViewController *)v5 headerView];
+  [headerView setTitle:title];
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v5];
@@ -264,21 +264,21 @@
 
 - (void)_presentRouteDetailsVC
 {
-  v11 = [(StepActionCoordinator *)self directionsStepsViewController];
+  directionsStepsViewController = [(StepActionCoordinator *)self directionsStepsViewController];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained route];
-  v5 = [v4 destination];
-  v6 = [v5 navDisplayName];
+  route = [WeakRetained route];
+  destination = [route destination];
+  navDisplayName = [destination navDisplayName];
 
-  if (!v6)
+  if (!navDisplayName)
   {
     v7 = +[NSBundle mainBundle];
-    v6 = [v7 localizedStringForKey:@"Directions_stepping" value:@"localized string not found" table:0];
+    navDisplayName = [v7 localizedStringForKey:@"Directions_stepping" value:@"localized string not found" table:0];
   }
 
-  v8 = [[ModalContaineeViewController alloc] initWithChildViewController:v11 visualEffectDisabled:1];
-  v9 = [(ModalContaineeViewController *)v8 headerView];
-  [v9 setTitle:v6];
+  v8 = [[ModalContaineeViewController alloc] initWithChildViewController:directionsStepsViewController visualEffectDisabled:1];
+  headerView = [(ModalContaineeViewController *)v8 headerView];
+  [headerView setTitle:navDisplayName];
 
   v10 = objc_loadWeakRetained(&self->_containerViewController);
   [v10 presentController:v8];
@@ -315,8 +315,8 @@
 
     [(RouteStepListViewController *)self->_directionsStepsViewController setDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v9 = [WeakRetained route];
-    [(RouteStepListViewController *)self->_directionsStepsViewController setRoute:v9];
+    route = [WeakRetained route];
+    [(RouteStepListViewController *)self->_directionsStepsViewController setRoute:route];
 
     directionsStepsViewController = self->_directionsStepsViewController;
   }
@@ -330,14 +330,14 @@
   if (!trayContaineeViewController)
   {
     v4 = [NavTrayViewController alloc];
-    v5 = [(StepActionCoordinator *)self appCoordinator];
-    v6 = [v5 platformController];
-    v7 = [(NavTrayViewController *)v4 initForSteppingWithDelegate:self platformController:v6];
+    appCoordinator = [(StepActionCoordinator *)self appCoordinator];
+    platformController = [appCoordinator platformController];
+    v7 = [(NavTrayViewController *)v4 initForSteppingWithDelegate:self platformController:platformController];
     v8 = self->_trayContaineeViewController;
     self->_trayContaineeViewController = v7;
 
-    v9 = [(NavTrayViewController *)self->_trayContaineeViewController view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(NavTrayViewController *)self->_trayContaineeViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     trayContaineeViewController = self->_trayContaineeViewController;
   }
@@ -347,40 +347,40 @@
 
 - (int64_t)displayedViewMode
 {
-  v2 = [(StepActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 displayedViewMode];
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  displayedViewMode = [chromeViewController displayedViewMode];
 
-  return v4;
+  return displayedViewMode;
 }
 
 - (GEOMapServiceTraits)newTraits
 {
-  v2 = [(StepActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 currentTraits];
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  return v4;
+  return currentTraits;
 }
 
-- (void)_shareRoute:(id)a3 sourceView:(id)a4
+- (void)_shareRoute:(id)route sourceView:(id)view
 {
-  if (a3)
+  if (route)
   {
-    v6 = a3;
-    v9 = [MUPresentationOptions optionsWithSender:a4];
-    v7 = [(StepActionCoordinator *)self appCoordinator];
-    v8 = [ShareItem shareItemWithRoute:v6 includeRoutingApps:0];
+    routeCopy = route;
+    v9 = [MUPresentationOptions optionsWithSender:view];
+    appCoordinator = [(StepActionCoordinator *)self appCoordinator];
+    v8 = [ShareItem shareItemWithRoute:routeCopy includeRoutingApps:0];
 
-    [v7 shareItem:v8 presentationOptions:v9 completion:0];
+    [appCoordinator shareItem:v8 presentationOptions:v9 completion:0];
   }
 }
 
-- (void)directionsStepsListDidTapRAPButton:(id)a3
+- (void)directionsStepsListDidTapRAPButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v5 = [WeakRetained route];
-  v6 = [v5 transportType] - 1;
+  route = [WeakRetained route];
+  v6 = [route transportType] - 1;
   if (v6 > 5)
   {
     v7 = 608;
@@ -395,74 +395,74 @@
   [v8 captureUserAction:5013 onTarget:v7 eventValue:0];
 
   v11 = objc_loadWeakRetained(&self->_containerViewController);
-  v9 = [v11 _maps_mapsSceneDelegate];
-  v10 = [v9 rapPresenter];
-  [v10 presentReportAProblemForRouteFromEntryPoint:v7];
+  _maps_mapsSceneDelegate = [v11 _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  [rapPresenter presentReportAProblemForRouteFromEntryPoint:v7];
 }
 
-- (void)directionsStepsListDidTapShareButton:(id)a3
+- (void)directionsStepsListDidTapShareButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained route];
-  v5 = [(StepActionCoordinator *)self directionsStepsViewController];
-  v6 = [v5 view];
-  [(StepActionCoordinator *)self _shareRoute:v4 sourceView:v6];
+  route = [WeakRetained route];
+  directionsStepsViewController = [(StepActionCoordinator *)self directionsStepsViewController];
+  view = [directionsStepsViewController view];
+  [(StepActionCoordinator *)self _shareRoute:route sourceView:view];
 }
 
-- (void)directionsStepsList:(id)a3 didTapRowForRouteStep:(id)a4
+- (void)directionsStepsList:(id)list didTapRowForRouteStep:(id)step
 {
-  v5 = a4;
+  stepCopy = step;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v7 = [(StepActionCoordinator *)self trayContaineeViewController];
-  [WeakRetained presentController:v7];
+  trayContaineeViewController = [(StepActionCoordinator *)self trayContaineeViewController];
+  [WeakRetained presentController:trayContaineeViewController];
 
   v8 = objc_loadWeakRetained(&self->_containerViewController);
-  [v8 updateWithDisplayedStep:v5];
+  [v8 updateWithDisplayedStep:stepCopy];
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  v5 = a3;
+  stateCopy = state;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(StepActionCoordinator *)self containerViewController];
-    v8 = [v7 chromeViewController];
-    v9 = [v8 mapView];
-    [v9 _deselectLabelMarkerAnimated:1];
+    containerViewController = [(StepActionCoordinator *)self containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    mapView = [chromeViewController mapView];
+    [mapView _deselectLabelMarkerAnimated:1];
   }
 
-  v10 = [(StepActionCoordinator *)self containerViewController];
-  [v10 popLastViewControllerAnimated:1];
+  containerViewController2 = [(StepActionCoordinator *)self containerViewController];
+  [containerViewController2 popLastViewControllerAnimated:1];
 }
 
-- (void)deselectVKLabelMarker:(id)a3
+- (void)deselectVKLabelMarker:(id)marker
 {
-  v4 = [(StepActionCoordinator *)self containerViewController];
-  v6 = [v4 currentViewController];
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(StepActionCoordinator *)self containerViewController];
-    [v5 popLastViewControllerAnimated:1];
+    containerViewController2 = [(StepActionCoordinator *)self containerViewController];
+    [containerViewController2 popLastViewControllerAnimated:1];
   }
 }
 
-- (BOOL)canSelectVKLabelMarker:(id)a3
+- (BOOL)canSelectVKLabelMarker:(id)marker
 {
-  v3 = a3;
-  if ([v3 isTransitLine])
+  markerCopy = marker;
+  if ([markerCopy isTransitLine])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 waypointInfo];
-    v6 = [v5 waypoint];
+    waypointInfo = [markerCopy waypointInfo];
+    waypoint = [waypointInfo waypoint];
 
     objc_opt_class();
     v4 = objc_opt_isKindOfClass() ^ 1;
@@ -471,17 +471,17 @@
   return v4 & 1;
 }
 
-- (void)selectVKLabelMarker:(id)a3
+- (void)selectVKLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [[MKMapItem alloc] _initWithLabelMarker:v4];
+  markerCopy = marker;
+  v5 = [[MKMapItem alloc] _initWithLabelMarker:markerCopy];
 
   [(StepActionCoordinator *)self _presentPlaceCardViewControllerForMapItem:v5 modally:0];
 }
 
-- (unint64_t)originalLayoutForViewController:(id)a3
+- (unint64_t)originalLayoutForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -496,10 +496,10 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 cardPresentationController];
-      v6 = [v5 presentedModally];
+      cardPresentationController = [controllerCopy cardPresentationController];
+      presentedModally = [cardPresentationController presentedModally];
 
-      if (v6)
+      if (presentedModally)
       {
         v4 = 5;
         goto LABEL_12;
@@ -513,9 +513,9 @@ LABEL_4:
       }
 
       v8 = +[UIDevice currentDevice];
-      v9 = [v8 userInterfaceIdiom];
+      userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-      if (v9 == 5)
+      if (userInterfaceIdiom == 5)
       {
         goto LABEL_4;
       }
@@ -533,51 +533,51 @@ LABEL_12:
 
 - (void)showVLF
 {
-  v3 = [(StepActionCoordinator *)self containerViewController];
-  v4 = [v3 currentViewController];
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v17 = [(StepActionCoordinator *)self containerViewController];
-    v6 = [v17 currentViewController];
-    [v6 handleVLFPuckTapped];
+    containerViewController2 = [(StepActionCoordinator *)self containerViewController];
+    currentViewController2 = [containerViewController2 currentViewController];
+    [currentViewController2 handleVLFPuckTapped];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = [(StepActionCoordinator *)self containerViewController];
-    v8 = [(StepActionCoordinator *)self appCoordinator];
-    v9 = [v8 baseActionCoordinator];
+    containerViewController3 = [(StepActionCoordinator *)self containerViewController];
+    appCoordinator = [(StepActionCoordinator *)self appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1008699C8;
     v18[3] = &unk_1016619A8;
     objc_copyWeak(&v19, &location);
-    v10 = [v7 showVLFCrowdsourcingPermissionCardWithContaineeDelegate:self delegate:v9 completion:v18];
+    v10 = [containerViewController3 showVLFCrowdsourcingPermissionCardWithContaineeDelegate:self delegate:baseActionCoordinator completion:v18];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(StepActionCoordinator *)self containerViewController];
-      v12 = [v11 chromeViewController];
-      v13 = [v12 userLocationView];
+      containerViewController4 = [(StepActionCoordinator *)self containerViewController];
+      chromeViewController = [containerViewController4 chromeViewController];
+      userLocationView = [chromeViewController userLocationView];
 
-      if ([v13 isVLFBannerVisible])
+      if ([userLocationView isVLFBannerVisible])
       {
-        v14 = 2;
+        isVLFPuckVisible = 2;
       }
 
       else
       {
-        v14 = [v13 isVLFPuckVisible];
+        isVLFPuckVisible = [userLocationView isVLFPuckVisible];
       }
 
-      v15 = [[VLFContaineeViewController alloc] initWithEntryPoint:v14];
+      v15 = [[VLFContaineeViewController alloc] initWithEntryPoint:isVLFPuckVisible];
       [(ContaineeViewController *)v15 setContaineeDelegate:self];
-      v16 = [(StepActionCoordinator *)self containerViewController];
-      [v16 presentController:v15];
+      containerViewController5 = [(StepActionCoordinator *)self containerViewController];
+      [containerViewController5 presentController:v15];
     }
 
     objc_destroyWeak(&v19);
@@ -585,42 +585,42 @@ LABEL_12:
   }
 }
 
-- (void)pressedViewWaypoint:(id)a3
+- (void)pressedViewWaypoint:(id)waypoint
 {
-  v4 = [a3 mkMapItem];
-  [(StepActionCoordinator *)self _presentPlaceCardViewControllerForMapItem:v4 modally:0];
+  mkMapItem = [waypoint mkMapItem];
+  [(StepActionCoordinator *)self _presentPlaceCardViewControllerForMapItem:mkMapItem modally:0];
 }
 
-- (void)viewController:(id)a3 showOverview:(BOOL)a4 zoomToMapRegion:(BOOL)a5
+- (void)viewController:(id)controller showOverview:(BOOL)overview zoomToMapRegion:(BOOL)region
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(StepActionCoordinator *)self containerViewController];
-  [v8 showOverview:v6 andZoomToMapRegion:v5];
+  regionCopy = region;
+  overviewCopy = overview;
+  containerViewController = [(StepActionCoordinator *)self containerViewController];
+  [containerViewController showOverview:overviewCopy andZoomToMapRegion:regionCopy];
 
-  v9 = [(StepActionCoordinator *)self containerViewController];
-  v10 = [v9 currentViewController];
-  v11 = [(StepActionCoordinator *)self trayContaineeViewController];
+  containerViewController2 = [(StepActionCoordinator *)self containerViewController];
+  currentViewController = [containerViewController2 currentViewController];
+  trayContaineeViewController = [(StepActionCoordinator *)self trayContaineeViewController];
 
-  if (v10 == v11)
+  if (currentViewController == trayContaineeViewController)
   {
-    v13 = [(StepActionCoordinator *)self trayContaineeViewController];
-    v12 = [v13 cardPresentationController];
-    [v12 wantsLayout:1];
+    trayContaineeViewController2 = [(StepActionCoordinator *)self trayContaineeViewController];
+    cardPresentationController = [trayContaineeViewController2 cardPresentationController];
+    [cardPresentationController wantsLayout:1];
   }
 }
 
-- (void)viewControllerPresentTray:(id)a3
+- (void)viewControllerPresentTray:(id)tray
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [(StepActionCoordinator *)self trayContaineeViewController];
-  [WeakRetained presentController:v4 animated:0];
+  trayContaineeViewController = [(StepActionCoordinator *)self trayContaineeViewController];
+  [WeakRetained presentController:trayContaineeViewController animated:0];
 }
 
-- (void)pressedEndWithSender:(id)a3
+- (void)pressedEndWithSender:(id)sender
 {
-  v3 = [(StepActionCoordinator *)self appCoordinator];
-  [v3 endNavigationAndReturnToRoutePlanning:0];
+  appCoordinator = [(StepActionCoordinator *)self appCoordinator];
+  [appCoordinator endNavigationAndReturnToRoutePlanning:0];
 }
 
 - (MKLocationManager)locationManager
@@ -640,16 +640,16 @@ LABEL_12:
 
 - (BOOL)isAuthorizedForPreciseLocation
 {
-  v2 = [(StepActionCoordinator *)self locationManager];
-  v3 = [v2 isLocationServicesApproved];
-  v4 = [v2 isAuthorizedForPreciseLocation];
+  locationManager = [(StepActionCoordinator *)self locationManager];
+  isLocationServicesApproved = [locationManager isLocationServicesApproved];
+  isAuthorizedForPreciseLocation = [locationManager isAuthorizedForPreciseLocation];
 
-  return v3 & v4;
+  return isLocationServicesApproved & isAuthorizedForPreciseLocation;
 }
 
-- (void)setAppCoordinator:(id)a3
+- (void)setAppCoordinator:(id)coordinator
 {
-  obj = a3;
+  obj = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_appCoordinator);
 
   v5 = obj;
@@ -660,16 +660,16 @@ LABEL_12:
   }
 }
 
-- (StepActionCoordinator)initWithContainerViewController:(id)a3
+- (StepActionCoordinator)initWithContainerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = StepActionCoordinator;
   v5 = [(StepActionCoordinator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_containerViewController, v4);
+    objc_storeWeak(&v5->_containerViewController, controllerCopy);
   }
 
   return v6;

@@ -1,46 +1,46 @@
 @interface MXSystemController
 + (BOOL)allowBluetoothAccessoryToRequestAudioRoute;
-+ (BOOL)getCanBeNowPlayingAppForPID:(int)a3;
-+ (BOOL)isAppAllowedToInitiatePlayback:(id)a3;
-+ (id)copyMXSystemControllerList:(BOOL)a3;
++ (BOOL)getCanBeNowPlayingAppForPID:(int)d;
++ (BOOL)isAppAllowedToInitiatePlayback:(id)playback;
++ (id)copyMXSystemControllerList:(BOOL)list;
 + (int)getPIDForAnyAppThatWantsVolumeChanges;
-+ (int)getPIDToInheritAppStateFromForPID:(int)a3;
++ (int)getPIDToInheritAppStateFromForPID:(int)d;
 + (void)dumpInfoOfMXSystemControllers;
 + (void)initialize;
-+ (void)mxSystemControllerListAddInstance:(id)a3 isSidekick:(BOOL)a4;
-+ (void)notifyAll:(id)a3 payload:(id)a4 dontPostIfSuspended:(BOOL)a5 remoteDeviceID:(id)a6;
++ (void)mxSystemControllerListAddInstance:(id)instance isSidekick:(BOOL)sidekick;
++ (void)notifyAll:(id)all payload:(id)payload dontPostIfSuspended:(BOOL)suspended remoteDeviceID:(id)d;
 + (void)updateMXSystemControllerList;
-- (BOOL)isAppAllowedToInitiatePlayback:(id)a3;
+- (BOOL)isAppAllowedToInitiatePlayback:(id)playback;
 - (BOOL)isSomeoneRecording;
 - (BOOL)phoneCallExists;
 - (BOOL)someLongFormVideoClientIsActiveOverAirPlayVideo;
 - (BOOL)someLongFormVideoClientIsPlaying;
 - (BOOL)someLongFormVideoClientIsPlayingOverAirPlayVideo;
 - (BOOL)someSharePlayCapableCallSessionIsActive;
-- (MXSystemController)initWithPID:(int)a3 remoteDeviceID:(id)a4;
+- (MXSystemController)initWithPID:(int)d remoteDeviceID:(id)iD;
 - (id)info;
-- (int)allowAppsToInitiatePlayback:(id)a3 clientType:(id)a4 isTemporary:(BOOL)a5;
-- (int)applyPIDToInheritAppStateFrom:(const void *)a3;
+- (int)allowAppsToInitiatePlayback:(id)playback clientType:(id)type isTemporary:(BOOL)temporary;
+- (int)applyPIDToInheritAppStateFrom:(const void *)from;
 - (int)clearUplinkMutedCache;
-- (int)copyAttributeForKey:(id)a3 withValueOut:(void *)a4;
-- (int)copyAttributeForKeyInternal:(id)a3 withValueOut:(void *)a4;
-- (int)copySessionIDsWithMuteValue:(id *)a3 muteValue:(BOOL *)a4;
-- (int)getAudioSessionID:(unsigned int *)a3 forAttributedPID:(int)a4;
-- (int)getInputMute:(id *)a3 outMuteValue:(BOOL *)a4;
-- (int)getVolumeButtonDelta:(id)a3 outVolumeDelta:(float *)a4;
-- (int)grantMediaEndowmentWithEnvironmentID:(id)a3 endowmentPayload:(id)a4;
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 outVolume:(float *)a10 outSequenceNumber:(int64_t *)a11 outMuted:(BOOL *)a12 outCategoryCopy:(id *)a13 outModeCopy:(id *)a14;
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 rampUpDuration:(float)a10 rampDownDuration:(float)a11 outVolume:(float *)a12 outSequenceNumber:(int64_t *)a13 outMuted:(BOOL *)a14 outCategoryCopy:(id *)a15 outModeCopy:(id *)a16;
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 rampUpDuration:(float)a10 rampDownDuration:(float)a11 outVolume:(float *)a12 outSequenceNumber:(int64_t *)a13 outMuted:(BOOL *)a14 outCategoryCopy:(id *)a15 outModeCopy:(id *)a16 retainFullMute:(BOOL)a17;
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 rampUpwardDuration:(id)a10 rampDownwardDuration:(id)a11 outVolume:(float *)a12 outSequenceNumber:(int64_t *)a13 outMuted:(BOOL *)a14 outCategoryCopy:(id *)a15 outModeCopy:(id *)a16;
-- (int)revokeMediaEndowmentWithEnvironmentID:(id)a3;
-- (int)setAttributeForKey:(id)a3 andValue:(const void *)a4;
-- (int)setAttributeForKeyInternal:(id)a3 andValue:(const void *)a4;
-- (int)setInputMute:(id *)a3 muteValue:(BOOL)a4;
+- (int)copyAttributeForKey:(id)key withValueOut:(void *)out;
+- (int)copyAttributeForKeyInternal:(id)internal withValueOut:(void *)out;
+- (int)copySessionIDsWithMuteValue:(id *)value muteValue:(BOOL *)muteValue;
+- (int)getAudioSessionID:(unsigned int *)d forAttributedPID:(int)iD;
+- (int)getInputMute:(id *)mute outMuteValue:(BOOL *)value;
+- (int)getVolumeButtonDelta:(id)delta outVolumeDelta:(float *)volumeDelta;
+- (int)grantMediaEndowmentWithEnvironmentID:(id)d endowmentPayload:(id)payload;
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype outVolume:(float *)self0 outSequenceNumber:(int64_t *)self1 outMuted:(BOOL *)self2 outCategoryCopy:(id *)self3 outModeCopy:(id *)self4;
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)self0 rampDownDuration:(float)self1 outVolume:(float *)self2 outSequenceNumber:(int64_t *)self3 outMuted:(BOOL *)self4 outCategoryCopy:(id *)self5 outModeCopy:(id *)self6;
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)self0 rampDownDuration:(float)self1 outVolume:(float *)self2 outSequenceNumber:(int64_t *)self3 outMuted:(BOOL *)self4 outCategoryCopy:(id *)self5 outModeCopy:(id *)self6 retainFullMute:(BOOL)self7;
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpwardDuration:(id)self0 rampDownwardDuration:(id)self1 outVolume:(float *)self2 outSequenceNumber:(int64_t *)self3 outMuted:(BOOL *)self4 outCategoryCopy:(id *)self5 outModeCopy:(id *)self6;
+- (int)revokeMediaEndowmentWithEnvironmentID:(id)d;
+- (int)setAttributeForKey:(id)key andValue:(const void *)value;
+- (int)setAttributeForKeyInternal:(id)internal andValue:(const void *)value;
+- (int)setInputMute:(id *)mute muteValue:(BOOL)value;
 - (int)toggleInputMute;
-- (void)applyCanBeNowPlayingApp:(const void *)a3;
+- (void)applyCanBeNowPlayingApp:(const void *)app;
 - (void)dealloc;
-- (void)volumeCategoryAndMode:(id)a3 mode:(id)a4 outCategoryCopy:(id *)a5 outModeCopy:(id *)a6;
+- (void)volumeCategoryAndMode:(id)mode mode:(id)a4 outCategoryCopy:(id *)copy outModeCopy:(id *)modeCopy;
 @end
 
 @implementation MXSystemController
@@ -58,9 +58,9 @@
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MXSystemController *)self displayID];
-  v6 = [(MXSystemController *)self clientPID];
-  v7 = [(MXSystemController *)self pidToInheritAppStateFrom];
+  displayID = [(MXSystemController *)self displayID];
+  clientPID = [(MXSystemController *)self clientPID];
+  pidToInheritAppStateFrom = [(MXSystemController *)self pidToInheritAppStateFrom];
   if ([(MXSystemController *)self appWantsVolumeChanges])
   {
     v8 = "YES";
@@ -81,7 +81,7 @@
     v9 = @"NO";
   }
 
-  return [v4 stringWithFormat:@"<MXSystemController: %@ PID=%d InheritingFrom=%d wantsVolumeChanges=%s hasEntitlementToEnableWombat=%@, listOfNotificationSubscriptions=%@>", v5, v6, v7, v8, v9, -[MXSystemController notificationsSubscribedTo](self, "notificationsSubscribedTo")];
+  return [v4 stringWithFormat:@"<MXSystemController: %@ PID=%d InheritingFrom=%d wantsVolumeChanges=%s hasEntitlementToEnableWombat=%@, listOfNotificationSubscriptions=%@>", displayID, clientPID, pidToInheritAppStateFrom, v8, v9, -[MXSystemController notificationsSubscribedTo](self, "notificationsSubscribedTo")];
 }
 
 + (int)getPIDForAnyAppThatWantsVolumeChanges
@@ -147,7 +147,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_self() == a1)
+  if (objc_opt_self() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -180,7 +180,7 @@ LABEL_12:
   return v3;
 }
 
-- (MXSystemController)initWithPID:(int)a3 remoteDeviceID:(id)a4
+- (MXSystemController)initWithPID:(int)d remoteDeviceID:(id)iD
 {
   v13.receiver = self;
   v13.super_class = MXSystemController;
@@ -188,22 +188,22 @@ LABEL_12:
   v7 = v6;
   if (v6)
   {
-    v6->_clientPID = a3;
+    v6->_clientPID = d;
     v6->_hasEntitlementForPIDInheritance = 0;
     v6->_auditToken = 0;
     v6->_bundleID = 0;
-    v6->_hasEntitlementToEnableWombat = getpid() == a3;
-    v7->_hasEntitlementToSetSilentMode = getpid() == a3;
-    v7->_hasEntitlementForSilentModeNotifications = getpid() == a3;
-    v7->_hasEntitlementToInitiateRecordingTemporarily = getpid() == a3;
+    v6->_hasEntitlementToEnableWombat = getpid() == d;
+    v7->_hasEntitlementToSetSilentMode = getpid() == d;
+    v7->_hasEntitlementForSilentModeNotifications = getpid() == d;
+    v7->_hasEntitlementToInitiateRecordingTemporarily = getpid() == d;
     v7->_notificationsSubscribedTo = objc_alloc_init(MEMORY[0x1E695DF90]);
     objc_initWeak(&location, v7);
-    if (a4)
+    if (iD)
     {
-      v7->_remoteDeviceID = a4;
+      v7->_remoteDeviceID = iD;
     }
 
-    [MXSystemController mxSystemControllerListAddInstance:objc_loadWeak(&location) isSidekick:a4 != 0];
+    [MXSystemController mxSystemControllerListAddInstance:objc_loadWeak(&location) isSidekick:iD != 0];
     v8 = MXGetSerialQueue();
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -293,12 +293,12 @@ uint64_t __29__MXSystemController_dealloc__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)volumeCategoryAndMode:(id)a3 mode:(id)a4 outCategoryCopy:(id *)a5 outModeCopy:(id *)a6
+- (void)volumeCategoryAndMode:(id)mode mode:(id)a4 outCategoryCopy:(id *)copy outModeCopy:(id *)modeCopy
 {
   +[MXInitialization waitUntilMXIsFullyInitialized];
-  v10 = [+[MXSessionManager sharedInstance](MXSessionManager getUncustomizedCategory:"getUncustomizedCategory:", a3];
+  mode = [+[MXSessionManager sharedInstance](MXSessionManager getUncustomizedCategory:"getUncustomizedCategory:", mode];
 
-  PVMCopyVolumeCategoryAndMode(v10, a4, a5, a6);
+  PVMCopyVolumeCategoryAndMode(mode, a4, copy, modeCopy);
 }
 
 - (int)toggleInputMute
@@ -367,7 +367,7 @@ uint64_t __37__MXSystemController_toggleInputMute__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int)setInputMute:(id *)a3 muteValue:(BOOL)a4
+- (int)setInputMute:(id *)mute muteValue:(BOOL)value
 {
   v24 = *MEMORY[0x1E69E9840];
   +[MXInitialization waitUntilMXIsFullyInitialized];
@@ -397,13 +397,13 @@ uint64_t __37__MXSystemController_toggleInputMute__block_invoke(uint64_t a1)
       v7 = MXGetSerialQueue();
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
-      v8 = *&a3->var0[4];
-      v14 = *a3->var0;
+      v8 = *&mute->var0[4];
+      v14 = *mute->var0;
       v13[2] = __45__MXSystemController_setInputMute_muteValue___block_invoke;
       v13[3] = &unk_1E7AEA980;
       v13[4] = &v20;
       v15 = v8;
-      v16 = a4;
+      valueCopy = value;
       MXDispatchAsyncAndWait("[MXSystemController setInputMute:muteValue:]", "MXSystemController_Embedded.m", 526, 0, 0, v7, v13);
     }
 
@@ -437,7 +437,7 @@ uint64_t __45__MXSystemController_setInputMute_muteValue___block_invoke(uint64_t
   return result;
 }
 
-- (int)getInputMute:(id *)a3 outMuteValue:(BOOL *)a4
+- (int)getInputMute:(id *)mute outMuteValue:(BOOL *)value
 {
   v23 = *MEMORY[0x1E69E9840];
   +[MXInitialization waitUntilMXIsFullyInitialized];
@@ -469,18 +469,18 @@ uint64_t __45__MXSystemController_setInputMute_muteValue___block_invoke(uint64_t
       v13[1] = 3221225472;
       v13[2] = __48__MXSystemController_getInputMute_outMuteValue___block_invoke;
       v13[3] = &unk_1E7AEA9A8;
-      v8 = *&a3->var0[4];
-      v14 = *a3->var0;
+      v8 = *&mute->var0[4];
+      v14 = *mute->var0;
       v15 = v8;
       v13[4] = &v19;
-      v13[5] = a4;
+      v13[5] = value;
       MXDispatchAsyncAndWait("[MXSystemController getInputMute:outMuteValue:]", "MXSystemController_Embedded.m", 554, 0, 0, v7, v13);
     }
 
     else
     {
       *(v20 + 6) = -15685;
-      *a4 = 0;
+      *value = 0;
       *type = 0;
       v16 = OS_LOG_TYPE_DEFAULT;
       v10 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -569,21 +569,21 @@ uint64_t __43__MXSystemController_clearUplinkMutedCache__block_invoke(uint64_t a
   return result;
 }
 
-- (int)copySessionIDsWithMuteValue:(id *)a3 muteValue:(BOOL *)a4
+- (int)copySessionIDsWithMuteValue:(id *)value muteValue:(BOOL *)muteValue
 {
   v51 = *MEMORY[0x1E69E9840];
   if (MX_FeatureFlags_IsSessionBasedMutingEnabled())
   {
     v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *a4 = 0;
-    v6 = [+[MXSessionManager sharedInstance](MXSessionManager copyPhoneCallBehaviorRecordingSession];
-    if ([v6 prefersBluetoothAccessoryMuting])
+    *muteValue = 0;
+    copyPhoneCallBehaviorRecordingSession = [+[MXSessionManager sharedInstance](MXSessionManager copyPhoneCallBehaviorRecordingSession];
+    if ([copyPhoneCallBehaviorRecordingSession prefersBluetoothAccessoryMuting])
     {
-      *a4 = [v6 isRecordingMuted] ^ 1;
+      *muteValue = [copyPhoneCallBehaviorRecordingSession isRecordingMuted] ^ 1;
       v7 = +[MXSessionManager sharedInstance];
-      if (v6)
+      if (copyPhoneCallBehaviorRecordingSession)
       {
-        [v6 auditToken];
+        [copyPhoneCallBehaviorRecordingSession auditToken];
       }
 
       else
@@ -601,7 +601,7 @@ uint64_t __43__MXSystemController_clearUplinkMutedCache__block_invoke(uint64_t a
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      v29 = v6;
+      v29 = copyPhoneCallBehaviorRecordingSession;
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
@@ -641,20 +641,20 @@ uint64_t __43__MXSystemController_clearUplinkMutedCache__block_invoke(uint64_t a
 
               if (v19)
               {
-                v20 = [v16 info];
-                v21 = *a4;
-                v22 = [v16 audioSessionID];
+                info = [v16 info];
+                v21 = *muteValue;
+                audioSessionID = [v16 audioSessionID];
                 v39 = 136316162;
                 v40 = "[MXSystemController copySessionIDsWithMuteValue:muteValue:]";
                 v41 = 2048;
                 v42 = v16;
                 v43 = 2114;
-                v44 = v20;
+                v44 = info;
                 v45 = 1024;
                 v46 = v21;
                 v13 = v30;
                 v47 = 1024;
-                v48 = v22;
+                v48 = audioSessionID;
                 LODWORD(v28) = 44;
                 v26 = &v39;
                 _os_log_send_and_compose_impl();
@@ -670,15 +670,15 @@ uint64_t __43__MXSystemController_clearUplinkMutedCache__block_invoke(uint64_t a
         while (v14);
       }
 
-      *a3 = v13;
+      *value = v13;
 
       v11 = 0;
-      v6 = v29;
+      copyPhoneCallBehaviorRecordingSession = v29;
     }
 
     else
     {
-      [+[MXSessionManager sharedInstance](MXSessionManager updateBluetoothFrameworkToPlayMuteChime:"updateBluetoothFrameworkToPlayMuteChime:playRejectTone:" playRejectTone:v6, 1];
+      [+[MXSessionManager sharedInstance](MXSessionManager updateBluetoothFrameworkToPlayMuteChime:"updateBluetoothFrameworkToPlayMuteChime:playRejectTone:" playRejectTone:copyPhoneCallBehaviorRecordingSession, 1];
       if (unk_1EB75DE80)
       {
         v38 = 0;
@@ -710,7 +710,7 @@ uint64_t __43__MXSystemController_clearUplinkMutedCache__block_invoke(uint64_t a
   return v11;
 }
 
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 rampUpwardDuration:(id)a10 rampDownwardDuration:(id)a11 outVolume:(float *)a12 outSequenceNumber:(int64_t *)a13 outMuted:(BOOL *)a14 outCategoryCopy:(id *)a15 outModeCopy:(id *)a16
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpwardDuration:(id)self0 rampDownwardDuration:(id)self1 outVolume:(float *)self2 outSequenceNumber:(int64_t *)self3 outMuted:(BOOL *)self4 outCategoryCopy:(id *)self5 outModeCopy:(id *)self6
 {
   +[MXInitialization waitUntilMXIsFullyInitialized];
   v29 = 0;
@@ -722,26 +722,26 @@ uint64_t __43__MXSystemController_clearUplinkMutedCache__block_invoke(uint64_t a
   v26[1] = 3221225472;
   v26[2] = __216__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_rampUpwardDuration_rampDownwardDuration_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy___block_invoke;
   v26[3] = &unk_1E7AEA9D0;
-  v27 = a3;
-  v28 = a4;
+  operationCopy = operation;
+  volumeCopy = volume;
   v26[4] = self;
-  v26[5] = a5;
-  v26[6] = a6;
-  v26[7] = a7;
-  v26[8] = a8;
-  v26[9] = a9;
-  v26[10] = a10;
-  v26[11] = a11;
+  v26[5] = category;
+  v26[6] = mode;
+  v26[7] = name;
+  v26[8] = identifier;
+  v26[9] = subtype;
+  v26[10] = duration;
+  v26[11] = downwardDuration;
   v26[12] = &v29;
-  v26[13] = a12;
-  v26[14] = a13;
-  v26[15] = a14;
-  v26[16] = a15;
-  v26[17] = a16;
+  v26[13] = outVolume;
+  v26[14] = number;
+  v26[15] = muted;
+  v26[16] = copy;
+  v26[17] = modeCopy;
   MXDispatchAsyncAndWait("[MXSystemController performVolumeOperation:volume:category:mode:routeName:routeDeviceIdentifier:routeSubtype:rampUpwardDuration:rampDownwardDuration:outVolume:outSequenceNumber:outMuted:outCategoryCopy:outModeCopy:]", "MXSystemController_Embedded.m", 715, 0, 0, v24, v26);
-  LODWORD(a9) = *(v30 + 6);
+  LODWORD(subtype) = *(v30 + 6);
   _Block_object_dispose(&v29, 8);
-  return a9;
+  return subtype;
 }
 
 uint64_t __216__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_rampUpwardDuration_rampDownwardDuration_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy___block_invoke(uint64_t a1, double a2)
@@ -753,7 +753,7 @@ uint64_t __216__MXSystemController_performVolumeOperation_volume_category_mode_r
   return result;
 }
 
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 rampUpDuration:(float)a10 rampDownDuration:(float)a11 outVolume:(float *)a12 outSequenceNumber:(int64_t *)a13 outMuted:(BOOL *)a14 outCategoryCopy:(id *)a15 outModeCopy:(id *)a16 retainFullMute:(BOOL)a17
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)self0 rampDownDuration:(float)self1 outVolume:(float *)self2 outSequenceNumber:(int64_t *)self3 outMuted:(BOOL *)self4 outCategoryCopy:(id *)self5 outModeCopy:(id *)self6 retainFullMute:(BOOL)self7
 {
   +[MXInitialization waitUntilMXIsFullyInitialized];
   v35 = 0;
@@ -765,27 +765,27 @@ uint64_t __216__MXSystemController_performVolumeOperation_volume_category_mode_r
   v29[1] = 3221225472;
   v29[2] = __223__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_rampUpDuration_rampDownDuration_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy_retainFullMute___block_invoke;
   v29[3] = &unk_1E7AEA9F8;
-  v30 = a3;
+  operationCopy = operation;
   v29[4] = self;
-  v29[5] = a5;
-  v29[6] = a6;
-  v29[7] = a7;
-  v29[8] = a8;
-  v29[9] = a9;
-  v31 = a4;
-  v32 = a10;
-  v33 = a11;
+  v29[5] = category;
+  v29[6] = mode;
+  v29[7] = name;
+  v29[8] = identifier;
+  v29[9] = subtype;
+  volumeCopy = volume;
+  durationCopy = duration;
+  downDurationCopy = downDuration;
   v29[10] = &v35;
-  v29[11] = a12;
-  v29[12] = a13;
-  v29[13] = a14;
-  v29[14] = a15;
-  v29[15] = a16;
-  v34 = a17;
+  v29[11] = outVolume;
+  v29[12] = number;
+  v29[13] = muted;
+  v29[14] = copy;
+  v29[15] = modeCopy;
+  muteCopy = mute;
   MXDispatchAsyncAndWait("[MXSystemController performVolumeOperation:volume:category:mode:routeName:routeDeviceIdentifier:routeSubtype:rampUpDuration:rampDownDuration:outVolume:outSequenceNumber:outMuted:outCategoryCopy:outModeCopy:retainFullMute:]", "MXSystemController_Embedded.m", 801, 0, 0, v27, v29);
-  LODWORD(a9) = *(v36 + 6);
+  LODWORD(subtype) = *(v36 + 6);
   _Block_object_dispose(&v35, 8);
-  return a9;
+  return subtype;
 }
 
 uint64_t __223__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_rampUpDuration_rampDownDuration_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy_retainFullMute___block_invoke(uint64_t a1, double a2, double a3, double a4)
@@ -800,7 +800,7 @@ uint64_t __223__MXSystemController_performVolumeOperation_volume_category_mode_r
   return result;
 }
 
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 rampUpDuration:(float)a10 rampDownDuration:(float)a11 outVolume:(float *)a12 outSequenceNumber:(int64_t *)a13 outMuted:(BOOL *)a14 outCategoryCopy:(id *)a15 outModeCopy:(id *)a16
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype rampUpDuration:(float)self0 rampDownDuration:(float)self1 outVolume:(float *)self2 outSequenceNumber:(int64_t *)self3 outMuted:(BOOL *)self4 outCategoryCopy:(id *)self5 outModeCopy:(id *)self6
 {
   +[MXInitialization waitUntilMXIsFullyInitialized];
   v33 = 0;
@@ -812,26 +812,26 @@ uint64_t __223__MXSystemController_performVolumeOperation_volume_category_mode_r
   v28[1] = 3221225472;
   v28[2] = __208__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_rampUpDuration_rampDownDuration_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy___block_invoke;
   v28[3] = &unk_1E7AEAA20;
-  v29 = a3;
+  operationCopy = operation;
   v28[4] = self;
-  v28[5] = a5;
-  v28[6] = a6;
-  v28[7] = a7;
-  v28[8] = a8;
-  v28[9] = a9;
-  v30 = a4;
-  v31 = a10;
-  v32 = a11;
+  v28[5] = category;
+  v28[6] = mode;
+  v28[7] = name;
+  v28[8] = identifier;
+  v28[9] = subtype;
+  volumeCopy = volume;
+  durationCopy = duration;
+  downDurationCopy = downDuration;
   v28[10] = &v33;
-  v28[11] = a12;
-  v28[12] = a13;
-  v28[13] = a14;
-  v28[14] = a15;
-  v28[15] = a16;
+  v28[11] = outVolume;
+  v28[12] = number;
+  v28[13] = muted;
+  v28[14] = copy;
+  v28[15] = modeCopy;
   MXDispatchAsyncAndWait("[MXSystemController performVolumeOperation:volume:category:mode:routeName:routeDeviceIdentifier:routeSubtype:rampUpDuration:rampDownDuration:outVolume:outSequenceNumber:outMuted:outCategoryCopy:outModeCopy:]", "MXSystemController_Embedded.m", 900, 0, 0, v26, v28);
-  LODWORD(a9) = *(v34 + 6);
+  LODWORD(subtype) = *(v34 + 6);
   _Block_object_dispose(&v33, 8);
-  return a9;
+  return subtype;
 }
 
 uint64_t __208__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_rampUpDuration_rampDownDuration_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy___block_invoke(uint64_t a1, double a2, double a3, double a4)
@@ -845,7 +845,7 @@ uint64_t __208__MXSystemController_performVolumeOperation_volume_category_mode_r
   return result;
 }
 
-- (int)performVolumeOperation:(unsigned int)a3 volume:(float)a4 category:(id)a5 mode:(id)a6 routeName:(id)a7 routeDeviceIdentifier:(id)a8 routeSubtype:(id)a9 outVolume:(float *)a10 outSequenceNumber:(int64_t *)a11 outMuted:(BOOL *)a12 outCategoryCopy:(id *)a13 outModeCopy:(id *)a14
+- (int)performVolumeOperation:(unsigned int)operation volume:(float)volume category:(id)category mode:(id)mode routeName:(id)name routeDeviceIdentifier:(id)identifier routeSubtype:(id)subtype outVolume:(float *)self0 outSequenceNumber:(int64_t *)self1 outMuted:(BOOL *)self2 outCategoryCopy:(id *)self3 outModeCopy:(id *)self4
 {
   +[MXInitialization waitUntilMXIsFullyInitialized];
   v27 = 0;
@@ -857,24 +857,24 @@ uint64_t __208__MXSystemController_performVolumeOperation_volume_category_mode_r
   v24[1] = 3221225472;
   v24[2] = __176__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy___block_invoke;
   v24[3] = &unk_1E7AEAA48;
-  v25 = a3;
-  v26 = a4;
+  operationCopy = operation;
+  volumeCopy = volume;
   v24[4] = self;
-  v24[5] = a5;
-  v24[6] = a6;
-  v24[7] = a7;
-  v24[8] = a8;
-  v24[9] = a9;
+  v24[5] = category;
+  v24[6] = mode;
+  v24[7] = name;
+  v24[8] = identifier;
+  v24[9] = subtype;
   v24[10] = &v27;
-  v24[11] = a10;
-  v24[12] = a11;
-  v24[13] = a12;
-  v24[14] = a13;
-  v24[15] = a14;
+  v24[11] = outVolume;
+  v24[12] = number;
+  v24[13] = muted;
+  v24[14] = copy;
+  v24[15] = modeCopy;
   MXDispatchAsyncAndWait("[MXSystemController performVolumeOperation:volume:category:mode:routeName:routeDeviceIdentifier:routeSubtype:outVolume:outSequenceNumber:outMuted:outCategoryCopy:outModeCopy:]", "MXSystemController_Embedded.m", 989, 0, 0, v22, v24);
-  LODWORD(a9) = *(v28 + 6);
+  LODWORD(subtype) = *(v28 + 6);
   _Block_object_dispose(&v27, 8);
-  return a9;
+  return subtype;
 }
 
 uint64_t __176__MXSystemController_performVolumeOperation_volume_category_mode_routeName_routeDeviceIdentifier_routeSubtype_outVolume_outSequenceNumber_outMuted_outCategoryCopy_outModeCopy___block_invoke(uint64_t a1, double a2)
@@ -894,10 +894,10 @@ uint64_t __176__MXSystemController_performVolumeOperation_volume_category_mode_r
   return v3;
 }
 
-- (int)applyPIDToInheritAppStateFrom:(const void *)a3
+- (int)applyPIDToInheritAppStateFrom:(const void *)from
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (from)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -911,22 +911,22 @@ LABEL_20:
     }
   }
 
-  v5 = [(MXSystemController *)self clientPID];
-  if (v5 < 1)
+  clientPID = [(MXSystemController *)self clientPID];
+  if (clientPID < 1)
   {
     goto LABEL_26;
   }
 
-  v6 = MX_RunningBoardServices_CopyBundleInfoValueForKeyAndPID(@"CanInheritApplicationStateFromOtherProcesses", v5);
+  v6 = MX_RunningBoardServices_CopyBundleInfoValueForKeyAndPID(@"CanInheritApplicationStateFromOtherProcesses", clientPID);
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     goto LABEL_26;
   }
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 LABEL_26:
     [MXSystemController applyPIDToInheritAppStateFrom:?];
@@ -935,7 +935,7 @@ LABEL_26:
 
   if ([(MXSystemController *)self hasEntitlementForPIDInheritance])
   {
-    -[MXSystemController setPidToInheritAppStateFrom:](self, "setPidToInheritAppStateFrom:", [a3 intValue]);
+    -[MXSystemController setPidToInheritAppStateFrom:](self, "setPidToInheritAppStateFrom:", [from intValue]);
     v8 = [MXSystemController copyMXSystemControllerList:0];
     v18 = 0u;
     v19 = 0u;
@@ -959,8 +959,8 @@ LABEL_26:
           v13 = *(*(&v18 + 1) + 8 * v12);
           if (v13)
           {
-            v14 = [*(*(&v18 + 1) + 8 * v12) clientPID];
-            if (v14 == [(MXSystemController *)self pidToInheritAppStateFrom])
+            clientPID2 = [*(*(&v18 + 1) + 8 * v12) clientPID];
+            if (clientPID2 == [(MXSystemController *)self pidToInheritAppStateFrom])
             {
               if ([v13 pidToInheritAppStateFrom])
               {
@@ -989,16 +989,16 @@ LABEL_26:
   return FigSignalErrorAtGM();
 }
 
-- (void)applyCanBeNowPlayingApp:(const void *)a3
+- (void)applyCanBeNowPlayingApp:(const void *)app
 {
   v10 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && !CMSMUtility_FetchUIShouldIgnoreRemoteControlEvents([(MXSystemController *)self clientPID]))
   {
-    v5 = [(MXSystemController *)self canBeNowPlayingApp];
-    if (v5 != [a3 BOOLValue])
+    canBeNowPlayingApp = [(MXSystemController *)self canBeNowPlayingApp];
+    if (canBeNowPlayingApp != [app BOOLValue])
     {
-      -[MXSystemController setCanBeNowPlayingApp:](self, "setCanBeNowPlayingApp:", [a3 BOOLValue]);
+      -[MXSystemController setCanBeNowPlayingApp:](self, "setCanBeNowPlayingApp:", [app BOOLValue]);
       if (unk_1EB75DE80)
       {
         os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -1022,20 +1022,20 @@ void __64__MXSystemController_setSilentMode_untilTime_reason_clientType___block_
   v2 = *(a1 + 40);
 }
 
-- (int)grantMediaEndowmentWithEnvironmentID:(id)a3 endowmentPayload:(id)a4
+- (int)grantMediaEndowmentWithEnvironmentID:(id)d endowmentPayload:(id)payload
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(MXSystemController *)self auditToken];
-  v9 = [(MXSystemController *)self bundleID];
-  v10 = [a4 objectForKey:@"RecordingWebsite"];
-  if (v8)
+  auditToken = [(MXSystemController *)self auditToken];
+  bundleID = [(MXSystemController *)self bundleID];
+  v10 = [payload objectForKey:@"RecordingWebsite"];
+  if (auditToken)
   {
-    [v7 setObject:v8 forKey:@"AuditToken"];
+    [v7 setObject:auditToken forKey:@"AuditToken"];
   }
 
-  if (v9)
+  if (bundleID)
   {
-    [v7 setObject:v9 forKey:@"BundleID"];
+    [v7 setObject:bundleID forKey:@"BundleID"];
   }
 
   if (v10)
@@ -1043,30 +1043,30 @@ void __64__MXSystemController_setSilentMode_untilTime_reason_clientType___block_
     [v7 setObject:v10 forKey:@"RecordingWebsite"];
   }
 
-  v11 = [+[MXMediaEndowmentManager sharedInstance](MXMediaEndowmentManager grantMediaEndowment:"grantMediaEndowment:environmentID:endowmentPayload:" environmentID:[(MXSystemController *)self clientPID] endowmentPayload:a3, v7];
+  v11 = [+[MXMediaEndowmentManager sharedInstance](MXMediaEndowmentManager grantMediaEndowment:"grantMediaEndowment:environmentID:endowmentPayload:" environmentID:[(MXSystemController *)self clientPID] endowmentPayload:d, v7];
 
   return v11;
 }
 
-- (int)revokeMediaEndowmentWithEnvironmentID:(id)a3
+- (int)revokeMediaEndowmentWithEnvironmentID:(id)d
 {
   v5 = +[MXMediaEndowmentManager sharedInstance];
-  v6 = [(MXSystemController *)self clientPID];
+  clientPID = [(MXSystemController *)self clientPID];
 
-  return [(MXMediaEndowmentManager *)v5 revokeMediaEndowment:v6 environmentID:a3];
+  return [(MXMediaEndowmentManager *)v5 revokeMediaEndowment:clientPID environmentID:d];
 }
 
-- (int)allowAppsToInitiatePlayback:(id)a3 clientType:(id)a4 isTemporary:(BOOL)a5
+- (int)allowAppsToInitiatePlayback:(id)playback clientType:(id)type isTemporary:(BOOL)temporary
 {
-  v5 = a5;
+  temporaryCopy = temporary;
   v15 = *MEMORY[0x1E69E9840];
   if ([(MXSystemController *)self hasEntitlementToAllowAppsToInitiatePlayback])
   {
     if (MX_FeatureFlags_IsAllowBackgroundPlaybackEnabled())
     {
-      [(MXSystemController *)self setAppsAllowedToInitiatePlayback:a3];
-      [(MXSystemController *)self setAppsAllowedToInitiatePlaybackClientType:a4];
-      if (v5)
+      [(MXSystemController *)self setAppsAllowedToInitiatePlayback:playback];
+      [(MXSystemController *)self setAppsAllowedToInitiatePlaybackClientType:type];
+      if (temporaryCopy)
       {
         v9 = [MEMORY[0x1E695DF00] now];
       }
@@ -1108,17 +1108,17 @@ void __64__MXSystemController_setSilentMode_untilTime_reason_clientType___block_
   return result;
 }
 
-- (int)getAudioSessionID:(unsigned int *)a3 forAttributedPID:(int)a4
+- (int)getAudioSessionID:(unsigned int *)d forAttributedPID:(int)iD
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (d && iD)
   {
-    v5 = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
+    copyMXCoreSessionList = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v6 = [copyMXCoreSessionList countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1129,7 +1129,7 @@ void __64__MXSystemController_setSilentMode_untilTime_reason_clientType___block_
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(copyMXCoreSessionList);
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
@@ -1148,7 +1148,7 @@ void __64__MXSystemController_setSilentMode_untilTime_reason_clientType___block_
           {
             [v13 getBytes:&v21 length:32];
             atoken = v21;
-            if (audit_token_to_pid(&atoken) == a4)
+            if (audit_token_to_pid(&atoken) == iD)
             {
               if (unk_1EB75DE80)
               {
@@ -1157,13 +1157,13 @@ void __64__MXSystemController_setSilentMode_untilTime_reason_clientType___block_
                 fig_log_call_emit_and_clean_up_after_send_and_compose();
               }
 
-              *a3 = [v10 audioSessionID];
+              *d = [v10 audioSessionID];
               goto LABEL_20;
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v7 = [copyMXCoreSessionList countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v7)
         {
           continue;
@@ -1191,14 +1191,14 @@ LABEL_20:
   return result;
 }
 
-- (int)getVolumeButtonDelta:(id)a3 outVolumeDelta:(float *)a4
+- (int)getVolumeButtonDelta:(id)delta outVolumeDelta:(float *)volumeDelta
 {
   v6 = +[MXSessionManager sharedInstance];
 
-  return [(MXSessionManager *)v6 getVolumeButtonDelta:a3 outVolumeDelta:a4];
+  return [(MXSessionManager *)v6 getVolumeButtonDelta:delta outVolumeDelta:volumeDelta];
 }
 
-- (int)copyAttributeForKey:(id)a3 withValueOut:(void *)a4
+- (int)copyAttributeForKey:(id)key withValueOut:(void *)out
 {
   v13 = 0;
   v14 = &v13;
@@ -1206,9 +1206,9 @@ LABEL_20:
   v16 = 0;
   UpTimeNanoseconds = FigGetUpTimeNanoseconds();
   +[MXInitialization waitUntilMXIsFullyInitialized];
-  if ([MXSystemController isNonSerializedCopyProperty:a3])
+  if ([MXSystemController isNonSerializedCopyProperty:key])
   {
-    v8 = [(MXSystemController *)self copyAttributeForKeyInternal:a3 withValueOut:a4];
+    v8 = [(MXSystemController *)self copyAttributeForKeyInternal:key withValueOut:out];
     *(v14 + 6) = v8;
   }
 
@@ -1220,13 +1220,13 @@ LABEL_20:
     v12[2] = __55__MXSystemController_copyAttributeForKey_withValueOut___block_invoke;
     v12[3] = &unk_1E7AE70D0;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = key;
     v12[6] = &v13;
-    v12[7] = a4;
+    v12[7] = out;
     MXDispatchAsyncAndWait("[MXSystemController copyAttributeForKey:withValueOut:]", "MXSystemController_Embedded.m", 1341, 0, 0, v9, v12);
   }
 
-  [+[MXAudioStatistics sharedInstance](MXAudioStatistics sendSinglePerformanceMessageForRoutine:"sendSinglePerformanceMessageForRoutine:operationTime:details:" operationTime:"[MXSystemController copyAttributeForKey:withValueOut:]" details:FigGetUpTimeNanoseconds() - UpTimeNanoseconds, a3];
+  [+[MXAudioStatistics sharedInstance](MXAudioStatistics sendSinglePerformanceMessageForRoutine:"sendSinglePerformanceMessageForRoutine:operationTime:details:" operationTime:"[MXSystemController copyAttributeForKey:withValueOut:]" details:FigGetUpTimeNanoseconds() - UpTimeNanoseconds, key];
   v10 = *(v14 + 6);
   _Block_object_dispose(&v13, 8);
   return v10;
@@ -1239,7 +1239,7 @@ uint64_t __55__MXSystemController_copyAttributeForKey_withValueOut___block_invok
   return result;
 }
 
-- (int)setAttributeForKey:(id)a3 andValue:(const void *)a4
+- (int)setAttributeForKey:(id)key andValue:(const void *)value
 {
   v13 = 0;
   v14 = &v13;
@@ -1247,9 +1247,9 @@ uint64_t __55__MXSystemController_copyAttributeForKey_withValueOut___block_invok
   v16 = 0;
   UpTimeNanoseconds = FigGetUpTimeNanoseconds();
   +[MXInitialization waitUntilMXIsFullyInitialized];
-  if ([MXSystemController isNonSerializedSetProperty:a3])
+  if ([MXSystemController isNonSerializedSetProperty:key])
   {
-    v8 = [(MXSystemController *)self setAttributeForKeyInternal:a3 andValue:a4];
+    v8 = [(MXSystemController *)self setAttributeForKeyInternal:key andValue:value];
     *(v14 + 6) = v8;
   }
 
@@ -1261,13 +1261,13 @@ uint64_t __55__MXSystemController_copyAttributeForKey_withValueOut___block_invok
     v12[2] = __50__MXSystemController_setAttributeForKey_andValue___block_invoke;
     v12[3] = &unk_1E7AE70D0;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = key;
     v12[6] = &v13;
-    v12[7] = a4;
+    v12[7] = value;
     MXDispatchAsyncAndWait("[MXSystemController setAttributeForKey:andValue:]", "MXSystemController_Embedded.m", 1371, 0, 0, v9, v12);
   }
 
-  [+[MXAudioStatistics sharedInstance](MXAudioStatistics sendSinglePerformanceMessageForRoutine:"sendSinglePerformanceMessageForRoutine:operationTime:details:" operationTime:"[MXSystemController setAttributeForKey:andValue:]" details:FigGetUpTimeNanoseconds() - UpTimeNanoseconds, a3];
+  [+[MXAudioStatistics sharedInstance](MXAudioStatistics sendSinglePerformanceMessageForRoutine:"sendSinglePerformanceMessageForRoutine:operationTime:details:" operationTime:"[MXSystemController setAttributeForKey:andValue:]" details:FigGetUpTimeNanoseconds() - UpTimeNanoseconds, key];
   v10 = *(v14 + 6);
   _Block_object_dispose(&v13, 8);
   return v10;
@@ -1280,22 +1280,22 @@ uint64_t __50__MXSystemController_setAttributeForKey_andValue___block_invoke(uin
   return result;
 }
 
-- (int)copyAttributeForKeyInternal:(id)a3 withValueOut:(void *)a4
+- (int)copyAttributeForKeyInternal:(id)internal withValueOut:(void *)out
 {
   v52 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"ActiveNeroVisualStreamInfo"])
+  if ([internal isEqualToString:@"ActiveNeroVisualStreamInfo"])
   {
     active = FigRoutingManagerCopyActiveNeroVisualStreamInfo([+[MXSessionManager systemMirroringRoutingContextUUID] sharedInstance];
 LABEL_18:
     v20 = active;
     result = 0;
-    *a4 = v20;
+    *out = v20;
     goto LABEL_19;
   }
 
-  if (![a3 isEqualToString:@"ActivePhoneCallInfo"])
+  if (![internal isEqualToString:@"ActivePhoneCallInfo"])
   {
-    if ([a3 isEqualToString:@"AirPlayScreenSuspended"])
+    if ([internal isEqualToString:@"AirPlayScreenSuspended"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = CMScreenIsSuspended();
@@ -1308,51 +1308,51 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if ([a3 isEqualToString:@"AppWantsVolumeChanges"])
+    if ([internal isEqualToString:@"AppWantsVolumeChanges"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
-      v18 = [(MXSystemController *)self appWantsVolumeChanges];
+      appWantsVolumeChanges = [(MXSystemController *)self appWantsVolumeChanges];
 LABEL_15:
-      v17 = v18;
+      v17 = appWantsVolumeChanges;
       goto LABEL_16;
     }
 
-    if ([a3 isEqualToString:@"CanBeNowPlayingApp"])
+    if ([internal isEqualToString:@"CanBeNowPlayingApp"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
-      v18 = [(MXSystemController *)self canBeNowPlayingApp];
+      appWantsVolumeChanges = [(MXSystemController *)self canBeNowPlayingApp];
       goto LABEL_15;
     }
 
-    if ([a3 isEqualToString:@"CarPlayAuxStreamSupport"])
+    if ([internal isEqualToString:@"CarPlayAuxStreamSupport"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = FigRoutingManager_iOSIsCarPlayAuxStreamSupported();
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"CarPlayIsConnected"])
+    if ([internal isEqualToString:@"CarPlayIsConnected"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
-      v18 = [+[MXSessionManager sharedInstance](MXSessionManager carPlayIsConnected];
+      appWantsVolumeChanges = [+[MXSessionManager sharedInstance](MXSessionManager carPlayIsConnected];
       goto LABEL_15;
     }
 
-    if ([a3 isEqualToString:@"CarPlayIsPlayingLongerDurationSession"])
+    if ([internal isEqualToString:@"CarPlayIsPlayingLongerDurationSession"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = CMSMUtility_CarPlayIsPlayingLongerDurationSession();
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"CarPlaySupportsMixableSiri"])
+    if ([internal isEqualToString:@"CarPlaySupportsMixableSiri"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = CMSMUtility_DoesCarPlaySupportMixableSiri();
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"ExternalScreenType"])
+    if ([internal isEqualToString:@"ExternalScreenType"])
     {
       ScreenType = CMScreenGetScreenType();
 LABEL_30:
@@ -1360,47 +1360,47 @@ LABEL_30:
       goto LABEL_18;
     }
 
-    if ([a3 isEqualToString:@"CurrentlyActiveCategory"])
+    if ([internal isEqualToString:@"CurrentlyActiveCategory"])
     {
       active = CMSMUtility_CopyCurrentlyActiveCategory();
       goto LABEL_18;
     }
 
-    if ([a3 isEqualToString:@"CurrentlyActiveMode"])
+    if ([internal isEqualToString:@"CurrentlyActiveMode"])
     {
       active = CMSMUtility_CopyCurrentlyActiveMode();
       goto LABEL_18;
     }
 
-    if ([a3 isEqualToString:@"CurrentVideoStreams"])
+    if ([internal isEqualToString:@"CurrentVideoStreams"])
     {
       CurrentlyAirPlayingVideoStreamsDictionary = CMSMUtility_CreateCurrentlyAirPlayingVideoStreamsDictionary(@"CurrentVideoStreams_BundleID", @"CurrentVideoStreams_VideoRoutes");
-      v13 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CurrentlyAirPlayingVideoStreamsDictionary, 0}];
+      firstObject = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CurrentlyAirPlayingVideoStreamsDictionary, 0}];
       goto LABEL_6;
     }
 
-    if ([a3 isEqualToString:@"DeviceSupportsPiP"])
+    if ([internal isEqualToString:@"DeviceSupportsPiP"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = CMSMDeviceState_SupportsPiP();
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"HeadphoneJackHasInput"])
+    if ([internal isEqualToString:@"HeadphoneJackHasInput"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = vaemHeadphoneJackHasInput(1);
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"HeadphoneJackIsConnected"])
+    if ([internal isEqualToString:@"HeadphoneJackIsConnected"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = vaemHeadphoneJackIsConnected(1);
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"HighestArbitrationPriorityForTipi"])
+    if ([internal isEqualToString:@"HighestArbitrationPriorityForTipi"])
     {
       if (MX_FeatureFlags_IsSmartRoutingOnActivationEnabled())
       {
@@ -1418,19 +1418,19 @@ LABEL_30:
       v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:LocalSessionPriority];
       if ([CurrentlyAirPlayingVideoStreamsDictionary displayID])
       {
-        v28 = [CurrentlyAirPlayingVideoStreamsDictionary displayID];
+        displayID = [CurrentlyAirPlayingVideoStreamsDictionary displayID];
       }
 
       else
       {
-        v28 = @"Unknown";
+        displayID = @"Unknown";
       }
 
-      v13 = [v26 initWithObjectsAndKeys:{v27, @"HighestArbitrationPriorityForTipi_AudioScore", v28, @"HighestArbitrationPriorityForTipi_BundleID", 0}];
+      firstObject = [v26 initWithObjectsAndKeys:{v27, @"HighestArbitrationPriorityForTipi_AudioScore", displayID, @"HighestArbitrationPriorityForTipi_BundleID", 0}];
       goto LABEL_6;
     }
 
-    if ([a3 isEqualToString:@"iOSWillRequestToBorrowStarkMainAudio"])
+    if ([internal isEqualToString:@"iOSWillRequestToBorrowStarkMainAudio"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       v24 = 1;
@@ -1439,43 +1439,43 @@ LABEL_50:
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"iOSWillRequestToTakeStarkMainAudio"])
+    if ([internal isEqualToString:@"iOSWillRequestToTakeStarkMainAudio"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       v24 = 0;
       goto LABEL_50;
     }
 
-    if ([a3 isEqualToString:@"IsSomeoneRecording"])
+    if ([internal isEqualToString:@"IsSomeoneRecording"])
     {
       IsSomeClientRecording = CMSMUtility_IsSomeClientRecording();
       v30 = objc_alloc(MEMORY[0x1E696AD98]);
-      v31 = IsSomeClientRecording;
+      pidToInheritAppStateFrom = IsSomeClientRecording;
 LABEL_58:
-      active = [v30 initWithUnsignedInt:v31];
+      active = [v30 initWithUnsignedInt:pidToInheritAppStateFrom];
       goto LABEL_18;
     }
 
-    if ([a3 isEqualToString:@"LongFormVideoApps"])
+    if ([internal isEqualToString:@"LongFormVideoApps"])
     {
       ScreenType = [+[MXSessionManager sharedInstance](MXSessionManager longFormVideoApps];
       goto LABEL_30;
     }
 
-    if ([a3 isEqualToString:@"NowPlayingAppDisplayID"])
+    if ([internal isEqualToString:@"NowPlayingAppDisplayID"])
     {
       ScreenType = [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager nowPlayingAppDisplayID];
       goto LABEL_30;
     }
 
-    if ([a3 isEqualToString:@"NowPlayingAppIsInterrupted"])
+    if ([internal isEqualToString:@"NowPlayingAppIsInterrupted"])
     {
       v15 = objc_alloc(MEMORY[0x1E696AD98]);
       IsSuspended = CMSMNP_GetNowPlayingAppIsInterrupted();
       goto LABEL_10;
     }
 
-    if ([a3 isEqualToString:@"NowPlayingAppIsPlaying"])
+    if ([internal isEqualToString:@"NowPlayingAppIsPlaying"])
     {
       IsPlaying = CMSMNP_GetNowPlayingAppIsPlaying();
 LABEL_67:
@@ -1486,13 +1486,13 @@ LABEL_68:
       goto LABEL_17;
     }
 
-    if ([a3 isEqualToString:@"NowPlayingAppPID"])
+    if ([internal isEqualToString:@"NowPlayingAppPID"])
     {
       active = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:{-[MXNowPlayingAppManager nowPlayingAppPID](+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager, "sharedInstance"), "nowPlayingAppPID")}];
       goto LABEL_18;
     }
 
-    if ([a3 isEqualToString:@"NowPlayingAppShouldResumeForCarPlay"])
+    if ([internal isEqualToString:@"NowPlayingAppShouldResumeForCarPlay"])
     {
       ShouldResumeForCarPlay = CMSMNP_GetNowPlayingAppShouldResumeForCarPlay();
       if (unk_1EB75DE80)
@@ -1505,7 +1505,7 @@ LABEL_68:
       goto LABEL_68;
     }
 
-    if ([a3 isEqualToString:@"IsMaximumSpeakerVolumeLimitEnabled"])
+    if ([internal isEqualToString:@"IsMaximumSpeakerVolumeLimitEnabled"])
     {
       if (MX_FeatureFlags_IsMaxSpeakerVolumeLimitEnabled())
       {
@@ -1518,7 +1518,7 @@ LABEL_86:
       goto LABEL_19;
     }
 
-    if ([a3 isEqualToString:@"MaximumSpeakerVolumeLimit"])
+    if ([internal isEqualToString:@"MaximumSpeakerVolumeLimit"])
     {
       if (MX_FeatureFlags_IsMaxSpeakerVolumeLimitEnabled())
       {
@@ -1536,14 +1536,14 @@ LABEL_96:
 
     else
     {
-      if (![a3 isEqualToString:@"DefaultMaximumSpeakerVolumeLimit"])
+      if (![internal isEqualToString:@"DefaultMaximumSpeakerVolumeLimit"])
       {
-        if ([a3 isEqualToString:@"PreferHeadphonesOverCarsAndSpeakersEnabled"])
+        if ([internal isEqualToString:@"PreferHeadphonesOverCarsAndSpeakersEnabled"])
         {
           if (MX_FeatureFlags_IsAirPodsInEarRoutingWithCarsAndSpeakersEnabled())
           {
             v15 = objc_alloc(MEMORY[0x1E696AD98]);
-            v18 = +[MXSystemController preferHeadphonesOverCarsAndSpeakersEnabled];
+            appWantsVolumeChanges = +[MXSystemController preferHeadphonesOverCarsAndSpeakersEnabled];
             goto LABEL_15;
           }
 
@@ -1552,30 +1552,30 @@ LABEL_96:
 
         else
         {
-          if (![a3 isEqualToString:@"AllowBluetoothAccessoryToRequestAudioRoute"])
+          if (![internal isEqualToString:@"AllowBluetoothAccessoryToRequestAudioRoute"])
           {
-            if ([a3 isEqualToString:@"PhoneCallExists"])
+            if ([internal isEqualToString:@"PhoneCallExists"])
             {
               v15 = objc_alloc(MEMORY[0x1E696AD98]);
               IsSuspended = CMSMUtility_IsPhoneCallActive();
               goto LABEL_10;
             }
 
-            if ([a3 isEqualToString:@"PIDToInheritApplicationStateFrom"])
+            if ([internal isEqualToString:@"PIDToInheritApplicationStateFrom"])
             {
               v42 = objc_alloc(MEMORY[0x1E696AD98]);
-              v31 = [(MXSystemController *)self pidToInheritAppStateFrom];
+              pidToInheritAppStateFrom = [(MXSystemController *)self pidToInheritAppStateFrom];
               v30 = v42;
               goto LABEL_58;
             }
 
-            if ([a3 isEqualToString:@"PlayingSessionsDescription"])
+            if ([internal isEqualToString:@"PlayingSessionsDescription"])
             {
               active = CMSMNotificationUtility_CreatePlayingSessionsDescription();
               goto LABEL_18;
             }
 
-            if ([a3 isEqualToString:@"DuckScalarForVoiceOver"])
+            if ([internal isEqualToString:@"DuckScalarForVoiceOver"])
             {
               if (!MX_FeatureFlags_IsRelativeVoiceOverVolumeEnabled())
               {
@@ -1594,105 +1594,105 @@ LABEL_96:
 
             else
             {
-              if ([a3 isEqualToString:@"RecordingClientPIDs"])
+              if ([internal isEqualToString:@"RecordingClientPIDs"])
               {
                 ScreenType = [+[MXSessionManager sharedInstance](MXSessionManager recordingClientPIDs];
                 goto LABEL_30;
               }
 
-              if ([a3 isEqualToString:@"RecordingSessionsDescription"])
+              if ([internal isEqualToString:@"RecordingSessionsDescription"])
               {
                 active = CMSMNotificationUtility_CreateRecordingSessionsDescription();
                 goto LABEL_18;
               }
 
-              if ([a3 isEqualToString:@"ShouldIgnorePlayCommandsFromAccessory"])
+              if ([internal isEqualToString:@"ShouldIgnorePlayCommandsFromAccessory"])
               {
                 v15 = objc_alloc(MEMORY[0x1E696AD98]);
                 IsSuspended = CMSMUtility_ShouldIgnorePlayCommandsFromAccessory();
                 goto LABEL_10;
               }
 
-              if (![a3 isEqualToString:@"SilentModeEnabled"])
+              if (![internal isEqualToString:@"SilentModeEnabled"])
               {
-                if ([a3 isEqualToString:@"SomeClientIsPlaying"])
+                if ([internal isEqualToString:@"SomeClientIsPlaying"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_SomeClientIsPlaying();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SomeClientIsPlayingLongFormAudio"])
+                if ([internal isEqualToString:@"SomeClientIsPlayingLongFormAudio"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_SomeClientIsPlayingLongFormAudio();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SomeLongFormVideoClientIsActiveOverAirPlayVideo"])
+                if ([internal isEqualToString:@"SomeLongFormVideoClientIsActiveOverAirPlayVideo"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_IsAnyLongFormVideoSessionActiveOverAirPlayVideo();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SomeLongFormVideoClientIsPlaying"])
+                if ([internal isEqualToString:@"SomeLongFormVideoClientIsPlaying"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_IsAnyLongFormVideoSessionPlaying();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SomeLongFormVideoClientIsPlayingOverAirPlayVideo"])
+                if ([internal isEqualToString:@"SomeLongFormVideoClientIsPlayingOverAirPlayVideo"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_IsAnyLongFormVideoSessionPlayingOverAirPlayVideo();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SomeRecordingSessionPresentThatDisallowsSystemSounds"])
+                if ([internal isEqualToString:@"SomeRecordingSessionPresentThatDisallowsSystemSounds"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_IsSomeRecordingSessionPresentThatDisallowsSystemSounds();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SomeSessionIsActiveThatPrefersNoInterruptionsByRingtonesAndAlerts"])
+                if ([internal isEqualToString:@"SomeSessionIsActiveThatPrefersNoInterruptionsByRingtonesAndAlerts"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMUtility_SomeSessionIsActiveThatPrefersNoInterruptionsByRingtonesAndAlerts();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"StarkMainAudioIsOwnedByiOSButBorrowedByCar"])
+                if ([internal isEqualToString:@"StarkMainAudioIsOwnedByiOSButBorrowedByCar"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
-                  v18 = [+[MXSessionManager sharedInstance](MXSessionManager starkMainAudioIsOwnedByiOSButBorrowedByCar];
+                  appWantsVolumeChanges = [+[MXSessionManager sharedInstance](MXSessionManager starkMainAudioIsOwnedByiOSButBorrowedByCar];
                   goto LABEL_15;
                 }
 
-                if ([a3 isEqualToString:@"SystemHasAudioInputDevice"])
+                if ([internal isEqualToString:@"SystemHasAudioInputDevice"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = vaemSystemHasAudioInputDevice();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SystemHasAudioInputDeviceExcludingBluetooth"])
+                if ([internal isEqualToString:@"SystemHasAudioInputDeviceExcludingBluetooth"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = vaemSystemHasAudioInputDeviceExcludingBluetooth();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"SystemIsAnAppleTV"])
+                if ([internal isEqualToString:@"SystemIsAnAppleTV"])
                 {
                   v15 = objc_alloc(MEMORY[0x1E696AD98]);
                   IsSuspended = CMSMDeviceState_ItsAnAppleTV();
                   goto LABEL_10;
                 }
 
-                if ([a3 isEqualToString:@"UplinkMute"])
+                if ([internal isEqualToString:@"UplinkMute"])
                 {
                   if (!MX_FeatureFlags_IsSessionBasedMutingEnabled())
                   {
@@ -1701,12 +1701,12 @@ LABEL_96:
                     v47 = +[MXSessionManager sharedInstance];
                     if (v46)
                     {
-                      v18 = [(MXSessionManager *)v47 uplinkMuteSetByClient];
+                      appWantsVolumeChanges = [(MXSessionManager *)v47 uplinkMuteSetByClient];
                     }
 
                     else
                     {
-                      v18 = [(MXSessionManager *)v47 uplinkMute];
+                      appWantsVolumeChanges = [(MXSessionManager *)v47 uplinkMute];
                     }
 
                     goto LABEL_15;
@@ -1720,65 +1720,65 @@ LABEL_96:
 
                 else
                 {
-                  if ([a3 isEqualToString:@"VibeIntensity"])
+                  if ([internal isEqualToString:@"VibeIntensity"])
                   {
                     v35 = PVMGetVibeIntensityPreference();
                     goto LABEL_80;
                   }
 
-                  if ([a3 isEqualToString:@"VoicePromptStyle"])
+                  if ([internal isEqualToString:@"VoicePromptStyle"])
                   {
                     ScreenType = CMSMUtility_GetVoicePromptStyle();
                     goto LABEL_30;
                   }
 
-                  if ([a3 isEqualToString:@"RemoteDeviceIDs"])
+                  if ([internal isEqualToString:@"RemoteDeviceIDs"])
                   {
                     ScreenType = [(NSSet *)[(MXSystemController *)self remoteDeviceIDs] allObjects];
                     goto LABEL_30;
                   }
 
-                  if ([a3 isEqualToString:@"WombatEnabled"])
+                  if ([internal isEqualToString:@"WombatEnabled"])
                   {
                     v15 = objc_alloc(MEMORY[0x1E696AD98]);
-                    v18 = [+[MXSessionManager sharedInstance](MXSessionManager wombatEnabled];
+                    appWantsVolumeChanges = [+[MXSessionManager sharedInstance](MXSessionManager wombatEnabled];
                     goto LABEL_15;
                   }
 
-                  if (([a3 isEqualToString:@"ActiveAudioRoute"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"CurrentlyActiveRoute"))
+                  if (([internal isEqualToString:@"ActiveAudioRoute"] & 1) != 0 || objc_msgSend(internal, "isEqualToString:", @"CurrentlyActiveRoute"))
                   {
                     cmsmUpdateCurrentActiveRoutesInfo();
                     ScreenType = CMSMUtility_GetCurrentRouteTypeAtIndex(0);
                     goto LABEL_30;
                   }
 
-                  if ([a3 isEqualToString:@"ActiveClientPIDsThatHideTheSpeechDetectionDevice"])
+                  if ([internal isEqualToString:@"ActiveClientPIDsThatHideTheSpeechDetectionDevice"])
                   {
                     active = CMSMUtility_CopyActiveClientPIDsThatHideTheSpeechDetectionDevice();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"ActiveInputRouteForPlayAndRecordNoBluetooth"])
+                  if ([internal isEqualToString:@"ActiveInputRouteForPlayAndRecordNoBluetooth"])
                   {
                     CurrentlyAirPlayingVideoStreamsDictionary = vaemCopyActiveInputRouteNamesForRouteConfiguration(@"PlayAndRecord", @"Default", 0, 0);
-                    v13 = [CurrentlyAirPlayingVideoStreamsDictionary firstObject];
+                    firstObject = [CurrentlyAirPlayingVideoStreamsDictionary firstObject];
                     goto LABEL_6;
                   }
 
-                  if ([a3 isEqualToString:@"AvailableVirtualAudioDevices"])
+                  if ([internal isEqualToString:@"AvailableVirtualAudioDevices"])
                   {
                     active = vaemCopyAvailableVADUIDs();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"CallScreeningStatus"])
+                  if ([internal isEqualToString:@"CallScreeningStatus"])
                   {
                     v15 = objc_alloc(MEMORY[0x1E696AD98]);
                     IsSuspended = vaemGetCallScreeningStatus();
                     goto LABEL_10;
                   }
 
-                  if ([a3 isEqualToString:@"ContinuityScreenOutputPortAvailable"])
+                  if ([internal isEqualToString:@"ContinuityScreenOutputPortAvailable"])
                   {
                     if (MX_FeatureFlags_IsOnenessEnabled())
                     {
@@ -1795,89 +1795,89 @@ LABEL_96:
                     goto LABEL_17;
                   }
 
-                  if ([a3 isEqualToString:@"CurrentPhoneCallIsRoutedViaCarBT"])
+                  if ([internal isEqualToString:@"CurrentPhoneCallIsRoutedViaCarBT"])
                   {
                     active = CMSMUtility_CopyCurrentPhoneCallIsRoutedViaCarBT();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"CurrentPlayingSessionIsRoutedViaCarBT"])
+                  if ([internal isEqualToString:@"CurrentPlayingSessionIsRoutedViaCarBT"])
                   {
                     active = CMSMUtility_CopyCurrentPlayingSessionIsRoutedViaCarBT();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"CurrentPrimaryAppDisplayID"])
+                  if ([internal isEqualToString:@"CurrentPrimaryAppDisplayID"])
                   {
                     active = [+[MXFrontBoardServices sharedInstance](MXFrontBoardServices copyPrimaryAppDisplayID];
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"CurrentRouteHasVolumeControl"])
+                  if ([internal isEqualToString:@"CurrentRouteHasVolumeControl"])
                   {
                     active = CMSMUtility_CopyCurrentRouteHasVolumeControl();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"DownlinkMute"])
+                  if ([internal isEqualToString:@"DownlinkMute"])
                   {
                     v15 = objc_alloc(MEMORY[0x1E696AD98]);
                     IsSuspended = vaemGetDownlinkMute();
                     goto LABEL_10;
                   }
 
-                  if ([a3 isEqualToString:@"FullMute"])
+                  if ([internal isEqualToString:@"FullMute"])
                   {
                     v15 = objc_alloc(MEMORY[0x1E696AD98]);
                     IsSuspended = vaemGetFullMute();
                     goto LABEL_10;
                   }
 
-                  if ([a3 isEqualToString:@"HeadphoneVolumeLimit"])
+                  if ([internal isEqualToString:@"HeadphoneVolumeLimit"])
                   {
                     v35 = PVMGetVolumeLimit();
                     goto LABEL_80;
                   }
 
-                  if ([a3 isEqualToString:@"PickableRoutes"])
+                  if ([internal isEqualToString:@"PickableRoutes"])
                   {
                     CurrentlyAirPlayingVideoStreamsDictionary = CMSMUtility_CopyPickableRoutes();
-                    v13 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:CurrentlyAirPlayingVideoStreamsDictionary copyItems:1];
+                    firstObject = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:CurrentlyAirPlayingVideoStreamsDictionary copyItems:1];
                     goto LABEL_6;
                   }
 
-                  if ([a3 isEqualToString:@"PickedRoute"])
+                  if ([internal isEqualToString:@"PickedRoute"])
                   {
                     active = cmsmDeepCopyPickedRoute();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"SpeechDetectionDevicePresent"])
+                  if ([internal isEqualToString:@"SpeechDetectionDevicePresent"])
                   {
                     v15 = objc_alloc(MEMORY[0x1E696AD98]);
                     IsSuspended = vaemSpeechDetectionVADExists();
                     goto LABEL_10;
                   }
 
-                  if ([a3 isEqualToString:@"ThermalControlInfo"])
+                  if ([internal isEqualToString:@"ThermalControlInfo"])
                   {
                     active = vaemCopyThermalControlInfo();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"ThermalGainAdjustment_Haptics"])
+                  if ([internal isEqualToString:@"ThermalGainAdjustment_Haptics"])
                   {
                     active = vaemCopyThermalGainAdjustment_Haptics();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"ThermalGainAdjustment_Speaker"])
+                  if ([internal isEqualToString:@"ThermalGainAdjustment_Speaker"])
                   {
                     active = vaemCopyThermalGainAdjustment_Speaker();
                     goto LABEL_18;
                   }
 
-                  if ([a3 isEqualToString:@"TopOfNowPlayingAppStackDisplayID"])
+                  if ([internal isEqualToString:@"TopOfNowPlayingAppStackDisplayID"])
                   {
                     active = [+[MXNowPlayingAppManager sharedInstance](MXNowPlayingAppManager copyTopOfNowPlayingAppStack];
                     goto LABEL_18;
@@ -1891,7 +1891,7 @@ LABEL_96:
               if ([(MXSystemController *)self hasEntitlementForSilentModeNotifications]|| [(MXSystemController *)self hasEntitlementToSetSilentMode])
               {
                 v15 = objc_alloc(MEMORY[0x1E696AD98]);
-                v18 = [+[MXSessionManager sharedInstance](MXSessionManager silentModeEnabled];
+                appWantsVolumeChanges = [+[MXSessionManager sharedInstance](MXSessionManager silentModeEnabled];
                 goto LABEL_15;
               }
 
@@ -1907,7 +1907,7 @@ LABEL_96:
           if (MX_FeatureFlags_IsAirPodsInEarRoutingWithCarsAndSpeakersEnabled())
           {
             v15 = objc_alloc(MEMORY[0x1E696AD98]);
-            v18 = +[MXSystemController allowBluetoothAccessoryToRequestAudioRoute];
+            appWantsVolumeChanges = +[MXSystemController allowBluetoothAccessoryToRequestAudioRoute];
             goto LABEL_15;
           }
 
@@ -1934,7 +1934,7 @@ LABEL_96:
 
     v38 = objc_alloc(MEMORY[0x1E696AD98]);
     LODWORD(v39) = -1.0;
-    *a4 = [v38 initWithFloat:v39];
+    *out = [v38 initWithFloat:v39];
     goto LABEL_86;
   }
 
@@ -1945,9 +1945,9 @@ LABEL_96:
     v10 = [objc_msgSend(v8 objectForKey:{@"ClientPriority", "intValue"}] == 10;
     v11 = [CurrentlyAirPlayingVideoStreamsDictionary objectForKey:@"AudioSessionID"];
     v12 = objc_alloc(MEMORY[0x1E695DF20]);
-    v13 = [v12 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v10), @"CallIsHighPriority", v11, @"AudioSessionID", 0}];
+    firstObject = [v12 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v10), @"CallIsHighPriority", v11, @"AudioSessionID", 0}];
 LABEL_6:
-    *a4 = v13;
+    *out = firstObject;
   }
 
   result = 0;
@@ -1956,23 +1956,23 @@ LABEL_19:
   return result;
 }
 
-- (int)setAttributeForKeyInternal:(id)a3 andValue:(const void *)a4
+- (int)setAttributeForKeyInternal:(id)internal andValue:(const void *)value
 {
   v127 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"AirPlayScreenSuspended"])
+  if ([internal isEqualToString:@"AirPlayScreenSuspended"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      refreshed = [a4 BOOLValue];
-      v8 = [+[MXSessionManager sharedInstance](MXSessionManager systemMirroringRoutingContextUUID];
+      refreshed = [value BOOLValue];
+      systemMirroringRoutingContextUUID = [+[MXSessionManager sharedInstance](MXSessionManager systemMirroringRoutingContextUUID];
       if (refreshed)
       {
-        FigRoutingManagerSuspendCurrentEndpointScreen(v8);
+        FigRoutingManagerSuspendCurrentEndpointScreen(systemMirroringRoutingContextUUID);
         goto LABEL_26;
       }
 
-      FigRoutingManagerResumeCurrentEndpointScreen(v8);
+      FigRoutingManagerResumeCurrentEndpointScreen(systemMirroringRoutingContextUUID);
       goto LABEL_27;
     }
 
@@ -1980,14 +1980,14 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"AllowAppToFadeInTemporarily"])
+  if ([internal isEqualToString:@"AllowAppToFadeInTemporarily"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (MX_FeatureFlags_IsHandoffEnabled())
       {
-        [+[MXSessionManager sharedInstance](MXSessionManager setAppAllowedToFadeInTemporarily:"setAppAllowedToFadeInTemporarily:", a4];
+        [+[MXSessionManager sharedInstance](MXSessionManager setAppAllowedToFadeInTemporarily:"setAppAllowedToFadeInTemporarily:", value];
         cmsmStartAllowedToFadeInTemporarilyTimer();
       }
 
@@ -2000,12 +2000,12 @@ LABEL_21:
     return FigSignalErrorAtGM();
   }
 
-  if ([a3 isEqualToString:@"AllowAppToInitiatePlaybackTemporarily"])
+  if ([internal isEqualToString:@"AllowAppToInitiatePlaybackTemporarily"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [+[MXSessionManager sharedInstance](MXSessionManager setAppAllowedToInitiatePlaybackTemporarily:"setAppAllowedToInitiatePlaybackTemporarily:", a4];
+      [+[MXSessionManager sharedInstance](MXSessionManager setAppAllowedToInitiatePlaybackTemporarily:"setAppAllowedToInitiatePlaybackTemporarily:", value];
       cmsmStartAllowedToInitiatePlaybackTemporarilyTimer();
       goto LABEL_26;
     }
@@ -2014,13 +2014,13 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"AllowAppToInitiateRecordingTemporarily"])
+  if ([internal isEqualToString:@"AllowAppToInitiateRecordingTemporarily"])
   {
     if ([(MXSystemController *)self hasEntitlementToInitiateRecordingTemporarily])
     {
-      if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        [+[MXSessionManager sharedInstance](MXSessionManager setAppAllowedToInitiateRecordingTemporarily:"setAppAllowedToInitiateRecordingTemporarily:", a4];
+        [+[MXSessionManager sharedInstance](MXSessionManager setAppAllowedToInitiateRecordingTemporarily:"setAppAllowedToInitiateRecordingTemporarily:", value];
         goto LABEL_26;
       }
 
@@ -2035,17 +2035,17 @@ LABEL_21:
     goto LABEL_131;
   }
 
-  if ([a3 isEqualToString:@"AppWantsVolumeChanges"])
+  if ([internal isEqualToString:@"AppWantsVolumeChanges"])
   {
-    -[MXSystemController setAppWantsVolumeChanges:](self, "setAppWantsVolumeChanges:", [a4 BOOLValue]);
+    -[MXSystemController setAppWantsVolumeChanges:](self, "setAppWantsVolumeChanges:", [value BOOLValue]);
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"CarSpeechStateChanged"])
+  if ([internal isEqualToString:@"CarSpeechStateChanged"])
   {
-    if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      if ([a4 BOOLValue])
+      if ([value BOOLValue])
       {
         CMSMNotificationUtility_PostVoicePromptStyleDidChange();
       }
@@ -2057,19 +2057,19 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"ClientAuditToken"])
+  if ([internal isEqualToString:@"ClientAuditToken"])
   {
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(MXSystemController *)self setAuditToken:a4];
+        [(MXSystemController *)self setAuditToken:value];
         *&v14 = -1;
         *(&v14 + 1) = -1;
         *valuePtr[0].val = v14;
         *&valuePtr[0].val[4] = v14;
-        [a4 getBytes:valuePtr length:32];
+        [value getBytes:valuePtr length:32];
         v15 = *MEMORY[0x1E695E480];
         token = valuePtr[0];
         v16 = SecTaskCreateWithAuditToken(v15, &token);
@@ -2082,8 +2082,8 @@ LABEL_21:
           [(MXSystemController *)self setHasEntitlementForPIDInheritance:1];
         }
 
-        v19 = [(MXSystemController *)self clientPID];
-        if (v19 != getpid())
+        clientPID = [(MXSystemController *)self clientPID];
+        if (clientPID != getpid())
         {
           v20 = SecTaskCopyValueForEntitlement(v16, @"com.apple.private.mediaexperience.allowwombatenabled", 0);
           -[MXSystemController setHasEntitlementToEnableWombat:](self, "setHasEntitlementToEnableWombat:", [v20 BOOLValue]);
@@ -2136,11 +2136,11 @@ LABEL_131:
     goto LABEL_27;
   }
 
-  if ([a3 isEqualToString:@"NowPlayingAppShouldResumeForCarPlay"])
+  if ([internal isEqualToString:@"NowPlayingAppShouldResumeForCarPlay"])
   {
-    if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      -[MXSessionManager updateNowPlayingAppShouldResumeForCarPlay:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "updateNowPlayingAppShouldResumeForCarPlay:", [a4 BOOLValue]);
+      -[MXSessionManager updateNowPlayingAppShouldResumeForCarPlay:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "updateNowPlayingAppShouldResumeForCarPlay:", [value BOOLValue]);
       goto LABEL_26;
     }
 
@@ -2148,7 +2148,7 @@ LABEL_131:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"PostInterruptionEndedNotification"])
+  if ([internal isEqualToString:@"PostInterruptionEndedNotification"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2157,8 +2157,8 @@ LABEL_131:
       goto LABEL_21;
     }
 
-    v29 = [objc_msgSend(a4 objectForKey:{@"AudioSessionID", "unsignedIntValue"}];
-    v30 = [objc_msgSend(a4 objectForKey:{@"IsResumable", "BOOLValue"}];
+    v29 = [objc_msgSend(value objectForKey:{@"AudioSessionID", "unsignedIntValue"}];
+    v30 = [objc_msgSend(value objectForKey:{@"IsResumable", "BOOLValue"}];
     if (unk_1EB75DE80)
     {
       v123 = 0;
@@ -2174,11 +2174,11 @@ LABEL_101:
     goto LABEL_27;
   }
 
-  if ([a3 isEqualToString:@"StarkMainAudioIsOwnedByiOSButBorrowedByCar"])
+  if ([internal isEqualToString:@"StarkMainAudioIsOwnedByiOSButBorrowedByCar"])
   {
-    if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      -[MXSessionManager setStarkMainAudioIsOwnedByiOSButBorrowedByCar:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "setStarkMainAudioIsOwnedByiOSButBorrowedByCar:", [a4 BOOLValue]);
+      -[MXSessionManager setStarkMainAudioIsOwnedByiOSButBorrowedByCar:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "setStarkMainAudioIsOwnedByiOSButBorrowedByCar:", [value BOOLValue]);
       goto LABEL_26;
     }
 
@@ -2186,7 +2186,7 @@ LABEL_101:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"SubscribeToNotifications"])
+  if ([internal isEqualToString:@"SubscribeToNotifications"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2196,7 +2196,7 @@ LABEL_101:
       v119 = 0u;
       v120 = 0u;
       v121 = 0u;
-      v35 = [a4 countByEnumeratingWithState:&v118 objects:v125 count:16];
+      v35 = [value countByEnumeratingWithState:&v118 objects:v125 count:16];
       if (!v35)
       {
         goto LABEL_85;
@@ -2211,7 +2211,7 @@ LABEL_101:
         {
           if (*v119 != v37)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(value);
           }
 
           v39 = *(*(&v118 + 1) + 8 * i);
@@ -2250,11 +2250,11 @@ LABEL_75:
 
           if (v42)
           {
-            v43 = [(MXSystemController *)self displayID];
+            displayID = [(MXSystemController *)self displayID];
             token.val[0] = 136315394;
             *&token.val[1] = "[MXSystemController(InternalUse) setAttributeForKeyInternal:andValue:]";
             LOWORD(token.val[3]) = 2114;
-            *(&token.val[3] + 2) = v43;
+            *(&token.val[3] + 2) = displayID;
             LODWORD(v115) = 22;
             p_token = &token;
             _os_log_send_and_compose_impl();
@@ -2264,7 +2264,7 @@ LABEL_75:
           v37 = v116;
         }
 
-        v36 = [a4 countByEnumeratingWithState:&v118 objects:v125 count:16];
+        v36 = [value countByEnumeratingWithState:&v118 objects:v125 count:16];
         if (!v36)
         {
 LABEL_85:
@@ -2290,12 +2290,12 @@ LABEL_93:
     goto LABEL_27;
   }
 
-  if ([a3 isEqualToString:@"VibeIntensity"])
+  if ([internal isEqualToString:@"VibeIntensity"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a4 floatValue];
+      [value floatValue];
       v45 = v44;
       if (v44 != PVMGetVibeIntensityPreference())
       {
@@ -2325,11 +2325,11 @@ LABEL_93:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"RemoteDeviceIDs"])
+  if ([internal isEqualToString:@"RemoteDeviceIDs"])
   {
     if (MX_FeatureFlags_IsAirPlayDaemonEnabled())
     {
-      if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         if (unk_1EB75DE80)
         {
@@ -2340,7 +2340,7 @@ LABEL_93:
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        v63 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:a4];
+        v63 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:value];
         [(MXSystemController *)self setRemoteDeviceIDs:v63];
 
         block[0] = MEMORY[0x1E69E9820];
@@ -2369,9 +2369,9 @@ LABEL_93:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"AppToInterruptCurrentNowPlayingSession"])
+  if ([internal isEqualToString:@"AppToInterruptCurrentNowPlayingSession"])
   {
-    if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       if (unk_1EB75DE80)
       {
@@ -2382,7 +2382,7 @@ LABEL_93:
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      [+[MXSessionManager appToInterruptCurrentNowPlayingSession:p_token], "appToInterruptCurrentNowPlayingSession:", a4];
+      [+[MXSessionManager appToInterruptCurrentNowPlayingSession:p_token], "appToInterruptCurrentNowPlayingSession:", value];
       goto LABEL_26;
     }
 
@@ -2390,17 +2390,17 @@ LABEL_93:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"AvailableForVoicePrompts"])
+  if ([internal isEqualToString:@"AvailableForVoicePrompts"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      Value = CFDictionaryGetValue(a4, @"PortNumber");
+      Value = CFDictionaryGetValue(value, @"PortNumber");
       if (Value)
       {
         valuePtr[0].val[0] = 0;
         CFNumberGetValue(Value, kCFNumberSInt32Type, valuePtr);
-        v54 = CFDictionaryGetValue(a4, @"BTDetails_IsAvailableForVoicePrompts") == *MEMORY[0x1E695E4D0];
+        v54 = CFDictionaryGetValue(value, @"BTDetails_IsAvailableForVoicePrompts") == *MEMORY[0x1E695E4D0];
         refreshed = vaeSetPortAvailableForVoicePrompts(valuePtr[0].val[0], v54);
         cmsmUpdatePickableRouteDescriptionLists(1);
         goto LABEL_27;
@@ -2413,7 +2413,7 @@ LABEL_93:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"CallScreeningStatus"])
+  if ([internal isEqualToString:@"CallScreeningStatus"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2422,21 +2422,21 @@ LABEL_93:
       goto LABEL_21;
     }
 
-    v56 = [a4 BOOLValue];
+    bOOLValue = [value BOOLValue];
     v57 = *MEMORY[0x1E69E9840];
 
-    return vaemSetCallScreeningStatus(v56);
+    return vaemSetCallScreeningStatus(bOOLValue);
   }
 
-  if ([a3 isEqualToString:@"CanBeNowPlayingApp"])
+  if ([internal isEqualToString:@"CanBeNowPlayingApp"])
   {
-    [(MXSystemController *)self applyCanBeNowPlayingApp:a4];
+    [(MXSystemController *)self applyCanBeNowPlayingApp:value];
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"DownlinkMute"])
+  if ([internal isEqualToString:@"DownlinkMute"])
   {
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2450,19 +2450,19 @@ LABEL_93:
     {
       v65 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v65 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", 1), @"MuteCmd"}];
-      [v65 setObject:a4 forKey:@"MuteValue"];
+      [v65 setObject:value forKey:@"MuteValue"];
       refreshed = CMSMUtility_AudioToolboxServerRefreshMuteState();
 
       goto LABEL_27;
     }
 
-    v73 = [a4 BOOLValue];
+    bOOLValue2 = [value BOOLValue];
     v74 = *MEMORY[0x1E69E9840];
 
-    return vaemSetDownlinkMute(v73);
+    return vaemSetDownlinkMute(bOOLValue2);
   }
 
-  if ([a3 isEqualToString:@"DuckScalarForVoiceOver"])
+  if ([internal isEqualToString:@"DuckScalarForVoiceOver"])
   {
     if (!MX_FeatureFlags_IsRelativeVoiceOverVolumeEnabled())
     {
@@ -2483,7 +2483,7 @@ LABEL_93:
       goto LABEL_21;
     }
 
-    [a4 floatValue];
+    [value floatValue];
     v67 = v66;
     v68 = +[MXSessionManager sharedInstance];
     LODWORD(v69) = v67;
@@ -2491,9 +2491,9 @@ LABEL_93:
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"FullMute"])
+  if ([internal isEqualToString:@"FullMute"])
   {
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2503,8 +2503,8 @@ LABEL_93:
       }
     }
 
-    v70 = [a4 BOOLValue];
-    if (vaemGetFullMute() != v70)
+    bOOLValue3 = [value BOOLValue];
+    if (vaemGetFullMute() != bOOLValue3)
     {
       if (unk_1EB75DE80)
       {
@@ -2526,7 +2526,7 @@ LABEL_27:
     return refreshed;
   }
 
-  if ([a3 isEqualToString:@"HeadphoneVolumeLimit"])
+  if ([internal isEqualToString:@"HeadphoneVolumeLimit"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2535,14 +2535,14 @@ LABEL_27:
       goto LABEL_21;
     }
 
-    [a4 floatValue];
+    [value floatValue];
     v76 = v75;
     VolumeSequenceNumber = CMSMUtility_GetVolumeSequenceNumber();
     PVMSetVolumeLimit(VolumeSequenceNumber, v76);
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"InterruptAudioSessionIDForHandoff"])
+  if ([internal isEqualToString:@"InterruptAudioSessionIDForHandoff"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2551,15 +2551,15 @@ LABEL_27:
       goto LABEL_21;
     }
 
-    v80 = [a4 unsignedIntValue];
+    unsignedIntValue = [value unsignedIntValue];
     v81 = *MEMORY[0x1E69E9840];
 
-    return CMSMUtility_InterruptAudioSessionIDForHandoff(v80);
+    return CMSMUtility_InterruptAudioSessionIDForHandoff(unsignedIntValue);
   }
 
-  if ([a3 isEqualToString:@"MakeStarkPortRoutableForPhoneCall"])
+  if ([internal isEqualToString:@"MakeStarkPortRoutableForPhoneCall"])
   {
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2569,13 +2569,13 @@ LABEL_27:
       }
     }
 
-    -[MXSessionManager makeStarkPortRoutableForPhoneCall:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "makeStarkPortRoutableForPhoneCall:", [a4 BOOLValue]);
+    -[MXSessionManager makeStarkPortRoutableForPhoneCall:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "makeStarkPortRoutableForPhoneCall:", [value BOOLValue]);
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"MakeStarkPortRoutableForPlayingSession"])
+  if ([internal isEqualToString:@"MakeStarkPortRoutableForPlayingSession"])
   {
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2585,11 +2585,11 @@ LABEL_27:
       }
     }
 
-    -[MXSessionManager makeStarkPortRoutableForPlayingSession:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "makeStarkPortRoutableForPlayingSession:", [a4 BOOLValue]);
+    -[MXSessionManager makeStarkPortRoutableForPlayingSession:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "makeStarkPortRoutableForPlayingSession:", [value BOOLValue]);
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"IsMaximumSpeakerVolumeLimitEnabled"])
+  if ([internal isEqualToString:@"IsMaximumSpeakerVolumeLimitEnabled"])
   {
     if (!MX_FeatureFlags_IsMaxSpeakerVolumeLimitEnabled())
     {
@@ -2604,26 +2604,26 @@ LABEL_27:
       goto LABEL_131;
     }
 
-    v86 = [a4 BOOLValue];
-    if (PVMIsMaxVolumeLimitForBuiltInSpeakerEnabled() == v86)
+    bOOLValue4 = [value BOOLValue];
+    if (PVMIsMaxVolumeLimitForBuiltInSpeakerEnabled() == bOOLValue4)
     {
       goto LABEL_26;
     }
 
-    refreshed = PVMToggleMaxVolumeLimitForBuiltInSpeaker(v86);
+    refreshed = PVMToggleMaxVolumeLimitForBuiltInSpeaker(bOOLValue4);
     if (refreshed)
     {
       goto LABEL_93;
     }
 
     v93 = PVMGetCurrentMaxVolumeLimitForBuiltInSpeaker();
-    v94 = v86;
+    v94 = bOOLValue4;
 LABEL_199:
     CMSMNotificationUtility_PostMaximumVolumeLimitForBuiltInSpeakerDidChangeIfNeeded(v94, v93);
     goto LABEL_27;
   }
 
-  if ([a3 isEqualToString:@"MaximumSpeakerVolumeLimit"])
+  if ([internal isEqualToString:@"MaximumSpeakerVolumeLimit"])
   {
     if (!MX_FeatureFlags_IsMaxSpeakerVolumeLimitEnabled())
     {
@@ -2638,7 +2638,7 @@ LABEL_199:
       goto LABEL_131;
     }
 
-    [a4 floatValue];
+    [value floatValue];
     v89 = v88;
     refreshed = PVMSetMaxVolumeLimitForBuiltInSpeaker(v88);
     if (refreshed)
@@ -2651,17 +2651,17 @@ LABEL_199:
     goto LABEL_199;
   }
 
-  if ([a3 isEqualToString:@"PreferHeadphonesOverCarsAndSpeakersEnabled"])
+  if ([internal isEqualToString:@"PreferHeadphonesOverCarsAndSpeakersEnabled"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v91 = [a4 BOOLValue];
-      if (v91 != +[MXSystemController preferHeadphonesOverCarsAndSpeakersEnabled])
+      bOOLValue5 = [value BOOLValue];
+      if (bOOLValue5 != +[MXSystemController preferHeadphonesOverCarsAndSpeakersEnabled])
       {
-        [MXSystemController setPreferHeadphonesOverCarsAndSpeakersEnabled:v91];
-        MXCFPreferencesSetAndSynchronizeUserPreference(@"PreferHeadphonesOverCarsAndSpeakersEnabled", a4);
-        CMSMNotificationUtility_PostPreferHeadphonesOverCarsAndSpeakersDidChange(v91);
+        [MXSystemController setPreferHeadphonesOverCarsAndSpeakersEnabled:bOOLValue5];
+        MXCFPreferencesSetAndSynchronizeUserPreference(@"PreferHeadphonesOverCarsAndSpeakersEnabled", value);
+        CMSMNotificationUtility_PostPreferHeadphonesOverCarsAndSpeakersDidChange(bOOLValue5);
       }
 
       goto LABEL_26;
@@ -2671,7 +2671,7 @@ LABEL_199:
     goto LABEL_131;
   }
 
-  if ([a3 isEqualToString:@"OverrideToPartnerRoute"])
+  if ([internal isEqualToString:@"OverrideToPartnerRoute"])
   {
     if (unk_1EB75DE80)
     {
@@ -2686,7 +2686,7 @@ LABEL_199:
     goto LABEL_101;
   }
 
-  if ([a3 isEqualToString:@"PickedRoute"])
+  if ([internal isEqualToString:@"PickedRoute"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2698,10 +2698,10 @@ LABEL_199:
     [(MXSystemController *)self displayID];
     v95 = *MEMORY[0x1E69E9840];
 
-    return cmsmActivateEndpointFromRouteDescription(a4);
+    return cmsmActivateEndpointFromRouteDescription(value);
   }
 
-  if ([a3 isEqualToString:@"PickedRouteWithPassword"])
+  if ([internal isEqualToString:@"PickedRouteWithPassword"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2710,7 +2710,7 @@ LABEL_199:
       goto LABEL_21;
     }
 
-    [a4 valueForKey:@"RouteName"];
+    [value valueForKey:@"RouteName"];
     if (unk_1EB75DE80)
     {
       v123 = 0;
@@ -2720,19 +2720,19 @@ LABEL_199:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [objc_msgSend(a4 valueForKey:{@"AVAudioRouteName", p_token, v115), "isEqualToString:", @"AirTunes"}];
+    [objc_msgSend(value valueForKey:{@"AVAudioRouteName", p_token, v115), "isEqualToString:", @"AirTunes"}];
     [(MXSystemController *)self displayID];
-    v50 = cmsmActivateEndpointFromRouteDescription(a4);
+    v50 = cmsmActivateEndpointFromRouteDescription(value);
     goto LABEL_101;
   }
 
-  if ([a3 isEqualToString:@"PIDToInheritApplicationStateFrom"])
+  if ([internal isEqualToString:@"PIDToInheritApplicationStateFrom"])
   {
-    [(MXSystemController *)self applyPIDToInheritAppStateFrom:a4];
+    [(MXSystemController *)self applyPIDToInheritAppStateFrom:value];
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"PopNowPlayingAppStack"])
+  if ([internal isEqualToString:@"PopNowPlayingAppStack"])
   {
     if (!MX_FeatureFlags_IsNowPlayingAppStackEnabled())
     {
@@ -2744,7 +2744,7 @@ LABEL_199:
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"RouteAwayFromAirPlay"])
+  if ([internal isEqualToString:@"RouteAwayFromAirPlay"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2766,7 +2766,7 @@ LABEL_199:
     goto LABEL_21;
   }
 
-  if ([a3 isEqualToString:@"ThermalControlInfo"])
+  if ([internal isEqualToString:@"ThermalControlInfo"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2777,10 +2777,10 @@ LABEL_199:
 
     v100 = *MEMORY[0x1E69E9840];
 
-    return vaemSetThermalControlInfo(a4);
+    return vaemSetThermalControlInfo(value);
   }
 
-  if ([a3 isEqualToString:@"ThermalGainAdjustment_Haptics"])
+  if ([internal isEqualToString:@"ThermalGainAdjustment_Haptics"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2789,12 +2789,12 @@ LABEL_199:
       goto LABEL_21;
     }
 
-    [a3 floatValue];
+    [internal floatValue];
     vaemUpdateHapticsThermalGainAdjustment(v102);
     goto LABEL_26;
   }
 
-  if ([a3 isEqualToString:@"ThermalGainAdjustment_Speaker"])
+  if ([internal isEqualToString:@"ThermalGainAdjustment_Speaker"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2803,14 +2803,14 @@ LABEL_199:
       goto LABEL_21;
     }
 
-    [a3 floatValue];
+    [internal floatValue];
     vaemUpdateSpeakerThermalGainAdjustment(v104);
     goto LABEL_26;
   }
 
-  if (![a3 isEqualToString:@"UplinkMute"])
+  if (![internal isEqualToString:@"UplinkMute"])
   {
-    if ([a3 isEqualToString:@"WombatEnabled"])
+    if ([internal isEqualToString:@"WombatEnabled"])
     {
       if (![(MXSystemController *)self hasEntitlementToEnableWombat])
       {
@@ -2818,7 +2818,7 @@ LABEL_199:
         goto LABEL_21;
       }
 
-      -[MXSessionManager setWombatEnabled:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "setWombatEnabled:", [a4 BOOLValue]);
+      -[MXSessionManager setWombatEnabled:](+[MXSessionManager sharedInstance](MXSessionManager, "sharedInstance"), "setWombatEnabled:", [value BOOLValue]);
     }
 
     goto LABEL_26;
@@ -2850,14 +2850,14 @@ LABEL_199:
     *(&v111 + 1) = -1;
     *valuePtr[0].val = v111;
     *&valuePtr[0].val[4] = v111;
-    v50 = [(MXSessionManager *)v110 updateMuteState:valuePtr muteValue:a4];
+    v50 = [(MXSessionManager *)v110 updateMuteState:valuePtr muteValue:value];
     goto LABEL_101;
   }
 
-  v112 = [a4 BOOLValue];
+  bOOLValue6 = [value BOOLValue];
   v113 = *MEMORY[0x1E69E9840];
 
-  return vaemSetUplinkMute(v112);
+  return vaemSetUplinkMute(bOOLValue6);
 }
 
 void __71__MXSystemController_InternalUse__setAttributeForKeyInternal_andValue___block_invoke(uint64_t a1)
@@ -2867,19 +2867,19 @@ void __71__MXSystemController_InternalUse__setAttributeForKeyInternal_andValue__
   objc_destroyWeak(&location);
 }
 
-+ (void)notifyAll:(id)a3 payload:(id)a4 dontPostIfSuspended:(BOOL)a5 remoteDeviceID:(id)a6
++ (void)notifyAll:(id)all payload:(id)payload dontPostIfSuspended:(BOOL)suspended remoteDeviceID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
+  allCopy = all;
+  payloadCopy = payload;
   v12 = MXGetNotificationSenderQueue();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__MXSystemController_InternalUse__notifyAll_payload_dontPostIfSuspended_remoteDeviceID___block_invoke;
   v13[3] = &unk_1E7AEAA70;
-  v13[4] = a6;
-  v13[5] = a3;
-  v14 = a5;
-  v13[6] = a4;
+  v13[4] = d;
+  v13[5] = all;
+  suspendedCopy = suspended;
+  v13[6] = payload;
   MXDispatchAsync("+[MXSystemController(InternalUse) notifyAll:payload:dontPostIfSuspended:remoteDeviceID:]", "MXSystemController_Embedded.m", 3312, 0, 0, v12, v13);
 }
 
@@ -2999,13 +2999,13 @@ void __88__MXSystemController_InternalUse__notifyAll_payload_dontPostIfSuspended
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isAppAllowedToInitiatePlayback:(id)a3
+- (BOOL)isAppAllowedToInitiatePlayback:(id)playback
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (playback)
   {
-    v5 = [(MXSystemController *)self appsAllowedToInitiatePlaybackTimestamp];
-    if (v5)
+    appsAllowedToInitiatePlaybackTimestamp = [(MXSystemController *)self appsAllowedToInitiatePlaybackTimestamp];
+    if (appsAllowedToInitiatePlaybackTimestamp)
     {
       [objc_msgSend(MEMORY[0x1E695DF00] "date")];
       if (v6 > 10.0)
@@ -3023,7 +3023,7 @@ void __88__MXSystemController_InternalUse__notifyAll_payload_dontPostIfSuspended
       }
     }
 
-    result = [(NSSet *)[(MXSystemController *)self appsAllowedToInitiatePlayback] containsObject:a3];
+    result = [(NSSet *)[(MXSystemController *)self appsAllowedToInitiatePlayback] containsObject:playback];
   }
 
   else
@@ -3038,10 +3038,10 @@ void __88__MXSystemController_InternalUse__notifyAll_payload_dontPostIfSuspended
   return result;
 }
 
-+ (BOOL)isAppAllowedToInitiatePlayback:(id)a3
++ (BOOL)isAppAllowedToInitiatePlayback:(id)playback
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (playback)
   {
     v4 = [MXSystemController copyMXSystemControllerList:0];
     v13 = 0u;
@@ -3062,7 +3062,7 @@ void __88__MXSystemController_InternalUse__notifyAll_payload_dontPostIfSuspended
             objc_enumerationMutation(v4);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) isAppAllowedToInitiatePlayback:a3])
+          if ([*(*(&v13 + 1) + 8 * i) isAppAllowedToInitiatePlayback:playback])
           {
             v9 = 1;
             goto LABEL_12;
@@ -3158,11 +3158,11 @@ LABEL_12:
 
           if (v13)
           {
-            v14 = [v9 info];
+            info = [v9 info];
             v45 = 136315394;
             v46 = "+[MXSystemController(InternalUse) dumpInfoOfMXSystemControllers]";
             v47 = 2114;
-            v48 = v14;
+            v48 = info;
             LODWORD(v33) = 22;
             v31 = &v45;
             _os_log_send_and_compose_impl();
@@ -3255,11 +3255,11 @@ LABEL_12:
 
           if (v27)
           {
-            v28 = [v23 info];
+            info2 = [v23 info];
             v45 = 136315394;
             v46 = "+[MXSystemController(InternalUse) dumpInfoOfMXSystemControllers]";
             v47 = 2114;
-            v48 = v28;
+            v48 = info2;
             _os_log_send_and_compose_impl();
           }
 
@@ -3277,7 +3277,7 @@ LABEL_12:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)getPIDToInheritAppStateFromForPID:(int)a3
++ (int)getPIDToInheritAppStateFromForPID:(int)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = [MXSystemController copyMXSystemControllerList:0];
@@ -3300,9 +3300,9 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if (v9 && [*(*(&v13 + 1) + 8 * i) clientPID] == a3 && objc_msgSend(v9, "pidToInheritAppStateFrom"))
+        if (v9 && [*(*(&v13 + 1) + 8 * i) clientPID] == d && objc_msgSend(v9, "pidToInheritAppStateFrom"))
         {
-          v10 = [v9 pidToInheritAppStateFrom];
+          pidToInheritAppStateFrom = [v9 pidToInheritAppStateFrom];
           goto LABEL_13;
         }
       }
@@ -3317,14 +3317,14 @@ LABEL_12:
     }
   }
 
-  v10 = 0;
+  pidToInheritAppStateFrom = 0;
 LABEL_13:
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return pidToInheritAppStateFrom;
 }
 
-+ (BOOL)getCanBeNowPlayingAppForPID:(int)a3
++ (BOOL)getCanBeNowPlayingAppForPID:(int)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = [MXSystemController copyMXSystemControllerList:0];
@@ -3347,9 +3347,9 @@ LABEL_13:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if (v9 && [*(*(&v13 + 1) + 8 * i) clientPID] == a3)
+        if (v9 && [*(*(&v13 + 1) + 8 * i) clientPID] == d)
         {
-          v10 = [v9 canBeNowPlayingApp];
+          canBeNowPlayingApp = [v9 canBeNowPlayingApp];
           goto LABEL_12;
         }
       }
@@ -3364,19 +3364,19 @@ LABEL_13:
     }
   }
 
-  v10 = 0;
+  canBeNowPlayingApp = 0;
 LABEL_12:
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return canBeNowPlayingApp;
 }
 
-+ (void)mxSystemControllerListAddInstance:(id)a3 isSidekick:(BOOL)a4
++ (void)mxSystemControllerListAddInstance:(id)instance isSidekick:(BOOL)sidekick
 {
-  v4 = a4;
-  objc_initWeak(&location, a3);
+  sidekickCopy = sidekick;
+  objc_initWeak(&location, instance);
   [gMXSystemControllerListLock lock];
-  if (v4)
+  if (sidekickCopy)
   {
     v5 = &gSidekickMXSystemControllerList;
     [gSidekickMXSystemControllerList addPointer:objc_loadWeak(&location)];
@@ -3405,21 +3405,21 @@ LABEL_12:
   [v2 unlock];
 }
 
-+ (id)copyMXSystemControllerList:(BOOL)a3
++ (id)copyMXSystemControllerList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_autoreleasePoolPush();
   [gMXSystemControllerListLock lock];
   v5 = &gSidekickMXSystemControllerList;
-  if (!v3)
+  if (!listCopy)
   {
     v5 = &gMXSystemControllerList;
   }
 
-  v6 = [*v5 allObjects];
+  allObjects = [*v5 allObjects];
   [gMXSystemControllerListLock unlock];
   objc_autoreleasePoolPop(v4);
-  return v6;
+  return allObjects;
 }
 
 - (uint64_t)applyPIDToInheritAppStateFrom:(_DWORD *)a1 .cold.1(_DWORD *a1)

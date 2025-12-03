@@ -1,12 +1,12 @@
 @interface _UISceneKeyValueStorageComponent
 - (_TtC5UIKit32_UISceneKeyValueStorageComponent)init;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UISceneKeyValueStorageComponent
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
@@ -20,11 +20,11 @@
   v11[2] = sub_1890F616C;
   v11[3] = &block_descriptor_62_3;
   v8 = _Block_copy(v11);
-  v9 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v10 = a4;
+  settingsCopy = settings;
 
-  [v10 inspectStorage_];
+  [settingsCopy inspectStorage_];
   _Block_release(v8);
   LOBYTE(v8) = swift_isEscapingClosureAtFileLocation();
   swift_unknownObjectRelease();
@@ -35,7 +35,7 @@
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
@@ -49,11 +49,11 @@
   v11[2] = sub_1890F616C;
   v11[3] = &block_descriptor_46_0;
   v8 = _Block_copy(v11);
-  v9 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v10 = a4;
+  settingsCopy = settings;
 
-  [v10 inspectStorage_];
+  [settingsCopy inspectStorage_];
   _Block_release(v8);
   LOBYTE(v8) = swift_isEscapingClosureAtFileLocation();
   swift_unknownObjectRelease();

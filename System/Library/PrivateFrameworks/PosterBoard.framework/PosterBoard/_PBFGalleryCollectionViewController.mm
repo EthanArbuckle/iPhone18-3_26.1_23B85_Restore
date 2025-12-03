@@ -1,56 +1,56 @@
 @interface _PBFGalleryCollectionViewController
-- (BOOL)_reloadCellForPosterPreviewIfVisible:(id)a3;
-- (CGRect)previewFrameForScrollingPreviewWithIdentifierToVisible:(id)a3;
+- (BOOL)_reloadCellForPosterPreviewIfVisible:(id)visible;
+- (CGRect)previewFrameForScrollingPreviewWithIdentifierToVisible:(id)visible;
 - (PUIRecycledViewsContainerProviding)recycledViewsContainerProviding;
 - (UIViewController)hostingViewController;
-- (_PBFGalleryCollectionViewController)initWithCollectionViewLayout:(id)a3;
+- (_PBFGalleryCollectionViewController)initWithCollectionViewLayout:(id)layout;
 - (_PBFGalleryCollectionViewControllerDelegate)delegate;
-- (id)assetHelper:(id)a3 choosePosterPreviewToGoLive:(id)a4;
-- (void)_applySnapshotFromDataProvider:(id)a3;
-- (void)_enumerateVisiblePosterPreviews:(id)a3;
+- (id)assetHelper:(id)helper choosePosterPreviewToGoLive:(id)live;
+- (void)_applySnapshotFromDataProvider:(id)provider;
+- (void)_enumerateVisiblePosterPreviews:(id)previews;
 - (void)_kickstartAssetHelperIfPossible;
 - (void)_resetState;
-- (void)_rotationAssertionStateDidChange:(BOOL)a3;
-- (void)_updateAssetHelperActiveContexts:(BOOL)a3;
-- (void)assetHelper:(id)a3 didUpdateAssetsForPosterPreviews:(id)a4;
-- (void)assetHelper:(id)a3 prepareForPosterPreview:(id)a4 movingToLive:(id)a5;
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_rotationAssertionStateDidChange:(BOOL)change;
+- (void)_updateAssetHelperActiveContexts:(BOOL)contexts;
+- (void)assetHelper:(id)helper didUpdateAssetsForPosterPreviews:(id)previews;
+- (void)assetHelper:(id)helper prepareForPosterPreview:(id)preview movingToLive:(id)live;
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)conditionallyShowGalleryControllerDebugView;
-- (void)configureCell:(id)a3 forCollectionView:(id)a4 posterPreview:(id)a5 indexPath:(id)a6;
+- (void)configureCell:(id)cell forCollectionView:(id)view posterPreview:(id)preview indexPath:(id)path;
 - (void)dealloc;
 - (void)noteEditingDidDismiss;
 - (void)noteEditingDidPresent;
 - (void)noteEditingWillDismiss;
-- (void)noteEditingWillPresentFromCell:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setApplicationStateMonitor:(id)a3;
-- (void)setDataProvider:(id)a3;
-- (void)setHostingViewController:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)noteEditingWillPresentFromCell:(id)cell;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setApplicationStateMonitor:(id)monitor;
+- (void)setDataProvider:(id)provider;
+- (void)setHostingViewController:(id)controller;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _PBFGalleryCollectionViewController
 
-- (_PBFGalleryCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_PBFGalleryCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = _PBFGalleryCollectionViewController;
-  v5 = [(_PBFGalleryCollectionViewController *)&v17 initWithCollectionViewLayout:v4];
+  v5 = [(_PBFGalleryCollectionViewController *)&v17 initWithCollectionViewLayout:layoutCopy];
   if (v5)
   {
     v6 = [[PBFApplicationStateNode alloc] initWithDescription:@"Gallery Collection View Controller"];
@@ -98,53 +98,53 @@
   v34.receiver = self;
   v34.super_class = _PBFGalleryCollectionViewController;
   [(_PBFGalleryCollectionViewController *)&v34 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
   displayedCellForIndexPath = self->_displayedCellForIndexPath;
-  self->_displayedCellForIndexPath = v3;
+  self->_displayedCellForIndexPath = strongToWeakObjectsMapTable;
 
-  v5 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  [v5 pui_setGlassGroupBackground];
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  [collectionView pui_setGlassGroupBackground];
   [(_PBFGalleryCollectionViewController *)self conditionallyShowGalleryControllerDebugView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterCellReuseIdentifier"];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterHeroCellReuseIdentifier"];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterCellWithComplicationsReuseIdentifier"];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterSmartAlbumCellReuseIdentifier"];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterCellWithDescriptionReuseIdentifier"];
-  [v5 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"KGalleryHeaderElementKind" withReuseIdentifier:@"KGalleryHeaderElementKind"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterCellReuseIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterHeroCellReuseIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterCellWithComplicationsReuseIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterSmartAlbumCellReuseIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kGalleryPosterCellWithDescriptionReuseIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"KGalleryHeaderElementKind" withReuseIdentifier:@"KGalleryHeaderElementKind"];
   v6 = objc_alloc(MEMORY[0x277D75D18]);
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v8 = [MEMORY[0x277D75348] blackColor];
-  [v7 setBackgroundColor:v8];
-  v9 = [MEMORY[0x277D75348] blackColor];
-  [v5 setBackgroundColor:v9];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v7 setBackgroundColor:blackColor];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  [collectionView setBackgroundColor:blackColor2];
 
-  [v5 setBackgroundView:v7];
-  [v5 setShowsVerticalScrollIndicator:0];
-  v10 = [MEMORY[0x277CD9EB0] layer];
+  [collectionView setBackgroundView:v7];
+  [collectionView setShowsVerticalScrollIndicator:0];
+  layer = [MEMORY[0x277CD9EB0] layer];
   v11 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   v36[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  [v10 setInterpolations:v12];
+  [layer setInterpolations:v12];
 
-  v13 = [MEMORY[0x277D75348] blackColor];
-  v14 = v13;
-  v15 = [v13 CGColor];
+  blackColor3 = [MEMORY[0x277D75348] blackColor];
+  v14 = blackColor3;
+  cGColor = [blackColor3 CGColor];
 
-  v16 = [MEMORY[0x277D75348] clearColor];
-  v17 = v16;
-  v18 = [v16 CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v17 = clearColor;
+  cGColor2 = [clearColor CGColor];
 
-  v35[0] = v15;
-  v35[1] = v18;
+  v35[0] = cGColor;
+  v35[1] = cGColor2;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
-  [v10 setColors:v19];
+  [layer setColors:v19];
 
-  [v10 setOpacity:0.0];
-  v20 = [(_PBFGalleryCollectionViewController *)self view];
-  v21 = [v20 layer];
-  [v21 addSublayer:v10];
+  [layer setOpacity:0.0];
+  view = [(_PBFGalleryCollectionViewController *)self view];
+  layer2 = [view layer];
+  [layer2 addSublayer:layer];
 
-  objc_storeStrong(&self->_topLegibilityGradientLayer, v10);
+  objc_storeStrong(&self->_topLegibilityGradientLayer, layer);
   if (!self->_diffableDataSource)
   {
     objc_initWeak(&location, self);
@@ -154,7 +154,7 @@
     v31[2] = __50___PBFGalleryCollectionViewController_viewDidLoad__block_invoke;
     v31[3] = &unk_2782C7110;
     objc_copyWeak(&v32, &location);
-    v23 = [v22 initWithCollectionView:v5 cellProvider:v31];
+    v23 = [v22 initWithCollectionView:collectionView cellProvider:v31];
     diffableDataSource = self->_diffableDataSource;
     self->_diffableDataSource = v23;
 
@@ -175,13 +175,13 @@
 
 - (void)conditionallyShowGalleryControllerDebugView
 {
-  v18 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  if ([MEMORY[0x277D3EF48] showErrorStateForGallery] && (objc_msgSend(v18, "visibleCells"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "count"), v3, !v4))
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  if ([MEMORY[0x277D3EF48] showErrorStateForGallery] && (objc_msgSend(collectionView, "visibleCells"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "count"), v3, !v4))
   {
     blankGalleryDebugView = self->_blankGalleryDebugView;
     if (!blankGalleryDebugView)
     {
-      [v18 bounds];
+      [collectionView bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -191,8 +191,8 @@
       self->_blankGalleryDebugView = v15;
 
       [(UIView *)self->_blankGalleryDebugView setFrame:v8, v10, v12, v14];
-      v17 = [(_PBFGalleryCollectionViewController *)self view];
-      [v17 addSubview:self->_blankGalleryDebugView];
+      view = [(_PBFGalleryCollectionViewController *)self view];
+      [view addSubview:self->_blankGalleryDebugView];
 
       blankGalleryDebugView = self->_blankGalleryDebugView;
     }
@@ -210,16 +210,16 @@
   }
 }
 
-- (void)setHostingViewController:(id)a3
+- (void)setHostingViewController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_hostingViewController, v4);
-  v10 = [v4 view];
+  controllerCopy = controller;
+  objc_storeWeak(&self->_hostingViewController, controllerCopy);
+  view = [controllerCopy view];
 
   containerView = self->_containerView;
   if (!containerView)
   {
-    [v10 bounds];
+    [view bounds];
     v8 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6 + v6, v7 + v7, v6, v7}];
     v9 = self->_containerView;
     self->_containerView = v8;
@@ -230,21 +230,21 @@
     containerView = self->_containerView;
   }
 
-  [v10 addSubview:containerView];
-  [v10 sendSubviewToBack:self->_containerView];
+  [view addSubview:containerView];
+  [view sendSubviewToBack:self->_containerView];
 }
 
-- (void)setDataProvider:(id)a3
+- (void)setDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   dataProvider = self->_dataProvider;
-  if (dataProvider != v5)
+  if (dataProvider != providerCopy)
   {
-    v13 = v5;
+    v13 = providerCopy;
     [(PBFPosterGalleryDataProvider *)dataProvider removeObserver:self];
     [(PBFPosterGalleryDataProvider *)self->_dataProvider invalidate];
     [(PBFPosterGalleryAssetHelper *)self->_assetHelper invalidate];
-    objc_storeStrong(&self->_dataProvider, a3);
+    objc_storeStrong(&self->_dataProvider, provider);
     [(PBFPosterGalleryDataProvider *)self->_dataProvider addObserver:self];
     if (v13)
     {
@@ -260,8 +260,8 @@
       }
 
       v9 = self->_assetHelper;
-      v10 = [(PBFPosterGalleryDataProvider *)self->_dataProvider posterPreviews];
-      [(PBFPosterGalleryAssetHelper *)v9 setPosterPreviews:v10];
+      posterPreviews = [(PBFPosterGalleryDataProvider *)self->_dataProvider posterPreviews];
+      [(PBFPosterGalleryAssetHelper *)v9 setPosterPreviews:posterPreviews];
 
       if ([(_PBFGalleryCollectionViewController *)self bs_isAppearingOrAppeared])
       {
@@ -277,33 +277,33 @@
     }
 
     [(_PBFGalleryCollectionViewController *)self _applySnapshotFromDataProvider:self->_dataProvider];
-    v5 = v13;
+    providerCopy = v13;
   }
 }
 
-- (void)setApplicationStateMonitor:(id)a3
+- (void)setApplicationStateMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   if (([(PBFApplicationStateMonitor *)self->_applicationStateMonitor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_applicationStateMonitor, a3);
+    objc_storeStrong(&self->_applicationStateMonitor, monitor);
     if ([(_PBFGalleryCollectionViewController *)self bs_isAppearingOrAppeared])
     {
       [(_PBFGalleryCollectionViewController *)self _resetState];
-      [v5 pushState:self->_state];
+      [monitorCopy pushState:self->_state];
     }
   }
 }
 
-- (void)_updateAssetHelperActiveContexts:(BOOL)a3
+- (void)_updateAssetHelperActiveContexts:(BOOL)contexts
 {
-  if (a3)
+  if (contexts)
   {
     [(PBFPosterGalleryAssetHelper *)self->_assetHelper resetKnownDisplayContexts];
   }
 
-  v4 = [(PBFPosterGalleryAssetHelper *)self->_assetHelper knownDisplayContexts];
-  v5 = [v4 mutableCopy];
+  knownDisplayContexts = [(PBFPosterGalleryAssetHelper *)self->_assetHelper knownDisplayContexts];
+  v5 = [knownDisplayContexts mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -317,25 +317,25 @@
 
   v8 = v7;
 
-  v9 = [(UIViewController *)self pbf_displayContext];
+  pbf_displayContext = [(UIViewController *)self pbf_displayContext];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __72___PBFGalleryCollectionViewController__updateAssetHelperActiveContexts___block_invoke;
   v15 = &unk_2782C7138;
-  v16 = v9;
+  v16 = pbf_displayContext;
   v17 = v8;
   v10 = v8;
-  v11 = v9;
+  v11 = pbf_displayContext;
   PBFSnapshotDefinitionEnumerateSupportedOrientationsForCurrentDeviceClass(&v12);
   [(PBFPosterGalleryAssetHelper *)self->_assetHelper setActiveDisplayContext:v11, v12, v13, v14, v15];
   [(PBFPosterGalleryAssetHelper *)self->_assetHelper setKnownDisplayContexts:v10];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v6 viewWillAppear:a3];
+  [(_PBFGalleryCollectionViewController *)&v6 viewWillAppear:appear];
   [(_PBFGalleryCollectionViewController *)self _applySnapshotFromDataProvider:self->_dataProvider];
   if (!self->_viewWillDisappearInteractionAssertion)
   {
@@ -347,33 +347,33 @@
   [(PBFApplicationStateMonitor *)self->_applicationStateMonitor pushState:self->_state];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v5 viewDidAppear:a3];
+  [(_PBFGalleryCollectionViewController *)&v5 viewDidAppear:appear];
   [(BSInvalidatable *)self->_viewWillDisappearInteractionAssertion invalidate];
   viewWillDisappearInteractionAssertion = self->_viewWillDisappearInteractionAssertion;
   self->_viewWillDisappearInteractionAssertion = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v6 viewWillDisappear:a3];
+  [(_PBFGalleryCollectionViewController *)&v6 viewWillDisappear:disappear];
   v4 = [(PBFPosterGalleryAssetHelper *)self->_assetHelper acquireGalleryInteractionAssertionWithReason:@"will disappear"];
   viewWillDisappearInteractionAssertion = self->_viewWillDisappearInteractionAssertion;
   self->_viewWillDisappearInteractionAssertion = v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v11.receiver = self;
   v11.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v11 viewDidDisappear:a3];
-  v4 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  [v4 setPrefetchingEnabled:0];
+  [(_PBFGalleryCollectionViewController *)&v11 viewDidDisappear:disappear];
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  [collectionView setPrefetchingEnabled:0];
 
   v5 = objc_autoreleasePoolPush();
   [(PUIReusableViewMap *)self->_reusableViewMap invalidate];
@@ -399,11 +399,11 @@
   [(PBFApplicationStateNode *)self->_state cancel];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v4 viewIsAppearing:a3];
+  [(_PBFGalleryCollectionViewController *)&v4 viewIsAppearing:appearing];
   [(_PBFGalleryCollectionViewController *)self _kickstartAssetHelperIfPossible];
 }
 
@@ -413,32 +413,32 @@
   v5.super_class = _PBFGalleryCollectionViewController;
   [(_PBFGalleryCollectionViewController *)&v5 viewDidLayoutSubviews];
   topLegibilityGradientLayer = self->_topLegibilityGradientLayer;
-  v4 = [(_PBFGalleryCollectionViewController *)self view];
-  [v4 bounds];
+  view = [(_PBFGalleryCollectionViewController *)self view];
+  [view bounds];
   [(CAGradientLayer *)topLegibilityGradientLayer setFrame:0.0, 0.0, CGRectGetWidth(v6), 126.0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v30.receiver = self;
   v30.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v30 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(_PBFGalleryCollectionViewController *)self view];
-  v9 = [v8 window];
+  [(_PBFGalleryCollectionViewController *)&v30 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(_PBFGalleryCollectionViewController *)self view];
+  window = [view window];
 
-  v10 = [v9 _fromWindowOrientation];
-  v11 = [v9 _toWindowOrientation];
-  if (v10 != v11)
+  _fromWindowOrientation = [window _fromWindowOrientation];
+  _toWindowOrientation = [window _toWindowOrientation];
+  if (_fromWindowOrientation != _toWindowOrientation)
   {
     v12 = PBFLogGallery();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v32 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_DEFAULT, "(%p) Gallery orientation changed - hiding live poster previews before rotating", buf, 0xCu);
     }
 
@@ -450,10 +450,10 @@
     [(_PBFGalleryCollectionViewController *)self _enumerateVisiblePosterPreviews:v29];
   }
 
-  v13 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  v14 = [v13 collectionViewLayout];
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   v15 = [(PBFPosterGalleryAssetHelper *)self->_assetHelper acquireGalleryInteractionAssertionWithReason:@"rotating"];
-  if (v10 == v11)
+  if (_fromWindowOrientation == _toWindowOrientation)
   {
     v16 = 0;
   }
@@ -467,10 +467,10 @@
   v24[1] = 3221225472;
   v24[2] = __90___PBFGalleryCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v24[3] = &unk_2782C71B0;
-  v25 = v14;
-  v26 = self;
-  v28 = v10 != v11;
-  v27 = v13;
+  v25 = collectionViewLayout;
+  selfCopy2 = self;
+  v28 = _fromWindowOrientation != _toWindowOrientation;
+  v27 = collectionView;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90___PBFGalleryCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_4;
@@ -479,20 +479,20 @@
   v23 = v16;
   v17 = v16;
   v18 = v15;
-  v19 = v13;
-  v20 = v14;
-  [v7 animateAlongsideTransition:v24 completion:v21];
+  v19 = collectionView;
+  v20 = collectionViewLayout;
+  [coordinatorCopy animateAlongsideTransition:v24 completion:v21];
 }
 
-- (void)_rotationAssertionStateDidChange:(BOOL)a3
+- (void)_rotationAssertionStateDidChange:(BOOL)change
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!change)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21B526000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "(%p) Gallery rotation transitions complete - resuming live asset helper", buf, 0xCu);
     }
 
@@ -506,24 +506,24 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _PBFGalleryCollectionViewController;
-  [(_PBFGalleryCollectionViewController *)&v4 traitCollectionDidChange:a3];
+  [(_PBFGalleryCollectionViewController *)&v4 traitCollectionDidChange:change];
   [(_PBFGalleryCollectionViewController *)self _updateAssetHelperActiveContexts:1];
 }
 
-- (CGRect)previewFrameForScrollingPreviewWithIdentifierToVisible:(id)a3
+- (CGRect)previewFrameForScrollingPreviewWithIdentifierToVisible:(id)visible
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource indexPathForItemIdentifier:a3];
+  v4 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource indexPathForItemIdentifier:visible];
   if (!v4)
   {
     goto LABEL_5;
   }
 
-  v5 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:v4];
   if (!v6)
   {
 
@@ -536,20 +536,20 @@ LABEL_5:
   }
 
   v7 = v6;
-  v8 = [v5 window];
-  v9 = [v8 screen];
-  v10 = [PBFPosterGalleryViewSpec specForScreen:v9];
+  window = [collectionView window];
+  screen = [window screen];
+  v10 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
   [v10 sectionHeaderBottomSpacing];
-  v11 = [v10 sectionHeaderTitleFont];
-  [v11 lineHeight];
+  sectionHeaderTitleFont = [v10 sectionHeaderTitleFont];
+  [sectionHeaderTitleFont lineHeight];
 
   [v7 frame];
   UIRectInset();
-  [v5 scrollRectToVisible:0 animated:?];
-  v12 = [v7 posterPreviewView];
-  [v12 posterPreviewFrame];
-  [v12 convertRect:v5 toCoordinateSpace:?];
+  [collectionView scrollRectToVisible:0 animated:?];
+  posterPreviewView = [v7 posterPreviewView];
+  [posterPreviewView posterPreviewFrame];
+  [posterPreviewView convertRect:collectionView toCoordinateSpace:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -567,17 +567,17 @@ LABEL_6:
   return result;
 }
 
-- (void)noteEditingWillPresentFromCell:(id)a3
+- (void)noteEditingWillPresentFromCell:(id)cell
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cellCopy = cell;
   self->_editingPresentationState = 1;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMapTable *)self->_displayedCellForIndexPath objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_displayedCellForIndexPath objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -589,21 +589,21 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if (v10 != v4)
+        if (v10 != cellCopy)
         {
-          v11 = [v10 posterPreviewView];
-          [v11 prepareForReuse];
+          posterPreviewView = [v10 posterPreviewView];
+          [posterPreviewView prepareForReuse];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -615,8 +615,8 @@ LABEL_6:
   if (self->_editingPresentationState == 1)
   {
     self->_editingPresentationState = 2;
-    v4 = [(_PBFGalleryCollectionViewController *)self collectionView];
-    [v4 setHidden:1];
+    collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+    [collectionView setHidden:1];
 
     assetHelper = self->_assetHelper;
 
@@ -627,8 +627,8 @@ LABEL_6:
 - (void)noteEditingWillDismiss
 {
   self->_editingPresentationState = 3;
-  v3 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  [v3 setHidden:0];
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  [collectionView setHidden:0];
 
   [(PBFPosterGalleryAssetHelper *)self->_assetHelper setSuspended:0];
   v4[0] = MEMORY[0x277D85DD0];
@@ -654,8 +654,8 @@ LABEL_6:
     if ([(PBFPosterGalleryAssetHelper *)self->_assetHelper isSuspended])
     {
       assetHelper = self->_assetHelper;
-      v4 = [(UIViewController *)self pbf_displayContext];
-      [(PBFPosterGalleryAssetHelper *)assetHelper setActiveDisplayContext:v4];
+      pbf_displayContext = [(UIViewController *)self pbf_displayContext];
+      [(PBFPosterGalleryAssetHelper *)assetHelper setActiveDisplayContext:pbf_displayContext];
 
       [(PBFPosterGalleryAssetHelper *)self->_assetHelper setSuspended:0];
       v5[0] = MEMORY[0x277D85DD0];
@@ -668,18 +668,18 @@ LABEL_6:
   }
 }
 
-- (void)_enumerateVisiblePosterPreviews:(id)a3
+- (void)_enumerateVisiblePosterPreviews:(id)previews
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewsCopy = previews;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathsForVisibleItems];
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -690,7 +690,7 @@ LABEL_3:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(indexPathsForVisibleItems);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
@@ -699,7 +699,7 @@ LABEL_3:
       v14 = [(PBFPosterGalleryDataProvider *)dataProvider previewForPreviewUniqueIdentifier:v13];
 
       v15 = 0;
-      v4[2](v4, v14, v11, &v15);
+      previewsCopy[2](previewsCopy, v14, v11, &v15);
       LOBYTE(v11) = v15;
 
       if (v11)
@@ -709,7 +709,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -721,25 +721,25 @@ LABEL_3:
   }
 }
 
-- (void)_applySnapshotFromDataProvider:(id)a3
+- (void)_applySnapshotFromDataProvider:(id)provider
 {
-  v9 = a3;
+  providerCopy = provider;
   if ([(_PBFGalleryCollectionViewController *)self isViewLoaded])
   {
-    v4 = [(_PBFGalleryCollectionViewController *)self bs_isAppearingOrAppeared];
-    if (v9)
+    bs_isAppearingOrAppeared = [(_PBFGalleryCollectionViewController *)self bs_isAppearingOrAppeared];
+    if (providerCopy)
     {
-      if (v4)
+      if (bs_isAppearingOrAppeared)
       {
-        v5 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource snapshot];
-        v6 = [v9 buildSnapshot];
-        if (!v5 || ([v5 isEqual:v6] & 1) == 0)
+        snapshot = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource snapshot];
+        buildSnapshot = [providerCopy buildSnapshot];
+        if (!snapshot || ([snapshot isEqual:buildSnapshot] & 1) == 0)
         {
           assetHelper = self->_assetHelper;
-          v8 = [(PBFPosterGalleryDataProvider *)self->_dataProvider posterPreviews];
-          [(PBFPosterGalleryAssetHelper *)assetHelper setPosterPreviews:v8];
+          posterPreviews = [(PBFPosterGalleryDataProvider *)self->_dataProvider posterPreviews];
+          [(PBFPosterGalleryAssetHelper *)assetHelper setPosterPreviews:posterPreviews];
 
-          [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshotUsingReloadData:v6];
+          [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshotUsingReloadData:buildSnapshot];
           [(_PBFGalleryCollectionViewController *)self _resetState];
         }
       }
@@ -750,31 +750,31 @@ LABEL_3:
 - (void)_resetState
 {
   state = self->_state;
-  v4 = [(PBFPosterGalleryDataProvider *)self->_dataProvider posterPreviews];
-  v3 = [v4 bs_map:&__block_literal_global_414];
+  posterPreviews = [(PBFPosterGalleryDataProvider *)self->_dataProvider posterPreviews];
+  v3 = [posterPreviews bs_map:&__block_literal_global_414];
   [(PBFApplicationStateNode *)state setComponents:v3];
 }
 
-- (void)configureCell:(id)a3 forCollectionView:(id)a4 posterPreview:(id)a5 indexPath:(id)a6
+- (void)configureCell:(id)cell forCollectionView:(id)view posterPreview:(id)preview indexPath:(id)path
 {
-  v10 = a3;
-  v107 = a4;
-  v11 = a5;
-  v109 = a6;
-  v12 = [(PBFPosterGalleryAssetHelper *)self->_assetHelper activeDisplayContext];
-  v13 = [(UIViewController *)self pbf_displayContext];
-  v14 = [v12 isEqualToDisplayContext:v13];
+  cellCopy = cell;
+  viewCopy = view;
+  previewCopy = preview;
+  pathCopy = path;
+  activeDisplayContext = [(PBFPosterGalleryAssetHelper *)self->_assetHelper activeDisplayContext];
+  pbf_displayContext = [(UIViewController *)self pbf_displayContext];
+  v14 = [activeDisplayContext isEqualToDisplayContext:pbf_displayContext];
 
   if ((v14 & 1) == 0)
   {
     [(_PBFGalleryCollectionViewController *)self _updateAssetHelperActiveContexts:0];
   }
 
-  v15 = [v10 posterPreviewView];
-  [v15 setReusableViewMap:self->_reusableViewMap];
+  posterPreviewView = [cellCopy posterPreviewView];
+  [posterPreviewView setReusableViewMap:self->_reusableViewMap];
 
-  v16 = [(UIViewController *)self pbf_layoutOrientation];
-  v17 = [(PBFPosterGalleryAssetHelper *)self->_assetHelper assetsForPosterPreview:v11];
+  pbf_layoutOrientation = [(UIViewController *)self pbf_layoutOrientation];
+  v17 = [(PBFPosterGalleryAssetHelper *)self->_assetHelper assetsForPosterPreview:previewCopy];
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -786,134 +786,134 @@ LABEL_3:
   if (!v17)
   {
     v112 = 0;
-    v108 = 0;
+    snapshotBundleLayoutView = 0;
     goto LABEL_17;
   }
 
-  v18 = [v11 type];
+  type = [previewCopy type];
   v19 = PBFPreviewTypeHero;
 
-  if (v18 == v19)
+  if (type == v19)
   {
-    v21 = [v111 heroView];
+    heroView = [v111 heroView];
     v112 = 0;
-    v108 = 0;
+    snapshotBundleLayoutView = 0;
   }
 
   else
   {
-    v108 = [v111 snapshotBundleLayoutView];
-    v20 = [v111 assetViewController];
-    v112 = v20;
-    if (v20)
+    snapshotBundleLayoutView = [v111 snapshotBundleLayoutView];
+    assetViewController = [v111 assetViewController];
+    v112 = assetViewController;
+    if (assetViewController)
     {
-      v21 = [v20 view];
+      heroView = [assetViewController view];
     }
 
     else
     {
-      v21 = v108;
+      heroView = snapshotBundleLayoutView;
       v112 = 0;
-      v108 = v21;
+      snapshotBundleLayoutView = heroView;
     }
   }
 
-  v110[2](v110, v21);
+  v110[2](v110, heroView);
   if (v112)
   {
     if (PBFDebugLiveWallpapers())
     {
-      v22 = [v10 contentView];
-      v23 = [v22 layer];
-      [v23 setBorderWidth:1.0];
+      contentView = [cellCopy contentView];
+      layer = [contentView layer];
+      [layer setBorderWidth:1.0];
 LABEL_15:
     }
   }
 
   else if (PBFDebugLiveWallpapers())
   {
-    v22 = [v10 contentView];
-    v23 = [v22 layer];
-    [v23 setBorderWidth:0.0];
+    contentView = [cellCopy contentView];
+    layer = [contentView layer];
+    [layer setBorderWidth:0.0];
     goto LABEL_15;
   }
 
-  [v10 updatePreview:v11 posterPreviewView:v21 layoutOrientation:v16 index:{objc_msgSend(v109, "row")}];
+  [cellCopy updatePreview:previewCopy posterPreviewView:heroView layoutOrientation:pbf_layoutOrientation index:{objc_msgSend(pathCopy, "row")}];
 
 LABEL_17:
-  v24 = [v10 posterPreviewView];
-  v25 = [v24 complicationContentView];
+  posterPreviewView2 = [cellCopy posterPreviewView];
+  complicationContentView = [posterPreviewView2 complicationContentView];
 
-  v26 = [v25 posterPreview];
-  v27 = [v26 isEqual:v11];
+  posterPreview = [complicationContentView posterPreview];
+  v27 = [posterPreview isEqual:previewCopy];
 
   if ((v27 & 1) == 0)
   {
-    [v25 setPosterPreview:v11];
-    [v25 prepareComplicationPreviewWithGenerator:self->_dataProvider];
+    [complicationContentView setPosterPreview:previewCopy];
+    [complicationContentView prepareComplicationPreviewWithGenerator:self->_dataProvider];
   }
 
-  v28 = [v11 galleryLocalizedTitle];
-  if (![v28 length])
+  galleryLocalizedTitle = [previewCopy galleryLocalizedTitle];
+  if (![galleryLocalizedTitle length])
   {
     goto LABEL_55;
   }
 
-  v29 = [v10 supportsPosterTitle];
+  supportsPosterTitle = [cellCopy supportsPosterTitle];
 
-  if (v29)
+  if (supportsPosterTitle)
   {
-    v30 = [(_PBFGalleryCollectionViewController *)self view];
-    v31 = [v30 window];
-    v32 = [v31 screen];
-    v28 = [PBFPosterGalleryViewSpec specForScreen:v32];
+    view = [(_PBFGalleryCollectionViewController *)self view];
+    window = [view window];
+    screen = [window screen];
+    galleryLocalizedTitle = [PBFPosterGalleryViewSpec specForScreen:screen];
 
-    v33 = [v11 galleryOptions];
-    v106 = [v33 modeSymbolImageName];
+    galleryOptions = [previewCopy galleryOptions];
+    modeSymbolImageName = [galleryOptions modeSymbolImageName];
 
-    if (v106)
+    if (modeSymbolImageName)
     {
-      v34 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76968] scale:1];
+      galleryLocalizedTitle3 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76968] scale:1];
       v104 = objc_alloc_init(MEMORY[0x277D74270]);
-      v35 = [MEMORY[0x277D755B8] _systemImageNamed:v106 withConfiguration:v34];
-      v36 = [v28 previewCellLabelColor];
-      v37 = [v35 imageWithTintColor:v36];
+      v35 = [MEMORY[0x277D755B8] _systemImageNamed:modeSymbolImageName withConfiguration:galleryLocalizedTitle3];
+      previewCellLabelColor = [galleryLocalizedTitle previewCellLabelColor];
+      v37 = [v35 imageWithTintColor:previewCellLabelColor];
       [v104 setImage:v37];
 
       v102 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v104];
       v38 = objc_alloc(MEMORY[0x277CCA898]);
-      v39 = [v11 galleryLocalizedTitle];
-      v40 = [v38 initWithString:v39];
+      galleryLocalizedTitle2 = [previewCopy galleryLocalizedTitle];
+      v40 = [v38 initWithString:galleryLocalizedTitle2];
 
       v41 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"%@ %@"];
-      v42 = [(_PBFGalleryCollectionViewController *)self traitCollection];
-      v43 = [v42 layoutDirection];
+      traitCollection = [(_PBFGalleryCollectionViewController *)self traitCollection];
+      layoutDirection = [traitCollection layoutDirection];
 
-      if (v43 == 1)
+      if (layoutDirection == 1)
       {
-        v44 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v40, v102];
+        v102 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v40, v102];
       }
 
       else
       {
-        v44 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v102, v40];
+        v102 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v102, v40];
       }
 
-      [v10 setAttributedPosterTitle:v44];
+      [cellCopy setAttributedPosterTitle:v102];
 LABEL_53:
 
       goto LABEL_54;
     }
 
-    if ([v11 galleryDisplayStyle] != 2)
+    if ([previewCopy galleryDisplayStyle] != 2)
     {
-      v45 = [v11 type];
+      type2 = [previewCopy type];
       v46 = PBFPreviewTypeSmartAlbum;
 
-      if (v45 != v46)
+      if (type2 != v46)
       {
-        v34 = [v11 galleryLocalizedTitle];
-        [v10 setPosterTitle:v34];
+        galleryLocalizedTitle3 = [previewCopy galleryLocalizedTitle];
+        [cellCopy setPosterTitle:galleryLocalizedTitle3];
 LABEL_54:
 
 LABEL_55:
@@ -921,22 +921,22 @@ LABEL_55:
       }
     }
 
-    v47 = [(_PBFGalleryCollectionViewController *)self view];
-    v48 = [v47 traitCollection];
-    [v48 displayScale];
+    view2 = [(_PBFGalleryCollectionViewController *)self view];
+    traitCollection2 = [view2 traitCollection];
+    [traitCollection2 displayScale];
     v50 = v49;
 
-    if ([v11 galleryDisplayStyle] == 2)
+    if ([previewCopy galleryDisplayStyle] == 2)
     {
       v51 = &OBJC_IVAR____PBFGalleryCollectionViewController__cachedGyroBadge;
     }
 
     else
     {
-      v52 = [v11 type];
+      type3 = [previewCopy type];
       v53 = PBFPreviewTypeSmartAlbum;
 
-      if (v52 != v53)
+      if (type3 != v53)
       {
         goto LABEL_35;
       }
@@ -952,25 +952,25 @@ LABEL_49:
       v104 = v55;
       v102 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v55];
       v92 = objc_alloc(MEMORY[0x277CCA898]);
-      v93 = [v11 galleryLocalizedTitle];
-      v40 = [v92 initWithString:v93];
+      galleryLocalizedTitle4 = [previewCopy galleryLocalizedTitle];
+      v40 = [v92 initWithString:galleryLocalizedTitle4];
 
       v41 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"%@ %@"];
-      v94 = [(_PBFGalleryCollectionViewController *)self traitCollection];
-      v95 = [v94 layoutDirection];
+      traitCollection3 = [(_PBFGalleryCollectionViewController *)self traitCollection];
+      layoutDirection2 = [traitCollection3 layoutDirection];
 
-      if (v95 == 1)
+      if (layoutDirection2 == 1)
       {
-        v44 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v102, v40];
+        v102 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v102, v40];
       }
 
       else
       {
-        v44 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v40, v102];
+        v102 = [objc_alloc(MEMORY[0x277CCA898]) initWithFormat:v41 options:0 locale:0, v40, v102];
       }
 
-      [v10 setAttributedPosterTitle:v44];
-      v34 = v104;
+      [cellCopy setAttributedPosterTitle:v102];
+      galleryLocalizedTitle3 = v104;
       goto LABEL_53;
     }
 
@@ -986,10 +986,10 @@ LABEL_35:
     v61 = [MEMORY[0x277D755B8] _systemImageNamed:@"shuffle" withConfiguration:v60];
     [MEMORY[0x277D755B8] _systemImageNamed:@"view.3d" withConfiguration:v60];
     v63 = v62 = v105;
-    v64 = [v11 galleryDisplayStyle];
+    galleryDisplayStyle = [previewCopy galleryDisplayStyle];
     v65 = v63;
     v103 = v63;
-    if (v64 == 2 || ([v11 type], v66 = objc_claimAutoreleasedReturnValue(), v67 = PBFPreviewTypeSmartAlbum, v66, v65 = v61, v68 = v66 == v67, v62 = v105, v68))
+    if (galleryDisplayStyle == 2 || ([previewCopy type], v66 = objc_claimAutoreleasedReturnValue(), v67 = PBFPreviewTypeSmartAlbum, v66, v65 = v61, v68 = v66 == v67, v62 = v105, v68))
     {
       v69 = v65;
     }
@@ -999,7 +999,7 @@ LABEL_35:
       v69 = 0;
     }
 
-    v101 = [v28 badgeColor];
+    badgeColor = [galleryLocalizedTitle badgeColor];
     [v61 size];
     v71 = v70;
     [v103 size];
@@ -1025,7 +1025,7 @@ LABEL_35:
     v116.height = v73 + 1.0 + 1.0;
     UIGraphicsBeginImageContextWithOptions(v116, 0, v50);
     v81 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{1.0, 1.0 / v50 + 0.0 + v75, v73, v80}];
-    [v101 setFill];
+    [badgeColor setFill];
     [v81 fill];
     [v69 drawInRect:23 blendMode:1.0 / v50 alpha:{(v73 - v77) * 0.5 + 1.0, v75, v77, 1.0}];
     v82 = UIGraphicsGetImageFromCurrentImageContext();
@@ -1036,17 +1036,17 @@ LABEL_35:
     v86 = v85;
     [v82 size];
     [v62 setBounds:{v84, v86 - (v78 + 1.0), v87, v88}];
-    if ([v11 galleryDisplayStyle] == 2)
+    if ([previewCopy galleryDisplayStyle] == 2)
     {
       v89 = &OBJC_IVAR____PBFGalleryCollectionViewController__cachedGyroBadge;
     }
 
     else
     {
-      v90 = [v11 type];
+      type4 = [previewCopy type];
       v91 = PBFPreviewTypeSmartAlbum;
 
-      v68 = v90 == v91;
+      v68 = type4 == v91;
       v62 = v105;
       if (!v68)
       {
@@ -1064,15 +1064,15 @@ LABEL_48:
   }
 
 LABEL_56:
-  v96 = [v11 galleryLocalizedDescription];
-  if (v96)
+  galleryLocalizedDescription = [previewCopy galleryLocalizedDescription];
+  if (galleryLocalizedDescription)
   {
-    v97 = [v10 supportsPosterDescription];
+    supportsPosterDescription = [cellCopy supportsPosterDescription];
 
-    if (v97)
+    if (supportsPosterDescription)
     {
-      v98 = [v11 galleryLocalizedDescription];
-      [v10 setPosterDescription:v98];
+      galleryLocalizedDescription2 = [previewCopy galleryLocalizedDescription];
+      [cellCopy setPosterDescription:galleryLocalizedDescription2];
     }
   }
 
@@ -1080,15 +1080,15 @@ LABEL_56:
   objc_destroyWeak(location);
 }
 
-- (void)assetHelper:(id)a3 didUpdateAssetsForPosterPreviews:(id)a4
+- (void)assetHelper:(id)helper didUpdateAssetsForPosterPreviews:(id)previews
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  previewsCopy = previews;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [previewsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1100,35 +1100,35 @@ LABEL_56:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(previewsCopy);
         }
 
         [(_PBFGalleryCollectionViewController *)self _reloadCellForPosterPreviewIfVisible:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [previewsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)assetHelper:(id)a3 prepareForPosterPreview:(id)a4 movingToLive:(id)a5
+- (void)assetHelper:(id)helper prepareForPosterPreview:(id)preview movingToLive:(id)live
 {
-  v6 = a5;
+  liveCopy = live;
   WeakRetained = objc_loadWeakRetained(&self->_hostingViewController);
-  [WeakRetained bs_addChildViewController:v6 withSuperview:self->_containerView];
+  [WeakRetained bs_addChildViewController:liveCopy withSuperview:self->_containerView];
 }
 
-- (BOOL)_reloadCellForPosterPreviewIfVisible:(id)a3
+- (BOOL)_reloadCellForPosterPreviewIfVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if ([(_PBFGalleryCollectionViewController *)self bs_isAppearingOrAppeared])
   {
     diffableDataSource = self->_diffableDataSource;
-    v6 = [v4 previewUniqueIdentifier];
-    v7 = [(UICollectionViewDiffableDataSource *)diffableDataSource indexPathForItemIdentifier:v6];
+    previewUniqueIdentifier = [visibleCopy previewUniqueIdentifier];
+    v7 = [(UICollectionViewDiffableDataSource *)diffableDataSource indexPathForItemIdentifier:previewUniqueIdentifier];
 
     if (v7)
     {
@@ -1136,8 +1136,8 @@ LABEL_56:
       v9 = v8 != 0;
       if (v8)
       {
-        v10 = [(_PBFGalleryCollectionViewController *)self collectionView];
-        [(_PBFGalleryCollectionViewController *)self configureCell:v8 forCollectionView:v10 posterPreview:v4 indexPath:v7];
+        collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+        [(_PBFGalleryCollectionViewController *)self configureCell:v8 forCollectionView:collectionView posterPreview:visibleCopy indexPath:v7];
       }
     }
 
@@ -1155,23 +1155,23 @@ LABEL_56:
   return v9;
 }
 
-- (id)assetHelper:(id)a3 choosePosterPreviewToGoLive:(id)a4
+- (id)assetHelper:(id)helper choosePosterPreviewToGoLive:(id)live
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v24 = [(_PBFGalleryCollectionViewController *)self collectionView];
-  [v24 bounds];
+  liveCopy = live;
+  collectionView = [(_PBFGalleryCollectionViewController *)self collectionView];
+  [collectionView bounds];
   v25 = objc_opt_new();
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(NSMapTable *)self->_displayedCellForIndexPath keyEnumerator];
-  v8 = [v7 allObjects];
-  v9 = [v6 setWithArray:v8];
+  keyEnumerator = [(NSMapTable *)self->_displayedCellForIndexPath keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v9 = [v6 setWithArray:allObjects];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v5;
+  v10 = liveCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -1188,8 +1188,8 @@ LABEL_56:
 
         v15 = *(*(&v26 + 1) + 8 * i);
         diffableDataSource = self->_diffableDataSource;
-        v17 = [v15 previewUniqueIdentifier];
-        v18 = [(UICollectionViewDiffableDataSource *)diffableDataSource indexPathForItemIdentifier:v17];
+        previewUniqueIdentifier = [v15 previewUniqueIdentifier];
+        v18 = [(UICollectionViewDiffableDataSource *)diffableDataSource indexPathForItemIdentifier:previewUniqueIdentifier];
 
         if ([v9 containsObject:v18])
         {
@@ -1203,36 +1203,36 @@ LABEL_56:
     while (v12);
   }
 
-  v19 = [v25 allKeys];
-  v20 = [v19 sortedArrayUsingComparator:&__block_literal_global_435];
+  allKeys = [v25 allKeys];
+  v20 = [allKeys sortedArrayUsingComparator:&__block_literal_global_435];
 
-  v21 = [v20 firstObject];
-  v22 = [v25 objectForKey:v21];
+  firstObject = [v20 firstObject];
+  v22 = [v25 objectForKey:firstObject];
 
   return v22;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view cellForItemAtIndexPath:pathCopy];
   dataProvider = self->_dataProvider;
-  v9 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v6];
+  v9 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   v10 = [(PBFPosterGalleryDataProvider *)dataProvider previewForPreviewUniqueIdentifier:v9];
 
-  v11 = [v10 type];
-  if ([v11 isEqualToString:PBFPreviewTypeHero])
+  type = [v10 type];
+  if ([type isEqualToString:PBFPreviewTypeHero])
   {
     goto LABEL_4;
   }
 
-  v12 = [v10 presentationStyle];
+  presentationStyle = [v10 presentationStyle];
 
-  if (v12 != 1)
+  if (presentationStyle != 1)
   {
-    v13 = [v7 posterPreviewView];
-    [v13 bounds];
+    posterPreviewView = [v7 posterPreviewView];
+    [posterPreviewView bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1245,62 +1245,62 @@ LABEL_56:
     v32.size.width = v19;
     v32.size.height = v21;
     v23 = Height - CGRectGetHeight(v32);
-    v11 = [objc_alloc(MEMORY[0x277D76180]) initWithFrame:{v15, v17, v19, v21}];
-    [v11 setAutoresizingMask:18];
-    [v11 setHidesSourceView:0];
-    [v11 setMatchesPosition:0];
-    [v11 setMatchesTransform:0];
-    [v11 setAllowsBackdropGroups:1];
-    v24 = [v7 posterPreviewView];
-    [v11 setSourceView:v24];
+    type = [objc_alloc(MEMORY[0x277D76180]) initWithFrame:{v15, v17, v19, v21}];
+    [type setAutoresizingMask:18];
+    [type setHidesSourceView:0];
+    [type setMatchesPosition:0];
+    [type setMatchesTransform:0];
+    [type setAllowsBackdropGroups:1];
+    posterPreviewView2 = [v7 posterPreviewView];
+    [type setSourceView:posterPreviewView2];
 
     v25 = [objc_alloc(MEMORY[0x277D3EFE8]) initWithFrame:{v15, v17, v19, v21}];
-    [v25 setContentView:v11];
+    [v25 setContentView:type];
     CGAffineTransformMakeTranslation(&v30, 0.0, v23);
     [v25 setContentViewTransform:&v30];
     v26 = [objc_alloc(MEMORY[0x277D3EFD8]) initWithFrame:{v15, v17, v19, v21}];
     [v26 setContentView:v25];
-    v27 = [v7 posterPreviewView];
-    [v27 prepareForFullScreenTransitionWithContentView:v26];
+    posterPreviewView3 = [v7 posterPreviewView];
+    [posterPreviewView3 prepareForFullScreenTransitionWithContentView:v26];
 
 LABEL_4:
   }
 
-  v28 = [(_PBFGalleryCollectionViewController *)self delegate];
-  v29 = [v7 posterPreviewView];
-  [v28 galleryCollectionViewControllerDidSelectPreview:v10 fromPreviewView:v29];
+  delegate = [(_PBFGalleryCollectionViewController *)self delegate];
+  posterPreviewView4 = [v7 posterPreviewView];
+  [delegate galleryCollectionViewControllerDidSelectPreview:v10 fromPreviewView:posterPreviewView4];
 
   [(_PBFGalleryCollectionViewController *)self noteEditingWillPresentFromCell:v7];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  [(NSMapTable *)self->_displayedCellForIndexPath setObject:v8 forKey:v9];
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  [(NSMapTable *)self->_displayedCellForIndexPath setObject:cellCopy forKey:pathCopy];
   dataProvider = self->_dataProvider;
-  v11 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v9];
+  v11 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
   v12 = [(PBFPosterGalleryDataProvider *)dataProvider previewForPreviewUniqueIdentifier:v11];
 
   if ([(PBFPosterGalleryAssetHelper *)self->_assetHelper updatePosterPreview:v12 isVisible:1])
   {
-    [(_PBFGalleryCollectionViewController *)self configureCell:v8 forCollectionView:v14 posterPreview:v12 indexPath:v9];
+    [(_PBFGalleryCollectionViewController *)self configureCell:cellCopy forCollectionView:viewCopy posterPreview:v12 indexPath:pathCopy];
   }
 
-  v13 = [(_PBFGalleryCollectionViewController *)self delegate];
-  [v13 galleryCollectionViewControllerWillDisplayPreview:v12];
+  delegate = [(_PBFGalleryCollectionViewController *)self delegate];
+  [delegate galleryCollectionViewControllerWillDisplayPreview:v12];
 
   [(_PBFGalleryCollectionViewController *)self conditionallyShowGalleryControllerDebugView];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   displayedCellForIndexPath = self->_displayedCellForIndexPath;
-  v7 = a5;
-  [(NSMapTable *)displayedCellForIndexPath removeObjectForKey:v7];
+  pathCopy = path;
+  [(NSMapTable *)displayedCellForIndexPath removeObjectForKey:pathCopy];
   dataProvider = self->_dataProvider;
-  v9 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v7];
+  v9 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   v10 = [(PBFPosterGalleryDataProvider *)dataProvider previewForPreviewUniqueIdentifier:v9];
 
@@ -1308,9 +1308,9 @@ LABEL_4:
   [(_PBFGalleryCollectionViewController *)self conditionallyShowGalleryControllerDebugView];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   v5 = v4 / 80.0;
   if (v4 / 80.0 > 1.0)
   {
@@ -1324,7 +1324,7 @@ LABEL_4:
   [(CAGradientLayer *)topLegibilityGradientLayer setOpacity:v7];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (!self->_userInteractionAssertion)
   {
@@ -1334,16 +1334,16 @@ LABEL_4:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a3;
-  v6 = v5;
+  draggingCopy = dragging;
+  v6 = draggingCopy;
   if (self->_userInteractionAssertion)
   {
-    v9 = v5;
-    v7 = [v5 isScrollAnimating];
+    v9 = draggingCopy;
+    isScrollAnimating = [draggingCopy isScrollAnimating];
     v6 = v9;
-    if ((v7 & 1) == 0)
+    if ((isScrollAnimating & 1) == 0)
     {
       [(BSInvalidatable *)self->_userInteractionAssertion invalidate];
       userInteractionAssertion = self->_userInteractionAssertion;
@@ -1354,27 +1354,27 @@ LABEL_4:
   }
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80___PBFGalleryCollectionViewController_collectionView_prefetchItemsAtIndexPaths___block_invoke;
   v8[3] = &unk_2782C7240;
   v8[4] = self;
-  v5 = [a4 bs_mapNoNulls:v8];
+  v5 = [paths bs_mapNoNulls:v8];
   assetHelper = self->_assetHelper;
   v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
   [(PBFPosterGalleryAssetHelper *)assetHelper prefetchPosterPreviews:v7];
 }
 
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __92___PBFGalleryCollectionViewController_collectionView_cancelPrefetchingForItemsAtIndexPaths___block_invoke;
   v8[3] = &unk_2782C7240;
   v8[4] = self;
-  v5 = [a4 bs_mapNoNulls:v8];
+  v5 = [paths bs_mapNoNulls:v8];
   assetHelper = self->_assetHelper;
   v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
   [(PBFPosterGalleryAssetHelper *)assetHelper cancelPrefetchForPosterPreviews:v7];

@@ -1,18 +1,18 @@
 @interface MPModelObjectMediaItem
-- (BOOL)isEqual:(id)a3;
-- (MPModelObjectMediaItem)initWithCoder:(id)a3;
-- (MPModelObjectMediaItem)initWithModelObject:(id)a3;
-- (MPModelObjectMediaItem)initWithPersistentID:(unint64_t)a3;
-- (id)valueForProperty:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPModelObjectMediaItem)initWithCoder:(id)coder;
+- (MPModelObjectMediaItem)initWithModelObject:(id)object;
+- (MPModelObjectMediaItem)initWithPersistentID:(unint64_t)d;
+- (id)valueForProperty:(id)property;
 - (unint64_t)persistentID;
 @end
 
 @implementation MPModelObjectMediaItem
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"artwork"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"artwork"])
   {
     v19 = 0;
     v20 = &v19;
@@ -29,7 +29,7 @@
       v18[4] = self;
       v18[5] = &v19;
       [MPModelObject performWithoutEnforcement:v18];
-      v5 = [v20[5] token];
+      token = [v20[5] token];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -57,7 +57,7 @@
 
   else
   {
-    v8 = [(NSDictionary *)self->_propertyValues valueForKey:v4];
+    v8 = [(NSDictionary *)self->_propertyValues valueForKey:propertyCopy];
     v9 = v8;
     if (v8)
     {
@@ -68,7 +68,7 @@
     {
       v17.receiver = self;
       v17.super_class = MPModelObjectMediaItem;
-      v10 = [(MPNondurableMediaItem *)&v17 valueForProperty:v4];
+      v10 = [(MPNondurableMediaItem *)&v17 valueForProperty:propertyCopy];
     }
 
     v12 = v10;
@@ -85,66 +85,66 @@ void __43__MPModelObjectMediaItem_valueForProperty___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MPModelObject *)self->_modelObject isEqual:v4[5]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MPModelObject *)self->_modelObject isEqual:equalCopy[5]];
 
   return v5;
 }
 
-- (MPModelObjectMediaItem)initWithCoder:(id)a3
+- (MPModelObjectMediaItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mo"];
 
   if (v5)
   {
     self = [(MPModelObjectMediaItem *)self initWithModelObject:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unint64_t)persistentID
 {
-  v2 = [(MPModelObject *)self->_modelObject identifiers];
-  v3 = [v2 library];
-  v4 = [v3 persistentID];
+  identifiers = [(MPModelObject *)self->_modelObject identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  return v4;
+  return persistentID;
 }
 
-- (MPModelObjectMediaItem)initWithPersistentID:(unint64_t)a3
+- (MPModelObjectMediaItem)initWithPersistentID:(unint64_t)d
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"MPModelObjectMediaItem.m" lineNumber:286 description:@"MPModelObjectMediaItem initWithPersistentID: is not supported. Use initWithModelObject: instead."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelObjectMediaItem.m" lineNumber:286 description:@"MPModelObjectMediaItem initWithPersistentID: is not supported. Use initWithModelObject: instead."];
 
   v7.receiver = self;
   v7.super_class = MPModelObjectMediaItem;
   return [(MPModelObjectMediaItem *)&v7 init];
 }
 
-- (MPModelObjectMediaItem)initWithModelObject:(id)a3
+- (MPModelObjectMediaItem)initWithModelObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = MPModelObjectMediaItem;
   v6 = [(MPModelObjectMediaItem *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modelObject, a3);
-    v8 = [v5 mediaItemPropertyValues];
+    objc_storeStrong(&v6->_modelObject, object);
+    mediaItemPropertyValues = [objectCopy mediaItemPropertyValues];
     propertyValues = v7->_propertyValues;
-    v7->_propertyValues = v8;
+    v7->_propertyValues = mediaItemPropertyValues;
   }
 
   return v7;

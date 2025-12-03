@@ -1,12 +1,12 @@
 @interface TPSScreenTimeValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSScreenTimeValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -21,7 +21,7 @@
   if (!v5)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
 
     v5 = v13[5];
   }
@@ -32,7 +32,7 @@
   v8[3] = &unk_2789B0BE0;
   v10 = v18;
   v8[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   v11 = &v12;
   [v5 screenTimeStateWithCompletionHandler:v8];

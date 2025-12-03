@@ -3,14 +3,14 @@
 + (CGSize)textBoundingSize;
 + (UIDragPreview)previewForURL:(NSURL *)url;
 + (UIDragPreview)previewForURL:(NSURL *)url title:(NSString *)title;
-+ (id)_previewWithHiddenViewDuringDrag:(id)a3 placeholderSize:(id)a4 parameters:(id)a5;
++ (id)_previewWithHiddenViewDuringDrag:(id)drag placeholderSize:(id)size parameters:(id)parameters;
 - (CGPoint)preferredAnchorPoint;
 - (UIDragPreview)initWithView:(UIView *)view;
 - (UIDragPreview)initWithView:(UIView *)view parameters:(UIDragPreviewParameters *)parameters;
 - (_DUIPreview)_duiPreview;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPreferredAnchorPoint:(CGPoint)a3;
-- (void)set_springboardPlatterStyle:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPreferredAnchorPoint:(CGPoint)point;
+- (void)set_springboardPlatterStyle:(BOOL)style;
 @end
 
 @implementation UIDragPreview
@@ -63,13 +63,13 @@
   return v20;
 }
 
-+ (id)_previewWithHiddenViewDuringDrag:(id)a3 placeholderSize:(id)a4 parameters:(id)a5
++ (id)_previewWithHiddenViewDuringDrag:(id)drag placeholderSize:(id)size parameters:(id)parameters
 {
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a3;
-  v11 = [a5 copy];
+  var2 = size.var2;
+  var1 = size.var1;
+  var0 = size.var0;
+  dragCopy = drag;
+  v11 = [parameters copy];
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
     dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -110,7 +110,7 @@
 
   [v11 _setHiddenDuringDrag:v14];
   [v11 _setPlaceholderContentSize3D:{var0, var1, var2}];
-  v15 = [[a1 alloc] initWithView:v10 parameters:v11];
+  v15 = [[self alloc] initWithView:dragCopy parameters:v11];
 
   return v15;
 }
@@ -130,8 +130,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIDragPreview.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragPreview.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
     if (v10)
     {
@@ -139,8 +139,8 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"UIDragPreview.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"parameters != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDragPreview.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"parameters != nil"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -172,8 +172,8 @@ LABEL_3:
 - (_DUIPreview)_duiPreview
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDragPreview *)self view];
-  [v3 bounds];
+  view = [(UIDragPreview *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -187,9 +187,9 @@ LABEL_3:
         goto LABEL_16;
       }
 
-      v19 = [(UIDragPreview *)self view];
+      view2 = [(UIDragPreview *)self view];
       v20 = 138412290;
-      v21 = v19;
+      v21 = view2;
       _os_log_fault_impl(&dword_188A29000, v18, OS_LOG_TYPE_FAULT, "UIDragPreview does not support zero-sized previews. This is a client issue. PLEASE FIX ME. %@", &v20, 0xCu);
     }
 
@@ -202,9 +202,9 @@ LABEL_3:
       }
 
       v18 = v17;
-      v19 = [(UIDragPreview *)self view];
+      view2 = [(UIDragPreview *)self view];
       v20 = 138412290;
-      v21 = v19;
+      v21 = view2;
       _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "UIDragPreview does not support zero-sized previews. This is a client issue. PLEASE FIX ME. %@", &v20, 0xCu);
     }
 
@@ -213,9 +213,9 @@ LABEL_16:
 
 LABEL_3:
   v8 = [_DUIPreview alloc];
-  v9 = [(UIDragPreview *)self view];
-  v10 = [(UIDragPreview *)self parameters];
-  v11 = [(_DUIPreview *)v8 initWithView:v9 container:0 parameters:v10];
+  view3 = [(UIDragPreview *)self view];
+  parameters = [(UIDragPreview *)self parameters];
+  v11 = [(_DUIPreview *)v8 initWithView:view3 container:0 parameters:parameters];
 
   [(_DUIPreview *)v11 setAvoidAnimation:[(UIDragPreview *)self avoidAnimation]];
   if (self->_preferredAnchorPoint)
@@ -242,10 +242,10 @@ LABEL_3:
 + (CGSize)defaultBoundingSize
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   v4 = 206.0;
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     v4 = 160.0;
   }
@@ -259,16 +259,16 @@ LABEL_3:
 + (CGSize)textBoundingSize
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   v4 = 400.0;
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     v4 = 310.0;
   }
 
   v5 = 206.0;
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     v5 = 160.0;
   }
@@ -278,9 +278,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setPreferredAnchorPoint:(CGPoint)a3
+- (void)setPreferredAnchorPoint:(CGPoint)point
 {
-  v4 = [MEMORY[0x1E696B098] valueWithCGPoint:{a3.x, a3.y}];
+  v4 = [MEMORY[0x1E696B098] valueWithCGPoint:{point.x, point.y}];
   preferredAnchorPoint = self->_preferredAnchorPoint;
   self->_preferredAnchorPoint = v4;
 }
@@ -293,9 +293,9 @@ LABEL_3:
   return result;
 }
 
-- (void)set_springboardPlatterStyle:(BOOL)a3
+- (void)set_springboardPlatterStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 4;
   }
@@ -308,21 +308,21 @@ LABEL_3:
   [(UIPreviewParameters *)self->_parameters _setPreviewMode:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = v4;
   if (v4)
   {
     objc_storeStrong((v4 + 24), self->_view);
-    v6 = [(UIDragPreview *)self parameters];
-    v7 = [v6 copy];
+    parameters = [(UIDragPreview *)self parameters];
+    v7 = [parameters copy];
     v8 = *(v5 + 32);
     *(v5 + 32) = v7;
 
     *(v5 + 17) = self->_avoidAnimation;
-    v9 = [(UIDragPreview *)self _springboardParameters];
-    v10 = [v9 copy];
+    _springboardParameters = [(UIDragPreview *)self _springboardParameters];
+    v10 = [_springboardParameters copy];
     v11 = *(v5 + 40);
     *(v5 + 40) = v10;
 

@@ -6,7 +6,7 @@
 
 - (uint64_t)jfxBoolForKey:()JFX defaultValue:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   v6 = v5;
   if (v5)
   {

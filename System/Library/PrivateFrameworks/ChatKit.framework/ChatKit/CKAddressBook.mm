@@ -1,9 +1,9 @@
 @interface CKAddressBook
 + (id)contactImageCache;
-+ (id)contactImageOfDiameter:(double)a3 forID:(id)a4 monogramStyle:(int64_t)a5 tintMonogramText:(BOOL)a6 customFont:(id)a7;
-+ (id)locationSharingContactImageOfDiameter:(double)a3 forID:(id)a4 useCustomFont:(BOOL)a5;
-+ (id)monogrammerWithDiameter:(double)a3 style:(int64_t)a4 useAppTintColor:(BOOL)a5 customFont:(id)a6;
-+ (id)placeholderContactImageOfDiameter:(double)a3 monogramStyle:(int64_t)a4 tintMonogramText:(BOOL)a5;
++ (id)contactImageOfDiameter:(double)diameter forID:(id)d monogramStyle:(int64_t)style tintMonogramText:(BOOL)text customFont:(id)font;
++ (id)locationSharingContactImageOfDiameter:(double)diameter forID:(id)d useCustomFont:(BOOL)font;
++ (id)monogrammerWithDiameter:(double)diameter style:(int64_t)style useAppTintColor:(BOOL)color customFont:(id)font;
++ (id)placeholderContactImageOfDiameter:(double)diameter monogramStyle:(int64_t)style tintMonogramText:(BOOL)text;
 + (void)flushMonogrammers;
 @end
 
@@ -32,53 +32,53 @@ void __34__CKAddressBook_contactImageCache__block_invoke()
   [v3 addObserver:contactImageCache_cache selector:sel_removeAllObjects name:*MEMORY[0x1E69A6830] object:0];
 }
 
-+ (id)contactImageOfDiameter:(double)a3 forID:(id)a4 monogramStyle:(int64_t)a5 tintMonogramText:(BOOL)a6 customFont:(id)a7
++ (id)contactImageOfDiameter:(double)diameter forID:(id)d monogramStyle:(int64_t)style tintMonogramText:(BOOL)text customFont:(id)font
 {
-  v8 = a6;
+  textCopy = text;
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a7;
-  *v24 = a3;
-  v24[1] = [v12 intValue];
-  v24[2] = a5;
-  v25 = v8;
-  *(&v25 + 1) = v13 != 0;
+  dCopy = d;
+  fontCopy = font;
+  *v24 = diameter;
+  v24[1] = [dCopy intValue];
+  v24[2] = style;
+  v25 = textCopy;
+  *(&v25 + 1) = fontCopy != 0;
   v14 = [MEMORY[0x1E696B098] value:v24 withObjCType:"{?=diqBB}"];
-  v15 = [a1 contactImageCache];
-  v16 = [v15 objectForKey:v14];
+  contactImageCache = [self contactImageCache];
+  v16 = [contactImageCache objectForKey:v14];
   if (!v16)
   {
-    v17 = [MEMORY[0x1E69A7FD0] sharedInstance];
+    mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
     [MEMORY[0x1E695D188] descriptorForRequiredKeysIncludingImage:1];
-    v18 = v23 = v8;
+    v18 = v23 = textCopy;
     v26[0] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    v20 = [v17 fetchCNContactForHandleID:v12 withKeys:v19];
+    v20 = [mEMORY[0x1E69A7FD0] fetchCNContactForHandleID:dCopy withKeys:v19];
 
-    if (![MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v20] || (objc_msgSend(a1, "monogrammerWithDiameter:style:useAppTintColor:customFont:", a5, v23, v13, a3), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "monogramForContact:", v20), v16 = objc_claimAutoreleasedReturnValue(), v21, !v16))
+    if (![MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v20] || (objc_msgSend(self, "monogrammerWithDiameter:style:useAppTintColor:customFont:", style, v23, fontCopy, diameter), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "monogramForContact:", v20), v16 = objc_claimAutoreleasedReturnValue(), v21, !v16))
     {
-      v16 = [a1 placeholderContactImageOfDiameter:a5 monogramStyle:v23 tintMonogramText:a3];
+      v16 = [self placeholderContactImageOfDiameter:style monogramStyle:v23 tintMonogramText:diameter];
     }
 
-    [v15 setObject:v16 forKey:v14];
+    [contactImageCache setObject:v16 forKey:v14];
   }
 
   return v16;
 }
 
-+ (id)placeholderContactImageOfDiameter:(double)a3 monogramStyle:(int64_t)a4 tintMonogramText:(BOOL)a5
++ (id)placeholderContactImageOfDiameter:(double)diameter monogramStyle:(int64_t)style tintMonogramText:(BOOL)text
 {
-  v5 = [a1 monogrammerWithDiameter:a4 style:a5 useAppTintColor:0 customFont:a3];
-  v6 = [v5 silhouetteMonogram];
+  v5 = [self monogrammerWithDiameter:style style:text useAppTintColor:0 customFont:diameter];
+  silhouetteMonogram = [v5 silhouetteMonogram];
 
-  return v6;
+  return silhouetteMonogram;
 }
 
-+ (id)locationSharingContactImageOfDiameter:(double)a3 forID:(id)a4 useCustomFont:(BOOL)a5
++ (id)locationSharingContactImageOfDiameter:(double)diameter forID:(id)d useCustomFont:(BOOL)font
 {
-  v5 = a5;
-  v8 = a4;
-  if (v5)
+  fontCopy = font;
+  dCopy = d;
+  if (fontCopy)
   {
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:42.0];
   }
@@ -88,7 +88,7 @@ void __34__CKAddressBook_contactImageCache__block_invoke()
     v9 = 0;
   }
 
-  v10 = [a1 contactImageOfDiameter:v8 forID:1 monogramStyle:1 tintMonogramText:v9 customFont:a3];
+  v10 = [self contactImageOfDiameter:dCopy forID:1 monogramStyle:1 tintMonogramText:v9 customFont:diameter];
 
   return v10;
 }
@@ -97,38 +97,38 @@ void __34__CKAddressBook_contactImageCache__block_invoke()
 {
   pthread_mutex_lock(&__CKAddressBook_MonogrammersMutex);
   pthread_mutex_unlock(&__CKAddressBook_MonogrammersMutex);
-  v3 = [a1 contactImageCache];
-  [v3 removeAllObjects];
+  contactImageCache = [self contactImageCache];
+  [contactImageCache removeAllObjects];
 }
 
-+ (id)monogrammerWithDiameter:(double)a3 style:(int64_t)a4 useAppTintColor:(BOOL)a5 customFont:(id)a6
++ (id)monogrammerWithDiameter:(double)diameter style:(int64_t)style useAppTintColor:(BOOL)color customFont:(id)font
 {
-  v6 = a5;
-  v10 = a6;
+  colorCopy = color;
+  fontCopy = font;
   pthread_mutex_lock(&__CKAddressBook_MonogrammersMutex);
   [MEMORY[0x1E696AF00] isMainThread];
-  *v18 = a3;
-  v18[1] = a4;
-  v19 = v6;
-  *(&v19 + 1) = v10 != 0;
+  *v18 = diameter;
+  v18[1] = style;
+  v19 = colorCopy;
+  *(&v19 + 1) = fontCopy != 0;
   v11 = [MEMORY[0x1E696B098] value:v18 withObjCType:"{?=dqBB}"];
   v12 = [0 objectForKey:v11];
   if (!v12)
   {
-    v13 = [a1 monogrammerProvider];
-    v12 = [v13 monogrammerForStyle:a4 diameter:a3];
+    monogrammerProvider = [self monogrammerProvider];
+    v12 = [monogrammerProvider monogrammerForStyle:style diameter:diameter];
 
-    if (v6)
+    if (colorCopy)
     {
       v14 = +[CKUIBehavior sharedBehaviors];
-      v15 = [v14 theme];
-      v16 = [v15 appTintColor];
-      [v12 monogramsWithTint:v16];
+      theme = [v14 theme];
+      appTintColor = [theme appTintColor];
+      [v12 monogramsWithTint:appTintColor];
     }
 
-    if (v10)
+    if (fontCopy)
     {
-      [v12 setFont:v10];
+      [v12 setFont:fontCopy];
     }
 
     [0 setObject:v12 forKey:v11];

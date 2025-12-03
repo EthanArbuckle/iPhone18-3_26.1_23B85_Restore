@@ -1,17 +1,17 @@
 @interface MKPlaceCompactCollectionsLogicController
 - (MKPlaceBatchConsumer)guideConsumer;
-- (MKPlaceCompactCollectionsLogicController)initWithGuideLocations:(id)a3 context:(int64_t)a4;
-- (MKPlaceCompactCollectionsLogicController)initWithGuideLocationsResult:(id)a3 context:(int64_t)a4 usingCollectionFetcher:(id)a5 usingGuideConsumer:(id)a6 usingBatchSize:(unint64_t)a7 selectedGuideLocation:(id)a8;
-- (id)buildBatchingStructureForResult:(id)a3;
-- (id)buildViewModelsFromGuideLocations:(id)a3;
-- (id)compactCollectionAtIndex:(unint64_t)a3 sectionIndex:(unint64_t)a4;
-- (id)compactCollectionsInSection:(unint64_t)a3;
-- (id)titleForSectionFromTitle:(id)a3;
+- (MKPlaceCompactCollectionsLogicController)initWithGuideLocations:(id)locations context:(int64_t)context;
+- (MKPlaceCompactCollectionsLogicController)initWithGuideLocationsResult:(id)result context:(int64_t)context usingCollectionFetcher:(id)fetcher usingGuideConsumer:(id)consumer usingBatchSize:(unint64_t)size selectedGuideLocation:(id)location;
+- (id)buildBatchingStructureForResult:(id)result;
+- (id)buildViewModelsFromGuideLocations:(id)locations;
+- (id)compactCollectionAtIndex:(unint64_t)index sectionIndex:(unint64_t)sectionIndex;
+- (id)compactCollectionsInSection:(unint64_t)section;
+- (id)titleForSectionFromTitle:(id)title;
 - (unint64_t)numberOfSections;
-- (void)createBatchControllerIfNeededUsingIdentifiers:(id)a3 usingCollectionFetcher:(id)a4 usingGuideConsumer:(id)a5 batchSize:(unint64_t)a6;
+- (void)createBatchControllerIfNeededUsingIdentifiers:(id)identifiers usingCollectionFetcher:(id)fetcher usingGuideConsumer:(id)consumer batchSize:(unint64_t)size;
 - (void)dismissedCompactCollections;
-- (void)shouldConsumeBatch:(BOOL)a3 fetchedBatch:(id)a4;
-- (void)willDisplayCellAtIndexpath:(id)a3;
+- (void)shouldConsumeBatch:(BOOL)batch fetchedBatch:(id)fetchedBatch;
+- (void)willDisplayCellAtIndexpath:(id)indexpath;
 @end
 
 @implementation MKPlaceCompactCollectionsLogicController
@@ -23,27 +23,27 @@
   return WeakRetained;
 }
 
-- (void)shouldConsumeBatch:(BOOL)a3 fetchedBatch:(id)a4
+- (void)shouldConsumeBatch:(BOOL)batch fetchedBatch:(id)fetchedBatch
 {
-  v4 = a3;
-  v6 = a4;
+  batchCopy = batch;
+  fetchedBatchCopy = fetchedBatch;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v14[3] = 0;
-  v7 = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
+  batchableLocations = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__MKPlaceCompactCollectionsLogicController_shouldConsumeBatch_fetchedBatch___block_invoke;
   v10[3] = &unk_1E76C8330;
   v13 = v14;
-  v8 = v6;
+  v8 = fetchedBatchCopy;
   v11 = v8;
-  v12 = self;
-  [v7 enumerateObjectsUsingBlock:v10];
+  selfCopy = self;
+  [batchableLocations enumerateObjectsUsingBlock:v10];
 
-  v9 = [(MKPlaceCompactCollectionsLogicController *)self guideConsumer];
-  [v9 shouldConsumeBatch:v4 fetchedBatch:v8];
+  guideConsumer = [(MKPlaceCompactCollectionsLogicController *)self guideConsumer];
+  [guideConsumer shouldConsumeBatch:batchCopy fetchedBatch:v8];
 
   _Block_object_dispose(v14, 8);
 }
@@ -97,38 +97,38 @@ void __76__MKPlaceCompactCollectionsLogicController_shouldConsumeBatch_fetchedBa
   }
 }
 
-- (void)createBatchControllerIfNeededUsingIdentifiers:(id)a3 usingCollectionFetcher:(id)a4 usingGuideConsumer:(id)a5 batchSize:(unint64_t)a6
+- (void)createBatchControllerIfNeededUsingIdentifiers:(id)identifiers usingCollectionFetcher:(id)fetcher usingGuideConsumer:(id)consumer batchSize:(unint64_t)size
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifiersCopy = identifiers;
+  fetcherCopy = fetcher;
+  consumerCopy = consumer;
   [(MKPlaceCompactCollectionsLogicController *)self setBatchController:0];
-  v12 = [v14 count];
-  if (v11 && v10 && v12)
+  v12 = [identifiersCopy count];
+  if (consumerCopy && fetcherCopy && v12)
   {
-    v13 = [[MKPlaceBatchController alloc] initWithItemIdentifiers:v14 withBatchSize:a6 minimumNumberOfItemBeforeFetching:2 shouldLoadFirstBatchImmediately:0 usingBatchFetcher:v10 usingBatchConsumer:v11 displayedItemCount:[(MKPlaceCompactCollectionsLogicController *)self initialDisplayCount]];
+    v13 = [[MKPlaceBatchController alloc] initWithItemIdentifiers:identifiersCopy withBatchSize:size minimumNumberOfItemBeforeFetching:2 shouldLoadFirstBatchImmediately:0 usingBatchFetcher:fetcherCopy usingBatchConsumer:consumerCopy displayedItemCount:[(MKPlaceCompactCollectionsLogicController *)self initialDisplayCount]];
     [(MKPlaceCompactCollectionsLogicController *)self setBatchController:v13];
   }
 }
 
-- (id)buildViewModelsFromGuideLocations:(id)a3
+- (id)buildViewModelsFromGuideLocations:(id)locations
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  locationsCopy = locations;
+  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(locationsCopy, "count")}];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __78__MKPlaceCompactCollectionsLogicController_buildViewModelsFromGuideLocations___block_invoke;
   v16 = &unk_1E76C82E0;
-  v17 = self;
+  selfCopy = self;
   v18 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v13];
+  [locationsCopy enumerateObjectsUsingBlock:&v13];
 
   v8 = objc_alloc(MEMORY[0x1E695DFB8]);
-  v9 = [v8 initWithArray:{v7, v13, v14, v15, v16, v17}];
-  v10 = [v9 array];
-  v11 = [v10 copy];
+  v9 = [v8 initWithArray:{v7, v13, v14, v15, v16, selfCopy}];
+  array = [v9 array];
+  v11 = [array copy];
 
   return v11;
 }
@@ -150,16 +150,16 @@ void __78__MKPlaceCompactCollectionsLogicController_buildViewModelsFromGuideLoca
   }
 }
 
-- (id)buildBatchingStructureForResult:(id)a3
+- (id)buildBatchingStructureForResult:(id)result
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  resultCopy = result;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [v5 sections];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  sections = [resultCopy sections];
+  v9 = [v7 initWithCapacity:{objc_msgSend(sections, "count")}];
 
-  v10 = [v5 sections];
+  sections2 = [resultCopy sections];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -170,7 +170,7 @@ void __78__MKPlaceCompactCollectionsLogicController_buildViewModelsFromGuideLoca
   v19 = v9;
   v11 = v9;
   v12 = v6;
-  [v10 enumerateObjectsUsingBlock:v17];
+  [sections2 enumerateObjectsUsingBlock:v17];
 
   v13 = [v11 copy];
   batchableLocations = self->_batchableLocations;
@@ -323,34 +323,34 @@ void __76__MKPlaceCompactCollectionsLogicController_buildBatchingStructureForRes
   [v3 cancelAllOperationsForCompactImageSource:v5];
 }
 
-- (id)compactCollectionAtIndex:(unint64_t)a3 sectionIndex:(unint64_t)a4
+- (id)compactCollectionAtIndex:(unint64_t)index sectionIndex:(unint64_t)sectionIndex
 {
   if ([(MKPlaceCompactCollectionsLogicController *)self context])
   {
-    v7 = [(MKPlaceCompactCollectionsLogicController *)self viewModels];
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 objectAtIndex:a3];
+    viewModels = [(MKPlaceCompactCollectionsLogicController *)self viewModels];
+    v8 = [viewModels objectAtIndex:sectionIndex];
+    viewModel = [v8 objectAtIndex:index];
   }
 
   else
   {
-    v7 = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
-    v8 = [v7 objectAtIndex:a4];
-    v10 = [v8 objectAtIndex:a3];
-    v9 = [v10 viewModel];
+    viewModels = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
+    v8 = [viewModels objectAtIndex:sectionIndex];
+    v10 = [v8 objectAtIndex:index];
+    viewModel = [v10 viewModel];
   }
 
-  return v9;
+  return viewModel;
 }
 
-- (id)compactCollectionsInSection:(unint64_t)a3
+- (id)compactCollectionsInSection:(unint64_t)section
 {
   if (self->_context == 1)
   {
     goto LABEL_5;
   }
 
-  if ([(MKPlaceCompactCollectionsLogicController *)self numberOfSections]- 1 < a3)
+  if ([(MKPlaceCompactCollectionsLogicController *)self numberOfSections]- 1 < section)
   {
     v5 = MEMORY[0x1E695E0F0];
     goto LABEL_6;
@@ -359,14 +359,14 @@ void __76__MKPlaceCompactCollectionsLogicController_buildBatchingStructureForRes
   if (self->_context)
   {
 LABEL_5:
-    v6 = [(MKPlaceCompactCollectionsLogicController *)self viewModels];
-    v5 = [v6 objectAtIndex:a3];
+    viewModels = [(MKPlaceCompactCollectionsLogicController *)self viewModels];
+    v5 = [viewModels objectAtIndex:section];
   }
 
   else
   {
-    v8 = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
-    v9 = [v8 objectAtIndex:a3];
+    batchableLocations = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
+    v9 = [batchableLocations objectAtIndex:section];
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12[0] = MEMORY[0x1E69E9820];
@@ -397,11 +397,11 @@ void __72__MKPlaceCompactCollectionsLogicController_compactCollectionsInSection_
   }
 }
 
-- (id)titleForSectionFromTitle:(id)a3
+- (id)titleForSectionFromTitle:(id)title
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && !self->_context)
+  titleCopy = title;
+  if (titleCopy && !self->_context)
   {
     v6 = objc_alloc(MEMORY[0x1E696AAB0]);
     v11 = *MEMORY[0x1E69DB648];
@@ -409,7 +409,7 @@ void __72__MKPlaceCompactCollectionsLogicController_compactCollectionsInSection_
     v8 = [v7 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
     v12[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    v5 = [v6 initWithString:v4 attributes:v9];
+    v5 = [v6 initWithString:titleCopy attributes:v9];
   }
 
   else
@@ -427,45 +427,45 @@ void __72__MKPlaceCompactCollectionsLogicController_compactCollectionsInSection_
     return 0;
   }
 
-  v3 = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
-  v4 = [v3 count];
+  batchableLocations = [(MKPlaceCompactCollectionsLogicController *)self batchableLocations];
+  v4 = [batchableLocations count];
 
   return v4;
 }
 
-- (void)willDisplayCellAtIndexpath:(id)a3
+- (void)willDisplayCellAtIndexpath:(id)indexpath
 {
-  v4 = a3;
-  v6 = [(MKPlaceCompactCollectionsLogicController *)self batchController];
-  v5 = [v4 item];
+  indexpathCopy = indexpath;
+  batchController = [(MKPlaceCompactCollectionsLogicController *)self batchController];
+  item = [indexpathCopy item];
 
-  [v6 didDisplayItemAtIndex:v5];
+  [batchController didDisplayItemAtIndex:item];
 }
 
-- (MKPlaceCompactCollectionsLogicController)initWithGuideLocationsResult:(id)a3 context:(int64_t)a4 usingCollectionFetcher:(id)a5 usingGuideConsumer:(id)a6 usingBatchSize:(unint64_t)a7 selectedGuideLocation:(id)a8
+- (MKPlaceCompactCollectionsLogicController)initWithGuideLocationsResult:(id)result context:(int64_t)context usingCollectionFetcher:(id)fetcher usingGuideConsumer:(id)consumer usingBatchSize:(unint64_t)size selectedGuideLocation:(id)location
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  resultCopy = result;
+  fetcherCopy = fetcher;
+  consumerCopy = consumer;
+  locationCopy = location;
   v23.receiver = self;
   v23.super_class = MKPlaceCompactCollectionsLogicController;
   v18 = [(MKPlaceCompactCollectionsLogicController *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    v18->_context = a4;
-    objc_storeStrong(&v18->_selectedGuideLocation, a8);
-    if (!a4)
+    v18->_context = context;
+    objc_storeStrong(&v18->_selectedGuideLocation, location);
+    if (!context)
     {
-      v20 = [(MKPlaceCompactCollectionsLogicController *)v19 buildBatchingStructureForResult:v14];
+      v20 = [(MKPlaceCompactCollectionsLogicController *)v19 buildBatchingStructureForResult:resultCopy];
       flattenedIdentifiersForBatching = v19->_flattenedIdentifiersForBatching;
       v19->_flattenedIdentifiersForBatching = v20;
 
       if ([(NSArray *)v19->_flattenedIdentifiersForBatching count])
       {
-        objc_storeWeak(&v19->_guideConsumer, v16);
-        [(MKPlaceCompactCollectionsLogicController *)v19 createBatchControllerIfNeededUsingIdentifiers:v19->_flattenedIdentifiersForBatching usingCollectionFetcher:v15 usingGuideConsumer:v19 batchSize:a7];
+        objc_storeWeak(&v19->_guideConsumer, consumerCopy);
+        [(MKPlaceCompactCollectionsLogicController *)v19 createBatchControllerIfNeededUsingIdentifiers:v19->_flattenedIdentifiersForBatching usingCollectionFetcher:fetcherCopy usingGuideConsumer:v19 batchSize:size];
       }
     }
   }
@@ -473,18 +473,18 @@ void __72__MKPlaceCompactCollectionsLogicController_compactCollectionsInSection_
   return v19;
 }
 
-- (MKPlaceCompactCollectionsLogicController)initWithGuideLocations:(id)a3 context:(int64_t)a4
+- (MKPlaceCompactCollectionsLogicController)initWithGuideLocations:(id)locations context:(int64_t)context
 {
-  v6 = a3;
+  locationsCopy = locations;
   v14.receiver = self;
   v14.super_class = MKPlaceCompactCollectionsLogicController;
   v7 = [(MKPlaceCompactCollectionsLogicController *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_context = a4;
+    v7->_context = context;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10 = [(MKPlaceCompactCollectionsLogicController *)v8 buildViewModelsFromGuideLocations:v6];
+    v10 = [(MKPlaceCompactCollectionsLogicController *)v8 buildViewModelsFromGuideLocations:locationsCopy];
     [v9 addObject:v10];
 
     v11 = [v9 copy];

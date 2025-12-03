@@ -1,21 +1,21 @@
 @interface AVCaptureDeferredPhotoSettings
-- (AVCaptureDeferredPhotoSettings)initWithCoder:(id)a3;
-- (id)_initWithCaptureSettings:(id)a3 serializedProcessingSettings:(id)a4;
+- (AVCaptureDeferredPhotoSettings)initWithCoder:(id)coder;
+- (id)_initWithCaptureSettings:(id)settings serializedProcessingSettings:(id)processingSettings;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCaptureDeferredPhotoSettings
 
-- (id)_initWithCaptureSettings:(id)a3 serializedProcessingSettings:(id)a4
+- (id)_initWithCaptureSettings:(id)settings serializedProcessingSettings:(id)processingSettings
 {
   v8.receiver = self;
   v8.super_class = AVCaptureDeferredPhotoSettings;
   v6 = [(AVCaptureDeferredPhotoSettings *)&v8 init];
   if (v6)
   {
-    v6->_captureSettings = a3;
-    v6->_serializedProcessingSettings = [a4 copy];
+    v6->_captureSettings = settings;
+    v6->_serializedProcessingSettings = [processingSettings copy];
   }
 
   return v6;
@@ -28,25 +28,25 @@
   [(AVCaptureDeferredPhotoSettings *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_captureSettings forKey:@"FigCaptureStillImageSettings"];
+  [coder encodeObject:self->_captureSettings forKey:@"FigCaptureStillImageSettings"];
   serializedProcessingSettings = self->_serializedProcessingSettings;
 
-  [a3 encodeObject:serializedProcessingSettings forKey:@"SerializedProcessingSettings"];
+  [coder encodeObject:serializedProcessingSettings forKey:@"SerializedProcessingSettings"];
 }
 
-- (AVCaptureDeferredPhotoSettings)initWithCoder:(id)a3
+- (AVCaptureDeferredPhotoSettings)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DFD8];
   v9[0] = objc_opt_class();
   v9[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  result = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", v6, v9[0]), @"FigCaptureStillImageSettings"}];
+  result = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", v6, v9[0]), @"FigCaptureStillImageSettings"}];
   if (result)
   {
     v8 = result;
-    result = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SerializedProcessingSettings"];
+    result = [coder decodeObjectOfClass:objc_opt_class() forKey:@"SerializedProcessingSettings"];
     if (result)
     {
       return [(AVCaptureDeferredPhotoSettings *)self _initWithCaptureSettings:v8 serializedProcessingSettings:result];

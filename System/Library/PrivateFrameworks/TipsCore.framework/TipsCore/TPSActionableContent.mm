@@ -1,23 +1,23 @@
 @interface TPSActionableContent
-- (TPSActionableContent)initWithCoder:(id)a3;
-- (TPSActionableContent)initWithDictionary:(id)a3 metadata:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSActionableContent)initWithCoder:(id)coder;
+- (TPSActionableContent)initWithDictionary:(id)dictionary metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSActionableContent
 
-- (TPSActionableContent)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSActionableContent)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = TPSActionableContent;
-  v7 = [(TPSContent *)&v27 initWithDictionary:v6 metadata:a4];
+  v7 = [(TPSContent *)&v27 initWithDictionary:dictionaryCopy metadata:metadata];
   if (v7)
   {
-    v8 = [v6 TPSSafeArrayForKey:@"actions"];
+    v8 = [dictionaryCopy TPSSafeArrayForKey:@"actions"];
     v9 = [v8 count];
     if (v9)
     {
@@ -70,29 +70,29 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TPSActionableContent;
-  v4 = [(TPSContent *)&v7 copyWithZone:a3];
-  v5 = [(TPSActionableContent *)self actions];
-  [v4 setActions:v5];
+  v4 = [(TPSContent *)&v7 copyWithZone:zone];
+  actions = [(TPSActionableContent *)self actions];
+  [v4 setActions:actions];
 
   return v4;
 }
 
-- (TPSActionableContent)initWithCoder:(id)a3
+- (TPSActionableContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TPSActionableContent;
-  v5 = [(TPSContent *)&v12 initWithCoder:v4];
+  v5 = [(TPSContent *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"actions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v9;
   }
@@ -100,14 +100,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSActionableContent;
-  v4 = a3;
-  [(TPSContent *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSContent *)&v6 encodeWithCoder:coderCopy];
   v5 = [(TPSActionableContent *)self actions:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"actions"];
+  [coderCopy encodeObject:v5 forKey:@"actions"];
 }
 
 - (id)debugDescription
@@ -118,12 +118,12 @@
   v4 = [(TPSContent *)&v10 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSActionableContent *)self actions];
+  actions = [(TPSActionableContent *)self actions];
 
-  if (v6)
+  if (actions)
   {
-    v7 = [(TPSActionableContent *)self actions];
-    v8 = [v7 debugDescription];
+    actions2 = [(TPSActionableContent *)self actions];
+    v8 = [actions2 debugDescription];
     [v5 appendFormat:@"\n %@ = %@", @"actions", v8];
   }
 

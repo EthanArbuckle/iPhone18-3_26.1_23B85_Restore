@@ -1,9 +1,9 @@
 @interface HMDHomeNetworkRouterManagingDeviceSettingsModel
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)modelNamespace;
 + (id)properties;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
 @end
 
@@ -12,21 +12,21 @@
 - (id)dependentUUIDs
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDHomeNetworkRouterManagingDeviceSettingsModel *)self primaryNetworkRouterManagingDeviceUUID];
+  primaryNetworkRouterManagingDeviceUUID = [(HMDHomeNetworkRouterManagingDeviceSettingsModel *)self primaryNetworkRouterManagingDeviceUUID];
 
-  if (v6)
+  if (primaryNetworkRouterManagingDeviceUUID)
   {
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = [(HMDHomeNetworkRouterManagingDeviceSettingsModel *)self primaryNetworkRouterManagingDeviceUUID];
-    v9 = [v7 initWithUUIDString:v8];
+    primaryNetworkRouterManagingDeviceUUID2 = [(HMDHomeNetworkRouterManagingDeviceSettingsModel *)self primaryNetworkRouterManagingDeviceUUID];
+    v9 = [v7 initWithUUIDString:primaryNetworkRouterManagingDeviceUUID2];
     [v3 addObject:v9];
   }
 
@@ -60,26 +60,26 @@ void __61__HMDHomeNetworkRouterManagingDeviceSettingsModel_properties__block_inv
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomeNetworkRouterManagingDeviceSettingsModel alloc];
-  v6 = [a1 modelIDForHomeUUID:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  v6 = [self modelIDForHomeUUID:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:dCopy];
 
   return v7;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 dataWithLength:16];
-  [v4 getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
+  [dCopy getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
 
   v6 = MEMORY[0x277CCAD78];
-  v7 = [objc_opt_class() modelNamespace];
-  v8 = [v6 hmf_UUIDWithNamespace:v7 data:v5];
+  modelNamespace = [objc_opt_class() modelNamespace];
+  v8 = [v6 hmf_UUIDWithNamespace:modelNamespace data:v5];
 
   return v8;
 }
@@ -91,23 +91,23 @@ void __61__HMDHomeNetworkRouterManagingDeviceSettingsModel_properties__block_inv
   return v2;
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"home"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"home"])
   {
     v11 = objc_opt_class();
-    v12 = [(HMDBackingStoreModelObject *)self parentUUID];
-    v13 = [v11 cd_getHomeFromUUID:v12];
+    parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+    v13 = [v11 cd_getHomeFromUUID:parentUUID];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = HMDHomeNetworkRouterManagingDeviceSettingsModel;
-    v13 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v13 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v13;

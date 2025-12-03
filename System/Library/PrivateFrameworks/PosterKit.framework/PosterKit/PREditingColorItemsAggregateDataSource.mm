@@ -1,22 +1,22 @@
 @interface PREditingColorItemsAggregateDataSource
-- (PREditingColorItemsAggregateDataSource)initWithDataSources:(id)a3;
-- (id)colorItemForIndex:(unint64_t)a3;
-- (id)firstColorItemPassingTest:(id)a3;
-- (unint64_t)indexForItem:(id)a3;
+- (PREditingColorItemsAggregateDataSource)initWithDataSources:(id)sources;
+- (id)colorItemForIndex:(unint64_t)index;
+- (id)firstColorItemPassingTest:(id)test;
+- (unint64_t)indexForItem:(id)item;
 - (unint64_t)numberOfItems;
 @end
 
 @implementation PREditingColorItemsAggregateDataSource
 
-- (PREditingColorItemsAggregateDataSource)initWithDataSources:(id)a3
+- (PREditingColorItemsAggregateDataSource)initWithDataSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v9.receiver = self;
   v9.super_class = PREditingColorItemsAggregateDataSource;
   v5 = [(PREditingColorItemsAggregateDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sourcesCopy copy];
     dataSources = v5->_dataSources;
     v5->_dataSources = v6;
   }
@@ -64,10 +64,10 @@
   return v5;
 }
 
-- (id)firstColorItemPassingTest:(id)a3
+- (id)firstColorItemPassingTest:(id)test
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -87,7 +87,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) firstColorItemPassingTest:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) firstColorItemPassingTest:{testCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -111,10 +111,10 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)indexForItem:(id)a3
+- (unint64_t)indexForItem:(id)item
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -137,7 +137,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 indexForItem:{v4, v15}];
+        v13 = [v12 indexForItem:{itemCopy, v15}];
         if (v13 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v7 = v13 + v9;
@@ -164,7 +164,7 @@ LABEL_11:
   return v7;
 }
 
-- (id)colorItemForIndex:(unint64_t)a3
+- (id)colorItemForIndex:(unint64_t)index
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -190,16 +190,16 @@ LABEL_11:
         }
 
         v11 = *(*(&v15 + 1) + 8 * v9);
-        v12 = [v11 numberOfItems];
-        v7 = v12 + v10;
-        if (v12 + v10 - 1 >= a3)
+        numberOfItems = [v11 numberOfItems];
+        v7 = numberOfItems + v10;
+        if (numberOfItems + v10 - 1 >= index)
         {
-          v13 = [v11 colorItemForIndex:a3 - v10];
+          v13 = [v11 colorItemForIndex:index - v10];
           goto LABEL_11;
         }
 
         ++v9;
-        v10 += v12;
+        v10 += numberOfItems;
       }
 
       while (v6 != v9);

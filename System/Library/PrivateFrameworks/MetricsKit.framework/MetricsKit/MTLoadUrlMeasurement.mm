@@ -1,95 +1,95 @@
 @interface MTLoadUrlMeasurement
-- (void)mark:(id)a3;
-- (void)mark:(id)a3 date:(id)a4;
-- (void)mark:(id)a3 time:(int64_t)a4;
-- (void)setDnsServersIPAddresses:(id)a3;
-- (void)setEdgeNodeCacheStatus:(id)a3;
-- (void)setRedirectCount:(unint64_t)a3;
-- (void)setRequestUrl:(id)a3;
-- (void)setResolvedIPAddress:(id)a3;
-- (void)setStatusCode:(unint64_t)a3;
-- (void)setXpSamplingPercentageUsers:(double)a3;
-- (void)setXpSessionDuration:(unint64_t)a3;
+- (void)mark:(id)mark;
+- (void)mark:(id)mark date:(id)date;
+- (void)mark:(id)mark time:(int64_t)time;
+- (void)setDnsServersIPAddresses:(id)addresses;
+- (void)setEdgeNodeCacheStatus:(id)status;
+- (void)setRedirectCount:(unint64_t)count;
+- (void)setRequestUrl:(id)url;
+- (void)setResolvedIPAddress:(id)address;
+- (void)setStatusCode:(unint64_t)code;
+- (void)setXpSamplingPercentageUsers:(double)users;
+- (void)setXpSessionDuration:(unint64_t)duration;
 @end
 
 @implementation MTLoadUrlMeasurement
 
-- (void)mark:(id)a3 time:(int64_t)a4
+- (void)mark:(id)mark time:(int64_t)time
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = [v6 numberWithLongLong:a4];
-  v8 = [(MTPerfBaseMeasurement *)self timestamps];
-  [v8 setObject:v9 forKeyedSubscript:v7];
+  markCopy = mark;
+  v9 = [v6 numberWithLongLong:time];
+  timestamps = [(MTPerfBaseMeasurement *)self timestamps];
+  [timestamps setObject:v9 forKeyedSubscript:markCopy];
 }
 
-- (void)setRequestUrl:(id)a3
+- (void)setRequestUrl:(id)url
 {
-  v4 = a3;
-  v5 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v5 setObject:v4 forKeyedSubscript:@"requestUrl"];
+  urlCopy = url;
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:urlCopy forKeyedSubscript:@"requestUrl"];
 }
 
-- (void)setDnsServersIPAddresses:(id)a3
+- (void)setDnsServersIPAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v5 setObject:v4 forKeyedSubscript:@"dnsServersIPAddresses"];
+  addressesCopy = addresses;
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:addressesCopy forKeyedSubscript:@"dnsServersIPAddresses"];
 }
 
-- (void)setEdgeNodeCacheStatus:(id)a3
+- (void)setEdgeNodeCacheStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v5 setObject:v4 forKeyedSubscript:@"edgeNodeCacheStatus"];
+  statusCopy = status;
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:statusCopy forKeyedSubscript:@"edgeNodeCacheStatus"];
 }
 
-- (void)setRedirectCount:(unint64_t)a3
+- (void)setRedirectCount:(unint64_t)count
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v4 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v4 setObject:v5 forKeyedSubscript:@"redirectCount"];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:v5 forKeyedSubscript:@"redirectCount"];
 }
 
-- (void)setResolvedIPAddress:(id)a3
+- (void)setResolvedIPAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v5 setObject:v4 forKeyedSubscript:@"resolvedIPAddress"];
+  addressCopy = address;
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:addressCopy forKeyedSubscript:@"resolvedIPAddress"];
 }
 
-- (void)setStatusCode:(unint64_t)a3
+- (void)setStatusCode:(unint64_t)code
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v4 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v4 setObject:v5 forKeyedSubscript:@"statusCode"];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:v5 forKeyedSubscript:@"statusCode"];
 }
 
-- (void)setXpSessionDuration:(unint64_t)a3
+- (void)setXpSessionDuration:(unint64_t)duration
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v4 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v4 setObject:v5 forKeyedSubscript:@"xpSessionDuration"];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:duration];
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:v5 forKeyedSubscript:@"xpSessionDuration"];
 }
 
-- (void)setXpSamplingPercentageUsers:(double)a3
+- (void)setXpSamplingPercentageUsers:(double)users
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v4 = [(MTPerfBaseMeasurement *)self measurementSpecificData];
-  [v4 setObject:v5 forKeyedSubscript:@"xpSamplingPercentageUsers"];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:users];
+  measurementSpecificData = [(MTPerfBaseMeasurement *)self measurementSpecificData];
+  [measurementSpecificData setObject:v5 forKeyedSubscript:@"xpSamplingPercentageUsers"];
 }
 
-- (void)mark:(id)a3
+- (void)mark:(id)mark
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  -[MTLoadUrlMeasurement mark:time:](self, "mark:time:", v5, [v4 mt_longMillisecondsSince1970]);
+  markCopy = mark;
+  -[MTLoadUrlMeasurement mark:time:](self, "mark:time:", markCopy, [v4 mt_longMillisecondsSince1970]);
 }
 
-- (void)mark:(id)a3 date:(id)a4
+- (void)mark:(id)mark date:(id)date
 {
-  v6 = a3;
-  -[MTLoadUrlMeasurement mark:time:](self, "mark:time:", v6, [a4 mt_longMillisecondsSince1970]);
+  markCopy = mark;
+  -[MTLoadUrlMeasurement mark:time:](self, "mark:time:", markCopy, [date mt_longMillisecondsSince1970]);
 }
 
 @end

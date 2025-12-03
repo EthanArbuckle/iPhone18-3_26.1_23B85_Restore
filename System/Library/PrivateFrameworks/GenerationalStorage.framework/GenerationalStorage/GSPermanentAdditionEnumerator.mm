@@ -1,5 +1,5 @@
 @interface GSPermanentAdditionEnumerator
-- (GSPermanentAdditionEnumerator)initWithStorage:(id)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 ordering:(int)a7;
+- (GSPermanentAdditionEnumerator)initWithStorage:(id)storage nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions ordering:(int)ordering;
 - (id)nextObject;
 - (void)_fetchNextBatch;
 - (void)dealloc;
@@ -7,27 +7,27 @@
 
 @implementation GSPermanentAdditionEnumerator
 
-- (GSPermanentAdditionEnumerator)initWithStorage:(id)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 ordering:(int)a7
+- (GSPermanentAdditionEnumerator)initWithStorage:(id)storage nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions ordering:(int)ordering
 {
-  v13 = a3;
-  v14 = a4;
+  storageCopy = storage;
+  spaceCopy = space;
   v22.receiver = self;
   v22.super_class = GSPermanentAdditionEnumerator;
   v15 = [(GSPermanentAdditionEnumerator *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_storage, a3);
-    objc_storeStrong(&v16->_nameSpace, a4);
-    v16->_withOptions = a5;
-    v16->_withoutOptions = a6;
+    objc_storeStrong(&v15->_storage, storage);
+    objc_storeStrong(&v16->_nameSpace, space);
+    v16->_withOptions = options;
+    v16->_withoutOptions = withoutOptions;
     v17 = +[GSDaemonProxySync proxy];
     proxy = v16->_proxy;
     v16->_proxy = v17;
 
     token = v16->_token;
     v20 = &unk_28627AC30;
-    if (a7 == -1)
+    if (ordering == -1)
     {
       v20 = &unk_28627AC18;
     }
@@ -42,7 +42,7 @@
 
 - (void)dealloc
 {
-  v3 = [(GSDaemonProxySync *)self->_proxy result];
+  result = [(GSDaemonProxySync *)self->_proxy result];
   v4.receiver = self;
   v4.super_class = GSPermanentAdditionEnumerator;
   [(GSPermanentAdditionEnumerator *)&v4 dealloc];
@@ -51,7 +51,7 @@
 - (void)_fetchNextBatch
 {
   proxy = self->_proxy;
-  v4 = [(GSPermanentStorage *)self->_storage remoteID];
+  remoteID = [(GSPermanentStorage *)self->_storage remoteID];
   nameSpace = self->_nameSpace;
   withOptions = self->_withOptions;
   withoutOptions = self->_withoutOptions;
@@ -61,7 +61,7 @@
   v9[2] = __48__GSPermanentAdditionEnumerator__fetchNextBatch__block_invoke;
   v9[3] = &unk_2796976B0;
   v9[4] = self;
-  [(GSDaemonProxySync *)proxy listAdditionsOfStorage:v4 nameSpace:nameSpace withOptions:withOptions withoutOptions:withoutOptions andEnumerationState:token completionHandler:v9];
+  [(GSDaemonProxySync *)proxy listAdditionsOfStorage:remoteID nameSpace:nameSpace withOptions:withOptions withoutOptions:withoutOptions andEnumerationState:token completionHandler:v9];
 }
 
 void __48__GSPermanentAdditionEnumerator__fetchNextBatch__block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6)
@@ -146,16 +146,16 @@ void __48__GSPermanentAdditionEnumerator__fetchNextBatch__block_invoke(uint64_t 
     pos = self->_pos;
     if (pos >= [(NSArray *)self->_array count])
     {
-      v8 = [(GSDaemonProxySync *)self->_proxy result];
+      result = [(GSDaemonProxySync *)self->_proxy result];
       array = self->_array;
-      self->_array = v8;
+      self->_array = result;
 
-      v10 = [(GSDaemonProxySync *)self->_proxy error];
+      error = [(GSDaemonProxySync *)self->_proxy error];
       self->_pos = 0;
-      if (v10)
+      if (error)
       {
         error = self->_error;
-        self->_error = v10;
+        self->_error = error;
 
         goto LABEL_2;
       }

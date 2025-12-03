@@ -1,17 +1,17 @@
 @interface SVXServiceCommandHandlerUIRepeatIt
-- (BOOL)shouldDependOnCommand:(id)a3;
-- (SVXServiceCommandHandlerUIRepeatIt)initWithSpeechSynthesizer:(id)a3 performer:(id)a4 instrumentationUtils:(id)a5 synthesisResultConverter:(id)a6;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
-- (void)speechSynthesizerWillStartRequest:(id)a3 taskTracker:(id)a4;
+- (BOOL)shouldDependOnCommand:(id)command;
+- (SVXServiceCommandHandlerUIRepeatIt)initWithSpeechSynthesizer:(id)synthesizer performer:(id)performer instrumentationUtils:(id)utils synthesisResultConverter:(id)converter;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
+- (void)speechSynthesizerWillStartRequest:(id)request taskTracker:(id)tracker;
 @end
 
 @implementation SVXServiceCommandHandlerUIRepeatIt
 
-- (void)speechSynthesizerWillStartRequest:(id)a3 taskTracker:(id)a4
+- (void)speechSynthesizerWillStartRequest:(id)request taskTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = [v5 speakableText];
-  v7 = [v6 length];
+  requestCopy = request;
+  speakableText = [requestCopy speakableText];
+  v7 = [speakableText length];
 
   if (v7)
   {
@@ -21,7 +21,7 @@
     v9[2] = __84__SVXServiceCommandHandlerUIRepeatIt_speechSynthesizerWillStartRequest_taskTracker___block_invoke;
     v9[3] = &unk_279C68FE8;
     v9[4] = self;
-    v10 = v5;
+    v10 = requestCopy;
     [(SVXPerforming *)performer performBlock:v9];
   }
 }
@@ -36,35 +36,35 @@ uint64_t __84__SVXServiceCommandHandlerUIRepeatIt_speechSynthesizerWillStartRequ
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  commandCopy = command;
+  trackerCopy = tracker;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIRepeatIt.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIRepeatIt class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIRepeatIt.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIRepeatIt class]]"}];
   }
 
-  v13 = v10;
+  v13 = commandCopy;
   kdebug_trace();
-  v14 = [v13 contingency];
+  contingency = [v13 contingency];
   performer = self->_performer;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __87__SVXServiceCommandHandlerUIRepeatIt_handleCommand_withContext_taskTracker_completion___block_invoke;
   v21[3] = &unk_279C68388;
   v21[4] = self;
-  v22 = v14;
-  v23 = v11;
+  v22 = contingency;
+  v23 = trackerCopy;
   v24 = v13;
-  v25 = v12;
-  v16 = v12;
+  v25 = completionCopy;
+  v16 = completionCopy;
   v17 = v13;
-  v18 = v11;
-  v19 = v14;
+  v18 = trackerCopy;
+  v19 = contingency;
   [(SVXPerforming *)performer performBlock:v21];
 }
 
@@ -198,9 +198,9 @@ void __87__SVXServiceCommandHandlerUIRepeatIt_handleCommand_withContext_taskTrac
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldDependOnCommand:(id)a3
+- (BOOL)shouldDependOnCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -216,26 +216,26 @@ void __87__SVXServiceCommandHandlerUIRepeatIt_handleCommand_withContext_taskTrac
   return isKindOfClass & 1;
 }
 
-- (SVXServiceCommandHandlerUIRepeatIt)initWithSpeechSynthesizer:(id)a3 performer:(id)a4 instrumentationUtils:(id)a5 synthesisResultConverter:(id)a6
+- (SVXServiceCommandHandlerUIRepeatIt)initWithSpeechSynthesizer:(id)synthesizer performer:(id)performer instrumentationUtils:(id)utils synthesisResultConverter:(id)converter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  synthesizerCopy = synthesizer;
+  performerCopy = performer;
+  utilsCopy = utils;
+  converterCopy = converter;
   v23.receiver = self;
   v23.super_class = SVXServiceCommandHandlerUIRepeatIt;
   v15 = [(SVXServiceCommandHandlerUIRepeatIt *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_speechSynthesizer, a3);
+    objc_storeStrong(&v15->_speechSynthesizer, synthesizer);
     [(SVXSpeechSynthesizer *)v16->_speechSynthesizer addListener:v16];
-    objc_storeStrong(&v16->_performer, a4);
-    objc_storeStrong(&v16->_instrumentationUtils, a5);
-    objc_storeStrong(&v16->_synthesisResultConverter, a6);
+    objc_storeStrong(&v16->_performer, performer);
+    objc_storeStrong(&v16->_instrumentationUtils, utils);
+    objc_storeStrong(&v16->_synthesisResultConverter, converter);
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
-    v18 = [objc_opt_class() supportedCommandClass];
-    v19 = NSStringFromClass(v18);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v19 = NSStringFromClass(supportedCommandClass);
     v20 = [v17 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v19];
     identifier = v16->_identifier;
     v16->_identifier = v20;

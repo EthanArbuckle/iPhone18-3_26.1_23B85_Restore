@@ -1,6 +1,6 @@
 @interface MCNetworkUsageRulesPayload
 + (id)typeStrings;
-- (MCNetworkUsageRulesPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCNetworkUsageRulesPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)installationWarnings;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -19,20 +19,20 @@
   return v2;
 }
 
-- (MCNetworkUsageRulesPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCNetworkUsageRulesPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v69.receiver = self;
   v69.super_class = MCNetworkUsageRulesPayload;
-  v9 = [(MCPayload *)&v69 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v69 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_47;
   }
 
   v68 = 0;
-  v10 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SIMRules" isRequired:0 outError:&v68];
+  v10 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SIMRules" isRequired:0 outError:&v68];
   v11 = v68;
   SIMRules = v9->_SIMRules;
   v9->_SIMRules = v10;
@@ -116,8 +116,8 @@
                   goto LABEL_32;
                 }
 
-                v34 = [v33 uppercaseString];
-                if ([v28 containsObject:v34])
+                uppercaseString = [v33 uppercaseString];
+                if ([v28 containsObject:uppercaseString])
                 {
 
 LABEL_32:
@@ -125,7 +125,7 @@ LABEL_32:
                   goto LABEL_33;
                 }
 
-                [v28 addObject:v34];
+                [v28 addObject:uppercaseString];
               }
 
               v30 = [v27 countByEnumeratingWithState:&v60 objects:v74 count:16];
@@ -151,10 +151,10 @@ LABEL_35:
             goto LABEL_36;
           }
 
-          v36 = [v35 intValue];
+          intValue = [v35 intValue];
 
           v21 = v58;
-          if (v36 > 3)
+          if (intValue > 3)
           {
             goto LABEL_35;
           }
@@ -177,7 +177,7 @@ LABEL_35:
 LABEL_30:
     v37 = v9->_SIMRules == 0;
     v59 = 0;
-    v38 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ApplicationRules" isRequired:v37 outError:&v59];
+    v38 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ApplicationRules" isRequired:v37 outError:&v59];
     v11 = v59;
     applicationRules = v9->_applicationRules;
     v9->_applicationRules = v38;
@@ -195,10 +195,10 @@ LABEL_37:
 LABEL_38:
     v41 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
     v42 = v41;
-    if (a5)
+    if (error)
     {
       v43 = v41;
-      *a5 = v42;
+      *error = v42;
     }
 
     v44 = _MCLogObjects;
@@ -207,28 +207,28 @@ LABEL_38:
       v45 = v44;
       v46 = objc_opt_class();
       v47 = v46;
-      v48 = [v42 MCVerboseDescription];
+      mCVerboseDescription = [v42 MCVerboseDescription];
       *buf = 138543618;
       v71 = v46;
       v72 = 2114;
-      v73 = v48;
+      v73 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v45, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
     v9 = 0;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v49 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v50 = v49;
-      v51 = [(MCPayload *)v9 friendlyName];
+      friendlyName = [(MCPayload *)v9 friendlyName];
       *buf = 138543618;
-      v71 = v51;
+      v71 = friendlyName;
       v72 = 2114;
-      v73 = v8;
+      v73 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v50, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -242,47 +242,47 @@ LABEL_47:
 {
   v9.receiver = self;
   v9.super_class = MCNetworkUsageRulesPayload;
-  v3 = [(MCPayload *)&v9 stubDictionary];
-  v4 = [(MCNetworkUsageRulesPayload *)self applicationRules];
+  stubDictionary = [(MCPayload *)&v9 stubDictionary];
+  applicationRules = [(MCNetworkUsageRulesPayload *)self applicationRules];
 
-  if (v4)
+  if (applicationRules)
   {
-    v5 = [(MCNetworkUsageRulesPayload *)self applicationRules];
-    [v3 setObject:v5 forKeyedSubscript:@"ApplicationRules"];
+    applicationRules2 = [(MCNetworkUsageRulesPayload *)self applicationRules];
+    [stubDictionary setObject:applicationRules2 forKeyedSubscript:@"ApplicationRules"];
   }
 
-  v6 = [(MCNetworkUsageRulesPayload *)self SIMRules];
+  sIMRules = [(MCNetworkUsageRulesPayload *)self SIMRules];
 
-  if (v6)
+  if (sIMRules)
   {
-    v7 = [(MCNetworkUsageRulesPayload *)self SIMRules];
-    [v3 setObject:v7 forKeyedSubscript:@"SIMRules"];
+    sIMRules2 = [(MCNetworkUsageRulesPayload *)self SIMRules];
+    [stubDictionary setObject:sIMRules2 forKeyedSubscript:@"SIMRules"];
   }
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v10.receiver = self;
   v10.super_class = MCNetworkUsageRulesPayload;
-  v3 = [(MCPayload *)&v10 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v10 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCNetworkUsageRulesPayload *)self applicationRules];
+  applicationRules = [(MCNetworkUsageRulesPayload *)self applicationRules];
 
-  if (v5)
+  if (applicationRules)
   {
-    v6 = [(MCNetworkUsageRulesPayload *)self applicationRules];
-    [v4 appendFormat:@"Application Rules : %@\n", v6];
+    applicationRules2 = [(MCNetworkUsageRulesPayload *)self applicationRules];
+    [v4 appendFormat:@"Application Rules : %@\n", applicationRules2];
   }
 
-  v7 = [(MCNetworkUsageRulesPayload *)self SIMRules];
+  sIMRules = [(MCNetworkUsageRulesPayload *)self SIMRules];
 
-  if (v7)
+  if (sIMRules)
   {
-    v8 = [(MCNetworkUsageRulesPayload *)self SIMRules];
-    [v4 appendFormat:@"SIM Rules         : %@\n", v8];
+    sIMRules2 = [(MCNetworkUsageRulesPayload *)self SIMRules];
+    [v4 appendFormat:@"SIM Rules         : %@\n", sIMRules2];
   }
 
   return v4;
@@ -293,8 +293,8 @@ LABEL_47:
   v97 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(MCNetworkUsageRulesPayload *)self applicationRules];
-  v6 = [v5 count];
+  applicationRules = [(MCNetworkUsageRulesPayload *)self applicationRules];
+  v6 = [applicationRules count];
 
   v70 = v3;
   if (v6)
@@ -303,7 +303,7 @@ LABEL_47:
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v64 = self;
+    selfCopy = self;
     obj = [(MCNetworkUsageRulesPayload *)self applicationRules];
     v68 = [obj countByEnumeratingWithState:&v89 objects:v96 count:16];
     if (v68)
@@ -427,11 +427,11 @@ LABEL_47:
       while (v68);
     }
 
-    self = v64;
+    self = selfCopy;
   }
 
-  v38 = [(MCNetworkUsageRulesPayload *)self SIMRules];
-  v39 = [v38 count];
+  sIMRules = [(MCNetworkUsageRulesPayload *)self SIMRules];
+  v39 = [sIMRules count];
 
   if (v39)
   {
@@ -439,8 +439,8 @@ LABEL_47:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v67 = [(MCNetworkUsageRulesPayload *)self SIMRules];
-    v72 = [v67 countByEnumeratingWithState:&v81 objects:v94 count:16];
+    sIMRules2 = [(MCNetworkUsageRulesPayload *)self SIMRules];
+    v72 = [sIMRules2 countByEnumeratingWithState:&v81 objects:v94 count:16];
     if (!v72)
     {
       goto LABEL_55;
@@ -454,7 +454,7 @@ LABEL_47:
       {
         if (*v82 != v69)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(sIMRules2);
         }
 
         v74 = *(*(&v81 + 1) + 8 * v40);
@@ -496,8 +496,8 @@ LABEL_47:
         v51 = v50;
         if (v50)
         {
-          v52 = [v50 intValue];
-          if (v52 == 3)
+          intValue = [v50 intValue];
+          if (intValue == 3)
           {
             v53 = @"NETWORK_USAGE_UNLIMITED_CELLULAR_DATA";
 LABEL_48:
@@ -506,7 +506,7 @@ LABEL_48:
 
           else
           {
-            if (v52 == 2)
+            if (intValue == 2)
             {
               v53 = @"NETWORK_USAGE_DEFAULT_CELLULAR_DATA";
               goto LABEL_48;
@@ -517,8 +517,8 @@ LABEL_48:
 
           v55 = v54;
           v56 = [MCKeyValue alloc];
-          v57 = [@"NETWORK_USAGE_WIFI_ASSIST_POLICY" MCAppendGreenteaSuffix];
-          v58 = MCLocalizedString(v57);
+          mCAppendGreenteaSuffix = [@"NETWORK_USAGE_WIFI_ASSIST_POLICY" MCAppendGreenteaSuffix];
+          v58 = MCLocalizedString(mCAppendGreenteaSuffix);
           v59 = [(MCKeyValue *)v56 initWithLocalizedString:v55 localizedKey:v58];
 
           [v4 addObject:v59];
@@ -537,7 +537,7 @@ LABEL_48:
       }
 
       while (v76 + 1 != v72);
-      v72 = [v67 countByEnumeratingWithState:&v81 objects:v94 count:16];
+      v72 = [sIMRules2 countByEnumeratingWithState:&v81 objects:v94 count:16];
       if (!v72)
       {
 LABEL_55:

@@ -1,28 +1,28 @@
 @interface GoogleAccountSyncController
 - (BOOL)_needsReAuthenciationSection;
-- (GoogleAccountSyncController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GoogleAccountSyncController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_reAuthenticationSectionSpecifiers;
 - (id)specifiers;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)_beginObservingAccountStoreDidChangeNotification;
-- (void)_effectiveSettingsDidChange:(id)a3;
-- (void)_reAuthenticationButtonTapped:(id)a3;
+- (void)_effectiveSettingsDidChange:(id)change;
+- (void)_reAuthenticationButtonTapped:(id)tapped;
 - (void)_stopObservingAccountStoreDidChangeNotification;
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5;
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation GoogleAccountSyncController
 
-- (GoogleAccountSyncController)initWithNibName:(id)a3 bundle:(id)a4
+- (GoogleAccountSyncController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v12.receiver = self;
   v12.super_class = GoogleAccountSyncController;
-  v8 = [(GoogleAccountSyncController *)&v12 initWithNibName:v6 bundle:v7];
+  v8 = [(GoogleAccountSyncController *)&v12 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -46,13 +46,13 @@
   [(GoogleAccountSyncController *)&v4 dealloc];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v7.receiver = self;
   v7.super_class = GoogleAccountSyncController;
-  [(GoogleAccountSyncController *)&v7 handleURL:v4];
-  v5 = [v4 objectForKeyedSubscript:@"slGoogleAction"];
+  [(GoogleAccountSyncController *)&v7 handleURL:lCopy];
+  v5 = [lCopy objectForKeyedSubscript:@"slGoogleAction"];
   v6 = [v5 isEqualToString:@"showAuthSheet"];
 
   if (v6)
@@ -73,20 +73,20 @@
   [v3 removeObserver:self name:ACAccountStoreDidChangeNotification object:0];
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v4 = [(GoogleAccountSyncController *)self account];
-  [v4 refresh];
+  account = [(GoogleAccountSyncController *)self account];
+  [account refresh];
 
-  LODWORD(v4) = self->_showingReAuthenticationSection;
-  if (v4 != [(GoogleAccountSyncController *)self _needsReAuthenciationSection])
+  LODWORD(account) = self->_showingReAuthenticationSection;
+  if (account != [(GoogleAccountSyncController *)self _needsReAuthenciationSection])
   {
 
     [(GoogleAccountSyncController *)self reloadSpecifiers];
   }
 }
 
-- (void)_effectiveSettingsDidChange:(id)a3
+- (void)_effectiveSettingsDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -103,17 +103,17 @@
   [(AccountPSSyncController *)&v8 viewDidLoad];
   if ([(GoogleAccountSyncController *)self isFirstTimeSetup])
   {
-    v3 = [(GoogleAccountSyncController *)self navigationItem];
-    v4 = [v3 title];
+    navigationItem = [(GoogleAccountSyncController *)self navigationItem];
+    title = [navigationItem title];
     firstTimeSetupValidationOriginalTitle = self->_firstTimeSetupValidationOriginalTitle;
-    self->_firstTimeSetupValidationOriginalTitle = v4;
+    self->_firstTimeSetupValidationOriginalTitle = title;
 
     [(GoogleAccountSyncController *)self startValidationWithPrompt:self->_firstTimeSetupValidationOriginalTitle];
     [(GoogleAccountSyncController *)self setTaskCompletionAssertionEnabled:1];
     v6 = objc_alloc_init(+[GmailAccount accountValidatorClass]);
     [v6 setDelegate:self];
-    v7 = [(AccountPSSyncController *)self mailAccount];
-    [v6 validateAccount:v7 useSSL:1];
+    mailAccount = [(AccountPSSyncController *)self mailAccount];
+    [v6 validateAccount:mailAccount useSSL:1];
   }
 }
 
@@ -124,28 +124,28 @@
     return 0;
   }
 
-  v4 = [(GoogleAccountSyncController *)self account];
-  v5 = [v4 isAuthenticated];
+  account = [(GoogleAccountSyncController *)self account];
+  isAuthenticated = [account isAuthenticated];
 
-  if ((v5 & 1) == 0)
+  if ((isAuthenticated & 1) == 0)
   {
     return 1;
   }
 
-  v6 = [(GoogleAccountSyncController *)self account];
-  v7 = [v6 credential];
-  v8 = [v7 oauthToken];
-  if (v8)
+  account2 = [(GoogleAccountSyncController *)self account];
+  credential = [account2 credential];
+  oauthToken = [credential oauthToken];
+  if (oauthToken)
   {
     v3 = 0;
   }
 
   else
   {
-    v9 = [(GoogleAccountSyncController *)self account];
-    v10 = [v9 credential];
-    v11 = [v10 oauthRefreshToken];
-    v3 = v11 == 0;
+    account3 = [(GoogleAccountSyncController *)self account];
+    credential2 = [account3 credential];
+    oauthRefreshToken = [credential2 oauthRefreshToken];
+    v3 = oauthRefreshToken == 0;
   }
 
   return v3;
@@ -153,13 +153,13 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy3 = self;
   v27 = OBJC_IVAR___PSListController__specifiers;
   if (!*&self->super.ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
     if ([(GoogleAccountSyncController *)self isFirstTimeSetup])
     {
-      v3 = !v2->_didFirstTimeSetupValidation;
+      v3 = !selfCopy3->_didFirstTimeSetupValidation;
     }
 
     else
@@ -167,24 +167,24 @@
       v3 = 0;
     }
 
-    v4 = [(GoogleAccountSyncController *)v2 _needsReAuthenciationSection];
+    _needsReAuthenciationSection = [(GoogleAccountSyncController *)selfCopy3 _needsReAuthenciationSection];
     v5 = objc_alloc_init(NSMutableArray);
-    if (v4)
+    if (_needsReAuthenciationSection)
     {
-      v29 = [(GoogleAccountSyncController *)v2 _reAuthenticationSectionSpecifiers];
-      [v5 addObjectsFromArray:v29];
+      _reAuthenticationSectionSpecifiers = [(GoogleAccountSyncController *)selfCopy3 _reAuthenticationSectionSpecifiers];
+      [v5 addObjectsFromArray:_reAuthenticationSectionSpecifiers];
     }
 
     else
     {
-      v29 = 0;
+      _reAuthenticationSectionSpecifiers = 0;
     }
 
-    self->_showingReAuthenticationSection = v4;
+    self->_showingReAuthenticationSection = _needsReAuthenciationSection;
     v35.receiver = self;
     v35.super_class = GoogleAccountSyncController;
-    v6 = [(AccountPSSyncController *)&v35 specifiers];
-    [v5 addObjectsFromArray:v6];
+    specifiers = [(AccountPSSyncController *)&v35 specifiers];
+    [v5 addObjectsFromArray:specifiers];
 
     v7 = +[MCProfileConnection sharedConnection];
     v8 = [v7 effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed];
@@ -197,7 +197,7 @@
     v9 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v9)
     {
-      v10 = v4 | v3;
+      v10 = _needsReAuthenciationSection | v3;
       v11 = *v32;
       v12 = PSEnabledKey;
       do
@@ -214,9 +214,9 @@
           if (v15)
           {
             v16 = [v14 propertyForKey:v12];
-            v17 = [v16 BOOLValue];
+            bOOLValue = [v16 BOOLValue];
 
-            if (!v17)
+            if (!bOOLValue)
             {
               continue;
             }
@@ -224,15 +224,15 @@
 
           if (v10)
           {
-            v18 = [(GoogleAccountSyncController *)self deleteButtonSpecifier];
-            v19 = v18;
-            if (v14 == v18)
+            deleteButtonSpecifier = [(GoogleAccountSyncController *)self deleteButtonSpecifier];
+            v19 = deleteButtonSpecifier;
+            if (v14 == deleteButtonSpecifier)
             {
             }
 
             else
             {
-              v20 = [v29 containsObject:v14];
+              v20 = [_reAuthenticationSectionSpecifiers containsObject:v14];
 
               if ((v20 & 1) == 0)
               {
@@ -241,7 +241,7 @@
             }
           }
 
-          if (v8 == 2 && ![v29 containsObject:v14])
+          if (v8 == 2 && ![_reAuthenticationSectionSpecifiers containsObject:v14])
           {
 LABEL_23:
             v21 = &__kCFBooleanFalse;
@@ -265,21 +265,21 @@ LABEL_23:
     v22 = *&self->super.ACUIDataclassConfigurationViewController_opaque[v27];
     *&self->super.ACUIDataclassConfigurationViewController_opaque[v27] = obj;
 
-    v2 = self;
+    selfCopy3 = self;
   }
 
-  if (v2->_IMAPValidationFailure)
+  if (selfCopy3->_IMAPValidationFailure)
   {
-    v23 = [(GoogleAccountSyncController *)v2 account];
-    [v23 setEnabled:0 forDataclass:ACAccountDataclassMail];
+    account = [(GoogleAccountSyncController *)selfCopy3 account];
+    [account setEnabled:0 forDataclass:ACAccountDataclassMail];
 
-    v24 = [(GoogleAccountSyncController *)self account];
-    [v24 refresh];
+    account2 = [(GoogleAccountSyncController *)self account];
+    [account2 refresh];
 
-    v2 = self;
+    selfCopy3 = self;
   }
 
-  v25 = *&v2->super.ACUIDataclassConfigurationViewController_opaque[v27];
+  v25 = *&selfCopy3->super.ACUIDataclassConfigurationViewController_opaque[v27];
 
   return v25;
 }
@@ -288,9 +288,9 @@ LABEL_23:
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  v5 = [(GoogleAccountSyncController *)self account];
-  v6 = [v5 username];
-  [v4 setProperty:v6 forKey:@"GoogleNameForAccountToAuthenticate"];
+  account = [(GoogleAccountSyncController *)self account];
+  username = [account username];
+  [v4 setProperty:username forKey:@"GoogleNameForAccountToAuthenticate"];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
@@ -310,14 +310,14 @@ LABEL_23:
   return v3;
 }
 
-- (void)_reAuthenticationButtonTapped:(id)a3
+- (void)_reAuthenticationButtonTapped:(id)tapped
 {
   if (!self->_reAuthenticating)
   {
     self->_reAuthenticating = 1;
     objc_initWeak(&location, self);
-    v4 = [(GoogleAccountSyncController *)self account];
-    v5 = [(GoogleAccountSyncController *)self accountStore];
+    account = [(GoogleAccountSyncController *)self account];
+    accountStore = [(GoogleAccountSyncController *)self accountStore];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_6B9C8;
@@ -328,27 +328,27 @@ LABEL_23:
     v7[2] = sub_6B9DC;
     v7[3] = &unk_B8FE8;
     objc_copyWeak(&v8, &location);
-    v6 = [SLGoogleAuthController googleAuthControllerWithAccount:v4 accountStore:v5 presentationBlock:v9 completion:v7];
+    v6 = [SLGoogleAuthController googleAuthControllerWithAccount:account accountStore:accountStore presentationBlock:v9 completion:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l
 {
-  v12 = a3;
-  v7 = a4;
+  validatorCopy = validator;
+  accountCopy = account;
   self->_didFirstTimeSetupValidation = 1;
   [(GoogleAccountSyncController *)self stopValidationWithPrompt:self->_firstTimeSetupValidationOriginalTitle showButtons:1];
-  if ([v12 accountIsValid])
+  if ([validatorCopy accountIsValid])
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 deliveryAccount];
-      if (v8)
+      deliveryAccount = [accountCopy deliveryAccount];
+      if (deliveryAccount)
       {
-        v9 = v7;
+        v9 = accountCopy;
         if (v9)
         {
           v10 = +[MFInvocationQueue sharedInvocationQueue];
@@ -366,7 +366,7 @@ LABEL_23:
     else
     {
       v9 = 0;
-      v8 = 0;
+      deliveryAccount = 0;
     }
   }
 

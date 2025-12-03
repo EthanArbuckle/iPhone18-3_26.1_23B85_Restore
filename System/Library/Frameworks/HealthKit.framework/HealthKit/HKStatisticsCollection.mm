@@ -1,26 +1,26 @@
 @interface HKStatisticsCollection
-- (BOOL)_insertStatistics:(id)a3;
+- (BOOL)_insertStatistics:(id)statistics;
 - (HKStatistics)statisticsForDate:(NSDate *)date;
 - (HKStatisticsCollection)init;
-- (HKStatisticsCollection)initWithAnchorDate:(id)a3 statisticsInterval:(id)a4 emptyStatisticsConstructor:(id)a5;
+- (HKStatisticsCollection)initWithAnchorDate:(id)date statisticsInterval:(id)interval emptyStatisticsConstructor:(id)constructor;
 - (NSArray)statistics;
 - (NSSet)sources;
 - (id)_maxSumQuantityStatistics;
 - (id)_minSumQuantityStatistics;
 - (id)_mostRecentQuantityDateInterval;
 - (id)_mostRecentQuantityStatistics;
-- (id)_statisticsDateIntervalAndIndex:(int64_t *)a3 forDate:(id)a4;
-- (id)_statisticsDateIntervalAtIndex:(int64_t)a3;
-- (id)_statisticsForIndex:(int64_t)a3;
+- (id)_statisticsDateIntervalAndIndex:(int64_t *)index forDate:(id)date;
+- (id)_statisticsDateIntervalAtIndex:(int64_t)index;
+- (id)_statisticsForIndex:(int64_t)index;
 - (id)_statisticsForLastIndex;
 - (id)asJSONObject;
 - (unint64_t)statisticsCount;
 - (void)_clearSourcesCache;
-- (void)_enumerateStatisticsIndexesFromDate:(id)a3 toDate:(id)a4 withBlock:(id)a5;
-- (void)_enumerateTimePeriodsFromDate:(id)a3 toDate:(id)a4 withBlock:(id)a5;
-- (void)_resetStatistics:(id)a3;
-- (void)_timePeriodForStatisticsAtIndex:(int64_t)a3 startDate:(id *)a4 endDate:(id *)a5;
-- (void)enumeratePopulatedStatisticsWithBlock:(id)a3;
+- (void)_enumerateStatisticsIndexesFromDate:(id)date toDate:(id)toDate withBlock:(id)block;
+- (void)_enumerateTimePeriodsFromDate:(id)date toDate:(id)toDate withBlock:(id)block;
+- (void)_resetStatistics:(id)statistics;
+- (void)_timePeriodForStatisticsAtIndex:(int64_t)index startDate:(id *)date endDate:(id *)endDate;
+- (void)enumeratePopulatedStatisticsWithBlock:(id)block;
 - (void)enumerateStatisticsFromDate:(NSDate *)startDate toDate:(NSDate *)endDate withBlock:(void *)block;
 @end
 
@@ -36,8 +36,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(HKStatisticsCollection *)self sources];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  sources = [(HKStatisticsCollection *)self sources];
+  v6 = [sources countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -48,14 +48,14 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sources);
         }
 
-        v10 = [*(*(&v24 + 1) + 8 * i) asJSONObject];
-        [v4 addObject:v10];
+        asJSONObject = [*(*(&v24 + 1) + 8 * i) asJSONObject];
+        [v4 addObject:asJSONObject];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [sources countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);
@@ -67,8 +67,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [(HKStatisticsCollection *)self statistics];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  statistics = [(HKStatisticsCollection *)self statistics];
+  v13 = [statistics countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -79,14 +79,14 @@
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(statistics);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * j) asJSONObject];
-        [v11 addObject:v17];
+        asJSONObject2 = [*(*(&v20 + 1) + 8 * j) asJSONObject];
+        [v11 addObject:asJSONObject2];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v14 = [statistics countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v14);
@@ -107,15 +107,15 @@
   return 0;
 }
 
-- (HKStatisticsCollection)initWithAnchorDate:(id)a3 statisticsInterval:(id)a4 emptyStatisticsConstructor:(id)a5
+- (HKStatisticsCollection)initWithAnchorDate:(id)date statisticsInterval:(id)interval emptyStatisticsConstructor:(id)constructor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  intervalCopy = interval;
+  constructorCopy = constructor;
   v12 = MEMORY[0x1E695D940];
-  if (v11)
+  if (constructorCopy)
   {
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -124,7 +124,7 @@
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ must be given a statistics constructor", objc_opt_class()}];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -132,11 +132,11 @@
 
   [MEMORY[0x1E695DF30] raise:*v12 format:{@"%@ must have an anchor date", objc_opt_class()}];
 LABEL_3:
-  [v10 hk_approximateDuration];
+  [intervalCopy hk_approximateDuration];
   v14 = v13;
   if (v13 == 0.0)
   {
-    [MEMORY[0x1E695DF30] raise:*v12 format:{@"%@ statistics interval must be non zero: %@", objc_opt_class(), v10}];
+    [MEMORY[0x1E695DF30] raise:*v12 format:{@"%@ statistics interval must be non zero: %@", objc_opt_class(), intervalCopy}];
   }
 
   v27.receiver = self;
@@ -145,29 +145,29 @@ LABEL_3:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_anchorDate, a3);
-    v17 = [v10 copy];
+    objc_storeStrong(&v15->_anchorDate, date);
+    v17 = [intervalCopy copy];
     statisticsInterval = v16->_statisticsInterval;
     v16->_statisticsInterval = v17;
 
-    v19 = [(NSDateComponents *)v16->_statisticsInterval calendar];
+    calendar = [(NSDateComponents *)v16->_statisticsInterval calendar];
 
-    if (!v19)
+    if (!calendar)
     {
       v20 = v16->_statisticsInterval;
-      v21 = [MEMORY[0x1E695DEE8] currentCalendar];
-      [(NSDateComponents *)v20 setCalendar:v21];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      [(NSDateComponents *)v20 setCalendar:currentCalendar];
     }
 
-    v22 = [v11 copy];
+    v22 = [constructorCopy copy];
     emptyStatisticsConstructor = v16->_emptyStatisticsConstructor;
     v16->_emptyStatisticsConstructor = v22;
 
     v16->_approximateStatisticsInterval = v14;
     v16->_lock._os_unfair_lock_opaque = 0;
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     statisticsByIndex = v16->_statisticsByIndex;
-    v16->_statisticsByIndex = v24;
+    v16->_statisticsByIndex = dictionary;
   }
 
   return v16;
@@ -192,9 +192,9 @@ LABEL_3:
     else
     {
       emptyStatisticsConstructor = self->_emptyStatisticsConstructor;
-      v11 = [v4 startDate];
-      v12 = [v4 endDate];
-      v9 = emptyStatisticsConstructor[2](emptyStatisticsConstructor, v11, v12);
+      startDate = [v4 startDate];
+      endDate = [v4 endDate];
+      v9 = emptyStatisticsConstructor[2](emptyStatisticsConstructor, startDate, endDate);
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -277,10 +277,10 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_statisticsByIndex copy];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -305,7 +305,7 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
         if (v12)
         {
           v14 = [v12 copy];
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -317,7 +317,7 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
 - (NSSet)sources
@@ -331,8 +331,8 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(NSMutableDictionary *)self->_statisticsByIndex allValues];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allValues = [(NSMutableDictionary *)self->_statisticsByIndex allValues];
+    v5 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
       v6 = v5;
@@ -344,19 +344,19 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = MEMORY[0x1E695DFD8];
-          v10 = [*(*(&v17 + 1) + 8 * v8) sources];
-          v11 = [v9 setWithArray:v10];
+          sources = [*(*(&v17 + 1) + 8 * v8) sources];
+          v11 = [v9 setWithArray:sources];
           [v3 unionSet:v11];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v6);
@@ -386,13 +386,13 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_statisticsByIndex allValues];
+  allValues = [(NSMutableDictionary *)self->_statisticsByIndex allValues];
   os_unfair_lock_unlock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -409,14 +409,14 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 sumQuantity];
-        v12 = [v7 compare:v11];
+        sumQuantity = [v10 sumQuantity];
+        v12 = [v7 compare:sumQuantity];
 
         if (v12 == -1 || v7 == 0)
         {
-          v14 = [v10 sumQuantity];
+          sumQuantity2 = [v10 sumQuantity];
 
-          v7 = v14;
+          v7 = sumQuantity2;
         }
       }
 
@@ -440,13 +440,13 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_statisticsByIndex allValues];
+  allValues = [(NSMutableDictionary *)self->_statisticsByIndex allValues];
   os_unfair_lock_unlock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -463,14 +463,14 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 sumQuantity];
-        v12 = [v7 compare:v11];
+        sumQuantity = [v10 sumQuantity];
+        v12 = [v7 compare:sumQuantity];
 
         if (v12 == 1 || v7 == 0)
         {
-          v14 = [v10 sumQuantity];
+          sumQuantity2 = [v10 sumQuantity];
 
-          v7 = v14;
+          v7 = sumQuantity2;
         }
       }
 
@@ -492,18 +492,18 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
 
 - (id)_mostRecentQuantityStatistics
 {
-  v2 = [(HKStatisticsCollection *)self _statisticsForLastIndex];
-  v3 = [v2 mostRecentQuantity];
+  _statisticsForLastIndex = [(HKStatisticsCollection *)self _statisticsForLastIndex];
+  mostRecentQuantity = [_statisticsForLastIndex mostRecentQuantity];
 
-  return v3;
+  return mostRecentQuantity;
 }
 
 - (id)_mostRecentQuantityDateInterval
 {
-  v2 = [(HKStatisticsCollection *)self _statisticsForLastIndex];
-  v3 = [v2 mostRecentQuantityDateInterval];
+  _statisticsForLastIndex = [(HKStatisticsCollection *)self _statisticsForLastIndex];
+  mostRecentQuantityDateInterval = [_statisticsForLastIndex mostRecentQuantityDateInterval];
 
-  return v3;
+  return mostRecentQuantityDateInterval;
 }
 
 - (void)_clearSourcesCache
@@ -515,29 +515,29 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_insertStatistics:(id)a3
+- (BOOL)_insertStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   [(HKStatisticsCollection *)self _clearSourcesCache];
   v5 = [HKDateInterval alloc];
-  v6 = [v4 startDate];
-  v7 = [v4 endDate];
-  v8 = [(HKDateInterval *)v5 initWithStartDate:v6 endDate:v7];
+  startDate = [statisticsCopy startDate];
+  endDate = [statisticsCopy endDate];
+  v8 = [(HKDateInterval *)v5 initWithStartDate:startDate endDate:endDate];
 
   v16 = 0;
-  v9 = [(HKDateInterval *)v8 startDate];
-  v10 = [(HKStatisticsCollection *)self _statisticsDateIntervalAndIndex:&v16 forDate:v9];
+  startDate2 = [(HKDateInterval *)v8 startDate];
+  v10 = [(HKStatisticsCollection *)self _statisticsDateIntervalAndIndex:&v16 forDate:startDate2];
   v11 = [v10 isEqual:v8];
 
   if (v11)
   {
     os_unfair_lock_lock(&self->_lock);
-    v12 = [v4 dataCount];
+    dataCount = [statisticsCopy dataCount];
     statisticsByIndex = self->_statisticsByIndex;
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
-    if (v12)
+    if (dataCount)
     {
-      [(NSMutableDictionary *)statisticsByIndex setObject:v4 forKey:v14];
+      [(NSMutableDictionary *)statisticsByIndex setObject:statisticsCopy forKey:v14];
     }
 
     else
@@ -551,24 +551,24 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
   return v11;
 }
 
-- (void)_resetStatistics:(id)a3
+- (void)_resetStatistics:(id)statistics
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
   cachedSources = self->_cachedSources;
   self->_cachedSources = 0;
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   statisticsByIndex = self->_statisticsByIndex;
-  self->_statisticsByIndex = v6;
+  self->_statisticsByIndex = dictionary;
 
   os_unfair_lock_unlock(&self->_lock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v4;
+  v8 = statisticsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -597,11 +597,11 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumerateTimePeriodsFromDate:(id)a3 toDate:(id)a4 withBlock:(id)a5
+- (void)_enumerateTimePeriodsFromDate:(id)date toDate:(id)toDate withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  blockCopy = block;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -633,9 +633,9 @@ uint64_t __71__HKStatisticsCollection_enumerateStatisticsFromDate_toDate_withBlo
   v12[4] = self;
   v16 = v18;
   v17 = v20;
-  v11 = v10;
+  v11 = blockCopy;
   v13 = v11;
-  [(HKStatisticsCollection *)self _enumerateStatisticsIndexesFromDate:v8 toDate:v9 withBlock:v12];
+  [(HKStatisticsCollection *)self _enumerateStatisticsIndexesFromDate:dateCopy toDate:toDateCopy withBlock:v12];
 
   _Block_object_dispose(v18, 8);
   _Block_object_dispose(v20, 8);
@@ -682,10 +682,10 @@ uint64_t __73__HKStatisticsCollection__enumerateTimePeriodsFromDate_toDate_withB
   return (*(a1[5] + 16))();
 }
 
-- (void)enumeratePopulatedStatisticsWithBlock:(id)a3
+- (void)enumeratePopulatedStatisticsWithBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_statisticsByIndex copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -694,8 +694,8 @@ uint64_t __73__HKStatisticsCollection__enumerateTimePeriodsFromDate_toDate_withB
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v5 allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
@@ -714,7 +714,7 @@ uint64_t __73__HKStatisticsCollection__enumerateTimePeriodsFromDate_toDate_withB
         v12 = [v5 objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
         if (v12)
         {
-          v4[2](v4, v12, &v18);
+          blockCopy[2](blockCopy, v12, &v18);
           if (v18 == 1)
           {
 
@@ -744,15 +744,15 @@ LABEL_12:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_statisticsByIndex copy];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 allKeys];
-  v5 = [v4 firstObject];
-  v6 = [v5 integerValue];
+  allKeys = [v3 allKeys];
+  firstObject = [allKeys firstObject];
+  integerValue = [firstObject integerValue];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = allKeys;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -768,9 +768,9 @@ LABEL_12:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        if ([v12 integerValue] > v6)
+        if ([v12 integerValue] > integerValue)
         {
-          v6 = [v12 integerValue];
+          integerValue = [v12 integerValue];
         }
       }
 
@@ -780,14 +780,14 @@ LABEL_12:
     while (v9);
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
   v14 = [v3 objectForKey:v13];
 
   if (!v14)
   {
     v19 = 0;
     v20 = 0;
-    [(HKStatisticsCollection *)self _timePeriodForStatisticsAtIndex:v6 startDate:&v20 endDate:&v19];
+    [(HKStatisticsCollection *)self _timePeriodForStatisticsAtIndex:integerValue startDate:&v20 endDate:&v19];
     v15 = v20;
     v16 = v19;
     v14 = (*(self->_emptyStatisticsConstructor + 2))();
@@ -798,11 +798,11 @@ LABEL_12:
   return v14;
 }
 
-- (id)_statisticsForIndex:(int64_t)a3
+- (id)_statisticsForIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
   statisticsByIndex = self->_statisticsByIndex;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v7 = [(NSMutableDictionary *)statisticsByIndex objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -810,7 +810,7 @@ LABEL_12:
   {
     v11 = 0;
     v12 = 0;
-    [(HKStatisticsCollection *)self _timePeriodForStatisticsAtIndex:a3 startDate:&v12 endDate:&v11];
+    [(HKStatisticsCollection *)self _timePeriodForStatisticsAtIndex:index startDate:&v12 endDate:&v11];
     v8 = v12;
     v9 = v11;
     v7 = (*(self->_emptyStatisticsConstructor + 2))();
@@ -819,39 +819,39 @@ LABEL_12:
   return v7;
 }
 
-- (void)_timePeriodForStatisticsAtIndex:(int64_t)a3 startDate:(id *)a4 endDate:(id *)a5
+- (void)_timePeriodForStatisticsAtIndex:(int64_t)index startDate:(id *)date endDate:(id *)endDate
 {
-  v9 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:a3 toDate:self->_anchorDate];
-  if (a4)
+  v9 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:index toDate:self->_anchorDate];
+  if (date)
   {
     v9 = v9;
-    *a4 = v9;
+    *date = v9;
   }
 
-  if (a5)
+  if (endDate)
   {
     v10 = v9;
-    *a5 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:a3 + 1 toDate:self->_anchorDate];
+    *endDate = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:index + 1 toDate:self->_anchorDate];
     v9 = v10;
   }
 }
 
-- (void)_enumerateStatisticsIndexesFromDate:(id)a3 toDate:(id)a4 withBlock:(id)a5
+- (void)_enumerateStatisticsIndexesFromDate:(id)date toDate:(id)toDate withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dateCopy = date;
+  toDateCopy = toDate;
+  blockCopy = block;
+  if (dateCopy)
   {
-    if (v9)
+    if (toDateCopy)
     {
       v16 = 0;
-      v11 = [(HKStatisticsCollection *)self _statisticsDateIntervalAndIndex:&v16 forDate:v8];
+      v11 = [(HKStatisticsCollection *)self _statisticsDateIntervalAndIndex:&v16 forDate:dateCopy];
 
       if (v11)
       {
         v15 = 0;
-        v12 = [(HKStatisticsCollection *)self _statisticsDateIntervalAndIndex:&v15 forDate:v9];
+        v12 = [(HKStatisticsCollection *)self _statisticsDateIntervalAndIndex:&v15 forDate:toDateCopy];
 
         if (v12)
         {
@@ -859,7 +859,7 @@ LABEL_12:
           do
           {
             v13 = objc_autoreleasePoolPush();
-            v10[2](v10, v16++, &v14);
+            blockCopy[2](blockCopy, v16++, &v14);
             objc_autoreleasePoolPop(v13);
           }
 
@@ -870,11 +870,11 @@ LABEL_12:
   }
 }
 
-- (id)_statisticsDateIntervalAndIndex:(int64_t *)a3 forDate:(id)a4
+- (id)_statisticsDateIntervalAndIndex:(int64_t *)index forDate:(id)date
 {
-  if (a4)
+  if (date)
   {
-    v4 = [(NSDateComponents *)self->_statisticsInterval hk_dateIntervalForDate:a4 anchorDate:self->_anchorDate outIndex:a3];
+    v4 = [(NSDateComponents *)self->_statisticsInterval hk_dateIntervalForDate:date anchorDate:self->_anchorDate outIndex:index];
   }
 
   else
@@ -892,11 +892,11 @@ LABEL_12:
   return v4;
 }
 
-- (id)_statisticsDateIntervalAtIndex:(int64_t)a3
+- (id)_statisticsDateIntervalAtIndex:(int64_t)index
 {
   v5 = [HKDateInterval alloc];
-  v6 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:a3 toDate:self->_anchorDate];
-  v7 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:a3 + 1 toDate:self->_anchorDate];
+  v6 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:index toDate:self->_anchorDate];
+  v7 = [(NSDateComponents *)self->_statisticsInterval hk_dateByAddingInterval:index + 1 toDate:self->_anchorDate];
   v8 = [(HKDateInterval *)v5 initWithStartDate:v6 endDate:v7];
 
   return v8;

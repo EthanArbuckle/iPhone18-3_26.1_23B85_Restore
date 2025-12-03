@@ -1,51 +1,51 @@
 @interface _MRGroupSessionTokenProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRouteType:(id)a3;
+- (int)StringAsRouteType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGroupSessionTokenProtobuf
 
-- (int)StringAsRouteType:(id)a3
+- (int)StringAsRouteType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GroupSessionRouteTypeUnknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GroupSessionRouteTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeCarKit"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeCarKit"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeCarPlay"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeCarPlay"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeSpeaker"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeSpeaker"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeHomePod"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeHomePod"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeHomePodMini"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeHomePodMini"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"GroupSessionRouteTypeAppleTV"])
+  else if ([typeCopy isEqualToString:@"GroupSessionRouteTypeAppleTV"])
   {
     v4 = 11;
   }
@@ -64,20 +64,20 @@
   v8.receiver = self;
   v8.super_class = _MRGroupSessionTokenProtobuf;
   v4 = [(_MRGroupSessionTokenProtobuf *)&v8 description];
-  v5 = [(_MRGroupSessionTokenProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGroupSessionTokenProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   invitationData = self->_invitationData;
   if (invitationData)
   {
-    [v3 setObject:invitationData forKey:@"invitationData"];
+    [dictionary setObject:invitationData forKey:@"invitationData"];
   }
 
   routeType = self->_routeType;
@@ -126,15 +126,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_invitationData)
   {
     [_MRGroupSessionTokenProtobuf writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteDataField();
   routeType = self->_routeType;
   PBDataWriterWriteInt32Field();
@@ -169,34 +169,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setInvitationData:self->_invitationData];
-  v4 = v5;
-  v5[8] = self->_routeType;
+  toCopy = to;
+  [toCopy setInvitationData:self->_invitationData];
+  v4 = toCopy;
+  toCopy[8] = self->_routeType;
   if (self->_displayName)
   {
-    [v5 setDisplayName:?];
-    v4 = v5;
+    [toCopy setDisplayName:?];
+    v4 = toCopy;
   }
 
   if (self->_sessionIdentifier)
   {
-    [v5 setSessionIdentifier:?];
-    v4 = v5;
+    [toCopy setSessionIdentifier:?];
+    v4 = toCopy;
   }
 
   if (self->_sharedSecret)
   {
-    [v5 setSharedSecret:?];
-    v4 = v5;
+    [toCopy setSharedSecret:?];
+    v4 = toCopy;
   }
 
   if (self->_equivalentMediaIdentifier)
   {
-    [v5 setEquivalentMediaIdentifier:?];
-    v4 = v5;
+    [toCopy setEquivalentMediaIdentifier:?];
+    v4 = toCopy;
   }
 
   if (*&self->_has)
@@ -206,27 +206,27 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_invitationData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_invitationData copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 32) = self->_routeType;
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_sharedSecret copyWithZone:a3];
+  v12 = [(NSString *)self->_sharedSecret copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSString *)self->_equivalentMediaIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_equivalentMediaIdentifier copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
@@ -239,16 +239,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   invitationData = self->_invitationData;
-  if (invitationData | *(v4 + 3))
+  if (invitationData | *(equalCopy + 3))
   {
     if (![(NSData *)invitationData isEqual:?])
     {
@@ -256,13 +256,13 @@
     }
   }
 
-  if (self->_routeType != *(v4 + 8))
+  if (self->_routeType != *(equalCopy + 8))
   {
     goto LABEL_17;
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 1))
+  if (displayName | *(equalCopy + 1))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -271,7 +271,7 @@
   }
 
   sessionIdentifier = self->_sessionIdentifier;
-  if (sessionIdentifier | *(v4 + 5))
+  if (sessionIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)sessionIdentifier isEqual:?])
     {
@@ -280,7 +280,7 @@
   }
 
   sharedSecret = self->_sharedSecret;
-  if (sharedSecret | *(v4 + 6))
+  if (sharedSecret | *(equalCopy + 6))
   {
     if (![(NSString *)sharedSecret isEqual:?])
     {
@@ -289,7 +289,7 @@
   }
 
   equivalentMediaIdentifier = self->_equivalentMediaIdentifier;
-  if (equivalentMediaIdentifier | *(v4 + 2))
+  if (equivalentMediaIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)equivalentMediaIdentifier isEqual:?])
     {
@@ -297,10 +297,10 @@
     }
   }
 
-  v10 = (*(v4 + 60) & 1) == 0;
+  v10 = (*(equalCopy + 60) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) != 0 && self->_version == *(v4 + 14))
+    if ((*(equalCopy + 60) & 1) != 0 && self->_version == *(equalCopy + 14))
     {
       v10 = 1;
       goto LABEL_18;
@@ -336,44 +336,44 @@ LABEL_18:
   return (2654435761 * routeType) ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(_MRGroupSessionTokenProtobuf *)self setInvitationData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_routeType = *(v4 + 8);
-  if (*(v4 + 1))
+  self->_routeType = *(fromCopy + 8);
+  if (*(fromCopy + 1))
   {
     [(_MRGroupSessionTokenProtobuf *)self setDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRGroupSessionTokenProtobuf *)self setSessionIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(_MRGroupSessionTokenProtobuf *)self setSharedSecret:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_MRGroupSessionTokenProtobuf *)self setEquivalentMediaIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
-    self->_version = *(v4 + 14);
+    self->_version = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 }

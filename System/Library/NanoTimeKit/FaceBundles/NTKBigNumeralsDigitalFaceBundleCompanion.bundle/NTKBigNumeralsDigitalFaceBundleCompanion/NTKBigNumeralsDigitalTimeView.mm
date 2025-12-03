@@ -1,69 +1,69 @@
 @interface NTKBigNumeralsDigitalTimeView
-- (NTKBigNumeralsDigitalTimeView)initWithDevice:(id)a3;
+- (NTKBigNumeralsDigitalTimeView)initWithDevice:(id)device;
 - (NTKBigNumeralsDigitalTimeViewDelegate)delegate;
 - (void)_updateLabels;
-- (void)applyColorPalette:(id)a3;
-- (void)applyRainbowColorTransitionWithFraction:(double)a3 colorPalette:(id)a4;
-- (void)applyStyle:(unint64_t)a3;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromTypeface:(unint64_t)a4 toTypeface:(unint64_t)a5;
-- (void)applyTypeface:(unint64_t)a3;
+- (void)applyColorPalette:(id)palette;
+- (void)applyRainbowColorTransitionWithFraction:(double)fraction colorPalette:(id)palette;
+- (void)applyStyle:(unint64_t)style;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyTransitionFraction:(double)fraction fromTypeface:(unint64_t)typeface toTypeface:(unint64_t)toTypeface;
+- (void)applyTypeface:(unint64_t)typeface;
 - (void)cleanupTransition;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setShowingStatus:(BOOL)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setShowingStatus:(BOOL)status;
 @end
 
 @implementation NTKBigNumeralsDigitalTimeView
 
-- (NTKBigNumeralsDigitalTimeView)initWithDevice:(id)a3
+- (NTKBigNumeralsDigitalTimeView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v38.receiver = self;
   v38.super_class = NTKBigNumeralsDigitalTimeView;
   v6 = [(NTKBigNumeralsDigitalTimeView *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_statusBarTransitionFraction = 0.0;
     v8 = objc_opt_new();
     timeLabelsContainerView = v7->_timeLabelsContainerView;
     v7->_timeLabelsContainerView = v8;
 
     [(NTKBigNumeralsDigitalTimeView *)v7 addSubview:v7->_timeLabelsContainerView];
-    v10 = [NTKBigNumeralsDigitalColorPalette multicolorAxialGradientLayerForColor:3012 device:v5];
+    v10 = [NTKBigNumeralsDigitalColorPalette multicolorAxialGradientLayerForColor:3012 device:deviceCopy];
     gradientLayer = v7->_gradientLayer;
     v7->_gradientLayer = v10;
 
-    v12 = [(NTKBigNumeralsDigitalTimeView *)v7 layer];
-    [v12 insertSublayer:v7->_gradientLayer atIndex:0];
+    layer = [(NTKBigNumeralsDigitalTimeView *)v7 layer];
+    [layer insertSublayer:v7->_gradientLayer atIndex:0];
 
     v13 = objc_alloc_init(CALayer);
     topLabelColorLayer = v7->_topLabelColorLayer;
     v7->_topLabelColorLayer = v13;
 
-    v15 = [(NTKBigNumeralsDigitalTimeView *)v7 layer];
-    [v15 insertSublayer:v7->_topLabelColorLayer above:v7->_gradientLayer];
+    layer2 = [(NTKBigNumeralsDigitalTimeView *)v7 layer];
+    [layer2 insertSublayer:v7->_topLabelColorLayer above:v7->_gradientLayer];
 
     v16 = objc_alloc_init(CALayer);
     bottomLabelColorLayer = v7->_bottomLabelColorLayer;
     v7->_bottomLabelColorLayer = v16;
 
-    v18 = [(NTKBigNumeralsDigitalTimeView *)v7 layer];
-    [v18 insertSublayer:v7->_bottomLabelColorLayer above:v7->_gradientLayer];
+    layer3 = [(NTKBigNumeralsDigitalTimeView *)v7 layer];
+    [layer3 insertSublayer:v7->_bottomLabelColorLayer above:v7->_gradientLayer];
 
-    sub_2D6C(v5, v36);
+    sub_2D6C(deviceCopy, v36);
     v19 = v37;
-    if ([v5 deviceCategory] == &dword_0 + 3)
+    if ([deviceCopy deviceCategory] == &dword_0 + 3)
     {
       v20 = @"A";
     }
 
     else
     {
-      if ([v5 deviceCategory] != &dword_4)
+      if ([deviceCopy deviceCategory] != &dword_4)
       {
         v22 = @"__TokyoFontDO";
         v21 = @"__TokyoFontD";
@@ -77,14 +77,14 @@
     v22 = [@"__TokyoFontDO" stringByAppendingString:v20];
 LABEL_8:
     LOBYTE(v31) = 0;
-    v23 = [[NTKBigNumeralsTimeComponentLabel alloc] initWithDevice:v5 timeComponent:0 fontVariant:1 filledFontSectName:v21 outlineFontSectName:v22 dsoHandle:&dword_0 fontSize:v19 useLigatures:v31];
+    v23 = [[NTKBigNumeralsTimeComponentLabel alloc] initWithDevice:deviceCopy timeComponent:0 fontVariant:1 filledFontSectName:v21 outlineFontSectName:v22 dsoHandle:&dword_0 fontSize:v19 useLigatures:v31];
     topLabel = v7->_topLabel;
     v7->_topLabel = v23;
 
     [(NTKBigNumeralsTimeComponentLabel *)v7->_topLabel setTextAlignment:2];
     [(UIView *)v7->_timeLabelsContainerView addSubview:v7->_topLabel];
     LOBYTE(v32) = 0;
-    v25 = [[NTKBigNumeralsTimeComponentLabel alloc] initWithDevice:v5 timeComponent:1 fontVariant:1 filledFontSectName:v21 outlineFontSectName:v22 dsoHandle:&dword_0 fontSize:v19 useLigatures:v32];
+    v25 = [[NTKBigNumeralsTimeComponentLabel alloc] initWithDevice:deviceCopy timeComponent:1 fontVariant:1 filledFontSectName:v21 outlineFontSectName:v22 dsoHandle:&dword_0 fontSize:v19 useLigatures:v32];
     bottomLabel = v7->_bottomLabel;
     v7->_bottomLabel = v25;
 
@@ -119,29 +119,29 @@ LABEL_8:
   [(NTKBigNumeralsDigitalTimeView *)&v4 dealloc];
 }
 
-- (void)setShowingStatus:(BOOL)a3
+- (void)setShowingStatus:(BOOL)status
 {
-  if (self->_showingStatus != a3)
+  if (self->_showingStatus != status)
   {
     v15 = v6;
     v16 = v5;
     v17 = v3;
     v18 = v4;
-    v7 = a3;
-    self->_showingStatus = a3;
+    statusCopy = status;
+    self->_showingStatus = status;
     v14 = 0;
     v12 = 0u;
     memset(v13, 0, sizeof(v13));
     sub_2D6C(self->_device, &v12);
     v9 = &v13[1] + 1;
-    if (!v7)
+    if (!statusCopy)
     {
       v9 = v13;
     }
 
     v10 = *v9;
     v11 = 0.0;
-    if (v7)
+    if (statusCopy)
     {
       v11 = 1.0;
     }
@@ -153,9 +153,9 @@ LABEL_8:
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  objc_storeStrong(&self->_overrideDate, a3);
+  objc_storeStrong(&self->_overrideDate, date);
 
   [(NTKBigNumeralsDigitalTimeView *)self _updateLabels];
 }
@@ -178,8 +178,8 @@ LABEL_8:
   [(NTKBigNumeralsTimeComponentLabel *)self->_bottomLabel setDate:v6];
   [(NTKBigNumeralsDigitalTimeView *)self setNeedsLayout];
   [(NTKBigNumeralsDigitalTimeView *)self layoutIfNeeded];
-  v5 = [(NTKBigNumeralsDigitalTimeView *)self delegate];
-  [v5 bigNumeralsDigitalTimeViewDidChangeTime];
+  delegate = [(NTKBigNumeralsDigitalTimeView *)self delegate];
+  [delegate bigNumeralsDigitalTimeViewDidChangeTime];
 }
 
 - (void)layoutSubviews
@@ -221,14 +221,14 @@ LABEL_8:
   v25 = v47;
   v26 = v43 - v47;
   v27 = v18 - v47;
-  v28 = [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel font];
-  [v28 ascender];
+  font = [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel font];
+  [font ascender];
   v30 = v29 + v25 * 2.0;
 
   [(CALayer *)self->_topLabelColorLayer setFrame:v27, v26, rect + v25 * 2.0, v30];
   v31 = v24 - v25;
-  v32 = [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel font];
-  [v32 ascender];
+  font2 = [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel font];
+  [font2 ascender];
   v34 = v33 + v25 * 2.0;
 
   [(CALayer *)self->_bottomLabelColorLayer setFrame:v22 - v25, v31, v41 + v25 * 2.0, v34];
@@ -255,73 +255,73 @@ LABEL_8:
   [CATransaction setDisableActions:0];
 }
 
-- (void)applyTypeface:(unint64_t)a3
+- (void)applyTypeface:(unint64_t)typeface
 {
-  self->_typeface = a3;
+  self->_typeface = typeface;
   [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel setTypeface:?];
   bottomLabel = self->_bottomLabel;
 
-  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel setTypeface:a3];
+  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel setTypeface:typeface];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromTypeface:(unint64_t)a4 toTypeface:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromTypeface:(unint64_t)typeface toTypeface:(unint64_t)toTypeface
 {
-  if (a3 <= 0.5)
+  if (fraction <= 0.5)
   {
-    v9 = a4;
+    toTypefaceCopy = typeface;
   }
 
   else
   {
-    v9 = a5;
+    toTypefaceCopy = toTypeface;
   }
 
-  self->_typeface = v9;
-  [NTKBigNumeralsTimeComponentLabel applyTransitionFraction:"applyTransitionFraction:fromTypeface:toTypeface:" fromTypeface:a3 toTypeface:?];
+  self->_typeface = toTypefaceCopy;
+  [NTKBigNumeralsTimeComponentLabel applyTransitionFraction:"applyTransitionFraction:fromTypeface:toTypeface:" fromTypeface:fraction toTypeface:?];
   bottomLabel = self->_bottomLabel;
 
-  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel applyTransitionFraction:a4 fromTypeface:a5 toTypeface:a3];
+  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel applyTransitionFraction:typeface fromTypeface:toTypeface toTypeface:fraction];
 }
 
-- (void)applyStyle:(unint64_t)a3
+- (void)applyStyle:(unint64_t)style
 {
-  self->_style = a3;
-  [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel setStyle:a3 == 2];
+  self->_style = style;
+  [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel setStyle:style == 2];
   bottomLabel = self->_bottomLabel;
 
-  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel setStyle:a3 - 1 < 2];
+  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel setStyle:style - 1 < 2];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a3 <= 0.5)
+  if (fraction <= 0.5)
   {
-    v9 = a4;
+    toStyleCopy = style;
   }
 
   else
   {
-    v9 = a5;
+    toStyleCopy = toStyle;
   }
 
-  self->_style = v9;
-  [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel applyTransitionFraction:a4 == 2 fromStyle:a5 == 2 toStyle:a3];
+  self->_style = toStyleCopy;
+  [(NTKBigNumeralsTimeComponentLabel *)self->_topLabel applyTransitionFraction:style == 2 fromStyle:toStyle == 2 toStyle:fraction];
   bottomLabel = self->_bottomLabel;
 
-  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel applyTransitionFraction:a4 - 1 < 2 fromStyle:a5 - 1 < 2 toStyle:a3];
+  [(NTKBigNumeralsTimeComponentLabel *)bottomLabel applyTransitionFraction:style - 1 < 2 fromStyle:toStyle - 1 < 2 toStyle:fraction];
 }
 
-- (void)applyColorPalette:(id)a3
+- (void)applyColorPalette:(id)palette
 {
-  v9 = a3;
-  objc_storeStrong(&self->_colorPalette, a3);
-  v5 = [v9 hourDigits];
-  v6 = [v9 minuteDigits];
+  paletteCopy = palette;
+  objc_storeStrong(&self->_colorPalette, palette);
+  hourDigits = [paletteCopy hourDigits];
+  minuteDigits = [paletteCopy minuteDigits];
   [CATransaction setDisableActions:1];
   [(CALayer *)self->_topLabelColorLayer opacity];
   if (v7 == 1.0)
   {
-    -[CALayer setBackgroundColor:](self->_topLabelColorLayer, "setBackgroundColor:", [v5 CGColor]);
+    -[CALayer setBackgroundColor:](self->_topLabelColorLayer, "setBackgroundColor:", [hourDigits CGColor]);
   }
 
   else
@@ -332,31 +332,31 @@ LABEL_8:
   [(CALayer *)self->_bottomLabelColorLayer opacity];
   if (v8 == 1.0)
   {
-    -[CALayer setBackgroundColor:](self->_bottomLabelColorLayer, "setBackgroundColor:", [v6 CGColor]);
+    -[CALayer setBackgroundColor:](self->_bottomLabelColorLayer, "setBackgroundColor:", [minuteDigits CGColor]);
     [(CAGradientLayer *)self->_gradientLayer setHidden:1];
   }
 
   [CATransaction setDisableActions:0];
 }
 
-- (void)applyRainbowColorTransitionWithFraction:(double)a3 colorPalette:(id)a4
+- (void)applyRainbowColorTransitionWithFraction:(double)fraction colorPalette:(id)palette
 {
-  v10 = a4;
+  paletteCopy = palette;
   [CATransaction setDisableActions:1];
-  [(CAGradientLayer *)self->_gradientLayer setHidden:fabs(a3) < 0.00000011920929];
-  v6 = 1.0 - a3;
-  *&a3 = 1.0 - a3;
-  LODWORD(v6) = LODWORD(a3);
+  [(CAGradientLayer *)self->_gradientLayer setHidden:fabs(fraction) < 0.00000011920929];
+  v6 = 1.0 - fraction;
+  *&fraction = 1.0 - fraction;
+  LODWORD(v6) = LODWORD(fraction);
   [(CALayer *)self->_topLabelColorLayer setOpacity:v6];
-  LODWORD(v7) = LODWORD(a3);
+  LODWORD(v7) = LODWORD(fraction);
   [(CALayer *)self->_bottomLabelColorLayer setOpacity:v7];
   if (([(CAGradientLayer *)self->_gradientLayer isHidden]& 1) == 0)
   {
-    v8 = [v10 hourDigits];
-    -[CALayer setBackgroundColor:](self->_topLabelColorLayer, "setBackgroundColor:", [v8 CGColor]);
+    hourDigits = [paletteCopy hourDigits];
+    -[CALayer setBackgroundColor:](self->_topLabelColorLayer, "setBackgroundColor:", [hourDigits CGColor]);
 
-    v9 = [v10 minuteDigits];
-    -[CALayer setBackgroundColor:](self->_bottomLabelColorLayer, "setBackgroundColor:", [v9 CGColor]);
+    minuteDigits = [paletteCopy minuteDigits];
+    -[CALayer setBackgroundColor:](self->_bottomLabelColorLayer, "setBackgroundColor:", [minuteDigits CGColor]);
   }
 
   [CATransaction setDisableActions:0];

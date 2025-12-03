@@ -32,12 +32,12 @@
 
 - (void)updateDebugText
 {
-  v3 = [(VectorKitFloatingDebugViewController *)self view];
-  [v3 setHidden:0];
+  view = [(VectorKitFloatingDebugViewController *)self view];
+  [view setHidden:0];
 
-  v5 = [(VectorKitFloatingDebugViewController *)self debugText];
-  v4 = [(VectorKitFloatingDebugViewController *)self debugLabel];
-  [v4 setAttributedText:v5];
+  debugText = [(VectorKitFloatingDebugViewController *)self debugText];
+  debugLabel = [(VectorKitFloatingDebugViewController *)self debugLabel];
+  [debugLabel setAttributedText:debugText];
 }
 
 - (id)debugText
@@ -62,10 +62,10 @@
   v10 = [v8 initWithString:v9 attributes:v5];
   [v6 appendAttributedString:v10];
 
-  v11 = [(VectorKitFloatingDebugViewController *)self platformController];
-  v12 = [v11 chromeViewController];
-  v13 = [v12 mapView];
-  v14 = [v13 _mapLayer];
+  platformController = [(VectorKitFloatingDebugViewController *)self platformController];
+  chromeViewController = [platformController chromeViewController];
+  mapView = [chromeViewController mapView];
+  _mapLayer = [mapView _mapLayer];
 
   v23[0] = NSForegroundColorAttributeName;
   v15 = +[UIColor whiteColor];
@@ -76,7 +76,7 @@
   v17 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
 
   v18 = [NSAttributedString alloc];
-  v19 = [v14 debugLabelString:1];
+  v19 = [_mapLayer debugLabelString:1];
   v20 = [NSString stringWithFormat:@"\nVKMapView:\n%@", v19];
   v21 = [v18 initWithString:v20 attributes:v17];
   [v6 appendAttributedString:v21];
@@ -97,14 +97,14 @@
   v4.receiver = self;
   v4.super_class = VectorKitFloatingDebugViewController;
   [(MapsFloatingDebugViewController *)&v4 updateViewForCurrentState];
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v3 == 1)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState == 1)
   {
     [(VectorKitFloatingDebugViewController *)self updateDebugText];
     [(VectorKitFloatingDebugViewController *)self startDebugInfoRefreshTimer];
   }
 
-  else if (!v3)
+  else if (!viewState)
   {
     [(VectorKitFloatingDebugViewController *)self setDebugInfoRefreshTimer:0];
   }
@@ -136,8 +136,8 @@
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v4 = [UIImage systemImageNamed:@"map.fill" withConfiguration:v3];
   v5 = [v4 imageWithRenderingMode:2];
-  v6 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v6 setImage:v5];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v5];
 
   v28 = +[NSMutableArray array];
   v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -149,28 +149,28 @@
   debugLabel = self->_debugLabel;
   self->_debugLabel = v7;
 
-  v10 = [(MapsFloatingDebugViewController *)self contentView];
-  [v10 addSubview:self->_debugLabel];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView addSubview:self->_debugLabel];
 
-  v26 = [(UILabel *)self->_debugLabel topAnchor];
-  v27 = [(MapsFloatingDebugViewController *)self contentView];
-  v25 = [v27 topAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:5.0];
+  topAnchor = [(UILabel *)self->_debugLabel topAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v30[0] = v24;
-  v22 = [(UILabel *)self->_debugLabel bottomAnchor];
-  v23 = [(MapsFloatingDebugViewController *)self contentView];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:-5.0];
+  bottomAnchor = [(UILabel *)self->_debugLabel bottomAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v30[1] = v20;
-  v11 = [(UILabel *)self->_debugLabel leadingAnchor];
-  v12 = [(MapsFloatingDebugViewController *)self contentView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:5.0];
+  leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v30[2] = v14;
-  v15 = [(UILabel *)self->_debugLabel trailingAnchor];
-  v16 = [(MapsFloatingDebugViewController *)self contentView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-5.0];
+  trailingAnchor = [(UILabel *)self->_debugLabel trailingAnchor];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
   v30[3] = v18;
   v19 = [NSArray arrayWithObjects:v30 count:4];
   [v28 addObjectsFromArray:v19];
@@ -186,9 +186,9 @@
   if (v2)
   {
     v3 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v4 = [v3 platformController];
+    platformController = [v3 platformController];
     platformController = v2->_platformController;
-    v2->_platformController = v4;
+    v2->_platformController = platformController;
   }
 
   return v2;

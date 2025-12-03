@@ -1,76 +1,76 @@
 @interface SportsFavoritesOnboardingViewController
-- (_TtC8VideosUI39SportsFavoritesOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI39SportsFavoritesOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)doConfirmationAction;
 - (void)doDeferAction;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SportsFavoritesOnboardingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3988438();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3988938(v4);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3988B84(v4);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3988C70();
 }
 
 - (void)doConfirmationAction
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39894FC();
 }
 
 - (void)doDeferAction
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E398AB90();
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1E398ADEC(v6, a4);
+  selfCopy = self;
+  sub_1E398ADEC(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC8VideosUI39SportsFavoritesOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI39SportsFavoritesOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E398AEDC();
 }
 

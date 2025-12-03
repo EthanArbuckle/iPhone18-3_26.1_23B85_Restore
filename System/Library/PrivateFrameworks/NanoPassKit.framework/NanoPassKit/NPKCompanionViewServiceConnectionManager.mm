@@ -1,8 +1,8 @@
 @interface NPKCompanionViewServiceConnectionManager
 - (NPDCompanionRemotePaymentPassActionsServiceSession)remotePassActionsServiceSession;
 - (NPKCompanionViewServiceConnectionManager)init;
-- (void)viewServiceConnectionServerService:(id)a3 didRequestPresentRemotePassItemSelectionViewControllerForRequest:(id)a4 contact:(id)a5 completion:(id)a6;
-- (void)viewServiceConnectionServerService:(id)a3 didRequestPresentRemotePassValueEntryViewControllerForRequest:(id)a4 contact:(id)a5 completion:(id)a6;
+- (void)viewServiceConnectionServerService:(id)service didRequestPresentRemotePassItemSelectionViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion;
+- (void)viewServiceConnectionServerService:(id)service didRequestPresentRemotePassValueEntryViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion;
 @end
 
 @implementation NPKCompanionViewServiceConnectionManager
@@ -40,22 +40,22 @@
   return remotePassActionsServiceSession;
 }
 
-- (void)viewServiceConnectionServerService:(id)a3 didRequestPresentRemotePassValueEntryViewControllerForRequest:(id)a4 contact:(id)a5 completion:(id)a6
+- (void)viewServiceConnectionServerService:(id)service didRequestPresentRemotePassValueEntryViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(NPKCompanionViewServiceConnectionManager *)self remotePassActionsServiceSession];
-  [v12 presentRemotePassValueEntryViewControllerForRequest:v11 contact:v10 completion:v9];
+  completionCopy = completion;
+  contactCopy = contact;
+  requestCopy = request;
+  remotePassActionsServiceSession = [(NPKCompanionViewServiceConnectionManager *)self remotePassActionsServiceSession];
+  [remotePassActionsServiceSession presentRemotePassValueEntryViewControllerForRequest:requestCopy contact:contactCopy completion:completionCopy];
 }
 
-- (void)viewServiceConnectionServerService:(id)a3 didRequestPresentRemotePassItemSelectionViewControllerForRequest:(id)a4 contact:(id)a5 completion:(id)a6
+- (void)viewServiceConnectionServerService:(id)service didRequestPresentRemotePassItemSelectionViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(NPKCompanionViewServiceConnectionManager *)self remotePassActionsServiceSession];
-  [v12 presentRemotePassSelectItemViewControllerForRequest:v11 contact:v10 completion:v9];
+  completionCopy = completion;
+  contactCopy = contact;
+  requestCopy = request;
+  remotePassActionsServiceSession = [(NPKCompanionViewServiceConnectionManager *)self remotePassActionsServiceSession];
+  [remotePassActionsServiceSession presentRemotePassSelectItemViewControllerForRequest:requestCopy contact:contactCopy completion:completionCopy];
 }
 
 @end

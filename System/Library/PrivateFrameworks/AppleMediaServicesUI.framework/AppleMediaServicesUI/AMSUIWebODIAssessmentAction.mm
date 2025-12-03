@@ -1,21 +1,21 @@
 @interface AMSUIWebODIAssessmentAction
-- (AMSUIWebODIAssessmentAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebODIAssessmentAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
-- (id)sessionIdentifierForString:(id)a3;
-- (unint64_t)accountTypeForString:(id)a3;
+- (id)sessionIdentifierForString:(id)string;
+- (unint64_t)accountTypeForString:(id)string;
 @end
 
 @implementation AMSUIWebODIAssessmentAction
 
-- (AMSUIWebODIAssessmentAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebODIAssessmentAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = AMSUIWebODIAssessmentAction;
-  v7 = [(AMSUIWebAction *)&v21 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v21 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"additionalAttributes"];
+    v8 = [objectCopy objectForKeyedSubscript:@"additionalAttributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
     additionalAttributes = v7->_additionalAttributes;
     v7->_additionalAttributes = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"accountType"];
+    v11 = [objectCopy objectForKeyedSubscript:@"accountType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
     rawAccountType = v7->_rawAccountType;
     v7->_rawAccountType = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
+    v14 = [objectCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
     rawBundleIdentifer = v7->_rawBundleIdentifer;
     v7->_rawBundleIdentifer = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"sessionIdentifer"];
+    v17 = [objectCopy objectForKeyedSubscript:@"sessionIdentifer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,15 +84,15 @@
   v46 = *MEMORY[0x1E69E9840];
   v41.receiver = self;
   v41.super_class = AMSUIWebODIAssessmentAction;
-  v3 = [(AMSUIWebAction *)&v41 runAction];
-  v4 = [(AMSUIWebODIAssessmentAction *)self rawAccountType];
-  v5 = [(AMSUIWebODIAssessmentAction *)self accountTypeForString:v4];
+  runAction = [(AMSUIWebAction *)&v41 runAction];
+  rawAccountType = [(AMSUIWebODIAssessmentAction *)self rawAccountType];
+  v5 = [(AMSUIWebODIAssessmentAction *)self accountTypeForString:rawAccountType];
 
-  v6 = [(AMSUIWebODIAssessmentAction *)self rawSessionIdentifer];
-  v7 = [(AMSUIWebODIAssessmentAction *)self sessionIdentifierForString:v6];
+  rawSessionIdentifer = [(AMSUIWebODIAssessmentAction *)self rawSessionIdentifer];
+  v7 = [(AMSUIWebODIAssessmentAction *)self sessionIdentifierForString:rawSessionIdentifer];
 
-  v8 = [(AMSUIWebODIAssessmentAction *)self rawBundleIdentifer];
-  if (v8)
+  rawBundleIdentifer = [(AMSUIWebODIAssessmentAction *)self rawBundleIdentifer];
+  if (rawBundleIdentifer)
   {
     if (v7)
     {
@@ -107,14 +107,14 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  v19 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v19)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v19 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v21 = objc_opt_class();
     v22 = AMSLogKey();
@@ -122,11 +122,11 @@ LABEL_17:
     v43 = v21;
     v44 = 2114;
     v45 = v22;
-    _os_log_impl(&dword_1BB036000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bundle identifier passed. Will fallback to process bundle identifier.", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bundle identifier passed. Will fallback to process bundle identifier.", buf, 0x16u);
   }
 
-  v23 = [MEMORY[0x1E698CAC8] currentProcess];
-  v8 = [v23 bundleIdentifier];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  rawBundleIdentifer = [currentProcess bundleIdentifier];
 
   if (!v7)
   {
@@ -134,16 +134,16 @@ LABEL_17:
   }
 
 LABEL_3:
-  if (!v8)
+  if (!rawBundleIdentifer)
   {
-    v25 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v25)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v25 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v27 = objc_opt_class();
       v28 = AMSLogKey();
@@ -151,7 +151,7 @@ LABEL_3:
       v43 = v27;
       v44 = 2114;
       v45 = v28;
-      _os_log_impl(&dword_1BB036000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bundle identifier found. Terminating assessment action.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bundle identifier found. Terminating assessment action.", buf, 0x16u);
     }
 
     v24 = MEMORY[0x1E698CAD0];
@@ -159,17 +159,17 @@ LABEL_3:
   }
 
   v9 = objc_alloc(MEMORY[0x1E698CA90]);
-  v10 = [(AMSUIWebAction *)self context];
-  v11 = [v10 bag];
-  v12 = [v9 initWithSessionIdentifier:v7 accountType:v5 bundleIdentifier:v8 bag:v11];
+  context = [(AMSUIWebAction *)self context];
+  v11 = [context bag];
+  v12 = [v9 initWithSessionIdentifier:v7 accountType:v5 bundleIdentifier:rawBundleIdentifer bag:v11];
 
-  v13 = [(AMSUIWebODIAssessmentAction *)self additionalAttributes];
+  additionalAttributes = [(AMSUIWebODIAssessmentAction *)self additionalAttributes];
 
-  if (v13)
+  if (additionalAttributes)
   {
     v14 = objc_alloc(MEMORY[0x1E698CA88]);
-    v15 = [(AMSUIWebODIAssessmentAction *)self additionalAttributes];
-    v16 = [v14 initWithAttributes:v15];
+    additionalAttributes2 = [(AMSUIWebODIAssessmentAction *)self additionalAttributes];
+    v16 = [v14 initWithAttributes:additionalAttributes2];
 
     v17 = [v12 provideUpdateWithAttributes:v16];
     v39[0] = MEMORY[0x1E69E9820];
@@ -178,19 +178,19 @@ LABEL_3:
     v39[3] = &unk_1E7F26898;
     v39[4] = self;
     v40 = v12;
-    v18 = [v17 continueWithBlock:v39];
+    getAssessment = [v17 continueWithBlock:v39];
   }
 
   else
   {
-    v31 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v31)
+    mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]3)
     {
-      v31 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v32 = [v31 OSLogObject];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [mEMORY[0x1E698C968]3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v33 = objc_opt_class();
       v34 = AMSLogKey();
@@ -198,10 +198,10 @@ LABEL_3:
       v43 = v33;
       v44 = 2114;
       v45 = v34;
-      _os_log_impl(&dword_1BB036000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running ODISession to get assessment.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running ODISession to get assessment.", buf, 0x16u);
     }
 
-    v18 = [v12 getAssessment];
+    getAssessment = [v12 getAssessment];
   }
 
   v37[0] = MEMORY[0x1E69E9820];
@@ -211,7 +211,7 @@ LABEL_3:
   v37[4] = self;
   v38 = v12;
   v29 = v12;
-  v30 = [v18 thenWithBlock:v37];
+  v30 = [getAssessment thenWithBlock:v37];
 
 LABEL_24:
   v35 = *MEMORY[0x1E69E9840];
@@ -286,26 +286,26 @@ id __40__AMSUIWebODIAssessmentAction_runAction__block_invoke_28(uint64_t a1, voi
   return v14;
 }
 
-- (unint64_t)accountTypeForString:(id)a3
+- (unint64_t)accountTypeForString:(id)string
 {
-  v3 = a3;
-  v4 = [&unk_1F394AA30 objectForKeyedSubscript:v3];
+  stringCopy = string;
+  v4 = [&unk_1F394AA30 objectForKeyedSubscript:stringCopy];
 
   if (v4)
   {
-    v5 = [&unk_1F394AA30 objectForKeyedSubscript:v3];
-    v6 = [v5 integerValue];
+    v5 = [&unk_1F394AA30 objectForKeyedSubscript:stringCopy];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 1;
+    integerValue = 1;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (id)sessionIdentifierForString:(id)a3
+- (id)sessionIdentifierForString:(id)string
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E698C710];
@@ -317,9 +317,9 @@ id __40__AMSUIWebODIAssessmentAction_runAction__block_invoke_28(uint64_t a1, voi
   v11[2] = @"idUpdate";
   v12[2] = *MEMORY[0x1E698C720];
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  stringCopy = string;
   v7 = [v5 dictionaryWithObjects:v12 forKeys:v11 count:3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:stringCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 

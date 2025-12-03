@@ -2,60 +2,60 @@
 + (NavigationFeedbackCollector)sharedFeedbackCollector;
 - (BOOL)_isSuppressed;
 - (BOOL)_shouldSendFeedback;
-- (NavigationFeedbackCollector)initWithNavigationService:(id)a3;
+- (NavigationFeedbackCollector)initWithNavigationService:(id)service;
 - (id)_stateOfChargeOfCurrentVehicle;
-- (id)_trafficCameraFeedbackForEventFeedback:(id)a3;
-- (int)_navigationModeTypeForState:(unint64_t)a3;
+- (id)_trafficCameraFeedbackForEventFeedback:(id)feedback;
+- (int)_navigationModeTypeForState:(unint64_t)state;
 - (void)_addArrival;
 - (void)_addGuidance;
-- (void)_captureArrivalAtWaypoint:(id)a3;
+- (void)_captureArrivalAtWaypoint:(id)waypoint;
 - (void)_captureInitialEVRouteState;
 - (void)_captureSessionlessEVRouteMessageIfNeeded;
-- (void)_captureVirtualGarageAnalytics:(id)a3;
-- (void)_completeCurrentStepFeedback:(BOOL)a3;
-- (void)_didSelectAlternate:(unint64_t)a3 forPrimaryString:(BOOL)a4 inSign:(id)a5;
+- (void)_captureVirtualGarageAnalytics:(id)analytics;
+- (void)_completeCurrentStepFeedback:(BOOL)feedback;
+- (void)_didSelectAlternate:(unint64_t)alternate forPrimaryString:(BOOL)string inSign:(id)sign;
 - (void)_didStartManeuver;
-- (void)_finalizeDirectionsFeedbackWithReason:(int64_t)a3;
+- (void)_finalizeDirectionsFeedbackWithReason:(int64_t)reason;
 - (void)_flushModalitiesFeedback;
 - (void)_flushStepFeedback;
 - (void)_handleNavigationErrors;
-- (void)_initializeDirectionsFeedbackWithNavigationState:(unint64_t)a3;
-- (void)_openNewStepFeedbackWithRoute:(id)a3 step:(id)a4;
-- (void)_runAsyncBlockOnLocalQueue:(id)a3;
-- (void)_runAsyncBlockOnLocalQueueIfNotSuppressed:(id)a3;
-- (void)_runAsyncBlockOnMainQueue:(id)a3;
+- (void)_initializeDirectionsFeedbackWithNavigationState:(unint64_t)state;
+- (void)_openNewStepFeedbackWithRoute:(id)route step:(id)step;
+- (void)_runAsyncBlockOnLocalQueue:(id)queue;
+- (void)_runAsyncBlockOnLocalQueueIfNotSuppressed:(id)suppressed;
+- (void)_runAsyncBlockOnMainQueue:(id)queue;
 - (void)_updateFeedbackCollectorWithEVData;
-- (void)addAlightNotificationFeedback:(id)a3;
-- (void)addTrafficRerouteFeedback:(id)a3;
-- (void)carManeuverView:(id)a3 didSelectAlternate:(unint64_t)a4 forPrimaryString:(BOOL)a5 inSign:(id)a6;
+- (void)addAlightNotificationFeedback:(id)feedback;
+- (void)addTrafficRerouteFeedback:(id)feedback;
+- (void)carManeuverView:(id)view didSelectAlternate:(unint64_t)alternate forPrimaryString:(BOOL)string inSign:(id)sign;
 - (void)dealloc;
-- (void)navSignView:(id)a3 didSelectAlternate:(unint64_t)a4 forPrimaryString:(BOOL)a5 inSign:(id)a6;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didEndWithReason:(unint64_t)a4;
-- (void)navigationService:(id)a3 didReceiveRoutingServiceError:(id)a4;
-- (void)navigationService:(id)a3 didReceiveTrafficIncidentAlert:(id)a4 responseCallback:(id)a5;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didStartRecordingTraceWithPath:(id)a4;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateAlternateRoutes:(id)a4 traffics:(id)a5;
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateETAResponse:(id)a4 forRoute:(id)a5;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateMotionType:(unint64_t)a4 confidence:(unint64_t)a5;
-- (void)navigationService:(id)a3 newGuidanceEventFeedback:(id)a4;
-- (void)navigationService:(id)a3 updatedGuidanceEventFeedback:(id)a4;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)offeredEVRerouteWithAlternateRoute:(id)a3 wasAccepted:(BOOL)a4;
+- (void)navSignView:(id)view didSelectAlternate:(unint64_t)alternate forPrimaryString:(BOOL)string inSign:(id)sign;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didEndWithReason:(unint64_t)reason;
+- (void)navigationService:(id)service didReceiveRoutingServiceError:(id)error;
+- (void)navigationService:(id)service didReceiveTrafficIncidentAlert:(id)alert responseCallback:(id)callback;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didStartRecordingTraceWithPath:(id)path;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateAlternateRoutes:(id)routes traffics:(id)traffics;
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateETAResponse:(id)response forRoute:(id)route;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateMotionType:(unint64_t)type confidence:(unint64_t)confidence;
+- (void)navigationService:(id)service newGuidanceEventFeedback:(id)feedback;
+- (void)navigationService:(id)service updatedGuidanceEventFeedback:(id)feedback;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)offeredEVRerouteWithAlternateRoute:(id)route wasAccepted:(BOOL)accepted;
 - (void)reset;
-- (void)setAddedChargingStationThroughSAR:(BOOL)a3;
-- (void)setCurrentRoute:(id)a3;
-- (void)setIsConnectedToCarplay:(BOOL)a3;
-- (void)setJunctionViewDisplayed:(id)a3;
+- (void)setAddedChargingStationThroughSAR:(BOOL)r;
+- (void)setCurrentRoute:(id)route;
+- (void)setIsConnectedToCarplay:(BOOL)carplay;
+- (void)setJunctionViewDisplayed:(id)displayed;
 - (void)updateAudioPreferences;
 - (void)virtualGarageDidBecomeAvailable;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation NavigationFeedbackCollector
@@ -158,135 +158,135 @@
 
 - (BOOL)_isSuppressed
 {
-  v2 = [(NavigationFeedbackCollector *)self navigationService];
-  [v2 state];
+  navigationService = [(NavigationFeedbackCollector *)self navigationService];
+  [navigationService state];
   IsNavigating = MNNavigationServiceStateIsNavigating();
 
   return IsNavigating ^ 1;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100D7E8EC;
   v5[3] = &unk_1016532F0;
-  v6 = a3;
-  v4 = v6;
+  updateCopy = update;
+  v4 = updateCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v5];
 }
 
-- (void)carManeuverView:(id)a3 didSelectAlternate:(unint64_t)a4 forPrimaryString:(BOOL)a5 inSign:(id)a6
+- (void)carManeuverView:(id)view didSelectAlternate:(unint64_t)alternate forPrimaryString:(BOOL)string inSign:(id)sign
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100D7E9F4;
   v9[3] = &unk_101653788;
-  v12 = a5;
-  v10 = a6;
-  v11 = a4;
-  v8 = v10;
+  stringCopy = string;
+  signCopy = sign;
+  alternateCopy = alternate;
+  v8 = signCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v9];
 }
 
-- (void)navSignView:(id)a3 didSelectAlternate:(unint64_t)a4 forPrimaryString:(BOOL)a5 inSign:(id)a6
+- (void)navSignView:(id)view didSelectAlternate:(unint64_t)alternate forPrimaryString:(BOOL)string inSign:(id)sign
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100D7EAAC;
   v9[3] = &unk_101653788;
-  v12 = a5;
-  v10 = a6;
-  v11 = a4;
-  v8 = v10;
+  stringCopy = string;
+  signCopy = sign;
+  alternateCopy = alternate;
+  v8 = signCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v9];
 }
 
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v16 = a3;
-  v7 = [a4 arrivalState];
-  if ((v7 - 5) < 2)
+  serviceCopy = service;
+  arrivalState = [info arrivalState];
+  if ((arrivalState - 5) < 2)
   {
     ++self->_parkingCount;
   }
 
-  else if (v7 == 4)
+  else if (arrivalState == 4)
   {
     ++self->_arrivedCount;
-    v12 = [(NavigationFeedbackCollector *)self lastLocation];
-    v13 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v13 setArrivalLocation:v12];
+    lastLocation = [(NavigationFeedbackCollector *)self lastLocation];
+    feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector setArrivalLocation:lastLocation];
   }
 
-  else if (v7 == 1)
+  else if (arrivalState == 1)
   {
-    v8 = [v16 alternateWalkingRouteDisplayETAInfo];
+    alternateWalkingRouteDisplayETAInfo = [serviceCopy alternateWalkingRouteDisplayETAInfo];
 
-    if (v8)
+    if (alternateWalkingRouteDisplayETAInfo)
     {
-      v9 = [v16 alternateWalkingRouteDisplayETAInfo];
-      v10 = [v9 remainingMinutesToEndOfRoute];
-      v11 = [(NavigationFeedbackCollector *)self feedbackCollector];
-      [v11 setTimeBetweenParkedAndArrival:v10];
+      alternateWalkingRouteDisplayETAInfo2 = [serviceCopy alternateWalkingRouteDisplayETAInfo];
+      remainingMinutesToEndOfRoute = [alternateWalkingRouteDisplayETAInfo2 remainingMinutesToEndOfRoute];
+      feedbackCollector2 = [(NavigationFeedbackCollector *)self feedbackCollector];
+      [feedbackCollector2 setTimeBetweenParkedAndArrival:remainingMinutesToEndOfRoute];
     }
 
     else
     {
-      v9 = [(NavigationFeedbackCollector *)self feedbackCollector];
-      [v9 setTimeBetweenParkedAndArrival:-1.0];
+      alternateWalkingRouteDisplayETAInfo2 = [(NavigationFeedbackCollector *)self feedbackCollector];
+      [alternateWalkingRouteDisplayETAInfo2 setTimeBetweenParkedAndArrival:-1.0];
     }
 
-    v14 = [(NavigationFeedbackCollector *)self lastLocation];
-    v15 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v15 setParkingDetectionLocation:v14];
+    lastLocation2 = [(NavigationFeedbackCollector *)self lastLocation];
+    feedbackCollector3 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector3 setParkingDetectionLocation:lastLocation2];
 
     ++self->_parkedCount;
   }
 }
 
-- (void)navigationService:(id)a3 didReceiveTrafficIncidentAlert:(id)a4 responseCallback:(id)a5
+- (void)navigationService:(id)service didReceiveTrafficIncidentAlert:(id)alert responseCallback:(id)callback
 {
-  v6 = a4;
-  [(NavigationFeedbackCollector *)self setPreviousAlert:v6];
+  alertCopy = alert;
+  [(NavigationFeedbackCollector *)self setPreviousAlert:alertCopy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100D7ECDC;
   v8[3] = &unk_1016532F0;
-  v9 = v6;
-  v7 = v6;
+  v9 = alertCopy;
+  v7 = alertCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v8];
 }
 
-- (void)navigationService:(id)a3 didStartRecordingTraceWithPath:(id)a4
+- (void)navigationService:(id)service didStartRecordingTraceWithPath:(id)path
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100D7EE44;
   v6[3] = &unk_1016532F0;
-  v7 = a4;
-  v5 = v7;
+  pathCopy = path;
+  v5 = pathCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v6];
 }
 
-- (void)navigationService:(id)a3 didUpdateMotionType:(unint64_t)a4 confidence:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateMotionType:(unint64_t)type confidence:(unint64_t)confidence
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100D7EEC0;
   v5[3] = &unk_101653720;
-  v5[4] = a4;
-  v5[5] = a5;
+  v5[4] = type;
+  v5[5] = confidence;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v5];
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v6 = *&a4;
-  v8 = a3;
+  desiredTransportType = *&type;
+  serviceCopy = service;
   if (![(NavigationFeedbackCollector *)self _isSuppressed])
   {
-    if (v6 == 4)
+    if (desiredTransportType == 4)
     {
       v9 = sub_10006D178();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -319,25 +319,25 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "While navigating there wasn't a transport type.", buf, 2u);
       }
 
-      v6 = [v8 desiredTransportType];
+      desiredTransportType = [serviceCopy desiredTransportType];
     }
 
-    v13 = [(NavigationFeedbackCollector *)self currentRoute];
-    v14 = [v13 transportType];
+    currentRoute = [(NavigationFeedbackCollector *)self currentRoute];
+    transportType = [currentRoute transportType];
 
-    if (v6 == v14)
+    if (desiredTransportType == transportType)
     {
       v15 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        if (v6 >= 7)
+        if (desiredTransportType >= 7)
         {
-          v16 = [NSString stringWithFormat:@"(unknown: %i)", v6];
+          v16 = [NSString stringWithFormat:@"(unknown: %i)", desiredTransportType];
         }
 
         else
         {
-          v16 = off_1016537C8[v6];
+          v16 = off_1016537C8[desiredTransportType];
         }
 
         *buf = 138412290;
@@ -349,111 +349,111 @@
     else
     {
       [(NavigationFeedbackCollector *)self _finalizeDirectionsFeedback];
-      -[NavigationFeedbackCollector _initializeDirectionsFeedbackWithNavigationState:](self, "_initializeDirectionsFeedbackWithNavigationState:", [v8 state]);
+      -[NavigationFeedbackCollector _initializeDirectionsFeedbackWithNavigationState:](self, "_initializeDirectionsFeedbackWithNavigationState:", [serviceCopy state]);
       [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:&stru_101653700];
     }
   }
 }
 
-- (void)navigationService:(id)a3 updatedGuidanceEventFeedback:(id)a4
+- (void)navigationService:(id)service updatedGuidanceEventFeedback:(id)feedback
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100D7F3E4;
   v6[3] = &unk_1016532F0;
-  v7 = a4;
-  v5 = v7;
+  feedbackCopy = feedback;
+  v5 = feedbackCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v6];
 }
 
-- (void)navigationService:(id)a3 newGuidanceEventFeedback:(id)a4
+- (void)navigationService:(id)service newGuidanceEventFeedback:(id)feedback
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100D7F57C;
   v6[3] = &unk_1016532F0;
-  v7 = a4;
-  v5 = v7;
+  feedbackCopy = feedback;
+  v5 = feedbackCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v6];
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100D7F69C;
   v9[3] = &unk_1016536E0;
-  v10 = a3;
-  v11 = a4;
-  v8 = v10;
+  serviceCopy = service;
+  maneuverCopy = maneuver;
+  v8 = serviceCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v9];
 }
 
-- (void)navigationService:(id)a3 didUpdateETAResponse:(id)a4 forRoute:(id)a5
+- (void)navigationService:(id)service didUpdateETAResponse:(id)response forRoute:(id)route
 {
-  v7 = a4;
+  responseCopy = response;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100D7F7FC;
   v10[3] = &unk_101653318;
-  v11 = a5;
-  v12 = v7;
-  v8 = v7;
-  v9 = v11;
+  routeCopy = route;
+  v12 = responseCopy;
+  v8 = responseCopy;
+  v9 = routeCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v10];
 }
 
-- (void)navigationService:(id)a3 didUpdateAlternateRoutes:(id)a4 traffics:(id)a5
+- (void)navigationService:(id)service didUpdateAlternateRoutes:(id)routes traffics:(id)traffics
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100D7F908;
   v7[3] = &unk_1016532F0;
-  v8 = a4;
-  v6 = v8;
+  routesCopy = routes;
+  v6 = routesCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v7];
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100D7F9EC;
   v9[3] = &unk_101653460;
-  v10 = a3;
-  v11 = a4;
+  serviceCopy = service;
+  rerouteCopy = reroute;
   v12 = !+[UIApplication _maps_isAnyApplicationOrCarPlayApplicationSceneForeground];
-  v7 = v11;
-  v8 = v10;
+  v7 = rerouteCopy;
+  v8 = serviceCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v9];
 }
 
-- (void)navigationService:(id)a3 didEndWithReason:(unint64_t)a4
+- (void)navigationService:(id)service didEndWithReason:(unint64_t)reason
 {
-  if (a4 == 3)
+  if (reason == 3)
   {
     [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:&stru_1016536B8];
   }
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v8 = a3;
+  serviceCopy = service;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100D7FEC8;
   v11[3] = &unk_101653678;
-  v13 = a4;
-  v14 = a5;
-  v12 = v8;
-  v9 = v13;
-  v10 = v8;
+  waypointCopy = waypoint;
+  indexCopy = index;
+  v12 = serviceCopy;
+  v9 = waypointCopy;
+  v10 = serviceCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v11];
 }
 
-- (void)navigationService:(id)a3 didReceiveRoutingServiceError:(id)a4
+- (void)navigationService:(id)service didReceiveRoutingServiceError:(id)error
 {
-  v9 = a4;
+  errorCopy = error;
   if (!self->_routingServiceErrors)
   {
     v5 = +[NSMutableArray array];
@@ -462,21 +462,21 @@
   }
 
   v7 = objc_opt_new();
-  [v7 setError:v9];
+  [v7 setError:errorCopy];
   v8 = +[NSDate date];
   [v7 setDate:v8];
 
   [(NSMutableArray *)self->_routingServiceErrors addObject:v7];
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateIsNavigating())
   {
     if (MNNavigationServiceStateChangedToNavigating())
     {
 
-      [(NavigationFeedbackCollector *)self _initializeDirectionsFeedbackWithNavigationState:a5];
+      [(NavigationFeedbackCollector *)self _initializeDirectionsFeedbackWithNavigationState:toState];
     }
 
     else
@@ -485,7 +485,7 @@
       v7[1] = 3221225472;
       v7[2] = sub_100D80198;
       v7[3] = &unk_101653630;
-      v7[4] = a5;
+      v7[4] = toState;
       [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v7];
     }
   }
@@ -497,43 +497,43 @@
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v28 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedToNavigating())
   {
     v6 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v7 = [v6 platformController];
-    v8 = [v7 auxiliaryTasksManager];
-    v9 = [v8 auxilaryTaskForClass:objc_opt_class()];
+    platformController = [v6 platformController];
+    auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+    v9 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
-    v10 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    v11 = [v9 analyticsTracker];
-    [v10 setIsVLFImprovementUsed:{objc_msgSend(v11, "hasVLFLocalizedRecently")}];
+    feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+    analyticsTracker = [v9 analyticsTracker];
+    [feedbackCollector setIsVLFImprovementUsed:{objc_msgSend(analyticsTracker, "hasVLFLocalizedRecently")}];
 
     v12 = +[PedestrianARSessionUsageTracker sharedInstance];
-    v13 = [(NavigationFeedbackCollector *)self currentRoute];
-    v14 = [v13 uniqueRouteID];
-    v15 = [v14 UUIDString];
-    v16 = [v12 hasUserEnteredARForRoute:v15 entryPoint:0];
+    currentRoute = [(NavigationFeedbackCollector *)self currentRoute];
+    uniqueRouteID = [currentRoute uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
+    v16 = [v12 hasUserEnteredARForRoute:uUIDString entryPoint:0];
 
     if (v16)
     {
-      v17 = [(NavigationFeedbackCollector *)self feedbackCollector];
-      [v17 setARWalkingUsedInRoutePlanning:1];
+      feedbackCollector2 = [(NavigationFeedbackCollector *)self feedbackCollector];
+      [feedbackCollector2 setARWalkingUsedInRoutePlanning:1];
     }
 
     v18 = +[MKLocationManager sharedLocationManager];
-    v19 = [v18 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v18 isAuthorizedForPreciseLocation];
 
-    v20 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v20 setIsCoarseLocationUsed:v19 ^ 1];
+    feedbackCollector3 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector3 setIsCoarseLocationUsed:isAuthorizedForPreciseLocation ^ 1];
 
-    v21 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    v22 = [v28 route];
-    v23 = [v22 origin];
-    v24 = [v23 bestLatLng];
-    [v21 setTripOrigin:v24];
+    feedbackCollector4 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    route = [serviceCopy route];
+    origin = [route origin];
+    bestLatLng = [origin bestLatLng];
+    [feedbackCollector4 setTripOrigin:bestLatLng];
 
     [(NavigationFeedbackCollector *)self _initializeEVRecording];
     [(NavigationFeedbackCollector *)self updateAudioPreferences];
@@ -543,10 +543,10 @@
 
   else if (MNNavigationServiceStateChangedFromNavigatingToStopped())
   {
-    v26 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    v27 = [v26 hasActiveFeedbackSession];
+    feedbackCollector5 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    hasActiveFeedbackSession = [feedbackCollector5 hasActiveFeedbackSession];
 
-    if (v27)
+    if (hasActiveFeedbackSession)
     {
       [(NavigationFeedbackCollector *)self _finalizeDirectionsFeedbackWithReason:1];
     }
@@ -555,44 +555,44 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100D8059C;
   v6[3] = &unk_101653318;
-  v7 = a4;
-  v8 = self;
-  v5 = v7;
+  locationCopy = location;
+  selfCopy = self;
+  v5 = locationCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueueIfNotSuppressed:v6];
 }
 
-- (void)_finalizeDirectionsFeedbackWithReason:(int64_t)a3
+- (void)_finalizeDirectionsFeedbackWithReason:(int64_t)reason
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100D809C0;
   v3[3] = &unk_101653630;
-  v3[4] = a3;
+  v3[4] = reason;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v3];
 }
 
-- (void)_initializeDirectionsFeedbackWithNavigationState:(unint64_t)a3
+- (void)_initializeDirectionsFeedbackWithNavigationState:(unint64_t)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100D80DE0;
   v3[3] = &unk_101653630;
-  v3[4] = a3;
+  v3[4] = state;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v3];
 }
 
 - (void)_handleNavigationErrors
 {
   v3 = +[GEOPlatform sharedPlatform];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     if ([(NSMutableArray *)self->_routingServiceErrors count])
     {
@@ -607,26 +607,26 @@
   }
 }
 
-- (id)_trafficCameraFeedbackForEventFeedback:(id)a3
+- (id)_trafficCameraFeedbackForEventFeedback:(id)feedback
 {
-  v3 = a3;
-  if ([v3 trafficCameraType])
+  feedbackCopy = feedback;
+  if ([feedbackCopy trafficCameraType])
   {
-    v4 = [v3 trafficCameraType];
-    if (v4 == 2)
+    trafficCameraType = [feedbackCopy trafficCameraType];
+    if (trafficCameraType == 2)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = 2 * (v4 == 1);
+      v5 = 2 * (trafficCameraType == 1);
     }
 
     v6 = objc_alloc_init(GEOTrafficCameraInformation);
     [v6 setCameraType:v5];
-    v7 = [v3 enrouteNoticeIdentifier];
-    [v6 setCameraIdentifier:v7];
+    enrouteNoticeIdentifier = [feedbackCopy enrouteNoticeIdentifier];
+    [v6 setCameraIdentifier:enrouteNoticeIdentifier];
   }
 
   else
@@ -640,23 +640,23 @@
 - (void)_addArrival
 {
   arrivedCount = self->_arrivedCount;
-  v4 = [(NavigationFeedbackCollector *)self feedbackCollector];
-  [v4 setArrivedAtDestinationCount:arrivedCount];
+  feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+  [feedbackCollector setArrivedAtDestinationCount:arrivedCount];
 
   parkingCount = self->_parkingCount;
-  v6 = [(NavigationFeedbackCollector *)self feedbackCollector];
-  [v6 setInParkingModeCount:parkingCount];
+  feedbackCollector2 = [(NavigationFeedbackCollector *)self feedbackCollector];
+  [feedbackCollector2 setInParkingModeCount:parkingCount];
 
   v7 = self->_parkingCount != 0;
-  v8 = [(NavigationFeedbackCollector *)self feedbackCollector];
-  [v8 setEnteredParkingMode:v7];
+  feedbackCollector3 = [(NavigationFeedbackCollector *)self feedbackCollector];
+  [feedbackCollector3 setEnteredParkingMode:v7];
 }
 
 - (void)_addGuidance
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(NSMutableDictionary *)self->_guidance allValues];
-  v5 = [v3 initWithArray:v4];
+  allValues = [(NSMutableDictionary *)self->_guidance allValues];
+  v5 = [v3 initWithArray:allValues];
 
   [v5 sortUsingComparator:&stru_1016535F0];
   v57 = 0u;
@@ -681,8 +681,8 @@
 
         v10 = *(*(&v55 + 1) + 8 * v9);
         v11 = objc_alloc_init(v7[186]);
-        v12 = [v10 routeID];
-        [v11 setRouteID:v12];
+        routeID = [v10 routeID];
+        [v11 setRouteID:routeID];
 
         if ([v10 stepID] != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -746,11 +746,11 @@
           [v11 setDistanceToManeuver:v28];
         }
 
-        v29 = [v10 type];
-        if (v29 == 4)
+        type = [v10 type];
+        if (type == 4)
         {
-          v40 = [v10 junctionViewImageIDs];
-          v41 = [v40 count];
+          junctionViewImageIDs = [v10 junctionViewImageIDs];
+          v41 = [junctionViewImageIDs count];
 
           if (!v41)
           {
@@ -760,10 +760,10 @@
           v42 = objc_alloc_init(GEOJunctionViewGuidanceFeedback);
           [v11 setJunctionViewGuidanceFeedback:v42];
 
-          v43 = [v10 junctionViewImageIDs];
-          v44 = [v43 mutableCopy];
+          junctionViewImageIDs2 = [v10 junctionViewImageIDs];
+          v44 = [junctionViewImageIDs2 mutableCopy];
           [v11 junctionViewGuidanceFeedback];
-          v45 = self;
+          selfCopy = self;
           v46 = v8;
           v47 = v7;
           v49 = v48 = v6;
@@ -772,35 +772,35 @@
           v6 = v48;
           v7 = v47;
           v8 = v46;
-          self = v45;
+          self = selfCopy;
 
-          junctionViewEventsDisplayed = v45->_junctionViewEventsDisplayed;
-          v35 = [v10 uniqueID];
-          v51 = [(NSMutableSet *)junctionViewEventsDisplayed containsObject:v35];
-          v52 = [v11 junctionViewGuidanceFeedback];
-          [v52 setImageDisplayed:v51];
+          junctionViewEventsDisplayed = selfCopy->_junctionViewEventsDisplayed;
+          uniqueID = [v10 uniqueID];
+          v51 = [(NSMutableSet *)junctionViewEventsDisplayed containsObject:uniqueID];
+          junctionViewGuidanceFeedback = [v11 junctionViewGuidanceFeedback];
+          [junctionViewGuidanceFeedback setImageDisplayed:v51];
 
           goto LABEL_40;
         }
 
-        if (v29 == 2)
+        if (type == 2)
         {
           if ([v10 selectedPrimaryStringIndex] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v36 = objc_alloc_init(GEOSpokenGuidanceFeedback);
             [v11 setSpokenGuidanceFeedback:v36];
 
-            v37 = [v10 selectedPrimaryStringIndex];
-            v38 = [v11 spokenGuidanceFeedback];
-            [v38 setSpokenGuidanceIndex:v37];
+            selectedPrimaryStringIndex = [v10 selectedPrimaryStringIndex];
+            spokenGuidanceFeedback = [v11 spokenGuidanceFeedback];
+            [spokenGuidanceFeedback setSpokenGuidanceIndex:selectedPrimaryStringIndex];
 
             if ([v10 trafficCameraType])
             {
-              v35 = [(NavigationFeedbackCollector *)self _trafficCameraFeedbackForEventFeedback:v10];
-              if (v35)
+              uniqueID = [(NavigationFeedbackCollector *)self _trafficCameraFeedbackForEventFeedback:v10];
+              if (uniqueID)
               {
-                v39 = [v11 spokenGuidanceFeedback];
-                [v39 setTrafficCameraGuidanceFeedback:v35];
+                spokenGuidanceFeedback2 = [v11 spokenGuidanceFeedback];
+                [spokenGuidanceFeedback2 setTrafficCameraGuidanceFeedback:uniqueID];
               }
 
               goto LABEL_40;
@@ -808,31 +808,31 @@
           }
         }
 
-        else if (v29 == 1 && ([v10 selectedPrimaryStringIndex] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v10, "selectedSecondaryStringIndex") != 0x7FFFFFFFFFFFFFFFLL))
+        else if (type == 1 && ([v10 selectedPrimaryStringIndex] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v10, "selectedSecondaryStringIndex") != 0x7FFFFFFFFFFFFFFFLL))
         {
           v30 = objc_alloc_init(GEOSignGuidanceFeedback);
           [v11 setSignGuidanceFeedback:v30];
 
           if ([v10 selectedPrimaryStringIndex] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v31 = [v10 selectedPrimaryStringIndex];
-            v32 = [v11 signGuidanceFeedback];
-            [v32 setSignTitleIndex:v31];
+            selectedPrimaryStringIndex2 = [v10 selectedPrimaryStringIndex];
+            signGuidanceFeedback = [v11 signGuidanceFeedback];
+            [signGuidanceFeedback setSignTitleIndex:selectedPrimaryStringIndex2];
           }
 
           if ([v10 selectedSecondaryStringIndex] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v33 = [v10 selectedSecondaryStringIndex];
-            v34 = [v11 signGuidanceFeedback];
-            [v34 setSignDetailIndex:v33];
+            selectedSecondaryStringIndex = [v10 selectedSecondaryStringIndex];
+            signGuidanceFeedback2 = [v11 signGuidanceFeedback];
+            [signGuidanceFeedback2 setSignDetailIndex:selectedSecondaryStringIndex];
           }
 
           if ([v10 trafficCameraType])
           {
-            v35 = [(NavigationFeedbackCollector *)self _trafficCameraFeedbackForEventFeedback:v10];
-            if (v35)
+            uniqueID = [(NavigationFeedbackCollector *)self _trafficCameraFeedbackForEventFeedback:v10];
+            if (uniqueID)
             {
-              [v11 setTrafficCameraGuidanceFeedback:v35];
+              [v11 setTrafficCameraGuidanceFeedback:uniqueID];
             }
 
 LABEL_40:
@@ -840,8 +840,8 @@ LABEL_40:
         }
 
 LABEL_41:
-        v53 = [(NavigationFeedbackCollector *)self feedbackCollector];
-        [v53 addGuidanceEventFeedback:v11];
+        feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+        [feedbackCollector addGuidanceEventFeedback:v11];
 
         v9 = v9 + 1;
       }
@@ -858,15 +858,15 @@ LABEL_41:
 
 - (void)_didStartManeuver
 {
-  v3 = [(NavigationFeedbackCollector *)self navigationService];
-  -[GEOStepFeedback setLightGuidance:](self->_stepFeedback, "setLightGuidance:", [v3 state] == 5);
+  navigationService = [(NavigationFeedbackCollector *)self navigationService];
+  -[GEOStepFeedback setLightGuidance:](self->_stepFeedback, "setLightGuidance:", [navigationService state] == 5);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_guidance allValues];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_guidance allValues];
+  v5 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -877,15 +877,15 @@ LABEL_41:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 stepID];
-        v11 = [(NavigationFeedbackCollector *)self prevStep];
-        v12 = [v11 stepID];
+        stepID = [v9 stepID];
+        prevStep = [(NavigationFeedbackCollector *)self prevStep];
+        stepID2 = [prevStep stepID];
 
-        if (v10 == v12)
+        if (stepID == stepID2)
         {
           [v9 maneuverTime];
           if (v13 == 0.0)
@@ -895,7 +895,7 @@ LABEL_41:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -908,9 +908,9 @@ LABEL_41:
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [(AudioPreferences *)v3 initWithDefaults:v4];
 
-  v6 = [(NavigationFeedbackCollector *)self navigationService];
-  v7 = [v6 route];
-  v8 = -[AudioPreferences guidanceLevelForTransportType:](v5, "guidanceLevelForTransportType:", [v7 transportType]);
+  navigationService = [(NavigationFeedbackCollector *)self navigationService];
+  route = [navigationService route];
+  v8 = -[AudioPreferences guidanceLevelForTransportType:](v5, "guidanceLevelForTransportType:", [route transportType]);
 
   if (v8 <= 0)
   {
@@ -948,16 +948,16 @@ LABEL_11:
 
   v9 = 2;
 LABEL_13:
-  v11 = [(NavigationFeedbackCollector *)self feedbackCollector];
-  [v11 setVoiceGuidanceLevel:v9];
+  feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+  [feedbackCollector setVoiceGuidanceLevel:v9];
 
-  v12 = [(NavigationFeedbackCollector *)self feedbackCollector];
+  feedbackCollector2 = [(NavigationFeedbackCollector *)self feedbackCollector];
   if (qword_10195F128 != -1)
   {
     dispatch_once(&qword_10195F128, &stru_1016537A8);
   }
 
-  v13 = [qword_10195F120 path];
+  path = [qword_10195F120 path];
   v14 = _CFPreferencesCopyAppValueWithContainer();
 
   if (v14)
@@ -982,15 +982,15 @@ LABEL_13:
 
   v17 = BOOL;
 
-  [v12 setIsHandsFreeProfileUsed:v17];
+  [feedbackCollector2 setIsHandsFreeProfileUsed:v17];
 }
 
 - (void)_flushModalitiesFeedback
 {
   if (self->_modalitiesFeedback)
   {
-    v3 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v3 setModalities:self->_modalitiesFeedback];
+    feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector setModalities:self->_modalitiesFeedback];
 
     modalitiesFeedback = self->_modalitiesFeedback;
     self->_modalitiesFeedback = 0;
@@ -1001,119 +1001,119 @@ LABEL_13:
 {
   if (self->_stepFeedback)
   {
-    v3 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v3 addStepFeedback:self->_stepFeedback];
+    feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector addStepFeedback:self->_stepFeedback];
 
     stepFeedback = self->_stepFeedback;
     self->_stepFeedback = 0;
   }
 }
 
-- (void)_completeCurrentStepFeedback:(BOOL)a3
+- (void)_completeCurrentStepFeedback:(BOOL)feedback
 {
   stepFeedback = self->_stepFeedback;
   if (stepFeedback)
   {
-    v5 = a3;
-    v6 = [(GEOStepFeedback *)stepFeedback evStepInfo];
-    if (v6)
+    feedbackCopy = feedback;
+    evStepInfo = [(GEOStepFeedback *)stepFeedback evStepInfo];
+    if (evStepInfo)
     {
-      v7 = [(VGVehicle *)self->_currentVehicle currentVehicleState];
-      v8 = [v7 currentBatteryCapacity];
+      currentVehicleState = [(VGVehicle *)self->_currentVehicle currentVehicleState];
+      currentBatteryCapacity = [currentVehicleState currentBatteryCapacity];
       v9 = +[NSUnitEnergy kilowattHours];
-      v10 = [v8 measurementByConvertingToUnit:v9];
+      v10 = [currentBatteryCapacity measurementByConvertingToUnit:v9];
       [v10 doubleValue];
-      v12 = (v11 * 1000.0);
+      remainingBatteryCharge2 = (v11 * 1000.0);
 
-      v13 = v12;
-      if ([v6 remainingBatteryCharge] >= v12)
+      remainingBatteryCharge = remainingBatteryCharge2;
+      if ([evStepInfo remainingBatteryCharge] >= remainingBatteryCharge2)
       {
-        v13 = [v6 remainingBatteryCharge];
+        remainingBatteryCharge = [evStepInfo remainingBatteryCharge];
       }
 
-      if ([v6 remainingBatteryCharge] <= v12)
+      if ([evStepInfo remainingBatteryCharge] <= remainingBatteryCharge2)
       {
-        v12 = [v6 remainingBatteryCharge];
+        remainingBatteryCharge2 = [evStepInfo remainingBatteryCharge];
       }
 
-      v14 = v13 - v12;
-      v15 = [(GEOStepFeedback *)self->_stepFeedback evStepInfo];
-      [v15 setStateOfChargeDiff:v14];
+      v14 = remainingBatteryCharge - remainingBatteryCharge2;
+      evStepInfo2 = [(GEOStepFeedback *)self->_stepFeedback evStepInfo];
+      [evStepInfo2 setStateOfChargeDiff:v14];
     }
 
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(GEOStepFeedback *)self->_stepFeedback stepID];
-      v18 = [(GEOStepFeedback *)self->_stepFeedback completedStep];
-      v19 = [(GEOStepFeedback *)self->_stepFeedback routeID];
-      v20 = [(GEOStepFeedback *)self->_stepFeedback waypointRouteID];
+      stepID = [(GEOStepFeedback *)self->_stepFeedback stepID];
+      completedStep = [(GEOStepFeedback *)self->_stepFeedback completedStep];
+      routeID = [(GEOStepFeedback *)self->_stepFeedback routeID];
+      waypointRouteID = [(GEOStepFeedback *)self->_stepFeedback waypointRouteID];
       v21[0] = 67109890;
-      v21[1] = v17;
+      v21[1] = stepID;
       v22 = 1024;
-      v23 = v18;
+      v23 = completedStep;
       v24 = 2112;
-      v25 = v19;
+      v25 = routeID;
       v26 = 1024;
-      v27 = v20;
+      v27 = waypointRouteID;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Adding step feedback. ID: %u, completed: %d, route: %@, waypointRouteID: %u", v21, 0x1Eu);
     }
 
     [(GEOStepFeedback *)self->_stepFeedback setCompletionTimeStamp:CFAbsoluteTimeGetCurrent()];
-    [(GEOStepFeedback *)self->_stepFeedback setCompletedStep:v5];
+    [(GEOStepFeedback *)self->_stepFeedback setCompletedStep:feedbackCopy];
     [(NavigationFeedbackCollector *)self _flushStepFeedback];
   }
 }
 
-- (void)_openNewStepFeedbackWithRoute:(id)a3 step:(id)a4
+- (void)_openNewStepFeedbackWithRoute:(id)route step:(id)step
 {
-  v17 = a3;
-  v6 = a4;
+  routeCopy = route;
+  stepCopy = step;
   if (self->_stepFeedback)
   {
     [(NavigationFeedbackCollector *)self _completeCurrentStepFeedback:0];
   }
 
   v7 = objc_alloc_init(GEOStepFeedback);
-  if ([v17 isNewProtocolRoute])
+  if ([routeCopy isNewProtocolRoute])
   {
-    v8 = [v17 legIndexForStepIndex:{objc_msgSend(v6, "stepIndex")}];
-    v9 = [v17 legs];
-    v10 = [v9 objectAtIndexedSubscript:v8];
+    v8 = [routeCopy legIndexForStepIndex:{objc_msgSend(stepCopy, "stepIndex")}];
+    legs = [routeCopy legs];
+    serverRouteID = [legs objectAtIndexedSubscript:v8];
 
-    v11 = [v10 serverLegIDForAnalytics];
-    [v7 setRouteID:v11];
+    serverLegIDForAnalytics = [serverRouteID serverLegIDForAnalytics];
+    [v7 setRouteID:serverLegIDForAnalytics];
 
-    [v7 setWaypointRouteID:{objc_msgSend(v17, "serverIdentifier")}];
+    [v7 setWaypointRouteID:{objc_msgSend(routeCopy, "serverIdentifier")}];
   }
 
   else
   {
-    v10 = [v17 serverRouteID];
-    [v7 setRouteID:v10];
+    serverRouteID = [routeCopy serverRouteID];
+    [v7 setRouteID:serverRouteID];
   }
 
-  [v7 setRouteIndex:{objc_msgSend(v17, "indexInResponse")}];
-  [v7 setStepID:{objc_msgSend(v6, "stepID")}];
+  [v7 setRouteIndex:{objc_msgSend(routeCopy, "indexInResponse")}];
+  [v7 setStepID:{objc_msgSend(stepCopy, "stepID")}];
   [v7 setCompletedStep:0];
-  [v7 setStepEndPathPointIndex:{objc_msgSend(v6, "endRouteCoordinate")}];
-  [v7 setStepEndPathPointOffset:{COERCE_FLOAT(objc_msgSend(v6, "endRouteCoordinate") >> 32)}];
-  [v7 setManeuverType:{objc_msgSend(v6, "maneuverType")}];
-  [v7 setExpectedTime:{objc_msgSend(v6, "duration")}];
-  v12 = [v17 etauResponseID];
+  [v7 setStepEndPathPointIndex:{objc_msgSend(stepCopy, "endRouteCoordinate")}];
+  [v7 setStepEndPathPointOffset:{COERCE_FLOAT(objc_msgSend(stepCopy, "endRouteCoordinate") >> 32)}];
+  [v7 setManeuverType:{objc_msgSend(stepCopy, "maneuverType")}];
+  [v7 setExpectedTime:{objc_msgSend(stepCopy, "duration")}];
+  etauResponseID = [routeCopy etauResponseID];
 
-  if (v12)
+  if (etauResponseID)
   {
-    v13 = [v17 etauResponseID];
-    [v7 setEtaTrafficUpdateResponseId:v13];
+    etauResponseID2 = [routeCopy etauResponseID];
+    [v7 setEtaTrafficUpdateResponseId:etauResponseID2];
   }
 
-  v14 = [v6 evInfo];
-  if (v14)
+  evInfo = [stepCopy evInfo];
+  if (evInfo)
   {
     v15 = objc_alloc_init(GEOEVStepFeedbackInfo);
-    [v15 setRemainingBatteryPercentage:{objc_msgSend(v14, "remainingBatteryPercentage")}];
-    [v15 setRemainingBatteryCharge:{objc_msgSend(v14, "remainingBatteryCharge")}];
+    [v15 setRemainingBatteryPercentage:{objc_msgSend(evInfo, "remainingBatteryPercentage")}];
+    [v15 setRemainingBatteryCharge:{objc_msgSend(evInfo, "remainingBatteryCharge")}];
     [v7 setEvStepInfo:v15];
   }
 
@@ -1121,24 +1121,24 @@ LABEL_13:
   self->_stepFeedback = v7;
 }
 
-- (int)_navigationModeTypeForState:(unint64_t)a3
+- (int)_navigationModeTypeForState:(unint64_t)state
 {
-  if (a3 == 4)
+  if (state == 4)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 5;
+    return state == 5;
   }
 }
 
-- (void)addAlightNotificationFeedback:(id)a3
+- (void)addAlightNotificationFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(NavigationFeedbackCollector *)self feedbackCollector];
-  [v5 addAlightNotificationFeedback:v4];
+  feedbackCopy = feedback;
+  feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+  [feedbackCollector addAlightNotificationFeedback:feedbackCopy];
 }
 
 - (BOOL)_shouldSendFeedback
@@ -1151,36 +1151,36 @@ LABEL_13:
   return GEOConfigGetBOOL();
 }
 
-- (void)_runAsyncBlockOnMainQueue:(id)a3
+- (void)_runAsyncBlockOnMainQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100D82A80;
   v7[3] = &unk_1016535B0;
   objc_copyWeak(v9, &location);
-  v8 = v5;
+  v8 = queueCopy;
   v9[1] = a2;
-  v6 = v5;
+  v6 = queueCopy;
   dispatch_async(&_dispatch_main_q, v7);
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_runAsyncBlockOnLocalQueueIfNotSuppressed:(id)a3
+- (void)_runAsyncBlockOnLocalQueueIfNotSuppressed:(id)suppressed
 {
-  v4 = a3;
+  suppressedCopy = suppressed;
   if (![(NavigationFeedbackCollector *)self _isSuppressed])
   {
-    [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v4];
+    [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:suppressedCopy];
   }
 }
 
-- (void)_runAsyncBlockOnLocalQueue:(id)a3
+- (void)_runAsyncBlockOnLocalQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
@@ -1188,109 +1188,109 @@ LABEL_13:
   v8[2] = sub_100D82CB0;
   v8[3] = &unk_1016535B0;
   objc_copyWeak(v10, &location);
-  v9 = v5;
+  v9 = queueCopy;
   v10[1] = a2;
-  v7 = v5;
+  v7 = queueCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_didSelectAlternate:(unint64_t)a3 forPrimaryString:(BOOL)a4 inSign:(id)a5
+- (void)_didSelectAlternate:(unint64_t)alternate forPrimaryString:(BOOL)string inSign:(id)sign
 {
-  v5 = a4;
-  v7 = [(NSMutableDictionary *)self->_guidance objectForKeyedSubscript:a5];
+  stringCopy = string;
+  v7 = [(NSMutableDictionary *)self->_guidance objectForKeyedSubscript:sign];
   if (v7)
   {
     v8 = v7;
-    if (v5)
+    if (stringCopy)
     {
-      [v7 setSelectedPrimaryStringIndex:a3];
+      [v7 setSelectedPrimaryStringIndex:alternate];
     }
 
     else
     {
-      [v7 setSelectedSecondaryStringIndex:a3];
+      [v7 setSelectedSecondaryStringIndex:alternate];
     }
 
     v7 = v8;
   }
 }
 
-- (void)_captureArrivalAtWaypoint:(id)a3
+- (void)_captureArrivalAtWaypoint:(id)waypoint
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100D82EBC;
   v5[3] = &unk_1016532F0;
-  v6 = a3;
-  v4 = v6;
+  waypointCopy = waypoint;
+  v4 = waypointCopy;
   [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v5];
 }
 
 - (void)_updateFeedbackCollectorWithEVData
 {
-  v3 = [(NavigationFeedbackCollector *)self currentRoute];
-  v4 = [v3 isEVRoute];
+  currentRoute = [(NavigationFeedbackCollector *)self currentRoute];
+  isEVRoute = [currentRoute isEVRoute];
 
-  if (v4)
+  if (isEVRoute)
   {
-    v5 = [(VGVehicle *)self->_currentVehicle currentVehicleState];
-    v6 = [v5 chargingArguments];
-    v7 = [v6 copy];
-    v8 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v8 setEvChargingModel:v7];
+    currentVehicleState = [(VGVehicle *)self->_currentVehicle currentVehicleState];
+    chargingArguments = [currentVehicleState chargingArguments];
+    v7 = [chargingArguments copy];
+    feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector setEvChargingModel:v7];
 
-    v9 = [(VGVehicle *)self->_currentVehicle currentVehicleState];
-    v10 = [v9 consumptionArguments];
-    v11 = [v10 copy];
-    v12 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v12 setEvConsumptionModel:v11];
+    currentVehicleState2 = [(VGVehicle *)self->_currentVehicle currentVehicleState];
+    consumptionArguments = [currentVehicleState2 consumptionArguments];
+    v11 = [consumptionArguments copy];
+    feedbackCollector2 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector2 setEvConsumptionModel:v11];
 
     initialStateOfCharge = self->_initialStateOfCharge;
-    v14 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v14 setStateOfChargeAtOrigin:initialStateOfCharge];
+    feedbackCollector3 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector3 setStateOfChargeAtOrigin:initialStateOfCharge];
 
     expectedFinalStateOfCharge = self->_expectedFinalStateOfCharge;
-    v16 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v16 setStateOfChargeAtDestPredicted:expectedFinalStateOfCharge];
+    feedbackCollector4 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector4 setStateOfChargeAtDestPredicted:expectedFinalStateOfCharge];
 
-    v17 = [(NavigationFeedbackCollector *)self _stateOfChargeOfCurrentVehicle];
-    v18 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v18 setStateOfChargeAtDestActual:v17];
+    _stateOfChargeOfCurrentVehicle = [(NavigationFeedbackCollector *)self _stateOfChargeOfCurrentVehicle];
+    feedbackCollector5 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector5 setStateOfChargeAtDestActual:_stateOfChargeOfCurrentVehicle];
 
-    v19 = [(NavigationFeedbackCollector *)self currentRoute];
-    v20 = [v19 legs];
-    v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
+    currentRoute2 = [(NavigationFeedbackCollector *)self currentRoute];
+    legs = [currentRoute2 legs];
+    v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [legs count]);
 
     v21 = objc_alloc_init(GEOWaypointInfo);
-    v22 = [(NavigationFeedbackCollector *)self currentRoute];
-    v23 = [v22 origin];
-    v24 = [v23 latLng];
-    [v21 setPosition:v24];
+    currentRoute3 = [(NavigationFeedbackCollector *)self currentRoute];
+    origin = [currentRoute3 origin];
+    latLng = [origin latLng];
+    [v21 setPosition:latLng];
 
     [v30 addObject:v21];
-    v25 = [(NavigationFeedbackCollector *)self currentRoute];
-    v26 = [v25 legs];
-    v27 = sub_100021DB0(v26, &stru_101653500);
+    currentRoute4 = [(NavigationFeedbackCollector *)self currentRoute];
+    legs2 = [currentRoute4 legs];
+    v27 = sub_100021DB0(legs2, &stru_101653500);
 
     [v30 addObjectsFromArray:v27];
     v28 = [v30 copy];
-    v29 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    [v29 setWaypoints:v28];
+    feedbackCollector6 = [(NavigationFeedbackCollector *)self feedbackCollector];
+    [feedbackCollector6 setWaypoints:v28];
   }
 }
 
 - (void)_captureSessionlessEVRouteMessageIfNeeded
 {
-  v3 = [(NavigationFeedbackCollector *)self currentRoute];
-  v4 = [v3 isEVRoute];
+  currentRoute = [(NavigationFeedbackCollector *)self currentRoute];
+  isEVRoute = [currentRoute isEVRoute];
 
-  if (v4)
+  if (isEVRoute)
   {
-    v9 = [(NavigationFeedbackCollector *)self feedbackCollector];
-    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 batteryDied]);
+    feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [feedbackCollector batteryDied]);
     v6 = [NSNumber numberWithBool:self->_outOfRangeDodgeballDisplayed];
     v7 = [NSNumber numberWithBool:self->_originalTripIncludedChargingStation];
     v8 = [NSNumber numberWithBool:self->_addedChargingStationThroughSAR];
@@ -1300,29 +1300,29 @@ LABEL_13:
 
 - (void)_captureInitialEVRouteState
 {
-  v3 = [(NavigationFeedbackCollector *)self currentRoute];
-  v4 = [v3 isEVRoute];
+  currentRoute = [(NavigationFeedbackCollector *)self currentRoute];
+  isEVRoute = [currentRoute isEVRoute];
 
-  if (v4)
+  if (isEVRoute)
   {
-    v7 = [(NavigationFeedbackCollector *)self currentRoute];
-    v5 = [v7 waypoints];
-    v6 = sub_1000282CC(v5, &stru_1016534A0);
+    currentRoute2 = [(NavigationFeedbackCollector *)self currentRoute];
+    waypoints = [currentRoute2 waypoints];
+    v6 = sub_1000282CC(waypoints, &stru_1016534A0);
     self->_originalTripIncludedChargingStation = [v6 count] != 0;
   }
 }
 
-- (void)offeredEVRerouteWithAlternateRoute:(id)a3 wasAccepted:(BOOL)a4
+- (void)offeredEVRerouteWithAlternateRoute:(id)route wasAccepted:(BOOL)accepted
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100D83AC4;
   v6[3] = &unk_101653460;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(NavigationFeedbackCollector *)v7 _runAsyncBlockOnLocalQueue:v6];
+  selfCopy = self;
+  routeCopy = route;
+  acceptedCopy = accepted;
+  v5 = routeCopy;
+  [(NavigationFeedbackCollector *)selfCopy _runAsyncBlockOnLocalQueue:v6];
 }
 
 - (id)_stateOfChargeOfCurrentVehicle
@@ -1330,15 +1330,15 @@ LABEL_13:
   currentVehicle = self->_currentVehicle;
   if (currentVehicle)
   {
-    v4 = [(VGVehicle *)currentVehicle currentVehicleState];
-    v5 = [v4 currentBatteryCapacity];
+    currentVehicleState = [(VGVehicle *)currentVehicle currentVehicleState];
+    currentBatteryCapacity = [currentVehicleState currentBatteryCapacity];
 
-    if (v5)
+    if (currentBatteryCapacity)
     {
-      v6 = [(VGVehicle *)self->_currentVehicle currentVehicleState];
-      v7 = [v6 currentBatteryCapacity];
+      currentVehicleState2 = [(VGVehicle *)self->_currentVehicle currentVehicleState];
+      currentBatteryCapacity2 = [currentVehicleState2 currentBatteryCapacity];
       v8 = +[NSUnitEnergy kilowattHours];
-      v9 = [v7 measurementByConvertingToUnit:v8];
+      v9 = [currentBatteryCapacity2 measurementByConvertingToUnit:v8];
       [v9 doubleValue];
       v11 = v10 * 1000.0;
 
@@ -1366,16 +1366,16 @@ LABEL_13:
   return v12;
 }
 
-- (void)setCurrentRoute:(id)a3
+- (void)setCurrentRoute:(id)route
 {
   p_currentRoute = &self->_currentRoute;
-  v6 = a3;
-  if (([v6 isEqual:*p_currentRoute] & 1) == 0)
+  routeCopy = route;
+  if (([routeCopy isEqual:*p_currentRoute] & 1) == 0)
   {
-    objc_storeStrong(&self->_currentRoute, a3);
-    if (v6)
+    objc_storeStrong(&self->_currentRoute, route);
+    if (routeCopy)
     {
-      -[GEODirectionsFeedbackCollector setTransportType:](self->_feedbackCollector, "setTransportType:", [v6 transportType]);
+      -[GEODirectionsFeedbackCollector setTransportType:](self->_feedbackCollector, "setTransportType:", [routeCopy transportType]);
     }
 
     if ([(GEOComposedRoute *)*p_currentRoute isEVRoute])
@@ -1386,55 +1386,55 @@ LABEL_13:
   }
 }
 
-- (void)setAddedChargingStationThroughSAR:(BOOL)a3
+- (void)setAddedChargingStationThroughSAR:(BOOL)r
 {
-  if (self->_addedChargingStationThroughSAR != a3)
+  if (self->_addedChargingStationThroughSAR != r)
   {
-    self->_addedChargingStationThroughSAR = a3;
+    self->_addedChargingStationThroughSAR = r;
   }
 }
 
-- (void)setIsConnectedToCarplay:(BOOL)a3
+- (void)setIsConnectedToCarplay:(BOOL)carplay
 {
   wasEverConnectedToCarplay = self->_wasEverConnectedToCarplay;
-  self->_wasEverConnectedToCarplay = wasEverConnectedToCarplay | a3;
-  if (wasEverConnectedToCarplay != (wasEverConnectedToCarplay | a3))
+  self->_wasEverConnectedToCarplay = wasEverConnectedToCarplay | carplay;
+  if (wasEverConnectedToCarplay != (wasEverConnectedToCarplay | carplay))
   {
     [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:&stru_101653358];
   }
 }
 
-- (void)setJunctionViewDisplayed:(id)a3
+- (void)setJunctionViewDisplayed:(id)displayed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  displayedCopy = displayed;
+  v5 = displayedCopy;
+  if (displayedCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100D84288;
     v6[3] = &unk_101653318;
     v6[4] = self;
-    v7 = v4;
+    v7 = displayedCopy;
     [(NavigationFeedbackCollector *)self _runAsyncBlockOnLocalQueue:v6];
   }
 }
 
-- (void)addTrafficRerouteFeedback:(id)a3
+- (void)addTrafficRerouteFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(NavigationFeedbackCollector *)self feedbackCollector];
-  [v5 addTrafficRerouteFeedback:v4];
+  feedbackCopy = feedback;
+  feedbackCollector = [(NavigationFeedbackCollector *)self feedbackCollector];
+  [feedbackCollector addTrafficRerouteFeedback:feedbackCopy];
 }
 
-- (void)_captureVirtualGarageAnalytics:(id)a3
+- (void)_captureVirtualGarageAnalytics:(id)analytics
 {
-  v3 = a3;
+  analyticsCopy = analytics;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [analyticsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1447,13 +1447,13 @@ LABEL_13:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(analyticsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 licensePlate];
+        licensePlate = [v10 licensePlate];
 
-        if (v11)
+        if (licensePlate)
         {
           v7 = (v7 + 1);
         }
@@ -1466,7 +1466,7 @@ LABEL_13:
         v6 = v6 + [v10 isPureElectricVehicle];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [analyticsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1487,24 +1487,24 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [(NavigationFeedbackCollector *)self navigationService];
-  [v3 unregisterObserver:self];
+  navigationService = [(NavigationFeedbackCollector *)self navigationService];
+  [navigationService unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = NavigationFeedbackCollector;
   [(NavigationFeedbackCollector *)&v4 dealloc];
 }
 
-- (NavigationFeedbackCollector)initWithNavigationService:(id)a3
+- (NavigationFeedbackCollector)initWithNavigationService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v19.receiver = self;
   v19.super_class = NavigationFeedbackCollector;
   v6 = [(NavigationFeedbackCollector *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationService, a3);
+    objc_storeStrong(&v6->_navigationService, service);
     [(MNNavigationService *)v7->_navigationService registerObserver:v7];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("NavigationFeedbackCollectorQueue", v8);

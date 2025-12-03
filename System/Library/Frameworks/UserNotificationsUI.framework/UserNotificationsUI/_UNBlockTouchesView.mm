@@ -1,34 +1,34 @@
 @interface _UNBlockTouchesView
 - (BOOL)isUserInteractionEnabled;
-- (_UNBlockTouchesView)initWithFrame:(CGRect)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (_UNBlockTouchesView)initWithFrame:(CGRect)frame;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation _UNBlockTouchesView
 
-- (_UNBlockTouchesView)initWithFrame:(CGRect)a3
+- (_UNBlockTouchesView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UNBlockTouchesView;
-  v3 = [(_UNBlockTouchesView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UNBlockTouchesView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_UNBlockTouchesView *)v3 layer];
-    [v5 setHitTestsAsOpaque:1];
+    layer = [(_UNBlockTouchesView *)v3 layer];
+    [layer setHitTestsAsOpaque:1];
   }
 
   return v4;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = _UNBlockTouchesView;
   [(_UNBlockTouchesView *)&v6 setUserInteractionEnabled:?];
-  v5 = [(_UNBlockTouchesView *)self layer];
-  [v5 setHitTestsAsOpaque:!v3];
+  layer = [(_UNBlockTouchesView *)self layer];
+  [layer setHitTestsAsOpaque:!enabledCopy];
 }
 
 - (BOOL)isUserInteractionEnabled
@@ -37,8 +37,8 @@
   v6.super_class = _UNBlockTouchesView;
   if ([(_UNBlockTouchesView *)&v6 isUserInteractionEnabled])
   {
-    v3 = [(_UNBlockTouchesView *)self layer];
-    v4 = [v3 hitTestsAsOpaque] ^ 1;
+    layer = [(_UNBlockTouchesView *)self layer];
+    v4 = [layer hitTestsAsOpaque] ^ 1;
   }
 
   else

@@ -7,29 +7,29 @@
 
 - (void)beginRecordingAndCreatePanView
 {
-  v3 = [(MapsRecordAnIssueDebugController *)self view];
-  v4 = [v3 window];
+  view = [(MapsRecordAnIssueDebugController *)self view];
+  window = [view window];
 
   v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   v6 = +[UIColor grayColor];
   [v5 setColor:v6];
 
-  [v4 frame];
+  [window frame];
   v8 = v7 * 0.5;
-  [v4 frame];
+  [window frame];
   [v5 setCenter:{v8, v9 * 0.5}];
-  [v4 addSubview:v5];
+  [window addSubview:v5];
   [v5 startAnimating];
-  v10 = [MapsEventRecorder initializeDefaultRecorderWithTapToRadar:[(MapsRecordAnIssueDebugController *)self tapToRadarEnabled] window:v4];
+  v10 = [MapsEventRecorder initializeDefaultRecorderWithTapToRadar:[(MapsRecordAnIssueDebugController *)self tapToRadarEnabled] window:window];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1005E9310;
   v13[3] = &unk_101661A40;
   v13[4] = self;
-  v14 = v4;
+  v14 = window;
   v15 = v5;
   v11 = v5;
-  v12 = v4;
+  v12 = window;
   [v10 beginRecordingWithCompletion:v13];
 }
 

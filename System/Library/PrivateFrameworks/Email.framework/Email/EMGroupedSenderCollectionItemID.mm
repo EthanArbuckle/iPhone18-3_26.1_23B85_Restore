@@ -1,11 +1,11 @@
 @interface EMGroupedSenderCollectionItemID
-- (BOOL)isEqual:(id)a3;
-- (EMGroupedSenderCollectionItemID)initWithBusinessID:(int64_t)a3;
-- (EMGroupedSenderCollectionItemID)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EMGroupedSenderCollectionItemID)initWithBusinessID:(int64_t)d;
+- (EMGroupedSenderCollectionItemID)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)cachedSelf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMGroupedSenderCollectionItemID
@@ -39,7 +39,7 @@ void ___ef_log_EMGroupedSenderCollectionItemID_block_invoke()
   _ef_log_EMGroupedSenderCollectionItemID_log = v0;
 }
 
-- (EMGroupedSenderCollectionItemID)initWithBusinessID:(int64_t)a3
+- (EMGroupedSenderCollectionItemID)initWithBusinessID:(int64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -47,7 +47,7 @@ void ___ef_log_EMGroupedSenderCollectionItemID_block_invoke()
   v4 = [(EMGroupedSenderCollectionItemID *)&v11 init];
   if (v4)
   {
-    if (!a3)
+    if (!d)
     {
       v5 = _ef_log_EMGroupedSenderCollectionItemID();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -69,28 +69,28 @@ void ___ef_log_EMGroupedSenderCollectionItemID_block_invoke()
       }
     }
 
-    v4->_businessID = a3;
+    v4->_businessID = d;
   }
 
-  v8 = [(EMGroupedSenderCollectionItemID *)v4 cachedSelf];
+  cachedSelf = [(EMGroupedSenderCollectionItemID *)v4 cachedSelf];
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return cachedSelf;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (([(EMGroupedSenderCollectionItemID *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EMGroupedSenderCollectionItemID *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EMGroupedSenderCollectionItemID *)self businessID];
-    v7 = v6 == [(EMGroupedSenderCollectionItemID *)v5 businessID];
+    v5 = equalCopy;
+    businessID = [(EMGroupedSenderCollectionItemID *)self businessID];
+    v7 = businessID == [(EMGroupedSenderCollectionItemID *)v5 businessID];
   }
 
   else
@@ -103,9 +103,9 @@ void ___ef_log_EMGroupedSenderCollectionItemID_block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(EMGroupedSenderCollectionItemID *)self businessID];
+  businessID = [(EMGroupedSenderCollectionItemID *)self businessID];
 
-  return MEMORY[0x1EEE02BA8](v2);
+  return MEMORY[0x1EEE02BA8](businessID);
 }
 
 - (NSString)description
@@ -115,11 +115,11 @@ void ___ef_log_EMGroupedSenderCollectionItemID_block_invoke()
   return v2;
 }
 
-- (EMGroupedSenderCollectionItemID)initWithCoder:(id)a3
+- (EMGroupedSenderCollectionItemID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v3 = v8;
-  v4 = self;
+  coderCopy = coder;
+  v3 = coderCopy;
+  selfCopy = self;
   v5 = EFDecodeCacheableInstance();
 
   return v5;
@@ -138,10 +138,10 @@ id __49__EMGroupedSenderCollectionItemID_initWithCoder___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 

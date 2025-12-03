@@ -1,26 +1,26 @@
 @interface _TVStackWrappingView
-- (_TVStackWrappingView)initWithFrame:(CGRect)a3;
+- (_TVStackWrappingView)initWithFrame:(CGRect)frame;
 - (id)preferredFocusEnvironments;
-- (void)configureSupplementaryCellLayoutAttributesWithAutomaticInsets:(UIEdgeInsets)a3 sectionIndex:(int64_t)a4;
+- (void)configureSupplementaryCellLayoutAttributesWithAutomaticInsets:(UIEdgeInsets)insets sectionIndex:(int64_t)index;
 - (void)layoutSubviews;
-- (void)setBackdropBlurEffectStyle:(int64_t)a3;
-- (void)setBackdropImage:(id)a3;
-- (void)setBackdropInitialPeek:(double)a3;
-- (void)setBackdropMaskFactor:(double)a3;
-- (void)setBackdropPeekGradient:(double)a3;
-- (void)setBackgroundImage:(id)a3;
-- (void)setStackView:(id)a3;
-- (void)setUsesBackdropImage:(BOOL)a3;
-- (void)setUsesBackgroundImage:(BOOL)a3;
+- (void)setBackdropBlurEffectStyle:(int64_t)style;
+- (void)setBackdropImage:(id)image;
+- (void)setBackdropInitialPeek:(double)peek;
+- (void)setBackdropMaskFactor:(double)factor;
+- (void)setBackdropPeekGradient:(double)gradient;
+- (void)setBackgroundImage:(id)image;
+- (void)setStackView:(id)view;
+- (void)setUsesBackdropImage:(BOOL)image;
+- (void)setUsesBackgroundImage:(BOOL)image;
 @end
 
 @implementation _TVStackWrappingView
 
-- (_TVStackWrappingView)initWithFrame:(CGRect)a3
+- (_TVStackWrappingView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _TVStackWrappingView;
-  result = [(_TVStackWrappingView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_TVStackWrappingView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_usesBackgroundImage = 1;
@@ -31,96 +31,96 @@
   return result;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v5 = a3;
-  if (self->_backgroundImage != v5)
+  imageCopy = image;
+  if (self->_backgroundImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_backgroundImage, image);
     [(_TVStackWrappingView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setUsesBackgroundImage:(BOOL)a3
+- (void)setUsesBackgroundImage:(BOOL)image
 {
-  if (self->_usesBackgroundImage != a3)
+  if (self->_usesBackgroundImage != image)
   {
-    self->_usesBackgroundImage = a3;
+    self->_usesBackgroundImage = image;
     [(_TVStackWrappingView *)self setNeedsLayout];
   }
 }
 
-- (void)setStackView:(id)a3
+- (void)setStackView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   stackView = self->_stackView;
-  if (stackView != v5)
+  if (stackView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UICollectionView *)stackView removeFromSuperview];
-    objc_storeStrong(&self->_stackView, a3);
+    objc_storeStrong(&self->_stackView, view);
     stackView = [(_TVStackWrappingView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](stackView, v5);
+  MEMORY[0x2821F96F8](stackView, viewCopy);
 }
 
-- (void)setBackdropImage:(id)a3
+- (void)setBackdropImage:(id)image
 {
-  v5 = a3;
-  if (self->_backdropImage != v5)
+  imageCopy = image;
+  if (self->_backdropImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backdropImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_backdropImage, image);
     [(_TVStackWrappingView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setUsesBackdropImage:(BOOL)a3
+- (void)setUsesBackdropImage:(BOOL)image
 {
-  if (self->_usesBackdropImage != a3)
+  if (self->_usesBackdropImage != image)
   {
-    self->_usesBackdropImage = a3;
-    [(_TVStackWrappingView *)self setNeedsLayout];
-  }
-}
-
-- (void)setBackdropBlurEffectStyle:(int64_t)a3
-{
-  if (self->_backdropBlurEffectStyle != a3)
-  {
-    self->_backdropBlurEffectStyle = a3;
+    self->_usesBackdropImage = image;
     [(_TVStackWrappingView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackdropPeekGradient:(double)a3
+- (void)setBackdropBlurEffectStyle:(int64_t)style
 {
-  if (self->_backdropPeekGradient != a3)
+  if (self->_backdropBlurEffectStyle != style)
   {
-    self->_backdropPeekGradient = a3;
+    self->_backdropBlurEffectStyle = style;
     [(_TVStackWrappingView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackdropInitialPeek:(double)a3
+- (void)setBackdropPeekGradient:(double)gradient
 {
-  if (self->_backdropInitialPeek != a3)
+  if (self->_backdropPeekGradient != gradient)
   {
-    self->_backdropInitialPeek = a3;
+    self->_backdropPeekGradient = gradient;
     [(_TVStackWrappingView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackdropMaskFactor:(double)a3
+- (void)setBackdropInitialPeek:(double)peek
 {
-  if (self->_backdropMaskFactor != a3)
+  if (self->_backdropInitialPeek != peek)
   {
-    self->_backdropMaskFactor = a3;
+    self->_backdropInitialPeek = peek;
+    [(_TVStackWrappingView *)self setNeedsLayout];
+  }
+}
+
+- (void)setBackdropMaskFactor:(double)factor
+{
+  if (self->_backdropMaskFactor != factor)
+  {
+    self->_backdropMaskFactor = factor;
     [(_TVStackWrappingView *)self setNeedsLayout];
   }
 }
@@ -135,15 +135,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_TVStackWrappingView *)self backdropBlurEffectStyle];
+  backdropBlurEffectStyle = [(_TVStackWrappingView *)self backdropBlurEffectStyle];
   [(_TVStackWrappingView *)self backdropInitialPeek];
   v13 = v12;
   [(_TVStackWrappingView *)self backdropPeekGradient];
   v15 = v14;
   [(_TVStackWrappingView *)self backdropMaskFactor];
   v17 = v16;
-  v18 = [(_TVStackWrappingView *)self backgroundImage];
-  if (v18 && [(_TVStackWrappingView *)self usesBackgroundImage])
+  backgroundImage = [(_TVStackWrappingView *)self backgroundImage];
+  if (backgroundImage && [(_TVStackWrappingView *)self usesBackgroundImage])
   {
     backgroundImageView = self->_backgroundImageView;
     if (!backgroundImageView)
@@ -156,7 +156,7 @@
       backgroundImageView = self->_backgroundImageView;
     }
 
-    [(UIImageView *)backgroundImageView setImage:v18];
+    [(UIImageView *)backgroundImageView setImage:backgroundImage];
     [(UIImageView *)self->_backgroundImageView setFrame:v4, v6, v8, v10];
   }
 
@@ -167,7 +167,7 @@
     self->_backgroundImageView = 0;
   }
 
-  if (v11 == 0x8000000000000000)
+  if (backdropBlurEffectStyle == 0x8000000000000000)
   {
     [(_TVStackBackdropView *)self->_backdropView removeFromSuperview];
     backdropView = self->_backdropView;
@@ -182,8 +182,8 @@
   {
     if ([(_TVStackWrappingView *)self usesBackdropImage])
     {
-      v25 = [(_TVStackWrappingView *)self backdropImage];
-      v26 = v25 != 0;
+      backdropImage = [(_TVStackWrappingView *)self backdropImage];
+      v26 = backdropImage != 0;
     }
 
     else
@@ -194,7 +194,7 @@
     v27 = self->_backdropView;
     if (!v27)
     {
-      v28 = [[_TVStackBackdropView alloc] initWithBlurEffectStyle:v11];
+      v28 = [[_TVStackBackdropView alloc] initWithBlurEffectStyle:backdropBlurEffectStyle];
       v29 = self->_backdropView;
       self->_backdropView = v28;
 
@@ -202,10 +202,10 @@
       v27 = self->_backdropView;
     }
 
-    __38___TVStackWrappingView_layoutSubviews__block_invoke([(_TVStackBackdropView *)v27 setBlurEffectStyle:v11], self->_backdropView, v26);
+    __38___TVStackWrappingView_layoutSubviews__block_invoke([(_TVStackBackdropView *)v27 setBlurEffectStyle:backdropBlurEffectStyle], self->_backdropView, v26);
     v30 = self->_backdropView;
-    v31 = [(_TVStackWrappingView *)self backdropImage];
-    [(_TVStackBackdropView *)v30 setImage:v31];
+    backdropImage2 = [(_TVStackWrappingView *)self backdropImage];
+    [(_TVStackBackdropView *)v30 setImage:backdropImage2];
 
     [(_TVStackBackdropView *)self->_backdropView setFrame:v4, v6, v8, v10];
     v32 = self->_maskedBackdropView;
@@ -225,40 +225,40 @@
         self->_maskedBackdropView = v33;
 
         v35 = self->_maskedBackdropView;
-        v36 = [[_TVStackBackdropView alloc] initWithBlurEffectStyle:v11];
+        v36 = [[_TVStackBackdropView alloc] initWithBlurEffectStyle:backdropBlurEffectStyle];
         [(_TVStackBackdropMaskingView *)v35 setBackdropView:v36];
 
         [(_TVStackWrappingView *)self insertSubview:self->_maskedBackdropView below:self->_backdropView];
         v32 = self->_maskedBackdropView;
       }
 
-      v37 = [(_TVStackBackdropMaskingView *)v32 backdropView];
-      [v37 setBlurEffectStyle:v11];
+      backdropView = [(_TVStackBackdropMaskingView *)v32 backdropView];
+      [backdropView setBlurEffectStyle:backdropBlurEffectStyle];
 
-      v38 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
-      v39 = v38;
+      backdropView2 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
+      v39 = backdropView2;
       if (v26)
       {
-        v40 = [(_TVStackWrappingView *)self backdropImage];
-        [v39 setImage:v40];
+        backdropImage3 = [(_TVStackWrappingView *)self backdropImage];
+        [v39 setImage:backdropImage3];
       }
 
       else
       {
-        [v38 setImage:0];
+        [backdropView2 setImage:0];
       }
 
-      v43 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
-      [v43 setBounds:{v4, v6, v8, v10}];
+      backdropView3 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
+      [backdropView3 setBounds:{v4, v6, v8, v10}];
 
       if (v15 <= 0.0)
       {
         [(_TVStackBackdropMaskingView *)self->_maskedBackdropView setFrame:v4, (v10 - v13) * v17, v8, v10 - (v10 - v13) * v17];
-        v47 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView layer];
-        [v47 setShouldRasterize:0];
+        layer = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView layer];
+        [layer setShouldRasterize:0];
 
-        v48 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
-        __38___TVStackWrappingView_layoutSubviews__block_invoke(v48, v48, v26);
+        backdropView4 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
+        __38___TVStackWrappingView_layoutSubviews__block_invoke(backdropView4, backdropView4, v26);
 
         [(_TVStackBackdropMaskingView *)self->_maskedBackdropView setAlpha:1.0];
         v41 = self->_backdropView;
@@ -276,11 +276,11 @@
 
         [(_TVStackBackdropMaskingView *)self->_maskedBackdropView setGradientStop:v44];
         [(_TVStackBackdropMaskingView *)self->_maskedBackdropView setFrame:0.0, v10 - v13, v8, v13];
-        v45 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView layer];
-        [v45 setShouldRasterize:v26];
+        layer2 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView layer];
+        [layer2 setShouldRasterize:v26];
 
-        v46 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
-        __38___TVStackWrappingView_layoutSubviews__block_invoke(v46, v46, 0);
+        backdropView5 = [(_TVStackBackdropMaskingView *)self->_maskedBackdropView backdropView];
+        __38___TVStackWrappingView_layoutSubviews__block_invoke(backdropView5, backdropView5, 0);
 
         [(_TVStackBackdropMaskingView *)self->_maskedBackdropView setAlpha:1.0];
         v41 = self->_backdropView;
@@ -291,13 +291,13 @@
     [(_TVStackBackdropView *)v41 setAlpha:v42];
   }
 
-  v49 = [(_TVStackWrappingView *)self stackView];
-  v50 = v49;
-  if (v49)
+  stackView = [(_TVStackWrappingView *)self stackView];
+  v50 = stackView;
+  if (stackView)
   {
-    v51 = [v49 superview];
+    superview = [stackView superview];
 
-    if (v51 != self)
+    if (superview != self)
     {
       [(_TVStackWrappingView *)self addSubview:v50];
     }
@@ -306,26 +306,26 @@
   }
 }
 
-- (void)configureSupplementaryCellLayoutAttributesWithAutomaticInsets:(UIEdgeInsets)a3 sectionIndex:(int64_t)a4
+- (void)configureSupplementaryCellLayoutAttributesWithAutomaticInsets:(UIEdgeInsets)insets sectionIndex:(int64_t)index
 {
-  bottom = a3.bottom;
-  right = a3.right;
-  left = a3.left;
-  top = a3.top;
+  bottom = insets.bottom;
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
   v82 = *MEMORY[0x277D85DE8];
-  v8 = [(_TVStackWrappingView *)self stackView];
+  stackView = [(_TVStackWrappingView *)self stackView];
 
-  if (v8)
+  if (stackView)
   {
     [(_TVStackWrappingView *)self bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(_TVStackWrappingView *)self stackView];
+    stackView2 = [(_TVStackWrappingView *)self stackView];
     v18 = MEMORY[0x277CBEB18];
-    v19 = [(_TVStackWrappingView *)self headerSupplementaryViews];
-    v20 = [v18 arrayWithCapacity:{objc_msgSend(v19, "count")}];
+    headerSupplementaryViews = [(_TVStackWrappingView *)self headerSupplementaryViews];
+    v20 = [v18 arrayWithCapacity:{objc_msgSend(headerSupplementaryViews, "count")}];
 
     v77 = 0;
     v78 = &v77;
@@ -338,7 +338,7 @@
     v21 = *(MEMORY[0x277D768C8] + 16);
     v75 = *MEMORY[0x277D768C8];
     v76 = v21;
-    v22 = [(_TVStackWrappingView *)self headerSupplementaryViews];
+    headerSupplementaryViews2 = [(_TVStackWrappingView *)self headerSupplementaryViews];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __99___TVStackWrappingView_configureSupplementaryCellLayoutAttributesWithAutomaticInsets_sectionIndex___block_invoke;
@@ -347,19 +347,19 @@
     v67 = v12;
     v68 = v14;
     v69 = v16;
-    v70 = a4;
+    indexCopy = index;
     v64 = &v71;
     v65 = &v77;
     v23 = v20;
     v63 = v23;
-    [v22 enumerateObjectsUsingBlock:v62];
+    [headerSupplementaryViews2 enumerateObjectsUsingBlock:v62];
 
-    [v17 contentOffset];
+    [stackView2 contentOffset];
     v25 = v24;
-    [v17 contentInset];
+    [stackView2 contentInset];
     v27 = v26;
     v55 = v25;
-    [v17 tv_margin];
+    [stackView2 tv_margin];
     v29 = v28;
     v31 = v30;
     v33 = v32;
@@ -416,11 +416,11 @@
       }
     }
 
-    [v17 setContentInset:{v42, v43, v44, v45}];
+    [stackView2 setContentInset:{v42, v43, v44, v45}];
     if (v55 <= -v27)
     {
-      [v17 contentOffset];
-      [v17 setContentOffset:?];
+      [stackView2 contentOffset];
+      [stackView2 setContentOffset:?];
     }
 
     v60 = 0u;
@@ -483,11 +483,11 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   [(_TVStackWrappingView *)self layoutIfNeeded];
-  v3 = [(_TVStackWrappingView *)self stackView];
-  if (v3)
+  stackView = [(_TVStackWrappingView *)self stackView];
+  if (stackView)
   {
-    v4 = [(_TVStackWrappingView *)self stackView];
-    v7[0] = v4;
+    stackView2 = [(_TVStackWrappingView *)self stackView];
+    v7[0] = stackView2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 

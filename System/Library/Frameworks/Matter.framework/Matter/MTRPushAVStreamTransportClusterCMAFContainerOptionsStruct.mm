@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct
 - (MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct);
-  v5 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self cmafInterface];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setCmafInterface:v5];
+  cmafInterface = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self cmafInterface];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setCmafInterface:cmafInterface];
 
-  v6 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self segmentDuration];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setSegmentDuration:v6];
+  segmentDuration = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self segmentDuration];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setSegmentDuration:segmentDuration];
 
-  v7 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self chunkDuration];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setChunkDuration:v7];
+  chunkDuration = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self chunkDuration];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setChunkDuration:chunkDuration];
 
-  v8 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self sessionGroup];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setSessionGroup:v8];
+  sessionGroup = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self sessionGroup];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setSessionGroup:sessionGroup];
 
-  v9 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self trackName];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setTrackName:v9];
+  trackName = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self trackName];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setTrackName:trackName];
 
-  v10 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self cencKey];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setCencKey:v10];
+  cencKey = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self cencKey];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setCencKey:cencKey];
 
-  v11 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self cencKeyID];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setCencKeyID:v11];
+  cencKeyID = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self cencKeyID];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setCencKeyID:cencKeyID];
 
-  v12 = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self metadataEnabled];
-  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setMetadataEnabled:v12];
+  metadataEnabled = [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)self metadataEnabled];
+  [(MTRPushAVStreamTransportClusterCMAFContainerOptionsStruct *)v4 setMetadataEnabled:metadataEnabled];
 
   return v4;
 }

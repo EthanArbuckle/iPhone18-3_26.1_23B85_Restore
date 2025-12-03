@@ -2,7 +2,7 @@
 - (UIAutocorrectBubble)init;
 - (UIEdgeInsets)alignmentRectInsets;
 - (id)lastBaselineAnchor;
-- (void)updateWithAutocorrectionText:(id)a3;
+- (void)updateWithAutocorrectionText:(id)text;
 @end
 
 @implementation UIAutocorrectBubble
@@ -41,42 +41,42 @@
     [(UILabel *)v9 setTextColor:v10];
 
     v29 = MEMORY[0x1E69977A0];
-    v41 = [(UIView *)v2->_backgroundView leadingAnchor];
-    v40 = [(UIView *)v2 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    leadingAnchor = [(UIView *)v2->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v2 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[0] = v39;
-    v38 = [(UIView *)v2->_backgroundView trailingAnchor];
-    v37 = [(UIView *)v2 trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    trailingAnchor = [(UIView *)v2->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(UIView *)v2 trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v47[1] = v36;
-    v35 = [(UIView *)v2->_backgroundView topAnchor];
-    v34 = [(UIView *)v2 topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor = [(UIView *)v2->_backgroundView topAnchor];
+    topAnchor2 = [(UIView *)v2 topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v47[2] = v33;
-    v32 = [(UIView *)v2->_backgroundView bottomAnchor];
-    v31 = [(UIView *)v2 bottomAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    bottomAnchor = [(UIView *)v2->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v2 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v47[3] = v30;
-    v28 = [(UIView *)v2->_textLabel topAnchor];
-    v27 = [(UIView *)v2 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    topAnchor3 = [(UIView *)v2->_textLabel topAnchor];
+    topAnchor4 = [(UIView *)v2 topAnchor];
+    v26 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v47[4] = v26;
-    v25 = [(UIView *)v2->_textLabel bottomAnchor];
-    v24 = [(UIView *)v2 bottomAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    bottomAnchor3 = [(UIView *)v2->_textLabel bottomAnchor];
+    bottomAnchor4 = [(UIView *)v2 bottomAnchor];
+    v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v47[5] = v23;
-    v22 = [(UIView *)v2 heightAnchor];
-    v21 = [v22 constraintEqualToConstant:19.0];
+    heightAnchor = [(UIView *)v2 heightAnchor];
+    v21 = [heightAnchor constraintEqualToConstant:19.0];
     v47[6] = v21;
-    v11 = [(UIAutocorrectBubble *)v2 textLabel];
-    v12 = [v11 leadingAnchor];
-    v13 = [(UIView *)v2 leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:0.0];
+    textLabel = [(UIAutocorrectBubble *)v2 textLabel];
+    leadingAnchor3 = [textLabel leadingAnchor];
+    leadingAnchor4 = [(UIView *)v2 leadingAnchor];
+    v14 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:0.0];
     v47[7] = v14;
-    v15 = [(UIView *)v2 trailingAnchor];
-    v16 = [(UIAutocorrectBubble *)v2 textLabel];
-    v17 = [v16 trailingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:16.0];
+    trailingAnchor3 = [(UIView *)v2 trailingAnchor];
+    textLabel2 = [(UIAutocorrectBubble *)v2 textLabel];
+    trailingAnchor4 = [textLabel2 trailingAnchor];
+    v18 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:16.0];
     v47[8] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:9];
     [v29 activateConstraints:v19];
@@ -85,11 +85,11 @@
   return v2;
 }
 
-- (void)updateWithAutocorrectionText:(id)a3
+- (void)updateWithAutocorrectionText:(id)text
 {
-  v4 = a3;
-  v5 = [(UIAutocorrectBubble *)self textLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  textLabel = [(UIAutocorrectBubble *)self textLabel];
+  [textLabel setText:textCopy];
 
   [(UIView *)self setNeedsUpdateConstraints];
 }
@@ -109,10 +109,10 @@
 
 - (id)lastBaselineAnchor
 {
-  v2 = [(UIAutocorrectBubble *)self textLabel];
-  v3 = [v2 lastBaselineAnchor];
+  textLabel = [(UIAutocorrectBubble *)self textLabel];
+  lastBaselineAnchor = [textLabel lastBaselineAnchor];
 
-  return v3;
+  return lastBaselineAnchor;
 }
 
 @end

@@ -25,9 +25,9 @@
 
 - (__n128)_init
 {
-  if (a1)
+  if (self)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = LAUIPearlGlyphStaticConfiguration;
     v1 = objc_msgSendSuper2(&v7, sel_init);
     if (v1)

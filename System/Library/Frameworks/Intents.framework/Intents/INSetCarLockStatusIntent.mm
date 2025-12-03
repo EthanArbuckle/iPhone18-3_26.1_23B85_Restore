@@ -5,17 +5,17 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCarName:(id)a3;
-- (void)setLocked:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCarName:(id)name;
+- (void)setLocked:(id)locked;
 @end
 
 @implementation INSetCarLockStatusIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetCarLockStatusIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetCarLockStatusIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"locked";
-  v3 = [(INSetCarLockStatusIntent *)self locked];
-  v4 = v3;
-  if (!v3)
+  locked = [(INSetCarLockStatusIntent *)self locked];
+  null = locked;
+  if (!locked)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"carName";
-  v11[0] = v4;
-  v5 = [(INSetCarLockStatusIntent *)self carName];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  carName = [(INSetCarLockStatusIntent *)self carName];
+  null2 = carName;
+  if (!carName)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!carName)
   {
   }
 
-  if (!v3)
+  if (!locked)
   {
   }
 
@@ -55,47 +55,47 @@
   return v7;
 }
 
-- (void)setCarName:(id)a3
+- (void)setCarName:(id)name
 {
-  v4 = a3;
-  v6 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setCarName:v5];
+  [_typedBackingStore setCarName:v5];
 }
 
 - (INSpeakableString)carName
 {
-  v2 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-  v3 = [v2 carName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+  carName = [_typedBackingStore carName];
+  v4 = INIntentSlotValueTransformFromDataString(carName);
 
   return v4;
 }
 
-- (void)setLocked:(id)a3
+- (void)setLocked:(id)locked
 {
-  v5 = a3;
-  v4 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-  if (v5)
+  lockedCopy = locked;
+  _typedBackingStore = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+  if (lockedCopy)
   {
-    [v4 setLocked:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setLocked:{objc_msgSend(lockedCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasLocked:0];
+    [_typedBackingStore setHasLocked:0];
   }
 }
 
 - (NSNumber)locked
 {
-  v3 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-  if ([v3 hasLocked])
+  _typedBackingStore = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasLocked])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "locked")}];
+    _typedBackingStore2 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "locked")}];
   }
 
   else
@@ -123,28 +123,28 @@
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetCarLockStatusIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetCarLockStatusIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

@@ -1,5 +1,5 @@
 @interface TIInputManagerHandwriting
-- (BOOL)isDummyCandidate:(id)a3;
+- (BOOL)isDummyCandidate:(id)candidate;
 - (BOOL)shouldCommitInputString;
 - (BOOL)shouldEnableHalfWidthPunctuationForCurrentInputContext;
 - (BOOL)shouldLookForCompletionCandidates;
@@ -10,29 +10,29 @@
 - (CIMCandidateData)candidateData;
 - (NSArray)facemarkCandidates;
 - (RecognizerProvider)recognizerProvider;
-- (TIInputManagerHandwriting)initWithConfig:(id)a3 keyboardState:(id)a4;
-- (id)addInputObject:(id)a3;
+- (TIInputManagerHandwriting)initWithConfig:(id)config keyboardState:(id)state;
+- (id)addInputObject:(id)object;
 - (id)candidateResultSet;
 - (id)defaultCandidate;
-- (id)didAcceptCandidate:(id)a3;
+- (id)didAcceptCandidate:(id)candidate;
 - (id)keyboardCandidateResultSetFromResults;
 - (id)keyboardConfigurationLayoutTag;
 - (id)markedTextForDefaultCandidate;
-- (id)processCandidates:(id)a3 stickers:(id)a4;
+- (id)processCandidates:(id)candidates stickers:(id)stickers;
 - (int)mecabraLanguage;
-- (unint64_t)predictionOptions:(BOOL)a3;
-- (void)addInput:(id)a3 withContext:(id)a4;
+- (unint64_t)predictionOptions:(BOOL)options;
+- (void)addInput:(id)input withContext:(id)context;
 - (void)cancelRecognition;
 - (void)clearCandidateRefsDictionary;
 - (void)clearInput;
 - (void)clearObservers;
 - (void)dealloc;
-- (void)deleteFromInputWithContext:(id)a3;
+- (void)deleteFromInputWithContext:(id)context;
 - (void)initImplementation;
-- (void)keyboardActivityDidTransition:(id)a3;
-- (void)mainThreadUpdateCandidates:(id)a3;
+- (void)keyboardActivityDidTransition:(id)transition;
+- (void)mainThreadUpdateCandidates:(id)candidates;
 - (void)suspend;
-- (void)syncMarkedTextForKeyboardState:(id)a3 afterContextChange:(BOOL)a4;
+- (void)syncMarkedTextForKeyboardState:(id)state afterContextChange:(BOOL)change;
 - (void)updateAddressBook;
 - (void)updateDictionaryPaths;
 - (void)updateUserWordEntries;
@@ -46,8 +46,8 @@
   if (!candidateData)
   {
     v4 = [CIMCandidateData alloc];
-    v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v6 = [(CIMCandidateData *)v4 initWithInputMode:v5];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    v6 = [(CIMCandidateData *)v4 initWithInputMode:inputMode];
     v7 = self->_candidateData;
     self->_candidateData = v6;
 
@@ -57,17 +57,17 @@
   return candidateData;
 }
 
-- (id)processCandidates:(id)a3 stickers:(id)a4
+- (id)processCandidates:(id)candidates stickers:(id)stickers
 {
   v145 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v103 = a4;
+  candidatesCopy = candidates;
+  stickersCopy = stickers;
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v7 = v5;
+  v7 = candidatesCopy;
   v8 = [v7 countByEnumeratingWithState:&v135 objects:v144 count:16];
   if (v8)
   {
@@ -125,7 +125,7 @@
   [(TIInputManagerHandwriting *)self mecabraLanguage];
   v118 = v15;
   v19 = [MEMORY[0x277CBEB58] setWithCapacity:2 * v15];
-  v114 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v117 = v6;
   v20 = [v6 count];
   if (v20)
@@ -140,8 +140,8 @@
       v23 = [v117 objectAtIndex:v22];
       if (([v23 isExtensionCandidate] & 1) == 0)
       {
-        v24 = [v23 candidate];
-        v25 = [v24 length];
+        candidate = [v23 candidate];
+        v25 = [candidate length];
 
         if (v25)
         {
@@ -163,9 +163,9 @@
           v115 = v23;
           if (!v22 && v27)
           {
-            v30 = [(TIInputManagerHandwriting *)self wordSearch];
-            v31 = [(TIInputManagerHandwriting *)self committedCandidates];
-            v32 = [v30 generateConversionsForCandidate:v28 candidateContext:v31 stringContext:v104];
+            wordSearch = [(TIInputManagerHandwriting *)self wordSearch];
+            committedCandidates = [(TIInputManagerHandwriting *)self committedCandidates];
+            v32 = [wordSearch generateConversionsForCandidate:v28 candidateContext:committedCandidates stringContext:v104];
 
             if ([v32 count])
             {
@@ -178,14 +178,14 @@
                 v36 = [v32 objectAtIndexedSubscript:v34];
 
                 v37 = [objc_alloc(MEMORY[0x277D6F448]) initWithMecabraCandidate:v36];
-                v38 = [v37 candidate];
-                v39 = [v107 containsObject:v38];
+                candidate2 = [v37 candidate];
+                v39 = [v107 containsObject:candidate2];
 
                 if ((v39 & 1) == 0)
                 {
-                  v40 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+                  candidateRefsDictionary = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
                   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v36];
-                  [v40 setObject:v36 forKeyedSubscript:v41];
+                  [candidateRefsDictionary setObject:v36 forKeyedSubscript:v41];
 
                   [v117 insertObject:v37 atIndex:++v22];
                   ++v33;
@@ -202,8 +202,8 @@
                 v23 = v115;
                 if ([v32 count])
                 {
-                  v42 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{1, objc_msgSend(v103, "count")}];
-                  [v117 insertObjects:v103 atIndexes:v42];
+                  v42 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{1, objc_msgSend(stickersCopy, "count")}];
+                  [v117 insertObjects:stickersCopy atIndexes:v42];
                 }
 
                 v29 = 0;
@@ -237,11 +237,11 @@
 
             else
             {
-              v44 = [v103 mutableCopy];
+              v44 = [stickersCopy mutableCopy];
             }
 
             v45 = v44;
-            v46 = [v23 candidate];
+            candidate3 = [v23 candidate];
             v47 = MecabraCopyEmojiCharacterArrayForString();
 
             v133 = 0u;
@@ -267,8 +267,8 @@
                   if (([v19 containsObject:v53] & 1) == 0)
                   {
                     v54 = objc_alloc(MEMORY[0x277D6F3D8]);
-                    v55 = [v115 input];
-                    v56 = [v54 initWithCandidate:v53 forInput:v55];
+                    input = [v115 input];
+                    v56 = [v54 initWithCandidate:v53 forInput:input];
 
                     v19 = v116;
                     [v45 addObject:v56];
@@ -313,7 +313,7 @@
 
                   else
                   {
-                    [v114 addObject:v64];
+                    [array addObject:v64];
                   }
 
                   ++v62;
@@ -358,18 +358,18 @@
 
           if (v65 == 1)
           {
-            v66 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+            candidateRefsDictionary2 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
             v67 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v28, "uniqueID")}];
-            v68 = [v66 objectForKey:v67];
+            v68 = [candidateRefsDictionary2 objectForKey:v67];
 
             if (v68)
             {
-              v69 = [(TIInputManagerHandwriting *)self wordSearch];
+              wordSearch2 = [(TIInputManagerHandwriting *)self wordSearch];
               v141 = v68;
               [MEMORY[0x277CBEA60] arrayWithObjects:&v141 count:1];
               v70 = v23;
               v72 = v71 = v21;
-              v73 = [v69 generatePredictionsWithCandidateContext:v72 stringContext:v104 option:v102];
+              v73 = [wordSearch2 generatePredictionsWithCandidateContext:v72 stringContext:v104 option:v102];
 
               v21 = v71;
               v23 = v70;
@@ -407,12 +407,12 @@
                   if (v80 && MecabraCandidateGetType() != 6)
                   {
                     v81 = v74;
-                    v82 = [v108 candidate];
-                    v110 = [v82 stringByAppendingString:v80];
+                    candidate4 = [v108 candidate];
+                    v110 = [candidate4 stringByAppendingString:v80];
 
-                    v83 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+                    candidateRefsDictionary3 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
                     v84 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v79];
-                    [v83 setObject:v79 forKeyedSubscript:v84];
+                    [candidateRefsDictionary3 setObject:v79 forKeyedSubscript:v84];
 
                     v85 = [objc_alloc(MEMORY[0x277D6F368]) initWithCandidate:v110 forInput:0 uniqueID:objc_msgSend(v108 completionUniqueID:{"uniqueID"), v79}];
                     [v117 insertObject:v85 atIndex:++v22];
@@ -474,9 +474,9 @@ LABEL_88:
   }
 
 LABEL_96:
-  [v117 addObjectsFromArray:v114];
+  [v117 addObjectsFromArray:array];
 
-  v86 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
@@ -501,13 +501,13 @@ LABEL_96:
       }
 
       v92 = *(*(&v119 + 1) + 8 * v91);
-      v93 = [v92 candidate];
-      if ([v93 _graphemeCount] == 1)
+      candidate5 = [v92 candidate];
+      if ([candidate5 _graphemeCount] == 1)
       {
-        if ([v93 rangeOfCharacterFromSet:v86] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([candidate5 rangeOfCharacterFromSet:alphanumericCharacterSet] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v94 = [v93 _stringByConvertingFromHalfWidthToFullWidth];
-          v95 = [v93 isEqualToString:v94];
+          _stringByConvertingFromHalfWidthToFullWidth = [candidate5 _stringByConvertingFromHalfWidthToFullWidth];
+          v95 = [candidate5 isEqualToString:_stringByConvertingFromHalfWidthToFullWidth];
           v96 = @"UI-Halfwidth";
           if ((v95 & 1) == 0)
           {
@@ -517,10 +517,10 @@ LABEL_96:
           goto LABEL_105;
         }
 
-        if ([v93 _containsFullwidthLettersAndNumbersOnly] && (objc_msgSend(v93, "_containsHiraganaOrKatakana") & 1) == 0)
+        if ([candidate5 _containsFullwidthLettersAndNumbersOnly] && (objc_msgSend(candidate5, "_containsHiraganaOrKatakana") & 1) == 0)
         {
-          v94 = [v93 _stringByConvertingFromFullWidthToHalfWidth];
-          v97 = [v93 isEqualToString:v94];
+          _stringByConvertingFromHalfWidthToFullWidth = [candidate5 _stringByConvertingFromFullWidthToHalfWidth];
+          v97 = [candidate5 isEqualToString:_stringByConvertingFromHalfWidthToFullWidth];
           v96 = @"UI-Fullwidth";
           if (v97)
           {
@@ -551,10 +551,10 @@ LABEL_113:
 
 - (int)mecabraLanguage
 {
-  v2 = [(TIInputManagerHandwriting *)self wordSearch];
-  v3 = [v2 mecabraLanguage];
+  wordSearch = [(TIInputManagerHandwriting *)self wordSearch];
+  mecabraLanguage = [wordSearch mecabraLanguage];
 
-  return v3;
+  return mecabraLanguage;
 }
 
 - (id)keyboardConfigurationLayoutTag
@@ -574,9 +574,9 @@ LABEL_113:
 
 - (BOOL)shouldEnableHalfWidthPunctuationForCurrentInputContext
 {
-  v3 = [(TIInputManagerHandwriting *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 contextBeforeInput];
+  keyboardState = [(TIInputManagerHandwriting *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
   if (*(&self->super.super.super.isa + *MEMORY[0x277D6FF28]))
   {
@@ -588,36 +588,36 @@ LABEL_113:
     v6 = 0;
   }
 
-  v7 = [TIKeyboardInputManagerChinese shouldEnableHalfWidthPunctuationForDocumentContext:v5 composedText:v6];
+  v7 = [TIKeyboardInputManagerChinese shouldEnableHalfWidthPunctuationForDocumentContext:contextBeforeInput composedText:v6];
 
   return v7;
 }
 
 - (BOOL)suppressPlaceholderCandidate
 {
-  v2 = [(TIInputManagerHandwriting *)self inputString];
-  v3 = [v2 isEqualToString:@"　"];
+  inputString = [(TIInputManagerHandwriting *)self inputString];
+  v3 = [inputString isEqualToString:@"　"];
 
   return v3;
 }
 
-- (void)deleteFromInputWithContext:(id)a3
+- (void)deleteFromInputWithContext:(id)context
 {
-  v31 = a3;
+  contextCopy = context;
   [(TIInputManagerHandwriting *)self setCandidates:0];
   [(TIInputManagerHandwriting *)self resetCompletionStates];
-  v4 = [(TIInputManagerHandwriting *)self committedCandidates];
-  [v4 removeAllObjects];
+  committedCandidates = [(TIInputManagerHandwriting *)self committedCandidates];
+  [committedCandidates removeAllObjects];
 
   if (![(TIInputManagerHandwriting *)self inputIndex])
   {
-    [v31 deleteBackward:1];
+    [contextCopy deleteBackward:1];
     goto LABEL_25;
   }
 
-  v5 = [(TIInputManagerHandwriting *)self userDrawing];
+  userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
 
-  if (v5)
+  if (userDrawing)
   {
     v6 = [(TIInputManagerHandwriting *)self usageTrackingKeyForStatistic:*MEMORY[0x277D6FB70]];
     TIStatisticScalarIncrement();
@@ -625,37 +625,37 @@ LABEL_113:
 
   [(TIInputManagerHandwriting *)self setCandidates:0];
   [(TIInputManagerHandwriting *)self cancelRecognition];
-  v7 = [(TIInputManagerHandwriting *)self userDrawing];
-  v8 = [RecognizeDrawingOperation drawingWithStrokes:v7];
+  userDrawing2 = [(TIInputManagerHandwriting *)self userDrawing];
+  v8 = [RecognizeDrawingOperation drawingWithStrokes:userDrawing2];
 
-  v9 = [(TIInputManagerHandwriting *)self recognizer];
+  recognizer = [(TIInputManagerHandwriting *)self recognizer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v11 = [(TIInputManagerHandwriting *)self recognizer];
+  recognizer2 = [(TIInputManagerHandwriting *)self recognizer];
   if (isKindOfClass)
   {
-    v12 = [(TIInputManagerHandwriting *)self keyboardState];
-    v13 = [(TIInputManagerHandwriting *)self historyForRecognition];
-    v14 = [RecognizeDrawingOperation textRecognitionResultsForDrawing:v8 withRecognizer:v11 keyboardState:v12 history:v13 shouldCancel:0];
+    keyboardState = [(TIInputManagerHandwriting *)self keyboardState];
+    historyForRecognition = [(TIInputManagerHandwriting *)self historyForRecognition];
+    recognizer3 = [RecognizeDrawingOperation textRecognitionResultsForDrawing:v8 withRecognizer:recognizer2 keyboardState:keyboardState history:historyForRecognition shouldCancel:0];
 
-    [v14 lastTokenStrokeIndexes];
+    [recognizer3 lastTokenStrokeIndexes];
   }
 
   else
   {
-    v15 = [(TIInputManagerHandwriting *)self historyForRecognition];
-    v16 = [RecognizeDrawingOperation recognitionResultsForDrawing:v8 withRecognizer:v11 history:v15 shouldCancel:0];
+    historyForRecognition2 = [(TIInputManagerHandwriting *)self historyForRecognition];
+    v16 = [RecognizeDrawingOperation recognitionResultsForDrawing:v8 withRecognizer:recognizer2 history:historyForRecognition2 shouldCancel:0];
 
-    v14 = [(TIInputManagerHandwriting *)self recognizer];
-    [v14 strokeIndexesForLastCharacter];
+    recognizer3 = [(TIInputManagerHandwriting *)self recognizer];
+    [recognizer3 strokeIndexesForLastCharacter];
   }
   v17 = ;
 
-  v18 = [(TIInputManagerHandwriting *)self userDrawing];
-  v19 = [v18 numberOfStrokes];
+  userDrawing3 = [(TIInputManagerHandwriting *)self userDrawing];
+  numberOfStrokes = [userDrawing3 numberOfStrokes];
 
-  v20 = [v17 lastIndex];
+  lastIndex = [v17 lastIndex];
   if ([v17 count])
   {
     v21 = 1;
@@ -663,27 +663,27 @@ LABEL_113:
 
   else
   {
-    v21 = v19 == 0;
+    v21 = numberOfStrokes == 0;
   }
 
   v22 = !v21;
-  if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+  if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     while (1)
     {
-      v23 = [(TIInputManagerHandwriting *)self userDrawing];
-      v24 = [v23 numberOfStrokes];
+      userDrawing4 = [(TIInputManagerHandwriting *)self userDrawing];
+      numberOfStrokes2 = [userDrawing4 numberOfStrokes];
 
-      if (v20 >= v24)
+      if (lastIndex >= numberOfStrokes2)
       {
         break;
       }
 
-      v25 = [(TIInputManagerHandwriting *)self userDrawing];
-      [v25 removeStrokeAtIndex:v20];
+      userDrawing5 = [(TIInputManagerHandwriting *)self userDrawing];
+      [userDrawing5 removeStrokeAtIndex:lastIndex];
 
-      v20 = [v17 indexLessThanIndex:v20];
-      if (v20 == 0x7FFFFFFFFFFFFFFFLL)
+      lastIndex = [v17 indexLessThanIndex:lastIndex];
+      if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_19;
       }
@@ -693,25 +693,25 @@ LABEL_113:
   }
 
 LABEL_19:
-  v26 = [(TIInputManagerHandwriting *)self inputString];
-  v27 = [v26 hasSuffix:*MEMORY[0x277D6FF50]];
+  inputString = [(TIInputManagerHandwriting *)self inputString];
+  v27 = [inputString hasSuffix:*MEMORY[0x277D6FF50]];
 
   if (!v27)
   {
     if (v22)
     {
       v28 = [MEMORY[0x277CCAA78] indexSetWithIndex:0x7FFFFFFFLL];
-      [v31 deleteHandwritingStrokes:v28];
+      [contextCopy deleteHandwritingStrokes:v28];
       [(TIInputManagerHandwriting *)self clearInput];
 
       goto LABEL_24;
     }
 
-    [v31 deleteHandwritingStrokes:v17];
-    v29 = [(TIInputManagerHandwriting *)self userDrawing];
-    v30 = [v29 numberOfStrokes];
+    [contextCopy deleteHandwritingStrokes:v17];
+    userDrawing6 = [(TIInputManagerHandwriting *)self userDrawing];
+    numberOfStrokes3 = [userDrawing6 numberOfStrokes];
 
-    if (v30)
+    if (numberOfStrokes3)
     {
       goto LABEL_24;
     }
@@ -737,8 +737,8 @@ LABEL_25:
 - (BOOL)updateCompletionCandidatesIfAppropriate
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [(TIInputManagerHandwriting *)self shouldLookForCompletionCandidates];
-  if (!v3)
+  shouldLookForCompletionCandidates = [(TIInputManagerHandwriting *)self shouldLookForCompletionCandidates];
+  if (!shouldLookForCompletionCandidates)
   {
     [(TIInputManagerHandwriting *)self resetCompletionStates];
     [(TIInputManagerHandwriting *)self setCandidates:MEMORY[0x277CBEBF8]];
@@ -750,13 +750,13 @@ LABEL_25:
   [(TIInputManagerHandwriting *)self clearCandidateRefsDictionary];
   v4 = [(TIInputManagerHandwriting *)self contextBeforeWithDesiredLength:10];
   [(TIInputManagerHandwriting *)self setIsInCompletionMode:1];
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v6 = [(TIInputManagerHandwriting *)self committedCandidates];
-  v7 = [v6 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  committedCandidates = [(TIInputManagerHandwriting *)self committedCandidates];
+  v7 = [committedCandidates countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v7)
   {
     v8 = v7;
@@ -768,39 +768,39 @@ LABEL_25:
       {
         if (*v60 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(committedCandidates);
         }
 
         v11 = *(*(&v59 + 1) + 8 * v10);
-        [v5 appendString:MecabraCandidateGetSurface()];
+        [string appendString:MecabraCandidateGetSurface()];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v59 objects:v64 count:16];
+      v8 = [committedCandidates countByEnumeratingWithState:&v59 objects:v64 count:16];
     }
 
     while (v8);
   }
 
-  v12 = -[TIInputManagerHandwriting contextBeforeWithDesiredLength:](self, "contextBeforeWithDesiredLength:", [v5 length] + 10);
-  v13 = [(TIInputManagerHandwriting *)self committedCandidates];
-  if ([v13 count] && objc_msgSend(v5, "length"))
+  v12 = -[TIInputManagerHandwriting contextBeforeWithDesiredLength:](self, "contextBeforeWithDesiredLength:", [string length] + 10);
+  committedCandidates2 = [(TIInputManagerHandwriting *)self committedCandidates];
+  if ([committedCandidates2 count] && objc_msgSend(string, "length"))
   {
-    v14 = [v12 hasSuffix:v5];
+    v14 = [v12 hasSuffix:string];
 
     if (v14)
     {
       goto LABEL_14;
     }
 
-    v13 = [(TIInputManagerHandwriting *)self committedCandidates];
-    [v13 removeAllObjects];
+    committedCandidates2 = [(TIInputManagerHandwriting *)self committedCandidates];
+    [committedCandidates2 removeAllObjects];
   }
 
 LABEL_14:
-  v15 = [(TIInputManagerHandwriting *)self committedCandidates];
-  v16 = [v15 count];
+  committedCandidates3 = [(TIInputManagerHandwriting *)self committedCandidates];
+  v16 = [committedCandidates3 count];
 
   v43 = v4;
   if (!v16)
@@ -809,9 +809,9 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  if ([v5 length] && objc_msgSend(v12, "hasSuffix:", v5))
+  if ([string length] && objc_msgSend(v12, "hasSuffix:", string))
   {
-    v17 = [v12 substringToIndex:{objc_msgSend(v12, "length") - objc_msgSend(v5, "length")}];
+    v17 = [v12 substringToIndex:{objc_msgSend(v12, "length") - objc_msgSend(string, "length")}];
 LABEL_21:
     v18 = v17;
     goto LABEL_22;
@@ -819,13 +819,13 @@ LABEL_21:
 
   v18 = 0;
 LABEL_22:
-  v19 = [MEMORY[0x277CCAB68] string];
+  string2 = [MEMORY[0x277CCAB68] string];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v20 = [(TIInputManagerHandwriting *)self committedCandidates];
-  v21 = [v20 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  committedCandidates4 = [(TIInputManagerHandwriting *)self committedCandidates];
+  v21 = [committedCandidates4 countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v21)
   {
     v22 = v21;
@@ -837,34 +837,34 @@ LABEL_22:
       {
         if (*v56 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(committedCandidates4);
         }
 
         v25 = *(*(&v55 + 1) + 8 * v24);
-        [v19 appendString:MecabraCandidateGetSurface()];
+        [string2 appendString:MecabraCandidateGetSurface()];
         ++v24;
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v22 = [committedCandidates4 countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v22);
   }
 
-  v26 = [MEMORY[0x277CBEB18] array];
-  v27 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v28 = [[GeneratePredictionsOperation alloc] initWithInputManager:self predictionOptions:[(TIInputManagerHandwriting *)self predictionOptions:0] prefixContext:v18];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __68__TIInputManagerHandwriting_updateCompletionCandidatesIfAppropriate__block_invoke;
   v51[3] = &unk_279D9D7E0;
   v51[4] = self;
-  v29 = v26;
+  v29 = array;
   v52 = v29;
   v30 = v28;
   v53 = v30;
-  v31 = v27;
+  v31 = array2;
   v54 = v31;
   v32 = MEMORY[0x26D6BFFC0](v51);
   v47[0] = MEMORY[0x277D85DD0];
@@ -888,12 +888,12 @@ LABEL_22:
   v37 = v36;
   v38 = v30;
   [(GeneratePredictionsOperation *)v38 setCompletionBlock:v44];
-  v39 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
-  [v39 addOperation:v38];
+  mEMORY[0x277D6FEF8] = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+  [mEMORY[0x277D6FEF8] addOperation:v38];
 
 LABEL_30:
   v40 = *MEMORY[0x277D85DE8];
-  return !v3;
+  return !shouldLookForCompletionCandidates;
 }
 
 void __68__TIInputManagerHandwriting_updateCompletionCandidatesIfAppropriate__block_invoke(id *a1)
@@ -1261,8 +1261,8 @@ LABEL_16:
 
   else
   {
-    v4 = [(TIInputManagerHandwriting *)self userDrawing];
-    if (v4)
+    userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
+    if (userDrawing)
     {
       LOBYTE(v3) = 0;
     }
@@ -1276,9 +1276,9 @@ LABEL_16:
   return v3;
 }
 
-- (unint64_t)predictionOptions:(BOOL)a3
+- (unint64_t)predictionOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v4 = 8;
   }
@@ -1298,10 +1298,10 @@ LABEL_16:
     v5 = v4 | 4;
   }
 
-  v6 = [(TIInputManagerHandwriting *)self keyboardState];
-  v7 = [v6 candidateSelectionPredictionEnabled];
+  keyboardState = [(TIInputManagerHandwriting *)self keyboardState];
+  candidateSelectionPredictionEnabled = [keyboardState candidateSelectionPredictionEnabled];
 
-  if (v7)
+  if (candidateSelectionPredictionEnabled)
   {
     return v5;
   }
@@ -1314,14 +1314,14 @@ LABEL_16:
 
 - (void)clearCandidateRefsDictionary
 {
-  v2 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
-  [v2 removeAllObjects];
+  candidateRefsDictionary = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+  [candidateRefsDictionary removeAllObjects];
 }
 
-- (id)didAcceptCandidate:(id)a3
+- (id)didAcceptCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 proactiveTrigger];
+  candidateCopy = candidate;
+  proactiveTrigger = [candidateCopy proactiveTrigger];
 
   if ([(TIInputManagerHandwriting *)self isInCompletionMode])
   {
@@ -1336,31 +1336,31 @@ LABEL_16:
 
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
-  if ([v4 isResponseKitCandidate])
+  if ([candidateCopy isResponseKitCandidate])
   {
     v8 = MEMORY[0x277D46BB8];
     v9 = *MEMORY[0x277D46BE8];
-    v10 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v11 = [v10 normalizedIdentifier];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    normalizedIdentifier = [inputMode normalizedIdentifier];
     TIInputModeGetBaseLanguage();
     v69 = isKindOfClass;
     v12 = v7;
-    v14 = v13 = v5;
+    v14 = v13 = proactiveTrigger;
     [v8 incrementAggdKeyForCategory:0 forAction:v9 withLanguageID:v14];
 
     v15 = MEMORY[0x277D46BB8];
-    v16 = [v4 responseKitCategory];
-    v17 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v18 = [v17 normalizedIdentifier];
+    responseKitCategory = [candidateCopy responseKitCategory];
+    inputMode2 = [(TIKeyboardInputManagerBase *)self inputMode];
+    normalizedIdentifier2 = [inputMode2 normalizedIdentifier];
     v19 = TIInputModeGetBaseLanguage();
-    [v15 incrementAggdKeyForCategory:v16 forAction:v9 withLanguageID:v19];
+    [v15 incrementAggdKeyForCategory:responseKitCategory forAction:v9 withLanguageID:v19];
 
-    v5 = v13;
+    proactiveTrigger = v13;
     v7 = v12;
     isKindOfClass = v69;
   }
 
-  if (!v5)
+  if (!proactiveTrigger)
   {
     goto LABEL_11;
   }
@@ -1370,22 +1370,22 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  v20 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
-  v21 = [v4 proactiveTrigger];
-  v22 = [v21 attributes];
-  v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D6FD88]];
-  v24 = [v20 objectForKeyedSubscript:v23];
+  candidateRefsDictionary = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+  proactiveTrigger2 = [candidateCopy proactiveTrigger];
+  attributes = [proactiveTrigger2 attributes];
+  v23 = [attributes objectForKeyedSubscript:*MEMORY[0x277D6FD88]];
+  v24 = [candidateRefsDictionary objectForKeyedSubscript:v23];
 
   if (v24)
   {
-    v25 = [v4 candidate];
+    candidate = [candidateCopy candidate];
     MecabraCandidateSetDisplayString();
 
-    v26 = [(TIInputManagerHandwriting *)self wordSearch];
-    [v26 acceptCandidate:v24];
+    wordSearch = [(TIInputManagerHandwriting *)self wordSearch];
+    [wordSearch acceptCandidate:v24];
 
-    v27 = [(TIInputManagerHandwriting *)self committedCandidates];
-    [v27 addObject:v24];
+    committedCandidates = [(TIInputManagerHandwriting *)self committedCandidates];
+    [committedCandidates addObject:v24];
 
     v28 = 1;
     if ((isKindOfClass & 1) == 0)
@@ -1406,17 +1406,17 @@ LABEL_11:
 
   if ([(TIInputManagerHandwriting *)self shouldLearnAcceptedCandidate])
   {
-    v29 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
-    v30 = [v4 mecabraCandidatePointerValue];
-    v31 = [v29 objectForKeyedSubscript:v30];
+    candidateRefsDictionary2 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+    mecabraCandidatePointerValue = [candidateCopy mecabraCandidatePointerValue];
+    v31 = [candidateRefsDictionary2 objectForKeyedSubscript:mecabraCandidatePointerValue];
 
     if (v31)
     {
-      v32 = [(TIInputManagerHandwriting *)self wordSearch];
-      [v32 acceptCandidate:v31];
+      wordSearch2 = [(TIInputManagerHandwriting *)self wordSearch];
+      [wordSearch2 acceptCandidate:v31];
 
-      v33 = [(TIInputManagerHandwriting *)self committedCandidates];
-      [v33 addObject:v31];
+      committedCandidates2 = [(TIInputManagerHandwriting *)self committedCandidates];
+      [committedCandidates2 addObject:v31];
 
       v28 = 1;
     }
@@ -1425,40 +1425,40 @@ LABEL_11:
 LABEL_15:
   if ((v7 & 1) != 0 && [(TIInputManagerHandwriting *)self shouldLearnAcceptedCandidate])
   {
-    v34 = v4;
-    if ([v34 uniqueID])
+    committedCandidates5 = candidateCopy;
+    if ([committedCandidates5 uniqueID])
     {
-      v35 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
-      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v34, "uniqueID")}];
-      v37 = [v35 objectForKeyedSubscript:v36];
+      candidateRefsDictionary3 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(committedCandidates5, "uniqueID")}];
+      v37 = [candidateRefsDictionary3 objectForKeyedSubscript:v36];
 
       if (v37)
       {
-        v38 = [(TIInputManagerHandwriting *)self wordSearch];
-        [v38 acceptCandidate:v37];
+        wordSearch3 = [(TIInputManagerHandwriting *)self wordSearch];
+        [wordSearch3 acceptCandidate:v37];
 
-        v39 = [(TIInputManagerHandwriting *)self committedCandidates];
-        [v39 addObject:v37];
+        committedCandidates3 = [(TIInputManagerHandwriting *)self committedCandidates];
+        [committedCandidates3 addObject:v37];
 
         v28 = 1;
       }
     }
 
-    if ([v34 completionUniqueID])
+    if ([committedCandidates5 completionUniqueID])
     {
       if ([(TIInputManagerHandwriting *)self shouldLearnAcceptedCandidate])
       {
-        v40 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
-        v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v34, "completionUniqueID")}];
-        v42 = [v40 objectForKeyedSubscript:v41];
+        candidateRefsDictionary4 = [(TIInputManagerHandwriting *)self candidateRefsDictionary];
+        v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(committedCandidates5, "completionUniqueID")}];
+        v42 = [candidateRefsDictionary4 objectForKeyedSubscript:v41];
 
         if (v42)
         {
-          v43 = [(TIInputManagerHandwriting *)self wordSearch];
-          [v43 acceptCandidate:v42];
+          wordSearch4 = [(TIInputManagerHandwriting *)self wordSearch];
+          [wordSearch4 acceptCandidate:v42];
 
-          v44 = [(TIInputManagerHandwriting *)self committedCandidates];
-          [v44 addObject:v42];
+          committedCandidates4 = [(TIInputManagerHandwriting *)self committedCandidates];
+          [committedCandidates4 addObject:v42];
 
           goto LABEL_27;
         }
@@ -1471,34 +1471,34 @@ LABEL_15:
     goto LABEL_28;
   }
 
-  v34 = [(TIInputManagerHandwriting *)self committedCandidates];
-  [v34 removeAllObjects];
+  committedCandidates5 = [(TIInputManagerHandwriting *)self committedCandidates];
+  [committedCandidates5 removeAllObjects];
 LABEL_27:
 
 LABEL_28:
-  v45 = [(TIInputManagerHandwriting *)self committedCandidates];
-  v46 = [v45 count];
+  committedCandidates6 = [(TIInputManagerHandwriting *)self committedCandidates];
+  v46 = [committedCandidates6 count];
 
   if (v46 >= 0xB)
   {
-    v47 = [(TIInputManagerHandwriting *)self committedCandidates];
-    v48 = [(TIInputManagerHandwriting *)self committedCandidates];
-    [v47 removeObjectsInRange:{0, objc_msgSend(v48, "count") - 10}];
+    committedCandidates7 = [(TIInputManagerHandwriting *)self committedCandidates];
+    committedCandidates8 = [(TIInputManagerHandwriting *)self committedCandidates];
+    [committedCandidates7 removeObjectsInRange:{0, objc_msgSend(committedCandidates8, "count") - 10}];
   }
 
-  v49 = [v4 candidate];
-  v50 = [(TIInputManagerHandwriting *)self userDrawing];
+  candidate2 = [candidateCopy candidate];
+  userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
 
-  if (v50)
+  if (userDrawing)
   {
     v51 = [(TIInputManagerHandwriting *)self usageTrackingKeyForStatistic:*MEMORY[0x277D6FB78]];
-    v52 = [(TIInputManagerHandwriting *)self userDrawing];
-    [v52 totalNumberOfPoints];
+    userDrawing2 = [(TIInputManagerHandwriting *)self userDrawing];
+    [userDrawing2 totalNumberOfPoints];
     TIStatisticDistributionPushValue();
 
     v53 = [(TIInputManagerHandwriting *)self usageTrackingKeyForStatistic:*MEMORY[0x277D6FB80]];
-    v54 = [(TIInputManagerHandwriting *)self userDrawing];
-    [v54 numberOfStrokes];
+    userDrawing3 = [(TIInputManagerHandwriting *)self userDrawing];
+    [userDrawing3 numberOfStrokes];
     TIStatisticDistributionPushValue();
   }
 
@@ -1510,29 +1510,29 @@ LABEL_28:
 
   v56 = MEMORY[0x277CCACA8];
   v57 = *MEMORY[0x277D6FB60];
-  v58 = [(TIInputManagerHandwriting *)self candidates];
-  v59 = [v56 stringWithFormat:@"%@.%lu", v57, objc_msgSend(v58, "indexOfObject:", v4)];
+  candidates = [(TIInputManagerHandwriting *)self candidates];
+  v59 = [v56 stringWithFormat:@"%@.%lu", v57, objc_msgSend(candidates, "indexOfObject:", candidateCopy)];
 
   v60 = [(TIInputManagerHandwriting *)self usageTrackingKeyForStatistic:v59];
   TIStatisticScalarIncrement();
 
-  if ([v4 isAddress])
+  if ([candidateCopy isAddress])
   {
-    v61 = [(TIInputManagerHandwriting *)self keyboardState];
-    v62 = [v61 documentState];
-    v63 = [v62 contextBeforeInput];
-    if ([v63 length])
+    keyboardState = [(TIInputManagerHandwriting *)self keyboardState];
+    documentState = [keyboardState documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    if ([contextBeforeInput length])
     {
-      v64 = [v49 _firstGrapheme];
-      v65 = [v64 _containsCJScripts];
+      _firstGrapheme = [candidate2 _firstGrapheme];
+      _containsCJScripts = [_firstGrapheme _containsCJScripts];
 
-      if (v65)
+      if (_containsCJScripts)
       {
         goto LABEL_40;
       }
 
-      [@" " stringByAppendingString:v49];
-      v49 = v61 = v49;
+      [@" " stringByAppendingString:candidate2];
+      candidate2 = keyboardState = candidate2;
     }
 
     else
@@ -1541,9 +1541,9 @@ LABEL_28:
   }
 
 LABEL_40:
-  if (v5)
+  if (proactiveTrigger)
   {
-    v66 = v49;
+    v66 = candidate2;
   }
 
   else
@@ -1556,27 +1556,27 @@ LABEL_40:
   return v66;
 }
 
-- (void)mainThreadUpdateCandidates:(id)a3
+- (void)mainThreadUpdateCandidates:(id)candidates
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isCancelled] & 1) == 0)
+  candidatesCopy = candidates;
+  if (([candidatesCopy isCancelled] & 1) == 0)
   {
-    v5 = [(TIInputManagerHandwriting *)self userDrawing];
+    userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
 
-    if (v5)
+    if (userDrawing)
     {
       v6 = MEMORY[0x277CBEB18];
-      v7 = [v4 candidates];
-      v30 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+      candidates = [candidatesCopy candidates];
+      v30 = [v6 arrayWithCapacity:{objc_msgSend(candidates, "count")}];
 
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v29 = v4;
-      v8 = [v4 candidates];
-      v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v29 = candidatesCopy;
+      candidates2 = [candidatesCopy candidates];
+      v9 = [candidates2 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1588,17 +1588,17 @@ LABEL_40:
           {
             if (*v32 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(candidates2);
             }
 
-            v13 = [*(*(&v31 + 1) + 8 * v12) mecabraHandwritingCandidate];
-            if (v13)
+            mecabraHandwritingCandidate = [*(*(&v31 + 1) + 8 * v12) mecabraHandwritingCandidate];
+            if (mecabraHandwritingCandidate)
             {
-              v14 = [objc_alloc(MEMORY[0x277D6F368]) initWithCandidate:MecabraCandidateGetSurface() forInput:0 uniqueID:v13 completionUniqueID:0];
+              v14 = [objc_alloc(MEMORY[0x277D6F368]) initWithCandidate:MecabraCandidateGetSurface() forInput:0 uniqueID:mecabraHandwritingCandidate completionUniqueID:0];
               [(TIInputManagerHandwriting *)self candidateRefsDictionary];
               v16 = v15 = self;
-              v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
-              [v16 setObject:v13 forKey:v17];
+              v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mecabraHandwritingCandidate];
+              [v16 setObject:mecabraHandwritingCandidate forKey:v17];
 
               self = v15;
               [v30 addObject:v14];
@@ -1608,42 +1608,42 @@ LABEL_40:
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v10 = [candidates2 countByEnumeratingWithState:&v31 objects:v35 count:16];
         }
 
         while (v10);
       }
 
-      v4 = v29;
-      v18 = [v29 stickers];
-      v19 = [(TIInputManagerHandwriting *)self processCandidates:v30 stickers:v18];
+      candidatesCopy = v29;
+      stickers = [v29 stickers];
+      v19 = [(TIInputManagerHandwriting *)self processCandidates:v30 stickers:stickers];
       [(TIInputManagerHandwriting *)self setCandidates:v19];
 
       [(TIInputManagerHandwriting *)self resetCompletionStates];
-      v20 = [(TIInputManagerHandwriting *)self candidates];
+      candidates3 = [(TIInputManagerHandwriting *)self candidates];
 
-      if (v20)
+      if (candidates3)
       {
-        v21 = [(TIInputManagerHandwriting *)self candidates];
-        v22 = [(TIInputManagerHandwriting *)self proactiveTriggers];
-        v23 = [(TIInputManagerHandwriting *)self candidateResultSetFromCandidates:v21 proactiveTriggers:v22];
+        candidates4 = [(TIInputManagerHandwriting *)self candidates];
+        proactiveTriggers = [(TIInputManagerHandwriting *)self proactiveTriggers];
+        dummySet = [(TIInputManagerHandwriting *)self candidateResultSetFromCandidates:candidates4 proactiveTriggers:proactiveTriggers];
       }
 
       else
       {
         v24 = MEMORY[0x277CBEA60];
-        v25 = [MEMORY[0x277CBEB68] null];
-        v26 = [v24 arrayWithObject:v25];
+        null = [MEMORY[0x277CBEB68] null];
+        v26 = [v24 arrayWithObject:null];
         [(TIInputManagerHandwriting *)self setCandidates:v26];
 
-        v23 = [MEMORY[0x277D6F3D0] dummySet];
+        dummySet = [MEMORY[0x277D6F3D0] dummySet];
       }
 
-      v27 = [(TIInputManagerHandwriting *)self markedTextForDefaultCandidate];
-      [(TIInputManagerHandwriting *)self setInput:v27];
+      markedTextForDefaultCandidate = [(TIInputManagerHandwriting *)self markedTextForDefaultCandidate];
+      [(TIInputManagerHandwriting *)self setInput:markedTextForDefaultCandidate];
 
       [(TIInputManagerHandwriting *)self setMarkedText];
-      [(TIInputManagerHandwriting *)self closeCandidateGenerationContextWithResults:v23];
+      [(TIInputManagerHandwriting *)self closeCandidateGenerationContextWithResults:dummySet];
     }
   }
 
@@ -1653,36 +1653,36 @@ LABEL_40:
 - (BOOL)updateCandidates
 {
   [(TIInputManagerHandwriting *)self cancelRecognition];
-  v3 = [(TIInputManagerHandwriting *)self showingFacemarks];
-  if (!v3)
+  showingFacemarks = [(TIInputManagerHandwriting *)self showingFacemarks];
+  if (!showingFacemarks)
   {
-    v4 = [(TIInputManagerHandwriting *)self userDrawing];
+    userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
 
-    if (v4)
+    if (userDrawing)
     {
-      v5 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+      mEMORY[0x277D6FEF8] = [MEMORY[0x277D6FEF8] sharedOperationQueue];
       v6 = [RecognizeDrawingOperation alloc];
-      v7 = [(TIInputManagerHandwriting *)self userDrawing];
-      v8 = [(TIInputManagerHandwriting *)self historyForRecognition];
-      v9 = [(RecognizeDrawingOperation *)v6 initWithInputManager:self strokes:v7 history:v8];
-      [v5 addOperation:v9];
+      userDrawing2 = [(TIInputManagerHandwriting *)self userDrawing];
+      historyForRecognition = [(TIInputManagerHandwriting *)self historyForRecognition];
+      v9 = [(RecognizeDrawingOperation *)v6 initWithInputManager:self strokes:userDrawing2 history:historyForRecognition];
+      [mEMORY[0x277D6FEF8] addOperation:v9];
     }
   }
 
-  return v3;
+  return showingFacemarks;
 }
 
-- (id)addInputObject:(id)a3
+- (id)addInputObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(TIInputManagerHandwriting *)self cancelRecognition];
-  [(TIInputManagerHandwriting *)self setUserDrawing:v4];
+  [(TIInputManagerHandwriting *)self setUserDrawing:objectCopy];
 
   [(TIInputManagerHandwriting *)self resetCompletionStates];
-  v5 = [(TIInputManagerHandwriting *)self userDrawing];
-  v6 = [v5 numberOfStrokes];
+  userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
+  numberOfStrokes = [userDrawing numberOfStrokes];
 
-  if (!v6)
+  if (!numberOfStrokes)
   {
     [(TIInputManagerHandwriting *)self clearInput];
   }
@@ -1692,14 +1692,14 @@ LABEL_40:
 
 - (void)cancelRecognition
 {
-  v3 = [MEMORY[0x277D6FEF8] sharedOperationQueue];
-  v4 = [v3 operations];
+  mEMORY[0x277D6FEF8] = [MEMORY[0x277D6FEF8] sharedOperationQueue];
+  operations = [mEMORY[0x277D6FEF8] operations];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__TIInputManagerHandwriting_cancelRecognition__block_invoke;
   v5[3] = &unk_279D9D7B8;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [operations enumerateObjectsUsingBlock:v5];
 }
 
 void __46__TIInputManagerHandwriting_cancelRecognition__block_invoke(uint64_t a1, void *a2)
@@ -1732,33 +1732,33 @@ void __46__TIInputManagerHandwriting_cancelRecognition__block_invoke(uint64_t a1
   }
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 object];
+  inputCopy = input;
+  contextCopy = context;
+  object = [inputCopy object];
 
-  if (v8)
+  if (object)
   {
-    v9 = [v6 object];
-    v10 = [(TIInputManagerHandwriting *)self addInputObject:v9];
-    [v6 setString:v10];
+    object2 = [inputCopy object];
+    v10 = [(TIInputManagerHandwriting *)self addInputObject:object2];
+    [inputCopy setString:v10];
   }
 
-  v11 = [v6 string];
+  string = [inputCopy string];
   [(TIInputManagerHandwriting *)self setShowingFacemarks:0];
-  v12 = [v11 isEqualToString:@"☻"];
-  v13 = [(TIInputManagerHandwriting *)self candidates];
-  v14 = v13;
+  v12 = [string isEqualToString:@"☻"];
+  candidates = [(TIInputManagerHandwriting *)self candidates];
+  v14 = candidates;
   if (!v12)
   {
-    if (v13 && !self->_showingCompletionCandidates)
+    if (candidates && !self->_showingCompletionCandidates)
     {
-      v20 = [v11 length];
+      v20 = [string length];
 
       if (v20)
       {
-        [(TIInputManagerHandwriting *)self acceptCurrentCandidateWithContext:v7];
+        [(TIInputManagerHandwriting *)self acceptCurrentCandidateWithContext:contextCopy];
         [(TIInputManagerHandwriting *)self setCandidates:0];
         goto LABEL_17;
       }
@@ -1768,27 +1768,27 @@ void __46__TIInputManagerHandwriting_cancelRecognition__block_invoke(uint64_t a1
     {
     }
 
-    v17 = [(TIInputManagerHandwriting *)self candidates];
-    if (v17)
+    candidates2 = [(TIInputManagerHandwriting *)self candidates];
+    if (candidates2)
     {
       showingCompletionCandidates = self->_showingCompletionCandidates;
 
       if (!showingCompletionCandidates)
       {
 LABEL_13:
-        v19 = [(TIInputManagerHandwriting *)self markedTextForDefaultCandidate];
+        markedTextForDefaultCandidate = [(TIInputManagerHandwriting *)self markedTextForDefaultCandidate];
 
-        [(TIInputManagerHandwriting *)self setInput:v19];
+        [(TIInputManagerHandwriting *)self setInput:markedTextForDefaultCandidate];
         [(TIInputManagerHandwriting *)self setMarkedText];
-        v11 = v19;
+        string = markedTextForDefaultCandidate;
         goto LABEL_18;
       }
     }
 
     else if (![(TIInputManagerHandwriting *)self inputCount])
     {
-      v21 = [(TIInputManagerHandwriting *)self userDrawing];
-      if ([v21 numberOfStrokes])
+      userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
+      if ([userDrawing numberOfStrokes])
       {
         v22 = self->_showingCompletionCandidates;
 
@@ -1804,39 +1804,39 @@ LABEL_13:
     }
 
 LABEL_17:
-    [v7 insertText:v11];
+    [contextCopy insertText:string];
     goto LABEL_18;
   }
 
-  if (v13)
+  if (candidates)
   {
     v15 = self->_showingCompletionCandidates;
 
     if (!v15)
     {
-      [(TIInputManagerHandwriting *)self acceptCurrentCandidateWithContext:v7];
+      [(TIInputManagerHandwriting *)self acceptCurrentCandidateWithContext:contextCopy];
       [(TIInputManagerHandwriting *)self setCandidates:0];
     }
   }
 
-  v16 = [(TIInputManagerHandwriting *)self facemarkCandidates];
-  [(TIInputManagerHandwriting *)self setCandidates:v16];
+  facemarkCandidates = [(TIInputManagerHandwriting *)self facemarkCandidates];
+  [(TIInputManagerHandwriting *)self setCandidates:facemarkCandidates];
 
   self->_showingCompletionCandidates = 0;
   [(TIInputManagerHandwriting *)self setShowingFacemarks:1];
-  [v6 setString:*MEMORY[0x277D6FF50]];
+  [inputCopy setString:*MEMORY[0x277D6FF50]];
   v23.receiver = self;
   v23.super_class = TIInputManagerHandwriting;
-  [(TIInputManagerHandwriting *)&v23 addInput:v6 withContext:v7];
+  [(TIInputManagerHandwriting *)&v23 addInput:inputCopy withContext:contextCopy];
 LABEL_18:
 }
 
-- (void)syncMarkedTextForKeyboardState:(id)a3 afterContextChange:(BOOL)a4
+- (void)syncMarkedTextForKeyboardState:(id)state afterContextChange:(BOOL)change
 {
-  if (a4)
+  if (change)
   {
-    v5 = [a3 inputForMarkedText];
-    v6 = [v5 length];
+    inputForMarkedText = [state inputForMarkedText];
+    v6 = [inputForMarkedText length];
 
     if (!v6)
     {
@@ -1854,9 +1854,9 @@ LABEL_18:
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = objc_alloc(MEMORY[0x277CBEAF8]);
-    v6 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v7 = [v6 languageWithRegion];
-    v8 = [v5 initWithLocaleIdentifier:v7];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    languageWithRegion = [inputMode languageWithRegion];
+    v8 = [v5 initWithLocaleIdentifier:languageWithRegion];
 
     v21 = 0u;
     v22 = 0u;
@@ -1879,8 +1879,8 @@ LABEL_18:
           }
 
           v15 = MEMORY[0x277D6F3D8];
-          v16 = [*(*(&v21 + 1) + 8 * i) string];
-          v17 = [v15 candidateWithCandidate:v16 forInput:v13];
+          string = [*(*(&v21 + 1) + 8 * i) string];
+          v17 = [v15 candidateWithCandidate:string forInput:v13];
           [(NSArray *)v4 addObject:v17];
         }
 
@@ -1903,27 +1903,27 @@ LABEL_18:
 
 - (id)markedTextForDefaultCandidate
 {
-  v2 = [(TIInputManagerHandwriting *)self defaultCandidate];
-  v3 = v2;
-  if (v2)
+  defaultCandidate = [(TIInputManagerHandwriting *)self defaultCandidate];
+  v3 = defaultCandidate;
+  if (defaultCandidate)
   {
-    v4 = [v2 candidate];
+    candidate = [defaultCandidate candidate];
   }
 
   else
   {
-    v4 = @"　";
+    candidate = @"　";
   }
 
-  return v4;
+  return candidate;
 }
 
-- (BOOL)isDummyCandidate:(id)a3
+- (BOOL)isDummyCandidate:(id)candidate
 {
   v3 = MEMORY[0x277CBEB68];
-  v4 = a3;
-  v5 = [v3 null];
-  v6 = [v4 isEqual:v5];
+  candidateCopy = candidate;
+  null = [v3 null];
+  v6 = [candidateCopy isEqual:null];
 
   return v6;
 }
@@ -1931,16 +1931,16 @@ LABEL_18:
 - (id)defaultCandidate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(TIInputManagerHandwriting *)self candidates];
-  if (![v3 count])
+  candidates = [(TIInputManagerHandwriting *)self candidates];
+  if (![candidates count])
   {
 
     goto LABEL_14;
   }
 
-  v4 = [(TIInputManagerHandwriting *)self inputCount];
+  inputCount = [(TIInputManagerHandwriting *)self inputCount];
 
-  if (!v4)
+  if (!inputCount)
   {
 LABEL_14:
     v11 = 0;
@@ -1951,8 +1951,8 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(TIInputManagerHandwriting *)self candidates];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  candidates2 = [(TIInputManagerHandwriting *)self candidates];
+  v6 = [candidates2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1963,7 +1963,7 @@ LABEL_5:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(candidates2);
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
@@ -1974,7 +1974,7 @@ LABEL_5:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [candidates2 countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_5;
@@ -1997,8 +1997,8 @@ LABEL_5:
 LABEL_12:
   }
 
-  v12 = [(TIInputManagerHandwriting *)self candidates];
-  v13 = [v12 objectAtIndex:0];
+  candidates3 = [(TIInputManagerHandwriting *)self candidates];
+  v13 = [candidates3 objectAtIndex:0];
 
   v11 = 0;
   if (![(TIInputManagerHandwriting *)self isDummyCandidate:v13])
@@ -2021,44 +2021,44 @@ LABEL_19:
   v29 = __Block_byref_object_copy__787;
   v30 = __Block_byref_object_dispose__788;
   v31 = 0;
-  v3 = [(TIInputManagerHandwriting *)self proactiveTriggers];
-  if ([v3 count])
+  proactiveTriggers = [(TIInputManagerHandwriting *)self proactiveTriggers];
+  if ([proactiveTriggers count])
   {
   }
 
   else
   {
-    v4 = [MEMORY[0x277D6FEC0] sharedInstance];
-    v5 = [v4 usePQT2Flow];
+    mEMORY[0x277D6FEC0] = [MEMORY[0x277D6FEC0] sharedInstance];
+    usePQT2Flow = [mEMORY[0x277D6FEC0] usePQT2Flow];
 
-    if (!v5)
+    if (!usePQT2Flow)
     {
       goto LABEL_10;
     }
   }
 
-  v6 = [(TIInputManagerHandwriting *)self keyboardState];
-  v7 = [v6 secureCandidateRenderTraits];
-  [v7 setDisableHideMyEmail:1];
+  keyboardState = [(TIInputManagerHandwriting *)self keyboardState];
+  secureCandidateRenderTraits = [keyboardState secureCandidateRenderTraits];
+  [secureCandidateRenderTraits setDisableHideMyEmail:1];
 
-  v8 = [(TIInputManagerHandwriting *)self keyboardState];
-  v9 = [v8 secureCandidateRenderTraits];
+  keyboardState2 = [(TIInputManagerHandwriting *)self keyboardState];
+  secureCandidateRenderTraits2 = [keyboardState2 secureCandidateRenderTraits];
 
-  [v9 singleCellWidth];
-  if (v10 > 0.0 && ([v9 singleCellHeight], v11 > 0.0) || (objc_msgSend(v9, "cellWidthOptions"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  [secureCandidateRenderTraits2 singleCellWidth];
+  if (v10 > 0.0 && ([secureCandidateRenderTraits2 singleCellHeight], v11 > 0.0) || (objc_msgSend(secureCandidateRenderTraits2, "cellWidthOptions"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [(TIInputManagerHandwriting *)self candidateHandlerForOpenRequest];
-    v14 = [v13 asynchronous];
+    candidateHandlerForOpenRequest = [(TIInputManagerHandwriting *)self candidateHandlerForOpenRequest];
+    asynchronous = [candidateHandlerForOpenRequest asynchronous];
 
-    v15 = [(TIInputManagerHandwriting *)self proactiveTriggers];
+    proactiveTriggers2 = [(TIInputManagerHandwriting *)self proactiveTriggers];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __66__TIInputManagerHandwriting_keyboardCandidateResultSetFromResults__block_invoke;
     v24[3] = &unk_279D9D788;
-    v25 = v14;
+    v25 = asynchronous;
     v24[4] = self;
     v24[5] = &v26;
-    [(TIInputManagerHandwriting *)self generateAndRenderProactiveSuggestionsWithTriggers:v15 withAdditionalPredictions:0 withInput:&stru_287EBF4E8 async:v14 completionHandler:v24];
+    [(TIInputManagerHandwriting *)self generateAndRenderProactiveSuggestionsWithTriggers:proactiveTriggers2 withAdditionalPredictions:0 withInput:&stru_287EBF4E8 async:asynchronous completionHandler:v24];
   }
 
   else
@@ -2068,13 +2068,13 @@ LABEL_19:
       goto LABEL_9;
     }
 
-    v15 = TIOSLogFacility();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    proactiveTriggers2 = TIOSLogFacility();
+    if (os_log_type_enabled(proactiveTriggers2, OS_LOG_TYPE_DEBUG))
     {
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s ProactiveQuickType:TI: Not generating proactive candidates - invalid secure candidate width or height trait", "-[TIInputManagerHandwriting keyboardCandidateResultSetFromResults]"];
       *buf = 138412290;
       v33 = v23;
-      _os_log_debug_impl(&dword_26D460000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+      _os_log_debug_impl(&dword_26D460000, proactiveTriggers2, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
@@ -2084,15 +2084,15 @@ LABEL_10:
   {
     v16 = MEMORY[0x277D6F3D0];
     v17 = v27[5];
-    v18 = [(TIInputManagerHandwriting *)self proactiveTriggers];
-    v19 = [v16 setWithCandidates:v17 proactiveTriggers:v18];
+    proactiveTriggers3 = [(TIInputManagerHandwriting *)self proactiveTriggers];
+    v19 = [v16 setWithCandidates:v17 proactiveTriggers:proactiveTriggers3];
   }
 
   else
   {
-    v18 = [(TIInputManagerHandwriting *)self candidates];
-    v20 = [(TIInputManagerHandwriting *)self proactiveTriggers];
-    v19 = [(TIInputManagerHandwriting *)self candidateResultSetFromCandidates:v18 proactiveTriggers:v20];
+    proactiveTriggers3 = [(TIInputManagerHandwriting *)self candidates];
+    proactiveTriggers4 = [(TIInputManagerHandwriting *)self proactiveTriggers];
+    v19 = [(TIInputManagerHandwriting *)self candidateResultSetFromCandidates:proactiveTriggers3 proactiveTriggers:proactiveTriggers4];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -2135,12 +2135,12 @@ void __66__TIInputManagerHandwriting_keyboardCandidateResultSetFromResults__bloc
 {
   if (([(TIInputManagerHandwriting *)self shouldSkipCandidateSelection]& 1) != 0)
   {
-    v3 = 0;
+    keyboardCandidateResultSetFromResults = 0;
     goto LABEL_10;
   }
 
-  v4 = [(TIInputManagerHandwriting *)self userDrawing];
-  if (v4)
+  userDrawing = [(TIInputManagerHandwriting *)self userDrawing];
+  if (userDrawing)
   {
   }
 
@@ -2157,15 +2157,15 @@ void __66__TIInputManagerHandwriting_keyboardCandidateResultSetFromResults__bloc
   if ([(TIInputManagerHandwriting *)self updateCandidates])
   {
 LABEL_7:
-    v3 = [(TIInputManagerHandwriting *)self keyboardCandidateResultSetFromResults];
+    keyboardCandidateResultSetFromResults = [(TIInputManagerHandwriting *)self keyboardCandidateResultSetFromResults];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v3 = [MEMORY[0x277D6F3D0] dummySet];
+  keyboardCandidateResultSetFromResults = [MEMORY[0x277D6F3D0] dummySet];
 LABEL_10:
 
-  return v3;
+  return keyboardCandidateResultSetFromResults;
 }
 
 - (BOOL)shouldCommitInputString
@@ -2175,23 +2175,23 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [(TIInputManagerHandwriting *)self keyboardState];
-  v4 = [v3 hardwareKeyboardMode];
+  keyboardState = [(TIInputManagerHandwriting *)self keyboardState];
+  hardwareKeyboardMode = [keyboardState hardwareKeyboardMode];
 
-  return v4;
+  return hardwareKeyboardMode;
 }
 
 - (void)updateDictionaryPaths
 {
   if ([(TIInputManagerHandwriting *)self shouldUpdateDictionaryPaths])
   {
-    v3 = [(TIInputManagerHandwriting *)self recognizerProvider];
+    recognizerProvider = [(TIInputManagerHandwriting *)self recognizerProvider];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __50__TIInputManagerHandwriting_updateDictionaryPaths__block_invoke;
     v4[3] = &unk_279D9D760;
     v4[4] = self;
-    [v3 provideRecognizerToBlock:v4];
+    [recognizerProvider provideRecognizerToBlock:v4];
   }
 }
 
@@ -2217,22 +2217,22 @@ void __50__TIInputManagerHandwriting_updateDictionaryPaths__block_invoke(uint64_
 - (void)updateUserWordEntries
 {
   v3 = self->_userDictionaryObserver;
-  v4 = [(TIInputManagerHandwriting *)self recognizerProvider];
-  v5 = [MEMORY[0x277D6FEF0] sharedInstance];
+  recognizerProvider = [(TIInputManagerHandwriting *)self recognizerProvider];
+  mEMORY[0x277D6FEF0] = [MEMORY[0x277D6FEF0] sharedInstance];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__TIInputManagerHandwriting_updateUserWordEntries__block_invoke;
   v10[3] = &unk_279D9D738;
-  v6 = v4;
+  v6 = recognizerProvider;
   v11 = v6;
-  v7 = [v5 addObserver:v10];
+  v7 = [mEMORY[0x277D6FEF0] addObserver:v10];
   userDictionaryObserver = self->_userDictionaryObserver;
   self->_userDictionaryObserver = v7;
 
   if (v3)
   {
-    v9 = [MEMORY[0x277D6FEF0] sharedInstance];
-    [v9 removeObserver:v3];
+    mEMORY[0x277D6FEF0]2 = [MEMORY[0x277D6FEF0] sharedInstance];
+    [mEMORY[0x277D6FEF0]2 removeObserver:v3];
   }
 }
 
@@ -2263,7 +2263,7 @@ void __50__TIInputManagerHandwriting_updateUserWordEntries__block_invoke_2(uint6
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x26D6BFFC0](self->_contactObserver, a2);
-  v4 = [(TIInputManagerHandwriting *)self recognizerProvider];
+  recognizerProvider = [(TIInputManagerHandwriting *)self recognizerProvider];
   v5 = TIPersonalizationContactOSLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2273,14 +2273,14 @@ void __50__TIInputManagerHandwriting_updateUserWordEntries__block_invoke_2(uint6
     _os_log_impl(&dword_26D460000, v5, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  v7 = [MEMORY[0x277D6FED8] sharedInstance];
+  mEMORY[0x277D6FED8] = [MEMORY[0x277D6FED8] sharedInstance];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __46__TIInputManagerHandwriting_updateAddressBook__block_invoke;
   v18 = &unk_279D9D710;
-  v8 = v4;
+  v8 = recognizerProvider;
   v19 = v8;
-  v9 = [v7 addContactObserver:&v15];
+  v9 = [mEMORY[0x277D6FED8] addContactObserver:&v15];
   contactObserver = self->_contactObserver;
   self->_contactObserver = v9;
 
@@ -2295,8 +2295,8 @@ void __50__TIInputManagerHandwriting_updateUserWordEntries__block_invoke_2(uint6
       _os_log_impl(&dword_26D460000, v11, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x277D6FED8] sharedInstance];
-    [v13 removeContactObserver:v3];
+    mEMORY[0x277D6FED8]2 = [MEMORY[0x277D6FED8] sharedInstance];
+    [mEMORY[0x277D6FED8]2 removeContactObserver:v3];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2340,18 +2340,18 @@ void __46__TIInputManagerHandwriting_updateAddressBook__block_invoke_207(uint64_
 
 - (void)suspend
 {
-  v3 = [(TIInputManagerHandwriting *)self committedCandidates];
-  [v3 removeAllObjects];
+  committedCandidates = [(TIInputManagerHandwriting *)self committedCandidates];
+  [committedCandidates removeAllObjects];
 
   v4.receiver = self;
   v4.super_class = TIInputManagerHandwriting;
   [(TIKeyboardInputManagerBase *)&v4 suspend];
 }
 
-- (void)keyboardActivityDidTransition:(id)a3
+- (void)keyboardActivityDidTransition:(id)transition
 {
   v10 = *MEMORY[0x277D85DE8];
-  if ([a3 toState] == 3)
+  if ([transition toState] == 3)
   {
     if (TICanLogMessageAtLevel())
     {
@@ -2365,8 +2365,8 @@ void __46__TIInputManagerHandwriting_updateAddressBook__block_invoke_207(uint64_
       }
     }
 
-    v5 = [(TIInputManagerHandwriting *)self recognizerProvider];
-    [v5 unloadRecognizer];
+    recognizerProvider = [(TIInputManagerHandwriting *)self recognizerProvider];
+    [recognizerProvider unloadRecognizer];
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -2378,8 +2378,8 @@ void __46__TIInputManagerHandwriting_updateAddressBook__block_invoke_207(uint64_
   if (!recognizerProvider)
   {
     v4 = [RecognizerProvider alloc];
-    v5 = [(TIInputManagerHandwriting *)self recognitionLanguage];
-    v6 = [(RecognizerProvider *)v4 initWithRecognitionLanguage:v5 mode:[(TIInputManagerHandwriting *)self recognitionMode]];
+    recognitionLanguage = [(TIInputManagerHandwriting *)self recognitionLanguage];
+    v6 = [(RecognizerProvider *)v4 initWithRecognitionLanguage:recognitionLanguage mode:[(TIInputManagerHandwriting *)self recognitionMode]];
     v7 = self->_recognizerProvider;
     self->_recognizerProvider = v6;
 
@@ -2452,10 +2452,10 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
 
 - (CHRecognizer)recognizer
 {
-  v2 = [(TIInputManagerHandwriting *)self recognizerProvider];
-  v3 = [v2 recognizer];
+  recognizerProvider = [(TIInputManagerHandwriting *)self recognizerProvider];
+  recognizer = [recognizerProvider recognizer];
 
-  return v3;
+  return recognizer;
 }
 
 - (void)dealloc
@@ -2472,14 +2472,14 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
       _os_log_impl(&dword_26D460000, v3, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v5 = [MEMORY[0x277D6FED8] sharedInstance];
-    [v5 removeContactObserver:self->_contactObserver];
+    mEMORY[0x277D6FED8] = [MEMORY[0x277D6FED8] sharedInstance];
+    [mEMORY[0x277D6FED8] removeContactObserver:self->_contactObserver];
   }
 
   if (self->_userDictionaryObserver)
   {
-    v6 = [MEMORY[0x277D6FEF0] sharedInstance];
-    [v6 removeObserver:self->_userDictionaryObserver];
+    mEMORY[0x277D6FEF0] = [MEMORY[0x277D6FEF0] sharedInstance];
+    [mEMORY[0x277D6FEF0] removeObserver:self->_userDictionaryObserver];
   }
 
   if (self->_dictionaryUpdateObserver)
@@ -2490,8 +2490,8 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
   }
 
   [(RecognizerProvider *)self->_recognizerProvider setRecognizerDidLoadBlock:0];
-  v8 = [MEMORY[0x277D6FE50] sharedController];
-  [v8 removeActivityObserver:self];
+  mEMORY[0x277D6FE50] = [MEMORY[0x277D6FE50] sharedController];
+  [mEMORY[0x277D6FE50] removeActivityObserver:self];
 
   v10.receiver = self;
   v10.super_class = TIInputManagerHandwriting;
@@ -2509,12 +2509,12 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
   return *(&self->super.super.super.isa + *MEMORY[0x277D6FF30]);
 }
 
-- (TIInputManagerHandwriting)initWithConfig:(id)a3 keyboardState:(id)a4
+- (TIInputManagerHandwriting)initWithConfig:(id)config keyboardState:(id)state
 {
-  v6 = a3;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = TIInputManagerHandwriting;
-  v7 = [(TIInputManagerHandwriting *)&v18 initWithConfig:v6 keyboardState:a4];
+  v7 = [(TIInputManagerHandwriting *)&v18 initWithConfig:configCopy keyboardState:state];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -2525,9 +2525,9 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
     committedCandidates = v7->_committedCandidates;
     v7->_committedCandidates = v10;
 
-    v12 = [MEMORY[0x277D6FF08] sharedWordSearchController];
-    v13 = [v6 inputMode];
-    v14 = [v12 wordSearchForInputMode:v13];
+    mEMORY[0x277D6FF08] = [MEMORY[0x277D6FF08] sharedWordSearchController];
+    inputMode = [configCopy inputMode];
+    v14 = [mEMORY[0x277D6FF08] wordSearchForInputMode:inputMode];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2535,9 +2535,9 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
       objc_storeStrong(&v7->_wordSearch, v14);
     }
 
-    v15 = [(TIInputManagerHandwriting *)v7 recognizer];
-    v16 = [MEMORY[0x277D6FE50] sharedController];
-    [v16 addActivityObserver:v7];
+    recognizer = [(TIInputManagerHandwriting *)v7 recognizer];
+    mEMORY[0x277D6FE50] = [MEMORY[0x277D6FE50] sharedController];
+    [mEMORY[0x277D6FE50] addActivityObserver:v7];
   }
 
   return v7;
@@ -2557,8 +2557,8 @@ void __47__TIInputManagerHandwriting_recognizerProvider__block_invoke_2(uint64_t
       _os_log_impl(&dword_26D460000, v3, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v5 = [MEMORY[0x277D6FED8] sharedInstance];
-    [v5 removeContactObserver:self->_contactObserver];
+    mEMORY[0x277D6FED8] = [MEMORY[0x277D6FED8] sharedInstance];
+    [mEMORY[0x277D6FED8] removeContactObserver:self->_contactObserver];
 
     contactObserver = self->_contactObserver;
     self->_contactObserver = 0;

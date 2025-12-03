@@ -1,16 +1,16 @@
 @interface DVPFrameRateConversionParameters
-- (DVPFrameRateConversionParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 interpolationPhase:(id)a6 submissionMode:(int64_t)a7 destinationFrames:(id)a8;
+- (DVPFrameRateConversionParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow interpolationPhase:(id)phase submissionMode:(int64_t)mode destinationFrames:(id)frames;
 @end
 
 @implementation DVPFrameRateConversionParameters
 
-- (DVPFrameRateConversionParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 interpolationPhase:(id)a6 submissionMode:(int64_t)a7 destinationFrames:(id)a8
+- (DVPFrameRateConversionParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow interpolationPhase:(id)phase submissionMode:(int64_t)mode destinationFrames:(id)frames
 {
-  v15 = a3;
-  v16 = a4;
-  v27 = a5;
-  v17 = a6;
-  v18 = a8;
+  frameCopy = frame;
+  nextFrameCopy = nextFrame;
+  flowCopy = flow;
+  phaseCopy = phase;
+  framesCopy = frames;
   v28.receiver = self;
   v28.super_class = DVPFrameRateConversionParameters;
   v19 = [(DVPFrameRateConversionParameters *)&v28 init];
@@ -23,19 +23,19 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v19->_sourceFrame, a3);
-  objc_storeStrong(&v20->_nextFrame, a4);
-  v21 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v17];
+  objc_storeStrong(&v19->_sourceFrame, frame);
+  objc_storeStrong(&v20->_nextFrame, nextFrame);
+  v21 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:phaseCopy];
   interpolationPhase = v20->_interpolationPhase;
   v20->_interpolationPhase = v21;
 
-  objc_storeStrong(&v20->_opticalFlow, a5);
-  v20->_submissionMode = a7;
-  v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v18];
+  objc_storeStrong(&v20->_opticalFlow, flow);
+  v20->_submissionMode = mode;
+  v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:framesCopy];
   destinationFrames = v20->_destinationFrames;
   v20->_destinationFrames = v23;
 
-  if (!isSameFormat([v15 buffer], objc_msgSend(v16, "buffer")))
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(nextFrameCopy, "buffer")))
   {
     NSLog(&cfstr_FailToToInitia_1.isa);
     goto LABEL_7;

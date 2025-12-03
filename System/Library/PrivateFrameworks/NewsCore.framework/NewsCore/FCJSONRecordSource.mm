@@ -1,15 +1,15 @@
 @interface FCJSONRecordSource
-- (FCJSONRecordSource)initWithSchema:(id)a3 contentDatabase:(id)a4 contentDirectory:(id)a5 experimentationSuffix:(id)a6 activeTreatmentID:(id)a7;
+- (FCJSONRecordSource)initWithSchema:(id)schema contentDatabase:(id)database contentDirectory:(id)directory experimentationSuffix:(id)suffix activeTreatmentID:(id)d;
 - (id)alwaysLocalizedKeys;
-- (id)keyValueRepresentationOfRecord:(id)a3;
+- (id)keyValueRepresentationOfRecord:(id)record;
 - (id)localizableKeys;
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 - (id)recordIDPrefixes;
 - (id)recordType;
 - (id)storeFilename;
-- (void)fetchRecordsWithIDs:(id)a3 cachePolicy:(id)a4 completion:(id)a5;
-- (void)fetchRecordsWithIDs:(id)a3 completion:(id)a4;
+- (void)fetchRecordsWithIDs:(id)ds cachePolicy:(id)policy completion:(id)completion;
+- (void)fetchRecordsWithIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation FCJSONRecordSource
@@ -17,23 +17,23 @@
 - (id)storeFilename
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(FCJSONRecordSource *)self schema];
-  v4 = [v3 recordType];
-  v5 = [v4 lowercaseString];
-  v6 = [v2 stringWithFormat:@"%@-record-source", v5];
+  schema = [(FCJSONRecordSource *)self schema];
+  recordType = [schema recordType];
+  lowercaseString = [recordType lowercaseString];
+  v6 = [v2 stringWithFormat:@"%@-record-source", lowercaseString];
 
   return v6;
 }
 
-- (FCJSONRecordSource)initWithSchema:(id)a3 contentDatabase:(id)a4 contentDirectory:(id)a5 experimentationSuffix:(id)a6 activeTreatmentID:(id)a7
+- (FCJSONRecordSource)initWithSchema:(id)schema contentDatabase:(id)database contentDirectory:(id)directory experimentationSuffix:(id)suffix activeTreatmentID:(id)d
 {
-  v12 = a3;
+  schemaCopy = schema;
   v19.receiver = self;
   v19.super_class = FCJSONRecordSource;
-  v13 = [(FCRecordSource *)&v19 initWithContentDatabase:a4 contentDirectory:a5 appActivityMonitor:0 backgroundTaskable:0 defaultTTL:a6 experimentalizableFieldsPostfix:a7 activeTreatmentID:0.0];
+  v13 = [(FCRecordSource *)&v19 initWithContentDatabase:database contentDirectory:directory appActivityMonitor:0 backgroundTaskable:0 defaultTTL:suffix experimentalizableFieldsPostfix:d activeTreatmentID:0.0];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [schemaCopy copy];
     schema = v13->_schema;
     v13->_schema = v14;
 
@@ -53,13 +53,13 @@ id __110__FCJSONRecordSource_initWithSchema_contentDatabase_contentDirectory_exp
   return v0;
 }
 
-- (void)fetchRecordsWithIDs:(id)a3 cachePolicy:(id)a4 completion:(id)a5
+- (void)fetchRecordsWithIDs:(id)ds cachePolicy:(id)policy completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(FCRecordSource *)self fetchOperationForRecordsWithIDs:a3];
-  [v10 setCachePolicy:{objc_msgSend(v9, "cachePolicy")}];
-  [v9 maximumCachedAge];
+  completionCopy = completion;
+  policyCopy = policy;
+  v10 = [(FCRecordSource *)self fetchOperationForRecordsWithIDs:ds];
+  [v10 setCachePolicy:{objc_msgSend(policyCopy, "cachePolicy")}];
+  [policyCopy maximumCachedAge];
   v12 = v11;
 
   [v10 setMaximumCachedAge:v12];
@@ -67,13 +67,13 @@ id __110__FCJSONRecordSource_initWithSchema_contentDatabase_contentDirectory_exp
   v15[1] = 3221225472;
   v15[2] = __65__FCJSONRecordSource_fetchRecordsWithIDs_cachePolicy_completion___block_invoke;
   v15[3] = &unk_1E7C37A38;
-  v13 = v8;
+  v13 = completionCopy;
   v16 = v13;
   [v10 setFetchCompletionBlock:v15];
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v14 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-    [v14 addOperation:v10];
+    fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+    [fc_sharedConcurrentQueue addOperation:v10];
   }
 
   else
@@ -113,52 +113,52 @@ id __65__FCJSONRecordSource_fetchRecordsWithIDs_cachePolicy_completion___block_i
   return v3;
 }
 
-- (void)fetchRecordsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchRecordsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   v8 = +[FCCachePolicy defaultCachePolicy];
-  [(FCJSONRecordSource *)self fetchRecordsWithIDs:v7 cachePolicy:v8 completion:v6];
+  [(FCJSONRecordSource *)self fetchRecordsWithIDs:dsCopy cachePolicy:v8 completion:completionCopy];
 }
 
 - (id)recordType
 {
-  v2 = [(FCJSONRecordSource *)self schema];
-  v3 = [v2 recordType];
+  schema = [(FCJSONRecordSource *)self schema];
+  recordType = [schema recordType];
 
-  return v3;
+  return recordType;
 }
 
 - (id)nonLocalizableKeys
 {
-  v2 = [(FCJSONRecordSource *)self schema];
-  v3 = [v2 keys];
+  schema = [(FCJSONRecordSource *)self schema];
+  keys = [schema keys];
 
-  return v3;
+  return keys;
 }
 
 - (id)localizableKeys
 {
-  v2 = [(FCJSONRecordSource *)self schema];
-  v3 = [v2 localizableKeys];
+  schema = [(FCJSONRecordSource *)self schema];
+  localizableKeys = [schema localizableKeys];
 
-  return v3;
+  return localizableKeys;
 }
 
 - (id)alwaysLocalizedKeys
 {
-  v2 = [(FCJSONRecordSource *)self schema];
-  v3 = [v2 alwaysLocalizedKeys];
+  schema = [(FCJSONRecordSource *)self schema];
+  alwaysLocalizedKeys = [schema alwaysLocalizedKeys];
 
-  return v3;
+  return alwaysLocalizedKeys;
 }
 
 - (id)recordIDPrefixes
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(FCJSONRecordSource *)self schema];
-  v3 = [v2 recordIDPrefix];
-  v7[0] = v3;
+  schema = [(FCJSONRecordSource *)self schema];
+  recordIDPrefix = [schema recordIDPrefix];
+  v7[0] = recordIDPrefix;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -166,15 +166,15 @@ id __65__FCJSONRecordSource_fetchRecordsWithIDs_cachePolicy_completion___block_i
   return v4;
 }
 
-- (id)keyValueRepresentationOfRecord:(id)a3
+- (id)keyValueRepresentationOfRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_opt_class();
-  v5 = FCCheckedDynamicCast(v4, v3);
+  v5 = FCCheckedDynamicCast(v4, recordCopy);
 
   v6 = MEMORY[0x1E696ACB0];
-  v7 = [v5 json];
-  v8 = [v6 JSONObjectWithData:v7 options:0 error:0];
+  json = [v5 json];
+  v8 = [v6 JSONObjectWithData:json options:0 error:0];
   v9 = v8;
   if (v8)
   {
@@ -191,41 +191,41 @@ id __65__FCJSONRecordSource_fetchRecordsWithIDs_cachePolicy_completion___block_i
   return v10;
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v49 = a4;
+  recordCopy = record;
+  baseCopy = base;
   v50 = objc_alloc_init(MEMORY[0x1E69B6E68]);
-  [v50 setBase:v49];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [v6 recordID];
-  v9 = [v8 recordName];
-  [v7 setObject:v9 forKeyedSubscript:@"_recordName"];
+  [v50 setBase:baseCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  [dictionary setObject:recordName forKeyedSubscript:@"_recordName"];
 
-  v10 = [(FCJSONRecordSource *)self dateFormatter];
-  v11 = [v10 value];
-  v12 = [v6 creationDate];
-  v13 = [v11 stringFromDate:v12];
-  [v7 setObject:v13 forKeyedSubscript:@"_recordCreationDate"];
+  dateFormatter = [(FCJSONRecordSource *)self dateFormatter];
+  value = [dateFormatter value];
+  creationDate = [recordCopy creationDate];
+  v13 = [value stringFromDate:creationDate];
+  [dictionary setObject:v13 forKeyedSubscript:@"_recordCreationDate"];
 
-  v14 = [(FCJSONRecordSource *)self dateFormatter];
-  v15 = [v14 value];
-  v16 = [v6 modificationDate];
-  v17 = [v15 stringFromDate:v16];
-  v53 = v7;
-  [v7 setObject:v17 forKeyedSubscript:@"_recordModificationDate"];
+  dateFormatter2 = [(FCJSONRecordSource *)self dateFormatter];
+  value2 = [dateFormatter2 value];
+  modificationDate = [recordCopy modificationDate];
+  v17 = [value2 stringFromDate:modificationDate];
+  v53 = dictionary;
+  [dictionary setObject:v17 forKeyedSubscript:@"_recordModificationDate"];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v18 = self;
-  v19 = [(FCJSONRecordSource *)self schema];
-  v20 = [v19 allKeys];
+  selfCopy = self;
+  schema = [(FCJSONRecordSource *)self schema];
+  allKeys = [schema allKeys];
 
-  obj = v20;
-  v21 = [v20 countByEnumeratingWithState:&v56 objects:v67 count:16];
+  obj = allKeys;
+  v21 = [allKeys countByEnumeratingWithState:&v56 objects:v67 count:16];
   if (v21)
   {
     v22 = v21;
@@ -241,20 +241,20 @@ id __65__FCJSONRecordSource_fetchRecordsWithIDs_cachePolicy_completion___block_i
         }
 
         v24 = *(*(&v56 + 1) + 8 * v23);
-        v25 = [(FCRecordSource *)v18 localizedKeysByOriginalKey];
-        v26 = [v25 objectForKeyedSubscript:v24];
+        localizedKeysByOriginalKey = [(FCRecordSource *)selfCopy localizedKeysByOriginalKey];
+        v26 = [localizedKeysByOriginalKey objectForKeyedSubscript:v24];
 
         v27 = v24;
-        v28 = [v6 objectForKeyedSubscript:v26];
-        if (v28 || ([v6 objectForKeyedSubscript:v27], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+        v28 = [recordCopy objectForKeyedSubscript:v26];
+        if (v28 || ([recordCopy objectForKeyedSubscript:v27], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v29 = v28;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v30 = [(FCJSONRecordSource *)v18 dateFormatter];
-            v31 = [v30 value];
-            v32 = [v31 stringFromDate:v29];
+            dateFormatter3 = [(FCJSONRecordSource *)selfCopy dateFormatter];
+            value3 = [dateFormatter3 value];
+            v32 = [value3 stringFromDate:v29];
           }
 
           else
@@ -295,12 +295,12 @@ LABEL_16:
             if (os_log_type_enabled(FCRecordSourceLog, OS_LOG_TYPE_ERROR))
             {
               v38 = v37;
-              v51 = [(FCJSONRecordSource *)v18 schema];
-              v39 = [v51 recordType];
+              schema2 = [(FCJSONRecordSource *)selfCopy schema];
+              recordType = [schema2 recordType];
               v40 = objc_opt_class();
               v41 = NSStringFromClass(v40);
               *buf = 138412802;
-              v61 = v39;
+              v61 = recordType;
               v62 = 2112;
               v63 = v27;
               v64 = 2112;

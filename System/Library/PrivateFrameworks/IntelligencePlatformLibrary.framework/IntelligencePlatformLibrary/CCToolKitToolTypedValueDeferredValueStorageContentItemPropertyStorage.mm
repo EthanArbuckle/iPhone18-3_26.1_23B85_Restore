@@ -1,24 +1,24 @@
 @interface CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithData:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithData:(id)data propertyKey:(id)key error:(id *)error;
+- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSData)data;
 - (NSString)propertyKey;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage
 
-- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"data"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"data"];
     if (v9)
     {
       objc_opt_class();
@@ -43,8 +43,8 @@
       v11 = v8;
     }
 
-    v14 = [v6 objectForKeyedSubscript:{@"propertyKey", v16}];
-    v13 = [[CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage alloc] initWithData:v9 propertyKey:v14 error:a4];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"propertyKey", v16}];
+    v13 = [[CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage alloc] initWithData:v9 propertyKey:v14 error:error];
 
 LABEL_9:
     v8 = v11;
@@ -63,15 +63,15 @@ LABEL_10:
   v3 = objc_opt_new();
   if (self->_data)
   {
-    v4 = [(CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage *)self data];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    data = [(CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage *)self data];
+    v5 = [data base64EncodedStringWithOptions:0];
     [v3 setObject:v5 forKeyedSubscript:@"data"];
   }
 
   if (self->_propertyKey)
   {
-    v6 = [(CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage *)self propertyKey];
-    [v3 setObject:v6 forKeyedSubscript:@"propertyKey"];
+    propertyKey = [(CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage *)self propertyKey];
+    [v3 setObject:propertyKey forKeyedSubscript:@"propertyKey"];
   }
 
   v7 = [v3 copy];
@@ -79,20 +79,20 @@ LABEL_10:
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_data)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] bytesValue:self->_data];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_propertyKey)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 stringValue:self->_propertyKey];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -110,10 +110,10 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -263,15 +263,15 @@ LABEL_38:
   return v31;
 }
 
-- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithData:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (CCToolKitToolTypedValueDeferredValueStorageContentItemPropertyStorage)initWithData:(id)data propertyKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!dataCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!keyCopy)
     {
       goto LABEL_8;
     }
@@ -285,7 +285,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -301,24 +301,24 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteDataField();
-  if (v9)
+  if (keyCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

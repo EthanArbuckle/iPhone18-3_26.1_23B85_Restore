@@ -1,8 +1,8 @@
 @interface CMOdometer
 - (CMOdometer)init;
 - (void)dealloc;
-- (void)startCyclingWorkoutDistanceUpdatesWithHandler:(id)a3;
-- (void)startOdometerUpdatesForActivity:(int64_t)a3 withHandler:(id)a4;
+- (void)startCyclingWorkoutDistanceUpdatesWithHandler:(id)handler;
+- (void)startOdometerUpdatesForActivity:(int64_t)activity withHandler:(id)handler;
 - (void)stopCyclingWorkoutDistanceUpdates;
 - (void)stopOdometerUpdates;
 @end
@@ -40,16 +40,16 @@
   [(CMOdometer *)&v5 dealloc];
 }
 
-- (void)startOdometerUpdatesForActivity:(int64_t)a3 withHandler:(id)a4
+- (void)startOdometerUpdatesForActivity:(int64_t)activity withHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!handler)
   {
-    v21 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v21 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, activity);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CMOdometer.mm", 273, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
-  if (a3 < 2)
+  if (activity < 2)
   {
     if (qword_1EAFE29D8 != -1)
     {
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(qword_1EAFE29E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v31 = a3;
+      activityCopy = activity;
       _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEFAULT, "#Warning The requested activity %ld is not yet supported", buf, 0xCu);
     }
 
@@ -74,7 +74,7 @@
       }
 
       v28 = 134217984;
-      v29 = a3;
+      activityCopy2 = activity;
       v10 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMOdometer startOdometerUpdatesForActivity:withHandler:]", "CoreLocation: %s\n", v10);
       if (v10 != buf)
@@ -88,11 +88,11 @@
     v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v9, &v27, &v26, 1);
 LABEL_31:
     v18 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v12, @"CMErrorDomain", 109, v11);
-    (*(a4 + 2))(a4, 0, v18);
+    (*(handler + 2))(handler, 0, v18);
     goto LABEL_32;
   }
 
-  if (a3 != 2)
+  if (activity != 2)
   {
     if (qword_1EAFE29D8 != -1)
     {
@@ -130,13 +130,13 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v13 = *(objc_msgSend_odometerProxy(self, a2, a3) + 8);
+  v13 = *(objc_msgSend_odometerProxy(self, a2, activity) + 8);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B627ADC;
   block[3] = &unk_1E7532B68;
   block[4] = self;
-  block[5] = a4;
+  block[5] = handler;
   dispatch_async(v13, block);
 LABEL_32:
   v19 = *MEMORY[0x1E69E9840];
@@ -153,15 +153,15 @@ LABEL_32:
   dispatch_sync(v4, block);
 }
 
-- (void)startCyclingWorkoutDistanceUpdatesWithHandler:(id)a3
+- (void)startCyclingWorkoutDistanceUpdatesWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMOdometer.mm", 311, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
-  v5 = objc_msgSend_copy(a3, a2, a3);
+  v5 = objc_msgSend_copy(handler, a2, handler);
   v8 = *(objc_msgSend_odometerProxy(self, v6, v7) + 8);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

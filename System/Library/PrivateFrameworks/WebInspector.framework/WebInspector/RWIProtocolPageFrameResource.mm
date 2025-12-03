@@ -5,50 +5,50 @@
 - (NSString)sourceMapURL;
 - (NSString)targetId;
 - (NSString)url;
-- (RWIProtocolPageFrameResource)initWithUrl:(id)a3 type:(int64_t)a4 mimeType:(id)a5;
+- (RWIProtocolPageFrameResource)initWithUrl:(id)url type:(int64_t)type mimeType:(id)mimeType;
 - (int64_t)type;
-- (void)setMimeType:(id)a3;
-- (void)setSourceMapURL:(id)a3;
-- (void)setTargetId:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setMimeType:(id)type;
+- (void)setSourceMapURL:(id)l;
+- (void)setTargetId:(id)id;
+- (void)setType:(int64_t)type;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolPageFrameResource
 
-- (RWIProtocolPageFrameResource)initWithUrl:(id)a3 type:(int64_t)a4 mimeType:(id)a5
+- (RWIProtocolPageFrameResource)initWithUrl:(id)url type:(int64_t)type mimeType:(id)mimeType
 {
-  v8 = a3;
-  v9 = a5;
+  urlCopy = url;
+  mimeTypeCopy = mimeType;
   v13.receiver = self;
   v13.super_class = RWIProtocolPageFrameResource;
   v10 = [(RWIProtocolJSONObject *)&v13 init];
   if (v10)
   {
-    if (!v8)
+    if (!urlCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"url"}];
     }
 
-    if (!v9)
+    if (!mimeTypeCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"mimeType"}];
     }
 
-    [(RWIProtocolPageFrameResource *)v10 setUrl:v8];
-    [(RWIProtocolPageFrameResource *)v10 setType:a4];
-    [(RWIProtocolPageFrameResource *)v10 setMimeType:v9];
+    [(RWIProtocolPageFrameResource *)v10 setUrl:urlCopy];
+    [(RWIProtocolPageFrameResource *)v10 setType:type];
+    [(RWIProtocolPageFrameResource *)v10 setMimeType:mimeTypeCopy];
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrameResource;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -128,11 +128,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setMimeType:(id)a3
+- (void)setMimeType:(id)type
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrameResource;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"mimeType"];
+  [(RWIProtocolJSONObject *)&v3 setString:type forKey:@"mimeType"];
 }
 
 - (NSString)mimeType
@@ -158,11 +158,11 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"canceled"];
 }
 
-- (void)setSourceMapURL:(id)a3
+- (void)setSourceMapURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrameResource;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"sourceMapURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"sourceMapURL"];
 }
 
 - (NSString)sourceMapURL
@@ -174,11 +174,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setTargetId:(id)a3
+- (void)setTargetId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrameResource;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"targetId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"targetId"];
 }
 
 - (NSString)targetId

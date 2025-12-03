@@ -1,9 +1,9 @@
 @interface _NSXPCConnectionImportInfo
 - (_NSXPCConnectionImportInfo)init;
-- (os_unfair_lock_s)_valueForEntitlement:(_OWORD *)a3 auditToken:;
-- (uint64_t)removeProxy:(uint64_t)a1;
+- (os_unfair_lock_s)_valueForEntitlement:(_OWORD *)entitlement auditToken:;
+- (uint64_t)removeProxy:(uint64_t)proxy;
 - (void)_clearEntitlementCache;
-- (void)addProxy:(uint64_t)a1;
+- (void)addProxy:(uint64_t)proxy;
 - (void)dealloc;
 @end
 
@@ -31,18 +31,18 @@
 
 - (void)_clearEntitlementCache
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 24);
-    if (v2 && (*(a1 + 36) & 1) == 0)
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 24);
+    if (v2 && (*(self + 36) & 1) == 0)
     {
-      *(a1 + 36) = 1;
+      *(self + 36) = 1;
       CFRelease(v2);
-      *(a1 + 24) = 0;
+      *(self + 24) = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 }
 
@@ -60,10 +60,10 @@
   return result;
 }
 
-- (void)addProxy:(uint64_t)a1
+- (void)addProxy:(uint64_t)proxy
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (proxy)
   {
     if (a2)
     {
@@ -75,12 +75,12 @@
       v3 = 0;
     }
 
-    os_unfair_lock_lock((a1 + 32));
-    Mutable = *(a1 + 16);
+    os_unfair_lock_lock((proxy + 32));
+    Mutable = *(proxy + 16);
     if (!Mutable)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 0, 0, 0);
-      *(a1 + 16) = Mutable;
+      *(proxy + 16) = Mutable;
     }
 
     v8[0] = 0;
@@ -99,14 +99,14 @@
     }
 
     CFDictionarySetValue(v6, v7, v5);
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((proxy + 32));
   }
 }
 
-- (uint64_t)removeProxy:(uint64_t)a1
+- (uint64_t)removeProxy:(uint64_t)proxy
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!proxy)
   {
     return 0;
   }
@@ -121,12 +121,12 @@
     v3 = 0;
   }
 
-  os_unfair_lock_lock((a1 + 32));
-  Mutable = *(a1 + 16);
+  os_unfair_lock_lock((proxy + 32));
+  Mutable = *(proxy + 16);
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 0, 0, 0);
-    *(a1 + 16) = Mutable;
+    *(proxy + 16) = Mutable;
   }
 
   v7[0] = 0;
@@ -146,11 +146,11 @@ LABEL_10:
   CFDictionaryRemoveValue(Mutable, v3);
   v5 = 1;
 LABEL_11:
-  os_unfair_lock_unlock((a1 + 32));
+  os_unfair_lock_unlock((proxy + 32));
   return v5;
 }
 
-- (os_unfair_lock_s)_valueForEntitlement:(_OWORD *)a3 auditToken:
+- (os_unfair_lock_s)_valueForEntitlement:(_OWORD *)entitlement auditToken:
 {
   v16 = *MEMORY[0x1E69E9840];
   if (result)
@@ -182,8 +182,8 @@ LABEL_11:
 
       os_unfair_lock_unlock(v5 + 8);
       v9 = *MEMORY[0x1E695E4A8];
-      v10 = a3[1];
-      *buf = *a3;
+      v10 = entitlement[1];
+      *buf = *entitlement;
       *&buf[16] = v10;
       v8 = _MergedGlobals_156(v9, buf);
       os_unfair_lock_lock(v5 + 8);

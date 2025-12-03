@@ -1,60 +1,60 @@
 @interface SafariDownloadsTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SafariDownloadsTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = SafariDownloadsTableCell;
-  [(SafariDownloadsTableCell *)&v20 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"providerDomain"];
+  [(SafariDownloadsTableCell *)&v20 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"providerDomain"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"providerItem"];
+  userInfo2 = [specifierCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"providerItem"];
 
-  v9 = [(SafariDownloadsTableCell *)self defaultContentConfiguration];
+  defaultContentConfiguration = [(SafariDownloadsTableCell *)self defaultContentConfiguration];
   if (v8)
   {
-    v10 = [v4 propertyForKey:PSAccessoryKey];
-    if (![v10 isEqual:&off_90B08])
+    displayName = [specifierCopy propertyForKey:PSAccessoryKey];
+    if (![displayName isEqual:&off_90B08])
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v11 = [v8 itemID];
-    v12 = [v6 identifier];
-    v13 = [FPItemID rootItemIDWithProviderDomainID:v12];
-    v14 = [v11 isEqual:v13];
+    itemID = [v8 itemID];
+    identifier = [v6 identifier];
+    v13 = [FPItemID rootItemIDWithProviderDomainID:identifier];
+    v14 = [itemID isEqual:v13];
 
     if ((v14 & 1) == 0)
     {
-      v10 = [v8 displayName];
-      [v9 setSecondaryText:v10];
+      displayName = [v8 displayName];
+      [defaultContentConfiguration setSecondaryText:displayName];
       goto LABEL_5;
     }
   }
 
 LABEL_6:
   v15 = DOCLocalizedDisplayName();
-  [v9 setText:v15];
+  [defaultContentConfiguration setText:v15];
 
   v16 = [DOCDocumentSource iconForFileProvider:v6 size:0];
-  [v9 setImage:v16];
+  [defaultContentConfiguration setImage:v16];
 
-  v17 = [v9 imageProperties];
-  [v17 setReservedLayoutSize:{30.0, 30.0}];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{30.0, 30.0}];
 
   v18 = +[UIColor secondaryLabelColor];
-  v19 = [v9 secondaryTextProperties];
-  [v19 setColor:v18];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:v18];
 
-  [(SafariDownloadsTableCell *)self setContentConfiguration:v9];
+  [(SafariDownloadsTableCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 @end

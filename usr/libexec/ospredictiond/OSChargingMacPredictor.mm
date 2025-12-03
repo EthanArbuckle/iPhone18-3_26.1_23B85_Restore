@@ -1,25 +1,25 @@
 @interface OSChargingMacPredictor
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
 @end
 
 @implementation OSChargingMacPredictor
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
-  v11 = a4;
-  v12 = a7;
-  v13 = a8;
+  eventsCopy = events;
+  dateCopy = date;
+  logCopy = log;
   v14 = +[NSCalendar currentCalendar];
-  v107 = [v14 components:96 fromDate:v12];
+  v107 = [v14 components:96 fromDate:dateCopy];
 
-  v15 = [v107 hour];
+  hour = [v107 hour];
   v16 = 0.0;
-  v17 = [OSIntelligenceUtilities events:v11 forHourBin:1 date:v12 withMaxDuration:0.0];
-  v18 = [OSIntelligenceUtilities events:v11 forHourBin:2 date:v12 withMaxDuration:0.0];
-  v19 = [OSIntelligenceUtilities events:v11 forHourBin:4 date:v12 withMaxDuration:0.0];
-  v20 = [OSIntelligenceUtilities events:v11 forHourBin:8 date:v12 withMaxDuration:0.0];
-  v21 = [OSIntelligenceUtilities events:v11 forHourBin:16 date:v12 withMaxDuration:0.0];
-  v22 = [OSIntelligenceUtilities events:v11 forHourBin:24 date:v12 withMaxDuration:0.0];
+  v17 = [OSIntelligenceUtilities events:eventsCopy forHourBin:1 date:dateCopy withMaxDuration:0.0];
+  v18 = [OSIntelligenceUtilities events:eventsCopy forHourBin:2 date:dateCopy withMaxDuration:0.0];
+  v19 = [OSIntelligenceUtilities events:eventsCopy forHourBin:4 date:dateCopy withMaxDuration:0.0];
+  v20 = [OSIntelligenceUtilities events:eventsCopy forHourBin:8 date:dateCopy withMaxDuration:0.0];
+  v21 = [OSIntelligenceUtilities events:eventsCopy forHourBin:16 date:dateCopy withMaxDuration:0.0];
+  v22 = [OSIntelligenceUtilities events:eventsCopy forHourBin:24 date:dateCopy withMaxDuration:0.0];
   [OSIntelligenceUtilities standardDeviationOf:v17];
   v91 = v23;
   [OSIntelligenceUtilities standardDeviationOf:v18];
@@ -51,24 +51,24 @@
   [OSIntelligenceUtilities medianOf:v22];
   v90 = v39;
   v40 = +[NSMutableDictionary dictionary];
-  v41 = [NSNumber numberWithUnsignedInteger:a5];
+  v41 = [NSNumber numberWithUnsignedInteger:level];
   [v40 setObject:v41 forKeyedSubscript:@"plugin_battery_level"];
 
-  v42 = [NSNumber numberWithDouble:v15];
+  v42 = [NSNumber numberWithDouble:hour];
   [v40 setObject:v42 forKeyedSubscript:@"hour"];
 
-  v43 = [v11 lastObject];
-  v44 = [v43 endDate];
-  v45 = [v11 lastObject];
-  v46 = [v45 startDate];
-  [v44 timeIntervalSinceDate:v46];
+  lastObject = [eventsCopy lastObject];
+  endDate = [lastObject endDate];
+  lastObject2 = [eventsCopy lastObject];
+  startDate = [lastObject2 startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v48 = [NSNumber numberWithDouble:v47 / 3600.0];
   [v40 setObject:v48 forKeyedSubscript:@"prev_charge_duration_1"];
 
-  v102 = v12;
-  v104 = v11;
-  v49 = [OSIntelligenceUtilities getUsageBucketsForEvents:v11 forDate:v12 withLog:v13];
-  +[OSIntelligenceUtilities hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:](OSIntelligenceUtilities, "hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:", v49, a3, [v107 minute]);
+  v102 = dateCopy;
+  v104 = eventsCopy;
+  v49 = [OSIntelligenceUtilities getUsageBucketsForEvents:eventsCopy forDate:dateCopy withLog:logCopy];
+  +[OSIntelligenceUtilities hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:](OSIntelligenceUtilities, "hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:", v49, features, [v107 minute]);
   v50 = [NSNumber numberWithDouble:?];
   [v40 setObject:v50 forKeyedSubscript:@"hours_until_use"];
 
@@ -76,7 +76,7 @@
   do
   {
     v52 = [NSString stringWithFormat:@"hour_plus_%d", v51];
-    v53 = (v16 + a3);
+    v53 = (v16 + features);
     if (v53 > 23)
     {
       v53 -= 24;
@@ -141,8 +141,8 @@
   v112 = 0u;
   v113 = 0u;
   v70 = v40;
-  v71 = [v40 allKeys];
-  v72 = [v71 countByEnumeratingWithState:&v110 objects:v121 count:16];
+  allKeys = [v40 allKeys];
+  v72 = [allKeys countByEnumeratingWithState:&v110 objects:v121 count:16];
   if (v72)
   {
     v73 = v72;
@@ -154,11 +154,11 @@
       {
         if (*v111 != v74)
         {
-          objc_enumerationMutation(v71);
+          objc_enumerationMutation(allKeys);
         }
 
         v76 = *(*(&v110 + 1) + 8 * v75);
-        v77 = v13;
+        v77 = logCopy;
         if (os_log_type_enabled(v77, OS_LOG_TYPE_DEBUG))
         {
           v78 = [v70 objectForKeyedSubscript:v76];
@@ -173,7 +173,7 @@
       }
 
       while (v73 != v75);
-      v73 = [v71 countByEnumeratingWithState:&v110 objects:v121 count:16];
+      v73 = [allKeys countByEnumeratingWithState:&v110 objects:v121 count:16];
     }
 
     while (v73);
@@ -201,15 +201,15 @@
   v86 = v109;
   if (v86)
   {
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logCopy, OS_LOG_TYPE_ERROR))
     {
-      sub_10005CD8C(v86, v13);
+      sub_10005CD8C(v86, logCopy);
     }
   }
 
   else
   {
-    v87 = v13;
+    v87 = logCopy;
     if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
     {
       v88 = [NSNumber numberWithDouble:v80];

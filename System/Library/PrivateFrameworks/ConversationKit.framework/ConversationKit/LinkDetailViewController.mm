@@ -1,6 +1,6 @@
 @interface LinkDetailViewController
-- (_TtC15ConversationKit24LinkDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (_TtC15ConversationKit24LinkDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didTapDeleteLinkButton;
 - (void)didTapJoin;
 - (void)viewDidLoad;
@@ -10,43 +10,43 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   LinkDetailViewController.viewDidLoad()();
 }
 
-- (_TtC15ConversationKit24LinkDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit24LinkDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   LinkDetailViewController.init(nibName:bundle:)();
 }
 
 - (void)didTapDeleteLinkButton
 {
-  v2 = self;
+  selfCopy = self;
   LinkDetailViewController.didTapDeleteLinkButton()();
 }
 
 - (void)didTapJoin
 {
-  v2 = self;
+  selfCopy = self;
   LinkDetailViewController.didTapJoin()();
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  LinkDetailViewController.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  LinkDetailViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }

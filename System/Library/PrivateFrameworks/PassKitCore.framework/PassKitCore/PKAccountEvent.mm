@@ -1,50 +1,50 @@
 @interface PKAccountEvent
-+ (id)accountIdentifierFromRecord:(id)a3;
-+ (id)recordNameForEventIdentifier:(id)a3;
-+ (int64_t)accountEventTypeFromRecord:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountEvent:(id)a3;
-- (PKAccountEvent)initWithCloudStoreCoder:(id)a3;
-- (PKAccountEvent)initWithCoder:(id)a3;
++ (id)accountIdentifierFromRecord:(id)record;
++ (id)recordNameForEventIdentifier:(id)identifier;
++ (int64_t)accountEventTypeFromRecord:(id)record;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountEvent:(id)event;
+- (PKAccountEvent)initWithCloudStoreCoder:(id)coder;
+- (PKAccountEvent)initWithCoder:(id)coder;
 - (id)description;
 - (id)recordName;
-- (id)recordNameForItem:(id)a3;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
+- (id)recordNameForItem:(id)item;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
 - (id)updateReasonsDescription;
 - (unint64_t)hash;
-- (void)_encodeServerDataForCloudStoreCoder:(id)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_encodeServerDataForCloudStoreCoder:(id)coder;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountEvent
 
-+ (int64_t)accountEventTypeFromRecord:(id)a3
++ (int64_t)accountEventTypeFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 recordType];
-  v6 = v5;
-  if (v5 == @"AccountEvent")
+  recordType = [recordCopy recordType];
+  v6 = recordType;
+  if (recordType == @"AccountEvent")
   {
 
     goto LABEL_8;
   }
 
-  if (!v5 || !@"AccountEvent")
+  if (!recordType || !@"AccountEvent")
   {
 
     v8 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(__CFString *)v5 isEqualToString:@"AccountEvent"];
+  v7 = [(__CFString *)recordType isEqualToString:@"AccountEvent"];
 
   if (v7)
   {
@@ -63,26 +63,26 @@ LABEL_11:
   return v8;
 }
 
-+ (id)accountIdentifierFromRecord:(id)a3
++ (id)accountIdentifierFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_10;
   }
 
-  v5 = [v3 recordType];
-  v6 = v5;
-  if (v5 == @"AccountEvent")
+  recordType = [recordCopy recordType];
+  v6 = recordType;
+  if (recordType == @"AccountEvent")
   {
 
     goto LABEL_8;
   }
 
-  if (v5 && @"AccountEvent")
+  if (recordType && @"AccountEvent")
   {
-    v7 = [(__CFString *)v5 isEqualToString:@"AccountEvent"];
+    v7 = [(__CFString *)recordType isEqualToString:@"AccountEvent"];
 
     if (!v7)
     {
@@ -109,14 +109,14 @@ LABEL_11:
   return [v3 recordNameForEventIdentifier:identifier];
 }
 
-+ (id)recordNameForEventIdentifier:(id)a3
++ (id)recordNameForEventIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 recordNamePrefix];
-  v7 = [v4 stringWithFormat:@"%@%@", v6, v5];
+  identifierCopy = identifier;
+  recordNamePrefix = [self recordNamePrefix];
+  identifierCopy = [v4 stringWithFormat:@"%@%@", recordNamePrefix, identifierCopy];
 
-  return v7;
+  return identifierCopy;
 }
 
 - (id)updateReasonsDescription
@@ -152,36 +152,36 @@ LABEL_8:
   return v8;
 }
 
-- (PKAccountEvent)initWithCoder:(id)a3
+- (PKAccountEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = PKAccountEvent;
   v5 = [(PKAccountEvent *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v14;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_blockNotification = [v4 decodeBoolForKey:@"blockNotification"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_blockNotification = [coderCopy decodeBoolForKey:@"blockNotification"];
     v35 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v33 = objc_opt_class();
@@ -199,88 +199,88 @@ LABEL_8:
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v35 setWithObjects:{v34, v33, v32, v31, v30, v29, v28, v16, v17, v18, v19, v20, v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"items"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"items"];
     items = v5->_items;
     v5->_items = v25;
 
-    v5->_updateReasons = [v4 decodeIntegerForKey:@"updateReasons"];
+    v5->_updateReasons = [coderCopy decodeIntegerForKey:@"updateReasons"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v5 encodeObject:self->_date forKey:@"date"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeBool:self->_blockNotification forKey:@"blockNotification"];
-  [v5 encodeObject:self->_items forKey:@"items"];
-  [v5 encodeInteger:self->_updateReasons forKey:@"updateReasons"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeBool:self->_blockNotification forKey:@"blockNotification"];
+  [coderCopy encodeObject:self->_items forKey:@"items"];
+  [coderCopy encodeInteger:self->_updateReasons forKey:@"updateReasons"];
 }
 
-- (PKAccountEvent)initWithCloudStoreCoder:(id)a3
+- (PKAccountEvent)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKAccountEvent;
   v5 = [(PKAccountEvent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKAccountEvent *)v5 applyPropertiesFromCloudStoreRecord:v4];
+    [(PKAccountEvent *)v5 applyPropertiesFromCloudStoreRecord:coderCopy];
   }
 
   return v6;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 recordsWithRecordType:@"AccountEvent"];
-  v6 = [v5 firstObject];
+  recordCopy = record;
+  v5 = [recordCopy recordsWithRecordType:@"AccountEvent"];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = [v6 pk_encryptedStringForKey:@"identifier"];
+    v7 = [firstObject pk_encryptedStringForKey:@"identifier"];
     identifier = self->_identifier;
     self->_identifier = v7;
 
-    v9 = [v6 pk_encryptedStringForKey:@"accountIdentifier"];
+    v9 = [firstObject pk_encryptedStringForKey:@"accountIdentifier"];
     accountIdentifier = self->_accountIdentifier;
     self->_accountIdentifier = v9;
 
-    v11 = [v6 pk_encryptedStringForKey:@"altDSID"];
+    v11 = [firstObject pk_encryptedStringForKey:@"altDSID"];
     altDSID = self->_altDSID;
     self->_altDSID = v11;
 
-    v13 = [v6 pk_encryptedDateForKey:@"expirationDate"];
+    v13 = [firstObject pk_encryptedDateForKey:@"expirationDate"];
     expirationDate = self->_expirationDate;
     self->_expirationDate = v13;
 
-    v15 = [v6 pk_encryptedDateForKey:@"date"];
+    v15 = [firstObject pk_encryptedDateForKey:@"date"];
     date = self->_date;
     self->_date = v15;
 
-    v17 = [v6 pk_encryptedStringForKey:@"type"];
+    v17 = [firstObject pk_encryptedStringForKey:@"type"];
     self->_type = PKAccountEventTypeFromString(v17);
 
-    v75 = v6;
-    v77 = self;
-    self->_blockNotification = [v6 pk_encryptedBoolForKey:@"blockNotification"];
+    v75 = firstObject;
+    selfCopy = self;
+    self->_blockNotification = [firstObject pk_encryptedBoolForKey:@"blockNotification"];
     v18 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v76 = v4;
-    obj = [v4 records];
+    v76 = recordCopy;
+    obj = [recordCopy records];
     v19 = [obj countByEnumeratingWithState:&v79 objects:v83 count:16];
     if (!v19)
     {
@@ -301,9 +301,9 @@ LABEL_8:
         }
 
         v23 = *(*(&v79 + 1) + 8 * v22);
-        v24 = [v23 recordType];
-        v25 = v24;
-        if (v24 == @"Rewards")
+        recordType = [v23 recordType];
+        v25 = recordType;
+        if (recordType == @"Rewards")
         {
 
 LABEL_13:
@@ -311,9 +311,9 @@ LABEL_13:
           goto LABEL_30;
         }
 
-        if (@"Rewards" && v24)
+        if (@"Rewards" && recordType)
         {
-          v26 = [(__CFString *)v24 isEqualToString:@"Rewards"];
+          v26 = [(__CFString *)recordType isEqualToString:@"Rewards"];
 
           if (v26)
           {
@@ -380,7 +380,7 @@ LABEL_29:
 
 LABEL_42:
           v34 = [[PKAccountPayment alloc] initWithRecord:v23];
-          v38 = [(PKAccountEvent *)v77 type]- 5;
+          v38 = [(PKAccountEvent *)selfCopy type]- 5;
           if (v38 <= 3)
           {
             v39 = &unk_1ADB9B1C0;
@@ -415,7 +415,7 @@ LABEL_32:
 
 LABEL_51:
           v34 = [[PKAccountTransfer alloc] initWithRecord:v23];
-          v38 = [(PKAccountEvent *)v77 type]- 19;
+          v38 = [(PKAccountEvent *)selfCopy type]- 19;
           if (v38 > 5)
           {
             goto LABEL_31;
@@ -450,15 +450,15 @@ LABEL_54:
 
 LABEL_62:
           v34 = [[PKAccountHold alloc] initWithRecord:v23];
-          v47 = [(PKAccountEvent *)v77 type];
-          if (v47 == 25)
+          type = [(PKAccountEvent *)selfCopy type];
+          if (type == 25)
           {
             v43 = 1;
           }
 
           else
           {
-            if (v47 != 26)
+            if (type != 26)
             {
               goto LABEL_31;
             }
@@ -688,55 +688,55 @@ LABEL_33:
 LABEL_131:
 
         v72 = [v18 copy];
-        items = v77->_items;
-        v77->_items = v72;
+        items = selfCopy->_items;
+        selfCopy->_items = v72;
 
-        v6 = v75;
-        v4 = v76;
+        firstObject = v75;
+        recordCopy = v76;
         break;
       }
     }
   }
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  if (a4 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    [(PKAccountEvent *)self _encodeServerDataForCloudStoreCoder:a3];
+    [(PKAccountEvent *)self _encodeServerDataForCloudStoreCoder:coder];
   }
 }
 
-- (void)_encodeServerDataForCloudStoreCoder:(id)a3
+- (void)_encodeServerDataForCloudStoreCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v4 = [v27 recordsWithRecordType:@"AccountEvent"];
-  v5 = [v4 firstObject];
+  coderCopy = coder;
+  v4 = [coderCopy recordsWithRecordType:@"AccountEvent"];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 encryptedValues];
-  [v6 setObject:self->_identifier forKey:@"identifier"];
-  [v6 setObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v6 setObject:self->_altDSID forKey:@"altDSID"];
-  [v6 setObject:self->_date forKey:@"date"];
-  [v6 setObject:self->_expirationDate forKey:@"expirationDate"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:self->_identifier forKey:@"identifier"];
+  [encryptedValues setObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [encryptedValues setObject:self->_altDSID forKey:@"altDSID"];
+  [encryptedValues setObject:self->_date forKey:@"date"];
+  [encryptedValues setObject:self->_expirationDate forKey:@"expirationDate"];
   v7 = PKAccountEventTypeToString(self->_type);
-  [v6 setObject:v7 forKey:@"type"];
+  [encryptedValues setObject:v7 forKey:@"type"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_blockNotification];
-  v24 = v6;
-  [v6 setObject:v8 forKey:@"blockNotification"];
+  v24 = encryptedValues;
+  [encryptedValues setObject:v8 forKey:@"blockNotification"];
 
-  v9 = [v5 recordID];
-  v28 = [v9 zoneID];
+  recordID = [firstObject recordID];
+  zoneID = [recordID zoneID];
 
-  v25 = v5;
-  v10 = [objc_alloc(MEMORY[0x1E695BAB0]) initWithRecord:v5 action:1];
+  v25 = firstObject;
+  v10 = [objc_alloc(MEMORY[0x1E695BAB0]) initWithRecord:firstObject action:1];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = self;
+  selfCopy = self;
   obj = self->_items;
   v12 = [(NSSet *)obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v12)
@@ -755,20 +755,20 @@ LABEL_131:
 
         v16 = *(*(&v29 + 1) + 8 * v15);
         v17 = objc_alloc(MEMORY[0x1E695BA70]);
-        v18 = [(PKAccountEvent *)v11 recordNameForItem:v16];
-        v19 = [v17 initWithRecordName:v18 zoneID:v28];
+        v18 = [(PKAccountEvent *)selfCopy recordNameForItem:v16];
+        v19 = [v17 initWithRecordName:v18 zoneID:zoneID];
 
         v20 = objc_alloc(MEMORY[0x1E695BA60]);
-        v21 = [objc_opt_class() recordType];
-        v22 = [v20 initWithRecordType:v21 recordID:v19];
+        recordType = [objc_opt_class() recordType];
+        v22 = [v20 initWithRecordType:recordType recordID:v19];
 
-        v23 = [v22 valuesByKey];
-        [v23 setObject:v10 forKey:@"accountEventReference"];
+        valuesByKey = [v22 valuesByKey];
+        [valuesByKey setObject:v10 forKey:@"accountEventReference"];
 
         [v16 encodeWithRecord:v22];
         if (v22)
         {
-          [v27 addRecord:v22];
+          [coderCopy addRecord:v22];
         }
 
         ++v15;
@@ -782,17 +782,17 @@ LABEL_131:
   }
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = @"AccountEvent";
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [objc_opt_class() recordNamePrefix];
-  v7 = [v5 stringWithFormat:@"%@%@", v6, self->_identifier];
+  recordNamePrefix = [objc_opt_class() recordNamePrefix];
+  v7 = [v5 stringWithFormat:@"%@%@", recordNamePrefix, self->_identifier];
   v27[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-  [v4 addObject:v8];
+  [array addObject:v8];
 
   v21 = 0u;
   v22 = 0u;
@@ -814,12 +814,12 @@ LABEL_131:
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [objc_opt_class() recordType];
-        v23 = v15;
+        recordType = [objc_opt_class() recordType];
+        v23 = recordType;
         v16 = [(PKAccountEvent *)self recordNameForItem:v14];
         v24 = v16;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-        [v4 addObject:v17];
+        [array addObject:v17];
       }
 
       v11 = [(NSSet *)v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -828,56 +828,56 @@ LABEL_131:
     while (v11);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)recordNameForItem:(id)a3
+- (id)recordNameForItem:(id)item
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [objc_opt_class() recordNamePrefix];
-  v6 = [v4 stringWithFormat:@"%@%@", v5, self->_identifier];
+  recordNamePrefix = [objc_opt_class() recordNamePrefix];
+  v6 = [v4 stringWithFormat:@"%@%@", recordNamePrefix, self->_identifier];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  [v3 safelyAddObject:self->_altDSID];
-  [v3 safelyAddObject:self->_expirationDate];
-  [v3 safelyAddObject:self->_date];
-  [v3 safelyAddObject:self->_items];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_accountIdentifier];
+  [array safelyAddObject:self->_altDSID];
+  [array safelyAddObject:self->_expirationDate];
+  [array safelyAddObject:self->_date];
+  [array safelyAddObject:self->_items];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
   v6 = self->_blockNotification - v5 + 32 * v5;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEvent *)self isEqualToAccountEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEvent *)self isEqualToAccountEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountEvent:(id)a3
+- (BOOL)isEqualToAccountEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   identifier = self->_identifier;
-  v6 = v4[2];
+  v6 = eventCopy[2];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -902,7 +902,7 @@ LABEL_131:
   }
 
   accountIdentifier = self->_accountIdentifier;
-  v9 = v4[3];
+  v9 = eventCopy[3];
   if (accountIdentifier && v9)
   {
     if (([(NSString *)accountIdentifier isEqual:?]& 1) == 0)
@@ -917,7 +917,7 @@ LABEL_131:
   }
 
   altDSID = self->_altDSID;
-  v11 = v4[4];
+  v11 = eventCopy[4];
   if (altDSID && v11)
   {
     if (([(NSString *)altDSID isEqual:?]& 1) == 0)
@@ -932,7 +932,7 @@ LABEL_131:
   }
 
   expirationDate = self->_expirationDate;
-  v13 = v4[7];
+  v13 = eventCopy[7];
   if (expirationDate && v13)
   {
     if (([(NSDate *)expirationDate isEqual:?]& 1) == 0)
@@ -947,7 +947,7 @@ LABEL_131:
   }
 
   date = self->_date;
-  v15 = v4[6];
+  v15 = eventCopy[6];
   if (date && v15)
   {
     if (([(NSDate *)date isEqual:?]& 1) == 0)
@@ -962,7 +962,7 @@ LABEL_131:
   }
 
   items = self->_items;
-  v17 = v4[8];
+  v17 = eventCopy[8];
   if (!items || !v17)
   {
     if (items == v17)
@@ -981,12 +981,12 @@ LABEL_36:
   }
 
 LABEL_34:
-  if (self->_type != v4[5])
+  if (self->_type != eventCopy[5])
   {
     goto LABEL_36;
   }
 
-  v18 = self->_blockNotification == *(v4 + 8);
+  v18 = self->_blockNotification == *(eventCopy + 8);
 LABEL_37:
 
   return v18;

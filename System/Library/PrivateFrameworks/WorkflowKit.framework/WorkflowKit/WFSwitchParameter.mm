@@ -7,8 +7,8 @@
 
 - (NSString)localizedOffDisplayName
 {
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [(WFParameter *)self _localizedStringForKey:@"OffDisplayName" context:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [(WFParameter *)self _localizedStringForKey:@"OffDisplayName" context:defaultContext];
 
   if (v4)
   {
@@ -27,8 +27,8 @@
 
 - (NSString)localizedOnDisplayName
 {
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [(WFParameter *)self _localizedStringForKey:@"OnDisplayName" context:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [(WFParameter *)self _localizedStringForKey:@"OnDisplayName" context:defaultContext];
 
   if (v4)
   {

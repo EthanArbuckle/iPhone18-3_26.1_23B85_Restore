@@ -1,36 +1,36 @@
 @interface CalculationResultCompletionItem
-- (BOOL)isEquivalentTo:(id)a3;
-- (CalculationResultCompletionItem)initWithQuery:(id)a3 calculationResult:(id)a4;
+- (BOOL)isEquivalentTo:(id)to;
+- (CalculationResultCompletionItem)initWithQuery:(id)query calculationResult:(id)result;
 - (NSArray)tableItemEqualityInfo;
 - (SFSearchResult)sfSearchResultValue;
-- (id)completionTableViewCellForCompletionList:(id)a3;
-- (id)searchFieldIconForCompletionList:(id)a3;
-- (void)acceptCompletionWithActionHandler:(id)a3;
-- (void)auditAcceptedCompletionWithRank:(unint64_t)a3;
+- (id)completionTableViewCellForCompletionList:(id)list;
+- (id)searchFieldIconForCompletionList:(id)list;
+- (void)acceptCompletionWithActionHandler:(id)handler;
+- (void)auditAcceptedCompletionWithRank:(unint64_t)rank;
 @end
 
 @implementation CalculationResultCompletionItem
 
-- (CalculationResultCompletionItem)initWithQuery:(id)a3 calculationResult:(id)a4
+- (CalculationResultCompletionItem)initWithQuery:(id)query calculationResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  resultCopy = result;
   v13.receiver = self;
   v13.super_class = CalculationResultCompletionItem;
   v9 = [(CalculationResultCompletionItem *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_query, a3);
-    v10->_parsecQueryID = [v7 queryID];
-    objc_storeStrong(&v10->_calculationResult, a4);
+    objc_storeStrong(&v9->_query, query);
+    v10->_parsecQueryID = [queryCopy queryID];
+    objc_storeStrong(&v10->_calculationResult, result);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)searchFieldIconForCompletionList:(id)a3
+- (id)searchFieldIconForCompletionList:(id)list
 {
   v3 = MEMORY[0x277D755B8];
   v4 = systemImageNameForCompletionIcon(4);
@@ -39,31 +39,31 @@
   return v5;
 }
 
-- (void)acceptCompletionWithActionHandler:(id)a3
+- (void)acceptCompletionWithActionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if ([(WBSCalculationResult *)self->_calculationResult isCurrencyConversion])
   {
-    [v5 goToURLString:*MEMORY[0x277D4A6D0]];
+    [handlerCopy goToURLString:*MEMORY[0x277D4A6D0]];
   }
 
   else
   {
-    v4 = [(WBSCalculationResult *)self->_calculationResult formattedExpression];
-    [v5 search:v4];
+    formattedExpression = [(WBSCalculationResult *)self->_calculationResult formattedExpression];
+    [handlerCopy search:formattedExpression];
   }
 }
 
-- (void)auditAcceptedCompletionWithRank:(unint64_t)a3
+- (void)auditAcceptedCompletionWithRank:(unint64_t)rank
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didAcceptCompletionItemOfType:1 atRank:a3];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didAcceptCompletionItemOfType:1 atRank:rank];
 }
 
-- (id)completionTableViewCellForCompletionList:(id)a3
+- (id)completionTableViewCellForCompletionList:(id)list
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -82,13 +82,13 @@
 
   v6 = v5;
   _Block_object_dispose(&v13, 8);
-  v7 = [(CalculationResultCompletionItem *)self sfSearchResultValue];
-  v17[0] = v7;
+  sfSearchResultValue = [(CalculationResultCompletionItem *)self sfSearchResultValue];
+  v17[0] = sfSearchResultValue;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v9 = [v5 rowViewsForResults:v8 feedbackDelegate:v4];
-  v10 = [v9 firstObject];
+  v9 = [v5 rowViewsForResults:v8 feedbackDelegate:listCopy];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 - (SFSearchResult)sfSearchResultValue
@@ -102,12 +102,12 @@
 
   else
   {
-    v5 = [MEMORY[0x277D4C5D0] safari_sfSearchResultWithUniqueIdentifier];
+    safari_sfSearchResultWithUniqueIdentifier = [MEMORY[0x277D4C5D0] safari_sfSearchResultWithUniqueIdentifier];
     v6 = self->_sfSearchResultValue;
-    self->_sfSearchResultValue = v5;
+    self->_sfSearchResultValue = safari_sfSearchResultWithUniqueIdentifier;
 
-    v7 = [(WBSCompletionQuery *)self->_query queryString];
-    [(SFSearchResult *)self->_sfSearchResultValue setUserInput:v7];
+    queryString = [(WBSCompletionQuery *)self->_query queryString];
+    [(SFSearchResult *)self->_sfSearchResultValue setUserInput:queryString];
 
     [(SFSearchResult *)self->_sfSearchResultValue setQueryId:[(WBSCompletionQuery *)self->_query queryID]];
     v8 = [@"com.apple.Safari.CompletionList." stringByAppendingString:@"CalculationResult"];
@@ -115,8 +115,8 @@
     [(SFSearchResult *)self->_sfSearchResultValue setSectionBundleIdentifier:v8];
     v9 = MEMORY[0x277D4C690];
     p_calculationResult = &self->_calculationResult;
-    v11 = [(WBSCalculationResult *)self->_calculationResult formattedEquation];
-    v12 = [v9 textWithString:v11];
+    formattedEquation = [(WBSCalculationResult *)self->_calculationResult formattedEquation];
+    v12 = [v9 textWithString:formattedEquation];
     [(SFSearchResult *)self->_sfSearchResultValue setTitle:v12];
 
     if ([(WBSCalculationResult *)self->_calculationResult isCalculation])
@@ -132,19 +132,19 @@
     [(SFSearchResult *)self->_sfSearchResultValue setType:v13];
     v14 = objc_alloc_init(MEMORY[0x277D4C5A0]);
     v15 = MEMORY[0x277CCACA8];
-    v16 = [(WBSCalculationResult *)*p_calculationResult formattedExpression];
-    v17 = [v15 stringWithFormat:@"%@ =", v16];
+    formattedExpression = [(WBSCalculationResult *)*p_calculationResult formattedExpression];
+    v17 = [v15 stringWithFormat:@"%@ =", formattedExpression];
     [v14 setTitle:v17];
 
-    v18 = [(WBSCalculationResult *)*p_calculationResult formattedResult];
-    [v14 setSubtitle:v18];
+    formattedResult = [(WBSCalculationResult *)*p_calculationResult formattedResult];
+    [v14 setSubtitle:formattedResult];
 
     [v14 setSubtitleIsEmphasized:1];
     if (objc_opt_respondsToSelector())
     {
       v19 = objc_alloc_init(MEMORY[0x277D4C698]);
-      v20 = [(WBSCalculationResult *)self->_calculationResult formattedResult];
-      [v19 setCopyableString:v20];
+      formattedResult2 = [(WBSCalculationResult *)self->_calculationResult formattedResult];
+      [v19 setCopyableString:formattedResult2];
 
       v21 = objc_alloc_init(MEMORY[0x277D4C2D8]);
       [v21 setCopyableItem:v19];
@@ -261,15 +261,15 @@
   return v3;
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WBSCalculationResult *)self->_calculationResult formattedExpression];
-    v6 = [v4[4] formattedExpression];
-    v7 = [v5 isEqualToString:v6];
+    formattedExpression = [(WBSCalculationResult *)self->_calculationResult formattedExpression];
+    formattedExpression2 = [toCopy[4] formattedExpression];
+    v7 = [formattedExpression isEqualToString:formattedExpression2];
   }
 
   else
@@ -282,8 +282,8 @@
 
 - (NSArray)tableItemEqualityInfo
 {
-  v2 = [(WBSCalculationResult *)self->_calculationResult formattedExpression];
-  v10 = CompletionListTableItemEqualityInfo(1, v3, v4, v5, v6, v7, v8, v9, v2);
+  formattedExpression = [(WBSCalculationResult *)self->_calculationResult formattedExpression];
+  v10 = CompletionListTableItemEqualityInfo(1, v3, v4, v5, v6, v7, v8, v9, formattedExpression);
 
   return v10;
 }

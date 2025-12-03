@@ -1,9 +1,9 @@
 @interface MTRTargetNavigatorClusterNavigateTargetResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRTargetNavigatorClusterNavigateTargetResponseParams)init;
-- (MTRTargetNavigatorClusterNavigateTargetResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRTargetNavigatorClusterNavigateTargetResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRTargetNavigatorClusterNavigateTargetResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTargetNavigatorClusterNavigateTargetResponseParams);
-  v5 = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self status];
-  [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 setStatus:v5];
+  status = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self status];
+  [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self data];
-  [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 setData:v6];
+  data = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self data];
+  [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 setData:data];
 
-  v7 = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -100,7 +100,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRTargetNavigatorClusterNavigateTargetResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRTargetNavigatorClusterNavigateTargetResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRTargetNavigatorClusterNavigateTargetResponseParams;
@@ -108,7 +108,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -124,13 +124,13 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self setStatus:v5];
 
-  v7 = *(a3 + 8);
-  v6 = a3 + 8;
+  v7 = *(struct + 8);
+  v6 = struct + 8;
   if (v7 != 1)
   {
     [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self setData:0];
@@ -141,9 +141,9 @@ LABEL_6:
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v8 length:v8[1] encoding:4];
   [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self setData:v9];
 
-  v10 = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self data];
+  data = [(MTRTargetNavigatorClusterNavigateTargetResponseParams *)self data];
 
-  if (v10)
+  if (data)
   {
 LABEL_5:
     v12 = 0;

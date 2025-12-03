@@ -1,50 +1,50 @@
 @interface PRInlineComplicationSnapshotViewController
-- (PRInlineComplicationSnapshotViewController)initWithComplicationDescriptor:(id)a3;
-- (PRInlineComplicationSnapshotViewController)initWithScene:(id)a3 complicationLayoutProvider:(id)a4;
-- (id)_hostViewControllerForComplicationDescriptor:(id)a3;
-- (void)setComplicationUserInteractionEnabled:(BOOL)a3;
-- (void)setVibrancyConfiguration:(id)a3;
+- (PRInlineComplicationSnapshotViewController)initWithComplicationDescriptor:(id)descriptor;
+- (PRInlineComplicationSnapshotViewController)initWithScene:(id)scene complicationLayoutProvider:(id)provider;
+- (id)_hostViewControllerForComplicationDescriptor:(id)descriptor;
+- (void)setComplicationUserInteractionEnabled:(BOOL)enabled;
+- (void)setVibrancyConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
 @implementation PRInlineComplicationSnapshotViewController
 
-- (PRInlineComplicationSnapshotViewController)initWithComplicationDescriptor:(id)a3
+- (PRInlineComplicationSnapshotViewController)initWithComplicationDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = PRInlineComplicationSnapshotViewController;
   v6 = [(PRInlineComplicationSnapshotViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_complicationDescriptor, a3);
+    objc_storeStrong(&v6->_complicationDescriptor, descriptor);
   }
 
   return v7;
 }
 
-- (PRInlineComplicationSnapshotViewController)initWithScene:(id)a3 complicationLayoutProvider:(id)a4
+- (PRInlineComplicationSnapshotViewController)initWithScene:(id)scene complicationLayoutProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_scene, a3);
-  v9 = [v7 settings];
-  v10 = [v9 pui_posterContents];
+  sceneCopy = scene;
+  providerCopy = provider;
+  objc_storeStrong(&self->_scene, scene);
+  settings = [sceneCopy settings];
+  pui_posterContents = [settings pui_posterContents];
 
-  v11 = [v10 identity];
-  if ([v11 type] == 3)
+  identity = [pui_posterContents identity];
+  if ([identity type] == 3)
   {
-    v12 = [[PRPosterConfiguration alloc] _initWithPath:v10];
+    pui_previewIdentifier = [[PRPosterConfiguration alloc] _initWithPath:pui_posterContents];
     v26 = 0;
-    v13 = [v12 loadComplicationLayoutWithError:&v26];
+    v13 = [pui_previewIdentifier loadComplicationLayoutWithError:&v26];
     v14 = v26;
     if (v14)
     {
-      v15 = PRLogCommon();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      inlineComplication = PRLogCommon();
+      if (os_log_type_enabled(inlineComplication, OS_LOG_TYPE_ERROR))
       {
-        [PRWidgetGridSnapshotViewController initWithScene:v12 complicationLayoutProvider:v14 gridType:v15];
+        [PRWidgetGridSnapshotViewController initWithScene:pui_previewIdentifier complicationLayoutProvider:v14 gridType:inlineComplication];
       }
 
       v16 = 0;
@@ -53,20 +53,20 @@
     else
     {
       v21 = [PRComplicationDescriptor alloc];
-      v15 = [v13 inlineComplication];
-      v16 = [(PRComplicationDescriptor *)v21 initWithPRSWidget:v15];
+      inlineComplication = [v13 inlineComplication];
+      v16 = [(PRComplicationDescriptor *)v21 initWithPRSWidget:inlineComplication];
     }
   }
 
   else
   {
-    v17 = [v7 settings];
-    v12 = [v17 pui_previewIdentifier];
+    settings2 = [sceneCopy settings];
+    pui_previewIdentifier = [settings2 pui_previewIdentifier];
 
-    v18 = [v8 complicationLayoutForPreviewIdentifier:v12];
+    v18 = [providerCopy complicationLayoutForPreviewIdentifier:pui_previewIdentifier];
     v19 = [PRComplicationDescriptor alloc];
-    v20 = [v18 inlineComplication];
-    v16 = [(PRComplicationDescriptor *)v19 initWithPRSWidget:v20];
+    inlineComplication2 = [v18 inlineComplication];
+    v16 = [(PRComplicationDescriptor *)v19 initWithPRSWidget:inlineComplication2];
   }
 
   if (![(PRComplicationDescriptor *)v16 hasMatchingDescriptor])
@@ -78,10 +78,10 @@
   v22 = [(PRInlineComplicationSnapshotViewController *)self initWithComplicationDescriptor:v16];
   if (v22)
   {
-    v23 = [v7 clientSettings];
-    v24 = [v23 pr_vibrancyConfiguration];
+    clientSettings = [sceneCopy clientSettings];
+    pr_vibrancyConfiguration = [clientSettings pr_vibrancyConfiguration];
 
-    [(PRInlineComplicationSnapshotViewController *)v22 setVibrancyConfiguration:v24];
+    [(PRInlineComplicationSnapshotViewController *)v22 setVibrancyConfiguration:pr_vibrancyConfiguration];
   }
 
   return v22;
@@ -162,24 +162,24 @@ void __57__PRInlineComplicationSnapshotViewController_viewDidLoad__block_invoke(
   }
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_vibrancyConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_vibrancyConfiguration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_vibrancyConfiguration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_vibrancyConfiguration, configuration);
     [(CHUISWidgetHostViewController *)self->_hostViewController setVibrancyConfiguration:v6];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
-- (void)setComplicationUserInteractionEnabled:(BOOL)a3
+- (void)setComplicationUserInteractionEnabled:(BOOL)enabled
 {
   touchBlockingView = self->_touchBlockingView;
-  if ((((touchBlockingView != 0) ^ a3) & 1) == 0)
+  if ((((touchBlockingView != 0) ^ enabled) & 1) == 0)
   {
-    if (a3)
+    if (enabled)
     {
       [(UIView *)touchBlockingView removeFromSuperview];
       v5 = self->_touchBlockingView;
@@ -188,28 +188,28 @@ void __57__PRInlineComplicationSnapshotViewController_viewDidLoad__block_invoke(
 
     else
     {
-      v10 = [(PRInlineComplicationSnapshotViewController *)self view];
+      view = [(PRInlineComplicationSnapshotViewController *)self view];
       v6 = objc_alloc(MEMORY[0x1E69DD250]);
-      [(UIView *)v10 bounds];
+      [(UIView *)view bounds];
       v7 = [v6 initWithFrame:?];
       [(UIView *)v7 setAutoresizingMask:18];
-      v8 = [(UIView *)v7 layer];
-      [v8 setHitTestsAsOpaque:1];
+      layer = [(UIView *)v7 layer];
+      [layer setHitTestsAsOpaque:1];
 
-      [(UIView *)v10 addSubview:v7];
+      [(UIView *)view addSubview:v7];
       v9 = self->_touchBlockingView;
       self->_touchBlockingView = v7;
 
-      v5 = v10;
+      v5 = view;
     }
   }
 }
 
-- (id)_hostViewControllerForComplicationDescriptor:(id)a3
+- (id)_hostViewControllerForComplicationDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc(MEMORY[0x1E6994530]);
-  v6 = [v5 pr_initWithComplicationDescriptor:v4];
+  v6 = [v5 pr_initWithComplicationDescriptor:descriptorCopy];
 
   [v6 setDrawSystemBackgroundMaterialIfNecessary:0];
   [v6 setVisibility:2];
@@ -229,24 +229,24 @@ void __57__PRInlineComplicationSnapshotViewController_viewDidLoad__block_invoke(
   [v6 setInlineTextParameters:v7];
   v10 = [objc_alloc(MEMORY[0x1E6994428]) initWithPrimaryTintColor:0 secondaryTintColor:0 filterStyle:1 fallbackFilterStyle:1 fraction:1.0];
   [v6 setTintParameters:v10];
-  v11 = [(PRInlineComplicationSnapshotViewController *)self vibrancyConfiguration];
-  [v6 setVibrancyConfiguration:v11];
+  vibrancyConfiguration = [(PRInlineComplicationSnapshotViewController *)self vibrancyConfiguration];
+  [v6 setVibrancyConfiguration:vibrancyConfiguration];
 
   [v6 setPresentationMode:2];
-  v12 = [v4 widget];
+  widget = [descriptorCopy widget];
   v13 = PRSharedWidgetExtensionProvider();
-  v14 = [v13 widgetDescriptorForWidget:v12];
+  v14 = [v13 widgetDescriptorForWidget:widget];
 
-  v15 = [v14 intentType];
-  if (v15 && (v16 = v15, [v12 intent], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
+  intentType = [v14 intentType];
+  if (intentType && (v16 = intentType, [widget intent], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __91__PRInlineComplicationSnapshotViewController__hostViewControllerForComplicationDescriptor___block_invoke;
     v19[3] = &unk_1E7845450;
     v20 = v6;
-    v21 = v12;
-    v22 = v4;
+    v21 = widget;
+    v22 = descriptorCopy;
     [v14 loadDefaultIntent:v19];
   }
 

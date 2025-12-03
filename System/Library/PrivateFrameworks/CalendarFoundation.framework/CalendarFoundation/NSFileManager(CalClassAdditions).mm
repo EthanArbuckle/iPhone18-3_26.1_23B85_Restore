@@ -12,18 +12,18 @@
 
 + (__CFString)mimeTypeForFile:()CalClassAdditions
 {
-  v3 = [a3 pathExtension];
-  v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v3];
-  v5 = [v4 preferredMIMEType];
-  if ([v5 length])
+  pathExtension = [a3 pathExtension];
+  v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
+  preferredMIMEType = [v4 preferredMIMEType];
+  if ([preferredMIMEType length])
   {
-    v6 = v5;
+    v6 = preferredMIMEType;
   }
 
   else
   {
-    v7 = [v4 identifier];
-    v8 = [v7 isEqualToString:@"com.apple.traditional-mac-plain-text"];
+    identifier = [v4 identifier];
+    v8 = [identifier isEqualToString:@"com.apple.traditional-mac-plain-text"];
 
     if (v8)
     {
@@ -43,13 +43,13 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if (([a1 fileExistsAtPath:v4] & 1) != 0 || !objc_msgSend(a1, "makeCompletePath:mode:", v4, 448) || (v5 = v4) == 0)
+  if (([self fileExistsAtPath:v4] & 1) != 0 || !objc_msgSend(self, "makeCompletePath:mode:", v4, 448) || (v5 = v4) == 0)
   {
     strcpy(v19, ".tmp.XXXXXX");
-    v6 = [MEMORY[0x1E696AF00] currentThread];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-T%p", v6];
-    v8 = [v7 UTF8String];
-    if (strlen(v8) >= 0x11)
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-T%p", currentThread];
+    uTF8String = [v7 UTF8String];
+    if (strlen(uTF8String) >= 0x11)
     {
       v9 = +[CalFoundationLogSubsystem defaultCategory];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -71,8 +71,8 @@
         v11 = v10;
       }
 
-      v12 = strlen(v8);
-      snprintf(&__s[v11], v12, "-T%p", v6);
+      v12 = strlen(uTF8String);
+      snprintf(&__s[v11], v12, "-T%p", currentThread);
       __strlcat_chk();
       v5 = mkdtemp(__s);
       if (!v5 && *__error() == 2 && ([MEMORY[0x1E696AC08] defaultManager], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "stringByDeletingLastPathComponent"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "makeCompletePath:mode:", v14, 448), v14, v13, v15))
@@ -89,7 +89,7 @@
 
       if (v5)
       {
-        v5 = [a1 stringWithFileSystemRepresentation:v5 length:strlen(v5)];
+        v5 = [self stringWithFileSystemRepresentation:v5 length:strlen(v5)];
       }
     }
 
@@ -121,34 +121,34 @@
     v9 = 0;
   }
 
-  v10 = [v6 stringByStandardizingPath];
+  stringByStandardizingPath = [v6 stringByStandardizingPath];
 
-  v11 = [v10 pathComponents];
-  v12 = [v11 count];
-  v13 = v10;
+  pathComponents = [stringByStandardizingPath pathComponents];
+  v12 = [pathComponents count];
+  v13 = stringByStandardizingPath;
   v14 = v13;
   if (v12)
   {
     v15 = v12;
     v16 = v13;
-    while (([a1 fileExistsAtPath:v16] & 1) == 0)
+    while (([self fileExistsAtPath:v16] & 1) == 0)
     {
-      v17 = [v16 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v16 stringByDeletingLastPathComponent];
 
-      v16 = v17;
+      v16 = stringByDeletingLastPathComponent;
       if (!--v15)
       {
         goto LABEL_11;
       }
     }
 
-    v17 = v16;
+    stringByDeletingLastPathComponent = v16;
   }
 
   else
   {
     v15 = 0;
-    v17 = v13;
+    stringByDeletingLastPathComponent = v13;
   }
 
 LABEL_11:
@@ -163,11 +163,11 @@ LABEL_15:
     v18 = 0;
     while (1)
     {
-      v19 = v17;
-      v20 = [v11 objectAtIndex:v15];
-      v17 = [v17 stringByAppendingPathComponent:v20];
+      v19 = stringByDeletingLastPathComponent;
+      v20 = [pathComponents objectAtIndex:v15];
+      stringByDeletingLastPathComponent = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v20];
 
-      if (([a1 createDirectoryAtPath:v17 withIntermediateDirectories:0 attributes:v9 error:0] & 1) == 0)
+      if (([self createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:0 attributes:v9 error:0] & 1) == 0)
       {
         break;
       }
@@ -179,7 +179,7 @@ LABEL_15:
       }
     }
 
-    NSLog(&cfstr_CouldnTCreateP.isa, v17);
+    NSLog(&cfstr_CouldnTCreateP.isa, stringByDeletingLastPathComponent);
   }
 
   return v18;
@@ -189,7 +189,7 @@ LABEL_15:
 {
   keys[6] = *MEMORY[0x1E69E9840];
   v8 = a3;
-  v9 = a1;
+  selfCopy = self;
   v10 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:v8 options:0 error:a5];
   v11 = v10;
   if (!v10)
@@ -198,15 +198,15 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  v35 = v9;
-  v12 = [v10 filename];
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [v13 CalTemporaryDirectoryAppropriateForURL:v8];
+  v35 = selfCopy;
+  filename = [v10 filename];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v14 = [defaultManager CalTemporaryDirectoryAppropriateForURL:v8];
   v15 = [v14 URLByAppendingPathComponent:@"com.apple.iCal.SavedAttachment"];
-  v16 = [v15 path];
-  v17 = [v13 makeUniqueDirectoryWithPath:v16];
+  path = [v15 path];
+  v17 = [defaultManager makeUniqueDirectoryWithPath:path];
 
-  v18 = [v17 stringByAppendingPathComponent:v12];
+  v18 = [v17 stringByAppendingPathComponent:filename];
   if (v18)
   {
     v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v18];
@@ -308,13 +308,13 @@ LABEL_15:
   if (v17)
   {
 LABEL_23:
-    v31 = [MEMORY[0x1E696AC08] defaultManager];
-    [v31 removeItemAtPath:v17 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtPath:v17 error:0];
   }
 
 LABEL_24:
 
-  v9 = v35;
+  selfCopy = v35;
 LABEL_25:
 
   v32 = *MEMORY[0x1E69E9840];
@@ -325,11 +325,11 @@ LABEL_25:
 - (uint64_t)archiveURLToFile:()CalClassAdditions toFile:createPKZipArchive:error:
 {
   v10 = a4;
-  v11 = [a1 archivedDataAtPath:a3 createPKZipArchive:a5];
+  v11 = [self archivedDataAtPath:a3 createPKZipArchive:a5];
   if (v11)
   {
-    v12 = [v10 path];
-    v13 = [v11 writeToFile:v12 options:0 error:a6];
+    path = [v10 path];
+    v13 = [v11 writeToFile:path options:0 error:a6];
   }
 
   else
@@ -347,7 +347,7 @@ LABEL_25:
   v12 = [v10 fileURLWithPath:a3];
   v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
 
-  v14 = [a1 archiveURLToFile:v12 toFile:v13 createPKZipArchive:a5 error:a6];
+  v14 = [self archiveURLToFile:v12 toFile:v13 createPKZipArchive:a5 error:a6];
   return v14;
 }
 
@@ -363,7 +363,7 @@ LABEL_25:
   }
 
   v12 = 0;
-  v8 = [a1 URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:&v12];
+  v8 = [self URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:&v12];
   v9 = v12;
   if (!v8)
   {

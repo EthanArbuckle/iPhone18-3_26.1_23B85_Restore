@@ -1,6 +1,6 @@
 @interface UINavigationController
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UINavigationController
@@ -89,11 +89,11 @@
   return v9;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  nameCopy = name;
+  objectCopy = object;
+  v10 = nameCopy;
   if (![v10 length])
   {
     goto LABEL_12;
@@ -104,18 +104,18 @@
   {
     if ([v10 length] < 2)
     {
-      v15 = [v10 uppercaseString];
+      uppercaseString = [v10 uppercaseString];
     }
 
     else
     {
       v12 = [v10 substringToIndex:1];
-      v13 = [v12 uppercaseString];
+      uppercaseString2 = [v12 uppercaseString];
       v14 = [v10 substringFromIndex:1];
-      v15 = [v13 stringByAppendingString:v14];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v14];
     }
 
-    v16 = [@"is" stringByAppendingString:v15];
+    v16 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v16);
     if (objc_opt_respondsToSelector())
     {
@@ -133,17 +133,17 @@
     }
 
 LABEL_12:
-    if (a6)
+    if (error)
     {
       v17 = v10;
-      if (v9)
+      if (objectCopy)
       {
-        v18 = [NSString stringWithFormat:@"%@", v9];
+        objectCopy = [NSString stringWithFormat:@"%@", objectCopy];
       }
 
       else
       {
-        v18 = &stru_3C768;
+        objectCopy = &stru_3C768;
       }
 
       if (v17)
@@ -159,7 +159,7 @@ LABEL_12:
       v25[0] = @"propertyName";
       v25[1] = @"objectDescription";
       v26[0] = v19;
-      v26[1] = v18;
+      v26[1] = objectCopy;
       v25[2] = @"errorDescription";
       v26[2] = &stru_3C768;
       v20 = v19;
@@ -167,10 +167,10 @@ LABEL_12:
       v22 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v21];
 
       v23 = v22;
-      *a6 = v22;
+      *error = v22;
 
       v11 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -188,10 +188,10 @@ LABEL_12:
   }
 
 LABEL_4:
-  a6 = [v9 valueForKey:v11];
+  error = [objectCopy valueForKey:v11];
 LABEL_21:
 
-  return a6;
+  return error;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface NUImageUtilities
-+ (int64_t)alignedRowBytesForWidth:(int64_t)a3 bytesPerPixel:(int64_t)a4;
-+ (void)copyBuffer:(id)a3 rect:(id *)a4 toBuffer:(id)a5 atPoint:(id)a6;
-+ (void)copyPixelsFromImage:(id)a3 atPoint:(id)a4 toBuffer:(id)a5;
-+ (void)copyPixelsFromImage:(id)a3 rect:(id *)a4 destPtr:(void *)a5 destPtrRowBytes:(int64_t)a6;
-+ (void)copyPixelsFromImage:(id)a3 srcRect:(id *)a4 destImage:(id)a5 destOrigin:(id)a6;
-+ (void)copyPixelsFromSurfaceImage:(id)a3 atPoint:(id)a4 toBuffer:(id)a5;
-+ (void)copyPixelsFromSurfaceImage:(id)a3 rect:(id *)a4 destPtr:(void *)a5 destPtrRowBytes:(int64_t)a6;
-+ (void)copyPixelsToImage:(id)a3 atPoint:(id)a4 fromBuffer:(id)a5 inRect:(id *)a6;
-+ (void)copyPixelsToImage:(id)a3 rect:(id *)a4 srcPtr:(const void *)a5 srcPtrRowBytes:(int64_t)a6;
-+ (void)copySurfaceImage:(id)a3 toImage:(id)a4;
-+ (void)copyTexture:(id)a3 fromRect:(id *)a4 toSurfaceImage:(id)a5 atPoint:(id)a6 withDevice:(id)a7;
-+ (void)fillPixelsInBuffer:(id)a3 rect:(id *)a4 srcPixel:(const void *)a5;
-+ (void)fillPixelsInImage:(id)a3 rect:(id *)a4 srcPixel:(const void *)a5;
-+ (void)renderImage:(id)a3 toSurface:(id)a4 atPoint:(id)a5 withContext:(id)a6 andColorSpace:(id)a7;
++ (int64_t)alignedRowBytesForWidth:(int64_t)width bytesPerPixel:(int64_t)pixel;
++ (void)copyBuffer:(id)buffer rect:(id *)rect toBuffer:(id)toBuffer atPoint:(id)point;
++ (void)copyPixelsFromImage:(id)image atPoint:(id)point toBuffer:(id)buffer;
++ (void)copyPixelsFromImage:(id)image rect:(id *)rect destPtr:(void *)ptr destPtrRowBytes:(int64_t)bytes;
++ (void)copyPixelsFromImage:(id)image srcRect:(id *)rect destImage:(id)destImage destOrigin:(id)origin;
++ (void)copyPixelsFromSurfaceImage:(id)image atPoint:(id)point toBuffer:(id)buffer;
++ (void)copyPixelsFromSurfaceImage:(id)image rect:(id *)rect destPtr:(void *)ptr destPtrRowBytes:(int64_t)bytes;
++ (void)copyPixelsToImage:(id)image atPoint:(id)point fromBuffer:(id)buffer inRect:(id *)rect;
++ (void)copyPixelsToImage:(id)image rect:(id *)rect srcPtr:(const void *)ptr srcPtrRowBytes:(int64_t)bytes;
++ (void)copySurfaceImage:(id)image toImage:(id)toImage;
++ (void)copyTexture:(id)texture fromRect:(id *)rect toSurfaceImage:(id)image atPoint:(id)point withDevice:(id)device;
++ (void)fillPixelsInBuffer:(id)buffer rect:(id *)rect srcPixel:(const void *)pixel;
++ (void)fillPixelsInImage:(id)image rect:(id *)rect srcPixel:(const void *)pixel;
++ (void)renderImage:(id)image toSurface:(id)surface atPoint:(id)point withContext:(id)context andColorSpace:(id)space;
 @end
 
 @implementation NUImageUtilities
 
-+ (int64_t)alignedRowBytesForWidth:(int64_t)a3 bytesPerPixel:(int64_t)a4
++ (int64_t)alignedRowBytesForWidth:(int64_t)width bytesPerPixel:(int64_t)pixel
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0)
+  if (width <= 0)
   {
     v18 = NUAssertLogger();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -39,8 +39,8 @@
       if (v22)
       {
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v32;
         v49 = 2114;
@@ -51,8 +51,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -61,8 +61,8 @@
     _NUAssertFailHandler("+[NUImageUtilities alignedRowBytesForWidth:bytesPerPixel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 311, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "width > 0");
   }
 
-  v4 = a3 * a4;
-  if ((a3 * a4) >> 64 != (a3 * a4) >> 63)
+  v4 = width * pixel;
+  if ((width * pixel) >> 64 != (width * pixel) >> 63)
   {
     if (_NULogOnceToken != -1)
     {
@@ -89,8 +89,8 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v13 = [v12 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v13 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v11;
         v49 = 2114;
@@ -109,8 +109,8 @@
       v8 = _NUAssertLogger;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v10 = [v9 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v10 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v48 = v10;
         _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -140,8 +140,8 @@
       if (v29)
       {
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v41 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v39;
         v49 = 2114;
@@ -152,8 +152,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -165,16 +165,16 @@
   return result;
 }
 
-+ (void)renderImage:(id)a3 toSurface:(id)a4 atPoint:(id)a5 withContext:(id)a6 andColorSpace:(id)a7
++ (void)renderImage:(id)image toSurface:(id)surface atPoint:(id)point withContext:(id)context andColorSpace:(id)space
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = point.var1;
+  var0 = point.var0;
   v60 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (!v12)
+  imageCopy = image;
+  surfaceCopy = surface;
+  contextCopy = context;
+  spaceCopy = space;
+  if (!imageCopy)
   {
     v22 = NUAssertLogger();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -193,8 +193,8 @@
       if (v26)
       {
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v59.a) = 138543618;
         *(&v59.a + 4) = v41;
         WORD2(v59.b) = 2114;
@@ -205,8 +205,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v59.a) = 138543362;
       *(&v59.a + 4) = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v59, 0xCu);
@@ -219,7 +219,7 @@ LABEL_29:
     _NUAssertFailHandler("+[NUImageUtilities renderImage:toSurface:atPoint:withContext:andColorSpace:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v45, @"Invalid parameter not satisfying: %s", v52, v53, v54, v55, v44);
   }
 
-  if (!v14)
+  if (!contextCopy)
   {
     v29 = NUAssertLogger();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -238,8 +238,8 @@ LABEL_29:
       if (v32)
       {
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(v59.a) = 138543618;
         *(&v59.a + 4) = v46;
         WORD2(v59.b) = 2114;
@@ -250,8 +250,8 @@ LABEL_29:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(v59.a) = 138543362;
       *(&v59.a + 4) = v34;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v59, 0xCu);
@@ -262,7 +262,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (!v13)
+  if (!surfaceCopy)
   {
     v35 = NUAssertLogger();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -281,8 +281,8 @@ LABEL_29:
       if (v38)
       {
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v51 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         LODWORD(v59.a) = 138543618;
         *(&v59.a + 4) = v49;
         WORD2(v59.b) = 2114;
@@ -293,8 +293,8 @@ LABEL_29:
 
     else if (v38)
     {
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       LODWORD(v59.a) = 138543362;
       *(&v59.a + 4) = v40;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v59, 0xCu);
@@ -305,7 +305,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  [v12 extent];
+  [imageCopy extent];
   v59.a = v16;
   v59.b = v17;
   v59.c = v18;
@@ -313,23 +313,23 @@ LABEL_29:
   NU::RectT<long>::RectT(v57, &v59, 0);
   v56 = v58;
   CGAffineTransformMakeTranslation(&v59, (var0 - v57[0]), (var1 - v57[1]));
-  v20 = [v12 imageByApplyingTransform:&v59];
+  v20 = [imageCopy imageByApplyingTransform:&v59];
 
-  v21 = [v20 imageByClampingToExtent];
+  imageByClampingToExtent = [v20 imageByClampingToExtent];
 
-  [v14 render:v21 toIOSurface:objc_msgSend(v13 bounds:"IOSurfaceRef") colorSpace:{objc_msgSend(v15, "CGColorSpace"), var0, var1, v56, *(&v56 + 1)}];
+  [contextCopy render:imageByClampingToExtent toIOSurface:objc_msgSend(surfaceCopy bounds:"IOSurfaceRef") colorSpace:{objc_msgSend(spaceCopy, "CGColorSpace"), var0, var1, v56, *(&v56 + 1)}];
 }
 
-+ (void)copyTexture:(id)a3 fromRect:(id *)a4 toSurfaceImage:(id)a5 atPoint:(id)a6 withDevice:(id)a7
++ (void)copyTexture:(id)texture fromRect:(id *)rect toSurfaceImage:(id)image atPoint:(id)point withDevice:(id)device
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
+  var1 = point.var1;
+  var0 = point.var0;
   v81 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = v14;
-  if (!v13)
+  textureCopy = texture;
+  imageCopy = image;
+  deviceCopy = device;
+  v15 = deviceCopy;
+  if (!imageCopy)
   {
     v24 = NUAssertLogger();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -348,8 +348,8 @@ LABEL_29:
       if (v28)
       {
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v51 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v49;
         *&buf[12] = 2114;
@@ -360,8 +360,8 @@ LABEL_29:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -374,7 +374,7 @@ LABEL_38:
     _NUAssertFailHandler("+[NUImageUtilities copyTexture:fromRect:toSurfaceImage:atPoint:withDevice:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v53, @"Invalid parameter not satisfying: %s", v63, v64, v65, v66, v52);
   }
 
-  if (!v14)
+  if (!deviceCopy)
   {
     v31 = NUAssertLogger();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -393,8 +393,8 @@ LABEL_38:
       if (v34)
       {
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v55 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v56 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v54;
         *&buf[12] = 2114;
@@ -405,8 +405,8 @@ LABEL_38:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v36;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -417,7 +417,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v12)
+  if (!textureCopy)
   {
     v37 = NUAssertLogger();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -436,8 +436,8 @@ LABEL_38:
       if (v40)
       {
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v58 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v59 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v57;
         *&buf[12] = 2114;
@@ -448,8 +448,8 @@ LABEL_38:
 
     else if (v40)
     {
-      v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v42 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v42;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -460,10 +460,10 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v16 = [v12 device];
-  v17 = [v15 metalDevice];
+  device = [textureCopy device];
+  metalDevice = [v15 metalDevice];
 
-  if (v16 != v17)
+  if (device != metalDevice)
   {
     v43 = NUAssertLogger();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -482,8 +482,8 @@ LABEL_38:
       if (v46)
       {
         v60 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v61 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v62 = [v61 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v62 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v60;
         *&buf[12] = 2114;
@@ -494,8 +494,8 @@ LABEL_38:
 
     else if (v46)
     {
-      v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v48 = [v47 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v48 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v48;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -506,10 +506,10 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v18 = a4->var1;
-  *buf = a4->var0;
+  v18 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = v18;
-  v79 = a4->var1;
+  v79 = rect->var1;
   v77[0] = var0;
   v77[1] = var1;
   v78 = v79;
@@ -518,7 +518,7 @@ LABEL_38:
   v67[1] = 3221225472;
   v67[2] = __75__NUImageUtilities_copyTexture_fromRect_toSurfaceImage_atPoint_withDevice___block_invoke;
   v67[3] = &unk_1E810A3D8;
-  v20 = v13;
+  v20 = imageCopy;
   v68 = v20;
   v69 = v19;
   v21 = v15;
@@ -528,7 +528,7 @@ LABEL_38:
   v74 = v79;
   v75 = *buf;
   v76 = *&buf[16];
-  v22 = v12;
+  v22 = textureCopy;
   v71 = v22;
   v23 = v19;
   [v21 executeMetal:v67];
@@ -591,14 +591,14 @@ void __75__NUImageUtilities_copyTexture_fromRect_toSurfaceImage_atPoint_withDevi
   [NUCopyKernel copyFromTexture:v9 region:&v12 toTexture:v10 atPoint:&v18 withCommandBuffer:*(a1 + 40)];
 }
 
-+ (void)copySurfaceImage:(id)a3 toImage:(id)a4
++ (void)copySurfaceImage:(id)image toImage:(id)toImage
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 size];
+  imageCopy = image;
+  toImageCopy = toImage;
+  v8 = [imageCopy size];
   v10 = v9;
-  if (v8 != [v7 size] || v10 != v11)
+  if (v8 != [toImageCopy size] || v10 != v11)
   {
     v17 = NUAssertLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -617,8 +617,8 @@ void __75__NUImageUtilities_copyTexture_fromRect_toSurfaceImage_atPoint_withDevi
       if (v21)
       {
         v24 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v24;
         *&buf[12] = 2114;
@@ -629,8 +629,8 @@ void __75__NUImageUtilities_copyTexture_fromRect_toSurfaceImage_atPoint_withDevi
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -639,7 +639,7 @@ void __75__NUImageUtilities_copyTexture_fromRect_toSurfaceImage_atPoint_withDevi
     _NUAssertFailHandler("+[NUImageUtilities copySurfaceImage:toImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 250, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "NUPixelSizeEqualToSize(surfaceImage.size, image.size)");
   }
 
-  v12 = [v7 size];
+  v12 = [toImageCopy size];
   v14 = v13;
   *buf = 0;
   *&buf[8] = 0;
@@ -650,14 +650,14 @@ void __75__NUImageUtilities_copyTexture_fromRect_toSurfaceImage_atPoint_withDevi
   v31[1] = 3221225472;
   v31[2] = __45__NUImageUtilities_copySurfaceImage_toImage___block_invoke;
   v31[3] = &unk_1E810A388;
-  v33 = a1;
-  v16 = v7;
+  selfCopy = self;
+  v16 = toImageCopy;
   v32 = v16;
   v34 = 0;
   v35 = 0;
   v36 = v12;
   v37 = v14;
-  [v6 readBufferRegion:v15 withBlock:v31];
+  [imageCopy readBufferRegion:v15 withBlock:v31];
 }
 
 void __45__NUImageUtilities_copySurfaceImage_toImage___block_invoke(uint64_t a1, void *a2)
@@ -688,17 +688,17 @@ void __45__NUImageUtilities_copySurfaceImage_toImage___block_invoke(uint64_t a1,
   [v5 copyPixelsToImage:v6 atPoint:v8 fromBuffer:v7 inRect:{v9, v11}];
 }
 
-+ (void)copyPixelsFromImage:(id)a3 srcRect:(id *)a4 destImage:(id)a5 destOrigin:(id)a6
++ (void)copyPixelsFromImage:(id)image srcRect:(id *)rect destImage:(id)destImage destOrigin:(id)origin
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a3;
-  v12 = a5;
-  v13 = a4->var0.var0;
-  v14 = a4->var0.var1;
-  v35 = a4->var1;
-  v15 = [v12 layout];
-  v16 = [v15 imageSize];
+  var1 = origin.var1;
+  var0 = origin.var0;
+  imageCopy = image;
+  destImageCopy = destImage;
+  v13 = rect->var0.var0;
+  v14 = rect->var0.var1;
+  v35 = rect->var1;
+  layout = [destImageCopy layout];
+  imageSize = [layout imageSize];
   v18 = v17;
 
   v33[0] = var0;
@@ -711,17 +711,17 @@ void __45__NUImageUtilities_copySurfaceImage_toImage___block_invoke(uint64_t a1,
   v21[3] = &unk_1E810A360;
   v23 = 0;
   v24 = 0;
-  v25 = v16;
+  v25 = imageSize;
   v26 = v18;
   v27 = var0;
   v28 = var1;
   v29 = v35;
   v30 = var0 - v13;
   v31 = var1 - v14;
-  v32 = a1;
-  v20 = v11;
+  selfCopy = self;
+  v20 = imageCopy;
   v22 = v20;
-  [v12 writeBufferRegion:v19 withBlock:v21];
+  [destImageCopy writeBufferRegion:v19 withBlock:v21];
 }
 
 void __69__NUImageUtilities_copyPixelsFromImage_srcRect_destImage_destOrigin___block_invoke(uint64_t a1, void *a2)
@@ -785,11 +785,11 @@ void __69__NUImageUtilities_copyPixelsFromImage_srcRect_destImage_destOrigin___b
   }
 }
 
-+ (void)fillPixelsInBuffer:(id)a3 rect:(id *)a4 srcPixel:(const void *)a5
++ (void)fillPixelsInBuffer:(id)buffer rect:(id *)rect srcPixel:(const void *)pixel
 {
   v56 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  if (!v48)
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     v14 = NUAssertLogger();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -808,8 +808,8 @@ void __69__NUImageUtilities_copyPixelsFromImage_srcRect_destImage_destOrigin___b
       if (v18)
       {
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v33;
         *&buf[12] = 2114;
@@ -820,8 +820,8 @@ void __69__NUImageUtilities_copyPixelsFromImage_srcRect_destImage_destOrigin___b
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -834,9 +834,9 @@ LABEL_37:
     _NUAssertFailHandler("+[NUImageUtilities fillPixelsInBuffer:rect:srcPixel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v37, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, v36);
   }
 
-  if (a4->var1.var0)
+  if (rect->var1.var0)
   {
-    v7 = a4->var1.var1 == 0;
+    v7 = rect->var1.var1 == 0;
   }
 
   else
@@ -863,8 +863,8 @@ LABEL_37:
       if (v24)
       {
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v38;
         *&buf[12] = 2114;
@@ -875,8 +875,8 @@ LABEL_37:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -887,7 +887,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!a5)
+  if (!pixel)
   {
     v27 = NUAssertLogger();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -906,8 +906,8 @@ LABEL_37:
       if (v30)
       {
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v43 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v41;
         *&buf[12] = 2114;
@@ -918,8 +918,8 @@ LABEL_37:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v32;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -932,10 +932,10 @@ LABEL_37:
 
   v50[0] = 0;
   v50[1] = 0;
-  *&v51 = [v48 size];
+  *&v51 = [bufferCopy size];
   *(&v51 + 1) = v8;
-  var0 = a4->var0;
-  var1 = a4->var1;
+  var0 = rect->var0;
+  var1 = rect->var1;
   *buf = 0;
   *&buf[8] = 0;
   *&buf[16] = v51;
@@ -946,19 +946,19 @@ LABEL_37:
   v49[1] = v53;
   if (v53 && *(&v53 + 1))
   {
-    v11 = [v48 mutableBytes];
-    v12 = [v48 rowBytes];
-    v13 = [v48 format];
-    nu::fill_rect<NUPixelRect>(v50, v11, v12, v49, a5, [v13 bytesPerPixel]);
+    mutableBytes = [bufferCopy mutableBytes];
+    rowBytes = [bufferCopy rowBytes];
+    format = [bufferCopy format];
+    nu::fill_rect<NUPixelRect>(v50, mutableBytes, rowBytes, v49, pixel, [format bytesPerPixel]);
   }
 }
 
-+ (void)fillPixelsInImage:(id)a3 rect:(id *)a4 srcPixel:(const void *)a5
++ (void)fillPixelsInImage:(id)image rect:(id *)rect srcPixel:(const void *)pixel
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  imageCopy = image;
+  v8 = imageCopy;
+  if (!imageCopy)
   {
     v17 = NUAssertLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -977,8 +977,8 @@ LABEL_37:
       if (v21)
       {
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v36;
         *&buf[12] = 2114;
@@ -989,8 +989,8 @@ LABEL_37:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1003,9 +1003,9 @@ LABEL_32:
     _NUAssertFailHandler("+[NUImageUtilities fillPixelsInImage:rect:srcPixel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v40, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, v39);
   }
 
-  if (a4->var1.var0)
+  if (rect->var1.var0)
   {
-    v9 = a4->var1.var1 == 0;
+    v9 = rect->var1.var1 == 0;
   }
 
   else
@@ -1032,8 +1032,8 @@ LABEL_32:
       if (v27)
       {
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v43 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v41;
         *&buf[12] = 2114;
@@ -1044,8 +1044,8 @@ LABEL_32:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v29;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1056,7 +1056,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (!a5)
+  if (!pixel)
   {
     v30 = NUAssertLogger();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1075,8 +1075,8 @@ LABEL_32:
       if (v33)
       {
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v46 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v44;
         *&buf[12] = 2114;
@@ -1087,8 +1087,8 @@ LABEL_32:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v35;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1099,12 +1099,12 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v10 = [v7 layout];
-  v11 = [v10 imageSize];
+  layout = [imageCopy layout];
+  imageSize = [layout imageSize];
   v13 = v12;
 
-  var1 = a4->var1;
-  *buf = a4->var0;
+  var1 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = var1;
   v15 = [NURegion regionWithRect:buf];
   v51[0] = MEMORY[0x1E69E9820];
@@ -1113,12 +1113,12 @@ LABEL_32:
   v51[3] = &__block_descriptor_104_e35_v24__0___NUMutableBufferTile__8_B16l;
   v51[4] = 0;
   v51[5] = 0;
-  v51[6] = v11;
+  v51[6] = imageSize;
   v51[7] = v13;
-  v16 = a4->var1;
-  var0 = a4->var0;
+  v16 = rect->var1;
+  var0 = rect->var0;
   v53 = v16;
-  v54 = a5;
+  pixelCopy = pixel;
   [v8 writeBufferRegion:v15 withBlock:v51];
 }
 
@@ -1179,21 +1179,21 @@ void __52__NUImageUtilities_fillPixelsInImage_rect_srcPixel___block_invoke(uint6
   }
 }
 
-+ (void)copyPixelsToImage:(id)a3 atPoint:(id)a4 fromBuffer:(id)a5 inRect:(id *)a6
++ (void)copyPixelsToImage:(id)image atPoint:(id)point fromBuffer:(id)buffer inRect:(id *)rect
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v11 = a3;
-  v12 = a5;
-  [a1 copyPixelsToImage:v11 rect:&v13 srcPtr:objc_msgSend(v12 srcPtrRowBytes:{"bytesAtPoint:", a6->var0.var0, a6->var0.var1, var0, var1, a6->var1.var0, a6->var1.var1), objc_msgSend(v12, "rowBytes")}];
+  var1 = point.var1;
+  var0 = point.var0;
+  imageCopy = image;
+  bufferCopy = buffer;
+  [self copyPixelsToImage:imageCopy rect:&v13 srcPtr:objc_msgSend(bufferCopy srcPtrRowBytes:{"bytesAtPoint:", rect->var0.var0, rect->var0.var1, var0, var1, rect->var1.var0, rect->var1.var1), objc_msgSend(bufferCopy, "rowBytes")}];
 }
 
-+ (void)copyPixelsToImage:(id)a3 rect:(id *)a4 srcPtr:(const void *)a5 srcPtrRowBytes:(int64_t)a6
++ (void)copyPixelsToImage:(id)image rect:(id *)rect srcPtr:(const void *)ptr srcPtrRowBytes:(int64_t)bytes
 {
   v72 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (!v9)
+  imageCopy = image;
+  v10 = imageCopy;
+  if (!imageCopy)
   {
     v23 = NUAssertLogger();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1212,8 +1212,8 @@ void __52__NUImageUtilities_fillPixelsInImage_rect_srcPixel___block_invoke(uint6
       if (v27)
       {
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v49 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v50 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v48;
         *&buf[12] = 2114;
@@ -1224,8 +1224,8 @@ void __52__NUImageUtilities_fillPixelsInImage_rect_srcPixel___block_invoke(uint6
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1238,10 +1238,10 @@ LABEL_44:
     _NUAssertFailHandler("+[NUImageUtilities copyPixelsToImage:rect:srcPtr:srcPtrRowBytes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v52, @"Invalid parameter not satisfying: %s", v62, v63, v64, v65, v51);
   }
 
-  var0 = a4->var1.var0;
+  var0 = rect->var1.var0;
   if (var0)
   {
-    v12 = a4->var1.var1 == 0;
+    v12 = rect->var1.var1 == 0;
   }
 
   else
@@ -1268,8 +1268,8 @@ LABEL_44:
       if (v33)
       {
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v54 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v55 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v53;
         *&buf[12] = 2114;
@@ -1280,8 +1280,8 @@ LABEL_44:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v35;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1292,7 +1292,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!a5)
+  if (!ptr)
   {
     v36 = NUAssertLogger();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -1311,8 +1311,8 @@ LABEL_44:
       if (v39)
       {
         v56 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v57 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v58 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v56;
         *&buf[12] = 2114;
@@ -1323,8 +1323,8 @@ LABEL_44:
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v41;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1335,20 +1335,20 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (a6 >= 0)
+  if (bytes >= 0)
   {
-    v13 = a6;
+    bytesCopy = bytes;
   }
 
   else
   {
-    v13 = -a6;
+    bytesCopy = -bytes;
   }
 
-  v14 = [v9 format];
-  v15 = [v14 bytesPerPixel] * var0;
+  format = [imageCopy format];
+  v15 = [format bytesPerPixel] * var0;
 
-  if (v15 > v13)
+  if (v15 > bytesCopy)
   {
     v42 = NUAssertLogger();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -1367,8 +1367,8 @@ LABEL_44:
       if (v45)
       {
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v60 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v61 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v59;
         *&buf[12] = 2114;
@@ -1379,8 +1379,8 @@ LABEL_44:
 
     else if (v45)
     {
-      v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v47 = [v46 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v47 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v47;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1391,12 +1391,12 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v16 = [v10 layout];
-  v17 = [v16 imageSize];
+  layout = [v10 layout];
+  imageSize = [layout imageSize];
   v19 = v18;
 
-  var1 = a4->var1;
-  *buf = a4->var0;
+  var1 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = var1;
   v21 = [NURegion regionWithRect:buf];
   v66[0] = MEMORY[0x1E69E9820];
@@ -1405,13 +1405,13 @@ LABEL_44:
   v66[3] = &__block_descriptor_112_e35_v24__0___NUMutableBufferTile__8_B16l;
   v66[4] = 0;
   v66[5] = 0;
-  v66[6] = v17;
+  v66[6] = imageSize;
   v66[7] = v19;
-  v22 = a4->var1;
-  v67 = a4->var0;
+  v22 = rect->var1;
+  v67 = rect->var0;
   v68 = v22;
-  v69 = a6;
-  v70 = a5;
+  bytesCopy2 = bytes;
+  ptrCopy = ptr;
   [v10 writeBufferRegion:v21 withBlock:v66];
 }
 
@@ -1496,22 +1496,22 @@ void __65__NUImageUtilities_copyPixelsToImage_rect_srcPtr_srcPtrRowBytes___block
   }
 }
 
-+ (void)copyPixelsFromSurfaceImage:(id)a3 atPoint:(id)a4 toBuffer:(id)a5
++ (void)copyPixelsFromSurfaceImage:(id)image atPoint:(id)point toBuffer:(id)buffer
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 size];
-  [a1 copyPixelsFromSurfaceImage:v9 rect:&v13 destPtr:objc_msgSend(v10 destPtrRowBytes:{"mutableBytes", var0, var1, v11, v12), objc_msgSend(v10, "rowBytes")}];
+  var1 = point.var1;
+  var0 = point.var0;
+  imageCopy = image;
+  bufferCopy = buffer;
+  v11 = [bufferCopy size];
+  [self copyPixelsFromSurfaceImage:imageCopy rect:&v13 destPtr:objc_msgSend(bufferCopy destPtrRowBytes:{"mutableBytes", var0, var1, v11, v12), objc_msgSend(bufferCopy, "rowBytes")}];
 }
 
-+ (void)copyPixelsFromSurfaceImage:(id)a3 rect:(id *)a4 destPtr:(void *)a5 destPtrRowBytes:(int64_t)a6
++ (void)copyPixelsFromSurfaceImage:(id)image rect:(id *)rect destPtr:(void *)ptr destPtrRowBytes:(int64_t)bytes
 {
   v71 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (!v9)
+  imageCopy = image;
+  v10 = imageCopy;
+  if (!imageCopy)
   {
     v22 = NUAssertLogger();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1530,8 +1530,8 @@ void __65__NUImageUtilities_copyPixelsToImage_rect_srcPtr_srcPtrRowBytes___block
       if (v26)
       {
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v49 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v47;
         *&buf[12] = 2114;
@@ -1542,8 +1542,8 @@ void __65__NUImageUtilities_copyPixelsToImage_rect_srcPtr_srcPtrRowBytes___block
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1556,10 +1556,10 @@ LABEL_41:
     _NUAssertFailHandler("+[NUImageUtilities copyPixelsFromSurfaceImage:rect:destPtr:destPtrRowBytes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v51, @"Invalid parameter not satisfying: %s", v61, v62, v63, v64, v50);
   }
 
-  var0 = a4->var1.var0;
+  var0 = rect->var1.var0;
   if (var0)
   {
-    v12 = a4->var1.var1 == 0;
+    v12 = rect->var1.var1 == 0;
   }
 
   else
@@ -1586,8 +1586,8 @@ LABEL_41:
       if (v32)
       {
         v52 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v53 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v54 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v52;
         *&buf[12] = 2114;
@@ -1598,8 +1598,8 @@ LABEL_41:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v34;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1610,7 +1610,7 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (!a5)
+  if (!ptr)
   {
     v35 = NUAssertLogger();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1629,8 +1629,8 @@ LABEL_41:
       if (v38)
       {
         v55 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v56 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v57 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v55;
         *&buf[12] = 2114;
@@ -1641,8 +1641,8 @@ LABEL_41:
 
     else if (v38)
     {
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v40;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1653,10 +1653,10 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v13 = [v9 format];
-  v14 = [v13 bytesPerPixel] * var0;
+  format = [imageCopy format];
+  v14 = [format bytesPerPixel] * var0;
 
-  if (v14 > a6)
+  if (v14 > bytes)
   {
     v41 = NUAssertLogger();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -1675,8 +1675,8 @@ LABEL_41:
       if (v44)
       {
         v58 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v59 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v60 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v58;
         *&buf[12] = 2114;
@@ -1687,8 +1687,8 @@ LABEL_41:
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v46;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1699,12 +1699,12 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v15 = [v10 layout];
-  v16 = [v15 imageSize];
+  layout = [v10 layout];
+  imageSize = [layout imageSize];
   v18 = v17;
 
-  var1 = a4->var1;
-  *buf = a4->var0;
+  var1 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = var1;
   v20 = [NURegion regionWithRect:buf];
   v65[0] = MEMORY[0x1E69E9820];
@@ -1713,13 +1713,13 @@ LABEL_41:
   v65[3] = &__block_descriptor_112_e28_v24__0___NUBufferTile__8_B16l;
   v65[4] = 0;
   v65[5] = 0;
-  v65[6] = v16;
+  v65[6] = imageSize;
   v65[7] = v18;
-  v21 = a4->var1;
-  v66 = a4->var0;
+  v21 = rect->var1;
+  v66 = rect->var0;
   v67 = v21;
-  v68 = a6;
-  v69 = a5;
+  bytesCopy = bytes;
+  ptrCopy = ptr;
   [v10 readBufferRegion:v20 withBlock:v65];
 }
 
@@ -1807,24 +1807,24 @@ void __76__NUImageUtilities_copyPixelsFromSurfaceImage_rect_destPtr_destPtrRowBy
   }
 }
 
-+ (void)copyPixelsFromImage:(id)a3 atPoint:(id)a4 toBuffer:(id)a5
++ (void)copyPixelsFromImage:(id)image atPoint:(id)point toBuffer:(id)buffer
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 size];
-  [a1 copyPixelsFromImage:v9 rect:&v13 destPtr:objc_msgSend(v10 destPtrRowBytes:{"mutableBytes", var0, var1, v11, v12), objc_msgSend(v10, "rowBytes")}];
+  var1 = point.var1;
+  var0 = point.var0;
+  imageCopy = image;
+  bufferCopy = buffer;
+  v11 = [bufferCopy size];
+  [self copyPixelsFromImage:imageCopy rect:&v13 destPtr:objc_msgSend(bufferCopy destPtrRowBytes:{"mutableBytes", var0, var1, v11, v12), objc_msgSend(bufferCopy, "rowBytes")}];
 }
 
-+ (void)copyBuffer:(id)a3 rect:(id *)a4 toBuffer:(id)a5 atPoint:(id)a6
++ (void)copyBuffer:(id)buffer rect:(id *)rect toBuffer:(id)toBuffer atPoint:(id)point
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
+  var1 = point.var1;
+  var0 = point.var0;
   v186 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  bufferCopy = buffer;
+  toBufferCopy = toBuffer;
+  if (!bufferCopy)
   {
     v65 = NUAssertLogger();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -1843,8 +1843,8 @@ void __76__NUImageUtilities_copyPixelsFromSurfaceImage_rect_destPtr_destPtrRowBy
       if (v69)
       {
         v126 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v127 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v128 = [v127 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v128 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v126;
         WORD2(src.height) = 2114;
@@ -1855,8 +1855,8 @@ void __76__NUImageUtilities_copyPixelsFromSurfaceImage_rect_destPtr_destPtrRowBy
 
     else if (v69)
     {
-      v70 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v71 = [v70 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v71 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v71;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -1869,7 +1869,7 @@ LABEL_121:
     _NUAssertFailHandler("+[NUImageUtilities copyBuffer:rect:toBuffer:atPoint:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v130, @"Invalid parameter not satisfying: %s", v158, v159, v160, v161, v129);
   }
 
-  if (a4->var0.var0 < 0)
+  if (rect->var0.var0 < 0)
   {
     v72 = NUAssertLogger();
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
@@ -1888,8 +1888,8 @@ LABEL_121:
       if (v75)
       {
         v131 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v132 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v133 = [v132 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v133 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v131;
         WORD2(src.height) = 2114;
@@ -1900,8 +1900,8 @@ LABEL_121:
 
     else if (v75)
     {
-      v76 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v77 = [v76 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v77 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v77;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -1912,9 +1912,9 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v14 = a4->var1.var0;
-  v13 = a4->var0.var0;
-  if (v14 + v13 > [v11 size])
+  v14 = rect->var1.var0;
+  v13 = rect->var0.var0;
+  if (v14 + v13 > [bufferCopy size])
   {
     v78 = NUAssertLogger();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
@@ -1933,8 +1933,8 @@ LABEL_121:
       if (v81)
       {
         v134 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v135 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v136 = [v135 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v136 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v134;
         WORD2(src.height) = 2114;
@@ -1945,8 +1945,8 @@ LABEL_121:
 
     else if (v81)
     {
-      v82 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v83 = [v82 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v83 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v83;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -1957,7 +1957,7 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v15 = a4->var0.var1;
+  v15 = rect->var0.var1;
   if (v15 < 0)
   {
     v84 = NUAssertLogger();
@@ -1977,8 +1977,8 @@ LABEL_121:
       if (v87)
       {
         v137 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v138 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v139 = [v138 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v139 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v137;
         WORD2(src.height) = 2114;
@@ -1989,8 +1989,8 @@ LABEL_121:
 
     else if (v87)
     {
-      v88 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v89 = [v88 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v89 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v89;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2001,8 +2001,8 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v16 = a4->var1.var1;
-  [v11 size];
+  v16 = rect->var1.var1;
+  [bufferCopy size];
   if (v16 + v15 > v17)
   {
     v90 = NUAssertLogger();
@@ -2022,8 +2022,8 @@ LABEL_121:
       if (v93)
       {
         v140 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v141 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v142 = [v141 componentsJoinedByString:@"\n"];
+        callStackSymbols9 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v142 = [callStackSymbols9 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v140;
         WORD2(src.height) = 2114;
@@ -2034,8 +2034,8 @@ LABEL_121:
 
     else if (v93)
     {
-      v94 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v95 = [v94 componentsJoinedByString:@"\n"];
+      callStackSymbols10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v95 = [callStackSymbols10 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v95;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2046,7 +2046,7 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  if (!v12)
+  if (!toBufferCopy)
   {
     v96 = NUAssertLogger();
     if (os_log_type_enabled(v96, OS_LOG_TYPE_ERROR))
@@ -2065,8 +2065,8 @@ LABEL_121:
       if (v99)
       {
         v143 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v144 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v145 = [v144 componentsJoinedByString:@"\n"];
+        callStackSymbols11 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v145 = [callStackSymbols11 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v143;
         WORD2(src.height) = 2114;
@@ -2077,8 +2077,8 @@ LABEL_121:
 
     else if (v99)
     {
-      v100 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v101 = [v100 componentsJoinedByString:@"\n"];
+      callStackSymbols12 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v101 = [callStackSymbols12 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v101;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2108,8 +2108,8 @@ LABEL_121:
       if (v105)
       {
         v146 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v147 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v148 = [v147 componentsJoinedByString:@"\n"];
+        callStackSymbols13 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v148 = [callStackSymbols13 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v146;
         WORD2(src.height) = 2114;
@@ -2120,8 +2120,8 @@ LABEL_121:
 
     else if (v105)
     {
-      v106 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v107 = [v106 componentsJoinedByString:@"\n"];
+      callStackSymbols14 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v107 = [callStackSymbols14 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v107;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2132,8 +2132,8 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v18 = a4->var1.var0;
-  if (v18 + var0 > [v12 size])
+  v18 = rect->var1.var0;
+  if (v18 + var0 > [toBufferCopy size])
   {
     v108 = NUAssertLogger();
     if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -2152,8 +2152,8 @@ LABEL_121:
       if (v111)
       {
         v149 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v150 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v151 = [v150 componentsJoinedByString:@"\n"];
+        callStackSymbols15 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v151 = [callStackSymbols15 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v149;
         WORD2(src.height) = 2114;
@@ -2164,8 +2164,8 @@ LABEL_121:
 
     else if (v111)
     {
-      v112 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v113 = [v112 componentsJoinedByString:@"\n"];
+      callStackSymbols16 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v113 = [callStackSymbols16 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v113;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2176,7 +2176,7 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  if (a4->var0.var1 < 0)
+  if (rect->var0.var1 < 0)
   {
     v114 = NUAssertLogger();
     if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
@@ -2195,8 +2195,8 @@ LABEL_121:
       if (v117)
       {
         v152 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v153 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v154 = [v153 componentsJoinedByString:@"\n"];
+        callStackSymbols17 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v154 = [callStackSymbols17 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v152;
         WORD2(src.height) = 2114;
@@ -2207,8 +2207,8 @@ LABEL_121:
 
     else if (v117)
     {
-      v118 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v119 = [v118 componentsJoinedByString:@"\n"];
+      callStackSymbols18 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v119 = [callStackSymbols18 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v119;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2219,8 +2219,8 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v19 = a4->var1.var1;
-  [v12 size];
+  v19 = rect->var1.var1;
+  [toBufferCopy size];
   if (v19 + var1 > v20)
   {
     v120 = NUAssertLogger();
@@ -2240,8 +2240,8 @@ LABEL_121:
       if (v123)
       {
         v155 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v156 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v157 = [v156 componentsJoinedByString:@"\n"];
+        callStackSymbols19 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v157 = [callStackSymbols19 componentsJoinedByString:@"\n"];
         LODWORD(src.data) = 138543618;
         *(&src.data + 4) = v155;
         WORD2(src.height) = 2114;
@@ -2252,8 +2252,8 @@ LABEL_121:
 
     else if (v123)
     {
-      v124 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v125 = [v124 componentsJoinedByString:@"\n"];
+      callStackSymbols20 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v125 = [callStackSymbols20 componentsJoinedByString:@"\n"];
       LODWORD(src.data) = 138543362;
       *(&src.data + 4) = v125;
       _os_log_error_impl(&dword_1C0184000, v68, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &src, 0xCu);
@@ -2264,29 +2264,29 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v21 = [v11 format];
-  v22 = [v12 format];
-  v23 = [v21 isEqualToPixelFormat:v22];
+  format = [bufferCopy format];
+  format2 = [toBufferCopy format];
+  v23 = [format isEqualToPixelFormat:format2];
 
   if (v23)
   {
-    v25 = a4->var1.var0;
-    v24 = a4->var1.var1;
-    v26 = [v11 format];
-    v27 = [v26 bytesPerPixel];
-    v28 = [v11 bytes];
-    v29 = [v11 rowBytes];
-    v30 = [v12 mutableBytes];
-    v31 = [v12 rowBytes];
+    v25 = rect->var1.var0;
+    v24 = rect->var1.var1;
+    format3 = [bufferCopy format];
+    bytesPerPixel = [format3 bytesPerPixel];
+    bytes = [bufferCopy bytes];
+    rowBytes = [bufferCopy rowBytes];
+    mutableBytes = [toBufferCopy mutableBytes];
+    rowBytes2 = [toBufferCopy rowBytes];
     if (v25 && v24)
     {
-      v32 = v31;
-      v33 = v27 * v25;
+      v32 = rowBytes2;
+      v33 = bytesPerPixel * v25;
       do
       {
-        memcpy(v30, v28, v33);
-        v28 += v29;
-        v30 += v32;
+        memcpy(mutableBytes, bytes, v33);
+        bytes += rowBytes;
+        mutableBytes += v32;
         --v24;
       }
 
@@ -2296,40 +2296,40 @@ LABEL_121:
     goto LABEL_25;
   }
 
-  src.data = [v11 bytesAtPoint:{a4->var0.var0, a4->var0.var1}];
+  src.data = [bufferCopy bytesAtPoint:{rect->var0.var0, rect->var0.var1}];
   v34.i64[0] = 0xFFFFFFFFLL;
   v34.i64[1] = 0xFFFFFFFFLL;
-  v35 = vandq_s8(a4->var1, v34);
+  v35 = vandq_s8(rect->var1, v34);
   *&src.height = vextq_s8(v35, v35, 8uLL);
-  src.rowBytes = [v11 rowBytes];
-  dest.data = [v12 mutableBytesAtPoint:{var0, var1}];
+  src.rowBytes = [bufferCopy rowBytes];
+  dest.data = [toBufferCopy mutableBytesAtPoint:{var0, var1}];
   v36.i64[0] = 0xFFFFFFFFLL;
   v36.i64[1] = 0xFFFFFFFFLL;
-  v37 = vandq_s8(a4->var1, v36);
+  v37 = vandq_s8(rect->var1, v36);
   *&dest.height = vextq_s8(v37, v37, 8uLL);
-  dest.rowBytes = [v12 rowBytes];
-  v38 = [v11 format];
+  dest.rowBytes = [toBufferCopy rowBytes];
+  format4 = [bufferCopy format];
   v39 = +[NUPixelFormat BGRA8];
-  v40 = [v38 isEqualToPixelFormat:v39];
+  v40 = [format4 isEqualToPixelFormat:v39];
   v41 = v40;
-  if (!v40 || ([v12 format], v21 = objc_claimAutoreleasedReturnValue(), +[NUPixelFormat RGBA8](NUPixelFormat, "RGBA8"), v6 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v21, "isEqualToPixelFormat:", v6) & 1) == 0))
+  if (!v40 || ([toBufferCopy format], format = objc_claimAutoreleasedReturnValue(), +[NUPixelFormat RGBA8](NUPixelFormat, "RGBA8"), v6 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(format, "isEqualToPixelFormat:", v6) & 1) == 0))
   {
-    v177 = v11;
-    v178 = v12;
-    v42 = [v11 format];
+    v177 = bufferCopy;
+    v178 = toBufferCopy;
+    format5 = [bufferCopy format];
     v43 = +[NUPixelFormat RGBA8];
-    if ([v42 isEqualToPixelFormat:v43])
+    if ([format5 isEqualToPixelFormat:v43])
     {
-      v44 = [v178 format];
+      format6 = [v178 format];
       v45 = +[NUPixelFormat BGRA8];
-      v46 = [v44 isEqualToPixelFormat:v45];
+      v46 = [format6 isEqualToPixelFormat:v45];
 
       if (v41)
       {
       }
 
-      v11 = v177;
-      v12 = v178;
+      bufferCopy = v177;
+      toBufferCopy = v178;
       if (v46)
       {
         goto LABEL_24;
@@ -2343,7 +2343,7 @@ LABEL_121:
       {
       }
 
-      v11 = v177;
+      bufferCopy = v177;
     }
 
     if (_NULogOnceToken != -1)
@@ -2355,9 +2355,9 @@ LABEL_121:
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
       v48 = MEMORY[0x1E696AEC0];
-      v49 = [v11 format];
-      v50 = [v178 format];
-      v51 = [v48 stringWithFormat:@"Unsupported pixel format conversion from %@ to %@", v49, v50];
+      format7 = [bufferCopy format];
+      format8 = [v178 format];
+      v51 = [v48 stringWithFormat:@"Unsupported pixel format conversion from %@ to %@", format7, format8];
       *buf = 138543362;
       v182 = v51;
       _os_log_error_impl(&dword_1C0184000, v47, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -2376,8 +2376,8 @@ LABEL_121:
       if (v54)
       {
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v58 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols21 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v59 = [callStackSymbols21 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v182 = v57;
         v183 = 2114;
@@ -2388,17 +2388,17 @@ LABEL_121:
 
     else if (v54)
     {
-      v55 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v56 = [v55 componentsJoinedByString:@"\n"];
+      callStackSymbols22 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v56 = [callStackSymbols22 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v182 = v56;
       _os_log_error_impl(&dword_1C0184000, v53, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v60 = [v11 format];
+    format9 = [bufferCopy format];
     [v178 format];
     objc_claimAutoreleasedReturnValue();
-    _NUAssertFailHandler("+[NUImageUtilities copyBuffer:rect:toBuffer:atPoint:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 118, @"Unsupported pixel format conversion from %@ to %@", v61, v62, v63, v64, v60);
+    _NUAssertFailHandler("+[NUImageUtilities copyBuffer:rect:toBuffer:atPoint:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 118, @"Unsupported pixel format conversion from %@ to %@", v61, v62, v63, v64, format9);
   }
 
 LABEL_24:
@@ -2422,8 +2422,8 @@ LABEL_24:
       if (v166)
       {
         v169 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v170 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v171 = [v170 componentsJoinedByString:@"\n"];
+        callStackSymbols23 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v171 = [callStackSymbols23 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v182 = v169;
         v183 = 2114;
@@ -2434,8 +2434,8 @@ LABEL_24:
 
     else if (v166)
     {
-      v167 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v168 = [v167 componentsJoinedByString:@"\n"];
+      callStackSymbols24 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v168 = [callStackSymbols24 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v182 = v168;
       _os_log_error_impl(&dword_1C0184000, v165, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2447,12 +2447,12 @@ LABEL_24:
 LABEL_25:
 }
 
-+ (void)copyPixelsFromImage:(id)a3 rect:(id *)a4 destPtr:(void *)a5 destPtrRowBytes:(int64_t)a6
++ (void)copyPixelsFromImage:(id)image rect:(id *)rect destPtr:(void *)ptr destPtrRowBytes:(int64_t)bytes
 {
   v85 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (!v9)
+  imageCopy = image;
+  v10 = imageCopy;
+  if (!imageCopy)
   {
     v29 = NUAssertLogger();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2471,8 +2471,8 @@ LABEL_25:
       if (v33)
       {
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v55 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v56 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v54;
         *&buf[12] = 2114;
@@ -2483,8 +2483,8 @@ LABEL_25:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2497,10 +2497,10 @@ LABEL_45:
     _NUAssertFailHandler("+[NUImageUtilities copyPixelsFromImage:rect:destPtr:destPtrRowBytes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v58, @"Invalid parameter not satisfying: %s", v68, v69, v70, v71, v57);
   }
 
-  var0 = a4->var1.var0;
+  var0 = rect->var1.var0;
   if (var0)
   {
-    v12 = a4->var1.var1 == 0;
+    v12 = rect->var1.var1 == 0;
   }
 
   else
@@ -2527,8 +2527,8 @@ LABEL_45:
       if (v39)
       {
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v60 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v61 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v59;
         *&buf[12] = 2114;
@@ -2539,8 +2539,8 @@ LABEL_45:
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v41;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2551,7 +2551,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (!a5)
+  if (!ptr)
   {
     v42 = NUAssertLogger();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -2570,8 +2570,8 @@ LABEL_45:
       if (v45)
       {
         v62 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v63 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v64 = [v63 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v64 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v62;
         *&buf[12] = 2114;
@@ -2582,8 +2582,8 @@ LABEL_45:
 
     else if (v45)
     {
-      v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v47 = [v46 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v47 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v47;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2594,10 +2594,10 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  v13 = [v9 format];
-  v14 = [v13 bytesPerPixel] * var0;
+  format = [imageCopy format];
+  v14 = [format bytesPerPixel] * var0;
 
-  if (v14 > a6)
+  if (v14 > bytes)
   {
     v48 = NUAssertLogger();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -2616,8 +2616,8 @@ LABEL_45:
       if (v51)
       {
         v65 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v66 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v67 = [v66 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v67 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v65;
         *&buf[12] = 2114;
@@ -2628,8 +2628,8 @@ LABEL_45:
 
     else if (v51)
     {
-      v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v53 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v53;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2640,14 +2640,14 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  v15 = [v10 layout];
-  v16 = [v15 imageSize];
+  layout = [v10 layout];
+  imageSize = [layout imageSize];
   v18 = v17;
 
-  *&v19 = v16;
+  *&v19 = imageSize;
   *(&v19 + 1) = v18;
-  v20 = a4->var0;
-  var1 = a4->var1;
+  v20 = rect->var0;
+  var1 = rect->var1;
   *buf = 0;
   *&buf[8] = 0;
   *&buf[16] = v19;
@@ -2656,12 +2656,12 @@ LABEL_45:
   NU::RectT<long>::Intersection(v82, buf, v83);
   v72 = v82[1];
   v73 = v82[0];
-  v22 = [v10 validRegion];
+  validRegion = [v10 validRegion];
   *buf = v73;
   *&buf[16] = v72;
-  v23 = [v22 regionByClippingToRect:buf];
-  v24 = a4->var1;
-  *buf = a4->var0;
+  v23 = [validRegion regionByClippingToRect:buf];
+  v24 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = v24;
   v25 = [NURegion regionWithRect:buf];
   v26 = [v23 isEqualToRegion:v25];
@@ -2670,8 +2670,8 @@ LABEL_45:
   {
     *buf = 0;
     *&buf[8] = 0;
-    v27 = [v10 format];
-    nu::fill_rect<NUPixelRect>(&a4->var0.var0, a5, a6, &a4->var0.var0, buf, [v27 bytesPerPixel]);
+    format2 = [v10 format];
+    nu::fill_rect<NUPixelRect>(&rect->var0.var0, ptr, bytes, &rect->var0.var0, buf, [format2 bytesPerPixel]);
   }
 
   if (([v23 isEmpty] & 1) == 0)
@@ -2682,12 +2682,12 @@ LABEL_45:
     v74[3] = &unk_1E810A2D8;
     v76 = v73;
     v77 = v72;
-    v75 = v22;
-    v28 = a4->var1;
-    v78 = a4->var0;
+    v75 = validRegion;
+    v28 = rect->var1;
+    v78 = rect->var0;
     v79 = v28;
-    v80 = a6;
-    v81 = a5;
+    bytesCopy = bytes;
+    ptrCopy = ptr;
     [v10 readBufferRegion:v23 withBlock:v74];
   }
 }

@@ -1,13 +1,13 @@
 @interface MPHomeSharingErrorResolver
-- (BOOL)_errorIsFairPlayError:(id)a3;
-- (MPHomeSharingErrorResolver)initWithKeybagURL:(id)a3 accountID:(unint64_t)a4 accountTokenData:(id)a5 downloaderAccountID:(unint64_t)a6 downloaderAccountTokenData:(id)a7 familyAccountID:(unint64_t)a8;
+- (BOOL)_errorIsFairPlayError:(id)error;
+- (MPHomeSharingErrorResolver)initWithKeybagURL:(id)l accountID:(unint64_t)d accountTokenData:(id)data downloaderAccountID:(unint64_t)iD downloaderAccountTokenData:(id)tokenData familyAccountID:(unint64_t)accountID;
 - (void)_performMachineAuthorization;
 - (void)_processNextAuthorizationRequest;
-- (void)authorizationRequest:(id)a3 didReceiveResponse:(id)a4;
+- (void)authorizationRequest:(id)request didReceiveResponse:(id)response;
 - (void)dealloc;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestDidFinish:(id)a3;
-- (void)resolveError:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestDidFinish:(id)finish;
+- (void)resolveError:(id)error;
 @end
 
 @implementation MPHomeSharingErrorResolver
@@ -49,8 +49,8 @@
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_accountID];
   v12 = [v3 initWithAuthorizationToken:accountTokenData accountIdentifier:v5];
 
-  v6 = [(NSURL *)self->_keybagURL path];
-  [v12 setKeybagPath:v6];
+  path = [(NSURL *)self->_keybagURL path];
+  [v12 setKeybagPath:path];
 
   [(NSMutableArray *)self->_requests addObject:v12];
   if (self->_downloaderAccountID)
@@ -61,8 +61,8 @@
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_downloaderAccountID];
     v10 = [v7 initWithAuthorizationToken:downloaderAccountTokenData accountIdentifier:v9];
 
-    v11 = [(NSURL *)self->_keybagURL path];
-    [v10 setKeybagPath:v11];
+    path2 = [(NSURL *)self->_keybagURL path];
+    [v10 setKeybagPath:path2];
 
     [(NSMutableArray *)self->_requests addObject:v10];
   }
@@ -70,16 +70,16 @@
   [(MPHomeSharingErrorResolver *)self _processNextAuthorizationRequest];
 }
 
-- (BOOL)_errorIsFairPlayError:(id)a3
+- (BOOL)_errorIsFairPlayError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = v4 + 49999;
-  v6 = v4 + 12169;
-  if (v4 == -11835)
+  errorCopy = error;
+  code = [errorCopy code];
+  v5 = code + 49999;
+  v6 = code + 12169;
+  if (code == -11835)
   {
-    v7 = [v3 domain];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E69874D8]];
+    domain = [errorCopy domain];
+    v8 = [domain isEqualToString:*MEMORY[0x1E69874D8]];
   }
 
   else
@@ -89,14 +89,14 @@
 
   if (v5 >> 6 < 0x7D || v6 <= 0x13)
   {
-    v10 = [v3 domain];
-    v8 |= [v10 isEqualToString:*MEMORY[0x1E696A768]];
+    domain2 = [errorCopy domain];
+    v8 |= [domain2 isEqualToString:*MEMORY[0x1E696A768]];
   }
 
   return v8 & 1;
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
   [(SSAuthorizationRequest *)self->_activeRequest setDelegate:0];
   activeRequest = self->_activeRequest;
@@ -105,9 +105,9 @@
   [(MPHomeSharingErrorResolver *)self _processNextAuthorizationRequest];
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  [(SSAuthorizationRequest *)self->_activeRequest setDelegate:0, a4];
+  [(SSAuthorizationRequest *)self->_activeRequest setDelegate:0, error];
   activeRequest = self->_activeRequest;
   self->_activeRequest = 0;
 
@@ -116,13 +116,13 @@
   self->_error = 0;
 }
 
-- (void)authorizationRequest:(id)a3 didReceiveResponse:(id)a4
+- (void)authorizationRequest:(id)request didReceiveResponse:(id)response
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = [a4 bodyData];
-  if ([v5 length])
+  bodyData = [response bodyData];
+  if ([bodyData length])
   {
-    v6 = [MEMORY[0x1E696AE40] propertyListWithData:v5 options:0 format:0 error:0];
+    v6 = [MEMORY[0x1E696AE40] propertyListWithData:bodyData options:0 format:0 error:0];
     v7 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -147,7 +147,7 @@
       v34 = 0;
       if (ICFairPlayGetHardwareInfo())
       {
-        v11 = [(MPHomeSharingML3DataProvider *)self->_dataProvider uniqueIdentifier];
+        uniqueIdentifier = [(MPHomeSharingML3DataProvider *)self->_dataProvider uniqueIdentifier];
         v12 = HSLibraryCacheDirectoryForIdentifier();
         v13 = [v12 stringByAppendingPathComponent:@"Tokens"];
 
@@ -159,8 +159,8 @@
           _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingErrorResolver] Key storage directory: %{public}@", v31, 0xCu);
         }
 
-        v15 = [MEMORY[0x1E696AC08] defaultManager];
-        v16 = [v15 fileExistsAtPath:v13];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v16 = [defaultManager fileExistsAtPath:v13];
 
         if ((v16 & 1) == 0)
         {
@@ -171,8 +171,8 @@
             _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingErrorResolver] Creating key storage directory...", v31, 2u);
           }
 
-          v18 = [MEMORY[0x1E696AC08] defaultManager];
-          [v18 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:0];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager2 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:0];
         }
 
         v30 = 0;
@@ -255,16 +255,16 @@
   }
 }
 
-- (void)resolveError:(id)a3
+- (void)resolveError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E696AA08]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  if ([(MPHomeSharingErrorResolver *)self _errorIsFairPlayError:v5])
+  if ([(MPHomeSharingErrorResolver *)self _errorIsFairPlayError:errorCopy])
   {
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
     [(MPHomeSharingErrorResolver *)self _performMachineAuthorization];
   }
 
@@ -278,19 +278,19 @@
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingErrorResolver] Reconnecting to HomeSharing Library for error: %{public}@", buf, 0xCu);
     }
 
-    objc_storeStrong(&self->_error, a3);
-    v9 = [(MPHomeSharingML3DataProvider *)self->_dataProvider homeSharingLibrary];
+    objc_storeStrong(&self->_error, error);
+    homeSharingLibrary = [(MPHomeSharingML3DataProvider *)self->_dataProvider homeSharingLibrary];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__MPHomeSharingErrorResolver_resolveError___block_invoke;
     v10[3] = &unk_1E767B220;
     v10[4] = self;
-    [v9 connectWithCompletionHandler:v10];
+    [homeSharingLibrary connectWithCompletionHandler:v10];
   }
 
   else
   {
-    [(MPAVErrorResolver *)self sendDidResolveError:v5 withResolution:0];
+    [(MPAVErrorResolver *)self sendDidResolveError:errorCopy withResolution:0];
   }
 }
 
@@ -322,27 +322,27 @@ void __43__MPHomeSharingErrorResolver_resolveError___block_invoke(uint64_t a1, i
   [(MPHomeSharingErrorResolver *)&v3 dealloc];
 }
 
-- (MPHomeSharingErrorResolver)initWithKeybagURL:(id)a3 accountID:(unint64_t)a4 accountTokenData:(id)a5 downloaderAccountID:(unint64_t)a6 downloaderAccountTokenData:(id)a7 familyAccountID:(unint64_t)a8
+- (MPHomeSharingErrorResolver)initWithKeybagURL:(id)l accountID:(unint64_t)d accountTokenData:(id)data downloaderAccountID:(unint64_t)iD downloaderAccountTokenData:(id)tokenData familyAccountID:(unint64_t)accountID
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  if (!a4 || ![v15 length])
+  lCopy = l;
+  dataCopy = data;
+  tokenDataCopy = tokenData;
+  if (!d || ![dataCopy length])
   {
     goto LABEL_9;
   }
 
-  if (a6)
+  if (iD)
   {
-    if (!a8)
+    if (!accountID)
     {
       goto LABEL_10;
     }
 
-    if (![v16 length])
+    if (![tokenDataCopy length])
     {
 LABEL_9:
-      a8 = 0;
+      accountID = 0;
       goto LABEL_10;
     }
   }
@@ -352,25 +352,25 @@ LABEL_9:
   v17 = [(MPHomeSharingErrorResolver *)&v23 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [lCopy copy];
     keybagURL = v17->_keybagURL;
     v17->_keybagURL = v18;
 
-    v17->_accountID = a4;
-    objc_storeStrong(&v17->_accountTokenData, a5);
-    v17->_downloaderAccountID = a6;
-    objc_storeStrong(&v17->_downloaderAccountTokenData, a7);
-    v17->_familyAccountID = a8;
+    v17->_accountID = d;
+    objc_storeStrong(&v17->_accountTokenData, data);
+    v17->_downloaderAccountID = iD;
+    objc_storeStrong(&v17->_downloaderAccountTokenData, tokenData);
+    v17->_familyAccountID = accountID;
     v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     requests = v17->_requests;
     v17->_requests = v20;
   }
 
   self = v17;
-  a8 = self;
+  accountID = self;
 LABEL_10:
 
-  return a8;
+  return accountID;
 }
 
 @end

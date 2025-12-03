@@ -1,31 +1,31 @@
 @interface PPTrialWrapper
 + (PPTrialWrapper)sharedInstance;
 + (id)sharedTrialClient;
-- (BOOL)hasFactor:(id)a3 namespaceName:(id)a4;
-- (BOOL)hasOverrideForFileFactor:(id)a3 namespaceName:(id)a4;
+- (BOOL)hasFactor:(id)factor namespaceName:(id)name;
+- (BOOL)hasOverrideForFileFactor:(id)factor namespaceName:(id)name;
 - (NSString)concatenatedTreatmentNames;
-- (PPTrialWrapper)initWithSettings:(id)a3 database:(id)a4 trialClient:(id)a5;
-- (id)_loadMLModelForModelName:(id)a3 namespaceName:(id)a4 error:(id *)a5;
-- (id)addUpdateHandlerForNamespaceName:(id)a3 block:(id)a4;
-- (id)defaultFilepathForFactor:(id)a3 namespaceName:(id)a4;
-- (id)filepathForFactorName:(id)a3 namespaceName:(id)a4 isDirectory:(BOOL)a5;
+- (PPTrialWrapper)initWithSettings:(id)settings database:(id)database trialClient:(id)client;
+- (id)_loadMLModelForModelName:(id)name namespaceName:(id)namespaceName error:(id *)error;
+- (id)addUpdateHandlerForNamespaceName:(id)name block:(id)block;
+- (id)defaultFilepathForFactor:(id)factor namespaceName:(id)name;
+- (id)filepathForFactorName:(id)name namespaceName:(id)namespaceName isDirectory:(BOOL)directory;
 - (id)lastTreatmentUpdate;
-- (id)lastTreatmentUpdateForNamespaceName:(id)a3;
-- (id)lazyPlistForFactorName:(id)a3 namespaceName:(id)a4 error:(id *)a5;
-- (id)mlModelPathForModelName:(id)a3 namespaceName:(id)a4 error:(id *)a5;
-- (id)plistForFactorName:(id)a3 namespaceName:(id)a4;
+- (id)lastTreatmentUpdateForNamespaceName:(id)name;
+- (id)lazyPlistForFactorName:(id)name namespaceName:(id)namespaceName error:(id *)error;
+- (id)mlModelPathForModelName:(id)name namespaceName:(id)namespaceName error:(id *)error;
+- (id)plistForFactorName:(id)name namespaceName:(id)namespaceName;
 - (id)readableTreatmentsMapping;
-- (id)treatmentNameForNamespaceName:(id)a3;
-- (id)trieForFactorName:(id)a3 namespaceName:(id)a4;
+- (id)treatmentNameForNamespaceName:(id)name;
+- (id)trieForFactorName:(id)name namespaceName:(id)namespaceName;
 - (unsigned)treatmentsHash;
-- (void)_addDefaultUpdateHandlersForAllNamespacesWithGuardedData:(id)a3;
+- (void)_addDefaultUpdateHandlersForAllNamespacesWithGuardedData:(id)data;
 - (void)_updateConcatenatedTreatmentNamesAndHash;
 - (void)callRegisteredUpdateHandlers;
-- (void)callRegisteredUpdateHandlersForNamespaceName:(id)a3;
-- (void)clearOverrideFilepathForFileFactor:(id)a3 namespaceName:(id)a4;
+- (void)callRegisteredUpdateHandlersForNamespaceName:(id)name;
+- (void)clearOverrideFilepathForFileFactor:(id)factor namespaceName:(id)name;
 - (void)dealloc;
-- (void)overrideFilepathForFileFactor:(id)a3 namespaceName:(id)a4 path:(id)a5;
-- (void)removeUpdateHandlerForToken:(id)a3;
+- (void)overrideFilepathForFileFactor:(id)factor namespaceName:(id)name path:(id)path;
+- (void)removeUpdateHandlerForToken:(id)token;
 @end
 
 @implementation PPTrialWrapper
@@ -154,11 +154,11 @@ LABEL_20:
   return v3;
 }
 
-- (id)trieForFactorName:(id)a3 namespaceName:(id)a4
+- (id)trieForFactorName:(id)name namespaceName:(id)namespaceName
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PPTrialWrapper *)self filepathForFactor:v6 namespaceName:a4];
+  nameCopy = name;
+  v7 = [(PPTrialWrapper *)self filepathForFactor:nameCopy namespaceName:namespaceName];
   v8 = pp_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -178,7 +178,7 @@ LABEL_20:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = nameCopy;
       _os_log_error_impl(&dword_23224A000, v10, OS_LOG_TYPE_ERROR, "Failed to read path for trie %@.", &v13, 0xCu);
     }
 
@@ -190,16 +190,16 @@ LABEL_20:
   return v9;
 }
 
-- (id)_loadMLModelForModelName:(id)a3 namespaceName:(id)a4 error:(id *)a5
+- (id)_loadMLModelForModelName:(id)name namespaceName:(id)namespaceName error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(PPTrialWrapper *)self mlModelPathForModelName:v8 namespaceName:a4 error:a5];
+  nameCopy = name;
+  v9 = [(PPTrialWrapper *)self mlModelPathForModelName:nameCopy namespaceName:namespaceName error:error];
   if (v9)
   {
     v10 = objc_opt_new();
     [v10 setComputeUnits:0];
-    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v9 configuration:v10 error:a5];
+    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v9 configuration:v10 error:error];
   }
 
   else
@@ -208,7 +208,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = nameCopy;
       _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "PPTrialWrapper: unable to resolve compiled URL for model %@", &v15, 0xCu);
     }
 
@@ -220,12 +220,12 @@ LABEL_20:
   return v11;
 }
 
-- (id)mlModelPathForModelName:(id)a3 namespaceName:(id)a4 error:(id *)a5
+- (id)mlModelPathForModelName:(id)name namespaceName:(id)namespaceName error:(id *)error
 {
-  v5 = [(PPTrialWrapper *)self directoryForFactorName:a3 namespaceName:a4, a5];
-  if (v5)
+  error = [(PPTrialWrapper *)self directoryForFactorName:name namespaceName:namespaceName, error];
+  if (error)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v5];
+    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:error];
   }
 
   else
@@ -271,28 +271,28 @@ LABEL_20:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callRegisteredUpdateHandlersForNamespaceName:(id)a3
+- (void)callRegisteredUpdateHandlersForNamespaceName:(id)name
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v6 = [[v3 alloc] initWithFormat:@"com.apple.trial.NamespaceUpdate.%@", v4];
+  nameCopy = name;
+  nameCopy = [[v3 alloc] initWithFormat:@"com.apple.trial.NamespaceUpdate.%@", nameCopy];
 
-  v5 = v6;
-  notify_post([v6 UTF8String]);
+  v5 = nameCopy;
+  notify_post([nameCopy UTF8String]);
 }
 
-- (void)clearOverrideFilepathForFileFactor:(id)a3 namespaceName:(id)a4
+- (void)clearOverrideFilepathForFileFactor:(id)factor namespaceName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  factorCopy = factor;
+  nameCopy = name;
   v8 = pp_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = v6;
+    v20 = factorCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = nameCopy;
     _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_INFO, "Cleared filepath override for file factor %@ in namespace %@", buf, 0x16u);
   }
 
@@ -301,10 +301,10 @@ LABEL_20:
   v14 = 3221225472;
   v15 = __67__PPTrialWrapper_clearOverrideFilepathForFileFactor_namespaceName___block_invoke;
   v16 = &unk_278978B18;
-  v17 = v7;
-  v18 = v6;
-  v10 = v6;
-  v11 = v7;
+  v17 = nameCopy;
+  v18 = factorCopy;
+  v10 = factorCopy;
+  v11 = nameCopy;
   [(_PASLock *)lock runWithLockAcquired:&v13];
   [(PPTrialWrapper *)self callRegisteredUpdateHandlersForNamespaceName:v11, v13, v14, v15, v16];
 
@@ -326,10 +326,10 @@ void __67__PPTrialWrapper_clearOverrideFilepathForFileFactor_namespaceName___blo
   [v5 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (BOOL)hasOverrideForFileFactor:(id)a3 namespaceName:(id)a4
+- (BOOL)hasOverrideForFileFactor:(id)factor namespaceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  factorCopy = factor;
+  nameCopy = name;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -342,9 +342,9 @@ void __67__PPTrialWrapper_clearOverrideFilepathForFileFactor_namespaceName___blo
   v14[2] = __57__PPTrialWrapper_hasOverrideForFileFactor_namespaceName___block_invoke;
   v14[3] = &unk_278978CD0;
   v17 = &v18;
-  v9 = v7;
+  v9 = nameCopy;
   v15 = v9;
-  v10 = v6;
+  v10 = factorCopy;
   v16 = v10;
   [(_PASLock *)lock runWithLockAcquired:v14];
   v11 = v16;
@@ -363,21 +363,21 @@ void __57__PPTrialWrapper_hasOverrideForFileFactor_namespaceName___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (void)overrideFilepathForFileFactor:(id)a3 namespaceName:(id)a4 path:(id)a5
+- (void)overrideFilepathForFileFactor:(id)factor namespaceName:(id)name path:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  factorCopy = factor;
+  nameCopy = name;
+  pathCopy = path;
   v11 = pp_default_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v22 = v8;
+    v22 = factorCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = nameCopy;
     v25 = 2112;
-    v26 = v10;
+    v26 = pathCopy;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_INFO, "Overriden filepath for file factor %@ in namespace %@ to %@", buf, 0x20u);
   }
 
@@ -386,12 +386,12 @@ void __57__PPTrialWrapper_hasOverrideForFileFactor_namespaceName___block_invoke(
   v17[1] = 3221225472;
   v17[2] = __67__PPTrialWrapper_overrideFilepathForFileFactor_namespaceName_path___block_invoke;
   v17[3] = &unk_278978CA8;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v18 = nameCopy;
+  v19 = factorCopy;
+  v20 = pathCopy;
+  v13 = pathCopy;
+  v14 = factorCopy;
+  v15 = nameCopy;
   [(_PASLock *)lock runWithLockAcquired:v17];
   [(PPTrialWrapper *)self callRegisteredUpdateHandlersForNamespaceName:v15];
 
@@ -414,27 +414,27 @@ void __67__PPTrialWrapper_overrideFilepathForFileFactor_namespaceName_path___blo
   [v6 setObject:v5 forKeyedSubscript:a1[5]];
 }
 
-- (id)lazyPlistForFactorName:(id)a3 namespaceName:(id)a4 error:(id *)a5
+- (id)lazyPlistForFactorName:(id)name namespaceName:(id)namespaceName error:(id *)error
 {
-  v8 = [(PPTrialWrapper *)self filepathForFactor:a3 namespaceName:a4];
+  v8 = [(PPTrialWrapper *)self filepathForFactor:name namespaceName:namespaceName];
   if (![v8 length])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PPTrialWrapper.m" lineNumber:402 description:{@"Invalid parameter not satisfying: %@", @"configPath.length > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPTrialWrapper.m" lineNumber:402 description:{@"Invalid parameter not satisfying: %@", @"configPath.length > 0"}];
   }
 
-  v9 = [MEMORY[0x277D425D8] dictionaryWithPath:v8 error:a5];
+  v9 = [MEMORY[0x277D425D8] dictionaryWithPath:v8 error:error];
 
   return v9;
 }
 
-- (id)plistForFactorName:(id)a3 namespaceName:(id)a4
+- (id)plistForFactorName:(id)name namespaceName:(id)namespaceName
 {
-  v6 = [(PPTrialWrapper *)self filepathForFactor:a3 namespaceName:a4];
+  v6 = [(PPTrialWrapper *)self filepathForFactor:name namespaceName:namespaceName];
   if (![v6 length])
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PPTrialWrapper.m" lineNumber:393 description:{@"Invalid parameter not satisfying: %@", @"configPath.length > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPTrialWrapper.m" lineNumber:393 description:{@"Invalid parameter not satisfying: %@", @"configPath.length > 0"}];
   }
 
   v7 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v6];
@@ -442,12 +442,12 @@ void __67__PPTrialWrapper_overrideFilepathForFileFactor_namespaceName_path___blo
   return v7;
 }
 
-- (id)filepathForFactorName:(id)a3 namespaceName:(id)a4 isDirectory:(BOOL)a5
+- (id)filepathForFactorName:(id)name namespaceName:(id)namespaceName isDirectory:(BOOL)directory
 {
-  v5 = a5;
+  directoryCopy = directory;
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  namespaceNameCopy = namespaceName;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -465,9 +465,9 @@ void __67__PPTrialWrapper_overrideFilepathForFileFactor_namespaceName_path___blo
   v23[3] = &unk_278978C80;
   v23[4] = self;
   v26 = &v28;
-  v11 = v9;
+  v11 = namespaceNameCopy;
   v24 = v11;
-  v12 = v8;
+  v12 = nameCopy;
   v25 = v12;
   v27 = &v32;
   [(_PASLock *)lock runWithLockAcquired:v23];
@@ -485,7 +485,7 @@ void __67__PPTrialWrapper_overrideFilepathForFileFactor_namespaceName_path___blo
 
     v14 = v33[5];
 LABEL_9:
-    v16 = v14;
+    path = v14;
     goto LABEL_10;
   }
 
@@ -509,7 +509,7 @@ LABEL_9:
   v20 = v19;
   if (v19)
   {
-    if (v5)
+    if (directoryCopy)
     {
       [v19 directoryValue];
     }
@@ -519,7 +519,7 @@ LABEL_9:
       [v19 fileValue];
     }
     v21 = ;
-    v16 = [v21 path];
+    path = [v21 path];
   }
 
   else
@@ -534,7 +534,7 @@ LABEL_9:
       _os_log_impl(&dword_23224A000, v22, OS_LOG_TYPE_DEFAULT, "PPTrialWrapper: Received nil factor from Trial for factor %@ in namespace %@, falling back to default", buf, 0x16u);
     }
 
-    v16 = [(PPTrialWrapper *)self defaultFilepathForFactor:v12 namespaceName:v11];
+    path = [(PPTrialWrapper *)self defaultFilepathForFactor:v12 namespaceName:v11];
   }
 
 LABEL_10:
@@ -543,7 +543,7 @@ LABEL_10:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return path;
 }
 
 void __66__PPTrialWrapper_filepathForFactorName_namespaceName_isDirectory___block_invoke(void *a1, void *a2)
@@ -579,12 +579,12 @@ void __66__PPTrialWrapper_filepathForFactorName_namespaceName_isDirectory___bloc
   }
 }
 
-- (id)defaultFilepathForFactor:(id)a3 namespaceName:(id)a4
+- (id)defaultFilepathForFactor:(id)factor namespaceName:(id)name
 {
   namespaceNamesIdsDict = self->_namespaceNamesIdsDict;
-  v6 = a3;
-  v7 = [(NSDictionary *)namespaceNamesIdsDict objectForKeyedSubscript:a4];
-  v8 = +[PPPaths defaultAssetPathForNamespaceId:factorName:](PPPaths, "defaultAssetPathForNamespaceId:factorName:", [v7 intValue], v6);
+  factorCopy = factor;
+  v7 = [(NSDictionary *)namespaceNamesIdsDict objectForKeyedSubscript:name];
+  v8 = +[PPPaths defaultAssetPathForNamespaceId:factorName:](PPPaths, "defaultAssetPathForNamespaceId:factorName:", [v7 intValue], factorCopy);
 
   return v8;
 }
@@ -634,9 +634,9 @@ void __66__PPTrialWrapper_filepathForFactorName_namespaceName_isDirectory___bloc
         v9 = objc_autoreleasePoolPush();
         v10 = [(PPTrialWrapper *)self treatmentNameForNamespaceName:v8];
         v11 = [(NSDictionary *)self->_namespaceNamesIdsDict objectForKeyedSubscript:v8];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
-        [v3 appendFormat:@", %d:%@", v12, v10];
+        [v3 appendFormat:@", %d:%@", intValue, v10];
         objc_autoreleasePoolPop(v9);
         ++v7;
       }
@@ -742,10 +742,10 @@ void __58__PPTrialWrapper__updateConcatenatedTreatmentNamesAndHash__block_invoke
   return v22;
 }
 
-- (BOOL)hasFactor:(id)a3 namespaceName:(id)a4
+- (BOOL)hasFactor:(id)factor namespaceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  factorCopy = factor;
+  nameCopy = name;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -755,11 +755,11 @@ void __58__PPTrialWrapper__updateConcatenatedTreatmentNamesAndHash__block_invoke
   v12[1] = 3221225472;
   v12[2] = __42__PPTrialWrapper_hasFactor_namespaceName___block_invoke;
   v12[3] = &unk_278978C30;
-  v9 = v7;
+  v9 = nameCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = factorCopy;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(_PASLock *)lock runWithLockAcquired:v12];
   LOBYTE(self) = *(v18 + 24);
@@ -817,14 +817,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)treatmentNameForNamespaceName:(id)a3
+- (id)treatmentNameForNamespaceName:(id)name
 {
-  v3 = [(TRIClient *)self->_trialClient levelForFactor:@"treatment_name" withNamespaceName:a3];
-  v4 = [v3 stringValue];
-  v5 = v4;
-  if (v4)
+  v3 = [(TRIClient *)self->_trialClient levelForFactor:@"treatment_name" withNamespaceName:name];
+  stringValue = [v3 stringValue];
+  v5 = stringValue;
+  if (stringValue)
   {
-    v6 = v4;
+    v6 = stringValue;
   }
 
   else
@@ -837,17 +837,17 @@ LABEL_11:
   return v6;
 }
 
-- (id)addUpdateHandlerForNamespaceName:(id)a3 block:(id)a4
+- (id)addUpdateHandlerForNamespaceName:(id)name block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   trialClient = self->_trialClient;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__PPTrialWrapper_addUpdateHandlerForNamespaceName_block___block_invoke;
   v15[3] = &unk_278978C08;
-  v8 = v6;
+  v8 = blockCopy;
   v16 = v8;
-  v9 = [(TRIClient *)trialClient addUpdateHandlerForNamespaceName:a3 usingBlock:v15];
+  v9 = [(TRIClient *)trialClient addUpdateHandlerForNamespaceName:name usingBlock:v15];
   v10 = v9;
   if (v9)
   {
@@ -863,26 +863,26 @@ LABEL_11:
   return v10;
 }
 
-- (void)removeUpdateHandlerForToken:(id)a3
+- (void)removeUpdateHandlerForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    [(TRIClient *)self->_trialClient removeUpdateHandlerForToken:v4];
+    [(TRIClient *)self->_trialClient removeUpdateHandlerForToken:tokenCopy];
     lock = self->_lock;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__PPTrialWrapper_removeUpdateHandlerForToken___block_invoke;
     v6[3] = &unk_278978B40;
-    v7 = v4;
+    v7 = tokenCopy;
     [(_PASLock *)lock runWithLockAcquired:v6];
   }
 }
 
-- (id)lastTreatmentUpdateForNamespaceName:(id)a3
+- (id)lastTreatmentUpdateForNamespaceName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -895,7 +895,7 @@ LABEL_11:
   v14 = __54__PPTrialWrapper_lastTreatmentUpdateForNamespaceName___block_invoke;
   v15 = &unk_278978BB8;
   v17 = &v18;
-  v6 = v4;
+  v6 = nameCopy;
   v16 = v6;
   [(PPSQLDatabase *)db readTransactionWithClient:6 block:&v12];
   if (v19[5])
@@ -936,10 +936,10 @@ void __54__PPTrialWrapper_lastTreatmentUpdateForNamespaceName___block_invoke(uin
   *(v6 + 40) = v5;
 }
 
-- (void)_addDefaultUpdateHandlersForAllNamespacesWithGuardedData:(id)a3
+- (void)_addDefaultUpdateHandlersForAllNamespacesWithGuardedData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   v19 = 0u;
   v20 = 0u;
@@ -967,12 +967,12 @@ void __54__PPTrialWrapper_lastTreatmentUpdateForNamespaceName___block_invoke(uin
         v13[2] = __75__PPTrialWrapper__addDefaultUpdateHandlersForAllNamespacesWithGuardedData___block_invoke;
         v13[3] = &unk_278978B90;
         objc_copyWeak(&v16, &location);
-        v14 = v4;
+        v14 = dataCopy;
         v15 = v8;
         v10 = [(TRIClient *)trialClient addUpdateHandlerForNamespaceName:v8 usingBlock:v13];
         if (v10)
         {
-          [v4[2] addObject:v10];
+          [dataCopy[2] addObject:v10];
         }
 
         objc_destroyWeak(&v16);
@@ -1080,11 +1080,11 @@ void __25__PPTrialWrapper_dealloc__block_invoke(uint64_t a1, uint64_t a2)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (PPTrialWrapper)initWithSettings:(id)a3 database:(id)a4 trialClient:(id)a5
+- (PPTrialWrapper)initWithSettings:(id)settings database:(id)database trialClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingsCopy = settings;
+  databaseCopy = database;
+  clientCopy = client;
   v27.receiver = self;
   v27.super_class = PPTrialWrapper;
   v11 = [(PPTrialWrapper *)&v27 init];
@@ -1100,15 +1100,15 @@ void __25__PPTrialWrapper_dealloc__block_invoke(uint64_t a1, uint64_t a2)
     lock = v12->_lock;
     v12->_lock = v16;
 
-    v12->_useDefaultFiles = [v8 trialUseDefaultFiles];
-    objc_storeStrong(&v12->_db, a4);
-    objc_storeStrong(&v12->_trialClient, a5);
+    v12->_useDefaultFiles = [settingsCopy trialUseDefaultFiles];
+    objc_storeStrong(&v12->_db, database);
+    objc_storeStrong(&v12->_trialClient, client);
     v18 = v12->_lock;
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __56__PPTrialWrapper_initWithSettings_database_trialClient___block_invoke;
     v24 = &unk_278978B18;
-    v25 = v8;
+    v25 = settingsCopy;
     v19 = v12;
     v26 = v19;
     [(_PASLock *)v18 runWithLockAcquired:&v21];

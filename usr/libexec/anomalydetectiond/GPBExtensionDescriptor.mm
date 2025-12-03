@@ -1,15 +1,15 @@
 @interface GPBExtensionDescriptor
 - (GPBEnumDescriptor)enumDescriptor;
-- (GPBExtensionDescriptor)initWithExtensionDescription:(GPBExtensionDescription *)description usesClassRefs:(BOOL)a4;
+- (GPBExtensionDescriptor)initWithExtensionDescription:(GPBExtensionDescription *)description usesClassRefs:(BOOL)refs;
 - (id)defaultValue;
 - (int)alternateWireType;
-- (int64_t)compareByFieldNumber:(id)a3;
+- (int64_t)compareByFieldNumber:(id)number;
 - (void)dealloc;
 @end
 
 @implementation GPBExtensionDescriptor
 
-- (GPBExtensionDescriptor)initWithExtensionDescription:(GPBExtensionDescription *)description usesClassRefs:(BOOL)a4
+- (GPBExtensionDescriptor)initWithExtensionDescription:(GPBExtensionDescription *)description usesClassRefs:(BOOL)refs
 {
   v12.receiver = self;
   v12.super_class = GPBExtensionDescriptor;
@@ -18,7 +18,7 @@
   if (v6)
   {
     v6->description_ = description;
-    if (!a4)
+    if (!refs)
     {
       if (description->var3.var0)
       {
@@ -172,10 +172,10 @@
   return result;
 }
 
-- (int64_t)compareByFieldNumber:(id)a3
+- (int64_t)compareByFieldNumber:(id)number
 {
   var5 = self->description_->var5;
-  v4 = *(*(a3 + 1) + 40);
+  v4 = *(*(number + 1) + 40);
   v5 = var5 < v4;
   v6 = var5 != v4;
   if (v5)

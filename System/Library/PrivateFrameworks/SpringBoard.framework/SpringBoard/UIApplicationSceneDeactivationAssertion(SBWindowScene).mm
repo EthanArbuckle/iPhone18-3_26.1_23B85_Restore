@@ -16,7 +16,7 @@
   v14 = v8;
   v10 = v9;
   v11 = v8;
-  [a1 acquireWithPredicate:v12 transitionContext:a4];
+  [self acquireWithPredicate:v12 transitionContext:a4];
 }
 
 @end

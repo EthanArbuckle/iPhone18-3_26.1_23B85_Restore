@@ -1,8 +1,8 @@
 @interface DurationFilterTickView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI22DurationFilterTickView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI22DurationFilterTickView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC9SeymourUI22DurationFilterTickView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI22DurationFilterTickView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation DurationFilterTickView
@@ -16,22 +16,22 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_20BE56100(x, y, width, height);
 }
 
-- (_TtC9SeymourUI22DurationFilterTickView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI22DurationFilterTickView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC9SeymourUI22DurationFilterTickView_layout;
   sub_20BE56B5C(v12);
   v9 = v12[1];
@@ -44,10 +44,10 @@
   return [(DurationFilterTickView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9SeymourUI22DurationFilterTickView)initWithCoder:(id)a3
+- (_TtC9SeymourUI22DurationFilterTickView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC9SeymourUI22DurationFilterTickView_layout;
-  v5 = a3;
+  coderCopy = coder;
   sub_20BE56B5C(v10);
   v6 = v10[1];
   *v4 = v10[0];
@@ -56,7 +56,7 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI22DurationFilterTickView_state) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for DurationFilterTickView();
-  v7 = [(DurationFilterTickView *)&v9 initWithCoder:v5];
+  v7 = [(DurationFilterTickView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

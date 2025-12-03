@@ -1,7 +1,7 @@
 @interface IdentityIntentToStoreRawValueKeys
 + (NSString)mayStore;
 + (NSString)willNotStore;
-+ (id)mayStoreForDays:(int64_t)a3;
++ (id)mayStoreForDays:(int64_t)days;
 - (_TtC7CoreIDV33IdentityIntentToStoreRawValueKeys)init;
 @end
 
@@ -21,7 +21,7 @@
   return v2;
 }
 
-+ (id)mayStoreForDays:(int64_t)a3
++ (id)mayStoreForDays:(int64_t)days
 {
   _s7CoreIDV33IdentityIntentToStoreRawValueKeysC03mayF7ForDaysySSSiFZ_0();
   v3 = sub_21CD83B04();

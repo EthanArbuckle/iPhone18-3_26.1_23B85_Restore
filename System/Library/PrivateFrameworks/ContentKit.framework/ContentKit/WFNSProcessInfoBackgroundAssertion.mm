@@ -1,6 +1,6 @@
 @interface WFNSProcessInfoBackgroundAssertion
-+ (id)backgroundAssertionWithName:(id)a3 expirationHandler:(id)a4;
-- (WFNSProcessInfoBackgroundAssertion)initWithName:(id)a3 expirationHandler:(id)a4;
++ (id)backgroundAssertionWithName:(id)name expirationHandler:(id)handler;
+- (WFNSProcessInfoBackgroundAssertion)initWithName:(id)name expirationHandler:(id)handler;
 - (void)end;
 @end
 
@@ -8,14 +8,14 @@
 
 - (void)end
 {
-  v2 = [(WFNSProcessInfoBackgroundAssertion *)self semaphore];
-  dispatch_semaphore_signal(v2);
+  semaphore = [(WFNSProcessInfoBackgroundAssertion *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
-- (WFNSProcessInfoBackgroundAssertion)initWithName:(id)a3 expirationHandler:(id)a4
+- (WFNSProcessInfoBackgroundAssertion)initWithName:(id)name expirationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = WFNSProcessInfoBackgroundAssertion;
   v8 = [(WFNSProcessInfoBackgroundAssertion *)&v24 init];
@@ -33,16 +33,16 @@
     v16[2] = 0x3032000000;
     v16[3] = __Block_byref_object_copy__1;
     v16[4] = __Block_byref_object_dispose__2;
-    v17 = _Block_copy(v7);
-    v9 = [MEMORY[0x277CCAC38] processInfo];
+    v17 = _Block_copy(handlerCopy);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __69__WFNSProcessInfoBackgroundAssertion_initWithName_expirationHandler___block_invoke;
     v12[3] = &unk_27834A678;
     v14 = v16;
     v15 = &v18;
-    v13 = v6;
-    [v9 performExpiringActivityWithReason:v13 usingBlock:v12];
+    v13 = nameCopy;
+    [processInfo performExpiringActivityWithReason:v13 usingBlock:v12];
 
     v10 = v8;
     _Block_object_dispose(v16, 8);
@@ -94,11 +94,11 @@ void __69__WFNSProcessInfoBackgroundAssertion_initWithName_expirationHandler___b
   }
 }
 
-+ (id)backgroundAssertionWithName:(id)a3 expirationHandler:(id)a4
++ (id)backgroundAssertionWithName:(id)name expirationHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 expirationHandler:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy expirationHandler:handlerCopy];
 
   return v8;
 }

@@ -11,18 +11,18 @@
 
 - (id)hexDescription
 {
-  v2 = [a1 bytes];
-  v3 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(a1, "length") + 2}];
+  bytes = [self bytes];
+  v3 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(self, "length") + 2}];
   [v3 appendFormat:@"0x"];
-  if ([a1 length])
+  if ([self length])
   {
     v4 = 0;
     do
     {
-      [v3 appendFormat:@"%02x", *(v2 + v4++)];
+      [v3 appendFormat:@"%02x", *(bytes + v4++)];
     }
 
-    while ([a1 length] > v4);
+    while ([self length] > v4);
   }
 
   v5 = [MEMORY[0x277CCACA8] stringWithString:v3];
@@ -32,17 +32,17 @@
 
 - (id)hexString
 {
-  v2 = [a1 bytes];
-  v3 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-  if ([a1 length])
+  bytes = [self bytes];
+  v3 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+  if ([self length])
   {
     v4 = 0;
     do
     {
-      [v3 appendFormat:@"%02x", *(v2 + v4++)];
+      [v3 appendFormat:@"%02x", *(bytes + v4++)];
     }
 
-    while ([a1 length] > v4);
+    while ([self length] > v4);
   }
 
   v5 = [MEMORY[0x277CCACA8] stringWithString:v3];
@@ -53,7 +53,7 @@
 - (id)md5
 {
   v4 = *MEMORY[0x277D85DE8];
-  CC_MD5([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_MD5([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x277CBEA90] dataWithBytes:md length:16];
 
   return v1;
@@ -66,10 +66,10 @@
   {
     v5 = a3;
     v6 = a3;
-    v7 = [v6 bytes];
+    bytes = [v6 bytes];
     v8 = [v6 length];
 
-    CCHmac(0, v7, v8, [a1 bytes], objc_msgSend(a1, "length"), macOut);
+    CCHmac(0, bytes, v8, [self bytes], objc_msgSend(self, "length"), macOut);
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:macOut length:20];
   }
 
@@ -84,7 +84,7 @@
 - (id)sha256Hash
 {
   v4 = *MEMORY[0x277D85DE8];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x277CBEA90] dataWithBytes:md length:32];
 
   return v1;

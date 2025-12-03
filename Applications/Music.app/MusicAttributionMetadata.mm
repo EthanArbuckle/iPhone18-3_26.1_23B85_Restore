@@ -2,9 +2,9 @@
 + (NSString)didChangeNotificationName;
 - (MusicAttributionMetadata)init;
 - (NSString)displayName;
-- (void)setArtworkCatalog:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setPlaceholderArtworkCatalog:(id)a3;
+- (void)setArtworkCatalog:(id)catalog;
+- (void)setDisplayName:(id)name;
+- (void)setPlaceholderArtworkCatalog:(id)catalog;
 @end
 
 @implementation MusicAttributionMetadata
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -55,18 +55,18 @@
   v6[1] = v5;
 }
 
-- (void)setArtworkCatalog:(id)a3
+- (void)setArtworkCatalog:(id)catalog
 {
   v4 = *(self + OBJC_IVAR___MusicAttributionMetadata_artworkCatalog);
-  *(self + OBJC_IVAR___MusicAttributionMetadata_artworkCatalog) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MusicAttributionMetadata_artworkCatalog) = catalog;
+  catalogCopy = catalog;
 }
 
-- (void)setPlaceholderArtworkCatalog:(id)a3
+- (void)setPlaceholderArtworkCatalog:(id)catalog
 {
   v4 = *(self + OBJC_IVAR___MusicAttributionMetadata_placeholderArtworkCatalog);
-  *(self + OBJC_IVAR___MusicAttributionMetadata_placeholderArtworkCatalog) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MusicAttributionMetadata_placeholderArtworkCatalog) = catalog;
+  catalogCopy = catalog;
 }
 
 - (MusicAttributionMetadata)init

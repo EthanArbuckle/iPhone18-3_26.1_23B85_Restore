@@ -1,31 +1,31 @@
 @interface RCAsyncBlockOperation
-+ (id)asyncBlockOperationWithBlock:(id)a3;
-+ (id)asyncBlockOperationWithMainThreadBlock:(id)a3;
++ (id)asyncBlockOperationWithBlock:(id)block;
++ (id)asyncBlockOperationWithMainThreadBlock:(id)block;
 - (RCAsyncBlockOperation)init;
-- (RCAsyncBlockOperation)initWithBlock:(id)a3;
+- (RCAsyncBlockOperation)initWithBlock:(id)block;
 - (void)start;
 @end
 
 @implementation RCAsyncBlockOperation
 
-+ (id)asyncBlockOperationWithBlock:(id)a3
++ (id)asyncBlockOperationWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBlock:v3];
+  blockCopy = block;
+  v4 = [objc_alloc(objc_opt_class()) initWithBlock:blockCopy];
 
   return v4;
 }
 
-+ (id)asyncBlockOperationWithMainThreadBlock:(id)a3
++ (id)asyncBlockOperationWithMainThreadBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__RCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_invoke;
   v8[3] = &unk_27822FB38;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 asyncBlockOperationWithBlock:v8];
+  v9 = blockCopy;
+  v5 = blockCopy;
+  v6 = [self asyncBlockOperationWithBlock:v8];
 
   return v6;
 }
@@ -69,10 +69,10 @@ void __64__RCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_
   objc_exception_throw(v6);
 }
 
-- (RCAsyncBlockOperation)initWithBlock:(id)a3
+- (RCAsyncBlockOperation)initWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCAsyncBlockOperation initWithBlock:];
   }
@@ -82,7 +82,7 @@ void __64__RCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_
   v5 = [(RCAsyncBlockOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
   }
@@ -106,13 +106,13 @@ void __64__RCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_
     self->_executing = 1;
     [(RCAsyncBlockOperation *)self didChangeValueForKey:@"isExecuting"];
     v3 = objc_autoreleasePoolPush();
-    v4 = [(RCAsyncBlockOperation *)self block];
+    block = [(RCAsyncBlockOperation *)self block];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __30__RCAsyncBlockOperation_start__block_invoke;
     v5[3] = &unk_27822F2B0;
     v5[4] = self;
-    (v4)[2](v4, v5);
+    (block)[2](block, v5);
 
     objc_autoreleasePoolPop(v3);
   }

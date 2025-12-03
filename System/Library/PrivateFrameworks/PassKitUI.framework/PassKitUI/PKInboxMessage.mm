@@ -1,23 +1,23 @@
 @interface PKInboxMessage
-+ (id)accountUserInvitationInboxMessageWithAccountUserInvitation:(id)a3 familyMember:(id)a4;
-- (BOOL)_isEqualToInboxMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKInboxMessage)initWithType:(int64_t)a3 identifier:(id)a4;
++ (id)accountUserInvitationInboxMessageWithAccountUserInvitation:(id)invitation familyMember:(id)member;
+- (BOOL)_isEqualToInboxMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
+- (PKInboxMessage)initWithType:(int64_t)type identifier:(id)identifier;
 @end
 
 @implementation PKInboxMessage
 
-- (PKInboxMessage)initWithType:(int64_t)a3 identifier:(id)a4
+- (PKInboxMessage)initWithType:(int64_t)type identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PKInboxMessage;
   v7 = [(PKInboxMessage *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
   }
@@ -25,49 +25,49 @@
   return v8;
 }
 
-+ (id)accountUserInvitationInboxMessageWithAccountUserInvitation:(id)a3 familyMember:(id)a4
++ (id)accountUserInvitationInboxMessageWithAccountUserInvitation:(id)invitation familyMember:(id)member
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v9 = [v6 applicationIdentifier];
-  v10 = [v8 initWithType:0 identifier:v9];
+  invitationCopy = invitation;
+  memberCopy = member;
+  v8 = [self alloc];
+  applicationIdentifier = [invitationCopy applicationIdentifier];
+  v10 = [v8 initWithType:0 identifier:applicationIdentifier];
 
   v11 = *(v10 + 32);
-  *(v10 + 32) = v6;
-  v12 = v6;
+  *(v10 + 32) = invitationCopy;
+  v12 = invitationCopy;
 
   v13 = *(v10 + 40);
-  *(v10 + 40) = v7;
+  *(v10 + 40) = memberCopy;
 
-  v14 = [v12 applicationState];
-  *(v10 + 8) = v14 == 14;
+  applicationState = [v12 applicationState];
+  *(v10 + 8) = applicationState == 14;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKInboxMessage *)self _isEqualToInboxMessage:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKInboxMessage *)self _isEqualToInboxMessage:v5];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToInboxMessage:(id)a3
+- (BOOL)_isEqualToInboxMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_type == *(v4 + 2) && PKEqualObjects() && PKEqualObjects())
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy && self->_type == *(messageCopy + 2) && PKEqualObjects() && PKEqualObjects())
   {
     v6 = PKEqualObjects();
   }

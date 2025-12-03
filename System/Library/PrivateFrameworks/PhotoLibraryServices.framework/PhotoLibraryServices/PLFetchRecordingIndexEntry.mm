@@ -1,13 +1,13 @@
 @interface PLFetchRecordingIndexEntry
-- (PLFetchRecordingFileNormalizedStatementHeader)entryLocked_statementEntryFomBuffer:(void *)a3;
-- (PLFetchRecordingIndexEntry)initWithOffset:(int64_t)a3;
+- (PLFetchRecordingFileNormalizedStatementHeader)entryLocked_statementEntryFomBuffer:(void *)buffer;
+- (PLFetchRecordingIndexEntry)initWithOffset:(int64_t)offset;
 @end
 
 @implementation PLFetchRecordingIndexEntry
 
-- (PLFetchRecordingFileNormalizedStatementHeader)entryLocked_statementEntryFomBuffer:(void *)a3
+- (PLFetchRecordingFileNormalizedStatementHeader)entryLocked_statementEntryFomBuffer:(void *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
@@ -17,15 +17,15 @@
     return 0;
   }
 
-  return (a3 + [(PLFetchRecordingIndexEntry *)self offset]);
+  return (buffer + [(PLFetchRecordingIndexEntry *)self offset]);
 }
 
-- (PLFetchRecordingIndexEntry)initWithOffset:(int64_t)a3
+- (PLFetchRecordingIndexEntry)initWithOffset:(int64_t)offset
 {
-  if (a3 <= 0)
+  if (offset <= 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"offset > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"offset > 0"}];
   }
 
   v8.receiver = self;
@@ -34,7 +34,7 @@
   if (result)
   {
     result->_entryLock._os_unfair_lock_opaque = 0;
-    result->_offset = a3;
+    result->_offset = offset;
   }
 
   return result;

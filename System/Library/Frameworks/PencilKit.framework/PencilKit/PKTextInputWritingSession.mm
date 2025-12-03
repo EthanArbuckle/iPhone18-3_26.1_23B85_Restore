@@ -2,13 +2,13 @@
 - (PKTextInputWritingSession)init;
 - (id)description;
 - (void)_evaluatePendingWritingEndedElements;
-- (void)_flushPendingWritingEndedElements:(uint64_t)a1;
+- (void)_flushPendingWritingEndedElements:(uint64_t)elements;
 - (void)dealloc;
-- (void)didEndWritingInElement:(uint64_t)a1;
-- (void)didInsertTextInElement:(uint64_t)a1;
+- (void)didEndWritingInElement:(uint64_t)element;
+- (void)didInsertTextInElement:(uint64_t)element;
 - (void)invalidate;
-- (void)setCurrentTargetElement:(id *)a1;
-- (void)willBeginWritingInElement:(uint64_t)a1;
+- (void)setCurrentTargetElement:(id *)element;
+- (void)willBeginWritingInElement:(uint64_t)element;
 @end
 
 @implementation PKTextInputWritingSession
@@ -51,23 +51,23 @@
     sessionIdentifier = 0;
   }
 
-  v6 = [v3 stringByAppendingFormat:@" identifier: %@", sessionIdentifier];
+  sessionIdentifier = [v3 stringByAppendingFormat:@" identifier: %@", sessionIdentifier];
 
-  return v6;
+  return sessionIdentifier;
 }
 
-- (void)setCurrentTargetElement:(id *)a1
+- (void)setCurrentTargetElement:(id *)element
 {
   v33 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (element)
   {
-    v6 = a1[5];
+    v6 = element[5];
     if (v6 != v4)
     {
       v7 = v6;
-      objc_storeStrong(a1 + 5, a2);
+      objc_storeStrong(element + 5, a2);
       if (v5 && v7 && ([(PKTextInputElement *)v7 isEquivalentToElement:v5]& 1) != 0)
       {
         [v7 swapWritingStateWithElement:v5];
@@ -79,7 +79,7 @@
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134218498;
-          v28 = a1;
+          elementCopy = element;
           v29 = 2112;
           v30 = v7;
           v31 = 2112;
@@ -88,15 +88,15 @@
         }
 
         [v7 didMoveToWritingSession:0];
-        [v5 didMoveToWritingSession:a1];
+        [v5 didMoveToWritingSession:element];
         v9 = v7;
-        if (v9 && ([a1[2] containsObject:v9] & 1) == 0)
+        if (v9 && ([element[2] containsObject:v9] & 1) == 0)
         {
           v25 = 0u;
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v10 = a1[2];
+          v10 = element[2];
           v11 = [v10 countByEnumeratingWithState:&v23 objects:buf count:16];
           if (v11)
           {
@@ -118,7 +118,7 @@
 
                   if (v16)
                   {
-                    [a1[2] removeObject:{v16, v23}];
+                    [element[2] removeObject:{v16, v23}];
                   }
 
                   goto LABEL_22;
@@ -137,10 +137,10 @@
 
           v16 = 0;
 LABEL_22:
-          [a1[2] addObject:{v9, v23}];
+          [element[2] addObject:{v9, v23}];
         }
 
-        [(PKTextInputWritingSession *)a1 _evaluatePendingWritingEndedElements];
+        [(PKTextInputWritingSession *)element _evaluatePendingWritingEndedElements];
         v17 = v5;
         if (v17)
         {
@@ -148,7 +148,7 @@ LABEL_22:
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v18 = a1[2];
+          v18 = element[2];
           v19 = [v18 countByEnumeratingWithState:&v23 objects:buf count:16];
           if (v19)
           {
@@ -192,13 +192,13 @@ LABEL_34:
 - (void)_evaluatePendingWritingEndedElements
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v2 = a1[2];
+    v2 = self[2];
     v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (!v3)
     {
@@ -219,15 +219,15 @@ LABEL_34:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = a1[5];
+        v9 = self[5];
         if ([(PKTextInputElement *)v9 isEquivalentToElement:v8])
         {
         }
 
         else
         {
-          WeakRetained = objc_loadWeakRetained(a1 + 6);
-          v11 = [WeakRetained writingSession:a1 elementHasPendingOperations:{v8, v12}];
+          WeakRetained = objc_loadWeakRetained(self + 6);
+          v11 = [WeakRetained writingSession:self elementHasPendingOperations:{v8, v12}];
 
           if ((v11 & 1) == 0)
           {
@@ -248,7 +248,7 @@ LABEL_34:
 
     if (v5)
     {
-      [(PKTextInputWritingSession *)a1 _flushPendingWritingEndedElements:v5];
+      [(PKTextInputWritingSession *)self _flushPendingWritingEndedElements:v5];
 LABEL_18:
     }
   }
@@ -256,24 +256,24 @@ LABEL_18:
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    [(PKTextInputWritingSession *)a1 setCurrentTargetElement:?];
-    if ([*(a1 + 16) count])
+    [(PKTextInputWritingSession *)self setCurrentTargetElement:?];
+    if ([*(self + 16) count])
     {
-      [(PKTextInputWritingSession *)a1 _flushPendingWritingEndedElements:?];
+      [(PKTextInputWritingSession *)self _flushPendingWritingEndedElements:?];
     }
 
-    *(a1 + 8) = 1;
+    *(self + 8) = 1;
   }
 }
 
-- (void)_flushPendingWritingEndedElements:(uint64_t)a1
+- (void)_flushPendingWritingEndedElements:(uint64_t)elements
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (elements)
   {
     v11 = 0u;
     v12 = 0u;
@@ -304,7 +304,7 @@ LABEL_18:
       while (v6);
     }
 
-    [*(a1 + 16) minusSet:v4];
+    [*(elements + 16) minusSet:v4];
   }
 }
 
@@ -317,7 +317,7 @@ LABEL_18:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_ERROR, "Deallocating session that hasn't been invalidated %@.", buf, 0xCu);
     }
   }
@@ -328,7 +328,7 @@ LABEL_18:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_ERROR, "Deallocating session that still has a current target element %@.", buf, 0xCu);
     }
   }
@@ -339,7 +339,7 @@ LABEL_18:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_ERROR, "Deallocating session that still has pending writing eneded elements %@.", buf, 0xCu);
     }
   }
@@ -349,33 +349,33 @@ LABEL_18:
   [(PKTextInputWritingSession *)&v6 dealloc];
 }
 
-- (void)willBeginWritingInElement:(uint64_t)a1
+- (void)willBeginWritingInElement:(uint64_t)element
 {
-  if (a1)
+  if (element)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [WeakRetained writingSession:a1 willBeginWritingInElement:v3];
+    WeakRetained = objc_loadWeakRetained((element + 48));
+    [WeakRetained writingSession:element willBeginWritingInElement:v3];
   }
 }
 
-- (void)didEndWritingInElement:(uint64_t)a1
+- (void)didEndWritingInElement:(uint64_t)element
 {
-  if (a1)
+  if (element)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [WeakRetained writingSession:a1 didEndWritingInElement:v3];
+    WeakRetained = objc_loadWeakRetained((element + 48));
+    [WeakRetained writingSession:element didEndWritingInElement:v3];
   }
 }
 
-- (void)didInsertTextInElement:(uint64_t)a1
+- (void)didInsertTextInElement:(uint64_t)element
 {
-  if (a1)
+  if (element)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [WeakRetained writingSession:a1 didInsertTextInElement:v3];
+    WeakRetained = objc_loadWeakRetained((element + 48));
+    [WeakRetained writingSession:element didInsertTextInElement:v3];
   }
 }
 

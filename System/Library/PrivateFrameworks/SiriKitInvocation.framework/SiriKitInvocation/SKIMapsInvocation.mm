@@ -1,19 +1,19 @@
 @interface SKIMapsInvocation
-+ (id)searchLocationRequestInApp:(id)a3;
-+ (id)shareETARequestInApp:(id)a3;
++ (id)searchLocationRequestInApp:(id)app;
++ (id)shareETARequestInApp:(id)app;
 @end
 
 @implementation SKIMapsInvocation
 
-+ (id)shareETARequestInApp:(id)a3
++ (id)shareETARequestInApp:(id)app
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appCopy = app;
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.geo.shareETA"];
-  if ([v3 length])
+  if ([appCopy length])
   {
     v11 = @"appBundleId";
-    v12[0] = v3;
+    v12[0] = appCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [(SKIDirectInvocationPayload *)v4 setUserData:v5];
   }
@@ -27,15 +27,15 @@
   return v8;
 }
 
-+ (id)searchLocationRequestInApp:(id)a3
++ (id)searchLocationRequestInApp:(id)app
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appCopy = app;
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.geo.search"];
-  if ([v3 length])
+  if ([appCopy length])
   {
     v11 = @"appBundleId";
-    v12[0] = v3;
+    v12[0] = appCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [(SKIDirectInvocationPayload *)v4 setUserData:v5];
   }

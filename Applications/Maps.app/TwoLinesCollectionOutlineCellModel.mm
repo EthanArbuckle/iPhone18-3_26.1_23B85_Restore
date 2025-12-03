@@ -1,44 +1,44 @@
 @interface TwoLinesCollectionOutlineCellModel
-- (BOOL)isEqual:(id)a3;
-- (TwoLinesCollectionOutlineCellModel)initWithCollection:(id)a3 accessoryModels:(id)a4 backgroundModel:(id)a5 actionModel:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (TwoLinesCollectionOutlineCellModel)initWithCollection:(id)collection accessoryModels:(id)models backgroundModel:(id)model actionModel:(id)actionModel;
 @end
 
 @implementation TwoLinesCollectionOutlineCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v15.receiver = self;
     v15.super_class = TwoLinesCollectionOutlineCellModel;
     if ([(TwoLinesBasicOutlineCellModel *)&v15 isEqual:v6])
     {
-      v7 = [(TwoLinesCollectionOutlineCellModel *)v6 collection];
-      v8 = v7;
-      if (v7 == self->_collection || [(CollectionHandler *)v7 isEqual:?])
+      collection = [(TwoLinesCollectionOutlineCellModel *)v6 collection];
+      v8 = collection;
+      if (collection == self->_collection || [(CollectionHandler *)collection isEqual:?])
       {
-        v9 = [(TwoLinesCollectionOutlineCellModel *)v6 accessoryModels];
-        v10 = v9;
-        if (v9 == self->_accessoryModels || [(NSArray *)v9 isEqual:?])
+        accessoryModels = [(TwoLinesCollectionOutlineCellModel *)v6 accessoryModels];
+        v10 = accessoryModels;
+        if (accessoryModels == self->_accessoryModels || [(NSArray *)accessoryModels isEqual:?])
         {
-          v11 = [(TwoLinesCollectionOutlineCellModel *)v6 actionModel];
-          v12 = v11;
-          if (v11 == self->_actionModel)
+          actionModel = [(TwoLinesCollectionOutlineCellModel *)v6 actionModel];
+          v12 = actionModel;
+          if (actionModel == self->_actionModel)
           {
             v13 = 1;
           }
 
           else
           {
-            v13 = [(TwoLinesOutlineCellActionModel *)v11 isEqual:?];
+            v13 = [(TwoLinesOutlineCellActionModel *)actionModel isEqual:?];
           }
         }
 
@@ -68,26 +68,26 @@
   return v13;
 }
 
-- (TwoLinesCollectionOutlineCellModel)initWithCollection:(id)a3 accessoryModels:(id)a4 backgroundModel:(id)a5 actionModel:(id)a6
+- (TwoLinesCollectionOutlineCellModel)initWithCollection:(id)collection accessoryModels:(id)models backgroundModel:(id)model actionModel:(id)actionModel
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  collectionCopy = collection;
+  modelsCopy = models;
+  actionModelCopy = actionModel;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100F95220;
   v19[3] = &unk_10165F700;
-  v14 = v11;
+  v14 = collectionCopy;
   v20 = v14;
   v18.receiver = self;
   v18.super_class = TwoLinesCollectionOutlineCellModel;
-  v15 = [(TwoLinesBasicOutlineCellModel *)&v18 initWithBackgroundModel:a5 contentModelBlock:v19];
+  v15 = [(TwoLinesBasicOutlineCellModel *)&v18 initWithBackgroundModel:model contentModelBlock:v19];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_collection, a3);
-    objc_storeStrong(&v16->_accessoryModels, a4);
-    objc_storeStrong(&v16->_actionModel, a6);
+    objc_storeStrong(&v15->_collection, collection);
+    objc_storeStrong(&v16->_accessoryModels, models);
+    objc_storeStrong(&v16->_actionModel, actionModel);
   }
 
   return v16;

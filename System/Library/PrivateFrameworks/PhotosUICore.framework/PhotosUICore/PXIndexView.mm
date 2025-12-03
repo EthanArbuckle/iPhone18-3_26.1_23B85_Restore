@@ -1,15 +1,15 @@
 @interface PXIndexView
 - (PXIndexView)init;
 - (void)layoutSubviews;
-- (void)setIndex:(unint64_t)a3;
+- (void)setIndex:(unint64_t)index;
 @end
 
 @implementation PXIndexView
 
-- (void)setIndex:(unint64_t)a3
+- (void)setIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a3];
-  [(UILabel *)self->_label setText:v4];
+  index = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", index];
+  [(UILabel *)self->_label setText:index];
 
   [(PXIndexView *)self setNeedsLayout];
 }
@@ -45,28 +45,28 @@
     frameView = v2->_frameView;
     v2->_frameView = v3;
 
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v6 = [v5 colorWithAlphaComponent:0.5];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v6 = [systemBackgroundColor colorWithAlphaComponent:0.5];
     [(UIView *)v2->_frameView setBackgroundColor:v6];
 
-    v7 = [(UIView *)v2->_frameView layer];
-    [v7 setCornerRadius:3.0];
+    layer = [(UIView *)v2->_frameView layer];
+    [layer setCornerRadius:3.0];
 
-    v8 = [(UIView *)v2->_frameView layer];
-    [v8 setBorderWidth:1.0];
+    layer2 = [(UIView *)v2->_frameView layer];
+    [layer2 setBorderWidth:1.0];
 
-    v9 = [MEMORY[0x1E69DC888] grayColor];
-    v10 = [v9 CGColor];
-    v11 = [(UIView *)v2->_frameView layer];
-    [v11 setBorderColor:v10];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    cGColor = [grayColor CGColor];
+    layer3 = [(UIView *)v2->_frameView layer];
+    [layer3 setBorderColor:cGColor];
 
     [(PXIndexView *)v2 addSubview:v2->_frameView];
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     label = v2->_label;
     v2->_label = v12;
 
-    v14 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v2->_label setTextColor:v14];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v2->_label setTextColor:labelColor];
 
     [(UILabel *)v2->_label setTextAlignment:1];
     [(PXIndexView *)v2 addSubview:v2->_label];

@@ -1,36 +1,36 @@
 @interface MFFilterTriageInteraction
-+ (id)interactionWithMessageListItem:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 messageList:(id)a6 delegate:(id)a7;
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4;
++ (id)interactionWithMessageListItem:(id)item origin:(int64_t)origin actor:(int64_t)actor messageList:(id)list delegate:(id)delegate;
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion;
 @end
 
 @implementation MFFilterTriageInteraction
 
-+ (id)interactionWithMessageListItem:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 messageList:(id)a6 delegate:(id)a7
++ (id)interactionWithMessageListItem:(id)item origin:(int64_t)origin actor:(int64_t)actor messageList:(id)list delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v19 = v12;
+  itemCopy = item;
+  listCopy = list;
+  delegateCopy = delegate;
+  v19 = itemCopy;
   v15 = [NSArray arrayWithObjects:&v19 count:1];
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___MFFilterTriageInteraction;
-  v16 = objc_msgSendSuper2(&v18, "interactionWithMessageListItems:undoManager:origin:actor:", v15, 0, a4, a5);
+  v16 = objc_msgSendSuper2(&v18, "interactionWithMessageListItems:undoManager:origin:actor:", v15, 0, origin, actor);
 
-  [v16 setMessageList:v13];
-  [v16 setDelegate:v14];
+  [v16 setMessageList:listCopy];
+  [v16 setDelegate:delegateCopy];
 
   return v16;
 }
 
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a4;
-  v5 = [(MFTriageInteraction *)self delegate];
-  [v5 filterUIWithFilterInteraction:self];
+  completionCopy = completion;
+  delegate = [(MFTriageInteraction *)self delegate];
+  [delegate filterUIWithFilterInteraction:self];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, self, 1);
+    completionCopy[2](completionCopy, self, 1);
   }
 }
 

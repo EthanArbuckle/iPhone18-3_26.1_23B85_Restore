@@ -1,21 +1,21 @@
 @interface _DASWidgetRefreshBudgetManager
 + (id)sharedInstance;
-+ (id)widgetBudgetIDFromBudgetName:(id)a3;
++ (id)widgetBudgetIDFromBudgetName:(id)name;
 - (_DASWidgetRefreshBudgetManager)init;
-- (double)balanceForBudgetWithName:(id)a3;
-- (double)balanceForWidgetBudgetID:(id)a3;
-- (double)capacityForBudgetWithName:(id)a3;
+- (double)balanceForBudgetWithName:(id)name;
+- (double)balanceForWidgetBudgetID:(id)d;
+- (double)capacityForBudgetWithName:(id)name;
 - (id)allBudgets;
-- (id)locked_instantiateBudgetsInto:(id)a3 withRemovals:(id)a4;
+- (id)locked_instantiateBudgetsInto:(id)into withRemovals:(id)removals;
 - (id)requiredBudgetsInfo;
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4;
+- (void)decrementBy:(double)by forBudgetWithName:(id)name;
 - (void)locked_reinstantiateConfiguredBudgets;
 - (void)reinstantiateConfiguredBudgets;
-- (void)reportActivityNoLongerRunning:(id)a3;
-- (void)reportActivityRunning:(id)a3;
+- (void)reportActivityNoLongerRunning:(id)running;
+- (void)reportActivityRunning:(id)running;
 - (void)resetBudgets;
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4;
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4;
+- (void)setBalance:(double)balance forBudgetWithName:(id)name;
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name;
 @end
 
 @implementation _DASWidgetRefreshBudgetManager
@@ -105,7 +105,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002C9E8;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AF20 != -1)
   {
     dispatch_once(&qword_10020AF20, block);
@@ -116,10 +116,10 @@
   return v2;
 }
 
-+ (id)widgetBudgetIDFromBudgetName:(id)a3
++ (id)widgetBudgetIDFromBudgetName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 substringFromIndex:{objc_msgSend(@"com.apple.dasd.widget", "length") + 1}];
+  nameCopy = name;
+  v4 = [nameCopy substringFromIndex:{objc_msgSend(@"com.apple.dasd.widget", "length") + 1}];
 
   return v4;
 }
@@ -132,7 +132,7 @@
   v9 = 3221225472;
   v10 = sub_10002CB90;
   v11 = &unk_1001B56E0;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   dispatch_sync(queue, &v8);
@@ -156,8 +156,8 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[NSMutableArray array];
-  v3 = [(_DASWidgetRefreshBudgetManager *)self managedBudgets];
-  v4 = [(_DASWidgetRefreshBudgetManager *)self locked_instantiateBudgetsInto:v3 withRemovals:v5];
+  managedBudgets = [(_DASWidgetRefreshBudgetManager *)self managedBudgets];
+  v4 = [(_DASWidgetRefreshBudgetManager *)self locked_instantiateBudgetsInto:managedBudgets withRemovals:v5];
 
   if ([v4 count] || objc_msgSend(v5, "count"))
   {
@@ -165,13 +165,13 @@
   }
 }
 
-- (id)locked_instantiateBudgetsInto:(id)a3 withRemovals:(id)a4
+- (id)locked_instantiateBudgetsInto:(id)into withRemovals:(id)removals
 {
-  v6 = a3;
-  v120 = a4;
+  intoCopy = into;
+  removalsCopy = removals;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(_DASWidgetRefreshBudgetManager *)self widgetRefreshUsageTracker];
-  [v7 invalidateComputedBudgetCache];
+  widgetRefreshUsageTracker = [(_DASWidgetRefreshBudgetManager *)self widgetRefreshUsageTracker];
+  [widgetRefreshUsageTracker invalidateComputedBudgetCache];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -179,7 +179,7 @@
     sub_10011D794(log, v9, v10, v11, v12, v13, v14, v15);
   }
 
-  v16 = [(_DASWidgetRefreshBudgetManager *)self requiredBudgetsInfo];
+  requiredBudgetsInfo = [(_DASWidgetRefreshBudgetManager *)self requiredBudgetsInfo];
   v17 = self->_log;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -190,14 +190,14 @@
     v154[2] = sub_10002DCE0;
     v154[3] = &unk_1001B5608;
     v154[4] = self;
-    [v16 enumerateKeysAndObjectsUsingBlock:v154];
+    [requiredBudgetsInfo enumerateKeysAndObjectsUsingBlock:v154];
   }
 
-  v127 = [v16 allKeys];
-  v128 = v16;
+  allKeys = [requiredBudgetsInfo allKeys];
+  v128 = requiredBudgetsInfo;
   defaultsPersistence = self->_defaultsPersistence;
-  v19 = [v16 allKeys];
-  v20 = [NSSet setWithArray:v19];
+  allKeys2 = [requiredBudgetsInfo allKeys];
+  v20 = [NSSet setWithArray:allKeys2];
   v21 = [(_DASDefaultsBudgetPersistence *)defaultsPersistence loadBudgetsWithExpectedNames:v20];
 
   v22 = self->_log;
@@ -229,8 +229,8 @@
         }
 
         v29 = *(*(&v150 + 1) + 8 * i);
-        v30 = [v29 name];
-        [v23 setObject:v29 forKeyedSubscript:v30];
+        name = [v29 name];
+        [v23 setObject:v29 forKeyedSubscript:name];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v150 objects:v164 count:16];
@@ -240,7 +240,7 @@
   }
 
   v125 = v23;
-  v31 = [v23 allKeys];
+  allKeys3 = [v23 allKeys];
   context = self->_context;
   v33 = [_CDContextualKeyPath keyPathWithKey:kDASWidgetOverrideKeyPath];
   v34 = [(_CDContext *)context objectForKeyedSubscript:v33];
@@ -301,7 +301,7 @@
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  obj = v31;
+  obj = allKeys3;
   v51 = [obj countByEnumeratingWithState:&v141 objects:v162 count:16];
   if (v51)
   {
@@ -325,7 +325,7 @@
           _os_log_debug_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        if (([v36 containsObject:{v55, v117, v119}] & 1) == 0 && (objc_msgSend(v127, "containsObject:", v55) & 1) == 0)
+        if (([v36 containsObject:{v55, v117, v119}] & 1) == 0 && (objc_msgSend(allKeys, "containsObject:", v55) & 1) == 0)
         {
           [v125 removeObjectForKey:v55];
           v57 = self->_log;
@@ -350,7 +350,7 @@
     sub_10011D804(v58, v59, v60, v61, v62, v63, v64, v65);
   }
 
-  [v6 allKeys];
+  [intoCopy allKeys];
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
@@ -378,16 +378,16 @@
           _os_log_debug_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        if (([v36 containsObject:v70] & 1) == 0 && (objc_msgSend(v127, "containsObject:", v70) & 1) == 0)
+        if (([v36 containsObject:v70] & 1) == 0 && (objc_msgSend(allKeys, "containsObject:", v70) & 1) == 0)
         {
-          v72 = [v6 objectForKeyedSubscript:v70];
+          v72 = [intoCopy objectForKeyedSubscript:v70];
           v73 = v72;
-          if (v120 && v72)
+          if (removalsCopy && v72)
           {
-            [v120 addObject:v72];
+            [removalsCopy addObject:v72];
           }
 
-          [v6 removeObjectForKey:v70];
+          [intoCopy removeObjectForKey:v70];
           v74 = self->_log;
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEBUG))
           {
@@ -405,10 +405,10 @@
   }
 
   v126 = objc_alloc_init(NSMutableArray);
-  v75 = [(_DASWidgetRefreshUsageTracker *)self->_widgetRefreshUsageTracker biomeMigrationComplete];
+  biomeMigrationComplete = [(_DASWidgetRefreshUsageTracker *)self->_widgetRefreshUsageTracker biomeMigrationComplete];
   v133 = 0u;
   v134 = 0u;
-  if (v75)
+  if (biomeMigrationComplete)
   {
     v76 = 4;
   }
@@ -420,8 +420,8 @@
 
   v135 = 0uLL;
   v136 = 0uLL;
-  v122 = [v128 allKeys];
-  v77 = [v122 countByEnumeratingWithState:&v133 objects:v160 count:16];
+  allKeys4 = [v128 allKeys];
+  v77 = [allKeys4 countByEnumeratingWithState:&v133 objects:v160 count:16];
   if (v77)
   {
     v78 = v77;
@@ -432,7 +432,7 @@
       {
         if (*v134 != v79)
         {
-          objc_enumerationMutation(v122);
+          objc_enumerationMutation(allKeys4);
         }
 
         v81 = *(*(&v133 + 1) + 8 * n);
@@ -440,11 +440,11 @@
         [v82 doubleValue];
         v84 = v83;
 
-        v85 = [v6 objectForKeyedSubscript:v81];
+        v85 = [intoCopy objectForKeyedSubscript:v81];
 
         if (v85)
         {
-          v86 = [v6 objectForKeyedSubscript:v81];
+          v86 = [intoCopy objectForKeyedSubscript:v81];
           [v86 capacity];
           if (v87 != v84)
           {
@@ -504,7 +504,7 @@ LABEL_82:
             }
 
             [v86 setAllocationType:v76];
-            [v6 setObject:v86 forKeyedSubscript:v81];
+            [intoCopy setObject:v86 forKeyedSubscript:v81];
             [v126 addObject:v86];
             goto LABEL_84;
           }
@@ -522,7 +522,7 @@ LABEL_82:
           }
 
           v96 = [_DASWidgetRefreshBudget budgetWithName:v81 widgetBudgetID:v86 capacity:v76 balance:v84 allocationType:0.0];
-          [v6 setObject:v96 forKeyedSubscript:v81];
+          [intoCopy setObject:v96 forKeyedSubscript:v81];
           [v126 addObject:v96];
           v97 = self->_log;
           if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
@@ -536,7 +536,7 @@ LABEL_82:
 LABEL_84:
       }
 
-      v78 = [v122 countByEnumeratingWithState:&v133 objects:v160 count:16];
+      v78 = [allKeys4 countByEnumeratingWithState:&v133 objects:v160 count:16];
     }
 
     while (v78);
@@ -571,14 +571,14 @@ LABEL_84:
         }
 
         v105 = [_DASWidgetRefreshBudgetManager budgetNameFromWidgetBudgetID:v103];
-        v106 = [(_DASWidgetRefreshUsageTracker *)self->_widgetRefreshUsageTracker maxWidgetRefreshBudgetForIndividualDaily];
-        v107 = v106;
-        v108 = vcvtd_n_f64_u32(v106, 3uLL);
-        v109 = [v6 objectForKeyedSubscript:v105];
+        maxWidgetRefreshBudgetForIndividualDaily = [(_DASWidgetRefreshUsageTracker *)self->_widgetRefreshUsageTracker maxWidgetRefreshBudgetForIndividualDaily];
+        v107 = maxWidgetRefreshBudgetForIndividualDaily;
+        v108 = vcvtd_n_f64_u32(maxWidgetRefreshBudgetForIndividualDaily, 3uLL);
+        v109 = [intoCopy objectForKeyedSubscript:v105];
 
         if (v109)
         {
-          v110 = [v6 objectForKeyedSubscript:v105];
+          v110 = [intoCopy objectForKeyedSubscript:v105];
           [v110 setCapacity:v107];
           [v110 balance];
           if (v111 > v108)
@@ -609,7 +609,7 @@ LABEL_84:
             _os_log_impl(&_mh_execute_header, v114, OS_LOG_TYPE_INFO, "budget %{public}@ init - newly created override list widget budget", buf, 0xCu);
           }
 
-          [v6 setObject:v110 forKeyedSubscript:v105];
+          [intoCopy setObject:v110 forKeyedSubscript:v105];
           [v126 addObject:v110];
         }
       }
@@ -644,13 +644,13 @@ LABEL_84:
 - (id)requiredBudgetsInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(_DASWidgetRefreshUsageTracker *)self->_widgetRefreshUsageTracker dailyBudgetsForAllWidgets];
+  dailyBudgetsForAllWidgets = [(_DASWidgetRefreshUsageTracker *)self->_widgetRefreshUsageTracker dailyBudgetsForAllWidgets];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [dailyBudgetsForAllWidgets allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -661,16 +661,16 @@ LABEL_84:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [_DASWidgetRefreshBudgetManager budgetNameFromWidgetBudgetID:v10];
-        v12 = [v4 objectForKeyedSubscript:v10];
+        v12 = [dailyBudgetsForAllWidgets objectForKeyedSubscript:v10];
         [v3 setObject:v12 forKeyedSubscript:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -679,9 +679,9 @@ LABEL_84:
   return v3;
 }
 
-- (double)balanceForBudgetWithName:(id)a3
+- (double)balanceForBudgetWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -691,10 +691,10 @@ LABEL_84:
   block[1] = 3221225472;
   block[2] = sub_10002E114;
   block[3] = &unk_1001B5D98;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -702,9 +702,9 @@ LABEL_84:
   return v7;
 }
 
-- (double)capacityForBudgetWithName:(id)a3
+- (double)capacityForBudgetWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -714,10 +714,10 @@ LABEL_84:
   block[1] = 3221225472;
   block[2] = sub_10002E258;
   block[3] = &unk_1001B5D98;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -725,9 +725,9 @@ LABEL_84:
   return v7;
 }
 
-- (double)balanceForWidgetBudgetID:(id)a3
+- (double)balanceForWidgetBudgetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -738,9 +738,9 @@ LABEL_84:
   block[2] = sub_10002E39C;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -748,54 +748,54 @@ LABEL_84:
   return v7;
 }
 
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4
+- (void)setBalance:(double)balance forBudgetWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002E4F4;
   block[3] = &unk_1001B5DC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = nameCopy;
+  balanceCopy = balance;
+  v8 = nameCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4
+- (void)decrementBy:(double)by forBudgetWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002E70C;
   block[3] = &unk_1001B5DC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = nameCopy;
+  byCopy = by;
+  v8 = nameCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002E90C;
   block[3] = &unk_1001B5DC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = nameCopy;
+  capacityCopy = capacity;
+  v8 = nameCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)reportActivityNoLongerRunning:(id)a3
+- (void)reportActivityNoLongerRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -807,7 +807,7 @@ LABEL_84:
   block[3] = &unk_1001B5D98;
   v15 = &v16;
   block[4] = self;
-  v6 = v4;
+  v6 = runningCopy;
   v14 = v6;
   dispatch_sync(queue, block);
   if (v17[3] > 0.0)
@@ -815,35 +815,35 @@ LABEL_84:
     v7 = self->_log;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 widgetBudgetID];
+      widgetBudgetID = [v6 widgetBudgetID];
       v9 = *(v17 + 3);
       *buf = 138543618;
-      v21 = v8;
+      v21 = widgetBudgetID;
       v22 = 2048;
       v23 = v9;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Attempting to decrement widget refresh budget for  %{public}@ by %lf", buf, 0x16u);
     }
 
     v10 = v17[3];
-    v11 = [v6 widgetBudgetID];
-    v12 = [_DASWidgetRefreshBudgetManager budgetNameFromWidgetBudgetID:v11];
+    widgetBudgetID2 = [v6 widgetBudgetID];
+    v12 = [_DASWidgetRefreshBudgetManager budgetNameFromWidgetBudgetID:widgetBudgetID2];
     [(_DASWidgetRefreshBudgetManager *)self decrementBy:v12 forBudgetWithName:v10];
   }
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)reportActivityRunning:(id)a3
+- (void)reportActivityRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002ED4C;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = runningCopy;
+  v6 = runningCopy;
   dispatch_sync(queue, v7);
 }
 

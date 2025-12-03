@@ -1,45 +1,45 @@
 @interface VNObjectTracker
-- (id)_parseInputObservations:(id)a3 imageBuffer:(id)a4 error:(id *)a5;
+- (id)_parseInputObservations:(id)observations imageBuffer:(id)buffer error:(id *)error;
 @end
 
 @implementation VNObjectTracker
 
-- (id)_parseInputObservations:(id)a3 imageBuffer:(id)a4 error:(id *)a5
+- (id)_parseInputObservations:(id)observations imageBuffer:(id)buffer error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observationsCopy = observations;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 uuid];
-    v8 = v7;
-    if (v7)
+    uuid = [observationsCopy uuid];
+    v8 = uuid;
+    if (uuid)
     {
-      v13 = v7;
-      [v6 boundingBox];
+      v13 = uuid;
+      [observationsCopy boundingBox];
       DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v16);
       v14[0] = DictionaryRepresentation;
-      a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
+      error = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     }
 
-    else if (a5)
+    else if (error)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Object identifier is not initialized in detected object observation"];
-      *a5 = [VNError errorWithCode:5 message:v11];
+      *error = [VNError errorWithCode:5 message:v11];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VNDetectedObjectObservation object is expected to initialize Object Tracker"];
-    *a5 = [VNError errorWithCode:5 message:v10];
+    *error = [VNError errorWithCode:5 message:v10];
 
-    a5 = 0;
+    error = 0;
   }
 
-  return a5;
+  return error;
 }
 
 @end

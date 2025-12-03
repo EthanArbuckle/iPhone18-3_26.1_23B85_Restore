@@ -1,29 +1,29 @@
 @interface CNPrivateAccessAggregator
-+ (BOOL)shouldShowPickerTipForBundleIdentifier:(id)a3;
++ (BOOL)shouldShowPickerTipForBundleIdentifier:(id)identifier;
 + (id)allLoggedBundledIdentifiers;
 + (id)log;
 + (id)sharedInstance;
-+ (void)recordAccessForBundleIdentifier:(id)a3;
-+ (void)recordPickerTipDismissalForBundleIdentifier:(id)a3;
++ (void)recordAccessForBundleIdentifier:(id)identifier;
++ (void)recordPickerTipDismissalForBundleIdentifier:(id)identifier;
 + (void)resetLog;
 - (BOOL)isSupportedOnThisPlatform;
-- (BOOL)shouldShowPrivacyTipInPickerForBundleIdentifier:(id)a3;
+- (BOOL)shouldShowPrivacyTipInPickerForBundleIdentifier:(id)identifier;
 - (CNPrivateAccessAggregator)init;
 - (id)applicationGroupContainerURL;
 - (id)bundleIdentifiers;
 - (id)fileURLToPrivateAccessAggregator;
-- (id)filterExpiredPrivateAccessEntries:(id)a3;
-- (id)readBundleIdentifiersFromURLAccessor:(id)a3 error:(id *)a4;
-- (void)privacyTipDismissedByUserForBundleIdentifier:(id)a3;
+- (id)filterExpiredPrivateAccessEntries:(id)entries;
+- (id)readBundleIdentifiersFromURLAccessor:(id)accessor error:(id *)error;
+- (void)privacyTipDismissedByUserForBundleIdentifier:(id)identifier;
 - (void)resetLoggedIdentifiers;
-- (void)updateAggregatorWithBundleID:(id)a3;
+- (void)updateAggregatorWithBundleID:(id)d;
 @end
 
 @implementation CNPrivateAccessAggregator
 
-- (void)privacyTipDismissedByUserForBundleIdentifier:(id)a3
+- (void)privacyTipDismissedByUserForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
@@ -40,14 +40,14 @@
   aBlock[2] = __74__CNPrivateAccessAggregator_privacyTipDismissedByUserForBundleIdentifier___block_invoke;
   aBlock[3] = &unk_1E74E4160;
   objc_copyWeak(v20, &location);
-  v6 = v5;
+  v6 = identifierCopy;
   v20[1] = a2;
   v18 = v6;
   v19 = v24;
   v7 = _Block_copy(aBlock);
-  v8 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v9 = [v8 schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__CNPrivateAccessAggregator_privacyTipDismissedByUserForBundleIdentifier___block_invoke_39;
@@ -57,7 +57,7 @@
   v11 = v7;
   v13 = v11;
   v15 = v24;
-  [v10 performBlock:v12 qualityOfService:4];
+  [backgroundScheduler performBlock:v12 qualityOfService:4];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(v20);
@@ -226,10 +226,10 @@ uint64_t __74__CNPrivateAccessAggregator_privacyTipDismissedByUserForBundleIdent
   return v7;
 }
 
-- (BOOL)shouldShowPrivacyTipInPickerForBundleIdentifier:(id)a3
+- (BOOL)shouldShowPrivacyTipInPickerForBundleIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -259,16 +259,16 @@ uint64_t __74__CNPrivateAccessAggregator_privacyTipDismissedByUserForBundleIdent
   v19 = v35;
   v20 = &v25;
   v21 = &v31;
-  v6 = v5;
+  v6 = identifierCopy;
   v23[1] = a2;
   v18 = v6;
   v22 = &v37;
   v7 = _Block_copy(aBlock);
-  v8 = [(CNPrivateAccessAggregator *)self fileCoordinator];
-  v9 = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
+  fileCoordinator = [(CNPrivateAccessAggregator *)self fileCoordinator];
+  privateAccessAggregatorURL = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
   v10 = (v26 + 5);
   obj = v26[5];
-  [v8 coordinateReadingItemAtURL:v9 options:0 error:&obj byAccessor:v7];
+  [fileCoordinator coordinateReadingItemAtURL:privateAccessAggregatorURL options:0 error:&obj byAccessor:v7];
   objc_storeStrong(v10, obj);
 
   if (*(v32 + 24) != 1 || v26[5])
@@ -276,10 +276,10 @@ uint64_t __74__CNPrivateAccessAggregator_privacyTipDismissedByUserForBundleIdent
     v11 = +[CNPrivateAccessAggregator log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v14 = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
+      privateAccessAggregatorURL2 = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
       v15 = v26[5];
       *buf = 138412546;
-      v42 = v14;
+      v42 = privateAccessAggregatorURL2;
       v43 = 2112;
       v44 = v15;
       _os_log_fault_impl(&dword_199A75000, v11, OS_LOG_TYPE_FAULT, "Unable to read from Private access aggregator (%@), error: %@", buf, 0x16u);
@@ -369,12 +369,12 @@ void __77__CNPrivateAccessAggregator_shouldShowPrivacyTipInPickerForBundleIdenti
     v27 = __Block_byref_object_copy__32103;
     v28 = __Block_byref_object_dispose__32104;
     v29 = 0;
-    v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v4 = [v3 entitlementVerifier];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    entitlementVerifier = [currentEnvironment entitlementVerifier];
     v5 = *MEMORY[0x1E6996510];
     v6 = (v25 + 5);
     obj = v25[5];
-    v7 = [v4 currentProcessHasBooleanEntitlement:v5 error:&obj];
+    v7 = [entitlementVerifier currentProcessHasBooleanEntitlement:v5 error:&obj];
     objc_storeStrong(v6, obj);
 
     if (v7)
@@ -390,9 +390,9 @@ void __77__CNPrivateAccessAggregator_shouldShowPrivacyTipInPickerForBundleIdenti
       aBlock[3] = &unk_1E74E41D8;
       aBlock[4] = &buf;
       v8 = _Block_copy(aBlock);
-      v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v10 = [v9 schedulerProvider];
-      v11 = [v10 backgroundScheduler];
+      currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+      schedulerProvider = [currentEnvironment2 schedulerProvider];
+      backgroundScheduler = [schedulerProvider backgroundScheduler];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __51__CNPrivateAccessAggregator_resetLoggedIdentifiers__block_invoke_37;
@@ -402,7 +402,7 @@ void __77__CNPrivateAccessAggregator_shouldShowPrivacyTipInPickerForBundleIdenti
       v12 = v8;
       v17 = v12;
       p_buf = &buf;
-      [v11 performBlock:v16 qualityOfService:4];
+      [backgroundScheduler performBlock:v16 qualityOfService:4];
 
       objc_destroyWeak(&v20);
       objc_destroyWeak(&location);
@@ -414,10 +414,10 @@ void __77__CNPrivateAccessAggregator_shouldShowPrivacyTipInPickerForBundleIdenti
       v13 = +[CNPrivateAccessAggregator log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [MEMORY[0x1E69966E8] currentEnvironment];
-        v15 = [v14 mainBundleIdentifier];
+        currentEnvironment3 = [MEMORY[0x1E69966E8] currentEnvironment];
+        mainBundleIdentifier = [currentEnvironment3 mainBundleIdentifier];
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v15;
+        *(&buf + 4) = mainBundleIdentifier;
         _os_log_error_impl(&dword_199A75000, v13, OS_LOG_TYPE_ERROR, "%{public}@ is not entitled to reset private contact access records", &buf, 0xCu);
       }
     }
@@ -558,11 +558,11 @@ void __51__CNPrivateAccessAggregator_resetLoggedIdentifiers__block_invoke_37(uin
     aBlock[6] = &v22;
     aBlock[7] = &v26;
     v3 = _Block_copy(aBlock);
-    v4 = [(CNPrivateAccessAggregator *)self fileCoordinator];
-    v5 = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
+    fileCoordinator = [(CNPrivateAccessAggregator *)self fileCoordinator];
+    privateAccessAggregatorURL = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
     v6 = (v17 + 5);
     obj = v17[5];
-    [v4 coordinateReadingItemAtURL:v5 options:0 error:&obj byAccessor:v3];
+    [fileCoordinator coordinateReadingItemAtURL:privateAccessAggregatorURL options:0 error:&obj byAccessor:v3];
     objc_storeStrong(v6, obj);
 
     if (*(v23 + 24) != 1 || v17[5])
@@ -570,10 +570,10 @@ void __51__CNPrivateAccessAggregator_resetLoggedIdentifiers__block_invoke_37(uin
       v7 = +[CNPrivateAccessAggregator log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
-        v10 = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
+        privateAccessAggregatorURL2 = [(CNPrivateAccessAggregator *)self privateAccessAggregatorURL];
         v11 = v17[5];
         *buf = 138412546;
-        v35 = v10;
+        v35 = privateAccessAggregatorURL2;
         v36 = 2112;
         v37 = v11;
         _os_log_fault_impl(&dword_199A75000, v7, OS_LOG_TYPE_FAULT, "Unable to read from Private access aggregator (%@), error: %@", buf, 0x16u);
@@ -664,10 +664,10 @@ void __46__CNPrivateAccessAggregator_bundleIdentifiers__block_invoke(uint64_t a1
   }
 }
 
-- (void)updateAggregatorWithBundleID:(id)a3
+- (void)updateAggregatorWithBundleID:(id)d
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   if ([(CNPrivateAccessAggregator *)self isSupportedOnThisPlatform])
   {
     v32 = 0;
@@ -676,12 +676,12 @@ void __46__CNPrivateAccessAggregator_bundleIdentifiers__block_invoke(uint64_t a1
     v35 = __Block_byref_object_copy__32103;
     v36 = __Block_byref_object_dispose__32104;
     v37 = 0;
-    v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v7 = [v6 entitlementVerifier];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    entitlementVerifier = [currentEnvironment entitlementVerifier];
     v8 = *MEMORY[0x1E69964E0];
     v9 = (v33 + 5);
     obj = v33[5];
-    v10 = [v7 currentProcessHasBooleanEntitlement:v8 error:&obj];
+    v10 = [entitlementVerifier currentProcessHasBooleanEntitlement:v8 error:&obj];
     objc_storeStrong(v9, obj);
 
     if (v10)
@@ -696,14 +696,14 @@ void __46__CNPrivateAccessAggregator_bundleIdentifiers__block_invoke(uint64_t a1
       aBlock[2] = __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_invoke;
       aBlock[3] = &unk_1E74E4160;
       objc_copyWeak(v29, &location);
-      v11 = v5;
+      v11 = dCopy;
       v29[1] = a2;
       v27 = v11;
       v28 = buf;
       v12 = _Block_copy(aBlock);
-      v13 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v14 = [v13 schedulerProvider];
-      v15 = [v14 backgroundScheduler];
+      currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+      schedulerProvider = [currentEnvironment2 schedulerProvider];
+      backgroundScheduler = [schedulerProvider backgroundScheduler];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_invoke_35;
@@ -713,7 +713,7 @@ void __46__CNPrivateAccessAggregator_bundleIdentifiers__block_invoke(uint64_t a1
       v16 = v12;
       v22 = v16;
       v24 = buf;
-      [v15 performBlock:v21 qualityOfService:4];
+      [backgroundScheduler performBlock:v21 qualityOfService:4];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(v29);
@@ -726,11 +726,11 @@ void __46__CNPrivateAccessAggregator_bundleIdentifiers__block_invoke(uint64_t a1
       v17 = +[CNPrivateAccessAggregator log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [MEMORY[0x1E69966E8] currentEnvironment];
-        v19 = [v18 mainBundleIdentifier];
+        currentEnvironment3 = [MEMORY[0x1E69966E8] currentEnvironment];
+        mainBundleIdentifier = [currentEnvironment3 mainBundleIdentifier];
         v20 = v33[5];
         *buf = 138543618;
-        *&buf[4] = v19;
+        *&buf[4] = mainBundleIdentifier;
         *&buf[12] = 2112;
         *&buf[14] = v20;
         _os_log_error_impl(&dword_199A75000, v17, OS_LOG_TYPE_ERROR, "Current process(%{public}@) is not entitled to record private access to contacts (error: %@)", buf, 0x16u);
@@ -893,28 +893,28 @@ uint64_t __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_in
 
 - (BOOL)isSupportedOnThisPlatform
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  if ([v2 isiOSAppOnMac])
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if ([processInfo isiOSAppOnMac])
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 isMacCatalystApp];
+    processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+    isMacCatalystApp = [processInfo2 isMacCatalystApp];
 
-    v3 = v5 ^ 1;
+    v3 = isMacCatalystApp ^ 1;
   }
 
   return v3;
 }
 
-- (id)filterExpiredPrivateAccessEntries:(id)a3
+- (id)filterExpiredPrivateAccessEntries:(id)entries
 {
-  if (a3)
+  if (entries)
   {
-    v4 = [a3 _cn_filter:&__block_literal_global_21_32141];
+    v4 = [entries _cn_filter:&__block_literal_global_21_32141];
   }
 
   else
@@ -925,11 +925,11 @@ uint64_t __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_in
   return v4;
 }
 
-- (id)readBundleIdentifiersFromURLAccessor:(id)a3 error:(id *)a4
+- (id)readBundleIdentifiersFromURLAccessor:(id)accessor error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6];
+  accessorCopy = accessor;
+  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:accessorCopy];
   v8 = v7;
   if (!v7 || ![v7 length])
   {
@@ -939,9 +939,9 @@ uint64_t __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_in
   }
 
   v9 = MEMORY[0x1E696ACD0];
-  v10 = [(CNPrivateAccessAggregator *)self supportedClasses];
+  supportedClasses = [(CNPrivateAccessAggregator *)self supportedClasses];
   v19 = 0;
-  v11 = [v9 unarchivedObjectOfClasses:v10 fromData:v8 error:&v19];
+  v11 = [v9 unarchivedObjectOfClasses:supportedClasses fromData:v8 error:&v19];
   v12 = v19;
 
   if (!v11 && v12)
@@ -950,17 +950,17 @@ uint64_t __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_in
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v6;
+      v21 = accessorCopy;
       v22 = 2112;
       v23 = v12;
       _os_log_error_impl(&dword_199A75000, v13, OS_LOG_TYPE_ERROR, "Unable to read contents from Private access aggregator (%@). Error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
       v11 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_10;
     }
 
@@ -969,7 +969,7 @@ uint64_t __58__CNPrivateAccessAggregator_updateAggregatorWithBundleID___block_in
 
   if ([v11 count])
   {
-    v16 = [v11 firstObject];
+    firstObject = [v11 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -994,11 +994,11 @@ LABEL_10:
 
 - (id)fileURLToPrivateAccessAggregator
 {
-  v2 = [(CNPrivateAccessAggregator *)self applicationGroupContainerURL];
-  v3 = v2;
-  if (v2)
+  applicationGroupContainerURL = [(CNPrivateAccessAggregator *)self applicationGroupContainerURL];
+  v3 = applicationGroupContainerURL;
+  if (applicationGroupContainerURL)
   {
-    v4 = [v2 URLByAppendingPathComponent:@"ContactsPickerView.privateaccess" isDirectory:0];
+    v4 = [applicationGroupContainerURL URLByAppendingPathComponent:@"ContactsPickerView.privateaccess" isDirectory:0];
     v5 = v4;
     if (v4)
     {
@@ -1017,41 +1017,41 @@ LABEL_10:
 - (id)applicationGroupContainerURL
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 fileManager];
-  v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.contacts.private-access"];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  fileManager = [currentEnvironment fileManager];
+  v4 = [fileManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.contacts.private-access"];
 
-  v5 = [v4 value];
+  value = [v4 value];
 
   v6 = +[CNPrivateAccessAggregator log];
   v7 = v6;
-  if (v5)
+  if (value)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 value];
+      value2 = [v4 value];
       v12 = 138543362;
-      v13 = v8;
+      v13 = value2;
       _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEFAULT, "Container URL: %{public}@", &v12, 0xCu);
     }
 
-    v9 = [v4 value];
+    value3 = [v4 value];
   }
 
   else
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v4 error];
+      error = [v4 error];
       v12 = 138543362;
-      v13 = v11;
+      v13 = error;
       _os_log_error_impl(&dword_199A75000, v7, OS_LOG_TYPE_ERROR, "Unable to get container URL. %{public}@", &v12, 0xCu);
     }
 
-    v9 = 0;
+    value3 = 0;
   }
 
-  return v9;
+  return value3;
 }
 
 - (CNPrivateAccessAggregator)init
@@ -1064,8 +1064,8 @@ LABEL_10:
     v3 = objc_alloc_init(MEMORY[0x1E696ABF8]);
     [(CNPrivateAccessAggregator *)v2 setFileCoordinator:v3];
 
-    v4 = [(CNPrivateAccessAggregator *)v2 fileURLToPrivateAccessAggregator];
-    [(CNPrivateAccessAggregator *)v2 setPrivateAccessAggregatorURL:v4];
+    fileURLToPrivateAccessAggregator = [(CNPrivateAccessAggregator *)v2 fileURLToPrivateAccessAggregator];
+    [(CNPrivateAccessAggregator *)v2 setPrivateAccessAggregatorURL:fileURLToPrivateAccessAggregator];
 
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
@@ -1081,33 +1081,33 @@ LABEL_10:
   return v2;
 }
 
-+ (void)recordPickerTipDismissalForBundleIdentifier:(id)a3
++ (void)recordPickerTipDismissalForBundleIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = +[CNPrivateAccessAggregator log];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = identifierCopy;
       _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "Recording limited picker tip dismissal for %@", &v6, 0xCu);
     }
 
     v5 = +[CNPrivateAccessAggregator sharedInstance];
-    [v5 privacyTipDismissedByUserForBundleIdentifier:v3];
+    [v5 privacyTipDismissedByUserForBundleIdentifier:identifierCopy];
   }
 }
 
-+ (BOOL)shouldShowPickerTipForBundleIdentifier:(id)a3
++ (BOOL)shouldShowPickerTipForBundleIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v3 = a3;
+    identifierCopy = identifier;
     v4 = +[CNPrivateAccessAggregator sharedInstance];
-    v5 = [v4 shouldShowPrivacyTipInPickerForBundleIdentifier:v3];
+    v5 = [v4 shouldShowPrivacyTipInPickerForBundleIdentifier:identifierCopy];
 
     v6 = +[CNPrivateAccessAggregator log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1135,16 +1135,16 @@ LABEL_10:
 + (id)allLoggedBundledIdentifiers
 {
   v2 = +[CNPrivateAccessAggregator sharedInstance];
-  v3 = [v2 bundleIdentifiers];
+  bundleIdentifiers = [v2 bundleIdentifiers];
 
-  return v3;
+  return bundleIdentifiers;
 }
 
-+ (void)recordAccessForBundleIdentifier:(id)a3
++ (void)recordAccessForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[CNPrivateAccessAggregator sharedInstance];
-  [v4 updateAggregatorWithBundleID:v3];
+  [v4 updateAggregatorWithBundleID:identifierCopy];
 }
 
 + (id)sharedInstance

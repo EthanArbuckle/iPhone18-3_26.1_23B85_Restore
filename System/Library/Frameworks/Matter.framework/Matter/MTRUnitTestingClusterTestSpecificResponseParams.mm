@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterTestSpecificResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterTestSpecificResponseParams)init;
-- (MTRUnitTestingClusterTestSpecificResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTRUnitTestingClusterTestSpecificResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterTestSpecificResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestSpecificResponseParams);
-  v5 = [(MTRUnitTestingClusterTestSpecificResponseParams *)self returnValue];
-  [(MTRUnitTestingClusterTestSpecificResponseParams *)v4 setReturnValue:v5];
+  returnValue = [(MTRUnitTestingClusterTestSpecificResponseParams *)self returnValue];
+  [(MTRUnitTestingClusterTestSpecificResponseParams *)v4 setReturnValue:returnValue];
 
-  v6 = [(MTRUnitTestingClusterTestSpecificResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestSpecificResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestSpecificResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestSpecificResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -93,7 +93,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterTestSpecificResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRUnitTestingClusterTestSpecificResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterTestSpecificResponseParams;
@@ -101,7 +101,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterTestSpecificResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterTestSpecificResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -117,9 +117,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTRUnitTestingClusterTestSpecificResponseParams *)self setReturnValue:v4];
 
   v5 = 0;

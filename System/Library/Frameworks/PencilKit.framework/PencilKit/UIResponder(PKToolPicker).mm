@@ -13,24 +13,24 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "set pencilKit responder state for responder: %p", &v9, 0xCu);
   }
 
   if (!_responderPKConfigurations)
   {
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v7 = _responderPKConfigurations;
-    _responderPKConfigurations = v6;
+    _responderPKConfigurations = weakToStrongObjectsMapTable;
   }
 
-  [v4 set_responder:a1];
-  [_responderPKConfigurations setObject:v4 forKey:a1];
+  [v4 set_responder:self];
+  [_responderPKConfigurations setObject:v4 forKey:self];
 
-  result = [a1 isFirstResponder];
+  result = [self isFirstResponder];
   if (result)
   {
-    return [PKToolPicker _updateToolPickerVisibilityForFirstResponder:a1];
+    return [PKToolPicker _updateToolPickerVisibilityForFirstResponder:self];
   }
 
   return result;
@@ -41,19 +41,19 @@
   v2 = _responderPKConfigurations;
   if (!_responderPKConfigurations)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v4 = _responderPKConfigurations;
-    _responderPKConfigurations = v3;
+    _responderPKConfigurations = weakToStrongObjectsMapTable;
 
     v2 = _responderPKConfigurations;
   }
 
-  v5 = [v2 objectForKey:a1];
+  v5 = [v2 objectForKey:self];
   if (!v5)
   {
     v5 = objc_alloc_init(PKResponderState);
-    [(PKResponderState *)v5 set_responder:a1];
-    [_responderPKConfigurations setObject:v5 forKey:a1];
+    [(PKResponderState *)v5 set_responder:self];
+    [_responderPKConfigurations setObject:v5 forKey:self];
   }
 
   return v5;

@@ -1,22 +1,22 @@
 @interface GaletteAppMemoryEntity
-+ (id)appWithBundleID:(id)a3 mode:(int64_t)a4 name:(id)a5;
++ (id)appWithBundleID:(id)d mode:(int64_t)mode name:(id)name;
 + (id)defaultProperties;
 @end
 
 @implementation GaletteAppMemoryEntity
 
-+ (id)appWithBundleID:(id)a3 mode:(int64_t)a4 name:(id)a5
++ (id)appWithBundleID:(id)d mode:(int64_t)mode name:(id)name
 {
-  v7 = a5;
-  v8 = a3;
+  nameCopy = name;
+  dCopy = d;
   v9 = [GaletteAppMemoryEntity alloc];
-  v15[0] = v8;
+  v15[0] = dCopy;
   v14[0] = @"bundle_id";
   v14[1] = @"mode";
-  v10 = [NSNumber numberWithInteger:a4];
+  v10 = [NSNumber numberWithInteger:mode];
   v14[2] = @"name";
   v15[1] = v10;
-  v15[2] = v7;
+  v15[2] = nameCopy;
   v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
   v12 = [(SQLiteMemoryEntity *)v9 initWithPropertyValues:v11];

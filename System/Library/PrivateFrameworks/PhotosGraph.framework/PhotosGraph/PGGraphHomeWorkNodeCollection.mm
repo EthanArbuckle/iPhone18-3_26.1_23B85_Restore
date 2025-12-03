@@ -1,6 +1,6 @@
 @interface PGGraphHomeWorkNodeCollection
-+ (id)homeNodesInGraph:(id)a3;
-+ (id)workNodesInGraph:(id)a3;
++ (id)homeNodesInGraph:(id)graph;
++ (id)workNodesInGraph:(id)graph;
 - (PGGraphAddressNodeCollection)addressNodes;
 - (PGGraphAddressNodeCollection)preciseAddressNodes;
 - (PGGraphPersonNodeCollection)ownerNodes;
@@ -23,8 +23,8 @@
   v4 = +[PGGraphHomeWorkNode addressOfHomeWork];
   v12[0] = v4;
   v5 = +[PGGraphAddressNode preciseFilter];
-  v6 = [v5 relation];
-  v12[1] = v6;
+  relation = [v5 relation];
+  v12[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v8 = [v3 chain:v7];
 
@@ -43,20 +43,20 @@
   return v4;
 }
 
-+ (id)workNodesInGraph:(id)a3
++ (id)workNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHomeWorkNode workFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)homeNodesInGraph:(id)a3
++ (id)homeNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHomeWorkNode homeFilter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }

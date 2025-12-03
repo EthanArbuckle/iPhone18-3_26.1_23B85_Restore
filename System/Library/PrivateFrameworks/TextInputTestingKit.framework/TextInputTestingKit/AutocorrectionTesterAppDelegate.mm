@@ -1,16 +1,16 @@
 @interface AutocorrectionTesterAppDelegate
-+ (id)reporterWithOptions:(id)a3;
-+ (void)setupSingletonMocksWithOptions:(id)a3;
-+ (void)teardownSingletonMocks:(id)a3;
-- (AutocorrectionTesterAppDelegate)initWithLocale:(id)a3 andText:(id)a4;
-- (AutocorrectionTesterAppDelegate)initWithOptions:(id)a3;
++ (id)reporterWithOptions:(id)options;
++ (void)setupSingletonMocksWithOptions:(id)options;
++ (void)teardownSingletonMocks:(id)mocks;
+- (AutocorrectionTesterAppDelegate)initWithLocale:(id)locale andText:(id)text;
+- (AutocorrectionTesterAppDelegate)initWithOptions:(id)options;
 - (BOOL)runAndWriteReport;
-- (BOOL)runAutocorrectionTester:(id)a3;
-- (BOOL)runTestCasesForSource:(id)a3 errorMessage:(id)a4 reportObserver:(id)a5;
-- (BOOL)runTests:(id)a3 withHarnessClass:(Class)a4 forLanguage:(id)a5 errorMessage:(id)a6 reportObserver:(id)a7;
-- (BOOL)runWithObserver:(id)a3;
-- (double)runDslTest:(id)a3 withHarnessClass:(Class)a4 forLanguage:(id)a5 errorMessage:(id)a6;
-- (void)resetOptions:(id)a3;
+- (BOOL)runAutocorrectionTester:(id)tester;
+- (BOOL)runTestCasesForSource:(id)source errorMessage:(id)message reportObserver:(id)observer;
+- (BOOL)runTests:(id)tests withHarnessClass:(Class)class forLanguage:(id)language errorMessage:(id)message reportObserver:(id)observer;
+- (BOOL)runWithObserver:(id)observer;
+- (double)runDslTest:(id)test withHarnessClass:(Class)class forLanguage:(id)language errorMessage:(id)message;
+- (void)resetOptions:(id)options;
 @end
 
 @implementation AutocorrectionTesterAppDelegate
@@ -45,10 +45,10 @@ void __52__AutocorrectionTesterAppDelegate_runAndWriteReport__block_invoke(uint6
   fprintf(*v12, "Error Rate: %.2f%%\n", (v11 * 100.0));
 }
 
-- (BOOL)runWithObserver:(id)a3
+- (BOOL)runWithObserver:(id)observer
 {
   v72 = *MEMORY[0x277D85DE8];
-  v57 = a3;
+  observerCopy = observer;
   v4 = [(NSMutableDictionary *)self->_options objectForKey:@"STEP_INDEX"];
 
   if (v4)
@@ -58,7 +58,7 @@ void __52__AutocorrectionTesterAppDelegate_runAndWriteReport__block_invoke(uint6
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v5 = self;
+    selfCopy = self;
     obj = self->_options;
     v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v66 objects:v71 count:16];
     if (v6)
@@ -96,18 +96,18 @@ void __52__AutocorrectionTesterAppDelegate_runAndWriteReport__block_invoke(uint6
       while (v7);
     }
 
-    v18 = [v58 debugValues];
-    v19 = [v18 count];
+    debugValues = [v58 debugValues];
+    v19 = [debugValues count];
 
     if (v19)
     {
-      v20 = v57;
-      v21 = [(AutocorrectionTesterAppDelegate *)v5 runAutocorrectionTester:v57];
+      v20 = observerCopy;
+      v21 = [(AutocorrectionTesterAppDelegate *)selfCopy runAutocorrectionTester:observerCopy];
 
       goto LABEL_33;
     }
 
-    self = v5;
+    self = selfCopy;
   }
 
   v22 = [(NSMutableDictionary *)self->_options objectForKey:@"STEP_COUNT"];
@@ -115,8 +115,8 @@ void __52__AutocorrectionTesterAppDelegate_runAndWriteReport__block_invoke(uint6
   if (!v22)
   {
 LABEL_30:
-    v20 = v57;
-    v21 = [(AutocorrectionTesterAppDelegate *)self runAutocorrectionTester:v57];
+    v20 = observerCopy;
+    v21 = [(AutocorrectionTesterAppDelegate *)self runAutocorrectionTester:observerCopy];
     goto LABEL_33;
   }
 
@@ -129,7 +129,7 @@ LABEL_30:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v25 = self;
+  selfCopy2 = self;
   obja = self->_options;
   v26 = [(NSMutableDictionary *)obja countByEnumeratingWithState:&v62 objects:v70 count:16];
   if (v26)
@@ -172,50 +172,50 @@ LABEL_30:
     while (v27);
   }
 
-  v42 = [v59 debugValues];
-  v43 = [v42 count];
+  debugValues2 = [v59 debugValues];
+  v43 = [debugValues2 count];
 
   if (!v43)
   {
 
-    self = v25;
+    self = selfCopy2;
     goto LABEL_30;
   }
 
-  v44 = [MEMORY[0x277CCAB68] string];
-  v45 = [v59 sweepStateHeader];
-  [v44 appendFormat:@"%@results, \n", v45];
+  string = [MEMORY[0x277CCAB68] string];
+  sweepStateHeader = [v59 sweepStateHeader];
+  [string appendFormat:@"%@results, \n", sweepStateHeader];
 
-  v46 = [(NSMutableDictionary *)v25->_options valueForKey:@"OUTPATH"];
-  v47 = [(NSMutableDictionary *)v25->_options objectForKey:@"SWEEP_EXTRACT"];
-  v48 = [v46 stringByDeletingLastPathComponent];
-  v49 = [v48 stringByAppendingPathComponent:v47];
+  v46 = [(NSMutableDictionary *)selfCopy2->_options valueForKey:@"OUTPATH"];
+  v47 = [(NSMutableDictionary *)selfCopy2->_options objectForKey:@"SWEEP_EXTRACT"];
+  stringByDeletingLastPathComponent = [v46 stringByDeletingLastPathComponent];
+  v49 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v47];
 
   v50 = [v49 stringByAppendingFormat:@" %@ > /tmp/sweep_value.txt", v46];
 
   v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"sh %@", v50];
 
-  v20 = v57;
+  v20 = observerCopy;
   if ([v59 finished])
   {
 LABEL_28:
-    v55 = [v46 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [v46 stringByDeletingPathExtension];
 
-    v46 = [v55 stringByAppendingString:@"_sweep.csv"];
+    v46 = [stringByDeletingPathExtension stringByAppendingString:@"_sweep.csv"];
 
     v21 = 1;
-    [v44 writeToFile:v46 atomically:1 encoding:4 error:0];
+    [string writeToFile:v46 atomically:1 encoding:4 error:0];
   }
 
   else
   {
-    while ([(AutocorrectionTesterAppDelegate *)v25 runAutocorrectionTester:v57])
+    while ([(AutocorrectionTesterAppDelegate *)selfCopy2 runAutocorrectionTester:observerCopy])
     {
       system([v51 cStringUsingEncoding:4]);
       v52 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:@"/tmp/sweep_value.txt" encoding:4 error:0];
-      v53 = [v59 sweepStateValues];
+      sweepStateValues = [v59 sweepStateValues];
       [v52 floatValue];
-      [v44 appendFormat:@"%@%f, \n", v53, v54];
+      [string appendFormat:@"%@%f, \n", sweepStateValues, v54];
 
       [v59 advanceSweep];
       if ([v59 finished])
@@ -231,11 +231,11 @@ LABEL_33:
   return v21;
 }
 
-- (BOOL)runAutocorrectionTester:(id)a3
+- (BOOL)runAutocorrectionTester:(id)tester
 {
   v138[16] = *MEMORY[0x277D85DE8];
-  v108 = a3;
-  v110 = self;
+  testerCopy = tester;
+  selfCopy = self;
   options = self->_options;
   p_options = &self->_options;
   v103 = [(NSMutableDictionary *)options objectForKey:@"WORDS"];
@@ -259,22 +259,22 @@ LABEL_33:
     v7 = @"0";
   }
 
-  v9 = [(__CFString *)v7 BOOLValue];
+  bOOLValue = [(__CFString *)v7 BOOLValue];
 
   v98 = [(NSMutableDictionary *)*p_options objectForKey:@"INPUT_SAMPLES"];
   if (v107)
   {
-    v10 = [(NSMutableDictionary *)v110->_options objectForKey:@"CLEAN_USER_DIRECTORY"];
-    v11 = [v10 intValue];
+    v10 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"CLEAN_USER_DIRECTORY"];
+    intValue = [v10 intValue];
 
-    if (v11)
+    if (intValue)
     {
       v12 = v107;
       if ([v12 length])
       {
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v138[0] = 0;
-        v14 = [v13 removeItemAtPath:v12 error:v138];
+        v14 = [defaultManager removeItemAtPath:v12 error:v138];
         v15 = v138[0];
 
         if (v15)
@@ -304,22 +304,22 @@ LABEL_33:
     TI_SET_KB_USER_DIRECTORY();
   }
 
-  v106 = [(NSMutableDictionary *)v110->_options valueForKey:@"KEYBOARD_LANGUAGE"];
+  v106 = [(NSMutableDictionary *)selfCopy->_options valueForKey:@"KEYBOARD_LANGUAGE"];
   if (v106 && (isInputModeAvailable() & 1) == 0)
   {
     goto LABEL_49;
   }
 
-  v17 = [(NSMutableDictionary *)v110->_options objectForKey:@"TOUCAN_LM_MODE"];
+  v17 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"TOUCAN_LM_MODE"];
 
   if (v17)
   {
-    v18 = [(NSMutableDictionary *)v110->_options objectForKey:@"TOUCAN_LM_MODE"];
-    v19 = [v18 intValue];
+    v18 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"TOUCAN_LM_MODE"];
+    intValue2 = [v18 intValue];
 
-    if (v19 > 2)
+    if (intValue2 > 2)
     {
-      v20 = [(NSMutableDictionary *)v110->_options objectForKey:@"TOUCAN_LM_MODE"];
+      v20 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"TOUCAN_LM_MODE"];
       NSLog(&cfstr_UnsupportedVal.isa, v20);
     }
 
@@ -373,10 +373,10 @@ LABEL_33:
           }
 
           v40 = *(*(&v111 + 1) + 8 * v38);
-          [(NSMutableDictionary *)v110->_options setObject:v40 forKey:@"INPUT_MODE"];
+          [(NSMutableDictionary *)selfCopy->_options setObject:v40 forKey:@"INPUT_MODE"];
           v35 = read_unigrams_dictionary(v109, v40);
 
-          v37 = v37 + [(AutocorrectionTesterAppDelegate *)v110 runTests:v35 withHarnessClass:v22 forLanguage:v40 errorMessage:@"Unable to read the dictionary file.\n" reportObserver:v108];
+          v37 = v37 + [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v35 withHarnessClass:v22 forLanguage:v40 errorMessage:@"Unable to read the dictionary file.\n" reportObserver:testerCopy];
           ++v38;
           v39 = v35;
         }
@@ -413,7 +413,7 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  [(NSMutableDictionary *)v110->_options setObject:v106 forKey:@"INPUT_MODE"];
+  [(NSMutableDictionary *)selfCopy->_options setObject:v106 forKey:@"INPUT_MODE"];
   if (v103)
   {
     v23 = v22;
@@ -462,7 +462,7 @@ LABEL_49:
       v26 = 0;
     }
 
-    v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v26 withHarnessClass:v23 forLanguage:v106 errorMessage:@"Unable to read the word list file.\n" reportObserver:v108];
+    v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v26 withHarnessClass:v23 forLanguage:v106 errorMessage:@"Unable to read the word list file.\n" reportObserver:testerCopy];
     goto LABEL_64;
   }
 
@@ -470,12 +470,12 @@ LABEL_49:
   {
     v42 = read_unigrams_dictionary(v109, v106);
     v43 = @"Unable to read the dictionary file.\n";
-    v44 = v110;
+    v44 = selfCopy;
     v45 = v42;
     v46 = v22;
     v47 = v106;
 LABEL_53:
-    v48 = [(AutocorrectionTesterAppDelegate *)v44 runTests:v45 withHarnessClass:v46 forLanguage:v47 errorMessage:v43 reportObserver:v108];
+    v48 = [(AutocorrectionTesterAppDelegate *)v44 runTests:v45 withHarnessClass:v46 forLanguage:v47 errorMessage:v43 reportObserver:testerCopy];
 LABEL_54:
     v41 = v48;
 LABEL_63:
@@ -485,14 +485,14 @@ LABEL_63:
 
   if (v6)
   {
-    [(NSMutableDictionary *)v110->_options setObject:@"YES" forKey:@"RUN_DSL_TEST"];
-    v42 = [(NSMutableDictionary *)v110->_options valueForKey:@"DSL_TEST_FILE"];
-    [(AutocorrectionTesterAppDelegate *)v110 runDslTest:v42 withHarnessClass:v22 forLanguage:v106 errorMessage:0];
+    [(NSMutableDictionary *)selfCopy->_options setObject:@"YES" forKey:@"RUN_DSL_TEST"];
+    v42 = [(NSMutableDictionary *)selfCopy->_options valueForKey:@"DSL_TEST_FILE"];
+    [(AutocorrectionTesterAppDelegate *)selfCopy runDslTest:v42 withHarnessClass:v22 forLanguage:v106 errorMessage:0];
     v41 = v50 != 0.0;
     goto LABEL_63;
   }
 
-  if (!((v101 == 0) | v9 & 1))
+  if (!((v101 == 0) | bOOLValue & 1))
   {
     v42 = [TTKTestCaseReader loadFromPath:?];
     if (!v42)
@@ -502,37 +502,37 @@ LABEL_63:
       goto LABEL_63;
     }
 
-    v59 = [(NSMutableDictionary *)v110->_options objectForKey:@"KEYSTROKE_SEGMENTATION_MODE"];
+    v59 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"KEYSTROKE_SEGMENTATION_MODE"];
 
     if (!v59)
     {
-      [(NSMutableDictionary *)v110->_options setValue:@"alignment" forKey:@"KEYSTROKE_SEGMENTATION_MODE"];
+      [(NSMutableDictionary *)selfCopy->_options setValue:@"alignment" forKey:@"KEYSTROKE_SEGMENTATION_MODE"];
     }
 
-    v48 = [(AutocorrectionTesterAppDelegate *)v110 runTestCasesForSource:v42 errorMessage:0 reportObserver:v108];
+    v48 = [(AutocorrectionTesterAppDelegate *)selfCopy runTestCasesForSource:v42 errorMessage:0 reportObserver:testerCopy];
     goto LABEL_54;
   }
 
-  if (v9)
+  if (bOOLValue)
   {
-    [(NSMutableDictionary *)v110->_options setObject:@"YES" forKey:@"PREFERS_PREDICTION_SELECTION"];
-    v52 = [(NSMutableDictionary *)v110->_options objectForKey:@"TEST_SENTENCE_TRANSLITERATION"];
+    [(NSMutableDictionary *)selfCopy->_options setObject:@"YES" forKey:@"PREFERS_PREDICTION_SELECTION"];
+    v52 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"TEST_SENTENCE_TRANSLITERATION"];
     v53 = v52;
     if (!v52)
     {
       v52 = @"0";
     }
 
-    v54 = [(__CFString *)v52 BOOLValue];
+    bOOLValue2 = [(__CFString *)v52 BOOLValue];
 
-    v55 = [(NSMutableDictionary *)v110->_options objectForKey:@"TRANSLITERATE_WITH_SPACES"];
+    v55 = [(NSMutableDictionary *)selfCopy->_options objectForKey:@"TRANSLITERATE_WITH_SPACES"];
     v56 = v55;
     if (!v55)
     {
       v55 = @"0";
     }
 
-    v57 = [(__CFString *)v55 BOOLValue];
+    bOOLValue3 = [(__CFString *)v55 BOOLValue];
 
     if (v99)
     {
@@ -541,7 +541,7 @@ LABEL_63:
 
     else if (v97)
     {
-      v58 = [PlaybackTest loadFromSentence:v97 withCatenation:v54];
+      v58 = [PlaybackTest loadFromSentence:v97 withCatenation:bOOLValue2];
     }
 
     else
@@ -551,14 +551,14 @@ LABEL_63:
         goto LABEL_50;
       }
 
-      v58 = [PlaybackTest loadFromTextInputFile:v100 withCatenation:v54 addWordSpacing:v57];
+      v58 = [PlaybackTest loadFromTextInputFile:v100 withCatenation:bOOLValue2 addWordSpacing:bOOLValue3];
     }
 
     v42 = v58;
     v47 = v106;
     if (v58)
     {
-      v44 = v110;
+      v44 = selfCopy;
       v45 = v42;
       v46 = v22;
       v43 = 0;
@@ -576,7 +576,7 @@ LABEL_50:
     v60 = read_textfile(v100, &v126);
     if (v60)
     {
-      v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v60 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:v108];
+      v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v60 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:testerCopy];
     }
 
     else
@@ -590,15 +590,15 @@ LABEL_50:
 
   if (v98)
   {
-    v61 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v124[0] = MEMORY[0x277D85DD0];
     v124[1] = 3221225472;
     v124[2] = __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invoke;
     v124[3] = &unk_279DA0C48;
-    v125 = v61;
-    v62 = v61;
+    v125 = array;
+    v62 = array;
     [v98 enumerateObjectsUsingBlock:v124];
-    v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v62 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:v108];
+    v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v62 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:testerCopy];
 
     goto LABEL_64;
   }
@@ -614,9 +614,9 @@ LABEL_50:
       v88 = *MEMORY[0x277D85DF8];
       v89 = v96;
       v90 = [v96 cStringUsingEncoding:4];
-      v91 = [v65 localizedDescription];
-      v92 = v91;
-      fprintf(v88, "Error: Unable to parse JSON config file '%s': %s\n\n", v90, [v91 cStringUsingEncoding:4]);
+      localizedDescription = [v65 localizedDescription];
+      v92 = localizedDescription;
+      fprintf(v88, "Error: Unable to parse JSON config file '%s': %s\n\n", v90, [localizedDescription cStringUsingEncoding:4]);
 
       exit(1);
     }
@@ -642,13 +642,13 @@ LABEL_50:
       v133 = v84;
       v85 = [MEMORY[0x277CBEA60] arrayWithObjects:&v133 count:1];
 
-      v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v85 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:v108];
+      v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v85 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:testerCopy];
     }
 
     else if (v105)
     {
       v86 = read_typologyInfo(v105);
-      v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v86 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:v108];
+      v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v86 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:testerCopy];
     }
 
     else
@@ -660,7 +660,7 @@ LABEL_50:
       }
 
       v87 = read_candidates(v95);
-      v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v87 withHarnessClass:v22 forLanguage:v106 errorMessage:@"Unable to read candidates\n" reportObserver:v108];
+      v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v87 withHarnessClass:v22 forLanguage:v106 errorMessage:@"Unable to read candidates\n" reportObserver:testerCopy];
     }
 
     obj = 0;
@@ -693,12 +693,12 @@ LABEL_50:
         }
 
         v75 = *(*(&v119 + 1) + 8 * j);
-        v76 = [(NSMutableDictionary *)v110->_options objectForKeyedSubscript:v75];
+        v76 = [(NSMutableDictionary *)selfCopy->_options objectForKeyedSubscript:v75];
 
         if (v76)
         {
           v77 = [v71 objectForKeyedSubscript:v75];
-          v78 = [(NSMutableDictionary *)v110->_options objectForKeyedSubscript:v75];
+          v78 = [(NSMutableDictionary *)selfCopy->_options objectForKeyedSubscript:v75];
           [v70 setObject:v78 forKeyedSubscript:v77];
         }
       }
@@ -738,7 +738,7 @@ LABEL_50:
     while (v80);
   }
 
-  v41 = [(AutocorrectionTesterAppDelegate *)v110 runTests:v79 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:v108];
+  v41 = [(AutocorrectionTesterAppDelegate *)selfCopy runTests:v79 withHarnessClass:v22 forLanguage:v106 errorMessage:0 reportObserver:testerCopy];
 LABEL_64:
 
   return v41;
@@ -762,23 +762,23 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   }
 }
 
-- (BOOL)runTestCasesForSource:(id)a3 errorMessage:(id)a4 reportObserver:(id)a5
+- (BOOL)runTestCasesForSource:(id)source errorMessage:(id)message reportObserver:(id)observer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  messageCopy = message;
+  observerCopy = observer;
   Current = CFAbsoluteTimeGetCurrent();
-  if (v8)
+  if (sourceCopy)
   {
     v12 = Current;
     v13 = objc_autoreleasePoolPush();
     [objc_opt_class() setupSingletonMocksWithOptions:self->_options];
     v14 = [objc_opt_class() reporterWithOptions:self->_options];
-    v15 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:2.0];
-    [v15 runUntilDate:v16];
+    [currentRunLoop runUntilDate:v16];
 
-    [TITester runTestCasesForSource:v8 options:self->_options reporter:v14 reportObserver:v10];
+    [TITester runTestCasesForSource:sourceCopy options:self->_options reporter:v14 reportObserver:observerCopy];
     objc_autoreleasePoolPop(v13);
     [objc_opt_class() teardownSingletonMocks:self->_options];
     v17 = CFAbsoluteTimeGetCurrent() - v12;
@@ -788,9 +788,9 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
 
   else
   {
-    if (v9)
+    if (messageCopy)
     {
-      NSLog(&stru_287EC4E08.isa, Current, v9);
+      NSLog(&stru_287EC4E08.isa, Current, messageCopy);
     }
 
     v18 = 0;
@@ -799,44 +799,44 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   return v18;
 }
 
-- (BOOL)runTests:(id)a3 withHarnessClass:(Class)a4 forLanguage:(id)a5 errorMessage:(id)a6 reportObserver:(id)a7
+- (BOOL)runTests:(id)tests withHarnessClass:(Class)class forLanguage:(id)language errorMessage:(id)message reportObserver:(id)observer
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  testsCopy = tests;
+  languageCopy = language;
+  messageCopy = message;
+  observerCopy = observer;
   Current = CFAbsoluteTimeGetCurrent();
-  NSLog(&cfstr_CurrentLanguag.isa, v13);
-  if (v12)
+  NSLog(&cfstr_CurrentLanguag.isa, languageCopy);
+  if (testsCopy)
   {
-    v33 = v14;
+    v33 = messageCopy;
     context = objc_autoreleasePoolPush();
     [objc_opt_class() setupSingletonMocksWithOptions:self->_options];
     v17 = [objc_opt_class() reporterWithOptions:self->_options];
-    v18 = [[a4 alloc] initWithAttributes:self->_options];
-    v19 = [MEMORY[0x277CBEB88] currentRunLoop];
+    v18 = [[class alloc] initWithAttributes:self->_options];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v20 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:2.0];
-    [v19 runUntilDate:v20];
+    [currentRunLoop runUntilDate:v20];
 
     v21 = [(NSMutableDictionary *)self->_options valueForKey:@"NUM_TRIALS"];
-    v22 = [v21 intValue];
+    intValue = [v21 intValue];
 
-    if (v22 <= 1)
+    if (intValue <= 1)
     {
       v23 = 1;
     }
 
     else
     {
-      v23 = v22;
+      v23 = intValue;
     }
 
     v24 = [(NSMutableDictionary *)self->_options valueForKey:@"START_INDEX"];
-    v25 = [v24 intValue];
+    intValue2 = [v24 intValue];
 
-    if (v25)
+    if (intValue2)
     {
-      v26 = v25 - 1;
+      v26 = intValue2 - 1;
     }
 
     else
@@ -845,28 +845,28 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
     }
 
     v27 = [(NSMutableDictionary *)self->_options valueForKey:@"END_INDEX"];
-    v28 = [v27 intValue];
+    intValue3 = [v27 intValue];
 
-    if (!v28)
+    if (!intValue3)
     {
-      v28 = [v12 count];
+      intValue3 = [testsCopy count];
     }
 
-    [TITester runWithTests:v12 inRange:v26 testHarness:v28 - v26 options:v18 reporter:self->_options numTrials:v17 reportObserver:v23, v15];
+    [TITester runWithTests:testsCopy inRange:v26 testHarness:intValue3 - v26 options:v18 reporter:self->_options numTrials:v17 reportObserver:v23, observerCopy];
 
     objc_autoreleasePoolPop(context);
     [objc_opt_class() teardownSingletonMocks:self->_options];
     v29 = CFAbsoluteTimeGetCurrent() - Current;
     fprintf(*MEMORY[0x277D85DF8], "Testing time: %.2f s\n", v29);
     v30 = v29 != 0.0;
-    v14 = v33;
+    messageCopy = v33;
   }
 
   else
   {
-    if (v14)
+    if (messageCopy)
     {
-      NSLog(&stru_287EC4E08.isa, v14);
+      NSLog(&stru_287EC4E08.isa, messageCopy);
     }
 
     v30 = 0;
@@ -875,34 +875,34 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   return v30;
 }
 
-- (double)runDslTest:(id)a3 withHarnessClass:(Class)a4 forLanguage:(id)a5 errorMessage:(id)a6
+- (double)runDslTest:(id)test withHarnessClass:(Class)class forLanguage:(id)language errorMessage:(id)message
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v36 = a6;
+  testCopy = test;
+  languageCopy = language;
+  messageCopy = message;
   Current = CFAbsoluteTimeGetCurrent();
-  v37 = v11;
-  NSLog(&cfstr_CurrentLanguag.isa, v11);
-  NSLog(&cfstr_CurrentDslFile.isa, v10);
+  v37 = languageCopy;
+  NSLog(&cfstr_CurrentLanguag.isa, languageCopy);
+  NSLog(&cfstr_CurrentDslFile.isa, testCopy);
   context = objc_autoreleasePoolPush();
   [objc_opt_class() setupSingletonMocksWithOptions:self->_options];
-  v13 = [[a4 alloc] initWithAttributes:self->_options];
-  v14 = [MEMORY[0x277CBEB88] currentRunLoop];
+  v13 = [[class alloc] initWithAttributes:self->_options];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
   v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:2.0];
-  [v14 runUntilDate:v15];
+  [currentRunLoop runUntilDate:v15];
 
-  v16 = [v13 dslTestDriver];
-  [v16 consumeTestFile:v10];
+  dslTestDriver = [v13 dslTestDriver];
+  [dslTestDriver consumeTestFile:testCopy];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = [v13 dslTestDriver];
-  v18 = [v17 syntaxErrors];
+  dslTestDriver2 = [v13 dslTestDriver];
+  syntaxErrors = [dslTestDriver2 syntaxErrors];
 
-  v19 = [v18 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  v19 = [syntaxErrors countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v19)
   {
     v20 = v19;
@@ -914,7 +914,7 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
       {
         if (*v43 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(syntaxErrors);
         }
 
         v24 = *(*(&v42 + 1) + 8 * i);
@@ -923,7 +923,7 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
         printf("Syntax Error: %s\n", [v24 UTF8String]);
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v20 = [syntaxErrors countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v20);
@@ -933,10 +933,10 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v25 = [v13 dslTestDriver];
-  v26 = [v25 failedTests];
+  dslTestDriver3 = [v13 dslTestDriver];
+  failedTests = [dslTestDriver3 failedTests];
 
-  v27 = [v26 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  v27 = [failedTests countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v27)
   {
     v28 = v27;
@@ -948,7 +948,7 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
       {
         if (*v39 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(failedTests);
         }
 
         v32 = *(*(&v38 + 1) + 8 * j);
@@ -957,7 +957,7 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
         printf("Failed Test: %s\n", [v32 UTF8String]);
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v28 = [failedTests countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v28);
@@ -971,18 +971,18 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   return v33;
 }
 
-- (void)resetOptions:(id)a3
+- (void)resetOptions:(id)options
 {
-  self->_options = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  self->_options = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (AutocorrectionTesterAppDelegate)initWithLocale:(id)a3 andText:(id)a4
+- (AutocorrectionTesterAppDelegate)initWithLocale:(id)locale andText:(id)text
 {
   v16[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = AutocorrectionTesterAppDelegate;
   v8 = [(AutocorrectionTesterAppDelegate *)&v14 init];
@@ -991,8 +991,8 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
     v9 = MEMORY[0x277CBEB38];
     v15[0] = @"KEYBOARD_LANGUAGE";
     v15[1] = @"SENTENCE";
-    v16[0] = v6;
-    v16[1] = v7;
+    v16[0] = localeCopy;
+    v16[1] = textCopy;
     v15[2] = @"USE_PREDICTION";
     v15[3] = @"MAX_PREDICTIONS_REPORTED";
     v16[2] = MEMORY[0x277CBEC38];
@@ -1010,15 +1010,15 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   return v8;
 }
 
-- (AutocorrectionTesterAppDelegate)initWithOptions:(id)a3
+- (AutocorrectionTesterAppDelegate)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = AutocorrectionTesterAppDelegate;
   v5 = [(AutocorrectionTesterAppDelegate *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:optionsCopy];
     options = v5->_options;
     v5->_options = v6;
   }
@@ -1026,36 +1026,36 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
   return v5;
 }
 
-+ (id)reporterWithOptions:(id)a3
++ (id)reporterWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = MGCopyAnswer();
   v5 = [[TIReporter alloc] initWithBuildVersion:v4];
-  [(TIReporter *)v5 setOptions:v3];
+  [(TIReporter *)v5 setOptions:optionsCopy];
 
   return v5;
 }
 
-+ (void)teardownSingletonMocks:(id)a3
++ (void)teardownSingletonMocks:(id)mocks
 {
-  v3 = [a3 valueForKey:@"TEST_AUTO_FILL_FEATURE"];
-  v4 = [v3 BOOLValue];
+  v3 = [mocks valueForKey:@"TEST_AUTO_FILL_FEATURE"];
+  bOOLValue = [v3 BOOLValue];
 
-  _TIEndMockingSingletonsWithData(v4);
+  _TIEndMockingSingletonsWithData(bOOLValue);
 }
 
-+ (void)setupSingletonMocksWithOptions:(id)a3
++ (void)setupSingletonMocksWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"NAMEDENTITIES"];
-  v5 = [v3 objectForKey:@"PORTRAIT_NAMEDENTITIES"];
-  v6 = [v3 objectForKey:@"ADDRESSBOOK"];
-  v7 = [v3 valueForKey:@"TEST_AUTO_FILL_FEATURE"];
-  v8 = [v7 BOOLValue];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKey:@"NAMEDENTITIES"];
+  v5 = [optionsCopy objectForKey:@"PORTRAIT_NAMEDENTITIES"];
+  v6 = [optionsCopy objectForKey:@"ADDRESSBOOK"];
+  v7 = [optionsCopy valueForKey:@"TEST_AUTO_FILL_FEATURE"];
+  bOOLValue = [v7 BOOLValue];
 
   if (!v6 && !v4 && !v5)
   {
-    _TIBeginMockingSingletonsWithData(0, 0, 0, 0, 0, v8);
+    _TIBeginMockingSingletonsWithData(0, 0, 0, 0, 0, bOOLValue);
     goto LABEL_18;
   }
 
@@ -1064,19 +1064,19 @@ void __59__AutocorrectionTesterAppDelegate_runAutocorrectionTester___block_invok
     v32 = 0;
     v9 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v4 encoding:4 error:&v32];
     v10 = v32;
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __read_nefile_block_invoke;
     v30 = &unk_279DA0CA8;
-    v12 = v11;
+    v12 = array;
     v31 = v12;
     [v9 enumerateLinesUsingBlock:&v27];
 
     if (v5)
     {
 LABEL_7:
-      v26 = v8;
+      v26 = bOOLValue;
       v13 = v5;
       v14 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v13];
       v27 = 0;
@@ -1086,8 +1086,8 @@ LABEL_7:
       {
         v23 = *MEMORY[0x277D85DF8];
         v24 = [v13 cStringUsingEncoding:4];
-        v25 = [v16 localizedDescription];
-        fprintf(v23, "Error: Unable to parse JSON config file '%s': %s\n\n", v24, [v25 cStringUsingEncoding:4]);
+        localizedDescription = [v16 localizedDescription];
+        fprintf(v23, "Error: Unable to parse JSON config file '%s': %s\n\n", v24, [localizedDescription cStringUsingEncoding:4]);
 
         exit(1);
       }
@@ -1102,7 +1102,7 @@ LABEL_7:
         v17 = MEMORY[0x277CBEBF8];
       }
 
-      v8 = v26;
+      bOOLValue = v26;
       goto LABEL_14;
     }
   }
@@ -1125,12 +1125,12 @@ LABEL_14:
     v32 = 0;
     v19 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v6 encoding:4 error:&v32];
     v20 = v32;
-    v21 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __read_mock_contactsfile_block_invoke;
     v30 = &unk_279DA0CA8;
-    v22 = v21;
+    v22 = array2;
     v31 = v22;
     [v19 enumerateLinesUsingBlock:&v27];
   }
@@ -1140,7 +1140,7 @@ LABEL_14:
     v22 = MEMORY[0x277CBEBF8];
   }
 
-  _TIBeginMockingSingletonsWithMockData(v22, v18, MEMORY[0x277CBEBF8], 0, 0, v8);
+  _TIBeginMockingSingletonsWithMockData(v22, v18, MEMORY[0x277CBEBF8], 0, 0, bOOLValue);
 
 LABEL_18:
 }

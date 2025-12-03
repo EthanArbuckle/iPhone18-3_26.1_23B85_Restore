@@ -1,18 +1,18 @@
 @interface WDUserDefaults
-- (WDUserDefaults)initWithHealthStore:(id)a3;
+- (WDUserDefaults)initWithHealthStore:(id)store;
 @end
 
 @implementation WDUserDefaults
 
-- (WDUserDefaults)initWithHealthStore:(id)a3
+- (WDUserDefaults)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = WDUserDefaults;
   v5 = [(WDUserDefaults *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCD570] healthAppDefaultsDomainWithHealthStore:v4];
+    v6 = [MEMORY[0x277CCD570] healthAppDefaultsDomainWithHealthStore:storeCopy];
     keyValueDomain = v5->_keyValueDomain;
     v5->_keyValueDomain = v6;
   }

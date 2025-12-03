@@ -18,11 +18,11 @@
 
 - (id)hk_populatedCalendarGregorianCalendarDefault
 {
-  v1 = [a1 calendar];
-  v2 = v1;
-  if (v1)
+  calendar = [self calendar];
+  v2 = calendar;
+  if (calendar)
   {
-    v3 = v1;
+    v3 = calendar;
   }
 
   else
@@ -45,7 +45,7 @@
 
 + (id)hk_componentsWithDays:()HealthKit
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 setDay:a3];
 
   return v4;
@@ -53,7 +53,7 @@
 
 + (id)hk_dateComponentsForCalendarUnit:()HealthKit
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 setValue:1 forComponent:a3];
 
   return v4;
@@ -62,7 +62,7 @@
 - (double)hk_approximateDuration
 {
   v2 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
-  v3 = [a1 hk_dateByAddingInterval:1 toDate:v2];
+  v3 = [self hk_dateByAddingInterval:1 toDate:v2];
   [v3 timeIntervalSinceDate:v2];
   v5 = v4;
 
@@ -72,8 +72,8 @@
 - (void)hk_dateByAddingInterval:()HealthKit toDate:
 {
   v7 = a4;
-  v8 = [a1 hk_maxComponentValue];
-  if (v8 < 0)
+  hk_maxComponentValue = [self hk_maxComponentValue];
+  if (hk_maxComponentValue < 0)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -93,12 +93,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ((v8 & 0x7FFFFFFFFFFFFFFFLL) == 0)
+  if ((hk_maxComponentValue & 0x7FFFFFFFFFFFFFFFLL) == 0)
   {
     goto LABEL_17;
   }
 
-  v12 = 0x7FFFFFFF / v8;
+  v12 = 0x7FFFFFFF / hk_maxComponentValue;
   do
   {
     if (a3 >= 0)
@@ -126,7 +126,7 @@ LABEL_17:
       v14 = -v13;
     }
 
-    v15 = [a1 _hk_dateByAddingFilteredInterval:v14 toDate:v7];
+    v15 = [self _hk_dateByAddingFilteredInterval:v14 toDate:v7];
 
     v7 = v15;
     a3 -= v14;
@@ -142,20 +142,20 @@ LABEL_18:
 - (id)_hk_dateByAddingFilteredInterval:()HealthKit toDate:
 {
   v6 = a4;
-  v7 = [a1 _hk_dateComponentsMultipliedByCount:a3];
-  v8 = [a1 calendar];
-  v9 = v8;
-  if (v8)
+  v7 = [self _hk_dateComponentsMultipliedByCount:a3];
+  calendar = [self calendar];
+  v9 = calendar;
+  if (calendar)
   {
-    v10 = v8;
+    currentCalendar = calendar;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   }
 
-  v11 = v10;
+  v11 = currentCalendar;
 
   v12 = [v11 dateByAddingComponents:v7 toDate:v6 options:0];
 
@@ -166,124 +166,124 @@ LABEL_18:
 {
   if (a3 == 1)
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    if ([a1 year] != 0x7FFFFFFFFFFFFFFFLL)
+    selfCopy = objc_alloc_init(MEMORY[0x1E695DF10]);
+    if ([self year] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setYear:{objc_msgSend(a1, "year") * a3}];
+      [selfCopy setYear:{objc_msgSend(self, "year") * a3}];
     }
 
-    if ([a1 month] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self month] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setMonth:{objc_msgSend(a1, "month") * a3}];
+      [selfCopy setMonth:{objc_msgSend(self, "month") * a3}];
     }
 
-    if ([a1 weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setWeekOfYear:{objc_msgSend(a1, "weekOfYear") * a3}];
+      [selfCopy setWeekOfYear:{objc_msgSend(self, "weekOfYear") * a3}];
     }
 
-    if ([a1 weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setWeekOfMonth:{objc_msgSend(a1, "weekOfMonth") * a3}];
+      [selfCopy setWeekOfMonth:{objc_msgSend(self, "weekOfMonth") * a3}];
     }
 
-    if ([a1 day] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self day] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setDay:{objc_msgSend(a1, "day") * a3}];
+      [selfCopy setDay:{objc_msgSend(self, "day") * a3}];
     }
 
-    if ([a1 hour] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self hour] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setHour:{objc_msgSend(a1, "hour") * a3}];
+      [selfCopy setHour:{objc_msgSend(self, "hour") * a3}];
     }
 
-    if ([a1 minute] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self minute] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setMinute:{objc_msgSend(a1, "minute") * a3}];
+      [selfCopy setMinute:{objc_msgSend(self, "minute") * a3}];
     }
 
-    if ([a1 second] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self second] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setSecond:{objc_msgSend(a1, "second") * a3}];
+      [selfCopy setSecond:{objc_msgSend(self, "second") * a3}];
     }
 
-    if ([a1 nanosecond] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self nanosecond] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 setNanosecond:{objc_msgSend(a1, "nanosecond") * a3}];
+      [selfCopy setNanosecond:{objc_msgSend(self, "nanosecond") * a3}];
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (uint64_t)hk_maxComponentValue
 {
-  v2 = 0x8000000000000000;
-  if ([a1 year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "year") != 0x8000000000000000)
+  year = 0x8000000000000000;
+  if ([self year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "year") != 0x8000000000000000)
   {
-    v2 = [a1 year];
+    year = [self year];
   }
 
-  if ([a1 month] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "month") > v2)
+  if ([self month] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "month") > year)
   {
-    v2 = [a1 month];
+    year = [self month];
   }
 
-  if ([a1 weekOfYear] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "weekOfYear") > v2)
+  if ([self weekOfYear] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "weekOfYear") > year)
   {
-    v2 = [a1 weekOfYear];
+    year = [self weekOfYear];
   }
 
-  if ([a1 weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "weekOfMonth") > v2)
+  if ([self weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "weekOfMonth") > year)
   {
-    v2 = [a1 weekOfMonth];
+    year = [self weekOfMonth];
   }
 
-  if ([a1 day] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "day") > v2)
+  if ([self day] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "day") > year)
   {
-    v2 = [a1 day];
+    year = [self day];
   }
 
-  if ([a1 hour] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "hour") > v2)
+  if ([self hour] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "hour") > year)
   {
-    v2 = [a1 hour];
+    year = [self hour];
   }
 
-  if ([a1 minute] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "minute") > v2)
+  if ([self minute] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "minute") > year)
   {
-    v2 = [a1 minute];
+    year = [self minute];
   }
 
-  if ([a1 second] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "second") > v2)
+  if ([self second] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "second") > year)
   {
-    v2 = [a1 second];
+    year = [self second];
   }
 
-  if ([a1 nanosecond] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(a1, "nanosecond") <= v2)
+  if ([self nanosecond] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(self, "nanosecond") <= year)
   {
-    return v2;
+    return year;
   }
 
-  return [a1 nanosecond];
+  return [self nanosecond];
 }
 
 - (id)hk_translateDateComponentsToCalendar:()HealthKit calendarUnits:
 {
   v6 = MEMORY[0x1E695DFE8];
   v7 = a3;
-  v8 = [v6 systemTimeZone];
-  v9 = [a1 hk_populatedCalendarGregorianCalendarDefault];
-  v10 = [v9 copy];
+  systemTimeZone = [v6 systemTimeZone];
+  hk_populatedCalendarGregorianCalendarDefault = [self hk_populatedCalendarGregorianCalendarDefault];
+  v10 = [hk_populatedCalendarGregorianCalendarDefault copy];
 
-  [v10 setTimeZone:v8];
+  [v10 setTimeZone:systemTimeZone];
   v11 = [v7 copy];
-  [v11 setTimeZone:v8];
-  v12 = [v10 dateFromComponents:a1];
+  [v11 setTimeZone:systemTimeZone];
+  v12 = [v10 dateFromComponents:self];
   v13 = [v11 components:a4 fromDate:v12];
   [v13 setCalendar:v7];
 
@@ -293,13 +293,13 @@ LABEL_18:
 - (uint64_t)hk_ageWithCurrentDate:()HealthKit
 {
   v4 = a3;
-  v5 = [a1 hk_populatedCalendarGregorianCalendarDefault];
-  v6 = [v5 hk_dateOfBirthDateComponentsWithDate:v4];
+  hk_populatedCalendarGregorianCalendarDefault = [self hk_populatedCalendarGregorianCalendarDefault];
+  v6 = [hk_populatedCalendarGregorianCalendarDefault hk_dateOfBirthDateComponentsWithDate:v4];
 
-  v7 = [v5 components:4 fromDateComponents:a1 toDateComponents:v6 options:0];
-  v8 = [v7 year];
+  v7 = [hk_populatedCalendarGregorianCalendarDefault components:4 fromDateComponents:self toDateComponents:v6 options:0];
+  year = [v7 year];
 
-  return v8;
+  return year;
 }
 
 - (HKDateInterval)hk_dateIntervalForDate:()HealthKit anchorDate:outIndex:
@@ -308,15 +308,15 @@ LABEL_18:
   v9 = a4;
   [v8 timeIntervalSinceDate:v9];
   v11 = v10;
-  [a1 hk_approximateDuration];
+  [self hk_approximateDuration];
   v13 = vcvtmd_s64_f64(v11 / v12);
   v14 = [HKDateInterval alloc];
-  v15 = [a1 hk_dateByAddingInterval:v13 toDate:v9];
-  v16 = [a1 hk_dateByAddingInterval:v13 + 1 toDate:v9];
+  v15 = [self hk_dateByAddingInterval:v13 toDate:v9];
+  v16 = [self hk_dateByAddingInterval:v13 + 1 toDate:v9];
   v17 = [(HKDateInterval *)v14 initWithStartDate:v15 endDate:v16];
 
-  v18 = [(HKDateInterval *)v17 startDate];
-  [v18 timeIntervalSinceReferenceDate];
+  startDate = [(HKDateInterval *)v17 startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v20 = v19;
   [v8 timeIntervalSinceReferenceDate];
   v22 = v21;
@@ -331,13 +331,13 @@ LABEL_18:
     do
     {
       --v13;
-      v23 = [(HKDateInterval *)v17 startDate];
+      startDate2 = [(HKDateInterval *)v17 startDate];
       v24 = [HKDateInterval alloc];
-      v25 = [a1 hk_dateByAddingInterval:-1 toDate:v23];
-      v26 = [(HKDateInterval *)v24 initWithStartDate:v25 endDate:v23];
+      v25 = [self hk_dateByAddingInterval:-1 toDate:startDate2];
+      v26 = [(HKDateInterval *)v24 initWithStartDate:v25 endDate:startDate2];
 
-      v27 = [(HKDateInterval *)v26 startDate];
-      [v27 timeIntervalSinceReferenceDate];
+      startDate3 = [(HKDateInterval *)v26 startDate];
+      [startDate3 timeIntervalSinceReferenceDate];
       v29 = v28;
       [v8 timeIntervalSinceReferenceDate];
       v31 = v30;
@@ -348,8 +348,8 @@ LABEL_18:
     while (v29 > v31);
   }
 
-  v32 = [(HKDateInterval *)v26 endDate];
-  [v32 timeIntervalSinceReferenceDate];
+  endDate = [(HKDateInterval *)v26 endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v34 = v33;
   [v8 timeIntervalSinceReferenceDate];
   v36 = v35;
@@ -359,13 +359,13 @@ LABEL_18:
     do
     {
       ++v13;
-      v38 = [(HKDateInterval *)v26 endDate];
+      endDate2 = [(HKDateInterval *)v26 endDate];
       v39 = [HKDateInterval alloc];
-      v40 = [a1 hk_dateByAddingInterval:1 toDate:v38];
-      v37 = [(HKDateInterval *)v39 initWithStartDate:v38 endDate:v40];
+      v40 = [self hk_dateByAddingInterval:1 toDate:endDate2];
+      v37 = [(HKDateInterval *)v39 initWithStartDate:endDate2 endDate:v40];
 
-      v41 = [(HKDateInterval *)v37 endDate];
-      [v41 timeIntervalSinceReferenceDate];
+      endDate3 = [(HKDateInterval *)v37 endDate];
+      [endDate3 timeIntervalSinceReferenceDate];
       v43 = v42;
       [v8 timeIntervalSinceReferenceDate];
       v45 = v44;
@@ -392,7 +392,7 @@ LABEL_18:
 - (uint64_t)hk_indexForDate:()HealthKit anchorDate:
 {
   v6 = 0;
-  v4 = [a1 hk_dateIntervalForDate:a3 anchorDate:a4 outIndex:&v6];
+  v4 = [self hk_dateIntervalForDate:a3 anchorDate:a4 outIndex:&v6];
   return v6;
 }
 

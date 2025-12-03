@@ -1,57 +1,57 @@
 @interface HMDNetworkRouterIPAddress
-+ (id)ipAddressFromNetAddress:(id)a3 error:(id *)a4;
-+ (id)ipAddressFromRuleAddress:(id)a3 allowWildcard:(BOOL)a4;
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)ipAddressFromNetAddress:(id)address error:(id *)error;
++ (id)ipAddressFromRuleAddress:(id)address allowWildcard:(BOOL)wildcard;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterIPAddress)init;
-- (HMDNetworkRouterIPAddress)initWithV4:(id)a3 v6:(id)a4;
+- (HMDNetworkRouterIPAddress)initWithV4:(id)v4 v6:(id)v6;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterIPAddress
 
-+ (id)ipAddressFromRuleAddress:(id)a3 allowWildcard:(BOOL)a4
++ (id)ipAddressFromRuleAddress:(id)address allowWildcard:(BOOL)wildcard
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && (+[HMDNetworkRouterFirewallRuleWAN ipAddressAny](HMDNetworkRouterFirewallRuleWAN, "ipAddressAny"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 isEqual:v7], v7, v8))
+  wildcardCopy = wildcard;
+  addressCopy = address;
+  if (wildcardCopy && (+[HMDNetworkRouterFirewallRuleWAN ipAddressAny](HMDNetworkRouterFirewallRuleWAN, "ipAddressAny"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [addressCopy isEqual:v7], v7, v8))
   {
     v14 = 0;
     v9 = [HMDNetworkRouterIPAddress alloc];
     v10 = [MEMORY[0x277CBEA90] dataWithBytes:&v14 length:4];
     v11 = [MEMORY[0x277CBEA90] dataWithBytes:MEMORY[0x277D85EE8] length:16];
-    v12 = [(HMDNetworkRouterIPAddress *)v9 initWithV4:v10 v6:v11];
+    v12 = [(HMDNetworkRouterIPAddress *)v9 initWithV4:v10 addressCopy:v11];
   }
 
   else
   {
-    v12 = [a1 ipAddressFromNetAddress:v6 error:0];
+    v12 = [self ipAddressFromNetAddress:addressCopy error:0];
   }
 
   return v12;
 }
 
-+ (id)ipAddressFromNetAddress:(id)a3 error:(id *)a4
++ (id)ipAddressFromNetAddress:(id)address error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 dataUsingEncoding:1];
+  addressCopy = address;
+  v6 = [addressCopy dataUsingEncoding:1];
   if (!v6)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 addressFamily];
-  if (v7 == 1)
+  addressFamily = [addressCopy addressFamily];
+  if (addressFamily == 1)
   {
     v9 = 4;
     v8 = 4;
     goto LABEL_7;
   }
 
-  if (v7 != 2)
+  if (addressFamily != 2)
   {
 LABEL_5:
     v10 = 0;
@@ -61,14 +61,14 @@ LABEL_5:
   v8 = 16;
   v9 = 8;
 LABEL_7:
-  v11 = [v6 bytes];
-  v10 = [MEMORY[0x277CBEA90] dataWithBytes:v11 + v9 length:v8];
+  bytes = [v6 bytes];
+  v10 = [MEMORY[0x277CBEA90] dataWithBytes:bytes + v9 length:v8];
 LABEL_8:
 
   if (v10)
   {
-    v12 = [v5 addressFamily];
-    if (v12 == 2)
+    addressFamily2 = [addressCopy addressFamily];
+    if (addressFamily2 == 2)
     {
       v13 = [HMDNetworkRouterIPAddress alloc];
       v14 = 0;
@@ -76,7 +76,7 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    if (v12 == 1)
+    if (addressFamily2 == 1)
     {
       v13 = [HMDNetworkRouterIPAddress alloc];
       v14 = v10;
@@ -87,10 +87,10 @@ LABEL_16:
     }
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -113,10 +113,10 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -126,7 +126,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = [(HMDNetworkRouterIPAddress *)self v4];
       v8 = [(HMDNetworkRouterIPAddress *)v6 v4];
       if (v7 != v8)
@@ -176,9 +176,9 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterIPAddress allocWithZone:a3];
+  v4 = [HMDNetworkRouterIPAddress allocWithZone:zone];
   v5 = [(HMDNetworkRouterIPAddress *)self v4];
   v6 = [(HMDNetworkRouterIPAddress *)self v6];
   v7 = [(HMDNetworkRouterIPAddress *)v4 initWithV4:v5 v6:v6];
@@ -186,7 +186,7 @@ LABEL_15:
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v38 = 0u;
@@ -232,11 +232,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -276,11 +276,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -294,34 +294,34 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
     v10 = 0;
     v11 = 0;
 LABEL_19:
-    [(HMDNetworkRouterIPAddress *)self setV4:v11, v22];
+    [(HMDNetworkRouterIPAddress *)self setV4:v11, errorCopy];
     [(HMDNetworkRouterIPAddress *)self setV6:v10];
     v12 = 0;
     v18 = 1;
     goto LABEL_26;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   while (1)
   {
     v29 = 0;
@@ -331,10 +331,10 @@ LABEL_19:
     v26 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (v22)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_26;
       }
 
@@ -394,11 +394,11 @@ LABEL_12:
   }
 
 LABEL_23:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v12;
     v18 = 0;
-    *v22 = v12;
+    *errorCopy = v12;
     goto LABEL_26;
   }
 
@@ -409,18 +409,18 @@ LABEL_26:
   return v18;
 }
 
-- (HMDNetworkRouterIPAddress)initWithV4:(id)a3 v6:(id)a4
+- (HMDNetworkRouterIPAddress)initWithV4:(id)v4 v6:(id)v6
 {
-  v7 = a3;
-  v8 = a4;
+  v4Copy = v4;
+  v6Copy = v6;
   v12.receiver = self;
   v12.super_class = HMDNetworkRouterIPAddress;
   v9 = [(HMDNetworkRouterIPAddress *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_v4, a3);
-    objc_storeStrong(&v10->_v6, a4);
+    objc_storeStrong(&v9->_v4, v4);
+    objc_storeStrong(&v10->_v6, v6);
   }
 
   return v10;
@@ -433,24 +433,24 @@ LABEL_26:
   return [(HMDNetworkRouterIPAddress *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterIPAddress);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterIPAddress *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterIPAddress *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

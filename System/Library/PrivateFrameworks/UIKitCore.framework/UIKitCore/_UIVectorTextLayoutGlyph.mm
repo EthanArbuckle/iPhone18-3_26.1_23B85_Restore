@@ -1,7 +1,7 @@
 @interface _UIVectorTextLayoutGlyph
 - (CGAffineTransform)pathTransform;
 - (CGRect)rect;
-- (void)setPathTransform:(CGAffineTransform *)a3;
+- (void)setPathTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UIVectorTextLayoutGlyph
@@ -28,11 +28,11 @@
   return self;
 }
 
-- (void)setPathTransform:(CGAffineTransform *)a3
+- (void)setPathTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_pathTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_pathTransform.tx = *&transform->tx;
   *&self->_pathTransform.c = v4;
   *&self->_pathTransform.a = v3;
 }

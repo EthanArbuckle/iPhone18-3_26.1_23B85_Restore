@@ -1,20 +1,20 @@
 @interface CKKSControlCLI
-- (CKKSControlCLI)initWithCKKSControl:(id)a3;
+- (CKKSControlCLI)initWithCKKSControl:(id)control;
 - (id)fetchPerformanceCounters;
-- (id)fetchStatus:(id)a3;
-- (id)parseJSON:(Class)a3 name:(id)a4 json:(id)a5;
-- (int)deleteSEZone:(id)a3;
-- (int)fetchSEView:(id)a3 json:(BOOL)a4;
-- (int)modifySEZone:(id)a3 tlkShareJsonStrings:(id)a4 deletetlkShareJsonStrings:(id)a5;
-- (int)proposeSETLK:(id)a3 tlkJson:(id)a4 oldTlkJson:(id)a5 tlkShareJsonStrings:(id)a6;
+- (id)fetchStatus:(id)status;
+- (id)parseJSON:(Class)n name:(id)name json:(id)json;
+- (int)deleteSEZone:(id)zone;
+- (int)fetchSEView:(id)view json:(BOOL)json;
+- (int)modifySEZone:(id)zone tlkShareJsonStrings:(id)strings deletetlkShareJsonStrings:(id)jsonStrings;
+- (int)proposeSETLK:(id)k tlkJson:(id)json oldTlkJson:(id)tlkJson tlkShareJsonStrings:(id)strings;
 - (int)toggleHavoc;
 - (int64_t)ckmetric;
-- (int64_t)fetch:(id)a3;
-- (int64_t)push:(id)a3;
-- (int64_t)resetCloudKit:(id)a3;
-- (int64_t)resetLocal:(id)a3;
-- (int64_t)resync:(id)a3;
-- (void)printHumanReadableStatus:(id)a3 shortenOutput:(BOOL)a4;
+- (int64_t)fetch:(id)fetch;
+- (int64_t)push:(id)push;
+- (int64_t)resetCloudKit:(id)kit;
+- (int64_t)resetLocal:(id)local;
+- (int64_t)resync:(id)resync;
+- (void)printHumanReadableStatus:(id)status shortenOutput:(BOOL)output;
 @end
 
 @implementation CKKSControlCLI
@@ -26,7 +26,7 @@
   v14 = 0x2020000000;
   v15 = 1;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100001650;
@@ -34,7 +34,7 @@
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  [v4 toggleHavoc:v9];
+  [control toggleHavoc:v9];
 
   v6 = dispatch_time(0, 65000000000);
   if (dispatch_semaphore_wait(v5, v6))
@@ -52,15 +52,15 @@
   return v7;
 }
 
-- (int)deleteSEZone:(id)a3
+- (int)deleteSEZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000189C;
@@ -68,7 +68,7 @@
   v15 = &v16;
   v7 = v5;
   v14 = v7;
-  [v6 deleteSEView:v4 reply:v13];
+  [control deleteSEView:zoneCopy reply:v13];
 
   v8 = dispatch_time(0, 150000000000);
   if (dispatch_semaphore_wait(v7, v8))
@@ -93,11 +93,11 @@
   return v10;
 }
 
-- (int)modifySEZone:(id)a3 tlkShareJsonStrings:(id)a4 deletetlkShareJsonStrings:(id)a5
+- (int)modifySEZone:(id)zone tlkShareJsonStrings:(id)strings deletetlkShareJsonStrings:(id)jsonStrings
 {
-  v26 = a3;
-  v8 = a4;
-  v27 = a5;
+  zoneCopy = zone;
+  stringsCopy = strings;
+  jsonStringsCopy = jsonStrings;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -107,7 +107,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v8;
+  v10 = stringsCopy;
   v11 = [v10 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v11)
   {
@@ -147,7 +147,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v27;
+  obj = jsonStringsCopy;
   v16 = [obj countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v16)
   {
@@ -182,7 +182,7 @@
   }
 
   v20 = dispatch_semaphore_create(0);
-  v21 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100001D48;
@@ -190,7 +190,7 @@
   v32 = &v41;
   obj = v20;
   v31 = obj;
-  [v21 modifyTLKSharesForSEView:v26 adding:v9 deleting:v15 reply:v30];
+  [control modifyTLKSharesForSEView:zoneCopy adding:v9 deleting:v15 reply:v30];
 
   v22 = dispatch_time(0, 150000000000);
   if (dispatch_semaphore_wait(obj, v22))
@@ -218,24 +218,24 @@ LABEL_26:
   return v24;
 }
 
-- (int)fetchSEView:(id)a3 json:(BOOL)a4
+- (int)fetchSEView:(id)view json:(BOOL)json
 {
-  v6 = a3;
+  viewCopy = view;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100001F80;
   v15[3] = &unk_10000C400;
-  v18 = a4;
+  jsonCopy = json;
   v17 = &v19;
   v9 = v7;
   v16 = v9;
-  [v8 fetchSEViewKeyHierarchy:v6 reply:v15];
+  [control fetchSEViewKeyHierarchy:viewCopy reply:v15];
 
   v10 = dispatch_time(0, 150000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -260,25 +260,25 @@ LABEL_26:
   return v12;
 }
 
-- (int)proposeSETLK:(id)a3 tlkJson:(id)a4 oldTlkJson:(id)a5 tlkShareJsonStrings:(id)a6
+- (int)proposeSETLK:(id)k tlkJson:(id)json oldTlkJson:(id)tlkJson tlkShareJsonStrings:(id)strings
 {
-  v25 = a3;
-  v10 = a4;
-  v27 = a5;
-  v26 = a6;
+  kCopy = k;
+  jsonCopy = json;
+  tlkJsonCopy = tlkJson;
+  stringsCopy = strings;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 1;
-  v11 = [(CKKSControlCLI *)self parseJSON:objc_opt_class() name:@"TLK" json:v10];
+  v11 = [(CKKSControlCLI *)self parseJSON:objc_opt_class() name:@"TLK" json:jsonCopy];
   if (!v11)
   {
     goto LABEL_4;
   }
 
-  if (v27)
+  if (tlkJsonCopy)
   {
-    v24 = [(CKKSControlCLI *)self parseJSON:objc_opt_class() name:@"old TLK" json:v27];
+    v24 = [(CKKSControlCLI *)self parseJSON:objc_opt_class() name:@"old TLK" json:tlkJsonCopy];
     if (!v24)
     {
 LABEL_4:
@@ -297,7 +297,7 @@ LABEL_4:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v14 = v26;
+  v14 = stringsCopy;
   v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v15)
   {
@@ -332,7 +332,7 @@ LABEL_4:
   }
 
   v19 = dispatch_semaphore_create(0);
-  v20 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100002E90;
@@ -340,7 +340,7 @@ LABEL_4:
   v31 = &v36;
   v14 = v19;
   v30 = v14;
-  [v20 proposeTLKForSEView:v25 proposedTLK:v11 wrappedOldTLK:0 tlkShares:v13 reply:v29];
+  [control proposeTLKForSEView:kCopy proposedTLK:v11 wrappedOldTLK:0 tlkShares:v13 reply:v29];
 
   v21 = dispatch_time(0, 150000000000);
   if (dispatch_semaphore_wait(v14, v21))
@@ -368,11 +368,11 @@ LABEL_22:
   return v12;
 }
 
-- (id)parseJSON:(Class)a3 name:(id)a4 json:(id)a5
+- (id)parseJSON:(Class)n name:(id)name json:(id)json
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 dataUsingEncoding:4];
+  nameCopy = name;
+  jsonCopy = json;
+  v9 = [jsonCopy dataUsingEncoding:4];
   v21 = 0;
   v10 = [NSJSONSerialization JSONObjectWithData:v9 options:0 error:&v21];
   v11 = v21;
@@ -390,7 +390,7 @@ LABEL_22:
   if (v12)
   {
     v20 = 0;
-    v15 = [(objc_class *)a3 parseFromJSONDict:v10 error:&v20];
+    v15 = [(objc_class *)n parseFromJSONDict:v10 error:&v20];
     v11 = v20;
     if (v15)
     {
@@ -399,19 +399,19 @@ LABEL_22:
       goto LABEL_10;
     }
 
-    v17 = [v7 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v18 = [v11 description];
-    printf("Unable to parse %s from JSON: %s\n", v17, [v18 UTF8String]);
+    printf("Unable to parse %s from JSON: %s\n", uTF8String, [v18 UTF8String]);
 
-    printf("JSON: %s\n", [v8 UTF8String]);
+    printf("JSON: %s\n", [jsonCopy UTF8String]);
     v14 = 0;
   }
 
   else
   {
-    v13 = [v7 UTF8String];
+    uTF8String2 = [nameCopy UTF8String];
     v14 = [v11 description];
-    printf("Unable to parse %s as JSON: %s\n", v13, [v14 UTF8String]);
+    printf("Unable to parse %s as JSON: %s\n", uTF8String2, [v14 UTF8String]);
   }
 
   v16 = 0;
@@ -427,7 +427,7 @@ LABEL_10:
   v16 = 0x2020000000;
   v17 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100003254;
@@ -435,7 +435,7 @@ LABEL_10:
   v13 = &v14;
   v5 = v3;
   v12 = v5;
-  [v4 rpcCKMetric:@"testMetric" attributes:&off_10000CD90 reply:v11];
+  [control rpcCKMetric:@"testMetric" attributes:&off_10000CD90 reply:v11];
 
   v6 = dispatch_time(0, 65000000000);
   if (dispatch_semaphore_wait(v5, v6))
@@ -460,15 +460,15 @@ LABEL_10:
   return v8;
 }
 
-- (int64_t)push:(id)a3
+- (int64_t)push:(id)push
 {
-  v4 = a3;
+  pushCopy = push;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000034A4;
@@ -476,7 +476,7 @@ LABEL_10:
   v15 = &v16;
   v7 = v5;
   v14 = v7;
-  [v6 rpcPushOutgoingChanges:v4 reply:v13];
+  [control rpcPushOutgoingChanges:pushCopy reply:v13];
 
   v8 = dispatch_time(0, 150000000000);
   if (dispatch_semaphore_wait(v7, v8))
@@ -501,15 +501,15 @@ LABEL_10:
   return v10;
 }
 
-- (int64_t)fetch:(id)a3
+- (int64_t)fetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000036F4;
@@ -517,7 +517,7 @@ LABEL_10:
   v15 = &v16;
   v7 = v5;
   v14 = v7;
-  [v6 rpcFetchAndProcessChanges:v4 reply:v13];
+  [control rpcFetchAndProcessChanges:fetchCopy reply:v13];
 
   v8 = dispatch_time(0, 150000000000);
   if (dispatch_semaphore_wait(v7, v8))
@@ -542,19 +542,19 @@ LABEL_10:
   return v10;
 }
 
-- (void)printHumanReadableStatus:(id)a3 shortenOutput:(BOOL)a4
+- (void)printHumanReadableStatus:(id)status shortenOutput:(BOOL)output
 {
-  v6 = a3;
+  statusCopy = status;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000038F4;
   v13[3] = &unk_10000C3D8;
-  v15 = a4;
+  outputCopy = output;
   v9 = v7;
   v14 = v9;
-  [v8 rpcStatus:v6 reply:v13];
+  [control rpcStatus:statusCopy reply:v13];
 
   v10 = dispatch_time(0, 45000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -569,12 +569,12 @@ LABEL_10:
   }
 }
 
-- (id)fetchStatus:(id)a3
+- (id)fetchStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = dispatch_semaphore_create(0);
-  v7 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000054F8;
@@ -583,7 +583,7 @@ LABEL_10:
   v17 = v8;
   v9 = v6;
   v18 = v9;
-  [v7 rpcStatus:v4 reply:v16];
+  [control rpcStatus:statusCopy reply:v16];
 
   v10 = dispatch_time(0, 45000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -603,17 +603,17 @@ LABEL_10:
   return v8;
 }
 
-- (int64_t)resync:(id)a3
+- (int64_t)resync:(id)resync
 {
-  v4 = a3;
-  v5 = v4;
+  resyncCopy = resync;
+  v5 = resyncCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (v4)
+  if (resyncCopy)
   {
-    v6 = [v4 description];
+    v6 = [resyncCopy description];
     printf("Beginning resync for %s...\n", [v6 UTF8String]);
   }
 
@@ -623,7 +623,7 @@ LABEL_10:
   }
 
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100005880;
@@ -631,7 +631,7 @@ LABEL_10:
   v17 = &v18;
   v9 = v7;
   v16 = v9;
-  [v8 rpcResync:v5 reply:v15];
+  [control rpcResync:v5 reply:v15];
 
   v10 = dispatch_time(0, 300000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -656,17 +656,17 @@ LABEL_10:
   return v12;
 }
 
-- (int64_t)resetCloudKit:(id)a3
+- (int64_t)resetCloudKit:(id)kit
 {
-  v4 = a3;
-  v5 = v4;
+  kitCopy = kit;
+  v5 = kitCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (v4)
+  if (kitCopy)
   {
-    v6 = [v4 description];
+    v6 = [kitCopy description];
     printf("Beginning CloudKit reset for %s...\n", [v6 UTF8String]);
   }
 
@@ -676,7 +676,7 @@ LABEL_10:
   }
 
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100005B00;
@@ -684,7 +684,7 @@ LABEL_10:
   v17 = &v18;
   v9 = v7;
   v16 = v9;
-  [v8 rpcResetCloudKit:v5 reason:@"ckksctl" reply:v15];
+  [control rpcResetCloudKit:v5 reason:@"ckksctl" reply:v15];
 
   v10 = dispatch_time(0, 300000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -709,17 +709,17 @@ LABEL_10:
   return v12;
 }
 
-- (int64_t)resetLocal:(id)a3
+- (int64_t)resetLocal:(id)local
 {
-  v4 = a3;
-  v5 = v4;
+  localCopy = local;
+  v5 = localCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (v4)
+  if (localCopy)
   {
-    v6 = [v4 description];
+    v6 = [localCopy description];
     printf("Beginning local reset for %s...\n", [v6 UTF8String]);
   }
 
@@ -729,7 +729,7 @@ LABEL_10:
   }
 
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100005D78;
@@ -737,7 +737,7 @@ LABEL_10:
   v17 = &v18;
   v9 = v7;
   v16 = v9;
-  [v8 rpcResetLocal:v5 reply:v15];
+  [control rpcResetLocal:v5 reply:v15];
 
   v10 = dispatch_time(0, 180000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -766,7 +766,7 @@ LABEL_10:
 {
   v3 = objc_alloc_init(NSMutableDictionary);
   v4 = dispatch_semaphore_create(0);
-  v5 = [(CKKSControlCLI *)self control];
+  control = [(CKKSControlCLI *)self control];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100005F28;
@@ -775,7 +775,7 @@ LABEL_10:
   v16 = v6;
   v7 = v4;
   v17 = v7;
-  [v5 rpcPerformanceCounters:&v12];
+  [control rpcPerformanceCounters:&v12];
 
   v8 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v7, v8))
@@ -789,16 +789,16 @@ LABEL_10:
   return v6;
 }
 
-- (CKKSControlCLI)initWithCKKSControl:(id)a3
+- (CKKSControlCLI)initWithCKKSControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v9.receiver = self;
   v9.super_class = CKKSControlCLI;
   v6 = [(CKKSControlCLI *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_control, a3);
+    objc_storeStrong(&v6->_control, control);
   }
 
   return v7;

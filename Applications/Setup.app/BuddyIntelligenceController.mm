@@ -2,92 +2,92 @@
 - (BFFFlowItemDelegate)delegate;
 - (BFFNavigationController)weakNavigationController;
 - (BOOL)hasBlackBackground;
-- (BOOL)responsibleForViewController:(id)a3;
+- (BOOL)responsibleForViewController:(id)controller;
 - (id)viewController;
-- (void)controllerCompletedWithContinue:(BOOL)a3;
+- (void)controllerCompletedWithContinue:(BOOL)continue;
 - (void)controllerWasPopped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setNavigationController:(id)a3;
-- (void)siriGMIntroViewControllerContinuePressed:(id)a3;
-- (void)siriGMIntroViewControllerNotNowPressed:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setNavigationController:(id)controller;
+- (void)siriGMIntroViewControllerContinuePressed:(id)pressed;
+- (void)siriGMIntroViewControllerNotNowPressed:(id)pressed;
 @end
 
 @implementation BuddyIntelligenceController
 
 - (id)viewController
 {
-  v2 = [(BuddyIntelligenceController *)self intelligenceController];
+  intelligenceController = [(BuddyIntelligenceController *)self intelligenceController];
 
-  if (v2)
+  if (intelligenceController)
   {
-    v8 = [(BuddyIntelligenceController *)self intelligenceController];
+    intelligenceController2 = [(BuddyIntelligenceController *)self intelligenceController];
   }
 
   else
   {
-    v3 = [(BuddyIntelligenceController *)self viewControllerProviderBlock];
+    viewControllerProviderBlock = [(BuddyIntelligenceController *)self viewControllerProviderBlock];
 
-    if (v3)
+    if (viewControllerProviderBlock)
     {
-      v4 = [(BuddyIntelligenceController *)self viewControllerProviderBlock];
-      v5 = v4[2](v4);
+      viewControllerProviderBlock2 = [(BuddyIntelligenceController *)self viewControllerProviderBlock];
+      v5 = viewControllerProviderBlock2[2](viewControllerProviderBlock2);
       [(BuddyIntelligenceController *)self setIntelligenceController:v5];
     }
 
     else
     {
-      v4 = [objc_alloc(sub_10016A4E8()) initWithDelegate:self];
-      [(BuddyIntelligenceController *)self setIntelligenceController:v4];
+      viewControllerProviderBlock2 = [objc_alloc(sub_10016A4E8()) initWithDelegate:self];
+      [(BuddyIntelligenceController *)self setIntelligenceController:viewControllerProviderBlock2];
     }
 
-    v8 = [(BuddyIntelligenceController *)self intelligenceController];
+    intelligenceController2 = [(BuddyIntelligenceController *)self intelligenceController];
   }
 
-  return v8;
+  return intelligenceController2;
 }
 
-- (void)controllerCompletedWithContinue:(BOOL)a3
+- (void)controllerCompletedWithContinue:(BOOL)continue
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = [(BuddyIntelligenceController *)self weakNavigationController];
-  location = [v17 topViewController];
+  continueCopy = continue;
+  weakNavigationController = [(BuddyIntelligenceController *)self weakNavigationController];
+  location = [weakNavigationController topViewController];
   if (location)
   {
-    v3 = [location view];
-    v4 = [v3 window];
-    [v4 setUserInteractionEnabled:0];
+    view = [location view];
+    window = [view window];
+    [window setUserInteractionEnabled:0];
 
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:location identifier:v6];
   }
 
-  v7 = [(BuddyIntelligenceController *)v20 intelligenceProvider];
+  intelligenceProvider = [(BuddyIntelligenceController *)selfCopy intelligenceProvider];
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_10016A7D0;
   v12 = &unk_10032BAC0;
-  v13 = v20;
-  v15 = v18;
+  v13 = selfCopy;
+  v15 = continueCopy;
   v14 = location;
-  [(IntelligenceProvider *)v7 updateAppleIntelligenceUpsellPreferencesWithDidShow:1 completionHandler:&v8];
+  [(IntelligenceProvider *)intelligenceProvider updateAppleIntelligenceUpsellPreferencesWithDidShow:1 completionHandler:&v8];
 
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&weakNavigationController, 0);
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyIntelligenceController *)v4 setWeakNavigationController:location[0]];
+  objc_storeStrong(location, controller);
+  [(BuddyIntelligenceController *)selfCopy setWeakNavigationController:location[0]];
   objc_storeStrong(location, 0);
 }
 
@@ -99,18 +99,18 @@
 
 - (BOOL)hasBlackBackground
 {
-  v2 = [(BuddyIntelligenceController *)self intelligenceProvider];
-  v3 = [(IntelligenceProvider *)v2 canEnableIntelligence];
+  intelligenceProvider = [(BuddyIntelligenceController *)self intelligenceProvider];
+  canEnableIntelligence = [(IntelligenceProvider *)intelligenceProvider canEnableIntelligence];
   v8 = 0;
   v6 = 0;
   v4 = 0;
-  if (v3)
+  if (canEnableIntelligence)
   {
-    v9 = [(BuddyIntelligenceController *)self viewController];
+    viewController = [(BuddyIntelligenceController *)self viewController];
     v8 = 1;
-    v7 = [v9 traitCollection];
+    traitCollection = [viewController traitCollection];
     v6 = 1;
-    v4 = [v7 userInterfaceStyle] == 2;
+    v4 = [traitCollection userInterfaceStyle] == 2;
   }
 
   v11 = v4;
@@ -125,39 +125,39 @@
   return v11;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyIntelligenceController *)v15 networkProvider];
-  v4 = [(BuddyNetworkProvider *)v3 networkReachable];
+  objc_storeStrong(location, completion);
+  networkProvider = [(BuddyIntelligenceController *)selfCopy networkProvider];
+  networkReachable = [(BuddyNetworkProvider *)networkProvider networkReachable];
 
-  v13 = v4 & 1;
-  v5 = [(BuddyIntelligenceController *)v15 intelligenceProvider];
+  v13 = networkReachable & 1;
+  intelligenceProvider = [(BuddyIntelligenceController *)selfCopy intelligenceProvider];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10016AF04;
   v10 = &unk_10032B020;
-  v11 = v15;
+  v11 = selfCopy;
   v12 = location[0];
-  [(IntelligenceProvider *)v5 shouldShowIntelligenceWithServerCheck:v4 & 1 completionHandler:&v6];
+  [(IntelligenceProvider *)intelligenceProvider shouldShowIntelligenceWithServerCheck:networkReachable & 1 completionHandler:&v6];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)responsibleForViewController:(id)a3
+- (BOOL)responsibleForViewController:(id)controller
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(BuddyIntelligenceController *)v14 viewController];
+  viewController = [(BuddyIntelligenceController *)selfCopy viewController];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [(NSBundle *)v3 isEqual:v5];
   v11 = 0;
@@ -167,9 +167,9 @@
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = 1;
-    v10 = [(NSBundle *)v12 bundleIdentifier];
+    bundleIdentifier = [(NSBundle *)v12 bundleIdentifier];
     v9 = 1;
-    v7 = [(NSString *)v10 containsString:@"UserNotifications"];
+    v7 = [(NSString *)bundleIdentifier containsString:@"UserNotifications"];
   }
 
   v15 = v7 & 1;
@@ -185,12 +185,12 @@
   return v15 & 1;
 }
 
-- (void)siriGMIntroViewControllerContinuePressed:(id)a3
+- (void)siriGMIntroViewControllerContinuePressed:(id)pressed
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pressed);
   oslog = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -202,16 +202,16 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyIntelligenceController *)v9 controllerCompletedWithContinue:1];
+  [(BuddyIntelligenceController *)selfCopy controllerCompletedWithContinue:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)siriGMIntroViewControllerNotNowPressed:(id)a3
+- (void)siriGMIntroViewControllerNotNowPressed:(id)pressed
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pressed);
   oslog = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -223,7 +223,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyIntelligenceController *)v9 controllerCompletedWithContinue:0];
+  [(BuddyIntelligenceController *)selfCopy controllerCompletedWithContinue:0];
   objc_storeStrong(location, 0);
 }
 

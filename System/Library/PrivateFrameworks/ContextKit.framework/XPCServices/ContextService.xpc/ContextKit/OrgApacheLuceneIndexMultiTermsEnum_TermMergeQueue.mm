@@ -1,29 +1,29 @@
 @interface OrgApacheLuceneIndexMultiTermsEnum_TermMergeQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
-- (int)fillTopWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSliceArray:(id)a3;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
+- (int)fillTopWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSliceArray:(id)array;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiTermsEnum_TermMergeQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v4 = *(a3 + 2)) == 0 || !a4)
+  if (!id || (v4 = *(id + 2)) == 0 || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  return [v4 compareToWithId:*(a4 + 2)] >> 31;
+  return [v4 compareToWithId:*(withId + 2)] >> 31;
 }
 
-- (int)fillTopWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSliceArray:(id)a3
+- (int)fillTopWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSliceArray:(id)array
 {
   v22 = [(OrgApacheLuceneUtilPriorityQueue *)self size];
   if (v22)
   {
-    if (a3)
+    if (array)
     {
-      IOSObjectArray_Set(a3, 0, [(OrgApacheLuceneUtilPriorityQueue *)self top]);
+      IOSObjectArray_Set(array, 0, [(OrgApacheLuceneUtilPriorityQueue *)self top]);
       stack = self->stack_;
       if (stack)
       {
@@ -77,13 +77,13 @@ LABEL_9:
             break;
           }
 
-          v17 = *(a3 + 2);
+          v17 = *(array + 2);
           if (v17 <= 0)
           {
             IOSArray_throwOutOfBoundsWithMsg(v17, 0);
           }
 
-          v18 = *(a3 + 3);
+          v18 = *(array + 3);
           if (!v18)
           {
             break;
@@ -91,7 +91,7 @@ LABEL_9:
 
           if ([v16 isEqual:*(v18 + 16)])
           {
-            IOSObjectArray_Set(a3, v7, v15);
+            IOSObjectArray_Set(array, v7, v15);
             v19 = self->stack_;
             v20 = v19->super.size_;
             if ((stack & 0x80000000) != 0 || stack >= v20)

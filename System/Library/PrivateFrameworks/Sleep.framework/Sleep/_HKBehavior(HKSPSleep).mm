@@ -21,33 +21,33 @@
 
 - (uint64_t)hksp_device
 {
-  if ([a1 isAppleWatch])
+  if ([self isAppleWatch])
   {
     return 2;
   }
 
-  if ([a1 isiPad])
+  if ([self isiPad])
   {
     return 4;
   }
 
-  v3 = [a1 currentDeviceClass];
-  if ([v3 isEqualToString:@"iPhone"])
+  currentDeviceClass = [self currentDeviceClass];
+  if ([currentDeviceClass isEqualToString:@"iPhone"])
   {
     v2 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RealityDevice"])
+  else if ([currentDeviceClass isEqualToString:@"RealityDevice"])
   {
     v2 = 6;
   }
 
-  else if ([v3 isEqualToString:@"iPod"])
+  else if ([currentDeviceClass isEqualToString:@"iPod"])
   {
     v2 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Mac"])
+  else if ([currentDeviceClass isEqualToString:@"Mac"])
   {
     v2 = 5;
   }
@@ -62,9 +62,9 @@
 
 - (uint64_t)_hksp_supportsSleep_checkTinker:()HKSPSleep
 {
-  v5 = [a1 hksp_device];
-  v6 = v5;
-  if (v5 <= 3)
+  hksp_device = [self hksp_device];
+  v6 = hksp_device;
+  if (hksp_device <= 3)
   {
     result = 1;
     if (v6 == 1)
@@ -87,7 +87,7 @@
       return result;
     }
 
-    if ([a1 tinkerModeEnabled])
+    if ([self tinkerModeEnabled])
     {
       v9 = HKSPLogForCategory(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -104,17 +104,17 @@
 
   else
   {
-    if (v5 > 5)
+    if (hksp_device > 5)
     {
       return 0;
     }
 
-    if (v5 == 4)
+    if (hksp_device == 4)
     {
-      v13 = [a1 features];
-      v14 = [v13 sleepOnIpad];
+      features = [self features];
+      sleepOnIpad = [features sleepOnIpad];
 
-      if ((v14 & 1) == 0)
+      if ((sleepOnIpad & 1) == 0)
       {
         v9 = HKSPLogForCategory(0);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -133,10 +133,10 @@ LABEL_20:
 
     else
     {
-      v7 = [a1 features];
-      v8 = [v7 sleepOnMac];
+      features2 = [self features];
+      sleepOnMac = [features2 sleepOnMac];
 
-      if ((v8 & 1) == 0)
+      if ((sleepOnMac & 1) == 0)
       {
         v9 = HKSPLogForCategory(0);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -159,18 +159,18 @@ LABEL_19:
 
 - (uint64_t)hksp_supportsSleepWidget
 {
-  result = [a1 hksp_supportsHealthData];
+  result = [self hksp_supportsHealthData];
   if (result)
   {
-    v3 = [a1 hksp_device];
-    if ((v3 - 1) >= 3)
+    hksp_device = [self hksp_device];
+    if ((hksp_device - 1) >= 3)
     {
-      if (v3 == 4)
+      if (hksp_device == 4)
       {
-        v4 = [a1 features];
-        v5 = [v4 sleepOnIpad];
+        features = [self features];
+        sleepOnIpad = [features sleepOnIpad];
 
-        return v5;
+        return sleepOnIpad;
       }
 
       else
@@ -190,21 +190,21 @@ LABEL_19:
 
 - (uint64_t)hksp_supportsWakeUpResults
 {
-  result = [a1 hksp_supportsHealthData];
+  result = [self hksp_supportsHealthData];
   if (result)
   {
-    v3 = [a1 hksp_device];
-    if (v3 == 1 || v3 == 3)
+    hksp_device = [self hksp_device];
+    if (hksp_device == 1 || hksp_device == 3)
     {
       return 1;
     }
 
-    else if (v3 == 2)
+    else if (hksp_device == 2)
     {
-      v4 = [MEMORY[0x277CBEBD0] hksp_internalUserDefaults];
-      v5 = [v4 hksp_watchResultsNotificationsEnabled];
+      hksp_internalUserDefaults = [MEMORY[0x277CBEBD0] hksp_internalUserDefaults];
+      hksp_watchResultsNotificationsEnabled = [hksp_internalUserDefaults hksp_watchResultsNotificationsEnabled];
 
-      return v5;
+      return hksp_watchResultsNotificationsEnabled;
     }
 
     else
@@ -218,10 +218,10 @@ LABEL_19:
 
 - (uint64_t)hksp_supportsLegacySleepAlarms
 {
-  result = [a1 hksp_supportsSleepAlarms];
+  result = [self hksp_supportsSleepAlarms];
   if (result)
   {
-    return (([a1 hksp_device] - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    return (([self hksp_device] - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
   return result;
@@ -229,7 +229,7 @@ LABEL_19:
 
 - (uint64_t)hksp_useDemoSleepData
 {
-  if ([a1 isRunningStoreDemoMode])
+  if ([self isRunningStoreDemoMode])
   {
     v1 = HKSPLogForCategory(0);
     if (os_log_type_enabled(v1, OS_LOG_TYPE_DEFAULT))
@@ -245,12 +245,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x277CBEBD0] hksp_internalUserDefaults];
-  v5 = [v4 hksp_useDemoSleepData];
+  hksp_internalUserDefaults = [MEMORY[0x277CBEBD0] hksp_internalUserDefaults];
+  hksp_useDemoSleepData = [hksp_internalUserDefaults hksp_useDemoSleepData];
 
   v6 = HKSPLogForCategory(0);
   v1 = v6;
-  if (v5)
+  if (hksp_useDemoSleepData)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -279,9 +279,9 @@ LABEL_12:
 
 - (BOOL)hksp_hasActivePairedDevice
 {
-  v0 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v1 = [v0 getActivePairedDevice];
-  v2 = v1 != 0;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  v2 = getActivePairedDevice != 0;
 
   return v2;
 }
@@ -289,7 +289,7 @@ LABEL_12:
 - (uint64_t)hksp_activePairedDeviceSupportsSleep
 {
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C0F3C2C3-0CDE-4DF9-A95A-789AC9A0348B"];
-  v3 = [a1 _hksp_activePairedDeviceSupportsCapability:v2];
+  v3 = [self _hksp_activePairedDeviceSupportsCapability:v2];
 
   return v3;
 }
@@ -297,7 +297,7 @@ LABEL_12:
 - (uint64_t)hksp_activePairedDeviceSupportsSleepStages
 {
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"A70EA46D-407A-4723-A8EF-CFF5DFB423B4"];
-  v3 = [a1 _hksp_activePairedDeviceSupportsCapability:v2];
+  v3 = [self _hksp_activePairedDeviceSupportsCapability:v2];
 
   return v3;
 }
@@ -305,7 +305,7 @@ LABEL_12:
 - (uint64_t)hksp_activePairedDeviceSupportsFocusMode
 {
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"FFDA9C57-8508-4B50-B6D8-EEE862251FC0"];
-  v3 = [a1 _hksp_activePairedDeviceSupportsCapability:v2];
+  v3 = [self _hksp_activePairedDeviceSupportsCapability:v2];
 
   return v3;
 }
@@ -313,7 +313,7 @@ LABEL_12:
 - (uint64_t)hksp_activePairedDeviceSupportsSleepLauncherComplication
 {
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"E49AA0D4-4AA5-47C3-9272-4644AF0E6FA9"];
-  v3 = [a1 _hksp_activePairedDeviceSupportsCapability:v2];
+  v3 = [self _hksp_activePairedDeviceSupportsCapability:v2];
 
   return v3;
 }
@@ -322,24 +322,24 @@ LABEL_12:
 {
   v3 = MEMORY[0x277D2BCF8];
   v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 getActivePairedDevice];
-  v7 = [v6 supportsCapability:v4];
+  sharedInstance = [v3 sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
+  v7 = [getActivePairedDevice supportsCapability:v4];
 
   return v7;
 }
 
 - (BOOL)hksp_activePairedDeviceHasHomeButton
 {
-  v0 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v1 = [v0 getActivePairedDevice];
-  v2 = v1;
-  if (v1)
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  v2 = getActivePairedDevice;
+  if (getActivePairedDevice)
   {
-    v3 = [v1 valueForProperty:*MEMORY[0x277D2BB18]];
-    v4 = [v3 integerValue];
+    v3 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BB18]];
+    integerValue = [v3 integerValue];
 
-    v5 = v4 != 2;
+    v5 = integerValue != 2;
   }
 
   else
@@ -352,10 +352,10 @@ LABEL_12:
 
 - (id)hksp_activePairedDeviceProductType
 {
-  v0 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v1 = [v0 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  v2 = [v1 valueForProperty:*MEMORY[0x277D2BBC0]];
+  v2 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
 
   return v2;
 }
@@ -363,17 +363,17 @@ LABEL_12:
 - (void)hksp_activePairedDeviceHasSleepAppInstalledWithCompletion:()HKSPSleep
 {
   v3 = a3;
-  v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v5 = [v4 getActivePairedDevice];
-  if (v5)
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  if (getActivePairedDevice)
   {
-    v6 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __84___HKBehavior_HKSPSleep__hksp_activePairedDeviceHasSleepAppInstalledWithCompletion___block_invoke;
     v8[3] = &unk_279C74AD8;
     v9 = v3;
-    [v6 applicationIsInstalledOnPairedDevice:v5 withBundleID:@"com.apple.NanoSleep.watchkitapp" completion:v8];
+    [mEMORY[0x277CEAF80] applicationIsInstalledOnPairedDevice:getActivePairedDevice withBundleID:@"com.apple.NanoSleep.watchkitapp" completion:v8];
   }
 
   else
@@ -391,12 +391,12 @@ LABEL_12:
 
 - (uint64_t)hksp_demoMode
 {
-  if ([a1 isRunningStoreDemoMode])
+  if ([self isRunningStoreDemoMode])
   {
     return 1;
   }
 
-  return [a1 runningInStoreDemoModeF201];
+  return [self runningInStoreDemoModeF201];
 }
 
 @end

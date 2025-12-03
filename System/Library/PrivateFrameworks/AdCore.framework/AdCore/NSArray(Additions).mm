@@ -6,18 +6,18 @@
 
 - (id)arrayCappedToMaxItems:()Additions
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 <= a3)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [a1 subarrayWithRange:{v5 - a3, a3}];
+    selfCopy = [self subarrayWithRange:{v5 - a3, a3}];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

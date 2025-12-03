@@ -1,7 +1,7 @@
 @interface NWBrowser
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (NSSet)discoveredEndpoints;
-- (NWBrowser)initWithDescriptor:(id)a3 parameters:(id)a4;
+- (NWBrowser)initWithDescriptor:(id)descriptor parameters:(id)parameters;
 - (id)copyDiscoveredEndpoints;
 - (void)cancel;
 - (void)dealloc;
@@ -10,19 +10,19 @@
 
 @implementation NWBrowser
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"discoveredEndpoints"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"discoveredEndpoints"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NWBrowser;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
@@ -30,19 +30,19 @@
 
 - (NSSet)discoveredEndpoints
 {
-  v2 = [(NWBrowser *)self copyDiscoveredEndpoints];
+  copyDiscoveredEndpoints = [(NWBrowser *)self copyDiscoveredEndpoints];
 
-  return v2;
+  return copyDiscoveredEndpoints;
 }
 
 - (id)copyDiscoveredEndpoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWBrowser *)v2 internalDiscoveredEndpoints];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalDiscoveredEndpoints = [(NWBrowser *)selfCopy internalDiscoveredEndpoints];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalDiscoveredEndpoints;
 }
 
 - (void)dealloc
@@ -55,20 +55,20 @@
 
 - (void)cancel
 {
-  v3 = [(NWBrowser *)self internalBrowser];
+  internalBrowser = [(NWBrowser *)self internalBrowser];
 
-  if (v3)
+  if (internalBrowser)
   {
-    v4 = [(NWBrowser *)self internalBrowser];
-    nw_browser_cancel(v4);
+    internalBrowser2 = [(NWBrowser *)self internalBrowser];
+    nw_browser_cancel(internalBrowser2);
   }
 }
 
-- (NWBrowser)initWithDescriptor:(id)a3 parameters:(id)a4
+- (NWBrowser)initWithDescriptor:(id)descriptor parameters:(id)parameters
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  parametersCopy = parameters;
   v27.receiver = self;
   v27.super_class = NWBrowser;
   v9 = [(NWBrowser *)&v27 init];
@@ -157,11 +157,11 @@ LABEL_24:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v9->_descriptor, a3);
-  objc_storeStrong(&v10->_parameters, a4);
-  v11 = [v7 internalDescriptor];
-  v12 = [v8 internalParameters];
-  v13 = nw_browser_create(v11, v12);
+  objc_storeStrong(&v9->_descriptor, descriptor);
+  objc_storeStrong(&v10->_parameters, parameters);
+  internalDescriptor = [descriptorCopy internalDescriptor];
+  internalParameters = [parametersCopy internalParameters];
+  v13 = nw_browser_create(internalDescriptor, internalParameters);
   internalBrowser = v10->_internalBrowser;
   v10->_internalBrowser = v13;
 
@@ -175,9 +175,9 @@ LABEL_24:
       *buf = 136446722;
       v29 = "[NWBrowser initWithDescriptor:parameters:]";
       v30 = 2114;
-      v31 = v7;
+      v31 = descriptorCopy;
       v32 = 2114;
-      v33 = v8;
+      v33 = parametersCopy;
       _os_log_impl(&dword_181A37000, v16, OS_LOG_TYPE_ERROR, "%{public}s nw_browser_create failed with descriptor %{public}@ and parameters %{public}@", buf, 0x20u);
     }
 
@@ -196,26 +196,26 @@ LABEL_8:
 - (void)setUpdateHandler
 {
   objc_initWeak(&location, self);
-  v3 = [(NWBrowser *)self internalBrowser];
+  internalBrowser = [(NWBrowser *)self internalBrowser];
   if (NWCopyInternalQueue_init_once != -1)
   {
     dispatch_once(&NWCopyInternalQueue_init_once, &__block_literal_global_66536);
   }
 
   v4 = NWCopyInternalQueue_nwQueue;
-  nw_browser_set_queue(v3, v4);
+  nw_browser_set_queue(internalBrowser, v4);
 
-  v5 = [(NWBrowser *)self internalBrowser];
+  internalBrowser2 = [(NWBrowser *)self internalBrowser];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __29__NWBrowser_setUpdateHandler__block_invoke;
   handler[3] = &unk_1E6A397D0;
   objc_copyWeak(&v8, &location);
   handler[4] = self;
-  nw_browser_set_browse_results_changed_handler(v5, handler);
+  nw_browser_set_browse_results_changed_handler(internalBrowser2, handler);
 
-  v6 = [(NWBrowser *)self internalBrowser];
-  nw_browser_start(v6);
+  internalBrowser3 = [(NWBrowser *)self internalBrowser];
+  nw_browser_start(internalBrowser3);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

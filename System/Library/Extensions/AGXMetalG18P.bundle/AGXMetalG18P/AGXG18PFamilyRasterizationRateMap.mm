@@ -1,38 +1,38 @@
 @interface AGXG18PFamilyRasterizationRateMap
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)parameterBufferSizeAndAlign;
-- ($94F468A8D4C62B317260615823C2B210)physicalCoordinate:(id)a3 forLayer:(unint64_t)a4;
-- ($94F468A8D4C62B317260615823C2B210)screenCoordinate:(id)a3 forLayer:(unint64_t)a4;
+- ($94F468A8D4C62B317260615823C2B210)physicalCoordinate:(id)coordinate forLayer:(unint64_t)layer;
+- ($94F468A8D4C62B317260615823C2B210)screenCoordinate:(id)coordinate forLayer:(unint64_t)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalGranularity;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)screenSize;
-- (AGXG18PFamilyRasterizationRateMap)initWithDevice:(id)a3 descriptor:(id)a4;
-- (void)copyParameterDataToBuffer:(id)a3 atOffset:(unint64_t)a4;
+- (AGXG18PFamilyRasterizationRateMap)initWithDevice:(id)device descriptor:(id)descriptor;
+- (void)copyParameterDataToBuffer:(id)buffer atOffset:(unint64_t)offset;
 - (void)dealloc;
-- (void)resetUsingDescriptor:(id)a3;
+- (void)resetUsingDescriptor:(id)descriptor;
 @end
 
 @implementation AGXG18PFamilyRasterizationRateMap
 
-- ($94F468A8D4C62B317260615823C2B210)screenCoordinate:(id)a3 forLayer:(unint64_t)a4
+- ($94F468A8D4C62B317260615823C2B210)screenCoordinate:(id)coordinate forLayer:(unint64_t)layer
 {
   impl = self->_impl;
   v5 = impl[4];
-  LODWORD(v6) = v5 - 1;
-  if (v5 <= a4)
+  LODWORD(layerCopy) = v5 - 1;
+  if (v5 <= layer)
   {
-    v6 = v6;
+    layerCopy = layerCopy;
   }
 
   else
   {
-    v6 = a4;
+    layerCopy = layer;
   }
 
-  v7 = &impl[2050 * v6 + 5];
-  if (a3.var0 >= 0.0)
+  v7 = &impl[2050 * layerCopy + 5];
+  if (coordinate.var0 >= 0.0)
   {
-    v9 = impl[v6 + 12310];
-    v10 = (a3.var0 * 0.03125);
+    v9 = impl[layerCopy + 12310];
+    v10 = (coordinate.var0 * 0.03125);
     if (v9 <= v10)
     {
       v8 = v9 - 1;
@@ -52,10 +52,10 @@
   v11 = (v7 + 8 * v8);
   v12 = *v11;
   v13 = v11[1];
-  if (a3.var1 >= 0.0)
+  if (coordinate.var1 >= 0.0)
   {
     v15 = impl[12312];
-    v16 = (a3.var1 * 0.03125);
+    v16 = (coordinate.var1 * 0.03125);
     if (v15 <= v16)
     {
       v14 = v15 - 1;
@@ -72,39 +72,39 @@
     v14 = 0;
   }
 
-  v17 = v12 * (a3.var0 - v13);
-  v18 = *&impl[2 * v14 + 8205] * (a3.var1 - *&impl[2 * v14 + 8206]);
+  v17 = v12 * (coordinate.var0 - v13);
+  v18 = *&impl[2 * v14 + 8205] * (coordinate.var1 - *&impl[2 * v14 + 8206]);
   result.var1 = v18;
   result.var0 = v17;
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)physicalCoordinate:(id)a3 forLayer:(unint64_t)a4
+- ($94F468A8D4C62B317260615823C2B210)physicalCoordinate:(id)coordinate forLayer:(unint64_t)layer
 {
   impl = self->_impl;
   v5 = impl[4];
-  if (v5 <= a4)
+  if (v5 <= layer)
   {
-    v6 = v5 - 1;
+    layerCopy = v5 - 1;
   }
 
   else
   {
-    v6 = a4;
+    layerCopy = layer;
   }
 
-  v7 = &impl[2050 * v6 + 4105];
-  if (a3.var0 >= 0.0)
+  v7 = &impl[2050 * layerCopy + 4105];
+  if (coordinate.var0 >= 0.0)
   {
     v9 = impl[12313];
-    if (v9 <= (a3.var0 * 0.03125))
+    if (v9 <= (coordinate.var0 * 0.03125))
     {
       v8 = v9 - 1;
     }
 
     else
     {
-      v8 = (a3.var0 * 0.03125);
+      v8 = (coordinate.var0 * 0.03125);
     }
   }
 
@@ -113,7 +113,7 @@
     v8 = 0;
   }
 
-  if ((a3.var0 - (32 * v8)) >= vcvts_n_f32_u32(*(v7 + 8 * v8 + 4), 1uLL))
+  if ((coordinate.var0 - (32 * v8)) >= vcvts_n_f32_u32(*(v7 + 8 * v8 + 4), 1uLL))
   {
     ++v8;
   }
@@ -121,17 +121,17 @@
   v10 = v7 + 8 * v8;
   v11 = *v10;
   v12 = *(v10 + 4);
-  if (a3.var1 >= 0.0)
+  if (coordinate.var1 >= 0.0)
   {
     v14 = impl[12314];
-    if (v14 <= (a3.var1 * 0.03125))
+    if (v14 <= (coordinate.var1 * 0.03125))
     {
       v13 = v14 - 1;
     }
 
     else
     {
-      v13 = (a3.var1 * 0.03125);
+      v13 = (coordinate.var1 * 0.03125);
     }
   }
 
@@ -141,19 +141,19 @@
   }
 
   v15 = impl + 10255;
-  v16 = vcvts_n_f32_s32(v12 >> 8, 8uLL) + (a3.var0 * v11);
-  if ((a3.var1 - (32 * v13)) >= vcvts_n_f32_u32(LOBYTE(v15[2 * v13 + 1]), 1uLL))
+  v16 = vcvts_n_f32_s32(v12 >> 8, 8uLL) + (coordinate.var0 * v11);
+  if ((coordinate.var1 - (32 * v13)) >= vcvts_n_f32_u32(LOBYTE(v15[2 * v13 + 1]), 1uLL))
   {
     ++v13;
   }
 
-  v17 = vcvts_n_f32_s32(v15[2 * v13 + 1] >> 8, 8uLL) + (a3.var1 * *&v15[2 * v13]);
+  v17 = vcvts_n_f32_s32(v15[2 * v13 + 1] >> 8, 8uLL) + (coordinate.var1 * *&v15[2 * v13]);
   result.var1 = v17;
   result.var0 = v16;
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer
 {
   var2 = self[2].var2;
   v5 = *(var2 + 4 * a4 + 49220);
@@ -164,32 +164,32 @@
   return self;
 }
 
-- (void)copyParameterDataToBuffer:(id)a3 atOffset:(unint64_t)a4
+- (void)copyParameterDataToBuffer:(id)buffer atOffset:(unint64_t)offset
 {
-  v5 = ([a3 contents] + a4);
+  v5 = ([buffer contents] + offset);
   v6 = self->_impl + 20;
 
   memcpy(v5, v6, 0xC030uLL);
 }
 
-- (void)resetUsingDescriptor:(id)a3
+- (void)resetUsingDescriptor:(id)descriptor
 {
   v8 = 0;
-  [a3 layerPointer:&v8];
+  [descriptor layerPointer:&v8];
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  if (a3)
+  if (descriptor)
   {
-    [a3 screenSize];
+    [descriptor screenSize];
   }
 
-  [a3 skipSampleValidationAndApplySampleAtTileGranularity];
-  [a3 skipSampleValidationAndInterpolation];
+  [descriptor skipSampleValidationAndApplySampleAtTileGranularity];
+  [descriptor skipSampleValidationAndInterpolation];
   AGX::WarpFunction<AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::initFactors(self->_impl);
 }
 
-- (AGXG18PFamilyRasterizationRateMap)initWithDevice:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyRasterizationRateMap)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v29 = *MEMORY[0x29EDCA608];
   v26.receiver = self;
@@ -198,20 +198,20 @@
   if (v6)
   {
     v25 = 0;
-    [a4 layerPointer:&v25];
-    if (a4)
+    [descriptor layerPointer:&v25];
+    if (descriptor)
     {
-      [a4 screenSize];
+      [descriptor screenSize];
     }
 
-    [a4 skipSampleValidationAndApplySampleAtTileGranularity];
-    [a4 skipSampleValidationAndInterpolation];
-    v7 = [a4 mutability];
-    [a4 minFactor];
+    [descriptor skipSampleValidationAndApplySampleAtTileGranularity];
+    [descriptor skipSampleValidationAndInterpolation];
+    mutability = [descriptor mutability];
+    [descriptor minFactor];
     v9 = v8;
     v10 = malloc_type_calloc(0xC120uLL, 1uLL, 0x10F1040AFC94ABCuLL);
     v6->_impl = v10;
-    if (v10 && ((v11 = v10, bzero(v10 + 8, 0xC118uLL), *v11 = &unk_2A23FA658, impl = v6->_impl, v13 = v25, *(impl + 49320) = v7 == 1, v14 = *(a3 + 106), *(impl + 8) = a3, v7 != 1) ? (v15 = 49408) : (v15 = 98608), AGX::Heap<true>::allocateImpl(&v27, v14 + 6832, v15, (impl + 49264)), v16 = v28[0], *(impl + 49272) = v27, *(impl + 49288) = v16, *(impl + 49297) = *(v28 + 9), *(impl + 49296)))
+    if (v10 && ((v11 = v10, bzero(v10 + 8, 0xC118uLL), *v11 = &unk_2A23FA658, impl = v6->_impl, v13 = v25, *(impl + 49320) = mutability == 1, v14 = *(device + 106), *(impl + 8) = device, mutability != 1) ? (v15 = 49408) : (v15 = 98608), AGX::Heap<true>::allocateImpl(&v27, v14 + 6832, v15, (impl + 49264)), v16 = v28[0], *(impl + 49272) = v27, *(impl + 49288) = v16, *(impl + 49297) = *(v28 + 9), *(impl + 49296)))
     {
       v17 = *(impl + 49272);
       v18 = *(impl + 49280);

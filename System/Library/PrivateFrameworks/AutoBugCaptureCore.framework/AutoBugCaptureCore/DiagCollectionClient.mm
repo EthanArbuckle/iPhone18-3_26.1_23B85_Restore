@@ -1,9 +1,9 @@
 @interface DiagCollectionClient
 - (DiagCollectionClient)init;
-- (DiagCollectionClient)initWithDestinationDirectory:(id)a3;
+- (DiagCollectionClient)initWithDestinationDirectory:(id)directory;
 - (id)setupXPCInterface;
-- (void)collectDEPayloadsWithIdentifier:(id)a3 diagnosticExtensionsWithParameters:(id)a4 queue:(id)a5 reply:(id)a6;
-- (void)moveDiagnosticFilesToDestination:(id)a3 reply:(id)a4;
+- (void)collectDEPayloadsWithIdentifier:(id)identifier diagnosticExtensionsWithParameters:(id)parameters queue:(id)queue reply:(id)reply;
+- (void)moveDiagnosticFilesToDestination:(id)destination reply:(id)reply;
 @end
 
 @implementation DiagCollectionClient
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (DiagCollectionClient)initWithDestinationDirectory:(id)a3
+- (DiagCollectionClient)initWithDestinationDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = DiagCollectionClient;
   v6 = [(DiagCollectionClient *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->destinationDirectory, a3);
+    objc_storeStrong(&v6->destinationDirectory, directory);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v9 = dispatch_queue_create("com.apple.autobugcapture.diagcollectionclient.queue", v8);
     queue = v7->_queue;
@@ -37,10 +37,10 @@
 
 - (id)setupXPCInterface
 {
-  v2 = [(DiagCollectionClient *)self currentLoginUserID];
-  if (v2)
+  currentLoginUserID = [(DiagCollectionClient *)self currentLoginUserID];
+  if (currentLoginUserID)
   {
-    v3 = v2;
+    v3 = currentLoginUserID;
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.symptom_diagnostics_collection" options:0];
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28538CC28];
     [v4 setRemoteObjectInterface:v5];
@@ -51,8 +51,8 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 remoteObjectInterface];
-    [v12 setClasses:v11 forSelector:sel_collectPayloadsWithIdentifier_diagnosticExtensions_reply_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [v4 remoteObjectInterface];
+    [remoteObjectInterface setClasses:v11 forSelector:sel_collectPayloadsWithIdentifier_diagnosticExtensions_reply_ argumentIndex:0 ofReply:1];
 
     [v4 setInvalidationHandler:&__block_literal_global_7];
     [v4 setInterruptionHandler:&__block_literal_global_65];
@@ -101,23 +101,23 @@ void __41__DiagCollectionClient_setupXPCInterface__block_invoke_63()
   }
 }
 
-- (void)moveDiagnosticFilesToDestination:(id)a3 reply:(id)a4
+- (void)moveDiagnosticFilesToDestination:(id)destination reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = MEMORY[0x277CCAA00];
-  v8 = a3;
-  v9 = [v7 defaultManager];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  destinationCopy = destination;
+  defaultManager = [v7 defaultManager];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__DiagCollectionClient_moveDiagnosticFilesToDestination_reply___block_invoke;
   v15[3] = &unk_278CF0A30;
   v15[4] = self;
-  v16 = v9;
-  v11 = v10;
+  v16 = defaultManager;
+  v11 = dictionary;
   v17 = v11;
-  v12 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v15];
+  v12 = defaultManager;
+  [destinationCopy enumerateKeysAndObjectsUsingBlock:v15];
 
   v13 = diagcollectLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -126,9 +126,9 @@ void __41__DiagCollectionClient_setupXPCInterface__block_invoke_63()
     _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEBUG, "DiagCollectionClient: Finished moving all DiagnosticExtension files", v14, 2u);
   }
 
-  if (v6)
+  if (replyCopy)
   {
-    v6[2](v6, v11);
+    replyCopy[2](replyCopy, v11);
   }
 }
 
@@ -268,27 +268,27 @@ void __63__DiagCollectionClient_moveDiagnosticFilesToDestination_reply___block_i
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectDEPayloadsWithIdentifier:(id)a3 diagnosticExtensionsWithParameters:(id)a4 queue:(id)a5 reply:(id)a6
+- (void)collectDEPayloadsWithIdentifier:(id)identifier diagnosticExtensionsWithParameters:(id)parameters queue:(id)queue reply:(id)reply
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  queueCopy = queue;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if ([v10 length])
+    if ([identifierCopy length])
     {
-      v14 = [(DiagCollectionClient *)self setupXPCInterface];
-      v15 = v14;
-      if (v14)
+      setupXPCInterface = [(DiagCollectionClient *)self setupXPCInterface];
+      v15 = setupXPCInterface;
+      if (setupXPCInterface)
       {
         *v48 = 0;
         v49 = v48;
         v50 = 0x2020000000;
         v51 = 0;
-        v16 = [v14 _queue];
-        v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v16);
+        _queue = [setupXPCInterface _queue];
+        v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, _queue);
 
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
@@ -297,9 +297,9 @@ void __63__DiagCollectionClient_moveDiagnosticFilesToDestination_reply___block_i
         v18 = v17;
         v44 = v18;
         v47 = v48;
-        v19 = v12;
+        v19 = queueCopy;
         v45 = v19;
-        v20 = v13;
+        v20 = replyCopy;
         v46 = v20;
         v29 = [v15 remoteObjectProxyWithErrorHandler:v43];
         if (v29)
@@ -354,7 +354,7 @@ void __63__DiagCollectionClient_moveDiagnosticFilesToDestination_reply___block_i
           v35[1] = self;
           v36 = v19;
           v37 = v20;
-          [v29 collectPayloadsWithIdentifier:v10 diagnosticExtensionsWithParameters:v11 reply:v34];
+          [v29 collectPayloadsWithIdentifier:identifierCopy diagnosticExtensionsWithParameters:parametersCopy reply:v34];
 
           v27 = v35;
         }
@@ -393,8 +393,8 @@ void __63__DiagCollectionClient_moveDiagnosticFilesToDestination_reply___block_i
         v30[1] = 3221225472;
         v30[2] = __103__DiagCollectionClient_collectDEPayloadsWithIdentifier_diagnosticExtensionsWithParameters_queue_reply___block_invoke_83;
         v30[3] = &unk_278CF0A58;
-        v31 = v13;
-        dispatch_async(v12, v30);
+        v31 = replyCopy;
+        dispatch_async(queueCopy, v30);
       }
     }
 
@@ -404,8 +404,8 @@ void __63__DiagCollectionClient_moveDiagnosticFilesToDestination_reply___block_i
       block[1] = 3221225472;
       block[2] = __103__DiagCollectionClient_collectDEPayloadsWithIdentifier_diagnosticExtensionsWithParameters_queue_reply___block_invoke;
       block[3] = &unk_278CF0A58;
-      v53 = v13;
-      dispatch_async(v12, block);
+      v53 = replyCopy;
+      dispatch_async(queueCopy, block);
       v15 = v53;
     }
   }

@@ -1,15 +1,15 @@
 @interface CALayerHost
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
 + (id)allLayerHosts;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)asynchronousOpaque;
 - (BOOL)inheritsSecurity;
 - (BOOL)preservesFlip;
 - (BOOL)rendersAsynchronously;
 - (BOOL)resizesHostedContext;
 - (BOOL)sequestered;
-- (BOOL)shouldArchiveValueForKey:(id)a3;
+- (BOOL)shouldArchiveValueForKey:(id)key;
 - (BOOL)stopsHitTestTransformAccumulation;
 - (BOOL)stopsSecureSuperlayersValidation;
 - (BOOL)transformsToScreenSpace;
@@ -19,25 +19,25 @@
 - (NSString)zombificationMode;
 - (double)asynchronousRenderPeriod;
 - (unsigned)contextId;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
-- (void)layerDidBecomeVisible:(BOOL)a3;
-- (void)setAsynchronousOpaque:(BOOL)a3;
-- (void)setAsynchronousRenderPeriod:(double)a3;
-- (void)setAsynchronousRenderTimes:(id)a3;
-- (void)setContextId:(unsigned int)a3;
-- (void)setHostingToken:(id)a3;
-- (void)setInheritsSecurity:(BOOL)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)layerDidBecomeVisible:(BOOL)visible;
+- (void)setAsynchronousOpaque:(BOOL)opaque;
+- (void)setAsynchronousRenderPeriod:(double)period;
+- (void)setAsynchronousRenderTimes:(id)times;
+- (void)setContextId:(unsigned int)id;
+- (void)setHostingToken:(id)token;
+- (void)setInheritsSecurity:(BOOL)security;
 - (void)setNeedsAuthoritativeHostingToken;
-- (void)setPreservesFlip:(BOOL)a3;
-- (void)setRendersAsynchronously:(BOOL)a3;
-- (void)setResizesHostedContext:(BOOL)a3;
-- (void)setSequestered:(BOOL)a3;
-- (void)setStopsHitTestTransformAccumulation:(BOOL)a3;
-- (void)setStopsSecureSuperlayersValidation:(BOOL)a3;
-- (void)setTransformsToScreenSpace:(BOOL)a3;
-- (void)setZombificationMode:(id)a3;
+- (void)setPreservesFlip:(BOOL)flip;
+- (void)setRendersAsynchronously:(BOOL)asynchronously;
+- (void)setResizesHostedContext:(BOOL)context;
+- (void)setSequestered:(BOOL)sequestered;
+- (void)setStopsHitTestTransformAccumulation:(BOOL)accumulation;
+- (void)setStopsSecureSuperlayersValidation:(BOOL)validation;
+- (void)setTransformsToScreenSpace:(BOOL)space;
+- (void)setZombificationMode:(id)mode;
 @end
 
 @implementation CALayerHost
@@ -245,72 +245,72 @@ LABEL_8:
   [(CALayer *)&v4 dealloc];
 }
 
-- (BOOL)shouldArchiveValueForKey:(id)a3
+- (BOOL)shouldArchiveValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (CAInternAtom(a3, 1) == 306)
+  if (CAInternAtom(key, 1) == 306)
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = CALayerHost;
-  return [(CALayer *)&v6 shouldArchiveValueForKey:a3];
+  return [(CALayer *)&v6 shouldArchiveValueForKey:key];
 }
 
-- (void)setZombificationMode:(id)a3
+- (void)setZombificationMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = mode;
   CA::Layer::setter(self->super._attr.layer, 0x2FD, 3, v3);
 }
 
-- (void)setStopsSecureSuperlayersValidation:(BOOL)a3
+- (void)setStopsSecureSuperlayersValidation:(BOOL)validation
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x2AF, 6, &v3);
+  validationCopy = validation;
+  CA::Layer::setter(self->super._attr.layer, 0x2AF, 6, &validationCopy);
 }
 
-- (void)setStopsHitTestTransformAccumulation:(BOOL)a3
+- (void)setStopsHitTestTransformAccumulation:(BOOL)accumulation
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x2AE, 6, &v3);
+  accumulationCopy = accumulation;
+  CA::Layer::setter(self->super._attr.layer, 0x2AE, 6, &accumulationCopy);
 }
 
-- (void)setSequestered:(BOOL)a3
+- (void)setSequestered:(BOOL)sequestered
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x27C, 6, &v3);
+  sequesteredCopy = sequestered;
+  CA::Layer::setter(self->super._attr.layer, 0x27C, 6, &sequesteredCopy);
 }
 
-- (void)setTransformsToScreenSpace:(BOOL)a3
+- (void)setTransformsToScreenSpace:(BOOL)space
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x2CD, 6, &v3);
+  spaceCopy = space;
+  CA::Layer::setter(self->super._attr.layer, 0x2CD, 6, &spaceCopy);
 }
 
-- (void)setResizesHostedContext:(BOOL)a3
+- (void)setResizesHostedContext:(BOOL)context
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x261, 6, &v3);
+  contextCopy = context;
+  CA::Layer::setter(self->super._attr.layer, 0x261, 6, &contextCopy);
 }
 
-- (void)setPreservesFlip:(BOOL)a3
+- (void)setPreservesFlip:(BOOL)flip
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x245, 6, &v3);
+  flipCopy = flip;
+  CA::Layer::setter(self->super._attr.layer, 0x245, 6, &flipCopy);
 }
 
-- (void)setAsynchronousRenderTimes:(id)a3
+- (void)setAsynchronousRenderTimes:(id)times
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if ([a3 count] >= 0x401)
+  if ([times count] >= 0x401)
   {
     if (x_log_get_api::once[0] != -1)
     {
@@ -327,37 +327,37 @@ LABEL_8:
 
   else
   {
-    *&v6[0] = a3;
+    *&v6[0] = times;
     CA::Layer::setter(self->super._attr.layer, 0x33, 3, v6);
   }
 }
 
-- (void)setAsynchronousRenderPeriod:(double)a3
+- (void)setAsynchronousRenderPeriod:(double)period
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = period;
   CA::Layer::setter(self->super._attr.layer, 0x32, 0x12, v3);
 }
 
-- (void)setAsynchronousOpaque:(BOOL)a3
+- (void)setAsynchronousOpaque:(BOOL)opaque
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x31, 6, &v3);
+  opaqueCopy = opaque;
+  CA::Layer::setter(self->super._attr.layer, 0x31, 6, &opaqueCopy);
 }
 
-- (void)setRendersAsynchronously:(BOOL)a3
+- (void)setRendersAsynchronously:(BOOL)asynchronously
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x25B, 6, &v3);
+  asynchronouslyCopy = asynchronously;
+  CA::Layer::setter(self->super._attr.layer, 0x25B, 6, &asynchronouslyCopy);
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x13A, 6, &v3);
+  securityCopy = security;
+  CA::Layer::setter(self->super._attr.layer, 0x13A, 6, &securityCopy);
 }
 
 - (void)setNeedsAuthoritativeHostingToken
@@ -372,14 +372,14 @@ LABEL_8:
   }
 }
 
-- (void)setHostingToken:(id)a3
+- (void)setHostingToken:(id)token
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  *&v6[0] = a3;
+  *&v6[0] = token;
   CA::Layer::setter(self->super._attr.layer, 0x132, 2, v6);
-  if (a3)
+  if (token)
   {
-    v5 = *(a3 + 6);
+    v5 = *(token + 6);
   }
 
   else
@@ -391,14 +391,14 @@ LABEL_8:
   CA::Layer::setter(self->super._attr.layer, 0x9C, 0xC, v6);
 }
 
-- (void)setContextId:(unsigned int)a3
+- (void)setContextId:(unsigned int)id
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (id)
   {
     objc_opt_self();
     v6 = 0xFFFFFFFF00000000;
-    v7 = a3;
+    idCopy = id;
     v8 = 1818454372;
     v5 = [[CAHostingToken alloc] _initWithPort:&v6 data:?];
     [(CALayerHost *)self setHostingToken:?];
@@ -414,10 +414,10 @@ LABEL_8:
 - (unsigned)contextId
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(CALayerHost *)self hostingToken];
-  if (v3)
+  hostingToken = [(CALayerHost *)self hostingToken];
+  if (hostingToken)
   {
-    return v3->_data.cid;
+    return hostingToken->_data.cid;
   }
 
   v5 = 0;
@@ -425,11 +425,11 @@ LABEL_8:
   return v5;
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v7 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!visible)
   {
     v5 = CA::Transaction::ensure_compat(self);
     CA::Layer::set_commit_needed(self->super._attr.layer, v5, 0);
@@ -437,14 +437,14 @@ LABEL_8:
 
   v6.receiver = self;
   v6.super_class = CALayerHost;
-  [(CALayer *)&v6 layerDidBecomeVisible:v3];
+  [(CALayer *)&v6 layerDidBecomeVisible:visibleCopy];
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(14, [CALayerHost _renderLayerDefinesProperty:]::atoms, a3) != -1)
+  if (CAAtomIndexInArray(14, [CALayerHost _renderLayerDefinesProperty:]::atoms, property) != -1)
   {
     return 1;
   }
@@ -454,18 +454,18 @@ LABEL_8:
   return [(CALayer *)&v6 _renderLayerDefinesProperty:v3];
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v26 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = CALayerHost;
-  v7 = [(CALayer *)&v25 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (!v7 || (*(a5 + 2) & 1) == 0)
+  v7 = [(CALayer *)&v25 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (!v7 || (*(commitFlags + 2) & 1) == 0)
   {
     return v7;
   }
 
-  v8 = [(CALayerHost *)self hostingToken];
+  hostingToken = [(CALayerHost *)self hostingToken];
   if (x_malloc_get_zone::once != -1)
   {
     dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -475,10 +475,10 @@ LABEL_8:
   v10 = v9;
   if (v9)
   {
-    if (v8)
+    if (hostingToken)
     {
-      port = v8->_port;
-      cid = v8->_data.cid;
+      port = hostingToken->_port;
+      cid = hostingToken->_data.cid;
     }
 
     else
@@ -523,11 +523,11 @@ LABEL_8:
     v10[3] |= 0x800u;
   }
 
-  v14 = [(CALayerHost *)self asynchronousRenderTimes];
-  if ([(NSArray *)v14 count])
+  asynchronousRenderTimes = [(CALayerHost *)self asynchronousRenderTimes];
+  if ([(NSArray *)asynchronousRenderTimes count])
   {
-    v15 = -[NSArray indexOfObject:inSortedRange:options:usingComparator:](v14, "indexOfObject:inSortedRange:options:usingComparator:", [MEMORY[0x1E696AD98] numberWithLongLong:mach_continuous_time()], 0, -[NSArray count](v14, "count"), 1024, &__block_literal_global_18873);
-    v16 = [(NSArray *)v14 count]- v15;
+    v15 = -[NSArray indexOfObject:inSortedRange:options:usingComparator:](asynchronousRenderTimes, "indexOfObject:inSortedRange:options:usingComparator:", [MEMORY[0x1E696AD98] numberWithLongLong:mach_continuous_time()], 0, -[NSArray count](asynchronousRenderTimes, "count"), 1024, &__block_literal_global_18873);
+    v16 = [(NSArray *)asynchronousRenderTimes count]- v15;
     std::vector<unsigned long long>::resize(v10 + 7, v16);
     if (v16 >= 1)
     {
@@ -536,7 +536,7 @@ LABEL_8:
       v19 = -1;
       do
       {
-        *v17++ = [-[NSArray objectAtIndexedSubscript:](v14 objectAtIndexedSubscript:{-[NSArray count](v14, "count") + v19--), "unsignedLongLongValue"}];
+        *v17++ = [-[NSArray objectAtIndexedSubscript:](asynchronousRenderTimes objectAtIndexedSubscript:{-[NSArray count](asynchronousRenderTimes, "count") + v19--), "unsignedLongLongValue"}];
         --v18;
       }
 
@@ -581,20 +581,20 @@ LABEL_8:
     v10[3] |= 0x10000u;
   }
 
-  v22 = [(CALayerHost *)self zombificationMode];
-  if ([(NSString *)v22 isEqualToString:@"default"])
+  zombificationMode = [(CALayerHost *)self zombificationMode];
+  if ([(NSString *)zombificationMode isEqualToString:@"default"])
   {
     v23 = 0x20000;
   }
 
-  else if ([(NSString *)v22 isEqualToString:@"always"])
+  else if ([(NSString *)zombificationMode isEqualToString:@"always"])
   {
     v23 = 0x40000;
   }
 
   else
   {
-    if (![(NSString *)v22 isEqualToString:@"never"])
+    if (![(NSString *)zombificationMode isEqualToString:@"never"])
     {
       CA::Render::Layer::set_subclass(v7, v10);
       if (!v10)
@@ -619,10 +619,10 @@ LABEL_43:
   return v7;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = CAAtomIndexInArray(14, [CALayerHost didChangeValueForKey:]::atoms, v5);
   if (v6 != -1)
   {
@@ -632,33 +632,33 @@ LABEL_43:
 
   v8.receiver = self;
   v8.super_class = CALayerHost;
-  [(CALayerHost *)&v8 didChangeValueForKey:a3];
+  [(CALayerHost *)&v8 didChangeValueForKey:key];
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CALayerHost;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"zombificationMode"])
+  if ([key isEqualToString:@"zombificationMode"])
   {
     return @"default";
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CALayerHost;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
 + (id)allLayerHosts

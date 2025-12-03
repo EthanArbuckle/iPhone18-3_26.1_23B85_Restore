@@ -1,37 +1,37 @@
 @interface MCContainerParallelizer
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (CGColor)backgroundColor;
 - (MCContainerParallelizer)init;
-- (MCContainerParallelizer)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCContainerParallelizer)initWithImprint:(id)imprint andMontage:(id)montage;
 - (NSArray)zOrderedPlugs;
 - (NSSet)plugs;
 - (id)imprint;
-- (id)plugForID:(id)a3;
-- (id)setPlugForContainer:(id)a3 forID:(id)a4;
-- (id)setPlugProxyForPlug:(id)a3;
+- (id)plugForID:(id)d;
+- (id)setPlugForContainer:(id)container forID:(id)d;
+- (id)setPlugProxyForPlug:(id)plug;
 - (unint64_t)countOfPlugs;
-- (void)changeIDOfPlug:(id)a3 toID:(id)a4;
+- (void)changeIDOfPlug:(id)plug toID:(id)d;
 - (void)demolish;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllPlugs;
-- (void)removePlug:(id)a3;
-- (void)removePlugForID:(id)a3;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setBackgroundColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
+- (void)removePlug:(id)plug;
+- (void)removePlugForID:(id)d;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setBackgroundColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 @end
 
 @implementation MCContainerParallelizer
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"zOrderedPlugs"])
+  if ([key isEqualToString:@"zOrderedPlugs"])
   {
     return [NSSet setWithObjects:@"plugs", 0];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MCContainerParallelizer;
-  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
 - (MCContainerParallelizer)init
@@ -47,14 +47,14 @@
   return v2;
 }
 
-- (MCContainerParallelizer)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCContainerParallelizer)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v20.receiver = self;
   v20.super_class = MCContainerParallelizer;
   v6 = [MCContainer initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v7 = [a3 objectForKey:@"plugs"];
+    v7 = [imprint objectForKey:@"plugs"];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -73,7 +73,7 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [MCObject objectWithImprint:*(*(&v16 + 1) + 8 * i) andMontage:a4];
+          v12 = [MCObject objectWithImprint:*(*(&v16 + 1) + 8 * i) andMontage:montage];
           [(NSMutableDictionary *)v6->mPlugs setObject:v12 forKey:[(MCObject *)v12 idInSupercontainer]];
           [(MCObject *)v12 setSupercontainer:v6];
           if (![(MCObject *)v6 isSnapshot])
@@ -88,7 +88,7 @@
       while (v9);
     }
 
-    v13 = [a3 objectForKey:@"backgroundColor"];
+    v13 = [imprint objectForKey:@"backgroundColor"];
     if (v13)
     {
       components = CGRectFromString(v13);
@@ -109,8 +109,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->mPlugs objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mPlugs objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -120,7 +120,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -132,7 +132,7 @@
         [v8 demolish];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -157,15 +157,15 @@
 {
   v17.receiver = self;
   v17.super_class = MCContainerParallelizer;
-  v3 = [(MCContainer *)&v17 imprint];
+  imprint = [(MCContainer *)&v17 imprint];
   v4 = objc_autoreleasePoolPush();
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MCContainerParallelizer *)self plugs];
-  v7 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  plugs = [(MCContainerParallelizer *)self plugs];
+  v7 = [(NSSet *)plugs countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -177,7 +177,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(plugs);
         }
 
         [v5 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * v10), "imprint")}];
@@ -185,27 +185,27 @@
       }
 
       while (v8 != v10);
-      v8 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [(NSSet *)plugs countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  [v3 setObject:v5 forKey:@"plugs"];
+  [imprint setObject:v5 forKey:@"plugs"];
   mBackgroundColor = self->mBackgroundColor;
   if (mBackgroundColor)
   {
     v19 = *CGColorGetComponents(mBackgroundColor);
-    [v3 setObject:NSStringFromCGRect(v19) forKey:@"backgroundColor"];
+    [imprint setObject:NSStringFromCGRect(v19) forKey:@"backgroundColor"];
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return imprint;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"zIndex", a4, a5, a6}])
+  if ([path isEqualToString:{@"zIndex", object, change, context}])
   {
     [(MCContainerParallelizer *)self willChangeValueForKey:@"zOrderedPlugs"];
     mPlugs = self->mPlugs;
@@ -227,17 +227,17 @@
   return v3;
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
-  if (!CGColorEqualToColor(a3, self->mBackgroundColor))
+  if (!CGColorEqualToColor(color, self->mBackgroundColor))
   {
     objc_sync_enter(self);
     [(MCContainerParallelizer *)self willChangeValueForKey:@"backgroundColor"];
     CGColorRelease(self->mBackgroundColor);
-    NumberOfComponents = CGColorGetNumberOfComponents(a3);
+    NumberOfComponents = CGColorGetNumberOfComponents(color);
     if (NumberOfComponents == 2)
     {
-      v6 = CGColorGetComponents(a3);
+      v6 = CGColorGetComponents(color);
       components[0] = *v6;
       components[1] = components[0];
       components[2] = components[0];
@@ -249,7 +249,7 @@
 
     else if (NumberOfComponents == 4)
     {
-      self->mBackgroundColor = CGColorRetain(a3);
+      self->mBackgroundColor = CGColorRetain(color);
     }
 
     else
@@ -263,15 +263,15 @@
   }
 }
 
-- (void)setBackgroundColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (void)setBackgroundColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   objc_sync_enter(self);
   [(MCContainerParallelizer *)self willChangeValueForKey:@"backgroundColor"];
   CGColorRelease(self->mBackgroundColor);
-  components[0] = a3;
-  components[1] = a4;
-  components[2] = a5;
-  components[3] = a6;
+  components[0] = red;
+  components[1] = green;
+  components[2] = blue;
+  components[3] = alpha;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   self->mBackgroundColor = CGColorCreate(DeviceRGB, components);
   CGColorSpaceRelease(DeviceRGB);
@@ -306,23 +306,23 @@
   return v4;
 }
 
-- (id)plugForID:(id)a3
+- (id)plugForID:(id)d
 {
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
-  v6 = [(NSMutableDictionary *)self->mPlugs objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->mPlugs objectForKey:d];
   objc_sync_exit(mPlugs);
 
   return v6;
 }
 
-- (id)setPlugForContainer:(id)a3 forID:(id)a4
+- (id)setPlugForContainer:(id)container forID:(id)d
 {
-  [(MCContainerParallelizer *)self removePlugForID:a4];
+  [(MCContainerParallelizer *)self removePlugForID:d];
   v7 = [(MCObject *)[MCPlugParallel alloc] initFromScratchWithMontage:self->super.super.mMontage];
   [v7 setSupercontainer:self];
-  [v7 setContainer:a3];
-  [v7 setIDInSupercontainer:a4];
+  [v7 setContainer:container];
+  [v7 setIDInSupercontainer:d];
   [v7 addObserver:self forKeyPath:@"zIndex" options:0 context:0];
   v8 = [[NSSet alloc] initWithObjects:{v7, 0}];
   [(MCContainerParallelizer *)self willChangeValueForKey:@"plugs" withSetMutation:1 usingObjects:v8];
@@ -330,18 +330,18 @@
   objc_sync_enter(mPlugs);
 
   self->mCachedZOrderedPlugs = 0;
-  [(NSMutableDictionary *)self->mPlugs setObject:v7 forKey:a4];
+  [(NSMutableDictionary *)self->mPlugs setObject:v7 forKey:d];
   objc_sync_exit(mPlugs);
   [(MCContainerParallelizer *)self didChangeValueForKey:@"plugs" withSetMutation:1 usingObjects:v8];
 
   return v7;
 }
 
-- (id)setPlugProxyForPlug:(id)a3
+- (id)setPlugProxyForPlug:(id)plug
 {
-  -[MCContainerParallelizer removePlugForID:](self, "removePlugForID:", [a3 idInSupercontainer]);
+  -[MCContainerParallelizer removePlugForID:](self, "removePlugForID:", [plug idInSupercontainer]);
   v5 = [(MCObject *)[MCPlugProxy alloc] initFromScratchWithMontage:self->super.super.mMontage];
-  [v5 setPlug:a3];
+  [v5 setPlug:plug];
   [v5 addObserver:self forKeyPath:@"zIndex" options:0 context:0];
   v6 = [[NSSet alloc] initWithObjects:{v5, 0}];
   [(MCContainerParallelizer *)self willChangeValueForKey:@"plugs" withSetMutation:1 usingObjects:v6];
@@ -349,49 +349,49 @@
   objc_sync_enter(mPlugs);
 
   self->mCachedZOrderedPlugs = 0;
-  -[NSMutableDictionary setObject:forKey:](self->mPlugs, "setObject:forKey:", v5, [a3 idInSupercontainer]);
+  -[NSMutableDictionary setObject:forKey:](self->mPlugs, "setObject:forKey:", v5, [plug idInSupercontainer]);
   objc_sync_exit(mPlugs);
   [(MCContainerParallelizer *)self didChangeValueForKey:@"plugs" withSetMutation:1 usingObjects:v6];
 
   return v5;
 }
 
-- (void)changeIDOfPlug:(id)a3 toID:(id)a4
+- (void)changeIDOfPlug:(id)plug toID:(id)d
 {
-  v7 = [a3 idInSupercontainer];
-  if (([a4 isEqualToString:v7] & 1) == 0)
+  idInSupercontainer = [plug idInSupercontainer];
+  if (([d isEqualToString:idInSupercontainer] & 1) == 0)
   {
     mPlugs = self->mPlugs;
     objc_sync_enter(mPlugs);
-    v9 = v7;
-    [(NSMutableDictionary *)self->mPlugs setObject:a3 forKey:a4];
-    [(NSMutableDictionary *)self->mPlugs removeObjectForKey:v7];
+    v9 = idInSupercontainer;
+    [(NSMutableDictionary *)self->mPlugs setObject:plug forKey:d];
+    [(NSMutableDictionary *)self->mPlugs removeObjectForKey:idInSupercontainer];
 
-    [a3 setIDInSupercontainer:a4];
+    [plug setIDInSupercontainer:d];
 
     objc_sync_exit(mPlugs);
   }
 }
 
-- (void)removePlug:(id)a3
+- (void)removePlug:(id)plug
 {
-  [a3 removeObserver:self forKeyPath:@"zIndex"];
-  v6 = [[NSSet alloc] initWithObjects:{a3, 0}];
+  [plug removeObserver:self forKeyPath:@"zIndex"];
+  v6 = [[NSSet alloc] initWithObjects:{plug, 0}];
   [(MCContainerParallelizer *)self willChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:?];
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
 
   self->mCachedZOrderedPlugs = 0;
-  -[NSMutableDictionary removeObjectForKey:](self->mPlugs, "removeObjectForKey:", [a3 idInSupercontainer]);
+  -[NSMutableDictionary removeObjectForKey:](self->mPlugs, "removeObjectForKey:", [plug idInSupercontainer]);
   objc_sync_exit(mPlugs);
   [(MCContainerParallelizer *)self didChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:v6];
-  [a3 setContainer:0];
-  [a3 setSupercontainer:0];
+  [plug setContainer:0];
+  [plug setSupercontainer:0];
 }
 
-- (void)removePlugForID:(id)a3
+- (void)removePlugForID:(id)d
 {
-  v4 = [(MCContainerParallelizer *)self plugForID:a3];
+  v4 = [(MCContainerParallelizer *)self plugForID:d];
   if (v4)
   {
 
@@ -401,8 +401,8 @@
 
 - (void)removeAllPlugs
 {
-  v3 = [(MCContainerParallelizer *)self plugs];
-  [(MCContainerParallelizer *)self willChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:v3];
+  plugs = [(MCContainerParallelizer *)self plugs];
+  [(MCContainerParallelizer *)self willChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:plugs];
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
 
@@ -411,8 +411,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSMutableDictionary *)self->mPlugs objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mPlugs objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
     v7 = *v18;
@@ -422,13 +422,13 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v17 + 1) + 8 * i) removeObserver:self forKeyPath:@"zIndex"];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v6);
@@ -436,12 +436,12 @@
 
   [(NSMutableDictionary *)self->mPlugs removeAllObjects];
   objc_sync_exit(mPlugs);
-  [(MCContainerParallelizer *)self didChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:v3];
+  [(MCContainerParallelizer *)self didChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:plugs];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v9 = [(NSSet *)v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  v9 = [(NSSet *)plugs countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v9)
   {
     v10 = *v14;
@@ -451,7 +451,7 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(plugs);
         }
 
         v12 = *(*(&v13 + 1) + 8 * j);
@@ -459,7 +459,7 @@
         [v12 setSupercontainer:0];
       }
 
-      v9 = [(NSSet *)v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v9 = [(NSSet *)plugs countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v9);

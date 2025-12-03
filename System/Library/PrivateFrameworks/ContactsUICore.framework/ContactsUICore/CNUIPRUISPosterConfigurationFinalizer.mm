@@ -1,13 +1,13 @@
 @interface CNUIPRUISPosterConfigurationFinalizer
-+ (id)finalizedConfiguration:(id)a3 forExtensionIdentifier:(id)a4;
++ (id)finalizedConfiguration:(id)configuration forExtensionIdentifier:(id)identifier;
 @end
 
 @implementation CNUIPRUISPosterConfigurationFinalizer
 
-+ (id)finalizedConfiguration:(id)a3 forExtensionIdentifier:(id)a4
++ (id)finalizedConfiguration:(id)configuration forExtensionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2050000000;
@@ -27,9 +27,9 @@
   v8 = v7;
   _Block_object_dispose(&v30, 8);
   v9 = [v7 alloc];
-  v10 = [v5 wrappedMutablePosterConfiguration];
-  v11 = [v10 _path];
-  v12 = [v9 initWithPath:v11 extensionIdentifier:v6];
+  wrappedMutablePosterConfiguration = [configurationCopy wrappedMutablePosterConfiguration];
+  _path = [wrappedMutablePosterConfiguration _path];
+  v12 = [v9 initWithPath:_path extensionIdentifier:identifierCopy];
 
   v30 = 0;
   v31 = &v30;

@@ -2,38 +2,38 @@
 - (NSArray)keysToDelete;
 - (NSArray)keysToUpdate;
 - (NSString)syncAnchor;
-- (SBKSyncTransaction)initWithStoreBagContext:(id)a3 syncAnchor:(id)a4 keysToUpdate:(id)a5 keysToDelete:(id)a6 conflictDetectionType:(int64_t)a7;
-- (SBKSyncTransaction)initWithSyncRequestURL:(id)a3 domain:(id)a4 syncAnchor:(id)a5 keysToUpdate:(id)a6 keysToDelete:(id)a7 conflictDetectionType:(int64_t)a8;
+- (SBKSyncTransaction)initWithStoreBagContext:(id)context syncAnchor:(id)anchor keysToUpdate:(id)update keysToDelete:(id)delete conflictDetectionType:(int64_t)type;
+- (SBKSyncTransaction)initWithSyncRequestURL:(id)l domain:(id)domain syncAnchor:(id)anchor keysToUpdate:(id)update keysToDelete:(id)delete conflictDetectionType:(int64_t)type;
 - (SBKSyncTransactionProcessing)transactionProcessor;
 - (id)clampsKey;
-- (id)conflictDetectionOrdinalForKey:(id)a3;
+- (id)conflictDetectionOrdinalForKey:(id)key;
 - (id)description;
-- (id)keyValuePairForUpdatedKey:(id)a3;
+- (id)keyValuePairForUpdatedKey:(id)key;
 - (int64_t)conflictDetectionType;
-- (void)_validateTransactionProcessor:(id)a3;
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4;
-- (void)setTransactionProcessor:(id)a3;
+- (void)_validateTransactionProcessor:(id)processor;
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler;
+- (void)setTransactionProcessor:(id)processor;
 @end
 
 @implementation SBKSyncTransaction
 
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 syncResponseData], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([responseCopy syncResponseData], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = os_log_create("com.apple.amp.StoreBookkeeper", "Default");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = responseCopy;
       _os_log_impl(&dword_26BC19000, v9, OS_LOG_TYPE_ERROR, "WARNING: Invalid response (%@).  Skipping...", buf, 0xCu);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     v8 = 0;
   }
 
@@ -47,9 +47,9 @@
   v15[3] = &unk_279D22FB0;
   v15[4] = self;
   v16 = v8;
-  v17 = v7;
+  v17 = handlerCopy;
   v12 = v8;
-  v13 = v7;
+  v13 = handlerCopy;
   [(SBKSyncResponseDataKeyEnumerator *)v11 enumerateKeysInResponseForTransaction:self completionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -144,26 +144,26 @@ uint64_t __66__SBKSyncTransaction_processDataInResponse_withCompletionHandler___
   return v7;
 }
 
-- (id)keyValuePairForUpdatedKey:(id)a3
+- (id)keyValuePairForUpdatedKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_transactionProcessor);
-  v6 = [WeakRetained transaction:self keyValuePairForUpdatedKey:v4];
+  v6 = [WeakRetained transaction:self keyValuePairForUpdatedKey:keyCopy];
 
   return v6;
 }
 
-- (id)conflictDetectionOrdinalForKey:(id)a3
+- (id)conflictDetectionOrdinalForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_transactionProcessor);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:124 description:@"transactions using conflict detection must supply a conflict ordinal"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:124 description:@"transactions using conflict detection must supply a conflict ordinal"];
   }
 
-  v7 = [WeakRetained transaction:self conflictDetectionOrdinalForKey:v5];
+  v7 = [WeakRetained transaction:self conflictDetectionOrdinalForKey:keyCopy];
 
   return v7;
 }
@@ -173,8 +173,8 @@ uint64_t __66__SBKSyncTransaction_processDataInResponse_withCompletionHandler___
   if ([(SBKSyncTransaction *)self type]== 1)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(SBKSyncTransaction *)self syncAnchor];
-    v5 = [v3 stringWithFormat:@"SYNC: anchor=%@", v4];
+    syncAnchor = [(SBKSyncTransaction *)self syncAnchor];
+    v5 = [v3 stringWithFormat:@"SYNC: anchor=%@", syncAnchor];
 
     if ([(NSArray *)self->_keysToDelete count])
     {
@@ -210,52 +210,52 @@ uint64_t __66__SBKSyncTransaction_processDataInResponse_withCompletionHandler___
   return WeakRetained;
 }
 
-- (void)setTransactionProcessor:(id)a3
+- (void)setTransactionProcessor:(id)processor
 {
-  obj = a3;
+  obj = processor;
   [(SBKSyncTransaction *)self _validateTransactionProcessor:obj];
   objc_storeWeak(&self->_transactionProcessor, obj);
 }
 
-- (void)_validateTransactionProcessor:(id)a3
+- (void)_validateTransactionProcessor:(id)processor
 {
-  v11 = a3;
-  if (v11)
+  processorCopy = processor;
+  if (processorCopy)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:81 description:@"Invalid processor"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:81 description:@"Invalid processor"];
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:82 description:@"Invalid processor"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:82 description:@"Invalid processor"];
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:83 description:@"Invalid processor"];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:83 description:@"Invalid processor"];
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:84 description:@"Invalid processor"];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:84 description:@"Invalid processor"];
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:85 description:@"Invalid processor"];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:85 description:@"Invalid processor"];
     }
 
     if ([(SBKSyncTransaction *)self conflictDetectionType]&& (objc_opt_respondsToSelector() & 1) == 0)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:88 description:@"Invalid processor"];
+      currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler6 handleFailureInMethod:a2 object:self file:@"SBKSyncTransaction.m" lineNumber:88 description:@"Invalid processor"];
     }
   }
 
@@ -268,47 +268,47 @@ uint64_t __66__SBKSyncTransaction_processDataInResponse_withCompletionHandler___
 - (id)clampsKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SBKSyncTransaction *)self type];
-  v5 = [(SBKSyncTransaction *)self transactionProcessor];
+  type = [(SBKSyncTransaction *)self type];
+  transactionProcessor = [(SBKSyncTransaction *)self transactionProcessor];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(SBKSyncTransaction *)self keysToUpdate];
-  v9 = [v3 stringWithFormat:@"%lld-%@-%lld", v4, v7, objc_msgSend(v8, "count")];
+  keysToUpdate = [(SBKSyncTransaction *)self keysToUpdate];
+  v9 = [v3 stringWithFormat:@"%lld-%@-%lld", type, v7, objc_msgSend(keysToUpdate, "count")];
 
   return v9;
 }
 
-- (SBKSyncTransaction)initWithStoreBagContext:(id)a3 syncAnchor:(id)a4 keysToUpdate:(id)a5 keysToDelete:(id)a6 conflictDetectionType:(int64_t)a7
+- (SBKSyncTransaction)initWithStoreBagContext:(id)context syncAnchor:(id)anchor keysToUpdate:(id)update keysToDelete:(id)delete conflictDetectionType:(int64_t)type
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v15 syncRequestURL];
-  v17 = [v15 domain];
+  deleteCopy = delete;
+  updateCopy = update;
+  anchorCopy = anchor;
+  contextCopy = context;
+  syncRequestURL = [contextCopy syncRequestURL];
+  domain = [contextCopy domain];
 
-  v18 = [(SBKSyncTransaction *)self initWithSyncRequestURL:v16 domain:v17 syncAnchor:v14 keysToUpdate:v13 keysToDelete:v12 conflictDetectionType:a7];
+  v18 = [(SBKSyncTransaction *)self initWithSyncRequestURL:syncRequestURL domain:domain syncAnchor:anchorCopy keysToUpdate:updateCopy keysToDelete:deleteCopy conflictDetectionType:type];
   return v18;
 }
 
-- (SBKSyncTransaction)initWithSyncRequestURL:(id)a3 domain:(id)a4 syncAnchor:(id)a5 keysToUpdate:(id)a6 keysToDelete:(id)a7 conflictDetectionType:(int64_t)a8
+- (SBKSyncTransaction)initWithSyncRequestURL:(id)l domain:(id)domain syncAnchor:(id)anchor keysToUpdate:(id)update keysToDelete:(id)delete conflictDetectionType:(int64_t)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  lCopy = l;
+  domainCopy = domain;
+  anchorCopy = anchor;
+  updateCopy = update;
+  deleteCopy = delete;
   v24.receiver = self;
   v24.super_class = SBKSyncTransaction;
   v19 = [(SBKTransaction *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_syncRequestURL, a3);
-    objc_storeStrong(&v20->_domain, a4);
-    if (v16)
+    objc_storeStrong(&v19->_syncRequestURL, l);
+    objc_storeStrong(&v20->_domain, domain);
+    if (anchorCopy)
     {
-      v21 = v16;
+      v21 = anchorCopy;
     }
 
     else
@@ -317,9 +317,9 @@ uint64_t __66__SBKSyncTransaction_processDataInResponse_withCompletionHandler___
     }
 
     objc_storeStrong(&v20->_syncAnchor, v21);
-    objc_storeStrong(&v20->_keysToUpdate, a6);
-    objc_storeStrong(&v20->_keysToDelete, a7);
-    v20->_conflictDetectionType = a8;
+    objc_storeStrong(&v20->_keysToUpdate, update);
+    objc_storeStrong(&v20->_keysToDelete, delete);
+    v20->_conflictDetectionType = type;
     v20->_type = 1;
   }
 

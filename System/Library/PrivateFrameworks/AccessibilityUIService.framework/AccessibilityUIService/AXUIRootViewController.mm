@@ -8,13 +8,13 @@
 
 - (void)loadView
 {
-  v6 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   v3 = objc_alloc(objc_opt_class());
-  [v6 bounds];
+  [mainScreen bounds];
   v4 = [v3 initWithFrame:?];
   [v4 setAutoresizingMask:18];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [(AXUIRootViewController *)self setView:v4];
 }
@@ -22,12 +22,12 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(AXUIRootViewController *)self childViewControllers];
+  childViewControllers = [(AXUIRootViewController *)self childViewControllers];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v4 = [childViewControllers countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -39,13 +39,13 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v7 &= [*(*(&v20 + 1) + 8 * i) supportedInterfaceOrientations];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v5);
@@ -53,28 +53,28 @@
     {
       if ([(AXUIRootViewController *)self isViewLoaded])
       {
-        v9 = [(AXUIRootViewController *)self view];
-        v10 = [v9 window];
+        view = [(AXUIRootViewController *)self view];
+        window = [view window];
       }
 
       else
       {
-        v10 = 0;
+        window = 0;
       }
 
-      v11 = [MEMORY[0x277CE6990] sharedInstance];
-      v12 = [v11 ignoreLogging];
+      mEMORY[0x277CE6990] = [MEMORY[0x277CE6990] sharedInstance];
+      ignoreLogging = [mEMORY[0x277CE6990] ignoreLogging];
 
-      if ((v12 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v13 = [MEMORY[0x277CE6990] identifier];
+        identifier = [MEMORY[0x277CE6990] identifier];
         v14 = AXLoggerForFacility();
 
         v15 = AXOSLogLevelFromAXLogLevel();
         if (os_log_type_enabled(v14, v15))
         {
           v16 = AXColorizeFormatLog();
-          [v10 windowLevel];
+          [window windowLevel];
           v17 = _AXStringForArgs();
           if (os_log_type_enabled(v14, v15))
           {
@@ -101,8 +101,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(AXUIRootViewController *)self childViewControllers];
-  v5 = [v3 stringWithFormat:@"AXUIRootViewController<%p> Content: %@", self, v4];
+  childViewControllers = [(AXUIRootViewController *)self childViewControllers];
+  v5 = [v3 stringWithFormat:@"AXUIRootViewController<%p> Content: %@", self, childViewControllers];
 
   return v5;
 }

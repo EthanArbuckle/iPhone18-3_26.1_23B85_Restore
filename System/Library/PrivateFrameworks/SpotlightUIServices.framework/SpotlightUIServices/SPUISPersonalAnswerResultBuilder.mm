@@ -1,83 +1,83 @@
 @interface SPUISPersonalAnswerResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISPersonalAnswerResultBuilder)initWithResult:(id)a3;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISPersonalAnswerResultBuilder)initWithResult:(id)result;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildDescriptions;
 - (id)buildInlineCardSections;
 - (id)buildThumbnail;
 - (id)buildTitle;
-- (id)processRawTitleString:(id)a3;
+- (id)processRawTitleString:(id)string;
 @end
 
 @implementation SPUISPersonalAnswerResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v8.receiver = a1;
+  resultCopy = result;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SPUISPersonalAnswerResultBuilder;
-  if (objc_msgSendSuper2(&v8, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v8, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 applicationBundleIdentifier];
-    v5 = [v6 isEqualToString:@"com.apple.spotlight.events"];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier isEqualToString:@"com.apple.spotlight.events"];
   }
 
   return v5;
 }
 
-- (SPUISPersonalAnswerResultBuilder)initWithResult:(id)a3
+- (SPUISPersonalAnswerResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = SPUISPersonalAnswerResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v12 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v12 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [(SPUISPersonalAnswerResultBuilder *)v5 setDisplayName:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
     v8 = [(SPUISPersonalAnswerResultBuilder *)v5 processRawTitleString:v7];
     [(SPUISPersonalAnswerResultBuilder *)v5 setTitleString:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC3128] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC3128] withType:objc_opt_class()];
     [(SPUISPersonalAnswerResultBuilder *)v5 setStartDate:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC27A0] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC27A0] withType:objc_opt_class()];
     [(SPUISPersonalAnswerResultBuilder *)v5 setEndDate:v10];
   }
 
   return v5;
 }
 
-- (id)processRawTitleString:(id)a3
+- (id)processRawTitleString:(id)string
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"Flight: "])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"Flight: "])
   {
-    v5 = [v4 stringByReplacingOccurrencesOfString:@": " withString:@" "];
+    v5 = [stringCopy stringByReplacingOccurrencesOfString:@": " withString:@" "];
 
     [(SPUISPersonalAnswerResultBuilder *)self setIsFlight:1];
   }
 
-  else if ([v4 hasPrefix:@"Stay: "])
+  else if ([stringCopy hasPrefix:@"Stay: "])
   {
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"Stay: " withString:&stru_287C50EE8];
+    v5 = [stringCopy stringByReplacingOccurrencesOfString:@"Stay: " withString:&stru_287C50EE8];
 
     [(SPUISPersonalAnswerResultBuilder *)self setIsHotel:1];
   }
 
   else
   {
-    v5 = v4;
-    if ([v4 hasPrefix:@"Reservation: "])
+    v5 = stringCopy;
+    if ([stringCopy hasPrefix:@"Reservation: "])
     {
-      v5 = [v4 stringByReplacingOccurrencesOfString:@"Reservation: " withString:&stru_287C50EE8];
+      v5 = [stringCopy stringByReplacingOccurrencesOfString:@"Reservation: " withString:&stru_287C50EE8];
 
       [(SPUISPersonalAnswerResultBuilder *)self setIsRestaurant:1];
     }
@@ -92,25 +92,25 @@
 {
   v4.receiver = self;
   v4.super_class = SPUISPersonalAnswerResultBuilder;
-  v2 = [(SPUISResultBuilder *)&v4 buildInlineCardSections];
+  buildInlineCardSections = [(SPUISResultBuilder *)&v4 buildInlineCardSections];
 
-  return v2;
+  return buildInlineCardSections;
 }
 
 - (id)buildTitle
 {
-  v3 = [(SPUISPersonalAnswerResultBuilder *)self displayName];
-  v4 = [v3 length];
+  displayName = [(SPUISPersonalAnswerResultBuilder *)self displayName];
+  v4 = [displayName length];
 
   if (v4)
   {
-    v5 = [(SPUISPersonalAnswerResultBuilder *)self displayName];
+    displayName2 = [(SPUISPersonalAnswerResultBuilder *)self displayName];
   }
 
   else
   {
-    v6 = [(SPUISPersonalAnswerResultBuilder *)self titleString];
-    v7 = [v6 length];
+    titleString = [(SPUISPersonalAnswerResultBuilder *)self titleString];
+    v7 = [titleString length];
 
     if (v7)
     {
@@ -121,15 +121,15 @@
     {
       [SPUISUtilities localizedStringForKey:@"NO_TITLE"];
     }
-    v5 = ;
+    displayName2 = ;
   }
 
-  v8 = v5;
-  if (v5)
+  v8 = displayName2;
+  if (displayName2)
   {
-    v9 = [MEMORY[0x277D4C598] textWithString:v5];
-    v10 = [(SPUISPersonalAnswerResultBuilder *)self displayName];
-    v11 = [v10 length];
+    v9 = [MEMORY[0x277D4C598] textWithString:displayName2];
+    displayName3 = [(SPUISPersonalAnswerResultBuilder *)self displayName];
+    v11 = [displayName3 length];
 
     if (v11)
     {
@@ -148,26 +148,26 @@
 - (id)buildDescriptions
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISPersonalAnswerResultBuilder *)self displayName];
+  displayName = [(SPUISPersonalAnswerResultBuilder *)self displayName];
 
-  if (v3)
+  if (displayName)
   {
-    v3 = self->_titleString;
+    displayName = self->_titleString;
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"MMMM d, yyyy"];
-  v5 = [(SPUISPersonalAnswerResultBuilder *)self startDate];
-  v6 = [v4 stringFromDate:v5];
+  startDate = [(SPUISPersonalAnswerResultBuilder *)self startDate];
+  v6 = [v4 stringFromDate:startDate];
 
   [v4 setDateFormat:@"h:mm a"];
-  v7 = [(SPUISPersonalAnswerResultBuilder *)self startDate];
-  v8 = [v4 stringFromDate:v7];
+  startDate2 = [(SPUISPersonalAnswerResultBuilder *)self startDate];
+  v8 = [v4 stringFromDate:startDate2];
 
   if ([(SPUISPersonalAnswerResultBuilder *)self isFlight])
   {
-    v9 = [(SPUISPersonalAnswerResultBuilder *)self endDate];
-    v10 = [v4 stringFromDate:v9];
+    endDate = [(SPUISPersonalAnswerResultBuilder *)self endDate];
+    v10 = [v4 stringFromDate:endDate];
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ to %@", v8, v10];
   }
@@ -177,7 +177,7 @@
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Check in at %@", v8];
   }
 
-  v12 = [MEMORY[0x277D4C598] textWithString:v3];
+  v12 = [MEMORY[0x277D4C598] textWithString:displayName];
   v18[0] = v12;
   v13 = [MEMORY[0x277D4C598] textWithString:v6];
   v18[1] = v13;
@@ -220,7 +220,7 @@ LABEL_8:
   return v3;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
   v3 = objc_opt_new();
   [v3 setSymbolName:@"envelope.fill"];

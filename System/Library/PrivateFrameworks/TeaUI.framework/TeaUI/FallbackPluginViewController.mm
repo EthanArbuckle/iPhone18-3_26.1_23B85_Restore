@@ -1,12 +1,12 @@
 @interface FallbackPluginViewController
-- (_TtC5TeaUIP33_555B43D3A3BE92296C45DE65B67B87E428FallbackPluginViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUIP33_555B43D3A3BE92296C45DE65B67B87E428FallbackPluginViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation FallbackPluginViewController
 
-- (_TtC5TeaUIP33_555B43D3A3BE92296C45DE65B67B87E428FallbackPluginViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUIP33_555B43D3A3BE92296C45DE65B67B87E428FallbackPluginViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1D8190F14();
     v7 = v6;
@@ -18,8 +18,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1D7F18750(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1D7F18750(v5, v7, bundle);
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface HMDNetworkRouterICMPType
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-+ (id)typeFromICMPType:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
++ (id)typeFromICMPType:(id)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterICMPType)init;
-- (HMDNetworkRouterICMPType)initWithProtocol:(id)a3 typeValue:(id)a4;
+- (HMDNetworkRouterICMPType)initWithProtocol:(id)protocol typeValue:(id)value;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterICMPType
 
-+ (id)typeFromICMPType:(id)a3
++ (id)typeFromICMPType:(id)type
 {
-  v3 = a3;
-  v4 = +[HMDNetworkRouterIPProtocolVersion protocolFromIPProtocolVersion:](HMDNetworkRouterIPProtocolVersion, "protocolFromIPProtocolVersion:", [v3 protocol]);
-  v5 = [v3 typeValue];
-  if (v5)
+  typeCopy = type;
+  v4 = +[HMDNetworkRouterIPProtocolVersion protocolFromIPProtocolVersion:](HMDNetworkRouterIPProtocolVersion, "protocolFromIPProtocolVersion:", [typeCopy protocol]);
+  typeValue = [typeCopy typeValue];
+  if (typeValue)
   {
     v6 = objc_alloc(MEMORY[0x277CFEC98]);
-    v7 = [v3 typeValue];
-    v8 = [v6 initWithValue:v7];
+    typeValue2 = [typeCopy typeValue];
+    v8 = [v6 initWithValue:typeValue2];
   }
 
   else
@@ -45,17 +45,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterICMPType *)self protocol];
-  v5 = [(HMDNetworkRouterICMPType *)self typeValue];
-  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterICMPType protocol=%@, typeValue=%@>", v4, v5];
+  protocol = [(HMDNetworkRouterICMPType *)self protocol];
+  typeValue = [(HMDNetworkRouterICMPType *)self typeValue];
+  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterICMPType protocol=%@, typeValue=%@>", protocol, typeValue];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -65,14 +65,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterICMPType *)self protocol];
-      v8 = [(HMDNetworkRouterICMPType *)v6 protocol];
-      if (v7 != v8)
+      v6 = equalCopy;
+      protocol = [(HMDNetworkRouterICMPType *)self protocol];
+      protocol2 = [(HMDNetworkRouterICMPType *)v6 protocol];
+      if (protocol != protocol2)
       {
-        v9 = [(HMDNetworkRouterICMPType *)self protocol];
-        v3 = [(HMDNetworkRouterICMPType *)v6 protocol];
-        if (![v9 isEqual:v3])
+        protocol3 = [(HMDNetworkRouterICMPType *)self protocol];
+        protocol4 = [(HMDNetworkRouterICMPType *)v6 protocol];
+        if (![protocol3 isEqual:protocol4])
         {
           v10 = 0;
 LABEL_13:
@@ -81,25 +81,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = protocol3;
       }
 
-      v11 = [(HMDNetworkRouterICMPType *)self typeValue];
-      v12 = [(HMDNetworkRouterICMPType *)v6 typeValue];
-      if (v11 == v12)
+      typeValue = [(HMDNetworkRouterICMPType *)self typeValue];
+      typeValue2 = [(HMDNetworkRouterICMPType *)v6 typeValue];
+      if (typeValue == typeValue2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMDNetworkRouterICMPType *)self typeValue];
-        v14 = [(HMDNetworkRouterICMPType *)v6 typeValue];
-        v10 = [v13 isEqual:v14];
+        typeValue3 = [(HMDNetworkRouterICMPType *)self typeValue];
+        typeValue4 = [(HMDNetworkRouterICMPType *)v6 typeValue];
+        v10 = [typeValue3 isEqual:typeValue4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      protocol3 = v16;
+      if (protocol == protocol2)
       {
         goto LABEL_14;
       }
@@ -115,17 +115,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterICMPType allocWithZone:a3];
-  v5 = [(HMDNetworkRouterICMPType *)self protocol];
-  v6 = [(HMDNetworkRouterICMPType *)self typeValue];
-  v7 = [(HMDNetworkRouterICMPType *)v4 initWithProtocol:v5 typeValue:v6];
+  v4 = [HMDNetworkRouterICMPType allocWithZone:zone];
+  protocol = [(HMDNetworkRouterICMPType *)self protocol];
+  typeValue = [(HMDNetworkRouterICMPType *)self typeValue];
+  v7 = [(HMDNetworkRouterICMPType *)v4 initWithProtocol:protocol typeValue:typeValue];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v38 = 0u;
@@ -150,13 +150,13 @@ LABEL_15:
   v21 = 0u;
   v19 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterICMPType *)self protocol];
+  protocol = [(HMDNetworkRouterICMPType *)self protocol];
 
-  if (v5)
+  if (protocol)
   {
-    v6 = [(HMDNetworkRouterICMPType *)self protocol];
+    protocol2 = [(HMDNetworkRouterICMPType *)self protocol];
     v18 = 0;
-    v7 = [v6 serializeWithError:&v18];
+    v7 = [protocol2 serializeWithError:&v18];
     v8 = v18;
 
     if (v8)
@@ -171,11 +171,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -184,9 +184,9 @@ LABEL_9:
     }
   }
 
-  v10 = [(HMDNetworkRouterICMPType *)self typeValue];
+  typeValue = [(HMDNetworkRouterICMPType *)self typeValue];
 
-  if (!v10)
+  if (!typeValue)
   {
 LABEL_11:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:v19 length:?];
@@ -194,9 +194,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v11 = [(HMDNetworkRouterICMPType *)self typeValue];
+  typeValue2 = [(HMDNetworkRouterICMPType *)self typeValue];
   v17 = 0;
-  v7 = [v11 serializeWithError:&v17];
+  v7 = [typeValue2 serializeWithError:&v17];
   v8 = v17;
 
   if (!v8)
@@ -215,11 +215,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -233,16 +233,16 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -251,11 +251,11 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v22 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   do
   {
     v29 = 0;
@@ -265,10 +265,10 @@ LABEL_14:
     v26 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_26;
       }
 
@@ -325,11 +325,11 @@ LABEL_13:
   if (v12)
   {
 LABEL_17:
-    if (a4)
+    if (error)
     {
       v18 = v12;
       v19 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_26;
     }
 
@@ -339,9 +339,9 @@ LABEL_22:
   }
 
 LABEL_24:
-  self = v22;
+  self = selfCopy;
 LABEL_25:
-  [(HMDNetworkRouterICMPType *)self setProtocol:v11, v22];
+  [(HMDNetworkRouterICMPType *)self setProtocol:v11, selfCopy];
   [(HMDNetworkRouterICMPType *)self setTypeValue:v10];
   v12 = 0;
   v19 = 1;
@@ -350,18 +350,18 @@ LABEL_26:
   return v19;
 }
 
-- (HMDNetworkRouterICMPType)initWithProtocol:(id)a3 typeValue:(id)a4
+- (HMDNetworkRouterICMPType)initWithProtocol:(id)protocol typeValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  protocolCopy = protocol;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = HMDNetworkRouterICMPType;
   v9 = [(HMDNetworkRouterICMPType *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_protocol, a3);
-    objc_storeStrong(&v10->_typeValue, a4);
+    objc_storeStrong(&v9->_protocol, protocol);
+    objc_storeStrong(&v10->_typeValue, value);
   }
 
   return v10;
@@ -374,24 +374,24 @@ LABEL_26:
   return [(HMDNetworkRouterICMPType *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterICMPType);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterICMPType *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterICMPType *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

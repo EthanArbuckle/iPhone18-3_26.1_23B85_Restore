@@ -32,7 +32,7 @@
 - (id)tsu_documentIdentifier
 {
   v4 = 0;
-  v1 = [a1 getResourceValue:&v4 forKey:*MEMORY[0x277CBE7C8] error:0];
+  v1 = [self getResourceValue:&v4 forKey:*MEMORY[0x277CBE7C8] error:0];
   v2 = v4;
   if ((v1 & 1) == 0)
   {
@@ -49,12 +49,12 @@
   if (v4)
   {
     v6 = v4;
-    v5 = [a1 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
     v6[2](v6);
     v4 = v6;
-    if (v5)
+    if (startAccessingSecurityScopedResource)
     {
-      [a1 stopAccessingSecurityScopedResource];
+      [self stopAccessingSecurityScopedResource];
       v4 = v6;
     }
   }
@@ -65,13 +65,13 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __87__NSURL_TSUAdditions__tsu_performSecurityScopedResourceAccessAsynchronouslyUsingBlock___block_invoke;
     v6[3] = &unk_2799C6410;
-    v7 = v5;
-    v6[4] = a1;
+    v7 = startAccessingSecurityScopedResource;
+    v6[4] = self;
     v4[2](v4, v6);
   }
 }
@@ -79,7 +79,7 @@
 - (uint64_t)tsu_fileSize
 {
   v2 = 0;
-  [a1 tsu_fileSize:&v2 error:0];
+  [self tsu_fileSize:&v2 error:0];
   return v2;
 }
 
@@ -88,20 +88,20 @@
   v36[1] = *MEMORY[0x277D85DE8];
   v34 = 0;
   v6 = *MEMORY[0x277CBE838];
-  v7 = [a1 getResourceValue:&v34 forKey:*MEMORY[0x277CBE838] error:0];
+  v7 = [self getResourceValue:&v34 forKey:*MEMORY[0x277CBE838] error:0];
   v8 = v34;
   v9 = v8;
-  v10 = 0;
+  unsignedLongLongValue = 0;
   if (v7)
   {
-    v10 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v36[0] = v6;
   v12 = 1;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  v14 = [v11 enumeratorAtURL:a1 includingPropertiesForKeys:v13 options:0 errorHandler:0];
+  v14 = [defaultManager enumeratorAtURL:self includingPropertiesForKeys:v13 options:0 errorHandler:0];
 
   v32 = 0u;
   v33 = 0u;
@@ -135,7 +135,7 @@
         v23 = v28;
         if (v22)
         {
-          v10 += [v9 unsignedLongLongValue];
+          unsignedLongLongValue += [v9 unsignedLongLongValue];
         }
 
         else
@@ -176,7 +176,7 @@ LABEL_15:
 
   if (a3)
   {
-    *a3 = v10;
+    *a3 = unsignedLongLongValue;
   }
 
   return v12 & 1;
@@ -185,16 +185,16 @@ LABEL_15:
 - (uint64_t)tsu_isShared
 {
   v2 = 0;
-  [a1 tsu_isShared:&v2 error:0];
+  [self tsu_isShared:&v2 error:0];
   return v2;
 }
 
 - (uint64_t)tsu_isShared:()TSUAdditions error:
 {
-  v4 = [0 BOOLValue];
+  bOOLValue = [0 BOOLValue];
   if (a3)
   {
-    *a3 = v4;
+    *a3 = bOOLValue;
   }
 
   return 1;
@@ -232,21 +232,21 @@ LABEL_4:
 - (uint64_t)tsu_isShareCollaborator
 {
   v2 = 0;
-  [a1 tsu_isShareCollaborator:&v2 error:0];
+  [self tsu_isShareCollaborator:&v2 error:0];
   return v2;
 }
 
 - (uint64_t)tsu_isShareOwner
 {
   v2 = 0;
-  [a1 tsu_isShareOwner:&v2 error:0];
+  [self tsu_isShareOwner:&v2 error:0];
   return v2;
 }
 
 - (id)tsu_displayName
 {
   v3 = 0;
-  [a1 tsu_displayName:&v3 error:0];
+  [self tsu_displayName:&v3 error:0];
   v1 = v3;
 
   return v1;
@@ -254,10 +254,10 @@ LABEL_4:
 
 - (uint64_t)tsu_displayName:()TSUAdditions error:
 {
-  v7 = [a1 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
   v8 = *MEMORY[0x277CBE8D0];
   v14 = 0;
-  v9 = [a1 getPromisedItemResourceValue:a3 forKey:v8 error:&v14];
+  v9 = [self getPromisedItemResourceValue:a3 forKey:v8 error:&v14];
   v10 = v14;
   if (v9)
   {
@@ -278,8 +278,8 @@ LABEL_4:
   if (a3)
   {
 LABEL_4:
-    v11 = [a1 lastPathComponent];
-    *a3 = [v11 stringByDeletingPathExtension];
+    lastPathComponent = [self lastPathComponent];
+    *a3 = [lastPathComponent stringByDeletingPathExtension];
   }
 
 LABEL_5:
@@ -290,9 +290,9 @@ LABEL_5:
   }
 
 LABEL_7:
-  if (v7)
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
   return v9;
@@ -301,7 +301,7 @@ LABEL_7:
 - (uint64_t)tsu_isDocumentUploaded
 {
   v2 = 0;
-  [a1 tsu_isDocumentUploaded:&v2 error:0];
+  [self tsu_isDocumentUploaded:&v2 error:0];
   return v2;
 }
 
@@ -325,11 +325,11 @@ LABEL_7:
   v8[1] = 3221225472;
   v8[2] = __52__NSURL_TSUAdditions__tsu_isDocumentUploaded_error___block_invoke;
   v8[3] = &unk_2799C6438;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
   v8[6] = &v15;
   v8[7] = &v19;
-  [a1 tsu_performSecurityScopedResourceAccessUsingBlock:v8];
+  [self tsu_performSecurityScopedResourceAccessUsingBlock:v8];
   if (a4)
   {
     *a4 = v10[5];
@@ -351,7 +351,7 @@ LABEL_7:
 - (id)tsu_shareOwnerName
 {
   v3 = 0;
-  [a1 tsu_shareOwnerName:&v3 error:0];
+  [self tsu_shareOwnerName:&v3 error:0];
   v1 = v3;
 
   return v1;
@@ -375,7 +375,7 @@ LABEL_7:
 
 - (BOOL)tsu_setNeedsDocumentIdentifierAndReturnError:()TSUAdditions
 {
-  v4 = open([a1 fileSystemRepresentation], 0x200000);
+  v4 = open([self fileSystemRepresentation], 0x200000);
   if (v4 < 0)
   {
     v6 = -1;
@@ -419,7 +419,7 @@ LABEL_9:
 - (id)tsu_fileTypeIdentifierHandlingFileCoordinationPromises
 {
   v3 = 0;
-  [a1 getResourceValue:&v3 forKey:*MEMORY[0x277CBE918] error:0];
+  [self getResourceValue:&v3 forKey:*MEMORY[0x277CBE918] error:0];
   v1 = v3;
 
   return v1;
@@ -428,21 +428,21 @@ LABEL_9:
 - (id)tsu_fileSystemTypeName
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     v4 = 0;
     goto LABEL_12;
   }
 
-  v2 = [a1 path];
+  path = [self path];
   memset(&v6, 0, 512);
-  if (!statfs([v2 fileSystemRepresentation], &v6) || (objc_msgSend(v2, "stringByDeletingLastPathComponent"), v3 = objc_claimAutoreleasedReturnValue(), v2, v2 = v3, LODWORD(v3) = statfs(objc_msgSend(v3, "fileSystemRepresentation"), &v6), __error(), !v3))
+  if (!statfs([path fileSystemRepresentation], &v6) || (objc_msgSend(path, "stringByDeletingLastPathComponent"), v3 = objc_claimAutoreleasedReturnValue(), path, path = v3, LODWORD(v3) = statfs(objc_msgSend(v3, "fileSystemRepresentation"), &v6), __error(), !v3))
   {
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:v6.f_fstypename];
     goto LABEL_11;
   }
 
-  if (![a1 checkResourceIsReachableAndReturnError:0])
+  if (![self checkResourceIsReachableAndReturnError:0])
   {
 LABEL_10:
     v4 = 0;
@@ -465,16 +465,16 @@ LABEL_12:
 
 - (uint64_t)tsu_isOnAPFSVolume
 {
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     return 0;
   }
 
-  v2 = [a1 tsu_fileSystemTypeName];
-  v3 = v2;
-  if (v2)
+  tsu_fileSystemTypeName = [self tsu_fileSystemTypeName];
+  v3 = tsu_fileSystemTypeName;
+  if (tsu_fileSystemTypeName)
   {
-    v4 = [v2 isEqualToString:@"apfs"];
+    v4 = [tsu_fileSystemTypeName isEqualToString:@"apfs"];
   }
 
   else
@@ -487,23 +487,23 @@ LABEL_12:
 
 - (id)tsu_reachableFileURLByDeletingUnreachablePathComponents
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
-    v2 = a1;
+    selfCopy = self;
     while (1)
     {
-      v3 = [v2 path];
-      v4 = [v3 length];
+      path = [selfCopy path];
+      v4 = [path length];
 
       if (v4 < 3)
       {
         break;
       }
 
-      if ([v2 checkResourceIsReachableAndReturnError:0])
+      if ([selfCopy checkResourceIsReachableAndReturnError:0])
       {
-        v5 = v2;
-        v2 = v5;
+        v5 = selfCopy;
+        selfCopy = v5;
         if (v5)
         {
           goto LABEL_10;
@@ -512,9 +512,9 @@ LABEL_12:
 
       else
       {
-        v6 = [v2 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [selfCopy URLByDeletingLastPathComponent];
 
-        v2 = v6;
+        selfCopy = uRLByDeletingLastPathComponent;
       }
     }
 
@@ -533,10 +533,10 @@ LABEL_10:
 - (uint64_t)tsu_isOnSameVolumeAs:()TSUAdditions
 {
   v4 = a3;
-  v5 = [a1 tsu_reachableFileURLByDeletingUnreachablePathComponents];
-  v6 = [v4 tsu_reachableFileURLByDeletingUnreachablePathComponents];
+  tsu_reachableFileURLByDeletingUnreachablePathComponents = [self tsu_reachableFileURLByDeletingUnreachablePathComponents];
+  tsu_reachableFileURLByDeletingUnreachablePathComponents2 = [v4 tsu_reachableFileURLByDeletingUnreachablePathComponents];
 
-  if (![v5 isFileURL] || !objc_msgSend(v6, "isFileURL"))
+  if (![tsu_reachableFileURLByDeletingUnreachablePathComponents isFileURL] || !objc_msgSend(tsu_reachableFileURLByDeletingUnreachablePathComponents2, "isFileURL"))
   {
     v14 = 0;
     goto LABEL_20;
@@ -544,12 +544,12 @@ LABEL_10:
 
   memset(&v17, 0, sizeof(v17));
   memset(&v16, 0, sizeof(v16));
-  v7 = [v5 path];
-  v8 = [v7 fileSystemRepresentation];
+  path = [tsu_reachableFileURLByDeletingUnreachablePathComponents path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (v8)
+  if (fileSystemRepresentation)
   {
-    v9 = lstat(v8, &v17);
+    v9 = lstat(fileSystemRepresentation, &v17);
     if (v9 != -1)
     {
       goto LABEL_8;
@@ -563,17 +563,17 @@ LABEL_10:
 
   v9 = -1;
 LABEL_8:
-  v10 = [v6 path];
-  v11 = [v10 fileSystemRepresentation];
+  path2 = [tsu_reachableFileURLByDeletingUnreachablePathComponents2 path];
+  fileSystemRepresentation2 = [path2 fileSystemRepresentation];
 
-  if (!v11)
+  if (!fileSystemRepresentation2)
   {
 LABEL_12:
     v12 = -1;
     goto LABEL_13;
   }
 
-  v12 = lstat(v11, &v16);
+  v12 = lstat(fileSystemRepresentation2, &v16);
   if (v12 == -1)
   {
     if (TSUDefaultCat_init_token != -1)
@@ -629,11 +629,11 @@ LABEL_20:
   v6[1] = 3221225472;
   v6[2] = __57__NSURL_TSUAdditions__tsu_fileProviderBookmarkableString__block_invoke;
   v6[3] = &unk_2799C6488;
-  v6[4] = a1;
+  v6[4] = self;
   v8 = &v9;
   v3 = v2;
   v7 = v3;
-  [a1 tsu_performSecurityScopedResourceAccessAsynchronouslyUsingBlock:v6];
+  [self tsu_performSecurityScopedResourceAccessAsynchronouslyUsingBlock:v6];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v10[5];
 
@@ -665,7 +665,7 @@ LABEL_20:
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeCachedResourceValueForKey:*(*(&v9 + 1) + 8 * v8++)];
+        [self removeCachedResourceValueForKey:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -679,11 +679,11 @@ LABEL_20:
 - (BOOL)tsu_isInTrash
 {
   v5 = 2;
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = 0;
-  LODWORD(a1) = [v2 getRelationship:&v5 ofDirectory:102 inDomain:0 toItemAtURL:a1 error:&v4];
+  LODWORD(self) = [defaultManager getRelationship:&v5 ofDirectory:102 inDomain:0 toItemAtURL:self error:&v4];
 
-  if (a1)
+  if (self)
   {
     return v5 == 0;
   }

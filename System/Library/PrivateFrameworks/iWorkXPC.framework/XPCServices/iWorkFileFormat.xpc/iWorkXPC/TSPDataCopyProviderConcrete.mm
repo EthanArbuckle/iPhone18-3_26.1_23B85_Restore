@@ -1,17 +1,17 @@
 @interface TSPDataCopyProviderConcrete
 - (NSInputStream)inputStream;
 - (NSURL)URL;
-- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)a3 error:(id *)a4;
+- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)l error:(id *)error;
 - (TSUReadChannel)readChannel;
-- (id)inputStreamForRange:(_NSRange)a3;
+- (id)inputStreamForRange:(_NSRange)range;
 - (void)cleanUp;
 @end
 
 @implementation TSPDataCopyProviderConcrete
 
-- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)a3 error:(id *)a4
+- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = TSPDataCopyProviderConcrete;
   v7 = [(TSPDataCopyProviderConcrete *)&v25 init];
@@ -23,10 +23,10 @@
 
   v8 = +[NSFileManager defaultManager];
   v9 = v8;
-  if (v6)
+  if (lCopy)
   {
     v24 = 0;
-    v10 = [v8 URLForDirectory:99 inDomain:1 appropriateForURL:v6 create:1 error:&v24];
+    v10 = [v8 URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:&v24];
     v11 = v24;
 
     if (v10)
@@ -52,8 +52,8 @@ LABEL_4:
     }
 
     v16 = +[NSUUID UUID];
-    v17 = [v16 UUIDString];
-    v10 = [v14 URLByAppendingPathComponent:v17];
+    uUIDString = [v16 UUIDString];
+    v10 = [v14 URLByAppendingPathComponent:uUIDString];
 
     if (v10)
     {
@@ -75,11 +75,11 @@ LABEL_10:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v11;
     v7 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -95,8 +95,8 @@ LABEL_14:
 - (void)cleanUp
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(TSPDataCopyProviderConcrete *)self directory];
-  [v3 removeItemAtURL:v4 error:0];
+  directory = [(TSPDataCopyProviderConcrete *)self directory];
+  [v3 removeItemAtURL:directory error:0];
 
   [(TSPDataCopyProviderConcrete *)self setURLInternal:0];
   [(TSPDataCopyProviderConcrete *)self setReadChannelInternal:0];
@@ -106,8 +106,8 @@ LABEL_14:
 
 - (NSURL)URL
 {
-  v2 = [(TSPDataCopyProviderConcrete *)self URLInternal];
-  if (!v2)
+  uRLInternal = [(TSPDataCopyProviderConcrete *)self URLInternal];
+  if (!uRLInternal)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -129,13 +129,13 @@ LABEL_14:
     abort();
   }
 
-  return v2;
+  return uRLInternal;
 }
 
 - (TSUReadChannel)readChannel
 {
-  v2 = [(TSPDataCopyProviderConcrete *)self readChannelInternal];
-  if (!v2)
+  readChannelInternal = [(TSPDataCopyProviderConcrete *)self readChannelInternal];
+  if (!readChannelInternal)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -157,13 +157,13 @@ LABEL_14:
     abort();
   }
 
-  return v2;
+  return readChannelInternal;
 }
 
 - (NSInputStream)inputStream
 {
-  v2 = [(TSPDataCopyProviderConcrete *)self inputStreamInternal];
-  if (!v2)
+  inputStreamInternal = [(TSPDataCopyProviderConcrete *)self inputStreamInternal];
+  if (!inputStreamInternal)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -185,16 +185,16 @@ LABEL_14:
     abort();
   }
 
-  return v2;
+  return inputStreamInternal;
 }
 
-- (id)inputStreamForRange:(_NSRange)a3
+- (id)inputStreamForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [TSUReadChannelInputStreamAdapter alloc];
-  v7 = [(TSPDataCopyProviderConcrete *)self readChannelInternal];
-  v8 = [(TSUReadChannelInputStreamAdapter *)v6 initWithReadChannel:v7 length:location + length closeChannelOnClose:0];
+  readChannelInternal = [(TSPDataCopyProviderConcrete *)self readChannelInternal];
+  v8 = [(TSUReadChannelInputStreamAdapter *)v6 initWithReadChannel:readChannelInternal length:location + length closeChannelOnClose:0];
 
   if (location)
   {

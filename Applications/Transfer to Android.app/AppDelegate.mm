@@ -1,13 +1,13 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC19Transfer_to_Android11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -20,7 +20,7 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -30,16 +30,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a4;
-  v7 = [v6 role];
+  sessionCopy = session;
+  role = [sessionCopy role];
   v8 = objc_allocWithZone(UISceneConfiguration);
   v9 = String._bridgeToObjectiveC()();
-  v10 = [v8 initWithName:v9 sessionRole:v7];
+  v10 = [v8 initWithName:v9 sessionRole:role];
 
   return v10;
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

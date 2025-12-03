@@ -1,5 +1,5 @@
 @interface PushToDeviceActivity
-- (PushToDeviceActivity)initWithDevice:(id)a3 place:(id)a4;
+- (PushToDeviceActivity)initWithDevice:(id)device place:(id)place;
 - (id)activityTitle;
 - (id)activityType;
 - (id)icon;
@@ -11,10 +11,10 @@
 - (id)icon
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 appKitBundleClass];
+  appKitBundleClass = [v3 appKitBundleClass];
 
-  v5 = [(MapsPushDevice *)self->_device model];
-  v6 = [v4 iconNameForDeviceModel:v5];
+  model = [(MapsPushDevice *)self->_device model];
+  v6 = [appKitBundleClass iconNameForDeviceModel:model];
 
   v7 = [UIImage systemImageNamed:v6];
 
@@ -31,32 +31,32 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Send to %@" value:@"localized string not found" table:0];
-  v5 = [(MapsPushDevice *)self->_device name];
-  v6 = [NSString stringWithFormat:v4, v5];
+  name = [(MapsPushDevice *)self->_device name];
+  v6 = [NSString stringWithFormat:v4, name];
 
   return v6;
 }
 
 - (id)activityType
 {
-  v2 = [(MapsPushDevice *)self->_device uniqueID];
-  v3 = [NSString stringWithFormat:@"com.apple.Maps.Push.%@", v2];
+  uniqueID = [(MapsPushDevice *)self->_device uniqueID];
+  v3 = [NSString stringWithFormat:@"com.apple.Maps.Push.%@", uniqueID];
 
   return v3;
 }
 
-- (PushToDeviceActivity)initWithDevice:(id)a3 place:(id)a4
+- (PushToDeviceActivity)initWithDevice:(id)device place:(id)place
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  placeCopy = place;
   v12.receiver = self;
   v12.super_class = PushToDeviceActivity;
   v9 = [(PushToDeviceActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_data, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_data, place);
   }
 
   return v10;

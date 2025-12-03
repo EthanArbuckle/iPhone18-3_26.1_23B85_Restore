@@ -1,10 +1,10 @@
 @interface _GCHapticParameterCurve
-- (_GCHapticParameterCurve)initWithHapticCommand:(const void *)a3;
+- (_GCHapticParameterCurve)initWithHapticCommand:(const void *)command;
 @end
 
 @implementation _GCHapticParameterCurve
 
-- (_GCHapticParameterCurve)initWithHapticCommand:(const void *)a3
+- (_GCHapticParameterCurve)initWithHapticCommand:(const void *)command
 {
   v34 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
@@ -15,13 +15,13 @@
     goto LABEL_41;
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   curve = v4->_curve;
-  v4->_curve = v5;
+  v4->_curve = array;
 
-  v8 = *(a3 + 8);
-  v9 = *(a3 + 6);
-  v10 = *(a3 + 4);
+  v8 = *(command + 8);
+  v9 = *(command + 6);
+  v10 = *(command + 4);
   if (v9 <= 1019)
   {
     if (v9 <= 1010)
@@ -71,7 +71,7 @@
     }
 
 LABEL_24:
-    v11 = *(a3 + 6);
+    v11 = *(command + 6);
     if (v9 > 0xFF)
     {
       v11 = 0;
@@ -128,13 +128,13 @@ LABEL_33:
   v12 = (v8 - 1);
   if (v8 != 1)
   {
-    v13 = (a3 + 48);
+    v13 = (command + 48);
     *&v7 = 138412290;
     v25 = v7;
     do
     {
       v14 = *(v13 - 2);
-      v15 = *(a3 + 1);
+      v15 = *(command + 1);
       v16 = v15 + *(v13 - 3);
       v17 = *v13;
       v18 = v15 + *(v13 - 1);

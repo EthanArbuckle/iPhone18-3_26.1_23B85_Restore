@@ -1,6 +1,6 @@
 @interface MFIMAPResponseConsumer
-- (void)addConsumer:(id)a3 forSection:(id)a4;
-- (void)appendData:(id)a3 forSection:(id)a4;
+- (void)addConsumer:(id)consumer forSection:(id)section;
+- (void)appendData:(id)data forSection:(id)section;
 - (void)dealloc;
 - (void)done;
 @end
@@ -14,16 +14,16 @@
   [(MFIMAPResponseConsumer *)&v2 dealloc];
 }
 
-- (void)addConsumer:(id)a3 forSection:(id)a4
+- (void)addConsumer:(id)consumer forSection:(id)section
 {
-  v12 = a3;
-  v6 = @"<null>";
-  if (a4)
+  consumerCopy = consumer;
+  sectionCopy = @"<null>";
+  if (section)
   {
-    v6 = a4;
+    sectionCopy = section;
   }
 
-  v7 = v6;
+  v7 = sectionCopy;
   consumersBySection = self->_consumersBySection;
   if (!consumersBySection)
   {
@@ -35,19 +35,19 @@
   }
 
   v11 = [(NSMutableDictionary *)consumersBySection objectForKey:v7];
-  [(NSMutableDictionary *)self->_consumersBySection setObject:v12 forKey:v7];
+  [(NSMutableDictionary *)self->_consumersBySection setObject:consumerCopy forKey:v7];
 }
 
-- (void)appendData:(id)a3 forSection:(id)a4
+- (void)appendData:(id)data forSection:(id)section
 {
-  v6 = a3;
-  v7 = @"<null>";
-  if (a4)
+  dataCopy = data;
+  sectionCopy = @"<null>";
+  if (section)
   {
-    v7 = a4;
+    sectionCopy = section;
   }
 
-  v8 = v7;
+  v8 = sectionCopy;
   v9 = [(NSMutableDictionary *)self->_consumersBySection objectForKey:v8];
   if (!v9)
     v10 = {;
@@ -57,13 +57,13 @@
     }
   }
 
-  [v9 appendData:v6];
+  [v9 appendData:dataCopy];
 }
 
 - (void)done
 {
-  v2 = [(NSMutableDictionary *)self->_consumersBySection allValues];
-  [v2 makeObjectsPerformSelector:sel_done];
+  allValues = [(NSMutableDictionary *)self->_consumersBySection allValues];
+  [allValues makeObjectsPerformSelector:sel_done];
 }
 
 - (void)appendData:forSection:.cold.1()

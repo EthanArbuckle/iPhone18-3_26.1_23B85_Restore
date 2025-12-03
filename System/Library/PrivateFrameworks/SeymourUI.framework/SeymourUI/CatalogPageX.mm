@@ -1,7 +1,7 @@
 @interface CatalogPageX
 - (_TtC9SeymourUI12CatalogPageX)init;
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
 @end
 
 @implementation CatalogPageX
@@ -13,29 +13,29 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   sub_20C133244();
   v6 = sub_20C13CC74();
-  v7 = a3;
-  v8 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_20BC73F64(v6);
 }
 
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section
 {
   if (!swift_unknownObjectWeakLoadStrong())
   {
     return;
   }
 
-  if (a5 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_9;
   }
 
-  if ((*(&self->super.isa + OBJC_IVAR____TtC9SeymourUI12CatalogPageX_shelves))[2] <= a5)
+  if ((*(&self->super.isa + OBJC_IVAR____TtC9SeymourUI12CatalogPageX_shelves))[2] <= section)
   {
 LABEL_9:
     __break(1u);
@@ -43,9 +43,9 @@ LABEL_9:
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  sub_20BC68620(a4);
+  sub_20BC68620(scroll);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

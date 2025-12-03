@@ -1,31 +1,31 @@
 @interface DMCEnrollmentTableViewTextCell
-- (BOOL)isMultipleLines:(id)a3;
-- (DMCEnrollmentTableViewTextCell)initWithText:(id)a3 bold:(BOOL)a4 subText:(id)a5 layoutStyle:(unint64_t)a6;
+- (BOOL)isMultipleLines:(id)lines;
+- (DMCEnrollmentTableViewTextCell)initWithText:(id)text bold:(BOOL)bold subText:(id)subText layoutStyle:(unint64_t)style;
 - (UITextView)hiddenTextView;
 - (double)_horizontalMargin;
 - (double)_verticalMargin;
 - (id)_rectsOfLinkText;
 - (id)_subTextFont;
-- (id)_textFontIsBold:(BOOL)a3;
+- (id)_textFontIsBold:(BOOL)bold;
 - (void)_updateTextFont;
-- (void)configureLinkText:(id)a3 forceLineBreak:(BOOL)a4 linkAction:(id)a5;
+- (void)configureLinkText:(id)text forceLineBreak:(BOOL)break linkAction:(id)action;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLinkAction:(id)a3;
-- (void)setLinkText:(id)a3;
-- (void)setLinkTextOnNextLine:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLinkAction:(id)action;
+- (void)setLinkText:(id)text;
+- (void)setLinkTextOnNextLine:(BOOL)line;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
 @end
 
 @implementation DMCEnrollmentTableViewTextCell
 
-- (DMCEnrollmentTableViewTextCell)initWithText:(id)a3 bold:(BOOL)a4 subText:(id)a5 layoutStyle:(unint64_t)a6
+- (DMCEnrollmentTableViewTextCell)initWithText:(id)text bold:(BOOL)bold subText:(id)subText layoutStyle:(unint64_t)style
 {
-  v8 = a4;
+  boldCopy = bold;
   v63[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v54 = a5;
+  textCopy = text;
+  subTextCopy = subText;
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v58.receiver = self;
@@ -36,55 +36,55 @@
   {
     [(DMCEnrollmentTableViewTextCell *)v13 setSelectionStyle:0];
     [(DMCEnrollmentTableViewTextCell *)v13 setUserInteractionEnabled:0];
-    v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(DMCEnrollmentTableViewTextCell *)v13 setBackgroundColor:v14];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(DMCEnrollmentTableViewTextCell *)v13 setBackgroundColor:systemBackgroundColor];
 
     v13->_shouldCalculateLinkTextLineBreak = 1;
-    v13->_layoutStyle = a6;
+    v13->_layoutStyle = style;
     v13->_textAlignment = 2 * ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] != 0);
-    v13->_bold = v8;
+    v13->_bold = boldCopy;
     v15 = [MEMORY[0x277D75220] buttonWithType:1];
     button = v13->_button;
     v13->_button = v15;
 
     [(UIButton *)v13->_button setHidden:1];
-    v17 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-    [v17 addSubview:v13->_button];
+    contentView = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+    [contentView addSubview:v13->_button];
 
     v18 = objc_opt_new();
     [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v18 setNumberOfLines:0];
-    v19 = [(DMCEnrollmentTableViewTextCell *)v13 _textFontIsBold:v8];
+    v19 = [(DMCEnrollmentTableViewTextCell *)v13 _textFontIsBold:boldCopy];
     [v18 setFont:v19];
 
-    v20 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v18 setTextColor:v20];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v18 setTextColor:secondaryLabelColor];
 
     [v18 setTextAlignment:v13->_textAlignment];
-    [v18 setText:v10];
-    v21 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-    [v21 addSubview:v18];
+    [v18 setText:textCopy];
+    contentView2 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+    [contentView2 addSubview:v18];
 
     [(DMCEnrollmentTableViewTextCell *)v13 _horizontalMargin];
     v23 = v22;
     [(DMCEnrollmentTableViewTextCell *)v13 _verticalMargin];
     v25 = v24;
-    if (v54)
+    if (subTextCopy)
     {
       v26 = objc_opt_new();
       [(UILabel *)v26 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v26 setNumberOfLines:1];
-      v27 = [(DMCEnrollmentTableViewTextCell *)v13 _subTextFont];
-      [(UILabel *)v26 setFont:v27];
+      _subTextFont = [(DMCEnrollmentTableViewTextCell *)v13 _subTextFont];
+      [(UILabel *)v26 setFont:_subTextFont];
 
-      v28 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UILabel *)v26 setTextColor:v28];
+      secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UILabel *)v26 setTextColor:secondaryLabelColor2];
 
       [(UILabel *)v26 setTextAlignment:v13->_textAlignment];
-      [(UILabel *)v26 setText:v54];
+      [(UILabel *)v26 setText:subTextCopy];
       [(UILabel *)v26 sizeToFit];
-      v29 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-      [v29 addSubview:v26];
+      contentView3 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+      [contentView3 addSubview:v26];
 
       v60[0] = @"label";
       v60[1] = @"subLabel";
@@ -101,16 +101,16 @@
 
       v37 = MEMORY[0x277CCAAD0];
       v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"V:|-%f-[label]-0-[subLabel]-%f-|", v25, v25];
-      v39 = [v37 constraintsWithVisualFormat:v38 options:0 metrics:0 views:v30];
+      contentView8 = [v37 constraintsWithVisualFormat:v38 options:0 metrics:0 views:v30];
 
-      v40 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-      [v40 addConstraints:v33];
+      contentView4 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+      [contentView4 addConstraints:v33];
 
-      v41 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-      [v41 addConstraints:v36];
+      contentView5 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+      [contentView5 addConstraints:v36];
 
-      v42 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-      [v42 addConstraints:v39];
+      contentView6 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+      [contentView6 addConstraints:contentView8];
 
       subLabel = v13->_subLabel;
       v13->_subLabel = v26;
@@ -129,14 +129,14 @@
       v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"V:|-%f-[label]-%f-|", v25, v25];
       v36 = [v46 constraintsWithVisualFormat:v47 options:0 metrics:0 views:v30];
 
-      v48 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-      [v48 addConstraints:v33];
+      contentView7 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+      [contentView7 addConstraints:v33];
 
-      v39 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
-      [v39 addConstraints:v36];
+      contentView8 = [(DMCEnrollmentTableViewTextCell *)v13 contentView];
+      [contentView8 addConstraints:v36];
     }
 
-    v49 = [v10 copy];
+    v49 = [textCopy copy];
     text = v13->_text;
     v13->_text = v49;
 
@@ -190,25 +190,25 @@ void __72__DMCEnrollmentTableViewTextCell_initWithText_bold_subText_layoutStyle_
   [(DMCEnrollmentTableViewTextCell *)&v31 layoutSubviews];
   [(DMCEnrollmentTableViewTextCell *)self bounds];
   [(DMCEnrollmentTableViewTextCell *)self setSeparatorInset:0.0, CGRectGetWidth(v32), 0.0, 0.0];
-  v3 = [(DMCEnrollmentTableViewTextCell *)self linkText];
+  linkText = [(DMCEnrollmentTableViewTextCell *)self linkText];
 
-  if (v3)
+  if (linkText)
   {
     [(DMCEnrollmentTableViewTextCell *)self setUserInteractionEnabled:1];
     if (self->_hiddenTextView)
     {
-      v4 = [(DMCEnrollmentTableViewTextCell *)self label];
-      [v4 frame];
+      label = [(DMCEnrollmentTableViewTextCell *)self label];
+      [label frame];
       v6 = v5;
       v8 = v7;
       v10 = v9;
 
-      v11 = [(DMCEnrollmentTableViewTextCell *)self contentView];
-      [v11 bounds];
+      contentView = [(DMCEnrollmentTableViewTextCell *)self contentView];
+      [contentView bounds];
       v12 = CGRectGetHeight(v33) - v8;
 
-      v13 = [(DMCEnrollmentTableViewTextCell *)self hiddenTextView];
-      [v13 setFrame:{v6 + -8.0, v8, v10 + 16.0, v12}];
+      hiddenTextView = [(DMCEnrollmentTableViewTextCell *)self hiddenTextView];
+      [hiddenTextView setFrame:{v6 + -8.0, v8, v10 + 16.0, v12}];
     }
 
     previousWidth = self->_previousWidth;
@@ -223,14 +223,14 @@ void __72__DMCEnrollmentTableViewTextCell_initWithText_bold_subText_layoutStyle_
       }
     }
 
-    v15 = [(DMCEnrollmentTableViewTextCell *)self _rectsOfLinkText];
+    _rectsOfLinkText = [(DMCEnrollmentTableViewTextCell *)self _rectsOfLinkText];
     if ([(DMCEnrollmentTableViewTextCell *)self shouldCalculateLinkTextLineBreak])
     {
-      [(DMCEnrollmentTableViewTextCell *)self setLinkTextOnNextLine:[(DMCEnrollmentTableViewTextCell *)self isMultipleLines:v15]| [(DMCEnrollmentTableViewTextCell *)self linkTextOnNextLine]];
+      [(DMCEnrollmentTableViewTextCell *)self setLinkTextOnNextLine:[(DMCEnrollmentTableViewTextCell *)self isMultipleLines:_rectsOfLinkText]| [(DMCEnrollmentTableViewTextCell *)self linkTextOnNextLine]];
     }
 
-    v16 = [v15 firstObject];
-    [v16 rect];
+    firstObject = [_rectsOfLinkText firstObject];
+    [firstObject rect];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -240,99 +240,99 @@ void __72__DMCEnrollmentTableViewTextCell_initWithText_bold_subText_layoutStyle_
     v26 = v25 + v18 + -18.0;
     [(DMCEnrollmentTableViewTextCell *)self _verticalMargin];
     v28 = v20 + -10.0 + v27;
-    v29 = [(DMCEnrollmentTableViewTextCell *)self button];
-    [v29 setFrame:{v26, v28, v22 + 20.0, v24 + 20.0}];
+    button = [(DMCEnrollmentTableViewTextCell *)self button];
+    [button setFrame:{v26, v28, v22 + 20.0, v24 + 20.0}];
 
-    v30 = [(DMCEnrollmentTableViewTextCell *)self button];
-    [v30 setHidden:0];
+    button2 = [(DMCEnrollmentTableViewTextCell *)self button];
+    [button2 setHidden:0];
   }
 
   else
   {
-    v15 = [(DMCEnrollmentTableViewTextCell *)self button];
-    [v15 setHidden:1];
+    _rectsOfLinkText = [(DMCEnrollmentTableViewTextCell *)self button];
+    [_rectsOfLinkText setHidden:1];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(UILabel *)self->_label setTextAlignment:?];
   }
 }
 
-- (void)configureLinkText:(id)a3 forceLineBreak:(BOOL)a4 linkAction:(id)a5
+- (void)configureLinkText:(id)text forceLineBreak:(BOOL)break linkAction:(id)action
 {
-  v6 = a4;
-  v9 = a3;
-  v8 = a5;
-  if (v6)
+  breakCopy = break;
+  textCopy = text;
+  actionCopy = action;
+  if (breakCopy)
   {
     [(DMCEnrollmentTableViewTextCell *)self setShouldCalculateLinkTextLineBreak:0];
     [(DMCEnrollmentTableViewTextCell *)self setLinkTextOnNextLine:1];
   }
 
-  [(DMCEnrollmentTableViewTextCell *)self setLinkText:v9];
-  [(DMCEnrollmentTableViewTextCell *)self setLinkAction:v8];
+  [(DMCEnrollmentTableViewTextCell *)self setLinkText:textCopy];
+  [(DMCEnrollmentTableViewTextCell *)self setLinkAction:actionCopy];
 }
 
-- (void)setLinkText:(id)a3
+- (void)setLinkText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_linkText isEqualToString:?])
   {
-    objc_storeStrong(&self->_linkText, a3);
+    objc_storeStrong(&self->_linkText, text);
     [(DMCEnrollmentTableViewTextCell *)self _updateTextFont];
   }
 }
 
-- (void)setLinkAction:(id)a3
+- (void)setLinkAction:(id)action
 {
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  actionCopy = action;
+  v5 = _Block_copy(actionCopy);
   linkAction = self->_linkAction;
   self->_linkAction = v5;
 
-  if (v4)
+  if (actionCopy)
   {
-    v7 = [(DMCEnrollmentTableViewTextCell *)self button];
+    button = [(DMCEnrollmentTableViewTextCell *)self button];
     v8 = MEMORY[0x277D750C8];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __48__DMCEnrollmentTableViewTextCell_setLinkAction___block_invoke;
     v10[3] = &unk_278EE7D18;
-    v11 = v4;
+    v11 = actionCopy;
     v9 = [v8 actionWithHandler:v10];
-    [v7 addAction:v9 forControlEvents:64];
+    [button addAction:v9 forControlEvents:64];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     text = self->_text;
     self->_text = v4;
 
     v6 = self->_text;
-    v7 = [(DMCEnrollmentTableViewTextCell *)self label];
-    [v7 setText:v6];
+    label = [(DMCEnrollmentTableViewTextCell *)self label];
+    [label setText:v6];
 
     [(DMCEnrollmentTableViewTextCell *)self setNeedsDisplay];
   }
 }
 
-- (void)setLinkTextOnNextLine:(BOOL)a3
+- (void)setLinkTextOnNextLine:(BOOL)line
 {
-  if (self->_linkTextOnNextLine != a3)
+  if (self->_linkTextOnNextLine != line)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_linkTextOnNextLine = a3;
+    self->_linkTextOnNextLine = line;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__DMCEnrollmentTableViewTextCell_setLinkTextOnNextLine___block_invoke;
@@ -342,14 +342,14 @@ void __72__DMCEnrollmentTableViewTextCell_initWithText_bold_subText_layoutStyle_
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke;
   v3[3] = &unk_278EE7A58;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   [MEMORY[0x277D75D18] performWithoutAnimation:v3];
 }
 
@@ -365,16 +365,16 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
 
 - (id)_rectsOfLinkText
 {
-  v3 = [(DMCEnrollmentTableViewTextCell *)self hiddenTextView];
-  v4 = [v3 endOfDocument];
-  v5 = [v3 positionFromPosition:v4 offset:0];
+  hiddenTextView = [(DMCEnrollmentTableViewTextCell *)self hiddenTextView];
+  endOfDocument = [hiddenTextView endOfDocument];
+  v5 = [hiddenTextView positionFromPosition:endOfDocument offset:0];
 
-  v6 = [v3 endOfDocument];
-  v7 = [(DMCEnrollmentTableViewTextCell *)self linkText];
-  v8 = [v3 positionFromPosition:v6 offset:{-objc_msgSend(v7, "length")}];
+  endOfDocument2 = [hiddenTextView endOfDocument];
+  linkText = [(DMCEnrollmentTableViewTextCell *)self linkText];
+  v8 = [hiddenTextView positionFromPosition:endOfDocument2 offset:{-objc_msgSend(linkText, "length")}];
 
-  v9 = [v3 textRangeFromPosition:v8 toPosition:v5];
-  v10 = [v3 selectionRectsForRange:v9];
+  v9 = [hiddenTextView textRangeFromPosition:v8 toPosition:v5];
+  v10 = [hiddenTextView selectionRectsForRange:v9];
 
   return v10;
 }
@@ -387,28 +387,28 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
     v4 = objc_opt_new();
     [(UITextView *)v4 setEditable:0];
     [(UITextView *)v4 setScrollEnabled:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v4 setTextColor:v6];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v4 setTextColor:clearColor2];
 
     [(UITextView *)v4 setTextAlignment:self->_textAlignment];
-    v7 = [(DMCEnrollmentTableViewTextCell *)self label];
-    v8 = [v7 font];
-    [(UITextView *)v4 setFont:v8];
+    label = [(DMCEnrollmentTableViewTextCell *)self label];
+    font = [label font];
+    [(UITextView *)v4 setFont:font];
 
     [(UITextView *)v4 setTextContainerInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    v9 = [(DMCEnrollmentTableViewTextCell *)self label];
-    [v9 frame];
+    label2 = [(DMCEnrollmentTableViewTextCell *)self label];
+    [label2 frame];
     [(UITextView *)v4 setFrame:?];
 
     [(UITextView *)v4 setAutoresizingMask:18];
-    v10 = [(DMCEnrollmentTableViewTextCell *)self contentView];
-    [v10 addSubview:v4];
+    contentView = [(DMCEnrollmentTableViewTextCell *)self contentView];
+    [contentView addSubview:v4];
 
-    v11 = [(DMCEnrollmentTableViewTextCell *)self contentView];
-    [v11 sendSubviewToBack:v4];
+    contentView2 = [(DMCEnrollmentTableViewTextCell *)self contentView];
+    [contentView2 sendSubviewToBack:v4];
 
     v12 = self->_hiddenTextView;
     self->_hiddenTextView = v4;
@@ -422,7 +422,7 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
 - (void)_updateTextFont
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v43 = [(DMCEnrollmentTableViewTextCell *)self text];
+  text = [(DMCEnrollmentTableViewTextCell *)self text];
   v39 = objc_opt_new();
   v51 = *MEMORY[0x277D740A8];
   v3 = v51;
@@ -430,8 +430,8 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
   v53[0] = v4;
   v52 = *MEMORY[0x277D740C0];
   v5 = v52;
-  v6 = [MEMORY[0x277D75348] labelColor];
-  v53[1] = v6;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v53[1] = labelColor;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:&v51 count:2];
 
   v8 = objc_opt_new();
@@ -440,10 +440,10 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
   v9 = [(DMCEnrollmentTableViewTextCell *)self _textFontIsBold:[(DMCEnrollmentTableViewTextCell *)self bold]];
   v50[0] = v9;
   v48[1] = v5;
-  v10 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   v49 = *MEMORY[0x277D74118];
   v11 = v49;
-  v50[1] = v10;
+  v50[1] = systemBlueColor;
   v50[2] = v8;
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v48 count:3];
 
@@ -452,9 +452,9 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
   v13 = [(DMCEnrollmentTableViewTextCell *)self _textFontIsBold:[(DMCEnrollmentTableViewTextCell *)self bold]];
   v47[0] = v13;
   v46[1] = v5;
-  v14 = [MEMORY[0x277D75348] placeholderTextColor];
+  placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
   v46[2] = v11;
-  v47[1] = v14;
+  v47[1] = placeholderTextColor;
   v47[2] = v8;
   v40 = v8;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
@@ -464,19 +464,19 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
   v44[1] = v5;
   v45[0] = v15;
   v16 = v39;
-  v17 = [MEMORY[0x277D75348] clearColor];
-  v45[1] = v17;
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v45[1] = clearColor;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
 
-  if (v43)
+  if (text)
   {
-    v19 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v43 attributes:v12];
+    v19 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:text attributes:v12];
     [v39 appendAttributedString:v19];
   }
 
-  v20 = [(DMCEnrollmentTableViewTextCell *)self linkText];
+  linkText = [(DMCEnrollmentTableViewTextCell *)self linkText];
 
-  if (v20)
+  if (linkText)
   {
     v21 = MEMORY[0x277CCACA8];
     if ([(DMCEnrollmentTableViewTextCell *)self linkTextOnNextLine])
@@ -489,25 +489,25 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
       v22 = @" %@";
     }
 
-    v23 = [(DMCEnrollmentTableViewTextCell *)self linkText];
-    v38 = [v21 stringWithFormat:v22, v23];
+    linkText2 = [(DMCEnrollmentTableViewTextCell *)self linkText];
+    v38 = [v21 stringWithFormat:v22, linkText2];
 
     v24 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v38 attributes:v18];
     [v39 appendAttributedString:v24];
 
     v25 = objc_alloc(MEMORY[0x277CCA898]);
-    v26 = [(DMCEnrollmentTableViewTextCell *)self linkText];
+    linkText3 = [(DMCEnrollmentTableViewTextCell *)self linkText];
     v27 = v42;
-    v28 = [v25 initWithString:v26 attributes:v42];
+    v28 = [v25 initWithString:linkText3 attributes:v42];
 
     v29 = objc_alloc(MEMORY[0x277CCA898]);
-    v30 = [(DMCEnrollmentTableViewTextCell *)self linkText];
+    linkText4 = [(DMCEnrollmentTableViewTextCell *)self linkText];
     v31 = v41;
-    v32 = [v29 initWithString:v30 attributes:v41];
+    v32 = [v29 initWithString:linkText4 attributes:v41];
 
-    v33 = [v39 string];
-    v34 = [(DMCEnrollmentTableViewTextCell *)self hiddenTextView];
-    [v34 setText:v33];
+    string = [v39 string];
+    hiddenTextView = [(DMCEnrollmentTableViewTextCell *)self hiddenTextView];
+    [hiddenTextView setText:string];
 
     v16 = v39;
   }
@@ -520,32 +520,32 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
     v27 = v42;
   }
 
-  v35 = [(DMCEnrollmentTableViewTextCell *)self label];
-  [v35 setAttributedText:v16];
+  label = [(DMCEnrollmentTableViewTextCell *)self label];
+  [label setAttributedText:v16];
 
-  v36 = [(DMCEnrollmentTableViewTextCell *)self button];
-  [v36 setAttributedTitle:v28 forState:0];
+  button = [(DMCEnrollmentTableViewTextCell *)self button];
+  [button setAttributedTitle:v28 forState:0];
 
-  v37 = [(DMCEnrollmentTableViewTextCell *)self button];
-  [v37 setAttributedTitle:v32 forState:2];
+  button2 = [(DMCEnrollmentTableViewTextCell *)self button];
+  [button2 setAttributedTitle:v32 forState:2];
 
   [(DMCEnrollmentTableViewTextCell *)self setNeedsLayout];
 }
 
-- (id)_textFontIsBold:(BOOL)a3
+- (id)_textFontIsBold:(BOOL)bold
 {
-  v3 = a3;
+  boldCopy = bold;
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
   [v5 pointSize];
   v7 = v6;
 
   v8 = MEMORY[0x277D74310];
   v9 = *MEMORY[0x277D76918];
-  v10 = [(DMCEnrollmentTableViewTextCell *)self traitCollection];
-  v11 = [v8 preferredFontDescriptorWithTextStyle:v9 compatibleWithTraitCollection:v10];
+  traitCollection = [(DMCEnrollmentTableViewTextCell *)self traitCollection];
+  v11 = [v8 preferredFontDescriptorWithTextStyle:v9 compatibleWithTraitCollection:traitCollection];
 
   v12 = MEMORY[0x277D74300];
-  if (v3)
+  if (boldCopy)
   {
     v13 = 2;
   }
@@ -575,15 +575,15 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (BOOL)isMultipleLines:(id)a3
+- (BOOL)isMultipleLines:(id)lines
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  linesCopy = lines;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [linesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = 0;
@@ -594,7 +594,7 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(linesCopy);
         }
 
         [*(*(&v10 + 1) + 8 * i) rect];
@@ -604,7 +604,7 @@ void __45__DMCEnrollmentTableViewTextCell_setEnabled___block_invoke(uint64_t a1)
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [linesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);

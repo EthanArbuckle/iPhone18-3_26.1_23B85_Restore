@@ -1,14 +1,14 @@
 @interface CLIProgram
-+ (BOOL)handleFormatOption:(id)a3 longOption:(id)a4 argument:(id)a5;
++ (BOOL)handleFormatOption:(id)option longOption:(id)longOption argument:(id)argument;
 + (CLIProgram)sharedProgram;
 + (id)commandToOptionsDict;
 + (id)nextOptionParser;
-+ (void)handleFormatOptionInDictionary:(id)a3;
++ (void)handleFormatOptionInDictionary:(id)dictionary;
 - (BOOL)startRunLoop;
 - (CLIProgram)init;
 - (NSString)programName;
 - (int)main;
-- (void)endRunLoopWithSuccess:(BOOL)a3;
+- (void)endRunLoopWithSuccess:(BOOL)success;
 - (void)registerAllCLICommands;
 @end
 
@@ -38,9 +38,9 @@
 
         v8 = *(*(&v13 + 1) + 8 * i);
         v9 = [qword_1000115D0 objectForKey:{v8, v13}];
-        v10 = [v9 _copiedSet];
-        v11 = [v8 name];
-        [v2 setObject:v10 forKeyedSubscript:v11];
+        _copiedSet = [v9 _copiedSet];
+        name = [v8 name];
+        [v2 setObject:_copiedSet forKeyedSubscript:name];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -54,9 +54,9 @@
 
 + (CLIProgram)sharedProgram
 {
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
-    sub_10000782C(a2, a1);
+    sub_10000782C(a2, self);
   }
 
   if (qword_1000115E8 != -1)
@@ -86,24 +86,24 @@
   return v2;
 }
 
-+ (BOOL)handleFormatOption:(id)a3 longOption:(id)a4 argument:(id)a5
++ (BOOL)handleFormatOption:(id)option longOption:(id)longOption argument:(id)argument
 {
-  v7 = a5;
-  v8 = [a4 isEqualToString:@"format"];
+  argumentCopy = argument;
+  v8 = [longOption isEqualToString:@"format"];
   if (v8)
   {
-    sub_100005DE8(a1, v7);
+    sub_100005DE8(self, argumentCopy);
   }
 
   return v8;
 }
 
-+ (void)handleFormatOptionInDictionary:(id)a3
++ (void)handleFormatOptionInDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"format"];
+  v4 = [dictionary objectForKeyedSubscript:@"format"];
   if (v4)
   {
-    sub_100005DE8(a1, v4);
+    sub_100005DE8(self, v4);
   }
 
   _objc_release_x1();
@@ -112,12 +112,12 @@
 + (id)nextOptionParser
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 arguments];
+  arguments = [v2 arguments];
 
   v4 = qword_1000115B8;
-  v5 = [v3 count];
+  v5 = [arguments count];
   v6 = [NSIndexSet indexSetWithIndexesInRange:v4, &v5[-qword_1000115B8]];
-  v7 = [v3 objectsAtIndexes:v6];
+  v7 = [arguments objectsAtIndexes:v6];
   v8 = v7;
   if (qword_1000115B8)
   {
@@ -257,11 +257,11 @@ LABEL_8:
   else
   {
     v5 = +[NSProcessInfo processInfo];
-    v6 = [v5 processName];
+    processName = [v5 processName];
     v7 = self->_programName;
-    self->_programName = v6;
+    self->_programName = processName;
 
-    v3 = v6;
+    v3 = processName;
   }
 
   return v3;
@@ -270,25 +270,25 @@ LABEL_8:
 - (int)main
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 environment];
-  v5 = [v4 objectForKeyedSubscript:@"PWD"];
+  environment = [v3 environment];
+  v5 = [environment objectForKeyedSubscript:@"PWD"];
 
   chdir([v5 fileSystemRepresentation]);
   v6 = objc_autoreleasePoolPush();
-  v7 = [(CLIProgram *)self delegate];
+  delegate = [(CLIProgram *)self delegate];
   sub_100007750(self);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v7 shouldAutomaticallyRegisterCommands])
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate shouldAutomaticallyRegisterCommands])
   {
     [(CLIProgram *)self registerAllCLICommands];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 registerGlobalOptions];
+    [delegate registerGlobalOptions];
   }
 
   v8 = +[CLIProgram nextOptionParser];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v7 parseGlobalOptions:v8])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate parseGlobalOptions:v8])
   {
     v15 = 1;
   }
@@ -297,24 +297,24 @@ LABEL_8:
   {
     v9 = +[CLIProgram nextOptionParser];
     [v9 validateArguments];
-    v10 = [v9 command];
-    v12 = [v9 commandName];
-    v13 = v12;
-    if (!v12)
+    command = [v9 command];
+    commandName = [v9 commandName];
+    name = commandName;
+    if (!commandName)
     {
-      v13 = [v10 name];
+      name = [command name];
     }
 
     if (self)
     {
-      objc_setProperty_nonatomic_copy(self, v11, v13, 40);
+      objc_setProperty_nonatomic_copy(self, v11, name, 40);
     }
 
-    if (!v12)
+    if (!commandName)
     {
     }
 
-    v14 = [v10 runWithOptions:v9];
+    v14 = [command runWithOptions:v9];
     v15 = v14 ^ 1;
   }
 
@@ -358,9 +358,9 @@ LABEL_8:
   return runLoopState == 2;
 }
 
-- (void)endRunLoopWithSuccess:(BOOL)a3
+- (void)endRunLoopWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v6 = self->_runLoopStateLock;
   objc_sync_enter(v6);
   if (self->_runLoopState != 1)
@@ -370,7 +370,7 @@ LABEL_8:
   }
 
   v7 = 2;
-  if (!v3)
+  if (!successCopy)
   {
     v7 = 3;
   }

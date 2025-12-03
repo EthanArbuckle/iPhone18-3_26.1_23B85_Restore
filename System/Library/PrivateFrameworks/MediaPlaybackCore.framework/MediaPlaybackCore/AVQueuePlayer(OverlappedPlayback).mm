@@ -16,7 +16,7 @@
       if (result)
       {
 
-        return [a1 setSupportsAdvanceTimeForOverlappedPlayback:a3];
+        return [self setSupportsAdvanceTimeForOverlappedPlayback:a3];
       }
     }
   }

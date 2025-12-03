@@ -1,34 +1,34 @@
 @interface CRKEDUPayloadCredentialValidator
-- (BOOL)areCredentialsValidForOneToOneDeviceWithError:(id *)a3;
-- (BOOL)areCredentialsValidForSharediPadDeviceWithError:(id *)a3;
-- (BOOL)areCredentialsValidWithError:(id *)a3;
+- (BOOL)areCredentialsValidForOneToOneDeviceWithError:(id *)error;
+- (BOOL)areCredentialsValidForSharediPadDeviceWithError:(id *)error;
+- (BOOL)areCredentialsValidWithError:(id *)error;
 - (BOOL)hasPayloadCertificate;
 - (BOOL)isInstructor;
 - (BOOL)isStudent;
-- (BOOL)validateAnchorsWithKeyPath:(id)a3 payloadKey:(id)a4 error:(id *)a5;
-- (CRKEDUPayloadCredentialValidator)initWithPayload:(id)a3 isStub:(BOOL)a4 isEphemeralMultiUserDevice:(BOOL)a5;
+- (BOOL)validateAnchorsWithKeyPath:(id)path payloadKey:(id)key error:(id *)error;
+- (CRKEDUPayloadCredentialValidator)initWithPayload:(id)payload isStub:(BOOL)stub isEphemeralMultiUserDevice:(BOOL)device;
 @end
 
 @implementation CRKEDUPayloadCredentialValidator
 
-- (CRKEDUPayloadCredentialValidator)initWithPayload:(id)a3 isStub:(BOOL)a4 isEphemeralMultiUserDevice:(BOOL)a5
+- (CRKEDUPayloadCredentialValidator)initWithPayload:(id)payload isStub:(BOOL)stub isEphemeralMultiUserDevice:(BOOL)device
 {
-  v9 = a3;
+  payloadCopy = payload;
   v13.receiver = self;
   v13.super_class = CRKEDUPayloadCredentialValidator;
   v10 = [(CRKEDUPayloadCredentialValidator *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_payload, a3);
-    v11->_stub = a4;
-    v11->_ephemeralMultiUserDevice = a5;
+    objc_storeStrong(&v10->_payload, payload);
+    v11->_stub = stub;
+    v11->_ephemeralMultiUserDevice = device;
   }
 
   return v11;
 }
 
-- (BOOL)areCredentialsValidWithError:(id *)a3
+- (BOOL)areCredentialsValidWithError:(id *)error
 {
   if ([(CRKEDUPayloadCredentialValidator *)self isStub])
   {
@@ -38,24 +38,24 @@
   if ([(CRKEDUPayloadCredentialValidator *)self isEphemeralMultiUserDevice])
   {
 
-    return [(CRKEDUPayloadCredentialValidator *)self areCredentialsValidForSharediPadDeviceWithError:a3];
+    return [(CRKEDUPayloadCredentialValidator *)self areCredentialsValidForSharediPadDeviceWithError:error];
   }
 
   else
   {
 
-    return [(CRKEDUPayloadCredentialValidator *)self areCredentialsValidForOneToOneDeviceWithError:a3];
+    return [(CRKEDUPayloadCredentialValidator *)self areCredentialsValidForOneToOneDeviceWithError:error];
   }
 }
 
-- (BOOL)areCredentialsValidForSharediPadDeviceWithError:(id *)a3
+- (BOOL)areCredentialsValidForSharediPadDeviceWithError:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = [(CRKEDUPayloadCredentialValidator *)self hasPayloadCertificate];
-  v6 = v5 ^ [(CRKEDUPayloadCredentialValidator *)self validateLeaderAnchorsWithError:0];
+  hasPayloadCertificate = [(CRKEDUPayloadCredentialValidator *)self hasPayloadCertificate];
+  v6 = hasPayloadCertificate ^ [(CRKEDUPayloadCredentialValidator *)self validateLeaderAnchorsWithError:0];
   if (v6 == 1)
   {
-    if (v5)
+    if (hasPayloadCertificate)
     {
       v7 = @"PayloadCertificateUUID";
     }
@@ -71,39 +71,39 @@
     v12[0] = @"PayloadCertificateUUID";
     v12[1] = @"LeaderPayloadCertificateAnchorUUID";
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x277CCA9B8] crk_allOrNoneKeysErrorWithProvidedKeys:v9 allOrNoneKeys:v10];
+      *error = [MEMORY[0x277CCA9B8] crk_allOrNoneKeysErrorWithProvidedKeys:v9 allOrNoneKeys:v10];
     }
   }
 
   return v6 ^ 1;
 }
 
-- (BOOL)areCredentialsValidForOneToOneDeviceWithError:(id *)a3
+- (BOOL)areCredentialsValidForOneToOneDeviceWithError:(id *)error
 {
   if (![(CRKEDUPayloadCredentialValidator *)self hasPayloadCertificate])
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x277CCA9B8] crk_missingFieldErrorWithField:@"PayloadCertificateUUID"];
+      *error = [MEMORY[0x277CCA9B8] crk_missingFieldErrorWithField:@"PayloadCertificateUUID"];
     }
 
     return 0;
   }
 
-  v5 = [(CRKEDUPayloadCredentialValidator *)self isStudent];
-  v6 = [(CRKEDUPayloadCredentialValidator *)self isInstructor];
-  if (v5 && v6)
+  isStudent = [(CRKEDUPayloadCredentialValidator *)self isStudent];
+  isInstructor = [(CRKEDUPayloadCredentialValidator *)self isInstructor];
+  if (isStudent && isInstructor)
   {
-    if (a3)
+    if (error)
     {
       v7 = MEMORY[0x277CCA9B8];
-      v8 = [(CRKEDUPayloadCredentialValidator *)self payload];
-      v9 = [v8 userIdentifier];
-      v10 = [v7 crk_topLevelUserIsBothLeaderAndMemberErrorWithUserIdentifier:v9];
+      payload = [(CRKEDUPayloadCredentialValidator *)self payload];
+      userIdentifier = [payload userIdentifier];
+      v10 = [v7 crk_topLevelUserIsBothLeaderAndMemberErrorWithUserIdentifier:userIdentifier];
 LABEL_15:
-      *a3 = v10;
+      *error = v10;
 
       return 0;
     }
@@ -111,60 +111,60 @@ LABEL_15:
     return 0;
   }
 
-  if (!v5 && !v6)
+  if (!isStudent && !isInstructor)
   {
-    if (a3)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
-      v8 = [(CRKEDUPayloadCredentialValidator *)self payload];
-      v9 = [v8 userIdentifier];
-      v10 = [v12 crk_topLevelUserIsNeitherLeaderNorMemberErrorWithUserIdentifier:v9];
+      payload = [(CRKEDUPayloadCredentialValidator *)self payload];
+      userIdentifier = [payload userIdentifier];
+      v10 = [v12 crk_topLevelUserIsNeitherLeaderNorMemberErrorWithUserIdentifier:userIdentifier];
       goto LABEL_15;
     }
 
     return 0;
   }
 
-  if (v5)
+  if (isStudent)
   {
 
-    return [(CRKEDUPayloadCredentialValidator *)self validateLeaderAnchorsWithError:a3];
+    return [(CRKEDUPayloadCredentialValidator *)self validateLeaderAnchorsWithError:error];
   }
 
   else
   {
 
-    return [(CRKEDUPayloadCredentialValidator *)self validateMemberAnchorsWithError:a3];
+    return [(CRKEDUPayloadCredentialValidator *)self validateMemberAnchorsWithError:error];
   }
 }
 
-- (BOOL)validateAnchorsWithKeyPath:(id)a3 payloadKey:(id)a4 error:(id *)a5
+- (BOOL)validateAnchorsWithKeyPath:(id)path payloadKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CRKEDUPayloadCredentialValidator *)self payload];
-  v11 = [v10 valueForKeyPath:v9];
+  keyCopy = key;
+  pathCopy = path;
+  payload = [(CRKEDUPayloadCredentialValidator *)self payload];
+  v11 = [payload valueForKeyPath:pathCopy];
 
   if (!v11)
   {
-    if (!a5)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_9;
     }
 
-    v14 = [MEMORY[0x277CCA9B8] crk_missingFieldErrorWithField:v8];
+    v14 = [MEMORY[0x277CCA9B8] crk_missingFieldErrorWithField:keyCopy];
     goto LABEL_7;
   }
 
   v12 = [v11 count];
   v13 = v12 != 0;
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    v14 = [MEMORY[0x277CCA9B8] crk_unsupportedValueErrorWithField:v8 value:v11];
+    v14 = [MEMORY[0x277CCA9B8] crk_unsupportedValueErrorWithField:keyCopy value:v11];
 LABEL_7:
     v13 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
 LABEL_9:
@@ -179,10 +179,10 @@ LABEL_9:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(CRKEDUPayloadCredentialValidator *)self payload];
-  v4 = [v3 groups];
+  payload = [(CRKEDUPayloadCredentialValidator *)self payload];
+  groups = [payload groups];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [groups countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -193,13 +193,13 @@ LABEL_9:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groups);
         }
 
         v9 = [*(*(&v15 + 1) + 8 * i) objectForKeyedSubscript:@"LeaderIdentifiers"];
-        v10 = [(CRKEDUPayloadCredentialValidator *)self payload];
-        v11 = [v10 userIdentifier];
-        v12 = [v9 containsObject:v11];
+        payload2 = [(CRKEDUPayloadCredentialValidator *)self payload];
+        userIdentifier = [payload2 userIdentifier];
+        v12 = [v9 containsObject:userIdentifier];
 
         if (v12)
         {
@@ -208,7 +208,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [groups countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -231,10 +231,10 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(CRKEDUPayloadCredentialValidator *)self payload];
-  v4 = [v3 groups];
+  payload = [(CRKEDUPayloadCredentialValidator *)self payload];
+  groups = [payload groups];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [groups countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -245,13 +245,13 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groups);
         }
 
         v9 = [*(*(&v15 + 1) + 8 * i) objectForKeyedSubscript:@"MemberIdentifiers"];
-        v10 = [(CRKEDUPayloadCredentialValidator *)self payload];
-        v11 = [v10 userIdentifier];
-        v12 = [v9 containsObject:v11];
+        payload2 = [(CRKEDUPayloadCredentialValidator *)self payload];
+        userIdentifier = [payload2 userIdentifier];
+        v12 = [v9 containsObject:userIdentifier];
 
         if (v12)
         {
@@ -260,7 +260,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [groups countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -278,9 +278,9 @@ LABEL_11:
 
 - (BOOL)hasPayloadCertificate
 {
-  v2 = [(CRKEDUPayloadCredentialValidator *)self payload];
-  v3 = [v2 payloadCertificateUUID];
-  v4 = v3 != 0;
+  payload = [(CRKEDUPayloadCredentialValidator *)self payload];
+  payloadCertificateUUID = [payload payloadCertificateUUID];
+  v4 = payloadCertificateUUID != 0;
 
   return v4;
 }

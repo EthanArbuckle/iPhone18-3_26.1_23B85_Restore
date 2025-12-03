@@ -1,41 +1,41 @@
 @interface HDQuantitySeriesSampleQueryServer
-- (HDQuantitySeriesSampleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDQuantitySeriesSampleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)_clientProxy;
-- (uint64_t)_deliverEnumerationResults:(uint64_t)a1 latestUUID:(void *)a2 latestSampleStartTime:(void *)a3 sampleIDsToLookup:(void *)a4 isFinal:(unsigned int)a5 error:(double)a6;
-- (void)_deliverEnumerationResults:(uint64_t)a3 isFinal:;
-- (void)_deliverError:(void *)a1;
-- (void)_deliverQuantitySeries:(uint64_t)a3 seriesAnchor:(uint64_t)a4 isFinal:;
+- (uint64_t)_deliverEnumerationResults:(uint64_t)results latestUUID:(void *)d latestSampleStartTime:(void *)time sampleIDsToLookup:(void *)lookup isFinal:(unsigned int)final error:(double)error;
+- (void)_deliverEnumerationResults:(uint64_t)results isFinal:;
+- (void)_deliverError:(void *)error;
+- (void)_deliverQuantitySeries:(uint64_t)series seriesAnchor:(uint64_t)anchor isFinal:;
 - (void)_queue_start;
 @end
 
 @implementation HDQuantitySeriesSampleQueryServer
 
-- (HDQuantitySeriesSampleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDQuantitySeriesSampleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = HDQuantitySeriesSampleQueryServer;
-  v11 = [(HDQueryServer *)&v21 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v21 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 quantitySample];
+    quantitySample = [configurationCopy quantitySample];
     sample = v11->_sample;
-    v11->_sample = v12;
+    v11->_sample = quantitySample;
 
-    v11->_lastDatumIndex = [v10 seriesAnchor];
-    v11->_mode = [v10 mode];
-    v11->_options = [v10 options];
-    v14 = [v10 maximumStartDate];
+    v11->_lastDatumIndex = [configurationCopy seriesAnchor];
+    v11->_mode = [configurationCopy mode];
+    v11->_options = [configurationCopy options];
+    maximumStartDate = [configurationCopy maximumStartDate];
     maximumDeliveredStartDate = v11->_maximumDeliveredStartDate;
-    v11->_maximumDeliveredStartDate = v14;
+    v11->_maximumDeliveredStartDate = maximumStartDate;
 
-    v16 = [v10 latestUUID];
+    latestUUID = [configurationCopy latestUUID];
     latestDeliveredUUID = v11->_latestDeliveredUUID;
-    v11->_latestDeliveredUUID = v16;
+    v11->_latestDeliveredUUID = latestUUID;
 
-    v18 = [v10 latestSampleStartDate];
+    latestSampleStartDate = [configurationCopy latestSampleStartDate];
     latestDeliveredSampleStartDate = v11->_latestDeliveredSampleStartDate;
-    v11->_latestDeliveredSampleStartDate = v18;
+    v11->_latestDeliveredSampleStartDate = latestSampleStartDate;
 
     v11->_batchThreshold = 400;
   }
@@ -49,9 +49,9 @@
   v64.receiver = self;
   v64.super_class = HDQuantitySeriesSampleQueryServer;
   [(HDQueryServer *)&v64 _queue_start];
-  v3 = [(HDQueryServer *)self quantityType];
+  quantityType = [(HDQueryServer *)self quantityType];
   v63 = 0;
-  v4 = [(HDQueryServer *)self authorizationStatusRecordForType:v3 error:&v63];
+  v4 = [(HDQueryServer *)self authorizationStatusRecordForType:quantityType error:&v63];
   v5 = v63;
 
   if (!v4)
@@ -71,14 +71,14 @@
         {
           v7 = objc_alloc_init(MEMORY[0x277CCD178]);
           v8 = objc_alloc_init(MEMORY[0x277CCD180]);
-          v9 = [(HKQuantitySample *)self->_sample quantity];
-          v10 = [(HKQuantitySample *)self->_sample quantity];
-          v11 = [v10 _unit];
-          [v9 doubleValueForUnit:v11];
+          quantity = [(HKQuantitySample *)self->_sample quantity];
+          quantity2 = [(HKQuantitySample *)self->_sample quantity];
+          _unit = [quantity2 _unit];
+          [quantity doubleValueForUnit:_unit];
           [v8 setValue:?];
 
-          v12 = [(HKQuantitySample *)self->_sample startDate];
-          [v12 timeIntervalSinceReferenceDate];
+          startDate = [(HKQuantitySample *)self->_sample startDate];
+          [startDate timeIntervalSinceReferenceDate];
           [v8 setTimeInterval:?];
 
           [v7 addValues:v8];
@@ -101,18 +101,18 @@
           v91 = __Block_byref_object_copy__137;
           v92 = __Block_byref_object_dispose__137;
           v93 = objc_alloc_init(MEMORY[0x277CCD178]);
-          v27 = [(HKQuantitySample *)self->_sample UUID];
-          v28 = [(HDQueryServer *)self profile];
+          uUID = [(HKQuantitySample *)self->_sample UUID];
+          profile = [(HDQueryServer *)self profile];
           v75 = 0;
           v76 = MEMORY[0x277D85DD0];
           v77 = 3221225472;
           v78 = __65__HDQuantitySeriesSampleQueryServer__queue_startSingleSeriesMode__block_invoke;
           v79 = &unk_278625FE8;
-          v80 = self;
+          selfCopy2 = self;
           v81 = &v71;
           v82 = &v67;
           v83 = &v88;
-          v29 = [HDQuantitySampleSeriesEntity enumerateDataWithIdentifier:v27 profile:v28 error:&v75 handler:&v76];
+          v29 = [HDQuantitySampleSeriesEntity enumerateDataWithIdentifier:uUID profile:profile error:&v75 handler:&v76];
           v7 = v75;
 
           if (v29)
@@ -144,23 +144,23 @@
 
     v75 = 0;
     v14 = MEMORY[0x277CBEB18];
-    v15 = [(HDQueryServer *)self quantityType];
-    v16 = HDSampleEntityPredicateForDataType(v15);
+    quantityType2 = [(HDQueryServer *)self quantityType];
+    v16 = HDSampleEntityPredicateForDataType(quantityType2);
     v17 = [v14 arrayWithObject:v16];
 
-    v18 = [(HDQueryServer *)self filter];
-    v19 = [(HDQueryServer *)self profile];
-    v20 = [v18 predicateWithProfile:v19];
+    filter = [(HDQueryServer *)self filter];
+    profile2 = [(HDQueryServer *)self profile];
+    v20 = [filter predicateWithProfile:profile2];
 
     if (v20)
     {
       [v17 addObject:v20];
     }
 
-    v21 = [(HDQueryServer *)self client];
-    v22 = [v21 authorizationOracle];
-    v23 = [(HDQueryServer *)self objectType];
-    v24 = [v22 additionalAuthorizationPredicateForObjectType:v23 error:&v75];
+    client = [(HDQueryServer *)self client];
+    authorizationOracle = [client authorizationOracle];
+    objectType = [(HDQueryServer *)self objectType];
+    v24 = [authorizationOracle additionalAuthorizationPredicateForObjectType:objectType error:&v75];
 
     if (!v24)
     {
@@ -188,7 +188,7 @@ LABEL_27:
         v68 = &v67;
         v69 = 0x2020000000;
         v70 = 0;
-        v45 = [(HDQueryServer *)self profile];
+        profile3 = [(HDQueryServer *)self profile];
         v46 = options & 1;
         v47 = options & 2;
         v66 = v41;
@@ -196,7 +196,7 @@ LABEL_27:
         v77 = 3221225472;
         v78 = __64__HDQuantitySeriesSampleQueryServer__queue_startEnumerationMode__block_invoke;
         v79 = &unk_278626010;
-        v80 = self;
+        selfCopy2 = self;
         v83 = &v71;
         v86 = v47 >> 1;
         v48 = v44;
@@ -207,7 +207,7 @@ LABEL_27:
         v82 = v60;
         v87 = v46;
         v49 = &v76;
-        v50 = v45;
+        v50 = profile3;
         v51 = v61;
         objc_opt_self();
         if (v47)
@@ -333,65 +333,65 @@ LABEL_43:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliverError:(void *)a1
+- (void)_deliverError:(void *)error
 {
-  if (a1)
+  if (error)
   {
     v3 = a2;
-    v5 = [(HDQuantitySeriesSampleQueryServer *)a1 _clientProxy];
-    v4 = [a1 queryUUID];
-    [v5 client_deliverError:v3 forQuery:v4];
+    _clientProxy = [(HDQuantitySeriesSampleQueryServer *)error _clientProxy];
+    queryUUID = [error queryUUID];
+    [_clientProxy client_deliverError:v3 forQuery:queryUUID];
   }
 }
 
 - (id)_clientProxy
 {
-  v2 = [a1 client];
-  v3 = [v2 connection];
+  client = [self client];
+  connection = [client connection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__HDQuantitySeriesSampleQueryServer__clientProxy__block_invoke;
   v6[3] = &unk_2786138D0;
-  v6[4] = a1;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v6[4] = self;
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
 
-- (void)_deliverQuantitySeries:(uint64_t)a3 seriesAnchor:(uint64_t)a4 isFinal:
+- (void)_deliverQuantitySeries:(uint64_t)series seriesAnchor:(uint64_t)anchor isFinal:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
     v12 = v7;
-    v8 = [(HDQuantitySeriesSampleQueryServer *)a1 _clientProxy];
-    v9 = [a1 queryUUID];
-    v10 = _Block_copy(a1[34]);
+    _clientProxy = [(HDQuantitySeriesSampleQueryServer *)self _clientProxy];
+    queryUUID = [self queryUUID];
+    v10 = _Block_copy(self[34]);
     v11 = v10;
     if (v10)
     {
-      (*(v10 + 2))(v10, a1);
+      (*(v10 + 2))(v10, self);
     }
 
-    [v8 client_deliverQuantitySeries:v12 seriesAnchor:a3 isFinal:a4 query:v9];
+    [_clientProxy client_deliverQuantitySeries:v12 seriesAnchor:series isFinal:anchor query:queryUUID];
 
     v7 = v12;
   }
 }
 
-- (void)_deliverEnumerationResults:(uint64_t)a3 isFinal:
+- (void)_deliverEnumerationResults:(uint64_t)results isFinal:
 {
   v9 = a2;
-  v5 = [(HDQuantitySeriesSampleQueryServer *)a1 _clientProxy];
-  v6 = [a1 queryUUID];
-  v7 = _Block_copy(a1[34]);
+  _clientProxy = [(HDQuantitySeriesSampleQueryServer *)self _clientProxy];
+  queryUUID = [self queryUUID];
+  v7 = _Block_copy(self[34]);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, a1);
+    (*(v7 + 2))(v7, self);
   }
 
-  [v5 client_deliverEnumerationResults:v9 isFinal:a3 query:v6];
+  [_clientProxy client_deliverEnumerationResults:v9 isFinal:results query:queryUUID];
 }
 
 void __49__HDQuantitySeriesSampleQueryServer__clientProxy__block_invoke(uint64_t a1, void *a2)
@@ -568,38 +568,38 @@ LABEL_14:
   return v21;
 }
 
-- (uint64_t)_deliverEnumerationResults:(uint64_t)a1 latestUUID:(void *)a2 latestSampleStartTime:(void *)a3 sampleIDsToLookup:(void *)a4 isFinal:(unsigned int)a5 error:(double)a6
+- (uint64_t)_deliverEnumerationResults:(uint64_t)results latestUUID:(void *)d latestSampleStartTime:(void *)time sampleIDsToLookup:(void *)lookup isFinal:(unsigned int)final error:(double)error
 {
-  v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  if (!a1)
+  dCopy = d;
+  timeCopy = time;
+  lookupCopy = lookup;
+  if (!results)
   {
     goto LABEL_5;
   }
 
   v13 = MEMORY[0x277CBEAA8];
-  v14 = [v10 results];
-  v15 = [v14 lastObject];
-  [v15 startTime];
+  results = [dCopy results];
+  lastObject = [results lastObject];
+  [lastObject startTime];
   v16 = [v13 dateWithTimeIntervalSinceReferenceDate:?];
-  v17 = *(a1 + 248);
-  *(a1 + 248) = v16;
+  v17 = *(results + 248);
+  *(results + 248) = v16;
 
-  objc_storeStrong((a1 + 256), a3);
-  v18 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a6];
-  v19 = *(a1 + 264);
-  *(a1 + 264) = v18;
+  objc_storeStrong((results + 256), time);
+  v18 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:error];
+  v19 = *(results + 264);
+  *(results + 264) = v18;
 
-  v20 = [v11 hk_dataForUUIDBytes];
-  v21 = [v10 results];
-  v22 = [v21 lastObject];
-  [v22 setUuid:v20];
+  hk_dataForUUIDBytes = [timeCopy hk_dataForUUIDBytes];
+  results2 = [dCopy results];
+  lastObject2 = [results2 lastObject];
+  [lastObject2 setUuid:hk_dataForUUIDBytes];
 
-  [v10 setLatestSampleStartTime:a6];
-  if (![v12 count] || (v27 = v12, v28 = v10, v23 = HKWithAutoreleasePool(), v28, v27, v23))
+  [dCopy setLatestSampleStartTime:error];
+  if (![lookupCopy count] || (v27 = lookupCopy, v28 = dCopy, v23 = HKWithAutoreleasePool(), v28, v27, v23))
   {
-    [(HDQuantitySeriesSampleQueryServer *)a1 _deliverEnumerationResults:v10 isFinal:a5];
+    [(HDQuantitySeriesSampleQueryServer *)results _deliverEnumerationResults:dCopy isFinal:final];
     v24 = 1;
   }
 

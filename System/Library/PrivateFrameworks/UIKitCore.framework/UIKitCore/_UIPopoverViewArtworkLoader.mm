@@ -1,9 +1,9 @@
 @interface _UIPopoverViewArtworkLoader
-+ (id)backgroundSelectorForBackgroundStyle:(int64_t)a3;
++ (id)backgroundSelectorForBackgroundStyle:(int64_t)style;
 - (BOOL)modern;
-- (CGRect)contentRectForRect:(CGRect)a3 inImageOfSize:(CGSize)a4;
-- (CGRect)contentsCenterForRect:(CGRect)a3 inImageOfSize:(CGSize)a4;
-- (_UIPopoverViewArtworkLoader)initWithBackgroundStyle:(int64_t)a3;
+- (CGRect)contentRectForRect:(CGRect)rect inImageOfSize:(CGSize)size;
+- (CGRect)contentsCenterForRect:(CGRect)rect inImageOfSize:(CGSize)size;
+- (_UIPopoverViewArtworkLoader)initWithBackgroundStyle:(int64_t)style;
 - (double)arrowHeight;
 - (double)arrowTopGradientEnd;
 - (double)bottomEndCapHeight;
@@ -15,35 +15,35 @@
 - (double)shortArtRightArrowBase;
 - (double)sideArrowStart;
 - (double)topArrowStart;
-- (id)_bottomArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_bottomArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_bottomArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_bottomArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_rightArrowBottomEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_rightArrowPinnedBottomViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_rightArrowPinnedTopViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_rightArrowTopEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_rightArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortBottomArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortBottomArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortBottomArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortBottomArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortRightArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortTopArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortTopArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortTopArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_shortTopArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_templateImageForDirection:(id)a3 shortArtwork:(BOOL)a4 traitCollection:(id)a5 rimShadow:(BOOL)a6;
-- (id)_topArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_topArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_topArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)_topArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4;
-- (id)viewWithContentsImage:(id)a3 rect:(CGRect)a4 center:(CGRect)a5 antialiasingMask:(unsigned int)a6 directionSelector:(id)a7;
+- (id)_bottomArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_bottomArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_bottomArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_bottomArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_rightArrowBottomEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_rightArrowPinnedBottomViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_rightArrowPinnedTopViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_rightArrowTopEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_rightArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortBottomArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortBottomArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortBottomArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortBottomArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortRightArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortTopArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortTopArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortTopArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_shortTopArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_templateImageForDirection:(id)direction shortArtwork:(BOOL)artwork traitCollection:(id)collection rimShadow:(BOOL)shadow;
+- (id)_topArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_topArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_topArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)_topArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow;
+- (id)viewWithContentsImage:(id)image rect:(CGRect)rect center:(CGRect)center antialiasingMask:(unsigned int)mask directionSelector:(id)selector;
 @end
 
 @implementation _UIPopoverViewArtworkLoader
 
-- (_UIPopoverViewArtworkLoader)initWithBackgroundStyle:(int64_t)a3
+- (_UIPopoverViewArtworkLoader)initWithBackgroundStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = _UIPopoverViewArtworkLoader;
@@ -51,8 +51,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_backgroundStyle = a3;
-    v6 = [objc_opt_class() backgroundSelectorForBackgroundStyle:a3];
+    v4->_backgroundStyle = style;
+    v6 = [objc_opt_class() backgroundSelectorForBackgroundStyle:style];
     backgroundSelector = v5->_backgroundSelector;
     v5->_backgroundSelector = v6;
   }
@@ -60,21 +60,21 @@
   return v5;
 }
 
-+ (id)backgroundSelectorForBackgroundStyle:(int64_t)a3
++ (id)backgroundSelectorForBackgroundStyle:(int64_t)style
 {
-  if (a3 > 5)
+  if (style > 5)
   {
-    if ((a3 - 6) < 2)
+    if ((style - 6) < 2)
     {
       return @"BlurMask";
     }
 
-    if (a3 == 8)
+    if (style == 8)
     {
       return @"Gray";
     }
 
-    if (a3 == 100)
+    if (style == 100)
     {
       return @"BlurMask";
     }
@@ -82,14 +82,14 @@
     return @"Blue";
   }
 
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       return @"Clear";
     }
 
-    if (a3 == 2)
+    if (style == 2)
     {
       return @"Cream";
     }
@@ -97,12 +97,12 @@
     return @"Blue";
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     return @"Black";
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     return @"Share";
   }
@@ -118,46 +118,46 @@
   return v3 < 2 || v4;
 }
 
-- (id)_templateImageForDirection:(id)a3 shortArtwork:(BOOL)a4 traitCollection:(id)a5 rimShadow:(BOOL)a6
+- (id)_templateImageForDirection:(id)direction shortArtwork:(BOOL)artwork traitCollection:(id)collection rimShadow:(BOOL)shadow
 {
-  v10 = a3;
-  v11 = a5;
+  directionCopy = direction;
+  collectionCopy = collection;
   v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (a6)
+  if (shadow)
   {
-    if (a4)
+    if (artwork)
     {
-      v13 = [v12 initWithFormat:@"_UIPopoverViewShortRimShadowArrow%@.png", v10, v17];
+      directionCopy = [v12 initWithFormat:@"_UIPopoverViewShortRimShadowArrow%@.png", directionCopy, v17];
     }
 
     else
     {
-      v13 = [v12 initWithFormat:@"_UIPopoverViewRimShadowArrow%@.png", v10, v17];
+      directionCopy = [v12 initWithFormat:@"_UIPopoverViewRimShadowArrow%@.png", directionCopy, v17];
     }
   }
 
-  else if (a4)
+  else if (artwork)
   {
-    v13 = [v12 initWithFormat:@"_UIPopoverViewShort%@BackgroundArrow%@.png", self->_backgroundSelector, v10];
+    directionCopy = [v12 initWithFormat:@"_UIPopoverViewShort%@BackgroundArrow%@.png", self->_backgroundSelector, directionCopy];
   }
 
   else
   {
-    v13 = [v12 initWithFormat:@"_UIPopoverView%@BackgroundArrow%@.png", self->_backgroundSelector, v10];
+    directionCopy = [v12 initWithFormat:@"_UIPopoverView%@BackgroundArrow%@.png", self->_backgroundSelector, directionCopy];
   }
 
-  v14 = v13;
-  v15 = _UIImageWithNameAndTraitCollection(v13, v11);
+  v14 = directionCopy;
+  v15 = _UIImageWithNameAndTraitCollection(directionCopy, collectionCopy);
 
   return v15;
 }
 
-- (CGRect)contentRectForRect:(CGRect)a3 inImageOfSize:(CGSize)a4
+- (CGRect)contentRectForRect:(CGRect)rect inImageOfSize:(CGSize)size
 {
-  v4 = a3.origin.x / a4.width;
-  v5 = a3.origin.y / a4.height;
-  v6 = a3.size.width / a4.width;
-  v7 = a3.size.height / a4.height;
+  v4 = rect.origin.x / size.width;
+  v5 = rect.origin.y / size.height;
+  v6 = rect.size.width / size.width;
+  v7 = rect.size.height / size.height;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -165,13 +165,13 @@
   return result;
 }
 
-- (CGRect)contentsCenterForRect:(CGRect)a3 inImageOfSize:(CGSize)a4
+- (CGRect)contentsCenterForRect:(CGRect)rect inImageOfSize:(CGSize)size
 {
-  v4 = a3.size.width + -1.0;
-  v5 = a3.size.height + -1.0;
-  v6 = (a3.origin.x + 0.5) / a4.width;
-  v7 = a3.origin.y + 0.5;
-  v8 = v4 / a4.width;
+  v4 = rect.size.width + -1.0;
+  v5 = rect.size.height + -1.0;
+  v6 = (rect.origin.x + 0.5) / size.width;
+  v7 = rect.origin.y + 0.5;
+  v8 = v4 / size.width;
   if (v4 == 0.0)
   {
     v9 = 0.00000011920929;
@@ -189,10 +189,10 @@
 
   else
   {
-    v10 = v5 / a4.height;
+    v10 = v5 / size.height;
   }
 
-  v11 = v7 / a4.height;
+  v11 = v7 / size.height;
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v11;
@@ -200,52 +200,52 @@
   return result;
 }
 
-- (id)viewWithContentsImage:(id)a3 rect:(CGRect)a4 center:(CGRect)a5 antialiasingMask:(unsigned int)a6 directionSelector:(id)a7
+- (id)viewWithContentsImage:(id)image rect:(CGRect)rect center:(CGRect)center antialiasingMask:(unsigned int)mask directionSelector:(id)selector
 {
-  v7 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v16 = a7;
-  v17 = a3;
+  v7 = *&mask;
+  height = center.size.height;
+  width = center.size.width;
+  y = center.origin.y;
+  x = center.origin.x;
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  selectorCopy = selector;
+  imageCopy = image;
   v18 = [_UIPopoverViewBackgroundComponentView alloc];
-  [v17 size];
+  [imageCopy size];
   v20 = v19;
-  [v17 size];
+  [imageCopy size];
   v22 = [(UIView *)v18 initWithFrame:0.0, 0.0, v20, v21];
   [(UIView *)v22 setOpaque:0];
-  v23 = [(UIView *)v22 layer];
-  [v23 setContents:{objc_msgSend(v17, "CGImage")}];
+  layer = [(UIView *)v22 layer];
+  [layer setContents:{objc_msgSend(imageCopy, "CGImage")}];
 
-  v24 = [(UIView *)v22 layer];
-  [v24 setContentsRect:{v14, v13, v12, v11}];
+  layer2 = [(UIView *)v22 layer];
+  [layer2 setContentsRect:{v14, v13, v12, v11}];
 
-  v25 = [(UIView *)v22 layer];
-  [v25 setContentsCenter:{x, y, width, height}];
+  layer3 = [(UIView *)v22 layer];
+  [layer3 setContentsCenter:{x, y, width, height}];
 
-  v26 = [(UIView *)v22 layer];
-  [v17 scale];
+  layer4 = [(UIView *)v22 layer];
+  [imageCopy scale];
   v28 = v27;
 
-  [v26 setContentsScale:v28];
-  v29 = [(UIView *)v22 layer];
-  [v29 setEdgeAntialiasingMask:v7];
+  [layer4 setContentsScale:v28];
+  layer5 = [(UIView *)v22 layer];
+  [layer5 setEdgeAntialiasingMask:v7];
 
-  [(_UIPopoverViewBackgroundComponentView *)v22 setDirectionSelector:v16];
+  [(_UIPopoverViewBackgroundComponentView *)v22 setDirectionSelector:selectorCopy];
 
   return v22;
 }
 
 - (double)arrowHeight
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 18.0;
-  if (v2)
+  if (modern)
   {
     return 13.0;
   }
@@ -255,9 +255,9 @@
 
 - (double)topArrowStart
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 10.0;
-  if (v2)
+  if (modern)
   {
     return 25.0;
   }
@@ -267,9 +267,9 @@
 
 - (double)sideArrowStart
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 24.0;
-  if (v2)
+  if (modern)
   {
     return 25.0;
   }
@@ -279,9 +279,9 @@
 
 - (double)clampArrowBase
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 44.0;
-  if (v2)
+  if (modern)
   {
     return 32.0;
   }
@@ -291,9 +291,9 @@
 
 - (double)arrowTopGradientEnd
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 42.0;
-  if (v2)
+  if (modern)
   {
     return 25.0;
   }
@@ -303,9 +303,9 @@
 
 - (double)noArrowTopGradientEnd
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 24.0;
-  if (v2)
+  if (modern)
   {
     return 25.0;
   }
@@ -315,9 +315,9 @@
 
 - (double)capCornerRadius
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 8.0;
-  if (v2)
+  if (modern)
   {
     return 16.0;
   }
@@ -327,9 +327,9 @@
 
 - (double)bottomEndCapHeight
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 10.0;
-  if (v2)
+  if (modern)
   {
     return 16.0;
   }
@@ -339,9 +339,9 @@
 
 - (double)shortArtNoArrowTopGradientEnd
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 28.0;
-  if (v2)
+  if (modern)
   {
     return 25.0;
   }
@@ -351,9 +351,9 @@
 
 - (double)shortArtArrowTopGradientEnd
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 46.0;
-  if (v2)
+  if (modern)
   {
     return 25.0;
   }
@@ -363,9 +363,9 @@
 
 - (double)shortArtRightArrowBase
 {
-  v2 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   result = 33.0;
-  if (!v2)
+  if (!modern)
   {
     return 22.0;
   }
@@ -373,9 +373,9 @@
   return result;
 }
 
-- (id)_topArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_topArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self topArrowStart];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self arrowBase];
@@ -411,9 +411,9 @@
   return v39;
 }
 
-- (id)_topArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_topArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"UpRight" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"UpRight" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self clampArrowBase];
@@ -451,9 +451,9 @@
   return v41;
 }
 
-- (id)_topArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_topArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self capCornerRadius];
   v7 = v6;
   [v5 size];
@@ -487,13 +487,13 @@
   return v37;
 }
 
-- (id)_topArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_topArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v4 = a4;
-  v6 = a3;
+  shadowCopy = shadow;
+  collectionCopy = collection;
   if ([(_UIPopoverViewArtworkLoader *)self modern])
   {
-    v7 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:0 traitCollection:v6 rimShadow:v4];
+    v7 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:0 traitCollection:collectionCopy rimShadow:shadowCopy];
 
     [v7 size];
     v9 = v8;
@@ -530,7 +530,7 @@
 
   else
   {
-    v41 = [(_UIPopoverViewArtworkLoader *)self _topArrowLeftEndCapViewForTraitCollection:v6 withRimShadow:v4];
+    v41 = [(_UIPopoverViewArtworkLoader *)self _topArrowLeftEndCapViewForTraitCollection:collectionCopy withRimShadow:shadowCopy];
 
     CATransform3DMakeScale(&v46, -1.0, 1.0, 1.0);
     CATransform3DGetAffineTransform(&v47, &v46);
@@ -543,9 +543,9 @@
   return v41;
 }
 
-- (id)_rightArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_rightArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self sideArrowStart];
   v7 = v6;
   [v5 size];
@@ -581,9 +581,9 @@
   return v39;
 }
 
-- (id)_rightArrowPinnedTopViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_rightArrowPinnedTopViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"SideTop" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"SideTop" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self clampArrowBase];
@@ -619,9 +619,9 @@
   return v39;
 }
 
-- (id)_rightArrowPinnedBottomViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_rightArrowPinnedBottomViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"SideBottom" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"SideBottom" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self clampArrowBase];
@@ -661,13 +661,13 @@
   return v43;
 }
 
-- (id)_rightArrowTopEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_rightArrowTopEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:0 traitCollection:a3 rimShadow:a4];
-  v6 = [(_UIPopoverViewArtworkLoader *)self modern];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:0 traitCollection:collection rimShadow:shadow];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   [v5 size];
   v8 = v7;
-  if (v6)
+  if (modern)
   {
     [(_UIPopoverViewArtworkLoader *)self capCornerRadius];
     v10 = v9;
@@ -724,9 +724,9 @@
   return v49;
 }
 
-- (id)_rightArrowBottomEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_rightArrowBottomEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self bottomEndCapHeight];
@@ -768,9 +768,9 @@
   return v41;
 }
 
-- (id)_bottomArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_bottomArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self topArrowStart];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self arrowBase];
@@ -808,9 +808,9 @@
   return v41;
 }
 
-- (id)_bottomArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_bottomArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"DownRight" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"DownRight" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self clampArrowBase];
@@ -850,9 +850,9 @@
   return v43;
 }
 
-- (id)_bottomArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_bottomArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:0 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:0 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self capCornerRadius];
   v7 = v6;
   [v5 size];
@@ -888,13 +888,13 @@
   return v39;
 }
 
-- (id)_bottomArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_bottomArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v4 = a4;
-  v6 = a3;
+  shadowCopy = shadow;
+  collectionCopy = collection;
   if ([(_UIPopoverViewArtworkLoader *)self modern])
   {
-    v7 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:0 traitCollection:v6 rimShadow:v4];
+    v7 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:0 traitCollection:collectionCopy rimShadow:shadowCopy];
 
     [v7 size];
     v9 = v8;
@@ -933,7 +933,7 @@
 
   else
   {
-    v43 = [(_UIPopoverViewArtworkLoader *)self _bottomArrowLeftEndCapViewForTraitCollection:v6 withRimShadow:v4];
+    v43 = [(_UIPopoverViewArtworkLoader *)self _bottomArrowLeftEndCapViewForTraitCollection:collectionCopy withRimShadow:shadowCopy];
 
     CATransform3DMakeScale(&v48, -1.0, 1.0, 1.0);
     CATransform3DGetAffineTransform(&v49, &v48);
@@ -946,9 +946,9 @@
   return v43;
 }
 
-- (id)_shortTopArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortTopArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self topArrowStart];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self arrowBase];
@@ -984,9 +984,9 @@
   return v39;
 }
 
-- (id)_shortTopArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortTopArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"UpRight" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"UpRight" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self clampArrowBase];
@@ -1024,9 +1024,9 @@
   return v41;
 }
 
-- (id)_shortTopArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortTopArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Up" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self capCornerRadius];
   v7 = v6;
   [v5 size];
@@ -1060,9 +1060,9 @@
   return v37;
 }
 
-- (id)_shortTopArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortTopArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v4 = [(_UIPopoverViewArtworkLoader *)self _shortTopArrowLeftEndCapViewForTraitCollection:a3 withRimShadow:a4];
+  v4 = [(_UIPopoverViewArtworkLoader *)self _shortTopArrowLeftEndCapViewForTraitCollection:collection withRimShadow:shadow];
   CATransform3DMakeScale(&v6, -1.0, 1.0, 1.0);
   CATransform3DGetAffineTransform(&v7, &v6);
   *&v6.m11 = *&v7.a;
@@ -1073,9 +1073,9 @@
   return v4;
 }
 
-- (id)_shortRightArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortRightArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Side" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [v5 size];
@@ -1087,12 +1087,12 @@
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(_UIPopoverViewArtworkLoader *)self modern];
+  modern = [(_UIPopoverViewArtworkLoader *)self modern];
   [(_UIPopoverViewArtworkLoader *)self capCornerRadius];
   v23 = v22;
   [v5 size];
   v25 = v24;
-  if (v21)
+  if (modern)
   {
     v26 = v23 / v24;
     [v5 size];
@@ -1133,9 +1133,9 @@
   return v50;
 }
 
-- (id)_shortBottomArrowViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortBottomArrowViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self topArrowStart];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self arrowBase];
@@ -1173,9 +1173,9 @@
   return v41;
 }
 
-- (id)_shortBottomArrowPinnedViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortBottomArrowPinnedViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"DownRight" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"DownRight" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [v5 size];
   v7 = v6;
   [(_UIPopoverViewArtworkLoader *)self clampArrowBase];
@@ -1215,9 +1215,9 @@
   return v43;
 }
 
-- (id)_shortBottomArrowLeftEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortBottomArrowLeftEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:1 traitCollection:a3 rimShadow:a4];
+  v5 = [(_UIPopoverViewArtworkLoader *)self _templateImageForDirection:@"Down" shortArtwork:1 traitCollection:collection rimShadow:shadow];
   [(_UIPopoverViewArtworkLoader *)self capCornerRadius];
   v7 = v6;
   [v5 size];
@@ -1253,9 +1253,9 @@
   return v39;
 }
 
-- (id)_shortBottomArrowRightEndCapViewForTraitCollection:(id)a3 withRimShadow:(BOOL)a4
+- (id)_shortBottomArrowRightEndCapViewForTraitCollection:(id)collection withRimShadow:(BOOL)shadow
 {
-  v4 = [(_UIPopoverViewArtworkLoader *)self _shortBottomArrowLeftEndCapViewForTraitCollection:a3 withRimShadow:a4];
+  v4 = [(_UIPopoverViewArtworkLoader *)self _shortBottomArrowLeftEndCapViewForTraitCollection:collection withRimShadow:shadow];
   CATransform3DMakeScale(&v6, -1.0, 1.0, 1.0);
   CATransform3DGetAffineTransform(&v7, &v6);
   *&v6.m11 = *&v7.a;

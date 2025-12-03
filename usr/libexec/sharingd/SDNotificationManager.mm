@@ -3,54 +3,54 @@
 - (NSSet)activeTVAutoFillPrompts;
 - (NSString)description;
 - (SDNotificationManager)init;
-- (id)attachmentFromURL:(id)a3;
-- (id)homePodHandoffContentForDevice:(id)a3 info:(id)a4;
-- (id)riServerContentForDevice:(id)a3 backgroundAction:(BOOL)a4;
+- (id)attachmentFromURL:(id)l;
+- (id)homePodHandoffContentForDevice:(id)device info:(id)info;
+- (id)riServerContentForDevice:(id)device backgroundAction:(BOOL)action;
 - (id)visionUnlockiOSUpsellContent;
-- (id)watchKeyboardContentForDevice:(id)a3;
+- (id)watchKeyboardContentForDevice:(id)device;
 - (void)_activate;
-- (void)_addRequestWithID:(id)a3 content:(id)a4 type:(unsigned int)a5 isHomePodMini:(BOOL)a6;
-- (void)_homePodEnsureStarted:(BOOL)a3 completion:(id)a4;
-- (void)_homePodHandleResponse:(id)a3 completion:(id)a4;
-- (void)_homePodHandoffPostIfNeeded:(id)a3 info:(id)a4;
-- (void)_homePodHandoffRemove:(id)a3 reason:(int64_t)a4;
+- (void)_addRequestWithID:(id)d content:(id)content type:(unsigned int)type isHomePodMini:(BOOL)mini;
+- (void)_homePodEnsureStarted:(BOOL)started completion:(id)completion;
+- (void)_homePodHandleResponse:(id)response completion:(id)completion;
+- (void)_homePodHandoffPostIfNeeded:(id)needed info:(id)info;
+- (void)_homePodHandoffRemove:(id)remove reason:(int64_t)reason;
 - (void)_homePodHandoffRemoveAll;
-- (void)_homePodHandoffUpdateIfNeeded:(id)a3 info:(id)a4;
+- (void)_homePodHandoffUpdateIfNeeded:(id)needed info:(id)info;
 - (void)_invalidate;
-- (void)_riServerEnsureStarted:(BOOL)a3 completion:(id)a4;
-- (void)_riServerRemove:(id)a3;
+- (void)_riServerEnsureStarted:(BOOL)started completion:(id)completion;
+- (void)_riServerRemove:(id)remove;
 - (void)_riServerRemoveAll;
-- (void)_riServerUpdate:(id)a3 info:(id)a4;
-- (void)_riServerUpdate:(id)a3 rtiData:(id)a4;
-- (void)_tvAutoFillPostIfNeeded:(id)a3;
-- (void)_tvAutoFillRemove:(id)a3;
+- (void)_riServerUpdate:(id)update info:(id)info;
+- (void)_riServerUpdate:(id)update rtiData:(id)data;
+- (void)_tvAutoFillPostIfNeeded:(id)needed;
+- (void)_tvAutoFillRemove:(id)remove;
 - (void)_tvAutoFillRemoveAll;
-- (void)_tvHandleResponse:(id)a3 completion:(id)a4;
+- (void)_tvHandleResponse:(id)response completion:(id)completion;
 - (void)_update;
-- (void)_visionHandleFailureResponse:(id)a3 completion:(id)a4;
-- (void)_visionHandleResponse:(id)a3 completion:(id)a4;
-- (void)_visionUnlockiOSEnsureStarted:(BOOL)a3 completion:(id)a4;
-- (void)_visionUnlockiOSPostFailureNotificationWithMessage:(id)a3 userInfo:(id)a4;
+- (void)_visionHandleFailureResponse:(id)response completion:(id)completion;
+- (void)_visionHandleResponse:(id)response completion:(id)completion;
+- (void)_visionUnlockiOSEnsureStarted:(BOOL)started completion:(id)completion;
+- (void)_visionUnlockiOSPostFailureNotificationWithMessage:(id)message userInfo:(id)info;
 - (void)_visionUnlockiOSRemoveAll;
 - (void)_visionUnlockiOSUpsellPostIfNeeded;
-- (void)_watchEnsureStarted:(BOOL)a3 completion:(id)a4;
-- (void)_watchHandleResponse:(id)a3 completion:(id)a4;
-- (void)_watchKeyboardPostIfNeeded:(id)a3;
-- (void)_watchKeyboardRemove:(id)a3;
+- (void)_watchEnsureStarted:(BOOL)started completion:(id)completion;
+- (void)_watchHandleResponse:(id)response completion:(id)completion;
+- (void)_watchKeyboardPostIfNeeded:(id)needed;
+- (void)_watchKeyboardRemove:(id)remove;
 - (void)_watchKeyboardRemoveAll;
-- (void)_watchKeyboardUpdate:(id)a3 info:(id)a4;
-- (void)_watchKeyboardUpdate:(id)a3 rtiData:(id)a4;
+- (void)_watchKeyboardUpdate:(id)update info:(id)info;
+- (void)_watchKeyboardUpdate:(id)update rtiData:(id)data;
 - (void)activate;
-- (void)homePodHandoffPostIfNeeded:(id)a3 info:(id)a4;
-- (void)homePodHandoffRemove:(id)a3 reason:(int64_t)a4;
+- (void)homePodHandoffPostIfNeeded:(id)needed info:(id)info;
+- (void)homePodHandoffRemove:(id)remove reason:(int64_t)reason;
 - (void)homePodHandoffRemoveAll;
-- (void)homePodHandoffUpdateIfNeeded:(id)a3 info:(id)a4;
+- (void)homePodHandoffUpdateIfNeeded:(id)needed info:(id)info;
 - (void)invalidate;
-- (void)riServerPostIfNeeded:(id)a3 backgroundAction:(BOOL)a4;
-- (void)riServerRemove:(id)a3;
+- (void)riServerPostIfNeeded:(id)needed backgroundAction:(BOOL)action;
+- (void)riServerRemove:(id)remove;
 - (void)riServerRemoveAll;
-- (void)riServerUpdate:(id)a3 info:(id)a4;
-- (void)riServerUpdate:(id)a3 rtiData:(id)a4;
+- (void)riServerUpdate:(id)update info:(id)info;
+- (void)riServerUpdate:(id)update rtiData:(id)data;
 - (void)testAutoFillRemove;
 - (void)testAutofillPost;
 - (void)testHandoffPost;
@@ -58,22 +58,22 @@
 - (void)testKeyboardPostAutoFill;
 - (void)testKeyboardRemove;
 - (void)testKeyboardUpdate;
-- (void)testPost:(id)a3;
+- (void)testPost:(id)post;
 - (void)testPostBasic;
 - (void)testWatchKeyboard;
 - (void)testWatchKeyboardAutoFill;
-- (void)tvAutoFillPostIfNeeded:(id)a3;
-- (void)tvAutoFillRemove:(id)a3;
+- (void)tvAutoFillPostIfNeeded:(id)needed;
+- (void)tvAutoFillRemove:(id)remove;
 - (void)tvAutoFillRemoveAll;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)visionUnlockiOSPostFailureNotificationWithMessage:(id)a3 userInfo:(id)a4;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)visionUnlockiOSPostFailureNotificationWithMessage:(id)message userInfo:(id)info;
 - (void)visionUnlockiOSRemoveAll;
 - (void)visionUnlockiOSUpsellPostIfNeeded;
-- (void)watchKeyboardPostIfNeeded:(id)a3;
-- (void)watchKeyboardRemove:(id)a3;
+- (void)watchKeyboardPostIfNeeded:(id)needed;
+- (void)watchKeyboardRemove:(id)remove;
 - (void)watchKeyboardRemoveAll;
-- (void)watchKeyboardUpdate:(id)a3 info:(id)a4;
-- (void)watchKeyboardUpdate:(id)a3 rtiData:(id)a4;
+- (void)watchKeyboardUpdate:(id)update info:(id)info;
+- (void)watchKeyboardUpdate:(id)update rtiData:(id)data;
 @end
 
 @implementation SDNotificationManager
@@ -121,11 +121,11 @@
 
 - (NSSet)activeTVAutoFillPrompts
 {
-  v2 = [(NSMutableDictionary *)self->_autoFillRequests allKeys];
-  v3 = v2;
-  if (v2)
+  allKeys = [(NSMutableDictionary *)self->_autoFillRequests allKeys];
+  v3 = allKeys;
+  if (allKeys)
   {
-    v4 = v2;
+    v4 = allKeys;
   }
 
   else
@@ -184,8 +184,8 @@
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v4 = [(NSMutableDictionary *)self->_autoFillRequests allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v55 objects:v64 count:16];
+    allKeys = [(NSMutableDictionary *)self->_autoFillRequests allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v55 objects:v64 count:16];
     if (v5)
     {
       v6 = v5;
@@ -196,13 +196,13 @@
         {
           if (*v56 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [v3 appendFormat:@" - %@\n", *(*(&v55 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v55 objects:v64 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v55 objects:v64 count:16];
       }
 
       while (v6);
@@ -217,8 +217,8 @@
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v9 = [(NSMutableDictionary *)self->_homePodRequests allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v51 objects:v63 count:16];
+    allKeys2 = [(NSMutableDictionary *)self->_homePodRequests allKeys];
+    v10 = [allKeys2 countByEnumeratingWithState:&v51 objects:v63 count:16];
     if (v10)
     {
       v11 = v10;
@@ -229,13 +229,13 @@
         {
           if (*v52 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys2);
           }
 
           [v3 appendFormat:@" - %@\n", *(*(&v51 + 1) + 8 * j)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v51 objects:v63 count:16];
+        v11 = [allKeys2 countByEnumeratingWithState:&v51 objects:v63 count:16];
       }
 
       while (v11);
@@ -250,8 +250,8 @@
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v14 = [(NSMutableDictionary *)self->_tvKeyboardRequests allKeys];
-    v15 = [v14 countByEnumeratingWithState:&v47 objects:v62 count:16];
+    allKeys3 = [(NSMutableDictionary *)self->_tvKeyboardRequests allKeys];
+    v15 = [allKeys3 countByEnumeratingWithState:&v47 objects:v62 count:16];
     if (v15)
     {
       v16 = v15;
@@ -262,13 +262,13 @@
         {
           if (*v48 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys3);
           }
 
           [v3 appendFormat:@" - %@\n", *(*(&v47 + 1) + 8 * k)];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v47 objects:v62 count:16];
+        v16 = [allKeys3 countByEnumeratingWithState:&v47 objects:v62 count:16];
       }
 
       while (v16);
@@ -283,8 +283,8 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v19 = [(NSMutableDictionary *)self->_watchKeyboardRequests allKeys];
-    v20 = [v19 countByEnumeratingWithState:&v43 objects:v61 count:16];
+    allKeys4 = [(NSMutableDictionary *)self->_watchKeyboardRequests allKeys];
+    v20 = [allKeys4 countByEnumeratingWithState:&v43 objects:v61 count:16];
     if (v20)
     {
       v21 = v20;
@@ -295,13 +295,13 @@
         {
           if (*v44 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allKeys4);
           }
 
           [v3 appendFormat:@" - %@\n", *(*(&v43 + 1) + 8 * m)];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v43 objects:v61 count:16];
+        v21 = [allKeys4 countByEnumeratingWithState:&v43 objects:v61 count:16];
       }
 
       while (v21);
@@ -316,8 +316,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v24 = [(NSMutableDictionary *)self->_visionUnlockiOSRequests allKeys];
-    v25 = [v24 countByEnumeratingWithState:&v39 objects:v60 count:16];
+    allKeys5 = [(NSMutableDictionary *)self->_visionUnlockiOSRequests allKeys];
+    v25 = [allKeys5 countByEnumeratingWithState:&v39 objects:v60 count:16];
     if (v25)
     {
       v26 = v25;
@@ -328,13 +328,13 @@
         {
           if (*v40 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(allKeys5);
           }
 
           [v3 appendFormat:@" - %@\n", *(*(&v39 + 1) + 8 * n)];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v39 objects:v60 count:16];
+        v26 = [allKeys5 countByEnumeratingWithState:&v39 objects:v60 count:16];
       }
 
       while (v26);
@@ -348,8 +348,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v29 = [(NSMutableDictionary *)self->_visionUnlockiOSRequestsErrors allKeys];
-    v30 = [v29 countByEnumeratingWithState:&v35 objects:v59 count:16];
+    allKeys6 = [(NSMutableDictionary *)self->_visionUnlockiOSRequestsErrors allKeys];
+    v30 = [allKeys6 countByEnumeratingWithState:&v35 objects:v59 count:16];
     if (v30)
     {
       v31 = v30;
@@ -360,13 +360,13 @@
         {
           if (*v36 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(allKeys6);
           }
 
           [v3 appendFormat:@" - %@\n", *(*(&v35 + 1) + 8 * ii)];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v35 objects:v59 count:16];
+        v31 = [allKeys6 countByEnumeratingWithState:&v35 objects:v59 count:16];
       }
 
       while (v31);
@@ -434,21 +434,21 @@
   }
 }
 
-- (void)_riServerEnsureStarted:(BOOL)a3 completion:(id)a4
+- (void)_riServerEnsureStarted:(BOOL)started completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_tvNotifCenter)
   {
 LABEL_2:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_11;
   }
 
-  if (a3)
+  if (started)
   {
     CFPrefs_SetValue();
   }
@@ -476,27 +476,27 @@ LABEL_2:
   v10[2] = sub_1001BE5A0;
   v10[3] = &unk_1008D3230;
   v10[4] = self;
-  v11 = v6;
+  v11 = completionCopy;
   [(UNUserNotificationCenter *)v9 getNotificationSettingsWithCompletionHandler:v10];
 
 LABEL_11:
 }
 
-- (void)_watchEnsureStarted:(BOOL)a3 completion:(id)a4
+- (void)_watchEnsureStarted:(BOOL)started completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_watchNotifCenter)
   {
 LABEL_2:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_11;
   }
 
-  if (a3)
+  if (started)
   {
     CFPrefs_SetValue();
   }
@@ -523,16 +523,16 @@ LABEL_2:
   v10[2] = sub_1001BE958;
   v10[3] = &unk_1008D3230;
   v10[4] = self;
-  v11 = v6;
+  v11 = completionCopy;
   [(UNUserNotificationCenter *)v9 getNotificationSettingsWithCompletionHandler:v10];
 
 LABEL_11:
 }
 
-- (void)_homePodEnsureStarted:(BOOL)a3 completion:(id)a4
+- (void)_homePodEnsureStarted:(BOOL)started completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (started)
   {
     CFPrefs_SetValue();
 LABEL_4:
@@ -590,7 +590,7 @@ LABEL_4:
     block[1] = 3221225472;
     block[2] = sub_1001BF2BC;
     block[3] = &unk_1008D08E0;
-    v16 = v6;
+    v16 = completionCopy;
     dispatch_group_notify(v7, dispatchQueue, block);
 
     goto LABEL_15;
@@ -601,23 +601,23 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_15:
 }
 
-- (void)_visionUnlockiOSEnsureStarted:(BOOL)a3 completion:(id)a4
+- (void)_visionUnlockiOSEnsureStarted:(BOOL)started completion:(id)completion
 {
-  v5 = a4;
-  v6 = v5;
+  completionCopy = completion;
+  v6 = completionCopy;
   if (self->_visionNotifCenter)
   {
-    if (v5)
+    if (completionCopy)
     {
-      (*(v5 + 2))(v5);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -645,25 +645,25 @@ LABEL_15:
   }
 }
 
-- (void)_visionHandleResponse:(id)a3 completion:(id)a4
+- (void)_visionHandleResponse:(id)response completion:(id)completion
 {
-  v5 = a3;
+  responseCopy = response;
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_1001BF9E0;
   v25 = &unk_1008D08E0;
-  v6 = a4;
-  v26 = v6;
+  completionCopy = completion;
+  v26 = completionCopy;
   v7 = objc_retainBlock(&v22);
   if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
   {
-    v21 = v5;
+    v21 = responseCopy;
     LogPrintF();
   }
 
-  v8 = [v5 actionIdentifier];
+  actionIdentifier = [responseCopy actionIdentifier];
   v9 = off_1009726A0();
-  v10 = v8;
+  v10 = actionIdentifier;
   v11 = v9;
   v12 = v11;
   if (v10 == v11)
@@ -681,9 +681,9 @@ LABEL_15:
     v13 = [v10 isEqual:v11];
   }
 
-  v14 = [v5 actionIdentifier];
+  actionIdentifier2 = [responseCopy actionIdentifier];
   v15 = off_1009726A8();
-  v16 = v14;
+  v16 = actionIdentifier2;
   v17 = v15;
   v18 = v17;
   if (v16 == v17)
@@ -708,8 +708,8 @@ LABEL_15:
       LogPrintF();
     }
 
-    v20 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    [v20 handleVisionOSUpsellDismissed];
+    actionIdentifier3 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
+    [actionIdentifier3 handleVisionOSUpsellDismissed];
     goto LABEL_30;
   }
 
@@ -721,14 +721,14 @@ LABEL_19:
       LogPrintF();
     }
 
-    v20 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    [v20 handleVisionOSUpsellAction];
+    actionIdentifier3 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
+    [actionIdentifier3 handleVisionOSUpsellAction];
     goto LABEL_30;
   }
 
   if (dword_100972630 <= 90 && (dword_100972630 != -1 || _LogCategory_Initialize()))
   {
-    v20 = [v5 actionIdentifier];
+    actionIdentifier3 = [responseCopy actionIdentifier];
     LogPrintF();
 LABEL_30:
   }
@@ -736,25 +736,25 @@ LABEL_30:
   (v7[2])(v7);
 }
 
-- (void)_visionHandleFailureResponse:(id)a3 completion:(id)a4
+- (void)_visionHandleFailureResponse:(id)response completion:(id)completion
 {
-  v5 = a3;
+  responseCopy = response;
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_1001BFCDC;
   v23 = &unk_1008D08E0;
-  v6 = a4;
-  v24 = v6;
+  completionCopy = completion;
+  v24 = completionCopy;
   v7 = objc_retainBlock(&v20);
   if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
   {
-    v19 = v5;
+    v19 = responseCopy;
     LogPrintF();
   }
 
-  v8 = [v5 actionIdentifier];
+  actionIdentifier = [responseCopy actionIdentifier];
   v9 = off_1009726A0();
-  v10 = v8;
+  v10 = actionIdentifier;
   v11 = v9;
   v12 = v11;
   if (v10 == v11)
@@ -789,21 +789,21 @@ LABEL_14:
   }
 
   v14 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-  v15 = [v5 notification];
-  v16 = [v15 request];
-  v17 = [v16 content];
-  v18 = [v17 userInfo];
-  [v14 handleVisionOSFailureTappedWithUserInfo:v18];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
+  [v14 handleVisionOSFailureTappedWithUserInfo:userInfo];
 
 LABEL_19:
   (v7[2])(v7);
 }
 
-- (void)_addRequestWithID:(id)a3 content:(id)a4 type:(unsigned int)a5 isHomePodMini:(BOOL)a6
+- (void)_addRequestWithID:(id)d content:(id)content type:(unsigned int)type isHomePodMini:(BOOL)mini
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  miniCopy = mini;
+  dCopy = d;
+  contentCopy = content;
   v48 = 0;
   v49 = &v48;
   v50 = 0x2050000000;
@@ -822,13 +822,13 @@ LABEL_19:
 
   v13 = v12;
   _Block_object_dispose(&v48, 8);
-  v14 = [v12 requestWithIdentifier:v10 content:v11 trigger:0];
-  if (a5 > 5)
+  v14 = [v12 requestWithIdentifier:dCopy content:contentCopy trigger:0];
+  if (type > 5)
   {
-    switch(a5)
+    switch(type)
     {
       case 6u:
-        v29 = [(NSMutableDictionary *)self->_watchKeyboardRequests objectForKeyedSubscript:v10];
+        v29 = [(NSMutableDictionary *)self->_watchKeyboardRequests objectForKeyedSubscript:dCopy];
 
         if (v29 && dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
         {
@@ -845,11 +845,11 @@ LABEL_19:
           watchKeyboardRequests = self->_watchKeyboardRequests;
         }
 
-        [(NSMutableDictionary *)watchKeyboardRequests setObject:v14 forKeyedSubscript:v10];
+        [(NSMutableDictionary *)watchKeyboardRequests setObject:v14 forKeyedSubscript:dCopy];
         watchNotifCenter = self->_watchNotifCenter;
         goto LABEL_55;
       case 7u:
-        v37 = [(NSMutableDictionary *)self->_visionUnlockiOSRequests objectForKeyedSubscript:v10];
+        v37 = [(NSMutableDictionary *)self->_visionUnlockiOSRequests objectForKeyedSubscript:dCopy];
 
         if (v37 && dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
         {
@@ -868,7 +868,7 @@ LABEL_19:
 
         break;
       case 8u:
-        v19 = [(NSMutableDictionary *)self->_visionUnlockiOSRequestsErrors objectForKeyedSubscript:v10];
+        v19 = [(NSMutableDictionary *)self->_visionUnlockiOSRequestsErrors objectForKeyedSubscript:dCopy];
 
         if (v19 && dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
         {
@@ -890,14 +890,14 @@ LABEL_19:
         goto LABEL_37;
     }
 
-    [(NSMutableDictionary *)visionUnlockiOSRequests setObject:v14 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)visionUnlockiOSRequests setObject:v14 forKeyedSubscript:dCopy];
     watchNotifCenter = self->_visionNotifCenter;
     goto LABEL_55;
   }
 
-  if (a5 - 2 < 2)
+  if (type - 2 < 2)
   {
-    v23 = [(NSMutableDictionary *)self->_homePodRequests objectForKeyedSubscript:v10];
+    v23 = [(NSMutableDictionary *)self->_homePodRequests objectForKeyedSubscript:dCopy];
 
     if (v23 && dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
     {
@@ -914,9 +914,9 @@ LABEL_19:
       homePodRequests = self->_homePodRequests;
     }
 
-    [(NSMutableDictionary *)homePodRequests setObject:v14 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)homePodRequests setObject:v14 forKeyedSubscript:dCopy];
     v27 = self->_homePodNotifCenter;
-    if (v6)
+    if (miniCopy)
     {
       v28 = self->_homePodMiniNotificationCenter;
 
@@ -926,9 +926,9 @@ LABEL_19:
     goto LABEL_56;
   }
 
-  if (a5 == 4)
+  if (type == 4)
   {
-    v34 = [(NSMutableDictionary *)self->_autoFillRequests objectForKeyedSubscript:v10];
+    v34 = [(NSMutableDictionary *)self->_autoFillRequests objectForKeyedSubscript:dCopy];
 
     if (v34 && dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
     {
@@ -948,9 +948,9 @@ LABEL_19:
     goto LABEL_47;
   }
 
-  if (a5 == 5)
+  if (type == 5)
   {
-    v15 = [(NSMutableDictionary *)self->_tvKeyboardRequests objectForKeyedSubscript:v10];
+    v15 = [(NSMutableDictionary *)self->_tvKeyboardRequests objectForKeyedSubscript:dCopy];
 
     if (v15 && dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
     {
@@ -968,7 +968,7 @@ LABEL_19:
     }
 
 LABEL_47:
-    [(NSMutableDictionary *)autoFillRequests setObject:v14 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)autoFillRequests setObject:v14 forKeyedSubscript:dCopy];
     watchNotifCenter = self->_tvNotifCenter;
 LABEL_55:
     v27 = watchNotifCenter;
@@ -977,7 +977,7 @@ LABEL_56:
     {
       if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
       {
-        sub_1001C6CA8(a5);
+        sub_1001C6CA8(type);
       }
 
       v40[0] = _NSConcreteStackBlock;
@@ -985,11 +985,11 @@ LABEL_56:
       v40[2] = sub_1001C02C0;
       v40[3] = &unk_1008D32D0;
       v41 = v14;
-      v42 = v11;
-      v43 = self;
-      v44 = v10;
-      v45 = a5;
-      v46 = v6;
+      v42 = contentCopy;
+      selfCopy = self;
+      v44 = dCopy;
+      typeCopy = type;
+      v46 = miniCopy;
       [(UNUserNotificationCenter *)v27 addNotificationRequest:v41 withCompletionHandler:v40];
     }
 
@@ -1012,10 +1012,10 @@ LABEL_37:
 LABEL_61:
 }
 
-- (id)attachmentFromURL:(id)a3
+- (id)attachmentFromURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = +[NSMutableDictionary dictionary];
     v5 = off_1009726B8();
@@ -1054,7 +1054,7 @@ LABEL_61:
     v11 = v10;
     _Block_object_dispose(&v16, 8);
     v12 = [v4 copy];
-    v13 = [v10 attachmentWithIdentifier:&stru_1008EFBD0 URL:v3 options:v12 error:0];
+    v13 = [v10 attachmentWithIdentifier:&stru_1008EFBD0 URL:lCopy options:v12 error:0];
 
     if (!v13 && dword_100972630 <= 90 && (dword_100972630 != -1 || _LogCategory_Initialize()))
     {
@@ -1070,29 +1070,29 @@ LABEL_61:
   return v13;
 }
 
-- (void)_tvHandleResponse:(id)a3 completion:(id)a4
+- (void)_tvHandleResponse:(id)response completion:(id)completion
 {
-  v5 = a3;
+  responseCopy = response;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1001C0C8C;
   v32[3] = &unk_1008D08E0;
-  v6 = a4;
-  v33 = v6;
+  completionCopy = completion;
+  v33 = completionCopy;
   v7 = objc_retainBlock(v32);
   if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
   {
-    v30 = v5;
+    v30 = responseCopy;
     LogPrintF();
   }
 
-  v8 = [v5 notification];
-  v9 = [v8 request];
-  v10 = [v9 identifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
-  if (v10)
+  if (identifier)
   {
-    v11 = [[NSUUID alloc] initWithUUIDString:v10];
+    v11 = [[NSUUID alloc] initWithUUIDString:identifier];
     if (!v11)
     {
       if (dword_100972630 <= 90 && (dword_100972630 != -1 || _LogCategory_Initialize()))
@@ -1103,9 +1103,9 @@ LABEL_61:
       goto LABEL_50;
     }
 
-    v12 = [v5 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     v13 = off_1009726A0();
-    v14 = v12;
+    v14 = actionIdentifier;
     v15 = v13;
     v16 = v15;
     if (v14 == v15)
@@ -1123,9 +1123,9 @@ LABEL_61:
       v17 = [v14 isEqual:v15];
     }
 
-    v18 = [v5 actionIdentifier];
+    actionIdentifier2 = [responseCopy actionIdentifier];
     v19 = off_1009726A8();
-    v20 = v18;
+    v20 = actionIdentifier2;
     v21 = v19;
     v22 = v21;
     if (v20 == v21)
@@ -1152,8 +1152,8 @@ LABEL_61:
         LogPrintF();
       }
 
-      v26 = [(NSMutableDictionary *)self->_autoFillRequests allKeys];
-      v27 = [v26 containsObject:v10];
+      allKeys = [(NSMutableDictionary *)self->_autoFillRequests allKeys];
+      v27 = [allKeys containsObject:identifier];
 
       if (v27)
       {
@@ -1162,8 +1162,8 @@ LABEL_61:
 
       else
       {
-        v28 = [(NSMutableDictionary *)self->_tvKeyboardRequests allKeys];
-        v29 = [v28 containsObject:v10];
+        allKeys2 = [(NSMutableDictionary *)self->_tvKeyboardRequests allKeys];
+        v29 = [allKeys2 containsObject:identifier];
 
         if (v29)
         {
@@ -1186,8 +1186,8 @@ LABEL_61:
         LogPrintF();
       }
 
-      v25 = +[SDRemoteInteractionAgent sharedAgent];
-      [v25 clientUserDidTapNotification:v11];
+      actionIdentifier3 = +[SDRemoteInteractionAgent sharedAgent];
+      [actionIdentifier3 clientUserDidTapNotification:v11];
     }
 
     else
@@ -1197,7 +1197,7 @@ LABEL_61:
         goto LABEL_49;
       }
 
-      v25 = [v5 actionIdentifier];
+      actionIdentifier3 = [responseCopy actionIdentifier];
       LogPrintF();
     }
 
@@ -1217,32 +1217,32 @@ LABEL_51:
   (v7[2])(v7);
 }
 
-- (void)riServerPostIfNeeded:(id)a3 backgroundAction:(BOOL)a4
+- (void)riServerPostIfNeeded:(id)needed backgroundAction:(BOOL)action
 {
-  v6 = a3;
+  neededCopy = needed;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C0F0C;
   block[3] = &unk_1008CF940;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = neededCopy;
+  actionCopy = action;
+  v8 = neededCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)riServerRemove:(id)a3
+- (void)riServerRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C1028;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = removeCopy;
+  v6 = removeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1271,58 +1271,58 @@ LABEL_51:
   [(NSMutableDictionary *)tvKeyboardRequests removeAllObjects];
 }
 
-- (void)riServerUpdate:(id)a3 info:(id)a4
+- (void)riServerUpdate:(id)update info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C11EC;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updateCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = updateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)riServerUpdate:(id)a3 rtiData:(id)a4
+- (void)riServerUpdate:(id)update rtiData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C1384;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updateCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = updateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_riServerUpdate:(id)a3 rtiData:(id)a4
+- (void)_riServerUpdate:(id)update rtiData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SDNotificationManager *)self riServerContentForDevice:v7 backgroundAction:0];
+  dataCopy = data;
+  updateCopy = update;
+  v8 = [(SDNotificationManager *)self riServerContentForDevice:updateCopy backgroundAction:0];
   v9 = [v8 mutableCopy];
 
-  v10 = [v7 identifier];
+  identifier = [updateCopy identifier];
 
-  v11 = [v10 UUIDString];
+  uUIDString = [identifier UUIDString];
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v12 = 0;
   v13 = -6705;
-  if (v10 && v11)
+  if (identifier && uUIDString)
   {
     if (v9)
     {
-      v12 = [(NSMutableDictionary *)self->_tvKeyboardRequests objectForKeyedSubscript:v11];
+      v12 = [(NSMutableDictionary *)self->_tvKeyboardRequests objectForKeyedSubscript:uUIDString];
 
       if (v12)
       {
@@ -1330,8 +1330,8 @@ LABEL_51:
         if (v12)
         {
           v14 = sub_1001C17D0();
-          v15 = [v12 data];
-          v16 = [v14 payloadWithData:v15 version:{objc_msgSend(v12, "version")}];
+          data = [v12 data];
+          v16 = [v14 payloadWithData:data version:{objc_msgSend(v12, "version")}];
 
           if (v16)
           {
@@ -1340,19 +1340,19 @@ LABEL_51:
               sub_1001C6F48();
             }
 
-            v17 = [v16 documentTraits];
-            v18 = [v17 prompt];
+            documentTraits = [v16 documentTraits];
+            prompt = [documentTraits prompt];
 
-            v19 = [v16 documentTraits];
-            v20 = [v19 title];
+            documentTraits2 = [v16 documentTraits];
+            title = [documentTraits2 title];
 
-            if (v18)
+            if (prompt)
             {
-              [v9 setBody:v18];
-              if (v20)
+              [v9 setBody:prompt];
+              if (title)
               {
 LABEL_12:
-                [v9 setSubtitle:v20];
+                [v9 setSubtitle:title];
                 goto LABEL_15;
               }
             }
@@ -1362,7 +1362,7 @@ LABEL_12:
               v21 = SFLocalizedStringForKey();
               [v9 setBody:v21];
 
-              if (v20)
+              if (title)
               {
                 goto LABEL_12;
               }
@@ -1374,9 +1374,9 @@ LABEL_12:
 LABEL_15:
             if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
             {
-              v28 = v18;
-              v29 = v20;
-              v27 = v11;
+              v28 = prompt;
+              v29 = title;
+              v27 = uUIDString;
               LogPrintF();
             }
 
@@ -1385,8 +1385,8 @@ LABEL_15:
             v30[1] = 3221225472;
             v30[2] = sub_1001C18B0;
             v30[3] = &unk_1008CDF90;
-            v30[4] = v11;
-            [(UNUserNotificationCenter *)tvNotifCenter replaceContentForRequestWithIdentifier:v11 replacementContent:v9 completionHandler:v30, v27, v28, v29];
+            v30[4] = uUIDString;
+            [(UNUserNotificationCenter *)tvNotifCenter replaceContentForRequestWithIdentifier:uUIDString replacementContent:v9 completionHandler:v30, v27, v28, v29];
 LABEL_20:
 
             goto LABEL_21;
@@ -1427,8 +1427,8 @@ LABEL_20:
     }
 
     v32 = v26;
-    v18 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    v20 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v24 userInfo:v18];
+    prompt = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+    title = [NSError errorWithDomain:NSOSStatusErrorDomain code:v24 userInfo:prompt];
     LogPrintF();
     goto LABEL_20;
   }
@@ -1436,31 +1436,31 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)tvAutoFillPostIfNeeded:(id)a3
+- (void)tvAutoFillPostIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C1A0C;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neededCopy;
+  v6 = neededCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)tvAutoFillRemove:(id)a3
+- (void)tvAutoFillRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C1CA8;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = removeCopy;
+  v6 = removeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1475,31 +1475,31 @@ LABEL_21:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)watchKeyboardPostIfNeeded:(id)a3
+- (void)watchKeyboardPostIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C1DC8;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neededCopy;
+  v6 = neededCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)watchKeyboardRemove:(id)a3
+- (void)watchKeyboardRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C1EE0;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = removeCopy;
+  v6 = removeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1528,58 +1528,58 @@ LABEL_21:
   [(NSMutableDictionary *)watchKeyboardRequests removeAllObjects];
 }
 
-- (void)watchKeyboardUpdate:(id)a3 info:(id)a4
+- (void)watchKeyboardUpdate:(id)update info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C20A4;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updateCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = updateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)watchKeyboardUpdate:(id)a3 rtiData:(id)a4
+- (void)watchKeyboardUpdate:(id)update rtiData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C223C;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updateCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = updateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_watchKeyboardUpdate:(id)a3 rtiData:(id)a4
+- (void)_watchKeyboardUpdate:(id)update rtiData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SDNotificationManager *)self watchKeyboardContentForDevice:v7];
+  dataCopy = data;
+  updateCopy = update;
+  v8 = [(SDNotificationManager *)self watchKeyboardContentForDevice:updateCopy];
   v9 = [v8 mutableCopy];
 
-  v10 = [v7 identifier];
+  identifier = [updateCopy identifier];
 
-  v11 = [v10 UUIDString];
+  uUIDString = [identifier UUIDString];
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v12 = 0;
   v13 = -6705;
-  if (v10 && v11)
+  if (identifier && uUIDString)
   {
     if (v9)
     {
-      v12 = [(NSMutableDictionary *)self->_watchKeyboardRequests objectForKeyedSubscript:v11];
+      v12 = [(NSMutableDictionary *)self->_watchKeyboardRequests objectForKeyedSubscript:uUIDString];
 
       if (v12)
       {
@@ -1587,8 +1587,8 @@ LABEL_21:
         if (v12)
         {
           v14 = sub_1001C17D0();
-          v15 = [v12 data];
-          v16 = [v14 payloadWithData:v15 version:{objc_msgSend(v12, "version")}];
+          data = [v12 data];
+          v16 = [v14 payloadWithData:data version:{objc_msgSend(v12, "version")}];
 
           if (v16)
           {
@@ -1597,19 +1597,19 @@ LABEL_21:
               sub_1001C7154();
             }
 
-            v17 = [v16 documentTraits];
-            v18 = [v17 prompt];
+            documentTraits = [v16 documentTraits];
+            prompt = [documentTraits prompt];
 
-            v19 = [v16 documentTraits];
-            v20 = [v19 title];
+            documentTraits2 = [v16 documentTraits];
+            title = [documentTraits2 title];
 
-            if (v18)
+            if (prompt)
             {
-              [v9 setBody:v18];
-              if (v20)
+              [v9 setBody:prompt];
+              if (title)
               {
 LABEL_12:
-                [v9 setSubtitle:v20];
+                [v9 setSubtitle:title];
                 goto LABEL_15;
               }
             }
@@ -1619,7 +1619,7 @@ LABEL_12:
               v21 = SFLocalizedStringForKey();
               [v9 setBody:v21];
 
-              if (v20)
+              if (title)
               {
                 goto LABEL_12;
               }
@@ -1631,9 +1631,9 @@ LABEL_12:
 LABEL_15:
             if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
             {
-              v28 = v18;
-              v29 = v20;
-              v27 = v11;
+              v28 = prompt;
+              v29 = title;
+              v27 = uUIDString;
               LogPrintF();
             }
 
@@ -1642,8 +1642,8 @@ LABEL_15:
             v30[1] = 3221225472;
             v30[2] = sub_1001C2684;
             v30[3] = &unk_1008CDF90;
-            v30[4] = v11;
-            [(UNUserNotificationCenter *)watchNotifCenter replaceContentForRequestWithIdentifier:v11 replacementContent:v9 completionHandler:v30, v27, v28, v29];
+            v30[4] = uUIDString;
+            [(UNUserNotificationCenter *)watchNotifCenter replaceContentForRequestWithIdentifier:uUIDString replacementContent:v9 completionHandler:v30, v27, v28, v29];
 LABEL_20:
 
             goto LABEL_21;
@@ -1684,8 +1684,8 @@ LABEL_20:
     }
 
     v32 = v26;
-    v18 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    v20 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v24 userInfo:v18];
+    prompt = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+    title = [NSError errorWithDomain:NSOSStatusErrorDomain code:v24 userInfo:prompt];
     LogPrintF();
     goto LABEL_20;
   }
@@ -1693,13 +1693,13 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_watchHandleResponse:(id)a3 completion:(id)a4
+- (void)_watchHandleResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v5 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   if (dword_100972630 > 30 || dword_100972630 == -1 && !_LogCategory_Initialize())
   {
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -1708,27 +1708,27 @@ LABEL_21:
   }
 
   sub_1001C7218();
-  if (v5)
+  if (completionCopy)
   {
 LABEL_5:
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_6:
 }
 
-- (id)homePodHandoffContentForDevice:(id)a3 info:(id)a4
+- (id)homePodHandoffContentForDevice:(id)device info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 notificationType];
-  if (v8 == 2)
+  deviceCopy = device;
+  infoCopy = info;
+  notificationType = [infoCopy notificationType];
+  if (notificationType == 2)
   {
-    v12 = [v7 body];
-    v13 = v12;
-    if (v12)
+    body = [infoCopy body];
+    v13 = body;
+    if (body)
     {
-      v14 = v12;
+      v14 = body;
     }
 
     else
@@ -1738,8 +1738,8 @@ LABEL_6:
 
     v16 = v14;
 
-    v17 = [v7 title];
-    if (!v17)
+    title = [infoCopy title];
+    if (!title)
     {
       goto LABEL_17;
     }
@@ -1747,13 +1747,13 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if (v8 == 3)
+  if (notificationType == 3)
   {
-    v9 = [v7 body];
-    v10 = v9;
-    if (v9)
+    body2 = [infoCopy body];
+    v10 = body2;
+    if (body2)
     {
-      v11 = v9;
+      v11 = body2;
     }
 
     else
@@ -1763,8 +1763,8 @@ LABEL_6:
 
     v16 = v11;
 
-    v17 = [v7 title];
-    if (!v17)
+    title = [infoCopy title];
+    if (!title)
     {
 LABEL_17:
       v18 = SFLocalizedStringForKey();
@@ -1772,16 +1772,16 @@ LABEL_17:
     }
 
 LABEL_16:
-    v18 = v17;
-    v17 = v18;
+    v18 = title;
+    title = v18;
 LABEL_18:
     v19 = v18;
 
-    v20 = [v7 header];
-    v21 = v20;
-    if (v20)
+    header = [infoCopy header];
+    v21 = header;
+    if (header)
     {
-      v22 = v20;
+      v22 = header;
     }
 
     else
@@ -1792,12 +1792,12 @@ LABEL_18:
     v23 = v22;
 
     v24 = +[NSUUID UUID];
-    v25 = [v24 UUIDString];
+    uUIDString = [v24 UUIDString];
 
     v26 = objc_alloc_init(sub_1001C0CA4());
     [v26 setBody:v16];
     [v26 setCategoryIdentifier:@"HomePodHandoffCategory"];
-    if ([v7 homePodType] == 2)
+    if ([infoCopy homePodType] == 2)
     {
       [v26 setCategoryIdentifier:@"60909dfe8f8c461e619cf5ffef54b503"];
       v27 = @"homepodmini.fill";
@@ -1820,13 +1820,13 @@ LABEL_18:
     [v26 setSubtitle:v19];
     v35[0] = @"deviceIdentifier";
     v35[1] = @"sessionID";
-    v36[0] = v6;
-    v36[1] = v25;
+    v36[0] = deviceCopy;
+    v36[1] = uUIDString;
     v29 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
     [v26 setUserInfo:v29];
 
-    v30 = [v7 attachmentURL];
-    v31 = [(SDNotificationManager *)self attachmentFromURL:v30];
+    attachmentURL = [infoCopy attachmentURL];
+    v31 = [(SDNotificationManager *)self attachmentFromURL:attachmentURL];
 
     if (v31)
     {
@@ -1847,7 +1847,7 @@ LABEL_18:
 
   if (dword_100972630 <= 90 && (dword_100972630 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001C728C(v7);
+    sub_1001C728C(infoCopy);
   }
 
   v15 = 0;
@@ -1856,131 +1856,131 @@ LABEL_30:
   return v15;
 }
 
-- (void)homePodHandoffPostIfNeeded:(id)a3 info:(id)a4
+- (void)homePodHandoffPostIfNeeded:(id)needed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C2C88;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = neededCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = neededCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_homePodHandoffPostIfNeeded:(id)a3 info:(id)a4
+- (void)_homePodHandoffPostIfNeeded:(id)needed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = [(SDNotificationManager *)self homePodHandoffContentForDevice:v6 info:v7];
+  v8 = [(SDNotificationManager *)self homePodHandoffContentForDevice:neededCopy info:infoCopy];
   if (v8)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1001C2D88;
     v9[3] = &unk_1008CE158;
-    v10 = v7;
-    v11 = v6;
-    v12 = self;
+    v10 = infoCopy;
+    v11 = neededCopy;
+    selfCopy = self;
     v13 = v8;
     [(SDNotificationManager *)self _homePodEnsureStarted:1 completion:v9];
   }
 }
 
-- (void)homePodHandoffRemove:(id)a3 reason:(int64_t)a4
+- (void)homePodHandoffRemove:(id)remove reason:(int64_t)reason
 {
-  v6 = a3;
+  removeCopy = remove;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C2EDC;
   block[3] = &unk_1008CF8F0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = removeCopy;
+  reasonCopy = reason;
+  v8 = removeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_homePodHandoffRemove:(id)a3 reason:(int64_t)a4
+- (void)_homePodHandoffRemove:(id)remove reason:(int64_t)reason
 {
-  v6 = a3;
+  removeCopy = remove;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [(NSMutableDictionary *)self->_homePodRequests objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_homePodRequests objectForKeyedSubscript:removeCopy];
 
   if (v7)
   {
     if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001C7318(a4);
+      sub_1001C7318(reason);
     }
 
     homePodNotifCenter = self->_homePodNotifCenter;
-    v20 = v6;
+    v20 = removeCopy;
     v9 = [NSArray arrayWithObjects:&v20 count:1];
     [(UNUserNotificationCenter *)homePodNotifCenter removeDeliveredNotificationsWithIdentifiers:v9];
 
     v10 = self->_homePodNotifCenter;
-    v19 = v6;
+    v19 = removeCopy;
     v11 = [NSArray arrayWithObjects:&v19 count:1];
     [(UNUserNotificationCenter *)v10 removePendingNotificationRequestsWithIdentifiers:v11];
 
     homePodMiniNotificationCenter = self->_homePodMiniNotificationCenter;
-    v18 = v6;
+    v18 = removeCopy;
     v13 = [NSArray arrayWithObjects:&v18 count:1];
     [(UNUserNotificationCenter *)homePodMiniNotificationCenter removeDeliveredNotificationsWithIdentifiers:v13];
 
     v14 = self->_homePodMiniNotificationCenter;
-    v17 = v6;
+    v17 = removeCopy;
     v15 = [NSArray arrayWithObjects:&v17 count:1];
     [(UNUserNotificationCenter *)v14 removePendingNotificationRequestsWithIdentifiers:v15];
 
-    [(NSMutableDictionary *)self->_homePodRequests removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_homePodRequests removeObjectForKey:removeCopy];
     v16 = +[SDProxHandoffAgent sharedAgent];
-    [v16 notificationDidDismiss:v6 reason:a4];
+    [v16 notificationDidDismiss:removeCopy reason:reason];
   }
 }
 
-- (void)homePodHandoffUpdateIfNeeded:(id)a3 info:(id)a4
+- (void)homePodHandoffUpdateIfNeeded:(id)needed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C3178;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = neededCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = neededCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_homePodHandoffUpdateIfNeeded:(id)a3 info:(id)a4
+- (void)_homePodHandoffUpdateIfNeeded:(id)needed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   homePodRequests = self->_homePodRequests;
   if (homePodRequests)
   {
-    v9 = [(NSMutableDictionary *)homePodRequests objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)homePodRequests objectForKeyedSubscript:neededCopy];
 
     if (v9)
     {
-      v10 = [(SDNotificationManager *)self homePodHandoffContentForDevice:v6 info:v7];
+      v10 = [(SDNotificationManager *)self homePodHandoffContentForDevice:neededCopy info:infoCopy];
       if (v10)
       {
         v11 = self->_homePodNotifCenter;
-        if ([v7 homePodType] == 2)
+        if ([infoCopy homePodType] == 2)
         {
           v12 = self->_homePodMiniNotificationCenter;
 
@@ -1996,9 +1996,9 @@ LABEL_30:
         v13[1] = 3221225472;
         v13[2] = sub_1001C3398;
         v13[3] = &unk_1008CDFB8;
-        v14 = v6;
-        v15 = v7;
-        v16 = self;
+        v14 = neededCopy;
+        v15 = infoCopy;
+        selfCopy = self;
         [(UNUserNotificationCenter *)v11 replaceContentForRequestWithIdentifier:v14 replacementContent:v10 completionHandler:v13];
       }
 
@@ -2015,31 +2015,31 @@ LABEL_30:
   }
 }
 
-- (void)_homePodHandleResponse:(id)a3 completion:(id)a4
+- (void)_homePodHandleResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
+  responseCopy = response;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_1001C3984;
   v34[3] = &unk_1008D08E0;
-  v7 = a4;
-  v35 = v7;
+  completionCopy = completion;
+  v35 = completionCopy;
   v8 = objc_retainBlock(v34);
   if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
   {
-    v32 = v6;
+    v32 = responseCopy;
     LogPrintF();
   }
 
-  v9 = [v6 notification];
-  v10 = [v9 request];
-  v11 = [v10 identifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v33 = self;
-    v12 = [v6 actionIdentifier];
-    if (!v12)
+    selfCopy = self;
+    actionIdentifier = [responseCopy actionIdentifier];
+    if (!actionIdentifier)
     {
       if (dword_100972630 > 90 || dword_100972630 == -1 && !_LogCategory_Initialize())
       {
@@ -2050,7 +2050,7 @@ LABEL_30:
     }
 
     v13 = off_1009726A0();
-    v14 = v12;
+    v14 = actionIdentifier;
     v15 = v13;
     v16 = v15;
     if (v14 == v15)
@@ -2148,13 +2148,13 @@ LABEL_30:
           {
 LABEL_42:
             v31 = +[SDProxHandoffAgent sharedAgent];
-            [v31 userDidTapNotification:v11];
+            [v31 userDidTapNotification:identifier];
 
             goto LABEL_49;
           }
 
 LABEL_44:
-          [(SDNotificationManager *)v33 homePodHandoffRemove:v11 reason:2];
+          [(SDNotificationManager *)selfCopy homePodHandoffRemove:identifier reason:2];
           goto LABEL_49;
         }
 
@@ -2218,41 +2218,41 @@ LABEL_50:
 - (void)_visionUnlockiOSUpsellPostIfNeeded
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(SDNotificationManager *)self visionUnlockiOSUpsellContent];
-  v4 = v3;
-  if (v3)
+  visionUnlockiOSUpsellContent = [(SDNotificationManager *)self visionUnlockiOSUpsellContent];
+  v4 = visionUnlockiOSUpsellContent;
+  if (visionUnlockiOSUpsellContent)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1001C3BA4;
     v5[3] = &unk_1008CE028;
     v5[4] = self;
-    v5[5] = v3;
+    v5[5] = visionUnlockiOSUpsellContent;
     [(SDNotificationManager *)self _visionUnlockiOSEnsureStarted:1 completion:v5];
   }
 }
 
-- (void)visionUnlockiOSPostFailureNotificationWithMessage:(id)a3 userInfo:(id)a4
+- (void)visionUnlockiOSPostFailureNotificationWithMessage:(id)message userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C3C80;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = messageCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_visionUnlockiOSPostFailureNotificationWithMessage:(id)a3 userInfo:(id)a4
+- (void)_visionUnlockiOSPostFailureNotificationWithMessage:(id)message userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v8 = objc_alloc_init(sub_1001C0CA4());
   if (v8)
@@ -2261,13 +2261,13 @@ LABEL_50:
     v10 = objc_alloc_init(sub_1001C0CA4());
 
     [v10 setTitle:@"Failed to unlock iPhone with VisionOS"];
-    [v10 setBody:v6];
+    [v10 setBody:messageCopy];
     [v10 setCategoryIdentifier:@"com.apple.SharingVisionUnlockiOSNotifications.Failure"];
     [v10 setShouldBackgroundDefaultAction:1];
     v11 = [UNNotificationIcon iconForSystemImageNamed:@"lock.open.iphone"];
     [v10 setIcon:v11];
 
-    [v10 setUserInfo:v7];
+    [v10 setUserInfo:infoCopy];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1001C3DE8;
@@ -2304,13 +2304,13 @@ LABEL_50:
   [(NSMutableDictionary *)visionUnlockiOSRequests removeAllObjects];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   homePodNotifCenter = self->_homePodNotifCenter;
-  v12 = v8;
+  v12 = centerCopy;
   v13 = homePodNotifCenter;
   v14 = v13;
   if (v13 == v12)
@@ -2358,7 +2358,7 @@ LABEL_11:
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v20, &state);
-    [(SDNotificationManager *)self _homePodHandleResponse:v9 completion:v10];
+    [(SDNotificationManager *)self _homePodHandleResponse:responseCopy completion:handlerCopy];
     os_activity_scope_leave(&state);
 
     goto LABEL_12;
@@ -2390,7 +2390,7 @@ LABEL_19:
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v26, &state);
-    [(SDNotificationManager *)self _tvHandleResponse:v9 completion:v10];
+    [(SDNotificationManager *)self _tvHandleResponse:responseCopy completion:handlerCopy];
     os_activity_scope_leave(&state);
 
     goto LABEL_12;
@@ -2422,7 +2422,7 @@ LABEL_26:
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v32, &state);
-    [(SDNotificationManager *)self _watchHandleResponse:v9 completion:v10];
+    [(SDNotificationManager *)self _watchHandleResponse:responseCopy completion:handlerCopy];
     os_activity_scope_leave(&state);
 
     goto LABEL_12;
@@ -2456,9 +2456,9 @@ LABEL_37:
         }
       }
 
-      if (v10)
+      if (handlerCopy)
       {
-        v10[2](v10);
+        handlerCopy[2](handlerCopy);
       }
 
       goto LABEL_12;
@@ -2481,20 +2481,20 @@ LABEL_37:
     LogPrintF();
   }
 
-  v39 = [v9 notification];
-  v40 = [v39 request];
-  v41 = [v40 content];
-  v42 = [v41 categoryIdentifier];
-  v43 = [v42 isEqualToString:@"com.apple.SharingVisionUnlockiOSNotifications.Failure"];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
+  v43 = [categoryIdentifier isEqualToString:@"com.apple.SharingVisionUnlockiOSNotifications.Failure"];
 
   if (v43)
   {
-    [(SDNotificationManager *)self _visionHandleFailureResponse:v9 completion:v10];
+    [(SDNotificationManager *)self _visionHandleFailureResponse:responseCopy completion:handlerCopy];
   }
 
   else
   {
-    [(SDNotificationManager *)self _visionHandleResponse:v9 completion:v10];
+    [(SDNotificationManager *)self _visionHandleResponse:responseCopy completion:handlerCopy];
   }
 
   os_activity_scope_leave(&state);
@@ -2502,26 +2502,26 @@ LABEL_37:
 LABEL_12:
 }
 
-- (void)testPost:(id)a3
+- (void)testPost:(id)post
 {
-  v4 = a3;
-  v6 = v4;
+  postCopy = post;
+  v6 = postCopy;
   if (dword_100972630 <= 30)
   {
-    if (dword_100972630 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_100972630 != -1 || (v5 = _LogCategory_Initialize(), postCopy = v6, v5))
     {
       sub_1001C75D0();
-      v4 = v6;
+      postCopy = v6;
     }
   }
 
   if (!self->_activated)
   {
     [(SDNotificationManager *)self _activate];
-    v4 = v6;
+    postCopy = v6;
   }
 
-  if ([v4 isEqual:@"-af"])
+  if ([postCopy isEqual:@"-af"])
   {
     [(SDNotificationManager *)self testAutofillPost];
   }
@@ -2585,8 +2585,8 @@ LABEL_12:
   }
 
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
-  [(SDNotificationManager *)self _addRequestWithID:v4 content:v5 type:5];
+  uUIDString = [v3 UUIDString];
+  [(SDNotificationManager *)self _addRequestWithID:uUIDString content:v5 type:5];
 }
 
 - (void)testAutofillPost
@@ -2728,25 +2728,25 @@ LABEL_12:
   [(SDNotificationManager *)self watchKeyboardPostIfNeeded:v4];
 }
 
-- (id)riServerContentForDevice:(id)a3 backgroundAction:(BOOL)a4
+- (id)riServerContentForDevice:(id)device backgroundAction:(BOOL)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v7 UUIDString];
-  v9 = v8;
+  actionCopy = action;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v9 = uUIDString;
   v10 = 0;
   v11 = 0;
-  v12 = 0;
+  uUIDString2 = 0;
   v13 = 0;
-  if (v7 && v8)
+  if (identifier && uUIDString)
   {
     v14 = +[NSUUID UUID];
-    v12 = [v14 UUIDString];
+    uUIDString2 = [v14 UUIDString];
 
-    v15 = [v6 deviceActionType];
+    deviceActionType = [deviceCopy deviceActionType];
     v16 = @"REMOTE_BULLETIN_MESSAGE";
-    if (v15 == 19)
+    if (deviceActionType == 19)
     {
       v16 = @"REMOTE_BULLETIN_MESSAGE_AUTOFILL";
       v17 = @"REMOTE_BULLETIN_SUBTITLE_AUTOFILL";
@@ -2779,13 +2779,13 @@ LABEL_12:
     v21[0] = @"deviceIdentifier";
     v21[1] = @"sessionID";
     v22[0] = v9;
-    v22[1] = v12;
+    v22[1] = uUIDString2;
     [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
     objc_claimAutoreleasedReturnValue();
     [sub_10002FCC0() setUserInfo:?];
 
     v18 = sub_1001C5830();
-    if (v5)
+    if (actionCopy)
     {
       [v18 setShouldBackgroundDefaultAction:?];
     }
@@ -2801,13 +2801,13 @@ LABEL_12:
   return v10;
 }
 
-- (void)_riServerRemove:(id)a3
+- (void)_riServerRemove:(id)remove
 {
-  v6 = [a3 identifier];
-  [v6 UUIDString];
+  identifier = [remove identifier];
+  [identifier UUIDString];
   objc_claimAutoreleasedReturnValue();
   sub_1001C5888();
-  if (v6)
+  if (identifier)
   {
     if (v3)
     {
@@ -2832,25 +2832,25 @@ LABEL_12:
   }
 }
 
-- (void)_riServerUpdate:(id)a3 info:(id)a4
+- (void)_riServerUpdate:(id)update info:(id)info
 {
-  v8 = a4;
-  v9 = a3;
+  infoCopy = info;
+  updateCopy = update;
   v10 = [sub_1001C5854() riServerContentForDevice:? backgroundAction:?];
   v11 = [v10 mutableCopy];
 
-  v12 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  v13 = [v12 UUIDString];
+  uUIDString = [identifier UUIDString];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (self->_tvNotifCenter && v12 && v13 && v11)
+  if (self->_tvNotifCenter && identifier && uUIDString && v11)
   {
-    v14 = [(NSMutableDictionary *)self->_tvKeyboardRequests objectForKeyedSubscript:v13];
+    v14 = [(NSMutableDictionary *)self->_tvKeyboardRequests objectForKeyedSubscript:uUIDString];
 
     if (v14)
     {
-      v15 = [v8 prompt];
-      if (v15)
+      prompt = [infoCopy prompt];
+      if (prompt)
       {
         [sub_1001C583C() setBody:?];
       }
@@ -2862,8 +2862,8 @@ LABEL_12:
         [sub_1001C57E4() setBody:?];
       }
 
-      v16 = [v8 title];
-      if (v16)
+      title = [infoCopy title];
+      if (title)
       {
         [sub_1001C583C() setSubtitle:?];
       }
@@ -2877,10 +2877,10 @@ LABEL_12:
 
       if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
       {
-        v17 = [v8 prompt];
-        [v8 title];
-        v29 = v28 = v17;
-        v27 = v13;
+        prompt2 = [infoCopy prompt];
+        [infoCopy title];
+        v29 = v28 = prompt2;
+        v27 = uUIDString;
         LogPrintF();
       }
 
@@ -2896,13 +2896,13 @@ LABEL_12:
   }
 }
 
-- (void)_tvAutoFillPostIfNeeded:(id)a3
+- (void)_tvAutoFillPostIfNeeded:(id)needed
 {
-  v5 = [a3 identifier];
-  [v5 UUIDString];
+  identifier = [needed identifier];
+  [identifier UUIDString];
   objc_claimAutoreleasedReturnValue();
   sub_1001C5888();
-  if (v5 && v3)
+  if (identifier && v3)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -2914,13 +2914,13 @@ LABEL_12:
   }
 }
 
-- (void)_tvAutoFillRemove:(id)a3
+- (void)_tvAutoFillRemove:(id)remove
 {
-  v6 = [a3 identifier];
-  [v6 UUIDString];
+  identifier = [remove identifier];
+  [identifier UUIDString];
   objc_claimAutoreleasedReturnValue();
   sub_1001C5888();
-  if (v6)
+  if (identifier)
   {
     if (v3)
     {
@@ -2962,24 +2962,24 @@ LABEL_12:
   }
 }
 
-- (id)watchKeyboardContentForDevice:(id)a3
+- (id)watchKeyboardContentForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
-  v7 = v6;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = uUIDString;
   v8 = 0;
   v9 = 0;
-  v10 = 0;
+  uUIDString2 = 0;
   v11 = 0;
-  if (v5 && v6)
+  if (identifier && uUIDString)
   {
     v12 = +[NSUUID UUID];
-    v10 = [v12 UUIDString];
+    uUIDString2 = [v12 UUIDString];
 
-    v13 = [v4 deviceActionType];
+    deviceActionType = [deviceCopy deviceActionType];
     v14 = @"WATCH_KEYBOARD_MESSAGE";
-    if (v13 == 19)
+    if (deviceActionType == 19)
     {
       v14 = @"WATCH_KEYBOARD_MESSAGE_AUTOFILL";
       v15 = @"WATCH_KEYBOARD_SUBTITLE_AUTOFILL";
@@ -3013,7 +3013,7 @@ LABEL_12:
     v18[0] = @"deviceIdentifier";
     v18[1] = @"sessionID";
     v19[0] = v7;
-    v19[1] = v10;
+    v19[1] = uUIDString2;
     [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
     objc_claimAutoreleasedReturnValue();
     [sub_100019E30() setUserInfo:?];
@@ -3031,16 +3031,16 @@ LABEL_12:
   return v8;
 }
 
-- (void)_watchKeyboardPostIfNeeded:(id)a3
+- (void)_watchKeyboardPostIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
+  neededCopy = needed;
+  identifier = [neededCopy identifier];
+  uUIDString = [identifier UUIDString];
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v6)
+  if (uUIDString)
   {
-    v7 = [(SDNotificationManager *)self watchKeyboardContentForDevice:v4];
+    v7 = [(SDNotificationManager *)self watchKeyboardContentForDevice:neededCopy];
     if (v7)
     {
       sub_100021EF0();
@@ -3048,7 +3048,7 @@ LABEL_12:
       v9[1] = 3221225472;
       v9[2] = sub_1001C1DD4;
       v9[3] = &unk_1008CE900;
-      v9[4] = v6;
+      v9[4] = uUIDString;
       v9[5] = self;
       v9[6] = v7;
       [(SDNotificationManager *)self _watchEnsureStarted:1 completion:v9];
@@ -3056,13 +3056,13 @@ LABEL_12:
   }
 }
 
-- (void)_watchKeyboardRemove:(id)a3
+- (void)_watchKeyboardRemove:(id)remove
 {
-  v6 = [a3 identifier];
-  [v6 UUIDString];
+  identifier = [remove identifier];
+  [identifier UUIDString];
   objc_claimAutoreleasedReturnValue();
   sub_1001C5888();
-  if (v6)
+  if (identifier)
   {
     if (v3)
     {
@@ -3087,25 +3087,25 @@ LABEL_12:
   }
 }
 
-- (void)_watchKeyboardUpdate:(id)a3 info:(id)a4
+- (void)_watchKeyboardUpdate:(id)update info:(id)info
 {
-  v8 = a4;
-  v9 = a3;
+  infoCopy = info;
+  updateCopy = update;
   v10 = [sub_1001C5854() riServerContentForDevice:? backgroundAction:?];
   v11 = [v10 mutableCopy];
 
-  v12 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  v13 = [v12 UUIDString];
+  uUIDString = [identifier UUIDString];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (self->_watchNotifCenter && v12 && v13 && v11)
+  if (self->_watchNotifCenter && identifier && uUIDString && v11)
   {
-    v14 = [(NSMutableDictionary *)self->_watchKeyboardRequests objectForKeyedSubscript:v13];
+    v14 = [(NSMutableDictionary *)self->_watchKeyboardRequests objectForKeyedSubscript:uUIDString];
 
     if (v14)
     {
-      v15 = [v8 prompt];
-      if (v15)
+      prompt = [infoCopy prompt];
+      if (prompt)
       {
         [sub_1001C583C() setBody:?];
       }
@@ -3117,8 +3117,8 @@ LABEL_12:
         [sub_1001C57E4() setBody:?];
       }
 
-      v16 = [v8 title];
-      if (v16)
+      title = [infoCopy title];
+      if (title)
       {
         [sub_1001C583C() setSubtitle:?];
       }
@@ -3132,10 +3132,10 @@ LABEL_12:
 
       if (dword_100972630 <= 30 && (dword_100972630 != -1 || _LogCategory_Initialize()))
       {
-        v17 = [v8 prompt];
-        [v8 title];
-        v29 = v28 = v17;
-        v27 = v13;
+        prompt2 = [infoCopy prompt];
+        [infoCopy title];
+        v29 = v28 = prompt2;
+        v27 = uUIDString;
         LogPrintF();
       }
 

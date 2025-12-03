@@ -1,46 +1,46 @@
 @interface RTVehicleEventHistoryMO
-+ (id)managedObjectWithVehicleEvent:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithVehicleEvent:(id)event inManagedObjectContext:(id)context;
 @end
 
 @implementation RTVehicleEventHistoryMO
 
-+ (id)managedObjectWithVehicleEvent:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithVehicleEvent:(id)event inManagedObjectContext:(id)context
 {
   v5 = MEMORY[0x277CBE408];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  eventCopy = event;
   v8 = +[(NSManagedObject *)RTVehicleEventHistoryMO];
-  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:v6];
+  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:contextCopy];
 
-  v10 = [v7 date];
-  [v9 setDate:v10];
+  date = [eventCopy date];
+  [v9 setDate:date];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v7 location];
-  [v12 latitude];
+  location = [eventCopy location];
+  [location latitude];
   v13 = [v11 numberWithDouble:?];
   [v9 setLocLatitude:v13];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v7 location];
-  [v15 longitude];
+  location2 = [eventCopy location];
+  [location2 longitude];
   v16 = [v14 numberWithDouble:?];
   [v9 setLocLongitude:v16];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v7 location];
-  [v18 horizontalUncertainty];
+  location3 = [eventCopy location];
+  [location3 horizontalUncertainty];
   v19 = [v17 numberWithDouble:?];
   [v9 setLocUncertainty:v19];
 
-  v20 = [v7 location];
-  v21 = [v20 date];
-  [v9 setLocDate:v21];
+  location4 = [eventCopy location];
+  date2 = [location4 date];
+  [v9 setLocDate:date2];
 
-  v22 = [v7 identifier];
+  identifier = [eventCopy identifier];
 
-  v23 = [v22 UUIDString];
-  [v9 setIdentifier:v23];
+  uUIDString = [identifier UUIDString];
+  [v9 setIdentifier:uUIDString];
 
   return v9;
 }

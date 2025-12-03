@@ -49,14 +49,14 @@ LABEL_8:
   v4 = a3;
   v5 = [v3 alloc];
   v6 = objc_alloc(MEMORY[0x277CCA970]);
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
-  v9 = [v6 initWithStartDate:v7 endDate:v8];
-  v10 = [v4 vehicleName];
-  v11 = [v4 vehicleModelName];
-  v12 = [v4 bluetoothAddress];
+  startDate = [v4 startDate];
+  endDate = [v4 endDate];
+  v9 = [v6 initWithStartDate:startDate endDate:endDate];
+  vehicleName = [v4 vehicleName];
+  vehicleModelName = [v4 vehicleModelName];
+  bluetoothAddress = [v4 bluetoothAddress];
 
-  v13 = [v5 initWithDateInterval:v9 vehicleName:v10 vehicleModelName:v11 bluetoothAddress:v12];
+  v13 = [v5 initWithDateInterval:v9 vehicleName:vehicleName vehicleModelName:vehicleModelName bluetoothAddress:bluetoothAddress];
 
   return v13;
 }
@@ -65,7 +65,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTVehicleMO managedObjectWithVehicle:a1 inManagedObjectContext:a3];
+    v3 = [RTVehicleMO managedObjectWithVehicle:self inManagedObjectContext:a3];
   }
 
   else

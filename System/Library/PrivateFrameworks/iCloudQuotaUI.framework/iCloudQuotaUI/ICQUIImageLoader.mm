@@ -1,33 +1,33 @@
 @interface ICQUIImageLoader
-+ (BOOL)_hasURLForScale:(double)a3 inImageURL:(id)a4;
-+ (id)_scaledImageURL:(id)a3;
-+ (id)fetchIconForAssetID:(id)a3;
-+ (id)fetchIconForBundleID:(id)a3;
-+ (void)fetchIconFromIconSpecification:(id)a3 completion:(id)a4;
-+ (void)fetchIconFromImageURL:(id)a3 completion:(id)a4;
-+ (void)loadImageWithURL:(id)a3 completion:(id)a4;
++ (BOOL)_hasURLForScale:(double)scale inImageURL:(id)l;
++ (id)_scaledImageURL:(id)l;
++ (id)fetchIconForAssetID:(id)d;
++ (id)fetchIconForBundleID:(id)d;
++ (void)fetchIconFromIconSpecification:(id)specification completion:(id)completion;
++ (void)fetchIconFromImageURL:(id)l completion:(id)completion;
++ (void)loadImageWithURL:(id)l completion:(id)completion;
 @end
 
 @implementation ICQUIImageLoader
 
-+ (void)loadImageWithURL:(id)a3 completion:(id)a4
++ (void)loadImageWithURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _scaledImageURL:a3];
+  completionCopy = completion;
+  v7 = [self _scaledImageURL:l];
   v8 = [MEMORY[0x277CCAD20] requestWithURL:v7 cachePolicy:0 timeoutInterval:30.0];
-  v9 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  v10 = [MEMORY[0x277CCACD8] sharedURLCache];
-  [v9 setURLCache:v10];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  mEMORY[0x277CCACD8] = [MEMORY[0x277CCACD8] sharedURLCache];
+  [defaultSessionConfiguration setURLCache:mEMORY[0x277CCACD8]];
 
-  v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v9];
+  v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __48__ICQUIImageLoader_loadImageWithURL_completion___block_invoke;
   v16[3] = &unk_27A65AF30;
   v17 = v11;
   v18 = v8;
-  v19 = v6;
-  v12 = v6;
+  v19 = completionCopy;
+  v12 = completionCopy;
   v13 = v8;
   v14 = v11;
   v15 = [v14 dataTaskWithRequest:v13 completionHandler:v16];
@@ -68,20 +68,20 @@ void __48__ICQUIImageLoader_loadImageWithURL_completion___block_invoke(uint64_t 
   }
 }
 
-+ (void)fetchIconFromIconSpecification:(id)a3 completion:(id)a4
++ (void)fetchIconFromIconSpecification:(id)specification completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 imageURL];
-  v9 = [v6 assetID];
-  v10 = [v6 bundleID];
+  specificationCopy = specification;
+  completionCopy = completion;
+  imageURL = [specificationCopy imageURL];
+  assetID = [specificationCopy assetID];
+  bundleID = [specificationCopy bundleID];
   +[_ICQUIHelperFunctions highestScreenScale];
-  v11 = [a1 _hasURLForScale:v8 inImageURL:?];
-  if (v10 || v9 || v11)
+  v11 = [self _hasURLForScale:imageURL inImageURL:?];
+  if (bundleID || assetID || v11)
   {
-    v12 = [v6 assetID];
-    v13 = [a1 fetchIconForAssetID:v12];
+    assetID2 = [specificationCopy assetID];
+    v13 = [self fetchIconForAssetID:assetID2];
 
     if (v13)
     {
@@ -89,14 +89,14 @@ void __48__ICQUIImageLoader_loadImageWithURL_completion___block_invoke(uint64_t 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v9;
+        v18 = assetID;
         _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "Fetched icon from assets catalog for asset ID %@", &v17, 0xCu);
       }
     }
 
     else
     {
-      v13 = [a1 fetchIconForBundleID:v10];
+      v13 = [self fetchIconForBundleID:bundleID];
       v15 = _ICQGetLogSystem();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
       if (!v13)
@@ -104,35 +104,35 @@ void __48__ICQUIImageLoader_loadImageWithURL_completion___block_invoke(uint64_t 
         if (v16)
         {
           v17 = 138412290;
-          v18 = v8;
+          v18 = imageURL;
           _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Fetching remote icon asset from URL %@", &v17, 0xCu);
         }
 
-        [a1 fetchIconFromImageURL:v8 completion:v7];
+        [self fetchIconFromImageURL:imageURL completion:completionCopy];
         goto LABEL_14;
       }
 
       if (v16)
       {
         v17 = 138412290;
-        v18 = v10;
+        v18 = bundleID;
         _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Fetched icon from IconServices for bundleID %@", &v17, 0xCu);
       }
     }
 
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_15:
 }
 
-+ (id)fetchIconForAssetID:(id)a3
++ (id)fetchIconForAssetID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [MEMORY[0x277D755B8] icqBundleImageNamed:?];
   }
@@ -145,9 +145,9 @@ LABEL_15:
   return v4;
 }
 
-+ (id)fetchIconForBundleID:(id)a3
++ (id)fetchIconForBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [_ICQUIHelperFunctions appIconWithSize:120.0 forBundleID:120.0];
   }
@@ -160,16 +160,16 @@ LABEL_15:
   return v4;
 }
 
-+ (void)fetchIconFromImageURL:(id)a3 completion:(id)a4
++ (void)fetchIconFromImageURL:(id)l completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ICQUIImageLoader_fetchIconFromImageURL_completion___block_invoke;
   v7[3] = &unk_27A65AF80;
-  v8 = v5;
-  v6 = v5;
-  [ICQUIImageLoader loadImageWithURL:a3 completion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [ICQUIImageLoader loadImageWithURL:l completion:v7];
 }
 
 void __53__ICQUIImageLoader_fetchIconFromImageURL_completion___block_invoke(uint64_t a1, void *a2)
@@ -203,60 +203,60 @@ void __53__ICQUIImageLoader_fetchIconFromImageURL_completion___block_invoke_2(ui
   }
 }
 
-+ (id)_scaledImageURL:(id)a3
++ (id)_scaledImageURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   +[_ICQUIHelperFunctions highestScreenScale];
   if (v4 < 3)
   {
     if (v4 == 2)
     {
-      [v3 URL2x];
+      [lCopy URL2x];
     }
 
     else
     {
-      [v3 URL1x];
+      [lCopy URL1x];
     }
-    v5 = ;
+    uRL3x = ;
   }
 
   else
   {
-    v5 = [v3 URL3x];
+    uRL3x = [lCopy URL3x];
   }
 
-  v6 = v5;
+  v6 = uRL3x;
 
   return v6;
 }
 
-+ (BOOL)_hasURLForScale:(double)a3 inImageURL:(id)a4
++ (BOOL)_hasURLForScale:(double)scale inImageURL:(id)l
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1.0)
+  lCopy = l;
+  v6 = lCopy;
+  if (scale == 1.0)
   {
-    v7 = [v5 URL1x];
+    uRL1x = [lCopy URL1x];
   }
 
-  else if (a3 == 2.0)
+  else if (scale == 2.0)
   {
-    v7 = [v5 URL2x];
+    uRL1x = [lCopy URL2x];
   }
 
   else
   {
-    if (a3 != 3.0)
+    if (scale != 3.0)
     {
       v8 = 0;
       goto LABEL_8;
     }
 
-    v7 = [v5 URL3x];
+    uRL1x = [lCopy URL3x];
   }
 
-  v8 = v7 != 0;
+  v8 = uRL1x != 0;
 
 LABEL_8:
   return v8;

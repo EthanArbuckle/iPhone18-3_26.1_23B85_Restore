@@ -1,24 +1,24 @@
 @interface CalVirtualConferenceJoinMethod
-- (BOOL)isEqual:(id)a3;
-- (CalVirtualConferenceJoinMethod)initWithTitle:(id)a3 URL:(id)a4 isBroadcast:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (CalVirtualConferenceJoinMethod)initWithTitle:(id)title URL:(id)l isBroadcast:(BOOL)broadcast;
 - (id)description;
 @end
 
 @implementation CalVirtualConferenceJoinMethod
 
-- (CalVirtualConferenceJoinMethod)initWithTitle:(id)a3 URL:(id)a4 isBroadcast:(BOOL)a5
+- (CalVirtualConferenceJoinMethod)initWithTitle:(id)title URL:(id)l isBroadcast:(BOOL)broadcast
 {
-  v9 = a3;
-  v10 = a4;
+  titleCopy = title;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = CalVirtualConferenceJoinMethod;
   v11 = [(CalVirtualConferenceJoinMethod *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a3);
-    objc_storeStrong(&v12->_URL, a4);
-    v12->_isBroadcast = a5;
+    objc_storeStrong(&v11->_title, title);
+    objc_storeStrong(&v12->_URL, l);
+    v12->_isBroadcast = broadcast;
   }
 
   return v12;
@@ -35,15 +35,15 @@
   [(CalDescriptionBuilder *)v5 setKey:@"title" withString:self->_title];
   [(CalDescriptionBuilder *)v5 setKey:@"URL" withObject:self->_URL];
   [(CalDescriptionBuilder *)v5 setKey:@"isBroadcast" withBoolean:self->_isBroadcast];
-  v6 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v6;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -53,10 +53,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       title = self->_title;
-      v7 = [(CalVirtualConferenceJoinMethod *)v5 title];
-      if (CalEqualStrings(title, v7))
+      title = [(CalVirtualConferenceJoinMethod *)v5 title];
+      if (CalEqualStrings(title, title))
       {
         URL = self->_URL;
         v9 = [(CalVirtualConferenceJoinMethod *)v5 URL];

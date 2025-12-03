@@ -1,20 +1,20 @@
 @interface _SCRCStackQueueEnumerator
-- (_SCRCStackQueueEnumerator)initWithListMember:(id)a3;
+- (_SCRCStackQueueEnumerator)initWithListMember:(id)member;
 - (id)nextObject;
 @end
 
 @implementation _SCRCStackQueueEnumerator
 
-- (_SCRCStackQueueEnumerator)initWithListMember:(id)a3
+- (_SCRCStackQueueEnumerator)initWithListMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v9.receiver = self;
   v9.super_class = _SCRCStackQueueEnumerator;
   v6 = [(_SCRCStackQueueEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentListMemeber, a3);
+    objc_storeStrong(&v6->_currentListMemeber, member);
   }
 
   return v7;
@@ -25,18 +25,18 @@
   currentListMemeber = self->_currentListMemeber;
   if (currentListMemeber)
   {
-    v4 = [(_SCRCStackNode *)currentListMemeber object];
-    v5 = [(_SCRCStackNode *)self->_currentListMemeber next];
+    object = [(_SCRCStackNode *)currentListMemeber object];
+    next = [(_SCRCStackNode *)self->_currentListMemeber next];
     v6 = self->_currentListMemeber;
-    self->_currentListMemeber = v5;
+    self->_currentListMemeber = next;
   }
 
   else
   {
-    v4 = 0;
+    object = 0;
   }
 
-  return v4;
+  return object;
 }
 
 @end

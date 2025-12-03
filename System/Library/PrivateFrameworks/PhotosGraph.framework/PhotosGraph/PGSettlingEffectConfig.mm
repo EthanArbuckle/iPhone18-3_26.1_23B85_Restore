@@ -1,23 +1,23 @@
 @interface PGSettlingEffectConfig
-- (PGSettlingEffectConfig)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-- (id)_requestWallpaperDownloadServerConfigWithPhotoLibrary:(id)a3 loggingConnection:(id)a4;
+- (PGSettlingEffectConfig)initWithPhotoLibrary:(id)library loggingConnection:(id)connection;
+- (id)_requestWallpaperDownloadServerConfigWithPhotoLibrary:(id)library loggingConnection:(id)connection;
 @end
 
 @implementation PGSettlingEffectConfig
 
-- (id)_requestWallpaperDownloadServerConfigWithPhotoLibrary:(id)a3 loggingConnection:(id)a4
+- (id)_requestWallpaperDownloadServerConfigWithPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  libraryCopy = library;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__32407;
   v31 = __Block_byref_object_dispose__32408;
   v32 = 0;
-  v6 = a4;
-  v7 = os_signpost_id_generate(v6);
-  v8 = v6;
+  connectionCopy = connection;
+  v7 = os_signpost_id_generate(connectionCopy);
+  v8 = connectionCopy;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
@@ -36,7 +36,7 @@
   v25 = &v27;
   v12 = v11;
   v24 = v12;
-  [v5 getCPLConfigrationValueForClient:0 completionHandler:v23];
+  [libraryCopy getCPLConfigrationValueForClient:0 completionHandler:v23];
   v13 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v12, v13) && os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -87,11 +87,11 @@ void __98__PGSettlingEffectConfig__requestWallpaperDownloadServerConfigWithPhoto
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (PGSettlingEffectConfig)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4
+- (PGSettlingEffectConfig)initWithPhotoLibrary:(id)library loggingConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v30.receiver = self;
   v30.super_class = PGSettlingEffectConfig;
   v8 = [(PGSettlingEffectConfig *)&v30 init];
@@ -100,7 +100,7 @@ void __98__PGSettlingEffectConfig__requestWallpaperDownloadServerConfigWithPhoto
   {
     *(v8 + 8) = xmmword_22F78C090;
     *(v8 + 24) = xmmword_22F78C0A0;
-    v10 = [v8 _requestWallpaperDownloadServerConfigWithPhotoLibrary:v6 loggingConnection:v7];
+    v10 = [v8 _requestWallpaperDownloadServerConfigWithPhotoLibrary:libraryCopy loggingConnection:connectionCopy];
     v11 = v10;
     if (v10)
     {
@@ -108,14 +108,14 @@ void __98__PGSettlingEffectConfig__requestWallpaperDownloadServerConfigWithPhoto
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 unsignedIntegerValue];
-        v15 = v14;
-        v9->_maxL1FailuresAllowed = v14;
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
+        v15 = unsignedIntegerValue;
+        v9->_maxL1FailuresAllowed = unsignedIntegerValue;
+        if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
           v32 = v15;
-          _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured maxL1FailuresAllowed: %d", buf, 8u);
+          _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured maxL1FailuresAllowed: %d", buf, 8u);
         }
       }
 
@@ -123,14 +123,14 @@ void __98__PGSettlingEffectConfig__requestWallpaperDownloadServerConfigWithPhoto
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 unsignedIntegerValue];
-        v19 = v18;
-        v9->_maxFRCRequestsAllowed = v18;
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        unsignedIntegerValue2 = [v16 unsignedIntegerValue];
+        v19 = unsignedIntegerValue2;
+        v9->_maxFRCRequestsAllowed = unsignedIntegerValue2;
+        if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
           v32 = v19;
-          _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured maxFRCRequestsAllowed: %d", buf, 8u);
+          _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured maxFRCRequestsAllowed: %d", buf, 8u);
         }
       }
 
@@ -138,14 +138,14 @@ void __98__PGSettlingEffectConfig__requestWallpaperDownloadServerConfigWithPhoto
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 unsignedIntegerValue];
-        v23 = v22;
-        v9->_defaultL1FailuresAllowed = v22;
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        unsignedIntegerValue3 = [v20 unsignedIntegerValue];
+        v23 = unsignedIntegerValue3;
+        v9->_defaultL1FailuresAllowed = unsignedIntegerValue3;
+        if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
           v32 = v23;
-          _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured defaultL1FailuresAllowed: %d", buf, 8u);
+          _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured defaultL1FailuresAllowed: %d", buf, 8u);
         }
       }
 
@@ -153,14 +153,14 @@ void __98__PGSettlingEffectConfig__requestWallpaperDownloadServerConfigWithPhoto
       v25 = v24;
       if (v24)
       {
-        v26 = [v24 unsignedIntegerValue];
-        v27 = v26;
-        v9->_defaultFRCRequestsAllowed = v26;
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        unsignedIntegerValue4 = [v24 unsignedIntegerValue];
+        v27 = unsignedIntegerValue4;
+        v9->_defaultFRCRequestsAllowed = unsignedIntegerValue4;
+        if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
           v32 = v27;
-          _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured defaultFRCRequestsAllowed: %d", buf, 8u);
+          _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGSettlingEffectConfig] Set server configured defaultFRCRequestsAllowed: %d", buf, 8u);
         }
       }
     }

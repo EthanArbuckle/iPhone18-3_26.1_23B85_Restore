@@ -3,8 +3,8 @@
 + (BOOL)isMacMini;
 + (BOOL)isNativeScreenOrientationPortrait;
 + (BOOL)supportsShutterSound;
-+ (CGSize)limitRecordingSizeForH264:(CGSize)a3;
-+ (CGSize)limitRecordingWindowSizeFromSize:(CGSize)a3;
++ (CGSize)limitRecordingSizeForH264:(CGSize)h264;
++ (CGSize)limitRecordingWindowSizeFromSize:(CGSize)size;
 + (id)modelIdentifier;
 @end
 
@@ -53,10 +53,10 @@
   return v4;
 }
 
-+ (CGSize)limitRecordingWindowSizeFromSize:(CGSize)a3
++ (CGSize)limitRecordingWindowSizeFromSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136446978;
@@ -72,9 +72,9 @@
 
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 objectForKey:@"RPFullResCapture"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -95,7 +95,7 @@
     v9 = 1920;
     if (+[RPHardwareUtility isIPad])
     {
-      if ([a1 chipId] == 35168)
+      if ([self chipId] == 35168)
       {
         v9 = 1600;
       }
@@ -161,15 +161,15 @@
   return result;
 }
 
-+ (CGSize)limitRecordingSizeForH264:(CGSize)a3
++ (CGSize)limitRecordingSizeForH264:(CGSize)h264
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width > 4096.0 || a3.height > 4096.0)
+  height = h264.height;
+  width = h264.width;
+  if (h264.width > 4096.0 || h264.height > 4096.0)
   {
-    if (a3.height > 4096.0)
+    if (h264.height > 4096.0)
     {
-      width = a3.width * (4096.0 / a3.height);
+      width = h264.width * (4096.0 / h264.height);
       height = 4096.0;
     }
 
@@ -223,7 +223,7 @@
 
 + (BOOL)isMacMini
 {
-  v2 = [a1 modelIdentifier];
+  modelIdentifier = [self modelIdentifier];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446722;
@@ -231,11 +231,11 @@
     v7 = 1024;
     v8 = 170;
     v9 = 2112;
-    v10 = v2;
+    v10 = modelIdentifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d modelID=%@", &v5, 0x1Cu);
   }
 
-  v3 = [v2 hasPrefix:@"Macmini"];
+  v3 = [modelIdentifier hasPrefix:@"Macmini"];
 
   return v3;
 }

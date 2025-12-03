@@ -1,24 +1,24 @@
 @interface BYDeviceSetupSourceSession
 - (void)activate;
-- (void)backupCompletedWithError:(id)a3;
-- (void)backupProgress:(double)a3 estimatedTimeRemaining:(int64_t)a4;
-- (void)finishedWithError:(id)a3;
+- (void)backupCompletedWithError:(id)error;
+- (void)backupProgress:(double)progress estimatedTimeRemaining:(int64_t)remaining;
+- (void)finishedWithError:(id)error;
 - (void)invalidate;
-- (void)setFileTransferSessionTemplate:(id)a3;
-- (void)setMessageSession:(id)a3;
-- (void)syncCompletedWithErrors:(id)a3;
-- (void)syncProgress:(double)a3;
+- (void)setFileTransferSessionTemplate:(id)template;
+- (void)setMessageSession:(id)session;
+- (void)syncCompletedWithErrors:(id)errors;
+- (void)syncProgress:(double)progress;
 - (void)updateProgress;
 @end
 
 @implementation BYDeviceSetupSourceSession
 
-- (void)setMessageSession:(id)a3
+- (void)setMessageSession:(id)session
 {
-  objc_storeStrong(&self->_messageSession, a3);
-  v4 = [(BYDeviceSetupSourceSession *)self client];
+  objc_storeStrong(&self->_messageSession, session);
+  client = [(BYDeviceSetupSourceSession *)self client];
 
-  if (v4)
+  if (client)
   {
     [(BYDeviceSetupSourceSession *)self invalidate];
 
@@ -26,16 +26,16 @@
   }
 }
 
-- (void)setFileTransferSessionTemplate:(id)a3
+- (void)setFileTransferSessionTemplate:(id)template
 {
-  v7 = a3;
-  objc_storeStrong(&self->_fileTransferSessionTemplate, a3);
-  v5 = [(BYDeviceSetupSourceSession *)self migrationSourceClient];
+  templateCopy = template;
+  objc_storeStrong(&self->_fileTransferSessionTemplate, template);
+  migrationSourceClient = [(BYDeviceSetupSourceSession *)self migrationSourceClient];
 
-  if (v5)
+  if (migrationSourceClient)
   {
-    v6 = [(BYDeviceSetupSourceSession *)self migrationSourceClient];
-    [v6 setFileTransferTemplate:v7];
+    migrationSourceClient2 = [(BYDeviceSetupSourceSession *)self migrationSourceClient];
+    [migrationSourceClient2 setFileTransferTemplate:templateCopy];
   }
 }
 
@@ -52,20 +52,20 @@
   v4 = objc_alloc_init(BYBuddyDaemonProximitySourceClient);
   [(BYDeviceSetupSourceSession *)self setClient:v4];
 
-  v5 = [(BYDeviceSetupSourceSession *)self client];
-  [v5 setDelegate:self];
+  client = [(BYDeviceSetupSourceSession *)self client];
+  [client setDelegate:self];
 
   v6 = objc_alloc_init(BYBuddyDaemonMigrationSourceClient);
   [(BYDeviceSetupSourceSession *)self setMigrationSourceClient:v6];
 
-  v7 = [(BYDeviceSetupSourceSession *)self migrationSourceClient];
-  v8 = [(BYDeviceSetupSourceSession *)self fileTransferSessionTemplate];
-  [v7 setFileTransferTemplate:v8];
+  migrationSourceClient = [(BYDeviceSetupSourceSession *)self migrationSourceClient];
+  fileTransferSessionTemplate = [(BYDeviceSetupSourceSession *)self fileTransferSessionTemplate];
+  [migrationSourceClient setFileTransferTemplate:fileTransferSessionTemplate];
 
   [(BYDeviceSetupSourceSession *)self setTimeRemaining:-1.0];
-  v9 = [(BYDeviceSetupSourceSession *)self client];
-  v10 = [(BYDeviceSetupSourceSession *)self messageSession];
-  [v9 activateWithSharingChannel:v10];
+  client2 = [(BYDeviceSetupSourceSession *)self client];
+  messageSession = [(BYDeviceSetupSourceSession *)self messageSession];
+  [client2 activateWithSharingChannel:messageSession];
 }
 
 - (void)invalidate
@@ -77,8 +77,8 @@
     _os_log_impl(&dword_1B862F000, v3, OS_LOG_TYPE_DEFAULT, "Proximity setup source session invalidated", v5, 2u);
   }
 
-  v4 = [(BYDeviceSetupSourceSession *)self client];
-  [v4 invalidate];
+  client = [(BYDeviceSetupSourceSession *)self client];
+  [client invalidate];
 
   [(BYDeviceSetupSourceSession *)self setClient:0];
 }
@@ -105,24 +105,24 @@
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BYDeviceSetupSourceSession currentPhase](self, "currentPhase")}];
   [v13 setObject:v10 forKeyedSubscript:@"phase"];
 
-  v11 = [(BYDeviceSetupSourceSession *)self progressHandler];
+  progressHandler = [(BYDeviceSetupSourceSession *)self progressHandler];
 
-  if (v11)
+  if (progressHandler)
   {
-    v12 = [(BYDeviceSetupSourceSession *)self progressHandler];
-    (v12)[2](v12, v13);
+    progressHandler2 = [(BYDeviceSetupSourceSession *)self progressHandler];
+    (progressHandler2)[2](progressHandler2, v13);
   }
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v9 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = v4;
-  if (v9)
+  if (errorCopy)
   {
     v6 = @"eo";
-    v7 = v9;
+    v7 = errorCopy;
   }
 
   else
@@ -132,21 +132,21 @@
   }
 
   [v4 setObject:v7 forKeyedSubscript:v6];
-  v8 = [(BYDeviceSetupSourceSession *)self progressHandler];
-  (v8)[2](v8, v5);
+  progressHandler = [(BYDeviceSetupSourceSession *)self progressHandler];
+  (progressHandler)[2](progressHandler, v5);
 }
 
-- (void)backupProgress:(double)a3 estimatedTimeRemaining:(int64_t)a4
+- (void)backupProgress:(double)progress estimatedTimeRemaining:(int64_t)remaining
 {
-  [(BYDeviceSetupSourceSession *)self setBackupProgress:a3];
-  [(BYDeviceSetupSourceSession *)self setTimeRemaining:a4];
+  [(BYDeviceSetupSourceSession *)self setBackupProgress:progress];
+  [(BYDeviceSetupSourceSession *)self setTimeRemaining:remaining];
   [(BYDeviceSetupSourceSession *)self setHasBackupCompleted:0];
   [(BYDeviceSetupSourceSession *)self setCurrentPhase:1];
 
   [(BYDeviceSetupSourceSession *)self updateProgress];
 }
 
-- (void)backupCompletedWithError:(id)a3
+- (void)backupCompletedWithError:(id)error
 {
   [(BYDeviceSetupSourceSession *)self setHasBackupCompleted:1];
   [(BYDeviceSetupSourceSession *)self setTimeRemaining:-1.0];
@@ -154,14 +154,14 @@
   [(BYDeviceSetupSourceSession *)self updateProgress];
 }
 
-- (void)syncProgress:(double)a3
+- (void)syncProgress:(double)progress
 {
-  [(BYDeviceSetupSourceSession *)self setSyncProgress:a3];
+  [(BYDeviceSetupSourceSession *)self setSyncProgress:progress];
 
   [(BYDeviceSetupSourceSession *)self updateProgress];
 }
 
-- (void)syncCompletedWithErrors:(id)a3
+- (void)syncCompletedWithErrors:(id)errors
 {
   [(BYDeviceSetupSourceSession *)self setHasSyncCompleted:1];
 

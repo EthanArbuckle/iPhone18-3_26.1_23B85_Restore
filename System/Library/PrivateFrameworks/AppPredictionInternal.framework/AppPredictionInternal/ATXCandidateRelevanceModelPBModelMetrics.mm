@@ -1,34 +1,34 @@
 @interface ATXCandidateRelevanceModelPBModelMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvgNumberOfNonZeroModelWeights:(BOOL)a3;
-- (void)setHasHasDefaultHyperParams:(BOOL)a3;
-- (void)setHasHasTrainedModel:(BOOL)a3;
-- (void)setHasLearningRate:(BOOL)a3;
-- (void)setHasLogisticRegressionRegularizationL1Ratio:(BOOL)a3;
-- (void)setHasLogisticRegressionRegularizationRate:(BOOL)a3;
-- (void)setHasMinIterations:(BOOL)a3;
-- (void)setHasModelAgeInDays:(BOOL)a3;
-- (void)setHasNumberOfCandidateModels:(BOOL)a3;
-- (void)setHasPipelineEnabled:(BOOL)a3;
-- (void)setHasStoppingThreshold:(BOOL)a3;
-- (void)setHasTrainDataNumberOfCandidates:(BOOL)a3;
-- (void)setHasTrainDataNumberOfDaysWithPositiveSamples:(BOOL)a3;
-- (void)setHasTrainDataNumberOfPositiveSamples:(BOOL)a3;
-- (void)setHasTrainDataNumberOfSamples:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvgNumberOfNonZeroModelWeights:(BOOL)weights;
+- (void)setHasHasDefaultHyperParams:(BOOL)params;
+- (void)setHasHasTrainedModel:(BOOL)model;
+- (void)setHasLearningRate:(BOOL)rate;
+- (void)setHasLogisticRegressionRegularizationL1Ratio:(BOOL)ratio;
+- (void)setHasLogisticRegressionRegularizationRate:(BOOL)rate;
+- (void)setHasMinIterations:(BOOL)iterations;
+- (void)setHasModelAgeInDays:(BOOL)days;
+- (void)setHasNumberOfCandidateModels:(BOOL)models;
+- (void)setHasPipelineEnabled:(BOOL)enabled;
+- (void)setHasStoppingThreshold:(BOOL)threshold;
+- (void)setHasTrainDataNumberOfCandidates:(BOOL)candidates;
+- (void)setHasTrainDataNumberOfDaysWithPositiveSamples:(BOOL)samples;
+- (void)setHasTrainDataNumberOfPositiveSamples:(BOOL)samples;
+- (void)setHasTrainDataNumberOfSamples:(BOOL)samples;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXCandidateRelevanceModelPBModelMetrics
 
-- (void)setHasPipelineEnabled:(BOOL)a3
+- (void)setHasPipelineEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x8000;
   }
@@ -41,9 +41,9 @@
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasHasTrainedModel:(BOOL)a3
+- (void)setHasHasTrainedModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 0x4000;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasHasDefaultHyperParams:(BOOL)a3
+- (void)setHasHasDefaultHyperParams:(BOOL)params
 {
-  if (a3)
+  if (params)
   {
     v3 = 0x2000;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasAvgNumberOfNonZeroModelWeights:(BOOL)a3
+- (void)setHasAvgNumberOfNonZeroModelWeights:(BOOL)weights
 {
-  if (a3)
+  if (weights)
   {
     v3 = 2;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNumberOfCandidateModels:(BOOL)a3
+- (void)setHasNumberOfCandidateModels:(BOOL)models
 {
-  if (a3)
+  if (models)
   {
     v3 = 128;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasLogisticRegressionRegularizationRate:(BOOL)a3
+- (void)setHasLogisticRegressionRegularizationRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 16;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLogisticRegressionRegularizationL1Ratio:(BOOL)a3
+- (void)setHasLogisticRegressionRegularizationL1Ratio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 8;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLearningRate:(BOOL)a3
+- (void)setHasLearningRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 4;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasMinIterations:(BOOL)a3
+- (void)setHasMinIterations:(BOOL)iterations
 {
-  if (a3)
+  if (iterations)
   {
     v3 = 32;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasStoppingThreshold:(BOOL)a3
+- (void)setHasStoppingThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 256;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTrainDataNumberOfPositiveSamples:(BOOL)a3
+- (void)setHasTrainDataNumberOfPositiveSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 2048;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasTrainDataNumberOfSamples:(BOOL)a3
+- (void)setHasTrainDataNumberOfSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 4096;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasTrainDataNumberOfDaysWithPositiveSamples:(BOOL)a3
+- (void)setHasTrainDataNumberOfDaysWithPositiveSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 1024;
   }
@@ -221,9 +221,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasTrainDataNumberOfCandidates:(BOOL)a3
+- (void)setHasTrainDataNumberOfCandidates:(BOOL)candidates
 {
-  if (a3)
+  if (candidates)
   {
     v3 = 512;
   }
@@ -236,9 +236,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasModelAgeInDays:(BOOL)a3
+- (void)setHasModelAgeInDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 64;
   }
@@ -257,20 +257,20 @@
   v8.receiver = self;
   v8.super_class = ATXCandidateRelevanceModelPBModelMetrics;
   v4 = [(ATXCandidateRelevanceModelPBModelMetrics *)&v8 description];
-  v5 = [(ATXCandidateRelevanceModelPBModelMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXCandidateRelevanceModelPBModelMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = dictionary;
   blendingABGroup = self->_blendingABGroup;
   if (blendingABGroup)
   {
-    [v3 setObject:blendingABGroup forKey:@"blendingABGroup"];
+    [dictionary setObject:blendingABGroup forKey:@"blendingABGroup"];
   }
 
   abGroup = self->_abGroup;
@@ -513,26 +513,26 @@ LABEL_30:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v24 = v4;
+  toCopy = to;
+  v24 = toCopy;
   if (self->_blendingABGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   if (self->_clientModelId)
   {
     PBDataWriterWriteStringField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   has = self->_has;
@@ -548,14 +548,14 @@ LABEL_30:
 
   pipelineEnabled = self->_pipelineEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v24;
+  toCopy = v24;
   *&has = self->_has;
   if ((*&has & 0x4000) != 0)
   {
 LABEL_9:
     hasTrainedModel = self->_hasTrainedModel;
     PBDataWriterWriteBOOLField();
-    v4 = v24;
+    toCopy = v24;
     *&has = self->_has;
   }
 
@@ -564,13 +564,13 @@ LABEL_10:
   {
     hasDefaultHyperParams = self->_hasDefaultHyperParams;
     PBDataWriterWriteBOOLField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   if (self->_modelType)
   {
     PBDataWriterWriteStringField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   v8 = self->_has;
@@ -578,7 +578,7 @@ LABEL_10:
   {
     avgNumberOfModelWeights = self->_avgNumberOfModelWeights;
     PBDataWriterWriteUint32Field();
-    v4 = v24;
+    toCopy = v24;
     v8 = self->_has;
     if ((v8 & 2) == 0)
     {
@@ -599,20 +599,20 @@ LABEL_16:
 
   avgNumberOfNonZeroModelWeights = self->_avgNumberOfNonZeroModelWeights;
   PBDataWriterWriteUint32Field();
-  v4 = v24;
+  toCopy = v24;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_17:
     numberOfCandidateModels = self->_numberOfCandidateModels;
     PBDataWriterWriteUint32Field();
-    v4 = v24;
+    toCopy = v24;
   }
 
 LABEL_18:
   if (self->_logisticRegressionRegularizationStrategy)
   {
     PBDataWriterWriteStringField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   v10 = self->_has;
@@ -620,7 +620,7 @@ LABEL_18:
   {
     logisticRegressionRegularizationRate = self->_logisticRegressionRegularizationRate;
     PBDataWriterWriteFloatField();
-    v4 = v24;
+    toCopy = v24;
     v10 = self->_has;
     if ((v10 & 8) == 0)
     {
@@ -641,7 +641,7 @@ LABEL_22:
 
   logisticRegressionRegularizationL1Ratio = self->_logisticRegressionRegularizationL1Ratio;
   PBDataWriterWriteFloatField();
-  v4 = v24;
+  toCopy = v24;
   v10 = self->_has;
   if ((v10 & 4) == 0)
   {
@@ -657,7 +657,7 @@ LABEL_23:
 LABEL_42:
   learningRate = self->_learningRate;
   PBDataWriterWriteFloatField();
-  v4 = v24;
+  toCopy = v24;
   v10 = self->_has;
   if ((v10 & 0x20) == 0)
   {
@@ -673,7 +673,7 @@ LABEL_24:
 LABEL_43:
   minIterations = self->_minIterations;
   PBDataWriterWriteUint32Field();
-  v4 = v24;
+  toCopy = v24;
   v10 = self->_has;
   if ((v10 & 0x100) == 0)
   {
@@ -689,7 +689,7 @@ LABEL_25:
 LABEL_44:
   stoppingThreshold = self->_stoppingThreshold;
   PBDataWriterWriteFloatField();
-  v4 = v24;
+  toCopy = v24;
   v10 = self->_has;
   if ((v10 & 0x800) == 0)
   {
@@ -705,7 +705,7 @@ LABEL_26:
 LABEL_45:
   trainDataNumberOfPositiveSamples = self->_trainDataNumberOfPositiveSamples;
   PBDataWriterWriteUint32Field();
-  v4 = v24;
+  toCopy = v24;
   v10 = self->_has;
   if ((v10 & 0x1000) == 0)
   {
@@ -721,7 +721,7 @@ LABEL_27:
 LABEL_46:
   trainDataNumberOfSamples = self->_trainDataNumberOfSamples;
   PBDataWriterWriteUint32Field();
-  v4 = v24;
+  toCopy = v24;
   v10 = self->_has;
   if ((v10 & 0x400) == 0)
   {
@@ -737,50 +737,50 @@ LABEL_28:
 LABEL_47:
   trainDataNumberOfDaysWithPositiveSamples = self->_trainDataNumberOfDaysWithPositiveSamples;
   PBDataWriterWriteUint32Field();
-  v4 = v24;
+  toCopy = v24;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_29:
     trainDataNumberOfCandidates = self->_trainDataNumberOfCandidates;
     PBDataWriterWriteUint32Field();
-    v4 = v24;
+    toCopy = v24;
   }
 
 LABEL_30:
   if (self->_executableType)
   {
     PBDataWriterWriteStringField();
-    v4 = v24;
+    toCopy = v24;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
     modelAgeInDays = self->_modelAgeInDays;
     PBDataWriterWriteUint32Field();
-    v4 = v24;
+    toCopy = v24;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_blendingABGroup)
   {
-    [v4 setBlendingABGroup:?];
-    v4 = v8;
+    [toCopy setBlendingABGroup:?];
+    toCopy = v8;
   }
 
   if (self->_abGroup)
   {
     [v8 setAbGroup:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clientModelId)
   {
     [v8 setClientModelId:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -794,35 +794,35 @@ LABEL_30:
     goto LABEL_9;
   }
 
-  *(v4 + 114) = self->_pipelineEnabled;
-  *(v4 + 58) |= 0x8000u;
+  *(toCopy + 114) = self->_pipelineEnabled;
+  *(toCopy + 58) |= 0x8000u;
   *&has = self->_has;
   if ((*&has & 0x4000) != 0)
   {
 LABEL_9:
-    *(v4 + 113) = self->_hasTrainedModel;
-    *(v4 + 58) |= 0x4000u;
+    *(toCopy + 113) = self->_hasTrainedModel;
+    *(toCopy + 58) |= 0x4000u;
     *&has = self->_has;
   }
 
 LABEL_10:
   if ((*&has & 0x2000) != 0)
   {
-    *(v4 + 112) = self->_hasDefaultHyperParams;
-    *(v4 + 58) |= 0x2000u;
+    *(toCopy + 112) = self->_hasDefaultHyperParams;
+    *(toCopy + 58) |= 0x2000u;
   }
 
   if (self->_modelType)
   {
     [v8 setModelType:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 4) = self->_avgNumberOfModelWeights;
-    *(v4 + 58) |= 1u;
+    *(toCopy + 4) = self->_avgNumberOfModelWeights;
+    *(toCopy + 58) |= 1u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -841,27 +841,27 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  *(v4 + 5) = self->_avgNumberOfNonZeroModelWeights;
-  *(v4 + 58) |= 2u;
+  *(toCopy + 5) = self->_avgNumberOfNonZeroModelWeights;
+  *(toCopy + 58) |= 2u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_17:
-    *(v4 + 22) = self->_numberOfCandidateModels;
-    *(v4 + 58) |= 0x80u;
+    *(toCopy + 22) = self->_numberOfCandidateModels;
+    *(toCopy + 58) |= 0x80u;
   }
 
 LABEL_18:
   if (self->_logisticRegressionRegularizationStrategy)
   {
     [v8 setLogisticRegressionRegularizationStrategy:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 0x10) != 0)
   {
-    *(v4 + 14) = LODWORD(self->_logisticRegressionRegularizationRate);
-    *(v4 + 58) |= 0x10u;
+    *(toCopy + 14) = LODWORD(self->_logisticRegressionRegularizationRate);
+    *(toCopy + 58) |= 0x10u;
     v7 = self->_has;
     if ((v7 & 8) == 0)
     {
@@ -880,8 +880,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  *(v4 + 13) = LODWORD(self->_logisticRegressionRegularizationL1Ratio);
-  *(v4 + 58) |= 8u;
+  *(toCopy + 13) = LODWORD(self->_logisticRegressionRegularizationL1Ratio);
+  *(toCopy + 58) |= 8u;
   v7 = self->_has;
   if ((v7 & 4) == 0)
   {
@@ -895,8 +895,8 @@ LABEL_23:
   }
 
 LABEL_42:
-  *(v4 + 12) = LODWORD(self->_learningRate);
-  *(v4 + 58) |= 4u;
+  *(toCopy + 12) = LODWORD(self->_learningRate);
+  *(toCopy + 58) |= 4u;
   v7 = self->_has;
   if ((v7 & 0x20) == 0)
   {
@@ -910,8 +910,8 @@ LABEL_24:
   }
 
 LABEL_43:
-  *(v4 + 18) = self->_minIterations;
-  *(v4 + 58) |= 0x20u;
+  *(toCopy + 18) = self->_minIterations;
+  *(toCopy + 58) |= 0x20u;
   v7 = self->_has;
   if ((v7 & 0x100) == 0)
   {
@@ -925,8 +925,8 @@ LABEL_25:
   }
 
 LABEL_44:
-  *(v4 + 23) = LODWORD(self->_stoppingThreshold);
-  *(v4 + 58) |= 0x100u;
+  *(toCopy + 23) = LODWORD(self->_stoppingThreshold);
+  *(toCopy + 58) |= 0x100u;
   v7 = self->_has;
   if ((v7 & 0x800) == 0)
   {
@@ -940,8 +940,8 @@ LABEL_26:
   }
 
 LABEL_45:
-  *(v4 + 26) = self->_trainDataNumberOfPositiveSamples;
-  *(v4 + 58) |= 0x800u;
+  *(toCopy + 26) = self->_trainDataNumberOfPositiveSamples;
+  *(toCopy + 58) |= 0x800u;
   v7 = self->_has;
   if ((v7 & 0x1000) == 0)
   {
@@ -955,8 +955,8 @@ LABEL_27:
   }
 
 LABEL_46:
-  *(v4 + 27) = self->_trainDataNumberOfSamples;
-  *(v4 + 58) |= 0x1000u;
+  *(toCopy + 27) = self->_trainDataNumberOfSamples;
+  *(toCopy + 58) |= 0x1000u;
   v7 = self->_has;
   if ((v7 & 0x400) == 0)
   {
@@ -970,41 +970,41 @@ LABEL_28:
   }
 
 LABEL_47:
-  *(v4 + 25) = self->_trainDataNumberOfDaysWithPositiveSamples;
-  *(v4 + 58) |= 0x400u;
+  *(toCopy + 25) = self->_trainDataNumberOfDaysWithPositiveSamples;
+  *(toCopy + 58) |= 0x400u;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_29:
-    *(v4 + 24) = self->_trainDataNumberOfCandidates;
-    *(v4 + 58) |= 0x200u;
+    *(toCopy + 24) = self->_trainDataNumberOfCandidates;
+    *(toCopy + 58) |= 0x200u;
   }
 
 LABEL_30:
   if (self->_executableType)
   {
     [v8 setExecutableType:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    *(v4 + 19) = self->_modelAgeInDays;
-    *(v4 + 58) |= 0x40u;
+    *(toCopy + 19) = self->_modelAgeInDays;
+    *(toCopy + 58) |= 0x40u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_blendingABGroup copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_blendingABGroup copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v8 = [(NSString *)self->_abGroup copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v10 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -1037,7 +1037,7 @@ LABEL_4:
     *(v5 + 116) |= 0x2000u;
   }
 
-  v13 = [(NSString *)self->_modelType copyWithZone:a3];
+  v13 = [(NSString *)self->_modelType copyWithZone:zone];
   v14 = *(v5 + 80);
   *(v5 + 80) = v13;
 
@@ -1074,7 +1074,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v16 = [(NSString *)self->_logisticRegressionRegularizationStrategy copyWithZone:a3];
+  v16 = [(NSString *)self->_logisticRegressionRegularizationStrategy copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 
@@ -1201,7 +1201,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  v19 = [(NSString *)self->_executableType copyWithZone:a3];
+  v19 = [(NSString *)self->_executableType copyWithZone:zone];
   v20 = *(v5 + 40);
   *(v5 + 40) = v19;
 
@@ -1214,16 +1214,16 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_106;
   }
 
   blendingABGroup = self->_blendingABGroup;
-  if (blendingABGroup | *(v4 + 3))
+  if (blendingABGroup | *(equalCopy + 3))
   {
     if (![(NSString *)blendingABGroup isEqual:?])
     {
@@ -1232,7 +1232,7 @@ LABEL_20:
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     if (![(NSString *)abGroup isEqual:?])
     {
@@ -1241,7 +1241,7 @@ LABEL_20:
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 4))
+  if (clientModelId | *(equalCopy + 4))
   {
     if (![(NSString *)clientModelId isEqual:?])
     {
@@ -1250,90 +1250,90 @@ LABEL_20:
   }
 
   has = self->_has;
-  v9 = *(v4 + 58);
+  v9 = *(equalCopy + 58);
   if ((*&has & 0x80000000) != 0)
   {
-    if ((*(v4 + 58) & 0x8000) == 0)
+    if ((*(equalCopy + 58) & 0x8000) == 0)
     {
       goto LABEL_106;
     }
 
-    v12 = *(v4 + 114);
+    v12 = *(equalCopy + 114);
     if (self->_pipelineEnabled)
     {
-      if ((*(v4 + 114) & 1) == 0)
+      if ((*(equalCopy + 114) & 1) == 0)
       {
         goto LABEL_106;
       }
     }
 
-    else if (*(v4 + 114))
+    else if (*(equalCopy + 114))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x8000) != 0)
+  else if ((*(equalCopy + 58) & 0x8000) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((*(v4 + 58) & 0x4000) == 0)
+    if ((*(equalCopy + 58) & 0x4000) == 0)
     {
       goto LABEL_106;
     }
 
-    v13 = *(v4 + 113);
+    v13 = *(equalCopy + 113);
     if (self->_hasTrainedModel)
     {
-      if ((*(v4 + 113) & 1) == 0)
+      if ((*(equalCopy + 113) & 1) == 0)
       {
         goto LABEL_106;
       }
     }
 
-    else if (*(v4 + 113))
+    else if (*(equalCopy + 113))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x4000) != 0)
+  else if ((*(equalCopy + 58) & 0x4000) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((*(v4 + 58) & 0x2000) == 0)
+    if ((*(equalCopy + 58) & 0x2000) == 0)
     {
       goto LABEL_106;
     }
 
-    v14 = *(v4 + 112);
+    v14 = *(equalCopy + 112);
     if (self->_hasDefaultHyperParams)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_106;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x2000) != 0)
+  else if ((*(equalCopy + 58) & 0x2000) != 0)
   {
     goto LABEL_106;
   }
 
   modelType = self->_modelType;
-  if (modelType | *(v4 + 10))
+  if (modelType | *(equalCopy + 10))
   {
     if (![(NSString *)modelType isEqual:?])
     {
@@ -1343,10 +1343,10 @@ LABEL_20:
     *&has = self->_has;
   }
 
-  v11 = *(v4 + 58);
+  v11 = *(equalCopy + 58);
   if (*&has)
   {
-    if ((v11 & 1) == 0 || self->_avgNumberOfModelWeights != *(v4 + 4))
+    if ((v11 & 1) == 0 || self->_avgNumberOfModelWeights != *(equalCopy + 4))
     {
       goto LABEL_106;
     }
@@ -1359,7 +1359,7 @@ LABEL_20:
 
   if ((*&has & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_avgNumberOfNonZeroModelWeights != *(v4 + 5))
+    if ((v11 & 2) == 0 || self->_avgNumberOfNonZeroModelWeights != *(equalCopy + 5))
     {
       goto LABEL_106;
     }
@@ -1372,7 +1372,7 @@ LABEL_20:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_numberOfCandidateModels != *(v4 + 22))
+    if ((v11 & 0x80) == 0 || self->_numberOfCandidateModels != *(equalCopy + 22))
     {
       goto LABEL_106;
     }
@@ -1384,7 +1384,7 @@ LABEL_20:
   }
 
   logisticRegressionRegularizationStrategy = self->_logisticRegressionRegularizationStrategy;
-  if (logisticRegressionRegularizationStrategy | *(v4 + 8))
+  if (logisticRegressionRegularizationStrategy | *(equalCopy + 8))
   {
     if (![(NSString *)logisticRegressionRegularizationStrategy isEqual:?])
     {
@@ -1394,10 +1394,10 @@ LABEL_20:
     *&has = self->_has;
   }
 
-  v16 = *(v4 + 58);
+  v16 = *(equalCopy + 58);
   if ((*&has & 0x10) != 0)
   {
-    if ((v16 & 0x10) == 0 || self->_logisticRegressionRegularizationRate != *(v4 + 14))
+    if ((v16 & 0x10) == 0 || self->_logisticRegressionRegularizationRate != *(equalCopy + 14))
     {
       goto LABEL_106;
     }
@@ -1410,7 +1410,7 @@ LABEL_20:
 
   if ((*&has & 8) != 0)
   {
-    if ((v16 & 8) == 0 || self->_logisticRegressionRegularizationL1Ratio != *(v4 + 13))
+    if ((v16 & 8) == 0 || self->_logisticRegressionRegularizationL1Ratio != *(equalCopy + 13))
     {
       goto LABEL_106;
     }
@@ -1423,7 +1423,7 @@ LABEL_20:
 
   if ((*&has & 4) != 0)
   {
-    if ((v16 & 4) == 0 || self->_learningRate != *(v4 + 12))
+    if ((v16 & 4) == 0 || self->_learningRate != *(equalCopy + 12))
     {
       goto LABEL_106;
     }
@@ -1436,7 +1436,7 @@ LABEL_20:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v16 & 0x20) == 0 || self->_minIterations != *(v4 + 18))
+    if ((v16 & 0x20) == 0 || self->_minIterations != *(equalCopy + 18))
     {
       goto LABEL_106;
     }
@@ -1449,71 +1449,71 @@ LABEL_20:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((*(v4 + 58) & 0x100) == 0 || self->_stoppingThreshold != *(v4 + 23))
+    if ((*(equalCopy + 58) & 0x100) == 0 || self->_stoppingThreshold != *(equalCopy + 23))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x100) != 0)
+  else if ((*(equalCopy + 58) & 0x100) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&has & 0x800) != 0)
   {
-    if ((*(v4 + 58) & 0x800) == 0 || self->_trainDataNumberOfPositiveSamples != *(v4 + 26))
+    if ((*(equalCopy + 58) & 0x800) == 0 || self->_trainDataNumberOfPositiveSamples != *(equalCopy + 26))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x800) != 0)
+  else if ((*(equalCopy + 58) & 0x800) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((*(v4 + 58) & 0x1000) == 0 || self->_trainDataNumberOfSamples != *(v4 + 27))
+    if ((*(equalCopy + 58) & 0x1000) == 0 || self->_trainDataNumberOfSamples != *(equalCopy + 27))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x1000) != 0)
+  else if ((*(equalCopy + 58) & 0x1000) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&has & 0x400) != 0)
   {
-    if ((*(v4 + 58) & 0x400) == 0 || self->_trainDataNumberOfDaysWithPositiveSamples != *(v4 + 25))
+    if ((*(equalCopy + 58) & 0x400) == 0 || self->_trainDataNumberOfDaysWithPositiveSamples != *(equalCopy + 25))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x400) != 0)
+  else if ((*(equalCopy + 58) & 0x400) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&has & 0x200) != 0)
   {
-    if ((*(v4 + 58) & 0x200) == 0 || self->_trainDataNumberOfCandidates != *(v4 + 24))
+    if ((*(equalCopy + 58) & 0x200) == 0 || self->_trainDataNumberOfCandidates != *(equalCopy + 24))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 58) & 0x200) != 0)
+  else if ((*(equalCopy + 58) & 0x200) != 0)
   {
     goto LABEL_106;
   }
 
   executableType = self->_executableType;
-  if (executableType | *(v4 + 5))
+  if (executableType | *(equalCopy + 5))
   {
     if ([(NSString *)executableType isEqual:?])
     {
@@ -1527,10 +1527,10 @@ LABEL_106:
   }
 
 LABEL_101:
-  v18 = *(v4 + 58);
+  v18 = *(equalCopy + 58);
   if ((*&has & 0x40) != 0)
   {
-    if ((v18 & 0x40) == 0 || self->_modelAgeInDays != *(v4 + 19))
+    if ((v18 & 0x40) == 0 || self->_modelAgeInDays != *(equalCopy + 19))
     {
       goto LABEL_106;
     }
@@ -1841,29 +1841,29 @@ LABEL_56:
   return v40 ^ v41 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v7 ^ v11 ^ v15 ^ v30 ^ v22 ^ v29 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ATXCandidateRelevanceModelPBModelMetrics *)self setBlendingABGroup:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXCandidateRelevanceModelPBModelMetrics *)self setAbGroup:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXCandidateRelevanceModelPBModelMetrics *)self setClientModelId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = v4[58];
+  v5 = fromCopy[58];
   if ((v5 & 0x80000000) == 0)
   {
     if ((v5 & 0x4000) == 0)
@@ -1874,36 +1874,36 @@ LABEL_56:
     goto LABEL_9;
   }
 
-  self->_pipelineEnabled = *(v4 + 114);
+  self->_pipelineEnabled = *(fromCopy + 114);
   *&self->_has |= 0x8000u;
-  LOWORD(v5) = v4[58];
+  LOWORD(v5) = fromCopy[58];
   if ((v5 & 0x4000) != 0)
   {
 LABEL_9:
-    self->_hasTrainedModel = *(v4 + 113);
+    self->_hasTrainedModel = *(fromCopy + 113);
     *&self->_has |= 0x4000u;
-    LOWORD(v5) = v4[58];
+    LOWORD(v5) = fromCopy[58];
   }
 
 LABEL_10:
   if ((v5 & 0x2000) != 0)
   {
-    self->_hasDefaultHyperParams = *(v4 + 112);
+    self->_hasDefaultHyperParams = *(fromCopy + 112);
     *&self->_has |= 0x2000u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(ATXCandidateRelevanceModelPBModelMetrics *)self setModelType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = v4[58];
+  v6 = fromCopy[58];
   if (v6)
   {
-    self->_avgNumberOfModelWeights = *(v4 + 4);
+    self->_avgNumberOfModelWeights = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v6 = v4[58];
+    v6 = fromCopy[58];
     if ((v6 & 2) == 0)
     {
 LABEL_16:
@@ -1921,28 +1921,28 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  self->_avgNumberOfNonZeroModelWeights = *(v4 + 5);
+  self->_avgNumberOfNonZeroModelWeights = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if ((v4[58] & 0x80) != 0)
+  if ((fromCopy[58] & 0x80) != 0)
   {
 LABEL_17:
-    self->_numberOfCandidateModels = *(v4 + 22);
+    self->_numberOfCandidateModels = *(fromCopy + 22);
     *&self->_has |= 0x80u;
   }
 
 LABEL_18:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(ATXCandidateRelevanceModelPBModelMetrics *)self setLogisticRegressionRegularizationStrategy:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 0x10) != 0)
   {
-    self->_logisticRegressionRegularizationRate = *(v4 + 14);
+    self->_logisticRegressionRegularizationRate = *(fromCopy + 14);
     *&self->_has |= 0x10u;
-    v7 = v4[58];
+    v7 = fromCopy[58];
     if ((v7 & 8) == 0)
     {
 LABEL_22:
@@ -1960,9 +1960,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  self->_logisticRegressionRegularizationL1Ratio = *(v4 + 13);
+  self->_logisticRegressionRegularizationL1Ratio = *(fromCopy + 13);
   *&self->_has |= 8u;
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 4) == 0)
   {
 LABEL_23:
@@ -1975,9 +1975,9 @@ LABEL_23:
   }
 
 LABEL_42:
-  self->_learningRate = *(v4 + 12);
+  self->_learningRate = *(fromCopy + 12);
   *&self->_has |= 4u;
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 0x20) == 0)
   {
 LABEL_24:
@@ -1990,9 +1990,9 @@ LABEL_24:
   }
 
 LABEL_43:
-  self->_minIterations = *(v4 + 18);
+  self->_minIterations = *(fromCopy + 18);
   *&self->_has |= 0x20u;
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 0x100) == 0)
   {
 LABEL_25:
@@ -2005,9 +2005,9 @@ LABEL_25:
   }
 
 LABEL_44:
-  self->_stoppingThreshold = *(v4 + 23);
+  self->_stoppingThreshold = *(fromCopy + 23);
   *&self->_has |= 0x100u;
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 0x800) == 0)
   {
 LABEL_26:
@@ -2020,9 +2020,9 @@ LABEL_26:
   }
 
 LABEL_45:
-  self->_trainDataNumberOfPositiveSamples = *(v4 + 26);
+  self->_trainDataNumberOfPositiveSamples = *(fromCopy + 26);
   *&self->_has |= 0x800u;
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 0x1000) == 0)
   {
 LABEL_27:
@@ -2035,9 +2035,9 @@ LABEL_27:
   }
 
 LABEL_46:
-  self->_trainDataNumberOfSamples = *(v4 + 27);
+  self->_trainDataNumberOfSamples = *(fromCopy + 27);
   *&self->_has |= 0x1000u;
-  v7 = v4[58];
+  v7 = fromCopy[58];
   if ((v7 & 0x400) == 0)
   {
 LABEL_28:
@@ -2050,25 +2050,25 @@ LABEL_28:
   }
 
 LABEL_47:
-  self->_trainDataNumberOfDaysWithPositiveSamples = *(v4 + 25);
+  self->_trainDataNumberOfDaysWithPositiveSamples = *(fromCopy + 25);
   *&self->_has |= 0x400u;
-  if ((v4[58] & 0x200) != 0)
+  if ((fromCopy[58] & 0x200) != 0)
   {
 LABEL_29:
-    self->_trainDataNumberOfCandidates = *(v4 + 24);
+    self->_trainDataNumberOfCandidates = *(fromCopy + 24);
     *&self->_has |= 0x200u;
   }
 
 LABEL_30:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXCandidateRelevanceModelPBModelMetrics *)self setExecutableType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((v4[58] & 0x40) != 0)
+  if ((fromCopy[58] & 0x40) != 0)
   {
-    self->_modelAgeInDays = *(v4 + 19);
+    self->_modelAgeInDays = *(fromCopy + 19);
     *&self->_has |= 0x40u;
   }
 }

@@ -1,5 +1,5 @@
 @interface VisualAreaArtworkComponent
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -8,16 +8,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_12C044();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = sub_12C140(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v10 = sub_12C140(width, height, priority, fittingPriority);
   v12 = v11;
 
   v13 = v10;
@@ -29,7 +29,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_12C3BC(&selRef_prepareForReuse);
 }
 

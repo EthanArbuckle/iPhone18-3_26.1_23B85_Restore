@@ -1,17 +1,17 @@
 @interface MPAssistantGetState
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantGetState
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantGetState *)self aceId];
-    v6 = sub_233505670(@"Get State", v5);
+    aceId = [(MPAssistantGetState *)self aceId];
+    v6 = sub_233505670(@"Get State", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -51,8 +51,8 @@
   block[3] = &unk_2789DB120;
   block[4] = self;
   v18 = v24;
-  v19 = v4;
-  v14 = v4;
+  v19 = completionCopy;
+  v14 = completionCopy;
   v15 = v24;
   dispatch_group_notify(v13, v11, block);
 

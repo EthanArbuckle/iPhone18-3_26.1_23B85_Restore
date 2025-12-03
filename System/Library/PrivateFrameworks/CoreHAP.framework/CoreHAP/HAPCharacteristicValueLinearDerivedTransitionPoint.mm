@@ -1,12 +1,12 @@
 @interface HAPCharacteristicValueLinearDerivedTransitionPoint
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueLinearDerivedTransitionPoint)init;
-- (HAPCharacteristicValueLinearDerivedTransitionPoint)initWithScale:(id)a3 offset:(id)a4 targetCompletionDuration:(id)a5 startDelayDuration:(id)a6;
+- (HAPCharacteristicValueLinearDerivedTransitionPoint)initWithScale:(id)scale offset:(id)offset targetCompletionDuration:(id)duration startDelayDuration:(id)delayDuration;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueLinearDerivedTransitionPoint
@@ -14,19 +14,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
-  v5 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
-  v6 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
-  v7 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
-  v8 = [v3 stringWithFormat:@"<HAPCharacteristicValueLinearDerivedTransitionPoint scale=%@, offset=%@, targetCompletionDuration=%@, startDelayDuration=%@>", v4, v5, v6, v7];
+  scale = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
+  offset = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
+  targetCompletionDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
+  startDelayDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
+  v8 = [v3 stringWithFormat:@"<HAPCharacteristicValueLinearDerivedTransitionPoint scale=%@, offset=%@, targetCompletionDuration=%@, startDelayDuration=%@>", scale, offset, targetCompletionDuration, startDelayDuration];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,34 +36,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
-      v8 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 scale];
-      if (v7 != v8)
+      v6 = equalCopy;
+      scale = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
+      scale2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 scale];
+      if (scale != scale2)
       {
-        v9 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
+        scale3 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
         [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 scale];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = scale3;
+        if (![scale3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
-      v12 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 offset];
-      if (v11 != v12)
+      offset = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
+      offset2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 offset];
+      if (offset != offset2)
       {
-        v3 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
-        v30 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 offset];
-        if (![v3 isEqual:?])
+        offset3 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
+        offset4 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 offset];
+        if (![offset3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (scale == scale2)
           {
 LABEL_25:
 
@@ -76,38 +76,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
-      v14 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 targetCompletionDuration];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      targetCompletionDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
+      targetCompletionDuration2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 targetCompletionDuration];
+      v31 = targetCompletionDuration;
+      v15 = targetCompletionDuration == targetCompletionDuration2;
+      v16 = targetCompletionDuration2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = offset3;
+        v29 = offset2;
       }
 
       else
       {
-        v17 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
-        v25 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 targetCompletionDuration];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        targetCompletionDuration3 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
+        targetCompletionDuration4 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 targetCompletionDuration];
+        v26 = targetCompletionDuration3;
+        if (![targetCompletionDuration3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = offset3;
+        v29 = offset2;
       }
 
       v27 = v16;
-      v18 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
-      v19 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 startDelayDuration];
-      v20 = v19;
-      if (v18 == v19)
+      startDelayDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
+      startDelayDuration2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 startDelayDuration];
+      v20 = startDelayDuration2;
+      if (startDelayDuration == startDelayDuration2)
       {
 
         v10 = 1;
@@ -115,20 +115,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
-        v22 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 startDelayDuration];
-        v10 = [v21 isEqual:v22];
+        startDelayDuration3 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
+        startDelayDuration4 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 startDelayDuration];
+        v10 = [startDelayDuration3 isEqual:startDelayDuration4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      offset3 = v28;
+      offset2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (offset == offset2)
         {
           goto LABEL_23;
         }
@@ -149,19 +149,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueLinearDerivedTransitionPoint allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
-  v6 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
-  v7 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
-  v8 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
-  v9 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v4 initWithScale:v5 offset:v6 targetCompletionDuration:v7 startDelayDuration:v8];
+  v4 = [HAPCharacteristicValueLinearDerivedTransitionPoint allocWithZone:zone];
+  scale = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
+  offset = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
+  targetCompletionDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
+  startDelayDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
+  v9 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v4 initWithScale:scale offset:offset targetCompletionDuration:targetCompletionDuration startDelayDuration:startDelayDuration];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v44 = 0u;
@@ -186,13 +186,13 @@ LABEL_26:
   v27 = 0u;
   v25 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
+  scale = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
 
-  if (v5)
+  if (scale)
   {
-    v6 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
+    scale2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self scale];
     v24 = 0;
-    v7 = [v6 serializeWithError:&v24];
+    v7 = [scale2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
@@ -209,16 +209,16 @@ LABEL_26:
     }
   }
 
-  v10 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
+  offset = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
 
-  if (!v10)
+  if (!offset)
   {
     goto LABEL_9;
   }
 
-  v11 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
+  offset2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self offset];
   v23 = 0;
-  v7 = [v11 serializeWithError:&v23];
+  v7 = [offset2 serializeWithError:&v23];
   v8 = v23;
 
   if (v8)
@@ -235,11 +235,11 @@ LABEL_12:
     v14 = v9;
 
 LABEL_13:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus(v14);
       v8 = 0;
-      *a3 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_22;
     }
 
@@ -250,13 +250,13 @@ LABEL_21:
   }
 
 LABEL_9:
-  v12 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
+  targetCompletionDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
 
-  if (v12)
+  if (targetCompletionDuration)
   {
-    v13 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
+    targetCompletionDuration2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self targetCompletionDuration];
     v22 = 0;
-    v7 = [v13 serializeWithError:&v22];
+    v7 = [targetCompletionDuration2 serializeWithError:&v22];
     v8 = v22;
 
     if (v8)
@@ -273,24 +273,24 @@ LABEL_9:
     }
   }
 
-  v16 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
+  startDelayDuration = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
 
-  if (v16)
+  if (startDelayDuration)
   {
-    v17 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
+    startDelayDuration2 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)self startDelayDuration];
     v21 = 0;
-    v7 = [v17 serializeWithError:&v21];
+    v7 = [startDelayDuration2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
     {
 LABEL_19:
 
-      if (a3)
+      if (error)
       {
         v18 = v8;
         v15 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_22;
       }
 
@@ -317,22 +317,22 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v24 = self;
-    v25 = a4;
-    v26 = v6;
+    selfCopy = self;
+    errorCopy = error;
+    v26 = dataCopy;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    v14 = v7 + v8;
+    v14 = bytes + v8;
     while (1)
     {
       v34 = 0;
@@ -342,10 +342,10 @@ LABEL_22:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (v25)
+        if (errorCopy)
         {
           HMErrorFromOSStatus(Next);
-          *v25 = v21 = 0;
+          *errorCopy = v21 = 0;
         }
 
         else
@@ -353,7 +353,7 @@ LABEL_22:
           v21 = 0;
         }
 
-        v6 = v26;
+        dataCopy = v26;
         goto LABEL_28;
       }
 
@@ -424,12 +424,12 @@ LABEL_14:
         if (v9)
         {
 LABEL_17:
-          v6 = v26;
-          if (v25)
+          dataCopy = v26;
+          if (errorCopy)
           {
             v20 = v9;
             v21 = 0;
-            *v25 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -441,8 +441,8 @@ LABEL_17:
         }
 
 LABEL_23:
-        v6 = v26;
-        self = v24;
+        dataCopy = v26;
+        self = selfCopy;
         goto LABEL_24;
       }
     }
@@ -464,22 +464,22 @@ LABEL_28:
   return v21;
 }
 
-- (HAPCharacteristicValueLinearDerivedTransitionPoint)initWithScale:(id)a3 offset:(id)a4 targetCompletionDuration:(id)a5 startDelayDuration:(id)a6
+- (HAPCharacteristicValueLinearDerivedTransitionPoint)initWithScale:(id)scale offset:(id)offset targetCompletionDuration:(id)duration startDelayDuration:(id)delayDuration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  scaleCopy = scale;
+  offsetCopy = offset;
+  durationCopy = duration;
+  delayDurationCopy = delayDuration;
   v18.receiver = self;
   v18.super_class = HAPCharacteristicValueLinearDerivedTransitionPoint;
   v15 = [(HAPCharacteristicValueLinearDerivedTransitionPoint *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_scale, a3);
-    objc_storeStrong(&v16->_offset, a4);
-    objc_storeStrong(&v16->_targetCompletionDuration, a5);
-    objc_storeStrong(&v16->_startDelayDuration, a6);
+    objc_storeStrong(&v15->_scale, scale);
+    objc_storeStrong(&v16->_offset, offset);
+    objc_storeStrong(&v16->_targetCompletionDuration, duration);
+    objc_storeStrong(&v16->_startDelayDuration, delayDuration);
   }
 
   return v16;
@@ -492,24 +492,24 @@ LABEL_28:
   return [(HAPCharacteristicValueLinearDerivedTransitionPoint *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueLinearDerivedTransitionPoint);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueLinearDerivedTransitionPoint *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

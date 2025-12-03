@@ -1,45 +1,45 @@
 @interface SGM2ContactDetailSent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDetail:(id)a3;
-- (int)StringAsFoundIn:(id)a3;
-- (int)StringAsSource:(id)a3;
-- (int)StringAsTokens:(id)a3;
+- (int)StringAsDetail:(id)detail;
+- (int)StringAsFoundIn:(id)in;
+- (int)StringAsSource:(id)source;
+- (int)StringAsTokens:(id)tokens;
 - (int)detail;
 - (int)foundIn;
 - (int)source;
 - (int)tokens;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFoundIn:(BOOL)a3;
-- (void)setHasHasName:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)setHasTokens:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFoundIn:(BOOL)in;
+- (void)setHasHasName:(BOOL)name;
+- (void)setHasSource:(BOOL)source;
+- (void)setHasTokens:(BOOL)tokens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2ContactDetailSent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2ContactDetailSent *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) != 0)
   {
-    self->_source = *(v4 + 6);
+    self->_source = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -52,14 +52,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 36) & 1) == 0)
+  else if ((*(fromCopy + 36) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_detail = *(v4 + 2);
+  self->_detail = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -72,9 +72,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_foundIn = *(v4 + 3);
+  self->_foundIn = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -87,12 +87,12 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_hasName = *(v4 + 32);
+  self->_hasName = *(fromCopy + 32);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_8:
-    self->_tokens = *(v4 + 7);
+    self->_tokens = *(fromCopy + 7);
     *&self->_has |= 8u;
   }
 
@@ -168,16 +168,16 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -187,46 +187,46 @@ LABEL_6:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_source != *(v4 + 6))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_source != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_detail != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_detail != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_foundIn != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_foundIn != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0)
+    if ((*(equalCopy + 36) & 0x10) == 0)
     {
       goto LABEL_21;
     }
@@ -236,30 +236,30 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 36) & 0x10) == 0)
+  if ((*(equalCopy + 36) & 0x10) == 0)
   {
     goto LABEL_26;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if (self->_hasName)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_26;
   }
 
 LABEL_21:
-  v6 = (*(v4 + 36) & 8) == 0;
+  v6 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_tokens != *(v4 + 7))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_tokens != *(equalCopy + 7))
     {
       goto LABEL_26;
     }
@@ -272,10 +272,10 @@ LABEL_27:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -344,21 +344,21 @@ LABEL_6:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 6) = self->_source;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 6) = self->_source;
+    *(toCopy + 36) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -377,8 +377,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_detail;
-  *(v4 + 36) |= 1u;
+  *(toCopy + 2) = self->_detail;
+  *(toCopy + 36) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -392,8 +392,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(v4 + 3) = self->_foundIn;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 3) = self->_foundIn;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -407,26 +407,26 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(v4 + 32) = self->_hasName;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 32) = self->_hasName;
+  *(toCopy + 36) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
-    *(v4 + 7) = self->_tokens;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 7) = self->_tokens;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_9:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -434,7 +434,7 @@ LABEL_9:
   {
     source = self->_source;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -455,7 +455,7 @@ LABEL_5:
 
   detail = self->_detail;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -471,7 +471,7 @@ LABEL_6:
 LABEL_14:
   foundIn = self->_foundIn;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -487,13 +487,13 @@ LABEL_7:
 LABEL_15:
   hasName = self->_hasName;
   PBDataWriterWriteBOOLField();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     tokens = self->_tokens;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_9:
@@ -501,12 +501,12 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -636,36 +636,36 @@ LABEL_28:
   v8.receiver = self;
   v8.super_class = SGM2ContactDetailSent;
   v4 = [(SGM2ContactDetailSent *)&v8 description];
-  v5 = [(SGM2ContactDetailSent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2ContactDetailSent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsTokens:(id)a3
+- (int)StringAsTokens:(id)tokens
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMLowCount0"])
+  tokensCopy = tokens;
+  if ([tokensCopy isEqualToString:@"SGMLowCount0"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMLowCount1"])
+  else if ([tokensCopy isEqualToString:@"SGMLowCount1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMLowCount2"])
+  else if ([tokensCopy isEqualToString:@"SGMLowCount2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMLowCount3to4"])
+  else if ([tokensCopy isEqualToString:@"SGMLowCount3to4"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMLowCount5orMore"])
+  else if ([tokensCopy isEqualToString:@"SGMLowCount5orMore"])
   {
     v4 = 4;
   }
@@ -678,9 +678,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)setHasTokens:(BOOL)a3
+- (void)setHasTokens:(BOOL)tokens
 {
-  if (a3)
+  if (tokens)
   {
     v3 = 8;
   }
@@ -706,9 +706,9 @@ LABEL_28:
   }
 }
 
-- (void)setHasHasName:(BOOL)a3
+- (void)setHasHasName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 16;
   }
@@ -721,25 +721,25 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsFoundIn:(id)a3
+- (int)StringAsFoundIn:(id)in
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailFoundInNotFound"])
+  inCopy = in;
+  if ([inCopy isEqualToString:@"SGMContactDetailFoundInNotFound"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailFoundInSenderCNContact"])
+  else if ([inCopy isEqualToString:@"SGMContactDetailFoundInSenderCNContact"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailFoundInOtherCNContact"])
+  else if ([inCopy isEqualToString:@"SGMContactDetailFoundInOtherCNContact"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailFoundInSuggestions"])
+  else if ([inCopy isEqualToString:@"SGMContactDetailFoundInSuggestions"])
   {
     v4 = 3;
   }
@@ -752,9 +752,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)setHasFoundIn:(BOOL)a3
+- (void)setHasFoundIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 2;
   }
@@ -780,30 +780,30 @@ LABEL_28:
   }
 }
 
-- (int)StringAsDetail:(id)a3
+- (int)StringAsDetail:(id)detail
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailTypeEmail"])
+  detailCopy = detail;
+  if ([detailCopy isEqualToString:@"SGMContactDetailTypeEmail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypePhone"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypePhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeAddress"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypeAddress"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeOther"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypeOther"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeBirthday"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypeBirthday"])
   {
     v4 = 4;
   }
@@ -829,25 +829,25 @@ LABEL_28:
   }
 }
 
-- (int)StringAsSource:(id)a3
+- (int)StringAsSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMDocumentTypeEmail"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"SGMDocumentTypeEmail"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SGMDocumentTypeMessage"];
+    v4 = [sourceCopy isEqualToString:@"SGMDocumentTypeMessage"];
   }
 
   return v4;
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }

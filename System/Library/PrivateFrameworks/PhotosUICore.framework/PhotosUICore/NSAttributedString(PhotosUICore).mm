@@ -15,15 +15,15 @@
 - (void)px_sizeWithProposedWidth:()PhotosUICore maximumLines:drawingOptions:
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = [a1 attributesAtIndex:0 effectiveRange:0];
+  v9 = [self attributesAtIndex:0 effectiveRange:0];
   [&stru_1F1741150 stringByPaddingToLength:a4 - 1 withString:@"\n" startingAtIndex:0];
   [objc_msgSend(objc_alloc(MEMORY[0x1E696AAB0]) initWithString:objc_claimAutoreleasedReturnValue() attributes:{v9), "boundingRectWithSize:options:context:", a5, 0, a2, INFINITY}];
-  [a1 boundingRectWithSize:a5 options:0 context:{a2, v10}];
-  if (a1)
+  [self boundingRectWithSize:a5 options:0 context:{a2, v10}];
+  if (self)
   {
-    v11 = [a1 attributesAtIndex:0 effectiveRange:0];
+    v11 = [self attributesAtIndex:0 effectiveRange:0];
     v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-    v13 = [a1 string];
+    string = [self string];
     v14 = _PXLanguageRequiringLineHeightAdjustmentsForString();
 
     if (v12)
@@ -43,11 +43,11 @@
 
     else
     {
-      v16 = [v12 fontDescriptor];
+      fontDescriptor = [v12 fontDescriptor];
       v21 = *MEMORY[0x1E69656F0];
       v22[0] = v14;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v18 = [v16 fontDescriptorByAddingAttributes:v17];
+      v18 = [fontDescriptor fontDescriptorByAddingAttributes:v17];
 
       v19 = MEMORY[0x1E69DB878];
       [v12 pointSize];
@@ -73,13 +73,13 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__NSAttributedString_PhotosUICore__px_containsAttribute___block_invoke;
   v8[3] = &unk_1E772D418;
   v8[4] = &v9;
-  [a1 enumerateAttribute:v4 inRange:0 options:v5 usingBlock:{0, v8}];
+  [self enumerateAttribute:v4 inRange:0 options:v5 usingBlock:{0, v8}];
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
@@ -89,7 +89,7 @@
 - (id)px_bulletPrefixAttributedStringWithBulletAttributes:()PhotosUICore isLeftToRight:
 {
   v6 = a3;
-  v7 = [a1 mutableCopy];
+  v7 = [self mutableCopy];
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
   if (a4)
   {
@@ -113,20 +113,20 @@
   v5 = a3;
   if (!v5)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"NSAttributedString+PhotosUICore.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"characterSet"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSAttributedString+PhotosUICore.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"characterSet"}];
   }
 
-  v6 = [a1 mutableCopy];
-  v7 = [v6 string];
-  v8 = [v7 rangeOfCharacterFromSet:v5];
+  v6 = [self mutableCopy];
+  string = [v6 string];
+  v8 = [string rangeOfCharacterFromSet:v5];
   v10 = v9;
 
   while (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 deleteCharactersInRange:{v8, v10}];
-    v11 = [v6 string];
-    v8 = [v11 rangeOfCharacterFromSet:v5];
+    string2 = [v6 string];
+    v8 = [string2 rangeOfCharacterFromSet:v5];
     v10 = v12;
   }
 
@@ -137,8 +137,8 @@
 
 - (id)px_attributedStringWithParagraphLineBreakMode:()PhotosUICore
 {
-  v4 = a1;
-  v5 = [v4 length];
+  selfCopy = self;
+  v5 = [selfCopy length];
   v6 = MEMORY[0x1E69DB688];
   if (v5 < 1)
   {
@@ -147,7 +147,7 @@
 
   else
   {
-    v7 = [v4 attribute:*MEMORY[0x1E69DB688] atIndex:v5 - 1 effectiveRange:0];
+    v7 = [selfCopy attribute:*MEMORY[0x1E69DB688] atIndex:v5 - 1 effectiveRange:0];
   }
 
   if ([v7 lineBreakMode] != a3)
@@ -167,25 +167,25 @@
     v11 = v10;
 
     [v11 setLineBreakMode:a3];
-    v12 = [v4 mutableCopy];
+    v12 = [selfCopy mutableCopy];
     [v12 addAttribute:*v6 value:v11 range:{0, v5}];
 
-    v4 = v12;
+    selfCopy = v12;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)px_attributedStringByApplyingCapitalization:()PhotosUICore
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3 != 3)
   {
     if (a3 == 2)
     {
-      v15 = [v4 mutableCopy];
-      v16 = [v5 string];
+      v15 = [selfCopy mutableCopy];
+      string = [v5 string];
       v17 = [v5 length];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
@@ -194,7 +194,7 @@
       v18 = v15;
       v28 = v18;
       v29 = 2;
-      [v16 enumerateSubstringsInRange:0 options:v17 usingBlock:{1027, v27}];
+      [string enumerateSubstringsInRange:0 options:v17 usingBlock:{1027, v27}];
 
       v6 = v18;
       goto LABEL_15;
@@ -202,7 +202,7 @@
 
     if (a3 == 1)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [selfCopy mutableCopy];
       v30 = 0;
       v31 = 0;
       if ([v5 length])
@@ -213,8 +213,8 @@
           v8 = v31;
           if (v31)
           {
-            v9 = [v5 string];
-            v10 = [v9 substringWithRange:{v30, v31}];
+            string2 = [v5 string];
+            v10 = [string2 substringWithRange:{v30, v31}];
 
             v11 = [v10 px_stringByApplyingCapitalization:1];
 
@@ -241,20 +241,20 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v19 = [v4 string];
-  v20 = [v19 px_firstLetterRange];
+  string3 = [selfCopy string];
+  px_firstLetterRange = [string3 px_firstLetterRange];
   v22 = v21;
 
-  if (v20 == 0x7FFFFFFFFFFFFFFFLL)
+  if (px_firstLetterRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_12;
   }
 
   v6 = [v5 mutableCopy];
-  v23 = [v5 string];
-  v24 = [v23 substringWithRange:{v20, v22}];
+  string4 = [v5 string];
+  v24 = [string4 substringWithRange:{px_firstLetterRange, v22}];
   v25 = [v24 px_stringByApplyingCapitalization:3];
-  [v6 replaceCharactersInRange:v20 withString:{v22, v25}];
+  [v6 replaceCharactersInRange:px_firstLetterRange withString:{v22, v25}];
 
 LABEL_14:
 LABEL_15:
@@ -265,8 +265,8 @@ LABEL_15:
 - (id)px_attributedStringByAddingAttributes:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  [v5 addAttributes:v4 range:{0, objc_msgSend(a1, "length")}];
+  v5 = [self mutableCopy];
+  [v5 addAttributes:v4 range:{0, objc_msgSend(self, "length")}];
 
   return v5;
 }
@@ -611,14 +611,14 @@ LABEL_25:
   [(PXAttributedStringHTMLParser *)v13 setParsedAttributedStringBlock:v23];
   [(PXAttributedStringHTMLParser *)v13 parse];
   v16 = +[PXApplicationSettings sharedInstance];
-  v17 = [v16 wantsPseudostringsWithSpecialCharacters];
+  wantsPseudostringsWithSpecialCharacters = [v16 wantsPseudostringsWithSpecialCharacters];
 
-  if (v17)
+  if (wantsPseudostringsWithSpecialCharacters)
   {
     v19 = objc_alloc(MEMORY[0x1E696AAB0]);
     v20 = +[PXApplicationSettings sharedInstance];
-    v21 = [v20 stringWithSpecialCharacters];
-    v22 = [v19 initWithString:v21];
+    stringWithSpecialCharacters = [v20 stringWithSpecialCharacters];
+    v22 = [v19 initWithString:stringWithSpecialCharacters];
     [v15 insertAttributedString:v22 atIndex:0];
   }
 

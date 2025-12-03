@@ -1,5 +1,5 @@
 @interface TSCHChartBorderAxisLayoutItem
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (void)buildSubTree;
 @end
 
@@ -61,12 +61,12 @@
   [(TSCHChartLayoutItem *)&v75 buildSubTree];
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v6 = [TSCHChartBorderAxisRenderer alloc];
-  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, repCopy, self);
 
   objc_msgSend_addObject_(v5, v12, v13, v14, v15, v11);
 

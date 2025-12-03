@@ -1,17 +1,17 @@
 @interface FSTaskMessageSTDIOWithProgress
 - (FSTaskMessageSTDIOWithProgress)init;
 - (NSProgress)progress;
-- (int)printAboveProgress:(const char *)a3;
-- (void)completed:(id)a3 replyHandler:(id)a4;
+- (int)printAboveProgress:(const char *)progress;
+- (void)completed:(id)completed replyHandler:(id)handler;
 - (void)dealloc;
 - (void)drawTwiddleBar;
-- (void)fillProgressBar:(float)a3;
+- (void)fillProgressBar:(float)bar;
 - (void)hideProgress;
 - (void)hideProgressLocked;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prompt:(id)a3 replyHandler:(id)a4;
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4;
-- (void)setProgress:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prompt:(id)prompt replyHandler:(id)handler;
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler;
+- (void)setProgress:(id)progress;
 - (void)showProgress;
 - (void)showProgressLocked;
 @end
@@ -87,7 +87,7 @@ LABEL_5:
   self->progress_buffer[self->screen_width] = 0;
 }
 
-- (void)fillProgressBar:(float)a3
+- (void)fillProgressBar:(float)bar
 {
   memset(self->progress_buffer, 32, self->screen_width);
   if ([(NSProgress *)self->_progress isFinished])
@@ -98,14 +98,14 @@ LABEL_5:
 
   else
   {
-    v7 = 0.0;
-    if (a3 >= 0.0)
+    barCopy = 0.0;
+    if (bar >= 0.0)
     {
-      v7 = a3;
+      barCopy = bar;
     }
 
-    v6 = (v7 * 100.0);
-    screen_width = (v7 * self->screen_width);
+    v6 = (barCopy * 100.0);
+    screen_width = (barCopy * self->screen_width);
   }
 
   memset(self->progress_buffer, 42, screen_width);
@@ -158,52 +158,52 @@ LABEL_5:
 
 - (NSProgress)progress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_progress;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_progress;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v9 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  p_progress = &v5->_progress;
-  progress = v5->_progress;
+  progressCopy = progress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_progress = &selfCopy->_progress;
+  progress = selfCopy->_progress;
   if (progress)
   {
-    [(NSProgress *)progress removeObserver:v5 forKeyPath:@"fractionCompleted" context:firstVoidPointer];
+    [(NSProgress *)progress removeObserver:selfCopy forKeyPath:@"fractionCompleted" context:firstVoidPointer];
     v8 = *p_progress;
     *p_progress = 0;
   }
 
-  objc_storeStrong(&v5->_progress, a3);
-  if (v9)
+  objc_storeStrong(&selfCopy->_progress, progress);
+  if (progressCopy)
   {
-    [v9 addObserver:v5 forKeyPath:@"fractionCompleted" options:1 context:firstVoidPointer];
+    [progressCopy addObserver:selfCopy forKeyPath:@"fractionCompleted" options:1 context:firstVoidPointer];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (firstVoidPointer == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (firstVoidPointer == context)
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    if (v13->_progress)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_progress)
     {
-      [(FSTaskMessageSTDIOWithProgress *)v13 showProgressLocked];
+      [(FSTaskMessageSTDIOWithProgress *)selfCopy showProgressLocked];
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -214,38 +214,38 @@ LABEL_5:
     {
       v14.receiver = self;
       v14.super_class = FSTaskMessageSTDIOWithProgress;
-      [(FSTaskMessageSTDIOWithProgress *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(FSTaskMessageSTDIOWithProgress *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
   }
 }
 
-- (int)printAboveProgress:(const char *)a3
+- (int)printAboveProgress:(const char *)progress
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  progressShowing = v4->_progressShowing;
-  [(FSTaskMessageSTDIOWithProgress *)v4 hideProgressLocked];
-  v6 = locking_vprintf(a3, &v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progressShowing = selfCopy->_progressShowing;
+  [(FSTaskMessageSTDIOWithProgress *)selfCopy hideProgressLocked];
+  v6 = locking_vprintf(progress, &v8);
   if (progressShowing)
   {
-    [(FSTaskMessageSTDIOWithProgress *)v4 showProgressLocked];
+    [(FSTaskMessageSTDIOWithProgress *)selfCopy showProgressLocked];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)prompt:(id)a3 replyHandler:(id)a4
+- (void)prompt:(id)prompt replyHandler:(id)handler
 {
-  v14 = a4;
-  -[FSTaskMessageSTDIOWithProgress printAboveProgress:](self, "printAboveProgress:", "%s\n", [a3 UTF8String]);
+  handlerCopy = handler;
+  -[FSTaskMessageSTDIOWithProgress printAboveProgress:](self, "printAboveProgress:", "%s\n", [prompt UTF8String]);
   v6 = malloc_type_malloc(0x400uLL, 0xCC45B557uLL);
   if (!v6)
   {
     v10 = __error();
     v11 = fs_errorForPOSIXError(*v10);
-    v14[2](v14, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
 LABEL_5:
 
     goto LABEL_8;
@@ -257,7 +257,7 @@ LABEL_5:
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
     free(v7);
-    (v14)[2](v14, v9, 0);
+    (handlerCopy)[2](handlerCopy, v9, 0);
 
     goto LABEL_8;
   }
@@ -269,24 +269,24 @@ LABEL_5:
   if (!v13)
   {
     v11 = fs_errorForPOSIXError(v12);
-    v14[2](v14, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
     goto LABEL_5;
   }
 
-  (v14[2])();
+  (handlerCopy[2])();
 LABEL_8:
 }
 
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler
 {
-  v19 = a4;
-  -[FSTaskMessageSTDIOWithProgress printAboveProgress:](self, "printAboveProgress:", "%s\n", [a3 UTF8String]);
+  handlerCopy = handler;
+  -[FSTaskMessageSTDIOWithProgress printAboveProgress:](self, "printAboveProgress:", "%s\n", [false UTF8String]);
   v6 = malloc_type_malloc(0x400uLL, 0x9287AB81uLL);
   if (!v6)
   {
     v16 = __error();
     v17 = fs_errorForPOSIXError(*v16);
-    v19[2](v19, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 LABEL_15:
 
     goto LABEL_16;
@@ -313,7 +313,7 @@ LABEL_10:
     }
 
     v17 = fs_errorForPOSIXError(v15);
-    v19[2](v19, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
     goto LABEL_15;
   }
 
@@ -336,39 +336,39 @@ LABEL_10:
 
   v18 = (v11 & 0xFFFFFFDF) == 89;
   free(v7);
-  v19[2](v19, v18, 0);
+  handlerCopy[2](handlerCopy, v18, 0);
 LABEL_16:
 }
 
-- (void)completed:(id)a3 replyHandler:(id)a4
+- (void)completed:(id)completed replyHandler:(id)handler
 {
-  v27 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_progressShowing)
+  completedCopy = completed;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_progressShowing)
   {
-    v8->_progressShowing = 0;
+    selfCopy->_progressShowing = 0;
     locking_printf("\n", v9, v10, v11, v12, v13, v14, v15, v26);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  objc_storeStrong(&v8->_completedError, a3);
-  if (v27)
+  objc_storeStrong(&selfCopy->_completedError, completed);
+  if (completedCopy)
   {
-    v16 = [v27 description];
-    v17 = [v16 UTF8String];
-    locking_printf("Completed with error: %s\n", v18, v19, v20, v21, v22, v23, v24, v17);
+    v16 = [completedCopy description];
+    uTF8String = [v16 UTF8String];
+    locking_printf("Completed with error: %s\n", v18, v19, v20, v21, v22, v23, v24, uTF8String);
   }
 
-  dispatch_group = v8->_dispatch_group;
+  dispatch_group = selfCopy->_dispatch_group;
   if (dispatch_group)
   {
     dispatch_group_leave(dispatch_group);
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface TSDContentPathAnimation
-- (id)i_animationWithTransformBlock:(id)a3;
+- (id)i_animationWithTransformBlock:(id)block;
 - (void)dealloc;
-- (void)setContentPath:(id)a3;
+- (void)setContentPath:(id)path;
 @end
 
 @implementation TSDContentPathAnimation
@@ -13,17 +13,17 @@
   [(TSDContentPathAnimation *)&v3 dealloc];
 }
 
-- (void)setContentPath:(id)a3
+- (void)setContentPath:(id)path
 {
-  v4 = [a3 i_contentLocations];
+  i_contentLocations = [path i_contentLocations];
 
-  [(TSDContentPathAnimation *)self setContentLocations:v4];
+  [(TSDContentPathAnimation *)self setContentLocations:i_contentLocations];
 }
 
-- (id)i_animationWithTransformBlock:(id)a3
+- (id)i_animationWithTransformBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -52,7 +52,7 @@
         v18 = 0u;
         v15 = 0u;
         v16 = 0u;
-        (*(a3 + 2))(&v15, a3, v11);
+        (*(block + 2))(&v15, block, v11);
         v14[4] = v19;
         v14[5] = v20;
         v14[6] = v21;
@@ -61,7 +61,7 @@
         v14[1] = v16;
         v14[2] = v17;
         v14[3] = v18;
-        [v5 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCATransform3D:", v14)}];
+        [array addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCATransform3D:", v14)}];
       }
 
       v8 = [(NSArray *)contentLocations countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -71,7 +71,7 @@
   }
 
   v12 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform"];
-  [v12 setValues:v5];
+  [v12 setValues:array];
   [(TSDContentPathAnimation *)self duration];
   [v12 setDuration:?];
   [v12 setTimingFunction:{-[TSDContentPathAnimation timingFunction](self, "timingFunction")}];

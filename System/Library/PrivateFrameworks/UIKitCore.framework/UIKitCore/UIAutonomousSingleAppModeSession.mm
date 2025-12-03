@@ -1,29 +1,29 @@
 @interface UIAutonomousSingleAppModeSession
 + (id)currentlyActiveSession;
-+ (void)__gaxTrampoline_requestSessionWithConfiguration:(id)a3 completion:(id)a4;
-+ (void)requestSessionWithConfiguration:(id)a3 completion:(id)a4;
++ (void)__gaxTrampoline_requestSessionWithConfiguration:(id)configuration completion:(id)completion;
++ (void)requestSessionWithConfiguration:(id)configuration completion:(id)completion;
 - (UIAutonomousSingleAppModeConfiguration)effectiveConfiguration;
-- (UIAutonomousSingleAppModeSession)initWithEffectiveConfiguration:(id)a3;
-- (void)__gaxTrampoline_endSessionWithCompletion:(id)a3;
-- (void)_guidedAccessStateDidChange:(id)a3;
+- (UIAutonomousSingleAppModeSession)initWithEffectiveConfiguration:(id)configuration;
+- (void)__gaxTrampoline_endSessionWithCompletion:(id)completion;
+- (void)_guidedAccessStateDidChange:(id)change;
 - (void)dealloc;
-- (void)endWithCompletion:(id)a3;
+- (void)endWithCompletion:(id)completion;
 @end
 
 @implementation UIAutonomousSingleAppModeSession
 
-- (UIAutonomousSingleAppModeSession)initWithEffectiveConfiguration:(id)a3
+- (UIAutonomousSingleAppModeSession)initWithEffectiveConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = UIAutonomousSingleAppModeSession;
   v5 = [(UIAutonomousSingleAppModeSession *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(UIAutonomousSingleAppModeSession *)v5 setEffectiveConfiguration:v4];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__guidedAccessStateDidChange_ name:@"UIAccessibilityGuidedAccessStateChanged" object:0];
+    [(UIAutonomousSingleAppModeSession *)v5 setEffectiveConfiguration:configurationCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__guidedAccessStateDidChange_ name:@"UIAccessibilityGuidedAccessStateChanged" object:0];
   }
 
   return v6;
@@ -31,15 +31,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityGuidedAccessStateChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityGuidedAccessStateChanged" object:0];
 
   v4.receiver = self;
   v4.super_class = UIAutonomousSingleAppModeSession;
   [(UIAutonomousSingleAppModeSession *)&v4 dealloc];
 }
 
-- (void)_guidedAccessStateDidChange:(id)a3
+- (void)_guidedAccessStateDidChange:(id)change
 {
   if (!UIAccessibilityIsGuidedAccessEnabled())
   {
@@ -59,26 +59,26 @@
 {
   +[UIApplication _accessibilityLoadSettingsLoaderIfNeeded];
 
-  return [a1 __gaxTrampoline_currentlyActiveSession];
+  return [self __gaxTrampoline_currentlyActiveSession];
 }
 
-+ (void)requestSessionWithConfiguration:(id)a3 completion:(id)a4
++ (void)requestSessionWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  configurationCopy = configuration;
   +[UIApplication _accessibilityLoadSettingsLoaderIfNeeded];
-  [a1 __gaxTrampoline_requestSessionWithConfiguration:v7 completion:v6];
+  [self __gaxTrampoline_requestSessionWithConfiguration:configurationCopy completion:completionCopy];
 }
 
-+ (void)__gaxTrampoline_requestSessionWithConfiguration:(id)a3 completion:(id)a4
++ (void)__gaxTrampoline_requestSessionWithConfiguration:(id)configuration completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__UIAutonomousSingleAppModeSession___gaxTrampoline_requestSessionWithConfiguration_completion___block_invoke;
   block[3] = &unk_1E70F0F78;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -98,22 +98,22 @@ void __95__UIAutonomousSingleAppModeSession___gaxTrampoline_requestSessionWithCo
   }
 }
 
-- (void)endWithCompletion:(id)a3
+- (void)endWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   +[UIApplication _accessibilityLoadSettingsLoaderIfNeeded];
-  [(UIAutonomousSingleAppModeSession *)self __gaxTrampoline_endSessionWithCompletion:v4];
+  [(UIAutonomousSingleAppModeSession *)self __gaxTrampoline_endSessionWithCompletion:completionCopy];
 }
 
-- (void)__gaxTrampoline_endSessionWithCompletion:(id)a3
+- (void)__gaxTrampoline_endSessionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__UIAutonomousSingleAppModeSession___gaxTrampoline_endSessionWithCompletion___block_invoke;
   block[3] = &unk_1E70F0F78;
-  v6 = v3;
-  v4 = v3;
+  v6 = completionCopy;
+  v4 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

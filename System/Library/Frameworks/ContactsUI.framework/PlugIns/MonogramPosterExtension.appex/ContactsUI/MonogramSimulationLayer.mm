@@ -1,7 +1,7 @@
 @interface MonogramSimulationLayer
 - (_TtC23MonogramPosterExtension23MonogramSimulationLayer)init;
-- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithCoder:(id)a3;
-- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithLayer:(id)a3;
+- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithCoder:(id)coder;
+- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithLayer:(id)layer;
 @end
 
 @implementation MonogramSimulationLayer
@@ -14,7 +14,7 @@
   return [(BackgroundSimulationLayer *)&v3 init];
 }
 
-- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithCoder:(id)a3
+- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23MonogramPosterExtension23MonogramSimulationLayer_monogramTexture) = 0;
   result = sub_100026D10();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithLayer:(id)a3
+- (_TtC23MonogramPosterExtension23MonogramSimulationLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_100026C40();

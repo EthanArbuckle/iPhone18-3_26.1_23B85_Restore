@@ -7,9 +7,9 @@
 - (CGSize)size;
 - (NSString)resourceName;
 - (NSURL)URL;
-- (SKUIImageViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIImageViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (id)accessibilityText;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)entityValueProperties;
 - (id)resourceCacheKey;
 - (id)uniquingMapKey;
@@ -19,11 +19,11 @@
 
 @implementation SKUIImageViewElement
 
-- (SKUIImageViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIImageViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -38,7 +38,7 @@
 
   v54.receiver = self;
   v54.super_class = SKUIImageViewElement;
-  v19 = [(SKUIViewElement *)&v54 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v19 = [(SKUIViewElement *)&v54 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v19)
   {
     if (initWithDOMElement_parent_elementFactory__sOnce != -1)
@@ -46,8 +46,8 @@
       [SKUIImageViewElement initWithDOMElement:parent:elementFactory:];
     }
 
-    v20 = [v8 getAttribute:@"srcset"];
-    v21 = [v8 getAttribute:@"src"];
+    v20 = [elementCopy getAttribute:@"srcset"];
+    v21 = [elementCopy getAttribute:@"src"];
     if ([v21 length])
     {
       v22 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v21];
@@ -88,16 +88,16 @@
 
     if (v27)
     {
-      v28 = [(NSURL *)v19->_url host];
+      host = [(NSURL *)v19->_url host];
       resourceName = v19->_resourceName;
-      v19->_resourceName = v28;
+      v19->_resourceName = host;
 
       v30 = v19->_url;
       v19->_url = 0;
     }
 
-    v31 = [v8 getAttribute:@"height"];
-    v32 = [v8 getAttribute:@"width"];
+    v31 = [elementCopy getAttribute:@"height"];
+    v32 = [elementCopy getAttribute:@"width"];
     if ([v31 length] && objc_msgSend(v32, "length"))
     {
       [v31 doubleValue];
@@ -106,11 +106,11 @@
       v19->_size.width = v34;
     }
 
-    v35 = [v8 getAttribute:@"alt"];
+    v35 = [elementCopy getAttribute:@"alt"];
     alt = v19->_alt;
     v19->_alt = v35;
 
-    v37 = [v8 getAttribute:@"disabled"];
+    v37 = [elementCopy getAttribute:@"disabled"];
     if ([v37 length])
     {
       v38 = [v37 BOOLValue] ^ 1;
@@ -183,9 +183,9 @@ void __65__SKUIImageViewElement_initWithDOMElement_parent_elementFactory___block
     [(SKUIImageViewElement *)self size];
     v7 = v6;
     v9 = v8;
-    v10 = [(SKUIImageViewElement *)self style];
-    v11 = [v10 imageTreatment];
-    v12 = [(SKUIImageViewElementCacheKey *)v4 initWithURL:v5 size:v11 imageTreatment:v7, v9];
+    style = [(SKUIImageViewElement *)self style];
+    imageTreatment = [style imageTreatment];
+    v12 = [(SKUIImageViewElementCacheKey *)v4 initWithURL:v5 size:imageTreatment imageTreatment:v7, v9];
     v13 = self->_resourceCacheKey;
     self->_resourceCacheKey = v12;
 
@@ -199,13 +199,13 @@ void __65__SKUIImageViewElement_initWithDOMElement_parent_elementFactory___block
 {
   width = self->_size.width;
   height = self->_size.height;
-  v4 = [(SKUIImageViewElement *)self style];
-  v5 = [v4 maxHeight];
-  v6 = [v4 maxWidth];
-  v7 = v6;
-  if (v5 && v6)
+  style = [(SKUIImageViewElement *)self style];
+  maxHeight = [style maxHeight];
+  maxWidth = [style maxWidth];
+  v7 = maxWidth;
+  if (maxHeight && maxWidth)
   {
-    [v5 floatValue];
+    [maxHeight floatValue];
     height = v8;
     [v7 floatValue];
     width = v9;
@@ -223,25 +223,25 @@ void __65__SKUIImageViewElement_initWithDOMElement_parent_elementFactory___block
   alt = self->_alt;
   if (alt)
   {
-    v3 = alt;
+    accessibilityText = alt;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SKUIImageViewElement;
-    v3 = [(SKUIImageViewElement *)&v5 accessibilityText];
+    accessibilityText = [(SKUIImageViewElement *)&v5 accessibilityText];
   }
 
-  return v3;
+  return accessibilityText;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v23.receiver = self;
   v23.super_class = SKUIImageViewElement;
-  v5 = [(SKUIViewElement *)&v23 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v23 applyUpdatesWithElement:elementCopy];
   v6 = v5;
   if (v5 != self)
   {
@@ -253,33 +253,33 @@ void __65__SKUIImageViewElement_initWithDOMElement_parent_elementFactory___block
     v7 = [SKUIImageViewElementCacheKey alloc];
     url = self->_url;
     p_size = &self->_size;
-    v10 = [(SKUIImageViewElement *)self style];
-    v11 = [v10 imageTreatment];
-    v12 = [(SKUIImageViewElementCacheKey *)v7 initWithURL:url size:v11 imageTreatment:p_size->width, p_size->height];
+    style = [(SKUIImageViewElement *)self style];
+    imageTreatment = [style imageTreatment];
+    v12 = [(SKUIImageViewElementCacheKey *)v7 initWithURL:url size:imageTreatment imageTreatment:p_size->width, p_size->height];
     transientResourceCacheKey = v6->_transientResourceCacheKey;
     v6->_transientResourceCacheKey = v12;
 
     goto LABEL_7;
   }
 
-  if (v4 != self && v4)
+  if (elementCopy != self && elementCopy)
   {
-    v14 = [(NSString *)v4->_alt copy];
+    v14 = [(NSString *)elementCopy->_alt copy];
     alt = self->_alt;
     self->_alt = v14;
 
     resourceCacheKey = self->_resourceCacheKey;
     self->_resourceCacheKey = 0;
 
-    v17 = [(SKUIImageViewElement *)v4 resourceName];
+    resourceName = [(SKUIImageViewElement *)elementCopy resourceName];
     resourceName = self->_resourceName;
-    self->_resourceName = v17;
+    self->_resourceName = resourceName;
 
-    [(SKUIImageViewElement *)v4 size];
+    [(SKUIImageViewElement *)elementCopy size];
     self->_size.width = v19;
     self->_size.height = v20;
-    v21 = [(SKUIImageViewElement *)v4 URL];
-    v10 = self->_url;
+    v21 = [(SKUIImageViewElement *)elementCopy URL];
+    style = self->_url;
     self->_url = v21;
 LABEL_7:
   }
@@ -291,8 +291,8 @@ LABEL_8:
 
 - (id)entityValueProperties
 {
-  v2 = [(SKUIImageViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"valueProperty"];
+  attributes = [(SKUIImageViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"valueProperty"];
 
   if (v3)
   {
@@ -330,18 +330,18 @@ LABEL_8:
 
   v14 = v2;
   v15 = v3;
-  v6 = [(SKUIImageViewElement *)self style];
-  v7 = [v6 imageTreatment];
-  v8 = SKUIImageTreatmentForString(v7);
+  style = [(SKUIImageViewElement *)self style];
+  imageTreatment = [style imageTreatment];
+  v8 = SKUIImageTreatmentForString(imageTreatment);
 
   if (v8 == 8)
   {
     return 0;
   }
 
-  v9 = [(SKUIImageViewElement *)self style];
-  v10 = [v9 imageTreatment];
-  v11 = SKUIImageTreatmentForString(v10);
+  style2 = [(SKUIImageViewElement *)self style];
+  imageTreatment2 = [style2 imageTreatment];
+  v11 = SKUIImageTreatmentForString(imageTreatment2);
 
   if (v11 == 9)
   {
@@ -355,18 +355,18 @@ LABEL_8:
 
 - (BOOL)rendersWithPerspective
 {
-  v2 = [(SKUIImageViewElement *)self style];
-  v3 = [v2 imageTreatment];
-  v4 = SKUIImageTreatmentForString(v3);
+  style = [(SKUIImageViewElement *)self style];
+  imageTreatment = [style imageTreatment];
+  v4 = SKUIImageTreatmentForString(imageTreatment);
 
   return v4 == 7;
 }
 
 - (BOOL)rendersWithParallax
 {
-  v2 = [(SKUIImageViewElement *)self style];
-  v3 = [v2 imageTreatment];
-  v4 = SKUIImageTreatmentForString(v3);
+  style = [(SKUIImageViewElement *)self style];
+  imageTreatment = [style imageTreatment];
+  v4 = SKUIImageTreatmentForString(imageTreatment);
 
   return v4 == 13;
 }
@@ -377,17 +377,17 @@ LABEL_8:
   entityURL = self->_entityURL;
   if (entityURL || (entityURL = self->_entityResourceName) != 0)
   {
-    v4 = entityURL;
+    uniquingMapKey = entityURL;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SKUIImageViewElement;
-    v4 = [(SKUIViewElement *)&v6 uniquingMapKey];
+    uniquingMapKey = [(SKUIViewElement *)&v6 uniquingMapKey];
   }
 
-  return v4;
+  return uniquingMapKey;
 }
 
 - (NSString)resourceName
@@ -419,42 +419,42 @@ LABEL_8:
   if (!self->_hasValidEntityValues)
   {
     self->_hasValidEntityValues = 1;
-    v4 = [(SKUIViewElement *)self entityValueProvider];
-    if (v4)
+    entityValueProvider = [(SKUIViewElement *)self entityValueProvider];
+    if (entityValueProvider)
     {
-      v5 = [(SKUIImageViewElement *)self attributes];
-      v6 = [v5 objectForKey:@"valueProperty"];
+      attributes = [(SKUIImageViewElement *)self attributes];
+      v6 = [attributes objectForKey:@"valueProperty"];
 
       if (v6)
       {
-        v7 = [MEMORY[0x277D759A0] mainScreen];
-        [v7 scale];
-        v9 = [v4 imageURLForEntityArtworkProperty:v6 fittingSize:self->_size.width destinationScale:{self->_size.height, v8}];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
+        v9 = [entityValueProvider imageURLForEntityArtworkProperty:v6 fittingSize:self->_size.width destinationScale:{self->_size.height, v8}];
 
-        v10 = [(NSURL *)v9 scheme];
-        v11 = [v10 isEqualToString:@"resource"];
+        scheme = [(NSURL *)v9 scheme];
+        v11 = [scheme isEqualToString:@"resource"];
 
         if (v11)
         {
-          v12 = [(NSURL *)v9 host];
+          host = [(NSURL *)v9 host];
         }
 
         else
         {
-          v12 = 0;
+          host = 0;
         }
       }
 
       else
       {
-        v12 = 0;
+        host = 0;
         v9 = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      host = 0;
       v9 = 0;
     }
 
@@ -463,8 +463,8 @@ LABEL_8:
     v17 = v9;
 
     entityResourceName = self->_entityResourceName;
-    self->_entityResourceName = v12;
-    v15 = v12;
+    self->_entityResourceName = host;
+    v15 = host;
 
     resourceCacheKey = self->_resourceCacheKey;
     self->_resourceCacheKey = 0;

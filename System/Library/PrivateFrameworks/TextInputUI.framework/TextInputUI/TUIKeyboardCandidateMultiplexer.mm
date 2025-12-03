@@ -1,31 +1,31 @@
 @interface TUIKeyboardCandidateMultiplexer
-- (BOOL)_queueOnly_willHandleDeliveryForCandidates:(id)a3 requestToken:(id)a4;
-- (BOOL)willHandleDeliveryForCandidates:(id)a3 requestToken:(id)a4;
+- (BOOL)_queueOnly_willHandleDeliveryForCandidates:(id)candidates requestToken:(id)token;
+- (BOOL)willHandleDeliveryForCandidates:(id)candidates requestToken:(id)token;
 - (NSString)debugDescription;
 - (TUIKeyboardCandidateMultiplexer)init;
 - (TUIKeyboardCandidateReceiver)candidateReceiver;
 - (_TtC11TextInputUI28TUITextComposerClientWrapper)internalSharedClientWrapper;
 - (id)_queueOnly_enabledGenerators;
-- (id)_queueOnly_enabledGeneratorsForAccumulatorType:(int)a3 context:(id)a4;
-- (id)_queueOnly_enabledSourceTypesWithGenerators:(id)a3 accumulatorType:(int)a4 context:(id)a5;
-- (id)_queueOnly_mergeKBDCorrections:(id)a3 withTextEffectsCorrections:(id)a4;
-- (id)_queueOnly_resultAccumulatorForContext:(id)a3 type:(int)a4 enabledCandidateSources:(id)a5;
-- (void)_didReceiveCandidateResults:(id)a3 forAccumulator:(id)a4;
-- (void)_queueOnly_candidateAccepted:(id)a3 keyboardState:(id)a4 candidateRequestToken:(id)a5;
-- (void)_queueOnly_generateCandidatesForContext:(id)a3 delayed:(BOOL)a4;
-- (void)_queueOnly_generateCandidatesForKeyboardState:(id)a3 requestToken:(id)a4 usesCandidateSelection:(BOOL)a5;
-- (void)_queueOnly_performUpdatesToCandidateReceiverForRequest:(id)a3 type:(int)a4 didTimeout:(BOOL)a5;
-- (void)_sendSmartResponsesTelemetryForCandidates:(id)a3 forKeyboardState:(id)a4;
-- (void)addGenerator:(id)a3;
-- (void)candidateAccepted:(id)a3 generationContext:(id)a4;
-- (void)candidateAccepted:(id)a3 keyboardState:(id)a4 candidateRequestToken:(id)a5;
-- (void)generateCandidatesForKeyboardState:(id)a3 requestToken:(id)a4;
-- (void)generateCandidatesWithKeyboardContext:(id)a3;
-- (void)installGeneratorForSource:(int64_t)a3;
-- (void)installGeneratorsForSources:(id)a3;
-- (void)receiveExternalAutocorrectionUpdate:(id)a3 requestToken:(id)a4;
-- (void)receiveExternalCandidateResultSet:(id)a3 requestToken:(id)a4;
-- (void)syncToKeyboardState:(id)a3;
+- (id)_queueOnly_enabledGeneratorsForAccumulatorType:(int)type context:(id)context;
+- (id)_queueOnly_enabledSourceTypesWithGenerators:(id)generators accumulatorType:(int)type context:(id)context;
+- (id)_queueOnly_mergeKBDCorrections:(id)corrections withTextEffectsCorrections:(id)effectsCorrections;
+- (id)_queueOnly_resultAccumulatorForContext:(id)context type:(int)type enabledCandidateSources:(id)sources;
+- (void)_didReceiveCandidateResults:(id)results forAccumulator:(id)accumulator;
+- (void)_queueOnly_candidateAccepted:(id)accepted keyboardState:(id)state candidateRequestToken:(id)token;
+- (void)_queueOnly_generateCandidatesForContext:(id)context delayed:(BOOL)delayed;
+- (void)_queueOnly_generateCandidatesForKeyboardState:(id)state requestToken:(id)token usesCandidateSelection:(BOOL)selection;
+- (void)_queueOnly_performUpdatesToCandidateReceiverForRequest:(id)request type:(int)type didTimeout:(BOOL)timeout;
+- (void)_sendSmartResponsesTelemetryForCandidates:(id)candidates forKeyboardState:(id)state;
+- (void)addGenerator:(id)generator;
+- (void)candidateAccepted:(id)accepted generationContext:(id)context;
+- (void)candidateAccepted:(id)accepted keyboardState:(id)state candidateRequestToken:(id)token;
+- (void)generateCandidatesForKeyboardState:(id)state requestToken:(id)token;
+- (void)generateCandidatesWithKeyboardContext:(id)context;
+- (void)installGeneratorForSource:(int64_t)source;
+- (void)installGeneratorsForSources:(id)sources;
+- (void)receiveExternalAutocorrectionUpdate:(id)update requestToken:(id)token;
+- (void)receiveExternalCandidateResultSet:(id)set requestToken:(id)token;
+- (void)syncToKeyboardState:(id)state;
 @end
 
 @implementation TUIKeyboardCandidateMultiplexer
@@ -37,9 +37,9 @@
   v2 = [(TUIKeyboardCandidateMultiplexer *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     generators = v2->_generators;
-    v2->_generators = v3;
+    v2->_generators = dictionary;
 
     v5 = [[_TUIGeneratorResultAccumulatorCache alloc] initWithSize:20];
     pendingRequests = v2->_pendingRequests;
@@ -74,14 +74,14 @@
   v10 = __Block_byref_object_copy__8277;
   v11 = __Block_byref_object_dispose__8278;
   v12 = 0;
-  v3 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__TUIKeyboardCandidateMultiplexer_debugDescription__block_invoke;
   block[3] = &unk_1E72D7CC8;
   block[4] = self;
   block[5] = &v7;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p, enabledGenerators: %@>", objc_opt_class(), self, v8[5]];
   _Block_object_dispose(&v7, 8);
@@ -99,26 +99,26 @@ uint64_t __51__TUIKeyboardCandidateMultiplexer_debugDescription__block_invoke(ui
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (BOOL)_queueOnly_willHandleDeliveryForCandidates:(id)a3 requestToken:(id)a4
+- (BOOL)_queueOnly_willHandleDeliveryForCandidates:(id)candidates requestToken:(id)token
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [_TUIKeyboardCandidateContainer forSourceType:0 withAutocorrectionList:v7];
-  v9 = [v7 predictions];
+  tokenCopy = token;
+  candidatesCopy = candidates;
+  v8 = [_TUIKeyboardCandidateContainer forSourceType:0 withAutocorrectionList:candidatesCopy];
+  predictions = [candidatesCopy predictions];
 
-  v10 = [v9 lastObject];
+  lastObject = [predictions lastObject];
 
-  v11 = [v10 customInfoType];
-  v12 = (v11 >> 5) & 1;
-  if ((v11 & 0x20) != 0)
+  customInfoType = [lastObject customInfoType];
+  v12 = (customInfoType >> 5) & 1;
+  if ((customInfoType & 0x20) != 0)
   {
-    v15 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_cachedResultAccumulatorForRequestToken:v6 type:0];
+    v15 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_cachedResultAccumulatorForRequestToken:tokenCopy type:0];
     v16 = v15;
     if (v15 && self->_enableKbdSource)
     {
-      v17 = [v15 context];
-      v13 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_resultAccumulatorForContext:v17 type:v12 enabledCandidateSources:&unk_1F03D9008];
+      context = [v15 context];
+      v13 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_resultAccumulatorForContext:context type:v12 enabledCandidateSources:&unk_1F03D9008];
     }
 
     else
@@ -136,7 +136,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_cachedResultAccumulatorForRequestToken:v6 type:v12];
+  v13 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_cachedResultAccumulatorForRequestToken:tokenCopy type:v12];
   if (v13)
   {
     goto LABEL_11;
@@ -146,9 +146,9 @@ LABEL_3:
   v14 = TUICandidateGenerationLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v6 shortIdentifier];
+    shortIdentifier = [tokenCopy shortIdentifier];
     v20 = 136315650;
-    v21 = [v19 UTF8String];
+    uTF8String = [shortIdentifier UTF8String];
     v22 = 1024;
     v23 = v12;
     v24 = 2080;
@@ -160,30 +160,30 @@ LABEL_12:
   return v13 != 0;
 }
 
-- (BOOL)willHandleDeliveryForCandidates:(id)a3 requestToken:(id)a4
+- (BOOL)willHandleDeliveryForCandidates:(id)candidates requestToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  candidatesCopy = candidates;
+  tokenCopy = token;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__TUIKeyboardCandidateMultiplexer_willHandleDeliveryForCandidates_requestToken___block_invoke;
   v12[3] = &unk_1E72D7CA0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = candidatesCopy;
+  v14 = tokenCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = tokenCopy;
+  v10 = candidatesCopy;
+  dispatch_sync(internalQueue, v12);
 
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(candidatesCopy) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return candidatesCopy;
 }
 
 uint64_t __80__TUIKeyboardCandidateMultiplexer_willHandleDeliveryForCandidates_requestToken___block_invoke(uint64_t a1)
@@ -193,10 +193,10 @@ uint64_t __80__TUIKeyboardCandidateMultiplexer_willHandleDeliveryForCandidates_r
   return result;
 }
 
-- (void)syncToKeyboardState:(id)a3
+- (void)syncToKeyboardState:(id)state
 {
-  v4 = [a3 copy];
-  v5 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  v4 = [state copy];
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__TUIKeyboardCandidateMultiplexer_syncToKeyboardState___block_invoke;
@@ -204,7 +204,7 @@ uint64_t __80__TUIKeyboardCandidateMultiplexer_willHandleDeliveryForCandidates_r
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(internalQueue, v7);
 }
 
 void __55__TUIKeyboardCandidateMultiplexer_syncToKeyboardState___block_invoke(uint64_t a1)
@@ -249,68 +249,68 @@ void __55__TUIKeyboardCandidateMultiplexer_syncToKeyboardState___block_invoke(ui
   }
 }
 
-- (void)_sendSmartResponsesTelemetryForCandidates:(id)a3 forKeyboardState:(id)a4
+- (void)_sendSmartResponsesTelemetryForCandidates:(id)candidates forKeyboardState:(id)state
 {
-  v21 = a3;
-  v5 = a4;
-  v6 = [v5 inputContextHistory];
-  v7 = [v6 threadIdentifier];
+  candidatesCopy = candidates;
+  stateCopy = state;
+  inputContextHistory = [stateCopy inputContextHistory];
+  threadIdentifier = [inputContextHistory threadIdentifier];
 
-  if ([v21 hasCandidates])
+  if ([candidatesCopy hasCandidates])
   {
-    v8 = [v21 candidateResultSet];
-    v9 = [v21 autocorrectionList];
-    v10 = v9;
-    if (v8)
+    candidateResultSet = [candidatesCopy candidateResultSet];
+    autocorrectionList = [candidatesCopy autocorrectionList];
+    v10 = autocorrectionList;
+    if (candidateResultSet)
     {
-      v11 = [v8 candidates];
+      candidates = [candidateResultSet candidates];
     }
 
     else
     {
-      v12 = [v9 corrections];
-      v11 = [v12 alternateCorrections];
+      corrections = [autocorrectionList corrections];
+      candidates = [corrections alternateCorrections];
     }
 
-    v13 = [v11 firstObject];
-    v14 = [v13 candidateProperty];
+    firstObject = [candidates firstObject];
+    candidateProperty = [firstObject candidateProperty];
 
-    if ((v14 & 2) != 0 && v7)
+    if ((candidateProperty & 2) != 0 && threadIdentifier)
     {
-      v15 = +[TUISmartReplyGenerator sharedInstance];
-      v16 = [v15 conversationType:v5];
-      v17 = [MEMORY[0x1E696AAE8] mainBundle];
-      v18 = [v17 bundleIdentifier];
-      [TUIInputAnalytics didHandleSmartReplyAnalyticsEventOfType:4 withBundleId:v18 withInputContextHistoryRequestId:0 withMsgOrMailThreadId:v7 withSmartReplyResponse:0 withConversationType:v16];
+      inputContextHistory2 = +[TUISmartReplyGenerator sharedInstance];
+      v16 = [inputContextHistory2 conversationType:stateCopy];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [TUIInputAnalytics didHandleSmartReplyAnalyticsEventOfType:4 withBundleId:bundleIdentifier withInputContextHistoryRequestId:0 withMsgOrMailThreadId:threadIdentifier withSmartReplyResponse:0 withConversationType:v16];
     }
 
     else
     {
-      v19 = [v11 firstObject];
+      firstObject2 = [candidates firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      if ((isKindOfClass & 1) == 0 || !v7)
+      if ((isKindOfClass & 1) == 0 || !threadIdentifier)
       {
         goto LABEL_12;
       }
 
-      v15 = [v5 inputContextHistory];
-      [TUIInputAnalytics sendSmartRepliesPollActionShownSignalWithInputContextHistory:v15];
+      inputContextHistory2 = [stateCopy inputContextHistory];
+      [TUIInputAnalytics sendSmartRepliesPollActionShownSignalWithInputContextHistory:inputContextHistory2];
     }
 
 LABEL_12:
   }
 }
 
-- (void)_queueOnly_performUpdatesToCandidateReceiverForRequest:(id)a3 type:(int)a4 didTimeout:(BOOL)a5
+- (void)_queueOnly_performUpdatesToCandidateReceiverForRequest:(id)request type:(int)type didTimeout:(BOOL)timeout
 {
-  v5 = *&a4;
+  v5 = *&type;
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v5 == 1 || ([(_TUIGeneratorResultAccumulatorCache *)self->_pendingRequests accumulatorForToken:v7 type:1], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  requestCopy = request;
+  if (v5 == 1 || ([(_TUIGeneratorResultAccumulatorCache *)self->_pendingRequests accumulatorForToken:requestCopy type:1], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
-    v9 = [(_TUIGeneratorResultAccumulatorCache *)self->_pendingRequests accumulatorForToken:v7 type:v5];
+    v9 = [(_TUIGeneratorResultAccumulatorCache *)self->_pendingRequests accumulatorForToken:requestCopy type:v5];
     v10 = v9;
     if (!v9)
     {
@@ -320,15 +320,15 @@ LABEL_23:
     }
 
     v11 = [v9 containerForCandidateSource:4];
-    v12 = [v11 hasCandidates];
+    hasCandidates = [v11 hasCandidates];
 
-    if (v12)
+    if (hasCandidates)
     {
       v13 = TUICandidateGenerationLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 shortIdentifier];
-        v15 = v14;
+        shortIdentifier = [requestCopy shortIdentifier];
+        v15 = shortIdentifier;
         v16 = "N";
         if (v5 == 2)
         {
@@ -336,7 +336,7 @@ LABEL_23:
         }
 
         *buf = 138412546;
-        v57 = v14;
+        v57 = shortIdentifier;
         v58 = 2080;
         v59 = v16;
       }
@@ -345,33 +345,33 @@ LABEL_23:
       v18 = 4;
 LABEL_14:
       v23 = [v17 containerForCandidateSource:v18];
-      v24 = [v10 keyboardState];
-      [(TUIKeyboardCandidateMultiplexer *)self _sendSmartResponsesTelemetryForCandidates:v23 forKeyboardState:v24];
+      keyboardState = [v10 keyboardState];
+      [(TUIKeyboardCandidateMultiplexer *)self _sendSmartResponsesTelemetryForCandidates:v23 forKeyboardState:keyboardState];
 LABEL_15:
 
 LABEL_16:
       v25 = TUICandidateGenerationLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v7 shortIdentifier];
+        shortIdentifier2 = [requestCopy shortIdentifier];
         *buf = 138412546;
         v57 = v23;
         v58 = 2112;
-        v59 = v26;
+        v59 = shortIdentifier2;
         _os_log_impl(&dword_18FFDC000, v25, OS_LOG_TYPE_DEFAULT, "Preparing to push %@ to candidate receiver, for request token: %@", buf, 0x16u);
       }
 
       if (v23)
       {
-        v27 = [(TUIKeyboardCandidateMultiplexer *)self receiverQueue];
+        receiverQueue = [(TUIKeyboardCandidateMultiplexer *)self receiverQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __106__TUIKeyboardCandidateMultiplexer__queueOnly_performUpdatesToCandidateReceiverForRequest_type_didTimeout___block_invoke;
         block[3] = &unk_1E72D80E8;
         v53 = v23;
-        v54 = v7;
-        v55 = self;
-        dispatch_async(v27, block);
+        v54 = requestCopy;
+        selfCopy = self;
+        dispatch_async(receiverQueue, block);
 
         v28 = v53;
       }
@@ -381,9 +381,9 @@ LABEL_16:
         v28 = TUICandidateGenerationLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v51 = [v7 shortIdentifier];
+          shortIdentifier3 = [requestCopy shortIdentifier];
           *buf = 138412290;
-          v57 = v51;
+          v57 = shortIdentifier3;
           _os_log_error_impl(&dword_18FFDC000, v28, OS_LOG_TYPE_ERROR, "containerToPush is nil, will not push anything to candidate receiver for request token: %@", buf, 0xCu);
         }
       }
@@ -392,16 +392,16 @@ LABEL_16:
     }
 
     v19 = [v10 containerForCandidateSource:2];
-    v20 = [v19 hasCandidates];
+    hasCandidates2 = [v19 hasCandidates];
 
-    if (v20)
+    if (hasCandidates2)
     {
       v21 = TUICandidateGenerationLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v7 shortIdentifier];
+        shortIdentifier4 = [requestCopy shortIdentifier];
         *buf = 138412290;
-        v57 = v22;
+        v57 = shortIdentifier4;
       }
 
       v17 = v10;
@@ -410,16 +410,16 @@ LABEL_16:
     }
 
     v29 = [v10 containerForCandidateSource:1];
-    v30 = [v29 hasCandidates];
+    hasCandidates3 = [v29 hasCandidates];
 
-    if (v30)
+    if (hasCandidates3)
     {
       v31 = TUICandidateGenerationLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [v7 shortIdentifier];
+        shortIdentifier5 = [requestCopy shortIdentifier];
         *buf = 138412290;
-        v57 = v32;
+        v57 = shortIdentifier5;
       }
 
       v33 = v10;
@@ -430,46 +430,46 @@ LABEL_29:
     }
 
     v35 = [v10 containerForCandidateSource:3];
-    v36 = [v35 hasCandidates];
+    hasCandidates4 = [v35 hasCandidates];
 
-    if (v36)
+    if (hasCandidates4)
     {
       v37 = TUICandidateGenerationLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [v7 shortIdentifier];
+        shortIdentifier6 = [requestCopy shortIdentifier];
         *buf = 138412290;
-        v57 = v38;
+        v57 = shortIdentifier6;
       }
 
       v39 = [v10 containerForCandidateSource:3];
-      v24 = [v39 autocorrectionList];
+      keyboardState = [v39 autocorrectionList];
 
       v40 = [v10 containerForCandidateSource:0];
-      v41 = [v40 autocorrectionList];
+      autocorrectionList = [v40 autocorrectionList];
 
-      v42 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_mergeKBDCorrections:v41 withTextEffectsCorrections:v24];
+      v42 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_mergeKBDCorrections:autocorrectionList withTextEffectsCorrections:keyboardState];
       v23 = [_TUIKeyboardCandidateContainer forSourceType:3 withAutocorrectionList:v42];
 
       goto LABEL_15;
     }
 
     v43 = [v10 containerForCandidateSource:0];
-    v44 = [v43 hasCandidates];
+    hasCandidates5 = [v43 hasCandidates];
 
-    if (v44)
+    if (hasCandidates5)
     {
-      v45 = [v10 context];
-      v46 = [v45 usesCandidateSelection];
+      context = [v10 context];
+      usesCandidateSelection = [context usesCandidateSelection];
 
-      if ((v46 & 1) == 0)
+      if ((usesCandidateSelection & 1) == 0)
       {
         v47 = TUICandidateGenerationLog();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v7 shortIdentifier];
+          shortIdentifier7 = [requestCopy shortIdentifier];
           *buf = 138412290;
-          v57 = v48;
+          v57 = shortIdentifier7;
         }
 
         v33 = v10;
@@ -483,9 +483,9 @@ LABEL_29:
       v49 = TUICandidateGenerationLog();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [v7 shortIdentifier];
+        shortIdentifier8 = [requestCopy shortIdentifier];
         *buf = 138412290;
-        v57 = v50;
+        v57 = shortIdentifier8;
       }
     }
 
@@ -551,99 +551,99 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_queueOnly_mergeKBDCorrections:(id)a3 withTextEffectsCorrections:(id)a4
+- (id)_queueOnly_mergeKBDCorrections:(id)corrections withTextEffectsCorrections:(id)effectsCorrections
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  correctionsCopy = corrections;
+  effectsCorrectionsCopy = effectsCorrections;
+  v7 = effectsCorrectionsCopy;
+  if (!(correctionsCopy | effectsCorrectionsCopy))
   {
     v8 = 0;
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!correctionsCopy)
   {
-    v25 = v6;
+    v25 = effectsCorrectionsCopy;
 LABEL_17:
     v8 = v25;
     goto LABEL_18;
   }
 
-  if (!v6)
+  if (!effectsCorrectionsCopy)
   {
-    v25 = v5;
+    v25 = correctionsCopy;
     goto LABEL_17;
   }
 
-  v9 = [v6 corrections];
+  corrections = [effectsCorrectionsCopy corrections];
 
-  if (v9)
+  if (corrections)
   {
     v10 = v7;
   }
 
   else
   {
-    v10 = v5;
+    v10 = correctionsCopy;
   }
 
-  v11 = [v10 corrections];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [v7 predictions];
-  if (v13)
+  corrections2 = [v10 corrections];
+  array = [MEMORY[0x1E695DF70] array];
+  predictions = [v7 predictions];
+  if (predictions)
   {
-    v14 = v13;
-    v15 = [v7 predictions];
-    v16 = [v15 count];
+    v14 = predictions;
+    predictions2 = [v7 predictions];
+    v16 = [predictions2 count];
 
     if (v16)
     {
-      v17 = [v7 predictions];
-      v18 = [v17 objectAtIndexedSubscript:0];
-      [v12 addObject:v18];
+      predictions3 = [v7 predictions];
+      v18 = [predictions3 objectAtIndexedSubscript:0];
+      [array addObject:v18];
     }
   }
 
-  v19 = [v5 predictions];
-  if (v19)
+  predictions4 = [correctionsCopy predictions];
+  if (predictions4)
   {
-    v20 = v19;
-    v21 = [v5 predictions];
-    v22 = [v21 count];
+    v20 = predictions4;
+    predictions5 = [correctionsCopy predictions];
+    v22 = [predictions5 count];
 
     if (v22)
     {
-      v23 = [v5 predictions];
-      v24 = [v23 objectAtIndexedSubscript:0];
-      [v12 addObject:v24];
+      predictions6 = [correctionsCopy predictions];
+      v24 = [predictions6 objectAtIndexedSubscript:0];
+      [array addObject:v24];
     }
   }
 
-  v8 = [MEMORY[0x1E69D9570] listWithCorrections:v11 predictions:v12];
+  v8 = [MEMORY[0x1E69D9570] listWithCorrections:corrections2 predictions:array];
 
 LABEL_18:
 
   return v8;
 }
 
-- (void)_queueOnly_candidateAccepted:(id)a3 keyboardState:(id)a4 candidateRequestToken:(id)a5
+- (void)_queueOnly_candidateAccepted:(id)accepted keyboardState:(id)state candidateRequestToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledGenerators];
+  acceptedCopy = accepted;
+  stateCopy = state;
+  tokenCopy = token;
+  _queueOnly_enabledGenerators = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledGenerators];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __100__TUIKeyboardCandidateMultiplexer__queueOnly_candidateAccepted_keyboardState_candidateRequestToken___block_invoke;
   v15[3] = &unk_1E72D7C78;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 enumerateObjectsUsingBlock:v15];
+  v16 = acceptedCopy;
+  v17 = stateCopy;
+  v18 = tokenCopy;
+  v12 = tokenCopy;
+  v13 = stateCopy;
+  v14 = acceptedCopy;
+  [_queueOnly_enabledGenerators enumerateObjectsUsingBlock:v15];
 }
 
 void __100__TUIKeyboardCandidateMultiplexer__queueOnly_candidateAccepted_keyboardState_candidateRequestToken___block_invoke(void *a1, void *a2)
@@ -655,24 +655,24 @@ void __100__TUIKeyboardCandidateMultiplexer__queueOnly_candidateAccepted_keyboar
   }
 }
 
-- (void)candidateAccepted:(id)a3 keyboardState:(id)a4 candidateRequestToken:(id)a5
+- (void)candidateAccepted:(id)accepted keyboardState:(id)state candidateRequestToken:(id)token
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 copy];
-  v11 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  acceptedCopy = accepted;
+  tokenCopy = token;
+  v10 = [state copy];
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__TUIKeyboardCandidateMultiplexer_candidateAccepted_keyboardState_candidateRequestToken___block_invoke;
   v15[3] = &unk_1E72D8110;
   v15[4] = self;
-  v16 = v8;
+  v16 = acceptedCopy;
   v17 = v10;
-  v18 = v9;
-  v12 = v9;
+  v18 = tokenCopy;
+  v12 = tokenCopy;
   v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v14 = acceptedCopy;
+  dispatch_async(internalQueue, v15);
 }
 
 uint64_t __89__TUIKeyboardCandidateMultiplexer_candidateAccepted_keyboardState_candidateRequestToken___block_invoke(uint64_t a1)
@@ -691,27 +691,27 @@ uint64_t __89__TUIKeyboardCandidateMultiplexer_candidateAccepted_keyboardState_c
   return result;
 }
 
-- (void)candidateAccepted:(id)a3 generationContext:(id)a4
+- (void)candidateAccepted:(id)accepted generationContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v6 keyboardState];
-  v8 = [v6 requestToken];
+  contextCopy = context;
+  acceptedCopy = accepted;
+  keyboardState = [contextCopy keyboardState];
+  requestToken = [contextCopy requestToken];
 
-  [(TUIKeyboardCandidateMultiplexer *)self candidateAccepted:v7 keyboardState:v9 candidateRequestToken:v8];
+  [(TUIKeyboardCandidateMultiplexer *)self candidateAccepted:acceptedCopy keyboardState:keyboardState candidateRequestToken:requestToken];
 }
 
-- (void)_didReceiveCandidateResults:(id)a3 forAccumulator:(id)a4
+- (void)_didReceiveCandidateResults:(id)results forAccumulator:(id)accumulator
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  accumulatorCopy = accumulator;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(TUIKeyboardCandidateMultiplexer *)self peekingGenerators];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  peekingGenerators = [(TUIKeyboardCandidateMultiplexer *)self peekingGenerators];
+  v9 = [peekingGenerators countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -722,40 +722,40 @@ uint64_t __89__TUIKeyboardCandidateMultiplexer_candidateAccepted_keyboardState_c
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(peekingGenerators);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v13 candidateSourceType];
-        if (v14 != [v6 candidateSourceType] && (objc_opt_respondsToSelector() & 1) != 0)
+        candidateSourceType = [v13 candidateSourceType];
+        if (candidateSourceType != [resultsCopy candidateSourceType] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v15 = [v7 context];
-          [v13 peekAtCandidates:v6 forContext:v15];
+          context = [accumulatorCopy context];
+          [v13 peekAtCandidates:resultsCopy forContext:context];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [peekingGenerators countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
-  [v7 updateWithContainer:v6];
+  [accumulatorCopy updateWithContainer:resultsCopy];
 }
 
-- (void)_queueOnly_generateCandidatesForContext:(id)a3 delayed:(BOOL)a4
+- (void)_queueOnly_generateCandidatesForContext:(id)context delayed:(BOOL)delayed
 {
-  v4 = a4;
+  delayedCopy = delayed;
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = TUICandidateGenerationLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v6 requestToken];
-    v28 = [v27 shortIdentifier];
-    v29 = [v6 usesCandidateSelection];
+    requestToken = [contextCopy requestToken];
+    shortIdentifier = [requestToken shortIdentifier];
+    usesCandidateSelection = [contextCopy usesCandidateSelection];
     v30 = "N";
-    if (v29)
+    if (usesCandidateSelection)
     {
       v31 = "Y";
     }
@@ -766,10 +766,10 @@ uint64_t __89__TUIKeyboardCandidateMultiplexer_candidateAccepted_keyboardState_c
     }
 
     *buf = 138412802;
-    v45 = v28;
+    v45 = shortIdentifier;
     v47 = v31;
     v46 = 2080;
-    if (v4)
+    if (delayedCopy)
     {
       v30 = "Y";
     }
@@ -779,13 +779,13 @@ uint64_t __89__TUIKeyboardCandidateMultiplexer_candidateAccepted_keyboardState_c
     _os_log_debug_impl(&dword_18FFDC000, v7, OS_LOG_TYPE_DEBUG, "multiplexer:generateCandidatesForKeyboardState (tokenID=%@, candSel=%s, delayed=%s)", buf, 0x20u);
   }
 
-  if (!v4 || (-[TUIKeyboardCandidateMultiplexer mostRecentRequest](self, "mostRecentRequest"), v8 = objc_claimAutoreleasedReturnValue(), [v6 requestToken], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isSameRequestAs:", v9), v9, v8, v10))
+  if (!delayedCopy || (-[TUIKeyboardCandidateMultiplexer mostRecentRequest](self, "mostRecentRequest"), v8 = objc_claimAutoreleasedReturnValue(), [contextCopy requestToken], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isSameRequestAs:", v9), v9, v8, v10))
   {
-    v11 = [v6 requestToken];
-    [(TUIKeyboardCandidateMultiplexer *)self setMostRecentRequest:v11];
+    requestToken2 = [contextCopy requestToken];
+    [(TUIKeyboardCandidateMultiplexer *)self setMostRecentRequest:requestToken2];
 
-    v12 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledGenerators];
-    if (![v12 count] || (-[TUIKeyboardCandidateMultiplexer candidateReceiver](self, "candidateReceiver"), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+    _queueOnly_enabledGenerators = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledGenerators];
+    if (![_queueOnly_enabledGenerators count] || (-[TUIKeyboardCandidateMultiplexer candidateReceiver](self, "candidateReceiver"), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_24:
 
@@ -793,11 +793,11 @@ LABEL_24:
     }
 
     v14 = v13;
-    v15 = [v6 requestToken];
+    requestToken3 = [contextCopy requestToken];
 
-    if (v15)
+    if (requestToken3)
     {
-      if (v4)
+      if (delayedCopy)
       {
         v16 = 2;
       }
@@ -807,20 +807,20 @@ LABEL_24:
         v16 = 0;
       }
 
-      v12 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledGeneratorsForAccumulatorType:v16 context:v6];
-      v17 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledSourceTypesWithGenerators:v12 accumulatorType:v16 context:v6];
+      _queueOnly_enabledGenerators = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledGeneratorsForAccumulatorType:v16 context:contextCopy];
+      v17 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_enabledSourceTypesWithGenerators:_queueOnly_enabledGenerators accumulatorType:v16 context:contextCopy];
       v18 = v17;
-      if (!v4 || [v17 count])
+      if (!delayedCopy || [v17 count])
       {
         v33 = v18;
-        v34 = v6;
-        v32 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_resultAccumulatorForContext:v6 type:v16 enabledCandidateSources:v18];
+        v34 = contextCopy;
+        v32 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_resultAccumulatorForContext:contextCopy type:v16 enabledCandidateSources:v18];
         v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v20 = v12;
+        v20 = _queueOnly_enabledGenerators;
         v21 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (v21)
         {
@@ -853,9 +853,9 @@ LABEL_24:
         v35[1] = 3221225472;
         v35[2] = __83__TUIKeyboardCandidateMultiplexer__queueOnly_generateCandidatesForContext_delayed___block_invoke;
         v35[3] = &unk_1E72D7C50;
-        v6 = v34;
+        contextCopy = v34;
         v36 = v34;
-        v37 = self;
+        selfCopy = self;
         v38 = v32;
         v26 = v32;
         [v20 enumerateObjectsUsingBlock:v35];
@@ -899,45 +899,45 @@ void __83__TUIKeyboardCandidateMultiplexer__queueOnly_generateCandidatesForConte
   dispatch_async(v4, block);
 }
 
-- (void)_queueOnly_generateCandidatesForKeyboardState:(id)a3 requestToken:(id)a4 usesCandidateSelection:(BOOL)a5
+- (void)_queueOnly_generateCandidatesForKeyboardState:(id)state requestToken:(id)token usesCandidateSelection:(BOOL)selection
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_TUIKeyboardCandidateGenerationContext alloc] initWith:v9 requestToken:v8 usesCandidateSelection:v5 keyboardSuggestionOptions:[(TUIKeyboardCandidateMultiplexer *)self keyboardSuggestionOptions]];
+  selectionCopy = selection;
+  tokenCopy = token;
+  stateCopy = state;
+  v10 = [[_TUIKeyboardCandidateGenerationContext alloc] initWith:stateCopy requestToken:tokenCopy usesCandidateSelection:selectionCopy keyboardSuggestionOptions:[(TUIKeyboardCandidateMultiplexer *)self keyboardSuggestionOptions]];
 
   [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_generateCandidatesForContext:v10 delayed:0];
 }
 
-- (void)generateCandidatesForKeyboardState:(id)a3 requestToken:(id)a4
+- (void)generateCandidatesForKeyboardState:(id)state requestToken:(id)token
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  tokenCopy = token;
+  v7 = [state copy];
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__TUIKeyboardCandidateMultiplexer_generateCandidatesForKeyboardState_requestToken___block_invoke;
   block[3] = &unk_1E72D80E8;
   block[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
   v10 = v7;
-  dispatch_async(v8, block);
+  dispatch_async(internalQueue, block);
 }
 
-- (void)generateCandidatesWithKeyboardContext:(id)a3
+- (void)generateCandidatesWithKeyboardContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  contextCopy = context;
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext___block_invoke;
   v7[3] = &unk_1E72D85E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = contextCopy;
+  v6 = contextCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext___block_invoke(uint64_t a1)
@@ -948,14 +948,14 @@ void __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext
   [v2 _queueOnly_generateCandidatesForKeyboardState:v4 requestToken:v3 usesCandidateSelection:{objc_msgSend(*(a1 + 40), "usesCandidateSelection")}];
 }
 
-- (id)_queueOnly_resultAccumulatorForContext:(id)a3 type:(int)a4 enabledCandidateSources:(id)a5
+- (id)_queueOnly_resultAccumulatorForContext:(id)context type:(int)type enabledCandidateSources:(id)sources
 {
-  v6 = *&a4;
+  v6 = *&type;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 requestToken];
-  v11 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_cachedResultAccumulatorForRequestToken:v10 type:v6];
+  contextCopy = context;
+  sourcesCopy = sources;
+  requestToken = [contextCopy requestToken];
+  v11 = [(TUIKeyboardCandidateMultiplexer *)self _queueOnly_cachedResultAccumulatorForRequestToken:requestToken type:v6];
 
   if (v11)
   {
@@ -965,10 +965,10 @@ void __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext
       goto LABEL_13;
     }
 
-    v13 = [v8 requestToken];
-    v14 = [v13 shortIdentifier];
+    requestToken2 = [contextCopy requestToken];
+    shortIdentifier = [requestToken2 shortIdentifier];
     *buf = 136315650;
-    v42 = [v14 UTF8String];
+    uTF8String = [shortIdentifier UTF8String];
     v43 = 1024;
     v44 = v6;
     v45 = 2080;
@@ -981,8 +981,8 @@ void __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext
     if (v6 == 1)
     {
       pendingRequests = self->_pendingRequests;
-      v16 = [v8 requestToken];
-      v17 = [(_TUIGeneratorResultAccumulatorCache *)pendingRequests accumulatorForToken:v16 type:0];
+      requestToken3 = [contextCopy requestToken];
+      v17 = [(_TUIGeneratorResultAccumulatorCache *)pendingRequests accumulatorForToken:requestToken3 type:0];
 
       if (([v17 areAllGeneratorsComplete] & 1) == 0)
       {
@@ -992,22 +992,22 @@ void __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext
       }
     }
 
-    v20 = [_TUIGeneratorResultAccumulatorPolicy policyForContext:v8 enabledCandidateSources:v9];
-    v21 = [v8 keyboardState];
-    v22 = [v21 textInputTraits];
-    v23 = [v22 secureTextEntry];
+    v20 = [_TUIGeneratorResultAccumulatorPolicy policyForContext:contextCopy enabledCandidateSources:sourcesCopy];
+    keyboardState = [contextCopy keyboardState];
+    textInputTraits = [keyboardState textInputTraits];
+    secureTextEntry = [textInputTraits secureTextEntry];
 
-    if (v23)
+    if (secureTextEntry)
     {
       v24 = objc_alloc_init(MEMORY[0x1E69D9660]);
       v25 = [_TUIKeyboardCandidateGenerationContext alloc];
-      v26 = [v8 requestToken];
-      v12 = -[_TUIKeyboardCandidateGenerationContext initWith:requestToken:usesCandidateSelection:keyboardSuggestionOptions:](v25, "initWith:requestToken:usesCandidateSelection:keyboardSuggestionOptions:", v24, v26, [v8 usesCandidateSelection], -[TUIKeyboardCandidateMultiplexer keyboardSuggestionOptions](self, "keyboardSuggestionOptions"));
+      requestToken4 = [contextCopy requestToken];
+      v12 = -[_TUIKeyboardCandidateGenerationContext initWith:requestToken:usesCandidateSelection:keyboardSuggestionOptions:](v25, "initWith:requestToken:usesCandidateSelection:keyboardSuggestionOptions:", v24, requestToken4, [contextCopy usesCandidateSelection], -[TUIKeyboardCandidateMultiplexer keyboardSuggestionOptions](self, "keyboardSuggestionOptions"));
     }
 
     else
     {
-      v12 = v8;
+      v12 = contextCopy;
     }
 
     v27 = [_TUIGeneratorResultAccumulator alloc];
@@ -1015,19 +1015,19 @@ void __73__TUIKeyboardCandidateMultiplexer_generateCandidatesWithKeyboardContext
     v34 = 3221225472;
     v35 = __103__TUIKeyboardCandidateMultiplexer__queueOnly_resultAccumulatorForContext_type_enabledCandidateSources___block_invoke;
     v36 = &unk_1E72D7C00;
-    v37 = self;
+    selfCopy = self;
     v40 = v6;
-    v38 = v8;
+    v38 = contextCopy;
     v39 = v20;
-    v13 = v20;
-    v28 = [(_TUIGeneratorResultAccumulator *)v27 initWithRequestContext:v12 enabledCandidateSources:v9 policy:v13 onComplete:&v33];
-    [(_TUIGeneratorResultAccumulatorCache *)self->_pendingRequests addToCache:v28 type:v6, v33, v34, v35, v36, v37];
+    requestToken2 = v20;
+    v28 = [(_TUIGeneratorResultAccumulator *)v27 initWithRequestContext:v12 enabledCandidateSources:sourcesCopy policy:requestToken2 onComplete:&v33];
+    [(_TUIGeneratorResultAccumulatorCache *)self->_pendingRequests addToCache:v28 type:v6, v33, v34, v35, v36, selfCopy];
   }
 
 LABEL_13:
   v29 = self->_pendingRequests;
-  v30 = [v8 requestToken];
-  v31 = [(_TUIGeneratorResultAccumulatorCache *)v29 accumulatorForToken:v30 type:v6];
+  requestToken5 = [contextCopy requestToken];
+  v31 = [(_TUIGeneratorResultAccumulatorCache *)v29 accumulatorForToken:requestToken5 type:v6];
 
   return v31;
 }
@@ -1094,12 +1094,12 @@ uint64_t __103__TUIKeyboardCandidateMultiplexer__queueOnly_resultAccumulatorForC
   return [*(a1 + 40) _queueOnly_generateCandidatesForContext:*(a1 + 32) delayed:1];
 }
 
-- (id)_queueOnly_enabledSourceTypesWithGenerators:(id)a3 accumulatorType:(int)a4 context:(id)a5
+- (id)_queueOnly_enabledSourceTypesWithGenerators:(id)generators accumulatorType:(int)type context:(id)context
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v7, "count") + 1}];
+  generatorsCopy = generators;
+  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(generatorsCopy, "count") + 1}];
   v9 = v8;
-  if (a4 != 2 && self->_enableKbdSource)
+  if (type != 2 && self->_enableKbdSource)
   {
     [v8 addObject:&unk_1F03D8D50];
   }
@@ -1110,10 +1110,10 @@ uint64_t __103__TUIKeyboardCandidateMultiplexer__queueOnly_resultAccumulatorForC
   v13[3] = &unk_1E72D7BB0;
   v14 = v9;
   v10 = v9;
-  [v7 enumerateObjectsUsingBlock:v13];
-  v11 = [v10 allObjects];
+  [generatorsCopy enumerateObjectsUsingBlock:v13];
+  allObjects = [v10 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __103__TUIKeyboardCandidateMultiplexer__queueOnly_enabledSourceTypesWithGenerators_accumulatorType_context___block_invoke(uint64_t a1, void *a2)
@@ -1123,34 +1123,34 @@ void __103__TUIKeyboardCandidateMultiplexer__queueOnly_enabledSourceTypesWithGen
   [v2 addObject:v3];
 }
 
-- (id)_queueOnly_enabledGeneratorsForAccumulatorType:(int)a3 context:(id)a4
+- (id)_queueOnly_enabledGeneratorsForAccumulatorType:(int)type context:(id)context
 {
-  v6 = a4;
-  v7 = [v6 keyboardState];
-  v8 = [v7 documentState];
-  [v8 documentIsEmpty];
+  contextCopy = context;
+  keyboardState = [contextCopy keyboardState];
+  documentState = [keyboardState documentState];
+  [documentState documentIsEmpty];
 
-  v9 = [v6 keyboardState];
-  [v9 inputContextHistory];
+  keyboardState2 = [contextCopy keyboardState];
+  [keyboardState2 inputContextHistory];
 
-  v10 = [(TUIKeyboardCandidateMultiplexer *)self generators];
-  v11 = [v10 allValues];
+  generators = [(TUIKeyboardCandidateMultiplexer *)self generators];
+  allValues = [generators allValues];
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v13 = [v6 keyboardState];
-    v14 = [v13 documentState];
-    [v14 documentIsEmpty];
+    keyboardState3 = [contextCopy keyboardState];
+    documentState2 = [keyboardState3 documentState];
+    [documentState2 documentIsEmpty];
 
     v12 = &__block_literal_global_21;
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v12 = &__block_literal_global_19;
   }
 
-  else if (a3)
+  else if (type)
   {
     v12 = 0;
   }
@@ -1165,8 +1165,8 @@ void __103__TUIKeyboardCandidateMultiplexer__queueOnly_enabledSourceTypesWithGen
   v18[2] = __90__TUIKeyboardCandidateMultiplexer__queueOnly_enabledGeneratorsForAccumulatorType_context___block_invoke_4;
   v18[3] = &unk_1E72D7B88;
   v19 = v12;
-  v15 = [v11 indexesOfObjectsPassingTest:v18];
-  v16 = [v11 objectsAtIndexes:v15];
+  v15 = [allValues indexesOfObjectsPassingTest:v18];
+  v16 = [allValues objectsAtIndexes:v15];
 
   return v16;
 }
@@ -1205,27 +1205,27 @@ uint64_t __90__TUIKeyboardCandidateMultiplexer__queueOnly_enabledGeneratorsForAc
 
 - (id)_queueOnly_enabledGenerators
 {
-  v2 = [(TUIKeyboardCandidateMultiplexer *)self generators];
-  v3 = [v2 allValues];
+  generators = [(TUIKeyboardCandidateMultiplexer *)self generators];
+  allValues = [generators allValues];
 
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_8332];
-  v5 = [v3 objectsAtIndexes:v4];
+  v4 = [allValues indexesOfObjectsPassingTest:&__block_literal_global_8332];
+  v5 = [allValues objectsAtIndexes:v4];
 
   return v5;
 }
 
-- (void)addGenerator:(id)a3
+- (void)addGenerator:(id)generator
 {
-  v4 = a3;
-  v5 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  generatorCopy = generator;
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__TUIKeyboardCandidateMultiplexer_addGenerator___block_invoke;
   v7[3] = &unk_1E72D85E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = generatorCopy;
+  v6 = generatorCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __48__TUIKeyboardCandidateMultiplexer_addGenerator___block_invoke(uint64_t a1)
@@ -1250,31 +1250,31 @@ void __48__TUIKeyboardCandidateMultiplexer_addGenerator___block_invoke(uint64_t 
   [v7 setObject:v6 forKeyedSubscript:v8];
 }
 
-- (void)receiveExternalCandidateResultSet:(id)a3 requestToken:(id)a4
+- (void)receiveExternalCandidateResultSet:(id)set requestToken:(id)token
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  tokenCopy = token;
   if (self->_enableKbdSource)
   {
     v8 = TUICandidateGenerationLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v6 candidates];
+      candidates = [setCopy candidates];
       *buf = 134217984;
-      v16 = [v10 count];
+      v16 = [candidates count];
       _os_log_error_impl(&dword_18FFDC000, v8, OS_LOG_TYPE_ERROR, "Received external candidate resultset. Total number of candidates: %lu", buf, 0xCu);
     }
 
-    v9 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+    internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__TUIKeyboardCandidateMultiplexer_receiveExternalCandidateResultSet_requestToken___block_invoke;
     block[3] = &unk_1E72D80E8;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    dispatch_async(v9, block);
+    v12 = setCopy;
+    selfCopy = self;
+    v14 = tokenCopy;
+    dispatch_async(internalQueue, block);
   }
 }
 
@@ -1305,21 +1305,21 @@ void __82__TUIKeyboardCandidateMultiplexer_receiveExternalCandidateResultSet_req
   }
 }
 
-- (void)receiveExternalAutocorrectionUpdate:(id)a3 requestToken:(id)a4
+- (void)receiveExternalAutocorrectionUpdate:(id)update requestToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  tokenCopy = token;
   if (self->_enableKbdSource)
   {
-    v8 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+    internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __84__TUIKeyboardCandidateMultiplexer_receiveExternalAutocorrectionUpdate_requestToken___block_invoke;
     block[3] = &unk_1E72D80E8;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
-    dispatch_async(v8, block);
+    v10 = updateCopy;
+    selfCopy = self;
+    v12 = tokenCopy;
+    dispatch_async(internalQueue, block);
   }
 }
 
@@ -1350,16 +1350,16 @@ void __84__TUIKeyboardCandidateMultiplexer_receiveExternalAutocorrectionUpdate_r
   }
 }
 
-- (void)installGeneratorForSource:(int64_t)a3
+- (void)installGeneratorForSource:(int64_t)source
 {
-  v5 = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
+  internalQueue = [(TUIKeyboardCandidateMultiplexer *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__TUIKeyboardCandidateMultiplexer_installGeneratorForSource___block_invoke;
   v6[3] = &unk_1E72D84B0;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = source;
+  dispatch_async(internalQueue, v6);
 }
 
 void __61__TUIKeyboardCandidateMultiplexer_installGeneratorForSource___block_invoke(uint64_t a1)
@@ -1436,14 +1436,14 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)installGeneratorsForSources:(id)a3
+- (void)installGeneratorsForSources:(id)sources
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __63__TUIKeyboardCandidateMultiplexer_installGeneratorsForSources___block_invoke;
   v3[3] = &unk_1E72D7B20;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [sources enumerateObjectsUsingBlock:v3];
 }
 
 uint64_t __63__TUIKeyboardCandidateMultiplexer_installGeneratorsForSources___block_invoke(uint64_t a1, void *a2)

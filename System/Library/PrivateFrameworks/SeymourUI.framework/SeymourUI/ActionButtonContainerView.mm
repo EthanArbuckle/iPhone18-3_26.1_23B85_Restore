@@ -1,12 +1,12 @@
 @interface ActionButtonContainerView
-- (_TtC9SeymourUI25ActionButtonContainerView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI25ActionButtonContainerView)initWithFrame:(CGRect)a3;
-- (void)actionButtonTapped:(id)a3;
+- (_TtC9SeymourUI25ActionButtonContainerView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI25ActionButtonContainerView)initWithFrame:(CGRect)frame;
+- (void)actionButtonTapped:(id)tapped;
 @end
 
 @implementation ActionButtonContainerView
 
-- (_TtC9SeymourUI25ActionButtonContainerView)initWithCoder:(id)a3
+- (_TtC9SeymourUI25ActionButtonContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI25ActionButtonContainerView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -17,14 +17,14 @@
   return result;
 }
 
-- (void)actionButtonTapped:(id)a3
+- (void)actionButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BC97530(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_20BC97530(tappedCopy);
 }
 
-- (_TtC9SeymourUI25ActionButtonContainerView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI25ActionButtonContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

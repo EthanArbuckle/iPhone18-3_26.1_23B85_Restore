@@ -1,33 +1,33 @@
 @interface TIAnalyticsUtil
-+ (BOOL)hasNonWhitespaceNonPunctuationText:(id)a3;
-+ (BOOL)isArray:(id)a3;
-+ (BOOL)isBoolean:(id)a3;
-+ (BOOL)isDictionary:(id)a3;
-+ (BOOL)isFloat:(id)a3;
-+ (BOOL)isInteger:(id)a3;
-+ (BOOL)isNumber:(id)a3;
-+ (BOOL)isReportableClientId:(id)a3;
-+ (BOOL)isString:(id)a3;
-+ (BOOL)isStylizedString:(id)a3 equalToString:(id)a4;
-+ (id)appCategoryForBundleID:(id)a3;
-+ (id)bucketNumber:(id)a3 bucketThresholds:(id)a4 bucketValues:(id)a5;
-+ (id)bucketRatioWithNumber:(id)a3 bucketCount:(int)a4;
-+ (id)bucketRatioWithNumerator:(id)a3 andDenominator:(id)a4 bucketCount:(int)a5;
-+ (id)bucketRatioWithValue:(double)a3 bucketCount:(int)a4;
-+ (id)constrainInteger:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5;
-+ (id)indexesForValidRatiosInArray:(id)a3;
-+ (id)roundCount:(id)a3 toSignificantDigits:(int64_t)a4;
-+ (id)roundNumber:(id)a3 toSignificantDigits:(id)a4;
-+ (id)toFloat:(id)a3;
-+ (id)toInteger:(id)a3;
-+ (int)computeCommonExtentForArrays:(id)a3;
++ (BOOL)hasNonWhitespaceNonPunctuationText:(id)text;
++ (BOOL)isArray:(id)array;
++ (BOOL)isBoolean:(id)boolean;
++ (BOOL)isDictionary:(id)dictionary;
++ (BOOL)isFloat:(id)float;
++ (BOOL)isInteger:(id)integer;
++ (BOOL)isNumber:(id)number;
++ (BOOL)isReportableClientId:(id)id;
++ (BOOL)isString:(id)string;
++ (BOOL)isStylizedString:(id)string equalToString:(id)toString;
++ (id)appCategoryForBundleID:(id)d;
++ (id)bucketNumber:(id)number bucketThresholds:(id)thresholds bucketValues:(id)values;
++ (id)bucketRatioWithNumber:(id)number bucketCount:(int)count;
++ (id)bucketRatioWithNumerator:(id)numerator andDenominator:(id)denominator bucketCount:(int)count;
++ (id)bucketRatioWithValue:(double)value bucketCount:(int)count;
++ (id)constrainInteger:(id)integer toMinimum:(id)minimum andMaximum:(id)maximum;
++ (id)indexesForValidRatiosInArray:(id)array;
++ (id)roundCount:(id)count toSignificantDigits:(int64_t)digits;
++ (id)roundNumber:(id)number toSignificantDigits:(id)digits;
++ (id)toFloat:(id)float;
++ (id)toInteger:(id)integer;
++ (int)computeCommonExtentForArrays:(id)arrays;
 @end
 
 @implementation TIAnalyticsUtil
 
-+ (id)appCategoryForBundleID:(id)a3
++ (id)appCategoryForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (!InputAnalyticsLibraryCore_12553())
   {
     goto LABEL_7;
@@ -50,7 +50,7 @@
   _Block_object_dispose(&v8, 8);
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [v4 lookupAppBundle:v3];
+    v6 = [v4 lookupAppBundle:dCopy];
   }
 
   else
@@ -62,10 +62,10 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)isReportableClientId:(id)a3
++ (BOOL)isReportableClientId:(id)id
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple."])
+  idCopy = id;
+  if ([idCopy hasPrefix:@"com.apple."])
   {
     v4 = 1;
   }
@@ -78,7 +78,7 @@ LABEL_7:
     }
 
     v5 = isReportableClientId__topThirdPartyBundleIds;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v3, "hash")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(idCopy, "hash")}];
     v4 = [v5 containsObject:v6];
   }
 
@@ -94,32 +94,32 @@ uint64_t __40__TIAnalyticsUtil_isReportableClientId___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)hasNonWhitespaceNonPunctuationText:(id)a3
++ (BOOL)hasNonWhitespaceNonPunctuationText:(id)text
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  textCopy = text;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [textCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v7 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
-  LOBYTE(v7) = [v8 length] != 0;
-  return v7;
+  LOBYTE(punctuationCharacterSet) = [v8 length] != 0;
+  return punctuationCharacterSet;
 }
 
-+ (BOOL)isStylizedString:(id)a3 equalToString:(id)a4
++ (BOOL)isStylizedString:(id)string equalToString:(id)toString
 {
-  v6 = a4;
-  v7 = [a1 createStringByReplacingStylizedQuotesToStraightQuotes:a3];
-  LOBYTE(a1) = [v7 isEqualToString:v6];
+  toStringCopy = toString;
+  v7 = [self createStringByReplacingStylizedQuotesToStraightQuotes:string];
+  LOBYTE(self) = [v7 isEqualToString:toStringCopy];
 
-  return a1;
+  return self;
 }
 
-+ (id)indexesForValidRatiosInArray:(id)a3
++ (id)indexesForValidRatiosInArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -127,7 +127,7 @@ uint64_t __40__TIAnalyticsUtil_isReportableClientId___block_invoke()
   v7[3] = &unk_1E6F4D7C0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [arrayCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -145,16 +145,16 @@ uint64_t __48__TIAnalyticsUtil_indexesForValidRatiosInArray___block_invoke(uint6
   return result;
 }
 
-+ (int)computeCommonExtentForArrays:(id)a3
++ (int)computeCommonExtentForArrays:(id)arrays
 {
   v15 = &v16;
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arraysCopy = arrays;
+  v4 = arraysCopy;
+  if (arraysCopy)
   {
     v5 = -1;
     v6 = -1;
-    v7 = v3;
+    v7 = arraysCopy;
     do
     {
       v8 = [v7 count];
@@ -226,40 +226,40 @@ uint64_t __48__TIAnalyticsUtil_indexesForValidRatiosInArray___block_invoke(uint6
   return v13;
 }
 
-+ (id)bucketRatioWithValue:(double)a3 bucketCount:(int)a4
++ (id)bucketRatioWithValue:(double)value bucketCount:(int)count
 {
-  if (a3 == -1.0)
+  if (value == -1.0)
   {
-    *&a4 = 0xFFFFFFFFLL;
+    *&count = 0xFFFFFFFFLL;
   }
 
   else
   {
-    if (a3 < 0.0)
+    if (value < 0.0)
     {
-      a3 = 0.0;
+      value = 0.0;
     }
 
-    if (a3 > 1.0)
+    if (value > 1.0)
     {
-      a3 = 1.0;
+      value = 1.0;
     }
 
-    a4 = llround(a3 * a4);
+    count = llround(value * count);
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:{*&a4, v4}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:{*&count, v4}];
 
   return v6;
 }
 
-+ (id)bucketRatioWithNumerator:(id)a3 andDenominator:(id)a4 bucketCount:(int)a5
++ (id)bucketRatioWithNumerator:(id)numerator andDenominator:(id)denominator bucketCount:(int)count
 {
-  v5 = *&a5;
-  v7 = a4;
-  [a3 doubleValue];
+  v5 = *&count;
+  denominatorCopy = denominator;
+  [numerator doubleValue];
   v9 = v8;
-  [v7 doubleValue];
+  [denominatorCopy doubleValue];
   v11 = v10;
 
   if (v9 < 0.0 || v11 <= 0.0)
@@ -275,25 +275,25 @@ uint64_t __48__TIAnalyticsUtil_indexesForValidRatiosInArray___block_invoke(uint6
   return v12;
 }
 
-+ (id)bucketRatioWithNumber:(id)a3 bucketCount:(int)a4
++ (id)bucketRatioWithNumber:(id)number bucketCount:(int)count
 {
-  v4 = *&a4;
-  [a3 doubleValue];
+  v4 = *&count;
+  [number doubleValue];
 
   return [TIAnalyticsUtil bucketRatioWithValue:v4 bucketCount:?];
 }
 
-+ (id)bucketNumber:(id)a3 bucketThresholds:(id)a4 bucketValues:(id)a5
++ (id)bucketNumber:(id)number bucketThresholds:(id)thresholds bucketValues:(id)values
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  numberCopy = number;
+  thresholdsCopy = thresholds;
+  valuesCopy = values;
+  v10 = valuesCopy;
+  if (thresholdsCopy)
   {
-    if (v9)
+    if (valuesCopy)
     {
-      [v9 objectAtIndexedSubscript:0];
+      [valuesCopy objectAtIndexedSubscript:0];
     }
 
     else
@@ -301,14 +301,14 @@ uint64_t __48__TIAnalyticsUtil_indexesForValidRatiosInArray___block_invoke(uint6
       [MEMORY[0x1E696AD98] numberWithInteger:0];
     }
     v12 = ;
-    if ([v8 count])
+    if ([thresholdsCopy count])
     {
       v13 = 0;
       while (1)
       {
-        [v7 doubleValue];
+        [numberCopy doubleValue];
         v15 = v14;
-        v16 = [v8 objectAtIndexedSubscript:v13];
+        v16 = [thresholdsCopy objectAtIndexedSubscript:v13];
         [v16 doubleValue];
         v18 = v17;
 
@@ -330,7 +330,7 @@ uint64_t __48__TIAnalyticsUtil_indexesForValidRatiosInArray___block_invoke(uint6
         v11 = ;
 
         v12 = v11;
-        if ([v8 count] == v13)
+        if ([thresholdsCopy count] == v13)
         {
           goto LABEL_15;
         }
@@ -342,7 +342,7 @@ uint64_t __48__TIAnalyticsUtil_indexesForValidRatiosInArray___block_invoke(uint6
 
   else
   {
-    v11 = v7;
+    v11 = numberCopy;
   }
 
 LABEL_15:
@@ -350,56 +350,56 @@ LABEL_15:
   return v11;
 }
 
-+ (id)constrainInteger:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5
++ (id)constrainInteger:(id)integer toMinimum:(id)minimum andMaximum:(id)maximum
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 intValue];
-  if (v7)
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  intValue = [integer intValue];
+  if (minimumCopy)
   {
-    v10 = [v7 intValue];
-    if (v9 <= v10)
+    intValue2 = [minimumCopy intValue];
+    if (intValue <= intValue2)
     {
-      v9 = v10;
+      intValue = intValue2;
     }
 
     else
     {
-      v9 = v9;
+      intValue = intValue;
     }
   }
 
-  if (v8)
+  if (maximumCopy)
   {
-    v11 = [v8 intValue];
-    if (v9 >= v11)
+    intValue3 = [maximumCopy intValue];
+    if (intValue >= intValue3)
     {
-      v9 = v11;
+      intValue = intValue3;
     }
 
     else
     {
-      v9 = v9;
+      intValue = intValue;
     }
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInt:v9];
+  v12 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
 
   return v12;
 }
 
-+ (id)roundNumber:(id)a3 toSignificantDigits:(id)a4
++ (id)roundNumber:(id)number toSignificantDigits:(id)digits
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  numberCopy = number;
+  digitsCopy = digits;
+  if (!digitsCopy)
   {
-    v11 = v5;
+    v11 = numberCopy;
     goto LABEL_11;
   }
 
-  v7 = [TIAnalyticsUtil isInteger:v5];
-  [v5 doubleValue];
+  v7 = [TIAnalyticsUtil isInteger:numberCopy];
+  [numberCopy doubleValue];
   if (v8 == 0.0)
   {
     v9 = MEMORY[0x1E696AD98];
@@ -417,9 +417,9 @@ LABEL_8:
   else
   {
     v12 = v8;
-    v13 = [v6 intValue];
+    intValue = [digitsCopy intValue];
     v14 = log10(fabs(v12));
-    v15 = __exp10((v13 - vcvtpd_s64_f64(v14)));
+    v15 = __exp10((intValue - vcvtpd_s64_f64(v14)));
     v16 = round(v12 * v15) / v15;
     v9 = MEMORY[0x1E696AD98];
     if (v7)
@@ -436,57 +436,57 @@ LABEL_11:
   return v17;
 }
 
-+ (id)roundCount:(id)a3 toSignificantDigits:(int64_t)a4
++ (id)roundCount:(id)count toSignificantDigits:(int64_t)digits
 {
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v5 numberWithInteger:a4];
-  v8 = [TIAnalyticsUtil roundNumber:v6 toSignificantDigits:v7];
+  countCopy = count;
+  v7 = [v5 numberWithInteger:digits];
+  v8 = [TIAnalyticsUtil roundNumber:countCopy toSignificantDigits:v7];
 
   return v8;
 }
 
-+ (id)toFloat:(id)a3
++ (id)toFloat:(id)float
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 floatValue];
+  [float floatValue];
 
   return [v3 numberWithFloat:?];
 }
 
-+ (id)toInteger:(id)a3
++ (id)toInteger:(id)integer
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 intValue];
+  intValue = [integer intValue];
 
-  return [v3 numberWithInt:v4];
+  return [v3 numberWithInt:intValue];
 }
 
-+ (BOOL)isDictionary:(id)a3
++ (BOOL)isDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isArray:(id)a3
++ (BOOL)isArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isBoolean:(id)a3
++ (BOOL)isBoolean:(id)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = CFGetTypeID(v3);
+    v4 = CFGetTypeID(booleanCopy);
     v5 = v4 == CFBooleanGetTypeID();
   }
 
@@ -498,27 +498,27 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)isNumber:(id)a3
++ (BOOL)isNumber:(id)number
 {
-  v3 = a3;
-  v4 = [TIAnalyticsUtil isInteger:v3]|| [TIAnalyticsUtil isFloat:v3];
+  numberCopy = number;
+  v4 = [TIAnalyticsUtil isInteger:numberCopy]|| [TIAnalyticsUtil isFloat:numberCopy];
 
   return v4;
 }
 
-+ (BOOL)isFloat:(id)a3
++ (BOOL)isFloat:(id)float
 {
-  v3 = a3;
+  floatCopy = float;
   objc_opt_class();
   v5 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v4 = CFGetTypeID(v3);
+    v4 = CFGetTypeID(floatCopy);
     if (v4 != CFBooleanGetTypeID())
     {
-      v7 = [v3 objCType];
-      v8 = *v7;
-      if (!*v7 || v8 == 102 || v8 == 100)
+      objCType = [floatCopy objCType];
+      v8 = *objCType;
+      if (!*objCType || v8 == 102 || v8 == 100)
       {
         v5 = 1;
       }
@@ -528,18 +528,18 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)isInteger:(id)a3
++ (BOOL)isInteger:(id)integer
 {
-  v3 = a3;
+  integerCopy = integer;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v4 = CFGetTypeID(v3), v4 != CFBooleanGetTypeID()) && memchr("BcsilqCSILQ", *[v3 objCType], 0xCuLL) != 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v4 = CFGetTypeID(integerCopy), v4 != CFBooleanGetTypeID()) && memchr("BcsilqCSILQ", *[integerCopy objCType], 0xCuLL) != 0;
 
   return v5;
 }
 
-+ (BOOL)isString:(id)a3
++ (BOOL)isString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

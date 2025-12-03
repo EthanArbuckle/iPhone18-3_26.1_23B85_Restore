@@ -1,18 +1,18 @@
 @interface HKHRCardioFitnessNotificationSettingsFactory
-- (HKHRCardioFitnessNotificationSettingsFactory)initWithFeatureStatus:(id)a3;
+- (HKHRCardioFitnessNotificationSettingsFactory)initWithFeatureStatus:(id)status;
 - (id)_ageGatedBridgeSettingFooter;
 - (id)_ageGatedWatchSettingFooter;
 - (id)_ageNotSetBridgeSettingFooter;
 - (id)_ageNotSetWatchSettingFooter;
-- (id)_bridgeNotificationsFooterForEvaluation:(id)a3 :(id)a4;
-- (id)_bridgeOnboardingFooterForEvaluation:(id)a3 :(id)a4;
+- (id)_bridgeNotificationsFooterForEvaluation:(id)evaluation :(id)a4;
+- (id)_bridgeOnboardingFooterForEvaluation:(id)evaluation :(id)a4;
 - (id)_genericBridgeSettingFooter;
 - (id)_genericWatchSettingFooter;
 - (id)_pairedDeviceRegionGatedFooter;
 - (id)_pregnancyBridgeSettingFooter;
 - (id)_pregnancyWatchSettingFooter;
-- (id)_statusTextForWatchWithEnabledState:(BOOL)a3;
-- (id)_watchFooterForEvaluation:(id)a3 :(id)a4;
+- (id)_statusTextForWatchWithEnabledState:(BOOL)state;
+- (id)_watchFooterForEvaluation:(id)evaluation :(id)a4;
 - (id)_wristDetectOffBridgeSettingFooter;
 - (id)bridgeSettings;
 - (id)watchSettings;
@@ -20,46 +20,46 @@
 
 @implementation HKHRCardioFitnessNotificationSettingsFactory
 
-- (HKHRCardioFitnessNotificationSettingsFactory)initWithFeatureStatus:(id)a3
+- (HKHRCardioFitnessNotificationSettingsFactory)initWithFeatureStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v9.receiver = self;
   v9.super_class = HKHRCardioFitnessNotificationSettingsFactory;
   v5 = [(HKHRCardioFitnessNotificationSettingsFactory *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(HKHRCardioFitnessNotificationSettingsFactory *)v5 setFeatureStatus:v4];
+    [(HKHRCardioFitnessNotificationSettingsFactory *)v5 setFeatureStatus:statusCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (id)_bridgeOnboardingFooterForEvaluation:(id)a3 :(id)a4
+- (id)_bridgeOnboardingFooterForEvaluation:(id)evaluation :(id)a4
 {
-  v5 = a3;
-  if ([v5 areAllRequirementsSatisfied])
+  evaluationCopy = evaluation;
+  if ([evaluationCopy areAllRequirementsSatisfied])
   {
-    v6 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBE30]];
+    featureStatus = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    highestPriorityUnsatisfiedRequirement = [featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBE30]];
 
-    if ([v7 areAllRequirementsSatisfied])
+    if ([highestPriorityUnsatisfiedRequirement areAllRequirementsSatisfied])
     {
 LABEL_3:
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _genericBridgeSettingFooter];
+      _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _genericBridgeSettingFooter];
       goto LABEL_8;
     }
 
-    v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pregnancyBridgeSettingFooter];
+    _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pregnancyBridgeSettingFooter];
   }
 
   else
   {
-    v7 = [v5 highestPriorityUnsatisfiedRequirement];
-    if (![v7 isEqualToString:*MEMORY[0x277CCBF08]] && !objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CCBF00]))
+    highestPriorityUnsatisfiedRequirement = [evaluationCopy highestPriorityUnsatisfiedRequirement];
+    if (![highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBF08]] && !objc_msgSend(highestPriorityUnsatisfiedRequirement, "isEqualToString:", *MEMORY[0x277CCBF00]))
     {
-      if (![v7 isEqualToString:*MEMORY[0x277CCBF50]])
+      if (![highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBF50]])
       {
         _HKInitializeLogging();
         v11 = HKLogHeartRateCategory();
@@ -72,59 +72,59 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pairedDeviceRegionGatedFooter];
+    _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pairedDeviceRegionGatedFooter];
   }
 
 LABEL_8:
-  v9 = v8;
+  v9 = _genericBridgeSettingFooter;
 
   return v9;
 }
 
-- (id)_bridgeNotificationsFooterForEvaluation:(id)a3 :(id)a4
+- (id)_bridgeNotificationsFooterForEvaluation:(id)evaluation :(id)a4
 {
-  v5 = a3;
-  if ([v5 areAllRequirementsSatisfied])
+  evaluationCopy = evaluation;
+  if ([evaluationCopy areAllRequirementsSatisfied])
   {
-    v6 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBE30]];
+    featureStatus = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    highestPriorityUnsatisfiedRequirement = [featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBE30]];
 
-    if ([v7 areAllRequirementsSatisfied])
+    if ([highestPriorityUnsatisfiedRequirement areAllRequirementsSatisfied])
     {
 LABEL_3:
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _genericBridgeSettingFooter];
+      _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _genericBridgeSettingFooter];
       goto LABEL_8;
     }
 
-    v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pregnancyBridgeSettingFooter];
+    _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pregnancyBridgeSettingFooter];
   }
 
   else
   {
-    v7 = [v5 highestPriorityUnsatisfiedRequirement];
-    if ([v7 isEqualToString:*MEMORY[0x277CCBF08]] || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CCBF00]))
+    highestPriorityUnsatisfiedRequirement = [evaluationCopy highestPriorityUnsatisfiedRequirement];
+    if ([highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBF08]] || objc_msgSend(highestPriorityUnsatisfiedRequirement, "isEqualToString:", *MEMORY[0x277CCBF00]))
     {
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pairedDeviceRegionGatedFooter];
+      _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pairedDeviceRegionGatedFooter];
     }
 
-    else if ([v7 isEqualToString:*MEMORY[0x277CCBEE0]])
+    else if ([highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBEE0]])
     {
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageNotSetBridgeSettingFooter];
+      _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageNotSetBridgeSettingFooter];
     }
 
-    else if ([v7 isEqualToString:*MEMORY[0x277CCBF70]])
+    else if ([highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBF70]])
     {
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageGatedBridgeSettingFooter];
+      _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageGatedBridgeSettingFooter];
     }
 
     else
     {
-      if ([v7 isEqualToString:*MEMORY[0x277CCBF50]])
+      if ([highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBF50]])
       {
         goto LABEL_3;
       }
 
-      if (![v7 isEqualToString:*MEMORY[0x277CCBFE8]])
+      if (![highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBFE8]])
       {
         _HKInitializeLogging();
         v11 = HKLogHeartRateCategory();
@@ -136,52 +136,52 @@ LABEL_3:
         goto LABEL_3;
       }
 
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _wristDetectOffBridgeSettingFooter];
+      _genericBridgeSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _wristDetectOffBridgeSettingFooter];
     }
   }
 
 LABEL_8:
-  v9 = v8;
+  v9 = _genericBridgeSettingFooter;
 
   return v9;
 }
 
 - (id)bridgeSettings
 {
-  v3 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-  v4 = [v3 objectForKeyedSubscript:@"CardioFitnessBridgeSettingsVisibility"];
+  featureStatus = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+  v4 = [featureStatus objectForKeyedSubscript:@"CardioFitnessBridgeSettingsVisibility"];
 
   if ([v4 areAllRequirementsSatisfied])
   {
-    v5 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v6 = [v5 objectForKeyedSubscript:@"CardioFitnessBridgeOnboardingVisibility"];
-    v7 = [v6 areAllRequirementsSatisfied];
+    featureStatus2 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    v6 = [featureStatus2 objectForKeyedSubscript:@"CardioFitnessBridgeOnboardingVisibility"];
+    areAllRequirementsSatisfied = [v6 areAllRequirementsSatisfied];
 
-    v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v9 = v8;
-    if (v7)
+    featureStatus3 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    v9 = featureStatus3;
+    if (areAllRequirementsSatisfied)
     {
-      v10 = [v8 objectForKeyedSubscript:@"CardioFitnessBridgeOnboardingEnablement"];
+      v10 = [featureStatus3 objectForKeyedSubscript:@"CardioFitnessBridgeOnboardingEnablement"];
 
-      v11 = [v10 areAllRequirementsSatisfied];
-      v12 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+      areAllRequirementsSatisfied2 = [v10 areAllRequirementsSatisfied];
+      featureStatus4 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
       v13 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _bridgeOnboardingFooterForEvaluation:v10];
 
-      v14 = [[HKHRCardioFitnessBridgeSettings alloc] initWithSettingVisible:1 settingEnabled:v11 showOnboarding:1 footer:v13];
+      v14 = [[HKHRCardioFitnessBridgeSettings alloc] initWithSettingVisible:1 settingEnabled:areAllRequirementsSatisfied2 showOnboarding:1 footer:v13];
     }
 
     else
     {
-      v10 = [v8 objectForKeyedSubscript:@"CardioFitnessBridgeNotificationsEnablement"];
+      v10 = [featureStatus3 objectForKeyedSubscript:@"CardioFitnessBridgeNotificationsEnablement"];
 
-      v15 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-      v16 = [v15 objectForKeyedSubscript:@"CardioFitnessBridgeNotificationsFooter"];
+      featureStatus5 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+      v16 = [featureStatus5 objectForKeyedSubscript:@"CardioFitnessBridgeNotificationsFooter"];
 
-      v17 = [v10 areAllRequirementsSatisfied];
-      v18 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+      areAllRequirementsSatisfied3 = [v10 areAllRequirementsSatisfied];
+      featureStatus6 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
       v19 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _bridgeNotificationsFooterForEvaluation:v16];
 
-      v14 = [[HKHRCardioFitnessBridgeSettings alloc] initWithSettingVisible:1 settingEnabled:v17 showOnboarding:0 footer:v19];
+      v14 = [[HKHRCardioFitnessBridgeSettings alloc] initWithSettingVisible:1 settingEnabled:areAllRequirementsSatisfied3 showOnboarding:0 footer:v19];
     }
   }
 
@@ -195,20 +195,20 @@ LABEL_8:
 
 - (id)watchSettings
 {
-  v3 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-  v4 = [v3 objectForKeyedSubscript:@"CardioFitnessNanoSettingsVisibility"];
+  featureStatus = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+  v4 = [featureStatus objectForKeyedSubscript:@"CardioFitnessNanoSettingsVisibility"];
 
   if ([v4 areAllRequirementsSatisfied])
   {
-    v5 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v6 = [v5 objectForKeyedSubscript:@"CardioFitnessNanoSettingsEnablement"];
+    featureStatus2 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    v6 = [featureStatus2 objectForKeyedSubscript:@"CardioFitnessNanoSettingsEnablement"];
 
-    v7 = [v6 areAllRequirementsSatisfied];
-    v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _statusTextForWatchWithEnabledState:v7];
-    v9 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    areAllRequirementsSatisfied = [v6 areAllRequirementsSatisfied];
+    v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _statusTextForWatchWithEnabledState:areAllRequirementsSatisfied];
+    featureStatus3 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
     v10 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _watchFooterForEvaluation:v6];
 
-    v11 = [[HKHRCardioFitnessWatchSettings alloc] initWithSettingVisible:1 settingEnabled:v7 statusText:v8 footer:v10];
+    v11 = [[HKHRCardioFitnessWatchSettings alloc] initWithSettingVisible:1 settingEnabled:areAllRequirementsSatisfied statusText:v8 footer:v10];
   }
 
   else
@@ -219,33 +219,33 @@ LABEL_8:
   return v11;
 }
 
-- (id)_watchFooterForEvaluation:(id)a3 :(id)a4
+- (id)_watchFooterForEvaluation:(id)evaluation :(id)a4
 {
-  v5 = a3;
-  if ([v5 areAllRequirementsSatisfied])
+  evaluationCopy = evaluation;
+  if ([evaluationCopy areAllRequirementsSatisfied])
   {
-    v6 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBE30]];
+    featureStatus = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    highestPriorityUnsatisfiedRequirement = [featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBE30]];
 
-    if (([v7 areAllRequirementsSatisfied] & 1) == 0)
+    if (([highestPriorityUnsatisfiedRequirement areAllRequirementsSatisfied] & 1) == 0)
     {
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pregnancyWatchSettingFooter];
+      _pregnancyWatchSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _pregnancyWatchSettingFooter];
       goto LABEL_12;
     }
   }
 
   else
   {
-    v7 = [v5 highestPriorityUnsatisfiedRequirement];
-    if ([v7 isEqualToString:*MEMORY[0x277CCBF70]])
+    highestPriorityUnsatisfiedRequirement = [evaluationCopy highestPriorityUnsatisfiedRequirement];
+    if ([highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBF70]])
     {
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageGatedWatchSettingFooter];
+      _pregnancyWatchSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageGatedWatchSettingFooter];
       goto LABEL_12;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCBEE0]])
+    if ([highestPriorityUnsatisfiedRequirement isEqualToString:*MEMORY[0x277CCBEE0]])
     {
-      v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageNotSetWatchSettingFooter];
+      _pregnancyWatchSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _ageNotSetWatchSettingFooter];
       goto LABEL_12;
     }
 
@@ -257,20 +257,20 @@ LABEL_8:
     }
   }
 
-  v8 = [(HKHRCardioFitnessNotificationSettingsFactory *)self _genericWatchSettingFooter];
+  _pregnancyWatchSettingFooter = [(HKHRCardioFitnessNotificationSettingsFactory *)self _genericWatchSettingFooter];
 LABEL_12:
-  v16 = v8;
+  v16 = _pregnancyWatchSettingFooter;
 
   return v16;
 }
 
-- (id)_statusTextForWatchWithEnabledState:(BOOL)a3
+- (id)_statusTextForWatchWithEnabledState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
-    v3 = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
-    v4 = [v3 requirementsEvaluationByContext];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    featureStatus = [(HKHRCardioFitnessNotificationSettingsFactory *)self featureStatus];
+    requirementsEvaluationByContext = [featureStatus requirementsEvaluationByContext];
+    v5 = [requirementsEvaluationByContext objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
     v6 = [v5 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF38]];
 
     if (v6)

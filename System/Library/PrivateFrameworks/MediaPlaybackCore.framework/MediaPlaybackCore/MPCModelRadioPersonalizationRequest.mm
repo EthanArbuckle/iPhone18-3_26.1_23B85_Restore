@@ -1,20 +1,20 @@
 @interface MPCModelRadioPersonalizationRequest
 - (MPCModelRadioPersonalizationRequest)init;
-- (MPCModelRadioPersonalizationRequest)initWithRadioStationTracks:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (MPCModelRadioPersonalizationRequest)initWithRadioStationTracks:(id)tracks;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPCModelRadioPersonalizationRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = MPCModelRadioPersonalizationRequest;
   v5 = [(MPCModelRadioPersonalizationRequest *)&v9 copyWithZone:?];
   if (v5)
   {
-    v6 = [(MPSectionedCollection *)self->_radioStationTracks copyWithZone:a3];
+    v6 = [(MPSectionedCollection *)self->_radioStationTracks copyWithZone:zone];
     v7 = v5[8];
     v5[8] = v6;
   }
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   v6 = os_signpost_id_make_with_pointer(v5, self);
 
@@ -47,9 +47,9 @@
   v14[3] = &unk_1E8235460;
   v14[4] = v9;
   v14[5] = self;
-  v15 = v4;
+  v15 = handlerCopy;
   v16 = v6;
-  v11 = v4;
+  v11 = handlerCopy;
   v12 = [v10 initWithStartHandler:v14];
 
   return v12;
@@ -213,16 +213,16 @@ uint64_t __71__MPCModelRadioPersonalizationRequest_newOperationWithResponseHandl
   return [a2 setUniversalStoreIdentifiersWithBlock:v3];
 }
 
-- (MPCModelRadioPersonalizationRequest)initWithRadioStationTracks:(id)a3
+- (MPCModelRadioPersonalizationRequest)initWithRadioStationTracks:(id)tracks
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tracksCopy = tracks;
   v14.receiver = self;
   v14.super_class = MPCModelRadioPersonalizationRequest;
   v5 = [(MPCModelRadioPersonalizationRequest *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [tracksCopy copy];
     radioStationTracks = v5->_radioStationTracks;
     v5->_radioStationTracks = v6;
 
@@ -234,8 +234,8 @@ uint64_t __71__MPCModelRadioPersonalizationRequest_newOperationWithResponseHandl
     v11 = [v9 kindWithRelationshipKinds:v10];
     [(MPCModelRadioPersonalizationRequest *)v5 setItemKind:v11];
 
-    v12 = [MEMORY[0x1E6970758] identityKind];
-    [(MPCModelRadioPersonalizationRequest *)v5 setSectionKind:v12];
+    identityKind = [MEMORY[0x1E6970758] identityKind];
+    [(MPCModelRadioPersonalizationRequest *)v5 setSectionKind:identityKind];
   }
 
   return v5;

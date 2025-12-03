@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneStoreNativeFSLockFactory
 + (void)initialize;
-- (id)obtainFSLockWithOrgApacheLuceneStoreFSDirectory:(id)a3 withNSString:(id)a4;
+- (id)obtainFSLockWithOrgApacheLuceneStoreFSDirectory:(id)directory withNSString:(id)string;
 @end
 
 @implementation OrgApacheLuceneStoreNativeFSLockFactory
 
-- (id)obtainFSLockWithOrgApacheLuceneStoreFSDirectory:(id)a3 withNSString:(id)a4
+- (id)obtainFSLockWithOrgApacheLuceneStoreFSDirectory:(id)directory withNSString:(id)string
 {
-  if (!a3)
+  if (!directory)
   {
     goto LABEL_18;
   }
 
-  v5 = [a3 getDirectory];
-  OrgLukhnosPortmobileFileFiles_createDirectoriesWithOrgLukhnosPortmobileFilePath_(v5);
-  if (!v5 || (v6 = [v5 resolveWithNSString:a4], OrgLukhnosPortmobileFileFiles_createFileWithOrgLukhnosPortmobileFilePath_(v6), !v6) || (v7 = objc_msgSend(v6, "toRealPath"), OrgLukhnosPortmobileFileAttributeBasicFileAttributes_class_(), (AttributesWithOrgLukhnosPortmobileFilePath_withIOSClass = OrgLukhnosPortmobileFileFiles_readAttributesWithOrgLukhnosPortmobileFilePath_withIOSClass_(v7)) == 0) || (v9 = -[OrgLukhnosPortmobileFileAttributeBasicFileAttributes creationTime](AttributesWithOrgLukhnosPortmobileFilePath_withIOSClass, "creationTime"), !qword_100554738) || !v7)
+  getDirectory = [directory getDirectory];
+  OrgLukhnosPortmobileFileFiles_createDirectoriesWithOrgLukhnosPortmobileFilePath_(getDirectory);
+  if (!getDirectory || (v6 = [getDirectory resolveWithNSString:string], OrgLukhnosPortmobileFileFiles_createFileWithOrgLukhnosPortmobileFilePath_(v6), !v6) || (v7 = objc_msgSend(v6, "toRealPath"), OrgLukhnosPortmobileFileAttributeBasicFileAttributes_class_(), (AttributesWithOrgLukhnosPortmobileFilePath_withIOSClass = OrgLukhnosPortmobileFileFiles_readAttributesWithOrgLukhnosPortmobileFilePath_withIOSClass_(v7)) == 0) || (v9 = -[OrgLukhnosPortmobileFileAttributeBasicFileAttributes creationTime](AttributesWithOrgLukhnosPortmobileFilePath_withIOSClass, "creationTime"), !qword_100554738) || !v7)
   {
 LABEL_18:
     JreThrowNullPointerException();
@@ -48,8 +48,8 @@ LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v28 = [v19 tryLock];
-  if (!v28)
+  tryLock = [v19 tryLock];
+  if (!tryLock)
   {
     v33 = JreStrcat("$@", v21, v22, v23, v24, v25, v26, v27, @"Lock held by another program: ");
     v34 = new_OrgApacheLuceneStoreLockObtainFailedException_initWithNSString_(v33);
@@ -57,13 +57,13 @@ LABEL_18:
   }
 
   v29 = [OrgApacheLuceneStoreNativeFSLockFactory_NativeFSLock alloc];
-  OrgApacheLuceneStoreNativeFSLockFactory_NativeFSLock_initWithJavaNioChannelsFileLock_withJavaNioChannelsFileChannel_withOrgLukhnosPortmobileFilePath_withOrgLukhnosPortmobileFileAttributeFileTime_(&v29->super.super.isa, v28, v20, v7, v10);
+  OrgApacheLuceneStoreNativeFSLockFactory_NativeFSLock_initWithJavaNioChannelsFileLock_withJavaNioChannelsFileChannel_withOrgLukhnosPortmobileFilePath_withOrgLukhnosPortmobileFileAttributeFileTime_(&v29->super.super.isa, tryLock, v20, v7, v10);
   return v29;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneStoreNativeFSLockFactory alloc];
     OrgApacheLuceneStoreFSLockFactory_init(v2, v3);

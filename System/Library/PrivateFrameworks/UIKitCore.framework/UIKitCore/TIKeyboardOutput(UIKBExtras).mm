@@ -8,50 +8,50 @@
 - (void)_copyTo:()UIKBExtras
 {
   v11 = a3;
-  v4 = [a1 acceptedCandidate];
-  [v11 setAcceptedCandidate:v4];
+  acceptedCandidate = [self acceptedCandidate];
+  [v11 setAcceptedCandidate:acceptedCandidate];
 
-  v5 = [a1 textToCommit];
-  [v11 setTextToCommit:v5];
+  textToCommit = [self textToCommit];
+  [v11 setTextToCommit:textToCommit];
 
-  [v11 setUnmarkIfNecessary:{objc_msgSend(a1, "unmarkIfNecessary")}];
+  [v11 setUnmarkIfNecessary:{objc_msgSend(self, "unmarkIfNecessary")}];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    [v11 setPositionOffset:{objc_msgSend(a1, "positionOffset")}];
+    [v11 setPositionOffset:{objc_msgSend(self, "positionOffset")}];
   }
 
-  [v11 setDeletionCount:{objc_msgSend(a1, "deletionCount")}];
-  v6 = [a1 insertionText];
-  [v11 setInsertionText:v6];
+  [v11 setDeletionCount:{objc_msgSend(self, "deletionCount")}];
+  insertionText = [self insertionText];
+  [v11 setInsertionText:insertionText];
 
-  [v11 setForwardDeletionCount:{objc_msgSend(a1, "forwardDeletionCount")}];
-  v7 = [a1 insertionTextAfterSelection];
-  [v11 setInsertionTextAfterSelection:v7];
+  [v11 setForwardDeletionCount:{objc_msgSend(self, "forwardDeletionCount")}];
+  insertionTextAfterSelection = [self insertionTextAfterSelection];
+  [v11 setInsertionTextAfterSelection:insertionTextAfterSelection];
 
-  v8 = [a1 shortcutConversion];
-  [v11 setShortcutConversion:v8];
+  shortcutConversion = [self shortcutConversion];
+  [v11 setShortcutConversion:shortcutConversion];
 
-  v9 = [a1 handwritingStrokesToDelete];
-  [v11 setHandwritingStrokesToDelete:v9];
+  handwritingStrokesToDelete = [self handwritingStrokesToDelete];
+  [v11 setHandwritingStrokesToDelete:handwritingStrokesToDelete];
 
-  [v11 setShouldSendCurrentLocation:{objc_msgSend(a1, "shouldSendCurrentLocation")}];
-  v10 = [a1 customInfo];
-  [v11 setCustomInfo:v10];
+  [v11 setShouldSendCurrentLocation:{objc_msgSend(self, "shouldSendCurrentLocation")}];
+  customInfo = [self customInfo];
+  [v11 setCustomInfo:customInfo];
 
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    [v11 setProducedByDeleteInput:{objc_msgSend(a1, "producedByDeleteInput")}];
+    [v11 setProducedByDeleteInput:{objc_msgSend(self, "producedByDeleteInput")}];
   }
 }
 
 - (BOOL)_isEmpty
 {
-  v2 = [a1 acceptedCandidate];
+  acceptedCandidate = [self acceptedCandidate];
 
-  v3 = [a1 textToCommit];
-  v4 = v2 | v3;
+  textToCommit = [self textToCommit];
+  v4 = acceptedCandidate | textToCommit;
 
-  v5 = [a1 unmarkIfNecessary];
+  unmarkIfNecessary = [self unmarkIfNecessary];
   if (v4)
   {
     v6 = 1;
@@ -59,44 +59,44 @@
 
   else
   {
-    v6 = v5;
+    v6 = unmarkIfNecessary;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [a1 positionOffset])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [self positionOffset])
   {
     v6 = 1;
   }
 
-  if ([a1 deletionCount])
+  if ([self deletionCount])
   {
     v6 = 1;
   }
 
-  v7 = [a1 insertionText];
-  if (v7)
+  insertionText = [self insertionText];
+  if (insertionText)
   {
     v6 = 1;
   }
 
-  if ([a1 forwardDeletionCount])
+  if ([self forwardDeletionCount])
   {
     v6 = 1;
   }
 
-  v8 = [a1 insertionTextAfterSelection];
-  if (v8)
+  insertionTextAfterSelection = [self insertionTextAfterSelection];
+  if (insertionTextAfterSelection)
   {
     v6 = 1;
   }
 
-  v9 = [a1 shortcutConversion];
-  if (v9)
+  shortcutConversion = [self shortcutConversion];
+  if (shortcutConversion)
   {
     v6 = 1;
   }
 
-  v10 = [a1 handwritingStrokesToDelete];
-  if (v10)
+  handwritingStrokesToDelete = [self handwritingStrokesToDelete];
+  if (handwritingStrokesToDelete)
   {
     v11 = 1;
   }
@@ -106,13 +106,13 @@
     v11 = v6;
   }
 
-  v12 = [a1 shouldSendCurrentLocation];
-  v13 = [a1 customInfo];
-  v14 = v11 | v12 | (v13 != 0);
+  shouldSendCurrentLocation = [self shouldSendCurrentLocation];
+  customInfo = [self customInfo];
+  v14 = v11 | shouldSendCurrentLocation | (customInfo != 0);
 
   if (objc_opt_respondsToSelector())
   {
-    v14 |= [a1 producedByDeleteInput];
+    v14 |= [self producedByDeleteInput];
   }
 
   return (v14 & 1) == 0;

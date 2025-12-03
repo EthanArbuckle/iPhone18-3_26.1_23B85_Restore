@@ -1,36 +1,36 @@
 @interface AVTAttributeValueView
-+ (CGRect)imageViewRectForBounds:(CGRect)a3 imageSizeRatio:(CGSize)a4 scale:(double)a5;
-- (AVTAttributeValueView)initWithFrame:(CGRect)a3;
++ (CGRect)imageViewRectForBounds:(CGRect)bounds imageSizeRatio:(CGSize)ratio scale:(double)scale;
+- (AVTAttributeValueView)initWithFrame:(CGRect)frame;
 - (CGRect)selectorRect;
 - (CGSize)imageSizeRatio;
 - (id)clippingBezierPath;
 - (id)selectionBezierPath;
 - (void)bringSelectionLayersToFront;
 - (void)cleanupAfterTransition;
-- (void)configureImageLayer:(id)a3;
+- (void)configureImageLayer:(id)layer;
 - (void)discardContent;
 - (void)layoutSubviews;
-- (void)prepareForTransitionToImage:(id)a3;
+- (void)prepareForTransitionToImage:(id)image;
 - (void)relayoutSublayers;
-- (void)setImageSizeRatio:(CGSize)a3;
-- (void)setSelectionStyle:(unint64_t)a3;
-- (void)setShowPlaceholder:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setImageSizeRatio:(CGSize)ratio;
+- (void)setSelectionStyle:(unint64_t)style;
+- (void)setShowPlaceholder:(BOOL)placeholder;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCornerRadii;
-- (void)updateHighlightedState:(BOOL)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)updateSelectedState:(BOOL)a3 animated:(BOOL)a4;
+- (void)updateHighlightedState:(BOOL)state animated:(BOOL)animated completionBlock:(id)block;
+- (void)updateSelectedState:(BOOL)state animated:(BOOL)animated;
 - (void)updateSelectionAndMaskLayer;
-- (void)updateWithImage:(id)a3;
+- (void)updateWithImage:(id)image;
 @end
 
 @implementation AVTAttributeValueView
 
-- (AVTAttributeValueView)initWithFrame:(CGRect)a3
+- (AVTAttributeValueView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31.receiver = self;
   v31.super_class = AVTAttributeValueView;
   v7 = [(AVTAttributeValueView *)&v31 initWithFrame:?];
@@ -51,8 +51,8 @@
     v8->_imageLayer = v16;
 
     [(AVTAttributeValueView *)v8 configureImageLayer:v8->_imageLayer];
-    v18 = [(UIView *)v8->_contentView layer];
-    [v18 addSublayer:v8->_imageLayer];
+    layer = [(UIView *)v8->_contentView layer];
+    [layer addSublayer:v8->_imageLayer];
 
     v19 = objc_alloc_init(MEMORY[0x1E6979398]);
     transitionImageLayer = v8->_transitionImageLayer;
@@ -60,30 +60,30 @@
 
     [(CALayer *)v8->_transitionImageLayer setOpacity:0.0];
     [(AVTAttributeValueView *)v8 configureImageLayer:v8->_transitionImageLayer];
-    v21 = [(UIView *)v8->_contentView layer];
-    [v21 addSublayer:v8->_transitionImageLayer];
+    layer2 = [(UIView *)v8->_contentView layer];
+    [layer2 addSublayer:v8->_transitionImageLayer];
 
-    v22 = [MEMORY[0x1E69794A0] layer];
+    layer3 = [MEMORY[0x1E69794A0] layer];
     selectionLayer = v8->_selectionLayer;
-    v8->_selectionLayer = v22;
+    v8->_selectionLayer = layer3;
 
     v24 = +[AVTUIColorRepository attributeValueCellSelectedStrokeColor];
     -[CAShapeLayer setStrokeColor:](v8->_selectionLayer, "setStrokeColor:", [v24 CGColor]);
 
-    v25 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v8->_selectionLayer, "setFillColor:", [v25 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v8->_selectionLayer, "setFillColor:", [clearColor CGColor]);
 
     [(CAShapeLayer *)v8->_selectionLayer setLineWidth:3.0];
     [(CAShapeLayer *)v8->_selectionLayer setOpacity:0.0];
-    v26 = [(AVTAttributeValueView *)v8 layer];
-    [v26 addSublayer:v8->_selectionLayer];
+    layer4 = [(AVTAttributeValueView *)v8 layer];
+    [layer4 addSublayer:v8->_selectionLayer];
 
-    v27 = [MEMORY[0x1E69794A0] layer];
+    layer5 = [MEMORY[0x1E69794A0] layer];
     clippingLayer = v8->_clippingLayer;
-    v8->_clippingLayer = v27;
+    v8->_clippingLayer = layer5;
 
-    v29 = [MEMORY[0x1E69DC888] blackColor];
-    -[CAShapeLayer setFillColor:](v8->_clippingLayer, "setFillColor:", [v29 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    -[CAShapeLayer setFillColor:](v8->_clippingLayer, "setFillColor:", [blackColor CGColor]);
 
     [(CAShapeLayer *)v8->_clippingLayer setLineWidth:0.0];
   }
@@ -100,8 +100,8 @@
   height = v31.size.height;
   if (!CGRectIsEmpty(v31))
   {
-    v7 = [(AVTAttributeValueView *)self selectionLayer];
-    [v7 frame];
+    selectionLayer = [(AVTAttributeValueView *)self selectionLayer];
+    [selectionLayer frame];
     v33.origin.x = x;
     v33.origin.y = y;
     v33.size.width = width;
@@ -110,53 +110,53 @@
 
     if (!v8)
     {
-      v9 = [(AVTAttributeValueView *)self selectionLayer];
-      [v9 setBounds:{x, y, width, height}];
+      selectionLayer2 = [(AVTAttributeValueView *)self selectionLayer];
+      [selectionLayer2 setBounds:{x, y, width, height}];
 
-      v10 = [(AVTAttributeValueView *)self selectionBezierPath];
-      v11 = [v10 CGPath];
-      v12 = [(AVTAttributeValueView *)self selectionLayer];
-      [v12 setPath:v11];
+      selectionBezierPath = [(AVTAttributeValueView *)self selectionBezierPath];
+      cGPath = [selectionBezierPath CGPath];
+      selectionLayer3 = [(AVTAttributeValueView *)self selectionLayer];
+      [selectionLayer3 setPath:cGPath];
 
-      v13 = [(AVTAttributeValueView *)self clippingLayer];
-      [v13 setBounds:{x, y, width, height}];
+      clippingLayer = [(AVTAttributeValueView *)self clippingLayer];
+      [clippingLayer setBounds:{x, y, width, height}];
 
-      v14 = [(AVTAttributeValueView *)self clippingBezierPath];
-      v15 = [v14 CGPath];
-      v16 = [(AVTAttributeValueView *)self clippingLayer];
-      [v16 setPath:v15];
+      clippingBezierPath = [(AVTAttributeValueView *)self clippingBezierPath];
+      cGPath2 = [clippingBezierPath CGPath];
+      clippingLayer2 = [(AVTAttributeValueView *)self clippingLayer];
+      [clippingLayer2 setPath:cGPath2];
     }
 
     v17 = +[AVTUIColorRepository attributeValueCellSelectedStrokeColor];
-    v18 = [v17 CGColor];
-    v19 = [(AVTAttributeValueView *)self selectionLayer];
-    [v19 setStrokeColor:v18];
+    cGColor = [v17 CGColor];
+    selectionLayer4 = [(AVTAttributeValueView *)self selectionLayer];
+    [selectionLayer4 setStrokeColor:cGColor];
 
     [(AVTAttributeValueView *)self bounds];
     UIRectGetCenter();
     v21 = v20;
     v23 = v22;
-    v24 = [(AVTAttributeValueView *)self selectionLayer];
-    [v24 setPosition:{v21, v23}];
+    selectionLayer5 = [(AVTAttributeValueView *)self selectionLayer];
+    [selectionLayer5 setPosition:{v21, v23}];
 
-    v25 = [(AVTAttributeValueView *)self clippingLayer];
-    [v25 setPosition:{v21, v23}];
+    clippingLayer3 = [(AVTAttributeValueView *)self clippingLayer];
+    [clippingLayer3 setPosition:{v21, v23}];
 
     if ([(AVTAttributeValueView *)self selectionStyle]== 1 || [(AVTAttributeValueView *)self isSelected])
     {
-      v29 = [(AVTAttributeValueView *)self clippingLayer];
+      clippingLayer4 = [(AVTAttributeValueView *)self clippingLayer];
       v26 = 1;
     }
 
     else
     {
       v26 = 0;
-      v29 = 0;
+      clippingLayer4 = 0;
     }
 
-    v27 = [(AVTAttributeValueView *)self contentView];
-    v28 = [v27 layer];
-    [v28 setMask:v29];
+    contentView = [(AVTAttributeValueView *)self contentView];
+    layer = [contentView layer];
+    [layer setMask:clippingLayer4];
 
     if (v26)
     {
@@ -164,23 +164,23 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = AVTAttributeValueView;
-  [(AVTAttributeValueView *)&v10 traitCollectionDidChange:v4];
+  [(AVTAttributeValueView *)&v10 traitCollectionDidChange:changeCopy];
   [(AVTAttributeValueView *)self updateSelectionAndMaskLayer];
   if (self->_showPlaceholder)
   {
-    v5 = [v4 userInterfaceStyle];
-    v6 = [(AVTAttributeValueView *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    userInterfaceStyle = [changeCopy userInterfaceStyle];
+    traitCollection = [(AVTAttributeValueView *)self traitCollection];
+    userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-    if (v5 != v7)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
-      v8 = [(AVTAttributeValueView *)self traitCollection];
-      v9 = AVTFlatSilhouetteImageForTraitCollection(v8);
+      traitCollection2 = [(AVTAttributeValueView *)self traitCollection];
+      v9 = AVTFlatSilhouetteImageForTraitCollection(traitCollection2);
       [(AVTAttributeValueView *)self updateWithImage:v9];
     }
   }
@@ -208,9 +208,9 @@
   [(AVTAttributeValueView *)self imageSizeRatio];
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTAttributeValueView *)self window];
-  v17 = [v16 screen];
-  [v17 scale];
+  window = [(AVTAttributeValueView *)self window];
+  screen = [window screen];
+  [screen scale];
   [v3 imageViewRectForBounds:v5 imageSizeRatio:v7 scale:{v9, v11, v13, v15, v18}];
   v20 = v19;
   v22 = v21;
@@ -223,26 +223,26 @@
   v30 = v29;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v31 = [(AVTAttributeValueView *)self imageLayer];
-  [v31 setPosition:{v28, v30}];
+  imageLayer = [(AVTAttributeValueView *)self imageLayer];
+  [imageLayer setPosition:{v28, v30}];
 
-  v32 = [(AVTAttributeValueView *)self imageLayer];
-  [v32 setBounds:{v20, v22, v24, v26}];
+  imageLayer2 = [(AVTAttributeValueView *)self imageLayer];
+  [imageLayer2 setBounds:{v20, v22, v24, v26}];
 
-  v33 = [(AVTAttributeValueView *)self transitionImageLayer];
-  [v33 setPosition:{v28, v30}];
+  transitionImageLayer = [(AVTAttributeValueView *)self transitionImageLayer];
+  [transitionImageLayer setPosition:{v28, v30}];
 
-  v34 = [(AVTAttributeValueView *)self transitionImageLayer];
-  [v34 setBounds:{v20, v22, v24, v26}];
+  transitionImageLayer2 = [(AVTAttributeValueView *)self transitionImageLayer];
+  [transitionImageLayer2 setBounds:{v20, v22, v24, v26}];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v35 = [(AVTAttributeValueView *)self imageLayer];
-  v36 = [v35 sublayers];
+  imageLayer3 = [(AVTAttributeValueView *)self imageLayer];
+  sublayers = [imageLayer3 sublayers];
 
-  v37 = [v36 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  v37 = [sublayers countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v37)
   {
     v38 = v37;
@@ -254,19 +254,19 @@
       {
         if (*v44 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(sublayers);
         }
 
         v41 = *(*(&v43 + 1) + 8 * v40);
-        v42 = [(AVTAttributeValueView *)self imageLayer];
-        [v42 bounds];
+        imageLayer4 = [(AVTAttributeValueView *)self imageLayer];
+        [imageLayer4 bounds];
         [v41 setFrame:?];
 
         ++v40;
       }
 
       while (v38 != v40);
-      v38 = [v36 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v38 = [sublayers countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v38);
@@ -291,9 +291,9 @@
   v22.size.height = height;
   CGRectGetHeight(v22);
   UIRectGetCenter();
-  v7 = [(AVTAttributeValueView *)self window];
-  v8 = [v7 screen];
-  [v8 scale];
+  window = [(AVTAttributeValueView *)self window];
+  screen = [window screen];
+  [screen scale];
   UIRectCenteredAboutPointScale();
   v10 = v9;
   v12 = v11;
@@ -311,20 +311,20 @@
   return result;
 }
 
-- (void)configureImageLayer:(id)a3
+- (void)configureImageLayer:(id)layer
 {
   v3 = *MEMORY[0x1E69796E8];
-  v4 = a3;
-  [v4 setCornerCurve:v3];
-  [v4 setCornerRadius:6.0];
-  [v4 setMasksToBounds:1];
-  [v4 setContentsGravity:*MEMORY[0x1E6979DF0]];
+  layerCopy = layer;
+  [layerCopy setCornerCurve:v3];
+  [layerCopy setCornerRadius:6.0];
+  [layerCopy setMasksToBounds:1];
+  [layerCopy setContentsGravity:*MEMORY[0x1E6979DF0]];
 }
 
-+ (CGRect)imageViewRectForBounds:(CGRect)a3 imageSizeRatio:(CGSize)a4 scale:(double)a5
++ (CGRect)imageViewRectForBounds:(CGRect)bounds imageSizeRatio:(CGSize)ratio scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = ratio.height;
+  width = ratio.width;
   v8 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
   v11 = 0u;
@@ -399,11 +399,11 @@
   return v15;
 }
 
-- (void)setSelectionStyle:(unint64_t)a3
+- (void)setSelectionStyle:(unint64_t)style
 {
-  if (self->_selectionStyle != a3)
+  if (self->_selectionStyle != style)
   {
-    self->_selectionStyle = a3;
+    self->_selectionStyle = style;
     [(AVTAttributeValueView *)self setNeedsLayout];
   }
 }
@@ -414,35 +414,35 @@
   if (![(AVTAttributeValueView *)self selectionStyle])
   {
     v4 = *MEMORY[0x1E69796E8];
-    v5 = [(AVTAttributeValueView *)self imageLayer];
-    [v5 setCornerCurve:v4];
+    imageLayer = [(AVTAttributeValueView *)self imageLayer];
+    [imageLayer setCornerCurve:v4];
 
     v3 = 6.0;
   }
 
-  v6 = [(AVTAttributeValueView *)self imageLayer];
-  [v6 setCornerRadius:v3];
+  imageLayer2 = [(AVTAttributeValueView *)self imageLayer];
+  [imageLayer2 setCornerRadius:v3];
 }
 
-- (void)setImageSizeRatio:(CGSize)a3
+- (void)setImageSizeRatio:(CGSize)ratio
 {
-  if (self->_imageSizeRatio.width != a3.width || self->_imageSizeRatio.height != a3.height)
+  if (self->_imageSizeRatio.width != ratio.width || self->_imageSizeRatio.height != ratio.height)
   {
-    self->_imageSizeRatio = a3;
+    self->_imageSizeRatio = ratio;
     [(AVTAttributeValueView *)self setNeedsLayout];
   }
 }
 
-- (void)updateHighlightedState:(BOOL)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)updateHighlightedState:(BOOL)state animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  stateCopy = state;
+  blockCopy = block;
   memset(&v13, 0, sizeof(v13));
-  if (v6)
+  if (stateCopy)
   {
     CGAffineTransformMakeScale(&v13, 0.95, 0.95);
-    if (!v5)
+    if (!animatedCopy)
     {
       goto LABEL_3;
     }
@@ -454,7 +454,7 @@ LABEL_6:
     v11[2] = __73__AVTAttributeValueView_updateHighlightedState_animated_completionBlock___block_invoke;
     v11[3] = &unk_1E7F3C0A0;
     v11[4] = self;
-    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v11 options:v8 animations:0.1 completion:0.0];
+    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v11 options:blockCopy animations:0.1 completion:0.0];
     goto LABEL_7;
   }
 
@@ -462,7 +462,7 @@ LABEL_6:
   *&v13.a = *MEMORY[0x1E695EFD0];
   *&v13.c = v9;
   *&v13.tx = *(MEMORY[0x1E695EFD0] + 32);
-  if (v5)
+  if (animatedCopy)
   {
     goto LABEL_6;
   }
@@ -470,9 +470,9 @@ LABEL_6:
 LABEL_3:
   v10 = v13;
   [(AVTAttributeValueView *)self setTransform:&v10];
-  if (v8)
+  if (blockCopy)
   {
-    v8[2](v8, 1);
+    blockCopy[2](blockCopy, 1);
   }
 
 LABEL_7:
@@ -487,18 +487,18 @@ uint64_t __73__AVTAttributeValueView_updateHighlightedState_animated_completionB
   return [*(a1 + 32) setTransform:v3];
 }
 
-- (void)updateSelectedState:(BOOL)a3 animated:(BOOL)a4
+- (void)updateSelectedState:(BOOL)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  stateCopy = state;
   [(AVTAttributeValueView *)self setSelected:?];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(AVTAttributeValueView *)self updateSelectionAndMaskLayer];
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E6979518] commit];
-    if (v5)
+    if (stateCopy)
     {
       v7 = 1.0;
     }
@@ -508,14 +508,14 @@ uint64_t __73__AVTAttributeValueView_updateHighlightedState_animated_completionB
       v7 = 0.0;
     }
 
-    v13 = [(AVTAttributeValueView *)self selectionLayer];
+    selectionLayer = [(AVTAttributeValueView *)self selectionLayer];
     *&v8 = v7;
-    [v13 setOpacity:v8];
+    [selectionLayer setOpacity:v8];
   }
 
   else
   {
-    if (v5)
+    if (stateCopy)
     {
       v9 = 1.0;
     }
@@ -525,9 +525,9 @@ uint64_t __73__AVTAttributeValueView_updateHighlightedState_animated_completionB
       v9 = 0.0;
     }
 
-    v10 = [(AVTAttributeValueView *)self selectionLayer];
+    selectionLayer2 = [(AVTAttributeValueView *)self selectionLayer];
     *&v11 = v9;
-    [v10 setOpacity:v11];
+    [selectionLayer2 setOpacity:v11];
 
     v12 = MEMORY[0x1E6979518];
 
@@ -537,65 +537,65 @@ uint64_t __73__AVTAttributeValueView_updateHighlightedState_animated_completionB
 
 - (void)bringSelectionLayersToFront
 {
-  v3 = [(AVTAttributeValueView *)self imageLayer];
-  [v3 removeFromSuperlayer];
+  imageLayer = [(AVTAttributeValueView *)self imageLayer];
+  [imageLayer removeFromSuperlayer];
 
-  v4 = [(AVTAttributeValueView *)self selectionLayer];
-  [v4 removeFromSuperlayer];
+  selectionLayer = [(AVTAttributeValueView *)self selectionLayer];
+  [selectionLayer removeFromSuperlayer];
 
-  v5 = [(AVTAttributeValueView *)self contentView];
-  v6 = [v5 layer];
-  v7 = [(AVTAttributeValueView *)self imageLayer];
-  [v6 addSublayer:v7];
+  contentView = [(AVTAttributeValueView *)self contentView];
+  layer = [contentView layer];
+  imageLayer2 = [(AVTAttributeValueView *)self imageLayer];
+  [layer addSublayer:imageLayer2];
 
-  v9 = [(AVTAttributeValueView *)self layer];
-  v8 = [(AVTAttributeValueView *)self selectionLayer];
-  [v9 addSublayer:v8];
+  layer2 = [(AVTAttributeValueView *)self layer];
+  selectionLayer2 = [(AVTAttributeValueView *)self selectionLayer];
+  [layer2 addSublayer:selectionLayer2];
 }
 
-- (void)updateWithImage:(id)a3
+- (void)updateWithImage:(id)image
 {
-  v8 = a3;
-  v4 = [(AVTAttributeValueView *)self image];
+  imageCopy = image;
+  image = [(AVTAttributeValueView *)self image];
 
-  if (v4 != v8)
+  if (image != imageCopy)
   {
-    [(AVTAttributeValueView *)self setImage:v8];
+    [(AVTAttributeValueView *)self setImage:imageCopy];
     self->_showPlaceholder = 0;
   }
 
-  v5 = v8;
-  v6 = [v8 CGImage];
-  v7 = [(AVTAttributeValueView *)self imageLayer];
-  [v7 setContents:v6];
+  v5 = imageCopy;
+  cGImage = [imageCopy CGImage];
+  imageLayer = [(AVTAttributeValueView *)self imageLayer];
+  [imageLayer setContents:cGImage];
 }
 
-- (void)prepareForTransitionToImage:(id)a3
+- (void)prepareForTransitionToImage:(id)image
 {
-  v8 = a3;
-  v4 = [(AVTAttributeValueView *)self image];
+  imageCopy = image;
+  image = [(AVTAttributeValueView *)self image];
 
-  if (v4 != v8)
+  if (image != imageCopy)
   {
-    [(AVTAttributeValueView *)self setImage:v8];
+    [(AVTAttributeValueView *)self setImage:imageCopy];
     self->_showPlaceholder = 0;
   }
 
-  v5 = v8;
-  v6 = [v8 CGImage];
-  v7 = [(AVTAttributeValueView *)self transitionImageLayer];
-  [v7 setContents:v6];
+  v5 = imageCopy;
+  cGImage = [imageCopy CGImage];
+  transitionImageLayer = [(AVTAttributeValueView *)self transitionImageLayer];
+  [transitionImageLayer setContents:cGImage];
 }
 
-- (void)setShowPlaceholder:(BOOL)a3
+- (void)setShowPlaceholder:(BOOL)placeholder
 {
-  if (self->_showPlaceholder != a3)
+  if (self->_showPlaceholder != placeholder)
   {
-    self->_showPlaceholder = a3;
-    if (a3)
+    self->_showPlaceholder = placeholder;
+    if (placeholder)
     {
-      v5 = [(AVTAttributeValueView *)self traitCollection];
-      v6 = AVTFlatSilhouetteImageForTraitCollection(v5);
+      traitCollection = [(AVTAttributeValueView *)self traitCollection];
+      v6 = AVTFlatSilhouetteImageForTraitCollection(traitCollection);
     }
 
     else
@@ -609,23 +609,23 @@ uint64_t __73__AVTAttributeValueView_updateHighlightedState_animated_completionB
 
 - (void)cleanupAfterTransition
 {
-  v4 = [(AVTAttributeValueView *)self imageLayer];
-  v3 = [(AVTAttributeValueView *)self transitionImageLayer];
-  [(AVTAttributeValueView *)self setImageLayer:v3];
+  imageLayer = [(AVTAttributeValueView *)self imageLayer];
+  transitionImageLayer = [(AVTAttributeValueView *)self transitionImageLayer];
+  [(AVTAttributeValueView *)self setImageLayer:transitionImageLayer];
 
   [(AVTAttributeValueView *)self bringSelectionLayersToFront];
-  [(AVTAttributeValueView *)self setTransitionImageLayer:v4];
+  [(AVTAttributeValueView *)self setTransitionImageLayer:imageLayer];
 }
 
 - (void)discardContent
 {
   [(AVTAttributeValueView *)self updateWithImage:0];
-  v3 = [(AVTAttributeValueView *)self discardableContentHandler];
+  discardableContentHandler = [(AVTAttributeValueView *)self discardableContentHandler];
 
-  if (v3)
+  if (discardableContentHandler)
   {
-    v4 = [(AVTAttributeValueView *)self discardableContentHandler];
-    v4[2](v4, self);
+    discardableContentHandler2 = [(AVTAttributeValueView *)self discardableContentHandler];
+    discardableContentHandler2[2](discardableContentHandler2, self);
   }
 }
 

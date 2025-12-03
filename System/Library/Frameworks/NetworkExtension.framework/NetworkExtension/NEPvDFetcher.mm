@@ -1,42 +1,42 @@
 @interface NEPvDFetcher
 - (BOOL)isActive;
-- (NEPvDFetcher)initWithDelegate:(id)a3 queue:(id)a4 url:(id)a5 identityRef:(__SecIdentity *)a6;
-- (id)findProxy:(void *)a1 proxyToFind:(void *)a2;
-- (id)formatExpirationDateFrom:(void *)a1;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
+- (NEPvDFetcher)initWithDelegate:(id)delegate queue:(id)queue url:(id)url identityRef:(__SecIdentity *)ref;
+- (id)findProxy:(void *)proxy proxyToFind:(void *)find;
+- (id)formatExpirationDateFrom:(void *)from;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
 - (void)dealloc;
 - (void)fetchPvDConfig;
-- (void)setQueue:(uint64_t)a1;
+- (void)setQueue:(uint64_t)queue;
 @end
 
 @implementation NEPvDFetcher
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v14 = ne_log_obj();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v12 protectionSpace];
-    v24 = [v23 authenticationMethod];
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
     v25 = 138412290;
-    v26 = v24;
+    v26 = authenticationMethod;
     _os_log_debug_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_DEBUG, "PvD got challenge type %@", &v25, 0xCu);
   }
 
-  if (!v12)
+  if (!challengeCopy)
   {
     goto LABEL_14;
   }
 
-  v15 = [v12 protectionSpace];
-  v16 = [v15 authenticationMethod];
-  v17 = [v16 isEqualToString:*MEMORY[0x1E696A940]];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  authenticationMethod2 = [protectionSpace2 authenticationMethod];
+  v17 = [authenticationMethod2 isEqualToString:*MEMORY[0x1E696A940]];
 
   if (!v17)
   {
@@ -68,26 +68,26 @@
 LABEL_13:
 
 LABEL_14:
-    v13[2](v13, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_15;
   }
 
   v20 = v19;
-  v13[2](v13, 0, v19);
+  handlerCopy[2](handlerCopy, 0, v19);
 
 LABEL_15:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  connectivityCopy = connectivity;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 currentRequest];
-    v7 = [v6 URL];
+    currentRequest = [connectivityCopy currentRequest];
+    v7 = [currentRequest URL];
     v9 = 138412290;
     v10 = v7;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEFAULT, "PvD configuration fetch is waiting for connectivity for %@", &v9, 0xCu);
@@ -131,22 +131,22 @@ LABEL_15:
   [(NEPvDFetcher *)&v5 dealloc];
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((queue + 32), a2);
   }
 }
 
-- (NEPvDFetcher)initWithDelegate:(id)a3 queue:(id)a4 url:(id)a5 identityRef:(__SecIdentity *)a6
+- (NEPvDFetcher)initWithDelegate:(id)delegate queue:(id)queue url:(id)url identityRef:(__SecIdentity *)ref
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v12)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  urlCopy = url;
+  v13 = urlCopy;
+  if (!urlCopy)
   {
     v31 = ne_log_obj();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
@@ -159,9 +159,9 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v14 = [v12 host];
+  host = [urlCopy host];
 
-  if (!v14)
+  if (!host)
   {
     v31 = ne_log_obj();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
@@ -196,11 +196,11 @@ LABEL_9:
   v15 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v15 setScheme:@"https"];
   [v15 setPath:@"/.well-known/pvd"];
-  v16 = [v13 host];
-  [v15 setHost:v16];
+  host2 = [v13 host];
+  [v15 setHost:host2];
 
-  v17 = [v13 port];
-  [v15 setPort:v17];
+  port = [v13 port];
+  [v15 setPort:port];
 
   v18 = [v15 URL];
   objc_storeStrong(&self->_url, v18);
@@ -210,17 +210,17 @@ LABEL_9:
     v19 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     objc_storeStrong(&self->_queue, v19);
 
-    [(NSOperationQueue *)self->_queue setUnderlyingQueue:v11];
-    v20 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-    [v20 setWaitsForConnectivity:1];
+    [(NSOperationQueue *)self->_queue setUnderlyingQueue:queueCopy];
+    ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration setWaitsForConnectivity:1];
     v21 = MEMORY[0x1E696AF78];
     v22 = self->_queue;
-    v23 = [v21 sessionWithConfiguration:v20 delegate:self delegateQueue:v22];
+    v23 = [v21 sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:v22];
     objc_storeStrong(&self->_session, v23);
 
-    objc_storeWeak(&self->_delegate, v10);
-    self->_identityRef = a6;
-    v24 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v11);
+    objc_storeWeak(&self->_delegate, delegateCopy);
+    self->_identityRef = ref;
+    v24 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     objc_storeStrong(&self->_fetchTimer, v24);
 
     objc_initWeak(location, self);
@@ -229,8 +229,8 @@ LABEL_9:
     v34[1] = 3221225472;
     v34[2] = __55__NEPvDFetcher_initWithDelegate_queue_url_identityRef___block_invoke;
     v34[3] = &unk_1E7F0A020;
-    v26 = self;
-    v35 = v26;
+    selfCopy = self;
+    v35 = selfCopy;
     v27 = fetchTimer;
     objc_copyWeak(&v36, location);
     dispatch_source_set_event_handler(v27, v34);
@@ -240,8 +240,8 @@ LABEL_9:
     dispatch_source_set_timer(v28, v29, 0xFFFFFFFFFFFFFFFFLL, 0);
 
     dispatch_activate(self->_fetchTimer);
-    [(NEPvDFetcher *)v26 fetchPvDConfig];
-    v30 = v26;
+    [(NEPvDFetcher *)selfCopy fetchPvDConfig];
+    v30 = selfCopy;
     objc_destroyWeak(&v36);
 
     objc_destroyWeak(location);
@@ -249,12 +249,12 @@ LABEL_9:
 
   else
   {
-    v20 = ne_log_obj();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    ephemeralSessionConfiguration = ne_log_obj();
+    if (os_log_type_enabled(ephemeralSessionConfiguration, OS_LOG_TYPE_FAULT))
     {
       LODWORD(location[0]) = 136315138;
       *(location + 4) = "[NEPvDFetcher initWithDelegate:queue:url:identityRef:]";
-      _os_log_fault_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_FAULT, "%s called with null self.url", location, 0xCu);
+      _os_log_fault_impl(&dword_1BA83C000, ephemeralSessionConfiguration, OS_LOG_TYPE_FAULT, "%s called with null self.url", location, 0xCu);
     }
 
     v30 = 0;
@@ -297,12 +297,12 @@ void __55__NEPvDFetcher_initWithDelegate_queue_url_identityRef___block_invoke(ui
   v17[3] = __Block_byref_object_copy__20481;
   v17[4] = __Block_byref_object_dispose__20482;
   v18 = 0;
-  if ((*(a1 + 8) & 1) == 0)
+  if ((*(self + 8) & 1) == 0)
   {
-    *(a1 + 8) = 1;
-    v2 = *(a1 + 16);
-    v3 = [MEMORY[0x1E696AF68] requestWithURL:*(a1 + 16) cachePolicy:1 timeoutInterval:30.0];
-    objc_initWeak(&location, a1);
+    *(self + 8) = 1;
+    v2 = *(self + 16);
+    v3 = [MEMORY[0x1E696AF68] requestWithURL:*(self + 16) cachePolicy:1 timeoutInterval:30.0];
+    objc_initWeak(&location, self);
     v4 = ne_log_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -311,7 +311,7 @@ void __55__NEPvDFetcher_initWithDelegate_queue_url_identityRef___block_invoke(ui
       _os_log_debug_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_DEBUG, "Fetching PvD configuration for url %@", buf, 0xCu);
     }
 
-    v5 = *(a1 + 24);
+    v5 = *(self + 24);
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __30__NEPvDFetcher_fetchPvDConfig__block_invoke;
@@ -920,10 +920,10 @@ LABEL_36:
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (id)formatExpirationDateFrom:(void *)a1
+- (id)formatExpirationDateFrom:(void *)from
 {
   v1 = MEMORY[0x1E696AB78];
-  v2 = a1;
+  fromCopy = from;
   v3 = objc_alloc_init(v1);
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v3 setLocale:v4];
@@ -932,22 +932,22 @@ LABEL_36:
   v5 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
   [v3 setTimeZone:v5];
 
-  v6 = [v3 dateFromString:v2];
+  v6 = [v3 dateFromString:fromCopy];
 
   return v6;
 }
 
-- (id)findProxy:(void *)a1 proxyToFind:(void *)a2
+- (id)findProxy:(void *)proxy proxyToFind:(void *)find
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = a2;
-  v5 = [MEMORY[0x1E695DF70] array];
+  proxyCopy = proxy;
+  findCopy = find;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = proxyCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
@@ -968,16 +968,16 @@ LABEL_36:
         if (isa_nsdictionary(v12))
         {
           v13 = [v12 objectForKey:@"identifier"];
-          v14 = [v4 isEqualToString:v13];
+          v14 = [findCopy isEqualToString:v13];
 
           if (v14)
           {
-            if (!v5)
+            if (!array)
             {
-              v5 = objc_alloc(MEMORY[0x1E695DF70]);
+              array = objc_alloc(MEMORY[0x1E695DF70]);
             }
 
-            [v5 addObject:{v12, v18, v19}];
+            [array addObject:{v12, v18, v19}];
           }
         }
 
@@ -1001,7 +1001,7 @@ LABEL_36:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 @end

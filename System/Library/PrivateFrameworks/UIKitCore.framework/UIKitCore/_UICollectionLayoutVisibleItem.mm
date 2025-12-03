@@ -5,29 +5,29 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (NSString)description;
-- (id)initWithLayoutAttributes:(void *)a3 layoutItem:;
+- (id)initWithLayoutAttributes:(void *)attributes layoutItem:;
 - (unint64_t)representedElementCategory;
-- (void)setTransform3D:(CATransform3D *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform3D:(CATransform3D *)d;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UICollectionLayoutVisibleItem
 
-- (id)initWithLayoutAttributes:(void *)a3 layoutItem:
+- (id)initWithLayoutAttributes:(void *)attributes layoutItem:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = _UICollectionLayoutVisibleItem;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
   if (v5)
   {
     objc_storeStrong(v5 + 2, a2);
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(v6 + 3, attributes);
   }
 
   return v6;
@@ -63,20 +63,20 @@
   return result;
 }
 
-- (void)setTransform3D:(CATransform3D *)a3
+- (void)setTransform3D:(CATransform3D *)d
 {
   self->_dirty = 1;
-  v3 = *&a3->m33;
-  v7[4] = *&a3->m31;
+  v3 = *&d->m33;
+  v7[4] = *&d->m31;
   v7[5] = v3;
-  v4 = *&a3->m43;
-  v7[6] = *&a3->m41;
+  v4 = *&d->m43;
+  v7[6] = *&d->m41;
   v7[7] = v4;
-  v5 = *&a3->m13;
-  v7[0] = *&a3->m11;
+  v5 = *&d->m13;
+  v7[0] = *&d->m11;
   v7[1] = v5;
-  v6 = *&a3->m23;
-  v7[2] = *&a3->m21;
+  v6 = *&d->m23;
+  v7[2] = *&d->m21;
   v7[3] = v6;
   [(UICollectionViewLayoutAttributes *)self->_layoutAttributes setTransform3D:v7];
 }
@@ -95,13 +95,13 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   self->_dirty = 1;
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(UICollectionViewLayoutAttributes *)self->_layoutAttributes setTransform:v4];
 }
 

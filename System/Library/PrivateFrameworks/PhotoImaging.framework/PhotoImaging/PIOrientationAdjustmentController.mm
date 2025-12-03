@@ -1,11 +1,11 @@
 @interface PIOrientationAdjustmentController
 - (int64_t)orientation;
-- (void)setOrientation:(int64_t)a3;
+- (void)setOrientation:(int64_t)orientation;
 @end
 
 @implementation PIOrientationAdjustmentController
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v25 = *MEMORY[0x1E69E9840];
   if ((NUOrientationIsValid() & 1) == 0)
@@ -30,8 +30,8 @@
         v15 = dispatch_get_specific(*v9);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v15;
         v23 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v14;
       _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,20 +52,20 @@
     _NUAssertFailHandler();
   }
 
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v5 = [(PIAdjustmentController *)self adjustment];
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PIOrientationAdjustmentController valueKey];
-  [v5 setObject:v20 forKeyedSubscript:v6];
+  [adjustment setObject:v20 forKeyedSubscript:v6];
 }
 
 - (int64_t)orientation
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIOrientationAdjustmentController valueKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 integerValue];
+  v4 = [adjustment objectForKeyedSubscript:v3];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 @end

@@ -1,53 +1,53 @@
 @interface CaptureMTLDebugCommandEncoder
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLDebugCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLDebugCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)dumpBuffer:(id)a3;
-- (void)dumpBuffer:(id)a3 name:(const char *)a4;
-- (void)dumpTexture:(id)a3;
-- (void)dumpTexture:(id)a3 name:(const char *)a4;
+- (void)dumpBuffer:(id)buffer;
+- (void)dumpBuffer:(id)buffer name:(const char *)name;
+- (void)dumpTexture:(id)texture;
+- (void)dumpTexture:(id)texture name:(const char *)name;
 - (void)touch;
 @end
 
 @implementation CaptureMTLDebugCommandEncoder
 
-- (void)dumpTexture:(id)a3
+- (void)dumpTexture:(id)texture
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  [(MTLDebugCommandEncoder *)baseObject dumpTexture:v4];
+  baseObject = [texture baseObject];
+  [(MTLDebugCommandEncoder *)baseObject dumpTexture:baseObject];
 }
 
-- (void)dumpTexture:(id)a3 name:(const char *)a4
+- (void)dumpTexture:(id)texture name:(const char *)name
 {
   baseObject = self->_baseObject;
-  v6 = [a3 baseObject];
-  [(MTLDebugCommandEncoder *)baseObject dumpTexture:v6 name:a4];
+  baseObject = [texture baseObject];
+  [(MTLDebugCommandEncoder *)baseObject dumpTexture:baseObject name:name];
 }
 
-- (void)dumpBuffer:(id)a3
+- (void)dumpBuffer:(id)buffer
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  [(MTLDebugCommandEncoder *)baseObject dumpBuffer:v4];
+  baseObject = [buffer baseObject];
+  [(MTLDebugCommandEncoder *)baseObject dumpBuffer:baseObject];
 }
 
-- (void)dumpBuffer:(id)a3 name:(const char *)a4
+- (void)dumpBuffer:(id)buffer name:(const char *)name
 {
   baseObject = self->_baseObject;
-  v6 = [a3 baseObject];
-  [(MTLDebugCommandEncoder *)baseObject dumpBuffer:v6 name:a4];
+  baseObject = [buffer baseObject];
+  [(MTLDebugCommandEncoder *)baseObject dumpBuffer:baseObject name:name];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLDebugCommandEncoder *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLDebugCommandEncoder *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -112,25 +112,25 @@
   [(CaptureMTLDebugCommandEncoder *)&v4 dealloc];
 }
 
-- (CaptureMTLDebugCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4
+- (CaptureMTLDebugCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v18.receiver = self;
   v18.super_class = CaptureMTLDebugCommandEncoder;
   v9 = [(CaptureMTLDebugCommandEncoder *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [bufferCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    objc_storeWeak(&v10->_captureCommandBuffer, v8);
-    v13 = [v8 retainedObjects];
+    objc_storeWeak(&v10->_captureCommandBuffer, bufferCopy);
+    retainedObjects = [bufferCopy retainedObjects];
     retainedObjects = v10->_retainedObjects;
-    v10->_retainedObjects = v13;
+    v10->_retainedObjects = retainedObjects;
 
     v15 = v10->_retainedObjects;
     v16 = DEVICEOBJECT(v10->_baseObject);

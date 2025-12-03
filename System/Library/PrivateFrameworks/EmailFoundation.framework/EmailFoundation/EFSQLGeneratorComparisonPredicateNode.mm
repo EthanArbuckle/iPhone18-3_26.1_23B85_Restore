@@ -1,6 +1,6 @@
 @interface EFSQLGeneratorComparisonPredicateNode
-- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)a3 predicateOperator:(unint64_t)a4 comparisonSource:(id)a5;
-- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)a3 predicateOperator:(unint64_t)a4 constantValue:(id)a5;
+- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)source predicateOperator:(unint64_t)operator comparisonSource:(id)comparisonSource;
+- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)source predicateOperator:(unint64_t)operator constantValue:(id)value;
 - (EFSQLValueExpressable)sqlExpressable;
 @end
 
@@ -8,65 +8,65 @@
 
 - (EFSQLValueExpressable)sqlExpressable
 {
-  v4 = [(EFSQLGeneratorComparisonPredicateNode *)self constantValue];
+  constantValue = [(EFSQLGeneratorComparisonPredicateNode *)self constantValue];
 
-  if (v4)
+  if (constantValue)
   {
-    v5 = [(EFSQLGeneratorComparisonPredicateNode *)self valueSource];
-    v6 = [(EFSQLGeneratorComparisonPredicateNode *)self constantValue];
-    v7 = [v5 comparisonExpressionForValue:v6 predicateOperator:{-[EFSQLGeneratorComparisonPredicateNode predicateOperator](self, "predicateOperator")}];
+    valueSource = [(EFSQLGeneratorComparisonPredicateNode *)self valueSource];
+    constantValue2 = [(EFSQLGeneratorComparisonPredicateNode *)self constantValue];
+    v7 = [valueSource comparisonExpressionForValue:constantValue2 predicateOperator:{-[EFSQLGeneratorComparisonPredicateNode predicateOperator](self, "predicateOperator")}];
   }
 
   else
   {
-    v8 = [(EFSQLGeneratorComparisonPredicateNode *)self comparisonSource];
+    comparisonSource = [(EFSQLGeneratorComparisonPredicateNode *)self comparisonSource];
 
-    if (!v8)
+    if (!comparisonSource)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"EFSQLGeneratorPredicateNode.m" lineNumber:100 description:@"Need something to compare to"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLGeneratorPredicateNode.m" lineNumber:100 description:@"Need something to compare to"];
     }
 
-    v5 = [(EFSQLGeneratorComparisonPredicateNode *)self comparisonSource];
-    v6 = [(EFSQLGeneratorComparisonPredicateNode *)self valueSource];
-    v9 = [v5 selectResultExpression];
-    v7 = [v6 comparisonExpressionForValue:v9 predicateOperator:{-[EFSQLGeneratorComparisonPredicateNode predicateOperator](self, "predicateOperator")}];
+    valueSource = [(EFSQLGeneratorComparisonPredicateNode *)self comparisonSource];
+    constantValue2 = [(EFSQLGeneratorComparisonPredicateNode *)self valueSource];
+    selectResultExpression = [valueSource selectResultExpression];
+    v7 = [constantValue2 comparisonExpressionForValue:selectResultExpression predicateOperator:{-[EFSQLGeneratorComparisonPredicateNode predicateOperator](self, "predicateOperator")}];
   }
 
   return v7;
 }
 
-- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)a3 predicateOperator:(unint64_t)a4 comparisonSource:(id)a5
+- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)source predicateOperator:(unint64_t)operator comparisonSource:(id)comparisonSource
 {
-  v9 = a3;
-  v10 = a5;
+  sourceCopy = source;
+  comparisonSourceCopy = comparisonSource;
   v14.receiver = self;
   v14.super_class = EFSQLGeneratorComparisonPredicateNode;
   v11 = [(EFSQLGeneratorComparisonPredicateNode *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_valueSource, a3);
-    v12->_predicateOperator = a4;
-    objc_storeStrong(&v12->_comparisonSource, a5);
+    objc_storeStrong(&v11->_valueSource, source);
+    v12->_predicateOperator = operator;
+    objc_storeStrong(&v12->_comparisonSource, comparisonSource);
   }
 
   return v12;
 }
 
-- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)a3 predicateOperator:(unint64_t)a4 constantValue:(id)a5
+- (EFSQLGeneratorComparisonPredicateNode)initWithValueSource:(id)source predicateOperator:(unint64_t)operator constantValue:(id)value
 {
-  v9 = a3;
-  v10 = a5;
+  sourceCopy = source;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = EFSQLGeneratorComparisonPredicateNode;
   v11 = [(EFSQLGeneratorComparisonPredicateNode *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_valueSource, a3);
-    v12->_predicateOperator = a4;
-    objc_storeStrong(&v12->_constantValue, a5);
+    objc_storeStrong(&v11->_valueSource, source);
+    v12->_predicateOperator = operator;
+    objc_storeStrong(&v12->_constantValue, value);
   }
 
   return v12;

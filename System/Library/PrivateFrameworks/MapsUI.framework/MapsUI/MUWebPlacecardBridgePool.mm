@@ -1,7 +1,7 @@
 @interface MUWebPlacecardBridgePool
 + (_TtC6MapsUI24MUWebPlacecardBridgePool)sharedPool;
 - (id)takeBridge;
-- (void)releaseBridge:(id)a3;
+- (void)releaseBridge:(id)bridge;
 @end
 
 @implementation MUWebPlacecardBridgePool
@@ -20,17 +20,17 @@
 
 - (id)takeBridge
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MUWebPlacecardBridgePool.take()();
 
   return v3;
 }
 
-- (void)releaseBridge:(id)a3
+- (void)releaseBridge:(id)bridge
 {
-  v5 = a3;
-  v6 = self;
-  MUWebPlacecardBridgePool.release(_:)(a3);
+  bridgeCopy = bridge;
+  selfCopy = self;
+  MUWebPlacecardBridgePool.release(_:)(bridge);
 }
 
 @end

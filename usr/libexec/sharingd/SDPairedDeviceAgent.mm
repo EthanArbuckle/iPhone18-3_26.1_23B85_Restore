@@ -5,7 +5,7 @@
 - (SDPairedDeviceAgent)init;
 - (SFPowerSource)powerSource;
 - (id)_idsActiveDevice;
-- (id)_messageFromPowerSource:(id)a3;
+- (id)_messageFromPowerSource:(id)source;
 - (id)_queueWithFallbackQOS;
 - (void)_activate;
 - (void)_companionLinkDevicesChanged;
@@ -15,29 +15,29 @@
 - (void)_idsEnsureCoalescersStarted;
 - (void)_idsEnsureCoalescersStopped;
 - (void)_idsEnsureSynced;
-- (void)_idsSendStateUpdate:(id)a3 asWaking:(BOOL)a4;
+- (void)_idsSendStateUpdate:(id)update asWaking:(BOOL)waking;
 - (void)_idsTimerInfoFired;
 - (void)_idsTimerInfoInvalidate;
 - (void)_idsTimerInfoRestart;
-- (void)_idsTriggerSyncForAnimation:(BOOL)a3;
+- (void)_idsTriggerSyncForAnimation:(BOOL)animation;
 - (void)_idsUpdateConnectedState;
 - (void)_invalidate;
-- (void)_lockStateChanged:(id)a3;
-- (void)_lockStateHandleMessage:(id)a3;
-- (void)_lockStateUpdate:(int)a3;
+- (void)_lockStateChanged:(id)changed;
+- (void)_lockStateHandleMessage:(id)message;
+- (void)_lockStateUpdate:(int)update;
 - (void)_lowPowerModeChanged;
-- (void)_messageHandleAllUpdate:(id)a3;
-- (void)_messageHandleDashboardEntry:(id)a3;
-- (void)_messageHandleIncomingData:(id)a3;
-- (void)_messageHandlePowerSourceUpdate:(id)a3;
-- (void)_messageIDAdd:(id)a3;
-- (void)_messageIDRemove:(id)a3;
-- (void)_nanoRegistryRegisterChangesForDevice:(id)a3;
+- (void)_messageHandleAllUpdate:(id)update;
+- (void)_messageHandleDashboardEntry:(id)entry;
+- (void)_messageHandleIncomingData:(id)data;
+- (void)_messageHandlePowerSourceUpdate:(id)update;
+- (void)_messageIDAdd:(id)add;
+- (void)_messageIDRemove:(id)remove;
+- (void)_nanoRegistryRegisterChangesForDevice:(id)device;
 - (void)_nanoRegistryUnregisterChanges;
-- (void)_postPowerStatusNotificationForPowerSource:(id)a3;
-- (void)_powerSourceChanged:(id)a3;
-- (void)_powerSourceLost:(id)a3;
-- (void)_powerSourceUpdatePairedDeviceInfo:(id)a3;
+- (void)_postPowerStatusNotificationForPowerSource:(id)source;
+- (void)_powerSourceChanged:(id)changed;
+- (void)_powerSourceLost:(id)lost;
+- (void)_powerSourceUpdatePairedDeviceInfo:(id)info;
 - (void)_setupLockStateMonitor;
 - (void)_setupPowerSourceMonitor;
 - (void)_setupWristStateMonitor;
@@ -46,25 +46,25 @@
 - (void)_testingOnCharger;
 - (void)_testingRegisterNotifications;
 - (void)_wristStateChanged;
-- (void)_wristStateHandleMessage:(id)a3;
-- (void)_wristStateUpdate:(int64_t)a3;
+- (void)_wristStateHandleMessage:(id)message;
+- (void)_wristStateUpdate:(int64_t)update;
 - (void)activate;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
 - (void)initialViewControllerDidAppear;
 - (void)initialViewControllerDidDisappear;
 - (void)invalidate;
-- (void)lowPowerModeChanged:(id)a3;
-- (void)sendAnimationDate:(id)a3;
-- (void)sendDashboardEntryWithName:(id)a3 dict:(id)a4;
-- (void)sendDismissUIWithReason:(int64_t)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)triggerChargingUIWithDismissHandler:(id)a3;
-- (void)wristStateChanged:(id)a3;
+- (void)lowPowerModeChanged:(id)changed;
+- (void)sendAnimationDate:(id)date;
+- (void)sendDashboardEntryWithName:(id)name dict:(id)dict;
+- (void)sendDismissUIWithReason:(int64_t)reason;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)triggerChargingUIWithDismissHandler:(id)handler;
+- (void)wristStateChanged:(id)changed;
 @end
 
 @implementation SDPairedDeviceAgent
@@ -83,10 +83,10 @@
 
 - (SFPowerSource)powerSource
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_powerSource;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_powerSource;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -99,12 +99,12 @@
   if (v2)
   {
     v3 = +[SDNearbyAgent sharedNearbyAgent];
-    v4 = [v3 sharedNearbyPipe];
+    sharedNearbyPipe = [v3 sharedNearbyPipe];
     blePipe = v2->_blePipe;
-    v2->_blePipe = v4;
+    v2->_blePipe = sharedNearbyPipe;
 
-    v6 = [(SDPairedDeviceAgent *)v2 _queueWithFallbackQOS];
-    [(SDXPCDaemon *)v2 setDispatchQueue:v6];
+    _queueWithFallbackQOS = [(SDPairedDeviceAgent *)v2 _queueWithFallbackQOS];
+    [(SDXPCDaemon *)v2 setDispatchQueue:_queueWithFallbackQOS];
 
     v7 = [[IDSService alloc] initWithService:@"com.apple.private.alloy.sharing.paireddevice"];
     idsService = v2->_idsService;
@@ -118,19 +118,19 @@
 
 - (void)activate
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007BDC4;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_activate
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -153,8 +153,8 @@
   {
     self->_activateCalled = 1;
     idsService = self->_idsService;
-    v6 = [(SDXPCDaemon *)self dispatchQueue];
-    [(IDSService *)idsService addDelegate:self queue:v6];
+    dispatchQueue2 = [(SDXPCDaemon *)self dispatchQueue];
+    [(IDSService *)idsService addDelegate:self queue:dispatchQueue2];
 
     [(SDPairedDeviceAgent *)self _systemStateRegisterObservers];
     [(SDPairedDeviceAgent *)self _testingRegisterNotifications];
@@ -162,31 +162,31 @@
     v10.super_class = SDPairedDeviceAgent;
     [(SDXPCDaemon *)&v10 onqueue_activate];
     v7 = dispatch_time(0, 5000000000);
-    v8 = [(SDXPCDaemon *)self dispatchQueue];
+    dispatchQueue3 = [(SDXPCDaemon *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007BF74;
     block[3] = &unk_1008CDEA0;
     block[4] = self;
-    dispatch_after(v7, v8, block);
+    dispatch_after(v7, dispatchQueue3, block);
   }
 }
 
 - (void)invalidate
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007C004;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_invalidate
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -235,8 +235,8 @@
   self->_companionLinkClient = v3;
 
   [(RPCompanionLinkClient *)self->_companionLinkClient setControlFlags:32];
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  [(RPCompanionLinkClient *)self->_companionLinkClient setDispatchQueue:v5];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  [(RPCompanionLinkClient *)self->_companionLinkClient setDispatchQueue:dispatchQueue];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -285,9 +285,9 @@
   v3 = charging_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(RPCompanionLinkClient *)self->_companionLinkClient activeDevices];
+    activeDevices = [(RPCompanionLinkClient *)self->_companionLinkClient activeDevices];
     *buf = 138412290;
-    v16 = v4;
+    v16 = activeDevices;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Companion link connected devices %@", buf, 0xCu);
   }
 
@@ -295,8 +295,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(RPCompanionLinkClient *)self->_companionLinkClient activeDevices];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  activeDevices2 = [(RPCompanionLinkClient *)self->_companionLinkClient activeDevices];
+  v6 = [activeDevices2 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -306,7 +306,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeDevices2);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) statusFlags])
@@ -316,7 +316,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [activeDevices2 countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -360,8 +360,8 @@ LABEL_13:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -371,7 +371,7 @@ LABEL_13:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -382,7 +382,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -399,8 +399,8 @@ LABEL_11:
 
 - (void)_idsEnsureCoalescersStarted
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (!self->_idsConnectionCoalescer)
   {
@@ -408,8 +408,8 @@ LABEL_11:
     idsConnectionCoalescer = self->_idsConnectionCoalescer;
     self->_idsConnectionCoalescer = v4;
 
-    v6 = [(SDXPCDaemon *)self dispatchQueue];
-    [(CUCoalescer *)self->_idsConnectionCoalescer setDispatchQueue:v6];
+    dispatchQueue2 = [(SDXPCDaemon *)self dispatchQueue];
+    [(CUCoalescer *)self->_idsConnectionCoalescer setDispatchQueue:dispatchQueue2];
 
     [(CUCoalescer *)self->_idsConnectionCoalescer setMinDelay:0.5];
     [(CUCoalescer *)self->_idsConnectionCoalescer setMaxDelay:3.0];
@@ -428,8 +428,8 @@ LABEL_11:
     idsSyncCoalescer = self->_idsSyncCoalescer;
     self->_idsSyncCoalescer = v7;
 
-    v9 = [(SDXPCDaemon *)self dispatchQueue];
-    [(CUCoalescer *)self->_idsSyncCoalescer setDispatchQueue:v9];
+    dispatchQueue3 = [(SDXPCDaemon *)self dispatchQueue];
+    [(CUCoalescer *)self->_idsSyncCoalescer setDispatchQueue:dispatchQueue3];
 
     [(CUCoalescer *)self->_idsSyncCoalescer setMinDelay:0.3];
     [(CUCoalescer *)self->_idsSyncCoalescer setMaxDelay:3.0];
@@ -456,8 +456,8 @@ LABEL_11:
 - (void)_idsEnsureSynced
 {
   v3 = objc_opt_new();
-  v4 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (!self->_powerSourcePairedDevice || self->_infoRequestForced)
   {
@@ -485,12 +485,12 @@ LABEL_11:
 
 - (BOOL)_idsHasDefaultDevice
 {
-  v2 = [(IDSService *)self->_idsService devices];
+  devices = [(IDSService *)self->_idsService devices];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -502,13 +502,13 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) isDefaultPairedDevice];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -531,13 +531,13 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Restarting IDS info timer", buf, 2u);
   }
 
-  v4 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (!self->_idsInfoTimer)
   {
-    v5 = [(SDXPCDaemon *)self dispatchQueue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    dispatchQueue2 = [(SDXPCDaemon *)self dispatchQueue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, dispatchQueue2);
     idsInfoTimer = self->_idsInfoTimer;
     self->_idsInfoTimer = v6;
 
@@ -566,8 +566,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "IDS info timer fired", v5, 2u);
   }
 
-  v4 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   self->_infoRequestForced = 1;
   [(SDPairedDeviceAgent *)self _idsTriggerSync];
@@ -583,8 +583,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating IDS info timer", v7, 2u);
   }
 
-  v4 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   idsInfoTimer = self->_idsInfoTimer;
   if (idsInfoTimer)
@@ -595,9 +595,9 @@ LABEL_11:
   }
 }
 
-- (void)_idsTriggerSyncForAnimation:(BOOL)a3
+- (void)_idsTriggerSyncForAnimation:(BOOL)animation
 {
-  if (!a3)
+  if (!animation)
   {
     animationMessageID = self->_animationMessageID;
     if (animationMessageID)
@@ -620,19 +620,19 @@ LABEL_11:
 
 - (void)_idsUpdateConnectedState
 {
-  v2 = self;
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [(IDSService *)v2->_idsService devices];
+  obj = [(IDSService *)selfCopy->_idsService devices];
   v4 = [obj countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v4)
   {
-    v31 = v2;
+    v31 = selfCopy;
     v5 = *v35;
     while (2)
     {
@@ -647,7 +647,7 @@ LABEL_11:
         v8 = charging_log();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v7 uniqueIDOverride];
+          uniqueIDOverride = [v7 uniqueIDOverride];
           if ([v7 isActive])
           {
             v10 = "yes";
@@ -668,9 +668,9 @@ LABEL_11:
             v11 = "no";
           }
 
-          v12 = [v7 isNearby];
+          isNearby = [v7 isNearby];
           *buf = 138413058;
-          if (v12)
+          if (isNearby)
           {
             v13 = "yes";
           }
@@ -680,7 +680,7 @@ LABEL_11:
             v13 = "no";
           }
 
-          v39 = v9;
+          v39 = uniqueIDOverride;
           v40 = 2080;
           v41 = v10;
           v42 = 2080;
@@ -707,25 +707,25 @@ LABEL_11:
     }
 
 LABEL_24:
-    v2 = v31;
+    selfCopy = v31;
   }
 
   v14 = charging_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v4 uniqueIDOverride];
-    v16 = [(IDSDevice *)v2->_idsConnectedDevice uniqueIDOverride];
+    uniqueIDOverride2 = [v4 uniqueIDOverride];
+    uniqueIDOverride3 = [(IDSDevice *)selfCopy->_idsConnectedDevice uniqueIDOverride];
     *buf = 138412546;
-    v39 = v15;
+    v39 = uniqueIDOverride2;
     v40 = 2112;
-    v41 = v16;
+    v41 = uniqueIDOverride3;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "New connected device ID %@, previous connected device ID %@", buf, 0x16u);
   }
 
-  v17 = [v4 uniqueIDOverride];
-  v18 = [(IDSDevice *)v2->_idsConnectedDevice uniqueIDOverride];
-  v19 = v17;
-  v20 = v18;
+  uniqueIDOverride4 = [v4 uniqueIDOverride];
+  uniqueIDOverride5 = [(IDSDevice *)selfCopy->_idsConnectedDevice uniqueIDOverride];
+  v19 = uniqueIDOverride4;
+  v20 = uniqueIDOverride5;
   v21 = v20;
   if (v19 == v20)
   {
@@ -766,13 +766,13 @@ LABEL_44:
     }
 
     v25 = dispatch_time(0, 10000000000);
-    v26 = [(SDXPCDaemon *)v2 dispatchQueue];
+    dispatchQueue2 = [(SDXPCDaemon *)selfCopy dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007D5B4;
     block[3] = &unk_1008CDEA0;
-    block[4] = v2;
-    dispatch_after(v25, v26, block);
+    block[4] = selfCopy;
+    dispatch_after(v25, dispatchQueue2, block);
   }
 
   else
@@ -783,135 +783,135 @@ LABEL_44:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Paired device disconnected, clearing device state", buf, 2u);
     }
 
-    [(SDPairedDeviceAgent *)v2 _lockStateUpdate:0xFFFFFFFFLL];
-    powerSourcePairedDevice = v2->_powerSourcePairedDevice;
+    [(SDPairedDeviceAgent *)selfCopy _lockStateUpdate:0xFFFFFFFFLL];
+    powerSourcePairedDevice = selfCopy->_powerSourcePairedDevice;
     if (powerSourcePairedDevice)
     {
       [(SFPowerSource *)powerSourcePairedDevice invalidate];
-      [(SDPairedDeviceAgent *)v2 _nanoRegistryUnregisterChanges];
-      v28 = v2->_powerSourcePairedDevice;
-      v2->_powerSourcePairedDevice = 0;
+      [(SDPairedDeviceAgent *)selfCopy _nanoRegistryUnregisterChanges];
+      v28 = selfCopy->_powerSourcePairedDevice;
+      selfCopy->_powerSourcePairedDevice = 0;
     }
 
-    [(SDPairedDeviceAgent *)v2 _wristStateUpdate:0];
+    [(SDPairedDeviceAgent *)selfCopy _wristStateUpdate:0];
   }
 
   v29 = v4;
-  idsConnectedDevice = v2->_idsConnectedDevice;
-  v2->_idsConnectedDevice = v29;
+  idsConnectedDevice = selfCopy->_idsConnectedDevice;
+  selfCopy->_idsConnectedDevice = v29;
 LABEL_42:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v19);
+  successCopy = success;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v20 = charging_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = "no";
     v22 = 138413570;
-    v23 = v14;
+    v23 = serviceCopy;
     v24 = 2112;
-    if (v10)
+    if (successCopy)
     {
       v21 = "yes";
     }
 
-    v25 = v15;
+    v25 = accountCopy;
     v26 = 2112;
-    v27 = v16;
+    v27 = identifierCopy;
     v28 = 2080;
     v29 = v21;
     v30 = 2112;
-    v31 = v17;
+    v31 = errorCopy;
     v32 = 2112;
-    v33 = v18;
+    v33 = contextCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Sent IDS message (service %@, account %@, identifier %@, success %s, error %@, context %@)", &v22, 0x3Eu);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v17);
+  serviceCopy = service;
+  accountCopy = account;
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v18 = charging_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v16 outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
     v21 = 138413314;
-    v22 = v12;
+    v22 = serviceCopy;
     v23 = 2112;
-    v24 = v13;
+    v24 = accountCopy;
     v25 = 2112;
-    v26 = v14;
+    v26 = protobufCopy;
     v27 = 2112;
-    v28 = v15;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v19;
+    v30 = outgoingResponseIdentifier;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Incoming IDS message (service %@, account %@, protobuf %@, fromID %@, identifier %@)", &v21, 0x34u);
   }
 
-  v20 = [v14 data];
-  [(SDPairedDeviceAgent *)self _messageHandleIncomingData:v20];
+  data = [protobufCopy data];
+  [(SDPairedDeviceAgent *)self _messageHandleIncomingData:data];
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = charging_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "IDS connected devices changed on service %@", &v7, 0xCu);
   }
 
   [(CUCoalescer *)self->_idsConnectionCoalescer trigger];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = charging_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "IDS devices changed on service %@", &v7, 0xCu);
   }
 
   [(CUCoalescer *)self->_idsConnectionCoalescer trigger];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = charging_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "IDS nearby devices changed on service %@", &v7, 0xCu);
   }
 
   [(CUCoalescer *)self->_idsConnectionCoalescer trigger];
 }
 
-- (void)_lockStateChanged:(id)a3
+- (void)_lockStateChanged:(id)changed
 {
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -919,37 +919,37 @@ LABEL_42:
     sub_1000813B0();
   }
 
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007DC28;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)_lockStateUpdate:(int)a3
+- (void)_lockStateUpdate:(int)update
 {
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   lockStatePairedDevice = self->_lockStatePairedDevice;
-  self->_lockStatePairedDevice = a3;
-  if (lockStatePairedDevice != a3)
+  self->_lockStatePairedDevice = update;
+  if (lockStatePairedDevice != update)
   {
     v7 = +[SDStatusMonitor sharedMonitor];
     [v7 updatePairedWatchLockState:self->_lockStatePairedDevice];
   }
 }
 
-- (void)_messageHandleIncomingData:(id)a3
+- (void)_messageHandleIncomingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  if (v4)
+  if (dataCopy)
   {
     v6 = OPACKDecodeData();
     objc_opt_class();
@@ -959,18 +959,18 @@ LABEL_42:
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 integerValue];
-        if (v9 == 5)
+        integerValue = [v7 integerValue];
+        if (integerValue == 5)
         {
           [(SDPairedDeviceAgent *)self _messageHandleDashboardEntry:v6];
         }
 
-        else if (v9 == 4)
+        else if (integerValue == 4)
         {
           [(SDPairedDeviceAgent *)self _messageHandlePowerSourceUpdate:v6];
         }
 
-        else if (v9 == 1)
+        else if (integerValue == 1)
         {
           [(SDPairedDeviceAgent *)self _messageHandleAllUpdate:v6];
         }
@@ -997,23 +997,23 @@ LABEL_42:
   }
 }
 
-- (void)_messageHandleAllUpdate:(id)a3
+- (void)_messageHandleAllUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"pad"];
-  v6 = [v4 objectForKeyedSubscript:@"rin"];
-  v7 = [v6 BOOLValue];
+  updateCopy = update;
+  v5 = [updateCopy objectForKeyedSubscript:@"pad"];
+  v6 = [updateCopy objectForKeyedSubscript:@"rin"];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = charging_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating all values: %@", &v13, 0xCu);
   }
 
-  v9 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v9);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (!self->_animationDateReceived || ([v5 timeIntervalSinceDate:?], v10 > 0.0))
   {
@@ -1029,10 +1029,10 @@ LABEL_42:
   }
 
   [(SDPairedDeviceAgent *)self _idsTimerInfoInvalidate];
-  [(SDPairedDeviceAgent *)self _lockStateHandleMessage:v4];
-  [(SDPairedDeviceAgent *)self _powerSourceUpdatePairedDeviceInfo:v4];
-  [(SDPairedDeviceAgent *)self _wristStateHandleMessage:v4];
-  if (v7)
+  [(SDPairedDeviceAgent *)self _lockStateHandleMessage:updateCopy];
+  [(SDPairedDeviceAgent *)self _powerSourceUpdatePairedDeviceInfo:updateCopy];
+  [(SDPairedDeviceAgent *)self _wristStateHandleMessage:updateCopy];
+  if (bOOLValue)
   {
     v12 = charging_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1045,27 +1045,27 @@ LABEL_42:
   }
 }
 
-- (void)_messageHandlePowerSourceUpdate:(id)a3
+- (void)_messageHandlePowerSourceUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = charging_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Power source update: %@", &v7, 0xCu);
   }
 
-  v6 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v6);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   [(SDPairedDeviceAgent *)self _idsTimerInfoInvalidate];
-  [(SDPairedDeviceAgent *)self _powerSourceUpdatePairedDeviceInfo:v4];
+  [(SDPairedDeviceAgent *)self _powerSourceUpdatePairedDeviceInfo:updateCopy];
 }
 
-- (void)_messageHandleDashboardEntry:(id)a3
+- (void)_messageHandleDashboardEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = charging_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1075,15 +1075,15 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dashboard entry: %@", buf, 0xCu);
   }
 
-  v7 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v7);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v8 = [v4 objectForKeyedSubscript:@"dae"];
+  v8 = [entryCopy objectForKeyedSubscript:@"dae"];
   v9 = [v8 objectForKeyedSubscript:@"dan"];
 
   if (v9)
   {
-    v10 = [v4 objectForKeyedSubscript:@"dae"];
+    v10 = [entryCopy objectForKeyedSubscript:@"dae"];
     v11 = [v10 objectForKeyedSubscript:@"dad"];
 
     if (v11)
@@ -1111,41 +1111,41 @@ LABEL_42:
   }
 }
 
-- (id)_messageFromPowerSource:(id)a3
+- (id)_messageFromPowerSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = objc_opt_new();
   [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"pis"];
-  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 adapterFamilyCode]);
+  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sourceCopy adapterFamilyCode]);
   [v4 setObject:v5 forKeyedSubscript:@"pat"];
 
-  [v3 chargeLevel];
+  [sourceCopy chargeLevel];
   v6 = [NSNumber numberWithDouble:?];
   [v4 setObject:v6 forKeyedSubscript:@"pcl"];
 
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 charging]);
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sourceCopy charging]);
   [v4 setObject:v7 forKeyedSubscript:@"pic"];
 
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 adapterSourceID]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sourceCopy adapterSourceID]);
   [v4 setObject:v8 forKeyedSubscript:@"pmd"];
 
-  [v3 maxCapacity];
+  [sourceCopy maxCapacity];
   v9 = [NSNumber numberWithDouble:?];
   [v4 setObject:v9 forKeyedSubscript:@"pmx"];
 
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 adapterSharedSource]);
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sourceCopy adapterSharedSource]);
   [v4 setObject:v10 forKeyedSubscript:@"pss"];
 
-  v11 = [v3 temperature];
-  v12 = [NSNumber numberWithInteger:v11];
+  temperature = [sourceCopy temperature];
+  v12 = [NSNumber numberWithInteger:temperature];
   [v4 setObject:v12 forKeyedSubscript:@"ptm"];
 
   return v4;
 }
 
-- (void)_messageIDAdd:(id)a3
+- (void)_messageIDAdd:(id)add
 {
-  v4 = a3;
+  addCopy = add;
   messageIDs = self->_messageIDs;
   if (!messageIDs)
   {
@@ -1156,14 +1156,14 @@ LABEL_42:
     messageIDs = self->_messageIDs;
   }
 
-  [(NSMutableArray *)messageIDs addObject:v4];
+  [(NSMutableArray *)messageIDs addObject:addCopy];
   v8 = charging_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 unsignedLongValue];
+    unsignedLongValue = [addCopy unsignedLongValue];
     v10 = [(NSMutableArray *)self->_messageIDs count];
     v11 = 134218240;
-    v12 = v9;
+    v12 = unsignedLongValue;
     v13 = 2048;
     v14 = v10;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Added message ID: %lu count: %ld", &v11, 0x16u);
@@ -1180,36 +1180,36 @@ LABEL_42:
   }
 }
 
-- (void)_messageIDRemove:(id)a3
+- (void)_messageIDRemove:(id)remove
 {
-  v4 = a3;
-  if (([(NSMutableArray *)self->_messageIDs containsObject:v4]& 1) == 0)
+  removeCopy = remove;
+  if (([(NSMutableArray *)self->_messageIDs containsObject:removeCopy]& 1) == 0)
   {
     v5 = charging_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_1000816D8(v4);
+      sub_1000816D8(removeCopy);
     }
   }
 
-  [(NSMutableArray *)self->_messageIDs removeObject:v4];
+  [(NSMutableArray *)self->_messageIDs removeObject:removeCopy];
   v6 = charging_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 unsignedLongValue];
+    unsignedLongValue = [removeCopy unsignedLongValue];
     v8 = [(NSMutableArray *)self->_messageIDs count];
     v9 = 134218240;
-    v10 = v7;
+    v10 = unsignedLongValue;
     v11 = 2048;
     v12 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removed message ID: %lu, count: %ld", &v9, 0x16u);
   }
 }
 
-- (void)_nanoRegistryRegisterChangesForDevice:(id)a3
+- (void)_nanoRegistryRegisterChangesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:NRDevicePropertyPairingID];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:NRDevicePropertyPairingID];
   if (v5)
   {
     nrRegisteredDevices = self->_nrRegisteredDevices;
@@ -1222,8 +1222,8 @@ LABEL_42:
       nrRegisteredDevices = self->_nrRegisteredDevices;
     }
 
-    v9 = [(NSMutableDictionary *)nrRegisteredDevices allKeys];
-    v10 = [v9 containsObject:v5];
+    allKeys = [(NSMutableDictionary *)nrRegisteredDevices allKeys];
+    v10 = [allKeys containsObject:v5];
 
     if (v10)
     {
@@ -1249,9 +1249,9 @@ LABEL_42:
       v14[2] = sub_10007E900;
       v14[3] = &unk_1008CE2A0;
       v14[4] = self;
-      [v4 registerForPropertyChanges:v13 withBlock:v14];
+      [deviceCopy registerForPropertyChanges:v13 withBlock:v14];
 
-      [(NSMutableDictionary *)self->_nrRegisteredDevices setObject:v4 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_nrRegisteredDevices setObject:deviceCopy forKeyedSubscript:v5];
     }
   }
 
@@ -1267,8 +1267,8 @@ LABEL_42:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_nrRegisteredDevices allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_nrRegisteredDevices allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1280,7 +1280,7 @@ LABEL_42:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v7) unregisterForPropertyChanges:0 withBlock:0];
@@ -1288,7 +1288,7 @@ LABEL_42:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1303,45 +1303,45 @@ LABEL_42:
   }
 }
 
-- (void)_powerSourceUpdatePairedDeviceInfo:(id)a3
+- (void)_powerSourceUpdatePairedDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[NRPairedDeviceRegistry sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  getActivePairedDevice = [v5 getActivePairedDevice];
 
-  v7 = [v4 objectForKeyedSubscript:@"pat"];
-  v8 = [v7 intValue];
+  v7 = [infoCopy objectForKeyedSubscript:@"pat"];
+  intValue = [v7 intValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"pcl"];
+  v9 = [infoCopy objectForKeyedSubscript:@"pcl"];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v4 objectForKeyedSubscript:@"pic"];
-  v57 = [v12 BOOLValue];
+  v12 = [infoCopy objectForKeyedSubscript:@"pic"];
+  bOOLValue = [v12 BOOLValue];
 
-  v13 = [v4 objectForKeyedSubscript:@"pmx"];
+  v13 = [infoCopy objectForKeyedSubscript:@"pmx"];
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v4 objectForKeyedSubscript:@"pss"];
-  v17 = [v16 BOOLValue];
+  v16 = [infoCopy objectForKeyedSubscript:@"pss"];
+  bOOLValue2 = [v16 BOOLValue];
 
-  v18 = [v4 objectForKeyedSubscript:@"pmd"];
-  v19 = [v18 integerValue];
+  v18 = [infoCopy objectForKeyedSubscript:@"pmd"];
+  integerValue = [v18 integerValue];
 
-  v20 = [v4 objectForKeyedSubscript:@"ptm"];
-  v21 = [v20 integerValue];
+  v20 = [infoCopy objectForKeyedSubscript:@"ptm"];
+  integerValue2 = [v20 integerValue];
 
-  v22 = [v4 objectForKeyedSubscript:@"pml"];
-  v23 = [v22 BOOLValue];
+  v22 = [infoCopy objectForKeyedSubscript:@"pml"];
+  bOOLValue3 = [v22 BOOLValue];
 
-  v24 = [v4 objectForKeyedSubscript:@"lpm"];
-  v25 = [v24 BOOLValue];
+  v24 = [infoCopy objectForKeyedSubscript:@"lpm"];
+  bOOLValue4 = [v24 BOOLValue];
 
-  v26 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v26);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v27 = [v4 objectForKeyedSubscript:@"pis"];
+  v27 = [infoCopy objectForKeyedSubscript:@"pis"];
   v28 = v27;
   if (!v27)
   {
@@ -1372,7 +1372,7 @@ LABEL_30:
     goto LABEL_33;
   }
 
-  v55 = v8;
+  v55 = intValue;
   if (!sub_10000C1F8(@"EnableWatchUI", 1))
   {
     v29 = charging_log();
@@ -1382,7 +1382,7 @@ LABEL_30:
     }
 
     *buf = 67109120;
-    LODWORD(v59) = v55;
+    LODWORD(unsignedLongValue) = v55;
     v48 = "Suppressing watch power source %d";
     v49 = v29;
     v50 = 8;
@@ -1391,7 +1391,7 @@ LABEL_33:
     goto LABEL_25;
   }
 
-  v29 = [v4 objectForKeyedSubscript:@"pai"];
+  v29 = [infoCopy objectForKeyedSubscript:@"pai"];
   if ([(NSMutableArray *)self->_messageIDs containsObject:v29])
   {
     [(SDPairedDeviceAgent *)self _messageIDRemove:v29];
@@ -1399,24 +1399,24 @@ LABEL_33:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v59 = [v29 unsignedLongValue];
+      unsignedLongValue = [v29 unsignedLongValue];
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Duping messages, not updating: %lu", buf, 0xCu);
     }
   }
 
   else
   {
-    v52 = v21;
-    v31 = v17;
+    v52 = integerValue2;
+    v31 = bOOLValue2;
     v54 = v28;
     if (v29)
     {
       [(SDPairedDeviceAgent *)self _messageIDAdd:v29];
     }
 
-    v32 = [v6 valueForProperty:_NRDevicePropertyBluetoothIdentifier];
-    v51 = [(SFPowerSource *)self->_powerSourcePairedDevice charging];
-    v33 = v6;
+    v32 = [getActivePairedDevice valueForProperty:_NRDevicePropertyBluetoothIdentifier];
+    charging = [(SFPowerSource *)self->_powerSourcePairedDevice charging];
+    v33 = getActivePairedDevice;
     powerSourcePairedDevice = self->_powerSourcePairedDevice;
     v35 = powerSourcePairedDevice;
     if (!powerSourcePairedDevice)
@@ -1430,20 +1430,20 @@ LABEL_33:
 
     [(SFPowerSource *)v35 setAccessoryCategory:@"Watch"];
     [(SFPowerSource *)self->_powerSourcePairedDevice setLowWarnLevel:10.0];
-    [(SFPowerSource *)self->_powerSourcePairedDevice setLowPowerModeEnabled:v25];
+    [(SFPowerSource *)self->_powerSourcePairedDevice setLowPowerModeEnabled:bOOLValue4];
     v53 = v32;
-    v38 = [v32 UUIDString];
-    [(SFPowerSource *)self->_powerSourcePairedDevice setAccessoryID:v38];
+    uUIDString = [v32 UUIDString];
+    [(SFPowerSource *)self->_powerSourcePairedDevice setAccessoryID:uUIDString];
 
     [(SFPowerSource *)self->_powerSourcePairedDevice setAdapterFamilyCode:v55];
     [(SFPowerSource *)self->_powerSourcePairedDevice setAdapterSharedSource:v31];
-    [(SFPowerSource *)self->_powerSourcePairedDevice setAdapterSourceID:v19];
-    [(SFPowerSource *)self->_powerSourcePairedDevice setCharging:v57];
+    [(SFPowerSource *)self->_powerSourcePairedDevice setAdapterSourceID:integerValue];
+    [(SFPowerSource *)self->_powerSourcePairedDevice setCharging:bOOLValue];
     [(SFPowerSource *)self->_powerSourcePairedDevice setChargeLevel:v11];
     [(SFPowerSource *)self->_powerSourcePairedDevice setMaxCapacity:v15];
     [(SFPowerSource *)self->_powerSourcePairedDevice setTemperature:v52];
     [(SFPowerSource *)self->_powerSourcePairedDevice setType:@"Accessory Source"];
-    if (v57)
+    if (bOOLValue)
     {
       v39 = @"AC Power";
     }
@@ -1461,7 +1461,7 @@ LABEL_33:
     [(SFPowerSource *)self->_powerSourcePairedDevice setName:v40];
 
     kdebug_trace();
-    v41 = [(SFPowerSource *)self->_powerSourcePairedDevice publish];
+    publish = [(SFPowerSource *)self->_powerSourcePairedDevice publish];
     v42 = charging_log();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
@@ -1476,33 +1476,33 @@ LABEL_33:
       }
 
       v44 = self->_powerSourcePairedDevice;
-      v45 = [(SFPowerSource *)v44 detailedDescription];
-      v46 = v45;
+      detailedDescription = [(SFPowerSource *)v44 detailedDescription];
+      v46 = detailedDescription;
       *buf = 138413314;
       v47 = "no";
-      v59 = v43;
+      unsignedLongValue = v43;
       v60 = 2112;
-      if (v57 != v51)
+      if (bOOLValue != charging)
       {
         v47 = "yes";
       }
 
       v61 = v44;
       v62 = 2112;
-      v63 = v45;
+      v63 = detailedDescription;
       v64 = 2080;
       v65 = v47;
       v66 = 1024;
-      v67 = v41;
+      v67 = publish;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%@ paired device power source %@\n%@charging changed %s, status %x", buf, 0x30u);
     }
 
-    if (v23)
+    if (bOOLValue3)
     {
       [(SDPairedDeviceAgent *)self _postPowerStatusNotificationForPowerSource:self->_powerSourcePairedDevice];
     }
 
-    v6 = v56;
+    getActivePairedDevice = v56;
     [(SDPairedDeviceAgent *)self _nanoRegistryRegisterChangesForDevice:v56];
 
     v28 = v54;
@@ -1513,16 +1513,16 @@ LABEL_25:
 
 - (void)_systemStateRegisterObservers
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   [(SDPairedDeviceAgent *)self _setupPowerSourceMonitor];
 }
 
 - (void)_systemStateUnregisterObservers
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -1532,8 +1532,8 @@ LABEL_25:
 
 - (void)_setupLockStateMonitor
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_lockStateChanged:" name:@"com.apple.sharingd.KeyBagLockStatusChanged" object:0];
@@ -1546,8 +1546,8 @@ LABEL_25:
   self->_powerSourceMonitor = v3;
 
   [(SFPowerSourceMonitor *)self->_powerSourceMonitor setChangeFlags:0xFFFFFFFFLL];
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  [(SFPowerSourceMonitor *)self->_powerSourceMonitor setDispatchQueue:v5];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  [(SFPowerSourceMonitor *)self->_powerSourceMonitor setDispatchQueue:dispatchQueue];
 
   [(SFPowerSourceMonitor *)self->_powerSourceMonitor setInvalidationHandler:&stru_1008CE2C0];
   v8[0] = _NSConcreteStackBlock;
@@ -1573,8 +1573,8 @@ LABEL_25:
 
 - (void)_setupWristStateMonitor
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"wristStateChanged:" name:@"com.apple.sharingd.WristStateChanged" object:0];
@@ -1582,8 +1582,8 @@ LABEL_25:
 
 - (void)_disablePowerStateMonitor
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   [(SFPowerSourceMonitor *)self->_powerSourceMonitor invalidate];
   powerSourceMonitor = self->_powerSourceMonitor;
@@ -1592,8 +1592,8 @@ LABEL_25:
 
 - (void)_testingRegisterNotifications
 {
-  v2 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v2);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
 - (void)_testingOnCharger
@@ -1605,11 +1605,11 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Faking on charger", v5, 2u);
   }
 
-  v4 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)wristStateChanged:(id)a3
+- (void)wristStateChanged:(id)changed
 {
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1618,24 +1618,24 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Wrist state changed", buf, 2u);
   }
 
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007FBB8;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_wristStateChanged
 {
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 watchWristState];
+  watchWristState = [v3 watchWristState];
 
   v5 = 2;
-  if ((v4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((watchWristState & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    v5 = v4;
+    v5 = watchWristState;
   }
 
   if (self->_wristStateLocal == v5)
@@ -1651,21 +1651,21 @@ LABEL_25:
   }
 }
 
-- (void)_wristStateUpdate:(int64_t)a3
+- (void)_wristStateUpdate:(int64_t)update
 {
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   wristStatePairedDevice = self->_wristStatePairedDevice;
-  self->_wristStatePairedDevice = a3;
-  if (wristStatePairedDevice != a3)
+  self->_wristStatePairedDevice = update;
+  if (wristStatePairedDevice != update)
   {
     v7 = +[SDStatusMonitor sharedMonitor];
     [v7 updatePairedWatchWristState:self->_wristStatePairedDevice];
   }
 }
 
-- (void)lowPowerModeChanged:(id)a3
+- (void)lowPowerModeChanged:(id)changed
 {
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1674,63 +1674,63 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Low power mode changed", buf, 2u);
   }
 
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007FDC8;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_lowPowerModeChanged
 {
   v3 = +[SDStatusMonitor sharedMonitor];
-  v4 = [v3 lowPowerModeEnabled];
+  lowPowerModeEnabled = [v3 lowPowerModeEnabled];
 
-  if (self->_lowPowerModeLocal == v4)
+  if (self->_lowPowerModeLocal == lowPowerModeEnabled)
   {
     sub_100081918();
   }
 
   else
   {
-    self->_lowPowerModeLocal = v4;
+    self->_lowPowerModeLocal = lowPowerModeEnabled;
 
     [(SDPairedDeviceAgent *)self _idsTriggerSync];
   }
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
-  v3 = a3;
+  establishedCopy = established;
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 sd_description];
+    sd_description = [establishedCopy sd_description];
     v6 = 138412290;
-    v7 = v5;
+    v7 = sd_description;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Paired device connection established %@", &v6, 0xCu);
   }
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v3 = a3;
+  invalidatedCopy = invalidated;
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 sd_description];
+    sd_description = [invalidatedCopy sd_description];
     v6 = 138412290;
-    v7 = v5;
+    v7 = sd_description;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Paired device connection invalidated %@", &v6, 0xCu);
   }
 }
 
 - (void)initialViewControllerDidAppear
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1744,8 +1744,8 @@ LABEL_25:
 
 - (void)initialViewControllerDidDisappear
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1757,54 +1757,54 @@ LABEL_25:
   self->_uiShowing = 0;
 }
 
-- (void)sendAnimationDate:(id)a3
+- (void)sendAnimationDate:(id)date
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)triggerChargingUIWithDismissHandler:(id)a3
+- (void)triggerChargingUIWithDismissHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if ([(SDPairedDeviceAgent *)self _companionLinkConnected])
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     chargingUIHandler = self->_chargingUIHandler;
     self->_chargingUIHandler = v6;
 
     v8 = dispatch_time(0, 10000000000);
-    v9 = [(SDXPCDaemon *)self dispatchQueue];
+    dispatchQueue2 = [(SDXPCDaemon *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000802AC;
     block[3] = &unk_1008CDEA0;
     block[4] = self;
-    dispatch_after(v8, v9, block);
+    dispatch_after(v8, dispatchQueue2, block);
   }
 
   else
   {
-    sub_100081968(v4);
+    sub_100081968(handlerCopy);
   }
 }
 
-- (void)sendDismissUIWithReason:(int64_t)a3
+- (void)sendDismissUIWithReason:(int64_t)reason
 {
-  v3 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)sendDashboardEntryWithName:(id)a3 dict:(id)a4
+- (void)sendDashboardEntryWithName:(id)name dict:(id)dict
 {
   v12[0] = @"dan";
   v12[1] = @"dad";
-  v13[0] = a3;
-  v13[1] = a4;
-  v6 = a4;
-  v7 = a3;
+  v13[0] = name;
+  v13[1] = dict;
+  dictCopy = dict;
+  nameCopy = name;
   v8 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10[0] = @"met";
   v10[1] = @"dae";
@@ -1815,14 +1815,14 @@ LABEL_25:
   [(SDPairedDeviceAgent *)self _idsSendDashboardEntryToCompanion:v9];
 }
 
-- (void)_postPowerStatusNotificationForPowerSource:(id)a3
+- (void)_postPowerStatusNotificationForPowerSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = charging_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = sourceCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Sending response for reason %@", &v6, 0xCu);
   }
 
@@ -1830,22 +1830,22 @@ LABEL_25:
   [v5 notifyBatteryStatus];
 }
 
-- (void)_idsSendStateUpdate:(id)a3 asWaking:(BOOL)a4
+- (void)_idsSendStateUpdate:(id)update asWaking:(BOOL)waking
 {
-  v4 = a4;
-  v6 = a3;
+  wakingCopy = waking;
+  updateCopy = update;
   v7 = [NSSet setWithObject:IDSDefaultPairedDevice];
-  v8 = [(SDPairedDeviceAgent *)self _idsHasDefaultDevice];
+  _idsHasDefaultDevice = [(SDPairedDeviceAgent *)self _idsHasDefaultDevice];
   v9 = objc_opt_new();
   v30 = 0;
-  v10 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v10);
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v11 = charging_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = "no";
-    if (v8)
+    if (_idsHasDefaultDevice)
     {
       v12 = "yes";
     }
@@ -1855,13 +1855,13 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Default paired device: %s", buf, 0xCu);
   }
 
-  if (v8)
+  if (_idsHasDefaultDevice)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       Data = OPACKEncoderCreateData();
-      v14 = [v6 objectForKeyedSubscript:@"met"];
+      v14 = [updateCopy objectForKeyedSubscript:@"met"];
       if (v14)
       {
         v15 = v14;
@@ -1870,14 +1870,14 @@ LABEL_25:
         [v9 setObject:v17 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
         [v9 setObject:@"com.apple.sharing.DeviceStateUpdate" forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
-        v18 = [NSNumber numberWithInt:!v4];
+        v18 = [NSNumber numberWithInt:!wakingCopy];
         [v9 setObject:v18 forKeyedSubscript:IDSSendMessageOptionNonWakingKey];
 
         v19 = charging_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v32 = v6;
+          v32 = updateCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Sending state update %@", buf, 0xCu);
         }
 
@@ -1941,18 +1941,18 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_lockStateHandleMessage:(id)a3
+- (void)_lockStateHandleMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [v4 objectForKeyedSubscript:@"lst"];
+  v6 = [messageCopy objectForKeyedSubscript:@"lst"];
 
   if (v6)
   {
-    v7 = [v6 intValue];
-    if ((v7 & 0x80000000) != 0)
+    intValue = [v6 intValue];
+    if ((intValue & 0x80000000) != 0)
     {
       v8 = charging_log();
       if (sub_10008073C(v8))
@@ -1963,44 +1963,44 @@ LABEL_17:
 
     else
     {
-      [(SDPairedDeviceAgent *)self _lockStateUpdate:v7];
+      [(SDPairedDeviceAgent *)self _lockStateUpdate:intValue];
     }
   }
 }
 
-- (void)_powerSourceChanged:(id)a3
+- (void)_powerSourceChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [(SDPairedDeviceAgent *)self _companionLinkConnected];
-  v7 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v7);
+  changedCopy = changed;
+  _companionLinkConnected = [(SDPairedDeviceAgent *)self _companionLinkConnected];
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v8 = [v5 type];
-  v9 = [v8 isEqualToString:@"InternalBattery"];
+  type = [changedCopy type];
+  v9 = [type isEqualToString:@"InternalBattery"];
 
   if (v9)
   {
     v10 = charging_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v5 detailedDescription];
-      v12 = v11;
+      detailedDescription = [changedCopy detailedDescription];
+      v12 = detailedDescription;
       v13 = "no";
       *v31 = 138412802;
-      *&v31[4] = v5;
-      if (v6)
+      *&v31[4] = changedCopy;
+      if (_companionLinkConnected)
       {
         v13 = "yes";
       }
 
       *&v31[12] = 2112;
-      *&v31[14] = v11;
+      *&v31[14] = detailedDescription;
       v32 = 2080;
       v33 = v13;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Local power source updated %@, IOPS details %@ link connected %s", v31, 0x20u);
     }
 
-    if (([v5 charging] & 1) == 0)
+    if (([changedCopy charging] & 1) == 0)
     {
       if (self->_chargingUIHandler)
       {
@@ -2023,7 +2023,7 @@ LABEL_17:
       self->_animationDateForIDS = 0;
     }
 
-    v18 = [(SDPairedDeviceAgent *)self _messageFromPowerSource:v5, *v31];
+    v18 = [(SDPairedDeviceAgent *)self _messageFromPowerSource:changedCopy, *v31];
     powerSourceMessage = self->_powerSourceMessage;
     if (powerSourceMessage && [(NSDictionary *)powerSourceMessage isEqualToDictionary:v18])
     {
@@ -2036,34 +2036,34 @@ LABEL_17:
 
     else
     {
-      objc_storeStrong(&self->_powerSourceLocal, a3);
-      v20 = self;
-      objc_sync_enter(v20);
-      objc_storeStrong(&v20->_powerSource, self->_powerSourceLocal);
-      objc_sync_exit(v20);
+      objc_storeStrong(&self->_powerSourceLocal, changed);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      objc_storeStrong(&selfCopy->_powerSource, self->_powerSourceLocal);
+      objc_sync_exit(selfCopy);
 
       v21 = self->_powerSourceMessage;
       self->_powerSourceMessage = v18;
       v22 = v18;
 
-      v20->_powerSourceWasCharging = [v5 charging];
+      selfCopy->_powerSourceWasCharging = [changedCopy charging];
       v23 = +[SDStatusMonitor sharedMonitor];
       [v23 updateLocalPowerSource:self->_powerSourceLocal];
 
-      [(SDPairedDeviceAgent *)v20 _idsTriggerSyncForAnimation:0];
+      [(SDPairedDeviceAgent *)selfCopy _idsTriggerSyncForAnimation:0];
     }
   }
 }
 
-- (void)_powerSourceLost:(id)a3
+- (void)_powerSourceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  lostCopy = lost;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [v4 type];
+  type = [lostCopy type];
 
-  v7 = [v6 isEqualToString:@"InternalBattery"];
+  v7 = [type isEqualToString:@"InternalBattery"];
   if (v7)
   {
     v8 = charging_log();
@@ -2082,18 +2082,18 @@ LABEL_17:
   }
 }
 
-- (void)_wristStateHandleMessage:(id)a3
+- (void)_wristStateHandleMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [v4 objectForKeyedSubscript:@"wst"];
+  v6 = [messageCopy objectForKeyedSubscript:@"wst"];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
-    if ((v7 & 0x8000000000000000) != 0)
+    integerValue = [v6 integerValue];
+    if ((integerValue & 0x8000000000000000) != 0)
     {
       v8 = charging_log();
       if (sub_10008073C(v8))
@@ -2104,7 +2104,7 @@ LABEL_17:
 
     else
     {
-      [(SDPairedDeviceAgent *)self _wristStateUpdate:v7];
+      [(SDPairedDeviceAgent *)self _wristStateUpdate:integerValue];
     }
   }
 }

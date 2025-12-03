@@ -1,60 +1,60 @@
 @interface AVCustomVideoCompositorSession
-+ (AVCustomVideoCompositorSession)sessionWithVideoComposition:(id)a3 recyclingSession:(id)a4;
-- (AVCustomVideoCompositorSession)initWithVideoComposition:(id)a3;
-- (BOOL)_validateRequiredPixelBufferAttributesForRenderContext:(id)a3 andReturnException:(id *)a4;
-- (BOOL)_validateSourcePixelBufferAttributes:(id)a3 andReturnException:(id *)a4;
-- (BOOL)commitCustomVideoCompositorPropertiesAndReturnError:(id *)a3;
++ (AVCustomVideoCompositorSession)sessionWithVideoComposition:(id)composition recyclingSession:(id)session;
+- (AVCustomVideoCompositorSession)initWithVideoComposition:(id)composition;
+- (BOOL)_validateRequiredPixelBufferAttributesForRenderContext:(id)context andReturnException:(id *)exception;
+- (BOOL)_validateSourcePixelBufferAttributes:(id)attributes andReturnException:(id *)exception;
+- (BOOL)commitCustomVideoCompositorPropertiesAndReturnError:(id *)error;
 - (BOOL)supportsHDRSourceFrames;
 - (BOOL)supportsWideColorSourceFrames;
 - (OpaqueFigVideoCompositor)_copyFigVideoCompositor;
 - (id)getAndClearClientError;
-- (int)_compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 atTime:(id *)a4 requiresRenderUsingSources:(id)a5 requiresSampleBuffersUsingSources:(id)a6 withInstruction:(void *)a7;
-- (int)_customCompositorShouldAnticipateRenderingFromTime:(id *)a3 toTime:(id *)a4 andThenFromTime:(id *)a5 toTime:(id *)a6;
+- (int)_compositionFrame:(OpaqueFigVideoCompositorFrame *)frame atTime:(id *)time requiresRenderUsingSources:(id)sources requiresSampleBuffersUsingSources:(id)usingSources withInstruction:(void *)instruction;
+- (int)_customCompositorShouldAnticipateRenderingFromTime:(id *)time toTime:(id *)toTime andThenFromTime:(id *)fromTime toTime:(id *)a6;
 - (int)_customCompositorShouldCancelPendingFrames;
-- (int)_customCompositorShouldPrerollForRenderingFromTime:(id *)a3 toTime:(id *)a4 andThenFromTime:(id *)a5 toTime:(id *)a6 requestID:(int64_t)a7;
+- (int)_customCompositorShouldPrerollForRenderingFromTime:(id *)time toTime:(id *)toTime andThenFromTime:(id *)fromTime toTime:(id *)a6 requestID:(int64_t)d;
 - (void)_cleanupFigCallbacks;
 - (void)_customCompositorFigPropertyDidChange;
 - (void)_willDeallocOrFinalize;
-- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 didFinishWithComposedPixelBuffer:(__CVBuffer *)a4;
-- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 didFinishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a4;
-- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 didFinishWithError:(id)a4;
-- (void)compositionFrameDidCancel:(OpaqueFigVideoCompositorFrame *)a3;
+- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)frame didFinishWithComposedPixelBuffer:(__CVBuffer *)buffer;
+- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)frame didFinishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group;
+- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)frame didFinishWithError:(id)error;
+- (void)compositionFrameDidCancel:(OpaqueFigVideoCompositorFrame *)cancel;
 - (void)dealloc;
 - (void)detachVideoComposition;
-- (void)setVideoComposition:(id)a3;
+- (void)setVideoComposition:(id)composition;
 @end
 
 @implementation AVCustomVideoCompositorSession
 
-+ (AVCustomVideoCompositorSession)sessionWithVideoComposition:(id)a3 recyclingSession:(id)a4
++ (AVCustomVideoCompositorSession)sessionWithVideoComposition:(id)composition recyclingSession:(id)session
 {
-  if (a4 && [a4 customVideoCompositor] && (objc_msgSend(a4, "customVideoCompositor"), objc_msgSend(a3, "customVideoCompositorClass"), (objc_opt_isKindOfClass() & 1) != 0))
+  if (session && [session customVideoCompositor] && (objc_msgSend(session, "customVideoCompositor"), objc_msgSend(composition, "customVideoCompositorClass"), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [a4 setVideoComposition:a3];
-    return a4;
+    [session setVideoComposition:composition];
+    return session;
   }
 
   else
   {
-    v7 = [[AVCustomVideoCompositorSession alloc] initWithVideoComposition:a3];
+    v7 = [[AVCustomVideoCompositorSession alloc] initWithVideoComposition:composition];
 
     return v7;
   }
 }
 
-- (AVCustomVideoCompositorSession)initWithVideoComposition:(id)a3
+- (AVCustomVideoCompositorSession)initWithVideoComposition:(id)composition
 {
   v26.receiver = self;
   v26.super_class = AVCustomVideoCompositorSession;
   v4 = [(AVCustomVideoCompositorSession *)&v26 init];
   if (v4)
   {
-    if (!a3)
+    if (!composition)
     {
       goto LABEL_19;
     }
 
-    v5 = [a3 copy];
+    v5 = [composition copy];
     v4->_videoComposition = v5;
     v6 = objc_alloc_init([(AVVideoComposition *)v5 customVideoCompositorClass]);
     v4->_clientCustomCompositor = v6;
@@ -145,14 +145,14 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)_validateSourcePixelBufferAttributes:(id)a3 andReturnException:(id *)a4
+- (BOOL)_validateSourcePixelBufferAttributes:(id)attributes andReturnException:(id *)exception
 {
-  if (a3)
+  if (attributes)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [a3 objectForKey:*MEMORY[0x1E6966130]];
+      v11 = [attributes objectForKey:*MEMORY[0x1E6966130]];
       if (v11)
       {
         v12 = v11;
@@ -168,7 +168,7 @@ LABEL_19:
 LABEL_11:
           v14 = 0;
           v15 = 1;
-          if (!a4)
+          if (!exception)
           {
             return v15;
           }
@@ -203,22 +203,22 @@ LABEL_11:
   }
 
 LABEL_14:
-  v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self->_clientCustomCompositor userInfo:{sel_sourcePixelBufferAttributes, v13, a4, v4, v5, v6, v7, self->_clientCustomCompositor), 0}];
+  v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self->_clientCustomCompositor userInfo:{sel_sourcePixelBufferAttributes, v13, exception, v4, v5, v6, v7, self->_clientCustomCompositor), 0}];
   v15 = 0;
-  if (a4)
+  if (exception)
   {
 LABEL_15:
-    *a4 = v14;
+    *exception = v14;
   }
 
   return v15;
 }
 
-- (BOOL)_validateRequiredPixelBufferAttributesForRenderContext:(id)a3 andReturnException:(id *)a4
+- (BOOL)_validateRequiredPixelBufferAttributesForRenderContext:(id)context andReturnException:(id *)exception
 {
-  if (a3)
+  if (context)
   {
-    v10 = [a3 objectForKey:*MEMORY[0x1E6966130]];
+    v10 = [context objectForKey:*MEMORY[0x1E6966130]];
     if (v10)
     {
       v11 = v10;
@@ -234,7 +234,7 @@ LABEL_15:
 LABEL_9:
         v13 = 0;
         v14 = 1;
-        if (!a4)
+        if (!exception)
         {
           return v14;
         }
@@ -263,23 +263,23 @@ LABEL_9:
   }
 
 LABEL_12:
-  v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self->_clientCustomCompositor userInfo:{sel_requiredPixelBufferAttributesForRenderContext, v12, a4, v4, v5, v6, v7, self->_clientCustomCompositor), 0}];
+  v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self->_clientCustomCompositor userInfo:{sel_requiredPixelBufferAttributesForRenderContext, v12, exception, v4, v5, v6, v7, self->_clientCustomCompositor), 0}];
   v14 = 0;
-  if (a4)
+  if (exception)
   {
 LABEL_13:
-    *a4 = v13;
+    *exception = v13;
   }
 
   return v14;
 }
 
-- (BOOL)commitCustomVideoCompositorPropertiesAndReturnError:(id *)a3
+- (BOOL)commitCustomVideoCompositorPropertiesAndReturnError:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v29 = 0;
-  v5 = [(AVVideoCompositing *)self->_clientCustomCompositor sourcePixelBufferAttributes];
-  v6 = [(AVVideoCompositing *)self->_clientCustomCompositor requiredPixelBufferAttributesForRenderContext];
+  sourcePixelBufferAttributes = [(AVVideoCompositing *)self->_clientCustomCompositor sourcePixelBufferAttributes];
+  requiredPixelBufferAttributesForRenderContext = [(AVVideoCompositing *)self->_clientCustomCompositor requiredPixelBufferAttributesForRenderContext];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3052000000;
@@ -292,7 +292,7 @@ LABEL_13:
   v20 = __Block_byref_object_copy__40;
   v21 = __Block_byref_object_dispose__40;
   v22 = 0;
-  if (![(AVCustomVideoCompositorSession *)self _validateSourcePixelBufferAttributes:v5 andReturnException:&v29]|| ![(AVCustomVideoCompositorSession *)self _validateRequiredPixelBufferAttributesForRenderContext:v6 andReturnException:&v29])
+  if (![(AVCustomVideoCompositorSession *)self _validateSourcePixelBufferAttributes:sourcePixelBufferAttributes andReturnException:&v29]|| ![(AVCustomVideoCompositorSession *)self _validateRequiredPixelBufferAttributesForRenderContext:requiredPixelBufferAttributesForRenderContext andReturnException:&v29])
   {
     goto LABEL_21;
   }
@@ -307,7 +307,7 @@ LABEL_10:
     goto LABEL_22;
   }
 
-  v9 = v8(FigBaseObject, *MEMORY[0x1E6973C18], v5);
+  v9 = v8(FigBaseObject, *MEMORY[0x1E6973C18], sourcePixelBufferAttributes);
   if (v9)
   {
     goto LABEL_10;
@@ -379,9 +379,9 @@ LABEL_22:
     v10 = AVLocalizedError(@"AVFoundationErrorDomain", -11841, [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1]);
   }
 
-  if (a3 && v10)
+  if (error && v10)
   {
-    *a3 = v10;
+    *error = v10;
   }
 
   _Block_object_dispose(&v17, 8);
@@ -459,14 +459,14 @@ void *__86__AVCustomVideoCompositorSession_commitCustomVideoCompositorProperties
   [(AVCustomVideoCompositorSession *)&v3 dealloc];
 }
 
-- (void)setVideoComposition:(id)a3
+- (void)setVideoComposition:(id)composition
 {
   videoCompositionQ = self->_videoCompositionQ;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__AVCustomVideoCompositorSession_setVideoComposition___block_invoke;
   v4[3] = &unk_1E7460DF0;
-  v4[4] = a3;
+  v4[4] = composition;
   v4[5] = self;
   dispatch_sync(videoCompositionQ, v4);
 }
@@ -525,17 +525,17 @@ void __56__AVCustomVideoCompositorSession_getAndClearClientError__block_invoke(u
   *(*(a1 + 32) + 96) = 0;
 }
 
-- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 didFinishWithComposedPixelBuffer:(__CVBuffer *)a4
+- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)frame didFinishWithComposedPixelBuffer:(__CVBuffer *)buffer
 {
-  CFRetain(a4);
+  CFRetain(buffer);
   finishedRequestQ = self->_finishedRequestQ;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__AVCustomVideoCompositorSession_compositionFrame_didFinishWithComposedPixelBuffer___block_invoke;
   block[3] = &unk_1E74625B0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = frame;
+  block[6] = buffer;
   dispatch_async(finishedRequestQ, block);
 }
 
@@ -555,17 +555,17 @@ void __84__AVCustomVideoCompositorSession_compositionFrame_didFinishWithComposed
   CFRelease(v6);
 }
 
-- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 didFinishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a4
+- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)frame didFinishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group
 {
-  CFRetain(a4);
+  CFRetain(group);
   finishedRequestQ = self->_finishedRequestQ;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__AVCustomVideoCompositorSession_compositionFrame_didFinishWithComposedTaggedBufferGroup___block_invoke;
   block[3] = &unk_1E74625B0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = frame;
+  block[6] = group;
   dispatch_async(finishedRequestQ, block);
 }
 
@@ -589,7 +589,7 @@ void __90__AVCustomVideoCompositorSession_compositionFrame_didFinishWithComposed
   CFRelease(v7);
 }
 
-- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 didFinishWithError:(id)a4
+- (void)compositionFrame:(OpaqueFigVideoCompositorFrame *)frame didFinishWithError:(id)error
 {
   clientErrorQ = self->_clientErrorQ;
   block[0] = MEMORY[0x1E69E9820];
@@ -597,7 +597,7 @@ void __90__AVCustomVideoCompositorSession_compositionFrame_didFinishWithComposed
   block[2] = __70__AVCustomVideoCompositorSession_compositionFrame_didFinishWithError___block_invoke;
   block[3] = &unk_1E7460DF0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = error;
   dispatch_sync(clientErrorQ, block);
   finishedRequestQ = self->_finishedRequestQ;
   v8[0] = MEMORY[0x1E69E9820];
@@ -605,7 +605,7 @@ void __90__AVCustomVideoCompositorSession_compositionFrame_didFinishWithComposed
   v8[2] = __70__AVCustomVideoCompositorSession_compositionFrame_didFinishWithError___block_invoke_2;
   v8[3] = &unk_1E7460FA8;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = frame;
   dispatch_async(finishedRequestQ, v8);
 }
 
@@ -638,7 +638,7 @@ uint64_t __70__AVCustomVideoCompositorSession_compositionFrame_didFinishWithErro
   return result;
 }
 
-- (void)compositionFrameDidCancel:(OpaqueFigVideoCompositorFrame *)a3
+- (void)compositionFrameDidCancel:(OpaqueFigVideoCompositorFrame *)cancel
 {
   finishedRequestQ = self->_finishedRequestQ;
   v4[0] = MEMORY[0x1E69E9820];
@@ -646,7 +646,7 @@ uint64_t __70__AVCustomVideoCompositorSession_compositionFrame_didFinishWithErro
   v4[2] = __60__AVCustomVideoCompositorSession_compositionFrameDidCancel___block_invoke;
   v4[3] = &unk_1E7460FA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = cancel;
   dispatch_async(finishedRequestQ, v4);
 }
 
@@ -677,21 +677,21 @@ uint64_t __60__AVCustomVideoCompositorSession_compositionFrameDidCancel___block_
   v12 = 0;
   if ([(AVCustomVideoCompositorSession *)self supportsHDRSourceFrames]|| (videoCompositionQ = self->_videoCompositionQ, v6[0] = MEMORY[0x1E69E9820], v6[1] = 3221225472, v6[2] = __63__AVCustomVideoCompositorSession_supportsWideColorSourceFrames__block_invoke, v6[3] = &unk_1E7460E68, v6[4] = self, v6[5] = &v7, dispatch_sync(videoCompositionQ, v6), [AVCustomVideoCompositorSession _colorPropertiesAreSetInVideoComposition:v8[5]]))
   {
-    v4 = 1;
+    supportsWideColorSourceFrames = 1;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v4 = [(AVVideoCompositing *)self->_clientCustomCompositor supportsWideColorSourceFrames];
+    supportsWideColorSourceFrames = [(AVVideoCompositing *)self->_clientCustomCompositor supportsWideColorSourceFrames];
   }
 
   else
   {
-    v4 = 0;
+    supportsWideColorSourceFrames = 0;
   }
 
   _Block_object_dispose(&v7, 8);
-  return v4;
+  return supportsWideColorSourceFrames;
 }
 
 id __63__AVCustomVideoCompositorSession_supportsWideColorSourceFrames__block_invoke(uint64_t a1)
@@ -713,7 +713,7 @@ id __63__AVCustomVideoCompositorSession_supportsWideColorSourceFrames__block_inv
   return [(AVVideoCompositing *)clientCustomCompositor supportsHDRSourceFrames];
 }
 
-- (int)_compositionFrame:(OpaqueFigVideoCompositorFrame *)a3 atTime:(id *)a4 requiresRenderUsingSources:(id)a5 requiresSampleBuffersUsingSources:(id)a6 withInstruction:(void *)a7
+- (int)_compositionFrame:(OpaqueFigVideoCompositorFrame *)frame atTime:(id *)time requiresRenderUsingSources:(id)sources requiresSampleBuffersUsingSources:(id)usingSources withInstruction:(void *)instruction
 {
   v40 = 0;
   v41 = &v40;
@@ -747,7 +747,7 @@ id __63__AVCustomVideoCompositorSession_supportsWideColorSourceFrames__block_inv
   block[6] = v39;
   block[7] = v37;
   block[8] = &v31;
-  block[9] = a7;
+  block[9] = instruction;
   dispatch_sync(videoCompositionQ, block);
   v24 = 0;
   v25 = &v24;
@@ -771,9 +771,9 @@ id __63__AVCustomVideoCompositorSession_supportsWideColorSourceFrames__block_inv
     v15 = v25[5];
     v16 = v41[5];
     v17 = v32[5];
-    v21 = *&a4->var0;
-    var3 = a4->var3;
-    [AVCustomVideoCompositorSession(AVCustomVideoCompositorSession_FigCallbackHandling) _compositionFrame:v20 atTime:[(AVAsynchronousVideoCompositionRequest *)v14 initUsingSession:self withRenderContext:v15 compositionFrame:a3 atTime:&v21 usingSources:a5 instruction:v16 withSampleBuffers:a6 lookupableSpatialVideoConfigurations:v17] requiresRenderUsingSources:? requiresSampleBuffersUsingSources:? withInstruction:?];
+    v21 = *&time->var0;
+    var3 = time->var3;
+    [AVCustomVideoCompositorSession(AVCustomVideoCompositorSession_FigCallbackHandling) _compositionFrame:v20 atTime:[(AVAsynchronousVideoCompositionRequest *)v14 initUsingSession:self withRenderContext:v15 compositionFrame:frame atTime:&v21 usingSources:sources instruction:v16 withSampleBuffers:usingSources lookupableSpatialVideoConfigurations:v17] requiresRenderUsingSources:? requiresSampleBuffersUsingSources:? withInstruction:?];
     v18 = 0;
   }
 
@@ -834,7 +834,7 @@ void __188__AVCustomVideoCompositorSession_AVCustomVideoCompositorSession_FigCal
   objc_autoreleasePoolPop(v2);
 }
 
-- (int)_customCompositorShouldAnticipateRenderingFromTime:(id *)a3 toTime:(id *)a4 andThenFromTime:(id *)a5 toTime:(id *)a6
+- (int)_customCompositorShouldAnticipateRenderingFromTime:(id *)time toTime:(id *)toTime andThenFromTime:(id *)fromTime toTime:(id *)a6
 {
   clientCustomCompositorQ = self->_clientCustomCompositorQ;
   block[0] = MEMORY[0x1E69E9820];
@@ -842,9 +842,9 @@ void __188__AVCustomVideoCompositorSession_AVCustomVideoCompositorSession_FigCal
   block[2] = __167__AVCustomVideoCompositorSession_AVCustomVideoCompositorSession_FigCallbackHandling___customCompositorShouldAnticipateRenderingFromTime_toTime_andThenFromTime_toTime___block_invoke;
   block[3] = &unk_1E7465D68;
   block[4] = self;
-  v9 = *a3;
-  v10 = *a4;
-  v11 = *a5;
+  v9 = *time;
+  v10 = *toTime;
+  v11 = *fromTime;
   v12 = *a6;
   dispatch_sync(clientCustomCompositorQ, block);
   return 0;
@@ -868,19 +868,19 @@ void __167__AVCustomVideoCompositorSession_AVCustomVideoCompositorSession_FigCal
   }
 }
 
-- (int)_customCompositorShouldPrerollForRenderingFromTime:(id *)a3 toTime:(id *)a4 andThenFromTime:(id *)a5 toTime:(id *)a6 requestID:(int64_t)a7
+- (int)_customCompositorShouldPrerollForRenderingFromTime:(id *)time toTime:(id *)toTime andThenFromTime:(id *)fromTime toTime:(id *)a6 requestID:(int64_t)d
 {
   clientCustomCompositorQ = self->_clientCustomCompositorQ;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __177__AVCustomVideoCompositorSession_AVCustomVideoCompositorSession_FigCallbackHandling___customCompositorShouldPrerollForRenderingFromTime_toTime_andThenFromTime_toTime_requestID___block_invoke;
   v9[3] = &unk_1E7465D90;
-  v10 = *a3;
-  v11 = *a4;
-  v12 = *a5;
+  v10 = *time;
+  v11 = *toTime;
+  v12 = *fromTime;
   v13 = *a6;
   v9[4] = self;
-  v9[5] = a7;
+  v9[5] = d;
   dispatch_sync(clientCustomCompositorQ, v9);
   return 0;
 }

@@ -1,14 +1,14 @@
 @interface PLVideoInternalResource
 - (BOOL)hasAssociatedMediaMetadata;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocallyAvailable;
 - (BOOL)isLocallyGeneratable;
 - (BOOL)isOriginalVideo;
 - (BOOL)isPlayable;
 - (BOOL)isStreamable;
-- (BOOL)matchesOrExceedsQualityLevel:(unsigned int)a3;
+- (BOOL)matchesOrExceedsQualityLevel:(unsigned int)level;
 - (NSString)debugDescription;
-- (PLVideoInternalResource)initWithBackingResource:(id)a3;
+- (PLVideoInternalResource)initWithBackingResource:(id)resource;
 - (id)additionalDescription;
 - (id)fileURLIfLocal;
 - (id)uniformTypeIdentifier;
@@ -18,29 +18,29 @@
 
 - (NSString)debugDescription
 {
-  v3 = [(PLInternalResource *)self->_backingResource dataStore];
+  dataStore = [(PLInternalResource *)self->_backingResource dataStore];
   v16 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLInternalResource *)self->_backingResource asset];
-  v6 = [v5 uuid];
-  v7 = [v3 descriptionForSubtype:{-[PLInternalResource dataStoreSubtype](self->_backingResource, "dataStoreSubtype")}];
-  v8 = [(PLInternalResource *)self->_backingResource unorientedWidth];
-  v9 = [(PLInternalResource *)self->_backingResource unorientedHeight];
+  asset = [(PLInternalResource *)self->_backingResource asset];
+  uuid = [asset uuid];
+  v7 = [dataStore descriptionForSubtype:{-[PLInternalResource dataStoreSubtype](self->_backingResource, "dataStoreSubtype")}];
+  unorientedWidth = [(PLInternalResource *)self->_backingResource unorientedWidth];
+  unorientedHeight = [(PLInternalResource *)self->_backingResource unorientedHeight];
   v10 = PLResourceLocalAvailabilityName([(PLInternalResource *)self->_backingResource localAvailability]);
-  v11 = [(PLInternalResource *)self->_backingResource remoteAvailability];
+  remoteAvailability = [(PLInternalResource *)self->_backingResource remoteAvailability];
   v12 = @"missing";
-  if (v11 == 1)
+  if (remoteAvailability == 1)
   {
     v12 = @"available";
   }
 
-  if (!v11)
+  if (!remoteAvailability)
   {
     v12 = @"unavailable";
   }
 
   v13 = v12;
-  v14 = [v16 stringWithFormat:@"<%@: %p> asset=%@ dataStoreSubtype=%@ size=%lldx%lld availability local=%@/remote=%@", v4, self, v6, v7, v8, v9, v10, v13];
+  v14 = [v16 stringWithFormat:@"<%@: %p> asset=%@ dataStoreSubtype=%@ size=%lldx%lld availability local=%@/remote=%@", v4, self, uuid, v7, unorientedWidth, unorientedHeight, v10, v13];
 
   return v14;
 }
@@ -49,15 +49,15 @@
 {
   v3 = [PLResourceRecipe recipeFromID:[(PLInternalResource *)self->_backingResource recipeID]];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PLInternalResource *)self->_backingResource version];
-  if (v5 > 2)
+  version = [(PLInternalResource *)self->_backingResource version];
+  if (version > 2)
   {
     v6 = @"cur";
   }
 
   else
   {
-    v6 = off_1E75664B0[v5];
+    v6 = off_1E75664B0[version];
   }
 
   v7 = v6;
@@ -69,48 +69,48 @@
 
 - (id)uniformTypeIdentifier
 {
-  v2 = [(PLInternalResource *)self->_backingResource uniformTypeIdentifier];
-  v3 = [v2 identifier];
+  uniformTypeIdentifier = [(PLInternalResource *)self->_backingResource uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)hasAssociatedMediaMetadata
 {
-  v3 = [(PLInternalResource *)self->_backingResource cplType];
-  if (v3 != 1)
+  cplType = [(PLInternalResource *)self->_backingResource cplType];
+  if (cplType != 1)
   {
-    LOBYTE(v3) = [(PLInternalResource *)self->_backingResource cplType]== 16 && [(PLInternalResource *)self->_backingResource version]== 2;
+    LOBYTE(cplType) = [(PLInternalResource *)self->_backingResource cplType]== 16 && [(PLInternalResource *)self->_backingResource version]== 2;
   }
 
-  return v3;
+  return cplType;
 }
 
 - (id)fileURLIfLocal
 {
-  v3 = [(PLInternalResource *)self->_backingResource dataStoreKey];
-  v4 = [(PLInternalResource *)self->_backingResource assetID];
-  v5 = [v3 fileURLForAssetID:v4];
+  dataStoreKey = [(PLInternalResource *)self->_backingResource dataStoreKey];
+  assetID = [(PLInternalResource *)self->_backingResource assetID];
+  v5 = [dataStoreKey fileURLForAssetID:assetID];
 
   return v5;
 }
 
-- (BOOL)matchesOrExceedsQualityLevel:(unsigned int)a3
+- (BOOL)matchesOrExceedsQualityLevel:(unsigned int)level
 {
-  v3 = *&a3;
-  v5 = [(PLInternalResource *)self->_backingResource dataStore];
-  LOBYTE(v3) = [v5 videoResource:self->_backingResource matchesOrExceedsQualityLevel:v3];
+  v3 = *&level;
+  dataStore = [(PLInternalResource *)self->_backingResource dataStore];
+  LOBYTE(v3) = [dataStore videoResource:self->_backingResource matchesOrExceedsQualityLevel:v3];
 
   return v3;
 }
 
 - (BOOL)isStreamable
 {
-  v2 = self;
-  v3 = [(PLInternalResource *)self->_backingResource dataStore];
-  LOBYTE(v2) = [v3 canStreamResource:v2->_backingResource];
+  selfCopy = self;
+  dataStore = [(PLInternalResource *)self->_backingResource dataStore];
+  LOBYTE(selfCopy) = [dataStore canStreamResource:selfCopy->_backingResource];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isPlayable
@@ -135,21 +135,21 @@
     return 0;
   }
 
-  v3 = [(PLInternalResource *)self->_backingResource asset];
-  v4 = [v3 deferredProcessingNeeded];
+  asset = [(PLInternalResource *)self->_backingResource asset];
+  deferredProcessingNeeded = [asset deferredProcessingNeeded];
 
-  if (v4 > 0xA)
+  if (deferredProcessingNeeded > 0xA)
   {
     return 0;
   }
 
   result = 1;
-  if (((1 << v4) & 0x1F9) != 0)
+  if (((1 << deferredProcessingNeeded) & 0x1F9) != 0)
   {
-    v6 = [(PLInternalResource *)self->_backingResource asset];
-    v7 = [v6 videoDeferredProcessingNeeded];
+    asset2 = [(PLInternalResource *)self->_backingResource asset];
+    videoDeferredProcessingNeeded = [asset2 videoDeferredProcessingNeeded];
 
-    return v7 == 1;
+    return videoDeferredProcessingNeeded == 1;
   }
 
   return result;
@@ -157,8 +157,8 @@
 
 - (BOOL)isLocallyAvailable
 {
-  v2 = [(PLInternalResource *)self->_backingResource dataStoreKey];
-  v3 = v2 != 0;
+  dataStoreKey = [(PLInternalResource *)self->_backingResource dataStoreKey];
+  v3 = dataStoreKey != 0;
 
   return v3;
 }
@@ -171,12 +171,12 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = PLVideoInternalResource;
-  if ([(PLVideoInternalResource *)&v7 isEqual:v4])
+  if ([(PLVideoInternalResource *)&v7 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -186,7 +186,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PLInternalResource *)self->_backingResource isEqual:v4[2]];
+      v5 = [(PLInternalResource *)self->_backingResource isEqual:equalCopy[2]];
     }
 
     else
@@ -198,13 +198,13 @@
   return v5;
 }
 
-- (PLVideoInternalResource)initWithBackingResource:(id)a3
+- (PLVideoInternalResource)initWithBackingResource:(id)resource
 {
-  v6 = a3;
-  if (!v6)
+  resourceCopy = resource;
+  if (!resourceCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLVideoInternalResourceContext.m" lineNumber:36 description:@"Backing resource required"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLVideoInternalResourceContext.m" lineNumber:36 description:@"Backing resource required"];
   }
 
   v11.receiver = self;
@@ -213,7 +213,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_backingResource, a3);
+    objc_storeStrong(&v7->_backingResource, resource);
   }
 
   return v8;

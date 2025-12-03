@@ -1,26 +1,26 @@
 @interface PGSchemaPGOverridesEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PGSchemaPGOverridesEnded)initWithDictionary:(id)a3;
-- (PGSchemaPGOverridesEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PGSchemaPGOverridesEnded)initWithDictionary:(id)dictionary;
+- (PGSchemaPGOverridesEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PGSchemaPGOverridesEnded
 
-- (PGSchemaPGOverridesEnded)initWithDictionary:(id)a3
+- (PGSchemaPGOverridesEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PGSchemaPGOverridesEnded;
   v5 = [(PGSchemaPGOverridesEnded *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"transcriptEventId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"transcriptEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PGSchemaPGOverridesEnded *)v5 setTranscriptEventId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"overridesMatched"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"overridesMatched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PGSchemaPGOverridesEnded *)v5 setOverridesMatched:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"assetVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"assetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PGSchemaPGOverridesEnded)initWithJSON:(id)a3
+- (PGSchemaPGOverridesEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PGSchemaPGOverridesEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PGSchemaPGOverridesEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PGSchemaPGOverridesEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,49 +86,49 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetVersion)
   {
-    v4 = [(PGSchemaPGOverridesEnded *)self assetVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetVersion"];
+    assetVersion = [(PGSchemaPGOverridesEnded *)self assetVersion];
+    v5 = [assetVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetVersion"];
   }
 
   if (self->_overridesMatched)
   {
-    v6 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    overridesMatched = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+    dictionaryRepresentation = [overridesMatched dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"overridesMatched"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"overridesMatched"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"overridesMatched"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"overridesMatched"];
     }
   }
 
   if (self->_transcriptEventId)
   {
-    v9 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    transcriptEventId = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+    dictionaryRepresentation2 = [transcriptEventId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"transcriptEventId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"transcriptEventId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"transcriptEventId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"transcriptEventId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -138,28 +138,28 @@
   return v4 ^ [(NSString *)self->_assetVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
-  v6 = [v4 transcriptEventId];
-  if ((v5 != 0) == (v6 == 0))
+  transcriptEventId = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+  transcriptEventId2 = [equalCopy transcriptEventId];
+  if ((transcriptEventId != 0) == (transcriptEventId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
-  if (v7)
+  transcriptEventId3 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+  if (transcriptEventId3)
   {
-    v8 = v7;
-    v9 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
-    v10 = [v4 transcriptEventId];
-    v11 = [v9 isEqual:v10];
+    v8 = transcriptEventId3;
+    transcriptEventId4 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+    transcriptEventId5 = [equalCopy transcriptEventId];
+    v11 = [transcriptEventId4 isEqual:transcriptEventId5];
 
     if (!v11)
     {
@@ -171,20 +171,20 @@
   {
   }
 
-  v5 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
-  v6 = [v4 overridesMatched];
-  if ((v5 != 0) == (v6 == 0))
+  transcriptEventId = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+  transcriptEventId2 = [equalCopy overridesMatched];
+  if ((transcriptEventId != 0) == (transcriptEventId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
-  if (v12)
+  overridesMatched = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+  if (overridesMatched)
   {
-    v13 = v12;
-    v14 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
-    v15 = [v4 overridesMatched];
-    v16 = [v14 isEqual:v15];
+    v13 = overridesMatched;
+    overridesMatched2 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+    overridesMatched3 = [equalCopy overridesMatched];
+    v16 = [overridesMatched2 isEqual:overridesMatched3];
 
     if (!v16)
     {
@@ -196,12 +196,12 @@
   {
   }
 
-  v5 = [(PGSchemaPGOverridesEnded *)self assetVersion];
-  v6 = [v4 assetVersion];
-  if ((v5 != 0) != (v6 == 0))
+  transcriptEventId = [(PGSchemaPGOverridesEnded *)self assetVersion];
+  transcriptEventId2 = [equalCopy assetVersion];
+  if ((transcriptEventId != 0) != (transcriptEventId2 == 0))
   {
-    v17 = [(PGSchemaPGOverridesEnded *)self assetVersion];
-    if (!v17)
+    assetVersion = [(PGSchemaPGOverridesEnded *)self assetVersion];
+    if (!assetVersion)
     {
 
 LABEL_20:
@@ -209,10 +209,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PGSchemaPGOverridesEnded *)self assetVersion];
-    v20 = [v4 assetVersion];
-    v21 = [v19 isEqual:v20];
+    v18 = assetVersion;
+    assetVersion2 = [(PGSchemaPGOverridesEnded *)self assetVersion];
+    assetVersion3 = [equalCopy assetVersion];
+    v21 = [assetVersion2 isEqual:assetVersion3];
 
     if (v21)
     {
@@ -232,55 +232,55 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+  toCopy = to;
+  transcriptEventId = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
 
-  if (v4)
+  if (transcriptEventId)
   {
-    v5 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+    transcriptEventId2 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+  overridesMatched = [(PGSchemaPGOverridesEnded *)self overridesMatched];
 
-  if (v6)
+  if (overridesMatched)
   {
-    v7 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+    overridesMatched2 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PGSchemaPGOverridesEnded *)self assetVersion];
+  assetVersion = [(PGSchemaPGOverridesEnded *)self assetVersion];
 
-  v9 = v10;
-  if (v8)
+  v9 = toCopy;
+  if (assetVersion)
   {
     PBDataWriterWriteStringField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PGSchemaPGOverridesEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  transcriptEventId = [(PGSchemaPGOverridesEnded *)self transcriptEventId];
+  v7 = [transcriptEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PGSchemaPGOverridesEnded *)self deleteTranscriptEventId];
   }
 
-  v9 = [(PGSchemaPGOverridesEnded *)self overridesMatched];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  overridesMatched = [(PGSchemaPGOverridesEnded *)self overridesMatched];
+  v10 = [overridesMatched applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PGSchemaPGOverridesEnded *)self deleteOverridesMatched];
   }

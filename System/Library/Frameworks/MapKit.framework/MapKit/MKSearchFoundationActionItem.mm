@@ -1,38 +1,38 @@
 @interface MKSearchFoundationActionItem
-+ (id)defaultActionItemDestinationMapItemData:(id)a3 mapItem:(id)a4;
++ (id)defaultActionItemDestinationMapItemData:(id)data mapItem:(id)item;
 @end
 
 @implementation MKSearchFoundationActionItem
 
-+ (id)defaultActionItemDestinationMapItemData:(id)a3 mapItem:(id)a4
++ (id)defaultActionItemDestinationMapItemData:(id)data mapItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  itemCopy = item;
   v7 = objc_alloc_init(MKSearchFoundationActionItem);
-  v8 = [v6 _messageID];
+  _messageID = [itemCopy _messageID];
 
-  v9 = v8 == 0;
-  if (v8)
+  v9 = _messageID == 0;
+  if (_messageID)
   {
-    v10 = [v6 _messageID];
-    [(SFActionItem *)v7 setMessageIdentifier:v10];
+    _messageID2 = [itemCopy _messageID];
+    [(SFActionItem *)v7 setMessageIdentifier:_messageID2];
 
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [v6 _messageURLString];
-    v13 = [v11 URLWithString:v12];
+    _messageURLString = [itemCopy _messageURLString];
+    v13 = [v11 URLWithString:_messageURLString];
     [(SFActionItem *)v7 setMessageURL:v13];
   }
 
-  if ([v6 _isStandAloneBrand])
+  if ([itemCopy _isStandAloneBrand])
   {
-    v14 = [v6 phoneNumber];
+    phoneNumber = [itemCopy phoneNumber];
   }
 
   else
   {
-    if (v5 && [v6 _canGetDirections])
+    if (dataCopy && [itemCopy _canGetDirections])
     {
-      [(SFActionItem *)v7 setMapsData:v5];
+      [(SFActionItem *)v7 setMapsData:dataCopy];
     }
 
     else
@@ -40,7 +40,7 @@
       v9 = 1;
     }
 
-    v14 = [v6 phoneNumber];
+    phoneNumber = [itemCopy phoneNumber];
 
     if (!v9)
     {
@@ -48,10 +48,10 @@
     }
   }
 
-  if (v14)
+  if (phoneNumber)
   {
-    v15 = [v6 phoneNumber];
-    [(SFActionItem *)v7 setPhoneNumber:v15];
+    phoneNumber2 = [itemCopy phoneNumber];
+    [(SFActionItem *)v7 setPhoneNumber:phoneNumber2];
   }
 
 LABEL_12:

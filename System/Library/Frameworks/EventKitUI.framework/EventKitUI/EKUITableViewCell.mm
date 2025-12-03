@@ -1,15 +1,15 @@
 @interface EKUITableViewCell
 + (id)reuseIdentifier;
-- (EKUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)separatorParentView;
 - (id)separatorView;
 - (void)_layoutSeparator;
-- (void)_setMarginExtendsToFullWidth:(BOOL)a3;
+- (void)_setMarginExtendsToFullWidth:(BOOL)width;
 - (void)layoutSubviews;
-- (void)setDisableSelectedBackground:(BOOL)a3;
-- (void)setRowSeparatorColor:(id)a3;
-- (void)setRowSeparatorVisualEffect:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setDisableSelectedBackground:(BOOL)background;
+- (void)setRowSeparatorColor:(id)color;
+- (void)setRowSeparatorVisualEffect:(id)effect;
+- (void)updateConfigurationUsingState:(id)state;
 - (void)updateRowSeparators;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __36__EKUITableViewCell_reuseIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (reuseIdentifier_onceToken_1 != -1)
   {
     dispatch_once(&reuseIdentifier_onceToken_1, block);
@@ -40,11 +40,11 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
   reuseIdentifier_reuseIdentifier_1 = v1;
 }
 
-- (EKUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = EKUITableViewCell;
-  v4 = [(EKUITableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUITableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -72,9 +72,9 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(EKUITableViewCell *)self usesInsetMargin];
+    usesInsetMargin = [(EKUITableViewCell *)self usesInsetMargin];
     v12 = 15.0;
-    if (!v11)
+    if (!usesInsetMargin)
     {
       [(EKUITableViewCell *)self separatorInset];
       if (v13 > 0.0)
@@ -114,9 +114,9 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [objc_opt_class() rowSeparatorThickness];
+    rowSeparatorThickness = [objc_opt_class() rowSeparatorThickness];
     v27 = v26;
-    if (MEMORY[0x1D38B98D0](v25))
+    if (MEMORY[0x1D38B98D0](rowSeparatorThickness))
     {
       [(EKUITableViewCell *)self separatorInset];
       if (v28 > 0.0)
@@ -171,10 +171,10 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
   }
 }
 
-- (void)setRowSeparatorColor:(id)a3
+- (void)setRowSeparatorColor:(id)color
 {
-  v7 = a3;
-  objc_storeStrong(&self->_rowSeparatorColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_rowSeparatorColor, color);
   bottomSeparatorViewForNonOpaqueTables = self->_bottomSeparatorViewForNonOpaqueTables;
   if (bottomSeparatorViewForNonOpaqueTables)
   {
@@ -188,10 +188,10 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
   }
 }
 
-- (void)setRowSeparatorVisualEffect:(id)a3
+- (void)setRowSeparatorVisualEffect:(id)effect
 {
-  objc_storeStrong(&self->_rowSeparatorVisualEffect, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_rowSeparatorVisualEffect, effect);
+  effectCopy = effect;
   [(UIVisualEffectView *)self->_bottomRowSeparatorParentView setEffect:self->_rowSeparatorVisualEffect];
   [(UIVisualEffectView *)self->_topRowSeparatorParentView setEffect:self->_rowSeparatorVisualEffect];
 }
@@ -202,8 +202,8 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
   [(EKUITableViewCell *)self bounds];
   v4 = [v3 initWithFrame:?];
   [v4 setAutoresizingMask:18];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   return v4;
 }
@@ -212,21 +212,21 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
 {
   v3 = objc_alloc_init(RowSeparatorView);
   v4 = EKUISeparatorLineThickness() * 0.5;
-  v5 = [(RowSeparatorView *)v3 layer];
-  [v5 setCornerRadius:v4];
+  layer = [(RowSeparatorView *)v3 layer];
+  [layer setCornerRadius:v4];
 
   [(RowSeparatorView *)v3 setClipsToBounds:1];
   -[RowSeparatorView setVibrant:](v3, "setVibrant:", [objc_opt_class() vibrant]);
   if ([objc_opt_class() vibrant])
   {
-    v6 = [(UIVisualEffectView *)self->_bottomRowSeparatorParentView contentView];
-    v7 = [v6 tintColor];
+    contentView = [(UIVisualEffectView *)self->_bottomRowSeparatorParentView contentView];
+    tintColor = [contentView tintColor];
   }
 
   else
   {
-    v6 = [(EKUITableViewCell *)self rowSeparatorColor];
-    if (v6)
+    contentView = [(EKUITableViewCell *)self rowSeparatorColor];
+    if (contentView)
     {
       [(EKUITableViewCell *)self rowSeparatorColor];
     }
@@ -235,11 +235,11 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
     {
       [MEMORY[0x1E69DC888] separatorColor];
     }
-    v7 = ;
+    tintColor = ;
   }
 
-  v8 = v7;
-  [(RowSeparatorView *)v3 setBackgroundColor:v7];
+  v8 = tintColor;
+  [(RowSeparatorView *)v3 setBackgroundColor:tintColor];
 
   return v3;
 }
@@ -258,40 +258,40 @@ void __36__EKUITableViewCell_reuseIdentifier__block_invoke()
     LODWORD(v3) = 0;
   }
 
-  v4 = self;
-  v5 = [objc_opt_class() vibrant];
-  v6 = v4;
-  v7 = v4;
-  if (v5)
+  selfCopy = self;
+  vibrant = [objc_opt_class() vibrant];
+  v6 = selfCopy;
+  contentView2 = selfCopy;
+  if (vibrant)
   {
-    v6 = v4;
-    if (v2 && (v6 = v4, !v4->_bottomRowSeparatorParentView))
+    v6 = selfCopy;
+    if (v2 && (v6 = selfCopy, !selfCopy->_bottomRowSeparatorParentView))
     {
-      v10 = [(EKUITableViewCell *)v4 separatorParentView];
-      bottomRowSeparatorParentView = v4->_bottomRowSeparatorParentView;
-      v4->_bottomRowSeparatorParentView = v10;
+      separatorParentView = [(EKUITableViewCell *)selfCopy separatorParentView];
+      bottomRowSeparatorParentView = selfCopy->_bottomRowSeparatorParentView;
+      selfCopy->_bottomRowSeparatorParentView = separatorParentView;
 
-      v12 = [(EKUITableViewCell *)v4 rowSeparatorVisualEffect];
-      rowSeparatorVisualEffect = v4->_rowSeparatorVisualEffect;
-      v4->_rowSeparatorVisualEffect = v12;
+      rowSeparatorVisualEffect = [(EKUITableViewCell *)selfCopy rowSeparatorVisualEffect];
+      rowSeparatorVisualEffect = selfCopy->_rowSeparatorVisualEffect;
+      selfCopy->_rowSeparatorVisualEffect = rowSeparatorVisualEffect;
 
-      v27 = [(UIVisualEffectView *)v4->_bottomRowSeparatorParentView contentView];
+      contentView = [(UIVisualEffectView *)selfCopy->_bottomRowSeparatorParentView contentView];
 
-      [(EKUITableViewCell *)v4 addSubview:v4->_bottomRowSeparatorParentView];
-      v6 = v27;
+      [(EKUITableViewCell *)selfCopy addSubview:selfCopy->_bottomRowSeparatorParentView];
+      v6 = contentView;
       if (v3)
       {
 LABEL_8:
-        if (!v4->_topRowSeparatorParentView)
+        if (!selfCopy->_topRowSeparatorParentView)
         {
           v26 = v6;
-          v8 = [(EKUITableViewCell *)v4 separatorParentView];
-          topRowSeparatorParentView = v4->_topRowSeparatorParentView;
-          v4->_topRowSeparatorParentView = v8;
+          separatorParentView2 = [(EKUITableViewCell *)selfCopy separatorParentView];
+          topRowSeparatorParentView = selfCopy->_topRowSeparatorParentView;
+          selfCopy->_topRowSeparatorParentView = separatorParentView2;
 
-          v7 = [(UIVisualEffectView *)v4->_topRowSeparatorParentView contentView];
+          contentView2 = [(UIVisualEffectView *)selfCopy->_topRowSeparatorParentView contentView];
 
-          [(EKUITableViewCell *)v4 addSubview:v4->_topRowSeparatorParentView];
+          [(EKUITableViewCell *)selfCopy addSubview:selfCopy->_topRowSeparatorParentView];
           v6 = v26;
           goto LABEL_12;
         }
@@ -303,81 +303,81 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v7 = v4;
+    contentView2 = selfCopy;
   }
 
 LABEL_12:
-  bottomSeparatorViewForNonOpaqueTables = v4->_bottomSeparatorViewForNonOpaqueTables;
+  bottomSeparatorViewForNonOpaqueTables = selfCopy->_bottomSeparatorViewForNonOpaqueTables;
   v28 = v6;
   if (v2)
   {
     if (!bottomSeparatorViewForNonOpaqueTables)
     {
-      v15 = [(EKUITableViewCell *)v4 separatorView];
-      v16 = v4->_bottomSeparatorViewForNonOpaqueTables;
-      v4->_bottomSeparatorViewForNonOpaqueTables = v15;
+      separatorView = [(EKUITableViewCell *)selfCopy separatorView];
+      v16 = selfCopy->_bottomSeparatorViewForNonOpaqueTables;
+      selfCopy->_bottomSeparatorViewForNonOpaqueTables = separatorView;
 
-      [(EKUITableViewCell *)v28 addSubview:v4->_bottomSeparatorViewForNonOpaqueTables];
+      [(EKUITableViewCell *)v28 addSubview:selfCopy->_bottomSeparatorViewForNonOpaqueTables];
     }
   }
 
   else if (bottomSeparatorViewForNonOpaqueTables)
   {
     [(RowSeparatorView *)bottomSeparatorViewForNonOpaqueTables removeFromSuperview];
-    v17 = v4->_bottomSeparatorViewForNonOpaqueTables;
-    v4->_bottomSeparatorViewForNonOpaqueTables = 0;
+    v17 = selfCopy->_bottomSeparatorViewForNonOpaqueTables;
+    selfCopy->_bottomSeparatorViewForNonOpaqueTables = 0;
   }
 
-  topSeparatorViewForNonOpaqueTables = v4->_topSeparatorViewForNonOpaqueTables;
+  topSeparatorViewForNonOpaqueTables = selfCopy->_topSeparatorViewForNonOpaqueTables;
   if (v3)
   {
     if (!topSeparatorViewForNonOpaqueTables)
     {
-      v19 = [(EKUITableViewCell *)v4 separatorView];
-      v20 = v4->_topSeparatorViewForNonOpaqueTables;
-      v4->_topSeparatorViewForNonOpaqueTables = v19;
+      separatorView2 = [(EKUITableViewCell *)selfCopy separatorView];
+      v20 = selfCopy->_topSeparatorViewForNonOpaqueTables;
+      selfCopy->_topSeparatorViewForNonOpaqueTables = separatorView2;
 
-      [v7 addSubview:v4->_topSeparatorViewForNonOpaqueTables];
+      [contentView2 addSubview:selfCopy->_topSeparatorViewForNonOpaqueTables];
     }
   }
 
   else if (topSeparatorViewForNonOpaqueTables)
   {
     [(RowSeparatorView *)topSeparatorViewForNonOpaqueTables removeFromSuperview];
-    v21 = v4->_topSeparatorViewForNonOpaqueTables;
-    v4->_topSeparatorViewForNonOpaqueTables = 0;
+    v21 = selfCopy->_topSeparatorViewForNonOpaqueTables;
+    selfCopy->_topSeparatorViewForNonOpaqueTables = 0;
   }
 
   if ([objc_opt_class() vibrant])
   {
     if ((v2 & 1) == 0)
     {
-      v22 = v4->_bottomRowSeparatorParentView;
+      v22 = selfCopy->_bottomRowSeparatorParentView;
       if (v22)
       {
         [(UIVisualEffectView *)v22 removeFromSuperview];
-        v23 = v4->_bottomRowSeparatorParentView;
-        v4->_bottomRowSeparatorParentView = 0;
+        v23 = selfCopy->_bottomRowSeparatorParentView;
+        selfCopy->_bottomRowSeparatorParentView = 0;
       }
     }
 
     if ((v3 & 1) == 0)
     {
-      v24 = v4->_topRowSeparatorParentView;
+      v24 = selfCopy->_topRowSeparatorParentView;
       if (v24)
       {
         [(UIVisualEffectView *)v24 removeFromSuperview];
-        v25 = v4->_topRowSeparatorParentView;
-        v4->_topRowSeparatorParentView = 0;
+        v25 = selfCopy->_topRowSeparatorParentView;
+        selfCopy->_topRowSeparatorParentView = 0;
       }
     }
   }
 }
 
-- (void)setDisableSelectedBackground:(BOOL)a3
+- (void)setDisableSelectedBackground:(BOOL)background
 {
-  self->_disableSelectedBackground = a3;
-  if (a3)
+  self->_disableSelectedBackground = background;
+  if (background)
   {
     [(EKUITableViewCell *)self setNeedsUpdateConfiguration];
   }
@@ -388,29 +388,29 @@ LABEL_12:
   }
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self->_disableSelectedBackground)
   {
-    v7 = v4;
-    v5 = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
+    v7 = stateCopy;
+    listGroupedCellConfiguration = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
     if ([v7 isSelected] && (objc_msgSend(v7, "isHighlighted") & 1) == 0)
     {
-      v6 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
-      [v5 setBackgroundColor:v6];
+      tableCellGroupedBackgroundColor = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+      [listGroupedCellConfiguration setBackgroundColor:tableCellGroupedBackgroundColor];
     }
 
-    [(EKUITableViewCell *)self setBackgroundConfiguration:v5];
+    [(EKUITableViewCell *)self setBackgroundConfiguration:listGroupedCellConfiguration];
 
-    v4 = v7;
+    stateCopy = v7;
   }
 }
 
-- (void)_setMarginExtendsToFullWidth:(BOOL)a3
+- (void)_setMarginExtendsToFullWidth:(BOOL)width
 {
   v3 = 15.0;
-  if (a3)
+  if (width)
   {
     v3 = 0.0;
   }

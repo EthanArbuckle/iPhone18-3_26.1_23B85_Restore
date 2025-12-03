@@ -13,79 +13,79 @@
 - (void)_nc_setHasDeferredActions:()NCDeferredActions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, @"UIView.NCDeferredActions.hasDeferredActions", v2, 0x303);
+  objc_setAssociatedObject(self, @"UIView.NCDeferredActions.hasDeferredActions", v2, 0x303);
 }
 
 - (uint64_t)_nc_subviewHasDeferredActions
 {
-  v1 = objc_getAssociatedObject(a1, @"UIView.NCDeferredActions.subviewHasDeferredActions");
+  v1 = objc_getAssociatedObject(self, @"UIView.NCDeferredActions.subviewHasDeferredActions");
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)_nc_setSubviewHasDeferredActions:()NCDeferredActions
 {
   v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, @"UIView.NCDeferredActions.subviewHasDeferredActions", v5, 0x303);
+  objc_setAssociatedObject(self, @"UIView.NCDeferredActions.subviewHasDeferredActions", v5, 0x303);
 
-  if ((a3 & 1) != 0 || ([a1 nc_hasDeferredActions] & 1) == 0)
+  if ((a3 & 1) != 0 || ([self nc_hasDeferredActions] & 1) == 0)
   {
-    v6 = [a1 superview];
-    [v6 _nc_setSubviewHasDeferredActions:a3];
+    superview = [self superview];
+    [superview _nc_setSubviewHasDeferredActions:a3];
   }
 }
 
 - (uint64_t)nc_hasDeferredActions
 {
-  v1 = objc_getAssociatedObject(a1, @"UIView.NCDeferredActions.hasDeferredActions");
+  v1 = objc_getAssociatedObject(self, @"UIView.NCDeferredActions.hasDeferredActions");
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)nc_setHasDeferredActions
 {
-  [a1 _nc_setHasDeferredActions:1];
-  v2 = [a1 superview];
-  [v2 _nc_setSubviewHasDeferredActions];
+  [self _nc_setHasDeferredActions:1];
+  superview = [self superview];
+  [superview _nc_setSubviewHasDeferredActions];
 }
 
 - (void)nc_performDeferredActionsIfNeeded
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (([a1 _nc_subviewHasDeferredActions] & 1) != 0 || objc_msgSend(a1, "nc_hasDeferredActions"))
+  if (([self _nc_subviewHasDeferredActions] & 1) != 0 || objc_msgSend(self, "nc_hasDeferredActions"))
   {
-    if ([a1 _nc_subviewHasDeferredActions])
+    if ([self _nc_subviewHasDeferredActions])
     {
-      [a1 _nc_setSubviewHasDeferredActions:0];
+      [self _nc_setSubviewHasDeferredActions:0];
     }
 
-    [a1 _nc_setHasDeferredActions:0];
+    [self _nc_setHasDeferredActions:0];
     v9 = 0u;
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v2 = [a1 subviews];
-    v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    subviews = [self subviews];
+    v3 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v3)
     {
       v4 = v3;
@@ -97,14 +97,14 @@
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v7 + 1) + 8 * v6++) nc_performDeferredActionsIfNeeded];
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        v4 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
       }
 
       while (v4);
@@ -114,11 +114,11 @@
 
 - (uint64_t)nc_performCrossFadeForDeferredActions
 {
-  result = [a1 nc_hasDeferredActions];
+  result = [self nc_hasDeferredActions];
   if (result)
   {
 
-    return [a1 pl_performCrossFadeIfNecessary];
+    return [self pl_performCrossFadeIfNecessary];
   }
 
   return result;

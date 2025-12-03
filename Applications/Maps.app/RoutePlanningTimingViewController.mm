@@ -2,10 +2,10 @@
 - (BOOL)_shouldShowCompact;
 - (NSTimeZone)destinationTimeZone;
 - (NSTimeZone)originTimeZone;
-- (RoutePlanningTimingViewController)initWithCurrentTiming:(id)a3 shouldShowArriveBy:(BOOL)a4 pickerDelegate:(id)a5;
+- (RoutePlanningTimingViewController)initWithCurrentTiming:(id)timing shouldShowArriveBy:(BOOL)by pickerDelegate:(id)delegate;
 - (RoutePlanningTimingViewControllerDelegate)pickerDelegate;
 - (id)_currentTiming;
-- (void)_keyboardWillChangeFrame:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
 - (void)_pressedDone;
 - (void)_pressedLeaveNow;
 - (void)_pressedSegmentControl;
@@ -13,16 +13,16 @@
 - (void)_updateDatePicker;
 - (void)_updateLeaveNowButton;
 - (void)_updateSegmentControl;
-- (void)handleDismissAction:(id)a3;
-- (void)setDestinationTimeZone:(id)a3;
-- (void)setLeavingNow:(BOOL)a3;
-- (void)setOriginTimeZone:(id)a3;
-- (void)setShowArriveBy:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)handleDismissAction:(id)action;
+- (void)setDestinationTimeZone:(id)zone;
+- (void)setLeavingNow:(BOOL)now;
+- (void)setOriginTimeZone:(id)zone;
+- (void)setShowArriveBy:(BOOL)by animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation RoutePlanningTimingViewController
@@ -76,9 +76,9 @@
 - (void)_pressedDone
 {
   [GEOAPPortal captureUserAction:17 target:631 value:0];
-  v3 = [(RoutePlanningTimingViewController *)self isLeavingNow];
-  v4 = [(RoutePlanningTimingViewController *)self pickerDelegate];
-  if (v3)
+  isLeavingNow = [(RoutePlanningTimingViewController *)self isLeavingNow];
+  pickerDelegate = [(RoutePlanningTimingViewController *)self pickerDelegate];
+  if (isLeavingNow)
   {
     +[RoutePlanningTiming leaveNowTiming];
   }
@@ -88,22 +88,22 @@
     [(RoutePlanningTimingViewController *)self _currentTiming];
   }
   v5 = ;
-  [v4 timingViewController:self didPickTiming:v5];
+  [pickerDelegate timingViewController:self didPickTiming:v5];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 dismiss:!UIAccessibilityIsReduceMotionEnabled()];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController dismiss:!UIAccessibilityIsReduceMotionEnabled()];
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 dismiss:!UIAccessibilityIsReduceMotionEnabled()];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController dismiss:!UIAccessibilityIsReduceMotionEnabled()];
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v22 = [v4 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [frame userInfo];
+  v22 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
 
   if (v22)
   {
@@ -153,8 +153,8 @@ LABEL_7:
 
 - (BOOL)_shouldShowCompact
 {
-  v2 = [(RoutePlanningTimingViewController *)self traitCollection];
-  v3 = [v2 verticalSizeClass] == 1;
+  traitCollection = [(RoutePlanningTimingViewController *)self traitCollection];
+  v3 = [traitCollection verticalSizeClass] == 1;
 
   return v3;
 }
@@ -162,28 +162,28 @@ LABEL_7:
 - (id)_currentTiming
 {
   isLeaveAt = self->_isLeaveAt;
-  v4 = [(UIDatePicker *)self->_datePicker date];
-  v5 = [(RoutePlanningTimingViewController *)self originTimeZone];
-  v6 = [(RoutePlanningTimingViewController *)self destinationTimeZone];
+  date = [(UIDatePicker *)self->_datePicker date];
+  originTimeZone = [(RoutePlanningTimingViewController *)self originTimeZone];
+  destinationTimeZone = [(RoutePlanningTimingViewController *)self destinationTimeZone];
   if (isLeaveAt)
   {
-    [RoutePlanningTiming timingWithDepartureDate:v4 departureTimeZone:v5 arrivalTimeZone:v6];
+    [RoutePlanningTiming timingWithDepartureDate:date departureTimeZone:originTimeZone arrivalTimeZone:destinationTimeZone];
   }
 
   else
   {
-    [RoutePlanningTiming timingWithArrivalDate:v4 departureTimeZone:v5 arrivalTimeZone:v6];
+    [RoutePlanningTiming timingWithArrivalDate:date departureTimeZone:originTimeZone arrivalTimeZone:destinationTimeZone];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)setDestinationTimeZone:(id)a3
+- (void)setDestinationTimeZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v6 = self->_destinationTimeZone;
-  v7 = v5;
+  v7 = zoneCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -192,7 +192,7 @@ LABEL_7:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_destinationTimeZone, a3);
+      objc_storeStrong(&self->_destinationTimeZone, zone);
       [(RoutePlanningTimingViewController *)self _updateDatePicker];
       v7 = v9;
     }
@@ -214,11 +214,11 @@ LABEL_7:
   return destinationTimeZone;
 }
 
-- (void)setOriginTimeZone:(id)a3
+- (void)setOriginTimeZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v6 = self->_originTimeZone;
-  v7 = v5;
+  v7 = zoneCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -227,7 +227,7 @@ LABEL_7:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_originTimeZone, a3);
+      objc_storeStrong(&self->_originTimeZone, zone);
       [(RoutePlanningTimingViewController *)self _updateDatePicker];
       v7 = v9;
     }
@@ -249,28 +249,28 @@ LABEL_7:
   return originTimeZone;
 }
 
-- (void)setLeavingNow:(BOOL)a3
+- (void)setLeavingNow:(BOOL)now
 {
-  if (self->_leavingNow != a3)
+  if (self->_leavingNow != now)
   {
-    self->_leavingNow = a3;
-    [(UIButton *)self->_leaveNowButton setEnabled:!a3];
+    self->_leavingNow = now;
+    [(UIButton *)self->_leaveNowButton setEnabled:!now];
   }
 }
 
 - (void)_updateLeaveNowButton
 {
-  v6 = [(RoutePlanningTimingViewController *)self traitCollection];
-  v3 = [v6 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryLarge];
+  traitCollection = [(RoutePlanningTimingViewController *)self traitCollection];
+  v3 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryLarge];
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v3];
-  v5 = [(UIButton *)self->_leaveNowButton titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(UIButton *)self->_leaveNowButton titleLabel];
+  [titleLabel setFont:v4];
 }
 
 - (void)_updateSegmentControl
 {
-  v3 = [(RoutePlanningTimingViewController *)self traitCollection];
-  v4 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
+  traitCollection = [(RoutePlanningTimingViewController *)self traitCollection];
+  v4 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline compatibleWithTraitCollection:v4];
 
   segmentControl = self->_segmentControl;
@@ -282,8 +282,8 @@ LABEL_7:
 
 - (void)_updateDatePicker
 {
-  v3 = [(RoutePlanningTimingViewController *)self _shouldShowCompact];
-  if (v3)
+  _shouldShowCompact = [(RoutePlanningTimingViewController *)self _shouldShowCompact];
+  if (_shouldShowCompact)
   {
     v4 = 2;
   }
@@ -294,7 +294,7 @@ LABEL_7:
   }
 
   [(UIDatePicker *)self->_datePicker setPreferredDatePickerStyle:v4];
-  if (v3)
+  if (_shouldShowCompact)
   {
     +[UIColor clearColor];
   }
@@ -306,7 +306,7 @@ LABEL_7:
   v5 = ;
   [(UIDatePicker *)self->_datePicker setBackgroundColor:v5];
 
-  [(NSLayoutConstraint *)self->_datePickerWidthConstraint setActive:v3 ^ 1];
+  [(NSLayoutConstraint *)self->_datePickerWidthConstraint setActive:_shouldShowCompact ^ 1];
   if (self->_isLeaveAt)
   {
     [(RoutePlanningTimingViewController *)self originTimeZone];
@@ -322,35 +322,35 @@ LABEL_7:
   [(UIDatePicker *)self->_datePicker setMinimumDate:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RoutePlanningTimingViewController;
-  [(ContaineeViewController *)&v4 viewWillAppear:a3];
+  [(ContaineeViewController *)&v4 viewWillAppear:appear];
   [(UIDatePicker *)self->_datePicker setMinuteInterval:5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = RoutePlanningTimingViewController;
-  [(MapsThemeViewController *)&v4 traitCollectionDidChange:a3];
+  [(MapsThemeViewController *)&v4 traitCollectionDidChange:change];
   [(RoutePlanningTimingViewController *)self _updateDatePicker];
   [(RoutePlanningTimingViewController *)self _updateSegmentControl];
   [(RoutePlanningTimingViewController *)self _updateLeaveNowButton];
 }
 
-- (void)setShowArriveBy:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowArriveBy:(BOOL)by animated:(BOOL)animated
 {
-  if (self->_showArriveBy != a3)
+  if (self->_showArriveBy != by)
   {
     v15[5] = v7;
     v15[6] = v6;
     v15[11] = v4;
     v15[12] = v5;
-    v8 = a4;
-    self->_showArriveBy = a3;
-    if (!a3 && !self->_isLeaveAt)
+    animatedCopy = animated;
+    self->_showArriveBy = by;
+    if (!by && !self->_isLeaveAt)
     {
       self->_isLeaveAt = 1;
       [(RoutePlanningTimingViewController *)self _updateDatePicker];
@@ -368,7 +368,7 @@ LABEL_7:
     v14[3] = &unk_101661738;
     v14[4] = self;
     v11 = objc_retainBlock(v14);
-    if (v8)
+    if (animatedCopy)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -387,11 +387,11 @@ LABEL_7:
   }
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v7.receiver = self;
   v7.super_class = RoutePlanningTimingViewController;
-  [(ContaineeViewController *)&v7 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v7 willBecomeCurrent:current];
   if (sub_10000FA08(self) == 5)
   {
     [(UIDatePicker *)self->_datePicker _setSafeAreaInsetsFrozen:0];
@@ -404,11 +404,11 @@ LABEL_7:
   }
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
   v7.receiver = self;
   v7.super_class = RoutePlanningTimingViewController;
-  [(ContaineeViewController *)&v7 willResignCurrent:a3];
+  [(ContaineeViewController *)&v7 willResignCurrent:current];
   if (sub_10000FA08(self) == 5)
   {
     [(UIDatePicker *)self->_datePicker _setSafeAreaInsetsFrozen:1];
@@ -441,31 +441,31 @@ LABEL_7:
   v119 = [MapsThemeButton buttonWithType:1];
   [v119 addTarget:self action:"_pressedDone" forControlEvents:64];
   [(ModalCardHeaderView *)v4 setTrailingButton:v119];
-  v7 = [(ContaineeViewController *)self headerView];
-  [v7 addSubview:v4];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView addSubview:v4];
 
-  v8 = [(ModalCardHeaderView *)v4 leadingAnchor];
-  v9 = [(ContaineeViewController *)self headerView];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  leadingAnchor = [(ModalCardHeaderView *)v4 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v11];
 
-  v12 = [(ModalCardHeaderView *)v4 trailingAnchor];
-  v13 = [(ContaineeViewController *)self headerView];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  trailingAnchor = [(ModalCardHeaderView *)v4 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v3 addObject:v15];
 
-  v16 = [(ModalCardHeaderView *)v4 topAnchor];
-  v17 = [(ContaineeViewController *)self headerView];
-  v18 = [v17 topAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  topAnchor = [(ModalCardHeaderView *)v4 topAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView4 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v3 addObject:v19];
 
-  v20 = [(ModalCardHeaderView *)v4 bottomAnchor];
-  v21 = [(ContaineeViewController *)self headerView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  bottomAnchor = [(ModalCardHeaderView *)v4 bottomAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView5 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v3 addObject:v23];
 
   v24 = objc_opt_new();
@@ -475,31 +475,31 @@ LABEL_7:
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIScrollView *)self->_scrollView setDelegate:self];
   [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
-  v26 = [(ContaineeViewController *)self contentView];
-  [v26 addSubview:self->_scrollView];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView addSubview:self->_scrollView];
 
-  v27 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v28 = [(ContaineeViewController *)self contentView];
-  v29 = [v28 leadingAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  leadingAnchor3 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView2 leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v3 addObject:v30];
 
-  v31 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v32 = [(ContaineeViewController *)self contentView];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  trailingAnchor3 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView3 trailingAnchor];
+  v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v3 addObject:v34];
 
-  v35 = [(UIScrollView *)self->_scrollView topAnchor];
-  v36 = [(ContaineeViewController *)self contentView];
-  v37 = [v36 topAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  topAnchor3 = [(UIScrollView *)self->_scrollView topAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  topAnchor4 = [contentView4 topAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v3 addObject:v38];
 
-  v39 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v40 = [(ContaineeViewController *)self contentView];
-  v41 = [v40 bottomAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  bottomAnchor3 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  bottomAnchor4 = [contentView5 bottomAnchor];
+  v42 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v3 addObject:v42];
 
   v43 = +[NSBundle mainBundle];
@@ -518,24 +518,24 @@ LABEL_7:
   [(RoutePlanningTimingViewController *)self _updateSegmentControl];
   [(UISegmentedControl *)self->_segmentControl addTarget:self action:"_pressedSegmentControl" forControlEvents:4096];
   [(UIScrollView *)self->_scrollView addSubview:self->_segmentControl];
-  v49 = [(UISegmentedControl *)self->_segmentControl leadingAnchor];
-  v50 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50 constant:16.0];
+  leadingAnchor5 = [(UISegmentedControl *)self->_segmentControl leadingAnchor];
+  leadingAnchor6 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v51 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:16.0];
   [v3 addObject:v51];
 
-  v52 = [(UISegmentedControl *)self->_segmentControl trailingAnchor];
-  v53 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53 constant:-16.0];
+  trailingAnchor5 = [(UISegmentedControl *)self->_segmentControl trailingAnchor];
+  trailingAnchor6 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v54 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   [v3 addObject:v54];
 
-  v55 = [(UISegmentedControl *)self->_segmentControl topAnchor];
-  v56 = [(UIScrollView *)self->_scrollView topAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56 constant:16.0];
+  topAnchor5 = [(UISegmentedControl *)self->_segmentControl topAnchor];
+  topAnchor6 = [(UIScrollView *)self->_scrollView topAnchor];
+  v57 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:16.0];
   [v121 addObject:v57];
 
-  v58 = [(UISegmentedControl *)self->_segmentControl bottomAnchor];
-  v59 = [(UIScrollView *)self->_scrollView topAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59 constant:0.0];
+  bottomAnchor5 = [(UISegmentedControl *)self->_segmentControl bottomAnchor];
+  topAnchor7 = [(UIScrollView *)self->_scrollView topAnchor];
+  v60 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7 constant:0.0];
   [v122 addObject:v60];
 
   [(UISegmentedControl *)self->_segmentControl setSelectedSegmentIndex:!self->_isLeaveAt];
@@ -552,39 +552,39 @@ LABEL_7:
   [(UIDatePicker *)self->_datePicker setMaximumDate:v63];
 
   [(UIDatePicker *)self->_datePicker _setContinuousCornerRadius:10.0];
-  v64 = [(UIDatePicker *)self->_datePicker layer];
-  [v64 setMasksToBounds:1];
+  layer = [(UIDatePicker *)self->_datePicker layer];
+  [layer setMasksToBounds:1];
 
   [(UIScrollView *)self->_scrollView addSubview:self->_datePicker];
-  v65 = [(UIDatePicker *)self->_datePicker widthAnchor];
-  v66 = [(RoutePlanningTimingViewController *)self view];
-  v67 = [v66 widthAnchor];
-  v68 = [v65 constraintEqualToAnchor:v67 constant:-32.0];
+  widthAnchor = [(UIDatePicker *)self->_datePicker widthAnchor];
+  view = [(RoutePlanningTimingViewController *)self view];
+  widthAnchor2 = [view widthAnchor];
+  v68 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-32.0];
   datePickerWidthConstraint = self->_datePickerWidthConstraint;
   self->_datePickerWidthConstraint = v68;
 
-  v70 = [(UIDatePicker *)self->_datePicker leadingAnchor];
-  v71 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v72 = [v70 constraintEqualToAnchor:v71 constant:16.0];
+  leadingAnchor7 = [(UIDatePicker *)self->_datePicker leadingAnchor];
+  leadingAnchor8 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v72 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
   datePickerLeadingConstraint = self->_datePickerLeadingConstraint;
   self->_datePickerLeadingConstraint = v72;
 
-  v74 = [(UIDatePicker *)self->_datePicker trailingAnchor];
-  v75 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v76 = [v74 constraintLessThanOrEqualToAnchor:v75 constant:-16.0];
+  trailingAnchor7 = [(UIDatePicker *)self->_datePicker trailingAnchor];
+  trailingAnchor8 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v76 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8 constant:-16.0];
   datePickerTrailingConstraint = self->_datePickerTrailingConstraint;
   self->_datePickerTrailingConstraint = v76;
 
   [v3 addObject:self->_datePickerLeadingConstraint];
   [v3 addObject:self->_datePickerTrailingConstraint];
-  v78 = [(UIDatePicker *)self->_datePicker topAnchor];
-  v79 = [(UISegmentedControl *)self->_segmentControl bottomAnchor];
-  v80 = [v78 constraintEqualToAnchor:v79 constant:16.0];
+  topAnchor8 = [(UIDatePicker *)self->_datePicker topAnchor];
+  bottomAnchor6 = [(UISegmentedControl *)self->_segmentControl bottomAnchor];
+  v80 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:16.0];
   [v121 addObject:v80];
 
-  v81 = [(UIDatePicker *)self->_datePicker topAnchor];
-  v82 = [(UIScrollView *)self->_scrollView topAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82 constant:16.0];
+  topAnchor9 = [(UIDatePicker *)self->_datePicker topAnchor];
+  topAnchor10 = [(UIScrollView *)self->_scrollView topAnchor];
+  v83 = [topAnchor9 constraintEqualToAnchor:topAnchor10 constant:16.0];
   [v122 addObject:v83];
 
   v84 = objc_opt_new();
@@ -596,8 +596,8 @@ LABEL_7:
   v86 = +[UIColor secondarySystemGroupedBackgroundColor];
   [(UIButton *)self->_leaveNowButton setBackgroundColor:v86];
 
-  v87 = [(UIButton *)self->_leaveNowButton titleLabel];
-  [v87 setAdjustsFontForContentSizeCategory:1];
+  titleLabel = [(UIButton *)self->_leaveNowButton titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
   [(UIButton *)self->_leaveNowButton _setContinuousCornerRadius:10.0];
   [(UIButton *)self->_leaveNowButton setContentHorizontalAlignment:4];
@@ -617,34 +617,34 @@ LABEL_7:
 
   [(RoutePlanningTimingViewController *)self _updateLeaveNowButton];
   [(UIScrollView *)self->_scrollView addSubview:self->_leaveNowButton];
-  v95 = [(UIButton *)self->_leaveNowButton leadingAnchor];
-  v96 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v97 = [v95 constraintEqualToAnchor:v96 constant:16.0];
+  leadingAnchor9 = [(UIButton *)self->_leaveNowButton leadingAnchor];
+  leadingAnchor10 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v97 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
   [v3 addObject:v97];
 
-  v98 = [(UIButton *)self->_leaveNowButton trailingAnchor];
-  v99 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v100 = [v98 constraintEqualToAnchor:v99 constant:-16.0];
+  trailingAnchor9 = [(UIButton *)self->_leaveNowButton trailingAnchor];
+  trailingAnchor10 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v100 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-16.0];
   [v3 addObject:v100];
 
-  v101 = [(UIButton *)self->_leaveNowButton topAnchor];
-  v102 = [(UIDatePicker *)self->_datePicker bottomAnchor];
-  v103 = [v101 constraintEqualToAnchor:v102 constant:16.0];
+  topAnchor11 = [(UIButton *)self->_leaveNowButton topAnchor];
+  bottomAnchor7 = [(UIDatePicker *)self->_datePicker bottomAnchor];
+  v103 = [topAnchor11 constraintEqualToAnchor:bottomAnchor7 constant:16.0];
   [v3 addObject:v103];
 
-  v104 = [(UIButton *)self->_leaveNowButton bottomAnchor];
-  v105 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v106 = [v104 constraintEqualToAnchor:v105 constant:-16.0];
+  bottomAnchor8 = [(UIButton *)self->_leaveNowButton bottomAnchor];
+  bottomAnchor9 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v106 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:-16.0];
   [v3 addObject:v106];
 
-  v107 = [(UIButton *)self->_leaveNowButton widthAnchor];
-  v108 = [(RoutePlanningTimingViewController *)self view];
-  v109 = [v108 widthAnchor];
-  v110 = [v107 constraintEqualToAnchor:v109 constant:-32.0];
+  widthAnchor3 = [(UIButton *)self->_leaveNowButton widthAnchor];
+  view2 = [(RoutePlanningTimingViewController *)self view];
+  widthAnchor4 = [view2 widthAnchor];
+  v110 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 constant:-32.0];
   [v3 addObject:v110];
 
-  v111 = [(UIButton *)self->_leaveNowButton heightAnchor];
-  v112 = [v111 constraintGreaterThanOrEqualToConstant:50.0];
+  heightAnchor = [(UIButton *)self->_leaveNowButton heightAnchor];
+  v112 = [heightAnchor constraintGreaterThanOrEqualToConstant:50.0];
   [v3 addObject:v112];
 
   v113 = [v121 copy];
@@ -672,45 +672,45 @@ LABEL_7:
   [(RoutePlanningTimingViewController *)self setLeavingNow:self->_originalDate == 0];
 }
 
-- (RoutePlanningTimingViewController)initWithCurrentTiming:(id)a3 shouldShowArriveBy:(BOOL)a4 pickerDelegate:(id)a5
+- (RoutePlanningTimingViewController)initWithCurrentTiming:(id)timing shouldShowArriveBy:(BOOL)by pickerDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  timingCopy = timing;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = RoutePlanningTimingViewController;
   v10 = [(RoutePlanningTimingViewController *)&v22 initWithNibName:0 bundle:0];
   if (v10)
   {
-    v11 = [v8 arrivalDate];
-    v12 = v11;
-    if (!v11)
+    arrivalDate = [timingCopy arrivalDate];
+    departureDate = arrivalDate;
+    if (!arrivalDate)
     {
-      v12 = [v8 departureDate];
+      departureDate = [timingCopy departureDate];
     }
 
-    objc_storeStrong(&v10->_originalDate, v12);
-    if (!v11)
+    objc_storeStrong(&v10->_originalDate, departureDate);
+    if (!arrivalDate)
     {
     }
 
-    v13 = [v8 arrivalDate];
-    v10->_isLeaveAt = v13 == 0;
+    arrivalDate2 = [timingCopy arrivalDate];
+    v10->_isLeaveAt = arrivalDate2 == 0;
 
-    v14 = [v8 departureTimeZone];
+    departureTimeZone = [timingCopy departureTimeZone];
     originTimeZone = v10->_originTimeZone;
-    v10->_originTimeZone = v14;
+    v10->_originTimeZone = departureTimeZone;
 
-    v16 = [v8 arrivalTimeZone];
+    arrivalTimeZone = [timingCopy arrivalTimeZone];
     destinationTimeZone = v10->_destinationTimeZone;
-    v10->_destinationTimeZone = v16;
+    v10->_destinationTimeZone = arrivalTimeZone;
 
-    v10->_showArriveBy = a4;
-    objc_storeWeak(&v10->_pickerDelegate, v9);
-    v18 = [(ContaineeViewController *)v10 cardPresentationController];
-    [v18 setPresentedModally:1];
+    v10->_showArriveBy = by;
+    objc_storeWeak(&v10->_pickerDelegate, delegateCopy);
+    cardPresentationController = [(ContaineeViewController *)v10 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v19 = [(ContaineeViewController *)v10 cardPresentationController];
-    [v19 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v10 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
     v20 = +[NSNotificationCenter defaultCenter];
     [v20 addObserver:v10 selector:"_keyboardWillChangeFrame:" name:UIKeyboardWillChangeFrameNotification object:0];

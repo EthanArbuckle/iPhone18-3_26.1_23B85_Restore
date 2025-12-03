@@ -1,29 +1,29 @@
 @interface CKPopoverViewLayoutMetrics
 - (CGRect)frame;
-- (CKPopoverViewLayoutMetrics)initWithState:(unint64_t)a3 frame:(CGRect)a4 coordinateSpace:(id)a5;
+- (CKPopoverViewLayoutMetrics)initWithState:(unint64_t)state frame:(CGRect)frame coordinateSpace:(id)space;
 @end
 
 @implementation CKPopoverViewLayoutMetrics
 
-- (CKPopoverViewLayoutMetrics)initWithState:(unint64_t)a3 frame:(CGRect)a4 coordinateSpace:(id)a5
+- (CKPopoverViewLayoutMetrics)initWithState:(unint64_t)state frame:(CGRect)frame coordinateSpace:(id)space
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
   v16.receiver = self;
   v16.super_class = CKPopoverViewLayoutMetrics;
   v13 = [(CKPopoverViewLayoutMetrics *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_state = a3;
+    v13->_state = state;
     v13->_frame.origin.x = x;
     v13->_frame.origin.y = y;
     v13->_frame.size.width = width;
     v13->_frame.size.height = height;
-    objc_storeStrong(&v13->_coordinateSpace, a5);
+    objc_storeStrong(&v13->_coordinateSpace, space);
   }
 
   return v14;

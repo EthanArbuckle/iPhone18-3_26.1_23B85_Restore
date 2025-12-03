@@ -1,23 +1,23 @@
 @interface PXShadowImageCache
 + (PXShadowImageCache)sharedInstance;
 - (PXShadowImageCache)init;
-- (id)stretchableShadowImageFor:(id)a3 cornerRadius:(double)a4 screenScale:(double)a5;
+- (id)stretchableShadowImageFor:(id)for cornerRadius:(double)radius screenScale:(double)scale;
 @end
 
 @implementation PXShadowImageCache
 
-- (id)stretchableShadowImageFor:(id)a3 cornerRadius:(double)a4 screenScale:(double)a5
+- (id)stretchableShadowImageFor:(id)for cornerRadius:(double)radius screenScale:(double)scale
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  forCopy = for;
   v9 = 0;
-  if (v8 && a5 != 0.0)
+  if (forCopy && scale != 0.0)
   {
     v10 = [off_1E7721928 alloc];
-    v16[0] = v8;
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v16[0] = forCopy;
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
     v16[1] = v11;
-    v12 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+    v12 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
     v16[2] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
     v14 = [v10 initWithObjects:v13];

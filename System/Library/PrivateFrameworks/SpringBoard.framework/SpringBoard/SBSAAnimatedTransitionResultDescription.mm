@@ -1,51 +1,51 @@
 @interface SBSAAnimatedTransitionResultDescription
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSAAnimatedTransitionResultDescription)initWithAnimatedTransitionResultDescription:(id)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAAnimatedTransitionResultDescription)initWithAnimatedTransitionResultDescription:(id)description;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAAnimatedTransitionResultDescription
 
-- (SBSAAnimatedTransitionResultDescription)initWithAnimatedTransitionResultDescription:(id)a3
+- (SBSAAnimatedTransitionResultDescription)initWithAnimatedTransitionResultDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = SBSAAnimatedTransitionResultDescription;
   v5 = [(SBSAAnimatedTransitionResultDescription *)&v12 init];
   if (v5)
   {
-    v6 = [v4 animatedTransitionIdentifier];
+    animatedTransitionIdentifier = [descriptionCopy animatedTransitionIdentifier];
     animatedTransitionIdentifier = v5->_animatedTransitionIdentifier;
-    v5->_animatedTransitionIdentifier = v6;
+    v5->_animatedTransitionIdentifier = animatedTransitionIdentifier;
 
-    v8 = [v4 associatedInterfaceElementPropertyIdentity];
+    associatedInterfaceElementPropertyIdentity = [descriptionCopy associatedInterfaceElementPropertyIdentity];
     associatedInterfaceElementPropertyIdentity = v5->_associatedInterfaceElementPropertyIdentity;
-    v5->_associatedInterfaceElementPropertyIdentity = v8;
+    v5->_associatedInterfaceElementPropertyIdentity = associatedInterfaceElementPropertyIdentity;
 
-    [v4 targetedMilestone];
+    [descriptionCopy targetedMilestone];
     v5->_targetedMilestone = v10;
-    v5->_transitionEndTargeted = [v4 isTransitionEndTargeted];
-    v5->_finished = [v4 finished];
-    v5->_retargeted = [v4 retargeted];
+    v5->_transitionEndTargeted = [descriptionCopy isTransitionEndTargeted];
+    v5->_finished = [descriptionCopy finished];
+    v5->_retargeted = [descriptionCopy retargeted];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x277CF0C20] builderWithObject:self ofExpectedClass:objc_opt_class()];
   animatedTransitionIdentifier = self->_animatedTransitionIdentifier;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __51__SBSAAnimatedTransitionResultDescription_isEqual___block_invoke;
   v35[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v36 = v7;
   v8 = [v5 appendObject:animatedTransitionIdentifier counterpart:v35];
   associatedInterfaceElementPropertyIdentity = self->_associatedInterfaceElementPropertyIdentity;
@@ -95,8 +95,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_animatedTransitionIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_animatedTransitionIdentifier];
   v5 = [v4 appendObject:self->_associatedInterfaceElementPropertyIdentity];
   v6 = [v5 appendCGFloat:self->_targetedMilestone];
   v7 = [v6 appendBool:self->_transitionEndTargeted];
@@ -136,30 +136,30 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithAnimatedTransitionResultDescription:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAAnimatedTransitionResultDescription *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

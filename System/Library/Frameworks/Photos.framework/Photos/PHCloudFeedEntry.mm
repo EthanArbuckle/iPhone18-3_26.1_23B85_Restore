@@ -1,9 +1,9 @@
 @interface PHCloudFeedEntry
 + (id)entityKeyMap;
-+ (id)fetchEntriesFromEarliestDate:(id)a3 latestDate:(id)a4 filter:(int64_t)a5 options:(id)a6;
-+ (id)fetchEntryWithLocalIdentifier:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-- (PHCloudFeedEntry)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchEntriesFromEarliestDate:(id)date latestDate:(id)latestDate filter:(int64_t)filter options:(id)options;
++ (id)fetchEntryWithLocalIdentifier:(id)identifier options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
+- (PHCloudFeedEntry)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
 @end
 
@@ -19,29 +19,29 @@
   return v4;
 }
 
-- (PHCloudFeedEntry)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHCloudFeedEntry)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PHCloudFeedEntry;
-  v9 = [(PHObject *)&v19 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v19 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"entryType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entryType"];
     v9->_entryType = [v10 integerValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"entryIsMine"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"entryIsMine"];
     v9->_entryIsMine = [v11 BOOLValue];
 
-    v12 = [v8 objectForKeyedSubscript:@"entryDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entryDate"];
     entryDate = v9->_entryDate;
     v9->_entryDate = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"entryAlbumGUID"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"entryAlbumGUID"];
     entryAlbumGUID = v9->_entryAlbumGUID;
     v9->_entryAlbumGUID = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"entryInvitationRecordGUID"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"entryInvitationRecordGUID"];
     entryInvitationRecordGUID = v9->_entryInvitationRecordGUID;
     v9->_entryInvitationRecordGUID = v16;
   }
@@ -49,16 +49,16 @@
   return v9;
 }
 
-+ (id)fetchEntryWithLocalIdentifier:(id)a3 options:(id)a4
++ (id)fetchEntryWithLocalIdentifier:(id)identifier options:(id)options
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__PHCloudFeedEntry_fetchEntryWithLocalIdentifier_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -71,20 +71,20 @@ id __58__PHCloudFeedEntry_fetchEntryWithLocalIdentifier_options___block_invoke(u
   return v3;
 }
 
-+ (id)fetchEntriesFromEarliestDate:(id)a3 latestDate:(id)a4 filter:(int64_t)a5 options:(id)a6
++ (id)fetchEntriesFromEarliestDate:(id)date latestDate:(id)latestDate filter:(int64_t)filter options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  latestDateCopy = latestDate;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PHCloudFeedEntry_fetchEntriesFromEarliestDate_latestDate_filter_options___block_invoke;
   v15[3] = &unk_1E75A7040;
-  v16 = v9;
-  v17 = v10;
-  v18 = a5;
-  v11 = v10;
-  v12 = v9;
-  v13 = [PHObject authorizationAwareFetchResultWithOptions:a6 fetchBlock:v15];
+  v16 = dateCopy;
+  v17 = latestDateCopy;
+  filterCopy = filter;
+  v11 = latestDateCopy;
+  v12 = dateCopy;
+  v13 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v15];
 
   return v13;
 }
@@ -139,7 +139,7 @@ void __32__PHCloudFeedEntry_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_16 = v8;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   pl_dispatch_once();
   v3 = propertiesToFetchWithHint__pl_once_object_15;

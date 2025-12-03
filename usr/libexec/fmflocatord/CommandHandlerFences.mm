@@ -1,14 +1,14 @@
 @interface CommandHandlerFences
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation CommandHandlerFences
 
 - (void)handleCommand
 {
-  v3 = [(CommandHandler *)self commandParams];
-  v4 = [v3 objectForKeyedSubscript:@"fences"];
+  commandParams = [(CommandHandler *)self commandParams];
+  v4 = [commandParams objectForKeyedSubscript:@"fences"];
 
   v5 = [v4 fm_map:&stru_10005DB10];
   v6 = sub_100002830();
@@ -17,14 +17,14 @@
     sub_100037C9C(v5, v6);
   }
 
-  v7 = [(CommandHandler *)self commandParams];
-  v8 = [v7 objectForKeyedSubscript:@"fenceVersion"];
+  commandParams2 = [(CommandHandler *)self commandParams];
+  v8 = [commandParams2 objectForKeyedSubscript:@"fenceVersion"];
 
-  v9 = [(CommandHandler *)self commandParams];
-  v10 = [v9 objectForKeyedSubscript:@"triggerurl"];
+  commandParams3 = [(CommandHandler *)self commandParams];
+  v10 = [commandParams3 objectForKeyedSubscript:@"triggerurl"];
 
-  v11 = [(CommandHandler *)self commandParams];
-  v12 = [v11 objectForKeyedSubscript:@"validityDurationInSecs"];
+  commandParams4 = [(CommandHandler *)self commandParams];
+  v12 = [commandParams4 objectForKeyedSubscript:@"validityDurationInSecs"];
 
   if (v12)
   {
@@ -51,12 +51,12 @@
   [(CommandHandler *)self didHandleCommandWithAckData:0, v17, v18, v19, v20];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(CommandHandler *)self provider];
-  v5 = [(CommandHandler *)self commandParams];
-  [v6 ackFencesCommand:v5 withCompletion:v4];
+  completionCopy = completion;
+  provider = [(CommandHandler *)self provider];
+  commandParams = [(CommandHandler *)self commandParams];
+  [provider ackFencesCommand:commandParams withCompletion:completionCopy];
 }
 
 @end

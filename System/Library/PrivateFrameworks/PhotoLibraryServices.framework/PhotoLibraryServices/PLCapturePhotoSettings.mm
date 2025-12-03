@@ -1,9 +1,9 @@
 @interface PLCapturePhotoSettings
-+ (id)photoSettingsWithPhotoSettings:(id)a3;
++ (id)photoSettingsWithPhotoSettings:(id)settings;
 - (NSString)description;
-- (PLCapturePhotoSettings)initWithCoder:(id)a3;
-- (PLCapturePhotoSettings)initWithPhotoSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PLCapturePhotoSettings)initWithCoder:(id)coder;
+- (PLCapturePhotoSettings)initWithPhotoSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLCapturePhotoSettings
@@ -19,30 +19,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_photoSettings forKey:@"photoSettings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_photoSettings forKey:@"photoSettings"];
 }
 
-- (PLCapturePhotoSettings)initWithCoder:(id)a3
+- (PLCapturePhotoSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PLCapturePhotoSettings;
   v5 = [(PLCapturePhotoSettings *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"photoSettings"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"photoSettings"];
     photoSettings = v5->_photoSettings;
     v5->_photoSettings = v11;
 
@@ -52,32 +52,32 @@
   return v5;
 }
 
-- (PLCapturePhotoSettings)initWithPhotoSettings:(id)a3
+- (PLCapturePhotoSettings)initWithPhotoSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = PLCapturePhotoSettings;
   v6 = [(PLCapturePhotoSettings *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v6->_uuid;
-    v6->_uuid = v8;
+    v6->_uuid = uUIDString;
 
-    objc_storeStrong(&v6->_photoSettings, a3);
+    objc_storeStrong(&v6->_photoSettings, settings);
     v10 = v6;
   }
 
   return v6;
 }
 
-+ (id)photoSettingsWithPhotoSettings:(id)a3
++ (id)photoSettingsWithPhotoSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
-    v4 = a3;
-    v5 = [[a1 alloc] initWithPhotoSettings:v4];
+    settingsCopy = settings;
+    v5 = [[self alloc] initWithPhotoSettings:settingsCopy];
   }
 
   else

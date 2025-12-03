@@ -3,7 +3,7 @@
 - (SFAuthenticateAccountsSession)init;
 - (id)_availableAccountsToSignIn;
 - (id)_trTargetedServices;
-- (int)__validateAccountsWithAccountStore:(id)a3;
+- (int)__validateAccountsWithAccountStore:(id)store;
 - (int)_runFinish;
 - (int)_runHomeKitSetup;
 - (int)_runInfoExchange;
@@ -15,19 +15,19 @@
 - (int)_runTRSessionStart;
 - (int)_validateAccounts;
 - (int)_validateiCloudAccountTerms;
-- (void)__runFinishWithSFSession:(id)a3;
+- (void)__runFinishWithSFSession:(id)session;
 - (void)_cleanup;
-- (void)_handleShowTermsUI:(id)a3 responseHandler:(id)a4;
-- (void)_presentiCloudTermsUIWithAccount:(id)a3;
-- (void)_reportError:(id)a3;
+- (void)_handleShowTermsUI:(id)i responseHandler:(id)handler;
+- (void)_presentiCloudTermsUIWithAccount:(id)account;
+- (void)_reportError:(id)error;
 - (void)_run;
 - (void)_runInfoExchangeRequest;
-- (void)_runInfoExchangeResponse:(id)a3 error:(id)a4;
+- (void)_runInfoExchangeResponse:(id)response error:(id)error;
 - (void)activate;
 - (void)dealloc;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
 @end
 
 @implementation SFAuthenticateAccountsSession
@@ -43,9 +43,9 @@
     dispatchQueue = v2->_dispatchQueue;
     v2->_dispatchQueue = v3;
 
-    v5 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     accountStore = v2->_accountStore;
-    v2->_accountStore = v5;
+    v2->_accountStore = defaultStore;
   }
 
   return v2;
@@ -205,24 +205,24 @@ uint64_t __43__SFAuthenticateAccountsSession_invalidate__block_invoke(uint64_t a
   return [v2 _cleanup];
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SFAuthenticateAccountsSession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_SFAuthenticateAccountsSession <= 90 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
   {
     [SFAuthenticateAccountsSession _reportError:];
@@ -232,8 +232,8 @@ uint64_t __43__SFAuthenticateAccountsSession_invalidate__block_invoke(uint64_t a
   if (progressHandler)
   {
     v17 = @"eo";
-    v8 = v6;
-    if (!v6)
+    v8 = errorCopy;
+    if (!errorCopy)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = *MEMORY[0x1E696A768];
@@ -255,7 +255,7 @@ uint64_t __43__SFAuthenticateAccountsSession_invalidate__block_invoke(uint64_t a
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     progressHandler[2](progressHandler, 30, v13);
 
-    if (!v6)
+    if (!errorCopy)
     {
     }
   }
@@ -629,12 +629,12 @@ void __46__SFAuthenticateAccountsSession__runPairSetup__block_invoke(uint64_t a1
 - (void)_runInfoExchangeRequest
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v5 = v4;
-  if (v4 && [v4 count])
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v5 = preferredLanguages;
+  if (preferredLanguages && [preferredLanguages count])
   {
-    v6 = [v5 firstObject];
-    [v3 setObject:v6 forKeyedSubscript:@"lang"];
+    firstObject = [v5 firstObject];
+    [v3 setObject:firstObject forKeyedSubscript:@"lang"];
 
     [v3 setObject:v5 forKeyedSubscript:@"langs"];
   }
@@ -644,12 +644,12 @@ void __46__SFAuthenticateAccountsSession__runPairSetup__block_invoke(uint64_t a1
     [SFAuthenticateAccountsSession _runInfoExchangeRequest];
   }
 
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = [v7 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  if (v8)
+  if (localeIdentifier)
   {
-    [v3 setObject:v8 forKeyedSubscript:@"locale"];
+    [v3 setObject:localeIdentifier forKeyedSubscript:@"locale"];
   }
 
   else if (gLogCategory_SFAuthenticateAccountsSession <= 60 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
@@ -671,10 +671,10 @@ void __46__SFAuthenticateAccountsSession__runPairSetup__block_invoke(uint64_t a1
     [SFAuthenticateAccountsSession _runInfoExchangeRequest];
   }
 
-  v11 = [(SFAuthenticateAccountsSession *)self _availableAccountsToSignIn];
-  if ([v11 count])
+  _availableAccountsToSignIn = [(SFAuthenticateAccountsSession *)self _availableAccountsToSignIn];
+  if ([_availableAccountsToSignIn count])
   {
-    [v3 addEntriesFromDictionary:v11];
+    [v3 addEntriesFromDictionary:_availableAccountsToSignIn];
   }
 
   v12 = SFDeviceSetupHomeKitCurrentUserIdentifiers(self->_homeManager);
@@ -689,10 +689,10 @@ void __46__SFAuthenticateAccountsSession__runPairSetup__block_invoke(uint64_t a1
     [v3 setObject:v13 forKeyedSubscript:@"hkhrmve"];
   }
 
-  v14 = [(objc_class *)getVTPreferencesClass() sharedPreferences];
-  v15 = [v14 voiceTriggerEnabled];
+  sharedPreferences = [(objc_class *)getVTPreferencesClass() sharedPreferences];
+  voiceTriggerEnabled = [sharedPreferences voiceTriggerEnabled];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:v15];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:voiceTriggerEnabled];
   [v3 setObject:v16 forKeyedSubscript:@"siriVP"];
 
   if (gLogCategory_SFAuthenticateAccountsSession <= 30 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
@@ -713,28 +713,28 @@ void __46__SFAuthenticateAccountsSession__runPairSetup__block_invoke(uint64_t a1
 - (id)_availableAccountsToSignIn
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
-  v5 = v4;
-  if (v4)
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  v5 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v6 = [v4 aa_altDSID];
-    [v3 setObject:v6 forKeyedSubscript:@"aaiCloudAltDSID"];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+    [v3 setObject:aa_altDSID forKeyedSubscript:@"aaiCloudAltDSID"];
   }
 
-  v7 = [(ACAccountStore *)self->_accountStore ams_activeiTunesAccount];
-  v8 = v7;
-  if (v7)
+  ams_activeiTunesAccount = [(ACAccountStore *)self->_accountStore ams_activeiTunesAccount];
+  v8 = ams_activeiTunesAccount;
+  if (ams_activeiTunesAccount)
   {
-    v9 = [v7 aa_altDSID];
-    [v3 setObject:v9 forKeyedSubscript:@"aaiTunesAltDSID"];
+    aa_altDSID2 = [ams_activeiTunesAccount aa_altDSID];
+    [v3 setObject:aa_altDSID2 forKeyedSubscript:@"aaiTunesAltDSID"];
   }
 
-  v10 = [objc_opt_class() _myGameCenterAccount];
-  v11 = v10;
-  if (v10)
+  _myGameCenterAccount = [objc_opt_class() _myGameCenterAccount];
+  v11 = _myGameCenterAccount;
+  if (_myGameCenterAccount)
   {
-    v12 = [v10 aa_altDSID];
-    [v3 setObject:v12 forKeyedSubscript:@"aaGameCenterAltDSID"];
+    aa_altDSID3 = [_myGameCenterAccount aa_altDSID];
+    [v3 setObject:aa_altDSID3 forKeyedSubscript:@"aaGameCenterAltDSID"];
   }
 
   v13 = [v3 copy];
@@ -742,20 +742,20 @@ void __46__SFAuthenticateAccountsSession__runPairSetup__block_invoke(uint64_t a1
   return v13;
 }
 
-- (void)_runInfoExchangeResponse:(id)a3 error:(id)a4
+- (void)_runInfoExchangeResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || v7)
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!responseCopy || errorCopy)
   {
     self->_infoExchangeState = 3;
-    if (!v7)
+    if (!errorCopy)
     {
       goto LABEL_14;
     }
 
-    [(SFAuthenticateAccountsSession *)self _reportError:v7];
+    [(SFAuthenticateAccountsSession *)self _reportError:errorCopy];
     goto LABEL_25;
   }
 
@@ -819,10 +819,10 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v16 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
-  v17 = [v16 aa_altDSID];
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
 
-  if (v13 && v17 && [v13 isEqual:v17])
+  if (v13 && aa_altDSID && [v13 isEqual:aa_altDSID])
   {
 
     goto LABEL_21;
@@ -857,9 +857,9 @@ LABEL_25:
     }
 
     self->_trSessionState = 1;
-    v4 = [(SFSession *)self->_sfSession trSession];
+    trSession = [(SFSession *)self->_sfSession trSession];
     trSession = self->_trSession;
-    self->_trSession = v4;
+    self->_trSession = trSession;
 
     if (self->_trSession)
     {
@@ -933,12 +933,12 @@ LABEL_13:
 
 - (int)_runTRAuthentication
 {
-  v3 = [(SFAuthenticateAccountsSession *)self _trTargetedServices];
-  v4 = v3;
+  _trTargetedServices = [(SFAuthenticateAccountsSession *)self _trTargetedServices];
+  v4 = _trTargetedServices;
   trAuthenticationState = self->_trAuthenticationState;
   if (!trAuthenticationState)
   {
-    if (![v3 count])
+    if (![_trTargetedServices count])
     {
       if (gLogCategory_SFAuthenticateAccountsSession <= 40 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
       {
@@ -1448,9 +1448,9 @@ void __43__SFAuthenticateAccountsSession__runFinish__block_invoke_2(uint64_t a1,
   [*(a1 + 32) invalidate];
 }
 
-- (void)__runFinishWithSFSession:(id)a3
+- (void)__runFinishWithSFSession:(id)session
 {
-  objc_storeStrong(&self->_sfSession, a3);
+  objc_storeStrong(&self->_sfSession, session);
 
   [(SFAuthenticateAccountsSession *)self _runFinish];
 }
@@ -1480,8 +1480,8 @@ void __43__SFAuthenticateAccountsSession__runFinish__block_invoke_2(uint64_t a1,
 
     else
     {
-      v5 = [(SFAuthenticateAccountsSession *)self _availableAccountsToSignIn];
-      v6 = [v5 count];
+      _availableAccountsToSignIn = [(SFAuthenticateAccountsSession *)self _availableAccountsToSignIn];
+      v6 = [_availableAccountsToSignIn count];
 
       if (v6)
       {
@@ -1500,16 +1500,16 @@ void __43__SFAuthenticateAccountsSession__runFinish__block_invoke_2(uint64_t a1,
   return self->_accountsState;
 }
 
-- (int)__validateAccountsWithAccountStore:(id)a3
+- (int)__validateAccountsWithAccountStore:(id)store
 {
-  objc_storeStrong(&self->_accountStore, a3);
+  objc_storeStrong(&self->_accountStore, store);
 
   return [(SFAuthenticateAccountsSession *)self _validateAccounts];
 }
 
-- (void)_handleShowTermsUI:(id)a3 responseHandler:(id)a4
+- (void)_handleShowTermsUI:(id)i responseHandler:(id)handler
 {
-  (*(a4 + 2))(a4, 0, 0, MEMORY[0x1E695E0F8]);
+  (*(handler + 2))(handler, 0, 0, MEMORY[0x1E695E0F8]);
   if (gLogCategory_SFAuthenticateAccountsSession <= 30 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
   {
     [SFAuthenticateAccountsSession _handleShowTermsUI:responseHandler:];
@@ -1517,8 +1517,8 @@ void __43__SFAuthenticateAccountsSession__runFinish__block_invoke_2(uint64_t a1,
 
   self->_trSessionState = 0;
   self->_trAuthenticationState = 0;
-  v5 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
-  [(SFAuthenticateAccountsSession *)self _presentiCloudTermsUIWithAccount:v5];
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  [(SFAuthenticateAccountsSession *)self _presentiCloudTermsUIWithAccount:aa_primaryAppleAccount];
 }
 
 - (int)_validateiCloudAccountTerms
@@ -1536,15 +1536,15 @@ void __43__SFAuthenticateAccountsSession__runFinish__block_invoke_2(uint64_t a1,
       goto LABEL_7;
     }
 
-    v4 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
-    if ([v4 aa_needsToVerifyTerms])
+    aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+    if ([aa_primaryAppleAccount aa_needsToVerifyTerms])
     {
       if (gLogCategory_SFAuthenticateAccountsSession <= 50 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
       {
         [SFAuthenticateAccountsSession _validateiCloudAccountTerms];
       }
 
-      [(SFAuthenticateAccountsSession *)self _presentiCloudTermsUIWithAccount:v4];
+      [(SFAuthenticateAccountsSession *)self _presentiCloudTermsUIWithAccount:aa_primaryAppleAccount];
     }
 
     else
@@ -1559,8 +1559,8 @@ LABEL_17:
 
   if (iCloudTermsState == 3)
   {
-    v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"UserErrorDomain" code:301025 userInfo:0];
-    [(SFAuthenticateAccountsSession *)self _reportError:v4];
+    aa_primaryAppleAccount = [MEMORY[0x1E696ABC0] errorWithDomain:@"UserErrorDomain" code:301025 userInfo:0];
+    [(SFAuthenticateAccountsSession *)self _reportError:aa_primaryAppleAccount];
     goto LABEL_17;
   }
 
@@ -1588,11 +1588,11 @@ LABEL_7:
   return self->_iCloudTermsState;
 }
 
-- (void)_presentiCloudTermsUIWithAccount:(id)a3
+- (void)_presentiCloudTermsUIWithAccount:(id)account
 {
   v4 = getAAUIGenericTermsRemoteUIClass;
-  v5 = a3;
-  v6 = [objc_alloc(v4()) initWithAccount:v5 inStore:self->_accountStore];
+  accountCopy = account;
+  v6 = [objc_alloc(v4()) initWithAccount:accountCopy inStore:self->_accountStore];
 
   [v6 setDelegate:self];
   [v6 presentFromViewController:self->_presentingViewController modal:1];
@@ -1602,10 +1602,10 @@ LABEL_7:
   self->_iCloudTermsState = 1;
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
+  successCopy = success;
+  iCopy = i;
   if (gLogCategory_SFAuthenticateAccountsSession <= 50 && (gLogCategory_SFAuthenticateAccountsSession != -1 || _LogCategory_Initialize()))
   {
     [SFAuthenticateAccountsSession genericTermsRemoteUI:didFinishWithSuccess:];
@@ -1614,7 +1614,7 @@ LABEL_7:
   termsRemoteUI = self->_termsRemoteUI;
   self->_termsRemoteUI = 0;
 
-  if (v4)
+  if (successCopy)
   {
     v8 = 4;
   }
@@ -1637,9 +1637,9 @@ LABEL_7:
 + (id)_myGameCenterAccount
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6959A48] defaultStore];
-  v3 = [v2 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959860]];
-  v4 = [v2 accountsWithAccountType:v3];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v3 = [defaultStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959860]];
+  v4 = [defaultStore accountsWithAccountType:v3];
   if ([v4 count] >= 2)
   {
     v5 = MEMORY[0x1E696AEB0];
@@ -1653,11 +1653,11 @@ LABEL_7:
     v4 = v9;
   }
 
-  v10 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return firstObject;
 }
 
 - (void)_run
@@ -1665,25 +1665,25 @@ LABEL_7:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v3 = [(SFAuthenticateAccountsSession *)self _validateAccounts];
-    if (v3 == 4 || v3 == 2)
+    _validateAccounts = [(SFAuthenticateAccountsSession *)self _validateAccounts];
+    if (_validateAccounts == 4 || _validateAccounts == 2)
     {
-      v5 = [(SFAuthenticateAccountsSession *)self _validateiCloudAccountTerms];
-      if (v5 == 4 || v5 == 2)
+      _validateiCloudAccountTerms = [(SFAuthenticateAccountsSession *)self _validateiCloudAccountTerms];
+      if (_validateiCloudAccountTerms == 4 || _validateiCloudAccountTerms == 2)
       {
-        v7 = [(SFAuthenticateAccountsSession *)self _runSFSessionStart];
-        if (v7 == 4 || v7 == 2)
+        _runSFSessionStart = [(SFAuthenticateAccountsSession *)self _runSFSessionStart];
+        if (_runSFSessionStart == 4 || _runSFSessionStart == 2)
         {
-          v9 = [(SFAuthenticateAccountsSession *)self _runPairVerify];
-          if (v9 == 4 || v9 == 2)
+          _runPairVerify = [(SFAuthenticateAccountsSession *)self _runPairVerify];
+          if (_runPairVerify == 4 || _runPairVerify == 2)
           {
             if (self->_sessionSecured || ((v11 = [(SFAuthenticateAccountsSession *)self _runPairSetup], v11 != 4) ? (v12 = v11 == 2) : (v12 = 1), v12))
             {
-              v13 = [(SFAuthenticateAccountsSession *)self _runInfoExchange];
-              if (v13 == 4 || v13 == 2)
+              _runInfoExchange = [(SFAuthenticateAccountsSession *)self _runInfoExchange];
+              if (_runInfoExchange == 4 || _runInfoExchange == 2)
               {
-                v15 = [(SFAuthenticateAccountsSession *)self _runTRSessionStart];
-                if (v15 == 4 || v15 == 2)
+                _runTRSessionStart = [(SFAuthenticateAccountsSession *)self _runTRSessionStart];
+                if (_runTRSessionStart == 4 || _runTRSessionStart == 2)
                 {
                   if (!self->_trAuthenticationEnabled || ((v17 = [(SFAuthenticateAccountsSession *)self _runTRAuthentication], v17 != 4) ? (v18 = v17 == 2) : (v18 = 1), v18))
                   {

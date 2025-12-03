@@ -40,8 +40,8 @@
 - (id)itk_quadConvertedToView:()ITKUtilities withContentsRect:
 {
   v12 = a7;
-  v13 = [a1 itkQuad];
-  v14 = [v13 quadByConvertingFromNormalizedRectToView:v12 contentsRect:{a2, a3, a4, a5}];
+  itkQuad = [self itkQuad];
+  v14 = [itkQuad quadByConvertingFromNormalizedRectToView:v12 contentsRect:{a2, a3, a4, a5}];
 
   return v14;
 }

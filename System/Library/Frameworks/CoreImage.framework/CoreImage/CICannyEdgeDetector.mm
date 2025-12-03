@@ -85,9 +85,9 @@
 - (id)outputImage
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CIImage *)self->inputImage imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
   [(NSNumber *)self->inputGaussianSigma floatValue];
-  v5 = [(CIImage *)v3 imageByApplyingGaussianBlurWithSigma:v4];
+  v5 = [(CIImage *)imageByClampingToExtent imageByApplyingGaussianBlurWithSigma:v4];
   if ([(NSNumber *)self->inputPerceptual BOOLValue])
   {
     v5 = [(CIImage *)v5 imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
@@ -123,16 +123,16 @@
   *&v29 = v22;
   v50[2] = [MEMORY[0x1E696AD98] numberWithFloat:v29];
   v30 = -[CIColorKernel applyWithExtent:arguments:](v23, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:3], v24, v25, v26, v27);
-  v31 = [(NSNumber *)self->inputHysteresisPasses intValue];
-  v32 = v31;
-  if (v31 >= 20)
+  intValue = [(NSNumber *)self->inputHysteresisPasses intValue];
+  v32 = intValue;
+  if (intValue >= 20)
   {
     v33 = 20;
   }
 
   else
   {
-    v33 = v31;
+    v33 = intValue;
   }
 
   v34 = [CIKernel kernelWithInternalRepresentation:&CI::_cannyHysteresis];

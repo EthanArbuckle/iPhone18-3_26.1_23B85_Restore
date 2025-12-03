@@ -1,67 +1,67 @@
 @interface SFB389NFCPromptConfiguration
-- (BOOL)isEqual:(id)a3;
-- (SFB389NFCPromptConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SFB389NFCPromptConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFB389NFCPromptConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedTitle = self->_localizedTitle;
-  v5 = a3;
-  [v5 encodeObject:localizedTitle forKey:@"localizedTitle"];
-  [v5 encodeObject:self->_message forKey:@"message"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_userMessage forKey:@"userMessage"];
-  [v5 encodeObject:self->_baUUID forKey:@"baUUID"];
-  [v5 encodeInteger:self->_promptState forKey:@"promptState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_userMessage forKey:@"userMessage"];
+  [coderCopy encodeObject:self->_baUUID forKey:@"baUUID"];
+  [coderCopy encodeInteger:self->_promptState forKey:@"promptState"];
 }
 
-- (SFB389NFCPromptConfiguration)initWithCoder:(id)a3
+- (SFB389NFCPromptConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = SFB389NFCPromptConfiguration;
   v5 = [(SFB389NFCPromptConfiguration *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     v7 = [v6 copy];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     v10 = [v9 copy];
     message = v5->_message;
     v5->_message = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     v13 = [v12 copy];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userMessage"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userMessage"];
     v16 = [v15 copy];
     userMessage = v5->_userMessage;
     v5->_userMessage = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baUUID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baUUID"];
     v19 = [v18 copy];
     baUUID = v5->_baUUID;
     v5->_baUUID = v19;
 
-    v5->_promptState = [v4 decodeIntegerForKey:@"promptState"];
+    v5->_promptState = [coderCopy decodeIntegerForKey:@"promptState"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -71,10 +71,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SFB389NFCPromptConfiguration *)self localizedTitle];
-      v6 = [(SFB389NFCPromptConfiguration *)v4 localizedTitle];
-      v7 = v5;
-      v8 = v6;
+      localizedTitle = [(SFB389NFCPromptConfiguration *)self localizedTitle];
+      localizedTitle2 = [(SFB389NFCPromptConfiguration *)equalCopy localizedTitle];
+      v7 = localizedTitle;
+      v8 = localizedTitle2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -101,10 +101,10 @@ LABEL_41:
         }
       }
 
-      v12 = [(SFB389NFCPromptConfiguration *)self message];
-      v13 = [(SFB389NFCPromptConfiguration *)v4 message];
-      v14 = v12;
-      v15 = v13;
+      message = [(SFB389NFCPromptConfiguration *)self message];
+      message2 = [(SFB389NFCPromptConfiguration *)equalCopy message];
+      v14 = message;
+      v15 = message2;
       v16 = v15;
       if (v14 == v15)
       {
@@ -131,10 +131,10 @@ LABEL_40:
         }
       }
 
-      v18 = [(SFB389NFCPromptConfiguration *)self phoneNumber];
-      v19 = [(SFB389NFCPromptConfiguration *)v4 phoneNumber];
-      v20 = v18;
-      v21 = v19;
+      phoneNumber = [(SFB389NFCPromptConfiguration *)self phoneNumber];
+      phoneNumber2 = [(SFB389NFCPromptConfiguration *)equalCopy phoneNumber];
+      v20 = phoneNumber;
+      v21 = phoneNumber2;
       v22 = v21;
       if (v20 == v21)
       {
@@ -161,10 +161,10 @@ LABEL_39:
         }
       }
 
-      v24 = [(SFB389NFCPromptConfiguration *)self userMessage];
-      v25 = [(SFB389NFCPromptConfiguration *)v4 userMessage];
-      v26 = v24;
-      v27 = v25;
+      userMessage = [(SFB389NFCPromptConfiguration *)self userMessage];
+      userMessage2 = [(SFB389NFCPromptConfiguration *)equalCopy userMessage];
+      v26 = userMessage;
+      v27 = userMessage2;
       v28 = v27;
       if (v26 == v27)
       {
@@ -197,10 +197,10 @@ LABEL_38:
 
       v43 = v28;
       v45 = v26;
-      v29 = [(SFB389NFCPromptConfiguration *)self baUUID];
-      v30 = [(SFB389NFCPromptConfiguration *)v4 baUUID];
-      v31 = v29;
-      v32 = v30;
+      baUUID = [(SFB389NFCPromptConfiguration *)self baUUID];
+      baUUID2 = [(SFB389NFCPromptConfiguration *)equalCopy baUUID];
+      v31 = baUUID;
+      v32 = baUUID2;
       v46 = v20;
       if (v31 == v32)
       {
@@ -242,8 +242,8 @@ LABEL_35:
         }
       }
 
-      v38 = [(SFB389NFCPromptConfiguration *)self promptState];
-      v11 = v38 == [(SFB389NFCPromptConfiguration *)v4 promptState];
+      promptState = [(SFB389NFCPromptConfiguration *)self promptState];
+      v11 = promptState == [(SFB389NFCPromptConfiguration *)equalCopy promptState];
       goto LABEL_35;
     }
 
@@ -255,27 +255,27 @@ LABEL_42:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SFB389NFCPromptConfiguration *)self localizedTitle];
-  v6 = [v5 copy];
+  localizedTitle = [(SFB389NFCPromptConfiguration *)self localizedTitle];
+  v6 = [localizedTitle copy];
   [v4 setLocalizedTitle:v6];
 
-  v7 = [(SFB389NFCPromptConfiguration *)self message];
-  v8 = [v7 copy];
+  message = [(SFB389NFCPromptConfiguration *)self message];
+  v8 = [message copy];
   [v4 setMessage:v8];
 
-  v9 = [(SFB389NFCPromptConfiguration *)self userMessage];
-  v10 = [v9 copy];
+  userMessage = [(SFB389NFCPromptConfiguration *)self userMessage];
+  v10 = [userMessage copy];
   [v4 setUserMessage:v10];
 
-  v11 = [(SFB389NFCPromptConfiguration *)self phoneNumber];
-  v12 = [v11 copy];
+  phoneNumber = [(SFB389NFCPromptConfiguration *)self phoneNumber];
+  v12 = [phoneNumber copy];
   [v4 setPhoneNumber:v12];
 
-  v13 = [(SFB389NFCPromptConfiguration *)self baUUID];
-  v14 = [v13 copy];
+  baUUID = [(SFB389NFCPromptConfiguration *)self baUUID];
+  v14 = [baUUID copy];
   [v4 setBaUUID:v14];
 
   [v4 setPromptState:{-[SFB389NFCPromptConfiguration promptState](self, "promptState")}];

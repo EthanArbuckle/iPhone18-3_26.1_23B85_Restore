@@ -1,9 +1,9 @@
 @interface CKDCompleteParticipantVettingOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDCompleteParticipantVettingOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDCompleteParticipantVettingOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (id)shortSharingTokenFromFullToken:(id)a3;
+- (id)shortSharingTokenFromFullToken:(id)token;
 - (void)_forceFetchShareMetadata;
 - (void)_performAuthKitVerification;
 - (void)_reconstructShareURL;
@@ -14,45 +14,45 @@
 
 @implementation CKDCompleteParticipantVettingOperation
 
-- (CKDCompleteParticipantVettingOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDCompleteParticipantVettingOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v58.receiver = self;
   v58.super_class = CKDCompleteParticipantVettingOperation;
-  v9 = [(CKDOperation *)&v58 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v58 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_vettingToken(v6, v7, v8);
+    v10 = objc_msgSend_vettingToken(infoCopy, v7, v8);
     v13 = objc_msgSend_copy(v10, v11, v12);
     vettingToken = v9->_vettingToken;
     v9->_vettingToken = v13;
 
-    v17 = objc_msgSend_vettingEmail(v6, v15, v16);
+    v17 = objc_msgSend_vettingEmail(infoCopy, v15, v16);
     v20 = objc_msgSend_copy(v17, v18, v19);
     vettingEmail = v9->_vettingEmail;
     v9->_vettingEmail = v20;
 
-    v24 = objc_msgSend_vettingPhone(v6, v22, v23);
+    v24 = objc_msgSend_vettingPhone(infoCopy, v22, v23);
     v27 = objc_msgSend_copy(v24, v25, v26);
     vettingPhone = v9->_vettingPhone;
     v9->_vettingPhone = v27;
 
-    v31 = objc_msgSend_routingKey(v6, v29, v30);
+    v31 = objc_msgSend_routingKey(infoCopy, v29, v30);
     v34 = objc_msgSend_copy(v31, v32, v33);
     routingKey = v9->_routingKey;
     v9->_routingKey = v34;
 
-    v38 = objc_msgSend_encryptedKey(v6, v36, v37);
+    v38 = objc_msgSend_encryptedKey(infoCopy, v36, v37);
     v41 = objc_msgSend_copy(v38, v39, v40);
     encryptedKey = v9->_encryptedKey;
     v9->_encryptedKey = v41;
 
-    v45 = objc_msgSend_baseToken(v6, v43, v44);
+    v45 = objc_msgSend_baseToken(infoCopy, v43, v44);
     v48 = objc_msgSend_copy(v45, v46, v47);
     baseToken = v9->_baseToken;
     v9->_baseToken = v48;
 
-    v52 = objc_msgSend_displayedHostname(v6, v50, v51);
+    v52 = objc_msgSend_displayedHostname(infoCopy, v50, v51);
     v55 = objc_msgSend_copy(v52, v53, v54);
     displayedHostname = v9->_displayedHostname;
     v9->_displayedHostname = v55;
@@ -114,14 +114,14 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 1uLL:
-        objc_msgSendSuper2(&v7, sel_nameForState_, 1, v5.receiver, v5.super_class, v6.receiver, v6.super_class, a1, &OBJC_METACLASS___CKDCompleteParticipantVettingOperation);
+        objc_msgSendSuper2(&v7, sel_nameForState_, 1, v5.receiver, v5.super_class, v6.receiver, v6.super_class, self, &OBJC_METACLASS___CKDCompleteParticipantVettingOperation);
         goto LABEL_14;
       case 2uLL:
         v3 = @"Reconstructing short token";
@@ -132,21 +132,21 @@
     }
 
 LABEL_13:
-    objc_msgSendSuper2(&v5, sel_nameForState_, a3, a1, &OBJC_METACLASS___CKDCompleteParticipantVettingOperation, v6.receiver, v6.super_class, v7.receiver, v7.super_class);
+    objc_msgSendSuper2(&v5, sel_nameForState_, state, self, &OBJC_METACLASS___CKDCompleteParticipantVettingOperation, v6.receiver, v6.super_class, v7.receiver, v7.super_class);
     goto LABEL_14;
   }
 
-  if (a3 > 5)
+  if (state > 5)
   {
-    if (a3 == 6)
+    if (state == 6)
     {
       v3 = @"Verifying OON key can be swapped";
       goto LABEL_18;
     }
 
-    if (a3 == 0xFFFFFFFF)
+    if (state == 0xFFFFFFFF)
     {
-      objc_msgSendSuper2(&v6, sel_nameForState_, 0xFFFFFFFFLL, v5.receiver, v5.super_class, a1, &OBJC_METACLASS___CKDCompleteParticipantVettingOperation, v7.receiver, v7.super_class);
+      objc_msgSendSuper2(&v6, sel_nameForState_, 0xFFFFFFFFLL, v5.receiver, v5.super_class, self, &OBJC_METACLASS___CKDCompleteParticipantVettingOperation, v7.receiver, v7.super_class);
       v3 = LABEL_14:;
       goto LABEL_18;
     }
@@ -154,7 +154,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
     v3 = @"Force fetching share metadata";
   }
@@ -169,12 +169,12 @@ LABEL_18:
   return v3;
 }
 
-- (id)shortSharingTokenFromFullToken:(id)a3
+- (id)shortSharingTokenFromFullToken:(id)token
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v6 = objc_msgSend_UTF8String(v3, v4, v5, 0, 0, 0, 0);
-  v8 = objc_msgSend_lengthOfBytesUsingEncoding_(v3, v7, 4);
+  tokenCopy = token;
+  v6 = objc_msgSend_UTF8String(tokenCopy, v4, v5, 0, 0, 0, 0);
+  v8 = objc_msgSend_lengthOfBytesUsingEncoding_(tokenCopy, v7, 4);
 
   CC_SHA256(v6, v8, &v16);
   v10 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v9, &v16, 16);
@@ -256,22 +256,22 @@ LABEL_18:
   *&buf[16] = 0x3032000000;
   v44 = sub_2250740A0;
   v45 = sub_2250735DC;
-  v18 = self;
-  v46 = v18;
-  v21 = objc_msgSend_stateTransitionGroup(v18, v19, v20);
+  selfCopy = self;
+  v46 = selfCopy;
+  v21 = objc_msgSend_stateTransitionGroup(selfCopy, v19, v20);
   dispatch_group_enter(v21);
 
-  v24 = objc_msgSend_container(v18, v22, v23);
+  v24 = objc_msgSend_container(selfCopy, v22, v23);
   v27 = objc_msgSend_account(v24, v25, v26);
-  v30 = objc_msgSend_vettingToken(v18, v28, v29);
-  v33 = objc_msgSend_vettingEmail(v18, v31, v32);
-  v36 = objc_msgSend_vettingPhone(v18, v34, v35);
-  v39 = objc_msgSend_container(v18, v37, v38);
+  v30 = objc_msgSend_vettingToken(selfCopy, v28, v29);
+  v33 = objc_msgSend_vettingEmail(selfCopy, v31, v32);
+  v36 = objc_msgSend_vettingPhone(selfCopy, v34, v35);
+  v39 = objc_msgSend_container(selfCopy, v37, v38);
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = sub_22522B288;
   v42[3] = &unk_27854A858;
-  v42[4] = v18;
+  v42[4] = selfCopy;
   v42[5] = buf;
   v42[6] = a2;
   objc_msgSend_validateVettingToken_vettingEmail_vettingPhone_container_completionHandler_(v27, v40, v30, v33, v36, v39, v42);

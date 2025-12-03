@@ -1,7 +1,7 @@
 @interface VRFWitness
 + (id)descriptor;
 - (id)diagnosticsJsonDictionary;
-- (unint64_t)verifyWithError:(id *)a3;
+- (unint64_t)verifyWithError:(id *)error;
 @end
 
 @implementation VRFWitness
@@ -26,31 +26,31 @@
   v4 = [v3 textFormatNameForValue:{-[VRFWitness type](self, "type")}];
   v12[0] = v4;
   v11[1] = @"output";
-  v5 = [(VRFWitness *)self output];
-  v6 = [v5 kt_hexString];
-  v12[1] = v6;
+  output = [(VRFWitness *)self output];
+  kt_hexString = [output kt_hexString];
+  v12[1] = kt_hexString;
   v11[2] = @"proof";
-  v7 = [(VRFWitness *)self proof];
-  v8 = [v7 kt_hexString];
-  v12[2] = v8;
+  proof = [(VRFWitness *)self proof];
+  kt_hexString2 = [proof kt_hexString];
+  v12[2] = kt_hexString2;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   return v9;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
-  v5 = [(VRFWitness *)self type];
-  v6 = [(VRFWitness *)self verifier];
-  v7 = [v6 vrfType];
+  type = [(VRFWitness *)self type];
+  verifier = [(VRFWitness *)self verifier];
+  vrfType = [verifier vrfType];
 
-  if (v5 == v7)
+  if (type == vrfType)
   {
-    v8 = [(VRFWitness *)self verifier];
-    v9 = [(VRFWitness *)self message];
-    v10 = [(VRFWitness *)self output];
-    v11 = [(VRFWitness *)self proof];
-    v12 = [v8 verifyMessage:v9 salt:0 output:v10 proof:v11 error:a3];
+    verifier2 = [(VRFWitness *)self verifier];
+    message = [(VRFWitness *)self message];
+    output = [(VRFWitness *)self output];
+    proof = [(VRFWitness *)self proof];
+    v12 = [verifier2 verifyMessage:message salt:0 output:output proof:proof error:error];
 
     if (v12)
     {
@@ -59,11 +59,11 @@
 
     else
     {
-      v15 = [(VRFWitness *)self verifier];
-      v16 = [v15 key];
-      v17 = [v16 needsRefresh];
+      verifier3 = [(VRFWitness *)self verifier];
+      v16 = [verifier3 key];
+      needsRefresh = [v16 needsRefresh];
 
-      if (v17)
+      if (needsRefresh)
       {
         return 2;
       }
@@ -77,9 +77,9 @@
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-55 description:@"Unknown VRF algorithm used for VRF witness: %d", VRFWitness_Type_RawValue(self)];
+      *error = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-55 description:@"Unknown VRF algorithm used for VRF witness: %d", VRFWitness_Type_RawValue(self)];
     }
 
     if (qword_10039CDF8 != -1)

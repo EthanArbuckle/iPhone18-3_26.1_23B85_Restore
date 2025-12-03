@@ -1,66 +1,66 @@
 @interface WKWallpaperRepresentingCollection
-+ (BOOL)shouldLoadWallpaperCollectionAtURL:(id)a3;
-+ (id)_loadCollectionMetadataWithURL:(id)a3;
-+ (id)_loadWallpaperRepresentingContentFromURL:(id)a3 collectionMetadata:(id)a4;
-+ (void)_raiseInvalidMetadataExceptionForMetadataKeypath:(id)a3 collectionURL:(id)a4;
-- (BOOL)containsWallpaperRepresentingWithIdentifier:(id)a3;
++ (BOOL)shouldLoadWallpaperCollectionAtURL:(id)l;
++ (id)_loadCollectionMetadataWithURL:(id)l;
++ (id)_loadWallpaperRepresentingContentFromURL:(id)l collectionMetadata:(id)metadata;
++ (void)_raiseInvalidMetadataExceptionForMetadataKeypath:(id)keypath collectionURL:(id)l;
+- (BOOL)containsWallpaperRepresentingWithIdentifier:(id)identifier;
 - (BOOL)supportsDownloading;
-- (WKWallpaperRepresentingCollection)initWithURL:(id)a3 downloadManager:(id)a4;
-- (WKWallpaperRepresentingCollection)initWithWallpaperCollectionIdentifier:(id)a3 displayName:(id)a4 previewWallpaperRepresenting:(id)a5 wallpapersShareBaseAppearance:(BOOL)a6 hiddenFromPicker:(BOOL)a7 depthEffectDisabled:(BOOL)a8 motionEffectsDisabled:(BOOL)a9 disableRotation:(BOOL)a10 wallpaperRepresentingCollection:(id)a11 downloadManager:(id)a12;
+- (WKWallpaperRepresentingCollection)initWithURL:(id)l downloadManager:(id)manager;
+- (WKWallpaperRepresentingCollection)initWithWallpaperCollectionIdentifier:(id)identifier displayName:(id)name previewWallpaperRepresenting:(id)representing wallpapersShareBaseAppearance:(BOOL)appearance hiddenFromPicker:(BOOL)picker depthEffectDisabled:(BOOL)disabled motionEffectsDisabled:(BOOL)effectsDisabled disableRotation:(BOOL)self0 wallpaperRepresentingCollection:(id)self1 downloadManager:(id)self2;
 - (id)deviceColor;
 - (id)deviceEnclosureColor;
-- (id)wallpaperBundleAtIndex:(int64_t)a3;
-- (id)wallpaperRepresentingWithIdentifier:(id)a3;
+- (id)wallpaperBundleAtIndex:(int64_t)index;
+- (id)wallpaperRepresentingWithIdentifier:(id)identifier;
 - (int64_t)numberOfWallpapers;
-- (void)cancelDownloadForWallpaperRepresentingWithIdentifier:(id)a3 completion:(id)a4;
-- (void)downloadWallpaperRepresentingWithIdentifier:(id)a3 progress:(id)a4 completion:(id)a5;
+- (void)cancelDownloadForWallpaperRepresentingWithIdentifier:(id)identifier completion:(id)completion;
+- (void)downloadWallpaperRepresentingWithIdentifier:(id)identifier progress:(id)progress completion:(id)completion;
 @end
 
 @implementation WKWallpaperRepresentingCollection
 
-- (WKWallpaperRepresentingCollection)initWithWallpaperCollectionIdentifier:(id)a3 displayName:(id)a4 previewWallpaperRepresenting:(id)a5 wallpapersShareBaseAppearance:(BOOL)a6 hiddenFromPicker:(BOOL)a7 depthEffectDisabled:(BOOL)a8 motionEffectsDisabled:(BOOL)a9 disableRotation:(BOOL)a10 wallpaperRepresentingCollection:(id)a11 downloadManager:(id)a12
+- (WKWallpaperRepresentingCollection)initWithWallpaperCollectionIdentifier:(id)identifier displayName:(id)name previewWallpaperRepresenting:(id)representing wallpapersShareBaseAppearance:(BOOL)appearance hiddenFromPicker:(BOOL)picker depthEffectDisabled:(BOOL)disabled motionEffectsDisabled:(BOOL)effectsDisabled disableRotation:(BOOL)self0 wallpaperRepresentingCollection:(id)self1 downloadManager:(id)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a11;
-  v21 = a12;
+  identifierCopy = identifier;
+  nameCopy = name;
+  representingCopy = representing;
+  collectionCopy = collection;
+  managerCopy = manager;
   v37.receiver = self;
   v37.super_class = WKWallpaperRepresentingCollection;
   v22 = [(WKWallpaperRepresentingCollection *)&v37 init];
   if (v22)
   {
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     wallpaperBundles = v22->__wallpaperBundles;
-    v22->__wallpaperBundles = v23;
+    v22->__wallpaperBundles = array;
 
-    v25 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     wallpaperLookupTable = v22->__wallpaperLookupTable;
-    v22->__wallpaperLookupTable = v25;
+    v22->__wallpaperLookupTable = strongToWeakObjectsMapTable;
 
-    v22->_wallpapersShareBaseAppearance = a6;
-    v22->_hiddenFromPicker = a7;
-    v22->_depthEffectDisabled = a8;
-    v22->_motionEffectsDisabled = a9;
-    v22->_disableRotation = a10;
-    objc_storeStrong(&v22->_wallpaperCollectionIdentifier, a3);
-    v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v17];
+    v22->_wallpapersShareBaseAppearance = appearance;
+    v22->_hiddenFromPicker = picker;
+    v22->_depthEffectDisabled = disabled;
+    v22->_motionEffectsDisabled = effectsDisabled;
+    v22->_disableRotation = rotation;
+    objc_storeStrong(&v22->_wallpaperCollectionIdentifier, identifier);
+    v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifierCopy];
     identifier = v22->_identifier;
     v22->_identifier = v27;
 
-    objc_storeStrong(&v22->_previewWallpaperRepresenting, a5);
-    v29 = [v18 copy];
+    objc_storeStrong(&v22->_previewWallpaperRepresenting, representing);
+    v29 = [nameCopy copy];
     displayName = v22->_displayName;
     v22->_displayName = v29;
 
-    objc_storeStrong(&v22->_downloadManager, a12);
+    objc_storeStrong(&v22->_downloadManager, manager);
     objc_initWeak(&location, v22);
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentifier_displayName_previewWallpaperRepresenting_wallpapersShareBaseAppearance_hiddenFromPicker_depthEffectDisabled_motionEffectsDisabled_disableRotation_wallpaperRepresentingCollection_downloadManager___block_invoke;
     v34[3] = &unk_1E8766EE8;
     objc_copyWeak(&v35, &location);
-    [v20 na_each:v34];
+    [collectionCopy na_each:v34];
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
   }
@@ -101,12 +101,12 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
   [v12 setObject:v5 forKey:v13];
 }
 
-- (WKWallpaperRepresentingCollection)initWithURL:(id)a3 downloadManager:(id)a4
+- (WKWallpaperRepresentingCollection)initWithURL:(id)l downloadManager:(id)manager
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v77 = a4;
-  v7 = [objc_opt_class() _loadCollectionMetadataWithURL:v6];
+  lCopy = l;
+  managerCopy = manager;
+  v7 = [objc_opt_class() _loadCollectionMetadataWithURL:lCopy];
   objc_opt_class();
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   if (objc_opt_isKindOfClass())
@@ -123,7 +123,7 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
 
   if (!v10)
   {
-    [objc_opt_class() _raiseInvalidMetadataExceptionForMetadataKeypath:@"identifier" collectionURL:v6];
+    [objc_opt_class() _raiseInvalidMetadataExceptionForMetadataKeypath:@"identifier" collectionURL:lCopy];
   }
 
   objc_opt_class();
@@ -140,10 +140,10 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
 
   v13 = v12;
 
-  v75 = [MEMORY[0x1E696AAE8] bundleWithURL:v6];
+  v75 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
   v76 = v13;
   v74 = [v75 localizedStringForKey:v13 value:0 table:0];
-  v78 = [objc_opt_class() _loadWallpaperRepresentingContentFromURL:v6 collectionMetadata:v7];
+  v78 = [objc_opt_class() _loadWallpaperRepresentingContentFromURL:lCopy collectionMetadata:v7];
   objc_opt_class();
   v14 = [v7 objectForKeyedSubscript:@"wallpapersShareBaseAppearance"];
   if (objc_opt_isKindOfClass())
@@ -189,12 +189,12 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
   v72 = v21;
   if (v21)
   {
-    v71 = [v21 BOOLValue];
+    bOOLValue = [v21 BOOLValue];
   }
 
   else
   {
-    v71 = 1;
+    bOOLValue = 1;
   }
 
   objc_opt_class();
@@ -213,12 +213,12 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
 
   if (v24)
   {
-    v69 = [v24 BOOLValue];
+    bOOLValue2 = [v24 BOOLValue];
   }
 
   else
   {
-    v69 = 0;
+    bOOLValue2 = 0;
   }
 
   v70 = v24;
@@ -294,7 +294,7 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
   v32 = v31;
 
   v67 = v32;
-  v66 = [v32 BOOLValue];
+  bOOLValue3 = [v32 BOOLValue];
   objc_opt_class();
   v33 = [v7 objectForKeyedSubscript:@"previewWallpaperMatchesDeviceTraits"];
   if (objc_opt_isKindOfClass())
@@ -316,7 +316,7 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
   }
 
   v62 = v10;
-  v63 = self;
+  selfCopy = self;
   objc_opt_class();
   v36 = [v7 objectForKeyedSubscript:@"previewWallpaperDeviceTraitsLookup"];
   if (v36)
@@ -341,19 +341,19 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
 
   if (!v38)
   {
-    [objc_opt_class() _raiseInvalidMetadataExceptionForMetadataKeypath:@"previewWallpaperDeviceTraitsLookup" collectionURL:v6];
+    [objc_opt_class() _raiseInvalidMetadataExceptionForMetadataKeypath:@"previewWallpaperDeviceTraitsLookup" collectionURL:lCopy];
   }
 
-  v61 = v6;
-  v39 = [(WKWallpaperRepresentingCollection *)self deviceColor];
-  v40 = [(WKWallpaperRepresentingCollection *)self deviceEnclosureColor];
+  v61 = lCopy;
+  deviceColor = [(WKWallpaperRepresentingCollection *)self deviceColor];
+  deviceEnclosureColor = [(WKWallpaperRepresentingCollection *)self deviceEnclosureColor];
   objc_opt_class();
-  v41 = [v38 objectForKeyedSubscript:v39];
+  v41 = [v38 objectForKeyedSubscript:deviceColor];
   v42 = (objc_opt_isKindOfClass() & 1) != 0 ? v41 : 0;
   v43 = v42;
 
   objc_opt_class();
-  v44 = [v43 objectForKeyedSubscript:v40];
+  v44 = [v43 objectForKeyedSubscript:deviceEnclosureColor];
   v45 = (objc_opt_isKindOfClass() & 1) != 0 ? v44 : 0;
   v46 = v45;
 
@@ -379,17 +379,17 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
     v79[3] = &unk_1E8766F10;
     v50 = v49;
     v80 = v50;
-    v51 = [v78 na_firstObjectPassingTest:v79];
-    if (v51)
+    firstObject2 = [v78 na_firstObjectPassingTest:v79];
+    if (firstObject2)
     {
       v52 = WKLogForCategory(4uLL);
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = [v51 identifierString];
+        identifierString = [firstObject2 identifierString];
         *buf = 136315650;
         v82 = "[WKWallpaperRepresentingCollection initWithURL:downloadManager:]";
         v83 = 2114;
-        v84 = v53;
+        v84 = identifierString;
         v85 = 2114;
         v86 = v62;
         _os_log_impl(&dword_1E4A23000, v52, OS_LOG_TYPE_DEFAULT, "%s: Using Preview Wallpaper Representing '%{public}@' for collection identifier '%{public}@' based on device traits.", buf, 0x20u);
@@ -399,35 +399,35 @@ void __269__WKWallpaperRepresentingCollection_initWithWallpaperCollectionIdentif
 
   else
   {
-    v51 = 0;
+    firstObject2 = 0;
   }
 
-  v6 = v61;
+  lCopy = v61;
   v10 = v62;
-  self = v63;
-  if (!v51)
+  self = selfCopy;
+  if (!firstObject2)
   {
 LABEL_73:
     v54 = WKLogForCategory(4uLL);
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = [v78 firstObject];
-      v56 = [v55 identifierString];
+      firstObject = [v78 firstObject];
+      identifierString2 = [firstObject identifierString];
       *buf = 136315650;
       v82 = "[WKWallpaperRepresentingCollection initWithURL:downloadManager:]";
       v83 = 2114;
       v84 = v10;
       v85 = 2114;
-      v86 = v56;
+      v86 = identifierString2;
       _os_log_impl(&dword_1E4A23000, v54, OS_LOG_TYPE_DEFAULT, "%s: Preview Wallpaper Representing for collection identifier '%{public}@' not set, defaulting to first wallpaper '%{public}@'.", buf, 0x20u);
     }
 
-    v51 = [v78 firstObject];
+    firstObject2 = [v78 firstObject];
   }
 
-  BYTE1(v60) = v66;
-  LOBYTE(v60) = v69;
-  v57 = -[WKWallpaperRepresentingCollection initWithWallpaperCollectionIdentifier:displayName:previewWallpaperRepresenting:wallpapersShareBaseAppearance:hiddenFromPicker:depthEffectDisabled:motionEffectsDisabled:disableRotation:wallpaperRepresentingCollection:downloadManager:](self, "initWithWallpaperCollectionIdentifier:displayName:previewWallpaperRepresenting:wallpapersShareBaseAppearance:hiddenFromPicker:depthEffectDisabled:motionEffectsDisabled:disableRotation:wallpaperRepresentingCollection:downloadManager:", v10, v74, v51, [v64 BOOLValue], v68, v71, v60, v78, v77);
+  BYTE1(v60) = bOOLValue3;
+  LOBYTE(v60) = bOOLValue2;
+  v57 = -[WKWallpaperRepresentingCollection initWithWallpaperCollectionIdentifier:displayName:previewWallpaperRepresenting:wallpapersShareBaseAppearance:hiddenFromPicker:depthEffectDisabled:motionEffectsDisabled:disableRotation:wallpaperRepresentingCollection:downloadManager:](self, "initWithWallpaperCollectionIdentifier:displayName:previewWallpaperRepresenting:wallpapersShareBaseAppearance:hiddenFromPicker:depthEffectDisabled:motionEffectsDisabled:disableRotation:wallpaperRepresentingCollection:downloadManager:", v10, v74, firstObject2, [v64 BOOLValue], v68, bOOLValue, v60, v78, managerCopy);
 
   v58 = *MEMORY[0x1E69E9840];
   return v57;
@@ -442,10 +442,10 @@ uint64_t __65__WKWallpaperRepresentingCollection_initWithURL_downloadManager___b
   return v5;
 }
 
-+ (BOOL)shouldLoadWallpaperCollectionAtURL:(id)a3
++ (BOOL)shouldLoadWallpaperCollectionAtURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = WKLogForCategory(4uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,17 +455,17 @@ uint64_t __65__WKWallpaperRepresentingCollection_initWithURL_downloadManager___b
   }
 
   v16 = 0;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v3 path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:&v16];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v7 = [defaultManager fileExistsAtPath:path isDirectory:&v16];
   v8 = v16;
 
   if (v7 & v8)
   {
-    v9 = [v3 URLByAppendingPathComponent:@"WallpaperCollection.plist"];
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v9 path];
-    v12 = [v10 fileExistsAtPath:v11 isDirectory:0];
+    v9 = [lCopy URLByAppendingPathComponent:@"WallpaperCollection.plist"];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v9 path];
+    v12 = [defaultManager2 fileExistsAtPath:path2 isDirectory:0];
 
     if ((v12 & 1) == 0)
     {
@@ -484,7 +484,7 @@ uint64_t __65__WKWallpaperRepresentingCollection_initWithURL_downloadManager___b
     v9 = WKLogForCategory(4uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v3 path];
+      [lCopy path];
       objc_claimAutoreleasedReturnValue();
       +[WKWallpaperRepresentingCollection shouldLoadWallpaperCollectionAtURL:];
     }
@@ -513,54 +513,54 @@ void __72__WKWallpaperRepresentingCollection_shouldLoadWallpaperCollectionAtURL_
 
 - (int64_t)numberOfWallpapers
 {
-  v2 = [(WKWallpaperRepresentingCollection *)self _wallpaperBundles];
-  v3 = [v2 count];
+  _wallpaperBundles = [(WKWallpaperRepresentingCollection *)self _wallpaperBundles];
+  v3 = [_wallpaperBundles count];
 
   return v3;
 }
 
 - (BOOL)supportsDownloading
 {
-  v2 = [(WKWallpaperRepresentingCollection *)self downloadManager];
-  v3 = v2 != 0;
+  downloadManager = [(WKWallpaperRepresentingCollection *)self downloadManager];
+  v3 = downloadManager != 0;
 
   return v3;
 }
 
-- (id)wallpaperBundleAtIndex:(int64_t)a3
+- (id)wallpaperBundleAtIndex:(int64_t)index
 {
-  v4 = [(WKWallpaperRepresentingCollection *)self _wallpaperBundles];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  _wallpaperBundles = [(WKWallpaperRepresentingCollection *)self _wallpaperBundles];
+  v5 = [_wallpaperBundles objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (BOOL)containsWallpaperRepresentingWithIdentifier:(id)a3
+- (BOOL)containsWallpaperRepresentingWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WKWallpaperRepresentingCollection *)self _wallpaperLookupTable];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _wallpaperLookupTable = [(WKWallpaperRepresentingCollection *)self _wallpaperLookupTable];
+  v6 = [_wallpaperLookupTable objectForKey:identifierCopy];
 
   return v6 != 0;
 }
 
-- (id)wallpaperRepresentingWithIdentifier:(id)a3
+- (id)wallpaperRepresentingWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WKWallpaperRepresentingCollection *)self _wallpaperLookupTable];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _wallpaperLookupTable = [(WKWallpaperRepresentingCollection *)self _wallpaperLookupTable];
+  v6 = [_wallpaperLookupTable objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (void)downloadWallpaperRepresentingWithIdentifier:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)downloadWallpaperRepresentingWithIdentifier:(id)identifier progress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WKWallpaperRepresentingCollection *)self wallpaperRepresentingWithIdentifier:v8];
+  identifierCopy = identifier;
+  progressCopy = progress;
+  completionCopy = completion;
+  v11 = [(WKWallpaperRepresentingCollection *)self wallpaperRepresentingWithIdentifier:identifierCopy];
   objc_initWeak(&location, self);
-  v12 = [(WKWallpaperRepresentingCollection *)self downloadManager];
+  downloadManager = [(WKWallpaperRepresentingCollection *)self downloadManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithIdentifier_progress_completion___block_invoke;
@@ -568,9 +568,9 @@ void __72__WKWallpaperRepresentingCollection_shouldLoadWallpaperCollectionAtURL_
   objc_copyWeak(&v18, &location);
   v13 = v11;
   v16 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v17 = v14;
-  [v12 downloadWallpaperRepresentingIfNeeded:v13 progress:v9 withCompletion:v15];
+  [downloadManager downloadWallpaperRepresentingIfNeeded:v13 progress:progressCopy withCompletion:v15];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -601,12 +601,12 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)cancelDownloadForWallpaperRepresentingWithIdentifier:(id)a3 completion:(id)a4
+- (void)cancelDownloadForWallpaperRepresentingWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v8 = [(WKWallpaperRepresentingCollection *)self wallpaperRepresentingWithIdentifier:a3];
-  v7 = [(WKWallpaperRepresentingCollection *)self downloadManager];
-  [v7 cancelDownloadForWallpaperRepresenting:v8 withCompletion:v6];
+  completionCopy = completion;
+  v8 = [(WKWallpaperRepresentingCollection *)self wallpaperRepresentingWithIdentifier:identifier];
+  downloadManager = [(WKWallpaperRepresentingCollection *)self downloadManager];
+  [downloadManager cancelDownloadForWallpaperRepresenting:v8 withCompletion:completionCopy];
 }
 
 - (id)deviceColor
@@ -623,10 +623,10 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
   return v2;
 }
 
-+ (id)_loadCollectionMetadataWithURL:(id)a3
++ (id)_loadCollectionMetadataWithURL:(id)l
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = WKLogForCategory(4uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -636,9 +636,9 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
   }
 
   v46 = 0;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v3 path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:&v46];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v7 = [defaultManager fileExistsAtPath:path isDirectory:&v46];
   v8 = v46;
 
   v9 = MEMORY[0x1E695D940];
@@ -647,7 +647,7 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
     v10 = WKLogForCategory(4uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [v3 path];
+      [lCopy path];
       objc_claimAutoreleasedReturnValue();
       +[WKWallpaperRepresentingCollection _loadCollectionMetadataWithURL:];
     }
@@ -656,17 +656,17 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v3 path];
-    v16 = [v12 stringWithFormat:@"%@: Wallpaper collection does not exist at URL '%@'.", v14, v15];
+    path2 = [lCopy path];
+    v16 = [v12 stringWithFormat:@"%@: Wallpaper collection does not exist at URL '%@'.", v14, path2];
     v17 = [v11 exceptionWithName:*v9 reason:v16 userInfo:0];
 
     [v17 raise];
   }
 
-  v18 = [v3 URLByAppendingPathComponent:@"WallpaperCollection.plist"];
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = [v18 path];
-  v21 = [v19 fileExistsAtPath:v20 isDirectory:0];
+  v18 = [lCopy URLByAppendingPathComponent:@"WallpaperCollection.plist"];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  path3 = [v18 path];
+  v21 = [defaultManager2 fileExistsAtPath:path3 isDirectory:0];
 
   if ((v21 & 1) == 0)
   {
@@ -682,8 +682,8 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
     v24 = MEMORY[0x1E696AEC0];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    v27 = [v18 path];
-    v28 = [v24 stringWithFormat:@"%@: Wallpaper collection does not contain a metadata file at path '%@'.", v26, v27];
+    path4 = [v18 path];
+    v28 = [v24 stringWithFormat:@"%@: Wallpaper collection does not contain a metadata file at path '%@'.", v26, path4];
     v29 = [v23 exceptionWithName:*v9 reason:v28 userInfo:0];
 
     [v29 raise];
@@ -699,11 +699,11 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
     {
       v42 = objc_opt_class();
       v44 = NSStringFromClass(v42);
-      v43 = [v18 path];
+      path5 = [v18 path];
       *buf = 138543874;
       v48 = v44;
       v49 = 2114;
-      v50 = v43;
+      v50 = path5;
       v51 = 2114;
       v52 = v31;
       _os_log_error_impl(&dword_1E4A23000, v32, OS_LOG_TYPE_ERROR, "%{public}@: Encountered error in loading Wallpaper Collection metadata file '%{public}@', error '%{public}@'", buf, 0x20u);
@@ -713,8 +713,8 @@ void __101__WKWallpaperRepresentingCollection_downloadWallpaperRepresentingWithI
     v34 = MEMORY[0x1E696AEC0];
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
-    v37 = [v18 path];
-    v38 = [v34 stringWithFormat:@"%@: Encountered error in loading metadata file (path: '%@') (error: '%@').", v36, v37, v31];
+    path6 = [v18 path];
+    v38 = [v34 stringWithFormat:@"%@: Encountered error in loading metadata file (path: '%@') (error: '%@').", v36, path6, v31];
     v39 = [v33 exceptionWithName:*v9 reason:v38 userInfo:0];
 
     [v39 raise];
@@ -740,13 +740,13 @@ void __68__WKWallpaperRepresentingCollection__loadCollectionMetadataWithURL___bl
   v1 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_loadWallpaperRepresentingContentFromURL:(id)a3 collectionMetadata:(id)a4
++ (id)_loadWallpaperRepresentingContentFromURL:(id)l collectionMetadata:(id)metadata
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  metadataCopy = metadata;
   objc_opt_class();
-  v8 = [v7 objectForKeyedSubscript:@"order"];
+  v8 = [metadataCopy objectForKeyedSubscript:@"order"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -761,47 +761,47 @@ void __68__WKWallpaperRepresentingCollection__loadCollectionMetadataWithURL___bl
 
   if (!v10)
   {
-    [a1 _raiseInvalidMetadataExceptionForMetadataKeypath:@"order" collectionURL:v6];
+    [self _raiseInvalidMetadataExceptionForMetadataKeypath:@"order" collectionURL:lCopy];
   }
 
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v12 = [v6 URLByAppendingPathComponent:@"Wallpapers"];
+  v12 = [lCopy URLByAppendingPathComponent:@"Wallpapers"];
   v49 = 0;
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v42 = v12;
-  v14 = [v12 path];
-  v15 = [v13 fileExistsAtPath:v14 isDirectory:&v49];
+  path = [v12 path];
+  v15 = [defaultManager fileExistsAtPath:path isDirectory:&v49];
   v16 = v49;
 
   if (v15 && (v16 & 1) != 0)
   {
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v48 = 0;
-    v18 = [v17 contentsOfDirectoryAtURL:v42 includingPropertiesForKeys:0 options:0 error:&v48];
+    v18 = [defaultManager2 contentsOfDirectoryAtURL:v42 includingPropertiesForKeys:0 options:0 error:&v48];
     v19 = v48;
 
-    v40 = v7;
+    v40 = metadataCopy;
     if (v19)
     {
       v20 = WKLogForCategory(4uLL);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [(WKWallpaperRepresentingCollection *)v6 _loadWallpaperRepresentingContentFromURL:v19 collectionMetadata:v20];
+        [(WKWallpaperRepresentingCollection *)lCopy _loadWallpaperRepresentingContentFromURL:v19 collectionMetadata:v20];
       }
 
       v21 = MEMORY[0x1E695DF30];
       v22 = *MEMORY[0x1E695D940];
       v23 = MEMORY[0x1E696AEC0];
-      v24 = NSStringFromClass(a1);
-      v25 = [v42 path];
-      v26 = [v23 stringWithFormat:@"%@: Encountered error in loading contents of directory for system wallpape collection (path: '%@') (error: '%@').", v24, v25, v19];
+      v24 = NSStringFromClass(self);
+      path2 = [v42 path];
+      v26 = [v23 stringWithFormat:@"%@: Encountered error in loading contents of directory for system wallpape collection (path: '%@') (error: '%@').", v24, path2, v19];
       v27 = [v21 exceptionWithName:v22 reason:v26 userInfo:0];
 
       [v27 raise];
     }
 
-    v41 = v6;
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    v41 = lCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v29 = [v18 na_filter:&__block_literal_global_82];
     if (![v29 count])
     {
@@ -817,7 +817,7 @@ void __68__WKWallpaperRepresentingCollection__loadCollectionMetadataWithURL___bl
     v47[1] = 3221225472;
     v47[2] = __97__WKWallpaperRepresentingCollection__loadWallpaperRepresentingContentFromURL_collectionMetadata___block_invoke_84;
     v47[3] = &unk_1E8766F80;
-    v47[4] = v28;
+    v47[4] = dictionary;
     [v29 na_each:v47];
     v45 = 0u;
     v46 = 0u;
@@ -838,7 +838,7 @@ void __68__WKWallpaperRepresentingCollection__loadCollectionMetadataWithURL___bl
             objc_enumerationMutation(v31);
           }
 
-          v36 = [v28 objectForKeyedSubscript:*(*(&v43 + 1) + 8 * i)];
+          v36 = [dictionary objectForKeyedSubscript:*(*(&v43 + 1) + 8 * i)];
           [v11 na_safeAddObject:v36];
         }
 
@@ -848,8 +848,8 @@ void __68__WKWallpaperRepresentingCollection__loadCollectionMetadataWithURL___bl
       while (v33);
     }
 
-    v7 = v40;
-    v6 = v41;
+    metadataCopy = v40;
+    lCopy = v41;
   }
 
   else
@@ -857,7 +857,7 @@ void __68__WKWallpaperRepresentingCollection__loadCollectionMetadataWithURL___bl
     v19 = WKLogForCategory(4uLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      [WKWallpaperRepresentingCollection _loadWallpaperRepresentingContentFromURL:v6 collectionMetadata:v19];
+      [WKWallpaperRepresentingCollection _loadWallpaperRepresentingContentFromURL:lCopy collectionMetadata:v19];
     }
   }
 
@@ -876,19 +876,19 @@ void __97__WKWallpaperRepresentingCollection__loadWallpaperRepresentingContentFr
   [v4 na_safeSetObject:v6 forKey:v5];
 }
 
-+ (void)_raiseInvalidMetadataExceptionForMetadataKeypath:(id)a3 collectionURL:(id)a4
++ (void)_raiseInvalidMetadataExceptionForMetadataKeypath:(id)keypath collectionURL:(id)l
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a4;
-  v10 = a3;
-  v11 = NSStringFromClass(a1);
-  v12 = [v9 path];
+  lCopy = l;
+  keypathCopy = keypath;
+  v11 = NSStringFromClass(self);
+  path = [lCopy path];
 
-  v13 = [v8 stringWithFormat:@"%@: (path: '%@') metadata does not contain valid value for keypath: '%@'", v11, v12, v10];
+  keypathCopy = [v8 stringWithFormat:@"%@: (path: '%@') metadata does not contain valid value for keypath: '%@'", v11, path, keypathCopy];
 
-  v14 = [v6 exceptionWithName:v7 reason:v13 userInfo:0];
+  v14 = [v6 exceptionWithName:v7 reason:keypathCopy userInfo:0];
 
   [v14 raise];
 }

@@ -1,37 +1,37 @@
 @interface HUFeatureOnboarder
 - (HUConfigurationViewController)_currentViewControllerForTests;
-- (HUFeatureOnboarder)initWithFeatures:(id)a3 usageOptions:(id)a4;
-- (HUFeatureOnboarder)initWithGroupedFeatures:(id)a3 usageOptions:(id)a4;
-- (id)_findNextAppropriateFlowByRemovingFlow:(id)a3 currentOnboardingFlowClass:(Class)a4 usageOptions:(id)a5;
-- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)a3 usageOptions:(id)a4;
-- (id)getNextViewControllerForOnboardingInput:(id)a3 currentOnboardingFlowClass:(Class)a4;
+- (HUFeatureOnboarder)initWithFeatures:(id)features usageOptions:(id)options;
+- (HUFeatureOnboarder)initWithGroupedFeatures:(id)features usageOptions:(id)options;
+- (id)_findNextAppropriateFlowByRemovingFlow:(id)flow currentOnboardingFlowClass:(Class)class usageOptions:(id)options;
+- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)groups usageOptions:(id)options;
+- (id)getNextViewControllerForOnboardingInput:(id)input currentOnboardingFlowClass:(Class)class;
 - (void)_skipAnyFlowsNoLongerRequired;
-- (void)configuratorDidFinish:(id)a3;
-- (void)configuratorDidUpdateViewController:(id)a3;
+- (void)configuratorDidFinish:(id)finish;
+- (void)configuratorDidUpdateViewController:(id)controller;
 - (void)restartCurrentOnboarding;
-- (void)startOnboardingWithPresentingViewController:(id)a3 usageOptions:(id)a4;
+- (void)startOnboardingWithPresentingViewController:(id)controller usageOptions:(id)options;
 @end
 
 @implementation HUFeatureOnboarder
 
-- (HUFeatureOnboarder)initWithFeatures:(id)a3 usageOptions:(id)a4
+- (HUFeatureOnboarder)initWithFeatures:(id)features usageOptions:(id)options
 {
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = [v6 arrayWithObject:a3];
-  v9 = [(HUFeatureOnboarder *)self initWithGroupedFeatures:v8 usageOptions:v7];
+  optionsCopy = options;
+  v8 = [v6 arrayWithObject:features];
+  v9 = [(HUFeatureOnboarder *)self initWithGroupedFeatures:v8 usageOptions:optionsCopy];
 
   return v9;
 }
 
-- (HUFeatureOnboarder)initWithGroupedFeatures:(id)a3 usageOptions:(id)a4
+- (HUFeatureOnboarder)initWithGroupedFeatures:(id)features usageOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  featuresCopy = features;
+  optionsCopy = options;
+  if (![featuresCopy count])
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HUFeatureOnboarder.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"featureGroups.count != 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUFeatureOnboarder.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"featureGroups.count != 0"}];
   }
 
   v22.receiver = self;
@@ -39,22 +39,22 @@
   v9 = [(HUFeatureOnboarder *)&v22 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     userInputResults = v9->_userInputResults;
-    v9->_userInputResults = v10;
+    v9->_userInputResults = dictionary;
 
-    objc_storeStrong(&v9->_initialUsageOptions, a4);
-    v12 = [(HUFeatureOnboarder *)v9 _subclass_buildAllFlowGroupsFromFeatureGroups:v7 usageOptions:v9->_initialUsageOptions];
+    objc_storeStrong(&v9->_initialUsageOptions, options);
+    v12 = [(HUFeatureOnboarder *)v9 _subclass_buildAllFlowGroupsFromFeatureGroups:featuresCopy usageOptions:v9->_initialUsageOptions];
     allRemainingFlowGroups = v9->_allRemainingFlowGroups;
     v9->_allRemainingFlowGroups = v12;
 
-    v14 = [(HUFeatureOnboarder *)v9 allRemainingFlowGroups];
-    v15 = [v14 count];
+    allRemainingFlowGroups = [(HUFeatureOnboarder *)v9 allRemainingFlowGroups];
+    v15 = [allRemainingFlowGroups count];
 
     if (!v15)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
-      [v21 handleFailureInMethod:a2 object:v9 file:@"HUFeatureOnboarder.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"self.allRemainingFlowGroups.count != 0"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v9 file:@"HUFeatureOnboarder.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"self.allRemainingFlowGroups.count != 0"}];
     }
 
     v16 = objc_alloc_init(MEMORY[0x277D2C900]);
@@ -71,24 +71,24 @@
   return v9;
 }
 
-- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)a3 usageOptions:(id)a4
+- (id)_subclass_buildAllFlowGroupsFromFeatureGroups:(id)groups usageOptions:(id)options
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HUFeatureOnboarder.m" lineNumber:124 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUFeatureOnboarder _subclass_buildAllFlowGroupsFromFeatureGroups:usageOptions:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUFeatureOnboarder.m" lineNumber:124 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUFeatureOnboarder _subclass_buildAllFlowGroupsFromFeatureGroups:usageOptions:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (void)startOnboardingWithPresentingViewController:(id)a3 usageOptions:(id)a4
+- (void)startOnboardingWithPresentingViewController:(id)controller usageOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && ([MEMORY[0x277D14CE8] isInternalTest] & 1) == 0)
+  controllerCopy = controller;
+  optionsCopy = options;
+  if (!controllerCopy && ([MEMORY[0x277D14CE8] isInternalTest] & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUFeatureOnboarder.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"presentingViewController != nil || [HFUtilities isInternalTest]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUFeatureOnboarder.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"presentingViewController != nil || [HFUtilities isInternalTest]"}];
 
-    if (!v8)
+    if (!optionsCopy)
     {
       goto LABEL_5;
     }
@@ -96,22 +96,22 @@
     goto LABEL_4;
   }
 
-  if (v8)
+  if (optionsCopy)
   {
 LABEL_4:
-    [(HUFeatureOnboarder *)self setInitialUsageOptions:v8];
+    [(HUFeatureOnboarder *)self setInitialUsageOptions:optionsCopy];
   }
 
 LABEL_5:
   objc_initWeak(&location, self);
-  v9 = [(HUFeatureOnboarder *)self _findNextAppropriateFlowByRemovingFlow:0 currentOnboardingFlowClass:0 usageOptions:v8];
+  v9 = [(HUFeatureOnboarder *)self _findNextAppropriateFlowByRemovingFlow:0 currentOnboardingFlowClass:0 usageOptions:optionsCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__HUFeatureOnboarder_startOnboardingWithPresentingViewController_usageOptions___block_invoke;
   v13[3] = &unk_277DBA0F8;
   objc_copyWeak(v15, &location);
   v15[1] = a2;
-  v10 = v7;
+  v10 = controllerCopy;
   v14 = v10;
   v11 = [v9 addCompletionBlock:v13];
 
@@ -236,45 +236,45 @@ LABEL_20:
   }
 }
 
-- (id)_findNextAppropriateFlowByRemovingFlow:(id)a3 currentOnboardingFlowClass:(Class)a4 usageOptions:(id)a5
+- (id)_findNextAppropriateFlowByRemovingFlow:(id)flow currentOnboardingFlowClass:(Class)class usageOptions:(id)options
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  flowCopy = flow;
+  optionsCopy = options;
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(HUFeatureOnboarder *)self allRemainingFlowGroups];
+    allRemainingFlowGroups = [(HUFeatureOnboarder *)self allRemainingFlowGroups];
     *buf = 138412546;
-    v32 = v12;
+    v32 = allRemainingFlowGroups;
     v33 = 2112;
-    v34 = a4;
+    classCopy = class;
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "allRemainingFlowGroups: %@, currentOnboardingFlowClass: %@", buf, 0x16u);
   }
 
-  v13 = [(HUFeatureOnboarder *)self allRemainingFlowGroups];
+  allRemainingFlowGroups2 = [(HUFeatureOnboarder *)self allRemainingFlowGroups];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __101__HUFeatureOnboarder__findNextAppropriateFlowByRemovingFlow_currentOnboardingFlowClass_usageOptions___block_invoke;
   v26[3] = &unk_277DBA170;
-  v14 = v9;
+  v14 = flowCopy;
   v27 = v14;
-  v15 = v10;
+  v15 = optionsCopy;
   v28 = v15;
-  v29 = self;
+  selfCopy = self;
   v30 = a2;
-  v16 = [v13 na_flatMap:v26];
+  v16 = [allRemainingFlowGroups2 na_flatMap:v26];
 
   objc_initWeak(buf, self);
   v17 = MEMORY[0x277D2C900];
-  v18 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v19 = [v17 combineAllFutures:v16 ignoringErrors:1 scheduler:v18];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v19 = [v17 combineAllFutures:v16 ignoringErrors:1 scheduler:mainThreadScheduler];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __101__HUFeatureOnboarder__findNextAppropriateFlowByRemovingFlow_currentOnboardingFlowClass_usageOptions___block_invoke_114;
   v23[3] = &unk_277DBA200;
   objc_copyWeak(v25, buf);
-  v25[1] = a4;
+  v25[1] = class;
   v20 = v14;
   v24 = v20;
   v21 = [v19 flatMap:v23];
@@ -544,15 +544,15 @@ BOOL __101__HUFeatureOnboarder__findNextAppropriateFlowByRemovingFlow_currentOnb
 
 - (void)_skipAnyFlowsNoLongerRequired
 {
-  v3 = [(HUFeatureOnboarder *)self allRemainingFlowGroups];
-  v4 = [v3 na_arrayByFlattening];
+  allRemainingFlowGroups = [(HUFeatureOnboarder *)self allRemainingFlowGroups];
+  na_arrayByFlattening = [allRemainingFlowGroups na_arrayByFlattening];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__HUFeatureOnboarder__skipAnyFlowsNoLongerRequired__block_invoke;
   v5[3] = &unk_277DBA228;
   v5[4] = self;
-  [v4 na_each:v5];
+  [na_arrayByFlattening na_each:v5];
 }
 
 void __51__HUFeatureOnboarder__skipAnyFlowsNoLongerRequired__block_invoke(uint64_t a1, void *a2)
@@ -568,53 +568,53 @@ void __51__HUFeatureOnboarder__skipAnyFlowsNoLongerRequired__block_invoke(uint64
   }
 }
 
-- (void)configuratorDidUpdateViewController:(id)a3
+- (void)configuratorDidUpdateViewController:(id)controller
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 currentViewController];
+    currentViewController = [controllerCopy currentViewController];
     v18 = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v7;
     v22 = 2112;
-    v23 = v8;
+    v23 = currentViewController;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@: HUFeatureOnboardingConfigurator advanced to %@", &v18, 0x20u);
   }
 
-  v9 = [(HUFeatureOnboarder *)self configurator];
-  v10 = [v5 currentViewController];
-  [v10 setDelegate:v9];
+  configurator = [(HUFeatureOnboarder *)self configurator];
+  currentViewController2 = [controllerCopy currentViewController];
+  [currentViewController2 setDelegate:configurator];
 
-  v11 = [v5 currentViewController];
-  [(HUFeatureOnboarder *)self set_currentViewControllerForTests:v11];
+  currentViewController3 = [controllerCopy currentViewController];
+  [(HUFeatureOnboarder *)self set_currentViewControllerForTests:currentViewController3];
 
-  v12 = [(HUFeatureOnboarder *)self navController];
+  navController = [(HUFeatureOnboarder *)self navController];
 
-  if (v12)
+  if (navController)
   {
-    v13 = [v5 currentViewController];
-    v14 = [v13 conformsToProtocol:&unk_28249D748];
+    currentViewController4 = [controllerCopy currentViewController];
+    v14 = [currentViewController4 conformsToProtocol:&unk_28249D748];
 
-    v15 = [(HUFeatureOnboarder *)self navController];
-    v16 = [v5 currentViewController];
+    navController2 = [(HUFeatureOnboarder *)self navController];
+    currentViewController5 = [controllerCopy currentViewController];
     if (v14)
     {
-      v17 = [v15 hu_pushPreloadableViewController:v16 animated:1];
+      v17 = [navController2 hu_pushPreloadableViewController:currentViewController5 animated:1];
     }
 
     else
     {
-      [v15 pushViewController:v16 animated:1];
+      [navController2 pushViewController:currentViewController5 animated:1];
     }
   }
 }
 
-- (void)configuratorDidFinish:(id)a3
+- (void)configuratorDidFinish:(id)finish
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -622,15 +622,15 @@ void __51__HUFeatureOnboarder__skipAnyFlowsNoLongerRequired__block_invoke(uint64
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@: HUFeatureOnboardingConfigurator FINISHED", buf, 0x16u);
   }
 
-  v7 = [(HUFeatureOnboarder *)self navController];
+  navController = [(HUFeatureOnboarder *)self navController];
 
-  if (v7)
+  if (navController)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -641,9 +641,9 @@ void __51__HUFeatureOnboarder__skipAnyFlowsNoLongerRequired__block_invoke(uint64
   }
 
   [(HUFeatureOnboarder *)self set_currentViewControllerForTests:0];
-  v8 = [(HUFeatureOnboarder *)self completionFuture];
-  v9 = [(HUFeatureOnboarder *)self userInputResults];
-  [v8 finishWithResult:v9];
+  completionFuture = [(HUFeatureOnboarder *)self completionFuture];
+  userInputResults = [(HUFeatureOnboarder *)self userInputResults];
+  [completionFuture finishWithResult:userInputResults];
 }
 
 void __44__HUFeatureOnboarder_configuratorDidFinish___block_invoke(uint64_t a1)
@@ -652,15 +652,15 @@ void __44__HUFeatureOnboarder_configuratorDidFinish___block_invoke(uint64_t a1)
   [v2 dismissViewControllerAnimated:objc_msgSend(*(a1 + 32) completion:{"restart") ^ 1, 0}];
 }
 
-- (id)getNextViewControllerForOnboardingInput:(id)a3 currentOnboardingFlowClass:(Class)a4
+- (id)getNextViewControllerForOnboardingInput:(id)input currentOnboardingFlowClass:(Class)class
 {
-  v7 = a3;
-  v8 = [(HUFeatureOnboarder *)self userInputResults];
-  [v8 addEntriesFromDictionary:v7];
+  inputCopy = input;
+  userInputResults = [(HUFeatureOnboarder *)self userInputResults];
+  [userInputResults addEntriesFromDictionary:inputCopy];
 
   objc_initWeak(&location, self);
-  v9 = [(HUFeatureOnboarder *)self initialUsageOptions];
-  v10 = [(HUFeatureOnboarder *)self _findNextAppropriateFlowByRemovingFlow:0 currentOnboardingFlowClass:a4 usageOptions:v9];
+  initialUsageOptions = [(HUFeatureOnboarder *)self initialUsageOptions];
+  v10 = [(HUFeatureOnboarder *)self _findNextAppropriateFlowByRemovingFlow:0 currentOnboardingFlowClass:class usageOptions:initialUsageOptions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__HUFeatureOnboarder_getNextViewControllerForOnboardingInput_currentOnboardingFlowClass___block_invoke;
@@ -1008,17 +1008,17 @@ id __89__HUFeatureOnboarder_getNextViewControllerForOnboardingInput_currentOnboa
 
 - (void)restartCurrentOnboarding
 {
-  v3 = [(HUFeatureOnboarder *)self navController];
+  navController = [(HUFeatureOnboarder *)self navController];
 
-  if (v3)
+  if (navController)
   {
-    v4 = [(HUFeatureOnboarder *)self navController];
-    v5 = [v4 popToRootViewControllerAnimated:0];
+    navController2 = [(HUFeatureOnboarder *)self navController];
+    v5 = [navController2 popToRootViewControllerAnimated:0];
   }
 
   [(HUFeatureOnboarder *)self setRestart:1];
-  v6 = [(HUFeatureOnboarder *)self configurator];
-  [(HUFeatureOnboarder *)self configuratorDidFinish:v6];
+  configurator = [(HUFeatureOnboarder *)self configurator];
+  [(HUFeatureOnboarder *)self configuratorDidFinish:configurator];
 }
 
 - (HUConfigurationViewController)_currentViewControllerForTests

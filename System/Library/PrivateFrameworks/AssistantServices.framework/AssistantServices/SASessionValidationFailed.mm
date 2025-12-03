@@ -7,8 +7,8 @@
 
 - (int64_t)ad_afErrorCode
 {
-  v2 = [(SASessionValidationFailed *)self errorCode];
-  if ([v2 isEqualToString:SAValidationFailedErrorCodeAppleConnectAuthFailedValue])
+  errorCode = [(SASessionValidationFailed *)self errorCode];
+  if ([errorCode isEqualToString:SAValidationFailedErrorCodeAppleConnectAuthFailedValue])
   {
     v3 = 7000;
   }
@@ -23,15 +23,15 @@
 
 - (BOOL)ad_shouldRetry
 {
-  v2 = [(SASessionValidationFailed *)self errorCode];
-  if ([v2 isEqualToString:SAValidationFailedErrorCodeInvalidSessionInfoValue] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", SAValidationFailedErrorCodeInvalidValidationDataValue) & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", SAValidationFailedErrorCodeInvalidFingerprintValue))
+  errorCode = [(SASessionValidationFailed *)self errorCode];
+  if ([errorCode isEqualToString:SAValidationFailedErrorCodeInvalidSessionInfoValue] & 1) != 0 || (objc_msgSend(errorCode, "isEqualToString:", SAValidationFailedErrorCodeInvalidValidationDataValue) & 1) != 0 || (objc_msgSend(errorCode, "isEqualToString:", SAValidationFailedErrorCodeInvalidFingerprintValue))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:SAValidationFailedErrorCodeAppleConnectServerUnreachableValue];
+    v3 = [errorCode isEqualToString:SAValidationFailedErrorCodeAppleConnectServerUnreachableValue];
   }
 
   return v3;

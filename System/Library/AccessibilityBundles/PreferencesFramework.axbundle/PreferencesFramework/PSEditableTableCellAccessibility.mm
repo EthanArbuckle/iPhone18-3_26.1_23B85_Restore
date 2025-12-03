@@ -4,7 +4,7 @@
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation PSEditableTableCellAccessibility
@@ -13,8 +13,8 @@
 {
   v9.receiver = self;
   v9.super_class = PSEditableTableCellAccessibility;
-  v3 = [(PSEditableTableCellAccessibility *)&v9 _accessibilityChildren];
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_1];
+  _accessibilityChildren = [(PSEditableTableCellAccessibility *)&v9 _accessibilityChildren];
+  v4 = [_accessibilityChildren indexOfObjectPassingTest:&__block_literal_global_1];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -22,15 +22,15 @@
 
   else
   {
-    v5 = [v3 objectAtIndex:v4];
+    v5 = [_accessibilityChildren objectAtIndex:v4];
   }
 
   [v5 setIsAccessibilityElement:0];
   v6 = [(PSEditableTableCellAccessibility *)self safeValueForKey:@"textField"];
-  v7 = [v5 accessibilityLabel];
-  [v6 setAccessibilityLabel:v7];
+  accessibilityLabel = [v5 accessibilityLabel];
+  [v6 setAccessibilityLabel:accessibilityLabel];
 
-  return v3;
+  return _accessibilityChildren;
 }
 
 uint64_t __58__PSEditableTableCellAccessibility__accessibilityChildren__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -47,21 +47,21 @@ uint64_t __58__PSEditableTableCellAccessibility__accessibilityChildren__block_in
   return isKindOfClass & 1;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v5 _accessibilitySetSelectedTextRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  _accessibilityTextViewTextOperationResponder = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder _accessibilitySetSelectedTextRange:{location, length}];
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v2 = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 _accessibilitySelectedTextRange];
+  _accessibilityTextViewTextOperationResponder = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  _accessibilitySelectedTextRange = [_accessibilityTextViewTextOperationResponder _accessibilitySelectedTextRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = _accessibilitySelectedTextRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -70,26 +70,26 @@ uint64_t __58__PSEditableTableCellAccessibility__accessibilityChildren__block_in
 
 - (id)accessibilityLabel
 {
-  v3 = [(PSEditableTableCellAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(PSEditableTableCellAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(PSEditableTableCellAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(PSEditableTableCellAccessibility *)self accessibilityUserDefinedLabel];
     goto LABEL_10;
   }
 
-  v4 = [(PSEditableTableCellAccessibility *)self safeValueForKey:@"title"];
-  if (![v4 length])
+  accessibilityUserDefinedLabel2 = [(PSEditableTableCellAccessibility *)self safeValueForKey:@"title"];
+  if (![accessibilityUserDefinedLabel2 length])
   {
-    v5 = [(PSEditableTableCellAccessibility *)self accessibilityIdentification];
-    if ([v5 isEqualToString:@"AASpecifierUsername"])
+    accessibilityIdentification = [(PSEditableTableCellAccessibility *)self accessibilityIdentification];
+    if ([accessibilityIdentification isEqualToString:@"AASpecifierUsername"])
     {
       v6 = @"account.username.label";
     }
 
     else
     {
-      if (![v5 isEqualToString:@"AASpecifierPassword"])
+      if (![accessibilityIdentification isEqualToString:@"AASpecifierPassword"])
       {
 LABEL_9:
 
@@ -101,29 +101,29 @@ LABEL_9:
 
     v7 = accessibilityLocalizedString(v6);
 
-    v4 = v7;
+    accessibilityUserDefinedLabel2 = v7;
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityValue];
+  _accessibilityTextViewTextOperationResponder = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityValue = [_accessibilityTextViewTextOperationResponder accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityTraits];
+  _accessibilityTextViewTextOperationResponder = [(PSEditableTableCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityTraits = [_accessibilityTextViewTextOperationResponder accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

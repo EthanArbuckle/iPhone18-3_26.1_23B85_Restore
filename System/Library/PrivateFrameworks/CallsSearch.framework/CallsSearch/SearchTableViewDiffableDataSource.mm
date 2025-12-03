@@ -1,22 +1,22 @@
 @interface SearchTableViewDiffableDataSource
 - (_TtC11CallsSearch33SearchTableViewDiffableDataSource)init;
-- (void)didCompleteSearchFor:(id)a3;
+- (void)didCompleteSearchFor:(id)for;
 - (void)reloadData;
 @end
 
 @implementation SearchTableViewDiffableDataSource
 
-- (void)didCompleteSearchFor:(id)a3
+- (void)didCompleteSearchFor:(id)for
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1CFB78CD8(a3);
+  selfCopy = self;
+  sub_1CFB78CD8(for);
   swift_unknownObjectRelease();
 }
 
 - (void)reloadData
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB5E3F4();
 }
 

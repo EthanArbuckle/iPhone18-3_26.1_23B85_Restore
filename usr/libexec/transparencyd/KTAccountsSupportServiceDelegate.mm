@@ -1,17 +1,17 @@
 @interface KTAccountsSupportServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation KTAccountsSupportServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"application-identifier"];
-  v7 = [v5 valueForEntitlement:@"com.apple.transparencyd.accounts-support"];
-  v8 = [v7 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"application-identifier"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.transparencyd.accounts-support"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if (qword_10038BE00 != -1)
     {
@@ -26,14 +26,14 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "accounts-support accepting new connection from %@", &v15, 0xCu);
     }
 
-    v10 = [(KTAccountsSupportServiceDelegate *)self xpcQueue];
-    [v5 _setQueue:v10];
+    xpcQueue = [(KTAccountsSupportServiceDelegate *)self xpcQueue];
+    [connectionCopy _setQueue:xpcQueue];
 
     v11 = +[TransparencyAccountsSupportInterface interface];
-    [v5 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v5 setExportedObject:self->_daemonContext];
-    [v5 resume];
+    [connectionCopy setExportedObject:self->_daemonContext];
+    [connectionCopy resume];
   }
 
   else
@@ -48,14 +48,14 @@
     {
       v13 = v12;
       v15 = 67109378;
-      LODWORD(v16[0]) = [v5 processIdentifier];
+      LODWORD(v16[0]) = [connectionCopy processIdentifier];
       WORD2(v16[0]) = 2112;
       *(v16 + 6) = v6;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "accounts-support rejecting client %d/[%@] due to lack of entitlement", &v15, 0x12u);
     }
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 @end

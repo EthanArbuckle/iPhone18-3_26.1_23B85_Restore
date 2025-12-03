@@ -1,28 +1,28 @@
 @interface HDSPTimeChangeListener
 - (HDSPEnvironment)environment;
-- (HDSPTimeChangeListener)initWithEnvironment:(id)a3;
+- (HDSPTimeChangeListener)initWithEnvironment:(id)environment;
 - (NSString)sourceIdentifier;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (void)addObserver:(id)observer;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)handleSignificantTimeChange;
 - (void)handleTimeZoneChange;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HDSPTimeChangeListener
 
-- (HDSPTimeChangeListener)initWithEnvironment:(id)a3
+- (HDSPTimeChangeListener)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = HDSPTimeChangeListener;
   v5 = [(HDSPTimeChangeListener *)&v12 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D624A0]);
-    v7 = [v4 defaultCallbackScheduler];
-    v8 = [v6 initWithCallbackScheduler:v7];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v8 = [v6 initWithCallbackScheduler:defaultCallbackScheduler];
     observers = v5->_observers;
     v5->_observers = v8;
 
@@ -32,32 +32,32 @@
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(HKSPObserverSet *)self->_observers addObserver:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(HKSPObserverSet *)self->_observers removeObserver:?];
   }
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v4 = [a3 notificationListener];
-  [v4 addObserver:self];
+  notificationListener = [ready notificationListener];
+  [notificationListener addObserver:self];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"SignificantTimeChange"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"SignificantTimeChange"])
   {
     [(HDSPTimeChangeListener *)self handleSignificantTimeChange];
   }
@@ -65,7 +65,7 @@
   else
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.system.timezone"];
-    v7 = [v5 isEqualToString:v6];
+    v7 = [nameCopy isEqualToString:v6];
 
     if (v7)
     {
@@ -73,9 +73,9 @@
     }
   }
 
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
-  return v8;
+  return futureWithNoResult;
 }
 
 - (void)handleSignificantTimeChange
@@ -97,11 +97,11 @@
     v6 = objc_opt_class();
     v7 = MEMORY[0x277CBEBB0];
     v8 = v6;
-    v9 = [v7 systemTimeZone];
+    systemTimeZone = [v7 systemTimeZone];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v9;
+    v16 = systemTimeZone;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] timeZone: %{public}@", buf, 0x16u);
   }
 
@@ -143,11 +143,11 @@ void __53__HDSPTimeChangeListener_handleSignificantTimeChange__block_invoke(uint
     v6 = objc_opt_class();
     v7 = MEMORY[0x277CBEBB0];
     v8 = v6;
-    v9 = [v7 systemTimeZone];
+    systemTimeZone = [v7 systemTimeZone];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v9;
+    v16 = systemTimeZone;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] timeZone: %{public}@", buf, 0x16u);
   }
 

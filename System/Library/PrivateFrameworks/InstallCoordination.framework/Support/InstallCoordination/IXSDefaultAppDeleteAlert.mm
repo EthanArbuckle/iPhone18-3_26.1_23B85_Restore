@@ -1,25 +1,25 @@
 @interface IXSDefaultAppDeleteAlert
-- (IXSDefaultAppDeleteAlert)initWithAppRecord:(id)a3 removability:(unint64_t)a4 defaultAppType:(unint64_t)a5;
+- (IXSDefaultAppDeleteAlert)initWithAppRecord:(id)record removability:(unint64_t)removability defaultAppType:(unint64_t)type;
 - (id)message;
 - (id)title;
-- (void)displayAlertWithCompletion:(id)a3;
+- (void)displayAlertWithCompletion:(id)completion;
 @end
 
 @implementation IXSDefaultAppDeleteAlert
 
-- (IXSDefaultAppDeleteAlert)initWithAppRecord:(id)a3 removability:(unint64_t)a4 defaultAppType:(unint64_t)a5
+- (IXSDefaultAppDeleteAlert)initWithAppRecord:(id)record removability:(unint64_t)removability defaultAppType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [v8 bundleIdentifier];
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
   v12.receiver = self;
   v12.super_class = IXSDefaultAppDeleteAlert;
-  v10 = [(IXSUninstallAlert *)&v12 initWithAppRecord:v8 bundleIdentifier:v9 removability:a4 deletionIsRestricted:0];
+  v10 = [(IXSUninstallAlert *)&v12 initWithAppRecord:recordCopy bundleIdentifier:bundleIdentifier removability:removability deletionIsRestricted:0];
 
   if (v10)
   {
     [(IXSUninstallAlert *)v10 setTypeDescription:@"Delete Default App"];
     [(IXSUninstallAlert *)v10 setDefaultButtonAppearsDestructive:1];
-    v10->_appType = a5;
+    v10->_appType = type;
   }
 
   return v10;
@@ -28,9 +28,9 @@
 - (id)title
 {
   v3 = [(IXSUninstallAlert *)self localizedStringForKey:@"UNINSTALL_ICON_TITLE_DELETE_WITH_NAME" withFormatHint:@"Delete “%@”?"];
-  v4 = [(IXSUninstallAlert *)self appRecord];
-  v5 = [v4 localizedName];
-  v6 = [NSString localizedStringWithFormat:v3, v5];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  localizedName = [appRecord localizedName];
+  v6 = [NSString localizedStringWithFormat:v3, localizedName];
 
   return v6;
 }
@@ -50,18 +50,18 @@
   }
 
   v5 = [(IXSUninstallAlert *)self localizedStringForKey:v3 withFormatHint:v4];
-  v6 = [(IXSDefaultAppDeleteAlert *)self appType];
-  v7 = v6;
-  if (v6 <= 5)
+  appType = [(IXSDefaultAppDeleteAlert *)self appType];
+  v7 = appType;
+  if (appType <= 5)
   {
-    if (v6 == 4)
+    if (appType == 4)
     {
       v8 = @"UNINSTALL_ICON_BODY_CONTACTLESS";
       v9 = @"You do not have any other contactless apps on this iPhone.";
       goto LABEL_15;
     }
 
-    if (v6 == 5)
+    if (appType == 5)
     {
       v8 = @"UNINSTALL_ICON_BODY_MAIL";
       v9 = @"You do not have any other email apps on this iPhone.";
@@ -71,7 +71,7 @@
 
   else
   {
-    switch(v6)
+    switch(appType)
     {
       case 6:
         v8 = @"UNINSTALL_ICON_BODY_PHONE";
@@ -104,26 +104,26 @@ LABEL_16:
   return v11;
 }
 
-- (void)displayAlertWithCompletion:(id)a3
+- (void)displayAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [IXSUninstallAlertConfiguration alloc];
-  v6 = [(IXSDefaultAppDeleteAlert *)self title];
-  v7 = [(IXSDefaultAppDeleteAlert *)self message];
-  v14 = [(IXSUninstallAlertConfiguration *)v5 initWithTitle:v6 message:v7];
+  title = [(IXSDefaultAppDeleteAlert *)self title];
+  message = [(IXSDefaultAppDeleteAlert *)self message];
+  v14 = [(IXSUninstallAlertConfiguration *)v5 initWithTitle:title message:message];
 
   v8 = [IXSUninstallButtonConfiguration alloc];
-  v9 = [(IXSDefaultAppDeleteAlert *)self cancelButtonLabel];
-  v10 = [(IXSUninstallButtonConfiguration *)v8 initWithTitle:v9 buttonType:2];
+  cancelButtonLabel = [(IXSDefaultAppDeleteAlert *)self cancelButtonLabel];
+  v10 = [(IXSUninstallButtonConfiguration *)v8 initWithTitle:cancelButtonLabel buttonType:2];
 
   [(IXSUninstallAlertConfiguration *)v14 addButtonDefinition:v10 forAction:&stru_100101108];
   v11 = [IXSUninstallButtonConfiguration alloc];
-  v12 = [(IXSDefaultAppDeleteAlert *)self defaultButtonLabel];
-  v13 = [(IXSUninstallButtonConfiguration *)v11 initWithTitle:v12 buttonType:0];
+  defaultButtonLabel = [(IXSDefaultAppDeleteAlert *)self defaultButtonLabel];
+  v13 = [(IXSUninstallButtonConfiguration *)v11 initWithTitle:defaultButtonLabel buttonType:0];
 
   [(IXSUninstallAlertConfiguration *)v14 addButtonDefinition:v13 forAction:&stru_100101128];
   [(IXSUninstallButtonConfiguration *)v13 setPresentationStyle:1];
-  [(IXSUninstallAlert *)self displayAlertWithCompletion:v4 uninstallAlertConfiguration:v14];
+  [(IXSUninstallAlert *)self displayAlertWithCompletion:completionCopy uninstallAlertConfiguration:v14];
 }
 
 @end

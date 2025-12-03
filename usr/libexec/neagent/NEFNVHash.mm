@@ -1,24 +1,24 @@
 @interface NEFNVHash
-+ (unsigned)hash:(id)a3;
-+ (unsigned)hashWithString:(const char *)a3;
++ (unsigned)hash:(id)hash;
++ (unsigned)hashWithString:(const char *)string;
 @end
 
 @implementation NEFNVHash
 
-+ (unsigned)hash:(id)a3
++ (unsigned)hash:(id)hash
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [hash UTF8String];
 
-  return [NEFNVHash hashWithString:v3];
+  return [NEFNVHash hashWithString:uTF8String];
 }
 
-+ (unsigned)hashWithString:(const char *)a3
++ (unsigned)hashWithString:(const char *)string
 {
   result = -2128831035;
-  v4 = *a3;
-  if (*a3)
+  v4 = *string;
+  if (*string)
   {
-    v5 = a3 + 1;
+    v5 = string + 1;
     do
     {
       result = 16777619 * (result ^ v4);

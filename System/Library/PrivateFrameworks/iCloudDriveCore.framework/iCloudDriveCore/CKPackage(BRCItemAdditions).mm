@@ -28,8 +28,8 @@
     }
 
     [MEMORY[0x277CBC538] liftAnchor:v4];
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    [v8 removeItemAtURL:v3 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtURL:v3 error:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -55,9 +55,9 @@
   v8 = brc_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [a1 packageID];
+    packageID = [self packageID];
     v17 = 138412802;
-    v18 = v16;
+    v18 = packageID;
     v19 = 2112;
     v20 = v6;
     v21 = 2112;
@@ -70,7 +70,7 @@
   v10 = MEMORY[0x277CBEAA8];
   [v9 packageAnchorExpirationInterval];
   v11 = [v10 dateWithTimeIntervalSinceNow:?];
-  v12 = [a1 anchorWithExpirationDate:v11 error:a4];
+  v12 = [self anchorWithExpirationDate:v11 error:a4];
   v13 = [v12 writeToURL:v6 options:1 error:a4];
 
   v14 = *MEMORY[0x277D85DE8];

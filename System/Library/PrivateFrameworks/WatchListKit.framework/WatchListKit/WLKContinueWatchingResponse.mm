@@ -1,6 +1,6 @@
 @interface WLKContinueWatchingResponse
 - (WLKContinueWatchingResponse)init;
-- (WLKContinueWatchingResponse)initWithDictionary:(id)a3;
+- (WLKContinueWatchingResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKContinueWatchingResponse
@@ -12,18 +12,18 @@
   return 0;
 }
 
-- (WLKContinueWatchingResponse)initWithDictionary:(id)a3
+- (WLKContinueWatchingResponse)initWithDictionary:(id)dictionary
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = WLKContinueWatchingResponse;
   v5 = [(WLKContinueWatchingResponse *)&v32 init];
   if (v5)
   {
-    v6 = [v4 wlk_dictionaryForKey:@"data"];
+    v6 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v7 = [WLKChannelsResponse parseChannelsFromPayload:v6];
-    v27 = v4;
+    v27 = dictionaryCopy;
     v25 = v7;
     if (v7)
     {
@@ -37,7 +37,7 @@
       v8 = 0;
     }
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -67,7 +67,7 @@
             v17 = [[WLKContinuationMetadata alloc] initWithDictionary:v16 context:v8];
             if (v17)
             {
-              [v9 addObject:v17];
+              [array addObject:v17];
             }
           }
         }
@@ -78,7 +78,7 @@
       while (v13);
     }
 
-    v18 = [v9 copy];
+    v18 = [array copy];
     items = v5->_items;
     v5->_items = v18;
 
@@ -90,7 +90,7 @@
       v5->_featured = v21;
     }
 
-    v4 = v27;
+    dictionaryCopy = v27;
   }
 
   v23 = *MEMORY[0x277D85DE8];

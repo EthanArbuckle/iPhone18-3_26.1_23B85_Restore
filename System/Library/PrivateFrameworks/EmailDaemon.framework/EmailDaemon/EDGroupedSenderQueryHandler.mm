@@ -1,40 +1,40 @@
 @interface EDGroupedSenderQueryHandler
-+ (id)_comparatorForSortDescriptors:(id)a3 sectionPredicates:(id)a4;
-+ (id)resolveMergePathsForMergedBusinesses:(id)a3;
-+ (unint64_t)_sectionIndexForGroupedSender:(id)a3 sectionPredicates:(id)a4 sectionIdentifier:(id *)a5;
-- (BOOL)_queryHelperIsCurrent:(id)a3;
++ (id)_comparatorForSortDescriptors:(id)descriptors sectionPredicates:(id)predicates;
++ (id)resolveMergePathsForMergedBusinesses:(id)businesses;
++ (unint64_t)_sectionIndexForGroupedSender:(id)sender sectionPredicates:(id)predicates sectionIdentifier:(id *)identifier;
+- (BOOL)_queryHelperIsCurrent:(id)current;
 - (BOOL)start;
-- (EDGroupedSenderQueryHandler)initWithQuery:(id)a3 messagePersistence:(id)a4 senderPersistence:(id)a5 businessPersistence:(id)a6 businessCloudStorage:(id)a7 hookRegistry:(id)a8 remindMeNotificationController:(id)a9 observer:(id)a10 observationIdentifier:(id)a11 keepMessagesInListOnBucketChange:(BOOL)a12;
+- (EDGroupedSenderQueryHandler)initWithQuery:(id)query messagePersistence:(id)persistence senderPersistence:(id)senderPersistence businessPersistence:(id)businessPersistence businessCloudStorage:(id)storage hookRegistry:(id)registry remindMeNotificationController:(id)controller observer:(id)self0 observationIdentifier:(id)self1 keepMessagesInListOnBucketChange:(BOOL)self2;
 - (EMMessageListItemQueryResultsObserver)resultsObserverIfUncanceled;
-- (id)_externalBusinessIDForEmailAddress:(id)a3;
-- (id)_extraInfoForSenderItemIDsBySection:(id)a3 includePrecachedSendersFromSenders:(id)a4;
-- (id)_groupedSenderForEDGroupedSender:(id)a3;
-- (id)_groupedSenderForObjectID:(id)a3;
-- (id)_itemIDsWithSectionChangesFrom:(id)a3 to:(id)a4;
-- (id)_messageQueryFromGroupedQuery:(id)a3;
-- (id)_senderItemIDsBySectionForSenders:(id)a3;
-- (id)_updateDifference:(id)a3 from:(id)a4 forChangedGroups:(id)a5;
-- (id)groupedSenderForObjectID:(id)a3 isPersisted:(BOOL *)a4 error:(id *)a5;
-- (id)messagesForGroupedSender:(id)a3 limit:(int64_t)a4;
-- (unint64_t)_sectionIndexForGroupedSender:(id)a3 sectionIdentifier:(id *)a4;
-- (void)_filterGroupedSenderChanges:(id)a3 withVisibleSenders:(id)a4;
-- (void)_messagesWereChanged:(id)a3 previousMessages:(id)a4 forKeyPaths:(id)a5 deleted:(BOOL)a6;
-- (void)_notifyObserversOfInsertedSenders:(id)a3 senderItemIDsBySection:(id)a4 previousSender:(id)a5 includePrecachedSenders:(BOOL)a6 notifyBlock:(id)a7;
-- (void)_notifyResultsObserverOfChangesToVisibleGroupedSendersFrom:(id)a3 to:(id)a4 forChangedGroups:(id)a5 itemIDsWithSectionChanges:(id)a6 includePrecachedSenders:(BOOL)a7 logMessage:(id)a8;
+- (id)_externalBusinessIDForEmailAddress:(id)address;
+- (id)_extraInfoForSenderItemIDsBySection:(id)section includePrecachedSendersFromSenders:(id)senders;
+- (id)_groupedSenderForEDGroupedSender:(id)sender;
+- (id)_groupedSenderForObjectID:(id)d;
+- (id)_itemIDsWithSectionChangesFrom:(id)from to:(id)to;
+- (id)_messageQueryFromGroupedQuery:(id)query;
+- (id)_senderItemIDsBySectionForSenders:(id)senders;
+- (id)_updateDifference:(id)difference from:(id)from forChangedGroups:(id)groups;
+- (id)groupedSenderForObjectID:(id)d isPersisted:(BOOL *)persisted error:(id *)error;
+- (id)messagesForGroupedSender:(id)sender limit:(int64_t)limit;
+- (unint64_t)_sectionIndexForGroupedSender:(id)sender sectionIdentifier:(id *)identifier;
+- (void)_filterGroupedSenderChanges:(id)changes withVisibleSenders:(id)senders;
+- (void)_messagesWereChanged:(id)changed previousMessages:(id)messages forKeyPaths:(id)paths deleted:(BOOL)deleted;
+- (void)_notifyObserversOfInsertedSenders:(id)senders senderItemIDsBySection:(id)section previousSender:(id)sender includePrecachedSenders:(BOOL)precachedSenders notifyBlock:(id)block;
+- (void)_notifyResultsObserverOfChangesToVisibleGroupedSendersFrom:(id)from to:(id)to forChangedGroups:(id)groups itemIDsWithSectionChanges:(id)changes includePrecachedSenders:(BOOL)senders logMessage:(id)message;
 - (void)_persistenceDidFinishMergingBusinesses;
 - (void)cancel;
-- (void)persistenceIsMergingBusinessID:(int64_t)a3 intoBusinessID:(int64_t)a4;
-- (void)queryHelper:(id)a3 businessIDDidChangeForMessages:(id)a4 fromBusinessID:(int64_t)a5;
-- (void)queryHelper:(id)a3 didAddMessages:(id)a4 searchInfo:(id)a5;
-- (void)queryHelper:(id)a3 didDeleteMessages:(id)a4;
-- (void)queryHelper:(id)a3 didUpdateMessages:(id)a4 forKeyPaths:(id)a5;
-- (void)queryHelper:(id)a3 messageFlagsDidChangeForMessages:(id)a4 previousMessages:(id)a5;
-- (void)queryHelperDidFindAllMessages:(id)a3 localSearchInfoCollector:(id)a4;
-- (void)queryHelperNeedsRestart:(id)a3;
+- (void)persistenceIsMergingBusinessID:(int64_t)d intoBusinessID:(int64_t)iD;
+- (void)queryHelper:(id)helper businessIDDidChangeForMessages:(id)messages fromBusinessID:(int64_t)d;
+- (void)queryHelper:(id)helper didAddMessages:(id)messages searchInfo:(id)info;
+- (void)queryHelper:(id)helper didDeleteMessages:(id)messages;
+- (void)queryHelper:(id)helper didUpdateMessages:(id)messages forKeyPaths:(id)paths;
+- (void)queryHelper:(id)helper messageFlagsDidChangeForMessages:(id)messages previousMessages:(id)previousMessages;
+- (void)queryHelperDidFindAllMessages:(id)messages localSearchInfoCollector:(id)collector;
+- (void)queryHelperNeedsRestart:(id)restart;
 - (void)tearDown;
 - (void)test_tearDown;
-- (void)updateUnseenCountsForBusinessesWithExternalIDs:(id)a3;
-- (void)updatedBusinessesWithExternalIDs:(id)a3 removedBusinessesWithExternalIDs:(id)a4;
+- (void)updateUnseenCountsForBusinessesWithExternalIDs:(id)ds;
+- (void)updatedBusinessesWithExternalIDs:(id)ds removedBusinessesWithExternalIDs:(id)iDs;
 @end
 
 @implementation EDGroupedSenderQueryHandler
@@ -46,37 +46,37 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
   _ef_log_EDGroupedSenderQueryHandler_log = v0;
 }
 
-- (EDGroupedSenderQueryHandler)initWithQuery:(id)a3 messagePersistence:(id)a4 senderPersistence:(id)a5 businessPersistence:(id)a6 businessCloudStorage:(id)a7 hookRegistry:(id)a8 remindMeNotificationController:(id)a9 observer:(id)a10 observationIdentifier:(id)a11 keepMessagesInListOnBucketChange:(BOOL)a12
+- (EDGroupedSenderQueryHandler)initWithQuery:(id)query messagePersistence:(id)persistence senderPersistence:(id)senderPersistence businessPersistence:(id)businessPersistence businessCloudStorage:(id)storage hookRegistry:(id)registry remindMeNotificationController:(id)controller observer:(id)self0 observationIdentifier:(id)self1 keepMessagesInListOnBucketChange:(BOOL)self2
 {
-  v18 = a3;
-  obj = a4;
-  v19 = a4;
-  v53 = a5;
-  v52 = a6;
-  v54 = a7;
-  v20 = a8;
-  v21 = a9;
+  queryCopy = query;
+  obj = persistence;
+  persistenceCopy = persistence;
+  senderPersistenceCopy = senderPersistence;
+  businessPersistenceCopy = businessPersistence;
+  storageCopy = storage;
+  registryCopy = registry;
+  controllerCopy = controller;
   v55.receiver = self;
   v55.super_class = EDGroupedSenderQueryHandler;
-  v50 = a10;
-  v51 = v21;
-  v49 = a11;
-  v22 = [(EDMessageRepositoryQueryHandler *)&v55 initWithQuery:v18 messagePersistence:v19 hookRegistry:v20 remindMeNotificationController:v21 observer:v50 observationIdentifier:?];
+  observerCopy = observer;
+  v51 = controllerCopy;
+  identifierCopy = identifier;
+  v22 = [(EDMessageRepositoryQueryHandler *)&v55 initWithQuery:queryCopy messagePersistence:persistenceCopy hookRegistry:registryCopy remindMeNotificationController:controllerCopy observer:observerCopy observationIdentifier:?];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_senderPersistence, a5);
+    objc_storeStrong(&v22->_senderPersistence, senderPersistence);
     objc_storeStrong(&v23->_messagePersistence, obj);
-    objc_storeStrong(&v23->_businessPersistence, a6);
-    objc_storeStrong(&v23->_businessCloudStorage, a7);
+    objc_storeStrong(&v23->_businessPersistence, businessPersistence);
+    objc_storeStrong(&v23->_businessCloudStorage, storage);
     v24 = objc_alloc_init(MEMORY[0x1E699ACF0]);
     unsubscribeDetector = v23->_unsubscribeDetector;
     v23->_unsubscribeDetector = v24;
 
     v26 = MEMORY[0x1E699ADA0];
-    v27 = [v18 predicate];
-    v28 = [v19 mailboxPersistence];
-    v29 = [v26 threadScopeForPredicate:v27 withMailboxTypeResolver:v28];
+    predicate = [queryCopy predicate];
+    mailboxPersistence = [persistenceCopy mailboxPersistence];
+    v29 = [v26 threadScopeForPredicate:predicate withMailboxTypeResolver:mailboxPersistence];
     threadScope = v23->_threadScope;
     v23->_threadScope = v29;
 
@@ -91,45 +91,45 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
     resultQueue = v23->_resultQueue;
     v23->_resultQueue = v36;
 
-    v38 = [MEMORY[0x1E695E000] em_userDefaults];
-    v23->_grouping = [v38 preferredGroupedSenderGrouping];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v23->_grouping = [em_userDefaults preferredGroupedSenderGrouping];
 
-    v39 = [v18 targetClassOptions];
-    v40 = [v39 objectForKeyedSubscript:*MEMORY[0x1E699A9F0]];
+    targetClassOptions = [queryCopy targetClassOptions];
+    v40 = [targetClassOptions objectForKeyedSubscript:*MEMORY[0x1E699A9F0]];
     sectionPredicates = v23->_sectionPredicates;
     v23->_sectionPredicates = v40;
 
     [(EFOrderedDictionary *)v23->_sectionPredicates enumerateKeysAndObjectsUsingBlock:&__block_literal_global_14];
     v23->_groupedSendersLock._os_unfair_lock_opaque = 0;
     v42 = [_EDGroupedSenderList alloc];
-    v43 = [v18 sortDescriptors];
-    v44 = [EDGroupedSenderQueryHandler _comparatorForSortDescriptors:v43 sectionPredicates:v23->_sectionPredicates];
+    sortDescriptors = [queryCopy sortDescriptors];
+    v44 = [EDGroupedSenderQueryHandler _comparatorForSortDescriptors:sortDescriptors sectionPredicates:v23->_sectionPredicates];
     v45 = [(_EDGroupedSenderList *)v42 initWithComparator:v44 grouping:v23->_grouping];
     groupedSenders = v23->_groupedSenders;
     v23->_groupedSenders = v45;
 
-    v23->_keepMessagesInListOnBucketChange = a12;
-    [v54 beginObserving:v23];
-    [v20 registerMessageChangeHookResponder:v23];
-    [v20 registerBusinessChangeHookResponder:v23];
+    v23->_keepMessagesInListOnBucketChange = change;
+    [storageCopy beginObserving:v23];
+    [registryCopy registerMessageChangeHookResponder:v23];
+    [registryCopy registerBusinessChangeHookResponder:v23];
   }
 
   return v23;
 }
 
-- (void)updateUnseenCountsForBusinessesWithExternalIDs:(id)a3
+- (void)updateUnseenCountsForBusinessesWithExternalIDs:(id)ds
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v36 = [(EDGroupedSenderQueryHandler *)self groupedSenders];
+  groupedSenders = [(EDGroupedSenderQueryHandler *)self groupedSenders];
   v6 = _ef_log_EDGroupedSenderQueryHandler();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
     v43 = objc_opt_class();
     v44 = 2048;
-    v45 = self;
+    selfCopy5 = self;
     v46 = 2048;
     v47 = v5;
     v7 = v43;
@@ -145,7 +145,7 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
     *buf = 138412802;
     v43 = v9;
     v44 = 2048;
-    v45 = self;
+    selfCopy5 = self;
     v46 = 2048;
     v47 = v5;
     v10 = v9;
@@ -156,8 +156,8 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = [v36 orderedGroupedSenders];
-  v12 = [v11 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  orderedGroupedSenders = [groupedSenders orderedGroupedSenders];
+  v12 = [orderedGroupedSenders countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v12)
   {
     v13 = *v38;
@@ -167,31 +167,31 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
       {
         if (*v38 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(orderedGroupedSenders);
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 externalBusinessID];
-        v17 = [v4 containsObject:v16];
+        externalBusinessID = [v15 externalBusinessID];
+        v17 = [dsCopy containsObject:externalBusinessID];
 
         if (v17)
         {
-          v18 = [v15 recalculateUnseenCount];
-          v19 = [v15 objectID];
-          [v5 setObject:v18 forKeyedSubscript:v19];
+          recalculateUnseenCount = [v15 recalculateUnseenCount];
+          objectID = [v15 objectID];
+          [v5 setObject:recalculateUnseenCount forKeyedSubscript:objectID];
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v12 = [orderedGroupedSenders countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v12);
   }
 
-  v20 = [(EDMessageRepositoryQueryHandler *)self query];
-  v21 = [v20 limit];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  limit = [query limit];
 
-  v22 = [v36 orderedGroupedSendersWithLimit:v21 & ~(v21 >> 63)];
+  v22 = [groupedSenders orderedGroupedSendersWithLimit:limit & ~(limit >> 63)];
   [(EDGroupedSenderQueryHandler *)self _filterGroupedSenderChanges:v5 withVisibleSenders:v22];
   if ([v5 count])
   {
@@ -203,15 +203,15 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
       *buf = 138412802;
       v43 = v24;
       v44 = 2048;
-      v45 = self;
+      selfCopy5 = self;
       v46 = 2048;
       v47 = v25;
       _os_log_impl(&dword_1C61EF000, v23, OS_LOG_TYPE_DEFAULT, "<%@ %p> Notifying observer of %lu changed groups (after last seen dates changed)", buf, 0x20u);
     }
 
-    v26 = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
-    v27 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-    [v26 observer:v27 matchedChangesForObjectIDs:v5];
+    resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
+    observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+    [resultsObserverIfUncanceled observer:observationIdentifier matchedChangesForObjectIDs:v5];
   }
 
   v28 = _ef_log_EDGroupedSenderQueryHandler();
@@ -221,7 +221,7 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
     *buf = 138412802;
     v43 = v29;
     v44 = 2048;
-    v45 = self;
+    selfCopy5 = self;
     v46 = 2048;
     v47 = v5;
     v30 = v29;
@@ -236,7 +236,7 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
     *buf = 138412802;
     v43 = v32;
     v44 = 2048;
-    v45 = self;
+    selfCopy5 = self;
     v46 = 2048;
     v47 = v5;
     v33 = v32;
@@ -246,26 +246,26 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_groupedSenderForObjectID:(id)a3
+- (id)_groupedSenderForObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(EDGroupedSenderQueryHandler *)self groupedSenders];
-  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "businessID")}];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dCopy = d;
+  groupedSenders = [(EDGroupedSenderQueryHandler *)self groupedSenders];
+  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(dCopy, "businessID")}];
+  v7 = [groupedSenders objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (id)_groupedSenderForEDGroupedSender:(id)a3
+- (id)_groupedSenderForEDGroupedSender:(id)sender
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  senderCopy = sender;
+  if (senderCopy)
   {
     os_unfair_lock_assert_owner(&self->_groupedSendersLock);
-    v6 = [v5 newestMessage];
+    newestMessage = [senderCopy newestMessage];
 
-    if (!v6)
+    if (!newestMessage)
     {
       v7 = _ef_log_EDGroupedSenderQueryHandler();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -273,24 +273,24 @@ void ___ef_log_EDGroupedSenderQueryHandler_block_invoke()
         *buf = 138412802;
         v19 = objc_opt_class();
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2114;
-        v23 = v5;
+        v23 = senderCopy;
         v13 = v19;
         _os_log_fault_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_FAULT, "<%@ %p> Empty group sender being created: %{public}@", buf, 0x20u);
       }
     }
 
     v8 = objc_alloc(MEMORY[0x1E699ACC0]);
-    v9 = [v5 objectID];
+    objectID = [senderCopy objectID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64__EDGroupedSenderQueryHandler__groupedSenderForEDGroupedSender___block_invoke;
     v14[3] = &unk_1E8252378;
-    v16 = self;
+    selfCopy2 = self;
     v17 = a2;
-    v15 = v5;
-    v10 = [v8 initWithObjectID:v9 builder:v14];
+    v15 = senderCopy;
+    v10 = [v8 initWithObjectID:objectID builder:v14];
   }
 
   else
@@ -388,13 +388,13 @@ void __64__EDGroupedSenderQueryHandler__groupedSenderForEDGroupedSender___block_
 - (void)tearDown
 {
   [(EDGroupedSenderQueryHandler *)self cancel];
-  v3 = [(EDGroupedSenderQueryHandler *)self scheduler];
+  scheduler = [(EDGroupedSenderQueryHandler *)self scheduler];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__EDGroupedSenderQueryHandler_tearDown__block_invoke;
   v5[3] = &unk_1E8250260;
   v5[4] = self;
-  [v3 performBlock:v5];
+  [scheduler performBlock:v5];
 
   v4.receiver = self;
   v4.super_class = EDGroupedSenderQueryHandler;
@@ -405,8 +405,8 @@ void __64__EDGroupedSenderQueryHandler__groupedSenderForEDGroupedSender___block_
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"EDGroupedSenderQueryHandler.m" lineNumber:220 description:{@"%s can only be called from unit tests", "-[EDGroupedSenderQueryHandler test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDGroupedSenderQueryHandler.m" lineNumber:220 description:{@"%s can only be called from unit tests", "-[EDGroupedSenderQueryHandler test_tearDown]"}];
   }
 
   [(EDGroupedSenderQueryHandler *)self tearDown];
@@ -416,39 +416,39 @@ void __64__EDGroupedSenderQueryHandler__groupedSenderForEDGroupedSender___block_
 {
   v23.receiver = self;
   v23.super_class = EDGroupedSenderQueryHandler;
-  v3 = [(EDMessageRepositoryQueryHandler *)&v23 start];
-  if (v3)
+  start = [(EDMessageRepositoryQueryHandler *)&v23 start];
+  if (start)
   {
-    v4 = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
+    messageQueryHelper = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
 
-    v5 = [(EDMessageRepositoryQueryHandler *)self query];
-    v6 = [(EDGroupedSenderQueryHandler *)self _messageQueryFromGroupedQuery:v5];
+    query = [(EDMessageRepositoryQueryHandler *)self query];
+    v6 = [(EDGroupedSenderQueryHandler *)self _messageQueryFromGroupedQuery:query];
 
     v7 = [EDMessageQueryHelper alloc];
-    v8 = [(EDGroupedSenderQueryHandler *)self messagePersistence];
-    v9 = [(EDMessageRepositoryQueryHandler *)self hookRegistry];
-    v10 = [(EDGroupedSenderQueryHandler *)self scheduler];
-    v11 = [(EDMessageRepositoryQueryHandler *)self remindMeNotificationController];
+    messagePersistence = [(EDGroupedSenderQueryHandler *)self messagePersistence];
+    hookRegistry = [(EDMessageRepositoryQueryHandler *)self hookRegistry];
+    scheduler = [(EDGroupedSenderQueryHandler *)self scheduler];
+    remindMeNotificationController = [(EDMessageRepositoryQueryHandler *)self remindMeNotificationController];
     BYTE2(v18) = [(EDGroupedSenderQueryHandler *)self keepMessagesInListOnBucketChange];
     LOWORD(v18) = 1;
-    v12 = [EDMessageQueryHelper initWithQuery:v7 initialBatchSize:"initWithQuery:initialBatchSize:maximumBatchSize:messagePersistence:hookRegistry:searchProvider:scheduler:remindMeNotificationController:delegate:shouldReconcileJournal:shouldAddMessagesSynchronously:keepMessagesInListOnBucketChange:" maximumBatchSize:v6 messagePersistence:200 hookRegistry:5000 searchProvider:v8 scheduler:v9 remindMeNotificationController:0 delegate:v10 shouldReconcileJournal:v11 shouldAddMessagesSynchronously:self keepMessagesInListOnBucketChange:v18];
+    v12 = [EDMessageQueryHelper initWithQuery:v7 initialBatchSize:"initWithQuery:initialBatchSize:maximumBatchSize:messagePersistence:hookRegistry:searchProvider:scheduler:remindMeNotificationController:delegate:shouldReconcileJournal:shouldAddMessagesSynchronously:keepMessagesInListOnBucketChange:" maximumBatchSize:v6 messagePersistence:200 hookRegistry:5000 searchProvider:messagePersistence scheduler:hookRegistry remindMeNotificationController:0 delegate:scheduler shouldReconcileJournal:remindMeNotificationController shouldAddMessagesSynchronously:self keepMessagesInListOnBucketChange:v18];
 
     [(EDGroupedSenderQueryHandler *)self setMessageQueryHelper:v12];
-    if (v4)
+    if (messageQueryHelper)
     {
-      v13 = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
-      objc_initWeak(&location, v13);
+      resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
+      objc_initWeak(&location, resultsObserverIfUncanceled);
 
-      v14 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-      v15 = [(EDGroupedSenderQueryHandler *)self resultQueue];
+      observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+      resultQueue = [(EDGroupedSenderQueryHandler *)self resultQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __36__EDGroupedSenderQueryHandler_start__block_invoke;
       block[3] = &unk_1E8250098;
       objc_copyWeak(&v21, &location);
-      v20 = v14;
-      v16 = v14;
-      dispatch_async(v15, block);
+      v20 = observationIdentifier;
+      v16 = observationIdentifier;
+      dispatch_async(resultQueue, block);
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -457,7 +457,7 @@ void __64__EDGroupedSenderQueryHandler__groupedSenderForEDGroupedSender___block_
     [(EDMessageQueryHelper *)v12 start];
   }
 
-  return v3;
+  return start;
 }
 
 void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
@@ -471,8 +471,8 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = EDGroupedSenderQueryHandler;
   [(EDMessageRepositoryQueryHandler *)&v4 cancel];
-  v3 = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
-  [v3 cancel];
+  messageQueryHelper = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
+  [messageQueryHelper cancel];
 
   [(EDGroupedSenderQueryHandler *)self setDidCancel:1];
 }
@@ -481,105 +481,105 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
 {
   if ([(EDGroupedSenderQueryHandler *)self didCancel])
   {
-    v3 = 0;
+    resultsObserver = 0;
   }
 
   else
   {
-    v3 = [(EDMessageRepositoryQueryHandler *)self resultsObserver];
+    resultsObserver = [(EDMessageRepositoryQueryHandler *)self resultsObserver];
   }
 
-  return v3;
+  return resultsObserver;
 }
 
-- (void)queryHelperNeedsRestart:(id)a3
+- (void)queryHelperNeedsRestart:(id)restart
 {
-  v4 = a3;
+  restartCopy = restart;
   if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:?])
   {
     [(EDGroupedSenderQueryHandler *)self start];
   }
 }
 
-- (void)queryHelperDidFindAllMessages:(id)a3 localSearchInfoCollector:(id)a4
+- (void)queryHelperDidFindAllMessages:(id)messages localSearchInfoCollector:(id)collector
 {
-  v7 = a3;
+  messagesCopy = messages;
   if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:?])
   {
-    v5 = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
-    v6 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-    [v5 observerDidFinishInitialLoad:v6 extraInfo:0];
+    resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
+    observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+    [resultsObserverIfUncanceled observerDidFinishInitialLoad:observationIdentifier extraInfo:0];
   }
 }
 
-- (void)queryHelper:(id)a3 didAddMessages:(id)a4 searchInfo:(id)a5
+- (void)queryHelper:(id)helper didAddMessages:(id)messages searchInfo:(id)info
 {
-  v8 = a3;
-  v7 = a4;
-  if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:v8])
+  helperCopy = helper;
+  messagesCopy = messages;
+  if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:helperCopy])
   {
-    [(EDGroupedSenderQueryHandler *)self _messagesWereAdded:v7 toInitialBatch:0];
+    [(EDGroupedSenderQueryHandler *)self _messagesWereAdded:messagesCopy toInitialBatch:0];
   }
 }
 
-- (void)queryHelper:(id)a3 didUpdateMessages:(id)a4 forKeyPaths:(id)a5
+- (void)queryHelper:(id)helper didUpdateMessages:(id)messages forKeyPaths:(id)paths
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (-[EDGroupedSenderQueryHandler _queryHelperIsCurrent:](self, "_queryHelperIsCurrent:", v10) && ([v9 count] != 1 || (objc_msgSend(v9, "containsObject:", *MEMORY[0x1E699A8E0]) & 1) == 0))
+  helperCopy = helper;
+  messagesCopy = messages;
+  pathsCopy = paths;
+  if (-[EDGroupedSenderQueryHandler _queryHelperIsCurrent:](self, "_queryHelperIsCurrent:", helperCopy) && ([pathsCopy count] != 1 || (objc_msgSend(pathsCopy, "containsObject:", *MEMORY[0x1E699A8E0]) & 1) == 0))
   {
-    [(EDGroupedSenderQueryHandler *)self _messagesWereChanged:v8 previousMessages:0 forKeyPaths:v9 deleted:0];
+    [(EDGroupedSenderQueryHandler *)self _messagesWereChanged:messagesCopy previousMessages:0 forKeyPaths:pathsCopy deleted:0];
   }
 }
 
-- (void)queryHelper:(id)a3 messageFlagsDidChangeForMessages:(id)a4 previousMessages:(id)a5
+- (void)queryHelper:(id)helper messageFlagsDidChangeForMessages:(id)messages previousMessages:(id)previousMessages
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:v8])
+  helperCopy = helper;
+  messagesCopy = messages;
+  previousMessagesCopy = previousMessages;
+  if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:helperCopy])
   {
     v11 = *MEMORY[0x1E699A8E8];
     v14[0] = *MEMORY[0x1E699A8A0];
     v14[1] = v11;
     v14[2] = *MEMORY[0x1E699A898];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
-    [(EDGroupedSenderQueryHandler *)self _messagesWereChanged:v9 previousMessages:v10 forKeyPaths:v12 deleted:0];
+    [(EDGroupedSenderQueryHandler *)self _messagesWereChanged:messagesCopy previousMessages:previousMessagesCopy forKeyPaths:v12 deleted:0];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryHelper:(id)a3 didDeleteMessages:(id)a4
+- (void)queryHelper:(id)helper didDeleteMessages:(id)messages
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:v7])
+  helperCopy = helper;
+  messagesCopy = messages;
+  if ([(EDGroupedSenderQueryHandler *)self _queryHelperIsCurrent:helperCopy])
   {
-    [(EDGroupedSenderQueryHandler *)self _messagesWereChanged:v6 previousMessages:0 forKeyPaths:0 deleted:1];
+    [(EDGroupedSenderQueryHandler *)self _messagesWereChanged:messagesCopy previousMessages:0 forKeyPaths:0 deleted:1];
   }
 }
 
-- (void)queryHelper:(id)a3 businessIDDidChangeForMessages:(id)a4 fromBusinessID:(int64_t)a5
+- (void)queryHelper:(id)helper businessIDDidChangeForMessages:(id)messages fromBusinessID:(int64_t)d
 {
   v71 = *MEMORY[0x1E69E9840];
-  v61 = a4;
-  v7 = [(EDMessageRepositoryQueryHandler *)self query];
-  v8 = [v7 limit];
+  messagesCopy = messages;
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  limit = [query limit];
 
   [(EDGroupedSenderQueryHandler *)self groupedSenders];
-  v62 = v56 = v8 & ~(v8 >> 63);
+  v62 = v56 = limit & ~(limit >> 63);
   v59 = [v62 orderedGroupedSendersWithLimit:?];
-  v9 = [v59 array];
-  v58 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:v9];
+  array = [v59 array];
+  v58 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:array];
 
   v60 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v63 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [v61 firstObject];
-  v11 = [v10 businessID];
-  v57 = a5;
+  firstObject = [messagesCopy firstObject];
+  businessID = [firstObject businessID];
+  dCopy = d;
 
   v12 = _ef_log_EDGroupedSenderQueryHandler();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -587,7 +587,7 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
     *buf = 138412802;
     v66 = objc_opt_class();
     v67 = 2048;
-    v68 = self;
+    selfCopy7 = self;
     v69 = 2048;
     v70 = v63;
     v13 = v66;
@@ -602,24 +602,24 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
     *buf = 138412802;
     v66 = v15;
     v67 = 2048;
-    v68 = self;
+    selfCopy7 = self;
     v69 = 2048;
     v70 = v63;
     v16 = v15;
     _os_log_impl(&dword_1C61EF000, v14, OS_LOG_TYPE_DEFAULT, "<%@ %p> Entered grouped sender list %p lock for updating business IDs", buf, 0x20u);
   }
 
-  v17 = [MEMORY[0x1E696AD98] numberWithLongLong:v11];
+  v17 = [MEMORY[0x1E696AD98] numberWithLongLong:businessID];
   v18 = [v62 objectForKeyedSubscript:v17];
 
   if (v18)
   {
-    v19 = [(EDGroupedSender *)v18 addMessages:v61];
+    v19 = [(EDGroupedSender *)v18 addMessages:messagesCopy];
     [v62 updateGroupedSender:v18];
     if (v19)
     {
-      v20 = [(EMObject *)v18 objectID];
-      [v63 setObject:v19 forKeyedSubscript:v20];
+      objectID = [(EMObject *)v18 objectID];
+      [v63 setObject:v19 forKeyedSubscript:objectID];
 
       [v60 addObject:v18];
     }
@@ -627,21 +627,21 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
 
   else
   {
-    v21 = [(EDGroupedSenderQueryHandler *)self businessPersistence];
-    v19 = [v21 businessExternalIDForBusinessID:v11];
+    businessPersistence = [(EDGroupedSenderQueryHandler *)self businessPersistence];
+    v19 = [businessPersistence businessExternalIDForBusinessID:businessID];
 
     v22 = [EDGroupedSender alloc];
-    v55 = [(EDMessageRepositoryQueryHandler *)self query];
+    query2 = [(EDMessageRepositoryQueryHandler *)self query];
     v23 = [(EDGroupedSenderQueryHandler *)self _messageQueryFromGroupedQuery:?];
-    v24 = [(EDGroupedSenderQueryHandler *)self businessPersistence];
-    v25 = [(EDGroupedSenderQueryHandler *)self messagePersistence];
-    v26 = [(EDGroupedSenderQueryHandler *)self businessCloudStorage];
-    v27 = [(EDGroupedSenderQueryHandler *)self unsubscribeDetector];
-    v18 = [(EDGroupedSender *)v22 initWithBusinessID:v11 externalBusinessID:v19 messages:v61 originatingQuery:v23 businessPersistence:v24 messagePersistence:v25 businessCloudStorage:v26 unsubscribeDetector:v27];
+    businessPersistence2 = [(EDGroupedSenderQueryHandler *)self businessPersistence];
+    messagePersistence = [(EDGroupedSenderQueryHandler *)self messagePersistence];
+    businessCloudStorage = [(EDGroupedSenderQueryHandler *)self businessCloudStorage];
+    unsubscribeDetector = [(EDGroupedSenderQueryHandler *)self unsubscribeDetector];
+    v18 = [(EDGroupedSender *)v22 initWithBusinessID:businessID externalBusinessID:v19 messages:messagesCopy originatingQuery:v23 businessPersistence:businessPersistence2 messagePersistence:messagePersistence businessCloudStorage:businessCloudStorage unsubscribeDetector:unsubscribeDetector];
 
-    v28 = [(EDGroupedSender *)v18 displayMessageItemID];
+    displayMessageItemID = [(EDGroupedSender *)v18 displayMessageItemID];
 
-    if (v28)
+    if (displayMessageItemID)
     {
       [v62 addGroupedSender:v18];
       [v60 addObject:v18];
@@ -656,22 +656,22 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
         *buf = 138412802;
         v66 = v53;
         v67 = 2048;
-        v68 = self;
+        selfCopy7 = self;
         v69 = 2048;
-        v70 = v11;
+        v70 = businessID;
         v54 = v53;
         _os_log_error_impl(&dword_1C61EF000, v29, OS_LOG_TYPE_ERROR, "<%@ %p> Avoid creating group sender with displayMessageItemID equals nil for BusinessID:%lld", buf, 0x20u);
       }
     }
   }
 
-  v30 = [MEMORY[0x1E696AD98] numberWithLongLong:v57];
+  v30 = [MEMORY[0x1E696AD98] numberWithLongLong:dCopy];
   v31 = [v62 objectForKeyedSubscript:v30];
 
   if (v31)
   {
     v64 = 0;
-    v32 = [v31 removeMessages:v61 isGroupEmpty:&v64 messageProvider:self];
+    v32 = [v31 removeMessages:messagesCopy isGroupEmpty:&v64 messageProvider:self];
     if (v64 == 1)
     {
       v33 = _ef_log_EDGroupedSenderQueryHandler();
@@ -681,7 +681,7 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
         *buf = 138412802;
         v66 = v34;
         v67 = 2048;
-        v68 = self;
+        selfCopy7 = self;
         v69 = 2114;
         v70 = v31;
         v35 = v34;
@@ -694,8 +694,8 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
     if (v32)
     {
       [v62 updateGroupedSender:v31];
-      v36 = [v31 objectID];
-      [v63 setObject:v32 forKeyedSubscript:v36];
+      objectID2 = [v31 objectID];
+      [v63 setObject:v32 forKeyedSubscript:objectID2];
 
       [v60 addObject:v31];
     }
@@ -708,7 +708,7 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
     *buf = 138412802;
     v66 = v38;
     v67 = 2048;
-    v68 = self;
+    selfCopy7 = self;
     v69 = 2048;
     v70 = v63;
     v39 = v38;
@@ -723,7 +723,7 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
     *buf = 138412802;
     v66 = v41;
     v67 = 2048;
-    v68 = self;
+    selfCopy7 = self;
     v69 = 2048;
     v70 = v63;
     v42 = v41;
@@ -731,8 +731,8 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
   }
 
   v43 = [v62 orderedGroupedSendersWithLimit:v56];
-  v44 = [v59 array];
-  v45 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:v44];
+  array2 = [v59 array];
+  v45 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:array2];
 
   [(EDGroupedSenderQueryHandler *)self _filterGroupedSenderChanges:v63 withVisibleSenders:v43];
   if ([v63 count])
@@ -745,15 +745,15 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
       *buf = 138412802;
       v66 = v47;
       v67 = 2048;
-      v68 = self;
+      selfCopy7 = self;
       v69 = 2048;
       v70 = v48;
       _os_log_impl(&dword_1C61EF000, v46, OS_LOG_TYPE_DEFAULT, "<%@ %p> Notifying observer of %lu changed groups (after businessID was changed for messages)", buf, 0x20u);
     }
 
-    v49 = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
-    v50 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-    [v49 observer:v50 matchedChangesForObjectIDs:v63];
+    resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
+    observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+    [resultsObserverIfUncanceled observer:observationIdentifier matchedChangesForObjectIDs:v63];
   }
 
   v51 = [(EDGroupedSenderQueryHandler *)self _itemIDsWithSectionChangesFrom:v58 to:v45];
@@ -762,18 +762,18 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_sectionIndexForGroupedSender:(id)a3 sectionIdentifier:(id *)a4
+- (unint64_t)_sectionIndexForGroupedSender:(id)sender sectionIdentifier:(id *)identifier
 {
-  v6 = a3;
-  v7 = [(EDGroupedSenderQueryHandler *)self sectionPredicates];
-  v8 = [EDGroupedSenderQueryHandler _sectionIndexForGroupedSender:v6 sectionPredicates:v7 sectionIdentifier:a4];
+  senderCopy = sender;
+  sectionPredicates = [(EDGroupedSenderQueryHandler *)self sectionPredicates];
+  v8 = [EDGroupedSenderQueryHandler _sectionIndexForGroupedSender:senderCopy sectionPredicates:sectionPredicates sectionIdentifier:identifier];
 
   return v8;
 }
 
-+ (unint64_t)_sectionIndexForGroupedSender:(id)a3 sectionPredicates:(id)a4 sectionIdentifier:(id *)a5
++ (unint64_t)_sectionIndexForGroupedSender:(id)sender sectionPredicates:(id)predicates sectionIdentifier:(id *)identifier
 {
-  v7 = a3;
+  senderCopy = sender;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -788,14 +788,14 @@ void __36__EDGroupedSenderQueryHandler_start__block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __97__EDGroupedSenderQueryHandler__sectionIndexForGroupedSender_sectionPredicates_sectionIdentifier___block_invoke;
   v11[3] = &unk_1E82523A0;
-  v8 = v7;
+  v8 = senderCopy;
   v12 = v8;
   v13 = &v15;
   v14 = &v19;
-  [a4 enumerateKeysAndObjectsUsingBlock:v11];
-  if (a5)
+  [predicates enumerateKeysAndObjectsUsingBlock:v11];
+  if (identifier)
   {
-    *a5 = v20[5];
+    *identifier = v20[5];
   }
 
   v9 = v16[3];
@@ -817,19 +817,19 @@ void __97__EDGroupedSenderQueryHandler__sectionIndexForGroupedSender_sectionPred
   }
 }
 
-+ (id)_comparatorForSortDescriptors:(id)a3 sectionPredicates:(id)a4
++ (id)_comparatorForSortDescriptors:(id)descriptors sectionPredicates:(id)predicates
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  predicatesCopy = predicates;
   v8 = EFComparatorFromSortDescriptors();
-  if ([v7 count])
+  if ([predicatesCopy count])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __79__EDGroupedSenderQueryHandler__comparatorForSortDescriptors_sectionPredicates___block_invoke;
     aBlock[3] = &unk_1E82523C8;
-    v14 = a1;
-    v12 = v7;
+    selfCopy = self;
+    v12 = predicatesCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
   }
@@ -1058,13 +1058,13 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
   return v3 ^ 1u;
 }
 
-- (void)_messagesWereChanged:(id)a3 previousMessages:(id)a4 forKeyPaths:(id)a5 deleted:(BOOL)a6
+- (void)_messagesWereChanged:(id)changed previousMessages:(id)messages forKeyPaths:(id)paths deleted:(BOOL)deleted
 {
-  v49 = a6;
+  deletedCopy = deleted;
   v73 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v43 = a4;
-  v44 = a5;
+  changedCopy = changed;
+  messagesCopy = messages;
+  pathsCopy = paths;
   v10 = _ef_log_EDGroupedSenderQueryHandler();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1073,24 +1073,24 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
     *buf = 138413314;
     v64 = v11;
     v65 = 2048;
-    v66 = self;
+    selfCopy2 = self;
     v67 = 2114;
     v68 = v12;
     v69 = 2114;
-    v70 = v44;
+    v70 = pathsCopy;
     v71 = 1024;
-    v72 = v49;
+    v72 = deletedCopy;
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "<%@ %p> %{public}@: keyPaths:%{public}@ delete:%{BOOL}d", buf, 0x30u);
   }
 
   [(EDGroupedSenderQueryHandler *)self grouping];
-  v47 = _groupMessagesBySender(self, v48);
+  v47 = _groupMessagesBySender(self, changedCopy);
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v61 = 0u;
   v59 = 0u;
   v60 = 0u;
   v58 = 0u;
-  v14 = v43;
+  v14 = messagesCopy;
   v15 = [v14 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v15)
   {
@@ -1105,8 +1105,8 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
         }
 
         v18 = *(*(&v58 + 1) + 8 * i);
-        v19 = [v18 objectID];
-        [v13 setObject:v18 forKeyedSubscript:v19];
+        objectID = [v18 objectID];
+        [v13 setObject:v18 forKeyedSubscript:objectID];
       }
 
       v15 = [v14 countByEnumeratingWithState:&v58 objects:v62 count:16];
@@ -1116,15 +1116,15 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
   }
 
   v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v20 = [(EDMessageRepositoryQueryHandler *)self query];
-  v21 = [v20 limit];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  limit = [query limit];
 
-  v46 = [(EDGroupedSenderQueryHandler *)self groupedSenders];
+  groupedSenders = [(EDGroupedSenderQueryHandler *)self groupedSenders];
   v41 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v22 = v21 & ~(v21 >> 63);
-  v50 = [v46 orderedGroupedSendersWithLimit:v22];
-  v23 = [v50 array];
-  v45 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:v23];
+  v22 = limit & ~(limit >> 63);
+  v50 = [groupedSenders orderedGroupedSendersWithLimit:v22];
+  array = [v50 array];
+  v45 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:array];
 
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -1133,19 +1133,19 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
   v51[4] = self;
   v24 = v42;
   v52 = v24;
-  v25 = v46;
+  v25 = groupedSenders;
   v53 = v25;
-  v57 = v49;
+  v57 = deletedCopy;
   v40 = v13;
   v54 = v40;
-  v39 = v44;
+  v39 = pathsCopy;
   v55 = v39;
   v26 = v41;
   v56 = v26;
   [v47 enumerateKeysAndObjectsUsingBlock:v51];
   v27 = [v25 orderedGroupedSendersWithLimit:v22];
-  v28 = [v50 array];
-  v29 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:v28];
+  array2 = [v50 array];
+  v29 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:array2];
 
   [(EDGroupedSenderQueryHandler *)self _filterGroupedSenderChanges:v24 withVisibleSenders:v27];
   if ([v24 count])
@@ -1158,13 +1158,13 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
       v33 = @"changed";
       *buf = 138413058;
       v64 = v31;
-      if (v49)
+      if (deletedCopy)
       {
         v33 = @"deleted";
       }
 
       v65 = 2048;
-      v66 = self;
+      selfCopy2 = self;
       v67 = 2048;
       v68 = v32;
       v69 = 2114;
@@ -1172,13 +1172,13 @@ uint64_t __65__EDGroupedSenderQueryHandler__messagesWereAdded_toInitialBatch___b
       _os_log_impl(&dword_1C61EF000, v30, OS_LOG_TYPE_DEFAULT, "<%@ %p> Notifying observer of %lu changed groups (after messages were %{public}@)", buf, 0x2Au);
     }
 
-    v34 = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
-    v35 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-    [v34 observer:v35 matchedChangesForObjectIDs:v24];
+    resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
+    observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+    [resultsObserverIfUncanceled observer:observationIdentifier matchedChangesForObjectIDs:v24];
   }
 
   v36 = [(EDGroupedSenderQueryHandler *)self _itemIDsWithSectionChangesFrom:v45 to:v29];
-  if (v49)
+  if (deletedCopy)
   {
     v37 = @"after messages were deleted";
   }
@@ -1460,73 +1460,73 @@ id __89__EDGroupedSenderQueryHandler__messagesWereChanged_previousMessages_forKe
   return v8;
 }
 
-- (id)_updateDifference:(id)a3 from:(id)a4 forChangedGroups:(id)a5
+- (id)_updateDifference:(id)difference from:(id)from forChangedGroups:(id)groups
 {
-  v7 = a3;
-  v8 = a4;
-  v53 = a5;
-  v9 = [v7 insertions];
-  if ([v9 count] != 1)
+  differenceCopy = difference;
+  fromCopy = from;
+  groupsCopy = groups;
+  insertions = [differenceCopy insertions];
+  if ([insertions count] != 1)
   {
 
     goto LABEL_27;
   }
 
-  v10 = [v7 removals];
-  v11 = [v10 count];
+  removals = [differenceCopy removals];
+  v11 = [removals count];
 
   if (v11 != 1)
   {
 LABEL_27:
-    v40 = v7;
+    v40 = differenceCopy;
     goto LABEL_38;
   }
 
-  v12 = [v7 insertions];
-  v13 = [v12 firstObject];
+  insertions2 = [differenceCopy insertions];
+  firstObject = [insertions2 firstObject];
 
-  v14 = [v7 removals];
-  v15 = [v14 firstObject];
+  removals2 = [differenceCopy removals];
+  firstObject2 = [removals2 firstObject];
 
-  v16 = [v13 index];
-  if (v16 == [v15 associatedIndex] && (v17 = objc_msgSend(v15, "index"), v17 == objc_msgSend(v13, "associatedIndex")))
+  index = [firstObject index];
+  if (index == [firstObject2 associatedIndex] && (v17 = objc_msgSend(firstObject2, "index"), v17 == objc_msgSend(firstObject, "associatedIndex")))
   {
-    v51 = v15;
-    v52 = v13;
+    v51 = firstObject2;
+    v52 = firstObject;
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v19 = [v13 index];
-    v20 = [v13 associatedIndex];
-    if (v19 >= v20)
+    index2 = [firstObject index];
+    associatedIndex = [firstObject associatedIndex];
+    if (index2 >= associatedIndex)
     {
-      v21 = v20;
+      v21 = associatedIndex;
     }
 
     else
     {
-      v21 = v19;
+      v21 = index2;
     }
 
-    v22 = [v13 index];
-    v23 = [v13 associatedIndex];
-    if (v22 <= v23)
+    index3 = [firstObject index];
+    associatedIndex2 = [firstObject associatedIndex];
+    if (index3 <= associatedIndex2)
     {
-      v24 = v23;
+      v24 = associatedIndex2;
     }
 
     else
     {
-      v24 = v22;
+      v24 = index3;
     }
 
-    v25 = [v13 index];
-    v26 = [v13 associatedIndex];
+    index4 = [firstObject index];
+    associatedIndex3 = [firstObject associatedIndex];
     if (v24 <= v21)
     {
 LABEL_18:
-      v29 = v8;
+      v29 = fromCopy;
       v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v31 = v24 - v21;
-      if (v25 >= v26)
+      if (index4 >= associatedIndex3)
       {
         if (v31)
         {
@@ -1595,7 +1595,7 @@ LABEL_18:
 
       v49 = [objc_alloc(MEMORY[0x1E696ADD8]) initWithChanges:v30];
 
-      v7 = v49;
+      differenceCopy = v49;
     }
 
     else
@@ -1603,10 +1603,10 @@ LABEL_18:
       v27 = v21;
       while (1)
       {
-        v28 = v25 < v26 ? v27 : v27 + 1;
-        v29 = v8;
-        v30 = [v8 objectAtIndexedSubscript:v28];
-        if (([v53 containsObject:v30] & 1) == 0)
+        v28 = index4 < associatedIndex3 ? v27 : v27 + 1;
+        v29 = fromCopy;
+        v30 = [fromCopy objectAtIndexedSubscript:v28];
+        if (([groupsCopy containsObject:v30] & 1) == 0)
         {
           break;
         }
@@ -1614,7 +1614,7 @@ LABEL_18:
         [v18 addObject:v30];
         ++v27;
 
-        v8 = v29;
+        fromCopy = v29;
         if (v24 == v27)
         {
           goto LABEL_18;
@@ -1622,16 +1622,16 @@ LABEL_18:
       }
     }
 
-    v40 = v7;
+    v40 = differenceCopy;
 
-    v8 = v29;
-    v15 = v51;
-    v13 = v52;
+    fromCopy = v29;
+    firstObject2 = v51;
+    firstObject = v52;
   }
 
   else
   {
-    v40 = v7;
+    v40 = differenceCopy;
   }
 
 LABEL_38:
@@ -1639,25 +1639,25 @@ LABEL_38:
   return v40;
 }
 
-- (void)_notifyResultsObserverOfChangesToVisibleGroupedSendersFrom:(id)a3 to:(id)a4 forChangedGroups:(id)a5 itemIDsWithSectionChanges:(id)a6 includePrecachedSenders:(BOOL)a7 logMessage:(id)a8
+- (void)_notifyResultsObserverOfChangesToVisibleGroupedSendersFrom:(id)from to:(id)to forChangedGroups:(id)groups itemIDsWithSectionChanges:(id)changes includePrecachedSenders:(BOOL)senders logMessage:(id)message
 {
-  v50 = a7;
+  sendersCopy = senders;
   v81 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v45 = a6;
-  v51 = a8;
-  v47 = v14;
-  v42 = v13;
-  v43 = v15;
-  v16 = [v14 differenceFromOrderedSet:v13 withOptions:4];
-  v52 = self;
-  v17 = [(EDGroupedSenderQueryHandler *)self _updateDifference:v16 from:v13 forChangedGroups:v15];
+  fromCopy = from;
+  toCopy = to;
+  groupsCopy = groups;
+  changesCopy = changes;
+  messageCopy = message;
+  v47 = toCopy;
+  v42 = fromCopy;
+  v43 = groupsCopy;
+  v16 = [toCopy differenceFromOrderedSet:fromCopy withOptions:4];
+  selfCopy = self;
+  v17 = [(EDGroupedSenderQueryHandler *)self _updateDifference:v16 from:fromCopy forChangedGroups:groupsCopy];
 
   v46 = v17;
-  v18 = [v17 ef_removalsExcludingMoves];
-  v19 = [v18 ef_map:&__block_literal_global_73];
+  ef_removalsExcludingMoves = [v17 ef_removalsExcludingMoves];
+  v19 = [ef_removalsExcludingMoves ef_map:&__block_literal_global_73];
 
   v44 = v19;
   if ([v19 count])
@@ -1671,23 +1671,23 @@ LABEL_38:
       *buf = 138413314;
       v72 = v21;
       v73 = 2048;
-      v74 = v52;
+      v74 = selfCopy;
       v75 = 2048;
       v76 = v22;
       v77 = 2114;
-      v78 = v51;
+      v78 = messageCopy;
       v79 = 2114;
       v80 = v23;
       _os_log_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEFAULT, "<%@ %p> Notifying observer of %lu deleted groups (%{public}@):\n%{public}@", buf, 0x34u);
     }
 
-    v24 = [(EDGroupedSenderQueryHandler *)v52 resultsObserverIfUncanceled];
-    v25 = [(EDMessageRepositoryQueryHandler *)v52 observationIdentifier];
-    [v24 observer:v25 matchedDeletedObjectIDs:v44];
+    resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)selfCopy resultsObserverIfUncanceled];
+    observationIdentifier = [(EDMessageRepositoryQueryHandler *)selfCopy observationIdentifier];
+    [resultsObserverIfUncanceled observer:observationIdentifier matchedDeletedObjectIDs:v44];
   }
 
-  v26 = [v45 mutableCopy];
-  [v46 ef_groupedInsertionsByObjectForTargetOrderedSet:v14 inferMoves:1];
+  v26 = [changesCopy mutableCopy];
+  [v46 ef_groupedInsertionsByObjectForTargetOrderedSet:toCopy inferMoves:1];
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
@@ -1706,37 +1706,37 @@ LABEL_38:
         }
 
         v29 = *(*(&v65 + 1) + 8 * i);
-        v30 = [v29 objects];
-        v31 = [v29 previousObject];
+        objects = [v29 objects];
+        previousObject = [v29 previousObject];
         if ([v29 isMove])
         {
           v63[0] = MEMORY[0x1E69E9820];
           v63[1] = 3221225472;
           v63[2] = __171__EDGroupedSenderQueryHandler__notifyResultsObserverOfChangesToVisibleGroupedSendersFrom_to_forChangedGroups_itemIDsWithSectionChanges_includePrecachedSenders_logMessage___block_invoke_74;
           v63[3] = &unk_1E8252488;
-          v63[4] = v52;
-          v64 = v51;
-          [(EDGroupedSenderQueryHandler *)v52 _notifyObserversOfMovedSenders:v30 previousSender:v31 includePrecachedSenders:v50 notifyBlock:v63];
+          v63[4] = selfCopy;
+          v64 = messageCopy;
+          [(EDGroupedSenderQueryHandler *)selfCopy _notifyObserversOfMovedSenders:objects previousSender:previousObject includePrecachedSenders:sendersCopy notifyBlock:v63];
         }
 
         else
         {
-          v32 = [(EDGroupedSenderQueryHandler *)v52 _senderItemIDsBySectionForSenders:v30];
+          v32 = [(EDGroupedSenderQueryHandler *)selfCopy _senderItemIDsBySectionForSenders:objects];
           v61[0] = MEMORY[0x1E69E9820];
           v61[1] = 3221225472;
           v61[2] = __171__EDGroupedSenderQueryHandler__notifyResultsObserverOfChangesToVisibleGroupedSendersFrom_to_forChangedGroups_itemIDsWithSectionChanges_includePrecachedSenders_logMessage___block_invoke_76;
           v61[3] = &unk_1E8252488;
-          v61[4] = v52;
-          v62 = v51;
-          [(EDGroupedSenderQueryHandler *)v52 _notifyObserversOfInsertedSenders:v30 senderItemIDsBySection:v32 previousSender:v31 includePrecachedSenders:v50 notifyBlock:v61];
+          v61[4] = selfCopy;
+          v62 = messageCopy;
+          [(EDGroupedSenderQueryHandler *)selfCopy _notifyObserversOfInsertedSenders:objects senderItemIDsBySection:v32 previousSender:previousObject includePrecachedSenders:sendersCopy notifyBlock:v61];
         }
 
         v59 = 0u;
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v33 = [v29 objects];
-        v34 = [v33 countByEnumeratingWithState:&v57 objects:v69 count:16];
+        objects2 = [v29 objects];
+        v34 = [objects2 countByEnumeratingWithState:&v57 objects:v69 count:16];
         if (v34)
         {
           v35 = *v58;
@@ -1746,14 +1746,14 @@ LABEL_38:
             {
               if (*v58 != v35)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(objects2);
               }
 
-              v37 = [*(*(&v57 + 1) + 8 * j) itemID];
-              [v26 removeObject:v37];
+              itemID = [*(*(&v57 + 1) + 8 * j) itemID];
+              [v26 removeObject:itemID];
             }
 
-            v34 = [v33 countByEnumeratingWithState:&v57 objects:v69 count:16];
+            v34 = [objects2 countByEnumeratingWithState:&v57 objects:v69 count:16];
           }
 
           while (v34);
@@ -1776,11 +1776,11 @@ LABEL_38:
       *buf = 138413314;
       v72 = v39;
       v73 = 2048;
-      v74 = v52;
+      v74 = selfCopy;
       v75 = 2048;
       v76 = v40;
       v77 = 2114;
-      v78 = v51;
+      v78 = messageCopy;
       v79 = 2114;
       v80 = v26;
       _os_log_impl(&dword_1C61EF000, v38, OS_LOG_TYPE_DEFAULT, "<%@ %p> Notifying observer of %lu additional groups with section changes (%{public}@):\n%{public}@", buf, 0x34u);
@@ -1791,7 +1791,7 @@ LABEL_38:
     v53[2] = __171__EDGroupedSenderQueryHandler__notifyResultsObserverOfChangesToVisibleGroupedSendersFrom_to_forChangedGroups_itemIDsWithSectionChanges_includePrecachedSenders_logMessage___block_invoke_77;
     v53[3] = &unk_1E82524B0;
     v54 = v26;
-    v55 = v52;
+    v55 = selfCopy;
     v56 = v47;
     [v56 enumerateObjectsUsingBlock:v53];
   }
@@ -1914,17 +1914,17 @@ void __171__EDGroupedSenderQueryHandler__notifyResultsObserverOfChangesToVisible
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyObserversOfInsertedSenders:(id)a3 senderItemIDsBySection:(id)a4 previousSender:(id)a5 includePrecachedSenders:(BOOL)a6 notifyBlock:(id)a7
+- (void)_notifyObserversOfInsertedSenders:(id)senders senderItemIDsBySection:(id)section previousSender:(id)sender includePrecachedSenders:(BOOL)precachedSenders notifyBlock:(id)block
 {
-  v8 = a6;
-  v18 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [a5 objectID];
-  v15 = [v18 ef_mapSelector:sel_objectID];
-  if (v8)
+  precachedSendersCopy = precachedSenders;
+  sendersCopy = senders;
+  sectionCopy = section;
+  blockCopy = block;
+  objectID = [sender objectID];
+  v15 = [sendersCopy ef_mapSelector:sel_objectID];
+  if (precachedSendersCopy)
   {
-    v16 = v18;
+    v16 = sendersCopy;
   }
 
   else
@@ -1932,18 +1932,18 @@ void __171__EDGroupedSenderQueryHandler__notifyResultsObserverOfChangesToVisible
     v16 = 0;
   }
 
-  v17 = [(EDGroupedSenderQueryHandler *)self _extraInfoForSenderItemIDsBySection:v12 includePrecachedSendersFromSenders:v16];
-  v13[2](v13, v15, v14, v17);
+  v17 = [(EDGroupedSenderQueryHandler *)self _extraInfoForSenderItemIDsBySection:sectionCopy includePrecachedSendersFromSenders:v16];
+  blockCopy[2](blockCopy, v15, objectID, v17);
 }
 
-- (id)_senderItemIDsBySectionForSenders:(id)a3
+- (id)_senderItemIDsBySectionForSenders:(id)senders
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__EDGroupedSenderQueryHandler__senderItemIDsBySectionForSenders___block_invoke;
   v6[3] = &unk_1E82524D8;
   v6[4] = self;
-  v3 = [a3 ef_groupBy:v6];
+  v3 = [senders ef_groupBy:v6];
   v4 = [v3 ef_mapValues:&__block_literal_global_84_0];
 
   return v4;
@@ -1966,41 +1966,41 @@ id __65__EDGroupedSenderQueryHandler__senderItemIDsBySectionForSenders___block_i
   return v2;
 }
 
-- (id)_extraInfoForSenderItemIDsBySection:(id)a3 includePrecachedSendersFromSenders:(id)a4
+- (id)_extraInfoForSenderItemIDsBySection:(id)section includePrecachedSendersFromSenders:(id)senders
 {
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  sendersCopy = senders;
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [v8 initWithObjectsAndKeys:{v6, *MEMORY[0x1E699A800], 0}];
-  if (v7)
+  v9 = [v8 initWithObjectsAndKeys:{sectionCopy, *MEMORY[0x1E699A800], 0}];
+  if (sendersCopy)
   {
-    v10 = [(EDMessageRepositoryQueryHandler *)self query];
-    v11 = [v10 targetClassOptions];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E699A9E8]];
-    v13 = [v12 unsignedIntegerValue];
+    query = [(EDMessageRepositoryQueryHandler *)self query];
+    targetClassOptions = [query targetClassOptions];
+    v12 = [targetClassOptions objectForKeyedSubscript:*MEMORY[0x1E699A9E8]];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    if (v13)
+    if (unsignedIntegerValue)
     {
       os_unfair_lock_lock(&self->_groupedSendersLock);
-      v14 = [v7 ef_prefix:v13];
+      v14 = [sendersCopy ef_prefix:unsignedIntegerValue];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __102__EDGroupedSenderQueryHandler__extraInfoForSenderItemIDsBySection_includePrecachedSendersFromSenders___block_invoke;
       v16[3] = &unk_1E8252520;
       v16[4] = self;
-      v13 = [v14 ef_map:v16];
+      unsignedIntegerValue = [v14 ef_map:v16];
 
       os_unfair_lock_unlock(&self->_groupedSendersLock);
-      if ([v13 count])
+      if ([unsignedIntegerValue count])
       {
-        [v9 setObject:v13 forKeyedSubscript:*MEMORY[0x1E699A7F0]];
+        [v9 setObject:unsignedIntegerValue forKeyedSubscript:*MEMORY[0x1E699A7F0]];
       }
     }
   }
 
   else
   {
-    v13 = 0;
+    unsignedIntegerValue = 0;
   }
 
   return v9;
@@ -2013,18 +2013,18 @@ id __102__EDGroupedSenderQueryHandler__extraInfoForSenderItemIDsBySection_includ
   return v2;
 }
 
-- (id)_itemIDsWithSectionChangesFrom:(id)a3 to:(id)a4
+- (id)_itemIDsWithSectionChangesFrom:(id)from to:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v5 = a4;
+  fromCopy = from;
+  toCopy = to;
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v7 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v8 = [v25 allKeys];
-  v23 = [v7 initWithArray:v8];
+  allKeys = [fromCopy allKeys];
+  v23 = [v7 initWithArray:allKeys];
 
-  v9 = [v5 allKeys];
-  [v23 addObjectsFromArray:v9];
+  allKeys2 = [toCopy allKeys];
+  [v23 addObjectsFromArray:allKeys2];
 
   v28 = 0u;
   v29 = 0u;
@@ -2046,11 +2046,11 @@ id __102__EDGroupedSenderQueryHandler__extraInfoForSenderItemIDsBySection_includ
 
         v13 = *(*(&v26 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x1E695DFD8]);
-        v15 = [v25 objectForKeyedSubscript:v13];
+        v15 = [fromCopy objectForKeyedSubscript:v13];
         v16 = [v14 initWithArray:v15];
 
         v17 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v18 = [v5 objectForKeyedSubscript:v13];
+        v18 = [toCopy objectForKeyedSubscript:v13];
         v19 = [v17 initWithArray:v18];
 
         if (([v16 isEqualToSet:v19] & 1) == 0)
@@ -2074,18 +2074,18 @@ id __102__EDGroupedSenderQueryHandler__extraInfoForSenderItemIDsBySection_includ
   return v6;
 }
 
-- (void)_filterGroupedSenderChanges:(id)a3 withVisibleSenders:(id)a4
+- (void)_filterGroupedSenderChanges:(id)changes withVisibleSenders:(id)senders
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 ef_compactMap:&__block_literal_global_91];
+  changesCopy = changes;
+  sendersCopy = senders;
+  v7 = [sendersCopy ef_compactMap:&__block_literal_global_91];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSenders___block_invoke_2;
   v9[3] = &unk_1E8252568;
   v10 = v7;
   v8 = v7;
-  [v5 ef_removeObjectsPassingTest:v9];
+  [changesCopy ef_removeObjectsPassingTest:v9];
 }
 
 id __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSenders___block_invoke(uint64_t a1, void *a2)
@@ -2095,51 +2095,51 @@ id __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSend
   return v2;
 }
 
-- (id)_messageQueryFromGroupedQuery:(id)a3
+- (id)_messageQueryFromGroupedQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   v4 = objc_alloc(MEMORY[0x1E699AE28]);
   v5 = objc_opt_class();
-  v6 = [v3 predicate];
-  v7 = [v3 sortDescriptors];
-  v8 = [v4 initWithTargetClass:v5 predicate:v6 sortDescriptors:v7 queryOptions:objc_msgSend(v3 label:{"queryOptions"), 0}];
+  predicate = [queryCopy predicate];
+  sortDescriptors = [queryCopy sortDescriptors];
+  v8 = [v4 initWithTargetClass:v5 predicate:predicate sortDescriptors:sortDescriptors queryOptions:objc_msgSend(queryCopy label:{"queryOptions"), 0}];
 
   return v8;
 }
 
-- (BOOL)_queryHelperIsCurrent:(id)a3
+- (BOOL)_queryHelperIsCurrent:(id)current
 {
-  v4 = a3;
-  v5 = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
-  LOBYTE(self) = v5 == v4;
+  currentCopy = current;
+  messageQueryHelper = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
+  LOBYTE(self) = messageQueryHelper == currentCopy;
 
   return self;
 }
 
-- (id)_externalBusinessIDForEmailAddress:(id)a3
+- (id)_externalBusinessIDForEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] em_userDefaults];
-  v6 = [v5 preferredGroupedSenderGrouping];
+  addressCopy = address;
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  preferredGroupedSenderGrouping = [em_userDefaults preferredGroupedSenderGrouping];
 
-  v7 = [(EDGroupedSenderQueryHandler *)self businessPersistence];
-  v8 = [v7 businessExternalIDForEmailAddress:v4 grouping:v6];
+  businessPersistence = [(EDGroupedSenderQueryHandler *)self businessPersistence];
+  v8 = [businessPersistence businessExternalIDForEmailAddress:addressCopy grouping:preferredGroupedSenderGrouping];
 
   return v8;
 }
 
-- (id)messagesForGroupedSender:(id)a3 limit:(int64_t)a4
+- (id)messagesForGroupedSender:(id)sender limit:(int64_t)limit
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  senderCopy = sender;
+  v7 = senderCopy;
+  if (senderCopy)
   {
-    v8 = [MEMORY[0x1E699ADA0] predicateForMessagesForBusinessID:{objc_msgSend(v6, "businessID")}];
-    v9 = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
+    v8 = [MEMORY[0x1E699ADA0] predicateForMessagesForBusinessID:{objc_msgSend(senderCopy, "businessID")}];
+    messageQueryHelper = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
     v28[0] = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    v11 = [v9 messagesWithAdditionalPredicates:v10 limit:a4];
+    v11 = [messageQueryHelper messagesWithAdditionalPredicates:v10 limit:limit];
 
     if (![v11 count])
     {
@@ -2147,18 +2147,18 @@ id __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSend
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v15 = objc_opt_class();
-        v16 = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
-        v17 = [v16 query];
+        messageQueryHelper2 = [(EDGroupedSenderQueryHandler *)self messageQueryHelper];
+        query = [messageQueryHelper2 query];
         v18 = 138413314;
         v19 = v15;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2114;
         v23 = v7;
         v24 = 2048;
-        v25 = a4;
+        limitCopy = limit;
         v26 = 2114;
-        v27 = v17;
+        v27 = query;
         _os_log_error_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_ERROR, "<%@ %p> found 0 messages for grouped sender:%{public}@ limit:%ld query:%{public}@", &v18, 0x34u);
       }
     }
@@ -2174,72 +2174,72 @@ id __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSend
   return v11;
 }
 
-- (id)groupedSenderForObjectID:(id)a3 isPersisted:(BOOL *)a4 error:(id *)a5
+- (id)groupedSenderForObjectID:(id)d isPersisted:(BOOL *)persisted error:(id *)error
 {
-  v7 = [(EDGroupedSenderQueryHandler *)self _groupedSenderForObjectID:a3, a4, a5];
+  error = [(EDGroupedSenderQueryHandler *)self _groupedSenderForObjectID:d, persisted, error];
   os_unfair_lock_lock(&self->_groupedSendersLock);
-  v8 = [(EDGroupedSenderQueryHandler *)self _groupedSenderForEDGroupedSender:v7];
+  v8 = [(EDGroupedSenderQueryHandler *)self _groupedSenderForEDGroupedSender:error];
   os_unfair_lock_unlock(&self->_groupedSendersLock);
-  if (a4)
+  if (persisted)
   {
-    *a4 = 0;
+    *persisted = 0;
   }
 
   return v8;
 }
 
-- (void)updatedBusinessesWithExternalIDs:(id)a3 removedBusinessesWithExternalIDs:(id)a4
+- (void)updatedBusinessesWithExternalIDs:(id)ds removedBusinessesWithExternalIDs:(id)iDs
 {
-  v7 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 ef_addAbsentObjectsFromArrayAccordingToEquals:v7];
+  iDsCopy = iDs;
+  v6 = [ds mutableCopy];
+  [v6 ef_addAbsentObjectsFromArrayAccordingToEquals:iDsCopy];
   [(EDGroupedSenderQueryHandler *)self updateUnseenCountsForBusinessesWithExternalIDs:v6];
 }
 
-- (void)persistenceIsMergingBusinessID:(int64_t)a3 intoBusinessID:(int64_t)a4
+- (void)persistenceIsMergingBusinessID:(int64_t)d intoBusinessID:(int64_t)iD
 {
-  v6 = [MEMORY[0x1E696AF00] currentThread];
-  v7 = [v6 threadDictionary];
-  v11 = [v7 objectForKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v11 = [threadDictionary objectForKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
 
   v8 = v11;
   if (!v11)
   {
     v12 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:1282];
-    v9 = [MEMORY[0x1E696AF00] currentThread];
-    v10 = [v9 threadDictionary];
-    [v10 setObject:v12 forKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:v12 forKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
 
     v8 = v12;
   }
 
   v13 = v8;
-  [v8 setObject:a4 forKey:a3];
+  [v8 setObject:iD forKey:d];
 }
 
 - (void)_persistenceDidFinishMergingBusinesses
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v5 = [threadDictionary objectForKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
 
-  v6 = [MEMORY[0x1E696AF00] currentThread];
-  v7 = [v6 threadDictionary];
-  [v7 setObject:0 forKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
+  currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setObject:0 forKeyedSubscript:@"EDGroupedSenderQueryHandler.mergedBusinesses"];
 
   if ([v5 count])
   {
     v8 = [objc_opt_class() resolveMergePathsForMergedBusinesses:v5];
 
-    v9 = [(EDMessageRepositoryQueryHandler *)self query];
-    v10 = [v9 limit];
+    query = [(EDMessageRepositoryQueryHandler *)self query];
+    limit = [query limit];
 
-    v11 = [(EDGroupedSenderQueryHandler *)self groupedSenders];
-    v12 = v10 & ~(v10 >> 63);
-    v13 = [v11 orderedGroupedSendersWithLimit:{v12, v11}];
-    v14 = [v13 array];
-    v15 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:v14];
+    groupedSenders = [(EDGroupedSenderQueryHandler *)self groupedSenders];
+    v12 = limit & ~(limit >> 63);
+    v13 = [groupedSenders orderedGroupedSendersWithLimit:{v12, groupedSenders}];
+    array = [v13 array];
+    v15 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:array];
 
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v29[0] = MEMORY[0x1E69E9820];
@@ -2249,12 +2249,12 @@ id __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSend
     v29[4] = self;
     v17 = v16;
     v30 = v17;
-    v18 = v11;
+    v18 = groupedSenders;
     v31 = v18;
     enumerateBusinessesInMapTable(v8, v29);
     v19 = [v18 orderedGroupedSendersWithLimit:v12];
-    v20 = [v13 array];
-    v21 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:v20];
+    array2 = [v13 array];
+    v21 = [(EDGroupedSenderQueryHandler *)self _senderItemIDsBySectionForSenders:array2];
 
     [(EDGroupedSenderQueryHandler *)self _filterGroupedSenderChanges:v17 withVisibleSenders:v19];
     if ([v17 count])
@@ -2267,15 +2267,15 @@ id __78__EDGroupedSenderQueryHandler__filterGroupedSenderChanges_withVisibleSend
         *buf = 138412802;
         v33 = v23;
         v34 = 2048;
-        v35 = self;
+        selfCopy = self;
         v36 = 2048;
         v37 = v24;
         _os_log_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEFAULT, "<%@ %p> Notifying observer of %lu changed groups (after groups were merged)", buf, 0x20u);
       }
 
-      v25 = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
-      v26 = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
-      [v25 observer:v26 matchedChangesForObjectIDs:v17];
+      resultsObserverIfUncanceled = [(EDGroupedSenderQueryHandler *)self resultsObserverIfUncanceled];
+      observationIdentifier = [(EDMessageRepositoryQueryHandler *)self observationIdentifier];
+      [resultsObserverIfUncanceled observer:observationIdentifier matchedChangesForObjectIDs:v17];
     }
 
     v27 = [(EDGroupedSenderQueryHandler *)self _itemIDsWithSectionChangesFrom:v15 to:v21];
@@ -2453,9 +2453,9 @@ void __69__EDGroupedSenderQueryHandler__persistenceDidFinishMergingBusinesses__b
   v55 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)resolveMergePathsForMergedBusinesses:(id)a3
++ (id)resolveMergePathsForMergedBusinesses:(id)businesses
 {
-  v5 = a3;
+  businessesCopy = businesses;
   v6 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:1282];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2464,8 +2464,8 @@ void __69__EDGroupedSenderQueryHandler__persistenceDidFinishMergingBusinesses__b
   v7 = v6;
   v13 = v7;
   v15 = a2;
-  v16 = a1;
-  v8 = v5;
+  selfCopy = self;
+  v8 = businessesCopy;
   v14 = v8;
   enumerateBusinessesInMapTable(v8, v12);
   v9 = v14;

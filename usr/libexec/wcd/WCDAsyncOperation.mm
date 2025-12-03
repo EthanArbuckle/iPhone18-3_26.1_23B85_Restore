@@ -1,27 +1,27 @@
 @interface WCDAsyncOperation
 - (NSOperationQueue)queue;
-- (WCDAsyncOperation)initWithDelegate:(id)a3 queue:(id)a4;
+- (WCDAsyncOperation)initWithDelegate:(id)delegate queue:(id)queue;
 - (WCDOperationDelegate)delegate;
 - (void)doWork;
-- (void)doWorkWithCompletionHandler:(id)a3;
+- (void)doWorkWithCompletionHandler:(id)handler;
 - (void)finish;
 - (void)start;
 @end
 
 @implementation WCDAsyncOperation
 
-- (WCDAsyncOperation)initWithDelegate:(id)a3 queue:(id)a4
+- (WCDAsyncOperation)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = WCDAsyncOperation;
   v8 = [(WCDAsyncOperation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_queue, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_queue, queueCopy);
   }
 
   return v9;
@@ -64,9 +64,9 @@
 - (void)doWork
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(WCDAsyncOperation *)self isCancelled];
+  isCancelled = [(WCDAsyncOperation *)self isCancelled];
 
-  if (v4)
+  if (isCancelled)
   {
     v5 = objc_loadWeakRetained(&location);
     [v5 finish];
@@ -86,9 +86,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)doWorkWithCompletionHandler:(id)a3
+- (void)doWorkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);

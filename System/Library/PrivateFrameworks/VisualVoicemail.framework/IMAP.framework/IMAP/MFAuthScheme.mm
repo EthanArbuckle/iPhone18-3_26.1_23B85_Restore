@@ -1,8 +1,8 @@
 @interface MFAuthScheme
-+ (id)authSchemesForAccount:(id)a3 connection:(id)a4;
++ (id)authSchemesForAccount:(id)account connection:(id)connection;
 + (void)initialize;
-+ (void)registerSchemeClass:(Class)a3;
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4;
++ (void)registerSchemeClass:(Class)class;
+- (id)authenticatorForAccount:(id)account connection:(id)connection;
 @end
 
 @implementation MFAuthScheme
@@ -20,37 +20,37 @@
       v6 = NSClassFromString(&(*(&initialize_schemes + i))->isa);
       if (v6)
       {
-        [a1 registerSchemeClass:v6];
+        [self registerSchemeClass:v6];
       }
     }
   }
 }
 
-+ (void)registerSchemeClass:(Class)a3
++ (void)registerSchemeClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v4 = [objc_allocWithZone(a3) init];
-    v3 = [v4 name];
-    if (v3)
+    v4 = [objc_allocWithZone(class) init];
+    name = [v4 name];
+    if (name)
     {
-      [_schemesByName setObject:v4 forKey:v3];
+      [_schemesByName setObject:v4 forKey:name];
     }
   }
 }
 
-+ (id)authSchemesForAccount:(id)a3 connection:(id)a4
++ (id)authSchemesForAccount:(id)account connection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 authenticationMechanisms];
-  v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  accountCopy = account;
+  connectionCopy = connection;
+  authenticationMechanisms = [connectionCopy authenticationMechanisms];
+  v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(authenticationMechanisms, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v7;
+  v8 = authenticationMechanisms;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -73,7 +73,7 @@
         }
 
         v14 = [MFAuthScheme schemeWithName:v13];
-        if (v14 && [v14 canAuthenticateAccountClass:objc_opt_class() connection:v6] && objc_msgSend(v17, "indexOfObject:", v14) == 0x7FFFFFFFFFFFFFFFLL)
+        if (v14 && [v14 canAuthenticateAccountClass:objc_opt_class() connection:connectionCopy] && objc_msgSend(v17, "indexOfObject:", v14) == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v17 addObject:v14];
         }
@@ -90,14 +90,14 @@
   return v17;
 }
 
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4
+- (id)authenticatorForAccount:(id)account connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFAuthScheme *)self authenticatorClass];
-  if (v8)
+  accountCopy = account;
+  connectionCopy = connection;
+  authenticatorClass = [(MFAuthScheme *)self authenticatorClass];
+  if (authenticatorClass)
   {
-    v9 = [[v8 alloc] initWithAuthScheme:self account:v6 connection:v7];
+    v9 = [[authenticatorClass alloc] initWithAuthScheme:self account:accountCopy connection:connectionCopy];
   }
 
   else

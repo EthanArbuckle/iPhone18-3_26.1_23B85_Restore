@@ -15,21 +15,21 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(AXUIWindow *)self rootViewController];
-  v3 = [v2 childViewControllers];
+  rootViewController = [(AXUIWindow *)self rootViewController];
+  childViewControllers = [rootViewController childViewControllers];
 
-  if ([v3 count] <= 1 && objc_msgSend(v3, "count") == 1)
+  if ([childViewControllers count] <= 1 && objc_msgSend(childViewControllers, "count") == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 title];
+    firstObject = [childViewControllers firstObject];
+    title = [firstObject title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)description
@@ -37,8 +37,8 @@
   v7.receiver = self;
   v7.super_class = AXUIWindow;
   v3 = [(AXUIWindow *)&v7 description];
-  v4 = [(AXUIWindow *)self accessibilityIdentifier];
-  v5 = [v3 stringByAppendingFormat:@" AXID: %@", v4];
+  accessibilityIdentifier = [(AXUIWindow *)self accessibilityIdentifier];
+  v5 = [v3 stringByAppendingFormat:@" AXID: %@", accessibilityIdentifier];
 
   return v5;
 }

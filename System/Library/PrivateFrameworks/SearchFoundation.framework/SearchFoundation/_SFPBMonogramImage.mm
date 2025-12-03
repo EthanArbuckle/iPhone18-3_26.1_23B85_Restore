@@ -1,33 +1,33 @@
 @interface _SFPBMonogramImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMonogramImage)initWithDictionary:(id)a3;
-- (_SFPBMonogramImage)initWithFacade:(id)a3;
-- (_SFPBMonogramImage)initWithJSON:(id)a3;
+- (_SFPBMonogramImage)initWithDictionary:(id)dictionary;
+- (_SFPBMonogramImage)initWithFacade:(id)facade;
+- (_SFPBMonogramImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setMonogramLetters:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setMonogramLetters:(id)letters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMonogramImage
 
-- (_SFPBMonogramImage)initWithFacade:(id)a3
+- (_SFPBMonogramImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMonogramImage *)self init];
   if (v5)
   {
-    v6 = [v4 monogramLetters];
+    monogramLetters = [facadeCopy monogramLetters];
 
-    if (v6)
+    if (monogramLetters)
     {
-      v7 = [v4 monogramLetters];
-      [(_SFPBMonogramImage *)v5 setMonogramLetters:v7];
+      monogramLetters2 = [facadeCopy monogramLetters];
+      [(_SFPBMonogramImage *)v5 setMonogramLetters:monogramLetters2];
     }
 
-    if ([v4 hasMonogramStyle])
+    if ([facadeCopy hasMonogramStyle])
     {
-      -[_SFPBMonogramImage setMonogramStyle:](v5, "setMonogramStyle:", [v4 monogramStyle]);
+      -[_SFPBMonogramImage setMonogramStyle:](v5, "setMonogramStyle:", [facadeCopy monogramStyle]);
     }
 
     v8 = v5;
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_SFPBMonogramImage)initWithDictionary:(id)a3
+- (_SFPBMonogramImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBMonogramImage;
   v5 = [(_SFPBMonogramImage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"monogramLetters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"monogramLetters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(_SFPBMonogramImage *)v5 setMonogramLetters:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"monogramStyle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"monogramStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBMonogramImage)initWithJSON:(id)a3
+- (_SFPBMonogramImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMonogramImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMonogramImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMonogramImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,27 +101,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_monogramLetters)
   {
-    v4 = [(_SFPBMonogramImage *)self monogramLetters];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"monogramLetters"];
+    monogramLetters = [(_SFPBMonogramImage *)self monogramLetters];
+    v5 = [monogramLetters copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"monogramLetters"];
   }
 
   if (self->_monogramStyle)
   {
-    v6 = [(_SFPBMonogramImage *)self monogramStyle];
-    if (v6)
+    monogramStyle = [(_SFPBMonogramImage *)self monogramStyle];
+    if (monogramStyle)
     {
-      if (v6 == 1)
+      if (monogramStyle == 1)
       {
         v7 = @"1";
       }
 
       else
       {
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", monogramStyle];
       }
     }
 
@@ -130,36 +130,36 @@
       v7 = @"0";
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"monogramStyle"];
+    [dictionary setObject:v7 forKeyedSubscript:@"monogramStyle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBMonogramImage *)self monogramLetters];
-    v6 = [v4 monogramLetters];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    monogramLetters = [(_SFPBMonogramImage *)self monogramLetters];
+    monogramLetters2 = [equalCopy monogramLetters];
+    v7 = monogramLetters2;
+    if ((monogramLetters != 0) != (monogramLetters2 == 0))
     {
-      v8 = [(_SFPBMonogramImage *)self monogramLetters];
-      if (!v8)
+      monogramLetters3 = [(_SFPBMonogramImage *)self monogramLetters];
+      if (!monogramLetters3)
       {
 
 LABEL_10:
         monogramStyle = self->_monogramStyle;
-        v13 = monogramStyle == [v4 monogramStyle];
+        v13 = monogramStyle == [equalCopy monogramStyle];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBMonogramImage *)self monogramLetters];
-      v11 = [v4 monogramLetters];
-      v12 = [v10 isEqual:v11];
+      v9 = monogramLetters3;
+      monogramLetters4 = [(_SFPBMonogramImage *)self monogramLetters];
+      monogramLetters5 = [equalCopy monogramLetters];
+      v12 = [monogramLetters4 isEqual:monogramLetters5];
 
       if (v12)
       {
@@ -178,11 +178,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBMonogramImage *)self monogramLetters];
-  if (v4)
+  toCopy = to;
+  monogramLetters = [(_SFPBMonogramImage *)self monogramLetters];
+  if (monogramLetters)
   {
     PBDataWriterWriteStringField();
   }
@@ -193,9 +193,9 @@ LABEL_8:
   }
 }
 
-- (void)setMonogramLetters:(id)a3
+- (void)setMonogramLetters:(id)letters
 {
-  v4 = [a3 copy];
+  v4 = [letters copy];
   monogramLetters = self->_monogramLetters;
   self->_monogramLetters = v4;
 

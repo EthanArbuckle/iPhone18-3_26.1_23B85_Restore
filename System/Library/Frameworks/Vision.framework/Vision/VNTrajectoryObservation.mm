@@ -1,21 +1,21 @@
 @interface VNTrajectoryObservation
-- (BOOL)isEqual:(id)a3;
-- (VNTrajectoryObservation)initWithCoder:(id)a3;
-- (id)_points:(_OWORD *)a3 transformedWith:;
-- (id)detectedPointsInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
-- (id)initWithOriginatingRequestSpecifier:(void *)a3 requestUUID:(void *)a4 trajectoryUUID:(void *)a5 detectedPoints:(void *)a6 projectedPoints:(double)a7 movingAverageRadius:(__n128)a8 equationCoefficients:(float)a9 confidence:;
-- (id)projectedPointsInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNTrajectoryObservation)initWithCoder:(id)coder;
+- (id)_points:(_OWORD *)_points transformedWith:;
+- (id)detectedPointsInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
+- (id)initWithOriginatingRequestSpecifier:(void *)specifier requestUUID:(void *)d trajectoryUUID:(void *)iD detectedPoints:(void *)points projectedPoints:(double)projectedPoints movingAverageRadius:(__n128)radius equationCoefficients:(float)coefficients confidence:;
+- (id)projectedPointsInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNTrajectoryObservation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -24,9 +24,9 @@
   {
     v17.receiver = self;
     v17.super_class = VNTrajectoryObservation;
-    if ([(VNObservation *)&v17 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v17 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5)
       {
         requestUUID = v5->_requestUUID;
@@ -98,67 +98,67 @@
 {
   v11.receiver = self;
   v11.super_class = VNTrajectoryObservation;
-  v3 = [(VNObservation *)&v11 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v11 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(NSUUID *)self->_requestUUID copy];
-    v5 = *(v3 + 120);
-    *(v3 + 120) = v4;
+    v5 = *(vn_cloneObject + 120);
+    *(vn_cloneObject + 120) = v4;
 
-    *(v3 + 128) = *self->_equationCoefficients;
+    *(vn_cloneObject + 128) = *self->_equationCoefficients;
     v6 = [(NSArray *)self->_detectedPoints copy];
-    v7 = *(v3 + 96);
-    *(v3 + 96) = v6;
+    v7 = *(vn_cloneObject + 96);
+    *(vn_cloneObject + 96) = v6;
 
     v8 = [(NSArray *)self->_projectedPoints copy];
-    v9 = *(v3 + 104);
-    *(v3 + 104) = v8;
+    v9 = *(vn_cloneObject + 104);
+    *(vn_cloneObject + 104) = v8;
 
-    *(v3 + 112) = self->_movingAverageRadius;
+    *(vn_cloneObject + 112) = self->_movingAverageRadius;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNTrajectoryObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_requestUUID forKey:@"requestUuid"];
-  [v4 vn_encodeSimdFloat3:@"eqCoeffs" forKey:*self->_equationCoefficients];
-  [v4 encodeObject:self->_detectedPoints forKey:@"detPts"];
-  [v4 encodeObject:self->_projectedPoints forKey:@"projPts"];
-  [v4 encodeDouble:@"mvAvgRad" forKey:self->_movingAverageRadius];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_requestUUID forKey:@"requestUuid"];
+  [coderCopy vn_encodeSimdFloat3:@"eqCoeffs" forKey:*self->_equationCoefficients];
+  [coderCopy encodeObject:self->_detectedPoints forKey:@"detPts"];
+  [coderCopy encodeObject:self->_projectedPoints forKey:@"projPts"];
+  [coderCopy encodeDouble:@"mvAvgRad" forKey:self->_movingAverageRadius];
 }
 
-- (VNTrajectoryObservation)initWithCoder:(id)a3
+- (VNTrajectoryObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = VNTrajectoryObservation;
-  v5 = [(VNObservation *)&v17 initWithCoder:v4];
+  v5 = [(VNObservation *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestUuid"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestUuid"];
     requestUUID = v5->_requestUUID;
     v5->_requestUUID = v7;
 
-    [v4 vn_decodeSimdFloat3ForKey:@"eqCoeffs"];
+    [coderCopy vn_decodeSimdFloat3ForKey:@"eqCoeffs"];
     *v5->_equationCoefficients = v9;
-    v10 = [v4 decodeObjectOfClass:v6 forKey:@"detPts"];
+    v10 = [coderCopy decodeObjectOfClass:v6 forKey:@"detPts"];
     detectedPoints = v5->_detectedPoints;
     v5->_detectedPoints = v10;
 
-    v12 = [v4 decodeObjectOfClass:v6 forKey:@"projPts"];
+    v12 = [coderCopy decodeObjectOfClass:v6 forKey:@"projPts"];
     projectedPoints = v5->_projectedPoints;
     v5->_projectedPoints = v12;
 
-    if ([v4 containsValueForKey:@"mvAvgRad"])
+    if ([coderCopy containsValueForKey:@"mvAvgRad"])
     {
-      [v4 decodeDoubleForKey:@"mvAvgRad"];
+      [coderCopy decodeDoubleForKey:@"mvAvgRad"];
       v5->_movingAverageRadius = v14;
     }
 
@@ -168,55 +168,55 @@
   return v5;
 }
 
-- (id)initWithOriginatingRequestSpecifier:(void *)a3 requestUUID:(void *)a4 trajectoryUUID:(void *)a5 detectedPoints:(void *)a6 projectedPoints:(double)a7 movingAverageRadius:(__n128)a8 equationCoefficients:(float)a9 confidence:
+- (id)initWithOriginatingRequestSpecifier:(void *)specifier requestUUID:(void *)d trajectoryUUID:(void *)iD detectedPoints:(void *)points projectedPoints:(double)projectedPoints movingAverageRadius:(__n128)radius equationCoefficients:(float)coefficients confidence:
 {
   v16 = a2;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  if (a1)
+  specifierCopy = specifier;
+  dCopy = d;
+  iDCopy = iD;
+  pointsCopy = points;
+  if (self)
   {
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = VNTrajectoryObservation;
     v21 = objc_msgSendSuper2(&v25, sel_initWithOriginatingRequestSpecifier_, v16);
-    a1 = v21;
+    self = v21;
     if (v21)
     {
-      [v21 setUUID:v18];
-      *&v22 = a9;
-      [a1 setConfidence:v22];
-      objc_storeStrong(a1 + 15, a3);
-      objc_storeStrong(a1 + 12, a5);
-      objc_storeStrong(a1 + 13, a6);
-      *(a1 + 14) = a7;
-      *(a1 + 8) = a8;
+      [v21 setUUID:dCopy];
+      *&v22 = coefficients;
+      [self setConfidence:v22];
+      objc_storeStrong(self + 15, specifier);
+      objc_storeStrong(self + 12, iD);
+      objc_storeStrong(self + 13, points);
+      *(self + 14) = projectedPoints;
+      *(self + 8) = radius;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)projectedPointsInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (id)projectedPointsInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   memset(v8, 0, sizeof(v8));
-  v5 = [(VNTrajectoryObservation *)self projectedPoints:VNAffineTransformForVisionToTopLeftOriginOrientation(a3];
+  v5 = [(VNTrajectoryObservation *)self projectedPoints:VNAffineTransformForVisionToTopLeftOriginOrientation(origin];
   v6 = [(VNTrajectoryObservation *)self _points:v5 transformedWith:v8];
 
   return v6;
 }
 
-- (id)_points:(_OWORD *)a3 transformedWith:
+- (id)_points:(_OWORD *)_points transformedWith:
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [v5 count];
     if (v7)
     {
-      a1 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
+      self = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
@@ -236,12 +236,12 @@
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
-            v13 = a3[1];
-            v16[0] = *a3;
+            v13 = _points[1];
+            v16[0] = *_points;
             v16[1] = v13;
-            v16[2] = a3[2];
+            v16[2] = _points[2];
             v14 = [v12 transformedWith:v16];
-            [a1 addObject:v14];
+            [self addObject:v14];
           }
 
           v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -253,17 +253,17 @@
 
     else
     {
-      a1 = MEMORY[0x1E695E0F0];
+      self = MEMORY[0x1E695E0F0];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)detectedPointsInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (id)detectedPointsInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   memset(v8, 0, sizeof(v8));
-  v5 = [(VNTrajectoryObservation *)self detectedPoints:VNAffineTransformForVisionToTopLeftOriginOrientation(a3];
+  v5 = [(VNTrajectoryObservation *)self detectedPoints:VNAffineTransformForVisionToTopLeftOriginOrientation(origin];
   v6 = [(VNTrajectoryObservation *)self _points:v5 transformedWith:v8];
 
   return v6;

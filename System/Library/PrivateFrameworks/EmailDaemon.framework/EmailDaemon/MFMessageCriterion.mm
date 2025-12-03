@@ -1,24 +1,24 @@
 @interface MFMessageCriterion
 - (id)mailServerSideCriterion;
-- (id)myEmailAddressesCriterionWithType:(int64_t)a3;
+- (id)myEmailAddressesCriterionWithType:(int64_t)type;
 - (id)referencedConversations;
 - (id)referencedMailboxes;
 @end
 
 @implementation MFMessageCriterion
 
-- (id)myEmailAddressesCriterionWithType:(int64_t)a3
+- (id)myEmailAddressesCriterionWithType:(int64_t)type
 {
-  v4 = [(MFMessageCriterion *)self userProfileProvider];
-  v5 = [v4 accountsEmailAddresses];
+  userProfileProvider = [(MFMessageCriterion *)self userProfileProvider];
+  accountsEmailAddresses = [userProfileProvider accountsEmailAddresses];
 
-  v6 = [v5 allObjects];
+  allObjects = [accountsEmailAddresses allObjects];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100075EC4;
   v10[3] = &unk_100158FC0;
-  v10[4] = a3;
-  v7 = [v6 ef_map:v10];
+  v10[4] = type;
+  v7 = [allObjects ef_map:v10];
 
   v8 = [MFMessageCriterion orCompoundCriterionWithCriteria:v7];
 

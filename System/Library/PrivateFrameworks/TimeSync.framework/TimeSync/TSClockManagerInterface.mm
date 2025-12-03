@@ -1,7 +1,7 @@
 @interface TSClockManagerInterface
 - (TSClockManagerInterface)init;
 - (void)addToClockManager;
-- (void)interruptedConnectionForClockManager:(id)a3;
+- (void)interruptedConnectionForClockManager:(id)manager;
 - (void)removeFromClockManager;
 @end
 
@@ -38,22 +38,22 @@ void __31__TSClockManagerInterface_init__block_invoke()
 
 - (void)addToClockManager
 {
-  v3 = [(TSClockManagerInterface *)self clockManager];
-  [v3 addClient:self];
+  clockManager = [(TSClockManagerInterface *)self clockManager];
+  [clockManager addClient:self];
 }
 
 - (void)removeFromClockManager
 {
-  v3 = [(TSClockManagerInterface *)self clockManager];
-  [v3 removeClient:self];
+  clockManager = [(TSClockManagerInterface *)self clockManager];
+  [clockManager removeClient:self];
 }
 
-- (void)interruptedConnectionForClockManager:(id)a3
+- (void)interruptedConnectionForClockManager:(id)manager
 {
   interruptionCallback = self->_interruptionCallback;
   if (interruptionCallback)
   {
-    interruptionCallback(self->_interruptionRefcon, a2, a3);
+    interruptionCallback(self->_interruptionRefcon, a2, manager);
   }
 
   [(TSClockManagerInterface *)self removeFromClockManager];

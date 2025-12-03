@@ -1,24 +1,24 @@
 @interface ICDocCamThumbnailCollectionViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGRect)compactFrameForThumbnailAtIndexPath:(id)a3 withSize:(CGSize)a4;
-- (CGRect)frameForThumbnailAtIndexPath:(id)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGRect)compactFrameForThumbnailAtIndexPath:(id)path withSize:(CGSize)size;
+- (CGRect)frameForThumbnailAtIndexPath:(id)path;
 - (CGSize)collectionViewContentSize;
-- (CGSize)frameSizeForImageSize:(CGSize)a3;
+- (CGSize)frameSizeForImageSize:(CGSize)size;
 - (CGSize)itemSize;
 - (ICDocCamThumbnailCollectionViewLayout)init;
-- (ICDocCamThumbnailCollectionViewLayout)initWithCoder:(id)a3;
+- (ICDocCamThumbnailCollectionViewLayout)initWithCoder:(id)coder;
 - (ICDocCamThumbnailViewLayoutDelegate)delegate;
-- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)finalizeCollectionViewUpdates;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
-- (void)prepareLayout:(BOOL)a3;
+- (void)prepareLayout:(BOOL)layout;
 - (void)setup;
 @end
 
@@ -38,7 +38,7 @@
   return v3;
 }
 
-- (ICDocCamThumbnailCollectionViewLayout)initWithCoder:(id)a3
+- (ICDocCamThumbnailCollectionViewLayout)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICDocCamThumbnailCollectionViewLayout;
@@ -69,33 +69,33 @@
 
 - (void)prepareLayout
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 0;
 
   [(ICDocCamThumbnailCollectionViewLayout *)self setCompactLayout:v4];
-  v5 = [(ICDocCamThumbnailCollectionViewLayout *)self compactLayout];
+  compactLayout = [(ICDocCamThumbnailCollectionViewLayout *)self compactLayout];
 
-  [(ICDocCamThumbnailCollectionViewLayout *)self prepareLayout:v5];
+  [(ICDocCamThumbnailCollectionViewLayout *)self prepareLayout:compactLayout];
 }
 
-- (void)prepareLayout:(BOOL)a3
+- (void)prepareLayout:(BOOL)layout
 {
-  v55 = a3;
-  v51 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  v6 = [v5 numberOfSections];
+  layoutCopy = layout;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  v52 = v6;
-  if (v6 >= 1)
+  v52 = numberOfSections;
+  if (numberOfSections >= 1)
   {
     v7 = 0;
     v8 = 0x277CCA000uLL;
-    v53 = v4;
+    v53 = dictionary2;
     do
     {
-      v9 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-      v10 = [v9 numberOfItemsInSection:v7];
+      collectionView2 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+      v10 = [collectionView2 numberOfItemsInSection:v7];
 
       v54 = v10 - 1;
       if (v10 >= 1)
@@ -107,16 +107,16 @@
           v13 = [(UICollectionViewLayoutAttributes *)ICDocCamThumbnailViewLayoutAttributes layoutAttributesForCellWithIndexPath:v12];
           objc_opt_class();
           objc_opt_isKindOfClass();
-          if (v55)
+          if (layoutCopy)
           {
             v14 = [*(v8 + 2672) indexPathForItem:v54 inSection:v7];
-            v15 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-            v16 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-            [v15 collectionView:v16 imageSizeAtIndex:{objc_msgSend(v14, "item")}];
+            delegate = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+            collectionView3 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+            [delegate collectionView:collectionView3 imageSizeAtIndex:{objc_msgSend(v14, "item")}];
             v18 = v17;
             v20 = v19;
 
-            v4 = v53;
+            dictionary2 = v53;
             [(ICDocCamThumbnailCollectionViewLayout *)self frameSizeForImageSize:v18, v20];
             v22 = v21;
             v24 = v23;
@@ -131,9 +131,9 @@
 
           else
           {
-            v26 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-            v27 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-            [v26 collectionView:v27 imageSizeAtIndex:{objc_msgSend(v12, "item")}];
+            delegate2 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+            collectionView4 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+            [delegate2 collectionView:collectionView4 imageSizeAtIndex:{objc_msgSend(v12, "item")}];
             v29 = v28;
             v31 = v30;
 
@@ -149,7 +149,7 @@
           }
 
           [v13 setZIndex:{objc_msgSend(v12, "item")}];
-          [v4 setObject:v13 forKeyedSubscript:v12];
+          [dictionary2 setObject:v13 forKeyedSubscript:v12];
 
           ++v11;
           --v10;
@@ -163,13 +163,13 @@
     }
 
     while (v7 != v52);
-    if (!v55)
+    if (!layoutCopy)
     {
       v36 = 0;
       while (2)
       {
-        v37 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-        v38 = [v37 numberOfItemsInSection:v36];
+        collectionView5 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+        v38 = [collectionView5 numberOfItemsInSection:v36];
 
         v39 = v38 - 2;
         if (v38 >= 2)
@@ -179,8 +179,8 @@
           {
             v41 = [MEMORY[0x277CCAA70] indexPathForItem:v40 inSection:v36];
             v42 = [MEMORY[0x277CCAA70] indexPathForItem:++v40 inSection:v36];
-            v43 = [v4 objectForKeyedSubscript:v41];
-            v44 = v4;
+            v43 = [dictionary2 objectForKeyedSubscript:v41];
+            v44 = dictionary2;
             v45 = v43;
             v46 = [v44 objectForKeyedSubscript:v42];
             [v45 frame];
@@ -197,11 +197,11 @@
               [(ICDocCamThumbnailCollectionViewLayout *)self setCompactLayout:1];
               [(ICDocCamThumbnailCollectionViewLayout *)self prepareLayout:1];
 
-              v4 = v53;
+              dictionary2 = v53;
               goto LABEL_25;
             }
 
-            v4 = v53;
+            dictionary2 = v53;
           }
 
           while (v40 - 1 != v39);
@@ -216,15 +216,15 @@
     }
   }
 
-  [v51 setObject:v4 forKeyedSubscript:@"ICDocCamThumbnailCellKind"];
-  [(ICDocCamThumbnailCollectionViewLayout *)self setLayoutInfo:v51];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"ICDocCamThumbnailCellKind"];
+  [(ICDocCamThumbnailCollectionViewLayout *)self setLayoutInfo:dictionary];
 LABEL_25:
 }
 
-- (CGSize)frameSizeForImageSize:(CGSize)a3
+- (CGSize)frameSizeForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(ICDocCamThumbnailCollectionViewLayout *)self itemSize];
   v8 = v7;
   if (width > height)
@@ -241,15 +241,15 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)compactFrameForThumbnailAtIndexPath:(id)a3 withSize:(CGSize)a4
+- (CGRect)compactFrameForThumbnailAtIndexPath:(id)path withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = 0.0;
   if ([MEMORY[0x277D74248] dc_isRTL])
   {
-    v8 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-    [v8 frame];
+    collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+    [collectionView frame];
     v10 = v9;
 
     v7 = v10 - width;
@@ -267,38 +267,38 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)frameForThumbnailAtIndexPath:(id)a3
+- (CGRect)frameForThumbnailAtIndexPath:(id)path
 {
   v164 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  v6 = [v5 numberOfItemsInSection:0];
+  pathCopy = path;
+  collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  v6 = [collectionView numberOfItemsInSection:0];
 
   if (v6)
   {
-    v7 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-    v8 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-    [v7 collectionView:v8 imageSizeAtIndex:{objc_msgSend(v4, "item")}];
+    delegate = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+    collectionView2 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+    [delegate collectionView:collectionView2 imageSizeAtIndex:{objc_msgSend(pathCopy, "item")}];
     v10 = v9;
     v12 = v11;
 
     [(ICDocCamThumbnailCollectionViewLayout *)self frameSizeForImageSize:v10, v12];
     v14 = v13;
     v16 = v15;
-    v17 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-    v18 = [v17 rootView];
+    delegate2 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+    rootView = [delegate2 rootView];
 
-    [v18 frame];
+    [rootView frame];
     v20 = v19 * 0.5;
     v22 = v21 * 0.5;
-    v23 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-    [v18 convertPoint:v23 toView:{v20, v22}];
+    collectionView3 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+    [rootView convertPoint:collectionView3 toView:{v20, v22}];
     v25 = v24;
 
     if ([MEMORY[0x277D74248] dc_isRTL])
     {
-      v26 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-      [v26 frame];
+      collectionView4 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+      [collectionView4 frame];
       v28 = v27;
 
       if ((DCDebugInterfaceEnabled() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "userInterfaceIdiom"), v29, v30 == 1))
@@ -313,16 +313,16 @@ LABEL_25:
 
         else
         {
-          v162 = v18;
+          v162 = rootView;
           v163 = &v161;
           v33 = 0;
           v34 = 0;
           v35 = v31 + 1;
           do
           {
-            v36 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-            v37 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-            [v36 collectionView:v37 imageSizeAtIndex:v34];
+            delegate3 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+            collectionView5 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+            [delegate3 collectionView:collectionView5 imageSizeAtIndex:v34];
             v39 = v38;
             v41 = v40;
 
@@ -336,24 +336,24 @@ LABEL_25:
 
           while (v6 != v34);
           v44 = v33;
-          v18 = v162;
+          rootView = v162;
         }
 
-        v63 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-        [v63 frame];
+        collectionView6 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+        [collectionView6 frame];
         v65 = v64;
 
         v66 = fmin((v65 - v44) / v32, 10.0);
         v46 = v25 + ((v44 + v66 * v32) / 2) - *v31;
-        v67 = [v4 item];
-        if (v67 >= v32)
+        item = [pathCopy item];
+        if (item >= v32)
         {
           v68 = v32;
         }
 
         else
         {
-          v68 = v67;
+          v68 = item;
         }
 
         if (v68 >= 1)
@@ -365,15 +365,15 @@ LABEL_25:
             v71 = *v70;
             v70 += 2;
             v46 = v46 - (v66 + v71);
-            v72 = [v4 item];
-            if (v72 >= v32)
+            item2 = [pathCopy item];
+            if (item2 >= v32)
             {
               v73 = v32;
             }
 
             else
             {
-              v73 = v72;
+              v73 = item2;
             }
 
             ++v69;
@@ -396,15 +396,15 @@ LABEL_25:
 
         else
         {
-          v162 = v18;
+          v162 = rootView;
           v91 = 0;
           v92 = 0;
           v93 = v89 + 1;
           do
           {
-            v94 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-            v95 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-            [v94 collectionView:v95 imageSizeAtIndex:v92];
+            delegate4 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+            collectionView7 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+            [delegate4 collectionView:collectionView7 imageSizeAtIndex:v92];
             v97 = v96;
             v99 = v98;
 
@@ -418,12 +418,12 @@ LABEL_25:
 
           while (v6 != v92);
           v102 = v91;
-          v18 = v162;
+          rootView = v162;
         }
 
         v117 = (v102 + v90 * 10.0);
-        v118 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-        [v118 frame];
+        collectionView8 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+        [collectionView8 frame];
         v120 = v119;
 
         v121 = (v117 / 2);
@@ -431,15 +431,15 @@ LABEL_25:
         if (v25 >= v121 && v122 <= v120)
         {
           v46 = v122 - *v89;
-          v133 = [v4 item];
-          if (v133 >= v90)
+          item3 = [pathCopy item];
+          if (item3 >= v90)
           {
             v134 = v90;
           }
 
           else
           {
-            v134 = v133;
+            v134 = item3;
           }
 
           if (v134 >= 1)
@@ -451,15 +451,15 @@ LABEL_25:
               v137 = *v136;
               v136 += 2;
               v46 = v46 - (v137 + 10.0);
-              v138 = [v4 item];
-              if (v138 >= v90)
+              item4 = [pathCopy item];
+              if (item4 >= v90)
               {
                 v139 = v90;
               }
 
               else
               {
-                v139 = v138;
+                v139 = item4;
               }
 
               ++v135;
@@ -472,15 +472,15 @@ LABEL_25:
         else
         {
           v46 = v28 - *v89;
-          v124 = [v4 item];
-          if (v124 >= v90)
+          item5 = [pathCopy item];
+          if (item5 >= v90)
           {
             v125 = v90;
           }
 
           else
           {
-            v125 = v124;
+            v125 = item5;
           }
 
           if (v125 >= 1)
@@ -503,15 +503,15 @@ LABEL_25:
                 v46 = v46;
               }
 
-              v131 = [v4 item];
-              if (v131 >= v90)
+              item6 = [pathCopy item];
+              if (item6 >= v90)
               {
                 v132 = v90;
               }
 
               else
               {
-                v132 = v131;
+                v132 = item6;
               }
 
               ++v126;
@@ -535,16 +535,16 @@ LABEL_25:
 
       else
       {
-        v162 = v18;
+        v162 = rootView;
         v163 = &v161;
         v51 = 0;
         v52 = 0;
         v53 = v49 + 1;
         do
         {
-          v54 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-          v55 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-          [v54 collectionView:v55 imageSizeAtIndex:v52];
+          delegate5 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+          collectionView9 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+          [delegate5 collectionView:collectionView9 imageSizeAtIndex:v52];
           v57 = v56;
           v59 = v58;
 
@@ -558,24 +558,24 @@ LABEL_25:
 
         while (v6 != v52);
         v62 = v51;
-        v18 = v162;
+        rootView = v162;
       }
 
-      v74 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-      [v74 frame];
+      collectionView10 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+      [collectionView10 frame];
       v76 = v75;
 
       v77 = fmin((v76 - v62) / v50, 10.0);
       v46 = v25 - ((v62 + v77 * v50) / 2);
-      v78 = [v4 item];
-      if (v78 >= v6)
+      item7 = [pathCopy item];
+      if (item7 >= v6)
       {
         v79 = v6;
       }
 
       else
       {
-        v79 = v78;
+        v79 = item7;
       }
 
       if (v79 >= 1)
@@ -585,15 +585,15 @@ LABEL_25:
           v81 = *v49;
           v49 += 2;
           v46 = v46 + v77 + v81;
-          v82 = [v4 item];
-          if (v82 >= v6)
+          item8 = [pathCopy item];
+          if (item8 >= v6)
           {
             v83 = v6;
           }
 
           else
           {
-            v83 = v82;
+            v83 = item8;
           }
         }
       }
@@ -611,16 +611,16 @@ LABEL_25:
 
       else
       {
-        v162 = v18;
+        v162 = rootView;
         v163 = &v161;
         v105 = 0;
         v106 = 0;
         v107 = v103 + 1;
         do
         {
-          v108 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-          v109 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-          [v108 collectionView:v109 imageSizeAtIndex:v105];
+          delegate6 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+          collectionView11 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+          [delegate6 collectionView:collectionView11 imageSizeAtIndex:v105];
           v111 = v110;
           v113 = v112;
 
@@ -634,28 +634,28 @@ LABEL_25:
 
         while (v6 != v105);
         v116 = v106;
-        v18 = v162;
+        rootView = v162;
       }
 
       v140 = (v116 + v104 * 10.0);
       v141 = (v140 / 2);
       v46 = v25 - v141;
-      v142 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-      [v142 frame];
+      collectionView12 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+      [collectionView12 frame];
       v144 = v143;
 
       v145 = v25 + v141;
       if (v25 - v141 >= 0.0 && v145 <= v144)
       {
-        v155 = [v4 item];
-        if (v155 >= v6)
+        item9 = [pathCopy item];
+        if (item9 >= v6)
         {
           v156 = v6;
         }
 
         else
         {
-          v156 = v155;
+          v156 = item9;
         }
 
         if (v156 >= 1)
@@ -665,15 +665,15 @@ LABEL_25:
             v158 = *v103;
             v103 += 2;
             v46 = v46 + v158 + 10.0;
-            v159 = [v4 item];
-            if (v159 >= v6)
+            item10 = [pathCopy item];
+            if (item10 >= v6)
             {
               v160 = v6;
             }
 
             else
             {
-              v160 = v159;
+              v160 = item10;
             }
           }
         }
@@ -681,15 +681,15 @@ LABEL_25:
 
       else
       {
-        v147 = [v4 item];
-        if (v147 >= v6)
+        item11 = [pathCopy item];
+        if (item11 >= v6)
         {
           v148 = v6;
         }
 
         else
         {
-          v148 = v147;
+          v148 = item11;
         }
 
         if (v148 < 1)
@@ -717,15 +717,15 @@ LABEL_25:
               v46 = v46;
             }
 
-            v153 = [v4 item];
-            if (v153 >= v6)
+            item12 = [pathCopy item];
+            if (item12 >= v6)
             {
               v154 = v6;
             }
 
             else
             {
-              v154 = v153;
+              v154 = item12;
             }
 
             ++v149;
@@ -759,22 +759,22 @@ LABEL_25:
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__6;
   v25 = __Block_byref_object_dispose__6;
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
-  v26 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  layoutInfo = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
+  v26 = [v8 arrayWithCapacity:{objc_msgSend(layoutInfo, "count")}];
 
-  v10 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
+  layoutInfo2 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__ICDocCamThumbnailCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke;
@@ -784,13 +784,13 @@ LABEL_25:
   *&v20[7] = width;
   *&v20[8] = height;
   v20[4] = &v21;
-  [v10 enumerateKeysAndObjectsUsingBlock:v20];
+  [layoutInfo2 enumerateKeysAndObjectsUsingBlock:v20];
 
-  v11 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  v12 = [v11 numberOfItemsInSection:0];
+  collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  v12 = [collectionView numberOfItemsInSection:0];
 
-  v13 = [(ICDocCamThumbnailCollectionViewLayout *)self compactLayout];
-  if (v12 > 1 && v13)
+  compactLayout = [(ICDocCamThumbnailCollectionViewLayout *)self compactLayout];
+  if (v12 > 1 && compactLayout)
   {
     v15 = [MEMORY[0x277CCAA70] indexPathForItem:v12 - 1 inSection:0];
     v16 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:@"Decoration.Shadow" atIndexPath:v15];
@@ -832,41 +832,41 @@ void __75__ICDocCamThumbnailCollectionViewLayout_layoutAttributesForElementsInRe
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
-  v6 = [v5 objectForKeyedSubscript:@"ICDocCamThumbnailCellKind"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  layoutInfo = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
+  v6 = [layoutInfo objectForKeyedSubscript:@"ICDocCamThumbnailCellKind"];
+  v7 = [v6 objectForKeyedSubscript:pathCopy];
 
   return v7;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  v9 = [v8 numberOfItemsInSection:0];
+  kindCopy = kind;
+  pathCopy = path;
+  collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  v9 = [collectionView numberOfItemsInSection:0];
 
   v10 = 0;
   if ([(ICDocCamThumbnailCollectionViewLayout *)self compactLayout]&& v9 >= 2)
   {
-    v10 = [MEMORY[0x277D75308] layoutAttributesForDecorationViewOfKind:v6 withIndexPath:v7];
-    v11 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
-    v12 = [v11 objectForKeyedSubscript:@"ICDocCamThumbnailCellKind"];
-    v13 = [v12 objectForKeyedSubscript:v7];
+    v10 = [MEMORY[0x277D75308] layoutAttributesForDecorationViewOfKind:kindCopy withIndexPath:pathCopy];
+    layoutInfo = [(ICDocCamThumbnailCollectionViewLayout *)self layoutInfo];
+    v12 = [layoutInfo objectForKeyedSubscript:@"ICDocCamThumbnailCellKind"];
+    v13 = [v12 objectForKeyedSubscript:pathCopy];
 
     [v13 frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [MEMORY[0x277D74248] dc_isRTL];
-    if ([v6 isEqualToString:@"Decoration.Shadow"])
+    dc_isRTL = [MEMORY[0x277D74248] dc_isRTL];
+    if ([kindCopy isEqualToString:@"Decoration.Shadow"])
     {
       v23 = -2.0;
-      if (v22)
+      if (dc_isRTL)
       {
         v23 = 2.0;
       }
@@ -877,7 +877,7 @@ void __75__ICDocCamThumbnailCollectionViewLayout_layoutAttributesForElementsInRe
 
     else
     {
-      if (!+[DCSettings _isSolariumEnabled](DCSettings, "_isSolariumEnabled") || ![v6 isEqualToString:@"Decoration.Badge"])
+      if (!+[DCSettings _isSolariumEnabled](DCSettings, "_isSolariumEnabled") || ![kindCopy isEqualToString:@"Decoration.Badge"])
       {
         goto LABEL_12;
       }
@@ -886,7 +886,7 @@ void __75__ICDocCamThumbnailCollectionViewLayout_layoutAttributesForElementsInRe
       v26 = v17;
       v27 = v19;
       v28 = v21;
-      if (v22)
+      if (dc_isRTL)
       {
         MinX = CGRectGetMinX(*&v25);
       }
@@ -899,7 +899,7 @@ void __75__ICDocCamThumbnailCollectionViewLayout_layoutAttributesForElementsInRe
       v31 = MinX;
       [v13 frame];
       [v10 setCenter:{v31, CGRectGetMinY(v33)}];
-      +[ICDocCamThumbnailBadgeDecorationView sizeThatFitsCount:](ICDocCamThumbnailBadgeDecorationView, "sizeThatFitsCount:", [v7 item] + 1);
+      +[ICDocCamThumbnailBadgeDecorationView sizeThatFitsCount:](ICDocCamThumbnailBadgeDecorationView, "sizeThatFitsCount:", [pathCopy item] + 1);
       [v10 setSize:?];
       v24 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -913,11 +913,11 @@ LABEL_12:
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
-  v6 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  [v6 bounds];
+  collectionView2 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  [collectionView2 bounds];
   v8 = v7;
 
   v9 = v5;
@@ -927,19 +927,19 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   if (![(ICDocCamThumbnailCollectionViewLayout *)self transitioning])
   {
     return 1;
   }
 
-  v8 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-  [v8 bounds];
+  collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -957,24 +957,24 @@ LABEL_12:
   return v17 != CGRectGetWidth(v20);
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   v20.receiver = self;
   v20.super_class = ICDocCamThumbnailCollectionViewLayout;
-  [(ICDocCamThumbnailCollectionViewLayout *)&v20 prepareForCollectionViewUpdates:v4];
-  v5 = [MEMORY[0x277CBEB18] array];
-  [(ICDocCamThumbnailCollectionViewLayout *)self setDeleteIndexPaths:v5];
+  [(ICDocCamThumbnailCollectionViewLayout *)&v20 prepareForCollectionViewUpdates:updatesCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  [(ICDocCamThumbnailCollectionViewLayout *)self setDeleteIndexPaths:array];
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  [(ICDocCamThumbnailCollectionViewLayout *)self setInsertIndexPaths:v6];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [(ICDocCamThumbnailCollectionViewLayout *)self setInsertIndexPaths:array2];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = updatesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
   {
@@ -992,8 +992,8 @@ LABEL_12:
         v12 = *(*(&v16 + 1) + 8 * i);
         if ([v12 updateAction] == 1)
         {
-          v13 = [(ICDocCamThumbnailCollectionViewLayout *)self deleteIndexPaths];
-          v14 = [v12 indexPathBeforeUpdate];
+          deleteIndexPaths = [(ICDocCamThumbnailCollectionViewLayout *)self deleteIndexPaths];
+          indexPathBeforeUpdate = [v12 indexPathBeforeUpdate];
         }
 
         else
@@ -1003,12 +1003,12 @@ LABEL_12:
             continue;
           }
 
-          v13 = [(ICDocCamThumbnailCollectionViewLayout *)self insertIndexPaths];
-          v14 = [v12 indexPathAfterUpdate];
+          deleteIndexPaths = [(ICDocCamThumbnailCollectionViewLayout *)self insertIndexPaths];
+          indexPathBeforeUpdate = [v12 indexPathAfterUpdate];
         }
 
-        v15 = v14;
-        [v13 addObject:v14];
+        v15 = indexPathBeforeUpdate;
+        [deleteIndexPaths addObject:indexPathBeforeUpdate];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -1027,31 +1027,31 @@ LABEL_12:
   [(ICDocCamThumbnailCollectionViewLayout *)self setInsertIndexPaths:0];
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v36.receiver = self;
   v36.super_class = ICDocCamThumbnailCollectionViewLayout;
-  v5 = [(ICDocCamThumbnailCollectionViewLayout *)&v36 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
-  v6 = [(ICDocCamThumbnailCollectionViewLayout *)self insertIndexPaths];
-  v7 = [v6 containsObject:v4];
+  v5 = [(ICDocCamThumbnailCollectionViewLayout *)&v36 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
+  insertIndexPaths = [(ICDocCamThumbnailCollectionViewLayout *)self insertIndexPaths];
+  v7 = [insertIndexPaths containsObject:pathCopy];
 
   if (v7)
   {
     if (!v5)
     {
-      v5 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v4];
+      v5 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
     }
 
     [v5 setAlpha:1.0];
-    v8 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-    v9 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-    [v8 collectionView:v9 imageSizeAtIndex:{objc_msgSend(v4, "item")}];
+    delegate = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+    collectionView = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+    [delegate collectionView:collectionView imageSizeAtIndex:{objc_msgSend(pathCopy, "item")}];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
-    [v14 targetViewRect];
+    delegate2 = [(ICDocCamThumbnailCollectionViewLayout *)self delegate];
+    [delegate2 targetViewRect];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -1062,32 +1062,32 @@ LABEL_12:
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-    v32 = [v31 superview];
-    v33 = [v32 superview];
+    collectionView2 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+    superview = [collectionView2 superview];
+    v32Superview = [superview superview];
 
-    v34 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
-    [v33 convertRect:v34 toView:{v24, v26, v28, v30}];
+    collectionView3 = [(ICDocCamThumbnailCollectionViewLayout *)self collectionView];
+    [v32Superview convertRect:collectionView3 toView:{v24, v26, v28, v30}];
     [v5 setFrame:?];
   }
 
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = ICDocCamThumbnailCollectionViewLayout;
-  v5 = [(ICDocCamThumbnailCollectionViewLayout *)&v11 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
-  v6 = [(ICDocCamThumbnailCollectionViewLayout *)self deleteIndexPaths];
-  v7 = [v6 containsObject:v4];
+  v5 = [(ICDocCamThumbnailCollectionViewLayout *)&v11 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
+  deleteIndexPaths = [(ICDocCamThumbnailCollectionViewLayout *)self deleteIndexPaths];
+  v7 = [deleteIndexPaths containsObject:pathCopy];
 
   if (v7)
   {
     if (!v5)
     {
-      v5 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v4];
+      v5 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
     }
 
     [v5 setAlpha:0.0];
@@ -1100,18 +1100,18 @@ LABEL_12:
   return 0;
 }
 
-- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)initialLayoutAttributesForAppearingDecorationElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = ICDocCamThumbnailCollectionViewLayout;
-  v8 = [(ICDocCamThumbnailCollectionViewLayout *)&v17 initialLayoutAttributesForAppearingDecorationElementOfKind:v6 atIndexPath:v7];
-  if ([v6 isEqualToString:@"Decoration.Shadow"])
+  v8 = [(ICDocCamThumbnailCollectionViewLayout *)&v17 initialLayoutAttributesForAppearingDecorationElementOfKind:kindCopy atIndexPath:pathCopy];
+  if ([kindCopy isEqualToString:@"Decoration.Shadow"])
   {
     if (!v8)
     {
-      v8 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+      v8 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
     }
 
     [v8 setAlpha:1.0];
@@ -1137,21 +1137,21 @@ LABEL_12:
   return 0;
 }
 
-- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)finalLayoutAttributesForDisappearingDecorationElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = ICDocCamThumbnailCollectionViewLayout;
-  v8 = [(ICDocCamThumbnailCollectionViewLayout *)&v19 finalLayoutAttributesForDisappearingDecorationElementOfKind:v6 atIndexPath:v7];
-  v9 = [(ICDocCamThumbnailCollectionViewLayout *)self deleteIndexPaths];
-  v10 = [v9 containsObject:v7];
+  v8 = [(ICDocCamThumbnailCollectionViewLayout *)&v19 finalLayoutAttributesForDisappearingDecorationElementOfKind:kindCopy atIndexPath:pathCopy];
+  deleteIndexPaths = [(ICDocCamThumbnailCollectionViewLayout *)self deleteIndexPaths];
+  v10 = [deleteIndexPaths containsObject:pathCopy];
 
-  if (v10 && [v6 isEqualToString:@"Decoration.Shadow"])
+  if (v10 && [kindCopy isEqualToString:@"Decoration.Shadow"])
   {
     if (!v8)
     {
-      v8 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+      v8 = [(ICDocCamThumbnailCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
     }
 
     [v8 setAlpha:0.0];

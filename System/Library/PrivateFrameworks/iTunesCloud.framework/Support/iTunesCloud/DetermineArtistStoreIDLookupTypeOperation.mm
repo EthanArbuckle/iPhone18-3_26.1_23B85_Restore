@@ -14,8 +14,8 @@
   v64 = sub_10006FB44;
   v65 = 0;
   v3 = [ICStoreRequestContext alloc];
-  v4 = [(QueueAwareOperation *)self userIdentity];
-  v55 = [v3 initWithIdentity:v4];
+  userIdentity = [(QueueAwareOperation *)self userIdentity];
+  v55 = [v3 initWithIdentity:userIdentity];
 
   v5 = +[ICURLBagProvider sharedBagProvider];
   v57[0] = _NSConcreteStackBlock;
@@ -56,8 +56,8 @@ LABEL_15:
       v51 = 0;
       v53 = 0;
 LABEL_47:
-      v25 = [(QueueAwareOperation *)self operationQueue];
-      if (v25)
+      operationQueue = [(QueueAwareOperation *)self operationQueue];
+      if (operationQueue)
       {
         if (v53)
         {
@@ -70,15 +70,15 @@ LABEL_47:
           }
 
           v27 = [UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation alloc];
-          v28 = [(QueueAwareOperation *)self artworkImporter];
-          v29 = [(QueueAwareOperation *)self clientIdentity];
-          v30 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-          v31 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-          v32 = [(QueueAwareOperation *)v27 initWithArtworkImporter:v28 clientIdentity:v29 operationQueue:v25 artistPersistentIDsToUpdate:v30 albumArtistPersistentIDsToUpdate:v31];
+          artworkImporter = [(QueueAwareOperation *)self artworkImporter];
+          clientIdentity = [(QueueAwareOperation *)self clientIdentity];
+          artistPersistentIDsToUpdate = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+          albumArtistPersistentIDsToUpdate = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+          v32 = [(QueueAwareOperation *)v27 initWithArtworkImporter:artworkImporter clientIdentity:clientIdentity operationQueue:operationQueue artistPersistentIDsToUpdate:artistPersistentIDsToUpdate albumArtistPersistentIDsToUpdate:albumArtistPersistentIDsToUpdate];
 
           [(UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation *)v32 setBulkArtistNameLibraryMatchURL:v53];
           [(UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation *)v32 setBulkArtistNameLibraryMatchBatchSize:v51];
-          [v25 addOperation:v32];
+          [operationQueue addOperation:v32];
         }
 
         else
@@ -94,16 +94,16 @@ LABEL_47:
             }
 
             v35 = [UpdateArtistStoreIDsByMapOperation alloc];
-            v36 = [(QueueAwareOperation *)self artworkImporter];
-            v37 = [(QueueAwareOperation *)self clientIdentity];
-            v38 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-            v39 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-            v32 = [(QueueAwareOperation *)v35 initWithArtworkImporter:v36 clientIdentity:v37 operationQueue:v25 artistPersistentIDsToUpdate:v38 albumArtistPersistentIDsToUpdate:v39];
+            artworkImporter2 = [(QueueAwareOperation *)self artworkImporter];
+            clientIdentity2 = [(QueueAwareOperation *)self clientIdentity];
+            artistPersistentIDsToUpdate2 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+            albumArtistPersistentIDsToUpdate2 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+            v32 = [(QueueAwareOperation *)v35 initWithArtworkImporter:artworkImporter2 clientIdentity:clientIdentity2 operationQueue:operationQueue artistPersistentIDsToUpdate:artistPersistentIDsToUpdate2 albumArtistPersistentIDsToUpdate:albumArtistPersistentIDsToUpdate2];
 
             [(UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation *)v32 setUpdateIntervalSeconds:v50];
             [(UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation *)v32 setAllArtistImagesMapURL:v49];
             [(UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation *)v32 setArtistNameLibraryMatchURL:v14];
-            [v25 addOperation:v32];
+            [operationQueue addOperation:v32];
           }
 
           else
@@ -115,14 +115,14 @@ LABEL_47:
             }
 
             v40 = [UpdateArtistStoreIDsByLibraryMatchLookupOperation alloc];
-            v41 = [(QueueAwareOperation *)self artworkImporter];
-            v42 = [(QueueAwareOperation *)self clientIdentity];
-            v43 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-            v44 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-            v32 = [(QueueAwareOperation *)v40 initWithArtworkImporter:v41 clientIdentity:v42 operationQueue:v25 artistPersistentIDsToUpdate:v43 albumArtistPersistentIDsToUpdate:v44];
+            artworkImporter3 = [(QueueAwareOperation *)self artworkImporter];
+            clientIdentity3 = [(QueueAwareOperation *)self clientIdentity];
+            artistPersistentIDsToUpdate3 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+            albumArtistPersistentIDsToUpdate3 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+            v32 = [(QueueAwareOperation *)v40 initWithArtworkImporter:artworkImporter3 clientIdentity:clientIdentity3 operationQueue:operationQueue artistPersistentIDsToUpdate:artistPersistentIDsToUpdate3 albumArtistPersistentIDsToUpdate:albumArtistPersistentIDsToUpdate3];
 
             [(UpdateArtistStoreIDsByBulkLibraryMatchLookupOperation *)v32 setArtistNameLibraryMatchURL:v14];
-            [v25 addOperation:v32];
+            [operationQueue addOperation:v32];
           }
         }
       }

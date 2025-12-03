@@ -1,8 +1,8 @@
 @interface OfflineRegionSelectorCropHandleView
 + (id)allHandles;
 - (CGSize)intrinsicContentSize;
-- (OfflineRegionSelectorCropHandleView)initWithHandle:(unint64_t)a3;
-- (id)constraintsForHandlePinnedToView:(id)a3;
+- (OfflineRegionSelectorCropHandleView)initWithHandle:(unint64_t)handle;
+- (id)constraintsForHandlePinnedToView:(id)view;
 - (void)_commonInit;
 - (void)_setupCornerHandle;
 - (void)_setupEdgeHandle;
@@ -10,130 +10,130 @@
 
 @implementation OfflineRegionSelectorCropHandleView
 
-- (id)constraintsForHandlePinnedToView:(id)a3
+- (id)constraintsForHandlePinnedToView:(id)view
 {
-  v4 = a3;
-  v5 = [(OfflineRegionSelectorCropHandleView *)self handle];
+  viewCopy = view;
+  handle = [(OfflineRegionSelectorCropHandleView *)self handle];
   v6 = &__NSArray0__struct;
-  if (v5 > 3)
+  if (handle > 3)
   {
-    if (v5 > 5)
+    if (handle > 5)
     {
-      if (v5 == 6)
+      if (handle == 6)
       {
-        v7 = [(OfflineRegionSelectorCropHandleView *)self leftAnchor];
-        v8 = [v4 leftAnchor];
-        v9 = [v7 constraintEqualToAnchor:v8 constant:-4.0];
+        leftAnchor = [(OfflineRegionSelectorCropHandleView *)self leftAnchor];
+        leftAnchor2 = [viewCopy leftAnchor];
+        v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:-4.0];
         v16[0] = v9;
-        v10 = [(OfflineRegionSelectorCropHandleView *)self bottomAnchor];
-        v11 = [v4 bottomAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11 constant:4.0];
+        bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self bottomAnchor];
+        bottomAnchor2 = [viewCopy bottomAnchor];
+        v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:4.0];
         v16[1] = v12;
         v13 = v16;
       }
 
       else
       {
-        if (v5 != 7)
+        if (handle != 7)
         {
           goto LABEL_19;
         }
 
-        v7 = [(OfflineRegionSelectorCropHandleView *)self rightAnchor];
-        v8 = [v4 rightAnchor];
-        v9 = [v7 constraintEqualToAnchor:v8 constant:4.0];
+        leftAnchor = [(OfflineRegionSelectorCropHandleView *)self rightAnchor];
+        leftAnchor2 = [viewCopy rightAnchor];
+        v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:4.0];
         v15[0] = v9;
-        v10 = [(OfflineRegionSelectorCropHandleView *)self bottomAnchor];
-        v11 = [v4 bottomAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11 constant:4.0];
+        bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self bottomAnchor];
+        bottomAnchor2 = [viewCopy bottomAnchor];
+        v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:4.0];
         v15[1] = v12;
         v13 = v15;
       }
     }
 
-    else if (v5 == 4)
+    else if (handle == 4)
     {
-      v7 = [(OfflineRegionSelectorCropHandleView *)self leftAnchor];
-      v8 = [v4 leftAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8 constant:-4.0];
+      leftAnchor = [(OfflineRegionSelectorCropHandleView *)self leftAnchor];
+      leftAnchor2 = [viewCopy leftAnchor];
+      v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:-4.0];
       v18[0] = v9;
-      v10 = [(OfflineRegionSelectorCropHandleView *)self topAnchor];
-      v11 = [v4 topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:-4.0];
+      bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self topAnchor];
+      bottomAnchor2 = [viewCopy topAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
       v18[1] = v12;
       v13 = v18;
     }
 
     else
     {
-      v7 = [(OfflineRegionSelectorCropHandleView *)self rightAnchor];
-      v8 = [v4 rightAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8 constant:4.0];
+      leftAnchor = [(OfflineRegionSelectorCropHandleView *)self rightAnchor];
+      leftAnchor2 = [viewCopy rightAnchor];
+      v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:4.0];
       v17[0] = v9;
-      v10 = [(OfflineRegionSelectorCropHandleView *)self topAnchor];
-      v11 = [v4 topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:-4.0];
+      bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self topAnchor];
+      bottomAnchor2 = [viewCopy topAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
       v17[1] = v12;
       v13 = v17;
     }
   }
 
-  else if (v5 > 1)
+  else if (handle > 1)
   {
-    if (v5 == 2)
+    if (handle == 2)
     {
-      v7 = [(OfflineRegionSelectorCropHandleView *)self centerXAnchor];
-      v8 = [v4 centerXAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      leftAnchor = [(OfflineRegionSelectorCropHandleView *)self centerXAnchor];
+      leftAnchor2 = [viewCopy centerXAnchor];
+      v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v20[0] = v9;
-      v10 = [(OfflineRegionSelectorCropHandleView *)self topAnchor];
-      v11 = [v4 bottomAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self topAnchor];
+      bottomAnchor2 = [viewCopy bottomAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v20[1] = v12;
       v13 = v20;
     }
 
     else
     {
-      v7 = [(OfflineRegionSelectorCropHandleView *)self leftAnchor];
-      v8 = [v4 rightAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      leftAnchor = [(OfflineRegionSelectorCropHandleView *)self leftAnchor];
+      leftAnchor2 = [viewCopy rightAnchor];
+      v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v19[0] = v9;
-      v10 = [(OfflineRegionSelectorCropHandleView *)self centerYAnchor];
-      v11 = [v4 centerYAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self centerYAnchor];
+      bottomAnchor2 = [viewCopy centerYAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v19[1] = v12;
       v13 = v19;
     }
   }
 
-  else if (v5)
+  else if (handle)
   {
-    if (v5 != 1)
+    if (handle != 1)
     {
       goto LABEL_19;
     }
 
-    v7 = [(OfflineRegionSelectorCropHandleView *)self rightAnchor];
-    v8 = [v4 leftAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leftAnchor = [(OfflineRegionSelectorCropHandleView *)self rightAnchor];
+    leftAnchor2 = [viewCopy leftAnchor];
+    v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v21[0] = v9;
-    v10 = [(OfflineRegionSelectorCropHandleView *)self centerYAnchor];
-    v11 = [v4 centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self centerYAnchor];
+    bottomAnchor2 = [viewCopy centerYAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v21[1] = v12;
     v13 = v21;
   }
 
   else
   {
-    v7 = [(OfflineRegionSelectorCropHandleView *)self centerXAnchor];
-    v8 = [v4 centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leftAnchor = [(OfflineRegionSelectorCropHandleView *)self centerXAnchor];
+    leftAnchor2 = [viewCopy centerXAnchor];
+    v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v22[0] = v9;
-    v10 = [(OfflineRegionSelectorCropHandleView *)self bottomAnchor];
-    v11 = [v4 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    bottomAnchor = [(OfflineRegionSelectorCropHandleView *)self bottomAnchor];
+    bottomAnchor2 = [viewCopy topAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v22[1] = v12;
     v13 = v22;
   }
@@ -272,8 +272,8 @@ LABEL_7:
 
 - (void)_setupEdgeHandle
 {
-  v3 = [(OfflineRegionSelectorCropHandleView *)self handle];
-  if (v3 > 3)
+  handle = [(OfflineRegionSelectorCropHandleView *)self handle];
+  if (handle > 3)
   {
     v6 = 0;
     v4 = 0.0;
@@ -284,11 +284,11 @@ LABEL_7:
 
   else
   {
-    v4 = dbl_101212DB0[v3];
-    v5 = dbl_101212DD0[v3];
-    v6 = qword_101212DF0[v3];
-    v7 = dbl_101212E10[v3];
-    v8 = dbl_101212E30[v3];
+    v4 = dbl_101212DB0[handle];
+    v5 = dbl_101212DD0[handle];
+    v6 = qword_101212DF0[handle];
+    v7 = dbl_101212E10[handle];
+    v8 = dbl_101212E30[handle];
   }
 
   v10 = [UIBezierPath bezierPathWithRoundedRect:v6 byRoundingCorners:0.0 cornerRadii:0.0, v4, v5, 1.0, 1.0];
@@ -308,8 +308,8 @@ LABEL_7:
   v6 = [v5 colorWithAlphaComponent:0.850000024];
   -[CAShapeLayer setFillColor:](self->_handleLayer, "setFillColor:", [v6 CGColor]);
 
-  v7 = [(OfflineRegionSelectorCropHandleView *)self layer];
-  [v7 addSublayer:self->_handleLayer];
+  layer = [(OfflineRegionSelectorCropHandleView *)self layer];
+  [layer addSublayer:self->_handleLayer];
 
   handle = self->_handle;
   if (handle > 3)
@@ -331,7 +331,7 @@ LABEL_7:
   [(CAShapeLayer *)v9 setBounds:PathBoundingBox.origin.x, PathBoundingBox.origin.y, PathBoundingBox.size.width, PathBoundingBox.size.height];
 }
 
-- (OfflineRegionSelectorCropHandleView)initWithHandle:(unint64_t)a3
+- (OfflineRegionSelectorCropHandleView)initWithHandle:(unint64_t)handle
 {
   v7.receiver = self;
   v7.super_class = OfflineRegionSelectorCropHandleView;
@@ -339,7 +339,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_handle = a3;
+    v4->_handle = handle;
     [(OfflineRegionSelectorCropHandleView *)v4 _commonInit];
   }
 

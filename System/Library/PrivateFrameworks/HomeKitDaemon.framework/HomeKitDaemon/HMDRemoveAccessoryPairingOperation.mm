@@ -1,6 +1,6 @@
 @interface HMDRemoveAccessoryPairingOperation
 + (id)logCategory;
-- (BOOL)mainWithError:(id *)a3;
+- (BOOL)mainWithError:(id *)error;
 - (NSString)pairingIdentifierToRemove;
 - (id)logIdentifier;
 @end
@@ -9,16 +9,16 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSString)pairingIdentifierToRemove
 {
-  v2 = [(HMDBackgroundOperation *)self userData];
-  v3 = [v2 objectForKeyedSubscript:@"PairingIdentifierToRemove"];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v3 = [userData objectForKeyedSubscript:@"PairingIdentifierToRemove"];
 
   if (v3)
   {
@@ -33,25 +33,25 @@
   }
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v140 = *MEMORY[0x277D85DE8];
-  v102 = [(HMDAccessoryBackgroundOperation *)self accessoryIdentifier];
-  v4 = [(HMDBackgroundOperation *)self userData];
-  v104 = [v4 objectForKeyedSubscript:@"PairingIdentifierToRemove"];
+  accessoryIdentifier = [(HMDAccessoryBackgroundOperation *)self accessoryIdentifier];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v104 = [userData objectForKeyedSubscript:@"PairingIdentifierToRemove"];
 
-  v5 = [(HMDBackgroundOperation *)self userData];
-  v103 = [v5 objectForKeyedSubscript:@"PairingPublicKeyToRemove"];
+  userData2 = [(HMDBackgroundOperation *)self userData];
+  v103 = [userData2 objectForKeyedSubscript:@"PairingPublicKeyToRemove"];
 
-  v6 = [(HMDBackgroundOperation *)self userData];
-  v7 = [v6 hmf_numberForKey:@"IsOwnerUser"];
-  v8 = [v7 BOOLValue];
+  userData3 = [(HMDBackgroundOperation *)self userData];
+  v7 = [userData3 hmf_numberForKey:@"IsOwnerUser"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
+  accessoryOperationStatus = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
   v10 = objc_opt_class();
-  v11 = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
-  v12 = [(HMDBackgroundOperation *)self homeManager];
-  v13 = [v10 findAccessoryUsing:v11 homeManager:v12];
+  accessoryUUID = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
+  homeManager = [(HMDBackgroundOperation *)self homeManager];
+  v13 = [v10 findAccessoryUsing:accessoryUUID homeManager:homeManager];
 
   v14 = v13;
   objc_opt_class();
@@ -97,25 +97,25 @@
 
   v99 = v22;
   v100 = v19;
-  if (v22 | v16 | v19 && v104 && v103 && v9)
+  if (v22 | v16 | v19 && v104 && v103 && accessoryOperationStatus)
   {
-    if (v9 == 1)
+    if (accessoryOperationStatus == 1)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v20 shortDescription];
-        v28 = [v20 home];
-        v29 = [v28 uuid];
+        shortDescription = [v20 shortDescription];
+        home = [v20 home];
+        uuid = [home uuid];
         *buf = 138543874;
         v129 = v26;
         v130 = 2112;
-        v131 = v27;
+        v131 = shortDescription;
         v132 = 2112;
-        v133 = v29;
+        v133 = uuid;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Since the accessory [%@] is already added back to this home [%@], there is no way this operation can successfully run in the future as the required parameters will never be true. Hence marking this operation as finished.", buf, 0x20u);
       }
 
@@ -124,24 +124,24 @@
       goto LABEL_58;
     }
 
-    v36 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+    internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
     v37 = objc_autoreleasePoolPush();
-    v98 = self;
+    selfCopy2 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       v39 = HMFGetLogIdentifier();
-      v40 = [v36 UUID];
-      v41 = [v20 name];
-      v42 = [v20 uuid];
+      uUID = [internalOnlyInitializer UUID];
+      name = [v20 name];
+      uuid2 = [v20 uuid];
       *buf = 138544130;
       v129 = v39;
       v130 = 2112;
-      v131 = v40;
+      v131 = uUID;
       v132 = 2112;
-      v133 = v41;
+      v133 = name;
       v134 = 2112;
-      v135 = v42;
+      v135 = uuid2;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Background Operations}] Remove Accessory Pairing Operation for: %@, %@", buf, 0x2Au);
     }
 
@@ -160,8 +160,8 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __52__HMDRemoveAccessoryPairingOperation_mainWithError___block_invoke;
     aBlock[3] = &unk_27868A5F8;
-    aBlock[4] = v98;
-    v97 = v36;
+    aBlock[4] = selfCopy2;
+    v97 = internalOnlyInitializer;
     v116 = v97;
     v95 = v104;
     v117 = v95;
@@ -188,20 +188,20 @@ LABEL_26:
 
 LABEL_27:
       v94 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:v43];
-      if ((v16 == 0) | v8 & 1 || ![v16 supportsCHIP])
+      if ((v16 == 0) | bOOLValue & 1 || ![v16 supportsCHIP])
       {
         goto LABEL_36;
       }
 
-      v47 = [v16 supportsMatterWalletKey];
-      if (([v47 BOOLValue] & 1) == 0)
+      supportsMatterWalletKey = [v16 supportsMatterWalletKey];
+      if (([supportsMatterWalletKey BOOLValue] & 1) == 0)
       {
-        v48 = [v16 supportsMatterAccessCode];
-        if (![v48 BOOLValue])
+        supportsMatterAccessCode = [v16 supportsMatterAccessCode];
+        if (![supportsMatterAccessCode BOOLValue])
         {
-          v85 = [v16 supportsACWGProvisioning];
+          supportsACWGProvisioning = [v16 supportsACWGProvisioning];
 
-          if ((v85 & 1) == 0)
+          if ((supportsACWGProvisioning & 1) == 0)
           {
             goto LABEL_36;
           }
@@ -213,16 +213,16 @@ LABEL_27:
 LABEL_33:
       dispatch_group_enter(v45);
       v49 = objc_autoreleasePoolPush();
-      v50 = v98;
+      v50 = selfCopy2;
       v51 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
         v52 = HMFGetLogIdentifier();
-        v53 = [v97 UUID];
+        uUID2 = [v97 UUID];
         *buf = 138543618;
         v129 = v52;
         v130 = 2112;
-        v131 = v53;
+        v131 = uUID2;
         _os_log_impl(&dword_229538000, v51, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Removing matter users with deleted creator fabric index", buf, 0x16u);
       }
 
@@ -247,34 +247,34 @@ LABEL_36:
       if (dispatch_group_wait(v45, v57))
       {
         v58 = objc_autoreleasePoolPush();
-        v59 = v98;
+        v59 = selfCopy2;
         v60 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
         {
           v61 = v45;
           v62 = HMFGetLogIdentifier();
-          v63 = [v97 UUID];
-          v64 = [v93 shortDescription];
+          uUID3 = [v97 UUID];
+          shortDescription2 = [v93 shortDescription];
           *buf = 138544130;
           v129 = v62;
           v130 = 2112;
-          v131 = v63;
+          v131 = uUID3;
           v132 = 2112;
           v133 = v95;
           v134 = 2112;
-          v135 = v64;
+          v135 = shortDescription2;
           _os_log_impl(&dword_229538000, v60, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not remove accessory pairing %@ from accessory %@ as the operation timed out", buf, 0x2Au);
 
           v45 = v61;
         }
 
         objc_autoreleasePoolPop(v58);
-        if (a3)
+        if (error)
         {
           v65 = [MEMORY[0x277CCA9B8] hmErrorWithCode:100];
 LABEL_48:
           v30 = 0;
-          *a3 = v65;
+          *error = v65;
 LABEL_56:
 
 LABEL_57:
@@ -294,7 +294,7 @@ LABEL_57:
           goto LABEL_56;
         }
 
-        if (a3)
+        if (error)
         {
           v65 = v68;
           goto LABEL_48;
@@ -313,43 +313,43 @@ LABEL_57:
 
       if (v46)
       {
-        [v100 removeUserPairingIdentity:v46 isOwner:v8 completionHandler:v96];
+        [v100 removeUserPairingIdentity:v46 isOwner:bOOLValue completionHandler:v96];
         goto LABEL_26;
       }
 
       v77 = objc_autoreleasePoolPush();
-      v78 = v98;
+      v78 = selfCopy2;
       v79 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
       {
         v80 = v45;
         v81 = HMFGetLogIdentifier();
-        v82 = [v97 UUID];
-        v83 = [(HMDAccessoryBackgroundOperation *)v78 accessoryUUID];
+        uUID4 = [v97 UUID];
+        accessoryUUID2 = [(HMDAccessoryBackgroundOperation *)v78 accessoryUUID];
         *buf = 138544642;
         v129 = v81;
         v130 = 2112;
-        v131 = v82;
+        v131 = uUID4;
         v132 = 2112;
         v133 = v95;
         v134 = 2112;
         v135 = v103;
         v136 = 2112;
-        v137 = v83;
+        v137 = accessoryUUID2;
         v138 = 2112;
-        v139 = v102;
+        v139 = accessoryIdentifier;
         _os_log_impl(&dword_229538000, v79, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Unable to create pairing identity from %@/%@ for operation : [%@/%@]", buf, 0x3Eu);
 
         v45 = v80;
       }
 
       objc_autoreleasePoolPop(v77);
-      if (a3)
+      if (error)
       {
         v84 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
 LABEL_69:
         v30 = 0;
-        *a3 = v84;
+        *error = v84;
         goto LABEL_57;
       }
     }
@@ -362,25 +362,25 @@ LABEL_69:
       }
 
       v69 = objc_autoreleasePoolPush();
-      v70 = v98;
+      v70 = selfCopy2;
       v71 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
       {
         v72 = HMFGetLogIdentifier();
-        v73 = [v97 UUID];
+        uUID5 = [v97 UUID];
         *buf = 138543618;
         v129 = v72;
         v130 = 2112;
-        v131 = v73;
+        v131 = uUID5;
         _os_log_impl(&dword_229538000, v71, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Removing pairing from Matter accessory", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v69);
-      v74 = [v99 accessoryServer];
-      v46 = v74;
-      if (v74)
+      accessoryServer = [v99 accessoryServer];
+      v46 = accessoryServer;
+      if (accessoryServer)
       {
-        [v74 removePairingIdentifier:v95 pairingPublicKey:v103 completionQueue:v43 completionHandler:v96];
+        [accessoryServer removePairingIdentifier:v95 pairingPublicKey:v103 completionQueue:v43 completionHandler:v96];
         goto LABEL_26;
       }
 
@@ -391,27 +391,27 @@ LABEL_69:
       {
         v89 = v45;
         v90 = HMFGetLogIdentifier();
-        v91 = [v97 UUID];
-        v92 = [(HMDAccessoryBackgroundOperation *)v87 accessoryUUID];
+        uUID6 = [v97 UUID];
+        accessoryUUID3 = [(HMDAccessoryBackgroundOperation *)v87 accessoryUUID];
         *buf = 138544642;
         v129 = v90;
         v130 = 2112;
-        v131 = v91;
+        v131 = uUID6;
         v132 = 2112;
         v133 = v95;
         v134 = 2112;
         v135 = v103;
         v136 = 2112;
-        v137 = v92;
+        v137 = accessoryUUID3;
         v138 = 2112;
-        v139 = v102;
+        v139 = accessoryIdentifier;
         _os_log_impl(&dword_229538000, v88, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] No accessory server from to remove %@/%@ for operation : [%@/%@]", buf, 0x3Eu);
 
         v45 = v89;
       }
 
       objc_autoreleasePoolPop(v86);
-      if (a3)
+      if (error)
       {
         v84 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
         goto LABEL_69;
@@ -423,26 +423,26 @@ LABEL_69:
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy3 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
     v34 = HMFGetLogIdentifier();
-    v35 = [(HMDAccessoryBackgroundOperation *)v32 accessoryUUID];
+    accessoryUUID4 = [(HMDAccessoryBackgroundOperation *)selfCopy3 accessoryUUID];
     *buf = 138543874;
     v129 = v34;
     v130 = 2112;
-    v131 = v35;
+    v131 = accessoryUUID4;
     v132 = 2112;
-    v133 = v102;
+    v133 = accessoryIdentifier;
     _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@Required parameters does not exist to properly execute this operation : [%@/%@]", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v31);
-  if (a3)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    *a3 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else

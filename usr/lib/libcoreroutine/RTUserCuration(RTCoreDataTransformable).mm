@@ -50,32 +50,32 @@ LABEL_8:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 originalLabel];
+    originalLabel = [v3 originalLabel];
 
-    if (v5)
+    if (originalLabel)
     {
       v6 = MEMORY[0x277D011A0];
-      v7 = [v4 originalLabel];
-      v5 = [v6 createWithManagedObject:v7];
+      originalLabel2 = [v4 originalLabel];
+      originalLabel = [v6 createWithManagedObject:originalLabel2];
     }
 
-    v8 = [v4 curatedLabel];
+    curatedLabel = [v4 curatedLabel];
 
-    if (v8)
+    if (curatedLabel)
     {
       v9 = MEMORY[0x277D011A0];
-      v10 = [v4 curatedLabel];
-      v8 = [v9 createWithManagedObject:v10];
+      curatedLabel2 = [v4 curatedLabel];
+      curatedLabel = [v9 createWithManagedObject:curatedLabel2];
     }
 
     v11 = objc_alloc(MEMORY[0x277D01410]);
-    v12 = [v4 identifier];
-    v13 = [v4 submissionDate];
-    v14 = [v4 expirationDate];
-    v15 = [v4 visitEntryDate];
-    v16 = [v4 visitExitDate];
-    v17 = [v4 visitIdentifier];
-    v18 = [v11 initWithIdentifier:v12 submissionDate:v13 expirationDate:v14 entryDate:v15 exitDate:v16 visitIdentifier:v17 originalLabel:v5 curatedLabel:v8];
+    identifier = [v4 identifier];
+    submissionDate = [v4 submissionDate];
+    expirationDate = [v4 expirationDate];
+    visitEntryDate = [v4 visitEntryDate];
+    visitExitDate = [v4 visitExitDate];
+    visitIdentifier = [v4 visitIdentifier];
+    v18 = [v11 initWithIdentifier:identifier submissionDate:submissionDate expirationDate:expirationDate entryDate:visitEntryDate exitDate:visitExitDate visitIdentifier:visitIdentifier originalLabel:originalLabel curatedLabel:curatedLabel];
   }
 
   else
@@ -97,7 +97,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTUserCurationMO managedObjectWithUserCuration:a1 inManagedObjectContext:a3];
+    v3 = [RTUserCurationMO managedObjectWithUserCuration:self inManagedObjectContext:a3];
   }
 
   else
@@ -118,8 +118,8 @@ LABEL_8:
 - (void)updateManagedObject:()RTCoreDataTransformable
 {
   v6 = a3;
-  v4 = [v6 managedObjectContext];
-  v5 = [RTUserCurationMO managedObjectWithUserCuration:a1 managedObject:v6 inManagedObjectContext:v4];
+  managedObjectContext = [v6 managedObjectContext];
+  v5 = [RTUserCurationMO managedObjectWithUserCuration:self managedObject:v6 inManagedObjectContext:managedObjectContext];
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface _DPBudgetAuditor
-+ (BOOL)checkMetadataLocalEpsilon:(double)a3 defaultLocalEpsilon:(double)a4 error:(id *)a5;
-+ (BOOL)containValidDPConfigInMetadata:(id)a3 error:(id *)a4;
-+ (BOOL)isMetadataValid:(id)a3 plistParameters:(id)a4 error:(id *)a5;
-+ (id)budgetAuditorFromMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5;
-+ (id)budgetAuditorFromMetadata:(id)a3 plistParameters:(id)a4 isInternalBuild:(BOOL)a5 error:(id *)a6;
-+ (id)maxApproximateDPFromPlist:(id)a3 error:(id *)a4;
-+ (id)targetApproximateDPFromDPConfig:(id)a3 error:(id *)a4;
-- (_DPBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 targetADP:(id)a5 maxADP:(id)a6 analysis:(id)a7 error:(id *)a8;
-- (id)auditedMetadataWithError:(id *)a3;
-- (id)getSymmetricRAPPORLocalEpsilonWithError:(id *)a3;
++ (BOOL)checkMetadataLocalEpsilon:(double)epsilon defaultLocalEpsilon:(double)localEpsilon error:(id *)error;
++ (BOOL)containValidDPConfigInMetadata:(id)metadata error:(id *)error;
++ (BOOL)isMetadataValid:(id)valid plistParameters:(id)parameters error:(id *)error;
++ (id)budgetAuditorFromMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error;
++ (id)budgetAuditorFromMetadata:(id)metadata plistParameters:(id)parameters isInternalBuild:(BOOL)build error:(id *)error;
++ (id)maxApproximateDPFromPlist:(id)plist error:(id *)error;
++ (id)targetApproximateDPFromDPConfig:(id)config error:(id *)error;
+- (_DPBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters targetADP:(id)p maxADP:(id)dP analysis:(id)analysis error:(id *)error;
+- (id)auditedMetadataWithError:(id *)error;
+- (id)getSymmetricRAPPORLocalEpsilonWithError:(id *)error;
 @end
 
 @implementation _DPBudgetAuditor
 
-+ (id)budgetAuditorFromMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5
++ (id)budgetAuditorFromMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 budgetAuditorFromMetadata:v9 plistParameters:v8 isInternalBuild:+[_DPDeviceInfo isInternalBuild](_DPDeviceInfo error:{"isInternalBuild"), a5}];
+  parametersCopy = parameters;
+  metadataCopy = metadata;
+  v10 = [self budgetAuditorFromMetadata:metadataCopy plistParameters:parametersCopy isInternalBuild:+[_DPDeviceInfo isInternalBuild](_DPDeviceInfo error:{"isInternalBuild"), error}];
 
   return v10;
 }
 
-+ (id)budgetAuditorFromMetadata:(id)a3 plistParameters:(id)a4 isInternalBuild:(BOOL)a5 error:(id *)a6
++ (id)budgetAuditorFromMetadata:(id)metadata plistParameters:(id)parameters isInternalBuild:(BOOL)build error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (![_DPBudgetAuditor isMetadataValid:v9 plistParameters:v10 error:a6])
+  buildCopy = build;
+  metadataCopy = metadata;
+  parametersCopy = parameters;
+  if (![_DPBudgetAuditor isMetadataValid:metadataCopy plistParameters:parametersCopy error:error])
   {
     v16 = 0;
     goto LABEL_25;
   }
 
-  v11 = [v9 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v11 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
 
   if (v11)
   {
-    v12 = [v9 objectForKeyedSubscript:@"DediscoTaskConfig"];
+    v12 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
     v13 = [v12 objectForKeyedSubscript:?];
     v14 = [v13 objectForKeyedSubscript:@"Mechanism"];
 
@@ -45,17 +45,17 @@
     {
       v15 = _DPNoneDPBudgetAuditor;
 LABEL_5:
-      v16 = [[v15 alloc] initWithMetadata:v9 plistParameters:v10 error:a6];
+      v16 = [[v15 alloc] initWithMetadata:metadataCopy plistParameters:parametersCopy error:error];
 LABEL_24:
 
       goto LABEL_25;
     }
 
-    if ([_DPBudgetAuditor containValidDPConfigInMetadata:v9 error:a6])
+    if ([_DPBudgetAuditor containValidDPConfigInMetadata:metadataCopy error:error])
     {
       if (!v14 || [v14 isEqualToString:@"ClientSymmetricRAPPOR"])
       {
-        if (v7)
+        if (buildCopy)
         {
           v15 = _DPSymmetricRAPPORInternalBuildBudgetAuditor;
         }
@@ -83,10 +83,10 @@ LABEL_24:
         +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v21 = v19;
-        *a6 = v19;
+        *error = v19;
       }
     }
 
@@ -100,57 +100,57 @@ LABEL_24:
     [_DPBudgetAuditor budgetAuditorFromMetadata:v17 plistParameters:? isInternalBuild:? error:?];
   }
 
-  v16 = [[_DPSymmetricRAPPORLegacyBudgetAuditor alloc] initWithMetadata:v9 plistParameters:v10 error:a6];
+  v16 = [[_DPSymmetricRAPPORLegacyBudgetAuditor alloc] initWithMetadata:metadataCopy plistParameters:parametersCopy error:error];
 LABEL_25:
 
   return v16;
 }
 
-- (_DPBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 targetADP:(id)a5 maxADP:(id)a6 analysis:(id)a7 error:(id *)a8
+- (_DPBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters targetADP:(id)p maxADP:(id)dP analysis:(id)analysis error:(id *)error
 {
-  v21 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  metadataCopy = metadata;
+  parametersCopy = parameters;
+  pCopy = p;
+  dPCopy = dP;
+  analysisCopy = analysis;
   v22.receiver = self;
   v22.super_class = _DPBudgetAuditor;
   v18 = [(_DPBudgetAuditor *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_metadata, a3);
-    objc_storeStrong(&v19->_plistParameters, a4);
-    objc_storeStrong(&v19->_targetADP, a5);
-    objc_storeStrong(&v19->_maxADP, a6);
-    objc_storeStrong(&v19->_analysis, a7);
+    objc_storeStrong(&v18->_metadata, metadata);
+    objc_storeStrong(&v19->_plistParameters, parameters);
+    objc_storeStrong(&v19->_targetADP, p);
+    objc_storeStrong(&v19->_maxADP, dP);
+    objc_storeStrong(&v19->_analysis, analysis);
   }
 
   return v19;
 }
 
-- (id)auditedMetadataWithError:(id *)a3
+- (id)auditedMetadataWithError:(id *)error
 {
-  v5 = [(_DPBudgetAuditor *)self targetADP];
+  targetADP = [(_DPBudgetAuditor *)self targetADP];
 
-  if (v5)
+  if (targetADP)
   {
-    v6 = [(_DPBudgetAuditor *)self targetADP];
-    v7 = [(_DPBudgetAuditor *)self analysis];
-    v8 = [v7 exceedApproximateDPBudget:v6 error:a3];
+    targetADP2 = [(_DPBudgetAuditor *)self targetADP];
+    analysis = [(_DPBudgetAuditor *)self analysis];
+    v8 = [analysis exceedApproximateDPBudget:targetADP2 error:error];
 
     if (v8)
     {
       if (![v8 BOOLValue])
       {
-        v17 = [(_DPBudgetAuditor *)self maxADP];
+        maxADP = [(_DPBudgetAuditor *)self maxADP];
 
-        if (v17)
+        if (maxADP)
         {
-          v18 = [(_DPBudgetAuditor *)self maxADP];
-          if ([v6 exceed:v18])
+          maxADP2 = [(_DPBudgetAuditor *)self maxADP];
+          if ([targetADP2 exceed:maxADP2])
           {
-            v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Target %@ budget exceeds the maximum allowed %@ budget.", v6, v18];
+            v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Target %@ budget exceeds the maximum allowed %@ budget.", targetADP2, maxADP2];
             v20 = _DPPrivacyBudgetError(4, v19);
 
             v21 = +[_DPLog framework];
@@ -159,32 +159,32 @@ LABEL_25:
               +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
             }
 
-            if (a3)
+            if (error)
             {
               v22 = v20;
-              *a3 = v20;
+              *error = v20;
             }
 
-            v15 = 0;
+            metadata = 0;
           }
 
           else
           {
-            v15 = [(_DPBudgetAuditor *)self metadata];
+            metadata = [(_DPBudgetAuditor *)self metadata];
           }
         }
 
         else
         {
-          v15 = [(_DPBudgetAuditor *)self metadata];
+          metadata = [(_DPBudgetAuditor *)self metadata];
         }
 
         goto LABEL_23;
       }
 
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(_DPBudgetAuditor *)self analysis];
-      v11 = [v9 stringWithFormat:@"Privacy budget analysis %@ will exceed the target %@ budget.", objc_opt_class(), v6];
+      analysis2 = [(_DPBudgetAuditor *)self analysis];
+      v11 = [v9 stringWithFormat:@"Privacy budget analysis %@ will exceed the target %@ budget.", objc_opt_class(), targetADP2];
       v12 = _DPPrivacyBudgetError(5, v11);
 
       v13 = +[_DPLog framework];
@@ -193,14 +193,14 @@ LABEL_25:
         +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
       }
 
-      if (a3)
+      if (error)
       {
         v14 = v12;
-        *a3 = v12;
+        *error = v12;
       }
     }
 
-    v15 = 0;
+    metadata = 0;
 LABEL_23:
 
     goto LABEL_24;
@@ -212,43 +212,43 @@ LABEL_23:
     [_DPBudgetAuditor auditedMetadataWithError:v16];
   }
 
-  v15 = [(_DPBudgetAuditor *)self metadata];
+  metadata = [(_DPBudgetAuditor *)self metadata];
 LABEL_24:
 
-  return v15;
+  return metadata;
 }
 
-- (id)getSymmetricRAPPORLocalEpsilonWithError:(id *)a3
+- (id)getSymmetricRAPPORLocalEpsilonWithError:(id *)error
 {
-  v5 = [(_DPBudgetAuditor *)self analysis];
+  analysis = [(_DPBudgetAuditor *)self analysis];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(_DPBudgetAuditor *)self analysis];
-    [v8 localEpsilon];
+    analysis2 = [(_DPBudgetAuditor *)self analysis];
+    [analysis2 localEpsilon];
     v9 = [v7 numberWithDouble:?];
 LABEL_6:
 
     goto LABEL_13;
   }
 
-  v10 = [(_DPBudgetAuditor *)self analysis];
+  analysis3 = [(_DPBudgetAuditor *)self analysis];
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
 
   if (v11)
   {
-    v8 = [(_DPBudgetAuditor *)self analysis];
-    v12 = [v8 rappor];
+    analysis2 = [(_DPBudgetAuditor *)self analysis];
+    rappor = [analysis2 rappor];
 
-    if (v12)
+    if (rappor)
     {
       v13 = MEMORY[0x277CCABB0];
-      v14 = [v8 rappor];
-      [v14 localEpsilon];
+      rappor2 = [analysis2 rappor];
+      [rappor2 localEpsilon];
       v9 = [v13 numberWithDouble:?];
 
       goto LABEL_6;
@@ -262,10 +262,10 @@ LABEL_6:
     +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
   }
 
-  if (a3)
+  if (error)
   {
     v17 = v15;
-    *a3 = v15;
+    *error = v15;
   }
 
   v9 = 0;
@@ -274,14 +274,14 @@ LABEL_13:
   return v9;
 }
 
-+ (id)targetApproximateDPFromDPConfig:(id)a3 error:(id *)a4
++ (id)targetApproximateDPFromDPConfig:(id)config error:(id *)error
 {
-  v5 = a3;
+  configCopy = config;
   v6 = [_DPApproximateDP alloc];
-  v7 = [v5 objectForKeyedSubscript:@"TargetCentralEpsilon"];
+  v7 = [configCopy objectForKeyedSubscript:@"TargetCentralEpsilon"];
   [v7 doubleValue];
   v9 = v8;
-  v10 = [v5 objectForKeyedSubscript:@"TargetCentralDelta"];
+  v10 = [configCopy objectForKeyedSubscript:@"TargetCentralDelta"];
 
   [v10 doubleValue];
   v24 = 0;
@@ -301,23 +301,23 @@ LABEL_13:
       [(_DPBudgetAuditor *)v15 targetApproximateDPFromDPConfig:v16 error:v17, v18, v19, v20, v21, v22];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _DPPrivacyBudgetErrorWithUnderlyingError(8, @"Malformed target central DP parameters in metadata.", v13);
+      *error = _DPPrivacyBudgetErrorWithUnderlyingError(8, @"Malformed target central DP parameters in metadata.", v13);
     }
   }
 
   return v12;
 }
 
-+ (id)maxApproximateDPFromPlist:(id)a3 error:(id *)a4
++ (id)maxApproximateDPFromPlist:(id)plist error:(id *)error
 {
-  v5 = a3;
+  plistCopy = plist;
   v6 = [_DPApproximateDP alloc];
-  v7 = [v5 objectForKeyedSubscript:@"MaxCentralEpsilon"];
+  v7 = [plistCopy objectForKeyedSubscript:@"MaxCentralEpsilon"];
   [v7 doubleValue];
   v9 = v8;
-  v10 = [v5 objectForKeyedSubscript:@"MaxCentralDelta"];
+  v10 = [plistCopy objectForKeyedSubscript:@"MaxCentralDelta"];
 
   [v10 doubleValue];
   v24 = 0;
@@ -337,20 +337,20 @@ LABEL_13:
       [(_DPBudgetAuditor *)v15 maxApproximateDPFromPlist:v16 error:v17, v18, v19, v20, v21, v22];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _DPPrivacyBudgetErrorWithUnderlyingError(7, @"Malformed max central DP parameters in plist.", v13);
+      *error = _DPPrivacyBudgetErrorWithUnderlyingError(7, @"Malformed max central DP parameters in plist.", v13);
     }
   }
 
   return v12;
 }
 
-+ (BOOL)checkMetadataLocalEpsilon:(double)a3 defaultLocalEpsilon:(double)a4 error:(id *)a5
++ (BOOL)checkMetadataLocalEpsilon:(double)epsilon defaultLocalEpsilon:(double)localEpsilon error:(id *)error
 {
-  if (a3 > a4)
+  if (epsilon > localEpsilon)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Local epsilon specified in metadata (%f) cannot exceed the default local epsilon (%f) in the plist.", *&a3, *&a4];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Local epsilon specified in metadata (%f) cannot exceed the default local epsilon (%f) in the plist.", *&epsilon, *&localEpsilon];
     v9 = _DPPrivacyBudgetError(8, v8);
 
     v10 = +[_DPLog framework];
@@ -359,20 +359,20 @@ LABEL_13:
       +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v11 = v9;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
-  return a3 <= a4;
+  return epsilon <= localEpsilon;
 }
 
-+ (BOOL)containValidDPConfigInMetadata:(id)a3 error:(id *)a4
++ (BOOL)containValidDPConfigInMetadata:(id)metadata error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v5 = [metadata objectForKeyedSubscript:@"DediscoTaskConfig"];
   v6 = [v5 objectForKeyedSubscript:@"DPConfig"];
 
   if (v6)
@@ -415,10 +415,10 @@ LABEL_13:
               +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
             }
 
-            if (a4)
+            if (error)
             {
               v19 = v17;
-              *a4 = v17;
+              *error = v17;
             }
 
             v15 = 0;
@@ -449,11 +449,11 @@ LABEL_16:
   return v15;
 }
 
-+ (BOOL)isMetadataValid:(id)a3 plistParameters:(id)a4 error:(id *)a5
++ (BOOL)isMetadataValid:(id)valid plistParameters:(id)parameters error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  validCopy = valid;
+  parametersCopy = parameters;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -477,7 +477,7 @@ LABEL_3:
       }
 
       v13 = *(*(&v47 + 1) + 8 * v12);
-      v14 = [v7 objectForKeyedSubscript:v13];
+      v14 = [parametersCopy objectForKeyedSubscript:v13];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -512,7 +512,7 @@ LABEL_3:
 
 LABEL_9:
 
-  v16 = [v6 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v16 = [validCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
 
   if (!v16)
   {
@@ -520,7 +520,7 @@ LABEL_9:
     goto LABEL_25;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v17 = [validCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   objc_opt_class();
   v18 = objc_opt_isKindOfClass();
 
@@ -535,18 +535,18 @@ LABEL_9:
       +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v36 = v8;
       v28 = 0;
-      *a5 = v8;
+      *error = v8;
       goto LABEL_24;
     }
 
     goto LABEL_23;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v8 = [validCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v19 = [v8 objectForKeyedSubscript:@"MinBatchSize"];
   objc_opt_class();
   v20 = objc_opt_isKindOfClass();
@@ -567,10 +567,10 @@ LABEL_19:
 
 LABEL_20:
 
-    if (a5)
+    if (error)
     {
       v31 = v24;
-      *a5 = v24;
+      *error = v24;
     }
 
     goto LABEL_22;
@@ -621,10 +621,10 @@ LABEL_20:
         +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v44 = v42;
-        *a5 = v42;
+        *error = v42;
       }
 
 LABEL_22:

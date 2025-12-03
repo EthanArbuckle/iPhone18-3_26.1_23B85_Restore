@@ -1,28 +1,28 @@
 @interface PSUITotalCellularUsageSubgroup
 - (PSBillingPeriodSource)billingPeriodSource;
-- (PSUITotalCellularUsageSubgroup)initWithStatisticsCache:(id)a3 andBillingPeriodSource:(id)a4 usageType:(unint64_t)a5;
+- (PSUITotalCellularUsageSubgroup)initWithStatisticsCache:(id)cache andBillingPeriodSource:(id)source usageType:(unint64_t)type;
 - (id)specifiers;
 - (id)totalBytesUsed;
-- (id)totalDataUsageForSpecifier:(id)a3;
+- (id)totalDataUsageForSpecifier:(id)specifier;
 - (id)totalRoamingBytesUsed;
-- (id)totalRoamingDataUsageForSpecifier:(id)a3;
+- (id)totalRoamingDataUsageForSpecifier:(id)specifier;
 @end
 
 @implementation PSUITotalCellularUsageSubgroup
 
-- (PSUITotalCellularUsageSubgroup)initWithStatisticsCache:(id)a3 andBillingPeriodSource:(id)a4 usageType:(unint64_t)a5
+- (PSUITotalCellularUsageSubgroup)initWithStatisticsCache:(id)cache andBillingPeriodSource:(id)source usageType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  cacheCopy = cache;
+  sourceCopy = source;
   v28.receiver = self;
   v28.super_class = PSUITotalCellularUsageSubgroup;
   v11 = [(PSUITotalCellularUsageSubgroup *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_statisticsCache, a3);
-    objc_storeWeak(&v12->_billingPeriodSource, v10);
-    v12->_usageType = a5;
+    objc_storeStrong(&v11->_statisticsCache, cache);
+    objc_storeWeak(&v12->_billingPeriodSource, sourceCopy);
+    v12->_usageType = type;
     v13 = MEMORY[0x277D3FAD8];
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"CURRENT_DATA_PERIOD" value:&stru_287733598 table:@"Cellular"];
@@ -85,13 +85,13 @@
 - (id)totalBytesUsed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUITotalCellularUsageSubgroup *)self billingPeriodSource];
-  v4 = v3;
-  if (v3)
+  billingPeriodSource = [(PSUITotalCellularUsageSubgroup *)self billingPeriodSource];
+  v4 = billingPeriodSource;
+  if (billingPeriodSource)
   {
-    v5 = [v3 selectedPeriod];
+    selectedPeriod = [billingPeriodSource selectedPeriod];
     v6 = @"previous billing cycle";
-    if (!v5)
+    if (!selectedPeriod)
     {
       v6 = @"current billing cycle";
     }
@@ -99,7 +99,7 @@
     v7 = v6;
     usageType = self->_usageType;
     statisticsCache = self->_statisticsCache;
-    v10 = [v4 selectedPeriod];
+    selectedPeriod2 = [v4 selectedPeriod];
     if (usageType)
     {
       goto LABEL_5;
@@ -108,22 +108,22 @@
 
   else
   {
-    v10 = 0;
+    selectedPeriod2 = 0;
     statisticsCache = self->_statisticsCache;
     v7 = @"total";
     if (self->_usageType)
     {
 LABEL_5:
-      v11 = [(PSDataUsageStatisticsCache *)statisticsCache totalSatelliteUsageForPeriod:v10];
+      v11 = [(PSDataUsageStatisticsCache *)statisticsCache totalSatelliteUsageForPeriod:selectedPeriod2];
       goto LABEL_8;
     }
   }
 
-  v11 = [(PSDataUsageStatisticsCache *)statisticsCache totalCellularUsageForPeriod:v10];
+  v11 = [(PSDataUsageStatisticsCache *)statisticsCache totalCellularUsageForPeriod:selectedPeriod2];
 LABEL_8:
   v12 = v11;
-  v13 = [(PSUITotalCellularUsageSubgroup *)self getLogger];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUITotalCellularUsageSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315650;
     v18 = "[PSUITotalCellularUsageSubgroup totalBytesUsed]";
@@ -131,7 +131,7 @@ LABEL_8:
     v20 = v7;
     v21 = 2048;
     v22 = v12;
-    _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "%s returning %@ usage %f", &v17, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s returning %@ usage %f", &v17, 0x20u);
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
@@ -144,32 +144,32 @@ LABEL_8:
 - (id)totalRoamingBytesUsed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUITotalCellularUsageSubgroup *)self billingPeriodSource];
-  v4 = v3;
-  if (v3)
+  billingPeriodSource = [(PSUITotalCellularUsageSubgroup *)self billingPeriodSource];
+  v4 = billingPeriodSource;
+  if (billingPeriodSource)
   {
-    v5 = [v3 selectedPeriod];
+    selectedPeriod = [billingPeriodSource selectedPeriod];
     v6 = @"previous billing cycle";
-    if (!v5)
+    if (!selectedPeriod)
     {
       v6 = @"current billing cycle";
     }
 
     v7 = v6;
     statisticsCache = self->_statisticsCache;
-    v9 = [v4 selectedPeriod];
+    selectedPeriod2 = [v4 selectedPeriod];
   }
 
   else
   {
-    v9 = 0;
+    selectedPeriod2 = 0;
     statisticsCache = self->_statisticsCache;
     v7 = @"total";
   }
 
-  v10 = [(PSDataUsageStatisticsCache *)statisticsCache totalRoamingUsageForPeriod:v9];
-  v11 = [(PSUITotalCellularUsageSubgroup *)self getLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  v10 = [(PSDataUsageStatisticsCache *)statisticsCache totalRoamingUsageForPeriod:selectedPeriod2];
+  getLogger = [(PSUITotalCellularUsageSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315650;
     v16 = "[PSUITotalCellularUsageSubgroup totalRoamingBytesUsed]";
@@ -177,7 +177,7 @@ LABEL_8:
     v18 = v7;
     v19 = 2048;
     v20 = v10;
-    _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_DEFAULT, "%s returning %@ roaming %f", &v15, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s returning %@ roaming %f", &v15, 0x20u);
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
@@ -187,17 +187,17 @@ LABEL_8:
   return v12;
 }
 
-- (id)totalDataUsageForSpecifier:(id)a3
+- (id)totalDataUsageForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSUITotalCellularUsageSubgroup *)self totalBytesUsed];
-  v6 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  specifierCopy = specifier;
+  totalBytesUsed = [(PSUITotalCellularUsageSubgroup *)self totalBytesUsed];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
 
-  if (v5)
+  if (totalBytesUsed)
   {
     [v6 setAccessoryView:0];
     v7 = MEMORY[0x277D4D878];
-    [v5 doubleValue];
+    [totalBytesUsed doubleValue];
     v8 = [v7 usageSizeString:?];
   }
 
@@ -213,17 +213,17 @@ LABEL_8:
   return v8;
 }
 
-- (id)totalRoamingDataUsageForSpecifier:(id)a3
+- (id)totalRoamingDataUsageForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSUITotalCellularUsageSubgroup *)self totalRoamingBytesUsed];
-  v6 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  specifierCopy = specifier;
+  totalRoamingBytesUsed = [(PSUITotalCellularUsageSubgroup *)self totalRoamingBytesUsed];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
 
-  if (v5)
+  if (totalRoamingBytesUsed)
   {
     [v6 setAccessoryView:0];
     v7 = MEMORY[0x277D4D878];
-    [v5 doubleValue];
+    [totalRoamingBytesUsed doubleValue];
     v8 = [v7 usageSizeString:?];
   }
 

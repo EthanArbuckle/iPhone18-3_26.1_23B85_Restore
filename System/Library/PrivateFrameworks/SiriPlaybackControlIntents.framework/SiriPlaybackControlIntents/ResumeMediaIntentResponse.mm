@@ -1,12 +1,12 @@
 @interface ResumeMediaIntentResponse
-- (ResumeMediaIntentResponse)initWithPropertiesByName:(id)a3;
+- (ResumeMediaIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation ResumeMediaIntentResponse
 
-- (ResumeMediaIntentResponse)initWithPropertiesByName:(id)a3
+- (ResumeMediaIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

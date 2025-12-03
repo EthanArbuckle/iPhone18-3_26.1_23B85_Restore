@@ -1,72 +1,72 @@
 @interface CRLiOSInsertPageViewController
 - (BOOL)crl_isInDarkMode;
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (BOOL)supportsSearch;
 - (CGSize)contentSize;
-- (CRLiOSInsertPageViewController)initWithCoder:(id)a3;
-- (CRLiOSInsertPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CRLiOSInsertPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5;
+- (CRLiOSInsertPageViewController)initWithCoder:(id)coder;
+- (CRLiOSInsertPageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CRLiOSInsertPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options;
 - (CRLiOSInsertPageViewControllerDataSource)insertPageViewControllerDataSource;
 - (CRLiOSInsertPageViewControllerDelegate)insertPageViewControllerDelegate;
 - (CRLiOSInsertPageViewControllerNavigationDataSource)insertPageViewControllerNavigationDataSource;
 - (UIView)p_searchOverlayView;
 - (double)p_dotsPageControlHeight;
 - (id)p_selectedViewController;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (unint64_t)p_pageControlType;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
 - (void)p_addKeyboardObservation;
-- (void)p_beginSearchingAnimated:(BOOL)a3;
+- (void)p_beginSearchingAnimated:(BOOL)animated;
 - (void)p_clearSearching;
 - (void)p_dotPageControlValueChanged;
 - (void)p_endSearching;
-- (void)p_keyboardWillHide:(id)a3;
-- (void)p_keyboardWillShow:(id)a3;
-- (void)p_moveOverlayView:(id)a3 toSelectedViewControllerView:(id)a4;
-- (void)p_recursivelySetExclusiveTouchOnView:(id)a3;
+- (void)p_keyboardWillHide:(id)hide;
+- (void)p_keyboardWillShow:(id)show;
+- (void)p_moveOverlayView:(id)view toSelectedViewControllerView:(id)controllerView;
+- (void)p_recursivelySetExclusiveTouchOnView:(id)view;
 - (void)p_removeKeyboardObservation;
 - (void)p_restoreViewState;
-- (void)p_selectPageAtIndex:(unint64_t)a3 animated:(BOOL)a4 scrollToBottom:(BOOL)a5;
-- (void)p_setSearchBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)p_setSearchOverlayViewHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)p_setViewControllers:(id)a3 shouldUpdatePageViewController:(BOOL)a4 animated:(BOOL)a5;
-- (void)p_setupConstraintsWithTopLevelView:(id)a3 searchBar:(id)a4 navigatorStackView:(id)a5 pageViewControllerView:(id)a6 dotsPageControlWrapper:(id)a7;
+- (void)p_selectPageAtIndex:(unint64_t)index animated:(BOOL)animated scrollToBottom:(BOOL)bottom;
+- (void)p_setSearchBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)p_setSearchOverlayViewHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)p_setViewControllers:(id)controllers shouldUpdatePageViewController:(BOOL)controller animated:(BOOL)animated;
+- (void)p_setupConstraintsWithTopLevelView:(id)view searchBar:(id)bar navigatorStackView:(id)stackView pageViewControllerView:(id)controllerView dotsPageControlWrapper:(id)wrapper;
 - (void)p_setupViews;
-- (void)p_subpageNavigatorDidChangeSelectedSegment:(id)a3;
-- (void)p_titlesPageControlValueChanged:(id)a3;
+- (void)p_subpageNavigatorDidChangeSelectedSegment:(id)segment;
+- (void)p_titlesPageControlValueChanged:(id)changed;
 - (void)p_updateBottomConstraintsIfNeeded;
 - (void)p_updatePageSelectionForViewAppearance;
-- (void)p_updateTitlesPageControlAndBottomViewColorsInDarkUI:(BOOL)a3;
-- (void)p_updateUIForChangeToPageNumber:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
+- (void)p_updateTitlesPageControlAndBottomViewColorsInDarkUI:(BOOL)i;
+- (void)p_updateUIForChangeToPageNumber:(unint64_t)number animated:(BOOL)animated completion:(id)completion;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
 - (void)resignFirstResponderIfNeeded;
-- (void)scribbleInteractionDidFinishWriting:(id)a3;
-- (void)scribbleInteractionWillBeginWriting:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
+- (void)scribbleInteractionDidFinishWriting:(id)writing;
+- (void)scribbleInteractionWillBeginWriting:(id)writing;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarTextDidEndEditing:(id)editing;
 - (void)updateBottomViewVisibilityIfNeeded;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation CRLiOSInsertPageViewController
 
-- (void)scribbleInteractionWillBeginWriting:(id)a3
+- (void)scribbleInteractionWillBeginWriting:(id)writing
 {
   if (self->_shouldIgnoreCancelBecauseOfWriting)
   {
@@ -100,7 +100,7 @@
   self->_shouldIgnoreCancelBecauseOfWriting = 1;
 }
 
-- (void)scribbleInteractionDidFinishWriting:(id)a3
+- (void)scribbleInteractionDidFinishWriting:(id)writing
 {
   if (!self->_shouldIgnoreCancelBecauseOfWriting)
   {
@@ -134,15 +134,15 @@
   self->_shouldIgnoreCancelBecauseOfWriting = 0;
 }
 
-- (CRLiOSInsertPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5
+- (CRLiOSInsertPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options
 {
-  v7 = a5;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = CRLiOSInsertPageViewController;
   v8 = [(CRLiOSInsertPageViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [[UIPageViewController alloc] initWithTransitionStyle:1 navigationOrientation:a4 options:v7];
+    v9 = [[UIPageViewController alloc] initWithTransitionStyle:1 navigationOrientation:orientation options:optionsCopy];
     pageViewController = v8->_pageViewController;
     v8->_pageViewController = v9;
   }
@@ -150,15 +150,15 @@
   return v8;
 }
 
-- (CRLiOSInsertPageViewController)initWithCoder:(id)a3
+- (CRLiOSInsertPageViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CRLiOSInsertPageViewController;
-  v5 = [(CRLiOSInsertPageViewController *)&v9 initWithCoder:v4];
+  v5 = [(CRLiOSInsertPageViewController *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [[UIPageViewController alloc] initWithCoder:v4];
+    v6 = [[UIPageViewController alloc] initWithCoder:coderCopy];
     pageViewController = v5->_pageViewController;
     v5->_pageViewController = v6;
   }
@@ -166,16 +166,16 @@
   return v5;
 }
 
-- (CRLiOSInsertPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CRLiOSInsertPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v12.receiver = self;
   v12.super_class = CRLiOSInsertPageViewController;
-  v8 = [(CRLiOSInsertPageViewController *)&v12 initWithNibName:v6 bundle:v7];
+  v8 = [(CRLiOSInsertPageViewController *)&v12 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
-    v9 = [[UIPageViewController alloc] initWithNibName:v6 bundle:v7];
+    v9 = [[UIPageViewController alloc] initWithNibName:nameCopy bundle:bundleCopy];
     pageViewController = v8->_pageViewController;
     v8->_pageViewController = v9;
   }
@@ -183,23 +183,23 @@
   return v8;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInsertPageViewController;
   [(CRLiOSInsertPageViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(CRLiOSInsertPageViewController *)self p_removeKeyboardObservation];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInsertPageViewController;
   [(CRLiOSInsertPageViewController *)&v5 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
     [(CRLiOSInsertPageViewController *)self p_updatePageSelectionForViewAppearance];
   }
@@ -209,10 +209,10 @@
 {
   if (![(CRLiOSInsertPageViewController *)self p_isShowingSearchBar])
   {
-    v3 = [(CRLiOSInsertPageViewController *)self p_currentPageNumber];
-    v4 = [(CRLiOSInsertPageViewController *)self p_shouldScrollToBottomOfPage];
+    p_currentPageNumber = [(CRLiOSInsertPageViewController *)self p_currentPageNumber];
+    p_shouldScrollToBottomOfPage = [(CRLiOSInsertPageViewController *)self p_shouldScrollToBottomOfPage];
 
-    [(CRLiOSInsertPageViewController *)self p_selectPageAtIndex:v3 animated:0 scrollToBottom:v4];
+    [(CRLiOSInsertPageViewController *)self p_selectPageAtIndex:p_currentPageNumber animated:0 scrollToBottom:p_shouldScrollToBottomOfPage];
   }
 }
 
@@ -230,67 +230,67 @@
   [(CRLiOSInsertPageViewController *)self p_setupViews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(CRLiOSInsertPageViewController *)self p_restoreViewState];
-  v5 = [(CRLiOSInsertPageViewController *)self p_pageViewController];
-  v6 = [(CRLiOSInsertPageViewController *)self viewControllers];
-  [v5 setViewControllers:v6 direction:0 animated:0 completion:0];
+  p_pageViewController = [(CRLiOSInsertPageViewController *)self p_pageViewController];
+  viewControllers = [(CRLiOSInsertPageViewController *)self viewControllers];
+  [p_pageViewController setViewControllers:viewControllers direction:0 animated:0 completion:0];
 
   v7.receiver = self;
   v7.super_class = CRLiOSInsertPageViewController;
-  [(CRLiOSInsertPageViewController *)&v7 viewWillAppear:v3];
+  [(CRLiOSInsertPageViewController *)&v7 viewWillAppear:appearCopy];
   [(CRLiOSInsertPageViewController *)self p_addKeyboardObservation];
   [(CRLiOSInsertPageViewController *)self p_updateBottomConstraintsIfNeeded];
   [(CRLiOSInsertPageViewController *)self p_updateTitlesPageControlAndBottomViewColorsInDarkUI:[(CRLiOSInsertPageViewController *)self crl_isInDarkMode]];
   self->_shouldUpdatePageSelectionOnNextLayoutSubviews = 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInsertPageViewController;
-  [(CRLiOSInsertPageViewController *)&v5 viewDidAppear:a3];
+  [(CRLiOSInsertPageViewController *)&v5 viewDidAppear:appear];
   [(CRLiOSInsertPageViewController *)self setP_isInViewHierarchy:1];
   [(CRLiOSInsertPageViewController *)self p_updatePageSelectionForViewAppearance];
-  v4 = [(CRLiOSInsertPageViewController *)self p_searchButton];
-  CRLAccessibilityPostLayoutChangedNotification(v4);
+  p_searchButton = [(CRLiOSInsertPageViewController *)self p_searchButton];
+  CRLAccessibilityPostLayoutChangedNotification(p_searchButton);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInsertPageViewController;
-  [(CRLiOSInsertPageViewController *)&v5 viewWillDisappear:a3];
+  [(CRLiOSInsertPageViewController *)&v5 viewWillDisappear:disappear];
   [(CRLiOSInsertPageViewController *)self p_removeKeyboardObservation];
-  v4 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  [v4 insertPageViewControllerWillDisappear:self];
+  insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  [insertPageViewControllerDelegate insertPageViewControllerWillDisappear:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CRLiOSInsertPageViewController;
-  [(CRLiOSInsertPageViewController *)&v4 viewDidDisappear:a3];
+  [(CRLiOSInsertPageViewController *)&v4 viewDidDisappear:disappear];
   [(CRLiOSInsertPageViewController *)self p_setSearchOverlayViewHidden:1 animated:0];
   [(CRLiOSInsertPageViewController *)self setP_isInViewHierarchy:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CRLiOSInsertPageViewController;
-  v7 = a4;
-  [(CRLiOSInsertPageViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CRLiOSInsertPageViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100205D7C;
   v8[3] = &unk_101848DD8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -300,10 +300,10 @@
   [(CRLiOSInsertPageViewController *)&v6 viewDidLayoutSubviews];
   if (![(CRLiOSInsertPageViewController *)self p_pageControlType])
   {
-    v3 = [(CRLiOSInsertPageViewController *)self view];
-    v4 = [v3 tintColor];
-    v5 = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
-    [v5 setCurrentPageIndicatorTintColor:v4];
+    view = [(CRLiOSInsertPageViewController *)self view];
+    tintColor = [view tintColor];
+    p_dotsPageControl = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
+    [p_dotsPageControl setCurrentPageIndicatorTintColor:tintColor];
   }
 
   if (self->_shouldUpdatePageSelectionOnNextLayoutSubviews)
@@ -320,36 +320,36 @@
   [(CRLiOSInsertPageViewController *)&v18 updateViewConstraints];
   if (![(CRLiOSInsertPageViewController *)self p_pageControlType])
   {
-    v3 = [(CRLiOSInsertPageViewController *)self p_bottomFadeBar];
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v4 = [v3 superview];
+    p_bottomFadeBar = [(CRLiOSInsertPageViewController *)self p_bottomFadeBar];
+    [p_bottomFadeBar setTranslatesAutoresizingMaskIntoConstraints:0];
+    superview = [p_bottomFadeBar superview];
 
-    if (v4)
+    if (superview)
     {
-      [v3 removeFromSuperview];
+      [p_bottomFadeBar removeFromSuperview];
     }
 
-    v5 = [(CRLiOSInsertPageViewController *)self view];
-    [v5 addSubview:v3];
-    [v5 bringSubviewToFront:v3];
-    v6 = [v3 leadingAnchor];
-    v7 = [v5 leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    view = [(CRLiOSInsertPageViewController *)self view];
+    [view addSubview:p_bottomFadeBar];
+    [view bringSubviewToFront:p_bottomFadeBar];
+    leadingAnchor = [p_bottomFadeBar leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v8 setActive:1];
 
-    v9 = [v3 trailingAnchor];
-    v10 = [v5 trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor = [p_bottomFadeBar trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v11 setActive:1];
 
-    v12 = [v3 bottomAnchor];
-    v13 = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
-    v14 = [v13 topAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [p_bottomFadeBar bottomAnchor];
+    p_dotsPageControl = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
+    topAnchor = [p_dotsPageControl topAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:topAnchor];
     [v15 setActive:1];
 
-    v16 = [v3 heightAnchor];
-    v17 = [v16 constraintEqualToConstant:6.0];
+    heightAnchor = [p_bottomFadeBar heightAnchor];
+    v17 = [heightAnchor constraintEqualToConstant:6.0];
     [v17 setActive:1];
   }
 }
@@ -362,16 +362,16 @@
   [(CRLiOSInsertPageViewController *)self p_updateBottomConstraintsIfNeeded];
 }
 
-- (void)p_recursivelySetExclusiveTouchOnView:(id)a3
+- (void)p_recursivelySetExclusiveTouchOnView:(id)view
 {
-  v4 = a3;
-  [v4 setExclusiveTouch:1];
+  viewCopy = view;
+  [viewCopy setExclusiveTouch:1];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [viewCopy subviews];
+  v6 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -383,7 +383,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         [(CRLiOSInsertPageViewController *)self p_recursivelySetExclusiveTouchOnView:*(*(&v10 + 1) + 8 * v9)];
@@ -391,21 +391,21 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)p_setViewControllers:(id)a3 shouldUpdatePageViewController:(BOOL)a4 animated:(BOOL)a5
+- (void)p_setViewControllers:(id)controllers shouldUpdatePageViewController:(BOOL)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if ([(CRLiOSInsertPageViewController *)self p_isInViewHierarchy]&& v6)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  controllersCopy = controllers;
+  if ([(CRLiOSInsertPageViewController *)self p_isInViewHierarchy]&& controllerCopy)
   {
-    if (v5)
+    if (animatedCopy)
     {
       v9 = 0.300000012;
     }
@@ -415,19 +415,19 @@
       v9 = 0.0;
     }
 
-    v10 = [(CRLiOSInsertPageViewController *)self p_pageViewController];
-    v11 = [v10 view];
+    p_pageViewController = [(CRLiOSInsertPageViewController *)self p_pageViewController];
+    view = [p_pageViewController view];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100206460;
     v28[3] = &unk_10183AE28;
-    v29 = v10;
-    v30 = v8;
-    v12 = v10;
-    [UIView transitionWithView:v11 duration:5242880 options:v28 animations:0 completion:v9];
+    v29 = p_pageViewController;
+    v30 = controllersCopy;
+    v12 = p_pageViewController;
+    [UIView transitionWithView:view duration:5242880 options:v28 animations:0 completion:v9];
   }
 
-  v13 = [v8 copy];
+  v13 = [controllersCopy copy];
   viewControllers = self->_viewControllers;
   self->_viewControllers = v13;
 
@@ -450,8 +450,8 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v24 + 1) + 8 * i) view];
-        [(CRLiOSInsertPageViewController *)self p_recursivelySetExclusiveTouchOnView:v20];
+        view2 = [*(*(&v24 + 1) + 8 * i) view];
+        [(CRLiOSInsertPageViewController *)self p_recursivelySetExclusiveTouchOnView:view2];
       }
 
       v17 = [(NSArray *)v15 countByEnumeratingWithState:&v24 objects:v31 count:16];
@@ -460,25 +460,25 @@
     while (v17);
   }
 
-  v21 = [(CRLiOSInsertPageViewController *)self p_searchOverlayView];
-  v22 = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
-  v23 = [v22 view];
-  [(CRLiOSInsertPageViewController *)self p_moveOverlayView:v21 toSelectedViewControllerView:v23];
+  p_searchOverlayView = [(CRLiOSInsertPageViewController *)self p_searchOverlayView];
+  p_selectedViewController = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
+  view3 = [p_selectedViewController view];
+  [(CRLiOSInsertPageViewController *)self p_moveOverlayView:p_searchOverlayView toSelectedViewControllerView:view3];
 }
 
 - (CGSize)contentSize
 {
-  v3 = [(CRLiOSInsertPageViewController *)self p_pageControlType];
-  v4 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
+  p_pageControlType = [(CRLiOSInsertPageViewController *)self p_pageControlType];
+  insertPageViewControllerNavigationDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
   Height = 0.0;
-  if ([v4 showsSubpageNavigator])
+  if ([insertPageViewControllerNavigationDataSource showsSubpageNavigator])
   {
-    v6 = [(CRLiOSInsertPageViewController *)self p_subpageNavigator];
-    [v6 bounds];
+    p_subpageNavigator = [(CRLiOSInsertPageViewController *)self p_subpageNavigator];
+    [p_subpageNavigator bounds];
     Height = CGRectGetHeight(v29);
   }
 
-  if (v3 == 1)
+  if (p_pageControlType == 1)
   {
     v7 = 44.0;
   }
@@ -490,15 +490,15 @@
 
   [(CRLiOSInsertPageViewController *)self p_dotsPageControlHeight];
   v9 = v8;
-  v10 = [(CRLiOSInsertPageViewController *)self view];
-  [v10 bounds];
+  view = [(CRLiOSInsertPageViewController *)self view];
+  [view bounds];
   v12 = v11;
   v14 = v13;
 
   [(CRLiOSInsertPageViewController *)self preferredContentSize];
   v16 = fmax(v14, v15) - (v7 + Height + v9);
-  v17 = [(CRLiOSInsertPageViewController *)self view];
-  [v17 safeAreaInsets];
+  view2 = [(CRLiOSInsertPageViewController *)self view];
+  [view2 safeAreaInsets];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -513,28 +513,28 @@
 
 - (BOOL)supportsSearch
 {
-  v2 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
-  v3 = [v2 supportsSearch];
+  insertPageViewControllerNavigationDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
+  supportsSearch = [insertPageViewControllerNavigationDataSource supportsSearch];
 
-  return v3;
+  return supportsSearch;
 }
 
 - (void)resignFirstResponderIfNeeded
 {
-  v3 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-  v4 = [v3 isFirstResponder];
+  p_searchBar = [(CRLiOSInsertPageViewController *)self p_searchBar];
+  isFirstResponder = [p_searchBar isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-    [v5 resignFirstResponder];
+    p_searchBar2 = [(CRLiOSInsertPageViewController *)self p_searchBar];
+    [p_searchBar2 resignFirstResponder];
   }
 }
 
 - (void)updateBottomViewVisibilityIfNeeded
 {
-  v3 = [(CRLiOSInsertPageViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(CRLiOSInsertPageViewController *)self view];
+  [view layoutIfNeeded];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -544,29 +544,29 @@
   [UIView animateWithDuration:v4 animations:0.300000012];
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v7 = [v6 insertPageViewController:self viewControllerBeforeViewController:v5];
+  viewControllerCopy = viewController;
+  insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  v7 = [insertPageViewControllerDataSource insertPageViewController:self viewControllerBeforeViewController:viewControllerCopy];
 
   return v7;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v7 = [v6 insertPageViewController:self viewControllerAfterViewController:v5];
+  viewControllerCopy = viewController;
+  insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  v7 = [insertPageViewControllerDataSource insertPageViewController:self viewControllerAfterViewController:viewControllerCopy];
 
   return v7;
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count] != 1)
+  controllerCopy = controller;
+  controllersCopy = controllers;
+  if ([controllersCopy count] != 1)
   {
     v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -586,9 +586,9 @@
       v20 = 1024;
       v21 = 667;
       v22 = 2112;
-      v23 = v7;
+      v23 = controllersCopy;
       v24 = 2112;
-      v25 = self;
+      selfCopy = self;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Incorrectly transitioning to more than one view controller (%@) in %@.", buf, 0x36u);
     }
 
@@ -605,85 +605,85 @@
 
     v11 = [NSString stringWithUTF8String:"[CRLiOSInsertPageViewController pageViewController:willTransitionToViewControllers:]"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Views/CRLiOSInsertPageViewController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:667 isFatal:0 description:"Incorrectly transitioning to more than one view controller (%@) in %@.", v7, self];
+    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:667 isFatal:0 description:"Incorrectly transitioning to more than one view controller (%@) in %@.", controllersCopy, self];
   }
 
-  v13 = [v6 view];
-  [(CRLiOSInsertPageViewController *)self p_recursivelySetExclusiveTouchOnView:v13];
+  view = [controllerCopy view];
+  [(CRLiOSInsertPageViewController *)self p_recursivelySetExclusiveTouchOnView:view];
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v6 = a6;
-  v8 = a3;
-  v9 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v10 = [v8 viewControllers];
-  v11 = [v10 firstObject];
-  v12 = [v9 insertPageViewController:self presentationIndexForViewController:v11];
+  completedCopy = completed;
+  controllerCopy = controller;
+  insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  viewControllers = [controllerCopy viewControllers];
+  firstObject = [viewControllers firstObject];
+  v12 = [insertPageViewControllerDataSource insertPageViewController:self presentationIndexForViewController:firstObject];
 
   [(CRLiOSInsertPageViewController *)self setP_currentPageNumber:v12];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"AX_INSERT_PANEL_PAGE_SCROLLED" value:@"Page %1$lu of %2$lu" table:0];
 
-  v15 = [(CRLiOSInsertPageViewController *)self p_pageControlType];
-  if (v15 == 1)
+  p_pageControlType = [(CRLiOSInsertPageViewController *)self p_pageControlType];
+  if (p_pageControlType == 1)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100206CF4;
     v22[3] = &unk_101848E40;
     v22[4] = self;
-    v23 = v8;
+    v23 = controllerCopy;
     v24 = v12;
-    v25 = v6;
+    v25 = completedCopy;
     [(CRLiOSInsertPageViewController *)self p_updateUIForChangeToPageNumber:v12 animated:1 completion:v22];
   }
 
-  else if (!v15)
+  else if (!p_pageControlType)
   {
-    v16 = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
-    [v16 setCurrentPage:v12];
+    p_dotsPageControl = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
+    [p_dotsPageControl setCurrentPage:v12];
 
-    v17 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-    [v17 insertPageViewController:self didSelectPageNumber:v12];
+    insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+    [insertPageViewControllerDelegate insertPageViewController:self didSelectPageNumber:v12];
 
-    v18 = [v8 viewControllers];
-    [(CRLiOSInsertPageViewController *)self p_setViewControllers:v18 shouldUpdatePageViewController:0 animated:0];
+    viewControllers2 = [controllerCopy viewControllers];
+    [(CRLiOSInsertPageViewController *)self p_setViewControllers:viewControllers2 shouldUpdatePageViewController:0 animated:0];
 
-    if (v6)
+    if (completedCopy)
     {
       v19 = UIAccessibilityPageScrolledNotification;
-      v20 = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
-      v21 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v14, v12 + 1, [v20 numberOfPages]);
+      p_dotsPageControl2 = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
+      v21 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v14, v12 + 1, [p_dotsPageControl2 numberOfPages]);
       UIAccessibilityPostNotification(v19, v21);
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if ([(CRLiOSInsertPageViewController *)self p_isShowingSearchBar])
   {
-    [v4 bounds];
-    [v4 setContentOffset:{CGRectGetWidth(v6), 0.0}];
+    [scrollCopy bounds];
+    [scrollCopy setContentOffset:{CGRectGetWidth(v6), 0.0}];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v6 = a3;
+  draggingCopy = dragging;
   if ([(CRLiOSInsertPageViewController *)self p_isShowingSearchBar])
   {
-    [v6 bounds];
-    [v6 setContentOffset:{CGRectGetWidth(v8), 0.0}];
+    [draggingCopy bounds];
+    [draggingCopy setContentOffset:{CGRectGetWidth(v8), 0.0}];
   }
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
-  v4 = [a3 text];
-  v5 = [v4 length];
+  text = [editing text];
+  v5 = [text length];
 
   if (!v5)
   {
@@ -693,48 +693,48 @@
   return 1;
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100206FF4;
   v8[3] = &unk_10183AE28;
-  v9 = v4;
-  v10 = self;
+  v9 = editingCopy;
+  selfCopy = self;
   v5 = v8;
-  v6 = v4;
+  v6 = editingCopy;
   Main = CFRunLoopGetMain();
   CFRunLoopPerformBlock(Main, kCFRunLoopDefaultMode, v5);
   CFRunLoopWakeUp(Main);
 }
 
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v5 = self;
-  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate:a3];
-  LOBYTE(v5) = [v6 insertPageViewControllerShouldChangeSearchText:v5];
+  selfCopy = self;
+  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate:bar];
+  LOBYTE(selfCopy) = [v6 insertPageViewControllerShouldChangeSearchText:selfCopy];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(CRLiOSInsertPageViewController *)self p_searchViewController];
-  v7 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  [v7 insertPageViewController:self willSearchWithText:v5 inViewController:v6 searchViewController:v6];
+  changeCopy = change;
+  p_searchViewController = [(CRLiOSInsertPageViewController *)self p_searchViewController];
+  insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  [insertPageViewControllerDelegate insertPageViewController:self willSearchWithText:changeCopy inViewController:p_searchViewController searchViewController:p_searchViewController];
 
-  v8 = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
+  p_selectedViewController = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
 
-  v9 = [v5 length];
-  v10 = v6;
-  if (v8 == v6)
+  v9 = [changeCopy length];
+  v10 = p_searchViewController;
+  if (p_selectedViewController == p_searchViewController)
   {
     if (!v9)
     {
-      v12 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-      v10 = [v12 insertPageViewController:self viewControllerForPageAtIndex:{-[CRLiOSInsertPageViewController p_currentPageNumber](self, "p_currentPageNumber")}];
+      insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+      v10 = [insertPageViewControllerDataSource insertPageViewController:self viewControllerForPageAtIndex:{-[CRLiOSInsertPageViewController p_currentPageNumber](self, "p_currentPageNumber")}];
 
       if (v10)
       {
@@ -749,20 +749,20 @@
 
   else if (v9)
   {
-    v10 = v6;
-    if (v6)
+    v10 = p_searchViewController;
+    if (p_searchViewController)
     {
       [(CRLiOSInsertPageViewController *)self p_setSearchOverlayViewHidden:1 animated:1];
-      v15 = v6;
+      v15 = p_searchViewController;
       v11 = [NSArray arrayWithObjects:&v15 count:1];
       [(CRLiOSInsertPageViewController *)self setViewControllers:v11 animated:0];
 
-      v10 = v6;
+      v10 = p_searchViewController;
     }
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   if (!self->_shouldIgnoreCancelBecauseOfWriting)
   {
@@ -773,13 +773,13 @@
   }
 }
 
-- (void)p_setSearchOverlayViewHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)p_setSearchOverlayViewHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(CRLiOSInsertPageViewController *)self p_searchOverlayView];
-  if (v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  p_searchOverlayView = [(CRLiOSInsertPageViewController *)self p_searchOverlayView];
+  if (hiddenCopy)
   {
     v10 = v15;
     v15[0] = _NSConcreteStackBlock;
@@ -795,7 +795,7 @@
     v11 = sub_100207414;
   }
 
-  if (v5)
+  if (animatedCopy)
   {
     v12 = 0.150000006;
   }
@@ -807,27 +807,27 @@
 
   v10[2] = v11;
   v10[3] = &unk_10183AB38;
-  v13 = v9;
+  v13 = p_searchOverlayView;
   v10[4] = v13;
-  [UIView animateWithDuration:v10 animations:v8 completion:v12];
+  [UIView animateWithDuration:v10 animations:completionCopy completion:v12];
 }
 
-- (void)p_setSearchBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)p_setSearchBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
   if ([(CRLiOSInsertPageViewController *)self supportsSearch])
   {
-    [(CRLiOSInsertPageViewController *)self setP_isShowingSearchBar:!v6];
-    v9 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-    if (!v6)
+    [(CRLiOSInsertPageViewController *)self setP_isShowingSearchBar:!hiddenCopy];
+    p_searchBar = [(CRLiOSInsertPageViewController *)self p_searchBar];
+    if (!hiddenCopy)
     {
-      v10 = [(CRLiOSInsertPageViewController *)self view];
-      [v10 bringSubviewToFront:v9];
+      view = [(CRLiOSInsertPageViewController *)self view];
+      [view bringSubviewToFront:p_searchBar];
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       v11 = 0.300000012;
     }
@@ -842,63 +842,63 @@
     v18[2] = sub_1002075C0;
     v18[3] = &unk_10183C3C8;
     v18[4] = self;
-    v19 = v6;
+    v19 = hiddenCopy;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100207688;
     v13[3] = &unk_101848E68;
-    v17 = v6;
-    v14 = v9;
-    v15 = self;
-    v16 = v8;
-    v12 = v9;
+    v17 = hiddenCopy;
+    v14 = p_searchBar;
+    selfCopy = self;
+    v16 = completionCopy;
+    v12 = p_searchBar;
     [UIView animateWithDuration:v18 animations:v13 completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)p_beginSearchingAnimated:(BOOL)a3
+- (void)p_beginSearchingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  [v5 insertPageViewControllerWillBeginSearch:self];
+  animatedCopy = animated;
+  insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  [insertPageViewControllerDelegate insertPageViewControllerWillBeginSearch:self];
 
-  [(CRLiOSInsertPageViewController *)self p_setSearchBarHidden:0 animated:v3 completion:0];
-  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v7 = [v6 insertPageViewControllerViewControllerForSearch:self];
+  [(CRLiOSInsertPageViewController *)self p_setSearchBarHidden:0 animated:animatedCopy completion:0];
+  insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  v7 = [insertPageViewControllerDataSource insertPageViewControllerViewControllerForSearch:self];
   [(CRLiOSInsertPageViewController *)self setP_searchViewController:v7];
 
-  v8 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  [v8 insertPageViewControllerDidBeginSearch:self];
+  insertPageViewControllerDelegate2 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  [insertPageViewControllerDelegate2 insertPageViewControllerDidBeginSearch:self];
 }
 
 - (void)p_endSearching
 {
   [(CRLiOSInsertPageViewController *)self p_clearSearching];
-  v3 = [(CRLiOSInsertPageViewController *)self p_currentPageNumber];
+  p_currentPageNumber = [(CRLiOSInsertPageViewController *)self p_currentPageNumber];
 
-  [(CRLiOSInsertPageViewController *)self p_selectPageAtIndex:v3];
+  [(CRLiOSInsertPageViewController *)self p_selectPageAtIndex:p_currentPageNumber];
 }
 
 - (void)p_clearSearching
 {
-  v3 = [(CRLiOSInsertPageViewController *)self p_didExplicitlyCancelSearch];
-  v4 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  [v4 insertPageViewControllerWillEndSearch:self cancelledExplicitly:v3];
+  p_didExplicitlyCancelSearch = [(CRLiOSInsertPageViewController *)self p_didExplicitlyCancelSearch];
+  insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  [insertPageViewControllerDelegate insertPageViewControllerWillEndSearch:self cancelledExplicitly:p_didExplicitlyCancelSearch];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100207970;
   v6[3] = &unk_101848E90;
   v6[4] = self;
-  v7 = v3;
+  v7 = p_didExplicitlyCancelSearch;
   [(CRLiOSInsertPageViewController *)self p_setSearchOverlayViewHidden:1 animated:1 completion:v6];
-  v5 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-  [v5 setText:&stru_1018BCA28];
+  p_searchBar = [(CRLiOSInsertPageViewController *)self p_searchBar];
+  [p_searchBar setText:&stru_1018BCA28];
 }
 
 - (void)p_addKeyboardObservation
@@ -919,77 +919,77 @@
   [v4 removeObserver:self name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)p_keyboardWillShow:(id)a3
+- (void)p_keyboardWillShow:(id)show
 {
-  v4 = a3;
-  v5 = [(CRLiOSInsertPageViewController *)self view];
-  [v5 layoutIfNeeded];
+  showCopy = show;
+  view = [(CRLiOSInsertPageViewController *)self view];
+  [view layoutIfNeeded];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100207BC0;
   v6[3] = &unk_10183AB38;
   v6[4] = self;
-  [UIView crl_animateWithKeyboardNotification:v4 animations:v6];
+  [UIView crl_animateWithKeyboardNotification:showCopy animations:v6];
 }
 
-- (void)p_keyboardWillHide:(id)a3
+- (void)p_keyboardWillHide:(id)hide
 {
-  v4 = a3;
-  v5 = [(CRLiOSInsertPageViewController *)self view];
-  [v5 layoutIfNeeded];
+  hideCopy = hide;
+  view = [(CRLiOSInsertPageViewController *)self view];
+  [view layoutIfNeeded];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100207CC8;
   v6[3] = &unk_10183AB38;
   v6[4] = self;
-  [UIView crl_animateWithKeyboardNotification:v4 animations:v6];
+  [UIView crl_animateWithKeyboardNotification:hideCopy animations:v6];
 }
 
 - (void)p_updateBottomConstraintsIfNeeded
 {
   [(CRLiOSInsertPageViewController *)self p_dotsPageControlHeight];
   v4 = v3;
-  v5 = [(CRLiOSInsertPageViewController *)self presentingViewController];
-  v6 = [v5 traitCollection];
-  v7 = [v6 crl_isCompactWidth];
+  presentingViewController = [(CRLiOSInsertPageViewController *)self presentingViewController];
+  traitCollection = [presentingViewController traitCollection];
+  crl_isCompactWidth = [traitCollection crl_isCompactWidth];
 
-  if (v7)
+  if (crl_isCompactWidth)
   {
-    v8 = +[CRLiOSKeyboardMonitor sharedKeyboardMonitor];
-    [v8 onScreenHeight];
+    p_bottomLayoutConstraintAboveKeyboard2 = +[CRLiOSKeyboardMonitor sharedKeyboardMonitor];
+    [p_bottomLayoutConstraintAboveKeyboard2 onScreenHeight];
     v10 = -v9;
-    v11 = [(CRLiOSInsertPageViewController *)self p_bottomLayoutConstraintAboveKeyboard];
-    [v11 setConstant:v10];
+    p_bottomLayoutConstraintAboveKeyboard = [(CRLiOSInsertPageViewController *)self p_bottomLayoutConstraintAboveKeyboard];
+    [p_bottomLayoutConstraintAboveKeyboard setConstant:v10];
   }
 
   else
   {
-    v8 = [(CRLiOSInsertPageViewController *)self p_bottomLayoutConstraintAboveKeyboard];
-    [v8 setConstant:0.0];
+    p_bottomLayoutConstraintAboveKeyboard2 = [(CRLiOSInsertPageViewController *)self p_bottomLayoutConstraintAboveKeyboard];
+    [p_bottomLayoutConstraintAboveKeyboard2 setConstant:0.0];
   }
 
-  v12 = [(CRLiOSInsertPageViewController *)self view];
-  [v12 safeAreaInsets];
+  view = [(CRLiOSInsertPageViewController *)self view];
+  [view safeAreaInsets];
   v14 = v4 + v13;
 
-  v15 = [(CRLiOSInsertPageViewController *)self p_dotsPageControlHeightConstraint];
-  [v15 setConstant:v14];
+  p_dotsPageControlHeightConstraint = [(CRLiOSInsertPageViewController *)self p_dotsPageControlHeightConstraint];
+  [p_dotsPageControlHeightConstraint setConstant:v14];
 }
 
 - (void)p_setupViews
 {
-  v3 = [(CRLiOSInsertPageViewController *)self view];
-  v4 = [(CRLiOSInsertPageViewController *)self p_pageViewController];
+  view = [(CRLiOSInsertPageViewController *)self view];
+  p_pageViewController = [(CRLiOSInsertPageViewController *)self p_pageViewController];
   v184 = 0u;
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v5 = [v4 view];
-  v6 = [v5 subviews];
+  view2 = [p_pageViewController view];
+  subviews = [view2 subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v184 objects:v188 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v184 objects:v188 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1000,7 +1000,7 @@
       {
         if (*v185 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v184 + 1) + 8 * i);
@@ -1013,23 +1013,23 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v184 objects:v188 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v184 objects:v188 count:16];
     }
 
     while (v8);
   }
 
-  [v4 setDataSource:self];
-  [v4 setDelegate:self];
-  [(CRLiOSInsertPageViewController *)self addChildViewController:v4];
-  [v4 didMoveToParentViewController:self];
-  v13 = [v4 view];
-  [v3 addSubview:v13];
+  [p_pageViewController setDataSource:self];
+  [p_pageViewController setDelegate:self];
+  [(CRLiOSInsertPageViewController *)self addChildViewController:p_pageViewController];
+  [p_pageViewController didMoveToParentViewController:self];
+  view3 = [p_pageViewController view];
+  [view addSubview:view3];
 
-  v14 = [(CRLiOSInsertPageViewController *)self supportsSearch];
-  v177 = v3;
-  v179 = v4;
-  if (v14)
+  supportsSearch = [(CRLiOSInsertPageViewController *)self supportsSearch];
+  v177 = view;
+  v179 = p_pageViewController;
+  if (supportsSearch)
   {
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"Search" value:0 table:0];
@@ -1038,16 +1038,16 @@
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v21 = [(CRLiOSInsertPageViewControllerSearchBar *)v17 initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(CRLiOSInsertPageViewControllerSearchBar *)v21 setDelegate:self];
-    [(CRLiOSInsertPageViewControllerSearchBar *)v21 setSearchBarStyle:2];
-    [(CRLiOSInsertPageViewControllerSearchBar *)v21 setShowsCancelButton:1];
-    [(CRLiOSInsertPageViewControllerSearchBar *)v21 setPlaceholder:v16];
-    [(CRLiOSInsertPageViewControllerSearchBar *)v21 setAlpha:0.0];
-    [v3 addSubview:v21];
-    [(CRLiOSInsertPageViewController *)self setP_searchBar:v21];
+    height = [(CRLiOSInsertPageViewControllerSearchBar *)v17 initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(CRLiOSInsertPageViewControllerSearchBar *)height setDelegate:self];
+    [(CRLiOSInsertPageViewControllerSearchBar *)height setSearchBarStyle:2];
+    [(CRLiOSInsertPageViewControllerSearchBar *)height setShowsCancelButton:1];
+    [(CRLiOSInsertPageViewControllerSearchBar *)height setPlaceholder:v16];
+    [(CRLiOSInsertPageViewControllerSearchBar *)height setAlpha:0.0];
+    [view addSubview:height];
+    [(CRLiOSInsertPageViewController *)self setP_searchBar:height];
     v22 = [UIImage systemImageNamed:@"magnifyingglass"];
-    v175 = v21;
+    v175 = height;
     if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
     {
       v23 = +[UIColor labelColor];
@@ -1057,7 +1057,7 @@
       v27 = [v25 imageByApplyingSymbolConfiguration:v26];
 
       v22 = v27;
-      v3 = v177;
+      view = v177;
     }
 
     v28 = [[UIButton alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -1103,10 +1103,10 @@
     v37 = objc_alloc_init(UILargeContentViewerInteraction);
     [v28 addInteraction:v37];
 
-    [v3 addSubview:v28];
+    [view addSubview:v28];
     [(CRLiOSInsertPageViewController *)self setP_searchButton:v28];
 
-    v4 = v179;
+    p_pageViewController = v179;
   }
 
   else
@@ -1115,21 +1115,21 @@
     v175 = 0;
   }
 
-  v38 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
-  v39 = [v38 showsSubpageNavigator];
+  insertPageViewControllerNavigationDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
+  showsSubpageNavigator = [insertPageViewControllerNavigationDataSource showsSubpageNavigator];
 
-  if (v39)
+  if (showsSubpageNavigator)
   {
-    v40 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
-    v41 = [v40 subpageNavigatorItems];
+    insertPageViewControllerNavigationDataSource2 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
+    subpageNavigatorItems = [insertPageViewControllerNavigationDataSource2 subpageNavigatorItems];
 
-    v42 = [[CRLiOSMultipaneSegmentedControl alloc] initWithItems:v41];
+    v42 = [[CRLiOSMultipaneSegmentedControl alloc] initWithItems:subpageNavigatorItems];
     [(CRLiOSMultipaneSegmentedControl *)v42 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CRLiOSMultipaneSegmentedControl *)v42 setBackdropHidden:1];
     [(CRLiOSMultipaneSegmentedControl *)v42 setSegmentHuggingEnabled:1];
     [(CRLiOSMultipaneSegmentedControl *)v42 setAllEdgeInsets:0.0, 16.0, 0.0, 16.0];
-    v43 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-    -[CRLiOSMultipaneSegmentedControl setSelectedSegmentIndex:](v42, "setSelectedSegmentIndex:", [v43 selectedSubpageIndexForInsertPageViewController:self]);
+    insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+    -[CRLiOSMultipaneSegmentedControl setSelectedSegmentIndex:](v42, "setSelectedSegmentIndex:", [insertPageViewControllerDataSource selectedSubpageIndexForInsertPageViewController:self]);
 
     [(CRLiOSMultipaneSegmentedControl *)v42 setExclusiveTouch:1];
     [(CRLiOSMultipaneSegmentedControl *)v42 addTarget:self action:"p_subpageNavigatorDidChangeSelectedSegment:" forControlEvents:4096];
@@ -1142,13 +1142,13 @@
     v182 = 0;
   }
 
-  v44 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v45 = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
-  v46 = [v44 insertPageViewController:self presentationIndexForViewController:v45];
+  insertPageViewControllerDataSource2 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  p_selectedViewController = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
+  v46 = [insertPageViewControllerDataSource2 insertPageViewController:self presentationIndexForViewController:p_selectedViewController];
 
   [(CRLiOSInsertPageViewController *)self setP_currentPageNumber:v46];
-  v47 = [(CRLiOSInsertPageViewController *)self p_pageControlType];
-  if (!v47)
+  p_pageControlType = [(CRLiOSInsertPageViewController *)self p_pageControlType];
+  if (!p_pageControlType)
   {
     v77 = +[UIColor clearColor];
     v78 = [UIView alloc];
@@ -1158,36 +1158,36 @@
     v55 = CGRectZero.size.height;
     v79 = [v78 initWithFrame:{CGRectZero.origin.x, v53, v54, v55}];
     [v79 setBackgroundColor:v77];
-    [v3 addSubview:v79];
+    [view addSubview:v79];
     v80 = [[UIPageControl alloc] initWithFrame:{CGRectZero.origin.x, v53, v54, v55}];
     [v79 addSubview:v80];
     [v80 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v81 = [v80 topAnchor];
-    v82 = [v79 topAnchor];
-    v83 = [v81 constraintEqualToAnchor:v82];
+    topAnchor = [v80 topAnchor];
+    topAnchor2 = [v79 topAnchor];
+    v83 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v83 setActive:1];
 
-    v84 = [v80 leadingAnchor];
-    v85 = [v79 leadingAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85];
+    leadingAnchor = [v80 leadingAnchor];
+    leadingAnchor2 = [v79 leadingAnchor];
+    v86 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v86 setActive:1];
 
-    v87 = [v80 trailingAnchor];
-    v88 = [v79 trailingAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88];
+    trailingAnchor = [v80 trailingAnchor];
+    trailingAnchor2 = [v79 trailingAnchor];
+    v89 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v89 setActive:1];
 
-    v3 = v177;
-    v90 = [v80 heightAnchor];
-    v91 = [v90 constraintEqualToConstant:44.0];
+    view = v177;
+    heightAnchor = [v80 heightAnchor];
+    v91 = [heightAnchor constraintEqualToConstant:44.0];
     [v91 setActive:1];
 
-    v4 = v179;
+    p_pageViewController = v179;
     v92 = [UIColor colorWithWhite:0.5 alpha:1.0];
     [v80 setPageIndicatorTintColor:v92];
 
-    v93 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-    [v80 setNumberOfPages:{objc_msgSend(v93, "presentationCountForInsertPageViewController:", self)}];
+    insertPageViewControllerDataSource3 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+    [v80 setNumberOfPages:{objc_msgSend(insertPageViewControllerDataSource3, "presentationCountForInsertPageViewController:", self)}];
 
     [v80 setCurrentPage:v46];
     [v80 setBackgroundColor:v77];
@@ -1207,7 +1207,7 @@ LABEL_31:
     goto LABEL_36;
   }
 
-  if (v47 != 1)
+  if (p_pageControlType != 1)
   {
     v95 = 0;
     v181 = 0;
@@ -1221,10 +1221,10 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v48 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
-  v49 = [v48 pageControlTitles];
+  insertPageViewControllerNavigationDataSource3 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
+  pageControlTitles = [insertPageViewControllerNavigationDataSource3 pageControlTitles];
 
-  v50 = [[CRLiOSInsertPageViewControllerTitlesPageControl alloc] initWithTitles:v49];
+  v50 = [[CRLiOSInsertPageViewControllerTitlesPageControl alloc] initWithTitles:pageControlTitles];
   [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 addTarget:self action:"p_titlesPageControlValueChanged:" forControlEvents:4096];
   v51 = [CRLiOSTitlesPageControlScrollView alloc];
@@ -1240,34 +1240,34 @@ LABEL_31:
   [(CRLiOSTitlesPageControlScrollView *)v56 setAccessibilityIdentifier:@"presetScrollView"];
   [(CRLiOSTitlesPageControlScrollView *)v56 addSubview:v50];
   [(CRLiOSTitlesPageControlScrollView *)v56 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v59 = [(CRLiOSTitlesPageControlScrollView *)v56 heightAnchor];
-  v60 = [v59 constraintEqualToConstant:44.0];
+  heightAnchor2 = [(CRLiOSTitlesPageControlScrollView *)v56 heightAnchor];
+  v60 = [heightAnchor2 constraintEqualToConstant:44.0];
   [v60 setActive:1];
 
-  v61 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 topAnchor];
-  v62 = [(CRLiOSTitlesPageControlScrollView *)v56 topAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  topAnchor3 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 topAnchor];
+  topAnchor4 = [(CRLiOSTitlesPageControlScrollView *)v56 topAnchor];
+  v63 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v63 setActive:1];
 
-  v64 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 leadingAnchor];
-  v65 = [(CRLiOSTitlesPageControlScrollView *)v56 leadingAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  leadingAnchor3 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 leadingAnchor];
+  leadingAnchor4 = [(CRLiOSTitlesPageControlScrollView *)v56 leadingAnchor];
+  v66 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v66 setActive:1];
 
-  v67 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 trailingAnchor];
-  v68 = [(CRLiOSTitlesPageControlScrollView *)v56 trailingAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68];
+  trailingAnchor3 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 trailingAnchor];
+  trailingAnchor4 = [(CRLiOSTitlesPageControlScrollView *)v56 trailingAnchor];
+  v69 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v69 setActive:1];
 
-  v3 = v177;
+  view = v177;
   v176 = v50;
-  v70 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 heightAnchor];
-  v71 = [v70 constraintEqualToConstant:44.0];
+  heightAnchor3 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v50 heightAnchor];
+  v71 = [heightAnchor3 constraintEqualToConstant:44.0];
   [v71 setActive:1];
 
   v181 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, v53, v54, v55}];
   [v177 addSubview:?];
-  if (v14)
+  if (supportsSearch)
   {
     v72 = sub_1004A48FC();
     v73 = [CRLiOSInsertPageViewControllerFadeView alloc];
@@ -1286,14 +1286,14 @@ LABEL_31:
     }
 
     v95 = [(CRLiOSInsertPageViewControllerFadeView *)v73 initWithStartPoint:0 endPoint:v74 shouldAddDividerView:v75, v76, 0.5];
-    v4 = v179;
+    p_pageViewController = v179;
     [(CRLiOSInsertPageViewControllerFadeView *)v95 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
   {
     v95 = 0;
-    v4 = v179;
+    p_pageViewController = v179;
   }
 
   v96 = v182;
@@ -1305,7 +1305,7 @@ LABEL_31:
 LABEL_36:
   v97 = [[UIStackView alloc] initWithFrame:{x, v53, v54, v55}];
   [v97 setAxis:1];
-  [v3 addSubview:v97];
+  [view addSubview:v97];
   v180 = v79;
   v183 = v95;
   v178 = v97;
@@ -1316,24 +1316,24 @@ LABEL_36:
     if (v28)
     {
       [v98 addSubview:v28];
-      v99 = [v28 topAnchor];
-      v100 = [v98 topAnchor];
-      v101 = [v99 constraintEqualToAnchor:v100];
+      topAnchor5 = [v28 topAnchor];
+      topAnchor6 = [v98 topAnchor];
+      v101 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       [v101 setActive:1];
 
-      v102 = [v28 leadingAnchor];
-      v103 = [v98 safeAreaLayoutGuide];
-      v104 = [v103 leadingAnchor];
-      v105 = [v102 constraintEqualToAnchor:v104];
+      leadingAnchor5 = [v28 leadingAnchor];
+      safeAreaLayoutGuide = [v98 safeAreaLayoutGuide];
+      leadingAnchor6 = [safeAreaLayoutGuide leadingAnchor];
+      v105 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       [v105 setActive:1];
 
-      v106 = [v28 bottomAnchor];
-      v107 = [v98 bottomAnchor];
-      v108 = [v106 constraintEqualToAnchor:v107];
+      bottomAnchor = [v28 bottomAnchor];
+      bottomAnchor2 = [v98 bottomAnchor];
+      v108 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v108 setActive:1];
 
-      v109 = [v28 widthAnchor];
-      v110 = [v109 constraintEqualToConstant:40.0];
+      widthAnchor = [v28 widthAnchor];
+      v110 = [widthAnchor constraintEqualToConstant:40.0];
       [v110 setActive:1];
 
       [v98 addSubview:v183];
@@ -1343,43 +1343,43 @@ LABEL_36:
       [v111 setBackgroundColor:v112];
 
       [v98 addSubview:v111];
-      v113 = [v111 topAnchor];
-      v114 = [v98 topAnchor];
-      v115 = [v113 constraintEqualToAnchor:v114];
+      topAnchor7 = [v111 topAnchor];
+      topAnchor8 = [v98 topAnchor];
+      v115 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
       [v115 setActive:1];
 
-      v116 = [v111 leadingAnchor];
-      v117 = [v98 leadingAnchor];
-      v118 = [v116 constraintEqualToAnchor:v117];
+      leadingAnchor7 = [v111 leadingAnchor];
+      leadingAnchor8 = [v98 leadingAnchor];
+      v118 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
       [v118 setActive:1];
 
-      v119 = [v111 bottomAnchor];
-      v120 = [v98 bottomAnchor];
-      v121 = [v119 constraintEqualToAnchor:v120];
+      bottomAnchor3 = [v111 bottomAnchor];
+      bottomAnchor4 = [v98 bottomAnchor];
+      v121 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v121 setActive:1];
 
-      v122 = [v111 trailingAnchor];
-      v123 = [(CRLiOSInsertPageViewControllerFadeView *)v183 leadingAnchor];
-      v124 = [v122 constraintEqualToAnchor:v123];
+      trailingAnchor5 = [v111 trailingAnchor];
+      leadingAnchor9 = [(CRLiOSInsertPageViewControllerFadeView *)v183 leadingAnchor];
+      v124 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor9];
       [v124 setActive:1];
 
-      v125 = [(CRLiOSInsertPageViewControllerFadeView *)v183 topAnchor];
-      v126 = [v98 topAnchor];
-      v127 = [v125 constraintEqualToAnchor:v126];
+      topAnchor9 = [(CRLiOSInsertPageViewControllerFadeView *)v183 topAnchor];
+      topAnchor10 = [v98 topAnchor];
+      v127 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
       [v127 setActive:1];
 
-      v128 = [(CRLiOSInsertPageViewControllerFadeView *)v183 trailingAnchor];
-      v129 = [v28 trailingAnchor];
-      v130 = [v128 constraintEqualToAnchor:v129];
+      trailingAnchor6 = [(CRLiOSInsertPageViewControllerFadeView *)v183 trailingAnchor];
+      trailingAnchor7 = [v28 trailingAnchor];
+      v130 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
       [v130 setActive:1];
 
-      v131 = [(CRLiOSInsertPageViewControllerFadeView *)v183 bottomAnchor];
-      v132 = [v98 bottomAnchor];
-      v133 = [v131 constraintEqualToAnchor:v132];
+      bottomAnchor5 = [(CRLiOSInsertPageViewControllerFadeView *)v183 bottomAnchor];
+      bottomAnchor6 = [v98 bottomAnchor];
+      v133 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
       [v133 setActive:1];
 
-      v134 = [(CRLiOSInsertPageViewControllerFadeView *)v183 widthAnchor];
-      v135 = [v134 constraintEqualToConstant:8.0];
+      widthAnchor2 = [(CRLiOSInsertPageViewControllerFadeView *)v183 widthAnchor];
+      v135 = [widthAnchor2 constraintEqualToConstant:8.0];
       [v135 setActive:1];
 
       [(CRLiOSInsertPageViewController *)self setP_searchButtonSpacerView:v111];
@@ -1391,26 +1391,26 @@ LABEL_36:
     }
 
     [v98 addSubview:v56];
-    v136 = [(CRLiOSTitlesPageControlScrollView *)v56 topAnchor];
-    v137 = [v98 topAnchor];
-    v138 = [v136 constraintEqualToAnchor:v137];
+    topAnchor11 = [(CRLiOSTitlesPageControlScrollView *)v56 topAnchor];
+    topAnchor12 = [v98 topAnchor];
+    v138 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
     [v138 setActive:1];
 
-    v139 = [(CRLiOSTitlesPageControlScrollView *)v56 bottomAnchor];
-    v140 = [v98 bottomAnchor];
-    v141 = [v139 constraintEqualToAnchor:v140];
+    bottomAnchor7 = [(CRLiOSTitlesPageControlScrollView *)v56 bottomAnchor];
+    bottomAnchor8 = [v98 bottomAnchor];
+    v141 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     [v141 setActive:1];
 
-    v142 = [(CRLiOSTitlesPageControlScrollView *)v56 trailingAnchor];
-    v143 = [v98 trailingAnchor];
-    v144 = [v142 constraintEqualToAnchor:v143];
+    trailingAnchor8 = [(CRLiOSTitlesPageControlScrollView *)v56 trailingAnchor];
+    trailingAnchor9 = [v98 trailingAnchor];
+    v144 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     [v144 setActive:1];
 
-    v145 = [(CRLiOSTitlesPageControlScrollView *)v56 leadingAnchor];
+    leadingAnchor10 = [(CRLiOSTitlesPageControlScrollView *)v56 leadingAnchor];
     if (v28)
     {
-      v146 = [v28 trailingAnchor];
-      v147 = [v145 constraintEqualToAnchor:v146];
+      trailingAnchor10 = [v28 trailingAnchor];
+      v147 = [leadingAnchor10 constraintEqualToAnchor:trailingAnchor10];
       [v147 setActive:1];
 
       [v98 bringSubviewToFront:v111];
@@ -1421,9 +1421,9 @@ LABEL_36:
 
     else
     {
-      v148 = [v98 safeAreaLayoutGuide];
-      v149 = [v148 leadingAnchor];
-      v150 = [v145 constraintEqualToAnchor:v149];
+      safeAreaLayoutGuide2 = [v98 safeAreaLayoutGuide];
+      leadingAnchor11 = [safeAreaLayoutGuide2 leadingAnchor];
+      v150 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
       [v150 setActive:1];
 
       v79 = v180;
@@ -1434,8 +1434,8 @@ LABEL_36:
     [v178 addArrangedSubview:v181];
 
     v97 = v178;
-    v3 = v177;
-    v4 = v179;
+    view = v177;
+    p_pageViewController = v179;
   }
 
   else if (v28)
@@ -1448,33 +1448,33 @@ LABEL_36:
     v151 = [[UIView alloc] initWithFrame:{x, v53, v54, v55}];
     [v151 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v151 addSubview:v96];
-    v152 = [v151 heightAnchor];
-    v153 = [v152 constraintEqualToConstant:44.0];
+    heightAnchor4 = [v151 heightAnchor];
+    v153 = [heightAnchor4 constraintEqualToConstant:44.0];
     [v153 setActive:1];
 
-    v154 = [v151 topAnchor];
-    v155 = [(CRLiOSMultipaneSegmentedControl *)v96 topAnchor];
-    v156 = [v154 constraintEqualToAnchor:v155 constant:-8.0];
+    topAnchor13 = [v151 topAnchor];
+    topAnchor14 = [(CRLiOSMultipaneSegmentedControl *)v96 topAnchor];
+    v156 = [topAnchor13 constraintEqualToAnchor:topAnchor14 constant:-8.0];
     [v156 setActive:1];
 
-    v157 = [v151 bottomAnchor];
-    v158 = [(CRLiOSMultipaneSegmentedControl *)v96 bottomAnchor];
-    v159 = [v157 constraintEqualToAnchor:v158 constant:8.0];
+    bottomAnchor9 = [v151 bottomAnchor];
+    bottomAnchor10 = [(CRLiOSMultipaneSegmentedControl *)v96 bottomAnchor];
+    v159 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:8.0];
     [v159 setActive:1];
 
-    v160 = [v151 widthAnchor];
-    v161 = [(CRLiOSMultipaneSegmentedControl *)v96 widthAnchor];
-    v162 = [v160 constraintLessThanOrEqualToAnchor:v161 constant:64.0];
+    widthAnchor3 = [v151 widthAnchor];
+    widthAnchor4 = [(CRLiOSMultipaneSegmentedControl *)v96 widthAnchor];
+    v162 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4 constant:64.0];
     [v162 setActive:1];
 
-    v163 = [v151 widthAnchor];
-    v164 = [(CRLiOSMultipaneSegmentedControl *)v96 widthAnchor];
-    v165 = [v163 constraintGreaterThanOrEqualToAnchor:v164 constant:24.0];
+    widthAnchor5 = [v151 widthAnchor];
+    widthAnchor6 = [(CRLiOSMultipaneSegmentedControl *)v96 widthAnchor];
+    v165 = [widthAnchor5 constraintGreaterThanOrEqualToAnchor:widthAnchor6 constant:24.0];
     [v165 setActive:1];
 
-    v166 = [v151 centerXAnchor];
-    v167 = [(CRLiOSMultipaneSegmentedControl *)v96 centerXAnchor];
-    v168 = [v166 constraintEqualToAnchor:v167];
+    centerXAnchor = [v151 centerXAnchor];
+    centerXAnchor2 = [(CRLiOSMultipaneSegmentedControl *)v96 centerXAnchor];
+    v168 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v168 setActive:1];
 
     v97 = v178;
@@ -1486,28 +1486,28 @@ LABEL_36:
 
   if (v95)
   {
-    [v3 bringSubviewToFront:v95];
+    [view bringSubviewToFront:v95];
   }
 
-  v169 = [v4 view];
-  [(CRLiOSInsertPageViewController *)self p_setupConstraintsWithTopLevelView:v3 searchBar:v175 navigatorStackView:v97 pageViewControllerView:v169 dotsPageControlWrapper:v79];
+  view4 = [p_pageViewController view];
+  [(CRLiOSInsertPageViewController *)self p_setupConstraintsWithTopLevelView:view searchBar:v175 navigatorStackView:v97 pageViewControllerView:view4 dotsPageControlWrapper:v79];
 
   [(CRLiOSInsertPageViewController *)self p_updateTitlesPageControlAndBottomViewColorsInDarkUI:[(CRLiOSInsertPageViewController *)self crl_isInDarkMode]];
-  v170 = [(CRLiOSInsertPageViewController *)self p_searchOverlayView];
-  if (!v170)
+  p_searchOverlayView = [(CRLiOSInsertPageViewController *)self p_searchOverlayView];
+  if (!p_searchOverlayView)
   {
-    v170 = [[UIView alloc] initWithFrame:{x, v53, v54, v55}];
+    p_searchOverlayView = [[UIView alloc] initWithFrame:{x, v53, v54, v55}];
     v171 = [UIColor colorWithWhite:0.0 alpha:1.0];
-    [v170 setBackgroundColor:v171];
+    [p_searchOverlayView setBackgroundColor:v171];
 
-    [v170 setAlpha:0.0];
-    [v170 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [p_searchOverlayView setAlpha:0.0];
+    [p_searchOverlayView setTranslatesAutoresizingMaskIntoConstraints:0];
     v172 = [[CRLiOSInsertPageViewControllerOverlayGestureRecognizer alloc] initWithTarget:self action:"p_searchOverlayTapped:"];
-    [v170 addGestureRecognizer:v172];
-    [(CRLiOSInsertPageViewController *)self setP_searchOverlayView:v170];
-    v173 = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
-    v174 = [v173 view];
-    [(CRLiOSInsertPageViewController *)self p_moveOverlayView:v170 toSelectedViewControllerView:v174];
+    [p_searchOverlayView addGestureRecognizer:v172];
+    [(CRLiOSInsertPageViewController *)self setP_searchOverlayView:p_searchOverlayView];
+    p_selectedViewController2 = [(CRLiOSInsertPageViewController *)self p_selectedViewController];
+    view5 = [p_selectedViewController2 view];
+    [(CRLiOSInsertPageViewController *)self p_moveOverlayView:p_searchOverlayView toSelectedViewControllerView:view5];
 
     v97 = v178;
     v79 = v180;
@@ -1516,199 +1516,199 @@ LABEL_36:
   }
 }
 
-- (void)p_moveOverlayView:(id)a3 toSelectedViewControllerView:(id)a4
+- (void)p_moveOverlayView:(id)view toSelectedViewControllerView:(id)controllerView
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 removeFromSuperview];
-  [v5 addSubview:v6];
-  v7 = [v6 topAnchor];
-  v8 = [v5 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  controllerViewCopy = controllerView;
+  viewCopy = view;
+  [viewCopy removeFromSuperview];
+  [controllerViewCopy addSubview:viewCopy];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [controllerViewCopy topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [v6 trailingAnchor];
-  v11 = [v5 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [controllerViewCopy trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v12 setActive:1];
 
-  v13 = [v6 bottomAnchor];
-  v14 = [v5 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [viewCopy bottomAnchor];
+  bottomAnchor2 = [controllerViewCopy bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 
-  v18 = [v6 leadingAnchor];
+  leadingAnchor = [viewCopy leadingAnchor];
 
-  v16 = [v5 leadingAnchor];
+  leadingAnchor2 = [controllerViewCopy leadingAnchor];
 
-  v17 = [v18 constraintEqualToAnchor:v16];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v17 setActive:1];
 }
 
 - (void)p_dotPageControlValueChanged
 {
-  v3 = [(CRLiOSInsertPageViewController *)self p_currentPageNumber];
-  v4 = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
-  v5 = [v4 currentPage];
+  p_currentPageNumber = [(CRLiOSInsertPageViewController *)self p_currentPageNumber];
+  p_dotsPageControl = [(CRLiOSInsertPageViewController *)self p_dotsPageControl];
+  currentPage = [p_dotsPageControl currentPage];
 
-  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v7 = [v6 insertPageViewController:self viewControllerForPageAtIndex:v5];
+  insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  v7 = [insertPageViewControllerDataSource insertPageViewController:self viewControllerForPageAtIndex:currentPage];
 
   v16 = v7;
   v8 = [NSArray arrayWithObjects:&v16 count:1];
-  v9 = [(CRLiOSInsertPageViewController *)self p_pageViewController];
+  p_pageViewController = [(CRLiOSInsertPageViewController *)self p_pageViewController];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1002096EC;
   v13 = &unk_101848EB8;
-  v14 = self;
-  v15 = v5;
-  [v9 setViewControllers:v8 direction:v5 < v3 animated:1 completion:&v10];
+  selfCopy = self;
+  v15 = currentPage;
+  [p_pageViewController setViewControllers:v8 direction:currentPage < p_currentPageNumber animated:1 completion:&v10];
   [(CRLiOSInsertPageViewController *)self p_setViewControllers:v8 shouldUpdatePageViewController:0 animated:0, v10, v11, v12, v13];
 }
 
-- (void)p_setupConstraintsWithTopLevelView:(id)a3 searchBar:(id)a4 navigatorStackView:(id)a5 pageViewControllerView:(id)a6 dotsPageControlWrapper:(id)a7
+- (void)p_setupConstraintsWithTopLevelView:(id)view searchBar:(id)bar navigatorStackView:(id)stackView pageViewControllerView:(id)controllerView dotsPageControlWrapper:(id)wrapper
 {
-  v65 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  viewCopy = view;
+  barCopy = bar;
+  stackViewCopy = stackView;
+  controllerViewCopy = controllerView;
+  wrapperCopy = wrapper;
+  if (barCopy)
   {
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [v12 leadingAnchor];
-    v17 = [v65 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    [barCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor = [barCopy leadingAnchor];
+    leadingAnchor2 = [viewCopy leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v18 setActive:1];
 
-    v19 = [v12 trailingAnchor];
-    v20 = [v65 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [barCopy trailingAnchor];
+    trailingAnchor2 = [viewCopy trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v21 setActive:1];
 
-    v22 = [v12 heightAnchor];
-    v23 = [v22 constraintEqualToConstant:44.0];
+    heightAnchor = [barCopy heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:44.0];
     [v23 setActive:1];
 
-    v24 = [v12 topAnchor];
-    v25 = [v65 topAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    topAnchor = [barCopy topAnchor];
+    topAnchor2 = [viewCopy topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v26 setActive:1];
   }
 
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [v14 leadingAnchor];
-  v28 = [v65 leadingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  [controllerViewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor3 = [controllerViewCopy leadingAnchor];
+  leadingAnchor4 = [viewCopy leadingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v29 setActive:1];
 
-  v30 = [v14 trailingAnchor];
-  v31 = [v65 trailingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  trailingAnchor3 = [controllerViewCopy trailingAnchor];
+  trailingAnchor4 = [viewCopy trailingAnchor];
+  v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v32 setActive:1];
 
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [v13 topAnchor];
-  v34 = [v65 topAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  [stackViewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor3 = [stackViewCopy topAnchor];
+  topAnchor4 = [viewCopy topAnchor];
+  v35 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v35 setActive:1];
 
-  v36 = [v13 leadingAnchor];
-  v37 = [v65 leadingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  leadingAnchor5 = [stackViewCopy leadingAnchor];
+  leadingAnchor6 = [viewCopy leadingAnchor];
+  v38 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v38 setActive:1];
 
-  v39 = [v13 trailingAnchor];
-  v40 = [v65 trailingAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  trailingAnchor5 = [stackViewCopy trailingAnchor];
+  trailingAnchor6 = [viewCopy trailingAnchor];
+  v41 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v41 setActive:1];
 
-  v42 = [v13 bottomAnchor];
-  v43 = [v14 topAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  bottomAnchor = [stackViewCopy bottomAnchor];
+  topAnchor5 = [controllerViewCopy topAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:topAnchor5];
   [v44 setActive:1];
 
-  v45 = [v13 arrangedSubviews];
-  v46 = [v45 count];
+  arrangedSubviews = [stackViewCopy arrangedSubviews];
+  v46 = [arrangedSubviews count];
 
-  v47 = [v13 heightAnchor];
-  v48 = v47;
+  heightAnchor2 = [stackViewCopy heightAnchor];
+  v48 = heightAnchor2;
   v49 = 44.0;
   if (!v46)
   {
     v49 = 0.0;
   }
 
-  v50 = [v47 constraintEqualToConstant:v49];
+  v50 = [heightAnchor2 constraintEqualToConstant:v49];
   [v50 setActive:1];
 
-  if (v15)
+  if (wrapperCopy)
   {
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v51 = [v15 leadingAnchor];
-    v52 = [v65 leadingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    [wrapperCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor7 = [wrapperCopy leadingAnchor];
+    leadingAnchor8 = [viewCopy leadingAnchor];
+    v53 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     [v53 setActive:1];
 
-    v54 = [v15 trailingAnchor];
-    v55 = [v65 trailingAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55];
+    trailingAnchor7 = [wrapperCopy trailingAnchor];
+    trailingAnchor8 = [viewCopy trailingAnchor];
+    v56 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     [v56 setActive:1];
 
-    v57 = [v15 heightAnchor];
+    heightAnchor3 = [wrapperCopy heightAnchor];
     [(CRLiOSInsertPageViewController *)self p_dotsPageControlHeight];
-    v58 = [v57 constraintEqualToConstant:?];
+    bottomAnchor5 = [heightAnchor3 constraintEqualToConstant:?];
 
-    [v58 setActive:1];
-    [(CRLiOSInsertPageViewController *)self setP_dotsPageControlHeightConstraint:v58];
-    v59 = [v15 bottomAnchor];
-    v60 = [v65 bottomAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    [bottomAnchor5 setActive:1];
+    [(CRLiOSInsertPageViewController *)self setP_dotsPageControlHeightConstraint:bottomAnchor5];
+    bottomAnchor2 = [wrapperCopy bottomAnchor];
+    bottomAnchor3 = [viewCopy bottomAnchor];
+    v61 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
 
-    v62 = [v14 bottomAnchor];
-    v63 = [v15 topAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    bottomAnchor4 = [controllerViewCopy bottomAnchor];
+    topAnchor6 = [wrapperCopy topAnchor];
+    v64 = [bottomAnchor4 constraintEqualToAnchor:topAnchor6];
     [v64 setActive:1];
   }
 
   else
   {
-    v58 = [v14 bottomAnchor];
-    v62 = [v65 bottomAnchor];
-    v61 = [v58 constraintEqualToAnchor:v62];
+    bottomAnchor5 = [controllerViewCopy bottomAnchor];
+    bottomAnchor4 = [viewCopy bottomAnchor];
+    v61 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor4];
   }
 
   [v61 setActive:1];
   [(CRLiOSInsertPageViewController *)self setP_bottomLayoutConstraintAboveKeyboard:v61];
-  if (v15)
+  if (wrapperCopy)
   {
     [(CRLiOSInsertPageViewController *)self p_updateBottomConstraintsIfNeeded];
   }
 }
 
-- (void)p_subpageNavigatorDidChangeSelectedSegment:(id)a3
+- (void)p_subpageNavigatorDidChangeSelectedSegment:(id)segment
 {
-  v4 = a3;
-  v6 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  v5 = [v4 selectedSegmentIndex];
+  segmentCopy = segment;
+  insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  selectedSegmentIndex = [segmentCopy selectedSegmentIndex];
 
-  [v6 insertPageViewController:self didSelectSubpageAtIndex:v5];
+  [insertPageViewControllerDelegate insertPageViewController:self didSelectSubpageAtIndex:selectedSegmentIndex];
 }
 
 - (unint64_t)p_pageControlType
 {
-  v2 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
-  v3 = [v2 pageControlType];
+  insertPageViewControllerNavigationDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerNavigationDataSource];
+  pageControlType = [insertPageViewControllerNavigationDataSource pageControlType];
 
-  return v3;
+  return pageControlType;
 }
 
 - (double)p_dotsPageControlHeight
 {
-  v2 = [(CRLiOSInsertPageViewController *)self p_pageControlType];
+  p_pageControlType = [(CRLiOSInsertPageViewController *)self p_pageControlType];
   result = 0.0;
-  if (!v2)
+  if (!p_pageControlType)
   {
     if (+[UIScreen crl_deviceIsLandscape](UIScreen, "crl_deviceIsLandscape", 0.0) && +[UIScreen crl_screenClassPhoneUIRegularOrLarge])
     {
@@ -1724,21 +1724,21 @@ LABEL_36:
   return result;
 }
 
-- (void)p_titlesPageControlValueChanged:(id)a3
+- (void)p_titlesPageControlValueChanged:(id)changed
 {
-  v4 = [a3 selectedTitleIndex];
+  selectedTitleIndex = [changed selectedTitleIndex];
 
-  [(CRLiOSInsertPageViewController *)self p_selectPageAtIndex:v4];
+  [(CRLiOSInsertPageViewController *)self p_selectPageAtIndex:selectedTitleIndex];
 }
 
-- (void)p_selectPageAtIndex:(unint64_t)a3 animated:(BOOL)a4 scrollToBottom:(BOOL)a5
+- (void)p_selectPageAtIndex:(unint64_t)index animated:(BOOL)animated scrollToBottom:(BOOL)bottom
 {
-  v5 = a5;
-  v6 = a4;
+  bottomCopy = bottom;
+  animatedCopy = animated;
   [(CRLiOSInsertPageViewController *)self setP_currentPageNumber:?];
-  [(CRLiOSInsertPageViewController *)self setP_shouldScrollToBottomOfPage:v5];
-  v9 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
-  v10 = [v9 insertPageViewController:self viewControllerForPageAtIndex:a3];
+  [(CRLiOSInsertPageViewController *)self setP_shouldScrollToBottomOfPage:bottomCopy];
+  insertPageViewControllerDataSource = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDataSource];
+  v10 = [insertPageViewControllerDataSource insertPageViewController:self viewControllerForPageAtIndex:index];
 
   if (v10)
   {
@@ -1752,8 +1752,8 @@ LABEL_36:
   v16[2] = sub_100209FD8;
   v16[3] = &unk_101848F08;
   v16[4] = self;
-  v18 = a3;
-  v19 = v6;
+  indexCopy = index;
+  v19 = animatedCopy;
   v12 = v10;
   v17 = v12;
   v13 = objc_retainBlock(v16);
@@ -1764,7 +1764,7 @@ LABEL_36:
     v14[2] = sub_10020A118;
     v14[3] = &unk_10183D168;
     v15 = v13;
-    [(CRLiOSInsertPageViewController *)self p_setSearchBarHidden:1 animated:v6 completion:v14];
+    [(CRLiOSInsertPageViewController *)self p_setSearchBarHidden:1 animated:animatedCopy completion:v14];
   }
 
   else
@@ -1773,23 +1773,23 @@ LABEL_36:
   }
 }
 
-- (void)p_updateUIForChangeToPageNumber:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)p_updateUIForChangeToPageNumber:(unint64_t)number animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v32 = a5;
-  v8 = [(CRLiOSInsertPageViewController *)self view];
-  [v8 layoutIfNeeded];
+  animatedCopy = animated;
+  completionCopy = completion;
+  view = [(CRLiOSInsertPageViewController *)self view];
+  [view layoutIfNeeded];
 
-  v9 = [(CRLiOSInsertPageViewController *)self p_titlesPageControlScrollView];
-  v10 = [(CRLiOSInsertPageViewController *)self p_titlesPageControl];
-  [v10 setSelectedTitleIndex:a3];
-  [v9 frame];
+  p_titlesPageControlScrollView = [(CRLiOSInsertPageViewController *)self p_titlesPageControlScrollView];
+  p_titlesPageControl = [(CRLiOSInsertPageViewController *)self p_titlesPageControl];
+  [p_titlesPageControl setSelectedTitleIndex:number];
+  [p_titlesPageControlScrollView frame];
   Width = CGRectGetWidth(v34);
   if (Width != 0.0)
   {
     v12 = Width;
-    v13 = [v10 selectedButton];
-    [v13 frame];
+    selectedButton = [p_titlesPageControl selectedButton];
+    [selectedButton frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1800,20 +1800,20 @@ LABEL_36:
     v35.size.width = v19;
     v35.size.height = v21;
     v22 = CGRectGetMidX(v35) + v12 * -0.5;
-    [v9 contentSize];
+    [p_titlesPageControlScrollView contentSize];
     v24 = v23;
     v25 = sub_1004A48FC();
     v26 = v24 - v12;
     v27 = 0.0;
     v28 = 14.0;
-    if (a3 != 1)
+    if (number != 1)
     {
       v28 = 0.0;
     }
 
     v29 = fmin(fmax(v22, v28), v26);
     v30 = fmax(v22, 0.0);
-    if (a3 == 1)
+    if (number == 1)
     {
       v27 = -14.0;
     }
@@ -1824,67 +1824,67 @@ LABEL_36:
       v31 = v29;
     }
 
-    [v9 setContentOffset:v5 animated:{v31, 0.0}];
-    if (v32)
+    [p_titlesPageControlScrollView setContentOffset:animatedCopy animated:{v31, 0.0}];
+    if (completionCopy)
     {
-      v32[2](v32, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
 - (id)p_selectedViewController
 {
-  v2 = [(CRLiOSInsertPageViewController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(CRLiOSInsertPageViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)p_restoreViewState
 {
-  v3 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-  v4 = [v3 insertPageViewControllerShouldAppearInSearchMode:self];
+  insertPageViewControllerDelegate = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+  v4 = [insertPageViewControllerDelegate insertPageViewControllerShouldAppearInSearchMode:self];
 
   if (v4)
   {
     [(CRLiOSInsertPageViewController *)self p_beginSearchingAnimated:0];
-    v5 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
-    v8 = [v5 insertPageViewControllerDefaultSearchTerm:self];
+    insertPageViewControllerDelegate2 = [(CRLiOSInsertPageViewController *)self insertPageViewControllerDelegate];
+    v8 = [insertPageViewControllerDelegate2 insertPageViewControllerDefaultSearchTerm:self];
 
-    v6 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-    [v6 setText:v8];
+    p_searchBar = [(CRLiOSInsertPageViewController *)self p_searchBar];
+    [p_searchBar setText:v8];
 
-    v7 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-    [(CRLiOSInsertPageViewController *)self searchBar:v7 textDidChange:v8];
+    p_searchBar2 = [(CRLiOSInsertPageViewController *)self p_searchBar];
+    [(CRLiOSInsertPageViewController *)self searchBar:p_searchBar2 textDidChange:v8];
   }
 }
 
 - (BOOL)crl_isInDarkMode
 {
   v2 = +[UIScreen mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 crl_isUserInterfaceStyleDark];
+  traitCollection = [v2 traitCollection];
+  crl_isUserInterfaceStyleDark = [traitCollection crl_isUserInterfaceStyleDark];
 
-  return v4;
+  return crl_isUserInterfaceStyleDark;
 }
 
-- (void)p_updateTitlesPageControlAndBottomViewColorsInDarkUI:(BOOL)a3
+- (void)p_updateTitlesPageControlAndBottomViewColorsInDarkUI:(BOOL)i
 {
   v4 = [(CRLiOSInsertPageViewController *)self p_searchBarStyleInDarkUI:0];
-  v5 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-  [v5 setBarStyle:v4];
+  p_searchBar = [(CRLiOSInsertPageViewController *)self p_searchBar];
+  [p_searchBar setBarStyle:v4];
 
   v6 = +[UIColor clearColor];
-  v7 = [(CRLiOSInsertPageViewController *)self p_searchBar];
-  [v7 setBackgroundColor:v6];
+  p_searchBar2 = [(CRLiOSInsertPageViewController *)self p_searchBar];
+  [p_searchBar2 setBackgroundColor:v6];
 
   v8 = +[UIColor clearColor];
-  v9 = [(CRLiOSInsertPageViewController *)self p_searchButton];
-  [v9 setBackgroundColor:v8];
+  p_searchButton = [(CRLiOSInsertPageViewController *)self p_searchButton];
+  [p_searchButton setBackgroundColor:v8];
 
   v11 = +[UIColor clearColor];
-  v10 = [(CRLiOSInsertPageViewController *)self p_searchButtonSpacerView];
-  [v10 setBackgroundColor:v11];
+  p_searchButtonSpacerView = [(CRLiOSInsertPageViewController *)self p_searchButtonSpacerView];
+  [p_searchButtonSpacerView setBackgroundColor:v11];
 }
 
 - (CRLiOSInsertPageViewControllerDataSource)insertPageViewControllerDataSource

@@ -1,28 +1,28 @@
 @interface UITextHighlightView
-+ (id)preferredPreviewParametersForTextLineRects:(id)a3;
-- (UITextHighlightView)initWithPreviewProvider:(id)a3;
++ (id)preferredPreviewParametersForTextLineRects:(id)rects;
+- (UITextHighlightView)initWithPreviewProvider:(id)provider;
 - (id)_fillEffect;
-- (void)_updateWithPreviewParameters:(id)a3;
-- (void)animateWithCompletion:(id)a3;
-- (void)fadeAwayWithCompletion:(id)a3;
+- (void)_updateWithPreviewParameters:(id)parameters;
+- (void)animateWithCompletion:(id)completion;
+- (void)fadeAwayWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setFillColor:(id)a3;
-- (void)setOverriddenPreviewParameters:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setOverriddenPreviewParameters:(id)parameters;
 @end
 
 @implementation UITextHighlightView
 
-+ (id)preferredPreviewParametersForTextLineRects:(id)a3
++ (id)preferredPreviewParametersForTextLineRects:(id)rects
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  rectsCopy = rects;
+  if ([rectsCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v3;
+    v4 = rectsCopy;
     v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
@@ -63,16 +63,16 @@
 
   v11 = v10 * 0.25;
   v12 = v10 * -0.2 * 0.5;
-  v13 = [[UIPreviewParameters alloc] initWithTextLineRects:v3];
+  v13 = [[UIPreviewParameters alloc] initWithTextLineRects:rectsCopy];
   [(UIPreviewParameters *)v13 _setTextPathCornerRadius:v11];
   [(UIPreviewParameters *)v13 _setTextPathInsets:v12, -4.0, v12, -4.0];
 
   return v13;
 }
 
-- (UITextHighlightView)initWithPreviewProvider:(id)a3
+- (UITextHighlightView)initWithPreviewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = UITextHighlightView;
   v5 = *MEMORY[0x1E695F058];
@@ -82,7 +82,7 @@
   v9 = [(UIView *)&v25 initWithFrame:*MEMORY[0x1E695F058], v6, v7, v8];
   if (v9)
   {
-    v10 = _Block_copy(v4);
+    v10 = _Block_copy(providerCopy);
     previewProvider = v9->_previewProvider;
     v9->_previewProvider = v10;
 
@@ -91,24 +91,24 @@
     v9->_backgroundView = v12;
 
     [(UIView *)v9 addSubview:v9->_backgroundView];
-    v14 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     contentClippingMaskLayer = v9->_contentClippingMaskLayer;
-    v9->_contentClippingMaskLayer = v14;
+    v9->_contentClippingMaskLayer = layer;
 
     v16 = _UIGetTextHighlightFillColor();
     fillColor = v9->_fillColor;
     v9->_fillColor = v16;
 
     v18 = [UIVisualEffectView alloc];
-    v19 = [(UITextHighlightView *)v9 _fillEffect];
-    v20 = [(UIVisualEffectView *)v18 initWithEffect:v19];
+    _fillEffect = [(UITextHighlightView *)v9 _fillEffect];
+    v20 = [(UIVisualEffectView *)v18 initWithEffect:_fillEffect];
     contentClippingEffectView = v9->_contentClippingEffectView;
     v9->_contentClippingEffectView = v20;
 
     [(UIView *)v9->_contentClippingEffectView setClipsToBounds:1];
     v22 = v9->_contentClippingMaskLayer;
-    v23 = [(UIView *)v9->_contentClippingEffectView layer];
-    [v23 setMask:v22];
+    layer2 = [(UIView *)v9->_contentClippingEffectView layer];
+    [layer2 setMask:v22];
 
     [(UIView *)v9 addSubview:v9->_contentClippingEffectView];
   }
@@ -118,42 +118,42 @@
 
 - (id)_fillEffect
 {
-  v2 = [(UITextHighlightView *)self fillColor];
-  v3 = [UIColorEffect colorEffectMonochromeTint:v2 blendingAmount:1.0 brightnessAdjustment:0.25];
+  fillColor = [(UITextHighlightView *)self fillColor];
+  v3 = [UIColorEffect colorEffectMonochromeTint:fillColor blendingAmount:1.0 brightnessAdjustment:0.25];
 
   return v3;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = _UIGetTextHighlightFillColor();
+    colorCopy = _UIGetTextHighlightFillColor();
   }
 
-  obj = v4;
-  if (![(UIColor *)self->_fillColor isEqual:v4])
+  obj = colorCopy;
+  if (![(UIColor *)self->_fillColor isEqual:colorCopy])
   {
     objc_storeStrong(&self->_fillColor, obj);
     v5 = obj;
-    v6 = [obj CGColor];
-    v7 = [(_UITextHighlightBackgroundView *)self->_backgroundView highlightLayer];
-    [v7 setFillColor:v6];
+    cGColor = [obj CGColor];
+    highlightLayer = [(_UITextHighlightBackgroundView *)self->_backgroundView highlightLayer];
+    [highlightLayer setFillColor:cGColor];
 
-    v8 = [(UITextHighlightView *)self _fillEffect];
-    [(UIVisualEffectView *)self->_contentClippingEffectView setEffect:v8];
+    _fillEffect = [(UITextHighlightView *)self _fillEffect];
+    [(UIVisualEffectView *)self->_contentClippingEffectView setEffect:_fillEffect];
   }
 }
 
-- (void)animateWithCompletion:(id)a3
+- (void)animateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(UIView *)self setAlpha:1.0];
   CGAffineTransformMakeScale(&v10, 1.2, 1.2);
   v9 = v10;
   [(UIView *)self setTransform:&v9];
-  v7 = v4;
+  v7 = completionCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__UITextHighlightView_animateWithCompletion___block_invoke;
@@ -163,7 +163,7 @@
   v6[1] = 3221225472;
   v6[2] = __45__UITextHighlightView_animateWithCompletion___block_invoke_2;
   v6[3] = &unk_1E70F3608;
-  v5 = v4;
+  v5 = completionCopy;
   [UIView animateWithDuration:2048 delay:v8 options:v6 animations:0.15 completion:0.0];
 }
 
@@ -191,9 +191,9 @@ uint64_t __45__UITextHighlightView_animateWithCompletion___block_invoke_2(uint64
   return result;
 }
 
-- (void)fadeAwayWithCompletion:(id)a3
+- (void)fadeAwayWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__UITextHighlightView_fadeAwayWithCompletion___block_invoke;
@@ -203,7 +203,7 @@ uint64_t __45__UITextHighlightView_animateWithCompletion___block_invoke_2(uint64
   v5[1] = 3221225472;
   v5[2] = __46__UITextHighlightView_fadeAwayWithCompletion___block_invoke_2;
   v5[3] = &unk_1E70F3608;
-  v4 = v6;
+  v4 = completionCopy;
   [UIView animateWithDuration:0 delay:v7 options:v5 animations:0.2 completion:0.3];
 }
 
@@ -221,18 +221,18 @@ uint64_t __46__UITextHighlightView_fadeAwayWithCompletion___block_invoke_2(uint6
   return result;
 }
 
-- (void)_updateWithPreviewParameters:(id)a3
+- (void)_updateWithPreviewParameters:(id)parameters
 {
   p_padding = &self->_padding;
-  v5 = a3;
-  [v5 _textPathInsets];
+  parametersCopy = parameters;
+  [parametersCopy _textPathInsets];
   p_padding->top = v6;
   p_padding->left = v7;
   p_padding->bottom = v8;
   p_padding->right = v9;
-  v10 = [v5 visiblePath];
+  visiblePath = [parametersCopy visiblePath];
 
-  v11 = [v10 copy];
+  v11 = [visiblePath copy];
   [v11 bounds];
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeTranslation(&v15, -v12, -v13);
@@ -242,14 +242,14 @@ uint64_t __46__UITextHighlightView_fadeAwayWithCompletion___block_invoke_2(uint6
   -[CAShapeLayer setPath:](self->_contentClippingMaskLayer, "setPath:", [v11 CGPath]);
 }
 
-- (void)setOverriddenPreviewParameters:(id)a3
+- (void)setOverriddenPreviewParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   if (![(UIPreviewParameters *)self->_overriddenPreviewParameters isEqual:?])
   {
     [(UITextHighlightView *)self invalidateContentView];
-    objc_storeStrong(&self->_overriddenPreviewParameters, a3);
-    [(UITextHighlightView *)self _updateWithPreviewParameters:v5];
+    objc_storeStrong(&self->_overriddenPreviewParameters, parameters);
+    [(UITextHighlightView *)self _updateWithPreviewParameters:parametersCopy];
   }
 }
 
@@ -272,26 +272,26 @@ uint64_t __46__UITextHighlightView_fadeAwayWithCompletion___block_invoke_2(uint6
     {
       if (!self->_overriddenPreviewParameters)
       {
-        v5 = [v3 parameters];
-        [(UITextHighlightView *)self _updateWithPreviewParameters:v5];
+        parameters = [v3 parameters];
+        [(UITextHighlightView *)self _updateWithPreviewParameters:parameters];
       }
 
       [(UIView *)self->_contentView removeFromSuperview];
-      v6 = [v4 view];
+      view = [v4 view];
       contentView = self->_contentView;
-      self->_contentView = v6;
+      self->_contentView = view;
 
-      v8 = [(UIVisualEffectView *)self->_contentClippingEffectView contentView];
-      [v8 addSubview:self->_contentView];
-      v9 = [v4 view];
-      [v9 frame];
+      contentView = [(UIVisualEffectView *)self->_contentClippingEffectView contentView];
+      [contentView addSubview:self->_contentView];
+      view2 = [v4 view];
+      [view2 frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [v4 target];
-      v19 = [v18 container];
-      [v8 convertRect:v19 fromView:{v11, v13, v15, v17}];
+      target = [v4 target];
+      container = [target container];
+      [contentView convertRect:container fromView:{v11, v13, v15, v17}];
       v21 = v20;
       v23 = v22;
       v25 = v24;
@@ -312,7 +312,7 @@ uint64_t __46__UITextHighlightView_fadeAwayWithCompletion___block_invoke_2(uint6
     else
     {
       [(UIView *)self->_contentView removeFromSuperview];
-      v8 = self->_contentView;
+      contentView = self->_contentView;
       self->_contentView = 0;
     }
 

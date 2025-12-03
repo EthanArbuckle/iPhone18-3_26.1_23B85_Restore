@@ -1,56 +1,56 @@
 @interface EKShareeViewController
 - (CGSize)preferredContentSize;
-- (EKShareeViewController)initWithSharee:(id)a3;
+- (EKShareeViewController)initWithSharee:(id)sharee;
 - (EKShareeViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)backgroundColor;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int)_subitemAtRow:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)_allowEditingChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int)_subitemAtRow:(int64_t)row;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)_allowEditingChanged:(id)changed;
 - (void)_reloadTitle;
 - (void)loadView;
 - (void)localDeleteTapped;
-- (void)removeClicked:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)removeClicked:(id)clicked;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKShareeViewController
 
-- (EKShareeViewController)initWithSharee:(id)a3
+- (EKShareeViewController)initWithSharee:(id)sharee
 {
-  v4 = a3;
+  shareeCopy = sharee;
   v10.receiver = self;
   v10.super_class = EKShareeViewController;
   v5 = [(EKShareeViewController *)&v10 initWithStyle:2];
   v6 = v5;
   if (v5)
   {
-    [(EKShareeViewController *)v5 setSharee:v4];
-    v7 = [(EKShareeViewController *)v6 sharee];
-    -[EKShareeViewController setAllowEditing:](v6, "setAllowEditing:", [v7 shareeAccessLevel] == 2);
+    [(EKShareeViewController *)v5 setSharee:shareeCopy];
+    sharee = [(EKShareeViewController *)v6 sharee];
+    -[EKShareeViewController setAllowEditing:](v6, "setAllowEditing:", [sharee shareeAccessLevel] == 2);
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v6 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v6;
 }
 
-- (int)_subitemAtRow:(int64_t)a3
+- (int)_subitemAtRow:(int64_t)row
 {
-  v4 = ((a3 > 1) & ([(EKShareeViewController *)self _shouldDisplayResendInvitationButton]^ 1)) + a3;
+  v4 = ((row > 1) & ([(EKShareeViewController *)self _shouldDisplayResendInvitationButton]^ 1)) + row;
   v5 = v4 + ((v4 > 2) & ~[(EKShareeViewController *)self _shouldDisplayStopSharingButton]);
   return v5 + ((v5 > 3) & ~[(EKShareeViewController *)self allowLocalDelete]);
 }
 
 - (void)_reloadTitle
 {
-  v4 = [(EKShareeViewController *)self sharee];
-  v3 = DisplayStringForIdentity(v4, 1, 0);
+  sharee = [(EKShareeViewController *)self sharee];
+  v3 = DisplayStringForIdentity(sharee, 1, 0);
   [(EKShareeViewController *)self setTitle:v3];
 }
 
@@ -78,34 +78,34 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = EKShareeViewController;
-  [(EKShareeViewController *)&v11 viewWillAppear:a3];
+  [(EKShareeViewController *)&v11 viewWillAppear:appear];
   if (MEMORY[0x1D38B98D0]([(EKShareeViewController *)self _reloadTitle]))
   {
-    v4 = [(EKShareeViewController *)self backgroundColor];
-    v5 = [(EKShareeViewController *)self tableView];
-    [v5 setBackgroundColor:v4];
+    backgroundColor = [(EKShareeViewController *)self backgroundColor];
+    tableView = [(EKShareeViewController *)self tableView];
+    [tableView setBackgroundColor:backgroundColor];
   }
 
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v6 lineHeight];
   v8 = v7;
-  v9 = [(EKShareeViewController *)self tableView];
-  [v9 setEstimatedRowHeight:v8];
+  tableView2 = [(EKShareeViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:v8];
 
-  v10 = [(EKShareeViewController *)self tableView];
-  [v10 reloadData];
+  tableView3 = [(EKShareeViewController *)self tableView];
+  [tableView3 reloadData];
 }
 
-- (void)_allowEditingChanged:(id)a3
+- (void)_allowEditingChanged:(id)changed
 {
-  v8 = a3;
-  if (v8)
+  changedCopy = changed;
+  if (changedCopy)
   {
-    -[EKShareeViewController setAllowEditing:](self, "setAllowEditing:", [v8 isOn]);
+    -[EKShareeViewController setAllowEditing:](self, "setAllowEditing:", [changedCopy isOn]);
   }
 
   if ([(EKShareeViewController *)self allowEditing])
@@ -118,13 +118,13 @@
     v4 = 1;
   }
 
-  v5 = [(EKShareeViewController *)self sharee];
-  [v5 setShareeAccessLevel:v4];
+  sharee = [(EKShareeViewController *)self sharee];
+  [sharee setShareeAccessLevel:v4];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  LOBYTE(sharee) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (sharee)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
     [v7 shareeViewControllerDidChangeAccessLevel:self];
@@ -133,8 +133,8 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(EKShareeViewController *)self tableView];
-  [v2 sizeThatFits:{EKUIContainedControllerIdealWidth(), 1100.0}];
+  tableView = [(EKShareeViewController *)self tableView];
+  [tableView sizeThatFits:{EKUIContainedControllerIdealWidth(), 1100.0}];
   v4 = v3;
   v6 = v5;
 
@@ -145,7 +145,7 @@
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(EKShareeViewController *)self _shouldDisplayResendInvitationButton])
   {
@@ -161,9 +161,9 @@
   return v5 + [(EKShareeViewController *)self allowLocalDelete];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = -[EKShareeViewController _subitemAtRow:](self, "_subitemAtRow:", [a4 section]);
+  v5 = -[EKShareeViewController _subitemAtRow:](self, "_subitemAtRow:", [path section]);
   v6 = 0;
   if (v5 > 1)
   {
@@ -173,33 +173,33 @@
         v6 = [[EKUICenteredTextTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"resendInvitation"];
         [(EKUICenteredTextTableViewCell *)v6 setAccessoryType:0];
         v10 = EventKitUIBundle();
-        v11 = v10;
+        sharee = v10;
         v12 = @"Resend Sharing Invitation";
         break;
       case 3:
         v6 = [[EKUICenteredTextTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-        v17 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
-        [(EKUICenteredTextTableViewCell *)v6 setBackgroundColor:v17];
+        tableCellGroupedBackgroundColor = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+        [(EKUICenteredTextTableViewCell *)v6 setBackgroundColor:tableCellGroupedBackgroundColor];
 
-        v18 = [MEMORY[0x1E69DC888] _systemDestructiveTintColor];
-        v19 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-        [v19 setTextColor:v18];
+        _systemDestructiveTintColor = [MEMORY[0x1E69DC888] _systemDestructiveTintColor];
+        textLabel = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+        [textLabel setTextColor:_systemDestructiveTintColor];
 
         v10 = EventKitUIBundle();
-        v11 = v10;
+        sharee = v10;
         v12 = @"Stop Sharing";
         break;
       case 4:
         v6 = [[EKUICenteredTextTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-        v7 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
-        [(EKUICenteredTextTableViewCell *)v6 setBackgroundColor:v7];
+        tableCellGroupedBackgroundColor2 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+        [(EKUICenteredTextTableViewCell *)v6 setBackgroundColor:tableCellGroupedBackgroundColor2];
 
-        v8 = [MEMORY[0x1E69DC888] _systemDestructiveTintColor];
-        v9 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-        [v9 setTextColor:v8];
+        _systemDestructiveTintColor2 = [MEMORY[0x1E69DC888] _systemDestructiveTintColor];
+        textLabel2 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+        [textLabel2 setTextColor:_systemDestructiveTintColor2];
 
         v10 = EventKitUIBundle();
-        v11 = v10;
+        sharee = v10;
         v12 = @"DeleteCalendarSharee";
         v13 = @"Delete";
         goto LABEL_12;
@@ -210,8 +210,8 @@
     v13 = &stru_1F4EF6790;
 LABEL_12:
     v20 = [v10 localizedStringForKey:v12 value:v13 table:0];
-    v21 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    [v21 setText:v20];
+    textLabel3 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    [textLabel3 setText:v20];
 
     goto LABEL_19;
   }
@@ -223,15 +223,15 @@ LABEL_12:
       goto LABEL_20;
     }
 
-    v11 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-    [v11 setOn:self->_allowEditing];
-    [v11 addTarget:self action:sel__allowEditingChanged_ forControlEvents:4096];
+    sharee = objc_alloc_init(MEMORY[0x1E69DCFD0]);
+    [sharee setOn:self->_allowEditing];
+    [sharee addTarget:self action:sel__allowEditingChanged_ forControlEvents:4096];
     v6 = objc_alloc_init(MEMORY[0x1E69DD028]);
-    [(EKUICenteredTextTableViewCell *)v6 setAccessoryView:v11];
+    [(EKUICenteredTextTableViewCell *)v6 setAccessoryView:sharee];
     v14 = EventKitUIBundle();
     v15 = [v14 localizedStringForKey:@"Allow Editing" value:&stru_1F4EF6790 table:0];
-    v16 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    [v16 setText:v15];
+    textLabel4 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    [textLabel4 setText:v15];
 
     [(EKUICenteredTextTableViewCell *)v6 setSelectionStyle:0];
   }
@@ -240,69 +240,69 @@ LABEL_12:
   {
     v6 = [[AddressCardTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"addressCard"];
     [(EKUICenteredTextTableViewCell *)v6 setAccessoryType:1];
-    v11 = [(EKShareeViewController *)self sharee];
-    v22 = DisplayStringForIdentity(v11, 0, 0);
-    v23 = DisplayAddressForIdentity(v11);
+    sharee = [(EKShareeViewController *)self sharee];
+    v22 = DisplayStringForIdentity(sharee, 0, 0);
+    v23 = DisplayAddressForIdentity(sharee);
     v24 = [v22 length];
-    v25 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    v26 = v25;
+    textLabel5 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    detailTextLabel = textLabel5;
     if (v24)
     {
-      [v25 setText:v22];
+      [textLabel5 setText:v22];
 
-      v26 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
+      detailTextLabel = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
     }
 
     v68 = v23;
-    [v26 setText:v23];
+    [detailTextLabel setText:v23];
 
-    v27 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    [v27 setHidden:1];
+    textLabel6 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    [textLabel6 setHidden:1];
 
-    v28 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
-    [v28 setHidden:1];
+    detailTextLabel2 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
+    [detailTextLabel2 setHidden:1];
 
     v29 = objc_opt_new();
-    v30 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    v31 = [v30 font];
-    [v29 setFont:v31];
+    textLabel7 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    font = [textLabel7 font];
+    [v29 setFont:font];
 
-    v32 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    v33 = [v32 text];
-    [v29 setText:v33];
+    textLabel8 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    text = [textLabel8 text];
+    [v29 setText:text];
 
-    v34 = [MEMORY[0x1E69DC888] labelColor];
-    [v29 setTextColor:v34];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v29 setTextColor:labelColor];
 
     [v29 setNumberOfLines:1];
     [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [[EKUILabeledAvatarView alloc] initWithIdentity:v11 placement:0 options:0];
+    v35 = [[EKUILabeledAvatarView alloc] initWithIdentity:sharee placement:0 options:0];
     [(EKUILabeledAvatarView *)v35 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v36 = [(EKUICenteredTextTableViewCell *)v6 contentView];
-    [v36 addSubview:v29];
+    contentView = [(EKUICenteredTextTableViewCell *)v6 contentView];
+    [contentView addSubview:v29];
 
-    v37 = [(EKUICenteredTextTableViewCell *)v6 contentView];
-    [v37 addSubview:v35];
+    contentView2 = [(EKUICenteredTextTableViewCell *)v6 contentView];
+    [contentView2 addSubview:v35];
 
     v38 = 0x1E696A000uLL;
     if ([v22 length])
     {
       v39 = objc_opt_new();
-      v40 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
-      v41 = [v40 font];
-      [v39 setFont:v41];
+      detailTextLabel3 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
+      font2 = [detailTextLabel3 font];
+      [v39 setFont:font2];
 
-      v42 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
-      v43 = [v42 text];
-      [v39 setText:v43];
+      detailTextLabel4 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
+      text2 = [detailTextLabel4 text];
+      [v39 setText:text2];
 
-      v44 = [MEMORY[0x1E69DC888] labelColor];
-      [v39 setTextColor:v44];
+      labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+      [v39 setTextColor:labelColor2];
 
       [v39 setNumberOfLines:1];
       [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v45 = [(EKUICenteredTextTableViewCell *)v6 contentView];
-      [v45 addSubview:v39];
+      contentView3 = [(EKUICenteredTextTableViewCell *)v6 contentView];
+      [contentView3 addSubview:v39];
 
       v46 = _NSDictionaryOfVariableBindings(&cfstr_TitleAvatarAdd.isa, v29, v35, v39, 0);
       v47 = MEMORY[0x1E696ACD8];
@@ -311,10 +311,10 @@ LABEL_12:
       v49 = v48 = v22;
       [v47 activateConstraints:v49];
 
-      v50 = [v39 firstBaselineAnchor];
-      v51 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
-      v52 = [v51 firstBaselineAnchor];
-      v53 = [v50 constraintEqualToAnchor:v52 constant:0.0];
+      firstBaselineAnchor = [v39 firstBaselineAnchor];
+      detailTextLabel5 = [(EKUICenteredTextTableViewCell *)v6 detailTextLabel];
+      firstBaselineAnchor2 = [detailTextLabel5 firstBaselineAnchor];
+      v53 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:0.0];
       [v53 setActive:1];
 
       v22 = v48;
@@ -336,16 +336,16 @@ LABEL_12:
     v57 = [v56 constraintsWithVisualFormat:@"V:|-(>=0)-[avatar]-(>=0)-|" options:0 metrics:0 views:v46];
     [v56 activateConstraints:v57];
 
-    v58 = [v29 firstBaselineAnchor];
-    v59 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
-    v60 = [v59 firstBaselineAnchor];
-    v61 = [v58 constraintEqualToAnchor:v60 constant:0.0];
+    firstBaselineAnchor3 = [v29 firstBaselineAnchor];
+    textLabel9 = [(EKUICenteredTextTableViewCell *)v6 textLabel];
+    firstBaselineAnchor4 = [textLabel9 firstBaselineAnchor];
+    v61 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4 constant:0.0];
     [v61 setActive:1];
 
-    v62 = [(EKUILabeledAvatarView *)v35 centerYAnchor];
-    v63 = [(EKUICenteredTextTableViewCell *)v6 contentView];
-    v64 = [v63 centerYAnchor];
-    v65 = [v62 constraintEqualToAnchor:v64];
+    centerYAnchor = [(EKUILabeledAvatarView *)v35 centerYAnchor];
+    contentView4 = [(EKUICenteredTextTableViewCell *)v6 contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v65 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v65 setActive:1];
   }
 
@@ -356,9 +356,9 @@ LABEL_20:
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([(EKShareeViewController *)self _subitemAtRow:a4]== 1)
+  if ([(EKShareeViewController *)self _subitemAtRow:section]== 1)
   {
     v4 = EventKitUIBundle();
     v5 = [v4 localizedStringForKey:@"Allow this person to make changes to the calendar." value:&stru_1F4EF6790 table:0];
@@ -372,16 +372,16 @@ LABEL_20:
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EKShareeViewController *)self traitCollection];
-  v10 = EKUIUsesLargeTextLayout(v9);
+  viewCopy = view;
+  pathCopy = path;
+  traitCollection = [(EKShareeViewController *)self traitCollection];
+  v10 = EKUIUsesLargeTextLayout(traitCollection);
 
   if (!v10)
   {
-    v11 = -[EKShareeViewController _subitemAtRow:](self, "_subitemAtRow:", [v8 section]);
+    v11 = -[EKShareeViewController _subitemAtRow:](self, "_subitemAtRow:", [pathCopy section]);
     if ((v11 - 1) < 2)
     {
       v12 = EKUITableRowHeightDefault();
@@ -399,7 +399,7 @@ LABEL_20:
 
     else
     {
-      [v7 rowHeight];
+      [viewCopy rowHeight];
     }
 
     v4 = v12;
@@ -412,12 +412,12 @@ LABEL_10:
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = [(EKShareeViewController *)self traitCollection];
-  v7 = EKUIUsesLargeTextLayout(v6);
+  traitCollection = [(EKShareeViewController *)self traitCollection];
+  v7 = EKUIUsesLargeTextLayout(traitCollection);
 
-  if (v7 || [(EKShareeViewController *)self _subitemAtRow:a4]!= 2)
+  if (v7 || [(EKShareeViewController *)self _subitemAtRow:section]!= 2)
   {
     return *MEMORY[0x1E69DE3D0];
   }
@@ -426,16 +426,16 @@ LABEL_10:
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = -[EKShareeViewController _subitemAtRow:](self, "_subitemAtRow:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[EKShareeViewController _subitemAtRow:](self, "_subitemAtRow:", [pathCopy section]);
   if (v7 > 2)
   {
     if (v7 == 3)
     {
-      v15 = [v16 cellForRowAtIndexPath:v6];
+      v15 = [viewCopy cellForRowAtIndexPath:pathCopy];
       [(EKShareeViewController *)self removeClicked:v15];
     }
 
@@ -449,35 +449,35 @@ LABEL_10:
       [(EKShareeViewController *)self localDeleteTapped];
     }
 
-    v11 = [(EKShareeViewController *)self tableView];
-    [(EKIdentityViewController *)v11 deselectRowAtIndexPath:v6 animated:1];
+    tableView = [(EKShareeViewController *)self tableView];
+    [(EKIdentityViewController *)tableView deselectRowAtIndexPath:pathCopy animated:1];
     goto LABEL_12;
   }
 
   if (!v7)
   {
     v12 = [EKIdentityViewController alloc];
-    v13 = [(EKShareeViewController *)self sharee];
-    v11 = [(EKIdentityViewController *)v12 initWithIdentity:v13];
+    sharee = [(EKShareeViewController *)self sharee];
+    tableView = [(EKIdentityViewController *)v12 initWithIdentity:sharee];
 
-    v14 = [(EKShareeViewController *)self navigationController];
-    [v14 pushViewController:v11 animated:1];
+    navigationController = [(EKShareeViewController *)self navigationController];
+    [navigationController pushViewController:tableView animated:1];
 
     goto LABEL_12;
   }
 
   if (v7 == 2)
   {
-    v8 = [(EKShareeViewController *)self tableView];
-    [v8 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+    tableView2 = [(EKShareeViewController *)self tableView];
+    [tableView2 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = objc_loadWeakRetained(&self->_delegate);
-      [(EKIdentityViewController *)v11 shareeViewController:self didCompleteWithAction:1];
+      tableView = objc_loadWeakRetained(&self->_delegate);
+      [(EKIdentityViewController *)tableView shareeViewController:self didCompleteWithAction:1];
 LABEL_12:
     }
   }
@@ -485,11 +485,11 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)removeClicked:(id)a3
+- (void)removeClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(EKShareeViewController *)self sharee];
-  v6 = DisplayStringForIdentity(v5, 1, 0);
+  clickedCopy = clicked;
+  sharee = [(EKShareeViewController *)self sharee];
+  v6 = DisplayStringForIdentity(sharee, 1, 0);
 
   v7 = MEMORY[0x1E69DC650];
   v8 = MEMORY[0x1E696AEC0];
@@ -519,15 +519,15 @@ LABEL_13:
   v23 = [v20 actionWithTitle:v22 style:1 handler:0];
   [(UIAlertController *)v19 addAction:v23];
 
-  v24 = [(UIAlertController *)self->_removeAlertController popoverPresentationController];
-  [v24 setSourceView:v4];
+  popoverPresentationController = [(UIAlertController *)self->_removeAlertController popoverPresentationController];
+  [popoverPresentationController setSourceView:clickedCopy];
 
   v25 = *MEMORY[0x1E695F050];
   v26 = *(MEMORY[0x1E695F050] + 8);
   v27 = *(MEMORY[0x1E695F050] + 16);
   v28 = *(MEMORY[0x1E695F050] + 24);
-  v29 = [(UIAlertController *)self->_removeAlertController popoverPresentationController];
-  [v29 setSourceRect:{v25, v26, v27, v28}];
+  popoverPresentationController2 = [(UIAlertController *)self->_removeAlertController popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v25, v26, v27, v28}];
 
   [(EKShareeViewController *)self presentViewController:self->_removeAlertController animated:1 completion:0];
 }

@@ -1,33 +1,33 @@
 @interface CRTextSequenceRecognizerModelEspresso
-+ (vImage_Buffer)_createBufferWithWidth:(SEL)a3 height:(unint64_t)a4 channels:(unint64_t)a5 batchSize:(unint64_t)a6 sequenceLength:(unint64_t)a7;
-+ (void)_checkCRLogRecognizerInputBatch:(vImage_Buffer *)a3 width:(unint64_t)a4;
++ (vImage_Buffer)_createBufferWithWidth:(SEL)width height:(unint64_t)height channels:(unint64_t)channels batchSize:(unint64_t)size sequenceLength:(unint64_t)length;
++ (void)_checkCRLogRecognizerInputBatch:(vImage_Buffer *)batch width:(unint64_t)width;
 - ($C4732ECC957FA13B9B3DF4A51A95735B)network;
-- (BOOL)_configurePlanForInput:(id)a3 error:(id *)a4;
-- (BOOL)_setupContextAndPlanForConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)_shouldReconfigurePlanForInput:(id)a3;
+- (BOOL)_configurePlanForInput:(id)input error:(id *)error;
+- (BOOL)_setupContextAndPlanForConfiguration:(id)configuration error:(id *)error;
+- (BOOL)_shouldReconfigurePlanForInput:(id)input;
 - (BOOL)shouldSaturateInputBatches;
-- (CRTextSequenceRecognizerModelEspresso)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5;
-- (id)_configurationHashForInput:(id)a3;
-- (id)_configurationHashForInput:(id)a3 batchSize:(unint64_t)a4;
-- (id)_modelConfigurationNameForInput:(id)a3;
+- (CRTextSequenceRecognizerModelEspresso)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error;
+- (id)_configurationHashForInput:(id)input;
+- (id)_configurationHashForInput:(id)input batchSize:(unint64_t)size;
+- (id)_modelConfigurationNameForInput:(id)input;
 - (id)modelFilePath;
-- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)a4 :allocator<espresso_buffer_t>> *)a3;
-- (id)predictFromInputs:(id)a3 error:(id *)a4;
-- (void)_createContextForEngine:(int)a3 configuration:(id)a4;
+- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)info :allocator<espresso_buffer_t>> *)a3;
+- (id)predictFromInputs:(id)inputs error:(id *)error;
+- (void)_createContextForEngine:(int)engine configuration:(id)configuration;
 - (void)_resetEspressoState;
 - (void)dealloc;
-- (void)preheatWithCompletionHandler:(id)a3;
+- (void)preheatWithCompletionHandler:(id)handler;
 - (void)releaseIntermediateBuffers;
 @end
 
 @implementation CRTextSequenceRecognizerModelEspresso
 
-- (void)preheatWithCompletionHandler:(id)a3
+- (void)preheatWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884C70);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -43,51 +43,51 @@
   v13[3] = 0;
   v13[4] = &unk_1B42AD688;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1B4105608(0, 0, v8, &unk_1B42AD698, v13);
 }
 
 - (id)modelFilePath
 {
-  v2 = [(CRTextSequenceRecognizerModel *)self modelURL];
-  v3 = [v2 path];
-  v4 = [v3 stringByAppendingPathComponent:@"model.espresso.net"];
+  modelURL = [(CRTextSequenceRecognizerModel *)self modelURL];
+  path = [modelURL path];
+  v4 = [path stringByAppendingPathComponent:@"model.espresso.net"];
 
   return v4;
 }
 
-- (CRTextSequenceRecognizerModelEspresso)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5
+- (CRTextSequenceRecognizerModelEspresso)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  configurationCopy = configuration;
+  ownerCopy = owner;
   v28.receiver = self;
   v28.super_class = CRTextSequenceRecognizerModelEspresso;
   v11 = [(CRTextSequenceRecognizerModelEspresso *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_configuration, a3);
-    objc_storeStrong(&v12->_owner, a4);
+    objc_storeStrong(&v11->_configuration, configuration);
+    objc_storeStrong(&v12->_owner, owner);
     [CRLoadCounterFacade recordLoad:v12 owner:v12->_owner];
     v13 = CROSLogForCategory(3);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [objc_opt_class() defaultURLOfModelInThisBundle];
-      v15 = [v14 lastPathComponent];
+      defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+      lastPathComponent = [defaultURLOfModelInThisBundle lastPathComponent];
       *buf = 138412290;
-      v30 = v15;
+      v30 = lastPathComponent;
       _os_log_impl(&dword_1B40D2000, v13, OS_LOG_TYPE_DEFAULT, "Loading model: %@", buf, 0xCu);
     }
 
     v27 = 0;
-    v16 = [(CRTextSequenceRecognizerModelEspresso *)v12 _setupContextAndPlanForConfiguration:v9 error:&v27];
+    v16 = [(CRTextSequenceRecognizerModelEspresso *)v12 _setupContextAndPlanForConfiguration:configurationCopy error:&v27];
     v17 = v27;
     v18 = v17;
-    if (a5 && v17)
+    if (error && v17)
     {
       v19 = v17;
-      *a5 = v18;
+      *error = v18;
     }
 
     if (!v16)
@@ -105,7 +105,7 @@
     predictionQueue = v12->_predictionQueue;
     v12->_predictionQueue = v23;
 
-    objc_storeStrong(&v12->_recognizerConfiguration, a3);
+    objc_storeStrong(&v12->_recognizerConfiguration, configuration);
     v12->_submissionLock._os_unfair_lock_opaque = 0;
   }
 
@@ -115,22 +115,22 @@ LABEL_11:
   return v25;
 }
 
-- (id)predictFromInputs:(id)a3 error:(id *)a4
+- (id)predictFromInputs:(id)inputs error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [(CRTextSequenceRecognizerModelEspresso *)self predictionQueue];
+  inputsCopy = inputs;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(inputsCopy, "count")}];
+  predictionQueue = [(CRTextSequenceRecognizerModelEspresso *)self predictionQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block_invoke;
   v14[3] = &unk_1E7BC22D8;
   v14[4] = self;
-  v15 = v6;
-  v17 = a4;
+  v15 = inputsCopy;
+  errorCopy = error;
   v9 = v7;
   v16 = v9;
-  v10 = v6;
-  dispatch_sync(v8, v14);
+  v10 = inputsCopy;
+  dispatch_sync(predictionQueue, v14);
 
   v11 = v16;
   v12 = v9;
@@ -462,9 +462,9 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
   }
 }
 
-- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)a4 :allocator<espresso_buffer_t>> *)a3
+- (id)outputFromOutputBuffers:()vector<espresso_buffer_t featureInfo:(std:(id)info :allocator<espresso_buffer_t>> *)a3
 {
-  v6 = a4;
+  infoCopy = info;
   var0 = a3->var0;
   v8 = *(a3->var0 + 120);
   v35 = *(a3->var0 + 104);
@@ -483,11 +483,11 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
   v30 = v12;
   v13 = malloc_type_malloc(*(var0 + 9), 0xA13B58D9uLL);
   memcpy(v13, *a3->var0, *(a3->var0 + 9));
-  v14 = [v6 count];
+  batchSize = [infoCopy count];
   if ([(CRTextSequenceRecognizerModelEspresso *)self shouldSaturateInputBatches])
   {
-    v15 = [(CRTextSequenceRecognizerModelEspresso *)self configuration];
-    v14 = [v15 batchSize];
+    configuration = [(CRTextSequenceRecognizerModelEspresso *)self configuration];
+    batchSize = [configuration batchSize];
   }
 
   v25 = v35;
@@ -501,23 +501,23 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
   v19 = v29;
   v20 = v30;
   v18 = v13;
-  v16 = [[CRTextRecognizerModelEspressoOutput alloc] initWithOutputLabelProbs:&v18 featureInfo:v6 batchSize:v14];
+  v16 = [[CRTextRecognizerModelEspressoOutput alloc] initWithOutputLabelProbs:&v18 featureInfo:infoCopy batchSize:batchSize];
 
   return v16;
 }
 
 - (BOOL)shouldSaturateInputBatches
 {
-  v3 = [(CRTextSequenceRecognizerModel *)self outputFormatVersion];
-  v4 = [v3 intValue];
+  outputFormatVersion = [(CRTextSequenceRecognizerModel *)self outputFormatVersion];
+  intValue = [outputFormatVersion intValue];
 
-  if (v4 == 1)
+  if (intValue == 1)
   {
     return self->_engine == 10007;
   }
 
-  v6 = [(CRTextSequenceRecognizerModel *)self outputFormatVersion];
-  [v6 intValue];
+  outputFormatVersion2 = [(CRTextSequenceRecognizerModel *)self outputFormatVersion];
+  [outputFormatVersion2 intValue];
 
   return 1;
 }
@@ -529,10 +529,10 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
   v3 = CROSLogForCategory(3);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [objc_opt_class() defaultURLOfModelInThisBundle];
-    v5 = [v4 lastPathComponent];
+    defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+    lastPathComponent = [defaultURLOfModelInThisBundle lastPathComponent];
     *buf = 138412290;
-    v8 = v5;
+    v8 = lastPathComponent;
     _os_log_impl(&dword_1B40D2000, v3, OS_LOG_TYPE_DEFAULT, "Unloading model: %@", buf, 0xCu);
   }
 
@@ -542,34 +542,34 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
   [(CRTextSequenceRecognizerModel *)&v6 dealloc];
 }
 
-- (id)_modelConfigurationNameForInput:(id)a3
+- (id)_modelConfigurationNameForInput:(id)input
 {
-  v4 = a3;
-  v5 = [(CRTextSequenceRecognizerModelEspresso *)self recognizerConfiguration];
-  v6 = -[CRTextSequenceRecognizerModelEspresso _configurationHashForInput:batchSize:](self, "_configurationHashForInput:batchSize:", v4, [v5 batchSize]);
+  inputCopy = input;
+  recognizerConfiguration = [(CRTextSequenceRecognizerModelEspresso *)self recognizerConfiguration];
+  v6 = -[CRTextSequenceRecognizerModelEspresso _configurationHashForInput:batchSize:](self, "_configurationHashForInput:batchSize:", inputCopy, [recognizerConfiguration batchSize]);
 
   return v6;
 }
 
-- (id)_configurationHashForInput:(id)a3
+- (id)_configurationHashForInput:(id)input
 {
-  v4 = a3;
-  v5 = -[CRTextSequenceRecognizerModelEspresso _configurationHashForInput:batchSize:](self, "_configurationHashForInput:batchSize:", v4, [v4 batchSize]);
+  inputCopy = input;
+  v5 = -[CRTextSequenceRecognizerModelEspresso _configurationHashForInput:batchSize:](self, "_configurationHashForInput:batchSize:", inputCopy, [inputCopy batchSize]);
 
   return v5;
 }
 
-- (id)_configurationHashForInput:(id)a3 batchSize:(unint64_t)a4
+- (id)_configurationHashForInput:(id)input batchSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  inputCopy = input;
+  v7 = inputCopy;
+  if (inputCopy)
   {
-    [v6 img_input];
+    [inputCopy img_input];
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(CRTextSequenceRecognizerModelEspresso *)self recognizerConfiguration];
-    [v9 inputHeight];
-    v11 = [v8 stringWithFormat:@"%@_%ld_%ld_%ld_%ld_%ld_", @"img_input", 1, a4, 1, v10, 0];
+    recognizerConfiguration = [(CRTextSequenceRecognizerModelEspresso *)self recognizerConfiguration];
+    [recognizerConfiguration inputHeight];
+    v11 = [v8 stringWithFormat:@"%@_%ld_%ld_%ld_%ld_%ld_", @"img_input", 1, size, 1, v10, 0];
   }
 
   else
@@ -580,21 +580,21 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
   return v11;
 }
 
-- (BOOL)_setupContextAndPlanForConfiguration:(id)a3 error:(id *)a4
+- (BOOL)_setupContextAndPlanForConfiguration:(id)configuration error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   [(CRTextSequenceRecognizerModelEspresso *)self _resetEspressoState];
   self->_engine = 5;
   self->_precision = 65552;
-  if ([v6 computeDeviceType] == 1)
+  if ([configurationCopy computeDeviceType] == 1)
   {
     engine = 0;
     self->_engine = 0;
     self->_precision = 65568;
   }
 
-  else if ([v6 usesAppleNeuralEngine])
+  else if ([configurationCopy usesAppleNeuralEngine])
   {
     engine = 10007;
     self->_engine = 10007;
@@ -606,11 +606,11 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
     engine = self->_engine;
   }
 
-  v8 = [(CRTextSequenceRecognizerModelEspresso *)self _createContextForEngine:engine configuration:v6];
+  v8 = [(CRTextSequenceRecognizerModelEspresso *)self _createContextForEngine:engine configuration:configurationCopy];
   self->_context = v8;
   if (!v8)
   {
-    if ([v6 computeDeviceType] || self->_engine == 5)
+    if ([configurationCopy computeDeviceType] || self->_engine == 5)
     {
       if (self->_context)
       {
@@ -621,7 +621,7 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
     else
     {
       self->_engine = 5;
-      v11 = [(CRTextSequenceRecognizerModelEspresso *)self _createContextForEngine:5 configuration:v6];
+      v11 = [(CRTextSequenceRecognizerModelEspresso *)self _createContextForEngine:5 configuration:configurationCopy];
       self->_context = v11;
       if (v11)
       {
@@ -629,14 +629,14 @@ void __65__CRTextSequenceRecognizerModelEspresso_predictFromInputs_error___block
       }
     }
 
-    if (!self->_engine || (self->_engine = 0, self->_precision = 65568, v9 = [(CRTextSequenceRecognizerModelEspresso *)self _createContextForEngine:0 configuration:v6], (self->_context = v9) == 0))
+    if (!self->_engine || (self->_engine = 0, self->_precision = 65568, v9 = [(CRTextSequenceRecognizerModelEspresso *)self _createContextForEngine:0 configuration:configurationCopy], (self->_context = v9) == 0))
     {
-      if (a4)
+      if (error)
       {
         v10 = [CRImageReader errorWithErrorCode:-8];
 LABEL_26:
         v16 = 0;
-        *a4 = v10;
+        *error = v10;
         goto LABEL_28;
       }
 
@@ -660,7 +660,7 @@ LABEL_15:
     }
 
     [(CRTextSequenceRecognizerModelEspresso *)self _resetEspressoState];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -668,8 +668,8 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  v13 = [(CRTextSequenceRecognizerModelEspresso *)self modelFilePath];
-  [v13 UTF8String];
+  modelFilePath = [(CRTextSequenceRecognizerModelEspresso *)self modelFilePath];
+  [modelFilePath UTF8String];
   v14 = espresso_plan_add_network();
 
   v15 = espresso_plan_build();
@@ -686,7 +686,7 @@ LABEL_15:
     }
 
     [(CRTextSequenceRecognizerModelEspresso *)self _resetEspressoState];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -702,17 +702,17 @@ LABEL_28:
   return v16;
 }
 
-- (void)_createContextForEngine:(int)a3 configuration:(id)a4
+- (void)_createContextForEngine:(int)engine configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (engine == 5)
   {
-    v7 = [v5 metalDevice];
+    metalDevice = [configurationCopy metalDevice];
 
-    if (v7)
+    if (metalDevice)
     {
-      v8 = [v6 metalDevice];
+      metalDevice2 = [v6 metalDevice];
       espresso_device_id_for_metal_device();
     }
   }
@@ -722,27 +722,27 @@ LABEL_28:
   return context;
 }
 
-+ (vImage_Buffer)_createBufferWithWidth:(SEL)a3 height:(unint64_t)a4 channels:(unint64_t)a5 batchSize:(unint64_t)a6 sequenceLength:(unint64_t)a7
++ (vImage_Buffer)_createBufferWithWidth:(SEL)width height:(unint64_t)height channels:(unint64_t)channels batchSize:(unint64_t)size sequenceLength:(unint64_t)length
 {
-  v10 = a7 * a5;
-  result = malloc_type_calloc(a7 * a5 * a4, 4uLL, 0x100004052888210uLL);
+  v10 = length * channels;
+  result = malloc_type_calloc(length * channels * height, 4uLL, 0x100004052888210uLL);
   retstr->data = result;
   retstr->height = v10;
-  retstr->width = a4;
-  retstr->rowBytes = 4 * a4;
+  retstr->width = height;
+  retstr->rowBytes = 4 * height;
   return result;
 }
 
-- (BOOL)_shouldReconfigurePlanForInput:(id)a3
+- (BOOL)_shouldReconfigurePlanForInput:(id)input
 {
-  v4 = a3;
-  v5 = [(CRTextSequenceRecognizerModelEspresso *)self currentConfigurationHash];
-  objc_sync_enter(v5);
-  if (v4)
+  inputCopy = input;
+  currentConfigurationHash = [(CRTextSequenceRecognizerModelEspresso *)self currentConfigurationHash];
+  objc_sync_enter(currentConfigurationHash);
+  if (inputCopy)
   {
-    v6 = [(CRTextSequenceRecognizerModelEspresso *)self _configurationHashForInput:v4];
-    v7 = [(CRTextSequenceRecognizerModelEspresso *)self currentConfigurationHash];
-    v8 = [v6 isEqualToString:v7] ^ 1;
+    v6 = [(CRTextSequenceRecognizerModelEspresso *)self _configurationHashForInput:inputCopy];
+    currentConfigurationHash2 = [(CRTextSequenceRecognizerModelEspresso *)self currentConfigurationHash];
+    v8 = [v6 isEqualToString:currentConfigurationHash2] ^ 1;
   }
 
   else
@@ -750,26 +750,26 @@ LABEL_28:
     LOBYTE(v8) = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(currentConfigurationHash);
 
   return v8;
 }
 
-- (BOOL)_configurePlanForInput:(id)a3 error:(id *)a4
+- (BOOL)_configurePlanForInput:(id)input error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CRTextSequenceRecognizerModelEspresso *)self currentConfigurationHash];
-  objc_sync_enter(v6);
-  if (v5)
+  inputCopy = input;
+  currentConfigurationHash = [(CRTextSequenceRecognizerModelEspresso *)self currentConfigurationHash];
+  objc_sync_enter(currentConfigurationHash);
+  if (inputCopy)
   {
-    [v5 batchSize];
-    v7 = [(CRTextSequenceRecognizerModelEspresso *)self recognizerConfiguration];
-    [v7 inputHeight];
+    [inputCopy batchSize];
+    recognizerConfiguration = [(CRTextSequenceRecognizerModelEspresso *)self recognizerConfiguration];
+    [recognizerConfiguration inputHeight];
 
-    [v5 img_input];
-    v17 = [(CRTextSequenceRecognizerModelEspresso *)self _modelConfigurationNameForInput:v5];
-    v15 = [(CRTextSequenceRecognizerModelEspresso *)self _configurationHashForInput:v5];
+    [inputCopy img_input];
+    v17 = [(CRTextSequenceRecognizerModelEspresso *)self _modelConfigurationNameForInput:inputCopy];
+    v15 = [(CRTextSequenceRecognizerModelEspresso *)self _configurationHashForInput:inputCopy];
     if (espresso_plan_get_phase() == 1)
     {
       espresso_plan_build_clean();
@@ -794,8 +794,8 @@ LABEL_28:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(CRTextSequenceRecognizerModelEspresso *)self outputNames];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    outputNames = [(CRTextSequenceRecognizerModelEspresso *)self outputNames];
+    v10 = [outputNames countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = *v19;
@@ -805,14 +805,14 @@ LABEL_28:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(outputNames);
           }
 
           [*(*(&v18 + 1) + 8 * i) UTF8String];
           espresso_network_declare_output();
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [outputNames countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -821,10 +821,10 @@ LABEL_28:
     if (espresso_plan_build())
     {
 LABEL_14:
-      if (a4)
+      if (error)
       {
         [CRImageReader errorWithErrorCode:-8];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
       }
 
       else
@@ -845,7 +845,7 @@ LABEL_14:
     v13 = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(currentConfigurationHash);
 
   return v13;
 }
@@ -873,13 +873,13 @@ LABEL_14:
   espresso_plan_build_clean();
 }
 
-+ (void)_checkCRLogRecognizerInputBatch:(vImage_Buffer *)a3 width:(unint64_t)a4
++ (void)_checkCRLogRecognizerInputBatch:(vImage_Buffer *)batch width:(unint64_t)width
 {
-  CRLogger = CRLogger::getCRLogger(a1);
+  CRLogger = CRLogger::getCRLogger(self);
   if (*CRLogger == 1 && (CRLogger[8] & 8) != 0)
   {
-    v8 = [[CRImage alloc] initWithFloatBuffer:a3->data width:a3->width height:a3->height];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/batch_%d_%d.png", a4, rand()];
+    v8 = [[CRImage alloc] initWithFloatBuffer:batch->data width:batch->width height:batch->height];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/batch_%d_%d.png", width, rand()];
     [(CRImage *)v8 writeToFile:v7];
   }
 }

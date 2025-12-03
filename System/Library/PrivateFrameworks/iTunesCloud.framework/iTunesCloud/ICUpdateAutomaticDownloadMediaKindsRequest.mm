@@ -1,36 +1,36 @@
 @interface ICUpdateAutomaticDownloadMediaKindsRequest
-- (ICUpdateAutomaticDownloadMediaKindsRequest)initWithRequestContext:(id)a3 mediaKindsToAdd:(id)a4 mediaKindsToRemove:(id)a5;
+- (ICUpdateAutomaticDownloadMediaKindsRequest)initWithRequestContext:(id)context mediaKindsToAdd:(id)add mediaKindsToRemove:(id)remove;
 - (void)execute;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ICUpdateAutomaticDownloadMediaKindsRequest
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = requestCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ received request to handle dialog request %{public}@", buf, 0x16u);
   }
 
-  v9 = [(ICStoreRequestContext *)self->_requestContext storeDialogResponseHandler];
-  if (v9)
+  storeDialogResponseHandler = [(ICStoreRequestContext *)self->_requestContext storeDialogResponseHandler];
+  if (storeDialogResponseHandler)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77__ICUpdateAutomaticDownloadMediaKindsRequest_handleDialogRequest_completion___block_invoke;
     v12[3] = &unk_1E7BF8DD8;
-    v13 = v7;
-    [v9 handleAMSDialogRequest:v6 completion:v12];
+    v13 = completionCopy;
+    [storeDialogResponseHandler handleAMSDialogRequest:requestCopy completion:v12];
     v10 = v13;
   }
 
@@ -40,35 +40,35 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Ignoring dialog as a handler is not configured", buf, 0xCu);
     }
 
     v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7009 underlyingError:0 debugDescription:@"Dialog handling not desired in this context"];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v6;
+    v23 = requestCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ handling authentication request %{public}@", buf, 0x16u);
   }
 
-  v9 = [v6 options];
-  v10 = v9;
-  if (v9)
+  options = [requestCopy options];
+  v10 = options;
+  if (options)
   {
-    v11 = v9;
+    v11 = options;
   }
 
   else
@@ -78,22 +78,22 @@
 
   v12 = v11;
 
-  v13 = [(ICRequestContext *)self->_requestContext authenticationProvider];
-  v14 = [v13 interactionLevel];
+  authenticationProvider = [(ICRequestContext *)self->_requestContext authenticationProvider];
+  interactionLevel = [authenticationProvider interactionLevel];
 
-  [v12 setAllowServerDialogs:v14 != 1];
-  [v12 setAuthenticationType:v14 == 1];
-  [v6 setOptions:v12];
-  v15 = [objc_alloc(MEMORY[0x1E698C7C8]) initWithRequest:v6];
-  v16 = [v15 performAuthentication];
+  [v12 setAllowServerDialogs:interactionLevel != 1];
+  [v12 setAuthenticationType:interactionLevel == 1];
+  [requestCopy setOptions:v12];
+  v15 = [objc_alloc(MEMORY[0x1E698C7C8]) initWithRequest:requestCopy];
+  performAuthentication = [v15 performAuthentication];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_completion___block_invoke;
   v18[3] = &unk_1E7BF8DB0;
   v18[4] = self;
-  v19 = v7;
-  v17 = v7;
-  [v16 addFinishBlock:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [performAuthentication addFinishBlock:v18];
 }
 
 void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -137,7 +137,7 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
     mediaKindsToAdd = self->_mediaKindsToAdd;
     mediaKindsToRemove = self->_mediaKindsToRemove;
     *buf = 138543874;
-    v61 = self;
+    selfCopy6 = self;
     v62 = 2114;
     v63 = mediaKindsToAdd;
     v64 = 2114;
@@ -145,10 +145,10 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ performing request with media kinds to add: %{public}@, kinds to remove: %{public}@", buf, 0x20u);
   }
 
-  v6 = [(ICStoreRequestContext *)self->_requestContext identity];
-  v7 = [(ICStoreRequestContext *)self->_requestContext identityStore];
+  identity = [(ICStoreRequestContext *)self->_requestContext identity];
+  identityStore = [(ICStoreRequestContext *)self->_requestContext identityStore];
   v57 = 0;
-  v8 = [v7 DSIDForUserIdentity:v6 outError:&v57];
+  v8 = [identityStore DSIDForUserIdentity:identity outError:&v57];
   v9 = v57;
   if (v9)
   {
@@ -156,11 +156,11 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
     v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(ICStoreRequestContext *)self->_requestContext identity];
+      identity2 = [(ICStoreRequestContext *)self->_requestContext identity];
       *buf = 138543874;
-      v61 = self;
+      selfCopy6 = self;
       v62 = 2114;
-      v63 = v12;
+      v63 = identity2;
       v64 = 2114;
       v65 = v10;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Failed to lookup account ID for user identity %{public}@. err=%{public}@", buf, 0x20u);
@@ -171,28 +171,28 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
 
   else if (v8)
   {
-    v13 = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
+    ic_sharedAccountStore = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
     v56 = 0;
-    v14 = [v13 ic_storeAccountForStoreAccountID:v8 error:&v56];
+    v14 = [ic_sharedAccountStore ic_storeAccountForStoreAccountID:v8 error:&v56];
     v15 = v56;
 
     if (v14)
     {
-      v16 = [v14 ams_automaticDownloadKinds];
-      v17 = v16;
+      ams_automaticDownloadKinds = [v14 ams_automaticDownloadKinds];
+      v17 = ams_automaticDownloadKinds;
       v44 = v15;
       v45 = v14;
-      if (v16)
+      if (ams_automaticDownloadKinds)
       {
-        v18 = v16;
+        array = ams_automaticDownloadKinds;
       }
 
       else
       {
-        v18 = [MEMORY[0x1E695DEC8] array];
+        array = [MEMORY[0x1E695DEC8] array];
       }
 
-      v22 = v18;
+      v22 = array;
 
       v46 = v22;
       v23 = [(NSSet *)v22 mutableCopy];
@@ -264,7 +264,7 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v61 = self;
+          selfCopy6 = self;
           _os_log_impl(&dword_1B4491000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@ No change in media types - finishing", buf, 0xCu);
         }
 
@@ -277,7 +277,7 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v61 = self;
+          selfCopy6 = self;
           v62 = 2114;
           v63 = v46;
           v64 = 2114;
@@ -286,18 +286,18 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
         }
 
         v38 = MEMORY[0x1E698C7D8];
-        v39 = [MEMORY[0x1E698C7D0] bagSubProfile];
-        v40 = [MEMORY[0x1E698C7D0] bagSubProfileVersion];
-        v41 = [v38 bagForProfile:v39 profileVersion:v40];
+        bagSubProfile = [MEMORY[0x1E698C7D0] bagSubProfile];
+        bagSubProfileVersion = [MEMORY[0x1E698C7D0] bagSubProfileVersion];
+        v41 = [v38 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
         v42 = [objc_alloc(MEMORY[0x1E698C7D0]) initWithEnabledMediaKinds:v23 account:v45 bag:v41 presentationDelegate:self];
-        v43 = [v42 perform];
+        perform = [v42 perform];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
         v47[2] = __53__ICUpdateAutomaticDownloadMediaKindsRequest_execute__block_invoke;
         v47[3] = &unk_1E7BF8D88;
         v47[4] = self;
-        [v43 resultWithCompletion:v47];
+        [perform resultWithCompletion:v47];
 
         v35 = v46;
       }
@@ -310,11 +310,11 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
       v20 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [(ICStoreRequestContext *)self->_requestContext identity];
+        identity3 = [(ICStoreRequestContext *)self->_requestContext identity];
         *buf = 138543874;
-        v61 = self;
+        selfCopy6 = self;
         v62 = 2114;
-        v63 = v21;
+        v63 = identity3;
         v64 = 2114;
         v65 = v15;
         _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Failed to lookup account for user identity %{public}@. err=%{public}@", buf, 0x20u);
@@ -330,7 +330,7 @@ void __83__ICUpdateAutomaticDownloadMediaKindsRequest_handleAuthenticateRequest_
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v61 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_ERROR, "%{public}@ No active account so nothing to do", buf, 0xCu);
     }
 
@@ -381,25 +381,25 @@ void __53__ICUpdateAutomaticDownloadMediaKindsRequest_execute__block_invoke(uint
   [*(a1 + 32) finishWithError:v11];
 }
 
-- (ICUpdateAutomaticDownloadMediaKindsRequest)initWithRequestContext:(id)a3 mediaKindsToAdd:(id)a4 mediaKindsToRemove:(id)a5
+- (ICUpdateAutomaticDownloadMediaKindsRequest)initWithRequestContext:(id)context mediaKindsToAdd:(id)add mediaKindsToRemove:(id)remove
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  addCopy = add;
+  removeCopy = remove;
   v19.receiver = self;
   v19.super_class = ICUpdateAutomaticDownloadMediaKindsRequest;
   v11 = [(ICRequestOperation *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [contextCopy copy];
     requestContext = v11->_requestContext;
     v11->_requestContext = v12;
 
-    v14 = [v9 copy];
+    v14 = [addCopy copy];
     mediaKindsToAdd = v11->_mediaKindsToAdd;
     v11->_mediaKindsToAdd = v14;
 
-    v16 = [v10 copy];
+    v16 = [removeCopy copy];
     mediaKindsToRemove = v11->_mediaKindsToRemove;
     v11->_mediaKindsToRemove = v16;
   }

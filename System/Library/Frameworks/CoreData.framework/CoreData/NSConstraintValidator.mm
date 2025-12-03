@@ -1,6 +1,6 @@
 @interface NSConstraintValidator
-- (id)initWithManagedObjectContext:(void *)a1;
-- (uint64_t)_addConstraintRoot:(void *)a3 forEntity:;
+- (id)initWithManagedObjectContext:(void *)context;
+- (uint64_t)_addConstraintRoot:(void *)root forEntity:;
 - (uint64_t)registerObject:(uint64_t)result;
 - (uint64_t)registerObjects:(uint64_t)result;
 - (uint64_t)reset;
@@ -12,20 +12,20 @@
 
 - (uint64_t)validateForSave
 {
-  v1 = a1;
+  selfCopy = self;
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (*(v1 + 24))
+    if (*(selfCopy + 24))
     {
-      v3 = [*(v1 + 16) count];
+      v3 = [*(selfCopy + 16) count];
       if (v3)
       {
         v4 = v3;
         for (i = 0; i != v4; ++i)
         {
-          v6 = *(v1 + 24);
+          v6 = *(selfCopy + 24);
           if (*(v6 + 8 * i))
           {
             v18 = 0u;
@@ -69,17 +69,17 @@
       v13 = *MEMORY[0x1E696A250];
       v20 = @"Conflicts";
       v21 = v2;
-      v1 = [MEMORY[0x1E696ABC0] errorWithDomain:v13 code:1551 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}];
+      selfCopy = [MEMORY[0x1E696ABC0] errorWithDomain:v13 code:1551 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)reset
@@ -168,18 +168,18 @@
   [(NSConstraintValidator *)&v7 dealloc];
 }
 
-- (id)initWithManagedObjectContext:(void *)a1
+- (id)initWithManagedObjectContext:(void *)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (context)
   {
-    v19.receiver = a1;
+    v19.receiver = context;
     v19.super_class = NSConstraintValidator;
     v3 = objc_msgSendSuper2(&v19, sel_init);
     if (v3)
     {
-      v4 = [a2 persistentStoreCoordinator];
-      v5 = v4 ? *(v4 + 96) : 0;
+      persistentStoreCoordinator = [a2 persistentStoreCoordinator];
+      v5 = persistentStoreCoordinator ? *(persistentStoreCoordinator + 96) : 0;
       v6 = v5;
       *(v3 + 1) = v6;
       v7 = [(_PFModelMap *)v6 entitiesForContext:a2 configuration:0];
@@ -232,12 +232,12 @@
   return v3;
 }
 
-- (uint64_t)_addConstraintRoot:(void *)a3 forEntity:
+- (uint64_t)_addConstraintRoot:(void *)root forEntity:
 {
   if (result)
   {
     v4 = result;
-    v5 = _PFModelMapSlotForEntity(*(result + 8), a3);
+    v5 = _PFModelMapSlotForEntity(*(result + 8), root);
     v6 = *(*(v4 + 24) + 8 * v5);
     if (!v6)
     {

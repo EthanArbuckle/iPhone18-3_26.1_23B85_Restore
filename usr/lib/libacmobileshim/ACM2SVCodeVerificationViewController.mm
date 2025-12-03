@@ -1,30 +1,30 @@
 @interface ACM2SVCodeVerificationViewController
-- (ACM2SVCodeVerificationViewController)initWithDelegate:(id)a3;
+- (ACM2SVCodeVerificationViewController)initWithDelegate:(id)delegate;
 - (float)navigationBarHeight;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)buildConstraints;
 - (void)buildDigitViews;
 - (void)buildHorizontalConstraints;
 - (void)buildVerticalConstraints;
-- (void)cancelAction:(id)a3;
+- (void)cancelAction:(id)action;
 - (void)dealloc;
-- (void)disableControls:(BOOL)a3;
+- (void)disableControls:(BOOL)controls;
 - (void)focus;
-- (void)hideAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)hideAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)loadView;
-- (void)presentWithParentViewController:(id)a3 completion:(id)a4;
+- (void)presentWithParentViewController:(id)controller completion:(id)completion;
 - (void)reset;
-- (void)sendAnotherCode:(id)a3;
-- (void)setCanResendTheCode:(BOOL)a3;
-- (void)setPasscodeLength:(unint64_t)a3;
-- (void)verificationCodeDidChange:(id)a3;
-- (void)verifyCode:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)sendAnotherCode:(id)code;
+- (void)setCanResendTheCode:(BOOL)code;
+- (void)setPasscodeLength:(unint64_t)length;
+- (void)verificationCodeDidChange:(id)change;
+- (void)verifyCode:(id)code;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ACM2SVCodeVerificationViewController
 
-- (ACM2SVCodeVerificationViewController)initWithDelegate:(id)a3
+- (ACM2SVCodeVerificationViewController)initWithDelegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = ACM2SVCodeVerificationViewController;
@@ -32,17 +32,17 @@
   v5 = v4;
   if (v4)
   {
-    [(ACM2SVCodeVerificationViewController *)v4 setDelegate:a3];
+    [(ACM2SVCodeVerificationViewController *)v4 setDelegate:delegate];
     [(ACM2SVCodeVerificationViewController *)v5 setPasscodeLength:4];
-    v6 = [MEMORY[0x29EDBA068] defaultCenter];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
     v7 = *MEMORY[0x29EDC8010];
-    v8 = [MEMORY[0x29EDBA088] mainQueue];
+    mainQueue = [MEMORY[0x29EDBA088] mainQueue];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __57__ACM2SVCodeVerificationViewController_initWithDelegate___block_invoke;
     v10[3] = &unk_29EE91B70;
     v10[4] = v5;
-    -[ACM2SVCodeVerificationViewController setApplicationActivationObserver:](v5, "setApplicationActivationObserver:", [v6 addObserverForName:v7 object:0 queue:v8 usingBlock:v10]);
+    -[ACM2SVCodeVerificationViewController setApplicationActivationObserver:](v5, "setApplicationActivationObserver:", [defaultCenter addObserverForName:v7 object:0 queue:mainQueue usingBlock:v10]);
   }
 
   return v5;
@@ -69,54 +69,54 @@
   [(ACM2SVCodeVerificationViewController *)&v3 dealloc];
 }
 
-- (void)setCanResendTheCode:(BOOL)a3
+- (void)setCanResendTheCode:(BOOL)code
 {
-  v3 = a3;
-  v4 = [(ACM2SVCodeVerificationViewController *)self sendAnotherCodeButton];
+  codeCopy = code;
+  sendAnotherCodeButton = [(ACM2SVCodeVerificationViewController *)self sendAnotherCodeButton];
 
-  [(UIButton *)v4 setHidden:!v3];
+  [(UIButton *)sendAnotherCodeButton setHidden:!codeCopy];
 }
 
-- (void)setPasscodeLength:(unint64_t)a3
+- (void)setPasscodeLength:(unint64_t)length
 {
-  if (self->_passcodeLength != a3)
+  if (self->_passcodeLength != length)
   {
-    self->_passcodeLength = a3;
+    self->_passcodeLength = length;
     [(ACM2SVCodeVerificationViewController *)self buildDigitViews];
   }
 }
 
-- (void)presentWithParentViewController:(id)a3 completion:(id)a4
+- (void)presentWithParentViewController:(id)controller completion:(id)completion
 {
   if ([(ACM2SVCodeVerificationViewController *)self completionBlock])
   {
-    if (a4)
+    if (completion)
     {
-      v7 = *(a4 + 2);
+      v7 = *(completion + 2);
 
-      v7(a4, 0);
+      v7(completion, 0);
     }
   }
 
   else
   {
-    [(ACM2SVCodeVerificationViewController *)self setCompletionBlock:a4];
+    [(ACM2SVCodeVerificationViewController *)self setCompletionBlock:completion];
     -[ACM2SVCodeVerificationViewController setNavigationController:](self, "setNavigationController:", [objc_alloc(MEMORY[0x29EDC7B80]) initWithRootViewController:self]);
     [(UINavigationController *)[(ACM2SVCodeVerificationViewController *)self navigationController] setDelegate:self];
     [(UINavigationBar *)[(UINavigationController *)[(ACM2SVCodeVerificationViewController *)self navigationController] navigationBar] setTranslucent:0];
-    v8 = [(ACM2SVCodeVerificationViewController *)self navigationController];
+    navigationController = [(ACM2SVCodeVerificationViewController *)self navigationController];
 
-    [a3 presentViewController:v8 animated:1 completion:0];
+    [controller presentViewController:navigationController animated:1 completion:0];
   }
 }
 
-- (void)hideAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)hideAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(ACM2SVCodeVerificationViewController *)self setCompletionBlock:0];
-  v7 = [(ACM2SVCodeVerificationViewController *)self presentingViewController];
+  presentingViewController = [(ACM2SVCodeVerificationViewController *)self presentingViewController];
 
-  [v7 dismissViewControllerAnimated:v5 completion:a4];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:completion];
 }
 
 - (void)loadView
@@ -197,7 +197,7 @@
     if (v3 != [(ACM2SVCodeVerificationViewController *)self passcodeLength])
     {
       [(NSArray *)[(ACM2SVCodeVerificationViewController *)self digitViews] makeObjectsPerformSelector:sel_removeFromSuperview];
-      v4 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       if ([(ACM2SVCodeVerificationViewController *)self passcodeLength])
       {
         v5 = 0;
@@ -220,7 +220,7 @@
           [(ACM2SVDigitCodeView *)v9 setFillType:0];
           [(ACM2SVDigitCodeView *)v9 setFillColor:[(ACM2SVCodeVerificationViewController *)self textColor]];
           [(UIView *)[(ACM2SVCodeVerificationViewController *)self digitPanel] addSubview:v9];
-          [v4 addObject:v9];
+          [array addObject:v9];
           [(ACM2SVDigitCodeView *)v9 frame];
           MaxX = CGRectGetMaxX(v12);
           ++v5;
@@ -234,18 +234,18 @@
         [(NSLayoutConstraint *)[(ACM2SVCodeVerificationViewController *)self digitPanelWidthConstraint] setConstant:(30 * [(ACM2SVCodeVerificationViewController *)self passcodeLength])];
       }
 
-      v10 = [v4 copy];
+      v10 = [array copy];
 
       [(ACM2SVCodeVerificationViewController *)self setDigitViews:v10];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ACM2SVCodeVerificationViewController;
-  [(ACM2SVCodeVerificationViewController *)&v4 viewWillAppear:a3];
+  [(ACM2SVCodeVerificationViewController *)&v4 viewWillAppear:appear];
   [(ACM2SVCodeVerificationViewController *)self reset];
 }
 
@@ -285,9 +285,9 @@
   [-[ACM2SVCodeVerificationViewController view](self "view")];
   [-[ACM2SVCodeVerificationViewController view](self "view")];
   v4 = [MEMORY[0x29EDBA008] constraintWithItem:-[ACM2SVCodeVerificationViewController sendAnotherCodeButton](self attribute:"sendAnotherCodeButton") relatedBy:9 toItem:0 attribute:-[ACM2SVCodeVerificationViewController contentView](self multiplier:"contentView") constant:{9, 1.0, 0.0}];
-  v5 = [(ACM2SVCodeVerificationViewController *)self view];
+  view = [(ACM2SVCodeVerificationViewController *)self view];
 
-  [v5 addConstraint:v4];
+  [view addConstraint:v4];
 }
 
 - (void)buildVerticalConstraints
@@ -300,9 +300,9 @@
   [-[ACM2SVCodeVerificationViewController view](self "view")];
   [-[ACM2SVCodeVerificationViewController view](self "view")];
   v3 = [MEMORY[0x29EDBA008] constraintWithItem:-[ACM2SVCodeVerificationViewController sendAnotherCodeButton](self attribute:"sendAnotherCodeButton") relatedBy:3 toItem:0 attribute:-[ACM2SVCodeVerificationViewController digitPanel](self multiplier:"digitPanel") constant:{4, 1.0, 20.0}];
-  v4 = [(ACM2SVCodeVerificationViewController *)self view];
+  view = [(ACM2SVCodeVerificationViewController *)self view];
 
-  [v4 addConstraint:v3];
+  [view addConstraint:v3];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -323,18 +323,18 @@
 {
   [(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] setText:&stru_2A1EB91A0];
   [(ACM2SVCodeVerificationViewController *)self disableControls:0];
-  v3 = [(ACM2SVCodeVerificationViewController *)self verificationCodeTextField];
+  verificationCodeTextField = [(ACM2SVCodeVerificationViewController *)self verificationCodeTextField];
 
-  [(ACM2SVCodeVerificationViewController *)self verificationCodeDidChange:v3];
+  [(ACM2SVCodeVerificationViewController *)self verificationCodeDidChange:verificationCodeTextField];
 }
 
-- (void)disableControls:(BOOL)a3
+- (void)disableControls:(BOOL)controls
 {
-  v3 = a3;
-  [(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] setEnabled:!a3];
-  [(UIButton *)[(ACM2SVCodeVerificationViewController *)self sendAnotherCodeButton] setEnabled:!v3];
+  controlsCopy = controls;
+  [(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] setEnabled:!controls];
+  [(UIButton *)[(ACM2SVCodeVerificationViewController *)self sendAnotherCodeButton] setEnabled:!controlsCopy];
   [objc_msgSend(-[ACM2SVCodeVerificationViewController navigationItem](self "navigationItem")];
-  if (!v3)
+  if (!controlsCopy)
   {
 
     [(ACM2SVCodeVerificationViewController *)self focus];
@@ -343,12 +343,12 @@
 
 - (void)focus
 {
-  v2 = [(ACM2SVCodeVerificationViewController *)self verificationCodeTextField];
+  verificationCodeTextField = [(ACM2SVCodeVerificationViewController *)self verificationCodeTextField];
 
-  [(UITextField *)v2 becomeFirstResponder];
+  [(UITextField *)verificationCodeTextField becomeFirstResponder];
 }
 
-- (void)verificationCodeDidChange:(id)a3
+- (void)verificationCodeDidChange:(id)change
 {
   v4 = [(NSString *)[(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] text] length];
   if (v4 > [(ACM2SVCodeVerificationViewController *)self passcodeLength])
@@ -356,18 +356,18 @@
     [(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] setText:[(NSString *)[(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] text] substringToIndex:[(ACM2SVCodeVerificationViewController *)self passcodeLength]]];
   }
 
-  v5 = [(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] text];
-  v6 = [(NSString *)v5 length];
-  v7 = [(ACM2SVCodeVerificationViewController *)self digitViews];
+  text = [(UITextField *)[(ACM2SVCodeVerificationViewController *)self verificationCodeTextField] text];
+  v6 = [(NSString *)text length];
+  digitViews = [(ACM2SVCodeVerificationViewController *)self digitViews];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __66__ACM2SVCodeVerificationViewController_verificationCodeDidChange___block_invoke;
   v8[3] = &__block_descriptor_40_e36_v32__0__ACM2SVDigitCodeView_8Q16_B24l;
   v8[4] = v6;
-  [(NSArray *)v7 enumerateObjectsUsingBlock:v8];
+  [(NSArray *)digitViews enumerateObjectsUsingBlock:v8];
   if (v6 == [(ACM2SVCodeVerificationViewController *)self passcodeLength])
   {
-    [(ACM2SVCodeVerificationViewController *)self verifyCode:v5];
+    [(ACM2SVCodeVerificationViewController *)self verifyCode:text];
   }
 }
 
@@ -390,15 +390,15 @@ uint64_t __66__ACM2SVCodeVerificationViewController_verificationCodeDidChange___
   return [a2 setFillType:v7];
 }
 
-- (void)sendAnotherCode:(id)a3
+- (void)sendAnotherCode:(id)code
 {
   [(ACM2SVCodeVerificationViewController *)self disableControls:1];
-  v4 = [(ACM2SVCodeVerificationViewController *)self delegate];
+  delegate = [(ACM2SVCodeVerificationViewController *)self delegate];
 
-  [(ACM2SVCodeVerificationViewControllerDelegate *)v4 codeVerificationViewControllerNeedsResendCode:self];
+  [(ACM2SVCodeVerificationViewControllerDelegate *)delegate codeVerificationViewControllerNeedsResendCode:self];
 }
 
-- (void)verifyCode:(id)a3
+- (void)verifyCode:(id)code
 {
   [(ACM2SVCodeVerificationViewController *)self disableControls:1];
   if ([(ACM2SVCodeVerificationViewController *)self completionBlock])
@@ -409,12 +409,12 @@ uint64_t __66__ACM2SVCodeVerificationViewController_verificationCodeDidChange___
   }
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
   if ([(ACM2SVCodeVerificationViewController *)self completionBlock])
   {
-    v4 = [(ACM2SVCodeVerificationViewController *)self completionBlock];
-    v4[2](v4, 0);
+    completionBlock = [(ACM2SVCodeVerificationViewController *)self completionBlock];
+    completionBlock[2](completionBlock, 0);
 
     [(ACM2SVCodeVerificationViewController *)self setCompletionBlock:0];
   }

@@ -1,15 +1,15 @@
 @interface CSLPRFApplicationLibrary
-+ (id)_withClassLock_libraryForLocation:(unint64_t)a3;
-+ (id)libraryForLocation:(unint64_t)a3;
-+ (id)sharedLibraryForLocation:(unint64_t)a3;
++ (id)_withClassLock_libraryForLocation:(unint64_t)location;
++ (id)libraryForLocation:(unint64_t)location;
++ (id)sharedLibraryForLocation:(unint64_t)location;
 @end
 
 @implementation CSLPRFApplicationLibrary
 
-+ (id)_withClassLock_libraryForLocation:(unint64_t)a3
++ (id)_withClassLock_libraryForLocation:(unint64_t)location
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (location >= 4)
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"location < __locationCount"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -22,7 +22,7 @@
       v22 = 2114;
       v23 = v19;
       v24 = 2048;
-      v25 = a1;
+      selfCopy = self;
       v26 = 2114;
       v27 = @"CSLPRFApplicationLibrary.m";
       v28 = 1024;
@@ -38,7 +38,7 @@
     JUMPOUT(0x22CEAA144);
   }
 
-  v4 = __sharedLibraries[a3];
+  v4 = __sharedLibraries[location];
   v5 = v4;
   if (v4)
   {
@@ -47,10 +47,10 @@
 
   else
   {
-    if (a3 > 1)
+    if (location > 1)
     {
       v10 = [CSLPRFCompositeApplicationLibrary alloc];
-      if (a3 == 2)
+      if (location == 2)
       {
         v11 = +[CSLPRFWatchApplicationLibrary libraryForWatchApplications];
         v12 = objc_alloc_init(CSLPRFBulletinBoardApplicationLibrary);
@@ -68,7 +68,7 @@
       goto LABEL_5;
     }
 
-    if (a3)
+    if (location)
     {
       v6 = objc_alloc_init(CSLPRFLocalApplicationLibrary);
     }
@@ -87,10 +87,10 @@ LABEL_5:
   return v7;
 }
 
-+ (id)libraryForLocation:(unint64_t)a3
++ (id)libraryForLocation:(unint64_t)location
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (location >= 4)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"location < __locationCount"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -103,7 +103,7 @@ LABEL_5:
       v15 = 2114;
       v16 = v12;
       v17 = 2048;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"CSLPRFApplicationLibrary.m";
       v21 = 1024;
@@ -120,10 +120,10 @@ LABEL_5:
   }
 
   os_unfair_lock_lock(&__lock);
-  v5 = __sharedLibraries[a3];
+  v5 = __sharedLibraries[location];
   if (!v5)
   {
-    v5 = [a1 _withClassLock_libraryForLocation:a3];
+    v5 = [self _withClassLock_libraryForLocation:location];
   }
 
   os_unfair_lock_unlock(&__lock);
@@ -132,10 +132,10 @@ LABEL_5:
   return v5;
 }
 
-+ (id)sharedLibraryForLocation:(unint64_t)a3
++ (id)sharedLibraryForLocation:(unint64_t)location
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (location >= 4)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"location < __locationCount"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -148,7 +148,7 @@ LABEL_5:
       v17 = 2114;
       v18 = v14;
       v19 = 2048;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"CSLPRFApplicationLibrary.m";
       v23 = 1024;
@@ -165,12 +165,12 @@ LABEL_5:
   }
 
   os_unfair_lock_lock(&__lock);
-  v5 = __sharedLibraries[a3];
+  v5 = __sharedLibraries[location];
   if (!v5)
   {
-    v6 = [a1 _withClassLock_libraryForLocation:a3];
-    v7 = __sharedLibraries[a3];
-    __sharedLibraries[a3] = v6;
+    v6 = [self _withClassLock_libraryForLocation:location];
+    v7 = __sharedLibraries[location];
+    __sharedLibraries[location] = v6;
 
     v5 = v6;
   }

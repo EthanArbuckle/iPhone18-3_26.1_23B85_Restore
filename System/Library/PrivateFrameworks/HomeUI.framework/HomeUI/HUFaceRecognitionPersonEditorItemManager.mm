@@ -1,8 +1,8 @@
 @interface HUFaceRecognitionPersonEditorItemManager
 + (id)dateFormatter;
-- (HUFaceRecognitionPersonEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUFaceRecognitionPersonEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 @end
 
@@ -28,21 +28,21 @@ void __57__HUFaceRecognitionPersonEditorItemManager_dateFormatter__block_invoke(
   _MergedGlobals_3_0 = v0;
 }
 
-- (HUFaceRecognitionPersonEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUFaceRecognitionPersonEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 conformsToProtocol:&unk_2825BD540] & 1) == 0)
+  delegateCopy = delegate;
+  itemCopy = item;
+  if (([itemCopy conformsToProtocol:&unk_2825BD540] & 1) == 0)
   {
-    NSLog(&cfstr_SourceItemDoes.isa, v7);
+    NSLog(&cfstr_SourceItemDoes.isa, itemCopy);
   }
 
   v17.receiver = self;
   v17.super_class = HUFaceRecognitionPersonEditorItemManager;
-  v8 = [(HFItemManager *)&v17 initWithDelegate:v6 sourceItem:v7];
+  v8 = [(HFItemManager *)&v17 initWithDelegate:delegateCopy sourceItem:itemCopy];
   if (v8)
   {
-    v9 = v7;
+    v9 = itemCopy;
     if ([v9 conformsToProtocol:&unk_2825BD540])
     {
       v10 = v9;
@@ -55,10 +55,10 @@ void __57__HUFaceRecognitionPersonEditorItemManager_dateFormatter__block_invoke(
 
     v11 = v10;
 
-    v12 = [v11 home];
+    home = [v11 home];
 
     personHome = v8->_personHome;
-    v8->_personHome = v12;
+    v8->_personHome = home;
 
     v14 = [objc_alloc(MEMORY[0x277D14CA8]) initWithHome:v8->_personHome];
     userNameFormatter = v8->_userNameFormatter;
@@ -73,67 +73,67 @@ void __57__HUFaceRecognitionPersonEditorItemManager_dateFormatter__block_invoke(
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUFaceRecognitionPersonEditorItemManager *)self personHome];
-  v4 = [v2 futureWithResult:v3];
+  personHome = [(HUFaceRecognitionPersonEditorItemManager *)self personHome];
+  v4 = [v2 futureWithResult:personHome];
 
   return v4;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v36 = [MEMORY[0x277CBEB18] array];
-  v5 = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
+  homeCopy = home;
+  array = [MEMORY[0x277CBEB18] array];
+  personItem = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v6 = 1;
+    isRunningInStoreDemoMode = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D14CE8] isRunningInStoreDemoMode];
+    isRunningInStoreDemoMode = [MEMORY[0x277D14CE8] isRunningInStoreDemoMode];
   }
 
   v7 = objc_alloc(MEMORY[0x277D14C30]);
-  v8 = [v5 copy];
+  v8 = [personItem copy];
   v9 = [v7 initWithSourceItem:v8 transformationBlock:&__block_literal_global_74];
   [(HUFaceRecognitionPersonEditorItemManager *)self setFaceCropItem:v9];
 
   v10 = objc_alloc(MEMORY[0x277D14C30]);
-  v11 = [v5 copy];
+  v11 = [personItem copy];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___block_invoke_3;
   v48[3] = &__block_descriptor_33_e36___NSDictionary_16__0__NSDictionary_8l;
-  v49 = v6;
+  v49 = isRunningInStoreDemoMode;
   v12 = [v10 initWithSourceItem:v11 updateOptionsTransformBlock:&__block_literal_global_78 resultsTransformBlock:v48];
   [(HUFaceRecognitionPersonEditorItemManager *)self setNameItem:v12];
 
   objc_initWeak(&location, self);
   v13 = objc_alloc(MEMORY[0x277D14C30]);
-  v14 = [v5 copy];
+  v14 = [personItem copy];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___block_invoke_5;
   v44[3] = &unk_277DB81B0;
   objc_copyWeak(&v45, &location);
-  v46 = v6;
+  v46 = isRunningInStoreDemoMode;
   v15 = [v13 initWithSourceItem:v14 updateOptionsTransformBlock:&__block_literal_global_81 resultsTransformBlock:v44];
   [(HUFaceRecognitionPersonEditorItemManager *)self setAddNameItem:v15];
 
-  v16 = [(HFItemManager *)self home];
-  v17 = [v16 personSettingsManager];
+  home = [(HFItemManager *)self home];
+  personSettingsManager = [home personSettingsManager];
 
   v18 = objc_alloc(MEMORY[0x277D14B38]);
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___block_invoke_6;
   v40[3] = &unk_277DB8250;
-  v19 = v5;
+  v19 = personItem;
   v41 = v19;
-  v35 = v17;
+  v35 = personSettingsManager;
   v42 = v35;
-  v43 = v6;
+  v43 = isRunningInStoreDemoMode;
   v20 = [v18 initWithResultsBlock:v40];
   [(HUFaceRecognitionPersonEditorItemManager *)self setHideNotificationsItem:v20];
 
@@ -144,29 +144,29 @@ void __57__HUFaceRecognitionPersonEditorItemManager_dateFormatter__block_invoke(
   v37[2] = __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___block_invoke_10;
   v37[3] = &unk_277DB81B0;
   objc_copyWeak(&v38, &location);
-  v39 = v6;
+  v39 = isRunningInStoreDemoMode;
   v23 = [v21 initWithSourceItem:v22 transformationBlock:v37];
   [(HUFaceRecognitionPersonEditorItemManager *)self setDeleteItem:v23];
 
   v24 = objc_alloc(MEMORY[0x277D14B40]);
   v25 = MEMORY[0x277CBEB98];
-  v26 = [(HUFaceRecognitionPersonEditorItemManager *)self faceCropItem];
-  v27 = [(HUFaceRecognitionPersonEditorItemManager *)self nameItem];
-  v28 = [(HUFaceRecognitionPersonEditorItemManager *)self addNameItem];
-  v29 = [(HUFaceRecognitionPersonEditorItemManager *)self hideNotificationsItem];
-  v30 = [(HUFaceRecognitionPersonEditorItemManager *)self deleteItem];
-  v31 = [v25 setWithObjects:{v26, v27, v28, v29, v30, 0}];
+  faceCropItem = [(HUFaceRecognitionPersonEditorItemManager *)self faceCropItem];
+  nameItem = [(HUFaceRecognitionPersonEditorItemManager *)self nameItem];
+  addNameItem = [(HUFaceRecognitionPersonEditorItemManager *)self addNameItem];
+  hideNotificationsItem = [(HUFaceRecognitionPersonEditorItemManager *)self hideNotificationsItem];
+  deleteItem = [(HUFaceRecognitionPersonEditorItemManager *)self deleteItem];
+  v31 = [v25 setWithObjects:{faceCropItem, nameItem, addNameItem, hideNotificationsItem, deleteItem, 0}];
   v32 = [v24 initWithItems:v31];
   [(HUFaceRecognitionPersonEditorItemManager *)self setStaticItemProvider:v32];
 
-  v33 = [(HUFaceRecognitionPersonEditorItemManager *)self staticItemProvider];
-  [v36 addObject:v33];
+  staticItemProvider = [(HUFaceRecognitionPersonEditorItemManager *)self staticItemProvider];
+  [array addObject:staticItemProvider];
 
   objc_destroyWeak(&v38);
   objc_destroyWeak(&v45);
   objc_destroyWeak(&location);
 
-  return v36;
+  return array;
 }
 
 id __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -415,44 +415,44 @@ id __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___b
   return v12;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v58[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  itemsCopy = items;
+  array = [v4 array];
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v7 = 1;
+    isRunningInStoreDemoMode = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D14CE8] isRunningInStoreDemoMode];
+    isRunningInStoreDemoMode = [MEMORY[0x277D14CE8] isRunningInStoreDemoMode];
   }
 
   v8 = 0x277D14000uLL;
   v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUFaceRecognitionPersonInformationSectionIdentifier"];
-  v10 = [(HUFaceRecognitionPersonEditorItemManager *)self faceCropItem];
-  v58[0] = v10;
-  v11 = [(HUFaceRecognitionPersonEditorItemManager *)self nameItem];
-  v58[1] = v11;
-  v12 = [(HUFaceRecognitionPersonEditorItemManager *)self addNameItem];
-  v58[2] = v12;
+  faceCropItem = [(HUFaceRecognitionPersonEditorItemManager *)self faceCropItem];
+  v58[0] = faceCropItem;
+  nameItem = [(HUFaceRecognitionPersonEditorItemManager *)self nameItem];
+  v58[1] = nameItem;
+  addNameItem = [(HUFaceRecognitionPersonEditorItemManager *)self addNameItem];
+  v58[2] = addNameItem;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:3];
   [v9 setItems:v13];
 
-  v14 = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
-  v15 = [v14 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13CF8]];
+  personItem = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
+  latestResults = [personItem latestResults];
+  v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13CF8]];
   LOBYTE(v13) = [v16 BOOLValue];
 
-  v17 = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
-  v18 = v17;
-  if (v13 & 1) != 0 || (v7)
+  personItem2 = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
+  v18 = personItem2;
+  if (v13 & 1) != 0 || (isRunningInStoreDemoMode)
   {
     objc_opt_class();
-    v35 = objc_opt_isKindOfClass() | v7;
+    v35 = objc_opt_isKindOfClass() | isRunningInStoreDemoMode;
 
     if ((v35 & 1) == 0)
     {
@@ -460,9 +460,9 @@ id __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___b
       goto LABEL_16;
     }
 
-    v36 = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
-    v37 = [v36 latestResults];
-    v22 = [v37 objectForKeyedSubscript:*MEMORY[0x277D13CE0]];
+    personItem3 = [(HUFaceRecognitionPersonEditorItemManager *)self personItem];
+    latestResults2 = [personItem3 latestResults];
+    v22 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13CE0]];
 
     if (!v22)
     {
@@ -470,32 +470,32 @@ id __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___b
       goto LABEL_15;
     }
 
-    v38 = [objc_opt_class() dateFormatter];
-    v39 = [v38 stringFromDate:v22];
+    dateFormatter = [objc_opt_class() dateFormatter];
+    v39 = [dateFormatter stringFromDate:v22];
     v34 = HULocalizedStringWithFormat(@"HUFaceRecognitionPersonEditorLastVisitedFooterFormat", @"%@", v40, v41, v42, v43, v44, v45, v39);
   }
 
   else
   {
-    v19 = [v17 personManager];
+    personManager = [personItem2 personManager];
 
-    v20 = [(HUFaceRecognitionPersonEditorItemManager *)self personHome];
-    v21 = [v20 hf_allUsersIncludingCurrentUser];
+    personHome = [(HUFaceRecognitionPersonEditorItemManager *)self personHome];
+    hf_allUsersIncludingCurrentUser = [personHome hf_allUsersIncludingCurrentUser];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __77__HUFaceRecognitionPersonEditorItemManager__buildSectionsWithDisplayedItems___block_invoke;
     v54[3] = &unk_277DB7D60;
-    v55 = v19;
-    v22 = v19;
-    v23 = [v21 na_firstObjectPassingTest:v54];
+    v55 = personManager;
+    v22 = personManager;
+    v23 = [hf_allUsersIncludingCurrentUser na_firstObjectPassingTest:v54];
 
     if (v23)
     {
-      v24 = [(HFItemManager *)self home];
-      v25 = [v24 hf_handleForUser:v23];
+      home = [(HFItemManager *)self home];
+      v25 = [home hf_handleForUser:v23];
 
-      v26 = [(HUFaceRecognitionPersonEditorItemManager *)self userNameFormatter];
-      v27 = [v26 stringForObjectValue:v25];
+      userNameFormatter = [(HUFaceRecognitionPersonEditorItemManager *)self userNameFormatter];
+      v27 = [userNameFormatter stringForObjectValue:v25];
       v34 = HULocalizedStringWithFormat(@"HUFaceRecognitionPersonEditorFromUserPhotoLibraryFormat", @"%@", v28, v29, v30, v31, v32, v33, v27);
 
       v8 = 0x277D14000;
@@ -506,28 +506,28 @@ id __71__HUFaceRecognitionPersonEditorItemManager__buildItemProvidersForHome___b
       v34 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionPersonEditorFromAPhotoLibrary", @"HUFaceRecognitionPersonEditorFromAPhotoLibrary", 1);
     }
 
-    v38 = v55;
+    dateFormatter = v55;
   }
 
 LABEL_15:
 LABEL_16:
   [v9 setFooterTitle:v34];
-  [v6 addObject:v9];
+  [array addObject:v9];
   v46 = [objc_alloc(*(v8 + 2128)) initWithIdentifier:@"HUFaceRecognitionPersonNotificationSectionIdentifier"];
-  v47 = [(HUFaceRecognitionPersonEditorItemManager *)self hideNotificationsItem];
-  v57 = v47;
+  hideNotificationsItem = [(HUFaceRecognitionPersonEditorItemManager *)self hideNotificationsItem];
+  v57 = hideNotificationsItem;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
   [v46 setItems:v48];
 
-  [v6 addObject:v46];
+  [array addObject:v46];
   v49 = [objc_alloc(*(v8 + 2128)) initWithIdentifier:@"HUFaceRecognitionPersonDeletionSectionIdentifier"];
-  v50 = [(HUFaceRecognitionPersonEditorItemManager *)self deleteItem];
-  v56 = v50;
+  deleteItem = [(HUFaceRecognitionPersonEditorItemManager *)self deleteItem];
+  v56 = deleteItem;
   v51 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
   [v49 setItems:v51];
 
-  [v6 addObject:v49];
-  v52 = [*(v8 + 2128) filterSections:v6 toDisplayedItems:v5];
+  [array addObject:v49];
+  v52 = [*(v8 + 2128) filterSections:array toDisplayedItems:itemsCopy];
 
   return v52;
 }

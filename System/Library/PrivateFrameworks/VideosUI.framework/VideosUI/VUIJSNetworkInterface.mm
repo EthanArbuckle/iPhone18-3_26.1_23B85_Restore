@@ -1,36 +1,36 @@
 @interface VUIJSNetworkInterface
-- (VUIJSNetworkInterface)initWithAppContext:(id)a3;
-- (id)_createURLRequestFromJSOptionsDictionary:(id)a3;
-- (id)_createURLRequestFromRequestProperties:(id)a3 request:(id)a4;
-- (id)makeMediaApiRequest:(id)a3 :(id)a4;
-- (id)makeRequest:(id)a3 :(id)a4;
-- (id)makeStoreRequest:(id)a3 :(id)a4;
-- (int64_t)_requestOptionsFromJSOptions:(id)a3;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)_completeRequestResponse:(unint64_t)a3 activity:(id)a4 networkOperation:(id)a5 networkResponse:(id)a6 jsCallbackUUID:(id)a7 networkError:(id)a8;
-- (void)_enqueueNetworkOp:(id)a3 withJSCallbackUUID:(id)a4;
-- (void)_handleConfigurationResponse:(id)a3 responseDictionary:(id)a4 error:(id)a5;
-- (void)_handleNetworkMetricsActivity:(id)a3 error:(id)a4;
-- (void)_handleServerConfigChange:(id)a3;
-- (void)cancelRequest:(id)a3;
+- (VUIJSNetworkInterface)initWithAppContext:(id)context;
+- (id)_createURLRequestFromJSOptionsDictionary:(id)dictionary;
+- (id)_createURLRequestFromRequestProperties:(id)properties request:(id)request;
+- (id)makeMediaApiRequest:(id)request :(id)a4;
+- (id)makeRequest:(id)request :(id)a4;
+- (id)makeStoreRequest:(id)request :(id)a4;
+- (int64_t)_requestOptionsFromJSOptions:(id)options;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)_completeRequestResponse:(unint64_t)response activity:(id)activity networkOperation:(id)operation networkResponse:(id)networkResponse jsCallbackUUID:(id)d networkError:(id)error;
+- (void)_enqueueNetworkOp:(id)op withJSCallbackUUID:(id)d;
+- (void)_handleConfigurationResponse:(id)response responseDictionary:(id)dictionary error:(id)error;
+- (void)_handleNetworkMetricsActivity:(id)activity error:(id)error;
+- (void)_handleServerConfigChange:(id)change;
+- (void)cancelRequest:(id)request;
 - (void)dealloc;
-- (void)fetchConfiguration:(BOOL)a3 :(id)a4;
-- (void)upNextItemsReceived:(id)a3 :(id)a4;
+- (void)fetchConfiguration:(BOOL)configuration :(id)a4;
+- (void)upNextItemsReceived:(id)received :(id)a4;
 @end
 
 @implementation VUIJSNetworkInterface
 
-- (VUIJSNetworkInterface)initWithAppContext:(id)a3
+- (VUIJSNetworkInterface)initWithAppContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = VUIJSNetworkInterface;
-  v3 = [(VUIJSObject *)&v9 initWithAppContext:a3];
+  v3 = [(VUIJSObject *)&v9 initWithAppContext:context];
   if (v3)
   {
     v4 = _os_feature_enabled_impl();
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v6 = defaultCenter;
     if (v4)
     {
       v7 = +[_TtC8VideosUI40VUIUTSConfigurationProxyNotificationName configurationDidChange];
@@ -39,7 +39,7 @@
 
     else
     {
-      [v5 addObserver:v3 selector:sel__handleServerConfigChange_ name:*MEMORY[0x1E69E1690] object:0];
+      [defaultCenter addObserver:v3 selector:sel__handleServerConfigChange_ name:*MEMORY[0x1E69E1690] object:0];
     }
   }
 
@@ -48,17 +48,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIJSNetworkInterface;
   [(VUIJSNetworkInterface *)&v4 dealloc];
 }
 
-- (id)makeRequest:(id)a3 :(id)a4
+- (id)makeRequest:(id)request :(id)a4
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = a4;
   if (!+[VUIJSThreadUtils isVideosUICoreJSThread])
   {
@@ -70,35 +70,35 @@
     }
   }
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v43 = v10;
+  v43 = uUIDString;
   v44 = v7;
-  [(VUIJSObject *)self setJSValue:v7 forProperty:v10];
-  v11 = [v6 wlk_stringForKey:@"endpoint"];
-  v12 = [v6 wlk_stringForKey:@"serverRoute"];
-  v49 = [v6 wlk_dictionaryForKey:@"headers"];
-  v13 = [v6 wlk_dictionaryForKey:@"queryParameters"];
-  v14 = [v6 wlk_stringForKey:@"httpMethod"];
-  v41 = [v6 wlk_stringForKey:@"postBody"];
+  [(VUIJSObject *)self setJSValue:v7 forProperty:uUIDString];
+  v11 = [requestCopy wlk_stringForKey:@"endpoint"];
+  v12 = [requestCopy wlk_stringForKey:@"serverRoute"];
+  v49 = [requestCopy wlk_dictionaryForKey:@"headers"];
+  v13 = [requestCopy wlk_dictionaryForKey:@"queryParameters"];
+  v14 = [requestCopy wlk_stringForKey:@"httpMethod"];
+  v41 = [requestCopy wlk_stringForKey:@"postBody"];
   v15 = [v41 dataUsingEncoding:4];
-  v16 = [v6 wlk_numberForKey:@"timeout"];
-  v17 = [v6 wlk_stringForKey:@"caller"];
-  v48 = [v6 wlk_numberForKey:@"networkActivity"];
-  v18 = [(VUIJSNetworkInterface *)self _requestOptionsFromJSOptions:v6];
+  v16 = [requestCopy wlk_numberForKey:@"timeout"];
+  v17 = [requestCopy wlk_stringForKey:@"caller"];
+  v48 = [requestCopy wlk_numberForKey:@"networkActivity"];
+  v18 = [(VUIJSNetworkInterface *)self _requestOptionsFromJSOptions:requestCopy];
   v42 = v13;
   v46 = v14;
-  v47 = v6;
+  v47 = requestCopy;
   v40 = v16;
   v45 = v15;
   if (v11)
   {
-    v19 = [v6 wlk_numberForKey:@"apiVersion"];
+    v19 = [requestCopy wlk_numberForKey:@"apiVersion"];
     v20 = v15;
     v21 = v19;
     v39 = v18;
-    v22 = v6;
+    v22 = requestCopy;
     v23 = v17;
     v24 = [MEMORY[0x1E69E1600] requestPropertiesWithEndpoint:v11 queryParameters:v13 httpMethod:v14 httpBody:v20 headers:v49 caller:v17 timeout:v16 apiVersion:v19 options:{v39, v16}];
 
@@ -126,8 +126,8 @@
   objc_initWeak(location, self);
   if (_os_feature_enabled_impl())
   {
-    v26 = [v24 endpoint];
-    if (v26)
+    endpoint = [v24 endpoint];
+    if (endpoint)
     {
       [v24 endpoint];
     }
@@ -185,9 +185,9 @@
   }
 
   v34 = MEMORY[0x1E696EB58];
-  v35 = [(VUIJSObject *)self appContext];
-  v36 = [v35 jsContext];
-  v37 = [v34 valueWithObject:&stru_1F5DB25C0 inContext:v36];
+  appContext = [(VUIJSObject *)self appContext];
+  jsContext = [appContext jsContext];
+  v37 = [v34 valueWithObject:&stru_1F5DB25C0 inContext:jsContext];
 
   objc_destroyWeak(location);
 
@@ -271,10 +271,10 @@ void __38__VUIJSNetworkInterface_makeRequest::__block_invoke_94(uint64_t a1, voi
   }
 }
 
-- (id)makeStoreRequest:(id)a3 :(id)a4
+- (id)makeStoreRequest:(id)request :(id)a4
 {
   v6 = a4;
-  v7 = a3;
+  requestCopy = request;
   if (!+[VUIJSThreadUtils isVideosUICoreJSThread])
   {
     v8 = WLKNetworkingLogObject();
@@ -285,33 +285,33 @@ void __38__VUIJSNetworkInterface_makeRequest::__block_invoke_94(uint64_t a1, voi
     }
   }
 
-  v9 = [(VUIJSNetworkInterface *)self _createURLRequestFromJSOptionsDictionary:v7];
-  v10 = [(VUIJSNetworkInterface *)self _requestOptionsFromJSOptions:v7];
+  v9 = [(VUIJSNetworkInterface *)self _createURLRequestFromJSOptionsDictionary:requestCopy];
+  v10 = [(VUIJSNetworkInterface *)self _requestOptionsFromJSOptions:requestCopy];
 
   v11 = [objc_alloc(MEMORY[0x1E69E1550]) initWithURLRequest:v9 options:v10];
   [v11 setAuthenticationDelegate:self];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VUIJSObject *)self setJSValue:v6 forProperty:v13];
-  [(VUIJSNetworkInterface *)self _enqueueNetworkOp:v11 withJSCallbackUUID:v13];
+  [(VUIJSObject *)self setJSValue:v6 forProperty:uUIDString];
+  [(VUIJSNetworkInterface *)self _enqueueNetworkOp:v11 withJSCallbackUUID:uUIDString];
   v14 = MEMORY[0x1E696EB58];
-  v15 = [v11 identifier];
-  v16 = [(VUIJSObject *)self appContext];
-  v17 = [v16 jsContext];
-  v18 = [v14 valueWithObject:v15 inContext:v17];
+  identifier = [v11 identifier];
+  appContext = [(VUIJSObject *)self appContext];
+  jsContext = [appContext jsContext];
+  v18 = [v14 valueWithObject:identifier inContext:jsContext];
 
   return v18;
 }
 
-- (id)makeMediaApiRequest:(id)a3 :(id)a4
+- (id)makeMediaApiRequest:(id)request :(id)a4
 {
   v6 = a4;
-  v7 = [(VUIJSNetworkInterface *)self _createURLRequestFromJSOptionsDictionary:a3];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  v7 = [(VUIJSNetworkInterface *)self _createURLRequestFromJSOptionsDictionary:request];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [(VUIJSObject *)self appContext];
+  appContext = [(VUIJSObject *)self appContext];
   if (v7)
   {
     +[VUIMediaAPIClient initializeWithAppleTVClientIdentifier];
@@ -320,15 +320,15 @@ void __38__VUIJSNetworkInterface_makeRequest::__block_invoke_94(uint64_t a1, voi
     v17 = 3221225472;
     v18 = __46__VUIJSNetworkInterface_makeMediaApiRequest::__block_invoke;
     v19 = &unk_1E8731E08;
-    v20 = v10;
+    v20 = appContext;
     v21 = v6;
     [v11 fetchContentForUrl:v7 completion:&v16];
   }
 
-  [(VUIJSObject *)self setJSValue:v6 forProperty:v9, v16, v17, v18, v19];
+  [(VUIJSObject *)self setJSValue:v6 forProperty:uUIDString, v16, v17, v18, v19];
   v12 = MEMORY[0x1E696EB58];
-  v13 = [v10 jsContext];
-  v14 = [v12 valueWithObject:v9 inContext:v13];
+  jsContext = [appContext jsContext];
+  v14 = [v12 valueWithObject:uUIDString inContext:jsContext];
 
   return v14;
 }
@@ -440,13 +440,13 @@ LABEL_9:
   }
 }
 
-- (void)upNextItemsReceived:(id)a3 :(id)a4
+- (void)upNextItemsReceived:(id)received :(id)a4
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  receivedCopy = received;
   v6 = a4;
-  v7 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v7 postNotificationName:*MEMORY[0x1E69E16A0] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69E16A0] object:0];
 
   v8 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -454,7 +454,7 @@ LABEL_9:
     *buf = 138412546;
     v14 = v6;
     v15 = 2048;
-    v16 = [v5 count];
+    v16 = [receivedCopy count];
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIJSNetworkInterface - Received UpNext update: donating media items [from %@, %ld items]", buf, 0x16u);
   }
 
@@ -463,8 +463,8 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke;
   block[3] = &unk_1E872D768;
-  v12 = v5;
-  v10 = v5;
+  v12 = receivedCopy;
+  v10 = receivedCopy;
   dispatch_async(v9, block);
 }
 
@@ -510,18 +510,18 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
   [MEMORY[0x1E69E1518] donateMediaItems:v2];
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [MEMORY[0x1E696ADC8] wlkDefaultConcurrentQueue];
-  v5 = [v4 operations];
+  wlkDefaultConcurrentQueue = [MEMORY[0x1E696ADC8] wlkDefaultConcurrentQueue];
+  operations = [wlkDefaultConcurrentQueue operations];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [operations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -533,14 +533,14 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(operations);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 identifier];
-          v12 = [v11 isEqualToString:v3];
+          identifier = [v10 identifier];
+          v12 = [identifier isEqualToString:requestCopy];
 
           if (v12)
           {
@@ -552,16 +552,16 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [operations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)fetchConfiguration:(BOOL)a3 :(id)a4
+- (void)fetchConfiguration:(BOOL)configuration :(id)a4
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6 = a4;
   v7 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -570,10 +570,10 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIJSNetworkInterface - Begin initconfig", buf, 2u);
   }
 
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VUIJSObject *)self setJSValue:v6 forProperty:v9];
+  [(VUIJSObject *)self setJSValue:v6 forProperty:uUIDString];
   if (_os_feature_enabled_impl())
   {
     objc_initWeak(buf, self);
@@ -584,13 +584,13 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
     v20[3] = &unk_1E8731E30;
     objc_copyWeak(&v22, buf);
     v21 = v6;
-    [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:v4 completion:v20];
+    [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:configurationCopy completion:v20];
     v11 = v21;
   }
 
   else
   {
-    if (v4)
+    if (configurationCopy)
     {
       v12 = 3;
     }
@@ -598,10 +598,10 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
     else
     {
       v13 = +[VUIFeaturesConfiguration sharedInstance];
-      v14 = [v13 launchConfig];
-      v15 = [v14 useConfigCacheIgnoreExpiry];
+      launchConfig = [v13 launchConfig];
+      useConfigCacheIgnoreExpiry = [launchConfig useConfigCacheIgnoreExpiry];
 
-      if (v15)
+      if (useConfigCacheIgnoreExpiry)
       {
         v12 = 5;
       }
@@ -614,15 +614,15 @@ void __46__VUIJSNetworkInterface_upNextItemsReceived::__block_invoke(uint64_t a1
 
     [(VUIJSNetworkInterface *)self setSuppressServerConfigNotifications:1];
     objc_initWeak(buf, self);
-    v16 = [MEMORY[0x1E69E1508] sharedInstance];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
     v10 = v17;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __45__VUIJSNetworkInterface_fetchConfiguration::__block_invoke_2;
     v17[3] = &unk_1E8731E80;
     objc_copyWeak(&v19, buf);
-    v18 = v9;
-    [v16 fetchConfigurationWithOptions:0 cachePolicy:v12 queryParameters:0 completion:v17];
+    v18 = uUIDString;
+    [mEMORY[0x1E69E1508] fetchConfigurationWithOptions:0 cachePolicy:v12 queryParameters:0 completion:v17];
 
     v11 = v18;
   }
@@ -726,24 +726,24 @@ void __45__VUIJSNetworkInterface_fetchConfiguration::__block_invoke_119(uint64_t
   }
 }
 
-- (void)_handleConfigurationResponse:(id)a3 responseDictionary:(id)a4 error:(id)a5
+- (void)_handleConfigurationResponse:(id)response responseDictionary:(id)dictionary error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VUIJSObject *)self appContext];
+  responseCopy = response;
+  dictionaryCopy = dictionary;
+  errorCopy = error;
+  appContext = [(VUIJSObject *)self appContext];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary_error___block_invoke;
   v15[3] = &unk_1E8731DE0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 evaluate:v15];
+  v16 = responseCopy;
+  v17 = dictionaryCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = dictionaryCopy;
+  v14 = responseCopy;
+  [appContext evaluate:v15];
 }
 
 void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary_error___block_invoke(uint64_t a1)
@@ -791,23 +791,23 @@ void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary
   }
 }
 
-- (void)_enqueueNetworkOp:(id)a3 withJSCallbackUUID:(id)a4
+- (void)_enqueueNetworkOp:(id)op withJSCallbackUUID:(id)d
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  opCopy = op;
+  dCopy = d;
   v8 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = opCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v7;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIJSNetworkInterface - Request start: %@ %p", buf, 0x16u);
   }
 
-  v9 = [v6 identifier];
-  v10 = [v9 substringToIndex:{fmin((objc_msgSend(v9, "length") - 1), 7.0)}];
+  identifier = [opCopy identifier];
+  v10 = [identifier substringToIndex:{fmin((objc_msgSend(identifier, "length") - 1), 7.0)}];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -818,7 +818,7 @@ void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary
   v45 = [(VUIScopedBackgroundTask *)v11 initWithIdentifier:v12 expirationHandler:0];
 
   v13 = WLKNetworkSignpostLogObject();
-  v14 = os_signpost_id_make_with_pointer(v13, v9);
+  v14 = os_signpost_id_make_with_pointer(v13, identifier);
 
   v15 = WLKNetworkSignpostLogObject();
   v16 = v15;
@@ -829,7 +829,7 @@ void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary
   }
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
+  objc_initWeak(&from, opCopy);
   *v34 = 0;
   v35 = v34;
   v36 = 0x3032000000;
@@ -838,7 +838,7 @@ void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary
   v39 = 0;
   if (_os_feature_enabled_impl())
   {
-    v17 = [v6 request];
+    request = [opCopy request];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __62__VUIJSNetworkInterface__enqueueNetworkOp_withJSCallbackUUID___block_invoke;
@@ -846,25 +846,25 @@ void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary
     v29[4] = self;
     v32 = v34;
     v33 = v14;
-    v30 = v6;
-    v31 = v7;
-    [_TtC8VideosUI22VUINetworkManagerProxy executeRequest:v17 completion:v29];
+    v30 = opCopy;
+    v31 = dCopy;
+    [_TtC8VideosUI22VUINetworkManagerProxy executeRequest:request completion:v29];
   }
 
   else
   {
-    v18 = [v6 networkLabel];
+    networkLabel = [opCopy networkLabel];
 
-    if (v18)
+    if (networkLabel)
     {
-      v19 = [v6 networkLabel];
-      [v19 unsignedIntValue];
+      networkLabel2 = [opCopy networkLabel];
+      [networkLabel2 unsignedIntValue];
       v20 = nw_activity_create();
       v21 = *(v35 + 5);
       *(v35 + 5) = v20;
 
       nw_activity_activate();
-      [v6 setNetworkActivity:*(v35 + 5)];
+      [opCopy setNetworkActivity:*(v35 + 5)];
     }
 
     v23[0] = MEMORY[0x1E69E9820];
@@ -876,10 +876,10 @@ void __79__VUIJSNetworkInterface__handleConfigurationResponse_responseDictionary
     v28[1] = v14;
     v25 = buf;
     v26 = v34;
-    v24 = v7;
-    [v6 setCompletionBlock:v23];
-    v22 = [MEMORY[0x1E696ADC8] wlkDefaultConcurrentQueue];
-    [v22 addOperation:v6];
+    v24 = dCopy;
+    [opCopy setCompletionBlock:v23];
+    wlkDefaultConcurrentQueue = [MEMORY[0x1E696ADC8] wlkDefaultConcurrentQueue];
+    [wlkDefaultConcurrentQueue addOperation:opCopy];
 
     objc_destroyWeak(v28);
     objc_destroyWeak(&v27);
@@ -903,34 +903,34 @@ void __62__VUIJSNetworkInterface__enqueueNetworkOp_withJSCallbackUUID___block_in
   [WeakRetained _completeRequestResponse:*(a1 + 72) activity:*(*(*(a1 + 48) + 8) + 40) networkOperation:v2 networkResponse:0 jsCallbackUUID:*(a1 + 32) networkError:0];
 }
 
-- (id)_createURLRequestFromRequestProperties:(id)a3 request:(id)a4
+- (id)_createURLRequestFromRequestProperties:(id)properties request:(id)request
 {
-  v5 = a3;
-  v6 = [a4 mutableCopy];
+  propertiesCopy = properties;
+  v6 = [request mutableCopy];
   v7 = [v6 URL];
-  v8 = [v7 absoluteString];
+  absoluteString = [v7 absoluteString];
 
-  v9 = [v5 httpMethod];
-  v10 = [v5 headers];
-  v11 = [v5 queryParameters];
-  v12 = [v5 timeout];
-  v13 = [v5 options];
-  v14 = [v5 options];
-  if (v8)
+  httpMethod = [propertiesCopy httpMethod];
+  headers = [propertiesCopy headers];
+  queryParameters = [propertiesCopy queryParameters];
+  timeout = [propertiesCopy timeout];
+  options = [propertiesCopy options];
+  options2 = [propertiesCopy options];
+  if (absoluteString)
   {
-    v27 = v14;
-    v15 = [MEMORY[0x1E695DFF8] URLWithString:v8];
+    v27 = options2;
+    v15 = [MEMORY[0x1E695DFF8] URLWithString:absoluteString];
     if (v15)
     {
       v16 = v15;
-      v26 = v10;
-      v17 = [MEMORY[0x1E695DFF8] vui_sortedQueryItemsFromDictionary:v11];
+      v26 = headers;
+      v17 = [MEMORY[0x1E695DFF8] vui_sortedQueryItemsFromDictionary:queryParameters];
       v18 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v16 resolvingAgainstBaseURL:0];
       v28 = v17;
       if ([v17 count])
       {
         v19 = v18;
-        if ((v13 & 2) != 0)
+        if ((options & 2) != 0)
         {
           [v18 setPercentEncodedQueryItems:v28];
         }
@@ -950,18 +950,18 @@ void __62__VUIJSNetworkInterface__enqueueNetworkOp_withJSCallbackUUID___block_in
         v19 = v18;
       }
 
-      v10 = v26;
+      headers = v26;
       v21 = objc_alloc(MEMORY[0x1E696AD68]);
-      [v12 doubleValue];
+      [timeout doubleValue];
       v22 = [v21 initWithURL:v16 cachePolicy:0 timeoutInterval:?];
 
-      if (v9)
+      if (httpMethod)
       {
-        [v22 setHTTPMethod:v9];
+        [v22 setHTTPMethod:httpMethod];
       }
 
-      v23 = [v5 httpBody];
-      [v22 setHTTPBody:v23];
+      httpBody = [propertiesCopy httpBody];
+      [v22 setHTTPBody:httpBody];
 
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
@@ -982,23 +982,23 @@ void __62__VUIJSNetworkInterface__enqueueNetworkOp_withJSCallbackUUID___block_in
   return v24;
 }
 
-- (void)_completeRequestResponse:(unint64_t)a3 activity:(id)a4 networkOperation:(id)a5 networkResponse:(id)a6 jsCallbackUUID:(id)a7 networkError:(id)a8
+- (void)_completeRequestResponse:(unint64_t)response activity:(id)activity networkOperation:(id)operation networkResponse:(id)networkResponse jsCallbackUUID:(id)d networkError:(id)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  activityCopy = activity;
+  operationCopy = operation;
+  networkResponseCopy = networkResponse;
+  dCopy = d;
+  errorCopy = error;
   v19 = WLKNetworkSignpostLogObject();
   v20 = v19;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
+  if (response - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
     LOWORD(buf[0]) = 0;
-    _os_signpost_emit_with_name_impl(&dword_1E323F000, v20, OS_SIGNPOST_INTERVAL_BEGIN, a3, "WLKUIRequest.bridge", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1E323F000, v20, OS_SIGNPOST_INTERVAL_BEGIN, response, "WLKUIRequest.bridge", "", buf, 2u);
   }
 
-  v21 = [(VUIJSObject *)self appContext];
-  if ([v21 isValid])
+  appContext = [(VUIJSObject *)self appContext];
+  if ([appContext isValid])
   {
     objc_initWeak(buf, self);
     v23[0] = MEMORY[0x1E69E9820];
@@ -1006,13 +1006,13 @@ void __62__VUIJSNetworkInterface__enqueueNetworkOp_withJSCallbackUUID___block_in
     v23[2] = __120__VUIJSNetworkInterface__completeRequestResponse_activity_networkOperation_networkResponse_jsCallbackUUID_networkError___block_invoke;
     v23[3] = &unk_1E8731F20;
     objc_copyWeak(v29, buf);
-    v29[1] = a3;
-    v24 = v18;
-    v25 = v16;
-    v26 = v15;
-    v27 = v17;
-    v28 = v14;
-    [v21 evaluate:v23];
+    v29[1] = response;
+    v24 = errorCopy;
+    v25 = networkResponseCopy;
+    v26 = operationCopy;
+    v27 = dCopy;
+    v28 = activityCopy;
+    [appContext evaluate:v23];
 
     objc_destroyWeak(v29);
     objc_destroyWeak(buf);
@@ -1220,11 +1220,11 @@ LABEL_42:
   [WeakRetained _handleNetworkMetricsActivity:*(a1 + 64) error:v7];
 }
 
-- (void)_handleNetworkMetricsActivity:(id)a3 error:(id)a4
+- (void)_handleNetworkMetricsActivity:(id)activity error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  activityCopy = activity;
+  errorCopy = error;
+  if (!activityCopy)
   {
     v7 = WLKNetworkingLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1255,9 +1255,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (errorCopy)
   {
-    [v6 code];
+    [errorCopy code];
     nw_activity_complete_with_reason_and_underlying_error();
   }
 
@@ -1276,17 +1276,17 @@ LABEL_10:
 LABEL_11:
 }
 
-- (int64_t)_requestOptionsFromJSOptions:(id)a3
+- (int64_t)_requestOptionsFromJSOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"suppressAuthentication"];
-  v5 = [v3 objectForKey:@"encodeQueryParams"];
-  v6 = [v3 objectForKey:@"nonPersonalized"];
-  v7 = [v3 objectForKey:@"ignoreLocalCache"];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKey:@"suppressAuthentication"];
+  v5 = [optionsCopy objectForKey:@"encodeQueryParams"];
+  v6 = [optionsCopy objectForKey:@"nonPersonalized"];
+  v7 = [optionsCopy objectForKey:@"ignoreLocalCache"];
 
   if (v4)
   {
-    v8 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     if (!v5)
     {
       goto LABEL_5;
@@ -1295,7 +1295,7 @@ LABEL_11:
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
     if (!v5)
     {
       goto LABEL_5;
@@ -1304,34 +1304,34 @@ LABEL_11:
 
   if (([v5 BOOLValue] & 1) == 0)
   {
-    v8 |= 2uLL;
+    bOOLValue |= 2uLL;
   }
 
 LABEL_5:
   if ([v6 BOOLValue])
   {
-    v8 |= 0x10uLL;
+    bOOLValue |= 0x10uLL;
   }
 
   if ([v7 BOOLValue])
   {
-    v8 |= 8uLL;
+    bOOLValue |= 8uLL;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)_createURLRequestFromJSOptionsDictionary:(id)a3
+- (id)_createURLRequestFromJSOptionsDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 wlk_stringForKey:@"url"];
-  v5 = [v3 wlk_stringForKey:@"httpMethod"];
-  v6 = [v3 wlk_stringForKey:@"postBody"];
-  v7 = [v3 wlk_dictionaryForKey:@"headers"];
-  v8 = [v3 wlk_dictionaryForKey:@"queryParameters"];
-  v9 = [v3 wlk_numberForKey:@"timeout"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy wlk_stringForKey:@"url"];
+  v5 = [dictionaryCopy wlk_stringForKey:@"httpMethod"];
+  v6 = [dictionaryCopy wlk_stringForKey:@"postBody"];
+  v7 = [dictionaryCopy wlk_dictionaryForKey:@"headers"];
+  v8 = [dictionaryCopy wlk_dictionaryForKey:@"queryParameters"];
+  v9 = [dictionaryCopy wlk_numberForKey:@"timeout"];
   v10 = [v5 isEqualToString:@"POST"];
-  v11 = [v3 wlk_BOOLForKey:@"encodeQueryParams" defaultValue:1];
+  v11 = [dictionaryCopy wlk_BOOLForKey:@"encodeQueryParams" defaultValue:1];
 
   if (v4 && ([MEMORY[0x1E695DFF8] URLWithString:v4], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -1397,10 +1397,10 @@ LABEL_5:
   return v17;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1411,11 +1411,11 @@ LABEL_5:
   v13 = MEMORY[0x1E69E9820];
   v14 = __75__VUIJSNetworkInterface_AMSURLSession_task_handleDialogRequest_completion___block_invoke;
   v15 = &unk_1E872E580;
-  v16 = v7;
-  v17 = v8;
+  v16 = requestCopy;
+  v17 = completionCopy;
   v10 = MEMORY[0x1E696AF00];
-  v11 = v8;
-  v12 = v7;
+  v11 = completionCopy;
+  v12 = requestCopy;
   if ([v10 isMainThread])
   {
     v14(&v13);
@@ -1471,10 +1471,10 @@ void __75__VUIJSNetworkInterface_AMSURLSession_task_handleDialogRequest_completi
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1485,11 +1485,11 @@ void __75__VUIJSNetworkInterface_AMSURLSession_task_handleDialogRequest_completi
   v13 = MEMORY[0x1E69E9820];
   v14 = __81__VUIJSNetworkInterface_AMSURLSession_task_handleAuthenticateRequest_completion___block_invoke;
   v15 = &unk_1E872E580;
-  v16 = v7;
-  v17 = v8;
+  v16 = requestCopy;
+  v17 = completionCopy;
   v10 = MEMORY[0x1E696AF00];
-  v11 = v8;
-  v12 = v7;
+  v11 = completionCopy;
+  v12 = requestCopy;
   if ([v10 isMainThread])
   {
     v14(&v13);
@@ -1545,9 +1545,9 @@ void __81__VUIJSNetworkInterface_AMSURLSession_task_handleAuthenticateRequest_co
   }
 }
 
-- (void)_handleServerConfigChange:(id)a3
+- (void)_handleServerConfigChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   NSLog(&cfstr_Vuijsnetworkin.isa);
   if (self->_suppressServerConfigNotifications)
   {
@@ -1556,8 +1556,8 @@ void __81__VUIJSNetworkInterface_AMSURLSession_task_handleAuthenticateRequest_co
 
   else
   {
-    v5 = [(VUIJSObject *)self appContext];
-    objc_initWeak(&location, v5);
+    appContext = [(VUIJSObject *)self appContext];
+    objc_initWeak(&location, appContext);
 
     objc_initWeak(&from, self);
     v6 = objc_loadWeakRetained(&location);
@@ -1566,7 +1566,7 @@ void __81__VUIJSNetworkInterface_AMSURLSession_task_handleAuthenticateRequest_co
     v7[2] = __51__VUIJSNetworkInterface__handleServerConfigChange___block_invoke;
     v7[3] = &unk_1E87309C0;
     objc_copyWeak(&v9, &from);
-    v8 = v4;
+    v8 = changeCopy;
     [v6 evaluate:v7];
 
     objc_destroyWeak(&v9);

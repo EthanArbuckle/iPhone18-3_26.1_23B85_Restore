@@ -1,37 +1,37 @@
 @interface LNNLGRepresentation
-- (BOOL)isEqual:(id)a3;
-- (LNNLGRepresentation)initWithCoder:(id)a3;
-- (LNNLGRepresentation)initWithType:(id)a3 title:(id)a4 value:(id)a5 format:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (LNNLGRepresentation)initWithCoder:(id)coder;
+- (LNNLGRepresentation)initWithType:(id)type title:(id)title value:(id)value format:(id)format;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNNLGRepresentation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNNLGRepresentation *)self type];
-  [v4 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  type = [(LNNLGRepresentation *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  v6 = [(LNNLGRepresentation *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(LNNLGRepresentation *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(LNNLGRepresentation *)self value];
-  [v4 encodeObject:v7 forKey:@"value"];
+  value = [(LNNLGRepresentation *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v8 = [(LNNLGRepresentation *)self format];
-  [v4 encodeObject:v8 forKey:@"format"];
+  format = [(LNNLGRepresentation *)self format];
+  [coderCopy encodeObject:format forKey:@"format"];
 }
 
-- (LNNLGRepresentation)initWithCoder:(id)a3
+- (LNNLGRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"format"];
 
   v9 = [(LNNLGRepresentation *)self initWithType:v5 title:v6 value:v7 format:v8];
   return v9;
@@ -42,58 +42,58 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNNLGRepresentation *)self type];
-  v7 = [(LNNLGRepresentation *)self title];
-  v8 = [(LNNLGRepresentation *)self value];
-  v9 = [(LNNLGRepresentation *)self format];
-  v10 = [v3 stringWithFormat:@"<%@: %p, type: %@, title: %@, value: %@, format: %@>", v5, self, v6, v7, v8, v9];
+  type = [(LNNLGRepresentation *)self type];
+  title = [(LNNLGRepresentation *)self title];
+  value = [(LNNLGRepresentation *)self value];
+  format = [(LNNLGRepresentation *)self format];
+  v10 = [v3 stringWithFormat:@"<%@: %p, type: %@, title: %@, value: %@, format: %@>", v5, self, type, title, value, format];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNNLGRepresentation *)self type];
-  v4 = [v3 hash];
-  v5 = [(LNNLGRepresentation *)self title];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNNLGRepresentation *)self value];
-  v8 = [v7 hash];
-  v9 = [(LNNLGRepresentation *)self format];
-  v10 = v8 ^ [v9 hash];
+  type = [(LNNLGRepresentation *)self type];
+  v4 = [type hash];
+  title = [(LNNLGRepresentation *)self title];
+  v6 = [title hash] ^ v4;
+  value = [(LNNLGRepresentation *)self value];
+  v8 = [value hash];
+  format = [(LNNLGRepresentation *)self format];
+  v10 = v8 ^ [format hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNNLGRepresentation *)self type];
-      v8 = [(LNNLGRepresentation *)v6 type];
-      if ([v7 isEqual:v8])
+      type = [(LNNLGRepresentation *)self type];
+      type2 = [(LNNLGRepresentation *)v6 type];
+      if ([type isEqual:type2])
       {
-        v9 = [(LNNLGRepresentation *)self title];
-        v10 = [(LNNLGRepresentation *)v6 title];
-        if ([v9 isEqual:v10])
+        title = [(LNNLGRepresentation *)self title];
+        title2 = [(LNNLGRepresentation *)v6 title];
+        if ([title isEqual:title2])
         {
-          v11 = [(LNNLGRepresentation *)self value];
-          v12 = [(LNNLGRepresentation *)v6 value];
-          if ([v11 isEqual:v12])
+          value = [(LNNLGRepresentation *)self value];
+          value2 = [(LNNLGRepresentation *)v6 value];
+          if ([value isEqual:value2])
           {
-            v16 = [(LNNLGRepresentation *)self format];
-            v13 = [(LNNLGRepresentation *)v6 format];
-            v14 = [v16 isEqual:v13];
+            format = [(LNNLGRepresentation *)self format];
+            format2 = [(LNNLGRepresentation *)v6 format];
+            v14 = [format isEqual:format2];
           }
 
           else
@@ -123,30 +123,30 @@
   return v14;
 }
 
-- (LNNLGRepresentation)initWithType:(id)a3 title:(id)a4 value:(id)a5 format:(id)a6
+- (LNNLGRepresentation)initWithType:(id)type title:(id)title value:(id)value format:(id)format
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  titleCopy = title;
+  valueCopy = value;
+  formatCopy = format;
   v25.receiver = self;
   v25.super_class = LNNLGRepresentation;
   v14 = [(LNNLGRepresentation *)&v25 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [typeCopy copy];
     type = v14->_type;
     v14->_type = v15;
 
-    v17 = [v11 copy];
+    v17 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v17;
 
-    v19 = [v12 copy];
+    v19 = [valueCopy copy];
     value = v14->_value;
     v14->_value = v19;
 
-    v21 = [v13 copy];
+    v21 = [formatCopy copy];
     format = v14->_format;
     v14->_format = v21;
 

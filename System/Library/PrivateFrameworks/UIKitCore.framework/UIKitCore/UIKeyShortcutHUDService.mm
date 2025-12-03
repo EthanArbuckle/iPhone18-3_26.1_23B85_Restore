@@ -1,35 +1,35 @@
 @interface UIKeyShortcutHUDService
 + (BOOL)_isOOPFeatureEnabled;
 + (UIKeyShortcutHUDService)sharedHUDService;
-- (BOOL)_isHUDAllowedForConfiguration:(id)a3;
+- (BOOL)_isHUDAllowedForConfiguration:(id)configuration;
 - (BOOL)_isHUDAllowedForCurrentResponder;
 - (BOOL)_isHUDAllowedOverCurrentWindow;
 - (BOOL)_isHUDSupportedOnPlatform;
 - (UIKeyShortcutHUDService)init;
 - (UIWindowScene)scheduledHUDKeyWindowScene;
 - (_UIKeyboardEventModifierListener)modifierKeyListener;
-- (id)metricsForWindow:(id)a3;
+- (id)metricsForWindow:(id)window;
 - (int64_t)hudPresentationState;
 - (void)_addPresentationObserversIfNeeded;
-- (void)_applicationDidBeginIgnoringInteractionEvents:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
+- (void)_applicationDidBeginIgnoringInteractionEvents:(id)events;
+- (void)_applicationWillResignActive:(id)active;
 - (void)_cancelAllScheduledHUDPresentationsIfNeeded;
-- (void)_didTakeScreenshot:(id)a3;
+- (void)_didTakeScreenshot:(id)screenshot;
 - (void)_discardScheduledHUDBookkeeping;
-- (void)_handleDeferredDismissalResponse:(id)a3;
-- (void)_handleKeyCommandFromResponse:(id)a3 withSession:(id)a4;
-- (void)_handleScheduledHUDPointerHover:(id)a3;
+- (void)_handleDeferredDismissalResponse:(id)response;
+- (void)_handleKeyCommandFromResponse:(id)response withSession:(id)session;
+- (void)_handleScheduledHUDPointerHover:(id)hover;
 - (void)_handleSystemHUDPresentationDarwinNotification;
 - (void)_handleSystemHUDPreventUnintendedPresentationDarwinNotificationIfNeeded;
-- (void)_hardwareKeyboardAvailabilityChanged:(id)a3;
+- (void)_hardwareKeyboardAvailabilityChanged:(id)changed;
 - (void)_registerForScheduledHUDCancellationDarwinNotifications;
 - (void)_registerForSystemHUDPresentationDarwinNotifications;
 - (void)_registerForSystemHUDPreventUnintendedPresentationDarwinNotificationsIfNeeded;
 - (void)_removePresentationObserversIfNeeded;
 - (void)_requestHUDDismissal;
-- (void)_requestHUDPresentationIfAllowedWithUnpreparedConfiguration:(id)a3;
-- (void)_requestHUDPresentationWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)_requestHUDPresentationWithUnpreparedConfiguration:(id)a3;
+- (void)_requestHUDPresentationIfAllowedWithUnpreparedConfiguration:(id)configuration;
+- (void)_requestHUDPresentationWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)_requestHUDPresentationWithUnpreparedConfiguration:(id)configuration;
 - (void)_sendSystemHUDPresentationDarwinNotificationIfNeeded;
 - (void)_sendSystemHUDPreventUnintendedPresentationDarwinNotificationIfNeeded;
 - (void)_unregisterForScheduledHUDCancellationDarwinNotifications;
@@ -38,11 +38,11 @@
 - (void)cancelScheduledHUDPresentationIfNeeded;
 - (void)dealloc;
 - (void)dismissOrCancelHUDPresentationIfNeeded;
-- (void)handleKeyboardEvent:(id)a3;
-- (void)handleTouchEvent:(id)a3;
-- (void)keyShortcutHUDDidDismissWithResponse:(id)a3 toOverlayService:(id)a4;
-- (void)modifierListener:(id)a3 didUpdateModifierFlag:(int64_t)a4;
-- (void)overlayServiceDidInvalidate:(id)a3;
+- (void)handleKeyboardEvent:(id)event;
+- (void)handleTouchEvent:(id)event;
+- (void)keyShortcutHUDDidDismissWithResponse:(id)response toOverlayService:(id)service;
+- (void)modifierListener:(id)listener didUpdateModifierFlag:(int64_t)flag;
+- (void)overlayServiceDidInvalidate:(id)invalidate;
 - (void)presentHUD;
 - (void)requestHUDPresentationIntoSearchMode;
 - (void)scheduleHUDPresentation;
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __43__UIKeyShortcutHUDService_sharedHUDService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49F038 != -1)
   {
     dispatch_once(&qword_1ED49F038, block);
@@ -69,10 +69,10 @@
 
 - (void)dismissOrCancelHUDPresentationIfNeeded
 {
-  v3 = [(UIKeyShortcutHUDService *)self hudPresentationState];
-  if ((v3 - 2) >= 2)
+  hudPresentationState = [(UIKeyShortcutHUDService *)self hudPresentationState];
+  if ((hudPresentationState - 2) >= 2)
   {
-    if (v3 == 1)
+    if (hudPresentationState == 1)
     {
       [(UIKeyShortcutHUDService *)self _discardScheduledHUDBookkeeping];
     }
@@ -88,22 +88,22 @@
 
 - (int64_t)hudPresentationState
 {
-  v3 = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
-  if (v3)
+  scheduledHUDTimer = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
+  if (scheduledHUDTimer)
   {
-    v4 = v3;
-    v5 = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
-    v6 = [v5 isValid];
+    v4 = scheduledHUDTimer;
+    scheduledHUDTimer2 = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
+    isValid = [scheduledHUDTimer2 isValid];
 
-    if (v6)
+    if (isValid)
     {
       return 1;
     }
   }
 
-  v8 = [(UIKeyShortcutHUDService *)self session];
+  session = [(UIKeyShortcutHUDService *)self session];
 
-  if (v8)
+  if (session)
   {
     return 3;
   }
@@ -119,17 +119,17 @@
   if (*&self->_flags)
   {
     *&self->_flags &= ~1u;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIApplicationWillResignActiveNotification" object:UIApp];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:0x1EFB8EF10 object:UIApp];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:0x1EFB8EF10 object:UIApp];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"UIApplicationUserDidTakeScreenshotNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"UIApplicationUserDidTakeScreenshotNotification" object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 removeObserver:self name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
   }
 }
 
@@ -154,11 +154,11 @@ void __43__UIKeyShortcutHUDService_sharedHUDService__block_invoke()
       v4 = objc_opt_new();
       [(UIKeyShortcutHUDService *)v3 setOverlayService:v4];
 
-      v5 = [(UIKeyShortcutHUDService *)v3 overlayService];
-      [v5 setDelegate:v3];
+      overlayService = [(UIKeyShortcutHUDService *)v3 overlayService];
+      [overlayService setDelegate:v3];
 
-      v6 = [(UIKeyShortcutHUDService *)v3 overlayService];
-      [v6 prewarmConnection];
+      overlayService2 = [(UIKeyShortcutHUDService *)v3 overlayService];
+      [overlayService2 prewarmConnection];
     }
 
     [(UIKeyShortcutHUDService *)v3 _registerForScheduledHUDCancellationDarwinNotifications];
@@ -330,10 +330,10 @@ void __47__UIKeyShortcutHUDService__isOOPFeatureEnabled__block_invoke()
 
 - (void)requestHUDPresentationIntoSearchMode
 {
-  v3 = [(UIKeyShortcutHUDService *)self hudPresentationState];
-  if (v3)
+  hudPresentationState = [(UIKeyShortcutHUDService *)self hudPresentationState];
+  if (hudPresentationState)
   {
-    if (v3 != 1)
+    if (hudPresentationState != 1)
     {
       return;
     }
@@ -345,8 +345,8 @@ void __47__UIKeyShortcutHUDService__isOOPFeatureEnabled__block_invoke()
   [v7 setPresentedModifierFlag:0x100000];
   [v7 setSearching:1];
   v4 = +[UIWindow _applicationKeyWindow];
-  v5 = [(UIKeyShortcutHUDService *)self lastKeyboardEvent];
-  v6 = [_UIKeyShortcutHUDClientTraits traitsWithReferenceTraitEnvironment:v4 referenceKeyboardEvent:v5];
+  lastKeyboardEvent = [(UIKeyShortcutHUDService *)self lastKeyboardEvent];
+  v6 = [_UIKeyShortcutHUDClientTraits traitsWithReferenceTraitEnvironment:v4 referenceKeyboardEvent:lastKeyboardEvent];
   [v7 setClientTraits:v6];
 
   [(UIKeyShortcutHUDService *)self _requestHUDPresentationIfAllowedWithUnpreparedConfiguration:v7];
@@ -357,8 +357,8 @@ void __47__UIKeyShortcutHUDService__isOOPFeatureEnabled__block_invoke()
   v22 = *MEMORY[0x1E69E9840];
   if ([(UIKeyShortcutHUDService *)self hudPresentationState]== 1)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"self.hudPresentationState != _UIKeyShortcutHUDPresentationStateScheduled"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"self.hudPresentationState != _UIKeyShortcutHUDPresentationStateScheduled"}];
   }
 
   [(UIKeyShortcutHUDService *)self _addPresentationObserversIfNeeded];
@@ -427,29 +427,29 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
   }
 }
 
-- (void)_handleScheduledHUDPointerHover:(id)a3
+- (void)_handleScheduledHUDPointerHover:(id)hover
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  hoverCopy = hover;
+  view = [hoverCopy view];
+  [hoverCopy locationInView:view];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 windowScene];
-  v11 = [v10 screen];
-  v12 = [v11 coordinateSpace];
-  [v12 convertPoint:v5 fromCoordinateSpace:{v7, v9}];
+  windowScene = [view windowScene];
+  screen = [windowScene screen];
+  coordinateSpace = [screen coordinateSpace];
+  [coordinateSpace convertPoint:view fromCoordinateSpace:{v7, v9}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [v4 state];
-  if ((v17 - 1) <= 2)
+  state = [hoverCopy state];
+  if ((state - 1) <= 2)
   {
-    v18 = [(UIKeyShortcutHUDService *)self scheduledHUDInitialPointerLocation];
+    scheduledHUDInitialPointerLocation = [(UIKeyShortcutHUDService *)self scheduledHUDInitialPointerLocation];
 
-    if (v18)
+    if (scheduledHUDInitialPointerLocation)
     {
-      v19 = [(UIKeyShortcutHUDService *)self scheduledHUDInitialPointerLocation];
-      [v19 CGPointValue];
+      scheduledHUDInitialPointerLocation2 = [(UIKeyShortcutHUDService *)self scheduledHUDInitialPointerLocation];
+      [scheduledHUDInitialPointerLocation2 CGPointValue];
       v22 = sqrt((v14 - v20) * (v14 - v20) + (v16 - v21) * (v16 - v21));
 
       if (v22 > 10.0)
@@ -480,22 +480,22 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
 - (void)_discardScheduledHUDBookkeeping
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
-  v4 = [v3 isValid];
+  scheduledHUDTimer = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
+  isValid = [scheduledHUDTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
-    v5 = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
-    [v5 invalidate];
+    scheduledHUDTimer2 = [(UIKeyShortcutHUDService *)self scheduledHUDTimer];
+    [scheduledHUDTimer2 invalidate];
   }
 
   [(UIKeyShortcutHUDService *)self setScheduledHUDTimer:0];
   [(UIKeyShortcutHUDService *)self setScheduledHUDConfiguration:0];
-  v6 = [(UIKeyShortcutHUDService *)self scheduledHUDKeyWindowScene];
-  if (v6)
+  scheduledHUDKeyWindowScene = [(UIKeyShortcutHUDService *)self scheduledHUDKeyWindowScene];
+  if (scheduledHUDKeyWindowScene)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:@"_UISceneDidResignTargetOfKeyboardEventDeferringEnvironmentNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"_UISceneDidResignTargetOfKeyboardEventDeferringEnvironmentNotification" object:scheduledHUDKeyWindowScene];
 
     [(UIKeyShortcutHUDService *)self setScheduledHUDKeyWindowScene:0];
   }
@@ -504,8 +504,8 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(UIKeyShortcutHUDService *)self scheduledHUDHoverGestureRecognizers];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  scheduledHUDHoverGestureRecognizers = [(UIKeyShortcutHUDService *)self scheduledHUDHoverGestureRecognizers];
+  v9 = [scheduledHUDHoverGestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -516,16 +516,16 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(scheduledHUDHoverGestureRecognizers);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
         [v13 setEnabled:0];
-        v14 = [v13 view];
-        [v14 removeGestureRecognizer:v13];
+        view = [v13 view];
+        [view removeGestureRecognizer:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [scheduledHUDHoverGestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -535,14 +535,14 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
   [(UIKeyShortcutHUDService *)self setScheduledHUDInitialPointerLocation:0];
 }
 
-- (void)_requestHUDPresentationIfAllowedWithUnpreparedConfiguration:(id)a3
+- (void)_requestHUDPresentationIfAllowedWithUnpreparedConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UISuppressKeyShortcutHUD, @"UISuppressKeyShortcutHUD") & 1) != 0 || !byte_1EA95E524)
   {
-    if ([(UIKeyShortcutHUDService *)self _isHUDSupportedOnPlatform]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedToAppearForProcess]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedOverCurrentWindow]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedForCurrentResponder]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedForConfiguration:v4]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedToBePresentedForPresentationState:[(UIKeyShortcutHUDService *)self hudPresentationState]])
+    if ([(UIKeyShortcutHUDService *)self _isHUDSupportedOnPlatform]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedToAppearForProcess]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedOverCurrentWindow]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedForCurrentResponder]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedForConfiguration:configurationCopy]&& [(UIKeyShortcutHUDService *)self _isHUDAllowedToBePresentedForPresentationState:[(UIKeyShortcutHUDService *)self hudPresentationState]])
     {
-      [(UIKeyShortcutHUDService *)self _requestHUDPresentationWithUnpreparedConfiguration:v4];
+      [(UIKeyShortcutHUDService *)self _requestHUDPresentationWithUnpreparedConfiguration:configurationCopy];
     }
   }
 
@@ -557,18 +557,18 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
   }
 }
 
-- (void)_requestHUDPresentationWithUnpreparedConfiguration:(id)a3
+- (void)_requestHUDPresentationWithUnpreparedConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (![(UIKeyShortcutHUDService *)self _isHUDSupportedOnPlatform]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedToAppearForProcess]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedOverCurrentWindow]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedForCurrentResponder]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedForConfiguration:v5])
+  configurationCopy = configuration;
+  if (![(UIKeyShortcutHUDService *)self _isHUDSupportedOnPlatform]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedToAppearForProcess]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedOverCurrentWindow]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedForCurrentResponder]|| ![(UIKeyShortcutHUDService *)self _isHUDAllowedForConfiguration:configurationCopy])
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:528 description:@"Attempted to present the key shortcut HUD when not allowed!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:528 description:@"Attempted to present the key shortcut HUD when not allowed!"];
   }
 
   if ([(UIKeyShortcutHUDService *)self _isHUDAllowedToBePresentedForPresentationState:[(UIKeyShortcutHUDService *)self hudPresentationState]])
   {
-    if (v5)
+    if (configurationCopy)
     {
       goto LABEL_8;
     }
@@ -576,56 +576,56 @@ void __50__UIKeyShortcutHUDService_scheduleHUDPresentation__block_invoke(uint64_
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:530 description:@"Attempted to present the key shortcut HUD in a state where it's not allowed!"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:530 description:@"Attempted to present the key shortcut HUD in a state where it's not allowed!"];
 
-    if (v5)
+    if (configurationCopy)
     {
       goto LABEL_8;
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:531 description:@"Attempted to present the key shortcut HUD with a nil configuration!"];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:531 description:@"Attempted to present the key shortcut HUD with a nil configuration!"];
 
 LABEL_8:
-  v6 = [v5 model];
+  model = [configurationCopy model];
 
-  if (!v6)
+  if (!model)
   {
     v7 = +[_UIKeyShortcutHUDModel modelForCurrentMenu];
-    [v5 setModel:v7];
+    [configurationCopy setModel:v7];
   }
 
-  v8 = [v5 model];
-  v9 = [v8 isEmpty];
+  model2 = [configurationCopy model];
+  isEmpty = [model2 isEmpty];
 
-  if ((v9 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
     v10 = objc_opt_new();
-    [v10 setConfiguration:v5];
+    [v10 setConfiguration:configurationCopy];
     if (+[UIKeyShortcutHUDService _isOOPFeatureEnabled])
     {
       v11 = +[UIKeyboardImpl activeInstance];
       [v10 setTextEditingSessionWasTornDown:{objc_msgSend(v11, "isCurrentEditResponderInEditingMode")}];
     }
 
-    v12 = [v5 clientTraits];
+    clientTraits = [configurationCopy clientTraits];
 
-    if (!v12)
+    if (!clientTraits)
     {
       v13 = +[UIWindow _applicationKeyWindow];
-      v14 = [(UIKeyShortcutHUDService *)self lastKeyboardEvent];
-      v15 = [_UIKeyShortcutHUDClientTraits traitsWithReferenceTraitEnvironment:v13 referenceKeyboardEvent:v14];
-      [v5 setClientTraits:v15];
+      lastKeyboardEvent = [(UIKeyShortcutHUDService *)self lastKeyboardEvent];
+      v15 = [_UIKeyShortcutHUDClientTraits traitsWithReferenceTraitEnvironment:v13 referenceKeyboardEvent:lastKeyboardEvent];
+      [configurationCopy setClientTraits:v15];
     }
 
-    v16 = [(UIKeyShortcutHUDService *)self modifierKeyListener];
-    [v5 setInitialHeldModifierFlags:{objc_msgSend(v16, "currentModifierFlags")}];
+    modifierKeyListener = [(UIKeyShortcutHUDService *)self modifierKeyListener];
+    [configurationCopy setInitialHeldModifierFlags:{objc_msgSend(modifierKeyListener, "currentModifierFlags")}];
 
     v17 = +[UIWindowScene _keyWindowScene];
-    v18 = [v17 _eventDeferringManager];
-    v19 = [(_UIEventDeferringManager *)v18 bufferKeyboardFocusEnvironmentEventsWithReason:?];
+    _eventDeferringManager = [v17 _eventDeferringManager];
+    v19 = [(_UIEventDeferringManager *)_eventDeferringManager bufferKeyboardFocusEnvironmentEventsWithReason:?];
 
     *&self->_flags |= 2u;
     v25[0] = MEMORY[0x1E69E9820];
@@ -633,11 +633,11 @@ LABEL_8:
     v25[2] = __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfiguration___block_invoke;
     v25[3] = &unk_1E7110100;
     v26 = v19;
-    v27 = self;
+    selfCopy = self;
     v28 = v10;
     v20 = v10;
     v21 = v19;
-    [(UIKeyShortcutHUDService *)self _requestHUDPresentationWithConfiguration:v5 completionHandler:v25];
+    [(UIKeyShortcutHUDService *)self _requestHUDPresentationWithConfiguration:configurationCopy completionHandler:v25];
   }
 }
 
@@ -657,32 +657,32 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   *(*(a1 + 40) + 8) &= ~2u;
 }
 
-- (void)_requestHUDPresentationWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)_requestHUDPresentationWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   if (+[UIKeyShortcutHUDService _isOOPFeatureEnabled])
   {
-    v9 = [[_UIORequestKeyShortcutHUDPresentationAction alloc] initWithConfiguration:v7 responseHandler:v6];
+    v9 = [[_UIORequestKeyShortcutHUDPresentationAction alloc] initWithConfiguration:configurationCopy responseHandler:handlerCopy];
 
-    v8 = [(UIKeyShortcutHUDService *)self overlayService];
-    [v8 sendOverlayAction:v9];
+    overlayService = [(UIKeyShortcutHUDService *)self overlayService];
+    [overlayService sendOverlayAction:v9];
   }
 
   else
   {
     v9 = +[UIWindowScene _keyWindowScene];
-    v8 = +[_UIKeyShortcutHUDServer sharedHUDServer];
-    [v8 presentHUDWithConfiguration:v7 inWindowScene:v9 forConnection:0 completionHandler:v6];
+    overlayService = +[_UIKeyShortcutHUDServer sharedHUDServer];
+    [overlayService presentHUDWithConfiguration:configurationCopy inWindowScene:v9 forConnection:0 completionHandler:handlerCopy];
   }
 }
 
 - (void)presentHUD
 {
-  v3 = [(UIKeyShortcutHUDService *)self hudPresentationState];
-  if (v3)
+  hudPresentationState = [(UIKeyShortcutHUDService *)self hudPresentationState];
+  if (hudPresentationState)
   {
-    if (v3 != 1)
+    if (hudPresentationState != 1)
     {
       return;
     }
@@ -693,8 +693,8 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   v7 = objc_opt_new();
   [v7 setPresentedModifierFlag:0x800000];
   v4 = +[UIWindow _applicationKeyWindow];
-  v5 = [(UIKeyShortcutHUDService *)self lastKeyboardEvent];
-  v6 = [_UIKeyShortcutHUDClientTraits traitsWithReferenceTraitEnvironment:v4 referenceKeyboardEvent:v5];
+  lastKeyboardEvent = [(UIKeyShortcutHUDService *)self lastKeyboardEvent];
+  v6 = [_UIKeyShortcutHUDClientTraits traitsWithReferenceTraitEnvironment:v4 referenceKeyboardEvent:lastKeyboardEvent];
   [v7 setClientTraits:v6];
 
   [(UIKeyShortcutHUDService *)self _requestHUDPresentationIfAllowedWithUnpreparedConfiguration:v7];
@@ -708,9 +708,9 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
     v3 = _UIKeyShortcutHUDLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v7 = 138543362;
-      v8 = v4;
+      v8 = callStackSymbols;
       _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "Requesting HUD dismissal; callStack=%{public}@", &v7, 0xCu);
     }
   }
@@ -718,8 +718,8 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   if (+[UIKeyShortcutHUDService _isOOPFeatureEnabled])
   {
     v5 = +[_UIORequestKeyShortcutHUDDismissalAction dismissalAction];
-    v6 = [(UIKeyShortcutHUDService *)self overlayService];
-    [v6 sendOverlayAction:v5];
+    overlayService = [(UIKeyShortcutHUDService *)self overlayService];
+    [overlayService sendOverlayAction:v5];
   }
 
   else
@@ -729,23 +729,23 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   }
 }
 
-- (void)handleKeyboardEvent:(id)a3
+- (void)handleKeyboardEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(UIKeyShortcutHUDService *)self _isHUDSupportedOnPlatform])
   {
-    [(UIKeyShortcutHUDService *)self setLastKeyboardEvent:v4];
-    v10 = [v4 _cloneEvent];
+    [(UIKeyShortcutHUDService *)self setLastKeyboardEvent:eventCopy];
+    _cloneEvent = [eventCopy _cloneEvent];
 
-    [v10 _privatize];
-    if ([v10 _isKeyDown] && (objc_msgSend(v10, "modifierFlags") & 0x800000) != 0)
+    [_cloneEvent _privatize];
+    if ([_cloneEvent _isKeyDown] && (objc_msgSend(_cloneEvent, "modifierFlags") & 0x800000) != 0)
     {
-      v5 = [v10 _modifiedInput];
-      if ([v5 length])
+      _modifiedInput = [_cloneEvent _modifiedInput];
+      if ([_modifiedInput length])
       {
-        v6 = [UIApp isFrontBoard];
+        isFrontBoard = [UIApp isFrontBoard];
 
-        if ((v6 & 1) == 0)
+        if ((isFrontBoard & 1) == 0)
         {
           [(UIKeyShortcutHUDService *)self preventUnintendedSystemHUDPresentationIfNeeded];
         }
@@ -759,21 +759,21 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
     if (!+[UIKeyShortcutHUDService _isOOPFeatureEnabled]|| _UIApplicationProcessIsOverlayUI())
     {
       v8 = +[_UIKeyShortcutHUDServer sharedHUDServer];
-      [v8 handleKeyboardEvent:v10];
+      [v8 handleKeyboardEvent:_cloneEvent];
     }
 
     if ([(UIKeyShortcutHUDService *)self _isHUDAllowedToAppearForProcess])
     {
-      v9 = [(UIKeyShortcutHUDService *)self modifierKeyListener];
-      [v9 handleKeyboardEvent:v10];
+      modifierKeyListener = [(UIKeyShortcutHUDService *)self modifierKeyListener];
+      [modifierKeyListener handleKeyboardEvent:_cloneEvent];
     }
 
-    v7 = v10;
+    v7 = _cloneEvent;
   }
 
   else
   {
-    v7 = v4;
+    v7 = eventCopy;
   }
 }
 
@@ -793,28 +793,28 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   return modifierKeyListener;
 }
 
-- (void)modifierListener:(id)a3 didUpdateModifierFlag:(int64_t)a4
+- (void)modifierListener:(id)listener didUpdateModifierFlag:(int64_t)flag
 {
-  v6 = a3;
-  v7 = [(UIKeyShortcutHUDService *)self hudPresentationState];
-  v8 = [v6 currentModifierFlags];
+  listenerCopy = listener;
+  hudPresentationState = [(UIKeyShortcutHUDService *)self hudPresentationState];
+  currentModifierFlags = [listenerCopy currentModifierFlags];
 
-  if ([(UIKeyShortcutHUDService *)self _canSummonHUDWithModifierFlag:a4])
+  if ([(UIKeyShortcutHUDService *)self _canSummonHUDWithModifierFlag:flag])
   {
-    v9 = v8 & a4;
-    if ([(UIKeyShortcutHUDService *)self _isHUDAllowedToBeScheduledForPresentationState:v7]&& v9)
+    v9 = currentModifierFlags & flag;
+    if ([(UIKeyShortcutHUDService *)self _isHUDAllowedToBeScheduledForPresentationState:hudPresentationState]&& v9)
     {
       v10 = objc_opt_new();
       [(UIKeyShortcutHUDService *)self setScheduledHUDConfiguration:v10];
 
-      v11 = [(UIKeyShortcutHUDService *)self scheduledHUDConfiguration];
-      [v11 setPresentedModifierFlag:a4];
+      scheduledHUDConfiguration = [(UIKeyShortcutHUDService *)self scheduledHUDConfiguration];
+      [scheduledHUDConfiguration setPresentedModifierFlag:flag];
 
       v15 = +[UIWindowScene _keyWindowScene];
       if (v15)
       {
-        v12 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v12 addObserver:self selector:sel__sceneDidLoseKeyboardFocus_ name:@"_UISceneDidResignTargetOfKeyboardEventDeferringEnvironmentNotification" object:v15];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__sceneDidLoseKeyboardFocus_ name:@"_UISceneDidResignTargetOfKeyboardEventDeferringEnvironmentNotification" object:v15];
 
         [(UIKeyShortcutHUDService *)self setScheduledHUDKeyWindowScene:v15];
       }
@@ -822,12 +822,12 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
       [(UIKeyShortcutHUDService *)self scheduleHUDPresentation];
     }
 
-    else if (v7 == 1 && !v9)
+    else if (hudPresentationState == 1 && !v9)
     {
-      v13 = [(UIKeyShortcutHUDService *)self scheduledHUDConfiguration];
-      v14 = [v13 presentedModifierFlag];
+      scheduledHUDConfiguration2 = [(UIKeyShortcutHUDService *)self scheduledHUDConfiguration];
+      presentedModifierFlag = [scheduledHUDConfiguration2 presentedModifierFlag];
 
-      if (v14 == a4)
+      if (presentedModifierFlag == flag)
       {
 
         [(UIKeyShortcutHUDService *)self cancelScheduledHUDPresentationIfNeeded];
@@ -836,16 +836,16 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   }
 }
 
-- (void)handleTouchEvent:(id)a3
+- (void)handleTouchEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v7 = v4;
-    v6 = [v4 type];
+    v7 = eventCopy;
+    type = [eventCopy type];
     v5 = v7;
-    if (!v6)
+    if (!type)
     {
       [(UIKeyShortcutHUDService *)self _cancelAllScheduledHUDPresentationsIfNeeded];
       v5 = v7;
@@ -853,45 +853,45 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
   }
 }
 
-- (void)keyShortcutHUDDidDismissWithResponse:(id)a3 toOverlayService:(id)a4
+- (void)keyShortcutHUDDidDismissWithResponse:(id)response toOverlayService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKeyShortcutHUDService *)self overlayService];
+  responseCopy = response;
+  serviceCopy = service;
+  overlayService = [(UIKeyShortcutHUDService *)self overlayService];
 
-  if (v8 == v7)
+  if (overlayService == serviceCopy)
   {
     [(UIKeyShortcutHUDService *)self _removePresentationObserversIfNeeded];
-    v10 = [(UIKeyShortcutHUDService *)self session];
+    session = [(UIKeyShortcutHUDService *)self session];
     [(UIKeyShortcutHUDService *)self setSession:0];
-    if (v10)
+    if (session)
     {
-      v11 = [v6 keyCommand];
-      if (v11)
+      keyCommand = [responseCopy keyCommand];
+      if (keyCommand)
       {
-        if (([v10 textEditingSessionWasTornDown]& 1) != 0)
+        if (([session textEditingSessionWasTornDown]& 1) != 0)
         {
-          [(UIKeyShortcutHUDService *)self setDeferredResponse:v6];
-          [(UIKeyShortcutHUDService *)self setDeferredResponseSession:v10];
-          v12 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v12 addObserver:self selector:sel__handleDeferredDismissalResponse_ name:@"UITextInputResponderIsReloadedNotification" object:0];
+          [(UIKeyShortcutHUDService *)self setDeferredResponse:responseCopy];
+          [(UIKeyShortcutHUDService *)self setDeferredResponseSession:session];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel__handleDeferredDismissalResponse_ name:@"UITextInputResponderIsReloadedNotification" object:0];
 
           v13 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
           [(UIKeyShortcutHUDService *)self setDeferredResponseTimer:v13];
 
-          v14 = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
+          deferredResponseTimer = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
           v15 = dispatch_time(0, 500000000);
-          dispatch_source_set_timer(v14, v15, 0xFFFFFFFFFFFFFFFFLL, 0);
+          dispatch_source_set_timer(deferredResponseTimer, v15, 0xFFFFFFFFFFFFFFFFLL, 0);
 
           objc_initWeak(buf, self);
-          v16 = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
+          deferredResponseTimer2 = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
           v20 = MEMORY[0x1E69E9820];
           v21 = 3221225472;
           v22 = __81__UIKeyShortcutHUDService_keyShortcutHUDDidDismissWithResponse_toOverlayService___block_invoke;
           v23 = &unk_1E70F2F80;
           objc_copyWeak(&v25, buf);
-          v24 = self;
-          dispatch_source_set_event_handler(v16, &v20);
+          selfCopy = self;
+          dispatch_source_set_event_handler(deferredResponseTimer2, &v20);
 
           v17 = [(UIKeyShortcutHUDService *)self deferredResponseTimer:v20];
           dispatch_activate(v17);
@@ -902,7 +902,7 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
 
         else
         {
-          [(UIKeyShortcutHUDService *)self _handleKeyCommandFromResponse:v6 withSession:v10];
+          [(UIKeyShortcutHUDService *)self _handleKeyCommandFromResponse:responseCopy withSession:session];
         }
       }
     }
@@ -932,11 +932,11 @@ void __78__UIKeyShortcutHUDService__requestHUDPresentationWithUnpreparedConfigur
 
   if (os_variant_has_internal_diagnostics())
   {
-    v10 = __UIFaultDebugAssertLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    session = __UIFaultDebugAssertLog();
+    if (os_log_type_enabled(session, OS_LOG_TYPE_FAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_fault_impl(&dword_188A29000, v10, OS_LOG_TYPE_FAULT, "Something has gone very wrong, OverlayUI has told the HUD that it dismissed via a different overlay service than the one the HUD service uses", buf, 2u);
+      _os_log_fault_impl(&dword_188A29000, session, OS_LOG_TYPE_FAULT, "Something has gone very wrong, OverlayUI has told the HUD that it dismissed via a different overlay service than the one the HUD service uses", buf, 2u);
     }
 
 LABEL_14:
@@ -967,32 +967,32 @@ void __81__UIKeyShortcutHUDService_keyShortcutHUDDidDismissWithResponse_toOverla
   }
 }
 
-- (void)_handleDeferredDismissalResponse:(id)a3
+- (void)_handleDeferredDismissalResponse:(id)response
 {
-  v4 = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
+  deferredResponseTimer = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
 
-  if (v4)
+  if (deferredResponseTimer)
   {
-    v5 = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
-    dispatch_source_cancel(v5);
+    deferredResponseTimer2 = [(UIKeyShortcutHUDService *)self deferredResponseTimer];
+    dispatch_source_cancel(deferredResponseTimer2);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"UITextInputResponderIsReloadedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UITextInputResponderIsReloadedNotification" object:0];
 
-  v7 = [(UIKeyShortcutHUDService *)self deferredResponse];
-  v8 = [(UIKeyShortcutHUDService *)self deferredResponseSession];
-  v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
+  deferredResponse = [(UIKeyShortcutHUDService *)self deferredResponse];
+  deferredResponseSession = [(UIKeyShortcutHUDService *)self deferredResponseSession];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__UIKeyShortcutHUDService__handleDeferredDismissalResponse___block_invoke;
   v12[3] = &unk_1E70F6228;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlock:v12];
+  v13 = deferredResponse;
+  v14 = deferredResponseSession;
+  selfCopy = self;
+  v10 = deferredResponseSession;
+  v11 = deferredResponse;
+  [mainRunLoop performBlock:v12];
 
   [(UIKeyShortcutHUDService *)self setDeferredResponse:0];
   [(UIKeyShortcutHUDService *)self setDeferredResponseSession:0];
@@ -1012,35 +1012,35 @@ uint64_t __60__UIKeyShortcutHUDService__handleDeferredDismissalResponse___block_
   return result;
 }
 
-- (void)_handleKeyCommandFromResponse:(id)a3 withSession:(id)a4
+- (void)_handleKeyCommandFromResponse:(id)response withSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 keyCommand];
-  if (!v9)
+  responseCopy = response;
+  sessionCopy = session;
+  keyCommand = [responseCopy keyCommand];
+  if (!keyCommand)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:872 description:{@"The keyboard shortcut HUD was dismissed without a selected key command, but the non-nil key command code path was run in the HUD service"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDService.m" lineNumber:872 description:{@"The keyboard shortcut HUD was dismissed without a selected key command, but the non-nil key command code path was run in the HUD service"}];
   }
 
-  v10 = [v7 pasteAuthenticationMessage];
-  [UIPasteboard _attemptAuthenticationWithMessage:v10];
-  v11 = [v8 configuration];
-  v12 = [v11 model];
-  v13 = [v12 appKeyCommandForSelectedKeyCommand:v9];
+  pasteAuthenticationMessage = [responseCopy pasteAuthenticationMessage];
+  [UIPasteboard _attemptAuthenticationWithMessage:pasteAuthenticationMessage];
+  configuration = [sessionCopy configuration];
+  model = [configuration model];
+  v13 = [model appKeyCommandForSelectedKeyCommand:keyCommand];
 
   if (v13)
   {
-    v14 = [v8 configuration];
-    v15 = [v14 model];
-    v16 = [v15 originalTargetForSelectedKeyCommand:v9];
+    configuration2 = [sessionCopy configuration];
+    model2 = [configuration2 model];
+    v16 = [model2 originalTargetForSelectedKeyCommand:keyCommand];
 
     if (([v13 attributes] & 1) == 0)
     {
       if (v16)
       {
-        v17 = [UIApp _responderForKeyEvents];
-        v18 = [v13 _resolvedTargetFromFirstTarget:v17 sender:0];
+        _responderForKeyEvents = [UIApp _responderForKeyEvents];
+        v18 = [v13 _resolvedTargetFromFirstTarget:_responderForKeyEvents sender:0];
 
         if (v16 == v18)
         {
@@ -1076,16 +1076,16 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)overlayServiceDidInvalidate:(id)a3
+- (void)overlayServiceDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = [(UIKeyShortcutHUDService *)self overlayService];
+  invalidateCopy = invalidate;
+  overlayService = [(UIKeyShortcutHUDService *)self overlayService];
 
-  if (v5 == v4 && [(UIKeyShortcutHUDService *)self hudPresentationState]== 3)
+  if (overlayService == invalidateCopy && [(UIKeyShortcutHUDService *)self hudPresentationState]== 3)
   {
     v7 = objc_opt_new();
-    v6 = [(UIKeyShortcutHUDService *)self overlayService];
-    [(UIKeyShortcutHUDService *)self keyShortcutHUDDidDismissWithResponse:v7 toOverlayService:v6];
+    overlayService2 = [(UIKeyShortcutHUDService *)self overlayService];
+    [(UIKeyShortcutHUDService *)self keyShortcutHUDDidDismissWithResponse:v7 toOverlayService:overlayService2];
   }
 }
 
@@ -1094,21 +1094,21 @@ LABEL_12:
   if ((*&self->_flags & 1) == 0)
   {
     *&self->_flags |= 1u;
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__applicationDidBeginIgnoringInteractionEvents_ name:0x1EFB8EF10 object:UIApp];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__applicationDidBeginIgnoringInteractionEvents_ name:0x1EFB8EF10 object:UIApp];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__didTakeScreenshot_ name:@"UIApplicationUserDidTakeScreenshotNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__didTakeScreenshot_ name:@"UIApplicationUserDidTakeScreenshotNotification" object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__hardwareKeyboardAvailabilityChanged_ name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel__hardwareKeyboardAvailabilityChanged_ name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
   }
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v4 = _UIKeyShortcutHUDLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1118,11 +1118,11 @@ LABEL_12:
   }
 
   [(UIKeyShortcutHUDService *)self dismissOrCancelHUDPresentationIfNeeded];
-  v5 = [(UIKeyShortcutHUDService *)self modifierKeyListener];
-  [v5 setCurrentModifierFlags:0];
+  modifierKeyListener = [(UIKeyShortcutHUDService *)self modifierKeyListener];
+  [modifierKeyListener setCurrentModifierFlags:0];
 }
 
-- (void)_applicationDidBeginIgnoringInteractionEvents:(id)a3
+- (void)_applicationDidBeginIgnoringInteractionEvents:(id)events
 {
   v4 = _UIKeyShortcutHUDLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1134,7 +1134,7 @@ LABEL_12:
   [(UIKeyShortcutHUDService *)self dismissOrCancelHUDPresentationIfNeeded];
 }
 
-- (void)_didTakeScreenshot:(id)a3
+- (void)_didTakeScreenshot:(id)screenshot
 {
   if ([(UIKeyShortcutHUDService *)self hudPresentationState]== 1)
   {
@@ -1149,12 +1149,12 @@ LABEL_12:
   }
 }
 
-- (void)_hardwareKeyboardAvailabilityChanged:(id)a3
+- (void)_hardwareKeyboardAvailabilityChanged:(id)changed
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 _isHardwareKeyboardAvailable];
+  _isHardwareKeyboardAvailable = [v4 _isHardwareKeyboardAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((_isHardwareKeyboardAvailable & 1) == 0)
   {
     v6 = _UIKeyShortcutHUDLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1167,11 +1167,11 @@ LABEL_12:
   }
 }
 
-- (id)metricsForWindow:(id)a3
+- (id)metricsForWindow:(id)window
 {
-  v3 = [a3 windowScene];
-  v4 = [v3 _coordinateSpace];
-  [v4 bounds];
+  windowScene = [window windowScene];
+  _coordinateSpace = [windowScene _coordinateSpace];
+  [_coordinateSpace bounds];
 
   v5 = objc_opt_new();
 
@@ -1191,10 +1191,10 @@ LABEL_12:
 - (BOOL)_isHUDAllowedOverCurrentWindow
 {
   v2 = +[UIWindow _applicationKeyWindow];
-  v3 = [v2 _windowHostingScene];
-  v4 = [v3 _sceneSessionRoleIsCarPlayOrNonInteractiveExternal];
+  _windowHostingScene = [v2 _windowHostingScene];
+  _sceneSessionRoleIsCarPlayOrNonInteractiveExternal = [_windowHostingScene _sceneSessionRoleIsCarPlayOrNonInteractiveExternal];
 
-  if (v4 & 1) != 0 || ([v2 _isHostedInAnotherProcess])
+  if (_sceneSessionRoleIsCarPlayOrNonInteractiveExternal & 1) != 0 || ([v2 _isHostedInAnotherProcess])
   {
     v5 = 0;
   }
@@ -1209,17 +1209,17 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_isHUDAllowedForConfiguration:(id)a3
+- (BOOL)_isHUDAllowedForConfiguration:(id)configuration
 {
-  v3 = [a3 presentedModifierFlag];
-  if (v3 == 0x800000)
+  presentedModifierFlag = [configuration presentedModifierFlag];
+  if (presentedModifierFlag == 0x800000)
   {
     v6 = UIApp;
 
     return [v6 _isGlobeKeyShortcutHUDEnabled];
   }
 
-  else if (v3 == 0x100000)
+  else if (presentedModifierFlag == 0x100000)
   {
     v4 = UIApp;
 
@@ -1235,9 +1235,9 @@ LABEL_12:
 - (BOOL)_isHUDAllowedForCurrentResponder
 {
   v2 = +[UIResponder _globalFirstResponder];
-  v3 = [v2 _disallowsPresentationOfKeyboardShortcutHUD];
+  _disallowsPresentationOfKeyboardShortcutHUD = [v2 _disallowsPresentationOfKeyboardShortcutHUD];
 
-  return v3 ^ 1;
+  return _disallowsPresentationOfKeyboardShortcutHUD ^ 1;
 }
 
 - (UIWindowScene)scheduledHUDKeyWindowScene

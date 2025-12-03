@@ -1,23 +1,23 @@
 @interface SCLScheduleFormatterItem
-- (SCLScheduleFormatterItem)initWithCalendar:(id)a3 timeIntervals:(id)a4;
+- (SCLScheduleFormatterItem)initWithCalendar:(id)calendar timeIntervals:(id)intervals;
 - (id)dayRanges;
 - (int64_t)earliestWeekdayInCalendar;
 @end
 
 @implementation SCLScheduleFormatterItem
 
-- (SCLScheduleFormatterItem)initWithCalendar:(id)a3 timeIntervals:(id)a4
+- (SCLScheduleFormatterItem)initWithCalendar:(id)calendar timeIntervals:(id)intervals
 {
-  v7 = a3;
-  v8 = a4;
+  calendarCopy = calendar;
+  intervalsCopy = intervals;
   v12.receiver = self;
   v12.super_class = SCLScheduleFormatterItem;
   v9 = [(SCLScheduleFormatterItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_calendar, a3);
-    objc_storeStrong(&v10->_timeIntervals, a4);
+    objc_storeStrong(&v9->_calendar, calendar);
+    objc_storeStrong(&v10->_timeIntervals, intervals);
     v10->_days = 0;
   }
 
@@ -30,14 +30,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 1;
-  v3 = [(SCLScheduleFormatterItem *)self calendar];
+  calendar = [(SCLScheduleFormatterItem *)self calendar];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__SCLScheduleFormatterItem_earliestWeekdayInCalendar__block_invoke;
   v6[3] = &unk_279B6C350;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 SCL_enumerateWeekdaysUsingBlock:v6];
+  [calendar SCL_enumerateWeekdaysUsingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -60,7 +60,7 @@ BOOL __53__SCLScheduleFormatterItem_earliestWeekdayInCalendar__block_invoke(uint
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(SCLScheduleFormatterItem *)self calendar];
+  calendar = [(SCLScheduleFormatterItem *)self calendar];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __37__SCLScheduleFormatterItem_dayRanges__block_invoke;
@@ -70,7 +70,7 @@ BOOL __53__SCLScheduleFormatterItem_earliestWeekdayInCalendar__block_invoke(uint
   v13 = v6;
   v7 = v3;
   v14 = v7;
-  [v5 SCL_enumerateWeekdaysUsingBlock:v12];
+  [calendar SCL_enumerateWeekdaysUsingBlock:v12];
 
   if ([v6 count])
   {

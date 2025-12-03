@@ -2,17 +2,17 @@
 - (HMDCharacteristicMetadata)pr_hapMetadata;
 - (MKFFloatCharacteristicDatabaseID)databaseID;
 - (MKFHome)home;
-- (void)pr_updateWithHAPMetadata:(id)a3;
+- (void)pr_updateWithHAPMetadata:(id)metadata;
 @end
 
 @implementation _MKFFloatCharacteristic
 
 - (MKFHome)home
 {
-  v2 = [(_MKFFloatCharacteristic *)self service];
-  v3 = [v2 home];
+  service = [(_MKFFloatCharacteristic *)self service];
+  home = [service home];
 
-  return v3;
+  return home;
 }
 
 - (MKFFloatCharacteristicDatabaseID)databaseID
@@ -22,33 +22,33 @@
   return v2;
 }
 
-- (void)pr_updateWithHAPMetadata:(id)a3
+- (void)pr_updateWithHAPMetadata:(id)metadata
 {
   v8.receiver = self;
   v8.super_class = _MKFFloatCharacteristic;
-  v4 = a3;
-  [(_MKFCharacteristic *)&v8 pr_updateWithHAPMetadata:v4];
-  v5 = [v4 minimumValue];
-  [(_MKFFloatCharacteristic *)self setMinimumValue:v5];
+  metadataCopy = metadata;
+  [(_MKFCharacteristic *)&v8 pr_updateWithHAPMetadata:metadataCopy];
+  minimumValue = [metadataCopy minimumValue];
+  [(_MKFFloatCharacteristic *)self setMinimumValue:minimumValue];
 
-  v6 = [v4 maximumValue];
-  [(_MKFFloatCharacteristic *)self setMaximumValue:v6];
+  maximumValue = [metadataCopy maximumValue];
+  [(_MKFFloatCharacteristic *)self setMaximumValue:maximumValue];
 
-  v7 = [v4 stepValue];
+  stepValue = [metadataCopy stepValue];
 
-  [(_MKFFloatCharacteristic *)self setStepValue:v7];
+  [(_MKFFloatCharacteristic *)self setStepValue:stepValue];
 }
 
 - (HMDCharacteristicMetadata)pr_hapMetadata
 {
   v3 = [HMDCharacteristicMetadata alloc];
-  v4 = [(_MKFFloatCharacteristic *)self minimumValue];
-  v5 = [(_MKFFloatCharacteristic *)self maximumValue];
-  v6 = [(_MKFFloatCharacteristic *)self stepValue];
-  v7 = [(_MKFFloatCharacteristic *)self format];
-  v8 = [(_MKFFloatCharacteristic *)self units];
-  v9 = [(_MKFFloatCharacteristic *)self manufacturerDescription];
-  v10 = [(HMDCharacteristicMetadata *)v3 initWithMinimumValue:v4 maximumValue:v5 stepValue:v6 maxLength:0 validValues:0 format:v7 units:v8 manufacturerDescription:v9];
+  minimumValue = [(_MKFFloatCharacteristic *)self minimumValue];
+  maximumValue = [(_MKFFloatCharacteristic *)self maximumValue];
+  stepValue = [(_MKFFloatCharacteristic *)self stepValue];
+  format = [(_MKFFloatCharacteristic *)self format];
+  units = [(_MKFFloatCharacteristic *)self units];
+  manufacturerDescription = [(_MKFFloatCharacteristic *)self manufacturerDescription];
+  v10 = [(HMDCharacteristicMetadata *)v3 initWithMinimumValue:minimumValue maximumValue:maximumValue stepValue:stepValue maxLength:0 validValues:0 format:format units:units manufacturerDescription:manufacturerDescription];
 
   return v10;
 }

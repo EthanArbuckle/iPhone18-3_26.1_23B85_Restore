@@ -1,16 +1,16 @@
 @interface CSFTimeUtils
 + (double)getHostClockFrequency;
-+ (double)hostTimeToTimeInterval:(unint64_t)a3;
-+ (float)hostTimeToSeconds:(unint64_t)a3;
-+ (unint64_t)hostTimeFromSampleCount:(unint64_t)a3 anchorHostTime:(unint64_t)a4 anchorSampleCount:(unint64_t)a5 sampleRate:(float)a6;
-+ (unint64_t)macHostTimeFromBridgeHostTime:(unint64_t)a3;
-+ (unint64_t)sampleCountFromHostTime:(unint64_t)a3 anchorHostTime:(unint64_t)a4 anchorSampleCount:(unint64_t)a5 sampleRate:(float)a6;
-+ (unint64_t)secondsToHostTime:(float)a3;
++ (double)hostTimeToTimeInterval:(unint64_t)interval;
++ (float)hostTimeToSeconds:(unint64_t)seconds;
++ (unint64_t)hostTimeFromSampleCount:(unint64_t)count anchorHostTime:(unint64_t)time anchorSampleCount:(unint64_t)sampleCount sampleRate:(float)rate;
++ (unint64_t)macHostTimeFromBridgeHostTime:(unint64_t)time;
++ (unint64_t)sampleCountFromHostTime:(unint64_t)time anchorHostTime:(unint64_t)hostTime anchorSampleCount:(unint64_t)count sampleRate:(float)rate;
++ (unint64_t)secondsToHostTime:(float)time;
 @end
 
 @implementation CSFTimeUtils
 
-+ (unint64_t)macHostTimeFromBridgeHostTime:(unint64_t)a3
++ (unint64_t)macHostTimeFromBridgeHostTime:(unint64_t)time
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -22,17 +22,17 @@
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return a3;
+  return time;
 }
 
-+ (unint64_t)sampleCountFromHostTime:(unint64_t)a3 anchorHostTime:(unint64_t)a4 anchorSampleCount:(unint64_t)a5 sampleRate:(float)a6
++ (unint64_t)sampleCountFromHostTime:(unint64_t)time anchorHostTime:(unint64_t)hostTime anchorSampleCount:(unint64_t)count sampleRate:(float)rate
 {
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  [a1 getHostClockFrequency];
-  v11 = llround(v9 / v10 * (a4 - a3));
-  result = a5 - v11;
-  if (a5 < v11)
+  rateCopy = rate;
+  [self getHostClockFrequency];
+  v11 = llround(rateCopy / v10 * (hostTime - time));
+  result = count - v11;
+  if (count < v11)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -49,13 +49,13 @@
   return result;
 }
 
-+ (unint64_t)hostTimeFromSampleCount:(unint64_t)a3 anchorHostTime:(unint64_t)a4 anchorSampleCount:(unint64_t)a5 sampleRate:(float)a6
++ (unint64_t)hostTimeFromSampleCount:(unint64_t)count anchorHostTime:(unint64_t)time anchorSampleCount:(unint64_t)sampleCount sampleRate:(float)rate
 {
   v23 = *MEMORY[0x1E69E9840];
-  [a1 getHostClockFrequency];
-  v11 = llround(v10 / a6 * (a5 - a3));
-  result = a4 - v11;
-  if (a4 < v11)
+  [self getHostClockFrequency];
+  v11 = llround(v10 / rate * (sampleCount - count));
+  result = time - v11;
+  if (time < v11)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -63,11 +63,11 @@
       v15 = 136315906;
       v16 = "+[CSFTimeUtils hostTimeFromSampleCount:anchorHostTime:anchorSampleCount:sampleRate:]";
       v17 = 2050;
-      v18 = a5;
+      sampleCountCopy = sampleCount;
       v19 = 2050;
-      v20 = a3;
+      countCopy = count;
       v21 = 2050;
-      v22 = a4;
+      timeCopy = time;
       _os_log_error_impl(&dword_1DDA4B000, v13, OS_LOG_TYPE_ERROR, "%s Delta is larger than anchorHostTime: anchorSampleCount = %{public}lld, sampleTime = %{public}lld, anchorHostTime = %{public}lld", &v15, 0x2Au);
     }
 
@@ -102,25 +102,25 @@ double __37__CSFTimeUtils_getHostClockFrequency__block_invoke()
   return result;
 }
 
-+ (double)hostTimeToTimeInterval:(unint64_t)a3
++ (double)hostTimeToTimeInterval:(unint64_t)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   +[CSFTimeUtils getHostClockFrequency];
-  return v3 / v4;
+  return intervalCopy / v4;
 }
 
-+ (float)hostTimeToSeconds:(unint64_t)a3
++ (float)hostTimeToSeconds:(unint64_t)seconds
 {
-  v3 = a3;
+  secondsCopy = seconds;
   +[CSFTimeUtils getHostClockFrequency];
-  return v3 / v4;
+  return secondsCopy / v4;
 }
 
-+ (unint64_t)secondsToHostTime:(float)a3
++ (unint64_t)secondsToHostTime:(float)time
 {
-  v3 = a3;
+  timeCopy = time;
   +[CSFTimeUtils getHostClockFrequency];
-  return (v4 * v3);
+  return (v4 * timeCopy);
 }
 
 @end

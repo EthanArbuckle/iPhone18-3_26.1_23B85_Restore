@@ -1,11 +1,11 @@
 @interface SUUISettingsHeaderFooterDescriptionView
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5;
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context;
 @end
 
 @implementation SUUISettingsHeaderFooterDescriptionView
 
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -14,7 +14,7 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context
 {
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);

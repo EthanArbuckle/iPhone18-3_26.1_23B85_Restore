@@ -1,53 +1,53 @@
 @interface SBAppDragAndDropGestureSwitcherModifier
-- (BOOL)_shouldPushInFullScreenContentForEvent:(id)a3;
+- (BOOL)_shouldPushInFullScreenContentForEvent:(id)event;
 - (BOOL)_showResizeUI;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBAppDragAndDropGestureSwitcherModifier)initWithGestureID:(id)a3 floatingSwitcherVisible:(BOOL)a4 fullScreenAppLayout:(id)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)backgroundOpacityForIndex:(unint64_t)a3;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBAppDragAndDropGestureSwitcherModifier)initWithGestureID:(id)d floatingSwitcherVisible:(BOOL)visible fullScreenAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)backgroundOpacityForIndex:(unint64_t)index;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)homeScreenDimmingAlpha;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleBlurProgressEvent:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleResizeProgressEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (void)_recomputeBlurStateWithCompletion:(id)a3;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleBlurProgressEvent:(id)event;
+- (id)handleGestureEvent:(id)event;
+- (id)handleResizeProgressEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (void)_recomputeBlurStateWithCompletion:(id)completion;
 @end
 
 @implementation SBAppDragAndDropGestureSwitcherModifier
 
-- (SBAppDragAndDropGestureSwitcherModifier)initWithGestureID:(id)a3 floatingSwitcherVisible:(BOOL)a4 fullScreenAppLayout:(id)a5
+- (SBAppDragAndDropGestureSwitcherModifier)initWithGestureID:(id)d floatingSwitcherVisible:(BOOL)visible fullScreenAppLayout:(id)layout
 {
-  v10 = a5;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v11 = [(SBGestureSwitcherModifier *)&v13 initWithGestureID:a3];
+  v11 = [(SBGestureSwitcherModifier *)&v13 initWithGestureID:d];
   if (v11)
   {
-    if (!v10)
+    if (!layoutCopy)
     {
       [SBAppDragAndDropGestureSwitcherModifier initWithGestureID:a2 floatingSwitcherVisible:v11 fullScreenAppLayout:?];
     }
 
-    v11->_floatingSwitcherVisible = a4;
-    objc_storeStrong(&v11->_fullScreenAppLayout, a5);
+    v11->_floatingSwitcherVisible = visible;
+    objc_storeStrong(&v11->_fullScreenAppLayout, layout);
     objc_storeStrong(&v11->_initialFullScreenAppLayout, v11->_fullScreenAppLayout);
   }
 
   return v11;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -55,8 +55,8 @@
   v35 = __Block_byref_object_dispose__115;
   v30.receiver = self;
   v30.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v36 = [(SBGestureSwitcherModifier *)&v30 handleGestureEvent:v4];
-  if ([v4 isCanceled])
+  v36 = [(SBGestureSwitcherModifier *)&v30 handleGestureEvent:eventCopy];
+  if ([eventCopy isCanceled])
   {
     [(SBChainableModifier *)self setState:1];
     v5 = v32[5];
@@ -64,8 +64,8 @@
 
   else
   {
-    v6 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-    v7 = [v6 indexOfObject:self->_fullScreenAppLayout];
+    appLayouts = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+    v7 = [appLayouts indexOfObject:self->_fullScreenAppLayout];
 
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -80,12 +80,12 @@
     [(SBAppDragAndDropGestureSwitcherModifier *)self frameForIndex:v8];
     v10 = v9;
     v12 = v11;
-    v13 = v4;
+    v13 = eventCopy;
     self->_shouldPushInFullScreenContent = [(SBAppDragAndDropGestureSwitcherModifier *)self _shouldPushInFullScreenContentForEvent:v13];
     self->_dropAction = [v13 dropAction];
-    v14 = [v13 draggedSceneIdentifier];
+    draggedSceneIdentifier = [v13 draggedSceneIdentifier];
     draggedSceneIdentifier = self->_draggedSceneIdentifier;
-    self->_draggedSceneIdentifier = v14;
+    self->_draggedSceneIdentifier = draggedSceneIdentifier;
 
     self->_isWindowDrag = [v13 isWindowDrag];
     self->_hasPlatterized = [v13 hasPlatterized];
@@ -100,8 +100,8 @@
     self->_location.x = v20;
     self->_location.y = v21;
     self->_gestureEnded = [v13 phase] == 3;
-    v22 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-    v23 = [v22 indexOfObject:self->_fullScreenAppLayout];
+    appLayouts2 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+    v23 = [appLayouts2 indexOfObject:self->_fullScreenAppLayout];
 
     if (v23 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -138,9 +138,9 @@ void __62__SBAppDragAndDropGestureSwitcherModifier_handleGestureEvent___block_in
   *(v4 + 40) = v3;
 }
 
-- (id)handleResizeProgressEvent:(id)a3
+- (id)handleResizeProgressEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -148,12 +148,12 @@ void __62__SBAppDragAndDropGestureSwitcherModifier_handleGestureEvent___block_in
   v17 = __Block_byref_object_dispose__115;
   v12.receiver = self;
   v12.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v18 = [(SBSwitcherModifier *)&v12 handleResizeProgressEvent:v4];
-  [v4 progress];
+  v18 = [(SBSwitcherModifier *)&v12 handleResizeProgressEvent:eventCopy];
+  [eventCopy progress];
   self->_isResizing = BSFloatIsOne() ^ 1;
-  [v4 progress];
-  v5 = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
-  [v5 dropAnimationUnblurThresholdPercentage];
+  [eventCopy progress];
+  medusaSettings = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
+  [medusaSettings dropAnimationUnblurThresholdPercentage];
   self->_hasResizedEnoughToUnblur = BSFloatGreaterThanOrEqualToFloat();
 
   v11[0] = MEMORY[0x277D85DD0];
@@ -181,9 +181,9 @@ void __69__SBAppDragAndDropGestureSwitcherModifier_handleResizeProgressEvent___b
   *(v4 + 40) = v3;
 }
 
-- (id)handleBlurProgressEvent:(id)a3
+- (id)handleBlurProgressEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -191,8 +191,8 @@ void __69__SBAppDragAndDropGestureSwitcherModifier_handleResizeProgressEvent___b
   v16 = __Block_byref_object_dispose__115;
   v11.receiver = self;
   v11.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v17 = [(SBSwitcherModifier *)&v11 handleBlurProgressEvent:v4];
-  [v4 progress];
+  v17 = [(SBSwitcherModifier *)&v11 handleBlurProgressEvent:eventCopy];
+  [eventCopy progress];
   self->_isBlurring = BSFloatIsOne() ^ 1;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -219,9 +219,9 @@ void __67__SBAppDragAndDropGestureSwitcherModifier_handleBlurProgressEvent___blo
   *(v4 + 40) = v3;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -229,7 +229,7 @@ void __67__SBAppDragAndDropGestureSwitcherModifier_handleBlurProgressEvent___blo
   v16 = __Block_byref_object_dispose__115;
   v11.receiver = self;
   v11.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v17 = [(SBSwitcherModifier *)&v11 handleSceneReadyEvent:v4];
+  v17 = [(SBSwitcherModifier *)&v11 handleSceneReadyEvent:eventCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__SBAppDragAndDropGestureSwitcherModifier_handleSceneReadyEvent___block_invoke;
@@ -255,33 +255,33 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleSceneReadyEvent___block
   *(v4 + 40) = v3;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
+  eventCopy = event;
+  v5 = eventCopy;
   if (self->_gestureEnded && !self->_transitionModifier)
   {
-    v6 = [v4 fromAppLayout];
+    fromAppLayout = [eventCopy fromAppLayout];
     dropTransitionFromAppLayout = self->_dropTransitionFromAppLayout;
-    self->_dropTransitionFromAppLayout = v6;
+    self->_dropTransitionFromAppLayout = fromAppLayout;
 
     v8 = [SBDragAndDropToAppTransitionSwitcherModifier alloc];
-    v9 = [v5 transitionID];
-    v10 = [(SBTransitionSwitcherModifier *)v8 initWithTransitionID:v9];
+    transitionID = [v5 transitionID];
+    v10 = [(SBTransitionSwitcherModifier *)v8 initWithTransitionID:transitionID];
     transitionModifier = self->_transitionModifier;
     self->_transitionModifier = v10;
 
     [(SBChainableModifier *)self addChildModifier:self->_transitionModifier];
   }
 
-  else if ([v4 isGestureInitiated] && !self->_transitionModifier)
+  else if ([eventCopy isGestureInitiated] && !self->_transitionModifier)
   {
     [(SBChainableModifier *)self setState:1];
   }
 
-  v12 = [v5 toAppLayout];
+  toAppLayout = [v5 toAppLayout];
   fullScreenAppLayout = self->_fullScreenAppLayout;
-  self->_fullScreenAppLayout = v12;
+  self->_fullScreenAppLayout = toAppLayout;
 
   v18 = 0;
   v19 = &v18;
@@ -311,19 +311,19 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleTransitionEvent___block
   *(v4 + 40) = v3;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
   v7 = v6;
   if (self->_gestureEnded && (dropTransitionFromAppLayout = self->_dropTransitionFromAppLayout, dropTransitionFromAppLayout != self->_fullScreenAppLayout) && (v9 = MEMORY[0x277CBEB98], [v6 allItems], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "setWithArray:", v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[SBAppLayout containsAnyItemFromSet:](dropTransitionFromAppLayout, "containsAnyItemFromSet:", v11), v11, v10, v12))
   {
-    -[SBAppDragAndDropGestureSwitcherModifier frameForIndex:](&v26, sel_frameForIndex_, [v5 indexOfObject:self->_fullScreenAppLayout], v25.receiver, v25.super_class, self, SBAppDragAndDropGestureSwitcherModifier);
+    -[SBAppDragAndDropGestureSwitcherModifier frameForIndex:](&v26, sel_frameForIndex_, [appLayouts indexOfObject:self->_fullScreenAppLayout], v25.receiver, v25.super_class, self, SBAppDragAndDropGestureSwitcherModifier);
   }
 
   else
   {
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v25 frameForIndex:a3, self, SBAppDragAndDropGestureSwitcherModifier, v26.receiver, v26.super_class];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v25 frameForIndex:index, self, SBAppDragAndDropGestureSwitcherModifier, v26.receiver, v26.super_class];
   }
 
   v17 = v13;
@@ -342,12 +342,12 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleTransitionEvent___block
   return result;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (self->_fullScreenAppLayout == v6)
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (self->_fullScreenAppLayout == layoutCopy)
   {
     if (self->_gestureEnded)
     {
@@ -355,8 +355,8 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleTransitionEvent___block
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v9 = [(SBAppLayout *)v6 allItems];
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      allItems = [(SBAppLayout *)layoutCopy allItems];
+      v10 = [allItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         v11 = v10;
@@ -367,14 +367,14 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleTransitionEvent___block
           {
             if (*v20 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allItems);
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
-            if ([(SBAppLayout *)v7 layoutRoleForItem:v14]== a3)
+            if ([(SBAppLayout *)v7 layoutRoleForItem:v14]== blurred)
             {
-              v15 = [v14 uniqueIdentifier];
-              v16 = [v15 isEqualToString:self->_draggedSceneIdentifier];
+              uniqueIdentifier = [v14 uniqueIdentifier];
+              v16 = [uniqueIdentifier isEqualToString:self->_draggedSceneIdentifier];
 
               if (v16)
               {
@@ -385,7 +385,7 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleTransitionEvent___block
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v11 = [allItems countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v11)
           {
             continue;
@@ -403,7 +403,7 @@ void __65__SBAppDragAndDropGestureSwitcherModifier_handleTransitionEvent___block
   {
     v18.receiver = self;
     v18.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    isBlurred = [(SBAppDragAndDropGestureSwitcherModifier *)&v18 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    isBlurred = [(SBAppDragAndDropGestureSwitcherModifier *)&v18 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
   }
 
 LABEL_16:
@@ -411,17 +411,17 @@ LABEL_16:
   return isBlurred;
 }
 
-- (double)backgroundOpacityForIndex:(unint64_t)a3
+- (double)backgroundOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBAppDragAndDropGestureSwitcherModifier *)self windowManagementContext];
-  v6 = [v5 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [(SBAppDragAndDropGestureSwitcherModifier *)self windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   result = 0.0;
-  if (v6)
+  if (isChamoisOrFlexibleWindowing)
   {
     v8.receiver = self;
     v8.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v8 backgroundOpacityForIndex:a3, 0.0];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v8 backgroundOpacityForIndex:index, 0.0];
   }
 
   return result;
@@ -429,33 +429,33 @@ LABEL_16:
 
 - (double)homeScreenDimmingAlpha
 {
-  v3 = [(SBAppDragAndDropGestureSwitcherModifier *)self windowManagementContext];
-  v4 = [v3 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [(SBAppDragAndDropGestureSwitcherModifier *)self windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v4)
+  if (isChamoisOrFlexibleWindowing)
   {
-    v10 = self;
-    v5 = &v10;
+    selfCopy = self;
+    v5 = &selfCopy;
 LABEL_6:
     v5[1] = SBAppDragAndDropGestureSwitcherModifier;
-    objc_msgSendSuper2(v5, sel_homeScreenDimmingAlpha, v9);
+    objc_msgSendSuper2(v5, sel_homeScreenDimmingAlpha, selfCopy2);
     return result;
   }
 
   transitionModifier = self->_transitionModifier;
   if (!transitionModifier || (v7 = [(SBTransitionSwitcherModifier *)transitionModifier transitionPhase], result = 1.0, v7 <= 1))
   {
-    v9 = self;
-    v5 = &v9;
+    selfCopy2 = self;
+    v5 = &selfCopy2;
     goto LABEL_6;
   }
 
   return result;
 }
 
-- (BOOL)isResizeGrabberVisibleForAppLayout:(id)a3
+- (BOOL)isResizeGrabberVisibleForAppLayout:(id)layout
 {
-  if (self->_fullScreenAppLayout == a3)
+  if (self->_fullScreenAppLayout == layout)
   {
     return 0;
   }
@@ -467,20 +467,20 @@ LABEL_6:
   return [(SBAppDragAndDropGestureSwitcherModifier *)&v6 isResizeGrabberVisibleForAppLayout:?];
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (self->_fullScreenAppLayout != v6 || !self->_dropAction)
+  layoutCopy = layout;
+  if (self->_fullScreenAppLayout != layoutCopy || !self->_dropAction)
   {
     v15.receiver = self;
     v15.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v15 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v15 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
     v8 = v7;
     goto LABEL_3;
   }
 
-  v10 = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
-  [v10 defaultDimmingOpacity];
+  medusaSettings = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
+  [medusaSettings defaultDimmingOpacity];
   v12 = v11;
 
   v8 = 0.0;
@@ -495,7 +495,7 @@ LABEL_6:
     case 3:
       v14 = &SBLayoutRoleSide;
 LABEL_12:
-      if (*v14 == a3)
+      if (*v14 == role)
       {
         v8 = v12;
       }
@@ -519,14 +519,14 @@ LABEL_3:
   return v8;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  if (self->_fullScreenAppLayout == v11 && !self->_gestureEnded)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if (self->_fullScreenAppLayout == layoutCopy && !self->_gestureEnded)
   {
     if ([(SBAppDragAndDropGestureSwitcherModifier *)self _isDraggingLiveWindow]&& !self->_hasPlatterized)
     {
@@ -552,21 +552,21 @@ LABEL_3:
       {
         v87.receiver = self;
         v87.super_class = SBAppDragAndDropGestureSwitcherModifier;
-        [(SBAppDragAndDropGestureSwitcherModifier *)&v87 frameForLayoutRole:1 inAppLayout:v11 withBounds:x, y, width, height];
+        [(SBAppDragAndDropGestureSwitcherModifier *)&v87 frameForLayoutRole:1 inAppLayout:layoutCopy withBounds:x, y, width, height];
         v30 = v65;
         v32 = v66;
         v34 = v67;
         v36 = v68;
         v86.receiver = self;
         v86.super_class = SBAppDragAndDropGestureSwitcherModifier;
-        [(SBAppDragAndDropGestureSwitcherModifier *)&v86 frameForLayoutRole:2 inAppLayout:v11 withBounds:x, y, width, height];
-        if (a3 == 1)
+        [(SBAppDragAndDropGestureSwitcherModifier *)&v86 frameForLayoutRole:2 inAppLayout:layoutCopy withBounds:x, y, width, height];
+        if (role == 1)
         {
           v30 = v30 + v71 + v69 - (v30 + v34);
           goto LABEL_37;
         }
 
-        if (a3 == 2)
+        if (role == 2)
         {
           v36 = v72;
           v34 = v71;
@@ -578,12 +578,12 @@ LABEL_3:
       goto LABEL_35;
     }
 
-    if (a3 != 1)
+    if (role != 1)
     {
       goto LABEL_35;
     }
 
-    v52 = [(SBAppLayout *)v11 itemForLayoutRole:2];
+    v52 = [(SBAppLayout *)layoutCopy itemForLayoutRole:2];
 
     if (v52 || (self->_dropAction & 0xFFFFFFFFFFFFFFFELL) != 4)
     {
@@ -592,13 +592,13 @@ LABEL_3:
 
     v85.receiver = self;
     v85.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v85 frameForLayoutRole:1 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v85 frameForLayoutRole:1 inAppLayout:layoutCopy withBounds:x, y, width, height];
     v30 = v53;
     v32 = v54;
     v56 = v55;
     v36 = v57;
-    v58 = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
-    [v58 draggingPlatterSideActivationGutterPadding];
+    medusaSettings = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
+    [medusaSettings draggingPlatterSideActivationGutterPadding];
 
     [(SBAppDragAndDropGestureSwitcherModifier *)self screenScale];
     BSFloatRoundForScale();
@@ -623,14 +623,14 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if ([(SBAppLayout *)self->_initialFullScreenAppLayout isOrContainsAppLayout:v11]&& !self->_gestureEnded)
+  if ([(SBAppLayout *)self->_initialFullScreenAppLayout isOrContainsAppLayout:layoutCopy]&& !self->_gestureEnded)
   {
     initialFullScreenAppLayout = self->_initialFullScreenAppLayout;
-    v38 = [(SBAppLayout *)v11 itemForLayoutRole:1];
+    v38 = [(SBAppLayout *)layoutCopy itemForLayoutRole:1];
     v39 = [(SBAppLayout *)initialFullScreenAppLayout layoutRoleForItem:v38];
 
-    v40 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-    v41 = [v40 indexOfObject:v11];
+    appLayouts = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+    v41 = [appLayouts indexOfObject:layoutCopy];
 
     if (v41 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -652,12 +652,12 @@ LABEL_40:
   }
 
   fullScreenAppLayout = self->_fullScreenAppLayout;
-  if (fullScreenAppLayout == v11 || !self->_gestureEnded || (dropTransitionFromAppLayout = self->_dropTransitionFromAppLayout, dropTransitionFromAppLayout == fullScreenAppLayout) || (v14 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](v11, "allItems"), v15 = objc_claimAutoreleasedReturnValue(), [v14 setWithArray:v15], v16 = objc_claimAutoreleasedReturnValue(), v17 = -[SBAppLayout containsAnyItemFromSet:](dropTransitionFromAppLayout, "containsAnyItemFromSet:", v16), v16, v15, v18 = self->_dropTransitionFromAppLayout, v19 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](self->_fullScreenAppLayout, "allItems"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "setWithArray:", v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = -[SBAppLayout containsAnyItemFromSet:](v18, "containsAnyItemFromSet:", v21), v21, v20, !v17) || !v22)
+  if (fullScreenAppLayout == layoutCopy || !self->_gestureEnded || (dropTransitionFromAppLayout = self->_dropTransitionFromAppLayout, dropTransitionFromAppLayout == fullScreenAppLayout) || (v14 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](layoutCopy, "allItems"), v15 = objc_claimAutoreleasedReturnValue(), [v14 setWithArray:v15], v16 = objc_claimAutoreleasedReturnValue(), v17 = -[SBAppLayout containsAnyItemFromSet:](dropTransitionFromAppLayout, "containsAnyItemFromSet:", v16), v16, v15, v18 = self->_dropTransitionFromAppLayout, v19 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](self->_fullScreenAppLayout, "allItems"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "setWithArray:", v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = -[SBAppLayout containsAnyItemFromSet:](v18, "containsAnyItemFromSet:", v21), v21, v20, !v17) || !v22)
   {
 LABEL_35:
     v77.receiver = self;
     v77.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v77 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v77 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
 LABEL_36:
     v30 = v48;
     v32 = v49;
@@ -678,8 +678,8 @@ LABEL_36:
   v79[4] = self;
   v79[5] = &v80;
   [(SBAppLayout *)v23 enumerate:v79];
-  v24 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v25 = [v24 indexOfObject:v11];
+  appLayouts2 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v25 = [appLayouts2 indexOfObject:layoutCopy];
 
   if (v25 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -728,23 +728,23 @@ uint64_t __85__SBAppDragAndDropGestureSwitcherModifier_frameForLayoutRole_inAppL
   return result;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
   if (!self->_isResizing)
   {
     return 0;
   }
 
-  v4 = [(SBAppLayout *)self->_fullScreenAppLayout itemForLayoutRole:a3, a4];
-  v5 = v4 != 0;
+  layout = [(SBAppLayout *)self->_fullScreenAppLayout itemForLayoutRole:scene, layout];
+  v5 = layout != 0;
 
   return v5;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_fullScreenAppLayout && self->_shouldPushInFullScreenContent && !self->_gestureEnded)
   {
@@ -755,17 +755,17 @@ uint64_t __85__SBAppDragAndDropGestureSwitcherModifier_frameForLayoutRole_inAppL
   {
     v10.receiver = self;
     v10.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v10 scaleForIndex:a3];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v10 scaleForIndex:index];
     v8 = v7;
   }
 
   return v8;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBAppDragAndDropGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 environment] == 1)
   {
@@ -777,7 +777,7 @@ uint64_t __85__SBAppDragAndDropGestureSwitcherModifier_frameForLayoutRole_inAppL
   {
     v19.receiver = self;
     v19.super_class = SBAppDragAndDropGestureSwitcherModifier;
-    [(SBAppDragAndDropGestureSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBAppDragAndDropGestureSwitcherModifier *)&v19 cornerRadiiForIndex:index];
   }
 
   v11 = v7;
@@ -796,32 +796,32 @@ uint64_t __85__SBAppDragAndDropGestureSwitcherModifier_frameForLayoutRole_inAppL
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
-  v7 = [v6 resizeAnimationSettings];
-  [v5 setLayoutSettings:v7];
+  medusaSettings = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings];
+  resizeAnimationSettings = [medusaSettings resizeAnimationSettings];
+  [v5 setLayoutSettings:resizeAnimationSettings];
 
   [v5 setUpdateMode:3];
 
   return v5;
 }
 
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = SBAppDragAndDropGestureSwitcherModifier;
-  v6 = a4;
-  v7 = [(SBAppDragAndDropGestureSwitcherModifier *)&v16 resizeProgressNotificationsForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  v7 = [(SBAppDragAndDropGestureSwitcherModifier *)&v16 resizeProgressNotificationsForLayoutRole:role inAppLayout:layoutCopy];
   fullScreenAppLayout = self->_fullScreenAppLayout;
 
-  if (fullScreenAppLayout == v6)
+  if (fullScreenAppLayout == layoutCopy)
   {
     v9 = [(SBAppDragAndDropGestureSwitcherModifier *)self medusaSettings:v16.receiver];
     [v9 dropAnimationUnblurThresholdPercentage];
@@ -840,36 +840,36 @@ uint64_t __85__SBAppDragAndDropGestureSwitcherModifier_frameForLayoutRole_inAppL
   return v7;
 }
 
-- (BOOL)_shouldPushInFullScreenContentForEvent:(id)a3
+- (BOOL)_shouldPushInFullScreenContentForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 dropAction];
-  if ((v5 - 1) < 5)
+  eventCopy = event;
+  dropAction = [eventCopy dropAction];
+  if ((dropAction - 1) < 5)
   {
 LABEL_5:
-    v6 = 1;
+    hasPlatterized = 1;
     goto LABEL_6;
   }
 
-  if ((v5 - 6) <= 3)
+  if ((dropAction - 6) <= 3)
   {
-    if ([v4 isWindowDrag])
+    if ([eventCopy isWindowDrag])
     {
-      v6 = [v4 hasPlatterized];
+      hasPlatterized = [eventCopy hasPlatterized];
       goto LABEL_6;
     }
 
     goto LABEL_5;
   }
 
-  v6 = 0;
+  hasPlatterized = 0;
 LABEL_6:
   if ([(SBAppDragAndDropGestureSwitcherModifier *)self _isDraggingLiveWindow])
   {
-    v6 &= self->_hasPreviewLifted;
+    hasPlatterized &= self->_hasPreviewLifted;
   }
 
-  v7 = v6 & ~self->_floatingSwitcherVisible;
+  v7 = hasPlatterized & ~self->_floatingSwitcherVisible;
 
   return v7 & 1;
 }
@@ -884,9 +884,9 @@ LABEL_6:
   return (self->_dropAction & 0xFFFFFFFFFFFFFFFELL) == 4 && (![(SBAppDragAndDropGestureSwitcherModifier *)self _isDraggingLiveWindow]|| self->_hasPlatterized);
 }
 
-- (void)_recomputeBlurStateWithCompletion:(id)a3
+- (void)_recomputeBlurStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   isBlurred = self->_isBlurred;
   v13 = 0;
   v14 = &v13;
@@ -932,9 +932,9 @@ LABEL_7:
   {
     v10 = objc_alloc_init(SBUpdateDragPlatterBlurSwitcherEventResponse);
     v11 = SBAppendSwitcherModifierResponse(v10, 0);
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 

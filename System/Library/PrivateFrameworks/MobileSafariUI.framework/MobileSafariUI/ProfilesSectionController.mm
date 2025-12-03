@@ -1,19 +1,19 @@
 @interface ProfilesSectionController
-- (ProfilesSectionController)initWithConfiguration:(id)a3;
+- (ProfilesSectionController)initWithConfiguration:(id)configuration;
 - (id)itemControllers;
 @end
 
 @implementation ProfilesSectionController
 
-- (ProfilesSectionController)initWithConfiguration:(id)a3
+- (ProfilesSectionController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = ProfilesSectionController;
-  v5 = [(LibrarySectionController *)&v10 initWithConfiguration:v4];
+  v5 = [(LibrarySectionController *)&v10 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [[ProfilesLibraryItemController alloc] initWithConfiguration:v4];
+    v6 = [[ProfilesLibraryItemController alloc] initWithConfiguration:configurationCopy];
     profilesItemController = v5->_profilesItemController;
     v5->_profilesItemController = v6;
 

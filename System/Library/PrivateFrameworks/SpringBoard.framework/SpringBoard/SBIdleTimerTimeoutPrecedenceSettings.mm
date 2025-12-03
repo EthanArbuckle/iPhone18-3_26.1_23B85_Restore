@@ -1,51 +1,51 @@
 @interface SBIdleTimerTimeoutPrecedenceSettings
-- (double)_intervalForPrecedence:(unint64_t)a3;
+- (double)_intervalForPrecedence:(unint64_t)precedence;
 - (double)greatestTimeout;
 - (double)leastTimeout;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)highestPrecedence;
-- (void)_setTimeout:(double)a3 ifGreatestForPrecedence:(unint64_t)a4;
-- (void)_setTimeout:(double)a3 ifLeastForPrecedence:(unint64_t)a4;
-- (void)_setTimeout:(double)a3 withPrecedence:(unint64_t)a4;
+- (void)_setTimeout:(double)timeout ifGreatestForPrecedence:(unint64_t)precedence;
+- (void)_setTimeout:(double)timeout ifLeastForPrecedence:(unint64_t)precedence;
+- (void)_setTimeout:(double)timeout withPrecedence:(unint64_t)precedence;
 @end
 
 @implementation SBIdleTimerTimeoutPrecedenceSettings
 
-- (double)_intervalForPrecedence:(unint64_t)a3
+- (double)_intervalForPrecedence:(unint64_t)precedence
 {
-  if (a3 <= 2)
+  if (precedence <= 2)
   {
-    return *(&self->_normalTimeout + a3);
+    return *(&self->_normalTimeout + precedence);
   }
 
   return result;
 }
 
-- (void)_setTimeout:(double)a3 withPrecedence:(unint64_t)a4
+- (void)_setTimeout:(double)timeout withPrecedence:(unint64_t)precedence
 {
-  if (a4 <= 2)
+  if (precedence <= 2)
   {
-    *(&self->_normalTimeout + a4) = a3;
+    *(&self->_normalTimeout + precedence) = timeout;
   }
 }
 
-- (void)_setTimeout:(double)a3 ifLeastForPrecedence:(unint64_t)a4
+- (void)_setTimeout:(double)timeout ifLeastForPrecedence:(unint64_t)precedence
 {
   if ((BSFloatIsZero() & 1) == 0 && ((BSFloatIsZero() & 1) != 0 || (BSFloatIsZero() & 1) == 0 && BSFloatLessThanFloat()))
   {
 
-    [(SBIdleTimerTimeoutPrecedenceSettings *)self _setTimeout:a4 withPrecedence:a3];
+    [(SBIdleTimerTimeoutPrecedenceSettings *)self _setTimeout:precedence withPrecedence:timeout];
   }
 }
 
-- (void)_setTimeout:(double)a3 ifGreatestForPrecedence:(unint64_t)a4
+- (void)_setTimeout:(double)timeout ifGreatestForPrecedence:(unint64_t)precedence
 {
   if ((BSFloatIsZero() & 1) == 0 && ((BSFloatIsZero() & 1) != 0 || (BSFloatIsZero() & 1) == 0 && BSFloatGreaterThanFloat()))
   {
 
-    [(SBIdleTimerTimeoutPrecedenceSettings *)self _setTimeout:a4 withPrecedence:a3];
+    [(SBIdleTimerTimeoutPrecedenceSettings *)self _setTimeout:precedence withPrecedence:timeout];
   }
 }
 
@@ -114,10 +114,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerTimeoutPrecedenceSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerTimeoutPrecedenceSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -141,12 +141,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerTimeoutPrecedenceSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerTimeoutPrecedenceSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

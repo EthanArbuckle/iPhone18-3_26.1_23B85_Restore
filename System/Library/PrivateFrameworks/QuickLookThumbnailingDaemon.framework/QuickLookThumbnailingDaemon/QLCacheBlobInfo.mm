@@ -1,18 +1,18 @@
 @interface QLCacheBlobInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation QLCacheBlobInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 location];
-    if (v6 == [(QLCacheBlobInfo *)self location])
+    v5 = equalCopy;
+    location = [v5 location];
+    if (location == [(QLCacheBlobInfo *)self location])
     {
       v7 = [v5 length];
       v8 = v7 == [(QLCacheBlobInfo *)self length];

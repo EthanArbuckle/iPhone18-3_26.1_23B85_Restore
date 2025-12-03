@@ -1,8 +1,8 @@
 @interface FMMapAnnotationGestureRecognizer
 - (FMMapAnnotationGestureRecognizer)init;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation FMMapAnnotationGestureRecognizer
@@ -21,21 +21,21 @@
   return v3;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [(FMMapAnnotationGestureRecognizer *)self touchDelegate:a3];
+  v5 = [(FMMapAnnotationGestureRecognizer *)self touchDelegate:began];
   [v5 fingerOnAnnotation:self];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(FMMapAnnotationGestureRecognizer *)self touchDelegate:a3];
+  v5 = [(FMMapAnnotationGestureRecognizer *)self touchDelegate:ended];
   [v5 fingerOffAnnotation:self];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = [(FMMapAnnotationGestureRecognizer *)self touchDelegate:a3];
+  v5 = [(FMMapAnnotationGestureRecognizer *)self touchDelegate:cancelled];
   [v5 fingerOffAnnotation:self];
 }
 

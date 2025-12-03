@@ -1,21 +1,21 @@
 @interface CRKConcreteStudentConnectionPrimitives
-- (void)connectWithCompletion:(id)a3 invalidationHandler:(id)a4;
+- (void)connectWithCompletion:(id)completion invalidationHandler:(id)handler;
 @end
 
 @implementation CRKConcreteStudentConnectionPrimitives
 
-- (void)connectWithCompletion:(id)a3 invalidationHandler:(id)a4
+- (void)connectWithCompletion:(id)completion invalidationHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__CRKConcreteStudentConnectionPrimitives_connectWithCompletion_invalidationHandler___block_invoke;
   v9[3] = &unk_278DC2D18;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = handlerCopy;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = handlerCopy;
   [CRKConnectedStudentDaemonProxyFactory makeConnectedStudentDaemonProxyWithCompletion:v9];
 }
 

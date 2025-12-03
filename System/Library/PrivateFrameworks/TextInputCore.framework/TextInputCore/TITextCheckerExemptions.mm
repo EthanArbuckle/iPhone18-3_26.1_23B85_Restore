@@ -1,29 +1,29 @@
 @interface TITextCheckerExemptions
-- (BOOL)stringIsExemptFromChecker:(id)a3;
+- (BOOL)stringIsExemptFromChecker:(id)checker;
 - (void)dealloc;
-- (void)setAssertsObservers:(BOOL)a3;
+- (void)setAssertsObservers:(BOOL)observers;
 @end
 
 @implementation TITextCheckerExemptions
 
-- (BOOL)stringIsExemptFromChecker:(id)a3
+- (BOOL)stringIsExemptFromChecker:(id)checker
 {
-  v3 = a3;
+  checkerCopy = checker;
   v4 = +[TITextCheckerExemptionsImpl sharedTextCheckerExemptionsImpl];
-  v5 = [v4 stringIsExemptFromChecker:v3];
+  v5 = [v4 stringIsExemptFromChecker:checkerCopy];
 
   return v5;
 }
 
-- (void)setAssertsObservers:(BOOL)a3
+- (void)setAssertsObservers:(BOOL)observers
 {
-  if (self->_assertsObservers != a3)
+  if (self->_assertsObservers != observers)
   {
-    v4 = a3;
-    self->_assertsObservers = a3;
+    observersCopy = observers;
+    self->_assertsObservers = observers;
     v5 = +[TITextCheckerExemptionsImpl sharedTextCheckerExemptionsImpl];
     v6 = v5;
-    if (v4)
+    if (observersCopy)
     {
       [v5 addObserverAssertion];
     }

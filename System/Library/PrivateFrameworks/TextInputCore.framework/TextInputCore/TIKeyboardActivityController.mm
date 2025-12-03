@@ -3,26 +3,26 @@
 + (double)keyboardIdleTimeoutInterval;
 + (id)sharedController;
 + (id)singletonInstance;
-+ (void)setSharedController:(id)a3;
++ (void)setSharedController:(id)controller;
 - (BOOL)canGoEarlyClean;
 - (BOOL)shouldBecomeClean;
 - (BOOL)shouldBecomeDirty;
 - (TIKeyboardActivityController)init;
 - (id)createMemoryPressureSource;
 - (unint64_t)activityState;
-- (void)addActivityObserver:(id)a3;
+- (void)addActivityObserver:(id)observer;
 - (void)backgroundActivityAssertionsDidChange;
 - (void)dealloc;
 - (void)generateMemgraphsIfNeeded;
-- (void)handleMemoryStatusPressure:(unint64_t)a3;
-- (void)inactivityTimerFired:(id)a3;
+- (void)handleMemoryStatusPressure:(unint64_t)pressure;
+- (void)inactivityTimerFired:(id)fired;
 - (void)keyboardAssertionsDidChange;
-- (void)notifyMemoryPressureLevel:(unint64_t)a3 excessMemoryInBytes:(unint64_t)a4;
-- (void)notifyTransitionWithContext:(id)a3;
+- (void)notifyMemoryPressureLevel:(unint64_t)level excessMemoryInBytes:(unint64_t)bytes;
+- (void)notifyTransitionWithContext:(id)context;
 - (void)releaseInputManagers;
-- (void)removeActivityObserver:(id)a3;
+- (void)removeActivityObserver:(id)observer;
 - (void)setKeyboardCleanIfNecessary;
-- (void)setKeyboardDirtyIfNecessaryWithReason:(id)a3;
+- (void)setKeyboardDirtyIfNecessaryWithReason:(id)reason;
 - (void)touchInactivityTimer;
 - (void)updateActivityState;
 @end
@@ -33,14 +33,14 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[TIKeyboardAssertionManager sharedAssertionManager];
-  v4 = [v3 hasAssertions];
+  hasAssertions = [v3 hasAssertions];
 
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
   }
 
-  if (v4)
+  if (hasAssertions)
   {
     if (TICanLogMessageAtLevel_logLevel >= 2)
     {
@@ -54,8 +54,8 @@
       }
     }
 
-    v6 = [(TIKeyboardActivityController *)self inactivityTimer];
-    [v6 invalidate];
+    inactivityTimer = [(TIKeyboardActivityController *)self inactivityTimer];
+    [inactivityTimer invalidate];
 
     self->_hadRecentActivity = 1;
     [(TIKeyboardActivityController *)self setKeyboardDirtyIfNecessaryWithReason:@"keyboardAssertionsDidChange"];
@@ -182,18 +182,18 @@ void __58__TIKeyboardActivityController_createMemoryPressureSource__block_invoke
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = +[TIKeyboardAssertionManager sharedAssertionManager];
-  v4 = [v3 hasAssertions];
+  hasAssertions = [v3 hasAssertions];
 
-  if (self->_isDirty && ((self->_hasBackgroundActivity | v4) & 1) == 0)
+  if (self->_isDirty && ((self->_hasBackgroundActivity | hasAssertions) & 1) == 0)
   {
     ExcessMemoryInBytes = getExcessMemoryInBytes();
     v7 = ExcessMemoryInBytes == 0;
     v5 = TIKeyboardActivityOSLogFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s earlycleanbytes=%d (isDirty=%d, hadRecentActivity=%d, hasBackgroundActivity=%d, bytesover=%lu)", "-[TIKeyboardActivityController canGoEarlyClean]", ExcessMemoryInBytes == 0, self->_isDirty, self->_hadRecentActivity, self->_hasBackgroundActivity, ExcessMemoryInBytes];
+      excessMemoryInBytes = [MEMORY[0x277CCACA8] stringWithFormat:@"%s earlycleanbytes=%d (isDirty=%d, hadRecentActivity=%d, hasBackgroundActivity=%d, bytesover=%lu)", "-[TIKeyboardActivityController canGoEarlyClean]", ExcessMemoryInBytes == 0, self->_isDirty, self->_hadRecentActivity, self->_hasBackgroundActivity, ExcessMemoryInBytes];
       *buf = 138412290;
-      v13 = v11;
+      v13 = excessMemoryInBytes;
       _os_log_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }
@@ -219,10 +219,10 @@ void __58__TIKeyboardActivityController_createMemoryPressureSource__block_invoke
 - (void)generateMemgraphsIfNeeded
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  isInternalInstall = [mEMORY[0x277D6F470] isInternalInstall];
 
-  if (v3)
+  if (isInternalInstall)
   {
     ExcessMemoryInBytes = getExcessMemoryInBytes();
     if (ExcessMemoryInBytes)
@@ -294,13 +294,13 @@ void __58__TIKeyboardActivityController_createMemoryPressureSource__block_invoke
 
     if (self->_hadRecentActivity)
     {
-      v11 = [(TIKeyboardActivityController *)self inactivityTimer];
-      v12 = [v11 isValid];
+      inactivityTimer = [(TIKeyboardActivityController *)self inactivityTimer];
+      isValid = [inactivityTimer isValid];
 
-      if (v12)
+      if (isValid)
       {
-        v13 = [(TIKeyboardActivityController *)self inactivityTimer];
-        [v13 invalidate];
+        inactivityTimer2 = [(TIKeyboardActivityController *)self inactivityTimer];
+        [inactivityTimer2 invalidate];
 
         v14 = TIKeyboardActivityOSLogFacility();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -313,8 +313,8 @@ void __58__TIKeyboardActivityController_createMemoryPressureSource__block_invoke
 
         v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:10.0];
         v17 = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v16 interval:self target:sel_inactivityTimerFired_ selector:0 userInfo:0 repeats:0.0];
-        v18 = [MEMORY[0x277CBEB88] currentRunLoop];
-        [v18 addTimer:v17 forMode:*MEMORY[0x277CBE640]];
+        currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+        [currentRunLoop addTimer:v17 forMode:*MEMORY[0x277CBE640]];
 
         [(TIKeyboardActivityController *)self setInactivityTimer:v17];
       }
@@ -346,7 +346,7 @@ LABEL_2:
     v26 = 0x3032000000;
     v27 = __Block_byref_object_copy__7580;
     v28 = __Block_byref_object_dispose__7581;
-    v29 = [(TIKeyboardActivityController *)self isDirtyTransaction];
+    isDirtyTransaction = [(TIKeyboardActivityController *)self isDirtyTransaction];
     v5 = TIKeyboardActivityOSLogFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -403,10 +403,10 @@ void __59__TIKeyboardActivityController_setKeyboardCleanIfNecessary__block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setKeyboardDirtyIfNecessaryWithReason:(id)a3
+- (void)setKeyboardDirtyIfNecessaryWithReason:(id)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if ([(TIKeyboardActivityController *)self shouldBecomeDirty])
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
@@ -426,7 +426,7 @@ void __59__TIKeyboardActivityController_setKeyboardCleanIfNecessary__block_invok
       }
     }
 
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%s", "com.apple.TextInput.kbd.isDirty", objc_msgSend(v4, "UTF8String")];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%s", "com.apple.TextInput.kbd.isDirty", objc_msgSend(reasonCopy, "UTF8String")];
     [v6 UTF8String];
     v7 = os_transaction_create();
     [(TIKeyboardActivityController *)self setIsDirtyTransaction:v7];
@@ -443,7 +443,7 @@ void __59__TIKeyboardActivityController_setKeyboardCleanIfNecessary__block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inactivityTimerFired:(id)a3
+- (void)inactivityTimerFired:(id)fired
 {
   v9 = *MEMORY[0x277D85DE8];
   if (TICanLogMessageAtLevel_onceToken != -1)
@@ -470,17 +470,17 @@ void __59__TIKeyboardActivityController_setKeyboardCleanIfNecessary__block_invok
 
 - (void)touchInactivityTimer
 {
-  v3 = [(TIKeyboardActivityController *)self inactivityTimer];
-  v4 = [v3 isValid];
+  inactivityTimer = [(TIKeyboardActivityController *)self inactivityTimer];
+  isValid = [inactivityTimer isValid];
 
-  if ((v4 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v5 = MEMORY[0x277CBEAA8];
     +[TIKeyboardActivityController keyboardIdleTimeoutInterval];
     v8 = [v5 dateWithTimeIntervalSinceNow:?];
     v6 = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v8 interval:self target:sel_inactivityTimerFired_ selector:0 userInfo:0 repeats:0.0];
-    v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v7 addTimer:v6 forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:v6 forMode:*MEMORY[0x277CBE640]];
 
     [(TIKeyboardActivityController *)self setInactivityTimer:v6];
   }
@@ -541,9 +541,9 @@ void __59__TIKeyboardActivityController_setKeyboardCleanIfNecessary__block_invok
   return v3;
 }
 
-- (void)handleMemoryStatusPressure:(unint64_t)a3
+- (void)handleMemoryStatusPressure:(unint64_t)pressure
 {
-  v3 = a3;
+  pressureCopy = pressure;
   v18 = *MEMORY[0x277D85DE8];
   v5 = +[TIKeyboardActivityController sharedController];
   if ([v5 activityState] != 3)
@@ -563,7 +563,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((v3 & 6) == 0)
+  if ((pressureCopy & 6) == 0)
   {
     goto LABEL_15;
   }
@@ -629,15 +629,15 @@ LABEL_15:
   return v3;
 }
 
-- (void)notifyMemoryPressureLevel:(unint64_t)a3 excessMemoryInBytes:(unint64_t)a4
+- (void)notifyMemoryPressureLevel:(unint64_t)level excessMemoryInBytes:(unint64_t)bytes
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = TIKeyboardActivityOSLogFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Notifying observers of memory pressure level %u (above the limit by %u bytes)", "-[TIKeyboardActivityController notifyMemoryPressureLevel:excessMemoryInBytes:]", a3, a4];
+    bytes = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Notifying observers of memory pressure level %u (above the limit by %u bytes)", "-[TIKeyboardActivityController notifyMemoryPressureLevel:excessMemoryInBytes:]", level, bytes];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = bytes;
     _os_log_impl(&dword_22CA55000, v7, OS_LOG_TYPE_DEFAULT, "%@", &buf, 0xCu);
   }
 
@@ -651,8 +651,8 @@ LABEL_15:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(TIKeyboardActivityController *)self observers];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  observers = [(TIKeyboardActivityController *)self observers];
+  v10 = [observers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -664,20 +664,20 @@ LABEL_15:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 handleMemoryPressureLevel:a3 excessMemoryInBytes:a4];
+          [v14 handleMemoryPressureLevel:level excessMemoryInBytes:bytes];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [observers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -702,14 +702,14 @@ void __78__TIKeyboardActivityController_notifyMemoryPressureLevel_excessMemoryIn
   *(v1 + 40) = 0;
 }
 
-- (void)notifyTransitionWithContext:(id)a3
+- (void)notifyTransitionWithContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = TIKeyboardActivityOSLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Notifying observers of activity state transition from %u to %u", "-[TIKeyboardActivityController notifyTransitionWithContext:]", objc_msgSend(v4, "fromState"), objc_msgSend(v4, "toState")];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Notifying observers of activity state transition from %u to %u", "-[TIKeyboardActivityController notifyTransitionWithContext:]", objc_msgSend(contextCopy, "fromState"), objc_msgSend(contextCopy, "toState")];
     *buf = 138412290;
     v19 = v6;
     _os_log_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
@@ -719,8 +719,8 @@ void __78__TIKeyboardActivityController_notifyMemoryPressureLevel_excessMemoryIn
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(TIKeyboardActivityController *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  observers = [(TIKeyboardActivityController *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -732,14 +732,14 @@ void __78__TIKeyboardActivityController_notifyMemoryPressureLevel_excessMemoryIn
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) keyboardActivityDidTransition:v4];
+        [*(*(&v13 + 1) + 8 * v11++) keyboardActivityDidTransition:contextCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [observers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -748,10 +748,10 @@ void __78__TIKeyboardActivityController_notifyMemoryPressureLevel_excessMemoryIn
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeActivityObserver:(id)a3
+- (void)removeActivityObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -765,7 +765,7 @@ void __78__TIKeyboardActivityController_notifyMemoryPressureLevel_excessMemoryIn
       v9 = MEMORY[0x277CCACA8];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v9 stringWithFormat:@"%s Removing observer <%@: %p>", "-[TIKeyboardActivityController removeActivityObserver:]", v4, v11];
+      v12 = [v9 stringWithFormat:@"%s Removing observer <%@: %p>", "-[TIKeyboardActivityController removeActivityObserver:]", observerCopy, v11];
       *buf = 138412290;
       v16 = v12;
       _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -777,7 +777,7 @@ void __78__TIKeyboardActivityController_notifyMemoryPressureLevel_excessMemoryIn
   aBlock[2] = __55__TIKeyboardActivityController_removeActivityObserver___block_invoke;
   aBlock[3] = &unk_278733738;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = observerCopy;
   v14 = v6;
   v7 = _Block_copy(aBlock);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -799,10 +799,10 @@ void __55__TIKeyboardActivityController_removeActivityObserver___block_invoke(ui
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addActivityObserver:(id)a3
+- (void)addActivityObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -816,7 +816,7 @@ void __55__TIKeyboardActivityController_removeActivityObserver___block_invoke(ui
       v9 = MEMORY[0x277CCACA8];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v9 stringWithFormat:@"%s Adding observer <%@: %p>", "-[TIKeyboardActivityController addActivityObserver:]", v4, v11];
+      v12 = [v9 stringWithFormat:@"%s Adding observer <%@: %p>", "-[TIKeyboardActivityController addActivityObserver:]", observerCopy, v11];
       *buf = 138412290;
       v16 = v12;
       _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -828,7 +828,7 @@ void __55__TIKeyboardActivityController_removeActivityObserver___block_invoke(ui
   aBlock[2] = __52__TIKeyboardActivityController_addActivityObserver___block_invoke;
   aBlock[3] = &unk_278733738;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = observerCopy;
   v14 = v6;
   v7 = _Block_copy(aBlock);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -872,9 +872,9 @@ void __52__TIKeyboardActivityController_addActivityObserver___block_invoke(uint6
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [(TIKeyboardActivityController *)v2 createMemoryPressureSource];
+    createMemoryPressureSource = [(TIKeyboardActivityController *)v2 createMemoryPressureSource];
     memoryPressureSource = v2->_memoryPressureSource;
-    v2->_memoryPressureSource = v5;
+    v2->_memoryPressureSource = createMemoryPressureSource;
 
     v2->_activityState = 0;
     v7 = +[TIKeyboardAssertionManager sharedAssertionManager];
@@ -993,14 +993,14 @@ void __49__TIKeyboardActivityController_singletonInstance__block_invoke_2()
   return v2;
 }
 
-+ (void)setSharedController:(id)a3
++ (void)setSharedController:(id)controller
 {
-  v4 = a3;
-  if (__testingInstance_7683 != v4)
+  controllerCopy = controller;
+  if (__testingInstance_7683 != controllerCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance_7683, a3);
-    v4 = v5;
+    v5 = controllerCopy;
+    objc_storeStrong(&__testingInstance_7683, controller);
+    controllerCopy = v5;
   }
 }
 

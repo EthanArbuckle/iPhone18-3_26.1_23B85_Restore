@@ -1,19 +1,19 @@
 @interface SREMusicModelQuery
-- (SREMusicModelQuery)initWithGenreID:(id)a3;
+- (SREMusicModelQuery)initWithGenreID:(id)d;
 @end
 
 @implementation SREMusicModelQuery
 
-- (SREMusicModelQuery)initWithGenreID:(id)a3
+- (SREMusicModelQuery)initWithGenreID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SREMusicModelQuery;
   v6 = [(SREMusicModelQuery *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_genreID, a3);
+    objc_storeStrong(&v6->_genreID, d);
   }
 
   return v7;

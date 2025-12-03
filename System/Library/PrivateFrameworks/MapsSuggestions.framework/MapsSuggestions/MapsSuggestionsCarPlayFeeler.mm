@@ -1,8 +1,8 @@
 @interface MapsSuggestionsCarPlayFeeler
 - (BOOL)updateSignals;
-- (MapsSuggestionsCarPlayFeeler)initWithDelegate:(id)a3 name:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (MapsSuggestionsCarPlayFeeler)initWithDelegate:(id)delegate name:(id)name;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation MapsSuggestionsCarPlayFeeler
@@ -14,14 +14,14 @@
   return 1;
 }
 
-- (MapsSuggestionsCarPlayFeeler)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsCarPlayFeeler)initWithDelegate:(id)delegate name:(id)name
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, delegate);
+  nameCopy = name;
   v7 = objc_loadWeakRetained(&location);
   v16.receiver = self;
   v16.super_class = MapsSuggestionsCarPlayFeeler;
-  v8 = [(MapsSuggestionsBaseFeeler *)&v16 initWithDelegate:v7 name:v6];
+  v8 = [(MapsSuggestionsBaseFeeler *)&v16 initWithDelegate:v7 name:nameCopy];
 
   if (v8)
   {
@@ -58,7 +58,7 @@
   return v8;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -71,7 +71,7 @@
   sub_100015024(self, 1u);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

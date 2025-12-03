@@ -1,17 +1,17 @@
 @interface CAMDirectionalIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (int64_t)_accessibilityExpandedStatus;
 - (unint64_t)accessibilityTraits;
-- (void)_updateArrowShapeAnimated:(BOOL)a3;
+- (void)_updateArrowShapeAnimated:(BOOL)animated;
 @end
 
 @implementation CAMDirectionalIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDirectionalIndicator" hasInstanceMethod:@"direction" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMDirectionalIndicator" hasInstanceMethod:@"_updateArrowShapeAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDirectionalIndicator" hasInstanceMethod:@"direction" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMDirectionalIndicator" hasInstanceMethod:@"_updateArrowShapeAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -39,11 +39,11 @@
   return *MEMORY[0x29EDC7F70] | [(CAMDirectionalIndicatorAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)_updateArrowShapeAnimated:(BOOL)a3
+- (void)_updateArrowShapeAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CAMDirectionalIndicatorAccessibility;
-  [(CAMDirectionalIndicatorAccessibility *)&v4 _updateArrowShapeAnimated:a3];
+  [(CAMDirectionalIndicatorAccessibility *)&v4 _updateArrowShapeAnimated:animated];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
 }
 

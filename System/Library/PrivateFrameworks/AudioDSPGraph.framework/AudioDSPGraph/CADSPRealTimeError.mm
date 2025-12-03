@@ -1,6 +1,6 @@
 @interface CADSPRealTimeError
-- (BOOL)isEqual:(id)a3;
-- (CADSPRealTimeError)initWithCode:(int64_t)a3 userInfo:(const CADSPErrorUserInfo *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CADSPRealTimeError)initWithCode:(int64_t)code userInfo:(const CADSPErrorUserInfo *)info;
 - (NSNumber)errorSourceLine;
 - (NSString)errorSourceFile;
 - (id)description;
@@ -15,12 +15,12 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    v5 = CFEqual(self, v4) != 0;
+    v5 = CFEqual(self, equalCopy) != 0;
   }
 
   else
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (CADSPRealTimeError)initWithCode:(int64_t)a3 userInfo:(const CADSPErrorUserInfo *)a4
+- (CADSPRealTimeError)initWithCode:(int64_t)code userInfo:(const CADSPErrorUserInfo *)info
 {
-  v5 = _CADSPRealTimeErrorCreate(*MEMORY[0x1E695E4A8], a3, a4);
+  v5 = _CADSPRealTimeErrorCreate(*MEMORY[0x1E695E4A8], code, info);
 
   return v5;
 }

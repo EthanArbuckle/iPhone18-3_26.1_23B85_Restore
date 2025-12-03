@@ -1,6 +1,6 @@
 @interface FSFCurareInteractionAsDict
-- (FSFCurareInteractionAsDict)initWithContent:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5;
-- (FSFCurareInteractionAsDict)initWithData:(id)a3 dataVersion:(unsigned int)a4 interactionId:(id)a5;
+- (FSFCurareInteractionAsDict)initWithContent:(id)content interactionId:(id)id dataVersion:(unsigned int)version;
+- (FSFCurareInteractionAsDict)initWithData:(id)data dataVersion:(unsigned int)version interactionId:(id)id;
 - (id)json;
 - (id)serialize;
 @end
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (FSFCurareInteractionAsDict)initWithContent:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5
+- (FSFCurareInteractionAsDict)initWithContent:(id)content interactionId:(id)id dataVersion:(unsigned int)version
 {
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  idCopy = id;
   if (+[FSFUtils isSupportedPlatform])
   {
     v15.receiver = self;
@@ -34,30 +34,30 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_interactionId, a4);
-      objc_storeStrong(&v12->_content, a3);
-      v12->_dataVersion = a5;
+      objc_storeStrong(&v11->_interactionId, id);
+      objc_storeStrong(&v12->_content, content);
+      v12->_dataVersion = version;
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)json
 {
-  v2 = [(FSFCurareInteractionAsDict *)self serialize];
-  if (v2)
+  serialize = [(FSFCurareInteractionAsDict *)self serialize];
+  if (serialize)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v2 encoding:4];
+    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:serialize encoding:4];
   }
 
   else
@@ -68,19 +68,19 @@
   return v3;
 }
 
-- (FSFCurareInteractionAsDict)initWithData:(id)a3 dataVersion:(unsigned int)a4 interactionId:(id)a5
+- (FSFCurareInteractionAsDict)initWithData:(id)data dataVersion:(unsigned int)version interactionId:(id)id
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  idCopy = id;
   v17.receiver = self;
   v17.super_class = FSFCurareInteractionAsDict;
   v10 = [(FSFCurareInteractionAsDict *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_dataVersion = a4;
+    v10->_dataVersion = version;
     v16 = 0;
-    v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v16];
+    v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v16];
     v13 = v16;
     content = v11->_content;
     v11->_content = v12;
@@ -90,7 +90,7 @@
       NSLog(&cfstr_ErrorWhileCrea.isa, v13);
     }
 
-    objc_storeStrong(&v11->_interactionId, a5);
+    objc_storeStrong(&v11->_interactionId, id);
   }
 
   return v11;

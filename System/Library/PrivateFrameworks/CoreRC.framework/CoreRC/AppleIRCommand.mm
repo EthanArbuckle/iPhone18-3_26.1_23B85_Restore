@@ -1,5 +1,5 @@
 @interface AppleIRCommand
-- (BOOL)getVendorSpecificHIDUsagePage:(unsigned int *)a3 usageID:(unsigned int *)a4 ignoreRepeats:(BOOL *)a5;
+- (BOOL)getVendorSpecificHIDUsagePage:(unsigned int *)page usageID:(unsigned int *)d ignoreRepeats:(BOOL *)repeats;
 - (id)description;
 - (unint64_t)command;
 @end
@@ -28,11 +28,11 @@
 
 - (unint64_t)command
 {
-  v2 = [(AppleIRCommand *)self token];
+  token = [(AppleIRCommand *)self token];
   v3 = 0;
-  if (v2 <= 3584)
+  if (token <= 3584)
   {
-    switch(v2)
+    switch(token)
     {
       case 1281:
         goto LABEL_33;
@@ -429,13 +429,13 @@
     }
   }
 
-  if (v2 > 3588)
+  if (token > 3588)
   {
-    if (v2 > 3629)
+    if (token > 3629)
     {
-      if (v2 != 3630)
+      if (token != 3630)
       {
-        if (v2 == 3631)
+        if (token == 3631)
         {
           if (gLogCategory_CoreRCDevice > 40)
           {
@@ -483,7 +483,7 @@ LABEL_27:
       }
     }
 
-    else if (v2 == 3589)
+    else if (token == 3589)
     {
 LABEL_33:
       if (gLogCategory_CoreRCDevice > 40)
@@ -508,7 +508,7 @@ LABEL_33:
 
     else
     {
-      if (v2 != 3590)
+      if (token != 3590)
       {
         return v3;
       }
@@ -539,9 +539,9 @@ LABEL_101:
     return v3;
   }
 
-  if (v2 <= 3586)
+  if (token <= 3586)
   {
-    if (v2 == 3585)
+    if (token == 3585)
     {
       if (gLogCategory_CoreRCDevice > 40)
       {
@@ -588,7 +588,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (v2 == 3587)
+  if (token == 3587)
   {
 LABEL_30:
     if (gLogCategory_CoreRCDevice > 40)
@@ -636,15 +636,15 @@ LABEL_19:
   return 4;
 }
 
-- (BOOL)getVendorSpecificHIDUsagePage:(unsigned int *)a3 usageID:(unsigned int *)a4 ignoreRepeats:(BOOL *)a5
+- (BOOL)getVendorSpecificHIDUsagePage:(unsigned int *)page usageID:(unsigned int *)d ignoreRepeats:(BOOL *)repeats
 {
-  v8 = [(AppleIRCommand *)self token];
+  token = [(AppleIRCommand *)self token];
   LOBYTE(v9) = 0;
-  if (v8 <= 3594)
+  if (token <= 3594)
   {
-    if (v8 <= 262)
+    if (token <= 262)
     {
-      if (v8 != 3 && v8 != 7)
+      if (token != 3 && token != 7)
       {
         return v9;
       }
@@ -678,14 +678,14 @@ LABEL_19:
 
     else
     {
-      if (v8 != 263)
+      if (token != 263)
       {
-        if (v8 == 3591)
+        if (token == 3591)
         {
           goto LABEL_23;
         }
 
-        if (v8 != 3592)
+        if (token != 3592)
         {
           return v9;
         }
@@ -724,11 +724,11 @@ LABEL_19:
     goto LABEL_64;
   }
 
-  if (v8 > 3634)
+  if (token > 3634)
   {
-    if (v8 != 3635)
+    if (token != 3635)
     {
-      if (v8 == 3636)
+      if (token == 3636)
       {
         if (gLogCategory_CoreRCDevice <= 50)
         {
@@ -749,7 +749,7 @@ LABEL_38:
         return v9;
       }
 
-      if (v8 != 3637)
+      if (token != 3637)
       {
         return v9;
       }
@@ -813,7 +813,7 @@ LABEL_26:
     goto LABEL_52;
   }
 
-  if (v8 == 3595)
+  if (token == 3595)
   {
     if (gLogCategory_CoreRCDevice <= 50)
     {
@@ -843,7 +843,7 @@ LABEL_26:
     goto LABEL_52;
   }
 
-  if (v8 == 3596)
+  if (token == 3596)
   {
     if (gLogCategory_CoreRCDevice <= 40)
     {
@@ -862,7 +862,7 @@ LABEL_26:
     goto LABEL_38;
   }
 
-  if (v8 != 3634)
+  if (token != 3634)
   {
     return v9;
   }
@@ -896,19 +896,19 @@ LABEL_56:
 LABEL_47:
   LogPrintF();
 LABEL_64:
-  if (a3)
+  if (page)
   {
-    *a3 = v12;
+    *page = v12;
   }
 
-  if (a4)
+  if (d)
   {
-    *a4 = v11;
+    *d = v11;
   }
 
-  if (a5)
+  if (repeats)
   {
-    *a5 = v10;
+    *repeats = v10;
   }
 
   LOBYTE(v9) = 1;

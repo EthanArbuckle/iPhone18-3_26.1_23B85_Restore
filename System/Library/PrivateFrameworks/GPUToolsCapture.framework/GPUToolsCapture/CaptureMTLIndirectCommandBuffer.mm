@@ -1,33 +1,33 @@
 @interface CaptureMTLIndirectCommandBuffer
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
 - (BOOL)isAliasable;
 - (BOOL)isPurgeable;
-- (CaptureMTLIndirectCommandBuffer)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (CaptureMTLIndirectCommandBuffer)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
-- (id)indirectComputeCommandAtIndex:(unint64_t)a3;
-- (id)indirectRenderCommandAtIndex:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (id)indirectComputeCommandAtIndex:(unint64_t)index;
+- (id)indirectRenderCommandAtIndex:(unint64_t)index;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)makeAliasable;
-- (void)resetWithRange:(_NSRange)a3;
-- (void)setLabel:(id)a3;
+- (void)resetWithRange:(_NSRange)range;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
 @implementation CaptureMTLIndirectCommandBuffer
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLIndirectCommandBufferSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLIndirectCommandBufferSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -15920;
   v8 = BYTE9(v19);
@@ -47,10 +47,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -60,7 +60,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -68,10 +68,10 @@
   return v6;
 }
 
-- (void)resetWithRange:(_NSRange)a3
+- (void)resetWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
@@ -97,10 +97,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -144,10 +144,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -169,7 +169,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLIndirectCommandBufferSPI *)self->_baseObject isPurgeable];
+  isPurgeable = [(MTLIndirectCommandBufferSPI *)self->_baseObject isPurgeable];
   v5 = v16;
   *(v16 + 8) = -15917;
   v6 = BYTE9(v17);
@@ -189,10 +189,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -201,13 +201,13 @@
   }
 
   *v7 = var0;
-  *(v7 + 2) = v4;
+  *(v7 + 2) = isPurgeable;
   *(v7 + 3) = 0;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return isPurgeable;
 }
 
 - (BOOL)isAliasable
@@ -217,7 +217,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLIndirectCommandBufferSPI *)self->_baseObject isAliasable];
+  isAliasable = [(MTLIndirectCommandBufferSPI *)self->_baseObject isAliasable];
   v5 = v16;
   *(v16 + 8) = -15918;
   v6 = BYTE9(v17);
@@ -237,10 +237,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -249,16 +249,16 @@
   }
 
   *v7 = var0;
-  *(v7 + 2) = v4;
+  *(v7 + 2) = isAliasable;
   *(v7 + 3) = 0;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return isAliasable;
 }
 
-- (id)indirectRenderCommandAtIndex:(unint64_t)a3
+- (id)indirectRenderCommandAtIndex:(unint64_t)index
 {
   v24 = 0u;
   v25 = 0u;
@@ -307,10 +307,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -318,10 +318,10 @@
     var0 = 0;
   }
 
-  v19 = [(CaptureMTLIndirectRenderCommand *)v11 traceStream];
-  if (v19)
+  traceStream2 = [(CaptureMTLIndirectRenderCommand *)v11 traceStream];
+  if (traceStream2)
   {
-    v20 = v19->var0;
+    v20 = traceStream2->var0;
   }
 
   else
@@ -331,7 +331,7 @@
 
   *v14 = var0;
   *(v14 + 1) = v20;
-  *(v14 + 2) = a3;
+  *(v14 + 2) = index;
   v21 = v24;
   *v7 = v25;
   *(v7 + 8) = BYTE8(v25);
@@ -340,7 +340,7 @@
   return v11;
 }
 
-- (id)indirectComputeCommandAtIndex:(unint64_t)a3
+- (id)indirectComputeCommandAtIndex:(unint64_t)index
 {
   v24 = 0u;
   v25 = 0u;
@@ -389,10 +389,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -400,10 +400,10 @@
     var0 = 0;
   }
 
-  v19 = [(CaptureMTLIndirectComputeCommand *)v11 traceStream];
-  if (v19)
+  traceStream2 = [(CaptureMTLIndirectComputeCommand *)v11 traceStream];
+  if (traceStream2)
   {
-    v20 = v19->var0;
+    v20 = traceStream2->var0;
   }
 
   else
@@ -413,7 +413,7 @@
 
   *v14 = var0;
   *(v14 + 1) = v20;
-  *(v14 + 2) = a3;
+  *(v14 + 2) = index;
   v21 = v24;
   *v7 = v25;
   *(v7 + 8) = BYTE8(v25);
@@ -422,72 +422,72 @@
   return v11;
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLIndirectCommandBufferSPI *)baseObject doesAliasResource:v4];
+  baseObject = [resource baseObject];
+  LOBYTE(baseObject) = [(MTLIndirectCommandBufferSPI *)baseObject doesAliasResource:baseObject];
 
   return baseObject;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLIndirectCommandBufferSPI *)baseObject doesAliasAnyResources:v8 count:a4];
+  return [(MTLIndirectCommandBufferSPI *)baseObject doesAliasAnyResources:v8 count:count];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLIndirectCommandBufferSPI *)baseObject doesAliasAllResources:v8 count:a4];
+  return [(MTLIndirectCommandBufferSPI *)baseObject doesAliasAllResources:v8 count:count];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIndirectCommandBufferSPI *)self->_baseObject setLabel:v4];
+  [(MTLIndirectCommandBufferSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15925;
   v7 = BYTE9(v20);
@@ -507,10 +507,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -518,16 +518,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -536,13 +536,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLIndirectCommandBufferSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLIndirectCommandBufferSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -627,10 +627,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLIndirectCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -649,22 +649,22 @@
   [(CaptureMTLIndirectCommandBuffer *)&v14 dealloc];
 }
 
-- (CaptureMTLIndirectCommandBuffer)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLIndirectCommandBuffer)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLIndirectCommandBuffer;
   v9 = [(CaptureMTLIndirectCommandBuffer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

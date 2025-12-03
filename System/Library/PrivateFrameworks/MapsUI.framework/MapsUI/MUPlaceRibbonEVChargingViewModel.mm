@@ -1,29 +1,29 @@
 @interface MUPlaceRibbonEVChargingViewModel
-+ (id)attributedStringFromString:(id)a3 color:(id)a4;
-- (MUPlaceRibbonEVChargingViewModel)initWithAvailabilityProvider:(id)a3;
++ (id)attributedStringFromString:(id)string color:(id)color;
+- (MUPlaceRibbonEVChargingViewModel)initWithAvailabilityProvider:(id)provider;
 - (void)_updateStringProviders;
 - (void)dealloc;
-- (void)evChargerAvailabilityProvider:(id)a3 didUpdateAvailability:(id)a4;
+- (void)evChargerAvailabilityProvider:(id)provider didUpdateAvailability:(id)availability;
 @end
 
 @implementation MUPlaceRibbonEVChargingViewModel
 
-- (void)evChargerAvailabilityProvider:(id)a3 didUpdateAvailability:(id)a4
+- (void)evChargerAvailabilityProvider:(id)provider didUpdateAvailability:(id)availability
 {
-  [(MUPlaceRibbonEVChargingViewModel *)self _updateStringProviders:a3];
-  v5 = [(MUPlaceRibbonItemViewModel *)self updateDelegate];
-  [v5 ribbonItemViewModelDidUpdate:self];
+  [(MUPlaceRibbonEVChargingViewModel *)self _updateStringProviders:provider];
+  updateDelegate = [(MUPlaceRibbonItemViewModel *)self updateDelegate];
+  [updateDelegate ribbonItemViewModelDidUpdate:self];
 }
 
 - (void)_updateStringProviders
 {
-  v3 = [(MUPlaceRibbonEVChargingViewModel *)self availabilityProvider];
-  v4 = [v3 availability];
+  availabilityProvider = [(MUPlaceRibbonEVChargingViewModel *)self availabilityProvider];
+  availability = [availabilityProvider availability];
 
-  v5 = [v4 aggregatedInfo];
-  v6 = [v5 status];
+  aggregatedInfo = [availability aggregatedInfo];
+  status = [aggregatedInfo status];
 
-  if (v6)
+  if (status)
   {
     v7 = @"Available Now [Placecard ribbon item title]";
   }
@@ -47,8 +47,8 @@
   v11[1] = 3221225472;
   v11[2] = __58__MUPlaceRibbonEVChargingViewModel__updateStringProviders__block_invoke;
   v11[3] = &unk_1E8219A48;
-  v12 = v4;
-  v10 = v4;
+  v12 = availability;
+  v10 = availability;
   [(MUPlaceRibbonItemViewModel *)self setValueStringProvider:v11];
 }
 
@@ -173,37 +173,37 @@ id __58__MUPlaceRibbonEVChargingViewModel__updateStringProviders__block_invoke(u
 
 - (void)dealloc
 {
-  v3 = [(MUPlaceRibbonEVChargingViewModel *)self availabilityProvider];
-  [v3 unregisterObserver:self];
+  availabilityProvider = [(MUPlaceRibbonEVChargingViewModel *)self availabilityProvider];
+  [availabilityProvider unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = MUPlaceRibbonEVChargingViewModel;
   [(MUPlaceRibbonEVChargingViewModel *)&v4 dealloc];
 }
 
-- (MUPlaceRibbonEVChargingViewModel)initWithAvailabilityProvider:(id)a3
+- (MUPlaceRibbonEVChargingViewModel)initWithAvailabilityProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = MUPlaceRibbonEVChargingViewModel;
   v5 = [(MUPlaceRibbonEVChargingViewModel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MUPlaceRibbonEVChargingViewModel *)v5 setAvailabilityProvider:v4];
+    [(MUPlaceRibbonEVChargingViewModel *)v5 setAvailabilityProvider:providerCopy];
     [(MUPlaceRibbonEVChargingViewModel *)v6 _updateStringProviders];
-    [v4 registerObserver:v6];
+    [providerCopy registerObserver:v6];
   }
 
   return v6;
 }
 
-+ (id)attributedStringFromString:(id)a3 color:(id)a4
++ (id)attributedStringFromString:(id)string color:(id)color
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  colorCopy = color;
   v6 = MEMORY[0x1E696AAB0];
-  v7 = a3;
+  stringCopy = string;
   v8 = [v6 alloc];
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v10 = [v9 _mapkit_fontWithWeight:*MEMORY[0x1E69DB970]];
@@ -211,12 +211,12 @@ id __58__MUPlaceRibbonEVChargingViewModel__updateStringProviders__block_invoke(u
   v18[0] = *MEMORY[0x1E69DB648];
   v18[1] = v11;
   v19[0] = v10;
-  v19[1] = v5;
+  v19[1] = colorCopy;
   v12 = MEMORY[0x1E695DF20];
-  v13 = v5;
+  v13 = colorCopy;
   v14 = [v12 dictionaryWithObjects:v19 forKeys:v18 count:2];
 
-  v15 = [v8 initWithString:v7 attributes:v14];
+  v15 = [v8 initWithString:stringCopy attributes:v14];
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;

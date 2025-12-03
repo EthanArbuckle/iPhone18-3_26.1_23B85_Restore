@@ -1,38 +1,38 @@
 @interface BMMobileAssetInstrumentationEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMobileAssetInstrumentationEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMobileAssetInstrumentationEvent)initWithSubSystemName:(id)a3 eventType:(int)a4 maDownloadResult:(id)a5 maSecureDetail:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMMobileAssetInstrumentationEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMobileAssetInstrumentationEvent)initWithSubSystemName:(id)name eventType:(int)type maDownloadResult:(id)result maSecureDetail:(id)detail;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMobileAssetInstrumentationEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
-    v7 = [v5 subSystemName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    subSystemName = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
+    subSystemName2 = [v5 subSystemName];
+    v8 = subSystemName2;
+    if (subSystemName == subSystemName2)
     {
     }
 
     else
     {
-      v9 = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
-      v10 = [v5 subSystemName];
-      v11 = [v9 isEqual:v10];
+      subSystemName3 = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
+      subSystemName4 = [v5 subSystemName];
+      v11 = [subSystemName3 isEqual:subSystemName4];
 
       if (!v11)
       {
@@ -40,21 +40,21 @@
       }
     }
 
-    v13 = [(BMMobileAssetInstrumentationEvent *)self eventType];
-    if (v13 == [v5 eventType])
+    eventType = [(BMMobileAssetInstrumentationEvent *)self eventType];
+    if (eventType == [v5 eventType])
     {
-      v14 = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
-      v15 = [v5 maDownloadResult];
-      v16 = v15;
-      if (v14 == v15)
+      maDownloadResult = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
+      maDownloadResult2 = [v5 maDownloadResult];
+      v16 = maDownloadResult2;
+      if (maDownloadResult == maDownloadResult2)
       {
       }
 
       else
       {
-        v17 = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
-        v18 = [v5 maDownloadResult];
-        v19 = [v17 isEqual:v18];
+        maDownloadResult3 = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
+        maDownloadResult4 = [v5 maDownloadResult];
+        v19 = [maDownloadResult3 isEqual:maDownloadResult4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
-      v21 = [v5 maSecureDetail];
-      if (v20 == v21)
+      maSecureDetail = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
+      maSecureDetail2 = [v5 maSecureDetail];
+      if (maSecureDetail == maSecureDetail2)
       {
         v12 = 1;
       }
 
       else
       {
-        v22 = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
-        v23 = [v5 maSecureDetail];
-        v12 = [v22 isEqual:v23];
+        maSecureDetail3 = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
+        maSecureDetail4 = [v5 maSecureDetail];
+        v12 = [maSecureDetail3 isEqual:maSecureDetail4];
       }
 
       goto LABEL_16;
@@ -95,50 +95,50 @@ LABEL_17:
 - (id)jsonDictionary
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
+  subSystemName = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMobileAssetInstrumentationEvent eventType](self, "eventType")}];
-  v5 = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
-  v6 = [v5 jsonDictionary];
+  maDownloadResult = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
+  jsonDictionary = [maDownloadResult jsonDictionary];
 
-  v7 = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
-  v8 = [v7 jsonDictionary];
+  maSecureDetail = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
+  jsonDictionary2 = [maSecureDetail jsonDictionary];
 
   v16[0] = @"subSystemName";
-  v9 = v3;
-  if (!v3)
+  null = subSystemName;
+  if (!subSystemName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v9;
+  v17[0] = null;
   v16[1] = @"eventType";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v10;
+  v17[1] = null2;
   v16[2] = @"maDownloadResult";
-  v11 = v6;
-  if (!v6)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v11;
+  v17[2] = null3;
   v16[3] = @"maSecureDetail";
-  v12 = v8;
-  if (!v8)
+  null4 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[3] = v12;
+  v17[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
-  if (v8)
+  if (jsonDictionary2)
   {
-    if (v6)
+    if (jsonDictionary)
     {
       goto LABEL_11;
     }
@@ -147,7 +147,7 @@ LABEL_17:
   else
   {
 
-    if (v6)
+    if (jsonDictionary)
     {
 LABEL_11:
       if (v4)
@@ -157,7 +157,7 @@ LABEL_11:
 
 LABEL_18:
 
-      if (v3)
+      if (subSystemName)
       {
         goto LABEL_13;
       }
@@ -172,7 +172,7 @@ LABEL_18:
   }
 
 LABEL_12:
-  if (v3)
+  if (subSystemName)
   {
     goto LABEL_13;
   }
@@ -185,11 +185,11 @@ LABEL_13:
   return v13;
 }
 
-- (BMMobileAssetInstrumentationEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMobileAssetInstrumentationEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"subSystemName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"subSystemName"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -201,9 +201,9 @@ LABEL_13:
   {
     v8 = v7;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"eventType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
     v10 = v9;
-    v35 = self;
+    selfCopy = self;
     if (v9)
     {
       objc_opt_class();
@@ -225,7 +225,7 @@ LABEL_4:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v13 = 0;
               v14 = 0;
@@ -235,12 +235,12 @@ LABEL_4:
             v34 = objc_alloc(MEMORY[0x1E696ABC0]);
             v28 = *MEMORY[0x1E698F240];
             v42 = *MEMORY[0x1E696A578];
-            v29 = a4;
+            errorCopy = error;
             v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"eventType"];
             v43 = v20;
             v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
             v14 = 0;
-            *v29 = [v34 initWithDomain:v28 code:2 userInfo:v17];
+            *errorCopy = [v34 initWithDomain:v28 code:2 userInfo:v17];
             v13 = 0;
             goto LABEL_40;
           }
@@ -251,20 +251,20 @@ LABEL_4:
     }
 
     v33 = v9;
-    v15 = [v6 objectForKeyedSubscript:@"maDownloadResult"];
-    v16 = a4;
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"maDownloadResult"];
+    errorCopy2 = error;
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v17 = 0;
 LABEL_18:
-      v18 = [v6 objectForKeyedSubscript:@"maSecureDetail"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"maSecureDetail"];
       if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v19 = 0;
 LABEL_21:
         v13 = v33;
-        v14 = -[BMMobileAssetInstrumentationEvent initWithSubSystemName:eventType:maDownloadResult:maSecureDetail:](v35, "initWithSubSystemName:eventType:maDownloadResult:maSecureDetail:", v8, [v33 intValue], v17, v19);
-        v35 = v14;
+        v14 = -[BMMobileAssetInstrumentationEvent initWithSubSystemName:eventType:maDownloadResult:maSecureDetail:](selfCopy, "initWithSubSystemName:eventType:maDownloadResult:maSecureDetail:", v8, [v33 intValue], v17, v19);
+        selfCopy = v14;
 LABEL_38:
 
 LABEL_39:
@@ -285,16 +285,16 @@ LABEL_39:
           goto LABEL_21;
         }
 
-        if (v16)
+        if (errorCopy2)
         {
           v23 = v23;
-          *v16 = v23;
+          *errorCopy2 = v23;
         }
       }
 
       else
       {
-        if (!v16)
+        if (!errorCopy2)
         {
           v14 = 0;
           v13 = v33;
@@ -307,7 +307,7 @@ LABEL_39:
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"maSecureDetail"];
         v39 = v19;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-        *v16 = [v32 initWithDomain:v30 code:2 userInfo:v22];
+        *errorCopy2 = [v32 initWithDomain:v30 code:2 userInfo:v22];
       }
 
       v14 = 0;
@@ -328,10 +328,10 @@ LABEL_39:
         goto LABEL_18;
       }
 
-      if (v16)
+      if (errorCopy2)
       {
         v21 = v21;
-        *v16 = v21;
+        *errorCopy2 = v21;
       }
 
       v14 = 0;
@@ -339,7 +339,7 @@ LABEL_39:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v14 = 0;
         v13 = v33;
@@ -352,7 +352,7 @@ LABEL_39:
       v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"maDownloadResult"];
       v41 = v17;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-      *a4 = [v31 initWithDomain:v24 code:2 userInfo:v25];
+      *error = [v31 initWithDomain:v24 code:2 userInfo:v25];
 
       v14 = 0;
       v20 = v15;
@@ -362,13 +362,13 @@ LABEL_39:
 LABEL_40:
 
     v15 = v20;
-    self = v35;
+    self = selfCopy;
 LABEL_41:
 
     goto LABEL_42;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v14 = 0;
@@ -383,7 +383,7 @@ LABEL_41:
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
   v8 = 0;
   v14 = 0;
-  *a4 = [v11 initWithDomain:v12 code:2 userInfo:v10];
+  *error = [v11 initWithDomain:v12 code:2 userInfo:v10];
 LABEL_42:
 
 LABEL_43:
@@ -395,14 +395,14 @@ LABEL_43:
 {
   v3 = objc_opt_new();
   [(BMMobileAssetInstrumentationEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_subSystemName)
   {
     PBDataWriterWriteStringField();
@@ -413,21 +413,21 @@ LABEL_43:
   if (self->_maDownloadResult)
   {
     PBDataWriterPlaceMark();
-    [(BMMADownloadResultEvent *)self->_maDownloadResult writeTo:v4];
+    [(BMMADownloadResultEvent *)self->_maDownloadResult writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_maSecureDetail)
   {
     PBDataWriterPlaceMark();
-    [(BMMASecureDetailEvent *)self->_maSecureDetail writeTo:v4];
+    [(BMMASecureDetailEvent *)self->_maSecureDetail writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMMobileAssetInstrumentationEvent;
   v5 = [(BMEventBase *)&v31 init];
@@ -436,12 +436,12 @@ LABEL_43:
     goto LABEL_49;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -452,18 +452,18 @@ LABEL_43:
       while (1)
       {
         LOBYTE(v32) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v32 & 0x7F) << v7;
@@ -480,9 +480,9 @@ LABEL_43:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -499,7 +499,7 @@ LABEL_16:
             goto LABEL_48;
           }
 
-          v23 = [[BMMADownloadResultEvent alloc] initByReadFrom:v4];
+          v23 = [[BMMADownloadResultEvent alloc] initByReadFrom:fromCopy];
           if (!v23)
           {
             goto LABEL_48;
@@ -528,7 +528,7 @@ LABEL_35:
             goto LABEL_48;
           }
 
-          v23 = [[BMMASecureDetailEvent alloc] initByReadFrom:v4];
+          v23 = [[BMMASecureDetailEvent alloc] initByReadFrom:fromCopy];
           if (!v23)
           {
             goto LABEL_48;
@@ -563,18 +563,18 @@ LABEL_35:
         while (1)
         {
           LOBYTE(v32) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v32 & 0x7F) << v16;
@@ -590,7 +590,7 @@ LABEL_35:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 2)
         {
 LABEL_44:
           LODWORD(v18) = 0;
@@ -600,13 +600,13 @@ LABEL_44:
       }
 
 LABEL_46:
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_48:
     v29 = 0;
@@ -624,30 +624,30 @@ LABEL_49:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
+  subSystemName = [(BMMobileAssetInstrumentationEvent *)self subSystemName];
   v5 = BMMAEventTypeAsString([(BMMobileAssetInstrumentationEvent *)self eventType]);
-  v6 = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
-  v7 = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
-  v8 = [v3 initWithFormat:@"BMMobileAssetInstrumentationEvent with subSystemName: %@, eventType: %@, maDownloadResult: %@, maSecureDetail: %@", v4, v5, v6, v7];
+  maDownloadResult = [(BMMobileAssetInstrumentationEvent *)self maDownloadResult];
+  maSecureDetail = [(BMMobileAssetInstrumentationEvent *)self maSecureDetail];
+  v8 = [v3 initWithFormat:@"BMMobileAssetInstrumentationEvent with subSystemName: %@, eventType: %@, maDownloadResult: %@, maSecureDetail: %@", subSystemName, v5, maDownloadResult, maSecureDetail];
 
   return v8;
 }
 
-- (BMMobileAssetInstrumentationEvent)initWithSubSystemName:(id)a3 eventType:(int)a4 maDownloadResult:(id)a5 maSecureDetail:(id)a6
+- (BMMobileAssetInstrumentationEvent)initWithSubSystemName:(id)name eventType:(int)type maDownloadResult:(id)result maSecureDetail:(id)detail
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  resultCopy = result;
+  detailCopy = detail;
   v16.receiver = self;
   v16.super_class = BMMobileAssetInstrumentationEvent;
   v14 = [(BMEventBase *)&v16 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v14->_subSystemName, a3);
-    v14->_eventType = a4;
-    objc_storeStrong(&v14->_maDownloadResult, a5);
-    objc_storeStrong(&v14->_maSecureDetail, a6);
+    objc_storeStrong(&v14->_subSystemName, name);
+    v14->_eventType = type;
+    objc_storeStrong(&v14->_maDownloadResult, result);
+    objc_storeStrong(&v14->_maSecureDetail, detail);
   }
 
   return v14;
@@ -709,9 +709,9 @@ id __44__BMMobileAssetInstrumentationEvent_columns__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -719,8 +719,8 @@ id __44__BMMobileAssetInstrumentationEvent_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMobileAssetInstrumentationEvent alloc] initByReadFrom:v7];
     v4 = v8;

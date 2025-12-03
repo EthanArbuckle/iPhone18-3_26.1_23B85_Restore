@@ -1,12 +1,12 @@
 @interface WelcomeUIViewController
-- (_TtC7Welcome23WelcomeUIViewController)initWithCoder:(id)a3;
-- (_TtC7Welcome23WelcomeUIViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Welcome23WelcomeUIViewController)initWithCoder:(id)coder;
+- (_TtC7Welcome23WelcomeUIViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation WelcomeUIViewController
 
-- (_TtC7Welcome23WelcomeUIViewController)initWithCoder:(id)a3
+- (_TtC7Welcome23WelcomeUIViewController)initWithCoder:(id)coder
 {
   sub_273DA244C();
   sub_273DA243C();
@@ -29,11 +29,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_273D99F80();
 }
 
-- (_TtC7Welcome23WelcomeUIViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Welcome23WelcomeUIViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_273DA244C();
   sub_273DA243C();
@@ -43,12 +43,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_273DA23AC();
   }
 
-  v6 = a4;
+  bundleCopy = bundle;
   WelcomeUIViewController.init(nibName:bundle:)();
 }
 

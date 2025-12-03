@@ -1,20 +1,20 @@
 @interface CardRim
-- (_TtC23ShelfKitCollectionViews7CardRim)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews7CardRim)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews7CardRim)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews7CardRim)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CardRim
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_932D0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_932D0(change);
 }
 
-- (_TtC23ShelfKitCollectionViews7CardRim)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews7CardRim)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC23ShelfKitCollectionViews7CardRim_innerRim;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(CALayer) init];
@@ -36,7 +36,7 @@
   [v3 setFrame:{v6.origin.x, v6.origin.y, v6.size.width, v6.size.height}];
 }
 
-- (_TtC23ShelfKitCollectionViews7CardRim)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews7CardRim)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

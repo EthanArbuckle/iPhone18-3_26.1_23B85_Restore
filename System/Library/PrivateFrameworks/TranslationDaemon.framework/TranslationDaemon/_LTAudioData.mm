@@ -1,16 +1,16 @@
 @interface _LTAudioData
 - (AudioStreamBasicDescription)asbd;
-- (BOOL)_populateWithOpusData:(id)a3;
-- (_LTAudioData)initWithASBD:(AudioStreamBasicDescription *)a3 rawData:(id)a4 wordTimingInfo:(id)a5;
-- (void)writeToURL:(id)a3;
+- (BOOL)_populateWithOpusData:(id)data;
+- (_LTAudioData)initWithASBD:(AudioStreamBasicDescription *)d rawData:(id)data wordTimingInfo:(id)info;
+- (void)writeToURL:(id)l;
 @end
 
 @implementation _LTAudioData
 
-- (_LTAudioData)initWithASBD:(AudioStreamBasicDescription *)a3 rawData:(id)a4 wordTimingInfo:(id)a5
+- (_LTAudioData)initWithASBD:(AudioStreamBasicDescription *)d rawData:(id)data wordTimingInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = _LTAudioData;
   v11 = [(_LTAudioData *)&v19 init];
@@ -20,14 +20,14 @@
     goto LABEL_7;
   }
 
-  v13 = *&a3->mSampleRate;
-  v14 = *&a3->mBytesPerPacket;
-  *(v11 + 5) = *&a3->mBitsPerChannel;
+  v13 = *&d->mSampleRate;
+  v14 = *&d->mBytesPerPacket;
+  *(v11 + 5) = *&d->mBitsPerChannel;
   *(v11 + 24) = v14;
   *(v11 + 8) = v13;
-  objc_storeStrong(v11 + 6, a4);
-  objc_storeStrong(v12 + 9, a5);
-  mFormatID = a3->mFormatID;
+  objc_storeStrong(v11 + 6, data);
+  objc_storeStrong(v12 + 9, info);
+  mFormatID = d->mFormatID;
   if (mFormatID != 1869641075)
   {
     if (mFormatID == 1819304813)
@@ -40,7 +40,7 @@
     goto LABEL_6;
   }
 
-  if (![v12 _populateWithOpusData:v9])
+  if (![v12 _populateWithOpusData:dataCopy])
   {
 LABEL_7:
     v17 = 0;
@@ -54,17 +54,17 @@ LABEL_8:
   return v17;
 }
 
-- (BOOL)_populateWithOpusData:(id)a3
+- (BOOL)_populateWithOpusData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB28] data];
-  v5 = [MEMORY[0x277CBEB28] data];
-  v6 = [v3 length];
-  v7 = [v3 bytes];
+  dataCopy = data;
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [MEMORY[0x277CBEB28] data];
+  v6 = [dataCopy length];
+  bytes = [dataCopy bytes];
   if (v6)
   {
-    v8 = v7;
+    v8 = bytes;
     v9 = 0;
     v10 = 0;
     while (1)
@@ -87,11 +87,11 @@ LABEL_8:
 
       *buf = 0;
       v22 = 0;
-      *buf = [v4 length];
+      *buf = [data length];
       LODWORD(v22) = 0;
       HIDWORD(v22) = v11;
-      [v5 appendBytes:buf length:16];
-      [v4 appendBytes:v12 length:v11];
+      [data2 appendBytes:buf length:16];
+      [data appendBytes:v12 length:v11];
       ++v9;
       v10 += v11;
       if (v14 >= v6)
@@ -120,8 +120,8 @@ LABEL_8:
     v9 = 0;
 LABEL_15:
     self->_packetCount = v9;
-    objc_storeStrong(&self->_packetDescriptions, v5);
-    objc_storeStrong(&self->_rawData, v4);
+    objc_storeStrong(&self->_packetDescriptions, data2);
+    objc_storeStrong(&self->_rawData, data);
     v17 = 1;
   }
 
@@ -129,16 +129,16 @@ LABEL_15:
   return v17;
 }
 
-- (void)writeToURL:(id)a3
+- (void)writeToURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v4 URLByDeletingLastPathComponent];
-    v7 = [v6 path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
 
-    if ([v5 fileExistsAtPath:v7])
+    if ([defaultManager fileExistsAtPath:path])
     {
       v8 = 0;
     }
@@ -146,7 +146,7 @@ LABEL_15:
     else
     {
       v15 = 0;
-      [v5 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v15];
+      [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v15];
       v8 = v15;
       if (v8)
       {
@@ -160,7 +160,7 @@ LABEL_15:
 
     rawData = self->_rawData;
     v14 = 0;
-    [(NSData *)rawData writeToURL:v4 options:0 error:&v14];
+    [(NSData *)rawData writeToURL:lCopy options:0 error:&v14];
     v12 = v14;
     if (v12)
     {

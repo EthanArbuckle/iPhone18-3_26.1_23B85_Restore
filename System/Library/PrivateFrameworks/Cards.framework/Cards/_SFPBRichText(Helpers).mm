@@ -20,16 +20,16 @@
 
 - (void)setMaxLines:()Helpers
 {
-  v4 = [a1 text];
-  [v4 setMaxLines:a3];
+  text = [self text];
+  [text setMaxLines:a3];
 }
 
 - (uint64_t)maxLines
 {
-  v1 = [a1 text];
-  v2 = [v1 maxLines];
+  text = [self text];
+  maxLines = [text maxLines];
 
-  return v2;
+  return maxLines;
 }
 
 @end

@@ -2,7 +2,7 @@
 + (Class)incomingMessageClass;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandCrashTest)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandCrashTest)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (unint64_t)crashCount;
 - (unint64_t)setTestLocks;
 - (void)execute;
@@ -31,9 +31,9 @@
   v76 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
   v3 = containermanager_copy_global_configuration();
-  v4 = [v3 csIdentifier];
+  csIdentifier = [v3 csIdentifier];
 
-  v5 = [(MCMCommand *)self context];
+  context = [(MCMCommand *)self context];
   v69 = 1;
   v6 = containermanager_copy_global_configuration();
   v7 = 12;
@@ -46,36 +46,36 @@
     [v9 dispositionForContainerClass:10];
   }
 
-  v10 = [(MCMCommand *)self context];
-  v11 = [v10 globalConfiguration];
-  v12 = [v11 staticConfig];
-  v13 = [v12 configForContainerClass:v7];
+  context2 = [(MCMCommand *)self context];
+  globalConfiguration = [context2 globalConfiguration];
+  staticConfig = [globalConfiguration staticConfig];
+  v13 = [staticConfig configForContainerClass:v7];
 
-  v14 = [v5 userIdentityCache];
-  v15 = [v14 userIdentityForPersonalPersona];
+  userIdentityCache = [context userIdentityCache];
+  userIdentityForPersonalPersona = [userIdentityCache userIdentityForPersonalPersona];
   active_platform = dyld_get_active_platform();
-  v17 = [(MCMCommand *)self context];
-  v18 = [v17 userIdentityCache];
+  context3 = [(MCMCommand *)self context];
+  userIdentityCache2 = [context3 userIdentityCache];
   v64 = v13;
-  v19 = [MCMContainerIdentity containerIdentityWithUserIdentity:v15 identifier:v4 containerConfig:v13 platform:active_platform userIdentityCache:v18 error:&v69];
+  v19 = [MCMContainerIdentity containerIdentityWithUserIdentity:userIdentityForPersonalPersona identifier:csIdentifier containerConfig:v13 platform:active_platform userIdentityCache:userIdentityCache2 error:&v69];
 
-  v20 = [v5 containerFactory];
+  containerFactory = [context containerFactory];
   v68 = 0;
-  v21 = [v20 containerForContainerIdentity:v19 createIfNecessary:1 error:&v68];
+  v21 = [containerFactory containerForContainerIdentity:v19 createIfNecessary:1 error:&v68];
   v22 = v68;
 
   v67 = v22;
   v23 = [v21 metadataWithError:&v67];
   v24 = v67;
 
-  v65 = v4;
+  v65 = csIdentifier;
   if (!v23)
   {
     v31 = container_log_handle_for_category();
     if (os_log_type_enabled(&v31->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = v4;
+      *&buf[4] = csIdentifier;
       v74 = 2112;
       v75 = v24;
       _os_log_error_impl(&dword_1DF2C3000, &v31->super, OS_LOG_TYPE_ERROR, "Failed to create or lookup lookup existing container for retry test: %@; error = %@", buf, 0x16u);
@@ -95,16 +95,16 @@
     v33 = 0;
 LABEL_16:
     v31 = objc_alloc_init(MCMResultPromise);
-    v39 = [v23 containerIdentity];
-    v70 = v39;
+    containerIdentity = [v23 containerIdentity];
+    v70 = containerIdentity;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v70 count:1];
-    v32 = [MCMCommandOperationDelete commandForOperationDeleteWithContainerIdentities:v40 removeAllCodeSignInfo:0 context:v5 resultPromise:v31];
+    v32 = [MCMCommandOperationDelete commandForOperationDeleteWithContainerIdentities:v40 removeAllCodeSignInfo:0 context:context resultPromise:v31];
 
     [v32 execute];
-    v41 = [(MCMResultPromise *)v31 result];
-    v42 = [v41 error];
+    result = [(MCMResultPromise *)v31 result];
+    error = [result error];
 
-    if (!v42)
+    if (!error)
     {
 
       v46 = objc_opt_new();
@@ -116,23 +116,23 @@ LABEL_16:
     v43 = container_log_handle_for_category();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
-      v61 = [v23 containerPath];
-      v60 = [v61 containerRootURL];
-      v58 = [v60 path];
-      v59 = [(MCMResultPromise *)v31 result];
-      v50 = [v59 error];
+      containerPath = [v23 containerPath];
+      containerRootURL = [containerPath containerRootURL];
+      path = [containerRootURL path];
+      result2 = [(MCMResultPromise *)v31 result];
+      error2 = [result2 error];
       *buf = 138412546;
-      *&buf[4] = v58;
+      *&buf[4] = path;
       v74 = 2112;
-      v75 = v50;
-      v51 = v50;
+      v75 = error2;
+      v51 = error2;
       _os_log_error_impl(&dword_1DF2C3000, v43, OS_LOG_TYPE_ERROR, "Failed to delete retry container at [%@]; error = %@", buf, 0x16u);
     }
 
-    v44 = [(MCMResultPromise *)v31 result];
-    v45 = [v44 error];
+    result3 = [(MCMResultPromise *)v31 result];
+    error3 = [result3 error];
 
-    v24 = v45;
+    v24 = error3;
     v19 = v34;
     v21 = v62;
 LABEL_20:
@@ -149,47 +149,47 @@ LABEL_22:
       _os_log_impl(&dword_1DF2C3000, v47, OS_LOG_TYPE_DEFAULT, "Restart result: %llu, error = %@", buf, 0x16u);
     }
 
-    v48 = [(MCMCommand *)self resultPromise];
-    [v48 completeWithResult:v46];
+    resultPromise = [(MCMCommand *)self resultPromise];
+    [resultPromise completeWithResult:v46];
 
     objc_autoreleasePoolPop(context);
     v49 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v25 = [v23 info];
-  v26 = [v25 objectForKeyedSubscript:@"CrashCounter"];
+  info = [v23 info];
+  v26 = [info objectForKeyedSubscript:@"CrashCounter"];
 
   v63 = v26;
   if (v26)
   {
-    v27 = [v23 info];
-    v28 = [v27 objectForKeyedSubscript:@"CrashCounter"];
-    v29 = [v28 unsignedIntValue];
+    info2 = [v23 info];
+    v28 = [info2 objectForKeyedSubscript:@"CrashCounter"];
+    unsignedIntValue = [v28 unsignedIntValue];
 
-    v30 = v29 - 1;
+    crashCount = unsignedIntValue - 1;
   }
 
   else
   {
-    v30 = [(MCMCommandCrashTest *)self crashCount];
+    crashCount = [(MCMCommandCrashTest *)self crashCount];
   }
 
   v35 = container_log_handle_for_category();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    *&buf[4] = v30;
+    *&buf[4] = crashCount;
     _os_log_error_impl(&dword_1DF2C3000, v35, OS_LOG_TYPE_ERROR, "Restarts remaining in retry test: %llu", buf, 0xCu);
   }
 
   v36 = [MCMCommandSetInfoValue alloc];
-  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v30];
-  v38 = [v23 containerIdentity];
-  v33 = [(MCMCommandSetInfoValue *)v36 initWithKey:@"CrashCounter" value:v37 containerIdentity:v38 context:v5 resultPromise:0];
+  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:crashCount];
+  containerIdentity2 = [v23 containerIdentity];
+  v33 = [(MCMCommandSetInfoValue *)v36 initWithKey:@"CrashCounter" value:v37 containerIdentity:containerIdentity2 context:context resultPromise:0];
 
   [(MCMCommandSetInfoValue *)v33 execute];
-  if (!v30)
+  if (!crashCount)
   {
     v34 = v19;
     goto LABEL_16;
@@ -232,16 +232,16 @@ LABEL_22:
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = containermanager_copy_global_configuration();
-  v4 = [v3 isInternalImage];
+  isInternalImage = [v3 isInternalImage];
 
-  if (v4)
+  if (isInternalImage)
   {
-    v5 = [(MCMCommand *)self context];
-    v6 = [v5 clientIdentity];
-    v7 = [v6 isAllowedToTest];
+    context = [(MCMCommand *)self context];
+    clientIdentity = [context clientIdentity];
+    isAllowedToTest = [clientIdentity isAllowedToTest];
 
     v8 = *MEMORY[0x1E69E9840];
-    return v7;
+    return isAllowedToTest;
   }
 
   else
@@ -251,17 +251,17 @@ LABEL_22:
   }
 }
 
-- (MCMCommandCrashTest)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandCrashTest)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = MCMCommandCrashTest;
-  v9 = [(MCMCommand *)&v12 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v12 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v9->_crashCount = [v8 crashCount];
-    v9->_setTestLocks = [v8 setTestLocks];
+    v9->_crashCount = [messageCopy crashCount];
+    v9->_setTestLocks = [messageCopy setTestLocks];
   }
 
   v10 = *MEMORY[0x1E69E9840];

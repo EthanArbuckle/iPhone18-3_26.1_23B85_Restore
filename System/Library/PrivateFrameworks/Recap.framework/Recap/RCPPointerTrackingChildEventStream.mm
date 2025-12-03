@@ -1,17 +1,17 @@
 @interface RCPPointerTrackingChildEventStream
 - (CAMediaTimingFunction)pointerCurveFunction;
 - (CGPoint)currentPointerLocation;
-- (CGPoint)orientedDestinationPoint:(CGPoint)a3;
-- (CGPoint)orientedNormalPoint:(CGPoint)a3;
-- (CGVector)_deltaToPoint:(CGPoint)a3;
-- (RCPPointerTrackingChildEventStream)initWithCurrentPointerLocation:(CGPoint)a3;
+- (CGPoint)orientedDestinationPoint:(CGPoint)point;
+- (CGPoint)orientedNormalPoint:(CGPoint)point;
+- (CGVector)_deltaToPoint:(CGPoint)point;
+- (RCPPointerTrackingChildEventStream)initWithCurrentPointerLocation:(CGPoint)location;
 - (id)finalizeEventStream;
 - (int64_t)currentInterfaceOrientation;
 - (unint64_t)_currentMachTime;
-- (void)_addIOHIDEventToProcessingBuffer:(__IOHIDEvent *)a3;
-- (void)moveByDelta:(CGVector)a3 duration:(double)a4;
-- (void)movePointerByDelta:(CGVector)a3;
-- (void)moveToPoint:(CGPoint)a3 duration:(double)a4;
+- (void)_addIOHIDEventToProcessingBuffer:(__IOHIDEvent *)buffer;
+- (void)moveByDelta:(CGVector)delta duration:(double)duration;
+- (void)movePointerByDelta:(CGVector)delta;
+- (void)moveToPoint:(CGPoint)point duration:(double)duration;
 @end
 
 @implementation RCPPointerTrackingChildEventStream
@@ -31,18 +31,18 @@
   return pointerCurveFunction;
 }
 
-- (RCPPointerTrackingChildEventStream)initWithCurrentPointerLocation:(CGPoint)a3
+- (RCPPointerTrackingChildEventStream)initWithCurrentPointerLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v9.receiver = self;
   v9.super_class = RCPPointerTrackingChildEventStream;
   v5 = [(RCPPointerTrackingChildEventStream *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     processingEventBuffer = v5->_processingEventBuffer;
-    v5->_processingEventBuffer = v6;
+    v5->_processingEventBuffer = array;
 
     v5->_currentTimeOffset = 0.0;
     v5->_frequency = 60.0;
@@ -61,31 +61,31 @@
   return v3;
 }
 
-- (void)moveToPoint:(CGPoint)a3 duration:(double)a4
+- (void)moveToPoint:(CGPoint)point duration:(double)duration
 {
-  [(RCPPointerTrackingChildEventStream *)self _deltaToPoint:a3.x, a3.y];
+  [(RCPPointerTrackingChildEventStream *)self _deltaToPoint:point.x, point.y];
 
   [RCPPointerTrackingChildEventStream moveByDelta:"moveByDelta:duration:" duration:?];
 }
 
-- (void)moveByDelta:(CGVector)a3 duration:(double)a4
+- (void)moveByDelta:(CGVector)delta duration:(double)duration
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = delta.dy;
+  dx = delta.dx;
   frequency = self->_frequency;
-  v8 = vcvtpd_s64_f64(frequency * a4);
-  v9 = [(RCPPointerTrackingChildEventStream *)self pointerCurveFunction];
+  v8 = vcvtpd_s64_f64(frequency * duration);
+  pointerCurveFunction = [(RCPPointerTrackingChildEventStream *)self pointerCurveFunction];
   if (v8 >= 1)
   {
     v10 = 0;
     v11 = 1.0 / frequency;
-    v12 = v9;
+    v12 = pointerCurveFunction;
     do
     {
       [v12 rcp_solveForDelta:v8 withSteps:v10 step:{dx, dy}];
       [(RCPPointerTrackingChildEventStream *)self movePointerByDelta:?];
       [(RCPPointerTrackingChildEventStream *)self advanceTime:v11];
-      v9 = v12;
+      pointerCurveFunction = v12;
       ++v10;
     }
 
@@ -93,10 +93,10 @@
   }
 }
 
-- (void)movePointerByDelta:(CGVector)a3
+- (void)movePointerByDelta:(CGVector)delta
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = delta.dy;
+  dx = delta.dx;
   [(RCPPointerTrackingChildEventStream *)self _currentMachTime];
   RelativePointerEvent = IOHIDEventCreateRelativePointerEvent();
   [(RCPPointerTrackingChildEventStream *)self _addIOHIDEventToProcessingBuffer:RelativePointerEvent];
@@ -107,10 +107,10 @@
   [(RCPPointerTrackingChildEventStream *)self setCurrentPointerLocation:v7, v8];
 }
 
-- (CGVector)_deltaToPoint:(CGPoint)a3
+- (CGVector)_deltaToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(RCPPointerTrackingChildEventStream *)self currentPointerLocation];
   v7 = x - v6;
   [(RCPPointerTrackingChildEventStream *)self currentPointerLocation];
@@ -124,15 +124,15 @@
 
 - (unint64_t)_currentMachTime
 {
-  v3 = [(RCPPointerTrackingChildEventStream *)self environment];
-  v4 = [v3 machAbsoluteTimeForTimeInterval:self->_currentTimeOffset];
+  environment = [(RCPPointerTrackingChildEventStream *)self environment];
+  v4 = [environment machAbsoluteTimeForTimeInterval:self->_currentTimeOffset];
 
   return v4;
 }
 
-- (void)_addIOHIDEventToProcessingBuffer:(__IOHIDEvent *)a3
+- (void)_addIOHIDEventToProcessingBuffer:(__IOHIDEvent *)buffer
 {
-  v4 = [RCPEvent eventWithHIDEvent:a3 deliveryTimeStamp:[(RCPPointerTrackingChildEventStream *)self _currentMachTime] senderProperties:self->_senderProperties preActions:0];
+  v4 = [RCPEvent eventWithHIDEvent:buffer deliveryTimeStamp:[(RCPPointerTrackingChildEventStream *)self _currentMachTime] senderProperties:self->_senderProperties preActions:0];
   [(NSMutableArray *)self->_processingEventBuffer addObject:v4];
 }
 
@@ -157,26 +157,26 @@
   v3 = v2;
   _Block_object_dispose(&v8, 8);
   v4 = objc_alloc_init(v2);
-  v5 = [v4 activeInterfaceOrientation];
+  activeInterfaceOrientation = [v4 activeInterfaceOrientation];
   [v4 invalidate];
 
-  return v5;
+  return activeInterfaceOrientation;
 }
 
-- (CGPoint)orientedDestinationPoint:(CGPoint)a3
+- (CGPoint)orientedDestinationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = RCPLogPlayback();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCPPointerTrackingChildEventStream orientedDestinationPoint:v6];
   }
 
-  v7 = [(RCPPointerTrackingChildEventStream *)self currentInterfaceOrientation];
+  currentInterfaceOrientation = [(RCPPointerTrackingChildEventStream *)self currentInterfaceOrientation];
   v8 = -y;
   v9 = -x;
-  if (v7 == 2)
+  if (currentInterfaceOrientation == 2)
   {
     v10 = -x;
   }
@@ -186,7 +186,7 @@
     v10 = x;
   }
 
-  if (v7 == 2)
+  if (currentInterfaceOrientation == 2)
   {
     v11 = -y;
   }
@@ -196,7 +196,7 @@
     v11 = y;
   }
 
-  if (v7 == 3)
+  if (currentInterfaceOrientation == 3)
   {
     v10 = y;
   }
@@ -206,7 +206,7 @@
     v9 = v11;
   }
 
-  if (v7 == 4)
+  if (currentInterfaceOrientation == 4)
   {
     v9 = x;
   }
@@ -221,18 +221,18 @@
   return result;
 }
 
-- (CGPoint)orientedNormalPoint:(CGPoint)a3
+- (CGPoint)orientedNormalPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = RCPLogPlayback();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCPPointerTrackingChildEventStream orientedNormalPoint:v6];
   }
 
-  v7 = [(RCPPointerTrackingChildEventStream *)self currentInterfaceOrientation];
-  if (v7 == 2)
+  currentInterfaceOrientation = [(RCPPointerTrackingChildEventStream *)self currentInterfaceOrientation];
+  if (currentInterfaceOrientation == 2)
   {
     v8 = 1.0 - x;
   }
@@ -242,7 +242,7 @@
     v8 = x;
   }
 
-  if (v7 == 2)
+  if (currentInterfaceOrientation == 2)
   {
     v9 = 1.0 - y;
   }
@@ -252,13 +252,13 @@
     v9 = y;
   }
 
-  if (v7 == 3)
+  if (currentInterfaceOrientation == 3)
   {
     v8 = y;
     v9 = 1.0 - x;
   }
 
-  if (v7 == 4)
+  if (currentInterfaceOrientation == 4)
   {
     v10 = 1.0 - y;
   }
@@ -268,7 +268,7 @@
     v10 = v8;
   }
 
-  if (v7 == 4)
+  if (currentInterfaceOrientation == 4)
   {
     v11 = x;
   }

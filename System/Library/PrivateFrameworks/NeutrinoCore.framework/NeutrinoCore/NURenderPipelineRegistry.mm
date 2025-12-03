@@ -2,8 +2,8 @@
 + (id)sharedRegistry;
 - (NURenderPipelineRegistry)init;
 - (id)description;
-- (id)renderPipelineForIdentifier:(id)a3;
-- (void)registerRenderPipeline:(id)a3 forIdentifier:(id)a4;
+- (id)renderPipelineForIdentifier:(id)identifier;
+- (void)registerRenderPipeline:(id)pipeline forIdentifier:(id)identifier;
 @end
 
 @implementation NURenderPipelineRegistry
@@ -37,11 +37,11 @@ uint64_t __39__NURenderPipelineRegistry_description__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)renderPipelineForIdentifier:(id)a3
+- (id)renderPipelineForIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v9 = NUAssertLogger_22421();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -62,8 +62,8 @@ uint64_t __39__NURenderPipelineRegistry_description__block_invoke(uint64_t a1)
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v16;
         *&buf[12] = 2114;
@@ -74,8 +74,8 @@ uint64_t __39__NURenderPipelineRegistry_description__block_invoke(uint64_t a1)
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -95,10 +95,10 @@ uint64_t __39__NURenderPipelineRegistry_description__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invoke;
   block[3] = &unk_1E810B500;
-  v26 = v4;
+  v26 = identifierCopy;
   v27 = buf;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = *(*&buf[8] + 40);
 
@@ -114,12 +114,12 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerRenderPipeline:(id)a3 forIdentifier:(id)a4
+- (void)registerRenderPipeline:(id)pipeline forIdentifier:(id)identifier
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  pipelineCopy = pipeline;
+  identifierCopy = identifier;
+  if (!pipelineCopy)
   {
     v11 = NUAssertLogger_22421();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -140,8 +140,8 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v25;
         v48 = 2114;
@@ -152,8 +152,8 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -162,7 +162,7 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
     _NUAssertFailHandler("[NURenderPipelineRegistry registerRenderPipeline:forIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineRegistry.m", 40, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "pipeline != nil");
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
     v18 = NUAssertLogger_22421();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -183,8 +183,8 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v34;
         v48 = 2114;
@@ -195,8 +195,8 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -211,10 +211,10 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
   block[2] = __65__NURenderPipelineRegistry_registerRenderPipeline_forIdentifier___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v44 = v6;
-  v45 = v7;
-  v9 = v7;
-  v10 = v6;
+  v44 = pipelineCopy;
+  v45 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = pipelineCopy;
   dispatch_sync(queue, block);
 }
 
@@ -237,9 +237,9 @@ uint64_t __56__NURenderPipelineRegistry_renderPipelineForIdentifier___block_invo
 + (id)sharedRegistry
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 renderPipelineRegistry];
+  renderPipelineRegistry = [v2 renderPipelineRegistry];
 
-  return v3;
+  return renderPipelineRegistry;
 }
 
 @end

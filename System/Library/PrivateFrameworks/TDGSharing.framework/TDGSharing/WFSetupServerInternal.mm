@@ -2,13 +2,13 @@
 - (BOOL)resume;
 - (WFSetupServerInternal)init;
 - (_TtC10TDGSharing33WFSetupServerAnisetteDataProvider)anisetteDataProvider;
-- (void)activateWith:(int64_t)a3;
+- (void)activateWith:(int64_t)with;
 - (void)invalidate;
 - (void)prepareToRun;
-- (void)sendSetupWithAction:(unsigned int)a3 info:(id)a4 responseHandler:(id)a5;
-- (void)setAnisetteDataProvider:(id)a3;
-- (void)setWithDelegate:(id)a3;
-- (void)tryPin:(id)a3;
+- (void)sendSetupWithAction:(unsigned int)action info:(id)info responseHandler:(id)handler;
+- (void)setAnisetteDataProvider:(id)provider;
+- (void)setWithDelegate:(id)delegate;
+- (void)tryPin:(id)pin;
 @end
 
 @implementation WFSetupServerInternal
@@ -20,20 +20,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAnisetteDataProvider:(id)a3
+- (void)setAnisetteDataProvider:(id)provider
 {
   v5 = OBJC_IVAR___WFSetupServerInternal_anisetteDataProvider;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = provider;
+  providerCopy = provider;
 }
 
-- (void)setWithDelegate:(id)a3
+- (void)setWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_26C68BDEC(a3);
+  selfCopy = self;
+  sub_26C68BDEC(delegate);
   swift_unknownObjectRelease();
 }
 
@@ -53,49 +53,49 @@
 
 - (void)prepareToRun
 {
-  v2 = self;
+  selfCopy = self;
   sub_26C690860();
 }
 
 - (BOOL)resume
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26C690A24();
 
   return v3 & 1;
 }
 
-- (void)activateWith:(int64_t)a3
+- (void)activateWith:(int64_t)with
 {
-  v4 = self;
-  sub_26C690F78(a3);
+  selfCopy = self;
+  sub_26C690F78(with);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_26C6920E4();
 }
 
-- (void)sendSetupWithAction:(unsigned int)a3 info:(id)a4 responseHandler:(id)a5
+- (void)sendSetupWithAction:(unsigned int)action info:(id)info responseHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     *(swift_allocObject() + 16) = v7;
     v7 = sub_26C69A2D4;
   }
 
-  v8 = self;
-  sub_26C699700(a3);
+  selfCopy = self;
+  sub_26C699700(action);
   sub_26C676904(v7);
 }
 
-- (void)tryPin:(id)a3
+- (void)tryPin:(id)pin
 {
   v4 = sub_26C6D8A08();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_26C692D64(v4, v6);
 }
 

@@ -6,9 +6,9 @@
 
 - (double)searchUIHorizontallyScrollingSectionModel_widthDimensionMultiplier
 {
-  v0 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   result = 1.33333333;
-  if (!v0)
+  if (!isMacOS)
   {
     return 1.0;
   }

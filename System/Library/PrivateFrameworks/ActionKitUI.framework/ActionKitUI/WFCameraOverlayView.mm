@@ -4,13 +4,13 @@
 - (UILabel)photosLabel;
 - (UIView)flashView;
 - (WFCameraFlashButton)flashButton;
-- (WFCameraOverlayView)initWithFrame:(CGRect)a3;
+- (WFCameraOverlayView)initWithFrame:(CGRect)frame;
 - (WFCameraShutterButton)shutterButton;
 - (void)cancelPressed;
 - (void)flashValueChanged;
 - (void)flipPressed;
 - (void)layoutSubviews;
-- (void)setPickerController:(id)a3;
+- (void)setPickerController:(id)controller;
 - (void)shutterPressed;
 - (void)updateButtons;
 - (void)updateFlipButton;
@@ -63,35 +63,35 @@
 
 - (void)updateButtons
 {
-  v3 = [(WFCameraOverlayView *)self pickerController];
-  v4 = [v3 cameraDevice];
+  pickerController = [(WFCameraOverlayView *)self pickerController];
+  cameraDevice = [pickerController cameraDevice];
 
-  v5 = [MEMORY[0x277D755C8] isFlashAvailableForCameraDevice:v4];
+  v5 = [MEMORY[0x277D755C8] isFlashAvailableForCameraDevice:cameraDevice];
   if ((v5 & 1) == 0)
   {
-    v6 = [(WFCameraOverlayView *)self pickerController];
-    [v6 setCameraFlashMode:-1];
+    pickerController2 = [(WFCameraOverlayView *)self pickerController];
+    [pickerController2 setCameraFlashMode:-1];
   }
 
-  v7 = [MEMORY[0x277D755C8] isCameraDeviceAvailable:v4 != 1];
-  v8 = [(WFCameraOverlayView *)self flipButton];
-  [v8 setEnabled:v7];
+  v7 = [MEMORY[0x277D755C8] isCameraDeviceAvailable:cameraDevice != 1];
+  flipButton = [(WFCameraOverlayView *)self flipButton];
+  [flipButton setEnabled:v7];
 
-  v9 = [(WFCameraOverlayView *)self flashButton];
-  [v9 setHidden:v5 ^ 1u];
+  flashButton = [(WFCameraOverlayView *)self flashButton];
+  [flashButton setHidden:v5 ^ 1u];
 
-  v10 = [(WFCameraOverlayView *)self pickerController];
-  v11 = [v10 cameraFlashMode];
-  v12 = [(WFCameraOverlayView *)self flashButton];
-  [v12 setFlashMode:v11];
+  pickerController3 = [(WFCameraOverlayView *)self pickerController];
+  cameraFlashMode = [pickerController3 cameraFlashMode];
+  flashButton2 = [(WFCameraOverlayView *)self flashButton];
+  [flashButton2 setFlashMode:cameraFlashMode];
 
   [(WFCameraOverlayView *)self updateFlipButton];
 }
 
 - (void)updateFlipButton
 {
-  v6 = [(WFCameraOverlayView *)self pickerController];
-  if ([v6 cameraDevice])
+  pickerController = [(WFCameraOverlayView *)self pickerController];
+  if ([pickerController cameraDevice])
   {
     v3 = @"Camera chooser - front facing";
   }
@@ -102,47 +102,47 @@
   }
 
   v4 = WFLocalizedString(v3);
-  v5 = [(WFCameraOverlayView *)self flipButton];
-  [v5 setAccessibilityLabel:v4];
+  flipButton = [(WFCameraOverlayView *)self flipButton];
+  [flipButton setAccessibilityLabel:v4];
 }
 
-- (void)setPickerController:(id)a3
+- (void)setPickerController:(id)controller
 {
-  objc_storeWeak(&self->_pickerController, a3);
+  objc_storeWeak(&self->_pickerController, controller);
 
   [(WFCameraOverlayView *)self updateButtons];
 }
 
 - (void)flashValueChanged
 {
-  v5 = [(WFCameraOverlayView *)self flashButton];
-  v3 = [v5 flashMode];
-  v4 = [(WFCameraOverlayView *)self pickerController];
-  [v4 setCameraFlashMode:v3];
+  flashButton = [(WFCameraOverlayView *)self flashButton];
+  flashMode = [flashButton flashMode];
+  pickerController = [(WFCameraOverlayView *)self pickerController];
+  [pickerController setCameraFlashMode:flashMode];
 }
 
 - (void)cancelPressed
 {
-  v3 = [(WFCameraOverlayView *)self pickerController];
-  v4 = [v3 delegate];
+  pickerController = [(WFCameraOverlayView *)self pickerController];
+  delegate = [pickerController delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(WFCameraOverlayView *)self pickerController];
-    v6 = [v8 delegate];
-    v7 = [(WFCameraOverlayView *)self pickerController];
-    [v6 imagePickerControllerDidCancel:v7];
+    pickerController2 = [(WFCameraOverlayView *)self pickerController];
+    delegate2 = [pickerController2 delegate];
+    pickerController3 = [(WFCameraOverlayView *)self pickerController];
+    [delegate2 imagePickerControllerDidCancel:pickerController3];
   }
 }
 
 - (void)flipPressed
 {
-  v3 = [(WFCameraOverlayView *)self pickerController];
-  v4 = [v3 cameraDevice] != 1;
+  pickerController = [(WFCameraOverlayView *)self pickerController];
+  v4 = [pickerController cameraDevice] != 1;
 
-  v5 = [(WFCameraOverlayView *)self pickerController];
-  [v5 setCameraDevice:v4];
+  pickerController2 = [(WFCameraOverlayView *)self pickerController];
+  [pickerController2 setCameraDevice:v4];
 
   [(WFCameraOverlayView *)self updateButtons];
 }
@@ -170,7 +170,7 @@
     }
 
     v11 = [v3 localizedStringWithFormat:v4, self->_totalPhotos];
-    v18 = [v11 stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+    photosLabel2 = [v11 stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
 
     v12 = MEMORY[0x277CCACA8];
     v13 = WFLocalizedString(@"%1$d %2$@");
@@ -185,26 +185,26 @@
       totalPhotos = self->_totalPhotos;
     }
 
-    v16 = [v12 localizedStringWithFormat:v13, totalPhotos, v18];
-    v17 = [(WFCameraOverlayView *)self photosLabel];
-    [v17 setText:v16];
+    v16 = [v12 localizedStringWithFormat:v13, totalPhotos, photosLabel2];
+    photosLabel = [(WFCameraOverlayView *)self photosLabel];
+    [photosLabel setText:v16];
   }
 
   else
   {
-    v18 = [(WFCameraOverlayView *)self photosLabel];
-    [v18 setText:0];
+    photosLabel2 = [(WFCameraOverlayView *)self photosLabel];
+    [photosLabel2 setText:0];
   }
 }
 
 - (void)shutterPressed
 {
-  v3 = [(WFCameraOverlayView *)self shutterButton];
-  [v3 setEnabled:0];
+  shutterButton = [(WFCameraOverlayView *)self shutterButton];
+  [shutterButton setEnabled:0];
 
   [(WFCameraOverlayView *)self setTakenPhotos:[(WFCameraOverlayView *)self takenPhotos]+ 1];
-  v4 = [(WFCameraOverlayView *)self pickerController];
-  [v4 takePicture];
+  pickerController = [(WFCameraOverlayView *)self pickerController];
+  [pickerController takePicture];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -247,14 +247,14 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
   v20.receiver = self;
   v20.super_class = WFCameraOverlayView;
   [(WFCameraOverlayView *)&v20 layoutSubviews];
-  v3 = [(WFCameraOverlayView *)self flipButton];
-  v4 = [v3 superview];
-  v5 = [v4 isEqual:self];
+  flipButton = [(WFCameraOverlayView *)self flipButton];
+  superview = [flipButton superview];
+  v5 = [superview isEqual:self];
 
   if (v5)
   {
-    v6 = [(WFCameraOverlayView *)self flipButton];
-    [v6 frame];
+    flipButton2 = [(WFCameraOverlayView *)self flipButton];
+    [flipButton2 frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -271,17 +271,17 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     v22.size.height = v14;
     MaxY = CGRectGetMaxY(v22);
     CGAffineTransformMakeTranslation(&v19, 0.0, MinY + MaxY);
-    v17 = [(WFCameraOverlayView *)self pickerController];
+    pickerController = [(WFCameraOverlayView *)self pickerController];
     v18 = v19;
-    [v17 setCameraViewTransform:&v18];
+    [pickerController setCameraViewTransform:&v18];
   }
 }
 
-- (WFCameraOverlayView)initWithFrame:(CGRect)a3
+- (WFCameraOverlayView)initWithFrame:(CGRect)frame
 {
   v127.receiver = self;
   v127.super_class = WFCameraOverlayView;
-  v3 = [(WFCameraOverlayView *)&v127 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFCameraOverlayView *)&v127 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -295,12 +295,12 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     v7 = WFLocalizedString(@"Switches between the front and back facing cameras");
     [v6 setAccessibilityHint:v7];
 
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [v6 setTintColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v6 setTintColor:whiteColor];
 
     v9 = [MEMORY[0x277D79FC8] actionKitImageNamed:@"CameraFlip"];
-    v10 = [v9 UIImage];
-    [v6 setImage:v10 forState:0];
+    uIImage = [v9 UIImage];
+    [v6 setImage:uIImage forState:0];
 
     v11 = WFLocalizedString(@"Camera flip");
     [v6 setAccessibilityLabel:v11];
@@ -310,8 +310,8 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     [(WFCameraOverlayView *)v3 setFlipButton:v6];
     v12 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [v12 setTextColor:v13];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [v12 setTextColor:whiteColor2];
 
     v14 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
     [v12 setFont:v14];
@@ -323,12 +323,12 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     [(WFCameraOverlayView *)v3 updatePhotosLabel];
     v15 = [MEMORY[0x277D75220] buttonWithType:1];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [v15 setTintColor:v16];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [v15 setTintColor:whiteColor3];
 
     v17 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    v18 = [v15 titleLabel];
-    [v18 setFont:v17];
+    titleLabel = [v15 titleLabel];
+    [titleLabel setFont:v17];
 
     v19 = WFLocalizedString(@"Cancel");
     [v15 setTitle:v19 forState:0];
@@ -337,8 +337,8 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     [v4 addSubview:v15];
     v20 = objc_alloc_init(WFCameraFlashButton);
     [(WFCameraFlashButton *)v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [(WFCameraOverlayView *)v3 pickerController];
-    -[WFCameraFlashButton setFlashMode:](v20, "setFlashMode:", [v21 cameraFlashMode]);
+    pickerController = [(WFCameraOverlayView *)v3 pickerController];
+    -[WFCameraFlashButton setFlashMode:](v20, "setFlashMode:", [pickerController cameraFlashMode]);
 
     [(WFCameraFlashButton *)v20 addTarget:v3 action:sel_flashValueChanged forControlEvents:4096];
     [(WFCameraOverlayView *)v3 addSubview:v20];
@@ -350,21 +350,21 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     [(WFCameraOverlayView *)v3 setShutterButton:v22];
     v23 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v24 = [MEMORY[0x277D75348] blackColor];
-    [v23 setBackgroundColor:v24];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v23 setBackgroundColor:blackColor];
 
     [v23 setAlpha:0.0];
     [(WFCameraOverlayView *)v3 addSubview:v23];
     [(WFCameraOverlayView *)v3 sendSubviewToBack:v23];
     [(WFCameraOverlayView *)v3 setFlashView:v23];
-    v25 = [(WFCameraShutterButton *)v22 centerXAnchor];
-    v26 = [v4 centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor = [(WFCameraShutterButton *)v22 centerXAnchor];
+    centerXAnchor2 = [v4 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v4 addConstraint:v27];
 
-    v28 = [(WFCameraShutterButton *)v22 centerYAnchor];
-    v29 = [v4 centerYAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerYAnchor = [(WFCameraShutterButton *)v22 centerYAnchor];
+    centerYAnchor2 = [v4 centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v4 addConstraint:v30];
 
     v120 = v23;
@@ -375,12 +375,12 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
     v33 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[flashView]|" options:0 metrics:0 views:v31];
     [(WFCameraOverlayView *)v3 addConstraints:v33];
 
-    v34 = [MEMORY[0x277D75418] currentDevice];
-    v35 = [v34 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v121 = v20;
     v122 = v31;
-    if (v35 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v36 = v123;
       [v4 addSubview:v123];
@@ -388,69 +388,69 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
       v37 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[sidebarView]|" options:0 metrics:0 views:v31];
       [(WFCameraOverlayView *)v3 addConstraints:v37];
 
-      v38 = [v4 rightAnchor];
-      v39 = [(WFCameraOverlayView *)v3 rightAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39];
+      rightAnchor = [v4 rightAnchor];
+      rightAnchor2 = [(WFCameraOverlayView *)v3 rightAnchor];
+      v40 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       [(WFCameraOverlayView *)v3 addConstraint:v40];
 
       v41 = [MEMORY[0x277CCAAD0] constraintWithItem:v4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:102.0];
       [v4 addConstraint:v41];
 
-      v42 = [v15 centerXAnchor];
-      v43 = [v4 centerXAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      centerXAnchor3 = [v15 centerXAnchor];
+      centerXAnchor4 = [v4 centerXAnchor];
+      v44 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       [v4 addConstraint:v44];
 
-      v45 = [v15 centerYAnchor];
-      v46 = [v4 bottomAnchor];
-      v47 = [v45 constraintEqualToAnchor:v46 constant:-40.0];
+      centerYAnchor3 = [v15 centerYAnchor];
+      bottomAnchor = [v4 bottomAnchor];
+      v47 = [centerYAnchor3 constraintEqualToAnchor:bottomAnchor constant:-40.0];
       [v4 addConstraint:v47];
 
-      v48 = [v15 centerXAnchor];
-      v49 = [v4 centerXAnchor];
-      v50 = [v48 constraintEqualToAnchor:v49];
+      centerXAnchor5 = [v15 centerXAnchor];
+      centerXAnchor6 = [v4 centerXAnchor];
+      v50 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
       [v4 addConstraint:v50];
 
-      v51 = [v15 leadingAnchor];
-      v52 = [v4 layoutMarginsGuide];
-      v53 = [v52 leadingAnchor];
-      v54 = [v51 constraintGreaterThanOrEqualToAnchor:v53];
+      leadingAnchor = [v15 leadingAnchor];
+      layoutMarginsGuide = [v4 layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v54 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
       [v4 addConstraint:v54];
 
-      v55 = [v15 trailingAnchor];
-      v56 = [v4 layoutMarginsGuide];
-      v57 = [v56 trailingAnchor];
-      v58 = [v55 constraintLessThanOrEqualToAnchor:v57];
+      trailingAnchor = [v15 trailingAnchor];
+      layoutMarginsGuide2 = [v4 layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+      v58 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
       [v4 addConstraint:v58];
 
-      v59 = [v123 centerXAnchor];
-      v60 = [v4 centerXAnchor];
-      v61 = [v59 constraintEqualToAnchor:v60];
+      centerXAnchor7 = [v123 centerXAnchor];
+      centerXAnchor8 = [v4 centerXAnchor];
+      v61 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
       [v4 addConstraint:v61];
 
-      v62 = [v123 centerYAnchor];
-      v63 = [v4 topAnchor];
-      v64 = [v62 constraintEqualToAnchor:v63 constant:40.0];
+      centerYAnchor4 = [v123 centerYAnchor];
+      topAnchor = [v4 topAnchor];
+      v64 = [centerYAnchor4 constraintEqualToAnchor:topAnchor constant:40.0];
       [v4 addConstraint:v64];
 
       v65 = [MEMORY[0x277CCAAD0] constraintWithItem:v12 attribute:10 relatedBy:0 toItem:v4 attribute:10 multiplier:1.5 constant:0.0];
       [v4 addConstraint:v65];
 
-      v66 = [v12 centerXAnchor];
-      v67 = [v4 centerXAnchor];
-      v68 = [v66 constraintEqualToAnchor:v67];
+      centerXAnchor9 = [v12 centerXAnchor];
+      centerXAnchor10 = [v4 centerXAnchor];
+      v68 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
       [v4 addConstraint:v68];
 
-      v69 = [v12 leadingAnchor];
-      v70 = [v4 layoutMarginsGuide];
-      v71 = [v70 leadingAnchor];
-      v72 = [v69 constraintGreaterThanOrEqualToAnchor:v71];
+      leadingAnchor3 = [v12 leadingAnchor];
+      layoutMarginsGuide3 = [v4 layoutMarginsGuide];
+      leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+      v72 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
       [v4 addConstraint:v72];
 
-      v73 = [v12 trailingAnchor];
-      v74 = [v4 layoutMarginsGuide];
-      v75 = [v74 trailingAnchor];
-      v76 = [v73 constraintLessThanOrEqualToAnchor:v75];
+      trailingAnchor3 = [v12 trailingAnchor];
+      layoutMarginsGuide4 = [v4 layoutMarginsGuide];
+      trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+      v76 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
       [v4 addConstraint:v76];
     }
 
@@ -460,71 +460,71 @@ void __37__WFCameraOverlayView_shutterPressed__block_invoke_3(uint64_t a1)
       v77 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[sidebarView]-|" options:0 metrics:0 views:v31];
       [(WFCameraOverlayView *)v3 addConstraints:v77];
 
-      v78 = [(WFCameraFlashButton *)v20 topAnchor];
+      topAnchor2 = [(WFCameraFlashButton *)v20 topAnchor];
       [(WFCameraOverlayView *)v3 safeAreaLayoutGuide];
       v80 = v79 = v20;
-      v81 = [v80 topAnchor];
-      v82 = [v78 constraintEqualToAnchor:v81];
+      topAnchor3 = [v80 topAnchor];
+      v82 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
       [(WFCameraOverlayView *)v3 addConstraint:v82];
 
-      v83 = [v4 bottomAnchor];
-      v84 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
-      v85 = [v84 bottomAnchor];
-      v86 = [v83 constraintEqualToAnchor:v85];
+      bottomAnchor2 = [v4 bottomAnchor];
+      layoutMarginsGuide5 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
+      bottomAnchor3 = [layoutMarginsGuide5 bottomAnchor];
+      v86 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       [(WFCameraOverlayView *)v3 addConstraint:v86];
 
-      v87 = [v123 topAnchor];
-      v88 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
-      v89 = [v88 topAnchor];
-      v90 = [v87 constraintEqualToAnchor:v89];
+      topAnchor4 = [v123 topAnchor];
+      layoutMarginsGuide6 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
+      topAnchor5 = [layoutMarginsGuide6 topAnchor];
+      v90 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       [(WFCameraOverlayView *)v3 addConstraint:v90];
 
-      v91 = [v123 rightAnchor];
-      v92 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
-      v93 = [v92 rightAnchor];
-      v94 = [v91 constraintEqualToAnchor:v93];
+      rightAnchor3 = [v123 rightAnchor];
+      layoutMarginsGuide7 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
+      rightAnchor4 = [layoutMarginsGuide7 rightAnchor];
+      v94 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
       [(WFCameraOverlayView *)v3 addConstraint:v94];
 
-      v95 = [(WFCameraFlashButton *)v79 leftAnchor];
-      v96 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
-      v97 = [v96 leftAnchor];
-      v98 = [v95 constraintEqualToAnchor:v97];
+      leftAnchor = [(WFCameraFlashButton *)v79 leftAnchor];
+      layoutMarginsGuide8 = [(WFCameraOverlayView *)v3 layoutMarginsGuide];
+      leftAnchor2 = [layoutMarginsGuide8 leftAnchor];
+      v98 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       [(WFCameraOverlayView *)v3 addConstraint:v98];
 
       v99 = [MEMORY[0x277CCAAD0] constraintWithItem:v4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:102.0];
       [v4 addConstraint:v99];
 
-      v100 = [v15 centerYAnchor];
-      v101 = [v4 centerYAnchor];
-      v102 = [v100 constraintEqualToAnchor:v101];
+      centerYAnchor5 = [v15 centerYAnchor];
+      centerYAnchor6 = [v4 centerYAnchor];
+      v102 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
       [v4 addConstraint:v102];
 
-      v103 = [v15 leadingAnchor];
-      v104 = [v4 layoutMarginsGuide];
-      v105 = [v104 leadingAnchor];
-      v106 = [v103 constraintEqualToAnchor:v105];
+      leadingAnchor5 = [v15 leadingAnchor];
+      layoutMarginsGuide9 = [v4 layoutMarginsGuide];
+      leadingAnchor6 = [layoutMarginsGuide9 leadingAnchor];
+      v106 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       [v4 addConstraint:v106];
 
-      v107 = [v15 trailingAnchor];
-      v108 = [(WFCameraShutterButton *)v22 leadingAnchor];
-      v109 = [v107 constraintLessThanOrEqualToAnchor:v108 constant:-10.0];
+      trailingAnchor5 = [v15 trailingAnchor];
+      leadingAnchor7 = [(WFCameraShutterButton *)v22 leadingAnchor];
+      v109 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor7 constant:-10.0];
       [v4 addConstraint:v109];
 
-      v110 = [v12 centerYAnchor];
-      v111 = [v4 centerYAnchor];
-      v112 = [v110 constraintEqualToAnchor:v111];
+      centerYAnchor7 = [v12 centerYAnchor];
+      centerYAnchor8 = [v4 centerYAnchor];
+      v112 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
       [v4 addConstraint:v112];
 
-      v113 = [v12 trailingAnchor];
-      v114 = [v4 layoutMarginsGuide];
-      v115 = [v114 trailingAnchor];
-      v116 = [v113 constraintEqualToAnchor:v115];
+      trailingAnchor6 = [v12 trailingAnchor];
+      layoutMarginsGuide10 = [v4 layoutMarginsGuide];
+      trailingAnchor7 = [layoutMarginsGuide10 trailingAnchor];
+      v116 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
       [v4 addConstraint:v116];
 
-      v73 = [v12 leadingAnchor];
-      v74 = [(WFCameraShutterButton *)v22 trailingAnchor];
-      v75 = [v73 constraintGreaterThanOrEqualToAnchor:v74 constant:10.0];
-      [v4 addConstraint:v75];
+      trailingAnchor3 = [v12 leadingAnchor];
+      layoutMarginsGuide4 = [(WFCameraShutterButton *)v22 trailingAnchor];
+      trailingAnchor4 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:layoutMarginsGuide4 constant:10.0];
+      [v4 addConstraint:trailingAnchor4];
       v36 = v123;
     }
 

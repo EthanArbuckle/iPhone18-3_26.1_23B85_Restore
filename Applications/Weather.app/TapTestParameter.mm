@@ -2,7 +2,7 @@
 - (NSString)testName;
 - (id)completionHandler;
 - (id)composerBlock;
-- (void)setTestName:(id)a3;
+- (void)setTestName:(id)name;
 @end
 
 @implementation TapTestParameter
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)setTestName:(id)a3
+- (void)setTestName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -37,7 +37,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_10095270C(v4, v6);
 }
 

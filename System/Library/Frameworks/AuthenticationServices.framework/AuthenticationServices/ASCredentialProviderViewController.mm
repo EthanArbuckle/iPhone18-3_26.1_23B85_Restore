@@ -11,9 +11,9 @@
 {
   v4.receiver = self;
   v4.super_class = ASCredentialProviderViewController;
-  v2 = [(ASCredentialProviderViewController *)&v4 extensionContext];
+  extensionContext = [(ASCredentialProviderViewController *)&v4 extensionContext];
 
-  return v2;
+  return extensionContext;
 }
 
 - (void)provideCredentialWithoutUserInteractionForIdentity:(ASPasswordCredentialIdentity *)credentialIdentity
@@ -25,28 +25,28 @@
 - (void)provideCredentialWithoutUserInteractionForRequest:(id)credentialRequest
 {
   v7 = credentialRequest;
-  v4 = [v7 credentialIdentity];
+  credentialIdentity = [v7 credentialIdentity];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v7 credentialIdentity];
-    [(ASCredentialProviderViewController *)self provideCredentialWithoutUserInteractionForIdentity:v6];
+    credentialIdentity2 = [v7 credentialIdentity];
+    [(ASCredentialProviderViewController *)self provideCredentialWithoutUserInteractionForIdentity:credentialIdentity2];
   }
 }
 
 - (void)prepareInterfaceToProvideCredentialForRequest:(id)credentialRequest
 {
   v7 = credentialRequest;
-  v4 = [v7 credentialIdentity];
+  credentialIdentity = [v7 credentialIdentity];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v7 credentialIdentity];
-    [(ASCredentialProviderViewController *)self prepareInterfaceToProvideCredentialForIdentity:v6];
+    credentialIdentity2 = [v7 credentialIdentity];
+    [(ASCredentialProviderViewController *)self prepareInterfaceToProvideCredentialForIdentity:credentialIdentity2];
   }
 }
 

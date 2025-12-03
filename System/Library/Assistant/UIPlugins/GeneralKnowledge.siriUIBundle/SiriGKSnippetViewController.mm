@@ -1,35 +1,35 @@
 @interface SiriGKSnippetViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (Class)transparentHeaderViewClass;
-- (SiriGKSnippetViewController)initWithSnippet:(id)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
+- (SiriGKSnippetViewController)initWithSnippet:(id)snippet;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
 - (double)desiredHeightForTransparentHeaderView;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)_podForSection:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)dragItemForIndexPath:(id)a3;
+- (double)desiredHeightForWidth:(double)width;
+- (id)_podForSection:(int64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)dragItemForIndexPath:(id)path;
 - (id)navigationTitle;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_disambiguationHeaderTapped;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureReusableTransparentHeaderView:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureReusableTransparentHeaderView:(id)view;
 - (void)loadView;
-- (void)setManageBackgroundColor:(BOOL)a3;
+- (void)setManageBackgroundColor:(BOOL)color;
 @end
 
 @implementation SiriGKSnippetViewController
 
-- (SiriGKSnippetViewController)initWithSnippet:(id)a3
+- (SiriGKSnippetViewController)initWithSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v5 = objc_alloc_init(GKCollectionViewFlowLayout);
   v15.receiver = self;
   v15.super_class = SiriGKSnippetViewController;
@@ -37,24 +37,24 @@
 
   if (v6)
   {
-    [(SiriGKSnippetViewController *)v6 setSnippet:v4];
-    v7 = [(SiriGKSnippetViewController *)v6 collectionViewLayout];
-    [v7 setPodList:v6->_podArray];
-    [v7 setDelegate:v6];
-    v8 = [v4 title];
+    [(SiriGKSnippetViewController *)v6 setSnippet:snippetCopy];
+    collectionViewLayout = [(SiriGKSnippetViewController *)v6 collectionViewLayout];
+    [collectionViewLayout setPodList:v6->_podArray];
+    [collectionViewLayout setDelegate:v6];
+    title = [snippetCopy title];
 
-    if (v8)
+    if (title)
     {
-      v9 = [v4 title];
-      [(SiriGKSnippetViewController *)v6 setTitle:v9];
+      title2 = [snippetCopy title];
+      [(SiriGKSnippetViewController *)v6 setTitle:title2];
     }
 
-    v10 = [v4 subtitle];
+    subtitle = [snippetCopy subtitle];
 
-    if (v10)
+    if (subtitle)
     {
-      v11 = [v4 subtitle];
-      [(SiriGKSnippetViewController *)v6 setSubtitle:v11];
+      subtitle2 = [snippetCopy subtitle];
+      [(SiriGKSnippetViewController *)v6 setSubtitle:subtitle2];
     }
 
     [(SiriGKSnippetViewController *)v6 setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
@@ -69,19 +69,19 @@
 - (void)_disambiguationHeaderTapped
 {
   v6 = [NSIndexPath indexPathForRow:0 inSection:[(NSMutableArray *)self->_podArray indexOfObject:self->_bottomAlternateResultsPod]];
-  v3 = [(SiriGKSnippetViewController *)self collectionView];
-  v4 = [v3 layoutAttributesForItemAtIndexPath:v6];
+  collectionView = [(SiriGKSnippetViewController *)self collectionView];
+  v4 = [collectionView layoutAttributesForItemAtIndexPath:v6];
 
-  v5 = [(SiriGKSnippetViewController *)self delegate];
+  delegate = [(SiriGKSnippetViewController *)self delegate];
   [v4 frame];
-  [v5 siriViewController:self setContentOffset:CGRectGetMinY(v8)];
+  [delegate siriViewController:self setContentOffset:CGRectGetMinY(v8)];
 }
 
-- (void)setManageBackgroundColor:(BOOL)a3
+- (void)setManageBackgroundColor:(BOOL)color
 {
-  self->_manageBackgroundColor = a3;
-  v3 = [(SiriGKSnippetViewController *)self collectionViewLayout];
-  [v3 invalidateLayout];
+  self->_manageBackgroundColor = color;
+  collectionViewLayout = [(SiriGKSnippetViewController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)loadView
@@ -89,30 +89,30 @@
   v49.receiver = self;
   v49.super_class = SiriGKSnippetViewController;
   [(SiriGKSnippetViewController *)&v49 loadView];
-  v3 = [(SiriGKSnippetViewController *)self snippet];
-  v4 = [v3 appPunchOut];
-  v5 = [v4 bundleId];
-  v6 = [v5 isEqualToString:@"com.apple.AppStore"];
+  snippet = [(SiriGKSnippetViewController *)self snippet];
+  appPunchOut = [snippet appPunchOut];
+  bundleId = [appPunchOut bundleId];
+  v6 = [bundleId isEqualToString:@"com.apple.AppStore"];
 
   if (v6)
   {
-    v7 = 0;
+    punchOutUri = 0;
   }
 
   else
   {
-    v8 = [v3 appPunchOut];
-    v7 = [v8 punchOutUri];
+    appPunchOut2 = [snippet appPunchOut];
+    punchOutUri = [appPunchOut2 punchOutUri];
   }
 
-  v9 = [(SiriGKSnippetViewController *)self delegate];
-  v10 = [v9 persistentDataStoreForSiriViewController:self];
+  delegate = [(SiriGKSnippetViewController *)self delegate];
+  v10 = [delegate persistentDataStoreForSiriViewController:self];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = [v3 pods];
+  obj = [snippet pods];
   v11 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v11)
   {
@@ -133,7 +133,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [[SiriGKWebLinkPod alloc] initWithPod:v15 safariBackURL:v7];
+          v16 = [[SiriGKWebLinkPod alloc] initWithPod:v15 safariBackURL:punchOutUri];
           goto LABEL_16;
         }
 
@@ -142,7 +142,7 @@
         {
           v17 = SiriGKImagePod;
 LABEL_15:
-          v16 = [[v17 alloc] initWithPod:v15 safariBackURL:v7 usingPersistentStore:v10];
+          v16 = [[v17 alloc] initWithPod:v15 safariBackURL:punchOutUri usingPersistentStore:v10];
           goto LABEL_16;
         }
 
@@ -166,15 +166,15 @@ LABEL_15:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v3 title];
-          if ([v20 length])
+          title = [snippet title];
+          if ([title length])
           {
-            v21 = [v3 subtitle];
-            v22 = [v21 length];
+            subtitle = [snippet subtitle];
+            v22 = [subtitle length];
 
             if (v22)
             {
-              v23 = [v3 subtitle];
+              subtitle2 = [snippet subtitle];
               goto LABEL_33;
             }
           }
@@ -183,14 +183,14 @@ LABEL_15:
           {
           }
 
-          v24 = [v3 title];
-          v25 = [v24 length];
+          title2 = [snippet title];
+          v25 = [title2 length];
 
           if (v25)
           {
-            v23 = [v3 title];
+            subtitle2 = [snippet title];
 LABEL_33:
-            bottomAlternateResultsPod = v23;
+            bottomAlternateResultsPod = subtitle2;
           }
 
           else
@@ -199,7 +199,7 @@ LABEL_33:
           }
 
           v27 = [SiriGKMapPod alloc];
-          if ([v3 sirigk_isMapOnlySnippet])
+          if ([snippet sirigk_isMapOnlySnippet])
           {
             v28 = 261.0;
           }
@@ -261,44 +261,44 @@ LABEL_17:
     while (v30);
   }
 
-  v31 = [v3 appPunchOut];
+  appPunchOut3 = [snippet appPunchOut];
 
-  if (v31)
+  if (appPunchOut3)
   {
-    v32 = [v3 appPunchOut];
-    [(SiriGKSnippetViewController *)self setHeaderPunchOut:v32];
+    appPunchOut4 = [snippet appPunchOut];
+    [(SiriGKSnippetViewController *)self setHeaderPunchOut:appPunchOut4];
 
     [(SiriGKSnippetViewController *)self setShowHeaderChevron:0];
     v33 = [SiriGKAttributionPod alloc];
-    v34 = [v3 appPunchOut];
-    v35 = [(SiriGKAttributionPod *)v33 initWithPunchOut:v34 usingPersistentStore:v10];
+    appPunchOut5 = [snippet appPunchOut];
+    v35 = [(SiriGKAttributionPod *)v33 initWithPunchOut:appPunchOut5 usingPersistentStore:v10];
 
     [(NSMutableArray *)self->_podArray addObject:v35];
   }
 
-  v36 = [(SiriGKSnippetViewController *)self collectionView];
+  collectionView = [(SiriGKSnippetViewController *)self collectionView];
   v37 = objc_opt_class();
   v38 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  [v36 registerClass:v37 forCellWithReuseIdentifier:v38];
+  [collectionView registerClass:v37 forCellWithReuseIdentifier:v38];
 
   v39 = objc_opt_class();
   v40 = +[SiriGKReusableSupplementaryView reuseIdentifier];
-  [v36 registerClass:v39 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v40];
+  [collectionView registerClass:v39 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v40];
 
   v41 = objc_opt_class();
   v42 = +[SiriGKReusableSupplementaryView reuseIdentifier];
-  [v36 registerClass:v41 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v42];
+  [collectionView registerClass:v41 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v42];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if (([(SiriGKSnippetViewController *)self isViewLoaded]& 1) == 0)
   {
     [(SiriGKSnippetViewController *)self loadView];
   }
 
-  v4 = [(SiriGKSnippetViewController *)self collectionViewLayout];
-  [v4 collectionViewContentSize];
+  collectionViewLayout = [(SiriGKSnippetViewController *)self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
 
   return v6;
@@ -319,19 +319,19 @@ LABEL_17:
   return v3;
 }
 
-- (void)configureReusableTransparentHeaderView:(id)a3
+- (void)configureReusableTransparentHeaderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   disambiguationPod = self->_disambiguationPod;
   if (disambiguationPod)
   {
-    v9 = v4;
-    v6 = [(SiriGKDisambiguationPod *)disambiguationPod title];
-    v7 = [(SiriGKDisambiguationPod *)self->_disambiguationPod subtitle];
-    [v9 configureWithTitle:v6 subtitle:v7];
+    v9 = viewCopy;
+    title = [(SiriGKDisambiguationPod *)disambiguationPod title];
+    subtitle = [(SiriGKDisambiguationPod *)self->_disambiguationPod subtitle];
+    [v9 configureWithTitle:title subtitle:subtitle];
 
-    v8 = [v9 headerButton];
-    [v8 addTarget:self action:"_disambiguationHeaderTapped" forControlEvents:64];
+    headerButton = [v9 headerButton];
+    [headerButton addTarget:self action:"_disambiguationHeaderTapped" forControlEvents:64];
   }
 
   _objc_release_x1();
@@ -358,43 +358,43 @@ LABEL_17:
 
 - (id)navigationTitle
 {
-  v3 = [(SiriGKSnippetViewController *)self snippet];
-  v4 = [v3 sirigk_isMapOnlySnippet];
+  snippet = [(SiriGKSnippetViewController *)self snippet];
+  sirigk_isMapOnlySnippet = [snippet sirigk_isMapOnlySnippet];
 
-  if (v4)
+  if (sirigk_isMapOnlySnippet)
   {
-    v5 = SiriGKLocalizedString(@"MAP_POD_NAVIGATION_TITLE");
+    title = SiriGKLocalizedString(@"MAP_POD_NAVIGATION_TITLE");
   }
 
   else
   {
-    v6 = [(SiriGKSnippetViewController *)self snippet];
-    v5 = [v6 title];
+    snippet2 = [(SiriGKSnippetViewController *)self snippet];
+    title = [snippet2 title];
   }
 
-  return v5;
+  return title;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SiriGKSnippetViewController *)self collectionView];
+  viewCopy = view;
+  pathCopy = path;
+  collectionView = [(SiriGKSnippetViewController *)self collectionView];
   v9 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  v10 = [v8 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v7];
+  v10 = [collectionView dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v7 section]);
+  v11 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section]);
   if (v11)
   {
-    v28 = v6;
+    v28 = viewCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v12 = [v10 contentView];
-    v13 = [v12 subviews];
+    contentView = [v10 contentView];
+    subviews = [contentView subviews];
 
-    v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v14 = [subviews countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v14)
     {
       v15 = v14;
@@ -405,7 +405,7 @@ LABEL_17:
         {
           if (*v30 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subviews);
           }
 
           v18 = *(*(&v29 + 1) + 8 * i);
@@ -416,41 +416,41 @@ LABEL_17:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v15 = [subviews countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v15);
     }
 
-    v19 = [v7 section];
-    v6 = v28;
-    if (v19 == [(SiriGKSnippetViewController *)self numberOfSectionsInCollectionView:v28]- 1)
+    section = [pathCopy section];
+    viewCopy = v28;
+    if (section == [(SiriGKSnippetViewController *)self numberOfSectionsInCollectionView:v28]- 1)
     {
       v20 = 0;
     }
 
     else
     {
-      v21 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v7 section] + 1);
-      v22 = [v21 headerView];
+      v21 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section] + 1);
+      headerView = [v21 headerView];
 
-      v20 = v22 == 0;
+      v20 = headerView == 0;
     }
 
-    v23 = [v7 row];
-    if (v23 != -[SiriGKSnippetViewController collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v28, [v7 section]) - 1 || v20)
+    v23 = [pathCopy row];
+    if (v23 != -[SiriGKSnippetViewController collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v28, [pathCopy section]) - 1 || v20)
     {
-      v24 = [v11 keylineType];
+      keylineType = [v11 keylineType];
     }
 
     else
     {
-      v24 = 0;
+      keylineType = 0;
     }
 
-    [v10 setKeylineType:v24];
+    [v10 setKeylineType:keylineType];
     [v10 setHasChevron:0];
-    v25 = [v11 viewAtIndex:{objc_msgSend(v7, "item")}];
+    v25 = [v11 viewAtIndex:{objc_msgSend(pathCopy, "item")}];
     [v10 setCustomView:v25];
     [v25 edgeInsets];
     [v10 setCustomViewEdgeInsets:?];
@@ -468,19 +468,19 @@ LABEL_17:
   return v10;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v8 section]);
-  v10 = [(SiriGKSnippetViewController *)self collectionView];
+  kindCopy = kind;
+  pathCopy = path;
+  v9 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section]);
+  collectionView = [(SiriGKSnippetViewController *)self collectionView];
   v11 = +[SiriGKReusableSupplementaryView reuseIdentifier];
-  v12 = [v10 dequeueReusableSupplementaryViewOfKind:v7 withReuseIdentifier:v11 forIndexPath:v8];
+  v12 = [collectionView dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  if ([v7 isEqualToString:UICollectionElementKindSectionHeader])
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionHeader])
   {
-    v13 = [v9 headerView];
-    if (!v13)
+    headerView = [v9 headerView];
+    if (!headerView)
     {
       goto LABEL_12;
     }
@@ -492,25 +492,25 @@ LABEL_11:
     v20 = v19;
     v22 = v21;
     [v9 headerInsets];
-    [v13 setFrame:{v16 + v26, v18 + v23, v20 - (v26 + v24), v22 - (v23 + v25)}];
-    [v12 setSubview:v13];
+    [headerView setFrame:{v16 + v26, v18 + v23, v20 - (v26 + v24), v22 - (v23 + v25)}];
+    [v12 setSubview:headerView];
 
     goto LABEL_12;
   }
 
-  if ([v7 isEqualToString:UICollectionElementKindSectionFooter])
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionFooter])
   {
-    if ((-[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v8 section] + 1), v14 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())) && (objc_opt_class(), (objc_opt_isKindOfClass()))
+    if ((-[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section] + 1), v14 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())) && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v13 = 0;
+      headerView = 0;
     }
 
     else
     {
-      v13 = [v9 footerView];
+      headerView = [v9 footerView];
     }
 
-    if (v13)
+    if (headerView)
     {
       goto LABEL_11;
     }
@@ -521,36 +521,36 @@ LABEL_12:
   return v12;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(SiriGKSnippetViewController *)self _podForSection:a4];
-  v5 = [v4 viewCount];
+  v4 = [(SiriGKSnippetViewController *)self _podForSection:section];
+  viewCount = [v4 viewCount];
 
-  return v5;
+  return viewCount;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v5 = [(SiriGKSnippetViewController *)self _podForSection:a5, a4];
-  [v5 minimumInteritemSpacing];
+  layout = [(SiriGKSnippetViewController *)self _podForSection:index, layout];
+  [layout minimumInteritemSpacing];
   v7 = v6;
 
   return v7;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v5 = [(SiriGKSnippetViewController *)self _podForSection:a5, a4];
-  [v5 minimumLineSpacing];
+  layout = [(SiriGKSnippetViewController *)self _podForSection:index, layout];
+  [layout minimumLineSpacing];
   v7 = v6;
 
   return v7;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v5 = [(SiriGKSnippetViewController *)self _podForSection:a5, a4];
-  [v5 edgeInsets];
+  layout = [(SiriGKSnippetViewController *)self _podForSection:index, layout];
+  [layout edgeInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -567,13 +567,13 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v6 = [(SiriGKSnippetViewController *)self _podForSection:a5, a4];
-  v7 = [v6 headerView];
-  v8 = [(SiriGKSnippetViewController *)self delegate];
-  [v8 siriViewControllerExpectedWidth:self];
-  [v7 sizeThatFits:?];
+  layout = [(SiriGKSnippetViewController *)self _podForSection:section, layout];
+  headerView = [layout headerView];
+  delegate = [(SiriGKSnippetViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
+  [headerView sizeThatFits:?];
   v10 = v9;
   v12 = v11;
 
@@ -584,13 +584,13 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v6 = [(SiriGKSnippetViewController *)self _podForSection:a5, a4];
-  v7 = [v6 footerView];
-  v8 = [(SiriGKSnippetViewController *)self delegate];
-  [v8 siriViewControllerExpectedWidth:self];
-  [v7 sizeThatFits:?];
+  layout = [(SiriGKSnippetViewController *)self _podForSection:section, layout];
+  footerView = [layout footerView];
+  delegate = [(SiriGKSnippetViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
+  [footerView sizeThatFits:?];
   v10 = v9;
   v12 = v11;
 
@@ -601,16 +601,16 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(SiriGKSnippetViewController *)self delegate];
-  [v7 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  delegate = [(SiriGKSnippetViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   width = v8;
 
-  v10 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v6 section]);
-  v11 = [v10 viewCount];
-  if (v11 <= [v6 item])
+  v10 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section]);
+  viewCount = [v10 viewCount];
+  if (viewCount <= [pathCopy item])
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -618,7 +618,7 @@ LABEL_12:
 
   else
   {
-    v12 = [v10 viewAtIndex:{objc_msgSend(v6, "item")}];
+    v12 = [v10 viewAtIndex:{objc_msgSend(pathCopy, "item")}];
     [v12 sizeThatFits:{width, 1.79769313e308}];
     v14 = v13;
     height = v15;
@@ -635,49 +635,49 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v5 section]);
-  v7 = [v5 item];
+  pathCopy = path;
+  v6 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section]);
+  item = [pathCopy item];
 
-  v8 = [v6 viewAtIndex:v7];
-  LOBYTE(v7) = [v8 isSelectable];
+  v8 = [v6 viewAtIndex:item];
+  LOBYTE(item) = [v8 isSelectable];
 
-  return v7;
+  return item;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v7 section]);
-  v9 = [v8 viewAtIndex:{objc_msgSend(v7, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section]);
+  v9 = [v8 viewAtIndex:{objc_msgSend(pathCopy, "item")}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 imageResource];
+    imageResource = [v9 imageResource];
 
-    if (v10)
+    if (imageResource)
     {
-      v11 = [v9 imageResource];
-      if (v11)
+      imageResource2 = [v9 imageResource];
+      if (imageResource2)
       {
-        v26 = [v9 link];
-        v25 = [v9 displayName];
+        link = [v9 link];
+        displayName = [v9 displayName];
         v12 = objc_alloc_init(SAUIImageView);
-        [v12 setImage:v11];
-        v13 = [v9 command];
-        [v13 setPunchOutUri:v26];
-        [v13 setSubtitle:v25];
-        v30 = v13;
+        [v12 setImage:imageResource2];
+        command = [v9 command];
+        [command setPunchOutUri:link];
+        [command setSubtitle:displayName];
+        v30 = command;
         v14 = [NSArray arrayWithObjects:&v30 count:1];
         [v12 setCommands:v14];
 
-        v15 = [(SiriGKSnippetViewController *)self delegate];
+        delegate = [(SiriGKSnippetViewController *)self delegate];
         v29 = v12;
         v16 = [NSArray arrayWithObjects:&v29 count:1];
-        [v15 siriSnippetViewController:self pushSirilandSnippets:v16];
+        [delegate siriSnippetViewController:self pushSirilandSnippets:v16];
       }
 
       goto LABEL_15;
@@ -687,15 +687,15 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v9 mapViewSnippet];
+    mapViewSnippet = [v9 mapViewSnippet];
 
-    if (v17)
+    if (mapViewSnippet)
     {
-      v11 = [(SiriGKSnippetViewController *)self delegate];
-      v18 = [v9 mapViewSnippet];
-      v28 = v18;
+      imageResource2 = [(SiriGKSnippetViewController *)self delegate];
+      mapViewSnippet2 = [v9 mapViewSnippet];
+      v28 = mapViewSnippet2;
       v19 = [NSArray arrayWithObjects:&v28 count:1];
-      [v11 siriSnippetViewController:self pushSirilandSnippets:v19];
+      [imageResource2 siriSnippetViewController:self pushSirilandSnippets:v19];
 LABEL_14:
 
 LABEL_15:
@@ -712,42 +712,42 @@ LABEL_15:
 
   else
   {
-    v20 = [v9 command];
+    command2 = [v9 command];
 
-    if (v20)
+    if (command2)
     {
-      v21 = [v9 selectionResponseTitle];
+      selectionResponseTitle = [v9 selectionResponseTitle];
 
-      if (v21)
+      if (selectionResponseTitle)
       {
         v22 = objc_alloc_init(SAUIListItem);
-        v23 = [v9 selectionResponseTitle];
-        [v22 setSelectionText:v23];
+        selectionResponseTitle2 = [v9 selectionResponseTitle];
+        [v22 setSelectionText:selectionResponseTitle2];
 
-        v24 = [(SiriGKSnippetViewController *)self delegate];
-        [v24 siriViewController:self addSelectionResponse:v22];
+        delegate2 = [(SiriGKSnippetViewController *)self delegate];
+        [delegate2 siriViewController:self addSelectionResponse:v22];
       }
 
-      v11 = [(SiriGKSnippetViewController *)self delegate];
-      v18 = [v9 command];
-      v27 = v18;
+      imageResource2 = [(SiriGKSnippetViewController *)self delegate];
+      mapViewSnippet2 = [v9 command];
+      v27 = mapViewSnippet2;
       v19 = [NSArray arrayWithObjects:&v27 count:1];
-      [v11 siriViewController:self performAceCommands:v19];
+      [imageResource2 siriViewController:self performAceCommands:v19];
       goto LABEL_14;
     }
   }
 
 LABEL_16:
-  [v6 deselectItemAtIndexPath:v7 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v5 = [(SiriGKSnippetViewController *)self dragItemForIndexPath:a5, a4];
-  v6 = v5;
-  if (v5)
+  session = [(SiriGKSnippetViewController *)self dragItemForIndexPath:path, session];
+  v6 = session;
+  if (session)
   {
-    v9 = v5;
+    v9 = session;
     v7 = [NSArray arrayWithObjects:&v9 count:1];
   }
 
@@ -759,9 +759,9 @@ LABEL_16:
   return v7;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = [(SiriGKSnippetViewController *)self dragItemForIndexPath:a5, a4, a6.x, a6.y];
+  v6 = [(SiriGKSnippetViewController *)self dragItemForIndexPath:path, session, point.x, point.y];
   v7 = v6;
   if (v6)
   {
@@ -777,57 +777,57 @@ LABEL_16:
   return v8;
 }
 
-- (id)dragItemForIndexPath:(id)a3
+- (id)dragItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [v4 section]);
-  v6 = [v4 item];
+  pathCopy = path;
+  v5 = -[SiriGKSnippetViewController _podForSection:](self, "_podForSection:", [pathCopy section]);
+  item = [pathCopy item];
 
-  v7 = [v5 viewAtIndex:v6];
+  v7 = [v5 viewAtIndex:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v9 = [v8 imageResource];
-    v10 = v9;
-    if (v9)
+    imageResource = [v8 imageResource];
+    v10 = imageResource;
+    if (imageResource)
     {
-      v11 = [v9 imageData];
+      imageData = [imageResource imageData];
 
-      if (v11)
+      if (imageData)
       {
-        v12 = [v10 imageData];
-        v13 = [UIImage imageWithData:v12];
+        imageData2 = [v10 imageData];
+        image = [UIImage imageWithData:imageData2];
       }
 
       else
       {
-        v21 = [v10 resourceUrl];
+        resourceUrl = [v10 resourceUrl];
 
-        if (v21)
+        if (resourceUrl)
         {
           v22 = [AFUIRemoteImageRepresentation alloc];
-          v12 = [v10 resourceUrl];
-          v13 = [v22 initWithImageURL:v12];
+          imageData2 = [v10 resourceUrl];
+          image = [v22 initWithImageURL:imageData2];
         }
 
         else
         {
-          v12 = [v8 imageView];
-          v13 = [v12 image];
+          imageData2 = [v8 imageView];
+          image = [imageData2 image];
         }
       }
 
-      v19 = v13;
+      punchoutURL2 = image;
 
       v20 = [NSItemProvider alloc];
     }
 
     else
     {
-      v17 = [v8 punchoutURL];
+      punchoutURL = [v8 punchoutURL];
 
-      if (!v17)
+      if (!punchoutURL)
       {
 LABEL_16:
 
@@ -835,45 +835,45 @@ LABEL_16:
       }
 
       v18 = [NSItemProvider alloc];
-      v19 = [v8 punchoutURL];
+      punchoutURL2 = [v8 punchoutURL];
       v20 = v18;
     }
 
-    v23 = [v20 initWithObject:v19];
+    v23 = [v20 initWithObject:punchoutURL2];
 
-    v17 = [[UIDragItem alloc] initWithItemProvider:v23];
+    punchoutURL = [[UIDragItem alloc] initWithItemProvider:v23];
     goto LABEL_16;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 punchoutURL], v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
   {
-    v17 = 0;
+    punchoutURL = 0;
     goto LABEL_18;
   }
 
   v15 = [NSItemProvider alloc];
-  v16 = [v7 punchoutURL];
-  v8 = [v15 initWithObject:v16];
+  punchoutURL3 = [v7 punchoutURL];
+  v8 = [v15 initWithObject:punchoutURL3];
 
-  v17 = [[UIDragItem alloc] initWithItemProvider:v8];
+  punchoutURL = [[UIDragItem alloc] initWithItemProvider:v8];
 LABEL_17:
 
 LABEL_18:
 
-  return v17;
+  return punchoutURL;
 }
 
-- (id)_podForSection:(int64_t)a3
+- (id)_podForSection:(int64_t)section
 {
-  if ([(NSMutableArray *)self->_podArray count]<= a3)
+  if ([(NSMutableArray *)self->_podArray count]<= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_podArray objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_podArray objectAtIndex:section];
   }
 
   return v5;

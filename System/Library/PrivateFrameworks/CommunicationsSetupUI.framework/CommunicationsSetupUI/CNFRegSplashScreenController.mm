@@ -1,14 +1,14 @@
 @interface CNFRegSplashScreenController
 - (CNFRegSplashScreenController)init;
-- (CNFRegSplashScreenController)initWithRegController:(id)a3 account:(id)a4;
+- (CNFRegSplashScreenController)initWithRegController:(id)controller account:(id)account;
 - (UIBarButtonItem)customLeftButton;
 - (UIBarButtonItem)customRightButton;
-- (void)_getStartedPressed:(id)a3;
-- (void)_learnMorePressed:(id)a3;
+- (void)_getStartedPressed:(id)pressed;
+- (void)_learnMorePressed:(id)pressed;
 - (void)dealloc;
 - (void)loadView;
-- (void)setCustomLeftButton:(id)a3;
-- (void)setCustomRightButton:(id)a3;
+- (void)setCustomLeftButton:(id)button;
+- (void)setCustomRightButton:(id)button;
 - (void)willBecomeActive;
 @end
 
@@ -30,14 +30,14 @@
   return v2;
 }
 
-- (CNFRegSplashScreenController)initWithRegController:(id)a3 account:(id)a4
+- (CNFRegSplashScreenController)initWithRegController:(id)controller account:(id)account
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(CNFRegSplashScreenController *)self init];
   v7 = v6;
   if (v6)
   {
-    [(CNFRegSplashScreenController *)v6 setRegController:v5];
+    [(CNFRegSplashScreenController *)v6 setRegController:controllerCopy];
   }
 
   return v7;
@@ -54,8 +54,8 @@
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v69 = [v3 initWithFrame:?];
 
   [v69 setAutoresizesSubviews:0];
@@ -74,8 +74,8 @@
     v13 = v5 / 580.0 * 131.0;
   }
 
-  v14 = [MEMORY[0x277D75348] whiteColor];
-  [v69 setBackgroundColor:v14];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v69 setBackgroundColor:whiteColor];
 
   v71.origin.x = v7;
   v71.origin.y = v9;
@@ -87,8 +87,8 @@
   v18 = [MEMORY[0x277D74300] fontWithName:@"Helvetica Neue Light" size:18.0];
   [v17 setFont:v18];
 
-  v19 = [MEMORY[0x277D07DB0] sharedInstance];
-  v20 = [v19 supportsWLAN];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsWLAN = [mEMORY[0x277D07DB0] supportsWLAN];
   v21 = _os_feature_enabled_impl();
   v22 = CNFRegStringTableName();
   v23 = CommunicationsSetupUIBundle();
@@ -104,7 +104,7 @@
     v25 = @"FACETIME_SPLASH_SYNOPSIS_WIFI";
   }
 
-  if (v20)
+  if (supportsWLAN)
   {
     v26 = v24;
   }
@@ -117,8 +117,8 @@
   v27 = CNFLocalizedStringFromTableInBundleWithFallback(v26, v22, v23);
   [v17 setText:v27];
 
-  v28 = [MEMORY[0x277D75348] blackColor];
-  [v17 setTextColor:v28];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v17 setTextColor:blackColor];
 
   [v17 setTextAlignment:1];
   [v17 setLineBreakMode:0];
@@ -151,8 +151,8 @@
     v37 = CommunicationsSetupUIBundle();
     v38 = CNFRegStringTableName();
     v39 = [v37 localizedStringForKey:@"FACETIME_SPLASH_LEARN_MORE" value:&stru_2856D3978 table:v38];
-    v40 = [(CNFRegSplashScreenController *)self userInteractionColor];
-    v41 = [CNFRegLearnMoreButton roundedButtonWithText:v39 color:v40];
+    userInteractionColor = [(CNFRegSplashScreenController *)self userInteractionColor];
+    v41 = [CNFRegLearnMoreButton roundedButtonWithText:v39 color:userInteractionColor];
     learnMoreButton = self->_learnMoreButton;
     self->_learnMoreButton = v41;
 
@@ -202,12 +202,12 @@
   v58 = [v56 localizedStringForKey:@"FACETIME_SPLASH_GET_STARTED" value:&stru_2856D3978 table:v57];
   [v55 setTitle:v58 forState:0];
 
-  v59 = [(CNFRegSplashScreenController *)self userInteractionColor];
-  [v55 setTitleColor:v59 forState:0];
+  userInteractionColor2 = [(CNFRegSplashScreenController *)self userInteractionColor];
+  [v55 setTitleColor:userInteractionColor2 forState:0];
 
-  v60 = [v55 titleLabel];
+  titleLabel = [v55 titleLabel];
   v61 = [MEMORY[0x277D74300] fontWithName:@"Helvetica Neue Medium" size:18.0];
-  [v60 setFont:v61];
+  [titleLabel setFont:v61];
 
   [v55 setContentEdgeInsets:{0.0, 6.0, 0.0, 6.0}];
   [v55 setTitleEdgeInsets:{0.0, 0.0, 0.0, 0.0}];
@@ -235,61 +235,61 @@
   [(UIButton *)self->_learnMoreButton setSelected:0];
 }
 
-- (void)_learnMorePressed:(id)a3
+- (void)_learnMorePressed:(id)pressed
 {
   v3 = *MEMORY[0x277D76620];
   v4 = CNFRegLocalizedSplashScreenURL();
   [v3 openURL:v4 withCompletionHandler:0];
 }
 
-- (void)_getStartedPressed:(id)a3
+- (void)_getStartedPressed:(id)pressed
 {
   v4 = [CNFRegSignInController alloc];
-  v5 = [(CNFRegSplashScreenController *)self regController];
-  v10 = [(CNFRegFirstRunController *)v4 initWithRegController:v5];
+  regController = [(CNFRegSplashScreenController *)self regController];
+  v10 = [(CNFRegFirstRunController *)v4 initWithRegController:regController];
 
   [(CNFRegSignInController *)v10 setHideLearnMoreButton:1];
-  v6 = [(CNFRegSplashScreenController *)self delegate];
-  [(CNFRegFirstRunController *)v10 setDelegate:v6];
+  delegate = [(CNFRegSplashScreenController *)self delegate];
+  [(CNFRegFirstRunController *)v10 setDelegate:delegate];
 
-  v7 = [(CNFRegSplashScreenController *)self rootController];
-  [(CNFRegSignInController *)v10 setRootController:v7];
+  rootController = [(CNFRegSplashScreenController *)self rootController];
+  [(CNFRegSignInController *)v10 setRootController:rootController];
 
-  v8 = [(CNFRegSplashScreenController *)self parentController];
-  [(CNFRegSignInController *)v10 setParentController:v8];
+  parentController = [(CNFRegSplashScreenController *)self parentController];
+  [(CNFRegSignInController *)v10 setParentController:parentController];
 
-  v9 = [(CNFRegSplashScreenController *)self rootController];
-  [v9 showController:v10];
+  rootController2 = [(CNFRegSplashScreenController *)self rootController];
+  [rootController2 showController:v10];
 }
 
-- (void)setCustomLeftButton:(id)a3
+- (void)setCustomLeftButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CNFRegSplashScreenController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  buttonCopy = button;
+  navigationItem = [(CNFRegSplashScreenController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:buttonCopy];
 }
 
 - (UIBarButtonItem)customLeftButton
 {
-  v2 = [(CNFRegSplashScreenController *)self navigationItem];
-  v3 = [v2 leftBarButtonItem];
+  navigationItem = [(CNFRegSplashScreenController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-  return v3;
+  return leftBarButtonItem;
 }
 
-- (void)setCustomRightButton:(id)a3
+- (void)setCustomRightButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CNFRegSplashScreenController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  buttonCopy = button;
+  navigationItem = [(CNFRegSplashScreenController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:buttonCopy];
 }
 
 - (UIBarButtonItem)customRightButton
 {
-  v2 = [(CNFRegSplashScreenController *)self navigationItem];
-  v3 = [v2 rightBarButtonItem];
+  navigationItem = [(CNFRegSplashScreenController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  return v3;
+  return rightBarButtonItem;
 }
 
 @end

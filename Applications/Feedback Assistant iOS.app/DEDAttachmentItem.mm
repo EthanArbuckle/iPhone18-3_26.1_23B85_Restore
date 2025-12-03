@@ -6,22 +6,22 @@
 
 - (BOOL)pointsToReachableDir
 {
-  v3 = [(DEDAttachmentItem *)self attachedPath];
+  attachedPath = [(DEDAttachmentItem *)self attachedPath];
   v8 = 0;
-  v4 = [v3 getResourceValue:&v8 forKey:NSURLIsDirectoryKey error:0];
+  v4 = [attachedPath getResourceValue:&v8 forKey:NSURLIsDirectoryKey error:0];
   v5 = v8;
 
   if (v4 && [v5 BOOLValue])
   {
-    v6 = [(DEDAttachmentItem *)self isLocal];
+    isLocal = [(DEDAttachmentItem *)self isLocal];
   }
 
   else
   {
-    v6 = 0;
+    isLocal = 0;
   }
 
-  return v6;
+  return isLocal;
 }
 
 @end

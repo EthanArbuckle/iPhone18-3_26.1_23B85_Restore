@@ -1,24 +1,24 @@
 @interface _MFMailComposePlaceholderView
-- (_MFMailComposePlaceholderView)initWithFrame:(CGRect)a3;
+- (_MFMailComposePlaceholderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _MFMailComposePlaceholderView
 
-- (_MFMailComposePlaceholderView)initWithFrame:(CGRect)a3
+- (_MFMailComposePlaceholderView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = _MFMailComposePlaceholderView;
-  v3 = [(_MFMailComposePlaceholderView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MFMailComposePlaceholderView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(_MFMailComposePlaceholderView *)v3 setAutoresizingMask:18];
-    v5 = [MEMORY[0x1E69DC888] mailGeneralBackgroundColor];
-    [(_MFMailComposePlaceholderView *)v4 setBackgroundColor:v5];
+    mailGeneralBackgroundColor = [MEMORY[0x1E69DC888] mailGeneralBackgroundColor];
+    [(_MFMailComposePlaceholderView *)v4 setBackgroundColor:mailGeneralBackgroundColor];
 
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v8 = v7;
     +[MFMailComposeView preferredHeaderHeight];
     v10 = v9;
@@ -48,8 +48,8 @@
     v25 = [v24 localizedStringForKey:@"CC/BCC" value:&stru_1F3CF3758 table:@"Main"];
     [(MFMailComposeHeaderView *)v23 setLabel:v25];
 
-    v26 = [(MFComposeSubjectView *)v4->_subjectView textView];
-    [v26 setUserInteractionEnabled:0];
+    textView = [(MFComposeSubjectView *)v4->_subjectView textView];
+    [textView setUserInteractionEnabled:0];
 
     [(_MFMailComposePlaceholderView *)v4 addSubview:v4->_toField];
     [(_MFMailComposePlaceholderView *)v4 addSubview:v4->_multiView];

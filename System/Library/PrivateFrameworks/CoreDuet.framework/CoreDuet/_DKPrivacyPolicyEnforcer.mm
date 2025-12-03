@@ -1,6 +1,6 @@
 @interface _DKPrivacyPolicyEnforcer
 + (id)privacyPolicyEnforcer;
-- (id)enforcePrivacy:(id)a3;
+- (id)enforcePrivacy:(id)privacy;
 @end
 
 @implementation _DKPrivacyPolicyEnforcer
@@ -17,19 +17,19 @@
   return v3;
 }
 
-- (id)enforcePrivacy:(id)a3
+- (id)enforcePrivacy:(id)privacy
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v56 = [MEMORY[0x1E695DF70] array];
+  privacyCopy = privacy;
+  array = [MEMORY[0x1E695DF70] array];
   v4 = MEMORY[0x1E696AE18];
   v5 = +[_CDSiriLearningSettings sharedInstance];
-  v6 = [v5 allLearningDisabledBundleIDs];
-  v7 = [v4 predicateWithFormat:@"SELF.source.bundleID IN %@", v6];
+  allLearningDisabledBundleIDs = [v5 allLearningDisabledBundleIDs];
+  v7 = [v4 predicateWithFormat:@"SELF.source.bundleID IN %@", allLearningDisabledBundleIDs];
 
   if (+[_CDDeviceInfo isRunningOnInternalBuild])
   {
-    v8 = [v3 filteredArrayUsingPredicate:v7];
+    v8 = [privacyCopy filteredArrayUsingPredicate:v7];
     if ([v8 count])
     {
       v9 = MEMORY[0x1E695DFD8];
@@ -48,7 +48,7 @@
 
   v50 = v7;
   v13 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v7];
-  v14 = [v3 filteredArrayUsingPredicate:v13];
+  v14 = [privacyCopy filteredArrayUsingPredicate:v13];
 
   v60 = 0u;
   v61 = 0u;
@@ -79,10 +79,10 @@
         if (objc_opt_isKindOfClass())
         {
           v20 = v20;
-          v22 = [v20 stream];
-          v23 = [v22 name];
+          stream = [v20 stream];
+          name = [stream name];
 
-          v24 = [_CDEventStreams privacyPolicyForEventStreamName:v23];
+          v24 = [_CDEventStreams privacyPolicyForEventStreamName:name];
           if (!v24)
           {
             v24 = +[_CDPrivacyPolicy sharedPrivacyPolicy];
@@ -98,44 +98,44 @@
           v25 = v20;
           if (v26 != 0.0)
           {
-            v27 = [v20 startDate];
-            [v27 timeIntervalSinceReferenceDate];
+            startDate = [v20 startDate];
+            [startDate timeIntervalSinceReferenceDate];
             v29 = v28;
 
             [v24 temporalPrecision];
             v31 = v30 * floor(v29 / v30);
-            v32 = [v20 endDate];
-            [v32 timeIntervalSinceReferenceDate];
+            endDate = [v20 endDate];
+            [endDate timeIntervalSinceReferenceDate];
             v34 = v33;
 
             [v24 temporalPrecision];
             v36 = v35 * floor(v34 / v35);
             v54 = *(v18 + 1528);
-            v53 = [v20 stream];
-            v37 = [v20 source];
-            v55 = v23;
+            stream2 = [v20 stream];
+            source = [v20 source];
+            v55 = name;
             v38 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v31];
             v39 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v36];
-            v40 = [v20 value];
+            value = [v20 value];
             [v20 confidence];
             v42 = v41;
             [v20 metadata];
             v44 = v43 = v18;
-            v25 = [v54 eventWithStream:v53 source:v37 startDate:v38 endDate:v39 value:v40 confidence:v44 metadata:v42];
+            v25 = [v54 eventWithStream:stream2 source:source startDate:v38 endDate:v39 value:value confidence:v44 metadata:v42];
 
             v18 = v43;
             v17 = v52;
 
             v15 = v51;
             [v25 setShouldSync:{objc_msgSend(v20, "shouldSync")}];
-            v45 = [v20 UUID];
-            [v25 setUUID:v45];
+            uUID = [v20 UUID];
+            [v25 setUUID:uUID];
 
             [v25 setCompatibilityVersion:{objc_msgSend(v20, "compatibilityVersion")}];
-            v46 = [v20 timeZone];
-            [v25 setTimeZone:v46];
+            timeZone = [v20 timeZone];
+            [v25 setTimeZone:timeZone];
 
-            v23 = v55;
+            name = v55;
           }
 
           v20 = v25;
@@ -146,7 +146,7 @@
           goto LABEL_23;
         }
 
-        [v56 addObject:v20];
+        [array addObject:v20];
 LABEL_22:
 
 LABEL_23:
@@ -160,7 +160,7 @@ LABEL_23:
     while (v17);
   }
 
-  v47 = [v56 copy];
+  v47 = [array copy];
   v48 = *MEMORY[0x1E69E9840];
 
   return v47;

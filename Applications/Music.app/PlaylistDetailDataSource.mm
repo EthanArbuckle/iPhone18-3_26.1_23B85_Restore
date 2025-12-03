@@ -1,19 +1,19 @@
 @interface PlaylistDetailDataSource
 - (_TtC5Music24PlaylistDetailDataSource)init;
-- (id)_collectionView:(id)a3 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (id)_collectionView:(id)view indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)reference;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)updateSearchResultsForSearchController:(id)controller;
 @end
 
 @implementation PlaylistDetailDataSource
@@ -22,7 +22,7 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC5Music24PlaylistDetailDataSource_asyncSetupTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_10010FC20(&qword_1011824A0);
     Task.cancel()();
@@ -30,7 +30,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -38,82 +38,82 @@
   [(PlaylistDetailDataSource *)&v5 dealloc];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10086843C(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10086843C(section);
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10080FBAC(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10080FBAC(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_100810ECC(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100810ECC(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   type metadata accessor for IndexPath();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = sub_10086B65C(v7);
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = self;
+  selfCopy = self;
   v5 = sub_100853B54();
   [v5 resignFirstResponder];
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_10086BE48(v9, a5);
+  selfCopy = self;
+  sub_10086BE48(configurationCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)_collectionView:(id)a3 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)a4
+- (id)_collectionView:(id)view indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)reference
 {
   v7 = sub_10010FC20(&unk_10118BCE0);
   __chkstk_darwin(v7 - 8);
   v9 = &v21 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v10);
   v12 = &v21 - v11;
-  if (a4)
+  if (reference)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for IndexPath();
@@ -126,8 +126,8 @@
     (*(*(v13 - 8) + 56))(v9, 1, 1, v13);
   }
 
-  v14 = a3;
-  v15 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100813D14(v12);
 
   sub_1000095E8(v9, &unk_10118BCE0);
@@ -145,73 +145,73 @@
   return v18;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_10086C6A8(v13, v11);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_10086C6A8(cellCopy, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_10086C82C(v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   type metadata accessor for IndexPath();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  sub_1008147A0(v7, v6);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1008147A0(viewCopy, v6);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100814CE0(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100814CE0(controllerCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_100814DE8(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_100814DE8(scrollCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v12 = a3;
-  [v12 contentOffset];
+  draggingCopy = dragging;
+  [draggingCopy contentOffset];
   v7 = v6;
-  [v12 adjustedContentInset];
+  [draggingCopy adjustedContentInset];
   if (v7 != -v8)
   {
-    y = a5->y;
-    [v12 safeAreaInsets];
+    y = offset->y;
+    [draggingCopy safeAreaInsets];
     if (y < -v10)
     {
-      [v12 safeAreaInsets];
-      a5->y = -v11;
+      [draggingCopy safeAreaInsets];
+      offset->y = -v11;
     }
   }
 }

@@ -1,6 +1,6 @@
 @interface OnboardingTopContentShortViewController
-- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)updateLayoutOnTraitChanges;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -10,13 +10,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2A5254();
 }
 
 - (void)updateLayoutOnTraitChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2A5824();
 }
 
@@ -35,14 +35,14 @@
   }
 }
 
-- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI39OnboardingTopContentShortViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,9 +1,9 @@
 @interface NRIdentityProxyClient
-- (NRIdentityProxyClient)initWithCertificateReference:(id)a3 options:(id)a4;
-- (NRIdentityProxyClient)initWithIdentityReference:(id)a3 options:(id)a4;
+- (NRIdentityProxyClient)initWithCertificateReference:(id)reference options:(id)options;
+- (NRIdentityProxyClient)initWithIdentityReference:(id)reference options:(id)options;
 - (id)copySecKeyProxy;
 - (id)description;
-- (id)initInternal:(void *)a3 options:;
+- (id)initInternal:(void *)internal options:;
 - (void)dealloc;
 @end
 
@@ -121,8 +121,8 @@ LABEL_69:
               v56 = v50;
               if (v50)
               {
-                v57 = [v50 endpoint];
-                v58 = v57 == 0;
+                endpoint = [v50 endpoint];
+                v58 = endpoint == 0;
 
                 if (!v58)
                 {
@@ -410,11 +410,11 @@ LABEL_55:
   [(NRIdentityProxyClient *)&v8 dealloc];
 }
 
-- (NRIdentityProxyClient)initWithCertificateReference:(id)a3 options:(id)a4
+- (NRIdentityProxyClient)initWithCertificateReference:(id)reference options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  referenceCopy = reference;
+  optionsCopy = options;
+  if (!referenceCopy)
   {
     v10 = nrCopyLogObj_1145();
     if (sNRCopyLogToStdErr == 1)
@@ -438,38 +438,38 @@ LABEL_55:
     goto LABEL_8;
   }
 
-  if (![v6 length])
+  if (![referenceCopy length])
   {
 LABEL_8:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  v8 = [(NRIdentityProxyClient *)&self->super.isa initInternal:v6 options:v7];
+  v8 = [(NRIdentityProxyClient *)&self->super.isa initInternal:referenceCopy options:optionsCopy];
   *(v8 + 9) = 1;
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)initInternal:(void *)a3 options:
+- (id)initInternal:(void *)internal options:
 {
   v26 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  internalCopy = internal;
+  if (self)
   {
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = NRIdentityProxyClient;
     v8 = objc_msgSendSuper2(&v25, sel_init);
     if (v8)
     {
-      a1 = v8;
+      self = v8;
       v8[2] = atomic_fetch_add_explicit(&initInternal_options__sNRIPCClientID, 1uLL, memory_order_relaxed);
       objc_storeStrong(v8 + 6, a2);
-      objc_storeStrong(a1 + 3, a3);
+      objc_storeStrong(self + 3, internal);
       goto LABEL_4;
     }
 
@@ -506,14 +506,14 @@ LABEL_9:
 LABEL_4:
 
   v9 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (NRIdentityProxyClient)initWithIdentityReference:(id)a3 options:(id)a4
+- (NRIdentityProxyClient)initWithIdentityReference:(id)reference options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  referenceCopy = reference;
+  optionsCopy = options;
+  if (!referenceCopy)
   {
     v10 = nrCopyLogObj_1145();
     if (sNRCopyLogToStdErr == 1)
@@ -537,20 +537,20 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  if (![v6 length])
+  if (![referenceCopy length])
   {
 LABEL_8:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  v8 = [(NRIdentityProxyClient *)&self->super.isa initInternal:v6 options:v7];
+  v8 = [(NRIdentityProxyClient *)&self->super.isa initInternal:referenceCopy options:optionsCopy];
   *(v8 + 8) = 1;
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

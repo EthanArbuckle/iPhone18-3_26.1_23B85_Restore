@@ -1,38 +1,38 @@
 @interface ADSignpostUtils
-+ (void)markEndFrame:(BOOL)a3 name:(id)a4 mappingId:(unint64_t)a5;
++ (void)markEndFrame:(BOOL)frame name:(id)name mappingId:(unint64_t)id;
 + (void)markEndMeasurement;
-+ (void)markStartFrame:(id)a3 mappingId:(unint64_t)a4;
++ (void)markStartFrame:(id)frame mappingId:(unint64_t)id;
 + (void)markStartMeasurement;
 @end
 
 @implementation ADSignpostUtils
 
-+ (void)markEndFrame:(BOOL)a3 name:(id)a4 mappingId:(unint64_t)a5
++ (void)markEndFrame:(BOOL)frame name:(id)name mappingId:(unint64_t)id
 {
-  v5 = a4;
-  [v5 UTF8String];
+  nameCopy = name;
+  [nameCopy UTF8String];
   kdebug_trace();
 }
 
-+ (void)markStartFrame:(id)a3 mappingId:(unint64_t)a4
++ (void)markStartFrame:(id)frame mappingId:(unint64_t)id
 {
-  v4 = a3;
-  [v4 UTF8String];
+  frameCopy = frame;
+  [frameCopy UTF8String];
   kdebug_trace();
 }
 
 + (void)markEndMeasurement
 {
   kdebug_trace();
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  [v3 systemUptime];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   NSLog(&cfstr_PnpMeasurement_0.isa, v2);
 }
 
 + (void)markStartMeasurement
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  [v2 systemUptime];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   NSLog(&cfstr_PnpMeasurement.isa, v3);
 
   kdebug_trace();

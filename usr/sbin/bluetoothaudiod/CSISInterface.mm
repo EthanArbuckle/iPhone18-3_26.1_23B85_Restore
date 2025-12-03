@@ -1,21 +1,21 @@
 @interface CSISInterface
-+ (BOOL)ResolveRSIWithSirk:(id)a3 withSirk:(id)a4;
-+ (id)csisSdf:(id)a3 withSirk:(id)a4;
-- (CSISInterface)initWithPeripheral:(id)a3 service:(id)a4;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
++ (BOOL)ResolveRSIWithSirk:(id)sirk withSirk:(id)withSirk;
++ (id)csisSdf:(id)sdf withSirk:(id)sirk;
+- (CSISInterface)initWithPeripheral:(id)peripheral service:(id)service;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CSISInterface
 
-- (CSISInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (CSISInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v7.receiver = self;
   v7.super_class = CSISInterface;
-  v4 = [(ServiceInterface *)&v7 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v7 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -46,9 +46,9 @@
   v12[4] = v7;
   v8 = [NSArray arrayWithObjects:v12 count:5];
 
-  v9 = [(ServiceInterface *)self peripheral];
-  v10 = [(ServiceInterface *)self service];
-  [v9 discoverCharacteristics:v8 forService:v10];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v8 forService:service];
 }
 
 - (void)stop
@@ -58,17 +58,17 @@
   [(ServiceInterface *)&v2 stop];
 }
 
-+ (id)csisSdf:(id)a3 withSirk:(id)a4
++ (id)csisSdf:(id)sdf withSirk:(id)sirk
 {
-  v5 = a4;
+  sirkCopy = sirk;
   v13[0] = 0;
   v13[1] = 0;
   v12[0] = 0;
   v12[1] = 0;
   v11[0] = 0;
   v11[1] = 0;
-  [a3 getBytes:v13 length:16];
-  [v5 getBytes:v12 length:16];
+  [sdf getBytes:v13 length:16];
+  [sirkCopy getBytes:v12 length:16];
   v6 = 0;
   v7 = 0xF00000000;
   do
@@ -87,40 +87,40 @@
   return v9;
 }
 
-+ (BOOL)ResolveRSIWithSirk:(id)a3 withSirk:(id)a4
++ (BOOL)ResolveRSIWithSirk:(id)sirk withSirk:(id)withSirk
 {
   WORD2(v7) = 0;
   LODWORD(v7) = 0;
   key[0] = 0;
   key[1] = 0;
-  v5 = a4;
-  [a3 getBytes:&v7 length:6];
-  [v5 getBytes:key length:{16, v7}];
+  withSirkCopy = withSirk;
+  [sirk getBytes:&v7 length:6];
+  [withSirkCopy getBytes:key length:{16, v7}];
 
   return sub_1000256EC(&v7, key);
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
   v10 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v9;
+    v44 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService %@", buf, 0xCu);
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v32 = v8;
+    v32 = serviceCopy;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = [v8 characteristics];
+    obj = [serviceCopy characteristics];
     v11 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v11)
     {
@@ -144,15 +144,15 @@
           if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v17;
-            v19 = [v16 UUID];
+            uUID = [v16 UUID];
             *buf = 138412290;
-            v44 = v19;
+            v44 = uUID;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService Characteristic %@", buf, 0xCu);
           }
 
-          v20 = [v16 UUID];
+          uUID2 = [v16 UUID];
           v21 = [CBUUID UUIDWithString:v14];
-          v22 = [v20 isEqual:v21];
+          v22 = [uUID2 isEqual:v21];
 
           if (v22)
           {
@@ -161,9 +161,9 @@
 
           else
           {
-            v23 = [v16 UUID];
+            uUID3 = [v16 UUID];
             v24 = [CBUUID UUIDWithString:v35];
-            v25 = [v23 isEqual:v24];
+            v25 = [uUID3 isEqual:v24];
 
             if (v25)
             {
@@ -172,9 +172,9 @@
 
             else
             {
-              v26 = [v16 UUID];
+              uUID4 = [v16 UUID];
               v27 = [CBUUID UUIDWithString:v34];
-              v28 = [v26 isEqual:v27];
+              v28 = [uUID4 isEqual:v27];
 
               if (v28)
               {
@@ -183,9 +183,9 @@
 
               else
               {
-                v29 = [v16 UUID];
+                uUID5 = [v16 UUID];
                 v30 = [CBUUID UUIDWithString:v33];
-                v31 = [v29 isEqual:v30];
+                v31 = [uUID5 isEqual:v30];
 
                 if (v31)
                 {
@@ -197,10 +197,10 @@
 
           if (([v16 properties] & 0x10) != 0)
           {
-            [v7 setNotifyValue:1 forCharacteristic:v16];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:v16];
           }
 
-          [v7 readValueForCharacteristic:v16];
+          [peripheralCopy readValueForCharacteristic:v16];
         }
 
         v12 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -210,22 +210,22 @@
     }
 
     [(ServiceInterface *)self notifyDidStart];
-    v9 = 0;
-    v8 = v32;
+    errorCopy = 0;
+    serviceCopy = v32;
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CSISInterface *)self setLock];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  setLock = [(CSISInterface *)self setLock];
 
-  if (v9 == v8)
+  if (setLock == characteristicCopy)
   {
-    v20 = [(CSISInterface *)self setLock];
-    v21 = [v20 value];
-    v15 = [DataInputStream inputStreamWithData:v21];
+    setLock2 = [(CSISInterface *)self setLock];
+    value = [setLock2 value];
+    v15 = [DataInputStream inputStreamWithData:value];
 
     LOBYTE(v60[0]) = 0;
     if ([v15 readUint8:v60])
@@ -234,10 +234,10 @@
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [(ServiceInterface *)self peripheral];
-        v25 = [v24 name];
+        peripheral = [(ServiceInterface *)self peripheral];
+        name = [peripheral name];
         *buf = 138412546;
-        v57 = v25;
+        v57 = name;
         v58 = 1024;
         LODWORD(v59) = LOBYTE(v60[0]);
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Updated Lock state for member %@: %u", buf, 0x12u);
@@ -246,27 +246,27 @@
       [(CSISInterface *)self setLockState:LOBYTE(v60[0])];
     }
 
-    v26 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
 
-    if (!v26)
+    if (!serviceEventHandler)
     {
       goto LABEL_38;
     }
 
     v27 = [NSNumber numberWithUnsignedChar:LOBYTE(v60[0])];
-    v28 = [(ServiceInterface *)self serviceEventHandler];
-    v28[2](v28, 23, v27);
+    serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler2[2](serviceEventHandler2, 23, v27);
     goto LABEL_37;
   }
 
-  v10 = [(CSISInterface *)self setSIRK];
+  setSIRK = [(CSISInterface *)self setSIRK];
 
-  if (v10 == v8)
+  if (setSIRK == characteristicCopy)
   {
     v53 = 0;
-    v29 = [(CSISInterface *)self setSIRK];
-    v30 = [v29 value];
-    v15 = [DataInputStream inputStreamWithData:v30 byteOrder:1];
+    setSIRK2 = [(CSISInterface *)self setSIRK];
+    value2 = [setSIRK2 value];
+    v15 = [DataInputStream inputStreamWithData:value2 byteOrder:1];
 
     [v15 readUint8:&v53];
     [(CSISInterface *)self setEncryptedSirk:v53];
@@ -274,8 +274,8 @@
     v31 = objc_alloc_init(NSMutableData);
     [(CSISInterface *)self setSetIdentityResolvingKey:v31];
 
-    v32 = [(CSISInterface *)self setIdentityResolvingKey];
-    [v15 readNumBytes:16 toData:v32];
+    setIdentityResolvingKey = [(CSISInterface *)self setIdentityResolvingKey];
+    [v15 readNumBytes:16 toData:setIdentityResolvingKey];
 
     if (![(CSISInterface *)self encryptedSirk])
     {
@@ -287,8 +287,8 @@
       }
 
       v34 = +[ConnectionManager instance];
-      v35 = [(ServiceInterface *)self peripheral];
-      v36 = [v34 retrievePairingInfo:v35];
+      peripheral2 = [(ServiceInterface *)self peripheral];
+      v36 = [v34 retrievePairingInfo:peripheral2];
 
       v37 = [v36 objectForKeyedSubscript:@"kCBMsgArgRemoteLTK"];
       if (!*[v37 bytes])
@@ -302,13 +302,13 @@
         }
       }
 
-      v39 = [(CSISInterface *)self setIdentityResolvingKey];
-      v40 = [CSISInterface csisSdf:v37 withSirk:v39];
+      setIdentityResolvingKey2 = [(CSISInterface *)self setIdentityResolvingKey];
+      v40 = [CSISInterface csisSdf:v37 withSirk:setIdentityResolvingKey2];
 
       if (v40)
       {
-        v41 = [(CSISInterface *)self setIdentityResolvingKey];
-        [v41 setData:v40];
+        setIdentityResolvingKey3 = [(CSISInterface *)self setIdentityResolvingKey];
+        [setIdentityResolvingKey3 setData:v40];
       }
 
       else
@@ -323,19 +323,19 @@ LABEL_27:
       }
     }
 
-    v27 = [v7 customProperty:@"SirkInDevCache"];
+    v27 = [peripheralCopy customProperty:@"SirkInDevCache"];
     v60[0] = 0;
     v60[1] = 0;
-    v28 = objc_alloc_init(NSMutableString);
-    v46 = [(CSISInterface *)self setIdentityResolvingKey];
-    [v46 getBytes:v60 length:16];
+    serviceEventHandler2 = objc_alloc_init(NSMutableString);
+    setIdentityResolvingKey4 = [(CSISInterface *)self setIdentityResolvingKey];
+    [setIdentityResolvingKey4 getBytes:v60 length:16];
 
     for (i = 0; i != 16; ++i)
     {
-      [v28 appendFormat:@"%02x", *(v60 + i)];
+      [serviceEventHandler2 appendFormat:@"%02x", *(v60 + i)];
     }
 
-    if (v27 && ([v27 isEqualToString:v28] & 1) != 0)
+    if (v27 && ([v27 isEqualToString:serviceEventHandler2] & 1) != 0)
     {
       v48 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -343,14 +343,14 @@ LABEL_27:
         *buf = 138412546;
         v57 = v27;
         v58 = 2112;
-        v59 = v7;
+        v59 = peripheralCopy;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "stored SIRK %@ of peripheral %@", buf, 0x16u);
       }
     }
 
     else
     {
-      [v7 setCustomProperty:@"SirkInDevCache" value:v28];
+      [peripheralCopy setCustomProperty:@"SirkInDevCache" value:serviceEventHandler2];
     }
 
 LABEL_37:
@@ -358,14 +358,14 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v11 = [(CSISInterface *)self setRank];
+  setRank = [(CSISInterface *)self setRank];
 
-  if (v11 == v8)
+  if (setRank == characteristicCopy)
   {
     LOBYTE(v60[0]) = 0;
-    v42 = [(CSISInterface *)self setRank];
-    v43 = [v42 value];
-    v15 = [DataInputStream inputStreamWithData:v43];
+    setRank2 = [(CSISInterface *)self setRank];
+    value3 = [setRank2 value];
+    v15 = [DataInputStream inputStreamWithData:value3];
 
     if ([v15 readUint8:v60])
     {
@@ -383,17 +383,17 @@ LABEL_37:
 
   else
   {
-    v12 = [(CSISInterface *)self setSize];
+    setSize = [(CSISInterface *)self setSize];
 
-    if (v12 != v8)
+    if (setSize != characteristicCopy)
     {
       goto LABEL_39;
     }
 
     LOBYTE(v60[0]) = 0;
-    v13 = [(CSISInterface *)self setSize];
-    v14 = [v13 value];
-    v15 = [DataInputStream inputStreamWithData:v14];
+    setSize2 = [(CSISInterface *)self setSize];
+    value4 = [setSize2 value];
+    v15 = [DataInputStream inputStreamWithData:value4];
 
     if ([v15 readUint8:v60])
     {
@@ -413,62 +413,62 @@ LABEL_37:
     v55 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
 
-    v19 = [(ServiceInterface *)self serviceEventHandler];
-    (v19)[2](v19, 26, v18);
+    serviceEventHandler3 = [(ServiceInterface *)self serviceEventHandler];
+    (serviceEventHandler3)[2](serviceEventHandler3, 26, v18);
   }
 
 LABEL_38:
 
 LABEL_39:
-  v49 = [(ServiceInterface *)self serviceEventHandler];
+  serviceEventHandler4 = [(ServiceInterface *)self serviceEventHandler];
 
-  if (v49)
+  if (serviceEventHandler4)
   {
-    v50 = [(ServiceInterface *)self serviceEventHandler];
-    v51 = [v8 UUID];
-    v52 = [v51 UUIDString];
-    (v50)[2](v50, 25, v52);
+    serviceEventHandler5 = [(ServiceInterface *)self serviceEventHandler];
+    uUID = [characteristicCopy UUID];
+    uUIDString = [uUID UUIDString];
+    (serviceEventHandler5)[2](serviceEventHandler5, 25, uUIDString);
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSISInterface *)self setLock];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  setLock = [(CSISInterface *)self setLock];
 
-  if (v9 == v8)
+  if (setLock == characteristicCopy)
   {
     v10 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(ServiceInterface *)self peripheral];
-      v13 = [v12 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       v18 = 138412546;
-      v19 = v13;
+      v19 = name;
       v20 = 2112;
-      v21 = v7;
+      v21 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Lock result for member %@: %@", &v18, 0x16u);
     }
 
-    v14 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
 
-    if (v14)
+    if (serviceEventHandler)
     {
-      if ([v7 code] == 133)
+      if ([errorCopy code] == 133)
       {
-        v15 = 0;
+        code = 0;
       }
 
       else
       {
-        v15 = [v7 code];
+        code = [errorCopy code];
       }
 
-      v16 = [NSNumber numberWithUnsignedChar:v15];
-      v17 = [(ServiceInterface *)self serviceEventHandler];
-      (v17)[2](v17, 24, v16);
+      v16 = [NSNumber numberWithUnsignedChar:code];
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 24, v16);
     }
   }
 }

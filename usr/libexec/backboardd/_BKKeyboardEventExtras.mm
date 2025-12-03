@@ -1,21 +1,21 @@
 @interface _BKKeyboardEventExtras
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)copy;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation _BKKeyboardEventExtras
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v9 = a3;
-  v4 = [v9 appendObject:self->_authenticationSpecification withName:@"authSpec" skipIfNil:1];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendObject:self->_authenticationSpecification withName:@"authSpec" skipIfNil:1];
   eventSource = self->_eventSource;
   v6 = NSStringFromBKSHIDEventSource();
-  [v9 appendString:v6 withName:@"eventSource"];
+  [formatterCopy appendString:v6 withName:@"eventSource"];
 
-  v7 = [v9 appendBool:self->_modifiersOnly withName:@"modifiersOnly"];
-  v8 = [v9 appendUnsignedInteger:self->_GSModifierState withName:@"GSModifierState" format:1];
+  v7 = [formatterCopy appendBool:self->_modifiersOnly withName:@"modifiersOnly"];
+  v8 = [formatterCopy appendUnsignedInteger:self->_GSModifierState withName:@"GSModifierState" format:1];
 }
 
 - (id)copy
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -39,7 +39,7 @@
   else
   {
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 && (authenticationSpecification = self->_authenticationSpecification, v6 = v4->_authenticationSpecification, BSEqualObjects()) && self->_eventSource == v4->_eventSource && self->_modifiersOnly == v4->_modifiersOnly && self->_GSModifierState == v4->_GSModifierState;
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 && (authenticationSpecification = self->_authenticationSpecification, v6 = equalCopy->_authenticationSpecification, BSEqualObjects()) && self->_eventSource == equalCopy->_eventSource && self->_modifiersOnly == equalCopy->_modifiersOnly && self->_GSModifierState == equalCopy->_GSModifierState;
   }
 
   return v7;

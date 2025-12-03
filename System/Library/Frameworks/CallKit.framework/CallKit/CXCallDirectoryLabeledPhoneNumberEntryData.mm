@@ -1,9 +1,9 @@
 @interface CXCallDirectoryLabeledPhoneNumberEntryData
 - (CXCallDirectoryLabeledPhoneNumberEntryData)init;
-- (CXCallDirectoryLabeledPhoneNumberEntryData)initWithCoder:(id)a3;
-- (const)utf8LabelAtIndex:(unint64_t)a3 length:(unsigned __int16 *)a4;
-- (int64_t)phoneNumberAtIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CXCallDirectoryLabeledPhoneNumberEntryData)initWithCoder:(id)coder;
+- (const)utf8LabelAtIndex:(unint64_t)index length:(unsigned __int16 *)length;
+- (int64_t)phoneNumberAtIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXCallDirectoryLabeledPhoneNumberEntryData
@@ -15,24 +15,24 @@
   v2 = [(CXCallDirectoryLabeledPhoneNumberEntryData *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
     phoneNumberData = v2->_phoneNumberData;
-    v2->_phoneNumberData = v3;
+    v2->_phoneNumberData = data;
 
-    v5 = [MEMORY[0x1E695DEF0] data];
+    data2 = [MEMORY[0x1E695DEF0] data];
     labelData = v2->_labelData;
-    v2->_labelData = v5;
+    v2->_labelData = data2;
   }
 
   return v2;
 }
 
-- (int64_t)phoneNumberAtIndex:(unint64_t)a3
+- (int64_t)phoneNumberAtIndex:(unint64_t)index
 {
   v6[0] = 0;
   v6[1] = 0;
-  v4 = 16 * a3;
-  if (16 * a3 + 16 > [(NSData *)self->_phoneNumberData length])
+  v4 = 16 * index;
+  if (16 * index + 16 > [(NSData *)self->_phoneNumberData length])
   {
     [CXCallDirectoryLabeledPhoneNumberEntryData phoneNumberAtIndex:];
     return 0;
@@ -45,12 +45,12 @@
   }
 }
 
-- (const)utf8LabelAtIndex:(unint64_t)a3 length:(unsigned __int16 *)a4
+- (const)utf8LabelAtIndex:(unint64_t)index length:(unsigned __int16 *)length
 {
   v14 = 0;
   v15 = 0;
-  v6 = 16 * a3;
-  if (16 * a3 + 16 > [(NSData *)self->_phoneNumberData length])
+  v6 = 16 * index;
+  if (16 * index + 16 > [(NSData *)self->_phoneNumberData length])
   {
     [CXCallDirectoryLabeledPhoneNumberEntryData utf8LabelAtIndex:length:];
     return 0;
@@ -68,7 +68,7 @@
 
   [(NSData *)self->_labelData getBytes:&v13 range:v7, 2];
   v9 = v13;
-  *a4 = v13;
+  *length = v13;
   v10 = v9 + v15 + 2;
   if (v10 > [(NSData *)self->_labelData length])
   {
@@ -76,13 +76,13 @@
     return 0;
   }
 
-  v11 = [(NSData *)self->_labelData bytes];
-  return &v11[v15 + 2];
+  bytes = [(NSData *)self->_labelData bytes];
+  return &bytes[v15 + 2];
 }
 
-- (CXCallDirectoryLabeledPhoneNumberEntryData)initWithCoder:(id)a3
+- (CXCallDirectoryLabeledPhoneNumberEntryData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CXCallDirectoryLabeledPhoneNumberEntryData;
   v5 = [(CXCallDirectoryLabeledPhoneNumberEntryData *)&v15 init];
@@ -90,13 +90,13 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_phoneNumberData);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     phoneNumberData = v5->_phoneNumberData;
     v5->_phoneNumberData = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_labelData);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     labelData = v5->_labelData;
     v5->_labelData = v12;
   }
@@ -104,16 +104,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryLabeledPhoneNumberEntryData *)self phoneNumberData];
+  coderCopy = coder;
+  phoneNumberData = [(CXCallDirectoryLabeledPhoneNumberEntryData *)self phoneNumberData];
   v6 = NSStringFromSelector(sel_phoneNumberData);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:phoneNumberData forKey:v6];
 
-  v8 = [(CXCallDirectoryLabeledPhoneNumberEntryData *)self labelData];
+  labelData = [(CXCallDirectoryLabeledPhoneNumberEntryData *)self labelData];
   v7 = NSStringFromSelector(sel_labelData);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:labelData forKey:v7];
 }
 
 - (void)phoneNumberAtIndex:.cold.1()

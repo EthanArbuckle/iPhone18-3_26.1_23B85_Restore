@@ -1,27 +1,27 @@
 @interface DebugHierarchyPropertyActionLegacyV1
-- (id)_serializePropertyDescription:(id)a3;
-- (void)performInContext:(id)a3 withObject:(id)a4;
+- (id)_serializePropertyDescription:(id)description;
+- (void)performInContext:(id)context withObject:(id)object;
 @end
 
 @implementation DebugHierarchyPropertyActionLegacyV1
 
-- (void)performInContext:(id)a3 withObject:(id)a4
+- (void)performInContext:(id)context withObject:(id)object
 {
-  v26 = a3;
-  v6 = a4;
-  if ([(DebugHierarchyPropertyAction *)self isTargetingObject:v6]&& DBHIsInstanceOverridingNSObjectSelector(v6, "debugHierarchyPropertyDescriptions"))
+  contextCopy = context;
+  objectCopy = object;
+  if ([(DebugHierarchyPropertyAction *)self isTargetingObject:objectCopy]&& DBHIsInstanceOverridingNSObjectSelector(objectCopy, "debugHierarchyPropertyDescriptions"))
   {
-    v27 = v6;
-    v7 = [v6 debugHierarchyPropertyDescriptions];
+    v27 = objectCopy;
+    debugHierarchyPropertyDescriptions = [objectCopy debugHierarchyPropertyDescriptions];
     v29 = +[NSMutableArray array];
-    v8 = [(DebugHierarchyPropertyAction *)self propertyNames];
-    v31 = [v8 count];
+    propertyNames = [(DebugHierarchyPropertyAction *)self propertyNames];
+    v31 = [propertyNames count];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v7;
+    obj = debugHierarchyPropertyDescriptions;
     v9 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (!v9)
     {
@@ -42,13 +42,13 @@
         v12 = [v11 objectForKeyedSubscript:@"propertyName"];
         if (v31)
         {
-          v13 = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
+          propertyNamesAreExclusive = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
           v34 = 0u;
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v14 = [(DebugHierarchyPropertyAction *)self propertyNames];
-          v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          propertyNames2 = [(DebugHierarchyPropertyAction *)self propertyNames];
+          v15 = [propertyNames2 countByEnumeratingWithState:&v32 objects:v40 count:16];
           if (v15)
           {
             v16 = *v33;
@@ -58,7 +58,7 @@ LABEL_11:
             {
               if (*v33 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(propertyNames2);
               }
 
               if ([*(*(&v32 + 1) + 8 * v17) isEqualToString:v12])
@@ -68,7 +68,7 @@ LABEL_11:
 
               if (v15 == ++v17)
               {
-                v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+                v15 = [propertyNames2 countByEnumeratingWithState:&v32 objects:v40 count:16];
                 if (v15)
                 {
                   goto LABEL_11;
@@ -78,9 +78,9 @@ LABEL_11:
               }
             }
 
-            v18 = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
+            propertyNamesAreExclusive2 = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
 
-            if (v18)
+            if (propertyNamesAreExclusive2)
             {
               goto LABEL_25;
             }
@@ -90,7 +90,7 @@ LABEL_11:
           {
 LABEL_17:
 
-            if (!v13)
+            if (!propertyNamesAreExclusive)
             {
               goto LABEL_25;
             }
@@ -98,9 +98,9 @@ LABEL_17:
         }
 
         v19 = [v11 objectForKeyedSubscript:@"propertyOptions"];
-        v20 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-        if (DebugHierarchyBitMaskComparison(v20, [(DebugHierarchyPropertyAction *)self options], [(DebugHierarchyPropertyAction *)self optionsComparisonStyle]))
+        if (DebugHierarchyBitMaskComparison(unsignedIntegerValue, [(DebugHierarchyPropertyAction *)self options], [(DebugHierarchyPropertyAction *)self optionsComparisonStyle]))
         {
           if (DBHIsInstanceOverridingNSObjectSelector(v27, "debugHierarchyValueForPropertyWithName:"))
           {
@@ -128,26 +128,26 @@ LABEL_25:
 LABEL_27:
 
         v25 = [v29 copy];
-        [v26 addProperties:v25 toObject:v27];
+        [contextCopy addProperties:v25 toObject:v27];
 
-        v6 = v27;
+        objectCopy = v27;
         break;
       }
     }
   }
 }
 
-- (id)_serializePropertyDescription:(id)a3
+- (id)_serializePropertyDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 copy];
+  descriptionCopy = description;
+  v4 = [descriptionCopy copy];
   v17 = 0;
   v5 = DBGSerializePropertyDescriptionAsJSON(v4, &v17);
   v6 = v17;
 
   if (v6)
   {
-    v7 = [v3 objectForKeyedSubscript:@"propertyName"];
+    v7 = [descriptionCopy objectForKeyedSubscript:@"propertyName"];
     v8 = v7;
     v9 = @"<nil>";
     if (v7)

@@ -1,9 +1,9 @@
 @interface ATXActivitySuggestionsFeedbackProcessor
 + (id)queue;
 - (ATXActivitySuggestionsFeedbackProcessor)init;
-- (ATXActivitySuggestionsFeedbackProcessor)initWithFeedbackStream:(id)a3 feedbackHistogramHelper:(id)a4;
+- (ATXActivitySuggestionsFeedbackProcessor)initWithFeedbackStream:(id)stream feedbackHistogramHelper:(id)helper;
 - (id)_activitySuggestionsFeedbackBookmark;
-- (void)processFeedbackWithXPCActivity:(id)a3;
+- (void)processFeedbackWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXActivitySuggestionsFeedbackProcessor
@@ -17,18 +17,18 @@
   return v5;
 }
 
-- (ATXActivitySuggestionsFeedbackProcessor)initWithFeedbackStream:(id)a3 feedbackHistogramHelper:(id)a4
+- (ATXActivitySuggestionsFeedbackProcessor)initWithFeedbackStream:(id)stream feedbackHistogramHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  helperCopy = helper;
   v12.receiver = self;
   v12.super_class = ATXActivitySuggestionsFeedbackProcessor;
   v9 = [(ATXActivitySuggestionsFeedbackProcessor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_feedbackStream, a3);
-    objc_storeStrong(&v10->_feedbackHistogramHelper, a4);
+    objc_storeStrong(&v9->_feedbackStream, stream);
+    objc_storeStrong(&v10->_feedbackHistogramHelper, helper);
   }
 
   return v10;
@@ -57,18 +57,18 @@ void __48__ATXActivitySuggestionsFeedbackProcessor_queue__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)processFeedbackWithXPCActivity:(id)a3
+- (void)processFeedbackWithXPCActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [objc_opt_class() queue];
+  activityCopy = activity;
+  queue = [objc_opt_class() queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__ATXActivitySuggestionsFeedbackProcessor_processFeedbackWithXPCActivity___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = activityCopy;
+  v6 = activityCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __74__ATXActivitySuggestionsFeedbackProcessor_processFeedbackWithXPCActivity___block_invoke(uint64_t a1)

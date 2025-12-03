@@ -1,9 +1,9 @@
 @interface MTASnoozeDurationCell
 + (NSString)reuseIdentifier;
 - (UITableView)tableView;
-- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithCoder:(id)a3;
-- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithViewModel:(id)a3 in:(id)a4;
+- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithCoder:(id)coder;
+- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithViewModel:(id)model in:(id)in;
 - (void)configure;
 @end
 
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithViewModel:(id)a3 in:(id)a4
+- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithViewModel:(id)model in:(id)in
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_10005EEBC(v5, a4);
+  modelCopy = model;
+  inCopy = in;
+  return sub_10005EEBC(modelCopy, in);
 }
 
-- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithCoder:(id)a3
+- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -46,12 +46,12 @@
   sub_10005F33C(v4);
   type metadata accessor for SnoozeDurationView();
   sub_10005F3A0();
-  v3 = self;
+  selfCopy = self;
   UIHostingConfiguration<>.init(content:)();
   UITableViewCell.contentConfiguration.setter();
 }
 
-- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11MobileTimer21MTASnoozeDurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

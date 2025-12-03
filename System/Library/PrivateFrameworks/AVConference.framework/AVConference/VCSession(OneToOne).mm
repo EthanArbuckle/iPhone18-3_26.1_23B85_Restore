@@ -14,9 +14,9 @@
 {
   v3 = a3;
   v7[5] = *MEMORY[0x1E69E9840];
-  v5 = [(NSArray *)[(VCSession *)self remoteParticipants] firstObject];
+  firstObject = [(NSArray *)[(VCSession *)self remoteParticipants] firstObject];
   self->_isOneToOneRemoteMediaStalling = v3;
-  [VCRemoteVideoManager_DefaultManager() remoteMediaDidStall:v3 streamToken:{objc_msgSend(v5, "participantVideoToken")}];
+  [VCRemoteVideoManager_DefaultManager() remoteMediaDidStall:v3 streamToken:{objc_msgSend(firstObject, "participantVideoToken")}];
   if (v3)
   {
     notificationQueue = self->_notificationQueue;
@@ -679,17 +679,17 @@ LABEL_9:
 
 - (uint64_t)switchFromMultiwayToOneToOne
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
-      return [a1 oneToOneToMultiwaySwitchResume];
+      return [self oneToOneToMultiwaySwitchResume];
     }
 
     VRTraceErrorLogLevelToCSTR();
     if (!OUTLINED_FUNCTION_28())
     {
-      return [a1 oneToOneToMultiwaySwitchResume];
+      return [self oneToOneToMultiwaySwitchResume];
     }
 
     OUTLINED_FUNCTION_1_0();
@@ -697,7 +697,7 @@ LABEL_9:
     OUTLINED_FUNCTION_11_1();
 LABEL_11:
     _os_log_error_impl(v2, v3, v4, v5, v6, v7);
-    return [a1 oneToOneToMultiwaySwitchResume];
+    return [self oneToOneToMultiwaySwitchResume];
   }
 
   if (OUTLINED_FUNCTION_28_0())
@@ -718,7 +718,7 @@ LABEL_11:
     }
   }
 
-  return [a1 oneToOneToMultiwaySwitchResume];
+  return [self oneToOneToMultiwaySwitchResume];
 }
 
 - (void)negotiateOneToOneWithRemoteParticipant:()OneToOne .cold.1(uint64_t a1)
@@ -980,7 +980,7 @@ LABEL_9:
 
 - (void)startOneToOne
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {

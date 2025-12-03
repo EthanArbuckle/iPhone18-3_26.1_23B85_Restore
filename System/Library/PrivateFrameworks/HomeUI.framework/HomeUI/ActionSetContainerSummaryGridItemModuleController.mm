@@ -1,19 +1,19 @@
 @interface ActionSetContainerSummaryGridItemModuleController
-- (Class)collectionCellClassForItem:(id)a3;
-- (_TtC6HomeUI49ActionSetContainerSummaryGridItemModuleController)initWithModule:(id)a3;
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4;
-- (id)displayedItemsInSection:(id)a3;
-- (id)transform:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)sceneEditor:(id)a3 removeActionSetBuilderFromTrigger:(id)a4;
+- (Class)collectionCellClassForItem:(id)item;
+- (_TtC6HomeUI49ActionSetContainerSummaryGridItemModuleController)initWithModule:(id)module;
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment;
+- (id)displayedItemsInSection:(id)section;
+- (id)transform:(id)transform;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)sceneEditor:(id)editor removeActionSetBuilderFromTrigger:(id)trigger;
 @end
 
 @implementation ActionSetContainerSummaryGridItemModuleController
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
   sub_20CECF940(0, &qword_27C81DFD0);
-  if ([a3 isKindOfClass_])
+  if ([item isKindOfClass_])
   {
     type metadata accessor for SceneTileCell();
   }
@@ -26,24 +26,24 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20CFA2E00(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CFA2E00(cellCopy, itemCopy);
 }
 
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment
 {
   v6 = sub_20D567838();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_20CFA2CCC();
   v14 = xmmword_20D5BD270;
   v15 = 0;
-  sub_20CEFA3C8(v6, v8, &v14, a4);
+  sub_20CEFA3C8(v6, v8, &v14, environment);
   v12 = v11;
 
   swift_unknownObjectRelease();
@@ -51,17 +51,17 @@
   return v12;
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
   sub_20D567838();
-  v4 = self;
-  v5 = [(HUItemModuleController *)v4 module];
-  v6 = [(HFItemModule *)v5 itemUpdater];
+  selfCopy = self;
+  module = [(HUItemModuleController *)selfCopy module];
+  itemUpdater = [(HFItemModule *)module itemUpdater];
 
-  if (v6)
+  if (itemUpdater)
   {
     v7 = sub_20D5677F8();
-    v8 = [(HFItemUpdating *)v6 displayedItemsInSectionWithIdentifier:v7];
+    v8 = [(HFItemUpdating *)itemUpdater displayedItemsInSectionWithIdentifier:v7];
 
     swift_unknownObjectRelease();
     sub_20CECF940(0, &qword_281120AC0);
@@ -78,30 +78,30 @@
   return v9;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_20CFA36D0(v4);
+  transformCopy = transform;
+  selfCopy = self;
+  v6 = sub_20CFA36D0(transformCopy);
 
   return v6;
 }
 
-- (void)sceneEditor:(id)a3 removeActionSetBuilderFromTrigger:(id)a4
+- (void)sceneEditor:(id)editor removeActionSetBuilderFromTrigger:(id)trigger
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_20CFA3238(a3, a4);
+  editorCopy = editor;
+  triggerCopy = trigger;
+  selfCopy = self;
+  sub_20CFA3238(editor, trigger);
 }
 
-- (_TtC6HomeUI49ActionSetContainerSummaryGridItemModuleController)initWithModule:(id)a3
+- (_TtC6HomeUI49ActionSetContainerSummaryGridItemModuleController)initWithModule:(id)module
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC6HomeUI49ActionSetContainerSummaryGridItemModuleController____lazy_storage___collectionLayoutManager) = 0;
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = type metadata accessor for ActionSetContainerSummaryGridItemModuleController();
-  return [(HUItemModuleController *)&v6 initWithModule:a3];
+  return [(HUItemModuleController *)&v6 initWithModule:module];
 }
 
 @end

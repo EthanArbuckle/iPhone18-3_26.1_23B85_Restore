@@ -1,5 +1,5 @@
 @interface GAXSBIconOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_gaxShouldAppearLaunchDisabled;
 - (BOOL)isLaunchEnabled;
 - (BOOL)isUninstallSupported;
@@ -7,12 +7,12 @@
 
 @implementation GAXSBIconOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isUninstallSupported" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isLaunchEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"contextMenuInteraction:configurationForMenuAtLocation:" withFullSignature:{"@", "{CGPoint=dd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isUninstallSupported" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isLaunchEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"contextMenuInteraction:configurationForMenuAtLocation:" withFullSignature:{"@", "{CGPoint=dd}", 0}];
 }
 
 - (BOOL)_gaxShouldAppearLaunchDisabled
@@ -36,17 +36,17 @@
   v3 = +[GAXSpringboard sharedInstance];
   if ([v3 isActive])
   {
-    v4 = 0;
+    isUninstallSupported = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = GAXSBIconOverride;
-    v4 = [(GAXSBIconOverride *)&v6 isUninstallSupported];
+    isUninstallSupported = [(GAXSBIconOverride *)&v6 isUninstallSupported];
   }
 
-  return v4;
+  return isUninstallSupported;
 }
 
 - (BOOL)isLaunchEnabled

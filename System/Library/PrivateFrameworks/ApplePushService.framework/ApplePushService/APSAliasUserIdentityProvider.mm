@@ -1,24 +1,24 @@
 @interface APSAliasUserIdentityProvider
 - (APSAliasUserIdentityProvider)init;
-- (APSAliasUserIdentityProvider)initWithMainUserIdentityProvider:(id)a3;
-- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 dataToSign:(id)a5 time:(id)a6 useIDSNonceVersion:(BOOL)a7 nonceOut:(id *)a8 signatureOut:(id *)a9;
+- (APSAliasUserIdentityProvider)initWithMainUserIdentityProvider:(id)provider;
+- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey dataToSign:(id)sign time:(id)time useIDSNonceVersion:(BOOL)version nonceOut:(id *)out signatureOut:(id *)signatureOut;
 - (id)errorsSinceLastSuccessfulServerPresence;
-- (id)fetchVMHostCertsAndSignData:(id)a3 error:(id *)a4;
-- (void)checkIdentityIsAvailable:(id)a3 hasExistingToken:(BOOL)a4;
-- (void)debugForceDeleteIdentity:(id)a3;
-- (void)fetchClientIdentityWithReason:(unint64_t)a3 hasExistingToken:(BOOL)a4 completionHandler:(id)a5;
-- (void)forceIdentityRefresh:(id)a3;
+- (id)fetchVMHostCertsAndSignData:(id)data error:(id *)error;
+- (void)checkIdentityIsAvailable:(id)available hasExistingToken:(BOOL)token;
+- (void)debugForceDeleteIdentity:(id)identity;
+- (void)fetchClientIdentityWithReason:(unint64_t)reason hasExistingToken:(BOOL)token completionHandler:(id)handler;
+- (void)forceIdentityRefresh:(id)refresh;
 - (void)noteInvalidServerPresence;
-- (void)noteServerBagUpdate:(id)a3 finishedProcessingServerBagUpdateBlock:(id)a4;
-- (void)preloadIdentity:(id)a3;
-- (void)setIdentityAvailabilityDidChangeBlock:(id)a3;
+- (void)noteServerBagUpdate:(id)update finishedProcessingServerBagUpdateBlock:(id)block;
+- (void)preloadIdentity:(id)identity;
+- (void)setIdentityAvailabilityDidChangeBlock:(id)block;
 @end
 
 @implementation APSAliasUserIdentityProvider
 
-- (APSAliasUserIdentityProvider)initWithMainUserIdentityProvider:(id)a3
+- (APSAliasUserIdentityProvider)initWithMainUserIdentityProvider:(id)provider
 {
-  *(&self->super.isa + OBJC_IVAR___APSAliasUserIdentityProvider_mainUserIdentityProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR___APSAliasUserIdentityProvider_mainUserIdentityProvider) = provider;
   v4.receiver = self;
   v4.super_class = type metadata accessor for AliasUserIdentityProvider();
   swift_unknownObjectRetain();
@@ -32,25 +32,25 @@
   return result;
 }
 
-- (void)checkIdentityIsAvailable:(id)a3 hasExistingToken:(BOOL)a4
+- (void)checkIdentityIsAvailable:(id)available hasExistingToken:(BOOL)token
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(available);
   v4[2](v4, 0);
 
   _Block_release(v4);
 }
 
-- (void)noteServerBagUpdate:(id)a3 finishedProcessingServerBagUpdateBlock:(id)a4
+- (void)noteServerBagUpdate:(id)update finishedProcessingServerBagUpdateBlock:(id)block
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(block);
   v4[2]();
 
   _Block_release(v4);
 }
 
-- (void)fetchClientIdentityWithReason:(unint64_t)a3 hasExistingToken:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchClientIdentityWithReason:(unint64_t)reason hasExistingToken:(BOOL)token completionHandler:(id)handler
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     v6 = v5;
@@ -64,12 +64,12 @@
   }
 }
 
-- (void)forceIdentityRefresh:(id)a3
+- (void)forceIdentityRefresh:(id)refresh
 {
   v5 = (*(*(sub_1000C8C30(&unk_1001BCA60, &qword_10015D240) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(refresh);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -85,16 +85,16 @@
   v12[3] = 0;
   v12[4] = &unk_10015D020;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1000C8384(0, 0, v7, &unk_10015D028, v12);
 }
 
-- (void)preloadIdentity:(id)a3
+- (void)preloadIdentity:(id)identity
 {
   v5 = (*(*(sub_1000C8C30(&unk_1001BCA60, &qword_10015D240) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(identity);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -110,7 +110,7 @@
   v12[3] = 0;
   v12[4] = &unk_10015D000;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1000C8384(0, 0, v7, &unk_10015D008, v12);
 }
 
@@ -136,9 +136,9 @@
   }
 }
 
-- (void)setIdentityAvailabilityDidChangeBlock:(id)a3
+- (void)setIdentityAvailabilityDidChangeBlock:(id)block
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(block);
   if (v3)
   {
 
@@ -146,10 +146,10 @@
   }
 }
 
-- (id)fetchVMHostCertsAndSignData:(id)a3 error:(id *)a4
+- (id)fetchVMHostCertsAndSignData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
@@ -159,11 +159,11 @@
   return v10;
 }
 
-- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 dataToSign:(id)a5 time:(id)a6 useIDSNonceVersion:(BOOL)a7 nonceOut:(id *)a8 signatureOut:(id *)a9
+- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey dataToSign:(id)sign time:(id)time useIDSNonceVersion:(BOOL)version nonceOut:(id *)out signatureOut:(id *)signatureOut
 {
-  if (a5)
+  if (sign)
   {
-    v9 = a5;
+    signCopy = sign;
     v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_100006D20(v10, v11);
   }
@@ -171,12 +171,12 @@
   return 0;
 }
 
-- (void)debugForceDeleteIdentity:(id)a3
+- (void)debugForceDeleteIdentity:(id)identity
 {
   v5 = (*(*(sub_1000C8C30(&unk_1001BCA60, &qword_10015D240) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(identity);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -192,7 +192,7 @@
   v12[3] = 0;
   v12[4] = &unk_10015CFB8;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1000C8384(0, 0, v7, &unk_10015CFC8, v12);
 }
 

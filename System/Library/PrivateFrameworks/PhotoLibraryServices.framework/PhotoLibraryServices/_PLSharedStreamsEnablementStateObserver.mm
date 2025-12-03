@@ -14,8 +14,8 @@
   if (v2)
   {
     v3 = +[PLAccountStore pl_sharedAccountStore];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_accountStoreDidChange name:@"PLAccountStoreDidChangeNotification" object:v3];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_accountStoreDidChange name:@"PLAccountStoreDidChangeNotification" object:v3];
   }
 
   return v2;
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _PLSharedStreamsEnablementStateObserver;

@@ -1,44 +1,44 @@
 @interface _GCAppleTVRemoteControllerManager
-- (BOOL)combineSiriRemoteHIDDevicesWithNewController:(id)a3 existingController:(id)a4;
+- (BOOL)combineSiriRemoteHIDDevicesWithNewController:(id)controller existingController:(id)existingController;
 - (GCController)firstMicroGamepad;
 - (_GCAppleTVRemoteControllerManager)init;
-- (_GCAppleTVRemoteControllerManager)initWithDeviceSessionConfiguration:(id)a3 queue:(id)a4 environment:(id)a5;
-- (id)activateWithSession:(id)a3 environment:(id)a4 options:(unint64_t)a5;
-- (id)invalidateWithSession:(id)a3 environment:(id)a4;
+- (_GCAppleTVRemoteControllerManager)initWithDeviceSessionConfiguration:(id)configuration queue:(id)queue environment:(id)environment;
+- (id)activateWithSession:(id)session environment:(id)environment options:(unint64_t)options;
+- (id)invalidateWithSession:(id)session environment:(id)environment;
 - (id)matchingHIDServiceAttributes;
 - (int)connectedATVRemoteCount;
 - (void)CBApplicationDidBecomeActive;
 - (void)CBApplicationWillResignActive;
-- (void)_legacy_publishController:(id)a3;
-- (void)_legacy_unpublishController:(id)a3;
-- (void)_onqueue_HIDServiceAdded:(id)a3;
-- (void)_onqueue_HIDServiceRemoved:(id)a3;
-- (void)_onqueue_addController:(uint64_t)a1;
-- (void)_onqueue_removeController:(void *)a3 registryID:;
-- (void)awakeWithSession:(id)a3 environment:(id)a4;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
-- (void)removeCoalescedControllerComponent:(id)a3;
-- (void)servicesDidChange:(id)a3 withAddedServices:(id)a4 removedServices:(id)a5;
-- (void)setFirstMicroGamepad:(id)a3;
-- (void)storeController:(id)a3;
+- (void)_legacy_publishController:(id)controller;
+- (void)_legacy_unpublishController:(id)controller;
+- (void)_onqueue_HIDServiceAdded:(id)added;
+- (void)_onqueue_HIDServiceRemoved:(id)removed;
+- (void)_onqueue_addController:(uint64_t)controller;
+- (void)_onqueue_removeController:(void *)controller registryID:;
+- (void)awakeWithSession:(id)session environment:(id)environment;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
+- (void)removeCoalescedControllerComponent:(id)component;
+- (void)servicesDidChange:(id)change withAddedServices:(id)services removedServices:(id)removedServices;
+- (void)setFirstMicroGamepad:(id)gamepad;
+- (void)storeController:(id)controller;
 @end
 
 @implementation _GCAppleTVRemoteControllerManager
 
-- (_GCAppleTVRemoteControllerManager)initWithDeviceSessionConfiguration:(id)a3 queue:(id)a4 environment:(id)a5
+- (_GCAppleTVRemoteControllerManager)initWithDeviceSessionConfiguration:(id)configuration queue:(id)queue environment:(id)environment
 {
-  v8 = a4;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = _GCAppleTVRemoteControllerManager;
-  v9 = a5;
-  v10 = a3;
+  environmentCopy = environment;
+  configurationCopy = configuration;
   v11 = [(_GCAppleTVRemoteControllerManager *)&v23 init];
   sessionQueue = v11->_sessionQueue;
-  v11->_sessionQueue = v8;
-  v13 = v8;
+  v11->_sessionQueue = queueCopy;
+  v13 = queueCopy;
 
-  LOBYTE(v8) = [v10 coalesceRemotes];
-  v11->_supportsMultipleRemotes = v8 ^ 1;
+  LOBYTE(queueCopy) = [configurationCopy coalesceRemotes];
+  v11->_supportsMultipleRemotes = queueCopy ^ 1;
   v14 = objc_opt_new();
   controllersByUDID = v11->_controllersByUDID;
   v11->_controllersByUDID = v14;
@@ -66,14 +66,14 @@
   return 0;
 }
 
-- (void)awakeWithSession:(id)a3 environment:(id)a4
+- (void)awakeWithSession:(id)session environment:(id)environment
 {
-  v5 = [a3 hidEventSource];
+  hidEventSource = [session hidEventSource];
   hidEventSource = self->_hidEventSource;
-  self->_hidEventSource = v5;
+  self->_hidEventSource = hidEventSource;
 }
 
-- (id)activateWithSession:(id)a3 environment:(id)a4 options:(unint64_t)a5
+- (id)activateWithSession:(id)session environment:(id)environment options:(unint64_t)options
 {
   sessionQueue = self->_sessionQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -81,14 +81,14 @@
   v8[2] = __77___GCAppleTVRemoteControllerManager_activateWithSession_environment_options___block_invoke;
   v8[3] = &unk_1E841A9A8;
   v8[4] = self;
-  v6 = [MEMORY[0x1E69A06D0] futureOnQueue:sessionQueue withBlock:{v8, a5}];
+  v6 = [MEMORY[0x1E69A06D0] futureOnQueue:sessionQueue withBlock:{v8, options}];
 
   return v6;
 }
 
-- (id)invalidateWithSession:(id)a3 environment:(id)a4
+- (id)invalidateWithSession:(id)session environment:(id)environment
 {
-  v5 = [_GCCurrentApplicationForegroundMonitor sharedInstance:a3];
+  v5 = [_GCCurrentApplicationForegroundMonitor sharedInstance:session];
   [v5 removeObserver:self];
 
   hidEventObservation = self->_hidEventObservation;
@@ -96,8 +96,8 @@
 
   v7 = [(GCHIDSystemServiceProviding *)self->_hidServiceProviding unregisterServicesChangedObserver:self notifyExisting:1];
   v8 = MEMORY[0x1E69A06D0];
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v10 = [v8 futureWithResult:v9];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [v8 futureWithResult:null];
 
   return v10;
 }
@@ -109,8 +109,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(_GCAppleTVRemoteControllerManager *)self devices];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [(_GCAppleTVRemoteControllerManager *)self devices];
+  v3 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -121,20 +121,20 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        v8 = [v7 motion];
+        motion = [v7 motion];
 
-        if (v8)
+        if (motion)
         {
-          v9 = [v7 motion];
-          [v9 _pauseMotionUpdates:1];
+          motion2 = [v7 motion];
+          [motion2 _pauseMotionUpdates:1];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -150,8 +150,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(_GCAppleTVRemoteControllerManager *)self devices];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [(_GCAppleTVRemoteControllerManager *)self devices];
+  v3 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -162,20 +162,20 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        v8 = [v7 motion];
+        motion = [v7 motion];
 
-        if (v8)
+        if (motion)
         {
-          v9 = [v7 motion];
-          [v9 _pauseMotionUpdates:0];
+          motion2 = [v7 motion];
+          [motion2 _pauseMotionUpdates:0];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -184,47 +184,47 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_legacy_publishController:(id)a3
+- (void)_legacy_publishController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(self->_sessionQueue);
-  if ([v7 areAllHIDDevicesConnected] && (objc_msgSend(v7, "isPublished") & 1) == 0)
+  if ([controllerCopy areAllHIDDevicesConnected] && (objc_msgSend(controllerCopy, "isPublished") & 1) == 0)
   {
-    [v7 _legacy_invalidateDescription];
-    [v7 setPublished:1];
-    v5 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+    [controllerCopy _legacy_invalidateDescription];
+    [controllerCopy setPublished:1];
+    v5 = [MEMORY[0x1E695DFD8] setWithObject:controllerCopy];
     [(_GCAppleTVRemoteControllerManager *)self willChangeValueForKey:@"devices" withSetMutation:1 usingObjects:v5];
-    v6 = [(NSSet *)self->_devices setByAddingObject:v7];
+    v6 = [(NSSet *)self->_devices setByAddingObject:controllerCopy];
     objc_setProperty_atomic(self, a2, v6, 88);
 
     [(_GCAppleTVRemoteControllerManager *)self didChangeValueForKey:@"devices" withSetMutation:1 usingObjects:v5];
   }
 }
 
-- (void)_legacy_unpublishController:(id)a3
+- (void)_legacy_unpublishController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(self->_sessionQueue);
-  if ([v7 isPublished])
+  if ([controllerCopy isPublished])
   {
-    [v7 setPublished:0];
-    v5 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+    [controllerCopy setPublished:0];
+    v5 = [MEMORY[0x1E695DFD8] setWithObject:controllerCopy];
     [(_GCAppleTVRemoteControllerManager *)self willChangeValueForKey:@"devices" withSetMutation:2 usingObjects:v5];
-    v6 = [(NSSet *)self->_devices gc_setByRemovingObject:v7];
+    v6 = [(NSSet *)self->_devices gc_setByRemovingObject:controllerCopy];
     objc_setProperty_atomic(self, a2, v6, 88);
 
     [(_GCAppleTVRemoteControllerManager *)self didChangeValueForKey:@"devices" withSetMutation:2 usingObjects:v5];
   }
 }
 
-- (void)storeController:(id)a3
+- (void)storeController:(id)controller
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "deviceHash")}];
-  [(NSMutableDictionary *)self->_controllersByUDID setObject:v4 forKey:v5];
-  v6 = [v4 hidServices];
-  v7 = [v6 mutableCopy];
+  controllerCopy = controller;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(controllerCopy, "deviceHash")}];
+  [(NSMutableDictionary *)self->_controllersByUDID setObject:controllerCopy forKey:v5];
+  hidServices = [controllerCopy hidServices];
+  v7 = [hidServices mutableCopy];
 
   v20 = 0u;
   v21 = 0u;
@@ -246,22 +246,22 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) registryID];
+        registryID = [*(*(&v18 + 1) + 8 * v12) registryID];
         if (gc_isInternalBuild())
         {
-          [(_GCAppleTVRemoteControllerManager *)v22 storeController:v13, &v23];
-          if (!v13)
+          [(_GCAppleTVRemoteControllerManager *)v22 storeController:registryID, &v23];
+          if (!registryID)
           {
             goto LABEL_10;
           }
         }
 
-        else if (!v13)
+        else if (!registryID)
         {
           goto LABEL_10;
         }
 
-        [(NSMutableDictionary *)self->_controllersByRegistryID setObject:v4 forKey:v13];
+        [(NSMutableDictionary *)self->_controllersByRegistryID setObject:controllerCopy forKey:registryID];
         if (gc_isInternalBuild())
         {
           [(_GCAppleTVRemoteControllerManager *)&v16 storeController:v17];
@@ -283,13 +283,13 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_HIDServiceAdded:(id)a3
+- (void)_onqueue_HIDServiceAdded:(id)added
 {
-  v4 = a3;
-  v5 = [v4 numberPropertyForKey:@"GameControllerSupportedHIDDevice"];
+  addedCopy = added;
+  v5 = [addedCopy numberPropertyForKey:@"GameControllerSupportedHIDDevice"];
   if (([v5 BOOLValue] & 1) == 0)
   {
-    if (isDeviceAppleSiriRemote([v4 service]))
+    if (isDeviceAppleSiriRemote([addedCopy service]))
     {
       if (gc_isInternalBuild())
       {
@@ -304,7 +304,7 @@ LABEL_10:
       v6 = 0;
     }
 
-    if (isDeviceAppleDirectionalRemote([v4 service]))
+    if (isDeviceAppleDirectionalRemote([addedCopy service]))
     {
       if (gc_isInternalBuild())
       {
@@ -318,10 +318,10 @@ LABEL_10:
     {
       if (gc_isInternalBuild())
       {
-        [_GCAppleTVRemoteControllerManager _onqueue_HIDServiceAdded:v4];
+        [_GCAppleTVRemoteControllerManager _onqueue_HIDServiceAdded:addedCopy];
       }
 
-      v7 = [[GCController alloc] initWithProfileClass:v6 service:v4];
+      v7 = [[GCController alloc] initWithProfileClass:v6 service:addedCopy];
       [(GCController *)v7 setCoalescingDelegate:self];
       if (v7)
       {
@@ -331,33 +331,33 @@ LABEL_10:
   }
 }
 
-- (void)_onqueue_HIDServiceRemoved:(id)a3
+- (void)_onqueue_HIDServiceRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [v4 registryID];
-  v6 = [(NSMutableDictionary *)self->_controllersByRegistryID objectForKey:v5];
+  removedCopy = removed;
+  registryID = [removedCopy registryID];
+  v6 = [(NSMutableDictionary *)self->_controllersByRegistryID objectForKey:registryID];
   if (v6)
   {
-    [(_GCAppleTVRemoteControllerManager *)self _onqueue_removeController:v6 registryID:v5];
+    [(_GCAppleTVRemoteControllerManager *)self _onqueue_removeController:v6 registryID:registryID];
     if (gc_isInternalBuild())
     {
       [_GCAppleTVRemoteControllerManager _onqueue_HIDServiceRemoved:v6];
     }
 
-    [v6 removeServiceRef:{objc_msgSend(v4, "service")}];
+    [v6 removeServiceRef:{objc_msgSend(removedCopy, "service")}];
   }
 }
 
-- (void)servicesDidChange:(id)a3 withAddedServices:(id)a4 removedServices:(id)a5
+- (void)servicesDidChange:(id)change withAddedServices:(id)services removedServices:(id)removedServices
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  servicesCopy = services;
+  removedServicesCopy = removedServices;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v9 = [removedServicesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -369,14 +369,14 @@ LABEL_10:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(removedServicesCopy);
         }
 
         [(_GCAppleTVRemoteControllerManager *)self _onqueue_HIDServiceRemoved:*(*(&v23 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v10 = [removedServicesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v10);
@@ -386,7 +386,7 @@ LABEL_10:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = v7;
+  v13 = servicesCopy;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {
@@ -455,10 +455,10 @@ LABEL_10:
   return v7;
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:IOHIDEventGetSenderID()];
-  if (IOHIDEventGetType() == 11 && _DescendantPointerEvent(a3))
+  if (IOHIDEventGetType() == 11 && _DescendantPointerEvent(event))
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:IOHIDEventGetSenderID()];
 
@@ -466,35 +466,35 @@ LABEL_10:
   }
 
   v6 = [(NSMutableDictionary *)self->_controllersByRegistryID objectForKey:v9];
-  v7 = [v6 isComponentBased];
-  if (v6 && (v7 & 1) == 0)
+  isComponentBased = [v6 isComponentBased];
+  if (v6 && (isComponentBased & 1) == 0)
   {
     v8 = +[_GCLegacyDeviceSession sharedInstance];
     [v8 becomeCurrentController:v6];
 
-    [v6 _legacy_handleEvent:a3];
+    [v6 _legacy_handleEvent:event];
   }
 }
 
-- (void)removeCoalescedControllerComponent:(id)a3
+- (void)removeCoalescedControllerComponent:(id)component
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v28 = self;
-  v5 = [(_GCAppleTVRemoteControllerManager *)self firstMicroGamepad];
-  v6 = [(GCController *)v4 deviceHash];
-  v7 = [(GCController *)v5 profile];
-  if ([v7 owner] == v6)
+  componentCopy = component;
+  selfCopy = self;
+  firstMicroGamepad = [(_GCAppleTVRemoteControllerManager *)self firstMicroGamepad];
+  deviceHash = [(GCController *)componentCopy deviceHash];
+  profile = [(GCController *)firstMicroGamepad profile];
+  if ([profile owner] == deviceHash)
   {
-    [v7 setOwner:0];
+    [profile setOwner:0];
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [(NSMutableDictionary *)v28->_controllersByUDID allValues];
-  v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  allValues = [(NSMutableDictionary *)selfCopy->_controllersByUDID allValues];
+  v9 = [allValues countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v9)
   {
 
@@ -506,14 +506,14 @@ LABEL_34:
       [_GCAppleTVRemoteControllerManager removeCoalescedControllerComponent:];
     }
 
-    [(_GCAppleTVRemoteControllerManager *)v28 _legacy_unpublishController:v5];
-    [(_GCAppleTVRemoteControllerManager *)v28 setFirstMicroGamepad:0];
+    [(_GCAppleTVRemoteControllerManager *)selfCopy _legacy_unpublishController:firstMicroGamepad];
+    [(_GCAppleTVRemoteControllerManager *)selfCopy setFirstMicroGamepad:0];
     goto LABEL_37;
   }
 
   v10 = v9;
-  v26 = v7;
-  v27 = v5;
+  v26 = profile;
+  v27 = firstMicroGamepad;
   v11 = 0;
   v12 = 0;
   v13 = 0;
@@ -524,14 +524,14 @@ LABEL_34:
     {
       if (*v30 != v14)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allValues);
       }
 
       v16 = *(*(&v29 + 1) + 8 * i);
-      if (v16 != v4 && [*(*(&v29 + 1) + 8 * i) isATVRemote] && -[GCController areAllHIDDevicesConnected](v16, "areAllHIDDevicesConnected"))
+      if (v16 != componentCopy && [*(*(&v29 + 1) + 8 * i) isATVRemote] && -[GCController areAllHIDDevicesConnected](v16, "areAllHIDDevicesConnected"))
       {
         ++v13;
-        controller_genericBTRemote = v28->__controller_genericBTRemote;
+        controller_genericBTRemote = selfCopy->__controller_genericBTRemote;
         v18 = v16;
         if (v16 == controller_genericBTRemote)
         {
@@ -555,36 +555,36 @@ LABEL_34:
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v29 objects:v33 count:16];
   }
 
   while (v10);
 
   if (!v13)
   {
-    v7 = v26;
-    v5 = v27;
+    profile = v26;
+    firstMicroGamepad = v27;
     goto LABEL_34;
   }
 
-  v7 = v26;
-  v5 = v27;
-  if (v11 && v11 == v28->__controller_genericBTRemote && v13 == 1)
+  profile = v26;
+  firstMicroGamepad = v27;
+  if (v11 && v11 == selfCopy->__controller_genericBTRemote && v13 == 1)
   {
     if (gc_isInternalBuild())
     {
       [_GCAppleTVRemoteControllerManager removeCoalescedControllerComponent:];
     }
 
-    [(_GCAppleTVRemoteControllerManager *)v28 _legacy_unpublishController:v27];
-    [(_GCAppleTVRemoteControllerManager *)v28 setFirstMicroGamepad:v11];
-    v20 = v28;
+    [(_GCAppleTVRemoteControllerManager *)selfCopy _legacy_unpublishController:v27];
+    [(_GCAppleTVRemoteControllerManager *)selfCopy setFirstMicroGamepad:v11];
+    v20 = selfCopy;
     v21 = v11;
   }
 
   else
   {
-    if (v27 != v4)
+    if (v27 != componentCopy)
     {
       goto LABEL_37;
     }
@@ -594,21 +594,21 @@ LABEL_34:
       [_GCAppleTVRemoteControllerManager removeCoalescedControllerComponent:];
     }
 
-    [(_GCAppleTVRemoteControllerManager *)v28 _legacy_unpublishController:v27];
-    [(_GCAppleTVRemoteControllerManager *)v28 setFirstMicroGamepad:v12];
-    v20 = v28;
+    [(_GCAppleTVRemoteControllerManager *)selfCopy _legacy_unpublishController:v27];
+    [(_GCAppleTVRemoteControllerManager *)selfCopy setFirstMicroGamepad:v12];
+    v20 = selfCopy;
     v21 = v12;
   }
 
   [(_GCAppleTVRemoteControllerManager *)v20 _legacy_publishController:v21];
 LABEL_37:
-  v22 = [(GCController *)v4 hidServices];
-  v23 = [v22 count];
+  hidServices = [(GCController *)componentCopy hidServices];
+  v23 = [hidServices count];
 
   if (v23 <= 1)
   {
-    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[GCController deviceHash](v4, "deviceHash")}];
-    [(NSMutableDictionary *)v28->_controllersByUDID removeObjectForKey:v24];
+    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[GCController deviceHash](componentCopy, "deviceHash")}];
+    [(NSMutableDictionary *)selfCopy->_controllersByUDID removeObjectForKey:v24];
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -621,8 +621,8 @@ LABEL_37:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NSMutableDictionary *)self->_controllersByUDID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_controllersByUDID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -634,7 +634,7 @@ LABEL_37:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -644,7 +644,7 @@ LABEL_37:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -666,9 +666,9 @@ LABEL_37:
   return WeakRetained;
 }
 
-- (void)setFirstMicroGamepad:(id)a3
+- (void)setFirstMicroGamepad:(id)gamepad
 {
-  obj = a3;
+  obj = gamepad;
   if (obj)
   {
     WeakRetained = objc_loadWeakRetained(&self->_firstMicroGamepad);
@@ -683,61 +683,61 @@ LABEL_37:
   objc_storeWeak(&self->_firstMicroGamepad, obj);
 }
 
-- (BOOL)combineSiriRemoteHIDDevicesWithNewController:(id)a3 existingController:(id)a4
+- (BOOL)combineSiriRemoteHIDDevicesWithNewController:(id)controller existingController:(id)existingController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hidServices];
-  v9 = [v8 firstObject];
-  v10 = [v9 registryID];
+  controllerCopy = controller;
+  existingControllerCopy = existingController;
+  hidServices = [controllerCopy hidServices];
+  firstObject = [hidServices firstObject];
+  registryID = [firstObject registryID];
 
-  if (v10)
+  if (registryID)
   {
     if (gc_isInternalBuild())
     {
       [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:existingController:];
     }
 
-    v11 = [v7 motion];
-    [v11 _stopDeviceMotionUpdates];
+    motion = [existingControllerCopy motion];
+    [motion _stopDeviceMotionUpdates];
 
-    v12 = [v7 motion];
-    v13 = [v12 valueChangedHandler];
+    motion2 = [existingControllerCopy motion];
+    valueChangedHandler = [motion2 valueChangedHandler];
 
     if (gc_isInternalBuild())
     {
-      [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:v13 existingController:?];
+      [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:valueChangedHandler existingController:?];
     }
 
-    if ([v6 physicalDeviceUsesCompass])
+    if ([controllerCopy physicalDeviceUsesCompass])
     {
-      [v7 setPhysicalDeviceUsesCompass:{objc_msgSend(v6, "physicalDeviceUsesCompass")}];
+      [existingControllerCopy setPhysicalDeviceUsesCompass:{objc_msgSend(controllerCopy, "physicalDeviceUsesCompass")}];
     }
 
-    [v7 addServiceRefs:v6];
+    [existingControllerCopy addServiceRefs:controllerCopy];
     if (gc_isInternalBuild())
     {
       [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:existingController:];
     }
 
-    [(NSMutableDictionary *)self->_controllersByRegistryID setObject:v7 forKey:v10];
-    [v6 clearServiceRef];
+    [(NSMutableDictionary *)self->_controllersByRegistryID setObject:existingControllerCopy forKey:registryID];
+    [controllerCopy clearServiceRef];
     if (gc_isInternalBuild())
     {
-      [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:v7 existingController:?];
-      if (!v13)
+      [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:existingControllerCopy existingController:?];
+      if (!valueChangedHandler)
       {
 LABEL_13:
-        v15 = [v7 physicalDeviceUniqueID];
+        physicalDeviceUniqueID = [existingControllerCopy physicalDeviceUniqueID];
 
-        if (!v15)
+        if (!physicalDeviceUniqueID)
         {
-          v16 = [v6 physicalDeviceUniqueID];
-          [v7 setPhysicalDeviceUniqueID:v16];
+          physicalDeviceUniqueID2 = [controllerCopy physicalDeviceUniqueID];
+          [existingControllerCopy setPhysicalDeviceUniqueID:physicalDeviceUniqueID2];
         }
 
-        v17 = [v7 profile];
-        v18 = [v17 conformsToProtocol:&unk_1F4E9C418];
+        profile = [existingControllerCopy profile];
+        v18 = [profile conformsToProtocol:&unk_1F4E9C418];
 
         if (!v18)
         {
@@ -747,8 +747,8 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v19 = [v7 profile];
-        v20 = [v6 profile];
+        profile2 = [existingControllerCopy profile];
+        profile3 = [controllerCopy profile];
         if (gc_isInternalBuild())
         {
           [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:existingController:];
@@ -756,17 +756,17 @@ LABEL_38:
 
         if (gc_isInternalBuild())
         {
-          [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:v19 existingController:?];
+          [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:profile2 existingController:?];
         }
 
-        if (![v19 deviceType])
+        if (![profile2 deviceType])
         {
-          [v19 setDeviceType:{objc_msgSend(v20, "deviceType")}];
+          [profile2 setDeviceType:{objc_msgSend(profile3, "deviceType")}];
         }
 
         if (gc_isInternalBuild())
         {
-          [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:v19 existingController:?];
+          [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:profile2 existingController:?];
         }
 
         if (gc_isInternalBuild())
@@ -774,17 +774,17 @@ LABEL_38:
           [_GCAppleTVRemoteControllerManager combineSiriRemoteHIDDevicesWithNewController:existingController:];
         }
 
-        if ([v19 deviceType] != 1 || (objc_msgSend(v7, "hidServices"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v22 <= 2))
+        if ([profile2 deviceType] != 1 || (objc_msgSend(existingControllerCopy, "hidServices"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v22 <= 2))
         {
-          if ([v19 deviceType] != 2 || (objc_msgSend(v7, "hidServices"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v24 <= 2))
+          if ([profile2 deviceType] != 2 || (objc_msgSend(existingControllerCopy, "hidServices"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v24 <= 2))
           {
-            if ([v19 deviceType] != 5 || (objc_msgSend(v7, "hidServices"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v26 < 2))
+            if ([profile2 deviceType] != 5 || (objc_msgSend(existingControllerCopy, "hidServices"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v26 < 2))
             {
               v27 = 0;
               goto LABEL_37;
             }
 
-            objc_storeStrong(&self->__controller_genericBTRemote, a4);
+            objc_storeStrong(&self->__controller_genericBTRemote, existingController);
           }
         }
 
@@ -795,13 +795,13 @@ LABEL_37:
       }
     }
 
-    else if (!v13)
+    else if (!valueChangedHandler)
     {
       goto LABEL_13;
     }
 
-    v14 = [v7 motion];
-    [v14 setValueChangedHandler:v13];
+    motion3 = [existingControllerCopy motion];
+    [motion3 setValueChangedHandler:valueChangedHandler];
 
     goto LABEL_13;
   }
@@ -812,19 +812,19 @@ LABEL_39:
   return v27;
 }
 
-- (void)_onqueue_addController:(uint64_t)a1
+- (void)_onqueue_addController:(uint64_t)controller
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (controller)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(controller + 8));
     if (gc_isInternalBuild())
     {
       v15 = getGCLogger();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v3 hidServices];
+        hidServices = [v3 hidServices];
         *v20 = 138412546;
         *&v20[4] = v3;
         OUTLINED_FUNCTION_4_12();
@@ -834,24 +834,24 @@ LABEL_39:
     }
 
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "deviceHash", *v20)}];
-    v5 = [*(a1 + 24) objectForKey:v4];
+    v5 = [*(controller + 24) objectForKey:v4];
     v6 = v5;
     if (v5)
     {
       if ([v5 isATVRemote] && objc_msgSend(v3, "isATVRemote"))
       {
-        v7 = [a1 combineSiriRemoteHIDDevicesWithNewController:v3 existingController:v6];
+        isForwarded = [controller combineSiriRemoteHIDDevicesWithNewController:v3 existingController:v6];
       }
 
       else if ([v3 isForwarded])
       {
-        v7 = 0;
+        isForwarded = 0;
       }
 
       else
       {
-        [*(a1 + 24) setObject:v3 forKey:v4];
-        v7 = 1;
+        [*(controller + 24) setObject:v3 forKey:v4];
+        isForwarded = 1;
       }
 
       v8 = v6;
@@ -863,7 +863,7 @@ LABEL_39:
       v18 = getGCLogger();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = *(a1 + 24);
+        v19 = *(controller + 24);
         *v20 = 138412290;
         *&v20[4] = v19;
         _os_log_impl(&dword_1D2CD5000, v18, OS_LOG_TYPE_DEFAULT, "existing controller does not exist: %@", v20, 0xCu);
@@ -872,38 +872,38 @@ LABEL_39:
 
     if ([v3 isATVRemote])
     {
-      v7 = [v3 isForwarded];
+      isForwarded = [v3 isForwarded];
     }
 
     else
     {
-      v7 = 1;
+      isForwarded = 1;
     }
 
-    v9 = [v3 physicalInputProfile];
-    if ([v9 conformsToProtocol:&unk_1F4E9C418])
+    physicalInputProfile = [v3 physicalInputProfile];
+    if ([physicalInputProfile conformsToProtocol:&unk_1F4E9C418])
     {
-      v10 = [v3 physicalInputProfile];
-      v11 = [v10 deviceType];
+      physicalInputProfile2 = [v3 physicalInputProfile];
+      deviceType = [physicalInputProfile2 deviceType];
 
-      if (v11 != 4)
+      if (deviceType != 4)
       {
 LABEL_19:
-        [a1 storeController:v3];
+        [controller storeController:v3];
         v8 = v3;
 LABEL_20:
         v13 = v8;
 
-        [v13 setAllHIDDevicesConnected:v7];
-        [a1 _legacy_publishController:v13];
+        [v13 setAllHIDDevicesConnected:isForwarded];
+        [controller _legacy_publishController:v13];
 
         goto LABEL_21;
       }
 
       v12 = v3;
-      v9 = *(a1 + 56);
-      *(a1 + 56) = v12;
-      v7 = 1;
+      physicalInputProfile = *(controller + 56);
+      *(controller + 56) = v12;
+      isForwarded = 1;
     }
 
     goto LABEL_19;
@@ -914,14 +914,14 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_removeController:(void *)a3 registryID:
+- (void)_onqueue_removeController:(void *)controller registryID:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(self + 8));
     if (gc_isInternalBuild())
     {
       v18 = getGCLogger();
@@ -930,14 +930,14 @@ LABEL_21:
         v20 = 138412546;
         v21 = v5;
         v22 = 2048;
-        v23 = [v5 deviceHash];
+        deviceHash = [v5 deviceHash];
         _os_log_impl(&dword_1D2CD5000, v18, OS_LOG_TYPE_DEFAULT, "removeController:%@ for hash: %lu", &v20, 0x16u);
       }
     }
 
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "deviceHash")}];
-    v8 = [*(a1 + 24) objectForKey:v7];
-    if (v6)
+    v8 = [*(self + 24) objectForKey:v7];
+    if (controllerCopy)
     {
       if (gc_isInternalBuild())
       {
@@ -946,44 +946,44 @@ LABEL_21:
         {
           OUTLINED_FUNCTION_8();
           OUTLINED_FUNCTION_4_12();
-          v23 = v7;
+          deviceHash = v7;
           _os_log_impl(&dword_1D2CD5000, v19, OS_LOG_TYPE_DEFAULT, "removing from registry lookup with registry ID: %@ and UDID: %@", &v20, 0x16u);
         }
       }
 
-      [*(a1 + 32) removeObjectForKey:v6];
+      [*(self + 32) removeObjectForKey:controllerCopy];
     }
 
-    v9 = [v8 physicalInputProfile];
-    if ([v9 conformsToProtocol:&unk_1F4E9C418])
+    physicalInputProfile = [v8 physicalInputProfile];
+    if ([physicalInputProfile conformsToProtocol:&unk_1F4E9C418])
     {
-      v10 = [v8 physicalInputProfile];
-      if ([v10 deviceType] == 4)
+      physicalInputProfile2 = [v8 physicalInputProfile];
+      if ([physicalInputProfile2 deviceType] == 4)
       {
       }
 
       else
       {
-        v11 = [v8 physicalInputProfile];
-        v12 = [v11 deviceType];
+        physicalInputProfile3 = [v8 physicalInputProfile];
+        deviceType = [physicalInputProfile3 deviceType];
 
-        if (v12 != 5)
+        if (deviceType != 5)
         {
           goto LABEL_12;
         }
       }
 
-      v9 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      physicalInputProfile = *(self + 56);
+      *(self + 56) = 0;
     }
 
 LABEL_12:
-    v13 = [v5 profile];
+    profile = [v5 profile];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v5 hidServices];
-      v15 = [v14 count];
+      hidServices = [v5 hidServices];
+      v15 = [hidServices count];
 
       if (v15 >= 2)
       {
@@ -1006,8 +1006,8 @@ LABEL_12:
     }
 
     [v8 setAllHIDDevicesConnected:0];
-    [*(a1 + 24) removeObjectForKey:v7];
-    [a1 _legacy_unpublishController:v8];
+    [*(self + 24) removeObjectForKey:v7];
+    [self _legacy_unpublishController:v8];
 LABEL_20:
   }
 

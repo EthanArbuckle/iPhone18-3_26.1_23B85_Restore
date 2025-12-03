@@ -1,6 +1,6 @@
 @interface DMCEnrollmentDirtyState
 - (BOOL)dirtyRMStoreForErSSO;
-- (DMCEnrollmentDirtyState)initWithDictionary:(id)a3;
+- (DMCEnrollmentDirtyState)initWithDictionary:(id)dictionary;
 - (NSArray)dirtyAltDISDs;
 - (NSArray)dirtyBundleIDs;
 - (NSArray)dirtyPersonaIDs;
@@ -8,23 +8,23 @@
 - (NSArray)dirtyRMAccounts;
 - (NSMutableDictionary)stateDictionary;
 - (id)dictionary;
-- (void)_addValue:(id)a3 toArrayForKey:(id)a4;
-- (void)_removeValue:(id)a3 fromArrayForKey:(id)a4;
+- (void)_addValue:(id)value toArrayForKey:(id)key;
+- (void)_removeValue:(id)value fromArrayForKey:(id)key;
 - (void)clearDirtyRMStoreForErSSO;
 - (void)setDirtyRMStoreForErSSO;
 @end
 
 @implementation DMCEnrollmentDirtyState
 
-- (DMCEnrollmentDirtyState)initWithDictionary:(id)a3
+- (DMCEnrollmentDirtyState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = DMCEnrollmentDirtyState;
   v5 = [(DMCEnrollmentDirtyState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     stateDictionary = v5->_stateDictionary;
     v5->_stateDictionary = v6;
   }
@@ -45,8 +45,8 @@
 
 - (NSArray)dirtyPersonaIDs
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"PersonaID"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"PersonaID"];
   v4 = [v3 copy];
 
   return v4;
@@ -54,8 +54,8 @@
 
 - (NSArray)dirtyRMAccounts
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"RMAccountIdentifier"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"RMAccountIdentifier"];
   v4 = [v3 copy];
 
   return v4;
@@ -63,8 +63,8 @@
 
 - (NSArray)dirtyAltDISDs
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"AltDSID"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"AltDSID"];
   v4 = [v3 copy];
 
   return v4;
@@ -72,8 +72,8 @@
 
 - (NSArray)dirtyProfileIdentifiers
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"ProfileIdentifier"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"ProfileIdentifier"];
   v4 = [v3 copy];
 
   return v4;
@@ -81,8 +81,8 @@
 
 - (NSArray)dirtyBundleIDs
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"BundleID"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"BundleID"];
   v4 = [v3 copy];
 
   return v4;
@@ -90,92 +90,92 @@
 
 - (BOOL)dirtyRMStoreForErSSO
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"RMStoreForErSSO"];
-  v4 = [v3 BOOLValue];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:@"RMStoreForErSSO"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)setDirtyRMStoreForErSSO
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  [v2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"RMStoreForErSSO"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  [stateDictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"RMStoreForErSSO"];
 }
 
 - (void)clearDirtyRMStoreForErSSO
 {
-  v2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  [v2 setObject:0 forKeyedSubscript:@"RMStoreForErSSO"];
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  [stateDictionary setObject:0 forKeyedSubscript:@"RMStoreForErSSO"];
 }
 
-- (void)_addValue:(id)a3 toArrayForKey:(id)a4
+- (void)_addValue:(id)value toArrayForKey:(id)key
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = [v8 containsObject:v23];
+  valueCopy = value;
+  keyCopy = key;
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v8 = [stateDictionary objectForKeyedSubscript:keyCopy];
+  v9 = [v8 containsObject:valueCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    stateDictionary2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+    v11 = [stateDictionary2 objectForKeyedSubscript:keyCopy];
 
     if (!v11)
     {
       v12 = objc_opt_new();
-      v13 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-      [v13 setObject:v12 forKeyedSubscript:v6];
+      stateDictionary3 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+      [stateDictionary3 setObject:v12 forKeyedSubscript:keyCopy];
     }
 
-    v14 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-    v15 = [v14 objectForKeyedSubscript:v6];
+    stateDictionary4 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+    v15 = [stateDictionary4 objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v17 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-      v18 = [v17 objectForKeyedSubscript:v6];
+      stateDictionary5 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+      v18 = [stateDictionary5 objectForKeyedSubscript:keyCopy];
       v19 = [v18 mutableCopy];
-      v20 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-      [v20 setObject:v19 forKeyedSubscript:v6];
+      stateDictionary6 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+      [stateDictionary6 setObject:v19 forKeyedSubscript:keyCopy];
     }
 
-    v21 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-    v22 = [v21 objectForKeyedSubscript:v6];
-    [v22 addObject:v23];
+    stateDictionary7 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+    v22 = [stateDictionary7 objectForKeyedSubscript:keyCopy];
+    [v22 addObject:valueCopy];
   }
 }
 
-- (void)_removeValue:(id)a3 fromArrayForKey:(id)a4
+- (void)_removeValue:(id)value fromArrayForKey:(id)key
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = [v8 containsObject:v19];
+  valueCopy = value;
+  keyCopy = key;
+  stateDictionary = [(DMCEnrollmentDirtyState *)self stateDictionary];
+  v8 = [stateDictionary objectForKeyedSubscript:keyCopy];
+  v9 = [v8 containsObject:valueCopy];
 
   if (v9)
   {
-    v10 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    stateDictionary2 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+    v11 = [stateDictionary2 objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v13 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-      v14 = [v13 objectForKeyedSubscript:v6];
+      stateDictionary3 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+      v14 = [stateDictionary3 objectForKeyedSubscript:keyCopy];
       v15 = [v14 mutableCopy];
-      v16 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-      [v16 setObject:v15 forKeyedSubscript:v6];
+      stateDictionary4 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+      [stateDictionary4 setObject:v15 forKeyedSubscript:keyCopy];
     }
 
-    v17 = [(DMCEnrollmentDirtyState *)self stateDictionary];
-    v18 = [v17 objectForKeyedSubscript:v6];
-    [v18 removeObject:v19];
+    stateDictionary5 = [(DMCEnrollmentDirtyState *)self stateDictionary];
+    v18 = [stateDictionary5 objectForKeyedSubscript:keyCopy];
+    [v18 removeObject:valueCopy];
   }
 }
 

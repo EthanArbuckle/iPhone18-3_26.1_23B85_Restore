@@ -1,8 +1,8 @@
 @interface XAMLocalAuthenticationProvider
 - (id)_makeAuthorizationContext;
-- (id)authorizationWithError:(id *)a3;
+- (id)authorizationWithError:(id *)error;
 - (id)localizedAuthorizationReason;
-- (void)requestAuthorizationWithReply:(id)a3;
+- (void)requestAuthorizationWithReply:(id)reply;
 @end
 
 @implementation XAMLocalAuthenticationProvider
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (void)requestAuthorizationWithReply:(id)a3
+- (void)requestAuthorizationWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(XAMLocalAuthenticationProvider *)self _makeAuthorizationContext];
-  v6 = [(XAMLocalAuthenticationProvider *)self localizedAuthorizationReason];
+  replyCopy = reply;
+  _makeAuthorizationContext = [(XAMLocalAuthenticationProvider *)self _makeAuthorizationContext];
+  localizedAuthorizationReason = [(XAMLocalAuthenticationProvider *)self localizedAuthorizationReason];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__XAMLocalAuthenticationProvider_requestAuthorizationWithReply___block_invoke;
   v9[3] = &unk_278CF9428;
-  v10 = v5;
-  v11 = v4;
-  v7 = v5;
-  v8 = v4;
-  [v7 evaluatePolicy:2 localizedReason:v6 reply:v9];
+  v10 = _makeAuthorizationContext;
+  v11 = replyCopy;
+  v7 = _makeAuthorizationContext;
+  v8 = replyCopy;
+  [v7 evaluatePolicy:2 localizedReason:localizedAuthorizationReason reply:v9];
 }
 
 uint64_t __64__XAMLocalAuthenticationProvider_requestAuthorizationWithReply___block_invoke(uint64_t a1, int a2)
@@ -60,15 +60,15 @@ uint64_t __64__XAMLocalAuthenticationProvider_requestAuthorizationWithReply___bl
   }
 }
 
-- (id)authorizationWithError:(id *)a3
+- (id)authorizationWithError:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = [(XAMLocalAuthenticationProvider *)self _makeAuthorizationContext];
+  _makeAuthorizationContext = [(XAMLocalAuthenticationProvider *)self _makeAuthorizationContext];
   v16 = &unk_285385AC0;
-  v6 = [(XAMLocalAuthenticationProvider *)self localizedAuthorizationReason];
-  v17[0] = v6;
+  localizedAuthorizationReason = [(XAMLocalAuthenticationProvider *)self localizedAuthorizationReason];
+  v17[0] = localizedAuthorizationReason;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v8 = [v5 evaluatePolicy:2 options:v7 error:a3];
+  v8 = [_makeAuthorizationContext evaluatePolicy:2 options:v7 error:error];
 
   v9 = XAMLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -80,7 +80,7 @@ uint64_t __64__XAMLocalAuthenticationProvider_requestAuthorizationWithReply___bl
 
   if (v8)
   {
-    v10 = v5;
+    v10 = _makeAuthorizationContext;
   }
 
   else

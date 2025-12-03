@@ -1,46 +1,46 @@
 @interface PKAccountInvitationController
-+ (BOOL)canInviteAccountUserWithAccount:(id)a3;
-+ (void)presentCreateAccountUserInvitationWithViewController:(id)a3 account:(id)a4 accountUserCollection:(id)a5 familyMemberCollection:(id)a6 context:(int64_t)a7 completion:(id)a8;
++ (BOOL)canInviteAccountUserWithAccount:(id)account;
++ (void)presentCreateAccountUserInvitationWithViewController:(id)controller account:(id)account accountUserCollection:(id)collection familyMemberCollection:(id)memberCollection context:(int64_t)context completion:(id)completion;
 - (BOOL)isCurrentFamilyMemberAnOrganizer;
-- (PKAccountInvitationController)initWithAccount:(id)a3 context:(int64_t)a4 familyMemberCollection:(id)a5;
-- (id)_filteredFamilyMembersFromFamilyMembers:(id)a3 accountUsers:(id)a4 invitations:(id)a5;
+- (PKAccountInvitationController)initWithAccount:(id)account context:(int64_t)context familyMemberCollection:(id)collection;
+- (id)_filteredFamilyMembersFromFamilyMembers:(id)members accountUsers:(id)users invitations:(id)invitations;
 - (int64_t)familyCircleCount;
-- (void)_accessObserversWithHandler:(id)a3;
+- (void)_accessObserversWithHandler:(id)handler;
 - (void)_fetchFamilyMemberDeviceCapabilties;
-- (void)accessLevelOptionsWithCompletion:(id)a3;
+- (void)accessLevelOptionsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)familyMembersForceReload:(BOOL)a3 completion:(id)a4;
-- (void)nextViewControllerWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setAccessLevel:(unint64_t)a3;
-- (void)setFamilyMember:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)familyMembersForceReload:(BOOL)reload completion:(id)completion;
+- (void)nextViewControllerWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)setAccessLevel:(unint64_t)level;
+- (void)setFamilyMember:(id)member;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PKAccountInvitationController
 
-- (PKAccountInvitationController)initWithAccount:(id)a3 context:(int64_t)a4 familyMemberCollection:(id)a5
+- (PKAccountInvitationController)initWithAccount:(id)account context:(int64_t)context familyMemberCollection:(id)collection
 {
-  v9 = a3;
-  v10 = a5;
+  accountCopy = account;
+  collectionCopy = collection;
   v33.receiver = self;
   v33.super_class = PKAccountInvitationController;
   v11 = [(PKAccountInvitationController *)&v33 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a3);
-    v12->_context = a4;
-    objc_storeStrong(&v12->_familyMemberCollection, a5);
-    v12->_feature = [v9 feature];
-    v13 = [MEMORY[0x1E69B8400] sharedInstance];
+    objc_storeStrong(&v11->_account, account);
+    v12->_context = context;
+    objc_storeStrong(&v12->_familyMemberCollection, collection);
+    v12->_feature = [accountCopy feature];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v12->_accountService;
-    v12->_accountService = v13;
+    v12->_accountService = mEMORY[0x1E69B8400];
 
-    v15 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v12->_paymentService;
-    v12->_paymentService = v15;
+    v12->_paymentService = paymentService;
 
     [(PKPaymentService *)v12->_paymentService registerObserver:v12];
     v17 = objc_alloc_init(MEMORY[0x1E69B87B0]);
@@ -52,26 +52,26 @@
     replyQueue = v12->_replyQueue;
     v12->_replyQueue = v19;
 
-    v21 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v12->_observers;
-    v12->_observers = v21;
+    v12->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
-    v23 = [(PKAccount *)v12->_account applyServiceURL];
-    if (v23)
+    applyServiceURL = [(PKAccount *)v12->_account applyServiceURL];
+    if (applyServiceURL)
     {
-      v24 = [MEMORY[0x1E69B8EF8] sharedService];
-      v25 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v24];
-      v26 = [[PKApplyControllerConfiguration alloc] initWithSetupDelegate:0 context:a4 provisioningController:v25];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v25 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
+      v26 = [[PKApplyControllerConfiguration alloc] initWithSetupDelegate:0 context:context provisioningController:v25];
       [(PKApplyControllerConfiguration *)v26 setFeature:v12->_feature];
-      [(PKApplyControllerConfiguration *)v26 setAccount:v9];
+      [(PKApplyControllerConfiguration *)v26 setAccount:accountCopy];
       [(PKApplyControllerConfiguration *)v26 setApplicationType:2];
       v27 = [[PKApplyController alloc] initWithApplyConfiguration:v26];
       applyController = v12->_applyController;
       v12->_applyController = v27;
 
-      [(PKApplyController *)v12->_applyController setApplyServiceURL:v23];
+      [(PKApplyController *)v12->_applyController setApplyServiceURL:applyServiceURL];
       v29 = v12->_applyController;
-      v30 = [MEMORY[0x1E69B8330] analyticsAccountTypeForAccount:v9];
+      v30 = [MEMORY[0x1E69B8330] analyticsAccountTypeForAccount:accountCopy];
       [(PKApplyController *)v29 setAnalyticsExistingAccountType:v30];
 
       if (v12->_familyMemberCollection)
@@ -82,11 +82,11 @@
 
     else
     {
-      v24 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      mEMORY[0x1E69B8EF8] = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(mEMORY[0x1E69B8EF8], OS_LOG_TYPE_DEFAULT))
       {
         *v32 = 0;
-        _os_log_impl(&dword_1BD026000, v24, OS_LOG_TYPE_DEFAULT, "Cannot create invitation controller without apply service URL", v32, 2u);
+        _os_log_impl(&dword_1BD026000, mEMORY[0x1E69B8EF8], OS_LOG_TYPE_DEFAULT, "Cannot create invitation controller without apply service URL", v32, 2u);
       }
     }
   }
@@ -102,22 +102,22 @@
   [(PKAccountInvitationController *)&v3 dealloc];
 }
 
-+ (BOOL)canInviteAccountUserWithAccount:(id)a3
++ (BOOL)canInviteAccountUserWithAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 accountUserInvitationAllowed] && objc_msgSend(v3, "accessLevel") == 1 && objc_msgSend(v3, "state") == 1;
+  accountCopy = account;
+  v4 = [accountCopy accountUserInvitationAllowed] && objc_msgSend(accountCopy, "accessLevel") == 1 && objc_msgSend(accountCopy, "state") == 1;
 
   return v4;
 }
 
-+ (void)presentCreateAccountUserInvitationWithViewController:(id)a3 account:(id)a4 accountUserCollection:(id)a5 familyMemberCollection:(id)a6 context:(int64_t)a7 completion:(id)a8
++ (void)presentCreateAccountUserInvitationWithViewController:(id)controller account:(id)account accountUserCollection:(id)collection familyMemberCollection:(id)memberCollection context:(int64_t)context completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  [v15 stateReason];
+  controllerCopy = controller;
+  accountCopy = account;
+  collectionCopy = collection;
+  memberCollectionCopy = memberCollection;
+  completionCopy = completion;
+  [accountCopy stateReason];
   if (PKAccountStateReasonIsInMerge())
   {
     v19 = PKLocalizedFeatureString();
@@ -125,10 +125,10 @@
     v21 = PKDisplayableErrorCustom();
 
     v22 = PKAlertForDisplayableErrorWithHandlers(v21, 0, 0, 0);
-    [v14 presentViewController:v22 animated:1 completion:0];
-    if (v18)
+    [controllerCopy presentViewController:v22 animated:1 completion:0];
+    if (completionCopy)
     {
-      v18[2](v18);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -140,20 +140,20 @@
     v53 = 0x3032000000;
     v54 = __Block_byref_object_copy__33;
     v55 = __Block_byref_object_dispose__33;
-    v56 = v15;
+    v56 = accountCopy;
     v45 = 0;
     v46 = &v45;
     v47 = 0x3032000000;
     v48 = __Block_byref_object_copy__33;
     v49 = __Block_byref_object_dispose__33;
-    v50 = v17;
+    v50 = memberCollectionCopy;
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
     v42 = __Block_byref_object_copy__33;
     v43 = __Block_byref_object_dispose__33;
-    v44 = v16;
-    objc_initWeak(&location, a1);
+    v44 = collectionCopy;
+    objc_initWeak(&location, self);
     if (!v52[5])
     {
       v36[0] = MEMORY[0x1E69E9820];
@@ -191,20 +191,20 @@
       objc_destroyWeak(&v33);
     }
 
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __158__PKAccountInvitationController_presentCreateAccountUserInvitationWithViewController_account_accountUserCollection_familyMemberCollection_context_completion___block_invoke_10;
     v25[3] = &unk_1E801B748;
     objc_copyWeak(v31, &location);
-    v27 = v18;
+    v27 = completionCopy;
     v28 = &v51;
-    v31[1] = a1;
-    v31[2] = a7;
+    v31[1] = self;
+    v31[2] = context;
     v29 = &v39;
     v30 = &v45;
-    v26 = v14;
-    v24 = [v21 evaluateWithInput:v23 completion:v25];
+    v26 = controllerCopy;
+    v24 = [v21 evaluateWithInput:null completion:v25];
 
     objc_destroyWeak(v31);
     objc_destroyWeak(&location);
@@ -434,45 +434,45 @@ void __158__PKAccountInvitationController_presentCreateAccountUserInvitationWith
   }
 }
 
-- (void)setFamilyMember:(id)a3
+- (void)setFamilyMember:(id)member
 {
-  v5 = a3;
-  if (self->_familyMember != v5)
+  memberCopy = member;
+  if (self->_familyMember != memberCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_familyMember, a3);
+    v6 = memberCopy;
+    objc_storeStrong(&self->_familyMember, member);
     [(PKApplyController *)self->_applyController setFamilyMember:self->_familyMember];
-    v5 = v6;
+    memberCopy = v6;
   }
 }
 
-- (void)setAccessLevel:(unint64_t)a3
+- (void)setAccessLevel:(unint64_t)level
 {
-  if (self->_accessLevel != a3)
+  if (self->_accessLevel != level)
   {
-    self->_accessLevel = a3;
+    self->_accessLevel = level;
     [(PKApplyController *)self->_applyController setAccessLevel:?];
   }
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  membersCopy = members;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
+    familyMembers = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
     *buf = 138412546;
-    v12 = v6;
+    v12 = familyMembers;
     v13 = 2112;
-    v14 = v4;
+    v14 = membersCopy;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Family members did update from existing members %@ to new members %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (membersCopy)
   {
-    v7 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
+    familyMembers2 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
     v8 = PKEqualObjects();
 
     if ((v8 & 1) == 0)
@@ -482,7 +482,7 @@ void __158__PKAccountInvitationController_presentCreateAccountUserInvitationWith
       v9[2] = __56__PKAccountInvitationController_didUpdateFamilyMembers___block_invoke;
       v9[3] = &unk_1E8010A10;
       v9[4] = self;
-      v10 = v4;
+      v10 = membersCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v9);
     }
   }
@@ -562,10 +562,10 @@ LABEL_17:
   [*(a1 + 32) _informObserversOfFamilyMemberChange];
 }
 
-- (void)nextViewControllerWithCompletion:(id)a3
+- (void)nextViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v9 = v4;
+  completionCopy = completion;
+  v9 = completionCopy;
   if (!self->_familyMember)
   {
     v7 = PKAccountInvitationChooseMemberViewController;
@@ -582,7 +582,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   applyController = self->_applyController;
   if (applyController)
   {
@@ -599,31 +599,31 @@ LABEL_8:
 
 - (BOOL)isCurrentFamilyMemberAnOrganizer
 {
-  v2 = [(PKFamilyMemberCollection *)self->_familyMemberCollection currentUser];
-  v3 = [v2 isOrganizer];
+  currentUser = [(PKFamilyMemberCollection *)self->_familyMemberCollection currentUser];
+  isOrganizer = [currentUser isOrganizer];
 
-  return v3;
+  return isOrganizer;
 }
 
 - (int64_t)familyCircleCount
 {
-  v2 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
-  v3 = [v2 count];
+  familyMembers = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
+  v3 = [familyMembers count];
 
   return v3;
 }
 
-- (void)familyMembersForceReload:(BOOL)a3 completion:(id)a4
+- (void)familyMembersForceReload:(BOOL)reload completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  reloadCopy = reload;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69B8658]);
     v8 = v7;
     if (self->_familyMemberCollection)
     {
-      v9 = !v4;
+      v9 = !reloadCopy;
     }
 
     else
@@ -638,7 +638,7 @@ LABEL_8:
       v37[2] = __69__PKAccountInvitationController_familyMembersForceReload_completion___block_invoke;
       v37[3] = &unk_1E801B770;
       v37[4] = self;
-      v38 = v4;
+      v38 = reloadCopy;
       [v7 addOperation:v37];
     }
 
@@ -652,7 +652,7 @@ LABEL_8:
     v33[1] = 3221225472;
     v33[2] = __69__PKAccountInvitationController_familyMembersForceReload_completion___block_invoke_4;
     v33[3] = &unk_1E801B798;
-    v34 = v4;
+    v34 = reloadCopy;
     v33[4] = self;
     v33[5] = v35;
     [v8 addOperation:v33];
@@ -724,17 +724,17 @@ LABEL_8:
     v18[4] = v35;
     v18[5] = v19;
     [v8 addOperation:v18];
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__PKAccountInvitationController_familyMembersForceReload_completion___block_invoke_20;
     v12[3] = &unk_1E801B8F0;
-    v13 = v6;
+    v13 = completionCopy;
     v14 = v25;
     v15 = v35;
     v16 = v22;
     v17 = v19;
-    v11 = [v8 evaluateWithInput:v10 completion:v12];
+    v11 = [v8 evaluateWithInput:null completion:v12];
 
     _Block_object_dispose(v19, 8);
     _Block_object_dispose(v22, 8);
@@ -1091,20 +1091,20 @@ void __69__PKAccountInvitationController_familyMembersForceReload_completion___b
   v23[2](v23, v24, 0);
 }
 
-- (void)accessLevelOptionsWithCompletion:(id)a3
+- (void)accessLevelOptionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     paymentService = self->_paymentService;
-    v6 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __66__PKAccountInvitationController_accessLevelOptionsWithCompletion___block_invoke;
     v7[3] = &unk_1E8010DF8;
     v7[4] = self;
-    v8 = v4;
-    [(PKPaymentService *)paymentService featureApplicationsForAccountIdentifier:v6 completion:v7];
+    v8 = completionCopy;
+    [(PKPaymentService *)paymentService featureApplicationsForAccountIdentifier:accountIdentifier completion:v7];
   }
 }
 
@@ -1204,18 +1204,18 @@ uint64_t __66__PKAccountInvitationController_accessLevelOptionsWithCompletion___
   return IsPendingInvitation;
 }
 
-- (id)_filteredFamilyMembersFromFamilyMembers:(id)a3 accountUsers:(id)a4 invitations:(id)a5
+- (id)_filteredFamilyMembersFromFamilyMembers:(id)members accountUsers:(id)users invitations:(id)invitations
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  membersCopy = members;
+  usersCopy = users;
+  invitationsCopy = invitations;
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = v8;
+  v11 = usersCopy;
   v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v12)
   {
@@ -1232,10 +1232,10 @@ uint64_t __66__PKAccountInvitationController_accessLevelOptionsWithCompletion___
 
         v16 = *(*(&v35 + 1) + 8 * i);
         [v16 accountState];
-        v17 = [v16 altDSID];
-        if (v17 && (PKAccountStateIsTerminal() & 1) == 0)
+        altDSID = [v16 altDSID];
+        if (altDSID && (PKAccountStateIsTerminal() & 1) == 0)
         {
-          [v10 addObject:v17];
+          [v10 addObject:altDSID];
         }
       }
 
@@ -1249,7 +1249,7 @@ uint64_t __66__PKAccountInvitationController_accessLevelOptionsWithCompletion___
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = v9;
+  v18 = invitationsCopy;
   v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v19)
   {
@@ -1265,15 +1265,15 @@ uint64_t __66__PKAccountInvitationController_accessLevelOptionsWithCompletion___
         }
 
         v23 = *(*(&v31 + 1) + 8 * j);
-        v24 = [v23 invitationDetails];
-        v25 = [v24 accountUserAltDSID];
+        invitationDetails = [v23 invitationDetails];
+        accountUserAltDSID = [invitationDetails accountUserAltDSID];
 
-        if (v25)
+        if (accountUserAltDSID)
         {
           [v23 applicationState];
           if (PKFeatureApplicationStateIsPendingInvitation())
           {
-            [v10 addObject:v25];
+            [v10 addObject:accountUserAltDSID];
           }
         }
       }
@@ -1290,7 +1290,7 @@ uint64_t __66__PKAccountInvitationController_accessLevelOptionsWithCompletion___
   v29[3] = &unk_1E801B938;
   v30 = v10;
   v26 = v10;
-  v27 = [v7 pk_objectsPassingTest:v29];
+  v27 = [membersCopy pk_objectsPassingTest:v29];
 
   return v27;
 }
@@ -1315,55 +1315,55 @@ uint64_t __98__PKAccountInvitationController__filteredFamilyMembersFromFamilyMem
 
 - (void)_fetchFamilyMemberDeviceCapabilties
 {
-  v3 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
-  v5 = [(PKAccountInvitationController *)self _filteredFamilyMembersFromFamilyMembers:v3 accountUsers:0 invitations:0];
+  familyMembers = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMembers];
+  v5 = [(PKAccountInvitationController *)self _filteredFamilyMembersFromFamilyMembers:familyMembers accountUsers:0 invitations:0];
 
   v4 = [v5 pk_arrayByApplyingBlock:&__block_literal_global_119];
   [(PKDeviceSharingCapabilitiesManager *)self->_deviceCapabiltiesManager fetchDeviceCapabilitesForAppleIDs:v4 associatedFamilyMembers:v5];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers addObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockObservers);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_lockObservers);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61__PKAccountInvitationController__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E8010DD0;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }

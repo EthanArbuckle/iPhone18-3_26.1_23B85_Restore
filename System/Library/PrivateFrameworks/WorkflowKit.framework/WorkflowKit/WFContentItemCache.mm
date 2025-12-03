@@ -1,33 +1,33 @@
 @interface WFContentItemCache
 - (WFContentItemCache)init;
-- (WFContentItemCache)initWithCache:(id)a3;
-- (WFContentItemCache)initWithCoder:(id)a3;
-- (id)contentItemForUUID:(id)a3;
-- (void)addContentCollection:(id)a3;
+- (WFContentItemCache)initWithCache:(id)cache;
+- (WFContentItemCache)initWithCoder:(id)coder;
+- (id)contentItemForUUID:(id)d;
+- (void)addContentCollection:(id)collection;
 - (void)clear;
-- (void)deleteContentCollection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)deleteContentCollection:(id)collection;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContentItemCache
 
 - (WFContentItemCache)init
 {
-  v3 = [MEMORY[0x1E696AD18] mapTableWithStrongToStrongObjects];
-  v4 = [(WFContentItemCache *)self initWithCache:v3];
+  mapTableWithStrongToStrongObjects = [MEMORY[0x1E696AD18] mapTableWithStrongToStrongObjects];
+  v4 = [(WFContentItemCache *)self initWithCache:mapTableWithStrongToStrongObjects];
 
   return v4;
 }
 
 - (void)clear
 {
-  v3 = [(WFContentItemCache *)self dispatchQueue];
+  dispatchQueue = [(WFContentItemCache *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__WFContentItemCache_clear__block_invoke;
   block[3] = &unk_1E837FA70;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(dispatchQueue, block);
 }
 
 void __27__WFContentItemCache_clear__block_invoke(uint64_t a1)
@@ -36,55 +36,55 @@ void __27__WFContentItemCache_clear__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (WFContentItemCache)initWithCoder:(id)a3
+- (WFContentItemCache)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"cache"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"cache"];
 
   if (v9)
   {
     self = [(WFContentItemCache *)self initWithCache:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFContentItemCache *)self cache];
-  [v4 encodeObject:v5 forKey:@"cache"];
+  coderCopy = coder;
+  cache = [(WFContentItemCache *)self cache];
+  [coderCopy encodeObject:cache forKey:@"cache"];
 }
 
-- (id)contentItemForUUID:(id)a3
+- (id)contentItemForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__58148;
   v16 = __Block_byref_object_dispose__58149;
   v17 = 0;
-  v5 = [(WFContentItemCache *)self dispatchQueue];
+  dispatchQueue = [(WFContentItemCache *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__WFContentItemCache_contentItemForUUID___block_invoke;
   block[3] = &unk_1E837C4B0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(dispatchQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -101,18 +101,18 @@ void __41__WFContentItemCache_contentItemForUUID___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)deleteContentCollection:(id)a3
+- (void)deleteContentCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(WFContentItemCache *)self dispatchQueue];
+  collectionCopy = collection;
+  dispatchQueue = [(WFContentItemCache *)self dispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__WFContentItemCache_deleteContentCollection___block_invoke;
   v7[3] = &unk_1E837F870;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = collectionCopy;
+  selfCopy = self;
+  v6 = collectionCopy;
+  dispatch_sync(dispatchQueue, v7);
 }
 
 void __46__WFContentItemCache_deleteContentCollection___block_invoke(uint64_t a1)
@@ -156,18 +156,18 @@ void __46__WFContentItemCache_deleteContentCollection___block_invoke(uint64_t a1
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addContentCollection:(id)a3
+- (void)addContentCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(WFContentItemCache *)self dispatchQueue];
+  collectionCopy = collection;
+  dispatchQueue = [(WFContentItemCache *)self dispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__WFContentItemCache_addContentCollection___block_invoke;
   v7[3] = &unk_1E837F870;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = collectionCopy;
+  selfCopy = self;
+  v6 = collectionCopy;
+  dispatch_sync(dispatchQueue, v7);
 }
 
 void __43__WFContentItemCache_addContentCollection___block_invoke(uint64_t a1)
@@ -211,16 +211,16 @@ void __43__WFContentItemCache_addContentCollection___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (WFContentItemCache)initWithCache:(id)a3
+- (WFContentItemCache)initWithCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = WFContentItemCache;
   v6 = [(WFContentItemCache *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cache, a3);
+    objc_storeStrong(&v6->_cache, cache);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("com.apple.Shortcuts.ContentItemCacheQueue", v8);
     dispatchQueue = v7->_dispatchQueue;

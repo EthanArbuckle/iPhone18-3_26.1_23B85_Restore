@@ -1,31 +1,31 @@
 @interface COSAppInstallButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSAppInstallButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSAppInstallButton)initWithFrame:(CGRect)frame;
 - (void)_updateButtonOutline;
 - (void)layoutSubviews;
-- (void)setMode:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setMode:(unint64_t)mode animated:(BOOL)animated;
 - (void)tintColorDidChange;
-- (void)updateOutlineEnabled:(BOOL)a3 forMode:(unint64_t)a4;
+- (void)updateOutlineEnabled:(BOOL)enabled forMode:(unint64_t)mode;
 @end
 
 @implementation COSAppInstallButton
 
-- (COSAppInstallButton)initWithFrame:(CGRect)a3
+- (COSAppInstallButton)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = COSAppInstallButton;
-  v3 = [(COSAppInstallButton *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSAppInstallButton *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIView);
     outline = v3->_outline;
     v3->_outline = v4;
 
-    v6 = [(UIView *)v3->_outline layer];
-    [v6 setBorderWidth:1.0];
+    layer = [(UIView *)v3->_outline layer];
+    [layer setBorderWidth:1.0];
 
-    v7 = [(UIView *)v3->_outline layer];
-    [v7 setCornerRadius:3.0];
+    layer2 = [(UIView *)v3->_outline layer];
+    [layer2 setCornerRadius:3.0];
 
     v8 = v3->_outline;
     v9 = +[UIColor clearColor];
@@ -59,10 +59,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_installLabel sizeThatFits:?];
   v8 = v7 + 20.0;
   if (v8 >= CGSizeZero.width)
@@ -144,9 +144,9 @@
   [(COSAppInstallButton *)self setMode:self->_mode animated:0];
 }
 
-- (void)updateOutlineEnabled:(BOOL)a3 forMode:(unint64_t)a4
+- (void)updateOutlineEnabled:(BOOL)enabled forMode:(unint64_t)mode
 {
-  if (a4 - 1 > 3)
+  if (mode - 1 > 3)
   {
     x = CGRectZero.origin.x;
     y = CGRectZero.origin.y;
@@ -156,7 +156,7 @@
 
   else
   {
-    [*(&self->super.super.super.super.super.isa + *off_100269F00[a4 - 1]) frame];
+    [*(&self->super.super.super.super.super.isa + *off_100269F00[mode - 1]) frame];
     x = v5;
     y = v7;
     width = v9;
@@ -189,31 +189,31 @@
   [(UIView *)outline setFrame:v14, v15, v16, v17];
 }
 
-- (void)setMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)setMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_mode = a3;
-  v7 = a3 == 1;
-  [(COSAppInstallButton *)self setEnabled:a3 == 1];
+  animatedCopy = animated;
+  self->_mode = mode;
+  v7 = mode == 1;
+  [(COSAppInstallButton *)self setEnabled:mode == 1];
   v8 = 0.0;
   v9[1] = 3221225472;
   v9[0] = _NSConcreteStackBlock;
   v9[2] = sub_10007C4C0;
   v9[3] = &unk_100269EC0;
-  if (v4)
+  if (animatedCopy)
   {
     v8 = 0.5;
   }
 
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = mode;
   v10 = v7;
   [UIView animateWithDuration:4 delay:v9 options:&stru_100269EE0 animations:v8 completion:0.0];
 }
 
 - (void)_updateButtonOutline
 {
-  v5 = [(UIView *)self->_outline layer];
+  layer = [(UIView *)self->_outline layer];
   if ([(COSAppInstallButton *)self isEnabled])
   {
     BPSSetupTintColor();
@@ -225,7 +225,7 @@
   }
   v3 = ;
   v4 = [(COSAppInstallButton *)self _accessibilityHigherContrastTintColorForColor:v3];
-  [v5 setBorderColor:{objc_msgSend(v4, "cgColor")}];
+  [layer setBorderColor:{objc_msgSend(v4, "cgColor")}];
 }
 
 - (void)tintColorDidChange

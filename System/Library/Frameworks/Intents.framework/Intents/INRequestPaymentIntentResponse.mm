@@ -1,17 +1,17 @@
 @interface INRequestPaymentIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INPaymentRecord)paymentRecord;
-- (INRequestPaymentIntentResponse)initWithBackingStore:(id)a3;
+- (INRequestPaymentIntentResponse)initWithBackingStore:(id)store;
 - (INRequestPaymentIntentResponse)initWithCode:(INRequestPaymentIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INRequestPaymentIntentResponse)initWithCoder:(id)a3;
+- (INRequestPaymentIntentResponse)initWithCoder:(id)coder;
 - (INRequestPaymentIntentResponseCode)code;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPaymentRecord:(INPaymentRecord *)paymentRecord;
 @end
 
@@ -21,32 +21,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INRequestPaymentIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INRequestPaymentIntentResponseCodeFailureTermsAndConditionsAcceptanceRequired|INRequestPaymentIntentResponseCodeReady))
+  code = [(INRequestPaymentIntentResponse *)self code];
+  v4 = code;
+  if (code < (INRequestPaymentIntentResponseCodeFailureTermsAndConditionsAcceptanceRequired|INRequestPaymentIntentResponseCodeReady))
   {
-    v5 = off_1E72836C0[v3];
-    v6 = v5;
+    null = off_1E72836C0[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"paymentRecord";
-  v13[0] = v5;
-  v7 = [(INRequestPaymentIntentResponse *)self paymentRecord];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  paymentRecord = [(INRequestPaymentIntentResponse *)self paymentRecord];
+  null2 = paymentRecord;
+  if (!paymentRecord)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!paymentRecord)
   {
   }
 
@@ -62,75 +62,75 @@
 - (void)setPaymentRecord:(INPaymentRecord *)paymentRecord
 {
   v4 = paymentRecord;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToPaymentRecord(v4);
 
-  [v5 setPaymentRecord:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setPaymentRecord:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (INPaymentRecord)paymentRecord
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 paymentRecord];
-  v4 = INIntentSlotValueTransformFromPaymentRecord(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  paymentRecord = [_responseMessagePBRepresentation paymentRecord];
+  v4 = INIntentSlotValueTransformFromPaymentRecord(paymentRecord);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INRequestPaymentIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INRequestPaymentIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailureCredentialsUnverified"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailureCredentialsUnverified"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailurePaymentsAmountBelowMinimum"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailurePaymentsAmountBelowMinimum"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailurePaymentsAmountAboveMaximum"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailurePaymentsAmountAboveMaximum"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailurePaymentsCurrencyUnsupported"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailurePaymentsCurrencyUnsupported"])
   {
     v4 = 9;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailureNoBankAccount"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailureNoBankAccount"])
   {
     v4 = 10;
   }
 
-  if ([v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailureNotEligible"])
+  if ([nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailureNotEligible"])
   {
     v5 = 11;
   }
@@ -140,7 +140,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INRequestPaymentIntentResponseCodeFailureTermsAndConditionsAcceptanceRequired"];
+  v6 = [nameCopy isEqualToString:@"INRequestPaymentIntentResponseCodeFailureTermsAndConditionsAcceptanceRequired"];
 
   if (v6)
   {
@@ -155,30 +155,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INRequestPaymentIntentResponse *)self code];
-  if ((v2 - 1) > 0xB)
+  code = [(INRequestPaymentIntentResponse *)self code];
+  if ((code - 1) > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FBD8[v2 - 1];
+    return qword_18EE5FBD8[code - 1];
   }
 }
 
-- (INRequestPaymentIntentResponse)initWithCoder:(id)a3
+- (INRequestPaymentIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INRequestPaymentIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INRequestPaymentIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INRequestPaymentIntentResponseCode)code
@@ -188,18 +188,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INRequestPaymentIntentResponse)initWithBackingStore:(id)a3
+- (INRequestPaymentIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INRequestPaymentIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INRequestPaymentIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INRequestPaymentIntentResponse)initWithCode:(INRequestPaymentIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -240,58 +240,58 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if ((a3 - 6) > 6)
+  if ((code - 6) > 6)
   {
     return 0x7FFFFFFF;
   }
 
   else
   {
-    return dword_18EE5F080[a3 - 6];
+    return dword_18EE5F080[code - 6];
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 0xB)
+  if ((code - 1) > 0xB)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FBA8[a3 - 1];
+    return dword_18EE5FBA8[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return 2;
     }
 
     else
     {
-      return a3 == 5;
+      return type == 5;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v5 = a4 - 1;
-      if (a4 - 1) < 8 && ((0xBFu >> v5))
+      v5 = code - 1;
+      if (code - 1) < 8 && ((0xBFu >> v5))
       {
         return qword_18EE5F040[v5];
       }
 
-      else if (a5)
+      else if (requested)
       {
         return 5;
       }

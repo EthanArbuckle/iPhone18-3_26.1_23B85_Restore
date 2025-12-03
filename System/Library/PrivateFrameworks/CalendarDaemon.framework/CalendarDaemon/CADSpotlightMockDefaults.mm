@@ -1,7 +1,7 @@
 @interface CADSpotlightMockDefaults
 - (CADSpotlightMockDefaults)init;
 - (NSString)description;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CADSpotlightMockDefaults
@@ -13,27 +13,27 @@
   v2 = [(CADSpotlightMockDefaults *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dict = v2->_dict;
-    v2->_dict = v3;
+    v2->_dict = dictionary;
   }
 
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"LastUnfinishedSpotlightReindex"])
+  objectCopy = object;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"LastUnfinishedSpotlightReindex"])
   {
-    if (v8)
+    if (objectCopy)
     {
       self->_reindexStarted = 1;
       [(CADSpotlightMockDefaults *)self setSuccessfullyReindexed:0];
-      v7 = v8;
+      v7 = objectCopy;
 LABEL_5:
-      [(NSMutableDictionary *)self->_dict setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)self->_dict setObject:v7 forKey:keyCopy];
       goto LABEL_10;
     }
 
@@ -47,14 +47,14 @@ LABEL_5:
 
   else
   {
-    v7 = v8;
-    if (v8)
+    v7 = objectCopy;
+    if (objectCopy)
     {
       goto LABEL_5;
     }
   }
 
-  [(NSMutableDictionary *)self->_dict removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_dict removeObjectForKey:keyCopy];
 LABEL_10:
 }
 

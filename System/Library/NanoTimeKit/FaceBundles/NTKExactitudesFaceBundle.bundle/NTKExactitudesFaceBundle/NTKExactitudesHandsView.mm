@@ -1,11 +1,11 @@
 @interface NTKExactitudesHandsView
-- (_TtC24NTKExactitudesFaceBundle23NTKExactitudesHandsView)initWithCoder:(id)a3;
+- (_TtC24NTKExactitudesFaceBundle23NTKExactitudesHandsView)initWithCoder:(id)coder;
 - (double)hourHandLength;
 - (double)minuteHandLength;
 - (double)secondHandLength;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)secondHandConfiguration;
-- (void)_setHandsAlpha:(double)a3;
+- (void)_setHandsAlpha:(double)alpha;
 @end
 
 @implementation NTKExactitudesHandsView
@@ -55,7 +55,7 @@
   return v3;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   sub_216EC();
   sub_216DC();
@@ -65,13 +65,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
-  v5 = sub_D2E0(a3);
+  deviceCopy = device;
+  v5 = sub_D2E0(device);
 
   return v5;
 }
 
-- (_TtC24NTKExactitudesFaceBundle23NTKExactitudesHandsView)initWithCoder:(id)a3
+- (_TtC24NTKExactitudesFaceBundle23NTKExactitudesHandsView)initWithCoder:(id)coder
 {
   sub_216EC();
   sub_216DC();
@@ -98,12 +98,12 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for NTKExactitudesHandsView();
-  v3 = self;
+  selfCopy = self;
   result = [(NTKExactitudesHandsView *)&v6 secondHandConfiguration];
   if (result)
   {
     v5 = result;
-    [result setHandLength:{*&v3->metrics[OBJC_IVAR____TtC24NTKExactitudesFaceBundle23NTKExactitudesHandsView_metrics + 8], v6.receiver, v6.super_class}];
+    [result setHandLength:{*&selfCopy->metrics[OBJC_IVAR____TtC24NTKExactitudesFaceBundle23NTKExactitudesHandsView_metrics + 8], v6.receiver, v6.super_class}];
 
     return v5;
   }
@@ -116,7 +116,7 @@
   return result;
 }
 
-- (void)_setHandsAlpha:(double)a3
+- (void)_setHandsAlpha:(double)alpha
 {
   sub_216EC();
   sub_216DC();
@@ -126,8 +126,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_DB54(a3);
+  selfCopy = self;
+  sub_DB54(alpha);
 }
 
 @end

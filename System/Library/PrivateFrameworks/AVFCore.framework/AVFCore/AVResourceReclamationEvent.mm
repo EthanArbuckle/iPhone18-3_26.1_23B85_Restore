@@ -1,8 +1,8 @@
 @interface AVResourceReclamationEvent
-- (AVResourceReclamationEvent)initWithEventIdentifier:(id)a3;
-- (BOOL)happenedAfter:(id)a3;
-- (BOOL)happenedBefore:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVResourceReclamationEvent)initWithEventIdentifier:(id)identifier;
+- (BOOL)happenedAfter:(id)after;
+- (BOOL)happenedBefore:(id)before;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -15,27 +15,27 @@
   [(AVResourceReclamationEvent *)&v3 dealloc];
 }
 
-- (AVResourceReclamationEvent)initWithEventIdentifier:(id)a3
+- (AVResourceReclamationEvent)initWithEventIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = AVResourceReclamationEvent;
   v4 = [(AVResourceReclamationEvent *)&v6 init];
   if (v4)
   {
-    v4->_eventIdentifier = [a3 copy];
+    v4->_eventIdentifier = [identifier copy];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -47,31 +47,31 @@
   }
 
   eventIdentifier = self->_eventIdentifier;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return [(NSNumber *)eventIdentifier isEqual:v6];
 }
 
-- (BOOL)happenedAfter:(id)a3
+- (BOOL)happenedAfter:(id)after
 {
-  if (!a3)
+  if (!after)
   {
     return 1;
   }
 
-  v4 = [(NSNumber *)self->_eventIdentifier unsignedLongLongValue];
-  return v4 > [objc_msgSend(a3 "eventIdentifier")];
+  unsignedLongLongValue = [(NSNumber *)self->_eventIdentifier unsignedLongLongValue];
+  return unsignedLongLongValue > [objc_msgSend(after "eventIdentifier")];
 }
 
-- (BOOL)happenedBefore:(id)a3
+- (BOOL)happenedBefore:(id)before
 {
-  if (!a3)
+  if (!before)
   {
     return 0;
   }
 
-  v4 = [(NSNumber *)self->_eventIdentifier unsignedLongLongValue];
-  return v4 < [objc_msgSend(a3 "eventIdentifier")];
+  unsignedLongLongValue = [(NSNumber *)self->_eventIdentifier unsignedLongLongValue];
+  return unsignedLongLongValue < [objc_msgSend(before "eventIdentifier")];
 }
 
 @end

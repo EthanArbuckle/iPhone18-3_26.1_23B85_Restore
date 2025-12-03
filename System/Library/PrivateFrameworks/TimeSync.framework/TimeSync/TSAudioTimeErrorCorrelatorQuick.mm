@@ -1,16 +1,16 @@
 @interface TSAudioTimeErrorCorrelatorQuick
-- (TSAudioTimeErrorCorrelatorQuick)initWithMaxCorrelationLength:(int64_t)a3 andUpscaleFactor:(int64_t)a4 forSamplingRate:(double)a5;
+- (TSAudioTimeErrorCorrelatorQuick)initWithMaxCorrelationLength:(int64_t)length andUpscaleFactor:(int64_t)factor forSamplingRate:(double)rate;
 - (void)_makeBlock;
 - (void)dealloc;
 @end
 
 @implementation TSAudioTimeErrorCorrelatorQuick
 
-- (TSAudioTimeErrorCorrelatorQuick)initWithMaxCorrelationLength:(int64_t)a3 andUpscaleFactor:(int64_t)a4 forSamplingRate:(double)a5
+- (TSAudioTimeErrorCorrelatorQuick)initWithMaxCorrelationLength:(int64_t)length andUpscaleFactor:(int64_t)factor forSamplingRate:(double)rate
 {
   v21.receiver = self;
   v21.super_class = TSAudioTimeErrorCorrelatorQuick;
-  v7 = [TSAudioTimeErrorCorrelator initWithMaxCorrelationLength:sel_initWithMaxCorrelationLength_andUpscaleFactor_forSamplingRate_ andUpscaleFactor:a5 forSamplingRate:?];
+  v7 = [TSAudioTimeErrorCorrelator initWithMaxCorrelationLength:sel_initWithMaxCorrelationLength_andUpscaleFactor_forSamplingRate_ andUpscaleFactor:rate forSamplingRate:?];
   v8 = v7;
   if (v7)
   {
@@ -25,11 +25,11 @@
       bzero(channelABuffer, 8 * v8->super._maxCorrelationLength);
       bzero(v8->_scratchBuffer, 8 * v8->super._maxCorrelationLength);
       bzero(v8->_correlationBuffer, 4 * v8->super._upscaleFactor * v8->super._maxCorrelationLength);
-      if (a4 * a3 >= 1)
+      if (factor * length >= 1)
       {
         v14 = 0;
-        *v13.i32 = a4;
-        v15 = vdupq_n_s64(a4 * a3 - 1);
+        *v13.i32 = factor;
+        v15 = vdupq_n_s64(factor * length - 1);
         v16 = v8->_interpollationIndiciesBuffer + 2;
         v17 = xmmword_26F0DFB70;
         v18 = xmmword_26F0DFB80;
@@ -59,7 +59,7 @@
           v16 += 4;
         }
 
-        while (((a4 * a3 + 3) & 0xFFFFFFFFFFFFFFFCLL) != v14);
+        while (((factor * length + 3) & 0xFFFFFFFFFFFFFFFCLL) != v14);
       }
 
       [(TSAudioTimeErrorCorrelatorQuick *)v8 _makeBlock];

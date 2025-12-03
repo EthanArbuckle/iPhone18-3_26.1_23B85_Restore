@@ -2,16 +2,16 @@
 - (BOOL)isKeybagRollingNeeded;
 - (MTChaperoneParser)init;
 - (id)_allCommands;
-- (id)_clearPasscode:(id)a3;
-- (id)_removeProfile:(id)a3;
-- (id)_requestUnlockToken:(id)a3;
-- (unint64_t)_profileInstallationStyleForRequest:(id)a3;
-- (void)_installApplication:(id)a3 completionBlock:(id)a4;
-- (void)_processRequest:(id)a3 accessRights:(unint64_t)a4 assertion:(id)a5 completionBlock:(id)a6;
-- (void)commandDefaultMDMOptionsCompletionBlock:(id)a3;
-- (void)commandProceedWithKeybagMigrationRequest:(id)a3 completionBlock:(id)a4;
-- (void)commandSetDefaultMDMOptionsRequest:(id)a3 completionBlock:(id)a4;
-- (void)waitUntilKeybagRollingHasBeenPerformedCompletionBlock:(id)a3 timeRemaining:(double)a4;
+- (id)_clearPasscode:(id)passcode;
+- (id)_removeProfile:(id)profile;
+- (id)_requestUnlockToken:(id)token;
+- (unint64_t)_profileInstallationStyleForRequest:(id)request;
+- (void)_installApplication:(id)application completionBlock:(id)block;
+- (void)_processRequest:(id)request accessRights:(unint64_t)rights assertion:(id)assertion completionBlock:(id)block;
+- (void)commandDefaultMDMOptionsCompletionBlock:(id)block;
+- (void)commandProceedWithKeybagMigrationRequest:(id)request completionBlock:(id)block;
+- (void)commandSetDefaultMDMOptionsRequest:(id)request completionBlock:(id)block;
+- (void)waitUntilKeybagRollingHasBeenPerformedCompletionBlock:(id)block timeRemaining:(double)remaining;
 @end
 
 @implementation MTChaperoneParser
@@ -33,12 +33,12 @@
   return v2;
 }
 
-- (void)_processRequest:(id)a3 accessRights:(unint64_t)a4 assertion:(id)a5 completionBlock:(id)a6
+- (void)_processRequest:(id)request accessRights:(unint64_t)rights assertion:(id)assertion completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 objectForKey:kMCTPRequestTypeKey];
+  requestCopy = request;
+  assertionCopy = assertion;
+  blockCopy = block;
+  v13 = [requestCopy objectForKey:kMCTPRequestTypeKey];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -49,13 +49,13 @@
   {
     if ([v13 isEqualToString:@"SetDefaultMDMOptions"])
     {
-      [(MTChaperoneParser *)self commandSetDefaultMDMOptionsRequest:v10 completionBlock:v12];
+      [(MTChaperoneParser *)self commandSetDefaultMDMOptionsRequest:requestCopy completionBlock:blockCopy];
       goto LABEL_9;
     }
 
     if ([v13 isEqualToString:@"ProceedWithKeybagMigration"])
     {
-      [(MTChaperoneParser *)self commandProceedWithKeybagMigrationRequest:v10 completionBlock:v12];
+      [(MTChaperoneParser *)self commandProceedWithKeybagMigrationRequest:requestCopy completionBlock:blockCopy];
       goto LABEL_9;
     }
 
@@ -65,17 +65,17 @@ LABEL_8:
     v15[2] = sub_100002E54;
     v15[3] = &unk_100010828;
     v15[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
+    v16 = requestCopy;
+    v17 = assertionCopy;
+    v18 = blockCopy;
     v14.receiver = self;
     v14.super_class = MTChaperoneParser;
-    [(MTChaperoneParser *)&v14 _processRequest:v16 accessRights:a4 assertion:v17 completionBlock:v15];
+    [(MTChaperoneParser *)&v14 _processRequest:v16 accessRights:rights assertion:v17 completionBlock:v15];
 
     goto LABEL_9;
   }
 
-  [(MTChaperoneParser *)self commandDefaultMDMOptionsCompletionBlock:v12];
+  [(MTChaperoneParser *)self commandDefaultMDMOptionsCompletionBlock:blockCopy];
 LABEL_9:
 }
 
@@ -94,32 +94,32 @@ LABEL_9:
   return qword_100014BD0;
 }
 
-- (unint64_t)_profileInstallationStyleForRequest:(id)a3
+- (unint64_t)_profileInstallationStyleForRequest:(id)request
 {
-  v3 = [a3 objectForKey:kMCTPRequestTypeKey];
+  v3 = [request objectForKey:kMCTPRequestTypeKey];
   v4 = [v3 isEqualToString:kMDMPRequestTypeInstallProfileSilent];
 
   return v4;
 }
 
-- (void)_installApplication:(id)a3 completionBlock:(id)a4
+- (void)_installApplication:(id)application completionBlock:(id)block
 {
-  v4 = a4;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000034A8;
     block[3] = &unk_100010850;
-    v7 = v4;
+    v7 = blockCopy;
     dispatch_async(v5, block);
   }
 }
 
-- (id)_removeProfile:(id)a3
+- (id)_removeProfile:(id)profile
 {
-  v4 = [a3 objectForKey:kIdentifierKey];
+  v4 = [profile objectForKey:kIdentifierKey];
   if (v4)
   {
     v5 = *DMCLogObjects();
@@ -159,7 +159,7 @@ LABEL_9:
   return v8;
 }
 
-- (id)_requestUnlockToken:(id)a3
+- (id)_requestUnlockToken:(id)token
 {
   if (+[MDMMCInterface isPasscodeSet])
   {
@@ -186,9 +186,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)_clearPasscode:(id)a3
+- (id)_clearPasscode:(id)passcode
 {
-  v3 = [a3 objectForKeyedSubscript:kMDMPUnlockTokenKey];
+  v3 = [passcode objectForKeyedSubscript:kMDMPUnlockTokenKey];
   v12[1] = 0;
   v4 = MDMKeybagRetrieveSupervisionEscrowSecret();
   v5 = 0;
@@ -220,9 +220,9 @@ LABEL_7:
   return v10;
 }
 
-- (void)commandDefaultMDMOptionsCompletionBlock:(id)a3
+- (void)commandDefaultMDMOptionsCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v3 = [MTChaperoneParser responseWithStatus:kMCTPStatusAcknowledged];
   v4 = +[MDMOptionsUtilities defaultMDMOptions];
   if (v4)
@@ -230,22 +230,22 @@ LABEL_7:
     [v3 setObject:v4 forKeyedSubscript:@"DefaultMDMOptions"];
   }
 
-  if (v5)
+  if (blockCopy)
   {
-    v5[2](v5, v3);
+    blockCopy[2](blockCopy, v3);
   }
 }
 
-- (void)commandSetDefaultMDMOptionsRequest:(id)a3 completionBlock:(id)a4
+- (void)commandSetDefaultMDMOptionsRequest:(id)request completionBlock:(id)block
 {
-  v8 = a4;
-  v5 = [a3 objectForKeyedSubscript:@"DefaultMDMOptions"];
+  blockCopy = block;
+  v5 = [request objectForKeyedSubscript:@"DefaultMDMOptions"];
   v6 = [MDMOptionsUtilities validatedMDMOptionsFromOptionsDictionary:v5];
   [MDMOptionsUtilities setDefaultMDMOptions:v6];
   v7 = [MTChaperoneParser responseWithStatus:kMCTPStatusAcknowledged];
-  if (v8)
+  if (blockCopy)
   {
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -268,9 +268,9 @@ LABEL_7:
   return CFProperty != 0;
 }
 
-- (void)waitUntilKeybagRollingHasBeenPerformedCompletionBlock:(id)a3 timeRemaining:(double)a4
+- (void)waitUntilKeybagRollingHasBeenPerformedCompletionBlock:(id)block timeRemaining:(double)remaining
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   SystemGeneration = MKBKeyBagGetSystemGeneration();
   v6 = *DMCLogObjects();
@@ -282,14 +282,14 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Could not get keybag system generation number.", buf, 2u);
     }
 
-    if (v4)
+    if (blockCopy)
     {
       v7 = dispatch_get_global_queue(0, 0);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000042D0;
       block[3] = &unk_100010850;
-      v12 = v4;
+      v12 = blockCopy;
       dispatch_async(v7, block);
 
       v8 = v12;
@@ -313,14 +313,14 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Keybag system generation is sufficient to proceed.", buf, 2u);
     }
 
-    if (v4)
+    if (blockCopy)
     {
       v10 = dispatch_get_global_queue(0, 0);
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100004130;
       v13[3] = &unk_100010850;
-      v14 = v4;
+      v14 = blockCopy;
       dispatch_async(v10, v13);
 
       v8 = v14;
@@ -329,16 +329,16 @@ LABEL_12:
   }
 }
 
-- (void)commandProceedWithKeybagMigrationRequest:(id)a3 completionBlock:(id)a4
+- (void)commandProceedWithKeybagMigrationRequest:(id)request completionBlock:(id)block
 {
   v5 = kMDMKeybagMigrationHasBeenClearedByHostKey;
   v6 = kMDMNotBackedUpPreferencesDomain;
   v7 = kMDMPreferencesMobileUserName;
-  v8 = a4;
+  blockCopy = block;
   CFPreferencesSetValue(v5, kCFBooleanTrue, v6, v7, kCFPreferencesAnyHost);
   CFPreferencesSynchronize(v6, v7, kCFPreferencesAnyHost);
   MDMSendTriggerRollKeybagsNotification();
-  [(MTChaperoneParser *)self waitUntilKeybagRollingHasBeenPerformedCompletionBlock:v8 timeRemaining:300.0];
+  [(MTChaperoneParser *)self waitUntilKeybagRollingHasBeenPerformedCompletionBlock:blockCopy timeRemaining:300.0];
 }
 
 @end

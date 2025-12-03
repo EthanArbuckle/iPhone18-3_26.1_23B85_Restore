@@ -1,12 +1,12 @@
 @interface VCPPhotosAsset
-+ (id)assetWithPHAsset:(id)a3;
-+ (id)assetWithPHAsset:(id)a3 downloadedData:(id)a4;
++ (id)assetWithPHAsset:(id)asset;
++ (id)assetWithPHAsset:(id)asset downloadedData:(id)data;
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)slomoRange;
 - (BOOL)isMovieResourceLocalAvailable;
 - (CGSize)originalMovieSize;
 - (NSArray)resources;
-- (VCPPhotosAsset)initWithPHAsset:(id)a3 downloadedData:(id)a4;
-- (__CVBuffer)imageWithPreferredDimension:(unint64_t)a3 orientation:(unsigned int *)a4;
+- (VCPPhotosAsset)initWithPHAsset:(id)asset downloadedData:(id)data;
+- (__CVBuffer)imageWithPreferredDimension:(unint64_t)dimension orientation:(unsigned int *)orientation;
 - (float)originalPhotoOffsetSeconds;
 - (float)photoOffsetSeconds;
 - (float)slowmoRate;
@@ -17,41 +17,41 @@
 - (id)movie;
 - (id)originalMovie;
 - (id)scenes;
-- (id)streamedMovie:(BOOL)a3;
+- (id)streamedMovie:(BOOL)movie;
 @end
 
 @implementation VCPPhotosAsset
 
-- (VCPPhotosAsset)initWithPHAsset:(id)a3 downloadedData:(id)a4
+- (VCPPhotosAsset)initWithPHAsset:(id)asset downloadedData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = VCPPhotosAsset;
   v9 = [(VCPPhotosAsset *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    objc_storeStrong(&v10->_downloadedData, a4);
+    objc_storeStrong(&v9->_asset, asset);
+    objc_storeStrong(&v10->_downloadedData, data);
   }
 
   return v10;
 }
 
-+ (id)assetWithPHAsset:(id)a3 downloadedData:(id)a4
++ (id)assetWithPHAsset:(id)asset downloadedData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithPHAsset:v5 downloadedData:v6];
+  assetCopy = asset;
+  dataCopy = data;
+  v7 = [objc_alloc(objc_opt_class()) initWithPHAsset:assetCopy downloadedData:dataCopy];
 
   return v7;
 }
 
-+ (id)assetWithPHAsset:(id)a3
++ (id)assetWithPHAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [objc_opt_class() assetWithPHAsset:v3 downloadedData:0];
+  assetCopy = asset;
+  v4 = [objc_opt_class() assetWithPHAsset:assetCopy downloadedData:0];
 
   return v4;
 }
@@ -73,27 +73,27 @@
 
 - (id)mainFileURL
 {
-  v2 = [(VCPPhotosAsset *)self resources];
-  v3 = [v2 vcp_originalResource];
-  v4 = [v3 privateFileURL];
+  resources = [(VCPPhotosAsset *)self resources];
+  vcp_originalResource = [resources vcp_originalResource];
+  privateFileURL = [vcp_originalResource privateFileURL];
 
-  return v4;
+  return privateFileURL;
 }
 
 - (id)allScenes
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHAsset *)self->_asset localIdentifier];
+  localIdentifier = [(PHAsset *)self->_asset localIdentifier];
 
-  if (v3)
+  if (localIdentifier)
   {
     v4 = MEMORY[0x1E6978A30];
     v10[0] = self->_asset;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v6 = [v4 fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:v5];
 
-    v7 = [(PHAsset *)self->_asset localIdentifier];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    localIdentifier2 = [(PHAsset *)self->_asset localIdentifier];
+    v8 = [v6 objectForKeyedSubscript:localIdentifier2];
   }
 
   else
@@ -107,45 +107,45 @@
 - (id)scenes
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_onceScenes)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_onceScenes)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    cachedScenes = v2->_cachedScenes;
-    v2->_cachedScenes = v3;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    cachedScenes = selfCopy->_cachedScenes;
+    selfCopy->_cachedScenes = dictionary;
 
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(PHAsset *)v2->_asset localIdentifier];
+    array = [MEMORY[0x1E695DF70] array];
+    localIdentifier = [(PHAsset *)selfCopy->_asset localIdentifier];
 
-    if (v6)
+    if (localIdentifier)
     {
       v7 = MEMORY[0x1E6978A30];
-      v34[0] = v2->_asset;
+      v34[0] = selfCopy->_asset;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
       v9 = [v7 fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:v8];
 
-      v10 = [(PHAsset *)v2->_asset localIdentifier];
-      v11 = [v9 objectForKeyedSubscript:v10];
-      [v5 addObjectsFromArray:v11];
+      localIdentifier2 = [(PHAsset *)selfCopy->_asset localIdentifier];
+      v11 = [v9 objectForKeyedSubscript:localIdentifier2];
+      [array addObjectsFromArray:v11];
     }
 
-    if (v5)
+    if (array)
     {
-      if ([v5 count] >= 0xB)
+      if ([array count] >= 0xB)
       {
-        [v5 sortUsingComparator:&__block_literal_global_42];
-        v12 = [v5 subarrayWithRange:{0, 10}];
+        [array sortUsingComparator:&__block_literal_global_42];
+        v12 = [array subarrayWithRange:{0, 10}];
         v13 = [v12 mutableCopy];
 
-        v5 = v13;
+        array = v13;
       }
 
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v14 = v5;
+      v14 = array;
       v15 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v15)
       {
@@ -160,22 +160,22 @@
             }
 
             v18 = *(*(&v27 + 1) + 8 * i);
-            v19 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-            v20 = [v19 mad_sceneNameFromExtendedSceneId:{objc_msgSend(v18, "extendedSceneIdentifier")}];
+            vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+            v20 = [vcp_sharedTaxonomy mad_sceneNameFromExtendedSceneId:{objc_msgSend(v18, "extendedSceneIdentifier")}];
 
             if (v20)
             {
               v21 = MEMORY[0x1E696AD98];
               [v18 confidence];
               v22 = [v21 numberWithDouble:?];
-              [(NSMutableDictionary *)v2->_cachedScenes setObject:v22 forKeyedSubscript:v20];
+              [(NSMutableDictionary *)selfCopy->_cachedScenes setObject:v22 forKeyedSubscript:v20];
             }
 
             else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v18 extendedSceneIdentifier];
+              extendedSceneIdentifier = [v18 extendedSceneIdentifier];
               *buf = 134217984;
-              v33 = v23;
+              v33 = extendedSceneIdentifier;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Scene identifier %llu has no name; ignoring", buf, 0xCu);
             }
           }
@@ -189,18 +189,18 @@
 
     else if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v24 = [(PHAsset *)v2->_asset localIdentifier];
+      localIdentifier3 = [(PHAsset *)selfCopy->_asset localIdentifier];
       *buf = 138412290;
-      v33 = v24;
+      v33 = localIdentifier3;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "  [%@] No scene classification result fetched from pre analysis", buf, 0xCu);
     }
 
-    v2->_onceScenes = 1;
+    selfCopy->_onceScenes = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v25 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v2->_cachedScenes];
+  v25 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:selfCopy->_cachedScenes];
 
   return v25;
 }
@@ -231,13 +231,13 @@ uint64_t __24__VCPPhotosAsset_scenes__block_invoke(uint64_t a1, void *a2, void *
 - (id)faces
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PHAsset *)self->_asset photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PHAsset *)self->_asset photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
   if ([MEMORY[0x1E69789B0] mad_clusterVideoFaces])
   {
-    [v4 setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   }
 
   v5 = *MEMORY[0x1E6978D70];
@@ -247,9 +247,9 @@ uint64_t __24__VCPPhotosAsset_scenes__block_invoke(uint64_t a1, void *a2, void *
   v10[2] = *MEMORY[0x1E6978D68];
   v10[3] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:4];
-  [v4 setFetchPropertySets:v7];
+  [librarySpecificFetchOptions setFetchPropertySets:v7];
 
-  v8 = [MEMORY[0x1E69787D0] fetchFacesInAsset:self->_asset options:v4];
+  v8 = [MEMORY[0x1E69787D0] fetchFacesInAsset:self->_asset options:librarySpecificFetchOptions];
 
   return v8;
 }
@@ -257,20 +257,20 @@ uint64_t __24__VCPPhotosAsset_scenes__block_invoke(uint64_t a1, void *a2, void *
 - (id)exif
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_onceExif)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_onceExif)
   {
-    v3 = [(VCPPhotosAsset *)v2 resources];
-    v4 = [v3 vcp_localPhotoResourcesSorted:{-[PHAsset hasAdjustments](v2->_asset, "hasAdjustments")}];
+    resources = [(VCPPhotosAsset *)selfCopy resources];
+    v4 = [resources vcp_localPhotoResourcesSorted:{-[PHAsset hasAdjustments](selfCopy->_asset, "hasAdjustments")}];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
     v16 = v4;
-    v5 = [v4 reverseObjectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    reverseObjectEnumerator = [v4 reverseObjectEnumerator];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -280,19 +280,19 @@ LABEL_4:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
         if ([v9 vcp_isDecodable])
         {
           v10 = MEMORY[0x1E695DF20];
-          v11 = [v9 privateFileURL];
-          v12 = [v10 vcp_exifFromImageURL:v11];
-          cachedExif = v2->_cachedExif;
-          v2->_cachedExif = v12;
+          privateFileURL = [v9 privateFileURL];
+          v12 = [v10 vcp_exifFromImageURL:privateFileURL];
+          cachedExif = selfCopy->_cachedExif;
+          selfCopy->_cachedExif = v12;
 
-          if (v2->_cachedExif)
+          if (selfCopy->_cachedExif)
           {
             break;
           }
@@ -300,7 +300,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -311,27 +311,27 @@ LABEL_4:
       }
     }
 
-    v2->_onceExif = 1;
+    selfCopy->_onceExif = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v14 = v2->_cachedExif;
+  v14 = selfCopy->_cachedExif;
 
   return v14;
 }
 
-- (__CVBuffer)imageWithPreferredDimension:(unint64_t)a3 orientation:(unsigned int *)a4
+- (__CVBuffer)imageWithPreferredDimension:(unint64_t)dimension orientation:(unsigned int *)orientation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(VCPPhotosAsset *)self resources];
-  v10 = [v9 vcp_localPhotoResourcesSorted:{-[PHAsset hasAdjustments](self->_asset, "hasAdjustments")}];
+  resources = [(VCPPhotosAsset *)self resources];
+  v10 = [resources vcp_localPhotoResourcesSorted:{-[PHAsset hasAdjustments](self->_asset, "hasAdjustments")}];
 
   v11 = [v10 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v11)
@@ -355,14 +355,14 @@ LABEL_4:
             v15 = v16;
           }
 
-          if (v15 >= a3)
+          if (v15 >= dimension)
           {
-            v17 = v8;
+            v17 = array2;
           }
 
           else
           {
-            v17 = v7;
+            v17 = array;
           }
 
           [v17 addObject:v14];
@@ -380,7 +380,7 @@ LABEL_4:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = v8;
+  v19 = array2;
   v20 = [v19 countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v20)
   {
@@ -394,10 +394,10 @@ LABEL_4:
           objc_enumerationMutation(v19);
         }
 
-        v23 = [v18 imageForResource:*(*(&v34 + 1) + 8 * j) pixelFormat:875704422 maxDimension:a3 orientation:a4];
+        v23 = [v18 imageForResource:*(*(&v34 + 1) + 8 * j) pixelFormat:875704422 maxDimension:dimension orientation:orientation];
         if (v23)
         {
-          v24 = v19;
+          reverseObjectEnumerator = v19;
           goto LABEL_35;
         }
       }
@@ -416,11 +416,11 @@ LABEL_4:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = [v7 reverseObjectEnumerator];
-  v25 = [v24 countByEnumeratingWithState:&v30 objects:v42 count:16];
+  reverseObjectEnumerator = [array reverseObjectEnumerator];
+  v25 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v25)
   {
-    obj = v24;
+    obj = reverseObjectEnumerator;
     v26 = *v31;
 LABEL_26:
     v27 = 0;
@@ -431,7 +431,7 @@ LABEL_26:
         objc_enumerationMutation(obj);
       }
 
-      v23 = [v18 imageForResource:*(*(&v30 + 1) + 8 * v27) pixelFormat:875704422 maxDimension:a3 orientation:a4];
+      v23 = [v18 imageForResource:*(*(&v30 + 1) + 8 * v27) pixelFormat:875704422 maxDimension:dimension orientation:orientation];
       if (v23)
       {
         break;
@@ -450,7 +450,7 @@ LABEL_26:
       }
     }
 
-    v24 = obj;
+    reverseObjectEnumerator = obj;
   }
 
   else
@@ -468,11 +468,11 @@ LABEL_35:
   Seconds = 0.0;
   if ([(VCPAsset *)self isLivePhoto])
   {
-    v4 = [(PHAsset *)self->_asset photoIrisProperties];
-    v5 = v4;
-    if (v4)
+    photoIrisProperties = [(PHAsset *)self->_asset photoIrisProperties];
+    v5 = photoIrisProperties;
+    if (photoIrisProperties)
     {
-      [v4 photoIrisStillDisplayTime];
+      [photoIrisProperties photoIrisStillDisplayTime];
       Seconds = CMTimeGetSeconds(&time);
     }
 
@@ -498,14 +498,14 @@ LABEL_35:
 
   if ([(PHAsset *)self->_asset hasAdjustments])
   {
-    v4 = [(VCPPhotosAsset *)self resources];
-    v5 = [v4 vcp_originalVideoResource];
+    resources = [(VCPPhotosAsset *)self resources];
+    vcp_originalVideoResource = [resources vcp_originalVideoResource];
 
-    if (v5 && [v5 isLocallyAvailable])
+    if (vcp_originalVideoResource && [vcp_originalVideoResource isLocallyAvailable])
     {
       v6 = MEMORY[0x1E6988168];
-      v7 = [v5 privateFileURL];
-      v8 = [v6 assetWithURL:v7];
+      privateFileURL = [vcp_originalVideoResource privateFileURL];
+      v8 = [v6 assetWithURL:privateFileURL];
 
       if (v8)
       {
@@ -518,11 +518,11 @@ LABEL_35:
       }
 
       Seconds = CMTimeGetSeconds(&time);
-      v11 = [(VCPPhotosAsset *)self movie];
-      v12 = v11;
-      if (v11)
+      movie = [(VCPPhotosAsset *)self movie];
+      v12 = movie;
+      if (movie)
       {
-        [v11 duration];
+        [movie duration];
       }
 
       else
@@ -562,8 +562,8 @@ LABEL_19:
 
 - (float)slowmoRate
 {
-  v2 = [(VCPPhotosAsset *)self resources];
-  [v2 vcp_getFpsRate];
+  resources = [(VCPPhotosAsset *)self resources];
+  [resources vcp_getFpsRate];
   v4 = v3;
 
   return v4;
@@ -575,13 +575,13 @@ LABEL_19:
   result = [(VCPAsset *)self isSlowmo];
   if (result)
   {
-    v6 = [(VCPPhotosAsset *)self resources];
-    v7 = [v6 vcp_adjustmentsResource];
-    v8 = [v7 privateFileURL];
+    resources = [(VCPPhotosAsset *)self resources];
+    vcp_adjustmentsResource = [resources vcp_adjustmentsResource];
+    privateFileURL = [vcp_adjustmentsResource privateFileURL];
 
-    if (v8)
+    if (privateFileURL)
     {
-      v9 = [objc_alloc(MEMORY[0x1E69C0908]) initWithURL:v8];
+      v9 = [objc_alloc(MEMORY[0x1E69C0908]) initWithURL:privateFileURL];
       v10 = v9;
       if (v9 && ([v9 hasSlowMotionAdjustments] & 1) != 0)
       {
@@ -592,9 +592,9 @@ LABEL_19:
       {
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
-          v13 = [(VCPPhotosAsset *)self localIdentifier];
+          localIdentifier = [(VCPPhotosAsset *)self localIdentifier];
           v19 = 138412290;
-          v20 = v13;
+          v20 = localIdentifier;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MediaAnalysis][%@] No slow-mo timestamp mapping file found", &v19, 0xCu);
         }
 
@@ -610,9 +610,9 @@ LABEL_19:
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
-        v16 = [(VCPPhotosAsset *)self localIdentifier];
+        localIdentifier2 = [(VCPPhotosAsset *)self localIdentifier];
         v19 = 138412290;
-        v20 = v16;
+        v20 = localIdentifier2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MediaAnalysis][%@] No slow-mo timestamp mapping file URL found", &v19, 0xCu);
       }
 
@@ -638,18 +638,18 @@ LABEL_19:
 
 - (id)movie
 {
-  v3 = [(VCPPhotosAsset *)self resources];
+  resources = [(VCPPhotosAsset *)self resources];
   if ([(PHAsset *)self->_asset vcp_isVideoSlowmo])
   {
-    v4 = [v3 vcp_originalResource];
-    if (-[PHAsset vcp_hasAdjustments](self->_asset, "vcp_hasAdjustments") || ![v4 vcp_isLocallyAvailable] || (objc_msgSend(v4, "vcp_avAsset"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    vcp_originalResource = [resources vcp_originalResource];
+    if (-[PHAsset vcp_hasAdjustments](self->_asset, "vcp_hasAdjustments") || ![vcp_originalResource vcp_isLocallyAvailable] || (objc_msgSend(vcp_originalResource, "vcp_avAsset"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v6 = [(PHAsset *)self->_asset vcp_hasAdjustments];
-      if ([v3 vcp_hasLocalSlowmo:v6] && (objc_msgSend(v3, "vcp_avAsset:", v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+      vcp_hasAdjustments = [(PHAsset *)self->_asset vcp_hasAdjustments];
+      if ([resources vcp_hasLocalSlowmo:vcp_hasAdjustments] && (objc_msgSend(resources, "vcp_avAsset:", vcp_hasAdjustments), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v8 = [v3 vcp_adjustmentsResource];
+        vcp_adjustmentsResource = [resources vcp_adjustmentsResource];
         [(PHAsset *)self->_asset duration];
-        v5 = [v7 vcp_assetWithoutAdjustments:v8 duration:?];
+        v5 = [v7 vcp_assetWithoutAdjustments:vcp_adjustmentsResource duration:?];
       }
 
       else
@@ -661,7 +661,7 @@ LABEL_19:
 
   else
   {
-    v5 = [v3 vcp_avAsset:{-[PHAsset hasAdjustments](self->_asset, "hasAdjustments")}];
+    v5 = [resources vcp_avAsset:{-[PHAsset hasAdjustments](self->_asset, "hasAdjustments")}];
   }
 
   return v5;
@@ -669,26 +669,26 @@ LABEL_19:
 
 - (BOOL)isMovieResourceLocalAvailable
 {
-  v3 = [(PHAsset *)self->_asset vcp_hasAdjustments];
-  v4 = [(VCPPhotosAsset *)self resources];
-  v5 = [v4 vcp_localMovieResourcesSorted:v3];
+  vcp_hasAdjustments = [(PHAsset *)self->_asset vcp_hasAdjustments];
+  resources = [(VCPPhotosAsset *)self resources];
+  v5 = [resources vcp_localMovieResourcesSorted:vcp_hasAdjustments];
   v6 = [v5 count] != 0;
 
   return v6;
 }
 
-- (id)streamedMovie:(BOOL)a3
+- (id)streamedMovie:(BOOL)movie
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(VCPPhotosAsset *)self resources];
-  v6 = [v5 vcp_smallMovieDerivativeResource];
+  resources = [(VCPPhotosAsset *)self resources];
+  vcp_smallMovieDerivativeResource = [resources vcp_smallMovieDerivativeResource];
 
-  if (v6)
+  if (vcp_smallMovieDerivativeResource)
   {
-    if (a3 || !_os_feature_enabled_impl())
+    if (movie || !_os_feature_enabled_impl())
     {
       v10 = +[VCPDownloadManager sharedManager];
-      v8 = [v10 requestDownloadOfResource:v6];
+      v8 = [v10 requestDownloadOfResource:vcp_smallMovieDerivativeResource];
 
       if (!v8)
       {
@@ -704,9 +704,9 @@ LABEL_12:
     {
       if (!self->_downloadedData && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v7 = [(PHAsset *)self->_asset localIdentifier];
+        localIdentifier = [(PHAsset *)self->_asset localIdentifier];
         v13 = 138412290;
-        v14 = v7;
+        v14 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Asset has not been downloaded.", &v13, 0xCu);
       }
 
@@ -723,9 +723,9 @@ LABEL_12:
 
   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PHAsset *)self->_asset localIdentifier];
+    localIdentifier2 = [(PHAsset *)self->_asset localIdentifier];
     v13 = 138412290;
-    v14 = v11;
+    v14 = localIdentifier2;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Asset has no small video derivative; cannot download", &v13, 0xCu);
   }
 
@@ -738,27 +738,27 @@ LABEL_17:
 - (id)originalMovie
 {
   v2 = [MEMORY[0x1E69786D0] vcp_allResourcesForAsset:self->_asset];
-  v3 = [v2 vcp_originalVideoResource];
+  vcp_originalVideoResource = [v2 vcp_originalVideoResource];
 
-  if ([v3 vcp_isLocallyAvailable])
+  if ([vcp_originalVideoResource vcp_isLocallyAvailable])
   {
-    v4 = [v3 vcp_avAsset];
+    vcp_avAsset = [vcp_originalVideoResource vcp_avAsset];
   }
 
   else
   {
-    v4 = 0;
+    vcp_avAsset = 0;
   }
 
-  return v4;
+  return vcp_avAsset;
 }
 
 - (CGSize)originalMovieSize
 {
   v2 = [MEMORY[0x1E69786D0] vcp_allResourcesForAsset:self->_asset];
-  v3 = [v2 vcp_originalVideoResource];
+  vcp_originalVideoResource = [v2 vcp_originalVideoResource];
 
-  [v3 vcp_size];
+  [vcp_originalVideoResource vcp_size];
   v5 = v4;
   v7 = v6;
 

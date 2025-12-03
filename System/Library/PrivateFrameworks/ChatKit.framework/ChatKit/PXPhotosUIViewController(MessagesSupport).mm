@@ -27,23 +27,23 @@
 - (void)setCk_transitionView:()MessagesSupport
 {
   value = a3;
-  v4 = [a1 ck_transitionView];
+  ck_transitionView = [self ck_transitionView];
 
-  if (v4 != value)
+  if (ck_transitionView != value)
   {
-    v5 = [a1 ck_transitionView];
-    [v5 removeFromSuperview];
+    ck_transitionView2 = [self ck_transitionView];
+    [ck_transitionView2 removeFromSuperview];
 
-    objc_setAssociatedObject(a1, sel_ck_transitionView, value, 1);
+    objc_setAssociatedObject(self, sel_ck_transitionView, value, 1);
   }
 }
 
 - (id)ck_chatController
 {
-  v1 = objc_getAssociatedObject(a1, sel_ck_chatController);
-  v2 = [v1 object];
+  v1 = objc_getAssociatedObject(self, sel_ck_chatController);
+  object = [v1 object];
 
-  return v2;
+  return object;
 }
 
 - (void)setCk_chatController:()MessagesSupport
@@ -59,16 +59,16 @@
     value = 0;
   }
 
-  objc_setAssociatedObject(a1, sel_ck_chatController, value, 1);
+  objc_setAssociatedObject(self, sel_ck_chatController, value, 1);
 }
 
 - (id)excludedActivityTypesForPreviewController:()MessagesSupport
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 currentPreviewItem];
+  currentPreviewItem = [v3 currentPreviewItem];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 mediaType] & 0xFFFFFFFE) == 2)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([currentPreviewItem mediaType] & 0xFFFFFFFE) == 2)
   {
     v9[0] = *MEMORY[0x1E69CDAF8];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -95,11 +95,11 @@
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 currentPreviewItem];
+  currentPreviewItem = [v3 currentPreviewItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = currentPreviewItem;
     if (([v5 mediaType] & 0xFFFFFFFE) == 2)
     {
       v6 = [[CKSaveToPhotosActivity alloc] initWithMediaObject:v5 presenterViewController:v3];
@@ -141,22 +141,22 @@
 
 - (uint64_t)shouldHideInteractionOptions
 {
-  v1 = [a1 ck_chatController];
-  v2 = [v1 shouldHideInteractionOptions];
+  ck_chatController = [self ck_chatController];
+  shouldHideInteractionOptions = [ck_chatController shouldHideInteractionOptions];
 
-  return v2;
+  return shouldHideInteractionOptions;
 }
 
 - (id)_assetReferenceForPreviewItem:()MessagesSupport
 {
   v4 = a3;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([a1 viewModel], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "currentDataSource"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([self viewModel], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "currentDataSource"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass))
   {
-    v8 = [a1 viewModel];
-    v9 = [v8 currentDataSource];
+    viewModel = [self viewModel];
+    currentDataSource = [viewModel currentDataSource];
 
-    v10 = [v9 assetReferenceForMediaObject:v4];
+    v10 = [currentDataSource assetReferenceForMediaObject:v4];
   }
 
   else
@@ -170,44 +170,44 @@
 - (void)previewControllerWillDismiss:()MessagesSupport
 {
   v4 = a3;
-  v5 = [a1 viewModel];
-  v6 = [v5 currentDataSource];
+  viewModel = [self viewModel];
+  currentDataSource = [viewModel currentDataSource];
 
-  v7 = [v4 dataSource];
-  v8 = [v7 numberOfPreviewItemsInPreviewController:v4];
+  dataSource = [v4 dataSource];
+  v8 = [dataSource numberOfPreviewItemsInPreviewController:v4];
 
-  if ([v6 numberOfSections] < 1)
+  if ([currentDataSource numberOfSections] < 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v6 numberOfItemsInSection:0];
+    v9 = [currentDataSource numberOfItemsInSection:0];
   }
 
   if (v8 == v9)
   {
-    v10 = [v4 currentPreviewItemIndex];
-    v12[0] = [v6 identifier];
+    currentPreviewItemIndex = [v4 currentPreviewItemIndex];
+    v12[0] = [currentDataSource identifier];
     v12[1] = 0;
-    v12[2] = v10;
+    v12[2] = currentPreviewItemIndex;
     v12[3] = 0x7FFFFFFFFFFFFFFFLL;
-    v11 = [v6 assetReferenceAtItemIndexPath:v12];
-    [a1 scrollToRevealAssetReference:v11 completion:&__block_literal_global_588_1];
+    v11 = [currentDataSource assetReferenceAtItemIndexPath:v12];
+    [self scrollToRevealAssetReference:v11 completion:&__block_literal_global_588_1];
   }
 }
 
 - (uint64_t)previewControllerDidDismiss:()MessagesSupport
 {
-  v2 = [a1 hiddenAssetReferences];
+  hiddenAssetReferences = [self hiddenAssetReferences];
 
-  if (v2)
+  if (hiddenAssetReferences)
   {
-    [a1 setHiddenAssetReferences:0 animationType:2];
+    [self setHiddenAssetReferences:0 animationType:2];
   }
 
-  return [a1 setCk_transitionView:0];
+  return [self setCk_transitionView:0];
 }
 
 - (id)previewController:()MessagesSupport transitionViewForPreviewItem:uncroppedSourceFrame:
@@ -226,15 +226,15 @@
     }
   }
 
-  v11 = [a1 gridView];
-  v12 = [v11 rootLayout];
-  v13 = [v12 createFenceWithType:2];
+  gridView = [self gridView];
+  rootLayout = [gridView rootLayout];
+  v13 = [rootLayout createFenceWithType:2];
 
   [v13 setTimeout:0.2];
-  v14 = [a1 _assetReferenceForPreviewItem:v9];
+  v14 = [self _assetReferenceForPreviewItem:v9];
   if (v14)
   {
-    v15 = [a1 regionOfInterestForAssetReference:v14 image:0 shouldSnapshotPlaceholder:0];
+    v15 = [self regionOfInterestForAssetReference:v14 image:0 shouldSnapshotPlaceholder:0];
   }
 
   else
@@ -242,11 +242,11 @@
     v15 = 0;
   }
 
-  v16 = [v15 placeholderViewFactory];
-  if (v16)
+  placeholderViewFactory = [v15 placeholderViewFactory];
+  if (placeholderViewFactory)
   {
-    v17 = [v15 placeholderViewFactory];
-    v18 = (v17)[2](v17, v15);
+    placeholderViewFactory2 = [v15 placeholderViewFactory];
+    v18 = (placeholderViewFactory2)[2](placeholderViewFactory2, v15);
   }
 
   else
@@ -254,21 +254,21 @@
     v18 = 0;
   }
 
-  [a1 setCk_transitionView:v18];
+  [self setCk_transitionView:v18];
   if (v18)
   {
     v19 = objc_alloc(MEMORY[0x1E695DFD8]);
     v38[0] = v14;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
     v21 = [v19 initWithArray:v20];
-    [a1 setHiddenAssetReferences:v21 animationType:2];
+    [self setHiddenAssetReferences:v21 animationType:2];
 
-    v22 = [a1 view];
-    [v15 rectInCoordinateSpace:v22];
+    view = [self view];
+    [v15 rectInCoordinateSpace:view];
     [v18 setFrame:?];
 
-    v23 = [a1 view];
-    [v23 addSubview:v18];
+    view2 = [self view];
+    [view2 addSubview:v18];
 
     [v18 bounds];
     *a5 = v24;
@@ -301,50 +301,50 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v6 chatControllerPreviewDelegate];
-  if (v7)
+  chatControllerPreviewDelegate = [v6 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v8 = [v6 chatControllerPreviewDelegate];
+    chatControllerPreviewDelegate2 = [v6 chatControllerPreviewDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [v6 chatControllerPreviewDelegate];
-      v7 = [v10 shouldShowReplyButtonForMediaObject:v5 previewController:v6];
+      chatControllerPreviewDelegate3 = [v6 chatControllerPreviewDelegate];
+      chatControllerPreviewDelegate = [chatControllerPreviewDelegate3 shouldShowReplyButtonForMediaObject:v5 previewController:v6];
     }
 
     else
     {
-      v7 = 0;
+      chatControllerPreviewDelegate = 0;
     }
   }
 
-  return v7;
+  return chatControllerPreviewDelegate;
 }
 
 - (void)replyButtonTappedForMediaObject:()MessagesSupport previewController:
 {
   v17 = a3;
   v6 = a4;
-  v7 = [a1 chatItemForMediaObject:v17 previewController:v6];
+  v7 = [self chatItemForMediaObject:v17 previewController:v6];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
-      v9 = [v8 mediaObject];
-      v10 = [v9 transferGUID];
-      v11 = [v17 transferGUID];
-      v12 = [v10 isEqualToString:v11];
+      mediaObject = [v8 mediaObject];
+      transferGUID = [mediaObject transferGUID];
+      transferGUID2 = [v17 transferGUID];
+      v12 = [transferGUID isEqualToString:transferGUID2];
 
       if (v12)
       {
-        v13 = [a1 viewModel];
-        v14 = [v13 assetActionManager];
+        viewModel = [self viewModel];
+        assetActionManager = [viewModel assetActionManager];
 
-        v15 = [v14 chatActionHelper];
-        v16 = [v15 inlineReplyControllerForChatItem:v8];
+        chatActionHelper = [assetActionManager chatActionHelper];
+        v16 = [chatActionHelper inlineReplyControllerForChatItem:v8];
 
         [v6 presentViewController:v16 animated:1 completion:0];
       }
@@ -356,81 +356,81 @@
 {
   v11 = a3;
   v5 = a4;
-  v6 = [v5 chatControllerPreviewDelegate];
-  if (v6)
+  chatControllerPreviewDelegate = [v5 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v7 = v6;
-    v8 = [v5 chatControllerPreviewDelegate];
+    v7 = chatControllerPreviewDelegate;
+    chatControllerPreviewDelegate2 = [v5 chatControllerPreviewDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [v5 chatControllerPreviewDelegate];
-      [v10 saveButtonTappedForMediaObject:v11 previewController:v5];
+      chatControllerPreviewDelegate3 = [v5 chatControllerPreviewDelegate];
+      [chatControllerPreviewDelegate3 saveButtonTappedForMediaObject:v11 previewController:v5];
     }
   }
 }
 
 - (id)chatItemForMediaObject:()MessagesSupport previewController:
 {
-  v1 = [a1 _assetReferenceForPreviewItem:?];
-  v2 = [v1 asset];
+  v1 = [self _assetReferenceForPreviewItem:?];
+  asset = [v1 asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [v1 asset];
-    v5 = [v4 chatItem];
+    asset2 = [v1 asset];
+    chatItem = [asset2 chatItem];
   }
 
   else
   {
-    v5 = 0;
+    chatItem = 0;
   }
 
-  return v5;
+  return chatItem;
 }
 
 - (void)previewControllerIsInGroupConversation:()MessagesSupport
 {
   v3 = a3;
-  v4 = [v3 chatControllerPreviewDelegate];
-  if (v4)
+  chatControllerPreviewDelegate = [v3 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v5 = [v3 chatControllerPreviewDelegate];
+    chatControllerPreviewDelegate2 = [v3 chatControllerPreviewDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [v3 chatControllerPreviewDelegate];
-      v4 = [v7 previewControllerIsInGroupConversation:v3];
+      chatControllerPreviewDelegate3 = [v3 chatControllerPreviewDelegate];
+      chatControllerPreviewDelegate = [chatControllerPreviewDelegate3 previewControllerIsInGroupConversation:v3];
     }
 
     else
     {
-      v4 = 0;
+      chatControllerPreviewDelegate = 0;
     }
   }
 
-  return v4;
+  return chatControllerPreviewDelegate;
 }
 
 - (void)sendMessageAcknowledgment:()MessagesSupport chatItem:previewController:
 {
   v13 = a4;
   v7 = a5;
-  v8 = [v7 chatControllerPreviewDelegate];
-  if (v8)
+  chatControllerPreviewDelegate = [v7 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v9 = v8;
-    v10 = [v7 chatControllerPreviewDelegate];
+    v9 = chatControllerPreviewDelegate;
+    chatControllerPreviewDelegate2 = [v7 chatControllerPreviewDelegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [v7 chatControllerPreviewDelegate];
-      [v12 sendMessageAcknowledgment:a3 chatItem:v13 previewController:v7];
+      chatControllerPreviewDelegate3 = [v7 chatControllerPreviewDelegate];
+      [chatControllerPreviewDelegate3 sendMessageAcknowledgment:a3 chatItem:v13 previewController:v7];
 
       [v7 updateBarButtonItems];
     }
@@ -442,17 +442,17 @@
   v16 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v16 chatControllerPreviewDelegate];
-  if (v11)
+  chatControllerPreviewDelegate = [v16 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v12 = v11;
-    v13 = [v16 chatControllerPreviewDelegate];
+    v12 = chatControllerPreviewDelegate;
+    chatControllerPreviewDelegate2 = [v16 chatControllerPreviewDelegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v16 chatControllerPreviewDelegate];
-      [v15 previewController:v16 sendTapback:v9 targetChatItem:v10 isRemoval:a6];
+      chatControllerPreviewDelegate3 = [v16 chatControllerPreviewDelegate];
+      [chatControllerPreviewDelegate3 previewController:v16 sendTapback:v9 targetChatItem:v10 isRemoval:a6];
 
       [v16 updateBarButtonItems];
     }
@@ -463,81 +463,81 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 chatControllerPreviewDelegate];
-  if (v7)
+  chatControllerPreviewDelegate = [v5 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v8 = [v5 chatControllerPreviewDelegate];
+    chatControllerPreviewDelegate2 = [v5 chatControllerPreviewDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [v5 chatControllerPreviewDelegate];
-      v7 = [v10 previewController:v5 shouldShowTapbackAttributionForChatItem:v6];
+      chatControllerPreviewDelegate3 = [v5 chatControllerPreviewDelegate];
+      chatControllerPreviewDelegate = [chatControllerPreviewDelegate3 previewController:v5 shouldShowTapbackAttributionForChatItem:v6];
     }
 
     else
     {
-      v7 = 0;
+      chatControllerPreviewDelegate = 0;
     }
   }
 
-  return v7;
+  return chatControllerPreviewDelegate;
 }
 
 - (void)previewController:()MessagesSupport shouldShowTapbackPickerForChatItem:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 chatControllerPreviewDelegate];
-  if (v7)
+  chatControllerPreviewDelegate = [v5 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v8 = [v5 chatControllerPreviewDelegate];
+    chatControllerPreviewDelegate2 = [v5 chatControllerPreviewDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [v5 chatControllerPreviewDelegate];
-      v7 = [v10 previewController:v5 shouldShowTapbackPickerForChatItem:v6];
+      chatControllerPreviewDelegate3 = [v5 chatControllerPreviewDelegate];
+      chatControllerPreviewDelegate = [chatControllerPreviewDelegate3 previewController:v5 shouldShowTapbackPickerForChatItem:v6];
     }
 
     else
     {
-      v7 = 0;
+      chatControllerPreviewDelegate = 0;
     }
   }
 
-  return v7;
+  return chatControllerPreviewDelegate;
 }
 
 - (void)previewControllerShouldEnableStickerTapbacks:()MessagesSupport
 {
   v3 = a3;
-  v4 = [v3 chatControllerPreviewDelegate];
-  if (v4)
+  chatControllerPreviewDelegate = [v3 chatControllerPreviewDelegate];
+  if (chatControllerPreviewDelegate)
   {
-    v5 = [v3 chatControllerPreviewDelegate];
+    chatControllerPreviewDelegate2 = [v3 chatControllerPreviewDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [v3 chatControllerPreviewDelegate];
-      v4 = [v7 previewControllerShouldEnableStickerTapbacks:v3];
+      chatControllerPreviewDelegate3 = [v3 chatControllerPreviewDelegate];
+      chatControllerPreviewDelegate = [chatControllerPreviewDelegate3 previewControllerShouldEnableStickerTapbacks:v3];
     }
 
     else
     {
-      v4 = 0;
+      chatControllerPreviewDelegate = 0;
     }
   }
 
-  return v4;
+  return chatControllerPreviewDelegate;
 }
 
 - (void)_handleBackButton
 {
-  v2 = [a1 navigationController];
-  v1 = [v2 presentingViewController];
-  [v1 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

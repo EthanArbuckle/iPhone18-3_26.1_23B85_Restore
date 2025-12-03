@@ -1,28 +1,28 @@
 @interface MBCKEncryptionManager
-+ (BOOL)_findMissingEncryptionKeysFromCKCacheWithAccount:(id)a3 serviceManager:(id)a4;
-+ (BOOL)_findMissingEncryptionKeysFromPendingSnapshotDirectoryForPersona:(id)a3;
-+ (BOOL)saveRestoreKeyBagsWithAccount:(id)a3 device:(id)a4 error:(id *)a5;
-+ (BOOL)tearDownBackupForVolume:(id)a3 error:(id *)a4;
-+ (id)loadRestoreKeyBagsWithAccount:(id)a3 error:(id *)a4;
-+ (id)restoreKeyBagsForDevice:(id)a3;
++ (BOOL)_findMissingEncryptionKeysFromCKCacheWithAccount:(id)account serviceManager:(id)manager;
++ (BOOL)_findMissingEncryptionKeysFromPendingSnapshotDirectoryForPersona:(id)persona;
++ (BOOL)saveRestoreKeyBagsWithAccount:(id)account device:(id)device error:(id *)error;
++ (BOOL)tearDownBackupForVolume:(id)volume error:(id *)error;
++ (id)loadRestoreKeyBagsWithAccount:(id)account error:(id *)error;
++ (id)restoreKeyBagsForDevice:(id)device;
 + (void)_exportKeychain;
-+ (void)_findMissingEncryptionKeysWithAccount:(id)a3 serviceManager:(id)a4;
-+ (void)_trackFoundEncryptionKeysForAccount:(id)a3 quiet:(BOOL)a4;
-+ (void)deviceIsLockingWithAccount:(id)a3 serviceManager:(id)a4 completion:(id)a5;
-+ (void)deviceIsUnlockedWithAccount:(id)a3 serviceManager:(id)a4;
-+ (void)removeRestoreKeyBagsWithAccount:(id)a3 device:(id)a4;
-+ (void)trackMissingEncryptionKeyForAccount:(id)a3;
++ (void)_findMissingEncryptionKeysWithAccount:(id)account serviceManager:(id)manager;
++ (void)_trackFoundEncryptionKeysForAccount:(id)account quiet:(BOOL)quiet;
++ (void)deviceIsLockingWithAccount:(id)account serviceManager:(id)manager completion:(id)completion;
++ (void)deviceIsUnlockedWithAccount:(id)account serviceManager:(id)manager;
++ (void)removeRestoreKeyBagsWithAccount:(id)account device:(id)device;
++ (void)trackMissingEncryptionKeyForAccount:(id)account;
 @end
 
 @implementation MBCKEncryptionManager
 
-+ (void)trackMissingEncryptionKeyForAccount:(id)a3
++ (void)trackMissingEncryptionKeyForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (!atomic_fetch_add(dword_1004217A8, 1u))
   {
-    v5 = a1;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v6 = MBGetDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -38,27 +38,27 @@
       v8 = v7;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v4 persona];
+        persona = [accountCopy persona];
         *buf = 138412290;
-        v13 = v9;
+        v13 = persona;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "=encryption key= Requesting backupd to fetch encryption keys for persona %@ on net unlock", buf, 0xCu);
       }
 
-      v11 = [v4 persona];
+      persona2 = [accountCopy persona];
       _MBLog();
     }
 
-    v10 = [v4 persona];
-    [v10 setPreferencesValue:&__kCFBooleanTrue forKey:@"FetchMissingKeysAtNextUnlock"];
+    persona3 = [accountCopy persona];
+    [persona3 setPreferencesValue:&__kCFBooleanTrue forKey:@"FetchMissingKeysAtNextUnlock"];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-+ (void)_trackFoundEncryptionKeysForAccount:(id)a3 quiet:(BOOL)a4
++ (void)_trackFoundEncryptionKeysForAccount:(id)account quiet:(BOOL)quiet
 {
-  v5 = a3;
-  if (a4)
+  accountCopy = account;
+  if (quiet)
   {
     CFPreferencesSetValue(@"NotifyDaemonNextTimeKeyBagIsUnlocked", &__kCFBooleanFalse, @"com.apple.MobileBackup", @"mobile", kCFPreferencesCurrentHost);
   }
@@ -77,30 +77,30 @@
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v5 persona];
+      persona = [accountCopy persona];
       *buf = 138412290;
-      v12 = v8;
+      v12 = persona;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "=encryption key= Requesting backupd to not fetch encryption keys for persona %@ on next unlock", buf, 0xCu);
 
-      v10 = [v5 persona];
+      persona2 = [accountCopy persona];
       _MBLog();
     }
   }
 
-  v9 = [v5 persona];
-  [v9 setPreferencesValue:&__kCFBooleanFalse forKey:@"FetchMissingKeysAtNextUnlock"];
+  persona3 = [accountCopy persona];
+  [persona3 setPreferencesValue:&__kCFBooleanFalse forKey:@"FetchMissingKeysAtNextUnlock"];
 }
 
-+ (void)deviceIsLockingWithAccount:(id)a3 serviceManager:(id)a4 completion:(id)a5
++ (void)deviceIsLockingWithAccount:(id)account serviceManager:(id)manager completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  managerCopy = manager;
+  completionCopy = completion;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10012A024;
   v23[3] = &unk_1003BBFE8;
-  v23[4] = a1;
+  v23[4] = self;
   if (qword_1004217B8 != -1)
   {
     dispatch_once(&qword_1004217B8, v23);
@@ -112,10 +112,10 @@
   block[1] = 3221225472;
   block[2] = sub_10012A0D0;
   block[3] = &unk_1003BDB10;
-  v22 = a1;
-  v13 = v8;
+  selfCopy = self;
+  v13 = accountCopy;
   v20 = v13;
-  v14 = v9;
+  v14 = managerCopy;
   v21 = v14;
   dispatch_group_async(v11, v12, block);
 
@@ -125,7 +125,7 @@
     v18[1] = 3221225472;
     v18[2] = sub_10012A118;
     v18[3] = &unk_1003BBFE8;
-    v18[4] = a1;
+    v18[4] = self;
     dispatch_group_async(v11, qword_1004217B0, v18);
   }
 
@@ -133,21 +133,21 @@
   v16[1] = 3221225472;
   v16[2] = sub_10012A120;
   v16[3] = &unk_1003BCB38;
-  v17 = v10;
-  v15 = v10;
+  v17 = completionCopy;
+  v15 = completionCopy;
   dispatch_group_notify(v11, v12, v16);
 }
 
-+ (void)deviceIsUnlockedWithAccount:(id)a3 serviceManager:(id)a4
++ (void)deviceIsUnlockedWithAccount:(id)account serviceManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accountCopy = account;
+  managerCopy = manager;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKEncryptionManager deviceIsUnlockedWithAccount:serviceManager:]", "MBCKEncryptionManager.m", 100, "account");
   }
 
-  v8 = v7;
+  v8 = managerCopy;
   v9 = atomic_exchange(dword_1004217A8, 0);
   if (v9)
   {
@@ -157,8 +157,8 @@
   buf[0] = 0;
   v10 = objc_opt_class();
   objc_sync_enter(v10);
-  v11 = [v6 persona];
-  v12 = [v11 getBooleanValueForKey:@"FetchMissingKeysAtNextUnlock" keyExists:buf];
+  persona = [accountCopy persona];
+  v12 = [persona getBooleanValueForKey:@"FetchMissingKeysAtNextUnlock" keyExists:buf];
 
   objc_sync_exit(v10);
   if (buf[0])
@@ -184,40 +184,40 @@ LABEL_5:
       block[1] = 3221225472;
       block[2] = sub_10012A3B4;
       block[3] = &unk_1003BDB10;
-      v18 = a1;
-      v16 = v6;
+      selfCopy = self;
+      v16 = accountCopy;
       v17 = v8;
       dispatch_sync(v14, block);
     }
   }
 }
 
-+ (void)_findMissingEncryptionKeysWithAccount:(id)a3 serviceManager:(id)a4
++ (void)_findMissingEncryptionKeysWithAccount:(id)account serviceManager:(id)manager
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 persona];
-  v8 = [a1 _findMissingEncryptionKeysFromPendingSnapshotDirectoryForPersona:v7];
-  v9 = [a1 _findMissingEncryptionKeysFromCKCacheWithAccount:v11 serviceManager:v6];
+  accountCopy = account;
+  managerCopy = manager;
+  persona = [accountCopy persona];
+  v8 = [self _findMissingEncryptionKeysFromPendingSnapshotDirectoryForPersona:persona];
+  v9 = [self _findMissingEncryptionKeysFromCKCacheWithAccount:accountCopy serviceManager:managerCopy];
   v10 = objc_opt_class();
   objc_sync_enter(v10);
   if (v8 && v9)
   {
-    [objc_opt_class() _trackFoundEncryptionKeysForAccount:v11 quiet:1];
+    [objc_opt_class() _trackFoundEncryptionKeysForAccount:accountCopy quiet:1];
   }
 
   else
   {
-    [objc_opt_class() trackMissingEncryptionKeyForAccount:v11];
+    [objc_opt_class() trackMissingEncryptionKeyForAccount:accountCopy];
   }
 
   objc_sync_exit(v10);
 }
 
-+ (BOOL)_findMissingEncryptionKeysFromPendingSnapshotDirectoryForPersona:(id)a3
++ (BOOL)_findMissingEncryptionKeysFromPendingSnapshotDirectoryForPersona:(id)persona
 {
-  v3 = [a3 snapshotDatabaseDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"pending"];
+  snapshotDatabaseDirectory = [persona snapshotDatabaseDirectory];
+  v4 = [snapshotDatabaseDirectory stringByAppendingPathComponent:@"pending"];
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:v4];
 
@@ -228,10 +228,10 @@ LABEL_5:
     v8 = v46;
     if (v7)
     {
-      if (MBSnapshotDirectoryExists(v3, v7))
+      if (MBSnapshotDirectoryExists(snapshotDatabaseDirectory, v7))
       {
         v45 = 0;
-        v43 = v3;
+        v43 = snapshotDatabaseDirectory;
         v44 = v7;
         v9 = MBGetDefaultLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -422,7 +422,7 @@ LABEL_5:
         *buf = 138412546;
         *&buf[4] = v7;
         *&buf[12] = 2112;
-        *&buf[14] = v3;
+        *&buf[14] = snapshotDatabaseDirectory;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_FAULT, "=encryption key= Snapshot directory for commitID %@ does not exist under %@", buf, 0x16u);
         _MBLog();
       }
@@ -463,21 +463,21 @@ LABEL_42:
   return v15 & 1;
 }
 
-+ (BOOL)_findMissingEncryptionKeysFromCKCacheWithAccount:(id)a3 serviceManager:(id)a4
++ (BOOL)_findMissingEncryptionKeysFromCKCacheWithAccount:(id)account serviceManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  accountCopy = account;
+  managerCopy = manager;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKEncryptionManager _findMissingEncryptionKeysFromCKCacheWithAccount:serviceManager:]", "MBCKEncryptionManager.m", 165, "account");
   }
 
-  v7 = v6;
+  v7 = managerCopy;
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = accountCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "=encryption key= Finding missing encryption keys from MBCKCache for:%@", &buf, 0xCu);
     _MBLog();
   }
@@ -503,7 +503,7 @@ LABEL_42:
   v28 = sub_10012B204;
   v29 = 0;
   obj = 0;
-  v9 = [v7 openCacheWithAccount:v5 accessType:2 error:&obj];
+  v9 = [v7 openCacheWithAccount:accountCopy accessType:2 error:&obj];
   objc_storeStrong(&v29, obj);
   if (v9)
   {
@@ -515,7 +515,7 @@ LABEL_42:
     v20 = &v24;
     p_buf = &buf;
     v17 = v7;
-    v18 = v5;
+    v18 = accountCopy;
     v22 = &v34;
     v10 = [v9 enumerateFilesMissingEncryptionKeys:v16];
     if (*(v35 + 24) == 1)
@@ -583,9 +583,9 @@ LABEL_15:
   }
 }
 
-+ (BOOL)tearDownBackupForVolume:(id)a3 error:(id *)a4
++ (BOOL)tearDownBackupForVolume:(id)volume error:(id *)error
 {
-  v5 = a3;
+  volumeCopy = volume;
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -598,13 +598,13 @@ LABEL_15:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = volumeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "=encryption key= Unregistering keybag for %@", buf, 0xCu);
     _MBLog();
   }
 
   v12 = 0;
-  v8 = [MBKeyBag unregisterOTAKeyBagForVolume:v5 error:&v12];
+  v8 = [MBKeyBag unregisterOTAKeyBagForVolume:volumeCopy error:&v12];
   v9 = v12;
   if (v8)
   {
@@ -617,45 +617,45 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v5;
+      v14 = volumeCopy;
       v15 = 2114;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "=encryption key= Failed to unregister OTA keybag for %@: %{public}@", buf, 0x16u);
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError errorWithCode:1 error:v9 format:@"Error unregistering keybag"];
+      *error = [MBError errorWithCode:1 error:v9 format:@"Error unregistering keybag"];
     }
   }
 
   return v8;
 }
 
-+ (id)loadRestoreKeyBagsWithAccount:(id)a3 error:(id *)a4
++ (id)loadRestoreKeyBagsWithAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKEncryptionManager loadRestoreKeyBagsWithAccount:error:]", "MBCKEncryptionManager.m", 267, "account");
   }
 
-  v6 = v5;
-  v7 = [v5 persona];
-  v8 = [v7 restoreKeyBagsPath];
+  v6 = accountCopy;
+  persona = [accountCopy persona];
+  restoreKeyBagsPath = [persona restoreKeyBagsPath];
 
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v49 = v8;
+    v49 = restoreKeyBagsPath;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "=encryption key= Loading restore keybags at %{public}@", buf, 0xCu);
     _MBLog();
   }
 
   v46 = 0;
-  v10 = [NSData dataWithContentsOfFile:v8 options:0 error:&v46];
+  v10 = [NSData dataWithContentsOfFile:restoreKeyBagsPath options:0 error:&v46];
   v11 = v46;
   if (v10)
   {
@@ -667,7 +667,7 @@ LABEL_15:
     {
       v35 = v13;
       v36 = v10;
-      v37 = v8;
+      v37 = restoreKeyBagsPath;
       v38 = v6;
       v40 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
       v41 = 0u;
@@ -692,12 +692,12 @@ LABEL_15:
 
             v18 = *(*(&v41 + 1) + 8 * i);
             v19 = [[NSData alloc] initWithBase64EncodedString:v18 options:0];
-            v20 = [MBKeychainManager fetchKeybagSecretForUUID:v18 error:a4];
+            v20 = [MBKeychainManager fetchKeybagSecretForUUID:v18 error:error];
             if (!v20)
             {
 
               v30 = 0;
-              v8 = v37;
+              restoreKeyBagsPath = v37;
               v6 = v38;
               v13 = v35;
               v10 = v36;
@@ -707,7 +707,7 @@ LABEL_15:
             }
 
             v21 = v20;
-            v22 = a4;
+            errorCopy = error;
             v23 = [v14 objectForKeyedSubscript:v18];
             v24 = [v23 mutableCopy];
 
@@ -724,7 +724,7 @@ LABEL_15:
               _MBLog();
             }
 
-            a4 = v22;
+            error = errorCopy;
           }
 
           v16 = [v14 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -750,7 +750,7 @@ LABEL_15:
       }
 
       v30 = v40;
-      v8 = v37;
+      restoreKeyBagsPath = v37;
       v6 = v38;
       v13 = v35;
       v10 = v36;
@@ -770,10 +770,10 @@ LABEL_24:
       }
 
       v30 = 0;
-      if (a4 && v13)
+      if (error && v13)
       {
         [MBError errorWithCode:1 error:v13 format:@"Error deserializing restore keybag plist"];
-        *a4 = v30 = 0;
+        *error = v30 = 0;
       }
     }
   }
@@ -784,17 +784,17 @@ LABEL_24:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v49 = v8;
+      v49 = restoreKeyBagsPath;
       v50 = 2114;
       v51 = v11;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "=encryption key= Failed to load the restore keybags from %{public}@: %{public}@", buf, 0x16u);
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
-      [MBError errorForNSError:v11 path:v8 format:@"Error reading restore keybag file"];
-      *a4 = v30 = 0;
+      [MBError errorForNSError:v11 path:restoreKeyBagsPath format:@"Error reading restore keybag file"];
+      *error = v30 = 0;
     }
 
     else
@@ -808,53 +808,53 @@ LABEL_24:
   return v30;
 }
 
-+ (BOOL)saveRestoreKeyBagsWithAccount:(id)a3 device:(id)a4 error:(id *)a5
++ (BOOL)saveRestoreKeyBagsWithAccount:(id)account device:(id)device error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  accountCopy = account;
+  deviceCopy = device;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKEncryptionManager saveRestoreKeyBagsWithAccount:device:error:]", "MBCKEncryptionManager.m", 310, "account");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = deviceCopy;
+  if (!deviceCopy)
   {
     __assert_rtn("+[MBCKEncryptionManager saveRestoreKeyBagsWithAccount:device:error:]", "MBCKEncryptionManager.m", 311, "device");
   }
 
-  v67 = a5;
-  [a1 removeRestoreKeyBagsWithAccount:v8 device:v9];
-  v68 = v8;
-  v11 = [v8 persona];
-  v12 = [v11 restoreKeyBagsPath];
+  errorCopy = error;
+  [self removeRestoreKeyBagsWithAccount:accountCopy device:deviceCopy];
+  v68 = accountCopy;
+  persona = [accountCopy persona];
+  restoreKeyBagsPath = [persona restoreKeyBagsPath];
 
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v88 = v12;
+    v88 = restoreKeyBagsPath;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "=encryption key= Saving restore keybags at %{public}@", buf, 0xCu);
-    v63 = v12;
+    v63 = restoreKeyBagsPath;
     _MBLog();
   }
 
-  v69 = v12;
+  v69 = restoreKeyBagsPath;
 
   v14 = [NSMutableDictionary alloc];
-  v15 = [v10 keybagManager];
-  v16 = [v15 keybagsByUUIDString];
-  v73 = [v14 initWithCapacity:{objc_msgSend(v16, "count")}];
+  keybagManager = [v10 keybagManager];
+  keybagsByUUIDString = [keybagManager keybagsByUUIDString];
+  v73 = [v14 initWithCapacity:{objc_msgSend(keybagsByUUIDString, "count")}];
 
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
   v72 = v10;
-  v17 = [v10 keybagManager];
-  v18 = [v17 keybagsByUUIDString];
+  keybagManager2 = [v10 keybagManager];
+  keybagsByUUIDString2 = [keybagManager2 keybagsByUUIDString];
 
-  v19 = [v18 countByEnumeratingWithState:&v82 objects:v93 count:16];
+  v19 = [keybagsByUUIDString2 countByEnumeratingWithState:&v82 objects:v93 count:16];
   if (v19)
   {
     v20 = v19;
@@ -865,23 +865,23 @@ LABEL_24:
       {
         if (*v83 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(keybagsByUUIDString2);
         }
 
         v23 = *(*(&v82 + 1) + 8 * i);
-        v24 = [v72 keybagManager];
-        v25 = [v24 keybagsByUUIDString];
-        v26 = [v25 objectForKeyedSubscript:v23];
+        keybagManager3 = [v72 keybagManager];
+        keybagsByUUIDString3 = [keybagManager3 keybagsByUUIDString];
+        v26 = [keybagsByUUIDString3 objectForKeyedSubscript:v23];
 
         v91 = @"keybagData";
-        v27 = [v26 keybagData];
-        v92 = v27;
+        keybagData = [v26 keybagData];
+        v92 = keybagData;
         v28 = [NSDictionary dictionaryWithObjects:&v92 forKeys:&v91 count:1];
 
         [v73 setObject:v28 forKeyedSubscript:v23];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v82 objects:v93 count:16];
+      v20 = [keybagsByUUIDString2 countByEnumeratingWithState:&v82 objects:v93 count:16];
     }
 
     while (v20);
@@ -893,10 +893,10 @@ LABEL_24:
   if (v29)
   {
     v31 = v69;
-    v32 = [v69 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v69 stringByDeletingLastPathComponent];
     v33 = +[NSFileManager defaultManager];
     v80 = v30;
-    v34 = [v33 createDirectoryAtPath:v32 withIntermediateDirectories:1 attributes:0 error:&v80];
+    v34 = [v33 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v80];
     v35 = v80;
 
     if ((v34 & 1) == 0)
@@ -906,17 +906,17 @@ LABEL_24:
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v88 = v32;
+        v88 = stringByDeletingLastPathComponent;
         v89 = 2114;
         v90 = v35;
         _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "=encryption key= Failed create the directory at %{public}@: %{public}@", buf, 0x16u);
         _MBLog();
       }
 
-      if (v67)
+      if (errorCopy)
       {
-        [MBError errorForNSError:v35 path:v32 format:@"Error creating restore keybag dir"];
-        *v67 = v56 = 0;
+        [MBError errorForNSError:v35 path:stringByDeletingLastPathComponent format:@"Error creating restore keybag dir"];
+        *errorCopy = v56 = 0;
       }
 
       else
@@ -946,10 +946,10 @@ LABEL_24:
         _MBLog();
       }
 
-      if (v67)
+      if (errorCopy)
       {
         [MBError errorWithCode:100 error:v30 path:v69 format:@"Error writing restore keybag plist"];
-        *v67 = v56 = 0;
+        *errorCopy = v56 = 0;
       }
 
       else
@@ -961,21 +961,21 @@ LABEL_24:
     }
 
     v70 = +[NSMutableArray array];
-    v38 = [v72 keybagManager];
-    v39 = [v38 keybagsByUUIDString];
+    keybagManager4 = [v72 keybagManager];
+    keybagsByUUIDString4 = [keybagManager4 keybagsByUUIDString];
 
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v40 = v39;
+    v40 = keybagsByUUIDString4;
     v41 = [v40 countByEnumeratingWithState:&v75 objects:v86 count:16];
     if (v41)
     {
       v42 = v41;
       obj = v40;
       v64 = v30;
-      v65 = v32;
+      v65 = stringByDeletingLastPathComponent;
       v66 = v29;
       v43 = 1;
       v44 = *v76;
@@ -998,13 +998,13 @@ LABEL_24:
             _MBLog();
           }
 
-          v48 = [v72 keybagManager];
-          v49 = [v48 keybagsByUUIDString];
-          v50 = [v49 objectForKeyedSubscript:v46];
+          keybagManager5 = [v72 keybagManager];
+          keybagsByUUIDString5 = [keybagManager5 keybagsByUUIDString];
+          v50 = [keybagsByUUIDString5 objectForKeyedSubscript:v46];
 
-          v51 = [v50 secret];
+          secret = [v50 secret];
           v74 = 0;
-          v52 = [MBKeychainManager addKeybagSecret:v51 forUUID:v46 error:&v74];
+          v52 = [MBKeychainManager addKeybagSecret:secret forUUID:v46 error:&v74];
           v53 = v74;
 
           if ((v52 & 1) == 0)
@@ -1042,18 +1042,18 @@ LABEL_24:
       while (v42);
       v40 = obj;
 
-      if (!((v67 == 0) | v43 & 1))
+      if (!((errorCopy == 0) | v43 & 1))
       {
         [MBError errorWithErrors:v70];
-        *v67 = v56 = 0;
-        v32 = v65;
+        *errorCopy = v56 = 0;
+        stringByDeletingLastPathComponent = v65;
         v29 = v66;
         v30 = v64;
         v31 = v69;
         goto LABEL_55;
       }
 
-      v32 = v65;
+      stringByDeletingLastPathComponent = v65;
       v29 = v66;
       v30 = v64;
       v31 = v69;
@@ -1097,10 +1097,10 @@ LABEL_56:
   }
 
   v37 = v72;
-  if (v67)
+  if (errorCopy)
   {
     [MBError errorForNSError:v30 path:v69 format:@"Error serializing restore keybag plist"];
-    *v67 = v56 = 0;
+    *errorCopy = v56 = 0;
   }
 
   else
@@ -1113,18 +1113,18 @@ LABEL_57:
   return v56;
 }
 
-+ (id)restoreKeyBagsForDevice:(id)a3
++ (id)restoreKeyBagsForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(NSMutableDictionary);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 keybagManager];
-  v6 = [v5 keybagsByUUIDString];
+  keybagManager = [deviceCopy keybagManager];
+  keybagsByUUIDString = [keybagManager keybagsByUUIDString];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [keybagsByUUIDString countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1135,18 +1135,18 @@ LABEL_57:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keybagsByUUIDString);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v3 keybagManager];
-        v13 = [v12 keybagsByUUIDString];
-        v14 = [v13 objectForKeyedSubscript:v11];
+        keybagManager2 = [deviceCopy keybagManager];
+        keybagsByUUIDString2 = [keybagManager2 keybagsByUUIDString];
+        v14 = [keybagsByUUIDString2 objectForKeyedSubscript:v11];
 
         [v4 setObject:v14 forKeyedSubscript:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [keybagsByUUIDString countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1155,27 +1155,27 @@ LABEL_57:
   return v4;
 }
 
-+ (void)removeRestoreKeyBagsWithAccount:(id)a3 device:(id)a4
++ (void)removeRestoreKeyBagsWithAccount:(id)account device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  accountCopy = account;
+  deviceCopy = device;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKEncryptionManager removeRestoreKeyBagsWithAccount:device:]", "MBCKEncryptionManager.m", 388, "account");
   }
 
-  v21 = v6;
-  v22 = v5;
-  v7 = [v6 keybagManager];
-  v8 = [v7 keybagsByUUIDString];
+  v21 = deviceCopy;
+  v22 = accountCopy;
+  keybagManager = [deviceCopy keybagManager];
+  keybagsByUUIDString = [keybagManager keybagsByUUIDString];
 
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = [v8 count];
+    v29 = [keybagsByUUIDString count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "=encryption key= Removing secrets for %ld keybags", buf, 0xCu);
-    [v8 count];
+    [keybagsByUUIDString count];
     _MBLog();
   }
 
@@ -1183,7 +1183,7 @@ LABEL_57:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
+  v10 = keybagsByUUIDString;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v11)
   {
@@ -1232,8 +1232,8 @@ LABEL_57:
     while (v12);
   }
 
-  v20 = [v22 persona];
-  [v20 removeRestoreKeybags];
+  persona = [v22 persona];
+  [persona removeRestoreKeybags];
 }
 
 @end

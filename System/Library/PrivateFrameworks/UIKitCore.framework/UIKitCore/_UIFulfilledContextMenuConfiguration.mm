@@ -1,8 +1,8 @@
 @interface _UIFulfilledContextMenuConfiguration
 - (BOOL)isPresentable;
 - (UIResponder)firstResponderTarget;
-- (void)setMenu:(id)a3;
-- (void)setPrimaryInternalIdentifier:(id)a3 secondaryIdentifiers:(id)a4;
+- (void)setMenu:(id)menu;
+- (void)setPrimaryInternalIdentifier:(id)identifier secondaryIdentifiers:(id)identifiers;
 @end
 
 @implementation _UIFulfilledContextMenuConfiguration
@@ -16,27 +16,27 @@
 
 - (BOOL)isPresentable
 {
-  v3 = [(_UIFulfilledContextMenuConfiguration *)self previewViewController];
-  if (v3)
+  previewViewController = [(_UIFulfilledContextMenuConfiguration *)self previewViewController];
+  if (previewViewController)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [(_UIFulfilledContextMenuConfiguration *)self menu];
-    v4 = ([v5 metadata] >> 24) & 1;
+    menu = [(_UIFulfilledContextMenuConfiguration *)self menu];
+    v4 = ([menu metadata] >> 24) & 1;
   }
 
   return v4;
 }
 
-- (void)setPrimaryInternalIdentifier:(id)a3 secondaryIdentifiers:(id)a4
+- (void)setPrimaryInternalIdentifier:(id)identifier secondaryIdentifiers:(id)identifiers
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v10)
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  v7 = identifiersCopy;
+  if (identifierCopy)
   {
     v8 = [MEMORY[0x1E695DFA8] setWithObject:?];
     if (![v7 count])
@@ -53,7 +53,7 @@
     goto LABEL_6;
   }
 
-  if ([v6 count])
+  if ([identifiersCopy count])
   {
 LABEL_6:
     v8 = [MEMORY[0x1E695DFA8] setWithSet:v7];
@@ -66,11 +66,11 @@ LABEL_8:
   self->_internalIdentifiers = v8;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v4 = [a3 _copyPreservingMetadataAndSharingLeafObserversIfNeeded];
+  _copyPreservingMetadataAndSharingLeafObserversIfNeeded = [menu _copyPreservingMetadataAndSharingLeafObserversIfNeeded];
   menu = self->_menu;
-  self->_menu = v4;
+  self->_menu = _copyPreservingMetadataAndSharingLeafObserversIfNeeded;
 }
 
 @end

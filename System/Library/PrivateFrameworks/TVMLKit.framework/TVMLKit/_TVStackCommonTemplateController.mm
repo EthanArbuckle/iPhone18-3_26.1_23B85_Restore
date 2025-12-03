@@ -1,22 +1,22 @@
 @interface _TVStackCommonTemplateController
 - (BOOL)_shouldLoadBackgroundImageAsynchronously;
-- (BOOL)_updateSupplementaryViewControllersWithElements:(id)a3 updateStyles:(BOOL)a4;
+- (BOOL)_updateSupplementaryViewControllersWithElements:(id)elements updateStyles:(BOOL)styles;
 - (CGSize)_backgroundImageProxySize;
 - (TVMediaPlaying)mediaPlayer;
 - (id)_backgroundImageProxy;
 - (id)_flowLayout;
 - (id)_modalPresenterPresentedViewController;
 - (id)_preferredFocusedSupplementaryView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)parsedMediaInfo;
 - (id)preferredFocusEnvironments;
-- (id)viewControllerWithElement:(id)a3 layout:(id)a4 existingController:(id)a5;
+- (id)viewControllerWithElement:(id)element layout:(id)layout existingController:(id)controller;
 - (int64_t)_blurEffectStyle;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4;
-- (void)_disableScrollingIfNecessary:(id)a3;
-- (void)_dispatchEvent:(id)a3 forItemAtIndexPath:(id)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage;
+- (void)_disableScrollingIfNecessary:(id)necessary;
+- (void)_dispatchEvent:(id)event forItemAtIndexPath:(id)path;
 - (void)_mediaPlayerStateDidChange;
 - (void)_recordImpressionsForVisibleView;
 - (void)_updateBackgroundViews;
@@ -24,25 +24,25 @@
 - (void)_updateViewLayout;
 - (void)_updateViewOverlay;
 - (void)_updateViewSupplementaryViews;
-- (void)addObserver:(id)a3 forEvent:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)addObserver:(id)observer forEvent:(id)event;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)handleEvent:(id)a3 sender:(id)a4 withUserInfo:(id)a5;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)handleEvent:(id)event sender:(id)sender withUserInfo:(id)info;
 - (void)loadView;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 forEvent:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer forEvent:(id)event;
 - (void)scrollToTop;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setMediaPlayer:(id)a3;
-- (void)setSelectedMediaInfo:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setMediaPlayer:(id)player;
+- (void)setSelectedMediaInfo:(id)info;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBackgroundAndBackdrop;
 - (void)updateBackgroundAndBackdropMaskFactor;
-- (void)updateWithViewElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateWithViewElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
@@ -50,15 +50,15 @@
 
 - (void)dealloc
 {
-  v3 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v3 setDataSource:0];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView setDataSource:0];
 
-  v4 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v4 setDelegate:0];
+  collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView2 setDelegate:0];
 
-  v5 = [(_TVStackCommonTemplateController *)self viewElement];
-  v6 = [v5 appDocument];
-  v7 = [TVTemplateFeaturesManager featuresManagerForAppDocument:v6];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  appDocument = [viewElement appDocument];
+  v7 = [TVTemplateFeaturesManager featuresManagerForAppDocument:appDocument];
 
   [v7 popContext:self forFeature:&unk_287E8B710];
   [(_TVStackCommonTemplateController *)self setMediaPlayer:0];
@@ -68,21 +68,21 @@
   [(_TVBgImageLoadingViewController *)&v8 dealloc];
 }
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v100 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v4 = a3;
+  elementCopy = element;
+  elementCopy2 = element;
   v94.receiver = self;
   v94.super_class = _TVStackCommonTemplateController;
-  [(_TVBgImageLoadingViewController *)&v94 updateWithViewElement:v4];
-  v58 = [MEMORY[0x277CBEB18] array];
+  [(_TVBgImageLoadingViewController *)&v94 updateWithViewElement:elementCopy2];
+  array = [MEMORY[0x277CBEB18] array];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v56 = v4;
-  obj = [v4 children];
+  v56 = elementCopy2;
+  obj = [elementCopy2 children];
   v64 = [obj countByEnumeratingWithState:&v90 objects:v99 count:16];
   if (!v64)
   {
@@ -103,7 +103,7 @@
   v62 = 0;
   v63 = *v91;
   v10 = 1;
-  v57 = self;
+  selfCopy = self;
   do
   {
     v11 = 0;
@@ -118,8 +118,8 @@
 
       v65 = v11;
       v69 = *(*(&v90 + 1) + 8 * v11);
-      v13 = [v69 tv_elementType];
-      if (v13 == 10)
+      tv_elementType = [v69 tv_elementType];
+      if (tv_elementType == 10)
       {
         v25 = v69;
 
@@ -127,7 +127,7 @@
         v62 = v25;
       }
 
-      else if (v13 == 4)
+      else if (tv_elementType == 4)
       {
         v14 = v69;
 
@@ -136,8 +136,8 @@
         v86 = 0u;
         v87 = 0u;
         v60 = v14;
-        v70 = [v14 children];
-        v15 = [v70 countByEnumeratingWithState:&v86 objects:v98 count:16];
+        children = [v14 children];
+        v15 = [children countByEnumeratingWithState:&v86 objects:v98 count:16];
         if (v15)
         {
           v16 = v15;
@@ -150,7 +150,7 @@
             {
               if (*v87 != v17)
               {
-                objc_enumerationMutation(v70);
+                objc_enumerationMutation(children);
               }
 
               v19 = *(*(&v86 + 1) + 8 * v18);
@@ -165,7 +165,7 @@
                 {
                   v72 = v7;
                   v20 = v19;
-                  v21 = [v20 children];
+                  children2 = [v20 children];
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
@@ -177,7 +177,7 @@
                     overlayView = 0;
                   }
 
-                  v23 = [TVMLViewFactory organizerViewWithElements:v21 existingView:overlayView];
+                  v23 = [TVMLViewFactory organizerViewWithElements:children2 existingView:overlayView];
 
                   v5 = v23;
                   v7 = v72;
@@ -207,7 +207,7 @@
             }
 
             while (v16 != v18);
-            v24 = [v70 countByEnumeratingWithState:&v86 objects:v98 count:16];
+            v24 = [children countByEnumeratingWithState:&v86 objects:v98 count:16];
             v16 = v24;
           }
 
@@ -228,8 +228,8 @@
           v85 = 0u;
           v82 = 0u;
           v83 = 0u;
-          v71 = [v69 children];
-          v26 = [v71 countByEnumeratingWithState:&v82 objects:v97 count:16];
+          children3 = [v69 children];
+          v26 = [children3 countByEnumeratingWithState:&v82 objects:v97 count:16];
           if (v26)
           {
             v27 = v26;
@@ -240,7 +240,7 @@
               {
                 if (*v83 != v28)
                 {
-                  objc_enumerationMutation(v71);
+                  objc_enumerationMutation(children3);
                 }
 
                 v30 = *(*(&v82 + 1) + 8 * i);
@@ -255,8 +255,8 @@
                   v81 = 0u;
                   v78 = 0u;
                   v79 = 0u;
-                  v31 = [v30 children];
-                  v32 = [v31 countByEnumeratingWithState:&v78 objects:v96 count:16];
+                  children4 = [v30 children];
+                  v32 = [children4 countByEnumeratingWithState:&v78 objects:v96 count:16];
                   if (v32)
                   {
                     v33 = v32;
@@ -267,7 +267,7 @@
                       {
                         if (*v79 != v34)
                         {
-                          objc_enumerationMutation(v31);
+                          objc_enumerationMutation(children4);
                         }
 
                         v36 = *(*(&v78 + 1) + 8 * j);
@@ -279,7 +279,7 @@
                         }
                       }
 
-                      v33 = [v31 countByEnumeratingWithState:&v78 objects:v96 count:16];
+                      v33 = [children4 countByEnumeratingWithState:&v78 objects:v96 count:16];
                     }
 
                     while (v33);
@@ -287,19 +287,19 @@
                 }
               }
 
-              v27 = [v71 countByEnumeratingWithState:&v82 objects:v97 count:16];
+              v27 = [children3 countByEnumeratingWithState:&v82 objects:v97 count:16];
             }
 
             while (v27);
           }
 
-          self = v57;
+          self = selfCopy;
           v7 = v73;
           v5 = v67;
           v9 = v61;
         }
 
-        [v58 addObject:v69];
+        [array addObject:v69];
         v10 = 1;
       }
 
@@ -359,12 +359,12 @@ LABEL_80:
 
       else
       {
-        v47 = [v44 tv_elementType];
+        tv_elementType2 = [v44 tv_elementType];
         v46 = 0;
         v48 = 0;
         v8 = 0;
         v45 = v44;
-        if (v47 != 16)
+        if (tv_elementType2 != 16)
         {
           goto LABEL_75;
         }
@@ -376,12 +376,12 @@ LABEL_80:
 LABEL_75:
       if (v48 | v8)
       {
-        self = v57;
+        self = selfCopy;
         v7 = v48;
         goto LABEL_82;
       }
 
-      self = v57;
+      self = selfCopy;
     }
 
     v39 = [obj countByEnumeratingWithState:&v74 objects:v95 count:16];
@@ -401,9 +401,9 @@ LABEL_82:
 LABEL_83:
 
 LABEL_85:
-  objc_storeStrong(&self->_viewElement, v55);
-  v50 = [v56 appDocument];
-  [v50 impressionThreshold];
+  objc_storeStrong(&self->_viewElement, elementCopy);
+  appDocument = [v56 appDocument];
+  [appDocument impressionThreshold];
   self->_impressionThreshold = v51;
 
   objc_storeStrong(&self->_collectionListElement, v62);
@@ -426,9 +426,9 @@ LABEL_85:
   v53 = self->_overlayView;
   self->_overlayView = v52;
 
-  -[_TVStackCommonTemplateController updateCollectionViewControllersAndForceReload:](self, "updateCollectionViewControllersAndForceReload:", -[_TVStackCommonTemplateController _updateSupplementaryViewControllersWithElements:updateStyles:](self, "_updateSupplementaryViewControllersWithElements:updateStyles:", v58, [v56 updateType] == 2));
-  v54 = [(_TVStackCommonTemplateController *)self parentViewController];
-  [(_TVStackCommonTemplateController *)self _disableScrollingIfNecessary:v54];
+  -[_TVStackCommonTemplateController updateCollectionViewControllersAndForceReload:](self, "updateCollectionViewControllersAndForceReload:", -[_TVStackCommonTemplateController _updateSupplementaryViewControllersWithElements:updateStyles:](self, "_updateSupplementaryViewControllersWithElements:updateStyles:", array, [v56 updateType] == 2));
+  parentViewController = [(_TVStackCommonTemplateController *)self parentViewController];
+  [(_TVStackCommonTemplateController *)self _disableScrollingIfNecessary:parentViewController];
 
   if ([(_TVStackCommonTemplateController *)self isViewLoaded])
   {
@@ -442,8 +442,8 @@ LABEL_85:
 - (void)loadView
 {
   v3 = [_TVStackWrappingView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [(_TVStackWrappingView *)v3 initWithFrame:?];
 
   [(_TVStackCommonTemplateController *)self setView:v5];
@@ -478,9 +478,9 @@ LABEL_85:
   observableEventController = self->_observableEventController;
   self->_observableEventController = v9;
 
-  v11 = [(_TVStackCommonTemplateController *)self viewElement];
-  v12 = [v11 appDocument];
-  v13 = [TVTemplateFeaturesManager featuresManagerForAppDocument:v12];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  appDocument = [viewElement appDocument];
+  v13 = [TVTemplateFeaturesManager featuresManagerForAppDocument:appDocument];
 
   [v13 pushContext:self forFeature:&unk_287E8B710];
   v14 = [v13 currentContextForFeature:&unk_287E9FB40];
@@ -490,21 +490,21 @@ LABEL_85:
   objc_destroyWeak(&location);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v19.receiver = self;
   v19.super_class = _TVStackCommonTemplateController;
-  v4 = a3;
-  [(_TVStackCommonTemplateController *)&v19 traitCollectionDidChange:v4];
-  v5 = [(_TVStackCommonTemplateController *)self popoverPresentationController];
-  if (![v5 presenting])
+  changeCopy = change;
+  [(_TVStackCommonTemplateController *)&v19 traitCollectionDidChange:changeCopy];
+  popoverPresentationController = [(_TVStackCommonTemplateController *)self popoverPresentationController];
+  if (![popoverPresentationController presenting])
   {
     goto LABEL_9;
   }
 
-  v6 = [(_TVStackCommonTemplateController *)self popoverPresentationController];
-  v7 = [v6 presentedViewController];
-  if ([v7 isEqual:self])
+  popoverPresentationController2 = [(_TVStackCommonTemplateController *)self popoverPresentationController];
+  presentedViewController = [popoverPresentationController2 presentedViewController];
+  if ([presentedViewController isEqual:self])
   {
 
 LABEL_4:
@@ -512,19 +512,19 @@ LABEL_4:
     goto LABEL_11;
   }
 
-  v9 = [(_TVStackCommonTemplateController *)self popoverPresentationController];
-  v10 = [v9 presentedViewController];
+  popoverPresentationController3 = [(_TVStackCommonTemplateController *)self popoverPresentationController];
+  presentedViewController2 = [popoverPresentationController3 presentedViewController];
   v11 = +[_TVModalPresenter presenter];
-  v12 = [v11 modalRootViewController];
-  if (![v10 isEqual:v12])
+  modalRootViewController = [v11 modalRootViewController];
+  if (![presentedViewController2 isEqual:modalRootViewController])
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [(_TVStackCommonTemplateController *)self _modalPresenterPresentedViewController];
-  v18 = [(_TVStackCommonTemplateController *)self isEqual:v13];
+  _modalPresenterPresentedViewController = [(_TVStackCommonTemplateController *)self _modalPresenterPresentedViewController];
+  v18 = [(_TVStackCommonTemplateController *)self isEqual:_modalPresenterPresentedViewController];
 
   if (v18)
   {
@@ -534,32 +534,32 @@ LABEL_9:
 LABEL_10:
   v8 = 1;
 LABEL_11:
-  v14 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v14 setAlwaysBounceVertical:v8];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView setAlwaysBounceVertical:v8];
 
-  v15 = [(_TVStackCommonTemplateController *)self traitCollection];
-  v16 = [v15 userInterfaceStyle];
-  v17 = [v4 userInterfaceStyle];
+  traitCollection = [(_TVStackCommonTemplateController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v16 != v17)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(_TVStackCommonTemplateController *)self updateBackgroundAndBackdrop];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _TVStackCommonTemplateController;
-  [(_TVBgImageLoadingViewController *)&v4 viewDidAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v4 viewDidAppear:appear];
   [(_TVStackCommonTemplateController *)self _updateImpressions];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _TVStackCommonTemplateController;
-  [(_TVBgImageLoadingViewController *)&v4 viewDidDisappear:a3];
+  [(_TVBgImageLoadingViewController *)&v4 viewDidDisappear:disappear];
   [(_TVStackCommonTemplateController *)self _cancelImpressionsUpdate];
 }
 
@@ -571,55 +571,55 @@ LABEL_11:
     if (self->_disabledTemplateFocusCaptureView)
     {
       v10[0] = self->_disabledTemplateFocusCaptureView;
-      v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
+      preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     }
 
     else
     {
-      v3 = MEMORY[0x277CBEBF8];
+      preferredFocusEnvironments = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v4 = [(_TVStackCommonTemplateController *)self view];
-    [v4 layoutIfNeeded];
+    view = [(_TVStackCommonTemplateController *)self view];
+    [view layoutIfNeeded];
 
-    v5 = [(_TVStackCommonTemplateController *)self _preferredFocusedSupplementaryView];
-    if (v5)
+    _preferredFocusedSupplementaryView = [(_TVStackCommonTemplateController *)self _preferredFocusedSupplementaryView];
+    if (_preferredFocusedSupplementaryView)
     {
-      v6 = [(_TVStackCommonTemplateController *)self _preferredFocusedSupplementaryView];
-      v9 = v6;
-      v3 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
+      _preferredFocusedSupplementaryView2 = [(_TVStackCommonTemplateController *)self _preferredFocusedSupplementaryView];
+      v9 = _preferredFocusedSupplementaryView2;
+      preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = _TVStackCommonTemplateController;
-      v3 = [(_TVStackCommonTemplateController *)&v8 preferredFocusEnvironments];
+      preferredFocusEnvironments = [(_TVStackCommonTemplateController *)&v8 preferredFocusEnvironments];
     }
   }
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  v6 = [v5 focusedView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
 
-  if (v6)
+  if (focusedView)
   {
-    v7 = [(_TVStackCommonTemplateController *)self view];
-    v8 = [v6 isDescendantOfView:v7];
+    view = [(_TVStackCommonTemplateController *)self view];
+    v8 = [focusedView isDescendantOfView:view];
 
     if (v8)
     {
-      v9 = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
-      v10 = [v9 view];
-      v11 = [v6 isDescendantOfView:v10];
+      focusedSupplementaryViewController = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
+      view2 = [focusedSupplementaryViewController view];
+      v11 = [focusedView isDescendantOfView:view2];
 
       if ((v11 & 1) == 0)
       {
@@ -627,8 +627,8 @@ LABEL_11:
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v12 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        supplementaryViewControllers = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
+        v13 = [supplementaryViewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v13)
         {
           v14 = *v20;
@@ -638,12 +638,12 @@ LABEL_11:
             {
               if (*v20 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(supplementaryViewControllers);
               }
 
               v16 = *(*(&v19 + 1) + 8 * i);
-              v17 = [v16 view];
-              v18 = [v6 isDescendantOfView:v17];
+              view3 = [v16 view];
+              v18 = [focusedView isDescendantOfView:view3];
 
               if (v18)
               {
@@ -652,7 +652,7 @@ LABEL_11:
               }
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+            v13 = [supplementaryViewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
             if (v13)
             {
               continue;
@@ -672,13 +672,13 @@ LABEL_14:
 
 - (void)scrollToTop
 {
-  v2 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v2 _scrollToTopIfPossible:1];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView _scrollToTopIfPossible:1];
 }
 
-- (void)setMediaPlayer:(id)a3
+- (void)setMediaPlayer:(id)player
 {
-  obj = a3;
+  obj = player;
   WeakRetained = objc_loadWeakRetained(&self->_mediaPlayer);
 
   if (WeakRetained != obj)
@@ -697,86 +697,86 @@ LABEL_14:
   }
 }
 
-- (void)setSelectedMediaInfo:(id)a3
+- (void)setSelectedMediaInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   selectedMediaInfo = self->_selectedMediaInfo;
-  if (selectedMediaInfo != v5)
+  if (selectedMediaInfo != infoCopy)
   {
-    v8 = v5;
-    selectedMediaInfo = [(TVMediaInfo *)selectedMediaInfo isEqual:v5];
-    v5 = v8;
+    v8 = infoCopy;
+    selectedMediaInfo = [(TVMediaInfo *)selectedMediaInfo isEqual:infoCopy];
+    infoCopy = v8;
     if ((selectedMediaInfo & 1) == 0)
     {
-      objc_storeStrong(&self->_selectedMediaInfo, a3);
-      v7 = [(_TVStackCommonTemplateController *)self observableEventController];
-      [v7 dispatchEvent:@"TVSelectedMediaInfoDidChangeEvent" sender:self withUserInfo:0];
+      objc_storeStrong(&self->_selectedMediaInfo, info);
+      observableEventController = [(_TVStackCommonTemplateController *)self observableEventController];
+      [observableEventController dispatchEvent:@"TVSelectedMediaInfoDidChangeEvent" sender:self withUserInfo:0];
 
-      v5 = v8;
+      infoCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](selectedMediaInfo, v5);
+  MEMORY[0x2821F96F8](selectedMediaInfo, infoCopy);
 }
 
-- (void)handleEvent:(id)a3 sender:(id)a4 withUserInfo:(id)a5
+- (void)handleEvent:(id)event sender:(id)sender withUserInfo:(id)info
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (@"TVMediaPlayingStateDidChangeEvent" == v10)
+  eventCopy = event;
+  senderCopy = sender;
+  infoCopy = info;
+  if (@"TVMediaPlayingStateDidChangeEvent" == eventCopy)
   {
     [(_TVStackCommonTemplateController *)self _mediaPlayerStateDidChange];
   }
 
-  else if (@"TVMediaPlayingCoverImageDidChangeEvent" == v10)
+  else if (@"TVMediaPlayingCoverImageDidChangeEvent" == eventCopy)
   {
     [(_TVStackCommonTemplateController *)self _mediaPlayerCoverImageDidChange];
   }
 }
 
-- (void)addObserver:(id)a3 forEvent:(id)a4
+- (void)addObserver:(id)observer forEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_TVStackCommonTemplateController *)self observableEventController];
-  [v8 addObserver:v7 forEvent:v6];
+  eventCopy = event;
+  observerCopy = observer;
+  observableEventController = [(_TVStackCommonTemplateController *)self observableEventController];
+  [observableEventController addObserver:observerCopy forEvent:eventCopy];
 }
 
-- (void)removeObserver:(id)a3 forEvent:(id)a4
+- (void)removeObserver:(id)observer forEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_TVStackCommonTemplateController *)self observableEventController];
-  [v8 removeObserver:v7 forEvent:v6];
+  eventCopy = event;
+  observerCopy = observer;
+  observableEventController = [(_TVStackCommonTemplateController *)self observableEventController];
+  [observableEventController removeObserver:observerCopy forEvent:eventCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(_TVStackCommonTemplateController *)self observableEventController];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observableEventController = [(_TVStackCommonTemplateController *)self observableEventController];
+  [observableEventController removeObserver:observerCopy];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers:a3];
+  v4 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_TVStackCommonTemplateController *)self collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"TVStackViewCollectionCellIdentifier" forIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"TVStackViewCollectionCellIdentifier" forIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v5, "item")}];
+    supplementaryViewControllers = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
+    v9 = [supplementaryViewControllers objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
     [v7 setViewController:v9];
   }
@@ -784,49 +784,49 @@ LABEL_14:
   return v7;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(_TVStackCommonTemplateController *)self updateBackgroundAndBackdropMaskFactor];
   [(_TVStackCommonTemplateController *)self _updateImpressions];
   if (self->_impressionThreshold > 0.0)
   {
-    v4 = [(_TVStackCollectionView *)self->_collectionView visibleCells];
-    [v4 enumerateObjectsUsingBlock:&__block_literal_global_23];
+    visibleCells = [(_TVStackCollectionView *)self->_collectionView visibleCells];
+    [visibleCells enumerateObjectsUsingBlock:&__block_literal_global_23];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = [a4 viewController];
-  if (v8)
+  viewController = [cell viewController];
+  if (viewController)
   {
-    v6 = [(_TVStackCommonTemplateController *)self childViewControllers];
-    v7 = [v6 containsObject:v8];
+    childViewControllers = [(_TVStackCommonTemplateController *)self childViewControllers];
+    v7 = [childViewControllers containsObject:viewController];
 
     if ((v7 & 1) == 0)
     {
-      [(_TVStackCommonTemplateController *)self addChildViewController:v8];
-      [v8 didMoveToParentViewController:self];
+      [(_TVStackCommonTemplateController *)self addChildViewController:viewController];
+      [viewController didMoveToParentViewController:self];
     }
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v6 = [v10 viewController];
-  if (v6)
+  cellCopy = cell;
+  viewController = [cellCopy viewController];
+  if (viewController)
   {
-    v7 = [(_TVStackCommonTemplateController *)self childViewControllers];
-    if ([v7 containsObject:v6])
+    childViewControllers = [(_TVStackCommonTemplateController *)self childViewControllers];
+    if ([childViewControllers containsObject:viewController])
     {
-      v8 = [v6 view];
-      v9 = [v8 isDescendantOfView:v10];
+      view = [viewController view];
+      v9 = [view isDescendantOfView:cellCopy];
 
       if (v9)
       {
-        [v6 willMoveToParentViewController:0];
-        [v6 removeFromParentViewController];
+        [viewController willMoveToParentViewController:0];
+        [viewController removeFromParentViewController];
       }
     }
 
@@ -838,61 +838,61 @@ LABEL_14:
 
 - (void)updateBackgroundAndBackdrop
 {
-  v14 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  v3 = [(IKImageElement *)self->_bgImgElement style];
-  v4 = [v3 tv_imageTreatment];
-  v5 = [v4 isEqualToString:@"blurOverlay"];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  style = [(IKImageElement *)self->_bgImgElement style];
+  tv_imageTreatment = [style tv_imageTreatment];
+  v5 = [tv_imageTreatment isEqualToString:@"blurOverlay"];
 
   if (v5)
   {
-    v6 = [(_TVStackCommonTemplateController *)self _blurEffectStyle];
-    v7 = [(_TVStackCommonTemplateController *)self _backgroundImageRequiresBlur];
+    _blurEffectStyle = [(_TVStackCommonTemplateController *)self _blurEffectStyle];
+    _backgroundImageRequiresBlur = [(_TVStackCommonTemplateController *)self _backgroundImageRequiresBlur];
     v8 = 4014;
-    if (v6 != 4000)
+    if (_blurEffectStyle != 4000)
     {
       v8 = 4015;
     }
 
-    if (v7)
+    if (_backgroundImageRequiresBlur)
     {
       v9 = v8;
     }
 
     else
     {
-      v9 = v6;
+      v9 = _blurEffectStyle;
     }
 
-    [v14 setBackdropBlurEffectStyle:v9];
-    [v14 bounds];
+    [stackWrappingView setBackdropBlurEffectStyle:v9];
+    [stackWrappingView bounds];
     v11 = v10;
-    v12 = [(IKImageElement *)self->_bgImgElement style];
-    [v12 tv_padding];
-    [v14 setBackdropInitialPeek:v11 - v13];
+    style2 = [(IKImageElement *)self->_bgImgElement style];
+    [style2 tv_padding];
+    [stackWrappingView setBackdropInitialPeek:v11 - v13];
 
-    [v14 setBackdropPeekGradient:0.0];
+    [stackWrappingView setBackdropPeekGradient:0.0];
   }
 
   else
   {
-    [v14 setBackdropBlurEffectStyle:0x8000000000000000];
+    [stackWrappingView setBackdropBlurEffectStyle:0x8000000000000000];
   }
 }
 
 - (void)updateBackgroundAndBackdropMaskFactor
 {
-  v15 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  [v15 bounds];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  [stackWrappingView bounds];
   v3 = v2;
-  v4 = [v15 stackView];
-  [v4 contentOffset];
+  stackView = [stackWrappingView stackView];
+  [stackView contentOffset];
   v6 = v5;
 
-  v7 = [v15 stackView];
-  [v7 contentInset];
+  stackView2 = [stackWrappingView stackView];
+  [stackView2 contentInset];
   v9 = v8;
 
-  [v15 backdropInitialPeek];
+  [stackWrappingView backdropInitialPeek];
   v11 = v3 - v10;
   v12 = 1.0;
   v13 = 1.0;
@@ -912,38 +912,38 @@ LABEL_14:
     v12 = v14;
   }
 
-  [v15 setBackdropMaskFactor:v12];
+  [stackWrappingView setBackdropMaskFactor:v12];
 }
 
 - (id)parsedMediaInfo
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackCommonTemplateController *)self bgMediaContentElement];
+  bgMediaContentElement = [(_TVStackCommonTemplateController *)self bgMediaContentElement];
 
-  if (v3)
+  if (bgMediaContentElement)
   {
-    v3 = objc_alloc_init(TVBackgroundMediaInfo);
-    v4 = [(_TVStackCommonTemplateController *)self viewElement];
-    v5 = [v4 style];
-    v6 = [v5 tv_backgroundColor];
-    v7 = [v6 color];
-    [(TVMediaInfo *)v3 setBackgroundColor:v7];
+    bgMediaContentElement = objc_alloc_init(TVBackgroundMediaInfo);
+    viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+    style = [viewElement style];
+    tv_backgroundColor = [style tv_backgroundColor];
+    color = [tv_backgroundColor color];
+    [(TVMediaInfo *)bgMediaContentElement setBackgroundColor:color];
 
-    v8 = [(_TVStackCommonTemplateController *)self bgMediaContentElement];
-    v9 = [v8 playerBridge];
-    [(TVBackgroundMediaInfo *)v3 setPlayerBridge:v9];
+    bgMediaContentElement2 = [(_TVStackCommonTemplateController *)self bgMediaContentElement];
+    playerBridge = [bgMediaContentElement2 playerBridge];
+    [(TVBackgroundMediaInfo *)bgMediaContentElement setPlayerBridge:playerBridge];
 
-    v10 = [(_TVStackCommonTemplateController *)self _backgroundImageProxy];
-    v11 = v10;
-    if (v10)
+    _backgroundImageProxy = [(_TVStackCommonTemplateController *)self _backgroundImageProxy];
+    v11 = _backgroundImageProxy;
+    if (_backgroundImageProxy)
     {
-      v14[0] = v10;
+      v14[0] = _backgroundImageProxy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-      [(TVMediaInfo *)v3 setImageProxies:v12];
+      [(TVMediaInfo *)bgMediaContentElement setImageProxies:v12];
     }
   }
 
-  return v3;
+  return bgMediaContentElement;
 }
 
 - (void)_updateImpressions
@@ -958,39 +958,39 @@ LABEL_14:
 
 - (void)_recordImpressionsForVisibleView
 {
-  v3 = [(_TVStackCommonTemplateController *)self view];
-  v4 = [v3 window];
+  view = [(_TVStackCommonTemplateController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v6 = [(IKViewElement *)self->_viewElement appDocument];
+    appDocument = [(IKViewElement *)self->_viewElement appDocument];
     v5 = [(_TVStackCommonTemplateController *)self impressionableElementsContainedInDocument:?];
     if ([v5 count])
     {
-      [v6 recordImpressionsForViewElements:v5];
+      [appDocument recordImpressionsForViewElements:v5];
     }
   }
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IKViewElement *)self->_viewElement appDocument];
-  v6 = [v5 isEqual:v4];
+  documentCopy = document;
+  appDocument = [(IKViewElement *)self->_viewElement appDocument];
+  v6 = [appDocument isEqual:documentCopy];
 
   if (v6)
   {
-    v7 = [(_TVStackCollectionView *)self->_collectionView visibleCells];
-    v8 = [MEMORY[0x277CBEB18] array];
+    visibleCells = [(_TVStackCollectionView *)self->_collectionView visibleCells];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(_TVStackCommonTemplateController *)self isViewLoaded])
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v25 = v7;
-      v9 = v7;
+      v25 = visibleCells;
+      v9 = visibleCells;
       v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v10)
       {
@@ -1005,9 +1005,9 @@ LABEL_14:
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v30 + 1) + 8 * i) viewController];
-            v15 = [v14 tv_impressionableElementsForDocument:v4];
-            [v8 addObjectsFromArray:v15];
+            viewController = [*(*(&v30 + 1) + 8 * i) viewController];
+            v15 = [viewController tv_impressionableElementsForDocument:documentCopy];
+            [array addObjectsFromArray:v15];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -1035,9 +1035,9 @@ LABEL_14:
               objc_enumerationMutation(v16);
             }
 
-            v21 = [*(*(&v26 + 1) + 8 * j) viewController];
-            v22 = [v21 tv_impressionableElementsForDocument:v4];
-            [v8 addObjectsFromArray:v22];
+            viewController2 = [*(*(&v26 + 1) + 8 * j) viewController];
+            v22 = [viewController2 tv_impressionableElementsForDocument:documentCopy];
+            [array addObjectsFromArray:v22];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -1046,12 +1046,12 @@ LABEL_14:
         while (v18);
       }
 
-      v7 = v25;
+      visibleCells = v25;
     }
 
-    if ([v8 count])
+    if ([array count])
     {
-      v23 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+      v23 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else
@@ -1093,10 +1093,10 @@ LABEL_14:
 
 - (id)_backgroundImageProxy
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 _graphicsQuality];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  if (v4 == 10)
+  if (_graphicsQuality == 10)
   {
     goto LABEL_2;
   }
@@ -1104,7 +1104,7 @@ LABEL_14:
   heroImgElement = self->_heroImgElement;
   if (heroImgElement)
   {
-    v5 = [(IKImageElement *)heroImgElement tv_imageProxy];
+    tv_imageProxy = [(IKImageElement *)heroImgElement tv_imageProxy];
   }
 
   else
@@ -1112,24 +1112,24 @@ LABEL_14:
     if (!self->_bgImgElement)
     {
 LABEL_2:
-      v5 = 0;
+      tv_imageProxy = 0;
       goto LABEL_7;
     }
 
-    v7 = [(IKViewElement *)self->_viewElement appDocument];
-    [v7 tv_adjustedWindowSize];
+    appDocument = [(IKViewElement *)self->_viewElement appDocument];
+    [appDocument tv_adjustedWindowSize];
     v9 = v8;
     v11 = v10;
 
     v12 = objc_opt_new();
     [v12 setImageSize:{v9, v11}];
     v13 = [TVImageLayout layoutWithLayout:v12 element:self->_bgImgElement];
-    v5 = [(IKImageElement *)self->_bgImgElement tv_imageProxyWithLayout:v12];
+    tv_imageProxy = [(IKImageElement *)self->_bgImgElement tv_imageProxyWithLayout:v12];
   }
 
 LABEL_7:
 
-  return v5;
+  return tv_imageProxy;
 }
 
 - (int64_t)_blurEffectStyle
@@ -1145,9 +1145,9 @@ LABEL_7:
   }
 }
 
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage
 {
-  [(_TVStackCommonTemplateController *)self setBgImage:a3, a4];
+  [(_TVStackCommonTemplateController *)self setBgImage:image, backdropImage];
   if ([(_TVStackCommonTemplateController *)self isViewLoaded])
   {
 
@@ -1157,32 +1157,32 @@ LABEL_7:
 
 - (BOOL)_shouldLoadBackgroundImageAsynchronously
 {
-  v2 = [(_TVStackCommonTemplateController *)self _backgroundImageProxy];
-  v3 = [v2 isImageAvailable];
+  _backgroundImageProxy = [(_TVStackCommonTemplateController *)self _backgroundImageProxy];
+  isImageAvailable = [_backgroundImageProxy isImageAvailable];
 
-  return v3 ^ 1;
+  return isImageAvailable ^ 1;
 }
 
-- (id)viewControllerWithElement:(id)a3 layout:(id)a4 existingController:(id)a5
+- (id)viewControllerWithElement:(id)element layout:(id)layout existingController:(id)controller
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  elementCopy = element;
+  controllerCopy = controller;
+  layoutCopy = layout;
   v10 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v11 = [v10 _viewControllerFromElement:v7 layout:v9 existingController:v8];
+  v11 = [v10 _viewControllerFromElement:elementCopy layout:layoutCopy existingController:controllerCopy];
 
   if (!v11)
   {
     v12 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v13 = [v8 view];
-    v14 = [v12 _viewFromElement:v7 existingView:v13];
+    view = [controllerCopy view];
+    v14 = [v12 _viewFromElement:elementCopy existingView:view];
 
     if (v14)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v8;
+        v15 = controllerCopy;
       }
 
       else
@@ -1192,7 +1192,7 @@ LABEL_7:
 
       v11 = v15;
       [(_TVStackWrappingViewController *)v15 setView:v14];
-      [v11 tv_setAssociatedIKViewElement:v7];
+      [v11 tv_setAssociatedIKViewElement:elementCopy];
     }
 
     else
@@ -1204,17 +1204,17 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)_updateSupplementaryViewControllersWithElements:(id)a3 updateStyles:(BOOL)a4
+- (BOOL)_updateSupplementaryViewControllersWithElements:(id)elements updateStyles:(BOOL)styles
 {
-  v4 = a4;
+  stylesCopy = styles;
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v4 || (v8 = [v6 count], -[_TVStackCommonTemplateController supplementaryViewControllers](self, "supplementaryViewControllers"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8 != v10))
+  elementsCopy = elements;
+  v7 = elementsCopy;
+  if (!stylesCopy || (v8 = [elementsCopy count], -[_TVStackCommonTemplateController supplementaryViewControllers](self, "supplementaryViewControllers"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8 != v10))
   {
     v44 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
-    v12 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
-    v46 = [v12 mutableCopy];
+    supplementaryViewControllers = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
+    v46 = [supplementaryViewControllers mutableCopy];
 
     v59 = 0u;
     v60 = 0u;
@@ -1222,7 +1222,7 @@ LABEL_7:
     v58 = 0u;
     v41 = v7;
     obj = v7;
-    v43 = self;
+    selfCopy = self;
     v47 = [obj countByEnumeratingWithState:&v57 objects:v64 count:16];
     v13 = 0;
     if (v47)
@@ -1238,9 +1238,9 @@ LABEL_7:
           }
 
           v15 = *(*(&v57 + 1) + 8 * i);
-          v16 = [v15 autoHighlightIdentifier];
+          autoHighlightIdentifier = [v15 autoHighlightIdentifier];
 
-          if (v16)
+          if (autoHighlightIdentifier)
           {
             [v15 resetProperty:2];
           }
@@ -1265,10 +1265,10 @@ LABEL_7:
                 }
 
                 v21 = *(*(&v53 + 1) + 8 * j);
-                v22 = [v21 tv_associatedIKViewElement];
-                v23 = [v22 tv_elementType];
+                tv_associatedIKViewElement = [v21 tv_associatedIKViewElement];
+                tv_elementType = [tv_associatedIKViewElement tv_elementType];
 
-                if (v23 == [v15 tv_elementType])
+                if (tv_elementType == [v15 tv_elementType])
                 {
                   v18 = v21;
                   goto LABEL_21;
@@ -1285,7 +1285,7 @@ LABEL_7:
             }
 
 LABEL_21:
-            self = v43;
+            self = selfCopy;
             v13 = v48;
           }
 
@@ -1293,7 +1293,7 @@ LABEL_21:
           v25 = v24;
           if (v24)
           {
-            if (!v13 && v16)
+            if (!v13 && autoHighlightIdentifier)
             {
               v13 = v24;
             }
@@ -1337,8 +1337,8 @@ LABEL_21:
 
           v32 = *(*(&v49 + 1) + 8 * k);
           [v32 willMoveToParentViewController:{0, v41}];
-          v33 = [v32 view];
-          [v33 removeFromSuperview];
+          view = [v32 view];
+          [view removeFromSuperview];
 
           [v32 removeFromParentViewController];
         }
@@ -1349,9 +1349,9 @@ LABEL_21:
       while (v29);
     }
 
-    self = v43;
-    [(_TVStackCommonTemplateController *)v43 setSupplementaryViewControllers:v44];
-    v34 = v43;
+    self = selfCopy;
+    [(_TVStackCommonTemplateController *)selfCopy setSupplementaryViewControllers:v44];
+    v34 = selfCopy;
     if (v26)
     {
       v35 = v26;
@@ -1359,22 +1359,22 @@ LABEL_21:
 
     else
     {
-      v37 = [(_TVStackCommonTemplateController *)v43 focusedSupplementaryViewController];
-      if (!v37)
+      focusedSupplementaryViewController = [(_TVStackCommonTemplateController *)selfCopy focusedSupplementaryViewController];
+      if (!focusedSupplementaryViewController)
       {
         goto LABEL_42;
       }
 
-      v38 = v37;
-      v39 = [(_TVStackCommonTemplateController *)v43 focusedSupplementaryViewController];
-      v40 = [v44 containsObject:v39];
+      v38 = focusedSupplementaryViewController;
+      focusedSupplementaryViewController2 = [(_TVStackCommonTemplateController *)selfCopy focusedSupplementaryViewController];
+      v40 = [v44 containsObject:focusedSupplementaryViewController2];
 
       if (v40)
       {
         goto LABEL_42;
       }
 
-      v34 = v43;
+      v34 = selfCopy;
       v35 = 0;
     }
 
@@ -1400,10 +1400,10 @@ LABEL_43:
 
 - (id)_flowLayout
 {
-  v2 = [(_TVStackCommonTemplateController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  return v3;
+  return collectionViewLayout;
 }
 
 - (void)_updateViewOverlay
@@ -1414,8 +1414,8 @@ LABEL_43:
     [(UIView *)self->_overlayView setComponentsNeedUpdate];
   }
 
-  v3 = [(_TVStackCommonTemplateController *)self view];
-  [v3 addSubview:self->_overlayView];
+  view = [(_TVStackCommonTemplateController *)self view];
+  [view addSubview:self->_overlayView];
 
   overlayView = self->_overlayView;
 
@@ -1424,59 +1424,59 @@ LABEL_43:
 
 - (void)_updateBackgroundViews
 {
-  v3 = [(_TVStackCommonTemplateController *)self parsedMediaInfo];
-  [(_TVStackCommonTemplateController *)self setSelectedMediaInfo:v3];
+  parsedMediaInfo = [(_TVStackCommonTemplateController *)self parsedMediaInfo];
+  [(_TVStackCommonTemplateController *)self setSelectedMediaInfo:parsedMediaInfo];
 
-  v15 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  v4 = [(_TVStackCommonTemplateController *)self selectedMediaInfo];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  selectedMediaInfo = [(_TVStackCommonTemplateController *)self selectedMediaInfo];
 
-  v5 = [(_TVStackCommonTemplateController *)self mediaPlayer];
-  v6 = [v5 coverImage];
-  v7 = v6;
-  if (v6)
+  mediaPlayer = [(_TVStackCommonTemplateController *)self mediaPlayer];
+  coverImage = [mediaPlayer coverImage];
+  v7 = coverImage;
+  if (coverImage)
   {
-    v8 = v6;
+    bgImage = coverImage;
   }
 
   else
   {
-    v8 = [(_TVStackCommonTemplateController *)self bgImage];
+    bgImage = [(_TVStackCommonTemplateController *)self bgImage];
   }
 
-  v9 = v8;
+  v9 = bgImage;
 
-  [v15 setBackgroundImage:v9];
-  [v15 setUsesBackgroundImage:v4 == 0];
-  v10 = [(_TVStackCommonTemplateController *)self viewElement];
-  v11 = [v10 style];
-  v12 = [v11 tv_backgroundColor];
-  v13 = [v12 color];
-  [v15 setBackgroundColor:v13];
+  [stackWrappingView setBackgroundImage:v9];
+  [stackWrappingView setUsesBackgroundImage:selectedMediaInfo == 0];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  style = [viewElement style];
+  tv_backgroundColor = [style tv_backgroundColor];
+  color = [tv_backgroundColor color];
+  [stackWrappingView setBackgroundColor:color];
 
-  v14 = [(_TVStackCommonTemplateController *)self mediaPlayer];
-  LODWORD(v11) = [v14 isPlaying];
+  mediaPlayer2 = [(_TVStackCommonTemplateController *)self mediaPlayer];
+  LODWORD(style) = [mediaPlayer2 isPlaying];
 
-  [v15 setBackdropImage:v9];
-  [v15 setUsesBackdropImage:v11 ^ 1];
+  [stackWrappingView setBackdropImage:v9];
+  [stackWrappingView setUsesBackdropImage:style ^ 1];
   [(_TVStackCommonTemplateController *)self updateBackgroundAndBackdrop];
 }
 
 - (void)_updateViewSupplementaryViews
 {
-  v3 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  v4 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
-  v5 = [v4 valueForKey:@"view"];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  supplementaryViewControllers = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
+  v5 = [supplementaryViewControllers valueForKey:@"view"];
 
-  v6 = [(_TVStackCommonTemplateController *)self viewElement];
-  v7 = [v6 tv_semanticContentAttribute];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  tv_semanticContentAttribute = [viewElement tv_semanticContentAttribute];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65___TVStackCommonTemplateController__updateViewSupplementaryViews__block_invoke;
   v8[3] = &__block_descriptor_40_e15_v32__0_8Q16_B24l;
-  v8[4] = v7;
+  v8[4] = tv_semanticContentAttribute;
   [v5 enumerateObjectsUsingBlock:v8];
-  [v3 setHeaderSupplementaryViews:v5];
+  [stackWrappingView setHeaderSupplementaryViews:v5];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -1484,75 +1484,75 @@ LABEL_43:
   v10.receiver = self;
   v10.super_class = _TVStackCommonTemplateController;
   [(_TVStackCommonTemplateController *)&v10 viewSafeAreaInsetsDidChange];
-  v3 = [(_TVStackCommonTemplateController *)self view];
-  [v3 safeAreaInsets];
+  view = [(_TVStackCommonTemplateController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
-  v6 = [(_TVStackCommonTemplateController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(_TVStackCommonTemplateController *)self view];
+  [view2 safeAreaInsets];
   v8 = v7;
 
-  v9 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  [v9 configureSupplementaryCellLayoutAttributesWithAutomaticInsets:-[_TVStackCommonTemplateController _supplementaryViewSectionIndex](self sectionIndex:{"_supplementaryViewSectionIndex"), v5, 0.0, v8, 0.0}];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  [stackWrappingView configureSupplementaryCellLayoutAttributesWithAutomaticInsets:-[_TVStackCommonTemplateController _supplementaryViewSectionIndex](self sectionIndex:{"_supplementaryViewSectionIndex"), v5, 0.0, v8, 0.0}];
 }
 
 - (void)_updateViewLayout
 {
-  v3 = [(_TVStackCommonTemplateController *)self collectionView];
-  v4 = [(_TVStackCommonTemplateController *)self viewElement];
-  [v3 setSemanticContentAttribute:{objc_msgSend(v4, "tv_semanticContentAttribute")}];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  [collectionView setSemanticContentAttribute:{objc_msgSend(viewElement, "tv_semanticContentAttribute")}];
 
-  v14 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  v5 = [(_TVStackCommonTemplateController *)self view];
-  [v5 safeAreaInsets];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  view = [(_TVStackCommonTemplateController *)self view];
+  [view safeAreaInsets];
   v7 = v6;
-  v8 = [(_TVStackCommonTemplateController *)self view];
-  [v8 safeAreaInsets];
+  view2 = [(_TVStackCommonTemplateController *)self view];
+  [view2 safeAreaInsets];
   v10 = v9;
 
   [(_TVStackCommonTemplateController *)self updateBackgroundAndBackdropMaskFactor];
-  v11 = [(_TVStackCommonTemplateController *)self viewElement];
-  [v14 transferLayoutStylesFromElement:v11];
+  viewElement2 = [(_TVStackCommonTemplateController *)self viewElement];
+  [stackWrappingView transferLayoutStylesFromElement:viewElement2];
 
-  v12 = [v14 stackView];
-  v13 = [(_TVStackCommonTemplateController *)self collectionListElement];
-  [v12 transferLayoutStylesFromElement:v13];
+  stackView = [stackWrappingView stackView];
+  collectionListElement = [(_TVStackCommonTemplateController *)self collectionListElement];
+  [stackView transferLayoutStylesFromElement:collectionListElement];
 
-  [v14 configureSupplementaryCellLayoutAttributesWithAutomaticInsets:-[_TVStackCommonTemplateController _supplementaryViewSectionIndex](self sectionIndex:{"_supplementaryViewSectionIndex"), v7, 0.0, v10, 0.0}];
+  [stackWrappingView configureSupplementaryCellLayoutAttributesWithAutomaticInsets:-[_TVStackCommonTemplateController _supplementaryViewSectionIndex](self sectionIndex:{"_supplementaryViewSectionIndex"), v7, 0.0, v10, 0.0}];
 }
 
 - (id)_modalPresenterPresentedViewController
 {
   v2 = +[_TVModalPresenter presenter];
-  v3 = [v2 presentedViewController];
+  presentedViewController = [v2 presentedViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 templateViewController];
+    templateViewController = [presentedViewController templateViewController];
 
-    v3 = v4;
+    presentedViewController = templateViewController;
   }
 
-  return v3;
+  return presentedViewController;
 }
 
-- (void)_disableScrollingIfNecessary:(id)a3
+- (void)_disableScrollingIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v23 = v4;
-  if (v4)
+  necessaryCopy = necessary;
+  v23 = necessaryCopy;
+  if (necessaryCopy)
   {
-    v5 = [v4 popoverPresentationController];
-    if (v5)
+    popoverPresentationController = [necessaryCopy popoverPresentationController];
+    if (popoverPresentationController)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [v23 navigationController];
-      v8 = [v7 popoverPresentationController];
-      v6 = v8 == 0;
+      navigationController = [v23 navigationController];
+      popoverPresentationController2 = [navigationController popoverPresentationController];
+      v6 = popoverPresentationController2 == 0;
     }
   }
 
@@ -1561,45 +1561,45 @@ LABEL_43:
     v6 = 1;
   }
 
-  v9 = [(_TVStackCommonTemplateController *)self viewElement];
-  v10 = [v9 attributes];
-  v11 = [v10 objectForKey:@"disableScrolling"];
-  v12 = [v11 BOOLValue];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  attributes = [viewElement attributes];
+  v11 = [attributes objectForKey:@"disableScrolling"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (!v6 && v12)
+  if (!v6 && bOOLValue)
   {
-    v13 = [(_TVStackCommonTemplateController *)self view];
-    v14 = [v13 stackView];
-    v15 = [v14 collectionViewLayout];
-    [v15 collectionViewContentSize];
+    view = [(_TVStackCommonTemplateController *)self view];
+    stackView = [view stackView];
+    collectionViewLayout = [stackView collectionViewLayout];
+    [collectionViewLayout collectionViewContentSize];
     v17 = v16;
 
-    [v14 contentInset];
+    [stackView contentInset];
     v19 = v18;
-    [v13 bounds];
+    [view bounds];
     v21 = v20 - v19 - v17 <= 8.0;
-    v22 = [(_TVStackCommonTemplateController *)self collectionView];
-    [v22 setScrollEnabled:v21];
+    collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+    [collectionView setScrollEnabled:v21];
   }
 }
 
 - (id)_preferredFocusedSupplementaryView
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
+  focusedSupplementaryViewController = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
 
-  if (v3)
+  if (focusedSupplementaryViewController)
   {
-    v4 = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
+    focusedSupplementaryViewController2 = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
     goto LABEL_26;
   }
 
-  v5 = [(_TVStackCommonTemplateController *)self collectionView];
-  v6 = [v5 indexPathForLastFocusedItem];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  indexPathForLastFocusedItem = [collectionView indexPathForLastFocusedItem];
 
-  if (v6)
+  if (indexPathForLastFocusedItem)
   {
-    v4 = 0;
+    focusedSupplementaryViewController2 = 0;
     goto LABEL_26;
   }
 
@@ -1607,16 +1607,16 @@ LABEL_43:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  supplementaryViewControllers = [(_TVStackCommonTemplateController *)self supplementaryViewControllers];
+  v8 = [supplementaryViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v8)
   {
-    v4 = 0;
+    focusedSupplementaryViewController2 = 0;
     goto LABEL_25;
   }
 
   v9 = v8;
-  v4 = 0;
+  focusedSupplementaryViewController2 = 0;
   v10 = *v21;
   do
   {
@@ -1624,83 +1624,83 @@ LABEL_43:
     {
       if (*v21 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(supplementaryViewControllers);
       }
 
       v12 = *(*(&v20 + 1) + 8 * i);
-      if (!v4)
+      if (!focusedSupplementaryViewController2)
       {
-        v13 = [*(*(&v20 + 1) + 8 * i) view];
-        if (([v13 canBecomeFocused] & 1) == 0)
+        view = [*(*(&v20 + 1) + 8 * i) view];
+        if (([view canBecomeFocused] & 1) == 0)
         {
 
 LABEL_15:
-          v4 = 0;
+          focusedSupplementaryViewController2 = 0;
           goto LABEL_16;
         }
 
-        v14 = [(_TVStackCommonTemplateController *)self numberOfCollections];
+        numberOfCollections = [(_TVStackCommonTemplateController *)self numberOfCollections];
 
-        if (v14)
+        if (numberOfCollections)
         {
           goto LABEL_15;
         }
 
-        v4 = v12;
+        focusedSupplementaryViewController2 = v12;
       }
 
 LABEL_16:
-      v15 = [v12 tv_associatedIKViewElement];
-      v16 = [v15 tv_elementType];
+      tv_associatedIKViewElement = [v12 tv_associatedIKViewElement];
+      tv_elementType = [tv_associatedIKViewElement tv_elementType];
 
-      if (v16 == 57 || v16 == 45)
+      if (tv_elementType == 57 || tv_elementType == 45)
       {
         v17 = v12;
 
-        v4 = v17;
+        focusedSupplementaryViewController2 = v17;
       }
 
-      if (v16 == 45 || v16 == 57)
+      if (tv_elementType == 45 || tv_elementType == 57)
       {
         goto LABEL_25;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [supplementaryViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v9);
 LABEL_25:
 
 LABEL_26:
-  v18 = [v4 view];
+  view2 = [focusedSupplementaryViewController2 view];
 
-  return v18;
+  return view2;
 }
 
-- (void)_dispatchEvent:(id)a3 forItemAtIndexPath:(id)a4
+- (void)_dispatchEvent:(id)event forItemAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(_TVStackCommonTemplateController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  eventCopy = event;
+  pathCopy = path;
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v9 = [v8 viewController];
-  v10 = [v9 tv_associatedIKViewElement];
+  viewController = [v8 viewController];
+  tv_associatedIKViewElement = [viewController tv_associatedIKViewElement];
 
-  if (v10 && ([v10 isDisabled] & 1) == 0)
+  if (tv_associatedIKViewElement && ([tv_associatedIKViewElement isDisabled] & 1) == 0)
   {
-    [v10 tv_dispatchEvent:v11 canBubble:1 isCancelable:1 extraInfo:0 targetResponder:v8 completionBlock:0];
+    [tv_associatedIKViewElement tv_dispatchEvent:eventCopy canBubble:1 isCancelable:1 extraInfo:0 targetResponder:v8 completionBlock:0];
   }
 }
 
 - (void)_mediaPlayerStateDidChange
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackCommonTemplateController *)self mediaPlayer];
-  v4 = [v3 isPlaying];
+  mediaPlayer = [(_TVStackCommonTemplateController *)self mediaPlayer];
+  isPlaying = [mediaPlayer isPlaying];
 
-  if (v4)
+  if (isPlaying)
   {
     v5 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
   }
@@ -1714,8 +1714,8 @@ LABEL_26:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(_TVStackCommonTemplateController *)self childViewControllers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childViewControllers = [(_TVStackCommonTemplateController *)self childViewControllers];
+  v7 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1727,14 +1727,14 @@ LABEL_26:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [(_TVStackCommonTemplateController *)self setOverrideTraitCollection:v5 forChildViewController:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

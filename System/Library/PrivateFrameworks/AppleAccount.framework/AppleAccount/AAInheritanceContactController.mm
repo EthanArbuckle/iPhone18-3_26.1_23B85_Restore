@@ -1,19 +1,19 @@
 @interface AAInheritanceContactController
-- (AAInheritanceContactController)initWithContactInfo:(id)a3 contactType:(int64_t)a4;
+- (AAInheritanceContactController)initWithContactInfo:(id)info contactType:(int64_t)type;
 - (NSString)accessKeyString;
 - (NSString)claimTokenString;
 - (id)_accessKeyQRCodeImage;
-- (id)accessKeyQRCodeImageDataWithSize:(double)a3;
-- (void)removeContactAsBenefactorWithCompletion:(id)a3;
-- (void)removeContactAsBeneficiaryWithCompletion:(id)a3;
-- (void)sendInvitationWithCompletion:(id)a3;
+- (id)accessKeyQRCodeImageDataWithSize:(double)size;
+- (void)removeContactAsBenefactorWithCompletion:(id)completion;
+- (void)removeContactAsBeneficiaryWithCompletion:(id)completion;
+- (void)sendInvitationWithCompletion:(id)completion;
 @end
 
 @implementation AAInheritanceContactController
 
-- (AAInheritanceContactController)initWithContactInfo:(id)a3 contactType:(int64_t)a4
+- (AAInheritanceContactController)initWithContactInfo:(id)info contactType:(int64_t)type
 {
-  v7 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = AAInheritanceContactController;
   v8 = [(AAInheritanceContactController *)&v12 init];
@@ -23,8 +23,8 @@
     inheritanceController = v8->_inheritanceController;
     v8->_inheritanceController = v9;
 
-    objc_storeStrong(&v8->_contactInfo, a3);
-    v8->_contactType = a4;
+    objc_storeStrong(&v8->_contactInfo, info);
+    v8->_contactType = type;
   }
 
   return v8;
@@ -32,31 +32,31 @@
 
 - (NSString)claimTokenString
 {
-  v2 = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
-  v3 = [v2 claimTokenString];
+  accessKey = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
+  claimTokenString = [accessKey claimTokenString];
 
-  return v3;
+  return claimTokenString;
 }
 
 - (NSString)accessKeyString
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
-  v5 = [v4 claimTokenString];
-  v6 = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
-  v7 = [v6 wrappingKeyString];
-  v8 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+  accessKey = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
+  claimTokenString = [accessKey claimTokenString];
+  accessKey2 = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
+  wrappingKeyString = [accessKey2 wrappingKeyString];
+  v8 = [v3 stringWithFormat:@"%@-%@", claimTokenString, wrappingKeyString];
 
   return v8;
 }
 
-- (id)accessKeyQRCodeImageDataWithSize:(double)a3
+- (id)accessKeyQRCodeImageDataWithSize:(double)size
 {
   memset(&v12, 0, sizeof(v12));
-  CGAffineTransformMakeScale(&v12, a3, a3);
-  v4 = [(AAInheritanceContactController *)self _accessKeyQRCodeImage];
+  CGAffineTransformMakeScale(&v12, size, size);
+  _accessKeyQRCodeImage = [(AAInheritanceContactController *)self _accessKeyQRCodeImage];
   v11 = v12;
-  v5 = [v4 imageByApplyingTransform:&v11];
+  v5 = [_accessKeyQRCodeImage imageByApplyingTransform:&v11];
 
   v13 = 0;
   v14 = &v13;
@@ -106,14 +106,14 @@
     v5 = v4;
     _Block_object_dispose(&v14, 8);
     v6 = [v4 filterWithName:@"CIQRCodeGenerator"];
-    v7 = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
-    v8 = [v7 wrappingKeyString];
-    v9 = [v8 dataUsingEncoding:1];
+    accessKey = [(AAInheritanceContactInfo *)self->_contactInfo accessKey];
+    wrappingKeyString = [accessKey wrappingKeyString];
+    v9 = [wrappingKeyString dataUsingEncoding:1];
 
     [v6 setValue:v9 forKey:@"inputMessage"];
-    v10 = [v6 outputImage];
+    outputImage = [v6 outputImage];
     v11 = self->_accessKeyQRCodeImage;
-    self->_accessKeyQRCodeImage = v10;
+    self->_accessKeyQRCodeImage = outputImage;
 
     accessKeyQRCodeImage = self->_accessKeyQRCodeImage;
   }
@@ -121,10 +121,10 @@
   return accessKeyQRCodeImage;
 }
 
-- (void)removeContactAsBeneficiaryWithCompletion:(id)a3
+- (void)removeContactAsBeneficiaryWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   contactType = self->_contactType;
   v6 = _AALogSystem();
   v7 = v6;
@@ -139,7 +139,7 @@
       _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "%@ : Removing Beneficiary...", &v11, 0xCu);
     }
 
-    [(AAInheritanceController *)self->_inheritanceController removeBeneficiary:self->_contactInfo manifest:0 completion:v4];
+    [(AAInheritanceController *)self->_inheritanceController removeBeneficiary:self->_contactInfo manifest:0 completion:completionCopy];
   }
 
   else
@@ -153,10 +153,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeContactAsBenefactorWithCompletion:(id)a3
+- (void)removeContactAsBenefactorWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   contactType = self->_contactType;
   v6 = _AALogSystem();
   v7 = v6;
@@ -171,7 +171,7 @@
       _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "%@ : Removing Benefactor...", &v11, 0xCu);
     }
 
-    [(AAInheritanceController *)self->_inheritanceController removeBenefactor:self->_contactInfo completion:v4];
+    [(AAInheritanceController *)self->_inheritanceController removeBenefactor:self->_contactInfo completion:completionCopy];
   }
 
   else
@@ -185,24 +185,24 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendInvitationWithCompletion:(id)a3
+- (void)sendInvitationWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(AAInheritanceContactInfo *)self->_contactInfo handle];
+    handle = [(AAInheritanceContactInfo *)self->_contactInfo handle];
     v10 = 138412546;
     v11 = v7;
     v12 = 2112;
-    v13 = v8;
+    v13 = handle;
     _os_log_impl(&dword_1B6F6A000, v5, OS_LOG_TYPE_DEFAULT, "%@ : Sending invitation to %@ ...", &v10, 0x16u);
   }
 
-  [(AAInheritanceController *)self->_inheritanceController sendInvitationToContact:self->_contactInfo completion:v4];
+  [(AAInheritanceController *)self->_inheritanceController sendInvitationToContact:self->_contactInfo completion:completionCopy];
   v9 = *MEMORY[0x1E69E9840];
 }
 

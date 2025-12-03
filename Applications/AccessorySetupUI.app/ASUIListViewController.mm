@@ -1,5 +1,5 @@
 @interface ASUIListViewController
-- (_TtC16AccessorySetupUI22ASUIListViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI22ASUIListViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (_TtC16AccessorySetupUI22ASUIListViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI22ASUIListViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI22ASUIListViewController_type] = 5;
@@ -29,7 +29,7 @@
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUIListViewController *)&v8 initWithContentView:a3];
+  return [(ASUIListViewController *)&v8 initWithContentView:view];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface THGlossaryTextWrapController
-- (id)floatingDrawableLayoutsForTarget:(id)a3;
-- (unint64_t)zOrderOfDrawable:(id)a3 forTarget:(id)a4;
+- (id)floatingDrawableLayoutsForTarget:(id)target;
+- (unint64_t)zOrderOfDrawable:(id)drawable forTarget:(id)target;
 @end
 
 @implementation THGlossaryTextWrapController
 
-- (id)floatingDrawableLayoutsForTarget:(id)a3
+- (id)floatingDrawableLayoutsForTarget:(id)target
 {
   objc_opt_class();
-  [a3 parent];
+  [target parent];
   v4 = TSUDynamicCast();
-  if ([v4 bodyLayout] == a3 && objc_msgSend(v4, "shouldWrapAgainstFloatingDrawables"))
+  if ([v4 bodyLayout] == target && objc_msgSend(v4, "shouldWrapAgainstFloatingDrawables"))
   {
-    v5 = [v4 floatingLayout];
+    floatingLayout = [v4 floatingLayout];
 
-    return [v5 children];
+    return [floatingLayout children];
   }
 
   else
@@ -25,11 +25,11 @@
   }
 }
 
-- (unint64_t)zOrderOfDrawable:(id)a3 forTarget:(id)a4
+- (unint64_t)zOrderOfDrawable:(id)drawable forTarget:(id)target
 {
   objc_opt_class();
-  [a4 parent];
-  return [objc_msgSend(TSUDynamicCast() "info")] != a3;
+  [target parent];
+  return [objc_msgSend(TSUDynamicCast() "info")] != drawable;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface TransparencyGPBDuration
 + (id)descriptor;
-- (TransparencyGPBDuration)initWithTimeInterval:(double)a3;
-- (void)setTimeInterval:(double)a3;
+- (TransparencyGPBDuration)initWithTimeInterval:(double)interval;
+- (void)setTimeInterval:(double)interval;
 @end
 
 @implementation TransparencyGPBDuration
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (TransparencyGPBDuration)initWithTimeInterval:(double)a3
+- (TransparencyGPBDuration)initWithTimeInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = TransparencyGPBDuration;
@@ -27,7 +27,7 @@
   if (v4)
   {
     __y = 0.0;
-    v5 = (modf(a3, &__y) * 1000000000.0);
+    v5 = (modf(interval, &__y) * 1000000000.0);
     [(TransparencyGPBDuration *)v4 setSeconds:__y];
     [(TransparencyGPBDuration *)v4 setNanos:v5];
   }
@@ -35,10 +35,10 @@
   return v4;
 }
 
-- (void)setTimeInterval:(double)a3
+- (void)setTimeInterval:(double)interval
 {
   __y = 0.0;
-  v4 = (modf(a3, &__y) * 1000000000.0);
+  v4 = (modf(interval, &__y) * 1000000000.0);
   [(TransparencyGPBDuration *)self setSeconds:__y];
 
   [(TransparencyGPBDuration *)self setNanos:v4];

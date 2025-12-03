@@ -1,25 +1,25 @@
 @interface _SFReaderViewController
 - (SFReaderViewControllerDelegate)delegate;
-- (_SFReaderViewController)initWithOriginalWebView:(id)a3;
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5;
-- (void)_webView:(id)a3 contextMenuDidEndForElement:(id)a4;
-- (void)_webView:(id)a3 contextMenuForElement:(id)a4 willCommitWithAnimator:(id)a5;
-- (void)_webView:(id)a3 contextMenuWillPresentForElement:(id)a4;
+- (_SFReaderViewController)initWithOriginalWebView:(id)view;
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler;
+- (void)_webView:(id)view contextMenuDidEndForElement:(id)element;
+- (void)_webView:(id)view contextMenuForElement:(id)element willCommitWithAnimator:(id)animator;
+- (void)_webView:(id)view contextMenuWillPresentForElement:(id)element;
 - (void)loadView;
 @end
 
 @implementation _SFReaderViewController
 
-- (_SFReaderViewController)initWithOriginalWebView:(id)a3
+- (_SFReaderViewController)initWithOriginalWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _SFReaderViewController;
   v5 = [(_SFReaderViewController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_originalWebView, v4);
+    objc_storeWeak(&v5->_originalWebView, viewCopy);
     v7 = v6;
   }
 
@@ -30,30 +30,30 @@
 {
   WeakRetained = objc_loadWeakRetained(&self->_originalWebView);
   v3 = objc_alloc_init(MEMORY[0x1E69853A8]);
-  v4 = [WeakRetained configuration];
-  v5 = [v4 processPool];
-  [v3 setProcessPool:v5];
+  configuration = [WeakRetained configuration];
+  processPool = [configuration processPool];
+  [v3 setProcessPool:processPool];
 
   [v3 _setRelatedWebView:WeakRetained];
   [v3 _setAlternateWebViewForNavigationGestures:WeakRetained];
   [v3 _setGroupIdentifier:@"Reader"];
-  v6 = [WeakRetained configuration];
-  v7 = [v6 websiteDataStore];
-  [v3 setWebsiteDataStore:v7];
+  configuration2 = [WeakRetained configuration];
+  websiteDataStore = [configuration2 websiteDataStore];
+  [v3 setWebsiteDataStore:websiteDataStore];
 
   [v3 setAllowsPictureInPictureMediaPlayback:0];
   v8 = _SFApplicationNameForUserAgent();
   [v3 setApplicationNameForUserAgent:v8];
 
   [v3 _setNeedsStorageAccessFromFileURLsQuirk:0];
-  v9 = [MEMORY[0x1E6985350] safari_readerUserContentController];
-  [v3 setUserContentController:v9];
+  safari_readerUserContentController = [MEMORY[0x1E6985350] safari_readerUserContentController];
+  [v3 setUserContentController:safari_readerUserContentController];
 
-  v10 = [WeakRetained configuration];
-  v11 = [v10 preferences];
-  v12 = [v11 _mediaCapabilityGrantsEnabled];
-  v13 = [v3 preferences];
-  [v13 _setMediaCapabilityGrantsEnabled:v12];
+  configuration3 = [WeakRetained configuration];
+  preferences = [configuration3 preferences];
+  _mediaCapabilityGrantsEnabled = [preferences _mediaCapabilityGrantsEnabled];
+  preferences2 = [v3 preferences];
+  [preferences2 _setMediaCapabilityGrantsEnabled:_mediaCapabilityGrantsEnabled];
 
   v14 = [_SFWebView alloc];
   [WeakRetained frame];
@@ -72,43 +72,43 @@
   [(_SFReaderViewController *)self setView:v15];
 }
 
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler
 {
-  v10 = a4;
-  v7 = a5;
+  elementCopy = element;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained contextMenuConfigurationForReaderViewController:self element:v10 completionHandler:v7];
+    [WeakRetained contextMenuConfigurationForReaderViewController:self element:elementCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_webView:(id)a3 contextMenuWillPresentForElement:(id)a4
+- (void)_webView:(id)view contextMenuWillPresentForElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained readerViewController:self contextMenuWillPresentForElement:v5];
+  [WeakRetained readerViewController:self contextMenuWillPresentForElement:elementCopy];
 }
 
-- (void)_webView:(id)a3 contextMenuForElement:(id)a4 willCommitWithAnimator:(id)a5
+- (void)_webView:(id)view contextMenuForElement:(id)element willCommitWithAnimator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
+  animatorCopy = animator;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained readerViewController:self contextMenuForElement:v8 willCommitWithAnimator:v7];
+  [WeakRetained readerViewController:self contextMenuForElement:elementCopy willCommitWithAnimator:animatorCopy];
 }
 
-- (void)_webView:(id)a3 contextMenuDidEndForElement:(id)a4
+- (void)_webView:(id)view contextMenuDidEndForElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained readerViewController:self contextMenuDidEndForElement:v5];
+  [WeakRetained readerViewController:self contextMenuDidEndForElement:elementCopy];
 }
 
 - (SFReaderViewControllerDelegate)delegate

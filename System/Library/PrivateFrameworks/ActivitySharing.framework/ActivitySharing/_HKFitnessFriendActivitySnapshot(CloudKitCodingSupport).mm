@@ -10,41 +10,41 @@
 - (ASCodableCloudKitActivitySnapshot)codableSnapshot
 {
   v2 = objc_alloc_init(ASCodableCloudKitActivitySnapshot);
-  v3 = _ASCodableCloudKitSampleForSample(a1);
+  v3 = _ASCodableCloudKitSampleForSample(self);
   [(ASCodableCloudKitActivitySnapshot *)v2 setSample:v3];
 
-  v4 = [a1 sourceUUID];
-  v5 = [v4 hk_dataForUUIDBytes];
-  [(ASCodableCloudKitActivitySnapshot *)v2 setSourceUUID:v5];
+  sourceUUID = [self sourceUUID];
+  hk_dataForUUIDBytes = [sourceUUID hk_dataForUUIDBytes];
+  [(ASCodableCloudKitActivitySnapshot *)v2 setSourceUUID:hk_dataForUUIDBytes];
 
-  -[ASCodableCloudKitActivitySnapshot setSnapshotIndex:](v2, "setSnapshotIndex:", [a1 snapshotIndex]);
-  v6 = [a1 timeZoneOffsetFromUTCForNoon];
-  -[ASCodableCloudKitActivitySnapshot setTimeZoneOffsetFromUTCForNoon:](v2, "setTimeZoneOffsetFromUTCForNoon:", [v6 longLongValue]);
+  -[ASCodableCloudKitActivitySnapshot setSnapshotIndex:](v2, "setSnapshotIndex:", [self snapshotIndex]);
+  timeZoneOffsetFromUTCForNoon = [self timeZoneOffsetFromUTCForNoon];
+  -[ASCodableCloudKitActivitySnapshot setTimeZoneOffsetFromUTCForNoon:](v2, "setTimeZoneOffsetFromUTCForNoon:", [timeZoneOffsetFromUTCForNoon longLongValue]);
 
-  [a1 energyBurned];
+  [self energyBurned];
   [(ASCodableCloudKitActivitySnapshot *)v2 setEnergyBurned:?];
-  [a1 energyBurnedGoal];
+  [self energyBurnedGoal];
   [(ASCodableCloudKitActivitySnapshot *)v2 setEnergyBurnedGoal:?];
-  [a1 mmv];
+  [self mmv];
   [(ASCodableCloudKitActivitySnapshot *)v2 setMmv:?];
-  [a1 mmg];
+  [self mmg];
   [(ASCodableCloudKitActivitySnapshot *)v2 setMmg:?];
-  [a1 briskMinutes];
+  [self briskMinutes];
   [(ASCodableCloudKitActivitySnapshot *)v2 setBriskMinutes:?];
-  [a1 briskMinutesGoal];
+  [self briskMinutesGoal];
   [(ASCodableCloudKitActivitySnapshot *)v2 setBriskMinutesGoal:?];
-  [a1 activeHours];
+  [self activeHours];
   [(ASCodableCloudKitActivitySnapshot *)v2 setActiveHours:?];
-  [a1 activeHoursGoal];
+  [self activeHoursGoal];
   [(ASCodableCloudKitActivitySnapshot *)v2 setActiveHoursGoal:?];
-  [a1 walkingAndRunningDistance];
+  [self walkingAndRunningDistance];
   [(ASCodableCloudKitActivitySnapshot *)v2 setWalkingAndRunningDistance:?];
-  [a1 stepCount];
+  [self stepCount];
   [(ASCodableCloudKitActivitySnapshot *)v2 setStepCount:?];
-  [a1 pushCount];
+  [self pushCount];
   [(ASCodableCloudKitActivitySnapshot *)v2 setPushCount:?];
-  -[ASCodableCloudKitActivitySnapshot setWheelchairUse:](v2, "setWheelchairUse:", [a1 wheelchairUse]);
-  -[ASCodableCloudKitActivitySnapshot setAmm:](v2, "setAmm:", [a1 amm]);
+  -[ASCodableCloudKitActivitySnapshot setWheelchairUse:](v2, "setWheelchairUse:", [self wheelchairUse]);
+  -[ASCodableCloudKitActivitySnapshot setAmm:](v2, "setAmm:", [self amm]);
 
   return v2;
 }
@@ -53,19 +53,19 @@
 {
   v6 = MEMORY[0x277CCABB0];
   v7 = a3;
-  v8 = [v6 numberWithLongLong:{objc_msgSend(a1, "snapshotIndex")}];
-  v9 = [a1 sourceUUID];
-  v10 = [v9 UUIDString];
+  v8 = [v6 numberWithLongLong:{objc_msgSend(self, "snapshotIndex")}];
+  sourceUUID = [self sourceUUID];
+  uUIDString = [sourceUUID UUIDString];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%lld-%@", @"ActivitySharingActivitySnapshot", objc_msgSend(v8, "longLongValue"), v10];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%lld-%@", @"ActivitySharingActivitySnapshot", objc_msgSend(v8, "longLongValue"), uUIDString];
   v12 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v11 zoneID:v7];
 
   v13 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingActivitySnapshot" recordID:v12];
   _ASUpdateSchemaVersionOnRecord(2, v13, a4);
-  v14 = [a1 codableSnapshot];
-  v15 = [v14 data];
-  v16 = [v13 encryptedValues];
-  [v16 setObject:v15 forKeyedSubscript:@"EncryptedData"];
+  codableSnapshot = [self codableSnapshot];
+  data = [codableSnapshot data];
+  encryptedValues = [v13 encryptedValues];
+  [encryptedValues setObject:data forKeyedSubscript:@"EncryptedData"];
 
   return v13;
 }
@@ -76,8 +76,8 @@
   v7 = a4;
   if (_ASCloudKitSchemaVersionForRecord(v6) == 2)
   {
-    v8 = [v6 encryptedValues];
-    v9 = [v8 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [v6 encryptedValues];
+    v9 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,8 +92,8 @@
     if (v10)
     {
       v12 = [[ASCodableCloudKitActivitySnapshot alloc] initWithData:v10];
-      v13 = [v6 modificationDate];
-      v11 = [a1 fitnessFriendActivitySnapshotWithCodableSnapshot:v12 friendUUID:v7 uploadedDate:v13];
+      modificationDate = [v6 modificationDate];
+      v11 = [self fitnessFriendActivitySnapshotWithCodableSnapshot:v12 friendUUID:v7 uploadedDate:modificationDate];
     }
 
     else
@@ -128,18 +128,18 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [v10 sample];
-  [v11 startDate];
+  sample = [v10 sample];
+  [sample startDate];
   v12 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
 
   v13 = MEMORY[0x277CBEAA8];
-  v14 = [v10 sample];
-  [v14 endDate];
+  sample2 = [v10 sample];
+  [sample2 endDate];
   v15 = [v13 dateWithTimeIntervalSinceReferenceDate:?];
 
   v16 = MEMORY[0x277CCAD78];
-  v17 = [v10 sourceUUID];
-  v18 = [v16 hk_UUIDWithData:v17];
+  sourceUUID = [v10 sourceUUID];
+  v18 = [v16 hk_UUIDWithData:sourceUUID];
 
   v19 = [MEMORY[0x277CCDDC8] _fitnessFriendActivitySnapshotWithSnapshotIndex:objc_msgSend(v10 startDate:"snapshotIndex") endDate:v12 sourceUUID:{v15, v18}];
   [v19 setFriendUUID:v9];

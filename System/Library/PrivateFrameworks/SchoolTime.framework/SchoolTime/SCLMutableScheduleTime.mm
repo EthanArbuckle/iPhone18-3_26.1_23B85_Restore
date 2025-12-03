@@ -1,23 +1,23 @@
 @interface SCLMutableScheduleTime
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setHour:(unint64_t)a3;
-- (void)setMinute:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setHour:(unint64_t)hour;
+- (void)setMinute:(unint64_t)minute;
 @end
 
 @implementation SCLMutableScheduleTime
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCLScheduleTime alloc];
 
   return [(SCLScheduleTime *)v4 initWithScheduleTime:self];
 }
 
-- (void)setHour:(unint64_t)a3
+- (void)setHour:(unint64_t)hour
 {
-  if (a3 < 0x18)
+  if (hour < 0x18)
   {
-    self->super._hour = a3;
+    self->super._hour = hour;
   }
 
   else
@@ -29,11 +29,11 @@
   }
 }
 
-- (void)setMinute:(unint64_t)a3
+- (void)setMinute:(unint64_t)minute
 {
-  if (a3 < 0x3C)
+  if (minute < 0x3C)
   {
-    self->super._minute = a3;
+    self->super._minute = minute;
   }
 
   else

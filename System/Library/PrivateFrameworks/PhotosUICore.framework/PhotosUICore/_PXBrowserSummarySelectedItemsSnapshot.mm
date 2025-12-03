@@ -1,33 +1,33 @@
 @interface _PXBrowserSummarySelectedItemsSnapshot
-- (_PXBrowserSummarySelectedItemsSnapshot)initWithBrowserSelectionSnapshot:(id)a3;
-- (id)containsItemReference:(id)a3;
-- (id)itemForItemReference:(id)a3;
-- (id)itemReferenceAtIndex:(int64_t)a3;
+- (_PXBrowserSummarySelectedItemsSnapshot)initWithBrowserSelectionSnapshot:(id)snapshot;
+- (id)containsItemReference:(id)reference;
+- (id)itemForItemReference:(id)reference;
+- (id)itemReferenceAtIndex:(int64_t)index;
 - (int64_t)count;
 @end
 
 @implementation _PXBrowserSummarySelectedItemsSnapshot
 
-- (id)itemForItemReference:(id)a3
+- (id)itemForItemReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
-  v6 = [v5 indexOfAssetReference:v4];
+  referenceCopy = reference;
+  browserSelectionSnapshot = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
+  v6 = [browserSelectionSnapshot indexOfAssetReference:referenceCopy];
 
-  v7 = [v5 displayAssetAtIndex:v6];
-  if (!v7)
+  null = [browserSelectionSnapshot displayAssetAtIndex:v6];
+  if (!null)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v7;
+  return null;
 }
 
-- (id)containsItemReference:(id)a3
+- (id)containsItemReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
-  v6 = [v5 indexOfAssetReference:v4];
+  referenceCopy = reference;
+  browserSelectionSnapshot = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
+  v6 = [browserSelectionSnapshot indexOfAssetReference:referenceCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -36,38 +36,38 @@
 
   else
   {
-    v7 = [v5 assetReferenceAtIndex:v6];
+    v7 = [browserSelectionSnapshot assetReferenceAtIndex:v6];
   }
 
   return v7;
 }
 
-- (id)itemReferenceAtIndex:(int64_t)a3
+- (id)itemReferenceAtIndex:(int64_t)index
 {
-  v4 = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
-  v5 = [v4 assetReferenceAtIndex:a3];
+  browserSelectionSnapshot = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
+  v5 = [browserSelectionSnapshot assetReferenceAtIndex:index];
 
   return v5;
 }
 
 - (int64_t)count
 {
-  v2 = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
-  v3 = [v2 assetCount];
+  browserSelectionSnapshot = [(_PXBrowserSummarySelectedItemsSnapshot *)self browserSelectionSnapshot];
+  assetCount = [browserSelectionSnapshot assetCount];
 
-  return v3;
+  return assetCount;
 }
 
-- (_PXBrowserSummarySelectedItemsSnapshot)initWithBrowserSelectionSnapshot:(id)a3
+- (_PXBrowserSummarySelectedItemsSnapshot)initWithBrowserSelectionSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   v9.receiver = self;
   v9.super_class = _PXBrowserSummarySelectedItemsSnapshot;
   v6 = [(_PXBrowserSummarySelectedItemsSnapshot *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_browserSelectionSnapshot, a3);
+    objc_storeStrong(&v6->_browserSelectionSnapshot, snapshot);
   }
 
   return v7;

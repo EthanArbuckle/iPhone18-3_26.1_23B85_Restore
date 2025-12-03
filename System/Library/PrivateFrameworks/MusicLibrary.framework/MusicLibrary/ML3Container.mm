@@ -1,71 +1,71 @@
 @interface ML3Container
-+ (BOOL)_reloadContainedMediaTypes:(BOOL)a3 removedMediaTypes:(id)a4 addedMediaTypes:(id)a5 notify:(BOOL)a6 incrementEntityRevision:(BOOL)a7 usingLibrary:(id)a8 connection:(id)a9 forContainerPersistentID:(int64_t)a10;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6 preserveUndeletableEntities:(BOOL)a7;
-+ (BOOL)hasCriterionInCriteriaList:(SearchCriteriaList *)a3 forITDBTrackField:(int)a4;
-+ (BOOL)smartCriteriaCanBeEvaluated:(id)a3;
-+ (BOOL)updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibrary:(id)a3;
-+ (id)_allStaticItemContainersInLibrary:(id)a3 usingConnection:(id)a4;
-+ (id)_mediaTypesForTracksInContainerWithPersistentID:(int64_t)a3 connection:(id)a4;
-+ (id)_mediaTypesForTracksWithPersistentIDs:(id)a3 usingConnection:(id)a4;
-+ (id)autoCreatedBuiltInSmartPlaylistsPIDs:(id)a3;
-+ (id)currentDeviceFavoritesPlaylistInLibrary:(id)a3 usingConnection:(id)a4;
++ (BOOL)_reloadContainedMediaTypes:(BOOL)types removedMediaTypes:(id)mediaTypes addedMediaTypes:(id)addedMediaTypes notify:(BOOL)notify incrementEntityRevision:(BOOL)revision usingLibrary:(id)library connection:(id)connection forContainerPersistentID:(int64_t)self0;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count preserveUndeletableEntities:(BOOL)entities;
++ (BOOL)hasCriterionInCriteriaList:(SearchCriteriaList *)list forITDBTrackField:(int)field;
++ (BOOL)smartCriteriaCanBeEvaluated:(id)evaluated;
++ (BOOL)updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibrary:(id)library;
++ (id)_allStaticItemContainersInLibrary:(id)library usingConnection:(id)connection;
++ (id)_mediaTypesForTracksInContainerWithPersistentID:(int64_t)d connection:(id)connection;
++ (id)_mediaTypesForTracksWithPersistentIDs:(id)ds usingConnection:(id)connection;
++ (id)autoCreatedBuiltInSmartPlaylistsPIDs:(id)ds;
++ (id)currentDeviceFavoritesPlaylistInLibrary:(id)library usingConnection:(id)connection;
 + (id)defaultFilterPredicates;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)nextFilepathForPlaylistType:(int)a3 withPersistentID:(unint64_t)a4 inLibrary:(id)a5;
-+ (id)predicateForCriteriaList:(SearchCriteriaList *)a3 parentMatchedAny:(BOOL)a4;
-+ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)a3 inLibrary:(id)a4 includeUndeletablePlaylists:(BOOL)a5;
-+ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)a3 inLibrary:(id)a4 persistentIDsToIgnore:(id)a5;
-+ (id)userUndeleteablePlaylistPersistentIDSInLibrary:(id)a3;
-+ (int)protocolSortTypeFromTrackOrder:(unsigned int)a3;
-+ (unsigned)trackOrderFromProtocolSortType:(int)a3;
-+ (void)_addMediaTypesToContainerWithPersistentID:(int64_t)a3 mediaTypes:(id)a4 connection:(id)a5;
-+ (void)_clearContainerMediaTypeInContainerWithPersistentID:(int64_t)a3 connection:(id)a4;
-+ (void)_insertNewSmartPlaylist:(id)a3 criteriaBlob:(id)a4 evaluationOrder:(unsigned int)a5 limited:(BOOL)a6 trackOrder:(unsigned int)a7 distinguishedKind:(int)a8 inLibrary:(id)a9 cachedNameOrders:(id)a10;
-+ (void)_removeMediaTypesFromContainerWithPersistentID:(int64_t)a3 mediaTypes:(id)a4 connection:(id)a5;
-+ (void)_updateContainedMediaTypeInContainerWithPersistentID:(int64_t)a3 connection:(id)a4 itemUpdateBlock:(id)a5;
-+ (void)deleteAutoCreatedBuiltInSmartPlaylistsPIDs:(id)a3 inLibrary:(id)a4;
++ (id)joinClausesForProperty:(id)property;
++ (id)nextFilepathForPlaylistType:(int)type withPersistentID:(unint64_t)d inLibrary:(id)library;
++ (id)predicateForCriteriaList:(SearchCriteriaList *)list parentMatchedAny:(BOOL)any;
++ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)identifier inLibrary:(id)library includeUndeletablePlaylists:(BOOL)playlists;
++ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)identifier inLibrary:(id)library persistentIDsToIgnore:(id)ignore;
++ (id)userUndeleteablePlaylistPersistentIDSInLibrary:(id)library;
++ (int)protocolSortTypeFromTrackOrder:(unsigned int)order;
++ (unsigned)trackOrderFromProtocolSortType:(int)type;
++ (void)_addMediaTypesToContainerWithPersistentID:(int64_t)d mediaTypes:(id)types connection:(id)connection;
++ (void)_clearContainerMediaTypeInContainerWithPersistentID:(int64_t)d connection:(id)connection;
++ (void)_insertNewSmartPlaylist:(id)playlist criteriaBlob:(id)blob evaluationOrder:(unsigned int)order limited:(BOOL)limited trackOrder:(unsigned int)trackOrder distinguishedKind:(int)kind inLibrary:(id)library cachedNameOrders:(id)self0;
++ (void)_removeMediaTypesFromContainerWithPersistentID:(int64_t)d mediaTypes:(id)types connection:(id)connection;
++ (void)_updateContainedMediaTypeInContainerWithPersistentID:(int64_t)d connection:(id)connection itemUpdateBlock:(id)block;
++ (void)deleteAutoCreatedBuiltInSmartPlaylistsPIDs:(id)ds inLibrary:(id)library;
 + (void)initialize;
-+ (void)populateMediaTypesOfStaticContainersInLibrary:(id)a3;
-+ (void)populateSortOrdersOfPropertyValues:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5;
-+ (void)reloadContainedMediaTypesForContainerWithPersistID:(int64_t)a3 usingConnection:(id)a4;
-+ (void)removeAnyNonLibraryItemsInPersistentIDs:(id)a3 fromContainersInLibrary:(id)a4 usingConnection:(id)a5;
-+ (void)removeNonLibraryItemsFromContainer:(id)a3 usingConnection:(id)a4;
-+ (void)removeNonLibraryItemsFromContainersInLibrary:(id)a3 usingConnection:(id)a4;
-- (BOOL)_reloadContainedMediaTypes:(BOOL)a3 removedMediaTypes:(id)a4 addedMediaTypes:(id)a5 notify:(BOOL)a6 incrementEntityRevision:(BOOL)a7 usingConnection:(id)a8;
-- (BOOL)_removeTracksAtIndexes:(id)a3 notify:(BOOL)a4 usingConnection:(id)a5;
-- (BOOL)_setItemPersistentIDs:(id)a3 andEntryProperties:(id)a4 withAttributionIdentifier:(id)a5 reloadContainedMediaTypes:(BOOL)a6 removedMediaTypes:(id)a7 addedMediaTypes:(id)a8 notify:(BOOL)a9 incrementEntityRevision:(BOOL)a10 usingConnection:(id)a11;
++ (void)populateMediaTypesOfStaticContainersInLibrary:(id)library;
++ (void)populateSortOrdersOfPropertyValues:(id)values inLibrary:(id)library cachedNameOrders:(id)orders;
++ (void)reloadContainedMediaTypesForContainerWithPersistID:(int64_t)d usingConnection:(id)connection;
++ (void)removeAnyNonLibraryItemsInPersistentIDs:(id)ds fromContainersInLibrary:(id)library usingConnection:(id)connection;
++ (void)removeNonLibraryItemsFromContainer:(id)container usingConnection:(id)connection;
++ (void)removeNonLibraryItemsFromContainersInLibrary:(id)library usingConnection:(id)connection;
+- (BOOL)_reloadContainedMediaTypes:(BOOL)types removedMediaTypes:(id)mediaTypes addedMediaTypes:(id)addedMediaTypes notify:(BOOL)notify incrementEntityRevision:(BOOL)revision usingConnection:(id)connection;
+- (BOOL)_removeTracksAtIndexes:(id)indexes notify:(BOOL)notify usingConnection:(id)connection;
+- (BOOL)_setItemPersistentIDs:(id)ds andEntryProperties:(id)properties withAttributionIdentifier:(id)identifier reloadContainedMediaTypes:(BOOL)types removedMediaTypes:(id)mediaTypes addedMediaTypes:(id)addedMediaTypes notify:(BOOL)notify incrementEntityRevision:(BOOL)self0 usingConnection:(id)self1;
 - (BOOL)_supportsOrderedTrackOperations;
-- (BOOL)appendTracksWithPersistentIDs:(id)a3 andEntryProperties:(id)a4 withAttributionIdentifier:(id)a5 notify:(BOOL)a6;
+- (BOOL)appendTracksWithPersistentIDs:(id)ds andEntryProperties:(id)properties withAttributionIdentifier:(id)identifier notify:(BOOL)notify;
 - (BOOL)isBuiltInSmartPlaylist;
 - (BOOL)isEvaluationOrderingDescending;
 - (BOOL)isLimitOrderingDescending;
 - (BOOL)isLimitedByCount;
-- (BOOL)moveTrackFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
+- (BOOL)moveTrackFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 - (BOOL)removeAllTracks;
 - (BOOL)removeFirstTrack;
-- (BOOL)removeTracksAtIndexes:(id)a3 notify:(BOOL)a4;
-- (BOOL)setItemReactionText:(id)a3 onEntryAtPosition:(unint64_t)a4 forUserIdentifier:(id)a5 previousReactionText:(id *)a6;
-- (BOOL)setTracksWithPersistentIDs:(id)a3 andEntryProperties:(id)a4 withAttributionIdentifier:(id)a5 notify:(BOOL)a6;
-- (ML3Container)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6;
+- (BOOL)removeTracksAtIndexes:(id)indexes notify:(BOOL)notify;
+- (BOOL)setItemReactionText:(id)text onEntryAtPosition:(unint64_t)position forUserIdentifier:(id)identifier previousReactionText:(id *)reactionText;
+- (BOOL)setTracksWithPersistentIDs:(id)ds andEntryProperties:(id)properties withAttributionIdentifier:(id)identifier notify:(BOOL)notify;
+- (ML3Container)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection;
 - (ML3Predicate)smartCriteriaPredicate;
 - (NSArray)cloudDisplayOrderingTerms;
 - (NSArray)displayOrderingTerms;
 - (NSArray)limitOrderingTerms;
 - (NSString)limitingProperty;
 - (SearchCriteriaList)importedCriteriaList;
-- (id)_BOOLeanStringForCriteriaInfo:(id *)a3;
-- (id)_addUnitesForCriterionInfo:(id *)a3;
-- (id)_convertNumericValueFromCriterionMatchKey:(unsigned int)a3 criteriaValue:(int64_t)a4;
-- (id)_criteriaListDescription:(SearchCriteriaList *)a3 level:(int64_t)a4;
-- (id)_dateStringForCriteriaInfo:(id *)a3;
-- (id)_nonzeroStringForCriteriaInfo:(id *)a3;
-- (id)_numericStringForCriteriaInfo:(id *)a3;
-- (id)_stringForCriterionBuffer:(id *)a3;
-- (id)_stringForCriterionMatchKey:(id *)a3;
-- (id)_stringForCriterionMatchType:(id *)a3;
-- (id)_stringForTrackFieldCloudStatus:(int64_t)a3;
-- (id)_stringForTrackFieldMediaKind:(int64_t)a3;
-- (id)_stringStringForCriteriaInfo:(id *)a3;
+- (id)_BOOLeanStringForCriteriaInfo:(id *)info;
+- (id)_addUnitesForCriterionInfo:(id *)info;
+- (id)_convertNumericValueFromCriterionMatchKey:(unsigned int)key criteriaValue:(int64_t)value;
+- (id)_criteriaListDescription:(SearchCriteriaList *)description level:(int64_t)level;
+- (id)_dateStringForCriteriaInfo:(id *)info;
+- (id)_nonzeroStringForCriteriaInfo:(id *)info;
+- (id)_numericStringForCriteriaInfo:(id *)info;
+- (id)_stringForCriterionBuffer:(id *)buffer;
+- (id)_stringForCriterionMatchKey:(id *)key;
+- (id)_stringForCriterionMatchType:(id *)type;
+- (id)_stringForTrackFieldCloudStatus:(int64_t)status;
+- (id)_stringForTrackFieldMediaKind:(int64_t)kind;
+- (id)_stringStringForCriteriaInfo:(id *)info;
 - (id)childPlaylistPersistentIds;
 - (id)criteriaListDescription;
 - (id)evaluationOrderingTerms;
@@ -74,10 +74,10 @@
 - (id)protocolItem;
 - (id)protocolItemForDynamicUpdate;
 - (id)trackPersistentIds;
-- (int64_t)_maxPositionForTracksUsingConnection:(id)a3;
+- (int64_t)_maxPositionForTracksUsingConnection:(id)connection;
 - (int64_t)limitValue;
-- (void)_setContainerSeedItemPersistentIDValue:(id)a3;
-- (void)setValues:(id)a3 forProperties:(id)a4 async:(BOOL)a5 withCompletionBlock:(id)a6;
+- (void)_setContainerSeedItemPersistentIDValue:(id)value;
+- (void)setValues:(id)values forProperties:(id)properties async:(BOOL)async withCompletionBlock:(id)block;
 @end
 
 @implementation ML3Container
@@ -85,7 +85,7 @@
 + (void)initialize
 {
   v26[6] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [ML3OrderingTerm orderingTermWithProperty:@"cloud_is_subscribed"];
     v26[0] = v2;
@@ -309,35 +309,35 @@
   return v3;
 }
 
-- (BOOL)_setItemPersistentIDs:(id)a3 andEntryProperties:(id)a4 withAttributionIdentifier:(id)a5 reloadContainedMediaTypes:(BOOL)a6 removedMediaTypes:(id)a7 addedMediaTypes:(id)a8 notify:(BOOL)a9 incrementEntityRevision:(BOOL)a10 usingConnection:(id)a11
+- (BOOL)_setItemPersistentIDs:(id)ds andEntryProperties:(id)properties withAttributionIdentifier:(id)identifier reloadContainedMediaTypes:(BOOL)types removedMediaTypes:(id)mediaTypes addedMediaTypes:(id)addedMediaTypes notify:(BOOL)notify incrementEntityRevision:(BOOL)self0 usingConnection:(id)self1
 {
-  v13 = a6;
+  typesCopy = types;
   v167[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v118 = a5;
-  v116 = a7;
-  v115 = a8;
-  v19 = a11;
+  dsCopy = ds;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  mediaTypesCopy = mediaTypes;
+  addedMediaTypesCopy = addedMediaTypes;
+  connectionCopy = connection;
   v20 = [MEMORY[0x277CCABB0] numberWithLongLong:self->super._persistentID];
-  v136 = v19;
-  v119 = self;
-  if ([v17 count])
+  v136 = connectionCopy;
+  selfCopy = self;
+  if ([dsCopy count])
   {
     v127 = v20;
-    v112 = v13;
-    v113 = v17;
-    v21 = [[ML3ContainerItemDiffOperation alloc] initWithContainerPersistentID:self->super._persistentID updatedItemsPersistentIDs:v17 updatedItemsProperties:v18 connection:v19];
+    v112 = typesCopy;
+    v113 = dsCopy;
+    v21 = [[ML3ContainerItemDiffOperation alloc] initWithContainerPersistentID:self->super._persistentID updatedItemsPersistentIDs:dsCopy updatedItemsProperties:propertiesCopy connection:connectionCopy];
     [(ML3ContainerItemDiffOperation *)v21 start];
     [(ML3ContainerItemDiffOperation *)v21 waitUntilFinished];
     v114 = v21;
-    v22 = [(ML3ContainerItemDiffOperation *)v21 containerItemsToDelete];
-    v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v22, "count")}];
+    containerItemsToDelete = [(ML3ContainerItemDiffOperation *)v21 containerItemsToDelete];
+    v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(containerItemsToDelete, "count")}];
     v146 = 0u;
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
-    v24 = v22;
+    v24 = containerItemsToDelete;
     v25 = [v24 countByEnumeratingWithState:&v146 objects:v165 count:16];
     if (v25)
     {
@@ -362,7 +362,7 @@
       while (v26);
     }
 
-    v128 = v18;
+    v128 = propertiesCopy;
     v117 = v24;
 
     v30 = +[ML3DatabaseStatementRenderer defaultRenderer];
@@ -446,22 +446,22 @@ LABEL_34:
     }
 
 LABEL_35:
-    if (v118)
+    if (identifierCopy)
     {
-      v164 = v118;
+      v164 = identifierCopy;
       v58 = [MEMORY[0x277CBEA60] arrayWithObjects:&v164 count:1];
       v59 = [v136 executeQuery:@"SELECT person_pid FROM person WHERE cloud_id = ?" withParameters:v58];
-      v60 = [v59 int64ValueForFirstRowAndColumn];
+      int64ValueForFirstRowAndColumn = [v59 int64ValueForFirstRowAndColumn];
 
       v61 = v114;
-      v129 = v60;
-      if (!v60)
+      v129 = int64ValueForFirstRowAndColumn;
+      if (!int64ValueForFirstRowAndColumn)
       {
         v62 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v156 = v118;
+          v156 = identifierCopy;
           _os_log_impl(&dword_22D2FA000, v62, OS_LOG_TYPE_ERROR, "No person entry for cloud ID '%{public}@' - skipping attribution", buf, 0xCu);
         }
 
@@ -475,25 +475,25 @@ LABEL_35:
       v61 = v114;
     }
 
-    v63 = [(ML3Entity *)v119 valueForProperty:@"keep_local"];
-    v64 = [v63 integerValue];
+    v63 = [(ML3Entity *)selfCopy valueForProperty:@"keep_local"];
+    integerValue = [v63 integerValue];
 
-    v65 = [(ML3ContainerItemDiffOperation *)v61 containerItemsToUpdate];
+    containerItemsToUpdate = [(ML3ContainerItemDiffOperation *)v61 containerItemsToUpdate];
     v120 = [[ML3PersistentIDGenerator alloc] initWithDatabaseConnection:v136 tableName:@"container_item"];
     v121 = [[ML3PersistentIDGenerator alloc] initWithDatabaseConnection:v136 tableName:@"container_item_person"];
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
     v143 = 0u;
-    obj = v65;
-    v18 = v128;
+    obj = containerItemsToUpdate;
+    propertiesCopy = v128;
     v126 = [obj countByEnumeratingWithState:&v140 objects:v163 count:16];
     if (!v126)
     {
       goto LABEL_81;
     }
 
-    v124 = v64 - 1;
+    v124 = integerValue - 1;
     v125 = *v141;
     *&v66 = 134218242;
     v111 = v66;
@@ -508,26 +508,26 @@ LABEL_43:
 
       v130 = v67;
       v68 = *(*(&v140 + 1) + 8 * v67);
-      v69 = [v68 persistentID];
+      persistentID = [v68 persistentID];
       v70 = os_log_create("com.apple.amp.medialibrary", "Default");
       v71 = os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT);
-      v135 = v69;
-      if (v69)
+      v135 = persistentID;
+      if (persistentID)
       {
         if (v71)
         {
-          v72 = [v68 newPosition];
-          v73 = [v68 persistentID];
-          v74 = [v68 previousPosition];
-          v75 = [v68 newPosition];
+          newPosition = [v68 newPosition];
+          persistentID2 = [v68 persistentID];
+          previousPosition = [v68 previousPosition];
+          newPosition2 = [v68 newPosition];
           *buf = 134218752;
-          v156 = v72;
+          v156 = newPosition;
           v157 = 2048;
-          v158 = v73;
+          v158 = persistentID2;
           v159 = 2048;
-          v160 = v74;
+          v160 = previousPosition;
           v161 = 2048;
-          v162 = v75;
+          v162 = newPosition2;
           _os_log_impl(&dword_22D2FA000, v70, OS_LOG_TYPE_DEFAULT, "Mapped item at position %lld to existing container_item with pid %lld (update position: %lld -> %lld)", buf, 0x2Au);
         }
       }
@@ -536,9 +536,9 @@ LABEL_43:
       {
         if (v71)
         {
-          v76 = [v68 newPosition];
+          newPosition3 = [v68 newPosition];
           *buf = 134217984;
-          v156 = v76;
+          v156 = newPosition3;
           _os_log_impl(&dword_22D2FA000, v70, OS_LOG_TYPE_DEFAULT, "Creating new container_item for item at position %lld", buf, 0xCu);
         }
 
@@ -546,38 +546,38 @@ LABEL_43:
       }
 
       v77 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v68, "newPosition")}];
-      v78 = [v18 objectForKeyedSubscript:v77];
+      v78 = [propertiesCopy objectForKeyedSubscript:v77];
 
       v79 = [v78 objectForKeyedSubscript:@"uuid"];
       v80 = v79;
       if (v79)
       {
-        v81 = v79;
+        uuid = v79;
       }
 
       else
       {
-        v81 = [v68 uuid];
+        uuid = [v68 uuid];
       }
 
-      v82 = v81;
+      v82 = uuid;
 
       v83 = [v78 objectForKeyedSubscript:@"position_uuid"];
       v84 = v83;
       v134 = v78;
       if (v83)
       {
-        v85 = v83;
+        positionUUID = v83;
       }
 
       else
       {
-        v85 = [v68 positionUUID];
+        positionUUID = [v68 positionUUID];
       }
 
-      v86 = v85;
+      v86 = positionUUID;
 
-      v87 = [v68 occurrenceID];
+      occurrenceID = [v68 occurrenceID];
       v88 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v68, "persistentID")}];
       v154[0] = v88;
       v154[1] = v127;
@@ -589,8 +589,8 @@ LABEL_43:
       v133 = v82;
       v154[4] = v82;
       v154[5] = v86;
-      v131 = v87;
-      v154[6] = v87;
+      v131 = occurrenceID;
+      v154[6] = occurrenceID;
       v91 = [MEMORY[0x277CBEA60] arrayWithObjects:v154 count:7];
       v139 = 0;
       LOBYTE(v86) = [v136 executeUpdate:@"INSERT OR REPLACE INTO container_item (container_item_pid withParameters:container_pid error:{item_pid, position, uuid, position_uuid, occurrence_id) VALUES (?, ?, ?, ?, ?, ?, ?)", v91, &v139}];
@@ -604,8 +604,8 @@ LABEL_43:
       v93 = v135;
       if (!v135 && v129)
       {
-        v94 = [(ML3PersistentIDGenerator *)v121 nextPersistentID];
-        v95 = [MEMORY[0x277CCABB0] numberWithLongLong:v94];
+        nextPersistentID = [(ML3PersistentIDGenerator *)v121 nextPersistentID];
+        v95 = [MEMORY[0x277CCABB0] numberWithLongLong:nextPersistentID];
         v153[0] = v95;
         v96 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v68, "persistentID")}];
         v153[1] = v96;
@@ -621,9 +621,9 @@ LABEL_43:
           v101 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v101, OS_LOG_TYPE_ERROR))
           {
-            v102 = [v68 itemPersistentID];
+            itemPersistentID = [v68 itemPersistentID];
             *buf = v111;
-            v156 = v102;
+            v156 = itemPersistentID;
             v157 = 2114;
             v158 = v100;
             _os_log_impl(&dword_22D2FA000, v101, OS_LOG_TYPE_ERROR, "Failed to add container_item_person for track %lld. err = %{public}@", buf, 0x16u);
@@ -633,7 +633,7 @@ LABEL_43:
         v93 = 0;
       }
 
-      v18 = v128;
+      propertiesCopy = v128;
       if (!v93 && v124 <= 1)
       {
         v103 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v68, "itemPersistentID")}];
@@ -649,9 +649,9 @@ LABEL_43:
           v107 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
           {
-            v108 = [v68 persistentID];
+            persistentID3 = [v68 persistentID];
             *buf = v111;
-            v156 = v108;
+            v156 = persistentID3;
             v157 = 2114;
             v158 = v106;
             _os_log_impl(&dword_22D2FA000, v107, OS_LOG_TYPE_ERROR, "Failed to clear keep_local for track %lld - error: %{public}@", buf, 0x16u);
@@ -673,14 +673,14 @@ LABEL_80:
 
 LABEL_81:
 
-        v56 = a9;
-        v55 = a10;
+        notifyCopy3 = notify;
+        revisionCopy3 = revision;
         v51 = v127;
         v50 = v114;
 LABEL_82:
 
-        v17 = v113;
-        v13 = v112;
+        dsCopy = v113;
+        typesCopy = v112;
         goto LABEL_83;
       }
     }
@@ -693,14 +693,14 @@ LABEL_82:
       _os_log_impl(&dword_22D2FA000, v106, OS_LOG_TYPE_ERROR, "Failed to insert container_item with error: %{public}@", buf, 0xCu);
     }
 
-    v18 = v128;
+    propertiesCopy = v128;
     goto LABEL_80;
   }
 
   v167[0] = v20;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:1];
   v151 = 0;
-  v49 = [v19 executeUpdate:@"DELETE FROM container_item_person WHERE container_item_pid in (SELECT container_item_pid from container_item where container_pid=?)" withParameters:v48 error:&v151];
+  v49 = [connectionCopy executeUpdate:@"DELETE FROM container_item_person WHERE container_item_pid in (SELECT container_item_pid from container_item where container_pid=?)" withParameters:v48 error:&v151];
   v50 = v151;
 
   v51 = v20;
@@ -723,8 +723,8 @@ LABEL_82:
 
   if ((v54 & 1) == 0)
   {
-    v112 = v13;
-    v113 = v17;
+    v112 = typesCopy;
+    v113 = dsCopy;
     v23 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -733,16 +733,16 @@ LABEL_82:
       _os_log_impl(&dword_22D2FA000, v23, OS_LOG_TYPE_ERROR, "Failed to delete all existing container_item rows with error: %{public}@", buf, 0xCu);
     }
 
-    v56 = a9;
-    v55 = a10;
+    notifyCopy3 = notify;
+    revisionCopy3 = revision;
     goto LABEL_82;
   }
 
-  v56 = a9;
-  v55 = a10;
+  notifyCopy3 = notify;
+  revisionCopy3 = revision;
 LABEL_83:
 
-  v109 = [(ML3Container *)v119 _reloadContainedMediaTypes:v13 removedMediaTypes:v116 addedMediaTypes:v115 notify:v56 incrementEntityRevision:v55 usingConnection:v136];
+  v109 = [(ML3Container *)selfCopy _reloadContainedMediaTypes:typesCopy removedMediaTypes:mediaTypesCopy addedMediaTypes:addedMediaTypesCopy notify:notifyCopy3 incrementEntityRevision:revisionCopy3 usingConnection:v136];
   return v109;
 }
 
@@ -755,17 +755,17 @@ LABEL_83:
   return v5 ^ 1;
 }
 
-- (void)_setContainerSeedItemPersistentIDValue:(id)a3
+- (void)_setContainerSeedItemPersistentIDValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ML3Container__setContainerSeedItemPersistentIDValue___block_invoke;
   v7[3] = &unk_278764670;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = valueCopy;
+  v6 = valueCopy;
   [WeakRetained databaseConnectionAllowingWrites:1 withBlock:v7];
 }
 
@@ -810,11 +810,11 @@ uint64_t __55__ML3Container__setContainerSeedItemPersistentIDValue___block_invok
   return v9;
 }
 
-- (BOOL)_removeTracksAtIndexes:(id)a3 notify:(BOOL)a4 usingConnection:(id)a5
+- (BOOL)_removeTracksAtIndexes:(id)indexes notify:(BOOL)notify usingConnection:(id)connection
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  notifyCopy = notify;
+  indexesCopy = indexes;
+  connectionCopy = connection;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -836,15 +836,15 @@ uint64_t __55__ML3Container__setContainerSeedItemPersistentIDValue___block_invok
   v16[4] = self;
   v22 = a2;
   v20 = &v25;
-  v12 = v10;
+  v12 = connectionCopy;
   v17 = v12;
   v13 = v11;
   v18 = v13;
   v21 = v23;
-  [v9 enumerateRangesUsingBlock:v16];
+  [indexesCopy enumerateRangesUsingBlock:v16];
   if (*(v26 + 24) == 1)
   {
-    v14 = [(ML3Container *)self _reloadContainedMediaTypes:1 removedMediaTypes:0 addedMediaTypes:0 notify:v6 incrementEntityRevision:1 usingConnection:v12];
+    v14 = [(ML3Container *)self _reloadContainedMediaTypes:1 removedMediaTypes:0 addedMediaTypes:0 notify:notifyCopy incrementEntityRevision:1 usingConnection:v12];
     *(v26 + 24) = v14;
   }
 
@@ -964,40 +964,40 @@ void __62__ML3Container__removeTracksAtIndexes_notify_usingConnection___block_in
   *(*(a1[9] + 8) + 24) += a3;
 }
 
-- (BOOL)_reloadContainedMediaTypes:(BOOL)a3 removedMediaTypes:(id)a4 addedMediaTypes:(id)a5 notify:(BOOL)a6 incrementEntityRevision:(BOOL)a7 usingConnection:(id)a8
+- (BOOL)_reloadContainedMediaTypes:(BOOL)types removedMediaTypes:(id)mediaTypes addedMediaTypes:(id)addedMediaTypes notify:(BOOL)notify incrementEntityRevision:(BOOL)revision usingConnection:(id)connection
 {
-  v8 = a7;
-  v9 = a6;
-  v12 = a3;
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
+  revisionCopy = revision;
+  notifyCopy = notify;
+  typesCopy = types;
+  connectionCopy = connection;
+  addedMediaTypesCopy = addedMediaTypes;
+  mediaTypesCopy = mediaTypes;
   WeakRetained = objc_loadWeakRetained(&self->super._library);
-  LOBYTE(v8) = [ML3Container _reloadContainedMediaTypes:v12 removedMediaTypes:v16 addedMediaTypes:v15 notify:v9 incrementEntityRevision:v8 usingLibrary:WeakRetained connection:v14 forContainerPersistentID:[(ML3Entity *)self persistentID]];
+  LOBYTE(revisionCopy) = [ML3Container _reloadContainedMediaTypes:typesCopy removedMediaTypes:mediaTypesCopy addedMediaTypes:addedMediaTypesCopy notify:notifyCopy incrementEntityRevision:revisionCopy usingLibrary:WeakRetained connection:connectionCopy forContainerPersistentID:[(ML3Entity *)self persistentID]];
 
-  return v8;
+  return revisionCopy;
 }
 
-- (int64_t)_maxPositionForTracksUsingConnection:(id)a3
+- (int64_t)_maxPositionForTracksUsingConnection:(id)connection
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [v4 numberWithLongLong:{-[ML3Entity persistentID](self, "persistentID")}];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v8 = [v5 executeQuery:@"SELECT IFNULL(MAX(position) withParameters:{-1) FROM container_item WHERE container_pid = ?", v7}];
+  v8 = [connectionCopy executeQuery:@"SELECT IFNULL(MAX(position) withParameters:{-1) FROM container_item WHERE container_pid = ?", v7}];
 
-  v9 = [v8 objectForFirstRowAndColumn];
-  v10 = [v9 integerValue];
+  objectForFirstRowAndColumn = [v8 objectForFirstRowAndColumn];
+  integerValue = [objectForFirstRowAndColumn integerValue];
 
-  return v10;
+  return integerValue;
 }
 
-- (BOOL)setItemReactionText:(id)a3 onEntryAtPosition:(unint64_t)a4 forUserIdentifier:(id)a5 previousReactionText:(id *)a6
+- (BOOL)setItemReactionText:(id)text onEntryAtPosition:(unint64_t)position forUserIdentifier:(id)identifier previousReactionText:(id *)reactionText
 {
-  v10 = a3;
-  v11 = a5;
+  textCopy = text;
+  identifierCopy = identifier;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1013,19 +1013,19 @@ void __62__ML3Container__removeTracksAtIndexes_notify_usingConnection___block_in
   v17[1] = 3221225472;
   v17[2] = __93__ML3Container_setItemReactionText_onEntryAtPosition_forUserIdentifier_previousReactionText___block_invoke;
   v17[3] = &unk_278762778;
-  v13 = v11;
+  v13 = identifierCopy;
   v18 = v13;
-  v19 = self;
-  v23 = a4;
+  selfCopy = self;
+  positionCopy = position;
   v21 = &v24;
-  v14 = v10;
+  v14 = textCopy;
   v20 = v14;
   v22 = &v30;
   [WeakRetained databaseConnectionAllowingWrites:1 withBlock:v17];
 
-  if (a6)
+  if (reactionText)
   {
-    *a6 = v25[5];
+    *reactionText = v25[5];
   }
 
   v15 = *(v31 + 24);
@@ -1167,7 +1167,7 @@ void __93__ML3Container_setItemReactionText_onEntryAtPosition_forUserIdentifier_
 - (BOOL)isBuiltInSmartPlaylist
 {
   v2 = [(ML3Entity *)self valueForProperty:@"distinguished_kind"];
-  v3 = [v2 longValue];
+  longValue = [v2 longValue];
 
   v4 = 0;
   v5 = &dword_28408603C;
@@ -1184,8 +1184,8 @@ void __93__ML3Container_setItemReactionText_onEntryAtPosition_forUserIdentifier_
     ++v4;
   }
 
-  while (v6 != v3);
-  return v6 == v3;
+  while (v6 != longValue);
+  return v6 == longValue;
 }
 
 - (id)parentPlaylistPersistentIdsAndNames
@@ -1196,9 +1196,9 @@ void __93__ML3Container_setItemReactionText_onEntryAtPosition_forUserIdentifier_
   v16 = &v15;
   v17 = 0x2020000000;
   v4 = [(ML3Entity *)self valueForProperty:@"parent_pid"];
-  v5 = [v4 longLongValue];
+  longLongValue = [v4 longLongValue];
 
-  v18 = v5;
+  v18 = longLongValue;
   while (v16[3])
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLongLong:?];
@@ -1268,7 +1268,7 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
 - (id)trackPersistentIds
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v5 = [ML3ComparisonPredicate predicateWithProperty:@"container_pid" equalToInt64:self->super._persistentID];
   v6 = [(ML3Entity *)ML3ContainerItem queryWithLibrary:WeakRetained predicate:v5];
@@ -1279,7 +1279,7 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
   v10[1] = 3221225472;
   v10[2] = __34__ML3Container_trackPersistentIds__block_invoke;
   v10[3] = &unk_278762DC0;
-  v8 = v3;
+  v8 = array;
   v11 = v8;
   [v6 enumeratePersistentIDsAndProperties:v7 usingBlock:v10];
 
@@ -1294,20 +1294,20 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
   return self;
 }
 
-- (BOOL)removeTracksAtIndexes:(id)a3 notify:(BOOL)a4
+- (BOOL)removeTracksAtIndexes:(id)indexes notify:(BOOL)notify
 {
-  v7 = a3;
+  indexesCopy = indexes;
   if (![(ML3Container *)self _supportsOrderedTrackOperations])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1967 description:@"removeTracksAtIndexes:notify: called on unsupported container"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1967 description:@"removeTracksAtIndexes:notify: called on unsupported container"];
   }
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  if ([v7 count])
+  if ([indexesCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->super._library);
     v12[0] = MEMORY[0x277D85DD0];
@@ -1316,8 +1316,8 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
     v12[3] = &unk_278762728;
     v14 = &v16;
     v12[4] = self;
-    v13 = v7;
-    v15 = a4;
+    v13 = indexesCopy;
+    notifyCopy = notify;
     [WeakRetained performDatabaseTransactionWithBlock:v12];
   }
 
@@ -1327,12 +1327,12 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
   return v9;
 }
 
-- (BOOL)moveTrackFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (BOOL)moveTrackFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   if (![(ML3Container *)self _supportsOrderedTrackOperations])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1898 description:@"moveTrackFromIndex:toIndex: called on unsupported container"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1898 description:@"moveTrackFromIndex:toIndex: called on unsupported container"];
   }
 
   v13 = 0;
@@ -1340,7 +1340,7 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
   v15 = 0x2020000000;
   v8 = 1;
   v16 = 1;
-  if (a3 != a4)
+  if (index != toIndex)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._library);
     v12[0] = MEMORY[0x277D85DD0];
@@ -1349,8 +1349,8 @@ void __42__ML3Container_childPlaylistPersistentIds__block_invoke(uint64_t a1, ui
     v12[3] = &unk_278762700;
     v12[4] = self;
     v12[5] = &v13;
-    v12[6] = a3;
-    v12[7] = a4;
+    v12[6] = index;
+    v12[7] = toIndex;
     [WeakRetained performDatabaseTransactionWithBlock:v12];
 
     v8 = *(v14 + 24);
@@ -1497,17 +1497,17 @@ uint64_t __43__ML3Container_moveTrackFromIndex_toIndex___block_invoke(uint64_t a
   return v22 & 1;
 }
 
-- (BOOL)appendTracksWithPersistentIDs:(id)a3 andEntryProperties:(id)a4 withAttributionIdentifier:(id)a5 notify:(BOOL)a6
+- (BOOL)appendTracksWithPersistentIDs:(id)ds andEntryProperties:(id)properties withAttributionIdentifier:(id)identifier notify:(BOOL)notify
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v11 count])
+  dsCopy = ds;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  if ([dsCopy count])
   {
     if (![(ML3Container *)self _supportsOrderedTrackOperations])
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1829 description:@"appendTracksWithPersistentIDs:notify: called on unsupported container"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1829 description:@"appendTracksWithPersistentIDs:notify: called on unsupported container"];
     }
 
     v27 = 0;
@@ -1515,7 +1515,7 @@ uint64_t __43__ML3Container_moveTrackFromIndex_toIndex___block_invoke(uint64_t a
     v29 = 0x2020000000;
     v30 = 0;
     v14 = [(ML3Entity *)self valueForProperty:@"keep_local"];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
 
     WeakRetained = objc_loadWeakRetained(&self->super._library);
     v20[0] = MEMORY[0x277D85DD0];
@@ -1523,12 +1523,12 @@ uint64_t __43__ML3Container_moveTrackFromIndex_toIndex___block_invoke(uint64_t a
     v20[2] = __98__ML3Container_appendTracksWithPersistentIDs_andEntryProperties_withAttributionIdentifier_notify___block_invoke;
     v20[3] = &unk_2787626D8;
     v20[4] = self;
-    v21 = v13;
-    v22 = v11;
-    v23 = v12;
+    v21 = identifierCopy;
+    v22 = dsCopy;
+    v23 = propertiesCopy;
     v24 = &v27;
-    v25 = v15;
-    v26 = a6;
+    v25 = integerValue;
+    notifyCopy = notify;
     [WeakRetained performDatabaseTransactionWithBlock:v20];
 
     v17 = *(v28 + 24);
@@ -1789,15 +1789,15 @@ LABEL_39:
   return v52 & 1;
 }
 
-- (BOOL)setTracksWithPersistentIDs:(id)a3 andEntryProperties:(id)a4 withAttributionIdentifier:(id)a5 notify:(BOOL)a6
+- (BOOL)setTracksWithPersistentIDs:(id)ds andEntryProperties:(id)properties withAttributionIdentifier:(id)identifier notify:(BOOL)notify
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dsCopy = ds;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
   if (![(ML3Container *)self _supportsOrderedTrackOperations])
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1810 description:@"setTracksWithPersistentIDs:notify: called on unsupported container"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:1810 description:@"setTracksWithPersistentIDs:notify: called on unsupported container"];
   }
 
   v27 = 0;
@@ -1811,13 +1811,13 @@ LABEL_39:
   v21[3] = &unk_2787626B0;
   v25 = &v27;
   v21[4] = self;
-  v15 = v11;
+  v15 = dsCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = propertiesCopy;
   v23 = v16;
-  v17 = v13;
+  v17 = identifierCopy;
   v24 = v17;
-  v26 = a6;
+  notifyCopy = notify;
   [WeakRetained performDatabaseTransactionWithBlock:v21];
 
   v18 = *(v28 + 24);
@@ -1865,12 +1865,12 @@ uint64_t __31__ML3Container_removeAllTracks__block_invoke(uint64_t a1, uint64_t 
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = [(ML3Entity *)self valueForProperty:@"is_reversed"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = [(ML3Entity *)self valueForProperty:@"play_order"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  v7 = [ML3Track orderingTermsForITTGTrackOrder:v6 descending:v4];
+  v7 = [ML3Track orderingTermsForITTGTrackOrder:intValue descending:bOOLValue];
   if ([v7 count])
   {
     v8 = v7;
@@ -1878,18 +1878,18 @@ uint64_t __31__ML3Container_removeAllTracks__block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    v9 = [(ML3Container *)self limitOrderingTerms];
-    if ([v9 count])
+    limitOrderingTerms = [(ML3Container *)self limitOrderingTerms];
+    if ([limitOrderingTerms count])
     {
-      v8 = v9;
+      v8 = limitOrderingTerms;
     }
 
     else
     {
-      v10 = [(ML3Container *)self evaluationOrderingTerms];
-      if ([v10 count])
+      evaluationOrderingTerms = [(ML3Container *)self evaluationOrderingTerms];
+      if ([evaluationOrderingTerms count])
       {
-        v11 = v10;
+        v11 = evaluationOrderingTerms;
       }
 
       else
@@ -1947,29 +1947,29 @@ uint64_t __31__ML3Container_removeAllTracks__block_invoke(uint64_t a1, uint64_t 
 - (NSArray)cloudDisplayOrderingTerms
 {
   v3 = [(ML3Entity *)self valueForProperty:@"is_reversed"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = [(ML3Entity *)self valueForProperty:@"play_order"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return [ML3Track orderingTermsForITTGTrackOrder:v6 descending:v4];
+  return [ML3Track orderingTermsForITTGTrackOrder:intValue descending:bOOLValue];
 }
 
 - (int64_t)limitValue
 {
   v3 = [(ML3Entity *)self valueForProperty:@"smart_limit_kind"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   v5 = [(ML3Entity *)self valueForProperty:@"smart_limit_value"];
-  v6 = [v5 longLongValue];
+  longLongValue = [v5 longLongValue];
 
-  if (v4 <= 2)
+  if (intValue <= 2)
   {
-    if (v4)
+    if (intValue)
     {
-      if (v4 != 1)
+      if (intValue != 1)
       {
-        return v6;
+        return longLongValue;
       }
 
       goto LABEL_10;
@@ -1978,58 +1978,58 @@ uint64_t __31__ML3Container_removeAllTracks__block_invoke(uint64_t a1, uint64_t 
     goto LABEL_8;
   }
 
-  if (v4 == 4)
+  if (intValue == 4)
   {
-    v6 <<= 10;
+    longLongValue <<= 10;
 LABEL_10:
-    v6 <<= 20;
-    return v6;
+    longLongValue <<= 20;
+    return longLongValue;
   }
 
-  if (v4 == 3)
+  if (intValue == 3)
   {
-    v6 *= 60;
+    longLongValue *= 60;
 LABEL_8:
-    v6 *= 60000;
+    longLongValue *= 60000;
   }
 
-  return v6;
+  return longLongValue;
 }
 
 - (NSArray)limitOrderingTerms
 {
   v3 = [(ML3Entity *)self valueForProperty:@"smart_limit_order"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  v5 = [(ML3Container *)self isLimitOrderingDescending];
+  isLimitOrderingDescending = [(ML3Container *)self isLimitOrderingDescending];
 
-  return [ML3Track orderingTermsForITTGTrackOrder:v4 descending:v5];
+  return [ML3Track orderingTermsForITTGTrackOrder:intValue descending:isLimitOrderingDescending];
 }
 
 - (id)evaluationOrderingTerms
 {
   v3 = [(ML3Entity *)self valueForProperty:@"smart_evaluation_order"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  v5 = [(ML3Container *)self isEvaluationOrderingDescending];
+  isEvaluationOrderingDescending = [(ML3Container *)self isEvaluationOrderingDescending];
 
-  return [ML3Track orderingTermsForITTGTrackOrder:v4 descending:v5];
+  return [ML3Track orderingTermsForITTGTrackOrder:intValue descending:isEvaluationOrderingDescending];
 }
 
 - (NSString)limitingProperty
 {
   v2 = [(ML3Entity *)self valueForProperty:@"smart_limit_kind"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
   v4 = 0;
-  if (v3 <= 1)
+  if (intValue <= 1)
   {
-    if (!v3)
+    if (!intValue)
     {
       goto LABEL_9;
     }
 
-    if (v3 != 1)
+    if (intValue != 1)
     {
       goto LABEL_11;
     }
@@ -2041,7 +2041,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  switch(v3)
+  switch(intValue)
   {
     case 2:
       v4 = @"1";
@@ -2062,15 +2062,15 @@ LABEL_11:
 - (BOOL)isLimitOrderingDescending
 {
   v3 = [(ML3Entity *)self valueForProperty:@"smart_limit_order"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   v5 = [(ML3Entity *)self valueForProperty:@"smart_reverse_limit_order"];
-  v6 = [v5 intValue];
-  v7 = v6 != 0;
+  intValue2 = [v5 intValue];
+  v7 = intValue2 != 0;
 
-  if (v4 <= 0x1D && ((1 << v4) & 0x2C400000) != 0 || v4 == 112)
+  if (intValue <= 0x1D && ((1 << intValue) & 0x2C400000) != 0 || intValue == 112)
   {
-    return v6 == 0;
+    return intValue2 == 0;
   }
 
   return v7;
@@ -2087,17 +2087,17 @@ LABEL_11:
 - (BOOL)isEvaluationOrderingDescending
 {
   v2 = [(ML3Entity *)self valueForProperty:@"smart_evaluation_order"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3 <= 0x1D && ((1 << v3) & 0x2C400000) != 0 || v3 == 112;
+  return intValue <= 0x1D && ((1 << intValue) & 0x2C400000) != 0 || intValue == 112;
 }
 
 - (ML3Predicate)smartCriteriaPredicate
 {
-  v2 = [(ML3Container *)self importedCriteriaList];
-  if (v2)
+  importedCriteriaList = [(ML3Container *)self importedCriteriaList];
+  if (importedCriteriaList)
   {
-    v3 = [objc_opt_class() predicateForCriteriaList:v2 parentMatchedAny:0];
+    v3 = [objc_opt_class() predicateForCriteriaList:importedCriteriaList parentMatchedAny:0];
     DisposeSearchCriteriaList();
   }
 
@@ -2124,11 +2124,11 @@ LABEL_11:
       v7 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(ML3Entity *)self persistentID];
+        persistentID = [(ML3Entity *)self persistentID];
         *buf = 134218496;
-        v13 = self;
+        selfCopy = self;
         v14 = 2048;
-        v15 = v8;
+        v15 = persistentID;
         v16 = 2048;
         v17 = v6;
         _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_ERROR, "Could not parse search criteria list for playlist %p (pid = %lld): %ld", buf, 0x20u);
@@ -2141,32 +2141,32 @@ LABEL_11:
   return v9;
 }
 
-- (void)setValues:(id)a3 forProperties:(id)a4 async:(BOOL)a5 withCompletionBlock:(id)a6
+- (void)setValues:(id)values forProperties:(id)properties async:(BOOL)async withCompletionBlock:(id)block
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [MEMORY[0x277CCAB58] indexSet];
+  asyncCopy = async;
+  valuesCopy = values;
+  propertiesCopy = properties;
+  blockCopy = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __66__ML3Container_setValues_forProperties_async_withCompletionBlock___block_invoke;
   v30[3] = &unk_278762470;
-  v16 = v10;
+  v16 = valuesCopy;
   v31 = v16;
   v17 = WeakRetained;
   v32 = v17;
-  v33 = self;
-  v18 = v13;
+  selfCopy = self;
+  v18 = dictionary;
   v34 = v18;
-  v19 = v14;
+  v19 = indexSet;
   v35 = v19;
-  [v11 enumerateObjectsUsingBlock:v30];
+  [propertiesCopy enumerateObjectsUsingBlock:v30];
   if ([v18 count] || objc_msgSend(v19, "count"))
   {
-    v20 = [v11 mutableCopy];
+    v20 = [propertiesCopy mutableCopy];
     v21 = [v16 mutableCopy];
     [v20 removeObjectsAtIndexes:v19];
     [v21 removeObjectsAtIndexes:v19];
@@ -2182,20 +2182,20 @@ LABEL_11:
     v24 = v22;
 
     v25 = v23;
-    v11 = v24;
+    propertiesCopy = v24;
     v16 = v25;
   }
 
-  if ([v11 count])
+  if ([propertiesCopy count])
   {
     v26.receiver = self;
     v26.super_class = ML3Container;
-    [(ML3Entity *)&v26 setValues:v16 forProperties:v11 async:v7 withCompletionBlock:v12];
+    [(ML3Entity *)&v26 setValues:v16 forProperties:propertiesCopy async:asyncCopy withCompletionBlock:blockCopy];
   }
 
-  else if (v12)
+  else if (blockCopy)
   {
-    v12[2](v12, 1, 0);
+    blockCopy[2](blockCopy, 1, 0);
   }
 }
 
@@ -2246,12 +2246,12 @@ void __66__ML3Container_setValues_forProperties_async_withCompletionBlock___bloc
   [*(a1 + 40) addObject:v6];
 }
 
-- (ML3Container)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6
+- (ML3Container)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection
 {
-  v11 = a4;
-  v12 = a5;
-  v49 = a6;
-  v13 = [a3 mutableCopy];
+  libraryCopy = library;
+  ordersCopy = orders;
+  connectionCopy = connection;
+  v13 = [dictionary mutableCopy];
   v14 = [v13 objectForKey:@"ROWID"];
   if (!v14)
   {
@@ -2259,11 +2259,11 @@ void __66__ML3Container_setValues_forProperties_async_withCompletionBlock___bloc
     [v13 setObject:v14 forKey:@"ROWID"];
   }
 
-  v48 = [v14 unsignedLongLongValue];
+  unsignedLongLongValue = [v14 unsignedLongLongValue];
   v15 = [v13 objectForKey:@"container_type"];
-  v16 = [v15 integerValue];
-  v50 = v12;
-  if (v16 != 3)
+  integerValue = [v15 integerValue];
+  v50 = ordersCopy;
+  if (integerValue != 3)
   {
     v7 = [v13 objectForKey:@"smart_is_genius"];
     if (![v7 integerValue])
@@ -2289,13 +2289,13 @@ LABEL_8:
   }
 
 LABEL_10:
-  if (v16 != 3)
+  if (integerValue != 3)
   {
   }
 
   v20 = [v13 objectForKey:@"container_type"];
-  v21 = [v20 integerValue];
-  if (v21 == 3 && ([v13 objectForKey:@"is_container_type_active_target"], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "integerValue")))
+  integerValue2 = [v20 integerValue];
+  if (integerValue2 == 3 && ([v13 objectForKey:@"is_container_type_active_target"], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "integerValue")))
   {
     v22 = 1;
   }
@@ -2305,7 +2305,7 @@ LABEL_10:
     v23 = [v13 objectForKey:@"(container.is_container_type_active_target AND (container.container_type = 2))"];
     v22 = [v23 integerValue] != 0;
 
-    if (v21 != 3)
+    if (integerValue2 != 3)
     {
       goto LABEL_17;
     }
@@ -2350,7 +2350,7 @@ LABEL_17:
       v31 = 2;
     }
 
-    v32 = [v30 nextFilepathForPlaylistType:v31 withPersistentID:v48 inLibrary:v11];
+    v32 = [v30 nextFilepathForPlaylistType:v31 withPersistentID:unsignedLongLongValue inLibrary:libraryCopy];
     [v13 setValue:v32 forKey:@"filepath"];
   }
 
@@ -2376,15 +2376,15 @@ LABEL_17:
   v38 = v37;
   if (v37)
   {
-    v39 = [v37 integerValue];
-    if (v39)
+    integerValue3 = [v37 integerValue];
+    if (integerValue3)
     {
       v40 = [v13 objectForKey:@"is_hidden"];
-      v41 = [v40 BOOLValue];
+      bOOLValue = [v40 BOOLValue];
 
-      if (v41)
+      if (bOOLValue)
       {
-        if ((v39 > 0x20 || ((1 << v39) & 0x100180000) == 0) && v39 != 10000 && v39 != 10010)
+        if ((integerValue3 > 0x20 || ((1 << integerValue3) & 0x100180000) == 0) && integerValue3 != 10000 && integerValue3 != 10010)
         {
           v42 = [MEMORY[0x277CCABB0] numberWithBool:1];
           [v13 setValue:v42 forKey:@"is_ignorable_itunes_playlist"];
@@ -2393,7 +2393,7 @@ LABEL_17:
     }
   }
 
-  [objc_opt_class() populateSortOrdersOfPropertyValues:v13 inLibrary:v11 cachedNameOrders:v50];
+  [objc_opt_class() populateSortOrdersOfPropertyValues:v13 inLibrary:libraryCopy cachedNameOrders:v50];
   v43 = [v13 objectForKey:@"orig_date_modified"];
 
   if (!v43)
@@ -2406,55 +2406,55 @@ LABEL_17:
 
   v52.receiver = self;
   v52.super_class = ML3Container;
-  v46 = [(ML3Entity *)&v52 initWithDictionary:v13 inLibrary:v11 cachedNameOrders:v50 usingConnection:v49];
+  v46 = [(ML3Entity *)&v52 initWithDictionary:v13 inLibrary:libraryCopy cachedNameOrders:v50 usingConnection:connectionCopy];
 
   return v46;
 }
 
-+ (BOOL)_reloadContainedMediaTypes:(BOOL)a3 removedMediaTypes:(id)a4 addedMediaTypes:(id)a5 notify:(BOOL)a6 incrementEntityRevision:(BOOL)a7 usingLibrary:(id)a8 connection:(id)a9 forContainerPersistentID:(int64_t)a10
++ (BOOL)_reloadContainedMediaTypes:(BOOL)types removedMediaTypes:(id)mediaTypes addedMediaTypes:(id)addedMediaTypes notify:(BOOL)notify incrementEntityRevision:(BOOL)revision usingLibrary:(id)library connection:(id)connection forContainerPersistentID:(int64_t)self0
 {
-  v11 = a7;
-  v12 = a6;
-  v14 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  if ((v14 & 1) != 0 || [v18 count] || objc_msgSend(v17, "count"))
+  revisionCopy = revision;
+  notifyCopy = notify;
+  typesCopy = types;
+  mediaTypesCopy = mediaTypes;
+  addedMediaTypesCopy = addedMediaTypes;
+  libraryCopy = library;
+  connectionCopy = connection;
+  if ((typesCopy & 1) != 0 || [addedMediaTypesCopy count] || objc_msgSend(mediaTypesCopy, "count"))
   {
-    v21 = [v18 count] || objc_msgSend(v17, "count") != 0;
-    if (v21 == v14)
+    v21 = [addedMediaTypesCopy count] || objc_msgSend(mediaTypesCopy, "count") != 0;
+    if (v21 == typesCopy)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"ML3Container.m" lineNumber:2219 description:{@"Only one of reloadContainedMediaTypes, and removedMediaTypes/addedMediaTypes can be used"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:2219 description:{@"Only one of reloadContainedMediaTypes, and removedMediaTypes/addedMediaTypes can be used"}];
     }
   }
 
-  if ([v17 count])
+  if ([mediaTypesCopy count])
   {
-    [ML3Container _removeMediaTypesFromContainerWithPersistentID:a10 mediaTypes:v17 connection:v20];
+    [ML3Container _removeMediaTypesFromContainerWithPersistentID:d mediaTypes:mediaTypesCopy connection:connectionCopy];
   }
 
-  if ([v18 count])
+  if ([addedMediaTypesCopy count])
   {
-    [ML3Container _addMediaTypesToContainerWithPersistentID:a10 mediaTypes:v18 connection:v20];
+    [ML3Container _addMediaTypesToContainerWithPersistentID:d mediaTypes:addedMediaTypesCopy connection:connectionCopy];
   }
 
-  if (v12)
+  if (notifyCopy)
   {
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __157__ML3Container__reloadContainedMediaTypes_removedMediaTypes_addedMediaTypes_notify_incrementEntityRevision_usingLibrary_connection_forContainerPersistentID___block_invoke;
     v28 = &unk_2787651D0;
-    v30 = a10;
-    v29 = v19;
-    [v20 enqueueBlockForTransactionCommit:&v25];
+    dCopy = d;
+    v29 = libraryCopy;
+    [connectionCopy enqueueBlockForTransactionCommit:&v25];
   }
 
-  if (v11)
+  if (revisionCopy)
   {
-    v22 = [objc_opt_class() incrementRevisionWithLibrary:v19 persistentID:a10 deletionType:0 revisionType:0 usingConnection:v20];
-    if (!v14)
+    v22 = [objc_opt_class() incrementRevisionWithLibrary:libraryCopy persistentID:d deletionType:0 revisionType:0 usingConnection:connectionCopy];
+    if (!typesCopy)
     {
       goto LABEL_20;
     }
@@ -2463,10 +2463,10 @@ LABEL_17:
   }
 
   v22 = 1;
-  if (v14)
+  if (typesCopy)
   {
 LABEL_19:
-    [ML3Container reloadContainedMediaTypesForContainerWithPersistID:a10 usingConnection:v20, v25, v26, v27, v28];
+    [ML3Container reloadContainedMediaTypesForContainerWithPersistID:d usingConnection:connectionCopy, v25, v26, v27, v28];
   }
 
 LABEL_20:
@@ -2496,20 +2496,20 @@ void __157__ML3Container__reloadContainedMediaTypes_removedMediaTypes_addedMedia
   }
 }
 
-+ (void)_insertNewSmartPlaylist:(id)a3 criteriaBlob:(id)a4 evaluationOrder:(unsigned int)a5 limited:(BOOL)a6 trackOrder:(unsigned int)a7 distinguishedKind:(int)a8 inLibrary:(id)a9 cachedNameOrders:(id)a10
++ (void)_insertNewSmartPlaylist:(id)playlist criteriaBlob:(id)blob evaluationOrder:(unsigned int)order limited:(BOOL)limited trackOrder:(unsigned int)trackOrder distinguishedKind:(int)kind inLibrary:(id)library cachedNameOrders:(id)self0
 {
-  v10 = *&a8;
-  v11 = *&a7;
-  v12 = a6;
+  v10 = *&kind;
+  v11 = *&trackOrder;
+  limitedCopy = limited;
   v30[17] = *MEMORY[0x277D85DE8];
-  v30[0] = a3;
+  v30[0] = playlist;
   v29[0] = @"name";
   v29[1] = @"distinguished_kind";
   v15 = MEMORY[0x277CCABB0];
-  v16 = a10;
-  v17 = a9;
-  v18 = a4;
-  v28 = a3;
+  ordersCopy = orders;
+  libraryCopy = library;
+  blobCopy = blob;
+  playlistCopy = playlist;
   v19 = [v15 numberWithUnsignedInt:v10];
   v30[1] = v19;
   v29[2] = @"date_created";
@@ -2524,7 +2524,7 @@ void __157__ML3Container__reloadContainedMediaTypes_removedMediaTypes_addedMedia
   v30[5] = &unk_2840C8E28;
   v29[5] = @"smart_is_folder";
   v29[6] = @"smart_criteria";
-  v30[6] = v18;
+  v30[6] = blobCopy;
   v30[7] = &unk_2840C8DC8;
   v29[7] = @"smart_is_dynamic";
   v29[8] = @"smart_is_filtered";
@@ -2532,13 +2532,13 @@ void __157__ML3Container__reloadContainedMediaTypes_removedMediaTypes_addedMedia
   v30[9] = &unk_2840C8E28;
   v29[9] = @"smart_is_genius";
   v29[10] = @"smart_is_limited";
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:limitedCopy];
   v30[10] = v22;
   v29[11] = @"smart_limit_order";
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
   v30[11] = v23;
   v29[12] = @"smart_evaluation_order";
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a5];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:order];
   v30[12] = v24;
   v30[13] = &unk_2840C8E40;
   v29[13] = @"smart_limit_value";
@@ -2550,25 +2550,25 @@ void __157__ML3Container__reloadContainedMediaTypes_removedMediaTypes_addedMedia
   v30[16] = &unk_2840C8E28;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:17];
 
-  v26 = [(ML3Entity *)ML3Container newWithDictionary:v25 inLibrary:v17 cachedNameOrders:v16];
+  v26 = [(ML3Entity *)ML3Container newWithDictionary:v25 inLibrary:libraryCopy cachedNameOrders:ordersCopy];
 }
 
-+ (id)_allStaticItemContainersInLibrary:(id)a3 usingConnection:(id)a4
++ (id)_allStaticItemContainersInLibrary:(id)library usingConnection:(id)connection
 {
-  v5 = a3;
+  libraryCopy = library;
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = [v6 array];
-  v9 = [v7 executeQuery:@"SELECT container.container_pid FROM container JOIN container_item ON (container.container_pid = container_item.container_pid AND position = 0) WHERE distinguished_kind = 0 AND smart_criteria IS NULL AND is_hidden = 0 AND cloud_is_subscribed = 0 AND cloud_is_curator_playlist = 0"];
+  connectionCopy = connection;
+  array = [v6 array];
+  v9 = [connectionCopy executeQuery:@"SELECT container.container_pid FROM container JOIN container_item ON (container.container_pid = container_item.container_pid AND position = 0) WHERE distinguished_kind = 0 AND smart_criteria IS NULL AND is_hidden = 0 AND cloud_is_subscribed = 0 AND cloud_is_curator_playlist = 0"];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__ML3Container__allStaticItemContainersInLibrary_usingConnection___block_invoke;
   v15[3] = &unk_278763E40;
-  v16 = v5;
-  v10 = v8;
+  v16 = libraryCopy;
+  v10 = array;
   v17 = v10;
-  v11 = v5;
+  v11 = libraryCopy;
   [v9 enumerateRowsWithBlock:v15];
   v12 = v17;
   v13 = v10;
@@ -2582,14 +2582,14 @@ void __66__ML3Container__allStaticItemContainersInLibrary_usingConnection___bloc
   [*(a1 + 40) addObject:v3];
 }
 
-+ (id)currentDeviceFavoritesPlaylistInLibrary:(id)a3 usingConnection:(id)a4
++ (id)currentDeviceFavoritesPlaylistInLibrary:(id)library usingConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [a4 executeQuery:@"SELECT container_pid FROM container WHERE distinguished_kind=?" withParameters:&unk_2840C8558];
-  v7 = [v6 int64ValueForFirstRowAndColumn];
-  if (v7)
+  libraryCopy = library;
+  v6 = [connection executeQuery:@"SELECT container_pid FROM container WHERE distinguished_kind=?" withParameters:&unk_2840C8558];
+  int64ValueForFirstRowAndColumn = [v6 int64ValueForFirstRowAndColumn];
+  if (int64ValueForFirstRowAndColumn)
   {
-    v8 = [(ML3Entity *)ML3Container newWithPersistentID:v7 inLibrary:v5];
+    v8 = [(ML3Entity *)ML3Container newWithPersistentID:int64ValueForFirstRowAndColumn inLibrary:libraryCopy];
   }
 
   else
@@ -2600,34 +2600,34 @@ void __66__ML3Container__allStaticItemContainersInLibrary_usingConnection___bloc
   return v8;
 }
 
-+ (void)reloadContainedMediaTypesForContainerWithPersistID:(int64_t)a3 usingConnection:(id)a4
++ (void)reloadContainedMediaTypesForContainerWithPersistID:(int64_t)d usingConnection:(id)connection
 {
-  v5 = a4;
-  [ML3Container _clearContainerMediaTypeInContainerWithPersistentID:a3 connection:v5];
-  v6 = [ML3Container _mediaTypesForTracksInContainerWithPersistentID:a3 connection:v5];
-  [ML3Container _addMediaTypesToContainerWithPersistentID:a3 mediaTypes:v6 connection:v5];
+  connectionCopy = connection;
+  [ML3Container _clearContainerMediaTypeInContainerWithPersistentID:d connection:connectionCopy];
+  v6 = [ML3Container _mediaTypesForTracksInContainerWithPersistentID:d connection:connectionCopy];
+  [ML3Container _addMediaTypesToContainerWithPersistentID:d mediaTypes:v6 connection:connectionCopy];
 }
 
-+ (void)removeNonLibraryItemsFromContainer:(id)a3 usingConnection:(id)a4
++ (void)removeNonLibraryItemsFromContainer:(id)container usingConnection:(id)connection
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAB58];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 indexSet];
-  v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v7, "persistentID")}];
+  connectionCopy = connection;
+  containerCopy = container;
+  indexSet = [v5 indexSet];
+  v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(containerCopy, "persistentID")}];
   v15[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v11 = [v6 executeQuery:@"SELECT position FROM container_item LEFT OUTER JOIN item USING (item_pid) WHERE NOT IFNULL(in_my_library withParameters:{0) AND container_pid = ?", v10}];
+  v11 = [connectionCopy executeQuery:@"SELECT position FROM container_item LEFT OUTER JOIN item USING (item_pid) WHERE NOT IFNULL(in_my_library withParameters:{0) AND container_pid = ?", v10}];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection___block_invoke;
   v13[3] = &unk_278766118;
-  v14 = v8;
-  v12 = v8;
+  v14 = indexSet;
+  v12 = indexSet;
   [v11 enumerateRowsWithBlock:v13];
-  [v7 _removeTracksAtIndexes:v12 notify:1 usingConnection:v6];
+  [containerCopy _removeTracksAtIndexes:v12 notify:1 usingConnection:connectionCopy];
 }
 
 uint64_t __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection___block_invoke(uint64_t a1, void *a2)
@@ -2638,11 +2638,11 @@ uint64_t __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection__
   return [v4 addIndex:v3];
 }
 
-+ (void)removeNonLibraryItemsFromContainersInLibrary:(id)a3 usingConnection:(id)a4
++ (void)removeNonLibraryItemsFromContainersInLibrary:(id)library usingConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a1 _allStaticItemContainersInLibrary:a3 usingConnection:v6];
+  connectionCopy = connection;
+  v7 = [self _allStaticItemContainersInLibrary:library usingConnection:connectionCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -2662,7 +2662,7 @@ uint64_t __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection__
           objc_enumerationMutation(v7);
         }
 
-        [a1 removeNonLibraryItemsFromContainer:*(*(&v12 + 1) + 8 * v11++) usingConnection:v6];
+        [self removeNonLibraryItemsFromContainer:*(*(&v12 + 1) + 8 * v11++) usingConnection:connectionCopy];
       }
 
       while (v9 != v11);
@@ -2673,14 +2673,14 @@ uint64_t __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection__
   }
 }
 
-+ (void)removeAnyNonLibraryItemsInPersistentIDs:(id)a3 fromContainersInLibrary:(id)a4 usingConnection:(id)a5
++ (void)removeAnyNonLibraryItemsInPersistentIDs:(id)ds fromContainersInLibrary:(id)library usingConnection:(id)connection
 {
-  v7 = a3;
-  v21 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  libraryCopy = library;
+  connectionCopy = connection;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = +[ML3DatabaseStatementRenderer defaultRenderer];
-  v11 = [v7 count];
+  v11 = [dsCopy count];
   if (v11)
   {
     v12 = v11;
@@ -2697,17 +2697,17 @@ uint64_t __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection__
         v14 = v12 - v13;
       }
 
-      v15 = [v7 subarrayWithRange:{v13, v14, v21}];
+      v15 = [dsCopy subarrayWithRange:{v13, v14, libraryCopy}];
       v13 += v14;
       v16 = objc_msgSend(v10, "statementWithPrefix:inParameterCount:", @"SELECT IFNULL(in_my_library, 0), container_pid, position FROM container_item LEFT OUTER JOIN item USING (item_pid) JOIN container USING (container_pid) WHERE distinguished_kind IN (0, 19, 20) AND smart_criteria IS NULL AND is_hidden = 0 AND cloud_is_subscribed = 0 AND cloud_is_curator_playlist = 0 AND (item.item_pid IS NULL OR container_item.item_pid"), v14;
       v17 = [v16 stringByAppendingString:@""]);
 
-      v18 = [v8 executeQuery:v17 withParameters:v15];
+      v18 = [connectionCopy executeQuery:v17 withParameters:v15];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __96__ML3Container_removeAnyNonLibraryItemsInPersistentIDs_fromContainersInLibrary_usingConnection___block_invoke;
       v25[3] = &unk_278766118;
-      v26 = v9;
+      v26 = dictionary;
       [v18 enumerateRowsWithBlock:v25];
     }
 
@@ -2718,11 +2718,11 @@ uint64_t __67__ML3Container_removeNonLibraryItemsFromContainer_usingConnection__
   v22[1] = 3221225472;
   v22[2] = __96__ML3Container_removeAnyNonLibraryItemsInPersistentIDs_fromContainersInLibrary_usingConnection___block_invoke_2;
   v22[3] = &unk_2787627A0;
-  v23 = v21;
-  v24 = v8;
-  v19 = v8;
-  v20 = v21;
-  [v9 enumerateKeysAndObjectsUsingBlock:v22];
+  v23 = libraryCopy;
+  v24 = connectionCopy;
+  v19 = connectionCopy;
+  v20 = libraryCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v22];
 }
 
 uint64_t __96__ML3Container_removeAnyNonLibraryItemsInPersistentIDs_fromContainersInLibrary_usingConnection___block_invoke(uint64_t a1, void *a2)
@@ -2756,18 +2756,18 @@ void __96__ML3Container_removeAnyNonLibraryItemsInPersistentIDs_fromContainersIn
   [v6 _removeTracksAtIndexes:v5 notify:1 usingConnection:*(a1 + 40)];
 }
 
-+ (void)populateMediaTypesOfStaticContainersInLibrary:(id)a3
++ (void)populateMediaTypesOfStaticContainersInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__ML3Container_populateMediaTypesOfStaticContainersInLibrary___block_invoke;
   v7[3] = &unk_278764670;
-  v8 = v3;
+  v8 = libraryCopy;
   v9 = v4;
   v5 = v4;
-  v6 = v3;
+  v6 = libraryCopy;
   [v6 databaseConnectionAllowingWrites:0 withBlock:v7];
 }
 
@@ -2806,20 +2806,20 @@ uint64_t __62__ML3Container_populateMediaTypesOfStaticContainersInLibrary___bloc
   return [ML3Container reloadContainedMediaTypesForContainerWithPersistID:v3 usingConnection:v4];
 }
 
-+ (void)_removeMediaTypesFromContainerWithPersistentID:(int64_t)a3 mediaTypes:(id)a4 connection:(id)a5
++ (void)_removeMediaTypesFromContainerWithPersistentID:(int64_t)d mediaTypes:(id)types connection:(id)connection
 {
-  v7 = a4;
-  v8 = a5;
+  typesCopy = types;
+  connectionCopy = connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__ML3Container__removeMediaTypesFromContainerWithPersistentID_mediaTypes_connection___block_invoke;
   v11[3] = &unk_278762660;
-  v12 = v7;
-  v13 = v8;
-  v14 = a3;
-  v9 = v8;
-  v10 = v7;
-  [ML3Container _updateContainedMediaTypeInContainerWithPersistentID:a3 connection:v9 itemUpdateBlock:v11];
+  v12 = typesCopy;
+  v13 = connectionCopy;
+  dCopy = d;
+  v9 = connectionCopy;
+  v10 = typesCopy;
+  [ML3Container _updateContainedMediaTypeInContainerWithPersistentID:d connection:v9 itemUpdateBlock:v11];
 }
 
 uint64_t __85__ML3Container__removeMediaTypesFromContainerWithPersistentID_mediaTypes_connection___block_invoke(uint64_t a1)
@@ -2863,20 +2863,20 @@ void __85__ML3Container__removeMediaTypesFromContainerWithPersistentID_mediaType
   }
 }
 
-+ (void)_addMediaTypesToContainerWithPersistentID:(int64_t)a3 mediaTypes:(id)a4 connection:(id)a5
++ (void)_addMediaTypesToContainerWithPersistentID:(int64_t)d mediaTypes:(id)types connection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  typesCopy = types;
+  connectionCopy = connection;
+  if ([typesCopy count])
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __80__ML3Container__addMediaTypesToContainerWithPersistentID_mediaTypes_connection___block_invoke;
     v10[3] = &unk_278762660;
-    v11 = v9;
-    v12 = v8;
-    v13 = a3;
-    [a1 _updateContainedMediaTypeInContainerWithPersistentID:a3 connection:v11 itemUpdateBlock:v10];
+    v11 = connectionCopy;
+    v12 = typesCopy;
+    dCopy = d;
+    [self _updateContainedMediaTypeInContainerWithPersistentID:d connection:v11 itemUpdateBlock:v10];
   }
 }
 
@@ -2938,17 +2938,17 @@ void __80__ML3Container__addMediaTypesToContainerWithPersistentID_mediaTypes_con
   }
 }
 
-+ (void)_clearContainerMediaTypeInContainerWithPersistentID:(int64_t)a3 connection:(id)a4
++ (void)_clearContainerMediaTypeInContainerWithPersistentID:(int64_t)d connection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__ML3Container__clearContainerMediaTypeInContainerWithPersistentID_connection___block_invoke;
   v8[3] = &unk_2787625E8;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
-  [a1 _updateContainedMediaTypeInContainerWithPersistentID:a3 connection:v7 itemUpdateBlock:v8];
+  v9 = connectionCopy;
+  dCopy = d;
+  v7 = connectionCopy;
+  [self _updateContainedMediaTypeInContainerWithPersistentID:d connection:v7 itemUpdateBlock:v8];
 }
 
 uint64_t __79__ML3Container__clearContainerMediaTypeInContainerWithPersistentID_connection___block_invoke(uint64_t a1)
@@ -2963,15 +2963,15 @@ uint64_t __79__ML3Container__clearContainerMediaTypeInContainerWithPersistentID_
   return v4;
 }
 
-+ (id)_mediaTypesForTracksInContainerWithPersistentID:(int64_t)a3 connection:(id)a4
++ (id)_mediaTypesForTracksInContainerWithPersistentID:(int64_t)d connection:(id)connection
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc_init(MLMediaTypeCountedSet);
-  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v14[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v9 = [v5 executeQuery:@"SELECT media_type withParameters:{COUNT(media_type) FROM item JOIN container_item USING (item_pid) WHERE container_pid = ? GROUP BY media_type", v8}];
+  v9 = [connectionCopy executeQuery:@"SELECT media_type withParameters:{COUNT(media_type) FROM item JOIN container_item USING (item_pid) WHERE container_pid = ? GROUP BY media_type", v8}];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2998,13 +2998,13 @@ uint64_t __75__ML3Container__mediaTypesForTracksInContainerWithPersistentID_conn
   return [v8 addMediaType:v5 count:v7];
 }
 
-+ (id)_mediaTypesForTracksWithPersistentIDs:(id)a3 usingConnection:(id)a4
++ (id)_mediaTypesForTracksWithPersistentIDs:(id)ds usingConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v7 = objc_alloc_init(MLMediaTypeCountedSet);
   v8 = +[ML3DatabaseStatementRenderer defaultRenderer];
-  v9 = [v5 count];
+  v9 = [dsCopy count];
   if (v9)
   {
     v10 = v9;
@@ -3022,13 +3022,13 @@ uint64_t __75__ML3Container__mediaTypesForTracksInContainerWithPersistentID_conn
         v13 = v10 - v12;
       }
 
-      v14 = [v5 subarrayWithRange:{v12, v13}];
+      v14 = [dsCopy subarrayWithRange:{v12, v13}];
       v12 += v13;
       v15 = [v8 statementWithPrefix:@"SELECT media_type inParameterCount:{COUNT(media_type) FROM item WHERE item_pid", v13}];
 
       v11 = [v15 stringByAppendingString:@" GROUP BY media_type"];
 
-      v16 = [v6 executeQuery:v11 withParameters:v14];
+      v16 = [connectionCopy executeQuery:v11 withParameters:v14];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __70__ML3Container__mediaTypesForTracksWithPersistentIDs_usingConnection___block_invoke;
@@ -3054,17 +3054,17 @@ void __70__ML3Container__mediaTypesForTracksWithPersistentIDs_usingConnection___
   [v2 addMediaType:v4 count:{objc_msgSend(v5, "integerValue")}];
 }
 
-+ (void)_updateContainedMediaTypeInContainerWithPersistentID:(int64_t)a3 connection:(id)a4 itemUpdateBlock:(id)a5
++ (void)_updateContainedMediaTypeInContainerWithPersistentID:(int64_t)d connection:(id)connection itemUpdateBlock:(id)block
 {
-  v7 = a4;
-  if ((*(a5 + 2))(a5))
+  connectionCopy = connection;
+  if ((*(block + 2))(block))
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __96__ML3Container__updateContainedMediaTypeInContainerWithPersistentID_connection_itemUpdateBlock___block_invoke;
     v8[3] = &unk_2787625E8;
-    v9 = v7;
-    v10 = a3;
+    v9 = connectionCopy;
+    dCopy = d;
     [v9 performTransactionWithBlock:v8];
   }
 }
@@ -3111,12 +3111,12 @@ void __96__ML3Container__updateContainedMediaTypeInContainerWithPersistentID_con
   }
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6 preserveUndeletableEntities:(BOOL)a7
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count preserveUndeletableEntities:(BOOL)entities
 {
-  v12 = a3;
-  v13 = v12;
+  libraryCopy = library;
+  v13 = libraryCopy;
   v14 = 1;
-  if (a6)
+  if (count)
   {
     v24 = 0;
     v25 = &v24;
@@ -3126,12 +3126,12 @@ void __96__ML3Container__updateContainedMediaTypeInContainerWithPersistentID_con
     v16[1] = 3221225472;
     v16[2] = __95__ML3Container_deleteFromLibrary_deletionType_persistentIDs_count_preserveUndeletableEntities___block_invoke;
     v16[3] = &unk_2787625C0;
-    v23 = a7;
-    v19 = a6;
-    v20 = a5;
-    v21 = a1;
-    v22 = a4;
-    v17 = v12;
+    entitiesCopy = entities;
+    countCopy = count;
+    dsCopy = ds;
+    selfCopy = self;
+    typeCopy = type;
+    v17 = libraryCopy;
     v18 = &v24;
     [v17 performDatabaseTransactionWithBlock:v16];
     v14 = *(v25 + 24);
@@ -3645,56 +3645,56 @@ uint64_t __95__ML3Container_deleteFromLibrary_deletionType_persistentIDs_count_p
   return MEMORY[0x2821F96F8](v4, v5);
 }
 
-+ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)a3 inLibrary:(id)a4 persistentIDsToIgnore:(id)a5
++ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)identifier inLibrary:(id)library persistentIDsToIgnore:(id)ignore
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
+  libraryCopy = library;
+  ignoreCopy = ignore;
+  array = [MEMORY[0x277CBEB18] array];
   v10 = MEMORY[0x277CBEB98];
-  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:identifier];
   v12 = [v10 setWithObject:v11];
 
   v13 = [ML3ContainmentPredicate predicateWithProperty:@"parent_pid" values:v12];
-  v14 = [(ML3Entity *)ML3Container queryWithLibrary:v7 predicate:v13 orderingTerms:MEMORY[0x277CBEBF8]];
+  v14 = [(ML3Entity *)ML3Container queryWithLibrary:libraryCopy predicate:v13 orderingTerms:MEMORY[0x277CBEBF8]];
   if ([v14 countOfEntities])
   {
-    v15 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __84__ML3Container_sagaIDTreeForPlaylistWithIdentifier_inLibrary_persistentIDsToIgnore___block_invoke;
     v29[3] = &unk_278765BD8;
-    v30 = v15;
-    v16 = v15;
+    v30 = array2;
+    v16 = array2;
     [v14 enumeratePersistentIDsUsingBlock:v29];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __84__ML3Container_sagaIDTreeForPlaylistWithIdentifier_inLibrary_persistentIDsToIgnore___block_invoke_2;
     v25[3] = &unk_278762570;
-    v26 = v7;
-    v27 = v8;
-    v28 = v9;
+    v26 = libraryCopy;
+    v27 = ignoreCopy;
+    v28 = array;
     [v16 enumerateObjectsUsingBlock:v25];
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-  v18 = [v8 containsObject:v17];
+  v17 = [MEMORY[0x277CCABB0] numberWithLongLong:identifier];
+  v18 = [ignoreCopy containsObject:v17];
 
   if ((v18 & 1) == 0)
   {
     v19 = [ML3ContainmentPredicate predicateWithProperty:@"container_pid" values:v12];
-    v20 = [(ML3Entity *)ML3Container queryWithLibrary:v7 predicate:v19];
+    v20 = [(ML3Entity *)ML3Container queryWithLibrary:libraryCopy predicate:v19];
     v31[0] = @"store_cloud_id";
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __84__ML3Container_sagaIDTreeForPlaylistWithIdentifier_inLibrary_persistentIDsToIgnore___block_invoke_3;
     v23[3] = &unk_278762DC0;
-    v24 = v9;
+    v24 = array;
     [v20 enumeratePersistentIDsAndProperties:v21 usingBlock:v23];
   }
 
-  return v9;
+  return array;
 }
 
 void __84__ML3Container_sagaIDTreeForPlaylistWithIdentifier_inLibrary_persistentIDsToIgnore___block_invoke(uint64_t a1, uint64_t a2)
@@ -3720,27 +3720,27 @@ uint64_t __84__ML3Container_sagaIDTreeForPlaylistWithIdentifier_inLibrary_persis
   return result;
 }
 
-+ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)a3 inLibrary:(id)a4 includeUndeletablePlaylists:(BOOL)a5
++ (id)sagaIDTreeForPlaylistWithIdentifier:(int64_t)identifier inLibrary:(id)library includeUndeletablePlaylists:(BOOL)playlists
 {
-  v7 = a4;
-  if (a5)
+  libraryCopy = library;
+  if (playlists)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [ML3Container userUndeleteablePlaylistPersistentIDSInLibrary:v7];
+    v8 = [ML3Container userUndeleteablePlaylistPersistentIDSInLibrary:libraryCopy];
   }
 
-  v9 = [ML3Container sagaIDTreeForPlaylistWithIdentifier:a3 inLibrary:v7 persistentIDsToIgnore:v8];
+  v9 = [ML3Container sagaIDTreeForPlaylistWithIdentifier:identifier inLibrary:libraryCopy persistentIDsToIgnore:v8];
 
   return v9;
 }
 
-+ (id)userUndeleteablePlaylistPersistentIDSInLibrary:(id)a3
++ (id)userUndeleteablePlaylistPersistentIDSInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = [MEMORY[0x277CBEB58] set];
   v14[0] = 0;
   v14[1] = v14;
@@ -3753,7 +3753,7 @@ uint64_t __84__ML3Container_sagaIDTreeForPlaylistWithIdentifier_inLibrary_persis
   v10[2] = __63__ML3Container_userUndeleteablePlaylistPersistentIDSInLibrary___block_invoke;
   v10[3] = &unk_278763398;
   v13 = v14;
-  v5 = v3;
+  v5 = libraryCopy;
   v11 = v5;
   v6 = v4;
   v12 = v6;
@@ -3782,18 +3782,18 @@ void __63__ML3Container_userUndeleteablePlaylistPersistentIDSInLibrary___block_i
   }
 }
 
-+ (void)deleteAutoCreatedBuiltInSmartPlaylistsPIDs:(id)a3 inLibrary:(id)a4
++ (void)deleteAutoCreatedBuiltInSmartPlaylistsPIDs:(id)ds inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  if ([dsCopy count])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__ML3Container_deleteAutoCreatedBuiltInSmartPlaylistsPIDs_inLibrary___block_invoke;
     v7[3] = &unk_278764670;
-    v8 = v5;
-    v9 = v6;
+    v8 = dsCopy;
+    v9 = libraryCopy;
     [v9 databaseConnectionAllowingWrites:1 withBlock:v7];
   }
 }
@@ -3835,15 +3835,15 @@ void __69__ML3Container_deleteAutoCreatedBuiltInSmartPlaylistsPIDs_inLibrary___b
   [(ML3Entity *)v6 deleteFromLibrary];
 }
 
-+ (id)autoCreatedBuiltInSmartPlaylistsPIDs:(id)a3
++ (id)autoCreatedBuiltInSmartPlaylistsPIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [v3 valueForDatabaseProperty:@"createdBuiltInSmartPlaylists"];
-  v5 = [v4 BOOLValue];
+  dsCopy = ds;
+  v4 = [dsCopy valueForDatabaseProperty:@"createdBuiltInSmartPlaylists"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
     for (i = 0; i != 120; i += 24)
     {
@@ -3852,27 +3852,27 @@ void __69__ML3Container_deleteAutoCreatedBuiltInSmartPlaylistsPIDs_inLibrary___b
     }
 
     v10 = [(ML3CompoundPredicate *)ML3AnyCompoundPredicate predicateMatchingPredicates:v7];
-    v11 = [(ML3Entity *)ML3Container queryWithLibrary:v3 predicate:v10];
-    v12 = [v3 valueForDatabaseProperty:@"autoCreatedSmartPlaylistsDeleted"];
-    v13 = [v12 BOOLValue];
+    v11 = [(ML3Entity *)ML3Container queryWithLibrary:dsCopy predicate:v10];
+    v12 = [dsCopy valueForDatabaseProperty:@"autoCreatedSmartPlaylistsDeleted"];
+    bOOLValue2 = [v12 BOOLValue];
 
-    if ((v13 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __53__ML3Container_autoCreatedBuiltInSmartPlaylistsPIDs___block_invoke;
       v15[3] = &unk_278765BD8;
-      v16 = v6;
+      v16 = array;
       [v11 enumeratePersistentIDsUsingBlock:v15];
     }
   }
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
-  return v6;
+  return array;
 }
 
 void __53__ML3Container_autoCreatedBuiltInSmartPlaylistsPIDs___block_invoke(uint64_t a1, uint64_t a2)
@@ -3882,10 +3882,10 @@ void __53__ML3Container_autoCreatedBuiltInSmartPlaylistsPIDs___block_invoke(uint
   [v2 addObject:v3];
 }
 
-+ (BOOL)updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibrary:(id)a3
++ (BOOL)updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibrary:(id)library
 {
-  v12 = a3;
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  libraryCopy = library;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = &builtInCriteriaInfo;
   v5 = 5;
   do
@@ -3894,7 +3894,7 @@ void __53__ML3Container_autoCreatedBuiltInSmartPlaylistsPIDs___block_invoke(uint
     v7 = [v6 localizedStringForKey:*v4 value:&stru_28408B690 table:@"MLLocalizable"];
 
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v4 + 5)];
-    [v3 setObject:v7 forKey:v8];
+    [dictionary setObject:v7 forKey:v8];
 
     v4 += 3;
     --v5;
@@ -3905,10 +3905,10 @@ void __53__ML3Container_autoCreatedBuiltInSmartPlaylistsPIDs___block_invoke(uint
   v13[1] = 3221225472;
   v13[2] = __75__ML3Container_updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibrary___block_invoke;
   v13[3] = &unk_278764E80;
-  v14 = v3;
-  v15 = v12;
-  v9 = v12;
-  v10 = v3;
+  v14 = dictionary;
+  v15 = libraryCopy;
+  v9 = libraryCopy;
+  v10 = dictionary;
   [v9 performDatabaseTransactionWithBlock:v13];
 
   return 1;
@@ -3991,7 +3991,7 @@ void __75__ML3Container_updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibra
   }
 }
 
-+ (id)predicateForCriteriaList:(SearchCriteriaList *)a3 parentMatchedAny:(BOOL)a4
++ (id)predicateForCriteriaList:(SearchCriteriaList *)list parentMatchedAny:(BOOL)any
 {
   v29 = *MEMORY[0x277D85DE8];
   LockSearchCriteriaList();
@@ -4017,7 +4017,7 @@ void __75__ML3Container_updateBuiltInSmartPlaylistNamesForCurrentLanguageInLibra
       {
         if (BYTE8(v24))
         {
-          v15 = [a1 predicateForCriteriaList:v25 parentMatchedAny:a4];
+          v15 = [self predicateForCriteriaList:v25 parentMatchedAny:any];
         }
 
         else
@@ -4118,7 +4118,7 @@ LABEL_23:
   return v20;
 }
 
-+ (BOOL)hasCriterionInCriteriaList:(SearchCriteriaList *)a3 forITDBTrackField:(int)a4
++ (BOOL)hasCriterionInCriteriaList:(SearchCriteriaList *)list forITDBTrackField:(int)field
 {
   v13 = *MEMORY[0x277D85DE8];
   LockSearchCriteriaList();
@@ -4153,21 +4153,21 @@ LABEL_23:
   return 0;
 }
 
-+ (void)populateSortOrdersOfPropertyValues:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5
++ (void)populateSortOrdersOfPropertyValues:(id)values inLibrary:(id)library cachedNameOrders:(id)orders
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  valuesCopy = values;
+  libraryCopy = library;
+  ordersCopy = orders;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__ML3Container_populateSortOrdersOfPropertyValues_inLibrary_cachedNameOrders___block_invoke;
   v14[3] = &unk_278762448;
-  v15 = v7;
-  v16 = v9;
-  v17 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = v7;
+  v15 = valuesCopy;
+  v16 = ordersCopy;
+  v17 = libraryCopy;
+  v10 = libraryCopy;
+  v11 = ordersCopy;
+  v12 = valuesCopy;
   v13 = MEMORY[0x2318CDB10](v14);
   (v13)[2](v13, @"name_order", @"name");
 }
@@ -4229,21 +4229,21 @@ LABEL_12:
   }
 }
 
-+ (BOOL)smartCriteriaCanBeEvaluated:(id)a3
++ (BOOL)smartCriteriaCanBeEvaluated:(id)evaluated
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!evaluated)
   {
     goto LABEL_8;
   }
 
   v14 = 0;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  evaluatedCopy = evaluated;
+  evaluatedCopy2 = evaluated;
+  bytes = [evaluatedCopy2 bytes];
+  v8 = [evaluatedCopy2 length];
 
-  v9 = MEMORY[0x2318CCB20](v7, v8, &v14);
+  v9 = MEMORY[0x2318CCB20](bytes, v8, &v14);
   if (v9)
   {
     v10 = v9;
@@ -4258,7 +4258,7 @@ LABEL_12:
 
   if (v14)
   {
-    v12 = [a1 hasCriterionInCriteriaList:v14 forITDBTrackField:40] ^ 1;
+    v12 = [self hasCriterionInCriteriaList:v14 forITDBTrackField:40] ^ 1;
     DisposeSearchCriteriaList();
   }
 
@@ -4271,16 +4271,16 @@ LABEL_8:
   return v12;
 }
 
-+ (id)nextFilepathForPlaylistType:(int)a3 withPersistentID:(unint64_t)a4 inLibrary:(id)a5
++ (id)nextFilepathForPlaylistType:(int)type withPersistentID:(unint64_t)d inLibrary:(id)library
 {
-  v9 = a5;
-  if (!a4)
+  libraryCopy = library;
+  if (!d)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"ML3Container.m" lineNumber:745 description:@"persistentID must be specified since it is part of the filename format."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:745 description:@"persistentID must be specified since it is part of the filename format."];
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v10 = 6;
   }
@@ -4290,7 +4290,7 @@ LABEL_8:
     v10 = 7;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v11 = 4;
   }
@@ -4304,12 +4304,12 @@ LABEL_8:
   if (v12)
   {
     v18 = 0;
-    v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v12 validFormatSpecifiers:@"%llu" error:&v18, a4];
+    v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v12 validFormatSpecifiers:@"%llu" error:&v18, d];
     v14 = v18;
     if (v14)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:a1 file:@"ML3Container.m" lineNumber:763 description:{@"Encountered error validating format. pathFormat=%@ error=%@", v12, v14}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3Container.m" lineNumber:763 description:{@"Encountered error validating format. pathFormat=%@ error=%@", v12, v14}];
     }
   }
 
@@ -4321,10 +4321,10 @@ LABEL_8:
   return v13;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [ML3ContainerJoinsForProperties objectForKey:v4];
+  propertyCopy = property;
+  v5 = [ML3ContainerJoinsForProperties objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -4333,9 +4333,9 @@ LABEL_8:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___ML3Container;
-    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -4362,7 +4362,7 @@ LABEL_8:
   v15[2] = __40__ML3Container_MLProtocol__protocolItem__block_invoke_2;
   v15[3] = &unk_2787648C0;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v18 = WeakRetained;
   v9 = v3;
   v19 = v9;
@@ -4868,7 +4868,7 @@ void __40__ML3Container_MLProtocol__protocolItem__block_invoke()
   v14[2] = __56__ML3Container_MLProtocol__protocolItemForDynamicUpdate__block_invoke_2;
   v14[3] = &unk_278764640;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v9 = v3;
   v17 = v9;
   v10 = v8;
@@ -4954,8 +4954,8 @@ void __56__ML3Container_MLProtocol__protocolItemForDynamicUpdate__block_invoke()
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v5 = objc_alloc_init(MIPLibraryIdentifier);
   [(MIPLibraryIdentifier *)v5 setLibraryId:self->super._persistentID];
-  v6 = [WeakRetained libraryUID];
-  [(MIPLibraryIdentifier *)v5 setLibraryName:v6];
+  libraryUID = [WeakRetained libraryUID];
+  [(MIPLibraryIdentifier *)v5 setLibraryName:libraryUID];
 
   [(MIPMultiverseIdentifier *)v3 addLibraryIdentifiers:v5];
   v11[0] = MEMORY[0x277D85DD0];
@@ -4963,7 +4963,7 @@ void __56__ML3Container_MLProtocol__protocolItemForDynamicUpdate__block_invoke()
   v11[2] = __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke;
   v11[3] = &unk_278764640;
   v12 = @"SELECT container.name, container.store_cloud_id, container.cloud_universal_library_id FROM container WHERE container.ROWID = ?";
-  v13 = self;
+  selfCopy = self;
   v7 = v3;
   v14 = v7;
   [WeakRetained databaseConnectionAllowingWrites:0 withBlock:v11];
@@ -5015,48 +5015,48 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
   }
 }
 
-+ (int)protocolSortTypeFromTrackOrder:(unsigned int)a3
++ (int)protocolSortTypeFromTrackOrder:(unsigned int)order
 {
-  if (a3 - 1 > 0x4B)
+  if (order - 1 > 0x4B)
   {
     return 0;
   }
 
   else
   {
-    return dword_22D5C9A84[a3 - 1];
+    return dword_22D5C9A84[order - 1];
   }
 }
 
-+ (unsigned)trackOrderFromProtocolSortType:(int)a3
++ (unsigned)trackOrderFromProtocolSortType:(int)type
 {
-  if ((a3 - 1) > 0x49)
+  if ((type - 1) > 0x49)
   {
     return 1;
   }
 
   else
   {
-    return *&asc_22D5C995C[4 * (a3 - 1)];
+    return *&asc_22D5C995C[4 * (type - 1)];
   }
 }
 
-- (id)_stringStringForCriteriaInfo:(id *)a3
+- (id)_stringStringForCriteriaInfo:(id *)info
 {
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:a3->var6.var0.var0 length:a3->var6.var0.var1 >> 1];
+  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:info->var6.var0.var0 length:info->var6.var0.var1 >> 1];
 
   return v3;
 }
 
-- (id)_stringForTrackFieldMediaKind:(int64_t)a3
+- (id)_stringForTrackFieldMediaKind:(int64_t)kind
 {
-  if (a3 > 4095)
+  if (kind > 4095)
   {
-    if (a3 < 0x40000)
+    if (kind < 0x40000)
     {
-      if (a3 >= 0x8000)
+      if (kind >= 0x8000)
       {
-        switch(a3)
+        switch(kind)
         {
           case 0x8000:
             return @"rental";
@@ -5069,7 +5069,7 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
 
       else
       {
-        switch(a3)
+        switch(kind)
         {
           case 0x1000:
             return @"software package";
@@ -5081,9 +5081,9 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
       }
     }
 
-    else if (a3 < 0x200000)
+    else if (kind < 0x200000)
     {
-      switch(a3)
+      switch(kind)
       {
         case 0x40000:
           return @"software game";
@@ -5094,14 +5094,14 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
       }
     }
 
-    else if (a3 >= 0x800000)
+    else if (kind >= 0x800000)
     {
-      if (a3 == 0x800000)
+      if (kind == 0x800000)
       {
         return @"PDF book";
       }
 
-      if (a3 == 0x1000000)
+      if (kind == 0x1000000)
       {
         return @"alert tone";
       }
@@ -5109,23 +5109,23 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
 
     else
     {
-      if (a3 == 0x200000)
+      if (kind == 0x200000)
       {
         return @"iTunes U";
       }
 
-      if (a3 == 0x400000)
+      if (kind == 0x400000)
       {
         return @"book";
       }
     }
   }
 
-  else if (a3 <= 31)
+  else if (kind <= 31)
   {
-    if (a3 > 3)
+    if (kind > 3)
     {
-      switch(a3)
+      switch(kind)
       {
         case 4:
           return @"podcast";
@@ -5138,7 +5138,7 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
 
     else
     {
-      switch(a3)
+      switch(kind)
       {
         case 0:
           return @"unknown";
@@ -5150,9 +5150,9 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
     }
   }
 
-  else if (a3 <= 255)
+  else if (kind <= 255)
   {
-    switch(a3)
+    switch(kind)
     {
       case 32:
         return @"music video";
@@ -5163,14 +5163,14 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
     }
   }
 
-  else if (a3 > 1023)
+  else if (kind > 1023)
   {
-    if (a3 == 1024)
+    if (kind == 1024)
     {
       return @"home video";
     }
 
-    if (a3 == 2048)
+    if (kind == 2048)
     {
       return @"future video 3";
     }
@@ -5178,12 +5178,12 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
 
   else
   {
-    if (a3 == 256)
+    if (kind == 256)
     {
       return @"coached audio";
     }
 
-    if (a3 == 512)
+    if (kind == 512)
     {
       return @"video pass";
     }
@@ -5192,22 +5192,22 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
   return @"invalid";
 }
 
-- (id)_stringForTrackFieldCloudStatus:(int64_t)a3
+- (id)_stringForTrackFieldCloudStatus:(int64_t)status
 {
-  if (a3 > 7)
+  if (status > 7)
   {
     return @"invalid";
   }
 
   else
   {
-    return off_278765E80[a3];
+    return off_278765E80[status];
   }
 }
 
-- (id)_stringForCriterionMatchType:(id *)a3
+- (id)_stringForCriterionMatchType:(id *)type
 {
-  HIDWORD(v4) = a3->var0 - 29;
+  HIDWORD(v4) = type->var0 - 29;
   LODWORD(v4) = HIDWORD(v4);
   v3 = v4 >> 1;
   if (v3 < 7 && ((0x53u >> v3) & 1) != 0)
@@ -5216,7 +5216,7 @@ void __48__ML3Container_MLProtocol__multiverseIdentifier__block_invoke_2(uint64_
     goto LABEL_37;
   }
 
-  var1 = a3->var1;
+  var1 = type->var1;
   v7 = var1 & 0xFFFFFF;
   v5 = &stru_28408B690;
   if ((var1 & 0xFFFFFF) <= 0x1F)
@@ -5325,10 +5325,10 @@ LABEL_37:
   return v5;
 }
 
-- (id)_stringForCriterionMatchKey:(id *)a3
+- (id)_stringForCriterionMatchKey:(id *)key
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unsupported: %d)", a3->var0];
-  var0 = a3->var0;
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unsupported: %d)", key->var0];
+  var0 = key->var0;
   v6 = @"Invalid";
   switch(var0)
   {
@@ -5747,9 +5747,9 @@ LABEL_136:
   return v4;
 }
 
-- (id)_stringForCriterionBuffer:(id *)a3
+- (id)_stringForCriterionBuffer:(id *)buffer
 {
-  switch(a3->var0)
+  switch(buffer->var0)
   {
     case 2u:
     case 3u:
@@ -5779,8 +5779,8 @@ LABEL_136:
     case 0x7Cu:
     case 0x7Fu:
     case 0x80u:
-      var6 = a3->var6;
-      v10 = *&a3->var0;
+      var6 = buffer->var6;
+      v10 = *&buffer->var0;
       v11 = var6;
       v4 = [(ML3Container *)self _stringStringForCriteriaInfo:&v10];
       break;
@@ -5825,8 +5825,8 @@ LABEL_136:
     case 0x81u:
     case 0x86u:
     case 0x9Au:
-      v3 = a3->var6;
-      v10 = *&a3->var0;
+      v3 = buffer->var6;
+      v10 = *&buffer->var0;
       v11 = v3;
       v4 = [(ML3Container *)self _numericStringForCriteriaInfo:&v10];
       break;
@@ -5836,8 +5836,8 @@ LABEL_136:
     case 0x22u:
     case 0x45u:
     case 0xB7u:
-      v7 = a3->var6;
-      v10 = *&a3->var0;
+      v7 = buffer->var6;
+      v10 = *&buffer->var0;
       v11 = v7;
       v4 = [(ML3Container *)self _dateStringForCriteriaInfo:&v10];
       break;
@@ -5855,42 +5855,42 @@ LABEL_136:
     case 0x7Du:
     case 0x83u:
     case 0x85u:
-      v6 = a3->var6;
-      v10 = *&a3->var0;
+      v6 = buffer->var6;
+      v10 = *&buffer->var0;
       v11 = v6;
       v4 = [(ML3Container *)self _BOOLeanStringForCriteriaInfo:&v10];
       break;
     case 0x7Eu:
-      v9 = a3->var6;
-      v10 = *&a3->var0;
+      v9 = buffer->var6;
+      v10 = *&buffer->var0;
       v11 = v9;
       v4 = [(ML3Container *)self _nonzeroStringForCriteriaInfo:&v10];
       break;
     default:
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unsupported: %d)", a3->var0];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unsupported: %d)", buffer->var0];
       break;
   }
 
   return v4;
 }
 
-- (id)_convertNumericValueFromCriterionMatchKey:(unsigned int)a3 criteriaValue:(int64_t)a4
+- (id)_convertNumericValueFromCriterionMatchKey:(unsigned int)key criteriaValue:(int64_t)value
 {
-  if (a3 == 13)
+  if (key == 13)
   {
-    v4 = [(ML3Container *)self _formatTime:a4];
+    v4 = [(ML3Container *)self _formatTime:value];
   }
 
   else
   {
-    if (a3 == 12)
+    if (key == 12)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a4 / 0x100000];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", value / 0x100000];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a4];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", value];
     }
     v4 = ;
   }
@@ -5898,14 +5898,14 @@ LABEL_136:
   return v4;
 }
 
-- (id)_numericStringForCriteriaInfo:(id *)a3
+- (id)_numericStringForCriteriaInfo:(id *)info
 {
-  var1 = a3->var1;
+  var1 = info->var1;
   LODWORD(v15) = 0;
   GetSearchCriterionInfoValueRange();
   ValueRangeCriteriaStartValue = GetValueRangeCriteriaStartValue();
   ValueRangeCriteriaEndValue = GetValueRangeCriteriaEndValue();
-  var0 = a3->var0;
+  var0 = info->var0;
   if (var0 > 89)
   {
     if (var0 != 90)
@@ -5935,7 +5935,7 @@ LABEL_8:
   {
 LABEL_9:
     v9 = [(ML3Container *)self _convertNumericValueFromCriterionMatchKey:var0 criteriaValue:ValueRangeCriteriaStartValue];
-    v10 = [(ML3Container *)self _convertNumericValueFromCriterionMatchKey:a3->var0 criteriaValue:ValueRangeCriteriaEndValue];
+    v10 = [(ML3Container *)self _convertNumericValueFromCriterionMatchKey:info->var0 criteriaValue:ValueRangeCriteriaEndValue];
     goto LABEL_10;
   }
 
@@ -5963,24 +5963,24 @@ LABEL_11:
   return v12;
 }
 
-- (id)_nonzeroStringForCriteriaInfo:(id *)a3
+- (id)_nonzeroStringForCriteriaInfo:(id *)info
 {
-  var6 = a3->var6;
-  v6[0] = *&a3->var0;
+  var6 = info->var6;
+  v6[0] = *&info->var0;
   v6[1] = var6;
   v4 = [(ML3Container *)self _BOOLeanStringForCriteriaInfo:v6];
 
   return v4;
 }
 
-- (id)_dateStringForCriteriaInfo:(id *)a3
+- (id)_dateStringForCriteriaInfo:(id *)info
 {
   if (_dateStringForCriteriaInfo__onceToken != -1)
   {
     dispatch_once(&_dateStringForCriteriaInfo__onceToken, &__block_literal_global_27530);
   }
 
-  var1 = a3->var1;
+  var1 = info->var1;
   GetSearchCriterionInfoValueRange();
   v5 = CFTimeZoneCopySystem();
   v6 = MEMORY[0x277CBECC8];
@@ -6023,9 +6023,9 @@ uint64_t __63__ML3Container_SmartPlaylistDebug___dateStringForCriteriaInfo___blo
   return [v2 setDateFormat:@"MM/dd/yyyy HH:mm"];
 }
 
-- (id)_BOOLeanStringForCriteriaInfo:(id *)a3
+- (id)_BOOLeanStringForCriteriaInfo:(id *)info
 {
-  HIDWORD(v4) = a3->var0 - 29;
+  HIDWORD(v4) = info->var0 - 29;
   LODWORD(v4) = HIDWORD(v4);
   v3 = v4 >> 1;
   if (v3 > 3)
@@ -6036,7 +6036,7 @@ uint64_t __63__ML3Container_SmartPlaylistDebug___dateStringForCriteriaInfo___blo
     }
 
 LABEL_10:
-    var1_high = HIBYTE(a3->var1);
+    var1_high = HIBYTE(info->var1);
     v6 = @"true";
     v7 = @"false";
     goto LABEL_11;
@@ -6049,7 +6049,7 @@ LABEL_10:
 
   if (v3 == 1)
   {
-    var1_high = HIBYTE(a3->var1);
+    var1_high = HIBYTE(info->var1);
     v6 = @"false";
     v7 = @"true";
 LABEL_11:
@@ -6058,7 +6058,7 @@ LABEL_11:
   }
 
 LABEL_15:
-  if (a3->var0 == 133 && (a3->var1 & 0x400) != 0)
+  if (info->var0 == 133 && (info->var1 & 0x400) != 0)
   {
     GetSearchCriterionInfoNumericValue();
   }
@@ -6079,12 +6079,12 @@ LABEL_12:
   }
 }
 
-- (id)_addUnitesForCriterionInfo:(id *)a3
+- (id)_addUnitesForCriterionInfo:(id *)info
 {
   v3 = @"MB";
-  var0 = a3->var0;
+  var0 = info->var0;
   v5 = &stru_28408B690;
-  if (a3->var0 == 6)
+  if (info->var0 == 6)
   {
     v5 = @"Hz";
   }
@@ -6105,12 +6105,12 @@ LABEL_12:
   }
 }
 
-- (id)_criteriaListDescription:(SearchCriteriaList *)a3 level:(int64_t)a4
+- (id)_criteriaListDescription:(SearchCriteriaList *)description level:(int64_t)level
 {
-  v4 = a4;
+  levelCopy = level;
   v13 = *MEMORY[0x277D85DE8];
   LockSearchCriteriaList();
-  v5 = [MEMORY[0x277CCAB68] stringWithFormat:@"%*c", (3 * v4), 32];
+  v5 = [MEMORY[0x277CCAB68] stringWithFormat:@"%*c", (3 * levelCopy), 32];
   GetSearchCriteriaListOptions();
   v6 = CountSearchCriteria();
   [v5 appendString:@"&&\n"];

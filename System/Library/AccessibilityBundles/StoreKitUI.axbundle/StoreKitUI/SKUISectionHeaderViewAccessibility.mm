@@ -17,8 +17,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SKUISectionHeaderViewAccessibility *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  subviews = [(SKUISectionHeaderViewAccessibility *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -31,7 +31,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -41,7 +41,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v5);
@@ -57,8 +57,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SKUISectionHeaderViewAccessibility *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(SKUISectionHeaderViewAccessibility *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -69,7 +69,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -81,7 +81,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -101,13 +101,13 @@ LABEL_11:
 - (id)accessibilityLabel
 {
   v19 = *MEMORY[0x29EDCA608];
-  v2 = [(SKUISectionHeaderViewAccessibility *)self subviews];
-  v3 = [MEMORY[0x29EDBA0F8] string];
+  subviews = [(SKUISectionHeaderViewAccessibility *)self subviews];
+  string = [MEMORY[0x29EDBA0F8] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = subviews;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -126,10 +126,10 @@ LABEL_11:
         NSClassFromString(&cfstr_Skuiattributed_0.isa);
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 _accessibilityViewIsVisible])
         {
-          v13 = [v9 accessibilityLabel];
+          accessibilityLabel = [v9 accessibilityLabel];
           v10 = __AXStringForVariables();
 
-          v3 = v10;
+          string = v10;
         }
       }
 
@@ -141,7 +141,7 @@ LABEL_11:
 
   v11 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return string;
 }
 
 - (unint64_t)accessibilityTraits
@@ -173,7 +173,7 @@ LABEL_11:
           NSClassFromString(&cfstr_Skuiattributed_0.isa);
           if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 _accessibilityViewIsVisible])
           {
-            v9 = [v8 accessibilityTraits];
+            accessibilityTraits = [v8 accessibilityTraits];
 
             goto LABEL_14;
           }
@@ -192,17 +192,17 @@ LABEL_11:
       }
     }
 
-    v9 = *MEMORY[0x29EDC7578];
+    accessibilityTraits = *MEMORY[0x29EDC7578];
 LABEL_14:
   }
 
   else
   {
-    v9 = *MEMORY[0x29EDC7FA0];
+    accessibilityTraits = *MEMORY[0x29EDC7FA0];
   }
 
   v10 = *MEMORY[0x29EDCA608];
-  return v9;
+  return accessibilityTraits;
 }
 
 @end

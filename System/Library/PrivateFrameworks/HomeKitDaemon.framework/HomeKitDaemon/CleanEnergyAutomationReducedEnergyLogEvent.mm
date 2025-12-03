@@ -1,14 +1,14 @@
 @interface CleanEnergyAutomationReducedEnergyLogEvent
 - (NSString)description;
-- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithHomeUUID:(id)a3;
-- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithHomeUUID:(id)d;
+- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 @end
 
 @implementation CleanEnergyAutomationReducedEnergyLogEvent
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2297B992C();
 
   v3 = sub_22A4DD5AC();
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithHomeUUID:(id)a3
+- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithHomeUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(v4 - 8);
@@ -34,7 +34,7 @@
   return v11;
 }
 
-- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtC13HomeKitDaemon42CleanEnergyAutomationReducedEnergyLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v6 = sub_22A4DB7DC();
   v7 = *(v6 - 8);
@@ -46,7 +46,7 @@
   v12 = type metadata accessor for CleanEnergyAutomationReducedEnergyLogEvent();
   v15.receiver = self;
   v15.super_class = v12;
-  v13 = [(HMMHomeLogEvent *)&v15 initWithStartTime:v11 homeUUID:a3];
+  v13 = [(HMMHomeLogEvent *)&v15 initWithStartTime:v11 homeUUID:time];
 
   (*(v7 + 8))(v10, v6);
   return v13;

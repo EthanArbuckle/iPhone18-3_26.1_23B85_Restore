@@ -1,16 +1,16 @@
 @interface ExpiredDownloadRecoveryOperation
-+ (BOOL)canAttemptRecoveryWithError:(id)a3;
-- (ExpiredDownloadRecoveryOperation)initWithDownloadIdentifier:(int64_t)a3 databaseSession:(id)a4;
++ (BOOL)canAttemptRecoveryWithError:(id)error;
+- (ExpiredDownloadRecoveryOperation)initWithDownloadIdentifier:(int64_t)identifier databaseSession:(id)session;
 - (id)outputBlock;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation ExpiredDownloadRecoveryOperation
 
-- (ExpiredDownloadRecoveryOperation)initWithDownloadIdentifier:(int64_t)a3 databaseSession:(id)a4
+- (ExpiredDownloadRecoveryOperation)initWithDownloadIdentifier:(int64_t)identifier databaseSession:(id)session
 {
-  v6 = a4;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = ExpiredDownloadRecoveryOperation;
   v7 = [(ExpiredDownloadRecoveryOperation *)&v18 init];
@@ -18,28 +18,28 @@
   {
     v8 = [[NSArray alloc] initWithObjects:{@"is_automatic", @"is_store_queued", @"kind", @"download_state.store_queue_refresh_count", @"store_saga_id", 0}];
     v9 = [DownloadEntity alloc];
-    v10 = [v6 database];
-    v11 = [(DownloadEntity *)v9 initWithPersistentID:a3 inDatabase:v10];
+    database = [sessionCopy database];
+    v11 = [(DownloadEntity *)v9 initWithPersistentID:identifier inDatabase:database];
 
     v12 = [[SSMemoryEntity alloc] initWithDatabaseEntity:v11 properties:v8];
     download = v7->_download;
     v7->_download = v12;
 
     v14 = [(SSMemoryEntity *)v7->_download valueForProperty:@"download_state.store_queue_refresh_count"];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
 
-    v16 = [NSNumber numberWithInteger:v15 + 1];
+    v16 = [NSNumber numberWithInteger:integerValue + 1];
     [(DownloadEntity *)v11 setValue:v16 forProperty:@"download_state.store_queue_refresh_count"];
   }
 
   return v7;
 }
 
-+ (BOOL)canAttemptRecoveryWithError:(id)a3
++ (BOOL)canAttemptRecoveryWithError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:SSErrorHTTPStatusCodeKey];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKey:SSErrorHTTPStatusCodeKey];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 integerValue] == 403)
@@ -65,13 +65,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(ExpiredDownloadRecoveryOperation *)self lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -83,12 +83,12 @@
 {
   v3 = objc_alloc_init(ExpiredDownloadRecoveryResponse);
   [(ExpiredDownloadRecoveryResponse *)v3 setResult:0];
-  v4 = [(SSMemoryEntity *)self->_download databaseID];
-  [(ExpiredDownloadRecoveryResponse *)v3 setDownloadIdentifier:v4];
+  databaseID = [(SSMemoryEntity *)self->_download databaseID];
+  [(ExpiredDownloadRecoveryResponse *)v3 setDownloadIdentifier:databaseID];
   v5 = [(SSMemoryEntity *)self->_download valueForProperty:@"is_automatic"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 2)
+  if (integerValue == 2)
   {
     [(ExpiredDownloadRecoveryResponse *)v3 setResult:1];
   }
@@ -101,11 +101,11 @@
   v11 = SSGetItemIdentifierFromValue();
 
   v12 = [(SSMemoryEntity *)self->_download valueForProperty:@"download_state.store_queue_refresh_count"];
-  v13 = [v12 integerValue];
+  integerValue2 = [v12 integerValue];
 
   if (v8)
   {
-    if (v13 <= 1)
+    if (integerValue2 <= 1)
     {
       v14 = off_100325230;
       goto LABEL_34;
@@ -114,7 +114,7 @@
     goto LABEL_22;
   }
 
-  if (![v9 BOOLValue] && !v11 && v6 != 2)
+  if (![v9 BOOLValue] && !v11 && integerValue != 2)
   {
     v15 = +[SSLogConfig sharedDaemonConfig];
     if (!v15)
@@ -122,19 +122,19 @@
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -144,7 +144,7 @@
       v53 = 138412546;
       v54 = objc_opt_class();
       v55 = 2048;
-      v56 = v4;
+      v56 = databaseID;
       v19 = v54;
       LODWORD(v51) = 22;
       v50 = &v53;
@@ -158,16 +158,16 @@ LABEL_20:
         goto LABEL_72;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v53, v51];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v53, v51];
       free(v20);
-      v50 = v18;
+      v50 = oSLogObject;
       SSFileLog();
     }
 
     goto LABEL_20;
   }
 
-  if (v13 < 2)
+  if (integerValue2 < 2)
   {
     v14 = off_100325228;
     if (!v11)
@@ -176,26 +176,26 @@ LABEL_20:
     }
 
 LABEL_34:
-    v21 = [objc_alloc(*v14) initWithDownloadIdentifier:v4];
+    v21 = [objc_alloc(*v14) initWithDownloadIdentifier:databaseID];
     v27 = +[SSLogConfig sharedDaemonConfig];
     if (!v27)
     {
       v27 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
+    shouldLog2 = [v27 shouldLog];
     if ([v27 shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog2 | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog2;
     }
 
-    v30 = [v27 OSLogObject];
-    if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v27 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v29 &= 2u;
     }
@@ -205,7 +205,7 @@ LABEL_34:
       v53 = 138412802;
       v54 = objc_opt_class();
       v55 = 2048;
-      v56 = v4;
+      v56 = databaseID;
       v57 = 2112;
       v58 = v21;
       v31 = v54;
@@ -218,16 +218,16 @@ LABEL_34:
         goto LABEL_45;
       }
 
-      v30 = [NSString stringWithCString:v32 encoding:4, &v53, v51];
+      oSLogObject2 = [NSString stringWithCString:v32 encoding:4, &v53, v51];
       free(v32);
-      v50 = v30;
+      v50 = oSLogObject2;
       SSFileLog();
     }
 
 LABEL_45:
     v52 = 0;
     v33 = [(ExpiredDownloadRecoveryOperation *)self runSubOperation:v21 returningError:&v52];
-    v24 = v52;
+    oSLogObject5 = v52;
     v34 = +[SSLogConfig sharedDaemonConfig];
     v35 = v34;
     if (v33)
@@ -237,19 +237,19 @@ LABEL_45:
         v35 = +[SSLogConfig sharedConfig];
       }
 
-      v36 = [v35 shouldLog];
+      shouldLog3 = [v35 shouldLog];
       if ([v35 shouldLogToDisk])
       {
-        v37 = v36 | 2;
+        v37 = shouldLog3 | 2;
       }
 
       else
       {
-        v37 = v36;
+        v37 = shouldLog3;
       }
 
-      v38 = [v35 OSLogObject];
-      if (!os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
+      oSLogObject3 = [v35 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
       {
         v37 &= 2u;
       }
@@ -260,7 +260,7 @@ LABEL_45:
         v53 = 138412546;
         v54 = v39;
         v55 = 2048;
-        v56 = v4;
+        v56 = databaseID;
         v40 = v39;
         LODWORD(v51) = 22;
         v50 = &v53;
@@ -274,9 +274,9 @@ LABEL_57:
           goto LABEL_70;
         }
 
-        v38 = [NSString stringWithCString:v41 encoding:4, &v53, v51];
+        oSLogObject3 = [NSString stringWithCString:v41 encoding:4, &v53, v51];
         free(v41);
-        v50 = v38;
+        v50 = oSLogObject3;
         SSFileLog();
       }
 
@@ -288,19 +288,19 @@ LABEL_57:
       v35 = +[SSLogConfig sharedConfig];
     }
 
-    v42 = [v35 shouldLog];
+    shouldLog4 = [v35 shouldLog];
     if ([v35 shouldLogToDisk])
     {
-      v43 = v42 | 2;
+      v43 = shouldLog4 | 2;
     }
 
     else
     {
-      v43 = v42;
+      v43 = shouldLog4;
     }
 
-    v44 = [v35 OSLogObject];
-    if (!os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v35 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v43 &= 2u;
     }
@@ -311,9 +311,9 @@ LABEL_57:
       v53 = 138412802;
       v54 = v45;
       v55 = 2048;
-      v56 = v4;
+      v56 = databaseID;
       v57 = 2112;
-      v58 = v24;
+      v58 = oSLogObject5;
       v46 = v45;
       LODWORD(v51) = 32;
       v50 = &v53;
@@ -323,13 +323,13 @@ LABEL_57:
       {
 LABEL_69:
 
-        [(ExpiredDownloadRecoveryResponse *)v3 setError:v24];
+        [(ExpiredDownloadRecoveryResponse *)v3 setError:oSLogObject5];
         goto LABEL_70;
       }
 
-      v44 = [NSString stringWithCString:v47 encoding:4, &v53, v51];
+      oSLogObject4 = [NSString stringWithCString:v47 encoding:4, &v53, v51];
       free(v47);
-      v50 = v44;
+      v50 = oSLogObject4;
       SSFileLog();
     }
 
@@ -343,19 +343,19 @@ LABEL_22:
     v21 = +[SSLogConfig sharedConfig];
   }
 
-  v22 = [v21 shouldLog];
+  shouldLog5 = [v21 shouldLog];
   if ([v21 shouldLogToDisk])
   {
-    v23 = v22 | 2;
+    v23 = shouldLog5 | 2;
   }
 
   else
   {
-    v23 = v22;
+    v23 = shouldLog5;
   }
 
-  v24 = [v21 OSLogObject];
-  if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+  oSLogObject5 = [v21 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
   {
     v23 &= 2u;
   }
@@ -368,7 +368,7 @@ LABEL_22:
   v53 = 138412546;
   v54 = objc_opt_class();
   v55 = 2048;
-  v56 = v4;
+  v56 = databaseID;
   v25 = v54;
   LODWORD(v51) = 22;
   v50 = &v53;
@@ -376,19 +376,19 @@ LABEL_22:
 
   if (v26)
   {
-    v24 = [NSString stringWithCString:v26 encoding:4, &v53, v51];
+    oSLogObject5 = [NSString stringWithCString:v26 encoding:4, &v53, v51];
     free(v26);
-    v50 = v24;
+    v50 = oSLogObject5;
     SSFileLog();
 LABEL_70:
   }
 
 LABEL_72:
-  v48 = [(ExpiredDownloadRecoveryOperation *)self outputBlock];
-  v49 = v48;
-  if (v48)
+  outputBlock = [(ExpiredDownloadRecoveryOperation *)self outputBlock];
+  v49 = outputBlock;
+  if (outputBlock)
   {
-    (*(v48 + 16))(v48, self, v3);
+    (*(outputBlock + 16))(outputBlock, self, v3);
     [(ExpiredDownloadRecoveryOperation *)self setOutputBlock:0];
   }
 }

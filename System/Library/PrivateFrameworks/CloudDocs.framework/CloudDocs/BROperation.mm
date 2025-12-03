@@ -5,14 +5,14 @@
 - (NSString)description;
 - (id)remoteFPFSObject;
 - (id)remoteObject;
-- (void)_setExecuting:(BOOL)a3;
-- (void)_setFinished:(BOOL)a3;
-- (void)_setRemoteOperation:(id)a3;
+- (void)_setExecuting:(BOOL)executing;
+- (void)_setFinished:(BOOL)finished;
+- (void)_setRemoteOperation:(id)operation;
 - (void)cancel;
-- (void)completedWithResult:(id)a3 error:(id)a4;
+- (void)completedWithResult:(id)result error:(id)error;
 - (void)dealloc;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)setRemoteOperationProxy:(id)a3 userInfo:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)setRemoteOperationProxy:(id)proxy userInfo:(id)info;
 - (void)start;
 @end
 
@@ -47,13 +47,13 @@
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %s", objc_opt_class(), out];
     [(BROperation *)v2 setName:v5];
 
-    v6 = [(BROperation *)v2 name];
-    v7 = v6;
-    v8 = [v6 UTF8String];
+    name = [(BROperation *)v2 name];
+    v7 = name;
+    uTF8String = [name UTF8String];
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v10 = dispatch_queue_attr_make_initially_inactive(v9);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(v10, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v8, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
 
     queue = v2->_queue;
     v2->_queue = v12;
@@ -67,12 +67,12 @@
 
 - (NSString)description
 {
-  v3 = [(BROperation *)self name];
+  name = [(BROperation *)self name];
 
-  if (v3)
+  if (name)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(BROperation *)self name];
+    name2 = [(BROperation *)self name];
     if ([(BROperation *)self isExecuting])
     {
       v6 = @"executing";
@@ -80,15 +80,15 @@
 
     else
     {
-      v8 = [(BROperation *)self isFinished];
+      isFinished = [(BROperation *)self isFinished];
       v6 = @"idle";
-      if (v8)
+      if (isFinished)
       {
         v6 = @"finished";
       }
     }
 
-    v7 = [v4 stringWithFormat:@"<%p %@ %@>", self, v5, v6];
+    v7 = [v4 stringWithFormat:@"<%p %@ %@>", self, name2, v6];
   }
 
   else
@@ -116,24 +116,24 @@
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setFinished:(BOOL)a3
+- (void)_setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(BROperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(BROperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)_setExecuting:(BOOL)a3
+- (void)_setExecuting:(BOOL)executing
 {
-  if ((((self->_executionTransation == 0) ^ a3) & 1) == 0)
+  if ((((self->_executionTransation == 0) ^ executing) & 1) == 0)
   {
-    v3 = a3;
+    executingCopy = executing;
     [(BROperation *)self willChangeValueForKey:@"isExecuting"];
-    if (v3)
+    if (executingCopy)
     {
       v5 = os_transaction_create();
     }
@@ -195,7 +195,7 @@ void __20__BROperation_start__block_invoke(uint64_t a1)
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_debug_impl(&dword_1AE2A9000, log, OS_LOG_TYPE_DEBUG, "[DEBUG] cancelling %@%@", &v4, 0x16u);
@@ -220,34 +220,34 @@ uint64_t __21__BROperation_cancel__block_invoke(uint64_t a1)
 {
   if (self->_finished)
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(isCancelled) = 1;
   }
 
   else if (self->_executionTransation)
   {
-    v2 = [(BROperation *)self isCancelled];
-    if (v2)
+    isCancelled = [(BROperation *)self isCancelled];
+    if (isCancelled)
     {
       v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
       [(BROperation *)self finishWithResult:0 error:v4];
 
-      LOBYTE(v2) = 1;
+      LOBYTE(isCancelled) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(isCancelled) = 0;
   }
 
-  return v2;
+  return isCancelled;
 }
 
 - (BOOL)finishIfCancelled
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(BROperation *)self isCancelled];
-  if (v3)
+  isCancelled = [(BROperation *)self isCancelled];
+  if (isCancelled)
   {
     queue = self->_queue;
     v16[0] = MEMORY[0x1E69E9820];
@@ -292,7 +292,7 @@ uint64_t __21__BROperation_cancel__block_invoke(uint64_t a1)
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v3;
+  return isCancelled;
 }
 
 - (id)remoteObject
@@ -321,20 +321,20 @@ uint64_t __21__BROperation_cancel__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)completedWithResult:(id)a3 error:(id)a4
+- (void)completedWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__BROperation_completedWithResult_error___block_invoke;
   block[3] = &unk_1E7A149E0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = resultCopy;
   dispatch_async(queue, block);
 }
 
@@ -372,19 +372,19 @@ void __41__BROperation_completedWithResult_error___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  [(BROperation *)self _setExecuting:0, a4];
+  [(BROperation *)self _setExecuting:0, error];
   [(BROperation *)self _setFinished:1];
 
   [(BROperation *)self _setRemoteOperation:0];
 }
 
-- (void)_setRemoteOperation:(id)a3
+- (void)_setRemoteOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   remoteOperation = self->_remoteOperation;
-  if (v4 && remoteOperation)
+  if (operationCopy && remoteOperation)
   {
     [(BROperation *)&self->_remoteOperation _setRemoteOperation:?];
     remoteOperation = v10;
@@ -393,7 +393,7 @@ void __41__BROperation_completedWithResult_error___block_invoke(uint64_t a1)
   [remoteOperation invalidate];
   if (self->_finished)
   {
-    if (!v4)
+    if (!operationCopy)
     {
       goto LABEL_10;
     }
@@ -401,13 +401,13 @@ void __41__BROperation_completedWithResult_error___block_invoke(uint64_t a1)
     goto LABEL_9;
   }
 
-  v6 = [(BROperation *)self isCancelled];
-  if (v4 && (v6 & 1) != 0)
+  isCancelled = [(BROperation *)self isCancelled];
+  if (operationCopy && (isCancelled & 1) != 0)
   {
 LABEL_9:
-    [v4 invalidate];
+    [operationCopy invalidate];
 
-    v4 = 0;
+    operationCopy = 0;
   }
 
 LABEL_10:
@@ -416,22 +416,22 @@ LABEL_10:
   v9[2] = __35__BROperation__setRemoteOperation___block_invoke;
   v9[3] = &unk_1E7A14830;
   v9[4] = self;
-  v7 = [v4 remoteObjectProxyWithErrorHandler:v9];
+  v7 = [operationCopy remoteObjectProxyWithErrorHandler:v9];
   v8 = self->_remoteOperation;
   self->_remoteOperation = v7;
 }
 
-- (void)setRemoteOperationProxy:(id)a3 userInfo:(id)a4
+- (void)setRemoteOperationProxy:(id)proxy userInfo:(id)info
 {
-  v5 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__BROperation_setRemoteOperationProxy_userInfo___block_invoke;
   v8[3] = &unk_1E7A14A08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = proxyCopy;
+  v7 = proxyCopy;
   dispatch_async(queue, v8);
 }
 

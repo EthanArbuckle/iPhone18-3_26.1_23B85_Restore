@@ -1,37 +1,37 @@
 @interface NPKPaymentProvisioningFlowControllerRequestContext
-- (NPKPaymentProvisioningFlowControllerRequestContext)initWithCoder:(id)a3;
-- (NPKPaymentProvisioningFlowControllerRequestContext)initWithRequestHeader:(id)a3;
+- (NPKPaymentProvisioningFlowControllerRequestContext)initWithCoder:(id)coder;
+- (NPKPaymentProvisioningFlowControllerRequestContext)initWithRequestHeader:(id)header;
 @end
 
 @implementation NPKPaymentProvisioningFlowControllerRequestContext
 
-- (NPKPaymentProvisioningFlowControllerRequestContext)initWithRequestHeader:(id)a3
+- (NPKPaymentProvisioningFlowControllerRequestContext)initWithRequestHeader:(id)header
 {
-  v5 = a3;
+  headerCopy = header;
   v11.receiver = self;
   v11.super_class = NPKPaymentProvisioningFlowControllerRequestContext;
   v6 = [(NPKPaymentProvisioningFlowControllerRequestContext *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestHeader, a3);
-    v8 = [v5 stepIdentifier];
+    objc_storeStrong(&v6->_requestHeader, header);
+    stepIdentifier = [headerCopy stepIdentifier];
     currentStepIdentifier = v7->_currentStepIdentifier;
-    v7->_currentStepIdentifier = v8;
+    v7->_currentStepIdentifier = stepIdentifier;
   }
 
   return v7;
 }
 
-- (NPKPaymentProvisioningFlowControllerRequestContext)initWithCoder:(id)a3
+- (NPKPaymentProvisioningFlowControllerRequestContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NPKPaymentProvisioningFlowControllerRequestContext;
   v5 = [(NPKPaymentProvisioningFlowControllerRequestContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"currentStepIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"currentStepIdentifier"];
     currentStepIdentifier = v5->_currentStepIdentifier;
     v5->_currentStepIdentifier = v6;
   }

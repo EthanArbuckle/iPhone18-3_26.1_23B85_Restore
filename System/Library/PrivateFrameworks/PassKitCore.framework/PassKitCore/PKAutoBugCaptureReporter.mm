@@ -1,35 +1,35 @@
 @interface PKAutoBugCaptureReporter
-- (BOOL)shouldReportIssueOfType:(id)a3;
-- (void)handleResponse:(id)a3;
-- (void)reportIssueWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6 payload:(id)a7;
+- (BOOL)shouldReportIssueOfType:(id)type;
+- (void)handleResponse:(id)response;
+- (void)reportIssueWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context payload:(id)payload;
 @end
 
 @implementation PKAutoBugCaptureReporter
 
-- (void)reportIssueWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6 payload:(id)a7
+- (void)reportIssueWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context payload:(id)payload
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  domainCopy = domain;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  contextCopy = context;
+  payloadCopy = payload;
   if (![(PKAutoBugCaptureReporter *)self isRunningUnitTests])
   {
-    if ([(PKAutoBugCaptureReporter *)self shouldReportIssueOfType:v13])
+    if ([(PKAutoBugCaptureReporter *)self shouldReportIssueOfType:typeCopy])
     {
-      v17 = [MEMORY[0x1E696AE30] processInfo];
-      v18 = [v17 processName];
-      v19 = v18;
-      if (v18)
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v19 = processName;
+      if (processName)
       {
-        v20 = v18;
+        bundleIdentifier = processName;
       }
 
       else
       {
-        v21 = [MEMORY[0x1E696AAE8] mainBundle];
-        v20 = [v21 bundleIdentifier];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
       }
 
       sdrReporter = self->sdrReporter;
@@ -42,18 +42,18 @@
         sdrReporter = self->sdrReporter;
       }
 
-      v25 = [(SDRDiagnosticReporter *)sdrReporter signatureWithDomain:v12 type:v13 subType:v14 subtypeContext:v15 detectedProcess:v20 triggerThresholdValues:0];
+      v25 = [(SDRDiagnosticReporter *)sdrReporter signatureWithDomain:domainCopy type:typeCopy subType:subtypeCopy subtypeContext:contextCopy detectedProcess:bundleIdentifier triggerThresholdValues:0];
       v26 = PKLogFacilityTypeGetObject(5uLL);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v30 = v12;
+        v30 = domainCopy;
         v31 = 2112;
-        v32 = v13;
+        v32 = typeCopy;
         v33 = 2112;
-        v34 = v14;
+        v34 = subtypeCopy;
         v35 = 2112;
-        v36 = v15;
+        v36 = contextCopy;
         _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_INFO, "AutoBugCapture - Submitting snapshot request to ABC for signature: %@.%@.%@.%@", buf, 0x2Au);
       }
 
@@ -63,42 +63,42 @@
       v28[2] = __86__PKAutoBugCaptureReporter_reportIssueWithDomain_type_subtype_subtypeContext_payload___block_invoke;
       v28[3] = &unk_1E79D0058;
       v28[4] = self;
-      [(SDRDiagnosticReporter *)v27 snapshotWithSignature:v25 duration:0 event:v16 payload:v28 reply:0.0];
+      [(SDRDiagnosticReporter *)v27 snapshotWithSignature:v25 duration:0 event:payloadCopy payload:v28 reply:0.0];
     }
 
     else
     {
-      v20 = PKLogFacilityTypeGetObject(5uLL);
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+      bundleIdentifier = PKLogFacilityTypeGetObject(5uLL);
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v30 = v12;
+        v30 = domainCopy;
         v31 = 2112;
-        v32 = v13;
+        v32 = typeCopy;
         v33 = 2112;
-        v34 = v14;
+        v34 = subtypeCopy;
         v35 = 2112;
-        v36 = v15;
-        _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_INFO, "AutoBugCapture - Not reporting to AutoBugCapture because we are rate limited: %@.%@.%@.%@", buf, 0x2Au);
+        v36 = contextCopy;
+        _os_log_impl(&dword_1AD337000, bundleIdentifier, OS_LOG_TYPE_INFO, "AutoBugCapture - Not reporting to AutoBugCapture because we are rate limited: %@.%@.%@.%@", buf, 0x2Au);
       }
     }
   }
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
   *&v15[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50D0]];
-  v6 = [v5 BOOLValue];
+  responseCopy = response;
+  v5 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50D0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (!v6)
+  if (!bOOLValue)
   {
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50A0]];
-    v10 = [v9 intValue];
+    v9 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50A0]];
+    intValue = [v9 intValue];
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50B0]];
-    v11 = [(PKAutoBugCaptureReporter *)self isExpectedFailureReason:v10];
+    v7 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50B0]];
+    v11 = [(PKAutoBugCaptureReporter *)self isExpectedFailureReason:intValue];
     v8 = PKLogFacilityTypeGetObject(5uLL);
     v12 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
     if (v11)
@@ -109,7 +109,7 @@
       }
 
       v14 = 67109378;
-      v15[0] = v10;
+      v15[0] = intValue;
       LOWORD(v15[1]) = 2112;
       *(&v15[1] + 2) = v7;
       v13 = "AutoBugCapture - Diagnostic reporter snapshot rejected with expected reason %d (%@)";
@@ -123,7 +123,7 @@
       }
 
       v14 = 67109378;
-      v15[0] = v10;
+      v15[0] = intValue;
       LOWORD(v15[1]) = 2112;
       *(&v15[1] + 2) = v7;
       v13 = "AutoBugCapture - Diagnostic reporter snapshot rejected with unexpected reason %d (%@)";
@@ -133,7 +133,7 @@
     goto LABEL_8;
   }
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50C0]];
+  v7 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50C0]];
   v8 = PKLogFacilityTypeGetObject(5uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -145,9 +145,9 @@
 LABEL_8:
 }
 
-- (BOOL)shouldReportIssueOfType:(id)a3
+- (BOOL)shouldReportIssueOfType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [MEMORY[0x1E695DF00] now];
   os_unfair_lock_lock(&_MergedGlobals_213);
   v5 = qword_1ED6D19B8;
@@ -160,7 +160,7 @@ LABEL_8:
     v5 = qword_1ED6D19B8;
   }
 
-  v8 = [v5 objectForKeyedSubscript:v3];
+  v8 = [v5 objectForKeyedSubscript:typeCopy];
   if (v8 && ([v4 timeIntervalSinceDate:v8], v9 < 86400.0))
   {
     v10 = 0;
@@ -168,7 +168,7 @@ LABEL_8:
 
   else
   {
-    [qword_1ED6D19B8 setObject:v4 forKeyedSubscript:v3];
+    [qword_1ED6D19B8 setObject:v4 forKeyedSubscript:typeCopy];
     v10 = 1;
   }
 

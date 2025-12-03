@@ -1,18 +1,18 @@
 @interface OrgApacheLuceneSearchTopFieldCollector
 + (void)initialize;
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4;
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int;
 - (id)topDocs;
 - (void)dealloc;
-- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4;
+- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchTopFieldCollector
 
-- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4
+- (void)populateResultsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int
 {
   if (!self->fillFields_)
   {
-    v9 = (a4 - 1);
+    v9 = (int - 1);
     if (v9 < 0)
     {
       return;
@@ -27,13 +27,13 @@
       }
 
       v11 = [(OrgApacheLuceneUtilPriorityQueue *)pq pop];
-      if (!a3 || !v11)
+      if (!array || !v11)
       {
         break;
       }
 
       v12 = new_OrgApacheLuceneSearchFieldDoc_initWithInt_withFloat_(*(v11 + 3), *(v11 + 2));
-      IOSObjectArray_SetAndConsume(a3, v9, v12);
+      IOSObjectArray_SetAndConsume(array, v9, v12);
       if (v9-- <= 0)
       {
         return;
@@ -50,14 +50,14 @@
     JreThrowClassCastException();
   }
 
-  v8 = (a4 - 1);
+  v8 = (int - 1);
   if (v8 >= 0)
   {
-    if (a3 && v7)
+    if (array && v7)
     {
       do
       {
-        IOSObjectArray_Set(a3, v8--, [(OrgApacheLuceneUtilPriorityQueue *)v7 fillFieldsWithOrgApacheLuceneSearchFieldValueHitQueue_Entry:[(OrgApacheLuceneUtilPriorityQueue *)v7 pop]]);
+        IOSObjectArray_Set(array, v8--, [(OrgApacheLuceneUtilPriorityQueue *)v7 fillFieldsWithOrgApacheLuceneSearchFieldValueHitQueue_Entry:[(OrgApacheLuceneUtilPriorityQueue *)v7 pop]]);
       }
 
       while (v8 != -1);
@@ -69,12 +69,12 @@ LABEL_16:
   }
 }
 
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int
 {
-  v4 = a3;
-  if (!a3)
+  arrayCopy = array;
+  if (!array)
   {
-    v4 = qword_100554230;
+    arrayCopy = qword_100554230;
     *(&self->super.totalHits_ + 1) = 2143289344;
   }
 
@@ -91,7 +91,7 @@ LABEL_16:
     JreThrowClassCastException();
   }
 
-  v8 = new_OrgApacheLuceneSearchTopFieldDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_withOrgApacheLuceneSearchSortFieldArray_withFloat_(totalHits, v4, [(OrgApacheLuceneUtilPriorityQueue *)pq getFields], *(&self->super.totalHits_ + 1));
+  v8 = new_OrgApacheLuceneSearchTopFieldDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_withOrgApacheLuceneSearchSortFieldArray_withFloat_(totalHits, arrayCopy, [(OrgApacheLuceneUtilPriorityQueue *)pq getFields], *(&self->super.totalHits_ + 1));
 
   return v8;
 }
@@ -100,14 +100,14 @@ LABEL_16:
 {
   v4.receiver = self;
   v4.super_class = OrgApacheLuceneSearchTopFieldCollector;
-  v2 = [(OrgApacheLuceneSearchTopDocsCollector *)&v4 topDocs];
+  topDocs = [(OrgApacheLuceneSearchTopDocsCollector *)&v4 topDocs];
   objc_opt_class();
-  if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (topDocs && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v2;
+  return topDocs;
 }
 
 - (void)dealloc
@@ -119,7 +119,7 @@ LABEL_16:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:OrgApacheLuceneSearchScoreDoc_class_()];
     JreStrongAssignAndConsume(&qword_100554230, v2);

@@ -1,71 +1,71 @@
 @interface _INPBBusTrip
-- (BOOL)isEqual:(id)a3;
-- (_INPBBusTrip)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBBusTrip)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setArrivalPlatform:(id)a3;
-- (void)setBusName:(id)a3;
-- (void)setBusNumber:(id)a3;
-- (void)setDeparturePlatform:(id)a3;
-- (void)setProvider:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setArrivalPlatform:(id)platform;
+- (void)setBusName:(id)name;
+- (void)setBusNumber:(id)number;
+- (void)setDeparturePlatform:(id)platform;
+- (void)setProvider:(id)provider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBBusTrip
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBBusTrip *)self arrivalBusStopLocation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"arrivalBusStopLocation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  arrivalBusStopLocation = [(_INPBBusTrip *)self arrivalBusStopLocation];
+  dictionaryRepresentation = [arrivalBusStopLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"arrivalBusStopLocation"];
 
   if (self->_arrivalPlatform)
   {
-    v6 = [(_INPBBusTrip *)self arrivalPlatform];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"arrivalPlatform"];
+    arrivalPlatform = [(_INPBBusTrip *)self arrivalPlatform];
+    v7 = [arrivalPlatform copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"arrivalPlatform"];
   }
 
   if (self->_busName)
   {
-    v8 = [(_INPBBusTrip *)self busName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"busName"];
+    busName = [(_INPBBusTrip *)self busName];
+    v9 = [busName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"busName"];
   }
 
   if (self->_busNumber)
   {
-    v10 = [(_INPBBusTrip *)self busNumber];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"busNumber"];
+    busNumber = [(_INPBBusTrip *)self busNumber];
+    v11 = [busNumber copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"busNumber"];
   }
 
-  v12 = [(_INPBBusTrip *)self departureBusStopLocation];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"departureBusStopLocation"];
+  departureBusStopLocation = [(_INPBBusTrip *)self departureBusStopLocation];
+  dictionaryRepresentation2 = [departureBusStopLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"departureBusStopLocation"];
 
   if (self->_departurePlatform)
   {
-    v14 = [(_INPBBusTrip *)self departurePlatform];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"departurePlatform"];
+    departurePlatform = [(_INPBBusTrip *)self departurePlatform];
+    v15 = [departurePlatform copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"departurePlatform"];
   }
 
   if (self->_provider)
   {
-    v16 = [(_INPBBusTrip *)self provider];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"provider"];
+    provider = [(_INPBBusTrip *)self provider];
+    v17 = [provider copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"provider"];
   }
 
-  v18 = [(_INPBBusTrip *)self tripDuration];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"tripDuration"];
+  tripDuration = [(_INPBBusTrip *)self tripDuration];
+  dictionaryRepresentation3 = [tripDuration dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"tripDuration"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -80,28 +80,28 @@
   return v9 ^ [(_INPBDateTimeRange *)self->_tripDuration hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = [(_INPBBusTrip *)self arrivalBusStopLocation];
-  v6 = [v4 arrivalBusStopLocation];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self arrivalBusStopLocation];
+  arrivalBusStopLocation2 = [equalCopy arrivalBusStopLocation];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v7 = [(_INPBBusTrip *)self arrivalBusStopLocation];
-  if (v7)
+  arrivalBusStopLocation3 = [(_INPBBusTrip *)self arrivalBusStopLocation];
+  if (arrivalBusStopLocation3)
   {
-    v8 = v7;
-    v9 = [(_INPBBusTrip *)self arrivalBusStopLocation];
-    v10 = [v4 arrivalBusStopLocation];
-    v11 = [v9 isEqual:v10];
+    v8 = arrivalBusStopLocation3;
+    arrivalBusStopLocation4 = [(_INPBBusTrip *)self arrivalBusStopLocation];
+    arrivalBusStopLocation5 = [equalCopy arrivalBusStopLocation];
+    v11 = [arrivalBusStopLocation4 isEqual:arrivalBusStopLocation5];
 
     if (!v11)
     {
@@ -113,20 +113,20 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self arrivalPlatform];
-  v6 = [v4 arrivalPlatform];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self arrivalPlatform];
+  arrivalBusStopLocation2 = [equalCopy arrivalPlatform];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v12 = [(_INPBBusTrip *)self arrivalPlatform];
-  if (v12)
+  arrivalPlatform = [(_INPBBusTrip *)self arrivalPlatform];
+  if (arrivalPlatform)
   {
-    v13 = v12;
-    v14 = [(_INPBBusTrip *)self arrivalPlatform];
-    v15 = [v4 arrivalPlatform];
-    v16 = [v14 isEqual:v15];
+    v13 = arrivalPlatform;
+    arrivalPlatform2 = [(_INPBBusTrip *)self arrivalPlatform];
+    arrivalPlatform3 = [equalCopy arrivalPlatform];
+    v16 = [arrivalPlatform2 isEqual:arrivalPlatform3];
 
     if (!v16)
     {
@@ -138,20 +138,20 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self busName];
-  v6 = [v4 busName];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self busName];
+  arrivalBusStopLocation2 = [equalCopy busName];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v17 = [(_INPBBusTrip *)self busName];
-  if (v17)
+  busName = [(_INPBBusTrip *)self busName];
+  if (busName)
   {
-    v18 = v17;
-    v19 = [(_INPBBusTrip *)self busName];
-    v20 = [v4 busName];
-    v21 = [v19 isEqual:v20];
+    v18 = busName;
+    busName2 = [(_INPBBusTrip *)self busName];
+    busName3 = [equalCopy busName];
+    v21 = [busName2 isEqual:busName3];
 
     if (!v21)
     {
@@ -163,20 +163,20 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self busNumber];
-  v6 = [v4 busNumber];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self busNumber];
+  arrivalBusStopLocation2 = [equalCopy busNumber];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v22 = [(_INPBBusTrip *)self busNumber];
-  if (v22)
+  busNumber = [(_INPBBusTrip *)self busNumber];
+  if (busNumber)
   {
-    v23 = v22;
-    v24 = [(_INPBBusTrip *)self busNumber];
-    v25 = [v4 busNumber];
-    v26 = [v24 isEqual:v25];
+    v23 = busNumber;
+    busNumber2 = [(_INPBBusTrip *)self busNumber];
+    busNumber3 = [equalCopy busNumber];
+    v26 = [busNumber2 isEqual:busNumber3];
 
     if (!v26)
     {
@@ -188,20 +188,20 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self departureBusStopLocation];
-  v6 = [v4 departureBusStopLocation];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self departureBusStopLocation];
+  arrivalBusStopLocation2 = [equalCopy departureBusStopLocation];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v27 = [(_INPBBusTrip *)self departureBusStopLocation];
-  if (v27)
+  departureBusStopLocation = [(_INPBBusTrip *)self departureBusStopLocation];
+  if (departureBusStopLocation)
   {
-    v28 = v27;
-    v29 = [(_INPBBusTrip *)self departureBusStopLocation];
-    v30 = [v4 departureBusStopLocation];
-    v31 = [v29 isEqual:v30];
+    v28 = departureBusStopLocation;
+    departureBusStopLocation2 = [(_INPBBusTrip *)self departureBusStopLocation];
+    departureBusStopLocation3 = [equalCopy departureBusStopLocation];
+    v31 = [departureBusStopLocation2 isEqual:departureBusStopLocation3];
 
     if (!v31)
     {
@@ -213,20 +213,20 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self departurePlatform];
-  v6 = [v4 departurePlatform];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self departurePlatform];
+  arrivalBusStopLocation2 = [equalCopy departurePlatform];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v32 = [(_INPBBusTrip *)self departurePlatform];
-  if (v32)
+  departurePlatform = [(_INPBBusTrip *)self departurePlatform];
+  if (departurePlatform)
   {
-    v33 = v32;
-    v34 = [(_INPBBusTrip *)self departurePlatform];
-    v35 = [v4 departurePlatform];
-    v36 = [v34 isEqual:v35];
+    v33 = departurePlatform;
+    departurePlatform2 = [(_INPBBusTrip *)self departurePlatform];
+    departurePlatform3 = [equalCopy departurePlatform];
+    v36 = [departurePlatform2 isEqual:departurePlatform3];
 
     if (!v36)
     {
@@ -238,20 +238,20 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self provider];
-  v6 = [v4 provider];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self provider];
+  arrivalBusStopLocation2 = [equalCopy provider];
+  if ((arrivalBusStopLocation != 0) == (arrivalBusStopLocation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v37 = [(_INPBBusTrip *)self provider];
-  if (v37)
+  provider = [(_INPBBusTrip *)self provider];
+  if (provider)
   {
-    v38 = v37;
-    v39 = [(_INPBBusTrip *)self provider];
-    v40 = [v4 provider];
-    v41 = [v39 isEqual:v40];
+    v38 = provider;
+    provider2 = [(_INPBBusTrip *)self provider];
+    provider3 = [equalCopy provider];
+    v41 = [provider2 isEqual:provider3];
 
     if (!v41)
     {
@@ -263,12 +263,12 @@
   {
   }
 
-  v5 = [(_INPBBusTrip *)self tripDuration];
-  v6 = [v4 tripDuration];
-  if ((v5 != 0) != (v6 == 0))
+  arrivalBusStopLocation = [(_INPBBusTrip *)self tripDuration];
+  arrivalBusStopLocation2 = [equalCopy tripDuration];
+  if ((arrivalBusStopLocation != 0) != (arrivalBusStopLocation2 == 0))
   {
-    v42 = [(_INPBBusTrip *)self tripDuration];
-    if (!v42)
+    tripDuration = [(_INPBBusTrip *)self tripDuration];
+    if (!tripDuration)
     {
 
 LABEL_45:
@@ -276,10 +276,10 @@ LABEL_45:
       goto LABEL_43;
     }
 
-    v43 = v42;
-    v44 = [(_INPBBusTrip *)self tripDuration];
-    v45 = [v4 tripDuration];
-    v46 = [v44 isEqual:v45];
+    v43 = tripDuration;
+    tripDuration2 = [(_INPBBusTrip *)self tripDuration];
+    tripDuration3 = [equalCopy tripDuration];
+    v46 = [tripDuration2 isEqual:tripDuration3];
 
     if (v46)
     {
@@ -299,170 +299,170 @@ LABEL_43:
   return v47;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBBusTrip allocWithZone:](_INPBBusTrip init];
-  v6 = [(_INPBLocationValue *)self->_arrivalBusStopLocation copyWithZone:a3];
+  v6 = [(_INPBLocationValue *)self->_arrivalBusStopLocation copyWithZone:zone];
   [(_INPBBusTrip *)v5 setArrivalBusStopLocation:v6];
 
-  v7 = [(NSString *)self->_arrivalPlatform copyWithZone:a3];
+  v7 = [(NSString *)self->_arrivalPlatform copyWithZone:zone];
   [(_INPBBusTrip *)v5 setArrivalPlatform:v7];
 
-  v8 = [(NSString *)self->_busName copyWithZone:a3];
+  v8 = [(NSString *)self->_busName copyWithZone:zone];
   [(_INPBBusTrip *)v5 setBusName:v8];
 
-  v9 = [(NSString *)self->_busNumber copyWithZone:a3];
+  v9 = [(NSString *)self->_busNumber copyWithZone:zone];
   [(_INPBBusTrip *)v5 setBusNumber:v9];
 
-  v10 = [(_INPBLocationValue *)self->_departureBusStopLocation copyWithZone:a3];
+  v10 = [(_INPBLocationValue *)self->_departureBusStopLocation copyWithZone:zone];
   [(_INPBBusTrip *)v5 setDepartureBusStopLocation:v10];
 
-  v11 = [(NSString *)self->_departurePlatform copyWithZone:a3];
+  v11 = [(NSString *)self->_departurePlatform copyWithZone:zone];
   [(_INPBBusTrip *)v5 setDeparturePlatform:v11];
 
-  v12 = [(NSString *)self->_provider copyWithZone:a3];
+  v12 = [(NSString *)self->_provider copyWithZone:zone];
   [(_INPBBusTrip *)v5 setProvider:v12];
 
-  v13 = [(_INPBDateTimeRange *)self->_tripDuration copyWithZone:a3];
+  v13 = [(_INPBDateTimeRange *)self->_tripDuration copyWithZone:zone];
   [(_INPBBusTrip *)v5 setTripDuration:v13];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBBusTrip *)self data];
+  coderCopy = coder;
+  data = [(_INPBBusTrip *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBBusTrip)initWithCoder:(id)a3
+- (_INPBBusTrip)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBBusTrip *)self initWithData:v6];
+    self = [(_INPBBusTrip *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
-  v4 = [(_INPBBusTrip *)self arrivalBusStopLocation];
+  toCopy = to;
+  arrivalBusStopLocation = [(_INPBBusTrip *)self arrivalBusStopLocation];
 
-  if (v4)
+  if (arrivalBusStopLocation)
   {
-    v5 = [(_INPBBusTrip *)self arrivalBusStopLocation];
+    arrivalBusStopLocation2 = [(_INPBBusTrip *)self arrivalBusStopLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBBusTrip *)self arrivalPlatform];
+  arrivalPlatform = [(_INPBBusTrip *)self arrivalPlatform];
 
-  if (v6)
+  if (arrivalPlatform)
   {
     arrivalPlatform = self->_arrivalPlatform;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBBusTrip *)self busName];
+  busName = [(_INPBBusTrip *)self busName];
 
-  if (v8)
+  if (busName)
   {
     busName = self->_busName;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBBusTrip *)self busNumber];
+  busNumber = [(_INPBBusTrip *)self busNumber];
 
-  if (v10)
+  if (busNumber)
   {
     busNumber = self->_busNumber;
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_INPBBusTrip *)self departureBusStopLocation];
+  departureBusStopLocation = [(_INPBBusTrip *)self departureBusStopLocation];
 
-  if (v12)
+  if (departureBusStopLocation)
   {
-    v13 = [(_INPBBusTrip *)self departureBusStopLocation];
+    departureBusStopLocation2 = [(_INPBBusTrip *)self departureBusStopLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBBusTrip *)self departurePlatform];
+  departurePlatform = [(_INPBBusTrip *)self departurePlatform];
 
-  if (v14)
+  if (departurePlatform)
   {
     departurePlatform = self->_departurePlatform;
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_INPBBusTrip *)self provider];
+  provider = [(_INPBBusTrip *)self provider];
 
-  if (v16)
+  if (provider)
   {
     provider = self->_provider;
     PBDataWriterWriteStringField();
   }
 
-  v18 = [(_INPBBusTrip *)self tripDuration];
+  tripDuration = [(_INPBBusTrip *)self tripDuration];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (tripDuration)
   {
-    v20 = [(_INPBBusTrip *)self tripDuration];
+    tripDuration2 = [(_INPBBusTrip *)self tripDuration];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v4 = [a3 copy];
+  v4 = [provider copy];
   provider = self->_provider;
   self->_provider = v4;
 
   MEMORY[0x1EEE66BB8](v4, provider);
 }
 
-- (void)setDeparturePlatform:(id)a3
+- (void)setDeparturePlatform:(id)platform
 {
-  v4 = [a3 copy];
+  v4 = [platform copy];
   departurePlatform = self->_departurePlatform;
   self->_departurePlatform = v4;
 
   MEMORY[0x1EEE66BB8](v4, departurePlatform);
 }
 
-- (void)setBusNumber:(id)a3
+- (void)setBusNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   busNumber = self->_busNumber;
   self->_busNumber = v4;
 
   MEMORY[0x1EEE66BB8](v4, busNumber);
 }
 
-- (void)setBusName:(id)a3
+- (void)setBusName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   busName = self->_busName;
   self->_busName = v4;
 
   MEMORY[0x1EEE66BB8](v4, busName);
 }
 
-- (void)setArrivalPlatform:(id)a3
+- (void)setArrivalPlatform:(id)platform
 {
-  v4 = [a3 copy];
+  v4 = [platform copy];
   arrivalPlatform = self->_arrivalPlatform;
   self->_arrivalPlatform = v4;
 

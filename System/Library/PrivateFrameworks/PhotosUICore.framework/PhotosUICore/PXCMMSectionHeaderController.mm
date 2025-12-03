@@ -2,53 +2,53 @@
 + (id)new;
 - (BOOL)_wantsActionButtons;
 - (PXCMMSectionHeaderController)init;
-- (PXCMMSectionHeaderController)initWithActivityType:(unint64_t)a3 viewModel:(id)a4 momentShareStatusPresentation:(id)a5 importStatusManager:(id)a6;
+- (PXCMMSectionHeaderController)initWithActivityType:(unint64_t)type viewModel:(id)model momentShareStatusPresentation:(id)presentation importStatusManager:(id)manager;
 - (UIView)view;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)_deselectAllAssets;
-- (void)_handleActionButtonTapped:(id)a3;
-- (void)_handleSecondaryButtonTapped:(id)a3;
+- (void)_handleActionButtonTapped:(id)tapped;
+- (void)_handleSecondaryButtonTapped:(id)tapped;
 - (void)_loadViewIfNeeded;
 - (void)_selectAllAssets;
-- (void)_setActionButtonType:(int64_t)a3;
-- (void)_setSecondaryActionButtonType:(int64_t)a3;
+- (void)_setActionButtonType:(int64_t)type;
+- (void)_setSecondaryActionButtonType:(int64_t)type;
 - (void)_updateActionButtons;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCMMSectionHeaderController
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = [objc_opt_class() _photosLabelFont];
-  [(UILabel *)self->_photosLabel setFont:v4];
+  _photosLabelFont = [objc_opt_class() _photosLabelFont];
+  [(UILabel *)self->_photosLabel setFont:_photosLabelFont];
 
-  v5 = [objc_opt_class() _buttonLabelFont];
-  v6 = [(UIButton *)self->_actionButton titleLabel];
-  [v6 setFont:v5];
+  _buttonLabelFont = [objc_opt_class() _buttonLabelFont];
+  titleLabel = [(UIButton *)self->_actionButton titleLabel];
+  [titleLabel setFont:_buttonLabelFont];
 
-  v7 = [(UIButton *)self->_actionButton titleLabel];
-  [v7 sizeToFit];
+  titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+  [titleLabel2 sizeToFit];
 
-  v8 = [objc_opt_class() _buttonLabelFont];
-  v9 = [(UIButton *)self->_secondaryButton titleLabel];
-  [v9 setFont:v8];
+  _buttonLabelFont2 = [objc_opt_class() _buttonLabelFont];
+  titleLabel3 = [(UIButton *)self->_secondaryButton titleLabel];
+  [titleLabel3 setFont:_buttonLabelFont2];
 
-  v10 = [(UIButton *)self->_secondaryButton titleLabel];
-  [v10 sizeToFit];
+  titleLabel4 = [(UIButton *)self->_secondaryButton titleLabel];
+  [titleLabel4 sizeToFit];
 
   [(UIView *)self->_underlyingView frame];
 
   [(PXCMMSectionHeaderController *)self _layoutButtonWithSize:v11, v12];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXCMMViewModelObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCMMViewModelObservationContext == context)
   {
-    if ((v6 & 0x4400) == 0)
+    if ((changeCopy & 0x4400) == 0)
     {
       goto LABEL_8;
     }
@@ -56,29 +56,29 @@
     goto LABEL_7;
   }
 
-  if (SelectionModelObservationContext == a5)
+  if (SelectionModelObservationContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    v11 = v9;
+    v11 = observableCopy;
     [(PXCMMSectionHeaderController *)self _updateActionButtons];
-    v9 = v11;
+    observableCopy = v11;
     goto LABEL_8;
   }
 
-  if (PXMomentShareStatusPresentationObservationContext_144545 != a5)
+  if (PXMomentShareStatusPresentationObservationContext_144545 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:423 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:423 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x4000) != 0)
+  if ((changeCopy & 0x4000) != 0)
   {
     goto LABEL_7;
   }
@@ -88,22 +88,22 @@ LABEL_8:
 
 - (void)_deselectAllAssets
 {
-  v2 = [(PXCMMViewModel *)self->_viewModel selectionManager];
-  [v2 performChanges:&__block_literal_global_228];
+  selectionManager = [(PXCMMViewModel *)self->_viewModel selectionManager];
+  [selectionManager performChanges:&__block_literal_global_228];
 }
 
 - (void)_selectAllAssets
 {
-  v3 = [(PXCMMViewModel *)self->_viewModel selectionManager];
-  v4 = v3;
+  selectionManager = [(PXCMMViewModel *)self->_viewModel selectionManager];
+  v4 = selectionManager;
   if (self->_activityType == 2 && self->_importStatusManager)
   {
-    [v3 selectNonCopiedAssetsWithImportStatusManager:?];
+    [selectionManager selectNonCopiedAssetsWithImportStatusManager:?];
   }
 
   else
   {
-    [v3 performChanges:&__block_literal_global_144553];
+    [selectionManager performChanges:&__block_literal_global_144553];
   }
 }
 
@@ -116,29 +116,29 @@ LABEL_8:
 
   if (!self->_actionButton)
   {
-    v3 = [(UIView *)self->_underlyingView tintColor];
-    v4 = [v3 colorWithAlphaComponent:0.3];
+    tintColor = [(UIView *)self->_underlyingView tintColor];
+    v4 = [tintColor colorWithAlphaComponent:0.3];
 
     v5 = [MEMORY[0x1E69DC738] buttonWithType:0];
     actionButton = self->_actionButton;
     self->_actionButton = v5;
 
-    v7 = [objc_opt_class() _buttonLabelFont];
-    v8 = [(UIButton *)self->_actionButton titleLabel];
-    [v8 setFont:v7];
+    _buttonLabelFont = [objc_opt_class() _buttonLabelFont];
+    titleLabel = [(UIButton *)self->_actionButton titleLabel];
+    [titleLabel setFont:_buttonLabelFont];
 
     v9 = self->_actionButton;
-    v10 = [(UIView *)self->_underlyingView tintColor];
-    [(UIButton *)v9 setTitleColor:v10 forState:0];
+    tintColor2 = [(UIView *)self->_underlyingView tintColor];
+    [(UIButton *)v9 setTitleColor:tintColor2 forState:0];
 
     [(UIButton *)self->_actionButton setTitleColor:v4 forState:1];
     [(UIButton *)self->_actionButton addTarget:self action:sel__handleActionButtonTapped_ forControlEvents:0x2000];
     [(UIView *)self->_underlyingView addSubview:self->_actionButton];
   }
 
-  v11 = [(PXCMMViewModel *)self->_viewModel isSelecting];
+  isSelecting = [(PXCMMViewModel *)self->_viewModel isSelecting];
   v12 = 1;
-  if (v11)
+  if (isSelecting)
   {
     v13 = 2;
   }
@@ -150,40 +150,40 @@ LABEL_8:
 
   [(PXCMMSectionHeaderController *)self _setActionButtonType:v13];
   [(UIButton *)self->_actionButton setHidden:[(PXCMMViewModel *)self->_viewModel selectionEnabled]^ 1];
-  if (v11)
+  if (isSelecting)
   {
     if (!self->_secondaryButton)
     {
-      v14 = [(UIView *)self->_underlyingView tintColor];
-      v15 = [v14 colorWithAlphaComponent:0.3];
+      tintColor3 = [(UIView *)self->_underlyingView tintColor];
+      v15 = [tintColor3 colorWithAlphaComponent:0.3];
 
       v16 = [MEMORY[0x1E69DC738] buttonWithType:0];
       secondaryButton = self->_secondaryButton;
       self->_secondaryButton = v16;
 
-      v18 = [objc_opt_class() _buttonLabelFont];
-      v19 = [(UIButton *)self->_secondaryButton titleLabel];
-      [v19 setFont:v18];
+      _buttonLabelFont2 = [objc_opt_class() _buttonLabelFont];
+      titleLabel2 = [(UIButton *)self->_secondaryButton titleLabel];
+      [titleLabel2 setFont:_buttonLabelFont2];
 
       v20 = self->_secondaryButton;
-      v21 = [(UIView *)self->_underlyingView tintColor];
-      [(UIButton *)v20 setTitleColor:v21 forState:0];
+      tintColor4 = [(UIView *)self->_underlyingView tintColor];
+      [(UIButton *)v20 setTitleColor:tintColor4 forState:0];
 
       [(UIButton *)self->_secondaryButton setTitleColor:v15 forState:1];
       [(UIButton *)self->_secondaryButton addTarget:self action:sel__handleSecondaryButtonTapped_ forControlEvents:0x2000];
       [(UIView *)self->_underlyingView addSubview:self->_secondaryButton];
     }
 
-    v22 = [(PXCMMViewModel *)self->_viewModel selectionManager];
+    selectionManager = [(PXCMMViewModel *)self->_viewModel selectionManager];
     momentShareStatusPresentation = self->_momentShareStatusPresentation;
     if (momentShareStatusPresentation && self->_activityType == 2)
     {
-      v24 = [(PXMomentShareStatusPresentation *)momentShareStatusPresentation numberOfAssetsNotCopied];
-      v25 = [v22 selectionSnapshot];
-      v26 = [v25 selectedIndexPaths];
-      v27 = [v26 count];
+      numberOfAssetsNotCopied = [(PXMomentShareStatusPresentation *)momentShareStatusPresentation numberOfAssetsNotCopied];
+      selectionSnapshot = [selectionManager selectionSnapshot];
+      selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+      v27 = [selectedIndexPaths count];
 
-      if (v24 != v27)
+      if (numberOfAssetsNotCopied != v27)
       {
 LABEL_14:
         v28 = 3;
@@ -197,10 +197,10 @@ LABEL_18:
 
     else
     {
-      v29 = [v22 selectionSnapshot];
-      v30 = [v29 areAllItemsSelected];
+      selectionSnapshot2 = [selectionManager selectionSnapshot];
+      areAllItemsSelected = [selectionSnapshot2 areAllItemsSelected];
 
-      if ((v30 & 1) == 0)
+      if ((areAllItemsSelected & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -250,8 +250,8 @@ LABEL_19:
   {
     v14 = v3;
     v15 = v2;
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:293 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:293 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -401,27 +401,27 @@ void __54__PXCMMSectionHeaderController__layoutButtonWithSize___block_invoke(uin
   }
 }
 
-- (void)_setSecondaryActionButtonType:(int64_t)a3
+- (void)_setSecondaryActionButtonType:(int64_t)type
 {
-  if (self->_secondaryActionButtonType == a3)
+  if (self->_secondaryActionButtonType == type)
   {
     return;
   }
 
-  self->_secondaryActionButtonType = a3;
-  if (a3 == 3)
+  self->_secondaryActionButtonType = type;
+  if (type == 3)
   {
     v6 = @"PXCMMSelectAllButtonTitle";
   }
 
   else
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 < 3)
+      if (type < 3)
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v5 handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:186 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:186 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -442,37 +442,37 @@ LABEL_9:
   [(PXCMMSectionHeaderController *)self _layoutButtonWithSize:v9, v10];
 }
 
-- (void)_setActionButtonType:(int64_t)a3
+- (void)_setActionButtonType:(int64_t)type
 {
-  if (self->_actionButtonType == a3)
+  if (self->_actionButtonType == type)
   {
     return;
   }
 
-  self->_actionButtonType = a3;
-  if (a3 <= 1)
+  self->_actionButtonType = type;
+  if (type <= 1)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = @"PXCMMSelectButtonTitle";
       goto LABEL_7;
     }
 
-    if (a3)
+    if (type)
     {
       goto LABEL_8;
     }
 
 LABEL_14:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:163 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:163 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
-    if ((a3 - 3) >= 2)
+    if ((type - 3) >= 2)
     {
       goto LABEL_8;
     }
@@ -492,38 +492,38 @@ LABEL_8:
   [(PXCMMSectionHeaderController *)self _layoutButtonWithSize:v7, v8];
 }
 
-- (void)_handleSecondaryButtonTapped:(id)a3
+- (void)_handleSecondaryButtonTapped:(id)tapped
 {
-  v7 = a3;
-  v5 = [(PXCMMSectionHeaderController *)self secondaryActionButtonType];
-  if (v5 == 3)
+  tappedCopy = tapped;
+  secondaryActionButtonType = [(PXCMMSectionHeaderController *)self secondaryActionButtonType];
+  if (secondaryActionButtonType == 3)
   {
     [(PXCMMSectionHeaderController *)self _selectAllAssets];
   }
 
-  else if (v5 == 4)
+  else if (secondaryActionButtonType == 4)
   {
     [(PXCMMSectionHeaderController *)self _deselectAllAssets];
   }
 
-  else if (v5 < 3)
+  else if (secondaryActionButtonType < 3)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:142 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:142 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 }
 
-- (void)_handleActionButtonTapped:(id)a3
+- (void)_handleActionButtonTapped:(id)tapped
 {
   v3 = self->_viewModel;
-  v4 = [(PXCMMViewModel *)v3 isSelecting];
+  isSelecting = [(PXCMMViewModel *)v3 isSelecting];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__PXCMMSectionHeaderController__handleActionButtonTapped___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0___PXCMMMutableViewModel__8l;
-  v6 = v4;
+  v6 = isSelecting;
   [(PXCMMViewModel *)v3 performChanges:v5];
 }
 
@@ -545,19 +545,19 @@ LABEL_8:
     underlyingView = self->_underlyingView;
     self->_underlyingView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)self->_underlyingView setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)self->_underlyingView setBackgroundColor:systemBackgroundColor];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     photosLabel = self->_photosLabel;
     self->_photosLabel = v8;
 
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_photosLabel setTextColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_photosLabel setTextColor:labelColor];
 
     [(UILabel *)self->_photosLabel setNumberOfLines:1];
-    v11 = [objc_opt_class() _photosLabelFont];
-    [(UILabel *)self->_photosLabel setFont:v11];
+    _photosLabelFont = [objc_opt_class() _photosLabelFont];
+    [(UILabel *)self->_photosLabel setFont:_photosLabelFont];
 
     v12 = PXLocalizedStringFromTable(@"PXCMMSectionHeaderTitle", @"PhotosUICore");
     [(UILabel *)self->_photosLabel setText:v12];
@@ -568,28 +568,28 @@ LABEL_8:
   }
 }
 
-- (PXCMMSectionHeaderController)initWithActivityType:(unint64_t)a3 viewModel:(id)a4 momentShareStatusPresentation:(id)a5 importStatusManager:(id)a6
+- (PXCMMSectionHeaderController)initWithActivityType:(unint64_t)type viewModel:(id)model momentShareStatusPresentation:(id)presentation importStatusManager:(id)manager
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  presentationCopy = presentation;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = PXCMMSectionHeaderController;
   v14 = [(PXCMMSectionHeaderController *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_activityType = a3;
-    objc_storeStrong(&v14->_viewModel, a4);
+    v14->_activityType = type;
+    objc_storeStrong(&v14->_viewModel, model);
     [(PXCMMViewModel *)v15->_viewModel registerChangeObserver:v15 context:PXCMMViewModelObservationContext];
-    v16 = [(PXCMMViewModel *)v15->_viewModel selectionManager];
-    [v16 registerChangeObserver:v15 context:SelectionModelObservationContext];
+    selectionManager = [(PXCMMViewModel *)v15->_viewModel selectionManager];
+    [selectionManager registerChangeObserver:v15 context:SelectionModelObservationContext];
 
-    objc_storeStrong(&v15->_momentShareStatusPresentation, a5);
+    objc_storeStrong(&v15->_momentShareStatusPresentation, presentation);
     [(PXMomentShareStatusPresentation *)v15->_momentShareStatusPresentation registerChangeObserver:v15 context:PXMomentShareStatusPresentationObservationContext_144545];
-    objc_storeStrong(&v15->_importStatusManager, a6);
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v15 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    objc_storeStrong(&v15->_importStatusManager, manager);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v15;
@@ -597,16 +597,16 @@ LABEL_8:
 
 - (PXCMMSectionHeaderController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:63 description:{@"%s is not available as initializer", "-[PXCMMSectionHeaderController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:63 description:{@"%s is not available as initializer", "-[PXCMMSectionHeaderController init]"}];
 
   abort();
 }
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXCMMSectionHeaderController.m" lineNumber:67 description:{@"%s is not available as initializer", "+[PXCMMSectionHeaderController new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMSectionHeaderController.m" lineNumber:67 description:{@"%s is not available as initializer", "+[PXCMMSectionHeaderController new]"}];
 
   abort();
 }

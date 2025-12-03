@@ -1,21 +1,21 @@
 @interface REMReminderFlaggedContextChangeItem
-- (REMReminderFlaggedContextChangeItem)initWithReminderChangeItem:(id)a3;
+- (REMReminderFlaggedContextChangeItem)initWithReminderChangeItem:(id)item;
 - (int64_t)flagged;
-- (void)setFlagged:(int64_t)a3;
+- (void)setFlagged:(int64_t)flagged;
 @end
 
 @implementation REMReminderFlaggedContextChangeItem
 
-- (REMReminderFlaggedContextChangeItem)initWithReminderChangeItem:(id)a3
+- (REMReminderFlaggedContextChangeItem)initWithReminderChangeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = REMReminderFlaggedContextChangeItem;
   v6 = [(REMReminderFlaggedContextChangeItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reminderChangeItem, a3);
+    objc_storeStrong(&v6->_reminderChangeItem, item);
   }
 
   return v7;
@@ -23,16 +23,16 @@
 
 - (int64_t)flagged
 {
-  v2 = [(REMReminderFlaggedContextChangeItem *)self reminderChangeItem];
-  v3 = [v2 flagged];
+  reminderChangeItem = [(REMReminderFlaggedContextChangeItem *)self reminderChangeItem];
+  flagged = [reminderChangeItem flagged];
 
-  return v3;
+  return flagged;
 }
 
-- (void)setFlagged:(int64_t)a3
+- (void)setFlagged:(int64_t)flagged
 {
-  v4 = [(REMReminderFlaggedContextChangeItem *)self reminderChangeItem];
-  [v4 setFlagged:a3];
+  reminderChangeItem = [(REMReminderFlaggedContextChangeItem *)self reminderChangeItem];
+  [reminderChangeItem setFlagged:flagged];
 }
 
 @end

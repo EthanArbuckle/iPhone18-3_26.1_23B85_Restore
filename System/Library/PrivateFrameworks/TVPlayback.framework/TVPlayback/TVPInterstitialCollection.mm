@@ -1,24 +1,24 @@
 @interface TVPInterstitialCollection
-- (TVPInterstitialCollection)initWithInterstitials:(id)a3;
-- (double)timeAdjustedByIncludingInterstitials:(double)a3;
-- (double)timeAdjustedByRemovingInterstitials:(double)a3;
-- (id)interstitialForTime:(double)a3;
-- (id)mergedInterstitialForTime:(double)a3;
+- (TVPInterstitialCollection)initWithInterstitials:(id)interstitials;
+- (double)timeAdjustedByIncludingInterstitials:(double)interstitials;
+- (double)timeAdjustedByRemovingInterstitials:(double)interstitials;
+- (id)interstitialForTime:(double)time;
+- (id)mergedInterstitialForTime:(double)time;
 @end
 
 @implementation TVPInterstitialCollection
 
-- (TVPInterstitialCollection)initWithInterstitials:(id)a3
+- (TVPInterstitialCollection)initWithInterstitials:(id)interstitials
 {
-  v4 = a3;
+  interstitialsCopy = interstitials;
   v25.receiver = self;
   v25.super_class = TVPInterstitialCollection;
   v5 = [(TVPInterstitialCollection *)&v25 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_0];
+    v6 = [interstitialsCopy sortedArrayUsingComparator:&__block_literal_global_0];
     objc_storeStrong(&v5->_interstitials, v6);
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v8 = [(NSArray *)v5->_interstitials count];
     v24[0] = 0;
     v24[1] = v24;
@@ -33,7 +33,7 @@
     v10 = v5;
     v20 = v10;
     v22 = v24;
-    v11 = v7;
+    v11 = array;
     v21 = v11;
     [(NSArray *)interstitials enumerateObjectsUsingBlock:&v16];
     v12 = objc_alloc(MEMORY[0x277CBEA60]);
@@ -144,7 +144,7 @@ LABEL_8:
 LABEL_13:
 }
 
-- (double)timeAdjustedByRemovingInterstitials:(double)a3
+- (double)timeAdjustedByRemovingInterstitials:(double)interstitials
 {
   v31 = *MEMORY[0x277D85DE8];
   interstitials = self->_interstitials;
@@ -154,8 +154,8 @@ LABEL_13:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = interstitials;
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    interstitialsCopy = interstitials;
+    v6 = [(NSArray *)interstitialsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -168,44 +168,44 @@ LABEL_4:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(interstitialsCopy);
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
-        v13 = [v12 timeRange];
-        [v13 startTime];
+        timeRange = [v12 timeRange];
+        [timeRange startTime];
         v15 = v14 - v9;
 
-        if (a3 <= v15)
+        if (interstitials <= v15)
         {
           break;
         }
 
-        v16 = [v12 timeRange];
-        [v16 endTime];
+        timeRange2 = [v12 timeRange];
+        [timeRange2 endTime];
         v18 = v17;
-        v19 = [v12 timeRange];
-        [v19 startTime];
-        v21 = a3 - (v18 - v20);
+        timeRange3 = [v12 timeRange];
+        [timeRange3 startTime];
+        v21 = interstitials - (v18 - v20);
 
         if (v21 - v15 >= 0.0)
         {
-          a3 = v21 - v15;
+          interstitials = v21 - v15;
         }
 
         else
         {
-          a3 = 0.0;
+          interstitials = 0.0;
         }
 
         v10 = v10 + v15;
-        v22 = [v12 timeRange];
-        [v22 endTime];
+        timeRange4 = [v12 timeRange];
+        [timeRange4 endTime];
         v9 = v23;
 
         if (v7 == ++v11)
         {
-          v7 = [(NSArray *)v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v7 = [(NSArray *)interstitialsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -221,14 +221,14 @@ LABEL_4:
       v10 = 0.0;
     }
 
-    a3 = a3 + v10;
+    interstitials = interstitials + v10;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return a3;
+  return interstitials;
 }
 
-- (double)timeAdjustedByIncludingInterstitials:(double)a3
+- (double)timeAdjustedByIncludingInterstitials:(double)interstitials
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
@@ -252,21 +252,21 @@ LABEL_3:
       }
 
       v10 = *(*(&v20 + 1) + 8 * v9);
-      v11 = [v10 timeRange];
-      [v11 startTime];
+      timeRange = [v10 timeRange];
+      [timeRange startTime];
       v13 = v12;
 
-      if (v8 + a3 <= v13)
+      if (v8 + interstitials <= v13)
       {
         break;
       }
 
-      v14 = [v10 timeRange];
-      [v14 startTime];
-      a3 = a3 - (v15 - v8);
+      timeRange2 = [v10 timeRange];
+      [timeRange2 startTime];
+      interstitials = interstitials - (v15 - v8);
 
-      v16 = [v10 timeRange];
-      [v16 endTime];
+      timeRange3 = [v10 timeRange];
+      [timeRange3 endTime];
       v8 = v17;
 
       if (v6 == ++v9)
@@ -288,18 +288,18 @@ LABEL_3:
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v8 + a3;
+  return v8 + interstitials;
 }
 
-- (id)interstitialForTime:(double)a3
+- (id)interstitialForTime:(double)time
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(TVPInterstitialCollection *)self interstitials];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  interstitials = [(TVPInterstitialCollection *)self interstitials];
+  v5 = [interstitials countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -309,12 +309,12 @@ LABEL_3:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interstitials);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 timeRange];
-        v10 = [v9 containsTime:a3];
+        timeRange = [v8 timeRange];
+        v10 = [timeRange containsTime:time];
 
         if (v10)
         {
@@ -323,7 +323,7 @@ LABEL_3:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [interstitials countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -340,15 +340,15 @@ LABEL_11:
   return v5;
 }
 
-- (id)mergedInterstitialForTime:(double)a3
+- (id)mergedInterstitialForTime:(double)time
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(TVPInterstitialCollection *)self interstitialsWithAdjacentsMerged];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  interstitialsWithAdjacentsMerged = [(TVPInterstitialCollection *)self interstitialsWithAdjacentsMerged];
+  v5 = [interstitialsWithAdjacentsMerged countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -358,12 +358,12 @@ LABEL_11:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interstitialsWithAdjacentsMerged);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 timeRange];
-        v10 = [v9 containsTime:a3];
+        timeRange = [v8 timeRange];
+        v10 = [timeRange containsTime:time];
 
         if (v10)
         {
@@ -372,7 +372,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [interstitialsWithAdjacentsMerged countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;

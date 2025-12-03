@@ -1,68 +1,68 @@
 @interface NMSSHHostConfig
 - (NMSSHHostConfig)init;
-- (id)arrayByRemovingDuplicateElementsFromArray:(id)a3;
-- (id)mergedArray:(id)a3 withArray:(id)a4;
-- (void)mergeFrom:(id)a3;
+- (id)arrayByRemovingDuplicateElementsFromArray:(id)array;
+- (id)mergedArray:(id)array withArray:(id)withArray;
+- (void)mergeFrom:(id)from;
 @end
 
 @implementation NMSSHHostConfig
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v16 = a3;
-  v4 = [(NMSSHHostConfig *)self hostPatterns];
-  v5 = [v16 hostPatterns];
-  v6 = [(NMSSHHostConfig *)self mergedArray:v4 withArray:v5];
+  fromCopy = from;
+  hostPatterns = [(NMSSHHostConfig *)self hostPatterns];
+  hostPatterns2 = [fromCopy hostPatterns];
+  v6 = [(NMSSHHostConfig *)self mergedArray:hostPatterns withArray:hostPatterns2];
   [(NMSSHHostConfig *)self setHostPatterns:v6];
 
-  v7 = [(NMSSHHostConfig *)self hostname];
+  hostname = [(NMSSHHostConfig *)self hostname];
 
-  if (!v7)
+  if (!hostname)
   {
-    v8 = [v16 hostname];
-    [(NMSSHHostConfig *)self setHostname:v8];
+    hostname2 = [fromCopy hostname];
+    [(NMSSHHostConfig *)self setHostname:hostname2];
   }
 
-  v9 = [(NMSSHHostConfig *)self user];
+  user = [(NMSSHHostConfig *)self user];
 
-  if (!v9)
+  if (!user)
   {
-    v10 = [v16 user];
-    [(NMSSHHostConfig *)self setUser:v10];
+    user2 = [fromCopy user];
+    [(NMSSHHostConfig *)self setUser:user2];
   }
 
-  v11 = [(NMSSHHostConfig *)self port];
+  port = [(NMSSHHostConfig *)self port];
 
-  if (!v11)
+  if (!port)
   {
-    v12 = [v16 port];
-    [(NMSSHHostConfig *)self setPort:v12];
+    port2 = [fromCopy port];
+    [(NMSSHHostConfig *)self setPort:port2];
   }
 
-  v13 = [(NMSSHHostConfig *)self identityFiles];
-  v14 = [v16 identityFiles];
-  v15 = [(NMSSHHostConfig *)self mergedArray:v13 withArray:v14];
+  identityFiles = [(NMSSHHostConfig *)self identityFiles];
+  identityFiles2 = [fromCopy identityFiles];
+  v15 = [(NMSSHHostConfig *)self mergedArray:identityFiles withArray:identityFiles2];
   [(NMSSHHostConfig *)self setIdentityFiles:v15];
 }
 
-- (id)mergedArray:(id)a3 withArray:(id)a4
+- (id)mergedArray:(id)array withArray:(id)withArray
 {
-  v5 = [a3 arrayByAddingObjectsFromArray:a4];
+  v5 = [array arrayByAddingObjectsFromArray:withArray];
   v6 = [(NMSSHHostConfig *)self arrayByRemovingDuplicateElementsFromArray:v5];
 
   return v6;
 }
 
-- (id)arrayByRemovingDuplicateElementsFromArray:(id)a3
+- (id)arrayByRemovingDuplicateElementsFromArray:(id)array
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -78,9 +78,9 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if (([v4 containsObject:{v10, v14}] & 1) == 0)
+        if (([array containsObject:{v10, v14}] & 1) == 0)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -90,7 +90,7 @@
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;

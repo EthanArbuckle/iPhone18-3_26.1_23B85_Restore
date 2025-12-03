@@ -1,9 +1,9 @@
 @interface SiriSharedUIDropletView
 + (Class)layerClass;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (_TtC12SiriSharedUI23SiriSharedUIDropletView)init;
-- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithCoder:(id)a3;
-- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithFrame:(CGRect)a3;
+- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithCoder:(id)coder;
+- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SiriSharedUIDropletView
@@ -20,7 +20,7 @@
   v5.receiver = self;
   v5.super_class = type metadata accessor for SiriSharedUIDropletView();
   v2 = [(SiriSharedUIDropletView *)&v5 initWithFrame:0.0, 0.0, 0.0, 0.0];
-  v3 = [(SiriSharedUIDropletView *)v2 layer];
+  layer = [(SiriSharedUIDropletView *)v2 layer];
   type metadata accessor for SiriSharedUIDropletLayer();
   swift_dynamicCastClassUnconditional();
   sub_21E4AB7CC();
@@ -28,26 +28,26 @@
   return v2;
 }
 
-- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithCoder:(id)a3
+- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithCoder:(id)coder
 {
   result = sub_21E4DD468();
   __break(1u);
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_21E47F760(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_21E47F760(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithFrame:(CGRect)a3
+- (_TtC12SiriSharedUI23SiriSharedUIDropletView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

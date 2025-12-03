@@ -1,22 +1,22 @@
 @interface MPStatusKitOutgoingRatchet
 - (BOOL)ratchetForward;
 - (MPStatusKitOutgoingRatchet)init;
-- (MPStatusKitOutgoingRatchet)initWithData:(id)a3 error:(id *)a4;
+- (MPStatusKitOutgoingRatchet)initWithData:(id)data error:(id *)error;
 - (id)currentSubscriptionKeys;
-- (id)sealStatus:(id)a3 authenticating:(id)a4 error:(id *)a5;
+- (id)sealStatus:(id)status authenticating:(id)authenticating error:(id *)error;
 - (id)serializedData;
 - (id)signingKeyIdentifier;
 @end
 
 @implementation MPStatusKitOutgoingRatchet
 
-- (MPStatusKitOutgoingRatchet)initWithData:(id)a3 error:(id *)a4
+- (MPStatusKitOutgoingRatchet)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = MPStatusKitOutgoingRatchet;
   v7 = [(MPStatusKitOutgoingRatchet *)&v11 init];
-  if (!v7 || (v8 = [[_TtC17MessageProtection17SKOutgoingRatchet alloc] initWithData:v6 error:a4], [(MPStatusKitOutgoingRatchet *)v7 setRatchet:v8], v8, [(MPStatusKitOutgoingRatchet *)v7 ratchet], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if (!v7 || (v8 = [[_TtC17MessageProtection17SKOutgoingRatchet alloc] initWithData:dataCopy error:error], [(MPStatusKitOutgoingRatchet *)v7 setRatchet:v8], v8, [(MPStatusKitOutgoingRatchet *)v7 ratchet], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     v9 = v7;
   }
@@ -40,44 +40,44 @@
 
 - (id)currentSubscriptionKeys
 {
-  v2 = [(MPStatusKitOutgoingRatchet *)self ratchet];
-  v3 = [v2 currentSubscriptionKeys];
+  ratchet = [(MPStatusKitOutgoingRatchet *)self ratchet];
+  currentSubscriptionKeys = [ratchet currentSubscriptionKeys];
 
-  return v3;
+  return currentSubscriptionKeys;
 }
 
 - (BOOL)ratchetForward
 {
-  v2 = [(MPStatusKitOutgoingRatchet *)self ratchet];
-  v3 = [v2 ratchetForward];
+  ratchet = [(MPStatusKitOutgoingRatchet *)self ratchet];
+  ratchetForward = [ratchet ratchetForward];
 
-  return v3;
+  return ratchetForward;
 }
 
-- (id)sealStatus:(id)a3 authenticating:(id)a4 error:(id *)a5
+- (id)sealStatus:(id)status authenticating:(id)authenticating error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MPStatusKitOutgoingRatchet *)self ratchet];
-  v11 = [v10 sealMessage:v9 authenticating:v8 error:a5];
+  authenticatingCopy = authenticating;
+  statusCopy = status;
+  ratchet = [(MPStatusKitOutgoingRatchet *)self ratchet];
+  v11 = [ratchet sealMessage:statusCopy authenticating:authenticatingCopy error:error];
 
   return v11;
 }
 
 - (id)serializedData
 {
-  v2 = [(MPStatusKitOutgoingRatchet *)self ratchet];
-  v3 = [v2 serializedData];
+  ratchet = [(MPStatusKitOutgoingRatchet *)self ratchet];
+  serializedData = [ratchet serializedData];
 
-  return v3;
+  return serializedData;
 }
 
 - (id)signingKeyIdentifier
 {
-  v2 = [(MPStatusKitOutgoingRatchet *)self ratchet];
-  v3 = [v2 signingKeyIdentifier];
+  ratchet = [(MPStatusKitOutgoingRatchet *)self ratchet];
+  signingKeyIdentifier = [ratchet signingKeyIdentifier];
 
-  return v3;
+  return signingKeyIdentifier;
 }
 
 @end

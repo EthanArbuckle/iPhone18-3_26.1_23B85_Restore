@@ -1,33 +1,33 @@
 @interface SFAccountDetailTOTPTableViewCell
-- (SFAccountDetailTOTPTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SFAccountDetailTOTPTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_attributedSubtitleString;
-- (id)_attributedSubtitleStringWithRemainingSeconds:(unint64_t)a3;
+- (id)_attributedSubtitleStringWithRemainingSeconds:(unint64_t)seconds;
 - (id)_formattedCode;
 - (void)_startTOTPTimerIfNeeded;
 - (void)_updateCodeAndLabels;
 - (void)_updateTitleAndVerificationCodeStackView;
 - (void)_updateVerificationCodeLabelTextColor;
-- (void)configureWithGenerator:(id)a3;
+- (void)configureWithGenerator:(id)generator;
 - (void)dealloc;
-- (void)setOverrideVerificationCodeLabelTextColor:(id)a3;
+- (void)setOverrideVerificationCodeLabelTextColor:(id)color;
 @end
 
 @implementation SFAccountDetailTOTPTableViewCell
 
-- (SFAccountDetailTOTPTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SFAccountDetailTOTPTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v52[2] = *MEMORY[0x1E69E9840];
   v48.receiver = self;
   v48.super_class = SFAccountDetailTOTPTableViewCell;
-  v4 = [(SFAccountDetailTOTPTableViewCell *)&v48 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SFAccountDetailTOTPTableViewCell *)&v48 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [v5 setFont:v6];
 
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [v5 setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v5 setTextColor:labelColor];
 
     [v5 setNumberOfLines:0];
     [v5 setAdjustsFontForContentSizeCategory:1];
@@ -42,8 +42,8 @@
     v11 = subtitleFont();
     [(UILabel *)v4->_subtitleLabel setFont:v11];
 
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_subtitleLabel setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_subtitleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v4->_subtitleLabel setAdjustsFontForContentSizeCategory:1];
@@ -57,8 +57,8 @@
     v16 = verificationCodeFont();
     [(UILabel *)v4->_verificationCodeLabel setFont:v16];
 
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_verificationCodeLabel setTextColor:v17];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_verificationCodeLabel setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v4->_verificationCodeLabel setTextAlignment:2];
     [(UILabel *)v4->_verificationCodeLabel setNumberOfLines:1];
@@ -83,28 +83,28 @@
     [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v25 setAxis:1];
     [v25 setSpacing:6.0];
-    v26 = [(SFAccountDetailTOTPTableViewCell *)v4 contentView];
-    [v26 addSubview:v25];
+    contentView = [(SFAccountDetailTOTPTableViewCell *)v4 contentView];
+    [contentView addSubview:v25];
 
-    v27 = [(SFAccountDetailTOTPTableViewCell *)v4 contentView];
-    v28 = [v27 layoutMarginsGuide];
+    contentView2 = [(SFAccountDetailTOTPTableViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
 
     v41 = MEMORY[0x1E696ACD8];
-    v46 = [v25 leadingAnchor];
-    v45 = [v28 leadingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    leadingAnchor = [v25 leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v50[0] = v44;
-    v43 = [v25 trailingAnchor];
-    v42 = [v28 trailingAnchor];
-    v40 = [v43 constraintEqualToAnchor:v42];
+    trailingAnchor = [v25 trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v50[1] = v40;
-    v29 = [v25 topAnchor];
-    v30 = [v28 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    topAnchor = [v25 topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v50[2] = v31;
-    v32 = [v25 bottomAnchor];
-    v33 = [v28 bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    bottomAnchor = [v25 bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v50[3] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:4];
     [v41 activateConstraints:v35];
@@ -129,10 +129,10 @@
   [(SFAccountDetailTOTPTableViewCell *)&v3 dealloc];
 }
 
-- (void)configureWithGenerator:(id)a3
+- (void)configureWithGenerator:(id)generator
 {
-  v6 = a3;
-  objc_storeStrong(&self->_generator, a3);
+  generatorCopy = generator;
+  objc_storeStrong(&self->_generator, generator);
   if (self->_generator)
   {
     [(SFAccountDetailTOTPTableViewCell *)self _updateCodeAndLabels];
@@ -149,20 +149,20 @@
 
 - (void)_updateCodeAndLabels
 {
-  v3 = [(SFAccountDetailTOTPTableViewCell *)self _formattedCode];
-  [(UILabel *)self->_verificationCodeLabel setAttributedText:v3];
+  _formattedCode = [(SFAccountDetailTOTPTableViewCell *)self _formattedCode];
+  [(UILabel *)self->_verificationCodeLabel setAttributedText:_formattedCode];
 
-  v4 = [MEMORY[0x1E695E000] pm_defaults];
-  v5 = [v4 pm_passwordManagerIsInDemoMode];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  pm_passwordManagerIsInDemoMode = [pm_defaults pm_passwordManagerIsInDemoMode];
 
-  if ((v5 & 1) == 0)
+  if ((pm_passwordManagerIsInDemoMode & 1) == 0)
   {
-    v6 = [(UILabel *)self->_verificationCodeLabel layer];
-    [v6 setDisableUpdateMask:18];
+    layer = [(UILabel *)self->_verificationCodeLabel layer];
+    [layer setDisableUpdateMask:18];
   }
 
-  v7 = [(SFAccountDetailTOTPTableViewCell *)self _attributedSubtitleString];
-  [(UILabel *)self->_subtitleLabel setAttributedText:v7];
+  _attributedSubtitleString = [(SFAccountDetailTOTPTableViewCell *)self _attributedSubtitleString];
+  [(UILabel *)self->_subtitleLabel setAttributedText:_attributedSubtitleString];
 
   [(SFAccountDetailTOTPTableViewCell *)self setNeedsLayout];
 }
@@ -172,8 +172,8 @@
   v19[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E696AD40]);
   generator = self->_generator;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(WBSTOTPGenerator *)generator codeForDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [(WBSTOTPGenerator *)generator codeForDate:date];
   v7 = [v3 initWithString:v6];
 
   if ([v7 length] >= 5)
@@ -216,8 +216,8 @@
     codeUpdateTimer = self->_codeUpdateTimer;
     self->_codeUpdateTimer = v4;
 
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v6 addTimer:self->_codeUpdateTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_codeUpdateTimer forMode:*MEMORY[0x1E695DA28]];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -233,8 +233,8 @@ void __59__SFAccountDetailTOTPTableViewCell__startTOTPTimerIfNeeded__block_invok
 - (id)_attributedSubtitleString
 {
   generator = self->_generator;
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(WBSTOTPGenerator *)generator startDateOfIntervalContainingDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [(WBSTOTPGenerator *)generator startDateOfIntervalContainingDate:date];
 
   [v5 timeIntervalSinceNow];
   v7 = [(SFAccountDetailTOTPTableViewCell *)self _attributedSubtitleStringWithRemainingSeconds:[(WBSTOTPGenerator *)self->_generator codeGenerationPeriod]- vcvtmd_u64_f64(-v6)];
@@ -242,11 +242,11 @@ void __59__SFAccountDetailTOTPTableViewCell__startTOTPTimerIfNeeded__block_invok
   return v7;
 }
 
-- (id)_attributedSubtitleStringWithRemainingSeconds:(unint64_t)a3
+- (id)_attributedSubtitleStringWithRemainingSeconds:(unint64_t)seconds
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v5 = [MEMORY[0x1E69C8A60] countdownStringForSecondsRemaining:a3];
+  v5 = [MEMORY[0x1E69C8A60] countdownStringForSecondsRemaining:seconds];
   v10 = *MEMORY[0x1E69DB648];
   v6 = subtitleFont();
   v11[0] = v6;
@@ -258,9 +258,9 @@ void __59__SFAccountDetailTOTPTableViewCell__startTOTPTimerIfNeeded__block_invok
 
 - (void)_updateTitleAndVerificationCodeStackView
 {
-  v3 = [(SFAccountDetailTOTPTableViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(SFAccountDetailTOTPTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -274,12 +274,12 @@ void __59__SFAccountDetailTOTPTableViewCell__startTOTPTimerIfNeeded__block_invok
 
   [(UIStackView *)self->_titleAndVerificationCodeStackView setAxis:IsAccessibilityCategory];
   [(UIStackView *)self->_titleAndVerificationCodeStackView setAlignment:v6];
-  v7 = [(SFAccountDetailTOTPTableViewCell *)self traitCollection];
-  v8 = [v7 layoutDirection];
+  traitCollection2 = [(SFAccountDetailTOTPTableViewCell *)self traitCollection];
+  layoutDirection = [traitCollection2 layoutDirection];
 
-  if ((v8 + 1) >= 2)
+  if ((layoutDirection + 1) >= 2)
   {
-    if (v8 != 1)
+    if (layoutDirection != 1)
     {
       return;
     }
@@ -310,9 +310,9 @@ void __59__SFAccountDetailTOTPTableViewCell__startTOTPTimerIfNeeded__block_invok
   [(UILabel *)verificationCodeLabel setTextAlignment:v9];
 }
 
-- (void)setOverrideVerificationCodeLabelTextColor:(id)a3
+- (void)setOverrideVerificationCodeLabelTextColor:(id)color
 {
-  objc_storeStrong(&self->_overrideVerificationCodeLabelTextColor, a3);
+  objc_storeStrong(&self->_overrideVerificationCodeLabelTextColor, color);
 
   [(SFAccountDetailTOTPTableViewCell *)self _updateVerificationCodeLabelTextColor];
 }
@@ -328,8 +328,8 @@ void __59__SFAccountDetailTOTPTableViewCell__startTOTPTimerIfNeeded__block_invok
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)self->_verificationCodeLabel setTextColor:v4];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)self->_verificationCodeLabel setTextColor:secondaryLabelColor];
   }
 }
 

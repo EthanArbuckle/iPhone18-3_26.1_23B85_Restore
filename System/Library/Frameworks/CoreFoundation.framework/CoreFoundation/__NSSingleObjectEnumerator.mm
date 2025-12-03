@@ -1,6 +1,6 @@
 @interface __NSSingleObjectEnumerator
 - (__NSSingleObjectEnumerator)init;
-- (__NSSingleObjectEnumerator)initWithObject:(id)a3 collection:(id)a4;
+- (__NSSingleObjectEnumerator)initWithObject:(id)object collection:(id)collection;
 - (id)description;
 - (id)nextObject;
 - (void)dealloc;
@@ -28,18 +28,18 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSSingleObjectEnumerator)initWithObject:(id)a3 collection:(id)a4
+- (__NSSingleObjectEnumerator)initWithObject:(id)object collection:(id)collection
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
     v10.receiver = self;
     v10.super_class = __NSSingleObjectEnumerator;
     v6 = [(__NSSingleObjectEnumerator *)&v10 init];
     if (v6)
     {
-      v6->_theObjectToReturn = a3;
-      v6->_theCollection = a4;
+      v6->_theObjectToReturn = object;
+      v6->_theCollection = collection;
     }
 
     v7 = *MEMORY[0x1E69E9840];

@@ -1,8 +1,8 @@
 @interface MFSafetyCheckWhenBlocking
 + (_TtC10MobileMail25MFSafetyCheckWhenBlocking)shared;
 - (void)prefetchSharing;
-- (void)presentSafetyCheckIfNeededForContact:(id)a3 completion:(id)a4;
-- (void)presentSafetyCheckIfNeededForEmailAddresses:(id)a3 completion:(id)a4;
+- (void)presentSafetyCheckIfNeededForContact:(id)contact completion:(id)completion;
+- (void)presentSafetyCheckIfNeededForEmailAddresses:(id)addresses completion:(id)completion;
 @end
 
 @implementation MFSafetyCheckWhenBlocking
@@ -23,23 +23,23 @@
   _objc_release(self);
 }
 
-- (void)presentSafetyCheckIfNeededForContact:(id)a3 completion:(id)a4
+- (void)presentSafetyCheckIfNeededForContact:(id)contact completion:(id)completion
 {
-  _objc_retain(a3);
-  v6 = _Block_copy(a4);
+  _objc_retain(contact);
+  v6 = _Block_copy(completion);
   _objc_retain(self);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  MFSafetyCheckWhenBlocking.presentSafetyCheckIfNeeded(for:completion:)(a3, sub_1003D3E5C, v7);
+  MFSafetyCheckWhenBlocking.presentSafetyCheckIfNeeded(for:completion:)(contact, sub_1003D3E5C, v7);
 
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(contact);
 }
 
-- (void)presentSafetyCheckIfNeededForEmailAddresses:(id)a3 completion:(id)a4
+- (void)presentSafetyCheckIfNeededForEmailAddresses:(id)addresses completion:(id)completion
 {
-  _objc_retain(a3);
-  v6 = _Block_copy(a4);
+  _objc_retain(addresses);
+  v6 = _Block_copy(completion);
   _objc_retain(self);
   sub_1002644F0();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -47,7 +47,7 @@
   *(v7 + 16) = v6;
   MFSafetyCheckWhenBlocking.presentSafetyCheckIfNeeded(for:completion:)(v8, sub_1003D3E5C, v7);
 
-  _objc_release(a3);
+  _objc_release(addresses);
   _objc_release(self);
 }
 

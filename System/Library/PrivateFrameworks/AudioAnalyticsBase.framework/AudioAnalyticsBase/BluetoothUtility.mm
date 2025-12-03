@@ -1,10 +1,10 @@
 @interface BluetoothUtility
-- (void)handleBluetoothManagerStateChangeWithNotification:(id)a3;
+- (void)handleBluetoothManagerStateChangeWithNotification:(id)notification;
 @end
 
 @implementation BluetoothUtility
 
-- (void)handleBluetoothManagerStateChangeWithNotification:(id)a3
+- (void)handleBluetoothManagerStateChangeWithNotification:(id)notification
 {
   v3 = sub_2239B2E58();
   v4 = *(v3 - 8);

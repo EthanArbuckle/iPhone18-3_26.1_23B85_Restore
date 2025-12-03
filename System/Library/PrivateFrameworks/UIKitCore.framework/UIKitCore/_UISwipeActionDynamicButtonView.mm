@@ -1,32 +1,32 @@
 @interface _UISwipeActionDynamicButtonView
-+ (double)imageOnlyButtonWidth:(CGRect)a3 buttonTypes:(id)a4;
++ (double)imageOnlyButtonWidth:(CGRect)width buttonTypes:(id)types;
 + (id)defaultButtonConfiguration;
 + (id)defaultTitleLabel;
 + (id)preferredSymbolConfigurationForImage;
 - (CGSize)preferredSize;
 - (UIButtonConfiguration)buttonConfiguration;
-- (_UISwipeActionDynamicButtonView)initWithFrame:(CGRect)a3;
+- (_UISwipeActionDynamicButtonView)initWithFrame:(CGRect)frame;
 - (_UISwipeActionDynamicButtonViewDelegate)delegate;
-- (void)_buttonDidTouchUpInInside:(id)a3;
+- (void)_buttonDidTouchUpInInside:(id)inside;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setButtonBackgroundColor:(id)a3;
-- (void)setButtonImage:(id)a3;
-- (void)setButtonMenu:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)swipeActionWillDisplayMenuForButton:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setButtonBackgroundColor:(id)color;
+- (void)setButtonImage:(id)image;
+- (void)setButtonMenu:(id)menu;
+- (void)setFrame:(CGRect)frame;
+- (void)setState:(unint64_t)state;
+- (void)setTitle:(id)title;
+- (void)swipeActionWillDisplayMenuForButton:(id)button;
 - (void)updateButtonConfiguration;
 @end
 
 @implementation _UISwipeActionDynamicButtonView
 
-- (_UISwipeActionDynamicButtonView)initWithFrame:(CGRect)a3
+- (_UISwipeActionDynamicButtonView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UISwipeActionDynamicButtonView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_UISwipeActionDynamicButton);
@@ -57,11 +57,11 @@
     v5 = self->_buttonConfiguration;
     self->_buttonConfiguration = v4;
 
-    v6 = [(_UISwipeActionDynamicButtonView *)self buttonBackgroundColor];
-    [(UIButtonConfiguration *)self->_buttonConfiguration setBaseBackgroundColor:v6];
+    buttonBackgroundColor = [(_UISwipeActionDynamicButtonView *)self buttonBackgroundColor];
+    [(UIButtonConfiguration *)self->_buttonConfiguration setBaseBackgroundColor:buttonBackgroundColor];
 
-    v7 = [(_UISwipeActionDynamicButtonView *)self buttonImage];
-    [(UIButtonConfiguration *)self->_buttonConfiguration setImage:v7];
+    buttonImage = [(_UISwipeActionDynamicButtonView *)self buttonImage];
+    [(UIButtonConfiguration *)self->_buttonConfiguration setImage:buttonImage];
 
     buttonConfiguration = self->_buttonConfiguration;
   }
@@ -69,16 +69,16 @@
   return buttonConfiguration;
 }
 
-- (void)setButtonMenu:(id)a3
+- (void)setButtonMenu:(id)menu
 {
-  v5 = [(_UISwipeActionDynamicButtonView *)self button];
-  [v5 setMenu:a3];
+  button = [(_UISwipeActionDynamicButtonView *)self button];
+  [button setMenu:menu];
 
-  v6 = [(_UISwipeActionDynamicButtonView *)self button];
-  [v6 setShowsMenuAsPrimaryAction:a3 != 0];
+  button2 = [(_UISwipeActionDynamicButtonView *)self button];
+  [button2 setShowsMenuAsPrimaryAction:menu != 0];
 
-  v7 = [(_UISwipeActionDynamicButtonView *)self button];
-  [v7 setSwipeActionButtonDelegate:self];
+  button3 = [(_UISwipeActionDynamicButtonView *)self button];
+  [button3 setSwipeActionButtonDelegate:self];
 }
 
 - (CGSize)preferredSize
@@ -126,8 +126,8 @@
   v4 = +[UIColor secondaryLabelColor];
   [(UILabel *)v3 setTextColor:v4];
 
-  v5 = [a1 preferredTitleFont];
-  [(UILabel *)v3 setFont:v5];
+  preferredTitleFont = [self preferredTitleFont];
+  [(UILabel *)v3 setFont:preferredTitleFont];
 
   [(UILabel *)v3 setNumberOfLines:0];
   [(UILabel *)v3 setTextAlignment:1];
@@ -138,11 +138,11 @@
   return v3;
 }
 
-+ (double)imageOnlyButtonWidth:(CGRect)a3 buttonTypes:(id)a4
++ (double)imageOnlyButtonWidth:(CGRect)width buttonTypes:(id)types
 {
-  Height = CGRectGetHeight(a3);
+  Height = CGRectGetHeight(width);
   v6 = floorf(Height) + -8.0;
-  v7 = [a4 containsObject:&unk_1EFE30820];
+  v7 = [types containsObject:&unk_1EFE30820];
   result = 50.0;
   v9 = 80.0;
   if (!v7)
@@ -163,42 +163,42 @@
   return result;
 }
 
-- (void)_buttonDidTouchUpInInside:(id)a3
+- (void)_buttonDidTouchUpInInside:(id)inside
 {
-  v4 = [(_UISwipeActionDynamicButtonView *)self delegate];
-  [v4 swipeActionButtonDidTouchUpInside:self];
+  delegate = [(_UISwipeActionDynamicButtonView *)self delegate];
+  [delegate swipeActionButtonDidTouchUpInside:self];
 }
 
-- (void)setFrame:(CGRect)a3
-{
-  v4.receiver = self;
-  v4.super_class = _UISwipeActionDynamicButtonView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  [(UIView *)self setNeedsLayout];
-}
-
-- (void)setBounds:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UISwipeActionDynamicButtonView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setBounds:(CGRect)bounds
+{
+  v4.receiver = self;
+  v4.super_class = _UISwipeActionDynamicButtonView;
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
+  [(UIView *)self setNeedsLayout];
+}
+
+- (void)setTitle:(id)title
 {
   title = self->_title;
-  v9 = a3;
-  v5 = title;
-  if (v5 == v9)
+  titleCopy = title;
+  titleCopy2 = title;
+  if (titleCopy2 == titleCopy)
   {
   }
 
   else
   {
-    if (v9 && v5)
+    if (titleCopy && titleCopy2)
     {
-      v6 = [(NSString *)v9 isEqual:v5];
+      v6 = [(NSString *)titleCopy isEqual:titleCopy2];
 
       if (v6)
       {
@@ -210,7 +210,7 @@
     {
     }
 
-    v7 = [(NSString *)v9 copy];
+    v7 = [(NSString *)titleCopy copy];
     v8 = self->_title;
     self->_title = v7;
 
@@ -218,21 +218,21 @@
   }
 }
 
-- (void)setButtonBackgroundColor:(id)a3
+- (void)setButtonBackgroundColor:(id)color
 {
-  if (self->_buttonBackgroundColor != a3)
+  if (self->_buttonBackgroundColor != color)
   {
-    objc_storeStrong(&self->_buttonBackgroundColor, a3);
+    objc_storeStrong(&self->_buttonBackgroundColor, color);
 
     [(_UISwipeActionDynamicButtonView *)self updateButtonConfiguration];
   }
 }
 
-- (void)setButtonImage:(id)a3
+- (void)setButtonImage:(id)image
 {
-  if (self->_buttonImage != a3)
+  if (self->_buttonImage != image)
   {
-    objc_storeStrong(&self->_buttonImage, a3);
+    objc_storeStrong(&self->_buttonImage, image);
 
     [(_UISwipeActionDynamicButtonView *)self updateButtonConfiguration];
   }
@@ -240,20 +240,20 @@
 
 - (void)updateButtonConfiguration
 {
-  v3 = [(_UISwipeActionDynamicButtonView *)self buttonBackgroundColor];
-  [(UIButtonConfiguration *)self->_buttonConfiguration setBaseBackgroundColor:v3];
+  buttonBackgroundColor = [(_UISwipeActionDynamicButtonView *)self buttonBackgroundColor];
+  [(UIButtonConfiguration *)self->_buttonConfiguration setBaseBackgroundColor:buttonBackgroundColor];
 
-  v4 = [(_UISwipeActionDynamicButtonView *)self buttonImage];
-  [(UIButtonConfiguration *)self->_buttonConfiguration setImage:v4];
+  buttonImage = [(_UISwipeActionDynamicButtonView *)self buttonImage];
+  [(UIButtonConfiguration *)self->_buttonConfiguration setImage:buttonImage];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -263,21 +263,21 @@
   v78.receiver = self;
   v78.super_class = _UISwipeActionDynamicButtonView;
   [(UIView *)&v78 layoutSubviews];
-  v3 = [(_UISwipeActionDynamicButtonView *)self button];
-  v4 = [(_UISwipeActionDynamicButtonView *)self buttonConfiguration];
-  v5 = [(_UISwipeActionDynamicButtonView *)self titleLabel];
-  v6 = [(_UISwipeActionDynamicButtonView *)self title];
-  [v5 setText:v6];
-  v7 = [v4 image];
-  v8 = v7 != 0;
+  button = [(_UISwipeActionDynamicButtonView *)self button];
+  buttonConfiguration = [(_UISwipeActionDynamicButtonView *)self buttonConfiguration];
+  titleLabel = [(_UISwipeActionDynamicButtonView *)self titleLabel];
+  title = [(_UISwipeActionDynamicButtonView *)self title];
+  [titleLabel setText:title];
+  image = [buttonConfiguration image];
+  v8 = image != 0;
 
-  v9 = [v6 length];
+  v9 = [title length];
   if (!v9)
   {
     v8 = 0;
   }
 
-  if (v7)
+  if (image)
   {
     v10 = 0;
   }
@@ -295,7 +295,7 @@
   v14 = floorf(Height);
   v15 = *MEMORY[0x1E695F060];
   v16 = *(MEMORY[0x1E695F060] + 8);
-  [v5 sizeThatFits:{*MEMORY[0x1E695F060], v16}];
+  [titleLabel sizeThatFits:{*MEMORY[0x1E695F060], v16}];
   v19 = v18;
   if (v9)
   {
@@ -315,8 +315,8 @@
   v81.size.width = v12;
   v81.size.height = v14;
   v23 = CGRectGetHeight(v81) + -8.0;
-  v24 = [(_UISwipeActionDynamicButtonView *)self buttonTypes];
-  v25 = [v24 count];
+  buttonTypes = [(_UISwipeActionDynamicButtonView *)self buttonTypes];
+  v25 = [buttonTypes count];
   v75 = v25;
   if (v8)
   {
@@ -328,13 +328,13 @@
     v8 = CGRectGetHeight(v82) >= 60.0 && v26 <= 1 && v23 - v22 + -4.0 >= 30.0;
   }
 
-  [v4 setCornerStyle:4];
-  v77 = v24;
-  if (v10 || [v24 containsObject:&unk_1EFE30820])
+  [buttonConfiguration setCornerStyle:4];
+  v77 = buttonTypes;
+  if (v10 || [buttonTypes containsObject:&unk_1EFE30820])
   {
-    [v4 setCornerStyle:-1];
-    v28 = [v4 background];
-    [v28 setCornerRadius:16.0];
+    [buttonConfiguration setCornerStyle:-1];
+    background = [buttonConfiguration background];
+    [background setCornerRadius:16.0];
 
     v29 = 1;
   }
@@ -344,13 +344,13 @@
     v29 = 0;
   }
 
-  if (v9 && (v7 == 0 || !v8))
+  if (v9 && (image == 0 || !v8))
   {
-    [v5 setText:0];
-    [v4 setTitle:v6];
+    [titleLabel setText:0];
+    [buttonConfiguration setTitle:title];
     v30 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleFootnote" maximumContentSizeCategory:@"UICTContentSizeCategoryAccessibilityM"];
     v31 = [UIImageSymbolConfiguration configurationWithFont:v30 scale:2];
-    [v4 setPreferredSymbolConfigurationForImage:v31];
+    [buttonConfiguration setPreferredSymbolConfigurationForImage:v31];
   }
 
   if (!v8)
@@ -360,11 +360,11 @@
       if (v19 > fmin(v23, 50.0) && !v10)
       {
 LABEL_34:
-        [v4 setTitle:0];
+        [buttonConfiguration setTitle:0];
         v39 = +[_UISwipeActionDynamicButtonView preferredSymbolConfigurationForImage];
-        [v4 setPreferredSymbolConfigurationForImage:v39];
+        [buttonConfiguration setPreferredSymbolConfigurationForImage:v39];
 
-        [v3 setConfiguration:v4];
+        [button setConfiguration:buttonConfiguration];
         v85.origin.x = 0.0;
         v85.origin.y = 0.0;
         v85.size.width = v12;
@@ -411,7 +411,7 @@ LABEL_34:
 
         v43 = 0.0;
         v76 = v23;
-        [v3 setBounds:{0.0, 0.0, v42, v23}];
+        [button setBounds:{0.0, 0.0, v42, v23}];
         v87.origin.x = 0.0;
         v87.origin.y = 0.0;
         v87.size.width = v12;
@@ -421,8 +421,8 @@ LABEL_34:
         v88.origin.y = 0.0;
         v88.size.width = v12;
         v88.size.height = v14;
-        [v3 setCenter:{MidX, CGRectGetMidY(v88)}];
-        [v5 setHidden:1];
+        [button setCenter:{MidX, CGRectGetMidY(v88)}];
+        [titleLabel setHidden:1];
         v45 = 32.0;
 LABEL_66:
         v46 = v77;
@@ -435,10 +435,10 @@ LABEL_66:
       goto LABEL_34;
     }
 
-    [v4 setDefaultContentInsets];
-    [v4 setImagePadding:4.0];
-    [v3 setConfiguration:v4];
-    [v3 sizeThatFits:{v15, v16}];
+    [buttonConfiguration setDefaultContentInsets];
+    [buttonConfiguration setImagePadding:4.0];
+    [button setConfiguration:buttonConfiguration];
+    [button sizeThatFits:{v15, v16}];
     v56 = v55;
     v57 = 80.0;
     if (!v29)
@@ -451,14 +451,14 @@ LABEL_66:
       v23 = v57;
     }
 
-    v58 = [v4 title];
+    title2 = [buttonConfiguration title];
     v59 = 60.0;
     if (v23 == 50.0)
     {
       v59 = 50.0;
     }
 
-    if (v58)
+    if (title2)
     {
       v36 = v56;
     }
@@ -485,7 +485,7 @@ LABEL_66:
 
     v43 = 0.0;
     v76 = v23;
-    [v3 setBounds:{0.0, 0.0, v61, v23}];
+    [button setBounds:{0.0, 0.0, v61, v23}];
     v94.origin.x = 0.0;
     v94.origin.y = 0.0;
     v94.size.width = v12;
@@ -495,8 +495,8 @@ LABEL_66:
     v95.origin.y = 0.0;
     v95.size.width = v12;
     v95.size.height = v14;
-    [v3 setCenter:{v62, CGRectGetMidY(v95)}];
-    [v5 setHidden:1];
+    [button setCenter:{v62, CGRectGetMidY(v95)}];
+    [titleLabel setHidden:1];
     v45 = 16.0;
     if ([(_UISwipeActionDynamicButtonView *)self canUseUniformInlineWidth])
     {
@@ -566,7 +566,7 @@ LABEL_66:
   }
 
   v46 = v77;
-  [v3 setBounds:{0.0, 0.0, v37, v38}];
+  [button setBounds:{0.0, 0.0, v37, v38}];
   v89.origin.x = 0.0;
   v89.origin.y = 0.0;
   v89.size.width = v12;
@@ -579,8 +579,8 @@ LABEL_66:
   v48 = v33 * 0.5;
   v49 = v38 * 0.5 + CGRectGetMidY(v90) - v48;
   [(UIView *)self _currentScreenScale];
-  [v3 setCenter:{UIPointRoundToScale(v47, v49, v50)}];
-  [v5 setBounds:{0.0, 0.0, v20, v74}];
+  [button setCenter:{UIPointRoundToScale(v47, v49, v50)}];
+  [titleLabel setBounds:{0.0, 0.0, v20, v74}];
   v91.origin.x = 0.0;
   v91.origin.y = 0.0;
   v91.size.width = v12;
@@ -592,17 +592,17 @@ LABEL_66:
   v92.size.height = v14;
   v52 = v74 * 0.5 + v48 + CGRectGetMidY(v92) - v73;
   [(UIView *)self _currentScreenScale];
-  [v5 setCenter:{UIPointRoundToScale(v51, v52, v53)}];
-  [v5 setHidden:0];
+  [titleLabel setCenter:{UIPointRoundToScale(v51, v52, v53)}];
+  [titleLabel setHidden:0];
   [(_UISwipeActionDynamicButtonView *)self uniformWidth];
   v43 = v54;
   v45 = 32.0;
 LABEL_67:
-  v64 = [(_UISwipeActionDynamicButtonView *)self state];
-  v65 = v64 - 3;
-  if (v64 - 3 >= 0xFFFFFFFFFFFFFFFELL)
+  state = [(_UISwipeActionDynamicButtonView *)self state];
+  v65 = state - 3;
+  if (state - 3 >= 0xFFFFFFFFFFFFFFFELL)
   {
-    if (v64 == 1)
+    if (state == 1)
     {
       v66 = 1;
     }
@@ -612,7 +612,7 @@ LABEL_67:
       v66 = 2;
     }
 
-    if (v64 == 1)
+    if (state == 1)
     {
       v67 = v45;
     }
@@ -622,7 +622,7 @@ LABEL_67:
       v67 = 0.0;
     }
 
-    if (v64 == 1)
+    if (state == 1)
     {
       v68 = 0.0;
     }
@@ -632,24 +632,24 @@ LABEL_67:
       v68 = v45;
     }
 
-    [v4 setContentInsets:{0.0, v67, 0.0, v68}];
+    [buttonConfiguration setContentInsets:{0.0, v67, 0.0, v68}];
   }
 
   else
   {
-    [v4 setDefaultContentInsets];
+    [buttonConfiguration setDefaultContentInsets];
     v66 = 0;
   }
 
-  [v3 setContentHorizontalAlignment:v66];
-  [v3 setConfiguration:v4];
+  [button setContentHorizontalAlignment:v66];
+  [button setConfiguration:buttonConfiguration];
   v69 = 1.0;
   if (v65 >= 0xFFFFFFFFFFFFFFFELL)
   {
     v69 = 0.0;
   }
 
-  [v5 setAlpha:v69];
+  [titleLabel setAlpha:v69];
   if (v43 >= v36)
   {
     v70 = v43;
@@ -669,18 +669,18 @@ LABEL_67:
   self->_preferredSize.height = v76;
 }
 
-- (void)swipeActionWillDisplayMenuForButton:(id)a3
+- (void)swipeActionWillDisplayMenuForButton:(id)button
 {
-  v8 = [(_UISwipeActionDynamicButtonView *)self delegate];
-  v5 = [a3 superview];
-  v6 = v5;
-  if (v5 == self)
+  delegate = [(_UISwipeActionDynamicButtonView *)self delegate];
+  superview = [button superview];
+  v6 = superview;
+  if (superview == self)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      [v8 swipeActionWillDisplayMenuForButton:self];
+      [delegate swipeActionWillDisplayMenuForButton:self];
     }
   }
 

@@ -1,37 +1,37 @@
 @interface WFShazamMediaActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)showWithCompletionHandler:(id)a3;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)showWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFShazamMediaActionUIKitUserInterface
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFShazamMediaActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFShazamMediaActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFShazamMediaActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFShazamMediaActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFShazamMediaActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__WFShazamMediaActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFShazamMediaActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -46,9 +46,9 @@ uint64_t __81__WFShazamMediaActionUIKitUserInterface_cancelPresentationWithCompl
   return v4();
 }
 
-- (void)showWithCompletionHandler:(id)a3
+- (void)showWithCompletionHandler:(id)handler
 {
-  [(WFShazamMediaActionUIKitUserInterface *)self setCompletionHandler:a3];
+  [(WFShazamMediaActionUIKitUserInterface *)self setCompletionHandler:handler];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__WFShazamMediaActionUIKitUserInterface_showWithCompletionHandler___block_invoke;

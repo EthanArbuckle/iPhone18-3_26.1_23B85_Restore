@@ -1,8 +1,8 @@
 @interface AMSSignInContext
 - (AMSSignInContext)init;
-- (AMSSignInContext)initWithCoder:(id)a3;
+- (AMSSignInContext)initWithCoder:(id)coder;
 - (NSString)hashedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSSignInContext
@@ -34,7 +34,7 @@
     v5 = @"false";
   }
 
-  v6 = [(AMSSignInContext *)self debugReason];
+  debugReason = [(AMSSignInContext *)self debugReason];
   if ([(AMSSignInContext *)self ignoreAccountConversion])
   {
     v7 = @"true";
@@ -55,45 +55,45 @@
     v8 = @"false";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p canMakeAccountActive = %@ | debugReason = %@ | ignoreAccountConversion = %@ | skipAuthentication = %@>", v4, self, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p canMakeAccountActive = %@ | debugReason = %@ | ignoreAccountConversion = %@ | skipAuthentication = %@>", v4, self, v5, debugReason, v7, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeBool:-[AMSSignInContext canMakeAccountActive](self forKey:{"canMakeAccountActive"), @"canMakeAccountActive"}];
-  v4 = [(AMSSignInContext *)self customHTTPHeaders];
-  [v6 encodeObject:v4 forKey:@"customHTTPHeaders"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[AMSSignInContext canMakeAccountActive](self forKey:{"canMakeAccountActive"), @"canMakeAccountActive"}];
+  customHTTPHeaders = [(AMSSignInContext *)self customHTTPHeaders];
+  [coderCopy encodeObject:customHTTPHeaders forKey:@"customHTTPHeaders"];
 
-  v5 = [(AMSSignInContext *)self debugReason];
-  [v6 encodeObject:v5 forKey:@"debugReason"];
+  debugReason = [(AMSSignInContext *)self debugReason];
+  [coderCopy encodeObject:debugReason forKey:@"debugReason"];
 
-  [v6 encodeBool:-[AMSSignInContext ignoreAccountConversion](self forKey:{"ignoreAccountConversion"), @"ignoreAccountConversion"}];
-  [v6 encodeBool:-[AMSSignInContext skipAuthentication](self forKey:{"skipAuthentication"), @"skipAuthentication"}];
+  [coderCopy encodeBool:-[AMSSignInContext ignoreAccountConversion](self forKey:{"ignoreAccountConversion"), @"ignoreAccountConversion"}];
+  [coderCopy encodeBool:-[AMSSignInContext skipAuthentication](self forKey:{"skipAuthentication"), @"skipAuthentication"}];
 }
 
-- (AMSSignInContext)initWithCoder:(id)a3
+- (AMSSignInContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AMSSignInContext;
   v5 = [(AMSSignInContext *)&v12 init];
   if (v5)
   {
-    v5->_canMakeAccountActive = [v4 decodeBoolForKey:@"canMakeAccountActive"];
+    v5->_canMakeAccountActive = [coderCopy decodeBoolForKey:@"canMakeAccountActive"];
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"customHTTPHeaders"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"customHTTPHeaders"];
     customHTTPHeaders = v5->_customHTTPHeaders;
     v5->_customHTTPHeaders = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"debugReason"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"debugReason"];
     debugReason = v5->_debugReason;
     v5->_debugReason = v9;
 
-    v5->_ignoreAccountConversion = [v4 decodeBoolForKey:@"ignoreAccountConversion"];
-    v5->_skipAuthentication = [v4 decodeBoolForKey:@"skipAuthentication"];
+    v5->_ignoreAccountConversion = [coderCopy decodeBoolForKey:@"ignoreAccountConversion"];
+    v5->_skipAuthentication = [coderCopy decodeBoolForKey:@"skipAuthentication"];
   }
 
   return v5;

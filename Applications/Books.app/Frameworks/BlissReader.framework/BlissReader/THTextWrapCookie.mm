@@ -1,6 +1,6 @@
 @interface THTextWrapCookie
 - (THTextWrapCookie)init;
-- (void)addFloatingWrappable:(id)a3;
+- (void)addFloatingWrappable:(id)wrappable;
 - (void)dealloc;
 @end
 
@@ -26,13 +26,13 @@
   [(THTextWrapCookie *)&v3 dealloc];
 }
 
-- (void)addFloatingWrappable:(id)a3
+- (void)addFloatingWrappable:(id)wrappable
 {
-  if ([a3 wrapType])
+  if ([wrappable wrapType])
   {
     floatingWrappables = self->_floatingWrappables;
 
-    [(NSMutableArray *)floatingWrappables addObject:a3];
+    [(NSMutableArray *)floatingWrappables addObject:wrappable];
   }
 }
 

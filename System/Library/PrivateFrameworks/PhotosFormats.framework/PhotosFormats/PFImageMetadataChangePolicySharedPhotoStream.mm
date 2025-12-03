@@ -1,18 +1,18 @@
 @interface PFImageMetadataChangePolicySharedPhotoStream
-+ (id)policyWithAllowLocation:(BOOL)a3;
-+ (void)_filterImageProperties:(id)a3 metadataWithKey:(id)a4 preserveProperties:(id)a5;
-- (BOOL)metadataNeedsProcessing:(id)a3;
-- (id)processMetadata:(id)a3;
++ (id)policyWithAllowLocation:(BOOL)location;
++ (void)_filterImageProperties:(id)properties metadataWithKey:(id)key preserveProperties:(id)preserveProperties;
+- (BOOL)metadataNeedsProcessing:(id)processing;
+- (id)processMetadata:(id)metadata;
 @end
 
 @implementation PFImageMetadataChangePolicySharedPhotoStream
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
   v13[4] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PFImageMetadataChangePolicySharedPhotoStream;
-  v4 = [(PFImageMetadataChangePolicyDefault *)&v12 processMetadata:a3];
+  v4 = [(PFImageMetadataChangePolicyDefault *)&v12 processMetadata:metadata];
   if ([(PFImageMetadataChangePolicySharedPhotoStream *)self metadataNeedsProcessing:v4])
   {
     v5 = [v4 mutableCopy];
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (BOOL)metadataNeedsProcessing:(id)a3
+- (BOOL)metadataNeedsProcessing:(id)processing
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DD90]];
+  v3 = [processing objectForKeyedSubscript:*MEMORY[0x1E696DD90]];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
-    v5 = [v3 isEqual:v4] ^ 1;
+    null = [MEMORY[0x1E695DFB0] null];
+    v5 = [v3 isEqual:null] ^ 1;
   }
 
   else
@@ -51,26 +51,26 @@
   return v5;
 }
 
-+ (void)_filterImageProperties:(id)a3 metadataWithKey:(id)a4 preserveProperties:(id)a5
++ (void)_filterImageProperties:(id)properties metadataWithKey:(id)key preserveProperties:(id)preserveProperties
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKey:v8];
+  propertiesCopy = properties;
+  keyCopy = key;
+  preservePropertiesCopy = preserveProperties;
+  v10 = [propertiesCopy objectForKey:keyCopy];
   if (v10)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v9;
+    v11 = preservePropertiesCopy;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
-      v19 = v9;
-      v20 = v7;
+      v19 = preservePropertiesCopy;
+      v20 = propertiesCopy;
       v14 = 0;
       v15 = *v22;
       do
@@ -100,11 +100,11 @@
 
       while (v13);
 
-      v9 = v19;
-      v7 = v20;
+      preservePropertiesCopy = v19;
+      propertiesCopy = v20;
       if (v14)
       {
-        [v20 setObject:v14 forKey:v8];
+        [v20 setObject:v14 forKey:keyCopy];
 
         goto LABEL_17;
       }
@@ -114,19 +114,19 @@
     {
     }
 
-    [v7 removeObjectForKey:v8];
+    [propertiesCopy removeObjectForKey:keyCopy];
   }
 
 LABEL_17:
 }
 
-+ (id)policyWithAllowLocation:(BOOL)a3
++ (id)policyWithAllowLocation:(BOOL)location
 {
-  v3 = a3;
+  locationCopy = location;
   v10[2] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
   v5 = v4;
-  if (v3)
+  if (locationCopy)
   {
     v6 = v4;
   }

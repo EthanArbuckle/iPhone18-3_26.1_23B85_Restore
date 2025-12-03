@@ -2,17 +2,17 @@
 + (id)singleton;
 - (WRM_MotionControllerIOS)init;
 - (void)dealloc;
-- (void)notifyHandoverManager:(int)a3;
+- (void)notifyHandoverManager:(int)manager;
 - (void)startMonitoringAlarms;
 - (void)stopAllAlarms;
 - (void)stopMonitoringAlarms;
 - (void)stopPendingAlarms;
-- (void)waitForActivityState:(unint64_t)a3 :(int)a4;
-- (void)waitForDrivingState:(unint64_t)a3;
-- (void)waitForPedestrianState:(unint64_t)a3;
-- (void)waitForRunningState:(unint64_t)a3;
-- (void)waitForStaticState:(unint64_t)a3;
-- (void)waitForWalkingState:(unint64_t)a3;
+- (void)waitForActivityState:(unint64_t)state :(int)a4;
+- (void)waitForDrivingState:(unint64_t)state;
+- (void)waitForPedestrianState:(unint64_t)state;
+- (void)waitForRunningState:(unint64_t)state;
+- (void)waitForStaticState:(unint64_t)state;
+- (void)waitForWalkingState:(unint64_t)state;
 @end
 
 @implementation WRM_MotionControllerIOS
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_10008CC20;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7E90 != -1)
   {
     dispatch_once(&qword_1002B7E90, block);
@@ -166,7 +166,7 @@
   }
 }
 
-- (void)waitForStaticState:(unint64_t)a3
+- (void)waitForStaticState:(unint64_t)state
 {
   [WCM_Logging logLevel:18 message:@"Alarm: setting up static state alarm "];
   mStaticAlarm = self->mStaticAlarm;
@@ -183,11 +183,11 @@
   v8[2] = sub_10008D368;
   v8[3] = &unk_10023FA70;
   v8[4] = self;
-  v8[5] = a3;
-  self->mStaticAlarm = [v6 initWithTrigger:0 duration:mAlarmQueue onQueue:v8 withHandler:a3];
+  v8[5] = state;
+  self->mStaticAlarm = [v6 initWithTrigger:0 duration:mAlarmQueue onQueue:v8 withHandler:state];
 }
 
-- (void)waitForPedestrianState:(unint64_t)a3
+- (void)waitForPedestrianState:(unint64_t)state
 {
   [WCM_Logging logLevel:18 message:@"Alarm: setting up pedestrian state alarm "];
   mPedestrianAfterStatic = self->mPedestrianAfterStatic;
@@ -204,11 +204,11 @@
   v8[2] = sub_10008D4C0;
   v8[3] = &unk_10023FA70;
   v8[4] = self;
-  v8[5] = a3;
-  self->mPedestrianAfterStatic = [v6 initWithTrigger:11 duration:mAlarmQueue onQueue:v8 withHandler:a3];
+  v8[5] = state;
+  self->mPedestrianAfterStatic = [v6 initWithTrigger:11 duration:mAlarmQueue onQueue:v8 withHandler:state];
 }
 
-- (void)waitForWalkingState:(unint64_t)a3
+- (void)waitForWalkingState:(unint64_t)state
 {
   [WCM_Logging logLevel:18 message:@"Alarm: setting up walking state alarm "];
   mWalkingAlarm = self->mWalkingAlarm;
@@ -225,11 +225,11 @@
   v8[2] = sub_10008D61C;
   v8[3] = &unk_10023FA70;
   v8[4] = self;
-  v8[5] = a3;
-  self->mWalkingAlarm = [v6 initWithTrigger:2 duration:mAlarmQueue onQueue:v8 withHandler:a3];
+  v8[5] = state;
+  self->mWalkingAlarm = [v6 initWithTrigger:2 duration:mAlarmQueue onQueue:v8 withHandler:state];
 }
 
-- (void)waitForRunningState:(unint64_t)a3
+- (void)waitForRunningState:(unint64_t)state
 {
   [WCM_Logging logLevel:18 message:@"Alarm: setting up running state alarm "];
   mRunningAlarm = self->mRunningAlarm;
@@ -246,11 +246,11 @@
   v8[2] = sub_10008D778;
   v8[3] = &unk_10023FA70;
   v8[4] = self;
-  v8[5] = a3;
-  self->mRunningAlarm = [v6 initWithTrigger:3 duration:mAlarmQueue onQueue:v8 withHandler:a3];
+  v8[5] = state;
+  self->mRunningAlarm = [v6 initWithTrigger:3 duration:mAlarmQueue onQueue:v8 withHandler:state];
 }
 
-- (void)waitForDrivingState:(unint64_t)a3
+- (void)waitForDrivingState:(unint64_t)state
 {
   [WCM_Logging logLevel:18 message:@"Alarm: setting up driving state alarm "];
   mDrivingAlarm = self->mDrivingAlarm;
@@ -267,21 +267,21 @@
   v8[2] = sub_10008D8D4;
   v8[3] = &unk_10023FA70;
   v8[4] = self;
-  v8[5] = a3;
-  self->mDrivingAlarm = [v6 initWithTrigger:4 duration:mAlarmQueue onQueue:v8 withHandler:a3];
+  v8[5] = state;
+  self->mDrivingAlarm = [v6 initWithTrigger:4 duration:mAlarmQueue onQueue:v8 withHandler:state];
 }
 
-- (void)waitForActivityState:(unint64_t)a3 :(int)a4
+- (void)waitForActivityState:(unint64_t)state :(int)a4
 {
   [(WRM_MotionControllerIOS *)self stopPendingAlarms];
   if (a4 <= 2)
   {
     if (!a4)
     {
-      [(WRM_MotionControllerIOS *)self waitForWalkingState:a3];
-      [(WRM_MotionControllerIOS *)self waitForRunningState:a3];
-      [(WRM_MotionControllerIOS *)self waitForDrivingState:a3];
-      [(WRM_MotionControllerIOS *)self waitForPedestrianState:a3];
+      [(WRM_MotionControllerIOS *)self waitForWalkingState:state];
+      [(WRM_MotionControllerIOS *)self waitForRunningState:state];
+      [(WRM_MotionControllerIOS *)self waitForDrivingState:state];
+      [(WRM_MotionControllerIOS *)self waitForPedestrianState:state];
       self->mMotionControllerState = 2;
       v7 = @"Alarm State: ALARM_WALKING_RUNNING_DRIVING_PEDESTRIAN";
       goto LABEL_18;
@@ -291,10 +291,10 @@
     {
       if (a4 == 2)
       {
-        [(WRM_MotionControllerIOS *)self waitForStaticState:a3];
-        [(WRM_MotionControllerIOS *)self waitForDrivingState:a3];
-        [(WRM_MotionControllerIOS *)self waitForWalkingState:a3];
-        [(WRM_MotionControllerIOS *)self waitForPedestrianState:a3];
+        [(WRM_MotionControllerIOS *)self waitForStaticState:state];
+        [(WRM_MotionControllerIOS *)self waitForDrivingState:state];
+        [(WRM_MotionControllerIOS *)self waitForWalkingState:state];
+        [(WRM_MotionControllerIOS *)self waitForPedestrianState:state];
         self->mMotionControllerState = 4;
         v7 = @"Alarm State: ALARM_DRIVING_STATIONARY_WALKING_PEDSTRIAN";
 LABEL_18:
@@ -311,10 +311,10 @@ LABEL_19:
       return;
     }
 
-    [(WRM_MotionControllerIOS *)self waitForStaticState:a3];
-    [(WRM_MotionControllerIOS *)self waitForRunningState:a3];
-    [(WRM_MotionControllerIOS *)self waitForDrivingState:a3];
-    [(WRM_MotionControllerIOS *)self waitForPedestrianState:a3];
+    [(WRM_MotionControllerIOS *)self waitForStaticState:state];
+    [(WRM_MotionControllerIOS *)self waitForRunningState:state];
+    [(WRM_MotionControllerIOS *)self waitForDrivingState:state];
+    [(WRM_MotionControllerIOS *)self waitForPedestrianState:state];
 LABEL_17:
     self->mMotionControllerState = 3;
     v7 = @"Alarm State: ALARM_RUNNING_DRIVING_STATIONARY_PEDESTRIAN";
@@ -323,10 +323,10 @@ LABEL_17:
 
   if (a4 == 3)
   {
-    [(WRM_MotionControllerIOS *)self waitForStaticState:a3];
-    [(WRM_MotionControllerIOS *)self waitForRunningState:a3];
-    [(WRM_MotionControllerIOS *)self waitForWalkingState:a3];
-    [(WRM_MotionControllerIOS *)self waitForPedestrianState:a3];
+    [(WRM_MotionControllerIOS *)self waitForStaticState:state];
+    [(WRM_MotionControllerIOS *)self waitForRunningState:state];
+    [(WRM_MotionControllerIOS *)self waitForWalkingState:state];
+    [(WRM_MotionControllerIOS *)self waitForPedestrianState:state];
     self->mMotionControllerState = 5;
     v7 = @"Alarm State: ALARM_STATIONARY_WALKING_RUNNING_PEDSTRIAN";
     goto LABEL_18;
@@ -334,10 +334,10 @@ LABEL_17:
 
   if (a4 == 4)
   {
-    [(WRM_MotionControllerIOS *)self waitForStaticState:a3];
-    [(WRM_MotionControllerIOS *)self waitForRunningState:a3];
-    [(WRM_MotionControllerIOS *)self waitForDrivingState:a3];
-    [(WRM_MotionControllerIOS *)self waitForWalkingState:a3];
+    [(WRM_MotionControllerIOS *)self waitForStaticState:state];
+    [(WRM_MotionControllerIOS *)self waitForRunningState:state];
+    [(WRM_MotionControllerIOS *)self waitForDrivingState:state];
+    [(WRM_MotionControllerIOS *)self waitForWalkingState:state];
     goto LABEL_17;
   }
 
@@ -346,13 +346,13 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  [(WRM_MotionControllerIOS *)self waitForStaticState:a3];
+  [(WRM_MotionControllerIOS *)self waitForStaticState:state];
 }
 
-- (void)notifyHandoverManager:(int)a3
+- (void)notifyHandoverManager:(int)manager
 {
   v4 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v4, "kWRMM_MOTION_STATE", a3);
+  xpc_dictionary_set_int64(v4, "kWRMM_MOTION_STATE", manager);
   *keys = *off_10023FA90;
   values[0] = xpc_uint64_create(0x3E9uLL);
   values[1] = v4;

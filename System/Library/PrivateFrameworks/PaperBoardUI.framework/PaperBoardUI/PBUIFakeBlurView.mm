@@ -1,39 +1,39 @@
 @interface PBUIFakeBlurView
-+ (id)_imageForStyle:(int64_t *)a3 withSource:(id)a4 overrideTraitCollection:(id)a5;
-+ (void)_imageForStyle:(int64_t)a3 withSource:(id)a4 overrideTraitCollection:(id)a5 result:(id)a6;
-- (BOOL)parallaxEnabledForVariant:(int64_t)a3;
-- (BOOL)updateImageProviderView:(id)a3 withImage:(id)a4;
++ (id)_imageForStyle:(int64_t *)style withSource:(id)source overrideTraitCollection:(id)collection;
++ (void)_imageForStyle:(int64_t)style withSource:(id)source overrideTraitCollection:(id)collection result:(id)result;
+- (BOOL)parallaxEnabledForVariant:(int64_t)variant;
+- (BOOL)updateImageProviderView:(id)view withImage:(id)image;
 - (NSString)description;
 - (PBUIFakeBlurImageProviding)imageProvider;
 - (PBUIFakeBlurObserver)observer;
-- (PBUIFakeBlurView)initWithVariant:(int64_t)a3 imageProvider:(id)a4 fakeBlurRegistry:(id)a5 wallpaperViewDelegate:(id)a6 transformOptions:(unint64_t)a7 reachabilityCoordinator:(id)a8;
-- (PBUIFakeBlurView)initWithVariant:(int64_t)a3 wallpaperViewController:(id)a4 transformOptions:(unint64_t)a5 reachabilityCoordinator:(id)a6;
+- (PBUIFakeBlurView)initWithVariant:(int64_t)variant imageProvider:(id)provider fakeBlurRegistry:(id)registry wallpaperViewDelegate:(id)delegate transformOptions:(unint64_t)options reachabilityCoordinator:(id)coordinator;
+- (PBUIFakeBlurView)initWithVariant:(int64_t)variant wallpaperViewController:(id)controller transformOptions:(unint64_t)options reachabilityCoordinator:(id)coordinator;
 - (PBUIFakeBlurViewRegistering)fakeBlurRegistry;
 - (PBUIWallpaperViewController)wallpaperViewController;
-- (double)parallaxFactorForVariant:(int64_t)a3;
-- (double)zoomFactorForVariant:(int64_t)a3;
-- (id)_effectiveTraitCollectionForMode:(void *)a1;
-- (id)imageForWallpaperStyle:(int64_t *)a3 variant:(int64_t)a4 traitCollection:(id)a5;
+- (double)parallaxFactorForVariant:(int64_t)variant;
+- (double)zoomFactorForVariant:(int64_t)variant;
+- (id)_effectiveTraitCollectionForMode:(void *)mode;
+- (id)imageForWallpaperStyle:(int64_t *)style variant:(int64_t)variant traitCollection:(id)collection;
 - (void)_createOrRemoveMatchMoveAnimationIfNeeded;
-- (void)_setImage:(uint64_t)a3 style:(int)a4 notify:;
-- (void)_updateImageFromProviderWithTraitCollection:(uint64_t)a1;
-- (void)_updateImageWithSource:(uint64_t)a1 overrideTraitCollection:(void *)a2 notifyObserver:(void *)a3;
+- (void)_setImage:(uint64_t)image style:(int)style notify:;
+- (void)_updateImageFromProviderWithTraitCollection:(uint64_t)collection;
+- (void)_updateImageWithSource:(uint64_t)source overrideTraitCollection:(void *)collection notifyObserver:(void *)observer;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)handleReachabilityYOffsetDidChange;
 - (void)layoutSubviews;
-- (void)offsetWallpaperBy:(CGPoint)a3;
+- (void)offsetWallpaperBy:(CGPoint)by;
 - (void)reconfigureFromProvider;
-- (void)reconfigureWithSource:(id)a3;
-- (void)requestStyle:(int64_t)a3;
-- (void)rotateToInterfaceOrientation:(int64_t)a3;
-- (void)setShouldMatchWallpaperPosition:(BOOL)a3;
-- (void)setTransformOptions:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateImageFromProviderForWallpaperMode:(int64_t)a3;
-- (void)updateImageWithSource:(id)a3;
-- (void)updateImageWithSource:(void *)a3 overrideTraitCollection:;
-- (void)willMoveToWindow:(id)a3;
+- (void)reconfigureWithSource:(id)source;
+- (void)requestStyle:(int64_t)style;
+- (void)rotateToInterfaceOrientation:(int64_t)orientation;
+- (void)setShouldMatchWallpaperPosition:(BOOL)position;
+- (void)setTransformOptions:(unint64_t)options;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateImageFromProviderForWallpaperMode:(int64_t)mode;
+- (void)updateImageWithSource:(id)source;
+- (void)updateImageWithSource:(void *)source overrideTraitCollection:;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PBUIFakeBlurView
@@ -54,8 +54,8 @@
     BSRectGetCenter();
     v12 = v11;
     v14 = v13;
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     width = v16;
     height = v17;
 
@@ -66,16 +66,16 @@
   reachabilityCoordinator = self->_reachabilityCoordinator;
   if (reachabilityCoordinator)
   {
-    v19 = [(PBUIFakeBlurView *)self window];
-    if (([(PBUIWallpaperReachabilityCoordinating *)reachabilityCoordinator isWindowIgnoredForReachability:v19]& 1) != 0)
+    window = [(PBUIFakeBlurView *)self window];
+    if (([(PBUIWallpaperReachabilityCoordinating *)reachabilityCoordinator isWindowIgnoredForReachability:window]& 1) != 0)
     {
     }
 
     else
     {
-      v20 = [(PBUIFakeBlurView *)self shouldMatchWallpaperPosition];
+      shouldMatchWallpaperPosition = [(PBUIFakeBlurView *)self shouldMatchWallpaperPosition];
 
-      if (v20)
+      if (shouldMatchWallpaperPosition)
       {
         [(PBUIWallpaperReachabilityCoordinating *)self->_reachabilityCoordinator effectiveReachabilityYOffset];
         v22 = -v21;
@@ -112,18 +112,18 @@
   if (WeakRetained)
   {
     v9 = WeakRetained;
-    v4 = [(PBUIFakeBlurView *)self transformOptions];
-    v5 = [(PBUIFakeBlurView *)self variant];
+    transformOptions = [(PBUIFakeBlurView *)self transformOptions];
+    variant = [(PBUIFakeBlurView *)self variant];
     wallpaperView = self->_wallpaperView;
-    [v9 parallaxFactorForVariant:v5];
+    [v9 parallaxFactorForVariant:variant];
     [(PBUIWallpaperView *)wallpaperView setParallaxFactor:?];
-    v7 = (v4 & 8) != 0 ? 0 : [v9 parallaxEnabledForVariant:v5];
+    v7 = (transformOptions & 8) != 0 ? 0 : [v9 parallaxEnabledForVariant:variant];
     [(PBUIWallpaperView *)self->_wallpaperView setParallaxEnabled:v7];
     WeakRetained = v9;
-    if ((v4 & 4) == 0)
+    if ((transformOptions & 4) == 0)
     {
       v8 = self->_wallpaperView;
-      [v9 zoomFactorForVariant:v5];
+      [v9 zoomFactorForVariant:variant];
       [(PBUIWallpaperView *)v8 setZoomFactor:?];
       WeakRetained = v9;
     }
@@ -133,45 +133,45 @@
 - (void)_createOrRemoveMatchMoveAnimationIfNeeded
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 window];
-    v3 = [v2 layer];
-    v4 = [v3 superlayer];
+    window = [self window];
+    layer = [window layer];
+    superlayer = [layer superlayer];
 
-    v5 = [v4 superlayer];
+    v4Superlayer = [superlayer superlayer];
 
-    if (v5)
+    if (v4Superlayer)
     {
-      v5 = [v4 superlayer];
+      v4Superlayer = [superlayer superlayer];
 
-      v4 = v5;
+      superlayer = v4Superlayer;
     }
 
-    if (!v4)
+    if (!superlayer)
     {
       goto LABEL_18;
     }
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"AlignFakeWallpaperToLayer-%p", v4];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"AlignFakeWallpaperToLayer-%p", superlayer];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_3() bounds];
     v7 = v6;
     v9 = v8;
-    v10 = [a1 traitCollection];
-    v11 = [v10 userInterfaceIdiom];
+    traitCollection = [self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v11 == -1)
+    if (userInterfaceIdiom == -1)
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
-      v14 = [v13 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice userInterfaceIdiom];
 
-      v12 = (v14 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+      v12 = (userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1;
     }
 
     else
     {
-      v12 = v11 == 0;
+      v12 = userInterfaceIdiom == 0;
     }
 
     v15 = 0;
@@ -180,18 +180,18 @@
       v15 = soft_PUIFeatureEnabled(0);
     }
 
-    v16 = a1[440];
-    v17 = [a1 layer];
-    v18 = v17;
+    v16 = self[440];
+    layer2 = [self layer];
+    v18 = layer2;
     if (v16 != 1 || (v15 & 1) != 0)
     {
-      [v17 removeAnimationForKey:v5];
+      [layer2 removeAnimationForKey:v4Superlayer];
     }
 
     else
     {
-      v19 = [v17 animationKeys];
-      v20 = [v19 containsObject:v5];
+      animationKeys = [layer2 animationKeys];
+      v20 = [animationKeys containsObject:v4Superlayer];
 
       if (v20)
       {
@@ -201,11 +201,11 @@ LABEL_18:
         return;
       }
 
-      [v4 bounds];
-      [a1 setFrame:?];
-      [a1 layoutIfNeeded];
+      [superlayer bounds];
+      [self setFrame:?];
+      [self layoutIfNeeded];
       v18 = objc_alloc_init(MEMORY[0x277CD9EE8]);
-      [v18 setSourceLayer:v4];
+      [v18 setSourceLayer:superlayer];
       v21 = MEMORY[0x277CCAE60];
       v36.origin.x = OUTLINED_FUNCTION_0_0();
       MinX = CGRectGetMinX(v36);
@@ -236,8 +236,8 @@ LABEL_18:
       [v18 setDuration:INFINITY];
       [v18 setFillMode:*MEMORY[0x277CDA230]];
       [v18 setRemovedOnCompletion:0];
-      v34 = [a1 layer];
-      [v34 addAnimation:v18 forKey:v5];
+      layer3 = [self layer];
+      [layer3 addAnimation:v18 forKey:v4Superlayer];
     }
 
     goto LABEL_17;
@@ -273,36 +273,36 @@ LABEL_18:
 
   v9 = [v3 appendObject:v6 withName:v7];
 
-  v10 = [v3 appendSuper];
-  v11 = [v3 build];
+  appendSuper = [v3 appendSuper];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (void)requestStyle:(int64_t)a3
+- (void)requestStyle:(int64_t)style
 {
-  if (self->_requestedStyle != a3)
+  if (self->_requestedStyle != style)
   {
-    self->_requestedStyle = a3;
+    self->_requestedStyle = style;
     WeakRetained = objc_loadWeakRetained(&self->_imageProvider);
 
     if (WeakRetained)
     {
       if (objc_opt_respondsToSelector())
       {
-        [(UIView *)self->_providedImageView requestStyle:a3];
+        [(UIView *)self->_providedImageView requestStyle:style];
       }
 
-      v9 = [(PBUIFakeBlurView *)self traitCollection];
-      [(PBUIFakeBlurView *)self _updateImageFromProviderWithTraitCollection:v9];
+      traitCollection = [(PBUIFakeBlurView *)self traitCollection];
+      [(PBUIFakeBlurView *)self _updateImageFromProviderWithTraitCollection:traitCollection];
     }
 
     else
     {
-      v9 = [(PBUIFakeBlurView *)self wallpaperViewController];
-      v7 = [v9 _sourceForFakeBlurView:self];
-      v8 = [v9 fakeBlurViewOverrideTraitCollection];
-      [PBUIFakeBlurView _updateImageWithSource:v7 overrideTraitCollection:v8 notifyObserver:?];
+      traitCollection = [(PBUIFakeBlurView *)self wallpaperViewController];
+      v7 = [traitCollection _sourceForFakeBlurView:self];
+      fakeBlurViewOverrideTraitCollection = [traitCollection fakeBlurViewOverrideTraitCollection];
+      [PBUIFakeBlurView _updateImageWithSource:v7 overrideTraitCollection:fakeBlurViewOverrideTraitCollection notifyObserver:?];
     }
   }
 }
@@ -314,14 +314,14 @@ LABEL_18:
   [(PBUIFakeBlurView *)self layoutIfNeeded];
 }
 
-- (PBUIFakeBlurView)initWithVariant:(int64_t)a3 imageProvider:(id)a4 fakeBlurRegistry:(id)a5 wallpaperViewDelegate:(id)a6 transformOptions:(unint64_t)a7 reachabilityCoordinator:(id)a8
+- (PBUIFakeBlurView)initWithVariant:(int64_t)variant imageProvider:(id)provider fakeBlurRegistry:(id)registry wallpaperViewDelegate:(id)delegate transformOptions:(unint64_t)options reachabilityCoordinator:(id)coordinator
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 bounds];
+  providerCopy = provider;
+  registryCopy = registry;
+  delegateCopy = delegate;
+  coordinatorCopy = coordinator;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v38.receiver = self;
   v38.super_class = PBUIFakeBlurView;
   v19 = [(PBUIFakeBlurView *)&v38 initWithFrame:?];
@@ -329,31 +329,31 @@ LABEL_18:
   if (v19)
   {
     v19->_wallpaperOffset = *MEMORY[0x277CBF348];
-    v20 = [[PBUIWallpaperConfiguration alloc] initWithVariant:a3 type:1];
+    v20 = [[PBUIWallpaperConfiguration alloc] initWithVariant:variant type:1];
     v21 = [PBUIWallpaperView alloc];
-    v22 = [(PBUIWallpaperView *)v21 initWithFrame:v20 configuration:a3 variant:0 cacheGroup:v16 delegate:0 options:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    v22 = [(PBUIWallpaperView *)v21 initWithFrame:v20 configuration:variant variant:0 cacheGroup:delegateCopy delegate:0 options:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     wallpaperView = v19->_wallpaperView;
     v19->_wallpaperView = v22;
 
     [(PBUIFakeBlurView *)v19 addSubview:v19->_wallpaperView];
-    [(PBUIFakeBlurView *)v19 setTransformOptions:a7];
-    v24 = [v14 newImageProviderView];
+    [(PBUIFakeBlurView *)v19 setTransformOptions:options];
+    newImageProviderView = [providerCopy newImageProviderView];
     providedImageView = v19->_providedImageView;
-    v19->_providedImageView = v24;
+    v19->_providedImageView = newImageProviderView;
 
     [(UIView *)v19->_providedImageView setOpaque:1];
-    v26 = [(UIView *)v19->_providedImageView layer];
-    [v26 setContentsOpaque:1];
+    layer = [(UIView *)v19->_providedImageView layer];
+    [layer setContentsOpaque:1];
 
     [(PBUIWallpaperView *)v19->_wallpaperView setContentView:v19->_providedImageView];
-    objc_storeWeak(&v19->_imageProvider, v14);
-    objc_storeWeak(&v19->_fakeBlurRegistry, v15);
-    [v15 _registerFakeBlurView:v19];
+    objc_storeWeak(&v19->_imageProvider, providerCopy);
+    objc_storeWeak(&v19->_fakeBlurRegistry, registryCopy);
+    [registryCopy _registerFakeBlurView:v19];
     [(PBUIFakeBlurView *)v19 reconfigureFromProvider];
     v19->_effectiveStyle = -1;
     v19->_requestedStyle = -1;
     v19->_shouldMatchWallpaperPosition = 1;
-    objc_storeStrong(&v19->_reachabilityCoordinator, a8);
+    objc_storeStrong(&v19->_reachabilityCoordinator, coordinator);
     [(PBUIWallpaperReachabilityCoordinating *)v19->_reachabilityCoordinator addReachabilityObserver:v19];
     if (PBUIReplicaDebugModeIsEnabled())
     {
@@ -371,8 +371,8 @@ LABEL_18:
 
       [(PBUIReplicaDebugView *)v19->_debugView setTitle:v33];
       v34 = v19->_debugView;
-      v35 = [MEMORY[0x277D75348] orangeColor];
-      v36 = [v35 colorWithAlphaComponent:0.4];
+      orangeColor = [MEMORY[0x277D75348] orangeColor];
+      v36 = [orangeColor colorWithAlphaComponent:0.4];
       [(PBUIReplicaDebugView *)v34 setColor:v36];
 
       [(PBUIFakeBlurView *)v19 addSubview:v19->_debugView];
@@ -388,15 +388,15 @@ LABEL_18:
   return v19;
 }
 
-- (PBUIFakeBlurView)initWithVariant:(int64_t)a3 wallpaperViewController:(id)a4 transformOptions:(unint64_t)a5 reachabilityCoordinator:(id)a6
+- (PBUIFakeBlurView)initWithVariant:(int64_t)variant wallpaperViewController:(id)controller transformOptions:(unint64_t)options reachabilityCoordinator:(id)coordinator
 {
-  v10 = a4;
-  v11 = [(PBUIFakeBlurView *)self initWithVariant:a3 imageProvider:self fakeBlurRegistry:v10 wallpaperViewDelegate:v10 transformOptions:a5 reachabilityCoordinator:a6];
+  controllerCopy = controller;
+  v11 = [(PBUIFakeBlurView *)self initWithVariant:variant imageProvider:self fakeBlurRegistry:controllerCopy wallpaperViewDelegate:controllerCopy transformOptions:options reachabilityCoordinator:coordinator];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_wallpaperViewController, v10);
-    v13 = [v10 _sourceForFakeBlurView:v12];
+    objc_storeWeak(&v11->_wallpaperViewController, controllerCopy);
+    v13 = [controllerCopy _sourceForFakeBlurView:v12];
     [(PBUIFakeBlurView *)v12 reconfigureWithSource:v13];
   }
 
@@ -405,8 +405,8 @@ LABEL_18:
 
 - (void)dealloc
 {
-  v3 = [(PBUIFakeBlurView *)self wallpaperViewController];
-  [v3 _unregisterFakeBlurView:self];
+  wallpaperViewController = [(PBUIFakeBlurView *)self wallpaperViewController];
+  [wallpaperViewController _unregisterFakeBlurView:self];
   if (self->_providedImageView && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(UIView *)self->_providedImageView invalidate];
@@ -417,40 +417,40 @@ LABEL_18:
   [(PBUIFakeBlurView *)&v4 dealloc];
 }
 
-- (void)reconfigureWithSource:(id)a3
+- (void)reconfigureWithSource:(id)source
 {
-  v8 = a3;
-  v4 = [(PBUIFakeBlurView *)self transformOptions];
+  sourceCopy = source;
+  transformOptions = [(PBUIFakeBlurView *)self transformOptions];
   wallpaperView = self->_wallpaperView;
-  [v8 parallaxFactor];
+  [sourceCopy parallaxFactor];
   [(PBUIWallpaperView *)wallpaperView setParallaxFactor:?];
-  if ((v4 & 8) != 0 || ![v8 parallaxEnabled])
+  if ((transformOptions & 8) != 0 || ![sourceCopy parallaxEnabled])
   {
-    v6 = 0;
+    allowsParallax = 0;
   }
 
   else
   {
-    v6 = [objc_opt_class() allowsParallax];
+    allowsParallax = [objc_opt_class() allowsParallax];
   }
 
-  [(PBUIWallpaperView *)self->_wallpaperView setParallaxEnabled:v6];
-  if ((v4 & 4) == 0)
+  [(PBUIWallpaperView *)self->_wallpaperView setParallaxEnabled:allowsParallax];
+  if ((transformOptions & 4) == 0)
   {
     v7 = self->_wallpaperView;
-    [v8 zoomFactor];
+    [sourceCopy zoomFactor];
     [(PBUIWallpaperView *)v7 setZoomFactor:?];
   }
 }
 
-- (void)setTransformOptions:(unint64_t)a3
+- (void)setTransformOptions:(unint64_t)options
 {
-  if (self->_transformOptions != a3)
+  if (self->_transformOptions != options)
   {
     v10 = v3;
     v11 = v4;
-    self->_transformOptions = a3;
-    if (PBUIWallpaperTransformOptionsShouldIgnoreRotation(a3))
+    self->_transformOptions = options;
+    if (PBUIWallpaperTransformOptionsShouldIgnoreRotation(options))
     {
       wallpaperView = self->_wallpaperView;
       v8 = *(MEMORY[0x277CBF2C0] + 16);
@@ -460,32 +460,32 @@ LABEL_18:
       [(PBUIWallpaperView *)wallpaperView setTransform:v9];
     }
 
-    [(PBUIWallpaperView *)self->_wallpaperView setTransformOptions:a3];
+    [(PBUIWallpaperView *)self->_wallpaperView setTransformOptions:options];
     if (objc_opt_respondsToSelector())
     {
-      [(UIView *)self->_providedImageView setTransformOptions:a3];
+      [(UIView *)self->_providedImageView setTransformOptions:options];
     }
   }
 }
 
-+ (id)_imageForStyle:(int64_t *)a3 withSource:(id)a4 overrideTraitCollection:(id)a5
++ (id)_imageForStyle:(int64_t *)style withSource:(id)source overrideTraitCollection:(id)collection
 {
-  v8 = a4;
-  v9 = a5;
+  sourceCopy = source;
+  collectionCopy = collection;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
   v19 = 0;
-  v10 = *a3;
+  v10 = *style;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection___block_invoke;
   v13[3] = &unk_278362290;
   v13[4] = &v14;
-  v13[5] = a3;
-  [a1 _imageForStyle:v10 withSource:v8 overrideTraitCollection:v9 result:v13];
+  v13[5] = style;
+  [self _imageForStyle:v10 withSource:sourceCopy overrideTraitCollection:collectionCopy result:v13];
   v11 = v15[5];
   _Block_object_dispose(&v14, 8);
 
@@ -499,50 +499,50 @@ void __70__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection___
   **(a1 + 40) = a4;
 }
 
-+ (void)_imageForStyle:(int64_t)a3 withSource:(id)a4 overrideTraitCollection:(id)a5 result:(id)a6
++ (void)_imageForStyle:(int64_t)style withSource:(id)source overrideTraitCollection:(id)collection result:(id)result
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3 == 3)
+  sourceCopy = source;
+  collectionCopy = collection;
+  resultCopy = result;
+  if (style == 3)
   {
-    v13 = [v10 blurredImage];
-    v14 = [v10 blurredImageURL];
-    if (v13)
+    blurredImage = [sourceCopy blurredImage];
+    blurredImageURL = [sourceCopy blurredImageURL];
+    if (blurredImage)
     {
-      a3 = 3;
+      style = 3;
     }
 
     else
     {
-      a3 = 0;
+      style = 0;
     }
   }
 
   else
   {
-    v15 = [v10 legibilitySettings];
-    v16 = [v15 contentColor];
+    legibilitySettings = [sourceCopy legibilitySettings];
+    contentColor = [legibilitySettings contentColor];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    _WallpaperBackdropParametersForStyleAndAverageColor(a3, v16, &v34);
-    HasTint = _WallpaperStyleHasTint(a3);
+    _WallpaperBackdropParametersForStyleAndAverageColor(style, contentColor, &v34);
+    HasTint = _WallpaperStyleHasTint(style);
     v30 = v34;
     v31 = v35;
     v32 = v36;
     v33 = v37;
-    v13 = [v10 imageForBackdropParameters:&v30 includeTint:HasTint overrideTraitCollection:v11];
+    blurredImage = [sourceCopy imageForBackdropParameters:&v30 includeTint:HasTint overrideTraitCollection:collectionCopy];
     v30 = v34;
     v31 = v35;
     v32 = v36;
     v33 = v37;
-    v14 = [v10 imageURLForBackdropParameters:&v30 includeTint:HasTint overrideTraitCollection:v11];
-    if (!v13)
+    blurredImageURL = [sourceCopy imageURLForBackdropParameters:&v30 includeTint:HasTint overrideTraitCollection:collectionCopy];
+    if (!blurredImage)
     {
-      if (a3)
+      if (style)
       {
         *&v30 = 0;
         *(&v30 + 1) = &v30;
@@ -567,11 +567,11 @@ void __70__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection___
         v19[4] = &v30;
         v19[5] = &v24;
         v19[6] = &v20;
-        [a1 _imageForStyle:3 withSource:v10 overrideTraitCollection:v11 result:v19];
-        v13 = *(*(&v30 + 1) + 40);
-        v18 = v25[5];
+        [self _imageForStyle:3 withSource:sourceCopy overrideTraitCollection:collectionCopy result:v19];
+        blurredImage = *(*(&v30 + 1) + 40);
+        snapshotImageURL = v25[5];
 
-        a3 = v21[3];
+        style = v21[3];
         _Block_object_dispose(&v20, 8);
         _Block_object_dispose(&v24, 8);
 
@@ -580,15 +580,15 @@ void __70__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection___
 
       else
       {
-        v13 = [v10 snapshotImage];
-        v18 = [v10 snapshotImageURL];
+        blurredImage = [sourceCopy snapshotImage];
+        snapshotImageURL = [sourceCopy snapshotImageURL];
       }
 
-      v14 = v18;
+      blurredImageURL = snapshotImageURL;
     }
   }
 
-  v12[2](v12, v13, v14, a3);
+  resultCopy[2](resultCopy, blurredImage, blurredImageURL, style);
 }
 
 void __77__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection_result___block_invoke(void *a1, void *a2, void *a3, uint64_t a4)
@@ -608,14 +608,14 @@ void __77__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection_re
   *(*(a1[6] + 8) + 24) = a4;
 }
 
-- (void)rotateToInterfaceOrientation:(int64_t)a3
+- (void)rotateToInterfaceOrientation:(int64_t)orientation
 {
   if ((PBUIWallpaperTransformOptionsShouldIgnoreRotation(self->_transformOptions) & 1) == 0)
   {
     if (PBUIWallpaperTransformOptionsShouldIgnoreLandscapeRotation(self->_transformOptions))
     {
       wallpaperView = self->_wallpaperView;
-      switch(a3)
+      switch(orientation)
       {
         case 1:
           v6 = 0.0;
@@ -628,7 +628,7 @@ void __77__PBUIFakeBlurView__imageForStyle_withSource_overrideTraitCollection_re
           break;
         default:
           v6 = 3.14159265;
-          if (a3 != 2)
+          if (orientation != 2)
           {
             v6 = 0.0;
           }
@@ -656,7 +656,7 @@ LABEL_25:
       }
 
       wallpaperView = self->_wallpaperView;
-      switch(a3)
+      switch(orientation)
       {
         case 1:
           v9 = 0.0;
@@ -669,7 +669,7 @@ LABEL_25:
           break;
         default:
           v9 = 3.14159265;
-          if (a3 != 2)
+          if (orientation != 2)
           {
             v9 = 0.0;
           }
@@ -689,59 +689,59 @@ LABEL_26:
   [(PBUIFakeBlurView *)self layoutIfNeeded];
 }
 
-- (void)offsetWallpaperBy:(CGPoint)a3
+- (void)offsetWallpaperBy:(CGPoint)by
 {
-  if (self->_wallpaperOffset.x != a3.x || self->_wallpaperOffset.y != a3.y)
+  if (self->_wallpaperOffset.x != by.x || self->_wallpaperOffset.y != by.y)
   {
-    self->_wallpaperOffset = a3;
+    self->_wallpaperOffset = by;
     [(PBUIFakeBlurView *)self setNeedsLayout];
 
     [(PBUIFakeBlurView *)self layoutIfNeeded];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = PBUIFakeBlurView;
-  [(PBUIFakeBlurView *)&v5 willMoveToWindow:a3];
-  v4 = [(PBUIFakeBlurView *)self layer];
-  [v4 removeAllAnimations];
+  [(PBUIFakeBlurView *)&v5 willMoveToWindow:window];
+  layer = [(PBUIFakeBlurView *)self layer];
+  [layer removeAllAnimations];
 }
 
-- (void)setShouldMatchWallpaperPosition:(BOOL)a3
+- (void)setShouldMatchWallpaperPosition:(BOOL)position
 {
-  if (self->_shouldMatchWallpaperPosition != a3)
+  if (self->_shouldMatchWallpaperPosition != position)
   {
-    v4 = a3;
-    self->_shouldMatchWallpaperPosition = a3;
+    positionCopy = position;
+    self->_shouldMatchWallpaperPosition = position;
     if (objc_opt_respondsToSelector())
     {
-      [(UIView *)self->_providedImageView setShouldMatchWallpaperPosition:v4];
+      [(UIView *)self->_providedImageView setShouldMatchWallpaperPosition:positionCopy];
     }
 
     [(PBUIFakeBlurView *)self _createOrRemoveMatchMoveAnimationIfNeeded];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PBUIFakeBlurView;
-  [(PBUIFakeBlurView *)&v9 traitCollectionDidChange:v4];
+  [(PBUIFakeBlurView *)&v9 traitCollectionDidChange:changeCopy];
   if (_WallpaperStyleUpdatesWithUserInterfaceStyle(self->_requestedStyle))
   {
-    v5 = [(PBUIFakeBlurView *)self traitCollection];
-    v6 = [v4 userInterfaceStyle];
-    if (v6 != [v5 userInterfaceStyle])
+    traitCollection = [(PBUIFakeBlurView *)self traitCollection];
+    userInterfaceStyle = [changeCopy userInterfaceStyle];
+    if (userInterfaceStyle != [traitCollection userInterfaceStyle])
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke;
       v7[3] = &unk_2783622E0;
       v7[4] = self;
-      v8 = v5;
+      v8 = traitCollection;
       dispatch_async(MEMORY[0x277D85CD0], v7);
     }
   }
@@ -766,12 +766,12 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)updateImageProviderView:(id)a3 withImage:(id)a4
+- (BOOL)updateImageProviderView:(id)view withImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  imageCopy = image;
   v7 = objc_opt_class();
-  v8 = v5;
+  v8 = viewCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -793,7 +793,7 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   v10 = v9;
 
   v11 = objc_opt_class();
-  v12 = v6;
+  v12 = imageCopy;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -817,9 +817,9 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   v15 = 0;
   if (v10 && v14)
   {
-    v16 = [v10 image];
-    v15 = v14 != v16;
-    if (v14 != v16)
+    image = [v10 image];
+    v15 = v14 != image;
+    if (v14 != image)
     {
       [v10 setImage:v14];
     }
@@ -828,10 +828,10 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)imageForWallpaperStyle:(int64_t *)a3 variant:(int64_t)a4 traitCollection:(id)a5
+- (id)imageForWallpaperStyle:(int64_t *)style variant:(int64_t)variant traitCollection:(id)collection
 {
-  v8 = a5;
-  if ([(PBUIFakeBlurView *)self variant]!= a4)
+  collectionCopy = collection;
+  if ([(PBUIFakeBlurView *)self variant]!= variant)
   {
     [PBUIFakeBlurView imageForWallpaperStyle:variant:traitCollection:];
   }
@@ -841,7 +841,7 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
 
   if (v10)
   {
-    v11 = [objc_opt_class() _imageForStyle:a3 withSource:v10 overrideTraitCollection:v8];
+    v11 = [objc_opt_class() _imageForStyle:style withSource:v10 overrideTraitCollection:collectionCopy];
   }
 
   else
@@ -852,9 +852,9 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (double)parallaxFactorForVariant:(int64_t)a3
+- (double)parallaxFactorForVariant:(int64_t)variant
 {
-  if ([(PBUIFakeBlurView *)self variant]!= a3)
+  if ([(PBUIFakeBlurView *)self variant]!= variant)
   {
     [PBUIFakeBlurView parallaxFactorForVariant:];
   }
@@ -867,9 +867,9 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)parallaxEnabledForVariant:(int64_t)a3
+- (BOOL)parallaxEnabledForVariant:(int64_t)variant
 {
-  if ([(PBUIFakeBlurView *)self variant]!= a3)
+  if ([(PBUIFakeBlurView *)self variant]!= variant)
   {
     [PBUIFakeBlurView parallaxEnabledForVariant:];
   }
@@ -879,20 +879,20 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
 
   if ([v5 parallaxEnabled])
   {
-    v6 = [objc_opt_class() allowsParallax];
+    allowsParallax = [objc_opt_class() allowsParallax];
   }
 
   else
   {
-    v6 = 0;
+    allowsParallax = 0;
   }
 
-  return v6;
+  return allowsParallax;
 }
 
-- (double)zoomFactorForVariant:(int64_t)a3
+- (double)zoomFactorForVariant:(int64_t)variant
 {
-  if ([(PBUIFakeBlurView *)self variant]!= a3)
+  if ([(PBUIFakeBlurView *)self variant]!= variant)
   {
     [PBUIFakeBlurView zoomFactorForVariant:];
   }
@@ -933,40 +933,40 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)_updateImageFromProviderWithTraitCollection:(uint64_t)a1
+- (void)_updateImageFromProviderWithTraitCollection:(uint64_t)collection
 {
-  if (a1)
+  if (collection)
   {
-    v15 = *(a1 + 416);
+    v15 = *(collection + 416);
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 488));
-    v5 = [WeakRetained imageForWallpaperStyle:&v15 variant:objc_msgSend(a1 traitCollection:{"variant"), v3}];
+    WeakRetained = objc_loadWeakRetained((collection + 488));
+    v5 = [WeakRetained imageForWallpaperStyle:&v15 variant:objc_msgSend(collection traitCollection:{"variant"), v3}];
 
     OUTLINED_FUNCTION_6_0(v6, v7, v8, v9, v10, v11, v12, v13, v14, v15);
   }
 }
 
-- (void)_updateImageWithSource:(uint64_t)a1 overrideTraitCollection:(void *)a2 notifyObserver:(void *)a3
+- (void)_updateImageWithSource:(uint64_t)source overrideTraitCollection:(void *)collection notifyObserver:(void *)observer
 {
-  if (a1)
+  if (source)
   {
-    v16 = *(a1 + 416);
-    v4 = a3;
-    v5 = a2;
-    v6 = [objc_opt_class() _imageForStyle:&v16 withSource:v5 overrideTraitCollection:v4];
+    v16 = *(source + 416);
+    observerCopy = observer;
+    collectionCopy = collection;
+    v6 = [objc_opt_class() _imageForStyle:&v16 withSource:collectionCopy overrideTraitCollection:observerCopy];
 
     OUTLINED_FUNCTION_6_0(v7, v8, v9, v10, v11, v12, v13, v14, v15, v16);
   }
 }
 
-- (id)_effectiveTraitCollectionForMode:(void *)a1
+- (id)_effectiveTraitCollectionForMode:(void *)mode
 {
-  if (a1)
+  if (mode)
   {
-    v3 = [a1 wallpaperViewController];
-    v4 = [v3 fakeBlurViewOverrideTraitCollection];
+    wallpaperViewController = [mode wallpaperViewController];
+    fakeBlurViewOverrideTraitCollection = [wallpaperViewController fakeBlurViewOverrideTraitCollection];
 
-    if (!v4)
+    if (!fakeBlurViewOverrideTraitCollection)
     {
       if (a2 == 2)
       {
@@ -978,40 +978,40 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
         v5 = 1;
       }
 
-      v4 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:v5];
+      fakeBlurViewOverrideTraitCollection = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:v5];
     }
   }
 
   else
   {
-    v4 = 0;
+    fakeBlurViewOverrideTraitCollection = 0;
   }
 
-  return v4;
+  return fakeBlurViewOverrideTraitCollection;
 }
 
-- (void)updateImageWithSource:(id)a3
+- (void)updateImageWithSource:(id)source
 {
-  v4 = a3;
-  v5 = -[PBUIFakeBlurView _effectiveTraitCollectionForMode:](self, [v4 wallpaperMode]);
-  [PBUIFakeBlurView _updateImageWithSource:v4 overrideTraitCollection:v5 notifyObserver:?];
+  sourceCopy = source;
+  v5 = -[PBUIFakeBlurView _effectiveTraitCollectionForMode:](self, [sourceCopy wallpaperMode]);
+  [PBUIFakeBlurView _updateImageWithSource:sourceCopy overrideTraitCollection:v5 notifyObserver:?];
 }
 
-- (void)updateImageWithSource:(void *)a3 overrideTraitCollection:
+- (void)updateImageWithSource:(void *)source overrideTraitCollection:
 {
-  if (a1)
+  if (self)
   {
-    [PBUIFakeBlurView _updateImageWithSource:a1 overrideTraitCollection:a2 notifyObserver:a3];
+    [PBUIFakeBlurView _updateImageWithSource:self overrideTraitCollection:a2 notifyObserver:source];
   }
 }
 
-- (void)_setImage:(uint64_t)a3 style:(int)a4 notify:
+- (void)_setImage:(uint64_t)image style:(int)style notify:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 488));
-    v9 = [WeakRetained updateImageProviderView:*(a1 + 448) withImage:v7];
+    WeakRetained = objc_loadWeakRetained((self + 488));
+    v9 = [WeakRetained updateImageProviderView:*(self + 448) withImage:v7];
 
     if (v9)
     {
@@ -1019,29 +1019,29 @@ void __45__PBUIFakeBlurView_traitCollectionDidChange___block_invoke(uint64_t a1)
       v12[1] = 3221225472;
       v12[2] = __43__PBUIFakeBlurView__setImage_style_notify___block_invoke;
       v12[3] = &unk_278361E18;
-      v12[4] = a1;
+      v12[4] = self;
       [MEMORY[0x277D75D18] performWithoutAnimation:v12];
-      v10 = [*(a1 + 432) layer];
-      [v10 reloadValueForKeyPath:@"contents"];
+      layer = [*(self + 432) layer];
+      [layer reloadValueForKeyPath:@"contents"];
 
-      [*(a1 + 432) setNeedsLayout];
+      [*(self + 432) setNeedsLayout];
     }
 
-    if (*(a1 + 424) != a3)
+    if (*(self + 424) != image)
     {
-      *(a1 + 424) = a3;
-      if (a4)
+      *(self + 424) = image;
+      if (style)
       {
-        v11 = objc_loadWeakRetained((a1 + 480));
-        [v11 fakeBlurView:a1 didChangeStyle:*(a1 + 424)];
+        v11 = objc_loadWeakRetained((self + 480));
+        [v11 fakeBlurView:self didChangeStyle:*(self + 424)];
       }
     }
   }
 }
 
-- (void)updateImageFromProviderForWallpaperMode:(int64_t)a3
+- (void)updateImageFromProviderForWallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIFakeBlurView *)self _effectiveTraitCollectionForMode:a3];
+  v4 = [(PBUIFakeBlurView *)self _effectiveTraitCollectionForMode:mode];
   [(PBUIFakeBlurView *)self _updateImageFromProviderWithTraitCollection:v4];
 }
 

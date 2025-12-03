@@ -1,9 +1,9 @@
 @interface ICSTokenizer
-- (BOOL)consumeChar:(char)a3;
+- (BOOL)consumeChar:(char)char;
 - (BOOL)consumeEOL;
-- (BOOL)consumeEscaped:(const char *)a3;
-- (ICSTokenizer)initWithCompressedData:(id)a3;
-- (ICSTokenizer)initWithData:(id)a3;
+- (BOOL)consumeEscaped:(const char *)escaped;
+- (ICSTokenizer)initWithCompressedData:(id)data;
+- (ICSTokenizer)initWithData:(id)data;
 - (id)currentToken;
 - (id)nextToken;
 - (void)consumeParamName;
@@ -15,16 +15,16 @@
 
 @implementation ICSTokenizer
 
-- (ICSTokenizer)initWithData:(id)a3
+- (ICSTokenizer)initWithData:(id)data
 {
   v15.receiver = self;
   v15.super_class = ICSTokenizer;
-  v3 = a3;
+  dataCopy = data;
   v4 = [(ICSTokenizer *)&v15 init];
   v5 = [ICSPushbackStream alloc];
   v6 = [ICSUnfoldingStream alloc];
   v7 = [ICSInputData alloc];
-  v8 = [(ICSInputData *)v7 initWithData:v3, v15.receiver, v15.super_class];
+  v8 = [(ICSInputData *)v7 initWithData:dataCopy, v15.receiver, v15.super_class];
 
   v9 = [(ICSUnfoldingStream *)v6 initWithInputStream:v8];
   v10 = [(ICSPushbackStream *)v5 initWithInputStream:v9];
@@ -38,16 +38,16 @@
   return v4;
 }
 
-- (ICSTokenizer)initWithCompressedData:(id)a3
+- (ICSTokenizer)initWithCompressedData:(id)data
 {
   v16.receiver = self;
   v16.super_class = ICSTokenizer;
-  v3 = a3;
+  dataCopy = data;
   v4 = [(ICSTokenizer *)&v16 init];
   v5 = [ICSPushbackStream alloc];
   v6 = [ICSUnfoldingStream alloc];
   v7 = [ICSCompressedInputStream alloc];
-  v8 = [(ICSCompressedInputStream *)v7 initWithData:v3, v16.receiver, v16.super_class];
+  v8 = [(ICSCompressedInputStream *)v7 initWithData:dataCopy, v16.receiver, v16.super_class];
 
   v9 = [(ICSUnfoldingStream *)v6 initWithInputStream:v8];
   v10 = [(ICSPushbackStream *)v5 initWithInputStream:v9];
@@ -71,18 +71,18 @@
   return v14;
 }
 
-- (BOOL)consumeChar:(char)a3
+- (BOOL)consumeChar:(char)char
 {
-  v3 = a3;
-  v5 = [(ICSPushbackStream *)self->_data read];
+  charCopy = char;
+  read = [(ICSPushbackStream *)self->_data read];
   if (![(ICSPushbackStream *)self->_data eos])
   {
-    if (v5 == v3)
+    if (read == charCopy)
     {
       return 1;
     }
 
-    [(ICSPushbackStream *)self->_data pushBack:v5];
+    [(ICSPushbackStream *)self->_data pushBack:read];
   }
 
   return 0;
@@ -90,14 +90,14 @@
 
 - (BOOL)consumeEOL
 {
-  v3 = [(ICSPushbackStream *)self->_data peek];
-  if (v3 == 13 || v3 == 10)
+  peek = [(ICSPushbackStream *)self->_data peek];
+  if (peek == 13 || peek == 10)
   {
     [(ICSPushbackStream *)self->_data read];
-    v5 = [(ICSPushbackStream *)self->_data read];
-    if (v5 != 10 && v5 != 13)
+    read = [(ICSPushbackStream *)self->_data read];
+    if (read != 10 && read != 13)
     {
-      v9 = v5;
+      v9 = read;
       if (![(ICSPushbackStream *)self->_data eos])
       {
         [(ICSPushbackStream *)self->_data pushBack:v9];
@@ -105,7 +105,7 @@
     }
   }
 
-  return v3 == 13 || v3 == 10;
+  return peek == 13 || peek == 10;
 }
 
 - (void)consumeWhiteSpace
@@ -135,28 +135,28 @@ LABEL_20:
     v3 = MEMORY[0x277D85DE0];
     while (1)
     {
-      v4 = [(ICSPushbackStream *)self->_data read];
-      v5 = v4;
-      v10 = v4;
-      if (v4 == 58)
+      read = [(ICSPushbackStream *)self->_data read];
+      v5 = read;
+      v10 = read;
+      if (read == 58)
       {
         break;
       }
 
-      if (v4 == 59)
+      if (read == 59)
       {
         v9 = 2;
         goto LABEL_23;
       }
 
-      if ((v4 & 0x80000000) != 0)
+      if ((read & 0x80000000) != 0)
       {
-        v6 = __maskrune(v4, 0x100uLL);
+        v6 = __maskrune(read, 0x100uLL);
       }
 
       else
       {
-        v6 = *(v3 + 4 * v4 + 60) & 0x100;
+        v6 = *(v3 + 4 * read + 60) & 0x100;
       }
 
       if (v5 != 45 && v6 == 0 && (v5 - 48) >= 0xA)
@@ -179,15 +179,15 @@ LABEL_20:
 LABEL_23:
     self->_tokenType = 0;
     self->_expectedNextTokenType = v9;
-    [(ICSPushbackStream *)self->_data pushBack:v4];
+    [(ICSPushbackStream *)self->_data pushBack:read];
   }
 }
 
 - (void)consumeParamName
 {
   [(NSMutableData *)self->_token setLength:0];
-  v3 = [(ICSPushbackStream *)self->_data read];
-  if ([(ICSPushbackStream *)self->_data eos]|| v3 != 59)
+  read = [(ICSPushbackStream *)self->_data read];
+  if ([(ICSPushbackStream *)self->_data eos]|| read != 59)
   {
     self->_tokenType = 5;
   }
@@ -205,22 +205,22 @@ LABEL_19:
     v4 = MEMORY[0x277D85DE0];
     while (1)
     {
-      v5 = [(ICSPushbackStream *)self->_data read];
-      v10 = v5;
-      if (v5 == 61)
+      read2 = [(ICSPushbackStream *)self->_data read];
+      v10 = read2;
+      if (read2 == 61)
       {
         break;
       }
 
-      v6 = v5;
-      if ((v5 & 0x80000000) != 0)
+      v6 = read2;
+      if ((read2 & 0x80000000) != 0)
       {
-        v7 = __maskrune(v5, 0x100uLL);
+        v7 = __maskrune(read2, 0x100uLL);
       }
 
       else
       {
-        v7 = *(v4 + 4 * v5 + 60) & 0x100;
+        v7 = *(v4 + 4 * read2 + 60) & 0x100;
       }
 
       if (v6 != 45 && v7 == 0 && v6 - 48 >= 0xA)
@@ -244,24 +244,24 @@ LABEL_19:
   }
 }
 
-- (BOOL)consumeEscaped:(const char *)a3
+- (BOOL)consumeEscaped:(const char *)escaped
 {
-  v5 = [(ICSPushbackStream *)self->_data peek];
-  if (*a3 == v5)
+  peek = [(ICSPushbackStream *)self->_data peek];
+  if (*escaped == peek)
   {
-    v6 = v5;
+    v6 = peek;
     [(ICSPushbackStream *)self->_data read];
     v7 = [(ICSPushbackStream *)self->_data eos];
     data = self->_data;
     if (!v7)
     {
-      v9 = [(ICSPushbackStream *)data read];
-      if (*(a3 + 1) == v9)
+      read = [(ICSPushbackStream *)data read];
+      if (*(escaped + 1) == read)
       {
         return 1;
       }
 
-      [(ICSPushbackStream *)self->_data pushBack:v9];
+      [(ICSPushbackStream *)self->_data pushBack:read];
       data = self->_data;
     }
 
@@ -280,20 +280,20 @@ LABEL_19:
     return;
   }
 
-  v20 = 0;
+  peek = 0;
   v3 = 0;
   if (![(ICSPushbackStream *)self->_data eos])
   {
-    v4 = [(ICSPushbackStream *)self->_data read];
-    v20 = v4;
-    if (v4 == 34)
+    read = [(ICSPushbackStream *)self->_data read];
+    peek = read;
+    if (read == 34)
     {
       v3 = 1;
     }
 
     else
     {
-      [(ICSPushbackStream *)self->_data pushBack:v4];
+      [(ICSPushbackStream *)self->_data pushBack:read];
       v3 = 0;
     }
   }
@@ -312,7 +312,7 @@ LABEL_8:
   v9 = 0;
   while (1)
   {
-    v20 = [(ICSPushbackStream *)self->_data peek];
+    peek = [(ICSPushbackStream *)self->_data peek];
     if (![(ICSTokenizer *)self consumeEscaped:"\\""])
     {
       break;
@@ -410,7 +410,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if ((v20 & 0xFE) != 0x3A)
+  if ((peek & 0xFE) != 0x3A)
   {
 LABEL_21:
     if (v9)
@@ -424,7 +424,7 @@ LABEL_21:
       goto LABEL_32;
     }
 
-    if ((v3 & (v20 == 34)) == 1)
+    if ((v3 & (peek == 34)) == 1)
     {
       [(ICSPushbackStream *)self->_data read];
 LABEL_31:
@@ -436,10 +436,10 @@ LABEL_32:
 
     if (v3)
     {
-      if (v20 <= 0x21u && ((1 << v20) & 0x300000200) != 0 || v20 < -7 || v20 - 35 < 0x5C)
+      if (peek <= 0x21u && ((1 << peek) & 0x300000200) != 0 || peek < -7 || peek - 35 < 0x5C)
       {
 LABEL_46:
-        [(NSMutableData *)self->_token appendBytes:&v20 length:1];
+        [(NSMutableData *)self->_token appendBytes:&peek length:1];
         v9 = 0;
 LABEL_47:
         [(ICSPushbackStream *)self->_data read];
@@ -447,7 +447,7 @@ LABEL_47:
       }
     }
 
-    else if (v20 <= 0x21u && ((1 << v20) & 0x300000200) != 0 || v20 < -7 || v20 - 60 < 0x43 || v20 - 35 < 9 || v20 - 45 < 0xD)
+    else if (peek <= 0x21u && ((1 << peek) & 0x300000200) != 0 || peek < -7 || peek - 60 < 0x43 || peek - 35 < 9 || peek - 45 < 0xD)
     {
       goto LABEL_46;
     }
@@ -468,7 +468,7 @@ LABEL_65:
     goto LABEL_47;
   }
 
-  if (v20 == 58)
+  if (peek == 58)
   {
     v5 = 1;
   }
@@ -501,15 +501,15 @@ LABEL_2:
   {
     while (1)
     {
-      v5 = [(ICSPushbackStream *)self->_data peek];
+      peek = [(ICSPushbackStream *)self->_data peek];
       if ([(ICSTokenizer *)self consumeEOL])
       {
         break;
       }
 
-      if (v5 == 9 || v5 == 32 || (v4 = v5, v4 < -7) || (v5 - 33) < 0x5Eu)
+      if (peek == 9 || peek == 32 || (v4 = peek, v4 < -7) || (peek - 33) < 0x5Eu)
       {
-        [(NSMutableData *)self->_token appendBytes:&v5 length:1];
+        [(NSMutableData *)self->_token appendBytes:&peek length:1];
       }
 
       else

@@ -1,38 +1,38 @@
 @interface _BRCOperation
 - (BOOL)_finishIfCancelled;
 - (BOOL)finishIfCancelled;
-- (BOOL)shouldRetryForError:(id)a3;
+- (BOOL)shouldRetryForError:(id)error;
 - (NSError)error;
 - (NSUUID)operationID;
 - (_BRCOperation)init;
-- (_BRCOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6;
+- (_BRCOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group;
 - (double)executionTimeInSec;
 - (id)createActivity;
-- (id)descriptionWithContext:(id)a3;
+- (id)descriptionWithContext:(id)context;
 - (id)lastErrorDescription;
-- (id)stateWithContext:(id)a3;
-- (void)_addSubOperation:(id)a3 overrideContext:(id)a4 allowsCellularAccess:(id)a5 asCompletionOf:(id)a6;
-- (void)_completedWithResult:(id)a3 error:(id)a4;
-- (void)_executeWithPreviousError:(id)a3;
+- (id)stateWithContext:(id)context;
+- (void)_addSubOperation:(id)operation overrideContext:(id)context allowsCellularAccess:(id)access asCompletionOf:(id)of;
+- (void)_completedWithResult:(id)result error:(id)error;
+- (void)_executeWithPreviousError:(id)error;
 - (void)_main;
-- (void)_scheduleExecutionWithPreviousError:(id)a3;
-- (void)_setDeviceConfigurationHeaderOnCKOp:(id)a3;
-- (void)addDependency:(id)a3;
-- (void)addSubOperation:(id)a3;
-- (void)addSubOperation:(id)a3 asCompletionOf:(id)a4;
-- (void)associateCKOperationsToEventMetric:(id)a3;
-- (void)blockOnHighPriorityOperation:(id)a3;
+- (void)_scheduleExecutionWithPreviousError:(id)error;
+- (void)_setDeviceConfigurationHeaderOnCKOp:(id)op;
+- (void)addDependency:(id)dependency;
+- (void)addSubOperation:(id)operation;
+- (void)addSubOperation:(id)operation asCompletionOf:(id)of;
+- (void)associateCKOperationsToEventMetric:(id)metric;
+- (void)blockOnHighPriorityOperation:(id)operation;
 - (void)cancel;
-- (void)cancelAfterDelay:(double)a3;
-- (void)completedWithResult:(id)a3 error:(id)a4;
+- (void)cancelAfterDelay:(double)delay;
+- (void)completedWithResult:(id)result error:(id)error;
 - (void)dealloc;
 - (void)error;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 - (void)schedule;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
-- (void)setGroup:(id)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
+- (void)setGroup:(id)group;
 - (void)start;
 @end
 
@@ -55,23 +55,23 @@
 
 - (void)start
 {
-  v3 = [(_BRCOperation *)self createActivity];
+  createActivity = [(_BRCOperation *)self createActivity];
   Activity = self->_Activity;
-  self->_Activity = v3;
+  self->_Activity = createActivity;
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_Activity, &state);
-  v5 = [(_BRCOperation *)self name];
-  [v5 hash];
+  name = [(_BRCOperation *)self name];
+  [name hash];
   [(_BRCOperation *)self hash];
   kdebug_trace();
 
   dispatch_activate(self->_callbackQueue);
   if (![(_BRCOperation *)self finishIfCancelled])
   {
-    v6 = [(_BRCOperation *)self operationThrottle];
-    if (v6)
+    operationThrottle = [(_BRCOperation *)self operationThrottle];
+    if (operationThrottle)
     {
       callbackQueue = self->_callbackQueue;
       v10[0] = MEMORY[0x277D85DD0];
@@ -102,8 +102,8 @@
 
 - (BOOL)finishIfCancelled
 {
-  v3 = [(_BRCOperation *)self isCancelled];
-  if (v3)
+  isCancelled = [(_BRCOperation *)self isCancelled];
+  if (isCancelled)
   {
     callbackQueue = self->_callbackQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -114,7 +114,7 @@
     dispatch_async_with_logs(callbackQueue, v6);
   }
 
-  return v3;
+  return isCancelled;
 }
 
 - (void)_main
@@ -133,8 +133,8 @@
 - (id)lastErrorDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSError *)self->_lastError domain];
-  v5 = [v3 stringWithFormat:@"%@:%ld", v4, -[NSError code](self->_lastError, "code")];
+  domain = [(NSError *)self->_lastError domain];
+  v5 = [v3 stringWithFormat:@"%@:%ld", domain, -[NSError code](self->_lastError, "code")];
 
   return v5;
 }
@@ -147,8 +147,8 @@
     goto LABEL_4;
   }
 
-  v3 = [(_BRCOperation *)self isCancelled];
-  if (v3)
+  isCancelled = [(_BRCOperation *)self isCancelled];
+  if (isCancelled)
   {
     [(_BRCOperation *)self isExecuting];
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CBBF50] code:20 userInfo:0];
@@ -157,10 +157,10 @@
     objc_autoreleasePoolPop(v5);
 
 LABEL_4:
-    LOBYTE(v3) = 1;
+    LOBYTE(isCancelled) = 1;
   }
 
-  return v3;
+  return isCancelled;
 }
 
 - (void)schedule
@@ -178,52 +178,52 @@ LABEL_4:
   return 0;
 }
 
-- (_BRCOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6
+- (_BRCOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  contextCopy = context;
+  sessionContextCopy = sessionContext;
+  groupCopy = group;
   v48.receiver = self;
   v48.super_class = _BRCOperation;
   v14 = [(_BRCOperation *)&v48 init];
   v15 = v14;
   if (v14)
   {
-    v45 = v11;
-    [(_BRCOperation *)v14 setName:v10];
+    v45 = contextCopy;
+    [(_BRCOperation *)v14 setName:nameCopy];
     uuid_generate_random(v15->_operationUUID);
-    objc_storeStrong(&v15->_sessionContext, a5);
-    v16 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v15->_sessionContext, sessionContext);
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v15->_startDate;
-    v15->_startDate = v16;
+    v15->_startDate = date;
 
-    v18 = [v10 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v19 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v20 = dispatch_queue_attr_make_initially_inactive(v19);
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(v20, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v22 = dispatch_queue_create(v18, v21);
+    v22 = dispatch_queue_create(uTF8String, v21);
 
     callbackQueue = v15->_callbackQueue;
     v15->_callbackQueue = v22;
 
-    v24 = [v10 UTF8String];
+    uTF8String2 = [nameCopy UTF8String];
     v25 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(v25, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v27 = dispatch_queue_create(v24, v26);
+    v27 = dispatch_queue_create(uTF8String2, v26);
 
     internalQueue = v15->_internalQueue;
     v15->_internalQueue = v27;
 
-    objc_storeStrong(&v15->_group, a6);
-    objc_storeStrong(&v15->_syncContext, a4);
-    v29 = [(BRCSessionContext *)v15->_sessionContext throttleProvider];
-    v15->_operationFailureThrottle = [v29 operationFailureThrottle];
+    objc_storeStrong(&v15->_group, group);
+    objc_storeStrong(&v15->_syncContext, context);
+    throttleProvider = [(BRCSessionContext *)v15->_sessionContext throttleProvider];
+    v15->_operationFailureThrottle = [throttleProvider operationFailureThrottle];
 
-    v30 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     subOperations = v15->_subOperations;
-    v15->_subOperations = v30;
+    v15->_subOperations = weakObjectsHashTable;
 
     v32 = objc_opt_new();
     associatedEventMetrics = v15->_associatedEventMetrics;
@@ -255,17 +255,17 @@ LABEL_4:
     v37 = v46;
     *&v15->_logSections.line = v47;
     *&v15->_logSections.sectionID = v37;
-    v38 = [MEMORY[0x277D77BF8] sharedManager];
-    v39 = [v38 br_currentPersonaID];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
     personaID = v15->_personaID;
-    v15->_personaID = v39;
+    v15->_personaID = br_currentPersonaID;
 
     v41 = [BRCUserDefaults defaultsForMangledID:0];
     [v41 operationTimeout];
     v15->_timeout = v42;
 
     v15->_maxBackoff = 1.79769313e308;
-    v11 = v45;
+    contextCopy = v45;
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -279,10 +279,10 @@ LABEL_4:
   return v2;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   logSections = self->_logSections;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
@@ -291,22 +291,22 @@ LABEL_4:
     *buf = 134218498;
     sectionID = logSections.sectionID;
     v12 = 2112;
-    v13 = v4;
+    v13 = groupCopy;
     v14 = 2112;
     v15 = v5;
     _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx now using group: %@%@", buf, 0x20u);
   }
 
   operationGroup = self->_operationGroup;
-  self->_operationGroup = v4;
+  self->_operationGroup = groupCopy;
 
   __brc_leave_section(&logSections);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stateWithContext:(id)a3
+- (id)stateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(_BRCOperation *)self isCancelled])
   {
     v5 = @"cancelled";
@@ -327,7 +327,7 @@ LABEL_4:
     v5 = @"idle";
   }
 
-  v6 = [BRCDumpContext highlightedString:v5 type:7 context:v4];
+  v6 = [BRCDumpContext highlightedString:v5 type:7 context:contextCopy];
 
   return v6;
 }
@@ -337,93 +337,93 @@ LABEL_4:
   finishDate = self->_finishDate;
   if (finishDate)
   {
-    v4 = finishDate;
+    date = finishDate;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v5 = v4;
-  [(NSDate *)v4 timeIntervalSinceDate:self->_startDate];
+  v5 = date;
+  [(NSDate *)date timeIntervalSinceDate:self->_startDate];
   v7 = v6;
 
   return v7;
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v39 = [BRCDumpContext nowDateFromContext:v4];
+  contextCopy = context;
+  v39 = [BRCDumpContext nowDateFromContext:contextCopy];
   v5 = objc_alloc(MEMORY[0x277CCAB68]);
-  v6 = [BRCDumpContext stringFromOperationUUID:self->_operationUUID context:v4];
-  v7 = [(_BRCOperation *)self name];
-  v8 = [v5 initWithFormat:@"%p %@ %@", self, v6, v7];
+  v6 = [BRCDumpContext stringFromOperationUUID:self->_operationUUID context:contextCopy];
+  name = [(_BRCOperation *)self name];
+  v8 = [v5 initWithFormat:@"%p %@ %@", self, v6, name];
 
-  v9 = self;
-  objc_sync_enter(v9);
-  obj = v9;
-  v40 = [(_BRCOperation *)v9 subclassableDescriptionWithContext:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  v40 = [(_BRCOperation *)selfCopy subclassableDescriptionWithContext:contextCopy];
   if ([v40 length])
   {
     [v8 appendString:@" "];
     [v8 appendString:v40];
   }
 
-  v10 = [(_BRCOperation *)v9 stateWithContext:v4];
+  v10 = [(_BRCOperation *)selfCopy stateWithContext:contextCopy];
   [v8 appendFormat:@" %@", v10];
 
-  finishDate = v9->_finishDate;
+  finishDate = selfCopy->_finishDate;
   if (!finishDate)
   {
     finishDate = v39;
   }
 
   v37 = finishDate;
-  [(NSDate *)v37 timeIntervalSinceDate:v9->_startDate];
-  v12 = [BRCDumpContext stringFromInterval:v4 context:?];
+  [(NSDate *)v37 timeIntervalSinceDate:selfCopy->_startDate];
+  v12 = [BRCDumpContext stringFromInterval:contextCopy context:?];
   [v8 appendFormat:@" duration:%@", v12];
 
-  nextTryDate = v9->_nextTryDate;
+  nextTryDate = selfCopy->_nextTryDate;
   if (nextTryDate)
   {
-    v14 = [BRCDumpContext stringFromDueDate:nextTryDate allowsPast:0 context:v4];
+    v14 = [BRCDumpContext stringFromDueDate:nextTryDate allowsPast:0 context:contextCopy];
     [v8 appendFormat:@" next-try:%@", v14];
   }
 
-  lastError = v9->_lastError;
+  lastError = selfCopy->_lastError;
   if (lastError)
   {
-    v16 = [BRCDumpContext stringFromError:lastError context:v4];
+    v16 = [BRCDumpContext stringFromError:lastError context:contextCopy];
     [v8 appendFormat:@" last-error:%@", v16];
   }
 
-  lastTryDate = v9->_lastTryDate;
+  lastTryDate = selfCopy->_lastTryDate;
   if (lastTryDate)
   {
-    v18 = [BRCDumpContext stringFromDueDate:lastTryDate allowsPast:1 context:v4];
+    v18 = [BRCDumpContext stringFromDueDate:lastTryDate allowsPast:1 context:contextCopy];
     [v8 appendFormat:@" last-try:%@", v18];
   }
 
-  v19 = [(_BRCOperation *)v9 dependencies];
-  v42 = [v19 mutableCopy];
+  dependencies = [(_BRCOperation *)selfCopy dependencies];
+  v42 = [dependencies mutableCopy];
 
-  v20 = v9->_subOperations;
+  v20 = selfCopy->_subOperations;
   objc_sync_enter(v20);
-  v21 = [(NSHashTable *)v9->_subOperations allObjects];
+  allObjects = [(NSHashTable *)selfCopy->_subOperations allObjects];
   objc_sync_exit(v20);
 
-  v38 = v21;
-  if ([v21 count])
+  v38 = allObjects;
+  if ([allObjects count])
   {
     [v8 appendString:@" sub {\n"];
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v22 = v21;
+    v22 = allObjects;
     v23 = [v22 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v23)
     {
@@ -439,8 +439,8 @@ LABEL_4:
 
           v26 = *(*(&v47 + 1) + 8 * i);
           [v42 removeObject:v26];
-          v27 = [v26 lightweightDescription];
-          v28 = [BRCDumpContext highlightedString:v27 type:2 context:v4];
+          lightweightDescription = [v26 lightweightDescription];
+          v28 = [BRCDumpContext highlightedString:lightweightDescription type:2 context:contextCopy];
           [v8 appendFormat:@"    %@, \n", v28];
         }
 
@@ -474,8 +474,8 @@ LABEL_4:
             objc_enumerationMutation(v29);
           }
 
-          v33 = [*(*(&v43 + 1) + 8 * j) lightweightDescription];
-          v34 = [BRCDumpContext highlightedString:v33 type:2 context:v4];
+          lightweightDescription2 = [*(*(&v43 + 1) + 8 * j) lightweightDescription];
+          v34 = [BRCDumpContext highlightedString:lightweightDescription2 type:2 context:contextCopy];
           [v8 appendFormat:@"    %@, \n", v34];
         }
 
@@ -506,42 +506,42 @@ LABEL_4:
   return lastError;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   dispatch_assert_queue_V2(self->_callbackQueue);
-  if (self->_finished != v3)
+  if (self->_finished != finishedCopy)
   {
-    if (v3)
+    if (finishedCopy)
     {
-      v5 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     else
     {
-      v5 = 0;
+      date = 0;
     }
 
-    objc_storeStrong(&self->_finishDate, v5);
-    if (v3)
+    objc_storeStrong(&self->_finishDate, date);
+    if (finishedCopy)
     {
     }
 
     [(_BRCOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = v3;
+    self->_finished = finishedCopy;
 
     [(_BRCOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  v3 = a3;
+  executingCopy = executing;
   dispatch_assert_queue_V2(self->_callbackQueue);
-  if ((((self->_executionTransaction == 0) ^ v3) & 1) == 0)
+  if ((((self->_executionTransaction == 0) ^ executingCopy) & 1) == 0)
   {
     [(_BRCOperation *)self willChangeValueForKey:@"isExecuting"];
-    if (v3)
+    if (executingCopy)
     {
       v5 = os_transaction_create();
     }
@@ -560,12 +560,12 @@ LABEL_4:
 
 - (void)main
 {
-  v3 = [(_BRCOperation *)self mainBlock];
+  mainBlock = [(_BRCOperation *)self mainBlock];
 
-  if (v3)
+  if (mainBlock)
   {
-    v4 = [(_BRCOperation *)self mainBlock];
-    v4[2](v4, self);
+    mainBlock2 = [(_BRCOperation *)self mainBlock];
+    mainBlock2[2](mainBlock2, self);
   }
 
   else
@@ -576,10 +576,10 @@ LABEL_4:
   }
 }
 
-- (void)_executeWithPreviousError:(id)a3
+- (void)_executeWithPreviousError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_callbackQueue);
   if (![(_BRCOperation *)self _finishIfCancelled])
   {
@@ -587,8 +587,8 @@ LABEL_4:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(_BRCOperation *)self dependencies];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    dependencies = [(_BRCOperation *)self dependencies];
+    v6 = [dependencies countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -599,14 +599,14 @@ LABEL_4:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(dependencies);
           }
 
           [(_BRCOperation *)self removeDependency:*(*(&v15 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [dependencies countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -617,13 +617,13 @@ LABEL_4:
     [(NSHashTable *)self->_subOperations removeAllObjects];
     objc_sync_exit(v9);
 
-    v10 = [(_BRCOperation *)self operationThrottle];
-    [v10 incrementRetryCount:self->_throttleHash];
+    operationThrottle = [(_BRCOperation *)self operationThrottle];
+    [operationThrottle incrementRetryCount:self->_throttleHash];
 
-    if (v4)
+    if (errorCopy)
     {
-      v11 = [(_BRCOperation *)self operationFailureThrottle];
-      [v11 incrementRetryCount:self->_throttleHash];
+      operationFailureThrottle = [(_BRCOperation *)self operationFailureThrottle];
+      [operationFailureThrottle incrementRetryCount:self->_throttleHash];
     }
 
     retryTimer = self->_retryTimer;
@@ -640,32 +640,32 @@ LABEL_4:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleExecutionWithPreviousError:(id)a3
+- (void)_scheduleExecutionWithPreviousError:(id)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_callbackQueue);
   [(_BRCOperation *)self setExecuting:0];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [MEMORY[0x277CBEAA8] date];
-  lastTryDate = v5->_lastTryDate;
-  v5->_lastTryDate = v6;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x277CBEAA8] date];
+  lastTryDate = selfCopy->_lastTryDate;
+  selfCopy->_lastTryDate = date;
 
-  objc_sync_exit(v5);
-  [v4 br_suggestedRetryTimeInterval];
+  objc_sync_exit(selfCopy);
+  [errorCopy br_suggestedRetryTimeInterval];
   v9 = v8;
-  if (!v5->_throttleHash)
+  if (!selfCopy->_throttleHash)
   {
-    v10 = [(_BRCOperation *)v5 name];
-    v5->_throttleHash = [BRCThrottle throttleHashFormat:@"%@%d", v10, [(_BRCOperation *)v5 nonDiscretionary]];
+    name = [(_BRCOperation *)selfCopy name];
+    selfCopy->_throttleHash = [BRCThrottle throttleHashFormat:@"%@%d", name, [(_BRCOperation *)selfCopy nonDiscretionary]];
   }
 
-  v11 = [(_BRCOperation *)v5 operationThrottle];
-  v12 = [v11 nsecsToNextRetry:v5->_throttleHash now:brc_current_date_nsec() increment:0];
-  v13 = [(_BRCOperation *)v5 operationFailureThrottle];
+  operationThrottle = [(_BRCOperation *)selfCopy operationThrottle];
+  v12 = [operationThrottle nsecsToNextRetry:selfCopy->_throttleHash now:brc_current_date_nsec() increment:0];
+  operationFailureThrottle = [(_BRCOperation *)selfCopy operationFailureThrottle];
 
-  v14 = [v13 nsecsToNextRetry:v5->_throttleHash now:brc_current_date_nsec() increment:0];
+  v14 = [operationFailureThrottle nsecsToNextRetry:selfCopy->_throttleHash now:brc_current_date_nsec() increment:0];
   if (v14 <= v12)
   {
     v15 = v12;
@@ -680,7 +680,7 @@ LABEL_4:
   v17 = brc_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    throttleHash = v5->_throttleHash;
+    throttleHash = selfCopy->_throttleHash;
     *buf = 134218498;
     v58 = v15 / 1000000000.0;
     v59 = 2048;
@@ -690,8 +690,8 @@ LABEL_4:
     _os_log_debug_impl(&dword_223E7A000, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] throttle backoff: %03fs for hash:0x%016llx%@", buf, 0x20u);
   }
 
-  v18 = ![(_BRCOperation *)v5 nonDiscretionary];
-  if (!v4)
+  v18 = ![(_BRCOperation *)selfCopy nonDiscretionary];
+  if (!errorCopy)
   {
     LOBYTE(v18) = 1;
   }
@@ -742,16 +742,16 @@ LABEL_4:
         [_BRCOperation _scheduleExecutionWithPreviousError:];
       }
 
-      v30 = v5;
+      v30 = selfCopy;
       objc_sync_enter(v30);
-      v31 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
       nextTryDate = v30->_nextTryDate;
-      v30->_nextTryDate = v31;
+      v30->_nextTryDate = distantFuture;
 
       objc_sync_exit(v30);
     }
 
-    else if (v27 / 1000000000.0 >= v5->_maxBackoff)
+    else if (v27 / 1000000000.0 >= selfCopy->_maxBackoff)
     {
       v48 = brc_bread_crumbs();
       v49 = brc_default_log();
@@ -763,7 +763,7 @@ LABEL_4:
       v50 = objc_alloc(MEMORY[0x277CCA9B8]);
       v51 = [v50 initWithDomain:*MEMORY[0x277CFABD0] code:23 userInfo:0];
       v52 = objc_autoreleasePoolPush();
-      [(_BRCOperation *)v5 finishWithResult:0 error:v51];
+      [(_BRCOperation *)selfCopy finishWithResult:0 error:v51];
       objc_autoreleasePoolPop(v52);
     }
 
@@ -776,15 +776,15 @@ LABEL_4:
         [_BRCOperation _scheduleExecutionWithPreviousError:?];
       }
 
-      v35 = v5;
+      v35 = selfCopy;
       objc_sync_enter(v35);
       v36 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v27 / 1000000000.0];
       v37 = v35->_nextTryDate;
       v35->_nextTryDate = v36;
 
       objc_sync_exit(v35);
-      v38 = [(_BRCOperation *)v35 callbackQueue];
-      v39 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v38);
+      callbackQueue = [(_BRCOperation *)v35 callbackQueue];
+      v39 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, callbackQueue);
       retryTimer = v35->_retryTimer;
       v35->_retryTimer = v39;
 
@@ -796,7 +796,7 @@ LABEL_4:
       v55[2] = __53___BRCOperation__scheduleExecutionWithPreviousError___block_invoke;
       v55[3] = &unk_2784FF478;
       v55[4] = v35;
-      v56 = v4;
+      v56 = errorCopy;
       v43 = v42;
       v44 = v55;
       v45 = v44;
@@ -814,7 +814,7 @@ LABEL_4:
 
     else
     {
-      [(_BRCOperation *)v5 _executeWithPreviousError:v4];
+      [(_BRCOperation *)selfCopy _executeWithPreviousError:errorCopy];
     }
   }
 
@@ -828,7 +828,7 @@ LABEL_4:
     }
 
     v23 = objc_autoreleasePoolPush();
-    [(_BRCOperation *)v5 finishWithResult:0 error:v4];
+    [(_BRCOperation *)selfCopy finishWithResult:0 error:errorCopy];
     objc_autoreleasePoolPop(v23);
   }
 
@@ -847,7 +847,7 @@ LABEL_4:
     *buf = 134218498;
     v40 = v36[0];
     v41 = 2112;
-    v42 = self;
+    selfCopy = self;
     v43 = 2112;
     v44 = v3;
     _os_log_debug_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx cancelling %@%@", buf, 0x20u);
@@ -858,17 +858,17 @@ LABEL_4:
   [(_BRCOperation *)&v35 cancel];
   v5 = self->_subOperations;
   objc_sync_enter(v5);
-  v6 = [(NSHashTable *)self->_subOperations allObjects];
+  allObjects = [(NSHashTable *)self->_subOperations allObjects];
   objc_sync_exit(v5);
 
-  v7 = [(_BRCOperation *)self dependencies];
-  v8 = [v7 mutableCopy];
+  dependencies = [(_BRCOperation *)self dependencies];
+  v8 = [dependencies mutableCopy];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v6;
+  obj = allObjects;
   v9 = [obj countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v9)
   {
@@ -919,11 +919,11 @@ LABEL_4:
         v20 = brc_default_log();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [(_BRCOperation *)self operationID];
+          operationID = [(_BRCOperation *)self operationID];
           *buf = v24;
           v40 = v18;
           v41 = 2112;
-          v42 = v21;
+          selfCopy = operationID;
           v43 = 2112;
           v44 = v19;
           _os_log_debug_impl(&dword_223E7A000, v20, OS_LOG_TYPE_DEBUG, "[DEBUG] Removed %@ as dependency of cancelled op %@%@", buf, 0x20u);
@@ -948,29 +948,29 @@ LABEL_4:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(_BRCOperation *)self nonDiscretionary])
   {
-    v5 = [v4 brc_isUserInitiatedRetriable];
+    brc_isUserInitiatedRetriable = [errorCopy brc_isUserInitiatedRetriable];
   }
 
   else
   {
-    v5 = [v4 brc_isRetriable];
+    brc_isUserInitiatedRetriable = [errorCopy brc_isRetriable];
   }
 
-  v6 = v5;
+  v6 = brc_isUserInitiatedRetriable;
 
   return v6;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(0, "[_BRCOperation finishWithResult:error:]", 652, 0, v28);
   v8 = brc_bread_crumbs();
@@ -980,7 +980,7 @@ LABEL_4:
     *buf = 134218498;
     v31 = v28[0];
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx finishing %@%@", buf, 0x20u);
@@ -1006,15 +1006,15 @@ LABEL_4:
   finishBlock = self->_finishBlock;
   if (finishBlock)
   {
-    finishBlock[2](finishBlock, v6, v7);
+    finishBlock[2](finishBlock, resultCopy, errorCopy);
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = [(_BRCOperation *)self dependencies];
-  v16 = [v15 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  dependencies = [(_BRCOperation *)self dependencies];
+  v16 = [dependencies countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v16)
   {
     v17 = *v25;
@@ -1025,14 +1025,14 @@ LABEL_4:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(dependencies);
         }
 
         [(_BRCOperation *)self removeDependency:*(*(&v24 + 1) + 8 * v18++)];
       }
 
       while (v16 != v18);
-      v16 = [v15 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v16 = [dependencies countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v16);
@@ -1043,8 +1043,8 @@ LABEL_4:
   [(NSHashTable *)self->_subOperations removeAllObjects];
   objc_sync_exit(v19);
 
-  v20 = [(_BRCOperation *)self name];
-  [v20 hash];
+  name = [(_BRCOperation *)self name];
+  [name hash];
   [(_BRCOperation *)self hash];
   kdebug_trace();
 
@@ -1060,11 +1060,11 @@ LABEL_4:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completedWithResult:(id)a3 error:(id)a4
+- (void)_completedWithResult:(id)result error:(id)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   logSections = self->_logSections;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
@@ -1072,7 +1072,7 @@ LABEL_4:
   {
     v22 = @"failed";
     *buf = 134219522;
-    if (!v7)
+    if (!errorCopy)
     {
       v22 = @"completed";
     }
@@ -1082,20 +1082,20 @@ LABEL_4:
     v23 = &stru_2837504F0;
     v31 = &stru_2837504F0;
     v24 = @"\nwith error: ";
-    if (!v7)
+    if (!errorCopy)
     {
       v24 = &stru_2837504F0;
     }
 
     v32 = 2112;
-    if (v7)
+    if (errorCopy)
     {
-      v23 = v7;
+      v23 = errorCopy;
     }
 
     v33 = v22;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v24;
     v38 = 2112;
@@ -1106,28 +1106,28 @@ LABEL_4:
   }
 
   dispatch_assert_queue_V2(self->_callbackQueue);
-  if ([(__CFString *)v7 brc_isCloudKitSchedulerActivityDeferred])
+  if ([(__CFString *)errorCopy brc_isCloudKitSchedulerActivityDeferred])
   {
     v10 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CBBF50] code:4 description:@"System conditions no longer appropriate."];
 
-    v7 = v10;
+    errorCopy = v10;
   }
 
   if (![(_BRCOperation *)self _finishIfCancelled:*&logSections.sectionID])
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    objc_storeStrong(&v11->_lastError, v7);
-    objc_sync_exit(v11);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    objc_storeStrong(&selfCopy2->_lastError, errorCopy);
+    objc_sync_exit(selfCopy2);
 
-    if ([(__CFString *)v7 brc_isDenylistError])
+    if ([(__CFString *)errorCopy brc_isDenylistError])
     {
       v12 = brc_bread_crumbs();
       v13 = brc_default_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        sectionID = v11;
+        sectionID = selfCopy2;
         v30 = 2112;
         v31 = v12;
         _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEFAULT, "[WARNING] We are denylisted! Not notifying about finishing %@%@", buf, 0x16u);
@@ -1136,7 +1136,7 @@ LABEL_4:
       goto LABEL_20;
     }
 
-    if ([(__CFString *)v7 brc_isCloudKitAccountTemporarilyUnavailable])
+    if ([(__CFString *)errorCopy brc_isCloudKitAccountTemporarilyUnavailable])
     {
       v14 = brc_bread_crumbs();
       v15 = brc_default_log();
@@ -1145,15 +1145,15 @@ LABEL_4:
         [_BRCOperation _completedWithResult:error:];
       }
 
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v16 postNotificationName:@"BRC_ACCOUNT_TEMPORARILY_UNAVAILABLE" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"BRC_ACCOUNT_TEMPORARILY_UNAVAILABLE" object:0];
     }
 
-    if (v7)
+    if (errorCopy)
     {
-      if ([(_BRCOperation *)v11 shouldRetryForError:v7])
+      if ([(_BRCOperation *)selfCopy2 shouldRetryForError:errorCopy])
       {
-        if (!v11->_operationFailureThrottle)
+        if (!selfCopy2->_operationFailureThrottle)
         {
           v25 = brc_bread_crumbs();
           v26 = brc_default_log();
@@ -1163,22 +1163,22 @@ LABEL_4:
           }
         }
 
-        [(_BRCOperation *)v11 _scheduleExecutionWithPreviousError:v7];
+        [(_BRCOperation *)selfCopy2 _scheduleExecutionWithPreviousError:errorCopy];
         goto LABEL_20;
       }
 
-      v17 = [(_BRCOperation *)v11 operationFailureThrottle];
-      v18 = v17 == 0;
+      operationFailureThrottle = [(_BRCOperation *)selfCopy2 operationFailureThrottle];
+      v18 = operationFailureThrottle == 0;
 
       if (!v18)
       {
-        v19 = [(_BRCOperation *)v11 operationFailureThrottle];
-        [v19 incrementRetryCount:v11->_throttleHash];
+        operationFailureThrottle2 = [(_BRCOperation *)selfCopy2 operationFailureThrottle];
+        [operationFailureThrottle2 incrementRetryCount:selfCopy2->_throttleHash];
       }
     }
 
     v20 = objc_autoreleasePoolPush();
-    [(_BRCOperation *)v11 finishWithResult:v6 error:v7];
+    [(_BRCOperation *)selfCopy2 finishWithResult:resultCopy error:errorCopy];
     objc_autoreleasePoolPop(v20);
   }
 
@@ -1188,11 +1188,11 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completedWithResult:(id)a3 error:(id)a4
+- (void)completedWithResult:(id)result error:(id)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   personaID = self->_personaID;
   if ((BRCurrentPersonaMatchesID() & 1) == 0)
   {
@@ -1220,13 +1220,13 @@ LABEL_20:
       v16 = 0;
     }
 
-    v17 = [MEMORY[0x277D77BF8] sharedManager];
-    v18 = [v17 currentPersona];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
     v43 = 0;
-    v19 = [v18 userPersonaUniqueString];
-    v20 = v19;
-    if (v19 == v15 || [(NSString *)v19 isEqualToString:v15])
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    v20 = userPersonaUniqueString;
+    if (userPersonaUniqueString == v15 || [(NSString *)userPersonaUniqueString isEqualToString:v15])
     {
       v21 = 0;
     }
@@ -1236,7 +1236,7 @@ LABEL_20:
       if (voucher_process_can_use_arbitrary_personas())
       {
         v42 = 0;
-        v26 = [v18 copyCurrentPersonaContextWithError:&v42];
+        v26 = [currentPersona copyCurrentPersonaContextWithError:&v42];
         v27 = v42;
         v28 = v43;
         v43 = v26;
@@ -1251,7 +1251,7 @@ LABEL_20:
           }
         }
 
-        v21 = [v18 br_generateAndRestorePersonaContextWithPersonaUniqueString:v15];
+        v21 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v15];
 
         if (!v21)
         {
@@ -1275,7 +1275,7 @@ LABEL_20:
 
       else
       {
-        if (!v16 || ([v18 isDataSeparatedPersona] & 1) != 0)
+        if (!v16 || ([currentPersona isDataSeparatedPersona] & 1) != 0)
         {
           v34 = brc_bread_crumbs();
           v35 = brc_default_log();
@@ -1306,10 +1306,10 @@ LABEL_14:
     block[2] = __43___BRCOperation_completedWithResult_error___block_invoke_122;
     block[3] = &unk_2784FF4A0;
     block[4] = self;
-    v40 = v6;
-    v41 = v7;
-    v23 = v7;
-    v24 = v6;
+    v40 = resultCopy;
+    v41 = errorCopy;
+    v23 = errorCopy;
+    v24 = resultCopy;
     dispatch_async(callbackQueue, block);
 
     _BRRestorePersona();
@@ -1322,22 +1322,22 @@ LABEL_14:
   v36[2] = __43___BRCOperation_completedWithResult_error___block_invoke_2;
   v36[3] = &unk_2784FF4A0;
   v36[4] = self;
-  v37 = v6;
-  v38 = v7;
-  v10 = v7;
-  v11 = v6;
+  v37 = resultCopy;
+  v38 = errorCopy;
+  v10 = errorCopy;
+  v11 = resultCopy;
   dispatch_async(v9, v36);
 
 LABEL_15:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setDeviceConfigurationHeaderOnCKOp:(id)a3
+- (void)_setDeviceConfigurationHeaderOnCKOp:(id)op
 {
-  v4 = a3;
-  v5 = [v4 configuration];
-  v6 = [v5 additionalRequestHTTPHeaders];
-  v7 = [v6 mutableCopy];
+  opCopy = op;
+  configuration = [opCopy configuration];
+  additionalRequestHTTPHeaders = [configuration additionalRequestHTTPHeaders];
+  v7 = [additionalRequestHTTPHeaders mutableCopy];
   v8 = v7;
   if (v7)
   {
@@ -1352,97 +1352,97 @@ LABEL_15:
   v15 = v9;
 
   v10 = [BRCDeviceConfiguration alloc];
-  v11 = [(BRCSessionContext *)self->_sessionContext accountFacade];
-  v12 = [(BRCDeviceConfiguration *)v10 initWithAccountFacade:v11];
+  accountFacade = [(BRCSessionContext *)self->_sessionContext accountFacade];
+  v12 = [(BRCDeviceConfiguration *)v10 initWithAccountFacade:accountFacade];
 
-  v13 = [(BRCDeviceConfiguration *)v12 getDeviceConfigurationString];
-  [v15 setObject:v13 forKeyedSubscript:@"X-APPLE-BR-DEVICE-CONFIGURATION"];
+  getDeviceConfigurationString = [(BRCDeviceConfiguration *)v12 getDeviceConfigurationString];
+  [v15 setObject:getDeviceConfigurationString forKeyedSubscript:@"X-APPLE-BR-DEVICE-CONFIGURATION"];
 
-  v14 = [v4 configuration];
+  configuration2 = [opCopy configuration];
 
-  [v14 setAdditionalRequestHTTPHeaders:v15];
+  [configuration2 setAdditionalRequestHTTPHeaders:v15];
 }
 
-- (void)_addSubOperation:(id)a3 overrideContext:(id)a4 allowsCellularAccess:(id)a5 asCompletionOf:(id)a6
+- (void)_addSubOperation:(id)operation overrideContext:(id)context allowsCellularAccess:(id)access asCompletionOf:(id)of
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  operationCopy = operation;
+  contextCopy = context;
+  accessCopy = access;
+  ofCopy = of;
+  if (!contextCopy)
   {
-    v11 = self->_syncContext;
+    contextCopy = self->_syncContext;
   }
 
   v26.receiver = self;
   v26.super_class = _BRCOperation;
-  [(_BRCOperation *)&v26 addDependency:v10];
+  [(_BRCOperation *)&v26 addDependency:operationCopy];
   v14 = self->_subOperations;
   objc_sync_enter(v14);
-  [(NSHashTable *)self->_subOperations addObject:v10];
+  [(NSHashTable *)self->_subOperations addObject:operationCopy];
   objc_sync_exit(v14);
 
-  [v10 setQualityOfService:{-[_BRCOperation qualityOfService](self, "qualityOfService")}];
-  [v10 setQueuePriority:{-[_BRCOperation queuePriority](self, "queuePriority")}];
+  [operationCopy setQualityOfService:{-[_BRCOperation qualityOfService](self, "qualityOfService")}];
+  [operationCopy setQueuePriority:{-[_BRCOperation queuePriority](self, "queuePriority")}];
   internalQueue = self->_internalQueue;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __86___BRCOperation__addSubOperation_overrideContext_allowsCellularAccess_asCompletionOf___block_invoke;
   v20[3] = &unk_2784FF4F0;
-  v21 = v11;
-  v22 = v10;
-  v23 = self;
-  v24 = v12;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
+  v21 = contextCopy;
+  v22 = operationCopy;
+  selfCopy = self;
+  v24 = accessCopy;
+  v25 = ofCopy;
+  v16 = ofCopy;
+  v17 = accessCopy;
+  v18 = operationCopy;
+  v19 = contextCopy;
   dispatch_async_with_logs(internalQueue, v20);
 }
 
-- (void)addSubOperation:(id)a3
+- (void)addSubOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (!self->_syncContext)
   {
     [_BRCOperation addSubOperation:];
   }
 
-  [(_BRCOperation *)self addSubOperation:v4 overrideContext:0 allowsCellularAccess:0];
+  [(_BRCOperation *)self addSubOperation:operationCopy overrideContext:0 allowsCellularAccess:0];
 }
 
-- (void)addSubOperation:(id)a3 asCompletionOf:(id)a4
+- (void)addSubOperation:(id)operation asCompletionOf:(id)of
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  ofCopy = of;
   if (!self->_syncContext)
   {
     [_BRCOperation addSubOperation:asCompletionOf:];
   }
 
-  [(_BRCOperation *)self _addSubOperation:v6 overrideContext:0 allowsCellularAccess:0 asCompletionOf:v7];
+  [(_BRCOperation *)self _addSubOperation:operationCopy overrideContext:0 allowsCellularAccess:0 asCompletionOf:ofCopy];
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dependencyCopy = dependency;
   if ([(_BRCOperation *)self nonDiscretionary])
   {
-    if (([v4 isCancelled] & 1) == 0)
+    if (([dependencyCopy isCancelled] & 1) == 0)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 nonDiscretionary] & 1) == 0)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ([dependencyCopy nonDiscretionary] & 1) == 0)
       {
         v5 = brc_bread_crumbs();
         v6 = brc_default_log();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v10 = v4;
+          v10 = dependencyCopy;
           v11 = 2112;
-          v12 = self;
+          selfCopy = self;
           v13 = 2112;
           v14 = v5;
           _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[WARNING] Adding discretionary op %@ as a dependency of a non-discretionary op %@%@", buf, 0x20u);
@@ -1453,33 +1453,33 @@ LABEL_15:
 
   v8.receiver = self;
   v8.super_class = _BRCOperation;
-  [(_BRCOperation *)&v8 addDependency:v4];
+  [(_BRCOperation *)&v8 addDependency:dependencyCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blockOnHighPriorityOperation:(id)a3
+- (void)blockOnHighPriorityOperation:(id)operation
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   if (([(_BRCOperation *)self isCancelled]& 1) == 0)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(_BRCOperation *)self operationID];
-      v19 = [v4 operationID];
+      operationID = [(_BRCOperation *)self operationID];
+      operationID2 = [operationCopy operationID];
       *location = 138412802;
-      *&location[4] = v18;
+      *&location[4] = operationID;
       v29 = 2112;
-      v30 = v19;
+      v30 = operationID2;
       v31 = 2112;
       v32 = v5;
       _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] Blocking %@ on high priority operation %@%@", location, 0x20u);
     }
 
-    [(_BRCOperation *)self addDependency:v4];
+    [(_BRCOperation *)self addDependency:operationCopy];
     v7 = self->_subOperations;
     objc_sync_enter(v7);
     v23 = 0u;
@@ -1505,12 +1505,12 @@ LABEL_15:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v12 blockOnHighPriorityOperation:v4];
+            [v12 blockOnHighPriorityOperation:operationCopy];
           }
 
           else
           {
-            [v12 addDependency:v4];
+            [v12 addDependency:operationCopy];
           }
 
           ++v11;
@@ -1530,7 +1530,7 @@ LABEL_15:
       self->_highPriorityWaitGroup = v13;
     }
 
-    v15 = [v4 completionBlock];
+    completionBlock = [operationCopy completionBlock];
     dispatch_group_enter(self->_highPriorityWaitGroup);
     objc_initWeak(location, self);
     v20[0] = MEMORY[0x277D85DD0];
@@ -1538,9 +1538,9 @@ LABEL_15:
     v20[2] = __46___BRCOperation_blockOnHighPriorityOperation___block_invoke;
     v20[3] = &unk_2784FF518;
     objc_copyWeak(&v22, location);
-    v16 = v15;
+    v16 = completionBlock;
     v21 = v16;
-    [v4 setCompletionBlock:v20];
+    [operationCopy setCompletionBlock:v20];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(location);
@@ -1551,26 +1551,26 @@ LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)associateCKOperationsToEventMetric:(id)a3
+- (void)associateCKOperationsToEventMetric:(id)metric
 {
-  if (a3)
+  if (metric)
   {
     [(NSMutableArray *)self->_associatedEventMetrics addObject:?];
   }
 }
 
-- (void)cancelAfterDelay:(double)a3
+- (void)cancelAfterDelay:(double)delay
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (a3 != 0.0)
+  if (delay != 0.0)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (([(_BRCOperation *)v4 isCancelled]& 1) == 0 && !v4->_timeoutTimer)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (([(_BRCOperation *)selfCopy isCancelled]& 1) == 0 && !selfCopy->_timeoutTimer)
     {
-      [(NSDate *)v4->_startDate timeIntervalSinceNow];
+      [(NSDate *)selfCopy->_startDate timeIntervalSinceNow];
       v6 = (v5 * 1000000000.0);
-      v7 = (a3 * 1000000000.0);
+      v7 = (delay * 1000000000.0);
       v8 = v7 - v6;
       if (v7 <= v6)
       {
@@ -1578,11 +1578,11 @@ LABEL_15:
         v23 = brc_default_log();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [(_BRCOperation *)v4 description];
+          v24 = [(_BRCOperation *)selfCopy description];
           [(_BRCOperation *)v24 cancelAfterDelay:v22, buf];
         }
 
-        [(_BRCOperation *)v4 cancel];
+        [(_BRCOperation *)selfCopy cancel];
       }
 
       else
@@ -1591,7 +1591,7 @@ LABEL_15:
         v10 = brc_default_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [(_BRCOperation *)v4 description];
+          v26 = [(_BRCOperation *)selfCopy description];
           *buf = 134218498;
           v29 = v8 / 0x3B9ACA00;
           v30 = 2112;
@@ -1603,15 +1603,15 @@ LABEL_15:
 
         v11 = dispatch_time(0, v8);
         v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, 0);
-        timeoutTimer = v4->_timeoutTimer;
-        v4->_timeoutTimer = v12;
+        timeoutTimer = selfCopy->_timeoutTimer;
+        selfCopy->_timeoutTimer = v12;
 
-        v14 = v4->_timeoutTimer;
+        v14 = selfCopy->_timeoutTimer;
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __34___BRCOperation_cancelAfterDelay___block_invoke;
         v27[3] = &unk_2784FF450;
-        v27[4] = v4;
+        v27[4] = selfCopy;
         v15 = v14;
         v16 = v27;
         v17 = v15;
@@ -1626,12 +1626,12 @@ LABEL_15:
         v21 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, v20);
         dispatch_source_set_event_handler(v17, v21);
 
-        dispatch_source_set_timer(v4->_timeoutTimer, v11, 0xFFFFFFFFFFFFFFFFLL, v7 / 10);
-        dispatch_resume(v4->_timeoutTimer);
+        dispatch_source_set_timer(selfCopy->_timeoutTimer, v11, 0xFFFFFFFFFFFFFFFFLL, v7 / 10);
+        dispatch_resume(selfCopy->_timeoutTimer);
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   v25 = *MEMORY[0x277D85DE8];

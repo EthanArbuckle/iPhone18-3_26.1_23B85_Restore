@@ -1,16 +1,16 @@
 @interface WFSpeechSynthesisVoice
 + (id)availableLanguageCodes;
 + (id)currentLanguageCode;
-+ (id)defaultVoiceForLanguageCode:(id)a3;
-+ (id)voiceForIdentifier:(id)a3;
-+ (id)voiceFromAVVoice:(id)a3;
-+ (id)voicesForLanguageCode:(id)a3;
++ (id)defaultVoiceForLanguageCode:(id)code;
++ (id)voiceForIdentifier:(id)identifier;
++ (id)voiceFromAVVoice:(id)voice;
++ (id)voicesForLanguageCode:(id)code;
 - (AVSpeechSynthesisVoice)avVoice;
 - (BOOL)isSiriVoice;
 - (NSString)languageCode;
 - (NSString)name;
 - (NSString)vsVoiceName;
-- (WFSpeechSynthesisVoice)initWithIdentifier:(id)a3;
+- (WFSpeechSynthesisVoice)initWithIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -51,9 +51,9 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"BOOL WFAXGetComponentsInSiriVoiceIdentifier(NSString *__strong, NSString *__autoreleasing *, NSString *__autoreleasing *, NSString *__autoreleasing *, NSString *__autoreleasing *)"}];
-    [v8 handleFailureInFunction:v9 file:@"WFSpeechSynthesisVoice.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v9 file:@"WFSpeechSynthesisVoice.m" lineNumber:27 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -72,8 +72,8 @@
   else
   {
     AVSpeechSynthesisVoiceClass = getAVSpeechSynthesisVoiceClass();
-    v6 = [(WFSpeechSynthesisVoice *)self identifier];
-    v3 = [AVSpeechSynthesisVoiceClass _voiceFromInternalVoiceListWithIdentifier:v6];
+    identifier = [(WFSpeechSynthesisVoice *)self identifier];
+    v3 = [AVSpeechSynthesisVoiceClass _voiceFromInternalVoiceListWithIdentifier:identifier];
   }
 
   return v3;
@@ -81,39 +81,39 @@
 
 - (BOOL)isSiriVoice
 {
-  v3 = [getAXAlternativeVoicesClass() sharedInstance];
-  v4 = [(WFSpeechSynthesisVoice *)self identifier];
-  v5 = [v3 isSiriVoiceIdentifier:v4];
+  sharedInstance = [getAXAlternativeVoicesClass() sharedInstance];
+  identifier = [(WFSpeechSynthesisVoice *)self identifier];
+  v5 = [sharedInstance isSiriVoiceIdentifier:identifier];
 
   return v5;
 }
 
 - (NSString)languageCode
 {
-  v2 = [(WFSpeechSynthesisVoice *)self avVoice];
-  v3 = [v2 language];
+  avVoice = [(WFSpeechSynthesisVoice *)self avVoice];
+  language = [avVoice language];
 
-  return v3;
+  return language;
 }
 
 - (NSString)name
 {
-  v3 = [(WFSpeechSynthesisVoice *)self avVoice];
-  v4 = [v3 name];
+  avVoice = [(WFSpeechSynthesisVoice *)self avVoice];
+  name = [avVoice name];
 
-  v5 = [getAXAlternativeVoicesClass() sharedInstance];
-  v6 = [(WFSpeechSynthesisVoice *)self identifier];
-  v7 = [v5 isSiriVoiceIdentifier:v6];
+  sharedInstance = [getAXAlternativeVoicesClass() sharedInstance];
+  identifier = [(WFSpeechSynthesisVoice *)self identifier];
+  v7 = [sharedInstance isSiriVoiceIdentifier:identifier];
 
   if (v7)
   {
-    v8 = [(WFSpeechSynthesisVoice *)self identifier];
-    v9 = [v5 nameForVoiceIdentifier:v8];
+    identifier2 = [(WFSpeechSynthesisVoice *)self identifier];
+    v9 = [sharedInstance nameForVoiceIdentifier:identifier2];
 
-    v4 = v9;
+    name = v9;
   }
 
-  return v4;
+  return name;
 }
 
 - (id)description
@@ -121,21 +121,21 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFSpeechSynthesisVoice *)self identifier];
-  v7 = [(WFSpeechSynthesisVoice *)self vsVoiceName];
-  v8 = [(WFSpeechSynthesisVoice *)self avVoice];
-  v9 = [v3 stringWithFormat:@"<%p %@> Identifier: %@, (VS voice name: %@ AV voice: %@)", self, v5, v6, v7, v8];
+  identifier = [(WFSpeechSynthesisVoice *)self identifier];
+  vsVoiceName = [(WFSpeechSynthesisVoice *)self vsVoiceName];
+  avVoice = [(WFSpeechSynthesisVoice *)self avVoice];
+  v9 = [v3 stringWithFormat:@"<%p %@> Identifier: %@, (VS voice name: %@ AV voice: %@)", self, v5, identifier, vsVoiceName, avVoice];
 
   return v9;
 }
 
-- (WFSpeechSynthesisVoice)initWithIdentifier:(id)a3
+- (WFSpeechSynthesisVoice)initWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesisVoice.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesisVoice.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v12.receiver = self;
@@ -144,18 +144,18 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (id)voiceFromAVVoice:(id)a3
++ (id)voiceFromAVVoice:(id)voice
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  voiceCopy = voice;
+  if (!voiceCopy)
   {
     v4 = getWFActionsLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -167,10 +167,10 @@
   }
 
   v5 = [WFSpeechSynthesisVoice alloc];
-  v6 = [v3 identifier];
-  v7 = [(WFSpeechSynthesisVoice *)v5 initWithIdentifier:v6];
+  identifier = [voiceCopy identifier];
+  v7 = [(WFSpeechSynthesisVoice *)v5 initWithIdentifier:identifier];
 
-  [(WFSpeechSynthesisVoice *)v7 setAvVoice:v3];
+  [(WFSpeechSynthesisVoice *)v7 setAvVoice:voiceCopy];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
@@ -185,17 +185,17 @@
 
 + (id)availableLanguageCodes
 {
-  v2 = [getAVSpeechSynthesisVoiceClass() _speechVoicesIncludingSiri];
-  v3 = [v2 if_compactMap:&__block_literal_global_181_6489];
+  _speechVoicesIncludingSiri = [getAVSpeechSynthesisVoiceClass() _speechVoicesIncludingSiri];
+  v3 = [_speechVoicesIncludingSiri if_compactMap:&__block_literal_global_181_6489];
   v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
 
   return v4;
 }
 
-+ (id)defaultVoiceForLanguageCode:(id)a3
++ (id)defaultVoiceForLanguageCode:(id)code
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -214,7 +214,7 @@
 
   v6 = v5;
   _Block_object_dispose(&v25, 8);
-  v7 = [v5 sharedInstance];
+  sharedInstance = [v5 sharedInstance];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -237,22 +237,22 @@
   _Block_object_dispose(&v25, 8);
   if (!v8)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAXSpeechSourceKeySpeechFeatures(void)"];
-    [v23 handleFailureInFunction:v24 file:@"WFSpeechSynthesisVoice.m" lineNumber:42 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v24 file:@"WFSpeechSynthesisVoice.m" lineNumber:42 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  v11 = [v7 speechVoiceIdentifierForLanguage:v4 sourceKey:*v8 exists:0];
+  v11 = [sharedInstance speechVoiceIdentifierForLanguage:codeCopy sourceKey:*v8 exists:0];
   if (v11)
   {
     v12 = [getAVSpeechSynthesisVoiceClass() _voiceFromInternalVoiceListWithIdentifier:v11];
-    v13 = v12;
+    firstObject = v12;
     if (v12)
     {
-      v14 = [v12 language];
-      v15 = v14 == v4;
+      language = [v12 language];
+      v15 = language == codeCopy;
 
       if (v15)
       {
@@ -263,29 +263,29 @@
 
   else
   {
-    v13 = 0;
+    firstObject = 0;
   }
 
-  if (![v4 length])
+  if (![codeCopy length])
   {
     v16 = +[WFSpeechSynthesisVoice currentLanguageCode];
 
-    v4 = v16;
+    codeCopy = v16;
   }
 
-  v17 = [getAVSpeechSynthesisVoiceClass() voiceWithLanguage:v4];
+  v17 = [getAVSpeechSynthesisVoiceClass() voiceWithLanguage:codeCopy];
 
   if (v17)
   {
-    v13 = v17;
+    firstObject = v17;
   }
 
   else
   {
-    v18 = [getAVSpeechSynthesisVoiceClass() speechVoices];
-    v13 = [v18 firstObject];
+    speechVoices = [getAVSpeechSynthesisVoiceClass() speechVoices];
+    firstObject = [speechVoices firstObject];
 
-    if (!v13)
+    if (!firstObject)
     {
       v19 = getWFActionsLogObject();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -293,39 +293,39 @@
         *buf = 136315394;
         *&buf[4] = "+[WFSpeechSynthesisVoice defaultVoiceForLanguageCode:]";
         *&buf[12] = 2112;
-        *&buf[14] = v4;
+        *&buf[14] = codeCopy;
         _os_log_impl(&dword_23DE30000, v19, OS_LOG_TYPE_ERROR, "%s Unable to get a default voice for language code: %@", buf, 0x16u);
       }
 
-      v13 = 0;
+      firstObject = 0;
     }
   }
 
 LABEL_19:
-  v20 = [a1 voiceFromAVVoice:v13];
+  v20 = [self voiceFromAVVoice:firstObject];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-+ (id)voicesForLanguageCode:(id)a3
++ (id)voicesForLanguageCode:(id)code
 {
-  v5 = a3;
-  if (!v5)
+  codeCopy = code;
+  if (!codeCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFSpeechSynthesisVoice.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesisVoice.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
   }
 
-  v6 = [getAVSpeechSynthesisVoiceClass() _speechVoicesIncludingSiri];
+  _speechVoicesIncludingSiri = [getAVSpeechSynthesisVoiceClass() _speechVoicesIncludingSiri];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__WFSpeechSynthesisVoice_voicesForLanguageCode___block_invoke;
   v12[3] = &unk_278C19D40;
-  v13 = v5;
-  v7 = v5;
-  v8 = [v6 if_compactMap:v12];
+  v13 = codeCopy;
+  v7 = codeCopy;
+  v8 = [_speechVoicesIncludingSiri if_compactMap:v12];
   v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_6497];
 
   return v9;
@@ -360,10 +360,10 @@ uint64_t __48__WFSpeechSynthesisVoice_voicesForLanguageCode___block_invoke_2(uin
   return v7;
 }
 
-+ (id)voiceForIdentifier:(id)a3
++ (id)voiceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }

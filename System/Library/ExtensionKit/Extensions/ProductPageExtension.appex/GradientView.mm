@@ -1,12 +1,12 @@
 @interface GradientView
 + (Class)layerClass;
-- (_TtC20ProductPageExtension12GradientView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension12GradientView)initWithFrame:(CGRect)a3;
+- (_TtC20ProductPageExtension12GradientView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension12GradientView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GradientView
 
-- (_TtC20ProductPageExtension12GradientView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension12GradientView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension12GradientView_colors) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension12GradientView_kind) = 0;
@@ -22,7 +22,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC20ProductPageExtension12GradientView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension12GradientView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,31 +1,31 @@
 @interface MRUpdateContentItemArtworkMessage
 - (MRPlayerPath)playerPath;
-- (MRUpdateContentItemArtworkMessage)initWithContentItems:(id)a3 forPlayerPath:(id)a4 encoding:(int64_t)a5;
+- (MRUpdateContentItemArtworkMessage)initWithContentItems:(id)items forPlayerPath:(id)path encoding:(int64_t)encoding;
 - (NSArray)contentItems;
 @end
 
 @implementation MRUpdateContentItemArtworkMessage
 
-- (MRUpdateContentItemArtworkMessage)initWithContentItems:(id)a3 forPlayerPath:(id)a4 encoding:(int64_t)a5
+- (MRUpdateContentItemArtworkMessage)initWithContentItems:(id)items forPlayerPath:(id)path encoding:(int64_t)encoding
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = MRUpdateContentItemArtworkMessage;
   v10 = [(MRProtocolMessage *)&v26 init];
   if (v10)
   {
     v11 = objc_alloc_init(_MRUpdateContentItemArtworkMessageProtobuf);
-    v12 = [v9 skeleton];
-    v13 = [v12 protobuf];
-    [(_MRUpdateContentItemArtworkMessageProtobuf *)v11 setPlayerPath:v13];
+    skeleton = [pathCopy skeleton];
+    protobuf = [skeleton protobuf];
+    [(_MRUpdateContentItemArtworkMessageProtobuf *)v11 setPlayerPath:protobuf];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = v8;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v15)
     {
@@ -41,7 +41,7 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * v18) protobufWithEncoding:{a5, v22}];
+          v19 = [*(*(&v22 + 1) + 8 * v18) protobufWithEncoding:{encoding, v22}];
           [(_MRUpdateContentItemArtworkMessageProtobuf *)v11 addContentItems:v19];
 
           ++v18;
@@ -64,18 +64,18 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
 
 - (NSArray)contentItems
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 contentItems];
-  v4 = [v3 mr_map:&__block_literal_global_114];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  contentItems = [underlyingCodableMessage contentItems];
+  v4 = [contentItems mr_map:&__block_literal_global_114];
 
   return v4;
 }

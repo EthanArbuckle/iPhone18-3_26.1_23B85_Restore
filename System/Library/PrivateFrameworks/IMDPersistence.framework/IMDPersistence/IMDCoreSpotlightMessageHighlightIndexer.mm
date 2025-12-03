@@ -1,19 +1,19 @@
 @interface IMDCoreSpotlightMessageHighlightIndexer
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7;
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler;
 @end
 
 @implementation IMDCoreSpotlightMessageHighlightIndexer
 
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  itemCopy = item;
+  chatCopy = chat;
+  contextCopy = context;
+  updateCopy = update;
+  profilerCopy = profiler;
   v16 = objc_alloc_init(IMDSharedWithYouMetadataManager);
-  v18 = objc_msgSend_updateAttributesWithSharedWithYouMetadata_withItem_chat_(v16, v17, v14, v11, v12);
+  v18 = objc_msgSend_updateAttributesWithSharedWithYouMetadata_withItem_chat_(v16, v17, updateCopy, itemCopy, chatCopy);
   if (IMOSLoggingEnabled())
   {
     v19 = OSLogHandleForIMFoundationCategory();

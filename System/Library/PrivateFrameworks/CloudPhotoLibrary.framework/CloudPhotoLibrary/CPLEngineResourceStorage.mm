@@ -1,24 +1,24 @@
 @interface CPLEngineResourceStorage
-- (BOOL)_clearAndCreateTempFolderIfNecessaryWithError:(id *)a3;
+- (BOOL)_clearAndCreateTempFolderIfNecessaryWithError:(id *)error;
 - (BOOL)checkIsEmpty;
-- (BOOL)compactWithError:(id *)a3;
-- (BOOL)dropResourceForUpload:(id)a3 error:(id *)a4;
-- (BOOL)hasResource:(id)a3;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)performMaintenanceWithError:(id *)a3;
-- (BOOL)releaseFileURL:(id)a3 forResource:(id)a4 error:(id *)a5;
-- (BOOL)resetWithError:(id *)a3;
-- (BOOL)storeDownloadedResource:(id)a3 atURL:(id)a4 error:(id *)a5;
-- (BOOL)storeResourceCopyForUpload:(id)a3 error:(id *)a4;
-- (BOOL)storeResourceForUpload:(id)a3 shouldCheckResource:(BOOL)a4 error:(id *)a5;
-- (CPLEngineResourceStorage)initWithEngineStore:(id)a3 name:(id)a4;
-- (id)createTempDestinationURLForResource:(id)a3 error:(id *)a4;
-- (id)retainFileURLForResource:(id)a3 error:(id *)a4;
+- (BOOL)compactWithError:(id *)error;
+- (BOOL)dropResourceForUpload:(id)upload error:(id *)error;
+- (BOOL)hasResource:(id)resource;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)performMaintenanceWithError:(id *)error;
+- (BOOL)releaseFileURL:(id)l forResource:(id)resource error:(id *)error;
+- (BOOL)resetWithError:(id *)error;
+- (BOOL)storeDownloadedResource:(id)resource atURL:(id)l error:(id *)error;
+- (BOOL)storeResourceCopyForUpload:(id)upload error:(id *)error;
+- (BOOL)storeResourceForUpload:(id)upload shouldCheckResource:(BOOL)resource error:(id *)error;
+- (CPLEngineResourceStorage)initWithEngineStore:(id)store name:(id)name;
+- (id)createTempDestinationURLForResource:(id)resource error:(id *)error;
+- (id)retainFileURLForResource:(id)resource error:(id *)error;
 - (id)status;
 - (id)statusDictionary;
 - (unint64_t)sizeOfOriginalResourcesToUpload;
 - (unint64_t)sizeOfResourcesToUpload;
-- (void)notePruningRequestForResource:(id)a3 realPrune:(BOOL)a4 successful:(BOOL)a5 prunedSize:(unint64_t)a6;
+- (void)notePruningRequestForResource:(id)resource realPrune:(BOOL)prune successful:(BOOL)successful prunedSize:(unint64_t)size;
 - (void)writeTransactionDidFail;
 - (void)writeTransactionDidSucceed;
 @end
@@ -68,19 +68,19 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notePruningRequestForResource:(id)a3 realPrune:(BOOL)a4 successful:(BOOL)a5 prunedSize:(unint64_t)a6
+- (void)notePruningRequestForResource:(id)resource realPrune:(BOOL)prune successful:(BOOL)successful prunedSize:(unint64_t)size
 {
-  v10 = a3;
+  resourceCopy = resource;
   pruneStatsQueue = self->_pruneStatsQueue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __90__CPLEngineResourceStorage_notePruningRequestForResource_realPrune_successful_prunedSize___block_invoke;
   v16[3] = &unk_1E861B840;
-  v19 = a4;
+  pruneCopy = prune;
   v16[4] = self;
-  v17 = v10;
-  v20 = a5;
-  v18 = a6;
+  v17 = resourceCopy;
+  successfulCopy = successful;
+  sizeCopy = size;
   v12 = v16;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -88,7 +88,7 @@
   block[3] = &unk_1E861B4E0;
   v22 = v12;
   v13 = pruneStatsQueue;
-  v14 = v10;
+  v14 = resourceCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v15);
 }
@@ -112,8 +112,8 @@ uint64_t __90__CPLEngineResourceStorage_notePruningRequestForResource_realPrune_
 {
   v18.receiver = self;
   v18.super_class = CPLEngineResourceStorage;
-  v3 = [(CPLEngineStorage *)&v18 statusDictionary];
-  v4 = [v3 mutableCopy];
+  statusDictionary = [(CPLEngineStorage *)&v18 statusDictionary];
+  v4 = [statusDictionary mutableCopy];
 
   pruneStatsQueue = self->_pruneStatsQueue;
   v12 = MEMORY[0x1E69E9820];
@@ -122,13 +122,13 @@ uint64_t __90__CPLEngineResourceStorage_notePruningRequestForResource_realPrune_
   v15 = &unk_1E861B290;
   v6 = v4;
   v16 = v6;
-  v17 = self;
+  selfCopy = self;
   dispatch_sync(pruneStatsQueue, &v12);
   v7 = [(CPLEngineStorage *)self engineStore:v12];
-  v8 = [v7 derivativesFilter];
+  derivativesFilter = [v7 derivativesFilter];
 
-  v9 = [v8 plistDescription];
-  [v6 setObject:v9 forKeyedSubscript:@"derivativesFilter"];
+  plistDescription = [derivativesFilter plistDescription];
+  [v6 setObject:plistDescription forKeyedSubscript:@"derivativesFilter"];
 
   v10 = v6;
   return v6;
@@ -162,8 +162,8 @@ void __44__CPLEngineResourceStorage_statusDictionary__block_invoke_2(uint64_t a1
 {
   v17.receiver = self;
   v17.super_class = CPLEngineResourceStorage;
-  v3 = [(CPLEngineStorage *)&v17 status];
-  v4 = [v3 mutableCopy];
+  status = [(CPLEngineStorage *)&v17 status];
+  v4 = [status mutableCopy];
 
   pruneStatsQueue = self->_pruneStatsQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -172,14 +172,14 @@ void __44__CPLEngineResourceStorage_statusDictionary__block_invoke_2(uint64_t a1
   block[3] = &unk_1E861B290;
   v6 = v4;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   dispatch_sync(pruneStatsQueue, block);
-  v7 = [(CPLEngineStorage *)self engineStore];
-  v8 = [v7 derivativesFilter];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  derivativesFilter = [engineStore derivativesFilter];
 
-  if (v8 && ([v8 isEmpty] & 1) == 0)
+  if (derivativesFilter && ([derivativesFilter isEmpty] & 1) == 0)
   {
-    v9 = [v8 description];
+    v9 = [derivativesFilter description];
     v10 = [v9 componentsSeparatedByString:@"\n"];
     v11 = [v10 componentsJoinedByString:@"\n\t"];
     [v6 appendFormat:@"\nDerivatives filter: %@", v11];
@@ -419,10 +419,10 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)resetWithError:(id *)a3
+- (BOOL)resetWithError:(id *)error
 {
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 resetWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject resetWithError:error];
 
   if (!v6)
   {
@@ -431,10 +431,10 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
 
   fileStorage = self->_fileStorage;
 
-  return [(CPLEngineFileStorage *)fileStorage resetWithError:a3];
+  return [(CPLEngineFileStorage *)fileStorage resetWithError:error];
 }
 
-- (BOOL)compactWithError:(id *)a3
+- (BOOL)compactWithError:(id *)error
 {
   fileStorage = self->_fileStorage;
   v5[0] = MEMORY[0x1E69E9820];
@@ -442,16 +442,16 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
   v5[2] = __45__CPLEngineResourceStorage_compactWithError___block_invoke;
   v5[3] = &unk_1E8620478;
   v5[4] = self;
-  return [(CPLEngineFileStorage *)fileStorage doWrite:v5 error:a3];
+  return [(CPLEngineFileStorage *)fileStorage doWrite:v5 error:error];
 }
 
-- (BOOL)storeDownloadedResource:(id)a3 atURL:(id)a4 error:(id *)a5
+- (BOOL)storeDownloadedResource:(id)resource atURL:(id)l error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 identity];
-  v12 = [v11 fileURL];
-  if (!v12)
+  resourceCopy = resource;
+  lCopy = l;
+  identity = [resourceCopy identity];
+  fileURL = [identity fileURL];
+  if (!fileURL)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -463,15 +463,15 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
       }
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineResourceStorage.m"];
-    [v24 handleFailureInMethod:a2 object:self file:v25 lineNumber:357 description:@"We should not try to store a resource that is not on disk"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v25 lineNumber:357 description:@"We should not try to store a resource that is not on disk"];
 
     abort();
   }
 
-  v13 = v12;
-  v14 = [v9 resourceType] == 1;
+  v13 = fileURL;
+  v14 = [resourceCopy resourceType] == 1;
   fileStorage = self->_fileStorage;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -480,27 +480,27 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
   v27[4] = self;
   v16 = v13;
   v28 = v16;
-  v17 = v11;
+  v17 = identity;
   v29 = v17;
   v30 = v14;
   v26 = 0;
   v18 = [(CPLEngineFileStorage *)fileStorage doWrite:v27 error:&v26];
   v19 = v26;
   v20 = v19;
-  if (a5 && !v18)
+  if (error && !v18)
   {
     v21 = v19;
-    *a5 = v20;
+    *error = v20;
   }
 
   return v18;
 }
 
-- (id)createTempDestinationURLForResource:(id)a3 error:(id *)a4
+- (id)createTempDestinationURLForResource:(id)resource error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!self->_shouldCreateTempFolder || [(CPLEngineResourceStorage *)self _clearAndCreateTempFolderIfNecessaryWithError:a4])
+  resourceCopy = resource;
+  if (!self->_shouldCreateTempFolder || [(CPLEngineResourceStorage *)self _clearAndCreateTempFolderIfNecessaryWithError:error])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -508,22 +508,22 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v24 = v6;
+        v24 = resourceCopy;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEBUG, "Creating a temporary URL for %@", buf, 0xCu);
       }
     }
 
-    v8 = [v6 bestFileNameForResource];
-    if (v8)
+    bestFileNameForResource = [resourceCopy bestFileNameForResource];
+    if (bestFileNameForResource)
     {
-      v9 = v8;
-      v10 = [v8 stringByDeletingPathExtension];
-      v11 = [v9 pathExtension];
+      v9 = bestFileNameForResource;
+      stringByDeletingPathExtension = [bestFileNameForResource stringByDeletingPathExtension];
+      pathExtension = [v9 pathExtension];
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [MEMORY[0x1E696AFB0] UUID];
-      v14 = [v13 UUIDString];
-      v15 = [v12 stringWithFormat:@"%@-%@", v10, v14];
-      v16 = [v15 stringByAppendingPathExtension:v11];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v15 = [v12 stringWithFormat:@"%@-%@", stringByDeletingPathExtension, uUIDString];
+      v16 = [v15 stringByAppendingPathExtension:pathExtension];
 
       v17 = [(NSURL *)self->_tempFolderURL URLByAppendingPathComponent:v16 isDirectory:0];
 
@@ -533,7 +533,7 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v24 = v6;
+          v24 = resourceCopy;
           v25 = 2112;
           v26 = v17;
           _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_DEBUG, "Temporary destination URL for %@ is %@", buf, 0x16u);
@@ -549,16 +549,16 @@ uint64_t __40__CPLEngineResourceStorage_checkIsEmpty__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = v6;
+        v24 = resourceCopy;
         _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_ERROR, "Can't find a good filename for %@", buf, 0xCu);
       }
     }
 
-    if (a4)
+    if (error)
     {
       +[CPLErrors unknownError];
       v16 = 0;
-      *a4 = v17 = 0;
+      *error = v17 = 0;
 LABEL_24:
 
       goto LABEL_25;
@@ -575,9 +575,9 @@ LABEL_23:
     v16 = __CPLStorageOSLogDomain_202();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(NSURL *)self->_tempFolderURL path];
+      path = [(NSURL *)self->_tempFolderURL path];
       *buf = 138412290;
-      v24 = v20;
+      v24 = path;
       _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_ERROR, "Failed to create temp folder at %@", buf, 0xCu);
     }
 
@@ -592,30 +592,30 @@ LABEL_25:
   return v17;
 }
 
-- (BOOL)hasResource:(id)a3
+- (BOOL)hasResource:(id)resource
 {
   fileStorage = self->_fileStorage;
-  v4 = [a3 identity];
-  LOBYTE(fileStorage) = [(CPLEngineFileStorage *)fileStorage hasFileWithIdentity:v4];
+  identity = [resource identity];
+  LOBYTE(fileStorage) = [(CPLEngineFileStorage *)fileStorage hasFileWithIdentity:identity];
 
   return fileStorage;
 }
 
-- (BOOL)releaseFileURL:(id)a3 forResource:(id)a4 error:(id *)a5
+- (BOOL)releaseFileURL:(id)l forResource:(id)resource error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  v11 = [v9 identity];
-  v12 = [v10 retainCountForIdentity:v11];
+  lCopy = l;
+  resourceCopy = resource;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  identity = [resourceCopy identity];
+  v12 = [platformObject retainCountForIdentity:identity];
 
   if (!v12)
   {
-    v13 = [v9 identity];
+    identity2 = [resourceCopy identity];
     identitiesToDelete = self->_identitiesToDelete;
-    v15 = [v13 identityForStorage];
-    [(NSMutableDictionary *)identitiesToDelete setObject:v13 forKeyedSubscript:v15];
+    identityForStorage = [identity2 identityForStorage];
+    [(NSMutableDictionary *)identitiesToDelete setObject:identity2 forKeyedSubscript:identityForStorage];
   }
 
   fileStorage = self->_fileStorage;
@@ -624,7 +624,7 @@ LABEL_25:
   v26[2] = __61__CPLEngineResourceStorage_releaseFileURL_forResource_error___block_invoke;
   v26[3] = &unk_1E8620940;
   v26[4] = self;
-  v17 = v8;
+  v17 = lCopy;
   v27 = v17;
   v25 = 0;
   v18 = [(CPLEngineFileStorage *)fileStorage doWrite:v26 error:&v25];
@@ -636,21 +636,21 @@ LABEL_25:
       v20 = __CPLStorageOSLogDomain_202();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v17 path];
+        path = [v17 path];
         *buf = 138412802;
-        v29 = v9;
+        v29 = resourceCopy;
         v30 = 2112;
-        v31 = v21;
+        v31 = path;
         v32 = 2112;
         v33 = v19;
         _os_log_impl(&dword_1DC05A000, v20, OS_LOG_TYPE_ERROR, "Unable to release %@ / %@: %@", buf, 0x20u);
       }
     }
 
-    if (a5)
+    if (error)
     {
       v22 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -658,10 +658,10 @@ LABEL_25:
   return v18;
 }
 
-- (id)retainFileURLForResource:(id)a3 error:(id *)a4
+- (id)retainFileURLForResource:(id)resource error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  resourceCopy = resource;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -675,7 +675,7 @@ LABEL_25:
   v19[3] = &unk_1E8620A38;
   v21 = &v22;
   v19[4] = self;
-  v8 = v6;
+  v8 = resourceCopy;
   v20 = v8;
   v18 = 0;
   v9 = [(CPLEngineFileStorage *)fileStorage doWrite:v19 error:&v18];
@@ -687,11 +687,11 @@ LABEL_25:
       v11 = __CPLStorageOSLogDomain_202();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v23[5] path];
+        path = [v23[5] path];
         *buf = 138412546;
         v29 = v8;
         v30 = 2112;
-        v31 = v12;
+        v31 = path;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEBUG, "Retained file path for %@ is: %@", buf, 0x16u);
       }
     }
@@ -712,10 +712,10 @@ LABEL_25:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -741,27 +741,27 @@ BOOL __59__CPLEngineResourceStorage_retainFileURLForResource_error___block_invok
 
 - (unint64_t)sizeOfOriginalResourcesToUpload
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 totalOriginalResourceSize];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  totalOriginalResourceSize = [platformObject totalOriginalResourceSize];
 
-  return v3;
+  return totalOriginalResourceSize;
 }
 
 - (unint64_t)sizeOfResourcesToUpload
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 totalResourceSize];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  totalResourceSize = [platformObject totalResourceSize];
 
-  return v3;
+  return totalResourceSize;
 }
 
-- (BOOL)dropResourceForUpload:(id)a3 error:(id *)a4
+- (BOOL)dropResourceForUpload:(id)upload error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  uploadCopy = upload;
   v23 = 0;
-  v7 = [v6 identity];
-  if (![v7 fileSize])
+  identity = [uploadCopy identity];
+  if (![identity fileSize])
   {
     fileStorage = self->_fileStorage;
     v20[0] = MEMORY[0x1E69E9820];
@@ -769,22 +769,22 @@ BOOL __59__CPLEngineResourceStorage_retainFileURLForResource_error___block_invok
     v20[2] = __56__CPLEngineResourceStorage_dropResourceForUpload_error___block_invoke;
     v20[3] = &unk_1E861B1C8;
     v20[4] = self;
-    v21 = v7;
-    v22 = v6;
+    v21 = identity;
+    v22 = uploadCopy;
     [(CPLEngineFileStorage *)fileStorage doRead:v20];
   }
 
-  v9 = +[CPLResource resourceTypeTrackedForUpload:](CPLResource, "resourceTypeTrackedForUpload:", [v6 resourceType]);
-  v10 = [(CPLEngineStorage *)self platformObject];
+  v9 = +[CPLResource resourceTypeTrackedForUpload:](CPLResource, "resourceTypeTrackedForUpload:", [uploadCopy resourceType]);
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v19 = 0;
-  v11 = [v10 releaseIdentity:v7 lastReference:&v23 isTrackedOriginal:v9 error:&v19];
+  v11 = [platformObject releaseIdentity:identity lastReference:&v23 isTrackedOriginal:v9 error:&v19];
   v12 = v19;
 
   if (v23 == 1)
   {
     identitiesToDelete = self->_identitiesToDelete;
-    v14 = [v7 identityForStorage];
-    [(NSMutableDictionary *)identitiesToDelete setObject:v7 forKeyedSubscript:v14];
+    identityForStorage = [identity identityForStorage];
+    [(NSMutableDictionary *)identitiesToDelete setObject:identity forKeyedSubscript:identityForStorage];
   }
 
   if ((v11 & 1) == 0)
@@ -795,17 +795,17 @@ BOOL __59__CPLEngineResourceStorage_retainFileURLForResource_error___block_invok
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v25 = v6;
+        v25 = uploadCopy;
         v26 = 2112;
         v27 = v12;
         _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_ERROR, "Unable to drop resource to upload %@: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v16 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -832,25 +832,25 @@ void __56__CPLEngineResourceStorage_dropResourceForUpload_error___block_invoke(u
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)storeResourceCopyForUpload:(id)a3 error:(id *)a4
+- (BOOL)storeResourceCopyForUpload:(id)upload error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v6 identity];
-  v9 = [v7 retainCountForIdentity:v8];
+  uploadCopy = upload;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  identity = [uploadCopy identity];
+  v9 = [platformObject retainCountForIdentity:identity];
 
   if (v9)
   {
-    v10 = +[CPLResource resourceTypeTrackedForUpload:](CPLResource, "resourceTypeTrackedForUpload:", [v6 resourceType]);
-    v11 = [(CPLEngineStorage *)self platformObject];
-    v12 = [v6 identity];
-    v13 = [v11 retainIdentity:v12 isTrackedOriginal:v10 error:a4];
+    v10 = +[CPLResource resourceTypeTrackedForUpload:](CPLResource, "resourceTypeTrackedForUpload:", [uploadCopy resourceType]);
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    identity2 = [uploadCopy identity];
+    v13 = [platformObject2 retainIdentity:identity2 isTrackedOriginal:v10 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [CPLErrors cplErrorWithCode:27 description:@"resource is not available locally"];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -861,51 +861,51 @@ void __56__CPLEngineResourceStorage_dropResourceForUpload_error___block_invoke(u
   return v13;
 }
 
-- (BOOL)storeResourceForUpload:(id)a3 shouldCheckResource:(BOOL)a4 error:(id *)a5
+- (BOOL)storeResourceForUpload:(id)upload shouldCheckResource:(BOOL)resource error:(id *)error
 {
-  v5 = a4;
+  resourceCopy = resource;
   v80 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  v9 = v5 && self->_shouldCheckFilesForUpload;
-  v10 = [v7 identity];
-  v11 = [v10 fileURL];
-  if (v11)
+  uploadCopy = upload;
+  v8 = uploadCopy;
+  v9 = resourceCopy && self->_shouldCheckFilesForUpload;
+  identity = [uploadCopy identity];
+  fileURL = [identity fileURL];
+  if (fileURL)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v78 = 0x2020000000;
     v79 = 0;
     v51 = [v8 resourceType] == 1;
-    v12 = [v10 fingerPrint];
-    v13 = v12 == 0;
-    if (!v12)
+    fingerPrint = [identity fingerPrint];
+    v13 = fingerPrint == 0;
+    if (!fingerPrint)
     {
-      v54 = [CPLErrors cplErrorWithCode:50 description:@"fingerPrint is nil"];
+      identityForStorage = [CPLErrors cplErrorWithCode:50 description:@"fingerPrint is nil"];
       v21 = 0;
-      if (!a5)
+      if (!error)
       {
 LABEL_19:
         v13 = 1;
         goto LABEL_45;
       }
 
-      v15 = v54;
+      v15 = identityForStorage;
       goto LABEL_44;
     }
 
-    v54 = [v10 identityForStorage];
-    v14 = [(NSMutableDictionary *)self->_identitiesToDelete objectForKeyedSubscript:v54];
+    identityForStorage = [identity identityForStorage];
+    v14 = [(NSMutableDictionary *)self->_identitiesToDelete objectForKeyedSubscript:identityForStorage];
 
     if (v14)
     {
-      [(NSMutableDictionary *)self->_identitiesToDelete removeObjectForKey:v54];
-      [v10 setFileURL:0];
+      [(NSMutableDictionary *)self->_identitiesToDelete removeObjectForKey:identityForStorage];
+      [identity setFileURL:0];
       v15 = 0;
 LABEL_8:
       v16 = +[CPLResource resourceTypeTrackedForUpload:](CPLResource, "resourceTypeTrackedForUpload:", [v8 resourceType]);
-      v17 = [v10 fileURL];
-      v18 = v17 == 0;
+      fileURL2 = [identity fileURL];
+      v18 = fileURL2 == 0;
 
       if (!v18)
       {
@@ -915,21 +915,21 @@ LABEL_8:
           if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
           {
             *v71 = 138412290;
-            v72 = v10;
+            v72 = identity;
             _os_log_impl(&dword_1DC05A000, v45, OS_LOG_TYPE_ERROR, "%@ should not have an URL anymore", v71, 0xCu);
           }
         }
 
-        v46 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineResourceStorage.m"];
-        [v46 handleFailureInMethod:a2 object:self file:v47 lineNumber:209 description:{@"%@ should not have an URL anymore", v10}];
+        [currentHandler handleFailureInMethod:a2 object:self file:v47 lineNumber:209 description:{@"%@ should not have an URL anymore", identity}];
 
         abort();
       }
 
-      v19 = [(CPLEngineStorage *)self platformObject];
+      platformObject = [(CPLEngineStorage *)self platformObject];
       v55 = v15;
-      v20 = [v19 retainIdentity:v10 isTrackedOriginal:v16 error:&v55];
+      v20 = [platformObject retainIdentity:identity isTrackedOriginal:v16 error:&v55];
       v21 = v55;
 
       if (!v20)
@@ -939,26 +939,26 @@ LABEL_8:
           v23 = __CPLStorageOSLogDomain_202();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v11 path];
+            path = [fileURL path];
             *v71 = 138412802;
             v72 = v8;
             v73 = 2112;
-            v74 = v24;
+            v74 = path;
             v75 = 2112;
             v76 = v21;
             _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_ERROR, "Unable to retain %@ (%@): %@", v71, 0x20u);
           }
         }
 
-        if (a5)
+        if (error)
         {
           v25 = v21;
-          *a5 = v21;
+          *error = v21;
         }
 
         if (*(*(&buf + 1) + 24) == 1)
         {
-          [(CPLEngineFileStorage *)self->_fileStorage discardUncommittedFileWithIdentity:v10 error:0];
+          [(CPLEngineFileStorage *)self->_fileStorage discardUncommittedFileWithIdentity:identity error:0];
         }
 
         v13 = 0;
@@ -967,7 +967,7 @@ LABEL_8:
 
       if (*(*(&buf + 1) + 24) == 1)
       {
-        [(NSMutableDictionary *)self->_identitiesToCommit setObject:v10 forKeyedSubscript:v54];
+        [(NSMutableDictionary *)self->_identitiesToCommit setObject:identity forKeyedSubscript:identityForStorage];
       }
 
       goto LABEL_19;
@@ -975,11 +975,11 @@ LABEL_8:
 
     if (v9)
     {
-      v26 = [(CPLEngineStorage *)self engineStore];
-      v27 = [v26 engineLibrary];
-      v28 = [v27 transport];
-      v29 = [v28 fingerprintContext];
-      v50 = [v29 fingerprintSchemeForFingerprint:v12];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore engineLibrary];
+      transport = [engineLibrary transport];
+      fingerprintContext = [transport fingerprintContext];
+      v50 = [fingerprintContext fingerprintSchemeForFingerprint:fingerPrint];
 
       if ([v50 canMatchSignatureToFingerprint])
       {
@@ -992,10 +992,10 @@ LABEL_8:
           goto LABEL_8;
         }
 
-        v31 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v69 = v15;
-        v32 = [v31 cplCopyItemAtURL:v11 toURL:v30 error:&v69];
-        v49 = v31;
+        v32 = [defaultManager cplCopyItemAtURL:fileURL toURL:v30 error:&v69];
+        v49 = defaultManager;
         v33 = v69;
 
         if (v32)
@@ -1006,7 +1006,7 @@ LABEL_8:
 
           if (v48)
           {
-            if ([v48 isEqualToString:v12])
+            if ([v48 isEqualToString:fingerPrint])
             {
               fileStorage = self->_fileStorage;
               v63[0] = MEMORY[0x1E69E9820];
@@ -1016,7 +1016,7 @@ LABEL_8:
               v63[4] = self;
               v64 = v30;
               v67 = v51;
-              v65 = v10;
+              v65 = identity;
               p_buf = &buf;
               v62 = v15;
               v35 = [(CPLEngineFileStorage *)fileStorage doWrite:v63 error:&v62];
@@ -1071,25 +1071,25 @@ LABEL_38:
           v39 = __CPLStorageOSLogDomain_202();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
-            v40 = [v11 path];
+            path2 = [fileURL path];
             *v71 = 138412802;
             v72 = v8;
             v73 = 2112;
-            v74 = v40;
+            v74 = path2;
             v75 = 2112;
             v76 = v15;
             _os_log_impl(&dword_1DC05A000, v39, OS_LOG_TYPE_ERROR, "Unable to store %@ (%@): %@", v71, 0x20u);
           }
         }
 
-        if (!a5)
+        if (!error)
         {
           v13 = 0;
           v21 = v15;
 LABEL_45:
 
           _Block_object_dispose(&buf, 8);
-          if (!v12)
+          if (!fingerPrint)
           {
             v13 = 0;
           }
@@ -1100,7 +1100,7 @@ LABEL_45:
         v21 = v15;
 LABEL_44:
         v41 = v15;
-        *a5 = v15;
+        *error = v15;
         goto LABEL_45;
       }
     }
@@ -1116,9 +1116,9 @@ LABEL_44:
     v57[2] = __77__CPLEngineResourceStorage_storeResourceForUpload_shouldCheckResource_error___block_invoke_2;
     v57[3] = &unk_1E861B7A0;
     v57[4] = self;
-    v58 = v11;
+    v58 = fileURL;
     v61 = v51;
-    v59 = v10;
+    v59 = identity;
     v60 = &buf;
     v56 = 0;
     v38 = [(CPLEngineFileStorage *)v37 doWrite:v57 error:&v56];
@@ -1150,26 +1150,26 @@ LABEL_47:
   return v13;
 }
 
-- (BOOL)performMaintenanceWithError:(id *)a3
+- (BOOL)performMaintenanceWithError:(id *)error
 {
   if (![(CPLEngineStorage *)self isEmpty])
   {
     return 1;
   }
 
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 downloadQueue];
-  v7 = [v6 isEmpty];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  downloadQueue = [engineStore downloadQueue];
+  isEmpty = [downloadQueue isEmpty];
 
-  if (!v7)
+  if (!isEmpty)
   {
     return 1;
   }
 
-  return [(CPLEngineResourceStorage *)self resetWithError:a3];
+  return [(CPLEngineResourceStorage *)self resetWithError:error];
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v9.receiver = self;
   v9.super_class = CPLEngineResourceStorage;
@@ -1182,10 +1182,10 @@ LABEL_47:
     v8[2] = __42__CPLEngineResourceStorage_openWithError___block_invoke;
     v8[3] = &unk_1E8620478;
     v8[4] = self;
-    v5 = [(CPLEngineFileStorage *)fileStorage doWrite:v8 error:a3];
+    v5 = [(CPLEngineFileStorage *)fileStorage doWrite:v8 error:error];
     if (v5)
     {
-      LOBYTE(v5) = [(CPLEngineResourceStorage *)self _clearAndCreateTempFolderIfNecessaryWithError:a3];
+      LOBYTE(v5) = [(CPLEngineResourceStorage *)self _clearAndCreateTempFolderIfNecessaryWithError:error];
     }
   }
 
@@ -1214,27 +1214,27 @@ BOOL __42__CPLEngineResourceStorage_openWithError___block_invoke_2(uint64_t a1, 
   return v5 == 0;
 }
 
-- (BOOL)_clearAndCreateTempFolderIfNecessaryWithError:(id *)a3
+- (BOOL)_clearAndCreateTempFolderIfNecessaryWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_shouldCreateTempFolder)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v5 cplFileExistsAtURL:self->_tempFolderURL])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager cplFileExistsAtURL:self->_tempFolderURL])
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v6 = __CPLStorageOSLogDomain_202();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
-          v7 = [(NSURL *)self->_tempFolderURL path];
+          path = [(NSURL *)self->_tempFolderURL path];
           v14 = 138412290;
-          v15 = v7;
+          v15 = path;
           _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEBUG, "Cleaning temporary folder at %@", &v14, 0xCu);
         }
       }
 
-      [v5 removeItemAtURL:self->_tempFolderURL error:0];
+      [defaultManager removeItemAtURL:self->_tempFolderURL error:0];
     }
 
     else if ((_CPLSilentLogging & 1) == 0)
@@ -1242,15 +1242,15 @@ BOOL __42__CPLEngineResourceStorage_openWithError___block_invoke_2(uint64_t a1, 
       v9 = __CPLStorageOSLogDomain_202();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(NSURL *)self->_tempFolderURL path];
+        path2 = [(NSURL *)self->_tempFolderURL path];
         v14 = 138412290;
-        v15 = v10;
+        v15 = path2;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEBUG, "Creating temporary folder at %@", &v14, 0xCu);
       }
     }
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v11 createDirectoryAtURL:self->_tempFolderURL withIntermediateDirectories:1 attributes:0 error:a3];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager2 createDirectoryAtURL:self->_tempFolderURL withIntermediateDirectories:1 attributes:0 error:error];
 
     if (v8)
     {
@@ -1267,24 +1267,24 @@ BOOL __42__CPLEngineResourceStorage_openWithError___block_invoke_2(uint64_t a1, 
   return v8;
 }
 
-- (CPLEngineResourceStorage)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEngineResourceStorage)initWithEngineStore:(id)store name:(id)name
 {
-  v6 = a3;
+  storeCopy = store;
   v29.receiver = self;
   v29.super_class = CPLEngineResourceStorage;
-  v7 = [(CPLEngineStorage *)&v29 initWithEngineStore:v6 name:a4];
+  v7 = [(CPLEngineStorage *)&v29 initWithEngineStore:storeCopy name:name];
   if (v7)
   {
-    v8 = [v6 engineLibrary];
-    v9 = [v8 cloudLibraryResourceStorageURL];
-    v10 = [v9 URLByAppendingPathComponent:@"tmp" isDirectory:1];
+    engineLibrary = [storeCopy engineLibrary];
+    cloudLibraryResourceStorageURL = [engineLibrary cloudLibraryResourceStorageURL];
+    v10 = [cloudLibraryResourceStorageURL URLByAppendingPathComponent:@"tmp" isDirectory:1];
     tempFolderURL = v7->_tempFolderURL;
     v7->_tempFolderURL = v10;
 
     v7->_shouldCreateTempFolder = 1;
     v12 = [CPLEngineFileStorage alloc];
-    v13 = [v8 cloudLibraryResourceStorageURL];
-    v14 = [(CPLEngineFileStorage *)v12 initWithBaseURL:v13];
+    cloudLibraryResourceStorageURL2 = [engineLibrary cloudLibraryResourceStorageURL];
+    v14 = [(CPLEngineFileStorage *)v12 initWithBaseURL:cloudLibraryResourceStorageURL2];
     fileStorage = v7->_fileStorage;
     v7->_fileStorage = v14;
 
@@ -1296,8 +1296,8 @@ BOOL __42__CPLEngineResourceStorage_openWithError___block_invoke_2(uint64_t a1, 
     identitiesToDelete = v7->_identitiesToDelete;
     v7->_identitiesToDelete = v18;
 
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7->_shouldCheckFilesForUpload = [v20 BOOLForKey:@"CPLDontCheckFilesFingerprintForUpload"] ^ 1;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7->_shouldCheckFilesForUpload = [standardUserDefaults BOOLForKey:@"CPLDontCheckFilesFingerprintForUpload"] ^ 1;
 
     v21 = CPLCopyDefaultSerialQueueAttributes();
     v22 = dispatch_queue_create("com.apple.cpl.prune.stats", v21);

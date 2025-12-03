@@ -1,9 +1,9 @@
 @interface RBSEndowmentGrant
-+ (id)grantWithNamespace:(id)a3 endowment:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RBSEndowmentGrant)initWithRBSXPCCoder:(id)a3;
++ (id)grantWithNamespace:(id)namespace endowment:(id)endowment;
+- (BOOL)isEqual:(id)equal;
+- (RBSEndowmentGrant)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSEndowmentGrant
@@ -29,42 +29,42 @@
   return v8;
 }
 
-+ (id)grantWithNamespace:(id)a3 endowment:(id)a4
++ (id)grantWithNamespace:(id)namespace endowment:(id)endowment
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  namespaceCopy = namespace;
+  endowmentCopy = endowment;
+  if (!namespaceCopy)
   {
-    [RBSEndowmentGrant grantWithNamespace:a2 endowment:a1];
+    [RBSEndowmentGrant grantWithNamespace:a2 endowment:self];
   }
 
-  v9 = [[a1 alloc] _init];
-  if (v9)
+  _init = [[self alloc] _init];
+  if (_init)
   {
-    v10 = [v7 copy];
-    v11 = v9[1];
-    v9[1] = v10;
+    v10 = [namespaceCopy copy];
+    v11 = _init[1];
+    _init[1] = v10;
 
-    v12 = RBSEndowmentEncode(v8);
-    v13 = v9[2];
-    v9[2] = v12;
+    v12 = RBSEndowmentEncode(endowmentCopy);
+    v13 = _init[2];
+    _init[2] = v12;
   }
 
-  return v9;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = RBSEndowmentGrant;
-  if (![(RBSAttribute *)&v12 isEqual:v4])
+  if (![(RBSAttribute *)&v12 isEqual:equalCopy])
   {
     goto LABEL_14;
   }
 
   endowmentNamespace = self->_endowmentNamespace;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (endowmentNamespace != v6)
   {
     v7 = !endowmentNamespace || v6 == 0;
@@ -75,7 +75,7 @@
   }
 
   encodedEndowment = self->_encodedEndowment;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (encodedEndowment)
   {
     if (v9 && (encodedEndowment == v9 || xpc_equal(encodedEndowment, v9)))
@@ -100,46 +100,46 @@ LABEL_15:
   return v10;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RBSEndowmentGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v6 encodeWithRBSXPCCoder:v4];
-  [v4 encodeObject:self->_endowmentNamespace forKey:{@"_endowmentNamespace", v6.receiver, v6.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v6 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_endowmentNamespace forKey:{@"_endowmentNamespace", v6.receiver, v6.super_class}];
   v5 = RBSXPCPackObject(self->_encodedEndowment);
-  [v4 encodeXPCObject:v5 forKey:@"_encodedEndowment"];
+  [coderCopy encodeXPCObject:v5 forKey:@"_encodedEndowment"];
 }
 
-- (RBSEndowmentGrant)initWithRBSXPCCoder:(id)a3
+- (RBSEndowmentGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"_endowmentNamespace"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"_endowmentNamespace"];
   if (v5)
   {
     v13.receiver = self;
     v13.super_class = RBSEndowmentGrant;
-    v6 = [(RBSAttribute *)&v13 initWithRBSXPCCoder:v4];
+    v6 = [(RBSAttribute *)&v13 initWithRBSXPCCoder:coderCopy];
     v7 = v6;
     if (v6)
     {
       objc_storeStrong(&v6->_endowmentNamespace, v5);
-      v8 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_encodedEndowment"];
+      v8 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_encodedEndowment"];
       v9 = RBSXPCUnpackObject(v8);
       encodedEndowment = v7->_encodedEndowment;
       v7->_encodedEndowment = v9;
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 + (void)grantWithNamespace:(uint64_t)a1 endowment:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

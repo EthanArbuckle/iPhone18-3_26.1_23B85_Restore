@@ -10,26 +10,26 @@
   v23[6] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = [v6 objectForKey:@"action"];
-  v8 = [a1 condition];
+  condition = [self condition];
 
-  if (v8 && ([a1 condition], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "evaluateWithObject:substitutionVariables:", v7, v6), v9, (v10 & 1) == 0))
+  if (condition && ([self condition], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "evaluateWithObject:substitutionVariables:", v7, v6), v9, (v10 & 1) == 0))
   {
     if (a4)
     {
       *a4 = 0;
     }
 
-    v11 = -1;
+    requirement = -1;
   }
 
   else
   {
-    v11 = [a1 requirement];
-    v12 = [v11 evaluateWithObject:v7 substitutionVariables:v6];
+    requirement = [self requirement];
+    v12 = [requirement evaluateWithObject:v7 substitutionVariables:v6];
 
     if (v12)
     {
-      v11 = 0;
+      requirement = 0;
       if (a4)
       {
         *a4 = 0;
@@ -38,25 +38,25 @@
 
     else
     {
-      v13 = [a1 behavior];
-      if (v13 == 9999)
+      behavior = [self behavior];
+      if (behavior == 9999)
       {
         if (a4)
         {
           *a4 = 0;
         }
 
-        v11 = 9999;
+        requirement = 9999;
       }
 
-      else if (v13 == 1)
+      else if (behavior == 1)
       {
         if (a4)
         {
-          v14 = [a1 message];
-          v15 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-          v16 = [v15 localeIdentifier];
-          v17 = [v14 localizedStringForLocaleIdentifier:v16];
+          message = [self message];
+          autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+          localeIdentifier = [autoupdatingCurrentLocale localeIdentifier];
+          v17 = [message localizedStringForLocaleIdentifier:localeIdentifier];
 
           v18 = MEMORY[0x1E696ABC0];
           v22 = *MEMORY[0x1E696A578];
@@ -65,13 +65,13 @@
           *a4 = [v18 errorWithDomain:@"AppIntentConstraints" code:1 userInfo:v19];
         }
 
-        v11 = 1;
+        requirement = 1;
       }
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v11;
+  return requirement;
 }
 
 + (uint64_t)evaluate:()ConstraintEvaluation inContext:error:

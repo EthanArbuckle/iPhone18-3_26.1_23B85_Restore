@@ -1,11 +1,11 @@
 @interface _CPInhibitorManager
 + (id)sharedInstance;
 - (_CPInhibitorManager)init;
-- (id)popAssertionWithIdentifier:(id)a3;
+- (id)popAssertionWithIdentifier:(id)identifier;
 - (id)startAnInhibitor;
-- (void)pushAssertion:(id)a3 withIdentifier:(id)a4;
+- (void)pushAssertion:(id)assertion withIdentifier:(id)identifier;
 - (void)startAnInhibitor;
-- (void)stopInhibitorWithIdentifier:(id)a3;
+- (void)stopInhibitorWithIdentifier:(id)identifier;
 @end
 
 @implementation _CPInhibitorManager
@@ -62,8 +62,8 @@
 
       v10 = v9;
       _Block_object_dispose(&v33, 8);
-      v11 = [v9 currentProcess];
-      if ([v11 isManaged])
+      currentProcess = [v9 currentProcess];
+      if ([currentProcess isManaged])
       {
         v2->_isProcessRunningBoardManaged = 1;
         v33 = 0;
@@ -84,9 +84,9 @@
 
         v13 = v12;
         _Block_object_dispose(&v33, 8);
-        v14 = [v12 currentProcess];
+        currentProcess2 = [v12 currentProcess];
         runningBoardTarget = v2->_runningBoardTarget;
-        v2->_runningBoardTarget = v14;
+        v2->_runningBoardTarget = currentProcess2;
 
         v33 = 0;
         v34 = &v33;
@@ -172,47 +172,47 @@
     v4 = v3;
     _Block_object_dispose(&v16, 8);
     v5 = [v3 alloc];
-    v6 = [(_CPInhibitorManager *)self runningBoardTarget];
-    v7 = [(_CPInhibitorManager *)self runningBoardAttributes];
-    v8 = [v5 initWithExplanation:@"AppSupport sqlite connection lock" target:v6 attributes:v7];
+    runningBoardTarget = [(_CPInhibitorManager *)self runningBoardTarget];
+    runningBoardAttributes = [(_CPInhibitorManager *)self runningBoardAttributes];
+    v8 = [v5 initWithExplanation:@"AppSupport sqlite connection lock" target:runningBoardTarget attributes:runningBoardAttributes];
 
     v14 = 0;
-    LODWORD(v7) = [v8 acquireWithError:&v14];
+    LODWORD(runningBoardAttributes) = [v8 acquireWithError:&v14];
     v9 = v14;
-    if (v7)
+    if (runningBoardAttributes)
     {
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v11 = [v10 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [(_CPInhibitorManager *)self pushAssertion:v8 withIdentifier:v11];
+      [(_CPInhibitorManager *)self pushAssertion:v8 withIdentifier:uUIDString];
     }
 
     else
     {
-      v12 = [(_CPInhibitorManager *)self os_log];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      os_log = [(_CPInhibitorManager *)self os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         [_CPInhibitorManager startAnInhibitor];
       }
 
-      v11 = 0;
+      uUIDString = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    uUIDString = 0;
   }
 
-  return v11;
+  return uUIDString;
 }
 
-- (void)stopInhibitorWithIdentifier:(id)a3
+- (void)stopInhibitorWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(_CPInhibitorManager *)self popAssertionWithIdentifier:v4];
+    v5 = [(_CPInhibitorManager *)self popAssertionWithIdentifier:identifierCopy];
     v6 = v5;
     if (v5)
     {
@@ -221,8 +221,8 @@
 
     else
     {
-      v7 = [(_CPInhibitorManager *)self os_log];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      os_log = [(_CPInhibitorManager *)self os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         [_CPInhibitorManager stopInhibitorWithIdentifier:];
       }
@@ -230,46 +230,46 @@
   }
 }
 
-- (void)pushAssertion:(id)a3 withIdentifier:(id)a4
+- (void)pushAssertion:(id)assertion withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_CPInhibitorManager *)self os_log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  identifierCopy = identifier;
+  assertionCopy = assertion;
+  os_log = [(_CPInhibitorManager *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [_CPInhibitorManager pushAssertion:withIdentifier:];
   }
 
-  v9 = [(_CPInhibitorManager *)self inhibitorMapLock];
-  [v9 lock];
+  inhibitorMapLock = [(_CPInhibitorManager *)self inhibitorMapLock];
+  [inhibitorMapLock lock];
 
-  v10 = [(_CPInhibitorManager *)self inhibitorMap];
-  [v10 setObject:v7 forKey:v6];
+  inhibitorMap = [(_CPInhibitorManager *)self inhibitorMap];
+  [inhibitorMap setObject:assertionCopy forKey:identifierCopy];
 
-  v11 = [(_CPInhibitorManager *)self inhibitorMapLock];
-  [v11 unlock];
+  inhibitorMapLock2 = [(_CPInhibitorManager *)self inhibitorMapLock];
+  [inhibitorMapLock2 unlock];
 }
 
-- (id)popAssertionWithIdentifier:(id)a3
+- (id)popAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_CPInhibitorManager *)self os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  identifierCopy = identifier;
+  os_log = [(_CPInhibitorManager *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [_CPInhibitorManager popAssertionWithIdentifier:];
   }
 
-  v6 = [(_CPInhibitorManager *)self inhibitorMapLock];
-  [v6 lock];
+  inhibitorMapLock = [(_CPInhibitorManager *)self inhibitorMapLock];
+  [inhibitorMapLock lock];
 
-  v7 = [(_CPInhibitorManager *)self inhibitorMap];
-  v8 = [v7 objectForKey:v4];
+  inhibitorMap = [(_CPInhibitorManager *)self inhibitorMap];
+  v8 = [inhibitorMap objectForKey:identifierCopy];
 
-  v9 = [(_CPInhibitorManager *)self inhibitorMap];
-  [v9 removeObjectForKey:v4];
+  inhibitorMap2 = [(_CPInhibitorManager *)self inhibitorMap];
+  [inhibitorMap2 removeObjectForKey:identifierCopy];
 
-  v10 = [(_CPInhibitorManager *)self inhibitorMapLock];
-  [v10 unlock];
+  inhibitorMapLock2 = [(_CPInhibitorManager *)self inhibitorMapLock];
+  [inhibitorMapLock2 unlock];
 
   return v8;
 }

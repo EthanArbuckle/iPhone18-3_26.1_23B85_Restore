@@ -1,43 +1,43 @@
 @interface NRXPCServer
-- (BOOL)hasEntitlement:(id)a3 withBitmask:(unsigned int)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NRXPCServer)initWithProxyClass:(Class)a3 xpcListenerClass:(Class)a4 serverDelegate:(id)a5 xpcTarget:(id)a6 services:(id)a7;
+- (BOOL)hasEntitlement:(id)entitlement withBitmask:(unsigned int)bitmask;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NRXPCServer)initWithProxyClass:(Class)class xpcListenerClass:(Class)listenerClass serverDelegate:(id)delegate xpcTarget:(id)target services:(id)services;
 - (id)_currentAppsPredicates;
-- (unsigned)scanForEntitlementsWithConnection:(id)a3;
-- (void)_addAppToMonitorWithProxy:(id)a3;
-- (void)_proxyDidDisconnect:(id)a3;
-- (void)_removeAppFromMonitorWithProxy:(id)a3;
+- (unsigned)scanForEntitlementsWithConnection:(id)connection;
+- (void)_addAppToMonitorWithProxy:(id)proxy;
+- (void)_proxyDidDisconnect:(id)disconnect;
+- (void)_removeAppFromMonitorWithProxy:(id)proxy;
 - (void)_resume;
 - (void)_suspend;
-- (void)_updatedFromMonitor:(id)a3 forProcess:(id)a4 withUpdate:(id)a5;
-- (void)enumerateClientProxies:(id)a3;
+- (void)_updatedFromMonitor:(id)monitor forProcess:(id)process withUpdate:(id)update;
+- (void)enumerateClientProxies:(id)proxies;
 - (void)invalidate;
 - (void)resume;
-- (void)shouldMonitorProxy:(id)a3 forSuspension:(BOOL)a4;
+- (void)shouldMonitorProxy:(id)proxy forSuspension:(BOOL)suspension;
 - (void)suspend;
 @end
 
 @implementation NRXPCServer
 
-- (NRXPCServer)initWithProxyClass:(Class)a3 xpcListenerClass:(Class)a4 serverDelegate:(id)a5 xpcTarget:(id)a6 services:(id)a7
+- (NRXPCServer)initWithProxyClass:(Class)class xpcListenerClass:(Class)listenerClass serverDelegate:(id)delegate xpcTarget:(id)target services:(id)services
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  delegateCopy = delegate;
+  targetCopy = target;
+  servicesCopy = services;
   v52.receiver = self;
   v52.super_class = NRXPCServer;
   v16 = [(NRXPCServer *)&v52 init];
   v17 = v16;
   if (v16)
   {
-    v44 = a4;
-    v45 = v15;
-    v46 = v14;
-    v47 = v13;
-    v16->_proxyClass = a3;
-    objc_storeStrong(&v16->_serverDelegate, a5);
-    objc_storeStrong(&v17->_xpcTarget, a6);
-    objc_storeStrong(&v17->_services, a7);
+    listenerClassCopy = listenerClass;
+    v45 = servicesCopy;
+    v46 = targetCopy;
+    v47 = delegateCopy;
+    v16->_proxyClass = class;
+    objc_storeStrong(&v16->_serverDelegate, delegate);
+    objc_storeStrong(&v17->_xpcTarget, target);
+    objc_storeStrong(&v17->_services, services);
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_attr_make_with_qos_class(v18, QOS_CLASS_USER_INITIATED, 0);
 
@@ -50,18 +50,18 @@
     xpcIncomingMessageQueue = v17->_xpcIncomingMessageQueue;
     v17->_xpcIncomingMessageQueue = v22;
 
-    v24 = [(objc_class *)a3 machServiceName];
+    machServiceName = [(objc_class *)class machServiceName];
     machServiceName = v17->_machServiceName;
-    v17->_machServiceName = v24;
+    v17->_machServiceName = machServiceName;
 
-    v43 = a3;
-    v26 = [(objc_class *)a3 entitlements];
-    v27 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v26 count]);
+    classCopy = class;
+    entitlements = [(objc_class *)class entitlements];
+    v27 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [entitlements count]);
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v28 = v26;
+    v28 = entitlements;
     v29 = [v28 countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v29)
     {
@@ -98,29 +98,29 @@
       objc_storeStrong(&v17->_entitlements, v27);
     }
 
-    v17->_entitlementRequired = [(objc_class *)v43 requireAnEntitlement];
+    v17->_entitlementRequired = [(objc_class *)classCopy requireAnEntitlement];
     v36 = +[NSMutableArray array];
     proxies = v17->_proxies;
     v17->_proxies = v36;
 
-    v38 = [[v44 alloc] initWithMachServiceName:v17->_machServiceName];
+    v38 = [[listenerClassCopy alloc] initWithMachServiceName:v17->_machServiceName];
     xpcListener = v17->_xpcListener;
     v17->_xpcListener = v38;
 
     [(NRNSXPCListenerProtocol *)v17->_xpcListener setDelegate:v17];
     v17->_listenerSuspended = 1;
 
-    v14 = v46;
-    v13 = v47;
-    v15 = v45;
+    targetCopy = v46;
+    delegateCopy = v47;
+    servicesCopy = v45;
   }
 
   return v17;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -131,9 +131,9 @@
   block[2] = sub_100003C74;
   block[3] = &unk_100175570;
   block[4] = self;
-  v10 = v5;
+  v10 = connectionCopy;
   v11 = &v12;
-  v7 = v5;
+  v7 = connectionCopy;
   dispatch_sync(managementQueue, block);
   LOBYTE(managementQueue) = *(v13 + 24);
 
@@ -141,9 +141,9 @@
   return managementQueue;
 }
 
-- (unsigned)scanForEntitlementsWithConnection:(id)a3
+- (unsigned)scanForEntitlementsWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -166,12 +166,12 @@
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_entitlements objectForKeyedSubscript:v10];
-        v12 = [v11 integerValue];
-        v13 = [v4 valueForEntitlement:v10];
+        integerValue = [v11 integerValue];
+        v13 = [connectionCopy valueForEntitlement:v10];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 BOOLValue])
         {
-          v7 |= 1 << v12;
+          v7 |= 1 << integerValue;
         }
       }
 
@@ -189,13 +189,13 @@
   return v7;
 }
 
-- (BOOL)hasEntitlement:(id)a3 withBitmask:(unsigned int)a4
+- (BOOL)hasEntitlement:(id)entitlement withBitmask:(unsigned int)bitmask
 {
-  v5 = [(NSMutableDictionary *)self->_entitlements objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_entitlements objectForKeyedSubscript:entitlement];
   v6 = v5;
   if (v5)
   {
-    v7 = (a4 >> [v5 integerValue]) & 1;
+    v7 = (bitmask >> [v5 integerValue]) & 1;
   }
 
   else
@@ -206,12 +206,12 @@
   return v7;
 }
 
-- (void)shouldMonitorProxy:(id)a3 forSuspension:(BOOL)a4
+- (void)shouldMonitorProxy:(id)proxy forSuspension:(BOOL)suspension
 {
-  v4 = a4;
-  v6 = a3;
+  suspensionCopy = suspension;
+  proxyCopy = proxy;
   managementQueue = self->_managementQueue;
-  if (v4)
+  if (suspensionCopy)
   {
     v8 = v12;
     v12[0] = _NSConcreteStackBlock;
@@ -230,15 +230,15 @@
   v8[2] = v9;
   v8[3] = &unk_100175598;
   v8[4] = self;
-  v10 = v6;
+  v10 = proxyCopy;
   v8[5] = v10;
   dispatch_sync(managementQueue, v8);
 }
 
-- (void)_addAppToMonitorWithProxy:(id)a3
+- (void)_addAppToMonitorWithProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [v4 pid];
+  proxyCopy = proxy;
+  v5 = [proxyCopy pid];
   serverDelegate = self->_serverDelegate;
   if (objc_opt_respondsToSelector())
   {
@@ -268,7 +268,7 @@
     v33[2] = sub_10000476C;
     v33[3] = &unk_1001755E8;
     v34 = v12;
-    v35 = self;
+    selfCopy = self;
     v13 = v12;
     v14 = [RBSProcessMonitor monitorWithConfiguration:v33];
     v15 = self->_processMonitor;
@@ -285,12 +285,12 @@
       v32 = 0;
       v17 = [RBSProcessHandle handleForIdentifier:v16 error:&v32];
       v18 = v32;
-      v19 = [v17 bundle];
-      v20 = [v19 identifier];
+      bundle = [v17 bundle];
+      identifier = [bundle identifier];
 
-      if (v20)
+      if (identifier)
       {
-        [(NSMutableDictionary *)self->_bundleIDToProxy setObject:v4 forKeyedSubscript:v20];
+        [(NSMutableDictionary *)self->_bundleIDToProxy setObject:proxyCopy forKeyedSubscript:identifier];
         v21 = nr_daemon_log();
         v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
 
@@ -300,28 +300,28 @@
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             machServiceName = self->_machServiceName;
-            v25 = [(NSMutableDictionary *)self->_bundleIDToProxy allKeys];
-            v26 = [v25 componentsJoinedByString:{@", "}];
+            allKeys = [(NSMutableDictionary *)self->_bundleIDToProxy allKeys];
+            v26 = [allKeys componentsJoinedByString:{@", "}];
             *buf = 138412802;
             v37 = machServiceName;
             v38 = 2112;
-            v39 = v20;
+            v39 = identifier;
             v40 = 2112;
             v41 = v26;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "NRXPCServer: %@ starts monitoring %@; new monitoring bundle IDs: [%@]", buf, 0x20u);
           }
         }
 
-        v27 = [(NRXPCServer *)self _currentAppsPredicates];
-        v28 = v27;
-        if (v27)
+        _currentAppsPredicates = [(NRXPCServer *)self _currentAppsPredicates];
+        v28 = _currentAppsPredicates;
+        if (_currentAppsPredicates)
         {
           v29 = self->_processMonitor;
           v30[0] = _NSConcreteStackBlock;
           v30[1] = 3221225472;
           v30[2] = sub_100004820;
           v30[3] = &unk_100175610;
-          v31 = v27;
+          v31 = _currentAppsPredicates;
           [(RBSProcessMonitor *)v29 updateConfiguration:v30];
         }
       }
@@ -329,9 +329,9 @@
   }
 }
 
-- (void)_removeAppFromMonitorWithProxy:(id)a3
+- (void)_removeAppFromMonitorWithProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   dispatch_assert_queue_V2(self->_managementQueue);
   bundleIDToProxy = self->_bundleIDToProxy;
   if (bundleIDToProxy && self->_processMonitor)
@@ -358,7 +358,7 @@
           v11 = *(*(&v30 + 1) + 8 * i);
           v12 = [(NSMutableDictionary *)self->_bundleIDToProxy objectForKeyedSubscript:v11];
           v13 = v12;
-          if (v12 == v4)
+          if (v12 == proxyCopy)
           {
             v14 = nr_daemon_log();
             v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -374,22 +374,22 @@
                 v36 = 2112;
                 v37 = v11;
                 v38 = 2112;
-                v39 = v4;
+                v39 = proxyCopy;
                 _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "NRXPCServer: %@ is no longer monitoring %@ (%@)", buf, 0x20u);
               }
             }
 
             [(NSMutableDictionary *)self->_bundleIDToProxy removeObjectForKey:v11];
-            v18 = [(NRXPCServer *)self _currentAppsPredicates];
-            v19 = v18;
-            if (v18)
+            _currentAppsPredicates = [(NRXPCServer *)self _currentAppsPredicates];
+            v19 = _currentAppsPredicates;
+            if (_currentAppsPredicates)
             {
               processMonitor = self->_processMonitor;
               v28[0] = _NSConcreteStackBlock;
               v28[1] = 3221225472;
               v28[2] = sub_100004BAC;
               v28[3] = &unk_100175610;
-              v29 = v18;
+              v29 = _currentAppsPredicates;
               [(RBSProcessMonitor *)processMonitor updateConfiguration:v28];
             }
 
@@ -439,8 +439,8 @@ LABEL_19:
 
 - (id)_currentAppsPredicates
 {
-  v2 = [(NSMutableDictionary *)self->_bundleIDToProxy allKeys];
-  v3 = [NSSet setWithArray:v2];
+  allKeys = [(NSMutableDictionary *)self->_bundleIDToProxy allKeys];
+  v3 = [NSSet setWithArray:allKeys];
 
   if ([v3 count])
   {
@@ -455,16 +455,16 @@ LABEL_19:
   return v4;
 }
 
-- (void)_updatedFromMonitor:(id)a3 forProcess:(id)a4 withUpdate:(id)a5
+- (void)_updatedFromMonitor:(id)monitor forProcess:(id)process withUpdate:(id)update
 {
-  v7 = a5;
-  v8 = [a4 bundle];
-  v9 = [v8 identifier];
+  updateCopy = update;
+  bundle = [process bundle];
+  identifier = [bundle identifier];
 
-  v10 = [v7 previousState];
-  v11 = [v7 state];
+  previousState = [updateCopy previousState];
+  state = [updateCopy state];
 
-  if (([v10 isEqual:v11] & 1) == 0)
+  if (([previousState isEqual:state] & 1) == 0)
   {
     v12 = nr_daemon_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -475,42 +475,42 @@ LABEL_19:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v24 = v9;
+        v24 = identifier;
         v25 = 2112;
-        v26 = v10;
+        v26 = previousState;
         v27 = 2112;
-        v28 = v11;
+        v28 = state;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "NRXPCServer: updated from monitor for process %@ with update %@ -> %@", buf, 0x20u);
       }
     }
 
-    if (v11)
+    if (state)
     {
-      v15 = [v11 taskState];
+      taskState = [state taskState];
     }
 
     else
     {
-      v15 = 0;
+      taskState = 0;
     }
 
-    v17 = v15 == 2 || v15 == 4;
+    v17 = taskState == 2 || taskState == 4;
     managementQueue = self->_managementQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100004EC0;
     block[3] = &unk_100175638;
     block[4] = self;
-    v20 = v9;
+    v20 = identifier;
     v21 = v17;
-    v22 = v15;
+    v22 = taskState;
     dispatch_async(managementQueue, block);
   }
 }
 
-- (void)enumerateClientProxies:(id)a3
+- (void)enumerateClientProxies:(id)proxies
 {
-  v4 = a3;
+  proxiesCopy = proxies;
   dispatch_assert_queue_V2(self->_managementQueue);
   v12 = 0u;
   v13 = 0u;
@@ -532,7 +532,7 @@ LABEL_19:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        proxiesCopy[2](proxiesCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
@@ -544,12 +544,12 @@ LABEL_19:
   }
 }
 
-- (void)_proxyDidDisconnect:(id)a3
+- (void)_proxyDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   dispatch_assert_queue_V2(self->_managementQueue);
-  [v4 _invalidate];
-  [(NSMutableArray *)self->_proxies removeObject:v4];
+  [disconnectCopy _invalidate];
+  [(NSMutableArray *)self->_proxies removeObject:disconnectCopy];
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -559,24 +559,24 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       machServiceName = self->_machServiceName;
-      v9 = [v4 appPath];
+      appPath = [disconnectCopy appPath];
       v11 = 138413058;
       v12 = machServiceName;
       v13 = 2114;
-      v14 = v9;
+      v14 = appPath;
       v15 = 2048;
-      v16 = [v4 pid];
+      v16 = [disconnectCopy pid];
       v17 = 2112;
-      v18 = v4;
+      v18 = disconnectCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NRXPCServer: %@ connection from %{public}@.%ld disconnected (%@)", &v11, 0x2Au);
     }
   }
 
-  [(NRXPCServer *)self _removeAppFromMonitorWithProxy:v4];
+  [(NRXPCServer *)self _removeAppFromMonitorWithProxy:disconnectCopy];
   v10 = self->_serverDelegate;
   if (objc_opt_respondsToSelector())
   {
-    [(NRXPCServerDelegate *)v10 xpcServer:self proxyDidDisconnect:v4];
+    [(NRXPCServerDelegate *)v10 xpcServer:self proxyDidDisconnect:disconnectCopy];
   }
 }
 

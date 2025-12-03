@@ -7,8 +7,8 @@
 
 - (void)_web_possibleURLsForForUserTypedString:()WebNSStringExtrasIOS
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E696AD60] stringWithString:a1];
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [MEMORY[0x1E696AD60] stringWithString:self];
   CFStringTrimWhitespace(v6);
   v19.length = [(__CFString *)v6 length];
   v19.location = 0;
@@ -18,7 +18,7 @@
   CFStringFindAndReplace(v6, @"\r", &stru_1F472E7E8, v20, 0);
   if (![(__CFString *)v6 length])
   {
-    return v5;
+    return array;
   }
 
   if ([(__CFString *)v6 characterAtIndex:0]!= 47 && [(__CFString *)v6 characterAtIndex:0]!= 126)
@@ -48,7 +48,7 @@
           v15 = [MEMORY[0x1E695DFF8] _webkit_URLWithUserTypedString:v6];
           if (v15)
           {
-            [v5 addObject:v15];
+            [array addObject:v15];
           }
 
 LABEL_35:
@@ -58,7 +58,7 @@ LABEL_16:
           v7 = [v14 _webkit_URLWithUserTypedString:v6];
           if (!v7)
           {
-            return v5;
+            return array;
           }
 
           goto LABEL_5;
@@ -70,7 +70,7 @@ LABEL_16:
           v16 = [MEMORY[0x1E695DFF8] _webkit_URLWithUserTypedString:v6];
           if (v16)
           {
-            [v5 addObject:v16];
+            [array addObject:v16];
           }
 
           v17 = [(__CFString *)v6 rangeOfString:@":" options:2 range:5, [(__CFString *)v6 length]- 5];
@@ -110,19 +110,19 @@ LABEL_15:
   if (v7)
   {
 LABEL_5:
-    [v5 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v5;
+  return array;
 }
 
 - (uint64_t)_web_bestURLForUserTypedString
 {
-  v1 = [a1 _web_possibleURLsForUserTypedString];
-  result = [v1 count];
+  _web_possibleURLsForUserTypedString = [self _web_possibleURLsForUserTypedString];
+  result = [_web_possibleURLsForUserTypedString count];
   if (result)
   {
-    v3 = [v1 objectAtIndex:0];
+    v3 = [_web_possibleURLsForUserTypedString objectAtIndex:0];
 
     return [v3 _webkit_canonicalize];
   }

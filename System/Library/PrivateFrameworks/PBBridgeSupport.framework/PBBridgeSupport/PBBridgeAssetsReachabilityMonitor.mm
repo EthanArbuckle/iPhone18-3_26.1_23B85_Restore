@@ -1,12 +1,12 @@
 @interface PBBridgeAssetsReachabilityMonitor
-+ (void)checkServerReachabilityWithCompletion:(id)a3;
++ (void)checkServerReachabilityWithCompletion:(id)completion;
 @end
 
 @implementation PBBridgeAssetsReachabilityMonitor
 
-+ (void)checkServerReachabilityWithCompletion:(id)a3
++ (void)checkServerReachabilityWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (checkServerReachabilityWithCompletion__onceToken != -1)
   {
     +[PBBridgeAssetsReachabilityMonitor checkServerReachabilityWithCompletion:];
@@ -17,8 +17,8 @@
   block[1] = 3221225472;
   block[2] = __75__PBBridgeAssetsReachabilityMonitor_checkServerReachabilityWithCompletion___block_invoke_2;
   block[3] = &unk_2799F3E90;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 

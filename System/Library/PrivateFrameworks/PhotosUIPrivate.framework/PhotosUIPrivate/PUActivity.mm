@@ -1,9 +1,9 @@
 @interface PUActivity
 - (PUActivityDataSource)dataSource;
 - (PUActivityItemSourceController)itemSourceController;
-- (id)pu_activityImageNamed:(id)a3;
-- (id)pu_activitySettingsImageNamed:(id)a3;
-- (void)setDataSource:(id)a3;
+- (id)pu_activityImageNamed:(id)named;
+- (id)pu_activitySettingsImageNamed:(id)named;
+- (void)setDataSource:(id)source;
 - (void)updateActivityViewControllerVisibleShareActions;
 @end
 
@@ -25,15 +25,15 @@
 
 - (void)updateActivityViewControllerVisibleShareActions
 {
-  v3 = [(PUActivity *)self itemSourceController];
-  if (v3)
+  itemSourceController = [(PUActivity *)self itemSourceController];
+  if (itemSourceController)
   {
-    v8 = v3;
-    v4 = [v3 activityViewController];
-    [v4 updateVisibleShareActionsIfNeeded];
+    v8 = itemSourceController;
+    activityViewController = [itemSourceController activityViewController];
+    [activityViewController updateVisibleShareActionsIfNeeded];
 LABEL_3:
 
-    v3 = v8;
+    itemSourceController = v8;
     goto LABEL_7;
   }
 
@@ -41,24 +41,24 @@ LABEL_3:
   {
     v8 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v4 = [WeakRetained activityViewControllerForActivity:self];
+    activityViewController = [WeakRetained activityViewControllerForActivity:self];
 
     v6 = objc_loadWeakRetained(&self->_dataSource);
     v7 = [v6 activityItemsForActivity:self];
 
-    [v4 _updateActivityItems:v7];
+    [activityViewController _updateActivityItems:v7];
     goto LABEL_3;
   }
 
 LABEL_7:
 }
 
-- (id)pu_activitySettingsImageNamed:(id)a3
+- (id)pu_activitySettingsImageNamed:(id)named
 {
   cachedSmallCustomImage = self->_cachedSmallCustomImage;
   if (!cachedSmallCustomImage)
   {
-    v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:a3];
+    v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:named];
     PLPhysicalScreenScale();
     v6 = [v5 _applicationIconImageForFormat:0 precomposed:0 scale:?];
     v7 = self->_cachedSmallCustomImage;
@@ -70,12 +70,12 @@ LABEL_7:
   return cachedSmallCustomImage;
 }
 
-- (id)pu_activityImageNamed:(id)a3
+- (id)pu_activityImageNamed:(id)named
 {
   cachedCustomImage = self->_cachedCustomImage;
   if (!cachedCustomImage)
   {
-    v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:a3];
+    v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:named];
     PLPhysicalScreenScale();
     v6 = [v5 _applicationIconImageForFormat:10 precomposed:0 scale:?];
     v7 = self->_cachedCustomImage;
@@ -87,9 +87,9 @@ LABEL_7:
   return cachedCustomImage;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)

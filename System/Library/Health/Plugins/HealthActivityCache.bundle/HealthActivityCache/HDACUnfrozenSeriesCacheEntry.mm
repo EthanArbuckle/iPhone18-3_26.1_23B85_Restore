@@ -1,37 +1,37 @@
 @interface HDACUnfrozenSeriesCacheEntry
-- (HDACUnfrozenSeriesCacheEntry)initWithSeriesId:(int64_t)a3 timestamp:(double)a4 dataTypeCode:(int64_t)a5 workoutSourceIdentifier:(int64_t)a6 sourceIdentifier:(int64_t)a7 isWatchSource:(BOOL)a8 isConnectedGymSource:(BOOL)a9 typeIsValidForAllDayFromCompanion:(BOOL)a10;
+- (HDACUnfrozenSeriesCacheEntry)initWithSeriesId:(int64_t)id timestamp:(double)timestamp dataTypeCode:(int64_t)code workoutSourceIdentifier:(int64_t)identifier sourceIdentifier:(int64_t)sourceIdentifier isWatchSource:(BOOL)source isConnectedGymSource:(BOOL)gymSource typeIsValidForAllDayFromCompanion:(BOOL)self0;
 - (id)predicateForSeries;
-- (void)setTimestamp:(double)a3;
+- (void)setTimestamp:(double)timestamp;
 @end
 
 @implementation HDACUnfrozenSeriesCacheEntry
 
-- (HDACUnfrozenSeriesCacheEntry)initWithSeriesId:(int64_t)a3 timestamp:(double)a4 dataTypeCode:(int64_t)a5 workoutSourceIdentifier:(int64_t)a6 sourceIdentifier:(int64_t)a7 isWatchSource:(BOOL)a8 isConnectedGymSource:(BOOL)a9 typeIsValidForAllDayFromCompanion:(BOOL)a10
+- (HDACUnfrozenSeriesCacheEntry)initWithSeriesId:(int64_t)id timestamp:(double)timestamp dataTypeCode:(int64_t)code workoutSourceIdentifier:(int64_t)identifier sourceIdentifier:(int64_t)sourceIdentifier isWatchSource:(BOOL)source isConnectedGymSource:(BOOL)gymSource typeIsValidForAllDayFromCompanion:(BOOL)self0
 {
   v18.receiver = self;
   v18.super_class = HDACUnfrozenSeriesCacheEntry;
   result = [(HDACUnfrozenSeriesCacheEntry *)&v18 init];
   if (result)
   {
-    result->_series_identifier = a3;
-    result->_timestamp = a4;
-    result->_dataTypeCode = a5;
-    result->_workoutSourceIdentifier = a6;
-    result->_sourceIdentifier = a7;
-    result->_isWatchSource = a8;
-    result->_isConnectedGymSource = a9;
-    result->_typeIsValidForAllDayFromCompanion = a10;
+    result->_series_identifier = id;
+    result->_timestamp = timestamp;
+    result->_dataTypeCode = code;
+    result->_workoutSourceIdentifier = identifier;
+    result->_sourceIdentifier = sourceIdentifier;
+    result->_isWatchSource = source;
+    result->_isConnectedGymSource = gymSource;
+    result->_typeIsValidForAllDayFromCompanion = companion;
     *&result->_hasTimestampBeenSet = 0;
   }
 
   return result;
 }
 
-- (void)setTimestamp:(double)a3
+- (void)setTimestamp:(double)timestamp
 {
-  if (self->_timestamp < a3)
+  if (self->_timestamp < timestamp)
   {
-    self->_timestamp = a3;
+    self->_timestamp = timestamp;
   }
 
   self->_hasTimestampBeenSet = 1;

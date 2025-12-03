@@ -1,9 +1,9 @@
 @interface TUSuggestionsMetadataCacheDataProvider
 + (BOOL)canUseSiriSuggestions;
 + (SGSuggestionsServiceContactsProtocol)sharedService;
-+ (id)newestSuggestedContactForDestinationID:(id)a3;
++ (id)newestSuggestedContactForDestinationID:(id)d;
 - (TUSuggestionsMetadataCacheDataProvider)init;
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4;
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group;
 @end
 
 @implementation TUSuggestionsMetadataCacheDataProvider
@@ -27,7 +27,7 @@
     }
 
     objc_initWeak(buf, v2);
-    v6 = [objc_opt_class() sharedService];
+    sharedService = [objc_opt_class() sharedService];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __46__TUSuggestionsMetadataCacheDataProvider_init__block_invoke;
@@ -35,7 +35,7 @@
     v7 = v2;
     v12 = v7;
     objc_copyWeak(&v13, buf);
-    v8 = [v6 registerContactsChangeObserver:v11];
+    v8 = [sharedService registerContactsChangeObserver:v11];
     suggestionsContactsObserver = v7->_suggestionsContactsObserver;
     v7->_suggestionsContactsObserver = v8;
 
@@ -83,22 +83,22 @@ void __55__TUSuggestionsMetadataCacheDataProvider_sharedService__block_invoke()
   return v3 ^ 1;
 }
 
-+ (id)newestSuggestedContactForDestinationID:(id)a3
++ (id)newestSuggestedContactForDestinationID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![a1 canUseSiriSuggestions])
+  dCopy = d;
+  if (![self canUseSiriSuggestions])
   {
     goto LABEL_14;
   }
 
-  if (![v4 destinationIdIsEmailAddress])
+  if (![dCopy destinationIdIsEmailAddress])
   {
-    if ([v4 destinationIdIsPhoneNumber])
+    if ([dCopy destinationIdIsPhoneNumber])
     {
-      v9 = [a1 sharedService];
+      sharedService = [self sharedService];
       v31 = 0;
-      v6 = [v9 contactMatchesByPhoneNumber:v4 error:&v31];
+      v6 = [sharedService contactMatchesByPhoneNumber:dCopy error:&v31];
       v7 = v31;
 
       if (!v6 && v7)
@@ -121,9 +121,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v5 = [a1 sharedService];
+  sharedService2 = [self sharedService];
   v32 = 0;
-  v6 = [v5 contactMatchesByEmailAddress:v4 error:&v32];
+  v6 = [sharedService2 contactMatchesByEmailAddress:dCopy error:&v32];
   v7 = v32;
 
   if (v6 || !v7)
@@ -136,17 +136,17 @@ LABEL_17:
       v27 = 0u;
       v28 = 0u;
       v6 = v6;
-      v10 = [v6 countByEnumeratingWithState:&v27 objects:v33 count:16];
-      if (v10)
+      cnContact = [v6 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      if (cnContact)
       {
         v25 = v7;
-        v26 = v4;
+        v26 = dCopy;
         v8 = 0;
         v14 = *v28;
-        v15 = -1;
+        numericValue2 = -1;
         do
         {
-          for (i = 0; i != v10; i = i + 1)
+          for (i = 0; i != cnContact; i = i + 1)
           {
             if (*v28 != v14)
             {
@@ -154,38 +154,38 @@ LABEL_17:
             }
 
             v17 = *(*(&v27 + 1) + 8 * i);
-            v18 = [v17 contact];
-            v19 = [v18 recordId];
-            v20 = [v19 numericValue];
+            contact = [v17 contact];
+            recordId = [contact recordId];
+            numericValue = [recordId numericValue];
 
-            if (v20 > v15)
+            if (numericValue > numericValue2)
             {
-              v21 = [v17 contact];
-              v22 = [v21 recordId];
-              v15 = [v22 numericValue];
+              contact2 = [v17 contact];
+              recordId2 = [contact2 recordId];
+              numericValue2 = [recordId2 numericValue];
 
               v23 = v17;
               v8 = v23;
             }
           }
 
-          v10 = [v6 countByEnumeratingWithState:&v27 objects:v33 count:16];
+          cnContact = [v6 countByEnumeratingWithState:&v27 objects:v33 count:16];
         }
 
-        while (v10);
+        while (cnContact);
 
         v7 = v25;
         if (!v8)
         {
-          v10 = 0;
-          v4 = v26;
+          cnContact = 0;
+          dCopy = v26;
           goto LABEL_16;
         }
 
-        v24 = [v8 contact];
-        v10 = [v24 cnContact];
+        contact3 = [v8 contact];
+        cnContact = [contact3 cnContact];
 
-        v4 = v26;
+        dCopy = v26;
       }
 
       else
@@ -197,7 +197,7 @@ LABEL_17:
     }
 
 LABEL_15:
-    v10 = 0;
+    cnContact = 0;
     goto LABEL_16;
   }
 
@@ -209,14 +209,14 @@ LABEL_15:
 
 LABEL_12:
   v6 = 0;
-  v10 = 0;
+  cnContact = 0;
 LABEL_13:
 
 LABEL_16:
-  v11 = v10;
+  v11 = cnContact;
 
   v12 = *MEMORY[0x1E69E9840];
-  return v10;
+  return cnContact;
 }
 
 void __46__TUSuggestionsMetadataCacheDataProvider_init__block_invoke(uint64_t a1)
@@ -236,16 +236,16 @@ void __46__TUSuggestionsMetadataCacheDataProvider_init__block_invoke(uint64_t a1
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  groupCopy = group;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v8 = [dsCopy countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v8)
   {
     v10 = v8;
@@ -258,18 +258,18 @@ void __46__TUSuggestionsMetadataCacheDataProvider_init__block_invoke(uint64_t a1
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v13 handle];
-        v15 = [v14 normalizedValue];
+        handle = [v13 handle];
+        normalizedValue = [handle normalizedValue];
 
-        if ([v15 length])
+        if ([normalizedValue length])
         {
-          v16 = [(TUSuggestionsMetadataCacheDataProvider *)self suggestionsServiceThrottleSemaphore];
+          suggestionsServiceThrottleSemaphore = [(TUSuggestionsMetadataCacheDataProvider *)self suggestionsServiceThrottleSemaphore];
           v17 = dispatch_time(0, 1000000000);
-          v18 = dispatch_semaphore_wait(v16, v17);
+          v18 = dispatch_semaphore_wait(suggestionsServiceThrottleSemaphore, v17);
 
           v19 = TUDefaultLog();
           v20 = v19;
@@ -288,11 +288,11 @@ void __46__TUSuggestionsMetadataCacheDataProvider_init__block_invoke(uint64_t a1
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
               *buf = v24;
-              v33 = v15;
+              v33 = normalizedValue;
               _os_log_debug_impl(&dword_1956FD000, v20, OS_LOG_TYPE_DEBUG, "dispatch_group_enter %@", buf, 0xCu);
             }
 
-            dispatch_group_enter(v7);
+            dispatch_group_enter(groupCopy);
             v21 = objc_opt_class();
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
@@ -300,15 +300,15 @@ void __46__TUSuggestionsMetadataCacheDataProvider_init__block_invoke(uint64_t a1
             v25[3] = &unk_1E7424BC8;
             v25[4] = self;
             v25[5] = v13;
-            v22 = v15;
+            v22 = normalizedValue;
             v26 = v22;
-            v27 = v7;
+            v27 = groupCopy;
             [v21 suggestedNamesForDestinationID:v22 onlySignificant:0 withCompletion:v25];
           }
         }
       }
 
-      v10 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v10 = [dsCopy countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v10);

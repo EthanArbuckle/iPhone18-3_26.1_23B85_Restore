@@ -1,63 +1,63 @@
 @interface RGCachedRenderCommandEncoder
 - (RGCachedRenderCommandEncoder)init;
-- (RGCachedRenderCommandEncoder)initWithEncoder:(id)a3;
+- (RGCachedRenderCommandEncoder)initWithEncoder:(id)encoder;
 - (id).cxx_construct;
-- (void)_setEncoder:(id)a3 alreadyUsed:(BOOL)a4;
+- (void)_setEncoder:(id)encoder alreadyUsed:(BOOL)used;
 - (void)applyChangedStates;
-- (void)beginEncodingWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4 label:(id)a5;
+- (void)beginEncodingWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor label:(id)label;
 - (void)clear;
 - (void)dealloc;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 - (void)endEncoding;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setCounters:(__RGRenderCounters *)a3;
-- (void)setCullMode:(unint64_t)a3;
-- (void)setDepthClipMode:(unint64_t)a3;
-- (void)setDepthStencilState:(id)a3;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6;
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFrontFacingWinding:(unint64_t)a3;
-- (void)setLockCullMode:(BOOL)a3;
-- (void)setLockFillMode:(BOOL)a3;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setStencilFrontReferenceValue:(unsigned int)a3 backReferenceValue:(unsigned int)a4;
-- (void)setStencilReferenceValue:(unsigned int)a3;
-- (void)setTriangleFillMode:(unint64_t)a3;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setViewport:(id *)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setCounters:(__RGRenderCounters *)counters;
+- (void)setCullMode:(unint64_t)mode;
+- (void)setDepthClipMode:(unint64_t)mode;
+- (void)setDepthStencilState:(id)state;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex;
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setFrontFacingWinding:(unint64_t)winding;
+- (void)setLockCullMode:(BOOL)mode;
+- (void)setLockFillMode:(BOOL)mode;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setStencilFrontReferenceValue:(unsigned int)value backReferenceValue:(unsigned int)referenceValue;
+- (void)setStencilReferenceValue:(unsigned int)value;
+- (void)setTriangleFillMode:(unint64_t)mode;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setViewport:(id *)viewport;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
 @end
 
 @implementation RGCachedRenderCommandEncoder
@@ -69,12 +69,12 @@
   return [(RGCachedRenderCommandEncoder *)&v3 init];
 }
 
-- (RGCachedRenderCommandEncoder)initWithEncoder:(id)a3
+- (RGCachedRenderCommandEncoder)initWithEncoder:(id)encoder
 {
   v7.receiver = self;
   v7.super_class = RGCachedRenderCommandEncoder;
   v4 = [(RGCachedRenderCommandEncoder *)&v7 init];
-  objc_msgSend__setEncoder_alreadyUsed_(v4, v5, a3, 0);
+  objc_msgSend__setEncoder_alreadyUsed_(v4, v5, encoder, 0);
   return v4;
 }
 
@@ -86,39 +86,39 @@
   [(RGCachedRenderCommandEncoder *)&v4 dealloc];
 }
 
-- (void)setCounters:(__RGRenderCounters *)a3
+- (void)setCounters:(__RGRenderCounters *)counters
 {
-  v3 = *&a3->storage.impl;
-  *&self->_counters.primitiveCount = *&a3->primitiveCount;
+  v3 = *&counters->storage.impl;
+  *&self->_counters.primitiveCount = *&counters->primitiveCount;
   *&self->_counters.storage.impl = v3;
 }
 
-- (void)beginEncodingWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4 label:(id)a5
+- (void)beginEncodingWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor label:(id)label
 {
-  v7 = objc_msgSend_renderCommandEncoderWithDescriptor_(a3, a2, a4, a4);
+  v7 = objc_msgSend_renderCommandEncoderWithDescriptor_(buffer, a2, descriptor, descriptor);
   v10 = v7;
-  if (a5)
+  if (label)
   {
-    objc_msgSend_setLabel_(v7, v8, a5, v9);
+    objc_msgSend_setLabel_(v7, v8, label, v9);
   }
 
   objc_msgSend__setEncoder_alreadyUsed_(self, v8, v10, 0);
 }
 
-- (void)_setEncoder:(id)a3 alreadyUsed:(BOOL)a4
+- (void)_setEncoder:(id)encoder alreadyUsed:(BOOL)used
 {
-  v4 = a4;
-  v7 = a3;
+  usedCopy = used;
+  encoderCopy = encoder;
   encoder = self->_encoder;
   if (encoder)
   {
   }
 
-  self->_encoder = a3;
+  self->_encoder = encoder;
   objc_msgSend_clear(self, v8, v9, v10);
   if (self->_encoder)
   {
-    v12 = !v4;
+    v12 = !usedCopy;
   }
 
   else
@@ -146,11 +146,11 @@
   self->_encoder = 0;
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
-  v10 = a4;
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_(self->_encoder, v13, a3, v10, a5, a6, a7);
+  countCopy = count;
+  objc_msgSend_applyChangedStates(self, a2, primitives, count);
+  objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_(self->_encoder, v13, primitives, countCopy, type, buffer, offset);
   impl = self->_counters.storage.impl;
   if (!impl)
   {
@@ -160,52 +160,52 @@
   vfx_counters_update(impl, self->_counters.drawCount, 1.0);
   v15 = self->_counters.storage.impl;
   primitiveCount = self->_counters.primitiveCount;
-  if (a3 <= 1)
+  if (primitives <= 1)
   {
-    if (!a3)
+    if (!primitives)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (primitives == 1)
     {
-      v10 >>= 1;
+      countCopy >>= 1;
       goto LABEL_14;
     }
 
 LABEL_13:
-    v10 = 0;
+    countCopy = 0;
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (primitives == 2)
   {
-    --v10;
+    --countCopy;
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (primitives == 3)
   {
-    v10 /= 3uLL;
+    countCopy /= 3uLL;
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (primitives != 4)
   {
     goto LABEL_13;
   }
 
-  v10 -= 2;
+  countCopy -= 2;
 LABEL_14:
 
-  vfx_counters_update(v15, primitiveCount, v10);
+  vfx_counters_update(v15, primitiveCount, countCopy);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
-  v12 = a4;
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_(self->_encoder, v15, a3, v12, a5, a6, a7, a8);
+  countCopy = count;
+  objc_msgSend_applyChangedStates(self, a2, primitives, count);
+  objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_(self->_encoder, v15, primitives, countCopy, type, buffer, offset, instanceCount);
   impl = self->_counters.storage.impl;
   if (!impl)
   {
@@ -215,62 +215,62 @@ LABEL_14:
   vfx_counters_update(impl, self->_counters.drawCount, 1.0);
   v17 = self->_counters.storage.impl;
   primitiveCount = self->_counters.primitiveCount;
-  if (a3 <= 1)
+  if (primitives <= 1)
   {
-    if (!a3)
+    if (!primitives)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (primitives == 1)
     {
-      v12 >>= 1;
+      countCopy >>= 1;
       goto LABEL_14;
     }
 
 LABEL_13:
-    v12 = 0;
+    countCopy = 0;
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (primitives == 2)
   {
-    --v12;
+    --countCopy;
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (primitives == 3)
   {
-    v12 /= 3uLL;
+    countCopy /= 3uLL;
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (primitives != 4)
   {
     goto LABEL_13;
   }
 
-  v12 -= 2;
+  countCopy -= 2;
 LABEL_14:
 
-  vfx_counters_update(v17, primitiveCount, (v12 * a8));
+  vfx_counters_update(v17, primitiveCount, (countCopy * instanceCount));
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
-  v14 = a4;
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  if (v14)
+  countCopy = count;
+  objc_msgSend_applyChangedStates(self, a2, primitives, count);
+  if (countCopy)
   {
     encoder = self->_encoder;
-    if (a9 <= 0 && a10 == 0)
+    if (vertex <= 0 && instance == 0)
     {
-      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_(encoder, v17, a3, v14, a5, a6, a7, a8);
+      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_(encoder, v17, primitives, countCopy, type, buffer, offset, instanceCount);
     }
 
     else
     {
-      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_baseVertex_baseInstance_(encoder, v17, a3, v14, a5, a6, a7, a8, a9, a10);
+      objc_msgSend_drawIndexedPrimitives_indexCount_indexType_indexBuffer_indexBufferOffset_instanceCount_baseVertex_baseInstance_(encoder, v17, primitives, countCopy, type, buffer, offset, instanceCount, vertex, instance);
     }
   }
 
@@ -280,48 +280,48 @@ LABEL_14:
     vfx_counters_update(impl, self->_counters.drawCount, 1.0);
     v21 = self->_counters.storage.impl;
     primitiveCount = self->_counters.primitiveCount;
-    if (a3 <= 1)
+    if (primitives <= 1)
     {
-      if (!a3)
+      if (!primitives)
       {
         goto LABEL_21;
       }
 
-      if (a3 == 1)
+      if (primitives == 1)
       {
-        v14 >>= 1;
+        countCopy >>= 1;
         goto LABEL_21;
       }
     }
 
     else
     {
-      switch(a3)
+      switch(primitives)
       {
         case 2uLL:
-          --v14;
+          --countCopy;
           goto LABEL_21;
         case 3uLL:
-          v14 /= 3uLL;
+          countCopy /= 3uLL;
           goto LABEL_21;
         case 4uLL:
-          v14 -= 2;
+          countCopy -= 2;
 LABEL_21:
 
-          vfx_counters_update(v21, primitiveCount, (v14 * a8));
+          vfx_counters_update(v21, primitiveCount, (countCopy * instanceCount));
           return;
       }
     }
 
-    v14 = 0;
+    countCopy = 0;
     goto LABEL_21;
   }
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawIndexedPrimitives_indexType_indexBuffer_indexBufferOffset_indirectBuffer_indirectBufferOffset_(self->_encoder, v15, a3, a4, a5, a6, a7, a8);
+  objc_msgSend_applyChangedStates(self, a2, primitives, type);
+  objc_msgSend_drawIndexedPrimitives_indexType_indexBuffer_indexBufferOffset_indirectBuffer_indirectBufferOffset_(self->_encoder, v15, primitives, type, buffer, offset, indirectBuffer, bufferOffset);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -333,10 +333,10 @@ LABEL_21:
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawPrimitives_indirectBuffer_indirectBufferOffset_(self->_encoder, v9, a3, a4, a5);
+  objc_msgSend_applyChangedStates(self, a2, primitives, buffer);
+  objc_msgSend_drawPrimitives_indirectBuffer_indirectBufferOffset_(self->_encoder, v9, primitives, buffer, offset);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -348,10 +348,10 @@ LABEL_21:
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawPrimitives_vertexStart_vertexCount_(self->_encoder, v9, a3, a4, a5);
+  objc_msgSend_applyChangedStates(self, a2, primitives, start);
+  objc_msgSend_drawPrimitives_vertexStart_vertexCount_(self->_encoder, v9, primitives, start, count);
   impl = self->_counters.storage.impl;
   if (!impl)
   {
@@ -361,51 +361,51 @@ LABEL_21:
   vfx_counters_update(impl, self->_counters.drawCount, 1.0);
   v11 = self->_counters.storage.impl;
   primitiveCount = self->_counters.primitiveCount;
-  if (a3 <= 1)
+  if (primitives <= 1)
   {
-    if (!a3)
+    if (!primitives)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (primitives == 1)
     {
-      a5 >>= 1;
+      count >>= 1;
       goto LABEL_14;
     }
 
 LABEL_13:
-    a5 = 0;
+    count = 0;
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (primitives == 2)
   {
-    --a5;
+    --count;
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (primitives == 3)
   {
-    a5 /= 3uLL;
+    count /= 3uLL;
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (primitives != 4)
   {
     goto LABEL_13;
   }
 
-  a5 -= 2;
+  count -= 2;
 LABEL_14:
 
-  vfx_counters_update(v11, primitiveCount, a5);
+  vfx_counters_update(v11, primitiveCount, count);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_(self->_encoder, v11, a3, a4, a5, a6);
+  objc_msgSend_applyChangedStates(self, a2, primitives, start);
+  objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_(self->_encoder, v11, primitives, start, count, instanceCount);
   impl = self->_counters.storage.impl;
   if (!impl)
   {
@@ -415,59 +415,59 @@ LABEL_14:
   vfx_counters_update(impl, self->_counters.drawCount, 1.0);
   v13 = self->_counters.storage.impl;
   primitiveCount = self->_counters.primitiveCount;
-  if (a3 <= 1)
+  if (primitives <= 1)
   {
-    if (!a3)
+    if (!primitives)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (primitives == 1)
     {
-      a5 >>= 1;
+      count >>= 1;
       goto LABEL_14;
     }
 
 LABEL_13:
-    a5 = 0;
+    count = 0;
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (primitives == 2)
   {
-    --a5;
+    --count;
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (primitives == 3)
   {
-    a5 /= 3uLL;
+    count /= 3uLL;
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (primitives != 4)
   {
     goto LABEL_13;
   }
 
-  a5 -= 2;
+  count -= 2;
 LABEL_14:
 
-  vfx_counters_update(v13, primitiveCount, (a5 * a6));
+  vfx_counters_update(v13, primitiveCount, (count * instanceCount));
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
+  objc_msgSend_applyChangedStates(self, a2, primitives, start);
   encoder = self->_encoder;
-  if (a7)
+  if (instance)
   {
-    objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_baseInstance_(encoder, v13, a3, a4, a5, a6, a7);
+    objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_baseInstance_(encoder, v13, primitives, start, count, instanceCount, instance);
   }
 
   else
   {
-    objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_(encoder, v13, a3, a4, a5, a6);
+    objc_msgSend_drawPrimitives_vertexStart_vertexCount_instanceCount_(encoder, v13, primitives, start, count, instanceCount);
   }
 
   impl = self->_counters.storage.impl;
@@ -479,51 +479,51 @@ LABEL_14:
   vfx_counters_update(impl, self->_counters.drawCount, 1.0);
   v16 = self->_counters.storage.impl;
   primitiveCount = self->_counters.primitiveCount;
-  if (a3 <= 1)
+  if (primitives <= 1)
   {
-    if (!a3)
+    if (!primitives)
     {
       goto LABEL_17;
     }
 
-    if (a3 == 1)
+    if (primitives == 1)
     {
-      a5 >>= 1;
+      count >>= 1;
       goto LABEL_17;
     }
 
 LABEL_16:
-    a5 = 0;
+    count = 0;
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (primitives == 2)
   {
-    --a5;
+    --count;
     goto LABEL_17;
   }
 
-  if (a3 == 3)
+  if (primitives == 3)
   {
-    a5 /= 3uLL;
+    count /= 3uLL;
     goto LABEL_17;
   }
 
-  if (a3 != 4)
+  if (primitives != 4)
   {
     goto LABEL_16;
   }
 
-  a5 -= 2;
+  count -= 2;
 LABEL_17:
 
-  vfx_counters_update(v16, primitiveCount, (a5 * a6));
+  vfx_counters_update(v16, primitiveCount, (count * instanceCount));
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawIndexedPatches_patchIndexBuffer_patchIndexBufferOffset_controlPointIndexBuffer_controlPointIndexBufferOffset_indirectBuffer_indirectBufferOffset_(self->_encoder, v16, a3, a4, a5, a6, a7, a8, a9);
+  objc_msgSend_applyChangedStates(self, a2, patches, buffer);
+  objc_msgSend_drawIndexedPatches_patchIndexBuffer_patchIndexBufferOffset_controlPointIndexBuffer_controlPointIndexBufferOffset_indirectBuffer_indirectBufferOffset_(self->_encoder, v16, patches, buffer, offset, indexBuffer, bufferOffset, indirectBuffer, indirectBufferOffset);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -535,10 +535,10 @@ LABEL_17:
   }
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawIndexedPatches_patchStart_patchCount_patchIndexBuffer_patchIndexBufferOffset_controlPointIndexBuffer_controlPointIndexBufferOffset_instanceCount_baseInstance_(self->_encoder, v18, a3, a4, a5, a6, a7, a8, a9, a10, a11);
+  objc_msgSend_applyChangedStates(self, a2, patches, start);
+  objc_msgSend_drawIndexedPatches_patchStart_patchCount_patchIndexBuffer_patchIndexBufferOffset_controlPointIndexBuffer_controlPointIndexBufferOffset_instanceCount_baseInstance_(self->_encoder, v18, patches, start, count, buffer, offset, indexBuffer, bufferOffset, instanceCount, instance);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -548,13 +548,13 @@ LABEL_17:
   }
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
+  objc_msgSend_applyChangedStates(self, a2, threadgroups, threadgroup);
   encoder = self->_encoder;
-  v14 = *a3;
-  v13 = *a4;
-  v12 = *a5;
+  v14 = *threadgroups;
+  v13 = *threadgroup;
+  v12 = *meshThreadgroup;
   objc_msgSend_drawMeshThreadgroups_threadsPerObjectThreadgroup_threadsPerMeshThreadgroup_(encoder, v10, &v14, &v13, &v12);
   impl = self->_counters.storage.impl;
   if (impl)
@@ -563,13 +563,13 @@ LABEL_17:
   }
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
+  objc_msgSend_applyChangedStates(self, a2, buffer, offset);
   encoder = self->_encoder;
-  v15 = *a5;
-  v14 = *a6;
-  objc_msgSend_drawMeshThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerObjectThreadgroup_threadsPerMeshThreadgroup_(encoder, v12, a3, a4, &v15, &v14);
+  v15 = *threadgroup;
+  v14 = *meshThreadgroup;
+  objc_msgSend_drawMeshThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerObjectThreadgroup_threadsPerMeshThreadgroup_(encoder, v12, buffer, offset, &v15, &v14);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -578,13 +578,13 @@ LABEL_17:
   }
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
+  objc_msgSend_applyChangedStates(self, a2, threads, threadgroup);
   encoder = self->_encoder;
-  v14 = *a3;
-  v13 = *a4;
-  v12 = *a5;
+  v14 = *threads;
+  v13 = *threadgroup;
+  v12 = *meshThreadgroup;
   objc_msgSend_drawMeshThreads_threadsPerObjectThreadgroup_threadsPerMeshThreadgroup_(encoder, v10, &v14, &v13, &v12);
   impl = self->_counters.storage.impl;
   if (impl)
@@ -593,10 +593,10 @@ LABEL_17:
   }
 }
 
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawPatches_patchIndexBuffer_patchIndexBufferOffset_indirectBuffer_indirectBufferOffset_(self->_encoder, v13, a3, a4, a5, a6, a7);
+  objc_msgSend_applyChangedStates(self, a2, patches, buffer);
+  objc_msgSend_drawPatches_patchIndexBuffer_patchIndexBufferOffset_indirectBuffer_indirectBufferOffset_(self->_encoder, v13, patches, buffer, offset, indirectBuffer, bufferOffset);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -608,10 +608,10 @@ LABEL_17:
   }
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, a4);
-  objc_msgSend_drawPatches_patchStart_patchCount_patchIndexBuffer_patchIndexBufferOffset_instanceCount_baseInstance_(self->_encoder, v16, a3, a4, a5, a6, a7, a8, a9);
+  objc_msgSend_applyChangedStates(self, a2, patches, start);
+  objc_msgSend_drawPatches_patchStart_patchCount_patchIndexBuffer_patchIndexBufferOffset_instanceCount_baseInstance_(self->_encoder, v16, patches, start, count, buffer, offset, instanceCount, instance);
   impl = self->_counters.storage.impl;
   if (impl)
   {
@@ -621,11 +621,11 @@ LABEL_17:
   }
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
-  v8.f32[0] = a3;
-  v8.f32[1] = a4;
-  v8.i64[1] = __PAIR64__(LODWORD(a6), LODWORD(a5));
+  v8.f32[0] = red;
+  v8.f32[1] = green;
+  v8.i64[1] = __PAIR64__(LODWORD(alpha), LODWORD(blue));
   if ((vmaxvq_u32(vmvnq_s8(vceqq_f32(*&self->_cache.material, v8))) & 0x80000000) != 0)
   {
     *&self->_cache.material = v8;
@@ -633,142 +633,142 @@ LABEL_17:
   }
 }
 
-- (void)setCullMode:(unint64_t)a3
+- (void)setCullMode:(unint64_t)mode
 {
   isa = self[22].super.isa;
-  if ((isa & 0x20) == 0 && self->_cache.meshElement != a3)
+  if ((isa & 0x20) == 0 && self->_cache.meshElement != mode)
   {
-    self->_cache.meshElement = a3;
+    self->_cache.meshElement = mode;
     LOWORD(self[22].super.isa) = isa | 4;
   }
 }
 
-- (void)setDepthClipMode:(unint64_t)a3
+- (void)setDepthClipMode:(unint64_t)mode
 {
-  if (self->_cache.program != a3)
+  if (self->_cache.program != mode)
   {
-    self->_cache.program = a3;
+    self->_cache.program = mode;
     LOWORD(self[22].super.isa) |= 0x10u;
   }
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  if (self->_cache.rasterizerStates != a3)
+  if (self->_cache.rasterizerStates != state)
   {
-    self->_cache.rasterizerStates = a3;
-    objc_msgSend_setDepthStencilState_(self->_encoder, a2, a3, v3);
+    self->_cache.rasterizerStates = state;
+    objc_msgSend_setDepthStencilState_(self->_encoder, a2, state, v3);
   }
 }
 
-- (void)setFrontFacingWinding:(unint64_t)a3
+- (void)setFrontFacingWinding:(unint64_t)winding
 {
-  if (self->_cache.metalMesh != a3)
+  if (self->_cache.metalMesh != winding)
   {
-    self->_cache.metalMesh = a3;
+    self->_cache.metalMesh = winding;
     LOWORD(self[22].super.isa) |= 2u;
   }
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  if (self->_cache.geometry != a3)
+  if (self->_cache.geometry != state)
   {
-    self->_cache.geometry = a3;
-    objc_msgSend_setRenderPipelineState_(self->_encoder, a2, a3, v3);
+    self->_cache.geometry = state;
+    objc_msgSend_setRenderPipelineState_(self->_encoder, a2, state, v3);
   }
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = self + 16 * a5;
+  v5 = self + 16 * index;
   *(v5 + 113) = 0;
   *(v5 + 112) = 0;
-  objc_msgSend_setVertexBytes_length_atIndex_(self->_encoder, a2, a3, a4);
+  objc_msgSend_setVertexBytes_length_atIndex_(self->_encoder, a2, bytes, length);
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   encoder = self->_encoder;
-  v5 = *&a3->var2;
-  v6[0] = *&a3->var0;
+  v5 = *&rect->var2;
+  v6[0] = *&rect->var0;
   v6[1] = v5;
   objc_msgSend_setScissorRect_(encoder, a2, v6, v3);
 }
 
-- (void)setStencilFrontReferenceValue:(unsigned int)a3 backReferenceValue:(unsigned int)a4
+- (void)setStencilFrontReferenceValue:(unsigned int)value backReferenceValue:(unsigned int)referenceValue
 {
-  if (LODWORD(self->_cache.metalShadable) != a3 || HIDWORD(self->_cache.metalShadable) != a4)
+  if (LODWORD(self->_cache.metalShadable) != value || HIDWORD(self->_cache.metalShadable) != referenceValue)
   {
-    LODWORD(self->_cache.metalShadable) = a3;
-    HIDWORD(self->_cache.metalShadable) = a4;
-    objc_msgSend_setStencilFrontReferenceValue_backReferenceValue_(self->_encoder, a2, *&a3, *&a4);
+    LODWORD(self->_cache.metalShadable) = value;
+    HIDWORD(self->_cache.metalShadable) = referenceValue;
+    objc_msgSend_setStencilFrontReferenceValue_backReferenceValue_(self->_encoder, a2, *&value, *&referenceValue);
   }
 }
 
-- (void)setStencilReferenceValue:(unsigned int)a3
+- (void)setStencilReferenceValue:(unsigned int)value
 {
-  if (LODWORD(self->_cache.metalShadable) != a3 || HIDWORD(self->_cache.metalShadable) != a3)
+  if (LODWORD(self->_cache.metalShadable) != value || HIDWORD(self->_cache.metalShadable) != value)
   {
-    LODWORD(self->_cache.metalShadable) = a3;
-    HIDWORD(self->_cache.metalShadable) = a3;
-    (MEMORY[0x1EEE66B58])(self->_encoder, sel_setStencilReferenceValue_, *&a3);
+    LODWORD(self->_cache.metalShadable) = value;
+    HIDWORD(self->_cache.metalShadable) = value;
+    (MEMORY[0x1EEE66B58])(self->_encoder, sel_setStencilReferenceValue_, *&value);
   }
 }
 
-- (void)setTriangleFillMode:(unint64_t)a3
+- (void)setTriangleFillMode:(unint64_t)mode
 {
   isa = self[22].super.isa;
-  if ((isa & 0x40) == 0 && self->_cache.metalMeshElement != a3)
+  if ((isa & 0x40) == 0 && self->_cache.metalMeshElement != mode)
   {
-    self->_cache.metalMeshElement = a3;
+    self->_cache.metalMeshElement = mode;
     LOWORD(self[22].super.isa) = isa | 8;
   }
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = (&self[13]._cache.rasterizerStates + 2 * a5);
-  if (*v5 == a3)
+  v5 = (&self[13]._cache.rasterizerStates + 2 * index);
+  if (*v5 == buffer)
   {
-    if (*(&self[13]._cache.geometry + 2 * a5) != a4)
+    if (*(&self[13]._cache.geometry + 2 * index) != offset)
     {
-      *(&self[13]._cache.geometry + 2 * a5) = a4;
-      MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentBufferOffset_atIndex_, a4, a5);
+      *(&self[13]._cache.geometry + 2 * index) = offset;
+      MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentBufferOffset_atIndex_, offset, index);
     }
   }
 
   else
   {
-    *v5 = a3;
-    *(&self[13]._cache.geometry + 2 * a5) = a4;
-    objc_msgSend_setFragmentBuffer_offset_atIndex_(self->_encoder, a2, a3, a4);
+    *v5 = buffer;
+    *(&self[13]._cache.geometry + 2 * index) = offset;
+    objc_msgSend_setFragmentBuffer_offset_atIndex_(self->_encoder, a2, buffer, offset);
   }
 }
 
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v4 = self + 16 * a4;
-  if (*(v4 + 319) != a3)
+  v4 = self + 16 * index;
+  if (*(v4 + 319) != offset)
   {
-    *(v4 + 319) = a3;
-    MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentBufferOffset_atIndex_, a3, a4);
+    *(v4 + 319) = offset;
+    MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentBufferOffset_atIndex_, offset, index);
   }
 }
 
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    v5 = &self[13]._cache.geometry + 2 * a5.location;
-    v6 = a3;
-    v7 = a4;
-    length = a5.length;
+    v5 = &self[13]._cache.geometry + 2 * range.location;
+    buffersCopy = buffers;
+    offsetsCopy = offsets;
+    length = range.length;
     do
     {
-      v10 = *v6++;
+      v10 = *buffersCopy++;
       v9 = v10;
-      v11 = *v7++;
+      v11 = *offsetsCopy++;
       *(v5 - 1) = v9;
       *v5 = v11;
       v5 += 2;
@@ -778,36 +778,36 @@ LABEL_17:
     while (length);
   }
 
-  MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentBuffers_offsets_withRange_, a3, a4);
+  MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentBuffers_offsets_withRange_, buffers, offsets);
 }
 
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v5 = self + 16 * a5;
+  v5 = self + 16 * index;
   *(v5 + 319) = 0;
   *(v5 + 318) = 0;
-  objc_msgSend_setFragmentBytes_length_atIndex_(self->_encoder, a2, a3, a4);
+  objc_msgSend_setFragmentBytes_length_atIndex_(self->_encoder, a2, bytes, length);
 }
 
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index
 {
-  if (*(&self[21]._counters.primitiveCount + a4) != a3)
+  if (*(&self[21]._counters.primitiveCount + index) != state)
   {
-    *(&self[21]._counters.primitiveCount + a4) = a3;
-    objc_msgSend_setFragmentSamplerState_atIndex_(self->_encoder, a2, a3, a4);
+    *(&self[21]._counters.primitiveCount + index) = state;
+    objc_msgSend_setFragmentSamplerState_atIndex_(self->_encoder, a2, state, index);
   }
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  if (a6.length)
+  if (range.length)
   {
-    v6 = &self[21]._counters.primitiveCount + 2 * a6.location;
-    v7 = a3;
-    length = a6.length;
+    v6 = &self[21]._counters.primitiveCount + 2 * range.location;
+    statesCopy = states;
+    length = range.length;
     do
     {
-      v9 = *v7++;
+      v9 = *statesCopy++;
       *v6 = v9;
       v6 += 2;
       --length;
@@ -816,19 +816,19 @@ LABEL_17:
     while (length);
   }
 
-  MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentSamplerStates_lodMinClamps_lodMaxClamps_withRange_, a3, a4);
+  MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentSamplerStates_lodMinClamps_lodMaxClamps_withRange_, states, clamps);
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    v4 = &self[21]._counters.primitiveCount + 2 * a4.location;
-    v5 = a3;
-    length = a4.length;
+    v4 = &self[21]._counters.primitiveCount + 2 * range.location;
+    statesCopy = states;
+    length = range.length;
     do
     {
-      v7 = *v5++;
+      v7 = *statesCopy++;
       *v4 = v7;
       v4 += 2;
       --length;
@@ -837,38 +837,38 @@ LABEL_17:
     while (length);
   }
 
-  MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentSamplerStates_withRange_, a3, a4.location);
+  MEMORY[0x1EEE66B58](self->_encoder, sel_setFragmentSamplerStates_withRange_, states, range.location);
 }
 
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index
 {
-  if (*(&self[15]._cache.deformerStack + a4) != a3)
+  if (*(&self[15]._cache.deformerStack + index) != texture)
   {
-    *(&self[15]._cache.deformerStack + a4) = a3;
+    *(&self[15]._cache.deformerStack + index) = texture;
     isa = self[22].super.isa;
     if (isa)
     {
       LOWORD(self[22].super.isa) = isa | 0x100;
-      *(&self[21]._cache.tessellationPipelineStateHash + (a4 >> 6)) |= 1 << a4;
+      *(&self[21]._cache.tessellationPipelineStateHash + (index >> 6)) |= 1 << index;
     }
 
     else
     {
-      objc_msgSend_setFragmentTexture_atIndex_(self->_encoder, a2, a3, a4);
+      objc_msgSend_setFragmentTexture_atIndex_(self->_encoder, a2, texture, index);
     }
   }
 }
 
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    v4 = &self[15]._cache.deformerStack + a4.location;
-    v5 = a3;
-    length = a4.length;
+    v4 = &self[15]._cache.deformerStack + range.location;
+    texturesCopy = textures;
+    length = range.length;
     do
     {
-      v7 = *v5++;
+      v7 = *texturesCopy++;
       *v4++ = v7;
       --length;
     }
@@ -876,71 +876,71 @@ LABEL_17:
     while (length);
   }
 
-  objc_msgSend_setFragmentTextures_withRange_(self->_encoder, a2, a3, a4.location);
+  objc_msgSend_setFragmentTextures_withRange_(self->_encoder, a2, textures, range.location);
 }
 
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex
 {
-  v6 = &self->super.isa + a6;
-  if (*(&self[15]._cache.deformerStack + a4) != a3 || v6[508] != a5)
+  v6 = &self->super.isa + samplerIndex;
+  if (*(&self[15]._cache.deformerStack + index) != texture || v6[508] != state)
   {
-    *(&self[15]._cache.deformerStack + a4) = a3;
-    v6[508] = a5;
-    objc_msgSend_setFragmentTexture_atTextureIndex_samplerState_atSamplerIndex_(self->_encoder, a2, a3, a4);
+    *(&self[15]._cache.deformerStack + index) = texture;
+    v6[508] = state;
+    objc_msgSend_setFragmentTexture_atTextureIndex_samplerState_atSamplerIndex_(self->_encoder, a2, texture, index);
   }
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = (&self[4]._cache.blendStates + 2 * a5);
-  if (*v5 == a3)
+  v5 = (&self[4]._cache.blendStates + 2 * index);
+  if (*v5 == buffer)
   {
-    if (*(&self[4]._cache.colorBufferWriteMask + 2 * a5) != a4)
+    if (*(&self[4]._cache.colorBufferWriteMask + 2 * index) != offset)
     {
-      *(&self[4]._cache.colorBufferWriteMask + 2 * a5) = a4;
-      objc_msgSend_setVertexBufferOffset_atIndex_(self->_encoder, a2, a4, a5);
+      *(&self[4]._cache.colorBufferWriteMask + 2 * index) = offset;
+      objc_msgSend_setVertexBufferOffset_atIndex_(self->_encoder, a2, offset, index);
     }
   }
 
   else
   {
-    *v5 = a3;
-    *(&self[4]._cache.colorBufferWriteMask + 2 * a5) = a4;
-    objc_msgSend_setVertexBuffer_offset_atIndex_(self->_encoder, a2, a3, a4);
+    *v5 = buffer;
+    *(&self[4]._cache.colorBufferWriteMask + 2 * index) = offset;
+    objc_msgSend_setVertexBuffer_offset_atIndex_(self->_encoder, a2, buffer, offset);
   }
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v4 = self + 16 * a4;
-  if (*(v4 + 113) != a3)
+  v4 = self + 16 * index;
+  if (*(v4 + 113) != offset)
   {
-    *(v4 + 113) = a3;
-    objc_msgSend_setVertexBufferOffset_atIndex_(self->_encoder, a2, a3, a4);
+    *(v4 + 113) = offset;
+    objc_msgSend_setVertexBufferOffset_atIndex_(self->_encoder, a2, offset, index);
   }
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     v10 = 0;
     v11 = 0;
-    for (i = (&self[4]._cache.colorBufferWriteMask + 16 * a5.location); ; i += 2)
+    for (i = (&self[4]._cache.colorBufferWriteMask + 16 * range.location); ; i += 2)
     {
-      v13 = a3[v11];
+      v13 = buffers[v11];
       if (*(i - 1) != v13)
       {
         break;
       }
 
-      v14 = a4[v11];
+      v14 = offsets[v11];
       if (*i != v14)
       {
         *i = v14;
-        objc_msgSend_setVertexBufferOffset_atIndex_(self->_encoder, a2, a4[v11], location + v11);
+        objc_msgSend_setVertexBufferOffset_atIndex_(self->_encoder, a2, offsets[v11], location + v11);
       }
 
       ++v11;
@@ -956,20 +956,20 @@ LABEL_17:
     {
       if (length - 1 == v11)
       {
-        v16 = a4[v11];
+        v16 = offsets[v11];
         *(i - 1) = v13;
         *i = v16;
         encoder = self->_encoder;
-        v18 = a3[v11];
-        v19 = a4[v11];
+        v18 = buffers[v11];
+        v19 = offsets[v11];
 
         objc_msgSend_setVertexBuffer_offset_atIndex_(encoder, a2, v18, v19, location + v11);
       }
 
       else
       {
-        v20 = &a3[v10 / 0xFFFFFFFFFFFFFFF8];
-        v21 = &a4[v10 / 0xFFFFFFFFFFFFFFF8];
+        v20 = &buffers[v10 / 0xFFFFFFFFFFFFFFF8];
+        v21 = &offsets[v10 / 0xFFFFFFFFFFFFFFF8];
         objc_msgSend_setVertexBuffers_offsets_withRange_(self->_encoder, a2, v20, v21, location + v11, length - v11);
         if (length > v11)
         {
@@ -991,25 +991,25 @@ LABEL_17:
   }
 }
 
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index
 {
-  if (*(&self[12]._cache.metalShadable + a4) != a3)
+  if (*(&self[12]._cache.metalShadable + index) != state)
   {
-    *(&self[12]._cache.metalShadable + a4) = a3;
-    objc_msgSend_setVertexSamplerState_atIndex_(self->_encoder, a2, a3, a4);
+    *(&self[12]._cache.metalShadable + index) = state;
+    objc_msgSend_setVertexSamplerState_atIndex_(self->_encoder, a2, state, index);
   }
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  if (a6.length)
+  if (range.length)
   {
-    v6 = &self[12]._cache.metalShadable + a6.location;
-    v7 = a3;
-    length = a6.length;
+    v6 = &self[12]._cache.metalShadable + range.location;
+    statesCopy = states;
+    length = range.length;
     do
     {
-      v9 = *v7++;
+      v9 = *statesCopy++;
       *v6++ = v9;
       --length;
     }
@@ -1017,19 +1017,19 @@ LABEL_17:
     while (length);
   }
 
-  MEMORY[0x1EEE66B58](self->_encoder, sel_setVertexSamplerStates_lodMinClamps_lodMaxClamps_withRange_, a3, a4);
+  MEMORY[0x1EEE66B58](self->_encoder, sel_setVertexSamplerStates_lodMinClamps_lodMaxClamps_withRange_, states, clamps);
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    v4 = &self[12]._cache.metalShadable + a4.location;
-    v5 = a3;
-    length = a4.length;
+    v4 = &self[12]._cache.metalShadable + range.location;
+    statesCopy = states;
+    length = range.length;
     do
     {
-      v7 = *v5++;
+      v7 = *statesCopy++;
       *v4++ = v7;
       --length;
     }
@@ -1037,38 +1037,38 @@ LABEL_17:
     while (length);
   }
 
-  MEMORY[0x1EEE66B58](self->_encoder, sel_setVertexSamplerStates_withRange_, a3, a4.location);
+  MEMORY[0x1EEE66B58](self->_encoder, sel_setVertexSamplerStates_withRange_, states, range.location);
 }
 
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index
 {
-  if (*(&self[7]._cache.rasterizerStates + a4) != a3)
+  if (*(&self[7]._cache.rasterizerStates + index) != texture)
   {
-    *(&self[7]._cache.rasterizerStates + a4) = a3;
+    *(&self[7]._cache.rasterizerStates + index) = texture;
     isa = self[22].super.isa;
     if (isa)
     {
       LOWORD(self[22].super.isa) = isa | 0x100;
-      *(&self[21]._cache.deformerStack + (a4 >> 6)) |= 1 << a4;
+      *(&self[21]._cache.deformerStack + (index >> 6)) |= 1 << index;
     }
 
     else
     {
-      objc_msgSend_setVertexTexture_atIndex_(self->_encoder, a2, a3, a4);
+      objc_msgSend_setVertexTexture_atIndex_(self->_encoder, a2, texture, index);
     }
   }
 }
 
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    v4 = &self[7]._cache.rasterizerStates + a4.location;
-    v5 = a3;
-    length = a4.length;
+    v4 = &self[7]._cache.rasterizerStates + range.location;
+    texturesCopy = textures;
+    length = range.length;
     do
     {
-      v7 = *v5++;
+      v7 = *texturesCopy++;
       *v4++ = v7;
       --length;
     }
@@ -1076,16 +1076,16 @@ LABEL_17:
     while (length);
   }
 
-  objc_msgSend_setVertexTextures_withRange_(self->_encoder, a2, a3, a4.location);
+  objc_msgSend_setVertexTextures_withRange_(self->_encoder, a2, textures, range.location);
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
-  if (self[4]._cache.commonProfile != 1 || memcmp(&self->_cache.commonProfile, a3, 0x30uLL))
+  if (self[4]._cache.commonProfile != 1 || memcmp(&self->_cache.commonProfile, viewport, 0x30uLL))
   {
-    v5 = *&a3->var0;
-    v6 = *&a3->var2;
-    *&self->_cache.pointOfView = *&a3->var4;
+    v5 = *&viewport->var0;
+    v6 = *&viewport->var2;
+    *&self->_cache.pointOfView = *&viewport->var4;
     *&self->_cache.colorBufferWriteMask = v6;
     *&self->_cache.commonProfile = v5;
     self[4]._cache.commonProfile = 1;
@@ -1093,29 +1093,29 @@ LABEL_17:
   }
 }
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
-  if (self[4]._cache.commonProfile != a4)
+  if (self[4]._cache.commonProfile != count)
   {
-    v7 = 48 * a4;
+    v7 = 48 * count;
     goto LABEL_5;
   }
 
-  v7 = 48 * a4;
-  if (memcmp(&self->_cache.commonProfile, a3, 48 * a4))
+  v7 = 48 * count;
+  if (memcmp(&self->_cache.commonProfile, viewports, 48 * count))
   {
 LABEL_5:
-    memcpy(&self->_cache.commonProfile, a3, v7);
-    self[4]._cache.commonProfile = a4;
+    memcpy(&self->_cache.commonProfile, viewports, v7);
+    self[4]._cache.commonProfile = count;
     LOWORD(self[22].super.isa) |= 0x80u;
   }
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
-  objc_msgSend_applyChangedStates(self, a2, a3, v3);
+  objc_msgSend_applyChangedStates(self, a2, tile, v3);
   encoder = self->_encoder;
-  v9 = *a3;
+  v9 = *tile;
   objc_msgSend_dispatchThreadsPerTile_(encoder, v7, &v9, v8);
 }
 
@@ -1200,9 +1200,9 @@ LABEL_13:
   }
 }
 
-- (void)setLockCullMode:(BOOL)a3
+- (void)setLockCullMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 32;
   }
@@ -1215,9 +1215,9 @@ LABEL_13:
   LOWORD(self[22].super.isa) = self[22].super.isa & 0xFFDF | v3;
 }
 
-- (void)setLockFillMode:(BOOL)a3
+- (void)setLockFillMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 64;
   }

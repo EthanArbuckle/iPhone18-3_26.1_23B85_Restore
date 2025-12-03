@@ -1,21 +1,21 @@
 @interface PBNumberDataDetective
-- (id)detectedPatternValuesInValue:(id)a3;
+- (id)detectedPatternValuesInValue:(id)value;
 @end
 
 @implementation PBNumberDataDetective
 
-- (id)detectedPatternValuesInValue:(id)a3
+- (id)detectedPatternValuesInValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = +[NSLocale currentLocale];
-    v5 = [v4 groupingSeparator];
-    v6 = v3;
-    if (v5)
+    groupingSeparator = [v4 groupingSeparator];
+    v6 = valueCopy;
+    if (groupingSeparator)
     {
-      v6 = [v3 stringByReplacingOccurrencesOfString:v5 withString:&stru_100032D58];
+      v6 = [valueCopy stringByReplacingOccurrencesOfString:groupingSeparator withString:&stru_100032D58];
     }
 
     if ([v6 length])
@@ -46,7 +46,7 @@
   else
   {
     v9 = &__NSDictionary0__struct;
-    v6 = v3;
+    v6 = valueCopy;
   }
 
   return v9;

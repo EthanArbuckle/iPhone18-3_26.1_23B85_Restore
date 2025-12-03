@@ -1,36 +1,36 @@
 @interface NSMutableParagraphStyle
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_mutateTabStops;
-- (void)_setLineBoundsOptions:(unint64_t)a3;
-- (void)_setListIntentOrdinal:(int64_t)a3;
-- (void)_setPresentationIntents:(id)a3;
+- (void)_setLineBoundsOptions:(unint64_t)options;
+- (void)_setListIntentOrdinal:(int64_t)ordinal;
+- (void)_setPresentationIntents:(id)intents;
 - (void)addTabStop:(NSTextTab *)anObject;
 - (void)removeTabStop:(NSTextTab *)anObject;
 - (void)setAlignment:(NSTextAlignment)alignment;
 - (void)setAllowsDefaultTighteningForTruncation:(BOOL)allowsDefaultTighteningForTruncation;
-- (void)setAllowsHangingPunctuation:(BOOL)a3;
+- (void)setAllowsHangingPunctuation:(BOOL)punctuation;
 - (void)setBaseWritingDirection:(NSWritingDirection)baseWritingDirection;
-- (void)setBaselineInterval:(double)a3;
-- (void)setBaselineIntervalType:(unint64_t)a3;
-- (void)setCodeBlockIntentLanguageHint:(id)a3;
-- (void)setCompositionLanguage:(int64_t)a3;
-- (void)setFullyJustified:(BOOL)a3;
+- (void)setBaselineInterval:(double)interval;
+- (void)setBaselineIntervalType:(unint64_t)type;
+- (void)setCodeBlockIntentLanguageHint:(id)hint;
+- (void)setCompositionLanguage:(int64_t)language;
+- (void)setFullyJustified:(BOOL)justified;
 - (void)setHeaderLevel:(NSInteger)headerLevel;
-- (void)setHorizontalAlignment:(int64_t)a3;
+- (void)setHorizontalAlignment:(int64_t)alignment;
 - (void)setHyphenationFactor:(float)hyphenationFactor;
 - (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode;
 - (void)setLineBreakStrategy:(NSLineBreakStrategy)lineBreakStrategy;
 - (void)setLineHeightMultiple:(CGFloat)lineHeightMultiple;
 - (void)setParagraphSpacingBefore:(CGFloat)paragraphSpacingBefore;
 - (void)setParagraphStyle:(NSParagraphStyle *)obj;
-- (void)setSecondaryLineBreakMode:(int64_t)a3;
-- (void)setSpansAllLines:(BOOL)a3;
+- (void)setSecondaryLineBreakMode:(int64_t)mode;
+- (void)setSpansAllLines:(BOOL)lines;
 - (void)setTabStops:(NSArray *)tabStops;
 - (void)setTextBlocks:(NSArray *)textBlocks;
 - (void)setTextLists:(NSArray *)textLists;
 - (void)setTighteningFactorForTruncation:(float)tighteningFactorForTruncation;
 - (void)setUsesDefaultHyphenation:(BOOL)usesDefaultHyphenation;
-- (void)setUsesOpticalAlignment:(BOOL)a3;
+- (void)setUsesOpticalAlignment:(BOOL)alignment;
 @end
 
 @implementation NSMutableParagraphStyle
@@ -98,33 +98,33 @@
   [(NSMutableParagraphStyle *)self setTextLists:[(NSParagraphStyle *)obj textLists]];
   [(NSMutableParagraphStyle *)self setAllowsDefaultTighteningForTruncation:[(NSParagraphStyle *)obj allowsDefaultTighteningForTruncation]];
   [(NSMutableParagraphStyle *)self setLineBreakStrategy:[(NSParagraphStyle *)obj lineBreakStrategy]];
-  v5 = [(NSParagraphStyle *)obj usesDefaultHyphenation];
-  v6 = [(NSParagraphStyle *)obj spansAllLines];
-  v7 = [(NSParagraphStyle *)obj secondaryLineBreakMode];
+  usesDefaultHyphenation = [(NSParagraphStyle *)obj usesDefaultHyphenation];
+  spansAllLines = [(NSParagraphStyle *)obj spansAllLines];
+  secondaryLineBreakMode = [(NSParagraphStyle *)obj secondaryLineBreakMode];
   [(NSParagraphStyle *)obj hyphenationFactor];
   v9 = v8;
-  [(NSMutableParagraphStyle *)self setUsesDefaultHyphenation:v5];
+  [(NSMutableParagraphStyle *)self setUsesDefaultHyphenation:usesDefaultHyphenation];
   v10 = 0.0;
-  if (!v5 || *&__NSDefaultHyphenationFactor != v9)
+  if (!usesDefaultHyphenation || *&__NSDefaultHyphenationFactor != v9)
   {
     *&v10 = v9;
   }
 
   [(NSMutableParagraphStyle *)self setHyphenationFactor:v10];
-  [(NSMutableParagraphStyle *)self setSpansAllLines:v6];
-  [(NSMutableParagraphStyle *)self setSecondaryLineBreakMode:v7];
+  [(NSMutableParagraphStyle *)self setSpansAllLines:spansAllLines];
+  [(NSMutableParagraphStyle *)self setSecondaryLineBreakMode:secondaryLineBreakMode];
   [(NSMutableParagraphStyle *)self setHorizontalAlignment:[(NSParagraphStyle *)obj horizontalAlignment]];
   [(NSMutableParagraphStyle *)self setFullyJustified:[(NSParagraphStyle *)obj isFullyJustified]];
-  v11 = [(NSParagraphStyle *)obj _alignmentFollowsWritingDirection];
-  if (v11 || self->super._extraData)
+  _alignmentFollowsWritingDirection = [(NSParagraphStyle *)obj _alignmentFollowsWritingDirection];
+  if (_alignmentFollowsWritingDirection || self->super._extraData)
   {
     [(NSParagraphStyle *)self _allocExtraData];
-    *(self->super._extraData + 83) = v11;
+    *(self->super._extraData + 83) = _alignmentFollowsWritingDirection;
   }
 
-  v12 = [(NSParagraphStyle *)obj compositionLanguage];
+  compositionLanguage = [(NSParagraphStyle *)obj compositionLanguage];
 
-  [(NSMutableParagraphStyle *)self setCompositionLanguage:v12];
+  [(NSMutableParagraphStyle *)self setCompositionLanguage:compositionLanguage];
 }
 
 - (void)setAlignment:(NSTextAlignment)alignment
@@ -142,55 +142,55 @@
   os_unfair_lock_unlock(&__NSParagraphStyleLock);
 }
 
-- (void)setSpansAllLines:(BOOL)a3
+- (void)setSpansAllLines:(BOOL)lines
 {
-  if ([(NSParagraphStyle *)self spansAllLines]!= a3)
+  if ([(NSParagraphStyle *)self spansAllLines]!= lines)
   {
     [(NSParagraphStyle *)self _allocExtraData];
-    *(self->super._extraData + 81) = a3;
+    *(self->super._extraData + 81) = lines;
   }
 }
 
-- (void)setSecondaryLineBreakMode:(int64_t)a3
+- (void)setSecondaryLineBreakMode:(int64_t)mode
 {
-  if ([(NSParagraphStyle *)self secondaryLineBreakMode]!= a3)
+  if ([(NSParagraphStyle *)self secondaryLineBreakMode]!= mode)
   {
     [(NSParagraphStyle *)self _allocExtraData];
-    *(self->super._extraData + 16) = a3;
+    *(self->super._extraData + 16) = mode;
   }
 }
 
-- (void)setBaselineIntervalType:(unint64_t)a3
+- (void)setBaselineIntervalType:(unint64_t)type
 {
-  if ([(NSParagraphStyle *)self baselineIntervalType]!= a3)
+  if ([(NSParagraphStyle *)self baselineIntervalType]!= type)
   {
     [(NSParagraphStyle *)self _allocExtraData];
-    *(self->super._extraData + 17) = a3;
+    *(self->super._extraData + 17) = type;
   }
 }
 
-- (void)setBaselineInterval:(double)a3
+- (void)setBaselineInterval:(double)interval
 {
   [(NSParagraphStyle *)self baselineInterval];
-  if (v5 != a3)
+  if (v5 != interval)
   {
     [(NSParagraphStyle *)self _allocExtraData];
-    *(self->super._extraData + 18) = a3;
+    *(self->super._extraData + 18) = interval;
   }
 }
 
-- (void)setHorizontalAlignment:(int64_t)a3
+- (void)setHorizontalAlignment:(int64_t)alignment
 {
-  v5 = [(NSParagraphStyle *)self horizontalAlignment];
-  if (!a3 || v5 != a3)
+  horizontalAlignment = [(NSParagraphStyle *)self horizontalAlignment];
+  if (!alignment || horizontalAlignment != alignment)
   {
     [(NSParagraphStyle *)self _allocExtraData];
     extraData = self->super._extraData;
-    extraData[15] = a3;
+    extraData[15] = alignment;
     *(extraData + 83) = 1;
     v7 = *(extraData + 82);
-    v8 = a3 - 2;
-    if ((a3 - 2) >= 3)
+    v8 = alignment - 2;
+    if ((alignment - 2) >= 3)
     {
       v8 = 4;
     }
@@ -209,14 +209,14 @@
   }
 }
 
-- (void)setFullyJustified:(BOOL)a3
+- (void)setFullyJustified:(BOOL)justified
 {
-  if ([(NSParagraphStyle *)self isFullyJustified]!= a3)
+  if ([(NSParagraphStyle *)self isFullyJustified]!= justified)
   {
     [(NSParagraphStyle *)self _allocExtraData];
     extraData = self->super._extraData;
-    extraData[82] = a3;
-    if (a3)
+    extraData[82] = justified;
+    if (justified)
     {
       LODWORD(v6) = 3;
     }
@@ -450,19 +450,19 @@ LABEL_2:
   }
 }
 
-- (void)_setLineBoundsOptions:(unint64_t)a3
+- (void)_setLineBoundsOptions:(unint64_t)options
 {
   [(NSParagraphStyle *)self _allocExtraData];
-  *(self->super._extraData + 8) = a3;
+  *(self->super._extraData + 8) = options;
   if (object_getClass(self) != __NSMutableParagraphStyleClass)
   {
-    [(NSMutableParagraphStyle *)self setAllowsHangingPunctuation:(a3 >> 2) & 1];
+    [(NSMutableParagraphStyle *)self setAllowsHangingPunctuation:(options >> 2) & 1];
 
-    [(NSMutableParagraphStyle *)self setUsesOpticalAlignment:(a3 >> 4) & 1];
+    [(NSMutableParagraphStyle *)self setUsesOpticalAlignment:(options >> 4) & 1];
   }
 }
 
-- (void)setAllowsHangingPunctuation:(BOOL)a3
+- (void)setAllowsHangingPunctuation:(BOOL)punctuation
 {
   extraData = self->super._extraData;
   if (extraData)
@@ -471,7 +471,7 @@ LABEL_2:
   }
 
   v5 = 4;
-  if (!a3)
+  if (!punctuation)
   {
     v5 = 0;
   }
@@ -481,7 +481,7 @@ LABEL_2:
   *(self->super._extraData + 8) = v6;
 }
 
-- (void)setUsesOpticalAlignment:(BOOL)a3
+- (void)setUsesOpticalAlignment:(BOOL)alignment
 {
   extraData = self->super._extraData;
   if (extraData)
@@ -490,7 +490,7 @@ LABEL_2:
   }
 
   v5 = 16;
-  if (!a3)
+  if (!alignment)
   {
     v5 = 0;
   }
@@ -523,9 +523,9 @@ LABEL_2:
 {
   if (baseWritingDirection == NSWritingDirectionNatural)
   {
-    v6 = [objc_opt_class() _defaultWritingDirection];
+    _defaultWritingDirection = [objc_opt_class() _defaultWritingDirection];
     os_unfair_lock_lock_with_options();
-    if (v6 == 1)
+    if (_defaultWritingDirection == 1)
     {
       v7 = 1536;
     }
@@ -617,9 +617,9 @@ LABEL_2:
   }
 }
 
-- (void)setCompositionLanguage:(int64_t)a3
+- (void)setCompositionLanguage:(int64_t)language
 {
-  if ([(NSParagraphStyle *)self compositionLanguage]!= a3)
+  if ([(NSParagraphStyle *)self compositionLanguage]!= language)
   {
     extraData = self->super._extraData;
     if (!extraData)
@@ -628,7 +628,7 @@ LABEL_2:
       extraData = self->super._extraData;
     }
 
-    extraData[11] = a3;
+    extraData[11] = language;
   }
 }
 
@@ -651,41 +651,41 @@ LABEL_2:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NSParagraphStyle allocWithZone:[(NSMutableParagraphStyle *)self zone]];
 
   return [(NSParagraphStyle *)v4 _initWithParagraphStyle:self];
 }
 
-- (void)setCodeBlockIntentLanguageHint:(id)a3
+- (void)setCodeBlockIntentLanguageHint:(id)hint
 {
   [(NSParagraphStyle *)self _allocExtraData];
   v5 = *(self->super._extraData + 14);
-  if (v5 != a3)
+  if (v5 != hint)
   {
 
-    *(self->super._extraData + 14) = [a3 copy];
+    *(self->super._extraData + 14) = [hint copy];
   }
 }
 
-- (void)_setPresentationIntents:(id)a3
+- (void)_setPresentationIntents:(id)intents
 {
   [(NSParagraphStyle *)self _allocExtraData];
   v5 = *(self->super._extraData + 12);
-  if (v5 != a3)
+  if (v5 != intents)
   {
 
-    *(self->super._extraData + 12) = [a3 copy];
+    *(self->super._extraData + 12) = [intents copy];
   }
 }
 
-- (void)_setListIntentOrdinal:(int64_t)a3
+- (void)_setListIntentOrdinal:(int64_t)ordinal
 {
-  if (a3 || self->super._extraData)
+  if (ordinal || self->super._extraData)
   {
     [(NSParagraphStyle *)self _allocExtraData];
-    *(self->super._extraData + 13) = a3;
+    *(self->super._extraData + 13) = ordinal;
   }
 }
 

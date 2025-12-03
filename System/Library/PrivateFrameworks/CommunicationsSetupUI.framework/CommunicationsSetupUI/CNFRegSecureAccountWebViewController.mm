@@ -1,5 +1,5 @@
 @interface CNFRegSecureAccountWebViewController
-- (CNFRegSecureAccountWebViewController)initWithRegController:(id)a3 account:(id)a4;
+- (CNFRegSecureAccountWebViewController)initWithRegController:(id)controller account:(id)account;
 - (id)authIdHeaderValue;
 - (id)authTokenHeaderValue;
 - (void)_incrementSigninFailureCount;
@@ -7,36 +7,36 @@
 - (void)_setupAccountHandlers;
 - (void)_showBadPasswordAlert;
 - (void)_showForgotPasswordAlert;
-- (void)_showRegistrationFailureWithError:(id)a3;
+- (void)_showRegistrationFailureWithError:(id)error;
 - (void)_showRequestPasswordAlert;
 @end
 
 @implementation CNFRegSecureAccountWebViewController
 
-- (CNFRegSecureAccountWebViewController)initWithRegController:(id)a3 account:(id)a4
+- (CNFRegSecureAccountWebViewController)initWithRegController:(id)controller account:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = CNFRegSecureAccountWebViewController;
-  v7 = [(CNFRegAccountWebViewController *)&v10 initWithRegController:a3];
+  v7 = [(CNFRegAccountWebViewController *)&v10 initWithRegController:controller];
   v8 = v7;
   if (v7)
   {
-    [(CNFRegSecureAccountWebViewController *)v7 setAccount:v6];
+    [(CNFRegSecureAccountWebViewController *)v7 setAccount:accountCopy];
     v8->_gotNewCredential = 0;
   }
 
   return v8;
 }
 
-- (void)_showRegistrationFailureWithError:(id)a3
+- (void)_showRegistrationFailureWithError:(id)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     if ([(CNFRegServerWebViewController *)self _shouldLog])
     {
       v7 = OSLogHandleForIDSCategory();
@@ -45,14 +45,14 @@
         *buf = 138412546;
         v41 = v5;
         v42 = 2048;
-        v43 = v6;
+        v43 = code;
         _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Received sign in error : %@ (%ld)", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
       {
         v34 = v5;
-        v35 = v6;
+        v35 = code;
         IMLogString();
       }
     }
@@ -63,8 +63,8 @@
 
   if (v9)
   {
-    v10 = [v5 userInfo];
-    v11 = [v10 objectForKey:@"cnf-customTitle"];
+    userInfo = [v5 userInfo];
+    v11 = [userInfo objectForKey:@"cnf-customTitle"];
     v12 = v11;
     if (v11)
     {
@@ -78,11 +78,11 @@
       v13 = [v14 localizedStringForKey:@"FACETIME_ACTIVATION_ERROR_TITLE" value:&stru_2856D3978 table:v15];
     }
 
-    v16 = [v5 localizedDescription];
-    v17 = v16;
-    if (v16)
+    localizedDescription = [v5 localizedDescription];
+    v17 = localizedDescription;
+    if (localizedDescription)
     {
-      v18 = v16;
+      v18 = localizedDescription;
     }
 
     else
@@ -92,8 +92,8 @@
       v18 = [v19 localizedStringForKey:@"FACETIME_SIGNIN_ERROR_GENERIC" value:&stru_2856D3978 table:v20];
     }
 
-    v21 = [v5 userInfo];
-    v22 = [v21 objectForKey:@"cnf-customButton"];
+    userInfo2 = [v5 userInfo];
+    v22 = [userInfo2 objectForKey:@"cnf-customButton"];
     v23 = v22;
     if (v22)
     {
@@ -116,8 +116,8 @@
     v28 = [MEMORY[0x277D750F8] actionWithTitle:v24 style:0 handler:v39];
     [v27 addAction:v28];
 
-    v29 = [v5 userInfo];
-    v30 = [v29 objectForKey:@"cnf-customActionTitle"];
+    userInfo3 = [v5 userInfo];
+    v30 = [userInfo3 objectForKey:@"cnf-customActionTitle"];
 
     if (v30)
     {
@@ -127,7 +127,7 @@
       v36[2] = __74__CNFRegSecureAccountWebViewController__showRegistrationFailureWithError___block_invoke_2;
       v36[3] = &unk_278DE8420;
       v37 = v5;
-      v38 = self;
+      selfCopy = self;
       v32 = [v31 actionWithTitle:v30 style:0 handler:v36];
       [v27 addAction:v32];
     }
@@ -210,10 +210,10 @@ void __74__CNFRegSecureAccountWebViewController__showRegistrationFailureWithErro
   v9 = CNFRegStringTableName();
   v10 = [v8 localizedStringForKey:@"FACETIME_SIGNIN_ERROR_INVALID_CREDENTIALS_FOR_%@" value:&stru_2856D3978 table:v9];
 
-  v11 = [(CNFRegSecureAccountWebViewController *)self account];
-  v12 = [v11 loginDisplayString];
+  account = [(CNFRegSecureAccountWebViewController *)self account];
+  loginDisplayString = [account loginDisplayString];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:v10, v12];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:v10, loginDisplayString];
   v14 = CommunicationsSetupUIBundle();
   v15 = CNFRegStringTableName();
   v16 = [v14 localizedStringForKey:@"FACETIME_ALERT_OK" value:&stru_2856D3978 table:v15];
@@ -255,8 +255,8 @@ uint64_t __61__CNFRegSecureAccountWebViewController__showBadPasswordAlert__block
 
   v7 = [v4 localizedStringForKey:v6 value:&stru_2856D3978 table:v5];
 
-  v8 = [(CNFRegSecureAccountWebViewController *)self account];
-  v9 = [v8 loginDisplayString];
+  account = [(CNFRegSecureAccountWebViewController *)self account];
+  loginDisplayString = [account loginDisplayString];
 
   v10 = CommunicationsSetupUIBundle();
   v11 = CNFRegStringTableName();
@@ -266,7 +266,7 @@ uint64_t __61__CNFRegSecureAccountWebViewController__showBadPasswordAlert__block
   v14 = CNFRegStringTableName();
   v15 = [v13 localizedStringForKey:@"FACETIME_SIGNIN_BUTTON_LABEL" value:&stru_2856D3978 table:v14];
 
-  v16 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v9 preferredStyle:1];
+  v16 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:loginDisplayString preferredStyle:1];
   [v16 addTextFieldWithConfigurationHandler:&__block_literal_global_9];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -282,7 +282,7 @@ uint64_t __61__CNFRegSecureAccountWebViewController__showBadPasswordAlert__block
   v21[2] = __65__CNFRegSecureAccountWebViewController__showRequestPasswordAlert__block_invoke_3;
   v21[3] = &unk_278DE8420;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v19 = v16;
   v20 = [v18 actionWithTitle:v15 style:0 handler:v21];
   [v19 addAction:v20];
@@ -326,9 +326,9 @@ void __65__CNFRegSecureAccountWebViewController__showRequestPasswordAlert__block
 
 - (void)_launchForgotPasswordUrl
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v2 = CNFRegiForgotURL();
-  [v3 openURL:v2 withCompletionHandler:0];
+  [mEMORY[0x277D75128] openURL:v2 withCompletionHandler:0];
 }
 
 - (void)_incrementSigninFailureCount
@@ -391,30 +391,30 @@ void __65__CNFRegSecureAccountWebViewController__showRequestPasswordAlert__block
 
 - (id)authIdHeaderValue
 {
-  v2 = [(CNFRegSecureAccountWebViewController *)self account];
-  v3 = [v2 authorizationID];
+  account = [(CNFRegSecureAccountWebViewController *)self account];
+  authorizationID = [account authorizationID];
 
-  return v3;
+  return authorizationID;
 }
 
 - (id)authTokenHeaderValue
 {
-  v2 = [(CNFRegSecureAccountWebViewController *)self account];
-  v3 = [v2 authorizationToken];
+  account = [(CNFRegSecureAccountWebViewController *)self account];
+  authorizationToken = [account authorizationToken];
 
-  return v3;
+  return authorizationToken;
 }
 
 - (void)_setupAccountHandlers
 {
-  v3 = [(CNFRegServerWebViewController *)self regController];
-  [v3 removeAllHandlers];
+  regController = [(CNFRegServerWebViewController *)self regController];
+  [regController removeAllHandlers];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__CNFRegSecureAccountWebViewController__setupAccountHandlers__block_invoke;
   v4[3] = &unk_278DE85A8;
   v4[4] = self;
-  [v3 setAccountRegistrationBlock:v4];
+  [regController setAccountRegistrationBlock:v4];
 }
 
 void __61__CNFRegSecureAccountWebViewController__setupAccountHandlers__block_invoke(uint64_t a1, void *a2, void *a3)

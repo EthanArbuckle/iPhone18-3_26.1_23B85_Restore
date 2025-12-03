@@ -1,10 +1,10 @@
 @interface BSSecTask
-+ (id)_taskForAuditToken:(uint64_t)a1;
-+ (id)secTaskForAuditToken:(uint64_t)a1;
++ (id)_taskForAuditToken:(uint64_t)token;
++ (id)secTaskForAuditToken:(uint64_t)token;
 + (id)secTaskForCurrentProcess;
-- (id)valueForEntitlement:(uint64_t)a1;
+- (id)valueForEntitlement:(uint64_t)entitlement;
 - (os_unfair_lock_s)representsPlatformBinary;
-- (uint64_t)BOOLForEntitlement:(uint64_t)a1;
+- (uint64_t)BOOLForEntitlement:(uint64_t)entitlement;
 - (void)dealloc;
 @end
 
@@ -46,7 +46,7 @@ void __37__BSSecTask_secTaskForCurrentProcess__block_invoke()
   qword_1ED44FF80 = v0;
 }
 
-+ (id)_taskForAuditToken:(uint64_t)a1
++ (id)_taskForAuditToken:(uint64_t)token
 {
   v22 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -92,9 +92,9 @@ void __37__BSSecTask_secTaskForCurrentProcess__block_invoke()
       v10 = qword_1ED44FF88;
       if (!qword_1ED44FF88)
       {
-        v11 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+        strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
         v12 = qword_1ED44FF88;
-        qword_1ED44FF88 = v11;
+        qword_1ED44FF88 = strongToWeakObjectsMapTable;
 
         v10 = qword_1ED44FF88;
       }
@@ -117,7 +117,7 @@ void __37__BSSecTask_secTaskForCurrentProcess__block_invoke()
   return v15;
 }
 
-+ (id)secTaskForAuditToken:(uint64_t)a1
++ (id)secTaskForAuditToken:(uint64_t)token
 {
   objc_opt_self();
   v3 = a2[1];
@@ -128,39 +128,39 @@ void __37__BSSecTask_secTaskForCurrentProcess__block_invoke()
   return v4;
 }
 
-- (uint64_t)BOOLForEntitlement:(uint64_t)a1
+- (uint64_t)BOOLForEntitlement:(uint64_t)entitlement
 {
   v3 = a2;
-  if (a1)
+  if (entitlement)
   {
-    v4 = [(BSSecTask *)a1 valueForEntitlement:v3];
+    v4 = [(BSSecTask *)entitlement valueForEntitlement:v3];
     if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)valueForEntitlement:(uint64_t)a1
+- (id)valueForEntitlement:(uint64_t)entitlement
 {
   v3 = a2;
-  if (a1)
+  if (entitlement)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v4 = BSSecTaskCopyEntitlementValue(*(a1 + 8), v3);
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_lock((entitlement + 16));
+    v4 = BSSecTaskCopyEntitlementValue(*(entitlement + 8), v3);
+    os_unfair_lock_unlock((entitlement + 16));
   }
 
   else

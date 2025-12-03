@@ -1,8 +1,8 @@
 @interface WBSPasswordBreachPeriodicLookupActivity
 - (WBSPasswordBreachPeriodicLookupActivity)init;
-- (void)_activityDidTransitionToRunState:(id)a3;
+- (void)_activityDidTransitionToRunState:(id)state;
 - (void)_registerActivity;
-- (void)_runActivityWithCompletionHandler:(id)a3;
+- (void)_runActivityWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachPeriodicLookupActivity
@@ -71,9 +71,9 @@ void __60__WBSPasswordBreachPeriodicLookupActivity__registerActivity__block_invo
   }
 }
 
-- (void)_activityDidTransitionToRunState:(id)a3
+- (void)_activityDidTransitionToRunState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -82,7 +82,7 @@ void __60__WBSPasswordBreachPeriodicLookupActivity__registerActivity__block_invo
   }
 
   v6 = os_transaction_create();
-  if (!xpc_activity_set_state(v4, 4))
+  if (!xpc_activity_set_state(stateCopy, 4))
   {
     v7 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -95,10 +95,10 @@ void __60__WBSPasswordBreachPeriodicLookupActivity__registerActivity__block_invo
   v17[1] = 3221225472;
   v17[2] = __76__WBSPasswordBreachPeriodicLookupActivity__activityDidTransitionToRunState___block_invoke;
   v17[3] = &unk_1E7FB6E30;
-  v18 = v4;
+  v18 = stateCopy;
   v19 = v6;
   v15 = v6;
-  v16 = v4;
+  v16 = stateCopy;
   [(WBSPasswordBreachPeriodicLookupActivity *)self _runActivityWithCompletionHandler:v17];
 }
 
@@ -121,15 +121,15 @@ void __76__WBSPasswordBreachPeriodicLookupActivity__activityDidTransitionToRunSt
   }
 }
 
-- (void)_runActivityWithCompletionHandler:(id)a3
+- (void)_runActivityWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__WBSPasswordBreachPeriodicLookupActivity__runActivityWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E7FC90F0;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v5];
 }
 

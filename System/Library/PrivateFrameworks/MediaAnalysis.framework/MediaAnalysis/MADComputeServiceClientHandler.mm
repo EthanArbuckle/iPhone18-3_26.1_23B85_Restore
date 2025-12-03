@@ -1,30 +1,30 @@
 @interface MADComputeServiceClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
-- (MADComputeServiceClientHandler)initWithXPCConnection:(id)a3;
-- (void)_storeComputeServiceRequests:(id)a3 assetURLs:(id)a4 extensionData:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8;
-- (void)_storeComputeServiceRequests:(id)a3 localIdentifiers:(id)a4 photoLibraryURL:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8;
++ (id)clientHandlerWithXPCConnection:(id)connection;
+- (MADComputeServiceClientHandler)initWithXPCConnection:(id)connection;
+- (void)_storeComputeServiceRequests:(id)requests assetURLs:(id)ls extensionData:(id)data resultDirectoryURL:(id)l resultExtensionData:(id)extensionData requestID:(id)d;
+- (void)_storeComputeServiceRequests:(id)requests localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL resultExtensionData:(id)data requestID:(id)d;
 - (void)cancelAllRequests;
-- (void)cancelWithRequestID:(id)a3;
-- (void)removeWithRequestID:(id)a3 reply:(id)a4;
-- (void)requestProcessing:(id)a3 assetURLs:(id)a4 extensionData:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9;
-- (void)requestProcessing:(id)a3 localIdentifiers:(id)a4 photoLibraryURL:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9;
-- (void)resumeWithRequestID:(id)a3 reply:(id)a4;
-- (void)scheduleProcessing:(id)a3 assetURLs:(id)a4 extensionData:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9;
-- (void)scheduleProcessing:(id)a3 localIdentifiers:(id)a4 photoLibraryURL:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9;
+- (void)cancelWithRequestID:(id)d;
+- (void)removeWithRequestID:(id)d reply:(id)reply;
+- (void)requestProcessing:(id)processing assetURLs:(id)ls extensionData:(id)data resultDirectoryURL:(id)l resultExtensionData:(id)extensionData requestID:(id)d reply:(id)reply;
+- (void)requestProcessing:(id)processing localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL resultExtensionData:(id)data requestID:(id)d reply:(id)reply;
+- (void)resumeWithRequestID:(id)d reply:(id)reply;
+- (void)scheduleProcessing:(id)processing assetURLs:(id)ls extensionData:(id)data resultDirectoryURL:(id)l resultExtensionData:(id)extensionData requestID:(id)d reply:(id)reply;
+- (void)scheduleProcessing:(id)processing localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL resultExtensionData:(id)data requestID:(id)d reply:(id)reply;
 @end
 
 @implementation MADComputeServiceClientHandler
 
-- (MADComputeServiceClientHandler)initWithXPCConnection:(id)a3
+- (MADComputeServiceClientHandler)initWithXPCConnection:(id)connection
 {
-  v33 = a3;
+  connectionCopy = connection;
   v44.receiver = self;
   v44.super_class = MADComputeServiceClientHandler;
   v5 = [(MADComputeServiceClientHandler *)&v44 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_connection, a3);
+    objc_storeStrong(&v5->_connection, connection);
     [(NSXPCConnection *)v6->_connection setExportedObject:v6];
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MADComputeServiceClientProtocol];
     [(NSXPCConnection *)v6->_connection setRemoteObjectInterface:v7];
@@ -32,11 +32,11 @@
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MADComputeServiceServerProtocol];
     [(NSXPCConnection *)v6->_connection setExportedInterface:v8];
 
-    v9 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
-    [MADComputeService configureClientInterface:v9];
+    remoteObjectInterface = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    [MADComputeService configureClientInterface:remoteObjectInterface];
 
-    v10 = [(NSXPCConnection *)v6->_connection exportedInterface];
-    [MADComputeService configureServerInterface:v10];
+    exportedInterface = [(NSXPCConnection *)v6->_connection exportedInterface];
+    [MADComputeService configureServerInterface:exportedInterface];
 
     objc_initWeak(&location, v6);
     connection = v6->_connection;
@@ -153,36 +153,36 @@
   return v6;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (void)_storeComputeServiceRequests:(id)a3 assetURLs:(id)a4 extensionData:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8
+- (void)_storeComputeServiceRequests:(id)requests assetURLs:(id)ls extensionData:(id)data resultDirectoryURL:(id)l resultExtensionData:(id)extensionData requestID:(id)d
 {
-  v25 = a3;
-  v14 = a4;
-  v29 = a5;
-  v27 = a6;
-  v28 = a7;
-  v30 = a8;
+  requestsCopy = requests;
+  lsCopy = ls;
+  dataCopy = data;
+  lCopy = l;
+  extensionDataCopy = extensionData;
+  dCopy = d;
   v26 = 0;
   v15 = VCPLogToOSLogType[6];
-  while (v26 < [v25 count])
+  while (v26 < [requestsCopy count])
   {
     context = objc_autoreleasePoolPush();
-    v16 = [v25 objectAtIndexedSubscript:v26];
-    for (i = 0; i < [v14 count]; ++i)
+    v16 = [requestsCopy objectAtIndexedSubscript:v26];
+    for (i = 0; i < [lsCopy count]; ++i)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = [v14 objectAtIndexedSubscript:i];
-      v20 = [v29 objectAtIndexedSubscript:i];
+      v19 = [lsCopy objectAtIndexedSubscript:i];
+      v20 = [dataCopy objectAtIndexedSubscript:i];
       clientBundleID = self->_clientBundleID;
       v31 = 0;
-      v22 = [MADManagedRequest entryWithRequestID:v30 bundleIdentifier:clientBundleID sourceIdentifier:@"FileSystem" assetIdentifier:0 assetURL:v19 assetURLExtension:v20 resultDirectoryURL:v27 resultDirectoryURLExtension:v28 request:v16 error:&v31];
+      v22 = [MADManagedRequest entryWithRequestID:dCopy bundleIdentifier:clientBundleID sourceIdentifier:@"FileSystem" assetIdentifier:0 assetURL:v19 assetURLExtension:v20 resultDirectoryURL:lCopy resultDirectoryURLExtension:extensionDataCopy request:v16 error:&v31];
       v23 = v31;
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v15))
       {
@@ -199,28 +199,28 @@
   }
 }
 
-- (void)_storeComputeServiceRequests:(id)a3 localIdentifiers:(id)a4 photoLibraryURL:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8
+- (void)_storeComputeServiceRequests:(id)requests localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL resultExtensionData:(id)data requestID:(id)d
 {
-  v25 = a3;
-  v14 = a4;
-  v29 = a5;
-  v27 = a6;
-  v28 = a7;
-  v30 = a8;
+  requestsCopy = requests;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  dCopy = d;
   v26 = 0;
   v15 = VCPLogToOSLogType[6];
-  while (v26 < [v25 count])
+  while (v26 < [requestsCopy count])
   {
     context = objc_autoreleasePoolPush();
-    v16 = [v25 objectAtIndexedSubscript:v26];
-    for (i = 0; i < [v14 count]; ++i)
+    v16 = [requestsCopy objectAtIndexedSubscript:v26];
+    for (i = 0; i < [identifiersCopy count]; ++i)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = [v14 objectAtIndexedSubscript:i];
+      v19 = [identifiersCopy objectAtIndexedSubscript:i];
       clientBundleID = self->_clientBundleID;
-      v21 = [v29 path];
+      path = [lCopy path];
       v31 = 0;
-      v22 = [MADManagedRequest entryWithRequestID:v30 bundleIdentifier:clientBundleID sourceIdentifier:v21 assetIdentifier:v19 assetURL:0 assetURLExtension:0 resultDirectoryURL:v27 resultDirectoryURLExtension:v28 request:v16 error:&v31];
+      v22 = [MADManagedRequest entryWithRequestID:dCopy bundleIdentifier:clientBundleID sourceIdentifier:path assetIdentifier:v19 assetURL:0 assetURLExtension:0 resultDirectoryURL:rLCopy resultDirectoryURLExtension:dataCopy request:v16 error:&v31];
       v23 = v31;
 
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v15))
@@ -238,21 +238,21 @@
   }
 }
 
-- (void)requestProcessing:(id)a3 assetURLs:(id)a4 extensionData:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9
+- (void)requestProcessing:(id)processing assetURLs:(id)ls extensionData:(id)data resultDirectoryURL:(id)l resultExtensionData:(id)extensionData requestID:(id)d reply:(id)reply
 {
-  v45 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v46 = a7;
-  v18 = a8;
-  v42 = a9;
+  processingCopy = processing;
+  lsCopy = ls;
+  dataCopy = data;
+  lCopy = l;
+  extensionDataCopy = extensionData;
+  dCopy = d;
+  replyCopy = reply;
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
   v56[2] = sub_1000B4A70;
   v56[3] = &unk_100285690;
   v56[4] = self;
-  v19 = v18;
+  v19 = dCopy;
   v57 = v19;
   v43 = objc_retainBlock(v56);
   v54[0] = _NSConcreteStackBlock;
@@ -263,8 +263,8 @@
   v20 = v19;
   v55 = v20;
   v44 = objc_retainBlock(v54);
-  v21 = [v15 count];
-  if (v21 != [v16 count])
+  v21 = [lsCopy count];
+  if (v21 != [dataCopy count])
   {
     v58 = NSLocalizedDescriptionKey;
     v22 = [NSString stringWithFormat:@"Asset URLs and sandbox extension data count mismatches!"];
@@ -272,15 +272,15 @@
     v23 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v24 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v23];
 
-    v42[2](v42, v24);
+    replyCopy[2](replyCopy, v24);
   }
 
   v41 = +[NSDate now];
-  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:v45 assetURLs:v15 extensionData:v16 resultDirectoryURL:v17 resultExtensionData:v46 requestID:v20];
-  for (i = 0; i < [v15 count]; ++i)
+  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:processingCopy assetURLs:lsCopy extensionData:dataCopy resultDirectoryURL:lCopy resultExtensionData:extensionDataCopy requestID:v20];
+  for (i = 0; i < [lsCopy count]; ++i)
   {
-    v26 = [v15 objectAtIndexedSubscript:i];
-    v27 = [v16 objectAtIndexedSubscript:i];
+    v26 = [lsCopy objectAtIndexedSubscript:i];
+    v27 = [dataCopy objectAtIndexedSubscript:i];
     _CFURLAttachSecurityScopeToFileURL();
   }
 
@@ -292,17 +292,17 @@
   v49[4] = self;
   v38 = v41;
   v50 = v38;
-  v28 = v45;
+  v28 = processingCopy;
   v51 = v28;
-  v29 = v15;
+  v29 = lsCopy;
   v52 = v29;
-  v30 = v42;
+  v30 = replyCopy;
   v53 = v30;
   v39 = objc_retainBlock(v49);
-  v40 = v17;
+  v40 = lCopy;
   v31 = v28;
   v32 = v29;
-  v33 = [MADComputeServiceProcessingTask taskWithRequests:v28 requestID:v20 assetURLs:v29 resultDirectoryURL:v17 cancelBlock:0 progressHandler:v43 resultsHandler:v44 completionHandler:v39];
+  v33 = [MADComputeServiceProcessingTask taskWithRequests:v28 requestID:v20 assetURLs:v29 resultDirectoryURL:lCopy cancelBlock:0 progressHandler:v43 resultsHandler:v44 completionHandler:v39];
   queuingTaskScheduler = self->_queuingTaskScheduler;
   v35 = v20;
   v36 = [v20 hash];
@@ -315,21 +315,21 @@
   [(MADServiceClientTaskQueuingScheduler *)queuingTaskScheduler submitClientTask:v33 withRequestID:v36 schedulingErrorHandler:v47];
 }
 
-- (void)requestProcessing:(id)a3 localIdentifiers:(id)a4 photoLibraryURL:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9
+- (void)requestProcessing:(id)processing localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL resultExtensionData:(id)data requestID:(id)d reply:(id)reply
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v37 = a9;
+  processingCopy = processing;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  dCopy = d;
+  replyCopy = reply;
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_1000B5704;
   v49[3] = &unk_100285690;
   v49[4] = self;
-  v21 = v20;
+  v21 = dCopy;
   v50 = v21;
   v39 = objc_retainBlock(v49);
   v47[0] = _NSConcreteStackBlock;
@@ -340,11 +340,11 @@
   v22 = v21;
   v48 = v22;
   v38 = objc_retainBlock(v47);
-  v35 = v18;
-  v36 = v17;
-  v34 = v19;
+  v35 = rLCopy;
+  v36 = lCopy;
+  v34 = dataCopy;
   v33 = +[NSDate now];
-  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:v15 localIdentifiers:v16 photoLibraryURL:v17 resultDirectoryURL:v18 resultExtensionData:v19 requestID:v22];
+  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:processingCopy localIdentifiers:identifiersCopy photoLibraryURL:lCopy resultDirectoryURL:rLCopy resultExtensionData:dataCopy requestID:v22];
   _CFURLAttachSecurityScopeToFileURL();
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
@@ -353,15 +353,15 @@
   v42[4] = self;
   v23 = v33;
   v43 = v23;
-  v24 = v15;
+  v24 = processingCopy;
   v44 = v24;
-  v25 = v16;
+  v25 = identifiersCopy;
   v45 = v25;
-  v26 = v18;
-  v27 = v37;
+  v26 = rLCopy;
+  v27 = replyCopy;
   v46 = v27;
   v28 = objc_retainBlock(v42);
-  v29 = [MADComputeServiceProcessingTask taskWithRequests:v24 requestID:v22 localIdentifiers:v25 photoLibraryURL:v17 resultDirectoryURL:v26 cancelBlock:0 progressHandler:v39 resultsHandler:v38 completionHandler:v28];
+  v29 = [MADComputeServiceProcessingTask taskWithRequests:v24 requestID:v22 localIdentifiers:v25 photoLibraryURL:lCopy resultDirectoryURL:v26 cancelBlock:0 progressHandler:v39 resultsHandler:v38 completionHandler:v28];
   queuingTaskScheduler = self->_queuingTaskScheduler;
   v31 = [v22 hash];
   v40[0] = _NSConcreteStackBlock;
@@ -373,17 +373,17 @@
   [(MADServiceClientTaskQueuingScheduler *)queuingTaskScheduler submitClientTask:v29 withRequestID:v31 schedulingErrorHandler:v40];
 }
 
-- (void)scheduleProcessing:(id)a3 assetURLs:(id)a4 extensionData:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9
+- (void)scheduleProcessing:(id)processing assetURLs:(id)ls extensionData:(id)data resultDirectoryURL:(id)l resultExtensionData:(id)extensionData requestID:(id)d reply:(id)reply
 {
-  v29 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [v15 count];
-  if (v21 != [v16 count])
+  processingCopy = processing;
+  lsCopy = ls;
+  dataCopy = data;
+  lCopy = l;
+  extensionDataCopy = extensionData;
+  dCopy = d;
+  replyCopy = reply;
+  v21 = [lsCopy count];
+  if (v21 != [dataCopy count])
   {
     v36 = NSLocalizedDescriptionKey;
     v22 = [NSString stringWithFormat:@"Asset URLs and sandbox extension data count mismatches!"];
@@ -391,10 +391,10 @@
     v23 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v24 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v23];
 
-    v20[2](v20, 0, v24);
+    replyCopy[2](replyCopy, 0, v24);
   }
 
-  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:v29 assetURLs:v15 extensionData:v16 resultDirectoryURL:v17 resultExtensionData:v18 requestID:v19, v29];
+  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:processingCopy assetURLs:lsCopy extensionData:dataCopy resultDirectoryURL:lCopy resultExtensionData:extensionDataCopy requestID:dCopy, processingCopy];
   v25 = +[MADComputeServiceBackgroundSystemTask sharedTask];
   v31 = 0;
   [v25 submitTask:&v31];
@@ -417,13 +417,13 @@
     }
   }
 
-  v20[2](v20, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (void)scheduleProcessing:(id)a3 localIdentifiers:(id)a4 photoLibraryURL:(id)a5 resultDirectoryURL:(id)a6 resultExtensionData:(id)a7 requestID:(id)a8 reply:(id)a9
+- (void)scheduleProcessing:(id)processing localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL resultExtensionData:(id)data requestID:(id)d reply:(id)reply
 {
-  v16 = a9;
-  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:a3 localIdentifiers:a4 photoLibraryURL:a5 resultDirectoryURL:a6 resultExtensionData:a7 requestID:a8];
+  replyCopy = reply;
+  [(MADComputeServiceClientHandler *)self _storeComputeServiceRequests:processing localIdentifiers:identifiers photoLibraryURL:l resultDirectoryURL:rL resultExtensionData:data requestID:d];
   v17 = +[MADComputeServiceBackgroundSystemTask sharedTask];
   v21 = 0;
   [v17 submitTask:&v21];
@@ -446,21 +446,21 @@
     }
   }
 
-  v16[2](v16, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (void)resumeWithRequestID:(id)a3 reply:(id)a4
+- (void)resumeWithRequestID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v21 = v6;
+  dCopy = d;
+  replyCopy = reply;
+  v21 = dCopy;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v8 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v8))
     {
       *buf = 138412290;
-      v32 = v6;
+      v32 = dCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[MADComputeServiceClientHandler] Resuming %@", buf, 0xCu);
     }
   }
@@ -470,7 +470,7 @@
   v29[2] = sub_1000B685C;
   v29[3] = &unk_100285690;
   v29[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v30 = v9;
   v10 = objc_retainBlock(v29);
   v27[0] = _NSConcreteStackBlock;
@@ -481,14 +481,14 @@
   v11 = v9;
   v28 = v11;
   v12 = objc_retainBlock(v27);
-  [NSDate now:v7];
+  [NSDate now:replyCopy];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000B6D60;
   v24[3] = &unk_100285580;
   v13 = v24[4] = self;
   v25 = v13;
-  v14 = v7;
+  v14 = replyCopy;
   v26 = v14;
   v15 = objc_retainBlock(v24);
   v16 = [MADComputeServiceProcessingTask taskWithRequestID:v11 cancelBlock:0 progressHandler:v10 resultsHandler:v12 completionHandler:v15];
@@ -525,63 +525,63 @@
     }
   }
 
-  v4 = [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler cancelAllTasks];
+  cancelAllTasks = [(MADServiceClientTaskQueuingScheduler *)self->_queuingTaskScheduler cancelAllTasks];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v6 = 134217984;
-      v7 = v4;
+      v7 = cancelAllTasks;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MADComputeServiceClientHandler] Canceled %lu tasks", &v6, 0xCu);
     }
   }
 }
 
-- (void)cancelWithRequestID:(id)a3
+- (void)cancelWithRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = dCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MADComputeServiceClientHandler] Canceling %@", &v7, 0xCu);
     }
   }
 
-  -[MADServiceClientTaskQueuingScheduler cancelTaskWithRequestID:](self->_queuingTaskScheduler, "cancelTaskWithRequestID:", [v4 hash]);
+  -[MADServiceClientTaskQueuingScheduler cancelTaskWithRequestID:](self->_queuingTaskScheduler, "cancelTaskWithRequestID:", [dCopy hash]);
   if (MediaAnalysisLogLevel() >= 6)
   {
     v6 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = dCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[MADComputeServiceClientHandler] Canceled %@", &v7, 0xCu);
     }
   }
 }
 
-- (void)removeWithRequestID:(id)a3 reply:(id)a4
+- (void)removeWithRequestID:(id)d reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v7 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[MADComputeServiceClientHandler] Removing %@", buf, 0xCu);
     }
   }
 
   v15 = 0;
-  v8 = [MADManagedRequest removeRequest:v5 error:&v15];
+  v8 = [MADManagedRequest removeRequest:dCopy error:&v15];
   v9 = v15;
   if (v8)
   {
@@ -591,7 +591,7 @@
       if (os_log_type_enabled(&_os_log_default, v10))
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = dCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[MADComputeServiceClientHandler] Removed %@", buf, 0xCu);
       }
     }
@@ -611,7 +611,7 @@
       if (v14)
       {
         *buf = 138412546;
-        v17 = v5;
+        v17 = dCopy;
         v18 = 2112;
         v19 = v9;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[MADComputeServiceClientHandler] Failed to remove %@ - %@", buf, 0x16u);
@@ -620,7 +620,7 @@
     }
   }
 
-  (v6)[2](v6, v8, v11);
+  (replyCopy)[2](replyCopy, v8, v11);
 }
 
 @end

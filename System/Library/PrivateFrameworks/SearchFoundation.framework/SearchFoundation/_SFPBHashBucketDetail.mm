@@ -1,35 +1,35 @@
 @interface _SFPBHashBucketDetail
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBHashBucketDetail)initWithDictionary:(id)a3;
-- (_SFPBHashBucketDetail)initWithFacade:(id)a3;
-- (_SFPBHashBucketDetail)initWithJSON:(id)a3;
+- (_SFPBHashBucketDetail)initWithDictionary:(id)dictionary;
+- (_SFPBHashBucketDetail)initWithFacade:(id)facade;
+- (_SFPBHashBucketDetail)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addHash_details:(id)a3;
-- (void)setHash_details:(id)a3;
-- (void)setHash_prefix:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addHash_details:(id)hash_details;
+- (void)setHash_details:(id)hash_details;
+- (void)setHash_prefix:(id)hash_prefix;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBHashBucketDetail
 
-- (_SFPBHashBucketDetail)initWithFacade:(id)a3
+- (_SFPBHashBucketDetail)initWithFacade:(id)facade
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBHashBucketDetail *)self init];
   if (v5)
   {
-    v6 = [v4 hash_prefix];
+    hash_prefix = [facadeCopy hash_prefix];
 
-    if (v6)
+    if (hash_prefix)
     {
-      v7 = [v4 hash_prefix];
-      [(_SFPBHashBucketDetail *)v5 setHash_prefix:v7];
+      hash_prefix2 = [facadeCopy hash_prefix];
+      [(_SFPBHashBucketDetail *)v5 setHash_prefix:hash_prefix2];
     }
 
-    v8 = [v4 hash_details];
-    if (v8)
+    hash_details = [facadeCopy hash_details];
+    if (hash_details)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -43,8 +43,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v4 hash_details];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    hash_details2 = [facadeCopy hash_details];
+    v11 = [hash_details2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -55,7 +55,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(hash_details2);
           }
 
           v15 = [[_SFPBHashBucketDetail_HashDetail alloc] initWithFacade:*(*(&v19 + 1) + 8 * i)];
@@ -65,7 +65,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [hash_details2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -79,16 +79,16 @@
   return v5;
 }
 
-- (_SFPBHashBucketDetail)initWithDictionary:(id)a3
+- (_SFPBHashBucketDetail)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = _SFPBHashBucketDetail;
   v5 = [(_SFPBHashBucketDetail *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hashPrefix"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hashPrefix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(_SFPBHashBucketDetail *)v5 setHash_prefix:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hashDetails"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hashDetails"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,30 +149,30 @@
   return v5;
 }
 
-- (_SFPBHashBucketDetail)initWithJSON:(id)a3
+- (_SFPBHashBucketDetail)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBHashBucketDetail *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBHashBucketDetail *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBHashBucketDetail *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -186,10 +186,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_hash_details count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -209,16 +209,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -228,43 +228,43 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"hashDetails"];
+    [dictionary setObject:array forKeyedSubscript:@"hashDetails"];
   }
 
   if (self->_hash_prefix)
   {
-    v12 = [(_SFPBHashBucketDetail *)self hash_prefix];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"hashPrefix"];
+    hash_prefix = [(_SFPBHashBucketDetail *)self hash_prefix];
+    v13 = [hash_prefix copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"hashPrefix"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBHashBucketDetail *)self hash_prefix];
-  v6 = [v4 hash_prefix];
-  if ((v5 != 0) == (v6 == 0))
+  hash_prefix = [(_SFPBHashBucketDetail *)self hash_prefix];
+  hash_prefix2 = [equalCopy hash_prefix];
+  if ((hash_prefix != 0) == (hash_prefix2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBHashBucketDetail *)self hash_prefix];
-  if (v7)
+  hash_prefix3 = [(_SFPBHashBucketDetail *)self hash_prefix];
+  if (hash_prefix3)
   {
-    v8 = v7;
-    v9 = [(_SFPBHashBucketDetail *)self hash_prefix];
-    v10 = [v4 hash_prefix];
-    v11 = [v9 isEqual:v10];
+    v8 = hash_prefix3;
+    hash_prefix4 = [(_SFPBHashBucketDetail *)self hash_prefix];
+    hash_prefix5 = [equalCopy hash_prefix];
+    v11 = [hash_prefix4 isEqual:hash_prefix5];
 
     if (!v11)
     {
@@ -276,12 +276,12 @@
   {
   }
 
-  v5 = [(_SFPBHashBucketDetail *)self hash_details];
-  v6 = [v4 hash_details];
-  if ((v5 != 0) != (v6 == 0))
+  hash_prefix = [(_SFPBHashBucketDetail *)self hash_details];
+  hash_prefix2 = [equalCopy hash_details];
+  if ((hash_prefix != 0) != (hash_prefix2 == 0))
   {
-    v12 = [(_SFPBHashBucketDetail *)self hash_details];
-    if (!v12)
+    hash_details = [(_SFPBHashBucketDetail *)self hash_details];
+    if (!hash_details)
     {
 
 LABEL_15:
@@ -289,10 +289,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBHashBucketDetail *)self hash_details];
-    v15 = [v4 hash_details];
-    v16 = [v14 isEqual:v15];
+    v13 = hash_details;
+    hash_details2 = [(_SFPBHashBucketDetail *)self hash_details];
+    hash_details3 = [equalCopy hash_details];
+    v16 = [hash_details2 isEqual:hash_details3];
 
     if (v16)
     {
@@ -312,22 +312,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBHashBucketDetail *)self hash_prefix];
-  if (v5)
+  toCopy = to;
+  hash_prefix = [(_SFPBHashBucketDetail *)self hash_prefix];
+  if (hash_prefix)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBHashBucketDetail *)self hash_details];
+  hash_details = [(_SFPBHashBucketDetail *)self hash_details];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [hash_details countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -339,7 +339,7 @@ LABEL_13:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hash_details);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -348,7 +348,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [hash_details countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -357,36 +357,36 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addHash_details:(id)a3
+- (void)addHash_details:(id)hash_details
 {
-  v4 = a3;
+  hash_detailsCopy = hash_details;
   hash_details = self->_hash_details;
-  v8 = v4;
+  v8 = hash_detailsCopy;
   if (!hash_details)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_hash_details;
-    self->_hash_details = v6;
+    self->_hash_details = array;
 
-    v4 = v8;
+    hash_detailsCopy = v8;
     hash_details = self->_hash_details;
   }
 
-  [(NSArray *)hash_details addObject:v4];
+  [(NSArray *)hash_details addObject:hash_detailsCopy];
 }
 
-- (void)setHash_details:(id)a3
+- (void)setHash_details:(id)hash_details
 {
-  v4 = [a3 copy];
+  v4 = [hash_details copy];
   hash_details = self->_hash_details;
   self->_hash_details = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setHash_prefix:(id)a3
+- (void)setHash_prefix:(id)hash_prefix
 {
-  v4 = [a3 copy];
+  v4 = [hash_prefix copy];
   hash_prefix = self->_hash_prefix;
   self->_hash_prefix = v4;
 

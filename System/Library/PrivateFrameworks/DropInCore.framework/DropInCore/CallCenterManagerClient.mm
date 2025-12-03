@@ -1,33 +1,33 @@
 @interface CallCenterManagerClient
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
 @end
 
 @implementation CallCenterManagerClient
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249E073D4(v6, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_249E073D4(managerCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249E078D4(v6, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_249E078D4(managerCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249E08530(v6, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_249E08530(managerCopy, conversationCopy);
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface FavoriteColorPickerView.Coordinator
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path;
 - (_TtCV20ColorPickerUIService23FavoriteColorPickerView11Coordinator)init;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)showDeleteCallout:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)showDeleteCallout:(id)callout;
 @end
 
 @implementation FavoriteColorPickerView.Coordinator
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -15,14 +15,14 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100031894();
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -34,11 +34,11 @@
   return 0;
 }
 
-- (void)showDeleteCallout:(id)a3
+- (void)showDeleteCallout:(id)callout
 {
-  v4 = a3;
-  v5 = self;
-  sub_100028938(v4);
+  calloutCopy = callout;
+  selfCopy = self;
+  sub_100028938(calloutCopy);
 }
 
 - (_TtCV20ColorPickerUIService23FavoriteColorPickerView11Coordinator)init

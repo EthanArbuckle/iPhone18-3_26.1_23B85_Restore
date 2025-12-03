@@ -1,16 +1,16 @@
 @interface NPKPassSyncServiceSyncStatus
-- (BOOL)shouldSyncWithCurrentIncomingChange:(id)a3 currentOutgoingChange:(id)a4 currentDate:(id)a5;
+- (BOOL)shouldSyncWithCurrentIncomingChange:(id)change currentOutgoingChange:(id)outgoingChange currentDate:(id)date;
 - (void)reset;
 @end
 
 @implementation NPKPassSyncServiceSyncStatus
 
-- (BOOL)shouldSyncWithCurrentIncomingChange:(id)a3 currentOutgoingChange:(id)a4 currentDate:(id)a5
+- (BOOL)shouldSyncWithCurrentIncomingChange:(id)change currentOutgoingChange:(id)outgoingChange currentDate:(id)date
 {
   v45 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  changeCopy = change;
+  outgoingChangeCopy = outgoingChange;
+  dateCopy = date;
   v12 = pk_Sync_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -24,13 +24,13 @@
       lastKnownOutgoingChange = self->_lastKnownOutgoingChange;
       outgoingChangeDate = self->_outgoingChangeDate;
       v34 = 138413570;
-      *v35 = v9;
+      *v35 = changeCopy;
       *&v35[8] = 2112;
       v36 = lastKnownIncomingChange;
       v37 = 2112;
       v38 = incomingChangeDate;
       v39 = 2112;
-      v40 = v10;
+      v40 = outgoingChangeCopy;
       v41 = 2112;
       v42 = lastKnownOutgoingChange;
       v43 = 2112;
@@ -40,7 +40,7 @@
   }
 
   v19 = self->_lastKnownIncomingChange;
-  if (!v9)
+  if (!changeCopy)
   {
     self->_lastKnownIncomingChange = 0;
 
@@ -55,7 +55,7 @@
     v20 = self->_incomingChangeDate;
     if (v20)
     {
-      [(NSDate *)v20 timeIntervalSinceDate:v11];
+      [(NSDate *)v20 timeIntervalSinceDate:dateCopy];
       if (fabs(v21) < 60.0)
       {
         goto LABEL_13;
@@ -67,13 +67,13 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  objc_storeStrong(&self->_lastKnownIncomingChange, a3);
-  objc_storeStrong(&self->_incomingChangeDate, a5);
+  objc_storeStrong(&self->_lastKnownIncomingChange, change);
+  objc_storeStrong(&self->_incomingChangeDate, date);
 LABEL_13:
   v23 = 0;
 LABEL_14:
   v24 = self->_lastKnownOutgoingChange;
-  if (!v10)
+  if (!outgoingChangeCopy)
   {
     self->_lastKnownOutgoingChange = 0;
 
@@ -88,7 +88,7 @@ LABEL_14:
     v25 = self->_outgoingChangeDate;
     if (v25)
     {
-      [(NSDate *)v25 timeIntervalSinceDate:v11];
+      [(NSDate *)v25 timeIntervalSinceDate:dateCopy];
       if (fabs(v26) < 60.0)
       {
         goto LABEL_22;
@@ -100,8 +100,8 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  objc_storeStrong(&self->_lastKnownOutgoingChange, a4);
-  objc_storeStrong(&self->_outgoingChangeDate, a5);
+  objc_storeStrong(&self->_lastKnownOutgoingChange, outgoingChange);
+  objc_storeStrong(&self->_outgoingChangeDate, date);
 LABEL_22:
   v28 = 0;
 LABEL_23:

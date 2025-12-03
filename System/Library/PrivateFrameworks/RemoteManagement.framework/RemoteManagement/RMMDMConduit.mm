@@ -1,61 +1,61 @@
 @interface RMMDMConduit
 + (id)_generateEnrollmentToken;
-- (BOOL)_incrementConduitStateError:(signed __int16)a3 serverRetryAfter:(id)a4 error:(id *)a5;
-- (BOOL)_processErrorResponse:(id)a3 error:(id *)a4;
-- (BOOL)persistentHistoryNotifier:(id)a3 isChangeInteresting:(id)a4 stop:(BOOL *)a5;
+- (BOOL)_incrementConduitStateError:(signed __int16)error serverRetryAfter:(id)after error:(id *)a5;
+- (BOOL)_processErrorResponse:(id)response error:(id *)error;
+- (BOOL)persistentHistoryNotifier:(id)notifier isChangeInteresting:(id)interesting stop:(BOOL *)stop;
 - (RMConduitDelegate)delegate;
-- (RMMDMConduit)initWithManagementSourceObjectID:(id)a3 inContext:(id)a4;
-- (id)_processResponse:(id)a3 payloadClass:(Class)a4 error:(id *)a5;
-- (id)_requestDataForPayload:(id)a3 error:(id *)a4;
+- (RMMDMConduit)initWithManagementSourceObjectID:(id)d inContext:(id)context;
+- (id)_processResponse:(id)response payloadClass:(Class)class error:(id *)error;
+- (id)_requestDataForPayload:(id)payload error:(id *)error;
 - (id)_statusItemsToSendOnceAfterEnrollment;
 - (id)statusItemsToImplicitlySubscribeTo;
 - (id)statusItemsToSendDuringEnrollment;
 - (signed)errorState;
-- (void)_didFinishFetchingDeclarationItems:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)_didFinishFetchingObject:(id)a3 objectID:(id)a4 class:(Class)a5 endpoint:(id)a6 response:(id)a7 error:(id)a8 completionHandler:(id)a9;
-- (void)_didFinishFetchingServerTokens:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)_didFinishSendingStatusWithError:(id)a3 completionHandler:(id)a4;
-- (void)_executeRequestForEndpoint:(id)a3 requestData:(id)a4 expectedResponseClass:(Class)a5 completionHandler:(id)a6;
-- (void)_fetchDeclarationItemsOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4;
-- (void)_fetchNextObjectOfClass:(Class)a3 endpoint:(id)a4 completionHandler:(id)a5;
-- (void)_fetchPartialObjectsWithCompletionHandler:(id)a3;
-- (void)_fetchTokensOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4;
-- (void)_processDeclarationItemsWithContext:(id)a3 infos:(id)a4 declarationItemClass:(Class)a5 declarationItemKeyPath:(id)a6;
+- (void)_didFinishFetchingDeclarationItems:(id)items error:(id)error completionHandler:(id)handler;
+- (void)_didFinishFetchingObject:(id)object objectID:(id)d class:(Class)class endpoint:(id)endpoint response:(id)response error:(id)error completionHandler:(id)handler;
+- (void)_didFinishFetchingServerTokens:(id)tokens error:(id)error completionHandler:(id)handler;
+- (void)_didFinishSendingStatusWithError:(id)error completionHandler:(id)handler;
+- (void)_executeRequestForEndpoint:(id)endpoint requestData:(id)data expectedResponseClass:(Class)class completionHandler:(id)handler;
+- (void)_fetchDeclarationItemsOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler;
+- (void)_fetchNextObjectOfClass:(Class)class endpoint:(id)endpoint completionHandler:(id)handler;
+- (void)_fetchPartialObjectsWithCompletionHandler:(id)handler;
+- (void)_fetchTokensOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler;
+- (void)_processDeclarationItemsWithContext:(id)context infos:(id)infos declarationItemClass:(Class)class declarationItemKeyPath:(id)path;
 - (void)_startObservers;
 - (void)_stopObservers;
-- (void)_updateWithSyncTokens:(id)a3 completionHandler:(id)a4;
-- (void)_writeQAStatusData:(id)a3 completionHandler:(id)a4;
-- (void)enrollWithStatusItems:(id)a3 completionHandler:(id)a4;
-- (void)persistentHistoryNotifier:(id)a3 hasChanges:(id)a4;
-- (void)sendStatusData:(id)a3 completionHandler:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)unenrollWithCompletionHandler:(id)a3;
-- (void)updateWithPushMessage:(id)a3 completionHandler:(id)a4;
-- (void)updateWithTokensResponse:(id)a3 completionHandler:(id)a4;
+- (void)_updateWithSyncTokens:(id)tokens completionHandler:(id)handler;
+- (void)_writeQAStatusData:(id)data completionHandler:(id)handler;
+- (void)enrollWithStatusItems:(id)items completionHandler:(id)handler;
+- (void)persistentHistoryNotifier:(id)notifier hasChanges:(id)changes;
+- (void)sendStatusData:(id)data completionHandler:(id)handler;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)unenrollWithCompletionHandler:(id)handler;
+- (void)updateWithPushMessage:(id)message completionHandler:(id)handler;
+- (void)updateWithTokensResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation RMMDMConduit
 
-- (RMMDMConduit)initWithManagementSourceObjectID:(id)a3 inContext:(id)a4
+- (RMMDMConduit)initWithManagementSourceObjectID:(id)d inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = RMMDMConduit;
   v9 = [(RMMDMConduit *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managementSourceObjectID, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_managementSourceObjectID, d);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "MDMConduit: starting", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -72,20 +72,20 @@
   v8[2] = sub_10004C000;
   v7 = v8[3] = &unk_1000D1270;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [v7 performBlockAndWait:v8];
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 
   os_activity_scope_leave(&state);
 }
 
 - (void)_startObservers
 {
-  v6 = [(RMMDMConduit *)self context];
-  v3 = [v6 transactionAuthor];
-  v4 = [[RMPersistentHistoryNotifier alloc] initWithContext:v6];
+  context = [(RMMDMConduit *)self context];
+  transactionAuthor = [context transactionAuthor];
+  v4 = [[RMPersistentHistoryNotifier alloc] initWithContext:context];
   [(RMPersistentHistoryNotifier *)v4 setDelegate:self];
-  v5 = [NSSet setWithObject:v3];
+  v5 = [NSSet setWithObject:transactionAuthor];
   [(RMPersistentHistoryNotifier *)v4 setIgnoredTransactionAuthors:v5];
 
   [(RMMDMConduit *)self setPersistentHistoryNotifier:v4];
@@ -94,15 +94,15 @@
 
 - (void)_stopObservers
 {
-  v3 = [(RMMDMConduit *)self persistentHistoryNotifier];
-  [v3 setDelegate:0];
+  persistentHistoryNotifier = [(RMMDMConduit *)self persistentHistoryNotifier];
+  [persistentHistoryNotifier setDelegate:0];
 
   [(RMMDMConduit *)self setPersistentHistoryNotifier:0];
 }
 
 - (signed)errorState
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -113,13 +113,13 @@
   v5[2] = sub_10004C2F4;
   v3 = v5[3] = &unk_1000D0E38;
   v6 = v3;
-  v7 = v2;
+  v7 = selfCopy;
   v8 = &v9;
   [v3 performBlockAndWait:v5];
-  LOWORD(v2) = *(v10 + 12);
+  LOWORD(selfCopy) = *(v10 + 12);
 
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)statusItemsToImplicitlySubscribeTo
@@ -152,7 +152,7 @@
   v7[2] = sub_10004C644;
   v4 = v7[3] = &unk_1000D0E38;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [v4 performBlockAndWait:v7];
   if (*(v12 + 24) == 1)
@@ -173,10 +173,10 @@
   return v5;
 }
 
-- (void)enrollWithStatusItems:(id)a3 completionHandler:(id)a4
+- (void)enrollWithStatusItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "MDMConduit: enrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -200,21 +200,21 @@
   v13[2] = sub_10004C920;
   v10 = v13[3] = &unk_1000D0E38;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [v10 performBlockAndWait:v13];
   if (v18[5])
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v11 = [(RMMDMConduit *)self delegate];
-    v12 = [(RMMDMConduit *)self _statusItemsToSendOnceAfterEnrollment];
-    [v11 conduitNeedsToSendStatusForKeyPaths:v12];
+    delegate = [(RMMDMConduit *)self delegate];
+    _statusItemsToSendOnceAfterEnrollment = [(RMMDMConduit *)self _statusItemsToSendOnceAfterEnrollment];
+    [delegate conduitNeedsToSendStatusForKeyPaths:_statusItemsToSendOnceAfterEnrollment];
 
-    (v7[2])(v7, 0);
+    (handlerCopy[2])(handlerCopy, 0);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -224,14 +224,14 @@
 + (id)_generateEnrollmentToken
 {
   v2 = objc_opt_new();
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)unenrollWithCompletionHandler:(id)a3
+- (void)unenrollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "MDMConduit: unenrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -249,19 +249,19 @@
   v7[2] = sub_10004CD68;
   v6 = v7[3] = &unk_1000D0E38;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [v6 performBlockAndWait:v7];
   +[RMMDMv1Liaison refreshState];
-  v4[2](v4, 0, v12[5]);
+  handlerCopy[2](handlerCopy, 0, v12[5]);
 
   _Block_object_dispose(&v11, 8);
   os_activity_scope_leave(&state);
 }
 
-- (void)_fetchTokensOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)_fetchTokensOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _os_activity_create(&_mh_execute_header, "MDMConduit: fetching server tokens", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -282,8 +282,8 @@
   v15[2] = sub_10004D19C;
   v9 = v15[3] = &unk_1000D1CD8;
   v16 = v9;
-  v17 = self;
-  v19 = a3;
+  selfCopy = self;
+  neededCopy = needed;
   v18 = &v20;
   [v9 performBlockAndWait:v15];
   if (v21[3])
@@ -295,7 +295,7 @@
     v13[2] = sub_10004D378;
     v13[3] = &unk_1000D22E0;
     v13[4] = self;
-    v14 = v6;
+    v14 = handlerCopy;
     [(RMMDMConduit *)self _executeRequestForEndpoint:v11 requestData:0 expectedResponseClass:v10 completionHandler:v13];
   }
 
@@ -307,19 +307,19 @@
       sub_100051A64();
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   _Block_object_dispose(&v20, 8);
   os_activity_scope_leave(&state);
 }
 
-- (void)_didFinishFetchingServerTokens:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_didFinishFetchingServerTokens:(id)tokens error:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  tokensCopy = tokens;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     v11 = +[RMLog mdmConduit];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -327,7 +327,7 @@
       sub_100051B00();
     }
 
-    v10[2](v10, v9);
+    handlerCopy[2](handlerCopy, errorCopy);
   }
 
   else
@@ -344,13 +344,13 @@
     v15[2] = sub_10004D5AC;
     v12 = v15[3] = &unk_1000D1E80;
     v16 = v12;
-    v17 = self;
-    v18 = v8;
+    selfCopy = self;
+    v18 = tokensCopy;
     v19 = &v20;
     [v12 performBlockAndWait:v15];
     if (v21[5])
     {
-      (v10[2])(v10);
+      (handlerCopy[2])(handlerCopy);
     }
 
     else
@@ -362,25 +362,25 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Successfully saved server tokens", v14, 2u);
       }
 
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     _Block_object_dispose(&v20, 8);
   }
 }
 
-- (void)updateWithPushMessage:(id)a3 completionHandler:(id)a4
+- (void)updateWithPushMessage:(id)message completionHandler:(id)handler
 {
   v11 = 0;
-  v6 = a4;
-  v7 = [RMProtocolPushMessage loadData:a3 serializationType:1 error:&v11];
+  handlerCopy = handler;
+  v7 = [RMProtocolPushMessage loadData:message serializationType:1 error:&v11];
   v8 = v11;
   if (v7)
   {
-    v9 = [v7 messageSyncTokens];
-    [(RMMDMConduit *)self _updateWithSyncTokens:v9 completionHandler:v6];
+    messageSyncTokens = [v7 messageSyncTokens];
+    [(RMMDMConduit *)self _updateWithSyncTokens:messageSyncTokens completionHandler:handlerCopy];
 
-    v6 = v9;
+    handlerCopy = messageSyncTokens;
   }
 
   else
@@ -391,22 +391,22 @@
       sub_100051C20();
     }
 
-    (*(v6 + 2))(v6, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 }
 
-- (void)updateWithTokensResponse:(id)a3 completionHandler:(id)a4
+- (void)updateWithTokensResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!responseCopy)
   {
     v10 = 0;
     goto LABEL_5;
   }
 
   v13 = 0;
-  v8 = [RMProtocolTokensResponse loadData:v6 serializationType:1 error:&v13];
+  v8 = [RMProtocolTokensResponse loadData:responseCopy serializationType:1 error:&v13];
   v9 = v13;
   v10 = v9;
   if (v8)
@@ -414,8 +414,8 @@
 
     v10 = v8;
 LABEL_5:
-    v11 = [v10 responseSyncTokens];
-    [(RMMDMConduit *)self _updateWithSyncTokens:v11 completionHandler:v7];
+    responseSyncTokens = [v10 responseSyncTokens];
+    [(RMMDMConduit *)self _updateWithSyncTokens:responseSyncTokens completionHandler:handlerCopy];
 
     goto LABEL_9;
   }
@@ -426,14 +426,14 @@ LABEL_5:
     sub_100051C88();
   }
 
-  v7[2](v7, v10);
+  handlerCopy[2](handlerCopy, v10);
 LABEL_9:
 }
 
-- (void)_updateWithSyncTokens:(id)a3 completionHandler:(id)a4
+- (void)_updateWithSyncTokens:(id)tokens completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -446,19 +446,19 @@ LABEL_9:
   v10[2] = sub_10004E120;
   v8 = v10[3] = &unk_1000D1E80;
   v11 = v8;
-  v12 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = tokensCopy;
   v13 = v9;
   v14 = &v15;
   [v8 performBlockAndWait:v10];
-  v7[2](v7, v16[5]);
+  handlerCopy[2](handlerCopy, v16[5]);
 
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_fetchDeclarationItemsOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)_fetchDeclarationItemsOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _os_activity_create(&_mh_execute_header, "MDMConduit: fetching declaration items", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -479,8 +479,8 @@ LABEL_9:
   v15[2] = sub_10004E504;
   v9 = v15[3] = &unk_1000D1CD8;
   v16 = v9;
-  v17 = self;
-  v19 = a3;
+  selfCopy = self;
+  neededCopy = needed;
   v18 = &v20;
   [v9 performBlockAndWait:v15];
   if (v21[3])
@@ -492,7 +492,7 @@ LABEL_9:
     v13[2] = sub_10004E6AC;
     v13[3] = &unk_1000D22E0;
     v13[4] = self;
-    v14 = v6;
+    v14 = handlerCopy;
     [(RMMDMConduit *)self _executeRequestForEndpoint:v11 requestData:0 expectedResponseClass:v10 completionHandler:v13];
   }
 
@@ -504,19 +504,19 @@ LABEL_9:
       sub_100051D24();
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   _Block_object_dispose(&v20, 8);
   os_activity_scope_leave(&state);
 }
 
-- (void)_didFinishFetchingDeclarationItems:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_didFinishFetchingDeclarationItems:(id)items error:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  itemsCopy = items;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     v11 = +[RMLog mdmConduit];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -524,7 +524,7 @@ LABEL_9:
       sub_100051D8C();
     }
 
-    v10[2](v10, v9);
+    handlerCopy[2](handlerCopy, errorCopy);
   }
 
   else
@@ -541,13 +541,13 @@ LABEL_9:
     v15[2] = sub_10004E8E0;
     v12 = v15[3] = &unk_1000D1E80;
     v16 = v12;
-    v17 = self;
-    v18 = v8;
+    selfCopy = self;
+    v18 = itemsCopy;
     v19 = &v20;
     [v12 performBlockAndWait:v15];
     if (v21[5])
     {
-      (v10[2])(v10);
+      (handlerCopy[2])(handlerCopy);
     }
 
     else
@@ -559,27 +559,27 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Successfully saved partial object", v14, 2u);
       }
 
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     _Block_object_dispose(&v20, 8);
   }
 }
 
-- (void)_processDeclarationItemsWithContext:(id)a3 infos:(id)a4 declarationItemClass:(Class)a5 declarationItemKeyPath:(id)a6
+- (void)_processDeclarationItemsWithContext:(id)context infos:(id)infos declarationItemClass:(Class)class declarationItemKeyPath:(id)path
 {
-  v9 = a3;
-  v40 = a4;
-  v10 = a6;
+  contextCopy = context;
+  infosCopy = infos;
+  pathCopy = path;
   context = objc_autoreleasePoolPush();
-  v39 = self;
-  v11 = [(RMMDMConduit *)self managementSourceObjectID];
-  v38 = v9;
-  v12 = [v9 objectWithID:v11];
+  selfCopy = self;
+  managementSourceObjectID = [(RMMDMConduit *)self managementSourceObjectID];
+  v38 = contextCopy;
+  v12 = [contextCopy objectWithID:managementSourceObjectID];
 
   v37 = v12;
-  v35 = v10;
-  v13 = [v12 valueForKey:v10];
+  v35 = pathCopy;
+  v13 = [v12 valueForKey:pathCopy];
   v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v13 count]);
   v49 = 0u;
   v50 = 0u;
@@ -601,9 +601,9 @@ LABEL_9:
         }
 
         v19 = *(*(&v49 + 1) + 8 * i);
-        v20 = [v19 identifier];
-        v21 = [v19 serverToken];
-        v22 = [NSString stringWithFormat:@"%@-%@", v20, v21];
+        identifier = [v19 identifier];
+        serverToken = [v19 serverToken];
+        v22 = [NSString stringWithFormat:@"%@-%@", identifier, serverToken];
         [v14 setObject:v19 forKeyedSubscript:v22];
       }
 
@@ -617,7 +617,7 @@ LABEL_9:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v41 = v40;
+  v41 = infosCopy;
   v23 = [v41 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v23)
   {
@@ -633,9 +633,9 @@ LABEL_9:
         }
 
         v27 = *(*(&v45 + 1) + 8 * j);
-        v28 = [v27 responseIdentifier];
-        v29 = [v27 responseServerToken];
-        v30 = [NSString stringWithFormat:@"%@-%@", v28, v29];
+        responseIdentifier = [v27 responseIdentifier];
+        responseServerToken = [v27 responseServerToken];
+        v30 = [NSString stringWithFormat:@"%@-%@", responseIdentifier, responseServerToken];
         v31 = [v14 objectForKeyedSubscript:v30];
         if (v31)
         {
@@ -645,11 +645,11 @@ LABEL_9:
 
         else
         {
-          v32 = [[a5 alloc] initWithContext:v38];
-          [v32 setIdentifier:v28];
-          [v32 setServerToken:v29];
+          v32 = [[class alloc] initWithContext:v38];
+          [v32 setIdentifier:responseIdentifier];
+          [v32 setServerToken:responseServerToken];
           [v32 setManagementSource:v37];
-          [(RMMDMConduit *)v39 setMadeChangesDuringSync:1];
+          [(RMMDMConduit *)selfCopy setMadeChangesDuringSync:1];
         }
       }
 
@@ -663,7 +663,7 @@ LABEL_9:
   v43[1] = 3221225472;
   v43[2] = sub_10004EF60;
   v43[3] = &unk_1000D1F98;
-  v43[4] = v39;
+  v43[4] = selfCopy;
   v33 = v38;
   v44 = v33;
   [v14 enumerateKeysAndObjectsUsingBlock:v43];
@@ -671,9 +671,9 @@ LABEL_9:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_fetchPartialObjectsWithCompletionHandler:(id)a3
+- (void)_fetchPartialObjectsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_class();
   v6 = RMProtocolEndpointDeclarationActivation;
   v8[0] = _NSConcreteStackBlock;
@@ -681,15 +681,15 @@ LABEL_9:
   v8[2] = sub_10004F104;
   v8[3] = &unk_1000D1EA8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(RMMDMConduit *)self _fetchNextObjectOfClass:v5 endpoint:v6 completionHandler:v8];
 }
 
-- (void)_fetchNextObjectOfClass:(Class)a3 endpoint:(id)a4 completionHandler:(id)a5
+- (void)_fetchNextObjectOfClass:(Class)class endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   v10 = _os_activity_create(&_mh_execute_header, "MDMConduit: fetching next object from server", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -697,7 +697,7 @@ LABEL_9:
   v11 = +[RMLog mdmConduit];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = NSStringFromClass(a3);
+    v12 = NSStringFromClass(class);
     sub_10003C5CC(v12, buf, v11);
   }
 
@@ -719,11 +719,11 @@ LABEL_9:
   v25[2] = sub_10004F714;
   v13 = v25[3] = &unk_1000D2308;
   v26 = v13;
-  v27 = self;
+  selfCopy = self;
   v30 = &v32;
-  v31 = a3;
+  classCopy = class;
   v29 = &v38;
-  v14 = v8;
+  v14 = endpointCopy;
   v28 = v14;
   [v13 performBlockAndWait:v25];
   if (v39[5])
@@ -736,9 +736,9 @@ LABEL_9:
     v20[3] = &unk_1000D2330;
     v20[4] = self;
     v23 = &v38;
-    v24 = a3;
+    classCopy2 = class;
     v21 = v14;
-    v22 = v9;
+    v22 = handlerCopy;
     [(RMMDMConduit *)self _executeRequestForEndpoint:v15 requestData:0 expectedResponseClass:v16 completionHandler:v20];
   }
 
@@ -747,12 +747,12 @@ LABEL_9:
     v17 = +[RMLog mdmConduit];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = NSStringFromClass(a3);
-      v19 = [(RMMDMConduit *)self managementSourceObjectID];
-      sub_10003C624(v18, v19, v45, v17);
+      v18 = NSStringFromClass(class);
+      managementSourceObjectID = [(RMMDMConduit *)self managementSourceObjectID];
+      sub_10003C624(v18, managementSourceObjectID, v45, v17);
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   _Block_object_dispose(&v32, 8);
@@ -761,19 +761,19 @@ LABEL_9:
   os_activity_scope_leave(&state);
 }
 
-- (void)_didFinishFetchingObject:(id)a3 objectID:(id)a4 class:(Class)a5 endpoint:(id)a6 response:(id)a7 error:(id)a8 completionHandler:(id)a9
+- (void)_didFinishFetchingObject:(id)object objectID:(id)d class:(Class)class endpoint:(id)endpoint response:(id)response error:(id)error completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = [v17 objectForKeyedSubscript:HTTPResponseKeyStatusCode];
-  v21 = [v20 integerValue];
+  objectCopy = object;
+  dCopy = d;
+  endpointCopy = endpoint;
+  responseCopy = response;
+  errorCopy = error;
+  handlerCopy = handler;
+  v20 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyStatusCode];
+  integerValue = [v20 integerValue];
 
-  v22 = v21 == 200 || v18 == 0;
-  if (v22 || v21 == 404)
+  v22 = integerValue == 200 || errorCopy == 0;
+  if (v22 || integerValue == 404)
   {
     *v37 = 0;
     *&v37[8] = v37;
@@ -787,17 +787,17 @@ LABEL_9:
     v29[2] = sub_10004FC70;
     v23 = v29[3] = &unk_1000D2358;
     v30 = v23;
-    v31 = self;
-    v32 = v15;
-    v33 = v18;
-    v24 = v16;
+    selfCopy = self;
+    v32 = dCopy;
+    v33 = errorCopy;
+    v24 = endpointCopy;
     v34 = v24;
-    v35 = v14;
+    v35 = objectCopy;
     v36 = v37;
     [v23 performBlockAndWait:v29];
     if (*(*&v37[8] + 40))
     {
-      v19[2](v19);
+      handlerCopy[2](handlerCopy);
     }
 
     else
@@ -809,7 +809,7 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Successfully saved object, fetching next one", buf, 2u);
       }
 
-      [(RMMDMConduit *)self _fetchNextObjectOfClass:a5 endpoint:v24 completionHandler:v19];
+      [(RMMDMConduit *)self _fetchNextObjectOfClass:class endpoint:v24 completionHandler:handlerCopy];
     }
 
     _Block_object_dispose(v37, 8);
@@ -821,22 +821,22 @@ LABEL_9:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *v37 = 138543874;
-      *&v37[4] = v15;
+      *&v37[4] = dCopy;
       *&v37[12] = 2114;
-      *&v37[14] = v16;
+      *&v37[14] = endpointCopy;
       *&v37[22] = 2114;
-      v38 = v18;
+      v38 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Error while fetching object %{public}@ (%{public}@): %{public}@", v37, 0x20u);
     }
 
-    (v19[2])(v19, v18);
+    (handlerCopy[2])(handlerCopy, errorCopy);
   }
 }
 
-- (void)sendStatusData:(id)a3 completionHandler:(id)a4
+- (void)sendStatusData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "MDMConduit: sending status", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -855,7 +855,7 @@ LABEL_9:
       sub_100052088();
     }
 
-    [(RMMDMConduit *)self _writeQAStatusData:v6 completionHandler:v7];
+    [(RMMDMConduit *)self _writeQAStatusData:dataCopy completionHandler:handlerCopy];
   }
 
   else
@@ -866,18 +866,18 @@ LABEL_9:
     v12[2] = sub_100050138;
     v12[3] = &unk_1000D22E0;
     v12[4] = self;
-    v13 = v7;
-    [(RMMDMConduit *)self _executeRequestForEndpoint:v11 requestData:v6 expectedResponseClass:0 completionHandler:v12];
+    v13 = handlerCopy;
+    [(RMMDMConduit *)self _executeRequestForEndpoint:v11 requestData:dataCopy expectedResponseClass:0 completionHandler:v12];
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_didFinishSendingStatusWithError:(id)a3 completionHandler:(id)a4
+- (void)_didFinishSendingStatusWithError:(id)error completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     v8 = +[RMLog mdmConduit];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -885,7 +885,7 @@ LABEL_9:
       sub_1000520BC();
     }
 
-    v7[2](v7, v6);
+    handlerCopy[2](handlerCopy, errorCopy);
   }
 
   else
@@ -902,12 +902,12 @@ LABEL_9:
     v12[2] = sub_10005034C;
     v9 = v12[3] = &unk_1000D0E38;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v15 = &v16;
     [v9 performBlockAndWait:v12];
     if (v17[5])
     {
-      (v7[2])(v7);
+      (handlerCopy[2])(handlerCopy);
     }
 
     else
@@ -919,21 +919,21 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Successfully sent status", &v11, 2u);
       }
 
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     _Block_object_dispose(&v16, 8);
   }
 }
 
-- (void)_writeQAStatusData:(id)a3 completionHandler:(id)a4
+- (void)_writeQAStatusData:(id)data completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v7 = [NSURL URLWithString:@"file:///tmp/rmd_test/Status"];
   v8 = +[NSFileManager defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9 isDirectory:0];
+  path = [v7 path];
+  v10 = [v8 fileExistsAtPath:path isDirectory:0];
 
   if ((v10 & 1) == 0)
   {
@@ -943,13 +943,13 @@ LABEL_9:
     v13 = v12;
     if ((v11 & 1) == 0)
     {
-      v6[2](v6, v12);
+      handlerCopy[2](handlerCopy, v12);
       goto LABEL_8;
     }
   }
 
   v20 = 0;
-  v14 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v20];
+  v14 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v20];
   v13 = v20;
   if (v14)
   {
@@ -964,38 +964,38 @@ LABEL_9:
     v13 = v18;
   }
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 
 LABEL_8:
 }
 
-- (id)_processResponse:(id)a3 payloadClass:(Class)a4 error:(id *)a5
+- (id)_processResponse:(id)response payloadClass:(Class)class error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:HTTPResponseKeyStatusCode];
-  v10 = [v9 integerValue];
+  responseCopy = response;
+  v9 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyStatusCode];
+  integerValue = [v9 integerValue];
 
-  v11 = [v8 objectForKeyedSubscript:HTTPResponseKeyBody];
+  v11 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyBody];
   v12 = +[RMLog mdmConduit];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v27 = v10;
+    v27 = integerValue;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Got back from MDM: %ld", buf, 0xCu);
   }
 
-  if ((v10 - 400) <= 0xC7)
+  if ((integerValue - 400) <= 0xC7)
   {
     v25 = 0;
-    v13 = [(RMMDMConduit *)self _processErrorResponse:v8 error:&v25];
+    v13 = [(RMMDMConduit *)self _processErrorResponse:responseCopy error:&v25];
     v14 = v25;
     v15 = v14;
     if ((v13 & 1) == 0)
     {
-      if (a5 && v14)
+      if (error && v14)
       {
         v21 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       goto LABEL_32;
@@ -1004,7 +1004,7 @@ LABEL_8:
     if (v11)
     {
       v16 = [v11 base64EncodedStringWithOptions:0];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_31;
       }
@@ -1013,7 +1013,7 @@ LABEL_8:
     else
     {
       v16 = @"Empty Response Body";
-      if (!a5)
+      if (!error)
       {
 LABEL_31:
 
@@ -1028,17 +1028,17 @@ LABEL_33:
     if (v23)
     {
       v23 = v23;
-      *a5 = v23;
+      *error = v23;
     }
 
     goto LABEL_31;
   }
 
-  if (v10 != 204 && v11 != 0)
+  if (integerValue != 204 && v11 != 0)
   {
-    if (a4)
+    if (class)
     {
-      v22 = [(objc_class *)a4 loadData:v11 serializationType:1 error:a5];
+      v22 = [(objc_class *)class loadData:v11 serializationType:1 error:error];
 LABEL_26:
       v19 = v22;
       goto LABEL_34;
@@ -1049,20 +1049,20 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!a4 || objc_opt_class() == a4)
+  if (!class || objc_opt_class() == class)
   {
     goto LABEL_25;
   }
 
-  v18 = [(RMMDMConduit *)self _incrementConduitStateError:2 serverRetryAfter:0 error:a5];
+  v18 = [(RMMDMConduit *)self _incrementConduitStateError:2 serverRetryAfter:0 error:error];
   v19 = 0;
-  if (a5 && v18)
+  if (error && v18)
   {
     v20 = [RMErrorUtilities createMDMRequestInvalid:@"Empty body"];
     if (v20)
     {
       v20 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     goto LABEL_33;
@@ -1073,15 +1073,15 @@ LABEL_34:
   return v19;
 }
 
-- (BOOL)_processErrorResponse:(id)a3 error:(id *)a4
+- (BOOL)_processErrorResponse:(id)response error:(id *)error
 {
   v6 = HTTPResponseKeyStatusCode;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = [v8 integerValue];
+  responseCopy = response;
+  v8 = [responseCopy objectForKeyedSubscript:v6];
+  integerValue = [v8 integerValue];
 
-  v10 = [v7 objectForKeyedSubscript:HTTPResponseKeyHeaders];
-  v11 = [v7 objectForKeyedSubscript:HTTPResponseKeyBody];
+  v10 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyHeaders];
+  v11 = [responseCopy objectForKeyedSubscript:HTTPResponseKeyBody];
 
   v12 = v11;
   v13 = [v10 objectForKeyedSubscript:@"Content-Type"];
@@ -1163,16 +1163,16 @@ LABEL_19:
   }
 
 LABEL_23:
-  v33 = [v30 responseCode];
-  v34 = v33;
+  responseCode = [v30 responseCode];
+  v34 = responseCode;
   v35 = 0;
   v36 = 2;
-  if (v9 > 409)
+  if (integerValue > 409)
   {
-    if (v9 == 410)
+    if (integerValue == 410)
     {
       v35 = 0;
-      if ([v33 isEqualToString:RMProtocolErrorResponse_Code_enrollmentNotAllowed])
+      if ([responseCode isEqualToString:RMProtocolErrorResponse_Code_enrollmentNotAllowed])
       {
         v36 = 4;
       }
@@ -1183,7 +1183,7 @@ LABEL_23:
       }
     }
 
-    else if (v9 == 503)
+    else if (integerValue == 503)
     {
       v37 = [v10 objectForKeyedSubscript:@"Retry-After"];
       if (v37)
@@ -1196,15 +1196,15 @@ LABEL_23:
         v35 = [v38 dateFromString:v37];
         if (!v35)
         {
-          v40 = [v37 integerValue];
-          if (v40 < 1)
+          integerValue2 = [v37 integerValue];
+          if (integerValue2 < 1)
           {
             v35 = 0;
           }
 
           else
           {
-            v35 = [NSDate dateWithTimeIntervalSinceNow:v40];
+            v35 = [NSDate dateWithTimeIntervalSinceNow:integerValue2];
           }
         }
       }
@@ -1220,9 +1220,9 @@ LABEL_23:
 
   else
   {
-    if (v9 == 403)
+    if (integerValue == 403)
     {
-      if (([v33 isEqualToString:RMProtocolErrorResponse_Code_clientVersionInvalid] & 1) != 0 || (objc_msgSend(v34, "isEqualToString:", RMProtocolErrorResponse_Code_deviceAuthInvalid) & 1) != 0 || objc_msgSend(v34, "isEqualToString:", RMProtocolErrorResponse_Code_deviceAuthMissing))
+      if (([responseCode isEqualToString:RMProtocolErrorResponse_Code_clientVersionInvalid] & 1) != 0 || (objc_msgSend(v34, "isEqualToString:", RMProtocolErrorResponse_Code_deviceAuthInvalid) & 1) != 0 || objc_msgSend(v34, "isEqualToString:", RMProtocolErrorResponse_Code_deviceAuthMissing))
       {
         v35 = 0;
         v36 = 1;
@@ -1232,9 +1232,9 @@ LABEL_23:
       goto LABEL_27;
     }
 
-    if (v9 == 404)
+    if (integerValue == 404)
     {
-      [v33 isEqualToString:RMProtocolErrorResponse_Code_enrollmentTokenInvalid];
+      [responseCode isEqualToString:RMProtocolErrorResponse_Code_enrollmentTokenInvalid];
 LABEL_27:
       v35 = 0;
       v36 = 2;
@@ -1242,14 +1242,14 @@ LABEL_27:
   }
 
 LABEL_45:
-  v41 = [(RMMDMConduit *)self _incrementConduitStateError:v36 serverRetryAfter:v35 error:a4];
+  v41 = [(RMMDMConduit *)self _incrementConduitStateError:v36 serverRetryAfter:v35 error:error];
 
   return v41;
 }
 
-- (BOOL)_incrementConduitStateError:(signed __int16)a3 serverRetryAfter:(id)a4 error:(id *)a5
+- (BOOL)_incrementConduitStateError:(signed __int16)error serverRetryAfter:(id)after error:(id *)a5
 {
-  v8 = a4;
+  afterCopy = after;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1262,9 +1262,9 @@ LABEL_45:
   v14[2] = sub_100050EF0;
   v9 = v14[3] = &unk_1000D2060;
   v15 = v9;
-  v16 = self;
-  v19 = a3;
-  v10 = v8;
+  selfCopy = self;
+  errorCopy = error;
+  v10 = afterCopy;
   v17 = v10;
   v18 = &v20;
   [v9 performBlockAndWait:v14];
@@ -1281,11 +1281,11 @@ LABEL_45:
   return v12;
 }
 
-- (id)_requestDataForPayload:(id)a3 error:(id *)a4
+- (id)_requestDataForPayload:(id)payload error:(id *)error
 {
-  if (a3)
+  if (payload)
   {
-    v5 = [a3 serializeAsDataWithType:1 error:a4];
+    v5 = [payload serializeAsDataWithType:1 error:error];
   }
 
   else
@@ -1296,63 +1296,63 @@ LABEL_45:
   return v5;
 }
 
-- (void)_executeRequestForEndpoint:(id)a3 requestData:(id)a4 expectedResponseClass:(Class)a5 completionHandler:(id)a6
+- (void)_executeRequestForEndpoint:(id)endpoint requestData:(id)data expectedResponseClass:(Class)class completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 substringFromIndex:29];
+  handlerCopy = handler;
+  dataCopy = data;
+  v12 = [endpoint substringFromIndex:29];
   v20 = @"Endpoint";
   v21 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v14 = [v13 mutableCopy];
 
-  [v14 setObject:v11 forKeyedSubscript:@"Data"];
+  [v14 setObject:dataCopy forKeyedSubscript:@"Data"];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005125C;
   v17[3] = &unk_1000D23A8;
   v15 = +[RMBundle managementScope]== 0;
   v17[4] = self;
-  v18 = v10;
-  v19 = a5;
-  v16 = v10;
-  [MDMDeclarativeManagement executeRequestForEndpoint:v12 channelType:v15 requestData:v11 completionHandler:v17];
+  v18 = handlerCopy;
+  classCopy = class;
+  v16 = handlerCopy;
+  [MDMDeclarativeManagement executeRequestForEndpoint:v12 channelType:v15 requestData:dataCopy completionHandler:v17];
 }
 
-- (BOOL)persistentHistoryNotifier:(id)a3 isChangeInteresting:(id)a4 stop:(BOOL *)a5
+- (BOOL)persistentHistoryNotifier:(id)notifier isChangeInteresting:(id)interesting stop:(BOOL *)stop
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 changeType] == 2)
+  notifierCopy = notifier;
+  interestingCopy = interesting;
+  if ([interestingCopy changeType] == 2)
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v11 = [v9 changedObjectID];
-    v12 = [v11 entity];
+    changedObjectID = [interestingCopy changedObjectID];
+    entity = [changedObjectID entity];
     v13 = +[RMConduitConfig entity];
-    v10 = [v12 isKindOfEntity:v13];
+    v10 = [entity isKindOfEntity:v13];
     if (v10)
     {
       v22 = 0;
       v23 = &v22;
       v24 = 0x2020000000;
       v25 = 0;
-      v14 = [(RMMDMConduit *)self context];
+      context = [(RMMDMConduit *)self context];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_10005159C;
       v16[3] = &unk_1000D20B0;
       v16[4] = self;
-      v17 = v11;
-      v18 = v9;
-      v19 = v12;
+      v17 = changedObjectID;
+      v18 = interestingCopy;
+      v19 = entity;
       v20 = v13;
       v21 = &v22;
-      [v14 performBlockAndWait:v16];
-      *a5 = *(v23 + 24);
+      [context performBlockAndWait:v16];
+      *stop = *(v23 + 24);
 
       _Block_object_dispose(&v22, 8);
     }
@@ -1361,22 +1361,22 @@ LABEL_45:
   return v10;
 }
 
-- (void)persistentHistoryNotifier:(id)a3 hasChanges:(id)a4
+- (void)persistentHistoryNotifier:(id)notifier hasChanges:(id)changes
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 insertedObjectIDs];
-  if (![v7 count])
+  notifierCopy = notifier;
+  changesCopy = changes;
+  insertedObjectIDs = [changesCopy insertedObjectIDs];
+  if (![insertedObjectIDs count])
   {
-    v8 = [v6 updatedObjectIDs];
-    if (![v8 count])
+    updatedObjectIDs = [changesCopy updatedObjectIDs];
+    if (![updatedObjectIDs count])
     {
-      v9 = [v6 deletedObjectIDs];
-      if (![v9 count])
+      deletedObjectIDs = [changesCopy deletedObjectIDs];
+      if (![deletedObjectIDs count])
       {
-        v11 = [v14 persistentHistoryToken];
-        v12 = [v6 persistentHistoryToken];
-        v13 = [RMPersistentHistoryNotifierChanges isExistingPersistentHistoryToken:v11 fromSameStoreAsUpdatedToken:v12];
+        persistentHistoryToken = [notifierCopy persistentHistoryToken];
+        persistentHistoryToken2 = [changesCopy persistentHistoryToken];
+        v13 = [RMPersistentHistoryNotifierChanges isExistingPersistentHistoryToken:persistentHistoryToken fromSameStoreAsUpdatedToken:persistentHistoryToken2];
 
         if (v13)
         {
@@ -1389,10 +1389,10 @@ LABEL_45:
   }
 
 LABEL_7:
-  v10 = [(RMMDMConduit *)self delegate];
+  delegate = [(RMMDMConduit *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 conduitNeedsToSync:self];
+    [delegate conduitNeedsToSync:self];
   }
 
 LABEL_10:

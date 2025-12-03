@@ -1,25 +1,25 @@
 @interface TSDCAPropertyAnimationContextCache
-- (TSDCAPropertyAnimationContextCache)initWithAnimation:(id)a3;
-- (id)adjustedResultWithValue:(id)a3;
-- (id)interpolatedValueFrom:(id)a3 to:(id)a4 percent:(double)a5;
-- (id)valueForKeyPath:(id)a3 atTime:(double)a4 animationCache:(id)a5;
+- (TSDCAPropertyAnimationContextCache)initWithAnimation:(id)animation;
+- (id)adjustedResultWithValue:(id)value;
+- (id)interpolatedValueFrom:(id)from to:(id)to percent:(double)percent;
+- (id)valueForKeyPath:(id)path atTime:(double)time animationCache:(id)cache;
 @end
 
 @implementation TSDCAPropertyAnimationContextCache
 
-- (TSDCAPropertyAnimationContextCache)initWithAnimation:(id)a3
+- (TSDCAPropertyAnimationContextCache)initWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v17.receiver = self;
   v17.super_class = TSDCAPropertyAnimationContextCache;
-  v7 = [(TSDCAAnimationContextCache *)&v17 initWithAnimation:v4];
+  v7 = [(TSDCAAnimationContextCache *)&v17 initWithAnimation:animationCopy];
   if (v7)
   {
-    v8 = objc_msgSend_keyPath(v4, v5, v6);
+    v8 = objc_msgSend_keyPath(animationCopy, v5, v6);
     keyPath = v7->_keyPath;
     v7->_keyPath = v8;
 
-    v7->_additive = objc_msgSend_isAdditive(v4, v10, v11);
+    v7->_additive = objc_msgSend_isAdditive(animationCopy, v10, v11);
     if (objc_msgSend_isEqualToString_(v7->_keyPath, v12, @"transform.rotation") & 1) != 0 || (objc_msgSend_isEqualToString_(v7->_keyPath, v13, @"transform.rotation.x") & 1) != 0 || (objc_msgSend_isEqualToString_(v7->_keyPath, v13, @"transform.rotation.y"))
     {
       isEqualToString = 1;
@@ -38,18 +38,18 @@
   return v7;
 }
 
-- (id)valueForKeyPath:(id)a3 atTime:(double)a4 animationCache:(id)a5
+- (id)valueForKeyPath:(id)path atTime:(double)time animationCache:(id)cache
 {
-  v8 = a3;
-  v11 = objc_msgSend_initialValues(a5, v9, v10);
-  v13 = objc_msgSend_objectForKey_(v11, v12, v8);
+  pathCopy = path;
+  v11 = objc_msgSend_initialValues(cache, v9, v10);
+  v13 = objc_msgSend_objectForKey_(v11, v12, pathCopy);
 
   v16 = objc_msgSend_keyPath(self, v14, v15);
-  isEqualToString = objc_msgSend_isEqualToString_(v16, v17, v8);
+  isEqualToString = objc_msgSend_isEqualToString_(v16, v17, pathCopy);
 
   if (isEqualToString)
   {
-    v20 = objc_msgSend_valueAtTime_initialValue_(self, v19, v13, a4);
+    v20 = objc_msgSend_valueAtTime_initialValue_(self, v19, v13, time);
   }
 
   else
@@ -62,14 +62,14 @@
   return v21;
 }
 
-- (id)adjustedResultWithValue:(id)a3
+- (id)adjustedResultWithValue:(id)value
 {
-  v6 = a3;
-  if (v6)
+  valueCopy = value;
+  if (valueCopy)
   {
     if (objc_msgSend_isAnimationKeyTypeOfRotation(self, v4, v5))
     {
-      objc_msgSend_doubleValue(v6, v7, v8);
+      objc_msgSend_doubleValue(valueCopy, v7, v8);
       v12 = fmod(v9 + 3.14159265, 6.28318531) + -3.14159265;
       if (v12 < -3.14159265)
       {
@@ -80,13 +80,13 @@
 LABEL_11:
       v18 = v13;
 
-      v6 = v18;
+      valueCopy = v18;
       goto LABEL_12;
     }
 
     if ((objc_msgSend_isAnimationKeyHidden(self, v7, v8) & 1) != 0 || objc_msgSend_isAnimationKeyDoubleSided(self, v14, v15))
     {
-      objc_msgSend_floatValue(v6, v14, v15);
+      objc_msgSend_floatValue(valueCopy, v14, v15);
       v16 = MEMORY[0x277CBEC28];
       if (v17 >= 0.5)
       {
@@ -100,18 +100,18 @@ LABEL_11:
 
 LABEL_12:
 
-  return v6;
+  return valueCopy;
 }
 
-- (id)interpolatedValueFrom:(id)a3 to:(id)a4 percent:(double)a5
+- (id)interpolatedValueFrom:(id)from to:(id)to percent:(double)percent
 {
-  v8 = a3;
-  v9 = a4;
+  fromCopy = from;
+  toCopy = to;
   if (objc_msgSend_isObjectTypeCGColor(self, v10, v11))
   {
-    v14 = objc_msgSend_colorWithCGColor_(MEMORY[0x277D81180], v12, v8);
-    v16 = objc_msgSend_colorWithCGColor_(MEMORY[0x277D81180], v15, v9);
-    v18 = objc_msgSend_blendedColorWithFraction_ofColor_(v14, v17, v16, a5);
+    v14 = objc_msgSend_colorWithCGColor_(MEMORY[0x277D81180], v12, fromCopy);
+    v16 = objc_msgSend_colorWithCGColor_(MEMORY[0x277D81180], v15, toCopy);
+    v18 = objc_msgSend_blendedColorWithFraction_ofColor_(v14, v17, v16, percent);
     v21 = objc_msgSend_CGColor(v18, v19, v20);
 
 LABEL_7:
@@ -133,12 +133,12 @@ LABEL_7:
     }
 
     v28 = v26;
-    v29 = a5;
+    percentCopy = percent;
     v21 = objc_msgSend_valueWithContentBlend_(MEMORY[0x277CCAE60], v24, &v28);
     goto LABEL_7;
   }
 
-  v21 = objc_msgSend_mixedObjectWithFraction_ofObject_(v8, v22, v9, a5);
+  v21 = objc_msgSend_mixedObjectWithFraction_ofObject_(fromCopy, v22, toCopy, percent);
 LABEL_9:
 
   return v21;

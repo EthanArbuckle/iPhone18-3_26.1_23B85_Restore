@@ -1,6 +1,6 @@
 @interface VCAudioCaptionsSpeechFactory
 + (BOOL)V2SpeechAPIEnabled;
-+ (id)captionsProviderForFrameworkType:(unsigned __int8)a3 withSpeechConfig:(const tagVCAudioCaptionsSpeechConfig *)a4;
++ (id)captionsProviderForFrameworkType:(unsigned __int8)type withSpeechConfig:(const tagVCAudioCaptionsSpeechConfig *)config;
 @end
 
 @implementation VCAudioCaptionsSpeechFactory
@@ -22,14 +22,14 @@ BOOL __50__VCAudioCaptionsSpeechFactory_V2SpeechAPIEnabled__block_invoke()
   return result;
 }
 
-+ (id)captionsProviderForFrameworkType:(unsigned __int8)a3 withSpeechConfig:(const tagVCAudioCaptionsSpeechConfig *)a4
++ (id)captionsProviderForFrameworkType:(unsigned __int8)type withSpeechConfig:(const tagVCAudioCaptionsSpeechConfig *)config
 {
-  if (a3 > 3u)
+  if (type > 3u)
   {
     return 0;
   }
 
-  v5 = [objc_alloc(*off_1E85F96C0[a3]) initWithSpeechConfig:a4];
+  v5 = [objc_alloc(*off_1E85F96C0[type]) initWithSpeechConfig:config];
 
   return v5;
 }

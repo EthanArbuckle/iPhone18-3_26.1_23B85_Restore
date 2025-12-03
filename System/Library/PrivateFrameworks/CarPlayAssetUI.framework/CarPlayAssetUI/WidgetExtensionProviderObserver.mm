@@ -1,7 +1,7 @@
 @interface WidgetExtensionProviderObserver
 - (_TtC14CarPlayAssetUI31WidgetExtensionProviderObserver)init;
 - (void)dealloc;
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
 @end
 
 @implementation WidgetExtensionProviderObserver
@@ -9,14 +9,14 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14CarPlayAssetUI31WidgetExtensionProviderObserver_provider);
-  v3 = self;
+  selfCopy = self;
   [v2 unregisterObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for WidgetExtensionProviderObserver();
   [(WidgetExtensionProviderObserver *)&v4 dealloc];
 }
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ECFAFB0);
   MEMORY[0x28223BE20](v4 - 8);
@@ -27,7 +27,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_242E8C7B4(0, 0, v6, &unk_242F43398, v8);
 }
 

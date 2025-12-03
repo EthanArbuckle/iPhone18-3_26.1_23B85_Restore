@@ -1,24 +1,24 @@
 @interface _LTDASRConfigurationModel
-- (_LTDASRConfigurationModel)initWithDictionary:(id)a3;
+- (_LTDASRConfigurationModel)initWithDictionary:(id)dictionary;
 - (id)_defaultAssetType;
 - (id)_taskHintMap;
-- (id)assetTypeForTaskHint:(int64_t)a3 localeIdentifier:(id)a4;
-- (id)assetTypesForLocaleIdentifier:(id)a3;
-- (id)supportedLocaleIdentifiersForTaskHint:(int64_t)a3;
+- (id)assetTypeForTaskHint:(int64_t)hint localeIdentifier:(id)identifier;
+- (id)assetTypesForLocaleIdentifier:(id)identifier;
+- (id)supportedLocaleIdentifiersForTaskHint:(int64_t)hint;
 @end
 
 @implementation _LTDASRConfigurationModel
 
-- (_LTDASRConfigurationModel)initWithDictionary:(id)a3
+- (_LTDASRConfigurationModel)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _LTDASRConfigurationModel;
   v6 = [(_LTDASRConfigurationModel *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_root, a3);
+    objc_storeStrong(&v6->_root, dictionary);
     v8 = [(NSDictionary *)v7->_root objectForKeyedSubscript:@"_all"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -89,21 +89,21 @@
   return v6;
 }
 
-- (id)assetTypesForLocaleIdentifier:(id)a3
+- (id)assetTypesForLocaleIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = [a3 lt_localeIdentifier];
+  lt_localeIdentifier = [identifier lt_localeIdentifier];
   v5 = MEMORY[0x277CBEB58];
-  v6 = [(_LTDASRConfigurationModel *)self _defaultAssetType];
-  v26 = [v5 setWithObject:v6];
+  _defaultAssetType = [(_LTDASRConfigurationModel *)self _defaultAssetType];
+  v26 = [v5 setWithObject:_defaultAssetType];
 
-  v7 = [(_LTDASRConfigurationModel *)self _taskHintMap];
+  _taskHintMap = [(_LTDASRConfigurationModel *)self _taskHintMap];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v7 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  allKeys = [_taskHintMap allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -114,11 +114,11 @@
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        v14 = [v7 objectForKeyedSubscript:v13];
+        v14 = [_taskHintMap objectForKeyedSubscript:v13];
         v15 = [v14 objectForKeyedSubscript:@"SupportedLocales"];
 
         if (v15)
@@ -142,10 +142,10 @@
 
         v17 = v16;
 
-        v18 = [v17 containsObject:v4];
+        v18 = [v17 containsObject:lt_localeIdentifier];
         if (v18)
         {
-          v19 = [v7 objectForKeyedSubscript:v13];
+          v19 = [_taskHintMap objectForKeyedSubscript:v13];
           v20 = [v19 objectForKeyedSubscript:@"AssetType"];
 
           if (v20)
@@ -173,25 +173,25 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  v23 = [v26 allObjects];
+  allObjects = [v26 allObjects];
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return allObjects;
 }
 
-- (id)assetTypeForTaskHint:(int64_t)a3 localeIdentifier:(id)a4
+- (id)assetTypeForTaskHint:(int64_t)hint localeIdentifier:(id)identifier
 {
-  v6 = [a4 lt_localeIdentifier];
+  lt_localeIdentifier = [identifier lt_localeIdentifier];
   v7 = _LTTranslationTaskHintString();
-  v8 = [(_LTDASRConfigurationModel *)self _taskHintMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  _taskHintMap = [(_LTDASRConfigurationModel *)self _taskHintMap];
+  v9 = [_taskHintMap objectForKeyedSubscript:v7];
 
   if (v9)
   {
@@ -214,8 +214,8 @@
 
   v11 = v10;
 
-  v12 = [(_LTDASRConfigurationModel *)self supportedLocaleIdentifiersForTaskHint:a3];
-  if ([v12 containsObject:v6])
+  v12 = [(_LTDASRConfigurationModel *)self supportedLocaleIdentifiersForTaskHint:hint];
+  if ([v12 containsObject:lt_localeIdentifier])
   {
     v13 = [v11 objectForKeyedSubscript:@"AssetType"];
     if (v13)
@@ -237,25 +237,25 @@
       v14 = 0;
     }
 
-    v15 = v14;
+    _defaultAssetType = v14;
   }
 
-  else if ((a3 - 9) >= 2)
+  else if ((hint - 9) >= 2)
   {
-    v15 = [(_LTDASRConfigurationModel *)self _defaultAssetType];
+    _defaultAssetType = [(_LTDASRConfigurationModel *)self _defaultAssetType];
   }
 
   else
   {
-    v15 = 0;
+    _defaultAssetType = 0;
   }
 
-  return v15;
+  return _defaultAssetType;
 }
 
-- (id)supportedLocaleIdentifiersForTaskHint:(int64_t)a3
+- (id)supportedLocaleIdentifiersForTaskHint:(int64_t)hint
 {
-  if ((a3 - 9) > 1)
+  if ((hint - 9) > 1)
   {
     v13 = self->_localeIdentifiers;
   }
@@ -263,8 +263,8 @@
   else
   {
     v4 = _LTTranslationTaskHintString();
-    v5 = [(_LTDASRConfigurationModel *)self _taskHintMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    _taskHintMap = [(_LTDASRConfigurationModel *)self _taskHintMap];
+    v6 = [_taskHintMap objectForKeyedSubscript:v4];
     v7 = objc_opt_class();
     v8 = v6;
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v9 = [v8 lt_ensureTypesForKeys:v7 values:0], v10 = v8, (v9 & 1) == 0))

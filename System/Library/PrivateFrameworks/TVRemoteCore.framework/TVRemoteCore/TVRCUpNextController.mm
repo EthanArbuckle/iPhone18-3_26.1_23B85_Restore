@@ -1,54 +1,54 @@
 @interface TVRCUpNextController
-- (void)_fetchPlayableOpenURLForMediaIdentifier:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (void)_fetchUpNextInfosWithPaginationToken:(id)a3 completion:(id)a4;
-- (void)_openURL:(id)a3 completion:(id)a4;
-- (void)_openURLString:(id)a3 completion:(id)a4;
-- (void)_playItemForMediaIdentifier:(id)a3 kind:(unint64_t)a4 completion:(id)a5;
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchUpNextInfosWithPaginationToken:(id)a3 completion:(id)a4;
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)playItem:(id)a3 completion:(id)a4;
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4;
+- (void)_fetchPlayableOpenURLForMediaIdentifier:(id)identifier type:(int64_t)type completion:(id)completion;
+- (void)_fetchUpNextInfosWithPaginationToken:(id)token completion:(id)completion;
+- (void)_openURL:(id)l completion:(id)completion;
+- (void)_openURLString:(id)string completion:(id)completion;
+- (void)_playItemForMediaIdentifier:(id)identifier kind:(unint64_t)kind completion:(id)completion;
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchUpNextInfosWithPaginationToken:(id)token completion:(id)completion;
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)playItem:(id)item completion:(id)completion;
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation TVRCUpNextController
 
-- (void)fetchUpNextInfosWithPaginationToken:(id)a3 completion:(id)a4
+- (void)fetchUpNextInfosWithPaginationToken:(id)token completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(TVRCUpNextController *)self fetchUpNextInfosImpl];
+  tokenCopy = token;
+  completionCopy = completion;
+  fetchUpNextInfosImpl = [(TVRCUpNextController *)self fetchUpNextInfosImpl];
 
-  if (v7)
+  if (fetchUpNextInfosImpl)
   {
-    v8 = [(TVRCUpNextController *)self fetchUpNextInfosImpl];
-    (v8)[2](v8, v9, v6);
+    fetchUpNextInfosImpl2 = [(TVRCUpNextController *)self fetchUpNextInfosImpl];
+    (fetchUpNextInfosImpl2)[2](fetchUpNextInfosImpl2, tokenCopy, completionCopy);
   }
 
   else
   {
-    [(TVRCUpNextController *)self _fetchUpNextInfosWithPaginationToken:v9 completion:v6];
+    [(TVRCUpNextController *)self _fetchUpNextInfosWithPaginationToken:tokenCopy completion:completionCopy];
   }
 }
 
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277D7A950]) initWithItemID:v5];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = [objc_alloc(MEMORY[0x277D7A950]) initWithItemID:identifierCopy];
   objc_initWeak(&location, v7);
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __68__TVRCUpNextController_markAsWatchedWithMediaIdentifier_completion___block_invoke;
   v14 = &unk_279D82430;
   objc_copyWeak(&v17, &location);
-  v8 = v5;
+  v8 = identifierCopy;
   v15 = v8;
-  v9 = v6;
+  v9 = completionCopy;
   v16 = v9;
   [v7 setCompletionBlock:&v11];
-  v10 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-  [v10 addOperation:v7];
+  wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+  [wlkDefaultQueue addOperation:v7];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -78,19 +78,19 @@ void __68__TVRCUpNextController_markAsWatchedWithMediaIdentifier_completion___bl
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277D7A928]) initWithCanonicalID:v5];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = [objc_alloc(MEMORY[0x277D7A928]) initWithCanonicalID:identifierCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__TVRCUpNextController_addItemWithMediaIdentifier_completion___block_invoke;
   v10[3] = &unk_279D82458;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   [v7 makeRequestWithCompletion:v10];
 }
 
@@ -117,19 +117,19 @@ void __62__TVRCUpNextController_addItemWithMediaIdentifier_completion___block_in
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277D7A960]) initWithCanonicalID:v5];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = [objc_alloc(MEMORY[0x277D7A960]) initWithCanonicalID:identifierCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__TVRCUpNextController_removeItemWithMediaIdentifier_completion___block_invoke;
   v10[3] = &unk_279D82458;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   [v7 makeRequestWithCompletion:v10];
 }
 
@@ -156,24 +156,24 @@ void __65__TVRCUpNextController_removeItemWithMediaIdentifier_completion___block
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)playItem:(id)a3 completion:(id)a4
+- (void)playItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasMediaIdentifierAndKind])
+  itemCopy = item;
+  completionCopy = completion;
+  if ([itemCopy hasMediaIdentifierAndKind])
   {
-    v8 = [v6 mediaIdentifier];
-    v9 = [v6 kind];
-    -[TVRCUpNextController _playItemForMediaIdentifier:kind:completion:](self, "_playItemForMediaIdentifier:kind:completion:", v8, [v9 integerValue], v7);
+    mediaIdentifier = [itemCopy mediaIdentifier];
+    kind = [itemCopy kind];
+    -[TVRCUpNextController _playItemForMediaIdentifier:kind:completion:](self, "_playItemForMediaIdentifier:kind:completion:", mediaIdentifier, [kind integerValue], completionCopy);
 
 LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v6 hasURL])
+  if ([itemCopy hasURL])
   {
-    v8 = [v6 url];
-    [(TVRCUpNextController *)self _openURL:v8 completion:v7];
+    mediaIdentifier = [itemCopy url];
+    [(TVRCUpNextController *)self _openURL:mediaIdentifier completion:completionCopy];
     goto LABEL_5;
   }
 
@@ -183,21 +183,21 @@ LABEL_5:
     [TVRCUpNextController playItem:v10 completion:?];
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_9:
 }
 
-- (void)_playItemForMediaIdentifier:(id)a3 kind:(unint64_t)a4 completion:(id)a5
+- (void)_playItemForMediaIdentifier:(id)identifier kind:(unint64_t)kind completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = 3;
-  if (a4 != 1)
+  if (kind != 1)
   {
     v10 = 1;
   }
 
-  if (a4 == 3)
+  if (kind == 3)
   {
     v11 = 0;
   }
@@ -213,9 +213,9 @@ LABEL_9:
   v13[2] = __68__TVRCUpNextController__playItemForMediaIdentifier_kind_completion___block_invoke;
   v13[3] = &unk_279D82480;
   objc_copyWeak(&v15, &location);
-  v12 = v9;
+  v12 = completionCopy;
   v14 = v12;
-  [(TVRCUpNextController *)self _fetchPlayableOpenURLForMediaIdentifier:v8 type:v11 completion:v13];
+  [(TVRCUpNextController *)self _fetchPlayableOpenURLForMediaIdentifier:identifierCopy type:v11 completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -228,10 +228,10 @@ void __68__TVRCUpNextController__playItemForMediaIdentifier_kind_completion___bl
   [WeakRetained _openURLString:v3 completion:*(a1 + 32)];
 }
 
-- (void)_fetchUpNextInfosWithPaginationToken:(id)a3 completion:(id)a4
+- (void)_fetchUpNextInfosWithPaginationToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x277D7A940]) initWithQueryParameters:0];
   objc_initWeak(&location, v8);
   objc_initWeak(&from, self);
@@ -241,11 +241,11 @@ void __68__TVRCUpNextController__playItemForMediaIdentifier_kind_completion___bl
   v11[3] = &unk_279D824D0;
   objc_copyWeak(&v13, &from);
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [v8 setCompletionBlock:v11];
-  v10 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-  [v10 addOperation:v8];
+  wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+  [wlkDefaultQueue addOperation:v8];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v13);
@@ -334,22 +334,22 @@ uint64_t __72__TVRCUpNextController__fetchUpNextInfosWithPaginationToken_complet
   return v4();
 }
 
-- (void)_fetchPlayableOpenURLForMediaIdentifier:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)_fetchPlayableOpenURLForMediaIdentifier:(id)identifier type:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277D7A938]) initWithCanonicalID:v8];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = [objc_alloc(MEMORY[0x277D7A938]) initWithCanonicalID:identifierCopy];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__TVRCUpNextController__fetchPlayableOpenURLForMediaIdentifier_type_completion___block_invoke;
   v13[3] = &unk_279D824F8;
   objc_copyWeak(&v16, &location);
-  v11 = v8;
+  v11 = identifierCopy;
   v14 = v11;
-  v12 = v9;
+  v12 = completionCopy;
   v15 = v12;
-  [v10 makeRequestWithCompletion:v13 canonicalType:a4];
+  [v10 makeRequestWithCompletion:v13 canonicalType:type];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -455,30 +455,30 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_openURLString:(id)a3 completion:(id)a4
+- (void)_openURLString:(id)string completion:(id)completion
 {
   v6 = MEMORY[0x277CBEBC0];
-  v7 = a4;
-  v10 = [v6 URLWithString:a3];
-  v8 = [v10 absoluteString];
-  v9 = [v8 length];
+  completionCopy = completion;
+  v10 = [v6 URLWithString:string];
+  absoluteString = [v10 absoluteString];
+  v9 = [absoluteString length];
 
   if (v9)
   {
-    [(TVRCUpNextController *)self _openURL:v10 completion:v7];
+    [(TVRCUpNextController *)self _openURL:v10 completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_openURL:(id)a3 completion:(id)a4
+- (void)_openURL:(id)l completion:(id)completion
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CC1F00]);
   v8 = *MEMORY[0x277D0AC30];
   v17[0] = *MEMORY[0x277D0AC58];
@@ -488,16 +488,16 @@ LABEL_6:
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   [v7 setFrontBoardOptions:v9];
 
-  v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __44__TVRCUpNextController__openURL_completion___block_invoke;
   v14[3] = &unk_279D82520;
-  v15 = v5;
-  v16 = v6;
-  v11 = v6;
-  v12 = v5;
-  [v10 openURL:v12 configuration:v7 completionHandler:v14];
+  v15 = lCopy;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = lCopy;
+  [defaultWorkspace openURL:v12 configuration:v7 completionHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }

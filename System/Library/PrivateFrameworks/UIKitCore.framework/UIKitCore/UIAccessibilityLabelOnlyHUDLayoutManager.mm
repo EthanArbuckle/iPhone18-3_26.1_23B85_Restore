@@ -1,26 +1,26 @@
 @interface UIAccessibilityLabelOnlyHUDLayoutManager
-- (BOOL)labelContainsSingleCharacter:(id)a3;
-- (CGRect)labelFrameForHUD:(id)a3 preferredSize:(CGSize)a4;
-- (CGSize)minimumUnscaledSizeForHUD:(id)a3 preferredLabelSize:(CGSize)a4;
-- (CGSize)unscaledSizeForHUD:(id)a3 containingSize:(CGSize)a4;
-- (id)labelFontForHUD:(id)a3;
+- (BOOL)labelContainsSingleCharacter:(id)character;
+- (CGRect)labelFrameForHUD:(id)d preferredSize:(CGSize)size;
+- (CGSize)minimumUnscaledSizeForHUD:(id)d preferredLabelSize:(CGSize)size;
+- (CGSize)unscaledSizeForHUD:(id)d containingSize:(CGSize)size;
+- (id)labelFontForHUD:(id)d;
 @end
 
 @implementation UIAccessibilityLabelOnlyHUDLayoutManager
 
-- (CGSize)unscaledSizeForHUD:(id)a3 containingSize:(CGSize)a4
+- (CGSize)unscaledSizeForHUD:(id)d containingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [v7 titleLabel];
+  height = size.height;
+  width = size.width;
+  dCopy = d;
+  titleLabel = [dCopy titleLabel];
   *&v9 = 155.0;
   *&v10 = 155.0;
-  if (![(UIAccessibilityLabelOnlyHUDLayoutManager *)self labelContainsSingleCharacter:v8])
+  if (![(UIAccessibilityLabelOnlyHUDLayoutManager *)self labelContainsSingleCharacter:titleLabel])
   {
     v15.receiver = self;
     v15.super_class = UIAccessibilityLabelOnlyHUDLayoutManager;
-    [(UIAccessibilityHUDLayoutManager *)&v15 unscaledSizeForHUD:v7 containingSize:width, height];
+    [(UIAccessibilityHUDLayoutManager *)&v15 unscaledSizeForHUD:dCopy containingSize:width, height];
     v9 = v11;
     v10 = v12;
   }
@@ -32,29 +32,29 @@
   return result;
 }
 
-- (CGSize)minimumUnscaledSizeForHUD:(id)a3 preferredLabelSize:(CGSize)a4
+- (CGSize)minimumUnscaledSizeForHUD:(id)d preferredLabelSize:(CGSize)size
 {
-  v4 = a4.width + 32.0;
-  v5 = a4.height + 48.0;
+  v4 = size.width + 32.0;
+  v5 = size.height + 48.0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGRect)labelFrameForHUD:(id)a3 preferredSize:(CGSize)a4
+- (CGRect)labelFrameForHUD:(id)d preferredSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = *MEMORY[0x1E695F058];
   v8 = *(MEMORY[0x1E695F058] + 8);
-  v9 = a3;
-  [(UIAccessibilityHUDLayoutManager *)self layoutBoundsForHUD:v9];
+  dCopy = d;
+  [(UIAccessibilityHUDLayoutManager *)self layoutBoundsForHUD:dCopy];
   v12 = v11 + v10 * 0.5;
   v15 = v14 + v13 * 0.5;
-  v16 = [v9 window];
+  window = [dCopy window];
 
-  v17 = [v16 screen];
-  [v17 scale];
+  screen = [window screen];
+  [screen scale];
   UIRectCenteredAboutPointScale(v7, v8, width, height, v12, v15, v18);
   v20 = v19;
   v22 = v21;
@@ -72,11 +72,11 @@
   return result;
 }
 
-- (id)labelFontForHUD:(id)a3
+- (id)labelFontForHUD:(id)d
 {
-  v4 = a3;
-  v5 = [v4 titleLabel];
-  if ([(UIAccessibilityLabelOnlyHUDLayoutManager *)self labelContainsSingleCharacter:v5])
+  dCopy = d;
+  titleLabel = [dCopy titleLabel];
+  if ([(UIAccessibilityLabelOnlyHUDLayoutManager *)self labelContainsSingleCharacter:titleLabel])
   {
     v6 = [off_1E70ECC18 systemFontOfSize:84.0];
   }
@@ -85,7 +85,7 @@
   {
     v9.receiver = self;
     v9.super_class = UIAccessibilityLabelOnlyHUDLayoutManager;
-    v6 = [(UIAccessibilityHUDLayoutManager *)&v9 labelFontForHUD:v4];
+    v6 = [(UIAccessibilityHUDLayoutManager *)&v9 labelFontForHUD:dCopy];
   }
 
   v7 = v6;
@@ -93,17 +93,17 @@
   return v7;
 }
 
-- (BOOL)labelContainsSingleCharacter:(id)a3
+- (BOOL)labelContainsSingleCharacter:(id)character
 {
-  v3 = a3;
-  v4 = [v3 text];
-  if ([v4 length])
+  characterCopy = character;
+  text = [characterCopy text];
+  if ([text length])
   {
-    v5 = [v3 text];
-    [v5 rangeOfComposedCharacterSequenceAtIndex:0];
+    text2 = [characterCopy text];
+    [text2 rangeOfComposedCharacterSequenceAtIndex:0];
     v7 = v6;
-    v8 = [v3 text];
-    v9 = v7 == [v8 length];
+    text3 = [characterCopy text];
+    v9 = v7 == [text3 length];
   }
 
   else

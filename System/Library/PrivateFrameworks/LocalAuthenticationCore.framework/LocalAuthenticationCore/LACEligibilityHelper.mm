@@ -1,11 +1,11 @@
 @interface LACEligibilityHelper
 + (LACEligibilityHelper)sharedInstance;
-- (BOOL)isEligibleForDomain:(id)a3;
+- (BOOL)isEligibleForDomain:(id)domain;
 - (LACEligibilityHelper)init;
 - (NSArray)registeredNotificationsForDomains;
 - (void)dealloc;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(const __CFString *)a4;
-- (void)setRegisteredNotificationsForDomains:(id)a3;
+- (void)notificationCenter:(id)center didReceiveNotification:(const __CFString *)notification;
+- (void)setRegisteredNotificationsForDomains:(id)domains;
 @end
 
 @implementation LACEligibilityHelper
@@ -32,7 +32,7 @@
   return v3.super.isa;
 }
 
-- (void)setRegisteredNotificationsForDomains:(id)a3
+- (void)setRegisteredNotificationsForDomains:(id)domains
 {
   type metadata accessor for LACEligibilityDomain(0);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -43,18 +43,18 @@
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR___LACEligibilityHelper_darwinNotificationCenter);
-  v3 = self;
+  selfCopy = self;
   [v2 removeObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = LACEligibilityHelper;
   [(LACEligibilityHelper *)&v4 dealloc];
 }
 
-- (BOOL)isEligibleForDomain:(id)a3
+- (BOOL)isEligibleForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = LACEligibilityHelper.isEligible(forDomain:)(v4);
+  domainCopy = domain;
+  selfCopy = self;
+  LOBYTE(self) = LACEligibilityHelper.isEligible(forDomain:)(domainCopy);
 
   return self & 1;
 }
@@ -74,14 +74,14 @@
   return [(LACEligibilityHelper *)&v8 init];
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(const __CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(const __CFString *)notification
 {
-  v5 = a4;
-  v7 = self;
-  if (LACDarwinNotificationsEqual(v5, @"com.apple.os-eligibility-domain.change.tellurium"))
+  notificationCopy = notification;
+  selfCopy = self;
+  if (LACDarwinNotificationsEqual(notificationCopy, @"com.apple.os-eligibility-domain.change.tellurium"))
   {
-    v6 = (v7 + OBJC_IVAR___LACEligibilityHelper_cache);
-    os_unfair_lock_lock((v7 + OBJC_IVAR___LACEligibilityHelper_cache));
+    v6 = (selfCopy + OBJC_IVAR___LACEligibilityHelper_cache);
+    os_unfair_lock_lock((selfCopy + OBJC_IVAR___LACEligibilityHelper_cache));
     specialized Dictionary.subscript.setter(2, @"LACEligibilityDomainPhoneIntegration");
     os_unfair_lock_unlock(v6);
   }

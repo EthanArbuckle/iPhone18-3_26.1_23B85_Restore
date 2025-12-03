@@ -1,5 +1,5 @@
 @interface MedicationCategoryTipCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,13 +7,13 @@
 
 @implementation MedicationCategoryTipCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthMedicationsUI.MedicationCategoryTipCell" hasSwiftField:@"item" withSwiftType:"Optional<SectionedDataSourceItem>"];
-  [v3 validateSwiftStruct:@"HealthMedicationsUI.MedicationsCategoryTipItem" hasSwiftField:@"titleText" withSwiftType:"String"];
-  [v3 validateSwiftStruct:@"HealthMedicationsUI.MedicationsCategoryTipItem" hasSwiftField:@"bodyText" withSwiftType:"String"];
-  [v3 validateClass:@"HealthMedicationsExperience.MedicationView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationCategoryTipCell" hasSwiftField:@"item" withSwiftType:"Optional<SectionedDataSourceItem>"];
+  [validationsCopy validateSwiftStruct:@"HealthMedicationsUI.MedicationsCategoryTipItem" hasSwiftField:@"titleText" withSwiftType:"String"];
+  [validationsCopy validateSwiftStruct:@"HealthMedicationsUI.MedicationsCategoryTipItem" hasSwiftField:@"bodyText" withSwiftType:"String"];
+  [validationsCopy validateClass:@"HealthMedicationsExperience.MedicationView"];
 }
 
 - (id)accessibilityLabel
@@ -28,7 +28,7 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(MedicationCategoryTipCellAccessibility *)self _axTipMedicationViews];
+  _axTipMedicationViews = [(MedicationCategoryTipCellAccessibility *)self _axTipMedicationViews];
   v3 = UIAXStringForAllChildren();
 
   return v3;

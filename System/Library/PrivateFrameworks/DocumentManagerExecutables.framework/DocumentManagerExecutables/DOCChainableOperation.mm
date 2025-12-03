@@ -7,7 +7,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   DOCChainableOperation.main()();
 }
 

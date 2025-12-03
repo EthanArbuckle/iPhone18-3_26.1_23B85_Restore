@@ -1,43 +1,43 @@
 @interface HMDCameraSignificantEventBulletinParams
 - (HMDCameraSignificantEventBulletinParams)init;
-- (HMDCameraSignificantEventBulletinParams)initWithSignificantEvent:(id)a3 cameraProfileUUID:(id)a4;
-- (HMDCameraSignificantEventBulletinParams)initWithUUID:(id)a3 reason:(unint64_t)a4 dateOfOccurrence:(id)a5 confidenceLevel:(unint64_t)a6 faceClassifications:(id)a7 cameraProfileUUID:(id)a8;
+- (HMDCameraSignificantEventBulletinParams)initWithSignificantEvent:(id)event cameraProfileUUID:(id)d;
+- (HMDCameraSignificantEventBulletinParams)initWithUUID:(id)d reason:(unint64_t)reason dateOfOccurrence:(id)occurrence confidenceLevel:(unint64_t)level faceClassifications:(id)classifications cameraProfileUUID:(id)iD;
 @end
 
 @implementation HMDCameraSignificantEventBulletinParams
 
-- (HMDCameraSignificantEventBulletinParams)initWithSignificantEvent:(id)a3 cameraProfileUUID:(id)a4
+- (HMDCameraSignificantEventBulletinParams)initWithSignificantEvent:(id)event cameraProfileUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 UUID];
-  v9 = [v7 reason];
-  v10 = [v7 dateOfOccurrence];
-  v11 = [v7 confidenceLevel];
-  v12 = [v7 faceClassifications];
+  dCopy = d;
+  eventCopy = event;
+  uUID = [eventCopy UUID];
+  reason = [eventCopy reason];
+  dateOfOccurrence = [eventCopy dateOfOccurrence];
+  confidenceLevel = [eventCopy confidenceLevel];
+  faceClassifications = [eventCopy faceClassifications];
 
-  v13 = [(HMDCameraSignificantEventBulletinParams *)self initWithUUID:v8 reason:v9 dateOfOccurrence:v10 confidenceLevel:v11 faceClassifications:v12 cameraProfileUUID:v6];
+  v13 = [(HMDCameraSignificantEventBulletinParams *)self initWithUUID:uUID reason:reason dateOfOccurrence:dateOfOccurrence confidenceLevel:confidenceLevel faceClassifications:faceClassifications cameraProfileUUID:dCopy];
   return v13;
 }
 
-- (HMDCameraSignificantEventBulletinParams)initWithUUID:(id)a3 reason:(unint64_t)a4 dateOfOccurrence:(id)a5 confidenceLevel:(unint64_t)a6 faceClassifications:(id)a7 cameraProfileUUID:(id)a8
+- (HMDCameraSignificantEventBulletinParams)initWithUUID:(id)d reason:(unint64_t)reason dateOfOccurrence:(id)occurrence confidenceLevel:(unint64_t)level faceClassifications:(id)classifications cameraProfileUUID:(id)iD
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  occurrenceCopy = occurrence;
+  classificationsCopy = classifications;
+  iDCopy = iD;
   v22.receiver = self;
   v22.super_class = HMDCameraSignificantEventBulletinParams;
   v18 = [(HMDCameraSignificantEventBulletinParams *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_UUID, a3);
-    v19->_reason = a4;
-    objc_storeStrong(&v19->_dateOfOccurrence, a5);
-    v19->_confidenceLevel = a6;
-    objc_storeStrong(&v19->_faceClassifications, a7);
-    objc_storeStrong(&v19->_cameraProfileUUID, a8);
+    objc_storeStrong(&v18->_UUID, d);
+    v19->_reason = reason;
+    objc_storeStrong(&v19->_dateOfOccurrence, occurrence);
+    v19->_confidenceLevel = level;
+    objc_storeStrong(&v19->_faceClassifications, classifications);
+    objc_storeStrong(&v19->_cameraProfileUUID, iD);
   }
 
   return v19;

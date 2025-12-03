@@ -1,20 +1,20 @@
 @interface NUWebContentLoadingPolicyProvider
-- (NUWebContentLoadingPolicyProvider)initWithHeadline:(id)a3;
+- (NUWebContentLoadingPolicyProvider)initWithHeadline:(id)headline;
 - (unint64_t)loadingPolicy;
 @end
 
 @implementation NUWebContentLoadingPolicyProvider
 
-- (NUWebContentLoadingPolicyProvider)initWithHeadline:(id)a3
+- (NUWebContentLoadingPolicyProvider)initWithHeadline:(id)headline
 {
-  v5 = a3;
+  headlineCopy = headline;
   v9.receiver = self;
   v9.super_class = NUWebContentLoadingPolicyProvider;
   v6 = [(NUWebContentLoadingPolicyProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_headline, a3);
+    objc_storeStrong(&v6->_headline, headline);
   }
 
   return v7;
@@ -22,33 +22,33 @@
 
 - (unint64_t)loadingPolicy
 {
-  v3 = [(NUWebContentLoadingPolicyProvider *)self headline];
-  if ([v3 webEmbedsEnabled])
+  headline = [(NUWebContentLoadingPolicyProvider *)self headline];
+  if ([headline webEmbedsEnabled])
   {
   }
 
   else
   {
-    v4 = [(NUWebContentLoadingPolicyProvider *)self headline];
-    v5 = [v4 isDraft];
+    headline2 = [(NUWebContentLoadingPolicyProvider *)self headline];
+    isDraft = [headline2 isDraft];
 
-    if (!v5)
+    if (!isDraft)
     {
       return 2;
     }
   }
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if ([v6 BOOLForKey:@"newsarticles.anf.embed_source_url"])
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"newsarticles.anf.embed_source_url"])
   {
 
     return 1;
   }
 
-  v7 = [(NUWebContentLoadingPolicyProvider *)self headline];
-  v8 = [v7 isDraft];
+  headline3 = [(NUWebContentLoadingPolicyProvider *)self headline];
+  isDraft2 = [headline3 isDraft];
 
-  return v8 != 0;
+  return isDraft2 != 0;
 }
 
 @end

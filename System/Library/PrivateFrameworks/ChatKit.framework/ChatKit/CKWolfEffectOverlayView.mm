@@ -1,14 +1,14 @@
 @interface CKWolfEffectOverlayView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CKWolfEffectOverlayView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = CKWolfEffectOverlayView;
-  v5 = [(CKWolfEffectOverlayView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CKWolfEffectOverlayView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

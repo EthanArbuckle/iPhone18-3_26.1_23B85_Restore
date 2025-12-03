@@ -1,15 +1,15 @@
 @interface MPContactSearchManager
-- (BOOL)isMatchInfoValidWithMatchInfo:(id)a3;
+- (BOOL)isMatchInfoValidWithMatchInfo:(id)info;
 - (MPContactSearchManager)init;
-- (MPContactSearchManager)initWithType:(int64_t)a3 contactStore:(id)a4 searchResultsRanker:(id)a5;
+- (MPContactSearchManager)initWithType:(int64_t)type contactStore:(id)store searchResultsRanker:(id)ranker;
 - (NSArray)_contactSearchResults;
 - (NSArray)contacts;
 - (NSString)_searchString;
 - (id)ranker;
 - (void)cancelPreviousSearch;
-- (void)searchFor:(NSString *)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5;
-- (void)set_contactSearchResults:(id)a3;
-- (void)set_searchString:(id)a3;
+- (void)searchFor:(NSString *)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler;
+- (void)set_contactSearchResults:(id)results;
+- (void)set_searchString:(id)string;
 @end
 
 @implementation MPContactSearchManager
@@ -38,7 +38,7 @@
   return v4;
 }
 
-- (void)set_searchString:(id)a3
+- (void)set_searchString:(id)string
 {
   v4 = sub_1CFB8FA90();
   v5 = (self + OBJC_IVAR___MPContactSearchManager__searchString);
@@ -57,7 +57,7 @@
   return v3;
 }
 
-- (void)set_contactSearchResults:(id)a3
+- (void)set_contactSearchResults:(id)results
 {
   sub_1CFB5D38C(0, &unk_1EE04BCF0, 0x1E69BDCF8);
   v4 = sub_1CFB8FB30();
@@ -65,20 +65,20 @@
   *(self + OBJC_IVAR___MPContactSearchManager__contactSearchResults) = v4;
 }
 
-- (MPContactSearchManager)initWithType:(int64_t)a3 contactStore:(id)a4 searchResultsRanker:(id)a5
+- (MPContactSearchManager)initWithType:(int64_t)type contactStore:(id)store searchResultsRanker:(id)ranker
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(ranker);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  v9 = a4;
-  v10 = sub_1CFB76F14(a3, a4, sub_1CFB76F0C, v8);
+  storeCopy = store;
+  v10 = sub_1CFB76F14(type, store, sub_1CFB76F0C, v8);
 
   return v10;
 }
 
 - (NSArray)contacts
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB73C50();
 
   sub_1CFB5D38C(0, &qword_1EC4EC820, 0x1E695CD58);
@@ -87,16 +87,16 @@
   return v3;
 }
 
-- (void)searchFor:(NSString *)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5
+- (void)searchFor:(NSString *)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4EC4B0, &qword_1CFB91F10);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = for;
+  *(v14 + 24) = result;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_1CFB8FBF0();
@@ -111,22 +111,22 @@
   v17[3] = 0;
   v17[4] = &unk_1CFB922C0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_1CFB8C0EC(0, 0, v12, &unk_1CFB922C8, v17);
 }
 
 - (void)cancelPreviousSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB75E58();
 }
 
-- (BOOL)isMatchInfoValidWithMatchInfo:(id)a3
+- (BOOL)isMatchInfoValidWithMatchInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1CFB76000(v4);
+  infoCopy = info;
+  selfCopy = self;
+  LOBYTE(self) = sub_1CFB76000(infoCopy);
 
   return self & 1;
 }

@@ -1,27 +1,27 @@
 @interface IFTSchemaIFTUpdateParameter
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTUpdateParameter)initWithDictionary:(id)a3;
-- (IFTSchemaIFTUpdateParameter)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTUpdateParameter)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTUpdateParameter)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasParameterIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasParameterIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTUpdateParameter
 
-- (IFTSchemaIFTUpdateParameter)initWithDictionary:(id)a3
+- (IFTSchemaIFTUpdateParameter)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = IFTSchemaIFTUpdateParameter;
   v5 = [(IFTSchemaIFTUpdateParameter *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parameterId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"parameterId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(IFTSchemaIFTUpdateParameter *)v5 setParameterId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"kind"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTUpdateParameter setKind:](v5, "setKind:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"value"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(IFTSchemaIFTUpdateParameter *)v5 setValue:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"parameterIndex"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"parameterIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTUpdateParameter)initWithJSON:(id)a3
+- (IFTSchemaIFTUpdateParameter)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTUpdateParameter *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTUpdateParameter *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTUpdateParameter *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,17 +93,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(IFTSchemaIFTUpdateParameter *)self kind];
+    kind = [(IFTSchemaIFTUpdateParameter *)self kind];
     v5 = @"ASTUPDATEKIND_UNKNOWN";
-    if (v4 == 1)
+    if (kind == 1)
     {
       v5 = @"ASTUPDATEKIND_APPEND";
     }
 
-    if (v4 == 2)
+    if (kind == 2)
     {
       v6 = @"ASTUPDATEKIND_REPLACE";
     }
@@ -113,41 +113,41 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"kind"];
+    [dictionary setObject:v6 forKeyedSubscript:@"kind"];
   }
 
   if (self->_parameterId)
   {
-    v7 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"parameterId"];
+    parameterId = [(IFTSchemaIFTUpdateParameter *)self parameterId];
+    v8 = [parameterId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"parameterId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTUpdateParameter parameterIndex](self, "parameterIndex")}];
-    [v3 setObject:v9 forKeyedSubscript:@"parameterIndex"];
+    [dictionary setObject:v9 forKeyedSubscript:@"parameterIndex"];
   }
 
   if (self->_value)
   {
-    v10 = [(IFTSchemaIFTUpdateParameter *)self value];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    value = [(IFTSchemaIFTUpdateParameter *)self value];
+    dictionaryRepresentation = [value dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"value"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"value"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"value"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -177,28 +177,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
-  v6 = [v4 parameterId];
-  if ((v5 != 0) == (v6 == 0))
+  parameterId = [(IFTSchemaIFTUpdateParameter *)self parameterId];
+  parameterId2 = [equalCopy parameterId];
+  if ((parameterId != 0) == (parameterId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
-  if (v7)
+  parameterId3 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
+  if (parameterId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
-    v10 = [v4 parameterId];
-    v11 = [v9 isEqual:v10];
+    v8 = parameterId3;
+    parameterId4 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
+    parameterId5 = [equalCopy parameterId];
+    v11 = [parameterId4 isEqual:parameterId5];
 
     if (!v11)
     {
@@ -210,7 +210,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_15;
   }
@@ -218,28 +218,28 @@
   if (*&self->_has)
   {
     kind = self->_kind;
-    if (kind != [v4 kind])
+    if (kind != [equalCopy kind])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(IFTSchemaIFTUpdateParameter *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) == (v6 == 0))
+  parameterId = [(IFTSchemaIFTUpdateParameter *)self value];
+  parameterId2 = [equalCopy value];
+  if ((parameterId != 0) == (parameterId2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v13 = [(IFTSchemaIFTUpdateParameter *)self value];
-  if (v13)
+  value = [(IFTSchemaIFTUpdateParameter *)self value];
+  if (value)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTUpdateParameter *)self value];
-    v16 = [v4 value];
-    v17 = [v15 isEqual:v16];
+    v14 = value;
+    value2 = [(IFTSchemaIFTUpdateParameter *)self value];
+    value3 = [equalCopy value];
+    v17 = [value2 isEqual:value3];
 
     if (!v17)
     {
@@ -252,9 +252,9 @@ LABEL_14:
   }
 
   v20 = (*&self->_has >> 1) & 1;
-  if (v20 == ((v4[40] >> 1) & 1))
+  if (v20 == ((equalCopy[40] >> 1) & 1))
   {
-    if (!v20 || (parameterIndex = self->_parameterIndex, parameterIndex == [v4 parameterIndex]))
+    if (!v20 || (parameterIndex = self->_parameterIndex, parameterIndex == [equalCopy parameterIndex]))
     {
       v18 = 1;
       goto LABEL_16;
@@ -268,12 +268,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(IFTSchemaIFTUpdateParameter *)self parameterId];
+  toCopy = to;
+  parameterId = [(IFTSchemaIFTUpdateParameter *)self parameterId];
 
-  if (v4)
+  if (parameterId)
   {
     PBDataWriterWriteStringField();
   }
@@ -283,11 +283,11 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(IFTSchemaIFTUpdateParameter *)self value];
+  value = [(IFTSchemaIFTUpdateParameter *)self value];
 
-  if (v5)
+  if (value)
   {
-    v6 = [(IFTSchemaIFTUpdateParameter *)self value];
+    value2 = [(IFTSchemaIFTUpdateParameter *)self value];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,9 +297,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasParameterIndex:(BOOL)a3
+- (void)setHasParameterIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -312,22 +312,22 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = IFTSchemaIFTUpdateParameter;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTUpdateParameter *)self deleteParameterId];
   }
 
-  v6 = [(IFTSchemaIFTUpdateParameter *)self value];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  value = [(IFTSchemaIFTUpdateParameter *)self value];
+  v7 = [value applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTUpdateParameter *)self deleteValue];
   }

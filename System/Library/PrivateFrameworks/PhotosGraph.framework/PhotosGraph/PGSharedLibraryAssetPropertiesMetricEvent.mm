@@ -1,7 +1,7 @@
 @interface PGSharedLibraryAssetPropertiesMetricEvent
 - (NSArray)payloads;
 - (NSString)description;
-- (void)gatherMetricsWithProgressBlock:(id)a3;
+- (void)gatherMetricsWithProgressBlock:(id)block;
 @end
 
 @implementation PGSharedLibraryAssetPropertiesMetricEvent
@@ -12,17 +12,17 @@
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(PGSharedLibraryAssetPropertiesMetricEvent *)self identifier];
-  v8 = [(PGSharedLibraryAssetPropertiesMetricEvent *)self payloads];
-  v9 = [v3 stringWithFormat:@"<%@: %p> %@:\nIdentifier:%@\nPayloads:%@", v4, self, v6, v7, v8];
+  identifier = [(PGSharedLibraryAssetPropertiesMetricEvent *)self identifier];
+  payloads = [(PGSharedLibraryAssetPropertiesMetricEvent *)self payloads];
+  v9 = [v3 stringWithFormat:@"<%@: %p> %@:\nIdentifier:%@\nPayloads:%@", v4, self, v6, identifier, payloads];
 
   return v9;
 }
 
-- (void)gatherMetricsWithProgressBlock:(id)a3
+- (void)gatherMetricsWithProgressBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (v4)
   {
@@ -49,8 +49,8 @@
     }
   }
 
-  v7 = [(NSDictionary *)self->_resultsByAssetIdentifier allKeys];
-  v8 = [v7 mutableCopy];
+  allKeys = [(NSDictionary *)self->_resultsByAssetIdentifier allKeys];
+  v8 = [allKeys mutableCopy];
 
   if ([v8 count])
   {
@@ -152,20 +152,20 @@ LABEL_30:
   v31 = *MEMORY[0x277D85DE8];
   if ([(NSMutableDictionary *)self->_payloadByAssetIdentifier count])
   {
-    v3 = [(NSMutableDictionary *)self->_payloadByAssetIdentifier allKeys];
-    v4 = [v3 mutableCopy];
+    allKeys = [(NSMutableDictionary *)self->_payloadByAssetIdentifier allKeys];
+    v4 = [allKeys mutableCopy];
 
-    v5 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v22 = v6;
+    v22 = librarySpecificFetchOptions;
     v23 = v4;
-    v7 = [MEMORY[0x277CD97A8] fetchAssetsWithUUIDs:v4 options:v6];
+    v7 = [MEMORY[0x277CD97A8] fetchAssetsWithUUIDs:v4 options:librarySpecificFetchOptions];
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
-    v9 = self;
+    selfCopy = self;
     v29.receiver = self;
     v29.super_class = PGSharedLibraryAssetPropertiesMetricEvent;
-    v10 = [(PGPhotosChallengeMetricEvent *)&v29 payload];
+    payload = [(PGPhotosChallengeMetricEvent *)&v29 payload];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -186,10 +186,10 @@ LABEL_30:
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v10 mutableCopy];
-          payloadByAssetIdentifier = v9->_payloadByAssetIdentifier;
-          v18 = [v15 uuid];
-          v19 = [(NSMutableDictionary *)payloadByAssetIdentifier objectForKeyedSubscript:v18];
+          v16 = [payload mutableCopy];
+          payloadByAssetIdentifier = selfCopy->_payloadByAssetIdentifier;
+          uuid = [v15 uuid];
+          v19 = [(NSMutableDictionary *)payloadByAssetIdentifier objectForKeyedSubscript:uuid];
           [v16 addEntriesFromDictionary:v19];
 
           [v16 setObject:v15 forKeyedSubscript:@"assets"];

@@ -1,8 +1,8 @@
 @interface OSLogDoublyLinkedList
 - (id)removeFromHead;
-- (void)addToTail:(id)a3;
+- (void)addToTail:(id)tail;
 - (void)removeAllObjects;
-- (void)removeNodeAndAddToTail:(id)a3;
+- (void)removeNodeAndAddToTail:(id)tail;
 @end
 
 @implementation OSLogDoublyLinkedList
@@ -11,69 +11,69 @@
 {
   do
   {
-    v3 = [(OSLogDoublyLinkedList *)self removeFromHead];
+    removeFromHead = [(OSLogDoublyLinkedList *)self removeFromHead];
   }
 
-  while (v3);
+  while (removeFromHead);
 }
 
-- (void)removeNodeAndAddToTail:(id)a3
+- (void)removeNodeAndAddToTail:(id)tail
 {
-  v12 = a3;
-  v4 = [v12 prev];
-  v5 = [v12 next];
-  [v5 setPrev:v4];
+  tailCopy = tail;
+  prev = [tailCopy prev];
+  next = [tailCopy next];
+  [next setPrev:prev];
 
-  v6 = [v12 next];
-  v7 = [v12 prev];
-  [v7 setNext:v6];
+  next2 = [tailCopy next];
+  prev2 = [tailCopy prev];
+  [prev2 setNext:next2];
 
-  v8 = [(OSLogDoublyLinkedList *)self head];
+  head = [(OSLogDoublyLinkedList *)self head];
 
-  if (v8 == v12)
+  if (head == tailCopy)
   {
-    v9 = [v12 next];
-    [(OSLogDoublyLinkedList *)self setHead:v9];
+    next3 = [tailCopy next];
+    [(OSLogDoublyLinkedList *)self setHead:next3];
   }
 
-  v10 = [(OSLogDoublyLinkedList *)self tail];
+  tail = [(OSLogDoublyLinkedList *)self tail];
 
-  if (v10 == v12)
+  if (tail == tailCopy)
   {
-    v11 = [v12 prev];
-    [(OSLogDoublyLinkedList *)self setTail:v11];
+    prev3 = [tailCopy prev];
+    [(OSLogDoublyLinkedList *)self setTail:prev3];
   }
 
-  [v12 setPrev:0];
-  [v12 setNext:0];
+  [tailCopy setPrev:0];
+  [tailCopy setNext:0];
   [(OSLogDoublyLinkedList *)self setCount:[(OSLogDoublyLinkedList *)self count]- 1];
-  [(OSLogDoublyLinkedList *)self addToTail:v12];
+  [(OSLogDoublyLinkedList *)self addToTail:tailCopy];
 }
 
-- (void)addToTail:(id)a3
+- (void)addToTail:(id)tail
 {
-  v4 = a3;
-  v5 = [(OSLogDoublyLinkedList *)self tail];
+  tailCopy = tail;
+  tail = [(OSLogDoublyLinkedList *)self tail];
 
-  if (v5)
+  if (tail)
   {
-    v6 = [(OSLogDoublyLinkedList *)self tail];
-    [v6 setNext:v4];
+    tail2 = [(OSLogDoublyLinkedList *)self tail];
+    [tail2 setNext:tailCopy];
 
-    v7 = [(OSLogDoublyLinkedList *)self tail];
-    [v4 setPrev:v7];
+    tail3 = [(OSLogDoublyLinkedList *)self tail];
+    [tailCopy setPrev:tail3];
 
-    [v4 setNext:0];
+    [tailCopy setNext:0];
   }
 
   else
   {
-    [v4 setPrev:0];
-    [v4 setNext:0];
-    [(OSLogDoublyLinkedList *)self setHead:v4];
+    [tailCopy setPrev:0];
+    [tailCopy setNext:0];
+    [(OSLogDoublyLinkedList *)self setHead:tailCopy];
   }
 
-  [(OSLogDoublyLinkedList *)self setTail:v4];
+  [(OSLogDoublyLinkedList *)self setTail:tailCopy];
 
   v8 = [(OSLogDoublyLinkedList *)self count]+ 1;
 
@@ -82,19 +82,19 @@
 
 - (id)removeFromHead
 {
-  v3 = [(OSLogDoublyLinkedList *)self head];
-  v4 = v3;
-  if (v3)
+  head = [(OSLogDoublyLinkedList *)self head];
+  v4 = head;
+  if (head)
   {
-    v5 = [v3 next];
-    [(OSLogDoublyLinkedList *)self setHead:v5];
+    next = [head next];
+    [(OSLogDoublyLinkedList *)self setHead:next];
 
-    v6 = [v4 next];
-    [v6 setPrev:0];
+    next2 = [v4 next];
+    [next2 setPrev:0];
 
-    v7 = [(OSLogDoublyLinkedList *)self tail];
+    tail = [(OSLogDoublyLinkedList *)self tail];
 
-    if (v4 == v7)
+    if (v4 == tail)
     {
       [(OSLogDoublyLinkedList *)self setTail:0];
     }

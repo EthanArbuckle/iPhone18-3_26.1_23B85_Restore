@@ -1,25 +1,25 @@
 @interface _CDContact
-+ (_CDContact)contactWithIdentifier:(id)a3 identifierType:(id)a4 displayName:(id)a5 personId:(id)a6 personIdType:(unint64_t)a7;
-+ (_CDContact)contactWithIdentifier:(id)a3 type:(unint64_t)a4 displayName:(id)a5 personId:(id)a6 personIdType:(unint64_t)a7;
-+ (id)normalizedStringKey:(id)a3;
-+ (id)predicateForContact:(id)a3;
-+ (id)predicateForContactWithPersonId:(id)a3 personIdType:(unint64_t)a4;
-+ (id)predicateForContactWithType:(unint64_t)a3;
-+ (id)typeAsCNContactPropertyKey:(unint64_t)a3;
-+ (unint64_t)typeFromString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mayContainPrefix:(id)a3;
-- (BOOL)mayRepresentSamePersonAs:(id)a3;
++ (_CDContact)contactWithIdentifier:(id)identifier identifierType:(id)type displayName:(id)name personId:(id)id personIdType:(unint64_t)idType;
++ (_CDContact)contactWithIdentifier:(id)identifier type:(unint64_t)type displayName:(id)name personId:(id)id personIdType:(unint64_t)idType;
++ (id)normalizedStringKey:(id)key;
++ (id)predicateForContact:(id)contact;
++ (id)predicateForContactWithPersonId:(id)id personIdType:(unint64_t)type;
++ (id)predicateForContactWithType:(unint64_t)type;
++ (id)typeAsCNContactPropertyKey:(unint64_t)key;
++ (unint64_t)typeFromString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mayContainPrefix:(id)prefix;
+- (BOOL)mayRepresentSamePersonAs:(id)as;
 - (NSString)identifierType;
-- (_CDContact)initWithCoder:(id)a3;
-- (_CDContact)initWithINPerson:(id)a3;
-- (_CDContact)initWithIdentifier:(id)a3 type:(unint64_t)a4 customIdentifier:(id)a5 displayName:(id)a6 displayType:(unint64_t)a7 personId:(id)a8 personIdType:(unint64_t)a9 displayImageURL:(id)a10 participantStatus:(int64_t)a11 contactIdType:(int64_t)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CDContact)initWithCoder:(id)coder;
+- (_CDContact)initWithINPerson:(id)person;
+- (_CDContact)initWithIdentifier:(id)identifier type:(unint64_t)type customIdentifier:(id)customIdentifier displayName:(id)name displayType:(unint64_t)displayType personId:(id)id personIdType:(unint64_t)idType displayImageURL:(id)self0 participantStatus:(int64_t)self1 contactIdType:(int64_t)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithContact:(id)a3;
-- (void)setIdentifierType:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithContact:(id)contact;
+- (void)setIdentifierType:(id)type;
 @end
 
 @implementation _CDContact
@@ -31,100 +31,100 @@
   return self->_personIdType - v4 + 32 * v4;
 }
 
-- (_CDContact)initWithINPerson:(id)a3
+- (_CDContact)initWithINPerson:(id)person
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  personCopy = person;
+  v5 = personCopy;
+  if (personCopy)
   {
-    v6 = [v4 personHandle];
+    selfCopy = [personCopy personHandle];
 
-    if (v6)
+    if (selfCopy)
     {
-      v7 = [v5 personHandle];
-      v8 = [v7 value];
-      v9 = [v8 length];
+      personHandle = [v5 personHandle];
+      value = [personHandle value];
+      v9 = [value length];
 
       if (!v9)
       {
         goto LABEL_5;
       }
 
-      v10 = [v5 personHandle];
-      v11 = [v10 value];
-      v12 = [_CDContactResolver resolveContactIfPossibleFromContactIdentifierString:v11];
+      personHandle2 = [v5 personHandle];
+      value2 = [personHandle2 value];
+      v12 = [_CDContactResolver resolveContactIfPossibleFromContactIdentifierString:value2];
 
-      v13 = [v12 identifier];
+      identifier = [v12 identifier];
 
-      if (!v13)
+      if (!identifier)
       {
 LABEL_5:
-        v14 = [v5 contactIdentifier];
-        v15 = [v14 length];
+        contactIdentifier = [v5 contactIdentifier];
+        v15 = [contactIdentifier length];
 
         if (v15)
         {
-          v13 = [v5 contactIdentifier];
+          identifier = [v5 contactIdentifier];
         }
 
         else
         {
-          v13 = 0;
+          identifier = 0;
         }
       }
 
-      v16 = [v5 personHandle];
-      v17 = [v16 value];
-      v18 = [_CDContactResolver normalizedStringFromContactString:v17];
+      personHandle3 = [v5 personHandle];
+      value3 = [personHandle3 value];
+      v18 = [_CDContactResolver normalizedStringFromContactString:value3];
 
-      v33 = [v18 _stripFZIDPrefix];
+      _stripFZIDPrefix = [v18 _stripFZIDPrefix];
 
-      v19 = [v5 image];
-      v20 = [v19 _uri];
+      image = [v5 image];
+      _uri = [image _uri];
 
-      v34 = v13;
-      if (v20)
+      v34 = identifier;
+      if (_uri)
       {
-        v21 = [v19 _uri];
+        _uri2 = [image _uri];
       }
 
       else
       {
-        v21 = [v19 _identifier];
+        _uri2 = [image _identifier];
 
-        if (v21)
+        if (_uri2)
         {
           v22 = MEMORY[0x1E695DFF8];
-          v23 = [v19 _identifier];
-          v21 = [v22 URLWithString:v23];
+          _identifier = [image _identifier];
+          _uri2 = [v22 URLWithString:_identifier];
         }
       }
 
-      v24 = [v5 personHandle];
-      v25 = [v24 type];
+      personHandle4 = [v5 personHandle];
+      type = [personHandle4 type];
       objc_opt_self();
-      if (v25 == 1)
+      if (type == 1)
       {
         v26 = 2;
       }
 
       else
       {
-        v26 = v25 == 2;
+        v26 = type == 2;
       }
 
-      v27 = [v5 customIdentifier];
-      v28 = [v5 displayName];
-      v29 = [v5 suggestionType];
+      customIdentifier = [v5 customIdentifier];
+      displayName = [v5 displayName];
+      suggestionType = [v5 suggestionType];
       objc_opt_self();
-      if (v29 == 1)
+      if (suggestionType == 1)
       {
         v30 = 1;
       }
 
       else
       {
-        v30 = 2 * (v29 == 2);
+        v30 = 2 * (suggestionType == 2);
       }
 
       v31 = 3;
@@ -133,122 +133,122 @@ LABEL_5:
         v31 = 0;
       }
 
-      self = [(_CDContact *)self initWithIdentifier:v33 type:v26 customIdentifier:v27 displayName:v28 displayType:v30 personId:v34 personIdType:v31 displayImageURL:v21];
+      self = [(_CDContact *)self initWithIdentifier:_stripFZIDPrefix type:v26 customIdentifier:customIdentifier displayName:displayName displayType:v30 personId:v34 personIdType:v31 displayImageURL:_uri2];
 
-      v6 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (_CDContact)contactWithIdentifier:(id)a3 type:(unint64_t)a4 displayName:(id)a5 personId:(id)a6 personIdType:(unint64_t)a7
++ (_CDContact)contactWithIdentifier:(id)identifier type:(unint64_t)type displayName:(id)name personId:(id)id personIdType:(unint64_t)idType
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [[_CDContact alloc] initWithIdentifier:v13 type:a4 displayName:v12 personId:v11 personIdType:a7];
+  idCopy = id;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v14 = [[_CDContact alloc] initWithIdentifier:identifierCopy type:type displayName:nameCopy personId:idCopy personIdType:idType];
 
   return v14;
 }
 
-- (_CDContact)initWithIdentifier:(id)a3 type:(unint64_t)a4 customIdentifier:(id)a5 displayName:(id)a6 displayType:(unint64_t)a7 personId:(id)a8 personIdType:(unint64_t)a9 displayImageURL:(id)a10 participantStatus:(int64_t)a11 contactIdType:(int64_t)a12
+- (_CDContact)initWithIdentifier:(id)identifier type:(unint64_t)type customIdentifier:(id)customIdentifier displayName:(id)name displayType:(unint64_t)displayType personId:(id)id personIdType:(unint64_t)idType displayImageURL:(id)self0 participantStatus:(int64_t)self1 contactIdType:(int64_t)self2
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v26 = a8;
-  v20 = a10;
+  identifierCopy = identifier;
+  customIdentifierCopy = customIdentifier;
+  nameCopy = name;
+  idCopy = id;
+  lCopy = l;
   v27.receiver = self;
   v27.super_class = _CDContact;
   v21 = [(_CDContact *)&v27 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_identifier, a3);
-    objc_storeStrong(&v22->_customIdentifier, a5);
-    v22->_type = a4;
-    objc_storeStrong(&v22->_displayName, a6);
-    v22->_displayType = a7;
-    objc_storeStrong(&v22->_personId, a8);
-    v22->_personIdType = a9;
-    objc_storeStrong(&v22->_displayImageURL, a10);
-    v22->_participantStatus = a11;
-    v22->_contactIdType = a12;
+    objc_storeStrong(&v21->_identifier, identifier);
+    objc_storeStrong(&v22->_customIdentifier, customIdentifier);
+    v22->_type = type;
+    objc_storeStrong(&v22->_displayName, name);
+    v22->_displayType = displayType;
+    objc_storeStrong(&v22->_personId, id);
+    v22->_personIdType = idType;
+    objc_storeStrong(&v22->_displayImageURL, l);
+    v22->_participantStatus = status;
+    v22->_contactIdType = contactIdType;
   }
 
   return v22;
 }
 
-- (_CDContact)initWithCoder:(id)a3
+- (_CDContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = _CDContact;
   v5 = [(_CDContact *)&v26 init];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"customIdentifier"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"customIdentifier"];
     customIdentifier = v5->_customIdentifier;
     v5->_customIdentifier = v10;
 
-    v5->_type = [v4 decodeInt64ForKey:@"type"];
+    v5->_type = [coderCopy decodeInt64ForKey:@"type"];
     v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"personId"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"personId"];
     personId = v5->_personId;
     v5->_personId = v13;
 
-    v5->_personIdType = [v4 decodeInt64ForKey:@"personIdType"];
+    v5->_personIdType = [coderCopy decodeInt64ForKey:@"personIdType"];
     v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"displayName"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v16;
 
-    v5->_displayType = [v4 decodeInt64ForKey:@"displayType"];
+    v5->_displayType = [coderCopy decodeInt64ForKey:@"displayType"];
     v18 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"statistics"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"statistics"];
     statistics = v5->_statistics;
     v5->_statistics = v19;
 
-    v5->_participantStatus = [v4 decodeInt64ForKey:@"participantStatus"];
+    v5->_participantStatus = [coderCopy decodeInt64ForKey:@"participantStatus"];
     v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"displayImageURL"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"displayImageURL"];
     displayImageURL = v5->_displayImageURL;
     v5->_displayImageURL = v22;
 
-    v5->_contactIdType = [v4 decodeInt64ForKey:@"contactIdType"];
+    v5->_contactIdType = [coderCopy decodeInt64ForKey:@"contactIdType"];
     v24 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_customIdentifier forKey:@"customIdentifier"];
-  [v5 encodeInt64:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_personId forKey:@"personId"];
-  [v5 encodeInt64:self->_personIdType forKey:@"personIdType"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeInt64:self->_displayType forKey:@"displayType"];
-  [v5 encodeObject:self->_statistics forKey:@"statistics"];
-  [v5 encodeObject:self->_displayImageURL forKey:@"displayImageURL"];
-  [v5 encodeInt64:self->_participantStatus forKey:@"participantStatus"];
-  [v5 encodeInt64:self->_contactIdType forKey:@"contactIdType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_customIdentifier forKey:@"customIdentifier"];
+  [coderCopy encodeInt64:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_personId forKey:@"personId"];
+  [coderCopy encodeInt64:self->_personIdType forKey:@"personIdType"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeInt64:self->_displayType forKey:@"displayType"];
+  [coderCopy encodeObject:self->_statistics forKey:@"statistics"];
+  [coderCopy encodeObject:self->_displayImageURL forKey:@"displayImageURL"];
+  [coderCopy encodeInt64:self->_participantStatus forKey:@"participantStatus"];
+  [coderCopy encodeInt64:self->_contactIdType forKey:@"contactIdType"];
 }
 
 - (id)description
@@ -271,7 +271,7 @@ LABEL_5:
     displayName = &stru_1F05B9908;
   }
 
-  v10 = [v7 initWithFormat:@"'%@'", displayName];
+  displayName = [v7 initWithFormat:@"'%@'", displayName];
   v11 = self->_personIdType - 1;
   if (v11 <= 2)
   {
@@ -302,13 +302,13 @@ LABEL_5:
 
   v19 = [v15 initWithFormat:@"ContactIdType=%@", v18];
   v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v21 = [(NSURL *)self->_displayImageURL absoluteString];
-  v22 = [v20 initWithFormat:@"%@; %@; %@; %@; displayImageURL=%@; %@", v3, v10, v9, v14, v21, v19];
+  absoluteString = [(NSURL *)self->_displayImageURL absoluteString];
+  v22 = [v20 initWithFormat:@"%@; %@; %@; %@; displayImageURL=%@; %@", v3, displayName, v9, v14, absoluteString, v19];
 
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_CDContact allocWithZone:?]];
   objc_storeStrong(&v4->_identifier, self->_identifier);
@@ -324,10 +324,10 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_11;
@@ -340,7 +340,7 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->_type != v5->_type || self->_personIdType != v5->_personIdType)
   {
@@ -392,13 +392,13 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)mayRepresentSamePersonAs:(id)a3
+- (BOOL)mayRepresentSamePersonAs:(id)as
 {
-  v4 = a3;
+  asCopy = as;
   personIdType = self->_personIdType;
-  v6 = [v4 personIdType];
+  personIdType = [asCopy personIdType];
   v7 = self->_personIdType;
-  if (personIdType == v6)
+  if (personIdType == personIdType)
   {
     if (v7)
     {
@@ -408,12 +408,12 @@ LABEL_11:
         goto LABEL_15;
       }
 
-      v8 = [v4 personId];
-      if (v8)
+      personId = [asCopy personId];
+      if (personId)
       {
         personId = self->_personId;
-        v9 = [v4 personId];
-        LOBYTE(personId) = [(NSString *)personId isEqualToString:v9];
+        personId2 = [asCopy personId];
+        LOBYTE(personId) = [(NSString *)personId isEqualToString:personId2];
       }
 
       else
@@ -433,26 +433,26 @@ LABEL_11:
   identifier = self->_identifier;
   if (identifier)
   {
-    v8 = [v4 identifier];
-    v12 = identifier;
+    personId = [asCopy identifier];
+    identifier2 = identifier;
 LABEL_12:
-    v13 = v8;
+    v13 = personId;
 LABEL_13:
-    LOBYTE(personId) = [v12 isEqualToString:v13];
+    LOBYTE(personId) = [identifier2 isEqualToString:v13];
 LABEL_14:
 
     goto LABEL_15;
   }
 
 LABEL_9:
-  if (![v4 personIdType])
+  if (![asCopy personIdType])
   {
-    v15 = [v4 identifier];
+    identifier = [asCopy identifier];
 
-    if (v15)
+    if (identifier)
     {
-      v12 = [v4 identifier];
-      v8 = v12;
+      identifier2 = [asCopy identifier];
+      personId = identifier2;
       v13 = self->_identifier;
       goto LABEL_13;
     }
@@ -461,8 +461,8 @@ LABEL_9:
   personId = self->_displayName;
   if (personId)
   {
-    v8 = [v4 displayName];
-    v12 = personId;
+    personId = [asCopy displayName];
+    identifier2 = personId;
     goto LABEL_12;
   }
 
@@ -471,170 +471,170 @@ LABEL_15:
   return personId;
 }
 
-- (void)mergeWithContact:(id)a3
+- (void)mergeWithContact:(id)contact
 {
-  v33 = a3;
-  v4 = [v33 identifier];
-  v5 = [(_CDContact *)self identifier];
-  v6 = [v4 isEqualToString:v5];
+  contactCopy = contact;
+  identifier = [contactCopy identifier];
+  identifier2 = [(_CDContact *)self identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   if (!v6)
   {
     goto LABEL_27;
   }
 
-  v7 = [(_CDContact *)self displayName];
-  if (!v7)
+  displayName = [(_CDContact *)self displayName];
+  if (!displayName)
   {
     goto LABEL_35;
   }
 
-  v8 = v7;
-  v9 = [(_CDContact *)self identifier];
-  v10 = [(_CDContact *)self displayName];
-  v11 = [v9 isEqualToString:v10];
+  v8 = displayName;
+  identifier3 = [(_CDContact *)self identifier];
+  displayName2 = [(_CDContact *)self displayName];
+  v11 = [identifier3 isEqualToString:displayName2];
 
   if (v11)
   {
 LABEL_35:
-    v12 = [v33 displayName];
-    if (v12)
+    displayName3 = [contactCopy displayName];
+    if (displayName3)
     {
-      v13 = v12;
-      v14 = [v33 identifier];
-      v15 = [v33 displayName];
-      v16 = [v14 isEqualToString:v15];
+      v13 = displayName3;
+      identifier4 = [contactCopy identifier];
+      displayName4 = [contactCopy displayName];
+      v16 = [identifier4 isEqualToString:displayName4];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v33 displayName];
-        [(_CDContact *)self setDisplayName:v17];
+        displayName5 = [contactCopy displayName];
+        [(_CDContact *)self setDisplayName:displayName5];
       }
     }
   }
 
-  v18 = [(_CDContact *)self personId];
-  if (v18)
+  personId = [(_CDContact *)self personId];
+  if (personId)
   {
   }
 
   else
   {
-    v29 = [v33 personId];
-    if (v29)
+    personId2 = [contactCopy personId];
+    if (personId2)
     {
-      v30 = v29;
-      v31 = [v33 personIdType];
+      v30 = personId2;
+      personIdType = [contactCopy personIdType];
 
-      if (v31)
+      if (personIdType)
       {
-        v32 = [v33 personId];
-        [(_CDContact *)self setPersonId:v32];
+        personId3 = [contactCopy personId];
+        [(_CDContact *)self setPersonId:personId3];
 
-        -[_CDContact setPersonIdType:](self, "setPersonIdType:", [v33 personIdType]);
+        -[_CDContact setPersonIdType:](self, "setPersonIdType:", [contactCopy personIdType]);
       }
     }
   }
 
   if (![(_CDContact *)self displayType])
   {
-    v19 = [v33 displayType];
-    if (v19 != [(_CDContact *)self displayType])
+    displayType = [contactCopy displayType];
+    if (displayType != [(_CDContact *)self displayType])
     {
-      -[_CDContact setDisplayType:](self, "setDisplayType:", [v33 displayType]);
+      -[_CDContact setDisplayType:](self, "setDisplayType:", [contactCopy displayType]);
     }
   }
 
-  v20 = [(_CDContact *)self customIdentifier];
-  if (v20)
+  customIdentifier = [(_CDContact *)self customIdentifier];
+  if (customIdentifier)
   {
     goto LABEL_15;
   }
 
-  v21 = [v33 customIdentifier];
+  customIdentifier2 = [contactCopy customIdentifier];
 
-  if (v21)
+  if (customIdentifier2)
   {
-    v20 = [v33 customIdentifier];
-    [(_CDContact *)self setCustomIdentifier:v20];
+    customIdentifier = [contactCopy customIdentifier];
+    [(_CDContact *)self setCustomIdentifier:customIdentifier];
 LABEL_15:
   }
 
-  v22 = [(_CDContact *)self statistics];
-  if (v22)
+  statistics = [(_CDContact *)self statistics];
+  if (statistics)
   {
-    v23 = v22;
-    v24 = [v33 statistics];
+    v23 = statistics;
+    statistics2 = [contactCopy statistics];
 
-    if (v24)
+    if (statistics2)
     {
-      v25 = [(_CDContact *)self statistics];
-      v26 = [v33 statistics];
-      [v25 updateWithStatistics:v26];
+      statistics3 = [(_CDContact *)self statistics];
+      statistics4 = [contactCopy statistics];
+      [statistics3 updateWithStatistics:statistics4];
 LABEL_22:
 
       goto LABEL_23;
     }
   }
 
-  v25 = [(_CDContact *)self statistics];
-  if (v25)
+  statistics3 = [(_CDContact *)self statistics];
+  if (statistics3)
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v27 = [v33 statistics];
+  statistics5 = [contactCopy statistics];
 
-  if (v27)
+  if (statistics5)
   {
-    v25 = [v33 statistics];
-    v26 = [v25 copy];
-    [(_CDContact *)self setStatistics:v26];
+    statistics3 = [contactCopy statistics];
+    statistics4 = [statistics3 copy];
+    [(_CDContact *)self setStatistics:statistics4];
     goto LABEL_22;
   }
 
 LABEL_24:
-  v28 = [(_CDContact *)self contactIdType];
-  if (v28 != [v33 contactIdType] && objc_msgSend(v33, "contactIdType") != 2)
+  contactIdType = [(_CDContact *)self contactIdType];
+  if (contactIdType != [contactCopy contactIdType] && objc_msgSend(contactCopy, "contactIdType") != 2)
   {
-    -[_CDContact setContactIdType:](self, "setContactIdType:", [v33 contactIdType]);
+    -[_CDContact setContactIdType:](self, "setContactIdType:", [contactCopy contactIdType]);
   }
 
 LABEL_27:
 }
 
-- (BOOL)mayContainPrefix:(id)a3
+- (BOOL)mayContainPrefix:(id)prefix
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(_CDContact *)self identifier];
-  v7 = [v6 length];
+  prefixCopy = prefix;
+  array = [MEMORY[0x1E695DF70] array];
+  identifier = [(_CDContact *)self identifier];
+  v7 = [identifier length];
 
   if (v7)
   {
-    v8 = [(_CDContact *)self identifier];
-    [v5 addObject:v8];
+    identifier2 = [(_CDContact *)self identifier];
+    [array addObject:identifier2];
   }
 
-  v9 = [(_CDContact *)self displayName];
-  v10 = [v9 length];
+  displayName = [(_CDContact *)self displayName];
+  v10 = [displayName length];
 
   if (v10)
   {
-    v11 = [(_CDContact *)self displayName];
-    v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v13 = [v11 componentsSeparatedByCharactersInSet:v12];
-    [v5 addObjectsFromArray:v13];
+    displayName2 = [(_CDContact *)self displayName];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v13 = [displayName2 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
+    [array addObjectsFromArray:v13];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v5;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -650,10 +650,10 @@ LABEL_27:
 
         v18 = *(*(&v24 + 1) + 8 * i);
         v19 = [v18 length];
-        if (v19 >= [v4 length])
+        if (v19 >= [prefixCopy length])
         {
-          v20 = [v18 substringToIndex:{objc_msgSend(v4, "length")}];
-          v21 = [v20 compare:v4 options:129];
+          v20 = [v18 substringToIndex:{objc_msgSend(prefixCopy, "length")}];
+          v21 = [v20 compare:prefixCopy options:129];
 
           if (!v21)
           {
@@ -679,29 +679,29 @@ LABEL_16:
   return v15;
 }
 
-+ (id)predicateForContactWithType:(unint64_t)a3
++ (id)predicateForContactWithType:(unint64_t)type
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v5 = [v3 predicateWithFormat:@"type == %@", v4];
 
   return v5;
 }
 
-+ (id)predicateForContactWithPersonId:(id)a3 personIdType:(unint64_t)a4
++ (id)predicateForContactWithPersonId:(id)id personIdType:(unint64_t)type
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  idCopy = id;
   v6 = MEMORY[0x1E696AE18];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v8 = [v6 predicateWithFormat:@"personIdType == %@", v7];
 
-  if (a4)
+  if (type)
   {
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personId == %@", v5];
+    idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"personId == %@", idCopy];
     v10 = MEMORY[0x1E696AB28];
     v15[0] = v8;
-    v15[1] = v9;
+    v15[1] = idCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v12 = [v10 andPredicateWithSubpredicates:v11];
 
@@ -713,117 +713,117 @@ LABEL_16:
   return v8;
 }
 
-+ (id)predicateForContact:(id)a3
++ (id)predicateForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [a1 predicateForContactWithType:{objc_msgSend(v4, "type")}];
-  [v5 addObject:v6];
+  contactCopy = contact;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [self predicateForContactWithType:{objc_msgSend(contactCopy, "type")}];
+  [array addObject:v6];
 
-  v7 = [v4 personId];
-  v8 = [a1 predicateForContactWithPersonId:v7 personIdType:{objc_msgSend(v4, "personIdType")}];
-  [v5 addObject:v8];
+  personId = [contactCopy personId];
+  v8 = [self predicateForContactWithPersonId:personId personIdType:{objc_msgSend(contactCopy, "personIdType")}];
+  [array addObject:v8];
 
-  v9 = [v4 identifier];
-  v10 = [a1 predicateForContactWithIdentifier:v9];
-  [v5 addObject:v10];
+  identifier = [contactCopy identifier];
+  v10 = [self predicateForContactWithIdentifier:identifier];
+  [array addObject:v10];
 
-  v11 = [v4 displayName];
-  v12 = [v11 length];
+  displayName = [contactCopy displayName];
+  v12 = [displayName length];
 
   if (v12)
   {
-    v13 = [v4 displayName];
-    v14 = [a1 predicateForContactWithDisplayName:v13];
-    [v5 addObject:v14];
+    displayName2 = [contactCopy displayName];
+    v14 = [self predicateForContactWithDisplayName:displayName2];
+    [array addObject:v14];
   }
 
-  v15 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v5];
+  v15 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
 
   return v15;
 }
 
-+ (_CDContact)contactWithIdentifier:(id)a3 identifierType:(id)a4 displayName:(id)a5 personId:(id)a6 personIdType:(unint64_t)a7
++ (_CDContact)contactWithIdentifier:(id)identifier identifierType:(id)type displayName:(id)name personId:(id)id personIdType:(unint64_t)idType
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [_CDContact contactWithIdentifier:v13 type:[_CDContact typeFromString:a4] displayName:v12 personId:v11 personIdType:a7];
+  idCopy = id;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v14 = [_CDContact contactWithIdentifier:identifierCopy type:[_CDContact typeFromString:type] displayName:nameCopy personId:idCopy personIdType:idType];
 
   return v14;
 }
 
 - (NSString)identifierType
 {
-  v2 = [(_CDContact *)self type];
+  type = [(_CDContact *)self type];
 
-  return [_CDContact typeAsCNContactPropertyKey:v2];
+  return [_CDContact typeAsCNContactPropertyKey:type];
 }
 
-- (void)setIdentifierType:(id)a3
+- (void)setIdentifierType:(id)type
 {
-  v4 = [_CDContact typeFromString:a3];
+  v4 = [_CDContact typeFromString:type];
 
   [(_CDContact *)self setType:v4];
 }
 
-+ (id)normalizedStringKey:(id)a3
++ (id)normalizedStringKey:(id)key
 {
-  v3 = [a3 lowercaseString];
-  if (!v3)
+  lowercaseString = [key lowercaseString];
+  if (!lowercaseString)
   {
-    v3 = @"<NIL>";
+    lowercaseString = @"<NIL>";
   }
 
-  return v3;
+  return lowercaseString;
 }
 
-+ (unint64_t)typeFromString:(id)a3
++ (unint64_t)typeFromString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52___CDContact_BackwardCompatability__typeFromString___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (typeFromString__onceToken != -1)
     {
       dispatch_once(&typeFromString__onceToken, block);
     }
 
-    v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
-    v7 = [a1 normalizedStringKey:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+    v7 = [self normalizedStringKey:v6];
 
     v8 = [typeFromString__lookup objectForKeyedSubscript:v7];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
-+ (id)typeAsCNContactPropertyKey:(unint64_t)a3
++ (id)typeAsCNContactPropertyKey:(unint64_t)key
 {
   v3 = 0;
-  if (a3 <= 3)
+  if (key <= 3)
   {
-    switch(a3)
+    switch(key)
     {
       case 1uLL:
         v3 = getCNContactPhoneNumbersKey();
@@ -837,14 +837,14 @@ LABEL_16:
     }
   }
 
-  else if (a3 > 5)
+  else if (key > 5)
   {
-    if (a3 == 6)
+    if (key == 6)
     {
       v3 = getCNContactUrlAddressesKey();
     }
 
-    else if (a3 == 7)
+    else if (key == 7)
     {
       v3 = getCNContactPostalAddressesKey();
     }
@@ -852,7 +852,7 @@ LABEL_16:
 
   else
   {
-    if (a3 == 4)
+    if (key == 4)
     {
       getCNContactGivenNameKey();
     }

@@ -1,15 +1,15 @@
 @interface AppReceiptTask
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppReceiptTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self || !*(&self->_account + 2))
   {
     v5 = objc_alloc_init(_TtC9appstored6LogKey);
@@ -68,39 +68,39 @@
   v21[3] = &unk_10051C6C0;
   v21[4] = self;
   v22 = v8;
-  v23 = v4;
-  v19 = v4;
+  v23 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v8;
   [(Task *)self runAsyncSubTask:v20 completionHandler:v21];
 }
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v5 = a4;
+    handlerCopy = handler;
     v6 = ASDErrorWithDescription();
-    (*(a4 + 2))(v5, 0, v6);
+    (*(handler + 2))(handlerCopy, 0, v6);
   }
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v5 = a4;
+    handlerCopy = handler;
     v6 = ASDErrorWithDescription();
-    (*(a4 + 2))(v5, 0, v6);
+    (*(handler + 2))(handlerCopy, 0, v6);
   }
 }
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v5 = a4;
+    handlerCopy = handler;
     v6 = ASDErrorWithDescription();
-    (*(a4 + 2))(v5, 0, v6);
+    (*(handler + 2))(handlerCopy, 0, v6);
   }
 }
 

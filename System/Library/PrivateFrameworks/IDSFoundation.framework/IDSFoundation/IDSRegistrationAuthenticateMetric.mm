@@ -1,5 +1,5 @@
 @interface IDSRegistrationAuthenticateMetric
-- (IDSRegistrationAuthenticateMetric)initWithGuid:(id)a3 success:(BOOL)a4 connectionType:(unsigned int)a5 resultCode:(unsigned int)a6 registrationError:(unsigned int)a7 isPhoneUser:(BOOL)a8 isDSUser:(BOOL)a9 genericError:(id)a10 URLError:(id)a11 POSIXError:(id)a12;
+- (IDSRegistrationAuthenticateMetric)initWithGuid:(id)guid success:(BOOL)success connectionType:(unsigned int)type resultCode:(unsigned int)code registrationError:(unsigned int)error isPhoneUser:(BOOL)user isDSUser:(BOOL)sUser genericError:(id)self0 URLError:(id)self1 POSIXError:(id)self2;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSRegistrationAuthenticateMetric *)self guid];
-  if (v4)
+  guid = [(IDSRegistrationAuthenticateMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IDSRegistrationAuthenticateMetric connectionType](self, "connectionType")}];
@@ -44,49 +44,49 @@
     CFDictionarySetValue(v3, @"isDSUser", v9);
   }
 
-  v10 = [(IDSRegistrationAuthenticateMetric *)self genericError];
-  if (v10)
+  genericError = [(IDSRegistrationAuthenticateMetric *)self genericError];
+  if (genericError)
   {
-    CFDictionarySetValue(v3, @"genericError", v10);
+    CFDictionarySetValue(v3, @"genericError", genericError);
   }
 
-  v11 = [(IDSRegistrationAuthenticateMetric *)self URLError];
-  if (v11)
+  uRLError = [(IDSRegistrationAuthenticateMetric *)self URLError];
+  if (uRLError)
   {
-    CFDictionarySetValue(v3, @"URLError", v11);
+    CFDictionarySetValue(v3, @"URLError", uRLError);
   }
 
-  v12 = [(IDSRegistrationAuthenticateMetric *)self POSIXError];
-  if (v12)
+  pOSIXError = [(IDSRegistrationAuthenticateMetric *)self POSIXError];
+  if (pOSIXError)
   {
-    CFDictionarySetValue(v3, @"POSIXError", v12);
+    CFDictionarySetValue(v3, @"POSIXError", pOSIXError);
   }
 
   return v3;
 }
 
-- (IDSRegistrationAuthenticateMetric)initWithGuid:(id)a3 success:(BOOL)a4 connectionType:(unsigned int)a5 resultCode:(unsigned int)a6 registrationError:(unsigned int)a7 isPhoneUser:(BOOL)a8 isDSUser:(BOOL)a9 genericError:(id)a10 URLError:(id)a11 POSIXError:(id)a12
+- (IDSRegistrationAuthenticateMetric)initWithGuid:(id)guid success:(BOOL)success connectionType:(unsigned int)type resultCode:(unsigned int)code registrationError:(unsigned int)error isPhoneUser:(BOOL)user isDSUser:(BOOL)sUser genericError:(id)self0 URLError:(id)self1 POSIXError:(id)self2
 {
-  v16 = a3;
-  v17 = a10;
-  v18 = a11;
-  v25 = a12;
+  guidCopy = guid;
+  genericErrorCopy = genericError;
+  lErrorCopy = lError;
+  xErrorCopy = xError;
   v26.receiver = self;
   v26.super_class = IDSRegistrationAuthenticateMetric;
   v19 = [(IDSRegistrationAuthenticateMetric *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_guid, a3);
-    v20->_success = a4;
-    v20->_connectionType = a5;
-    v20->_resultCode = a6;
-    v20->_registrationError = a7;
-    v20->_isPhoneUser = a8;
-    v20->_isDSUser = a9;
-    objc_storeStrong(&v20->_genericError, a10);
-    objc_storeStrong(&v20->_URLError, a11);
-    objc_storeStrong(&v20->_POSIXError, a12);
+    objc_storeStrong(&v19->_guid, guid);
+    v20->_success = success;
+    v20->_connectionType = type;
+    v20->_resultCode = code;
+    v20->_registrationError = error;
+    v20->_isPhoneUser = user;
+    v20->_isDSUser = sUser;
+    objc_storeStrong(&v20->_genericError, genericError);
+    objc_storeStrong(&v20->_URLError, lError);
+    objc_storeStrong(&v20->_POSIXError, xError);
   }
 
   return v20;

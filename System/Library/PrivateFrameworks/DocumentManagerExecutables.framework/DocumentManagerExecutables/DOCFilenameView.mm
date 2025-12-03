@@ -1,12 +1,12 @@
 @interface DOCFilenameView
-- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DOCFilenameView
 
-- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables15DOCFilenameView_textFieldTextStyle) = *MEMORY[0x277D76A20];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables15DOCFilenameView_postLayoutTextFieldUpdates) = MEMORY[0x277D84FA0];
@@ -25,7 +25,7 @@
   DOCFilenameView.updateTextFieldIfPossible()();
 }
 
-- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables15DOCFilenameView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

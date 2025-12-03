@@ -7,10 +7,10 @@
 + (id)layerWithName:()Extras
 {
   v3 = a3;
-  v4 = [objc_opt_class() layer];
-  [v4 setName:v3];
+  layer = [objc_opt_class() layer];
+  [layer setName:v3];
 
-  return v4;
+  return layer;
 }
 
 @end

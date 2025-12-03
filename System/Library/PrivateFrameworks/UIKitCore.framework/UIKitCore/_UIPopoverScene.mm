@@ -8,20 +8,20 @@
 {
   if (_UIResponderCrossSceneResponderChainEnabled())
   {
-    v3 = [(UIWindowScene *)self windows];
-    v4 = [v3 firstObject];
+    windows = [(UIWindowScene *)self windows];
+    firstObject = [windows firstObject];
 
-    v5 = [v4 rootViewController];
-    v6 = [v5 parentModalViewController];
+    rootViewController = [firstObject rootViewController];
+    parentModalViewController = [rootViewController parentModalViewController];
 
-    if (v6)
+    if (parentModalViewController)
     {
-      v7 = [v5 _nextResponderIgnoresWindowIfRootVC];
-      [v5 set_nextResponderIgnoresWindowIfRootVC:1];
-      v8 = [v5 nextResponder];
-      [v5 set_nextResponderIgnoresWindowIfRootVC:v7];
+      _nextResponderIgnoresWindowIfRootVC = [rootViewController _nextResponderIgnoresWindowIfRootVC];
+      [rootViewController set_nextResponderIgnoresWindowIfRootVC:1];
+      nextResponder = [rootViewController nextResponder];
+      [rootViewController set_nextResponderIgnoresWindowIfRootVC:_nextResponderIgnoresWindowIfRootVC];
 
-      if (v8)
+      if (nextResponder)
       {
         goto LABEL_7;
       }
@@ -34,10 +34,10 @@
 
   v10.receiver = self;
   v10.super_class = _UIPopoverScene;
-  v8 = [(UIScene *)&v10 nextResponder];
+  nextResponder = [(UIScene *)&v10 nextResponder];
 LABEL_7:
 
-  return v8;
+  return nextResponder;
 }
 
 @end

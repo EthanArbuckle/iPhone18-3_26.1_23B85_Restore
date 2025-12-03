@@ -1,20 +1,20 @@
 @interface MTPBSound
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSoundVolume:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSoundVolume:(BOOL)volume;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTPBSound
 
-- (void)setHasSoundVolume:(BOOL)a3
+- (void)setHasSoundVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 2;
   }
@@ -33,51 +33,51 @@
   v8.receiver = self;
   v8.super_class = MTPBSound;
   v4 = [(MTPBSound *)&v8 description];
-  v5 = [(MTPBSound *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTPBSound *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_soundType];
-  [v3 setObject:v4 forKey:@"soundType"];
+  [dictionary setObject:v4 forKey:@"soundType"];
 
   toneID = self->_toneID;
   if (toneID)
   {
-    [v3 setObject:toneID forKey:@"toneID"];
+    [dictionary setObject:toneID forKey:@"toneID"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_mediaID];
-    [v3 setObject:v7 forKey:@"mediaID"];
+    [dictionary setObject:v7 forKey:@"mediaID"];
   }
 
   vibeID = self->_vibeID;
   if (vibeID)
   {
-    [v3 setObject:vibeID forKey:@"vibeID"];
+    [dictionary setObject:vibeID forKey:@"vibeID"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     *&v5 = self->_soundVolume;
     v9 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-    [v3 setObject:v9 forKey:@"soundVolume"];
+    [dictionary setObject:v9 forKey:@"soundVolume"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   soundType = self->_soundType;
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_toneID)
   {
@@ -105,41 +105,41 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_soundType;
-  v5 = v4;
+  toCopy = to;
+  toCopy[4] = self->_soundType;
+  v5 = toCopy;
   if (self->_toneID)
   {
-    [v4 setToneID:?];
-    v4 = v5;
+    [toCopy setToneID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_mediaID;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_mediaID;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_vibeID)
   {
     [v5 setVibeID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[5] = LODWORD(self->_soundVolume);
-    *(v4 + 40) |= 2u;
+    toCopy[5] = LODWORD(self->_soundVolume);
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_soundType;
-  v6 = [(NSString *)self->_toneID copyWithZone:a3];
+  v6 = [(NSString *)self->_toneID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -149,7 +149,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSString *)self->_vibeID copyWithZone:a3];
+  v8 = [(NSString *)self->_vibeID copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -162,21 +162,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  if (self->_soundType != *(v4 + 4))
+  if (self->_soundType != *(equalCopy + 4))
   {
     goto LABEL_17;
   }
 
   toneID = self->_toneID;
-  if (toneID | *(v4 + 3))
+  if (toneID | *(equalCopy + 3))
   {
     if (![(NSString *)toneID isEqual:?])
     {
@@ -185,22 +185,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_mediaID != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_mediaID != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_17;
   }
 
   vibeID = self->_vibeID;
-  if (vibeID | *(v4 + 4))
+  if (vibeID | *(equalCopy + 4))
   {
     if (![(NSString *)vibeID isEqual:?])
     {
@@ -212,10 +212,10 @@ LABEL_17:
     has = self->_has;
   }
 
-  v9 = (*(v4 + 40) & 2) == 0;
+  v9 = (*(equalCopy + 40) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_soundVolume != *(v4 + 5))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_soundVolume != *(equalCopy + 5))
     {
       goto LABEL_17;
     }
@@ -302,32 +302,32 @@ LABEL_18:
   return v4 ^ v7 ^ v11 ^ v14 ^ (2654435761 * soundType);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_soundType = *(v4 + 4);
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_soundType = *(fromCopy + 4);
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(MTPBSound *)self setToneID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_mediaID = *(v4 + 1);
+    self->_mediaID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(MTPBSound *)self setVibeID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
-    self->_soundVolume = *(v4 + 5);
+    self->_soundVolume = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 }

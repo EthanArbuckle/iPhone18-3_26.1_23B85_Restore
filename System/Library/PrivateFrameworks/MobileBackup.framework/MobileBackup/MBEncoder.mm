@@ -1,15 +1,15 @@
 @interface MBEncoder
-+ (MBEncoder)encoderWithOutputStream:(id)a3;
-+ (id)encoderToFile:(id)a3 error:(id *)a4;
++ (MBEncoder)encoderWithOutputStream:(id)stream;
++ (id)encoderToFile:(id)file error:(id *)error;
 + (id)encoderToMemory;
-- (MBEncoder)initWithOutputStream:(id)a3;
+- (MBEncoder)initWithOutputStream:(id)stream;
 - (id)data;
 - (void)close;
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)encodeData:(id)a3;
-- (void)encodeDate:(id)a3;
-- (void)encodeString:(id)a3;
-- (void)encodeVersion:(double)a3;
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length;
+- (void)encodeData:(id)data;
+- (void)encodeDate:(id)date;
+- (void)encodeString:(id)string;
+- (void)encodeVersion:(double)version;
 - (void)flush;
 @end
 
@@ -24,18 +24,18 @@
   return v3;
 }
 
-+ (id)encoderToFile:(id)a3 error:(id *)a4
++ (id)encoderToFile:(id)file error:(id *)error
 {
-  v5 = [NSOutputStream outputStreamToFileAtPath:a3 append:0];
+  v5 = [NSOutputStream outputStreamToFileAtPath:file append:0];
   [v5 open];
-  v6 = [v5 streamError];
+  streamError = [v5 streamError];
 
-  if (v6)
+  if (streamError)
   {
-    if (a4)
+    if (error)
     {
       [v5 streamError];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -52,24 +52,24 @@
   return v7;
 }
 
-+ (MBEncoder)encoderWithOutputStream:(id)a3
++ (MBEncoder)encoderWithOutputStream:(id)stream
 {
-  v3 = a3;
-  v4 = [[MBEncoder alloc] initWithOutputStream:v3];
+  streamCopy = stream;
+  v4 = [[MBEncoder alloc] initWithOutputStream:streamCopy];
 
   return v4;
 }
 
-- (MBEncoder)initWithOutputStream:(id)a3
+- (MBEncoder)initWithOutputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v11.receiver = self;
   v11.super_class = MBEncoder;
   v6 = [(MBEncoder *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputStream, a3);
+    objc_storeStrong(&v6->_outputStream, stream);
     v8 = [[NSMutableData alloc] initWithCapacity:0x4000];
     buffer = v7->_buffer;
     v7->_buffer = v8;
@@ -80,19 +80,19 @@
 
 - (void)flush
 {
-  v3 = [(NSMutableData *)self->_buffer bytes];
+  bytes = [(NSMutableData *)self->_buffer bytes];
   v4 = [(NSMutableData *)self->_buffer length];
   if (v4)
   {
     v5 = v4;
     for (i = 0; i < v5; i += v7)
     {
-      v7 = [(NSOutputStream *)self->_outputStream write:&v3[i] maxLength:v5 - i];
+      v7 = [(NSOutputStream *)self->_outputStream write:&bytes[i] maxLength:v5 - i];
       if (v7 < 0)
       {
         v9 = [MBException alloc];
-        v10 = [(NSOutputStream *)self->_outputStream streamError];
-        v11 = [v9 initWithCode:100 format:{@"Output stream write error: %@", v10}];
+        streamError = [(NSOutputStream *)self->_outputStream streamError];
+        v11 = [v9 initWithCode:100 format:{@"Output stream write error: %@", streamError}];
         v12 = v11;
 
         objc_exception_throw(v11);
@@ -113,40 +113,40 @@
   [(NSOutputStream *)outputStream close];
 }
 
-- (void)encodeVersion:(double)a3
+- (void)encodeVersion:(double)version
 {
-  v6 = a3;
-  v7 = llround((a3 - a3) * 10.0);
-  if (a3 + v7 * 0.1 != a3)
+  versionCopy = version;
+  v7 = llround((version - version) * 10.0);
+  if (version + v7 * 0.1 != version)
   {
     v8 = +[NSAssertionHandler currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MBEncoder.m" lineNumber:93 description:{@"Couldn't split version number: %0.1f", *&a3}];
+    [v8 handleFailureInMethod:a2 object:self file:@"MBEncoder.m" lineNumber:93 description:{@"Couldn't split version number: %0.1f", *&version}];
   }
 
-  if (v6 <= 0)
+  if (versionCopy <= 0)
   {
     v9 = +[NSAssertionHandler currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MBEncoder.m" lineNumber:94 description:{@"Invalid major version: %0.1f", *&a3}];
+    [v9 handleFailureInMethod:a2 object:self file:@"MBEncoder.m" lineNumber:94 description:{@"Invalid major version: %0.1f", *&version}];
   }
 
   if (v7 >= 0xA)
   {
     v10 = +[NSAssertionHandler currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MBEncoder.m" lineNumber:95 description:{@"Invalid minor version: %0.1f", *&a3}];
+    [v10 handleFailureInMethod:a2 object:self file:@"MBEncoder.m" lineNumber:95 description:{@"Invalid minor version: %0.1f", *&version}];
   }
 
-  [(MBEncoder *)self encodeInt8:v6];
+  [(MBEncoder *)self encodeInt8:versionCopy];
 
   [(MBEncoder *)self encodeInt8:v7];
 }
 
-- (void)encodeData:(id)a3
+- (void)encodeData:(id)data
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy)
   {
-    v5 = [v4 length];
+    v5 = [dataCopy length];
     if (v5 >= 0x8000)
     {
       [NSException raise:NSInvalidArgumentException format:@"Data too long to encode: %d", v5];
@@ -165,11 +165,11 @@
   }
 }
 
-- (void)encodeDate:(id)a3
+- (void)encodeDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = v4;
   }
 
@@ -181,13 +181,13 @@
   [(MBEncoder *)self encodeInt32:v5];
 }
 
-- (void)encodeString:(id)a3
+- (void)encodeString:(id)string
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (stringCopy)
   {
-    v7 = [v5 maximumLengthOfBytesUsingEncoding:4];
+    v7 = [stringCopy maximumLengthOfBytesUsingEncoding:4];
     v8 = malloc_type_malloc(v7, 0xCDBF1515uLL);
     v11 = 0;
     if (([v6 getBytes:v8 maxLength:v7 usedLength:&v11 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(v6, "length"), 0}] & 1) == 0)
@@ -214,10 +214,10 @@
   }
 }
 
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length
 {
-  [(NSMutableData *)self->_buffer appendBytes:a3 length:?];
-  self->_offset += a4;
+  [(NSMutableData *)self->_buffer appendBytes:bytes length:?];
+  self->_offset += length;
   if ([(NSMutableData *)self->_buffer length]>= 0x4000)
   {
 

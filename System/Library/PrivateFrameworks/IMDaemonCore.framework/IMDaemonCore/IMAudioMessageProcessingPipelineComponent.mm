@@ -1,38 +1,38 @@
 @interface IMAudioMessageProcessingPipelineComponent
-- (id)createMessageItemWithInput:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)createMessageItemWithInput:(id)input;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMAudioMessageProcessingPipelineComponent
 
-- (id)createMessageItemWithInput:(id)a3
+- (id)createMessageItemWithInput:(id)input
 {
-  v4 = a3;
-  v18 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:v4];
+  inputCopy = input;
+  v18 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:inputCopy];
   v5 = objc_alloc(MEMORY[0x277D1AA70]);
-  v6 = [v4 fromIdentifier];
-  v7 = [v6 _stripFZIDPrefix];
+  fromIdentifier = [inputCopy fromIdentifier];
+  _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
   v8 = MEMORY[0x277CBEAA8];
-  v9 = [v4 timestamp];
-  v10 = [v8 __im_iMessageDateFromTimeStamp:v9];
-  v11 = [v4 richBody];
-  v12 = [v4 fileTransferGUIDs];
-  v13 = [v4 GUID];
-  v14 = [v4 threadIdentifierGUID];
-  v15 = [v5 initWithSender:v7 time:v10 body:v11 attributes:0 fileTransferGUIDs:v12 flags:v18 | 0x1200000 error:0 guid:v13 threadIdentifier:v14];
+  timestamp = [inputCopy timestamp];
+  v10 = [v8 __im_iMessageDateFromTimeStamp:timestamp];
+  richBody = [inputCopy richBody];
+  fileTransferGUIDs = [inputCopy fileTransferGUIDs];
+  gUID = [inputCopy GUID];
+  threadIdentifierGUID = [inputCopy threadIdentifierGUID];
+  v15 = [v5 initWithSender:_stripFZIDPrefix time:v10 body:richBody attributes:0 fileTransferGUIDs:fileTransferGUIDs flags:v18 | 0x1200000 error:0 guid:gUID threadIdentifier:threadIdentifierGUID];
 
-  v16 = [v4 replicatedFallbackGUIDs];
+  replicatedFallbackGUIDs = [inputCopy replicatedFallbackGUIDs];
 
-  [v15 setReplicatedFallbackGUIDs:v16];
+  [v15 setReplicatedFallbackGUIDs:replicatedFallbackGUIDs];
 
   return v15;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v5.receiver = self;
   v5.super_class = IMAudioMessageProcessingPipelineComponent;
-  v3 = [(IMTextMessageProcessingPipelineComponent *)&v5 runIndividuallyWithInput:a3];
+  v3 = [(IMTextMessageProcessingPipelineComponent *)&v5 runIndividuallyWithInput:input];
 
   return v3;
 }

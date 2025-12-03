@@ -6,22 +6,22 @@
 + (BOOL)isAddPersonEnabled;
 + (BOOL)supportsConversations;
 + (BOOL)supportsEffects;
-+ (id)activeRemoteParticipantsForCall:(id)a3 remoteMembers:(id)a4;
-+ (id)conversationWithPseudonym:(id)a3 fromConversations:(id)a4;
-+ (id)conversationWithRemoteMembers:(id)a3 andLink:(id)a4 fromConversations:(id)a5;
-+ (id)conversationWithRemoteMembers:(id)a3 andLink:(id)a4 fromConversations:(id)a5 matchingVideo:(BOOL)a6 backedByGroupSession:(BOOL)a7;
-+ (id)conversationWithUUID:(id)a3 fromConversations:(id)a4;
-+ (id)conversationsWithRemoteMembers:(id)a3 andLink:(id)a4 fromConversations:(id)a5;
-+ (id)pendingConversationWithLink:(id)a3 fromConversations:(id)a4;
-+ (id)remoteMembersForCall:(id)a3;
-+ (int64_t)conversationStateForCall:(id)a3;
++ (id)activeRemoteParticipantsForCall:(id)call remoteMembers:(id)members;
++ (id)conversationWithPseudonym:(id)pseudonym fromConversations:(id)conversations;
++ (id)conversationWithRemoteMembers:(id)members andLink:(id)link fromConversations:(id)conversations;
++ (id)conversationWithRemoteMembers:(id)members andLink:(id)link fromConversations:(id)conversations matchingVideo:(BOOL)video backedByGroupSession:(BOOL)session;
++ (id)conversationWithUUID:(id)d fromConversations:(id)conversations;
++ (id)conversationsWithRemoteMembers:(id)members andLink:(id)link fromConversations:(id)conversations;
++ (id)pendingConversationWithLink:(id)link fromConversations:(id)conversations;
++ (id)remoteMembersForCall:(id)call;
++ (int64_t)conversationStateForCall:(id)call;
 + (int64_t)memorySize;
 + (unint64_t)maximumNumberOfInvitedMembers;
 - (BOOL)autoSharePlayEnabled;
 - (BOOL)currentProcessCanAccessCollaborations;
 - (BOOL)isScreenSharingAvailable;
 - (BOOL)isSharePlayAvailable;
-- (BOOL)openCollaborationWithIdentifier:(id)a3 forConversation:(id)a4;
+- (BOOL)openCollaborationWithIdentifier:(id)identifier forConversation:(id)conversation;
 - (NSDictionary)activityAuthorizedBundleIdentifiers;
 - (NSSet)activatedConversationLinks;
 - (NSSet)activeAdvertisements;
@@ -29,115 +29,115 @@
 - (NSSet)incomingPendingConversations;
 - (TUConversation)avLessConversation;
 - (TUConversationManager)init;
-- (TUConversationManager)initWithDataSource:(id)a3;
-- (TUConversationManager)initWithDataSource:(id)a3 notificationCenter:(id)a4;
+- (TUConversationManager)initWithDataSource:(id)source;
+- (TUConversationManager)initWithDataSource:(id)source notificationCenter:(id)center;
 - (TUConversationMediaController)mediaController;
 - (TUConversationMessagesGroupProviding)messagesGroupProvider;
 - (TUConversationReactionsController)reactionsController;
-- (id)activeConversationWithGroupUUID:(id)a3;
-- (id)activeConversationWithLinkForCall:(id)a3;
-- (id)activeConversationWithRemoteMembers:(id)a3 andLink:(id)a4;
-- (id)activeConversationWithUUID:(id)a3;
-- (id)callPendingUpgradeInConversationsWithGroupUUID:(id)a3;
-- (id)ckBundleIDForCollaborationIdentifier:(id)a3;
-- (id)collaborationForConversation:(id)a3;
-- (id)createConversationForCallNotBackedByGroupSession:(id)a3;
-- (id)handoffEligibleConversationForEligibility:(id)a3;
-- (id)joinRequestForApplicableConversationWithHandoffEligibility:(id)a3;
-- (id)pendingConversationWithLink:(id)a3;
-- (int64_t)collaborationStateForConversation:(id)a3;
-- (void)activateConversationNoticeWithActionURL:(id)a3 bundleIdentifier:(id)a4;
-- (void)activateLink:(id)a3 completionHandler:(id)a4;
-- (void)activeParticipant:(id)a3 removedHighlightFromConversation:(id)a4 highlightIdentifier:(id)a5;
-- (void)activityAuthorizationsChangedForDataSource:(id)a3 oldActivityAuthorizedBundleIdentifiers:(id)a4;
-- (void)addCollaboration:(id)a3 forConversation:(id)a4;
-- (void)addCollaborationIdentifier:(id)a3 forConversation:(id)a4;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addDisclosedCollaborationInitiator:(id)a3 toConversationUUID:(id)a4;
-- (void)addInvitedMemberHandles:(id)a3 toConversationLink:(id)a4 completionHandler:(id)a5;
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 invitationPreferences:(id)a5 toConversation:(id)a6;
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 toConversation:(id)a5;
-- (void)addRemoteMembers:(id)a3 toConversation:(id)a4;
-- (void)addScreenSharingType:(unint64_t)a3 forConversation:(id)a4;
-- (void)addedCollaborationDictionary:(id)a3 forConversation:(id)a4;
-- (void)approveExternalParticipants:(id)a3;
-- (void)approvePendingMember:(id)a3 forConversation:(id)a4;
-- (void)buzzMember:(id)a3 destinationID:(id)a4 invitationContext:(id)a5 conversation:(id)a6;
-- (void)callPropertiesChanged:(id)a3;
-- (void)cancelOrDenyScreenShareRequest:(id)a3 forConversation:(id)a4;
-- (void)checkLinkValidity:(id)a3 completionHandler:(id)a4;
-- (void)collaborationChanged:(id)a3 forConversation:(id)a4 collaborationState:(int64_t)a5;
-- (void)conversation:(id)a3 addedMembersLocally:(id)a4;
-- (void)conversation:(id)a3 buzzedMember:(id)a4;
-- (void)conversation:(id)a3 collaborationStateChanged:(int64_t)a4 highlightIdentifier:(id)a5;
-- (void)conversation:(id)a3 didChangeSceneAssociationForActivitySession:(id)a4;
-- (void)conversation:(id)a3 didChangeStateForActivitySession:(id)a4;
-- (void)conversation:(id)a3 participant:(id)a4 addedCollaborationNotice:(id)a5;
-- (void)conversation:(id)a3 participant:(id)a4 addedNotice:(id)a5;
-- (void)conversation:(id)a3 receivedActivitySessionEvent:(id)a4;
-- (void)conversation:(id)a3 screenSharingChangedForParticipant:(id)a4;
-- (void)conversationManagerDataSource:(id)a3 conversation:(id)a4 appLaunchState:(unint64_t)a5 forActivitySession:(id)a6;
-- (void)conversationManagerDataSource:(id)a3 didChangeActivatedConversationLinks:(id)a4;
-- (void)conversationManagerDataSource:(id)a3 messagesGroupDetailsForMessagesGroupId:(id)a4 completionHandler:(id)a5;
-- (void)conversationUpdateMessagesGroupPhoto:(id)a3;
-- (void)conversationUpdatedMessagesGroupPhoto:(id)a3;
-- (void)conversationsChangedForDataSource:(id)a3 conversationsByGroupUUID:(id)a4 oldConversationsByGroupUUID:(id)a5;
-- (void)conversationsChangedForDataSource:(id)a3 oldConversationsByGroupUUID:(id)a4 newConversationsByGroupUUID:(id)a5 creationQueue:(id)a6;
-- (void)conversationsChangedForDataSource:(id)a3 updatedIncomingPendingConversationsByGroupUUID:(id)a4;
-- (void)conversationsChangedFromOldConversationsByGroupUUID:(id)a3 newConversationsByGroupUUID:(id)a4;
-- (void)createActivitySession:(id)a3 onConversation:(id)a4;
-- (void)createActivitySession:(id)a3 onConversation:(id)a4 options:(unint64_t)a5;
+- (id)activeConversationWithGroupUUID:(id)d;
+- (id)activeConversationWithLinkForCall:(id)call;
+- (id)activeConversationWithRemoteMembers:(id)members andLink:(id)link;
+- (id)activeConversationWithUUID:(id)d;
+- (id)callPendingUpgradeInConversationsWithGroupUUID:(id)d;
+- (id)ckBundleIDForCollaborationIdentifier:(id)identifier;
+- (id)collaborationForConversation:(id)conversation;
+- (id)createConversationForCallNotBackedByGroupSession:(id)session;
+- (id)handoffEligibleConversationForEligibility:(id)eligibility;
+- (id)joinRequestForApplicableConversationWithHandoffEligibility:(id)eligibility;
+- (id)pendingConversationWithLink:(id)link;
+- (int64_t)collaborationStateForConversation:(id)conversation;
+- (void)activateConversationNoticeWithActionURL:(id)l bundleIdentifier:(id)identifier;
+- (void)activateLink:(id)link completionHandler:(id)handler;
+- (void)activeParticipant:(id)participant removedHighlightFromConversation:(id)conversation highlightIdentifier:(id)identifier;
+- (void)activityAuthorizationsChangedForDataSource:(id)source oldActivityAuthorizedBundleIdentifiers:(id)identifiers;
+- (void)addCollaboration:(id)collaboration forConversation:(id)conversation;
+- (void)addCollaborationIdentifier:(id)identifier forConversation:(id)conversation;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addDisclosedCollaborationInitiator:(id)initiator toConversationUUID:(id)d;
+- (void)addInvitedMemberHandles:(id)handles toConversationLink:(id)link completionHandler:(id)handler;
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles invitationPreferences:(id)preferences toConversation:(id)conversation;
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles toConversation:(id)conversation;
+- (void)addRemoteMembers:(id)members toConversation:(id)conversation;
+- (void)addScreenSharingType:(unint64_t)type forConversation:(id)conversation;
+- (void)addedCollaborationDictionary:(id)dictionary forConversation:(id)conversation;
+- (void)approveExternalParticipants:(id)participants;
+- (void)approvePendingMember:(id)member forConversation:(id)conversation;
+- (void)buzzMember:(id)member destinationID:(id)d invitationContext:(id)context conversation:(id)conversation;
+- (void)callPropertiesChanged:(id)changed;
+- (void)cancelOrDenyScreenShareRequest:(id)request forConversation:(id)conversation;
+- (void)checkLinkValidity:(id)validity completionHandler:(id)handler;
+- (void)collaborationChanged:(id)changed forConversation:(id)conversation collaborationState:(int64_t)state;
+- (void)conversation:(id)conversation addedMembersLocally:(id)locally;
+- (void)conversation:(id)conversation buzzedMember:(id)member;
+- (void)conversation:(id)conversation collaborationStateChanged:(int64_t)changed highlightIdentifier:(id)identifier;
+- (void)conversation:(id)conversation didChangeSceneAssociationForActivitySession:(id)session;
+- (void)conversation:(id)conversation didChangeStateForActivitySession:(id)session;
+- (void)conversation:(id)conversation participant:(id)participant addedCollaborationNotice:(id)notice;
+- (void)conversation:(id)conversation participant:(id)participant addedNotice:(id)notice;
+- (void)conversation:(id)conversation receivedActivitySessionEvent:(id)event;
+- (void)conversation:(id)conversation screenSharingChangedForParticipant:(id)participant;
+- (void)conversationManagerDataSource:(id)source conversation:(id)conversation appLaunchState:(unint64_t)state forActivitySession:(id)session;
+- (void)conversationManagerDataSource:(id)source didChangeActivatedConversationLinks:(id)links;
+- (void)conversationManagerDataSource:(id)source messagesGroupDetailsForMessagesGroupId:(id)id completionHandler:(id)handler;
+- (void)conversationUpdateMessagesGroupPhoto:(id)photo;
+- (void)conversationUpdatedMessagesGroupPhoto:(id)photo;
+- (void)conversationsChangedForDataSource:(id)source conversationsByGroupUUID:(id)d oldConversationsByGroupUUID:(id)iD;
+- (void)conversationsChangedForDataSource:(id)source oldConversationsByGroupUUID:(id)d newConversationsByGroupUUID:(id)iD creationQueue:(id)queue;
+- (void)conversationsChangedForDataSource:(id)source updatedIncomingPendingConversationsByGroupUUID:(id)d;
+- (void)conversationsChangedFromOldConversationsByGroupUUID:(id)d newConversationsByGroupUUID:(id)iD;
+- (void)createActivitySession:(id)session onConversation:(id)conversation;
+- (void)createActivitySession:(id)session onConversation:(id)conversation options:(unint64_t)options;
 - (void)dealloc;
-- (void)denyExternalParticipants:(id)a3;
-- (void)didChangeConversationAdvertisement:(id)a3;
-- (void)endActivitySession:(id)a3 onConversation:(id)a4;
-- (void)fetchUpcomingNoticeWithCompletionHandler:(id)a3;
-- (void)generateLinkForConversation:(id)a3 completionHandler:(id)a4;
-- (void)generateLinkWithInvitedMemberHandles:(id)a3 linkLifetimeScope:(int64_t)a4 completionHandler:(id)a5;
-- (void)getInactiveLinkWithCompletionHandler:(id)a3;
-- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)a3;
-- (void)getMessagesGroupDetailsForConversationUUID:(id)a3 completionHandler:(id)a4;
-- (void)getNeedsDisclosureOfCollaborationInitiator:(id)a3 forConversationUUID:(id)a4 completionHandler:(id)a5;
-- (void)invalidateLink:(id)a3 completionHandler:(id)a4;
-- (void)joinConversationWithRequest:(id)a3;
-- (void)kickMember:(id)a3 conversation:(id)a4;
-- (void)launchApplicationForActivitySession:(id)a3 completionHandler:(id)a4;
-- (void)launchApplicationForActivitySessionUUID:(id)a3 completionHandler:(id)a4;
-- (void)leaveActivitySession:(id)a3 onConversation:(id)a4;
-- (void)leaveConversationWithUUID:(id)a3;
-- (void)prepareConversationWithUUID:(id)a3 withHandoffContext:(id)a4;
-- (void)presentDismissalAlertForActivitySession:(id)a3 onConversation:(id)a4;
-- (void)pruneConversationsPendingUpgradeInConversationsWithGroupUUID:(id)a3;
-- (void)receivedTrackedPendingMember:(id)a3 forConversationLink:(id)a4;
+- (void)denyExternalParticipants:(id)participants;
+- (void)didChangeConversationAdvertisement:(id)advertisement;
+- (void)endActivitySession:(id)session onConversation:(id)conversation;
+- (void)fetchUpcomingNoticeWithCompletionHandler:(id)handler;
+- (void)generateLinkForConversation:(id)conversation completionHandler:(id)handler;
+- (void)generateLinkWithInvitedMemberHandles:(id)handles linkLifetimeScope:(int64_t)scope completionHandler:(id)handler;
+- (void)getInactiveLinkWithCompletionHandler:(id)handler;
+- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)handler;
+- (void)getMessagesGroupDetailsForConversationUUID:(id)d completionHandler:(id)handler;
+- (void)getNeedsDisclosureOfCollaborationInitiator:(id)initiator forConversationUUID:(id)d completionHandler:(id)handler;
+- (void)invalidateLink:(id)link completionHandler:(id)handler;
+- (void)joinConversationWithRequest:(id)request;
+- (void)kickMember:(id)member conversation:(id)conversation;
+- (void)launchApplicationForActivitySession:(id)session completionHandler:(id)handler;
+- (void)launchApplicationForActivitySessionUUID:(id)d completionHandler:(id)handler;
+- (void)leaveActivitySession:(id)session onConversation:(id)conversation;
+- (void)leaveConversationWithUUID:(id)d;
+- (void)prepareConversationWithUUID:(id)d withHandoffContext:(id)context;
+- (void)presentDismissalAlertForActivitySession:(id)session onConversation:(id)conversation;
+- (void)pruneConversationsPendingUpgradeInConversationsWithGroupUUID:(id)d;
+- (void)receivedTrackedPendingMember:(id)member forConversationLink:(id)link;
 - (void)refreshActiveConversations;
-- (void)registerMessagesGroupUUIDForConversationUUID:(id)a3;
-- (void)registerWithCompletionHandler:(id)a3;
-- (void)rejectPendingMember:(id)a3 forConversation:(id)a4;
-- (void)remoteScreenShareAttributesChanged:(id)a3 isLocallySharing:(BOOL)a4;
-- (void)remoteScreenShareEndedWithReason:(id)a3;
-- (void)removeCollaborationIdentifier:(id)a3 forConversation:(id)a4;
-- (void)removeConversationNoticeWithUUID:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)renewLink:(id)a3 expirationDate:(id)a4 reason:(unint64_t)a5 completionHandler:(id)a6;
-- (void)requestParticipantToShareScreen:(id)a3 forConversation:(id)a4;
-- (void)requestScreenShareFromMember:(id)a3 conversation:(id)a4;
-- (void)screenSharingAvailableChanged:(BOOL)a3;
-- (void)serverDisconnectedForDataSource:(id)a3 oldConversationsByGroupUUID:(id)a4;
-- (void)setGridDisplayMode:(unint64_t)a3 conversation:(id)a4;
-- (void)setLinkName:(id)a3 forConversationLink:(id)a4 completionHandler:(id)a5;
-- (void)setLocalParticipantAudioVideoMode:(unint64_t)a3 forConversationUUID:(id)a4;
-- (void)setLocalParticipantCluster:(id)a3 forConversation:(id)a4;
-- (void)setMessagesGroupProvider:(id)a3;
-- (void)setNonSessionBackedConversationCreationQueue:(id)a3;
-- (void)sharePlayAvailableChanged:(BOOL)a3;
-- (void)startTrackingCollaboration:(id)a3 forConversation:(id)a4 completionHandler:(id)a5;
-- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)a3;
-- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)a3 conversationsByGroupUUID:(id)a4 creationQueue:(id)a5;
-- (void)updateExternalParticipants:(id)a3;
-- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)a3 forConversationUUID:(id)a4;
-- (void)updateMessagesGroupName:(id)a3 onConversation:(id)a4;
-- (void)updateRemoteControlStatus:(int64_t)a3 onConversation:(id)a4;
-- (void)updateURLWithDugongTokenIfNeeded:(id)a3 collaboration:(id)a4 handle:(id)a5 completion:(id)a6;
+- (void)registerMessagesGroupUUIDForConversationUUID:(id)d;
+- (void)registerWithCompletionHandler:(id)handler;
+- (void)rejectPendingMember:(id)member forConversation:(id)conversation;
+- (void)remoteScreenShareAttributesChanged:(id)changed isLocallySharing:(BOOL)sharing;
+- (void)remoteScreenShareEndedWithReason:(id)reason;
+- (void)removeCollaborationIdentifier:(id)identifier forConversation:(id)conversation;
+- (void)removeConversationNoticeWithUUID:(id)d;
+- (void)removeDelegate:(id)delegate;
+- (void)renewLink:(id)link expirationDate:(id)date reason:(unint64_t)reason completionHandler:(id)handler;
+- (void)requestParticipantToShareScreen:(id)screen forConversation:(id)conversation;
+- (void)requestScreenShareFromMember:(id)member conversation:(id)conversation;
+- (void)screenSharingAvailableChanged:(BOOL)changed;
+- (void)serverDisconnectedForDataSource:(id)source oldConversationsByGroupUUID:(id)d;
+- (void)setGridDisplayMode:(unint64_t)mode conversation:(id)conversation;
+- (void)setLinkName:(id)name forConversationLink:(id)link completionHandler:(id)handler;
+- (void)setLocalParticipantAudioVideoMode:(unint64_t)mode forConversationUUID:(id)d;
+- (void)setLocalParticipantCluster:(id)cluster forConversation:(id)conversation;
+- (void)setMessagesGroupProvider:(id)provider;
+- (void)setNonSessionBackedConversationCreationQueue:(id)queue;
+- (void)sharePlayAvailableChanged:(BOOL)changed;
+- (void)startTrackingCollaboration:(id)collaboration forConversation:(id)conversation completionHandler:(id)handler;
+- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)call;
+- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)call conversationsByGroupUUID:(id)d creationQueue:(id)queue;
+- (void)updateExternalParticipants:(id)participants;
+- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)mode forConversationUUID:(id)d;
+- (void)updateMessagesGroupName:(id)name onConversation:(id)conversation;
+- (void)updateRemoteControlStatus:(int64_t)status onConversation:(id)conversation;
+- (void)updateURLWithDugongTokenIfNeeded:(id)needed collaboration:(id)collaboration handle:(id)handle completion:(id)completion;
 @end
 
 @implementation TUConversationManager
@@ -145,8 +145,8 @@
 - (TUConversationManager)init
 {
   v3 = objc_alloc_init(TUConversationManagerXPCClient);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [(TUConversationManager *)self initWithDataSource:v3 notificationCenter:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v5 = [(TUConversationManager *)self initWithDataSource:v3 notificationCenter:defaultCenter];
 
   return v5;
 }
@@ -171,12 +171,12 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
 - (NSSet)activeConversations
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(TUConversationManager *)self dataSource];
-  v5 = [v4 conversationsByGroupUUID];
-  v6 = [v5 allValues];
-  v7 = [v3 setWithArray:v6];
-  v8 = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
-  v9 = [v7 setByAddingObjectsFromSet:v8];
+  dataSource = [(TUConversationManager *)self dataSource];
+  conversationsByGroupUUID = [dataSource conversationsByGroupUUID];
+  allValues = [conversationsByGroupUUID allValues];
+  v7 = [v3 setWithArray:allValues];
+  conversationsNotBackedByGroupSessions = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
+  v9 = [v7 setByAddingObjectsFromSet:conversationsNotBackedByGroupSessions];
 
   return v9;
 }
@@ -190,8 +190,8 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "Asked to refreshActiveConversations", v5, 2u);
   }
 
-  v4 = [(TUConversationManager *)self dataSource];
-  [v4 refreshActiveConversations];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource refreshActiveConversations];
 }
 
 - (TUConversationReactionsController)reactionsController
@@ -200,8 +200,8 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
   if (!reactionsController)
   {
     v4 = [TUConversationReactionsController alloc];
-    v5 = [(TUConversationManager *)self dataSource];
-    v6 = [(TUConversationReactionsController *)v4 initWithConversationDataSource:v5];
+    dataSource = [(TUConversationManager *)self dataSource];
+    v6 = [(TUConversationReactionsController *)v4 initWithConversationDataSource:dataSource];
     v7 = self->_reactionsController;
     self->_reactionsController = v6;
 
@@ -213,10 +213,10 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
 
 - (BOOL)isSharePlayAvailable
 {
-  v2 = [(TUConversationManager *)self dataSource];
-  v3 = [v2 isSharePlayAvailable];
+  dataSource = [(TUConversationManager *)self dataSource];
+  isSharePlayAvailable = [dataSource isSharePlayAvailable];
 
-  return v3;
+  return isSharePlayAvailable;
 }
 
 - (TUConversation)avLessConversation
@@ -226,11 +226,11 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(TUConversationManager *)self dataSource];
-  v3 = [v2 conversationsByGroupUUID];
-  v4 = [v3 allValues];
+  dataSource = [(TUConversationManager *)self dataSource];
+  conversationsByGroupUUID = [dataSource conversationsByGroupUUID];
+  allValues = [conversationsByGroupUUID allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -240,7 +240,7 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -251,7 +251,7 @@ uint64_t __62__TUConversationManager_currentProcessCanAccessCollaborations__bloc
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -268,21 +268,21 @@ LABEL_13:
   return v5;
 }
 
-- (TUConversationManager)initWithDataSource:(id)a3
+- (TUConversationManager)initWithDataSource:(id)source
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  v7 = [(TUConversationManager *)self initWithDataSource:v5 notificationCenter:v6];
+  sourceCopy = source;
+  defaultCenter = [v4 defaultCenter];
+  v7 = [(TUConversationManager *)self initWithDataSource:sourceCopy notificationCenter:defaultCenter];
 
   return v7;
 }
 
-- (TUConversationManager)initWithDataSource:(id)a3 notificationCenter:(id)a4
+- (TUConversationManager)initWithDataSource:(id)source notificationCenter:(id)center
 {
   v43[8] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  centerCopy = center;
   v41.receiver = self;
   v41.super_class = TUConversationManager;
   v9 = [(TUConversationManager *)&v41 init];
@@ -292,12 +292,12 @@ LABEL_13:
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeStrong(&v9->_dataSource, a3);
+    objc_storeStrong(&v9->_dataSource, source);
     [(TUConversationManagerDataSource *)v9->_dataSource setDelegate:v9];
-    objc_storeStrong(&v9->_notificationCenter, a4);
-    v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeStrong(&v9->_notificationCenter, center);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     delegateToQueue = v9->_delegateToQueue;
-    v9->_delegateToQueue = v12;
+    v9->_delegateToQueue = weakToStrongObjectsMapTable;
 
     v14 = [MEMORY[0x1E695DFA8] set];
     conversationsNotBackedByGroupSessions = v9->_conversationsNotBackedByGroupSessions;
@@ -307,15 +307,15 @@ LABEL_13:
     callsNotBackedByGroupSessionsPendingUpgrade = v9->_callsNotBackedByGroupSessionsPendingUpgrade;
     v9->_callsNotBackedByGroupSessionsPendingUpgrade = v16;
 
-    v18 = [(TUConversationManager *)v9 currentProcessCanAccessCollaborations];
-    v19 = TUDefaultLog();
-    v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-    if (v18)
+    currentProcessCanAccessCollaborations = [(TUConversationManager *)v9 currentProcessCanAccessCollaborations];
+    collaborationManager2 = TUDefaultLog();
+    v20 = os_log_type_enabled(collaborationManager2, OS_LOG_TYPE_DEFAULT);
+    if (currentProcessCanAccessCollaborations)
     {
       if (v20)
       {
         *buf = 0;
-        _os_log_impl(&dword_1956FD000, v19, OS_LOG_TYPE_DEFAULT, "Creating collaboration manager for current process", buf, 2u);
+        _os_log_impl(&dword_1956FD000, collaborationManager2, OS_LOG_TYPE_DEFAULT, "Creating collaboration manager for current process", buf, 2u);
       }
 
       v21 = [TUCollaborationManager alloc];
@@ -324,18 +324,18 @@ LABEL_13:
       collaborationManager = v9->_collaborationManager;
       v9->_collaborationManager = v23;
 
-      v25 = [(TUConversationManager *)v9 collaborationManager];
-      [v25 setDelegate:v9];
+      collaborationManager = [(TUConversationManager *)v9 collaborationManager];
+      [collaborationManager setDelegate:v9];
 
-      v19 = [(TUConversationManager *)v9 collaborationManager];
-      v26 = [(TUConversationManager *)v9 queue];
-      [(TUConversationManager *)v9 addDelegate:v19 queue:v26];
+      collaborationManager2 = [(TUConversationManager *)v9 collaborationManager];
+      queue = [(TUConversationManager *)v9 queue];
+      [(TUConversationManager *)v9 addDelegate:collaborationManager2 queue:queue];
     }
 
     else if (v20)
     {
       *buf = 0;
-      _os_log_impl(&dword_1956FD000, v19, OS_LOG_TYPE_DEFAULT, "Current process is not entitled to access collaborations on the call- not initializing the collaboration manager", buf, 2u);
+      _os_log_impl(&dword_1956FD000, collaborationManager2, OS_LOG_TYPE_DEFAULT, "Current process is not entitled to access collaborations on the call- not initializing the collaboration manager", buf, 2u);
     }
 
     v43[0] = @"TUCallCenterCallStatusChangedNotification";
@@ -366,8 +366,8 @@ LABEL_13:
           }
 
           v32 = *(*(&v36 + 1) + 8 * i);
-          v33 = [(TUConversationManager *)v9 notificationCenter];
-          [v33 addObserver:v9 selector:sel_callPropertiesChanged_ name:v32 object:0];
+          notificationCenter = [(TUConversationManager *)v9 notificationCenter];
+          [notificationCenter addObserver:v9 selector:sel_callPropertiesChanged_ name:v32 object:0];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -383,8 +383,8 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(TUConversationManagerDataSource *)self->_dataSource invalidate];
   v4.receiver = self;
@@ -392,21 +392,21 @@ LABEL_13:
   [(TUConversationManager *)&v4 dealloc];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__TUConversationManager_addDelegate_queue___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
+  dispatch_async(queue, block);
 }
 
 void __43__TUConversationManager_addDelegate_queue___block_invoke(uint64_t a1)
@@ -415,18 +415,18 @@ void __43__TUConversationManager_addDelegate_queue___block_invoke(uint64_t a1)
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self queue];
+  delegateCopy = delegate;
+  queue = [(TUConversationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__TUConversationManager_removeDelegate___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(queue, v7);
 }
 
 void __40__TUConversationManager_removeDelegate___block_invoke(uint64_t a1)
@@ -438,10 +438,10 @@ void __40__TUConversationManager_removeDelegate___block_invoke(uint64_t a1)
 - (NSSet)activeAdvertisements
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(TUConversationManager *)self dataSource];
-  v4 = [v3 advertisementsOnSystem];
-  v5 = [v4 allValues];
-  v6 = [v2 setWithArray:v5];
+  dataSource = [(TUConversationManager *)self dataSource];
+  advertisementsOnSystem = [dataSource advertisementsOnSystem];
+  allValues = [advertisementsOnSystem allValues];
+  v6 = [v2 setWithArray:allValues];
 
   return v6;
 }
@@ -449,56 +449,56 @@ void __40__TUConversationManager_removeDelegate___block_invoke(uint64_t a1)
 - (NSSet)incomingPendingConversations
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(TUConversationManager *)self dataSource];
-  v4 = [v3 incomingPendingConversationsByGroupUUID];
-  v5 = [v4 allValues];
-  v6 = [v2 setWithArray:v5];
+  dataSource = [(TUConversationManager *)self dataSource];
+  incomingPendingConversationsByGroupUUID = [dataSource incomingPendingConversationsByGroupUUID];
+  allValues = [incomingPendingConversationsByGroupUUID allValues];
+  v6 = [v2 setWithArray:allValues];
 
   return v6;
 }
 
 - (NSSet)activatedConversationLinks
 {
-  v2 = [(TUConversationManager *)self dataSource];
-  v3 = [v2 activatedConversationLinks];
+  dataSource = [(TUConversationManager *)self dataSource];
+  activatedConversationLinks = [dataSource activatedConversationLinks];
 
-  return v3;
+  return activatedConversationLinks;
 }
 
 - (NSDictionary)activityAuthorizedBundleIdentifiers
 {
-  v2 = [(TUConversationManager *)self dataSource];
-  v3 = [v2 activityAuthorizedBundleIdentifiers];
+  dataSource = [(TUConversationManager *)self dataSource];
+  activityAuthorizedBundleIdentifiers = [dataSource activityAuthorizedBundleIdentifiers];
 
-  return v3;
+  return activityAuthorizedBundleIdentifiers;
 }
 
 - (BOOL)autoSharePlayEnabled
 {
-  v2 = [(TUConversationManager *)self dataSource];
-  v3 = [v2 autoSharePlayEnabled];
+  dataSource = [(TUConversationManager *)self dataSource];
+  autoSharePlayEnabled = [dataSource autoSharePlayEnabled];
 
-  return v3;
+  return autoSharePlayEnabled;
 }
 
 - (BOOL)isScreenSharingAvailable
 {
-  v2 = [(TUConversationManager *)self dataSource];
-  v3 = [v2 isScreenSharingAvailable];
+  dataSource = [(TUConversationManager *)self dataSource];
+  isScreenSharingAvailable = [dataSource isScreenSharingAvailable];
 
-  return v3;
+  return isScreenSharingAvailable;
 }
 
-- (id)activeConversationWithUUID:(id)a3
+- (id)activeConversationWithUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(TUConversationManager *)self activeConversations];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeConversations = [(TUConversationManager *)self activeConversations];
+  v6 = [activeConversations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -508,12 +508,12 @@ void __40__TUConversationManager_removeDelegate___block_invoke(uint64_t a1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeConversations);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 UUID];
-        v11 = [v10 isEqual:v4];
+        uUID = [v9 UUID];
+        v11 = [uUID isEqual:dCopy];
 
         if (v11)
         {
@@ -522,7 +522,7 @@ void __40__TUConversationManager_removeDelegate___block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activeConversations countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -539,13 +539,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)activeConversationWithGroupUUID:(id)a3
+- (id)activeConversationWithGroupUUID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUConversationManager *)self dataSource];
-  v6 = [v5 conversationsByGroupUUID];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  dataSource = [(TUConversationManager *)self dataSource];
+  conversationsByGroupUUID = [dataSource conversationsByGroupUUID];
+  v7 = [conversationsByGroupUUID objectForKeyedSubscript:dCopy];
 
   if (!v7)
   {
@@ -553,8 +553,8 @@ LABEL_11:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    conversationsNotBackedByGroupSessions = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
+    v9 = [conversationsNotBackedByGroupSessions countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -566,12 +566,12 @@ LABEL_11:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(conversationsNotBackedByGroupSessions);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 groupUUID];
-          v15 = [v14 isEqual:v4];
+          groupUUID = [v13 groupUUID];
+          v15 = [groupUUID isEqual:dCopy];
 
           if (v15)
           {
@@ -581,7 +581,7 @@ LABEL_11:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [conversationsNotBackedByGroupSessions countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
@@ -598,31 +598,31 @@ LABEL_11:
   return v7;
 }
 
-- (id)activeConversationWithRemoteMembers:(id)a3 andLink:(id)a4
+- (id)activeConversationWithRemoteMembers:(id)members andLink:(id)link
 {
-  v6 = a4;
-  v7 = a3;
+  linkCopy = link;
+  membersCopy = members;
   v8 = objc_opt_class();
-  v9 = [(TUConversationManager *)self activeConversations];
-  v10 = [v8 conversationWithRemoteMembers:v7 andLink:v6 fromConversations:v9];
+  activeConversations = [(TUConversationManager *)self activeConversations];
+  v10 = [v8 conversationWithRemoteMembers:membersCopy andLink:linkCopy fromConversations:activeConversations];
 
   return v10;
 }
 
-- (id)activeConversationWithLinkForCall:(id)a3
+- (id)activeConversationWithLinkForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self dataSource];
-  v6 = [v5 pseudonymsByCallUUID];
-  v7 = [v4 uniqueProxyIdentifierUUID];
+  callCopy = call;
+  dataSource = [(TUConversationManager *)self dataSource];
+  pseudonymsByCallUUID = [dataSource pseudonymsByCallUUID];
+  uniqueProxyIdentifierUUID = [callCopy uniqueProxyIdentifierUUID];
 
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [pseudonymsByCallUUID objectForKeyedSubscript:uniqueProxyIdentifierUUID];
 
   if (v8)
   {
     v9 = objc_opt_class();
-    v10 = [(TUConversationManager *)self activeConversations];
-    v11 = [v9 conversationWithPseudonym:v8 fromConversations:v10];
+    activeConversations = [(TUConversationManager *)self activeConversations];
+    v11 = [v9 conversationWithPseudonym:v8 fromConversations:activeConversations];
   }
 
   else
@@ -633,37 +633,37 @@ LABEL_11:
   return v11;
 }
 
-- (id)pendingConversationWithLink:(id)a3
+- (id)pendingConversationWithLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v5 = objc_opt_class();
-  v6 = [(TUConversationManager *)self activeConversations];
-  v7 = [v5 pendingConversationWithLink:v4 fromConversations:v6];
+  activeConversations = [(TUConversationManager *)self activeConversations];
+  v7 = [v5 pendingConversationWithLink:linkCopy fromConversations:activeConversations];
 
   return v7;
 }
 
-+ (id)conversationWithRemoteMembers:(id)a3 andLink:(id)a4 fromConversations:(id)a5
++ (id)conversationWithRemoteMembers:(id)members andLink:(id)link fromConversations:(id)conversations
 {
-  v5 = [a1 conversationsWithRemoteMembers:a3 andLink:a4 fromConversations:a5];
-  v6 = [v5 anyObject];
+  v5 = [self conversationsWithRemoteMembers:members andLink:link fromConversations:conversations];
+  anyObject = [v5 anyObject];
 
-  return v6;
+  return anyObject;
 }
 
-+ (id)conversationWithRemoteMembers:(id)a3 andLink:(id)a4 fromConversations:(id)a5 matchingVideo:(BOOL)a6 backedByGroupSession:(BOOL)a7
++ (id)conversationWithRemoteMembers:(id)members andLink:(id)link fromConversations:(id)conversations matchingVideo:(BOOL)video backedByGroupSession:(BOOL)session
 {
-  v7 = a7;
-  v8 = a6;
+  sessionCopy = session;
+  videoCopy = video;
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  membersCopy = members;
+  linkCopy = link;
+  conversationsCopy = conversations;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = [objc_opt_class() conversationsWithRemoteMembers:v11 andLink:v12 fromConversations:{v13, 0}];
+  v14 = [objc_opt_class() conversationsWithRemoteMembers:membersCopy andLink:linkCopy fromConversations:{conversationsCopy, 0}];
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
@@ -679,7 +679,7 @@ LABEL_11:
         }
 
         v19 = *(*(&v23 + 1) + 8 * i);
-        if ([v19 isVideo] == v8 && objc_msgSend(v19, "isBackedByGroupSession") == v7)
+        if ([v19 isVideo] == videoCopy && objc_msgSend(v19, "isBackedByGroupSession") == sessionCopy)
         {
           v20 = v19;
           goto LABEL_12;
@@ -704,18 +704,18 @@ LABEL_12:
   return v20;
 }
 
-+ (id)conversationsWithRemoteMembers:(id)a3 andLink:(id)a4 fromConversations:(id)a5
++ (id)conversationsWithRemoteMembers:(id)members andLink:(id)link fromConversations:(id)conversations
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  membersCopy = members;
+  linkCopy = link;
+  conversationsCopy = conversations;
+  v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(conversationsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v9;
+  v11 = conversationsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -731,7 +731,7 @@ LABEL_12:
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if ([v16 isRepresentedByRemoteMembers:v7 andLink:{v8, v19}])
+        if ([v16 isRepresentedByRemoteMembers:membersCopy andLink:{linkCopy, v19}])
         {
           [v10 addObject:v16];
         }
@@ -748,16 +748,16 @@ LABEL_12:
   return v10;
 }
 
-+ (id)conversationWithPseudonym:(id)a3 fromConversations:(id)a4
++ (id)conversationWithPseudonym:(id)pseudonym fromConversations:(id)conversations
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pseudonymCopy = pseudonym;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  conversationsCopy = conversations;
+  v7 = [conversationsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -767,17 +767,17 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(conversationsCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 link];
-        if (v11)
+        link = [v10 link];
+        if (link)
         {
-          v12 = v11;
-          v13 = [v10 link];
-          v14 = [v13 pseudonym];
-          v15 = [v14 isEqualToString:v5];
+          v12 = link;
+          link2 = [v10 link];
+          pseudonym = [link2 pseudonym];
+          v15 = [pseudonym isEqualToString:pseudonymCopy];
 
           if (v15)
           {
@@ -787,7 +787,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [conversationsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -804,16 +804,16 @@ LABEL_12:
   return v7;
 }
 
-+ (id)pendingConversationWithLink:(id)a3 fromConversations:(id)a4
++ (id)pendingConversationWithLink:(id)link fromConversations:(id)conversations
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  linkCopy = link;
+  conversationsCopy = conversations;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [conversationsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v7)
   {
     v9 = 0;
@@ -829,26 +829,26 @@ LABEL_12:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(conversationsCopy);
       }
 
       v12 = *(*(&v17 + 1) + 8 * i);
-      v13 = [v12 link];
-      if ([v13 isEquivalentToConversationLink:v5])
+      link = [v12 link];
+      if ([link isEquivalentToConversationLink:linkCopy])
       {
-        v14 = [v12 letMeInRequestState];
+        letMeInRequestState = [v12 letMeInRequestState];
 
-        if (!v14)
+        if (!letMeInRequestState)
         {
           continue;
         }
 
-        v13 = v9;
+        link = v9;
         v9 = v12;
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [conversationsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v8);
@@ -859,11 +859,11 @@ LABEL_14:
   return v9;
 }
 
-+ (id)remoteMembersForCall:(id)a3
++ (id)remoteMembersForCall:(id)call
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a3 remoteParticipantHandles];
-  v4 = [v3 copy];
+  remoteParticipantHandles = [call remoteParticipantHandles];
+  v4 = [remoteParticipantHandles copy];
 
   v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
   v16 = 0u;
@@ -902,9 +902,9 @@ LABEL_14:
   return v5;
 }
 
-- (void)registerWithCompletionHandler:(id)a3
+- (void)registerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -912,8 +912,8 @@ LABEL_14:
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "", v7, 2u);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 registerWithCompletionHandler:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource registerWithCompletionHandler:handlerCopy];
 }
 
 - (TUConversationMediaController)mediaController
@@ -922,8 +922,8 @@ LABEL_14:
   if (!mediaController)
   {
     v4 = [TUConversationMediaController alloc];
-    v5 = [(TUConversationManager *)self dataSource];
-    v6 = [(TUConversationMediaController *)v4 initWithConversationDataSource:v5];
+    dataSource = [(TUConversationManager *)self dataSource];
+    v6 = [(TUConversationMediaController *)v4 initWithConversationDataSource:dataSource];
     v7 = self->_mediaController;
     self->_mediaController = v6;
 
@@ -933,369 +933,369 @@ LABEL_14:
   return mediaController;
 }
 
-- (void)addRemoteMembers:(id)a3 toConversation:(id)a4
+- (void)addRemoteMembers:(id)members toConversation:(id)conversation
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = a3;
+  conversationCopy = conversation;
+  membersCopy = members;
   v9 = [v6 set];
-  [(TUConversationManager *)self addRemoteMembers:v8 otherInvitedHandles:v9 toConversation:v7];
+  [(TUConversationManager *)self addRemoteMembers:membersCopy otherInvitedHandles:v9 toConversation:conversationCopy];
 }
 
-- (void)updateMessagesGroupName:(id)a3 onConversation:(id)a4
+- (void)updateMessagesGroupName:(id)name onConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = nameCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to set new messages group name: %@ on conversation: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 updateMessagesGroupName:v6 onConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource updateMessagesGroupName:nameCopy onConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setGridDisplayMode:(unint64_t)a3 conversation:(id)a4
+- (void)setGridDisplayMode:(unint64_t)mode conversation:(id)conversation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  conversationCopy = conversation;
   v7 = TUDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    modeCopy = mode;
     v12 = 2112;
-    v13 = v6;
+    v13 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Asked to set grid display mode to: %lu on conversation: %@", &v10, 0x16u);
   }
 
-  v8 = [(TUConversationManager *)self dataSource];
-  [v8 setGridDisplayMode:a3 conversation:v6];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource setGridDisplayMode:mode conversation:conversationCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversationUpdateMessagesGroupPhoto:(id)a3
+- (void)conversationUpdateMessagesGroupPhoto:(id)photo
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photoCopy = photo;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = photoCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to update messages group photo on conversation: %@", &v8, 0xCu);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 conversationUpdateMessagesGroupPhoto:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource conversationUpdateMessagesGroupPhoto:photoCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 toConversation:(id)a5
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles toConversation:(id)conversation
 {
   v7 = MEMORY[0x1E695DFD8];
-  v8 = a5;
-  v9 = a3;
+  conversationCopy = conversation;
+  membersCopy = members;
   v10 = [v7 set];
-  [(TUConversationManager *)self addRemoteMembers:v9 otherInvitedHandles:v10 invitationPreferences:0 toConversation:v8];
+  [(TUConversationManager *)self addRemoteMembers:membersCopy otherInvitedHandles:v10 invitationPreferences:0 toConversation:conversationCopy];
 }
 
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 invitationPreferences:(id)a5 toConversation:(id)a6
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles invitationPreferences:(id)preferences toConversation:(id)conversation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  membersCopy = members;
+  handlesCopy = handles;
+  conversationCopy = conversation;
+  preferencesCopy = preferences;
   v14 = TUDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412802;
-    v18 = v10;
+    v18 = membersCopy;
     v19 = 2112;
-    v20 = v11;
+    v20 = handlesCopy;
     v21 = 2112;
-    v22 = v12;
+    v22 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v14, OS_LOG_TYPE_DEFAULT, "Asked to add remote members: %@ otherInvitedHandles: %@ to conversation: %@", &v17, 0x20u);
   }
 
-  v15 = [(TUConversationManager *)self dataSource];
-  [v15 addRemoteMembers:v10 otherInvitedHandles:v11 invitationPreferences:v13 toConversation:v12];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource addRemoteMembers:membersCopy otherInvitedHandles:handlesCopy invitationPreferences:preferencesCopy toConversation:conversationCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareConversationWithUUID:(id)a3 withHandoffContext:(id)a4
+- (void)prepareConversationWithUUID:(id)d withHandoffContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = dCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = contextCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to prepare conversation with UUID: %@ with hand off context: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 prepareConversationWithUUID:v6 withHandoffContext:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource prepareConversationWithUUID:dCopy withHandoffContext:contextCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createActivitySession:(id)a3 onConversation:(id)a4
+- (void)createActivitySession:(id)session onConversation:(id)conversation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUConversationManager *)self dataSource];
-  [v8 createActivitySession:v7 onConversation:v6 options:0];
+  conversationCopy = conversation;
+  sessionCopy = session;
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource createActivitySession:sessionCopy onConversation:conversationCopy options:0];
 }
 
-- (void)createActivitySession:(id)a3 onConversation:(id)a4 options:(unint64_t)a5
+- (void)createActivitySession:(id)session onConversation:(id)conversation options:(unint64_t)options
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  conversationCopy = conversation;
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v8;
+    v14 = sessionCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Asked to add activity: %@ to conversation: %@", &v13, 0x16u);
   }
 
-  v11 = [(TUConversationManager *)self dataSource];
-  [v11 createActivitySession:v8 onConversation:v9 options:a5];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource createActivitySession:sessionCopy onConversation:conversationCopy options:options];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)leaveActivitySession:(id)a3 onConversation:(id)a4
+- (void)leaveActivitySession:(id)session onConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = sessionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to leave activitySession: %@ to conversation: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 leaveActivitySession:v6 onConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource leaveActivitySession:sessionCopy onConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endActivitySession:(id)a3 onConversation:(id)a4
+- (void)endActivitySession:(id)session onConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = sessionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to end activitySession: %@ to conversation: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 endActivitySession:v6 onConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource endActivitySession:sessionCopy onConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentDismissalAlertForActivitySession:(id)a3 onConversation:(id)a4
+- (void)presentDismissalAlertForActivitySession:(id)session onConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = sessionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to present dismissal alert for activitySession: %@ on conversation: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 presentDismissalAlertForActivitySession:v6 onConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource presentDismissalAlertForActivitySession:sessionCopy onConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)joinConversationWithRequest:(id)a3
+- (void)joinConversationWithRequest:(id)request
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = requestCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "joinConversationWithRequest %@", &v8, 0xCu);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 joinConversationWithRequest:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource joinConversationWithRequest:requestCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)leaveConversationWithUUID:(id)a3
+- (void)leaveConversationWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "leaveConversationWithUUID %@", &v8, 0xCu);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 leaveConversationWithUUID:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource leaveConversationWithUUID:dCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)launchApplicationForActivitySession:(id)a3 completionHandler:(id)a4
+- (void)launchApplicationForActivitySession:(id)session completionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = sessionCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to launch application for activitySession %@", &v12, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  v10 = [v6 UUID];
-  [v9 launchApplicationForActivitySessionUUID:v10 authorizedExternally:0 forceBackground:0 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  uUID = [sessionCopy UUID];
+  [dataSource launchApplicationForActivitySessionUUID:uUID authorizedExternally:0 forceBackground:0 completionHandler:handlerCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)launchApplicationForActivitySessionUUID:(id)a3 completionHandler:(id)a4
+- (void)launchApplicationForActivitySessionUUID:(id)d completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to launch application for activitySession UUID %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 launchApplicationForActivitySessionUUID:v6 authorizedExternally:0 forceBackground:0 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource launchApplicationForActivitySessionUUID:dCopy authorizedExternally:0 forceBackground:0 completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buzzMember:(id)a3 destinationID:(id)a4 invitationContext:(id)a5 conversation:(id)a6
+- (void)buzzMember:(id)member destinationID:(id)d invitationContext:(id)context conversation:(id)conversation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  memberCopy = member;
+  conversationCopy = conversation;
+  contextCopy = context;
+  dCopy = d;
   v14 = TUDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v10;
+    v18 = memberCopy;
     v19 = 2112;
-    v20 = v11;
+    v20 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v14, OS_LOG_TYPE_DEFAULT, "Asked to buzz member: %@ conversation: %@", &v17, 0x16u);
   }
 
-  v15 = [(TUConversationManager *)self dataSource];
-  [v15 buzzMember:v10 destinationID:v13 invitationContext:v12 conversation:v11];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource buzzMember:memberCopy destinationID:dCopy invitationContext:contextCopy conversation:conversationCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestScreenShareFromMember:(id)a3 conversation:(id)a4
+- (void)requestScreenShareFromMember:(id)member conversation:(id)conversation
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"TUConversationManager.m" lineNumber:509 description:@"requestScreenShareFromMembers is deprecated and should not be used"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUConversationManager.m" lineNumber:509 description:@"requestScreenShareFromMembers is deprecated and should not be used"];
 }
 
-- (void)kickMember:(id)a3 conversation:(id)a4
+- (void)kickMember:(id)member conversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = memberCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to kick member: %@ conversation: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 kickMember:v6 conversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource kickMember:memberCopy conversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addScreenSharingType:(unint64_t)a3 forConversation:(id)a4
+- (void)addScreenSharingType:(unint64_t)type forConversation:(id)conversation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  conversationCopy = conversation;
   v7 = TUDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    typeCopy = type;
     v12 = 2112;
-    v13 = v6;
+    v13 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Asked to set screen sharing type to: (%ld) for conversation: %@", &v10, 0x16u);
   }
 
-  v8 = [(TUConversationManager *)self dataSource];
-  [v8 addScreenSharingType:a3 forConversation:v6];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource addScreenSharingType:type forConversation:conversationCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)a3
+- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1303,41 +1303,41 @@ LABEL_14:
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to get the latest remote screen share attributes", v7, 2u);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 getLatestRemoteScreenShareAttributesWithCompletionHandler:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource getLatestRemoteScreenShareAttributesWithCompletionHandler:handlerCopy];
 }
 
-- (id)ckBundleIDForCollaborationIdentifier:(id)a3
+- (id)ckBundleIDForCollaborationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self collaborationManager];
-  v6 = [v5 collaborationProvider];
-  v7 = [v6 ckBundleIDForCollaborationIdentifier:v4];
+  identifierCopy = identifier;
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  collaborationProvider = [collaborationManager collaborationProvider];
+  v7 = [collaborationProvider ckBundleIDForCollaborationIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)addCollaborationIdentifier:(id)a3 forConversation:(id)a4
+- (void)addCollaborationIdentifier:(id)identifier forConversation:(id)conversation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   v9 = v8;
-  if (v6)
+  if (identifierCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = conversationCopy;
       _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Asked to set collaboration identifier: %@ for conversation: %@", &v16, 0x16u);
     }
 
-    v10 = [(TUConversationManager *)self collaborationManager];
-    v11 = [v10 collaborationProvider];
-    v9 = [v11 collaborationHighlightForIdentifier:v6];
+    collaborationManager = [(TUConversationManager *)self collaborationManager];
+    collaborationProvider = [collaborationManager collaborationProvider];
+    v9 = [collaborationProvider collaborationHighlightForIdentifier:identifierCopy];
 
     v12 = TUDefaultLog();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -1346,13 +1346,13 @@ LABEL_14:
       if (v13)
       {
         v16 = 138412546;
-        v17 = v6;
+        v17 = identifierCopy;
         v18 = 2112;
-        v19 = v7;
+        v19 = conversationCopy;
         _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "Found collaboration -Adding collaboration identifier: %@ for conversation: %@", &v16, 0x16u);
       }
 
-      [(TUConversationManager *)self addCollaboration:v9 forConversation:v7];
+      [(TUConversationManager *)self addCollaboration:v9 forConversation:conversationCopy];
     }
 
     else
@@ -1360,230 +1360,230 @@ LABEL_14:
       if (v13)
       {
         v16 = 138412546;
-        v17 = v6;
+        v17 = identifierCopy;
         v18 = 2112;
-        v19 = v7;
+        v19 = conversationCopy;
         _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "Not adding collaboration identifier: %@ to conversation: %@, could not find corresponding collaboration. Adding to pending collaborations", &v16, 0x16u);
       }
 
-      v14 = [(TUConversationManager *)self collaborationManager];
-      [v14 queueCollaborationIdentifierForCollaboration:v6 toConversation:v7];
+      collaborationManager2 = [(TUConversationManager *)self collaborationManager];
+      [collaborationManager2 queueCollaborationIdentifierForCollaboration:identifierCopy toConversation:conversationCopy];
     }
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [TUConversationManager addCollaborationIdentifier:v7 forConversation:?];
+    [TUConversationManager addCollaborationIdentifier:conversationCopy forConversation:?];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCollaboration:(id)a3 forConversation:(id)a4
+- (void)addCollaboration:(id)collaboration forConversation:(id)conversation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 collaborationIdentifier];
+  collaborationCopy = collaboration;
+  conversationCopy = conversation;
+  collaborationIdentifier = [collaborationCopy collaborationIdentifier];
 
   v9 = TUDefaultLog();
-  v10 = v9;
-  if (v8)
+  ckAppBundleIDs = v9;
+  if (collaborationIdentifier)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 collaborationIdentifier];
+      collaborationIdentifier2 = [collaborationCopy collaborationIdentifier];
       v23 = 138412546;
-      v24 = v11;
+      v24 = collaborationIdentifier2;
       v25 = 2112;
-      v26 = v7;
-      _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Asked to add collaboration: %@ for conversation: %@", &v23, 0x16u);
+      v26 = conversationCopy;
+      _os_log_impl(&dword_1956FD000, ckAppBundleIDs, OS_LOG_TYPE_DEFAULT, "Asked to add collaboration: %@ for conversation: %@", &v23, 0x16u);
     }
 
-    v12 = [v6 attributions];
-    v13 = [v12 count];
+    attributions = [collaborationCopy attributions];
+    v13 = [attributions count];
 
     if (v13)
     {
-      v14 = [v6 attributions];
-      v15 = [v14 firstObject];
-      v16 = [v15 collaborationMetadata];
-      v10 = [v16 ckAppBundleIDs];
+      attributions2 = [collaborationCopy attributions];
+      firstObject = [attributions2 firstObject];
+      collaborationMetadata = [firstObject collaborationMetadata];
+      ckAppBundleIDs = [collaborationMetadata ckAppBundleIDs];
     }
 
     else
     {
-      v10 = 0;
+      ckAppBundleIDs = 0;
     }
 
-    v17 = [(TUConversationManager *)self dataSource];
-    v18 = [v6 collaborationIdentifier];
-    v19 = [v6 URL];
+    dataSource = [(TUConversationManager *)self dataSource];
+    collaborationIdentifier3 = [collaborationCopy collaborationIdentifier];
+    v19 = [collaborationCopy URL];
     v20 = [v19 description];
-    v21 = [v7 UUID];
-    [v17 addCollaborationIdentifier:v18 collaborationURL:v20 cloudKitAppBundleIDs:v10 forConversationUUID:v21];
+    uUID = [conversationCopy UUID];
+    [dataSource addCollaborationIdentifier:collaborationIdentifier3 collaborationURL:v20 cloudKitAppBundleIDs:ckAppBundleIDs forConversationUUID:uUID];
   }
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [TUConversationManager addCollaboration:v6 forConversation:v7];
+    [TUConversationManager addCollaboration:collaborationCopy forConversation:conversationCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTrackingCollaboration:(id)a3 forConversation:(id)a4 completionHandler:(id)a5
+- (void)startTrackingCollaboration:(id)collaboration forConversation:(id)conversation completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collaborationCopy = collaboration;
+  conversationCopy = conversation;
+  handlerCopy = handler;
   v11 = TUDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 collaborationIdentifier];
+    collaborationIdentifier = [collaborationCopy collaborationIdentifier];
     v25 = 138412546;
-    v26 = v12;
+    v26 = collaborationIdentifier;
     v27 = 2112;
-    v28 = v9;
+    v28 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "Asked to set collaboration identifier: %@ for conversation: %@", &v25, 0x16u);
   }
 
-  v13 = [v8 attributions];
-  v14 = [v13 count];
+  attributions = [collaborationCopy attributions];
+  v14 = [attributions count];
 
   if (v14)
   {
-    v15 = [v8 attributions];
-    v16 = [v15 firstObject];
-    v17 = [v16 collaborationMetadata];
-    v18 = [v17 ckAppBundleIDs];
+    attributions2 = [collaborationCopy attributions];
+    firstObject = [attributions2 firstObject];
+    collaborationMetadata = [firstObject collaborationMetadata];
+    ckAppBundleIDs = [collaborationMetadata ckAppBundleIDs];
   }
 
   else
   {
-    v18 = 0;
+    ckAppBundleIDs = 0;
   }
 
-  v19 = [(TUConversationManager *)self dataSource];
-  v20 = [v8 collaborationIdentifier];
-  v21 = [v8 URL];
+  dataSource = [(TUConversationManager *)self dataSource];
+  collaborationIdentifier2 = [collaborationCopy collaborationIdentifier];
+  v21 = [collaborationCopy URL];
   v22 = [v21 description];
-  v23 = [v9 UUID];
-  [v19 startTrackingCollaborationWithIdentifier:v20 collaborationURL:v22 cloudKitAppBundleIDs:v18 forConversationUUID:v23 completionHandler:v10];
+  uUID = [conversationCopy UUID];
+  [dataSource startTrackingCollaborationWithIdentifier:collaborationIdentifier2 collaborationURL:v22 cloudKitAppBundleIDs:ckAppBundleIDs forConversationUUID:uUID completionHandler:handlerCopy];
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeCollaborationIdentifier:(id)a3 forConversation:(id)a4
+- (void)removeCollaborationIdentifier:(id)identifier forConversation:(id)conversation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
-  v9 = v8;
-  if (v6)
+  dataSource = v8;
+  if (identifierCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v6;
+      v13 = identifierCopy;
       v14 = 2112;
-      v15 = v7;
-      _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "Asked to remove collaboration identifier: %@ for conversation: %@", &v12, 0x16u);
+      v15 = conversationCopy;
+      _os_log_impl(&dword_1956FD000, dataSource, OS_LOG_TYPE_DEFAULT, "Asked to remove collaboration identifier: %@ for conversation: %@", &v12, 0x16u);
     }
 
-    v9 = [(TUConversationManager *)self dataSource];
-    v10 = [v7 UUID];
-    [v9 removeCollaborationIdentifier:v6 forConversationUUID:v10];
+    dataSource = [(TUConversationManager *)self dataSource];
+    uUID = [conversationCopy UUID];
+    [dataSource removeCollaborationIdentifier:identifierCopy forConversationUUID:uUID];
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [TUConversationManager removeCollaborationIdentifier:v7 forConversation:?];
+    [TUConversationManager removeCollaborationIdentifier:conversationCopy forConversation:?];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getNeedsDisclosureOfCollaborationInitiator:(id)a3 forConversationUUID:(id)a4 completionHandler:(id)a5
+- (void)getNeedsDisclosureOfCollaborationInitiator:(id)initiator forConversationUUID:(id)d completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  initiatorCopy = initiator;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = TUDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v8;
+    v15 = initiatorCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = dCopy;
     _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "Checking disclosure of collaboration initiator %@ for conversation UUID %@", &v14, 0x16u);
   }
 
-  v12 = [(TUConversationManager *)self dataSource];
-  [v12 getNeedsDisclosureOfCollaborationInitiator:v8 forConversationUUID:v9 completionHandler:v10];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource getNeedsDisclosureOfCollaborationInitiator:initiatorCopy forConversationUUID:dCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDisclosedCollaborationInitiator:(id)a3 toConversationUUID:(id)a4
+- (void)addDisclosedCollaborationInitiator:(id)initiator toConversationUUID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  initiatorCopy = initiator;
+  dCopy = d;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = initiatorCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = dCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Adding disclosed collaboration initiator %@ to conversation UUID %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 addDisclosedCollaborationInitiator:v6 toConversationUUID:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource addDisclosedCollaborationInitiator:initiatorCopy toConversationUUID:dCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateURLWithDugongTokenIfNeeded:(id)a3 collaboration:(id)a4 handle:(id)a5 completion:(id)a6
+- (void)updateURLWithDugongTokenIfNeeded:(id)needed collaboration:(id)collaboration handle:(id)handle completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 attributions];
-  v15 = [v14 firstObject];
-  v16 = [v15 uniqueIdentifier];
+  neededCopy = needed;
+  collaborationCopy = collaboration;
+  handleCopy = handle;
+  completionCopy = completion;
+  attributions = [collaborationCopy attributions];
+  firstObject = [attributions firstObject];
+  uniqueIdentifier = [firstObject uniqueIdentifier];
 
   v17 = TUDefaultLog();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-  if (v16)
+  if (uniqueIdentifier)
   {
     if (v18)
     {
       *buf = 138412546;
-      *&buf[4] = v10;
+      *&buf[4] = neededCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = handleCopy;
       _os_log_impl(&dword_1956FD000, v17, OS_LOG_TYPE_DEFAULT, "Asked to update collaboration URL %@ with Dugong token for handle %@, if needed", buf, 0x16u);
     }
 
-    v19 = [(TUConversationManager *)self queue];
+    queue = [(TUConversationManager *)self queue];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __90__TUConversationManager_updateURLWithDugongTokenIfNeeded_collaboration_handle_completion___block_invoke;
     v28[3] = &unk_1E7426B50;
-    v29 = v16;
-    v32 = v13;
-    v30 = v10;
-    v31 = v12;
+    v29 = uniqueIdentifier;
+    v32 = completionCopy;
+    v30 = neededCopy;
+    v31 = handleCopy;
     v20 = v29;
-    v21 = v19;
+    v21 = queue;
     v22 = v28;
     v33 = 0;
     v34 = &v33;
@@ -1614,15 +1614,15 @@ LABEL_14:
   {
     if (v18)
     {
-      v24 = [v11 attributions];
-      v25 = [v24 firstObject];
-      v26 = [v25 uniqueIdentifier];
+      attributions2 = [collaborationCopy attributions];
+      firstObject2 = [attributions2 firstObject];
+      uniqueIdentifier2 = [firstObject2 uniqueIdentifier];
       *buf = 138412290;
-      *&buf[4] = v26;
+      *&buf[4] = uniqueIdentifier2;
       _os_log_impl(&dword_1956FD000, v17, OS_LOG_TYPE_DEFAULT, "Returning collaboration URL without Dugong token because no messageGUID was found in collaboration's attribution: %@", buf, 0xCu);
     }
 
-    (*(v13 + 2))(v13, v10);
+    (*(completionCopy + 2))(completionCopy, neededCopy);
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -1785,39 +1785,39 @@ LABEL_22:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)openCollaborationWithIdentifier:(id)a3 forConversation:(id)a4
+- (BOOL)openCollaborationWithIdentifier:(id)identifier forConversation:(id)conversation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to open collaboration identifier: %@", buf, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self collaborationManager];
-  v10 = [v9 collaborationProvider];
-  v11 = [v10 collaborationHighlightForIdentifier:v6];
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  collaborationProvider = [collaborationManager collaborationProvider];
+  v11 = [collaborationProvider collaborationHighlightForIdentifier:identifierCopy];
 
   if (v11)
   {
     objc_initWeak(buf, self);
     v12 = [v11 URL];
-    v13 = [v7 localMember];
-    v14 = [v13 handle];
-    v15 = [v14 normalizedValue];
+    localMember = [conversationCopy localMember];
+    handle = [localMember handle];
+    normalizedValue = [handle normalizedValue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __73__TUConversationManager_openCollaborationWithIdentifier_forConversation___block_invoke;
     v19[3] = &unk_1E7426BA0;
     objc_copyWeak(&v23, buf);
-    v20 = v6;
-    v21 = v7;
+    v20 = identifierCopy;
+    v21 = conversationCopy;
     v22 = v11;
-    [(TUConversationManager *)self updateURLWithDugongTokenIfNeeded:v12 collaboration:v22 handle:v15 completion:v19];
+    [(TUConversationManager *)self updateURLWithDugongTokenIfNeeded:v12 collaboration:v22 handle:normalizedValue completion:v19];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -1878,48 +1878,48 @@ void __73__TUConversationManager_openCollaborationWithIdentifier_forConversation
   }
 }
 
-- (void)generateLinkForConversation:(id)a3 completionHandler:(id)a4
+- (void)generateLinkForConversation:(id)conversation completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  conversationCopy = conversation;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to generate link for conversation: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 generateLinkForConversation:v6 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource generateLinkForConversation:conversationCopy completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateLinkWithInvitedMemberHandles:(id)a3 linkLifetimeScope:(int64_t)a4 completionHandler:(id)a5
+- (void)generateLinkWithInvitedMemberHandles:(id)handles linkLifetimeScope:(int64_t)scope completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  handlesCopy = handles;
+  handlerCopy = handler;
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v8;
+    v17 = handlesCopy;
     v18 = 2048;
-    v19 = a4;
+    scopeCopy = scope;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Asked to generate link in advance of conversation with invited member handles: %@, linkLifetimeScope: %ld", buf, 0x16u);
   }
 
-  v11 = [(TUConversationManager *)self dataSource];
+  dataSource = [(TUConversationManager *)self dataSource];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__TUConversationManager_generateLinkWithInvitedMemberHandles_linkLifetimeScope_completionHandler___block_invoke;
   v14[3] = &unk_1E7426BC8;
-  v15 = v9;
-  v12 = v9;
-  [v11 generateLinkWithInvitedMemberHandles:v8 linkLifetimeScope:a4 completionHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  [dataSource generateLinkWithInvitedMemberHandles:handlesCopy linkLifetimeScope:scope completionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1971,93 +1971,93 @@ LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addInvitedMemberHandles:(id)a3 toConversationLink:(id)a4 completionHandler:(id)a5
+- (void)addInvitedMemberHandles:(id)handles toConversationLink:(id)link completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlesCopy = handles;
+  linkCopy = link;
+  handlerCopy = handler;
   v11 = TUDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v8;
+    v15 = handlesCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = linkCopy;
     _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "Asked to add invited member handles %@ to link %@", &v14, 0x16u);
   }
 
-  v12 = [(TUConversationManager *)self dataSource];
-  [v12 addInvitedMemberHandles:v8 toConversationLink:v9 completionHandler:v10];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource addInvitedMemberHandles:handlesCopy toConversationLink:linkCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invalidateLink:(id)a3 completionHandler:(id)a4
+- (void)invalidateLink:(id)link completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = linkCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Invalidate link: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 invalidateLink:v6 deleteReason:2 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource invalidateLink:linkCopy deleteReason:2 completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)renewLink:(id)a3 expirationDate:(id)a4 reason:(unint64_t)a5 completionHandler:(id)a6
+- (void)renewLink:(id)link expirationDate:(id)date reason:(unint64_t)reason completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  linkCopy = link;
+  dateCopy = date;
+  handlerCopy = handler;
   v13 = TUDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412802;
-    v17 = v10;
+    v17 = linkCopy;
     v18 = 2112;
-    v19 = v11;
+    v19 = dateCopy;
     v20 = 2048;
-    v21 = a5;
+    reasonCopy = reason;
     _os_log_impl(&dword_1956FD000, v13, OS_LOG_TYPE_DEFAULT, "Asked to renew link %@ to new expiration date %@ with reason %lu", &v16, 0x20u);
   }
 
-  v14 = [(TUConversationManager *)self dataSource];
-  [v14 renewLink:v10 expirationDate:v11 reason:a5 completionHandler:v12];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource renewLink:linkCopy expirationDate:dateCopy reason:reason completionHandler:handlerCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkLinkValidity:(id)a3 completionHandler:(id)a4
+- (void)checkLinkValidity:(id)validity completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  validityCopy = validity;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = validityCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to check validity for link: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 checkLinkValidity:v6 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource checkLinkValidity:validityCopy completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getInactiveLinkWithCompletionHandler:(id)a3
+- (void)getInactiveLinkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2065,66 +2065,66 @@ LABEL_10:
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to get an inactive link for vending as suggestion", v7, 2u);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 getInactiveLinkWithCompletionHandler:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource getInactiveLinkWithCompletionHandler:handlerCopy];
 }
 
-- (void)activateLink:(id)a3 completionHandler:(id)a4
+- (void)activateLink:(id)link completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = linkCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to activate previously-vended link: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 activateLink:v6 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource activateLink:linkCopy completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLinkName:(id)a3 forConversationLink:(id)a4 completionHandler:(id)a5
+- (void)setLinkName:(id)name forConversationLink:(id)link completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  linkCopy = link;
+  handlerCopy = handler;
+  nameCopy = name;
   v11 = TUDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v8;
+    v15 = linkCopy;
     _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "Asked to set a link name for link: %@", &v14, 0xCu);
   }
 
-  v12 = [(TUConversationManager *)self dataSource];
-  [v12 setLinkName:v10 forConversationLink:v8 completionHandler:v9];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource setLinkName:nameCopy forConversationLink:linkCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateExternalParticipants:(id)a3
+- (void)updateExternalParticipants:(id)participants
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self dataSource];
-  [v5 updateExternalParticipants:v4];
+  participantsCopy = participants;
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource updateExternalParticipants:participantsCopy];
 }
 
-- (void)approveExternalParticipants:(id)a3
+- (void)approveExternalParticipants:(id)participants
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  participantsCopy = participants;
   v4 = [MEMORY[0x1E695DFA8] set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = participantsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -2142,10 +2142,10 @@ LABEL_10:
 
         v10 = *(*(&v18 + 1) + 8 * v9);
         v11 = [TUExternalParticipant alloc];
-        v12 = [v10 identifier];
-        v13 = [v10 displayName];
-        v14 = [v10 info];
-        v15 = [(TUExternalParticipant *)v11 initWithIdentifier:v12 displayName:v13 info:v14 status:1];
+        identifier = [v10 identifier];
+        displayName = [v10 displayName];
+        info = [v10 info];
+        v15 = [(TUExternalParticipant *)v11 initWithIdentifier:identifier displayName:displayName info:info status:1];
         [v4 addObject:v15];
 
         ++v9;
@@ -2162,16 +2162,16 @@ LABEL_10:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)denyExternalParticipants:(id)a3
+- (void)denyExternalParticipants:(id)participants
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  participantsCopy = participants;
   v4 = [MEMORY[0x1E695DFA8] set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = participantsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -2189,10 +2189,10 @@ LABEL_10:
 
         v10 = *(*(&v18 + 1) + 8 * v9);
         v11 = [TUExternalParticipant alloc];
-        v12 = [v10 identifier];
-        v13 = [v10 displayName];
-        v14 = [v10 info];
-        v15 = [(TUExternalParticipant *)v11 initWithIdentifier:v12 displayName:v13 info:v14 status:2];
+        identifier = [v10 identifier];
+        displayName = [v10 displayName];
+        info = [v10 info];
+        v15 = [(TUExternalParticipant *)v11 initWithIdentifier:identifier displayName:displayName info:info status:2];
         [v4 addObject:v15];
 
         ++v9;
@@ -2209,90 +2209,90 @@ LABEL_10:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)approvePendingMember:(id)a3 forConversation:(id)a4
+- (void)approvePendingMember:(id)member forConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = memberCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to approve a pending member waiting to be let in: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 approvePendingMember:v6 forConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource approvePendingMember:memberCopy forConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rejectPendingMember:(id)a3 forConversation:(id)a4
+- (void)rejectPendingMember:(id)member forConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = memberCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to reject a pending member waiting to be let in: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 rejectPendingMember:v6 forConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource rejectPendingMember:memberCopy forConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestParticipantToShareScreen:(id)a3 forConversation:(id)a4
+- (void)requestParticipantToShareScreen:(id)screen forConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  screenCopy = screen;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = screenCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to generate screen share request with requested participant: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 requestParticipantToShareScreen:v6 forConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource requestParticipantToShareScreen:screenCopy forConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelOrDenyScreenShareRequest:(id)a3 forConversation:(id)a4
+- (void)cancelOrDenyScreenShareRequest:(id)request forConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = requestCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to cancel screen share request: %@ for conversation: %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 cancelOrDenyScreenShareRequest:v6 forConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource cancelOrDenyScreenShareRequest:requestCopy forConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
 + (BOOL)supportsConversations
 {
-  v2 = [CUTWeakLinkClass() sharedInstance];
-  if ([v2 multiwaySupported])
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+  if ([cUTWeakLinkClass() multiwaySupported])
   {
-    v3 = [v2 isGreenTea] ^ 1;
+    v3 = [cUTWeakLinkClass() isGreenTea] ^ 1;
   }
 
   else
@@ -2305,36 +2305,36 @@ LABEL_10:
 
 + (BOOL)isAddPersonEnabled
 {
-  v2 = [CUTWeakLinkClass() sharedInstance];
-  v3 = [v2 objectForKey:@"gft-legacy-upgrade-enabled"];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+  v3 = [cUTWeakLinkClass() objectForKey:@"gft-legacy-upgrade-enabled"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (unint64_t)maximumNumberOfInvitedMembers
 {
-  v2 = [CUTWeakLinkClass() sharedInstance];
-  v3 = [v2 objectForKey:@"qr-max-participants"];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+  v3 = [cUTWeakLinkClass() objectForKey:@"qr-max-participants"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 32;
+    unsignedIntegerValue = 32;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 + (BOOL)allowsVideo
@@ -2343,7 +2343,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __36__TUConversationManager_allowsVideo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allowsVideo_onceToken != -1)
   {
     dispatch_once(&allowsVideo_onceToken, block);
@@ -2429,10 +2429,10 @@ uint64_t __36__TUConversationManager_allowsVideo__block_invoke(uint64_t a1)
 
 + (BOOL)supportsEffects
 {
-  v2 = [CUTWeakLinkClass() sharedInstance];
-  v3 = [v2 supportsFunCam];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+  supportsFunCam = [cUTWeakLinkClass() supportsFunCam];
 
-  return v3;
+  return supportsFunCam;
 }
 
 + (int64_t)memorySize
@@ -2455,118 +2455,118 @@ uint64_t __35__TUConversationManager_memorySize__block_invoke()
   return result;
 }
 
-- (void)getMessagesGroupDetailsForConversationUUID:(id)a3 completionHandler:(id)a4
+- (void)getMessagesGroupDetailsForConversationUUID:(id)d completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Fetching Messages group info for conversation: %@", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 getMessagesGroupDetailsForConversationUUID:v6 completionHandler:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource getMessagesGroupDetailsForConversationUUID:dCopy completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMessagesGroupProvider:(id)a3
+- (void)setMessagesGroupProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_messagesGroupProvider);
 
-  objc_storeWeak(&self->_messagesGroupProvider, v4);
-  if ((v4 != 0) == (WeakRetained == 0))
+  objc_storeWeak(&self->_messagesGroupProvider, providerCopy);
+  if ((providerCopy != 0) == (WeakRetained == 0))
   {
-    v6 = [(TUConversationManager *)self dataSource];
-    [v6 setSupportsMessagesGroupProviding:v4 != 0];
+    dataSource = [(TUConversationManager *)self dataSource];
+    [dataSource setSupportsMessagesGroupProviding:providerCopy != 0];
   }
 }
 
-- (void)setLocalParticipantCluster:(id)a3 forConversation:(id)a4
+- (void)setLocalParticipantCluster:(id)cluster forConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clusterCopy = cluster;
+  conversationCopy = conversation;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = clusterCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to set local participant cluster to %@ for conversation %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 setLocalParticipantCluster:v6 forConversation:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource setLocalParticipantCluster:clusterCopy forConversation:conversationCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLocalParticipantAudioVideoMode:(unint64_t)a3 forConversationUUID:(id)a4
+- (void)setLocalParticipantAudioVideoMode:(unint64_t)mode forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUConversationManager *)self dataSource];
-  [v7 setLocalParticipantAudioVideoMode:a3 forConversationUUID:v6];
+  dCopy = d;
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource setLocalParticipantAudioVideoMode:mode forConversationUUID:dCopy];
 }
 
-- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)a3 forConversationUUID:(id)a4
+- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)mode forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(TUConversationManager *)self dataSource];
-  [v7 updateLocalParticipantToAVLessWithPresentationMode:a3 forConversationUUID:v6];
+  dCopy = d;
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource updateLocalParticipantToAVLessWithPresentationMode:mode forConversationUUID:dCopy];
 }
 
-- (void)registerMessagesGroupUUIDForConversationUUID:(id)a3
+- (void)registerMessagesGroupUUIDForConversationUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self dataSource];
-  [v5 registerMessagesGroupUUIDForConversationUUID:v4];
+  dCopy = d;
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource registerMessagesGroupUUIDForConversationUUID:dCopy];
 }
 
-- (void)updateRemoteControlStatus:(int64_t)a3 onConversation:(id)a4
+- (void)updateRemoteControlStatus:(int64_t)status onConversation:(id)conversation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  conversationCopy = conversation;
   v7 = TUDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = a3;
+    statusCopy = status;
     v12 = 2112;
-    v13 = v6;
+    v13 = conversationCopy;
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Asked to update remote control status: %lu for conversation: %@", &v10, 0x16u);
   }
 
-  v8 = [(TUConversationManager *)self dataSource];
-  [v8 updateRemoteControlStatus:a3 onConversation:v6];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource updateRemoteControlStatus:status onConversation:conversationCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversationsChangedForDataSource:(id)a3 conversationsByGroupUUID:(id)a4 oldConversationsByGroupUUID:(id)a5
+- (void)conversationsChangedForDataSource:(id)source conversationsByGroupUUID:(id)d oldConversationsByGroupUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUConversationManager *)self queue];
+  sourceCopy = source;
+  dCopy = d;
+  iDCopy = iD;
+  queue = [(TUConversationManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __112__TUConversationManager_conversationsChangedForDataSource_conversationsByGroupUUID_oldConversationsByGroupUUID___block_invoke;
   v15[3] = &unk_1E7425188;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = sourceCopy;
+  v19 = iDCopy;
+  v12 = iDCopy;
+  v13 = sourceCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
 void __112__TUConversationManager_conversationsChangedForDataSource_conversationsByGroupUUID_oldConversationsByGroupUUID___block_invoke(uint64_t a1)
@@ -2585,20 +2585,20 @@ void __112__TUConversationManager_conversationsChangedForDataSource_conversation
   }
 }
 
-- (void)conversationsChangedForDataSource:(id)a3 oldConversationsByGroupUUID:(id)a4 newConversationsByGroupUUID:(id)a5 creationQueue:(id)a6
+- (void)conversationsChangedForDataSource:(id)source oldConversationsByGroupUUID:(id)d newConversationsByGroupUUID:(id)iD creationQueue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __129__TUConversationManager_conversationsChangedForDataSource_oldConversationsByGroupUUID_newConversationsByGroupUUID_creationQueue___block_invoke;
   block[3] = &unk_1E7424FD8;
-  v14 = v9;
-  v15 = v10;
-  v16 = self;
-  v11 = v10;
-  v12 = v9;
-  dispatch_async(a6, block);
+  v14 = dCopy;
+  v15 = iDCopy;
+  selfCopy = self;
+  v11 = iDCopy;
+  v12 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __129__TUConversationManager_conversationsChangedForDataSource_oldConversationsByGroupUUID_newConversationsByGroupUUID_creationQueue___block_invoke(id *a1)
@@ -2799,21 +2799,21 @@ uint64_t __129__TUConversationManager_conversationsChangedForDataSource_oldConve
   return result;
 }
 
-- (void)conversationsChangedFromOldConversationsByGroupUUID:(id)a3 newConversationsByGroupUUID:(id)a4
+- (void)conversationsChangedFromOldConversationsByGroupUUID:(id)d newConversationsByGroupUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  dCopy = d;
+  iDCopy = iD;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __105__TUConversationManager_conversationsChangedFromOldConversationsByGroupUUID_newConversationsByGroupUUID___block_invoke;
   block[3] = &unk_1E7424FD8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = iDCopy;
+  selfCopy = self;
+  v9 = iDCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __105__TUConversationManager_conversationsChangedFromOldConversationsByGroupUUID_newConversationsByGroupUUID___block_invoke(uint64_t a1)
@@ -4563,18 +4563,18 @@ void __105__TUConversationManager_conversationsChangedFromOldConversationsByGrou
   v319 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serverDisconnectedForDataSource:(id)a3 oldConversationsByGroupUUID:(id)a4
+- (void)serverDisconnectedForDataSource:(id)source oldConversationsByGroupUUID:(id)d
 {
-  v5 = a4;
-  v6 = [(TUConversationManager *)self queue];
+  dCopy = d;
+  queue = [(TUConversationManager *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__TUConversationManager_serverDisconnectedForDataSource_oldConversationsByGroupUUID___block_invoke;
   v8[3] = &unk_1E7424898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(queue, v8);
 }
 
 void __85__TUConversationManager_serverDisconnectedForDataSource_oldConversationsByGroupUUID___block_invoke(uint64_t a1)
@@ -4684,24 +4684,24 @@ void __85__TUConversationManager_serverDisconnectedForDataSource_oldConversation
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversation:(id)a3 participant:(id)a4 addedNotice:(id)a5
+- (void)conversation:(id)conversation participant:(id)participant addedNotice:(id)notice
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  participantCopy = participant;
+  noticeCopy = notice;
+  queue = [(TUConversationManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__TUConversationManager_conversation_participant_addedNotice___block_invoke;
   v15[3] = &unk_1E7425188;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = conversationCopy;
+  v17 = participantCopy;
+  v18 = noticeCopy;
+  v12 = noticeCopy;
+  v13 = participantCopy;
+  v14 = conversationCopy;
+  dispatch_async(queue, v15);
 }
 
 void __62__TUConversationManager_conversation_participant_addedNotice___block_invoke(uint64_t a1)
@@ -4775,33 +4775,33 @@ uint64_t __62__TUConversationManager_conversation_participant_addedNotice___bloc
   return result;
 }
 
-- (void)activeParticipant:(id)a3 removedHighlightFromConversation:(id)a4 highlightIdentifier:(id)a5
+- (void)activeParticipant:(id)participant removedHighlightFromConversation:(id)conversation highlightIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUConversationManager *)self collaborationManager];
-  [v11 participant:v10 removedHighlightFromConversation:v9 highlightIdentifier:v8];
+  identifierCopy = identifier;
+  conversationCopy = conversation;
+  participantCopy = participant;
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  [collaborationManager participant:participantCopy removedHighlightFromConversation:conversationCopy highlightIdentifier:identifierCopy];
 }
 
-- (void)conversation:(id)a3 participant:(id)a4 addedCollaborationNotice:(id)a5
+- (void)conversation:(id)conversation participant:(id)participant addedCollaborationNotice:(id)notice
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  participantCopy = participant;
+  noticeCopy = notice;
+  queue = [(TUConversationManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__TUConversationManager_conversation_participant_addedCollaborationNotice___block_invoke;
   v15[3] = &unk_1E7425188;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = conversationCopy;
+  v17 = participantCopy;
+  v18 = noticeCopy;
+  v12 = noticeCopy;
+  v13 = participantCopy;
+  v14 = conversationCopy;
+  dispatch_async(queue, v15);
 }
 
 void __75__TUConversationManager_conversation_participant_addedCollaborationNotice___block_invoke(uint64_t a1)
@@ -4875,58 +4875,58 @@ uint64_t __75__TUConversationManager_conversation_participant_addedCollaboration
   return result;
 }
 
-- (void)conversation:(id)a3 collaborationStateChanged:(int64_t)a4 highlightIdentifier:(id)a5
+- (void)conversation:(id)conversation collaborationStateChanged:(int64_t)changed highlightIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  identifierCopy = identifier;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a4;
+    changedCopy = changed;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "TUConversationManager received collaborationStateChanged : %lu", &v11, 0xCu);
   }
 
-  v9 = [(TUConversationManager *)self collaborationManager];
-  [v9 setCollaborationState:a4 forCollaborationIdentifier:v7];
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  [collaborationManager setCollaborationState:changed forCollaborationIdentifier:identifierCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addedCollaborationDictionary:(id)a3 forConversation:(id)a4
+- (void)addedCollaborationDictionary:(id)dictionary forConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = dictionaryCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Received collaboration dictionary: %@", &v11, 0xCu);
   }
 
-  v7 = [(TUConversationManager *)self collaborationManager];
-  v8 = [v7 collaborationProvider];
-  v9 = [v8 addTemporaryCollaboration:v5];
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  collaborationProvider = [collaborationManager collaborationProvider];
+  v9 = [collaborationProvider addTemporaryCollaboration:dictionaryCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversation:(id)a3 addedMembersLocally:(id)a4
+- (void)conversation:(id)conversation addedMembersLocally:(id)locally
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  locallyCopy = locally;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__TUConversationManager_conversation_addedMembersLocally___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = locallyCopy;
+  v9 = locallyCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__TUConversationManager_conversation_addedMembersLocally___block_invoke(uint64_t a1)
@@ -4998,21 +4998,21 @@ uint64_t __58__TUConversationManager_conversation_addedMembersLocally___block_in
   return result;
 }
 
-- (void)conversation:(id)a3 buzzedMember:(id)a4
+- (void)conversation:(id)conversation buzzedMember:(id)member
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  memberCopy = member;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__TUConversationManager_conversation_buzzedMember___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = memberCopy;
+  v9 = memberCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __51__TUConversationManager_conversation_buzzedMember___block_invoke(uint64_t a1)
@@ -5084,18 +5084,18 @@ uint64_t __51__TUConversationManager_conversation_buzzedMember___block_invoke_2(
   return result;
 }
 
-- (void)conversationsChangedForDataSource:(id)a3 updatedIncomingPendingConversationsByGroupUUID:(id)a4
+- (void)conversationsChangedForDataSource:(id)source updatedIncomingPendingConversationsByGroupUUID:(id)d
 {
-  v5 = a4;
-  v6 = [(TUConversationManager *)self queue];
+  dCopy = d;
+  queue = [(TUConversationManager *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __106__TUConversationManager_conversationsChangedForDataSource_updatedIncomingPendingConversationsByGroupUUID___block_invoke;
   v8[3] = &unk_1E7424898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(queue, v8);
 }
 
 void __106__TUConversationManager_conversationsChangedForDataSource_updatedIncomingPendingConversationsByGroupUUID___block_invoke(uint64_t a1)
@@ -5161,18 +5161,18 @@ void __106__TUConversationManager_conversationsChangedForDataSource_updatedIncom
   }
 }
 
-- (void)conversationUpdatedMessagesGroupPhoto:(id)a3
+- (void)conversationUpdatedMessagesGroupPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self queue];
+  photoCopy = photo;
+  queue = [(TUConversationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__TUConversationManager_conversationUpdatedMessagesGroupPhoto___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = photoCopy;
+  v6 = photoCopy;
+  dispatch_async(queue, v7);
 }
 
 void __63__TUConversationManager_conversationUpdatedMessagesGroupPhoto___block_invoke(uint64_t a1)
@@ -5239,21 +5239,21 @@ void __63__TUConversationManager_conversationUpdatedMessagesGroupPhoto___block_i
   }
 }
 
-- (void)conversation:(id)a3 didChangeStateForActivitySession:(id)a4
+- (void)conversation:(id)conversation didChangeStateForActivitySession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  sessionCopy = session;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__TUConversationManager_conversation_didChangeStateForActivitySession___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__TUConversationManager_conversation_didChangeStateForActivitySession___block_invoke(uint64_t a1)
@@ -5325,18 +5325,18 @@ uint64_t __71__TUConversationManager_conversation_didChangeStateForActivitySessi
   return result;
 }
 
-- (void)didChangeConversationAdvertisement:(id)a3
+- (void)didChangeConversationAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self queue];
+  advertisementCopy = advertisement;
+  queue = [(TUConversationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__TUConversationManager_didChangeConversationAdvertisement___block_invoke;
   v7[3] = &unk_1E7424898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = advertisementCopy;
+  selfCopy = self;
+  v6 = advertisementCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__TUConversationManager_didChangeConversationAdvertisement___block_invoke(uint64_t a1)
@@ -5414,21 +5414,21 @@ uint64_t __60__TUConversationManager_didChangeConversationAdvertisement___block_
   return result;
 }
 
-- (void)conversation:(id)a3 didChangeSceneAssociationForActivitySession:(id)a4
+- (void)conversation:(id)conversation didChangeSceneAssociationForActivitySession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  sessionCopy = session;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__TUConversationManager_conversation_didChangeSceneAssociationForActivitySession___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __82__TUConversationManager_conversation_didChangeSceneAssociationForActivitySession___block_invoke(uint64_t a1)
@@ -5500,21 +5500,21 @@ uint64_t __82__TUConversationManager_conversation_didChangeSceneAssociationForAc
   return result;
 }
 
-- (void)conversation:(id)a3 receivedActivitySessionEvent:(id)a4
+- (void)conversation:(id)conversation receivedActivitySessionEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  eventCopy = event;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__TUConversationManager_conversation_receivedActivitySessionEvent___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = eventCopy;
+  v9 = eventCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __67__TUConversationManager_conversation_receivedActivitySessionEvent___block_invoke(uint64_t a1)
@@ -5586,18 +5586,18 @@ uint64_t __67__TUConversationManager_conversation_receivedActivitySessionEvent__
   return result;
 }
 
-- (void)conversationManagerDataSource:(id)a3 didChangeActivatedConversationLinks:(id)a4
+- (void)conversationManagerDataSource:(id)source didChangeActivatedConversationLinks:(id)links
 {
-  v5 = a4;
-  v6 = [(TUConversationManager *)self queue];
+  linksCopy = links;
+  queue = [(TUConversationManager *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__TUConversationManager_conversationManagerDataSource_didChangeActivatedConversationLinks___block_invoke;
   v8[3] = &unk_1E7424898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = linksCopy;
+  v7 = linksCopy;
+  dispatch_async(queue, v8);
 }
 
 void __91__TUConversationManager_conversationManagerDataSource_didChangeActivatedConversationLinks___block_invoke(uint64_t a1)
@@ -5661,21 +5661,21 @@ uint64_t __91__TUConversationManager_conversationManagerDataSource_didChangeActi
   return result;
 }
 
-- (void)conversationManagerDataSource:(id)a3 messagesGroupDetailsForMessagesGroupId:(id)a4 completionHandler:(id)a5
+- (void)conversationManagerDataSource:(id)source messagesGroupDetailsForMessagesGroupId:(id)id completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(TUConversationManager *)self queue];
+  idCopy = id;
+  handlerCopy = handler;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __112__TUConversationManager_conversationManagerDataSource_messagesGroupDetailsForMessagesGroupId_completionHandler___block_invoke;
   block[3] = &unk_1E7426458;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = idCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = idCopy;
+  dispatch_async(queue, block);
 }
 
 void __112__TUConversationManager_conversationManagerDataSource_messagesGroupDetailsForMessagesGroupId_completionHandler___block_invoke(uint64_t a1)
@@ -5708,9 +5708,9 @@ void __112__TUConversationManager_conversationManagerDataSource_messagesGroupDet
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchUpcomingNoticeWithCompletionHandler:(id)a3
+- (void)fetchUpcomingNoticeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5718,65 +5718,65 @@ void __112__TUConversationManager_conversationManagerDataSource_messagesGroupDet
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "", v7, 2u);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 fetchUpcomingNoticeWithCompletionHandler:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource fetchUpcomingNoticeWithCompletionHandler:handlerCopy];
 }
 
-- (void)activateConversationNoticeWithActionURL:(id)a3 bundleIdentifier:(id)a4
+- (void)activateConversationNoticeWithActionURL:(id)l bundleIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = lCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "activateConversationNoticeWithActionURL: %@ bundleID %@", &v11, 0x16u);
   }
 
-  v9 = [(TUConversationManager *)self dataSource];
-  [v9 activateConversationNoticeWithActionURL:v6 bundleIdentifier:v7];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource activateConversationNoticeWithActionURL:lCopy bundleIdentifier:identifierCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeConversationNoticeWithUUID:(id)a3
+- (void)removeConversationNoticeWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "UUID: %@", &v8, 0xCu);
   }
 
-  v6 = [(TUConversationManager *)self dataSource];
-  [v6 removeConversationNoticeWithUUID:v4];
+  dataSource = [(TUConversationManager *)self dataSource];
+  [dataSource removeConversationNoticeWithUUID:dCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversationManagerDataSource:(id)a3 conversation:(id)a4 appLaunchState:(unint64_t)a5 forActivitySession:(id)a6
+- (void)conversationManagerDataSource:(id)source conversation:(id)conversation appLaunchState:(unint64_t)state forActivitySession:(id)session
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  sessionCopy = session;
+  queue = [(TUConversationManager *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __102__TUConversationManager_conversationManagerDataSource_conversation_appLaunchState_forActivitySession___block_invoke;
   v14[3] = &unk_1E7424D50;
-  v15 = v10;
-  v16 = v9;
-  v17 = self;
-  v18 = a5;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, v14);
+  v15 = sessionCopy;
+  v16 = conversationCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v12 = conversationCopy;
+  v13 = sessionCopy;
+  dispatch_async(queue, v14);
 }
 
 void __102__TUConversationManager_conversationManagerDataSource_conversation_appLaunchState_forActivitySession___block_invoke(uint64_t a1)
@@ -5864,21 +5864,21 @@ uint64_t __102__TUConversationManager_conversationManagerDataSource_conversation
   return result;
 }
 
-- (void)receivedTrackedPendingMember:(id)a3 forConversationLink:(id)a4
+- (void)receivedTrackedPendingMember:(id)member forConversationLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  memberCopy = member;
+  linkCopy = link;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__TUConversationManager_receivedTrackedPendingMember_forConversationLink___block_invoke;
   block[3] = &unk_1E7424FD8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = memberCopy;
+  v13 = linkCopy;
+  selfCopy = self;
+  v9 = linkCopy;
+  v10 = memberCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__TUConversationManager_receivedTrackedPendingMember_forConversationLink___block_invoke(id *a1)
@@ -5961,21 +5961,21 @@ uint64_t __74__TUConversationManager_receivedTrackedPendingMember_forConversatio
   return result;
 }
 
-- (void)conversation:(id)a3 screenSharingChangedForParticipant:(id)a4
+- (void)conversation:(id)conversation screenSharingChangedForParticipant:(id)participant
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  conversationCopy = conversation;
+  participantCopy = participant;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__TUConversationManager_conversation_screenSharingChangedForParticipant___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = participantCopy;
+  v9 = participantCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
 void __73__TUConversationManager_conversation_screenSharingChangedForParticipant___block_invoke(uint64_t a1)
@@ -6047,19 +6047,19 @@ uint64_t __73__TUConversationManager_conversation_screenSharingChangedForPartici
   return result;
 }
 
-- (void)remoteScreenShareAttributesChanged:(id)a3 isLocallySharing:(BOOL)a4
+- (void)remoteScreenShareAttributesChanged:(id)changed isLocallySharing:(BOOL)sharing
 {
-  v6 = a3;
-  v7 = [(TUConversationManager *)self queue];
+  changedCopy = changed;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__TUConversationManager_remoteScreenShareAttributesChanged_isLocallySharing___block_invoke;
   block[3] = &unk_1E7425B78;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  sharingCopy = sharing;
+  v10 = changedCopy;
+  selfCopy = self;
+  v8 = changedCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__TUConversationManager_remoteScreenShareAttributesChanged_isLocallySharing___block_invoke(uint64_t a1)
@@ -6147,18 +6147,18 @@ uint64_t __77__TUConversationManager_remoteScreenShareAttributesChanged_isLocall
   return result;
 }
 
-- (void)remoteScreenShareEndedWithReason:(id)a3
+- (void)remoteScreenShareEndedWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self queue];
+  reasonCopy = reason;
+  queue = [(TUConversationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__TUConversationManager_remoteScreenShareEndedWithReason___block_invoke;
   v7[3] = &unk_1E7424898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__TUConversationManager_remoteScreenShareEndedWithReason___block_invoke(uint64_t a1)
@@ -6236,16 +6236,16 @@ uint64_t __58__TUConversationManager_remoteScreenShareEndedWithReason___block_in
   return result;
 }
 
-- (void)sharePlayAvailableChanged:(BOOL)a3
+- (void)sharePlayAvailableChanged:(BOOL)changed
 {
-  v5 = [(TUConversationManager *)self queue];
+  queue = [(TUConversationManager *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__TUConversationManager_sharePlayAvailableChanged___block_invoke;
   v6[3] = &unk_1E7425000;
-  v7 = a3;
+  changedCopy = changed;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 }
 
 void __51__TUConversationManager_sharePlayAvailableChanged___block_invoke(uint64_t a1)
@@ -6323,16 +6323,16 @@ uint64_t __51__TUConversationManager_sharePlayAvailableChanged___block_invoke_31
   return result;
 }
 
-- (void)screenSharingAvailableChanged:(BOOL)a3
+- (void)screenSharingAvailableChanged:(BOOL)changed
 {
-  v5 = [(TUConversationManager *)self queue];
+  queue = [(TUConversationManager *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__TUConversationManager_screenSharingAvailableChanged___block_invoke;
   v6[3] = &unk_1E7425000;
-  v7 = a3;
+  changedCopy = changed;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 }
 
 void __55__TUConversationManager_screenSharingAvailableChanged___block_invoke(uint64_t a1)
@@ -6410,21 +6410,21 @@ uint64_t __55__TUConversationManager_screenSharingAvailableChanged___block_invok
   return result;
 }
 
-- (void)activityAuthorizationsChangedForDataSource:(id)a3 oldActivityAuthorizedBundleIdentifiers:(id)a4
+- (void)activityAuthorizationsChangedForDataSource:(id)source oldActivityAuthorizedBundleIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUConversationManager *)self queue];
+  sourceCopy = source;
+  identifiersCopy = identifiers;
+  queue = [(TUConversationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __107__TUConversationManager_activityAuthorizationsChangedForDataSource_oldActivityAuthorizedBundleIdentifiers___block_invoke;
   block[3] = &unk_1E7424FD8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sourceCopy;
+  v13 = identifiersCopy;
+  selfCopy = self;
+  v9 = identifiersCopy;
+  v10 = sourceCopy;
+  dispatch_async(queue, block);
 }
 
 void __107__TUConversationManager_activityAuthorizationsChangedForDataSource_oldActivityAuthorizedBundleIdentifiers___block_invoke(id *a1)
@@ -6555,35 +6555,35 @@ void __107__TUConversationManager_activityAuthorizationsChangedForDataSource_old
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collaborationChanged:(id)a3 forConversation:(id)a4 collaborationState:(int64_t)a5
+- (void)collaborationChanged:(id)changed forConversation:(id)conversation collaborationState:(int64_t)state
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  changedCopy = changed;
+  conversationCopy = conversation;
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 collaborationIdentifier];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    collaborationIdentifier = [changedCopy collaborationIdentifier];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     *buf = 138412546;
-    v22 = v11;
+    v22 = collaborationIdentifier;
     v23 = 2112;
     v24 = v12;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Notifying delegate of collaboration changed %@ with document state %@", buf, 0x16u);
   }
 
-  v13 = [(TUConversationManager *)self queue];
+  queue = [(TUConversationManager *)self queue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__TUConversationManager_collaborationChanged_forConversation_collaborationState___block_invoke;
   v17[3] = &unk_1E7424D50;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = a5;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v13, v17);
+  v18 = changedCopy;
+  v19 = conversationCopy;
+  stateCopy = state;
+  v14 = conversationCopy;
+  v15 = changedCopy;
+  dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -6666,69 +6666,69 @@ uint64_t __81__TUConversationManager_collaborationChanged_forConversation_collab
   return result;
 }
 
-- (id)collaborationForConversation:(id)a3
+- (id)collaborationForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self collaborationManager];
-  v6 = [v5 collaborationForConversation:v4];
+  conversationCopy = conversation;
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  v6 = [collaborationManager collaborationForConversation:conversationCopy];
 
   return v6;
 }
 
-- (int64_t)collaborationStateForConversation:(id)a3
+- (int64_t)collaborationStateForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self collaborationManager];
-  v6 = [v5 collaborationStateForConversation:v4];
+  conversationCopy = conversation;
+  collaborationManager = [(TUConversationManager *)self collaborationManager];
+  v6 = [collaborationManager collaborationStateForConversation:conversationCopy];
 
   return v6;
 }
 
-- (void)setNonSessionBackedConversationCreationQueue:(id)a3
+- (void)setNonSessionBackedConversationCreationQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self queue];
+  queueCopy = queue;
+  queue = [(TUConversationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__TUConversationManager_setNonSessionBackedConversationCreationQueue___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)callPropertiesChanged:(id)a3
+- (void)callPropertiesChanged:(id)changed
 {
-  v8 = a3;
-  v4 = [v8 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v8 object];
-    if (v6)
+    object2 = [changedCopy object];
+    if (object2)
     {
-      v7 = v6;
-      [(TUConversationManager *)self updateConversationsNotBackedByGroupSessionWithCall:v6];
+      v7 = object2;
+      [(TUConversationManager *)self updateConversationsNotBackedByGroupSessionWithCall:object2];
     }
   }
 }
 
-- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)a3
+- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if ([(TUConversationManager *)self nonSessionBackedConversationCreationMode])
   {
-    v5 = [(TUConversationManager *)self queue];
+    queue = [(TUConversationManager *)self queue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __76__TUConversationManager_updateConversationsNotBackedByGroupSessionWithCall___block_invoke;
     v6[3] = &unk_1E7424898;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = callCopy;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -6747,20 +6747,20 @@ void __76__TUConversationManager_updateConversationsNotBackedByGroupSessionWithC
   }
 }
 
-- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)a3 conversationsByGroupUUID:(id)a4 creationQueue:(id)a5
+- (void)updateConversationsNotBackedByGroupSessionWithCall:(id)call conversationsByGroupUUID:(id)d creationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
+  callCopy = call;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __115__TUConversationManager_updateConversationsNotBackedByGroupSessionWithCall_conversationsByGroupUUID_creationQueue___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  dispatch_async(a5, block);
+  v13 = callCopy;
+  v14 = dCopy;
+  v10 = dCopy;
+  v11 = callCopy;
+  dispatch_async(queue, block);
 }
 
 void __115__TUConversationManager_updateConversationsNotBackedByGroupSessionWithCall_conversationsByGroupUUID_creationQueue___block_invoke(uint64_t a1)
@@ -7010,19 +7010,19 @@ uint64_t __115__TUConversationManager_updateConversationsNotBackedByGroupSession
   return result;
 }
 
-- (void)pruneConversationsPendingUpgradeInConversationsWithGroupUUID:(id)a3
+- (void)pruneConversationsPendingUpgradeInConversationsWithGroupUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUConversationManager *)self nonSessionBackedConversationCreationQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  nonSessionBackedConversationCreationQueue = [(TUConversationManager *)self nonSessionBackedConversationCreationQueue];
+  dispatch_assert_queue_V2(nonSessionBackedConversationCreationQueue);
 
-  v6 = [(TUConversationManager *)self callPendingUpgradeInConversationsWithGroupUUID:v4];
+  v6 = [(TUConversationManager *)self callPendingUpgradeInConversationsWithGroupUUID:dCopy];
 
   v7 = objc_opt_class();
-  v8 = [v6 uniqueProxyIdentifierUUID];
-  v9 = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
-  v10 = [v7 conversationWithUUID:v8 fromConversations:v9];
+  uniqueProxyIdentifierUUID = [v6 uniqueProxyIdentifierUUID];
+  conversationsNotBackedByGroupSessions = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
+  v10 = [v7 conversationWithUUID:uniqueProxyIdentifierUUID fromConversations:conversationsNotBackedByGroupSessions];
 
   if (v10)
   {
@@ -7034,22 +7034,22 @@ uint64_t __115__TUConversationManager_updateConversationsNotBackedByGroupSession
       _os_log_impl(&dword_1956FD000, v11, OS_LOG_TYPE_DEFAULT, "Stopping tracking conversation not backed by session %@ since it is now backed by session", &v15, 0xCu);
     }
 
-    v12 = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
-    [v12 removeObject:v10];
+    conversationsNotBackedByGroupSessions2 = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
+    [conversationsNotBackedByGroupSessions2 removeObject:v10];
 
-    v13 = [(TUConversationManager *)self callsNotBackedByGroupSessionsPendingUpgrade];
-    [v13 removeObject:v6];
+    callsNotBackedByGroupSessionsPendingUpgrade = [(TUConversationManager *)self callsNotBackedByGroupSessionsPendingUpgrade];
+    [callsNotBackedByGroupSessionsPendingUpgrade removeObject:v6];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)callPendingUpgradeInConversationsWithGroupUUID:(id)a3
+- (id)callPendingUpgradeInConversationsWithGroupUUID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = [(TUConversationManager *)self nonSessionBackedConversationCreationQueue];
-  dispatch_assert_queue_V2(v4);
+  dCopy = d;
+  nonSessionBackedConversationCreationQueue = [(TUConversationManager *)self nonSessionBackedConversationCreationQueue];
+  dispatch_assert_queue_V2(nonSessionBackedConversationCreationQueue);
 
   v30 = 0u;
   v31 = 0u;
@@ -7075,8 +7075,8 @@ uint64_t __115__TUConversationManager_updateConversationsNotBackedByGroupSession
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v7 = [v21 allValues];
-        v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        allValues = [dCopy allValues];
+        v8 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
         {
           v9 = v8;
@@ -7087,17 +7087,17 @@ uint64_t __115__TUConversationManager_updateConversationsNotBackedByGroupSession
             {
               if (*v25 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allValues);
               }
 
               v12 = *(*(&v24 + 1) + 8 * j);
               v13 = [objc_opt_class() remoteMembersForCall:v6];
               if ([v12 isRepresentedByRemoteMembers:v13 andLink:0])
               {
-                v14 = [v12 isVideo];
-                v15 = [v6 isVideo];
+                isVideo = [v12 isVideo];
+                isVideo2 = [v6 isVideo];
 
-                if (v14 == v15)
+                if (isVideo == isVideo2)
                 {
                   v16 = v6;
 
@@ -7111,7 +7111,7 @@ uint64_t __115__TUConversationManager_updateConversationsNotBackedByGroupSession
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v9 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v9);
@@ -7136,31 +7136,31 @@ LABEL_17:
   return v23;
 }
 
-- (id)createConversationForCallNotBackedByGroupSession:(id)a3
+- (id)createConversationForCallNotBackedByGroupSession:(id)session
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUConversationManager *)self nonSessionBackedConversationCreationQueue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  nonSessionBackedConversationCreationQueue = [(TUConversationManager *)self nonSessionBackedConversationCreationQueue];
+  dispatch_assert_queue_V2(nonSessionBackedConversationCreationQueue);
 
-  if (!v4 || ([v4 isConversation] & 1) != 0 || (objc_msgSend(v4, "isVideo") & 1) == 0 && -[TUConversationManager nonSessionBackedConversationCreationMode](self, "nonSessionBackedConversationCreationMode") == 1)
+  if (!sessionCopy || ([sessionCopy isConversation] & 1) != 0 || (objc_msgSend(sessionCopy, "isVideo") & 1) == 0 && -[TUConversationManager nonSessionBackedConversationCreationMode](self, "nonSessionBackedConversationCreationMode") == 1)
   {
     goto LABEL_3;
   }
 
-  v7 = [v4 provider];
-  if (([v7 isFaceTimeProvider] & 1) == 0)
+  provider = [sessionCopy provider];
+  if (([provider isFaceTimeProvider] & 1) == 0)
   {
-    v8 = [v4 provider];
-    if ([v8 isSuperboxProvider])
+    provider2 = [sessionCopy provider];
+    if ([provider2 isSuperboxProvider])
     {
 
       goto LABEL_9;
     }
 
-    v35 = [(TUConversationManager *)self nonSessionBackedConversationCreationMode];
+    nonSessionBackedConversationCreationMode = [(TUConversationManager *)self nonSessionBackedConversationCreationMode];
 
-    if (v35 == 3)
+    if (nonSessionBackedConversationCreationMode == 3)
     {
       goto LABEL_10;
     }
@@ -7174,13 +7174,13 @@ LABEL_9:
 
 LABEL_10:
   v9 = objc_opt_class();
-  v10 = [v4 uniqueProxyIdentifierUUID];
-  v11 = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
-  v12 = [v9 conversationWithUUID:v10 fromConversations:v11];
-  v13 = [v12 groupUUID];
+  uniqueProxyIdentifierUUID = [sessionCopy uniqueProxyIdentifierUUID];
+  conversationsNotBackedByGroupSessions = [(TUConversationManager *)self conversationsNotBackedByGroupSessions];
+  v12 = [v9 conversationWithUUID:uniqueProxyIdentifierUUID fromConversations:conversationsNotBackedByGroupSessions];
+  groupUUID = [v12 groupUUID];
 
-  v14 = [v4 provider];
-  if ([v14 isFaceTimeProvider])
+  provider3 = [sessionCopy provider];
+  if ([provider3 isFaceTimeProvider])
   {
     +[TUConversationProvider faceTimeProvider];
   }
@@ -7192,37 +7192,37 @@ LABEL_10:
   v15 = ;
 
   v16 = [TUMutableConversation alloc];
-  v17 = [v4 uniqueProxyIdentifierUUID];
-  if (v13)
+  uniqueProxyIdentifierUUID2 = [sessionCopy uniqueProxyIdentifierUUID];
+  if (groupUUID)
   {
-    v18 = [(TUConversation *)v16 initWithUUID:v17 groupUUID:v13 provider:v15];
+    v18 = [(TUConversation *)v16 initWithUUID:uniqueProxyIdentifierUUID2 groupUUID:groupUUID provider:v15];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [(TUConversation *)v16 initWithUUID:v17 groupUUID:v19 provider:v15];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v18 = [(TUConversation *)v16 initWithUUID:uniqueProxyIdentifierUUID2 groupUUID:uUID provider:v15];
   }
 
-  -[TUConversation setVideo:](v18, "setVideo:", [v4 isVideo]);
-  -[TUConversation setState:](v18, "setState:", [objc_opt_class() conversationStateForCall:v4]);
-  v20 = [objc_opt_class() remoteMembersForCall:v4];
+  -[TUConversation setVideo:](v18, "setVideo:", [sessionCopy isVideo]);
+  -[TUConversation setState:](v18, "setState:", [objc_opt_class() conversationStateForCall:sessionCopy]);
+  v20 = [objc_opt_class() remoteMembersForCall:sessionCopy];
   [(TUConversation *)v18 setRemoteMembers:v20];
 
   v21 = objc_opt_class();
-  v22 = [(TUConversation *)v18 remoteMembers];
-  v23 = [v21 activeRemoteParticipantsForCall:v4 remoteMembers:v22];
+  remoteMembers = [(TUConversation *)v18 remoteMembers];
+  v23 = [v21 activeRemoteParticipantsForCall:sessionCopy remoteMembers:remoteMembers];
   [(TUConversation *)v18 setActiveRemoteParticipants:v23];
 
-  -[TUConversation setAudioEnabled:](v18, "setAudioEnabled:", [v4 isUplinkMuted]);
-  -[TUConversation setVideoEnabled:](v18, "setVideoEnabled:", [v4 isSendingVideo]);
+  -[TUConversation setAudioEnabled:](v18, "setAudioEnabled:", [sessionCopy isUplinkMuted]);
+  -[TUConversation setVideoEnabled:](v18, "setVideoEnabled:", [sessionCopy isSendingVideo]);
   v24 = [MEMORY[0x1E695DFD8] set];
   [(TUConversation *)v18 setActivitySessions:v24];
 
   [(TUConversation *)v18 setOneToOneModeEnabled:1];
   [(TUConversation *)v18 setBackedByGroupSession:0];
-  -[TUConversation setAvcSessionToken:](v18, "setAvcSessionToken:", [v4 videoStreamToken]);
-  if ([v4 isVideo])
+  -[TUConversation setAvcSessionToken:](v18, "setAvcSessionToken:", [sessionCopy videoStreamToken]);
+  if ([sessionCopy isVideo])
   {
     v25 = 2;
   }
@@ -7233,15 +7233,15 @@ LABEL_10:
   }
 
   [(TUConversation *)v18 setAvMode:v25];
-  v26 = [v4 localSenderIdentity];
-  v27 = [v26 handle];
+  localSenderIdentity = [sessionCopy localSenderIdentity];
+  handle = [localSenderIdentity handle];
 
-  if (v27)
+  if (handle)
   {
     v28 = [TUConversationMember alloc];
-    v29 = [v4 localSenderIdentity];
-    v30 = [v29 handle];
-    v31 = [(TUConversationMember *)v28 initWithHandle:v30];
+    localSenderIdentity2 = [sessionCopy localSenderIdentity];
+    handle2 = [localSenderIdentity2 handle];
+    v31 = [(TUConversationMember *)v28 initWithHandle:handle2];
     [(TUConversation *)v18 setLocalMember:v31];
   }
 
@@ -7251,7 +7251,7 @@ LABEL_10:
     v36 = 138412546;
     v37 = v18;
     v38 = 2112;
-    v39 = v4;
+    v39 = sessionCopy;
     _os_log_impl(&dword_1956FD000, v32, OS_LOG_TYPE_DEFAULT, "Created conversation: %@ for call: %@", &v36, 0x16u);
   }
 
@@ -7263,15 +7263,15 @@ LABEL_24:
   return v6;
 }
 
-+ (int64_t)conversationStateForCall:(id)a3
++ (int64_t)conversationStateForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 status];
-  if (v4 <= 2)
+  callCopy = call;
+  status = [callCopy status];
+  if (status <= 2)
   {
-    if (v4 == 1)
+    if (status == 1)
     {
-      v5 = [v3 isConnected] == 0;
+      v5 = [callCopy isConnected] == 0;
       v6 = 2;
 LABEL_11:
       if (v5)
@@ -7287,20 +7287,20 @@ LABEL_11:
       goto LABEL_14;
     }
 
-    v7 = v4 == 2;
+    v7 = status == 2;
     v8 = 3;
   }
 
   else
   {
-    if ((v4 - 3) < 2)
+    if ((status - 3) < 2)
     {
-      v5 = [v3 isConnecting] == 0;
+      v5 = [callCopy isConnecting] == 0;
       v6 = 1;
       goto LABEL_11;
     }
 
-    v7 = v4 == 5;
+    v7 = status == 5;
     v8 = 4;
   }
 
@@ -7319,21 +7319,21 @@ LABEL_14:
   return v9;
 }
 
-+ (id)activeRemoteParticipantsForCall:(id)a3 remoteMembers:(id)a4
++ (id)activeRemoteParticipantsForCall:(id)call remoteMembers:(id)members
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v26 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v7 = [v5 status];
-  if (v7 <= 4 && ((1 << v7) & 0x16) != 0)
+  callCopy = call;
+  membersCopy = members;
+  v26 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(membersCopy, "count")}];
+  status = [callCopy status];
+  if (status <= 4 && ((1 << status) & 0x16) != 0)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v6;
-    obj = v6;
+    v24 = membersCopy;
+    obj = membersCopy;
     v8 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v8)
     {
@@ -7350,13 +7350,13 @@ LABEL_14:
 
           v12 = *(*(&v27 + 1) + 8 * i);
           v13 = [TUConversationParticipant alloc];
-          v14 = [v12 handle];
-          v15 = [(TUConversationParticipant *)v13 initWithIdentifier:0 handle:v14];
+          handle = [v12 handle];
+          v15 = [(TUConversationParticipant *)v13 initWithIdentifier:0 handle:handle];
 
-          -[TUConversationParticipant setStreamToken:](v15, "setStreamToken:", [v5 videoStreamToken]);
+          -[TUConversationParticipant setStreamToken:](v15, "setStreamToken:", [callCopy videoStreamToken]);
           [(TUConversationParticipant *)v15 setAudioEnabled:1];
-          -[TUConversationParticipant setVideoEnabled:](v15, "setVideoEnabled:", [v5 isVideo]);
-          if ([v5 isVideo])
+          -[TUConversationParticipant setVideoEnabled:](v15, "setVideoEnabled:", [callCopy isVideo]);
+          if ([callCopy isVideo])
           {
             v16 = 2;
           }
@@ -7367,13 +7367,13 @@ LABEL_14:
           }
 
           [(TUConversationParticipant *)v15 setAudioVideoMode:v16];
-          v17 = [v5 providerContext];
-          v18 = [v17 objectForKeyedSubscript:@"TUCallFaceTimeRemoteIDSDestinationKey"];
+          providerContext = [callCopy providerContext];
+          v18 = [providerContext objectForKeyedSubscript:@"TUCallFaceTimeRemoteIDSDestinationKey"];
           [(TUConversationParticipant *)v15 setActiveIDSDestination:v18];
 
           v19 = objc_alloc_init(TUConversationParticipantCapabilities);
-          v20 = [v5 providerContext];
-          v21 = [v20 objectForKeyedSubscript:@"TUCallFaceTimeRemoteMomentsAvailableKey"];
+          providerContext2 = [callCopy providerContext];
+          v21 = [providerContext2 objectForKeyedSubscript:@"TUCallFaceTimeRemoteMomentsAvailableKey"];
           -[TUConversationParticipantCapabilities setMomentsAvailable:](v19, "setMomentsAvailable:", [v21 BOOLValue]);
 
           [(TUConversationParticipant *)v15 setCapabilities:v19];
@@ -7386,7 +7386,7 @@ LABEL_14:
       while (v9);
     }
 
-    v6 = v24;
+    membersCopy = v24;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -7394,16 +7394,16 @@ LABEL_14:
   return v26;
 }
 
-+ (id)conversationWithUUID:(id)a3 fromConversations:(id)a4
++ (id)conversationWithUUID:(id)d fromConversations:(id)conversations
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  conversationsCopy = conversations;
+  v7 = [conversationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -7413,12 +7413,12 @@ LABEL_14:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(conversationsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 UUID];
-        v12 = [v11 isEqual:v5];
+        uUID = [v10 UUID];
+        v12 = [uUID isEqual:dCopy];
 
         if (v12)
         {
@@ -7427,7 +7427,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [conversationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -7444,19 +7444,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)handoffEligibleConversationForEligibility:(id)a3
+- (id)handoffEligibleConversationForEligibility:(id)eligibility
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eligibilityCopy = eligibility;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(TUConversationManager *)self dataSource];
-  v7 = [v6 conversationsByGroupUUID];
-  v8 = [v7 allValues];
+  dataSource = [(TUConversationManager *)self dataSource];
+  conversationsByGroupUUID = [dataSource conversationsByGroupUUID];
+  allValues = [conversationsByGroupUUID allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -7468,7 +7468,7 @@ LABEL_3:
     {
       if (*v22 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allValues);
       }
 
       v14 = *(*(&v21 + 1) + 8 * v13);
@@ -7477,19 +7477,19 @@ LABEL_3:
         goto LABEL_18;
       }
 
-      if (v5 && ([v5 conversationGroupUUID], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "groupUUID"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "isEqual:", v3)))
+      if (eligibilityCopy && ([eligibilityCopy conversationGroupUUID], conversationsByGroupUUID = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "groupUUID"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(conversationsByGroupUUID, "isEqual:", v3)))
       {
       }
 
       else
       {
-        v15 = [v14 handoffEligibility];
+        handoffEligibility = [v14 handoffEligibility];
 
-        if (v5)
+        if (eligibilityCopy)
         {
         }
 
-        if (!v15)
+        if (!handoffEligibility)
         {
           goto LABEL_14;
         }
@@ -7501,7 +7501,7 @@ LABEL_3:
 LABEL_14:
       if (v10 == ++v13)
       {
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
         v17 = v11;
         if (v10)
         {
@@ -7523,45 +7523,45 @@ LABEL_19:
   return v17;
 }
 
-- (id)joinRequestForApplicableConversationWithHandoffEligibility:(id)a3
+- (id)joinRequestForApplicableConversationWithHandoffEligibility:(id)eligibility
 {
-  v4 = a3;
-  v5 = [(TUConversationManager *)self handoffEligibleConversationForEligibility:v4];
+  eligibilityCopy = eligibility;
+  v5 = [(TUConversationManager *)self handoffEligibleConversationForEligibility:eligibilityCopy];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (eligibilityCopy)
     {
-      v7 = v4;
+      handoffEligibility = eligibilityCopy;
     }
 
     else
     {
-      v7 = [v5 handoffEligibility];
+      handoffEligibility = [v5 handoffEligibility];
     }
 
-    v9 = v7;
+    v9 = handoffEligibility;
     v8 = [[TUJoinConversationRequest alloc] initWithConversation:v6 originatingUIType:43];
     -[TUJoinConversationRequest setAvMode:](v8, "setAvMode:", [v6 avMode]);
-    v10 = [v6 presentationContext];
-    -[TUJoinConversationRequest setPresentationMode:](v8, "setPresentationMode:", [v10 mode]);
+    presentationContext = [v6 presentationContext];
+    -[TUJoinConversationRequest setPresentationMode:](v8, "setPresentationMode:", [presentationContext mode]);
 
     if ([v6 avMode] == 2)
     {
-      v11 = [v9 isSendingVideo];
+      isSendingVideo = [v9 isSendingVideo];
     }
 
     else
     {
-      v11 = 0;
+      isSendingVideo = 0;
     }
 
-    [(TUJoinConversationRequest *)v8 setVideoEnabled:v11];
+    [(TUJoinConversationRequest *)v8 setVideoEnabled:isSendingVideo];
     -[TUJoinConversationRequest setUplinkMuted:](v8, "setUplinkMuted:", [v9 isUplinkMuted]);
     v12 = [v6 avMode] != 1 && objc_msgSend(v6, "resolvedAudioVideoMode") == 2;
     [(TUJoinConversationRequest *)v8 setWantsStagingArea:v12];
-    v13 = [v9 association];
-    v14 = [v13 copy];
+    association = [v9 association];
+    v14 = [association copy];
     [(TUJoinConversationRequest *)v8 setParticipantAssociation:v14];
   }
 

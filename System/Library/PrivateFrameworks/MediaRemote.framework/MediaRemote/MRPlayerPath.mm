@@ -1,43 +1,43 @@
 @interface MRPlayerPath
 + (MRPlayerPath)anyPlayerPath;
 + (id)localPlayerPath;
-+ (id)localResolvedPlayerPathFromPlayerPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)localResolvedPlayerPathFromPlayerPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHomepodDemoApplication;
 - (BOOL)isLocal;
 - (BOOL)isResolved;
 - (BOOL)isSystemBooksApplication;
 - (BOOL)isSystemMediaApplication;
 - (BOOL)isSystemPodcastsApplication;
-- (MRPlayerPath)initWithCoder:(id)a3;
-- (MRPlayerPath)initWithData:(id)a3;
-- (MRPlayerPath)initWithOrigin:(id)a3 bundleIdentifier:(id)a4 player:(id)a5;
-- (MRPlayerPath)initWithOrigin:(id)a3 client:(id)a4 player:(id)a5;
-- (MRPlayerPath)initWithProtobuf:(id)a3;
+- (MRPlayerPath)initWithCoder:(id)coder;
+- (MRPlayerPath)initWithData:(id)data;
+- (MRPlayerPath)initWithOrigin:(id)origin bundleIdentifier:(id)identifier player:(id)player;
+- (MRPlayerPath)initWithOrigin:(id)origin client:(id)client player:(id)player;
+- (MRPlayerPath)initWithProtobuf:(id)protobuf;
 - (MRPlayerPath)localResolvedPlayerPath;
 - (MRPlayerPath)skeleton;
 - (NSData)data;
 - (_MRNowPlayingPlayerPathProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)playerPathByLocalizingWithOrigin:(id)a3;
-- (id)playerPathByRedirectingToOrigin:(id)a3;
+- (id)playerPathByLocalizingWithOrigin:(id)origin;
+- (id)playerPathByRedirectingToOrigin:(id)origin;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setClient:(id)a3;
-- (void)setOrigin:(id)a3;
-- (void)setPlayer:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setClient:(id)client;
+- (void)setOrigin:(id)origin;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation MRPlayerPath
 
 - (id)description
 {
-  v3 = [(MRPlayerPath *)self isResolved];
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = v4;
-  if (v3)
+  isResolved = [(MRPlayerPath *)self isResolved];
+  string = [MEMORY[0x1E696AD60] string];
+  v5 = string;
+  if (isResolved)
   {
     v6 = @"【 ";
   }
@@ -47,7 +47,7 @@
     v6 = @"〖 ";
   }
 
-  if (v3)
+  if (isResolved)
   {
     v7 = @" 】";
   }
@@ -57,9 +57,9 @@
     v7 = @" 〗";
   }
 
-  [v4 appendString:v6];
-  v8 = [(MRPlayerPath *)self origin];
-  v9 = [v8 description];
+  [string appendString:v6];
+  origin = [(MRPlayerPath *)self origin];
+  v9 = [origin description];
   v10 = v9;
   if (v9)
   {
@@ -74,8 +74,8 @@
   [v5 appendString:v11];
 
   [v5 appendString:@" ❯ "];
-  v12 = [(MRPlayerPath *)self client];
-  v13 = [v12 description];
+  client = [(MRPlayerPath *)self client];
+  v13 = [client description];
   v14 = v13;
   if (v13)
   {
@@ -90,8 +90,8 @@
   [v5 appendString:v15];
 
   [v5 appendString:@" ❯ "];
-  v16 = [(MRPlayerPath *)self player];
-  v17 = [v16 description];
+  player = [(MRPlayerPath *)self player];
+  v17 = [player description];
   v18 = v17;
   if (v17)
   {
@@ -112,25 +112,25 @@
 
 - (BOOL)isResolved
 {
-  v3 = [(MRPlayerPath *)self origin];
-  if (v3)
+  origin = [(MRPlayerPath *)self origin];
+  if (origin)
   {
-    v4 = [(MRPlayerPath *)self client];
-    if (v4)
+    client = [(MRPlayerPath *)self client];
+    if (client)
     {
-      v5 = [(MRPlayerPath *)self player];
-      if (v5)
+      player = [(MRPlayerPath *)self player];
+      if (player)
       {
-        v6 = [(MRPlayerPath *)self client];
-        if ([v6 processIdentifier] < 1)
+        client2 = [(MRPlayerPath *)self client];
+        if ([client2 processIdentifier] < 1)
         {
           LOBYTE(v8) = 0;
         }
 
         else
         {
-          v7 = [(MRPlayerPath *)self client];
-          v8 = [v7 hasPlaceholder] ^ 1;
+          client3 = [(MRPlayerPath *)self client];
+          v8 = [client3 hasPlaceholder] ^ 1;
         }
       }
 
@@ -156,11 +156,11 @@
 
 - (MRPlayerPath)localResolvedPlayerPath
 {
-  v3 = [(MRPlayerPath *)self origin];
-  v4 = v3;
-  if (v3)
+  origin = [(MRPlayerPath *)self origin];
+  v4 = origin;
+  if (origin)
   {
-    v5 = [v3 copy];
+    v5 = [origin copy];
   }
 
   else
@@ -169,11 +169,11 @@
     v5 = [v6 copy];
   }
 
-  v7 = [(MRPlayerPath *)self client];
-  v8 = v7;
-  if (v7)
+  client = [(MRPlayerPath *)self client];
+  v8 = client;
+  if (client)
   {
-    v9 = [v7 copy];
+    v9 = [client copy];
   }
 
   else
@@ -182,11 +182,11 @@
     v9 = [v10 copy];
   }
 
-  v11 = [(MRPlayerPath *)self player];
-  v12 = v11;
-  if (v11)
+  player = [(MRPlayerPath *)self player];
+  v12 = player;
+  if (player)
   {
-    v13 = [v11 copy];
+    v13 = [player copy];
   }
 
   else
@@ -201,22 +201,22 @@
     [v9 setProcessIdentifier:{objc_msgSend(v15, "processIdentifier")}];
   }
 
-  v16 = [v9 bundleIdentifier];
+  bundleIdentifier = [v9 bundleIdentifier];
 
-  if (!v16)
+  if (!bundleIdentifier)
   {
     v17 = +[MRClient localClient];
-    v18 = [v17 bundleIdentifier];
-    [v9 setBundleIdentifier:v18];
+    bundleIdentifier2 = [v17 bundleIdentifier];
+    [v9 setBundleIdentifier:bundleIdentifier2];
   }
 
-  v19 = [v13 identifier];
+  identifier = [v13 identifier];
 
-  if (!v19)
+  if (!identifier)
   {
     v20 = +[MRPlayer defaultPlayer];
-    v21 = [v20 identifier];
-    [v13 setIdentifier:v21];
+    identifier2 = [v20 identifier];
+    [v13 setIdentifier:identifier2];
   }
 
   v22 = [[MRPlayerPath alloc] initWithOrigin:v5 client:v9 player:v13];
@@ -303,63 +303,63 @@
 
 - (NSData)data
 {
-  v2 = [(MRPlayerPath *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRPlayerPath *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRNowPlayingPlayerPathProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRNowPlayingPlayerPathProtobuf);
-  v4 = [(MRPlayerPath *)self origin];
-  v5 = [v4 protobuf];
-  [(_MRNowPlayingPlayerPathProtobuf *)v3 setOrigin:v5];
+  origin = [(MRPlayerPath *)self origin];
+  protobuf = [origin protobuf];
+  [(_MRNowPlayingPlayerPathProtobuf *)v3 setOrigin:protobuf];
 
-  v6 = [(MRPlayerPath *)self client];
-  v7 = [v6 protobuf];
-  [(_MRNowPlayingPlayerPathProtobuf *)v3 setClient:v7];
+  client = [(MRPlayerPath *)self client];
+  protobuf2 = [client protobuf];
+  [(_MRNowPlayingPlayerPathProtobuf *)v3 setClient:protobuf2];
 
-  v8 = [(MRPlayerPath *)self player];
-  v9 = [(MRPlayer *)v8 protobuf];
-  [(_MRNowPlayingPlayerPathProtobuf *)v3 setPlayer:v9];
+  player = [(MRPlayerPath *)self player];
+  protobuf3 = [(MRPlayer *)player protobuf];
+  [(_MRNowPlayingPlayerPathProtobuf *)v3 setPlayer:protobuf3];
 
   return v3;
 }
 
 - (BOOL)isLocal
 {
-  v3 = [(MRPlayerPath *)self isResolved];
-  if (v3)
+  isResolved = [(MRPlayerPath *)self isResolved];
+  if (isResolved)
   {
-    v4 = [(MRPlayerPath *)self client];
-    v5 = [v4 isLocal];
+    client = [(MRPlayerPath *)self client];
+    isLocal = [client isLocal];
 
-    if (!v5)
+    if (!isLocal)
     {
 LABEL_9:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(isResolved) = 0;
+      return isResolved;
     }
 
     v6 = +[MRUserSettings currentSettings];
-    v7 = [v6 supportMultiplayerHost];
+    supportMultiplayerHost = [v6 supportMultiplayerHost];
 
-    v8 = [(MRPlayerPath *)self origin];
-    v9 = [v8 isLocal];
-    v10 = v9;
-    if (v7)
+    origin = [(MRPlayerPath *)self origin];
+    isLocal2 = [origin isLocal];
+    v10 = isLocal2;
+    if (supportMultiplayerHost)
     {
-      if (v9)
+      if (isLocal2)
       {
 
         goto LABEL_9;
       }
 
-      v11 = [(MRPlayerPath *)self origin];
-      v12 = [v11 isLocallyHosted];
+      origin2 = [(MRPlayerPath *)self origin];
+      isLocallyHosted = [origin2 isLocallyHosted];
 
-      if ((v12 & 1) == 0)
+      if ((isLocallyHosted & 1) == 0)
       {
         goto LABEL_9;
       }
@@ -374,10 +374,10 @@ LABEL_9:
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(isResolved) = 1;
   }
 
-  return v3;
+  return isResolved;
 }
 
 + (MRPlayerPath)anyPlayerPath
@@ -393,10 +393,10 @@ LABEL_9:
 
 - (BOOL)isSystemMediaApplication
 {
-  v2 = [(MRPlayerPath *)self client];
-  v3 = [v2 isSystemMediaApplication];
+  client = [(MRPlayerPath *)self client];
+  isSystemMediaApplication = [client isSystemMediaApplication];
 
-  return v3;
+  return isSystemMediaApplication;
 }
 
 + (id)localPlayerPath
@@ -421,22 +421,22 @@ void __31__MRPlayerPath_localPlayerPath__block_invoke()
   localPlayerPath_localPlayerPath = v2;
 }
 
-- (MRPlayerPath)initWithOrigin:(id)a3 bundleIdentifier:(id)a4 player:(id)a5
+- (MRPlayerPath)initWithOrigin:(id)origin bundleIdentifier:(id)identifier player:(id)player
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MRClient alloc] initWithBundleIdentifier:v9];
+  playerCopy = player;
+  identifierCopy = identifier;
+  originCopy = origin;
+  v11 = [[MRClient alloc] initWithBundleIdentifier:identifierCopy];
 
-  v12 = [(MRPlayerPath *)self initWithOrigin:v10 client:v11 player:v8];
+  v12 = [(MRPlayerPath *)self initWithOrigin:originCopy client:v11 player:playerCopy];
   return v12;
 }
 
-- (MRPlayerPath)initWithOrigin:(id)a3 client:(id)a4 player:(id)a5
+- (MRPlayerPath)initWithOrigin:(id)origin client:(id)client player:(id)player
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  originCopy = origin;
+  clientCopy = client;
+  playerCopy = player;
   v19.receiver = self;
   v19.super_class = MRPlayerPath;
   v11 = [(MRPlayerPath *)&v19 init];
@@ -445,10 +445,10 @@ void __31__MRPlayerPath_localPlayerPath__block_invoke()
     goto LABEL_14;
   }
 
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (originCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MRPlayerPath initWithOrigin:client:player:];
-    if (v9)
+    if (clientCopy)
     {
 LABEL_5:
       objc_opt_class();
@@ -459,12 +459,12 @@ LABEL_5:
     }
   }
 
-  else if (v9)
+  else if (clientCopy)
   {
     goto LABEL_5;
   }
 
-  if (v10)
+  if (playerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -473,13 +473,13 @@ LABEL_5:
     }
   }
 
-  v12 = [v8 copy];
+  v12 = [originCopy copy];
   origin = v11->_origin;
   v11->_origin = v12;
 
-  if ([v9 isValid])
+  if ([clientCopy isValid])
   {
-    v14 = [v9 copy];
+    v14 = [clientCopy copy];
   }
 
   else
@@ -490,7 +490,7 @@ LABEL_5:
   client = v11->_client;
   v11->_client = v14;
 
-  v16 = [v10 copy];
+  v16 = [playerCopy copy];
   player = v11->_player;
   v11->_player = v16;
 
@@ -498,59 +498,59 @@ LABEL_14:
   return v11;
 }
 
-- (MRPlayerPath)initWithProtobuf:(id)a3
+- (MRPlayerPath)initWithProtobuf:(id)protobuf
 {
-  if (a3)
+  if (protobuf)
   {
-    v4 = a3;
+    protobufCopy = protobuf;
     v5 = [MROrigin alloc];
-    v6 = [v4 origin];
-    v7 = [(MROrigin *)v5 initWithProtobuf:v6];
+    origin = [protobufCopy origin];
+    v7 = [(MROrigin *)v5 initWithProtobuf:origin];
 
     v8 = [MRClient alloc];
-    v9 = [v4 client];
-    v10 = [(MRClient *)v8 initWithProtobuf:v9];
+    client = [protobufCopy client];
+    v10 = [(MRClient *)v8 initWithProtobuf:client];
 
     v11 = [MRPlayer alloc];
-    v12 = [v4 player];
+    player = [protobufCopy player];
 
-    v13 = [(MRPlayer *)v11 initWithProtobuf:v12];
+    v13 = [(MRPlayer *)v11 initWithProtobuf:player];
     self = [(MRPlayerPath *)self initWithOrigin:v7 client:v10 player:v13];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (MRPlayerPath)initWithData:(id)a3
+- (MRPlayerPath)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRNowPlayingPlayerPathProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRNowPlayingPlayerPathProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRPlayerPath *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)setOrigin:(id)a3
+- (void)setOrigin:(id)origin
 {
-  v6 = a3;
-  if (v6)
+  originCopy = origin;
+  if (originCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -559,15 +559,15 @@ LABEL_14:
     }
   }
 
-  v4 = [v6 copy];
+  v4 = [originCopy copy];
   origin = self->_origin;
   self->_origin = v4;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v6 = a3;
-  if (v6)
+  clientCopy = client;
+  if (clientCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -576,15 +576,15 @@ LABEL_14:
     }
   }
 
-  v4 = [v6 copy];
+  v4 = [clientCopy copy];
   client = self->_client;
   self->_client = v4;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v6 = a3;
-  if (v6)
+  playerCopy = player;
+  if (playerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -593,7 +593,7 @@ LABEL_14:
     }
   }
 
-  v4 = [v6 copy];
+  v4 = [playerCopy copy];
   player = self->_player;
   self->_player = v4;
 }
@@ -601,50 +601,50 @@ LABEL_14:
 - (MRPlayerPath)skeleton
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(MRPlayerPath *)self origin];
-  v5 = [v4 skeleton];
-  v6 = [(MRPlayerPath *)self client];
-  v7 = [v6 skeleton];
-  v8 = [(MRPlayerPath *)self player];
-  v9 = [v8 skeleton];
-  v10 = [v3 initWithOrigin:v5 client:v7 player:v9];
+  origin = [(MRPlayerPath *)self origin];
+  skeleton = [origin skeleton];
+  client = [(MRPlayerPath *)self client];
+  skeleton2 = [client skeleton];
+  player = [(MRPlayerPath *)self player];
+  skeleton3 = [player skeleton];
+  v10 = [v3 initWithOrigin:skeleton client:skeleton2 player:skeleton3];
 
   return v10;
 }
 
 - (BOOL)isSystemPodcastsApplication
 {
-  v2 = [(MRPlayerPath *)self client];
-  v3 = [v2 isSystemPodcastsApplication];
+  client = [(MRPlayerPath *)self client];
+  isSystemPodcastsApplication = [client isSystemPodcastsApplication];
 
-  return v3;
+  return isSystemPodcastsApplication;
 }
 
 - (BOOL)isSystemBooksApplication
 {
-  v2 = [(MRPlayerPath *)self client];
-  v3 = [v2 isSystemBooksApplication];
+  client = [(MRPlayerPath *)self client];
+  isSystemBooksApplication = [client isSystemBooksApplication];
 
-  return v3;
+  return isSystemBooksApplication;
 }
 
 - (BOOL)isHomepodDemoApplication
 {
-  v3 = [(MRPlayerPath *)self client];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.HomePodCannedDemo"];
+  client = [(MRPlayerPath *)self client];
+  bundleIdentifier = [client bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.HomePodCannedDemo"];
 
-  v6 = [(MRPlayerPath *)self client];
-  v7 = [v6 bundleIdentifier];
-  LOBYTE(v4) = [v7 isEqualToString:@"com.apple.ChannelDemoCap"];
+  client2 = [(MRPlayerPath *)self client];
+  bundleIdentifier2 = [client2 bundleIdentifier];
+  LOBYTE(bundleIdentifier) = [bundleIdentifier2 isEqualToString:@"com.apple.ChannelDemoCap"];
 
-  return (v5 | v4) & 1;
+  return (v5 | bundleIdentifier) & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -654,25 +654,25 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRPlayerPath *)self origin];
-      v7 = [(MRPlayerPath *)v5 origin];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      origin = [(MRPlayerPath *)self origin];
+      origin2 = [(MRPlayerPath *)v5 origin];
+      if (origin == origin2 || [origin isEqual:origin2])
       {
-        v8 = [(MRPlayerPath *)self client];
-        v9 = [(MRPlayerPath *)v5 client];
-        if (v8 == v9 || [v8 isEqual:v9])
+        client = [(MRPlayerPath *)self client];
+        client2 = [(MRPlayerPath *)v5 client];
+        if (client == client2 || [client isEqual:client2])
         {
-          v10 = [(MRPlayerPath *)self player];
-          v11 = [(MRPlayerPath *)v5 player];
-          if (v10 == v11)
+          player = [(MRPlayerPath *)self player];
+          player2 = [(MRPlayerPath *)v5 player];
+          if (player == player2)
           {
             v12 = 1;
           }
 
           else
           {
-            v12 = [v10 isEqual:v11];
+            v12 = [player isEqual:player2];
           }
         }
 
@@ -699,35 +699,35 @@ LABEL_14:
 
 - (id)debugDescription
 {
-  v2 = [(MRPlayerPath *)self protobuf];
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 description];
+  protobuf = [(MRPlayerPath *)self protobuf];
+  dictionaryRepresentation = [protobuf dictionaryRepresentation];
+  v4 = [dictionaryRepresentation description];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MRPlayerPath *)self origin];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  origin = [(MRPlayerPath *)self origin];
+  v7 = [origin copyWithZone:zone];
   [v5 setOrigin:v7];
 
-  v8 = [(MRPlayerPath *)self client];
-  v9 = [v8 copyWithZone:a3];
+  client = [(MRPlayerPath *)self client];
+  v9 = [client copyWithZone:zone];
   [v5 setClient:v9];
 
-  v10 = [(MRPlayerPath *)self player];
-  v11 = [v10 copyWithZone:a3];
+  player = [(MRPlayerPath *)self player];
+  v11 = [player copyWithZone:zone];
   [v5 setPlayer:v11];
 
   return v5;
 }
 
-- (MRPlayerPath)initWithCoder:(id)a3
+- (MRPlayerPath)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -746,52 +746,52 @@ LABEL_14:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRPlayerPath *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRPlayerPath *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
-- (id)playerPathByRedirectingToOrigin:(id)a3
+- (id)playerPathByRedirectingToOrigin:(id)origin
 {
-  v4 = a3;
-  if (!v4)
+  originCopy = origin;
+  if (!originCopy)
   {
     [MRPlayerPath playerPathByRedirectingToOrigin:];
   }
 
   v5 = objc_alloc_init(MRPlayerPath);
-  [(MRPlayerPath *)v5 setOrigin:v4];
-  v6 = [(MRPlayerPath *)self client];
+  [(MRPlayerPath *)v5 setOrigin:originCopy];
+  client = [(MRPlayerPath *)self client];
 
-  if (v6)
+  if (client)
   {
     v7 = objc_alloc_init(MRClient);
     [(MRPlayerPath *)v5 setClient:v7];
 
-    v8 = [(MRPlayerPath *)self client];
-    v9 = [v8 bundleIdentifier];
-    v10 = [(MRPlayerPath *)v5 client];
-    [v10 setBundleIdentifier:v9];
+    client2 = [(MRPlayerPath *)self client];
+    bundleIdentifier = [client2 bundleIdentifier];
+    client3 = [(MRPlayerPath *)v5 client];
+    [client3 setBundleIdentifier:bundleIdentifier];
   }
 
-  v11 = [(MRPlayerPath *)self player];
+  player = [(MRPlayerPath *)self player];
 
-  if (v11)
+  if (player)
   {
     v12 = [MRPlayer alloc];
-    v13 = [(MRPlayerPath *)self player];
-    v14 = [v13 identifier];
-    v15 = [(MRPlayerPath *)self player];
-    v16 = [v15 displayName];
-    v17 = [(MRPlayer *)v12 initWithIdentifier:v14 displayName:v16];
+    player2 = [(MRPlayerPath *)self player];
+    identifier = [player2 identifier];
+    player3 = [(MRPlayerPath *)self player];
+    displayName = [player3 displayName];
+    v17 = [(MRPlayer *)v12 initWithIdentifier:identifier displayName:displayName];
     [(MRPlayerPath *)v5 setPlayer:v17];
   }
 
-  v18 = [(MRPlayerPath *)self client];
-  v19 = [v18 bundleIdentifier];
-  IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication(v19);
+  client4 = [(MRPlayerPath *)self client];
+  bundleIdentifier2 = [client4 bundleIdentifier];
+  IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication(bundleIdentifier2);
 
   if (IsSystemMediaApplication)
   {
@@ -800,9 +800,9 @@ LABEL_14:
 
   else
   {
-    v22 = [(MRPlayerPath *)self client];
-    v23 = [v22 bundleIdentifier];
-    IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication(v23);
+    client5 = [(MRPlayerPath *)self client];
+    bundleIdentifier3 = [client5 bundleIdentifier];
+    IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication(bundleIdentifier3);
 
     if (IsSystemPodcastApplication)
     {
@@ -811,9 +811,9 @@ LABEL_14:
 
     else
     {
-      v25 = [(MRPlayerPath *)self client];
-      v26 = [v25 bundleIdentifier];
-      IsSystemBooksApplication = MRMediaRemoteApplicationIsSystemBooksApplication(v26);
+      client6 = [(MRPlayerPath *)self client];
+      bundleIdentifier4 = [client6 bundleIdentifier];
+      IsSystemBooksApplication = MRMediaRemoteApplicationIsSystemBooksApplication(bundleIdentifier4);
 
       if (!IsSystemBooksApplication)
       {
@@ -825,36 +825,36 @@ LABEL_14:
   }
 
   v28 = *v21;
-  v29 = [(MRPlayerPath *)v5 client];
-  [v29 setBundleIdentifier:v28];
+  client7 = [(MRPlayerPath *)v5 client];
+  [client7 setBundleIdentifier:v28];
 
 LABEL_14:
 
   return v5;
 }
 
-- (id)playerPathByLocalizingWithOrigin:(id)a3
+- (id)playerPathByLocalizingWithOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   v5 = [MRPlayerPath alloc];
-  v6 = [(MRPlayerPath *)self client];
-  v7 = [(MRPlayerPath *)self player];
-  v8 = [(MRPlayerPath *)v5 initWithOrigin:v4 client:v6 player:v7];
+  client = [(MRPlayerPath *)self client];
+  player = [(MRPlayerPath *)self player];
+  v8 = [(MRPlayerPath *)v5 initWithOrigin:originCopy client:client player:player];
 
   return v8;
 }
 
-+ (id)localResolvedPlayerPathFromPlayerPath:(id)a3
++ (id)localResolvedPlayerPathFromPlayerPath:(id)path
 {
-  v3 = a3;
-  if (!v3)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v3 = [[MRPlayerPath alloc] initWithOrigin:0 client:0 player:0];
+    pathCopy = [[MRPlayerPath alloc] initWithOrigin:0 client:0 player:0];
   }
 
-  v4 = [(MRPlayerPath *)v3 localResolvedPlayerPath];
+  localResolvedPlayerPath = [(MRPlayerPath *)pathCopy localResolvedPlayerPath];
 
-  return v4;
+  return localResolvedPlayerPath;
 }
 
 - (void)initWithOrigin:client:player:.cold.1()

@@ -1,34 +1,34 @@
 @interface CLIndoorXPCProvider
-+ (id)newConnectionFor:(id)a3;
++ (id)newConnectionFor:(id)for;
 - (CLIndoorXPCProvider)init;
-- (CLIndoorXPCProvider)initWithConnection:(id)a3;
-- (CLIndoorXPCProvider)initWithEndpoint:(id)a3;
-- (id)_defaultErrHandler:(id)a3 forCaller:(id)a4;
-- (id)_defaultErrHandlerForCaller:(id)a3;
-- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
+- (CLIndoorXPCProvider)initWithConnection:(id)connection;
+- (CLIndoorXPCProvider)initWithEndpoint:(id)endpoint;
+- (id)_defaultErrHandler:(id)handler forCaller:(id)caller;
+- (id)_defaultErrHandlerForCaller:(id)caller;
+- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
 - (void)dealloc;
 - (void)invalidate;
-- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
+- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
 - (void)withinQueueInitializeConnection;
 - (void)withinQueueInterruptionHandler;
 - (void)withinQueueInvalidate;
 - (void)withinQueueReinitializeRemoteState;
-- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)a3 :(id)a4 ratio<1;
+- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)std :(id)a4 ratio<1;
 @end
 
 @implementation CLIndoorXPCProvider
 
-+ (id)newConnectionFor:(id)a3
++ (id)newConnectionFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [NSXPCConnection alloc];
-  v6 = [v3 endpointName];
+  endpointName = [forCopy endpointName];
   v7 = [v4 persistentDomainForName:@"com.apple.pipelined.framework"];
   v8 = [v7 objectForKey:@"UnprivilegedDaemon"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (!v9)
+  if (!bOOLValue)
   {
     v11 = 4096;
     goto LABEL_7;
@@ -58,14 +58,14 @@ LABEL_5:
   v11 = 0;
 LABEL_7:
 
-  v12 = [v5 initWithMachServiceName:v6 options:v11];
+  v12 = [v5 initWithMachServiceName:endpointName options:v11];
   return v12;
 }
 
 - (CLIndoorXPCProvider)init
 {
-  v3 = [(CLIndoorXPCProvider *)self impl];
-  v4 = [CLIndoorXPCProvider newConnectionFor:v3];
+  impl = [(CLIndoorXPCProvider *)self impl];
+  v4 = [CLIndoorXPCProvider newConnectionFor:impl];
 
   if (qword_10045B060 != -1)
   {
@@ -93,10 +93,10 @@ LABEL_4:
   return v6;
 }
 
-- (CLIndoorXPCProvider)initWithEndpoint:(id)a3
+- (CLIndoorXPCProvider)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[NSXPCConnection alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
   if (qword_10045B060 != -1)
   {
     sub_10038285C();
@@ -123,9 +123,9 @@ LABEL_4:
   return v7;
 }
 
-- (CLIndoorXPCProvider)initWithConnection:(id)a3
+- (CLIndoorXPCProvider)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v28.receiver = self;
   v28.super_class = CLIndoorXPCProvider;
   v6 = [(CLIndoorXPCProvider *)&v28 init];
@@ -160,7 +160,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v7->_connection, a3);
+  objc_storeStrong(&v7->_connection, connection);
   if (!v8->_connection)
   {
     v22 = @"Must provide a connection";
@@ -217,9 +217,9 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(CLIndoorXPCProvider *)self impl];
-  v4 = [v3 endpointName];
-  v5 = [v4 UTF8String];
+  impl = [(CLIndoorXPCProvider *)self impl];
+  endpointName = [impl endpointName];
+  uTF8String = [endpointName UTF8String];
 
   if (dispatch_get_specific(&unk_1003C6C90) == self || !self->_frameworkQueue)
   {
@@ -232,7 +232,7 @@ LABEL_10:
     if (os_log_type_enabled(qword_10045B068, OS_LOG_TYPE_INFO))
     {
       *buf = 136446210;
-      v14 = v5;
+      v14 = uTF8String;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "dealloc connection to %{public}s", buf, 0xCu);
     }
 
@@ -258,8 +258,8 @@ LABEL_10:
     block[1] = 3321888768;
     block[2] = sub_10001EE54;
     block[3] = &unk_100432720;
-    v12 = self;
-    v8 = v12;
+    selfCopy = self;
+    v8 = selfCopy;
     dispatch_sync(frameworkQueue, block);
   }
 
@@ -275,8 +275,8 @@ LABEL_10:
   block[1] = 3321888768;
   block[2] = sub_10001EFBC;
   block[3] = &unk_100432750;
-  v5 = self;
-  v3 = v5;
+  selfCopy = self;
+  v3 = selfCopy;
   dispatch_sync(frameworkQueue, block);
 }
 
@@ -291,12 +291,12 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     connection = self->_connection;
-    v5 = [(CLIndoorXPCProvider *)self impl];
-    v6 = [v5 endpointName];
+    impl = [(CLIndoorXPCProvider *)self impl];
+    endpointName = [impl endpointName];
     v10 = 134349314;
     v11 = connection;
     v12 = 2114;
-    v13 = v6;
+    v13 = endpointName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "About to invalidate connection %{public}p to %{public}@", &v10, 0x16u);
   }
 
@@ -312,15 +312,15 @@ LABEL_10:
   v8 = self->_connection;
   self->_connection = 0;
 
-  v9 = [(CLIndoorXPCProvider *)self impl];
-  [v9 withinQueueInvalidateState];
+  impl2 = [(CLIndoorXPCProvider *)self impl];
+  [impl2 withinQueueInvalidateState];
 }
 
 - (void)withinQueueInitializeConnection
 {
-  v3 = [(CLIndoorXPCProvider *)self impl];
-  v4 = [v3 remoteObjectProtocol];
-  v5 = [NSXPCInterface interfaceWithProtocol:v4];
+  impl = [(CLIndoorXPCProvider *)self impl];
+  remoteObjectProtocol = [impl remoteObjectProtocol];
+  v5 = [NSXPCInterface interfaceWithProtocol:remoteObjectProtocol];
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v5];
 
   objc_initWeak(&location, self);
@@ -354,10 +354,10 @@ LABEL_10:
 
 - (void)withinQueueInterruptionHandler
 {
-  v3 = [(CLIndoorXPCProvider *)self impl];
-  v4 = [v3 withinQueuePermanentShutdownReason];
+  impl = [(CLIndoorXPCProvider *)self impl];
+  withinQueuePermanentShutdownReason = [impl withinQueuePermanentShutdownReason];
 
-  if (v4)
+  if (withinQueuePermanentShutdownReason)
   {
     if (qword_10045B060 != -1)
     {
@@ -367,11 +367,11 @@ LABEL_10:
     v5 = qword_10045B068;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CLIndoorXPCProvider *)self impl];
-      v7 = [v6 endpointName];
-      v8 = [v4 description];
+      impl2 = [(CLIndoorXPCProvider *)self impl];
+      endpointName = [impl2 endpointName];
+      v8 = [withinQueuePermanentShutdownReason description];
       v12 = 138543618;
-      v13 = v7;
+      v13 = endpointName;
       v14 = 2114;
       v15 = v8;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "XPC connection invalidated by daemon to %{public}@: %{public}@", &v12, 0x16u);
@@ -390,10 +390,10 @@ LABEL_10:
     v9 = qword_10045B068;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(CLIndoorXPCProvider *)self impl];
-      v11 = [v10 endpointName];
+      impl3 = [(CLIndoorXPCProvider *)self impl];
+      endpointName2 = [impl3 endpointName];
       v12 = 138543362;
-      v13 = v11;
+      v13 = endpointName2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "pipelined interruption handler for %{public}@", &v12, 0xCu);
     }
 
@@ -401,7 +401,7 @@ LABEL_10:
   }
 }
 
-- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock
+- (void)withinQueueHandleReconnect:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock
 {
   v5 = [(CLIndoorXPCProvider *)self withinQueueShouldReinitializeRemote:?];
   if (v5 == 1)
@@ -417,7 +417,7 @@ LABEL_10:
 
   if (v5 == 2)
   {
-    [(CLIndoorXPCProvider *)self withinQueueScheduleReconnect:*(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) - a3.var0.__rep_ + 10000000000 reason:@"deferred re-initialization"];
+    [(CLIndoorXPCProvider *)self withinQueueScheduleReconnect:*(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) - std.var0.__rep_ + 10000000000 reason:@"deferred re-initialization"];
   }
 
   if (!self->_lastReconnectTime.m_initialized)
@@ -427,17 +427,17 @@ LABEL_5:
   }
 
 LABEL_6:
-  *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) = a3;
+  *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) = std;
 }
 
-- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock
+- (int)withinQueueShouldReinitializeRemote:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock
 {
-  v5 = [(CLIndoorXPCProvider *)self impl];
-  v6 = [v5 withinQueueCanReinitializeRemoteState];
+  impl = [(CLIndoorXPCProvider *)self impl];
+  withinQueueCanReinitializeRemoteState = [impl withinQueueCanReinitializeRemoteState];
 
-  if (v6)
+  if (withinQueueCanReinitializeRemoteState)
   {
-    if (self->_lastReconnectTime.m_initialized && a3.var0.__rep_ - *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) < 10000000000)
+    if (self->_lastReconnectTime.m_initialized && std.var0.__rep_ - *(&self->_lastReconnectTime.m_storage.dummy_.aligner_ + 7) < 10000000000)
     {
       return 2;
     }
@@ -458,10 +458,10 @@ LABEL_6:
     v8 = qword_10045B068;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(CLIndoorXPCProvider *)self impl];
-      v10 = [v9 endpointName];
+      impl2 = [(CLIndoorXPCProvider *)self impl];
+      endpointName = [impl2 endpointName];
       v11 = 138543362;
-      v12 = v10;
+      v12 = endpointName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Already invalidated/no remote state - ignoring request to re-initialize %{public}@", &v11, 0xCu);
     }
 
@@ -479,18 +479,18 @@ LABEL_6:
   v3 = qword_10045B068;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(CLIndoorXPCProvider *)self impl];
-    v5 = [v4 endpointName];
+    impl = [(CLIndoorXPCProvider *)self impl];
+    endpointName = [impl endpointName];
     v7 = 138543362;
-    v8 = v5;
+    v8 = endpointName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "re-initializing pipelined connection to %{public}@ with existing state", &v7, 0xCu);
   }
 
-  v6 = [(CLIndoorXPCProvider *)self impl];
-  [v6 withinQueueReinitializeRemoteState];
+  impl2 = [(CLIndoorXPCProvider *)self impl];
+  [impl2 withinQueueReinitializeRemoteState];
 }
 
-- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)a3 :(id)a4 ratio<1
+- (void)withinQueueScheduleReconnect:(duration<long)long reason:()std:(1000000000>>)std :(id)a4 ratio<1
 {
   v6 = a4;
   if (qword_10045B060 != -1)
@@ -501,37 +501,37 @@ LABEL_6:
   v7 = qword_10045B068;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(CLIndoorXPCProvider *)self impl];
-    v9 = [v8 endpointName];
+    impl = [(CLIndoorXPCProvider *)self impl];
+    endpointName = [impl endpointName];
     v11 = 138543874;
-    v12 = v9;
+    v12 = endpointName;
     v13 = 2114;
     v14 = v6;
     v15 = 2048;
-    v16 = a3.__rep_ / 1000000;
+    v16 = std.__rep_ / 1000000;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Connection to %{public}@ %{public}@ - retrying in %lld milliseconds", &v11, 0x20u);
   }
 
-  v10 = dispatch_time(0, a3.__rep_);
+  v10 = dispatch_time(0, std.__rep_);
   dispatch_source_set_timer(self->_interruptReconnection, v10, 0xFFFFFFFFFFFFFFFFLL, 0x77359400uLL);
 }
 
-- (id)_defaultErrHandlerForCaller:(id)a3
+- (id)_defaultErrHandlerForCaller:(id)caller
 {
-  v3 = [(CLIndoorXPCProvider *)self _defaultErrHandler:&stru_100432780 forCaller:a3];
+  v3 = [(CLIndoorXPCProvider *)self _defaultErrHandler:&stru_100432780 forCaller:caller];
 
   return v3;
 }
 
-- (id)_defaultErrHandler:(id)a3 forCaller:(id)a4
+- (id)_defaultErrHandler:(id)handler forCaller:(id)caller
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3321888768;
   v11[2] = sub_10001FD50;
   v11[3] = &unk_1004327A0;
-  v5 = a4;
-  v6 = objc_retainBlock(a3);
-  v7 = v5;
+  callerCopy = caller;
+  v6 = objc_retainBlock(handler);
+  v7 = callerCopy;
   v12 = v7;
   v13 = objc_retainBlock(v6);
   v8 = objc_retainBlock(v11);

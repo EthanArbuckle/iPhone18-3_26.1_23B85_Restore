@@ -1,21 +1,21 @@
 @interface AAVoiceAmplificationSliderCell
 + (id)valueLabels;
-- (AAVoiceAmplificationSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AAVoiceAmplificationSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityValue;
 @end
 
 @implementation AAVoiceAmplificationSliderCell
 
-- (AAVoiceAmplificationSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AAVoiceAmplificationSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = AAVoiceAmplificationSliderCell;
-  v4 = [(HearingSettingsValueSliderCell *)&v8 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(HearingSettingsValueSliderCell *)&v8 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HearingSettingsValueSliderCell *)v4 slider];
-    [v6 setSnapsToSegment:1];
+    slider = [(HearingSettingsValueSliderCell *)v4 slider];
+    [slider setSnapsToSegment:1];
   }
 
   return v5;

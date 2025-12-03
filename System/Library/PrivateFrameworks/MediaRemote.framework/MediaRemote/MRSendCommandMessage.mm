@@ -9,8 +9,8 @@
 
 - (unsigned)command
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = MRMediaRemoteCommandFromProtobuf([v2 command]);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v3 = MRMediaRemoteCommandFromProtobuf([underlyingCodableMessage command]);
 
   return v3;
 }
@@ -20,9 +20,9 @@
   options = self->_options;
   if (!options)
   {
-    v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v5 = [v4 options];
-    v6 = MRMediaRemoteCommandOptionsFromProtobuf(v5);
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    options = [underlyingCodableMessage options];
+    v6 = MRMediaRemoteCommandOptionsFromProtobuf(options);
     v7 = self->_options;
     self->_options = v6;
 
@@ -35,9 +35,9 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
@@ -45,9 +45,9 @@
 - (unsigned)appOptions
 {
   v2 = [(NSDictionary *)self->_options objectForKey:@"kMRMediaRemoteOptionSendOptionsNumber"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 @end

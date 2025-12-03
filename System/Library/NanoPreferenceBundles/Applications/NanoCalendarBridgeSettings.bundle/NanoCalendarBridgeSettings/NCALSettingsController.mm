@@ -1,20 +1,20 @@
 @interface NCALSettingsController
-- (BOOL)showAlertsForSubsectionId:(id)a3;
+- (BOOL)showAlertsForSubsectionId:(id)id;
 - (BOOL)usingCustomCalendars;
 - (BOOL)usingCustomOverlayCalendar;
-- (id)_alertsEnabled:(id)a3;
+- (id)_alertsEnabled:(id)enabled;
 - (id)_specifiersForOverlayCalendars;
 - (id)applicationGroupSpecifiers;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
 - (id)localizedMirroringDetailFooter;
 - (id)localizedPaneTitle;
 - (id)notificationApplicationSpecifiers;
-- (void)mirrorSettingsChanged:(BOOL)a3;
-- (void)setOverlayCalendarID:(id)a3;
-- (void)setShowAlerts:(BOOL)a3 forSubsectionId:(id)a4;
-- (void)setUsingCustomCalendars:(BOOL)a3;
-- (void)setUsingCustomOverlayCalendar:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)mirrorSettingsChanged:(BOOL)changed;
+- (void)setOverlayCalendarID:(id)d;
+- (void)setShowAlerts:(BOOL)alerts forSubsectionId:(id)id;
+- (void)setUsingCustomCalendars:(BOOL)calendars;
+- (void)setUsingCustomOverlayCalendar:(BOOL)calendar;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation NCALSettingsController
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = NCALSettingsController;
-  v5 = [(NCALSettingsController *)&v10 loadSpecifiersFromPlistName:a3 target:a4 bundle:a5];
+  v5 = [(NCALSettingsController *)&v10 loadSpecifiersFromPlistName:name target:target bundle:bundle];
   v6 = [v5 specifierForID:BPSMirrorGroupID];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"NOTIFICATIONS_GROUP_HEADER" value:&stru_10A88 table:@"NanoCalendarBridgeSettings"];
@@ -129,12 +129,12 @@
 - (id)localizedMirroringDetailFooter
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(NCALSettingsController *)self bbSectionInfo];
-  v5 = [v4 subsections];
-  v6 = [v5 copy];
+  bbSectionInfo = [(NCALSettingsController *)self bbSectionInfo];
+  subsections = [bbSectionInfo subsections];
+  v6 = [subsections copy];
 
-  v7 = [(NCALSettingsController *)self sectionInfo];
-  v8 = [v7 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+  sectionInfo = [(NCALSettingsController *)self sectionInfo];
+  v8 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSubsections];
   v9 = [v8 valueForKey:BPSNanoBulletinSubsectionId];
 
   v41[0] = _NSConcreteStackBlock;
@@ -148,10 +148,10 @@
   v10 = [v6 objectsAtIndexes:?];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"SETTING_DESCRIPTION_LINE_FORMAT_NO_COLON" value:&stru_10A88 table:@"NanoCalendarBridgeSettings"];
-  v13 = [(NCALSettingsController *)self showAlerts];
+  showAlerts = [(NCALSettingsController *)self showAlerts];
   v14 = [NSBundle bundleForClass:objc_opt_class()];
   v15 = v14;
-  if (v13)
+  if (showAlerts)
   {
     v16 = @"SHOW_ALERTS";
   }
@@ -187,7 +187,7 @@
         v21 = *(*(&v37 + 1) + 8 * i);
         v22 = [NSBundle bundleForClass:objc_opt_class()];
         v23 = [v22 localizedStringForKey:@"SETTING_DESCRIPTION_LINE_FORMAT_WITH_COLON" value:&stru_10A88 table:@"NanoCalendarBridgeSettings"];
-        v24 = [v21 displayName];
+        displayName = [v21 displayName];
         LODWORD(v21) = [v21 showsInNotificationCenter];
         v25 = [NSBundle bundleForClass:objc_opt_class()];
         v26 = v25;
@@ -202,7 +202,7 @@
         }
 
         v28 = [v25 localizedStringForKey:v27 value:&stru_10A88 table:@"NanoCalendarBridgeSettings"];
-        [v36 appendFormat:v23, v24, v28];
+        [v36 appendFormat:v23, displayName, v28];
       }
 
       v19 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
@@ -216,9 +216,9 @@
   return v29;
 }
 
-- (void)mirrorSettingsChanged:(BOOL)a3
+- (void)mirrorSettingsChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 0;
   }
@@ -228,8 +228,8 @@
     v3 = 3;
   }
 
-  v13 = [(NCALSettingsController *)self sectionInfo];
-  v4 = [v13 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+  sectionInfo = [(NCALSettingsController *)self sectionInfo];
+  v4 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSubsections];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -268,9 +268,9 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  getActivePairedDevice = [v4 getActivePairedDevice];
 
-  if (v5)
+  if (getActivePairedDevice)
   {
     NRWatchOSVersionForRemoteDevice();
     if (NRVersionIsGreaterThanOrEqual())
@@ -293,8 +293,8 @@
 
       [v14 setIdentifier:@"CALENDARS_CUSTOM_ID"];
       [v3 addObject:v14];
-      v15 = [(NCALSettingsController *)self usingCustomCalendars];
-      if (v15)
+      usingCustomCalendars = [(NCALSettingsController *)self usingCustomCalendars];
+      if (usingCustomCalendars)
       {
         v16 = &off_111F8;
       }
@@ -305,7 +305,7 @@
       }
 
       v17 = &PSAccessoryKey;
-      if (!v15)
+      if (!usingCustomCalendars)
       {
         v17 = &PSHidesDisclosureIndicatorKey;
       }
@@ -325,8 +325,8 @@
     }
   }
 
-  v19 = [(NCALSettingsController *)self _specifiersForOverlayCalendars];
-  [v3 addObjectsFromArray:v19];
+  _specifiersForOverlayCalendars = [(NCALSettingsController *)self _specifiersForOverlayCalendars];
+  [v3 addObjectsFromArray:_specifiersForOverlayCalendars];
 
   return v3;
 }
@@ -369,7 +369,7 @@
     v15 = +[NanoCalendarPreferences overlayCalendarLocaleIDs];
     v16 = +[NanoCalendarPreferences overlayCalendarLocaleDisplayNames];
     [v15 insertObject:&stru_10A88 atIndex:0];
-    v37 = self;
+    selfCopy = self;
     v17 = [NSBundle bundleForClass:objc_opt_class()];
     v18 = [v17 localizedStringForKey:@"OFF" value:&stru_10A88 table:@"NanoCalendarBridgeSettings"];
     v40 = v16;
@@ -377,7 +377,7 @@
 
     v19 = &NRVersionIsGreaterThanOrEqual_ptr;
     v20 = +[NanoCalendarPreferences sharedPreferences];
-    v38 = [v20 overlayCalendarID];
+    overlayCalendarID = [v20 overlayCalendarID];
 
     v44 = 0u;
     v45 = 0u;
@@ -401,14 +401,14 @@
 
           v26 = *(*(&v42 + 1) + 8 * i);
           v27 = [v40 objectForKeyedSubscript:v26];
-          v28 = [v19[79] preferenceSpecifierNamed:v27 target:v37 set:0 get:0 detail:0 cell:3 edit:0];
-          v29 = [v14 identifier];
-          v30 = [NSString stringWithFormat:@"%@.%@", v29, v26];
+          v28 = [v19[79] preferenceSpecifierNamed:v27 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
+          identifier = [v14 identifier];
+          v30 = [NSString stringWithFormat:@"%@.%@", identifier, v26];
 
           [v28 setIdentifier:v30];
           [v28 setObject:v26 forKeyedSubscript:v24];
           [v41 addObject:v28];
-          if ([v26 isEqualToString:v38])
+          if ([v26 isEqualToString:overlayCalendarID])
           {
             [v14 setObject:v28 forKeyedSubscript:v35];
           }
@@ -430,44 +430,44 @@
   return v41;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCALSettingsController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(NCALSettingsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"CALENDARS_MIRROR_MY_COMPANION_ID"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"CALENDARS_MIRROR_MY_COMPANION_ID"];
 
   if ((v11 & 1) != 0 || ([v9 identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"CALENDARS_CUSTOM_ID"), v12, v13))
   {
     [(NCALSettingsController *)self setUsingCustomCalendars:v11 ^ 1];
   }
 
-  v14 = [v9 identifier];
-  v15 = [v14 isEqualToString:@"OVERLAY_CALENDAR_MIRROR_MY_COMPANION_ID"];
+  identifier2 = [v9 identifier];
+  v15 = [identifier2 isEqualToString:@"OVERLAY_CALENDAR_MIRROR_MY_COMPANION_ID"];
 
   if (v15)
   {
-    v16 = self;
+    selfCopy2 = self;
     v17 = 0;
 LABEL_8:
-    [(NCALSettingsController *)v16 setUsingCustomOverlayCalendar:v17];
+    [(NCALSettingsController *)selfCopy2 setUsingCustomOverlayCalendar:v17];
     goto LABEL_9;
   }
 
-  v18 = [v9 identifier];
-  v19 = [v18 isEqualToString:@"OVERLAY_CALENDAR_CUSTOM_ID"];
+  identifier3 = [v9 identifier];
+  v19 = [identifier3 isEqualToString:@"OVERLAY_CALENDAR_CUSTOM_ID"];
 
   if (v19)
   {
-    v16 = self;
+    selfCopy2 = self;
     v17 = 1;
     goto LABEL_8;
   }
 
-  v20 = [v9 identifier];
-  v21 = [v20 containsString:@"OVERLAY_CALENDAR_CUSTOM_GROUP_ID"];
+  identifier4 = [v9 identifier];
+  v21 = [identifier4 containsString:@"OVERLAY_CALENDAR_CUSTOM_GROUP_ID"];
 
   if (v21)
   {
@@ -478,71 +478,71 @@ LABEL_8:
 LABEL_9:
   v23.receiver = self;
   v23.super_class = NCALSettingsController;
-  [(NCALSettingsController *)&v23 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(NCALSettingsController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (BOOL)usingCustomCalendars
 {
   v2 = +[NanoCalendarPreferences sharedPreferences];
-  v3 = [v2 customDeselectedCalendarHashes];
-  v4 = v3 != 0;
+  customDeselectedCalendarHashes = [v2 customDeselectedCalendarHashes];
+  v4 = customDeselectedCalendarHashes != 0;
 
   return v4;
 }
 
-- (void)setUsingCustomCalendars:(BOOL)a3
+- (void)setUsingCustomCalendars:(BOOL)calendars
 {
-  v3 = a3;
-  if ([(NCALSettingsController *)self usingCustomCalendars]!= a3)
+  calendarsCopy = calendars;
+  if ([(NCALSettingsController *)self usingCustomCalendars]!= calendars)
   {
     v5 = ncs_log_selected_calendars();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109120;
-      v11[1] = v3;
+      v11[1] = calendarsCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "NCALSettingsController: Set Using Custom Calendars: %d", v11, 8u);
     }
 
     v6 = +[NanoCalendarPreferences sharedPreferences];
-    if (v3)
+    if (calendarsCopy)
     {
       v7 = +[EKPreferences shared];
-      v8 = [v7 deselectedCalendarSyncHashes];
+      deselectedCalendarSyncHashes = [v7 deselectedCalendarSyncHashes];
 
-      if (v8)
+      if (deselectedCalendarSyncHashes)
       {
         v9 = +[EKPreferences shared];
-        v10 = [v9 deselectedCalendarSyncIdentifiers];
+        deselectedCalendarSyncIdentifiers = [v9 deselectedCalendarSyncIdentifiers];
       }
 
       else
       {
-        v8 = &__NSArray0__struct;
-        v10 = &__NSArray0__struct;
+        deselectedCalendarSyncHashes = &__NSArray0__struct;
+        deselectedCalendarSyncIdentifiers = &__NSArray0__struct;
       }
     }
 
     else
     {
-      v8 = 0;
-      v10 = 0;
+      deselectedCalendarSyncHashes = 0;
+      deselectedCalendarSyncIdentifiers = 0;
     }
 
-    [v6 setCustomDeselectedCalendarHashes:v8];
-    [v6 setCustomDeselectedCalendarIdentifiers:v10];
+    [v6 setCustomDeselectedCalendarHashes:deselectedCalendarSyncHashes];
+    [v6 setCustomDeselectedCalendarIdentifiers:deselectedCalendarSyncIdentifiers];
     [(NCALSettingsController *)self reloadSpecifiers];
   }
 }
 
-- (id)_alertsEnabled:(id)a3
+- (id)_alertsEnabled:(id)enabled
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"SpecifierUserInfoSubsectionID"];
+  userInfo = [enabled userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"SpecifierUserInfoSubsectionID"];
 
-  LODWORD(v4) = [(NCALSettingsController *)self showAlertsForSubsectionId:v5];
+  LODWORD(userInfo) = [(NCALSettingsController *)self showAlertsForSubsectionId:v5];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v4)
+  if (userInfo)
   {
     v8 = @"ON";
   }
@@ -557,12 +557,12 @@ LABEL_9:
   return v9;
 }
 
-- (void)setShowAlerts:(BOOL)a3 forSubsectionId:(id)a4
+- (void)setShowAlerts:(BOOL)alerts forSubsectionId:(id)id
 {
-  v16 = a3;
-  v5 = a4;
-  v17 = [(NCALSettingsController *)self sectionInfo];
-  [v17 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+  alertsCopy = alerts;
+  idCopy = id;
+  sectionInfo = [(NCALSettingsController *)self sectionInfo];
+  [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSubsections];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -584,11 +584,11 @@ LABEL_9:
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:v10];
-        v14 = [v13 isEqualToString:v5];
+        v14 = [v13 isEqualToString:idCopy];
 
         if (v14)
         {
-          v15 = [NSNumber numberWithBool:v16];
+          v15 = [NSNumber numberWithBool:alertsCopy];
           [v12 setObject:v15 forKeyedSubscript:BPSNanoBulletinShowsAlerts];
 
           [(NCALSettingsController *)self writeSectionState];
@@ -610,11 +610,11 @@ LABEL_9:
 LABEL_11:
 }
 
-- (BOOL)showAlertsForSubsectionId:(id)a3
+- (BOOL)showAlertsForSubsectionId:(id)id
 {
-  v4 = a3;
-  v5 = [(NCALSettingsController *)self sectionInfo];
-  [v5 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+  idCopy = id;
+  sectionInfo = [(NCALSettingsController *)self sectionInfo];
+  [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSubsections];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -636,12 +636,12 @@ LABEL_11:
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:{v10, v18}];
-        v14 = [v13 isEqualToString:v4];
+        v14 = [v13 isEqualToString:idCopy];
 
         if (v14)
         {
           v16 = [v12 objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
-          v15 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
 
           goto LABEL_11;
         }
@@ -657,27 +657,27 @@ LABEL_11:
     }
   }
 
-  v15 = 0;
+  bOOLValue = 0;
 LABEL_11:
 
-  return v15;
+  return bOOLValue;
 }
 
 - (BOOL)usingCustomOverlayCalendar
 {
   v2 = +[NanoCalendarPreferences sharedPreferences];
-  v3 = [v2 customOverlayCalendarID];
-  v4 = v3 != 0;
+  customOverlayCalendarID = [v2 customOverlayCalendarID];
+  v4 = customOverlayCalendarID != 0;
 
   return v4;
 }
 
-- (void)setUsingCustomOverlayCalendar:(BOOL)a3
+- (void)setUsingCustomOverlayCalendar:(BOOL)calendar
 {
-  v3 = a3;
-  if ([(NCALSettingsController *)self usingCustomOverlayCalendar]!= a3)
+  calendarCopy = calendar;
+  if ([(NCALSettingsController *)self usingCustomOverlayCalendar]!= calendar)
   {
-    if (v3)
+    if (calendarCopy)
     {
       v5 = &stru_10A88;
     }
@@ -693,11 +693,11 @@ LABEL_11:
   [(NCALSettingsController *)self reloadSpecifiers];
 }
 
-- (void)setOverlayCalendarID:(id)a3
+- (void)setOverlayCalendarID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NanoCalendarPreferences sharedPreferences];
-  [v4 setOverlayCalendarID:v3 deviceHasCompanion:1];
+  [v4 setOverlayCalendarID:dCopy deviceHasCompanion:1];
 }
 
 @end

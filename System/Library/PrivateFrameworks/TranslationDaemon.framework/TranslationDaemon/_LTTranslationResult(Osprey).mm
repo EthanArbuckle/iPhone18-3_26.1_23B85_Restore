@@ -11,18 +11,18 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 init];
+  v10 = [self init];
   v11 = v10;
   if (v10)
   {
     [v10 setRoute:2];
-    v12 = [v8 translation_locale_pair];
-    v13 = [v12 target_locale];
+    translation_locale_pair = [v8 translation_locale_pair];
+    target_locale = [translation_locale_pair target_locale];
 
-    v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v13];
+    v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:target_locale];
     [v11 setLocale:v14];
 
-    v15 = [v8 n_best_translated_phrases];
+    n_best_translated_phrases = [v8 n_best_translated_phrases];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __98___LTTranslationResult_Osprey__initWithOspreySpeechTranslationMTResponse_sourceText_censorSpeech___block_invoke;
@@ -30,10 +30,10 @@
     v16 = v11;
     v26 = v16;
     v27 = a5;
-    v17 = [v15 _ltCompactMap:&v22];
+    v17 = [n_best_translated_phrases _ltCompactMap:&v22];
     [v16 setTranslations:{v17, v22, v23, v24, v25}];
-    v18 = [v8 request_id];
-    [v16 setIdentifier:v18];
+    request_id = [v8 request_id];
+    [v16 setIdentifier:request_id];
 
     [v16 setIsFinal:{objc_msgSend(v8, "is_final")}];
     v19 = [MEMORY[0x277CE1AE0] resultFromFTSpeechResponse:v8 sourceText:v9 censorSpeech:a5];
@@ -48,13 +48,13 @@
 - (void)initWithOspreyResponse:()Osprey
 {
   v4 = a3;
-  v5 = [a1 init];
+  v5 = [self init];
   v6 = v5;
   if (v5)
   {
     [v5 setRoute:2];
-    v7 = [v4 n_best_translated_phrases];
-    v8 = [v7 _ltCompactMap:&__block_literal_global_33];
+    n_best_translated_phrases = [v4 n_best_translated_phrases];
+    v8 = [n_best_translated_phrases _ltCompactMap:&__block_literal_global_33];
     [v6 setTranslations:v8];
 
     v9 = [MEMORY[0x277CE1AE0] resultFromOspreyResponse:v4];
@@ -71,21 +71,21 @@
   v19[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 init];
+  v8 = [self init];
   v9 = v8;
   if (v8)
   {
     [v8 setRoute:2];
-    v10 = [v6 translated_text_romanized];
-    if (![v10 length])
+    translated_text_romanized = [v6 translated_text_romanized];
+    if (![translated_text_romanized length])
     {
 
-      v10 = 0;
+      translated_text_romanized = 0;
     }
 
     v11 = objc_alloc(MEMORY[0x277CE1BF8]);
-    v12 = [v6 translated_text];
-    v13 = [v11 initWithFormattedString:v12 sanitizedFormattedString:0 confidence:0 lowConfidence:v10 romanization:0 tokens:0 preToPostITN:1.0];
+    translated_text = [v6 translated_text];
+    v13 = [v11 initWithFormattedString:translated_text sanitizedFormattedString:0 confidence:0 lowConfidence:translated_text_romanized romanization:0 tokens:0 preToPostITN:1.0];
 
     v19[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
@@ -106,11 +106,11 @@
   v40 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v29 = a1;
-  v9 = [a1 translations];
-  v10 = [v9 firstObject];
-  v11 = [v10 formattedString];
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  translations = [self translations];
+  firstObject = [translations firstObject];
+  formattedString = [firstObject formattedString];
 
   if ([v7 count])
   {
@@ -150,19 +150,19 @@
 
             v19 = *(*(&v35 + 1) + 8 * v18);
             v20 = objc_alloc_init(MEMORY[0x277CE1AB8]);
-            v21 = [v13 identifier];
-            [v20 setIdentifier:v21];
+            identifier = [v13 identifier];
+            [v20 setIdentifier:identifier];
 
-            v22 = [v13 range];
-            [v20 setSourceRange:{v22, v23}];
-            v24 = [v11 lt_codeUnitsRangeFromCodePointsRange:{objc_msgSend(v19, "start_index"), (objc_msgSend(v19, "end_index") - objc_msgSend(v19, "start_index") + 1)}];
+            range = [v13 range];
+            [v20 setSourceRange:{range, v23}];
+            v24 = [formattedString lt_codeUnitsRangeFromCodePointsRange:{objc_msgSend(v19, "start_index"), (objc_msgSend(v19, "end_index") - objc_msgSend(v19, "start_index") + 1)}];
             v26 = v25;
             [v20 setTargetRange:{v24, v25}];
-            v27 = [v11 substringWithRange:{v24, v26}];
+            v27 = [formattedString substringWithRange:{v24, v26}];
             [v20 setText:v27];
 
             [v20 setShouldTranslate:{objc_msgSend(v19, "do_not_translate") ^ 1}];
-            [v8 addObject:v20];
+            [array addObject:v20];
 
             ++v18;
           }
@@ -182,8 +182,8 @@
     while (v33 + 1 < [v30 count]);
   }
 
-  [v8 sortUsingComparator:&__block_literal_global_19_0];
-  [v29 setAlignments:v8];
+  [array sortUsingComparator:&__block_literal_global_19_0];
+  [selfCopy setAlignments:array];
 
   v28 = *MEMORY[0x277D85DE8];
 }

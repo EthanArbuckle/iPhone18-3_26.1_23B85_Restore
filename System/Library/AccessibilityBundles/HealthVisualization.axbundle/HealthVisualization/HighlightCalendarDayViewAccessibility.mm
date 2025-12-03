@@ -1,19 +1,19 @@
 @interface HighlightCalendarDayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axProjectionValues:(int64_t)a3 projectionKind:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axProjectionValues:(int64_t)values projectionKind:(id)kind;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation HighlightCalendarDayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axProjectionKind" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axProbability" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axCircleState" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axProjectionKind" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axProbability" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"HealthVisualization.HighlightCalendarDayView" hasInstanceMethod:@"axCircleState" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (id)_axProjectionValues:(int64_t)a3 projectionKind:(id)a4
+- (id)_axProjectionValues:(int64_t)values projectionKind:(id)kind
 {
-  v6 = a4;
+  kindCopy = kind;
   v7 = [(HighlightCalendarDayViewAccessibility *)self safeIntegerForKey:@"axCircleState"];
-  if (v6)
+  if (kindCopy)
   {
-    if (a3 == 2)
+    if (values == 2)
     {
-      if ([v6 isEqualToString:@"menstruation"])
+      if ([kindCopy isEqualToString:@"menstruation"])
       {
         v8 = @"predicted.period";
       }
@@ -57,7 +57,7 @@
       goto LABEL_14;
     }
 
-    if (a3 == 1 && [v6 isEqualToString:@"menstruation"])
+    if (values == 1 && [kindCopy isEqualToString:@"menstruation"])
     {
       v8 = @"possible.period";
 LABEL_14:

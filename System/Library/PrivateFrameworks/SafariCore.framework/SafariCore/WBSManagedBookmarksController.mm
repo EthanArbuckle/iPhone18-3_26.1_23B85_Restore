@@ -54,19 +54,19 @@ void __37__WBSManagedBookmarksController_init__block_invoke(uint64_t a1, void *a
 {
   v38 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_new();
-  v3 = [v2 safari];
-  v4 = [v3 managedBookmarks];
+  safari = [v2 safari];
+  managedBookmarks = [safari managedBookmarks];
 
-  if ([v4 count])
+  if ([managedBookmarks count])
   {
     v28 = v2;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = managedBookmarks;
+    obj = managedBookmarks;
     v31 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v31)
     {
@@ -83,20 +83,20 @@ void __37__WBSManagedBookmarksController_init__block_invoke(uint64_t a1, void *a
 
           v32 = v6;
           v7 = *(*(&v33 + 1) + 8 * v6);
-          v8 = [v7 title];
-          v9 = [v5 objectForKey:v8];
+          title = [v7 title];
+          v9 = [dictionary objectForKey:title];
 
           if (v9)
           {
             v10 = MEMORY[0x1E696AEC0];
-            v11 = [v7 title];
-            v12 = [v7 sourceIdentifier];
-            v13 = [v10 stringWithFormat:@"%@ - %@", v11, v12];
+            title2 = [v7 title];
+            sourceIdentifier = [v7 sourceIdentifier];
+            v13 = [v10 stringWithFormat:@"%@ - %@", title2, sourceIdentifier];
 
-            v8 = v13;
+            title = v13;
           }
 
-          v14 = [v5 objectForKey:v8];
+          v14 = [dictionary objectForKey:title];
 
           if (v14)
           {
@@ -104,16 +104,16 @@ void __37__WBSManagedBookmarksController_init__block_invoke(uint64_t a1, void *a
             do
             {
               v16 = MEMORY[0x1E696AEC0];
-              v17 = [v7 title];
+              title3 = [v7 title];
               [v7 sourceIdentifier];
-              v19 = v18 = v5;
-              v20 = [v16 stringWithFormat:@"%@ - %@ (%lu)", v17, v19, v15];
+              v19 = v18 = dictionary;
+              v20 = [v16 stringWithFormat:@"%@ - %@ (%lu)", title3, v19, v15];
 
-              v5 = v18;
+              dictionary = v18;
               v21 = [v18 objectForKey:v20];
 
               ++v15;
-              v8 = v20;
+              title = v20;
             }
 
             while (v21);
@@ -121,12 +121,12 @@ void __37__WBSManagedBookmarksController_init__block_invoke(uint64_t a1, void *a
 
           else
           {
-            v20 = v8;
+            v20 = title;
           }
 
-          v22 = [v7 children];
-          v23 = dictionaryArrayFromBookmarkArray(v22);
-          [v5 setObject:v23 forKeyedSubscript:v20];
+          children = [v7 children];
+          v23 = dictionaryArrayFromBookmarkArray(children);
+          [dictionary setObject:v23 forKeyedSubscript:v20];
 
           v6 = v32 + 1;
         }
@@ -138,8 +138,8 @@ void __37__WBSManagedBookmarksController_init__block_invoke(uint64_t a1, void *a
       while (v31);
     }
 
-    v24 = [v5 copy];
-    v4 = v27;
+    v24 = [dictionary copy];
+    managedBookmarks = v27;
     v2 = v28;
   }
 
@@ -155,27 +155,27 @@ void __37__WBSManagedBookmarksController_init__block_invoke(uint64_t a1, void *a
 
 - (NSString)topLevelBookmarksFolderTitle
 {
-  v2 = [(WBSManagedBookmarksController *)self managedBookmarks];
-  if ([v2 count])
+  managedBookmarks = [(WBSManagedBookmarksController *)self managedBookmarks];
+  if ([managedBookmarks count])
   {
-    if ([v2 count] == 1)
+    if ([managedBookmarks count] == 1)
     {
-      v3 = [v2 allKeys];
-      v4 = [v3 firstObject];
+      allKeys = [managedBookmarks allKeys];
+      firstObject = [allKeys firstObject];
     }
 
     else
     {
-      v4 = _WBSLocalizedString(@"Organization Bookmarks", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
+      firstObject = _WBSLocalizedString(@"Organization Bookmarks", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 @end

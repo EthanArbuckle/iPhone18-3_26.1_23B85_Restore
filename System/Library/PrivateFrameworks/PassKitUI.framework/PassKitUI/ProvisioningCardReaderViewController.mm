@@ -1,6 +1,6 @@
 @interface ProvisioningCardReaderViewController
 - (BOOL)isComplete;
-- (void)fieldTextValueDidChangeForField:(id)a3;
+- (void)fieldTextValueDidChangeForField:(id)field;
 - (void)loadView;
 - (void)manualEntryButtonPressed;
 - (void)verifyLaterButtonPressed;
@@ -10,27 +10,27 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA168F4();
 }
 
 - (void)manualEntryButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA18F9C();
 }
 
 - (void)verifyLaterButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA1911C();
 }
 
-- (void)fieldTextValueDidChangeForField:(id)a3
+- (void)fieldTextValueDidChangeForField:(id)field
 {
-  v5 = self;
-  [(PKPaymentSetupFieldsViewController *)v5 _setPrimaryButtonEnabled:sub_1BDA1A068(0) & 1];
-  v3 = *(&v5->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI36ProvisioningCardReaderViewController_verifyLaterButton);
+  selfCopy = self;
+  [(PKPaymentSetupFieldsViewController *)selfCopy _setPrimaryButtonEnabled:sub_1BDA1A068(0) & 1];
+  v3 = *(&selfCopy->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI36ProvisioningCardReaderViewController_verifyLaterButton);
   if (v3)
   {
     v4 = v3;
@@ -40,7 +40,7 @@
 
 - (BOOL)isComplete
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BDA1A068(0);
 
   return v3 & 1;

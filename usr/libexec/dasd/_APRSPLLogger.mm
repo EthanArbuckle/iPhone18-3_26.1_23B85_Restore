@@ -1,16 +1,16 @@
 @interface _APRSPLLogger
 + (id)sharedInstance;
-+ (id)topPredictionsFromScores:(id)a3;
++ (id)topPredictionsFromScores:(id)scores;
 - (BOOL)getInferredCarryStatus;
-- (BOOL)updateCarryStatusWithContext:(id)a3;
+- (BOOL)updateCarryStatusWithContext:(id)context;
 - (_APRSPLLogger)init;
 - (id)appsFromProactiveSuggestions;
-- (id)computeAccuraciesWithLastPredictions:(id)a3 andAppsLaunched:(id)a4;
+- (id)computeAccuraciesWithLastPredictions:(id)predictions andAppsLaunched:(id)launched;
 - (id)generateAccuraciesCAEventDictionary;
-- (id)queryAppsLaunchedFromStartDate:(id)a3 toEndDate:(id)a4;
+- (id)queryAppsLaunchedFromStartDate:(id)date toEndDate:(id)endDate;
 - (void)initializeCarryStatusLogging;
-- (void)logAppResumePredictions:(id)a3 durationCheck:(BOOL)a4;
-- (void)logFreezerSkipReasons:(id)a3;
+- (void)logAppResumePredictions:(id)predictions durationCheck:(BOOL)check;
+- (void)logFreezerSkipReasons:(id)reasons;
 - (void)logUpdatedCarryStatus;
 - (void)reportAppResumePredictions;
 @end
@@ -93,9 +93,9 @@ LABEL_6:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v26 = v25;
-    v27 = [@"/System/Library/PrivateFrameworks/PowerLog.framework/PowerLog" UTF8String];
+    uTF8String = [@"/System/Library/PrivateFrameworks/PowerLog.framework/PowerLog" UTF8String];
     *buf = 136315138;
-    v33 = v27;
+    v33 = uTF8String;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Powerlog library at %s does not exist", buf, 0xCu);
   }
 
@@ -111,7 +111,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_1000372F4;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AF68 != -1)
   {
     dispatch_once(&qword_10020AF68, block);
@@ -122,19 +122,19 @@ LABEL_10:
   return v2;
 }
 
-+ (id)topPredictionsFromScores:(id)a3
++ (id)topPredictionsFromScores:(id)scores
 {
-  v3 = a3;
-  v4 = [v3 keysSortedByValueUsingComparator:&stru_1001B6018];
+  scoresCopy = scores;
+  v4 = [scoresCopy keysSortedByValueUsingComparator:&stru_1001B6018];
   v5 = +[NSMutableDictionary dictionary];
-  if ([v3 count] > 9)
+  if ([scoresCopy count] > 9)
   {
     v6 = 10;
   }
 
   else
   {
-    v6 = [v3 count];
+    v6 = [scoresCopy count];
     if (v6 < 1)
     {
       goto LABEL_7;
@@ -146,7 +146,7 @@ LABEL_10:
   do
   {
     v9 = [v4 objectAtIndexedSubscript:v7];
-    v10 = [v3 objectForKeyedSubscript:v9];
+    v10 = [scoresCopy objectForKeyedSubscript:v9];
     v11 = [v4 objectAtIndexedSubscript:v7];
     [v5 setObject:v10 forKeyedSubscript:v11];
 
@@ -159,13 +159,13 @@ LABEL_7:
   return v5;
 }
 
-- (void)logAppResumePredictions:(id)a3 durationCheck:(BOOL)a4
+- (void)logAppResumePredictions:(id)predictions durationCheck:(BOOL)check
 {
-  v4 = a4;
-  v6 = a3;
+  checkCopy = check;
+  predictionsCopy = predictions;
   if (self->_powerLogExists)
   {
-    if (v4 && ([(NSDate *)self->_lastReportedDate timeIntervalSinceNow], v7 > -1800.0))
+    if (checkCopy && ([(NSDate *)self->_lastReportedDate timeIntervalSinceNow], v7 > -1800.0))
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -185,15 +185,15 @@ LABEL_8:
       v26[2] = sub_1000377E0;
       v10 = v26[3] = &unk_1001B5608;
       v27 = v10;
-      [v6 enumerateKeysAndObjectsUsingBlock:v26];
-      v11 = [(_APRSPLLogger *)self appsFromProactiveSuggestions];
+      [predictionsCopy enumerateKeysAndObjectsUsingBlock:v26];
+      appsFromProactiveSuggestions = [(_APRSPLLogger *)self appsFromProactiveSuggestions];
       v21 = _NSConcreteStackBlock;
       v22 = 3221225472;
       v23 = sub_1000378BC;
       v24 = &unk_1001B5608;
       v12 = v10;
       v25 = v12;
-      [v11 enumerateKeysAndObjectsUsingBlock:&v21];
+      [appsFromProactiveSuggestions enumerateKeysAndObjectsUsingBlock:&v21];
       v30 = @"appResumePredictions";
       v31 = v12;
       v13 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1, v21, v22, v23, v24];
@@ -276,7 +276,7 @@ LABEL_8:
     v29 = 0x3032000000;
     v30 = sub_100037DA0;
     v31 = sub_100037DB0;
-    v32 = [(_APRSPLLogger *)self generateAccuraciesCAEventDictionary];
+    generateAccuraciesCAEventDictionary = [(_APRSPLLogger *)self generateAccuraciesCAEventDictionary];
     v15 = self->_log;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -311,30 +311,30 @@ LABEL_8:
   [(NSUserDefaults *)v24 setObject:v25 forKey:@"appResumeSwapPredictionsAccuracy"];
 }
 
-- (id)queryAppsLaunchedFromStartDate:(id)a3 toEndDate:(id)a4
+- (id)queryAppsLaunchedFromStartDate:(id)date toEndDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v6;
+    v27 = dateCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = endDateCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Querying for app launch between %@ and %@", buf, 0x16u);
   }
 
   v9 = objc_alloc_init(NSMutableArray);
   v10 = BiomeLibrary();
   v11 = [v10 App];
-  v12 = [v11 InFocus];
+  inFocus = [v11 InFocus];
 
-  v13 = [BMPublisherOptions optionsWithStartDate:v6 endDate:v7];
+  v13 = [BMPublisherOptions optionsWithStartDate:dateCopy endDate:endDateCopy];
   v14 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v15 = [v14 getConsoleUserUid];
+  getConsoleUserUid = [v14 getConsoleUserUid];
 
-  v16 = [v12 publisherWithUser:v15 useCase:@"DASBiomeUtilityUseCase" options:v13];
+  v16 = [inFocus publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v13];
   v17 = [v16 filterWithIsIncluded:&stru_1001B6060];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -354,13 +354,13 @@ LABEL_8:
   return v18;
 }
 
-- (id)computeAccuraciesWithLastPredictions:(id)a3 andAppsLaunched:(id)a4
+- (id)computeAccuraciesWithLastPredictions:(id)predictions andAppsLaunched:(id)launched
 {
-  v6 = a4;
-  v7 = a3;
+  launchedCopy = launched;
+  predictionsCopy = predictions;
   v8 = objc_alloc_init(NSMutableArray);
   v9 = objc_alloc_init(NSMutableArray);
-  [v7 sortUsingComparator:&stru_1001B60C8];
+  [predictionsCopy sortUsingComparator:&stru_1001B60C8];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_1000384BC;
@@ -369,7 +369,7 @@ LABEL_8:
   v25 = v10;
   v11 = v9;
   v26 = v11;
-  [v7 enumerateObjectsUsingBlock:&v21];
+  [predictionsCopy enumerateObjectsUsingBlock:&v21];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -382,8 +382,8 @@ LABEL_8:
   }
 
   v13 = objc_alloc_init(NSMutableDictionary);
-  v14 = [_DASPredictionUtilites computeAccuraciesFromSortedPredictions:v10 andObservations:v6 withEqualityOperator:&stru_1001B6130, v21, v22, v23, v24];
-  v15 = [_DASPredictionUtilites computeAccuraciesFromSortedPredictions:v11 andObservations:v6 withEqualityOperator:&stru_1001B6150];
+  v14 = [_DASPredictionUtilites computeAccuraciesFromSortedPredictions:v10 andObservations:launchedCopy withEqualityOperator:&stru_1001B6130, v21, v22, v23, v24];
+  v15 = [_DASPredictionUtilites computeAccuraciesFromSortedPredictions:v11 andObservations:launchedCopy withEqualityOperator:&stru_1001B6150];
 
   [v13 setObject:v14 forKeyedSubscript:@"proactive"];
   [v13 setObject:v15 forKeyedSubscript:@"swap"];
@@ -409,48 +409,48 @@ LABEL_8:
   v4 = objc_alloc_init(NSMutableDictionary);
   if ([v3 totalPredictionIntervals] >= 1)
   {
-    v5 = [v3 accuracyRate];
-    v6 = [v5 objectForKeyedSubscript:@"top1"];
+    accuracyRate = [v3 accuracyRate];
+    v6 = [accuracyRate objectForKeyedSubscript:@"top1"];
     [v4 setObject:v6 forKeyedSubscript:@"swap_top1"];
 
-    v7 = [v5 objectForKeyedSubscript:@"top3"];
+    v7 = [accuracyRate objectForKeyedSubscript:@"top3"];
     [v4 setObject:v7 forKeyedSubscript:@"swap_top3"];
 
-    v8 = [v5 objectForKeyedSubscript:@"top5"];
+    v8 = [accuracyRate objectForKeyedSubscript:@"top5"];
     [v4 setObject:v8 forKeyedSubscript:@"swap_top5"];
 
-    v9 = [v5 objectForKeyedSubscript:@"top10"];
+    v9 = [accuracyRate objectForKeyedSubscript:@"top10"];
     [v4 setObject:v9 forKeyedSubscript:@"swap_top10"];
   }
 
   v10 = [(NSMutableDictionary *)self->_predictionAccuracies objectForKeyedSubscript:@"proactive"];
   if ([v10 totalPredictionIntervals] >= 1)
   {
-    v11 = [v10 accuracyRate];
-    v12 = [v11 objectForKeyedSubscript:@"top1"];
+    accuracyRate2 = [v10 accuracyRate];
+    v12 = [accuracyRate2 objectForKeyedSubscript:@"top1"];
     [v4 setObject:v12 forKeyedSubscript:@"proactive_top1"];
 
-    v13 = [v11 objectForKeyedSubscript:@"top3"];
+    v13 = [accuracyRate2 objectForKeyedSubscript:@"top3"];
     [v4 setObject:v13 forKeyedSubscript:@"proactive_top3"];
 
-    v14 = [v11 objectForKeyedSubscript:@"top5"];
+    v14 = [accuracyRate2 objectForKeyedSubscript:@"top5"];
     [v4 setObject:v14 forKeyedSubscript:@"proactive_top5"];
 
-    v15 = [v11 objectForKeyedSubscript:@"top10"];
+    v15 = [accuracyRate2 objectForKeyedSubscript:@"top10"];
     [v4 setObject:v15 forKeyedSubscript:@"proactive_top10"];
   }
 
   return v4;
 }
 
-- (void)logFreezerSkipReasons:(id)a3
+- (void)logFreezerSkipReasons:(id)reasons
 {
-  v4 = a3;
-  v5 = v4;
+  reasonsCopy = reasons;
+  v5 = reasonsCopy;
   if (self->_powerLogExists)
   {
     v9 = @"Applications";
-    v10 = v4;
+    v10 = reasonsCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
@@ -495,16 +495,16 @@ LABEL_8:
     v5 = v4;
     _Block_object_dispose(&v32, 8);
     v22 = [[v4 alloc] initWithConsumerSubType:9];
-    v6 = [v22 suggestionLayoutFromCache];
-    v21 = v6;
-    if (v6)
+    suggestionLayoutFromCache = [v22 suggestionLayoutFromCache];
+    v21 = suggestionLayoutFromCache;
+    if (suggestionLayoutFromCache)
     {
-      v7 = [v6 allSuggestionsInLayout];
+      allSuggestionsInLayout = [suggestionLayoutFromCache allSuggestionsInLayout];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v8 = [v7 countByEnumeratingWithState:&v23 objects:v36 count:16];
+      v8 = [allSuggestionsInLayout countByEnumeratingWithState:&v23 objects:v36 count:16];
       if (v8)
       {
         v9 = *v24;
@@ -514,24 +514,24 @@ LABEL_8:
           {
             if (*v24 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allSuggestionsInLayout);
             }
 
             v11 = *(*(&v23 + 1) + 8 * i);
-            v12 = [v11 executableSpecification];
-            v13 = [v12 executableObject];
+            executableSpecification = [v11 executableSpecification];
+            executableObject = [executableSpecification executableObject];
 
-            if (v13)
+            if (executableObject)
             {
-              v14 = [v11 scoreSpecification];
-              [v14 rawScore];
+              scoreSpecification = [v11 scoreSpecification];
+              [scoreSpecification rawScore];
               v15 = [NSNumber numberWithDouble:?];
-              v16 = [v13 description];
+              v16 = [executableObject description];
               [v3 setObject:v15 forKeyedSubscript:v16];
             }
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v23 objects:v36 count:16];
+          v8 = [allSuggestionsInLayout countByEnumeratingWithState:&v23 objects:v36 count:16];
         }
 
         while (v8);
@@ -571,9 +571,9 @@ LABEL_8:
 {
   v3 = +[_CDClientContext userContext];
   v4 = [v3 objectForKeyedSubscript:self->_inferredCarryStatusKeyPath];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)initializeCarryStatusLogging
@@ -624,10 +624,10 @@ LABEL_8:
 {
   v3 = +[_CDClientContext userContext];
   v4 = [v3 objectForKeyedSubscript:self->_inferredCarryStatusKeyPath];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = [(_APRSPLLogger *)self updateCarryStatusWithContext:v3];
-  if (v5 == v6)
+  if (bOOLValue == v6)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
@@ -653,20 +653,20 @@ LABEL_8:
   }
 }
 
-- (BOOL)updateCarryStatusWithContext:(id)a3
+- (BOOL)updateCarryStatusWithContext:(id)context
 {
   v4 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v5 = [v4 deviceIsInferredCarry];
+  deviceIsInferredCarry = [v4 deviceIsInferredCarry];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v5;
+    v8[1] = deviceIsInferredCarry;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Inferred carry status is %d", v8, 8u);
   }
 
-  return v5;
+  return deviceIsInferredCarry;
 }
 
 @end

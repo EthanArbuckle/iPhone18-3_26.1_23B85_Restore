@@ -1,29 +1,29 @@
 @interface CalendarSettingsSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (CalendarSettingsSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (CalendarSettingsSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
-- (id)_dataclassState:(id)a3;
+- (id)_dataclassState:(id)state;
 - (id)account;
-- (id)accountForServiceType:(id)a3 primaryAltDSID:(id)a4 primaryDSID:(id)a5;
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountForServiceType:(id)type primaryAltDSID:(id)d primaryDSID:(id)iD;
+- (id)accountsForAccountManager:(id)manager;
 - (id)serviceOwnersManager;
-- (void)onCalendarTapWithDeeplink:(id)a3;
+- (void)onCalendarTapWithDeeplink:(id)deeplink;
 @end
 
 @implementation CalendarSettingsSpecifierProvider
 
-- (CalendarSettingsSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (CalendarSettingsSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = CalendarSettingsSpecifierProvider;
   v9 = [(CalendarSettingsSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_presenter, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_presenter, presenterCopy);
   }
 
   return v10;
@@ -31,8 +31,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:AIDAServiceTypeCloud];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
   return v3;
 }
@@ -55,8 +55,8 @@
     }
 
     v9 = objc_alloc_init(NSMutableArray);
-    v10 = [(AIDAAccountManager *)self->_accountManager accounts];
-    v11 = [v10 objectForKeyedSubscript:AIDAServiceTypeCloud];
+    accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+    v11 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
     v12 = ACAccountDataclassCalendars;
     v13 = [PSSpecifier acui_linkListCellSpecifierForDataclass:ACAccountDataclassCalendars account:v11 target:self set:0 get:"_dataclassState:" detail:0];
@@ -100,15 +100,15 @@
   return specifiers;
 }
 
-- (id)_dataclassState:(id)a3
+- (id)_dataclassState:(id)state
 {
-  v3 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v4 = [v3 objectForKeyedSubscript:AIDAServiceTypeCloud];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
-  LODWORD(v3) = [v4 isEnabledForDataclass:ACAccountDataclassCalendars];
+  LODWORD(accounts) = [v4 isEnabledForDataclass:ACAccountDataclassCalendars];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v3)
+  if (accounts)
   {
     v7 = @"ON";
   }
@@ -142,21 +142,21 @@
   return v8;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+  serviceOwnersManager = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
   v6 = AIDAServiceTypeCloud;
-  v7 = [v5 accountForService:AIDAServiceTypeCloud];
+  v7 = [serviceOwnersManager accountForService:AIDAServiceTypeCloud];
 
   if (v7)
   {
     [v4 setObject:v7 forKeyedSubscript:v6];
-    v8 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
-    v9 = [v8 altDSIDForAccount:v7 service:v6];
+    serviceOwnersManager2 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+    v9 = [serviceOwnersManager2 altDSIDForAccount:v7 service:v6];
 
-    v10 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
-    v11 = [v10 DSIDForAccount:v7 service:v6];
+    serviceOwnersManager3 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+    v11 = [serviceOwnersManager3 DSIDForAccount:v7 service:v6];
 
     if (v9)
     {
@@ -179,9 +179,9 @@
     }
   }
 
-  v15 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+  serviceOwnersManager4 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
   v16 = AIDAServiceTypeStore;
-  v17 = [v15 accountForService:AIDAServiceTypeStore];
+  v17 = [serviceOwnersManager4 accountForService:AIDAServiceTypeStore];
 
   if (v17)
   {
@@ -191,30 +191,30 @@
   return v4;
 }
 
-- (id)accountForServiceType:(id)a3 primaryAltDSID:(id)a4 primaryDSID:(id)a5
+- (id)accountForServiceType:(id)type primaryAltDSID:(id)d primaryDSID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
-  v12 = [v11 accountForService:v8];
+  typeCopy = type;
+  dCopy = d;
+  iDCopy = iD;
+  serviceOwnersManager = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+  v12 = [serviceOwnersManager accountForService:typeCopy];
 
   if (v12)
   {
-    v13 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
-    v14 = [v13 altDSIDForAccount:v12 service:v8];
+    serviceOwnersManager2 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+    v14 = [serviceOwnersManager2 altDSIDForAccount:v12 service:typeCopy];
 
-    if (v14 && [v14 isEqualToString:v9])
+    if (v14 && [v14 isEqualToString:dCopy])
     {
       v15 = v12;
     }
 
     else
     {
-      v16 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
-      v17 = [v16 DSIDForAccount:v12 service:v8];
+      serviceOwnersManager3 = [(CalendarSettingsSpecifierProvider *)self serviceOwnersManager];
+      v17 = [serviceOwnersManager3 DSIDForAccount:v12 service:typeCopy];
 
-      if (v17 && [v17 isEqualToString:v10])
+      if (v17 && [v17 isEqualToString:iDCopy])
       {
         v15 = v12;
       }
@@ -235,13 +235,13 @@
   return v15;
 }
 
-- (void)onCalendarTapWithDeeplink:(id)a3
+- (void)onCalendarTapWithDeeplink:(id)deeplink
 {
-  v4 = [(CalendarSettingsSpecifierProvider *)self account];
-  v5 = v4;
-  if (v4 && [v4 isProvisionedForDataclass:ACAccountDataclassCalendars])
+  account = [(CalendarSettingsSpecifierProvider *)self account];
+  v5 = account;
+  if (account && [account isProvisionedForDataclass:ACAccountDataclassCalendars])
   {
-    v6 = [(CalendarSettingsSpecifierProvider *)self specifiers];
+    specifiers = [(CalendarSettingsSpecifierProvider *)self specifiers];
     v7 = objc_alloc_init(CalendarSettingsController);
     [(CalendarSettingsController *)v7 setSpecifier:self->_iCloudCalendarSettingSpecifier];
     WeakRetained = objc_loadWeakRetained(&self->_presenter);

@@ -1,30 +1,30 @@
 @interface BKUnsyncedSeriesCollection
-+ (id)seriesCollectionWithSeriesID:(id)a3 name:(id)a4;
++ (id)seriesCollectionWithSeriesID:(id)d name:(id)name;
 - (id)collectionID;
 @end
 
 @implementation BKUnsyncedSeriesCollection
 
-+ (id)seriesCollectionWithSeriesID:(id)a3 name:(id)a4
++ (id)seriesCollectionWithSeriesID:(id)d name:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  dCopy = d;
   v7 = objc_alloc_init(BKUnsyncedSeriesCollection);
-  [(BKDefaultCollection *)v7 setSeriesID:v6];
+  [(BKDefaultCollection *)v7 setSeriesID:dCopy];
 
-  [(BKDefaultCollection *)v7 setTitle:v5];
+  [(BKDefaultCollection *)v7 setTitle:nameCopy];
 
   return v7;
 }
 
 - (id)collectionID
 {
-  v3 = [(BKDefaultCollection *)self seriesID];
+  seriesID = [(BKDefaultCollection *)self seriesID];
 
-  if (v3)
+  if (seriesID)
   {
-    v4 = [(BKDefaultCollection *)self seriesID];
-    v5 = [BKCollection seriesCollectionIDForSeriesID:v4];
+    seriesID2 = [(BKDefaultCollection *)self seriesID];
+    v5 = [BKCollection seriesCollectionIDForSeriesID:seriesID2];
   }
 
   else

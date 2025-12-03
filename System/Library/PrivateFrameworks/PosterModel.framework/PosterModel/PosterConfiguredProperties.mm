@@ -1,17 +1,17 @@
 @interface PosterConfiguredProperties
 - (_TtC11PosterModel26PosterConfiguredProperties)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PosterConfiguredProperties
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11PosterModel26PosterConfiguredProperties_titleStyleConfiguration);
-  v5 = a3;
-  v6 = self;
-  [v5 encodeObject:v4 forKey:@"titleStyleConfiguration"];
-  [v5 encodeObject:*(&v6->super.isa + OBJC_IVAR____TtC11PosterModel26PosterConfiguredProperties_renderingConfiguration) forKey:@"titleStyleConfiguration"];
+  coderCopy = coder;
+  selfCopy = self;
+  [coderCopy encodeObject:v4 forKey:@"titleStyleConfiguration"];
+  [coderCopy encodeObject:*(&selfCopy->super.isa + OBJC_IVAR____TtC11PosterModel26PosterConfiguredProperties_renderingConfiguration) forKey:@"titleStyleConfiguration"];
 }
 
 - (_TtC11PosterModel26PosterConfiguredProperties)init

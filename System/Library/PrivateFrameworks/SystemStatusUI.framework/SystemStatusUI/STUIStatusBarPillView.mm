@@ -1,27 +1,27 @@
 @interface STUIStatusBarPillView
 - (BOOL)canBecomeFocused;
 - (BOOL)isUserInteractionEnabled;
-- (STUIStatusBarPillView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarPillView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIView)subviewForBaselineAlignment;
 - (void)_updateBackgroundColor;
-- (void)applyStyleAttributes:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)resumePersistentAnimation;
-- (void)setPillColor:(id)a3;
-- (void)setPulsing:(BOOL)a3;
-- (void)setVisualEffect:(id)a3;
+- (void)setPillColor:(id)color;
+- (void)setPulsing:(BOOL)pulsing;
+- (void)setVisualEffect:(id)effect;
 @end
 
 @implementation STUIStatusBarPillView
 
-- (STUIStatusBarPillView)initWithFrame:(CGRect)a3
+- (STUIStatusBarPillView)initWithFrame:(CGRect)frame
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = STUIStatusBarPillView;
-  v3 = [(STUIStatusBarRoundedCornerView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarRoundedCornerView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(MEMORY[0x277D75D68]);
   visualEffectView = v3->_visualEffectView;
   v3->_visualEffectView = v4;
@@ -29,16 +29,16 @@
   [(UIVisualEffectView *)v3->_visualEffectView setHidden:1];
   [(STUIStatusBarPillView *)v3 addSubview:v3->_visualEffectView];
   v3->_pulsing = 1;
-  v6 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   pulseLayer = v3->_pulseLayer;
-  v3->_pulseLayer = v6;
+  v3->_pulseLayer = layer;
 
   v8 = [MEMORY[0x277D75348] colorWithWhite:0.0980392157 alpha:0.18];
   -[CALayer setBackgroundColor:](v3->_pulseLayer, "setBackgroundColor:", [v8 CGColor]);
 
   [(CALayer *)v3->_pulseLayer setOpacity:0.0];
-  v9 = [(STUIStatusBarPillView *)v3 layer];
-  [v9 addSublayer:v3->_pulseLayer];
+  layer2 = [(STUIStatusBarPillView *)v3 layer];
+  [layer2 addSublayer:v3->_pulseLayer];
 
   [(STUIStatusBarPillView *)v3 setClipsToBounds:1];
   v13[0] = v3;
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (void)setPillColor:(id)a3
+- (void)setPillColor:(id)color
 {
-  objc_storeStrong(&self->_pillColor, a3);
+  objc_storeStrong(&self->_pillColor, color);
 
   [(STUIStatusBarPillView *)self _updateBackgroundColor];
 }
@@ -81,8 +81,8 @@
   v14.receiver = self;
   v14.super_class = STUIStatusBarPillView;
   [(STUIStatusBarRoundedCornerView *)&v14 layoutSubviews];
-  v3 = [(STUIStatusBarPillView *)self layer];
-  [v3 bounds];
+  layer = [(STUIStatusBarPillView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -101,25 +101,25 @@
   }
 }
 
-- (void)setVisualEffect:(id)a3
+- (void)setVisualEffect:(id)effect
 {
-  v5 = a3;
-  if (self->_visualEffect != v5)
+  effectCopy = effect;
+  if (self->_visualEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_visualEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_visualEffect, effect);
     [(UIVisualEffectView *)self->_visualEffectView setEffect:v6];
     [(UIVisualEffectView *)self->_visualEffectView setHidden:v6 == 0];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (void)setPulsing:(BOOL)a3
+- (void)setPulsing:(BOOL)pulsing
 {
-  if (self->_pulsing != a3)
+  if (self->_pulsing != pulsing)
   {
-    self->_pulsing = a3;
-    if (a3)
+    self->_pulsing = pulsing;
+    if (pulsing)
     {
       [(STUIStatusBarPillView *)self resumePersistentAnimation];
     }
@@ -133,38 +133,38 @@
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(STUIStatusBarPillView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 3;
+  traitCollection = [(STUIStatusBarPillView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 3;
 
   return v3;
 }
 
 - (BOOL)isUserInteractionEnabled
 {
-  v2 = [(STUIStatusBarPillView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 3;
+  traitCollection = [(STUIStatusBarPillView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 3;
 
   return v3;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarPillView;
-  [(STUIStatusBarPillView *)&v5 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(STUIStatusBarPillView *)&v5 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   [(STUIStatusBarPillView *)self _updateBackgroundColor];
 }
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(STUIStatusBarPillView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 3)
+  traitCollection = [(STUIStatusBarPillView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v4 = [(STUIStatusBarPillView *)self isFocused];
+    isFocused = [(STUIStatusBarPillView *)self isFocused];
 
-    if (v4)
+    if (isFocused)
     {
-      v5 = [MEMORY[0x277D75348] _carSystemFocusColor];
+      _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
       goto LABEL_6;
     }
   }
@@ -173,22 +173,22 @@
   {
   }
 
-  v5 = [(STUIStatusBarPillView *)self pillColor];
+  _carSystemFocusColor = [(STUIStatusBarPillView *)self pillColor];
 LABEL_6:
-  v6 = v5;
-  [(STUIStatusBarPillView *)self setBackgroundColor:v5];
+  v6 = _carSystemFocusColor;
+  [(STUIStatusBarPillView *)self setBackgroundColor:_carSystemFocusColor];
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(STUIStatusBarPillView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(STUIStatusBarPillView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -200,20 +200,20 @@ LABEL_6:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 applyStyleAttributes:v4];
+          [v10 applyStyleAttributes:attributesCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

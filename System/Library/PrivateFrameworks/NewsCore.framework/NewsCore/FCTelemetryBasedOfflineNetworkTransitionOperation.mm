@@ -1,8 +1,8 @@
 @interface FCTelemetryBasedOfflineNetworkTransitionOperation
 - (FCTelemetryBasedOfflineNetworkTransitionOperation)init;
-- (FCTelemetryBasedOfflineNetworkTransitionOperation)initWithAppActivationMonitor:(id)a3 ignoredHosts:(id)a4 networkBehaviorMonitor:(id)a5;
-- (void)logNetworkEvent:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCTelemetryBasedOfflineNetworkTransitionOperation)initWithAppActivationMonitor:(id)monitor ignoredHosts:(id)hosts networkBehaviorMonitor:(id)behaviorMonitor;
+- (void)logNetworkEvent:(id)event;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -10,11 +10,11 @@
 
 - (void)performOperation
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self setMonitoringStartDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self setMonitoringStartDate:date];
 
-  v4 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self networkBehaviorMonitor];
-  [v4 addMonitor:self];
+  networkBehaviorMonitor = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self networkBehaviorMonitor];
+  [networkBehaviorMonitor addMonitor:self];
 }
 
 - (FCTelemetryBasedOfflineNetworkTransitionOperation)init
@@ -43,13 +43,13 @@
   objc_exception_throw(v6);
 }
 
-- (FCTelemetryBasedOfflineNetworkTransitionOperation)initWithAppActivationMonitor:(id)a3 ignoredHosts:(id)a4 networkBehaviorMonitor:(id)a5
+- (FCTelemetryBasedOfflineNetworkTransitionOperation)initWithAppActivationMonitor:(id)monitor ignoredHosts:(id)hosts networkBehaviorMonitor:(id)behaviorMonitor
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  monitorCopy = monitor;
+  hostsCopy = hosts;
+  behaviorMonitorCopy = behaviorMonitor;
+  if (!monitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appActivationMonitor"];
     *buf = 136315906;
@@ -62,13 +62,13 @@
     v31 = v20;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (hostsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (hostsCopy)
   {
     goto LABEL_6;
   }
@@ -88,7 +88,7 @@
   }
 
 LABEL_6:
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!behaviorMonitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "networkBehaviorMonitor"];
     *buf = 136315906;
@@ -108,12 +108,12 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appActivationMonitor, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_appActivationMonitor, monitor);
+    v14 = [hostsCopy copy];
     ignoredHosts = v13->_ignoredHosts;
     v13->_ignoredHosts = v14;
 
-    objc_storeStrong(&v13->_networkBehaviorMonitor, a5);
+    objc_storeStrong(&v13->_networkBehaviorMonitor, behaviorMonitor);
     v16 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
     lock = v13->_lock;
     v13->_lock = v16;
@@ -123,33 +123,33 @@ LABEL_6:
   return v13;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self networkBehaviorMonitor];
-  [v4 removeMonitor:self];
+  networkBehaviorMonitor = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self networkBehaviorMonitor];
+  [networkBehaviorMonitor removeMonitor:self];
 }
 
-- (void)logNetworkEvent:(id)a3
+- (void)logNetworkEvent:(id)event
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = MEMORY[0x1E695DF00];
-  [v4 startTime];
+  [eventCopy startTime];
   v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
-  v7 = [v4 error];
-  v8 = v7;
-  if (v7)
+  error = [eventCopy error];
+  v8 = error;
+  if (error)
   {
-    v9 = v7;
-    v10 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self monitoringStartDate];
-    if (([v6 fc_isLaterThan:v10] & 1) == 0)
+    v9 = error;
+    monitoringStartDate = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self monitoringStartDate];
+    if (([v6 fc_isLaterThan:monitoringStartDate] & 1) == 0)
     {
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __69__FCTelemetryBasedOfflineNetworkTransitionOperation_logNetworkEvent___block_invoke_3;
       v37[3] = &unk_1E7C36C58;
       v38 = v6;
-      v39 = v10;
+      v39 = monitoringStartDate;
       __69__FCTelemetryBasedOfflineNetworkTransitionOperation_logNetworkEvent___block_invoke_3(v37);
 
 LABEL_10:
@@ -174,15 +174,15 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v13 = [v4 error];
-    v14 = [v13 userInfo];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E696A980]];
+    error2 = [eventCopy error];
+    userInfo = [error2 userInfo];
+    v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A980]];
 
     if (v15)
     {
-      v16 = [v15 host];
-      v17 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self ignoredHosts];
-      v18 = [v17 containsObject:v16];
+      host = [v15 host];
+      ignoredHosts = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self ignoredHosts];
+      v18 = [ignoredHosts containsObject:host];
 
       v19 = FCReachabilityLog;
       v20 = os_log_type_enabled(FCReachabilityLog, OS_LOG_TYPE_DEFAULT);
@@ -191,7 +191,7 @@ LABEL_10:
         if (v20)
         {
           *buf = 138543362;
-          v45 = v16;
+          v45 = host;
           _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_DEFAULT, "host %{public}@ will be ignored", buf, 0xCu);
         }
 
@@ -201,7 +201,7 @@ LABEL_10:
       if (v20)
       {
         *buf = 138543362;
-        v45 = v16;
+        v45 = host;
         _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_DEFAULT, "host %{public}@ will not be ignored", buf, 0xCu);
       }
     }
@@ -216,23 +216,23 @@ LABEL_10:
       }
     }
 
-    v22 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self appActivationMonitor];
-    v16 = [v22 lastActivationDate];
+    appActivationMonitor = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self appActivationMonitor];
+    host = [appActivationMonitor lastActivationDate];
 
-    v23 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self appActivationMonitor];
-    v24 = [v23 lastBackgroundDate];
+    appActivationMonitor2 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self appActivationMonitor];
+    lastBackgroundDate = [appActivationMonitor2 lastBackgroundDate];
 
-    if (v16)
+    if (host)
     {
-      if (v24 && [v24 fc_isLaterThan:v16])
+      if (lastBackgroundDate && [lastBackgroundDate fc_isLaterThan:host])
       {
         v25 = FCReachabilityLog;
         if (os_log_type_enabled(FCReachabilityLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v45 = v24;
+          v45 = lastBackgroundDate;
           v46 = 2114;
-          v47 = v16;
+          v47 = host;
           v26 = "disregarding error, since app is currently in the background, with last activation date of %{public}@ and last background date of %{public}@ ";
 LABEL_29:
           v27 = v25;
@@ -244,19 +244,19 @@ LABEL_32:
 
       else
       {
-        if (![v6 fc_isEarlierThan:v16])
+        if (![v6 fc_isEarlierThan:host])
         {
-          v30 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self lock];
+          lock = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)self lock];
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __69__FCTelemetryBasedOfflineNetworkTransitionOperation_logNetworkEvent___block_invoke_25;
           v31[3] = &unk_1E7C376C8;
           v31[4] = self;
-          v32 = v4;
+          v32 = eventCopy;
           v33 = v6;
-          v34 = v16;
-          v35 = v24;
-          [v30 performWithLockSync:v31];
+          v34 = host;
+          v35 = lastBackgroundDate;
+          [lock performWithLockSync:v31];
 
           goto LABEL_34;
         }
@@ -267,7 +267,7 @@ LABEL_32:
           *buf = 138543618;
           v45 = v6;
           v46 = 2114;
-          v47 = v16;
+          v47 = host;
           v26 = "disregarding error, since network event started at %{public}@ relative to last activation date of %{public}@";
           goto LABEL_29;
         }
@@ -297,8 +297,8 @@ LABEL_35:
   v40[1] = 3221225472;
   v40[2] = __69__FCTelemetryBasedOfflineNetworkTransitionOperation_logNetworkEvent___block_invoke;
   v40[3] = &unk_1E7C376A0;
-  v41 = v4;
-  v42 = self;
+  v41 = eventCopy;
+  selfCopy = self;
   v43 = v6;
   __69__FCTelemetryBasedOfflineNetworkTransitionOperation_logNetworkEvent___block_invoke(v40);
 

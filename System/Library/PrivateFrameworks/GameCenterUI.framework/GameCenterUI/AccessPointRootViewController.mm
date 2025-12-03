@@ -1,5 +1,5 @@
 @interface AccessPointRootViewController
-- (_TtC12GameCenterUI29AccessPointRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12GameCenterUI29AccessPointRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)supportedInterfaceOrientations;
 @end
 
@@ -7,15 +7,15 @@
 
 - (id)supportedInterfaceOrientations
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_24DFFAD08();
 
   return v2;
 }
 
-- (_TtC12GameCenterUI29AccessPointRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI29AccessPointRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_24E347CF8();
     v7 = v6;
@@ -27,8 +27,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_24DFFADA4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_24DFFADA4(v5, v7, bundle);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface PhotosUIServiceVirtualLibraryEducationViewController
 - (id)createEducationViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)continueButtonTapped:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)continueButtonTapped:(id)tapped;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -15,14 +15,14 @@
   v5 = PXLocalizedString();
   v6 = [UIImage px_imageNamed:@"PhotosPrivacyIcon"];
   v7 = [[OBWelcomeController alloc] initWithTitle:v3 detailText:v4 icon:v6];
-  v8 = [v7 headerView];
-  [v8 setAllowFullWidthIcon:1];
+  headerView = [v7 headerView];
+  [headerView setAllowFullWidthIcon:1];
 
   v9 = +[OBBoldTrayButton boldButton];
   [v9 setTitle:v5 forState:0];
   [v9 addTarget:self action:"continueButtonTapped:" forControlEvents:0x2000];
-  v10 = [v7 buttonTray];
-  [v10 addButton:v9];
+  buttonTray = [v7 buttonTray];
+  [buttonTray addButton:v9];
 
   v11 = [UIKeyCommand keyCommandWithInput:@"\r" modifierFlags:0 action:"continueButtonTapped:"];
   [v7 addKeyCommand:v11];
@@ -33,9 +33,9 @@
   return v7;
 }
 
-- (void)continueButtonTapped:(id)a3
+- (void)continueButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -52,31 +52,31 @@
   v4.receiver = self;
   v4.super_class = PhotosUIServiceVirtualLibraryEducationViewController;
   [(PhotosUIServiceVirtualLibraryEducationViewController *)&v4 viewDidLoad];
-  v3 = [(PhotosUIServiceVirtualLibraryEducationViewController *)self createEducationViewController];
-  [(PhotosUIServiceVirtualLibraryEducationViewController *)self presentViewController:v3 animated:1 completion:0];
+  createEducationViewController = [(PhotosUIServiceVirtualLibraryEducationViewController *)self createEducationViewController];
+  [(PhotosUIServiceVirtualLibraryEducationViewController *)self presentViewController:createEducationViewController animated:1 completion:0];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v9 = a4;
-  v5 = [(PhotosUIServiceVirtualLibraryEducationViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 _rootSheetPresentationController];
-  [v7 _setShouldScaleDownBehindDescendantSheets:0];
+  completionCopy = completion;
+  view = [(PhotosUIServiceVirtualLibraryEducationViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 

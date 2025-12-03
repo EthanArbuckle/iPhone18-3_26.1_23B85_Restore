@@ -1,13 +1,13 @@
 @interface _WKAttachment
 - (NSString)uniqueIdentifier;
 - (_WKAttachmentInfo)info;
-- (uint64_t)setFileWrapper:(const void *)a1 contentType:completion:;
-- (uint64_t)setFileWrapper:(uint64_t)a1 contentType:completion:;
+- (uint64_t)setFileWrapper:(const void *)wrapper contentType:completion:;
+- (uint64_t)setFileWrapper:(uint64_t)wrapper contentType:completion:;
 - (void)dealloc;
-- (void)requestInfo:(id)a3;
-- (void)setData:(id)a3 newContentType:(id)a4;
-- (void)setData:(id)a3 newContentType:(id)a4 newFilename:(id)a5 completion:(id)a6;
-- (void)setFileWrapper:(id)a3 contentType:(id)a4 completion:(id)a5;
+- (void)requestInfo:(id)info;
+- (void)setData:(id)data newContentType:(id)type;
+- (void)setData:(id)data newContentType:(id)type newFilename:(id)filename completion:(id)completion;
+- (void)setFileWrapper:(id)wrapper contentType:(id)type completion:(id)completion;
 @end
 
 @implementation _WKAttachment
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (void)requestInfo:(id)a3
+- (void)requestInfo:(id)info
 {
-  v4 = [(_WKAttachment *)self info];
-  v5 = *(a3 + 2);
+  info = [(_WKAttachment *)self info];
+  v5 = *(info + 2);
 
-  v5(a3, v4, 0);
+  v5(info, info, 0);
 }
 
-- (void)setFileWrapper:(id)a3 contentType:(id)a4 completion:(id)a5
+- (void)setFileWrapper:(id)wrapper contentType:(id)type completion:(id)completion
 {
   v6 = *self[1]._attachment.m_storage.data;
   if (v6 && *(v6 + 8))
@@ -62,8 +62,8 @@
       WTF::StringImpl::destroy(v10, a2);
     }
 
-    API::Attachment::setFileWrapperAndUpdateContentType(&self->_attachment, a3, a4);
-    v11 = _Block_copy(a5);
+    API::Attachment::setFileWrapperAndUpdateContentType(&self->_attachment, wrapper, type);
+    v11 = _Block_copy(completion);
     v12 = WTF::fastMalloc(0x10);
     *v12 = &unk_1F10FAFE0;
     v12[1] = v11;
@@ -79,33 +79,33 @@
     _Block_release(0);
   }
 
-  else if (a5)
+  else if (completion)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:2 userInfo:0];
-    v15 = *(a5 + 2);
+    v15 = *(completion + 2);
 
-    v15(a5, v14);
+    v15(completion, v14);
   }
 }
 
-- (void)setData:(id)a3 newContentType:(id)a4
+- (void)setData:(id)data newContentType:(id)type
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:a3];
+  v5 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:data];
   [_WKAttachment setFileWrapper:"setFileWrapper:contentType:completion:" contentType:? completion:?];
   if (v5)
   {
   }
 }
 
-- (void)setData:(id)a3 newContentType:(id)a4 newFilename:(id)a5 completion:(id)a6
+- (void)setData:(id)data newContentType:(id)type newFilename:(id)filename completion:(id)completion
 {
-  v10 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:a3];
-  if (a5)
+  v10 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:data];
+  if (filename)
   {
-    [v10 setPreferredFilename:a5];
+    [v10 setPreferredFilename:filename];
   }
 
-  [(_WKAttachment *)self setFileWrapper:v10 contentType:a4 completion:a6];
+  [(_WKAttachment *)self setFileWrapper:v10 contentType:type completion:completion];
   if (v10)
   {
   }
@@ -147,9 +147,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (uint64_t)setFileWrapper:(uint64_t)a1 contentType:completion:
+- (uint64_t)setFileWrapper:(uint64_t)wrapper contentType:completion:
 {
-  result = *(a1 + 8);
+  result = *(wrapper + 8);
   if (result)
   {
     return (*(result + 16))(result, 0);
@@ -158,12 +158,12 @@ LABEL_7:
   return result;
 }
 
-- (uint64_t)setFileWrapper:(const void *)a1 contentType:completion:
+- (uint64_t)setFileWrapper:(const void *)wrapper contentType:completion:
 {
-  *a1 = &unk_1F10FAFE0;
-  _Block_release(a1[1]);
+  *wrapper = &unk_1F10FAFE0;
+  _Block_release(wrapper[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(wrapper, v2);
 }
 
 @end

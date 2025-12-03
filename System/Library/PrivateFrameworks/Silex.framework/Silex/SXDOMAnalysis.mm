@@ -1,29 +1,29 @@
 @interface SXDOMAnalysis
 - (SXDOMAnalysis)init;
-- (id)childComponentsOfComponent:(id)a3 includeDescendants:(BOOL)a4;
-- (id)componentStylesForComponent:(id)a3;
-- (id)componentStylesForComponents:(id)a3;
-- (id)componentTextStylesForComponent:(id)a3;
-- (id)componentTextStylesForComponents:(id)a3;
-- (id)componentsForComponentStyle:(id)a3;
-- (id)componentsForComponentStyles:(id)a3;
-- (id)componentsForComponentTextStyle:(id)a3;
-- (id)componentsForComponentTextStyles:(id)a3;
-- (id)componentsForTextStyle:(id)a3;
-- (id)componentsForTextStyles:(id)a3;
-- (id)componentsWithRole:(int)a3;
-- (id)componentsWithType:(id)a3;
-- (id)containerPathForComponentWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)identifiersForKey:(id)a3 map:(id)a4;
-- (id)identifiersForKeys:(id)a3 map:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)parentComponentOfComponent:(id)a3;
-- (id)textStylesForComponent:(id)a3;
-- (id)textStylesForComponents:(id)a3;
-- (id)typeForComponent:(id)a3;
-- (int)roleForComponent:(id)a3;
-- (void)populateWithSource:(id)a3;
+- (id)childComponentsOfComponent:(id)component includeDescendants:(BOOL)descendants;
+- (id)componentStylesForComponent:(id)component;
+- (id)componentStylesForComponents:(id)components;
+- (id)componentTextStylesForComponent:(id)component;
+- (id)componentTextStylesForComponents:(id)components;
+- (id)componentsForComponentStyle:(id)style;
+- (id)componentsForComponentStyles:(id)styles;
+- (id)componentsForComponentTextStyle:(id)style;
+- (id)componentsForComponentTextStyles:(id)styles;
+- (id)componentsForTextStyle:(id)style;
+- (id)componentsForTextStyles:(id)styles;
+- (id)componentsWithRole:(int)role;
+- (id)componentsWithType:(id)type;
+- (id)containerPathForComponentWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)identifiersForKey:(id)key map:(id)map;
+- (id)identifiersForKeys:(id)keys map:(id)map;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)parentComponentOfComponent:(id)component;
+- (id)textStylesForComponent:(id)component;
+- (id)textStylesForComponents:(id)components;
+- (id)typeForComponent:(id)component;
+- (int)roleForComponent:(id)component;
+- (void)populateWithSource:(id)source;
 @end
 
 @implementation SXDOMAnalysis
@@ -35,53 +35,53 @@
   v2 = [(SXDOMAnalysis *)&v32 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     roleToComponentsMap = v2->_roleToComponentsMap;
-    v2->_roleToComponentsMap = v3;
+    v2->_roleToComponentsMap = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     componentToRoleMap = v2->_componentToRoleMap;
-    v2->_componentToRoleMap = v5;
+    v2->_componentToRoleMap = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     typeToComponentsMap = v2->_typeToComponentsMap;
-    v2->_typeToComponentsMap = v7;
+    v2->_typeToComponentsMap = dictionary3;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     componentToTypeMap = v2->_componentToTypeMap;
-    v2->_componentToTypeMap = v9;
+    v2->_componentToTypeMap = dictionary4;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     componentStyleToComponentsMap = v2->_componentStyleToComponentsMap;
-    v2->_componentStyleToComponentsMap = v11;
+    v2->_componentStyleToComponentsMap = dictionary5;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     componentToComponentStylesMap = v2->_componentToComponentStylesMap;
-    v2->_componentToComponentStylesMap = v13;
+    v2->_componentToComponentStylesMap = dictionary6;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary7 = [MEMORY[0x1E695DF90] dictionary];
     componentTextStyleToComponentsMap = v2->_componentTextStyleToComponentsMap;
-    v2->_componentTextStyleToComponentsMap = v15;
+    v2->_componentTextStyleToComponentsMap = dictionary7;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary8 = [MEMORY[0x1E695DF90] dictionary];
     componentToComponentTextStylesMap = v2->_componentToComponentTextStylesMap;
-    v2->_componentToComponentTextStylesMap = v17;
+    v2->_componentToComponentTextStylesMap = dictionary8;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary9 = [MEMORY[0x1E695DF90] dictionary];
     textStyleToComponentsMap = v2->_textStyleToComponentsMap;
-    v2->_textStyleToComponentsMap = v19;
+    v2->_textStyleToComponentsMap = dictionary9;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary10 = [MEMORY[0x1E695DF90] dictionary];
     componentToTextStylesMap = v2->_componentToTextStylesMap;
-    v2->_componentToTextStylesMap = v21;
+    v2->_componentToTextStylesMap = dictionary10;
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary11 = [MEMORY[0x1E695DF90] dictionary];
     componentToChildComponentsMap = v2->_componentToChildComponentsMap;
-    v2->_componentToChildComponentsMap = v23;
+    v2->_componentToChildComponentsMap = dictionary11;
 
-    v25 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary12 = [MEMORY[0x1E695DF90] dictionary];
     componentToParentComponentMap = v2->_componentToParentComponentMap;
-    v2->_componentToParentComponentMap = v25;
+    v2->_componentToParentComponentMap = dictionary12;
 
     v27 = objc_alloc_init(SXMutableConditionalObjectAnalysis);
     conditionalObjectAnalysis = v2->_conditionalObjectAnalysis;
@@ -95,10 +95,10 @@
   return v2;
 }
 
-- (id)componentsWithRole:(int)a3
+- (id)componentsWithRole:(int)role
 {
   roleToComponentsMap = self->_roleToComponentsMap;
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&role];
   v5 = [(NSMutableDictionary *)roleToComponentsMap objectForKey:v4];
   v6 = [v5 copy];
   v7 = v6;
@@ -117,17 +117,17 @@
   return v9;
 }
 
-- (int)roleForComponent:(id)a3
+- (int)roleForComponent:(id)component
 {
-  v3 = [(NSMutableDictionary *)self->_componentToRoleMap objectForKey:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSMutableDictionary *)self->_componentToRoleMap objectForKey:component];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (id)componentsWithType:(id)a3
+- (id)componentsWithType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_typeToComponentsMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_typeToComponentsMap objectForKey:type];
   v4 = [v3 copy];
   v5 = v4;
   if (v4)
@@ -145,115 +145,115 @@
   return v7;
 }
 
-- (id)typeForComponent:(id)a3
+- (id)typeForComponent:(id)component
 {
-  v3 = [(NSMutableDictionary *)self->_componentToTypeMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_componentToTypeMap objectForKey:component];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentStylesForComponent:(id)a3
+- (id)componentStylesForComponent:(id)component
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKey:a3 map:self->_componentToComponentStylesMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKey:component map:self->_componentToComponentStylesMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentStylesForComponents:(id)a3
+- (id)componentStylesForComponents:(id)components
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKeys:a3 map:self->_componentToComponentStylesMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKeys:components map:self->_componentToComponentStylesMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentsForComponentStyle:(id)a3
+- (id)componentsForComponentStyle:(id)style
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKey:a3 map:self->_componentStyleToComponentsMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKey:style map:self->_componentStyleToComponentsMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentsForComponentStyles:(id)a3
+- (id)componentsForComponentStyles:(id)styles
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKeys:a3 map:self->_componentStyleToComponentsMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKeys:styles map:self->_componentStyleToComponentsMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentTextStylesForComponent:(id)a3
+- (id)componentTextStylesForComponent:(id)component
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKey:a3 map:self->_componentToComponentTextStylesMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKey:component map:self->_componentToComponentTextStylesMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentTextStylesForComponents:(id)a3
+- (id)componentTextStylesForComponents:(id)components
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKeys:a3 map:self->_componentToComponentTextStylesMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKeys:components map:self->_componentToComponentTextStylesMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentsForComponentTextStyle:(id)a3
+- (id)componentsForComponentTextStyle:(id)style
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKey:a3 map:self->_componentTextStyleToComponentsMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKey:style map:self->_componentTextStyleToComponentsMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentsForComponentTextStyles:(id)a3
+- (id)componentsForComponentTextStyles:(id)styles
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKeys:a3 map:self->_componentTextStyleToComponentsMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKeys:styles map:self->_componentTextStyleToComponentsMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)textStylesForComponent:(id)a3
+- (id)textStylesForComponent:(id)component
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKey:a3 map:self->_componentToTextStylesMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKey:component map:self->_componentToTextStylesMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)textStylesForComponents:(id)a3
+- (id)textStylesForComponents:(id)components
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKeys:a3 map:self->_componentToTextStylesMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKeys:components map:self->_componentToTextStylesMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentsForTextStyle:(id)a3
+- (id)componentsForTextStyle:(id)style
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKey:a3 map:self->_textStyleToComponentsMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKey:style map:self->_textStyleToComponentsMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)componentsForTextStyles:(id)a3
+- (id)componentsForTextStyles:(id)styles
 {
-  v3 = [(SXDOMAnalysis *)self identifiersForKeys:a3 map:self->_textStyleToComponentsMap];
+  v3 = [(SXDOMAnalysis *)self identifiersForKeys:styles map:self->_textStyleToComponentsMap];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)childComponentsOfComponent:(id)a3 includeDescendants:(BOOL)a4
+- (id)childComponentsOfComponent:(id)component includeDescendants:(BOOL)descendants
 {
-  v4 = a4;
+  descendantsCopy = descendants;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = [(NSMutableDictionary *)self->_componentToChildComponentsMap objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_componentToChildComponentsMap objectForKey:component];
   v7 = v6;
   if (v6)
   {
@@ -267,7 +267,7 @@
 
   v9 = v8;
 
-  if (v4)
+  if (descendantsCopy)
   {
     v20 = 0u;
     v21 = 0u;
@@ -307,25 +307,25 @@
   return v16;
 }
 
-- (id)parentComponentOfComponent:(id)a3
+- (id)parentComponentOfComponent:(id)component
 {
-  v3 = [(NSMutableDictionary *)self->_componentToParentComponentMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_componentToParentComponentMap objectForKey:component];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)containerPathForComponentWithIdentifier:(id)a3
+- (id)containerPathForComponentWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(SXDOMAnalysis *)self parentComponentOfComponent:v4];
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(SXDOMAnalysis *)self parentComponentOfComponent:identifierCopy];
   if (v6)
   {
     v7 = v6;
     do
     {
-      [v5 insertObject:v7 atIndex:0];
+      [array insertObject:v7 atIndex:0];
       v8 = [(SXDOMAnalysis *)self parentComponentOfComponent:v7];
 
       v7 = v8;
@@ -334,48 +334,48 @@
     while (v8);
   }
 
-  v9 = [v5 copy];
+  v9 = [array copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXDOMAnalysis);
   [(SXDOMAnalysis *)v4 populateWithSource:self];
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXMutableDOMAnalysis);
   [(SXDOMAnalysis *)v4 populateWithSource:self];
   return v4;
 }
 
-- (void)populateWithSource:(id)a3
+- (void)populateWithSource:(id)source
 {
-  v4 = *(a3 + 1);
+  v4 = *(source + 1);
   roleToComponentsMap = self->_roleToComponentsMap;
-  v6 = a3;
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v6, v4, roleToComponentsMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v7, v6[3], self->_typeToComponentsMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v8, v6[5], self->_componentStyleToComponentsMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v9, v6[6], self->_componentToComponentStylesMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v10, v6[7], self->_componentTextStyleToComponentsMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v11, v6[8], self->_componentToComponentTextStylesMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v12, v6[9], self->_textStyleToComponentsMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v13, v6[10], self->_componentToTextStylesMap);
-  __36__SXDOMAnalysis_populateWithSource___block_invoke(v14, v6[11], self->_componentToChildComponentsMap);
-  v15 = [v6[12] mutableCopy];
+  sourceCopy = source;
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(sourceCopy, v4, roleToComponentsMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v7, sourceCopy[3], self->_typeToComponentsMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v8, sourceCopy[5], self->_componentStyleToComponentsMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v9, sourceCopy[6], self->_componentToComponentStylesMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v10, sourceCopy[7], self->_componentTextStyleToComponentsMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v11, sourceCopy[8], self->_componentToComponentTextStylesMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v12, sourceCopy[9], self->_textStyleToComponentsMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v13, sourceCopy[10], self->_componentToTextStylesMap);
+  __36__SXDOMAnalysis_populateWithSource___block_invoke(v14, sourceCopy[11], self->_componentToChildComponentsMap);
+  v15 = [sourceCopy[12] mutableCopy];
   componentToParentComponentMap = self->_componentToParentComponentMap;
   self->_componentToParentComponentMap = v15;
 
-  v17 = [v6[13] mutableCopy];
+  v17 = [sourceCopy[13] mutableCopy];
   conditionalObjectAnalysis = self->_conditionalObjectAnalysis;
   self->_conditionalObjectAnalysis = v17;
 
-  v19 = v6[14];
+  v19 = sourceCopy[14];
   v20 = [v19 mutableCopy];
   namespacedObjectReferences = self->_namespacedObjectReferences;
   self->_namespacedObjectReferences = v20;
@@ -403,17 +403,17 @@ void __36__SXDOMAnalysis_populateWithSource___block_invoke_2(uint64_t a1, void *
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)identifiersForKeys:(id)a3 map:(id)a4
+- (id)identifiersForKeys:(id)keys map:(id)map
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  mapCopy = map;
   v8 = [MEMORY[0x1E695DFA8] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -428,7 +428,7 @@ void __36__SXDOMAnalysis_populateWithSource___block_invoke_2(uint64_t a1, void *
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(SXDOMAnalysis *)self identifiersForKey:*(*(&v17 + 1) + 8 * i) map:v7, v17];
+        v14 = [(SXDOMAnalysis *)self identifiersForKey:*(*(&v17 + 1) + 8 * i) map:mapCopy, v17];
         [v8 unionSet:v14];
       }
 
@@ -443,15 +443,15 @@ void __36__SXDOMAnalysis_populateWithSource___block_invoke_2(uint64_t a1, void *
   return v15;
 }
 
-- (id)identifiersForKey:(id)a3 map:(id)a4
+- (id)identifiersForKey:(id)key map:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:v5];
+  keyCopy = key;
+  mapCopy = map;
+  v7 = [mapCopy objectForKey:keyCopy];
   if (!v7)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
-    [v6 setObject:v7 forKey:v5];
+    [mapCopy setObject:v7 forKey:keyCopy];
   }
 
   return v7;

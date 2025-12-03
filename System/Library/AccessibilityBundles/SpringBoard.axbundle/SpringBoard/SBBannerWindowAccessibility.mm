@@ -1,16 +1,16 @@
 @interface SBBannerWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityViewIsModal;
 @end
 
 @implementation SBBannerWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBBannerWindow" hasInstanceVariable:@"_keyWindowStack" withType:"_SBFKeyWindowStack"];
-  [v3 validateClass:@"_SBFKeyWindowStack" hasInstanceVariable:@"_expectedKeyWindow" withType:"SBFWindow"];
-  [v3 validateClass:@"SBTransientOverlayWindow"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBBannerWindow" hasInstanceVariable:@"_keyWindowStack" withType:"_SBFKeyWindowStack"];
+  [validationsCopy validateClass:@"_SBFKeyWindowStack" hasInstanceVariable:@"_expectedKeyWindow" withType:"SBFWindow"];
+  [validationsCopy validateClass:@"SBTransientOverlayWindow"];
 }
 
 - (BOOL)accessibilityViewIsModal

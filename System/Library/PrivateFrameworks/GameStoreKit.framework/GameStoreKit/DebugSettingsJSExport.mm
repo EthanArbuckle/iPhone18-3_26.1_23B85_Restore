@@ -54,290 +54,290 @@
 
 - (BOOL)isPlayerPageActivityFeedActive
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)isPlayTogetherFeedActive
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)isPlayTogetherEnhancementsActive
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)isGameDetailPageActivityFeedActive
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowGameDetailPageBackground
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)force3DChicletFallBack
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)show3DChicletsForFriendsArePlaying
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)show3DChicletsForHomeHero
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)show3DChicletsForGameHero
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)show3DChicletsForRoomHeaders
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)show3DChicletsForSmallBricks
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldContinuePlayingLaunchGameIfInstalled
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)isMockPlayNowFeed
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowMiniGamesShelfInPlayNowFeed
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowMiniGamesInvocationSheet
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)allLeaderboardsSupportChallenges
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowChallengeDebugDurationOptions
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowBadgesInChallengeHub
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)allowSendingChallengeInvitesViaMessages
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)alwaysShowAddFriendButtonOnProfile
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)forcePresentWelcomeOnboarding
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)forcePresentCrossUseConsentOnboarding
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)forcePresentProfileCreationOnboarding
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)forceEnablePrerenderedIconArtwork
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)forcePrerenderedIcons
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)showMiniGamesInLibraryPage
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)hideOfferButtonsInLibraryPage
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)alwaysSendCAIDFriendRequests
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)displayEmptyShelvesInPlayNowFeed
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)disablePlayNowFeedHydration
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)displayErrorsInPlayNowFeed
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)showImpressionIndexOverlay
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)showRecordings
@@ -352,74 +352,74 @@
 
 - (BOOL)showArcadeTab
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)prioritizeContactNames
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowMockActivityCards
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowInviteToPlayOption
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)shouldShowMockHomeCategoryBricks
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)enableHighlightsFromProductPageResponse
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)disableArcade
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (BOOL)enableDynamicType
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_24F92B098();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface SBHomeScreenMaterialView
-+ (id)colorBurnContentImageForImage:(id)a3;
++ (id)colorBurnContentImageForImage:(id)image;
 - (UIEdgeInsets)backgroundInsets;
-- (id)_initWithFrame:(CGRect)a3 backgroundView:(id)a4 material:(int64_t)a5 wantsGlass:(BOOL)a6 foregroundImage:(id)a7 wantsRimHighlight:(BOOL)a8;
+- (id)_initWithFrame:(CGRect)frame backgroundView:(id)view material:(int64_t)material wantsGlass:(BOOL)glass foregroundImage:(id)image wantsRimHighlight:(BOOL)highlight;
 - (void)_addHighlightViewIfNecessary;
 - (void)layoutSubviews;
-- (void)setBackgroundInsets:(UIEdgeInsets)a3;
-- (void)setBrightness:(double)a3;
-- (void)setForegroundImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setLegibilityStyle:(unint64_t)a3;
+- (void)setBackgroundInsets:(UIEdgeInsets)insets;
+- (void)setBrightness:(double)brightness;
+- (void)setForegroundImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageSize:(CGSize)size;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setLegibilityStyle:(unint64_t)style;
 @end
 
 @implementation SBHomeScreenMaterialView
 
-+ (id)colorBurnContentImageForImage:(id)a3
++ (id)colorBurnContentImageForImage:(id)image
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  imageCopy = image;
+  v4 = imageCopy;
+  if (imageCopy)
   {
-    if ([v3 isSymbolImage])
+    if ([imageCopy isSymbolImage])
     {
       v5 = v4;
     }
@@ -48,36 +48,36 @@
   return v5;
 }
 
-- (id)_initWithFrame:(CGRect)a3 backgroundView:(id)a4 material:(int64_t)a5 wantsGlass:(BOOL)a6 foregroundImage:(id)a7 wantsRimHighlight:(BOOL)a8
+- (id)_initWithFrame:(CGRect)frame backgroundView:(id)view material:(int64_t)material wantsGlass:(BOOL)glass foregroundImage:(id)image wantsRimHighlight:(BOOL)highlight
 {
-  v8 = a8;
-  v10 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  highlightCopy = highlight;
+  glassCopy = glass;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v62 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a7;
+  viewCopy = view;
+  imageCopy = image;
   v60.receiver = self;
   v60.super_class = SBHomeScreenMaterialView;
-  v19 = [(SBHomeScreenMaterialView *)&v60 initWithFrame:x, y, width, height];
-  v20 = v19;
-  if (v19)
+  height = [(SBHomeScreenMaterialView *)&v60 initWithFrame:x, y, width, height];
+  v20 = height;
+  if (height)
   {
-    [(SBHomeScreenMaterialView *)v19 setOpaque:0];
-    v21 = [(SBHomeScreenMaterialView *)v20 layer];
-    [v21 setAllowsGroupBlending:0];
+    [(SBHomeScreenMaterialView *)height setOpaque:0];
+    layer = [(SBHomeScreenMaterialView *)v20 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v20->_wantsGlass = v10;
-    if (v10)
+    v20->_wantsGlass = glassCopy;
+    if (glassCopy)
     {
-      if (a5 == 2)
+      if (material == 2)
       {
         [(UIView *)v20 sbh_applyCloseBoxGlass];
       }
 
-      else if (a5)
+      else if (material)
       {
         [(UIView *)v20 sbh_applyGlass];
       }
@@ -87,22 +87,22 @@
         [(UIView *)v20 sbh_applyClearGlass];
       }
 
-      v33 = [objc_opt_class() colorBurnContentImageForImage:v18];
+      v33 = [objc_opt_class() colorBurnContentImageForImage:imageCopy];
       v46 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v33];
       p_xColorBurnView = &v20->_xColorBurnView;
       xColorBurnView = v20->_xColorBurnView;
       v20->_xColorBurnView = v46;
 
       v48 = v20->_xColorBurnView;
-      v49 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIImageView *)v48 setTintColor:v49];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIImageView *)v48 setTintColor:whiteColor];
     }
 
     else
     {
-      if (v17)
+      if (viewCopy)
       {
-        v22 = v17;
+        v22 = viewCopy;
         backgroundView = v20->_backgroundView;
         v20->_backgroundView = v22;
       }
@@ -119,7 +119,7 @@
       }
 
       [(SBHomeScreenMaterialView *)v20 addSubview:v20->_backgroundView];
-      if (v8)
+      if (highlightCopy)
       {
         v27 = objc_alloc_init(MEMORY[0x1E69DD250]);
         rimView = v20->_rimView;
@@ -134,12 +134,12 @@
       v20->_whiteTintView = v29;
 
       v31 = v20->_whiteTintView;
-      v32 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIView *)v31 setBackgroundColor:v32];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIView *)v31 setBackgroundColor:whiteColor2];
 
       [(UIView *)v20->_whiteTintView setAlpha:0.42];
       [(SBHomeScreenMaterialView *)v20 addSubview:v20->_whiteTintView];
-      v33 = [objc_opt_class() colorBurnContentImageForImage:v18];
+      v33 = [objc_opt_class() colorBurnContentImageForImage:imageCopy];
       v34 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v33];
       v35 = v20->_xColorBurnView;
       v20->_xColorBurnView = v34;
@@ -148,22 +148,22 @@
       v37 = [MEMORY[0x1E69DC888] colorWithWhite:0.3 alpha:1.0];
       [(UIImageView *)v36 setTintColor:v37];
 
-      v38 = [(UIImageView *)v20->_xColorBurnView layer];
-      [v38 setCompositingFilter:*MEMORY[0x1E6979850]];
+      layer2 = [(UIImageView *)v20->_xColorBurnView layer];
+      [layer2 setCompositingFilter:*MEMORY[0x1E6979850]];
 
       [(SBHomeScreenMaterialView *)v20 addSubview:v20->_xColorBurnView];
-      v39 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v18];
+      v39 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
       p_xColorBurnView = &v20->_xPlusDView;
       xPlusDView = v20->_xPlusDView;
       v20->_xPlusDView = v39;
 
-      v42 = [(UIImageView *)v20->_xPlusDView layer];
+      layer3 = [(UIImageView *)v20->_xPlusDView layer];
       v43 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
-      [v42 setCompositingFilter:v43];
+      [layer3 setCompositingFilter:v43];
 
       v44 = v20->_xPlusDView;
-      v45 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIImageView *)v44 setTintColor:v45];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(UIImageView *)v44 setTintColor:blackColor];
 
       [(UIImageView *)v20->_xPlusDView setAlpha:0.3];
     }
@@ -174,8 +174,8 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v50 = [(SBHomeScreenMaterialView *)v20 subviews];
-    v51 = [v50 countByEnumeratingWithState:&v56 objects:v61 count:16];
+    subviews = [(SBHomeScreenMaterialView *)v20 subviews];
+    v51 = [subviews countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (v51)
     {
       v52 = v51;
@@ -186,13 +186,13 @@
         {
           if (*v57 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v56 + 1) + 8 * i) setUserInteractionEnabled:0];
         }
 
-        v52 = [v50 countByEnumeratingWithState:&v56 objects:v61 count:16];
+        v52 = [subviews countByEnumeratingWithState:&v56 objects:v61 count:16];
       }
 
       while (v52);
@@ -202,34 +202,34 @@
   return v20;
 }
 
-- (void)setBackgroundInsets:(UIEdgeInsets)a3
+- (void)setBackgroundInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_backgroundInsets.top), vceqq_f64(v4, *&self->_backgroundInsets.bottom)))) & 1) == 0)
   {
-    self->_backgroundInsets = a3;
+    self->_backgroundInsets = insets;
     [(SBHomeScreenMaterialView *)self setNeedsLayout];
   }
 }
 
-- (void)setForegroundImage:(id)a3
+- (void)setForegroundImage:(id)image
 {
-  v6 = a3;
-  v4 = [(SBHomeScreenMaterialView *)self foregroundImage];
+  imageCopy = image;
+  foregroundImage = [(SBHomeScreenMaterialView *)self foregroundImage];
 
-  if (v4 != v6)
+  if (foregroundImage != imageCopy)
   {
-    [(UIImageView *)self->_xPlusDView setImage:v6];
-    v5 = [objc_opt_class() colorBurnContentImageForImage:v6];
+    [(UIImageView *)self->_xPlusDView setImage:imageCopy];
+    v5 = [objc_opt_class() colorBurnContentImageForImage:imageCopy];
     [(UIImageView *)self->_xColorBurnView setImage:v5];
     [(SBHomeScreenMaterialView *)self setNeedsLayout];
   }
 }
 
-- (void)setLegibilityStyle:(unint64_t)a3
+- (void)setLegibilityStyle:(unint64_t)style
 {
   if (!self->_wantsGlass)
   {
@@ -237,12 +237,12 @@
     v15 = v3;
     whiteTintView = self->_whiteTintView;
     v11 = 0.42;
-    if (a3 == 2)
+    if (style == 2)
     {
       v11 = 0.0;
     }
 
-    v12 = dbl_1BEE87EA0[a3 == 2];
+    v12 = dbl_1BEE87EA0[style == 2];
     [(UIView *)whiteTintView setAlpha:v11, v8, v14, v4, v15, v5];
     xPlusDView = self->_xPlusDView;
 
@@ -250,35 +250,35 @@
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   if (self->_wantsGlass)
   {
-    v5 = [a3 primaryColor];
-    v6 = v5;
-    if (v5)
+    primaryColor = [settings primaryColor];
+    v6 = primaryColor;
+    if (primaryColor)
     {
-      v7 = v5;
+      systemWhiteColor = primaryColor;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
     }
 
-    v8 = v7;
+    v8 = systemWhiteColor;
 
     [(UIImageView *)self->_xColorBurnView setTintColor:v8];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     v3 = 0.466666667;
-    if (!a3)
+    if (!highlighted)
     {
       v3 = 1.0;
     }
@@ -287,12 +287,12 @@
   }
 }
 
-- (void)setBrightness:(double)a3
+- (void)setBrightness:(double)brightness
 {
   [(SBHomeScreenMaterialView *)self _addHighlightViewIfNecessary];
   highlightView = self->_highlightView;
 
-  [(UIView *)highlightView setAlpha:1.0 - a3];
+  [(UIView *)highlightView setAlpha:1.0 - brightness];
 }
 
 - (void)layoutSubviews
@@ -308,31 +308,31 @@
   width = v30.size.width;
   height = v30.size.height;
   v7 = CGRectGetHeight(v30) * 0.5;
-  v8 = [(SBHomeScreenMaterialView *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(SBHomeScreenMaterialView *)self layer];
+  [layer setCornerRadius:v7];
 
-  v9 = [(SBHomeScreenMaterialView *)self layer];
-  v10 = [v9 cornerCurve];
+  layer2 = [(SBHomeScreenMaterialView *)self layer];
+  cornerCurve = [layer2 cornerCurve];
 
   [(UIView *)self->_backgroundView setFrame:x, y, width, height];
-  v11 = [(UIView *)self->_backgroundView layer];
-  [v11 setMasksToBounds:1];
+  layer3 = [(UIView *)self->_backgroundView layer];
+  [layer3 setMasksToBounds:1];
 
-  v12 = [(UIView *)self->_backgroundView layer];
-  [v12 setCornerRadius:v7];
+  layer4 = [(UIView *)self->_backgroundView layer];
+  [layer4 setCornerRadius:v7];
 
   v28 = x;
   [(UIView *)self->_whiteTintView setFrame:x, y, width, height];
-  v13 = [(UIView *)self->_whiteTintView layer];
-  [v13 setCornerRadius:v7];
+  layer5 = [(UIView *)self->_whiteTintView layer];
+  [layer5 setCornerRadius:v7];
 
-  v14 = [(UIView *)self->_whiteTintView layer];
-  [v14 setCornerCurve:v10];
+  layer6 = [(UIView *)self->_whiteTintView layer];
+  [layer6 setCornerCurve:cornerCurve];
 
   if (self->_imageSize.width == 0.0 && self->_imageSize.height == 0.0)
   {
-    v15 = [(UIImageView *)self->_xColorBurnView image];
-    [v15 size];
+    image = [(UIImageView *)self->_xColorBurnView image];
+    [image size];
   }
 
   BSRectWithSize();
@@ -344,25 +344,25 @@
   [(UIImageView *)self->_xColorBurnView setFrame:0];
   [(UIImageView *)self->_xPlusDView setFrame:v17, v19, v21, v23];
   [(UIView *)self->_highlightView setFrame:v28, y, width, height];
-  v24 = [(UIView *)self->_highlightView layer];
-  [v24 setCornerRadius:v7];
+  layer7 = [(UIView *)self->_highlightView layer];
+  [layer7 setCornerRadius:v7];
 
-  v25 = [(UIView *)self->_highlightView layer];
-  [v25 setCornerCurve:v10];
+  layer8 = [(UIView *)self->_highlightView layer];
+  [layer8 setCornerCurve:cornerCurve];
 
   [(UIView *)self->_rimView setFrame:v28, y, width, height];
-  v26 = [(UIView *)self->_rimView layer];
-  [v26 setCornerRadius:v7];
+  layer9 = [(UIView *)self->_rimView layer];
+  [layer9 setCornerRadius:v7];
 
-  v27 = [(UIView *)self->_rimView layer];
-  [v27 setCornerCurve:v10];
+  layer10 = [(UIView *)self->_rimView layer];
+  [layer10 setCornerCurve:cornerCurve];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(SBHomeScreenMaterialView *)self setNeedsLayout];
   }
 }

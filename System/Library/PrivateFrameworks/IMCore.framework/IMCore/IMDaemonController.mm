@@ -1,11 +1,11 @@
 @interface IMDaemonController
 + (IMDaemonController)sharedController;
 + (id)sharedInstance;
-- (BOOL)_hasMultiplexedConnectionWithUniqueID:(id)a3;
-- (BOOL)addListenerID:(id)a3 capabilities:(unsigned int)a4;
+- (BOOL)_hasMultiplexedConnectionWithUniqueID:(id)d;
+- (BOOL)addListenerID:(id)d capabilities:(unsigned int)capabilities;
 - (BOOL)connectToDaemon;
-- (BOOL)connectToDaemonWithLaunch:(BOOL)a3;
-- (BOOL)connectToDaemonWithLaunch:(BOOL)a3 capabilities:(unsigned int)a4 blockUntilConnected:(BOOL)a5;
+- (BOOL)connectToDaemonWithLaunch:(BOOL)launch;
+- (BOOL)connectToDaemonWithLaunch:(BOOL)launch capabilities:(unsigned int)capabilities blockUntilConnected:(BOOL)connected;
 - (BOOL)isConnected;
 - (BOOL)isConnecting;
 - (IMDaemonController)init;
@@ -14,19 +14,19 @@
 - (IMDaemonProtocol)synchronousRemoteDaemon;
 - (IMDaemonProtocol)synchronousReplyingRemoteDaemon;
 - (NSDictionary)processContext;
-- (id)_multiplexedConnectionWithUniqueID:(id)a3 label:(id)a4 capabilities:(unint64_t)a5 context:(id)a6 retain:(BOOL)a7;
+- (id)_multiplexedConnectionWithUniqueID:(id)d label:(id)label capabilities:(unint64_t)capabilities context:(id)context retain:(BOOL)retain;
 - (id)delegate;
-- (id)multiplexedConnectionWithLabel:(id)a3 capabilities:(unint64_t)a4 context:(id)a5;
-- (unint64_t)_capabilitiesForMultiplexedConnectionWithUniqueID:(id)a3;
-- (unint64_t)_clientCapabilitiesForLegacyClientWithListenerID:(id)a3 requestedCapabilities:(unint64_t)a4;
+- (id)multiplexedConnectionWithLabel:(id)label capabilities:(unint64_t)capabilities context:(id)context;
+- (unint64_t)_capabilitiesForMultiplexedConnectionWithUniqueID:(id)d;
+- (unint64_t)_clientCapabilitiesForLegacyClientWithListenerID:(id)d requestedCapabilities:(unint64_t)capabilities;
 - (unint64_t)processCapabilities;
 - (unint64_t)requestedCapabilities;
-- (unsigned)capabilitiesForListenerID:(id)a3;
-- (void)_connectWithCompletion:(id)a3;
-- (void)_handleDaemonLaunched:(id)a3;
-- (void)_invalidateMultiplexedConnectionWithUniqueID:(id)a3;
+- (unsigned)capabilitiesForListenerID:(id)d;
+- (void)_connectWithCompletion:(id)completion;
+- (void)_handleDaemonLaunched:(id)launched;
+- (void)_invalidateMultiplexedConnectionWithUniqueID:(id)d;
 - (void)_reconnectIfNeeded;
-- (void)_updateAnonymousMultiplexedConnectionWithAddedCapabilities:(unint64_t)a3;
+- (void)_updateAnonymousMultiplexedConnectionWithAddedCapabilities:(unint64_t)capabilities;
 - (void)blockUntilConnected;
 - (void)disconnectFromDaemon;
 - (void)killDaemon;
@@ -310,9 +310,9 @@
   return v6;
 }
 
-- (void)_connectWithCompletion:(id)a3
+- (void)_connectWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -328,8 +328,8 @@
   v11[1] = 3221225472;
   v11[2] = sub_1A828322C;
   v11[3] = &unk_1E780FE90;
-  v12 = v4;
-  v9 = v4;
+  v12 = completionCopy;
+  v9 = completionCopy;
   objc_msgSend_requestSetupIfNeededWithCompletionHandler_(v8, v10, v11);
 }
 
@@ -349,9 +349,9 @@
   return 1;
 }
 
-- (BOOL)connectToDaemonWithLaunch:(BOOL)a3
+- (BOOL)connectToDaemonWithLaunch:(BOOL)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   v12 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -359,7 +359,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = @"NO";
-      if (v3)
+      if (launchCopy)
       {
         v7 = @"YES";
       }
@@ -375,9 +375,9 @@
   return 1;
 }
 
-- (BOOL)connectToDaemonWithLaunch:(BOOL)a3 capabilities:(unsigned int)a4 blockUntilConnected:(BOOL)a5
+- (BOOL)connectToDaemonWithLaunch:(BOOL)launch capabilities:(unsigned int)capabilities blockUntilConnected:(BOOL)connected
 {
-  v5 = a5;
+  connectedCopy = connected;
   v25 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -387,7 +387,7 @@
       v10 = IMStringFromClientCapabilities();
       v11 = v10;
       v12 = @"NO";
-      if (v5)
+      if (connectedCopy)
       {
         v12 = @"YES";
       }
@@ -400,9 +400,9 @@
     }
   }
 
-  objc_msgSend__updateAnonymousMultiplexedConnectionWithAddedCapabilities_(self, v8, a4);
+  objc_msgSend__updateAnonymousMultiplexedConnectionWithAddedCapabilities_(self, v8, capabilities);
   objc_msgSend__connectWithContextChange_(self, v13, 0);
-  if (v5)
+  if (connectedCopy)
   {
     v16 = objc_msgSend_connection(self, v14, v15);
     objc_msgSend_waitForSetup(v16, v17, v18);
@@ -498,9 +498,9 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDaemonLaunched:(id)a3
+- (void)_handleDaemonLaunched:(id)launched
 {
-  v4 = a3;
+  launchedCopy = launched;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -514,28 +514,28 @@
   objc_msgSend__reconnectIfNeeded(self, v5, v6);
 }
 
-- (id)multiplexedConnectionWithLabel:(id)a3 capabilities:(unint64_t)a4 context:(id)a5
+- (id)multiplexedConnectionWithLabel:(id)label capabilities:(unint64_t)capabilities context:(id)context
 {
   v8 = MEMORY[0x1E696AEC0];
   v9 = MEMORY[0x1E696AFB0];
-  v10 = a5;
-  v11 = a3;
+  contextCopy = context;
+  labelCopy = label;
   v14 = objc_msgSend_UUID(v9, v12, v13);
   v17 = objc_msgSend_UUIDString(v14, v15, v16);
-  v19 = objc_msgSend_stringWithFormat_(v8, v18, @"%@-%@", v11, v17);
+  v19 = objc_msgSend_stringWithFormat_(v8, v18, @"%@-%@", labelCopy, v17);
 
-  v21 = objc_msgSend__multiplexedConnectionWithUniqueID_label_capabilities_context_retain_(self, v20, v19, v11, a4, v10, 0);
+  v21 = objc_msgSend__multiplexedConnectionWithUniqueID_label_capabilities_context_retain_(self, v20, v19, labelCopy, capabilities, contextCopy, 0);
 
   return v21;
 }
 
-- (id)_multiplexedConnectionWithUniqueID:(id)a3 label:(id)a4 capabilities:(unint64_t)a5 context:(id)a6 retain:(BOOL)a7
+- (id)_multiplexedConnectionWithUniqueID:(id)d label:(id)label capabilities:(unint64_t)capabilities context:(id)context retain:(BOOL)retain
 {
-  v7 = a7;
+  retainCopy = retain;
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dCopy = d;
+  labelCopy = label;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -543,7 +543,7 @@
   aBlock[2] = sub_1A8283DE0;
   aBlock[3] = &unk_1E7810450;
   objc_copyWeak(&v45, &location);
-  v15 = v12;
+  v15 = dCopy;
   v44 = v15;
   v16 = _Block_copy(aBlock);
   v38 = MEMORY[0x1E69E9820];
@@ -553,13 +553,13 @@
   objc_copyWeak(&v42, &location);
   v17 = _Block_copy(&v38);
   v18 = [IMMultiplexedDaemonConnection alloc];
-  v20 = objc_msgSend_initWithLabel_capabilities_context_onInvalidate_onDealloc_(v18, v19, v13, a5, v14, v16, v17, v38, v39, v40, v41);
+  v20 = objc_msgSend_initWithLabel_capabilities_context_onInvalidate_onDealloc_(v18, v19, labelCopy, capabilities, contextCopy, v16, v17, v38, v39, v40, v41);
   v23 = objc_msgSend_multiplexedConnections(self, v21, v22);
   objc_msgSend_setObject_forKey_(v23, v24, v20, v15);
 
   v27 = objc_msgSend_retainedMultiplexedConnections(self, v25, v26);
   v29 = v27;
-  if (v7)
+  if (retainCopy)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v27, v28, v20, v15);
   }
@@ -569,7 +569,7 @@
     objc_msgSend_setObject_forKeyedSubscript_(v27, v28, 0, v15);
   }
 
-  if (v14)
+  if (contextCopy)
   {
     processContext = self->_processContext;
     self->_processContext = 0;
@@ -584,13 +584,13 @@
       v33 = IMStringFromClientCapabilities();
       v34 = v33;
       v35 = MEMORY[0x1E695E110];
-      if (v14)
+      if (contextCopy)
       {
         v35 = MEMORY[0x1E695E118];
       }
 
       *buf = 138412802;
-      v48 = v13;
+      v48 = labelCopy;
       v49 = 2112;
       v50 = v33;
       v51 = 2112;
@@ -599,7 +599,7 @@
     }
   }
 
-  objc_msgSend__capabilitiesDidChangeWithContextChange_(self, v31, v14 != 0);
+  objc_msgSend__capabilitiesDidChangeWithContextChange_(self, v31, contextCopy != 0);
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(&v45);
@@ -610,16 +610,16 @@
   return v20;
 }
 
-- (void)_invalidateMultiplexedConnectionWithUniqueID:(id)a3
+- (void)_invalidateMultiplexedConnectionWithUniqueID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   v7 = objc_msgSend_multiplexedConnections(self, v5, v6);
-  objc_msgSend_removeObjectForKey_(v7, v8, v4);
+  objc_msgSend_removeObjectForKey_(v7, v8, dCopy);
 
   v11 = objc_msgSend_retainedMultiplexedConnections(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v11, v12, 0, v4);
+  objc_msgSend_setObject_forKeyedSubscript_(v11, v12, 0, dCopy);
 
   os_unfair_lock_unlock(&self->_lock);
   if (IMOSLoggingEnabled())
@@ -628,7 +628,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = dCopy;
       _os_log_impl(&dword_1A823F000, v15, OS_LOG_TYPE_INFO, "Removed multiplexed connection with uniqueID: %@", &v17, 0xCu);
     }
   }
@@ -638,43 +638,43 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_hasMultiplexedConnectionWithUniqueID:(id)a3
+- (BOOL)_hasMultiplexedConnectionWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   v7 = objc_msgSend_multiplexedConnections(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, dCopy);
 
   os_unfair_lock_unlock(&self->_lock);
   return v9 != 0;
 }
 
-- (unint64_t)_capabilitiesForMultiplexedConnectionWithUniqueID:(id)a3
+- (unint64_t)_capabilitiesForMultiplexedConnectionWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   v7 = objc_msgSend_multiplexedConnections(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, dCopy);
 
   v12 = objc_msgSend_capabilities(v9, v10, v11);
   os_unfair_lock_unlock(&self->_lock);
   return v12;
 }
 
-- (void)_updateAnonymousMultiplexedConnectionWithAddedCapabilities:(unint64_t)a3
+- (void)_updateAnonymousMultiplexedConnectionWithAddedCapabilities:(unint64_t)capabilities
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (capabilities)
   {
-    v3 = a3;
-    v5 = objc_msgSend_anonymousMultiplexedConnection(self, a2, a3);
+    capabilitiesCopy = capabilities;
+    v5 = objc_msgSend_anonymousMultiplexedConnection(self, a2, capabilities);
 
     if (v5)
     {
       v8 = objc_msgSend_anonymousMultiplexedConnection(self, v6, v7);
       v11 = objc_msgSend_capabilities(v8, v9, v10);
 
-      v3 |= v11;
+      capabilitiesCopy |= v11;
       if (IMOSLoggingEnabled())
       {
         v12 = OSLogHandleForIMFoundationCategory();
@@ -691,20 +691,20 @@
       }
     }
 
-    v15 = objc_msgSend__multiplexedConnectionWithUniqueID_label_capabilities_context_retain_(self, v6, @"__IMDaemonControllerAnonymousConnectionIdentifier", @"__IMDaemonControllerAnonymousConnectionIdentifier", v3, 0, 1);
+    v15 = objc_msgSend__multiplexedConnectionWithUniqueID_label_capabilities_context_retain_(self, v6, @"__IMDaemonControllerAnonymousConnectionIdentifier", @"__IMDaemonControllerAnonymousConnectionIdentifier", capabilitiesCopy, 0, 1);
     objc_msgSend_setAnonymousMultiplexedConnection_(self, v16, v15);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addListenerID:(id)a3 capabilities:(unsigned int)a4
+- (BOOL)addListenerID:(id)d capabilities:(unsigned int)capabilities
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = objc_msgSend__clientCapabilitiesForLegacyClientWithListenerID_requestedCapabilities_(self, v7, v6, a4);
-  v10 = objc_msgSend__multiplexedConnectionWithUniqueID_label_capabilities_context_retain_(self, v9, v6, v6, v8, 0, 1);
-  if (objc_msgSend__clientRequiresSynchronousConnectionRescueWithListenerID_(self, v11, v6))
+  dCopy = d;
+  v8 = objc_msgSend__clientCapabilitiesForLegacyClientWithListenerID_requestedCapabilities_(self, v7, dCopy, capabilities);
+  v10 = objc_msgSend__multiplexedConnectionWithUniqueID_label_capabilities_context_retain_(self, v9, dCopy, dCopy, v8, 0, 1);
+  if (objc_msgSend__clientRequiresSynchronousConnectionRescueWithListenerID_(self, v11, dCopy))
   {
     if (IMOSLoggingEnabled())
     {
@@ -712,7 +712,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v17 = 138412290;
-        v18 = v6;
+        v18 = dCopy;
         _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "Forcing block until connected for client %@ to rescue poor asynchronous behavior", &v17, 0xCu);
       }
     }
@@ -724,11 +724,11 @@
   return 1;
 }
 
-- (unsigned)capabilitiesForListenerID:(id)a3
+- (unsigned)capabilitiesForListenerID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    return objc_msgSend__capabilitiesForMultiplexedConnectionWithUniqueID_(self, a2, a3);
+    return objc_msgSend__capabilitiesForMultiplexedConnectionWithUniqueID_(self, a2, d);
   }
 
   else
@@ -737,20 +737,20 @@
   }
 }
 
-- (unint64_t)_clientCapabilitiesForLegacyClientWithListenerID:(id)a3 requestedCapabilities:(unint64_t)a4
+- (unint64_t)_clientCapabilitiesForLegacyClientWithListenerID:(id)d requestedCapabilities:(unint64_t)capabilities
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ((a4 & 0x200004) == 4)
+  dCopy = d;
+  if ((capabilities & 0x200004) == 4)
   {
-    v7 = a4 | 0x400000;
+    capabilitiesCopy = capabilities | 0x400000;
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v17 = 138412290;
-        v18 = v6;
+        v18 = dCopy;
         _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_INFO, "Assuming client %@ wants Precached Recent Chats (has no on-demand chat registry capability)", &v17, 0xCu);
       }
     }
@@ -758,30 +758,30 @@
 
   else
   {
-    v7 = a4;
-    v9 = a4;
-    if ((a4 & 4) == 0)
+    capabilitiesCopy = capabilities;
+    capabilitiesCopy2 = capabilities;
+    if ((capabilities & 4) == 0)
     {
       goto LABEL_11;
     }
   }
 
-  v9 = v7 | 0x43200;
+  capabilitiesCopy2 = capabilitiesCopy | 0x43200;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = dCopy;
       _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_INFO, "Assuming client %@ wants Send Messages, Message History Modify Read State, and Accounts (has chat capability)", &v17, 0xCu);
     }
   }
 
 LABEL_11:
-  if (objc_msgSend_isEqualToString_(v6, v5, @"CKSettingsMessagesController"))
+  if (objc_msgSend_isEqualToString_(dCopy, v5, @"CKSettingsMessagesController"))
   {
-    v9 |= 0x20000000uLL;
+    capabilitiesCopy2 |= 0x20000000uLL;
     if (IMOSLoggingEnabled())
     {
       v11 = OSLogHandleForIMFoundationCategory();
@@ -801,7 +801,7 @@ LABEL_11:
       v13 = IMStringFromClientCapabilities();
       v14 = IMStringFromClientCapabilities();
       v17 = 138412802;
-      v18 = v6;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v13;
       v21 = 2112;
@@ -811,7 +811,7 @@ LABEL_11:
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v9;
+  return capabilitiesCopy2;
 }
 
 - (BOOL)isConnecting

@@ -1,24 +1,24 @@
 @interface UITextRangeImpl
-+ (id)wrapDOMRange:(id)a3 withAffinity:(int64_t)a4;
++ (id)wrapDOMRange:(id)range withAffinity:(int64_t)affinity;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)end;
 - (id)start;
-- (void)adjustAffinityOfPosition:(id)a3 isStart:(BOOL)a4;
+- (void)adjustAffinityOfPosition:(id)position isStart:(BOOL)start;
 @end
 
 @implementation UITextRangeImpl
 
-+ (id)wrapDOMRange:(id)a3 withAffinity:(int64_t)a4
++ (id)wrapDOMRange:(id)range withAffinity:(int64_t)affinity
 {
-  if (a3)
+  if (range)
   {
-    v5 = a3;
+    rangeCopy = range;
     v6 = objc_alloc_init(UITextRangeImpl);
-    [(UITextRangeImpl *)v6 setDomRange:v5];
+    [(UITextRangeImpl *)v6 setDomRange:rangeCopy];
 
-    [(UITextRangeImpl *)v6 setAffinity:a4];
+    [(UITextRangeImpl *)v6 setAffinity:affinity];
   }
 
   else
@@ -33,33 +33,33 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UITextRangeImpl *)self start];
+  start = [(UITextRangeImpl *)self start];
   v6 = [(UITextRangeImpl *)self end];
-  v7 = [v3 stringWithFormat:@"%@(%p) - start:%@, end:%@", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@(%p) - start:%@, end:%@", v4, self, start, v6];
 
   return v7;
 }
 
-- (void)adjustAffinityOfPosition:(id)a3 isStart:(BOOL)a4
+- (void)adjustAffinityOfPosition:(id)position isStart:(BOOL)start
 {
-  v4 = a4;
-  v7 = a3;
+  startCopy = start;
+  positionCopy = position;
   if ([(UITextRangeImpl *)self isEmpty])
   {
-    v4 = [(UITextRangeImpl *)self affinity]== 0;
+    startCopy = [(UITextRangeImpl *)self affinity]== 0;
   }
 
-  v6 = [v7 webVisiblePosition];
-  [v6 setAffinity:v4];
+  webVisiblePosition = [positionCopy webVisiblePosition];
+  [webVisiblePosition setAffinity:startCopy];
 }
 
 - (id)start
 {
   WebThreadLock();
   v3 = objc_alloc_init(UITextPositionImpl);
-  v4 = [(UITextRangeImpl *)self domRange];
-  v5 = [v4 startPosition];
-  [(UITextPositionImpl *)v3 setWebVisiblePosition:v5];
+  domRange = [(UITextRangeImpl *)self domRange];
+  startPosition = [domRange startPosition];
+  [(UITextPositionImpl *)v3 setWebVisiblePosition:startPosition];
 
   [(UITextRangeImpl *)self adjustAffinityOfPosition:v3 isStart:1];
 
@@ -70,9 +70,9 @@
 {
   WebThreadLock();
   v3 = objc_alloc_init(UITextPositionImpl);
-  v4 = [(UITextRangeImpl *)self domRange];
-  v5 = [v4 endPosition];
-  [(UITextPositionImpl *)v3 setWebVisiblePosition:v5];
+  domRange = [(UITextRangeImpl *)self domRange];
+  endPosition = [domRange endPosition];
+  [(UITextPositionImpl *)v3 setWebVisiblePosition:endPosition];
 
   [(UITextRangeImpl *)self adjustAffinityOfPosition:v3 isStart:0];
 
@@ -82,38 +82,38 @@
 - (BOOL)isEmpty
 {
   WebThreadLock();
-  v3 = [(UITextRangeImpl *)self domRange];
-  v4 = [v3 collapsed];
+  domRange = [(UITextRangeImpl *)self domRange];
+  collapsed = [domRange collapsed];
 
-  return v4;
+  return collapsed;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   WebThreadLock();
-  v5 = v4;
+  v5 = equalCopy;
   if (self == v5)
   {
     v10 = 1;
     goto LABEL_6;
   }
 
-  v6 = [(UITextRangeImpl *)self domRange];
-  v7 = [(UITextRangeImpl *)v5 domRange];
-  v8 = [v6 startContainer];
-  v9 = [v7 startContainer];
+  domRange = [(UITextRangeImpl *)self domRange];
+  domRange2 = [(UITextRangeImpl *)v5 domRange];
+  startContainer = [domRange startContainer];
+  startContainer2 = [domRange2 startContainer];
 
-  if (v8 != v9)
+  if (startContainer != startContainer2)
   {
     goto LABEL_3;
   }
 
-  if (![v6 collapsed])
+  if (![domRange collapsed])
   {
-    if (v6 != v7)
+    if (domRange != domRange2)
     {
-      if (([v7 collapsed] & 1) == 0 && !objc_msgSend(v6, "compareBoundaryPoints:sourceRange:", 2, v7))
+      if (([domRange2 collapsed] & 1) == 0 && !objc_msgSend(domRange, "compareBoundaryPoints:sourceRange:", 2, domRange2))
       {
         goto LABEL_15;
       }
@@ -126,21 +126,21 @@ LABEL_16:
     goto LABEL_4;
   }
 
-  v12 = [(UITextRangeImpl *)self affinity];
-  if (v12 != [(UITextRangeImpl *)v5 affinity])
+  affinity = [(UITextRangeImpl *)self affinity];
+  if (affinity != [(UITextRangeImpl *)v5 affinity])
   {
     goto LABEL_3;
   }
 
-  if (v6 == v7)
+  if (domRange == domRange2)
   {
     goto LABEL_16;
   }
 
-  if ([v7 collapsed])
+  if ([domRange2 collapsed])
   {
 LABEL_15:
-    v10 = [v6 compareBoundaryPoints:0 sourceRange:v7] == 0;
+    v10 = [domRange compareBoundaryPoints:0 sourceRange:domRange2] == 0;
     goto LABEL_4;
   }
 

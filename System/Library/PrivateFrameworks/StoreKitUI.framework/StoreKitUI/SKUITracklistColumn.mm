@@ -1,15 +1,15 @@
 @interface SKUITracklistColumn
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setPreferredWidthForAttributedStrings:(id)a3;
+- (void)setPreferredWidthForAttributedStrings:(id)strings;
 @end
 
 @implementation SKUITracklistColumn
 
-- (void)setPreferredWidthForAttributedStrings:(id)a3
+- (void)setPreferredWidthForAttributedStrings:(id)strings
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -26,7 +26,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v4;
+  v13 = stringsCopy;
   v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v14)
   {
@@ -106,7 +106,7 @@ LABEL_20:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -120,7 +120,7 @@ LABEL_20:
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v13 setColumnIdentifier:self->_columnIdentifier];
   [v13 setContentAlignment:self->_contentAlignment];
   [v13 setHeaderAlignment:self->_headerAlignment];

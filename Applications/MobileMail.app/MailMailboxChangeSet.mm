@@ -1,24 +1,24 @@
 @interface MailMailboxChangeSet
-- (BOOL)allowOtherChange:(id)a3;
+- (BOOL)allowOtherChange:(id)change;
 - (BOOL)commit;
 - (BOOL)revert;
-- (MailMailboxChangeSet)initWithOperation:(id)a3;
+- (MailMailboxChangeSet)initWithOperation:(id)operation;
 - (id)accounts;
 - (id)description;
 @end
 
 @implementation MailMailboxChangeSet
 
-- (MailMailboxChangeSet)initWithOperation:(id)a3
+- (MailMailboxChangeSet)initWithOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = MailMailboxChangeSet;
   v6 = [(MailMailboxChangeSet *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailboxOperation, a3);
+    objc_storeStrong(&v6->_mailboxOperation, operation);
     *(&v7->super + 16) |= 1u;
   }
 
@@ -32,23 +32,23 @@
     sub_100488B10();
   }
 
-  v3 = [(MCSMailboxOperation *)self->_mailboxOperation commit];
+  commit = [(MCSMailboxOperation *)self->_mailboxOperation commit];
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 1024;
-    v9 = v3;
+    v9 = commit;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "#ChangeSetActions Committed %@ with result %d", &v6, 0x12u);
   }
 
-  if (!v3)
+  if (!commit)
   {
     [(MailMailboxChangeSet *)self revert];
   }
 
-  return v3;
+  return commit;
 }
 
 - (BOOL)revert
@@ -76,27 +76,27 @@
 - (id)accounts
 {
   v3 = +[NSMutableSet set];
-  v4 = [(MCSMailboxOperation *)self->_mailboxOperation accountForErrorHandling];
-  if (v4)
+  accountForErrorHandling = [(MCSMailboxOperation *)self->_mailboxOperation accountForErrorHandling];
+  if (accountForErrorHandling)
   {
-    [v3 addObject:v4];
+    [v3 addObject:accountForErrorHandling];
   }
 
   return v3;
 }
 
-- (BOOL)allowOtherChange:(id)a3
+- (BOOL)allowOtherChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
-  if ((v4 == 0) | ((objc_opt_isKindOfClass() & 1) == 0))
+  if ((changeCopy == 0) | ((objc_opt_isKindOfClass() & 1) == 0))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(MCSMailboxOperation *)self->_mailboxOperation allowOtherMailboxOperation:v4[3]];
+    v5 = [(MCSMailboxOperation *)self->_mailboxOperation allowOtherMailboxOperation:changeCopy[3]];
   }
 
   return v5;

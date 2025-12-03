@@ -7,7 +7,7 @@
 
 - (void)st_startSpinner
 {
-  v1 = [a1 propertyForKey:*MEMORY[0x277D40148]];
+  v1 = [self propertyForKey:*MEMORY[0x277D40148]];
   if (v1)
   {
     v3 = v1;
@@ -21,11 +21,11 @@
 
 - (void)st_stopSpinner
 {
-  v2 = [a1 propertyForKey:*MEMORY[0x277D40148]];
+  v2 = [self propertyForKey:*MEMORY[0x277D40148]];
   if (v2)
   {
     v4 = v2;
-    v3 = [a1 propertyForKey:*MEMORY[0x277D3FEB0]];
+    v3 = [self propertyForKey:*MEMORY[0x277D3FEB0]];
     [v4 setAccessoryView:v3];
 
     v2 = v4;

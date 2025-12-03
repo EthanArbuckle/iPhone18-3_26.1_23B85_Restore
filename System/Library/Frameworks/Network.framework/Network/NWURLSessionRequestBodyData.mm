@@ -1,26 +1,26 @@
 @interface NWURLSessionRequestBodyData
 - (int64_t)countOfBytesSent;
-- (void)readMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
+- (void)readMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
 @end
 
 @implementation NWURLSessionRequestBodyData
 
-- (void)readMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v7 = a5;
-  v12 = v7;
+  handlerCopy = handler;
+  v12 = handlerCopy;
   if (self && (offset = self->_offset, offset < self->_length))
   {
-    subrange = dispatch_data_create_subrange(self->_data, offset, a4);
+    subrange = dispatch_data_create_subrange(self->_data, offset, maximumLength);
     length = self->_length;
-    v11 = self->_offset + a4;
+    v11 = self->_offset + maximumLength;
     self->_offset = v11;
     v12[2](v12, subrange, v11 >= length, 0);
   }
 
   else
   {
-    v7[2](v7, 0, 1, 0);
+    handlerCopy[2](handlerCopy, 0, 1, 0);
   }
 }
 

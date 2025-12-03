@@ -1,55 +1,55 @@
 @interface SFCommandButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCommandButtonItem)initWithCoder:(id)a3;
-- (SFCommandButtonItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCommandButtonItem)initWithCoder:(id)coder;
+- (SFCommandButtonItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCommandButtonItem
 
-- (SFCommandButtonItem)initWithProtobuf:(id)a3
+- (SFCommandButtonItem)initWithProtobuf:(id)protobuf
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v31.receiver = self;
   v31.super_class = SFCommandButtonItem;
   v5 = [(SFCommandButtonItem *)&v31 init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [SFImage alloc];
-      v8 = [v4 image];
-      v9 = [(SFImage *)v7 initWithProtobuf:v8];
+      image2 = [protobufCopy image];
+      v9 = [(SFImage *)v7 initWithProtobuf:image2];
       [(SFCommandButtonItem *)v5 setImage:v9];
     }
 
-    v10 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v10)
+    if (title)
     {
-      v11 = [v4 title];
-      [(SFCommandButtonItem *)v5 setTitle:v11];
+      title2 = [protobufCopy title];
+      [(SFCommandButtonItem *)v5 setTitle:title2];
     }
 
-    v12 = [v4 command];
+    command = [protobufCopy command];
 
-    if (v12)
+    if (command)
     {
       v13 = [SFCommand alloc];
-      v14 = [v4 command];
-      v15 = [(SFCommand *)v13 initWithProtobuf:v14];
+      command2 = [protobufCopy command];
+      v15 = [(SFCommand *)v13 initWithProtobuf:command2];
       [(SFCommandButtonItem *)v5 setCommand:v15];
     }
 
-    v16 = [v4 previewButtonItems];
-    if (v16)
+    previewButtonItems = [protobufCopy previewButtonItems];
+    if (previewButtonItems)
     {
       v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -63,8 +63,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = [v4 previewButtonItems];
-    v19 = [v18 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    previewButtonItems2 = [protobufCopy previewButtonItems];
+    v19 = [previewButtonItems2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v19)
     {
       v20 = v19;
@@ -75,7 +75,7 @@
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(previewButtonItems2);
           }
 
           v23 = [[SFButtonItem alloc] initWithProtobuf:*(*(&v27 + 1) + 8 * i)];
@@ -85,21 +85,21 @@
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v20 = [previewButtonItems2 countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v20);
     }
 
     [(SFCommandButtonItem *)v5 setPreviewButtonItems:v17];
-    if ([v4 isDestructive])
+    if ([protobufCopy isDestructive])
     {
-      -[SFCommandButtonItem setIsDestructive:](v5, "setIsDestructive:", [v4 isDestructive]);
+      -[SFCommandButtonItem setIsDestructive:](v5, "setIsDestructive:", [protobufCopy isDestructive]);
     }
 
-    if ([v4 uniqueId])
+    if ([protobufCopy uniqueId])
     {
-      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [protobufCopy uniqueId]);
     }
 
     v24 = v5;
@@ -114,40 +114,40 @@
   v15.receiver = self;
   v15.super_class = SFCommandButtonItem;
   v3 = [(SFButtonItem *)&v15 hash];
-  v4 = [(SFCommandButtonItem *)self image];
-  v5 = [v4 hash];
-  v6 = [(SFCommandButtonItem *)self title];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFCommandButtonItem *)self command];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(SFCommandButtonItem *)self previewButtonItems];
-  v11 = v9 ^ [v10 hash];
+  image = [(SFCommandButtonItem *)self image];
+  v5 = [image hash];
+  title = [(SFCommandButtonItem *)self title];
+  v7 = v5 ^ [title hash];
+  command = [(SFCommandButtonItem *)self command];
+  v9 = v7 ^ [command hash];
+  previewButtonItems = [(SFCommandButtonItem *)self previewButtonItems];
+  v11 = v9 ^ [previewButtonItems hash];
   v12 = v11 ^ [(SFCommandButtonItem *)self isDestructive]^ v3;
-  v13 = [(SFButtonItem *)self uniqueId];
+  uniqueId = [(SFButtonItem *)self uniqueId];
 
-  return v12 ^ v13;
+  return v12 ^ uniqueId;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(SFCommandButtonItem *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFCommandButtonItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v43.receiver = self;
       v43.super_class = SFCommandButtonItem;
-      if ([(SFButtonItem *)&v43 isEqual:v4])
+      if ([(SFButtonItem *)&v43 isEqual:equalCopy])
       {
-        v5 = v4;
-        v6 = [(SFCommandButtonItem *)self image];
-        v7 = [(SFCommandButtonItem *)v5 image];
-        if ((v6 != 0) == (v7 == 0))
+        v5 = equalCopy;
+        image = [(SFCommandButtonItem *)self image];
+        image2 = [(SFCommandButtonItem *)v5 image];
+        if ((image != 0) == (image2 == 0))
         {
           v10 = 0;
 LABEL_38:
@@ -155,32 +155,32 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v8 = [(SFCommandButtonItem *)self image];
-        if (v8)
+        image3 = [(SFCommandButtonItem *)self image];
+        if (image3)
         {
-          v9 = [(SFCommandButtonItem *)self image];
-          v41 = [(SFCommandButtonItem *)v5 image];
-          if (![v9 isEqual:?])
+          image4 = [(SFCommandButtonItem *)self image];
+          image5 = [(SFCommandButtonItem *)v5 image];
+          if (![image4 isEqual:?])
           {
             v10 = 0;
             goto LABEL_36;
           }
 
-          v40 = v9;
+          v40 = image4;
         }
 
-        v42 = [(SFCommandButtonItem *)self title];
-        v11 = [(SFCommandButtonItem *)v5 title];
-        if ((v42 != 0) != (v11 == 0))
+        title = [(SFCommandButtonItem *)self title];
+        title2 = [(SFCommandButtonItem *)v5 title];
+        if ((title != 0) != (title2 == 0))
         {
-          v12 = [(SFCommandButtonItem *)self title];
-          if (v12)
+          title3 = [(SFCommandButtonItem *)self title];
+          if (title3)
           {
-            v13 = v12;
-            v14 = [(SFCommandButtonItem *)self title];
+            v13 = title3;
+            title4 = [(SFCommandButtonItem *)self title];
             [(SFCommandButtonItem *)v5 title];
-            v39 = v37 = v14;
-            if (![v14 isEqual:?])
+            v39 = v37 = title4;
+            if (![title4 isEqual:?])
             {
               v10 = 0;
               v19 = v39;
@@ -195,19 +195,19 @@ LABEL_38:
             v38 = 0;
           }
 
-          v15 = [(SFCommandButtonItem *)self command];
-          v16 = [(SFCommandButtonItem *)v5 command];
-          if ((v15 != 0) != (v16 == 0))
+          command = [(SFCommandButtonItem *)self command];
+          command2 = [(SFCommandButtonItem *)v5 command];
+          if ((command != 0) != (command2 == 0))
           {
-            v35 = v15;
-            v36 = v16;
-            v17 = [(SFCommandButtonItem *)self command];
-            if (v17)
+            v35 = command;
+            v36 = command2;
+            command3 = [(SFCommandButtonItem *)self command];
+            if (command3)
             {
-              v18 = [(SFCommandButtonItem *)self command];
-              v33 = [(SFCommandButtonItem *)v5 command];
-              v34 = v18;
-              if (![v18 isEqual:?])
+              command4 = [(SFCommandButtonItem *)self command];
+              command5 = [(SFCommandButtonItem *)v5 command];
+              v34 = command4;
+              if (![command4 isEqual:?])
               {
                 v10 = 0;
                 v13 = v38;
@@ -216,15 +216,15 @@ LABEL_38:
               }
             }
 
-            v20 = [(SFCommandButtonItem *)self previewButtonItems];
-            v21 = [(SFCommandButtonItem *)v5 previewButtonItems];
-            if ((v20 != 0) == (v21 == 0))
+            previewButtonItems = [(SFCommandButtonItem *)self previewButtonItems];
+            previewButtonItems2 = [(SFCommandButtonItem *)v5 previewButtonItems];
+            if ((previewButtonItems != 0) == (previewButtonItems2 == 0))
             {
 
               v10 = 0;
               v13 = v38;
               v19 = v39;
-              if (!v17)
+              if (!command3)
               {
                 goto LABEL_32;
               }
@@ -232,32 +232,32 @@ LABEL_38:
               goto LABEL_31;
             }
 
-            v31 = v21;
-            v32 = v20;
+            v31 = previewButtonItems2;
+            v32 = previewButtonItems;
             [(SFCommandButtonItem *)self previewButtonItems];
             v22 = v19 = v39;
             if (v22)
             {
-              v28 = v17;
-              v23 = [(SFCommandButtonItem *)self previewButtonItems];
+              v28 = command3;
+              previewButtonItems3 = [(SFCommandButtonItem *)self previewButtonItems];
               [(SFCommandButtonItem *)v5 previewButtonItems];
-              v30 = v27 = v23;
-              if (![v23 isEqual:?])
+              v30 = v27 = previewButtonItems3;
+              if (![previewButtonItems3 isEqual:?])
               {
                 v10 = 0;
-                v17 = v28;
+                command3 = v28;
                 v26 = v30;
                 goto LABEL_46;
               }
 
-              v17 = v28;
+              command3 = v28;
             }
 
-            v29 = [(SFCommandButtonItem *)self isDestructive];
-            if (v29 == [(SFCommandButtonItem *)v5 isDestructive])
+            isDestructive = [(SFCommandButtonItem *)self isDestructive];
+            if (isDestructive == [(SFCommandButtonItem *)v5 isDestructive])
             {
-              v25 = [(SFButtonItem *)self uniqueId];
-              v10 = v25 == [(SFButtonItem *)v5 uniqueId];
+              uniqueId = [(SFButtonItem *)self uniqueId];
+              v10 = uniqueId == [(SFButtonItem *)v5 uniqueId];
             }
 
             else
@@ -271,7 +271,7 @@ LABEL_38:
 LABEL_47:
 
               v13 = v38;
-              if (!v17)
+              if (!command3)
               {
 LABEL_32:
 
@@ -280,8 +280,8 @@ LABEL_32:
 LABEL_34:
 
 LABEL_35:
-                  v9 = v40;
-                  if (!v8)
+                  image4 = v40;
+                  if (!image3)
                   {
 LABEL_37:
 
@@ -326,25 +326,25 @@ LABEL_39:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = SFCommandButtonItem;
-  v4 = [(SFButtonItem *)&v14 copyWithZone:a3];
-  v5 = [(SFCommandButtonItem *)self image];
-  v6 = [v5 copy];
+  v4 = [(SFButtonItem *)&v14 copyWithZone:zone];
+  image = [(SFCommandButtonItem *)self image];
+  v6 = [image copy];
   [v4 setImage:v6];
 
-  v7 = [(SFCommandButtonItem *)self title];
-  v8 = [v7 copy];
+  title = [(SFCommandButtonItem *)self title];
+  v8 = [title copy];
   [v4 setTitle:v8];
 
-  v9 = [(SFCommandButtonItem *)self command];
-  v10 = [v9 copy];
+  command = [(SFCommandButtonItem *)self command];
+  v10 = [command copy];
   [v4 setCommand:v10];
 
-  v11 = [(SFCommandButtonItem *)self previewButtonItems];
-  v12 = [v11 copy];
+  previewButtonItems = [(SFCommandButtonItem *)self previewButtonItems];
+  v12 = [previewButtonItems copy];
   [v4 setPreviewButtonItems:v12];
 
   [v4 setIsDestructive:{-[SFCommandButtonItem isDestructive](self, "isDestructive")}];
@@ -355,31 +355,31 @@ LABEL_39:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCommandButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBCommandButtonItem *)v2 jsonData];
+  jsonData = [(_SFPBCommandButtonItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCommandButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBCommandButtonItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCommandButtonItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCommandButtonItem alloc] initWithFacade:self];
-  v5 = [(_SFPBCommandButtonItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCommandButtonItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCommandButtonItem)initWithCoder:(id)a3
+- (SFCommandButtonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCommandButtonItem alloc] initWithData:v5];
   v7 = [(SFCommandButtonItem *)self initWithProtobuf:v6];

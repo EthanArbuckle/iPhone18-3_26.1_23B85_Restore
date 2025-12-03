@@ -1,13 +1,13 @@
 @interface SmartFolderComposerCreateTagCell
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 @end
 
 @implementation SmartFolderComposerCreateTagCell
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
+  returnCopy = return;
+  selfCopy = self;
   LOBYTE(self) = sub_100385EB8();
 
   return self & 1;

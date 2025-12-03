@@ -1,57 +1,57 @@
 @interface ACHMindfulSessionIterator
-- (ACHMindfulSessionIterator)initWithHealthStore:(id)a3;
-- (ACHMindfulSessionIterator)initWithHealthStore:(id)a3 batchSize:(unint64_t)a4;
-- (void)_runQueryForDateInterval:(id)a3 lastCursor:(id)a4 completion:(id)a5;
-- (void)enumerateMindfulSessionsForDateInterval:(id)a3 handler:(id)a4 errorHandler:(id)a5;
+- (ACHMindfulSessionIterator)initWithHealthStore:(id)store;
+- (ACHMindfulSessionIterator)initWithHealthStore:(id)store batchSize:(unint64_t)size;
+- (void)_runQueryForDateInterval:(id)interval lastCursor:(id)cursor completion:(id)completion;
+- (void)enumerateMindfulSessionsForDateInterval:(id)interval handler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation ACHMindfulSessionIterator
 
-- (ACHMindfulSessionIterator)initWithHealthStore:(id)a3
+- (ACHMindfulSessionIterator)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = ACHMindfulSessionIterator;
   v6 = [(ACHMindfulSessionIterator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v7->_batchSize = 128;
   }
 
   return v7;
 }
 
-- (ACHMindfulSessionIterator)initWithHealthStore:(id)a3 batchSize:(unint64_t)a4
+- (ACHMindfulSessionIterator)initWithHealthStore:(id)store batchSize:(unint64_t)size
 {
-  v7 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = ACHMindfulSessionIterator;
   v8 = [(ACHMindfulSessionIterator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_healthStore, a3);
-    v9->_batchSize = a4;
+    objc_storeStrong(&v8->_healthStore, store);
+    v9->_batchSize = size;
   }
 
   return v9;
 }
 
-- (void)enumerateMindfulSessionsForDateInterval:(id)a3 handler:(id)a4 errorHandler:(id)a5
+- (void)enumerateMindfulSessionsForDateInterval:(id)interval handler:(id)handler errorHandler:(id)errorHandler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v8 = a4;
-  v23 = a5;
-  v9 = [(ACHMindfulSessionIterator *)self query];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  query = [(ACHMindfulSessionIterator *)self query];
 
-  if (v9)
+  if (query)
   {
-    v10 = [(ACHMindfulSessionIterator *)self healthStore];
-    v11 = [(ACHMindfulSessionIterator *)self query];
-    [v10 stopQuery:v11];
+    healthStore = [(ACHMindfulSessionIterator *)self healthStore];
+    query2 = [(ACHMindfulSessionIterator *)self query];
+    [healthStore stopQuery:query2];
   }
 
   v46 = 0;
@@ -85,7 +85,7 @@
     v33 = &v34;
     v14 = v12;
     v30 = v14;
-    [(ACHMindfulSessionIterator *)self _runQueryForDateInterval:v24 lastCursor:v13 completion:v29];
+    [(ACHMindfulSessionIterator *)self _runQueryForDateInterval:intervalCopy lastCursor:v13 completion:v29];
     v15 = dispatch_time(0, 10000000000);
     v16 = dispatch_semaphore_wait(v14, v15);
     if (v41[5] || v16 != 0)
@@ -112,7 +112,7 @@
             objc_enumerationMutation(v18);
           }
 
-          v8[2](v8, *(*(&v25 + 1) + 8 * v21++));
+          handlerCopy[2](handlerCopy, *(*(&v25 + 1) + 8 * v21++));
         }
 
         while (v19 != v21);
@@ -128,7 +128,7 @@
     }
   }
 
-  v23[2]();
+  errorHandlerCopy[2]();
 
 LABEL_17:
   _Block_object_dispose(&v34, 8);
@@ -168,16 +168,16 @@ void __90__ACHMindfulSessionIterator_enumerateMindfulSessionsForDateInterval_han
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_runQueryForDateInterval:(id)a3 lastCursor:(id)a4 completion:(id)a5
+- (void)_runQueryForDateInterval:(id)interval lastCursor:(id)cursor completion:(id)completion
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intervalCopy = interval;
+  cursorCopy = cursor;
+  completionCopy = completion;
   v11 = MEMORY[0x277CCD838];
-  v12 = [v8 startDate];
-  v13 = [v8 endDate];
-  v26 = [v11 predicateForSamplesWithStartDate:v12 endDate:v13 options:1];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v26 = [v11 predicateForSamplesWithStartDate:startDate endDate:endDate options:1];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -185,12 +185,12 @@ void __90__ACHMindfulSessionIterator_enumerateMindfulSessionsForDateInterval_han
   aBlock[2] = __76__ACHMindfulSessionIterator__runQueryForDateInterval_lastCursor_completion___block_invoke;
   aBlock[3] = &unk_278491B48;
   objc_copyWeak(&v29, &location);
-  v14 = v10;
+  v14 = completionCopy;
   v28 = v14;
   v15 = _Block_copy(aBlock);
-  if (v9)
+  if (cursorCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x277CCD8B8]) initWithQueryCursor:v9 limit:-[ACHMindfulSessionIterator batchSize](self resultsHandler:{"batchSize"), v15}];
+    v16 = [objc_alloc(MEMORY[0x277CCD8B8]) initWithQueryCursor:cursorCopy limit:-[ACHMindfulSessionIterator batchSize](self resultsHandler:{"batchSize"), v15}];
     [(ACHMindfulSessionIterator *)self setQuery:v16];
   }
 
@@ -208,9 +208,9 @@ void __90__ACHMindfulSessionIterator_enumerateMindfulSessionsForDateInterval_han
     [(ACHMindfulSessionIterator *)self setQuery:v21];
   }
 
-  v22 = [(ACHMindfulSessionIterator *)self healthStore];
-  v23 = [(ACHMindfulSessionIterator *)self query];
-  [v22 executeQuery:v23];
+  healthStore = [(ACHMindfulSessionIterator *)self healthStore];
+  query = [(ACHMindfulSessionIterator *)self query];
+  [healthStore executeQuery:query];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);

@@ -1,18 +1,18 @@
 @interface BMSyncService
-- (BOOL)triggerCloudKitSyncWithError:(id *)a3;
-- (BOOL)triggerRapportSyncWithDeviceIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)triggerRapportSyncWithError:(id *)a3;
-- (id)cascadeRapportSyncWithErrors:(id *)a3;
-- (id)cloudKitSyncWithErrors:(id *)a3;
+- (BOOL)triggerCloudKitSyncWithError:(id *)error;
+- (BOOL)triggerRapportSyncWithDeviceIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)triggerRapportSyncWithError:(id *)error;
+- (id)cascadeRapportSyncWithErrors:(id *)errors;
+- (id)cloudKitSyncWithErrors:(id *)errors;
 - (id)connection;
-- (id)peerInformationWithError:(id *)a3;
-- (id)rapportSyncWithErrors:(id *)a3;
-- (id)remoteDevicesForAccount:(id)a3 error:(id *)a4;
-- (id)remoteDevicesWithError:(id *)a3;
-- (void)remoteDevicesForAccount:(id)a3 reply:(id)a4;
-- (void)remoteDevicesWithReply:(id)a3;
-- (void)triggerCloudKitSyncWithReply:(id)a3;
-- (void)triggerRapportSyncWithReply:(id)a3;
+- (id)peerInformationWithError:(id *)error;
+- (id)rapportSyncWithErrors:(id *)errors;
+- (id)remoteDevicesForAccount:(id)account error:(id *)error;
+- (id)remoteDevicesWithError:(id *)error;
+- (void)remoteDevicesForAccount:(id)account reply:(id)reply;
+- (void)remoteDevicesWithReply:(id)reply;
+- (void)triggerCloudKitSyncWithReply:(id)reply;
+- (void)triggerRapportSyncWithReply:(id)reply;
 @end
 
 @implementation BMSyncService
@@ -134,20 +134,20 @@ void __27__BMSyncService_connection__block_invoke_30()
   }
 }
 
-- (void)remoteDevicesWithReply:(id)a3
+- (void)remoteDevicesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__BMSyncService_remoteDevicesWithReply___block_invoke;
   v13[3] = &unk_278D08E10;
-  v7 = v4;
+  v7 = replyCopy;
   v14 = v7;
   objc_copyWeak(&v15, &location);
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__BMSyncService_remoteDevicesWithReply___block_invoke_2;
@@ -188,21 +188,21 @@ void __40__BMSyncService_remoteDevicesWithReply___block_invoke_2(uint64_t a1)
   [WeakRetained invalidate];
 }
 
-- (void)remoteDevicesForAccount:(id)a3 reply:(id)a4
+- (void)remoteDevicesForAccount:(id)account reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  replyCopy = reply;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v9);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __47__BMSyncService_remoteDevicesForAccount_reply___block_invoke;
   v16[3] = &unk_278D08E10;
-  v10 = v7;
+  v10 = replyCopy;
   v17 = v10;
   objc_copyWeak(&v18, &location);
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __47__BMSyncService_remoteDevicesForAccount_reply___block_invoke_2;
@@ -210,7 +210,7 @@ void __40__BMSyncService_remoteDevicesWithReply___block_invoke_2(uint64_t a1)
   v12 = v10;
   v14 = v12;
   objc_copyWeak(&v15, &location);
-  [v11 remoteDevicesForAccount:v6 reply:v13];
+  [v11 remoteDevicesForAccount:accountCopy reply:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v18);
@@ -243,20 +243,20 @@ void __47__BMSyncService_remoteDevicesForAccount_reply___block_invoke_2(uint64_t
   [WeakRetained invalidate];
 }
 
-- (void)triggerRapportSyncWithReply:(id)a3
+- (void)triggerRapportSyncWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__BMSyncService_triggerRapportSyncWithReply___block_invoke;
   v13[3] = &unk_278D08E10;
-  v7 = v4;
+  v7 = replyCopy;
   v14 = v7;
   objc_copyWeak(&v15, &location);
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__BMSyncService_triggerRapportSyncWithReply___block_invoke_2;
@@ -297,20 +297,20 @@ void __45__BMSyncService_triggerRapportSyncWithReply___block_invoke_2(uint64_t a
   [WeakRetained invalidate];
 }
 
-- (void)triggerCloudKitSyncWithReply:(id)a3
+- (void)triggerCloudKitSyncWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__BMSyncService_triggerCloudKitSyncWithReply___block_invoke;
   v13[3] = &unk_278D08E10;
-  v7 = v4;
+  v7 = replyCopy;
   v14 = v7;
   objc_copyWeak(&v15, &location);
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__BMSyncService_triggerCloudKitSyncWithReply___block_invoke_2;
@@ -351,7 +351,7 @@ void __46__BMSyncService_triggerCloudKitSyncWithReply___block_invoke_2(uint64_t 
   [WeakRetained invalidate];
 }
 
-- (id)remoteDevicesWithError:(id *)a3
+- (id)remoteDevicesWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -366,15 +366,15 @@ void __46__BMSyncService_triggerCloudKitSyncWithReply___block_invoke_2(uint64_t 
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__BMSyncService_remoteDevicesWithError___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v16;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__BMSyncService_remoteDevicesWithError___block_invoke_2;
@@ -389,12 +389,12 @@ void __46__BMSyncService_triggerCloudKitSyncWithReply___block_invoke_2(uint64_t 
   objc_destroyWeak(&location);
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (error)
   {
     v8 = v17[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -430,9 +430,9 @@ void __40__BMSyncService_remoteDevicesWithError___block_invoke_2(uint64_t a1, vo
   [WeakRetained invalidate];
 }
 
-- (id)remoteDevicesForAccount:(id)a3 error:(id *)a4
+- (id)remoteDevicesForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -446,15 +446,15 @@ void __40__BMSyncService_remoteDevicesWithError___block_invoke_2(uint64_t a1, vo
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v8);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __47__BMSyncService_remoteDevicesForAccount_error___block_invoke;
   v15[3] = &unk_278D08E60;
   v15[4] = &v18;
   objc_copyWeak(&v16, &location);
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v9 = [connection synchronousRemoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __47__BMSyncService_remoteDevicesForAccount_error___block_invoke_2;
@@ -462,19 +462,19 @@ void __40__BMSyncService_remoteDevicesWithError___block_invoke_2(uint64_t a1, vo
   v13[4] = &v24;
   v13[5] = &v18;
   objc_copyWeak(&v14, &location);
-  [v9 remoteDevicesForAccount:v6 reply:v13];
+  [v9 remoteDevicesForAccount:accountCopy reply:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (error)
   {
     v10 = v19[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -510,7 +510,7 @@ void __47__BMSyncService_remoteDevicesForAccount_error___block_invoke_2(uint64_t
   [WeakRetained invalidate];
 }
 
-- (BOOL)triggerRapportSyncWithError:(id *)a3
+- (BOOL)triggerRapportSyncWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -519,15 +519,15 @@ void __47__BMSyncService_remoteDevicesForAccount_error___block_invoke_2(uint64_t
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__BMSyncService_triggerRapportSyncWithError___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v16;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__BMSyncService_triggerRapportSyncWithError___block_invoke_2;
@@ -542,9 +542,9 @@ void __47__BMSyncService_remoteDevicesForAccount_error___block_invoke_2(uint64_t
 
   objc_autoreleasePoolPop(v5);
   v8 = v17[5];
-  if (a3 && v8)
+  if (error && v8)
   {
-    *a3 = v8;
+    *error = v8;
     v8 = v17[5];
   }
 
@@ -568,9 +568,9 @@ void __45__BMSyncService_triggerRapportSyncWithError___block_invoke_2(uint64_t a
   [WeakRetained invalidate];
 }
 
-- (BOOL)triggerRapportSyncWithDeviceIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)triggerRapportSyncWithDeviceIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -578,22 +578,22 @@ void __45__BMSyncService_triggerRapportSyncWithError___block_invoke_2(uint64_t a
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v8);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__BMSyncService_triggerRapportSyncWithDeviceIdentifiers_error___block_invoke;
   v15[3] = &unk_278D08E60;
   v15[4] = &v18;
   objc_copyWeak(&v16, &location);
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v9 = [connection synchronousRemoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__BMSyncService_triggerRapportSyncWithDeviceIdentifiers_error___block_invoke_2;
   v13[3] = &unk_278D08E60;
   v13[4] = &v18;
   objc_copyWeak(&v14, &location);
-  [v9 triggerRapportSyncDeviceIdentifiers:v6 reply:v13];
+  [v9 triggerRapportSyncDeviceIdentifiers:identifiersCopy reply:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v16);
@@ -601,9 +601,9 @@ void __45__BMSyncService_triggerRapportSyncWithError___block_invoke_2(uint64_t a
 
   objc_autoreleasePoolPop(v7);
   v10 = v19[5];
-  if (a4 && v10)
+  if (error && v10)
   {
-    *a4 = v10;
+    *error = v10;
     v10 = v19[5];
   }
 
@@ -627,7 +627,7 @@ void __63__BMSyncService_triggerRapportSyncWithDeviceIdentifiers_error___block_i
   [WeakRetained invalidate];
 }
 
-- (BOOL)triggerCloudKitSyncWithError:(id *)a3
+- (BOOL)triggerCloudKitSyncWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -636,15 +636,15 @@ void __63__BMSyncService_triggerRapportSyncWithDeviceIdentifiers_error___block_i
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__BMSyncService_triggerCloudKitSyncWithError___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v16;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__BMSyncService_triggerCloudKitSyncWithError___block_invoke_2;
@@ -659,9 +659,9 @@ void __63__BMSyncService_triggerRapportSyncWithDeviceIdentifiers_error___block_i
 
   objc_autoreleasePoolPop(v5);
   v8 = v17[5];
-  if (a3 && v8)
+  if (error && v8)
   {
-    *a3 = v8;
+    *error = v8;
     v8 = v17[5];
   }
 
@@ -685,7 +685,7 @@ void __46__BMSyncService_triggerCloudKitSyncWithError___block_invoke_2(uint64_t 
   [WeakRetained invalidate];
 }
 
-- (id)rapportSyncWithErrors:(id *)a3
+- (id)rapportSyncWithErrors:(id *)errors
 {
   v22 = 0;
   v23 = &v22;
@@ -700,15 +700,15 @@ void __46__BMSyncService_triggerCloudKitSyncWithError___block_invoke_2(uint64_t 
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__BMSyncService_rapportSyncWithErrors___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v16;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__BMSyncService_rapportSyncWithErrors___block_invoke_2;
@@ -723,12 +723,12 @@ void __46__BMSyncService_triggerCloudKitSyncWithError___block_invoke_2(uint64_t 
   objc_destroyWeak(&location);
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (errors)
   {
     v8 = v17[5];
     if (v8)
     {
-      *a3 = v8;
+      *errors = v8;
     }
   }
 
@@ -774,7 +774,7 @@ void __39__BMSyncService_rapportSyncWithErrors___block_invoke_2(uint64_t a1, voi
   [WeakRetained invalidate];
 }
 
-- (id)cascadeRapportSyncWithErrors:(id *)a3
+- (id)cascadeRapportSyncWithErrors:(id *)errors
 {
   v22 = 0;
   v23 = &v22;
@@ -789,15 +789,15 @@ void __39__BMSyncService_rapportSyncWithErrors___block_invoke_2(uint64_t a1, voi
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__BMSyncService_cascadeRapportSyncWithErrors___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v16;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__BMSyncService_cascadeRapportSyncWithErrors___block_invoke_2;
@@ -812,12 +812,12 @@ void __39__BMSyncService_rapportSyncWithErrors___block_invoke_2(uint64_t a1, voi
   objc_destroyWeak(&location);
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (errors)
   {
     v8 = v17[5];
     if (v8)
     {
-      *a3 = v8;
+      *errors = v8;
     }
   }
 
@@ -863,7 +863,7 @@ void __46__BMSyncService_cascadeRapportSyncWithErrors___block_invoke_2(uint64_t 
   [WeakRetained invalidate];
 }
 
-- (id)cloudKitSyncWithErrors:(id *)a3
+- (id)cloudKitSyncWithErrors:(id *)errors
 {
   v22 = 0;
   v23 = &v22;
@@ -878,15 +878,15 @@ void __46__BMSyncService_cascadeRapportSyncWithErrors___block_invoke_2(uint64_t 
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__BMSyncService_cloudKitSyncWithErrors___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v16;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__BMSyncService_cloudKitSyncWithErrors___block_invoke_2;
@@ -901,12 +901,12 @@ void __46__BMSyncService_cascadeRapportSyncWithErrors___block_invoke_2(uint64_t 
   objc_destroyWeak(&location);
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (errors)
   {
     v8 = v17[5];
     if (v8)
     {
-      *a3 = v8;
+      *errors = v8;
     }
   }
 
@@ -952,7 +952,7 @@ void __40__BMSyncService_cloudKitSyncWithErrors___block_invoke_2(uint64_t a1, vo
   [WeakRetained invalidate];
 }
 
-- (id)peerInformationWithError:(id *)a3
+- (id)peerInformationWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -967,15 +967,15 @@ void __40__BMSyncService_cloudKitSyncWithErrors___block_invoke_2(uint64_t a1, vo
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMSyncService *)self connection];
-  objc_initWeak(&location, v6);
+  connection = [(BMSyncService *)self connection];
+  objc_initWeak(&location, connection);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __42__BMSyncService_peerInformationWithError___block_invoke;
   v13[3] = &unk_278D08E60;
   v13[4] = &v22;
   objc_copyWeak(&v14, &location);
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__BMSyncService_peerInformationWithError___block_invoke_2;
@@ -990,12 +990,12 @@ void __40__BMSyncService_cloudKitSyncWithErrors___block_invoke_2(uint64_t a1, vo
   objc_destroyWeak(&location);
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (error)
   {
     v8 = v23[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 

@@ -1,20 +1,20 @@
 @interface TRAArbitrationInterfaceIdiomInputs
-- (TRAArbitrationInterfaceIdiomInputs)initWithIsPad:(BOOL)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (TRAArbitrationInterfaceIdiomInputs)initWithIsPad:(BOOL)pad;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAArbitrationInterfaceIdiomInputs
 
-- (TRAArbitrationInterfaceIdiomInputs)initWithIsPad:(BOOL)a3
+- (TRAArbitrationInterfaceIdiomInputs)initWithIsPad:(BOOL)pad
 {
   v5.receiver = self;
   v5.super_class = TRAArbitrationInterfaceIdiomInputs;
   result = [(TRAArbitrationInterfaceIdiomInputs *)&v5 init];
   if (result)
   {
-    result->_isPad = a3;
+    result->_isPad = pad;
   }
 
   return result;
@@ -22,10 +22,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationInterfaceIdiomInputs *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationInterfaceIdiomInputs *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -36,12 +36,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationInterfaceIdiomInputs *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationInterfaceIdiomInputs *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

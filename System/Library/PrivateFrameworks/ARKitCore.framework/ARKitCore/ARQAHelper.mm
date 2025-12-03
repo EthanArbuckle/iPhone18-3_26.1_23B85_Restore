@@ -1,39 +1,39 @@
 @interface ARQAHelper
-+ (float)_meanDepthValueOfDepthBuffer:(__CVBuffer *)a3 consideringSegmentation:(BOOL)a4 ofSegmentationBuffer:(__CVBuffer *)a5;
-+ (id)arrayFromRaycastResults:(id)a3;
-+ (id)arrayOf2dPoints:(id)a1 count:(SEL)a2;
-+ (id)arrayOf3dPoints:(id)a1 count:(SEL)a2;
-+ (id)arrayOfUUIDSet:(id)a3;
-+ (id)arrayWithMatrix3x3:(__n128)a3;
-+ (id)arrayWithMatrix4x4:(__n128)a3;
-+ (id)arrayWithVector2:(id)a1;
-+ (id)arrayWithVector3:(id)a1;
-+ (id)arrayWithVector4:(id)a1;
-+ (id)dictionaryFromAnchor:(id)a3;
-+ (id)dictionaryFromCLLocation:(id)a3;
-+ (id)dictionaryFromMeshAnchor:(id)a3;
-+ (id)dictionaryFromMeshGeometry:(id)a3;
-+ (id)dictionaryFromPatchGrid:(id)a3;
-+ (id)dictionaryFromPlaneAnchor:(id)a3;
-+ (id)dictionaryFromPlaneExtent:(id)a3;
-+ (id)dictionaryFromRawCLLocation:(id)a3;
-+ (id)dictionaryFromRaycastQuery:(id)a3;
-+ (id)dictionaryFromVertices:(id)a1 vertexCount:(SEL)a2 textureCoordinates:textureCoordinateCount:;
-+ (id)extractAnchorDataForFrame:(id)a3;
-+ (id)extractDetectedBodiesForFrame:(id)a3;
++ (float)_meanDepthValueOfDepthBuffer:(__CVBuffer *)buffer consideringSegmentation:(BOOL)segmentation ofSegmentationBuffer:(__CVBuffer *)segmentationBuffer;
++ (id)arrayFromRaycastResults:(id)results;
++ (id)arrayOf2dPoints:(id)points count:(SEL)count;
++ (id)arrayOf3dPoints:(id)points count:(SEL)count;
++ (id)arrayOfUUIDSet:(id)set;
++ (id)arrayWithMatrix3x3:(__n128)matrix3x3;
++ (id)arrayWithMatrix4x4:(__n128)matrix4x4;
++ (id)arrayWithVector2:(id)vector2;
++ (id)arrayWithVector3:(id)vector3;
++ (id)arrayWithVector4:(id)vector4;
++ (id)dictionaryFromAnchor:(id)anchor;
++ (id)dictionaryFromCLLocation:(id)location;
++ (id)dictionaryFromMeshAnchor:(id)anchor;
++ (id)dictionaryFromMeshGeometry:(id)geometry;
++ (id)dictionaryFromPatchGrid:(id)grid;
++ (id)dictionaryFromPlaneAnchor:(id)anchor;
++ (id)dictionaryFromPlaneExtent:(id)extent;
++ (id)dictionaryFromRawCLLocation:(id)location;
++ (id)dictionaryFromRaycastQuery:(id)query;
++ (id)dictionaryFromVertices:(id)vertices vertexCount:(SEL)count textureCoordinates:textureCoordinateCount:;
++ (id)extractAnchorDataForFrame:(id)frame;
++ (id)extractDetectedBodiesForFrame:(id)frame;
 + (id)formatDescriptionForAnchor;
 + (id)formatDescriptionForPlaneAnchor;
-+ (id)generateTagsForConfiguration:(id)a3 replaySensor:(id)a4 technique:(id)a5;
-+ (id)headerInformationWithConfiguration:(id)a3 technique:(id)a4;
-+ (id)traceFrameData:(id)a3 withFrameIndex:(unint64_t)a4;
-+ (id)traceFrameData:(id)a3 withFrameIndex:(unint64_t)a4 writeOBJ:(BOOL)a5;
-+ (void)techniquesArray:(id)a3 array:(id)a4;
-+ (void)traverseTechniques:(id)a3 withBlock:(id)a4;
++ (id)generateTagsForConfiguration:(id)configuration replaySensor:(id)sensor technique:(id)technique;
++ (id)headerInformationWithConfiguration:(id)configuration technique:(id)technique;
++ (id)traceFrameData:(id)data withFrameIndex:(unint64_t)index;
++ (id)traceFrameData:(id)data withFrameIndex:(unint64_t)index writeOBJ:(BOOL)j;
++ (void)techniquesArray:(id)array array:(id)a4;
++ (void)traverseTechniques:(id)techniques withBlock:(id)block;
 @end
 
 @implementation ARQAHelper
 
-+ (id)arrayWithVector2:(id)a1
++ (id)arrayWithVector2:(id)vector2
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7 = *(&v2 + 1);
@@ -46,7 +46,7 @@
   return v5;
 }
 
-+ (id)arrayWithVector3:(id)a1
++ (id)arrayWithVector3:(id)vector3
 {
   v9[3] = *MEMORY[0x1E69E9840];
   v8 = v2;
@@ -61,7 +61,7 @@
   return v6;
 }
 
-+ (id)arrayWithVector4:(id)a1
++ (id)arrayWithVector4:(id)vector4
 {
   v10[4] = *MEMORY[0x1E69E9840];
   v9 = v2;
@@ -78,18 +78,18 @@
   return v7;
 }
 
-+ (id)arrayWithMatrix4x4:(__n128)a3
++ (id)arrayWithMatrix4x4:(__n128)matrix4x4
 {
   v41 = *MEMORY[0x1E69E9840];
-  v21 = a1;
-  v20 = ARFloat(a1.n128_f32[0]);
+  selfCopy = self;
+  v20 = ARFloat(self.n128_f32[0]);
   v25 = v20;
-  v26 = ARFloat(v21.n128_f32[1]);
+  v26 = ARFloat(selfCopy.n128_f32[1]);
   v19 = v26;
-  v18 = ARFloat(v21.n128_f32[2]);
+  v18 = ARFloat(selfCopy.n128_f32[2]);
   v27 = v18;
-  v21.n128_u64[0] = ARFloat(v21.n128_f32[3]);
-  v28 = v21.n128_u64[0];
+  selfCopy.n128_u64[0] = ARFloat(selfCopy.n128_f32[3]);
+  v28 = selfCopy.n128_u64[0];
   v17 = ARFloat(a2.n128_f32[0]);
   v29 = v17;
   v16 = ARFloat(a2.n128_f32[1]);
@@ -98,13 +98,13 @@
   v31 = v15;
   v4 = ARFloat(a2.n128_f32[3]);
   v32 = v4;
-  v5 = ARFloat(a3.n128_f32[0]);
+  v5 = ARFloat(matrix4x4.n128_f32[0]);
   v33 = v5;
-  v6 = ARFloat(a3.n128_f32[1]);
+  v6 = ARFloat(matrix4x4.n128_f32[1]);
   v34 = v6;
-  v7 = ARFloat(a3.n128_f32[2]);
+  v7 = ARFloat(matrix4x4.n128_f32[2]);
   v35 = v7;
-  v8 = ARFloat(a3.n128_f32[3]);
+  v8 = ARFloat(matrix4x4.n128_f32[3]);
   v36 = v8;
   v9 = ARFloat(a4.n128_f32[0]);
   v37 = v9;
@@ -119,14 +119,14 @@
   return v13;
 }
 
-+ (id)arrayWithMatrix3x3:(__n128)a3
++ (id)arrayWithMatrix3x3:(__n128)matrix3x3
 {
   v17[9] = *MEMORY[0x1E69E9840];
-  v3 = ARFloat(a1.n128_f32[0]);
+  v3 = ARFloat(self.n128_f32[0]);
   v17[0] = v3;
-  v4 = ARFloat(a1.n128_f32[1]);
+  v4 = ARFloat(self.n128_f32[1]);
   v17[1] = v4;
-  v5 = ARFloat(a1.n128_f32[2]);
+  v5 = ARFloat(self.n128_f32[2]);
   v17[2] = v5;
   v6 = ARFloat(a2.n128_f32[0]);
   v17[3] = v6;
@@ -134,18 +134,18 @@
   v17[4] = v7;
   v8 = ARFloat(a2.n128_f32[2]);
   v17[5] = v8;
-  v9 = ARFloat(a3.n128_f32[0]);
+  v9 = ARFloat(matrix3x3.n128_f32[0]);
   v17[6] = v9;
-  v10 = ARFloat(a3.n128_f32[1]);
+  v10 = ARFloat(matrix3x3.n128_f32[1]);
   v17[7] = v10;
-  v11 = ARFloat(a3.n128_f32[2]);
+  v11 = ARFloat(matrix3x3.n128_f32[2]);
   v17[8] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:9];
 
   return v12;
 }
 
-+ (id)arrayOf2dPoints:(id)a1 count:(SEL)a2
++ (id)arrayOf2dPoints:(id)points count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -160,7 +160,7 @@
   return i;
 }
 
-+ (id)arrayOf3dPoints:(id)a1 count:(SEL)a2
++ (id)arrayOf3dPoints:(id)points count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -175,16 +175,16 @@
   return i;
 }
 
-+ (id)arrayOfUUIDSet:(id)a3
++ (id)arrayOfUUIDSet:(id)set
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  setCopy = set;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(setCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v3;
+  v5 = setCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -198,8 +198,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) UUIDString];
-        [v4 addObject:v9];
+        uUIDString = [*(*(&v11 + 1) + 8 * i) UUIDString];
+        [v4 addObject:uUIDString];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -211,11 +211,11 @@
   return v4;
 }
 
-+ (id)generateTagsForConfiguration:(id)a3 replaySensor:(id)a4 technique:(id)a5
++ (id)generateTagsForConfiguration:(id)configuration replaySensor:(id)sensor technique:(id)technique
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  sensorCopy = sensor;
+  techniqueCopy = technique;
   v10 = objc_opt_new();
   v11 = ARDeviceString();
   [v10 setObject:v11 forKeyedSubscript:@"device"];
@@ -223,92 +223,92 @@
   v12 = [objc_opt_class() description];
   [v10 setObject:v12 forKeyedSubscript:@"configuration"];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "isAutoFocusEnabled")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(configurationCopy, "isAutoFocusEnabled")}];
   [v10 setObject:v13 forKeyedSubscript:@"isAutoFocusEnabled"];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "isLightEstimationEnabled")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(configurationCopy, "isLightEstimationEnabled")}];
   [v10 setObject:v14 forKeyedSubscript:@"isLightEstimationEnabled"];
 
-  v15 = NSStringFromARWorldAlignment([v7 worldAlignment]);
+  v15 = NSStringFromARWorldAlignment([configurationCopy worldAlignment]);
   [v10 setObject:v15 forKeyedSubscript:@"worldAlignment"];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "providesAudioData")}];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(configurationCopy, "providesAudioData")}];
   [v10 setObject:v16 forKeyedSubscript:@"providesAudioData"];
 
-  if ([v7 frameSemantics])
+  if ([configurationCopy frameSemantics])
   {
-    v17 = NSStringFromARFrameSemantics([v7 frameSemantics]);
+    v17 = NSStringFromARFrameSemantics([configurationCopy frameSemantics]);
     [v10 setObject:v17 forKeyedSubscript:@"frameSemantics"];
   }
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v7 videoFormat];
-  [v19 imageResolution];
+  videoFormat = [configurationCopy videoFormat];
+  [videoFormat imageResolution];
   v21 = v20;
-  v22 = [v7 videoFormat];
-  [v22 imageResolution];
+  videoFormat2 = [configurationCopy videoFormat];
+  [videoFormat2 imageResolution];
   v24 = [v18 stringWithFormat:@"%.0f, %.0f", v21, v23];
   [v10 setObject:v24 forKeyedSubscript:@"videoResolution"];
 
   v25 = MEMORY[0x1E696AD98];
-  v26 = [v7 videoFormat];
-  v27 = [v25 numberWithLong:{objc_msgSend(v26, "framesPerSecond")}];
+  videoFormat3 = [configurationCopy videoFormat];
+  v27 = [v25 numberWithLong:{objc_msgSend(videoFormat3, "framesPerSecond")}];
   [v10 setObject:v27 forKeyedSubscript:@"videoFramesPerSecond"];
 
-  if (v8)
+  if (sensorCopy)
   {
-    v28 = [v8 sequenceURL];
-    v29 = [v28 absoluteString];
-    [v10 setObject:v29 forKeyedSubscript:@"replayURL"];
+    sequenceURL = [sensorCopy sequenceURL];
+    absoluteString = [sequenceURL absoluteString];
+    [v10 setObject:absoluteString forKeyedSubscript:@"replayURL"];
 
-    v30 = [v8 deviceModel];
-    [v10 setObject:v30 forKeyedSubscript:@"replayDeviceModel"];
+    deviceModel = [sensorCopy deviceModel];
+    [v10 setObject:deviceModel forKeyedSubscript:@"replayDeviceModel"];
 
-    v31 = [v8 osVersion];
-    [v10 setObject:v31 forKeyedSubscript:@"replayOSVersion"];
+    osVersion = [sensorCopy osVersion];
+    [v10 setObject:osVersion forKeyedSubscript:@"replayOSVersion"];
 
-    v32 = [v8 arkitVersion];
-    [v10 setObject:v32 forKeyedSubscript:@"replayARKitVersion"];
+    arkitVersion = [sensorCopy arkitVersion];
+    [v10 setObject:arkitVersion forKeyedSubscript:@"replayARKitVersion"];
 
     v33 = MEMORY[0x1E696AEC0];
-    [v8 imageResolution];
+    [sensorCopy imageResolution];
     v35 = v34;
-    [v8 imageResolution];
+    [sensorCopy imageResolution];
     v37 = [v33 stringWithFormat:@"%.0fx%.0f", v35, v36];
     [v10 setObject:v37 forKeyedSubscript:@"replayVideoResolution"];
 
     v38 = MEMORY[0x1E696AEC0];
-    [v8 nominalFrameRate];
+    [sensorCopy nominalFrameRate];
     v40 = [v38 stringWithFormat:@"%.02ffps", v39];
     [v10 setObject:v40 forKeyedSubscript:@"replayNominalFramerate"];
 
-    v41 = NSStringFromARReplayMode([v8 replayMode]);
+    v41 = NSStringFromARReplayMode([sensorCopy replayMode]);
     [v10 setObject:v41 forKeyedSubscript:@"replaySensorMode"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v42 = v7;
+    v42 = configurationCopy;
     v43 = NSStringFromARPlaneDetection([v42 planeDetection]);
     [v10 setObject:v43 forKeyedSubscript:@"planeDetection"];
 
     v44 = MEMORY[0x1E696AD98];
-    v45 = [v42 initialWorldMap];
-    v46 = [v44 numberWithBool:v45 != 0];
+    initialWorldMap = [v42 initialWorldMap];
+    v46 = [v44 numberWithBool:initialWorldMap != 0];
     [v10 setObject:v46 forKeyedSubscript:@"isInitialWorldMapSet"];
 
     v47 = MEMORY[0x1E696AD98];
-    v48 = [v42 detectionImages];
-    v49 = [v47 numberWithUnsignedInteger:{objc_msgSend(v48, "count")}];
+    detectionImages = [v42 detectionImages];
+    v49 = [v47 numberWithUnsignedInteger:{objc_msgSend(detectionImages, "count")}];
     [v10 setObject:v49 forKeyedSubscript:@"numberOfDetectionImages"];
 
     v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v42, "maximumNumberOfTrackedImages")}];
     [v10 setObject:v50 forKeyedSubscript:@"maximumNumberOfTrackedImages"];
 
     v51 = MEMORY[0x1E696AD98];
-    v52 = [v42 detectionObjects];
-    v53 = [v51 numberWithUnsignedInteger:{objc_msgSend(v52, "count")}];
+    detectionObjects = [v42 detectionObjects];
+    v53 = [v51 numberWithUnsignedInteger:{objc_msgSend(detectionObjects, "count")}];
     [v10 setObject:v53 forKeyedSubscript:@"numberOfDetectionObjects"];
 
     v54 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v42, "isMLModelEnabled")}];
@@ -326,10 +326,10 @@
       goto LABEL_10;
     }
 
-    v56 = v7;
+    v56 = configurationCopy;
     v57 = MEMORY[0x1E696AD98];
-    v58 = [v56 trackingImages];
-    v59 = [v57 numberWithUnsignedInteger:{objc_msgSend(v58, "count")}];
+    trackingImages = [v56 trackingImages];
+    v59 = [v57 numberWithUnsignedInteger:{objc_msgSend(trackingImages, "count")}];
     [v10 setObject:v59 forKeyedSubscript:@"numberOfTrackingImages"];
 
     v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v56, "maximumNumberOfTrackedImages")}];
@@ -338,7 +338,7 @@
 
 LABEL_10:
   v60 = objc_opt_new();
-  [ARQAHelper techniquesArray:v9 array:v60];
+  [ARQAHelper techniquesArray:techniqueCopy array:v60];
   [v10 setObject:v60 forKeyedSubscript:@"techniques"];
   v61 = objc_opt_new();
   v68[0] = MEMORY[0x1E69E9820];
@@ -347,7 +347,7 @@ LABEL_10:
   v68[3] = &unk_1E817D950;
   v62 = v61;
   v69 = v62;
-  [ARQAHelper traverseTechniques:v9 withBlock:v68];
+  [ARQAHelper traverseTechniques:techniqueCopy withBlock:v68];
   [v10 setObject:v62 forKeyedSubscript:@"networkVersion"];
   v63 = objc_opt_new();
   v66[0] = MEMORY[0x1E69E9820];
@@ -356,7 +356,7 @@ LABEL_10:
   v66[3] = &unk_1E817D950;
   v64 = v63;
   v67 = v64;
-  [ARQAHelper traverseTechniques:v9 withBlock:v66];
+  [ARQAHelper traverseTechniques:techniqueCopy withBlock:v66];
   [v10 setObject:v64 forKeyedSubscript:@"activeRemoteTechniqueConnections"];
 
   return v10;
@@ -399,22 +399,22 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
   }
 }
 
-+ (void)traverseTechniques:(id)a3 withBlock:(id)a4
++ (void)traverseTechniques:(id)techniques withBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v7[2](v7, v6);
-  v8 = [v6 splitTechniques];
+  techniquesCopy = techniques;
+  blockCopy = block;
+  blockCopy[2](blockCopy, techniquesCopy);
+  splitTechniques = [techniquesCopy splitTechniques];
 
-  if (v8)
+  if (splitTechniques)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v6 splitTechniques];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    splitTechniques2 = [techniquesCopy splitTechniques];
+    v10 = [splitTechniques2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v10)
     {
       v11 = *v22;
@@ -425,14 +425,14 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(splitTechniques2);
           }
 
-          [a1 traverseTechniques:*(*(&v21 + 1) + 8 * v12++) withBlock:v7];
+          [self traverseTechniques:*(*(&v21 + 1) + 8 * v12++) withBlock:blockCopy];
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v10 = [splitTechniques2 countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v10);
@@ -446,8 +446,8 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v13 = [v6 techniques];
-    v14 = [v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    techniques = [techniquesCopy techniques];
+    v14 = [techniques countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v14)
     {
       v15 = *v18;
@@ -458,14 +458,14 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
         {
           if (*v18 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(techniques);
           }
 
-          [a1 traverseTechniques:*(*(&v17 + 1) + 8 * v16++) withBlock:v7];
+          [self traverseTechniques:*(*(&v17 + 1) + 8 * v16++) withBlock:blockCopy];
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v14 = [techniques countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v14);
@@ -473,10 +473,10 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
   }
 }
 
-+ (void)techniquesArray:(id)a3 array:(id)a4
++ (void)techniquesArray:(id)array array:(id)a4
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  arrayCopy = array;
   v7 = a4;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -485,8 +485,8 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v6 techniques];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    techniques = [arrayCopy techniques];
+    v9 = [techniques countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -497,14 +497,14 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(techniques);
           }
 
-          [a1 techniquesArray:*(*(&v14 + 1) + 8 * v11++) array:v7];
+          [self techniquesArray:*(*(&v14 + 1) + 8 * v11++) array:v7];
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [techniques countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -522,10 +522,10 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
   }
 }
 
-+ (id)headerInformationWithConfiguration:(id)a3 technique:(id)a4
++ (id)headerInformationWithConfiguration:(id)configuration technique:(id)technique
 {
-  v5 = a3;
-  v29 = a4;
+  configurationCopy = configuration;
+  techniqueCopy = technique;
   v28 = objc_opt_new();
   v6 = ARFrameworkVersions();
   v30[0] = MEMORY[0x1E69E9820];
@@ -541,24 +541,24 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
   v9 = AROSVersionString();
   [v7 setObject:v9 forKeyedSubscript:@"deviceOSVersion"];
 
-  if ([v5 frameSemantics])
+  if ([configurationCopy frameSemantics])
   {
     [v7 setObject:@"segmentation.mov" forKeyedSubscript:@"segmentationFilename"];
   }
 
   v10 = objc_opt_new();
-  v11 = [v5 replaySensor];
-  v12 = v5;
+  replaySensor = [configurationCopy replaySensor];
+  v12 = configurationCopy;
   objc_opt_class();
   v13 = v12;
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 templateConfiguration];
-    v15 = v14;
+    templateConfiguration = [v12 templateConfiguration];
+    v15 = templateConfiguration;
     v13 = v12;
-    if (v14)
+    if (templateConfiguration)
     {
-      v13 = v14;
+      v13 = templateConfiguration;
     }
   }
 
@@ -575,8 +575,8 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
       [v10 addObject:v18];
     }
 
-    v19 = [v17 detectionImages];
-    v20 = [v19 count];
+    detectionImages = [v17 detectionImages];
+    v20 = [detectionImages count];
 
     if (v20)
     {
@@ -584,8 +584,8 @@ void __66__ARQAHelper_generateTagsForConfiguration_replaySensor_technique___bloc
       [v10 addObject:v21];
     }
 
-    v22 = [v17 detectionObjects];
-    v23 = [v22 count];
+    detectionObjects = [v17 detectionObjects];
+    v23 = [detectionObjects count];
 
     if (v23)
     {
@@ -605,11 +605,11 @@ LABEL_17:
   }
 
   [v7 setObject:v10 forKeyedSubscript:@"expectedAnchors"];
-  v25 = [ARQAHelper generateTagsForConfiguration:v13 replaySensor:v11 technique:v29];
+  v25 = [ARQAHelper generateTagsForConfiguration:v13 replaySensor:replaySensor technique:techniqueCopy];
   [v7 setObject:v25 forKeyedSubscript:@"tags"];
 
-  v26 = [MEMORY[0x1E695E000] appleGlobalDomainARKitDefaults];
-  [v7 setObject:v26 forKeyedSubscript:@"userDefaults"];
+  appleGlobalDomainARKitDefaults = [MEMORY[0x1E695E000] appleGlobalDomainARKitDefaults];
+  [v7 setObject:appleGlobalDomainARKitDefaults forKeyedSubscript:@"userDefaults"];
 
   return v7;
 }
@@ -621,29 +621,29 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-+ (id)dictionaryFromPlaneExtent:(id)a3
++ (id)dictionaryFromPlaneExtent:(id)extent
 {
-  v3 = a3;
+  extentCopy = extent;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
   v5 = MEMORY[0x1E696AD98];
-  [v3 rotationOnYAxis];
+  [extentCopy rotationOnYAxis];
   v6 = [v5 numberWithFloat:?];
   [v4 setObject:v6 forKeyedSubscript:@"rotationOnYAxis"];
 
   v7 = MEMORY[0x1E696AD98];
-  [v3 width];
+  [extentCopy width];
   v8 = [v7 numberWithFloat:?];
   [v4 setObject:v8 forKeyedSubscript:@"width"];
 
   v9 = MEMORY[0x1E696AD98];
-  [v3 height];
+  [extentCopy height];
   v10 = [v9 numberWithFloat:?];
   [v4 setObject:v10 forKeyedSubscript:@"height"];
 
   return v4;
 }
 
-+ (id)dictionaryFromVertices:(id)a1 vertexCount:(SEL)a2 textureCoordinates:textureCoordinateCount:
++ (id)dictionaryFromVertices:(id)vertices vertexCount:(SEL)count textureCoordinates:textureCoordinateCount:
 {
   v6 = v5;
   v7 = v4;
@@ -659,45 +659,45 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
   return v10;
 }
 
-+ (id)dictionaryFromMeshGeometry:(id)a3
++ (id)dictionaryFromMeshGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [v3 vertices];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "count")}];
+  vertices = [geometryCopy vertices];
+  v7 = [v5 numberWithInteger:{objc_msgSend(vertices, "count")}];
   [v4 setObject:v7 forKeyedSubscript:@"vertexCount"];
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [v3 faces];
-  v10 = [v8 numberWithInteger:{objc_msgSend(v9, "count")}];
+  faces = [geometryCopy faces];
+  v10 = [v8 numberWithInteger:{objc_msgSend(faces, "count")}];
   [v4 setObject:v10 forKeyedSubscript:@"faceCount"];
 
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v3 normals];
-  v13 = [v11 numberWithInteger:{objc_msgSend(v12, "count")}];
+  normals = [geometryCopy normals];
+  v13 = [v11 numberWithInteger:{objc_msgSend(normals, "count")}];
   [v4 setObject:v13 forKeyedSubscript:@"normalCount"];
 
   return v4;
 }
 
-+ (id)dictionaryFromPatchGrid:(id)a3
++ (id)dictionaryFromPatchGrid:(id)grid
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "size")}];
+  gridCopy = grid;
+  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(gridCopy, "size")}];
   v4 = 0;
-  for (i = 0; i < [v3 size]; ++i)
+  for (i = 0; i < [gridCopy size]; ++i)
   {
-    v6 = [v3 patches];
-    v7 = [MEMORY[0x1E696AD98] numberWithFloat:*(v6 + v4)];
+    patches = [gridCopy patches];
+    v7 = [MEMORY[0x1E696AD98] numberWithFloat:*(patches + v4)];
     v20[0] = v7;
-    LODWORD(v8) = *(v6 + v4 + 4);
+    LODWORD(v8) = *(patches + v4 + 4);
     v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
     v20[1] = v9;
-    v10 = [MEMORY[0x1E696AD98] numberWithFloat:*(v6 + v4 + 8)];
+    v10 = [MEMORY[0x1E696AD98] numberWithFloat:*(patches + v4 + 8)];
     v20[2] = v10;
-    LODWORD(v11) = *(v6 + v4 + 12);
+    LODWORD(v11) = *(patches + v4 + 12);
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
     v20[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
@@ -707,11 +707,11 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
   }
 
   v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "size")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(gridCopy, "size")}];
   [v14 setObject:v15 forKeyedSubscript:@"size"];
 
   v16 = MEMORY[0x1E696AD98];
-  [v3 pivot];
+  [gridCopy pivot];
   v17 = [v16 numberWithFloat:?];
   [v14 setObject:v17 forKeyedSubscript:@"pivot"];
 
@@ -720,13 +720,13 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
   return v14;
 }
 
-+ (id)extractAnchorDataForFrame:(id)a3
++ (id)extractAnchorDataForFrame:(id)frame
 {
   v104 = *MEMORY[0x1E69E9840];
-  v90 = a3;
+  frameCopy = frame;
   v96 = objc_opt_new();
-  v3 = [v90 anchors];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_96];
+  anchors = [frameCopy anchors];
+  v4 = [anchors sortedArrayUsingComparator:&__block_literal_global_96];
 
   v100 = 0u;
   v101 = 0u;
@@ -757,13 +757,13 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         v10 = [ARQAHelper arrayWithMatrix4x4:?];
         [v8 setObject:v10 forKeyedSubscript:@"transform"];
 
-        v11 = [v7 name];
-        LOBYTE(v10) = v11 == 0;
+        name = [v7 name];
+        LOBYTE(v10) = name == 0;
 
         if ((v10 & 1) == 0)
         {
-          v12 = [v7 name];
-          [v8 setObject:v12 forKeyedSubscript:@"name"];
+          name2 = [v7 name];
+          [v8 setObject:name2 forKeyedSubscript:@"name"];
         }
 
         if (objc_opt_respondsToSelector())
@@ -773,16 +773,16 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         }
 
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [v7 identifier];
-        v16 = [v15 UUIDString];
-        v17 = [v14 stringWithFormat:@"%@", v16, v90];
-        [v8 setObject:v17 forKeyedSubscript:@"identifier"];
+        identifier = [v7 identifier];
+        uUIDString = [identifier UUIDString];
+        frameCopy = [v14 stringWithFormat:@"%@", uUIDString, frameCopy];
+        [v8 setObject:frameCopy forKeyedSubscript:@"identifier"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [objc_opt_class() dictionaryFromPlaneAnchor:v7];
-          [v8 addEntriesFromDictionary:v18];
+          referenceObject3 = [objc_opt_class() dictionaryFromPlaneAnchor:v7];
+          [v8 addEntriesFromDictionary:referenceObject3];
           goto LABEL_21;
         }
 
@@ -790,8 +790,8 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         if (objc_opt_isKindOfClass())
         {
           v19 = v7;
-          v20 = [v19 blendShapes];
-          [v8 setObject:v20 forKeyedSubscript:@"blendShapes"];
+          blendShapes = [v19 blendShapes];
+          [v8 setObject:blendShapes forKeyedSubscript:@"blendShapes"];
 
           [v19 leftEyeTransform];
           v21 = [ARQAHelper arrayWithMatrix4x4:?];
@@ -802,8 +802,8 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
           [v8 setObject:v22 forKeyedSubscript:@"rightEyeTransform"];
 
           [v19 lookAtPoint];
-          v18 = [ARQAHelper arrayWithVector3:?];
-          [v8 setObject:v18 forKeyedSubscript:@"lookAtPoint"];
+          referenceObject3 = [ARQAHelper arrayWithVector3:?];
+          [v8 setObject:referenceObject3 forKeyedSubscript:@"lookAtPoint"];
           goto LABEL_21;
         }
 
@@ -811,19 +811,19 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         if (objc_opt_isKindOfClass())
         {
           v23 = v7;
-          v24 = [v23 referenceImage];
-          v25 = [v24 name];
-          [v8 setObject:v25 forKeyedSubscript:@"referenceImageName"];
+          referenceImage = [v23 referenceImage];
+          name3 = [referenceImage name];
+          [v8 setObject:name3 forKeyedSubscript:@"referenceImageName"];
 
           v26 = MEMORY[0x1E696AD98];
-          v27 = [v23 referenceImage];
-          [v27 physicalSize];
+          referenceImage2 = [v23 referenceImage];
+          [referenceImage2 physicalSize];
           *&v28 = v28;
           v29 = [v26 numberWithFloat:v28];
           v102[0] = v29;
           v30 = MEMORY[0x1E696AD98];
-          v31 = [v23 referenceImage];
-          [v31 physicalSize];
+          referenceImage3 = [v23 referenceImage];
+          [referenceImage3 physicalSize];
           *&v33 = v32;
           v34 = [v30 numberWithFloat:v33];
           v102[1] = v34;
@@ -833,8 +833,8 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
           v36 = MEMORY[0x1E696AD98];
           [v23 estimatedScaleFactor];
           *&v37 = v37;
-          v18 = [v36 numberWithFloat:v37];
-          [v8 setObject:v18 forKeyedSubscript:@"estimatedScaleFactor"];
+          referenceObject3 = [v36 numberWithFloat:v37];
+          [v8 setObject:referenceObject3 forKeyedSubscript:@"estimatedScaleFactor"];
           goto LABEL_21;
         }
 
@@ -842,17 +842,17 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         if (objc_opt_isKindOfClass())
         {
           v38 = v7;
-          v39 = [v38 referenceObject];
-          v40 = [v39 name];
-          [v8 setObject:v40 forKeyedSubscript:@"referenceObjectName"];
+          referenceObject = [v38 referenceObject];
+          name4 = [referenceObject name];
+          [v8 setObject:name4 forKeyedSubscript:@"referenceObjectName"];
 
-          v41 = [v38 referenceObject];
-          [v41 center];
+          referenceObject2 = [v38 referenceObject];
+          [referenceObject2 center];
           v42 = [ARQAHelper arrayWithVector3:?];
           [v8 setObject:v42 forKeyedSubscript:@"referenceObjectCenter"];
 
-          v18 = [v38 referenceObject];
-          [v18 extent];
+          referenceObject3 = [v38 referenceObject];
+          [referenceObject3 extent];
           v93 = [ARQAHelper arrayWithVector3:?];
           [v8 setObject:? forKeyedSubscript:?];
           goto LABEL_18;
@@ -863,11 +863,11 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         {
           v43 = v7;
           v44 = [v43 url];
-          v45 = [v44 absoluteString];
-          [v8 setObject:v45 forKeyedSubscript:@"url"];
+          absoluteString = [v44 absoluteString];
+          [v8 setObject:absoluteString forKeyedSubscript:@"url"];
 
-          v46 = [v43 instanceID];
-          [v8 setObject:v46 forKeyedSubscript:@"instanceID"];
+          instanceID = [v43 instanceID];
+          [v8 setObject:instanceID forKeyedSubscript:@"instanceID"];
 
           v47 = MEMORY[0x1E696AD98];
           [v43 radius];
@@ -882,8 +882,8 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
           v51 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v43, "urlDecodingState")}];
           [v8 setObject:v51 forKeyedSubscript:@"urlDecodingState"];
 
-          v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v43, "urlDecodingStateInternal")}];
-          [v8 setObject:v18 forKeyedSubscript:@"urlDecodingStateInternal"];
+          referenceObject3 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v43, "urlDecodingStateInternal")}];
+          [v8 setObject:referenceObject3 forKeyedSubscript:@"urlDecodingStateInternal"];
           goto LABEL_21;
         }
 
@@ -892,78 +892,78 @@ void __59__ARQAHelper_headerInformationWithConfiguration_technique___block_invok
         {
           v52 = v7;
           v53 = MEMORY[0x1E695DF70];
-          v54 = [v52 skeleton];
-          v18 = [v53 arrayWithCapacity:{objc_msgSend(v54, "jointCount")}];
+          skeleton = [v52 skeleton];
+          referenceObject3 = [v53 arrayWithCapacity:{objc_msgSend(skeleton, "jointCount")}];
 
           v55 = 0;
           for (i = 0; ; ++i)
           {
-            v57 = [v52 skeleton];
-            v58 = [v57 jointCount] > i;
+            skeleton2 = [v52 skeleton];
+            v58 = [skeleton2 jointCount] > i;
 
             if (!v58)
             {
               break;
             }
 
-            v59 = [v52 skeleton];
-            v60 = [v59 jointModelTransforms];
-            v61 = [ARQAHelper arrayWithMatrix4x4:*(v60 + v55), *(v60 + v55 + 16), *(v60 + v55 + 32), *(v60 + v55 + 48)];
-            [v18 addObject:v61];
+            skeleton3 = [v52 skeleton];
+            jointModelTransforms = [skeleton3 jointModelTransforms];
+            v61 = [ARQAHelper arrayWithMatrix4x4:*(jointModelTransforms + v55), *(jointModelTransforms + v55 + 16), *(jointModelTransforms + v55 + 32), *(jointModelTransforms + v55 + 48)];
+            [referenceObject3 addObject:v61];
 
             v55 += 64;
           }
 
           v64 = MEMORY[0x1E695DF70];
-          v65 = [v52 referenceBody];
-          v66 = [v65 skeleton];
-          v93 = [v64 arrayWithCapacity:{objc_msgSend(v66, "jointCount")}];
+          referenceBody = [v52 referenceBody];
+          skeleton4 = [referenceBody skeleton];
+          v93 = [v64 arrayWithCapacity:{objc_msgSend(skeleton4, "jointCount")}];
 
           for (j = 0; ; ++j)
           {
-            v68 = [v52 referenceBody];
-            v69 = [v68 skeleton];
-            v70 = [v69 jointCount] > j;
+            referenceBody2 = [v52 referenceBody];
+            skeleton5 = [referenceBody2 skeleton];
+            v70 = [skeleton5 jointCount] > j;
 
             if (!v70)
             {
               break;
             }
 
-            v71 = [v52 referenceBody];
-            v72 = [v71 skeleton];
-            v73 = +[ARQAHelper arrayWithVector2:](ARQAHelper, "arrayWithVector2:", *([v72 jointLandmarks] + 8 * j));
+            referenceBody3 = [v52 referenceBody];
+            skeleton6 = [referenceBody3 skeleton];
+            v73 = +[ARQAHelper arrayWithVector2:](ARQAHelper, "arrayWithVector2:", *([skeleton6 jointLandmarks] + 8 * j));
             [v93 addObject:v73];
           }
 
           v74 = MEMORY[0x1E695DF70];
-          v75 = [v52 skeleton];
-          v76 = [v75 coreRESkeleton];
-          v77 = [v76 liftedSkeletonData];
-          v91 = [v74 arrayWithCapacity:{objc_msgSend(v77, "jointCount")}];
+          skeleton7 = [v52 skeleton];
+          coreRESkeleton = [skeleton7 coreRESkeleton];
+          liftedSkeletonData = [coreRESkeleton liftedSkeletonData];
+          v91 = [v74 arrayWithCapacity:{objc_msgSend(liftedSkeletonData, "jointCount")}];
 
           for (k = 0; ; ++k)
           {
-            v79 = [v52 skeleton];
-            v80 = [v79 coreRESkeleton];
-            v81 = [v80 liftedSkeletonData];
-            v82 = [v81 jointCount] > k;
+            skeleton8 = [v52 skeleton];
+            coreRESkeleton2 = [skeleton8 coreRESkeleton];
+            liftedSkeletonData2 = [coreRESkeleton2 liftedSkeletonData];
+            v82 = [liftedSkeletonData2 jointCount] > k;
 
             if (!v82)
             {
               break;
             }
 
-            v83 = [v52 skeleton];
-            v84 = [v83 coreRESkeleton];
-            v85 = [v84 liftedSkeletonData];
-            v94 = *([v85 joints] + 16 * k);
+            skeleton9 = [v52 skeleton];
+            coreRESkeleton3 = [skeleton9 coreRESkeleton];
+            liftedSkeletonData3 = [coreRESkeleton3 liftedSkeletonData];
+            v94 = *([liftedSkeletonData3 joints] + 16 * k);
 
             v86 = [ARQAHelper arrayWithVector3:*&v94];
             [v91 addObject:v86];
           }
 
-          [v8 setObject:v18 forKeyedSubscript:@"jointModelTransforms"];
+          [v8 setObject:referenceObject3 forKeyedSubscript:@"jointModelTransforms"];
           [v8 setObject:v93 forKeyedSubscript:@"referenceBodyLandmarks"];
           v87 = MEMORY[0x1E696AD98];
           [v52 estimatedScaleFactor];
@@ -981,10 +981,10 @@ LABEL_21:
         if (objc_opt_isKindOfClass())
         {
           v62 = v7;
-          v63 = [v62 geometry];
-          v18 = [ARQAHelper dictionaryFromMeshGeometry:v63];
+          geometry = [v62 geometry];
+          referenceObject3 = [ARQAHelper dictionaryFromMeshGeometry:geometry];
 
-          [v8 setObject:v18 forKeyedSubscript:@"geometry"];
+          [v8 setObject:referenceObject3 forKeyedSubscript:@"geometry"];
           [v62 extent];
           v93 = [ARQAHelper arrayWithVector3:?];
           [v8 setObject:? forKeyedSubscript:?];
@@ -1035,10 +1035,10 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
   return v12;
 }
 
-+ (id)extractDetectedBodiesForFrame:(id)a3
++ (id)extractDetectedBodiesForFrame:(id)frame
 {
   v30 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  frameCopy = frame;
   v20 = objc_opt_new();
   v23 = objc_opt_new();
   v24 = objc_opt_new();
@@ -1046,9 +1046,9 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [v18 detectedBodies];
-  obj = v3;
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  detectedBodies = [frameCopy detectedBodies];
+  obj = detectedBodies;
+  v4 = [detectedBodies countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v4)
   {
     v22 = *v26;
@@ -1066,21 +1066,21 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
         v8 = objc_opt_new();
         for (j = 0; ; ++j)
         {
-          v10 = [v6 skeleton];
-          v11 = [v10 jointCount] > j;
+          skeleton = [v6 skeleton];
+          v11 = [skeleton jointCount] > j;
 
           if (!v11)
           {
             break;
           }
 
-          v12 = [v6 skeleton];
-          v13 = +[ARQAHelper arrayWithVector2:](ARQAHelper, "arrayWithVector2:", *([v12 jointLandmarks] + 8 * j));
+          skeleton2 = [v6 skeleton];
+          v13 = +[ARQAHelper arrayWithVector2:](ARQAHelper, "arrayWithVector2:", *([skeleton2 jointLandmarks] + 8 * j));
           [v7 addObject:v13];
 
           v14 = MEMORY[0x1E696AD98];
-          v15 = [v6 skeleton];
-          v16 = [v14 numberWithBool:{objc_msgSend(v15, "isJointTracked:", j)}];
+          skeleton3 = [v6 skeleton];
+          v16 = [v14 numberWithBool:{objc_msgSend(skeleton3, "isJointTracked:", j)}];
           [v8 addObject:v16];
         }
 
@@ -1088,7 +1088,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
         [v24 addObject:v8];
       }
 
-      v3 = obj;
+      detectedBodies = obj;
       v4 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
@@ -1108,143 +1108,143 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
   return v20;
 }
 
-+ (id)traceFrameData:(id)a3 withFrameIndex:(unint64_t)a4
++ (id)traceFrameData:(id)data withFrameIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [objc_opt_class() traceFrameData:v5 withFrameIndex:a4 writeOBJ:0];
+  dataCopy = data;
+  v6 = [objc_opt_class() traceFrameData:dataCopy withFrameIndex:index writeOBJ:0];
 
   return v6;
 }
 
-+ (id)traceFrameData:(id)a3 withFrameIndex:(unint64_t)a4 writeOBJ:(BOOL)a5
++ (id)traceFrameData:(id)data withFrameIndex:(unint64_t)index writeOBJ:(BOOL)j
 {
-  v278 = a5;
+  jCopy = j;
   v297[2] = *MEMORY[0x1E69E9840];
-  v276 = a3;
+  dataCopy = data;
   v275 = objc_opt_new();
-  v280 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  indexCopy = index;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [v275 setObject:v6 forKeyedSubscript:@"frame"];
 
   v7 = MEMORY[0x1E696AD98];
-  [v276 timestamp];
+  [dataCopy timestamp];
   v8 = [v7 numberWithDouble:?];
   [v275 setObject:v8 forKeyedSubscript:@"timestamp"];
 
-  v9 = [v276 camera];
-  [v9 transform];
+  camera = [dataCopy camera];
+  [camera transform];
   v10 = [ARQAHelper arrayWithMatrix4x4:?];
   [v275 setObject:v10 forKeyedSubscript:@"cameraTransform"];
 
-  [v276 referenceOriginTransform];
+  [dataCopy referenceOriginTransform];
   v11 = [ARQAHelper arrayWithMatrix4x4:?];
   [v275 setObject:v11 forKeyedSubscript:@"referenceOriginTransform"];
 
   v12 = MEMORY[0x1E696AD98];
-  v13 = [v276 camera];
-  v14 = [v12 numberWithInteger:{objc_msgSend(v13, "trackingState")}];
+  camera2 = [dataCopy camera];
+  v14 = [v12 numberWithInteger:{objc_msgSend(camera2, "trackingState")}];
   [v275 setObject:v14 forKeyedSubscript:@"trackingState"];
 
   v15 = MEMORY[0x1E696AD98];
-  v16 = [v276 camera];
-  v17 = [v15 numberWithInteger:{objc_msgSend(v16, "trackingStateReason")}];
+  camera3 = [dataCopy camera];
+  v17 = [v15 numberWithInteger:{objc_msgSend(camera3, "trackingStateReason")}];
   [v275 setObject:v17 forKeyedSubscript:@"trackingStateReason"];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v276, "worldMappingStatus")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dataCopy, "worldMappingStatus")}];
   [v275 setObject:v18 forKeyedSubscript:@"worldMappingStatus"];
 
   v19 = MEMORY[0x1E696AD98];
-  [v276 cameraGrainIntensity];
+  [dataCopy cameraGrainIntensity];
   v20 = [v19 numberWithFloat:?];
   [v275 setObject:v20 forKeyedSubscript:@"cameraGrainIntensity"];
 
-  v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v276, "deviceOrientation")}];
+  v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dataCopy, "deviceOrientation")}];
   [v275 setObject:v21 forKeyedSubscript:@"deviceOrientation"];
 
-  v22 = [v276 resultDatas];
+  resultDatas = [dataCopy resultDatas];
   v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"class == %@", objc_opt_class()];
-  v24 = [v22 filteredArrayUsingPredicate:v23];
+  v24 = [resultDatas filteredArrayUsingPredicate:v23];
 
   v268 = v24;
-  v25 = [v24 firstObject];
+  firstObject = [v24 firstObject];
 
-  if (v25)
+  if (firstObject)
   {
-    v26 = [v24 firstObject];
-    [v26 visionCameraTransform];
+    firstObject2 = [v24 firstObject];
+    [firstObject2 visionCameraTransform];
     v27 = [ARQAHelper arrayWithMatrix4x4:?];
     [v275 setObject:v27 forKeyedSubscript:@"visionCameraTransform"];
   }
 
-  v28 = [v276 worldTrackingState];
-  v29 = [v28 majorRelocalization];
+  worldTrackingState = [dataCopy worldTrackingState];
+  majorRelocalization = [worldTrackingState majorRelocalization];
 
-  if (v29)
+  if (majorRelocalization)
   {
     v30 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v275 setObject:v30 forKeyedSubscript:@"majorRelocalization"];
   }
 
-  v31 = [v276 worldTrackingState];
-  v32 = [v31 minorRelocalization];
+  worldTrackingState2 = [dataCopy worldTrackingState];
+  minorRelocalization = [worldTrackingState2 minorRelocalization];
 
-  if (v32)
+  if (minorRelocalization)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v275 setObject:v33 forKeyedSubscript:@"minorRelocalization"];
   }
 
-  v34 = [v276 worldTrackingState];
-  v35 = [v34 poseGraphUpdated];
+  worldTrackingState3 = [dataCopy worldTrackingState];
+  poseGraphUpdated = [worldTrackingState3 poseGraphUpdated];
 
-  if (v35)
+  if (poseGraphUpdated)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v275 setObject:v36 forKeyedSubscript:@"poseGraphUpdated"];
   }
 
   v37 = MEMORY[0x1E696AD98];
-  v38 = [v276 worldTrackingState];
-  v39 = [v37 numberWithUnsignedInteger:{objc_msgSend(v38, "currentVIOMapSize")}];
+  worldTrackingState4 = [dataCopy worldTrackingState];
+  v39 = [v37 numberWithUnsignedInteger:{objc_msgSend(worldTrackingState4, "currentVIOMapSize")}];
   [v275 setObject:v39 forKeyedSubscript:@"currentVIOMapSize"];
 
   v40 = MEMORY[0x1E696AD98];
-  v41 = [v276 worldTrackingState];
-  v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(v41, "reinitializationAttempts")}];
+  worldTrackingState5 = [dataCopy worldTrackingState];
+  v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(worldTrackingState5, "reinitializationAttempts")}];
   [v275 setObject:v42 forKeyedSubscript:@"reinitializationAttempts"];
 
   v43 = MEMORY[0x1E696AD98];
-  v44 = [v276 worldTrackingState];
-  v45 = [v43 numberWithInteger:{objc_msgSend(v44, "vioTrackingState")}];
+  worldTrackingState6 = [dataCopy worldTrackingState];
+  v45 = [v43 numberWithInteger:{objc_msgSend(worldTrackingState6, "vioTrackingState")}];
   [v275 setObject:v45 forKeyedSubscript:@"vioTrackingState"];
 
-  v46 = [v276 worldTrackingErrorData];
+  worldTrackingErrorData = [dataCopy worldTrackingErrorData];
 
-  if (v46)
+  if (worldTrackingErrorData)
   {
     v296[0] = @"Timestamp";
     v47 = MEMORY[0x1E696AD98];
-    v48 = [v276 worldTrackingErrorData];
-    [v48 timestamp];
+    worldTrackingErrorData2 = [dataCopy worldTrackingErrorData];
+    [worldTrackingErrorData2 timestamp];
     v49 = [v47 numberWithDouble:?];
     v296[1] = @"ErrorCode";
     v297[0] = v49;
     v50 = MEMORY[0x1E696AD98];
-    v51 = [v276 worldTrackingErrorData];
-    v52 = [v50 numberWithInteger:{objc_msgSend(v51, "errorCode")}];
+    worldTrackingErrorData3 = [dataCopy worldTrackingErrorData];
+    v52 = [v50 numberWithInteger:{objc_msgSend(worldTrackingErrorData3, "errorCode")}];
     v297[1] = v52;
     v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v297 forKeys:v296 count:2];
     [v275 setObject:v53 forKeyedSubscript:@"worldTrackingError"];
   }
 
-  if ([v276 segmentationBuffer])
+  if ([dataCopy segmentationBuffer])
   {
-    v54 = [v276 segmentationBuffer];
-    CVPixelBufferLockBaseAddress(v54, 0);
-    Width = CVPixelBufferGetWidth(v54);
-    Height = CVPixelBufferGetHeight(v54);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(v54);
-    BaseAddress = CVPixelBufferGetBaseAddress(v54);
+    segmentationBuffer = [dataCopy segmentationBuffer];
+    CVPixelBufferLockBaseAddress(segmentationBuffer, 0);
+    Width = CVPixelBufferGetWidth(segmentationBuffer);
+    Height = CVPixelBufferGetHeight(segmentationBuffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(segmentationBuffer);
+    BaseAddress = CVPixelBufferGetBaseAddress(segmentationBuffer);
     if (Height)
     {
       v59 = 0;
@@ -1273,7 +1273,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
       v64 = 0.0;
     }
 
-    CVPixelBufferUnlockBaseAddress(v54, 0);
+    CVPixelBufferUnlockBaseAddress(segmentationBuffer, 0);
     v65 = 100.0 - v64 / (Height * Width);
     *&v65 = v65;
     v66 = [MEMORY[0x1E696AD98] numberWithFloat:v65];
@@ -1281,23 +1281,23 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
   }
 
   v269 = [MEMORY[0x1E696AE18] predicateWithFormat:@"class == %@", objc_opt_class()];
-  v67 = [v276 resultDatas];
-  v271 = [v67 filteredArrayUsingPredicate:v269];
+  resultDatas2 = [dataCopy resultDatas];
+  v271 = [resultDatas2 filteredArrayUsingPredicate:v269];
 
-  v68 = [v271 firstObject];
+  firstObject3 = [v271 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v70 = [v271 firstObject];
+    firstObject4 = [v271 firstObject];
     v71 = objc_opt_new();
     v291 = 0u;
     v292 = 0u;
     v289 = 0u;
     v290 = 0u;
-    v72 = [v70 detectedObjects];
-    v73 = [v72 countByEnumeratingWithState:&v289 objects:v295 count:16];
+    detectedObjects = [firstObject4 detectedObjects];
+    v73 = [detectedObjects countByEnumeratingWithState:&v289 objects:v295 count:16];
     if (v73)
     {
       v74 = *v290;
@@ -1307,7 +1307,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
         {
           if (*v290 != v74)
           {
-            objc_enumerationMutation(v72);
+            objc_enumerationMutation(detectedObjects);
           }
 
           v76 = *(*(&v289 + 1) + 8 * j);
@@ -1323,7 +1323,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
           [v71 addObject:v85];
         }
 
-        v73 = [v72 countByEnumeratingWithState:&v289 objects:v295 count:16];
+        v73 = [detectedObjects countByEnumeratingWithState:&v289 objects:v295 count:16];
       }
 
       while (v73);
@@ -1332,119 +1332,119 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
     [v275 setObject:v71 forKeyedSubscript:@"personDetectionBoundingBoxes"];
   }
 
-  if ([v276 segmentationBuffer] && objc_msgSend(v276, "estimatedDepthData"))
+  if ([dataCopy segmentationBuffer] && objc_msgSend(dataCopy, "estimatedDepthData"))
   {
-    [objc_opt_class() _meanDepthValueOfDepthBuffer:objc_msgSend(v276 consideringSegmentation:"estimatedDepthData") ofSegmentationBuffer:{1, objc_msgSend(v276, "segmentationBuffer")}];
+    [objc_opt_class() _meanDepthValueOfDepthBuffer:objc_msgSend(dataCopy consideringSegmentation:"estimatedDepthData") ofSegmentationBuffer:{1, objc_msgSend(dataCopy, "segmentationBuffer")}];
     v87 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.4f", v86];
     [v275 setObject:v87 forKeyedSubscript:@"averageDepth"];
   }
 
-  v88 = [v276 capturedDepthData];
-  v89 = v88 == 0;
+  capturedDepthData = [dataCopy capturedDepthData];
+  v89 = capturedDepthData == 0;
 
   if (!v89)
   {
     v90 = objc_opt_class();
-    v91 = [v276 capturedDepthData];
-    v92 = v91;
-    [v90 _meanDepthValueOfDepthBuffer:objc_msgSend(v91 consideringSegmentation:"depthDataMap") ofSegmentationBuffer:{0, 0}];
+    capturedDepthData2 = [dataCopy capturedDepthData];
+    v92 = capturedDepthData2;
+    [v90 _meanDepthValueOfDepthBuffer:objc_msgSend(capturedDepthData2 consideringSegmentation:"depthDataMap") ofSegmentationBuffer:{0, 0}];
     v94 = v93;
 
     v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.4f", v94];
     [v275 setObject:v95 forKeyedSubscript:@"averageCapturedDepth"];
   }
 
-  v96 = [v276 featurePoints];
-  v97 = [v96 count] == 0;
+  featurePoints = [dataCopy featurePoints];
+  v97 = [featurePoints count] == 0;
 
   if (!v97)
   {
-    v98 = [v276 featurePoints];
-    v99 = [v98 points];
-    v100 = [v276 featurePoints];
-    v101 = +[ARQAHelper arrayOf3dPoints:count:](ARQAHelper, "arrayOf3dPoints:count:", v99, [v100 count]);
+    featurePoints2 = [dataCopy featurePoints];
+    points = [featurePoints2 points];
+    featurePoints3 = [dataCopy featurePoints];
+    v101 = +[ARQAHelper arrayOf3dPoints:count:](ARQAHelper, "arrayOf3dPoints:count:", points, [featurePoints3 count]);
     [v275 setObject:v101 forKeyedSubscript:@"featurePoints"];
   }
 
-  v102 = [v276 location];
-  v103 = v102 == 0;
+  location = [dataCopy location];
+  v103 = location == 0;
 
   if (!v103)
   {
-    v104 = [v276 location];
-    v105 = [ARQAHelper dictionaryFromCLLocation:v104];
+    location2 = [dataCopy location];
+    v105 = [ARQAHelper dictionaryFromCLLocation:location2];
     [v275 setObject:v105 forKeyedSubscript:@"location"];
   }
 
-  v106 = [v276 rawLocation];
-  v107 = v106 == 0;
+  rawLocation = [dataCopy rawLocation];
+  v107 = rawLocation == 0;
 
   if (!v107)
   {
-    v108 = [v276 rawLocation];
-    v109 = [ARQAHelper dictionaryFromRawCLLocation:v108];
+    rawLocation2 = [dataCopy rawLocation];
+    v109 = [ARQAHelper dictionaryFromRawCLLocation:rawLocation2];
     [v275 setObject:v109 forKeyedSubscript:@"rawLocation"];
   }
 
   v110 = MEMORY[0x1E696AD98];
-  [v276 heading];
+  [dataCopy heading];
   v111 = [v110 numberWithDouble:?];
   [v275 setObject:v111 forKeyedSubscript:@"heading"];
 
   v112 = MEMORY[0x1E696AD98];
-  [v276 rawHeading];
+  [dataCopy rawHeading];
   v113 = [v112 numberWithDouble:?];
   [v275 setObject:v113 forKeyedSubscript:@"rawHeading"];
 
   v114 = MEMORY[0x1E696AD98];
-  v115 = [v276 vlState];
-  [v115 fusedReplayHeading];
+  vlState = [dataCopy vlState];
+  [vlState fusedReplayHeading];
   v116 = [v114 numberWithDouble:?];
   [v275 setObject:v116 forKeyedSubscript:@"fusedHeading"];
 
   v117 = MEMORY[0x1E696AD98];
-  v118 = [v276 vlState];
-  [v118 fusedReplayHeadingTimestamp];
+  vlState2 = [dataCopy vlState];
+  [vlState2 fusedReplayHeadingTimestamp];
   v119 = [v117 numberWithDouble:?];
   [v275 setObject:v119 forKeyedSubscript:@"fusedHeadingTimestamp"];
 
   v120 = MEMORY[0x1E696AD98];
-  [v276 rawLocationTimestamp];
+  [dataCopy rawLocationTimestamp];
   v121 = [v120 numberWithDouble:?];
   [v275 setObject:v121 forKeyedSubscript:@"rawLocationTimestamp"];
 
-  [v276 undulation];
+  [dataCopy undulation];
   v122 = MEMORY[0x1E696AD98];
-  [v276 undulation];
+  [dataCopy undulation];
   v123 = [v122 numberWithDouble:?];
   [v275 setObject:v123 forKeyedSubscript:@"undulation"];
 
-  v124 = [v276 resultDatas];
+  resultDatas3 = [dataCopy resultDatas];
   v125 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_382];
-  v126 = [v124 filteredArrayUsingPredicate:v125];
-  v274 = [v126 firstObject];
+  v126 = [resultDatas3 filteredArrayUsingPredicate:v125];
+  firstObject5 = [v126 firstObject];
 
-  if (v274)
+  if (firstObject5)
   {
-    v127 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v274, "errorCode")}];
+    v127 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(firstObject5, "errorCode")}];
     [v275 setObject:v127 forKeyedSubscript:@"vlErrorCode"];
 
-    v128 = [v274 localizationResult];
-    LOBYTE(v127) = v128 == 0;
+    localizationResult = [firstObject5 localizationResult];
+    LOBYTE(v127) = localizationResult == 0;
 
     if ((v127 & 1) == 0)
     {
       v129 = MEMORY[0x1E696AD98];
-      v130 = [v274 localizationResult];
-      [v130 inputTimestamp];
+      localizationResult2 = [firstObject5 localizationResult];
+      [localizationResult2 inputTimestamp];
       v131 = [v129 numberWithDouble:?];
       [v275 setObject:v131 forKeyedSubscript:@"vlInputTimestamp"];
 
-      v132 = [v274 localizationResult];
-      v133 = v132;
-      if (v132)
+      localizationResult3 = [firstObject5 localizationResult];
+      v133 = localizationResult3;
+      if (localizationResult3)
       {
-        [v132 transform];
+        [localizationResult3 transform];
       }
 
       else
@@ -1455,58 +1455,58 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
       v134 = [ARQAHelper arrayWithMatrix4x4:ARMatrix4x4DoubleToFloat(buf)];
       [v275 setObject:v134 forKeyedSubscript:@"vlTransform"];
 
-      v135 = [v274 location];
-      v136 = [ARQAHelper dictionaryFromCLLocation:v135];
+      location3 = [firstObject5 location];
+      v136 = [ARQAHelper dictionaryFromCLLocation:location3];
       [v275 setObject:v136 forKeyedSubscript:@"vlLocation"];
 
       v137 = MEMORY[0x1E696AD98];
-      [v274 heading];
+      [firstObject5 heading];
       v138 = [v137 numberWithDouble:?];
       [v275 setObject:v138 forKeyedSubscript:@"vlHeading"];
     }
 
-    v139 = [v274 debugInfo];
-    v140 = [v139 inputParameters];
-    [v275 setObject:v140 forKeyedSubscript:@"vlDebugInputParameters"];
+    debugInfo = [firstObject5 debugInfo];
+    inputParameters = [debugInfo inputParameters];
+    [v275 setObject:inputParameters forKeyedSubscript:@"vlDebugInputParameters"];
 
-    v141 = [v274 debugInfo];
-    v142 = [v141 results];
-    [v275 setObject:v142 forKeyedSubscript:@"vlDebugResults"];
+    debugInfo2 = [firstObject5 debugInfo];
+    results = [debugInfo2 results];
+    [v275 setObject:results forKeyedSubscript:@"vlDebugResults"];
 
-    v143 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v274, "algorithmVersion")}];
+    v143 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(firstObject5, "algorithmVersion")}];
     [v275 setObject:v143 forKeyedSubscript:@"vlAlgorithmVersion"];
   }
 
-  v144 = [v276 geoTrackingStatus];
-  v145 = v144 == 0;
+  geoTrackingStatus = [dataCopy geoTrackingStatus];
+  v145 = geoTrackingStatus == 0;
 
   if (!v145)
   {
-    v146 = [v276 geoTrackingStatus];
-    v147 = NSStringFromARGeoTrackingState([v146 state]);
+    geoTrackingStatus2 = [dataCopy geoTrackingStatus];
+    v147 = NSStringFromARGeoTrackingState([geoTrackingStatus2 state]);
     [v275 setObject:v147 forKeyedSubscript:@"geoTrackingStatus.state"];
 
-    v148 = [v276 geoTrackingStatus];
-    v149 = NSStringFromARGeoTrackingAccuracy([v148 accuracy]);
+    geoTrackingStatus3 = [dataCopy geoTrackingStatus];
+    v149 = NSStringFromARGeoTrackingAccuracy([geoTrackingStatus3 accuracy]);
     [v275 setObject:v149 forKeyedSubscript:@"geoTrackingStatus.accuracy"];
 
-    v150 = [v276 geoTrackingStatus];
-    v151 = NSStringFromARGeoTrackingStateReason([v150 stateReason]);
+    geoTrackingStatus4 = [dataCopy geoTrackingStatus];
+    v151 = NSStringFromARGeoTrackingStateReason([geoTrackingStatus4 stateReason]);
     [v275 setObject:v151 forKeyedSubscript:@"geoTrackingStatus.stateReason"];
 
     v152 = MEMORY[0x1E696AD98];
-    v153 = [v276 geoTrackingStatus];
-    v154 = [v152 numberWithInteger:{objc_msgSend(v153, "failureReasons")}];
+    geoTrackingStatus5 = [dataCopy geoTrackingStatus];
+    v154 = [v152 numberWithInteger:{objc_msgSend(geoTrackingStatus5, "failureReasons")}];
     [v275 setObject:v154 forKeyedSubscript:@"geoTrackingStatus.failureReasons"];
   }
 
-  v267 = [ARQAHelper extractAnchorDataForFrame:v276];
+  v267 = [ARQAHelper extractAnchorDataForFrame:dataCopy];
   if ([v267 count])
   {
     [v275 setObject:v267 forKeyedSubscript:@"anchors"];
   }
 
-  v270 = [ARQAHelper extractDetectedBodiesForFrame:v276];
+  v270 = [ARQAHelper extractDetectedBodiesForFrame:dataCopy];
   if ([v270 count])
   {
     v155 = [v270 objectForKeyedSubscript:@"bodies"];
@@ -1516,21 +1516,21 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
     [v275 setObject:v156 forKeyedSubscript:@"detectedBodiesTrackingStates"];
   }
 
-  v157 = [v276 currentlyActiveVideoFormat];
-  v158 = v157 == 0;
+  currentlyActiveVideoFormat = [dataCopy currentlyActiveVideoFormat];
+  v158 = currentlyActiveVideoFormat == 0;
 
   if (!v158)
   {
-    v159 = [v276 currentlyActiveVideoFormat];
-    v160 = [v159 captureDeviceType];
-    [v275 setObject:v160 forKeyedSubscript:@"currentlyActiveCameraForVIO"];
+    currentlyActiveVideoFormat2 = [dataCopy currentlyActiveVideoFormat];
+    captureDeviceType = [currentlyActiveVideoFormat2 captureDeviceType];
+    [v275 setObject:captureDeviceType forKeyedSubscript:@"currentlyActiveCameraForVIO"];
   }
 
-  if (v278)
+  if (jCopy)
   {
-    v161 = [v276 anchors];
+    anchors = [dataCopy anchors];
     v162 = [MEMORY[0x1E696AE18] predicateWithFormat:@"class == %@", objc_opt_class()];
-    v163 = [v161 filteredArrayUsingPredicate:v162];
+    v163 = [anchors filteredArrayUsingPredicate:v162];
 
     if ([v163 count])
     {
@@ -1557,7 +1557,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
             LODWORD(buf[0].f64[0]) = 138543874;
             *(buf[0].f64 + 4) = v171;
             WORD2(buf[0].f64[1]) = 2048;
-            *(&buf[0].f64[1] + 6) = a1;
+            *(&buf[0].f64[1] + 6) = self;
             HIWORD(buf[1].f64[0]) = 2112;
             *&buf[1].f64[1] = v166;
             _os_log_impl(&dword_1C241C000, v169, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not create obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1571,7 +1571,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
           LODWORD(buf[0].f64[0]) = 138543874;
           *(buf[0].f64 + 4) = v180;
           WORD2(buf[0].f64[1]) = 2048;
-          *(&buf[0].f64[1] + 6) = a1;
+          *(&buf[0].f64[1] + 6) = self;
           HIWORD(buf[1].f64[0]) = 2112;
           *&buf[1].f64[1] = v166;
           _os_log_impl(&dword_1C241C000, v169, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not create obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1581,8 +1581,8 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
       else
       {
         v172 = +[ARQATracer traceOutputDirectory];
-        v173 = [MEMORY[0x1E696AEC0] stringWithFormat:@"meshAnchors_%lu.obj", v280];
-        v169 = [v172 stringByAppendingPathComponent:v173];
+        indexCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"meshAnchors_%lu.obj", indexCopy];
+        v169 = [v172 stringByAppendingPathComponent:indexCopy];
 
         v287 = 0;
         [v164 writeToFile:v169 atomically:1 encoding:4 error:&v287];
@@ -1606,7 +1606,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
               LODWORD(buf[0].f64[0]) = 138543874;
               *(buf[0].f64 + 4) = v178;
               WORD2(buf[0].f64[1]) = 2048;
-              *(&buf[0].f64[1] + 6) = a1;
+              *(&buf[0].f64[1] + 6) = self;
               HIWORD(buf[1].f64[0]) = 2112;
               *&buf[1].f64[1] = v166;
               _os_log_impl(&dword_1C241C000, v176, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not save obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1620,7 +1620,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
             LODWORD(buf[0].f64[0]) = 138543874;
             *(buf[0].f64 + 4) = v182;
             WORD2(buf[0].f64[1]) = 2048;
-            *(&buf[0].f64[1] + 6) = a1;
+            *(&buf[0].f64[1] + 6) = self;
             HIWORD(buf[1].f64[0]) = 2112;
             *&buf[1].f64[1] = v166;
             _os_log_impl(&dword_1C241C000, v176, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not save obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1636,9 +1636,9 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
       }
     }
 
-    v183 = [v276 anchors];
+    anchors2 = [dataCopy anchors];
     v184 = [MEMORY[0x1E696AE18] predicateWithFormat:@"class == %@", objc_opt_class()];
-    v185 = [v183 filteredArrayUsingPredicate:v184];
+    v185 = [anchors2 filteredArrayUsingPredicate:v184];
 
     if ([v185 count])
     {
@@ -1665,7 +1665,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
             LODWORD(buf[0].f64[0]) = 138543874;
             *(buf[0].f64 + 4) = v193;
             WORD2(buf[0].f64[1]) = 2048;
-            *(&buf[0].f64[1] + 6) = a1;
+            *(&buf[0].f64[1] + 6) = self;
             HIWORD(buf[1].f64[0]) = 2112;
             *&buf[1].f64[1] = v188;
             _os_log_impl(&dword_1C241C000, v191, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not create obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1679,7 +1679,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
           LODWORD(buf[0].f64[0]) = 138543874;
           *(buf[0].f64 + 4) = v202;
           WORD2(buf[0].f64[1]) = 2048;
-          *(&buf[0].f64[1] + 6) = a1;
+          *(&buf[0].f64[1] + 6) = self;
           HIWORD(buf[1].f64[0]) = 2112;
           *&buf[1].f64[1] = v188;
           _os_log_impl(&dword_1C241C000, v191, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not create obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1689,8 +1689,8 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
       else
       {
         v194 = +[ARQATracer traceOutputDirectory];
-        v195 = [MEMORY[0x1E696AEC0] stringWithFormat:@"planeAnchors_%lu.obj", v280];
-        v191 = [v194 stringByAppendingPathComponent:v195];
+        indexCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"planeAnchors_%lu.obj", indexCopy];
+        v191 = [v194 stringByAppendingPathComponent:indexCopy2];
 
         v285 = 0;
         [v186 writeToFile:v191 atomically:1 encoding:4 error:&v285];
@@ -1714,7 +1714,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
               LODWORD(buf[0].f64[0]) = 138543874;
               *(buf[0].f64 + 4) = v200;
               WORD2(buf[0].f64[1]) = 2048;
-              *(&buf[0].f64[1] + 6) = a1;
+              *(&buf[0].f64[1] + 6) = self;
               HIWORD(buf[1].f64[0]) = 2112;
               *&buf[1].f64[1] = v188;
               _os_log_impl(&dword_1C241C000, v198, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not save obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1728,7 +1728,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
             LODWORD(buf[0].f64[0]) = 138543874;
             *(buf[0].f64 + 4) = v204;
             WORD2(buf[0].f64[1]) = 2048;
-            *(&buf[0].f64[1] + 6) = a1;
+            *(&buf[0].f64[1] + 6) = self;
             HIWORD(buf[1].f64[0]) = 2112;
             *&buf[1].f64[1] = v188;
             _os_log_impl(&dword_1C241C000, v198, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not save obj for mesh anchors due to error: %@", buf, 0x20u);
@@ -1745,19 +1745,19 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
     }
   }
 
-  v205 = [v276 resultDatas];
+  resultDatas4 = [dataCopy resultDatas];
   v206 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_453];
-  v207 = [v205 filteredArrayUsingPredicate:v206];
-  v272 = [v207 firstObject];
+  v207 = [resultDatas4 filteredArrayUsingPredicate:v206];
+  firstObject6 = [v207 firstObject];
 
-  v208 = [v272 resultDataOfClass:objc_opt_class()];
-  v273 = [v208 firstObject];
+  v208 = [firstObject6 resultDataOfClass:objc_opt_class()];
+  firstObject7 = [v208 firstObject];
 
-  v209 = [v272 resultDataOfClass:objc_opt_class()];
-  v279 = [v209 firstObject];
+  v209 = [firstObject6 resultDataOfClass:objc_opt_class()];
+  firstObject8 = [v209 firstObject];
 
   v210 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.qatracing.dumpSemanticSegmantationData"];
-  if (v273)
+  if (firstObject7)
   {
     v211 = v210;
   }
@@ -1767,19 +1767,19 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
     v211 = 0;
   }
 
-  if (v211 && [v273 source] == 2)
+  if (v211 && [firstObject7 source] == 2)
   {
-    v212 = [v273 sourceImageData];
-    v213 = [v212 isBackUltraWide];
+    sourceImageData = [firstObject7 sourceImageData];
+    isBackUltraWide = [sourceImageData isBackUltraWide];
 
-    if (v213)
+    if (isBackUltraWide)
     {
       v214 = +[ARQATracer traceOutputDirectory];
-      v215 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ultraWideImage_%lu.png", v280];
-      v216 = [v214 stringByAppendingPathComponent:v215];
+      indexCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ultraWideImage_%lu.png", indexCopy];
+      v216 = [v214 stringByAppendingPathComponent:indexCopy3];
 
-      v217 = [v273 sourceImageData];
-      v218 = ARSavePixelBufferPNG([v217 pixelBuffer], v216) == 0;
+      sourceImageData2 = [firstObject7 sourceImageData];
+      v218 = ARSavePixelBufferPNG([sourceImageData2 pixelBuffer], v216) == 0;
 
       if (!v218)
       {
@@ -1800,7 +1800,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
             LODWORD(buf[0].f64[0]) = 138543618;
             *(buf[0].f64 + 4) = v223;
             WORD2(buf[0].f64[1]) = 2048;
-            *(&buf[0].f64[1] + 6) = a1;
+            *(&buf[0].f64[1] + 6) = self;
             _os_log_impl(&dword_1C241C000, v221, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not save ultrawide image to file", buf, 0x16u);
           }
         }
@@ -1812,7 +1812,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
           LODWORD(buf[0].f64[0]) = 138543618;
           *(buf[0].f64 + 4) = v225;
           WORD2(buf[0].f64[1]) = 2048;
-          *(&buf[0].f64[1] + 6) = a1;
+          *(&buf[0].f64[1] + 6) = self;
           _os_log_impl(&dword_1C241C000, v221, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not save ultrawide image to file", buf, 0x16u);
         }
       }
@@ -1820,14 +1820,14 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
       [v275 setObject:v216 forKeyedSubscript:@"semanticSegmentationUndistoredUltraWideImage"];
     }
 
-    if (v279)
+    if (firstObject8)
     {
       v283 = 0u;
       v284 = 0u;
       v281 = 0u;
       v282 = 0u;
-      v226 = [v279 downScalingResults];
-      v227 = [v226 countByEnumeratingWithState:&v281 objects:v293 count:16];
+      downScalingResults = [firstObject8 downScalingResults];
+      v227 = [downScalingResults countByEnumeratingWithState:&v281 objects:v293 count:16];
       if (v227)
       {
         v228 = *v282;
@@ -1838,7 +1838,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
           {
             if (*v282 != v228)
             {
-              objc_enumerationMutation(v226);
+              objc_enumerationMutation(downScalingResults);
             }
 
             v230 = *(*(&v281 + 1) + 8 * v229);
@@ -1848,9 +1848,9 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
               [v230 imageResolution];
               v233 = v232;
               [v230 imageResolution];
-              v235 = [v231 stringWithFormat:@"mlImage%dx%d_%lu.png", v233, v234, v280];
+              indexCopy4 = [v231 stringWithFormat:@"mlImage%dx%d_%lu.png", v233, v234, indexCopy];
               v236 = +[ARQATracer traceOutputDirectory];
-              v237 = [v236 stringByAppendingPathComponent:v235];
+              v237 = [v236 stringByAppendingPathComponent:indexCopy4];
 
               if (ARSavePixelBufferPNG([v230 pixelBuffer], v237))
               {
@@ -1871,7 +1871,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
                     LODWORD(buf[0].f64[0]) = 138543618;
                     *(buf[0].f64 + 4) = v242;
                     WORD2(buf[0].f64[1]) = 2048;
-                    *(&buf[0].f64[1] + 6) = a1;
+                    *(&buf[0].f64[1] + 6) = self;
                     _os_log_impl(&dword_1C241C000, v240, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not save ml image to file", buf, 0x16u);
                   }
                 }
@@ -1883,25 +1883,25 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
                   LODWORD(buf[0].f64[0]) = 138543618;
                   *(buf[0].f64 + 4) = v244;
                   WORD2(buf[0].f64[1]) = 2048;
-                  *(&buf[0].f64[1] + 6) = a1;
+                  *(&buf[0].f64[1] + 6) = self;
                   _os_log_impl(&dword_1C241C000, v240, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not save ml image to file", buf, 0x16u);
                 }
               }
             }
 
-            v245 = [v279 latestResizedUltraWideImageData];
-            v246 = [v245 downScalingResults];
-            v247 = [v246 firstObject];
+            latestResizedUltraWideImageData = [firstObject8 latestResizedUltraWideImageData];
+            downScalingResults2 = [latestResizedUltraWideImageData downScalingResults];
+            firstObject9 = [downScalingResults2 firstObject];
 
-            if ([v247 undistortedPixelBuffer])
+            if ([firstObject9 undistortedPixelBuffer])
             {
               v248 = MEMORY[0x1E696AEC0];
-              v249 = CVPixelBufferGetWidth([v247 undistortedPixelBuffer]);
-              v250 = [v248 stringWithFormat:@"undistortedPixelBuffer%dx%d_%lu.png", v249, CVPixelBufferGetHeight(objc_msgSend(v247, "undistortedPixelBuffer")), v280];
+              v249 = CVPixelBufferGetWidth([firstObject9 undistortedPixelBuffer]);
+              indexCopy5 = [v248 stringWithFormat:@"undistortedPixelBuffer%dx%d_%lu.png", v249, CVPixelBufferGetHeight(objc_msgSend(firstObject9, "undistortedPixelBuffer")), indexCopy];
               v251 = +[ARQATracer traceOutputDirectory];
-              v252 = [v251 stringByAppendingPathComponent:v250];
+              v252 = [v251 stringByAppendingPathComponent:indexCopy5];
 
-              if (ARSavePixelBufferPNG([v247 undistortedPixelBuffer], v252))
+              if (ARSavePixelBufferPNG([firstObject9 undistortedPixelBuffer], v252))
               {
                 if (ARShouldUseLogTypeError(void)::onceToken != -1)
                 {
@@ -1920,7 +1920,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
                     LODWORD(buf[0].f64[0]) = 138543618;
                     *(buf[0].f64 + 4) = v257;
                     WORD2(buf[0].f64[1]) = 2048;
-                    *(&buf[0].f64[1] + 6) = a1;
+                    *(&buf[0].f64[1] + 6) = self;
                     _os_log_impl(&dword_1C241C000, v255, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not save undistored image to file", buf, 0x16u);
                   }
                 }
@@ -1932,7 +1932,7 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
                   LODWORD(buf[0].f64[0]) = 138543618;
                   *(buf[0].f64 + 4) = v259;
                   WORD2(buf[0].f64[1]) = 2048;
-                  *(&buf[0].f64[1] + 6) = a1;
+                  *(&buf[0].f64[1] + 6) = self;
                   _os_log_impl(&dword_1C241C000, v255, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not save undistored image to file", buf, 0x16u);
                 }
               }
@@ -1942,31 +1942,31 @@ uint64_t __40__ARQAHelper_extractAnchorDataForFrame___block_invoke(uint64_t a1, 
           }
 
           while (v227 != v229);
-          v227 = [v226 countByEnumeratingWithState:&v281 objects:v293 count:16];
+          v227 = [downScalingResults countByEnumeratingWithState:&v281 objects:v293 count:16];
         }
 
         while (v227);
       }
     }
 
-    CVPixelBufferLockBaseAddress([v273 segmentationBuffer], 0);
+    CVPixelBufferLockBaseAddress([firstObject7 segmentationBuffer], 0);
     v260 = +[ARQATracer traceOutputDirectory];
-    v261 = [MEMORY[0x1E696AEC0] stringWithFormat:@"semanticSegmentation_%lu.png", v280];
-    v262 = [v260 stringByAppendingPathComponent:v261];
+    indexCopy6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"semanticSegmentation_%lu.png", indexCopy];
+    v262 = [v260 stringByAppendingPathComponent:indexCopy6];
 
-    LODWORD(v260) = CVPixelBufferGetWidth([v273 segmentationBuffer]);
-    LODWORD(v261) = CVPixelBufferGetHeight([v273 segmentationBuffer]);
-    v263 = CVPixelBufferGetBytesPerRow([v273 segmentationBuffer]);
-    v264 = CVPixelBufferGetBaseAddress([v273 segmentationBuffer]);
+    LODWORD(v260) = CVPixelBufferGetWidth([firstObject7 segmentationBuffer]);
+    LODWORD(indexCopy6) = CVPixelBufferGetHeight([firstObject7 segmentationBuffer]);
+    v263 = CVPixelBufferGetBytesPerRow([firstObject7 segmentationBuffer]);
+    v264 = CVPixelBufferGetBaseAddress([firstObject7 segmentationBuffer]);
     buf[0].f64[0] = 0.0;
-    *&buf[0].f64[1] = v260 | (v261 << 32);
+    *&buf[0].f64[1] = v260 | (indexCopy6 << 32);
     *&buf[1].f64[0] = (v263 << 32) | 1;
     *&buf[1].f64[1] = v264;
     v265 = v262;
     [v262 UTF8String];
     cva::imwrite<unsigned char>();
     [v275 setObject:v262 forKeyedSubscript:@"semanticSegmentationLabelsFile"];
-    CVPixelBufferUnlockBaseAddress([v273 segmentationBuffer], 0);
+    CVPixelBufferUnlockBaseAddress([firstObject7 segmentationBuffer], 0);
   }
 
   return v275;
@@ -1990,33 +1990,33 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   return isKindOfClass & 1;
 }
 
-+ (id)dictionaryFromCLLocation:(id)a3
++ (id)dictionaryFromCLLocation:(id)location
 {
   v18[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  locationCopy = location;
   v17[0] = @"latitude";
   v4 = MEMORY[0x1E696AD98];
-  [v3 coordinate];
+  [locationCopy coordinate];
   v5 = [v4 numberWithDouble:?];
   v18[0] = v5;
   v17[1] = @"longitude";
   v6 = MEMORY[0x1E696AD98];
-  [v3 coordinate];
+  [locationCopy coordinate];
   v8 = [v6 numberWithDouble:v7];
   v18[1] = v8;
   v17[2] = @"altitude";
   v9 = MEMORY[0x1E696AD98];
-  [v3 altitude];
+  [locationCopy altitude];
   v10 = [v9 numberWithDouble:?];
   v18[2] = v10;
   v17[3] = @"horizontalAccuracy";
   v11 = MEMORY[0x1E696AD98];
-  [v3 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v12 = [v11 numberWithDouble:?];
   v18[3] = v12;
   v17[4] = @"verticalAccuracy";
   v13 = MEMORY[0x1E696AD98];
-  [v3 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v14 = [v13 numberWithDouble:?];
   v18[4] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
@@ -2024,14 +2024,14 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   return v15;
 }
 
-+ (id)dictionaryFromRawCLLocation:(id)a3
++ (id)dictionaryFromRawCLLocation:(id)location
 {
   v53[20] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 _groundAltitude];
-  v5 = v4;
-  v51 = v4;
-  if (!v4 || [v4 undulationModel] == -1)
+  locationCopy = location;
+  _groundAltitude = [locationCopy _groundAltitude];
+  v5 = _groundAltitude;
+  v51 = _groundAltitude;
+  if (!_groundAltitude || [_groundAltitude undulationModel] == -1)
   {
     v7 = 0;
   }
@@ -2043,11 +2043,11 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
     v7 = v6 > 0.0;
   }
 
-  if ([v3 isAltitudeWgs84Available])
+  if ([locationCopy isAltitudeWgs84Available])
   {
-    [v3 altitudeWgs84];
+    [locationCopy altitudeWgs84];
     v9 = v8;
-    [v3 altitude];
+    [locationCopy altitude];
     v11 = v9 - v10;
   }
 
@@ -2058,72 +2058,72 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
 
   v52[0] = @"latitude";
   v12 = MEMORY[0x1E696AD98];
-  [v3 coordinate];
+  [locationCopy coordinate];
   v50 = [v12 numberWithDouble:?];
   v53[0] = v50;
   v52[1] = @"longitude";
   v13 = MEMORY[0x1E696AD98];
-  [v3 coordinate];
+  [locationCopy coordinate];
   v49 = [v13 numberWithDouble:v14];
   v53[1] = v49;
   v52[2] = @"altitude";
   v15 = MEMORY[0x1E696AD98];
-  [v3 altitude];
+  [locationCopy altitude];
   v48 = [v15 numberWithDouble:?];
   v53[2] = v48;
   v52[3] = @"course";
   v16 = MEMORY[0x1E696AD98];
-  [v3 course];
+  [locationCopy course];
   v47 = [v16 numberWithDouble:?];
   v53[3] = v47;
   v52[4] = @"horizontalAccuracy";
   v17 = MEMORY[0x1E696AD98];
-  [v3 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v46 = [v17 numberWithDouble:?];
   v53[4] = v46;
   v52[5] = @"verticalAccuracy";
   v18 = MEMORY[0x1E696AD98];
-  [v3 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v45 = [v18 numberWithDouble:?];
   v53[5] = v45;
   v52[6] = @"courseAccuracy";
   v19 = MEMORY[0x1E696AD98];
-  [v3 courseAccuracy];
+  [locationCopy courseAccuracy];
   v44 = [v19 numberWithDouble:?];
   v53[6] = v44;
   v52[7] = @"rawLatitude";
   v20 = MEMORY[0x1E696AD98];
-  [v3 rawCoordinate];
+  [locationCopy rawCoordinate];
   v43 = [v20 numberWithDouble:?];
   v53[7] = v43;
   v52[8] = @"rawLongitude";
   v21 = MEMORY[0x1E696AD98];
-  [v3 rawCoordinate];
+  [locationCopy rawCoordinate];
   v42 = [v21 numberWithDouble:v22];
   v53[8] = v42;
   v52[9] = @"rawAltitude";
   v23 = MEMORY[0x1E696AD98];
-  [v3 rawAltitude];
+  [locationCopy rawAltitude];
   v41 = [v23 numberWithDouble:?];
   v53[9] = v41;
   v52[10] = @"rawCourse";
   v24 = MEMORY[0x1E696AD98];
-  [v3 rawCourse];
+  [locationCopy rawCourse];
   v40 = [v24 numberWithDouble:?];
   v53[10] = v40;
   v52[11] = @"rawHorizontalAccuracy";
   v25 = MEMORY[0x1E696AD98];
-  [v3 rawHorizontalAccuracy];
+  [locationCopy rawHorizontalAccuracy];
   v39 = [v25 numberWithDouble:?];
   v53[11] = v39;
   v52[12] = @"rawVerticalAccuracy";
   v26 = MEMORY[0x1E696AD98];
-  [v3 rawVerticalAccuracy];
+  [locationCopy rawVerticalAccuracy];
   v27 = [v26 numberWithDouble:?];
   v53[12] = v27;
   v52[13] = @"rawCourseAccuracy";
   v28 = MEMORY[0x1E696AD98];
-  [v3 rawCourseAccuracy];
+  [locationCopy rawCourseAccuracy];
   v29 = [v28 numberWithDouble:?];
   v53[13] = v29;
   v52[14] = @"undulation";
@@ -2133,18 +2133,18 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   v31 = [MEMORY[0x1E696AD98] numberWithBool:v7];
   v53[15] = v31;
   v52[16] = @"isAltitudeWgs84Available";
-  v32 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isAltitudeWgs84Available")}];
+  v32 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(locationCopy, "isAltitudeWgs84Available")}];
   v53[16] = v32;
   v52[17] = @"isCoordinateFused";
-  v33 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isCoordinateFused")}];
+  v33 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(locationCopy, "isCoordinateFused")}];
   v53[17] = v33;
   v52[18] = @"isCoordinateFusedWithVL";
-  v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isCoordinateFusedWithVL")}];
+  v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(locationCopy, "isCoordinateFusedWithVL")}];
   v53[18] = v34;
   v52[19] = @"ellipsoidalAltitude";
-  [v3 ellipsoidalAltitude];
+  [locationCopy ellipsoidalAltitude];
   v35 = MEMORY[0x1E696AD98];
-  [v3 ellipsoidalAltitude];
+  [locationCopy ellipsoidalAltitude];
   v36 = [v35 numberWithDouble:?];
   v53[19] = v36;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:20];
@@ -2152,37 +2152,37 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   return v37;
 }
 
-+ (id)dictionaryFromRaycastQuery:(id)a3
++ (id)dictionaryFromRaycastQuery:(id)query
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queryCopy = query;
   v10[0] = @"origin";
-  [v4 origin];
-  v5 = [a1 arrayWithVector3:?];
+  [queryCopy origin];
+  v5 = [self arrayWithVector3:?];
   v11[0] = v5;
   v10[1] = @"direction";
-  [v4 direction];
-  v6 = [a1 arrayWithVector3:?];
+  [queryCopy direction];
+  v6 = [self arrayWithVector3:?];
   v11[1] = v6;
   v10[2] = @"description";
-  v7 = [v4 description];
+  v7 = [queryCopy description];
   v11[2] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   return v8;
 }
 
-+ (id)arrayFromRaycastResults:(id)a3
++ (id)arrayFromRaycastResults:(id)results
 {
   v22 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  resultsCopy = results;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = v13;
-  v5 = [obj countByEnumeratingWithState:&v15 objects:v21 count:{16, v13}];
+  obj = resultsCopy;
+  v5 = [obj countByEnumeratingWithState:&v15 objects:v21 count:{16, resultsCopy}];
   if (v5)
   {
     v6 = *v16;
@@ -2198,7 +2198,7 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
         v8 = *(*(&v15 + 1) + 8 * i);
         v19[0] = @"transform";
         [v8 worldTransform];
-        v9 = [a1 arrayWithMatrix4x4:?];
+        v9 = [self arrayWithMatrix4x4:?];
         v19[1] = @"description";
         v20[0] = v9;
         v10 = [v8 description];
@@ -2217,27 +2217,27 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   return v4;
 }
 
-+ (float)_meanDepthValueOfDepthBuffer:(__CVBuffer *)a3 consideringSegmentation:(BOOL)a4 ofSegmentationBuffer:(__CVBuffer *)a5
++ (float)_meanDepthValueOfDepthBuffer:(__CVBuffer *)buffer consideringSegmentation:(BOOL)segmentation ofSegmentationBuffer:(__CVBuffer *)segmentationBuffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return NAN;
   }
 
-  v6 = a4;
-  if (!a5 && a4)
+  segmentationCopy = segmentation;
+  if (!segmentationBuffer && segmentation)
   {
     return NAN;
   }
 
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (v6)
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  if (segmentationCopy)
   {
-    v12 = CVPixelBufferGetBytesPerRow(a5);
-    v13 = CVPixelBufferGetWidth(a5);
-    v14 = CVPixelBufferGetHeight(a5);
+    v12 = CVPixelBufferGetBytesPerRow(segmentationBuffer);
+    v13 = CVPixelBufferGetWidth(segmentationBuffer);
+    v14 = CVPixelBufferGetHeight(segmentationBuffer);
     result = NAN;
     if (Width != v13 || Height != v14)
     {
@@ -2250,13 +2250,13 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
     v12 = 0;
   }
 
-  CVPixelBufferLockBaseAddress(a3, 0);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   v16 = 0;
-  if (v6)
+  if (segmentationCopy)
   {
-    CVPixelBufferLockBaseAddress(a5, 0);
-    v16 = CVPixelBufferGetBaseAddress(a5);
+    CVPixelBufferLockBaseAddress(segmentationBuffer, 0);
+    v16 = CVPixelBufferGetBaseAddress(segmentationBuffer);
   }
 
   if (Height)
@@ -2270,7 +2270,7 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
       v21 = v16;
       for (i = BaseAddress; v20; --v20)
       {
-        if (!v6 || *v21)
+        if (!segmentationCopy || *v21)
         {
           v19 = v19 + *i;
           ++v18;
@@ -2295,10 +2295,10 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
     v23 = 0.0;
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
-  if (a5)
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
+  if (segmentationBuffer)
   {
-    CVPixelBufferUnlockBaseAddress(a5, 0);
+    CVPixelBufferUnlockBaseAddress(segmentationBuffer, 0);
   }
 
   return v19 / v23;
@@ -2313,15 +2313,15 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   return v2;
 }
 
-+ (id)dictionaryFromAnchor:(id)a3
++ (id)dictionaryFromAnchor:(id)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   v4 = objc_opt_new();
-  v5 = [v3 identifier];
-  v6 = [v5 UUIDString];
-  [v4 setObject:v6 forKeyedSubscript:@"identifier"];
+  identifier = [anchorCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"identifier"];
 
-  [v3 transform];
+  [anchorCopy transform];
   v7 = [ARQAHelper arrayWithMatrix4x4:?];
   [v4 setObject:v7 forKeyedSubscript:@"transform"];
 
@@ -2330,8 +2330,8 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
 
 + (id)formatDescriptionForPlaneAnchor
 {
-  v2 = [a1 formatDescriptionForAnchor];
-  v3 = [v2 mutableCopy];
+  formatDescriptionForAnchor = [self formatDescriptionForAnchor];
+  v3 = [formatDescriptionForAnchor mutableCopy];
 
   [v3 setObject:@"Alignment. horizontal or vertical" forKeyedSubscript:@"alignment"];
   [v3 setObject:@"Center of plane" forKeyedSubscript:@"center"];
@@ -2346,72 +2346,72 @@ uint64_t __53__ARQAHelper_traceFrameData_withFrameIndex_writeOBJ___block_invoke_
   return v3;
 }
 
-+ (id)dictionaryFromPlaneAnchor:(id)a3
++ (id)dictionaryFromPlaneAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [a1 dictionaryFromAnchor:v4];
+  anchorCopy = anchor;
+  v5 = [self dictionaryFromAnchor:anchorCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "alignment")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(anchorCopy, "alignment")}];
   [v6 setObject:v7 forKeyedSubscript:@"alignment"];
 
-  [v4 center];
+  [anchorCopy center];
   v8 = [ARQAHelper arrayWithVector3:?];
   [v6 setObject:v8 forKeyedSubscript:@"center"];
 
-  [v4 extent];
+  [anchorCopy extent];
   v9 = [ARQAHelper arrayWithVector3:?];
   [v6 setObject:v9 forKeyedSubscript:@"extent"];
 
-  v10 = [v4 planeExtent];
-  v11 = [ARQAHelper dictionaryFromPlaneExtent:v10];
+  planeExtent = [anchorCopy planeExtent];
+  v11 = [ARQAHelper dictionaryFromPlaneExtent:planeExtent];
   [v6 setObject:v11 forKeyedSubscript:@"planeExtent"];
 
-  v12 = [v4 geometry];
-  v13 = [v12 vertices];
-  v14 = [v4 geometry];
-  v15 = [v14 vertexCount];
-  v16 = [v4 geometry];
-  v17 = [v16 textureCoordinates];
-  v18 = [v4 geometry];
-  v19 = +[ARQAHelper dictionaryFromVertices:vertexCount:textureCoordinates:textureCoordinateCount:](ARQAHelper, "dictionaryFromVertices:vertexCount:textureCoordinates:textureCoordinateCount:", v13, v15, v17, [v18 textureCoordinateCount]);
+  geometry = [anchorCopy geometry];
+  vertices = [geometry vertices];
+  geometry2 = [anchorCopy geometry];
+  vertexCount = [geometry2 vertexCount];
+  geometry3 = [anchorCopy geometry];
+  textureCoordinates = [geometry3 textureCoordinates];
+  geometry4 = [anchorCopy geometry];
+  v19 = +[ARQAHelper dictionaryFromVertices:vertexCount:textureCoordinates:textureCoordinateCount:](ARQAHelper, "dictionaryFromVertices:vertexCount:textureCoordinates:textureCoordinateCount:", vertices, vertexCount, textureCoordinates, [geometry4 textureCoordinateCount]);
 
   v20 = MEMORY[0x1E696AD98];
-  [v4 area];
+  [anchorCopy area];
   v21 = [v20 numberWithFloat:?];
   [v6 setObject:v21 forKeyedSubscript:@"area"];
 
-  v22 = NSStringFromARPlaneClassification([v4 classification]);
+  v22 = NSStringFromARPlaneClassification([anchorCopy classification]);
   [v6 setObject:v22 forKeyedSubscript:@"planeClassification"];
 
-  v23 = [v4 gridExtent];
+  gridExtent = [anchorCopy gridExtent];
 
-  if (v23)
+  if (gridExtent)
   {
-    v24 = [v4 gridExtent];
-    v25 = [ARQAHelper dictionaryFromPatchGrid:v24];
+    gridExtent2 = [anchorCopy gridExtent];
+    v25 = [ARQAHelper dictionaryFromPatchGrid:gridExtent2];
     [v6 setObject:v25 forKeyedSubscript:@"gridExtent"];
   }
 
-  v26 = NSStringFromARPlaneClassificationStatus([v4 classificationStatus]);
+  v26 = NSStringFromARPlaneClassificationStatus([anchorCopy classificationStatus]);
   [v6 setObject:v26 forKeyedSubscript:@"planeClassificationStatus"];
 
-  v27 = [v4 classificationLabel];
-  [v6 setObject:v27 forKeyedSubscript:@"classificationLabel"];
+  classificationLabel = [anchorCopy classificationLabel];
+  [v6 setObject:classificationLabel forKeyedSubscript:@"classificationLabel"];
 
   [v6 setObject:v19 forKeyedSubscript:@"geometry"];
 
   return v6;
 }
 
-+ (id)dictionaryFromMeshAnchor:(id)a3
++ (id)dictionaryFromMeshAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [a1 dictionaryFromAnchor:v4];
+  anchorCopy = anchor;
+  v5 = [self dictionaryFromAnchor:anchorCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 geometry];
-  v8 = [ARQAHelper dictionaryFromMeshGeometry:v7];
+  geometry = [anchorCopy geometry];
+  v8 = [ARQAHelper dictionaryFromMeshGeometry:geometry];
 
   [v6 setObject:v8 forKeyedSubscript:@"geometry"];
 

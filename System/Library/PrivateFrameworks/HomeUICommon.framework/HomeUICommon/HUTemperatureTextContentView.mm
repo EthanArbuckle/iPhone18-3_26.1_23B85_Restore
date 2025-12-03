@@ -1,23 +1,23 @@
 @interface HUTemperatureTextContentView
-- (HUTemperatureTextContentView)initWithFrame:(CGRect)a3;
+- (HUTemperatureTextContentView)initWithFrame:(CGRect)frame;
 - (void)configureLabel;
 - (void)layoutSubviews;
 @end
 
 @implementation HUTemperatureTextContentView
 
-- (HUTemperatureTextContentView)initWithFrame:(CGRect)a3
+- (HUTemperatureTextContentView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HUTemperatureTextContentView;
-  v3 = [(HUIconContentView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconContentView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756C0]);
     [(HUTemperatureTextContentView *)v3 setTemperatureLabel:v4];
 
-    v5 = [(HUTemperatureTextContentView *)v3 temperatureLabel];
-    [(HUTemperatureTextContentView *)v3 addSubview:v5];
+    temperatureLabel = [(HUTemperatureTextContentView *)v3 temperatureLabel];
+    [(HUTemperatureTextContentView *)v3 addSubview:temperatureLabel];
   }
 
   return v3;
@@ -25,39 +25,39 @@
 
 - (void)configureLabel
 {
-  v3 = [(HUIconContentView *)self iconDescriptor];
-  v4 = [v3 targetHeatingCoolingMode];
+  iconDescriptor = [(HUIconContentView *)self iconDescriptor];
+  targetHeatingCoolingMode = [iconDescriptor targetHeatingCoolingMode];
 
-  if (v4)
+  if (targetHeatingCoolingMode)
   {
-    v5 = [(HUIconContentView *)self iconDescriptor];
-    v6 = [v5 heatingCoolingMode];
+    iconDescriptor2 = [(HUIconContentView *)self iconDescriptor];
+    heatingCoolingMode = [iconDescriptor2 heatingCoolingMode];
 
-    v7 = 0;
-    if (v6 > 1)
+    systemCyanColor = 0;
+    if (heatingCoolingMode > 1)
     {
-      if (v6 == 2)
+      if (heatingCoolingMode == 2)
       {
-        v7 = [MEMORY[0x277D75340] systemCyanColor];
+        systemCyanColor = [MEMORY[0x277D75340] systemCyanColor];
       }
 
-      else if (v6 == 3)
+      else if (heatingCoolingMode == 3)
       {
-        v7 = [MEMORY[0x277D75340] darkGrayColor];
+        systemCyanColor = [MEMORY[0x277D75340] darkGrayColor];
       }
     }
 
-    else if (v6)
+    else if (heatingCoolingMode)
     {
-      if (v6 == 1)
+      if (heatingCoolingMode == 1)
       {
-        v7 = [MEMORY[0x277D75340] systemOrangeColor];
+        systemCyanColor = [MEMORY[0x277D75340] systemOrangeColor];
       }
     }
 
     else
     {
-      v7 = [MEMORY[0x277D75340] systemGreenColor];
+      systemCyanColor = [MEMORY[0x277D75340] systemGreenColor];
     }
   }
 
@@ -72,16 +72,16 @@
     {
       [(HUTemperatureTextContentView *)self tintColor];
     }
-    v7 = ;
+    systemCyanColor = ;
   }
 
-  v21 = v7;
-  v8 = [(HUIconContentView *)self iconDescriptor];
-  v9 = [v8 formattedTemperature];
-  v10 = v9;
-  if (v9)
+  v21 = systemCyanColor;
+  iconDescriptor3 = [(HUIconContentView *)self iconDescriptor];
+  formattedTemperature = [iconDescriptor3 formattedTemperature];
+  v10 = formattedTemperature;
+  if (formattedTemperature)
   {
-    v11 = v9;
+    v11 = formattedTemperature;
   }
 
   else
@@ -92,24 +92,24 @@
   v12 = v11;
 
   v13 = [MEMORY[0x277D742F8] systemFontOfSize:22.0 weight:*MEMORY[0x277D743F0]];
-  v14 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v14 setText:v12];
+  temperatureLabel = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel setText:v12];
 
-  v15 = [MEMORY[0x277D75340] clearColor];
-  v16 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v16 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x277D75340] clearColor];
+  temperatureLabel2 = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel2 setBackgroundColor:clearColor];
 
-  v17 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v17 setFont:v13];
+  temperatureLabel3 = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel3 setFont:v13];
 
-  v18 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v18 setTextColor:v21];
+  temperatureLabel4 = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel4 setTextColor:v21];
 
-  v19 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v19 setAdjustsFontSizeToFitWidth:1];
+  temperatureLabel5 = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel5 setAdjustsFontSizeToFitWidth:1];
 
-  v20 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v20 setMinimumScaleFactor:0.2];
+  temperatureLabel6 = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel6 setMinimumScaleFactor:0.2];
 }
 
 - (void)layoutSubviews
@@ -122,8 +122,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUTemperatureTextContentView *)self temperatureLabel];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  temperatureLabel = [(HUTemperatureTextContentView *)self temperatureLabel];
+  [temperatureLabel setFrame:{v4, v6, v8, v10}];
 
   [(HUTemperatureTextContentView *)self setClipsToBounds:0];
 }

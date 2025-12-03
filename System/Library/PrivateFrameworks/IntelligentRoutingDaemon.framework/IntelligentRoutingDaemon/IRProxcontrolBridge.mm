@@ -1,5 +1,5 @@
 @interface IRProxcontrolBridge
-- (IRProxcontrolBridge)initWithDelegate:(id)a3 name:(id)a4;
+- (IRProxcontrolBridge)initWithDelegate:(id)delegate name:(id)name;
 - (IRProximityBridgeDelegateProtocol)delegate;
 - (void)_createProxControlObserver;
 - (void)_runProxControlObserver;
@@ -9,18 +9,18 @@
 
 @implementation IRProxcontrolBridge
 
-- (IRProxcontrolBridge)initWithDelegate:(id)a3 name:(id)a4
+- (IRProxcontrolBridge)initWithDelegate:(id)delegate name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = IRProxcontrolBridge;
   v8 = [(IRProxcontrolBridge *)&v12 self];
 
   if (v8)
   {
-    [(IRProxcontrolBridge *)v8 setName:v7];
-    [(IRProxcontrolBridge *)v8 setDelegate:v6];
+    [(IRProxcontrolBridge *)v8 setName:nameCopy];
+    [(IRProxcontrolBridge *)v8 setDelegate:delegateCopy];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.intelligentroutingd.proxcontrol-bridge", v9);
     [(IRProxcontrolBridge *)v8 setQueue:v10];
@@ -32,17 +32,17 @@
 - (void)_createProxControlObserver
 {
   v3 = [(NSString *)self->_name copy];
-  v4 = [(IRProxcontrolBridge *)self pclControlsObserver];
+  pclControlsObserver = [(IRProxcontrolBridge *)self pclControlsObserver];
 
-  if (!v4)
+  if (!pclControlsObserver)
   {
     objc_initWeak(&location, self);
     v5 = objc_alloc_init(MEMORY[0x277D435E0]);
     [(IRProxcontrolBridge *)self setPclControlsObserver:v5];
 
     queue = self->_queue;
-    v7 = [(IRProxcontrolBridge *)self pclControlsObserver];
-    [v7 setDispatchQueue:queue];
+    pclControlsObserver2 = [(IRProxcontrolBridge *)self pclControlsObserver];
+    [pclControlsObserver2 setDispatchQueue:queue];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -51,8 +51,8 @@
     objc_copyWeak(&v21, &location);
     v8 = v3;
     v20 = v8;
-    v9 = [(IRProxcontrolBridge *)self pclControlsObserver];
-    [v9 setDeviceLost:v19];
+    pclControlsObserver3 = [(IRProxcontrolBridge *)self pclControlsObserver];
+    [pclControlsObserver3 setDeviceLost:v19];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -61,8 +61,8 @@
     objc_copyWeak(&v18, &location);
     v10 = v8;
     v17 = v10;
-    v11 = [(IRProxcontrolBridge *)self pclControlsObserver];
-    [v11 setDeviceUpdated:v16];
+    pclControlsObserver4 = [(IRProxcontrolBridge *)self pclControlsObserver];
+    [pclControlsObserver4 setDeviceUpdated:v16];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -70,8 +70,8 @@
     v13[3] = &unk_2797E1060;
     objc_copyWeak(&v15, &location);
     v14 = v10;
-    v12 = [(IRProxcontrolBridge *)self pclControlsObserver];
-    [v12 setInvalidationHandler:v13];
+    pclControlsObserver5 = [(IRProxcontrolBridge *)self pclControlsObserver];
+    [pclControlsObserver5 setInvalidationHandler:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v18);
@@ -173,13 +173,13 @@ void __49__IRProxcontrolBridge__createProxControlObserver__block_invoke_36(uint6
     _os_log_impl(&dword_25543D000, v3, OS_LOG_TYPE_INFO, "#proxcontrol-bridge, Starting proximity control session", buf, 2u);
   }
 
-  v4 = [(IRProxcontrolBridge *)self pclControlsObserver];
+  pclControlsObserver = [(IRProxcontrolBridge *)self pclControlsObserver];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__IRProxcontrolBridge__runProxControlObserver__block_invoke;
   v5[3] = &unk_2797E1088;
   objc_copyWeak(&v6, &location);
-  [v4 activateWithCompletion:v5];
+  [pclControlsObserver activateWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -228,13 +228,13 @@ void __46__IRProxcontrolBridge__runProxControlObserver__block_invoke(uint64_t a1
 - (void)invalidate
 {
   objc_initWeak(&location, self);
-  v3 = [(IRProxcontrolBridge *)self queue];
+  queue = [(IRProxcontrolBridge *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __33__IRProxcontrolBridge_invalidate__block_invoke;
   v4[3] = &unk_2797E0C18;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -257,13 +257,13 @@ void __33__IRProxcontrolBridge_invalidate__block_invoke(uint64_t a1)
 - (void)run
 {
   objc_initWeak(&location, self);
-  v3 = [(IRProxcontrolBridge *)self queue];
+  queue = [(IRProxcontrolBridge *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __26__IRProxcontrolBridge_run__block_invoke;
   v4[3] = &unk_2797E0C18;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);

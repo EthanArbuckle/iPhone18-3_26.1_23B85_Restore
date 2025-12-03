@@ -1,11 +1,11 @@
 @interface VCMediaNegotiationBlobV2BandwidthSettings
-+ (id)filteredSetForArbiterMode:(unsigned __int8)a3 bandwidthConfigurations:(id)a4;
++ (id)filteredSetForArbiterMode:(unsigned __int8)mode bandwidthConfigurations:(id)configurations;
 - (BOOL)isDefaultSettings;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setupCapForBandwidthConfiguration:(id)a3;
-- (VCMediaNegotiationBlobV2BandwidthSettings)initWithBandwidthConfigurations:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setupCapForBandwidthConfiguration:(id)configuration;
+- (VCMediaNegotiationBlobV2BandwidthSettings)initWithBandwidthConfigurations:(id)configurations;
 - (id)bandwidthConfigurations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -14,24 +14,24 @@
 - (unsigned)cap5G;
 - (unsigned)capLTE;
 - (unsigned)capWifi;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4;
-- (void)setHasCap3G:(BOOL)a3;
-- (void)setHasCap5G:(BOOL)a3;
-- (void)setHasCapLTE:(BOOL)a3;
-- (void)setHasCapWifi:(BOOL)a3;
-- (void)setupCap2G:(unsigned int)a3;
-- (void)setupCap3G:(unsigned int)a3;
-- (void)setupCap5G:(unsigned int)a3;
-- (void)setupCapLTE:(unsigned int)a3;
-- (void)setupCapWifi:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file prefix:(id)prefix;
+- (void)setHasCap3G:(BOOL)g;
+- (void)setHasCap5G:(BOOL)g;
+- (void)setHasCapLTE:(BOOL)e;
+- (void)setHasCapWifi:(BOOL)wifi;
+- (void)setupCap2G:(unsigned int)g;
+- (void)setupCap3G:(unsigned int)g;
+- (void)setupCap5G:(unsigned int)g;
+- (void)setupCapLTE:(unsigned int)e;
+- (void)setupCapWifi:(unsigned int)wifi;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2BandwidthSettings
 
-- (VCMediaNegotiationBlobV2BandwidthSettings)initWithBandwidthConfigurations:(id)a3
+- (VCMediaNegotiationBlobV2BandwidthSettings)initWithBandwidthConfigurations:(id)configurations
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = [(VCMediaNegotiationBlobV2BandwidthSettings *)self init];
@@ -40,7 +40,7 @@
     return v4;
   }
 
-  if (!a3)
+  if (!configurations)
   {
     [VCMediaNegotiationBlobV2BandwidthSettings(Utils) initWithBandwidthConfigurations:];
 LABEL_14:
@@ -48,7 +48,7 @@ LABEL_14:
     return 0;
   }
 
-  v5 = [VCMediaNegotiationBlobV2BandwidthSettings filteredSetForArbiterMode:1 bandwidthConfigurations:a3];
+  v5 = [VCMediaNegotiationBlobV2BandwidthSettings filteredSetForArbiterMode:1 bandwidthConfigurations:configurations];
   if (!v5)
   {
     [VCMediaNegotiationBlobV2BandwidthSettings(Utils) initWithBandwidthConfigurations:];
@@ -172,13 +172,13 @@ LABEL_8:
   return self;
 }
 
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4
+- (void)printWithLogFile:(void *)file prefix:(id)prefix
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2BandwidthSettings data](self, "data"), "length"), a4];
-  [v6 appendFormat:@"BandwidthSettings: 2G=%u 3G=%u LTE=%u 5G=%u Wifi=%u", -[VCMediaNegotiationBlobV2BandwidthSettings cap2G](self, "cap2G"), -[VCMediaNegotiationBlobV2BandwidthSettings cap3G](self, "cap3G"), -[VCMediaNegotiationBlobV2BandwidthSettings capLTE](self, "capLTE"), -[VCMediaNegotiationBlobV2BandwidthSettings cap5G](self, "cap5G"), -[VCMediaNegotiationBlobV2BandwidthSettings capWifi](self, "capWifi")];
-  v7 = [v6 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "%s\n", v8, v9, v10, v11, v12, v13, v7);
+  prefix = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2BandwidthSettings data](self, "data"), "length"), prefix];
+  [prefix appendFormat:@"BandwidthSettings: 2G=%u 3G=%u LTE=%u 5G=%u Wifi=%u", -[VCMediaNegotiationBlobV2BandwidthSettings cap2G](self, "cap2G"), -[VCMediaNegotiationBlobV2BandwidthSettings cap3G](self, "cap3G"), -[VCMediaNegotiationBlobV2BandwidthSettings capLTE](self, "capLTE"), -[VCMediaNegotiationBlobV2BandwidthSettings cap5G](self, "cap5G"), -[VCMediaNegotiationBlobV2BandwidthSettings capWifi](self, "capWifi")];
+  uTF8String = [prefix UTF8String];
+  VRLogfilePrintWithTimestamp(file, "%s\n", v8, v9, v10, v11, v12, v13, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v14 = VRTraceErrorLogLevelToCSTR();
@@ -192,72 +192,72 @@ LABEL_8:
       v20 = 1024;
       v21 = 90;
       v22 = 2112;
-      v23 = v6;
+      v23 = prefix;
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@", buf, 0x26u);
     }
   }
 }
 
-- (void)setupCap2G:(unsigned int)a3
+- (void)setupCap2G:(unsigned int)g
 {
-  v3 = *&a3;
-  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self cap2G]!= a3)
+  v3 = *&g;
+  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self cap2G]!= g)
   {
 
     [(VCMediaNegotiationBlobV2BandwidthSettings *)self setCap2G:v3];
   }
 }
 
-- (void)setupCap3G:(unsigned int)a3
+- (void)setupCap3G:(unsigned int)g
 {
-  v3 = *&a3;
-  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self cap3G]!= a3)
+  v3 = *&g;
+  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self cap3G]!= g)
   {
 
     [(VCMediaNegotiationBlobV2BandwidthSettings *)self setCap3G:v3];
   }
 }
 
-- (void)setupCapLTE:(unsigned int)a3
+- (void)setupCapLTE:(unsigned int)e
 {
-  v3 = *&a3;
-  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self capLTE]!= a3)
+  v3 = *&e;
+  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self capLTE]!= e)
   {
 
     [(VCMediaNegotiationBlobV2BandwidthSettings *)self setCapLTE:v3];
   }
 }
 
-- (void)setupCap5G:(unsigned int)a3
+- (void)setupCap5G:(unsigned int)g
 {
-  v3 = *&a3;
-  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self cap5G]!= a3)
+  v3 = *&g;
+  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self cap5G]!= g)
   {
 
     [(VCMediaNegotiationBlobV2BandwidthSettings *)self setCap5G:v3];
   }
 }
 
-- (void)setupCapWifi:(unsigned int)a3
+- (void)setupCapWifi:(unsigned int)wifi
 {
-  v3 = *&a3;
-  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self capWifi]!= a3)
+  v3 = *&wifi;
+  if ([(VCMediaNegotiationBlobV2BandwidthSettings *)self capWifi]!= wifi)
   {
 
     [(VCMediaNegotiationBlobV2BandwidthSettings *)self setCapWifi:v3];
   }
 }
 
-+ (id)filteredSetForArbiterMode:(unsigned __int8)a3 bandwidthConfigurations:(id)a4
++ (id)filteredSetForArbiterMode:(unsigned __int8)mode bandwidthConfigurations:(id)configurations
 {
-  v5 = a3;
+  modeCopy = mode;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v7 = [configurations countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v7)
   {
     v8 = v7;
@@ -268,72 +268,72 @@ LABEL_8:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(configurations);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v11, "connectionType")}];
-        if ([v11 isDefaultMode] && !objc_msgSend(v6, "objectForKeyedSubscript:", v12) || objc_msgSend(v11, "mode") == v5)
+        if ([v11 isDefaultMode] && !objc_msgSend(dictionary, "objectForKeyedSubscript:", v12) || objc_msgSend(v11, "mode") == modeCopy)
         {
-          [v6 setObject:v11 forKeyedSubscript:v12];
+          [dictionary setObject:v11 forKeyedSubscript:v12];
         }
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v8 = [configurations countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v8);
   }
 
-  return [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(v6, "allValues")}];
+  return [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(dictionary, "allValues")}];
 }
 
-- (BOOL)setupCapForBandwidthConfiguration:(id)a3
+- (BOOL)setupCapForBandwidthConfiguration:(id)configuration
 {
-  v5 = [a3 connectionType];
+  connectionType = [configuration connectionType];
   result = 0;
-  if (v5 > 2)
+  if (connectionType > 2)
   {
-    if ((v5 - 4) >= 2)
+    if ((connectionType - 4) >= 2)
     {
-      if (v5 == 3)
+      if (connectionType == 3)
       {
-        -[VCMediaNegotiationBlobV2BandwidthSettings setupCapWifi:](self, "setupCapWifi:", [a3 maxBandwidth]);
+        -[VCMediaNegotiationBlobV2BandwidthSettings setupCapWifi:](self, "setupCapWifi:", [configuration maxBandwidth]);
       }
 
       else
       {
-        if (v5 != 6)
+        if (connectionType != 6)
         {
           return result;
         }
 
-        -[VCMediaNegotiationBlobV2BandwidthSettings setupCap5G:](self, "setupCap5G:", [a3 maxBandwidth]);
+        -[VCMediaNegotiationBlobV2BandwidthSettings setupCap5G:](self, "setupCap5G:", [configuration maxBandwidth]);
       }
     }
   }
 
-  else if (v5)
+  else if (connectionType)
   {
-    if (v5 == 1)
+    if (connectionType == 1)
     {
-      -[VCMediaNegotiationBlobV2BandwidthSettings setupCap3G:](self, "setupCap3G:", [a3 maxBandwidth]);
+      -[VCMediaNegotiationBlobV2BandwidthSettings setupCap3G:](self, "setupCap3G:", [configuration maxBandwidth]);
     }
 
     else
     {
-      if (v5 != 2)
+      if (connectionType != 2)
       {
         return result;
       }
 
-      -[VCMediaNegotiationBlobV2BandwidthSettings setupCapLTE:](self, "setupCapLTE:", [a3 maxBandwidth]);
+      -[VCMediaNegotiationBlobV2BandwidthSettings setupCapLTE:](self, "setupCapLTE:", [configuration maxBandwidth]);
     }
   }
 
   else
   {
-    -[VCMediaNegotiationBlobV2BandwidthSettings setupCap2G:](self, "setupCap2G:", [a3 maxBandwidth]);
+    -[VCMediaNegotiationBlobV2BandwidthSettings setupCap2G:](self, "setupCap2G:", [configuration maxBandwidth]);
   }
 
   return 1;
@@ -365,9 +365,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasCap3G:(BOOL)a3
+- (void)setHasCap3G:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 2;
   }
@@ -393,9 +393,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasCapLTE:(BOOL)a3
+- (void)setHasCapLTE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 8;
   }
@@ -421,9 +421,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasCap5G:(BOOL)a3
+- (void)setHasCap5G:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 4;
   }
@@ -449,9 +449,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasCapWifi:(BOOL)a3
+- (void)setHasCapWifi:(BOOL)wifi
 {
-  if (a3)
+  if (wifi)
   {
     v3 = 16;
   }
@@ -474,11 +474,11 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cap2G), @"cap2G"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cap2G), @"cap2G"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -497,7 +497,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cap3G), @"cap3G"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cap3G), @"cap3G"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -508,17 +508,17 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cap5G), @"cap5G"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_cap5G), @"cap5G"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_6;
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capLTE), @"capLTE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capLTE), @"capLTE"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -529,13 +529,13 @@ LABEL_5:
   if ((has & 0x10) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capWifi), @"capWifi"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capWifi), @"capWifi"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -598,13 +598,13 @@ LABEL_11:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_cap2G;
-    *(a3 + 28) |= 1u;
+    *(to + 2) = self->_cap2G;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -623,8 +623,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_cap3G;
-  *(a3 + 28) |= 2u;
+  *(to + 3) = self->_cap3G;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -638,8 +638,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 5) = self->_capLTE;
-  *(a3 + 28) |= 8u;
+  *(to + 5) = self->_capLTE;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -650,23 +650,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 6) = self->_capWifi;
-    *(a3 + 28) |= 0x10u;
+    *(to + 6) = self->_capWifi;
+    *(to + 28) |= 0x10u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 4) = self->_cap5G;
-  *(a3 + 28) |= 4u;
+  *(to + 4) = self->_cap5G;
+  *(to + 28) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -733,20 +733,20 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_cap2G != *(a3 + 2))
+      if ((*(equal + 28) & 1) == 0 || self->_cap2G != *(equal + 2))
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_26:
       LOBYTE(v5) = 0;
@@ -755,47 +755,47 @@ LABEL_26:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_cap3G != *(a3 + 3))
+      if ((*(equal + 28) & 2) == 0 || self->_cap3G != *(equal + 3))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 28) & 8) == 0 || self->_capLTE != *(a3 + 5))
+      if ((*(equal + 28) & 8) == 0 || self->_capLTE != *(equal + 5))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 28) & 8) != 0)
+    else if ((*(equal + 28) & 8) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0 || self->_cap5G != *(a3 + 4))
+      if ((*(equal + 28) & 4) == 0 || self->_cap5G != *(equal + 4))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 28) & 4) != 0)
+    else if ((*(equal + 28) & 4) != 0)
     {
       goto LABEL_26;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 0x10) == 0;
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 28) & 0x10) == 0 || self->_capWifi != *(a3 + 6))
+      if ((*(equal + 28) & 0x10) == 0 || self->_capWifi != *(equal + 6))
       {
         goto LABEL_26;
       }
@@ -875,14 +875,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_cap2G = *(a3 + 2);
+    self->_cap2G = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -895,14 +895,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 2) == 0)
+  else if ((*(from + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_cap3G = *(a3 + 3);
+  self->_cap3G = *(from + 3);
   *&self->_has |= 2u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -915,9 +915,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_capLTE = *(a3 + 5);
+  self->_capLTE = *(from + 5);
   *&self->_has |= 8u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -927,15 +927,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_capWifi = *(a3 + 6);
+    self->_capWifi = *(from + 6);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_10:
-  self->_cap5G = *(a3 + 4);
+  self->_cap5G = *(from + 4);
   *&self->_has |= 4u;
-  if ((*(a3 + 28) & 0x10) != 0)
+  if ((*(from + 28) & 0x10) != 0)
   {
     goto LABEL_11;
   }

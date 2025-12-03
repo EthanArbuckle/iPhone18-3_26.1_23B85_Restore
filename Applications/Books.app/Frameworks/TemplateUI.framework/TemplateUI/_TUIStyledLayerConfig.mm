@@ -1,32 +1,32 @@
 @interface _TUIStyledLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
-- (_TUIStyledLayerConfig)initWithStyler:(id)a3;
+- (BOOL)isEqualToConfig:(id)config;
+- (_TUIStyledLayerConfig)initWithStyler:(id)styler;
 @end
 
 @implementation _TUIStyledLayerConfig
 
-- (_TUIStyledLayerConfig)initWithStyler:(id)a3
+- (_TUIStyledLayerConfig)initWithStyler:(id)styler
 {
-  v5 = a3;
+  stylerCopy = styler;
   v9.receiver = self;
   v9.super_class = _TUIStyledLayerConfig;
   v6 = [(_TUIStyledLayerConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styler, a3);
+    objc_storeStrong(&v6->_styler, styler);
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = configCopy;
   }
 
   else

@@ -1,5 +1,5 @@
 @interface SessionCastingView
-- (_TtC9SeymourUI18SessionCastingView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI18SessionCastingView)initWithFrame:(CGRect)frame;
 - (void)playButtonTapped;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)playButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B76CF50();
 }
 
-- (_TtC9SeymourUI18SessionCastingView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI18SessionCastingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,20 +1,20 @@
 @interface TSCHLegendModelCache
 - (CGSize)largestCellSize;
-- (TSCHLegendModelCache)initWithChartModel:(id)a3 textEditingSelectionPair:(id)a4 styleProvidingSource:(id)a5;
-- (id)cellForSeriesIndex:(unint64_t)a3 cellType:(int)a4;
-- (id)viewCacheForWidth:(double)a3;
+- (TSCHLegendModelCache)initWithChartModel:(id)model textEditingSelectionPair:(id)pair styleProvidingSource:(id)source;
+- (id)cellForSeriesIndex:(unint64_t)index cellType:(int)type;
+- (id)viewCacheForWidth:(double)width;
 @end
 
 @implementation TSCHLegendModelCache
 
-- (TSCHLegendModelCache)initWithChartModel:(id)a3 textEditingSelectionPair:(id)a4 styleProvidingSource:(id)a5
+- (TSCHLegendModelCache)initWithChartModel:(id)model textEditingSelectionPair:(id)pair styleProvidingSource:(id)source
 {
   v312 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v16 = objc_msgSend_chartInfo(v8, v11, v12, v13, v14);
-  v305 = v8;
+  modelCopy = model;
+  pairCopy = pair;
+  sourceCopy = source;
+  v16 = objc_msgSend_chartInfo(modelCopy, v11, v12, v13, v14);
+  v305 = modelCopy;
   if (v16)
   {
     v310.receiver = self;
@@ -25,12 +25,12 @@
     {
 LABEL_52:
       self = v21;
-      v75 = self;
+      selfCopy = self;
       goto LABEL_53;
     }
 
-    v304 = v10;
-    objc_storeWeak(&v20->_styleProvidingSource, v10);
+    v304 = sourceCopy;
+    objc_storeWeak(&v20->_styleProvidingSource, sourceCopy);
     v26 = objc_msgSend_legend(v16, v22, v23, v24, v25);
     v21->_legendOn = objc_msgSend_intValueForProperty_defaultValue_(v16, v27, v28, v29, v30, 1113, 1) != 0;
     v35 = objc_msgSend_intValueForProperty_defaultValue_(v26, v31, v32, v33, v34, 1214, 0);
@@ -113,15 +113,15 @@ LABEL_52:
     v21->_legendIsRTL = objc_msgSend_isDirectionRightToLeft(v139, v140, v141, v142, v143);
 
     objc_opt_class();
-    v148 = objc_msgSend_first(v9, v144, v145, v146, v147);
+    v148 = objc_msgSend_first(pairCopy, v144, v145, v146, v147);
     v149 = TSUDynamicCast();
 
     objc_opt_class();
-    v154 = objc_msgSend_second(v9, v150, v151, v152, v153);
+    v154 = objc_msgSend_second(pairCopy, v150, v151, v152, v153);
     v155 = TSUDynamicCast();
 
     v297 = v16;
-    v298 = v9;
+    v298 = pairCopy;
     v296 = v149;
     if (v149)
     {
@@ -272,8 +272,8 @@ LABEL_23:
     {
       v292 = v287;
       v293 = *v307;
-      v9 = v298;
-      v10 = v304;
+      pairCopy = v298;
+      sourceCopy = v304;
       do
       {
         for (i = 0; i != v292; ++i)
@@ -303,14 +303,14 @@ LABEL_23:
 
     else
     {
-      v9 = v298;
-      v10 = v304;
+      pairCopy = v298;
+      sourceCopy = v304;
     }
 
     v21->_largestCellSize.width = v280;
     v21->_largestCellSize.height = v281;
 
-    v8 = v305;
+    modelCopy = v305;
     v16 = v297;
     goto LABEL_52;
   }
@@ -321,13 +321,13 @@ LABEL_23:
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v60, v67, v68, v69, v70, v61, v66, 145, 0, "invalid nil value for '%{public}s'", "chartInfo");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v71, v72, v73, v74);
-  v75 = 0;
+  selfCopy = 0;
 LABEL_53:
 
-  return v75;
+  return selfCopy;
 }
 
-- (id)cellForSeriesIndex:(unint64_t)a3 cellType:(int)a4
+- (id)cellForSeriesIndex:(unint64_t)index cellType:(int)type
 {
   v27 = *MEMORY[0x277D85DE8];
   v22 = 0u;
@@ -350,7 +350,7 @@ LABEL_53:
         }
 
         v19 = *(*(&v22 + 1) + 8 * i);
-        if (objc_msgSend_seriesIndex(v19, v12, v13, v14, v15, v22) == a3 && objc_msgSend_cellType(v19, v12, v13, v14, v15) == a4)
+        if (objc_msgSend_seriesIndex(v19, v12, v13, v14, v15, v22) == index && objc_msgSend_cellType(v19, v12, v13, v14, v15) == type)
         {
           v20 = v19;
           goto LABEL_12;
@@ -373,22 +373,22 @@ LABEL_12:
   return v20;
 }
 
-- (id)viewCacheForWidth:(double)a3
+- (id)viewCacheForWidth:(double)width
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  lastLegendViewCache = v4->_lastLegendViewCache;
-  if (!lastLegendViewCache || (lastLegendWidth = v4->_lastLegendWidth, lastLegendWidth != a3) || lastLegendWidth == 0.0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastLegendViewCache = selfCopy->_lastLegendViewCache;
+  if (!lastLegendViewCache || (lastLegendWidth = selfCopy->_lastLegendWidth, lastLegendWidth != width) || lastLegendWidth == 0.0)
   {
-    v4->_lastLegendWidth = a3;
+    selfCopy->_lastLegendWidth = width;
     v7 = [TSCHLegendViewCache alloc];
-    lastLegendViewCache = objc_msgSend_initWithLegendModelCache_legendWidth_(v7, v8, a3, v9, v10, v4);
-    v11 = v4->_lastLegendViewCache;
-    v4->_lastLegendViewCache = lastLegendViewCache;
+    lastLegendViewCache = objc_msgSend_initWithLegendModelCache_legendWidth_(v7, v8, width, v9, v10, selfCopy);
+    v11 = selfCopy->_lastLegendViewCache;
+    selfCopy->_lastLegendViewCache = lastLegendViewCache;
   }
 
   v12 = lastLegendViewCache;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }

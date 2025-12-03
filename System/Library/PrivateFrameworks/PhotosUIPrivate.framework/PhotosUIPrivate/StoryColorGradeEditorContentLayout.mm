@@ -1,18 +1,18 @@
 @interface StoryColorGradeEditorContentLayout
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)selectedSpriteIndexesInLayout:(id)a3;
-- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (id)selectedSpriteIndexesInLayout:(id)layout;
+- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)index inLayout:(id)layout;
 @end
 
 @implementation StoryColorGradeEditorContentLayout
 
-- (id)selectedSpriteIndexesInLayout:(id)a3
+- (id)selectedSpriteIndexesInLayout:(id)layout
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB858130);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v13 - v6;
-  v8 = a3;
-  v9 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   sub_1B37A1DE0(v7);
 
   v10 = sub_1B3C98248();
@@ -26,7 +26,7 @@
   return v11;
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = sub_1B37A200C();
   result.var3 = v7;
@@ -36,10 +36,10 @@
   return result;
 }
 
-- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
-  v5 = a4;
-  v6 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   v7 = sub_1B37A2038();
 
   return v7;

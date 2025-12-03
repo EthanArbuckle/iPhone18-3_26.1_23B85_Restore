@@ -11,12 +11,12 @@
   {
     v2 = (v2 - 1);
     v3 = [CalDAVPrincipalSearchSupport namespaceForWellKnownType:v2];
-    v4 = [a1 nameSpace];
-    if ([v3 isEqualToString:v4])
+    nameSpace = [self nameSpace];
+    if ([v3 isEqualToString:nameSpace])
     {
       v5 = [CalDAVPrincipalSearchSupport nameForWellKnownType:v2];
-      v6 = [a1 name];
-      v7 = [v5 isEqualToString:v6];
+      name = [self name];
+      v7 = [v5 isEqualToString:name];
 
       if (v7)
       {

@@ -3,16 +3,16 @@
 - (BOOL)shouldShowSuggestionThroughOverrides;
 - (double)getfirstEntryTimestampFromDb;
 - (id)result;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)didUpgrade;
 - (void)run;
 @end
 
 @implementation PLBatteryUIResponseTypeRecentUsageInsight
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
-  v4 = [a3 objectForKeyedSubscript:@"end"];
+  v4 = [configure objectForKeyedSubscript:@"end"];
   [v4 doubleValue];
   v6 = v5;
 
@@ -212,17 +212,17 @@
   v4 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AppRunTime"];
   v5 = [MEMORY[0x277D3F128] entryKeyForType:v3 andName:*MEMORY[0x277D3F318]];
   v6 = [MEMORY[0x277D3F128] entryKeyForType:v3 andName:*MEMORY[0x277D3F2F0]];
-  v7 = [(PLBatteryUIResponseTypeRecentUsageInsight *)self responderService];
-  v8 = [v7 storage];
-  v9 = [v8 entryForKey:v4 withID:1];
+  responderService = [(PLBatteryUIResponseTypeRecentUsageInsight *)self responderService];
+  storage = [responderService storage];
+  v9 = [storage entryForKey:v4 withID:1];
 
-  v10 = [(PLBatteryUIResponseTypeRecentUsageInsight *)self responderService];
-  v11 = [v10 storage];
-  v12 = [v11 entryForKey:v5 withID:1];
+  responderService2 = [(PLBatteryUIResponseTypeRecentUsageInsight *)self responderService];
+  storage2 = [responderService2 storage];
+  v12 = [storage2 entryForKey:v5 withID:1];
 
-  v13 = [(PLBatteryUIResponseTypeRecentUsageInsight *)self responderService];
-  v14 = [v13 storage];
-  v15 = [v14 entryForKey:v6 withID:1];
+  responderService3 = [(PLBatteryUIResponseTypeRecentUsageInsight *)self responderService];
+  storage3 = [responderService3 storage];
+  v15 = [storage3 entryForKey:v6 withID:1];
 
   v16 = 9.22337204e18;
   if (v9 && v12 && v15)
@@ -247,9 +247,9 @@
   if (v2)
   {
     v3 = [PLUtilities powerlogDefaultForKey:@"BUI_RECENTUSAGE_SUGGESTION_SHOW"];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;

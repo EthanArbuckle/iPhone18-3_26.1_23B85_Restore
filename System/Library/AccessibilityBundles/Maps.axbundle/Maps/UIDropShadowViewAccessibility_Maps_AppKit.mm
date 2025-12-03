@@ -1,5 +1,5 @@
 @interface UIDropShadowViewAccessibility_Maps_AppKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axCollapseCard;
 - (BOOL)_axExpandCard;
 - (BOOL)accessibilityPerformEscape;
@@ -13,27 +13,27 @@
 
 @implementation UIDropShadowViewAccessibility_Maps_AppKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIDropShadowView" hasInstanceMethod:@"_topGrabber" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIDropShadowView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ContainerViewController" hasInstanceMethod:@"setLayoutIfSupported: animated:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"ModalContaineeViewController" hasInstanceMethod:@"_dismissContainee" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ContainerViewController"];
-  [v3 validateClass:@"ModalContaineeViewController"];
-  [v3 validateClass:@"CollectionCreateViewController"];
-  [v3 validateClass:@"ControlContaineeViewController"];
-  [v3 validateClass:@"MapsRouteCreationContainee"];
-  [v3 validateClass:@"ContainerViewController" hasInstanceMethod:@"currentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CardPresentationController" hasInstanceMethod:@"containeeLayout" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIDropShadowView" hasInstanceMethod:@"_topGrabber" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIDropShadowView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ContainerViewController" hasInstanceMethod:@"setLayoutIfSupported: animated:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"ModalContaineeViewController" hasInstanceMethod:@"_dismissContainee" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ContainerViewController"];
+  [validationsCopy validateClass:@"ModalContaineeViewController"];
+  [validationsCopy validateClass:@"CollectionCreateViewController"];
+  [validationsCopy validateClass:@"ControlContaineeViewController"];
+  [validationsCopy validateClass:@"MapsRouteCreationContainee"];
+  [validationsCopy validateClass:@"ContainerViewController" hasInstanceMethod:@"currentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CardPresentationController" hasInstanceMethod:@"containeeLayout" withFullSignature:{"Q", 0}];
 }
 
 - (BOOL)_axExpandCard
 {
-  v3 = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContainerViewController];
-  v4 = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeLayout];
-  if (v4 == 2)
+  _accessibilityContainerViewController = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContainerViewController];
+  _accessibilityContaineeLayout = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeLayout];
+  if (_accessibilityContaineeLayout == 2)
   {
     v5 = v9;
     v9[0] = MEMORY[0x29EDCA5F8];
@@ -43,7 +43,7 @@
 
   else
   {
-    if (v4 != 1)
+    if (_accessibilityContaineeLayout != 1)
     {
       v7 = 0;
       goto LABEL_7;
@@ -57,7 +57,7 @@
 
   v5[2] = v6;
   v5[3] = &unk_29F2CC3B0;
-  v5[4] = v3;
+  v5[4] = _accessibilityContainerViewController;
   AXPerformSafeBlock();
 
   v7 = 1;
@@ -68,11 +68,11 @@ LABEL_7:
 
 - (BOOL)_axCollapseCard
 {
-  v3 = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContainerViewController];
-  v4 = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeLayout];
-  if (v4 - 3 >= 2)
+  _accessibilityContainerViewController = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContainerViewController];
+  _accessibilityContaineeLayout = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeLayout];
+  if (_accessibilityContaineeLayout - 3 >= 2)
   {
-    if (v4 != 2)
+    if (_accessibilityContaineeLayout != 2)
     {
       v7 = 0;
       goto LABEL_7;
@@ -94,7 +94,7 @@ LABEL_7:
 
   v5[2] = v6;
   v5[3] = &unk_29F2CC3B0;
-  v5[4] = v3;
+  v5[4] = _accessibilityContainerViewController;
   AXPerformSafeBlock();
 
   v7 = 1;
@@ -114,8 +114,8 @@ LABEL_7:
   [v3 setIsAccessibilityElement:1];
   [v3 setAccessibilityRespondsToUserInteraction:1];
   [v3 setAccessibilityIdentifier:@"Card grabber"];
-  v4 = [v3 accessibilityCustomActions];
-  v5 = v4 == 0;
+  accessibilityCustomActions = [v3 accessibilityCustomActions];
+  v5 = accessibilityCustomActions == 0;
 
   if (v5)
   {
@@ -128,8 +128,8 @@ LABEL_7:
     v10 = AXMapsLocString(@"COLLAPSE_CARD");
     v11 = [v9 initWithName:v10 target:self selector:sel__axCollapseCard];
 
-    v12 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v12 addObserver:self selector:sel__axCollapseCard name:@"AXCollapseMapsChromeNotification" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__axCollapseCard name:@"AXCollapseMapsChromeNotification" object:0];
 
     v21[0] = v8;
     v21[1] = v11;
@@ -162,8 +162,8 @@ LABEL_7:
   v4.super_class = UIDropShadowViewAccessibility_Maps_AppKit;
   [(UIDropShadowViewAccessibility_Maps_AppKit *)&v4 layoutSubviews];
   [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityLoadAccessibilityInformation];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotificationName:@"AXMapVisibleRegionDidChange" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"AXMapVisibleRegionDidChange" object:0];
 }
 
 - (id)_accessibilityContainerViewController
@@ -193,8 +193,8 @@ LABEL_6:
 
 - (id)_accessibilityContaineeViewController
 {
-  v2 = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContainerViewController];
-  v3 = [v2 safeValueForKey:@"currentViewController"];
+  _accessibilityContainerViewController = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContainerViewController];
+  v3 = [_accessibilityContainerViewController safeValueForKey:@"currentViewController"];
 
   return v3;
 }
@@ -236,7 +236,7 @@ LABEL_6:
 
 - (BOOL)accessibilityViewIsModal
 {
-  v3 = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeViewController];
+  _accessibilityContaineeViewController = [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeViewController];
   NSClassFromString(&cfstr_Collectioncrea.isa);
   v4 = (objc_opt_isKindOfClass() & 1) != 0 || [(UIDropShadowViewAccessibility_Maps_AppKit *)self _accessibilityContaineeLayout]== 3;
 

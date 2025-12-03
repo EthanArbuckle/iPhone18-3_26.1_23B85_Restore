@@ -1,7 +1,7 @@
 @interface CDMContextUpdateService
-- (id)handle:(id)a3;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)setup:(id)a3;
+- (id)setup:(id)setup;
 @end
 
 @implementation CDMContextUpdateService
@@ -20,10 +20,10 @@
   return v5;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handleCopy = handle;
   v4 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -32,39 +32,39 @@
     _os_log_impl(&dword_1DC287000, v4, OS_LOG_TYPE_INFO, "%s Calling Context Update Service", buf, 0xCu);
   }
 
-  v5 = [v3 ctxUpdateRequest];
-  v6 = [v5 currentTurn];
-  v7 = [v6 copy];
+  ctxUpdateRequest = [handleCopy ctxUpdateRequest];
+  currentTurn = [ctxUpdateRequest currentTurn];
+  v7 = [currentTurn copy];
 
   v8 = objc_alloc(MEMORY[0x1E695DF70]);
-  v9 = [v3 ctxUpdateRequest];
-  v10 = [v9 previousTurns];
-  v11 = [v8 initWithArray:v10 copyItems:1];
+  ctxUpdateRequest2 = [handleCopy ctxUpdateRequest];
+  previousTurns = [ctxUpdateRequest2 previousTurns];
+  v11 = [v8 initWithArray:previousTurns copyItems:1];
 
   if (!v7 || (v12 = [v7 tapToEdit], (v12 & 1) == 0) && !+[SiriNLUTypesUtils isTopSdaAskRepeat:](SiriNLUTypesUtils, "isTopSdaAskRepeat:", v7))
   {
-    v18 = [v3 ctxUpdateRequest];
-    v14 = [v18 qrHypotheses];
-    if (v14)
+    ctxUpdateRequest3 = [handleCopy ctxUpdateRequest];
+    qrHypotheses = [ctxUpdateRequest3 qrHypotheses];
+    if (qrHypotheses)
     {
-      v19 = [v3 ctxUpdateRequest];
-      v20 = [v19 qrHypotheses];
-      v21 = [v20 count] == 1;
+      ctxUpdateRequest4 = [handleCopy ctxUpdateRequest];
+      qrHypotheses2 = [ctxUpdateRequest4 qrHypotheses];
+      v21 = [qrHypotheses2 count] == 1;
 
       if (!v21)
       {
         v48 = 0;
-        v14 = 0;
+        qrHypotheses = 0;
         v27 = 0;
         goto LABEL_39;
       }
 
-      v22 = [v3 ctxUpdateRequest];
-      v23 = [v22 qrHypotheses];
-      v24 = [v23 objectAtIndexedSubscript:0];
-      v18 = [v24 copy];
+      ctxUpdateRequest5 = [handleCopy ctxUpdateRequest];
+      qrHypotheses3 = [ctxUpdateRequest5 qrHypotheses];
+      v24 = [qrHypotheses3 objectAtIndexedSubscript:0];
+      ctxUpdateRequest3 = [v24 copy];
 
-      if (![v18 rewriteType])
+      if (![ctxUpdateRequest3 rewriteType])
       {
         v34 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -86,7 +86,7 @@
         goto LABEL_34;
       }
 
-      if ([v18 rewriteType]== 1)
+      if ([ctxUpdateRequest3 rewriteType]== 1)
       {
         v25 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -108,12 +108,12 @@
 LABEL_34:
 
         v48 = 0;
-        v14 = 0;
+        qrHypotheses = 0;
         goto LABEL_37;
       }
 
       v48 = 0;
-      v14 = 0;
+      qrHypotheses = 0;
     }
 
     else
@@ -141,19 +141,19 @@ LABEL_34:
     _os_log_debug_impl(&dword_1DC287000, v13, OS_LOG_TYPE_DEBUG, "%s Handling %@ triggered Request", buf, 0x16u);
   }
 
-  v14 = 0;
+  qrHypotheses = 0;
   v48 = v12 ^ 1;
   while ([v11 count])
   {
-    v15 = [v11 lastObject];
-    if ([v15 tapToEdit])
+    lastObject = [v11 lastObject];
+    if ([lastObject tapToEdit])
     {
     }
 
     else
     {
-      v16 = [v11 lastObject];
-      v17 = [SiriNLUTypesUtils isTopSdaAskRepeat:v16];
+      lastObject2 = [v11 lastObject];
+      v17 = [SiriNLUTypesUtils isTopSdaAskRepeat:lastObject2];
 
       if (!v17)
       {
@@ -161,17 +161,17 @@ LABEL_34:
       }
     }
 
-    v14 = (v14 + 1);
+    qrHypotheses = (qrHypotheses + 1);
     [v11 removeLastObject];
   }
 
   if ([v11 count])
   {
-    v18 = [v7 asrOutputs];
-    v28 = [v11 lastObject];
+    ctxUpdateRequest3 = [v7 asrOutputs];
+    lastObject3 = [v11 lastObject];
 
-    v29 = [v18 mutableCopy];
-    [v28 setAsrOutputs:v29];
+    v29 = [ctxUpdateRequest3 mutableCopy];
+    [lastObject3 setAsrOutputs:v29];
 
     [v11 removeLastObject];
     v30 = CDMOSLoggerForCategory(0);
@@ -190,39 +190,39 @@ LABEL_34:
       _os_log_debug_impl(&dword_1DC287000, v30, OS_LOG_TYPE_DEBUG, "%s Reform type: %@", buf, 0x16u);
     }
 
-    v14 = (v14 + 1);
+    qrHypotheses = (qrHypotheses + 1);
     v27 = 3;
     goto LABEL_38;
   }
 
-  v31 = [v3 ctxUpdateRequest];
-  v32 = [v31 previousTurns];
-  v33 = [v32 mutableCopy];
+  ctxUpdateRequest6 = [handleCopy ctxUpdateRequest];
+  previousTurns2 = [ctxUpdateRequest6 previousTurns];
+  v33 = [previousTurns2 mutableCopy];
 
-  v18 = CDMOSLoggerForCategory(0);
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+  ctxUpdateRequest3 = CDMOSLoggerForCategory(0);
+  if (os_log_type_enabled(ctxUpdateRequest3, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
     v51 = "[CDMContextUpdateService handle:]";
-    _os_log_impl(&dword_1DC287000, v18, OS_LOG_TYPE_INFO, "%s [WARN]: Received an invalid NluRequest with every turn as Tap2Edit/AskRepeat turns.", buf, 0xCu);
+    _os_log_impl(&dword_1DC287000, ctxUpdateRequest3, OS_LOG_TYPE_INFO, "%s [WARN]: Received an invalid NluRequest with every turn as Tap2Edit/AskRepeat turns.", buf, 0xCu);
   }
 
   v27 = 0;
   v11 = v33;
 LABEL_37:
-  v28 = v7;
+  lastObject3 = v7;
 LABEL_38:
 
-  v7 = v28;
+  v7 = lastObject3;
 LABEL_39:
   v35 = objc_alloc_init(MEMORY[0x1E69D12A8]);
   [v35 setType:v27];
   [v35 setCurrentTurn:v7];
   [v35 setPreviousTurns:v11];
   v36 = objc_alloc_init(MEMORY[0x1E69D12A0]);
-  v37 = [v3 ctxUpdateRequest];
-  v38 = [v37 requestId];
-  v39 = [v38 copy];
+  ctxUpdateRequest7 = [handleCopy ctxUpdateRequest];
+  requestId = [ctxUpdateRequest7 requestId];
+  v39 = [requestId copy];
   [v36 setRequestId:v39];
 
   v49 = v35;
@@ -233,7 +233,7 @@ LABEL_39:
   v42 = [[CDMContextUpdateResponseCommand alloc] initWithCtxUpdateResponse:v36];
   if ((v48 & 1) == 0)
   {
-    [(CDMContextUpdateService *)self doCoreAnalyticsForContextUpdateOutcome:v27 numTurnsRollback:v14 locale:self->locale];
+    [(CDMContextUpdateService *)self doCoreAnalyticsForContextUpdateOutcome:v27 numTurnsRollback:qrHypotheses locale:self->locale];
   }
 
   v43 = *MEMORY[0x1E69E9840];
@@ -241,10 +241,10 @@ LABEL_39:
   return v42;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -253,10 +253,10 @@ LABEL_39:
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Setting up Context Update Service", &v13, 0xCu);
   }
 
-  v6 = [v4 dynamicConfig];
-  v7 = [v6 languageCode];
+  dynamicConfig = [setupCopy dynamicConfig];
+  languageCode = [dynamicConfig languageCode];
   locale = self->locale;
-  self->locale = v7;
+  self->locale = languageCode;
 
   if (!self->locale)
   {
@@ -270,11 +270,11 @@ LABEL_39:
   }
 
   self->super.super._serviceState = 2;
-  v10 = [(CDMBaseService *)self createSetupResponseCommand];
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return createSetupResponseCommand;
 }
 
 @end

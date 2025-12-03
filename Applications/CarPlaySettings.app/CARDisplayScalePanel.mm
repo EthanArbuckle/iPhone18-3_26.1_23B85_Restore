@@ -1,33 +1,33 @@
 @interface CARDisplayScalePanel
-+ (BOOL)switchValue:(id)a3;
-+ (int64_t)scaleMode:(id)a3;
-+ (void)actionWithPanelController:(id)a3 switchValueObject:(id)a4;
++ (BOOL)switchValue:(id)value;
++ (int64_t)scaleMode:(id)mode;
++ (void)actionWithPanelController:(id)controller switchValueObject:(id)object;
 - (CARDisplayScalePanel)init;
 @end
 
 @implementation CARDisplayScalePanel
 
-+ (void)actionWithPanelController:(id)a3 switchValueObject:(id)a4
++ (void)actionWithPanelController:(id)controller switchValueObject:(id)object
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  _s15CarPlaySettings17DisplayScalePanelC6action15panelController17switchValueObjectySo011CARSettingsfI0_pSg_yXlSgtFZ_0(a3, a4);
+  _s15CarPlaySettings17DisplayScalePanelC6action15panelController17switchValueObjectySo011CARSettingsfI0_pSg_yXlSgtFZ_0(controller, object);
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();
 }
 
-+ (int64_t)scaleMode:(id)a3
++ (int64_t)scaleMode:(id)mode
 {
   swift_unknownObjectRetain();
-  v4 = _s15CarPlaySettings17DisplayScalePanelC9scaleModeySo010CARDisplayeH0VSo011CARSettingsF10Controller_pFZ_0(a3);
+  v4 = _s15CarPlaySettings17DisplayScalePanelC9scaleModeySo010CARDisplayeH0VSo011CARSettingsF10Controller_pFZ_0(mode);
   swift_unknownObjectRelease();
   return v4;
 }
 
-+ (BOOL)switchValue:(id)a3
++ (BOOL)switchValue:(id)value
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }

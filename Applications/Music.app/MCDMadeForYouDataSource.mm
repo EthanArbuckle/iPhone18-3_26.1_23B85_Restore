@@ -7,15 +7,15 @@
 
 - (id)itemSortDescriptors
 {
-  v3 = [(_MCDLibraryDataSource *)self sortingPreference];
+  sortingPreference = [(_MCDLibraryDataSource *)self sortingPreference];
   if ([(_MCDLibraryDataSource *)self limitedUI])
   {
     v4 = MCDSortByRecentlyPlayed;
 
-    v3 = v4;
+    sortingPreference = v4;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyAdded])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyAdded])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyPlaylistLibraryAddedDate ascending:0];
     v12 = v5;
@@ -26,7 +26,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyPlayed])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyPlayed])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyPlaylistLastDevicePlaybackDate ascending:0];
     v11 = v5;
@@ -34,7 +34,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyUpdated])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyUpdated])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyPlaylistLastModifiedDateComponents ascending:0];
     v10 = v5;
@@ -42,7 +42,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:MCDSortByTitle])
+  if ([sortingPreference isEqualToString:MCDSortByTitle])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyPlaylistName ascending:1];
     v9 = v5;

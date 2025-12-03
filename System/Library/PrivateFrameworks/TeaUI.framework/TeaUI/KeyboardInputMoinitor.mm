@@ -1,14 +1,14 @@
 @interface KeyboardInputMoinitor
-- (void)handle:(id)a3;
+- (void)handle:(id)handle;
 @end
 
 @implementation KeyboardInputMoinitor
 
-- (void)handle:(id)a3
+- (void)handle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  KeyboardInputMoinitor.handle(_:)(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  KeyboardInputMoinitor.handle(_:)(handleCopy);
 }
 
 @end

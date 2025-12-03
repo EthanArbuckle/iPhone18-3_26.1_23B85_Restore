@@ -1,30 +1,30 @@
 @interface PKSubcredentialMessageComposeViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
-- (PKSubcredentialMessageComposeViewController)initWithSharingRequest:(id)a3 delegate:(id)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
+- (PKSubcredentialMessageComposeViewController)initWithSharingRequest:(id)request delegate:(id)delegate;
 - (PKSubcredentialMessageComposeViewControllerDelegate)delegate;
 - (int64_t)modalPresentationStyle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4;
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler;
 - (void)dealloc;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKSubcredentialMessageComposeViewController
 
-- (PKSubcredentialMessageComposeViewController)initWithSharingRequest:(id)a3 delegate:(id)a4
+- (PKSubcredentialMessageComposeViewController)initWithSharingRequest:(id)request delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = PKSubcredentialMessageComposeViewController;
   v9 = [(PKSubcredentialMessageComposeViewController *)&v18 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sharingRequest, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_sharingRequest, request);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     objc_initWeak(&location, v10);
     [(PKSubcredentialMessageComposeViewController *)v10 _beginDelayingPresentation:0 cancellationHandler:10.0];
     v11 = *MEMORY[0x1E69BC530];
@@ -100,7 +100,7 @@ void __79__PKSubcredentialMessageComposeViewController_initWithSharingRequest_de
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -110,22 +110,22 @@ void __79__PKSubcredentialMessageComposeViewController_initWithSharingRequest_de
   [(PKSubcredentialMessageComposeViewController *)&v6 dealloc];
 }
 
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   remoteVC = self->_remoteVC;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(PKRemoteSubcredentialMessageComposeViewController *)remoteVC setDelegate:WeakRetained];
 
   objc_storeWeak(&self->_delegate, 0);
   [(PKSubcredentialMessageComposeViewController *)self addChildViewController:self->_remoteVC];
-  v11 = [(PKRemoteSubcredentialMessageComposeViewController *)self->_remoteVC view];
-  v12 = [(PKSubcredentialMessageComposeViewController *)self view];
-  [v12 addSubview:v11];
-  [v12 setNeedsLayout];
-  [v12 layoutIfNeeded];
+  view = [(PKRemoteSubcredentialMessageComposeViewController *)self->_remoteVC view];
+  view2 = [(PKSubcredentialMessageComposeViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKSubcredentialMessageComposeViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(PKSubcredentialMessageComposeViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
@@ -134,17 +134,17 @@ void __79__PKSubcredentialMessageComposeViewController_initWithSharingRequest_de
   v28[1] = 3221225472;
   v28[2] = __78__PKSubcredentialMessageComposeViewController__setRemoteVC_completionHandler___block_invoke;
   v28[3] = &unk_1E8012C28;
-  v14 = v8;
+  v14 = handlerCopy;
   v29 = v14;
   v15 = [(_UIRemoteViewController *)v13 serviceViewControllerProxyWithErrorHandler:v28];
   if (v15)
   {
-    v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v17 = [v16 fixedCoordinateSpace];
-    [v17 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v19 = v18;
     v21 = v20;
-    [v16 scale];
+    [mainScreen scale];
     [v15 setDisplayPropertiesWithScreenSize:v19 scale:{v21, v22}];
 
     sharingRequest = self->_sharingRequest;
@@ -224,9 +224,9 @@ void __78__PKSubcredentialMessageComposeViewController__setRemoteVC_completionHa
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -243,9 +243,9 @@ void __78__PKSubcredentialMessageComposeViewController__setRemoteVC_completionHa
   v5.receiver = self;
   v5.super_class = PKSubcredentialMessageComposeViewController;
   [(PKSubcredentialMessageComposeViewController *)&v5 loadView];
-  v3 = [(PKSubcredentialMessageComposeViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKSubcredentialMessageComposeViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -253,10 +253,10 @@ void __78__PKSubcredentialMessageComposeViewController__setRemoteVC_completionHa
   v5.receiver = self;
   v5.super_class = PKSubcredentialMessageComposeViewController;
   [(PKSubcredentialMessageComposeViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKSubcredentialMessageComposeViewController *)self view];
-  v4 = [(PKRemoteSubcredentialMessageComposeViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKSubcredentialMessageComposeViewController *)self view];
+  view2 = [(PKRemoteSubcredentialMessageComposeViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 }
 
 - (PKSubcredentialMessageComposeViewControllerDelegate)delegate
@@ -274,16 +274,16 @@ void __78__PKSubcredentialMessageComposeViewController__setRemoteVC_completionHa
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   if (self->_remoteVC)
   {
-    [(PKRemoteSubcredentialMessageComposeViewController *)self->_remoteVC setDelegate:a3];
+    [(PKRemoteSubcredentialMessageComposeViewController *)self->_remoteVC setDelegate:delegate];
   }
 
   else
   {
-    objc_storeWeak(&self->_delegate, a3);
+    objc_storeWeak(&self->_delegate, delegate);
   }
 }
 

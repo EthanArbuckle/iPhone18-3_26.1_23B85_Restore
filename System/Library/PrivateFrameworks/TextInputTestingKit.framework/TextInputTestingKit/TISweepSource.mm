@@ -3,18 +3,18 @@
 - (BOOL)finished;
 - (id)sweepStateHeader;
 - (id)sweepStateValues;
-- (void)addValue:(id)a3 withMin:(float)a4 withMax:(float)a5;
-- (void)addValue:(id)a3 withValue:(float)a4;
+- (void)addValue:(id)value withMin:(float)min withMax:(float)max;
+- (void)addValue:(id)value withValue:(float)withValue;
 - (void)advanceSweep;
-- (void)setStepCount:(int)a3;
+- (void)setStepCount:(int)count;
 @end
 
 @implementation TISweepSource
 
-- (void)setStepCount:(int)a3
+- (void)setStepCount:(int)count
 {
   v21 = *MEMORY[0x277D85DE8];
-  self->stepCount = a3;
+  self->stepCount = count;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -25,7 +25,7 @@
   {
     v7 = v6;
     v8 = *v17;
-    v9 = a3;
+    countCopy = count;
     do
     {
       v10 = 0;
@@ -40,7 +40,7 @@
         [v11 sweepMax];
         v13 = v12;
         [v11 sweepMin];
-        *&v15 = (v13 - v14) / v9;
+        *&v15 = (v13 - v14) / countCopy;
         [v11 setStepSize:v15];
 
         ++v10;
@@ -162,7 +162,7 @@ LABEL_11:
 - (id)sweepStateValues
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -184,7 +184,7 @@ LABEL_11:
 
         v9 = [(NSMutableDictionary *)self->debugValues objectForKey:*(*(&v12 + 1) + 8 * i)];
         [v9 sweepValue];
-        [v3 appendFormat:@"%f, ", v10];
+        [string appendFormat:@"%f, ", v10];
       }
 
       v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -193,13 +193,13 @@ LABEL_11:
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 - (id)sweepStateHeader
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -219,7 +219,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        [v3 appendFormat:@"%@, ", *(*(&v10 + 1) + 8 * i)];
+        [string appendFormat:@"%@, ", *(*(&v10 + 1) + 8 * i)];
       }
 
       v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -228,20 +228,20 @@ LABEL_11:
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
-- (void)addValue:(id)a3 withValue:(float)a4
+- (void)addValue:(id)value withValue:(float)withValue
 {
-  v14 = a3;
+  valueCopy = value;
   v6 = objc_alloc_init(TIDebugValue);
-  *&v7 = a4;
+  *&v7 = withValue;
   [(TIDebugValue *)v6 setDefaultValue:v7];
-  *&v8 = a4;
+  *&v8 = withValue;
   [(TIDebugValue *)v6 setSweepValue:v8];
-  *&v9 = a4;
+  *&v9 = withValue;
   [(TIDebugValue *)v6 setSweepMin:v9];
-  *&v10 = a4;
+  *&v10 = withValue;
   [(TIDebugValue *)v6 setSweepMax:v10];
   [(TIDebugValue *)v6 setStepSize:0.0];
   debugValues = self->debugValues;
@@ -254,22 +254,22 @@ LABEL_11:
     debugValues = self->debugValues;
   }
 
-  [(NSMutableDictionary *)debugValues setObject:v6 forKey:v14];
+  [(NSMutableDictionary *)debugValues setObject:v6 forKey:valueCopy];
 }
 
-- (void)addValue:(id)a3 withMin:(float)a4 withMax:(float)a5
+- (void)addValue:(id)value withMin:(float)min withMax:(float)max
 {
-  v17 = a3;
+  valueCopy = value;
   v8 = objc_alloc_init(TIDebugValue);
-  *&v9 = (a4 + a5) * 0.5;
+  *&v9 = (min + max) * 0.5;
   [(TIDebugValue *)v8 setDefaultValue:v9];
-  *&v10 = a4;
+  *&v10 = min;
   [(TIDebugValue *)v8 setSweepValue:v10];
-  *&v11 = a4;
+  *&v11 = min;
   [(TIDebugValue *)v8 setSweepMin:v11];
-  *&v12 = a5;
+  *&v12 = max;
   [(TIDebugValue *)v8 setSweepMax:v12];
-  *&v13 = (a5 - a4) / self->stepCount;
+  *&v13 = (max - min) / self->stepCount;
   [(TIDebugValue *)v8 setStepSize:v13];
   debugValues = self->debugValues;
   if (!debugValues)
@@ -281,7 +281,7 @@ LABEL_11:
     debugValues = self->debugValues;
   }
 
-  [(NSMutableDictionary *)debugValues setObject:v8 forKey:v17];
+  [(NSMutableDictionary *)debugValues setObject:v8 forKey:valueCopy];
 }
 
 + (id)sharedInstance

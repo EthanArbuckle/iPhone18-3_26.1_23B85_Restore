@@ -19,7 +19,7 @@
   x8_0[3] = 0u;
   *x8_0 = 0u;
   x8_0[1] = 0u;
-  return [a1 getValue:x8_0];
+  return [self getValue:x8_0];
 }
 
 + (id)valueWithPXTileGeometry:()PXTileGeometry

@@ -1,18 +1,18 @@
 @interface AWDLServiceDiscoveryManager
 - (AWDLServiceDiscoveryManager)init;
-- (BOOL)_usingAWDLDiscoveryManagerProxy:(id)a3 onSuccess:(id)a4 error:(id *)a5;
-- (BOOL)clearTrafficRegistration:(id)a3 error:(id *)a4;
-- (BOOL)getActiveTrafficRegistrationWithCompletionHandler:(id)a3;
-- (BOOL)performRealtimeConnectivityCheckWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)resumeAWDLWithError:(id *)a3;
-- (BOOL)setTrafficRegistration:(id)a3 onInvalidationHandler:(id)a4 error:(id *)a5;
-- (BOOL)suspendAWDLWithError:(id *)a3;
+- (BOOL)_usingAWDLDiscoveryManagerProxy:(id)proxy onSuccess:(id)success error:(id *)error;
+- (BOOL)clearTrafficRegistration:(id)registration error:(id *)error;
+- (BOOL)getActiveTrafficRegistrationWithCompletionHandler:(id)handler;
+- (BOOL)performRealtimeConnectivityCheckWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)resumeAWDLWithError:(id *)error;
+- (BOOL)setTrafficRegistration:(id)registration onInvalidationHandler:(id)handler error:(id *)error;
+- (BOOL)suspendAWDLWithError:(id *)error;
 - (void)_destroyConnection;
-- (void)_removeFirstTrafficRegistrationMatching:(id)a3;
+- (void)_removeFirstTrafficRegistrationMatching:(id)matching;
 - (void)_retryConnection;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)invalidatedActiveTrafficRegistration:(id)a3;
+- (void)invalidatedActiveTrafficRegistration:(id)registration;
 @end
 
 @implementation AWDLServiceDiscoveryManager
@@ -28,9 +28,9 @@
     lock = v2->_lock;
     v2->_lock = v3;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     activeTrafficRegistrations = v2->_activeTrafficRegistrations;
-    v2->_activeTrafficRegistrations = v5;
+    v2->_activeTrafficRegistrations = array;
 
     v2->_suspendCount = 0;
     v2->_notifyToken = -1;
@@ -138,10 +138,10 @@ void __47__AWDLServiceDiscoveryManager__retryConnection__block_invoke(uint64_t a
   [(NSLock *)lock unlock];
 }
 
-- (BOOL)_usingAWDLDiscoveryManagerProxy:(id)a3 onSuccess:(id)a4 error:(id *)a5
+- (BOOL)_usingAWDLDiscoveryManagerProxy:(id)proxy onSuccess:(id)success error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  proxyCopy = proxy;
+  successCopy = success;
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
@@ -178,7 +178,7 @@ void __47__AWDLServiceDiscoveryManager__retryConnection__block_invoke(uint64_t a
   v15 = [WiFiP2PXPCConnection endpointForEndpointType:0];
   if (v15)
   {
-    v32 = v9;
+    v32 = successCopy;
     v41 = 0;
     v42 = &v41;
     v43 = 0x3032000000;
@@ -237,7 +237,7 @@ void __47__AWDLServiceDiscoveryManager__retryConnection__block_invoke(uint64_t a
     objc_destroyWeak(&v38);
     _Block_object_dispose(&v41, 8);
 
-    v9 = v32;
+    successCopy = v32;
   }
 
   xpcConnection = *p_xpcConnection;
@@ -256,24 +256,24 @@ LABEL_7:
     v33[3] = &unk_2787AB130;
     v33[4] = &v56;
     v33[5] = &v47;
-    v8[2](v8, v28, v33);
+    proxyCopy[2](proxyCopy, v28, v33);
   }
 
-  if (a5)
+  if (error)
   {
     v29 = v48[5];
-    *a5 = v29;
+    *error = v29;
     if (!(*p_xpcConnection | v29))
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:6 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:6 userInfo:0];
     }
   }
 
   if (*(v57 + 24) == 1)
   {
-    if (v9)
+    if (successCopy)
     {
-      v9[2](v9, self);
+      successCopy[2](successCopy, self);
     }
 
     if (![(AWDLServiceDiscoveryManager *)self _requiresConnection])
@@ -287,9 +287,9 @@ LABEL_7:
       *p_notifyToken = -1;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
@@ -379,52 +379,52 @@ void __79__AWDLServiceDiscoveryManager__usingAWDLDiscoveryManagerProxy_onSuccess
   [WeakRetained connectionInvalidated];
 }
 
-- (BOOL)setTrafficRegistration:(id)a3 onInvalidationHandler:(id)a4 error:(id *)a5
+- (BOOL)setTrafficRegistration:(id)registration onInvalidationHandler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isKnownService] & 1) == 0)
+  registrationCopy = registration;
+  handlerCopy = handler;
+  if (([registrationCopy isKnownService] & 1) == 0)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
     goto LABEL_13;
   }
 
-  v10 = [v8 uniqueIdentifier];
-  v11 = [v10 isEqualToString:@"airplay-connectivity-check"];
+  uniqueIdentifier = [registrationCopy uniqueIdentifier];
+  v11 = [uniqueIdentifier isEqualToString:@"airplay-connectivity-check"];
 
   if (!v11)
   {
-    v14 = [v8 uniqueIdentifier];
-    if ([v14 isEqualToString:@"airplay"])
+    uniqueIdentifier2 = [registrationCopy uniqueIdentifier];
+    if ([uniqueIdentifier2 isEqualToString:@"airplay"])
     {
-      v15 = [v8 peerAddress];
+      peerAddress = [registrationCopy peerAddress];
       v16 = +[WiFiMACAddress zeroAddress];
-      if ([v15 isEqual:v16])
+      if ([peerAddress isEqual:v16])
       {
-        v17 = [v8 options];
+        options = [registrationCopy options];
 
-        if ((v17 & 1) == 0)
+        if ((options & 1) == 0)
         {
-          [v8 setActiveFlagOverride:1];
-          v12 = [(AWDLServiceDiscoveryManager *)self clearTrafficRegistration:v8 error:a5];
+          [registrationCopy setActiveFlagOverride:1];
+          v12 = [(AWDLServiceDiscoveryManager *)self clearTrafficRegistration:registrationCopy error:error];
           goto LABEL_4;
         }
 
 LABEL_12:
-        [v8 setInvalidationHandler:v9];
+        [registrationCopy setInvalidationHandler:handlerCopy];
         [(NSLock *)self->_lock lock];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __82__AWDLServiceDiscoveryManager_setTrafficRegistration_onInvalidationHandler_error___block_invoke;
         v24[3] = &unk_2787AB650;
-        v25 = v8;
+        v25 = registrationCopy;
         v19 = MEMORY[0x277D85DD0];
         v20 = 3221225472;
         v21 = __82__AWDLServiceDiscoveryManager_setTrafficRegistration_onInvalidationHandler_error___block_invoke_2;
         v22 = &unk_2787AB6A0;
         v23 = v25;
-        v13 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:v24 onSuccess:&v19 error:a5];
+        v13 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:v24 onSuccess:&v19 error:error];
         [(NSLock *)self->_lock unlock:v19];
 
         goto LABEL_13;
@@ -434,7 +434,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [(AWDLServiceDiscoveryManager *)self queryAirPlayConnectivityWithConfiguration:v8 error:a5];
+  v12 = [(AWDLServiceDiscoveryManager *)self queryAirPlayConnectivityWithConfiguration:registrationCopy error:error];
 LABEL_4:
   v13 = v12;
 LABEL_13:
@@ -465,27 +465,27 @@ void __82__AWDLServiceDiscoveryManager_setTrafficRegistration_onInvalidationHand
   }
 }
 
-- (BOOL)clearTrafficRegistration:(id)a3 error:(id *)a4
+- (BOOL)clearTrafficRegistration:(id)registration error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
-  if (![v7 isEqualToString:@"airplay"])
+  registrationCopy = registration;
+  uniqueIdentifier = [registrationCopy uniqueIdentifier];
+  if (![uniqueIdentifier isEqualToString:@"airplay"])
   {
     goto LABEL_6;
   }
 
-  v8 = [v6 peerAddress];
+  peerAddress = [registrationCopy peerAddress];
   v9 = +[WiFiMACAddress zeroAddress];
-  if (([v8 isEqual:v9] & 1) == 0)
+  if (([peerAddress isEqual:v9] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v6 options];
+  options = [registrationCopy options];
 
-  if ((v10 & 1) == 0)
+  if ((options & 1) == 0)
   {
 LABEL_7:
     [(NSLock *)self->_lock lock];
@@ -493,20 +493,20 @@ LABEL_7:
     v18[1] = 3221225472;
     v18[2] = __62__AWDLServiceDiscoveryManager_clearTrafficRegistration_error___block_invoke;
     v18[3] = &unk_2787AB650;
-    v19 = v6;
+    v19 = registrationCopy;
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __62__AWDLServiceDiscoveryManager_clearTrafficRegistration_error___block_invoke_2;
     v16 = &unk_2787AB6A0;
     v17 = v19;
-    v11 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:v18 onSuccess:&v13 error:a4];
+    v11 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:v18 onSuccess:&v13 error:error];
     [(NSLock *)self->_lock unlock:v13];
 
     goto LABEL_8;
   }
 
-  [v6 setActiveFlagOverride:1];
-  v11 = [(AWDLServiceDiscoveryManager *)self setTrafficRegistration:v6 error:a4];
+  [registrationCopy setActiveFlagOverride:1];
+  v11 = [(AWDLServiceDiscoveryManager *)self setTrafficRegistration:registrationCopy error:error];
 LABEL_8:
 
   return v11;
@@ -520,9 +520,9 @@ void __62__AWDLServiceDiscoveryManager_clearTrafficRegistration_error___block_in
   [v6 trafficRegistration:v4 enabled:objc_msgSend(v4 completionHandler:{"activeFlagOverride"), v5}];
 }
 
-- (BOOL)getActiveTrafficRegistrationWithCompletionHandler:(id)a3
+- (BOOL)getActiveTrafficRegistrationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(NSLock *)self->_lock lock];
   v9 = 0;
   v10[0] = MEMORY[0x277D85DD0];
@@ -530,8 +530,8 @@ void __62__AWDLServiceDiscoveryManager_clearTrafficRegistration_error___block_in
   v10[2] = __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompletionHandler___block_invoke;
   v10[3] = &unk_2787AB6F0;
   v11 = 0;
-  v12 = v4;
-  v5 = v4;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:v10 onSuccess:&__block_literal_global_154 error:&v9];
   v7 = v9;
   [(NSLock *)self->_lock unlock];
@@ -561,7 +561,7 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
   return (*(v4 + 16))(v4, a2, a3);
 }
 
-- (BOOL)resumeAWDLWithError:(id *)a3
+- (BOOL)resumeAWDLWithError:(id *)error
 {
   [(NSLock *)self->_lock lock];
   suspendCount = self->_suspendCount;
@@ -579,14 +579,14 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
 
   else
   {
-    v8 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:&__block_literal_global_156 onSuccess:&__block_literal_global_158 error:a3];
+    v8 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:&__block_literal_global_156 onSuccess:&__block_literal_global_158 error:error];
   }
 
   [(NSLock *)self->_lock unlock];
   return v8;
 }
 
-- (BOOL)suspendAWDLWithError:(id *)a3
+- (BOOL)suspendAWDLWithError:(id *)error
 {
   [(NSLock *)self->_lock lock];
   suspendCount = self->_suspendCount;
@@ -598,22 +598,22 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
 
   else
   {
-    v6 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:&__block_literal_global_160 onSuccess:&__block_literal_global_162 error:a3];
+    v6 = [(AWDLServiceDiscoveryManager *)self _usingAWDLDiscoveryManagerProxy:&__block_literal_global_160 onSuccess:&__block_literal_global_162 error:error];
   }
 
   [(NSLock *)self->_lock unlock];
   return v6;
 }
 
-- (BOOL)performRealtimeConnectivityCheckWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)performRealtimeConnectivityCheckWithConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v22 = 0;
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __87__AWDLServiceDiscoveryManager_performRealtimeConnectivityCheckWithConfiguration_error___block_invoke;
   v20 = &unk_2787AB758;
-  v6 = v5;
+  v6 = configurationCopy;
   v21 = v6;
   v7 = [WiFiP2PXPCConnection directQueryOnEndpointType:2 error:&v22 querying:&v17];
   v8 = v22;
@@ -630,7 +630,7 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
   if (v9)
   {
     v10 = v8;
-    if (a4)
+    if (error)
     {
       if (!v8)
       {
@@ -639,7 +639,7 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
 
       v11 = v10;
       v12 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -650,19 +650,19 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
 
   else
   {
-    v13 = [v7 integerValue];
-    v14 = v13;
-    if (a4)
+    integerValue = [v7 integerValue];
+    v14 = integerValue;
+    if (error)
     {
-      if (v13)
+      if (integerValue)
       {
-        v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v13 userInfo:0];
-        *a4 = v15;
+        v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:integerValue userInfo:0];
+        *error = v15;
       }
 
       else
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
 
@@ -673,9 +673,9 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
   return v12;
 }
 
-- (void)_removeFirstTrafficRegistrationMatching:(id)a3
+- (void)_removeFirstTrafficRegistrationMatching:(id)matching
 {
-  v4 = [(NSMutableArray *)self->_activeTrafficRegistrations indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_activeTrafficRegistrations indexOfObject:matching];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
@@ -685,10 +685,10 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
   }
 }
 
-- (void)invalidatedActiveTrafficRegistration:(id)a3
+- (void)invalidatedActiveTrafficRegistration:(id)registration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  registrationCopy = registration;
   [(NSLock *)self->_lock lock];
   v17 = 0u;
   v18 = 0u;
@@ -710,14 +710,14 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 isEqual:{v4, v15}])
+        if ([v10 isEqual:{registrationCopy, v15}])
         {
-          v11 = [v10 invalidationHandler];
+          invalidationHandler = [v10 invalidationHandler];
 
-          if (v11)
+          if (invalidationHandler)
           {
-            v12 = [v10 invalidationHandler];
-            (v12)[2](v12, v10);
+            invalidationHandler2 = [v10 invalidationHandler];
+            (invalidationHandler2)[2](invalidationHandler2, v10);
           }
         }
       }
@@ -728,7 +728,7 @@ uint64_t __81__AWDLServiceDiscoveryManager_getActiveTrafficRegistrationWithCompl
     while (v7);
   }
 
-  [(NSMutableArray *)self->_activeTrafficRegistrations removeObject:v4];
+  [(NSMutableArray *)self->_activeTrafficRegistrations removeObject:registrationCopy];
   if (![(AWDLServiceDiscoveryManager *)self _requiresConnection])
   {
     [(AWDLServiceDiscoveryManager *)self _destroyConnection];

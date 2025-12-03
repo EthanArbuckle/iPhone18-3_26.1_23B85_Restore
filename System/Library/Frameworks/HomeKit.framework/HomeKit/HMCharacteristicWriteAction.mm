@@ -1,27 +1,27 @@
 @interface HMCharacteristicWriteAction
-+ (HMCharacteristicWriteAction)actionWithProtoBuf:(id)a3 home:(id)a4;
++ (HMCharacteristicWriteAction)actionWithProtoBuf:(id)buf home:(id)home;
 + (HMCharacteristicWriteAction)new;
 + (NSSet)allowedTargetValueClassesForShortcuts;
-- (BOOL)_handleUpdates:(id)a3;
+- (BOOL)_handleUpdates:(id)updates;
 - (BOOL)isAffectedByEndEvents;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfAllowedTargetValueClass:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfAllowedTargetValueClass:(id)class;
+- (BOOL)isValidWithError:(id *)error;
+- (BOOL)mergeFromNewObject:(id)object;
 - (BOOL)requiresDeviceUnlock;
 - (HMCharacteristic)characteristic;
 - (HMCharacteristicWriteAction)init;
 - (HMCharacteristicWriteAction)initWithCharacteristic:(HMCharacteristic *)characteristic targetValue:(id)targetValue;
-- (HMCharacteristicWriteAction)initWithCoder:(id)a3;
-- (HMCharacteristicWriteAction)initWithDictionary:(id)a3 home:(id)a4;
-- (HMCharacteristicWriteAction)initWithUUID:(id)a3;
-- (id)_resolvedCharacteristicInHome:(id)a3 forCharacteristic:(id)a4;
+- (HMCharacteristicWriteAction)initWithCoder:(id)coder;
+- (HMCharacteristicWriteAction)initWithDictionary:(id)dictionary home:(id)home;
+- (HMCharacteristicWriteAction)initWithUUID:(id)d;
+- (id)_resolvedCharacteristicInHome:(id)home forCharacteristic:(id)characteristic;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProtoBuf;
-- (id)initWithCharacteristic:(void *)a3 targetValue:(uint64_t)a4 uuid:;
+- (id)initWithCharacteristic:(void *)characteristic targetValue:(uint64_t)value uuid:;
 - (id)targetValue;
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4;
+- (void)__configureWithContext:(id)context actionSet:(id)set;
 - (void)updateTargetValue:(id)targetValue completionHandler:(void *)completion;
 @end
 
@@ -30,37 +30,37 @@
 - (id)encodeAsProtoBuf
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(HMCharacteristicWriteAction *)self characteristic];
-  v4 = [v3 service];
+  characteristic = [(HMCharacteristicWriteAction *)self characteristic];
+  service = [characteristic service];
 
-  v5 = [v4 accessory];
-  v6 = [v5 home];
-  if (v6)
+  accessory = [service accessory];
+  home = [accessory home];
+  if (home)
   {
     v7 = objc_alloc_init(HMPBCharacteristicWriteAction);
-    v8 = [(HMAction *)self uuid];
-    v9 = [v8 hm_convertToData];
-    [(HMPBCharacteristicWriteAction *)v7 setActionUUID:v9];
+    uuid = [(HMAction *)self uuid];
+    hm_convertToData = [uuid hm_convertToData];
+    [(HMPBCharacteristicWriteAction *)v7 setActionUUID:hm_convertToData];
 
-    v10 = [(HMCharacteristicWriteAction *)self characteristic];
-    v11 = [HMPBCharacteristicReference characteristicReferenceWithCharacteristic:v10];
+    characteristic2 = [(HMCharacteristicWriteAction *)self characteristic];
+    v11 = [HMPBCharacteristicReference characteristicReferenceWithCharacteristic:characteristic2];
     [(HMPBCharacteristicWriteAction *)v7 setCharacteristicReference:v11];
 
-    v12 = [(HMCharacteristicWriteAction *)self targetValue];
-    LODWORD(v10) = [(HMCharacteristicWriteAction *)self isKindOfAllowedTargetValueClass:v12];
+    targetValue = [(HMCharacteristicWriteAction *)self targetValue];
+    LODWORD(characteristic2) = [(HMCharacteristicWriteAction *)self isKindOfAllowedTargetValueClass:targetValue];
 
-    if (v10)
+    if (characteristic2)
     {
       v13 = MEMORY[0x1E696ACC8];
-      v14 = [(HMCharacteristicWriteAction *)self targetValue];
+      targetValue2 = [(HMCharacteristicWriteAction *)self targetValue];
       v34 = 0;
-      v15 = [v13 archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v34];
+      v15 = [v13 archivedDataWithRootObject:targetValue2 requiringSecureCoding:1 error:&v34];
       v16 = v34;
       [(HMPBCharacteristicWriteAction *)v7 setTargetValue:v15];
 
-      v17 = [(HMPBCharacteristicWriteAction *)v7 targetValue];
+      targetValue3 = [(HMPBCharacteristicWriteAction *)v7 targetValue];
 
-      if (v17)
+      if (targetValue3)
       {
 
         v18 = objc_alloc_init(HMPBActionContainer);
@@ -72,7 +72,7 @@ LABEL_15:
       }
 
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -80,7 +80,7 @@ LABEL_15:
         *buf = 138543618;
         v36 = v31;
         v37 = 2112;
-        v38 = v16;
+        selfCopy3 = v16;
         _os_log_impl(&dword_19BB39000, v30, OS_LOG_TYPE_ERROR, "%{public}@Couldn't encode targetValue: %@", buf, 0x16u);
       }
 
@@ -90,17 +90,17 @@ LABEL_15:
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [(HMCharacteristicWriteAction *)v23 targetValue];
+        targetValue4 = [(HMCharacteristicWriteAction *)selfCopy2 targetValue];
         *buf = 138543618;
         v36 = v25;
         v37 = 2112;
-        v38 = objc_opt_class();
-        v27 = v38;
+        selfCopy3 = objc_opt_class();
+        v27 = selfCopy3;
         _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@Target Value is of unhandled class %@", buf, 0x16u);
       }
 
@@ -119,7 +119,7 @@ LABEL_15:
     *buf = 138543874;
     v36 = v21;
     v37 = 2112;
-    v38 = self;
+    selfCopy3 = self;
     v39 = 2112;
     v40 = 0;
     _os_log_impl(&dword_19BB39000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed encode action as protobuf, home is invalid %@:%@", buf, 0x20u);
@@ -134,10 +134,10 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)isKindOfAllowedTargetValueClass:(id)a3
+- (BOOL)isKindOfAllowedTargetValueClass:(id)class
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  classCopy = class;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -180,7 +180,7 @@ LABEL_11:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v4 = [[HMCharacteristicWriteAction alloc] initWithCharacteristic:self->_targetValue targetValue:0 uuid:?];
@@ -188,20 +188,20 @@ LABEL_11:
   return v4;
 }
 
-- (id)initWithCharacteristic:(void *)a3 targetValue:(uint64_t)a4 uuid:
+- (id)initWithCharacteristic:(void *)characteristic targetValue:(uint64_t)value uuid:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  characteristicCopy = characteristic;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = HMCharacteristicWriteAction;
-    v10 = objc_msgSendSuper2(&v15, sel_initWithUUID_, a4);
+    v10 = objc_msgSendSuper2(&v15, sel_initWithUUID_, value);
     v11 = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 7, a2);
-      v12 = [v9 copy];
+      v12 = [characteristicCopy copy];
       v13 = v11[8];
       v11[8] = v12;
     }
@@ -215,10 +215,10 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -228,7 +228,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -239,8 +239,8 @@ LABEL_11:
     v6 = v5;
     if (v6 && ([(HMCharacteristicWriteAction *)self characteristic], v7 = objc_claimAutoreleasedReturnValue(), [(HMCharacteristicWriteAction *)v6 characteristic], v8 = objc_claimAutoreleasedReturnValue(), v9 = HMFEqualObjects(), v8, v7, v9))
     {
-      v10 = [(HMCharacteristicWriteAction *)self targetValue];
-      v11 = [(HMCharacteristicWriteAction *)v6 targetValue];
+      targetValue = [(HMCharacteristicWriteAction *)self targetValue];
+      targetValue2 = [(HMCharacteristicWriteAction *)v6 targetValue];
       v12 = HMFEqualObjects();
     }
 
@@ -253,14 +253,14 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -272,18 +272,18 @@ LABEL_11:
 
   if (v6)
   {
-    v7 = [(HMAction *)self actionSet];
-    v24 = [v7 home];
+    actionSet = [(HMAction *)self actionSet];
+    home = [actionSet home];
 
-    v25 = [v6 characteristic];
-    v8 = [v6 targetValue];
+    characteristic = [v6 characteristic];
+    targetValue = [v6 targetValue];
     os_unfair_lock_lock_with_options();
     targetValue = self->_targetValue;
     v10 = HMFEqualObjects();
     if ((v10 & 1) == 0)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -291,21 +291,21 @@ LABEL_11:
         *buf = 138543618;
         v27 = v14;
         v28 = 2112;
-        v29 = v8;
+        v29 = targetValue;
         _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Updating target value via merge to %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v11);
-      objc_storeStrong(&self->_targetValue, v8);
+      objc_storeStrong(&self->_targetValue, targetValue);
     }
 
-    v15 = [(HMCharacteristicWriteAction *)self _resolvedCharacteristicInHome:v24 forCharacteristic:v25];
+    v15 = [(HMCharacteristicWriteAction *)self _resolvedCharacteristicInHome:home forCharacteristic:characteristic];
     v16 = v15;
     v17 = v10 ^ 1;
     if (v15 && self->_characteristic != v15)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -334,19 +334,19 @@ LABEL_11:
   return v17;
 }
 
-- (HMCharacteristicWriteAction)initWithCoder:(id)a3
+- (HMCharacteristicWriteAction)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HMCharacteristicWriteAction;
-  v5 = [(HMAction *)&v21 initWithCoder:v4];
+  v5 = [(HMAction *)&v21 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"characteristic"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"characteristic"];
   characteristic = v5->_characteristic;
   v5->_characteristic = v6;
 
@@ -376,7 +376,7 @@ LABEL_10:
   }
 
   v8 = allowedCharValueTypes();
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"characteristicValue"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"characteristicValue"];
   targetValue = v5->_targetValue;
   v5->_targetValue = v9;
 
@@ -408,35 +408,35 @@ LABEL_11:
   return v11;
 }
 
-- (id)_resolvedCharacteristicInHome:(id)a3 forCharacteristic:(id)a4
+- (id)_resolvedCharacteristicInHome:(id)home forCharacteristic:(id)characteristic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 service];
-  v8 = [v7 accessory];
-  v9 = v8;
+  homeCopy = home;
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  v9 = accessory;
   v10 = 0;
-  if (v7 && v8)
+  if (service && accessory)
   {
-    v11 = [v8 uuid];
-    v12 = [v5 accessoryWithUUID:v11];
+    uuid = [accessory uuid];
+    v12 = [homeCopy accessoryWithUUID:uuid];
 
-    v13 = [v6 instanceID];
-    v14 = [v7 instanceID];
-    v10 = [v12 _findCharacteristic:v13 forService:v14];
+    instanceID = [characteristicCopy instanceID];
+    instanceID2 = [service instanceID];
+    v10 = [v12 _findCharacteristic:instanceID forService:instanceID2];
   }
 
   return v10;
 }
 
-- (BOOL)_handleUpdates:(id)a3
+- (BOOL)_handleUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kActionType"];
+  updatesCopy = updates;
+  v5 = [updatesCopy objectForKeyedSubscript:@"kActionType"];
   v6 = v5;
   if (v5 && ![v5 unsignedIntegerValue])
   {
-    v8 = [v4 objectForKeyedSubscript:@"kCharacteristicValue"];
+    v8 = [updatesCopy objectForKeyedSubscript:@"kCharacteristicValue"];
     v7 = v8 != 0;
     if (v8)
     {
@@ -461,24 +461,24 @@ LABEL_11:
   {
     v16.receiver = self;
     v16.super_class = HMCharacteristicWriteAction;
-    v3 = [(HMAction *)&v16 _serializeForAdd];
-    v4 = [v3 mutableCopy];
+    _serializeForAdd = [(HMAction *)&v16 _serializeForAdd];
+    v4 = [_serializeForAdd mutableCopy];
 
-    v5 = [(HMCharacteristicWriteAction *)self characteristic];
-    v6 = [v5 service];
+    characteristic = [(HMCharacteristicWriteAction *)self characteristic];
+    service = [characteristic service];
     v17[0] = @"kAccessoryUUID";
-    v7 = [v6 targetAccessoryUUID];
-    v8 = [v7 UUIDString];
-    v18[0] = v8;
+    targetAccessoryUUID = [service targetAccessoryUUID];
+    uUIDString = [targetAccessoryUUID UUIDString];
+    v18[0] = uUIDString;
     v17[1] = @"kServiceInstanceID";
-    v9 = [v6 instanceID];
-    v18[1] = v9;
+    instanceID = [service instanceID];
+    v18[1] = instanceID;
     v17[2] = @"kCharacteristicInstanceID";
-    v10 = [v5 instanceID];
-    v18[2] = v10;
+    instanceID2 = [characteristic instanceID];
+    v18[2] = instanceID2;
     v17[3] = @"kCharacteristicValue";
-    v11 = [(HMCharacteristicWriteAction *)self targetValue];
-    v18[3] = v11;
+    targetValue = [(HMCharacteristicWriteAction *)self targetValue];
+    v18[3] = targetValue;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
     [v4 addEntriesFromDictionary:v12];
 
@@ -497,23 +497,23 @@ LABEL_11:
 
 - (BOOL)requiresDeviceUnlock
 {
-  v2 = [(HMCharacteristicWriteAction *)self characteristic];
-  v3 = [v2 requiresDeviceUnlock];
+  characteristic = [(HMCharacteristicWriteAction *)self characteristic];
+  requiresDeviceUnlock = [characteristic requiresDeviceUnlock];
 
-  return v3;
+  return requiresDeviceUnlock;
 }
 
 - (BOOL)isAffectedByEndEvents
 {
-  v3 = [(HMCharacteristicWriteAction *)self characteristic];
-  v4 = [v3 characteristicType];
-  if (isRestoreSupportedForCharacteristic(v4))
+  characteristic = [(HMCharacteristicWriteAction *)self characteristic];
+  characteristicType = [characteristic characteristicType];
+  if (isRestoreSupportedForCharacteristic(characteristicType))
   {
-    v5 = [(HMCharacteristicWriteAction *)self targetValue];
+    targetValue = [(HMCharacteristicWriteAction *)self targetValue];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = targetValue;
     }
 
     else
@@ -534,18 +534,18 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v5 = [(HMCharacteristicWriteAction *)self characteristic];
-  v6 = [v5 properties];
-  v7 = [v6 containsObject:@"HMCharacteristicPropertyWritable"];
+  characteristic = [(HMCharacteristicWriteAction *)self characteristic];
+  properties = [characteristic properties];
+  v7 = [properties containsObject:@"HMCharacteristicPropertyWritable"];
 
   if ((v7 & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] hmErrorWithCode:5];
-      *a3 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_7;
     }
 
@@ -554,16 +554,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(HMCharacteristicWriteAction *)self targetValue];
+  targetValue = [(HMCharacteristicWriteAction *)self targetValue];
 
-  if (!v8)
+  if (!targetValue)
   {
     goto LABEL_6;
   }
 
-  v9 = [v5 service];
-  v10 = [v9 accessory];
-  v11 = v10 != 0;
+  service = [characteristic service];
+  accessory = [service accessory];
+  v11 = accessory != 0;
 
 LABEL_7:
   return v11;
@@ -572,14 +572,14 @@ LABEL_7:
 - (void)updateTargetValue:(id)targetValue completionHandler:(void *)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = targetValue;
+  delegateCaller3 = targetValue;
   v7 = completion;
-  v8 = [(HMAction *)self context];
+  context = [(HMAction *)self context];
   if (!v7)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCharacteristicWriteAction updateTargetValue:completionHandler:]", @"completion"];
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -596,27 +596,27 @@ LABEL_7:
     objc_exception_throw(v27);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    if (v6)
+    if (delegateCaller3)
     {
-      v10 = [(HMAction *)self actionSet];
-      v11 = [v10 home];
-      if (v11)
+      actionSet = [(HMAction *)self actionSet];
+      home = [actionSet home];
+      if (home)
       {
-        v12 = [v6 copy];
+        v12 = [delegateCaller3 copy];
 
-        v13 = [(HMAction *)self uuid];
+        uuid = [(HMAction *)self uuid];
 
-        if (v13)
+        if (uuid)
         {
           v28[0] = @"kActionType";
           v28[1] = @"kCharacteristicValue";
           v29[0] = &unk_1F0EFCF68;
           v29[1] = v12;
-          v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
-          [v10 _updateAction:self changes:v14 completionHandler:v7];
+          delegateCaller = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
+          [actionSet _updateAction:self changes:delegateCaller completionHandler:v7];
         }
 
         else
@@ -624,33 +624,33 @@ LABEL_7:
           os_unfair_lock_lock_with_options();
           objc_storeStrong(&self->_targetValue, v12);
           os_unfair_lock_unlock(&self->_lock);
-          v14 = [v9 delegateCaller];
-          [v14 callCompletion:v7 error:0];
+          delegateCaller = [v9 delegateCaller];
+          [delegateCaller callCompletion:v7 error:0];
         }
 
-        v6 = v12;
+        delegateCaller3 = v12;
       }
 
       else
       {
-        v19 = [v9 delegateCaller];
+        delegateCaller2 = [v9 delegateCaller];
         v20 = [MEMORY[0x1E696ABC0] hmErrorWithCode:21];
-        [v19 callCompletion:v7 error:v20];
+        [delegateCaller2 callCompletion:v7 error:v20];
       }
     }
 
     else
     {
-      v6 = [v8 delegateCaller];
-      v10 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-      [v6 callCompletion:v7 error:v10];
+      delegateCaller3 = [context delegateCaller];
+      actionSet = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
+      [delegateCaller3 callCompletion:v7 error:actionSet];
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -663,8 +663,8 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v15);
-    v10 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    v7[2](v7, v10);
+    actionSet = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    v7[2](v7, actionSet);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -688,38 +688,38 @@ LABEL_7:
   return v3;
 }
 
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4
+- (void)__configureWithContext:(id)context actionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = HMCharacteristicWriteAction;
-  [(HMAction *)&v11 __configureWithContext:v6 actionSet:v7];
-  v8 = [v7 home];
+  [(HMAction *)&v11 __configureWithContext:contextCopy actionSet:setCopy];
+  home = [setCopy home];
   os_unfair_lock_lock_with_options();
-  v9 = [(HMCharacteristicWriteAction *)self _resolvedCharacteristicInHome:v8 forCharacteristic:self->_characteristic];
+  v9 = [(HMCharacteristicWriteAction *)self _resolvedCharacteristicInHome:home forCharacteristic:self->_characteristic];
   characteristic = self->_characteristic;
   self->_characteristic = v9;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HMCharacteristicWriteAction)initWithDictionary:(id)a3 home:(id)a4
+- (HMCharacteristicWriteAction)initWithDictionary:(id)dictionary home:(id)home
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
   v32.receiver = self;
   v32.super_class = HMCharacteristicWriteAction;
-  v8 = [(HMAction *)&v32 initWithDictionary:v6 home:v7];
+  v8 = [(HMAction *)&v32 initWithDictionary:dictionaryCopy home:homeCopy];
   if (!v8)
   {
     goto LABEL_8;
   }
 
-  v9 = [v6 hmf_UUIDForKey:@"kAccessoryUUID"];
-  v10 = [v6 hmf_numberForKey:@"kServiceInstanceID"];
-  v11 = [v6 hmf_numberForKey:@"kCharacteristicInstanceID"];
+  v9 = [dictionaryCopy hmf_UUIDForKey:@"kAccessoryUUID"];
+  v10 = [dictionaryCopy hmf_numberForKey:@"kServiceInstanceID"];
+  v11 = [dictionaryCopy hmf_numberForKey:@"kCharacteristicInstanceID"];
   v12 = v11;
   if (!v9 || !v10 || !v11)
   {
@@ -749,7 +749,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"kCharacteristicValue"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"kCharacteristicValue"];
   targetValue = v8->_targetValue;
   v8->_targetValue = v13;
 
@@ -773,7 +773,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v15 = [v7 _findCharacteristic:v12 forService:v10 accessoryUUID:v9];
+  v15 = [homeCopy _findCharacteristic:v12 forService:v10 accessoryUUID:v9];
   characteristic = v8->_characteristic;
   v8->_characteristic = v15;
 
@@ -836,9 +836,9 @@ LABEL_5:
   return v9;
 }
 
-- (HMCharacteristicWriteAction)initWithUUID:(id)a3
+- (HMCharacteristicWriteAction)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -863,27 +863,27 @@ LABEL_5:
   objc_exception_throw(v7);
 }
 
-+ (HMCharacteristicWriteAction)actionWithProtoBuf:(id)a3 home:(id)a4
++ (HMCharacteristicWriteAction)actionWithProtoBuf:(id)buf home:(id)home
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 characteristicReference];
-  v9 = [HMCharacteristic characteristicWithCharacteristicReference:v8 home:v7];
+  bufCopy = buf;
+  homeCopy = home;
+  characteristicReference = [bufCopy characteristicReference];
+  v9 = [HMCharacteristic characteristicWithCharacteristicReference:characteristicReference home:homeCopy];
   if (v9)
   {
     v10 = MEMORY[0x1E696ACD0];
     v11 = +[HMCharacteristicWriteAction allowedTargetValueClassesForShortcuts];
-    v12 = [v6 targetValue];
+    targetValue = [bufCopy targetValue];
     v25 = 0;
-    v13 = [v10 unarchivedObjectOfClasses:v11 fromData:v12 error:&v25];
+    v13 = [v10 unarchivedObjectOfClasses:v11 fromData:targetValue error:&v25];
     v14 = v25;
 
     if (v13)
     {
       v15 = MEMORY[0x1E696AFB0];
-      v16 = [v6 actionUUID];
-      v17 = [v15 hmf_UUIDWithBytesAsData:v16];
+      actionUUID = [bufCopy actionUUID];
+      v17 = [v15 hmf_UUIDWithBytesAsData:actionUUID];
 
       v18 = [[HMCharacteristicWriteAction alloc] initWithCharacteristic:v9 targetValue:v13 uuid:v17];
     }
@@ -891,7 +891,7 @@ LABEL_5:
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = a1;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {

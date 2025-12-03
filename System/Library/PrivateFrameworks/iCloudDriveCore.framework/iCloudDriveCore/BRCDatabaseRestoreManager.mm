@@ -1,21 +1,21 @@
 @interface BRCDatabaseRestoreManager
-- (BRCDatabaseRestoreManager)initWithUserURL:(id)a3;
-- (void)restoreWithCompletionBlock:(id)a3;
+- (BRCDatabaseRestoreManager)initWithUserURL:(id)l;
+- (void)restoreWithCompletionBlock:(id)block;
 @end
 
 @implementation BRCDatabaseRestoreManager
 
-- (BRCDatabaseRestoreManager)initWithUserURL:(id)a3
+- (BRCDatabaseRestoreManager)initWithUserURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = BRCDatabaseRestoreManager;
   v6 = [(BRCDatabaseRestoreManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userURL, a3);
+    objc_storeStrong(&v6->_userURL, l);
     v8 = [(NSURL *)v7->_userURL URLByAppendingPathComponent:@"Library/Application Support/CloudDocs/session/db/client.db"];
     clientDatabaseURL = v7->_clientDatabaseURL;
     v7->_clientDatabaseURL = v8;
@@ -24,9 +24,9 @@
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(NSURL *)v7->_clientDatabaseURL path];
+      path = [(NSURL *)v7->_clientDatabaseURL path];
       *buf = 138412546;
-      v17 = v12;
+      v17 = path;
       v18 = 2112;
       v19 = v10;
       _os_log_impl(&dword_223E7A000, v11, OS_LOG_TYPE_INFO, "[INFO] Initializing restore manager with %@%@", buf, 0x16u);
@@ -37,15 +37,15 @@
   return v7;
 }
 
-- (void)restoreWithCompletionBlock:(id)a3
+- (void)restoreWithCompletionBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = [[BRCDatabaseBackupManager alloc] initWithUserURL:self->_userURL outputUserURL:self->_userURL];
-  v6 = [(BRCDatabaseBackupManager *)v5 databaseURL];
-  v7 = [[BRCDatabaseBackupStorage alloc] initWithDatabaseURL:v6];
-  v8 = [(NSURL *)self->_userURL path];
-  [(BRCDatabaseBackupStorage *)v7 populateNewColumnsWithBasePath:v8];
+  databaseURL = [(BRCDatabaseBackupManager *)v5 databaseURL];
+  v7 = [[BRCDatabaseBackupStorage alloc] initWithDatabaseURL:databaseURL];
+  path = [(NSURL *)self->_userURL path];
+  [(BRCDatabaseBackupStorage *)v7 populateNewColumnsWithBasePath:path];
   clientDatabaseURL = self->_clientDatabaseURL;
   v24 = 0;
   v10 = [(BRCDatabaseBackupStorage *)v7 attachDatabase:clientDatabaseURL error:&v24];
@@ -72,13 +72,13 @@
           _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] Calling completion block with success.%@", buf, 0xCu);
         }
 
-        v4[2](v4, 1, 0);
+        blockCopy[2](blockCopy, 1, 0);
         v7 = 0;
       }
 
       else
       {
-        (v4)[2](v4, 0, v14);
+        (blockCopy)[2](blockCopy, 0, v14);
       }
 
       v11 = v14;
@@ -93,7 +93,7 @@
         [(BRCDatabaseRestoreManager *)v7 restoreWithCompletionBlock:v19, v20];
       }
 
-      v4[2](v4, 0, 0);
+      blockCopy[2](blockCopy, 0, 0);
     }
   }
 
@@ -103,9 +103,9 @@
     v18 = brc_default_log();
     if (os_log_type_enabled(v18, 0x90u))
     {
-      v22 = [(NSURL *)self->_clientDatabaseURL path];
+      path2 = [(NSURL *)self->_clientDatabaseURL path];
       *buf = 138412802;
-      v26 = v22;
+      v26 = path2;
       v27 = 2112;
       v28 = v11;
       v29 = 2112;
@@ -113,7 +113,7 @@
       _os_log_error_impl(&dword_223E7A000, v18, 0x90u, "[ERROR] Unable to attach db %@: %@%@", buf, 0x20u);
     }
 
-    (v4)[2](v4, 0, v11);
+    (blockCopy)[2](blockCopy, 0, v11);
   }
 
   v21 = *MEMORY[0x277D85DE8];

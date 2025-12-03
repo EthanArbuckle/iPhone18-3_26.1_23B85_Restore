@@ -1,12 +1,12 @@
 @interface ImagePreviewView
-- (_TtC18CosmeticAssessment16ImagePreviewView)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment16ImagePreviewView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC18CosmeticAssessment16ImagePreviewView)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment16ImagePreviewView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ImagePreviewView
 
-- (_TtC18CosmeticAssessment16ImagePreviewView)initWithFrame:(CGRect)a3
+- (_TtC18CosmeticAssessment16ImagePreviewView)initWithFrame:(CGRect)frame
 {
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
@@ -29,7 +29,7 @@
   return v7;
 }
 
-- (_TtC18CosmeticAssessment16ImagePreviewView)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment16ImagePreviewView)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -58,13 +58,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v11 = self;
-  v4 = [(ImagePreviewView *)v11 layer];
-  [(ImagePreviewView *)v11 bounds];
-  v9 = [objc_opt_self() bezierPathWithRect_];
-  v10 = [v9 CGPath];
+  selfCopy = self;
+  layer = [(ImagePreviewView *)selfCopy layer];
+  [(ImagePreviewView *)selfCopy bounds];
+  bezierPathWithRect_ = [objc_opt_self() bezierPathWithRect_];
+  cGPath = [bezierPathWithRect_ CGPath];
 
-  [v4 setShadowPath_];
+  [layer setShadowPath_];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface PBUserAuthorizationRecord
-- (PBUserAuthorizationRecord)initWithPasteAllowed:(BOOL)a3;
+- (PBUserAuthorizationRecord)initWithPasteAllowed:(BOOL)allowed;
 @end
 
 @implementation PBUserAuthorizationRecord
 
-- (PBUserAuthorizationRecord)initWithPasteAllowed:(BOOL)a3
+- (PBUserAuthorizationRecord)initWithPasteAllowed:(BOOL)allowed
 {
   v6.receiver = self;
   v6.super_class = PBUserAuthorizationRecord;
@@ -12,7 +12,7 @@
   if (v4)
   {
     v4->_timestamp = mach_continuous_time();
-    v4->_pasteWasAllowed = a3;
+    v4->_pasteWasAllowed = allowed;
   }
 
   return v4;

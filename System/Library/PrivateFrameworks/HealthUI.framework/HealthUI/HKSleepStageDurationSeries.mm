@@ -2,10 +2,10 @@
 - (HKSleepStageDurationSeries)init;
 - (NSArray)sleepStageFillStyles;
 - (NSNumber)highlightedSleepStage;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
 - (void)_rebuildFillStyles;
-- (void)setHighlightedSleepStage:(id)a3;
-- (void)setSleepStageFillStyles:(id)a3;
+- (void)setHighlightedSleepStage:(id)stage;
+- (void)setSleepStageFillStyles:(id)styles;
 @end
 
 @implementation HKSleepStageDurationSeries
@@ -34,82 +34,82 @@
 
 - (NSNumber)highlightedSleepStage
 {
-  v3 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_highlightedSleepStageStorage;
-  v5 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setHighlightedSleepStage:(id)a3
+- (void)setHighlightedSleepStage:(id)stage
 {
-  v4 = a3;
-  v5 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stageCopy = stage;
+  seriesMutableStateLock = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   highlightedSleepStageStorage = self->_highlightedSleepStageStorage;
-  self->_highlightedSleepStageStorage = v4;
+  self->_highlightedSleepStageStorage = stageCopy;
 
-  v7 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   [(HKSleepStageDurationSeries *)self _rebuildFillStyles];
 }
 
 - (NSArray)sleepStageFillStyles
 {
-  v3 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_sleepStageFillStylesStorage;
-  v5 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSleepStageFillStyles:(id)a3
+- (void)setSleepStageFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   sleepStageFillStylesStorage = self->_sleepStageFillStylesStorage;
   self->_sleepStageFillStylesStorage = v6;
 
-  v8 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   [(HKSleepStageDurationSeries *)self _rebuildFillStyles];
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
   v64 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 chartPoints];
-  if (!v12)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKSleepStageDurationSeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v49 = v10;
-  v54 = [v10 transform];
-  v48 = v11;
-  v13 = [v11 transform];
-  v52 = self;
-  v14 = [(HKSleepStageDurationSeries *)self highlightedSleepStage];
-  v53 = [MEMORY[0x1E695DF70] array];
+  v49 = axisCopy;
+  transform = [axisCopy transform];
+  v48 = yAxisCopy;
+  transform2 = [yAxisCopy transform];
+  selfCopy = self;
+  highlightedSleepStage = [(HKSleepStageDurationSeries *)self highlightedSleepStage];
+  array = [MEMORY[0x1E695DF70] array];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v12;
+  obj = chartPoints;
   v15 = [obj countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v15)
   {
@@ -125,23 +125,23 @@
         }
 
         v18 = *(*(&v57 + 1) + 8 * i);
-        v19 = [v18 xValueAsGenericType];
-        [v54 coordinateForValue:v19];
+        xValueAsGenericType = [v18 xValueAsGenericType];
+        [transform coordinateForValue:xValueAsGenericType];
         v21 = v20;
 
         v22 = v21 + -0.25;
-        [v13 coordinateForValue:&unk_1F4382950];
+        [transform2 coordinateForValue:&unk_1F4382950];
         v24 = v23;
-        v25 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v26 = [MEMORY[0x1E696B098] valueWithCGPoint:{v22, v24}];
-        [v25 addObject:v26];
+        [array2 addObject:v26];
 
-        if (v14)
+        if (highlightedSleepStage)
         {
-          v27 = [v14 intValue];
-          if (v27 > 2)
+          intValue = [highlightedSleepStage intValue];
+          if (intValue > 2)
           {
-            switch(v27)
+            switch(intValue)
             {
               case 3:
                 v29 = MEMORY[0x1E696AD98];
@@ -161,15 +161,15 @@
 
 LABEL_21:
             v30 = [v29 numberWithDouble:?];
-            [v13 coordinateForValue:v30];
+            [transform2 coordinateForValue:v30];
             v24 = v31;
 
             goto LABEL_22;
           }
 
-          if (v27 >= 2)
+          if (intValue >= 2)
           {
-            if (v27 != 2)
+            if (intValue != 2)
             {
               goto LABEL_22;
             }
@@ -183,33 +183,33 @@ LABEL_21:
           v28 = *MEMORY[0x1E696B998];
           if (os_log_type_enabled(*MEMORY[0x1E696B998], OS_LOG_TYPE_ERROR))
           {
-            [HKSleepStageDurationSeries coordinatesForBlock:v61 blockPath:v28 xAxis:v52 yAxis:&v62];
+            [HKSleepStageDurationSeries coordinatesForBlock:v61 blockPath:v28 xAxis:selfCopy yAxis:&v62];
           }
         }
 
 LABEL_22:
         v32 = [MEMORY[0x1E696B098] valueWithCGPoint:{v22, v24}];
-        [v25 addObject:v32];
+        [array2 addObject:v32];
 
         v33 = MEMORY[0x1E696AD98];
         [v18 totalDurationValue];
         v34 = [v33 numberWithDouble:?];
-        [v13 coordinateForValue:v34];
+        [transform2 coordinateForValue:v34];
         v36 = v35;
 
         v37 = [MEMORY[0x1E696B098] valueWithCGPoint:{v22, v36}];
-        [v25 addObject:v37];
+        [array2 addObject:v37];
 
-        v38 = [(HKSleepStageDurationSeries *)v52 highlightedSleepStage];
-        v39 = HKSleepChartPointFormatterOptionsForSleepAnalysis(v38);
-        v40 = [v18 userInfo];
-        [v40 setAnnotationOptions:v39];
+        highlightedSleepStage2 = [(HKSleepStageDurationSeries *)selfCopy highlightedSleepStage];
+        v39 = HKSleepChartPointFormatterOptionsForSleepAnalysis(highlightedSleepStage2);
+        userInfo = [v18 userInfo];
+        [userInfo setAnnotationOptions:v39];
 
         v41 = [HKSleepDurationCoordinate alloc];
-        v42 = [v18 userInfo];
-        v43 = [(HKSleepDurationCoordinate *)v41 initWithStackPoints:v25 goalLineYValue:0 highlighted:1 userInfo:v42];
+        userInfo2 = [v18 userInfo];
+        v43 = [(HKSleepDurationCoordinate *)v41 initWithStackPoints:array2 goalLineYValue:0 highlighted:1 userInfo:userInfo2];
 
-        [v53 addObject:v43];
+        [array addObject:v43];
       }
 
       v16 = [obj countByEnumeratingWithState:&v57 objects:v63 count:16];
@@ -220,7 +220,7 @@ LABEL_22:
 
   v55 = *v47;
   v56 = *(v47 + 2);
-  v44 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v53 blockPath:&v55];
+  v44 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:array blockPath:&v55];
 
   return v44;
 }
@@ -228,12 +228,12 @@ LABEL_22:
 - (void)_rebuildFillStyles
 {
   v6 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v4 = 138543362;
   v5 = v3;
-  _os_log_error_impl(&dword_1C3942000, v1, OS_LOG_TYPE_ERROR, "%{public}@: Asked to create fill style for unsupported sleep category value", &v4, 0xCu);
+  _os_log_error_impl(&dword_1C3942000, selfCopy, OS_LOG_TYPE_ERROR, "%{public}@: Asked to create fill style for unsupported sleep category value", &v4, 0xCu);
 }
 
 - (void)coordinatesForBlock:(uint64_t)a1 blockPath:(uint64_t)a2 xAxis:yAxis:.cold.1(uint64_t a1, uint64_t a2)

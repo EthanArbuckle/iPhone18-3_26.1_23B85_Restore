@@ -1,6 +1,6 @@
 @interface PersonalizationFeedbackCollectionViewCell
-- (void)didTapSubmitButton:(id)a3;
-- (void)feedbackButtonSelectedWithFeedbackOptioButton:(id)a3;
+- (void)didTapSubmitButton:(id)button;
+- (void)feedbackButtonSelectedWithFeedbackOptioButton:(id)button;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -9,27 +9,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10070347C();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007043AC();
 }
 
-- (void)feedbackButtonSelectedWithFeedbackOptioButton:(id)a3
+- (void)feedbackButtonSelectedWithFeedbackOptioButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_1007045D8();
 }
 
-- (void)didTapSubmitButton:(id)a3
+- (void)didTapSubmitButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_1007079C0();
 }
 

@@ -1,8 +1,8 @@
 @interface FavoriteItem_SharedMailbox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelectable;
-- (FavoriteItem_SharedMailbox)initWithDictionary:(id)a3;
-- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)a3;
+- (FavoriteItem_SharedMailbox)initWithDictionary:(id)dictionary;
+- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)type;
 - (id)analyticsKey;
 - (id)badgeCountString;
 - (id)countQueryPredicate;
@@ -11,19 +11,19 @@
 - (id)mailboxScope;
 - (id)serverCountMailboxScope;
 - (void)dealloc;
-- (void)setUnreadCountToken:(id)a3;
+- (void)setUnreadCountToken:(id)token;
 @end
 
 @implementation FavoriteItem_SharedMailbox
 
-- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)a3
+- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = FavoriteItem_SharedMailbox;
   result = [(FavoriteItem *)&v5 initWithType:5];
   if (result)
   {
-    result->_sourceType = a3;
+    result->_sourceType = type;
   }
 
   return result;
@@ -37,18 +37,18 @@
   [(FavoriteItem_SharedMailbox *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_sourceType == v5->_sourceType;
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_sourceType == v5->_sourceType;
   }
 
   return v6;
@@ -62,18 +62,18 @@
   }
 
   v2 = +[VIPManager defaultInstance];
-  v3 = [v2 hasVIPs];
+  hasVIPs = [v2 hasVIPs];
 
-  return v3;
+  return hasVIPs;
 }
 
-- (FavoriteItem_SharedMailbox)initWithDictionary:(id)a3
+- (FavoriteItem_SharedMailbox)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FavoriteItem_SharedMailbox;
-  v5 = [(FavoriteItem *)&v9 initWithDictionary:v4];
-  if (v5 && ([v4 objectForKey:@"sourceType"], v6 = objc_claimAutoreleasedReturnValue(), v5->_sourceType = objc_msgSend(v6, "integerValue"), v6, v5->_sourceType > 0x1A))
+  v5 = [(FavoriteItem *)&v9 initWithDictionary:dictionaryCopy];
+  if (v5 && ([dictionaryCopy objectForKey:@"sourceType"], v6 = objc_claimAutoreleasedReturnValue(), v5->_sourceType = objc_msgSend(v6, "integerValue"), v6, v5->_sourceType > 0x1A))
   {
     v7 = 0;
   }
@@ -90,18 +90,18 @@
 {
   v6.receiver = self;
   v6.super_class = FavoriteItem_SharedMailbox;
-  v3 = [(FavoriteItem *)&v6 dictionaryRepresentation];
+  dictionaryRepresentation = [(FavoriteItem *)&v6 dictionaryRepresentation];
   v4 = [NSNumber numberWithInteger:self->_sourceType];
-  [v3 setObject:v4 forKey:@"sourceType"];
+  [dictionaryRepresentation setObject:v4 forKey:@"sourceType"];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)setUnreadCountToken:(id)a3
+- (void)setUnreadCountToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   unreadCountToken = self->_unreadCountToken;
-  if (unreadCountToken != v5)
+  if (unreadCountToken != tokenCopy)
   {
     [(EFCancelable *)unreadCountToken cancel];
     if (self->_unreadCountToken)
@@ -110,12 +110,12 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = objc_opt_class();
-        v9 = [(FavoriteItem_SharedMailbox *)self displayName];
+        displayName = [(FavoriteItem_SharedMailbox *)self displayName];
         v10 = self->_unreadCountToken;
         v12 = 138543874;
         v13 = v8;
         v14 = 2114;
-        v15 = v9;
+        v15 = displayName;
         v16 = 2114;
         v17 = v10;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ - Cancel token:%{public}@", &v12, 0x20u);
@@ -127,15 +127,15 @@
       [(FavoriteItem_SharedMailbox *)self setIsObserving:0];
     }
 
-    objc_storeStrong(&self->_unreadCountToken, a3);
+    objc_storeStrong(&self->_unreadCountToken, token);
   }
 }
 
 - (id)displayName
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sourceType];
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
   v3 = &stru_10015BEC8;
-  switch(v2)
+  switch(sourceType)
   {
     case 1uLL:
     case 2uLL:
@@ -166,28 +166,28 @@
 
 - (id)badgeCountString
 {
-  v4 = [(FavoriteItem_SharedMailbox *)self sourceType];
-  if (v4 <= 0x1A)
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
+  if (sourceType <= 0x1A)
   {
-    if (((1 << v4) & 0x2FF800C) != 0)
+    if (((1 << sourceType) & 0x2FF800C) != 0)
     {
       v5 = [NSBundle bundleWithIdentifier:@"com.apple.Message"];
       v6 = [v5 localizedStringForKey:@"MESSAGE_COUNT_FORMAT%1$lu" value:&stru_10015BEC8 table:@"Main"];
-      v7 = [(FavoriteItem *)self badgeCount];
-      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 integerValue]);
+      badgeCount = [(FavoriteItem *)self badgeCount];
+      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [badgeCount integerValue]);
     }
 
     else
     {
-      if (((1 << v4) & 0x40001F3) == 0)
+      if (((1 << sourceType) & 0x40001F3) == 0)
       {
         goto LABEL_7;
       }
 
       v5 = [NSBundle bundleWithIdentifier:@"com.apple.Message"];
       v6 = [v5 localizedStringForKey:@"UNREAD_COUNT_FORMAT%1$lu" value:&stru_10015BEC8 table:@"Main"];
-      v7 = [(FavoriteItem *)self badgeCount];
-      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 integerValue]);
+      badgeCount = [(FavoriteItem *)self badgeCount];
+      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [badgeCount integerValue]);
     }
 
     v2 = v8;
@@ -200,11 +200,11 @@ LABEL_7:
 
 - (id)countQueryPredicate
 {
-  v3 = [(FavoriteItem_SharedMailbox *)self sourceType];
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
   v4 = objc_alloc_init(NSMutableArray);
   v5 = 0;
   v6 = 1;
-  switch(v3)
+  switch(sourceType)
   {
     case 1uLL:
       v7 = 1;
@@ -265,8 +265,8 @@ LABEL_19:
         [v4 addObject:v10];
       }
 
-      v11 = [(FavoriteItem_SharedMailbox *)self mailboxScope];
-      v12 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v11];
+      mailboxScope = [(FavoriteItem_SharedMailbox *)self mailboxScope];
+      v12 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:mailboxScope];
       [v4 addObject:v12];
 
       v5 = [NSCompoundPredicate andPredicateWithSubpredicates:v4];
@@ -281,14 +281,14 @@ LABEL_19:
 
 - (id)mailboxScope
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sourceType];
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
   v3 = [EMMailboxScope mailboxScopeForMailboxTypes:&off_100163720 forExclusion:1];
   v4 = [EMMailboxScope mailboxScopeForMailboxType:7 forExclusion:0];
   v5 = v4;
   v6 = 0;
-  if (v2 <= 0x16)
+  if (sourceType <= 0x16)
   {
-    if (((1 << v2) & 0x7F0144) != 0)
+    if (((1 << sourceType) & 0x7F0144) != 0)
     {
       v7 = v3;
     }
@@ -296,7 +296,7 @@ LABEL_19:
     else
     {
       v7 = v4;
-      if (((1 << v2) & 0xBA) == 0)
+      if (((1 << sourceType) & 0xBA) == 0)
       {
         goto LABEL_6;
       }
@@ -314,15 +314,15 @@ LABEL_6:
 {
   if ([(FavoriteItem_SharedMailbox *)self sourceType]== 3)
   {
-    v3 = [(FavoriteItem_SharedMailbox *)self mailboxScope];
+    mailboxScope = [(FavoriteItem_SharedMailbox *)self mailboxScope];
   }
 
   else
   {
-    v3 = 0;
+    mailboxScope = 0;
   }
 
-  return v3;
+  return mailboxScope;
 }
 
 - (id)analyticsKey

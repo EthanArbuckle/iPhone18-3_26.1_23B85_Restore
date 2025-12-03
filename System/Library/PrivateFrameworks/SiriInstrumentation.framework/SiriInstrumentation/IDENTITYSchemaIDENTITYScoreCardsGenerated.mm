@@ -1,25 +1,25 @@
 @interface IDENTITYSchemaIDENTITYScoreCardsGenerated
-- (BOOL)isEqual:(id)a3;
-- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithDictionary:(id)a3;
-- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithDictionary:(id)dictionary;
+- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDENTITYSchemaIDENTITYScoreCardsGenerated
 
-- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithDictionary:(id)a3
+- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IDENTITYSchemaIDENTITYScoreCardsGenerated;
   v5 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceScoreCard"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceScoreCard"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)v5 setVoiceScoreCard:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"identityScoreCard"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"identityScoreCard"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithJSON:(id)a3
+- (IDENTITYSchemaIDENTITYScoreCardsGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_identityScoreCard)
   {
-    v4 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    identityScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+    dictionaryRepresentation = [identityScoreCard dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"identityScoreCard"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"identityScoreCard"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"identityScoreCard"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"identityScoreCard"];
     }
   }
 
   if (self->_voiceScoreCard)
   {
-    v7 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    voiceScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+    dictionaryRepresentation2 = [voiceScoreCard dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"voiceScoreCard"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"voiceScoreCard"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"voiceScoreCard"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"voiceScoreCard"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
-  v6 = [v4 voiceScoreCard];
-  if ((v5 != 0) == (v6 == 0))
+  voiceScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+  voiceScoreCard2 = [equalCopy voiceScoreCard];
+  if ((voiceScoreCard != 0) == (voiceScoreCard2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
-  if (v7)
+  voiceScoreCard3 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+  if (voiceScoreCard3)
   {
-    v8 = v7;
-    v9 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
-    v10 = [v4 voiceScoreCard];
-    v11 = [v9 isEqual:v10];
+    v8 = voiceScoreCard3;
+    voiceScoreCard4 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+    voiceScoreCard5 = [equalCopy voiceScoreCard];
+    v11 = [voiceScoreCard4 isEqual:voiceScoreCard5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
-  v6 = [v4 identityScoreCard];
-  if ((v5 != 0) != (v6 == 0))
+  voiceScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+  voiceScoreCard2 = [equalCopy identityScoreCard];
+  if ((voiceScoreCard != 0) != (voiceScoreCard2 == 0))
   {
-    v12 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
-    if (!v12)
+    identityScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+    if (!identityScoreCard)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
-    v15 = [v4 identityScoreCard];
-    v16 = [v14 isEqual:v15];
+    v13 = identityScoreCard;
+    identityScoreCard2 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+    identityScoreCard3 = [equalCopy identityScoreCard];
+    v16 = [identityScoreCard2 isEqual:identityScoreCard3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+  toCopy = to;
+  voiceScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
 
-  if (v4)
+  if (voiceScoreCard)
   {
-    v5 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+    voiceScoreCard2 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+  identityScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
 
-  if (v6)
+  if (identityScoreCard)
   {
-    v7 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+    identityScoreCard2 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IDENTITYSchemaIDENTITYScoreCardsGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  voiceScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self voiceScoreCard];
+  v7 = [voiceScoreCard applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self deleteVoiceScoreCard];
   }
 
-  v9 = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  identityScoreCard = [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self identityScoreCard];
+  v10 = [identityScoreCard applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IDENTITYSchemaIDENTITYScoreCardsGenerated *)self deleteIdentityScoreCard];
   }

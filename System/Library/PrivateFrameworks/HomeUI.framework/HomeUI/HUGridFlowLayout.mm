@@ -1,26 +1,26 @@
 @interface HUGridFlowLayout
 - (HUGridFlowLayout)parentGridLayout;
-- (id)_modifiedLayoutAttributesForAttributes:(id)a3;
-- (id)initForRTL:(BOOL)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)_modifiedLayoutAttributesForAttributes:(id)attributes;
+- (id)initForRTL:(BOOL)l;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)_updateContainingGridLayout;
-- (void)applyOverrideAttributes:(id)a3 toItem:(id)a4 atIndexPath:(id)a5;
-- (void)clearAllOverrideAttributesForItems:(id)a3;
-- (void)clearOverrideAttributesForItem:(id)a3 atIndexPath:(id)a4;
+- (void)applyOverrideAttributes:(id)attributes toItem:(id)item atIndexPath:(id)path;
+- (void)clearAllOverrideAttributesForItems:(id)items;
+- (void)clearOverrideAttributesForItem:(id)item atIndexPath:(id)path;
 - (void)invalidateLayout;
 - (void)prepareLayout;
-- (void)registerChildGridLayout:(id)a3;
-- (void)setLayoutOptions:(id)a3;
-- (void)unregisterChildGridLayout:(id)a3;
+- (void)registerChildGridLayout:(id)layout;
+- (void)setLayoutOptions:(id)options;
+- (void)unregisterChildGridLayout:(id)layout;
 @end
 
 @implementation HUGridFlowLayout
 
-- (id)initForRTL:(BOOL)a3
+- (id)initForRTL:(BOOL)l
 {
-  self->_shouldFlipForRTL = a3;
+  self->_shouldFlipForRTL = l;
   v11.receiver = self;
   v11.super_class = HUGridFlowLayout;
   v3 = [(UICollectionViewFlowLayout *)&v11 init];
@@ -34,32 +34,32 @@
     overrideAttributesByIndexPath = v3->_overrideAttributesByIndexPath;
     v3->_overrideAttributesByIndexPath = v6;
 
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     childGridLayouts = v3->_childGridLayouts;
-    v3->_childGridLayouts = v8;
+    v3->_childGridLayouts = weakObjectsHashTable;
   }
 
   return v3;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([(HUGridLayoutOptions *)self->_layoutOptions isEqual:v5]& 1) == 0)
+  optionsCopy = options;
+  if (([(HUGridLayoutOptions *)self->_layoutOptions isEqual:optionsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_layoutOptions, a3);
-    -[UICollectionViewFlowLayout setScrollDirection:](self, "setScrollDirection:", [v5 scrollDirection]);
-    [v5 rowSpacing];
+    objc_storeStrong(&self->_layoutOptions, options);
+    -[UICollectionViewFlowLayout setScrollDirection:](self, "setScrollDirection:", [optionsCopy scrollDirection]);
+    [optionsCopy rowSpacing];
     [(UICollectionViewFlowLayout *)self setMinimumLineSpacing:?];
-    [v5 columnSpacing];
+    [optionsCopy columnSpacing];
     [(UICollectionViewFlowLayout *)self setMinimumInteritemSpacing:?];
-    [v5 sectionLeadingMargin];
+    [optionsCopy sectionLeadingMargin];
     v7 = v6;
-    [v5 sectionTrailingMargin];
+    [optionsCopy sectionTrailingMargin];
     [(UICollectionViewFlowLayout *)self setSectionInset:0.0, v7, 0.0, v8];
     v12 = MEMORY[0x277D85DD0];
-    v13 = v5;
+    v13 = optionsCopy;
     if ([v13 columnStyle])
     {
       v9 = 0;
@@ -93,21 +93,21 @@ uint64_t __37__HUGridFlowLayout_setLayoutOptions___block_invoke(uint64_t a1)
   }
 }
 
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position
 {
   v6.receiver = self;
   v6.super_class = HUGridFlowLayout;
-  v4 = [(HUGridFlowLayout *)&v6 layoutAttributesForInteractivelyMovingItemAtIndexPath:a3 withTargetPosition:a4.x, a4.y];
+  v4 = [(HUGridFlowLayout *)&v6 layoutAttributesForInteractivelyMovingItemAtIndexPath:path withTargetPosition:position.x, position.y];
   [v4 setAlpha:0.8];
 
   return v4;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v12.receiver = self;
   v12.super_class = HUGridFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v12 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UICollectionViewFlowLayout *)&v12 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -129,11 +129,11 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = HUGridFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(UICollectionViewFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:path];
   v5 = [(HUGridFlowLayout *)self _modifiedLayoutAttributesForAttributes:v4];
 
   return v5;
@@ -149,8 +149,8 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(HUGridFlowLayout *)self childGridLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  childGridLayouts = [(HUGridFlowLayout *)self childGridLayouts];
+  v4 = [childGridLayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -162,14 +162,14 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childGridLayouts);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) invalidateLayout];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [childGridLayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -184,169 +184,169 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
   [(HUGridFlowLayout *)self _updateContainingGridLayout];
 }
 
-- (void)applyOverrideAttributes:(id)a3 toItem:(id)a4 atIndexPath:(id)a5
+- (void)applyOverrideAttributes:(id)attributes toItem:(id)item atIndexPath:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 conformsToProtocol:&unk_2824C0788])
+  itemCopy = item;
+  pathCopy = path;
+  attributesCopy = attributes;
+  if ([itemCopy conformsToProtocol:&unk_2824C0788])
   {
-    v11 = [v8 homeKitObject];
-    v12 = [v11 uniqueIdentifier];
+    homeKitObject = [itemCopy homeKitObject];
+    uniqueIdentifier = [homeKitObject uniqueIdentifier];
 
-    v13 = [(HUGridFlowLayout *)self indexPathsByItems];
-    v14 = v13;
-    v15 = v9;
-    v16 = v12;
+    indexPathsByItems = [(HUGridFlowLayout *)self indexPathsByItems];
+    latestResults = indexPathsByItems;
+    v15 = pathCopy;
+    v16 = uniqueIdentifier;
   }
 
   else
   {
-    if ([v8 conformsToProtocol:&unk_2824C0828])
+    if ([itemCopy conformsToProtocol:&unk_2824C0828])
     {
-      v14 = v8;
-      v13 = [(HUGridFlowLayout *)self indexPathsByItems];
-      v12 = v13;
+      latestResults = itemCopy;
+      indexPathsByItems = [(HUGridFlowLayout *)self indexPathsByItems];
+      uniqueIdentifier = indexPathsByItems;
     }
 
     else
     {
-      v12 = [(HUGridFlowLayout *)self indexPathsByItems];
-      v14 = [v8 latestResults];
-      v13 = v12;
+      uniqueIdentifier = [(HUGridFlowLayout *)self indexPathsByItems];
+      latestResults = [itemCopy latestResults];
+      indexPathsByItems = uniqueIdentifier;
     }
 
-    v15 = v9;
-    v16 = v14;
+    v15 = pathCopy;
+    v16 = latestResults;
   }
 
-  [v13 setObject:v15 forKey:v16];
+  [indexPathsByItems setObject:v15 forKey:v16];
 
-  v17 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
-  [v17 setObject:v10 forKeyedSubscript:v9];
+  overrideAttributesByIndexPath = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+  [overrideAttributesByIndexPath setObject:attributesCopy forKeyedSubscript:pathCopy];
 
   v18 = HFLogForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(HUGridFlowLayout *)self indexPathsByItems];
-    v20 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+    indexPathsByItems2 = [(HUGridFlowLayout *)self indexPathsByItems];
+    overrideAttributesByIndexPath2 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
     v21 = 136316162;
     v22 = "[HUGridFlowLayout applyOverrideAttributes:toItem:atIndexPath:]";
     v23 = 2112;
-    v24 = v8;
+    v24 = itemCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = pathCopy;
     v27 = 2112;
-    v28 = v19;
+    v28 = indexPathsByItems2;
     v29 = 2112;
-    v30 = v20;
+    v30 = overrideAttributesByIndexPath2;
     _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%s. applied attributes to item %@ at indexPath %@. indexPathsByItems = %@, overrideAttributesByIndexPath = %@", &v21, 0x34u);
   }
 
   [(HUGridFlowLayout *)self invalidateLayout];
 }
 
-- (void)clearOverrideAttributesForItem:(id)a3 atIndexPath:(id)a4
+- (void)clearOverrideAttributesForItem:(id)item atIndexPath:(id)path
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  pathCopy = path;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(HUGridFlowLayout *)self indexPathsByItems];
-    v10 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+    indexPathsByItems = [(HUGridFlowLayout *)self indexPathsByItems];
+    overrideAttributesByIndexPath = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
     v20 = 136316162;
     v21 = "[HUGridFlowLayout clearOverrideAttributesForItem:atIndexPath:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = itemCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = pathCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = indexPathsByItems;
     v28 = 2112;
-    v29 = v10;
+    v29 = overrideAttributesByIndexPath;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%s. clearing attributes to item %@ at indexPath %@. Before clearing: indexPathsByItems = %@, overrideAttributesByIndexPath = %@", &v20, 0x34u);
   }
 
-  if ([v6 conformsToProtocol:&unk_2824C0788])
+  if ([itemCopy conformsToProtocol:&unk_2824C0788])
   {
-    v11 = [v6 homeKitObject];
-    v12 = [v11 uniqueIdentifier];
+    homeKitObject = [itemCopy homeKitObject];
+    uniqueIdentifier = [homeKitObject uniqueIdentifier];
 
-    v13 = [(HUGridFlowLayout *)self indexPathsByItems];
-    v14 = v13;
-    v15 = v12;
+    indexPathsByItems2 = [(HUGridFlowLayout *)self indexPathsByItems];
+    latestResults = indexPathsByItems2;
+    v15 = uniqueIdentifier;
   }
 
   else
   {
-    if ([v6 conformsToProtocol:&unk_2824C0828])
+    if ([itemCopy conformsToProtocol:&unk_2824C0828])
     {
-      v14 = v6;
-      v13 = [(HUGridFlowLayout *)self indexPathsByItems];
-      v12 = v13;
+      latestResults = itemCopy;
+      indexPathsByItems2 = [(HUGridFlowLayout *)self indexPathsByItems];
+      uniqueIdentifier = indexPathsByItems2;
     }
 
     else
     {
-      v12 = [(HUGridFlowLayout *)self indexPathsByItems];
-      v14 = [v6 latestResults];
-      v13 = v12;
+      uniqueIdentifier = [(HUGridFlowLayout *)self indexPathsByItems];
+      latestResults = [itemCopy latestResults];
+      indexPathsByItems2 = uniqueIdentifier;
     }
 
-    v15 = v14;
+    v15 = latestResults;
   }
 
-  [v13 removeObjectForKey:v15];
+  [indexPathsByItems2 removeObjectForKey:v15];
 
-  v16 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
-  [v16 removeObjectForKey:v7];
+  overrideAttributesByIndexPath2 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+  [overrideAttributesByIndexPath2 removeObjectForKey:pathCopy];
 
   v17 = HFLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(HUGridFlowLayout *)self indexPathsByItems];
-    v19 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+    indexPathsByItems3 = [(HUGridFlowLayout *)self indexPathsByItems];
+    overrideAttributesByIndexPath3 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
     v20 = 136316162;
     v21 = "[HUGridFlowLayout clearOverrideAttributesForItem:atIndexPath:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = itemCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = pathCopy;
     v26 = 2112;
-    v27 = v18;
+    v27 = indexPathsByItems3;
     v28 = 2112;
-    v29 = v19;
+    v29 = overrideAttributesByIndexPath3;
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%s. clearing attributes to item %@ at indexPath %@. After clearing: indexPathsByItems = %@, overrideAttributesByIndexPath = %@", &v20, 0x34u);
   }
 
   [(HUGridFlowLayout *)self invalidateLayout];
 }
 
-- (void)clearAllOverrideAttributesForItems:(id)a3
+- (void)clearAllOverrideAttributesForItems:(id)items
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
-  v6 = [v5 count];
+  itemsCopy = items;
+  overrideAttributesByIndexPath = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+  v6 = [overrideAttributesByIndexPath count];
 
   if (v6)
   {
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HUGridFlowLayout *)self indexPathsByItems];
-      v9 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+      indexPathsByItems = [(HUGridFlowLayout *)self indexPathsByItems];
+      overrideAttributesByIndexPath2 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
       *buf = 136315906;
       v51 = "[HUGridFlowLayout clearAllOverrideAttributesForItems:]";
       v52 = 2112;
-      v53 = v4;
+      v53 = itemsCopy;
       v54 = 2112;
-      v55 = v8;
+      v55 = indexPathsByItems;
       v56 = 2112;
-      v57 = v9;
+      v57 = overrideAttributesByIndexPath2;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%s. clearing all attributes for items %@. Before clearing: indexPathsByItems = %@, overrideAttributesByIndexPath = %@", buf, 0x2Au);
     }
 
@@ -355,8 +355,8 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v39 = v4;
-    v11 = v4;
+    v39 = itemsCopy;
+    v11 = itemsCopy;
     v12 = [v11 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v12)
     {
@@ -375,10 +375,10 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
           if ([v16 conformsToProtocol:&unk_2824C0788])
           {
             v17 = v16;
-            v18 = [v17 homeKitObject];
-            v19 = [v18 uniqueIdentifier];
+            homeKitObject = [v17 homeKitObject];
+            uniqueIdentifier = [homeKitObject uniqueIdentifier];
 
-            [v10 addObject:v19];
+            [v10 addObject:uniqueIdentifier];
           }
 
           else if ([v16 conformsToProtocol:&unk_2824C0828])
@@ -388,8 +388,8 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
 
           else
           {
-            v20 = [v16 latestResults];
-            [v10 addObject:v20];
+            latestResults = [v16 latestResults];
+            [v10 addObject:latestResults];
           }
         }
 
@@ -400,9 +400,9 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
     }
 
     v21 = MEMORY[0x277CBEB98];
-    v22 = [(HUGridFlowLayout *)self indexPathsByItems];
-    v23 = [v22 allKeys];
-    v24 = [v21 setWithArray:v23];
+    indexPathsByItems2 = [(HUGridFlowLayout *)self indexPathsByItems];
+    allKeys = [indexPathsByItems2 allKeys];
+    v24 = [v21 setWithArray:allKeys];
 
     [v10 intersectSet:v24];
     v25 = HFLogForCategory();
@@ -420,8 +420,8 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v27 = [v10 allObjects];
-    v28 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
+    allObjects = [v10 allObjects];
+    v28 = [allObjects countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (v28)
     {
       v29 = v28;
@@ -432,12 +432,12 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
         {
           if (*v41 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(allObjects);
           }
 
           v32 = *(*(&v40 + 1) + 8 * j);
-          v33 = [(HUGridFlowLayout *)self indexPathsByItems];
-          v34 = [v33 objectForKey:v32];
+          indexPathsByItems3 = [(HUGridFlowLayout *)self indexPathsByItems];
+          v34 = [indexPathsByItems3 objectForKey:v32];
 
           if (v34)
           {
@@ -445,14 +445,14 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
           }
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
+        v29 = [allObjects countByEnumeratingWithState:&v40 objects:v48 count:16];
       }
 
       while (v29);
     }
 
     v35 = HFLogForCategory();
-    v4 = v39;
+    itemsCopy = v39;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
@@ -462,11 +462,11 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
       _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "%s. clearing all attributes for items. indexPathsToInvalidate = %@", buf, 0x16u);
     }
 
-    v36 = [(HUGridFlowLayout *)self indexPathsByItems];
-    [v36 removeAllObjects];
+    indexPathsByItems4 = [(HUGridFlowLayout *)self indexPathsByItems];
+    [indexPathsByItems4 removeAllObjects];
 
-    v37 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
-    [v37 removeAllObjects];
+    overrideAttributesByIndexPath3 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+    [overrideAttributesByIndexPath3 removeAllObjects];
 
     v38 = objc_alloc_init(MEMORY[0x277D752F8]);
     [v38 invalidateItemsAtIndexPaths:v26];
@@ -476,13 +476,13 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
 
 - (void)_updateContainingGridLayout
 {
-  v3 = [(HUGridFlowLayout *)self collectionView];
-  v4 = [v3 superview];
+  collectionView = [(HUGridFlowLayout *)self collectionView];
+  superview = [collectionView superview];
 
-  while (v4)
+  while (superview)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = superview;
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
@@ -499,10 +499,10 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
     if (isKindOfClass)
     {
       objc_opt_class();
-      v9 = [v5 collectionViewLayout];
+      collectionViewLayout = [v5 collectionViewLayout];
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        v10 = collectionViewLayout;
       }
 
       else
@@ -514,56 +514,56 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
 
       if (v11)
       {
-        v12 = [(HUGridFlowLayout *)self parentGridLayout];
+        parentGridLayout = [(HUGridFlowLayout *)self parentGridLayout];
 
-        if (v11 != v12)
+        if (v11 != parentGridLayout)
         {
-          v13 = [(HUGridFlowLayout *)self parentGridLayout];
-          [v13 unregisterChildGridLayout:self];
+          parentGridLayout2 = [(HUGridFlowLayout *)self parentGridLayout];
+          [parentGridLayout2 unregisterChildGridLayout:self];
 
           [v11 registerChildGridLayout:self];
         }
       }
     }
 
-    v4 = [v5 superview];
+    superview = [v5 superview];
   }
 }
 
-- (void)registerChildGridLayout:(id)a3
+- (void)registerChildGridLayout:(id)layout
 {
-  v5 = a3;
-  v4 = [(HUGridFlowLayout *)self childGridLayouts];
-  [v4 addObject:v5];
+  layoutCopy = layout;
+  childGridLayouts = [(HUGridFlowLayout *)self childGridLayouts];
+  [childGridLayouts addObject:layoutCopy];
 
-  [v5 setParentGridLayout:self];
+  [layoutCopy setParentGridLayout:self];
 }
 
-- (void)unregisterChildGridLayout:(id)a3
+- (void)unregisterChildGridLayout:(id)layout
 {
-  v5 = a3;
-  v4 = [(HUGridFlowLayout *)self childGridLayouts];
-  [v4 removeObject:v5];
+  layoutCopy = layout;
+  childGridLayouts = [(HUGridFlowLayout *)self childGridLayouts];
+  [childGridLayouts removeObject:layoutCopy];
 
-  [v5 setParentGridLayout:0];
+  [layoutCopy setParentGridLayout:0];
 }
 
-- (id)_modifiedLayoutAttributesForAttributes:(id)a3
+- (id)_modifiedLayoutAttributesForAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_LayoutAttribut.isa, v4);
+    NSLog(&cfstr_LayoutAttribut.isa, attributesCopy);
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![v4 representedElementCategory])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![attributesCopy representedElementCategory])
   {
-    v7 = [v4 indexPath];
-    v5 = [v4 copy];
-    v8 = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    indexPath = [attributesCopy indexPath];
+    v5 = [attributesCopy copy];
+    overrideAttributesByIndexPath = [(HUGridFlowLayout *)self overrideAttributesByIndexPath];
+    v9 = [overrideAttributesByIndexPath objectForKeyedSubscript:indexPath];
 
     if (v9)
     {
@@ -577,44 +577,44 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
       [v5 setZIndex:{objc_msgSend(v9, "zIndex")}];
     }
 
-    v10 = [(HUGridFlowLayout *)self collectionView];
-    v11 = [v10 delegate];
+    collectionView = [(HUGridFlowLayout *)self collectionView];
+    delegate = [collectionView delegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(HUGridFlowLayout *)self collectionView];
-      v13 = [v11 collectionView:v12 gridLayout:self wantsScrollingAdjustmentsForItemAtIndexPath:v7];
+      collectionView2 = [(HUGridFlowLayout *)self collectionView];
+      v13 = [delegate collectionView:collectionView2 gridLayout:self wantsScrollingAdjustmentsForItemAtIndexPath:indexPath];
 
       if (v13)
       {
         [v5 setZIndex:-1000];
-        v40 = [(HUGridFlowLayout *)self collectionView];
-        [v40 contentOffset];
+        collectionView3 = [(HUGridFlowLayout *)self collectionView];
+        [collectionView3 contentOffset];
         v15 = v14;
-        v16 = [(HUGridFlowLayout *)self collectionView];
-        [v16 contentInset];
+        collectionView4 = [(HUGridFlowLayout *)self collectionView];
+        [collectionView4 contentInset];
         v18 = v15 + v17;
-        v19 = [(HUGridFlowLayout *)self collectionView];
-        [v19 contentOffset];
+        collectionView5 = [(HUGridFlowLayout *)self collectionView];
+        [collectionView5 contentOffset];
         v21 = v20;
-        v22 = [(HUGridFlowLayout *)self collectionView];
-        [v22 contentInset];
+        collectionView6 = [(HUGridFlowLayout *)self collectionView];
+        [collectionView6 contentInset];
         v24 = v21 + v23;
-        v25 = [(HUGridFlowLayout *)self collectionView];
-        [v25 _systemContentInset];
+        collectionView7 = [(HUGridFlowLayout *)self collectionView];
+        [collectionView7 _systemContentInset];
         v27 = v24 + v26;
 
         if (objc_opt_respondsToSelector())
         {
-          v28 = [(HUGridFlowLayout *)self collectionView];
-          [v11 collectionView:v28 gridLayout:self alphaForItemAtIndexPath:v7 scrollDistance:{v18, v27}];
+          collectionView8 = [(HUGridFlowLayout *)self collectionView];
+          [delegate collectionView:collectionView8 gridLayout:self alphaForItemAtIndexPath:indexPath scrollDistance:{v18, v27}];
           [v5 setAlpha:?];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v29 = [(HUGridFlowLayout *)self collectionView];
-          [v11 collectionView:v29 gridLayout:self positionOffsetForItemAtIndexPath:v7 scrollDistance:{v18, v27}];
+          collectionView9 = [(HUGridFlowLayout *)self collectionView];
+          [delegate collectionView:collectionView9 gridLayout:self positionOffsetForItemAtIndexPath:indexPath scrollDistance:{v18, v27}];
           v31 = v30;
           v33 = v32;
 
@@ -622,17 +622,17 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
           [v5 setCenter:{v31 + v34, v33 + v35}];
         }
 
-        v36 = [(HUGridFlowLayout *)self collectionView];
-        v37 = [v36 delegate];
+        collectionView10 = [(HUGridFlowLayout *)self collectionView];
+        delegate2 = [collectionView10 delegate];
         v38 = objc_opt_respondsToSelector();
 
         if (v38)
         {
-          v39 = [(HUGridFlowLayout *)self collectionView];
+          collectionView11 = [(HUGridFlowLayout *)self collectionView];
           [v5 frame];
-          if (v11)
+          if (delegate)
           {
-            [v11 collectionView:v39 gridLayout:self transformForItemAtIndexPath:v7 cellFrame:? scrollDistance:? offset:?];
+            [delegate collectionView:collectionView11 gridLayout:self transformForItemAtIndexPath:indexPath cellFrame:? scrollDistance:? offset:?];
           }
 
           else
@@ -653,7 +653,7 @@ void __54__HUGridFlowLayout_layoutAttributesForElementsInRect___block_invoke(uin
 
   else
   {
-    v5 = v4;
+    v5 = attributesCopy;
   }
 
   return v5;

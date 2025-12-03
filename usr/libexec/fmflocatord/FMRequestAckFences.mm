@@ -1,6 +1,6 @@
 @interface FMRequestAckFences
-- (BOOL)canReplace:(id)a3;
-- (FMRequestAckFences)initWithProvider:(id)a3 fencesCommand:(id)a4 ackURL:(id)a5;
+- (BOOL)canReplace:(id)replace;
+- (FMRequestAckFences)initWithProvider:(id)provider fencesCommand:(id)command ackURL:(id)l;
 - (id)requestBody;
 - (void)deinitializeRequest;
 @end
@@ -16,18 +16,18 @@
   [(FMRequestAckFences *)self setAckURL:0];
 }
 
-- (FMRequestAckFences)initWithProvider:(id)a3 fencesCommand:(id)a4 ackURL:(id)a5
+- (FMRequestAckFences)initWithProvider:(id)provider fencesCommand:(id)command ackURL:(id)l
 {
-  v8 = a4;
-  v9 = a5;
+  commandCopy = command;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = FMRequestAckFences;
-  v10 = [(FMRequest *)&v13 initWithProvider:a3];
+  v10 = [(FMRequest *)&v13 initWithProvider:provider];
   v11 = v10;
   if (v10)
   {
-    [(FMRequestAckFences *)v10 setFencesCommand:v8];
-    [(FMRequestAckFences *)v11 setAckURL:v9];
+    [(FMRequestAckFences *)v10 setFencesCommand:commandCopy];
+    [(FMRequestAckFences *)v11 setAckURL:lCopy];
   }
 
   return v11;
@@ -37,41 +37,41 @@
 {
   v10.receiver = self;
   v10.super_class = FMRequestAckFences;
-  v3 = [(FMRequest *)&v10 requestBody];
-  v4 = [(FMRequest *)self provider];
-  v5 = [v4 standardDeviceContext];
-  [v3 setObject:v5 forKeyedSubscript:@"deviceContext"];
+  requestBody = [(FMRequest *)&v10 requestBody];
+  provider = [(FMRequest *)self provider];
+  standardDeviceContext = [provider standardDeviceContext];
+  [requestBody setObject:standardDeviceContext forKeyedSubscript:@"deviceContext"];
 
-  v6 = [(FMRequest *)self provider];
-  v7 = [v6 fullDeviceInfo];
-  [v3 setObject:v7 forKeyedSubscript:@"deviceInfo"];
+  provider2 = [(FMRequest *)self provider];
+  fullDeviceInfo = [provider2 fullDeviceInfo];
+  [requestBody setObject:fullDeviceInfo forKeyedSubscript:@"deviceInfo"];
 
-  [v3 setObject:@"OK" forKeyedSubscript:@"statusMessage"];
-  [v3 setObject:&off_100062F88 forKeyedSubscript:@"statusCode"];
-  v8 = [(FMRequestAckFences *)self fencesCommand];
-  [v3 setObject:v8 forKeyedSubscript:@"cmdContext"];
+  [requestBody setObject:@"OK" forKeyedSubscript:@"statusMessage"];
+  [requestBody setObject:&off_100062F88 forKeyedSubscript:@"statusCode"];
+  fencesCommand = [(FMRequestAckFences *)self fencesCommand];
+  [requestBody setObject:fencesCommand forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMRequest *)self delegate];
-      v7 = [v5 delegate];
-      if (v6 == v7)
+      delegate = [(FMRequest *)self delegate];
+      delegate2 = [v5 delegate];
+      if (delegate == delegate2)
       {
-        v9 = [(FMRequestAckFences *)self fencesCommand];
-        v10 = [v9 objectForKeyedSubscript:@"id"];
-        v11 = [v5 fencesCommand];
-        v12 = [v11 objectForKeyedSubscript:@"id"];
+        fencesCommand = [(FMRequestAckFences *)self fencesCommand];
+        v10 = [fencesCommand objectForKeyedSubscript:@"id"];
+        fencesCommand2 = [v5 fencesCommand];
+        v12 = [fencesCommand2 objectForKeyedSubscript:@"id"];
         v8 = [v10 isEqualToString:v12];
       }
 

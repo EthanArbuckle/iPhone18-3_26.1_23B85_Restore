@@ -1,11 +1,11 @@
 @interface ICSharedWithYouController
 + (ICSharedWithYouController)sharedController;
-- (ICSharedWithYouController)initWithController:(id)a3;
+- (ICSharedWithYouController)initWithController:(id)controller;
 - (NSManagedObjectContext)managedObjectContext;
-- (id)highlightForURL:(id)a3;
-- (void)fetchShareMetadataWithURLs:(id)a3 completion:(id)a4;
-- (void)setManagedObjectContext:(id)a3;
-- (void)userAcceptedInvitationWithShareMetadata:(id)a3 associatedObjectID:(id)a4;
+- (id)highlightForURL:(id)l;
+- (void)fetchShareMetadataWithURLs:(id)ls completion:(id)completion;
+- (void)setManagedObjectContext:(id)context;
+- (void)userAcceptedInvitationWithShareMetadata:(id)metadata associatedObjectID:(id)d;
 @end
 
 @implementation ICSharedWithYouController
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (ICSharedWithYouController)initWithController:(id)a3
+- (ICSharedWithYouController)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = ICSharedWithYouController;
   v6 = [(ICSharedWithYouController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
@@ -36,26 +36,26 @@
 
 - (NSManagedObjectContext)managedObjectContext
 {
-  v2 = [(ICSharedWithYouController *)self controller];
-  v3 = [v2 managedObjectContext];
+  controller = [(ICSharedWithYouController *)self controller];
+  managedObjectContext = [controller managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
-- (void)setManagedObjectContext:(id)a3
+- (void)setManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICSharedWithYouController *)self controller];
-  [v5 setManagedObjectContext:v4];
+  contextCopy = context;
+  controller = [(ICSharedWithYouController *)self controller];
+  [controller setManagedObjectContext:contextCopy];
 }
 
-- (id)highlightForURL:(id)a3
+- (id)highlightForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = a3;
-    v5 = [(ICSharedWithYouController *)self controller];
-    v6 = [v5 highlightForURL:v4];
+    lCopy = l;
+    controller = [(ICSharedWithYouController *)self controller];
+    v6 = [controller highlightForURL:lCopy];
   }
 
   else
@@ -66,20 +66,20 @@
   return v6;
 }
 
-- (void)fetchShareMetadataWithURLs:(id)a3 completion:(id)a4
+- (void)fetchShareMetadataWithURLs:(id)ls completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSharedWithYouController *)self controller];
-  [v8 fetchShareMetadataWithURLs:v7 completion:v6];
+  completionCopy = completion;
+  lsCopy = ls;
+  controller = [(ICSharedWithYouController *)self controller];
+  [controller fetchShareMetadataWithURLs:lsCopy completion:completionCopy];
 }
 
-- (void)userAcceptedInvitationWithShareMetadata:(id)a3 associatedObjectID:(id)a4
+- (void)userAcceptedInvitationWithShareMetadata:(id)metadata associatedObjectID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSharedWithYouController *)self controller];
-  [v8 userAcceptedInvitationWithShareMetadata:v7 associatedObjectID:v6];
+  dCopy = d;
+  metadataCopy = metadata;
+  controller = [(ICSharedWithYouController *)self controller];
+  [controller userAcceptedInvitationWithShareMetadata:metadataCopy associatedObjectID:dCopy];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface LSMIResultUnregistrant
-- (LSMIResultUnregistrant)initWithContext:(id)a3 operationUUID:(id)a4 bundleIdentifier:(id)a5 precondition:(id)a6 type:(unsigned int)a7;
-- (void)runWithCompletion:(id)a3;
+- (LSMIResultUnregistrant)initWithContext:(id)context operationUUID:(id)d bundleIdentifier:(id)identifier precondition:(id)precondition type:(unsigned int)type;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation LSMIResultUnregistrant
 
-- (LSMIResultUnregistrant)initWithContext:(id)a3 operationUUID:(id)a4 bundleIdentifier:(id)a5 precondition:(id)a6 type:(unsigned int)a7
+- (LSMIResultUnregistrant)initWithContext:(id)context operationUUID:(id)d bundleIdentifier:(id)identifier precondition:(id)precondition type:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  contextCopy = context;
+  dCopy = d;
+  identifierCopy = identifier;
+  preconditionCopy = precondition;
   v24.receiver = self;
   v24.super_class = LSMIResultUnregistrant;
   v17 = [(LSMIResultUnregistrant *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_strategy, a3);
-    objc_storeStrong(&v18->_uuid, a4);
-    v19 = [v15 copy];
+    objc_storeStrong(&v17->_strategy, context);
+    objc_storeStrong(&v18->_uuid, d);
+    v19 = [identifierCopy copy];
     bundleID = v18->_bundleID;
     v18->_bundleID = v19;
 
-    if (v16)
+    if (preconditionCopy)
     {
-      v21 = v16;
+      v21 = preconditionCopy;
     }
 
     else
@@ -36,15 +36,15 @@
     precondition = v18->_precondition;
     v18->_precondition = v21;
 
-    v18->_type = a7;
+    v18->_type = type;
   }
 
   return v18;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(LSRegistrantStrategy *)self->_strategy preUnregistrationContextForBundleIdentifier:self->_bundleID];
   v24 = 0;
   v25 = &v24;
@@ -86,7 +86,7 @@
   dispatch_async(v7, &v9);
 
   _LSLogStepFinished(6, v25[5] == 0, self->_bundleID, &cfstr_UnregisterBund_0.isa, v9, v10, v11, v12);
-  v4[2](v4, v19[5], v25[5]);
+  completionCopy[2](completionCopy, v19[5], v25[5]);
 
   _Block_object_dispose(v16, 8);
   _Block_object_dispose(&v18, 8);

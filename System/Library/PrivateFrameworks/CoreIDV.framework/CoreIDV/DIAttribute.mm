@@ -7,7 +7,7 @@
 - (BOOL)notForVerification;
 - (BOOL)optional;
 - (DIAttribute)init;
-- (DIAttribute)initWithCoder:(id)a3;
+- (DIAttribute)initWithCoder:(id)coder;
 - (NSData)submissionValue;
 - (NSObject)defaultValue;
 - (NSObject)getCurrentValue;
@@ -26,84 +26,84 @@
 - (NSString)supportingData;
 - (id)description;
 - (unint64_t)attributeType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributeType:(unint64_t)a3;
-- (void)setClientValidationRegex:(id)a3;
-- (void)setCodeOnError:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setDataNodeProof:(BOOL)a3;
-- (void)setDataNodeProofGroup:(id)a3;
-- (void)setDefaultValue:(id)a3;
-- (void)setDisplayFormat:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setHasLabel:(BOOL)a3;
-- (void)setHoldLocally:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIncorrect:(BOOL)a3;
-- (void)setIsSensitive:(BOOL)a3;
-- (void)setLocalizedDisplayName:(id)a3;
-- (void)setLocalizedPlaceholder:(id)a3;
-- (void)setNotForVerification:(BOOL)a3;
-- (void)setOptional:(BOOL)a3;
-- (void)setReason:(id)a3;
-- (void)setServerValidationURL:(id)a3;
-- (void)setSubmissionFormat:(id)a3;
-- (void)setSubmissionKey:(id)a3;
-- (void)setSubmissionValue:(id)a3;
-- (void)setSupportingData:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributeType:(unint64_t)type;
+- (void)setClientValidationRegex:(id)regex;
+- (void)setCodeOnError:(id)error;
+- (void)setCurrentValue:(id)value;
+- (void)setDataNodeProof:(BOOL)proof;
+- (void)setDataNodeProofGroup:(id)group;
+- (void)setDefaultValue:(id)value;
+- (void)setDisplayFormat:(id)format;
+- (void)setGroup:(id)group;
+- (void)setHasLabel:(BOOL)label;
+- (void)setHoldLocally:(BOOL)locally;
+- (void)setIdentifier:(id)identifier;
+- (void)setIncorrect:(BOOL)incorrect;
+- (void)setIsSensitive:(BOOL)sensitive;
+- (void)setLocalizedDisplayName:(id)name;
+- (void)setLocalizedPlaceholder:(id)placeholder;
+- (void)setNotForVerification:(BOOL)verification;
+- (void)setOptional:(BOOL)optional;
+- (void)setReason:(id)reason;
+- (void)setServerValidationURL:(id)l;
+- (void)setSubmissionFormat:(id)format;
+- (void)setSubmissionKey:(id)key;
+- (void)setSubmissionValue:(id)value;
+- (void)setSupportingData:(id)data;
 @end
 
 @implementation DIAttribute
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeInteger:self->_attributeType forKey:@"attributeType"];
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_displayFormat forKey:@"displayFormat"];
-  [v4 encodeObject:self->_localizedDisplayName forKey:@"localizedDisplayName"];
-  [v4 encodeObject:self->_localizedPlaceholder forKey:@"localizedPlaceholder"];
-  [v4 encodeObject:self->_submissionKey forKey:@"submissionKey"];
-  [v4 encodeBool:self->_optional forKey:@"optional"];
-  [v4 encodeBool:self->_incorrect forKey:@"incorrect"];
-  [v4 encodeObject:self->_reason forKey:@"reason"];
-  [v4 encodeObject:self->_currentValue forKey:@"currentValue"];
-  [v4 encodeObject:self->_defaultValue forKey:@"defaultValue"];
+  [coderCopy encodeInteger:self->_attributeType forKey:@"attributeType"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_displayFormat forKey:@"displayFormat"];
+  [coderCopy encodeObject:self->_localizedDisplayName forKey:@"localizedDisplayName"];
+  [coderCopy encodeObject:self->_localizedPlaceholder forKey:@"localizedPlaceholder"];
+  [coderCopy encodeObject:self->_submissionKey forKey:@"submissionKey"];
+  [coderCopy encodeBool:self->_optional forKey:@"optional"];
+  [coderCopy encodeBool:self->_incorrect forKey:@"incorrect"];
+  [coderCopy encodeObject:self->_reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_currentValue forKey:@"currentValue"];
+  [coderCopy encodeObject:self->_defaultValue forKey:@"defaultValue"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (DIAttribute)initWithCoder:(id)a3
+- (DIAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIAttribute *)self init];
   if (v5)
   {
-    v5->_attributeType = [v4 decodeIntegerForKey:@"attributeType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5->_attributeType = [coderCopy decodeIntegerForKey:@"attributeType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayFormat"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayFormat"];
     displayFormat = v5->_displayFormat;
     v5->_displayFormat = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDisplayName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDisplayName"];
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedPlaceholder"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedPlaceholder"];
     localizedPlaceholder = v5->_localizedPlaceholder;
     v5->_localizedPlaceholder = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"submissionKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"submissionKey"];
     submissionKey = v5->_submissionKey;
     v5->_submissionKey = v14;
 
-    v5->_optional = [v4 decodeBoolForKey:@"optional"];
-    v5->_incorrect = [v4 decodeBoolForKey:@"incorrect"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v5->_optional = [coderCopy decodeBoolForKey:@"optional"];
+    v5->_incorrect = [coderCopy decodeBoolForKey:@"incorrect"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v16;
 
@@ -117,7 +117,7 @@
 
       if (attributeType == 3)
       {
-        v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentValue"];
+        v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentValue"];
         currentValue = v5->_currentValue;
         v5->_currentValue = v24;
 
@@ -134,7 +134,7 @@
           v19 = MEMORY[0x277CBEB98];
           v20 = objc_opt_class();
           v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-          v22 = [v4 decodeObjectOfClasses:v21 forKey:@"currentValue"];
+          v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"currentValue"];
           v23 = v5->_currentValue;
           v5->_currentValue = v22;
 
@@ -154,11 +154,11 @@ LABEL_13:
       }
 
 LABEL_12:
-      v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentValue"];
+      v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentValue"];
       v28 = v5->_currentValue;
       v5->_currentValue = v27;
 
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
       goto LABEL_13;
     }
   }
@@ -182,13 +182,13 @@ LABEL_14:
   return result;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_currentValue != v6)
+  if (self->_currentValue != valueCopy)
   {
-    v4 = [v6 copyWithZone:0];
+    v4 = [valueCopy copyWithZone:0];
     currentValue = self->_currentValue;
     self->_currentValue = v4;
   }
@@ -196,13 +196,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_defaultValue != v6)
+  if (self->_defaultValue != valueCopy)
   {
-    v4 = [v6 copyWithZone:0];
+    v4 = [valueCopy copyWithZone:0];
     defaultValue = self->_defaultValue;
     self->_defaultValue = v4;
   }
@@ -210,13 +210,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_identifier != v6)
+  if (self->_identifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)identifierCopy copyWithZone:0];
     identifier = self->_identifier;
     self->_identifier = v4;
   }
@@ -224,21 +224,21 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setAttributeType:(unint64_t)a3
+- (void)setAttributeType:(unint64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_attributeType = a3;
+  self->_attributeType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDisplayFormat:(id)a3
+- (void)setDisplayFormat:(id)format
 {
-  v6 = a3;
+  formatCopy = format;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_displayFormat != v6)
+  if (self->_displayFormat != formatCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)formatCopy copyWithZone:0];
     displayFormat = self->_displayFormat;
     self->_displayFormat = v4;
   }
@@ -246,13 +246,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLocalizedDisplayName:(id)a3
+- (void)setLocalizedDisplayName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_localizedDisplayName != v6)
+  if (self->_localizedDisplayName != nameCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)nameCopy copyWithZone:0];
     localizedDisplayName = self->_localizedDisplayName;
     self->_localizedDisplayName = v4;
   }
@@ -260,13 +260,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLocalizedPlaceholder:(id)a3
+- (void)setLocalizedPlaceholder:(id)placeholder
 {
-  v6 = a3;
+  placeholderCopy = placeholder;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_localizedPlaceholder != v6)
+  if (self->_localizedPlaceholder != placeholderCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)placeholderCopy copyWithZone:0];
     localizedPlaceholder = self->_localizedPlaceholder;
     self->_localizedPlaceholder = v4;
   }
@@ -274,13 +274,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSubmissionKey:(id)a3
+- (void)setSubmissionKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_submissionKey != v6)
+  if (self->_submissionKey != keyCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)keyCopy copyWithZone:0];
     submissionKey = self->_submissionKey;
     self->_submissionKey = v4;
   }
@@ -288,13 +288,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSubmissionFormat:(id)a3
+- (void)setSubmissionFormat:(id)format
 {
-  v6 = a3;
+  formatCopy = format;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_submissionFormat != v6)
+  if (self->_submissionFormat != formatCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)formatCopy copyWithZone:0];
     submissionFormat = self->_submissionFormat;
     self->_submissionFormat = v4;
   }
@@ -310,61 +310,61 @@ LABEL_14:
   return optional;
 }
 
-- (void)setOptional:(BOOL)a3
+- (void)setOptional:(BOOL)optional
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_optional = a3;
+  self->_optional = optional;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIncorrect:(BOOL)a3
+- (void)setIncorrect:(BOOL)incorrect
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_incorrect = a3;
+  self->_incorrect = incorrect;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIsSensitive:(BOOL)a3
+- (void)setIsSensitive:(BOOL)sensitive
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_isSensitive = a3;
+  self->_isSensitive = sensitive;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setHoldLocally:(BOOL)a3
+- (void)setHoldLocally:(BOOL)locally
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_holdLocally = a3;
+  self->_holdLocally = locally;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setNotForVerification:(BOOL)a3
+- (void)setNotForVerification:(BOOL)verification
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_notForVerification = a3;
+  self->_notForVerification = verification;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDataNodeProof:(BOOL)a3
+- (void)setDataNodeProof:(BOOL)proof
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_dataNodeProof = a3;
+  self->_dataNodeProof = proof;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v6 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_group != v6)
+  if (self->_group != groupCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)groupCopy copyWithZone:0];
     group = self->_group;
     self->_group = v4;
   }
@@ -372,13 +372,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDataNodeProofGroup:(id)a3
+- (void)setDataNodeProofGroup:(id)group
 {
-  v6 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_dataNodeProofGroup != v6)
+  if (self->_dataNodeProofGroup != groupCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)groupCopy copyWithZone:0];
     dataNodeProofGroup = self->_dataNodeProofGroup;
     self->_dataNodeProofGroup = v4;
   }
@@ -386,13 +386,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSubmissionValue:(id)a3
+- (void)setSubmissionValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_submissionValue != v6)
+  if (self->_submissionValue != valueCopy)
   {
-    v4 = [(NSData *)v6 copyWithZone:0];
+    v4 = [(NSData *)valueCopy copyWithZone:0];
     submissionValue = self->_submissionValue;
     self->_submissionValue = v4;
   }
@@ -400,13 +400,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setClientValidationRegex:(id)a3
+- (void)setClientValidationRegex:(id)regex
 {
-  v6 = a3;
+  regexCopy = regex;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_clientValidationRegex != v6)
+  if (self->_clientValidationRegex != regexCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)regexCopy copyWithZone:0];
     clientValidationRegex = self->_clientValidationRegex;
     self->_clientValidationRegex = v4;
   }
@@ -414,13 +414,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCodeOnError:(id)a3
+- (void)setCodeOnError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_codeOnError != v6)
+  if (self->_codeOnError != errorCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)errorCopy copyWithZone:0];
     codeOnError = self->_codeOnError;
     self->_codeOnError = v4;
   }
@@ -428,13 +428,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setServerValidationURL:(id)a3
+- (void)setServerValidationURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_serverValidationURL != v6)
+  if (self->_serverValidationURL != lCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)lCopy copyWithZone:0];
     serverValidationURL = self->_serverValidationURL;
     self->_serverValidationURL = v4;
   }
@@ -442,21 +442,21 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setHasLabel:(BOOL)a3
+- (void)setHasLabel:(BOOL)label
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_hasLabel = a3;
+  self->_hasLabel = label;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSupportingData:(id)a3
+- (void)setSupportingData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_supportingData != v6)
+  if (self->_supportingData != dataCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)dataCopy copyWithZone:0];
     supportingData = self->_supportingData;
     self->_supportingData = v4;
   }
@@ -464,13 +464,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_reason != v6)
+  if (self->_reason != reasonCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)reasonCopy copyWithZone:0];
     reason = self->_reason;
     self->_reason = v4;
   }

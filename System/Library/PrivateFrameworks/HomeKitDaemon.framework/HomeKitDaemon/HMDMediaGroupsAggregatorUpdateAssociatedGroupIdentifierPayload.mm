@@ -1,7 +1,7 @@
 @interface HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload
-- (BOOL)isEqual:(id)a3;
-- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithGroupIdentifier:(id)a3 associatedGroupIdentifier:(id)a4;
-- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithGroupIdentifier:(id)identifier associatedGroupIdentifier:(id)groupIdentifier;
+- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithPayload:(id)payload;
 - (id)attributeDescriptions;
 - (id)payloadCopy;
 - (unint64_t)hash;
@@ -9,10 +9,10 @@
 
 @implementation HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -22,7 +22,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -33,12 +33,12 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
-      v8 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)v6 groupIdentifier];
-      if ([v7 hmf_isEqualToUUID:v8])
+      groupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
+      groupIdentifier2 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)v6 groupIdentifier];
+      if ([groupIdentifier hmf_isEqualToUUID:groupIdentifier2])
       {
-        v9 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self associatedGroupIdentifier];
-        v10 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)v6 associatedGroupIdentifier];
+        associatedGroupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self associatedGroupIdentifier];
+        associatedGroupIdentifier2 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)v6 associatedGroupIdentifier];
         v11 = HMFEqualObjects();
       }
 
@@ -59,8 +59,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
-  v3 = [v2 hash];
+  groupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
+  v3 = [groupIdentifier hash];
 
   return v3;
 }
@@ -69,17 +69,17 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"groupIdentifier";
-  v3 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
-  v4 = [v3 UUIDString];
+  groupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
+  uUIDString = [groupIdentifier UUIDString];
   v12[1] = @"associatedGroupIdentifier";
-  v13[0] = v4;
-  v5 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self associatedGroupIdentifier];
-  v6 = [v5 UUIDString];
-  v7 = v6;
+  v13[0] = uUIDString;
+  associatedGroupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self associatedGroupIdentifier];
+  uUIDString2 = [associatedGroupIdentifier UUIDString];
+  v7 = uUIDString2;
   v8 = &stru_283CF9D50;
-  if (v6)
+  if (uUIDString2)
   {
-    v8 = v6;
+    v8 = uUIDString2;
   }
 
   v13[1] = v8;
@@ -90,22 +90,22 @@
   return v9;
 }
 
-- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithPayload:(id)a3
+- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithPayload:(id)payload
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmf_UUIDForKey:@"groupIdentifier"];
-  v6 = [v4 hmf_UUIDForKey:@"associatedGroupIdentifier"];
+  payloadCopy = payload;
+  v5 = [payloadCopy hmf_UUIDForKey:@"groupIdentifier"];
+  v6 = [payloadCopy hmf_UUIDForKey:@"associatedGroupIdentifier"];
   if (v5)
   {
-    v7 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self initWithGroupIdentifier:v5 associatedGroupIdentifier:v6];
-    v8 = v7;
+    selfCopy = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self initWithGroupIdentifier:v5 associatedGroupIdentifier:v6];
+    v8 = selfCopy;
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -115,7 +115,7 @@
       v16 = 2112;
       v17 = 0;
       v18 = 2112;
-      v19 = v4;
+      v19 = payloadCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Failed to get decode dependencies group identifier: %@ payload: %@ due", &v14, 0x20u);
     }
 
@@ -131,15 +131,15 @@
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
-  v5 = [v3 initWithName:@"groupIdentifier" value:v4];
+  groupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self groupIdentifier];
+  v5 = [v3 initWithName:@"groupIdentifier" value:groupIdentifier];
   v14[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self associatedGroupIdentifier];
-  v8 = v7;
-  if (v7)
+  associatedGroupIdentifier = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)self associatedGroupIdentifier];
+  v8 = associatedGroupIdentifier;
+  if (associatedGroupIdentifier)
   {
-    v9 = v7;
+    v9 = associatedGroupIdentifier;
   }
 
   else
@@ -156,21 +156,21 @@
   return v11;
 }
 
-- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithGroupIdentifier:(id)a3 associatedGroupIdentifier:(id)a4
+- (HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload)initWithGroupIdentifier:(id)identifier associatedGroupIdentifier:(id)groupIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  if (identifierCopy)
   {
-    v9 = v8;
+    v9 = groupIdentifierCopy;
     v15.receiver = self;
     v15.super_class = HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload;
     v10 = [(HMDMediaGroupsAggregatorUpdateAssociatedGroupIdentifierPayload *)&v15 init];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_groupIdentifier, a3);
-      objc_storeStrong(&v11->_associatedGroupIdentifier, a4);
+      objc_storeStrong(&v10->_groupIdentifier, identifier);
+      objc_storeStrong(&v11->_associatedGroupIdentifier, groupIdentifier);
     }
 
     return v11;

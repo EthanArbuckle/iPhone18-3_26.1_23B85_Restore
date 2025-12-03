@@ -6,8 +6,8 @@
 
 - (BOOL)_accessibilityOpaqueElementScrollsContentIntoView
 {
-  v3 = [(UICollectionViewAccessibility__PhotosUI__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"photoSharingCollectionView"];
+  accessibilityIdentifier = [(UICollectionViewAccessibility__PhotosUI__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"photoSharingCollectionView"];
 
   if (v4)
   {

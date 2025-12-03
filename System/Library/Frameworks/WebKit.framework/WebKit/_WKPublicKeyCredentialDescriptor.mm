@@ -1,11 +1,11 @@
 @interface _WKPublicKeyCredentialDescriptor
-- (_WKPublicKeyCredentialDescriptor)initWithIdentifier:(id)a3;
+- (_WKPublicKeyCredentialDescriptor)initWithIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation _WKPublicKeyCredentialDescriptor
 
-- (_WKPublicKeyCredentialDescriptor)initWithIdentifier:(id)a3
+- (_WKPublicKeyCredentialDescriptor)initWithIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = _WKPublicKeyCredentialDescriptor;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(_WKPublicKeyCredentialDescriptor *)v4 setIdentifier:a3];
+    [(_WKPublicKeyCredentialDescriptor *)v4 setIdentifier:identifier];
   }
 
   return v5;

@@ -1,20 +1,20 @@
 @interface HMIExternalPersonManagerSettings
-- (BOOL)isEqual:(id)a3;
-- (HMIExternalPersonManagerSettings)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMIExternalPersonManagerSettings)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIExternalPersonManagerSettings
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -25,8 +25,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMIExternalPersonManagerSettings isImportingFromPhotoLibraryEnabled](self, "isImportingFromPhotoLibraryEnabled"), v7 == [v6 isImportingFromPhotoLibraryEnabled]))
   {
-    v9 = [(HMIExternalPersonManagerSettings *)self isSharingFaceClassificationsEnabled];
-    v8 = v9 ^ [v6 isSharingFaceClassificationsEnabled] ^ 1;
+    isSharingFaceClassificationsEnabled = [(HMIExternalPersonManagerSettings *)self isSharingFaceClassificationsEnabled];
+    v8 = isSharingFaceClassificationsEnabled ^ [v6 isSharingFaceClassificationsEnabled] ^ 1;
   }
 
   else
@@ -37,7 +37,7 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMIMutableExternalPersonManagerSettings allocWithZone:?]];
   [(HMIExternalPersonManagerSettings *)v4 setImportingFromPhotoLibraryEnabled:[(HMIExternalPersonManagerSettings *)self isImportingFromPhotoLibraryEnabled]];
@@ -45,19 +45,19 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[HMIExternalPersonManagerSettings isImportingFromPhotoLibraryEnabled](self forKey:{"isImportingFromPhotoLibraryEnabled"), @"HMPMS.ifple"}];
-  [v4 encodeBool:-[HMIExternalPersonManagerSettings isSharingFaceClassificationsEnabled](self forKey:{"isSharingFaceClassificationsEnabled"), @"HMPMS.sfce"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[HMIExternalPersonManagerSettings isImportingFromPhotoLibraryEnabled](self forKey:{"isImportingFromPhotoLibraryEnabled"), @"HMPMS.ifple"}];
+  [coderCopy encodeBool:-[HMIExternalPersonManagerSettings isSharingFaceClassificationsEnabled](self forKey:{"isSharingFaceClassificationsEnabled"), @"HMPMS.sfce"}];
 }
 
-- (HMIExternalPersonManagerSettings)initWithCoder:(id)a3
+- (HMIExternalPersonManagerSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  -[HMIExternalPersonManagerSettings setImportingFromPhotoLibraryEnabled:](v5, "setImportingFromPhotoLibraryEnabled:", [v4 decodeBoolForKey:@"HMPMS.ifple"]);
-  v6 = [v4 decodeBoolForKey:@"HMPMS.sfce"];
+  -[HMIExternalPersonManagerSettings setImportingFromPhotoLibraryEnabled:](v5, "setImportingFromPhotoLibraryEnabled:", [coderCopy decodeBoolForKey:@"HMPMS.ifple"]);
+  v6 = [coderCopy decodeBoolForKey:@"HMPMS.sfce"];
 
   [(HMIExternalPersonManagerSettings *)v5 setSharingFaceClassificationsEnabled:v6];
   return v5;

@@ -1,8 +1,8 @@
 @interface MTROperationalCredentialsClusterAddNOCParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROperationalCredentialsClusterAddNOCParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,16 +15,16 @@
   v2 = [(MTROperationalCredentialsClusterAddNOCParams *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     nocValue = v2->_nocValue;
-    v2->_nocValue = v3;
+    v2->_nocValue = data;
 
     icacValue = v2->_icacValue;
     v2->_icacValue = 0;
 
-    v6 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     ipkValue = v2->_ipkValue;
-    v2->_ipkValue = v6;
+    v2->_ipkValue = data2;
 
     caseAdminSubject = v2->_caseAdminSubject;
     v2->_caseAdminSubject = &unk_284C3E4C8;
@@ -42,29 +42,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterAddNOCParams);
-  v5 = [(MTROperationalCredentialsClusterAddNOCParams *)self nocValue];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setNocValue:v5];
+  nocValue = [(MTROperationalCredentialsClusterAddNOCParams *)self nocValue];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setNocValue:nocValue];
 
-  v6 = [(MTROperationalCredentialsClusterAddNOCParams *)self icacValue];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setIcacValue:v6];
+  icacValue = [(MTROperationalCredentialsClusterAddNOCParams *)self icacValue];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setIcacValue:icacValue];
 
-  v7 = [(MTROperationalCredentialsClusterAddNOCParams *)self ipkValue];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setIpkValue:v7];
+  ipkValue = [(MTROperationalCredentialsClusterAddNOCParams *)self ipkValue];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setIpkValue:ipkValue];
 
-  v8 = [(MTROperationalCredentialsClusterAddNOCParams *)self caseAdminSubject];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setCaseAdminSubject:v8];
+  caseAdminSubject = [(MTROperationalCredentialsClusterAddNOCParams *)self caseAdminSubject];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setCaseAdminSubject:caseAdminSubject];
 
-  v9 = [(MTROperationalCredentialsClusterAddNOCParams *)self adminVendorId];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setAdminVendorId:v9];
+  adminVendorId = [(MTROperationalCredentialsClusterAddNOCParams *)self adminVendorId];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setAdminVendorId:adminVendorId];
 
-  v10 = [(MTROperationalCredentialsClusterAddNOCParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterAddNOCParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTROperationalCredentialsClusterAddNOCParams *)self serverSideProcessingTimeout];
-  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTROperationalCredentialsClusterAddNOCParams *)self serverSideProcessingTimeout];
+  [(MTROperationalCredentialsClusterAddNOCParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -82,41 +82,41 @@
   return v9;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27 = 0uLL;
   v28 = 0;
-  v31 = 0;
+  unsignedLongLongValue = 0;
   v30 = 0uLL;
-  v32 = 0;
+  unsignedShortValue = 0;
   v26[0] = 0;
   v26[1] = 0;
   v25 = v26;
-  v5 = [(MTROperationalCredentialsClusterAddNOCParams *)self nocValue];
-  sub_238DB6950(v19, [v5 bytes], objc_msgSend(v5, "length"));
+  nocValue = [(MTROperationalCredentialsClusterAddNOCParams *)self nocValue];
+  sub_238DB6950(v19, [nocValue bytes], objc_msgSend(nocValue, "length"));
 
   v27 = v19[0];
-  v6 = [(MTROperationalCredentialsClusterAddNOCParams *)self icacValue];
+  icacValue = [(MTROperationalCredentialsClusterAddNOCParams *)self icacValue];
 
-  if (v6)
+  if (icacValue)
   {
     v28 = 1;
     v29 = 0uLL;
-    v7 = [(MTROperationalCredentialsClusterAddNOCParams *)self icacValue];
-    sub_238DB6950(v19, [v7 bytes], objc_msgSend(v7, "length"));
+    icacValue2 = [(MTROperationalCredentialsClusterAddNOCParams *)self icacValue];
+    sub_238DB6950(v19, [icacValue2 bytes], objc_msgSend(icacValue2, "length"));
 
     v29 = v19[0];
   }
 
-  v8 = [(MTROperationalCredentialsClusterAddNOCParams *)self ipkValue];
-  sub_238DB6950(v19, [v8 bytes], objc_msgSend(v8, "length"));
+  ipkValue = [(MTROperationalCredentialsClusterAddNOCParams *)self ipkValue];
+  sub_238DB6950(v19, [ipkValue bytes], objc_msgSend(ipkValue, "length"));
 
   v30 = v19[0];
-  v9 = [(MTROperationalCredentialsClusterAddNOCParams *)self caseAdminSubject];
-  v31 = [v9 unsignedLongLongValue];
+  caseAdminSubject = [(MTROperationalCredentialsClusterAddNOCParams *)self caseAdminSubject];
+  unsignedLongLongValue = [caseAdminSubject unsignedLongLongValue];
 
-  v10 = [(MTROperationalCredentialsClusterAddNOCParams *)self adminVendorId];
-  v32 = [v10 unsignedShortValue];
+  adminVendorId = [(MTROperationalCredentialsClusterAddNOCParams *)self adminVendorId];
+  unsignedShortValue = [adminVendorId unsignedShortValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v24);
   if (v24)
@@ -137,8 +137,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -166,19 +166,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROperationalCredentialsClusterAddNOCParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -189,7 +189,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x23F500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

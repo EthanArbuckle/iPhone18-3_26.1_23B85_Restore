@@ -1,100 +1,100 @@
 @interface AVVoiceController
 - (AVVoiceControllerRecordDelegate)recordDelegate;
-- (BOOL)IsDeviceAvailableInLocalRoute:(id)a3 error:(id *)a4;
-- (BOOL)activateAudioSessionForStream:(unint64_t)a3 isPrewarm:(BOOL)a4 error:(id *)a5;
-- (BOOL)activateAudioSessionForStream:(unint64_t)a3 isPrewarm:(BOOL)a4 recordMode:(BOOL)a5 error:(id *)a6;
-- (BOOL)configureAlertBehaviorForStream:(id)a3 error:(id *)a4;
-- (BOOL)enableSmartRoutingConsiderationForStream:(unint64_t)a3 enable:(BOOL)a4 error:(id *)a5;
-- (BOOL)isDuckingSupportedOnPickedRouteForStream:(unint64_t)a3 error:(id *)a4;
-- (BOOL)isMeteringEnabledForStream:(unint64_t)a3;
-- (BOOL)playAlertSoundForType:(int)a3 overrideMode:(int64_t)a4;
-- (BOOL)prepareRecordForStream:(id)a3 error:(id *)a4;
-- (BOOL)setAlertSoundFromURL:(id)a3 forType:(int)a4;
-- (BOOL)setAnnounceCallsEnabledForStream:(unint64_t)a3 enable:(BOOL)a4;
-- (BOOL)setContextForStream:(id)a3 forStream:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setDuckOthersForStream:(unint64_t)a3 withSettings:(id)a4 error:(id *)a5;
-- (BOOL)setEnableInterruptionByRecordingClientsForStream:(unint64_t)a3 enable:(BOOL)a4 error:(id *)a5;
-- (BOOL)setRecordModeForStream:(unint64_t)a3 recordMode:(int64_t)a4 error:(id *)a5;
-- (BOOL)startRecordForStream:(id)a3 error:(id *)a4;
-- (BOOL)stopRecordForStream:(unint64_t)a3 error:(id *)a4;
-- (BOOL)updateMeterForStream:(unint64_t)a3;
+- (BOOL)IsDeviceAvailableInLocalRoute:(id)route error:(id *)error;
+- (BOOL)activateAudioSessionForStream:(unint64_t)stream isPrewarm:(BOOL)prewarm error:(id *)error;
+- (BOOL)activateAudioSessionForStream:(unint64_t)stream isPrewarm:(BOOL)prewarm recordMode:(BOOL)mode error:(id *)error;
+- (BOOL)configureAlertBehaviorForStream:(id)stream error:(id *)error;
+- (BOOL)enableSmartRoutingConsiderationForStream:(unint64_t)stream enable:(BOOL)enable error:(id *)error;
+- (BOOL)isDuckingSupportedOnPickedRouteForStream:(unint64_t)stream error:(id *)error;
+- (BOOL)isMeteringEnabledForStream:(unint64_t)stream;
+- (BOOL)playAlertSoundForType:(int)type overrideMode:(int64_t)mode;
+- (BOOL)prepareRecordForStream:(id)stream error:(id *)error;
+- (BOOL)setAlertSoundFromURL:(id)l forType:(int)type;
+- (BOOL)setAnnounceCallsEnabledForStream:(unint64_t)stream enable:(BOOL)enable;
+- (BOOL)setContextForStream:(id)stream forStream:(unint64_t)forStream error:(id *)error;
+- (BOOL)setDuckOthersForStream:(unint64_t)stream withSettings:(id)settings error:(id *)error;
+- (BOOL)setEnableInterruptionByRecordingClientsForStream:(unint64_t)stream enable:(BOOL)enable error:(id *)error;
+- (BOOL)setRecordModeForStream:(unint64_t)stream recordMode:(int64_t)mode error:(id *)error;
+- (BOOL)startRecordForStream:(id)stream error:(id *)error;
+- (BOOL)stopRecordForStream:(unint64_t)stream error:(id *)error;
+- (BOOL)updateMeterForStream:(unint64_t)stream;
 - (Endpointer)endpointerDelegate;
 - (NSDictionary)metrics;
-- (double)getRecordBufferDurationForStream:(unint64_t)a3;
+- (double)getRecordBufferDurationForStream:(unint64_t)stream;
 - (double)recordEndWaitTime;
 - (double)recordInterspeechWaitTime;
 - (double)recordStartWaitTime;
 - (float)alertVolume;
-- (float)getAveragePowerForStream:(unint64_t)a3 forChannel:(unint64_t)a4;
-- (float)getPeakPowerForStream:(unint64_t)a3 forChannel:(unint64_t)a4;
-- (id)getPlaybackRouteForStream:(unint64_t)a3 withError:(id *)a4;
-- (id)getRecordDeviceInfoForStream:(unint64_t)a3;
-- (id)getRecordSettingsForStream:(unint64_t)a3;
-- (id)initVoiceControllerForClient:(int64_t)a3 withError:(id *)a4;
+- (float)getAveragePowerForStream:(unint64_t)stream forChannel:(unint64_t)channel;
+- (float)getPeakPowerForStream:(unint64_t)stream forChannel:(unint64_t)channel;
+- (id)getPlaybackRouteForStream:(unint64_t)stream withError:(id *)error;
+- (id)getRecordDeviceInfoForStream:(unint64_t)stream;
+- (id)getRecordSettingsForStream:(unint64_t)stream;
+- (id)initVoiceControllerForClient:(int64_t)client withError:(id *)error;
 - (id)mockPluginEndpoint;
 - (int)recordEndpointMode;
-- (int64_t)_bringUp:(int64_t)a3 withError:(id *)a4;
+- (int64_t)_bringUp:(int64_t)up withError:(id *)error;
 - (int64_t)getCurrentSessionState;
-- (int64_t)getCurrentSessionStateForStream:(unint64_t)a3;
-- (int64_t)getCurrentStreamState:(unint64_t)a3;
-- (int64_t)getRecordModeForStream:(unint64_t)a3;
+- (int64_t)getCurrentSessionStateForStream:(unint64_t)stream;
+- (int64_t)getCurrentStreamState:(unint64_t)state;
+- (int64_t)getRecordModeForStream:(unint64_t)stream;
 - (shared_ptr<ControllerImpl>)impl;
 - (unint64_t)getAlertStartTime;
-- (unint64_t)setContext:(id)a3 error:(id *)a4;
-- (unint64_t)setContext:(id)a3 streamType:(int64_t *)a4 error:(id *)a5;
-- (void)_teardownWithError:(id *)a3;
-- (void)alertPlaybackFinishedWithSettings:(id)a3;
-- (void)beganRecording:(unint64_t)a3 status:(int)a4;
-- (void)beginRecordInterruptionWithContext:(id)a3;
-- (void)cleanSlateWithError:(id *)a3;
-- (void)configureAlertBehaviorForStream:(id)a3 completion:(id)a4;
+- (unint64_t)setContext:(id)context error:(id *)error;
+- (unint64_t)setContext:(id)context streamType:(int64_t *)type error:(id *)error;
+- (void)_teardownWithError:(id *)error;
+- (void)alertPlaybackFinishedWithSettings:(id)settings;
+- (void)beganRecording:(unint64_t)recording status:(int)status;
+- (void)beginRecordInterruptionWithContext:(id)context;
+- (void)cleanSlateWithError:(id *)error;
+- (void)configureAlertBehaviorForStream:(id)stream completion:(id)completion;
 - (void)configureVoiceTriggerClientCompletionBlocks;
-- (void)deactivateAudioSessionForStream:(unint64_t)a3 withOptions:(unint64_t)a4 completion:(id)a5;
-- (void)deactivateAudioSessionForStream:(unint64_t)a3 withOptions:(unint64_t)a4 error:(id *)a5;
-- (void)deactivateAudioSessionWithOptions:(unint64_t)a3;
+- (void)deactivateAudioSessionForStream:(unint64_t)stream withOptions:(unint64_t)options completion:(id)completion;
+- (void)deactivateAudioSessionForStream:(unint64_t)stream withOptions:(unint64_t)options error:(id *)error;
+- (void)deactivateAudioSessionWithOptions:(unint64_t)options;
 - (void)dealloc;
-- (void)enableMiniDucking:(BOOL)a3;
-- (void)enableTriangleModeForStream:(unint64_t)a3 enable:(BOOL)a4 withCompletion:(id)a5;
-- (void)encodeError:(int)a3;
+- (void)enableMiniDucking:(BOOL)ducking;
+- (void)enableTriangleModeForStream:(unint64_t)stream enable:(BOOL)enable withCompletion:(id)completion;
+- (void)encodeError:(int)error;
 - (void)endRecordInterruption;
-- (void)endpointDetectedAtTime:(double)a3;
+- (void)endpointDetectedAtTime:(double)time;
 - (void)finalize;
-- (void)finishedRecording:(unint64_t)a3 status:(int)a4;
-- (void)getDeviceLatenciesForStream:(unint64_t)a3 withCompletion:(id)a4;
-- (void)getInputChannelInfoForStream:(unint64_t)a3 completion:(id)a4;
-- (void)getPlaybackRouteForStream:(unint64_t)a3 withCompletion:(id)a4;
-- (void)handleInterruption:(id)a3;
-- (void)handleMediaServerDeath:(id)a3;
-- (void)handleMediaServerReset:(id)a3;
-- (void)handlePluginDidPublishDevice:(id)a3 withDevice:(id)a4;
-- (void)handlePluginDidUnpublishDevice:(id)a3 withDevice:(id)a4;
-- (void)handleRouteChange:(id)a3;
-- (void)interspeechPointDetectedAtTime:(double)a3;
-- (void)notifyEventOccured:(unint64_t)a3 error:(id)a4;
-- (void)notifyStreamInvalidated:(unint64_t)a3;
-- (void)playAlert:(int)a3 withOverride:(int64_t)a4 completion:(id)a5;
-- (void)prepareRecordForStream:(id)a3 completion:(id)a4;
-- (void)removeSessionNotifications:(id)a3;
-- (void)removeStream:(unint64_t)a3 completion:(id)a4;
+- (void)finishedRecording:(unint64_t)recording status:(int)status;
+- (void)getDeviceLatenciesForStream:(unint64_t)stream withCompletion:(id)completion;
+- (void)getInputChannelInfoForStream:(unint64_t)stream completion:(id)completion;
+- (void)getPlaybackRouteForStream:(unint64_t)stream withCompletion:(id)completion;
+- (void)handleInterruption:(id)interruption;
+- (void)handleMediaServerDeath:(id)death;
+- (void)handleMediaServerReset:(id)reset;
+- (void)handlePluginDidPublishDevice:(id)device withDevice:(id)withDevice;
+- (void)handlePluginDidUnpublishDevice:(id)device withDevice:(id)withDevice;
+- (void)handleRouteChange:(id)change;
+- (void)interspeechPointDetectedAtTime:(double)time;
+- (void)notifyEventOccured:(unint64_t)occured error:(id)error;
+- (void)notifyStreamInvalidated:(unint64_t)invalidated;
+- (void)playAlert:(int)alert withOverride:(int64_t)override completion:(id)completion;
+- (void)prepareRecordForStream:(id)stream completion:(id)completion;
+- (void)removeSessionNotifications:(id)notifications;
+- (void)removeStream:(unint64_t)stream completion:(id)completion;
 - (void)sessionCleanup;
 - (void)sessionSetup;
-- (void)setAlertVolume:(float)a3;
-- (void)setContext:(id)a3 completion:(id)a4;
-- (void)setEndpointerDelegate:(id)a3;
-- (void)setRecordDelegate:(id)a3;
-- (void)setRecordEndWaitTime:(double)a3;
-- (void)setRecordEndpointMode:(int)a3;
-- (void)setRecordInterspeechWaitTime:(double)a3;
-- (void)setRecordStartWaitTime:(double)a3;
-- (void)setRecordStatusChangeBlock:(id)a3;
-- (void)setSessionNotifications:(id)a3;
-- (void)startKeepAliveQueueForStream:(unint64_t)a3 completion:(id)a4;
-- (void)startRecordForStream:(id)a3 completion:(id)a4;
-- (void)startRecordWithSettings:(id)a3 completion:(id)a4 alertCompletion:(id)a5 audioCallback:(id)a6;
+- (void)setAlertVolume:(float)volume;
+- (void)setContext:(id)context completion:(id)completion;
+- (void)setEndpointerDelegate:(id)delegate;
+- (void)setRecordDelegate:(id)delegate;
+- (void)setRecordEndWaitTime:(double)time;
+- (void)setRecordEndpointMode:(int)mode;
+- (void)setRecordInterspeechWaitTime:(double)time;
+- (void)setRecordStartWaitTime:(double)time;
+- (void)setRecordStatusChangeBlock:(id)block;
+- (void)setSessionNotifications:(id)notifications;
+- (void)startKeepAliveQueueForStream:(unint64_t)stream completion:(id)completion;
+- (void)startRecordForStream:(id)stream completion:(id)completion;
+- (void)startRecordWithSettings:(id)settings completion:(id)completion alertCompletion:(id)alertCompletion audioCallback:(id)callback;
 - (void)startpointDetected;
-- (void)stopKeepAliveQueueForStream:(unint64_t)a3 completion:(id)a4;
-- (void)stopRecordForStream:(unint64_t)a3 completion:(id)a4;
-- (void)teardownWithError:(id *)a3;
+- (void)stopKeepAliveQueueForStream:(unint64_t)stream completion:(id)completion;
+- (void)stopRecordForStream:(unint64_t)stream completion:(id)completion;
+- (void)teardownWithError:(id *)error;
 @end
 
 @implementation AVVoiceController
@@ -175,14 +175,14 @@ LABEL_12:
   [(AVVoiceController *)self impl];
   if (v8 && !self->mClientAPIClutch)
   {
-    v3 = [*(v8 + 464) mockPluginEndpoint];
+    mockPluginEndpoint = [*(v8 + 464) mockPluginEndpoint];
     goto LABEL_11;
   }
 
   if (kAVVCScope)
   {
-    v3 = *kAVVCScope;
-    if (!v3)
+    mockPluginEndpoint = *kAVVCScope;
+    if (!mockPluginEndpoint)
     {
       goto LABEL_11;
     }
@@ -190,11 +190,11 @@ LABEL_12:
 
   else
   {
-    v3 = MEMORY[0x1E69E9C10];
+    mockPluginEndpoint = MEMORY[0x1E69E9C10];
     v4 = MEMORY[0x1E69E9C10];
   }
 
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(mockPluginEndpoint, OS_LOG_TYPE_ERROR))
   {
     mClientAPIClutch = self->mClientAPIClutch;
     *buf = 136315906;
@@ -205,10 +205,10 @@ LABEL_12:
     v15 = v8;
     v16 = 1024;
     v17 = mClientAPIClutch;
-    _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
+    _os_log_impl(&dword_1BA5AC000, mockPluginEndpoint, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
   }
 
-  v3 = 0;
+  mockPluginEndpoint = 0;
 LABEL_11:
   if (v9)
   {
@@ -217,12 +217,12 @@ LABEL_11:
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return mockPluginEndpoint;
 }
 
-- (BOOL)setEnableInterruptionByRecordingClientsForStream:(unint64_t)a3 enable:(BOOL)a4 error:(id *)a5
+- (BOOL)setEnableInterruptionByRecordingClientsForStream:(unint64_t)stream enable:(BOOL)enable error:(id *)error
 {
-  v6 = a4;
+  enableCopy = enable;
   v27 = *MEMORY[0x1E69E9840];
   ElapsedTime::ElapsedTime(v26, "[AVVoiceController setEnableInterruptionByRecordingClientsForStream:enable:error:]", 0, 0);
   if (kAVVCScope)
@@ -249,9 +249,9 @@ LABEL_11:
     *&buf[18] = 2048;
     *&buf[20] = self;
     v22 = 2048;
-    v23 = a3;
+    streamCopy = stream;
     v24 = 1024;
-    v25 = v6;
+    v25 = enableCopy;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setEnableInterruptionByRecordingClientForStream: streamHandle(%lu) enable(%d)", buf, 0x2Cu);
   }
 
@@ -275,8 +275,8 @@ LABEL_8:
       atomic_fetch_add_explicit(&v20->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v17 = a3;
-    v18 = v6;
+    streamCopy2 = stream;
+    v18 = enableCopy;
     ControllerImpl::safeWork(v19, v15, "[AVVoiceController setEnableInterruptionByRecordingClientsForStream:enable:error:]");
     if (v16)
     {
@@ -291,9 +291,9 @@ LABEL_8:
 
   v11 = *(*&buf[8] + 24);
   v12 = v11;
-  if (a5 && v11)
+  if (error && v11)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:0];
   }
 
   _Block_object_dispose(buf, 8);
@@ -390,10 +390,10 @@ LABEL_14:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDeviceLatenciesForStream:(unint64_t)a3 withCompletion:(id)a4
+- (void)getDeviceLatenciesForStream:(unint64_t)stream withCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   ElapsedTime::ElapsedTime(v26, "[AVVoiceController getDeviceLatenciesForStream:withCompletion:]", 0, 0);
   if (kAVVCScope)
   {
@@ -413,15 +413,15 @@ LABEL_14:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = _Block_copy(v6);
+    v10 = _Block_copy(completionCopy);
     *buf = 136316162;
     *&buf[4] = "AVVoiceController.mm";
     *&buf[12] = 1024;
     *&buf[14] = 1894;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
-    v23 = a3;
+    streamCopy = stream;
     v24 = 2048;
     v25 = v10;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: getDeviceLatenciesForStream: streamHandle(%lu), completionBlock(%p)", buf, 0x30u);
@@ -443,8 +443,8 @@ LABEL_8:
       atomic_fetch_add_explicit((*&buf[8] + 8), 1uLL, memory_order_relaxed);
     }
 
-    v18 = a3;
-    v15 = v6;
+    streamCopy2 = stream;
+    v15 = completionCopy;
     ControllerImpl::safeWork(v11, v14, "[AVVoiceController getDeviceLatenciesForStream:withCompletion:]");
 
     if (v17)
@@ -453,10 +453,10 @@ LABEL_8:
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v6 + 2))(v6, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   if (*&buf[8])
@@ -592,10 +592,10 @@ LABEL_17:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopKeepAliveQueueForStream:(unint64_t)a3 completion:(id)a4
+- (void)stopKeepAliveQueueForStream:(unint64_t)stream completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   ElapsedTime::ElapsedTime(v25, "[AVVoiceController stopKeepAliveQueueForStream:completion:]", 0, 0);
   [(AVVoiceController *)self impl];
   if (kAVVCScope)
@@ -616,15 +616,15 @@ LABEL_17:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = _Block_copy(v6);
+    v10 = _Block_copy(completionCopy);
     *buf = 136316162;
     v16 = "AVVoiceController.mm";
     v17 = 1024;
     v18 = 1882;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    streamCopy = stream;
     v23 = 2048;
     v24 = v10;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: stopKeepAliveQueueForStream: streamHandle(%lu) completion(%p)", buf, 0x30u);
@@ -633,13 +633,13 @@ LABEL_17:
 LABEL_8:
   if (v13 && !self->mClientAPIClutch)
   {
-    ControllerImpl::stopKeepAliveQueueForStream(v13, a3, v6);
+    ControllerImpl::stopKeepAliveQueueForStream(v13, stream, completionCopy);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v6 + 2))(v6, a3, 0, v11);
+    (*(completionCopy + 2))(completionCopy, stream, 0, v11);
   }
 
   if (v14)
@@ -652,10 +652,10 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startKeepAliveQueueForStream:(unint64_t)a3 completion:(id)a4
+- (void)startKeepAliveQueueForStream:(unint64_t)stream completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   ElapsedTime::ElapsedTime(v25, "[AVVoiceController startKeepAliveQueueForStream:completion:]", 0, 0);
   [(AVVoiceController *)self impl];
   if (kAVVCScope)
@@ -676,15 +676,15 @@ LABEL_8:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = _Block_copy(v6);
+    v10 = _Block_copy(completionCopy);
     *buf = 136316162;
     v16 = "AVVoiceController.mm";
     v17 = 1024;
     v18 = 1869;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    streamCopy = stream;
     v23 = 2048;
     v24 = v10;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: startKeepAliveQueueForStream: streamHandle(%lu) completion(%p)", buf, 0x30u);
@@ -693,13 +693,13 @@ LABEL_8:
 LABEL_8:
   if (v13 && !self->mClientAPIClutch)
   {
-    ControllerImpl::startKeepAliveQueueForStream(v13, a3, v6);
+    ControllerImpl::startKeepAliveQueueForStream(v13, stream, completionCopy);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v6 + 2))(v6, a3, 0, v11);
+    (*(completionCopy + 2))(completionCopy, stream, 0, v11);
   }
 
   if (v14)
@@ -712,7 +712,7 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getPlaybackRouteForStream:(unint64_t)a3 withError:(id *)a4
+- (id)getPlaybackRouteForStream:(unint64_t)stream withError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -738,7 +738,7 @@ LABEL_8:
     *&buf[12] = 1024;
     *&buf[14] = 1853;
     *&buf[18] = 2048;
-    *&buf[20] = a3;
+    *&buf[20] = stream;
     _os_log_impl(&dword_1BA5AC000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d ### getPlaybackRouteForStream:withError: streamHandle(%lu)", buf, 0x1Cu);
   }
 
@@ -785,7 +785,7 @@ LABEL_20:
   *&buf[16] = ___ZN14ControllerImpl16getPlaybackRouteEPU8__strongP8NSStringm_block_invoke;
   *&buf[24] = &__block_descriptor_56_e41_v16__0__NSObject_OS_dispatch_semaphore__8l;
   *&buf[32] = v17;
-  v21 = a3;
+  streamCopy = stream;
   v22 = &v19;
   makeSynchronous(buf);
   if (!kAVVCScope)
@@ -825,10 +825,10 @@ LABEL_26:
   return v12;
 }
 
-- (void)getPlaybackRouteForStream:(unint64_t)a3 withCompletion:(id)a4
+- (void)getPlaybackRouteForStream:(unint64_t)stream withCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   ElapsedTime::ElapsedTime(v23, "[AVVoiceController getPlaybackRouteForStream:withCompletion:]", 0, 0);
   if (kAVVCScope)
   {
@@ -848,13 +848,13 @@ LABEL_26:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = _Block_copy(v6);
+    v10 = _Block_copy(completionCopy);
     *buf = 136315906;
     *&buf[4] = "AVVoiceController.mm";
     *&buf[12] = 1024;
     *&buf[14] = 1834;
     v19 = 2048;
-    v20 = a3;
+    streamCopy = stream;
     v21 = 2048;
     v22 = v10;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d ### getPlaybackRouteForStream: streamHandle(%lu) completionBlock(%p)", buf, 0x26u);
@@ -876,8 +876,8 @@ LABEL_8:
       atomic_fetch_add_explicit((*&buf[8] + 8), 1uLL, memory_order_relaxed);
     }
 
-    v17 = a3;
-    v14 = v6;
+    streamCopy2 = stream;
+    v14 = completionCopy;
     ControllerImpl::safeWork(v11, v13, "[AVVoiceController getPlaybackRouteForStream:withCompletion:]");
 
     if (v16)
@@ -886,9 +886,9 @@ LABEL_8:
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   if (*&buf[8])
@@ -901,11 +901,11 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableTriangleModeForStream:(unint64_t)a3 enable:(BOOL)a4 withCompletion:(id)a5
+- (void)enableTriangleModeForStream:(unint64_t)stream enable:(BOOL)enable withCompletion:(id)completion
 {
-  v5 = a4;
+  enableCopy = enable;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   ElapsedTime::ElapsedTime(v25, "[AVVoiceController enableTriangleModeForStream:enable:withCompletion:]", 0, 0);
   [(AVVoiceController *)self impl];
   if (kAVVCScope)
@@ -930,24 +930,24 @@ LABEL_8:
     v17 = 1024;
     v18 = 1822;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    streamCopy = stream;
     v23 = 1024;
-    v24 = v5;
+    v24 = enableCopy;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: enableTriangleModeForStream: streamHandle(%lu), opt value : %d", buf, 0x2Cu);
   }
 
 LABEL_8:
   if (v13 && !self->mClientAPIClutch)
   {
-    ControllerImpl::enableTriangleModeForStream(v13, a3, v5, v8);
+    ControllerImpl::enableTriangleModeForStream(v13, stream, enableCopy, completionCopy);
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v8 + 2))(v8, a3, 0, v11);
+    (*(completionCopy + 2))(completionCopy, stream, 0, v11);
   }
 
   if (v14)
@@ -960,7 +960,7 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isDuckingSupportedOnPickedRouteForStream:(unint64_t)a3 error:(id *)a4
+- (BOOL)isDuckingSupportedOnPickedRouteForStream:(unint64_t)stream error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   ElapsedTime::ElapsedTime(v30, "[AVVoiceController isDuckingSupportedOnPickedRouteForStream:error:]", 0, 0);
@@ -994,9 +994,9 @@ LABEL_13:
       v24 = 1024;
       v25 = 1807;
       v26 = 2048;
-      v27 = v20;
+      selfCopy = v20;
       v28 = 1024;
-      LODWORD(v29) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
@@ -1021,9 +1021,9 @@ LABEL_15:
       v24 = 1024;
       v25 = 1808;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2048;
-      v29 = a3;
+      streamCopy = stream;
       _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: isDuckingSupportedOnPickedRouteForStream: streamHandle(%lu)", buf, 0x26u);
     }
 
@@ -1031,13 +1031,13 @@ LABEL_15:
   }
 
   v19 = 0;
-  isDuckingSupportedOnPickedRouteForStream = ControllerImpl::isDuckingSupportedOnPickedRouteForStream(v7, a3, &v19);
+  isDuckingSupportedOnPickedRouteForStream = ControllerImpl::isDuckingSupportedOnPickedRouteForStream(v7, stream, &v19);
   v15 = v19;
   v12 = v15;
-  if (a4)
+  if (error)
   {
     v16 = v15;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_20:
@@ -1051,10 +1051,10 @@ LABEL_20:
   return isDuckingSupportedOnPickedRouteForStream;
 }
 
-- (BOOL)setDuckOthersForStream:(unint64_t)a3 withSettings:(id)a4 error:(id *)a5
+- (BOOL)setDuckOthersForStream:(unint64_t)stream withSettings:(id)settings error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  settingsCopy = settings;
   ElapsedTime::ElapsedTime(v33, "[AVVoiceController setDuckOthersForStream:withSettings:error:]", 0, 0);
   if (kAVVCScope)
   {
@@ -1078,11 +1078,11 @@ LABEL_20:
     v25 = 1024;
     v26 = 1791;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2048;
-    v30 = a3;
+    streamCopy = stream;
     v31 = 2112;
-    v32 = v8;
+    v32 = settingsCopy;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setDuckOthersForStream: streamHandle(%lu), duckSettings(%@)", buf, 0x30u);
   }
 
@@ -1116,9 +1116,9 @@ LABEL_19:
       v25 = 1024;
       v26 = 1793;
       v27 = 2048;
-      v28 = v21;
+      selfCopy = v21;
       v29 = 1024;
-      LODWORD(v30) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
@@ -1126,13 +1126,13 @@ LABEL_19:
   }
 
   v20 = 0;
-  v12 = ControllerImpl::setDuckOthersForStream(v21, a3, v8, &v20);
+  v12 = ControllerImpl::setDuckOthersForStream(v21, stream, settingsCopy, &v20);
   v13 = v20;
   v14 = v13;
-  if (a5)
+  if (error)
   {
     v15 = v13;
-    *a5 = v14;
+    *error = v14;
   }
 
 LABEL_20:
@@ -1146,10 +1146,10 @@ LABEL_20:
   return v12;
 }
 
-- (void)getInputChannelInfoForStream:(unint64_t)a3 completion:(id)a4
+- (void)getInputChannelInfoForStream:(unint64_t)stream completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   [(AVVoiceController *)self impl];
   if (kAVVCScope)
   {
@@ -1173,22 +1173,22 @@ LABEL_20:
     v15 = 1024;
     v16 = 1776;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: getInputChannelInfoForStream: streamHandle(%lu)", buf, 0x26u);
   }
 
 LABEL_8:
   if (v11 && !self->mClientAPIClutch)
   {
-    ControllerImpl::getInputChannelInfoForStream(v11, v6);
+    ControllerImpl::getInputChannelInfoForStream(v11, completionCopy);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 
   if (v12)
@@ -1199,9 +1199,9 @@ LABEL_8:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setAnnounceCallsEnabledForStream:(unint64_t)a3 enable:(BOOL)a4
+- (BOOL)setAnnounceCallsEnabledForStream:(unint64_t)stream enable:(BOOL)enable
 {
-  v4 = a4;
+  enableCopy = enable;
   v27 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
   {
@@ -1225,11 +1225,11 @@ LABEL_8:
     v19 = 1024;
     v20 = 1763;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2048;
-    v24 = a3;
+    streamCopy = stream;
     v25 = 1024;
-    v26 = v4;
+    v26 = enableCopy;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setAnnounceCallsEnabledForStream: streamHandle(%lu), enable : %d", buf, 0x2Cu);
   }
 
@@ -1237,7 +1237,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v15 && !self->mClientAPIClutch)
   {
-    v10 = ControllerImpl::setAnnounceCallsEnabledForStream(v15, a3, v4) == 0;
+    v10 = ControllerImpl::setAnnounceCallsEnabledForStream(v15, stream, enableCopy) == 0;
     goto LABEL_19;
   }
 
@@ -1260,9 +1260,9 @@ LABEL_15:
       v19 = 1024;
       v20 = 1765;
       v21 = 2048;
-      v22 = v15;
+      selfCopy = v15;
       v23 = 1024;
-      LODWORD(v24) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
   }
@@ -1278,7 +1278,7 @@ LABEL_19:
   return v10;
 }
 
-- (int64_t)getRecordModeForStream:(unint64_t)a3
+- (int64_t)getRecordModeForStream:(unint64_t)stream
 {
   v23 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
@@ -1303,9 +1303,9 @@ LABEL_19:
     v17 = 1024;
     v18 = 1749;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: getRecordModeForStream: streamHandle(%lu)", buf, 0x26u);
   }
 
@@ -1313,7 +1313,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v13 && !self->mClientAPIClutch)
   {
-    RecordModeForStream = ControllerImpl::getRecordModeForStream(v13, a3);
+    RecordModeForStream = ControllerImpl::getRecordModeForStream(v13, stream);
     goto LABEL_19;
   }
 
@@ -1336,9 +1336,9 @@ LABEL_15:
       v17 = 1024;
       v18 = 1751;
       v19 = 2048;
-      v20 = v13;
+      selfCopy = v13;
       v21 = 1024;
-      LODWORD(v22) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
   }
@@ -1354,7 +1354,7 @@ LABEL_19:
   return RecordModeForStream;
 }
 
-- (BOOL)setRecordModeForStream:(unint64_t)a3 recordMode:(int64_t)a4 error:(id *)a5
+- (BOOL)setRecordModeForStream:(unint64_t)stream recordMode:(int64_t)mode error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   v20 = 4122;
@@ -1385,16 +1385,16 @@ LABEL_19:
     v26 = 1024;
     v27 = 1728;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2048;
-    v31 = a3;
+    streamCopy = stream;
     v32 = 1024;
-    v33 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setRecordModeForStream: streamHandle(%lu), mode : %d", buf, 0x2Cu);
   }
 
 LABEL_8:
-  if (!a4)
+  if (!mode)
   {
     LOBYTE(v11) = 0;
     goto LABEL_25;
@@ -1403,11 +1403,11 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v18 && !self->mClientAPIClutch)
   {
-    v12 = ControllerImpl::setRecordModeForStream(v18, a3, a4);
+    v12 = ControllerImpl::setRecordModeForStream(v18, stream, mode);
     v13 = v12;
-    if (a5 && v12)
+    if (error && v12)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v12 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v12 userInfo:0];
     }
 
     LOBYTE(v11) = v13 == 0;
@@ -1433,9 +1433,9 @@ LABEL_20:
       v26 = 1024;
       v27 = 1734;
       v28 = 2048;
-      v29 = v18;
+      selfCopy = v18;
       v30 = 1024;
-      LODWORD(v31) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
@@ -1455,9 +1455,9 @@ LABEL_25:
   return v11;
 }
 
-- (BOOL)enableSmartRoutingConsiderationForStream:(unint64_t)a3 enable:(BOOL)a4 error:(id *)a5
+- (BOOL)enableSmartRoutingConsiderationForStream:(unint64_t)stream enable:(BOOL)enable error:(id *)error
 {
-  v6 = a4;
+  enableCopy = enable;
   v31 = *MEMORY[0x1E69E9840];
   ElapsedTime::ElapsedTime(v30, "[AVVoiceController enableSmartRoutingConsiderationForStream:enable:error:]", 0, 0);
   if (kAVVCScope)
@@ -1482,11 +1482,11 @@ LABEL_25:
     v22 = 1024;
     v23 = 1708;
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2048;
-    v27 = a3;
+    streamCopy = stream;
     v28 = 1024;
-    v29 = v6;
+    v29 = enableCopy;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: enableSmartRoutingConsideration: streamHandle(%lu), enable : %d", buf, 0x2Cu);
   }
 
@@ -1494,11 +1494,11 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v18 && !self->mClientAPIClutch)
   {
-    v12 = ControllerImpl::enableSmartRoutingConsideration(v18, a3, v6);
+    v12 = ControllerImpl::enableSmartRoutingConsideration(v18, stream, enableCopy);
     v13 = v12;
-    if (a5 && v12)
+    if (error && v12)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v12 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v12 userInfo:0];
     }
 
     LOBYTE(v11) = v13 == 0;
@@ -1529,9 +1529,9 @@ LABEL_8:
       v22 = 1024;
       v23 = 1710;
       v24 = 2048;
-      v25 = v18;
+      selfCopy = v18;
       v26 = 1024;
-      LODWORD(v27) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
@@ -1549,10 +1549,10 @@ LABEL_21:
   return v11;
 }
 
-- (void)setRecordStatusChangeBlock:(id)a3
+- (void)setRecordStatusChangeBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (kAVVCScope)
   {
     v5 = *kAVVCScope;
@@ -1575,7 +1575,7 @@ LABEL_21:
     v15 = 1024;
     v16 = 1698;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setRecordStatusChangeBlock", buf, 0x1Cu);
   }
 
@@ -1583,7 +1583,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    ControllerImpl::setRecordStatusChangeBlock(v11, v4);
+    ControllerImpl::setRecordStatusChangeBlock(v11, blockCopy);
     goto LABEL_18;
   }
 
@@ -1610,7 +1610,7 @@ LABEL_8:
     v15 = 1024;
     v16 = 1699;
     v17 = 2048;
-    v18 = v11;
+    selfCopy = v11;
     v19 = 1024;
     v20 = mClientAPIClutch;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -1625,14 +1625,14 @@ LABEL_18:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (float)getAveragePowerForStream:(unint64_t)a3 forChannel:(unint64_t)a4
+- (float)getAveragePowerForStream:(unint64_t)stream forChannel:(unint64_t)channel
 {
-  v4 = a4;
+  channelCopy = channel;
   v23 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v13 && !self->mClientAPIClutch)
   {
-    AveragePowerForStreamAndChannel = ControllerImpl::getAveragePowerForStreamAndChannel(v13, a3, v4);
+    AveragePowerForStreamAndChannel = ControllerImpl::getAveragePowerForStreamAndChannel(v13, stream, channelCopy);
     goto LABEL_12;
   }
 
@@ -1673,14 +1673,14 @@ LABEL_12:
   return AveragePowerForStreamAndChannel;
 }
 
-- (float)getPeakPowerForStream:(unint64_t)a3 forChannel:(unint64_t)a4
+- (float)getPeakPowerForStream:(unint64_t)stream forChannel:(unint64_t)channel
 {
-  v4 = a4;
+  channelCopy = channel;
   v23 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v13 && !self->mClientAPIClutch)
   {
-    PeakPowerForStreamAndChannel = ControllerImpl::getPeakPowerForStreamAndChannel(v13, a3, v4);
+    PeakPowerForStreamAndChannel = ControllerImpl::getPeakPowerForStreamAndChannel(v13, stream, channelCopy);
     goto LABEL_12;
   }
 
@@ -1721,13 +1721,13 @@ LABEL_12:
   return PeakPowerForStreamAndChannel;
 }
 
-- (BOOL)updateMeterForStream:(unint64_t)a3
+- (BOOL)updateMeterForStream:(unint64_t)stream
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    updated = ControllerImpl::updateMeterLevelForStream(v11, a3);
+    updated = ControllerImpl::updateMeterLevelForStream(v11, stream);
     goto LABEL_12;
   }
 
@@ -1768,13 +1768,13 @@ LABEL_12:
   return updated;
 }
 
-- (BOOL)isMeteringEnabledForStream:(unint64_t)a3
+- (BOOL)isMeteringEnabledForStream:(unint64_t)stream
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    isMeteringEnabledForStream = ControllerImpl::isMeteringEnabledForStream(v11, a3);
+    isMeteringEnabledForStream = ControllerImpl::isMeteringEnabledForStream(v11, stream);
     goto LABEL_12;
   }
 
@@ -1815,13 +1815,13 @@ LABEL_12:
   return isMeteringEnabledForStream;
 }
 
-- (id)getRecordSettingsForStream:(unint64_t)a3
+- (id)getRecordSettingsForStream:(unint64_t)stream
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    v6 = ControllerImpl::getRecordSettingsForStream(v11, self, a3);
+    v6 = ControllerImpl::getRecordSettingsForStream(v11, self, stream);
     goto LABEL_12;
   }
 
@@ -1863,13 +1863,13 @@ LABEL_12:
   return v6;
 }
 
-- (double)getRecordBufferDurationForStream:(unint64_t)a3
+- (double)getRecordBufferDurationForStream:(unint64_t)stream
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    RecordBufferDurationForStream = ControllerImpl::getRecordBufferDurationForStream(v11, a3);
+    RecordBufferDurationForStream = ControllerImpl::getRecordBufferDurationForStream(v11, stream);
     goto LABEL_12;
   }
 
@@ -1910,7 +1910,7 @@ LABEL_12:
   return RecordBufferDurationForStream;
 }
 
-- (BOOL)playAlertSoundForType:(int)a3 overrideMode:(int64_t)a4
+- (BOOL)playAlertSoundForType:(int)type overrideMode:(int64_t)mode
 {
   v36 = *MEMORY[0x1E69E9840];
   v21 = 4145;
@@ -1980,17 +1980,17 @@ LABEL_10:
     v27 = 1024;
     v28 = 1656;
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     v31 = 1024;
-    v32 = a3;
+    typeCopy = type;
     v33 = 1024;
-    v34 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_1BA5AC000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: playAlertSoundForStream: alertType(%d) overrideMode(%d)", buf, 0x28u);
   }
 
   v7 = v19;
 LABEL_22:
-  v17 = ControllerImpl::playAlertWithOverride(v7, self, a3, a4);
+  v17 = ControllerImpl::playAlertWithOverride(v7, self, type, mode);
   if (!v17)
   {
     LOBYTE(v8) = 1;
@@ -2018,7 +2018,7 @@ LABEL_28:
     v27 = 1024;
     v28 = 1659;
     v29 = 1024;
-    LODWORD(v30) = v17;
+    LODWORD(selfCopy) = v17;
     v10 = "%25s:%-5d playAlertSoundForStream failed with error : %d";
     v11 = v8;
     v12 = 24;
@@ -2037,10 +2037,10 @@ LABEL_12:
   return v8;
 }
 
-- (void)playAlert:(int)a3 withOverride:(int64_t)a4 completion:(id)a5
+- (void)playAlert:(int)alert withOverride:(int64_t)override completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   v17 = 4145;
   v18 = 1;
   v19 = 0u;
@@ -2069,11 +2069,11 @@ LABEL_12:
     v23 = 1024;
     v24 = 1640;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
-    v28 = a3;
+    alertCopy = alert;
     v29 = 1024;
-    v30 = a4;
+    overrideCopy = override;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: playAlert alertType(%d). overrideMode(%d)", buf, 0x28u);
   }
 
@@ -2081,7 +2081,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v15 && !self->mClientAPIClutch)
   {
-    ControllerImpl::playAlertWithCompletion(v15, self, a3, a4, v8);
+    ControllerImpl::playAlertWithCompletion(v15, self, alert, override, completionCopy);
     goto LABEL_18;
   }
 
@@ -2108,9 +2108,9 @@ LABEL_8:
     v23 = 1024;
     v24 = 1641;
     v25 = 2048;
-    v26 = v15;
+    selfCopy = v15;
     v27 = 1024;
-    v28 = mClientAPIClutch;
+    alertCopy = mClientAPIClutch;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
   }
 
@@ -2126,10 +2126,10 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setContextForStream:(id)a3 forStream:(unint64_t)a4 error:(id *)a5
+- (BOOL)setContextForStream:(id)stream forStream:(unint64_t)forStream error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  streamCopy = stream;
   v25 = 4146;
   v26 = 1;
   v27 = 0u;
@@ -2154,20 +2154,20 @@ LABEL_18:
   v11 = v9;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = Get4CCFromInt([(AVVCContextSettings *)v8 activationMode]);
-    v13 = [(AVVCContextSettings *)v8 activationDeviceUID];
+    v12 = Get4CCFromInt([(AVVCContextSettings *)streamCopy activationMode]);
+    activationDeviceUID = [(AVVCContextSettings *)streamCopy activationDeviceUID];
     *buf = 136316418;
     v30 = "AVVoiceController.mm";
     v31 = 1024;
     v32 = 1624;
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v12;
     v37 = 2112;
-    v38 = v13;
+    v38 = activationDeviceUID;
     v39 = 2048;
-    v40 = a4;
+    forStreamCopy = forStream;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setContextForStream: activationMode(%@), deviceUID(%@). streamHandle(%lu)", buf, 0x3Au);
   }
 
@@ -2200,7 +2200,7 @@ LABEL_25:
       v31 = 1024;
       v32 = 1625;
       v33 = 2048;
-      v34 = v23;
+      selfCopy = v23;
       v35 = 1024;
       LODWORD(v36) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -2209,9 +2209,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v15 = ControllerImpl::setContextForStream(v23, self, v8, a4);
+  v15 = ControllerImpl::setContextForStream(v23, self, streamCopy, forStream);
   v16 = v15 == 0;
-  if (a5 && v15)
+  if (error && v15)
   {
     v17 = v15;
     if (v15 == 560557673)
@@ -2230,7 +2230,7 @@ LABEL_25:
     }
 
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v18 userInfo:0];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
 LABEL_26:
@@ -2246,13 +2246,13 @@ LABEL_26:
   return v16;
 }
 
-- (int64_t)getCurrentSessionStateForStream:(unint64_t)a3
+- (int64_t)getCurrentSessionStateForStream:(unint64_t)stream
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    AVVCSessionState = ControllerImpl::getAVVCSessionState(v11, a3);
+    AVVCSessionState = ControllerImpl::getAVVCSessionState(v11, stream);
     goto LABEL_12;
   }
 
@@ -2293,7 +2293,7 @@ LABEL_12:
   return AVVCSessionState;
 }
 
-- (void)deactivateAudioSessionForStream:(unint64_t)a3 withOptions:(unint64_t)a4 error:(id *)a5
+- (void)deactivateAudioSessionForStream:(unint64_t)stream withOptions:(unint64_t)options error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v17 = 4144;
@@ -2324,11 +2324,11 @@ LABEL_12:
     v23 = 1024;
     v24 = 1604;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
-    v28 = a3;
+    streamCopy = stream;
     v29 = 2048;
-    v30 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: deactivateAudioSessionForStream:(%d) withOptions(%lu)", buf, 0x2Cu);
   }
 
@@ -2336,7 +2336,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v15 && !self->mClientAPIClutch)
   {
-    ControllerImpl::deactivateAudioSessionWithOptions(v15, self, a4, a3, a5);
+    ControllerImpl::deactivateAudioSessionWithOptions(v15, self, options, stream, error);
     goto LABEL_18;
   }
 
@@ -2363,9 +2363,9 @@ LABEL_8:
     v23 = 1024;
     v24 = 1605;
     v25 = 2048;
-    v26 = v15;
+    selfCopy = v15;
     v27 = 1024;
-    v28 = mClientAPIClutch;
+    streamCopy = mClientAPIClutch;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
   }
 
@@ -2380,10 +2380,10 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deactivateAudioSessionForStream:(unint64_t)a3 withOptions:(unint64_t)a4 completion:(id)a5
+- (void)deactivateAudioSessionForStream:(unint64_t)stream withOptions:(unint64_t)options completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   v17 = 4144;
   v18 = 1;
   v19 = 0u;
@@ -2412,11 +2412,11 @@ LABEL_18:
     v23 = 1024;
     v24 = 1595;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
-    v28 = a3;
+    streamCopy = stream;
     v29 = 2048;
-    v30 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: deactivateAudioSessionForStream:(%d) withOptions(%lu) completion:", buf, 0x2Cu);
   }
 
@@ -2424,7 +2424,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v15 && !self->mClientAPIClutch)
   {
-    ControllerImpl::deactivateAudioSessionWithOptions(v15, self, a4, a3, v8);
+    ControllerImpl::deactivateAudioSessionWithOptions(v15, self, options, stream, completionCopy);
     goto LABEL_18;
   }
 
@@ -2451,9 +2451,9 @@ LABEL_8:
     v23 = 1024;
     v24 = 1596;
     v25 = 2048;
-    v26 = v15;
+    selfCopy = v15;
     v27 = 1024;
-    v28 = mClientAPIClutch;
+    streamCopy = mClientAPIClutch;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
   }
 
@@ -2469,7 +2469,7 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deactivateAudioSessionWithOptions:(unint64_t)a3
+- (void)deactivateAudioSessionWithOptions:(unint64_t)options
 {
   v26 = *MEMORY[0x1E69E9840];
   v13 = 4144;
@@ -2500,9 +2500,9 @@ LABEL_18:
     v19 = 1024;
     v20 = 1586;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2048;
-    v24 = a3;
+    optionsCopy = options;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: deactivateAudioSessionWithOptions(%lu)", buf, 0x26u);
   }
 
@@ -2510,7 +2510,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v11 && !self->mClientAPIClutch)
   {
-    ControllerImpl::deactivateAudioSessionWithOptions(v11, self, a3, *(v11 + 472), 0);
+    ControllerImpl::deactivateAudioSessionWithOptions(v11, self, options, *(v11 + 472), 0);
     goto LABEL_18;
   }
 
@@ -2537,9 +2537,9 @@ LABEL_8:
     v19 = 1024;
     v20 = 1587;
     v21 = 2048;
-    v22 = v11;
+    selfCopy = v11;
     v23 = 1024;
-    LODWORD(v24) = mClientAPIClutch;
+    LODWORD(optionsCopy) = mClientAPIClutch;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
   }
 
@@ -2554,10 +2554,10 @@ LABEL_18:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)activateAudioSessionForStream:(unint64_t)a3 isPrewarm:(BOOL)a4 recordMode:(BOOL)a5 error:(id *)a6
+- (BOOL)activateAudioSessionForStream:(unint64_t)stream isPrewarm:(BOOL)prewarm recordMode:(BOOL)mode error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  modeCopy = mode;
+  prewarmCopy = prewarm;
   v39 = *MEMORY[0x1E69E9840];
   v22 = 4144;
   v23 = 1;
@@ -2587,13 +2587,13 @@ LABEL_18:
     v28 = 1024;
     v29 = 1573;
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 1024;
-    v33 = v8;
+    v33 = prewarmCopy;
     v34 = 1024;
-    v35 = v7;
+    v35 = modeCopy;
     v36 = 2048;
-    v37 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: activateAudioSessionForStream isPrewarm(%d), switchRecordMode(%d). streamHandle(%lu)", buf, 0x32u);
   }
 
@@ -2601,11 +2601,11 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v20 && !self->mClientAPIClutch)
   {
-    v14 = ControllerImpl::activateAudioSessionForStream(v20, self, a3, v8, v7);
+    v14 = ControllerImpl::activateAudioSessionForStream(v20, self, stream, prewarmCopy, modeCopy);
     v15 = v14;
-    if (a6 && v14)
+    if (error && v14)
     {
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v14 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v14 userInfo:0];
     }
 
     LOBYTE(v13) = v15 == 0;
@@ -2636,7 +2636,7 @@ LABEL_8:
       v28 = 1024;
       v29 = 1574;
       v30 = 2048;
-      v31 = v20;
+      selfCopy = v20;
       v32 = 1024;
       v33 = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v13, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -2657,9 +2657,9 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)activateAudioSessionForStream:(unint64_t)a3 isPrewarm:(BOOL)a4 error:(id *)a5
+- (BOOL)activateAudioSessionForStream:(unint64_t)stream isPrewarm:(BOOL)prewarm error:(id *)error
 {
-  v6 = a4;
+  prewarmCopy = prewarm;
   v35 = *MEMORY[0x1E69E9840];
   v20 = 4144;
   v21 = 1;
@@ -2689,11 +2689,11 @@ LABEL_21:
     v26 = 1024;
     v27 = 1560;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 1024;
-    v31 = v6;
+    v31 = prewarmCopy;
     v32 = 2048;
-    v33 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: activateAudioSessionForStream isPrewarm(%d). streamHandle(%lu)", buf, 0x2Cu);
   }
 
@@ -2701,11 +2701,11 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v18 && !self->mClientAPIClutch)
   {
-    v12 = ControllerImpl::activateAudioSessionForStream(v18, self, a3, v6, 1);
+    v12 = ControllerImpl::activateAudioSessionForStream(v18, self, stream, prewarmCopy, 1);
     v13 = v12;
-    if (a5 && v12)
+    if (error && v12)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v12 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v12 userInfo:0];
     }
 
     LOBYTE(v11) = v13 == 0;
@@ -2736,7 +2736,7 @@ LABEL_8:
       v26 = 1024;
       v27 = 1561;
       v28 = 2048;
-      v29 = v18;
+      selfCopy = v18;
       v30 = 1024;
       v31 = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -2757,7 +2757,7 @@ LABEL_21:
   return v11;
 }
 
-- (id)getRecordDeviceInfoForStream:(unint64_t)a3
+- (id)getRecordDeviceInfoForStream:(unint64_t)stream
 {
   v24 = *MEMORY[0x1E69E9840];
   ElapsedTime::ElapsedTime(v23, "[AVVoiceController getRecordDeviceInfoForStream:]", 0, 0);
@@ -2783,9 +2783,9 @@ LABEL_21:
     v17 = 1024;
     v18 = 1550;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: getRecordDeviceInfoForStream: streamHandle(%lu)", buf, 0x26u);
   }
 
@@ -2793,7 +2793,7 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v13 && !self->mClientAPIClutch)
   {
-    v8 = ControllerImpl::getRecordDeviceInfoForStream(v13, self, a3);
+    v8 = ControllerImpl::getRecordDeviceInfoForStream(v13, self, stream);
     goto LABEL_19;
   }
 
@@ -2816,9 +2816,9 @@ LABEL_15:
       v17 = 1024;
       v18 = 1551;
       v19 = 2048;
-      v20 = v13;
+      selfCopy = v13;
       v21 = 1024;
-      LODWORD(v22) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
   }
@@ -2836,7 +2836,7 @@ LABEL_19:
   return v8;
 }
 
-- (int64_t)getCurrentStreamState:(unint64_t)a3
+- (int64_t)getCurrentStreamState:(unint64_t)state
 {
   v25 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
@@ -2866,9 +2866,9 @@ LABEL_19:
       v17 = 1024;
       v18 = 1541;
       v19 = 2048;
-      v20 = v13;
+      selfCopy = v13;
       v21 = 1024;
-      LODWORD(v22) = mClientAPIClutch;
+      LODWORD(stateCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
@@ -2876,7 +2876,7 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  CurrentStreamStateForStream = ControllerImpl::getCurrentStreamStateForStream(v13, self, a3);
+  CurrentStreamStateForStream = ControllerImpl::getCurrentStreamStateForStream(v13, self, state);
   if (!kAVVCScope)
   {
     v5 = MEMORY[0x1E69E9C10];
@@ -2899,9 +2899,9 @@ LABEL_18:
       v17 = 1024;
       v18 = 1543;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2048;
-      v22 = a3;
+      stateCopy = state;
       v23 = 2080;
       v24 = v12;
       _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: getCurrentStreamState: streamHandle(%lu). State(%s)", buf, 0x30u);
@@ -2928,7 +2928,7 @@ LABEL_14:
   return CurrentStreamStateForStream;
 }
 
-- (BOOL)stopRecordForStream:(unint64_t)a3 error:(id *)a4
+- (BOOL)stopRecordForStream:(unint64_t)stream error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -2955,9 +2955,9 @@ LABEL_14:
     v23 = 1024;
     v24 = 1519;
     v25 = 2048;
-    v26 = self;
+    streamCopy2 = self;
     v27 = 2048;
-    v28 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: stopRecordForStream: streamHandle(%lu)", buf, 0x26u);
   }
 
@@ -2990,16 +2990,16 @@ LABEL_22:
       v23 = 1024;
       v24 = 1521;
       v25 = 2048;
-      v26 = v19;
+      streamCopy2 = v19;
       v27 = 1024;
-      LODWORD(v28) = mClientAPIClutch;
+      LODWORD(streamCopy) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
     goto LABEL_22;
   }
 
-  v10 = ControllerImpl::stopRecordForStream(v19, self, a3);
+  v10 = ControllerImpl::stopRecordForStream(v19, self, stream);
   v11 = v10;
   if (v10 > -309)
   {
@@ -3020,7 +3020,7 @@ LABEL_22:
     v12 = 0;
     if (v10 == -11793 || v10 == -11781)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_31;
       }
@@ -3038,16 +3038,16 @@ LABEL_22:
     v23 = 1024;
     v24 = v11;
     v25 = 2048;
-    v26 = a3;
+    streamCopy2 = stream;
     _os_log_fault_impl(&dword_1BA5AC000, v15, OS_LOG_TYPE_FAULT, "%s unexpected error (%d) returned from stopRecordForStream for streamHandle(%lu)", buf, 0x1Cu);
   }
 
 LABEL_29:
   v12 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_30:
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:0];
   }
 
 LABEL_31:
@@ -3063,10 +3063,10 @@ LABEL_32:
   return v12;
 }
 
-- (void)stopRecordForStream:(unint64_t)a3 completion:(id)a4
+- (void)stopRecordForStream:(unint64_t)stream completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v11 = 4137;
   v12 = 1;
   v13 = 0u;
@@ -3095,9 +3095,9 @@ LABEL_32:
     *&buf[12] = 1024;
     *&buf[14] = 1506;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = a3;
+    streamCopy = stream;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d !! DEPRECATED !! #### AVVoiceController[self = %p]: stopRecordForStream: streamHandle(%lu)", buf, 0x26u);
   }
 
@@ -3105,13 +3105,13 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (*buf && !self->mClientAPIClutch)
   {
-    ControllerImpl::stopRecordForStream(*buf, self, a3, v6);
+    ControllerImpl::stopRecordForStream(*buf, self, stream, completionCopy);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v6 + 2))(v6, a3, 0, 0, v9);
+    (*(completionCopy + 2))(completionCopy, stream, 0, 0, v9);
   }
 
   if (*&buf[8])
@@ -3125,10 +3125,10 @@ LABEL_8:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)configureAlertBehaviorForStream:(id)a3 error:(id *)a4
+- (BOOL)configureAlertBehaviorForStream:(id)stream error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  streamCopy = stream;
   v19 = 4147;
   v20 = 1;
   v21 = 0u;
@@ -3158,15 +3158,15 @@ LABEL_8:
     v25 = 1024;
     v26 = 1489;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2048;
-    v30 = [(AVVCConfigureAlertBehaviorSettings *)v6 streamID];
+    streamID = [(AVVCConfigureAlertBehaviorSettings *)streamCopy streamID];
     v31 = 1024;
-    v32 = [(AVVCConfigureAlertBehaviorSettings *)v6 startAlert];
+    startAlert = [(AVVCConfigureAlertBehaviorSettings *)streamCopy startAlert];
     v33 = 1024;
-    v34 = [(AVVCConfigureAlertBehaviorSettings *)v6 stopAlert];
+    stopAlert = [(AVVCConfigureAlertBehaviorSettings *)streamCopy stopAlert];
     v35 = 1024;
-    v36 = [(AVVCConfigureAlertBehaviorSettings *)v6 stopOnErrorAlert];
+    stopOnErrorAlert = [(AVVCConfigureAlertBehaviorSettings *)streamCopy stopOnErrorAlert];
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: configureAlertBehaviorForStream: streamHandle(%lu), AlertsOverride(%d,%d,%d)", buf, 0x38u);
   }
 
@@ -3199,22 +3199,22 @@ LABEL_20:
       v25 = 1024;
       v26 = 1491;
       v27 = 2048;
-      v28 = v17;
+      selfCopy = v17;
       v29 = 1024;
-      LODWORD(v30) = mClientAPIClutch;
+      LODWORD(streamID) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
     goto LABEL_20;
   }
 
-  v11 = ControllerImpl::configureAlertBehaviorForStream(v17, self, v6);
+  v11 = ControllerImpl::configureAlertBehaviorForStream(v17, self, streamCopy);
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_21;
     }
 
@@ -3235,11 +3235,11 @@ LABEL_21:
   return v12;
 }
 
-- (void)configureAlertBehaviorForStream:(id)a3 completion:(id)a4
+- (void)configureAlertBehaviorForStream:(id)stream completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  completionCopy = completion;
   v13 = 4147;
   v14 = 1;
   v15 = 0u;
@@ -3269,15 +3269,15 @@ LABEL_21:
     *&buf[12] = 1024;
     *&buf[14] = 1475;
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 2048;
-    v21 = [v6 streamID];
+    streamID = [streamCopy streamID];
     v22 = 1024;
-    v23 = [v6 startAlert];
+    startAlert = [streamCopy startAlert];
     v24 = 1024;
-    v25 = [v6 stopAlert];
+    stopAlert = [streamCopy stopAlert];
     v26 = 1024;
-    v27 = [v6 stopOnErrorAlert];
+    stopOnErrorAlert = [streamCopy stopOnErrorAlert];
     _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: configureAlertBehaviorForStream:completion: streamHandle(%lu), AlertsOverride(%d,%d,%d)", buf, 0x38u);
   }
 
@@ -3285,13 +3285,13 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (*buf && !self->mClientAPIClutch)
   {
-    ControllerImpl::configureAlertBehaviorForStream(*buf, self, v6, v7);
+    ControllerImpl::configureAlertBehaviorForStream(*buf, self, streamCopy, completionCopy);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 
   if (*&buf[8])
@@ -3305,10 +3305,10 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)startRecordForStream:(id)a3 error:(id *)a4
+- (BOOL)startRecordForStream:(id)stream error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  streamCopy = stream;
   kdebug_trace();
   ElapsedTime::ElapsedTime(v44, "[AVVoiceController startRecordForStream:error:]", 0, 0);
   if (kAVVCScope)
@@ -3329,34 +3329,34 @@ LABEL_8:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(AVVCStartRecordSettings *)v6 streamID];
-    v11 = [(AVVCStartRecordSettings *)v6 startHostTime];
-    v12 = [(AVVCStartRecordSettings *)v6 startAlert];
-    v13 = [(AVVCStartRecordSettings *)v6 stopAlert];
-    v14 = [(AVVCStartRecordSettings *)v6 stopOnErrorAlert];
-    v15 = [(AVVCStartRecordSettings *)v6 skipAlert];
+    streamID = [(AVVCStartRecordSettings *)streamCopy streamID];
+    startHostTime = [(AVVCStartRecordSettings *)streamCopy startHostTime];
+    startAlert = [(AVVCStartRecordSettings *)streamCopy startAlert];
+    stopAlert = [(AVVCStartRecordSettings *)streamCopy stopAlert];
+    stopOnErrorAlert = [(AVVCStartRecordSettings *)streamCopy stopOnErrorAlert];
+    skipAlert = [(AVVCStartRecordSettings *)streamCopy skipAlert];
     v16 = " will NOT skip alert";
     *buf = 136317186;
     v27 = "AVVoiceController.mm";
     v29 = 1457;
     v28 = 1024;
-    if (v15)
+    if (skipAlert)
     {
       v16 = " will skip alert";
     }
 
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 2048;
-    v33 = v10;
+    v33 = streamID;
     v34 = 2048;
-    v35 = v11;
+    v35 = startHostTime;
     v36 = 1024;
-    v37 = v12;
+    v37 = startAlert;
     v38 = 1024;
-    v39 = v13;
+    v39 = stopAlert;
     v40 = 1024;
-    v41 = v14;
+    v41 = stopOnErrorAlert;
     v42 = 2080;
     v43 = v16;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: startRecordForStream: streamHandle(%lu), startTime(%llu). AlertsOverride(%d,%d,%d,%s)", buf, 0x4Cu);
@@ -3391,7 +3391,7 @@ LABEL_22:
       v28 = 1024;
       v29 = 1459;
       v30 = 2048;
-      v31 = v24;
+      selfCopy = v24;
       v32 = 1024;
       LODWORD(v33) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v17, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -3400,11 +3400,11 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  started = ControllerImpl::startRecordForStream(v24, self, v6);
+  started = ControllerImpl::startRecordForStream(v24, self, streamCopy);
   v19 = started == 0;
-  if (a4 && started)
+  if (error && started)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:started userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:started userInfo:0];
   }
 
   kdebug_trace();
@@ -3420,11 +3420,11 @@ LABEL_24:
   return v19;
 }
 
-- (void)startRecordForStream:(id)a3 completion:(id)a4
+- (void)startRecordForStream:(id)stream completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  completionCopy = completion;
   v21 = 4136;
   v22 = 1;
   v23 = 0u;
@@ -3449,34 +3449,34 @@ LABEL_24:
   v10 = v8;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 streamID];
-    v12 = [v6 startHostTime];
-    v13 = [v6 startAlert];
-    v14 = [v6 stopAlert];
-    v15 = [v6 stopOnErrorAlert];
-    v16 = [v6 skipAlert];
+    streamID = [streamCopy streamID];
+    startHostTime = [streamCopy startHostTime];
+    startAlert = [streamCopy startAlert];
+    stopAlert = [streamCopy stopAlert];
+    stopOnErrorAlert = [streamCopy stopOnErrorAlert];
+    skipAlert = [streamCopy skipAlert];
     v17 = " will NOT skip alert";
     *buf = 136317186;
     *&buf[4] = "AVVoiceController.mm";
     *&buf[14] = 1443;
     *&buf[12] = 1024;
-    if (v16)
+    if (skipAlert)
     {
       v17 = " will skip alert";
     }
 
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2048;
-    v29 = v11;
+    v29 = streamID;
     v30 = 2048;
-    v31 = v12;
+    v31 = startHostTime;
     v32 = 1024;
-    v33 = v13;
+    v33 = startAlert;
     v34 = 1024;
-    v35 = v14;
+    v35 = stopAlert;
     v36 = 1024;
-    v37 = v15;
+    v37 = stopOnErrorAlert;
     v38 = 2080;
     v39 = v17;
     _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: startRecordForStream:completion: streamHandle(%lu), startTime(%llu). AlertsOverride(%d,%d,%d,%s)", buf, 0x4Cu);
@@ -3486,14 +3486,14 @@ LABEL_10:
   [(AVVoiceController *)self impl];
   if (*buf && !self->mClientAPIClutch)
   {
-    ControllerImpl::startRecordForStream(*buf, self, v6, v7);
+    ControllerImpl::startRecordForStream(*buf, self, streamCopy, completionCopy);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v18 = [v6 streamID];
+    streamID2 = [streamCopy streamID];
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v7 + 2))(v7, v18, 0, 0, v19);
+    (*(completionCopy + 2))(completionCopy, streamID2, 0, 0, v19);
   }
 
   if (*&buf[8])
@@ -3507,13 +3507,13 @@ LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRecordWithSettings:(id)a3 completion:(id)a4 alertCompletion:(id)a5 audioCallback:(id)a6
+- (void)startRecordWithSettings:(id)settings completion:(id)completion alertCompletion:(id)alertCompletion audioCallback:(id)callback
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  settingsCopy = settings;
+  completionCopy = completion;
+  alertCompletionCopy = alertCompletion;
+  callbackCopy = callback;
   v20 = 4136;
   v21 = 1;
   v22 = 0u;
@@ -3543,17 +3543,17 @@ LABEL_10:
     *&buf[12] = 1024;
     *&buf[14] = 1429;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
-    v28 = [v10 streamID];
+    streamID = [settingsCopy streamID];
     v29 = 2048;
-    v30 = [v10 startHostTime];
+    startHostTime = [settingsCopy startHostTime];
     v31 = 1024;
-    v32 = [v10 startAlert];
+    startAlert = [settingsCopy startAlert];
     v33 = 1024;
-    v34 = [v10 stopAlert];
+    stopAlert = [settingsCopy stopAlert];
     v35 = 1024;
-    v36 = [v10 stopOnErrorAlert];
+    stopOnErrorAlert = [settingsCopy stopOnErrorAlert];
     _os_log_impl(&dword_1BA5AC000, v16, OS_LOG_TYPE_DEFAULT, "%25s:%-5d !! DEPRECATED !! #### AVVoiceController[self = %p]: startRecordWithSettings:completion:alertCompletion:audioCallback: streamHandle(%lu), startTime(%llu). AlertsOverride(%d,%d,%d)", buf, 0x42u);
   }
 
@@ -3561,14 +3561,14 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (*buf && !self->mClientAPIClutch)
   {
-    ControllerImpl::startRecordForStream(*buf, self, v10, v11, v12, v13);
+    ControllerImpl::startRecordForStream(*buf, self, settingsCopy, completionCopy, alertCompletionCopy, callbackCopy);
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    v17 = [v10 streamID];
+    streamID2 = [settingsCopy streamID];
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v11 + 2))(v11, v17, 0, 0, v18);
+    (*(completionCopy + 2))(completionCopy, streamID2, 0, 0, v18);
   }
 
   if (*&buf[8])
@@ -3582,10 +3582,10 @@ LABEL_8:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)prepareRecordForStream:(id)a3 error:(id *)a4
+- (BOOL)prepareRecordForStream:(id)stream error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  streamCopy = stream;
   v23 = 4135;
   v24 = 1;
   v25 = 0u;
@@ -3610,22 +3610,22 @@ LABEL_8:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(AVVCPrepareRecordSettings *)v6 streamID];
-    [(AVVCPrepareRecordSettings *)v6 recordBufferDuration];
+    streamID = [(AVVCPrepareRecordSettings *)streamCopy streamID];
+    [(AVVCPrepareRecordSettings *)streamCopy recordBufferDuration];
     v12 = v11;
-    v13 = [(AVVCPrepareRecordSettings *)v6 avAudioSettings];
+    avAudioSettings = [(AVVCPrepareRecordSettings *)streamCopy avAudioSettings];
     *buf = 136316418;
     v28 = "AVVoiceController.mm";
     v29 = 1024;
     v30 = 1412;
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     v33 = 2048;
-    v34 = v10;
+    v34 = streamID;
     v35 = 2048;
     v36 = v12;
     v37 = 2112;
-    v38 = v13;
+    v38 = avAudioSettings;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: prepareRecordForStream: streamHandle(%lu), bufferDuration(%f), settings: %@", buf, 0x3Au);
   }
 
@@ -3658,7 +3658,7 @@ LABEL_20:
       v29 = 1024;
       v30 = 1414;
       v31 = 2048;
-      v32 = v21;
+      selfCopy = v21;
       v33 = 1024;
       LODWORD(v34) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -3667,13 +3667,13 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v15 = ControllerImpl::prepareRecordForStream(v21, self, v6);
+  v15 = ControllerImpl::prepareRecordForStream(v21, self, streamCopy);
   if (v15)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v15 userInfo:0];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_21;
     }
 
@@ -3694,11 +3694,11 @@ LABEL_21:
   return v16;
 }
 
-- (void)prepareRecordForStream:(id)a3 completion:(id)a4
+- (void)prepareRecordForStream:(id)stream completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  completionCopy = completion;
   v18 = 4135;
   v19 = 1;
   v20 = 0u;
@@ -3723,22 +3723,22 @@ LABEL_21:
   v10 = v8;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 streamID];
-    [v6 recordBufferDuration];
+    streamID = [streamCopy streamID];
+    [streamCopy recordBufferDuration];
     v13 = v12;
-    v14 = [v6 avAudioSettings];
+    avAudioSettings = [streamCopy avAudioSettings];
     *buf = 136316418;
     *&buf[4] = "AVVoiceController.mm";
     *&buf[12] = 1024;
     *&buf[14] = 1399;
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2048;
-    v26 = v11;
+    v26 = streamID;
     v27 = 2048;
     v28 = v13;
     v29 = 2112;
-    v30 = v14;
+    v30 = avAudioSettings;
     _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d !! DEPRECATED !! #### AVVoiceController[self = %p]: prepareRecordForStream: streamHandle(%lu), bufferDuration(%f), settings: %@", buf, 0x3Au);
   }
 
@@ -3746,14 +3746,14 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (*buf && !self->mClientAPIClutch)
   {
-    ControllerImpl::prepareRecordForStream(*buf, self, v6, v7);
+    ControllerImpl::prepareRecordForStream(*buf, self, streamCopy, completionCopy);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v15 = [v6 streamID];
+    streamID2 = [streamCopy streamID];
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v7 + 2))(v7, v15, 0, v16);
+    (*(completionCopy + 2))(completionCopy, streamID2, 0, v16);
   }
 
   if (*&buf[8])
@@ -3767,10 +3767,10 @@ LABEL_8:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)setContext:(id)a3 streamType:(int64_t *)a4 error:(id *)a5
+- (unint64_t)setContext:(id)context streamType:(int64_t *)type error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  contextCopy = context;
   v23 = 4134;
   v24 = 1;
   v25 = 0u;
@@ -3795,18 +3795,18 @@ LABEL_8:
   v11 = v9;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = Get4CCFromInt([v8 activationMode]);
-    v13 = [v8 activationDeviceUID];
+    v12 = Get4CCFromInt([contextCopy activationMode]);
+    activationDeviceUID = [contextCopy activationDeviceUID];
     *buf = 136316162;
     v28 = "AVVoiceController.mm";
     v29 = 1024;
     v30 = 1383;
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v12;
     v35 = 2112;
-    v36 = v13;
+    v36 = activationDeviceUID;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setContext: activationMode(%@), deviceUID(%@)", buf, 0x30u);
   }
 
@@ -3815,12 +3815,12 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v20 && !self->mClientAPIClutch)
   {
-    v15 = ControllerImpl::setContext(v20, self, v8, &v22, a4);
+    v15 = ControllerImpl::setContext(v20, self, contextCopy, &v22, type);
     if (v15)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v15 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v15 userInfo:0];
       }
 
       v14 = 0;
@@ -3858,7 +3858,7 @@ LABEL_8:
       v29 = 1024;
       v30 = 1385;
       v31 = 2048;
-      v32 = v20;
+      selfCopy = v20;
       v33 = 1024;
       LODWORD(v34) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -3880,10 +3880,10 @@ LABEL_21:
   return v14;
 }
 
-- (unint64_t)setContext:(id)a3 error:(id *)a4
+- (unint64_t)setContext:(id)context error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v21 = 4134;
   v22 = 1;
   v23 = 0u;
@@ -3908,18 +3908,18 @@ LABEL_21:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = Get4CCFromInt([v6 activationMode]);
-    v11 = [v6 activationDeviceUID];
+    v10 = Get4CCFromInt([contextCopy activationMode]);
+    activationDeviceUID = [contextCopy activationDeviceUID];
     *buf = 136316162;
     v26 = "AVVoiceController.mm";
     v27 = 1024;
     v28 = 1366;
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
     v32 = v10;
     v33 = 2112;
-    v34 = v11;
+    v34 = activationDeviceUID;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setContext: activationMode(%@), deviceUID(%@)", buf, 0x30u);
   }
 
@@ -3928,12 +3928,12 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (v18 && !self->mClientAPIClutch)
   {
-    v13 = ControllerImpl::setContext(v18, self, v6, &v20, 0);
+    v13 = ControllerImpl::setContext(v18, self, contextCopy, &v20, 0);
     if (v13)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v13 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v13 userInfo:0];
       }
 
       v12 = 0;
@@ -3971,7 +3971,7 @@ LABEL_8:
       v27 = 1024;
       v28 = 1368;
       v29 = 2048;
-      v30 = v18;
+      selfCopy = v18;
       v31 = 1024;
       LODWORD(v32) = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -3993,11 +3993,11 @@ LABEL_21:
   return v12;
 }
 
-- (void)setContext:(id)a3 completion:(id)a4
+- (void)setContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v15 = 4134;
   v16 = 1;
   v17 = 0u;
@@ -4022,18 +4022,18 @@ LABEL_21:
   v10 = v8;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = Get4CCFromInt([v6 activationMode]);
-    v12 = [v6 activationDeviceUID];
+    v11 = Get4CCFromInt([contextCopy activationMode]);
+    activationDeviceUID = [contextCopy activationDeviceUID];
     *buf = 136316162;
     *&buf[4] = "AVVoiceController.mm";
     *&buf[12] = 1024;
     *&buf[14] = 1352;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v11;
     v24 = 2112;
-    v25 = v12;
+    v25 = activationDeviceUID;
     _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: setContext:streamType:completion: activationMode(%@), deviceUID(%@)", buf, 0x30u);
   }
 
@@ -4041,13 +4041,13 @@ LABEL_8:
   [(AVVoiceController *)self impl];
   if (*buf && !self->mClientAPIClutch)
   {
-    ControllerImpl::setContext(*buf, self, v6, v7);
+    ControllerImpl::setContext(*buf, self, contextCopy, completionCopy);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11780 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
   }
 
   if (*&buf[8])
@@ -4061,7 +4061,7 @@ LABEL_8:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)_bringUp:(int64_t)a3 withError:(id *)a4
+- (int64_t)_bringUp:(int64_t)up withError:(id *)error
 {
   v6 = *MEMORY[0x1E69E9840];
   v5[0] = 0;
@@ -4079,7 +4079,7 @@ uint64_t __40__AVVoiceController__bringUp_withError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)initVoiceControllerForClient:(int64_t)a3 withError:(id *)a4
+- (id)initVoiceControllerForClient:(int64_t)client withError:(id *)error
 {
   v61 = *MEMORY[0x1E69E9840];
   v50 = 4133;
@@ -4111,15 +4111,15 @@ uint64_t __40__AVVoiceController__bringUp_withError___block_invoke(uint64_t a1)
     v57 = 1024;
     *v58 = 1279;
     *&v58[4] = 1024;
-    *&v58[6] = a3;
+    *&v58[6] = client;
     *&v58[10] = 2048;
     *&v58[12] = self;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [enforce 1 avvc] #### AVVoiceController: initVoiceControllerForClient:(%d) (V2): [self == %p]", buf, 0x22u);
   }
 
 LABEL_8:
-  v9 = [AVVoiceTriggerClient sharedInstance:a3];
-  v10 = self;
+  v9 = [AVVoiceTriggerClient sharedInstance:client];
+  selfCopy = self;
   if (kAVVCScope)
   {
     v11 = *kAVVCScope;
@@ -4145,7 +4145,7 @@ LABEL_8:
     v57 = 1024;
     *v58 = 124;
     *&v58[4] = 2048;
-    *&v58[6] = v10;
+    *&v58[6] = selfCopy;
     *&v58[14] = 2112;
     *&v58[16] = v15;
     _os_log_impl(&dword_1BA5AC000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [enforce 1 avvc] before wait controller(%p), %@", buf, 0x26u);
@@ -4190,7 +4190,7 @@ LABEL_15:
 
     *&v58[6] = v25;
     *&v58[14] = 2048;
-    *&v58[16] = v10;
+    *&v58[16] = selfCopy;
     v59 = 2112;
     v60 = v23;
     _os_log_impl(&dword_1BA5AC000, v21, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [enforce 1 avvc] after wait%s controller(%p), %@", buf, 0x30u);
@@ -4212,7 +4212,7 @@ LABEL_32:
           *buf = 136315394;
           v56 = "BlockIfAnotherAVVCIsStillAlive";
           v57 = 2048;
-          *v58 = v10;
+          *v58 = selfCopy;
           _os_log_fault_impl(&dword_1BA5AC000, v28, OS_LOG_TYPE_FAULT, "[enforce 1 avvc] %s Timed out waiting to initialize, which means multiple AVVC objects exist simultaneously. Controller(%p)", buf, 0x16u);
         }
 
@@ -4240,7 +4240,7 @@ LABEL_32:
 
 LABEL_35:
 
-  v49.receiver = v10;
+  v49.receiver = selfCopy;
   v49.super_class = AVVoiceController;
   v30 = [(AVVoiceController *)&v49 init];
   v31 = v30;
@@ -4309,7 +4309,7 @@ LABEL_48:
 
     pthread_mutex_unlock(&MapLocker::sMapLock);
 
-    v38 = [(AVVoiceController *)v32 _bringUp:a3 withError:a4];
+    v38 = [(AVVoiceController *)v32 _bringUp:client withError:error];
     if (v18)
     {
       if (IsMetricsOwnedByAVVC(void)::onceToken != -1)
@@ -4327,17 +4327,17 @@ LABEL_48:
         [MEMORY[0x1E698D708] sharedInstance];
       }
       v39 = ;
-      v40 = [v39 reporterID];
+      reporterID = [v39 reporterID];
 
       v41 = +[AVVCMetricsManager sharedManager];
-      [v41 logABCMetric:@"avvcDualAVVC" category:8 type:5 reporterID:v40];
+      [v41 logABCMetric:@"avvcDualAVVC" category:8 type:5 reporterID:reporterID];
     }
 
     if (v38)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v38 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v38 userInfo:0];
       }
 
       v48 = 0;
@@ -4398,7 +4398,7 @@ LABEL_68:
   v8 = __28__AVVoiceController_metrics__block_invoke;
   v9 = &unk_1E7EF6988;
   v10 = &v11;
-  v2 = self;
+  selfCopy = self;
   v3 = v7;
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
@@ -4412,7 +4412,7 @@ LABEL_68:
 
   else
   {
-    v4 = v2;
+    v4 = selfCopy;
     objc_sync_enter(v4);
     v8(v3);
     objc_sync_exit(v4);
@@ -4530,7 +4530,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)setAlertVolume:(float)a3
+- (void)setAlertVolume:(float)volume
 {
   v24 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
@@ -4555,7 +4555,7 @@ LABEL_12:
     v18 = 1024;
     v19 = 1216;
     v20 = 2048;
-    v21 = a3;
+    volumeCopy = volume;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: setAlertVolume: %f ####", buf, 0x1Cu);
   }
 
@@ -4586,7 +4586,7 @@ LABEL_8:
       v18 = 1024;
       v19 = 1217;
       v20 = 2048;
-      v21 = v14;
+      volumeCopy = v14;
       v22 = 1024;
       v23 = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -4606,7 +4606,7 @@ LABEL_8:
       atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v13 = a3;
+    volumeCopy2 = volume;
     ControllerImpl::safeWork(*&v14, v11, "[AVVoiceController setAlertVolume:]");
     if (v12)
     {
@@ -4652,7 +4652,7 @@ void __36__AVVoiceController_setAlertVolume___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setRecordEndWaitTime:(double)a3
+- (void)setRecordEndWaitTime:(double)time
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
@@ -4662,7 +4662,7 @@ void __36__AVVoiceController_setAlertVolume___block_invoke(uint64_t a1)
     v9[1] = 3321888768;
     v9[2] = __42__AVVoiceController_setRecordEndWaitTime___block_invoke;
     v9[3] = &__block_descriptor_56_ea8_40c42_ZTSNSt3__110shared_ptrI14ControllerImplEE_e5_v8__0l;
-    *&v9[4] = a3;
+    *&v9[4] = time;
     v9[5] = v11;
     v10 = v12;
     if (v12)
@@ -4846,7 +4846,7 @@ double __38__AVVoiceController_recordEndWaitTime__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setRecordInterspeechWaitTime:(double)a3
+- (void)setRecordInterspeechWaitTime:(double)time
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
@@ -4856,7 +4856,7 @@ double __38__AVVoiceController_recordEndWaitTime__block_invoke(uint64_t a1)
     v9[1] = 3321888768;
     v9[2] = __50__AVVoiceController_setRecordInterspeechWaitTime___block_invoke;
     v9[3] = &__block_descriptor_56_ea8_40c42_ZTSNSt3__110shared_ptrI14ControllerImplEE_e5_v8__0l;
-    *&v9[4] = a3;
+    *&v9[4] = time;
     v9[5] = v11;
     v10 = v12;
     if (v12)
@@ -5040,7 +5040,7 @@ double __46__AVVoiceController_recordInterspeechWaitTime__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setRecordStartWaitTime:(double)a3
+- (void)setRecordStartWaitTime:(double)time
 {
   v23 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
@@ -5065,7 +5065,7 @@ double __46__AVVoiceController_recordInterspeechWaitTime__block_invoke(uint64_t 
     v17 = 1024;
     v18 = 1144;
     v19 = 2048;
-    v20 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: recordStartWaitTime: %f ####", buf, 0x1Cu);
   }
 
@@ -5096,7 +5096,7 @@ LABEL_8:
       v17 = 1024;
       v18 = 1145;
       v19 = 2048;
-      v20 = v13;
+      timeCopy = v13;
       v21 = 1024;
       v22 = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
@@ -5109,7 +5109,7 @@ LABEL_8:
     v11[1] = 3321888768;
     v11[2] = __44__AVVoiceController_setRecordStartWaitTime___block_invoke;
     v11[3] = &__block_descriptor_56_ea8_40c42_ZTSNSt3__110shared_ptrI14ControllerImplEE_e5_v8__0l;
-    *&v11[4] = a3;
+    *&v11[4] = time;
     *&v11[5] = v13;
     v12 = v14;
     if (v14)
@@ -5261,7 +5261,7 @@ double __40__AVVoiceController_recordStartWaitTime__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setRecordEndpointMode:(int)a3
+- (void)setRecordEndpointMode:(int)mode
 {
   v24 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
@@ -5286,7 +5286,7 @@ double __40__AVVoiceController_recordStartWaitTime__block_invoke(uint64_t a1)
     v18 = 1024;
     v19 = 1120;
     v20 = 1024;
-    LODWORD(v21) = a3;
+    LODWORD(v21) = mode;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: setRecordEndpointMode: %d ####", buf, 0x18u);
   }
 
@@ -5305,7 +5305,7 @@ LABEL_8:
       atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v13 = a3;
+    modeCopy = mode;
     ControllerImpl::safeWork(v14, v11, "[AVVoiceController setRecordEndpointMode:]");
     if (v12)
     {
@@ -5475,10 +5475,10 @@ LABEL_16:
   return v4;
 }
 
-- (void)setEndpointerDelegate:(id)a3
+- (void)setEndpointerDelegate:(id)delegate
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (kAVVCScope)
   {
     v5 = *kAVVCScope;
@@ -5520,7 +5520,7 @@ LABEL_8:
     }
 
     v12[4] = self;
-    v13 = v4;
+    v13 = delegateCopy;
     ControllerImpl::safeWorkSync(v7, v12);
 
     if (v15)
@@ -5658,10 +5658,10 @@ uint64_t __39__AVVoiceController_endpointerDelegate__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setRecordDelegate:(id)a3
+- (void)setRecordDelegate:(id)delegate
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (kAVVCScope)
   {
     v5 = *kAVVCScope;
@@ -5684,7 +5684,7 @@ uint64_t __39__AVVoiceController_endpointerDelegate__block_invoke(uint64_t a1)
     *&buf[12] = 1024;
     *&buf[14] = 1065;
     v15 = 2048;
-    v16 = v4;
+    v16 = delegateCopy;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: setRecordDelegate: %p ####", buf, 0x1Cu);
   }
 
@@ -5697,7 +5697,7 @@ LABEL_8:
     v9[1] = 3321888768;
     v9[2] = __39__AVVoiceController_setRecordDelegate___block_invoke;
     v9[3] = &unk_1F3848978;
-    v10 = v4;
+    v10 = delegateCopy;
     v12 = v7;
     v13 = *&buf[8];
     if (*&buf[8])
@@ -5705,7 +5705,7 @@ LABEL_8:
       atomic_fetch_add_explicit((*&buf[8] + 8), 1uLL, memory_order_relaxed);
     }
 
-    v11 = self;
+    selfCopy = self;
     ControllerImpl::safeWorkSync(v7, v9);
     if (v13)
     {
@@ -5840,10 +5840,10 @@ uint64_t __35__AVVoiceController_recordDelegate__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)setAlertSoundFromURL:(id)a3 forType:(int)a4
+- (BOOL)setAlertSoundFromURL:(id)l forType:(int)type
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   [(AVVoiceController *)self impl];
   if (!v17 || self->mClientAPIClutch)
   {
@@ -5874,7 +5874,7 @@ LABEL_13:
       v23 = 2048;
       v24 = v17;
       v25 = 1024;
-      v26 = mClientAPIClutch;
+      typeCopy = mClientAPIClutch;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid operation. impl(%p) ClientAPIClutch(%d)", buf, 0x22u);
     }
 
@@ -5899,22 +5899,22 @@ LABEL_13:
   v14 = v8;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 136315906;
     v20 = "AVVoiceController.mm";
     v21 = 1024;
     v22 = 1038;
     v23 = 2112;
-    v24 = v15;
+    v24 = absoluteString;
     v25 = 1024;
-    v26 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_1BA5AC000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: setAlertSoundFromURL: %@ forType: %d ####", buf, 0x22u);
   }
 
 LABEL_21:
-  if ((a4 - 4) > 0xFFFFFFFC)
+  if ((type - 4) > 0xFFFFFFFC)
   {
-    LOBYTE(self) = ControllerImpl::setAlertURL(v17, self, a4, v6) == 0;
+    LOBYTE(self) = ControllerImpl::setAlertURL(v17, self, type, lCopy) == 0;
     goto LABEL_14;
   }
 
@@ -5951,13 +5951,13 @@ LABEL_14:
   return self;
 }
 
-- (BOOL)IsDeviceAvailableInLocalRoute:(id)a3 error:(id *)a4
+- (BOOL)IsDeviceAvailableInLocalRoute:(id)route error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  routeCopy = route;
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
   }
 
   if (kAVVCScope)
@@ -5989,9 +5989,9 @@ LABEL_10:
   return 1;
 }
 
-- (void)enableMiniDucking:(BOOL)a3
+- (void)enableMiniDucking:(BOOL)ducking
 {
-  v3 = a3;
+  duckingCopy = ducking;
   v24 = *MEMORY[0x1E69E9840];
   if (kAVVCScope)
   {
@@ -6015,7 +6015,7 @@ LABEL_10:
     v18 = 1024;
     v19 = 985;
     v20 = 1024;
-    LODWORD(v21) = v3;
+    LODWORD(v21) = duckingCopy;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: enableMiniDucking: %d", buf, 0x18u);
   }
 
@@ -6034,7 +6034,7 @@ LABEL_8:
       atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v13 = v3;
+    v13 = duckingCopy;
     ControllerImpl::safeWorkSync(v14, v11);
     if (v12)
     {
@@ -6130,11 +6130,11 @@ void __39__AVVoiceController_enableMiniDucking___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
-    v49 = "AVVoiceController.mm";
+    selfCopy2 = "AVVoiceController.mm";
     v50 = 1024;
     v51 = 965;
     v52 = 2048;
-    v53 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [enforce 1 avvc] #### AVVoiceController: dealloc [self == %p] ####", buf, 0x1Cu);
   }
 
@@ -6165,7 +6165,7 @@ LABEL_19:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
         {
           *buf = 134217984;
-          v49 = self;
+          selfCopy2 = self;
           _os_log_fault_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_FAULT, "In dealloc without prior teardownWithError: call. Controller(%p)", buf, 0xCu);
         }
 
@@ -6182,11 +6182,11 @@ LABEL_19:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v49 = "AVVoiceController.mm";
+      selfCopy2 = "AVVoiceController.mm";
       v50 = 1024;
       v51 = 971;
       v52 = 2048;
-      v53 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d In dealloc without prior teardownWithError: call. Controller(%p)", buf, 0x1Cu);
     }
 
@@ -6200,7 +6200,7 @@ LABEL_22:
   }
 
 LABEL_24:
-  v12 = self;
+  selfCopy4 = self;
   if (kAVVCScope)
   {
     if (*(kAVVCScope + 8))
@@ -6212,18 +6212,18 @@ LABEL_24:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
           *buf = 136315650;
-          v49 = "AVVCUtils.mm";
+          selfCopy2 = "AVVCUtils.mm";
           v50 = 1024;
           v51 = 87;
           v52 = 2048;
-          v53 = v12;
+          selfCopy3 = selfCopy4;
           _os_log_impl(&dword_1BA5AC000, v14, OS_LOG_TYPE_DEBUG, "%25s:%-5d UnregisterObject: unregistering %p", buf, 0x1Cu);
         }
       }
     }
   }
 
-  if (!ObjectExists(v12))
+  if (!ObjectExists(selfCopy4))
   {
     CAVerboseAbort();
   }
@@ -6241,8 +6241,8 @@ LABEL_24:
   do
   {
     v19 = v18[4];
-    v20 = v19 >= v12;
-    v21 = v19 < v12;
+    v20 = v19 >= selfCopy4;
+    v21 = v19 < selfCopy4;
     if (v20)
     {
       v17 = v18;
@@ -6252,7 +6252,7 @@ LABEL_24:
   }
 
   while (v18);
-  if (v17 == (ObjectMap + 1) || v17[4] > v12)
+  if (v17 == (ObjectMap + 1) || v17[4] > selfCopy4)
   {
 LABEL_39:
     v17 = (ObjectMap + 1);
@@ -6311,14 +6311,14 @@ LABEL_39:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
-    v49 = "AVVoiceController.mm";
+    selfCopy2 = "AVVoiceController.mm";
     v50 = 1024;
     v51 = 977;
     _os_log_impl(&dword_1BA5AC000, v26, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: exiting dealloc ####", buf, 0x12u);
   }
 
 LABEL_55:
-  v28 = v12;
+  v28 = selfCopy4;
   if (kAVVCScope)
   {
     v29 = *kAVVCScope;
@@ -6340,11 +6340,11 @@ LABEL_55:
     v32 = GetAVVCSingleInstanceSemaphore();
     v33 = [v32 debugDescription];
     *buf = 136315906;
-    v49 = "AVVoiceController.mm";
+    selfCopy2 = "AVVoiceController.mm";
     v50 = 1024;
     v51 = 138;
     v52 = 2048;
-    v53 = v28;
+    selfCopy3 = v28;
     v54 = 2112;
     v55 = v33;
     _os_log_impl(&dword_1BA5AC000, v31, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [enforce 1 avvc] before signal avvc(%p), %@", buf, 0x26u);
@@ -6375,11 +6375,11 @@ LABEL_62:
     v38 = GetAVVCSingleInstanceSemaphore();
     v39 = [v38 debugDescription];
     *buf = 136315906;
-    v49 = "AVVoiceController.mm";
+    selfCopy2 = "AVVoiceController.mm";
     v50 = 1024;
     v51 = 140;
     v52 = 2048;
-    v53 = v28;
+    selfCopy3 = v28;
     v54 = 2112;
     v55 = v39;
     _os_log_impl(&dword_1BA5AC000, v37, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [enforce 1 avvc] after signal avvc(%p), %@", buf, 0x26u);
@@ -6395,7 +6395,7 @@ LABEL_69:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_teardownWithError:(id *)a3
+- (void)_teardownWithError:(id *)error
 {
   impl = self->_impl;
   if (!impl)
@@ -6663,7 +6663,7 @@ LABEL_44:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)teardownWithError:(id *)a3
+- (void)teardownWithError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   self->mClientAPIClutch = 1;
@@ -6695,27 +6695,27 @@ LABEL_44:
     v14 = 1024;
     v15 = 864;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: teardownWithError: ", buf, 0x1Cu);
   }
 
 LABEL_8:
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   [(AVVoiceController *)self setRecordDelegate:0];
-  [(AVVoiceController *)self _teardownWithError:a3];
+  [(AVVoiceController *)self _teardownWithError:error];
   ElapsedTime::~ElapsedTime(v18);
   TraceWrapper::~TraceWrapper(&v8);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeStream:(unint64_t)a3 completion:(id)a4
+- (void)removeStream:(unint64_t)stream completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   [(AVVoiceController *)self impl];
   v7 = v18;
   if (v18 && !self->mClientAPIClutch)
@@ -6731,10 +6731,10 @@ LABEL_8:
       atomic_fetch_add_explicit(&v19->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v17 = a3;
+    streamCopy = stream;
     v12[4] = self;
     v13 = 0;
-    v14 = v6;
+    v14 = completionCopy;
     ControllerImpl::safeWork(v7, v12, "[AVVoiceController removeStream:completion:]");
 
     if (v16)
@@ -6839,7 +6839,7 @@ uint64_t __45__AVVoiceController_removeStream_completion___block_invoke_3(uint64
   return result;
 }
 
-- (void)cleanSlateWithError:(id *)a3
+- (void)cleanSlateWithError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   self->mClientAPIClutch = 1;
@@ -6871,7 +6871,7 @@ uint64_t __45__AVVoiceController_removeStream_completion___block_invoke_3(uint64
     *&buf[12] = 1024;
     *&buf[14] = 819;
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController[self = %p]: cleanSlate:", buf, 0x1Cu);
   }
 
@@ -6889,13 +6889,13 @@ LABEL_8:
     }
 
     [(AVVoiceController *)self setRecordDelegate:0];
-    [(AVVoiceController *)self _teardownWithError:a3];
+    [(AVVoiceController *)self _teardownWithError:error];
     v12 = 0;
     v9 = [(AVVoiceController *)self _bringUp:v7 withError:&v12];
     v10 = v12;
-    if (a3 && v9)
+    if (error && v9)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v9 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v9 userInfo:0];
     }
 
     self->mClientAPIClutch = 0;
@@ -6988,10 +6988,10 @@ LABEL_12:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginRecordInterruptionWithContext:(id)a3
+- (void)beginRecordInterruptionWithContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   [(AVVoiceController *)self impl];
   if (v18)
   {
@@ -7010,7 +7010,7 @@ LABEL_12:
           {
 LABEL_22:
             v13 = objc_loadWeakRetained((v18 + 168));
-            [v13 voiceControllerBeginRecordInterruption:self withContext:v4];
+            [v13 voiceControllerBeginRecordInterruption:self withContext:contextCopy];
 LABEL_28:
 
             goto LABEL_29;
@@ -7030,7 +7030,7 @@ LABEL_28:
           v22 = 1024;
           v23 = 744;
           v24 = 2112;
-          v25 = v4;
+          v25 = contextCopy;
           _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d handleInterruptStart: notifying with context: %@", buf, 0x1Cu);
         }
 
@@ -7113,10 +7113,10 @@ LABEL_29:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyEventOccured:(unint64_t)a3 error:(id)a4
+- (void)notifyEventOccured:(unint64_t)occured error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   [(AVVoiceController *)self impl];
   if (v15)
   {
@@ -7135,7 +7135,7 @@ LABEL_29:
           {
 LABEL_17:
             v11 = objc_loadWeakRetained((v15 + 168));
-            [v11 voiceControllerEventOccurred:self forStream:a3 error:v6];
+            [v11 voiceControllerEventOccurred:self forStream:occured error:errorCopy];
 LABEL_18:
 
             goto LABEL_19;
@@ -7155,9 +7155,9 @@ LABEL_18:
           v19 = 1024;
           v20 = 727;
           v21 = 2048;
-          v22 = a3;
+          occuredCopy = occured;
           v23 = 2112;
-          v24 = v6;
+          v24 = errorCopy;
           _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Notifying streamHandle(%lu) that an event occured: %@", buf, 0x26u);
         }
 
@@ -7201,7 +7201,7 @@ LABEL_19:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyStreamInvalidated:(unint64_t)a3
+- (void)notifyStreamInvalidated:(unint64_t)invalidated
 {
   v21 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
@@ -7222,7 +7222,7 @@ LABEL_19:
           {
 LABEL_17:
             v9 = objc_loadWeakRetained((v13 + 168));
-            [v9 voiceControllerStreamInvalidated:self forStream:a3];
+            [v9 voiceControllerStreamInvalidated:self forStream:invalidated];
 LABEL_18:
 
             goto LABEL_19;
@@ -7242,7 +7242,7 @@ LABEL_18:
           v17 = 1024;
           v18 = 712;
           v19 = 2048;
-          v20 = a3;
+          invalidatedCopy2 = invalidated;
           _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Notifying streamHandle(%lu) invalidated", buf, 0x1Cu);
         }
 
@@ -7272,7 +7272,7 @@ LABEL_18:
       v17 = 1024;
       v18 = 716;
       v19 = 2048;
-      v20 = a3;
+      invalidatedCopy2 = invalidated;
       _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d streamHandle(%lu) invalidated but no record delegate, or notify selector not supported", buf, 0x1Cu);
     }
 
@@ -7288,10 +7288,10 @@ LABEL_19:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)alertPlaybackFinishedWithSettings:(id)a3
+- (void)alertPlaybackFinishedWithSettings:(id)settings
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   [(AVVoiceController *)self impl];
   if (v22)
   {
@@ -7304,7 +7304,7 @@ LABEL_19:
       if (v7)
       {
         v8 = objc_loadWeakRetained((v22 + 168));
-        [v8 voiceControllerDidFinishAlertPlayback:self withSettings:v4 error:0];
+        [v8 voiceControllerDidFinishAlertPlayback:self withSettings:settingsCopy error:0];
 
         if (kAVVCScope)
         {
@@ -7329,11 +7329,11 @@ LABEL_19:
           v26 = 1024;
           v27 = 697;
           v28 = 1024;
-          v29 = [v4 type];
+          type = [settingsCopy type];
           v30 = 1024;
-          v31 = [v4 mode];
+          mode = [settingsCopy mode];
           v32 = 2048;
-          v33 = [v4 alertEndTime];
+          alertEndTime = [settingsCopy alertEndTime];
           v17 = "%25s:%-5d Calling alert playback finished delegate. Settings { Type: %d, Mode: %d, alertEndTime: %llu }";
           v18 = v16;
           v19 = 40;
@@ -7355,7 +7355,7 @@ LABEL_18:
       if (v12)
       {
         v13 = objc_loadWeakRetained((v22 + 168));
-        [v13 voiceControllerDidFinishAlertPlayback:self ofType:objc_msgSend(v4 error:{"type"), 0}];
+        [v13 voiceControllerDidFinishAlertPlayback:self ofType:objc_msgSend(settingsCopy error:{"type"), 0}];
 
         if (kAVVCScope)
         {
@@ -7380,7 +7380,7 @@ LABEL_18:
           v26 = 1024;
           v27 = 701;
           v28 = 1024;
-          v29 = [v4 type];
+          type = [settingsCopy type];
           v17 = "%25s:%-5d Calling alert playback finished delegate. Type: %d";
           v18 = v16;
           v19 = 24;
@@ -7401,7 +7401,7 @@ LABEL_20:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeError:(int)a3
+- (void)encodeError:(int)error
 {
   v26 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
@@ -7426,7 +7426,7 @@ LABEL_20:
     v8 = v6;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      CAX4CCString::CAX4CCString(v19, a3);
+      CAX4CCString::CAX4CCString(v19, error);
       *buf = 136315650;
       v21 = "AVVoiceController.mm";
       v22 = 1024;
@@ -7447,7 +7447,7 @@ LABEL_9:
       if (v11)
       {
         v12 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v13 = [v12 initWithDomain:*MEMORY[0x1E696A768] code:a3 userInfo:0];
+        v13 = [v12 initWithDomain:*MEMORY[0x1E696A768] code:error userInfo:0];
         v14 = objc_loadWeakRetained((v17 + 168));
         [v14 voiceControllerEncoderErrorDidOccur:self error:v13];
 
@@ -7492,7 +7492,7 @@ LABEL_19:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endpointDetectedAtTime:(double)a3
+- (void)endpointDetectedAtTime:(double)time
 {
   v27 = *MEMORY[0x1E69E9840];
   if (ObjectExists(self))
@@ -7526,7 +7526,7 @@ LABEL_19:
       v23 = 1024;
       v24 = 661;
       v25 = 2048;
-      v26 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_1BA5AC000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### endpointDetected: time %.2f seconds ####", buf, 0x1Cu);
     }
 
@@ -7536,7 +7536,7 @@ LABEL_17:
     if (WeakRetained && (v11 = objc_loadWeakRetained((v19 + 168)), v12 = objc_opt_respondsToSelector(), v11, WeakRetained, (v12 & 1) != 0))
     {
       v13 = objc_loadWeakRetained((v19 + 168));
-      [v13 voiceControllerDidDetectEndpoint:self ofType:2 atTime:a3];
+      [v13 voiceControllerDidDetectEndpoint:self ofType:2 atTime:time];
     }
 
     else
@@ -7613,7 +7613,7 @@ LABEL_32:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)interspeechPointDetectedAtTime:(double)a3
+- (void)interspeechPointDetectedAtTime:(double)time
 {
   v27 = *MEMORY[0x1E69E9840];
   if (ObjectExists(self))
@@ -7647,7 +7647,7 @@ LABEL_32:
       v23 = 1024;
       v24 = 639;
       v25 = 2048;
-      v26 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_1BA5AC000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### interspeechPointDetected: time %.2f seconds ####", buf, 0x1Cu);
     }
 
@@ -7657,7 +7657,7 @@ LABEL_17:
     if (WeakRetained && (v11 = objc_loadWeakRetained((v19 + 168)), v12 = objc_opt_respondsToSelector(), v11, WeakRetained, (v12 & 1) != 0))
     {
       v13 = objc_loadWeakRetained((v19 + 168));
-      [v13 voiceControllerDidDetectEndpoint:self ofType:1 atTime:a3];
+      [v13 voiceControllerDidDetectEndpoint:self ofType:1 atTime:time];
     }
 
     else
@@ -7843,9 +7843,9 @@ LABEL_29:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishedRecording:(unint64_t)a3 status:(int)a4
+- (void)finishedRecording:(unint64_t)recording status:(int)status
 {
-  LODWORD(v4) = a4;
+  LODWORD(v4) = status;
   v31 = *MEMORY[0x1E69E9840];
   if (ObjectExists(self))
   {
@@ -7884,7 +7884,7 @@ LABEL_29:
       LOWORD(v29) = 1024;
       *(&v29 + 2) = v4;
       HIWORD(v29) = 2048;
-      v30 = a3;
+      recordingCopy = recording;
       _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### AVVoiceController: Recording finished (success = %d status = %d streamID = %llu) ####", buf, 0x28u);
     }
 
@@ -7900,14 +7900,14 @@ LABEL_23:
       {
         v17 = objc_loadWeakRetained((v25 + 168));
         v4 = v4;
-        [v17 voiceControllerDidStopRecording:self forStream:a3 forReason:v4];
+        [v17 voiceControllerDidStopRecording:self forStream:recording forReason:v4];
 
 LABEL_37:
         *buf = 4116;
         v28[0] = 0;
         *&v28[4] = v4;
         v29 = 0;
-        v30 = 0;
+        recordingCopy = 0;
         kdebug_trace();
         TraceWrapper::~TraceWrapper(buf);
 LABEL_38:
@@ -7993,7 +7993,7 @@ LABEL_40:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beganRecording:(unint64_t)a3 status:(int)a4
+- (void)beganRecording:(unint64_t)recording status:(int)status
 {
   v32 = *MEMORY[0x1E69E9840];
   [(AVVoiceController *)self impl];
@@ -8022,11 +8022,11 @@ LABEL_40:
       *&v29[8] = 1024;
       *&v29[10] = 561;
       *&v29[14] = 1024;
-      *&v29[16] = a4 == 0;
+      *&v29[16] = status == 0;
       LOWORD(v30) = 1024;
-      *(&v30 + 2) = a4;
+      *(&v30 + 2) = status;
       HIWORD(v30) = 2048;
-      v31 = a3;
+      recordingCopy = recording;
       _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d #### beganRecording: (success = %d status = %d streamID = %llu) ####", buf, 0x28u);
     }
 
@@ -8035,10 +8035,10 @@ LABEL_9:
     WeakRetained = objc_loadWeakRetained((v7 + 168));
     if (WeakRetained && (v11 = objc_loadWeakRetained((v26 + 168)), v12 = objc_opt_respondsToSelector(), v11, WeakRetained, (v12 & 1) != 0))
     {
-      if (a4)
+      if (status)
       {
         v13 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v14 = [v13 initWithDomain:*MEMORY[0x1E696A768] code:a4 userInfo:0];
+        v14 = [v13 initWithDomain:*MEMORY[0x1E696A768] code:status userInfo:0];
       }
 
       else
@@ -8047,7 +8047,7 @@ LABEL_9:
       }
 
       v23 = objc_loadWeakRetained((v26 + 168));
-      [v23 voiceControllerDidStartRecording:self forStream:a3 successfully:a4 == 0 error:v14];
+      [v23 voiceControllerDidStartRecording:self forStream:recording successfully:status == 0 error:v14];
     }
 
     else
@@ -8055,10 +8055,10 @@ LABEL_9:
       v15 = objc_loadWeakRetained((v26 + 168));
       if (v15 && (v16 = objc_loadWeakRetained((v26 + 168)), v17 = objc_opt_respondsToSelector(), v16, v15, (v17 & 1) != 0))
       {
-        if (a4)
+        if (status)
         {
           v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v14 = [v18 initWithDomain:*MEMORY[0x1E696A768] code:a4 userInfo:0];
+          v14 = [v18 initWithDomain:*MEMORY[0x1E696A768] code:status userInfo:0];
         }
 
         else
@@ -8067,7 +8067,7 @@ LABEL_9:
         }
 
         v24 = objc_loadWeakRetained((v26 + 168));
-        [v24 voiceControllerDidStartRecording:self successfully:a4 == 0 error:v14];
+        [v24 voiceControllerDidStartRecording:self successfully:status == 0 error:v14];
       }
 
       else
@@ -8076,7 +8076,7 @@ LABEL_9:
         if (v19 && (v20 = objc_loadWeakRetained((v26 + 168)), v21 = objc_opt_respondsToSelector(), v20, v19, (v21 & 1) != 0))
         {
           v14 = objc_loadWeakRetained((v26 + 168));
-          [v14 voiceControllerDidStartRecording:self successfully:a4 == 0];
+          [v14 voiceControllerDidStartRecording:self successfully:status == 0];
         }
 
         else
@@ -8112,9 +8112,9 @@ LABEL_31:
     ProfileMetrics(&cfstr_AvvcProfilePro.isa);
     *buf = 4115;
     v29[0] = 0;
-    *&v29[4] = a4;
+    *&v29[4] = status;
     v30 = 0;
-    v31 = 0;
+    recordingCopy = 0;
     kdebug_trace();
     TraceWrapper::~TraceWrapper(buf);
   }
@@ -8127,11 +8127,11 @@ LABEL_31:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlePluginDidUnpublishDevice:(id)a3 withDevice:(id)a4
+- (void)handlePluginDidUnpublishDevice:(id)device withDevice:(id)withDevice
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  withDeviceCopy = withDevice;
   [(AVVoiceController *)self impl];
   v8 = v17;
   if (v17)
@@ -8148,8 +8148,8 @@ LABEL_31:
     }
 
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = deviceCopy;
+    v14 = withDeviceCopy;
     ControllerImpl::dispatchAndSafeWork(v8, v12, "[AVVoiceController(AVVoiceControllerInternal) handlePluginDidUnpublishDevice:withDevice:]");
 
     if (v16)
@@ -8242,15 +8242,15 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlePluginDidPublishDevice:(id)a3 withDevice:(id)a4
+- (void)handlePluginDidPublishDevice:(id)device withDevice:(id)withDevice
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  withDeviceCopy = withDevice;
   [(AVVoiceController *)self impl];
   if (v11)
   {
-    ControllerImpl::handlePluginDidPublishDevice(self, v6, v7);
+    ControllerImpl::handlePluginDidPublishDevice(self, deviceCopy, withDeviceCopy);
     goto LABEL_10;
   }
 
@@ -8380,10 +8380,10 @@ void __91__AVVoiceController_AVVoiceControllerInternal__configureVoiceTriggerCli
   }
 }
 
-- (void)handleMediaServerReset:(id)a3
+- (void)handleMediaServerReset:(id)reset
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resetCopy = reset;
   v17 = 4111;
   v18 = 0;
   v19 = 0u;
@@ -8407,7 +8407,7 @@ void __91__AVVoiceController_AVVoiceControllerInternal__configureVoiceTriggerCli
     }
 
     v10[4] = self;
-    v11 = v4;
+    v11 = resetCopy;
     ControllerImpl::dispatchAndSafeWork(v5, v10, "[AVVoiceController(AVVoiceControllerInternal) handleMediaServerReset:]");
 
     if (v13)
@@ -8439,9 +8439,9 @@ LABEL_10:
     }
   }
 
-  if (v4)
+  if (resetCopy)
   {
-    v4[2](v4);
+    resetCopy[2](resetCopy);
   }
 
 LABEL_15:
@@ -8514,10 +8514,10 @@ void __71__AVVoiceController_AVVoiceControllerInternal__handleMediaServerReset__
   }
 }
 
-- (void)handleMediaServerDeath:(id)a3
+- (void)handleMediaServerDeath:(id)death
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deathCopy = death;
   v17 = 4110;
   v18 = 0;
   v19 = 0u;
@@ -8541,7 +8541,7 @@ void __71__AVVoiceController_AVVoiceControllerInternal__handleMediaServerReset__
     }
 
     v10[4] = self;
-    v11 = v4;
+    v11 = deathCopy;
     ControllerImpl::dispatchAndSafeWork(v5, v10, "[AVVoiceController(AVVoiceControllerInternal) handleMediaServerDeath:]");
 
     if (v13)
@@ -8573,9 +8573,9 @@ LABEL_10:
     }
   }
 
-  if (v4)
+  if (deathCopy)
   {
-    v4[2](v4);
+    deathCopy[2](deathCopy);
   }
 
 LABEL_15:
@@ -8714,34 +8714,34 @@ LABEL_20:
   v3();
 }
 
-- (void)handleRouteChange:(id)a3
+- (void)handleRouteChange:(id)change
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   [(AVVoiceController *)self impl];
   if (v19)
   {
-    v5 = [v4 object];
+    object = [changeCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 object];
+      object2 = [changeCopy object];
 
-      if (!v6)
+      if (!object2)
       {
         goto LABEL_16;
       }
 
       v7 = objc_alloc(MEMORY[0x1E695DF90]);
-      v8 = [v4 userInfo];
-      v9 = [v7 initWithDictionary:v8];
+      userInfo = [changeCopy userInfo];
+      v9 = [v7 initWithDictionary:userInfo];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3321888768;
       v13[2] = __66__AVVoiceController_AVVoiceControllerInternal__handleRouteChange___block_invoke;
       v13[3] = &unk_1F3848630;
-      v5 = v6;
-      v14 = v5;
+      object = object2;
+      v14 = object;
       v10 = v9;
       v15 = v10;
       v17 = v19;
@@ -8751,7 +8751,7 @@ LABEL_20:
         atomic_fetch_add_explicit(&v20->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v16 = self;
+      selfCopy = self;
       ControllerImpl::dispatchAndSafeWork(v19, v13, "[AVVoiceController(AVVoiceControllerInternal) handleRouteChange:]");
       if (v18)
       {
@@ -8764,16 +8764,16 @@ LABEL_20:
 
   if (!kAVVCScope)
   {
-    v5 = MEMORY[0x1E69E9C10];
+    object = MEMORY[0x1E69E9C10];
     v11 = MEMORY[0x1E69E9C10];
 LABEL_13:
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(object, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v22 = "AVVoiceController.mm";
       v23 = 1024;
       v24 = 381;
-      _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d handleRouteChange: ControllerImpl is nil. Bailing!", buf, 0x12u);
+      _os_log_impl(&dword_1BA5AC000, object, OS_LOG_TYPE_ERROR, "%25s:%-5d handleRouteChange: ControllerImpl is nil. Bailing!", buf, 0x12u);
     }
 
 LABEL_15:
@@ -8781,8 +8781,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v5 = *kAVVCScope;
-  if (v5)
+  object = *kAVVCScope;
+  if (object)
   {
     goto LABEL_13;
   }
@@ -8961,21 +8961,21 @@ LABEL_38:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleInterruption:(id)a3
+- (void)handleInterruption:(id)interruption
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptionCopy = interruption;
   [(AVVoiceController *)self impl];
   if (v17)
   {
-    v5 = [v4 userInfo];
-    v6 = [v4 object];
+    userInfo = [interruptionCopy userInfo];
+    object = [interruptionCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 object];
+      object2 = [interruptionCopy object];
 
-      if (!v7)
+      if (!object2)
       {
 LABEL_16:
 
@@ -8987,8 +8987,8 @@ LABEL_16:
       v11[1] = 3321888768;
       v11[2] = __67__AVVoiceController_AVVoiceControllerInternal__handleInterruption___block_invoke;
       v11[3] = &unk_1F3848630;
-      v6 = v7;
-      v12 = v6;
+      object = object2;
+      v12 = object;
       v15 = v17;
       v16 = v18;
       if (v18)
@@ -8996,8 +8996,8 @@ LABEL_16:
         atomic_fetch_add_explicit(&v18->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v13 = self;
-      v14 = v5;
+      selfCopy = self;
+      v14 = userInfo;
       ControllerImpl::dispatchAndSafeWork(v8, v11, "[AVVoiceController(AVVoiceControllerInternal) handleInterruption:]");
 
       if (v16)
@@ -9011,23 +9011,23 @@ LABEL_16:
 
   if (!kAVVCScope)
   {
-    v5 = MEMORY[0x1E69E9C10];
+    userInfo = MEMORY[0x1E69E9C10];
     v9 = MEMORY[0x1E69E9C10];
 LABEL_14:
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v20 = "AVVoiceController.mm";
       v21 = 1024;
       v22 = 355;
-      _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d handleInterruption: ControllerImpl is nil. Bailing!", buf, 0x12u);
+      _os_log_impl(&dword_1BA5AC000, userInfo, OS_LOG_TYPE_ERROR, "%25s:%-5d handleInterruption: ControllerImpl is nil. Bailing!", buf, 0x12u);
     }
 
     goto LABEL_16;
   }
 
-  v5 = *kAVVCScope;
-  if (v5)
+  userInfo = *kAVVCScope;
+  if (userInfo)
   {
     goto LABEL_14;
   }
@@ -9107,11 +9107,11 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSessionNotifications:(id)a3
+- (void)removeSessionNotifications:(id)notifications
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  notificationsCopy = notifications;
+  if (notificationsCopy)
   {
     if (kAVVCScope)
     {
@@ -9119,7 +9119,7 @@ LABEL_10:
       if (!v5)
       {
 LABEL_11:
-        [v4 removeSessionNotifications:{self, *v13, *&v13[16]}];
+        [notificationsCopy removeSessionNotifications:{self, *v13, *&v13[16]}];
         goto LABEL_12;
       }
     }
@@ -9133,15 +9133,15 @@ LABEL_11:
     v7 = v5;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 isPrimary];
-      v9 = [v4 audioSession];
-      v10 = v9;
+      isPrimary = [notificationsCopy isPrimary];
+      audioSession = [notificationsCopy audioSession];
+      v10 = audioSession;
       v11 = "aux";
       *&v13[4] = "AVVoiceController.mm";
       *&v13[12] = 1024;
       *&v13[14] = 329;
       *v13 = 136315906;
-      if (v8)
+      if (isPrimary)
       {
         v11 = "primary";
       }
@@ -9149,7 +9149,7 @@ LABEL_11:
       *&v13[18] = 2080;
       *&v13[20] = v11;
       v14 = 2048;
-      v15 = v9;
+      v15 = audioSession;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d removeSessionNotifications: removing all notifications for %s session(%p)", v13, 0x26u);
     }
 
@@ -9161,11 +9161,11 @@ LABEL_12:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSessionNotifications:(id)a3
+- (void)setSessionNotifications:(id)notifications
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  notificationsCopy = notifications;
+  if (notificationsCopy)
   {
     if (kAVVCScope)
     {
@@ -9173,7 +9173,7 @@ LABEL_12:
       if (!v5)
       {
 LABEL_11:
-        [v4 setupSessionNotifications:{self, *v13, *&v13[16]}];
+        [notificationsCopy setupSessionNotifications:{self, *v13, *&v13[16]}];
         goto LABEL_12;
       }
     }
@@ -9187,15 +9187,15 @@ LABEL_11:
     v7 = v5;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 isPrimary];
-      v9 = [v4 audioSession];
-      v10 = v9;
+      isPrimary = [notificationsCopy isPrimary];
+      audioSession = [notificationsCopy audioSession];
+      v10 = audioSession;
       v11 = "aux";
       *&v13[4] = "AVVoiceController.mm";
       *&v13[12] = 1024;
       *&v13[14] = 319;
       *v13 = 136315906;
-      if (v8)
+      if (isPrimary)
       {
         v11 = "primary";
       }
@@ -9203,7 +9203,7 @@ LABEL_11:
       *&v13[18] = 2080;
       *&v13[20] = v11;
       v14 = 2048;
-      v15 = v9;
+      v15 = audioSession;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d setSessionNotifications: setting up notifications for %s session(%p)", v13, 0x26u);
     }
 

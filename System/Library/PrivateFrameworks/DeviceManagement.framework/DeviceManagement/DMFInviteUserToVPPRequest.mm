@@ -1,25 +1,25 @@
 @interface DMFInviteUserToVPPRequest
-- (DMFInviteUserToVPPRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFInviteUserToVPPRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFInviteUserToVPPRequest
 
-- (DMFInviteUserToVPPRequest)initWithCoder:(id)a3
+- (DMFInviteUserToVPPRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = DMFInviteUserToVPPRequest;
-  v5 = [(CATTaskRequest *)&v13 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"URL"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v7;
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"originator"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"originator"];
     originator = v5->_originator;
     v5->_originator = v10;
   }
@@ -27,17 +27,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DMFInviteUserToVPPRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(DMFInviteUserToVPPRequest *)self URL:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"URL"];
+  [coderCopy encodeObject:v5 forKey:@"URL"];
 
-  v6 = [(DMFInviteUserToVPPRequest *)self originator];
-  [v4 encodeObject:v6 forKey:@"originator"];
+  originator = [(DMFInviteUserToVPPRequest *)self originator];
+  [coderCopy encodeObject:originator forKey:@"originator"];
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface ATXNotificationTelemetryLogger
-- (ATXNotificationTelemetryLogger)initWithContactStore:(id)a3;
-- (ATXNotificationTelemetryLogger)initWithDatastore:(id)a3 featuresCorrelator:(id)a4 modeConfigClient:(id)a5 contactStore:(id)a6;
-- (id)summaryMetricsForActivityType:(unint64_t)a3;
-- (id)userNotificationWithUUID:(id)a3 withTimeStamp:(double)a4 urgency:(int64_t)a5 fromNotificationStreamWithStartTime:(id)a6 endTime:(id)a7;
-- (void)logNotificationMetricsFromStartTimestamp:(id)a3 toEndTimestamp:(id)a4 withTask:(id)a5;
-- (void)logNotificationMetricsWithBreakthroughFeaturesFromStartTimestamp:(id)a3 toEndTimestamp:(id)a4 withTelemetryQueryResult:(id)a5 withTask:(id)a6;
-- (void)logNotificationMetricsWithTask:(id)a3;
+- (ATXNotificationTelemetryLogger)initWithContactStore:(id)store;
+- (ATXNotificationTelemetryLogger)initWithDatastore:(id)datastore featuresCorrelator:(id)correlator modeConfigClient:(id)client contactStore:(id)store;
+- (id)summaryMetricsForActivityType:(unint64_t)type;
+- (id)userNotificationWithUUID:(id)d withTimeStamp:(double)stamp urgency:(int64_t)urgency fromNotificationStreamWithStartTime:(id)time endTime:(id)endTime;
+- (void)logNotificationMetricsFromStartTimestamp:(id)timestamp toEndTimestamp:(id)endTimestamp withTask:(id)task;
+- (void)logNotificationMetricsWithBreakthroughFeaturesFromStartTimestamp:(id)timestamp toEndTimestamp:(id)endTimestamp withTelemetryQueryResult:(id)result withTask:(id)task;
+- (void)logNotificationMetricsWithTask:(id)task;
 @end
 
 @implementation ATXNotificationTelemetryLogger
 
-- (ATXNotificationTelemetryLogger)initWithContactStore:(id)a3
+- (ATXNotificationTelemetryLogger)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x277CEB440] sharedInstance];
-  v8 = [(ATXNotificationTelemetryLogger *)self initWithDatastore:v5 featuresCorrelator:v6 modeConfigClient:v7 contactStore:v4];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  v8 = [(ATXNotificationTelemetryLogger *)self initWithDatastore:v5 featuresCorrelator:v6 modeConfigClient:mEMORY[0x277CEB440] contactStore:storeCopy];
 
   return v8;
 }
 
-- (ATXNotificationTelemetryLogger)initWithDatastore:(id)a3 featuresCorrelator:(id)a4 modeConfigClient:(id)a5 contactStore:(id)a6
+- (ATXNotificationTelemetryLogger)initWithDatastore:(id)datastore featuresCorrelator:(id)correlator modeConfigClient:(id)client contactStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  datastoreCopy = datastore;
+  correlatorCopy = correlator;
+  clientCopy = client;
+  storeCopy = store;
   v27.receiver = self;
   v27.super_class = ATXNotificationTelemetryLogger;
   v15 = [(ATXNotificationTelemetryLogger *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_datastore, a3);
-    objc_storeStrong(&v16->_featuresCorrelator, a4);
-    objc_storeStrong(&v16->_modeConfigClient, a5);
+    objc_storeStrong(&v15->_datastore, datastore);
+    objc_storeStrong(&v16->_featuresCorrelator, correlator);
+    objc_storeStrong(&v16->_modeConfigClient, client);
     v17 = objc_opt_new();
     summaryMetrics = v16->_summaryMetrics;
     v16->_summaryMetrics = v17;
 
-    objc_storeStrong(&v16->_contactStore, a6);
-    v19 = [[ATXContactRelationshipsCollector alloc] initWithContactStore:v14];
+    objc_storeStrong(&v16->_contactStore, store);
+    v19 = [[ATXContactRelationshipsCollector alloc] initWithContactStore:storeCopy];
     contactRelationships = v16->_contactRelationships;
     v16->_contactRelationships = v19;
 
@@ -56,20 +56,20 @@
   return v16;
 }
 
-- (void)logNotificationMetricsFromStartTimestamp:(id)a3 toEndTimestamp:(id)a4 withTask:(id)a5
+- (void)logNotificationMetricsFromStartTimestamp:(id)timestamp toEndTimestamp:(id)endTimestamp withTask:(id)task
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
+  taskCopy = task;
   v11 = __atxlog_handle_metrics();
   v12 = os_signpost_id_generate(v11);
 
   [(ATXNotificationAndSuggestionDatastore *)self->_datastore updateDatabase];
   [(ATXNotificationNextAppLaunchRecorder *)self->_notificationNextAppLaunchRecorder updateNotificationsWithNextAppLaunch];
   datastore = self->_datastore;
-  [v8 timeIntervalSinceReferenceDate];
+  [timestampCopy timeIntervalSinceReferenceDate];
   v15 = v14;
-  [v9 timeIntervalSinceReferenceDate];
+  [endTimestampCopy timeIntervalSinceReferenceDate];
   v17 = [(ATXNotificationAndSuggestionDatastore *)datastore telemetryDataForNotificationsFromTimestamp:v15 endTimestamp:v16];
   v18 = objc_alloc_init(ATXBundleIdRedactor);
   v19 = [v17 _pas_mappedArrayWithTransform:&__block_literal_global_237];
@@ -78,14 +78,14 @@
   v24[2] = __99__ATXNotificationTelemetryLogger_logNotificationMetricsFromStartTimestamp_toEndTimestamp_withTask___block_invoke_2;
   v24[3] = &unk_2785A14C8;
   v25 = v17;
-  v26 = v10;
-  v27 = self;
-  v28 = v8;
-  v29 = v9;
+  v26 = taskCopy;
+  selfCopy = self;
+  v28 = timestampCopy;
+  v29 = endTimestampCopy;
   v30 = v12;
-  v20 = v9;
-  v21 = v8;
-  v22 = v10;
+  v20 = endTimestampCopy;
+  v21 = timestampCopy;
+  v22 = taskCopy;
   v23 = v17;
   [(ATXBundleIdRedactor *)v18 redactWithBundleIds:v19 completionHandler:v24];
 }
@@ -301,7 +301,7 @@ LABEL_19:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)summaryMetricsForActivityType:(unint64_t)a3
+- (id)summaryMetricsForActivityType:(unint64_t)type
 {
   v4 = [ATXModeDimensionSet alloc];
   v5 = ATXActivityTypeToString();
@@ -320,18 +320,18 @@ LABEL_19:
   return v9;
 }
 
-- (void)logNotificationMetricsWithBreakthroughFeaturesFromStartTimestamp:(id)a3 toEndTimestamp:(id)a4 withTelemetryQueryResult:(id)a5 withTask:(id)a6
+- (void)logNotificationMetricsWithBreakthroughFeaturesFromStartTimestamp:(id)timestamp toEndTimestamp:(id)endTimestamp withTelemetryQueryResult:(id)result withTask:(id)task
 {
   v44 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v35 = a4;
-  v10 = a5;
-  v34 = a6;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
+  resultCopy = result;
+  taskCopy = task;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v10;
+  obj = resultCopy;
   v11 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v11)
   {
@@ -364,10 +364,10 @@ LABEL_19:
 
         v20 = *(*(&v37 + 1) + 8 * v15);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v20 notificationUUID];
-        v23 = [v20 receiveTimestamp];
-        [v23 timeIntervalSinceReferenceDate];
-        v25 = -[ATXNotificationTelemetryLogger userNotificationWithUUID:withTimeStamp:urgency:fromNotificationStreamWithStartTime:endTime:](self, "userNotificationWithUUID:withTimeStamp:urgency:fromNotificationStreamWithStartTime:endTime:", v22, [v20 urgency], v36, v35, v24);
+        notificationUUID = [v20 notificationUUID];
+        receiveTimestamp = [v20 receiveTimestamp];
+        [receiveTimestamp timeIntervalSinceReferenceDate];
+        v25 = -[ATXNotificationTelemetryLogger userNotificationWithUUID:withTimeStamp:urgency:fromNotificationStreamWithStartTime:endTime:](self, "userNotificationWithUUID:withTimeStamp:urgency:fromNotificationStreamWithStartTime:endTime:", notificationUUID, [v20 urgency], timestampCopy, endTimestampCopy, v24);
 
         v26 = [(ATXDynamicBreakthroughFeaturesCorrelator *)self->_featuresCorrelator collectDynamicBreakthroughFeaturesForNotification:v25 contactStore:self->_contactStore withContactRelationships:self->_contactRelationships];
         v27 = [[ATXNotificationBreakthroughEventMetric alloc] initWithQueryResult:v20 featureCollectionSet:v26];
@@ -377,7 +377,7 @@ LABEL_19:
           goto LABEL_16;
         }
 
-        if ([v34 didDefer])
+        if ([taskCopy didDefer])
         {
           v28 = __atxlog_handle_metrics();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -415,10 +415,10 @@ LABEL_17:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logNotificationMetricsWithTask:(id)a3
+- (void)logNotificationMetricsWithTask:(id)task
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   v5 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -453,7 +453,7 @@ LABEL_17:
 
   if ([v10 compare:v11] == -1)
   {
-    [(ATXNotificationTelemetryLogger *)self logNotificationMetricsFromStartTimestamp:v10 toEndTimestamp:v11 withTask:v4];
+    [(ATXNotificationTelemetryLogger *)self logNotificationMetricsFromStartTimestamp:v10 toEndTimestamp:v11 withTask:taskCopy];
     v18 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -474,12 +474,12 @@ LABEL_17:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)userNotificationWithUUID:(id)a3 withTimeStamp:(double)a4 urgency:(int64_t)a5 fromNotificationStreamWithStartTime:(id)a6 endTime:(id)a7
+- (id)userNotificationWithUUID:(id)d withTimeStamp:(double)stamp urgency:(int64_t)urgency fromNotificationStreamWithStartTime:(id)time endTime:(id)endTime
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v11 UUIDString];
+  dCopy = d;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  uUIDString = [dCopy UUIDString];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -487,20 +487,20 @@ LABEL_17:
   v34 = __Block_byref_object_dispose__99;
   v35 = 0;
   v15 = BiomeLibrary();
-  v16 = [v15 Notification];
-  v17 = [v16 Usage];
-  v18 = [v17 atx_publisherWithStartDate:v12 endDate:v13 maxEvents:0 lastN:0 reversed:0];
+  notification = [v15 Notification];
+  usage = [notification Usage];
+  v18 = [usage atx_publisherWithStartDate:timeCopy endDate:endTimeCopy maxEvents:0 lastN:0 reversed:0];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __125__ATXNotificationTelemetryLogger_userNotificationWithUUID_withTimeStamp_urgency_fromNotificationStreamWithStartTime_endTime___block_invoke_41;
   v24[3] = &unk_2785A14F0;
-  v19 = v14;
+  v19 = uUIDString;
   v25 = v19;
   v27 = &v30;
-  v20 = v11;
+  v20 = dCopy;
   v26 = v20;
-  v28 = a4;
-  v29 = a5;
+  stampCopy = stamp;
+  urgencyCopy = urgency;
   v21 = [v18 sinkWithCompletion:&__block_literal_global_40_1 shouldContinue:v24];
 
   v22 = v31[5];

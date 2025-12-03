@@ -13,7 +13,7 @@
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v14 = [a1 componentsJoinedByString:a3];
+  v14 = [self componentsJoinedByString:a3];
   [v14 _legacy_sizeWithFont:a5];
   if (v15 <= a7)
   {
@@ -30,7 +30,7 @@
     v48 = a4;
     v51 = v13;
     v49 = a6;
-    v16 = [a1 count];
+    v16 = [self count];
     v50 = &v48;
     v17 = 8 * v16;
     MEMORY[0x1EEE9AC00](v16);
@@ -47,7 +47,7 @@
     v54 = 0u;
     v53 = 0u;
     v52 = 0u;
-    v23 = [a1 countByEnumeratingWithState:&v52 objects:v56 count:16];
+    v23 = [self countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v23)
     {
       v24 = v23;
@@ -59,7 +59,7 @@
         {
           if (*v53 != v26)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
           v28 = *(*(&v52 + 1) + 8 * i);
@@ -73,7 +73,7 @@
           v21[v25++] = v29;
         }
 
-        v24 = [a1 countByEnumeratingWithState:&v52 objects:v56 count:16];
+        v24 = [self countByEnumeratingWithState:&v52 objects:v56 count:16];
       }
 
       while (v24);

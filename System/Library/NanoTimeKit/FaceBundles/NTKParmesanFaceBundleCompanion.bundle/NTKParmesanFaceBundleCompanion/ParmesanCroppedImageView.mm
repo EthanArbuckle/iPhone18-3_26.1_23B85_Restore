@@ -1,16 +1,16 @@
 @interface ParmesanCroppedImageView
-- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithFrame:(CGRect)a3;
+- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ParmesanCroppedImageView
 
-- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView_image) = 0;
   v7 = self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView_crop;
   *v7 = 0u;
@@ -21,7 +21,7 @@
   return [(ParmesanCroppedImageView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView_image) = 0;
   v4 = self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanionP33_CCA0DA31BB871EB560D99E844C31548824ParmesanCroppedImageView_crop;
@@ -30,8 +30,8 @@
   v4[32] = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ParmesanCroppedImageView();
-  v5 = a3;
-  v6 = [(ParmesanCroppedImageView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ParmesanCroppedImageView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

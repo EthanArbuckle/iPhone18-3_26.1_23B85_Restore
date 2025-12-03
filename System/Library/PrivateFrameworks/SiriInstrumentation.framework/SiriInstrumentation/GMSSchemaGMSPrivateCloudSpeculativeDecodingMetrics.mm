@@ -1,32 +1,32 @@
 @interface GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics
-- (BOOL)isEqual:(id)a3;
-- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithDictionary:(id)a3;
-- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithDictionary:(id)dictionary;
+- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDraftModelInferenceCallCount:(BOOL)a3;
-- (void)setHasDraftModelTotalInferenceLatencyMillis:(BOOL)a3;
-- (void)setHasDraftOutputTokenCount:(BOOL)a3;
-- (void)setHasDraftSteps:(BOOL)a3;
-- (void)setHasTargetModelInferenceCallCount:(BOOL)a3;
-- (void)setHasTargetModelTotalInferenceLatencyMillis:(BOOL)a3;
-- (void)setHasTargetOutputTokenCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDraftModelInferenceCallCount:(BOOL)count;
+- (void)setHasDraftModelTotalInferenceLatencyMillis:(BOOL)millis;
+- (void)setHasDraftOutputTokenCount:(BOOL)count;
+- (void)setHasDraftSteps:(BOOL)steps;
+- (void)setHasTargetModelInferenceCallCount:(BOOL)count;
+- (void)setHasTargetModelTotalInferenceLatencyMillis:(BOOL)millis;
+- (void)setHasTargetOutputTokenCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics
 
-- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithDictionary:(id)a3
+- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics;
   v5 = [(GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"speculativeDecodingAcceptanceRate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"speculativeDecodingAcceptanceRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,49 +35,49 @@
     }
 
     v16 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"draftModelInferenceCallCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"draftModelInferenceCallCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics setDraftModelInferenceCallCount:](v5, "setDraftModelInferenceCallCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"targetModelInferenceCallCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"targetModelInferenceCallCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics setTargetModelInferenceCallCount:](v5, "setTargetModelInferenceCallCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"draftOutputTokenCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"draftOutputTokenCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics setDraftOutputTokenCount:](v5, "setDraftOutputTokenCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"targetOutputTokenCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"targetOutputTokenCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics setTargetOutputTokenCount:](v5, "setTargetOutputTokenCount:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"draftModelTotalInferenceLatencyMillis"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"draftModelTotalInferenceLatencyMillis"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics setDraftModelTotalInferenceLatencyMillis:](v5, "setDraftModelTotalInferenceLatencyMillis:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"targetModelTotalInferenceLatencyMillis"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"targetModelTotalInferenceLatencyMillis"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics setTargetModelTotalInferenceLatencyMillis:](v5, "setTargetModelTotalInferenceLatencyMillis:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"draftSteps"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"draftSteps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithJSON:(id)a3
+- (GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,12 +126,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics draftModelInferenceCallCount](self, "draftModelInferenceCallCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"draftModelInferenceCallCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"draftModelInferenceCallCount"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -152,7 +152,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics draftModelTotalInferenceLatencyMillis](self, "draftModelTotalInferenceLatencyMillis")}];
-  [v3 setObject:v8 forKeyedSubscript:@"draftModelTotalInferenceLatencyMillis"];
+  [dictionary setObject:v8 forKeyedSubscript:@"draftModelTotalInferenceLatencyMillis"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -168,7 +168,7 @@ LABEL_4:
 
 LABEL_15:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics draftOutputTokenCount](self, "draftOutputTokenCount")}];
-  [v3 setObject:v9 forKeyedSubscript:@"draftOutputTokenCount"];
+  [dictionary setObject:v9 forKeyedSubscript:@"draftOutputTokenCount"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -184,7 +184,7 @@ LABEL_5:
 
 LABEL_16:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics draftSteps](self, "draftSteps")}];
-  [v3 setObject:v10 forKeyedSubscript:@"draftSteps"];
+  [dictionary setObject:v10 forKeyedSubscript:@"draftSteps"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -202,7 +202,7 @@ LABEL_17:
   v11 = MEMORY[0x1E696AD98];
   [(GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics *)self speculativeDecodingAcceptanceRate];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"speculativeDecodingAcceptanceRate"];
+  [dictionary setObject:v12 forKeyedSubscript:@"speculativeDecodingAcceptanceRate"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -218,7 +218,7 @@ LABEL_7:
 
 LABEL_18:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics targetModelInferenceCallCount](self, "targetModelInferenceCallCount")}];
-  [v3 setObject:v13 forKeyedSubscript:@"targetModelInferenceCallCount"];
+  [dictionary setObject:v13 forKeyedSubscript:@"targetModelInferenceCallCount"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -234,19 +234,19 @@ LABEL_8:
 
 LABEL_19:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics targetModelTotalInferenceLatencyMillis](self, "targetModelTotalInferenceLatencyMillis")}];
-  [v3 setObject:v14 forKeyedSubscript:@"targetModelTotalInferenceLatencyMillis"];
+  [dictionary setObject:v14 forKeyedSubscript:@"targetModelTotalInferenceLatencyMillis"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics targetOutputTokenCount](self, "targetOutputTokenCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"targetOutputTokenCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"targetOutputTokenCount"];
   }
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -383,16 +383,16 @@ LABEL_17:
   return v9 ^ v4 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -401,14 +401,14 @@ LABEL_17:
   if (*&has)
   {
     speculativeDecodingAcceptanceRate = self->_speculativeDecodingAcceptanceRate;
-    [v4 speculativeDecodingAcceptanceRate];
+    [equalCopy speculativeDecodingAcceptanceRate];
     if (speculativeDecodingAcceptanceRate != v8)
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -420,13 +420,13 @@ LABEL_17:
   if (v9)
   {
     draftModelInferenceCallCount = self->_draftModelInferenceCallCount;
-    if (draftModelInferenceCallCount != [v4 draftModelInferenceCallCount])
+    if (draftModelInferenceCallCount != [equalCopy draftModelInferenceCallCount])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -438,13 +438,13 @@ LABEL_17:
   if (v11)
   {
     targetModelInferenceCallCount = self->_targetModelInferenceCallCount;
-    if (targetModelInferenceCallCount != [v4 targetModelInferenceCallCount])
+    if (targetModelInferenceCallCount != [equalCopy targetModelInferenceCallCount])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v13 = (*&has >> 3) & 1;
@@ -456,13 +456,13 @@ LABEL_17:
   if (v13)
   {
     draftOutputTokenCount = self->_draftOutputTokenCount;
-    if (draftOutputTokenCount != [v4 draftOutputTokenCount])
+    if (draftOutputTokenCount != [equalCopy draftOutputTokenCount])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v15 = (*&has >> 4) & 1;
@@ -474,13 +474,13 @@ LABEL_17:
   if (v15)
   {
     targetOutputTokenCount = self->_targetOutputTokenCount;
-    if (targetOutputTokenCount != [v4 targetOutputTokenCount])
+    if (targetOutputTokenCount != [equalCopy targetOutputTokenCount])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v17 = (*&has >> 5) & 1;
@@ -492,13 +492,13 @@ LABEL_17:
   if (v17)
   {
     draftModelTotalInferenceLatencyMillis = self->_draftModelTotalInferenceLatencyMillis;
-    if (draftModelTotalInferenceLatencyMillis != [v4 draftModelTotalInferenceLatencyMillis])
+    if (draftModelTotalInferenceLatencyMillis != [equalCopy draftModelTotalInferenceLatencyMillis])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v19 = (*&has >> 6) & 1;
@@ -510,10 +510,10 @@ LABEL_17:
   if (v19)
   {
     targetModelTotalInferenceLatencyMillis = self->_targetModelTotalInferenceLatencyMillis;
-    if (targetModelTotalInferenceLatencyMillis == [v4 targetModelTotalInferenceLatencyMillis])
+    if (targetModelTotalInferenceLatencyMillis == [equalCopy targetModelTotalInferenceLatencyMillis])
     {
       has = self->_has;
-      v6 = v4[56];
+      v6 = equalCopy[56];
       goto LABEL_30;
     }
 
@@ -531,7 +531,7 @@ LABEL_30:
   if ((*&has & 0x80) != 0)
   {
     draftSteps = self->_draftSteps;
-    if (draftSteps != [v4 draftSteps])
+    if (draftSteps != [equalCopy draftSteps])
     {
       goto LABEL_34;
     }
@@ -543,9 +543,9 @@ LABEL_35:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -649,9 +649,9 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)setHasDraftSteps:(BOOL)a3
+- (void)setHasDraftSteps:(BOOL)steps
 {
-  if (a3)
+  if (steps)
   {
     v3 = 0x80;
   }
@@ -664,9 +664,9 @@ LABEL_9:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTargetModelTotalInferenceLatencyMillis:(BOOL)a3
+- (void)setHasTargetModelTotalInferenceLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 64;
   }
@@ -679,9 +679,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDraftModelTotalInferenceLatencyMillis:(BOOL)a3
+- (void)setHasDraftModelTotalInferenceLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 32;
   }
@@ -694,9 +694,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTargetOutputTokenCount:(BOOL)a3
+- (void)setHasTargetOutputTokenCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -709,9 +709,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDraftOutputTokenCount:(BOOL)a3
+- (void)setHasDraftOutputTokenCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -724,9 +724,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTargetModelInferenceCallCount:(BOOL)a3
+- (void)setHasTargetModelInferenceCallCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -739,9 +739,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDraftModelInferenceCallCount:(BOOL)a3
+- (void)setHasDraftModelInferenceCallCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

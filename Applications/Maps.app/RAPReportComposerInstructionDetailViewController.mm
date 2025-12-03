@@ -1,11 +1,11 @@
 @interface RAPReportComposerInstructionDetailViewController
-- (RAPReportComposerInstructionDetailViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportComposerInstructionDetailViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (id)tableParts;
 - (void)cancelCorrection;
 - (void)saveCorrection;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RAPReportComposerInstructionDetailViewController
@@ -13,8 +13,8 @@
 - (id)tableParts
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(RAPReportTableViewController *)self userInfoPart];
-  [v3 addObject:v4];
+  userInfoPart = [(RAPReportTableViewController *)self userInfoPart];
+  [v3 addObject:userInfoPart];
 
   if (!self->_locationPart)
   {
@@ -50,41 +50,41 @@
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:10109 onTarget:1102 eventValue:0];
 
-  v4 = [(RAPReportComposerInstructionDetailViewController *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(RAPReportComposerInstructionDetailViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)saveCorrection
 {
-  v3 = [(RAPReportLocationSection *)self->_locationSection imageDataOfMapAndInstructionsCell];
-  [(RAPInstructionCorrectionQuestion *)self->_question setCellScreenshotImageData:v3];
+  imageDataOfMapAndInstructionsCell = [(RAPReportLocationSection *)self->_locationSection imageDataOfMapAndInstructionsCell];
+  [(RAPInstructionCorrectionQuestion *)self->_question setCellScreenshotImageData:imageDataOfMapAndInstructionsCell];
 
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:10105 onTarget:1102 eventValue:0];
 
-  v5 = [(RAPQuestion *)self->_question parentQuestion];
-  [v5 saveCorrection:self->_question];
+  parentQuestion = [(RAPQuestion *)self->_question parentQuestion];
+  [parentQuestion saveCorrection:self->_question];
 
-  v6 = [(RAPReportComposerInstructionDetailViewController *)self navigationController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(RAPReportComposerInstructionDetailViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = RAPReportComposerInstructionDetailViewController;
-  [(RAPReportComposerInstructionDetailViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(RAPReportComposerInstructionDetailViewController *)self tableView];
-  [v5 reloadData];
+  [(RAPReportComposerInstructionDetailViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  tableView = [(RAPReportComposerInstructionDetailViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = RAPReportComposerInstructionDetailViewController;
-  [(RAPReportComposerInstructionDetailViewController *)&v6 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
-  v5 = [(RAPReportComposerInstructionDetailViewController *)self tableView];
-  [v5 reloadData];
+  [(RAPReportComposerInstructionDetailViewController *)&v6 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
+  tableView = [(RAPReportComposerInstructionDetailViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -92,37 +92,37 @@
   v6.receiver = self;
   v6.super_class = RAPReportComposerInstructionDetailViewController;
   [(RAPReportTableViewController *)&v6 viewDidLoad];
-  v3 = [(RAPQuestion *)self->_question parentQuestion];
-  v4 = [v3 localizedTitle];
-  v5 = [(RAPReportComposerInstructionDetailViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  parentQuestion = [(RAPQuestion *)self->_question parentQuestion];
+  localizedTitle = [parentQuestion localizedTitle];
+  navigationItem = [(RAPReportComposerInstructionDetailViewController *)self navigationItem];
+  [navigationItem setTitle:localizedTitle];
 }
 
-- (RAPReportComposerInstructionDetailViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportComposerInstructionDetailViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v9 = a4;
+  questionCopy = question;
   v24.receiver = self;
   v24.super_class = RAPReportComposerInstructionDetailViewController;
-  v10 = [(RAPReportTableViewController *)&v24 initWithReport:a3 question:v9 completion:a5];
+  v10 = [(RAPReportTableViewController *)&v24 initWithReport:report question:questionCopy completion:completion];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_question, a4);
-    v12 = [(RAPCommentQuestion *)v11->_question comment];
+    objc_storeStrong(&v10->_question, question);
+    comment = [(RAPCommentQuestion *)v11->_question comment];
     savedCorrectionText = v11->_savedCorrectionText;
-    v11->_savedCorrectionText = v12;
+    v11->_savedCorrectionText = comment;
 
     v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v11 action:"cancelCorrection"];
-    v15 = [(RAPReportComposerInstructionDetailViewController *)v11 navigationItem];
-    [v15 setLeftBarButtonItem:v14];
+    navigationItem = [(RAPReportComposerInstructionDetailViewController *)v11 navigationItem];
+    [navigationItem setLeftBarButtonItem:v14];
 
     v16 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v11 action:"saveCorrection"];
-    v17 = [(RAPReportComposerInstructionDetailViewController *)v11 navigationItem];
-    [v17 setRightBarButtonItem:v16];
+    navigationItem2 = [(RAPReportComposerInstructionDetailViewController *)v11 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v16];
 
-    v18 = [(RAPReportComposerInstructionDetailViewController *)v11 navigationItem];
-    v19 = [v18 rightBarButtonItem];
-    [v19 setEnabled:0];
+    navigationItem3 = [(RAPReportComposerInstructionDetailViewController *)v11 navigationItem];
+    rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
 
     question = v11->_question;
     v22[0] = _NSConcreteStackBlock;

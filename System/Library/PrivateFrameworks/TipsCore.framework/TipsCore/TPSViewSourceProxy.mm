@@ -1,22 +1,22 @@
 @interface TPSViewSourceProxy
-+ (id)proxyWithViewMethod:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)proxyWithViewMethod:(id)method;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation TPSViewSourceProxy
 
-+ (id)proxyWithViewMethod:(id)a3
++ (id)proxyWithViewMethod:(id)method
 {
-  v3 = a3;
+  methodCopy = method;
   v4 = objc_alloc_init(TPSViewSourceProxy);
-  [(TPSViewSourceProxy *)v4 setViewMethod:v3];
+  [(TPSViewSourceProxy *)v4 setViewMethod:methodCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

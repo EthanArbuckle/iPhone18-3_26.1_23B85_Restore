@@ -1,57 +1,57 @@
 @interface AFMyriadContext
-+ (id)newWithBuilder:(id)a3;
-- (AFMyriadContext)initWithBuilder:(id)a3;
-- (AFMyriadContext)initWithCoder:(id)a3;
-- (AFMyriadContext)initWithTimestamp:(unint64_t)a3 perceptualAudioHash:(id)a4 overrideState:(id)a5 activationSource:(int64_t)a6 activationExpirationTime:(unint64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFMyriadContext)initWithBuilder:(id)builder;
+- (AFMyriadContext)initWithCoder:(id)coder;
+- (AFMyriadContext)initWithTimestamp:(unint64_t)timestamp perceptualAudioHash:(id)hash overrideState:(id)state activationSource:(int64_t)source activationExpirationTime:(unint64_t)time;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFMyriadContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   timestamp = self->_timestamp;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedLongLong:timestamp];
-  [v6 encodeObject:v7 forKey:@"AFMyriadContext::timestamp"];
+  [coderCopy encodeObject:v7 forKey:@"AFMyriadContext::timestamp"];
 
-  [v6 encodeObject:self->_perceptualAudioHash forKey:@"AFMyriadContext::perceptualAudioHash"];
-  [v6 encodeObject:self->_overrideState forKey:@"AFMyriadContext::overrideState"];
+  [coderCopy encodeObject:self->_perceptualAudioHash forKey:@"AFMyriadContext::perceptualAudioHash"];
+  [coderCopy encodeObject:self->_overrideState forKey:@"AFMyriadContext::overrideState"];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_activationSource];
-  [v6 encodeObject:v8 forKey:@"AFMyriadContext::activationSource"];
+  [coderCopy encodeObject:v8 forKey:@"AFMyriadContext::activationSource"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_activationExpirationTime];
-  [v6 encodeObject:v9 forKey:@"AFMyriadContext::activationExpirationTime"];
+  [coderCopy encodeObject:v9 forKey:@"AFMyriadContext::activationExpirationTime"];
 }
 
-- (AFMyriadContext)initWithCoder:(id)a3
+- (AFMyriadContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::timestamp"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::timestamp"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::perceptualAudioHash"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::overrideState"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::activationSource"];
-  v10 = [v9 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::perceptualAudioHash"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::overrideState"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::activationSource"];
+  integerValue = [v9 integerValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::activationExpirationTime"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMyriadContext::activationExpirationTime"];
 
-  v12 = [v11 unsignedLongLongValue];
-  v13 = [(AFMyriadContext *)self initWithTimestamp:v6 perceptualAudioHash:v7 overrideState:v8 activationSource:v10 activationExpirationTime:v12];
+  unsignedLongLongValue2 = [v11 unsignedLongLongValue];
+  v13 = [(AFMyriadContext *)self initWithTimestamp:unsignedLongLongValue perceptualAudioHash:v7 overrideState:v8 activationSource:integerValue activationExpirationTime:unsignedLongLongValue2];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -61,17 +61,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timestamp = self->_timestamp;
       if (timestamp == [(AFMyriadContext *)v5 timestamp]&& (activationSource = self->_activationSource, activationSource == [(AFMyriadContext *)v5 activationSource]) && (activationExpirationTime = self->_activationExpirationTime, activationExpirationTime == [(AFMyriadContext *)v5 activationExpirationTime]))
       {
-        v9 = [(AFMyriadContext *)v5 perceptualAudioHash];
+        perceptualAudioHash = [(AFMyriadContext *)v5 perceptualAudioHash];
         perceptualAudioHash = self->_perceptualAudioHash;
-        if (perceptualAudioHash == v9 || [(AFMyriadPerceptualAudioHash *)perceptualAudioHash isEqual:v9])
+        if (perceptualAudioHash == perceptualAudioHash || [(AFMyriadPerceptualAudioHash *)perceptualAudioHash isEqual:perceptualAudioHash])
         {
-          v11 = [(AFMyriadContext *)v5 overrideState];
+          overrideState = [(AFMyriadContext *)v5 overrideState];
           overrideState = self->_overrideState;
-          v13 = overrideState == v11 || [(AFMyriadGoodnessScoreOverrideState *)overrideState isEqual:v11];
+          v13 = overrideState == overrideState || [(AFMyriadGoodnessScoreOverrideState *)overrideState isEqual:overrideState];
         }
 
         else
@@ -109,7 +109,7 @@
   return v6 ^ v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14.receiver = self;
@@ -135,21 +135,21 @@
   return v12;
 }
 
-- (AFMyriadContext)initWithTimestamp:(unint64_t)a3 perceptualAudioHash:(id)a4 overrideState:(id)a5 activationSource:(int64_t)a6 activationExpirationTime:(unint64_t)a7
+- (AFMyriadContext)initWithTimestamp:(unint64_t)timestamp perceptualAudioHash:(id)hash overrideState:(id)state activationSource:(int64_t)source activationExpirationTime:(unint64_t)time
 {
-  v12 = a4;
-  v13 = a5;
+  hashCopy = hash;
+  stateCopy = state;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __113__AFMyriadContext_initWithTimestamp_perceptualAudioHash_overrideState_activationSource_activationExpirationTime___block_invoke;
   v18[3] = &unk_1E7342610;
-  v19 = v12;
-  v20 = v13;
-  v21 = a3;
-  v22 = a6;
-  v23 = a7;
-  v14 = v13;
-  v15 = v12;
+  v19 = hashCopy;
+  v20 = stateCopy;
+  timestampCopy = timestamp;
+  sourceCopy = source;
+  timeCopy = time;
+  v14 = stateCopy;
+  v15 = hashCopy;
   v16 = [(AFMyriadContext *)self initWithBuilder:v18];
 
   return v16;
@@ -166,27 +166,27 @@ void __113__AFMyriadContext_initWithTimestamp_perceptualAudioHash_overrideState_
   [v4 setActivationExpirationTime:a1[8]];
 }
 
-- (AFMyriadContext)initWithBuilder:(id)a3
+- (AFMyriadContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFMyriadContext;
   v5 = [(AFMyriadContext *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFMyriadContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFMyriadContextMutation *)v7 isDirty])
     {
       v6->_timestamp = [(_AFMyriadContextMutation *)v7 getTimestamp];
-      v8 = [(_AFMyriadContextMutation *)v7 getPerceptualAudioHash];
-      v9 = [v8 copy];
+      getPerceptualAudioHash = [(_AFMyriadContextMutation *)v7 getPerceptualAudioHash];
+      v9 = [getPerceptualAudioHash copy];
       perceptualAudioHash = v6->_perceptualAudioHash;
       v6->_perceptualAudioHash = v9;
 
-      v11 = [(_AFMyriadContextMutation *)v7 getOverrideState];
-      v12 = [v11 copy];
+      getOverrideState = [(_AFMyriadContextMutation *)v7 getOverrideState];
+      v12 = [getOverrideState copy];
       overrideState = v6->_overrideState;
       v6->_overrideState = v12;
 
@@ -198,32 +198,32 @@ void __113__AFMyriadContext_initWithTimestamp_perceptualAudioHash_overrideState_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFMyriadContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFMyriadContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFMyriadContext);
       v6->_timestamp = [(_AFMyriadContextMutation *)v5 getTimestamp];
-      v7 = [(_AFMyriadContextMutation *)v5 getPerceptualAudioHash];
-      v8 = [v7 copy];
+      getPerceptualAudioHash = [(_AFMyriadContextMutation *)v5 getPerceptualAudioHash];
+      v8 = [getPerceptualAudioHash copy];
       perceptualAudioHash = v6->_perceptualAudioHash;
       v6->_perceptualAudioHash = v8;
 
-      v10 = [(_AFMyriadContextMutation *)v5 getOverrideState];
-      v11 = [v10 copy];
+      getOverrideState = [(_AFMyriadContextMutation *)v5 getOverrideState];
+      v11 = [getOverrideState copy];
       overrideState = v6->_overrideState;
       v6->_overrideState = v11;
 

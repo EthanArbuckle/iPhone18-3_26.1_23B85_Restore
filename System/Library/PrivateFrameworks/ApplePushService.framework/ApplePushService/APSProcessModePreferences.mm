@@ -1,9 +1,9 @@
 @interface APSProcessModePreferences
-- (APSProcessModePreferences)initWithUser:(id)a3;
+- (APSProcessModePreferences)initWithUser:(id)user;
 - (NSDictionary)defaultUserPersistentTopics;
 - (NSDictionary)persistentTopics;
-- (void)setDefaultUserPersistentTopics:(id)a3;
-- (void)setPersistentTopics:(id)a3;
+- (void)setDefaultUserPersistentTopics:(id)topics;
+- (void)setPersistentTopics:(id)topics;
 @end
 
 @implementation APSProcessModePreferences
@@ -25,14 +25,14 @@
   return v3;
 }
 
-- (APSProcessModePreferences)initWithUser:(id)a3
+- (APSProcessModePreferences)initWithUser:(id)user
 {
   v5.receiver = self;
   v5.super_class = APSProcessModePreferences;
   result = [(APSProcessModePreferences *)&v5 init];
   if (result)
   {
-    result->_user = a3;
+    result->_user = user;
   }
 
   return result;
@@ -55,24 +55,24 @@
   return v3;
 }
 
-- (void)setDefaultUserPersistentTopics:(id)a3
+- (void)setDefaultUserPersistentTopics:(id)topics
 {
-  sub_100005394(APSPersistentTopicsKey, a3, 1);
-  v4 = [(APSUser *)self->_user isDefaultUser];
+  sub_100005394(APSPersistentTopicsKey, topics, 1);
+  isDefaultUser = [(APSUser *)self->_user isDefaultUser];
 
-  sub_1000054B8(v4);
+  sub_1000054B8(isDefaultUser);
 }
 
-- (void)setPersistentTopics:(id)a3
+- (void)setPersistentTopics:(id)topics
 {
   v4 = APSPersistentTopicsKey;
   user = self->_user;
-  v6 = a3;
-  sub_100005394(v4, v6, [(APSUser *)user isDefaultUser]);
+  topicsCopy = topics;
+  sub_100005394(v4, topicsCopy, [(APSUser *)user isDefaultUser]);
 
-  v7 = [(APSUser *)self->_user isDefaultUser];
+  isDefaultUser = [(APSUser *)self->_user isDefaultUser];
 
-  sub_1000054B8(v7);
+  sub_1000054B8(isDefaultUser);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface IMDeliveredQuietlyReceiptProcessingPipelineComponent
-- (IMDeliveredQuietlyReceiptProcessingPipelineComponent)initWithPipelineResources:(id)a3;
+- (IMDeliveredQuietlyReceiptProcessingPipelineComponent)initWithPipelineResources:(id)resources;
 - (id)_account;
 - (id)_idsAccount;
 - (id)_messageStore;
-- (id)runIndividuallyWithInput:(id)a3;
-- (void)_markMessageAsDeliveredQuietlyAndNotify:(id)a3 session:(id)a4 chat:(id)a5;
+- (id)runIndividuallyWithInput:(id)input;
+- (void)_markMessageAsDeliveredQuietlyAndNotify:(id)notify session:(id)session chat:(id)chat;
 @end
 
 @implementation IMDeliveredQuietlyReceiptProcessingPipelineComponent
 
-- (IMDeliveredQuietlyReceiptProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMDeliveredQuietlyReceiptProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMDeliveredQuietlyReceiptProcessingPipelineComponent;
   v6 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
@@ -26,51 +26,51 @@
 
 - (id)_idsAccount
 {
-  v2 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 idsAccount];
+    idsAccount = [imdAccount idsAccount];
   }
 
   else
   {
-    v4 = 0;
+    idsAccount = 0;
   }
 
-  return v4;
+  return idsAccount;
 }
 
 - (id)_account
 {
-  v2 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
-  return v3;
+  return imdAccount;
 }
 
 - (id)_messageStore
 {
-  v2 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 messageStore];
+  pipelineResources = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
 
-  return v3;
+  return messageStore;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v50 = *MEMORY[0x277D85DE8];
-  v39 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v39 GUID];
+      gUID = [inputCopy GUID];
       *buf = 138412290;
-      v47 = v5;
+      v47 = gUID;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "<IMDeliveredQuietlyReceiptProcessingPipelineComponent> Started processing for Message GUID: %@", buf, 0xCu);
     }
   }
@@ -82,27 +82,27 @@
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v39 GUID];
+        gUID2 = [inputCopy GUID];
         *buf = 138412290;
-        v47 = v7;
+        v47 = gUID2;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "    Ignoring delivered quietly receipt for message: %@", buf, 0xCu);
       }
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v39];
+    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
   {
-    v9 = [v39 GUID];
+    gUID3 = [inputCopy GUID];
 
-    if (v9)
+    if (gUID3)
     {
-      v10 = [v39 GUID];
+      gUID4 = [inputCopy GUID];
       v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v11 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-      v12 = [v11 messageStore];
-      v13 = [v12 chatsForMessageGUID:v10];
+      pipelineResources = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+      messageStore = [pipelineResources messageStore];
+      v13 = [messageStore chatsForMessageGUID:gUID4];
 
       if (IMOSLoggingEnabled())
       {
@@ -110,7 +110,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v47 = v10;
+          v47 = gUID4;
           v48 = 2112;
           v49 = v13;
           _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "Found chats for messageID: %@   chats: %@", buf, 0x16u);
@@ -136,16 +136,16 @@
             }
 
             v19 = *(*(&v41 + 1) + 8 * i);
-            v20 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-            v21 = [v20 messageStore];
-            v22 = [v21 messageWithGUID:v10];
+            pipelineResources2 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+            messageStore2 = [pipelineResources2 messageStore];
+            v22 = [messageStore2 messageWithGUID:gUID4];
 
             if (v22)
             {
               [v40 addObject:v22];
-              v23 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self _account];
-              v24 = [v23 session];
-              [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self _markMessageAsDeliveredQuietlyAndNotify:v22 session:v24 chat:v19];
+              _account = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self _account];
+              session = [_account session];
+              [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self _markMessageAsDeliveredQuietlyAndNotify:v22 session:session chat:v19];
             }
           }
 
@@ -164,9 +164,9 @@
           v33 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
-            v34 = [v39 GUID];
+            gUID5 = [inputCopy GUID];
             *buf = 138412290;
-            v47 = v34;
+            v47 = gUID5;
             _os_log_impl(&dword_22B4CC000, v33, OS_LOG_TYPE_INFO, "Unable to mark message delivered quietly with GUID=%@: message not found", buf, 0xCu);
           }
         }
@@ -183,20 +183,20 @@
           v27 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
-            v28 = [v39 GUID];
+            gUID6 = [inputCopy GUID];
             *buf = 138412290;
-            v47 = v28;
+            v47 = gUID6;
             _os_log_impl(&dword_22B4CC000, v27, OS_LOG_TYPE_INFO, "Marked message with GUID=%@ as delivered quietly", buf, 0xCu);
           }
         }
 
-        v29 = [v15 firstObject];
-        [v39 setChat:v29];
+        firstObject = [v15 firstObject];
+        [inputCopy setChat:firstObject];
 
         v30 = [v40 copy];
-        [v39 setMessageItems:v30];
+        [inputCopy setMessageItems:v30];
 
-        v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v39];
+        v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
     }
 
@@ -213,8 +213,8 @@
       }
 
       v32 = objc_alloc(MEMORY[0x277CCA9B8]);
-      v10 = [v32 initWithDomain:*MEMORY[0x277D18DF8] code:3 userInfo:0];
-      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v10];
+      gUID4 = [v32 initWithDomain:*MEMORY[0x277D18DF8] code:3 userInfo:0];
+      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:gUID4];
     }
   }
 
@@ -223,36 +223,36 @@
   return v8;
 }
 
-- (void)_markMessageAsDeliveredQuietlyAndNotify:(id)a3 session:(id)a4 chat:(id)a5
+- (void)_markMessageAsDeliveredQuietlyAndNotify:(id)notify session:(id)session chat:(id)chat
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notifyCopy = notify;
+  sessionCopy = session;
+  chatCopy = chat;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v18 = 138412290;
-      v19 = v8;
+      v19 = notifyCopy;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Mark message as delivered quietly: %@", &v18, 0xCu);
     }
   }
 
-  [v8 setFlags:{objc_msgSend(v8, "flags") | 0x400000000}];
-  if ([v8 errorCode])
+  [notifyCopy setFlags:{objc_msgSend(notifyCopy, "flags") | 0x400000000}];
+  if ([notifyCopy errorCode])
   {
-    [v8 setErrorCode:0];
+    [notifyCopy setErrorCode:0];
   }
 
-  v12 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-  v13 = [v12 messageStore];
-  v14 = [v13 storeMessage:v8 forceReplace:0 modifyError:1 modifyFlags:1 flagMask:0x400000000];
+  pipelineResources = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
+  v14 = [messageStore storeMessage:notifyCopy forceReplace:0 modifyError:1 modifyFlags:1 flagMask:0x400000000];
 
-  v15 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
-  v16 = [v15 chatRegistry];
-  [v16 updateStateForChat:v10 hintMessage:0 shouldRebuildFailedMessageDate:0];
+  pipelineResources2 = [(IMDeliveredQuietlyReceiptProcessingPipelineComponent *)self pipelineResources];
+  chatRegistry = [pipelineResources2 chatRegistry];
+  [chatRegistry updateStateForChat:chatCopy hintMessage:0 shouldRebuildFailedMessageDate:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }

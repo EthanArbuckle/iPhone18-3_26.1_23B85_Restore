@@ -1,13 +1,13 @@
 @interface TimestepDataset
-- (id)getFeatureMatrixWithUnknownLoiLabel:(id)a3;
+- (id)getFeatureMatrixWithUnknownLoiLabel:(id)label;
 @end
 
 @implementation TimestepDataset
 
-- (id)getFeatureMatrixWithUnknownLoiLabel:(id)a3
+- (id)getFeatureMatrixWithUnknownLoiLabel:(id)label
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  labelCopy = label;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = [(NSMutableArray *)self->_ordinalLoiLabels count];
   if (v6 == [(NSMutableArray *)self->_dayOfWeekSinArray count]&& (v7 = [(NSMutableArray *)self->_ordinalLoiLabels count], v7 == [(NSMutableArray *)self->_dayOfWeekCosArray count]) && (v8 = [(NSMutableArray *)self->_ordinalLoiLabels count], v8 == [(NSMutableArray *)self->_timeOfDaySinArray count]) && (v9 = [(NSMutableArray *)self->_ordinalLoiLabels count], v9 == [(NSMutableArray *)self->_timeOfDayCosArray count]))
@@ -24,7 +24,7 @@
 
         if (v14)
         {
-          v15 = v4;
+          v15 = labelCopy;
 
           [(NSMutableArray *)self->_ordinalLoiLabels setObject:v15 atIndexedSubscript:v10];
           v11 = v15;

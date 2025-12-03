@@ -1,20 +1,20 @@
 @interface COSFadePushAnimation
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation COSFadePushAnimation
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
-  v4 = [v3 viewForKey:UITransitionContextFromViewKey];
-  v5 = [v3 viewForKey:UITransitionContextToViewKey];
-  v6 = [v3 containerView];
+  transitionCopy = transition;
+  v4 = [transitionCopy viewForKey:UITransitionContextFromViewKey];
+  v5 = [transitionCopy viewForKey:UITransitionContextToViewKey];
+  containerView = [transitionCopy containerView];
   [v4 setAlpha:1.0];
   [v5 setAlpha:0.0];
-  [v6 bounds];
+  [containerView bounds];
   [v5 setFrame:?];
-  [v6 addSubview:v5];
+  [containerView addSubview:v5];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007ED3C;
@@ -26,8 +26,8 @@
   v10[2] = sub_10007ED80;
   v10[3] = &unk_100269F28;
   v11 = v14;
-  v12 = v3;
-  v7 = v3;
+  v12 = transitionCopy;
+  v7 = transitionCopy;
   v8 = v14;
   v9 = v5;
   [UIView animateWithDuration:v13 animations:v10 completion:0.5];

@@ -1,23 +1,23 @@
 @interface PKDASession
 - (NSString)description;
-- (PKDASession)initWithDelegate:(id)a3;
+- (PKDASession)initWithDelegate:(id)delegate;
 - (PKSessionDelegate)delegate;
-- (void)daSession:(id)a3 didBecomeActive:(id)a4;
-- (void)daSession:(id)a3 didEnd:(id)a4;
+- (void)daSession:(id)session didBecomeActive:(id)active;
+- (void)daSession:(id)session didEnd:(id)end;
 - (void)dealloc;
 - (void)endSession;
 @end
 
 @implementation PKDASession
 
-- (PKDASession)initWithDelegate:(id)a3
+- (PKDASession)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(PKDASession *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     atomic_store(1u, &v6->_sessionState);
   }
 
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Ending DA Session %@", &v5, 0xCu);
   }
 
@@ -66,7 +66,7 @@
   return v5;
 }
 
-- (void)daSession:(id)a3 didBecomeActive:(id)a4
+- (void)daSession:(id)session didBecomeActive:(id)active
 {
   atomic_store(2u, &self->_sessionState);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -76,15 +76,15 @@
   }
 }
 
-- (void)daSession:(id)a3 didEnd:(id)a4
+- (void)daSession:(id)session didEnd:(id)end
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  endCopy = end;
   atomic_store(4u, &self->_sessionState);
   v8 = PKLogFacilityTypeGetObject(7uLL);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (endCopy)
   {
     if (!v9)
     {
@@ -92,9 +92,9 @@
     }
 
     v15 = 138412546;
-    v16 = v6;
+    v16 = sessionCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = endCopy;
     v10 = "Session %@ invalidated with error %@";
     v11 = v8;
     v12 = 22;
@@ -108,7 +108,7 @@
     }
 
     v15 = 138412290;
-    v16 = v6;
+    v16 = sessionCopy;
     v10 = "Session %@ has ended";
     v11 = v8;
     v12 = 12;

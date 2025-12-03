@@ -1,19 +1,19 @@
 @interface CNMemojiMetadataUtilities
-+ (id)avatarRecordForIdentifier:(id)a3;
-+ (id)dataForMemojiMetadata:(id)a3;
-+ (id)dataForMemojiMetadata:(id)a3 backgroundColorDescription:(id)a4 cropTransform:(CGAffineTransform *)a5;
-+ (id)dataForPoseConfiguration:(id)a3;
-+ (id)memojiMetadataDataForAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5;
-+ (id)memojiMetadataDataForAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5 cropTransform:(CGAffineTransform *)a6;
-+ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)a3 poseConfigurationData:(id)a4 backgroundColorDescription:(id)a5;
-+ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)a3 poseConfigurationData:(id)a4 backgroundColorDescription:(id)a5 cropTransform:(CGAffineTransform *)a6;
-+ (id)memojiMetadataFromAvatarRecordData:(id)a3 poseConfigurationData:(id)a4 backgroundColorDescription:(id)a5;
-+ (id)memojiMetadataFromData:(id)a3;
++ (id)avatarRecordForIdentifier:(id)identifier;
++ (id)dataForMemojiMetadata:(id)metadata;
++ (id)dataForMemojiMetadata:(id)metadata backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform;
++ (id)dataForPoseConfiguration:(id)configuration;
++ (id)memojiMetadataDataForAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description;
++ (id)memojiMetadataDataForAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform;
++ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)identifier poseConfigurationData:(id)data backgroundColorDescription:(id)description;
++ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)identifier poseConfigurationData:(id)data backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform;
++ (id)memojiMetadataFromAvatarRecordData:(id)data poseConfigurationData:(id)configurationData backgroundColorDescription:(id)description;
++ (id)memojiMetadataFromData:(id)data;
 + (id)os_log;
-+ (id)physicsStatesDictionaryRepresentationForPose:(id)a3;
-+ (id)poseConfigurationForData:(id)a3 withAvatarRecord:(id)a4;
-+ (id)stickerConfigurationForAvatarRecord:(id)a3 stickerName:(id)a4 pose:(id)a5;
-+ (id)stickerConfigurationForAvatarRecord:(id)a3 stickerName:(id)a4 stickerPack:(id)a5;
++ (id)physicsStatesDictionaryRepresentationForPose:(id)pose;
++ (id)poseConfigurationForData:(id)data withAvatarRecord:(id)record;
++ (id)stickerConfigurationForAvatarRecord:(id)record stickerName:(id)name pose:(id)pose;
++ (id)stickerConfigurationForAvatarRecord:(id)record stickerName:(id)name stickerPack:(id)pack;
 @end
 
 @implementation CNMemojiMetadataUtilities
@@ -39,32 +39,32 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)memojiMetadataDataForAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5
++ (id)memojiMetadataDataForAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description
 {
   v5 = *(MEMORY[0x1E695EFD0] + 16);
   v8[0] = *MEMORY[0x1E695EFD0];
   v8[1] = v5;
   v8[2] = *(MEMORY[0x1E695EFD0] + 32);
-  v6 = [a1 memojiMetadataDataForAvatarRecord:a3 poseConfiguration:a4 backgroundColorDescription:a5 cropTransform:v8];
+  v6 = [self memojiMetadataDataForAvatarRecord:record poseConfiguration:configuration backgroundColorDescription:description cropTransform:v8];
 
   return v6;
 }
 
-+ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)a3 poseConfigurationData:(id)a4 backgroundColorDescription:(id)a5
++ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)identifier poseConfigurationData:(id)data backgroundColorDescription:(id)description
 {
   v5 = *(MEMORY[0x1E695EFD0] + 16);
   v8[0] = *MEMORY[0x1E695EFD0];
   v8[1] = v5;
   v8[2] = *(MEMORY[0x1E695EFD0] + 32);
-  v6 = [a1 memojiMetadataDataForAvatarRecordIdentifier:a3 poseConfigurationData:a4 backgroundColorDescription:a5 cropTransform:v8];
+  v6 = [self memojiMetadataDataForAvatarRecordIdentifier:identifier poseConfigurationData:data backgroundColorDescription:description cropTransform:v8];
 
   return v6;
 }
 
-+ (id)dataForMemojiMetadata:(id)a3
++ (id)dataForMemojiMetadata:(id)metadata
 {
   v7 = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:metadata requiringSecureCoding:1 error:&v7];
   v4 = v7;
   if (!v3)
   {
@@ -78,41 +78,41 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
   return v3;
 }
 
-+ (id)dataForMemojiMetadata:(id)a3 backgroundColorDescription:(id)a4 cropTransform:(CGAffineTransform *)a5
++ (id)dataForMemojiMetadata:(id)metadata backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform
 {
-  v7 = a4;
-  v8 = a3;
+  descriptionCopy = description;
+  metadataCopy = metadata;
   v9 = [CNMemojiMetadata alloc];
-  v10 = [v8 avatarRecord];
-  v11 = [v8 poseName];
-  v12 = [v8 pose];
+  avatarRecord = [metadataCopy avatarRecord];
+  poseName = [metadataCopy poseName];
+  pose = [metadataCopy pose];
 
-  v13 = *&a5->c;
-  v17[0] = *&a5->a;
+  v13 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v13;
-  v17[2] = *&a5->tx;
-  v14 = [(CNMemojiMetadata *)v9 initWithAvatarRecord:v10 poseName:v11 pose:v12 backgroundColorDescription:v7 cropTransform:v17];
+  v17[2] = *&transform->tx;
+  v14 = [(CNMemojiMetadata *)v9 initWithAvatarRecord:avatarRecord poseName:poseName pose:pose backgroundColorDescription:descriptionCopy cropTransform:v17];
 
   v15 = [objc_opt_class() dataForMemojiMetadata:v14];
 
   return v15;
 }
 
-+ (id)memojiMetadataDataForAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5 cropTransform:(CGAffineTransform *)a6
++ (id)memojiMetadataDataForAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform
 {
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9 && v10 && v11)
+  recordCopy = record;
+  configurationCopy = configuration;
+  descriptionCopy = description;
+  v12 = descriptionCopy;
+  if (recordCopy && configurationCopy && descriptionCopy)
   {
     v13 = [CNMemojiMetadata alloc];
-    v14 = *&a6->c;
-    *v18 = *&a6->a;
+    v14 = *&transform->c;
+    *v18 = *&transform->a;
     *&v18[16] = v14;
-    v19 = *&a6->tx;
-    v15 = [(CNMemojiMetadata *)v13 initWithAvatarRecord:v9 poseConfiguration:v10 backgroundColorDescription:v12 cropTransform:v18];
+    v19 = *&transform->tx;
+    v15 = [(CNMemojiMetadata *)v13 initWithAvatarRecord:recordCopy poseConfiguration:configurationCopy backgroundColorDescription:v12 cropTransform:v18];
     v16 = [objc_opt_class() dataForMemojiMetadata:v15];
   }
 
@@ -122,9 +122,9 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *v18 = 138412802;
-      *&v18[4] = v9;
+      *&v18[4] = recordCopy;
       *&v18[12] = 2112;
-      *&v18[14] = v10;
+      *&v18[14] = configurationCopy;
       *&v18[22] = 2112;
       *&v18[24] = v12;
       _os_log_error_impl(&dword_1954A0000, v15, OS_LOG_TYPE_ERROR, "Error creating Memoji metadata for avatarRecord: %@, poseConfiguration: %@, backgroundColorDescription: %@ : received nil argument", v18, 0x20u);
@@ -136,23 +136,23 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
   return v16;
 }
 
-+ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)a3 poseConfigurationData:(id)a4 backgroundColorDescription:(id)a5 cropTransform:(CGAffineTransform *)a6
++ (id)memojiMetadataDataForAvatarRecordIdentifier:(id)identifier poseConfigurationData:(id)data backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [CNMemojiMetadataUtilities avatarRecordForIdentifier:v9];
+  identifierCopy = identifier;
+  dataCopy = data;
+  descriptionCopy = description;
+  v12 = [CNMemojiMetadataUtilities avatarRecordForIdentifier:identifierCopy];
   if (v12)
   {
-    v13 = [CNMemojiMetadataUtilities poseConfigurationForData:v10 withAvatarRecord:v12];
+    v13 = [CNMemojiMetadataUtilities poseConfigurationForData:dataCopy withAvatarRecord:v12];
     if (v13)
     {
       v14 = [CNMemojiMetadata alloc];
-      v15 = *&a6->c;
-      v19[0] = *&a6->a;
+      v15 = *&transform->c;
+      v19[0] = *&transform->a;
       v19[1] = v15;
-      v19[2] = *&a6->tx;
-      v16 = [(CNMemojiMetadata *)v14 initWithAvatarRecord:v12 poseConfiguration:v13 backgroundColorDescription:v11 cropTransform:v19];
+      v19[2] = *&transform->tx;
+      v16 = [(CNMemojiMetadata *)v14 initWithAvatarRecord:v12 poseConfiguration:v13 backgroundColorDescription:descriptionCopy cropTransform:v19];
       v17 = [objc_opt_class() dataForMemojiMetadata:v16];
     }
 
@@ -182,13 +182,13 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
   return v17;
 }
 
-+ (id)memojiMetadataFromData:(id)a3
++ (id)memojiMetadataFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v8 = 0;
-    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
+    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v8];
     v5 = v8;
     if (!v4)
     {
@@ -214,37 +214,37 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
   return v4;
 }
 
-+ (id)memojiMetadataFromAvatarRecordData:(id)a3 poseConfigurationData:(id)a4 backgroundColorDescription:(id)a5
++ (id)memojiMetadataFromAvatarRecordData:(id)data poseConfigurationData:(id)configurationData backgroundColorDescription:(id)description
 {
   v5 = 0;
-  if (a3 && a4 && a5)
+  if (data && configurationData && description)
   {
     v8 = getAVTAvatarRecordSerializerClass_0;
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
-    v12 = [(objc_class *)v8() avatarRecordFromData:v11];
+    descriptionCopy = description;
+    configurationDataCopy = configurationData;
+    dataCopy = data;
+    v12 = [(objc_class *)v8() avatarRecordFromData:dataCopy];
 
-    v13 = [CNMemojiMetadataUtilities poseConfigurationForData:v10 withAvatarRecord:v12];
+    v13 = [CNMemojiMetadataUtilities poseConfigurationForData:configurationDataCopy withAvatarRecord:v12];
 
-    v5 = [[CNMemojiMetadata alloc] initWithAvatarRecord:v12 poseConfiguration:v13 backgroundColorDescription:v9];
+    v5 = [[CNMemojiMetadata alloc] initWithAvatarRecord:v12 poseConfiguration:v13 backgroundColorDescription:descriptionCopy];
   }
 
   return v5;
 }
 
-+ (id)stickerConfigurationForAvatarRecord:(id)a3 stickerName:(id)a4 pose:(id)a5
++ (id)stickerConfigurationForAvatarRecord:(id)record stickerName:(id)name pose:(id)pose
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  recordCopy = record;
+  nameCopy = name;
+  poseCopy = pose;
+  v11 = poseCopy;
+  if (recordCopy && nameCopy && poseCopy)
   {
-    if ([v9 isEqualToString:@"custom_capture"])
+    if ([nameCopy isEqualToString:@"custom_capture"])
     {
-      v12 = [objc_alloc(getAVTStickerConfigurationClass()) initWithName:v9 pose:v11 props:0 shaders:0 camera:0 options:0];
+      v12 = [objc_alloc(getAVTStickerConfigurationClass()) initWithName:nameCopy pose:v11 props:0 shaders:0 camera:0 options:0];
       goto LABEL_24;
     }
 
@@ -270,7 +270,7 @@ uint64_t __35__CNMemojiMetadataUtilities_os_log__block_invoke()
     _Block_object_dispose(&v22, 8);
     if (v14)
     {
-      v12 = [a1 stickerConfigurationForAvatarRecord:v8 stickerName:v9 stickerPack:{*v14, v22}];
+      v12 = [self stickerConfigurationForAvatarRecord:recordCopy stickerName:nameCopy stickerPack:{*v14, v22}];
       if (v12)
       {
         goto LABEL_24;
@@ -312,7 +312,7 @@ LABEL_23:
       _Block_object_dispose(&v22, 8);
       if (v17)
       {
-        v12 = [a1 stickerConfigurationForAvatarRecord:v8 stickerName:v9 stickerPack:{*v17, v22}];
+        v12 = [self stickerConfigurationForAvatarRecord:recordCopy stickerName:nameCopy stickerPack:{*v17, v22}];
         if (v12)
         {
           goto LABEL_24;
@@ -336,9 +336,9 @@ LABEL_23:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    *&buf[4] = v8;
+    *&buf[4] = recordCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = nameCopy;
     *&buf[22] = 2112;
     v27 = v11;
     _os_log_error_impl(&dword_1954A0000, v13, OS_LOG_TYPE_ERROR, "Error creating pose configuration for avatarRecord: %@, poseName: %@, pose: %@ : received nil argument", buf, 0x20u);
@@ -350,37 +350,37 @@ LABEL_24:
   return v12;
 }
 
-+ (id)stickerConfigurationForAvatarRecord:(id)a3 stickerName:(id)a4 stickerPack:(id)a5
++ (id)stickerConfigurationForAvatarRecord:(id)record stickerName:(id)name stickerPack:(id)pack
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 isEditable];
+  recordCopy = record;
+  packCopy = pack;
+  nameCopy = name;
+  isEditable = [recordCopy isEditable];
   AVTStickerConfigurationClass = getAVTStickerConfigurationClass();
   v12 = AVTStickerConfigurationClass;
-  if (v10)
+  if (isEditable)
   {
-    v13 = [AVTStickerConfigurationClass stickerConfigurationForMemojiInStickerPack:v8 stickerName:v9];
+    v13 = [AVTStickerConfigurationClass stickerConfigurationForMemojiInStickerPack:packCopy stickerName:nameCopy];
   }
 
   else
   {
-    v14 = [v7 identifier];
-    v13 = [v12 stickerConfigurationForAnimojiNamed:v14 inStickerPack:v8 stickerName:v9];
+    identifier = [recordCopy identifier];
+    v13 = [v12 stickerConfigurationForAnimojiNamed:identifier inStickerPack:packCopy stickerName:nameCopy];
 
-    v8 = v9;
-    v9 = v14;
+    packCopy = nameCopy;
+    nameCopy = identifier;
   }
 
   return v13;
 }
 
-+ (id)dataForPoseConfiguration:(id)a3
++ (id)dataForPoseConfiguration:(id)configuration
 {
-  v3 = a3;
-  if (v3)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v4 = [[CNSerializedPoseConfiguration alloc] initWithPoseConfiguration:v3];
+    v4 = [[CNSerializedPoseConfiguration alloc] initWithPoseConfiguration:configurationCopy];
     v9 = 0;
     v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v9];
     v6 = v9;
@@ -408,27 +408,27 @@ LABEL_24:
   return v5;
 }
 
-+ (id)poseConfigurationForData:(id)a3 withAvatarRecord:(id)a4
++ (id)poseConfigurationForData:(id)data withAvatarRecord:(id)record
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  dataCopy = data;
+  recordCopy = record;
+  v7 = recordCopy;
+  if (dataCopy && recordCopy)
   {
     v14 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v14];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v14];
     v9 = v14;
     if (v8)
     {
-      v10 = [v8 poseName];
-      v11 = [v8 pose];
-      v12 = [CNMemojiMetadataUtilities stickerConfigurationForAvatarRecord:v7 stickerName:v10 pose:v11];
+      poseName = [v8 poseName];
+      pose = [v8 pose];
+      v12 = [CNMemojiMetadataUtilities stickerConfigurationForAvatarRecord:v7 stickerName:poseName pose:pose];
     }
 
     else
     {
-      v10 = +[CNMemojiMetadataUtilities os_log];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      poseName = +[CNMemojiMetadataUtilities os_log];
+      if (os_log_type_enabled(poseName, OS_LOG_TYPE_ERROR))
       {
         +[CNMemojiMetadataUtilities poseConfigurationForData:withAvatarRecord:];
       }
@@ -451,19 +451,19 @@ LABEL_24:
   return v12;
 }
 
-+ (id)avatarRecordForIdentifier:(id)a3
++ (id)avatarRecordForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = objc_alloc_init(getAVTPAvatarStoreClass());
-    v5 = [(objc_class *)getAVTAvatarFetchRequestClass() requestForAvatarWithIdentifier:v3];
+    v5 = [(objc_class *)getAVTAvatarFetchRequestClass() requestForAvatarWithIdentifier:identifierCopy];
     v11 = 0;
     v6 = [v4 avatarsForFetchRequest:v5 error:&v11];
     v7 = v11;
     if (v6)
     {
-      v8 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     else
@@ -474,7 +474,7 @@ LABEL_24:
         +[CNMemojiMetadataUtilities avatarRecordForIdentifier:];
       }
 
-      v8 = 0;
+      firstObject = 0;
     }
   }
 
@@ -486,25 +486,25 @@ LABEL_24:
       +[CNMemojiMetadataUtilities avatarRecordForIdentifier:];
     }
 
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)physicsStatesDictionaryRepresentationForPose:(id)a3
++ (id)physicsStatesDictionaryRepresentationForPose:(id)pose
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if (v3)
+  poseCopy = pose;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (poseCopy)
   {
-    v5 = [v3 physicsStates];
+    physicsStates = [poseCopy physicsStates];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [physicsStates countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -515,16 +515,16 @@ LABEL_24:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(physicsStates);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v5 objectForKeyedSubscript:v10];
-          v12 = [v11 dictionaryRepresentation];
-          [v4 setValue:v12 forKey:v10];
+          v11 = [physicsStates objectForKeyedSubscript:v10];
+          dictionaryRepresentation = [v11 dictionaryRepresentation];
+          [dictionary setValue:dictionaryRepresentation forKey:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [physicsStates countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -533,14 +533,14 @@ LABEL_24:
 
   else
   {
-    v5 = +[CNMemojiMetadataUtilities os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    physicsStates = +[CNMemojiMetadataUtilities os_log];
+    if (os_log_type_enabled(physicsStates, OS_LOG_TYPE_ERROR))
     {
       +[CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:];
     }
   }
 
-  return v4;
+  return dictionary;
 }
 
 + (void)dataForMemojiMetadata:.cold.1()

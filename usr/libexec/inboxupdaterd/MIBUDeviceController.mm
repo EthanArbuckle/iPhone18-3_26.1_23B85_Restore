@@ -1,25 +1,25 @@
 @interface MIBUDeviceController
 + (id)sharedInstance;
 - (BOOL)_isD5x;
-- (BOOL)_readBTFWOKFlagFromIOPMUService:(id *)a3;
-- (BOOL)_readLPMFlagFromIOPMUService:(id *)a3;
+- (BOOL)_readBTFWOKFlagFromIOPMUService:(id *)service;
+- (BOOL)_readLPMFlagFromIOPMUService:(id *)service;
 - (BOOL)_updateIOPMUBootLPMCtrl;
-- (BOOL)isActivated:(id *)a3;
+- (BOOL)isActivated:(id *)activated;
 - (BOOL)isInBoxUpdateMode;
 - (BOOL)isInDiagnosticMode;
 - (BOOL)isInitialBuddySetupComplete;
-- (BOOL)isLPMSet:(id *)a3;
+- (BOOL)isLPMSet:(id *)set;
 - (BOOL)isOnLockScreen;
-- (BOOL)setSystemTime:(int64_t)a3;
-- (BOOL)setToLPMWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)setSystemTime:(int64_t)time;
+- (BOOL)setToLPMWithOptions:(id)options error:(id *)error;
 - (BOOL)shutdownInLPM;
 - (BOOL)wakedUpFromLPM;
 - (MIBUDeviceController)init;
 - (id)_batteryVirtualTemperature;
-- (id)_dataFromInt32:(unsigned int)a3;
-- (id)_dataFromInt8:(unsigned __int8)a3;
-- (id)_dictFromSMCKeyMapping:(id)a3;
-- (id)_dictFromTmpSensorKeyMapping:(id)a3;
+- (id)_dataFromInt32:(unsigned int)int32;
+- (id)_dataFromInt8:(unsigned __int8)int8;
+- (id)_dictFromSMCKeyMapping:(id)mapping;
+- (id)_dictFromTmpSensorKeyMapping:(id)mapping;
 - (id)_smcHelper;
 - (id)batteryDetails;
 - (id)buildVersion;
@@ -28,7 +28,7 @@
 - (id)thermalDetails;
 - (int64_t)thermalPressureLevel;
 - (unsigned)_findServicePmuPrimary;
-- (void)_writeSMCKey:(id)a3 withData:(id)a4 usingHelper:(id)a5 andReadInterval:(id)a6 andReadbackData:(id)a7 error:(id *)a8;
+- (void)_writeSMCKey:(id)key withData:(id)data usingHelper:(id)helper andReadInterval:(id)interval andReadbackData:(id)readbackData error:(id *)error;
 - (void)disableCarrierMode;
 - (void)enableCarrierMode;
 - (void)reboot;
@@ -69,7 +69,7 @@
   if (os_variant_has_internal_content() && (+[MIBUTestPreferences sharedInstance](MIBUTestPreferences, "sharedInstance"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 inBoxUpdateMode], v3, v4))
   {
     v5 = +[MIBUTestPreferences sharedInstance];
-    v6 = [v5 inBoxUpdateMode];
+    inBoxUpdateMode = [v5 inBoxUpdateMode];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -80,7 +80,7 @@
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       v13[0] = 67109120;
-      v13[1] = v6;
+      v13[1] = inBoxUpdateMode;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Overriding InBoxUpdateMode = %d", v13, 8u);
     }
   }
@@ -102,16 +102,16 @@
     v11 = v10 & (v9 ^ 1);
     if (v8)
     {
-      LOBYTE(v6) = v11;
+      LOBYTE(inBoxUpdateMode) = v11;
     }
 
     else
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(inBoxUpdateMode) = 0;
     }
   }
 
-  return v6;
+  return inBoxUpdateMode;
 }
 
 - (BOOL)isInDiagnosticMode
@@ -122,18 +122,18 @@
   return v3;
 }
 
-- (BOOL)isActivated:(id *)a3
+- (BOOL)isActivated:(id *)activated
 {
   if (os_variant_has_internal_content())
   {
     v4 = +[MIBUTestPreferences sharedInstance];
-    v5 = [v4 isActivated];
+    isActivated = [v4 isActivated];
 
-    if (v5)
+    if (isActivated)
     {
       v6 = +[MIBUTestPreferences sharedInstance];
-      v7 = [v6 isActivated];
-      v8 = [v7 BOOLValue];
+      isActivated2 = [v6 isActivated];
+      bOOLValue = [isActivated2 BOOLValue];
 
       if (qword_1000B84A8[0] != -1)
       {
@@ -144,20 +144,20 @@
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v15 = v8;
+        v15 = bOOLValue;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Overrding isActivated = %d", buf, 8u);
       }
 
       v10 = 0;
       v11 = 0;
-      if (!a3)
+      if (!activated)
       {
         goto LABEL_12;
       }
 
 LABEL_11:
       v12 = v11;
-      *a3 = v11;
+      *activated = v11;
       goto LABEL_12;
     }
   }
@@ -166,8 +166,8 @@ LABEL_11:
   v11 = 0;
   if (!v11)
   {
-    LOBYTE(v8) = [v10 isEqualToString:kMAActivationStateActivated];
-    if (!a3)
+    LOBYTE(bOOLValue) = [v10 isEqualToString:kMAActivationStateActivated];
+    if (!activated)
     {
       goto LABEL_12;
     }
@@ -185,15 +185,15 @@ LABEL_11:
     sub_10005D1D8();
   }
 
-  LOBYTE(v8) = 0;
-  if (a3)
+  LOBYTE(bOOLValue) = 0;
+  if (activated)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isInitialBuddySetupComplete
@@ -201,8 +201,8 @@ LABEL_12:
   if (os_variant_has_internal_content() && (+[MIBUTestPreferences sharedInstance](MIBUTestPreferences, "sharedInstance"), v2 = objc_claimAutoreleasedReturnValue(), [v2 initialBuddySetupComplete], v3 = objc_claimAutoreleasedReturnValue(), v3, v2, v3))
   {
     v4 = +[MIBUTestPreferences sharedInstance];
-    v5 = [v4 initialBuddySetupComplete];
-    byte_1000B8408 = [v5 BOOLValue];
+    initialBuddySetupComplete = [v4 initialBuddySetupComplete];
+    byte_1000B8408 = [initialBuddySetupComplete BOOLValue];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -234,8 +234,8 @@ LABEL_12:
   if (os_variant_has_internal_content() && (+[MIBUTestPreferences sharedInstance](MIBUTestPreferences, "sharedInstance"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isOnLockScreen], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
     v5 = +[MIBUTestPreferences sharedInstance];
-    v6 = [v5 isOnLockScreen];
-    v7 = [v6 BOOLValue];
+    isOnLockScreen = [v5 isOnLockScreen];
+    bOOLValue = [isOnLockScreen BOOLValue];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -246,7 +246,7 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v12 = v7;
+      v12 = bOOLValue;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Overrding OnLockScreen = %d", buf, 8u);
     }
   }
@@ -265,24 +265,24 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Diagnostic mode detected. Skipping lock screen check", buf, 2u);
     }
 
-    LOBYTE(v7) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
   else
   {
     SBSSpringBoardBlockableServerPort();
     SBGetScreenLockStatus();
-    LOBYTE(v7) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)setSystemTime:(int64_t)a3
+- (BOOL)setSystemTime:(int64_t)time
 {
   *&v6.tv_usec = 0;
   v7 = 0;
-  v6.tv_sec = a3;
+  v6.tv_sec = time;
   time(&v7);
   if (qword_1000B84A8[0] != -1)
   {
@@ -295,7 +295,7 @@ LABEL_12:
     *buf = 134218240;
     v9 = v7;
     v10 = 2048;
-    v11 = a3;
+    timeCopy = time;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Current system time is %lu; setting system time to %lu", buf, 0x16u);
   }
 
@@ -343,8 +343,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Setting Device to Shelf Life Mode ...", buf, 2u);
   }
 
-  v4 = [(MIBUDeviceController *)self _smcHelper];
-  if (v4)
+  _smcHelper = [(MIBUDeviceController *)self _smcHelper];
+  if (_smcHelper)
   {
     if ([(MIBUDeviceController *)self _isD5x])
     {
@@ -361,7 +361,7 @@ LABEL_12:
       v5 = [(MIBUDeviceController *)self _dataFromInt8:1];
       v6 = [(MIBUDeviceController *)self _dataFromInt8:2];
       v8 = 0;
-      [(MIBUDeviceController *)self _writeSMCKey:@"BCSL" withData:v5 usingHelper:v4 andReadInterval:0 andReadbackData:v6 error:&v8];
+      [(MIBUDeviceController *)self _writeSMCKey:@"BCSL" withData:v5 usingHelper:_smcHelper andReadInterval:0 andReadbackData:v6 error:&v8];
       v7 = v8;
     }
   }
@@ -516,7 +516,7 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: device will shutdown in low power mode now.", buf, 0xCu);
     }
 
@@ -530,8 +530,8 @@ LABEL_12:
 - (id)thermalDetails
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUDeviceController *)self thermalPressureLevel];
-  v5 = [(MIBUDeviceController *)self _batteryVirtualTemperature];
+  thermalPressureLevel = [(MIBUDeviceController *)self thermalPressureLevel];
+  _batteryVirtualTemperature = [(MIBUDeviceController *)self _batteryVirtualTemperature];
   if ([(MIBUDeviceController *)self _isD5x]|| [(MIBUDeviceController *)self _isN104])
   {
     v11[0] = @"TSRM/TVRM";
@@ -574,14 +574,14 @@ LABEL_12:
 
   v8 = v7;
 
-  if (v5)
+  if (_batteryVirtualTemperature)
   {
-    [v8 setObject:v5 forKey:@"TG0V"];
+    [v8 setObject:_batteryVirtualTemperature forKey:@"TG0V"];
   }
 
   if (v8)
   {
-    v9 = [NSNumber numberWithInteger:v4];
+    v9 = [NSNumber numberWithInteger:thermalPressureLevel];
     [v8 setObject:v9 forKey:@"ThermalPressure"];
   }
 
@@ -641,9 +641,9 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)setToLPMWithOptions:(id)a3 error:(id *)a4
+- (BOOL)setToLPMWithOptions:(id)options error:(id *)error
 {
-  v66 = a3;
+  optionsCopy = options;
   v82 = 0;
   v83 = &v82;
   v84 = 0x3032000000;
@@ -662,7 +662,7 @@ LABEL_12:
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v89 = v66;
+    *v89 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting device to LPM mode with options: %{public}@", buf, 0xCu);
   }
 
@@ -727,7 +727,7 @@ LABEL_28:
     goto LABEL_32;
   }
 
-  v6 = [v66 objectForKey:@"LPMTemplateFile"];
+  v6 = [optionsCopy objectForKey:@"LPMTemplateFile"];
   if (v6)
   {
     v61 = v6;
@@ -818,7 +818,7 @@ LABEL_43:
     v6 = v61;
   }
 
-  v19 = [v66 objectForKey:@"LPMScanPayload"];
+  v19 = [optionsCopy objectForKey:@"LPMScanPayload"];
   v20 = v19;
   if (!v19)
   {
@@ -879,12 +879,12 @@ LABEL_33:
   v30 = qword_1000B84A0;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v4 scanWindow];
-    v32 = [v4 scanInterval];
+    scanWindow = [v4 scanWindow];
+    scanInterval = [v4 scanInterval];
     *buf = 67109376;
-    *v89 = v31;
+    *v89 = scanWindow;
     *&v89[4] = 1024;
-    *&v89[6] = v32;
+    *&v89[6] = scanInterval;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Setting device to LPM mode; scanWindow = 0x%X; scanInterval = 0x%X", buf, 0xEu);
   }
 
@@ -921,8 +921,8 @@ LABEL_33:
       v48 = qword_1000B84A0;
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v83[5] localizedDescription];
-        sub_10005DCDC(v49, buf, v48);
+        localizedDescription = [v83[5] localizedDescription];
+        sub_10005DCDC(localizedDescription, buf, v48);
       }
     }
   }
@@ -936,9 +936,9 @@ LABEL_33:
   }
 
 LABEL_44:
-  if (a4)
+  if (error)
   {
-    *a4 = v83[5];
+    *error = v83[5];
   }
 
   [v67 invalidate];
@@ -949,7 +949,7 @@ LABEL_41:
   return v40;
 }
 
-- (BOOL)isLPMSet:(id *)a3
+- (BOOL)isLPMSet:(id *)set
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -1027,10 +1027,10 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Device has LPM flags set: btLPMFlag=%{BOOL}d btFWOKFlag=%{BOOL}d", buf, 0xEu);
   }
 
-  if (a3)
+  if (set)
   {
     v13 = v8;
-    *a3 = v8;
+    *set = v8;
   }
 
   return v11;
@@ -1038,8 +1038,8 @@ LABEL_41:
 
 - (id)_smcHelper
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_1000B8410)
   {
     v3 = objc_alloc_init(MIBUSMCHelper);
@@ -1069,7 +1069,7 @@ LABEL_41:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = qword_1000B8410;
 
@@ -1108,29 +1108,29 @@ LABEL_41:
   return v2;
 }
 
-- (id)_dataFromInt32:(unsigned int)a3
+- (id)_dataFromInt32:(unsigned int)int32
 {
-  v5 = a3;
-  v3 = [NSData dataWithBytes:&v5 length:4];
+  int32Copy = int32;
+  v3 = [NSData dataWithBytes:&int32Copy length:4];
 
   return v3;
 }
 
-- (id)_dataFromInt8:(unsigned __int8)a3
+- (id)_dataFromInt8:(unsigned __int8)int8
 {
-  v5 = a3;
-  v3 = [NSData dataWithBytes:&v5 length:1];
+  int8Copy = int8;
+  v3 = [NSData dataWithBytes:&int8Copy length:1];
 
   return v3;
 }
 
 - (id)_batteryVirtualTemperature
 {
-  v2 = [(MIBUDeviceController *)self _smcHelper];
-  v3 = v2;
-  if (v2)
+  _smcHelper = [(MIBUDeviceController *)self _smcHelper];
+  v3 = _smcHelper;
+  if (_smcHelper)
   {
-    v4 = [v2 readSMCKey:@"TG0V" error:0];
+    v4 = [_smcHelper readSMCKey:@"TG0V" error:0];
   }
 
   else
@@ -1142,19 +1142,19 @@ LABEL_41:
   return v4;
 }
 
-- (id)_dictFromSMCKeyMapping:(id)a3
+- (id)_dictFromSMCKeyMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v5 = objc_opt_new();
-  v6 = [(MIBUDeviceController *)self _smcHelper];
-  if (v6)
+  _smcHelper = [(MIBUDeviceController *)self _smcHelper];
+  if (_smcHelper)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v17 = v4;
-    v7 = v4;
+    v17 = mappingCopy;
+    v7 = mappingCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -1171,10 +1171,10 @@ LABEL_41:
 
           v12 = *(*(&v19 + 1) + 8 * i);
           v13 = [v7 objectForKey:{v12, v17}];
-          if ([v6 isKeySupported:v13])
+          if ([_smcHelper isKeySupported:v13])
           {
             v18 = 0;
-            v14 = [v6 readSMCKey:v13 error:&v18];
+            v14 = [_smcHelper readSMCKey:v13 error:&v18];
             v15 = v18;
             if (v14)
             {
@@ -1195,7 +1195,7 @@ LABEL_41:
       while (v9);
     }
 
-    v4 = v17;
+    mappingCopy = v17;
   }
 
   else
@@ -1206,15 +1206,15 @@ LABEL_41:
   return v5;
 }
 
-- (id)_dictFromTmpSensorKeyMapping:(id)a3
+- (id)_dictFromTmpSensorKeyMapping:(id)mapping
 {
-  v3 = a3;
+  mappingCopy = mapping;
   v18 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = v3;
+  v4 = mappingCopy;
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -1231,10 +1231,10 @@ LABEL_41:
 
         v9 = *(*(&v21 + 1) + 8 * i);
         v10 = [v4 objectForKey:v9];
-        v11 = [v10 unsignedIntValue];
+        unsignedIntValue = [v10 unsignedIntValue];
 
         v20 = 0;
-        v12 = [MIBUTempSensorHelper readKey:v11 error:&v20];
+        v12 = [MIBUTempSensorHelper readKey:unsignedIntValue error:&v20];
         v13 = v20;
         if (v12)
         {
@@ -1360,11 +1360,11 @@ LABEL_11:
 
 - (BOOL)_updateIOPMUBootLPMCtrl
 {
-  v2 = [(MIBUDeviceController *)self _findServicePmuPrimary];
-  if (v2)
+  _findServicePmuPrimary = [(MIBUDeviceController *)self _findServicePmuPrimary];
+  if (_findServicePmuPrimary)
   {
-    v3 = v2;
-    v4 = IORegistryEntrySetCFProperties(v2, &off_1000A9FB8);
+    v3 = _findServicePmuPrimary;
+    v4 = IORegistryEntrySetCFProperties(_findServicePmuPrimary, &off_1000A9FB8);
     v5 = v4 == 0;
     if (v4)
     {
@@ -1402,13 +1402,13 @@ LABEL_11:
 
 - (BOOL)wakedUpFromLPM
 {
-  v2 = [(MIBUDeviceController *)self _findServicePmuPrimary];
-  if (v2)
+  _findServicePmuPrimary = [(MIBUDeviceController *)self _findServicePmuPrimary];
+  if (_findServicePmuPrimary)
   {
-    v3 = v2;
+    v3 = _findServicePmuPrimary;
     size = 4;
     v7 = 0;
-    if (IORegistryEntryGetProperty(v2, "IOPMUBootReasonLPMSU", &v7, &size))
+    if (IORegistryEntryGetProperty(_findServicePmuPrimary, "IOPMUBootReasonLPMSU", &v7, &size))
     {
       if (qword_1000B84A8[0] != -1)
       {
@@ -1449,14 +1449,14 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_readLPMFlagFromIOPMUService:(id *)a3
+- (BOOL)_readLPMFlagFromIOPMUService:(id *)service
 {
-  v4 = [(MIBUDeviceController *)self _findServicePmuPrimary];
-  if (v4)
+  _findServicePmuPrimary = [(MIBUDeviceController *)self _findServicePmuPrimary];
+  if (_findServicePmuPrimary)
   {
-    v9 = v4;
+    v9 = _findServicePmuPrimary;
     valuePtr = 0;
-    v10 = IORegistryEntrySearchCFProperty(v4, "IOService", @"IOPMUBootLPMCtrl", kCFAllocatorDefault, 1u);
+    v10 = IORegistryEntrySearchCFProperty(_findServicePmuPrimary, "IOService", @"IOPMUBootLPMCtrl", kCFAllocatorDefault, 1u);
     if (v10)
     {
       v15 = v10;
@@ -1474,7 +1474,7 @@ LABEL_11:
 
         else
         {
-          sub_100016130(a3, 3489660933, 0, @"Unexpected data type found for lpm3 key", v23, v24, v25, v26, v29);
+          sub_100016130(service, 3489660933, 0, @"Unexpected data type found for lpm3 key", v23, v24, v25, v26, v29);
         }
 
         CFRelease(v21);
@@ -1482,7 +1482,7 @@ LABEL_11:
 
       else
       {
-        sub_100016130(a3, 3489660933, 0, @"Unexpected data type found for IOPMUBootLPMCtrl", v17, v18, v19, v20, v29);
+        sub_100016130(service, 3489660933, 0, @"Unexpected data type found for IOPMUBootLPMCtrl", v17, v18, v19, v20, v29);
       }
 
       CFRelease(v15);
@@ -1490,7 +1490,7 @@ LABEL_11:
 
     else
     {
-      sub_100016130(a3, 3489660933, 0, @"Cannot find IO registry entry property for IOPMUBootLPMCtrl", v11, v12, v13, v14, v29);
+      sub_100016130(service, 3489660933, 0, @"Cannot find IO registry entry property for IOPMUBootLPMCtrl", v11, v12, v13, v14, v29);
     }
 
     IOObjectRelease(v9);
@@ -1499,18 +1499,18 @@ LABEL_11:
 
   else
   {
-    sub_100016130(a3, 3489660933, 0, @"Cannot find IO registry entry for IOPMUPrimary", v5, v6, v7, v8, v29);
+    sub_100016130(service, 3489660933, 0, @"Cannot find IO registry entry for IOPMUPrimary", v5, v6, v7, v8, v29);
     return 0;
   }
 }
 
-- (BOOL)_readBTFWOKFlagFromIOPMUService:(id *)a3
+- (BOOL)_readBTFWOKFlagFromIOPMUService:(id *)service
 {
-  v4 = [(MIBUDeviceController *)self _findServicePmuPrimary];
-  if (v4)
+  _findServicePmuPrimary = [(MIBUDeviceController *)self _findServicePmuPrimary];
+  if (_findServicePmuPrimary)
   {
-    v9 = v4;
-    v10 = IORegistryEntrySearchCFProperty(v4, "IOService", @"IOPMUBootLPMFWOK", kCFAllocatorDefault, 1u);
+    v9 = _findServicePmuPrimary;
+    v10 = IORegistryEntrySearchCFProperty(_findServicePmuPrimary, "IOService", @"IOPMUBootLPMFWOK", kCFAllocatorDefault, 1u);
     if (!v10)
     {
       if (qword_1000B84A8[0] != -1)
@@ -1551,22 +1551,22 @@ LABEL_16:
       v26 = @"Unexpected data type found for IOPMUBootLPMFWOK";
     }
 
-    sub_100016130(a3, 3489660933, 0, v26, v13, v14, v15, v16, v28);
+    sub_100016130(service, 3489660933, 0, v26, v13, v14, v15, v16, v28);
     v17 = 0;
     goto LABEL_15;
   }
 
-  sub_100016130(a3, 3489660933, 0, @"Cannot find IO registry entry for IOPMUPrimary", v5, v6, v7, v8, v28);
+  sub_100016130(service, 3489660933, 0, @"Cannot find IO registry entry for IOPMUPrimary", v5, v6, v7, v8, v28);
   return 0;
 }
 
-- (void)_writeSMCKey:(id)a3 withData:(id)a4 usingHelper:(id)a5 andReadInterval:(id)a6 andReadbackData:(id)a7 error:(id *)a8
+- (void)_writeSMCKey:(id)key withData:(id)data usingHelper:(id)helper andReadInterval:(id)interval andReadbackData:(id)readbackData error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  keyCopy = key;
+  dataCopy = data;
+  helperCopy = helper;
+  intervalCopy = interval;
+  readbackDataCopy = readbackData;
   if ([sub_10002FDF0() isKeySupported:?])
   {
     v67 = 0;
@@ -1590,9 +1590,9 @@ LABEL_16:
         if (sub_10002FDB4())
         {
           *buf = 138543618;
-          v69 = v14;
+          v69 = dataCopy;
           v70 = 2114;
-          v71 = v13;
+          v71 = keyCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Writing %{public}@ to SMC key %{public}@", buf, 0x16u);
         }
 
@@ -1619,7 +1619,7 @@ LABEL_16:
 
         else
         {
-          if (!v17)
+          if (!readbackDataCopy)
           {
             v21 = 0;
             goto LABEL_45;
@@ -1637,7 +1637,7 @@ LABEL_16:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Reading back SMC key value to verify...", buf, 2u);
           }
 
-          if (v16)
+          if (intervalCopy)
           {
             sub_100017760();
             if (!v22)
@@ -1648,13 +1648,13 @@ LABEL_16:
             if (sub_10002FDB4())
             {
               v24 = v21;
-              v25 = [v16 unsignedIntValue];
+              unsignedIntValue = [intervalCopy unsignedIntValue];
               *buf = 67109120;
-              LODWORD(v69) = v25;
+              LODWORD(v69) = unsignedIntValue;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Waiting for %ds before reading back the value to verify...", buf, 8u);
             }
 
-            sleep([v16 unsignedIntValue]);
+            sleep([intervalCopy unsignedIntValue]);
           }
 
           v65 = 0;
@@ -1680,7 +1680,7 @@ LABEL_16:
 
           else
           {
-            if (([v26 isEqualToData:v17]& 1) != 0)
+            if (([v26 isEqualToData:readbackDataCopy]& 1) != 0)
             {
               v21 = 0;
               v18 = v26;
@@ -1699,14 +1699,14 @@ LABEL_16:
               sub_10002FD60(*&v62);
               v71 = v26;
               v72 = v55;
-              v73[0] = v17;
+              v73[0] = readbackDataCopy;
               _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "SMC key %{public}@ : %{public}@ does not have expected val: %{public}@", buf, 0x20u);
             }
 
             v64 = 0;
             v59 = v26;
-            v60 = v17;
-            sub_100016130(&v64, 2684354564, 0, @"SMC key %@ : %@ does not have expected val: %@", v28, v29, v30, v31, v13);
+            v60 = readbackDataCopy;
+            sub_100016130(&v64, 2684354564, 0, @"SMC key %@ : %@ does not have expected val: %@", v28, v29, v30, v31, keyCopy);
             v21 = v64;
           }
 
@@ -1760,10 +1760,10 @@ LABEL_16:
   }
 
 LABEL_45:
-  if (a8)
+  if (error)
   {
     v56 = v21;
-    *a8 = v21;
+    *error = v21;
   }
 }
 

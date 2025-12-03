@@ -1,7 +1,7 @@
 @interface CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationContains)contains;
 - (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)doesNotContain;
 - (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationEquals)equals;
@@ -9,23 +9,23 @@
 - (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationLessThan)lessThan;
 - (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationNotEquals)notEquals;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation
 
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v49[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"isSome"];
-    v10 = [v6 objectForKeyedSubscript:@"isNone"];
-    v11 = [v6 objectForKeyedSubscript:@"equals"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isSome"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isNone"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"equals"];
     if (v11)
     {
       v49[0] = 0;
@@ -44,7 +44,7 @@ LABEL_57:
       v11 = v12;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"notEquals"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"notEquals"];
     if (v14)
     {
       v48 = 0;
@@ -63,7 +63,7 @@ LABEL_56:
       v14 = v15;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"greaterThan"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"greaterThan"];
     v42 = v10;
     if (v12)
     {
@@ -84,7 +84,7 @@ LABEL_55:
       v12 = v17;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"lessThan"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"lessThan"];
     v41 = v8;
     if (v15)
     {
@@ -108,7 +108,7 @@ LABEL_54:
       v8 = v41;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"contains"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"contains"];
     v40 = v9;
     if (v17)
     {
@@ -127,8 +127,8 @@ LABEL_54:
       v9 = v40;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"doesNotContain"];
-    v39 = self;
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"doesNotContain"];
+    selfCopy = self;
     if (!v23)
     {
       v26 = 0;
@@ -220,15 +220,15 @@ LABEL_33:
         v36 = v29;
       }
 
-      v27 = [[CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation alloc] initWithKind:v9 kindType:v36 error:a4];
-      self = v39;
+      v27 = [[CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation alloc] initWithKind:v9 kindType:v36 error:error];
+      self = selfCopy;
       goto LABEL_53;
     }
 
     CCSetError();
 
     v27 = 0;
-    self = v39;
+    self = selfCopy;
     v8 = v41;
 LABEL_53:
 
@@ -270,9 +270,9 @@ LABEL_58:
       goto LABEL_23;
     }
 
-    v7 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self equals];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"equals"];
+    equals = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self equals];
+    jsonDictionary = [equals jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"equals"];
 
     kindType = self->_kindType;
   }
@@ -284,9 +284,9 @@ LABEL_58:
       goto LABEL_23;
     }
 
-    v9 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self notEquals];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"notEquals"];
+    notEquals = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self notEquals];
+    jsonDictionary2 = [notEquals jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"notEquals"];
 
     kindType = self->_kindType;
   }
@@ -298,9 +298,9 @@ LABEL_58:
       goto LABEL_23;
     }
 
-    v11 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self greaterThan];
-    v12 = [v11 jsonDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"greaterThan"];
+    greaterThan = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self greaterThan];
+    jsonDictionary3 = [greaterThan jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"greaterThan"];
 
     kindType = self->_kindType;
   }
@@ -312,9 +312,9 @@ LABEL_58:
       goto LABEL_23;
     }
 
-    v13 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self lessThan];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"lessThan"];
+    lessThan = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self lessThan];
+    jsonDictionary4 = [lessThan jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"lessThan"];
 
     kindType = self->_kindType;
   }
@@ -326,18 +326,18 @@ LABEL_58:
       goto LABEL_23;
     }
 
-    v15 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self contains];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"contains"];
+    contains = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self contains];
+    jsonDictionary5 = [contains jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"contains"];
 
     kindType = self->_kindType;
   }
 
   if (kindType == 8 && self->_doesNotContain)
   {
-    v17 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self doesNotContain];
-    v18 = [v17 jsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"doesNotContain"];
+    doesNotContain = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation *)self doesNotContain];
+    jsonDictionary6 = [doesNotContain jsonDictionary];
+    [v3 setObject:jsonDictionary6 forKeyedSubscript:@"doesNotContain"];
   }
 
 LABEL_23:
@@ -346,54 +346,54 @@ LABEL_23:
   return v19;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v16 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_isSome];
-  v16[2](v16, v7);
+  blockCopy[2](blockCopy, v7);
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_isNone];
-  v16[2](v16, v8);
+  blockCopy[2](blockCopy, v8);
 
   if (self->_equals)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_equals];
-    v16[2](v16, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_notEquals)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_notEquals];
-    v16[2](v16, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_greaterThan)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_greaterThan];
-    v16[2](v16, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_lessThan)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_lessThan];
-    v16[2](v16, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_contains)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_contains];
-    v16[2](v16, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
-  v14 = v16;
+  v14 = blockCopy;
   if (self->_doesNotContain)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_doesNotContain];
-    v16[2](v16, v15);
+    blockCopy[2](blockCopy, v15);
 
-    v14 = v16;
+    v14 = blockCopy;
   }
 }
 
@@ -439,10 +439,10 @@ LABEL_23:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -893,18 +893,18 @@ LABEL_81:
   return v95;
 }
 
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelation)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (kindCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (IsInstanceOfExpectedClass)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v12 = CCValidateEnumField();
       v13 = v11;
 
@@ -919,9 +919,9 @@ LABEL_81:
     goto LABEL_11;
   }
 
-  if (!v8 || a4 != 2)
+  if (!kindCopy || type != 2)
   {
-    if (v8 && a4 == 3)
+    if (kindCopy && type == 3)
     {
       objc_opt_class();
       v17 = CCValidateIsInstanceOfExpectedClass();
@@ -929,14 +929,14 @@ LABEL_81:
       if (v17)
       {
 LABEL_35:
-        v23 = [v8 data];
+        data = [kindCopy data];
         CCPBDataWriterWriteDataField();
 
         goto LABEL_36;
       }
     }
 
-    else if (v8 && a4 == 4)
+    else if (kindCopy && type == 4)
     {
       objc_opt_class();
       v18 = CCValidateIsInstanceOfExpectedClass();
@@ -947,7 +947,7 @@ LABEL_35:
       }
     }
 
-    else if (v8 && a4 == 5)
+    else if (kindCopy && type == 5)
     {
       objc_opt_class();
       v19 = CCValidateIsInstanceOfExpectedClass();
@@ -958,7 +958,7 @@ LABEL_35:
       }
     }
 
-    else if (v8 && a4 == 6)
+    else if (kindCopy && type == 6)
     {
       objc_opt_class();
       v20 = CCValidateIsInstanceOfExpectedClass();
@@ -969,7 +969,7 @@ LABEL_35:
       }
     }
 
-    else if (v8 && a4 == 7)
+    else if (kindCopy && type == 7)
     {
       objc_opt_class();
       v21 = CCValidateIsInstanceOfExpectedClass();
@@ -983,7 +983,7 @@ LABEL_35:
     else
     {
       v13 = 0;
-      if (!v8 || a4 != 8)
+      if (!kindCopy || type != 8)
       {
         goto LABEL_36;
       }
@@ -999,7 +999,7 @@ LABEL_35:
     }
 
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     v11 = v13;
     goto LABEL_37;
   }
@@ -1009,7 +1009,7 @@ LABEL_35:
   v11 = 0;
   if (v14)
   {
-    [v8 unsignedIntegerValue];
+    [kindCopy unsignedIntegerValue];
     v15 = CCValidateEnumField();
     v13 = v11;
 
@@ -1020,20 +1020,20 @@ LABEL_10:
     }
 
 LABEL_36:
-    v24 = [v9 immutableData];
-    self = [(CCItemMessage *)self initWithData:v24 error:a5];
+    immutableData = [v9 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
     v11 = v13;
-    v16 = self;
+    selfCopy = self;
     goto LABEL_37;
   }
 
 LABEL_11:
   CCSetError();
-  v16 = 0;
+  selfCopy = 0;
 LABEL_37:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

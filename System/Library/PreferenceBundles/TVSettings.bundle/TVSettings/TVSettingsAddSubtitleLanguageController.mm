@@ -1,20 +1,20 @@
 @interface TVSettingsAddSubtitleLanguageController
-- (TVSettingsAddSubtitleLanguageController)initWithTopLevelController:(id)a3;
+- (TVSettingsAddSubtitleLanguageController)initWithTopLevelController:(id)controller;
 - (id)selectedLanguages;
 - (id)specifiers;
 - (id)unselectedLanguages;
 - (void)_setupNavigationBar;
 - (void)dealloc;
-- (void)setSelectedLanguages:(id)a3;
+- (void)setSelectedLanguages:(id)languages;
 @end
 
 @implementation TVSettingsAddSubtitleLanguageController
 
-- (TVSettingsAddSubtitleLanguageController)initWithTopLevelController:(id)a3
+- (TVSettingsAddSubtitleLanguageController)initWithTopLevelController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TVSettingsAddSubtitleLanguageController;
-  v3 = [(TVSettingsAddLanguageController *)&v6 initWithTopLevelController:a3];
+  v3 = [(TVSettingsAddLanguageController *)&v6 initWithTopLevelController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -36,17 +36,17 @@
 
 - (id)selectedLanguages
 {
-  v2 = [(TVSettingsAddLanguageController *)self topLevelController];
-  v3 = [v2 preferredSubtitleLanguageCodes];
+  topLevelController = [(TVSettingsAddLanguageController *)self topLevelController];
+  preferredSubtitleLanguageCodes = [topLevelController preferredSubtitleLanguageCodes];
 
-  return v3;
+  return preferredSubtitleLanguageCodes;
 }
 
-- (void)setSelectedLanguages:(id)a3
+- (void)setSelectedLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = [(TVSettingsAddLanguageController *)self topLevelController];
-  [v5 setPreferredSubtitleLanguageCodes:v4];
+  languagesCopy = languages;
+  topLevelController = [(TVSettingsAddLanguageController *)self topLevelController];
+  [topLevelController setPreferredSubtitleLanguageCodes:languagesCopy];
 }
 
 - (id)specifiers
@@ -58,7 +58,7 @@
     v18 = objc_alloc_init(NSMutableArray);
     v4 = +[NSMutableSet set];
     v20 = +[NSMutableArray array];
-    v21 = self;
+    selfCopy = self;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -87,7 +87,7 @@
           {
             [v4 addObject:v12];
             v14 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v12];
-            v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:v21 set:0 get:0 detail:0 cell:3 edit:0];
+            v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
             [v15 setProperty:v12 forKey:v9];
             [v15 setProperty:objc_opt_class() forKey:v10];
@@ -103,10 +103,10 @@
 
     [v20 sortUsingComparator:&stru_20948];
     [v18 addObjectsFromArray:v20];
-    v16 = *&v21->super.PSListController_opaque[v19];
-    *&v21->super.PSListController_opaque[v19] = v18;
+    v16 = *&selfCopy->super.PSListController_opaque[v19];
+    *&selfCopy->super.PSListController_opaque[v19] = v18;
 
-    v3 = *&v21->super.PSListController_opaque[v19];
+    v3 = *&selfCopy->super.PSListController_opaque[v19];
   }
 
   return v3;

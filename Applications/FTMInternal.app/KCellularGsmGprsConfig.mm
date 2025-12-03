@@ -1,30 +1,30 @@
 @interface KCellularGsmGprsConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccThr:(BOOL)a3;
-- (void)setHasCellBarAccess2:(BOOL)a3;
-- (void)setHasCrHyst:(BOOL)a3;
-- (void)setHasExtUplTbfSupported:(BOOL)a3;
-- (void)setHasGprsSup:(BOOL)a3;
-- (void)setHasNco:(BOOL)a3;
-- (void)setHasNom:(BOOL)a3;
-- (void)setHasPriorityClass:(BOOL)a3;
-- (void)setHasRac:(BOOL)a3;
-- (void)setHasSpPgCy:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccThr:(BOOL)thr;
+- (void)setHasCellBarAccess2:(BOOL)access2;
+- (void)setHasCrHyst:(BOOL)hyst;
+- (void)setHasExtUplTbfSupported:(BOOL)supported;
+- (void)setHasGprsSup:(BOOL)sup;
+- (void)setHasNco:(BOOL)nco;
+- (void)setHasNom:(BOOL)nom;
+- (void)setHasPriorityClass:(BOOL)class;
+- (void)setHasRac:(BOOL)rac;
+- (void)setHasSpPgCy:(BOOL)cy;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularGsmGprsConfig
 
-- (void)setHasGprsSup:(BOOL)a3
+- (void)setHasGprsSup:(BOOL)sup
 {
-  if (a3)
+  if (sup)
   {
     v3 = 1024;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasRac:(BOOL)a3
+- (void)setHasRac:(BOOL)rac
 {
-  if (a3)
+  if (rac)
   {
     v3 = 128;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSpPgCy:(BOOL)a3
+- (void)setHasSpPgCy:(BOOL)cy
 {
-  if (a3)
+  if (cy)
   {
     v3 = 2048;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasNco:(BOOL)a3
+- (void)setHasNco:(BOOL)nco
 {
-  if (a3)
+  if (nco)
   {
     v3 = 16;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNom:(BOOL)a3
+- (void)setHasNom:(BOOL)nom
 {
-  if (a3)
+  if (nom)
   {
     v3 = 32;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCrHyst:(BOOL)a3
+- (void)setHasCrHyst:(BOOL)hyst
 {
-  if (a3)
+  if (hyst)
   {
     v3 = 8;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAccThr:(BOOL)a3
+- (void)setHasAccThr:(BOOL)thr
 {
-  if (a3)
+  if (thr)
   {
     v3 = 2;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasExtUplTbfSupported:(BOOL)a3
+- (void)setHasExtUplTbfSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 512;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPriorityClass:(BOOL)a3
+- (void)setHasPriorityClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 64;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasCellBarAccess2:(BOOL)a3
+- (void)setHasCellBarAccess2:(BOOL)access2
 {
-  if (a3)
+  if (access2)
   {
     v3 = 4;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 256;
   }
@@ -192,8 +192,8 @@
   v7.receiver = self;
   v7.super_class = KCellularGsmGprsConfig;
   v3 = [(KCellularGsmGprsConfig *)&v7 description];
-  v4 = [(KCellularGsmGprsConfig *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularGsmGprsConfig *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -384,9 +384,9 @@ LABEL_14:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -557,14 +557,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 26) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 26) |= 1u;
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -583,8 +583,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 49) = self->_gprsSup;
-  *(v4 + 26) |= 0x400u;
+  *(toCopy + 49) = self->_gprsSup;
+  *(toCopy + 26) |= 0x400u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -598,8 +598,8 @@ LABEL_4:
   }
 
 LABEL_19:
-  *(v4 + 10) = self->_rac;
-  *(v4 + 26) |= 0x80u;
+  *(toCopy + 10) = self->_rac;
+  *(toCopy + 26) |= 0x80u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_5:
   }
 
 LABEL_20:
-  *(v4 + 50) = self->_spPgCy;
-  *(v4 + 26) |= 0x800u;
+  *(toCopy + 50) = self->_spPgCy;
+  *(toCopy + 26) |= 0x800u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -628,8 +628,8 @@ LABEL_6:
   }
 
 LABEL_21:
-  *(v4 + 7) = self->_nco;
-  *(v4 + 26) |= 0x10u;
+  *(toCopy + 7) = self->_nco;
+  *(toCopy + 26) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -643,8 +643,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  *(v4 + 8) = self->_nom;
-  *(v4 + 26) |= 0x20u;
+  *(toCopy + 8) = self->_nom;
+  *(toCopy + 26) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -658,8 +658,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  *(v4 + 6) = self->_crHyst;
-  *(v4 + 26) |= 8u;
+  *(toCopy + 6) = self->_crHyst;
+  *(toCopy + 26) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -673,8 +673,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  *(v4 + 4) = self->_accThr;
-  *(v4 + 26) |= 2u;
+  *(toCopy + 4) = self->_accThr;
+  *(toCopy + 26) |= 2u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -688,8 +688,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(v4 + 48) = self->_extUplTbfSupported;
-  *(v4 + 26) |= 0x200u;
+  *(toCopy + 48) = self->_extUplTbfSupported;
+  *(toCopy + 26) |= 0x200u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -703,8 +703,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  *(v4 + 9) = self->_priorityClass;
-  *(v4 + 26) |= 0x40u;
+  *(toCopy + 9) = self->_priorityClass;
+  *(toCopy + 26) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -718,21 +718,21 @@ LABEL_12:
   }
 
 LABEL_27:
-  *(v4 + 5) = self->_cellBarAccess2;
-  *(v4 + 26) |= 4u;
+  *(toCopy + 5) = self->_cellBarAccess2;
+  *(toCopy + 26) |= 4u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_13:
-    *(v4 + 11) = self->_subsId;
-    *(v4 + 26) |= 0x100u;
+    *(toCopy + 11) = self->_subsId;
+    *(toCopy + 26) |= 0x100u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -904,19 +904,19 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_71;
   }
 
   has = self->_has;
-  v6 = *(v4 + 26);
+  v6 = *(equalCopy + 26);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_71;
     }
@@ -929,34 +929,34 @@ LABEL_13:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 26) & 0x400) == 0)
+    if ((*(equalCopy + 26) & 0x400) == 0)
     {
       goto LABEL_71;
     }
 
-    v7 = *(v4 + 49);
+    v7 = *(equalCopy + 49);
     if (self->_gprsSup)
     {
-      if ((*(v4 + 49) & 1) == 0)
+      if ((*(equalCopy + 49) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(v4 + 49))
+    else if (*(equalCopy + 49))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(v4 + 26) & 0x400) != 0)
+  else if ((*(equalCopy + 26) & 0x400) != 0)
   {
     goto LABEL_71;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_rac != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_rac != *(equalCopy + 10))
     {
       goto LABEL_71;
     }
@@ -969,34 +969,34 @@ LABEL_13:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 26) & 0x800) == 0)
+    if ((*(equalCopy + 26) & 0x800) == 0)
     {
       goto LABEL_71;
     }
 
-    v8 = *(v4 + 50);
+    v8 = *(equalCopy + 50);
     if (self->_spPgCy)
     {
-      if ((*(v4 + 50) & 1) == 0)
+      if ((*(equalCopy + 50) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(v4 + 50))
+    else if (*(equalCopy + 50))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(v4 + 26) & 0x800) != 0)
+  else if ((*(equalCopy + 26) & 0x800) != 0)
   {
     goto LABEL_71;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_nco != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_nco != *(equalCopy + 7))
     {
       goto LABEL_71;
     }
@@ -1009,7 +1009,7 @@ LABEL_13:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_nom != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_nom != *(equalCopy + 8))
     {
       goto LABEL_71;
     }
@@ -1022,7 +1022,7 @@ LABEL_13:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_crHyst != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_crHyst != *(equalCopy + 6))
     {
       goto LABEL_71;
     }
@@ -1035,7 +1035,7 @@ LABEL_13:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_accThr != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_accThr != *(equalCopy + 4))
     {
       goto LABEL_71;
     }
@@ -1048,7 +1048,7 @@ LABEL_13:
 
   if ((*&self->_has & 0x200) == 0)
   {
-    if ((*(v4 + 26) & 0x200) == 0)
+    if ((*(equalCopy + 26) & 0x200) == 0)
     {
       goto LABEL_50;
     }
@@ -1058,21 +1058,21 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if ((*(v4 + 26) & 0x200) == 0)
+  if ((*(equalCopy + 26) & 0x200) == 0)
   {
     goto LABEL_71;
   }
 
-  v9 = *(v4 + 48);
+  v9 = *(equalCopy + 48);
   if (self->_extUplTbfSupported)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_71;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_71;
   }
@@ -1080,7 +1080,7 @@ LABEL_71:
 LABEL_50:
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_priorityClass != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_priorityClass != *(equalCopy + 9))
     {
       goto LABEL_71;
     }
@@ -1093,7 +1093,7 @@ LABEL_50:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_cellBarAccess2 != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_cellBarAccess2 != *(equalCopy + 5))
     {
       goto LABEL_71;
     }
@@ -1106,7 +1106,7 @@ LABEL_50:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 26) & 0x100) == 0 || self->_subsId != *(v4 + 11))
+    if ((*(equalCopy + 26) & 0x100) == 0 || self->_subsId != *(equalCopy + 11))
     {
       goto LABEL_71;
     }
@@ -1291,15 +1291,15 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 26);
+  fromCopy = from;
+  v5 = *(fromCopy + 26);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 26);
+    v5 = *(fromCopy + 26);
     if ((v5 & 0x400) == 0)
     {
 LABEL_3:
@@ -1312,14 +1312,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 26) & 0x400) == 0)
+  else if ((*(fromCopy + 26) & 0x400) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_gprsSup = *(v4 + 49);
+  self->_gprsSup = *(fromCopy + 49);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -1332,9 +1332,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_rac = *(v4 + 10);
+  self->_rac = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x800) == 0)
   {
 LABEL_5:
@@ -1347,9 +1347,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_spPgCy = *(v4 + 50);
+  self->_spPgCy = *(fromCopy + 50);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -1362,9 +1362,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_nco = *(v4 + 7);
+  self->_nco = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -1377,9 +1377,9 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_nom = *(v4 + 8);
+  self->_nom = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1392,9 +1392,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_crHyst = *(v4 + 6);
+  self->_crHyst = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1407,9 +1407,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_accThr = *(v4 + 4);
+  self->_accThr = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x200) == 0)
   {
 LABEL_10:
@@ -1422,9 +1422,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_extUplTbfSupported = *(v4 + 48);
+  self->_extUplTbfSupported = *(fromCopy + 48);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -1437,9 +1437,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_priorityClass = *(v4 + 9);
+  self->_priorityClass = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 4) == 0)
   {
 LABEL_12:
@@ -1452,12 +1452,12 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_cellBarAccess2 = *(v4 + 5);
+  self->_cellBarAccess2 = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 26) & 0x100) != 0)
+  if ((*(fromCopy + 26) & 0x100) != 0)
   {
 LABEL_13:
-    self->_subsId = *(v4 + 11);
+    self->_subsId = *(fromCopy + 11);
     *&self->_has |= 0x100u;
   }
 

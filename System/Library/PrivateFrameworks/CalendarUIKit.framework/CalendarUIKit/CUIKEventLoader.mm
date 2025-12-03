@@ -1,30 +1,30 @@
 @interface CUIKEventLoader
-- (BOOL)isLoadedOrLoading:(id)a3 endDate:(id)a4;
-- (BOOL)setSelectedCalendars:(id)a3;
+- (BOOL)isLoadedOrLoading:(id)loading endDate:(id)date;
+- (BOOL)setSelectedCalendars:(id)calendars;
 - (CUIKEventLoader)init;
 - (CUIKEventLoaderDelegate)delegate;
-- (id)_groupForGeneration:(unint64_t)a3;
-- (id)occurrencesForStartDate:(id)a3 endDate:(id)a4 preSorted:(BOOL)a5 waitForLoad:(BOOL)a6 isComplete:(BOOL *)a7;
-- (unint64_t)_loadIfNeededBetweenStart:(double)a3 end:(double)a4 loadPaddingNow:(BOOL)a5;
-- (unint64_t)_setMonitoredRange:(double)a3 end:(double)a4 loadingPadding:(BOOL)a5;
-- (void)_getStart:(double)a3 end:(double)a4 expandedToComponents:(unint64_t)a5 withResultStart:(double *)a6 resultEnd:(double *)a7;
-- (void)_getStart:(double)a3 end:(double)a4 paddedByDays:(int)a5 inTimeZone:(id)a6 resultStart:(double *)a7 resultEnd:(double *)a8;
-- (void)_loadIfNeededWithImmediatePadding:(BOOL)a3;
+- (id)_groupForGeneration:(unint64_t)generation;
+- (id)occurrencesForStartDate:(id)date endDate:(id)endDate preSorted:(BOOL)sorted waitForLoad:(BOOL)load isComplete:(BOOL *)complete;
+- (unint64_t)_loadIfNeededBetweenStart:(double)start end:(double)end loadPaddingNow:(BOOL)now;
+- (unint64_t)_setMonitoredRange:(double)range end:(double)end loadingPadding:(BOOL)padding;
+- (void)_getStart:(double)start end:(double)end expandedToComponents:(unint64_t)components withResultStart:(double *)resultStart resultEnd:(double *)resultEnd;
+- (void)_getStart:(double)start end:(double)end paddedByDays:(int)days inTimeZone:(id)zone resultStart:(double *)resultStart resultEnd:(double *)resultEnd;
+- (void)_loadIfNeededWithImmediatePadding:(BOOL)padding;
 - (void)_reload;
-- (void)_updateLoadedGeneration:(unint64_t)a3 start:(double)a4 end:(double)a5;
-- (void)addOccurrenceAwaitingDeletion:(id)a3;
-- (void)addOccurrenceAwaitingRefresh:(id)a3;
+- (void)_updateLoadedGeneration:(unint64_t)generation start:(double)start end:(double)end;
+- (void)addOccurrenceAwaitingDeletion:(id)deletion;
+- (void)addOccurrenceAwaitingRefresh:(id)refresh;
 - (void)loadIfNeeded;
-- (void)receivedNewAndUpdatedEvents:(id)a3 removedEvents:(id)a4 error:(id)a5 wasFirstResult:(BOOL)a6 forGeneration:(unint64_t)a7 start:(double)a8 end:(double)a9 disabled:(BOOL)a10;
+- (void)receivedNewAndUpdatedEvents:(id)events removedEvents:(id)removedEvents error:(id)error wasFirstResult:(BOOL)result forGeneration:(unint64_t)generation start:(double)start end:(double)end disabled:(BOOL)self0;
 - (void)reload;
-- (void)removeOccurrenceAwaitingRefresh:(id)a3;
-- (void)setAllowEventLocationPrediction:(BOOL)a3;
-- (void)setCacheLimit:(unsigned int)a3;
-- (void)setComponentForExpandingPadding:(unint64_t)a3;
-- (void)setPadding:(unsigned int)a3;
-- (void)setPreferredReloadStartDate:(id)a3 endDate:(id)a4;
-- (void)setTimeZone:(id)a3;
-- (void)waitForBackgroundLoad:(unint64_t)a3;
+- (void)removeOccurrenceAwaitingRefresh:(id)refresh;
+- (void)setAllowEventLocationPrediction:(BOOL)prediction;
+- (void)setCacheLimit:(unsigned int)limit;
+- (void)setComponentForExpandingPadding:(unint64_t)padding;
+- (void)setPadding:(unsigned int)padding;
+- (void)setPreferredReloadStartDate:(id)date endDate:(id)endDate;
+- (void)setTimeZone:(id)zone;
+- (void)waitForBackgroundLoad:(unint64_t)load;
 @end
 
 @implementation CUIKEventLoader
@@ -105,13 +105,13 @@
   return WeakRetained;
 }
 
-- (void)setAllowEventLocationPrediction:(BOOL)a3
+- (void)setAllowEventLocationPrediction:(BOOL)prediction
 {
-  if (self->_allowEventLocationPrediction != a3)
+  if (self->_allowEventLocationPrediction != prediction)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_allowEventLocationPrediction = a3;
+    self->_allowEventLocationPrediction = prediction;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __51__CUIKEventLoader_setAllowEventLocationPrediction___block_invoke;
@@ -155,18 +155,18 @@ void __51__CUIKEventLoader_setAllowEventLocationPrediction___block_invoke(uint64
   }
 }
 
-- (void)addOccurrenceAwaitingRefresh:(id)a3
+- (void)addOccurrenceAwaitingRefresh:(id)refresh
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  refreshCopy = refresh;
+  v5 = refreshCopy;
+  if (refreshCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __48__CUIKEventLoader_addOccurrenceAwaitingRefresh___block_invoke;
     v6[3] = &unk_1E8399B60;
-    v7 = v4;
-    v8 = self;
+    v7 = refreshCopy;
+    selfCopy = self;
     withLock(&self->_occurrencesLock, v6);
   }
 }
@@ -186,18 +186,18 @@ uint64_t __48__CUIKEventLoader_addOccurrenceAwaitingRefresh___block_invoke(uint6
   return [v5 addObject:v3];
 }
 
-- (void)removeOccurrenceAwaitingRefresh:(id)a3
+- (void)removeOccurrenceAwaitingRefresh:(id)refresh
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  refreshCopy = refresh;
+  v5 = refreshCopy;
+  if (refreshCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __51__CUIKEventLoader_removeOccurrenceAwaitingRefresh___block_invoke;
     v7[3] = &unk_1E8399B60;
     v7[4] = self;
-    v8 = v4;
+    v8 = refreshCopy;
     withLock(&self->_occurrencesLock, v7);
   }
 
@@ -229,29 +229,29 @@ uint64_t __51__CUIKEventLoader_removeOccurrenceAwaitingRefresh___block_invoke_2(
   return [v2 removeAllObjects];
 }
 
-- (void)addOccurrenceAwaitingDeletion:(id)a3
+- (void)addOccurrenceAwaitingDeletion:(id)deletion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deletionCopy = deletion;
+  v5 = deletionCopy;
+  if (deletionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __49__CUIKEventLoader_addOccurrenceAwaitingDeletion___block_invoke;
     v6[3] = &unk_1E8399B60;
     v6[4] = self;
-    v7 = v4;
+    v7 = deletionCopy;
     withLock(&self->_occurrencesLock, v6);
   }
 }
 
-- (void)setPadding:(unsigned int)a3
+- (void)setPadding:(unsigned int)padding
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __30__CUIKEventLoader_setPadding___block_invoke;
   v3[3] = &unk_1E839B128;
-  v4 = a3;
+  paddingCopy = padding;
   v3[4] = self;
   withLock(&self->_occurrencesLock, v3);
 }
@@ -269,13 +269,13 @@ uint64_t __30__CUIKEventLoader_setPadding___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setCacheLimit:(unsigned int)a3
+- (void)setCacheLimit:(unsigned int)limit
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__CUIKEventLoader_setCacheLimit___block_invoke;
   v3[3] = &unk_1E839B128;
-  v4 = a3;
+  limitCopy = limit;
   v3[4] = self;
   withLock(&self->_occurrencesLock, v3);
 }
@@ -310,14 +310,14 @@ void __33__CUIKEventLoader_setCacheLimit___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setComponentForExpandingPadding:(unint64_t)a3
+- (void)setComponentForExpandingPadding:(unint64_t)padding
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__CUIKEventLoader_setComponentForExpandingPadding___block_invoke;
   v3[3] = &unk_1E8399BB0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = padding;
   withLock(&self->_occurrencesLock, v3);
 }
 
@@ -333,19 +333,19 @@ uint64_t __51__CUIKEventLoader_setComponentForExpandingPadding___block_invoke(ui
   return result;
 }
 
-- (void)setPreferredReloadStartDate:(id)a3 endDate:(id)a4
+- (void)setPreferredReloadStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__CUIKEventLoader_setPreferredReloadStartDate_endDate___block_invoke;
   v10[3] = &unk_1E839A260;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dateCopy;
+  v12 = endDateCopy;
+  v8 = endDateCopy;
+  v9 = dateCopy;
   withLock(&self->_occurrencesLock, v10);
 }
 
@@ -384,10 +384,10 @@ void __55__CUIKEventLoader_setPreferredReloadStartDate_endDate___block_invoke(ui
   }
 }
 
-- (BOOL)isLoadedOrLoading:(id)a3 endDate:(id)a4
+- (BOOL)isLoadedOrLoading:(id)loading endDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  loadingCopy = loading;
+  dateCopy = date;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -404,11 +404,11 @@ void __55__CUIKEventLoader_setPreferredReloadStartDate_endDate___block_invoke(ui
   v12[5] = &v17;
   v12[6] = &v13;
   withLock(&self->_occurrencesLock, v12);
-  [v6 timeIntervalSinceReferenceDate];
+  [loadingCopy timeIntervalSinceReferenceDate];
   v10 = 0;
   if (v8 >= v18[3])
   {
-    [v7 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     if (v9 <= v14[3])
     {
       v10 = 1;
@@ -429,9 +429,9 @@ double __45__CUIKEventLoader_isLoadedOrLoading_endDate___block_invoke(void *a1)
   return result;
 }
 
-- (BOOL)setSelectedCalendars:(id)a3
+- (BOOL)setSelectedCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -440,9 +440,9 @@ double __45__CUIKEventLoader_isLoadedOrLoading_endDate___block_invoke(void *a1)
   v7[1] = 3221225472;
   v7[2] = __40__CUIKEventLoader_setSelectedCalendars___block_invoke;
   v7[3] = &unk_1E839AF18;
-  v5 = v4;
+  v5 = calendarsCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   withLock(&self->_occurrencesLock, v7);
   LOBYTE(self) = *(v12 + 24);
@@ -471,9 +471,9 @@ uint64_t __40__CUIKEventLoader_setSelectedCalendars___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -483,7 +483,7 @@ uint64_t __40__CUIKEventLoader_setSelectedCalendars___block_invoke(uint64_t a1)
   v6[2] = __31__CUIKEventLoader_setTimeZone___block_invoke;
   v6[3] = &unk_1E839AF18;
   v6[4] = self;
-  v5 = v4;
+  v5 = zoneCopy;
   v7 = v5;
   v8 = &v9;
   withLock(&self->_occurrencesLock, v6);
@@ -504,10 +504,10 @@ void __31__CUIKEventLoader_setTimeZone___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_groupForGeneration:(unint64_t)a3
+- (id)_groupForGeneration:(unint64_t)generation
 {
   os_unfair_lock_assert_owner(&self->_occurrencesLock);
-  if (self->_loadedGeneration >= a3)
+  if (self->_loadedGeneration >= generation)
   {
     v8 = 0;
   }
@@ -521,7 +521,7 @@ void __31__CUIKEventLoader_setTimeZone___block_invoke(uint64_t a1)
       self->_waitersByGeneration = v5;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:generation];
     v8 = [(NSMutableDictionary *)self->_waitersByGeneration objectForKeyedSubscript:v7];
     if (!v8)
     {
@@ -534,7 +534,7 @@ void __31__CUIKEventLoader_setTimeZone___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)waitForBackgroundLoad:(unint64_t)a3
+- (void)waitForBackgroundLoad:(unint64_t)load
 {
   v5 = dispatch_time(0, 700000000);
   v8 = 0;
@@ -549,7 +549,7 @@ void __31__CUIKEventLoader_setTimeZone___block_invoke(uint64_t a1)
   v7[3] = &unk_1E839B178;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = load;
   withLock(&self->_occurrencesLock, v7);
   v6 = v9[5];
   if (v6)
@@ -570,15 +570,15 @@ uint64_t __41__CUIKEventLoader_waitForBackgroundLoad___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)occurrencesForStartDate:(id)a3 endDate:(id)a4 preSorted:(BOOL)a5 waitForLoad:(BOOL)a6 isComplete:(BOOL *)a7
+- (id)occurrencesForStartDate:(id)date endDate:(id)endDate preSorted:(BOOL)sorted waitForLoad:(BOOL)load isComplete:(BOOL *)complete
 {
-  v8 = a6;
-  v9 = a5;
+  loadCopy = load;
+  sortedCopy = sorted;
   v54 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (!v12)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v14 = endDateCopy;
+  if (!dateCopy)
   {
     v30 = +[CUIKLogSubsystem eventLoader];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -589,7 +589,7 @@ uint64_t __41__CUIKEventLoader_waitForBackgroundLoad___block_invoke(uint64_t a1)
     goto LABEL_26;
   }
 
-  if (!v13)
+  if (!endDateCopy)
   {
     v30 = +[CUIKLogSubsystem eventLoader];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -604,7 +604,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  [v12 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v16 = v15;
   [v14 timeIntervalSinceReferenceDate];
   v18 = v17;
@@ -632,7 +632,7 @@ LABEL_26:
   v48[4] = self;
   v48[5] = &v49;
   withLock(&self->_occurrencesLock, v48);
-  if (v8)
+  if (loadCopy)
   {
     [(CUIKEventLoader *)self waitForBackgroundLoad:v50[3]];
   }
@@ -655,10 +655,10 @@ LABEL_26:
   *&v37[8] = v18;
   v37[4] = self;
   v37[5] = &v42;
-  v37[9] = a7;
+  v37[9] = complete;
   v37[6] = &v38;
   withLock(&self->_occurrencesLock, v37);
-  if (v9)
+  if (sortedCopy)
   {
     [v43[5] sortUsingFunction:CUIKCompareEKEvents context:0];
   }
@@ -863,9 +863,9 @@ LABEL_6:
   withLock(&self->_occurrencesLock, v2);
 }
 
-- (void)_loadIfNeededWithImmediatePadding:(BOOL)a3
+- (void)_loadIfNeededWithImmediatePadding:(BOOL)padding
 {
-  v3 = a3;
+  paddingCopy = padding;
   preferredReloadStart = self->_preferredReloadStart;
   if (preferredReloadStart == INFINITY)
   {
@@ -886,45 +886,45 @@ LABEL_6:
       [(CUIKEventLoader *)preferredReloadStart _loadIfNeededWithImmediatePadding:?];
     }
 
-    [(CUIKEventLoader *)self _loadIfNeededBetweenStart:v3 end:preferredReloadStart loadPaddingNow:preferredReloadEnd];
+    [(CUIKEventLoader *)self _loadIfNeededBetweenStart:paddingCopy end:preferredReloadStart loadPaddingNow:preferredReloadEnd];
   }
 }
 
-- (unint64_t)_loadIfNeededBetweenStart:(double)a3 end:(double)a4 loadPaddingNow:(BOOL)a5
+- (unint64_t)_loadIfNeededBetweenStart:(double)start end:(double)end loadPaddingNow:(BOOL)now
 {
-  v5 = a5;
+  nowCopy = now;
   os_unfair_lock_assert_owner(&self->_occurrencesLock);
   v27 = 0.0;
   v26 = 0.0;
-  [(CUIKEventLoader *)self _getStart:self->_daysOfPadding end:self->_timeZone paddedByDays:&v27 inTimeZone:&v26 resultStart:a3 resultEnd:a4];
+  [(CUIKEventLoader *)self _getStart:self->_daysOfPadding end:self->_timeZone paddedByDays:&v27 inTimeZone:&v26 resultStart:start resultEnd:end];
   [(CUIKEventLoader *)self _getStart:self->_componentForExpandingPadding end:&v27 expandedToComponents:&v26 withResultStart:v27 resultEnd:v26];
   v9 = v27;
   v10 = v26;
-  if (v5)
+  if (nowCopy)
   {
-    v11 = v26;
+    endCopy = v26;
   }
 
   else
   {
-    v11 = a4;
+    endCopy = end;
   }
 
-  if (v5)
+  if (nowCopy)
   {
-    v12 = v27;
+    startCopy = v27;
   }
 
   else
   {
-    v12 = a3;
+    startCopy = start;
   }
 
   loadingStart = self->_loadingStart;
   if (loadingStart == INFINITY)
   {
-    v14 = [(CUIKEventLoader *)self _setMonitoredRange:v5 end:v12 loadingPadding:v11];
-    if (v12 != v9 || v11 != v10)
+    v14 = [(CUIKEventLoader *)self _setMonitoredRange:nowCopy end:startCopy loadingPadding:endCopy];
+    if (startCopy != v9 || endCopy != v10)
     {
 LABEL_40:
       v21 = dispatch_time(0, (self->_paddingLoadDelay * 1000000000.0));
@@ -933,17 +933,17 @@ LABEL_40:
       block[2] = __64__CUIKEventLoader__loadIfNeededBetweenStart_end_loadPaddingNow___block_invoke;
       block[3] = &unk_1E839B218;
       block[4] = self;
-      *&block[5] = a3;
-      *&block[6] = a4;
+      *&block[5] = start;
+      *&block[6] = end;
       dispatch_after(v21, MEMORY[0x1E69E96A0], block);
     }
   }
 
   else
   {
-    if (loadingStart >= v12)
+    if (loadingStart >= startCopy)
     {
-      v16 = v12;
+      v16 = startCopy;
     }
 
     else
@@ -951,14 +951,14 @@ LABEL_40:
       v16 = self->_loadingStart;
     }
 
-    if (self->_loadingEnd >= v11)
+    if (self->_loadingEnd >= endCopy)
     {
       loadingEnd = self->_loadingEnd;
     }
 
     else
     {
-      loadingEnd = v11;
+      loadingEnd = endCopy;
     }
 
     v24 = 0.0;
@@ -968,28 +968,28 @@ LABEL_40:
     {
       if (v16 >= v25)
       {
-        v12 = v16;
+        startCopy = v16;
       }
 
       else
       {
-        v12 = v25;
+        startCopy = v25;
       }
 
       if (loadingEnd >= v24)
       {
-        v11 = v24;
+        endCopy = v24;
       }
 
       else
       {
-        v11 = loadingEnd;
+        endCopy = loadingEnd;
       }
     }
 
-    if (v5)
+    if (nowCopy)
     {
-      return [(CUIKEventLoader *)self _setMonitoredRange:1 end:v12 loadingPadding:v11];
+      return [(CUIKEventLoader *)self _setMonitoredRange:1 end:startCopy loadingPadding:endCopy];
     }
 
     else
@@ -1014,8 +1014,8 @@ LABEL_40:
         v19 = v26;
       }
 
-      v14 = [(CUIKEventLoader *)self _setMonitoredRange:0 end:v12 loadingPadding:v11];
-      if (v18 < v12 || v19 > v11)
+      v14 = [(CUIKEventLoader *)self _setMonitoredRange:0 end:startCopy loadingPadding:endCopy];
+      if (v18 < startCopy || v19 > endCopy)
       {
         goto LABEL_40;
       }
@@ -1075,17 +1075,17 @@ void __64__CUIKEventLoader__loadIfNeededBetweenStart_end_loadPaddingNow___block_
   }
 }
 
-- (unint64_t)_setMonitoredRange:(double)a3 end:(double)a4 loadingPadding:(BOOL)a5
+- (unint64_t)_setMonitoredRange:(double)range end:(double)end loadingPadding:(BOOL)padding
 {
-  v5 = a5;
+  paddingCopy = padding;
   v52 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_occurrencesLock);
-  if (a3 >= a4)
+  if (range >= end)
   {
-    v9 = +[CUIKLogSubsystem eventLoader];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    delegate = +[CUIKLogSubsystem eventLoader];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      [CUIKEventLoader _setMonitoredRange:v9 end:a3 loadingPadding:a4];
+      [CUIKEventLoader _setMonitoredRange:delegate end:range loadingPadding:end];
     }
 
     goto LABEL_24;
@@ -1096,8 +1096,8 @@ void __64__CUIKEventLoader__loadIfNeededBetweenStart_end_loadPaddingNow___block_
     [CUIKEventLoader _setMonitoredRange:end:loadingPadding:];
   }
 
-  v9 = [(CUIKEventLoader *)self delegate];
-  if (!v9)
+  delegate = [(CUIKEventLoader *)self delegate];
+  if (!delegate)
   {
     v18 = +[CUIKLogSubsystem eventLoader];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1112,7 +1112,7 @@ LABEL_24:
 
   loadingStart = self->_loadingStart;
   loadingEnd = self->_loadingEnd;
-  v12 = loadingStart == a3 && loadingEnd == a4;
+  v12 = loadingStart == range && loadingEnd == end;
   if (v12 && self->_loadingCalendarGeneration == self->_calendarGeneration && self->_predicateMonitor)
   {
     loadingGeneration = self->_loadingGeneration;
@@ -1120,7 +1120,7 @@ LABEL_24:
 
   else
   {
-    v14 = loadingEnd <= a3 || loadingStart >= a4;
+    v14 = loadingEnd <= range || loadingStart >= end;
     v15 = [(NSSet *)self->_selectedCalendars count];
     v16 = v15;
     if (v14 || !v15)
@@ -1136,8 +1136,8 @@ LABEL_24:
           {
             v22 = (self->_loadingStart + *MEMORY[0x1E695E468]);
             v23 = (*MEMORY[0x1E695E468] + self->_loadingEnd);
-            v24 = *MEMORY[0x1E695E468] + a3;
-            v25 = (*MEMORY[0x1E695E468] + a4);
+            v24 = *MEMORY[0x1E695E468] + range;
+            v25 = (*MEMORY[0x1E695E468] + end);
             *buf = 134218752;
             *&buf[4] = v22;
             *&buf[12] = 2048;
@@ -1168,23 +1168,23 @@ LABEL_24:
       LODWORD(predicateMonitor) = 0;
     }
 
-    self->_loadingStart = a3;
-    self->_loadingEnd = a4;
+    self->_loadingStart = range;
+    self->_loadingEnd = end;
     self->_loadingCalendarGeneration = self->_calendarGeneration;
     v27 = self->_loadingGeneration;
     loadingGeneration = (v27 + 1);
     self->_loadingGeneration = v27 + 1;
     if (v16)
     {
-      v28 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+      v28 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:range];
       v29 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_loadingEnd];
-      v30 = [(NSSet *)self->_selectedCalendars allObjects];
-      v31 = [v9 predicateForStart:v28 end:v29 calendars:v30];
+      allObjects = [(NSSet *)self->_selectedCalendars allObjects];
+      v31 = [delegate predicateForStart:v28 end:v29 calendars:allObjects];
 
       objc_initWeak(&location, self);
       if (self->_predicateMonitor)
       {
-        if (v5)
+        if (paddingCopy)
         {
           ++self->_pendingPaddingPredicateUpdates;
         }
@@ -1192,8 +1192,8 @@ LABEL_24:
         v32 = +[CUIKLogSubsystem eventLoader];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v38 = *MEMORY[0x1E695E468] + a3;
-          v39 = (*MEMORY[0x1E695E468] + a4);
+          v38 = *MEMORY[0x1E695E468] + range;
+          v39 = (*MEMORY[0x1E695E468] + end);
           *buf = 134218496;
           *&buf[4] = loadingGeneration;
           *&buf[12] = 2048;
@@ -1210,8 +1210,8 @@ LABEL_24:
         v42[3] = &unk_1E839B2B8;
         objc_copyWeak(v43, &location);
         v43[1] = loadingGeneration;
-        v43[2] = *&a3;
-        v43[3] = *&a4;
+        v43[2] = *&range;
+        v43[3] = *&end;
         [(EKPredicateMonitor *)v33 updatePredicate:v31 completion:v42];
         objc_destroyWeak(v43);
       }
@@ -1221,8 +1221,8 @@ LABEL_24:
         v34 = +[CUIKLogSubsystem eventLoader];
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v40 = *MEMORY[0x1E695E468] + a3;
-          v41 = (*MEMORY[0x1E695E468] + a4);
+          v40 = *MEMORY[0x1E695E468] + range;
+          v41 = (*MEMORY[0x1E695E468] + end);
           *buf = 134218496;
           *&buf[4] = loadingGeneration;
           *&buf[12] = 2048;
@@ -1244,9 +1244,9 @@ LABEL_24:
         v44[4] = buf;
         objc_copyWeak(v45, &location);
         v45[1] = loadingGeneration;
-        v45[2] = *&a3;
-        v45[3] = *&a4;
-        v35 = [v9 monitorPredicate:v31 options:1 resultsBlock:v44];
+        v45[2] = *&range;
+        v45[3] = *&end;
+        v35 = [delegate monitorPredicate:v31 options:1 resultsBlock:v44];
         v37 = self->_predicateMonitor;
         p_predicateMonitor = &self->_predicateMonitor;
         *p_predicateMonitor = v35;
@@ -1268,14 +1268,14 @@ LABEL_24:
       block[3] = &unk_1E839B240;
       block[4] = self;
       block[5] = v27 + 1;
-      *&block[6] = a3;
-      *&block[7] = a4;
+      *&block[6] = range;
+      *&block[7] = end;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
     else
     {
-      [(CUIKEventLoader *)self _updateLoadedGeneration:v27 + 1 start:a3 end:a4];
+      [(CUIKEventLoader *)self _updateLoadedGeneration:v27 + 1 start:range end:end];
       ++self->_resultsReceived;
     }
   }
@@ -1357,13 +1357,13 @@ uint64_t __57__CUIKEventLoader__setMonitoredRange_end_loadingPadding___block_inv
   return result;
 }
 
-- (void)receivedNewAndUpdatedEvents:(id)a3 removedEvents:(id)a4 error:(id)a5 wasFirstResult:(BOOL)a6 forGeneration:(unint64_t)a7 start:(double)a8 end:(double)a9 disabled:(BOOL)a10
+- (void)receivedNewAndUpdatedEvents:(id)events removedEvents:(id)removedEvents error:(id)error wasFirstResult:(BOOL)result forGeneration:(unint64_t)generation start:(double)start end:(double)end disabled:(BOOL)self0
 {
-  v14 = a6;
+  resultCopy = result;
   v92 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v50 = a5;
+  eventsCopy = events;
+  removedEventsCopy = removedEvents;
+  errorCopy = error;
   v80 = 0;
   v81 = &v80;
   v82 = 0x2020000000;
@@ -1388,17 +1388,17 @@ uint64_t __57__CUIKEventLoader__setMonitoredRange_end_loadingPadding___block_inv
   v51[1] = 3221225472;
   v51[2] = __115__CUIKEventLoader_receivedNewAndUpdatedEvents_removedEvents_error_wasFirstResult_forGeneration_start_end_disabled___block_invoke;
   v51[3] = &unk_1E839B2E0;
-  v59 = a7;
+  generationCopy = generation;
   v51[4] = self;
-  v62 = a10;
-  v63 = v14;
-  v60 = a8;
-  v61 = a9;
-  v20 = v19;
+  disabledCopy = disabled;
+  v63 = resultCopy;
+  startCopy = start;
+  endCopy = end;
+  v20 = removedEventsCopy;
   v52 = v20;
   v54 = &v72;
   v55 = &v68;
-  v21 = v18;
+  v21 = eventsCopy;
   v53 = v21;
   v56 = &v80;
   v57 = &v76;
@@ -1408,26 +1408,26 @@ uint64_t __57__CUIKEventLoader__setMonitoredRange_end_loadingPadding___block_inv
   {
     v22 = [v21 count];
     v23 = v81[3];
-    if (v14)
+    if (resultCopy)
     {
       if (v23 != INFINITY)
       {
-        if (v23 < a8)
+        if (v23 < start)
         {
-          a8 = v81[3];
+          start = v81[3];
         }
 
-        if (v77[3] >= a9)
+        if (v77[3] >= end)
         {
-          a9 = v77[3];
+          end = v77[3];
         }
       }
 
       v24 = +[CUIKLogSubsystem eventLoader];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = a8 + *MEMORY[0x1E695E468];
-        v26 = (a9 + *MEMORY[0x1E695E468]);
+        v25 = start + *MEMORY[0x1E695E468];
+        v26 = (end + *MEMORY[0x1E695E468]);
         v27 = *(v65 + 6);
         *buf = 134218752;
         v85 = v25;
@@ -1443,7 +1443,7 @@ uint64_t __57__CUIKEventLoader__setMonitoredRange_end_loadingPadding___block_inv
       v28 = v22 == 0;
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained calendarEventLoader:self occurrencesDidUpdateBetweenStart:*(v65 + 6) end:v28 generation:a8 wasEmptyLoad:a9];
+      [WeakRetained calendarEventLoader:self occurrencesDidUpdateBetweenStart:*(v65 + 6) end:v28 generation:start wasEmptyLoad:end];
 LABEL_22:
 
       goto LABEL_23;
@@ -1483,8 +1483,8 @@ LABEL_22:
             v45 = +[CUIKLogSubsystem eventLoader];
             if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
             {
-              v46 = *MEMORY[0x1E695E468] + a8;
-              v47 = (*MEMORY[0x1E695E468] + a9);
+              v46 = *MEMORY[0x1E695E468] + start;
+              v47 = (*MEMORY[0x1E695E468] + end);
               v48 = *(v65 + 6);
               *buf = 134218496;
               v85 = v46;
@@ -1841,13 +1841,13 @@ void __115__CUIKEventLoader_receivedNewAndUpdatedEvents_removedEvents_error_wasF
   }
 }
 
-- (void)_updateLoadedGeneration:(unint64_t)a3 start:(double)a4 end:(double)a5
+- (void)_updateLoadedGeneration:(unint64_t)generation start:(double)start end:(double)end
 {
-  self->_loadedGeneration = a3;
-  self->_loadedStart = a4;
-  self->_loadedEnd = a5;
+  self->_loadedGeneration = generation;
+  self->_loadedStart = start;
+  self->_loadedEnd = end;
   notifiedGeneration = self->_notifiedGeneration;
-  if (notifiedGeneration < a3)
+  if (notifiedGeneration < generation)
   {
     v16 = v8;
     v17 = v7;
@@ -1875,84 +1875,84 @@ void __115__CUIKEventLoader_receivedNewAndUpdatedEvents_removedEvents_error_wasF
   }
 }
 
-- (void)_getStart:(double)a3 end:(double)a4 expandedToComponents:(unint64_t)a5 withResultStart:(double *)a6 resultEnd:(double *)a7
+- (void)_getStart:(double)start end:(double)end expandedToComponents:(unint64_t)components withResultStart:(double *)resultStart resultEnd:(double *)resultEnd
 {
-  v10 = a3;
-  if (a5)
+  startCopy = start;
+  if (components)
   {
-    v11 = a5;
-    v13 = [MEMORY[0x1E69930C8] calendarDateWithAbsoluteTime:self->_timeZone timeZone:a3];
-    v14 = [MEMORY[0x1E69930C8] calendarDateWithAbsoluteTime:self->_timeZone timeZone:a4];
+    componentsCopy = components;
+    v13 = [MEMORY[0x1E69930C8] calendarDateWithAbsoluteTime:self->_timeZone timeZone:start];
+    v14 = [MEMORY[0x1E69930C8] calendarDateWithAbsoluteTime:self->_timeZone timeZone:end];
     v15 = v14;
-    if ((v11 & 0x10) == 0)
+    if ((componentsCopy & 0x10) == 0)
     {
-      if ((v11 & 0x1000) == 0)
+      if ((componentsCopy & 0x1000) == 0)
       {
-        if ((v11 & 8) == 0)
+        if ((componentsCopy & 8) == 0)
         {
-          v16 = v13;
-          v17 = v15;
+          calendarDateForDay = v13;
+          calendarDateForEndOfDay = v15;
 LABEL_9:
-          v18 = v17;
+          v18 = calendarDateForEndOfDay;
 LABEL_10:
-          [v16 absoluteTime];
-          v10 = v19;
+          [calendarDateForDay absoluteTime];
+          startCopy = v19;
           [v18 absoluteTime];
-          a4 = v20;
+          end = v20;
 
           goto LABEL_11;
         }
 
         if ([v14 differenceInDays:v13] < 7)
         {
-          v21 = [v13 calendarDateForMonth];
-          v16 = [v21 calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+          calendarDateForMonth = [v13 calendarDateForMonth];
+          calendarDateForDay = [calendarDateForMonth calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
 
-          v22 = [v15 calendarDateForEndOfMonth];
-          v18 = [v22 calendarDateForEndOfWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+          calendarDateForEndOfMonth = [v15 calendarDateForEndOfMonth];
+          v18 = [calendarDateForEndOfMonth calendarDateForEndOfWeekWithWeekStart:CUIKOneIndexedWeekStart()];
 
           goto LABEL_10;
         }
       }
 
-      v16 = [v13 calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
-      v17 = [v15 calendarDateForEndOfWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+      calendarDateForDay = [v13 calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+      calendarDateForEndOfDay = [v15 calendarDateForEndOfWeekWithWeekStart:CUIKOneIndexedWeekStart()];
       goto LABEL_9;
     }
 
-    v16 = [v13 calendarDateForDay];
-    v17 = [v15 calendarDateForEndOfDay];
+    calendarDateForDay = [v13 calendarDateForDay];
+    calendarDateForEndOfDay = [v15 calendarDateForEndOfDay];
     goto LABEL_9;
   }
 
 LABEL_11:
-  if (a6)
+  if (resultStart)
   {
-    *a6 = v10;
+    *resultStart = startCopy;
   }
 
-  if (a7)
+  if (resultEnd)
   {
-    *a7 = a4;
+    *resultEnd = end;
   }
 }
 
-- (void)_getStart:(double)a3 end:(double)a4 paddedByDays:(int)a5 inTimeZone:(id)a6 resultStart:(double *)a7 resultEnd:(double *)a8
+- (void)_getStart:(double)start end:(double)end paddedByDays:(int)days inTimeZone:(id)zone resultStart:(double *)resultStart resultEnd:(double *)resultEnd
 {
-  v10 = a6;
+  zoneCopy = zone;
   CalAbsoluteTimeAddGregorianUnits();
   v12 = v11;
   CalAbsoluteTimeAddGregorianUnits();
   v14 = v13;
 
-  if (a7)
+  if (resultStart)
   {
-    *a7 = v12;
+    *resultStart = v12;
   }
 
-  if (a8)
+  if (resultEnd)
   {
-    *a8 = v14;
+    *resultEnd = v14;
   }
 }
 

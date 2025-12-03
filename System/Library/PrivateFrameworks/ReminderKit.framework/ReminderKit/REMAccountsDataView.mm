@@ -1,127 +1,127 @@
 @interface REMAccountsDataView
-+ (id)accountsFromAccountStorages:(id)a3 store:(id)a4;
-- (REMAccountsDataView)initWithStore:(id)a3;
-- (id)accountsFromStorages:(id)a3;
-- (id)fetchAccountWithExternalIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchAccountWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchAccountsWithExternalIdentifiers:(id)a3 error:(id *)a4;
-- (id)fetchAccountsWithObjectIDs:(id)a3 error:(id *)a4;
-- (id)fetchActiveCloudKitAccountObjectIDsWithFetchOption:(int64_t)a3 error:(id *)a4;
-- (id)fetchAllAccountsForAccountManagementWithError:(id *)a3;
-- (id)fetchAllAccountsForDumpingWithError:(id *)a3;
-- (id)fetchAllAccountsWithError:(id *)a3;
-- (id)fetchPrimaryActiveCloudKitAccountREMObjectIDWithError:(id *)a3;
-- (id)fetchPrimaryActiveCloudKitAccountWithError:(id *)a3;
++ (id)accountsFromAccountStorages:(id)storages store:(id)store;
+- (REMAccountsDataView)initWithStore:(id)store;
+- (id)accountsFromStorages:(id)storages;
+- (id)fetchAccountWithExternalIdentifier:(id)identifier error:(id *)error;
+- (id)fetchAccountWithObjectID:(id)d error:(id *)error;
+- (id)fetchAccountsWithExternalIdentifiers:(id)identifiers error:(id *)error;
+- (id)fetchAccountsWithObjectIDs:(id)ds error:(id *)error;
+- (id)fetchActiveCloudKitAccountObjectIDsWithFetchOption:(int64_t)option error:(id *)error;
+- (id)fetchAllAccountsForAccountManagementWithError:(id *)error;
+- (id)fetchAllAccountsForDumpingWithError:(id *)error;
+- (id)fetchAllAccountsWithError:(id *)error;
+- (id)fetchPrimaryActiveCloudKitAccountREMObjectIDWithError:(id *)error;
+- (id)fetchPrimaryActiveCloudKitAccountWithError:(id *)error;
 @end
 
 @implementation REMAccountsDataView
 
-- (REMAccountsDataView)initWithStore:(id)a3
+- (REMAccountsDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMAccountsDataView;
   v6 = [(REMAccountsDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchAllAccountsWithError:(id *)a3
+- (id)fetchAllAccountsWithError:(id *)error
 {
   v5 = [[REMAccountsDataViewInvocation_fetchAll alloc] initWithPurpose:0];
-  v6 = [(REMAccountsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMAccountsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 accountStorages];
-  v11 = [(REMAccountsDataView *)self accountsFromStorages:v10];
+  accountStorages = [v9 accountStorages];
+  v11 = [(REMAccountsDataView *)self accountsFromStorages:accountStorages];
 
   return v11;
 }
 
-- (id)fetchAllAccountsForAccountManagementWithError:(id *)a3
+- (id)fetchAllAccountsForAccountManagementWithError:(id *)error
 {
   v5 = [[REMAccountsDataViewInvocation_fetchAll alloc] initWithPurpose:1];
-  v6 = [(REMAccountsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMAccountsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 accountStorages];
-  v11 = [(REMAccountsDataView *)self accountsFromStorages:v10];
+  accountStorages = [v9 accountStorages];
+  v11 = [(REMAccountsDataView *)self accountsFromStorages:accountStorages];
 
   return v11;
 }
 
-- (id)fetchAllAccountsForDumpingWithError:(id *)a3
+- (id)fetchAllAccountsForDumpingWithError:(id *)error
 {
   v5 = [[REMAccountsDataViewInvocation_fetchAll alloc] initWithPurpose:2];
-  v6 = [(REMAccountsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMAccountsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 accountStorages];
-  v11 = [(REMAccountsDataView *)self accountsFromStorages:v10];
+  accountStorages = [v9 accountStorages];
+  v11 = [(REMAccountsDataView *)self accountsFromStorages:accountStorages];
 
   return v11;
 }
 
-- (id)fetchPrimaryActiveCloudKitAccountREMObjectIDWithError:(id *)a3
+- (id)fetchPrimaryActiveCloudKitAccountREMObjectIDWithError:(id *)error
 {
   v5 = [[REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount alloc] initWithFetchREMObjectIDOnly:1];
-  v6 = [(REMAccountsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMAccountsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 accountIDs];
-  v11 = [v10 count];
+  accountIDs = [v9 accountIDs];
+  v11 = [accountIDs count];
 
   if (v11)
   {
-    v12 = [v9 accountIDs];
-    v13 = [v12 count];
+    accountIDs2 = [v9 accountIDs];
+    v13 = [accountIDs2 count];
 
     if (v13 >= 2)
     {
       [REMAccountsDataView fetchPrimaryActiveCloudKitAccountREMObjectIDWithError:v9];
     }
 
-    v14 = [v9 accountIDs];
-    v15 = [v14 firstObject];
+    accountIDs3 = [v9 accountIDs];
+    firstObject = [accountIDs3 firstObject];
   }
 
-  else if (a3)
+  else if (error)
   {
     +[REMError noPrimaryActiveCloudKitAccountError];
-    *a3 = v15 = 0;
+    *error = firstObject = 0;
   }
 
   else
   {
-    v15 = 0;
+    firstObject = 0;
   }
 
-  return v15;
+  return firstObject;
 }
 
-- (id)fetchPrimaryActiveCloudKitAccountWithError:(id *)a3
+- (id)fetchPrimaryActiveCloudKitAccountWithError:(id *)error
 {
   v5 = [[REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount alloc] initWithFetchREMObjectIDOnly:0];
-  v6 = [(REMAccountsDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMAccountsDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
-  v10 = [v9 accountStorages];
-  v11 = [(REMAccountsDataView *)self accountsFromStorages:v10];
+  accountStorages = [v9 accountStorages];
+  v11 = [(REMAccountsDataView *)self accountsFromStorages:accountStorages];
 
   if ([v11 count])
   {
@@ -130,36 +130,36 @@
       [REMAccountsDataView fetchPrimaryActiveCloudKitAccountWithError:v11];
     }
 
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
   }
 
-  else if (a3)
+  else if (error)
   {
     +[REMError noPrimaryActiveCloudKitAccountError];
-    *a3 = v12 = 0;
+    *error = firstObject = 0;
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
-- (id)fetchActiveCloudKitAccountObjectIDsWithFetchOption:(int64_t)a3 error:(id *)a4
+- (id)fetchActiveCloudKitAccountObjectIDsWithFetchOption:(int64_t)option error:(id *)error
 {
-  v6 = [[REMAccountsDataViewInvocation_fetchActiveCloudKitAccountObjectIDs alloc] initWithFetchOption:a3];
-  v7 = [(REMAccountsDataView *)self store];
+  v6 = [[REMAccountsDataViewInvocation_fetchActiveCloudKitAccountObjectIDs alloc] initWithFetchOption:option];
+  store = [(REMAccountsDataView *)self store];
   v17 = 0;
-  v8 = [v7 resultFromPerformingInvocation:v6 error:&v17];
+  v8 = [store resultFromPerformingInvocation:v6 error:&v17];
   v9 = v17;
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v8);
-  v12 = [v11 accountIDs];
+  accountIDs = [v11 accountIDs];
 
-  if (v12)
+  if (accountIDs)
   {
     v13 = v9 == 0;
   }
@@ -171,47 +171,47 @@
 
   if (v13)
   {
-    v15 = [v11 accountIDs];
+    accountIDs2 = [v11 accountIDs];
   }
 
-  else if (a4)
+  else if (error)
   {
     if (v9)
     {
       v14 = v9;
-      v15 = 0;
-      *a4 = v9;
+      accountIDs2 = 0;
+      *error = v9;
     }
 
     else
     {
       [REMError internalErrorWithDebugDescription:@"Unknown error in fetchActiveCloudKitAccountObjectIDsWithOption yielding nil fetchResult.accountIDs"];
-      *a4 = v15 = 0;
+      *error = accountIDs2 = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    accountIDs2 = 0;
   }
 
-  return v15;
+  return accountIDs2;
 }
 
-- (id)fetchAccountWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchAccountWithObjectID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v15[0] = v6;
+  dCopy = d;
+  v15[0] = dCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v8 = [(REMAccountsDataView *)self fetchAccountsWithObjectIDs:v7 error:a4];
+  v8 = [(REMAccountsDataView *)self fetchAccountsWithObjectIDs:v7 error:error];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
   if (v9)
   {
     goto LABEL_8;
@@ -221,14 +221,14 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&dword_19A0DB000, v10, OS_LOG_TYPE_DEFAULT, "REMAccountsDataView: Requested to fetch non-existent account {objectID: %{public}@}", &v13, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithObjectID:v6];
-    *a4 = v9 = 0;
+    [REMError noSuchObjectErrorWithObjectID:dCopy];
+    *error = v9 = 0;
   }
 
   else
@@ -244,20 +244,20 @@ LABEL_8:
   return v9;
 }
 
-- (id)fetchAccountsWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchAccountsWithObjectIDs:(id)ds error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [[REMAccountsDataViewInvocation_fetchByObjectID alloc] initWithObjectIDs:v6];
-    v8 = [(REMAccountsDataView *)self store];
-    v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+    v7 = [[REMAccountsDataViewInvocation_fetchByObjectID alloc] initWithObjectIDs:dsCopy];
+    store = [(REMAccountsDataView *)self store];
+    v9 = [store resultFromPerformingInvocation:v7 error:error];
 
     v10 = objc_opt_class();
     v11 = REMDynamicCast(v10, v9);
-    v12 = [v11 accountStorages];
-    v13 = [(REMAccountsDataView *)self accountsFromStorages:v12];
+    accountStorages = [v11 accountStorages];
+    v13 = [(REMAccountsDataView *)self accountsFromStorages:accountStorages];
 
     if (v13)
     {
@@ -284,8 +284,8 @@ LABEL_8:
             }
 
             v20 = *(*(&v26 + 1) + 8 * i);
-            v21 = [v20 objectID];
-            [v14 setObject:v20 forKeyedSubscript:v21];
+            objectID = [v20 objectID];
+            [v14 setObject:v20 forKeyedSubscript:objectID];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -314,20 +314,20 @@ LABEL_8:
   return v14;
 }
 
-- (id)fetchAccountWithExternalIdentifier:(id)a3 error:(id *)a4
+- (id)fetchAccountWithExternalIdentifier:(id)identifier error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v15[0] = v6;
+  identifierCopy = identifier;
+  v15[0] = identifierCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v8 = [(REMAccountsDataView *)self fetchAccountsWithExternalIdentifiers:v7 error:a4];
+  v8 = [(REMAccountsDataView *)self fetchAccountsWithExternalIdentifiers:v7 error:error];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
   if (v9)
   {
     goto LABEL_8;
@@ -337,14 +337,14 @@ LABEL_8:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&dword_19A0DB000, v10, OS_LOG_TYPE_DEFAULT, "REMAccountsDataView: Requested to fetch non-existent account {externalIdentifier: %{public}@}", &v13, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithExternalIdentifier:v6];
-    *a4 = v9 = 0;
+    [REMError noSuchObjectErrorWithExternalIdentifier:identifierCopy];
+    *error = v9 = 0;
   }
 
   else
@@ -360,25 +360,25 @@ LABEL_8:
   return v9;
 }
 
-- (id)fetchAccountsWithExternalIdentifiers:(id)a3 error:(id *)a4
+- (id)fetchAccountsWithExternalIdentifiers:(id)identifiers error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[REMAccountsDataViewInvocation_fetchByExternalIdentifier alloc] initWithExternalIdentifiers:v6];
-  v8 = [(REMAccountsDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  identifiersCopy = identifiers;
+  v7 = [[REMAccountsDataViewInvocation_fetchByExternalIdentifier alloc] initWithExternalIdentifiers:identifiersCopy];
+  store = [(REMAccountsDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 accountStorages];
-  v13 = [(REMAccountsDataView *)self accountsFromStorages:v12];
+  accountStorages = [v11 accountStorages];
+  v13 = [(REMAccountsDataView *)self accountsFromStorages:accountStorages];
 
   if (v13)
   {
     v31 = v11;
     v32 = v9;
     v33 = v7;
-    v34 = v6;
+    v34 = identifiersCopy;
     v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v13, "count")}];
     v36 = 0u;
     v37 = 0u;
@@ -401,8 +401,8 @@ LABEL_8:
           }
 
           v20 = *(*(&v36 + 1) + 8 * i);
-          v21 = [v20 externalIdentifier];
-          if (!v21)
+          externalIdentifier = [v20 externalIdentifier];
+          if (!externalIdentifier)
           {
             v23 = +[REMLogStore read];
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -413,22 +413,22 @@ LABEL_8:
             goto LABEL_13;
           }
 
-          v22 = [v14 objectForKeyedSubscript:v21];
+          v22 = [v14 objectForKeyedSubscript:externalIdentifier];
 
           if (v22)
           {
             v23 = +[REMLogStore read];
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              v35 = [v14 objectForKeyedSubscript:v21];
-              v24 = [v35 remObjectID];
-              v25 = [v20 remObjectID];
+              v35 = [v14 objectForKeyedSubscript:externalIdentifier];
+              remObjectID = [v35 remObjectID];
+              remObjectID2 = [v20 remObjectID];
               *buf = 138412802;
-              v41 = v21;
+              v41 = externalIdentifier;
               v42 = 2112;
-              v43 = v24;
+              v43 = remObjectID;
               v44 = 2112;
-              v45 = v25;
+              v45 = remObjectID2;
               _os_log_error_impl(&dword_19A0DB000, v23, OS_LOG_TYPE_ERROR, "REMAccountsDataView -fetchAccountsWithExternalIdentifiers: More than 1 account found for the given external identifier {extID: %@, acctObjID1: %@, acctObjID2: %@}.", buf, 0x20u);
             }
 
@@ -437,7 +437,7 @@ LABEL_13:
             goto LABEL_15;
           }
 
-          [v14 setObject:v20 forKeyedSubscript:v21];
+          [v14 setObject:v20 forKeyedSubscript:externalIdentifier];
 LABEL_15:
         }
 
@@ -448,7 +448,7 @@ LABEL_15:
     }
 
     v26 = [v15 count];
-    v6 = v34;
+    identifiersCopy = v34;
     if (v26 <= [v34 count])
     {
       v9 = v32;
@@ -482,19 +482,19 @@ LABEL_15:
   return v14;
 }
 
-- (id)accountsFromStorages:(id)a3
+- (id)accountsFromStorages:(id)storages
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  storagesCopy = storages;
+  if (storagesCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(storagesCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v4;
-    v6 = v4;
+    v17 = storagesCopy;
+    v6 = storagesCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -511,8 +511,8 @@ LABEL_15:
 
           v11 = *(*(&v18 + 1) + 8 * i);
           v12 = [REMAccount alloc];
-          v13 = [(REMAccountsDataView *)self store];
-          v14 = [(REMAccount *)v12 initWithStore:v13 storage:v11];
+          store = [(REMAccountsDataView *)self store];
+          v14 = [(REMAccount *)v12 initWithStore:store storage:v11];
 
           [v5 addObject:v14];
         }
@@ -523,7 +523,7 @@ LABEL_15:
       while (v8);
     }
 
-    v4 = v17;
+    storagesCopy = v17;
   }
 
   else
@@ -536,19 +536,19 @@ LABEL_15:
   return v5;
 }
 
-+ (id)accountsFromAccountStorages:(id)a3 store:(id)a4
++ (id)accountsFromAccountStorages:(id)storages store:(id)store
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  storagesCopy = storages;
+  storeCopy = store;
+  if (storagesCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(storagesCopy, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v5;
+    v8 = storagesCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -565,9 +565,9 @@ LABEL_15:
 
           v13 = *(*(&v19 + 1) + 8 * i);
           v14 = [REMAccount alloc];
-          v15 = [(REMAccount *)v14 initWithStore:v6 storage:v13, v19];
-          v16 = [(REMAccount *)v15 objectID];
-          [v7 setObject:v15 forKeyedSubscript:v16];
+          v15 = [(REMAccount *)v14 initWithStore:storeCopy storage:v13, v19];
+          objectID = [(REMAccount *)v15 objectID];
+          [v7 setObject:v15 forKeyedSubscript:objectID];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];

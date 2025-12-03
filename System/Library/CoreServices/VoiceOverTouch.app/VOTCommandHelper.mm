@@ -1,16 +1,16 @@
 @interface VOTCommandHelper
 + (id)commandHelper;
-- (BOOL)_commandIsSupportedByTV:(id)a3;
+- (BOOL)_commandIsSupportedByTV:(id)v;
 - (CGRect)practiceRegion;
 - (VOTCommandHelper)init;
-- (id)_keyboardKeyStringForEvent:(id)a3 spoken:(BOOL)a4;
-- (id)_stringForBrailleGestureCommand:(id)a3;
-- (void)_processFallbackHelpForEvent:(id)a3 command:(id)a4 commandHelpText:(id *)a5 activationSpokenHelpText:(id *)a6 activationDisplayedHelpText:(id *)a7;
-- (void)_processHelpForEvent:(id)a3 userCommandContext:(id)a4 commandHelpText:(id *)a5 activationSpokenHelpText:(id *)a6 activationDisplayedHelpText:(id *)a7;
-- (void)_updateAccelerometerDataIfNeededAndAnnounce:(BOOL)a3;
+- (id)_keyboardKeyStringForEvent:(id)event spoken:(BOOL)spoken;
+- (id)_stringForBrailleGestureCommand:(id)command;
+- (void)_processFallbackHelpForEvent:(id)event command:(id)command commandHelpText:(id *)text activationSpokenHelpText:(id *)helpText activationDisplayedHelpText:(id *)displayedHelpText;
+- (void)_processHelpForEvent:(id)event userCommandContext:(id)context commandHelpText:(id *)text activationSpokenHelpText:(id *)helpText activationDisplayedHelpText:(id *)displayedHelpText;
+- (void)_updateAccelerometerDataIfNeededAndAnnounce:(BOOL)announce;
 - (void)dealloc;
-- (void)processHelpForEvent:(id)a3;
-- (void)setHelpEnabled:(BOOL)a3;
+- (void)processHelpForEvent:(id)event;
+- (void)setHelpEnabled:(BOOL)enabled;
 @end
 
 @implementation VOTCommandHelper
@@ -56,9 +56,9 @@
   [(VOTCommandHelper *)&v3 dealloc];
 }
 
-- (void)setHelpEnabled:(BOOL)a3
+- (void)setHelpEnabled:(BOOL)enabled
 {
-  self->_helpEnabled = a3;
+  self->_helpEnabled = enabled;
   [(VOTCommandHelper *)self _updateAccelerometerDataIfNeededAndAnnounce:0];
   if (!self->_helpEnabled)
   {
@@ -70,21 +70,21 @@
   [v4 postNotificationName:@"VOTHelpEnabledChangedNotification" object:0];
 }
 
-- (void)_updateAccelerometerDataIfNeededAndAnnounce:(BOOL)a3
+- (void)_updateAccelerometerDataIfNeededAndAnnounce:(BOOL)announce
 {
-  if (self->_helpEnabled && (v4 = a3, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 voiceOverHelpMode], v5, v6 == 2))
+  if (self->_helpEnabled && (v4 = announce, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 voiceOverHelpMode], v5, v6 == 2))
   {
     [(BKSAccelerometer *)self->_accelerometer setOrientationEventsEnabled:1];
     currentTypingMode = self->_currentTypingMode;
     self->_currentTypingMode = [(BKSAccelerometer *)self->_accelerometer currentDeviceOrientation]== 5;
     if (v4)
     {
-      v8 = [(BKSAccelerometer *)self->_accelerometer currentDeviceOrientation];
+      currentDeviceOrientation = [(BKSAccelerometer *)self->_accelerometer currentDeviceOrientation];
       if (self->_currentTypingMode != currentTypingMode)
       {
-        v10 = v8;
-        v11 = [VOTSharedWorkspace selectedLanguage];
-        v15 = v11;
+        v10 = currentDeviceOrientation;
+        selectedLanguage = [VOTSharedWorkspace selectedLanguage];
+        v15 = selectedLanguage;
         if (v10 == 5)
         {
           v12 = @"braille.table.top";
@@ -95,7 +95,7 @@
           v12 = @"braille.screen.away";
         }
 
-        v13 = sub_1000516CC(off_1001FDDD0, v12, 0, v11);
+        v13 = sub_1000516CC(off_1001FDDD0, v12, 0, selectedLanguage);
         v14 = sub_1000095FC(v13, 0, v15);
       }
     }
@@ -109,13 +109,13 @@
   }
 }
 
-- (id)_keyboardKeyStringForEvent:(id)a3 spoken:(BOOL)a4
+- (id)_keyboardKeyStringForEvent:(id)event spoken:(BOOL)spoken
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 objectForIndex:103];
+  spokenCopy = spoken;
+  eventCopy = event;
+  v6 = [eventCopy objectForIndex:103];
   v7 = @" + ";
-  if (v4)
+  if (spokenCopy)
   {
     v7 = @", ";
   }
@@ -124,7 +124,7 @@
   if (v6)
   {
     v9 = +[NSMutableString string];
-    v10 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000B6D6C;
@@ -134,13 +134,13 @@
     v39 = v8;
     v12 = objc_retainBlock(v37);
     v13 = v12;
-    if (v10)
+    if (integerValue)
     {
       (v12[2])(v12, @"VOSKey.left");
-      if ((v10 & 2) == 0)
+      if ((integerValue & 2) == 0)
       {
 LABEL_6:
-        if ((v10 & 4) == 0)
+        if ((integerValue & 4) == 0)
         {
           goto LABEL_7;
         }
@@ -149,16 +149,16 @@ LABEL_6:
       }
     }
 
-    else if ((v10 & 2) == 0)
+    else if ((integerValue & 2) == 0)
     {
       goto LABEL_6;
     }
 
     (v13)[2](v13, @"VOSKey.right");
-    if ((v10 & 4) == 0)
+    if ((integerValue & 4) == 0)
     {
 LABEL_7:
-      if ((v10 & 8) == 0)
+      if ((integerValue & 8) == 0)
       {
 LABEL_9:
         v14 = v11;
@@ -173,7 +173,7 @@ LABEL_8:
 
 LABEL_20:
     (v13)[2](v13, @"VOSKey.up");
-    if ((v10 & 8) == 0)
+    if ((integerValue & 8) == 0)
     {
       goto LABEL_9;
     }
@@ -181,21 +181,21 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  v15 = [v5 keyInfo];
-  v16 = [v15 eventRecord];
-  v17 = [v15 changedModifiers];
-  if (!v17)
+  keyInfo = [eventCopy keyInfo];
+  eventRecord = [keyInfo eventRecord];
+  changedModifiers = [keyInfo changedModifiers];
+  if (!changedModifiers)
   {
-    if ([v15 isAppleVendorKey])
+    if ([keyInfo isAppleVendorKey])
     {
-      v19 = [v15 mediaKeyCode];
-      if (v19 == 32)
+      mediaKeyCode = [keyInfo mediaKeyCode];
+      if (mediaKeyCode == 32)
       {
         v20 = @"brightnessUp";
         goto LABEL_45;
       }
 
-      if (v19 == 33)
+      if (mediaKeyCode == 33)
       {
         v20 = @"brightnessDown";
         goto LABEL_45;
@@ -204,38 +204,38 @@ LABEL_20:
       goto LABEL_71;
     }
 
-    if (![v15 isMediaKey])
+    if (![keyInfo isMediaKey])
     {
-      if (v16)
+      if (eventRecord)
       {
-        if ([v16 originalType] == 1007)
+        if ([eventRecord originalType] == 1007)
         {
           v20 = @"volumeUp";
           goto LABEL_45;
         }
 
-        if ([v16 originalType] == 1009)
+        if ([eventRecord originalType] == 1009)
         {
           v20 = @"volumeDown";
           goto LABEL_45;
         }
       }
 
-      v36 = [v15 keyCode];
-      if ((v36 - 58) >= 0xC)
+      keyCode = [keyInfo keyCode];
+      if ((keyCode - 58) >= 0xC)
       {
         v28 = 0;
         v20 = @"enter";
-        if (v36 > 77)
+        if (keyCode > 77)
         {
-          if (v36 > 80)
+          if (keyCode > 80)
           {
-            if (v36 == 81)
+            if (keyCode == 81)
             {
               v20 = @"down";
             }
 
-            else if (v36 == 82)
+            else if (keyCode == 82)
             {
               v20 = @"up";
             }
@@ -243,19 +243,19 @@ LABEL_20:
             else
             {
               v14 = 0;
-              if (v36 != 88)
+              if (keyCode != 88)
               {
                 goto LABEL_47;
               }
             }
           }
 
-          else if (v36 == 78)
+          else if (keyCode == 78)
           {
             v20 = @"pagedown";
           }
 
-          else if (v36 == 79)
+          else if (keyCode == 79)
           {
             v20 = @"right";
           }
@@ -266,14 +266,14 @@ LABEL_20:
           }
         }
 
-        else if (v36 > 73)
+        else if (keyCode > 73)
         {
-          if (v36 == 74)
+          if (keyCode == 74)
           {
             v20 = @"home";
           }
 
-          else if (v36 == 75)
+          else if (keyCode == 75)
           {
             v20 = @"pageup";
           }
@@ -281,7 +281,7 @@ LABEL_20:
           else
           {
             v14 = 0;
-            if (v36 != 77)
+            if (keyCode != 77)
             {
               goto LABEL_47;
             }
@@ -290,9 +290,9 @@ LABEL_20:
           }
         }
 
-        else if (v36 != 40)
+        else if (keyCode != 40)
         {
-          if (v36 == 41)
+          if (keyCode == 41)
           {
             v20 = @"escape";
           }
@@ -300,7 +300,7 @@ LABEL_20:
           else
           {
             v14 = 0;
-            if (v36 != 42)
+            if (keyCode != 42)
             {
               goto LABEL_47;
             }
@@ -312,7 +312,7 @@ LABEL_20:
         goto LABEL_45;
       }
 
-      v20 = [NSString stringWithFormat:@"F%i", (v36 - 57)];
+      v20 = [NSString stringWithFormat:@"F%i", (keyCode - 57)];
       if (v20)
       {
 LABEL_45:
@@ -327,18 +327,18 @@ LABEL_71:
       goto LABEL_47;
     }
 
-    v29 = [v15 mediaKeyCode];
+    mediaKeyCode2 = [keyInfo mediaKeyCode];
     v28 = 0;
-    if (v29 > 183)
+    if (mediaKeyCode2 > 183)
     {
-      if (v29 > 429)
+      if (mediaKeyCode2 > 429)
       {
-        if (v29 == 430)
+        if (mediaKeyCode2 == 430)
         {
           v20 = @"layout";
         }
 
-        else if (v29 == 433)
+        else if (mediaKeyCode2 == 433)
         {
           v20 = @"screensaver";
         }
@@ -346,7 +346,7 @@ LABEL_71:
         else
         {
           v14 = 0;
-          if (v29 != 545)
+          if (mediaKeyCode2 != 545)
           {
             goto LABEL_47;
           }
@@ -355,12 +355,12 @@ LABEL_71:
         }
       }
 
-      else if (v29 == 184)
+      else if (mediaKeyCode2 == 184)
       {
         v20 = @"eject";
       }
 
-      else if (v29 == 205)
+      else if (mediaKeyCode2 == 205)
       {
         v20 = @"playPause";
       }
@@ -368,7 +368,7 @@ LABEL_71:
       else
       {
         v14 = 0;
-        if (v29 != 226)
+        if (mediaKeyCode2 != 226)
         {
           goto LABEL_47;
         }
@@ -379,11 +379,11 @@ LABEL_71:
       goto LABEL_45;
     }
 
-    if (v29 > 180)
+    if (mediaKeyCode2 > 180)
     {
-      if (v29 != 181)
+      if (mediaKeyCode2 != 181)
       {
-        if (v29 != 182)
+        if (mediaKeyCode2 != 182)
         {
           v20 = @"stop";
           goto LABEL_45;
@@ -397,16 +397,16 @@ LABEL_85:
 
     else
     {
-      if (v29 == 178)
+      if (mediaKeyCode2 == 178)
       {
         v20 = @"record";
         goto LABEL_45;
       }
 
-      if (v29 != 179)
+      if (mediaKeyCode2 != 179)
       {
         v14 = 0;
-        if (v29 != 180)
+        if (mediaKeyCode2 != 180)
         {
           goto LABEL_47;
         }
@@ -419,7 +419,7 @@ LABEL_85:
     goto LABEL_45;
   }
 
-  v18 = v17;
+  v18 = changedModifiers;
   v14 = +[NSMutableString string];
   if ((v18 & 8) != 0)
   {
@@ -500,7 +500,7 @@ LABEL_31:
   v26 = VOSLocString();
   [v14 appendStringWithComma:v26];
 
-  if ([v15 isKeyboardSelectKey])
+  if ([keyInfo isKeyboardSelectKey])
   {
     v27 = VOSLocString();
     [v14 appendStringWithComma:v27];
@@ -516,14 +516,14 @@ LABEL_33:
 LABEL_47:
   if (![v14 length])
   {
-    if ([v15 isControlKeyPressed])
+    if ([keyInfo isControlKeyPressed])
     {
-      [v15 originalCharacters];
+      [keyInfo originalCharacters];
     }
 
     else
     {
-      [v15 characters];
+      [keyInfo characters];
     }
     v30 = ;
     if ([v30 length])
@@ -550,10 +550,10 @@ LABEL_59:
   return v14;
 }
 
-- (id)_stringForBrailleGestureCommand:(id)a3
+- (id)_stringForBrailleGestureCommand:(id)command
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kVOTEventCommandNextElement] && self->_currentTypingMode == 1 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandPreviousElement) && !self->_currentTypingMode || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandPreviousElement) && self->_currentTypingMode == 1 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandNextElement) && !self->_currentTypingMode || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandSearchRotorDown) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandSearchRotorUp) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandMoveToLinkedUI) && self->_currentTypingMode == 1 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandCustomTwoFingerSwipeLeft) && !self->_currentTypingMode || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandReadAll) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandScrollLeftPage) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandScrollRightPage) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandCustomTwoFingerSwipeLeft) && self->_currentTypingMode == 1 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandMoveToLinkedUI) && !self->_currentTypingMode || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandScrollDownPage) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kVOTEventCommandScrollUpPage) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", kVOTEventCommandTracking))
+  commandCopy = command;
+  if ([commandCopy isEqualToString:kVOTEventCommandNextElement] && self->_currentTypingMode == 1 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandPreviousElement) && !self->_currentTypingMode || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandPreviousElement) && self->_currentTypingMode == 1 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandNextElement) && !self->_currentTypingMode || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandSearchRotorDown) & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandSearchRotorUp) & 1) != 0 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandMoveToLinkedUI) && self->_currentTypingMode == 1 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandCustomTwoFingerSwipeLeft) && !self->_currentTypingMode || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandReadAll) & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandScrollLeftPage) & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandScrollRightPage) & 1) != 0 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandCustomTwoFingerSwipeLeft) && self->_currentTypingMode == 1 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandMoveToLinkedUI) && !self->_currentTypingMode || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandScrollDownPage) & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandScrollUpPage) & 1) != 0 || objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandTracking))
   {
     v5 = VOSLocString();
   }
@@ -566,22 +566,22 @@ LABEL_59:
   return v5;
 }
 
-- (void)processHelpForEvent:(id)a3
+- (void)processHelpForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 command];
+  eventCopy = event;
+  command = [eventCopy command];
   Current = CFAbsoluteTimeGetCurrent();
-  if (([v5 isEqualToString:kVOTEventCommandIdle] & 1) == 0 && (!objc_msgSend(v5, "isEqualToString:", kVOTEventCommandTracking) || -[NSString isEqualToString:](self->_lastCommand, "isEqualToString:", kVOTEventCommandTracking) || Current - self->_lastCommandOutputTime >= 1.5) && (!objc_msgSend(v5, "isEqualToString:", kVOTEventCommandSystemToggleQuickNote) || AXDeviceSupportsQuickNote()))
+  if (([command isEqualToString:kVOTEventCommandIdle] & 1) == 0 && (!objc_msgSend(command, "isEqualToString:", kVOTEventCommandTracking) || -[NSString isEqualToString:](self->_lastCommand, "isEqualToString:", kVOTEventCommandTracking) || Current - self->_lastCommandOutputTime >= 1.5) && (!objc_msgSend(command, "isEqualToString:", kVOTEventCommandSystemToggleQuickNote) || AXDeviceSupportsQuickNote()))
   {
-    v7 = [v4 userCommandContext];
-    if (v7)
+    userCommandContext = [eventCopy userCommandContext];
+    if (userCommandContext)
     {
       v31 = 0;
       v32 = 0;
       v30 = 0;
       v8 = &v31;
       v9 = &v30;
-      [(VOTCommandHelper *)self _processHelpForEvent:v4 userCommandContext:v7 commandHelpText:&v32 activationSpokenHelpText:&v31 activationDisplayedHelpText:&v30];
+      [(VOTCommandHelper *)self _processHelpForEvent:eventCopy userCommandContext:userCommandContext commandHelpText:&v32 activationSpokenHelpText:&v31 activationDisplayedHelpText:&v30];
       v10 = v32;
     }
 
@@ -592,7 +592,7 @@ LABEL_59:
       v27 = 0;
       v8 = &v28;
       v9 = &v27;
-      [(VOTCommandHelper *)self _processFallbackHelpForEvent:v4 command:v5 commandHelpText:&v29 activationSpokenHelpText:&v28 activationDisplayedHelpText:&v27];
+      [(VOTCommandHelper *)self _processFallbackHelpForEvent:eventCopy command:command commandHelpText:&v29 activationSpokenHelpText:&v28 activationDisplayedHelpText:&v27];
       v10 = v29;
     }
 
@@ -612,11 +612,11 @@ LABEL_59:
         v15 = &stru_1001CBF90;
       }
 
-      v16 = [v14 initWithObjects:{v15, v11, v5, 0}];
+      v16 = [v14 initWithObjects:{v15, v11, command, 0}];
       [(VOTElement *)self->_practiceElement setGesturePracticeInfo:v16];
     }
 
-    if (![v5 isEqualToString:self->_lastCommand] || (+[VOTOutputManager outputManager](VOTOutputManager, "outputManager"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isSpeaking"), v17, (v18 & 1) == 0))
+    if (![command isEqualToString:self->_lastCommand] || (+[VOTOutputManager outputManager](VOTOutputManager, "outputManager"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isSpeaking"), v17, (v18 & 1) == 0))
     {
       v19 = [objc_allocWithZone(VOTOutputRequest) init];
       if ([v12 length])
@@ -632,27 +632,27 @@ LABEL_59:
       practiceElement = self->_practiceElement;
       if (practiceElement)
       {
-        v23 = [(VOTElement *)practiceElement shouldSpeakHelpInGestureArea];
+        shouldSpeakHelpInGestureArea = [(VOTElement *)practiceElement shouldSpeakHelpInGestureArea];
       }
 
       else
       {
-        v23 = 1;
+        shouldSpeakHelpInGestureArea = 1;
       }
 
-      if ([v19 containsActions] && v23)
+      if ([v19 containsActions] && shouldSpeakHelpInGestureArea)
       {
         [v19 setGeneratesBraille:1];
         [v19 send];
       }
 
-      objc_storeStrong(&self->_lastCommand, v5);
+      objc_storeStrong(&self->_lastCommand, command);
       self->_lastCommandOutputTime = Current;
-      if ([v5 isEqualToString:kVOTEventCommandStartHelp] && !self->_practiceElement)
+      if ([command isEqualToString:kVOTEventCommandStartHelp] && !self->_practiceElement)
       {
-        v24 = [VOTSharedWorkspace selectedLanguage];
-        v25 = sub_1000516CC(off_1001FDDD0, @"stopping.help.mode", 0, v24);
-        v26 = sub_1000095FC(v25, 2, v24);
+        selectedLanguage = [VOTSharedWorkspace selectedLanguage];
+        v25 = sub_1000516CC(off_1001FDDD0, @"stopping.help.mode", 0, selectedLanguage);
+        v26 = sub_1000095FC(v25, 2, selectedLanguage);
 
         [(VOTCommandHelper *)self setHelpEnabled:0];
       }
@@ -660,111 +660,111 @@ LABEL_59:
   }
 }
 
-- (void)_processHelpForEvent:(id)a3 userCommandContext:(id)a4 commandHelpText:(id *)a5 activationSpokenHelpText:(id *)a6 activationDisplayedHelpText:(id *)a7
+- (void)_processHelpForEvent:(id)event userCommandContext:(id)context commandHelpText:(id *)text activationSpokenHelpText:(id *)helpText activationDisplayedHelpText:(id *)displayedHelpText
 {
-  v22 = a4;
-  v10 = [v22 command];
-  v11 = [v10 localizedName];
+  contextCopy = context;
+  command = [contextCopy command];
+  localizedName = [command localizedName];
 
-  v12 = [v22 gesture];
+  gesture = [contextCopy gesture];
 
-  if (v12)
+  if (gesture)
   {
-    v13 = [v22 gesture];
-    v14 = [v13 localizedName];
+    gesture2 = [contextCopy gesture];
+    localizedName2 = [gesture2 localizedName];
 
-    v15 = [v22 gesture];
-    v16 = [v15 localizedName];
+    gesture3 = [contextCopy gesture];
+    localizedName3 = [gesture3 localizedName];
 LABEL_5:
-    v18 = v16;
+    v18 = localizedName3;
 
     goto LABEL_6;
   }
 
-  v14 = [v22 keyChord];
+  localizedName2 = [contextCopy keyChord];
 
-  if (v14)
+  if (localizedName2)
   {
-    v17 = [v22 keyChord];
-    v14 = [v17 displayValue];
+    keyChord = [contextCopy keyChord];
+    localizedName2 = [keyChord displayValue];
 
-    v15 = [v22 keyChord];
-    v16 = [v15 displayValue];
+    gesture3 = [contextCopy keyChord];
+    localizedName3 = [gesture3 displayValue];
     goto LABEL_5;
   }
 
   v18 = 0;
 LABEL_6:
-  v19 = v11;
-  *a5 = v11;
-  v20 = v14;
-  *a6 = v14;
+  v19 = localizedName;
+  *text = localizedName;
+  v20 = localizedName2;
+  *helpText = localizedName2;
   v21 = v18;
-  *a7 = v18;
+  *displayedHelpText = v18;
 }
 
-- (void)_processFallbackHelpForEvent:(id)a3 command:(id)a4 commandHelpText:(id *)a5 activationSpokenHelpText:(id *)a6 activationDisplayedHelpText:(id *)a7
+- (void)_processFallbackHelpForEvent:(id)event command:(id)command commandHelpText:(id *)text activationSpokenHelpText:(id *)helpText activationDisplayedHelpText:(id *)displayedHelpText
 {
-  v12 = a3;
-  v13 = a4;
+  eventCopy = event;
+  commandCopy = command;
   v14 = +[AXSettings sharedInstance];
-  v15 = [v14 voiceOverHelpMode];
+  voiceOverHelpMode = [v14 voiceOverHelpMode];
 
-  if ([v13 isEqualToString:kVOTEventCommandTracking])
+  if ([commandCopy isEqualToString:kVOTEventCommandTracking])
   {
-    v16 = VOSLocString();
+    localizedName = VOSLocString();
     v17 = VOSLocString();
     v18 = v17;
 LABEL_30:
-    v29 = v16;
-    *a5 = v16;
+    v29 = localizedName;
+    *text = localizedName;
     v30 = v18;
-    *a6 = v18;
+    *helpText = v18;
     v31 = v17;
-    *a7 = v17;
+    *displayedHelpText = v17;
 
     goto LABEL_31;
   }
 
-  if (v15 > 1)
+  if (voiceOverHelpMode > 1)
   {
-    if (v15 == 2)
+    if (voiceOverHelpMode == 2)
     {
-      v16 = [(VOTCommandHelper *)self _stringForBrailleGestureCommand:v13];
+      localizedName = [(VOTCommandHelper *)self _stringForBrailleGestureCommand:commandCopy];
     }
 
     else
     {
-      v16 = 0;
+      localizedName = 0;
     }
   }
 
   else
   {
-    v19 = [VOSCommand commandForVOSEventCommand:v13];
-    v16 = [v19 localizedName];
-    if (![v16 length])
+    v19 = [VOSCommand commandForVOSEventCommand:commandCopy];
+    localizedName = [v19 localizedName];
+    if (![localizedName length])
     {
       v20 = VOTLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        sub_10012E068(v19, v13, v20);
+        sub_10012E068(v19, commandCopy, v20);
       }
     }
   }
 
-  if ([VOTSharedWorkspace allowSingleLetterSearching] && objc_msgSend(v12, "isKeyEvent") && objc_msgSend(v13, "isEqualToString:", kVOTEventCommandSingleLetterSearch))
+  if ([VOTSharedWorkspace allowSingleLetterSearching] && objc_msgSend(eventCopy, "isKeyEvent") && objc_msgSend(commandCopy, "isEqualToString:", kVOTEventCommandSingleLetterSearch))
   {
     v21 = +[VOTKeyboardManager keyboardManager];
-    v22 = [v12 keyInfo];
-    v23 = [v21 singleLetterCommandForKeyInfo:v22];
+    keyInfo = [eventCopy keyInfo];
+    v23 = [v21 singleLetterCommandForKeyInfo:keyInfo];
 
     if (v23)
     {
       v24 = [VOSCommand commandForVOSEventCommand:v23];
-      v25 = [v24 localizedName];
+      localizedName2 = [v24 localizedName];
 
-      if (![v25 length])
+      if (![localizedName2 length])
       {
         v26 = VOTLogCommon();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -772,31 +772,31 @@ LABEL_30:
           v32 = 138412802;
           v33 = v24;
           v34 = 2112;
-          v35 = v13;
+          v35 = commandCopy;
           v36 = 2112;
           v37 = v23;
           _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "No help text found for transformed command: '%@'. name: '%@' (actual: '%@')", &v32, 0x20u);
         }
       }
 
-      v16 = v25;
+      localizedName = localizedName2;
     }
   }
 
-  if (![v13 length] || objc_msgSend(v16, "length") || objc_msgSend(v12, "isKeyEvent"))
+  if (![commandCopy length] || objc_msgSend(localizedName, "length") || objc_msgSend(eventCopy, "isKeyEvent"))
   {
-    v27 = [v12 origin];
-    if (v27 == 5)
+    origin = [eventCopy origin];
+    if (origin == 5)
     {
-      v28 = [v12 objectForIndex:105];
+      v28 = [eventCopy objectForIndex:105];
       v18 = [v28 componentsJoinedByString:{@", "}];
       v17 = [v28 componentsJoinedByString:@" + "];
     }
 
-    else if (v27 == 4)
+    else if (origin == 4)
     {
-      v18 = [(VOTCommandHelper *)self _keyboardKeyStringForEvent:v12 spoken:1];
-      v17 = [(VOTCommandHelper *)self _keyboardKeyStringForEvent:v12 spoken:0];
+      v18 = [(VOTCommandHelper *)self _keyboardKeyStringForEvent:eventCopy spoken:1];
+      v17 = [(VOTCommandHelper *)self _keyboardKeyStringForEvent:eventCopy spoken:0];
     }
 
     else
@@ -811,16 +811,16 @@ LABEL_30:
 LABEL_31:
 }
 
-- (BOOL)_commandIsSupportedByTV:(id)a3
+- (BOOL)_commandIsSupportedByTV:(id)v
 {
   v3 = qword_1001FED70;
-  v4 = a3;
+  vCopy = v;
   if (v3 != -1)
   {
     sub_10012E0F0();
   }
 
-  v5 = [qword_1001FED68 containsObject:v4];
+  v5 = [qword_1001FED68 containsObject:vCopy];
 
   return v5 ^ 1;
 }

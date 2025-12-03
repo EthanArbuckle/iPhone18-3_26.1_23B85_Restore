@@ -1,17 +1,17 @@
 @interface LAUICheckmarkLayer
 - (CGSize)aspectSize;
-- (CGSize)defaultSizeForCircleWithDiameter:(double)a3 scale:(double)a4;
+- (CGSize)defaultSizeForCircleWithDiameter:(double)diameter scale:(double)scale;
 - (LAUICheckmarkLayer)init;
 - (id).cxx_construct;
 - (void)_animationsDidResolve;
-- (void)_executeCompletions:(BOOL)a3;
-- (void)_updateRevealedAnimated:(BOOL)a3;
+- (void)_executeCompletions:(BOOL)completions;
+- (void)_updateRevealedAnimated:(BOOL)animated;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setColor:(CGColor *)a3 animated:(BOOL)a4;
-- (void)setLineWidthScale:(double)a3;
-- (void)setPrimaryColor:(id)a3 animated:(BOOL)a4;
-- (void)setRevealed:(BOOL)a3 animated:(BOOL)a4 withCompletion:(id)a5;
+- (void)setColor:(CGColor *)color animated:(BOOL)animated;
+- (void)setLineWidthScale:(double)scale;
+- (void)setPrimaryColor:(id)color animated:(BOOL)animated;
+- (void)setRevealed:(BOOL)revealed animated:(BOOL)animated withCompletion:(id)completion;
 @end
 
 @implementation LAUICheckmarkLayer
@@ -25,40 +25,40 @@
   v6 = [v4 URLForResource:@"checkmark" withExtension:@"caml"];
   v7 = [v5 packageWithContentsOfURL:v6 type:*MEMORY[0x277CDA800] options:0 error:0];
 
-  v8 = [v7 rootLayer];
-  v9 = [MEMORY[0x277CBEB68] null];
+  rootLayer = [v7 rootLayer];
+  null = [MEMORY[0x277CBEB68] null];
   *&b.m11 = @"position";
   *&b.m12 = @"bounds";
-  *&a.m11 = v9;
-  *&a.m12 = v9;
+  *&a.m11 = null;
+  *&a.m12 = null;
   *&b.m13 = @"transform";
   *&b.m14 = @"backgroundColor";
-  *&a.m13 = v9;
-  *&a.m14 = v9;
+  *&a.m13 = null;
+  *&a.m14 = null;
   *&b.m21 = @"cornerRadius";
   *&b.m22 = @"contents";
-  *&a.m21 = v9;
-  *&a.m22 = v9;
+  *&a.m21 = null;
+  *&a.m22 = null;
   *&b.m23 = @"anchorPoint";
   *&b.m24 = @"opacity";
-  *&a.m23 = v9;
-  *&a.m24 = v9;
+  *&a.m23 = null;
+  *&a.m24 = null;
   *&b.m31 = @"strokeStart";
   *&b.m32 = @"strokeEnd";
-  *&a.m31 = v9;
-  *&a.m32 = v9;
+  *&a.m31 = null;
+  *&a.m32 = null;
   *&b.m33 = @"strokeColor";
   *&b.m34 = @"fillColor";
-  *&a.m33 = v9;
-  *&a.m34 = v9;
+  *&a.m33 = null;
+  *&a.m34 = null;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&a forKeys:&b count:12];
 
-  [v8 setActions:v10];
-  [v8 setAnchorPoint:{0.5, 0.5}];
+  [rootLayer setActions:v10];
+  [rootLayer setAnchorPoint:{0.5, 0.5}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v8;
+    v12 = rootLayer;
   }
 
   else
@@ -119,15 +119,15 @@
     }
 
     self = v16;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -237,49 +237,49 @@
   [(CAShapeLayer *)v30 setPosition:MidX, CGRectGetMidY(v42)];
 }
 
-- (void)setLineWidthScale:(double)a3
+- (void)setLineWidthScale:(double)scale
 {
-  if (self->_line_width_scale != a3)
+  if (self->_line_width_scale != scale)
   {
     v8 = v3;
-    self->_line_width_scale = a3;
-    if (a3 < 0.0)
+    self->_line_width_scale = scale;
+    if (scale < 0.0)
     {
-      a3 = 0.0;
+      scale = 0.0;
     }
 
-    self->_effective_line_width = a3 * self->_line_width;
+    self->_effective_line_width = scale * self->_line_width;
     [(CAShapeLayer *)self->_shape_layer setLineWidth:v4, v8, v5];
 
     [(LAUICheckmarkLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimaryColor:(id)a3 animated:(BOOL)a4
+- (void)setPrimaryColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  colorCopy = color;
   primary_color = self->_primary_color;
-  v10 = v6;
-  if (primary_color != v6 && (!v6 || !primary_color || ([(UIColor *)primary_color isEqual:v6]& 1) == 0))
+  v10 = colorCopy;
+  if (primary_color != colorCopy && (!colorCopy || !primary_color || ([(UIColor *)primary_color isEqual:colorCopy]& 1) == 0))
   {
     v8 = [(UIColor *)v10 copy];
     v9 = self->_primary_color;
     self->_primary_color = v8;
 
-    [(LAUICheckmarkLayer *)self setColor:[(UIColor *)self->_primary_color CGColor] animated:v4];
+    [(LAUICheckmarkLayer *)self setColor:[(UIColor *)self->_primary_color CGColor] animated:animatedCopy];
   }
 }
 
-- (void)setColor:(CGColor *)a3 animated:(BOOL)a4
+- (void)setColor:(CGColor *)color animated:(BOOL)animated
 {
   color = self->_color;
-  if (color != a3)
+  if (color != color)
   {
-    v6 = a4;
-    if (a3 && color)
+    animatedCopy = animated;
+    if (color && color)
     {
-      if (CGColorEqualToColor(color, a3))
+      if (CGColorEqualToColor(color, color))
       {
         return;
       }
@@ -288,9 +288,9 @@
     }
 
     CGColorRelease(color);
-    v8 = CGColorRetain(a3);
+    v8 = CGColorRetain(color);
     self->_color = v8;
-    if (v6)
+    if (animatedCopy)
     {
       [(CAShapeLayer *)self->_shape_layer removeAnimationForKey:@"strokeColor"];
       v9 = objc_alloc(MEMORY[0x277CD9EF8]);
@@ -300,19 +300,19 @@
       v13 = [v9 initWithControlPoints:v10 :0.0 :v11 :v12];
       LAUI_CA_utilities::spring_factory::spring_factory(v19, 2.0, 300.0, 400.0, 0.0, v13);
 
-      v14 = [(CAShapeLayer *)self->_shape_layer presentationLayer];
-      shape_layer = v14;
-      if (!v14)
+      presentationLayer = [(CAShapeLayer *)self->_shape_layer presentationLayer];
+      shape_layer = presentationLayer;
+      if (!presentationLayer)
       {
         shape_layer = self->_shape_layer;
       }
 
       v16 = shape_layer;
 
-      v17 = [(CAShapeLayer *)v16 strokeColor];
+      strokeColor = [(CAShapeLayer *)v16 strokeColor];
       animation = LAUI_CA_utilities::spring_factory::create_animation(v19, &cfstr_Strokecolor.isa);
       [animation setAdditive:0];
-      [animation setFromValue:v17];
+      [animation setFromValue:strokeColor];
       [animation setToValue:self->_color];
       [(CAShapeLayer *)self->_shape_layer addAnimation:animation forKey:@"strokeColor"];
 
@@ -323,16 +323,16 @@
   }
 }
 
-- (void)setRevealed:(BOOL)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)setRevealed:(BOOL)revealed animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v18 = v8;
-  if (self->_revealed == v6)
+  animatedCopy = animated;
+  revealedCopy = revealed;
+  completionCopy = completion;
+  v18 = completionCopy;
+  if (self->_revealed == revealedCopy)
   {
-    v9 = v8;
-    if (v8)
+    v9 = completionCopy;
+    if (completionCopy)
     {
       if (self->_animating)
       {
@@ -357,7 +357,7 @@
         v16[1] = 3321888768;
         v16[2] = __58__LAUICheckmarkLayer_setRevealed_animated_withCompletion___block_invoke;
         v16[3] = &__block_descriptor_40_ea8_32c71_ZTSKZ58__LAUICheckmarkLayer_setRevealed_animated_withCompletion__E3__0_e5_v8__0l;
-        v15 = MEMORY[0x259C5AE60](v8);
+        v15 = MEMORY[0x259C5AE60](completionCopy);
         v17 = MEMORY[0x259C5AE60]();
         dispatch_async(MEMORY[0x277D85CD0], v16);
       }
@@ -367,7 +367,7 @@
   else
   {
     [(LAUICheckmarkLayer *)self _executeCompletions:0];
-    self->_revealed = v6;
+    self->_revealed = revealedCopy;
     if (v18)
     {
       v13 = self->_completions.__end_;
@@ -384,7 +384,7 @@
       self->_completions.__end_ = v14;
     }
 
-    [(LAUICheckmarkLayer *)self _updateRevealedAnimated:v5];
+    [(LAUICheckmarkLayer *)self _updateRevealedAnimated:animatedCopy];
   }
 }
 
@@ -412,12 +412,12 @@
   return result;
 }
 
-- (CGSize)defaultSizeForCircleWithDiameter:(double)a3 scale:(double)a4
+- (CGSize)defaultSizeForCircleWithDiameter:(double)diameter scale:(double)scale
 {
   [(LAUICheckmarkLayer *)self aspectSize];
   v8 = v7;
-  v9 = a3 * 0.434065934;
-  if (a4 == 0.0)
+  v9 = diameter * 0.434065934;
+  if (scale == 0.0)
   {
     v10 = round(v9);
     v11 = round(v6 * (v10 / v8));
@@ -425,8 +425,8 @@
 
   else
   {
-    v10 = round(v9 * a4) / a4;
-    v11 = round(v6 * (v10 / v8) * a4) / a4;
+    v10 = round(v9 * scale) / scale;
+    v11 = round(v6 * (v10 / v8) * scale) / scale;
   }
 
   result.height = v11;
@@ -434,9 +434,9 @@
   return result;
 }
 
-- (void)_updateRevealedAnimated:(BOOL)a3
+- (void)_updateRevealedAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = 1.0;
   if (!self->_revealed)
   {
@@ -445,10 +445,10 @@
   }
 
   animating = self->_animating;
-  self->_animating = v3;
+  self->_animating = animatedCopy;
   v8 = self->_animation_index + 1;
   self->_animation_index = v8;
-  if (v3)
+  if (animatedCopy)
   {
     v9 = objc_alloc(MEMORY[0x277CD9EF8]);
     LODWORD(v10) = 1043928040;
@@ -606,9 +606,9 @@ void __46__LAUICheckmarkLayer__updateRevealedAnimated___block_invoke(uint64_t a1
   }
 }
 
-- (void)_executeCompletions:(BOOL)a3
+- (void)_executeCompletions:(BOOL)completions
 {
-  LAUI_CA_utilities::animation_completion_handler_container::execute(&self->_completions, a3);
+  LAUI_CA_utilities::animation_completion_handler_container::execute(&self->_completions, completions);
   std::vector<LAUI_CA_utilities::animation_completion_handler_container>::__base_destruct_at_end[abi:ne200100](&self->_completions, self->_completions.__begin_);
 
   std::vector<LAUI_CA_utilities::animation_completion_handler_container>::shrink_to_fit(&self->_completions);

@@ -1,5 +1,5 @@
 @interface PLSearchOCRTextLineCandidate
-- (PLSearchOCRTextLineCandidate)initWithLine:(id)a3 words:(id)a4 confidence:(double)a5;
+- (PLSearchOCRTextLineCandidate)initWithLine:(id)line words:(id)words confidence:(double)confidence;
 - (id)description;
 @end
 
@@ -7,33 +7,33 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@:%p> ", v5, self];
+  [string appendFormat:@"<%@:%p> ", v5, self];
 
-  [v3 appendFormat:@"confidence: %f, ", *&self->_confidence];
-  [v3 appendFormat:@"line: '%@', ", self->_line];
-  [v3 appendFormat:@"words: %@, ", self->_words];
+  [string appendFormat:@"confidence: %f, ", *&self->_confidence];
+  [string appendFormat:@"line: '%@', ", self->_line];
+  [string appendFormat:@"words: %@, ", self->_words];
 
-  return v3;
+  return string;
 }
 
-- (PLSearchOCRTextLineCandidate)initWithLine:(id)a3 words:(id)a4 confidence:(double)a5
+- (PLSearchOCRTextLineCandidate)initWithLine:(id)line words:(id)words confidence:(double)confidence
 {
-  v8 = a3;
-  v9 = a4;
+  lineCopy = line;
+  wordsCopy = words;
   v16.receiver = self;
   v16.super_class = PLSearchOCRTextLineCandidate;
   v10 = [(PLSearchOCRTextLineCandidate *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [lineCopy copy];
     line = v10->_line;
     v10->_line = v11;
 
-    v10->_confidence = a5;
-    v13 = [v9 copy];
+    v10->_confidence = confidence;
+    v13 = [wordsCopy copy];
     words = v10->_words;
     v10->_words = v13;
   }

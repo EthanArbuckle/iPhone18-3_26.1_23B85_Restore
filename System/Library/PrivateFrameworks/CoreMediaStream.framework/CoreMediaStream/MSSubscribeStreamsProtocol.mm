@@ -1,36 +1,36 @@
 @interface MSSubscribeStreamsProtocol
-- (MSSubscribeStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4;
-- (id)_assetCollectionsFromCoreArray:(id)a3 personID:(id)a4 outError:(id *)a5;
-- (id)_assetFromCoreDictionary:(id)a3 personID:(id)a4 outError:(id *)a5;
-- (id)_invalidFieldErrorWithFieldName:(id)a3 suggestion:(id)a4;
+- (MSSubscribeStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l;
+- (id)_assetCollectionsFromCoreArray:(id)array personID:(id)d outError:(id *)error;
+- (id)_assetFromCoreDictionary:(id)dictionary personID:(id)d outError:(id *)error;
+- (id)_invalidFieldErrorWithFieldName:(id)name suggestion:(id)suggestion;
 - (id)delegate;
-- (void)_chunkDidEndStreamForPersonID:(id)a3 ctag:(id)a4;
-- (void)_chunkDidFindSubscriptionGoneForPersonID:(id)a3;
-- (void)_chunkDidFindSubscriptionTemporarilyUnavailableForPersonID:(id)a3;
-- (void)_chunkDidParseAssetCollections:(id)a3 forPersonID:(id)a4;
-- (void)_coreProtocolDidFailAuthentication:(id)a3;
-- (void)_coreProtocolDidFinishError:(id)a3;
-- (void)_coreProtocolDidGetDataChunk:(id)a3;
+- (void)_chunkDidEndStreamForPersonID:(id)d ctag:(id)ctag;
+- (void)_chunkDidFindSubscriptionGoneForPersonID:(id)d;
+- (void)_chunkDidFindSubscriptionTemporarilyUnavailableForPersonID:(id)d;
+- (void)_chunkDidParseAssetCollections:(id)collections forPersonID:(id)d;
+- (void)_coreProtocolDidFailAuthentication:(id)authentication;
+- (void)_coreProtocolDidFinishError:(id)error;
+- (void)_coreProtocolDidGetDataChunk:(id)chunk;
 - (void)_parseChunks;
 - (void)_parseNextChunk;
 - (void)dealloc;
-- (void)pollForSubscriptionUpdatesWithAccountAnchors:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)pollForSubscriptionUpdatesWithAccountAnchors:(id)anchors;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MSSubscribeStreamsProtocol
 
-- (id)_assetCollectionsFromCoreArray:(id)a3 personID:(id)a4 outError:(id *)a5
+- (id)_assetCollectionsFromCoreArray:(id)array personID:(id)d outError:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  arrayCopy = array;
+  dCopy = d;
+  v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v9 = v7;
+  v9 = arrayCopy;
   v42 = [v9 countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (!v42)
   {
@@ -69,7 +69,7 @@ LABEL_37:
       }
 
       v56 = v10;
-      v14 = [(MSSubscribeStreamsProtocol *)self _assetFromCoreDictionary:v13 personID:v8 outError:&v56];
+      v14 = [(MSSubscribeStreamsProtocol *)self _assetFromCoreDictionary:v13 personID:dCopy outError:&v56];
       v15 = v56;
 
       if (v15)
@@ -114,7 +114,7 @@ LABEL_37:
 
               v26 = *(*(&v52 + 1) + 8 * j);
               v51 = 0;
-              v27 = [(MSSubscribeStreamsProtocol *)self _assetFromCoreDictionary:v26 personID:v8 outError:&v51];
+              v27 = [(MSSubscribeStreamsProtocol *)self _assetFromCoreDictionary:v26 personID:dCopy outError:&v51];
               v28 = v51;
               if (v28)
               {
@@ -204,11 +204,11 @@ LABEL_34:
 
 LABEL_35:
   v34 = v40;
-  if (a5)
+  if (error)
   {
     v35 = v10;
     v36 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -223,13 +223,13 @@ LABEL_39:
   return v36;
 }
 
-- (id)_assetFromCoreDictionary:(id)a3 personID:(id)a4 outError:(id *)a5
+- (id)_assetFromCoreDictionary:(id)dictionary personID:(id)d outError:(id *)error
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   v10 = +[MSAsset asset];
-  v11 = [v8 objectForKey:@"fileHash"];
+  v11 = [dictionaryCopy objectForKey:@"fileHash"];
   if (v11)
   {
     objc_opt_class();
@@ -242,11 +242,11 @@ LABEL_39:
     [v10 setFileHash:v11];
   }
 
-  v12 = [v8 objectForKey:@"masterAssetHash"];
+  v12 = [dictionaryCopy objectForKey:@"masterAssetHash"];
   if (!v12)
   {
 LABEL_7:
-    v13 = [v8 objectForKey:@"type"];
+    v13 = [dictionaryCopy objectForKey:@"type"];
     if (v13)
     {
       objc_opt_class();
@@ -261,7 +261,7 @@ LABEL_108:
       [v10 setType:v13];
     }
 
-    v14 = [v8 objectForKey:@"MMCSAccessHeader"];
+    v14 = [dictionaryCopy objectForKey:@"MMCSAccessHeader"];
     if (v14)
     {
       objc_opt_class();
@@ -276,7 +276,7 @@ LABEL_107:
       [v10 setMMCSAccessHeader:v14];
     }
 
-    v15 = [v8 objectForKey:@"MMCSURL"];
+    v15 = [dictionaryCopy objectForKey:@"MMCSURL"];
     v77 = v15;
     if (v15)
     {
@@ -293,7 +293,7 @@ LABEL_106:
       [v10 setMMCSURL:v16];
     }
 
-    v17 = [v8 objectForKey:@"protocolFileSize"];
+    v17 = [dictionaryCopy objectForKey:@"protocolFileSize"];
     v76 = v17;
     if (v17)
     {
@@ -310,23 +310,23 @@ LABEL_105:
       [v10 setProtocolFileSize:{objc_msgSend(v18, "unsignedLongLongValue")}];
     }
 
-    v19 = [v8 objectForKey:@"metadata"];
+    v19 = [dictionaryCopy objectForKey:@"metadata"];
     if (v19)
     {
       v74 = v13;
-      v20 = a5;
-      v21 = v9;
+      errorCopy = error;
+      v21 = dCopy;
       v22 = v14;
       v23 = v19;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v73 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v75 = v23;
         v24 = [v23 objectForKey:@"fileSize"];
         v14 = v22;
-        v9 = v21;
-        a5 = v20;
+        dCopy = v21;
+        error = errorCopy;
         v13 = v74;
         v72 = v24;
         if (v24)
@@ -342,7 +342,7 @@ LABEL_103:
             goto LABEL_104;
           }
 
-          [v73 setObject:v25 forKey:@"MSAssetMetadataFileSize"];
+          [dictionary setObject:v25 forKey:@"MSAssetMetadataFileSize"];
         }
 
         v26 = [v75 objectForKey:@"pixelWidth"];
@@ -359,7 +359,7 @@ LABEL_102:
             goto LABEL_103;
           }
 
-          [v73 setObject:v27 forKey:@"MSAssetMetadataPixelWidth"];
+          [dictionary setObject:v27 forKey:@"MSAssetMetadataPixelWidth"];
         }
 
         v28 = [v75 objectForKey:@"pixelHeight"];
@@ -376,7 +376,7 @@ LABEL_101:
             goto LABEL_102;
           }
 
-          [v73 setObject:v29 forKey:@"MSAssetMetadataPixelHeight"];
+          [dictionary setObject:v29 forKey:@"MSAssetMetadataPixelHeight"];
         }
 
         v30 = [v75 objectForKey:@"deviceID"];
@@ -393,7 +393,7 @@ LABEL_100:
             goto LABEL_101;
           }
 
-          [v73 setObject:v31 forKey:@"MSAssetMetadataDeviceID"];
+          [dictionary setObject:v31 forKey:@"MSAssetMetadataDeviceID"];
         }
 
         v32 = [v75 objectForKey:@"dateContentModified"];
@@ -410,7 +410,7 @@ LABEL_99:
             goto LABEL_100;
           }
 
-          [v73 setObject:v33 forKey:@"MSAssetMetadataDateContentModified"];
+          [dictionary setObject:v33 forKey:@"MSAssetMetadataDateContentModified"];
         }
 
         v34 = [v75 objectForKey:@"dateContentCreated"];
@@ -427,7 +427,7 @@ LABEL_98:
             goto LABEL_99;
           }
 
-          [v73 setObject:v35 forKey:@"MSAssetMetadataDateContentCreated"];
+          [dictionary setObject:v35 forKey:@"MSAssetMetadataDateContentCreated"];
         }
 
         v36 = [v75 objectForKey:@"sourceLibraryID"];
@@ -444,7 +444,7 @@ LABEL_97:
             goto LABEL_98;
           }
 
-          [v73 setObject:v37 forKey:@"MSAssetMetadataSourceLibraryID"];
+          [dictionary setObject:v37 forKey:@"MSAssetMetadataSourceLibraryID"];
         }
 
         v38 = [v75 objectForKey:@"sourceItemID"];
@@ -461,7 +461,7 @@ LABEL_96:
             goto LABEL_97;
           }
 
-          [v73 setObject:v39 forKey:@"MSAssetMetadataSourceItemID"];
+          [dictionary setObject:v39 forKey:@"MSAssetMetadataSourceItemID"];
         }
 
         v40 = [v75 objectForKey:@"sourceContainerType"];
@@ -478,7 +478,7 @@ LABEL_95:
             goto LABEL_96;
           }
 
-          [v73 setObject:v41 forKey:@"MSAssetMetadataSourceContainerTypeKey"];
+          [dictionary setObject:v41 forKey:@"MSAssetMetadataSourceContainerTypeKey"];
         }
 
         v42 = [v75 objectForKey:@"sourceContainerID"];
@@ -495,7 +495,7 @@ LABEL_94:
             goto LABEL_95;
           }
 
-          [v73 setObject:v43 forKey:@"MSAssetMetadataSourceContainerIDKey"];
+          [dictionary setObject:v43 forKey:@"MSAssetMetadataSourceContainerIDKey"];
         }
 
         v44 = [v75 objectForKey:@"sourceContainerDisplayName"];
@@ -512,7 +512,7 @@ LABEL_93:
             goto LABEL_94;
           }
 
-          [v73 setObject:v45 forKey:@"MSAssetMetadataSourceContainerDisplayNameKey"];
+          [dictionary setObject:v45 forKey:@"MSAssetMetadataSourceContainerDisplayNameKey"];
         }
 
         v46 = [v75 objectForKey:@"deviceDisplayName"];
@@ -529,7 +529,7 @@ LABEL_92:
             goto LABEL_93;
           }
 
-          [v73 setObject:v47 forKey:@"MSAssetMetadataDeviceDisplayNameKey"];
+          [dictionary setObject:v47 forKey:@"MSAssetMetadataDeviceDisplayNameKey"];
         }
 
         v60 = [v75 objectForKey:@"rasterToDisplayRotationAngle"];
@@ -544,7 +544,7 @@ LABEL_91:
             goto LABEL_92;
           }
 
-          [v73 setObject:v60 forKey:@"MSAssetMetadataRasterToDisplayRotationAngleKey"];
+          [dictionary setObject:v60 forKey:@"MSAssetMetadataRasterToDisplayRotationAngleKey"];
         }
 
         v48 = [v75 objectForKey:@"sourceiCloudPhotoLibraryEnabled"];
@@ -561,17 +561,17 @@ LABEL_90:
             goto LABEL_91;
           }
 
-          [v73 setObject:v49 forKey:@"MSAssetMetadataSourceiCloudPhotoLibraryEnabledKey"];
+          [dictionary setObject:v49 forKey:@"MSAssetMetadataSourceiCloudPhotoLibraryEnabledKey"];
         }
 
-        if (v9)
+        if (dCopy)
         {
-          [v73 setObject:v9 forKey:@"MSAssetMetadataStreamIDKey"];
+          [dictionary setObject:dCopy forKey:@"MSAssetMetadataStreamIDKey"];
         }
 
-        if ([v73 count])
+        if ([dictionary count])
         {
-          [v10 setMetadata:v73];
+          [v10 setMetadata:dictionary];
         }
 
         v50 = 0;
@@ -581,8 +581,8 @@ LABEL_90:
       v50 = [(MSSubscribeStreamsProtocol *)self _invalidFieldErrorWithFieldName:@"metadata"];
       v19 = v23;
       v14 = v22;
-      v9 = v21;
-      a5 = v20;
+      dCopy = v21;
+      error = errorCopy;
       v13 = v74;
     }
 
@@ -613,28 +613,28 @@ LABEL_110:
     {
       v53 = objc_opt_class();
       v54 = v53;
-      v55 = [(MSStreamsProtocol *)self personID];
-      v56 = [v50 MSVerboseDescription];
+      personID = [(MSStreamsProtocol *)self personID];
+      mSVerboseDescription = [v50 MSVerboseDescription];
       *buf = 138543874;
       v79 = v53;
       v80 = 2112;
-      v81 = v55;
+      v81 = personID;
       v82 = 2114;
-      v83 = v56;
+      v83 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Cannot parse asset dictionary. Error: %{public}@", buf, 0x20u);
 
-      if (a5)
+      if (error)
       {
         goto LABEL_113;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_113:
       v51 = v50;
       v52 = 0;
-      *a5 = v50;
+      *error = v50;
       goto LABEL_117;
     }
 
@@ -653,114 +653,114 @@ LABEL_117:
   return v52;
 }
 
-- (id)_invalidFieldErrorWithFieldName:(id)a3 suggestion:(id)a4
+- (id)_invalidFieldErrorWithFieldName:(id)name suggestion:(id)suggestion
 {
   v5 = MEMORY[0x277CCA9B8];
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
+  suggestionCopy = suggestion;
+  nameCopy = name;
   v9 = MSCFCopyLocalizedString(@"ERROR_GET_CONNECTION_INVALID_FIELD_P_NAME");
-  v10 = [v6 stringWithFormat:v9, v8];
+  nameCopy = [v6 stringWithFormat:v9, nameCopy];
 
-  v11 = [v5 MSErrorWithDomain:@"MSStreamsGetConnectionErrorDomain" code:2 description:v10 suggestion:v7];
+  v11 = [v5 MSErrorWithDomain:@"MSStreamsGetConnectionErrorDomain" code:2 description:nameCopy suggestion:suggestionCopy];
 
   return v11;
 }
 
-- (void)_chunkDidFindSubscriptionTemporarilyUnavailableForPersonID:(id)a3
+- (void)_chunkDidFindSubscriptionTemporarilyUnavailableForPersonID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     v10 = 138543874;
     v11 = v5;
     v12 = 2112;
-    v13 = v7;
+    v13 = personID;
     v14 = 2112;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Subscription temporarily unavailable for person ID %@", &v10, 0x20u);
   }
 
-  v8 = [(MSSubscribeStreamsProtocol *)self delegate];
-  [v8 subscribeStreamsProtocol:self didFindTemporarilyUnavailableSubscriptionForPersonID:v4];
+  delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+  [delegate subscribeStreamsProtocol:self didFindTemporarilyUnavailableSubscriptionForPersonID:dCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_chunkDidFindSubscriptionGoneForPersonID:(id)a3
+- (void)_chunkDidFindSubscriptionGoneForPersonID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     v10 = 138543874;
     v11 = v5;
     v12 = 2112;
-    v13 = v7;
+    v13 = personID;
     v14 = 2112;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Subscription is gone for person ID %@", &v10, 0x20u);
   }
 
-  v8 = [(MSSubscribeStreamsProtocol *)self delegate];
-  [v8 subscribeStreamsProtocol:self didFindDisappearedSubscriptionForPersonID:v4];
+  delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+  [delegate subscribeStreamsProtocol:self didFindDisappearedSubscriptionForPersonID:dCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_chunkDidEndStreamForPersonID:(id)a3 ctag:(id)a4
+- (void)_chunkDidEndStreamForPersonID:(id)d ctag:(id)ctag
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  ctagCopy = ctag;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     v13 = 138543874;
     v14 = v10;
     v15 = 2112;
-    v16 = v12;
+    v16 = personID;
     v17 = 2112;
-    v18 = v6;
+    v18 = dCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@- %@ Finished stream for personID: %@", &v13, 0x20u);
   }
 
-  v8 = [(MSSubscribeStreamsProtocol *)self delegate];
-  [v8 subscribeStreamsProtocol:self didFinishReceivingUpdatesForPersonID:v6 ctag:v7];
+  delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+  [delegate subscribeStreamsProtocol:self didFinishReceivingUpdatesForPersonID:dCopy ctag:ctagCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_chunkDidParseAssetCollections:(id)a3 forPersonID:(id)a4
+- (void)_chunkDidParseAssetCollections:(id)collections forPersonID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  collectionsCopy = collections;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v16 = objc_opt_class();
     v17 = v16;
-    v18 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     *buf = 138543874;
     v21 = v16;
     v22 = 2112;
-    v23 = v18;
+    v23 = personID;
     v24 = 2114;
-    v25 = v6;
+    v25 = collectionsCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Parsed asset collections: %{public}@", buf, 0x20u);
   }
 
   v19 = 0;
-  v8 = [(MSSubscribeStreamsProtocol *)self _assetCollectionsFromCoreArray:v6 personID:v7 outError:&v19];
+  v8 = [(MSSubscribeStreamsProtocol *)self _assetCollectionsFromCoreArray:collectionsCopy personID:dCopy outError:&v19];
   v9 = v19;
   if (v9)
   {
@@ -768,22 +768,22 @@ LABEL_117:
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [(MSStreamsProtocol *)self personID];
-      v13 = [v9 MSVerboseDescription];
+      personID2 = [(MSStreamsProtocol *)self personID];
+      mSVerboseDescription = [v9 MSVerboseDescription];
       *buf = 138543874;
       v21 = v10;
       v22 = 2112;
-      v23 = v12;
+      v23 = personID2;
       v24 = 2114;
-      v25 = v13;
+      v25 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Could not create asset collections from response. Error: %{public}@", buf, 0x20u);
     }
   }
 
   else
   {
-    v14 = [(MSSubscribeStreamsProtocol *)self delegate];
-    [v14 subscribeStreamsProtocol:self didReceiveAssetCollections:v8 forPersonID:v7];
+    delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+    [delegate subscribeStreamsProtocol:self didReceiveAssetCollections:v8 forPersonID:dCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -808,11 +808,11 @@ LABEL_10:
       {
         v11 = objc_opt_class();
         v12 = v11;
-        v13 = [(MSStreamsProtocol *)self personID];
+        personID = [(MSStreamsProtocol *)self personID];
         *buf = 138543874;
         *&buf[4] = v11;
         v25 = 2112;
-        v26 = v13;
+        v26 = personID;
         v27 = 1024;
         LODWORD(v28[0]) = v3;
         _os_log_debug_impl(&dword_245B99000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Parsing chunk number %d.", buf, 0x1Cu);
@@ -852,16 +852,16 @@ LABEL_10:
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [(MSStreamsProtocol *)self personID];
-      v23 = [v8 MSVerboseDescription];
+      personID2 = [(MSStreamsProtocol *)self personID];
+      mSVerboseDescription = [v8 MSVerboseDescription];
       *buf = 138544130;
       *&buf[4] = v20;
       v25 = 2112;
-      v26 = v22;
+      v26 = personID2;
       v27 = 1024;
       LODWORD(v28[0]) = v3;
       WORD2(v28[0]) = 2114;
-      *(v28 + 6) = v23;
+      *(v28 + 6) = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@- %@ Error found while parsing chunk number %d. Error: %{public}@", buf, 0x26u);
     }
   }
@@ -870,22 +870,22 @@ LABEL_10:
   {
     v16 = objc_opt_class();
     v17 = v16;
-    v18 = [(MSStreamsProtocol *)self personID];
-    v19 = [v8 MSVerboseDescription];
+    personID3 = [(MSStreamsProtocol *)self personID];
+    mSVerboseDescription2 = [v8 MSVerboseDescription];
     *buf = 138543874;
     *&buf[4] = v16;
     v25 = 2112;
-    v26 = v18;
+    v26 = personID3;
     v27 = 2114;
-    v28[0] = v19;
+    v28[0] = mSVerboseDescription2;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Finished parsing all chunks. Error: %{public}@", buf, 0x20u);
   }
 
   _resetChunkContext(&self->_parseContext->var0);
   free(self->_parseContext);
   self->_parseContext = 0;
-  v14 = [(MSSubscribeStreamsProtocol *)self delegate];
-  [v14 subscribeStreamsProtocol:self didFinishError:v8];
+  delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+  [delegate subscribeStreamsProtocol:self didFinishError:v8];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -909,12 +909,12 @@ LABEL_10:
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     chunkIndex = self->_chunkIndex;
     v10 = 138543874;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = personID;
     v14 = 1024;
     v15 = chunkIndex;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Starting to parse %d chunks.", &v10, 0x1Cu);
@@ -924,24 +924,24 @@ LABEL_10:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_coreProtocolDidFailAuthentication:(id)a3
+- (void)_coreProtocolDidFailAuthentication:(id)authentication
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [(MSStreamsProtocol *)self personID];
-  v8 = MSPathSubscribeProtocolDirForPersonID(v7);
-  [v6 removeItemAtPath:v8 error:0];
+  authenticationCopy = authentication;
+  defaultManager = [v4 defaultManager];
+  personID = [(MSStreamsProtocol *)self personID];
+  v8 = MSPathSubscribeProtocolDirForPersonID(personID);
+  [defaultManager removeItemAtPath:v8 error:0];
 
-  v9 = [(MSSubscribeStreamsProtocol *)self delegate];
-  [v9 subscribeStreamsProtocol:self didReceiveAuthenticationError:v5];
+  delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+  [delegate subscribeStreamsProtocol:self didReceiveAuthenticationError:authenticationCopy];
 }
 
-- (void)_coreProtocolDidGetDataChunk:(id)a3
+- (void)_coreProtocolDidGetDataChunk:(id)chunk
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
+  chunkCopy = chunk;
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:chunkCopy encoding:4];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v8 = 138543362;
@@ -950,32 +950,32 @@ LABEL_10:
   }
 
   v6 = [(MSSubscribeStreamsProtocol *)self _pathToChunkIndex:self->_chunkIndex];
-  [v4 writeToFile:v6 atomically:0];
+  [chunkCopy writeToFile:v6 atomically:0];
 
   ++self->_chunkIndex;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_coreProtocolDidFinishError:(id)a3
+- (void)_coreProtocolDidFinishError:(id)error
 {
-  v8 = a3;
-  if (v8)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = [(MSSubscribeStreamsProtocol *)self delegate];
-    v5 = v4;
-    v6 = self;
-    v7 = v8;
+    delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+    v5 = delegate;
+    selfCopy2 = self;
+    v7 = errorCopy;
 LABEL_3:
-    [v4 subscribeStreamsProtocol:v6 didFinishError:v7];
+    [delegate subscribeStreamsProtocol:selfCopy2 didFinishError:v7];
 
     goto LABEL_6;
   }
 
   if (self->_chunkIndex < 1)
   {
-    v4 = [(MSSubscribeStreamsProtocol *)self delegate];
-    v5 = v4;
-    v6 = self;
+    delegate = [(MSSubscribeStreamsProtocol *)self delegate];
+    v5 = delegate;
+    selfCopy2 = self;
     v7 = 0;
     goto LABEL_3;
   }
@@ -984,33 +984,33 @@ LABEL_3:
 LABEL_6:
 }
 
-- (void)pollForSubscriptionUpdatesWithAccountAnchors:(id)a3
+- (void)pollForSubscriptionUpdatesWithAccountAnchors:(id)anchors
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  anchorsCopy = anchors;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSStreamsProtocol *)self personID];
+    personID = [(MSStreamsProtocol *)self personID];
     v14 = 138543618;
     v15 = v5;
     v16 = 2112;
-    v17 = v7;
+    v17 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Requesting subscription updates...", &v14, 0x16u);
   }
 
-  v8 = [(MSStreamsProtocol *)self personID];
-  v9 = MSPathSubscribeProtocolDirForPersonID(v8);
+  personID2 = [(MSStreamsProtocol *)self personID];
+  v9 = MSPathSubscribeProtocolDirForPersonID(personID2);
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  [v10 removeItemAtPath:v9 error:0];
-  [v10 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:v9 error:0];
+  [defaultManager createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
   self->_chunkIndex = 0;
   [(MSStreamsProtocol *)self _refreshAuthTokenForContext:&self->_context];
-  v11 = [(MSStreamsProtocol *)self getURL];
+  getURL = [(MSStreamsProtocol *)self getURL];
   v12 = MSPURLConnectionProperties();
-  MSSSPCGetMetadataAsync(&self->_context._super.owner, v11, v12, v4);
+  MSSSPCGetMetadataAsync(&self->_context._super.owner, getURL, v12, anchorsCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -1024,17 +1024,17 @@ LABEL_6:
   [(MSSubscribeStreamsProtocol *)&v3 dealloc];
 }
 
-- (MSSubscribeStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSSubscribeStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = MSSubscribeStreamsProtocol;
-  v7 = [(MSStreamsProtocol *)&v10 initWithPersonID:v6 baseURL:a4];
+  v7 = [(MSStreamsProtocol *)&v10 initWithPersonID:dCopy baseURL:l];
   v8 = v7;
   if (v7)
   {
     v7->_context._super.owner = v7;
-    v7->_context._super.personID = v6;
+    v7->_context._super.personID = dCopy;
     v8->_context._super.deviceInfo = [(MSStreamsProtocol *)v8 deviceInfoDict];
     v8->_context.finishedCallback = _finishedCallback;
     v8->_context.gotDataChunkCallback = _gotDataChunkCallback;
@@ -1046,20 +1046,20 @@ LABEL_6:
   return v8;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = MSSubscribeStreamsProtocol;
-  [(MSStreamsProtocol *)&v3 setDelegate:a3];
+  [(MSStreamsProtocol *)&v3 setDelegate:delegate];
 }
 
 - (id)delegate
 {
   v4.receiver = self;
   v4.super_class = MSSubscribeStreamsProtocol;
-  v2 = [(MSStreamsProtocol *)&v4 delegate];
+  delegate = [(MSStreamsProtocol *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface REBlockSentinel
-- (REBlockSentinel)initWithFailureBlock:(id)a3;
+- (REBlockSentinel)initWithFailureBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation REBlockSentinel
 
-- (REBlockSentinel)initWithFailureBlock:(id)a3
+- (REBlockSentinel)initWithFailureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = REBlockSentinel;
   v5 = [(REBlockSentinel *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x22AABC5E0](v4);
+    v6 = MEMORY[0x22AABC5E0](blockCopy);
     failureBlock = v5->_failureBlock;
     v5->_failureBlock = v6;
 

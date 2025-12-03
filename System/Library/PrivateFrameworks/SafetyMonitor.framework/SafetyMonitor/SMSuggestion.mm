@@ -1,26 +1,26 @@
 @interface SMSuggestion
-+ (id)stringFromSMSuggestionSuppressionReason:(unint64_t)a3;
-+ (id)stringFromSMSuggestionTrigger:(unint64_t)a3;
-+ (id)stringFromSMSuggestionUserType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMSuggestion)initWithCoder:(id)a3;
-- (SMSuggestion)initWithSuggestionTrigger:(unint64_t)a3 suggestionUserType:(unint64_t)a4 suppressionReason:(unint64_t)a5 sessionType:(unint64_t)a6 sourceLocation:(id)a7 destinationLocation:(id)a8 buddy:(id)a9 dateInterval:(id)a10 creationDate:(id)a11 locationOfInterest:(id)a12;
++ (id)stringFromSMSuggestionSuppressionReason:(unint64_t)reason;
++ (id)stringFromSMSuggestionTrigger:(unint64_t)trigger;
++ (id)stringFromSMSuggestionUserType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (SMSuggestion)initWithCoder:(id)coder;
+- (SMSuggestion)initWithSuggestionTrigger:(unint64_t)trigger suggestionUserType:(unint64_t)type suppressionReason:(unint64_t)reason sessionType:(unint64_t)sessionType sourceLocation:(id)location destinationLocation:(id)destinationLocation buddy:(id)buddy dateInterval:(id)self0 creationDate:(id)self1 locationOfInterest:(id)self2;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSuggestion
 
-- (SMSuggestion)initWithSuggestionTrigger:(unint64_t)a3 suggestionUserType:(unint64_t)a4 suppressionReason:(unint64_t)a5 sessionType:(unint64_t)a6 sourceLocation:(id)a7 destinationLocation:(id)a8 buddy:(id)a9 dateInterval:(id)a10 creationDate:(id)a11 locationOfInterest:(id)a12
+- (SMSuggestion)initWithSuggestionTrigger:(unint64_t)trigger suggestionUserType:(unint64_t)type suppressionReason:(unint64_t)reason sessionType:(unint64_t)sessionType sourceLocation:(id)location destinationLocation:(id)destinationLocation buddy:(id)buddy dateInterval:(id)self0 creationDate:(id)self1 locationOfInterest:(id)self2
 {
-  v30 = a7;
-  v29 = a8;
-  v28 = a9;
-  v27 = a10;
-  v17 = a11;
-  v26 = a12;
-  if (!v17)
+  locationCopy = location;
+  destinationLocationCopy = destinationLocation;
+  buddyCopy = buddy;
+  intervalCopy = interval;
+  dateCopy = date;
+  interestCopy = interest;
+  if (!dateCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -32,11 +32,11 @@
 
 LABEL_7:
 
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  if (a6 != 4 && !v30)
+  if (sessionType != 4 && !locationCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -57,23 +57,23 @@ LABEL_13:
   p_isa = &v21->super.isa;
   if (v21)
   {
-    v21->_suggestionTrigger = a3;
-    v21->_suggestionUserType = a4;
-    v21->_suppressionReason = a5;
-    v21->_sessionType = a6;
-    objc_storeStrong(&v21->_sourceLocation, a7);
-    objc_storeStrong(p_isa + 6, a8);
-    objc_storeStrong(p_isa + 7, a9);
-    objc_storeStrong(p_isa + 8, a10);
-    objc_storeStrong(p_isa + 9, a11);
-    objc_storeStrong(p_isa + 10, a12);
+    v21->_suggestionTrigger = trigger;
+    v21->_suggestionUserType = type;
+    v21->_suppressionReason = reason;
+    v21->_sessionType = sessionType;
+    objc_storeStrong(&v21->_sourceLocation, location);
+    objc_storeStrong(p_isa + 6, destinationLocation);
+    objc_storeStrong(p_isa + 7, buddy);
+    objc_storeStrong(p_isa + 8, interval);
+    objc_storeStrong(p_isa + 9, date);
+    objc_storeStrong(p_isa + 10, interest);
   }
 
   self = p_isa;
-  v20 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v20;
+  return selfCopy;
 }
 
 - (id)description
@@ -83,89 +83,89 @@ LABEL_11:
   v3 = [objc_opt_class() stringFromSMSuggestionUserType:{-[SMSuggestion suggestionUserType](self, "suggestionUserType")}];
   v13 = [objc_opt_class() stringFromSMSuggestionSuppressionReason:{-[SMSuggestion suppressionReason](self, "suppressionReason")}];
   v4 = [SMSessionConfiguration sessionTypeToString:[(SMSuggestion *)self sessionType]];
-  v5 = [(SMSuggestion *)self sourceLocation];
-  v6 = [(SMSuggestion *)self destinationLocation];
-  v7 = [(SMSuggestion *)self buddy];
-  v8 = [(SMSuggestion *)self dateInterval];
-  v9 = [(SMSuggestion *)self creationDate];
-  v10 = [v9 stringFromDate];
-  v11 = [(SMSuggestion *)self locationOfInterest];
-  v16 = [v15 stringWithFormat:@"trigger, %@, user type, %@, suppression reason, %@, session type, %@, source location, %@, destination location, %@, buddy, %@, date interval, %@, creationDate, %@, locationOfInterest, %@", v14, v3, v13, v4, v5, v6, v7, v8, v10, v11];
+  sourceLocation = [(SMSuggestion *)self sourceLocation];
+  destinationLocation = [(SMSuggestion *)self destinationLocation];
+  buddy = [(SMSuggestion *)self buddy];
+  dateInterval = [(SMSuggestion *)self dateInterval];
+  creationDate = [(SMSuggestion *)self creationDate];
+  stringFromDate = [creationDate stringFromDate];
+  locationOfInterest = [(SMSuggestion *)self locationOfInterest];
+  v16 = [v15 stringWithFormat:@"trigger, %@, user type, %@, suppression reason, %@, session type, %@, source location, %@, destination location, %@, buddy, %@, date interval, %@, creationDate, %@, locationOfInterest, %@", v14, v3, v13, v4, sourceLocation, destinationLocation, buddy, dateInterval, stringFromDate, locationOfInterest];
 
   return v16;
 }
 
-+ (id)stringFromSMSuggestionTrigger:(unint64_t)a3
++ (id)stringFromSMSuggestionTrigger:(unint64_t)trigger
 {
-  if (a3 - 1 > 3)
+  if (trigger - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B64CE0[a3 - 1];
+    return off_279B64CE0[trigger - 1];
   }
 }
 
-+ (id)stringFromSMSuggestionUserType:(unint64_t)a3
++ (id)stringFromSMSuggestionUserType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B64D00[a3 - 1];
+    return off_279B64D00[type - 1];
   }
 }
 
-+ (id)stringFromSMSuggestionSuppressionReason:(unint64_t)a3
++ (id)stringFromSMSuggestionSuppressionReason:(unint64_t)reason
 {
-  if (a3 - 1 > 0xC)
+  if (reason - 1 > 0xC)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B64D20[a3 - 1];
+    return off_279B64D20[reason - 1];
   }
 }
 
-- (SMSuggestion)initWithCoder:(id)a3
+- (SMSuggestion)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v15 = [v3 decodeIntegerForKey:@"Trigger"];
-  v4 = [v3 decodeIntegerForKey:@"UserType"];
-  v5 = [v3 decodeIntegerForKey:@"SuppressionReason"];
-  v6 = [v3 decodeIntegerForKey:@"sSssionType"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SourceLocation"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"DestinationLocation"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Buddy"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"DateInterval"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"LocationOfInterest"];
+  coderCopy = coder;
+  v15 = [coderCopy decodeIntegerForKey:@"Trigger"];
+  v4 = [coderCopy decodeIntegerForKey:@"UserType"];
+  v5 = [coderCopy decodeIntegerForKey:@"SuppressionReason"];
+  v6 = [coderCopy decodeIntegerForKey:@"sSssionType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceLocation"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DestinationLocation"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Buddy"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateInterval"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LocationOfInterest"];
 
   v13 = [(SMSuggestion *)self initWithSuggestionTrigger:v15 suggestionUserType:v4 suppressionReason:v5 sessionType:v6 sourceLocation:v7 destinationLocation:v8 buddy:v9 dateInterval:v10 creationDate:v11 locationOfInterest:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   suggestionTrigger = self->_suggestionTrigger;
-  v5 = a3;
-  [v5 encodeInteger:suggestionTrigger forKey:@"Trigger"];
-  [v5 encodeInteger:self->_suggestionUserType forKey:@"UserType"];
-  [v5 encodeInteger:self->_suppressionReason forKey:@"SuppressionReason"];
-  [v5 encodeInteger:self->_sessionType forKey:@"sSssionType"];
-  [v5 encodeObject:self->_sourceLocation forKey:@"SourceLocation"];
-  [v5 encodeObject:self->_destinationLocation forKey:@"DestinationLocation"];
-  [v5 encodeObject:self->_buddy forKey:@"Buddy"];
-  [v5 encodeObject:self->_dateInterval forKey:@"DateInterval"];
-  [v5 encodeObject:self->_creationDate forKey:@"CreationDate"];
-  [v5 encodeObject:self->_locationOfInterest forKey:@"LocationOfInterest"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:suggestionTrigger forKey:@"Trigger"];
+  [coderCopy encodeInteger:self->_suggestionUserType forKey:@"UserType"];
+  [coderCopy encodeInteger:self->_suppressionReason forKey:@"SuppressionReason"];
+  [coderCopy encodeInteger:self->_sessionType forKey:@"sSssionType"];
+  [coderCopy encodeObject:self->_sourceLocation forKey:@"SourceLocation"];
+  [coderCopy encodeObject:self->_destinationLocation forKey:@"DestinationLocation"];
+  [coderCopy encodeObject:self->_buddy forKey:@"Buddy"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"DateInterval"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"CreationDate"];
+  [coderCopy encodeObject:self->_locationOfInterest forKey:@"LocationOfInterest"];
 }
 
 - (unint64_t)hash
@@ -178,26 +178,26 @@ LABEL_11:
   v7 = [v6 hash];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSuggestion sessionType](self, "sessionType")}];
   v22 = v5 ^ v7 ^ [v8 hash];
-  v9 = [(SMSuggestion *)self sourceLocation];
-  v10 = [v9 hash];
-  v11 = [(SMSuggestion *)self destinationLocation];
-  v12 = v10 ^ [v11 hash];
-  v13 = [(SMSuggestion *)self buddy];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(SMSuggestion *)self dateInterval];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SMSuggestion *)self creationDate];
-  v18 = v16 ^ [v17 hash];
-  v19 = [(SMSuggestion *)self locationOfInterest];
-  v20 = v18 ^ [v19 hash];
+  sourceLocation = [(SMSuggestion *)self sourceLocation];
+  v10 = [sourceLocation hash];
+  destinationLocation = [(SMSuggestion *)self destinationLocation];
+  v12 = v10 ^ [destinationLocation hash];
+  buddy = [(SMSuggestion *)self buddy];
+  v14 = v12 ^ [buddy hash];
+  dateInterval = [(SMSuggestion *)self dateInterval];
+  v16 = v14 ^ [dateInterval hash];
+  creationDate = [(SMSuggestion *)self creationDate];
+  v18 = v16 ^ [creationDate hash];
+  locationOfInterest = [(SMSuggestion *)self locationOfInterest];
+  v20 = v18 ^ [locationOfInterest hash];
 
   return v22 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -207,9 +207,9 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(SMSuggestion *)self suggestionTrigger];
-      if (v7 != [(SMSuggestion *)v6 suggestionTrigger]|| (v8 = [(SMSuggestion *)self suggestionUserType], v8 != [(SMSuggestion *)v6 suggestionUserType]) || (v9 = [(SMSuggestion *)self suppressionReason], v9 != [(SMSuggestion *)v6 suppressionReason]) || (v10 = [(SMSuggestion *)self sessionType], v10 != [(SMSuggestion *)v6 sessionType]))
+      v6 = equalCopy;
+      suggestionTrigger = [(SMSuggestion *)self suggestionTrigger];
+      if (suggestionTrigger != [(SMSuggestion *)v6 suggestionTrigger]|| (v8 = [(SMSuggestion *)self suggestionUserType], v8 != [(SMSuggestion *)v6 suggestionUserType]) || (v9 = [(SMSuggestion *)self suppressionReason], v9 != [(SMSuggestion *)v6 suppressionReason]) || (v10 = [(SMSuggestion *)self sessionType], v10 != [(SMSuggestion *)v6 sessionType]))
       {
         v14 = 0;
 LABEL_13:
@@ -217,33 +217,33 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v11 = [(SMSuggestion *)self sourceLocation];
-      v12 = [(SMSuggestion *)v6 sourceLocation];
-      if (v11 != v12)
+      sourceLocation = [(SMSuggestion *)self sourceLocation];
+      sourceLocation2 = [(SMSuggestion *)v6 sourceLocation];
+      if (sourceLocation != sourceLocation2)
       {
-        v13 = [(SMSuggestion *)self sourceLocation];
-        v59 = [(SMSuggestion *)v6 sourceLocation];
-        v60 = v13;
-        if (![v13 isEqual:v59])
+        sourceLocation3 = [(SMSuggestion *)self sourceLocation];
+        sourceLocation4 = [(SMSuggestion *)v6 sourceLocation];
+        v60 = sourceLocation3;
+        if (![sourceLocation3 isEqual:sourceLocation4])
         {
           v14 = 0;
           goto LABEL_44;
         }
       }
 
-      v16 = [(SMSuggestion *)self destinationLocation];
-      v17 = [(SMSuggestion *)v6 destinationLocation];
-      if (v16 != v17)
+      destinationLocation = [(SMSuggestion *)self destinationLocation];
+      destinationLocation2 = [(SMSuggestion *)v6 destinationLocation];
+      if (destinationLocation != destinationLocation2)
       {
-        v3 = [(SMSuggestion *)self destinationLocation];
-        v57 = [(SMSuggestion *)v6 destinationLocation];
-        if (![v3 isEqual:?])
+        destinationLocation3 = [(SMSuggestion *)self destinationLocation];
+        destinationLocation4 = [(SMSuggestion *)v6 destinationLocation];
+        if (![destinationLocation3 isEqual:?])
         {
           v14 = 0;
 LABEL_42:
 
 LABEL_43:
-          if (v11 == v12)
+          if (sourceLocation == sourceLocation2)
           {
 LABEL_45:
 
@@ -256,22 +256,22 @@ LABEL_44:
         }
       }
 
-      v18 = [(SMSuggestion *)self buddy];
-      v19 = [(SMSuggestion *)v6 buddy];
-      v58 = v18;
-      v20 = v18 == v19;
-      v21 = v19;
+      buddy = [(SMSuggestion *)self buddy];
+      buddy2 = [(SMSuggestion *)v6 buddy];
+      v58 = buddy;
+      v20 = buddy == buddy2;
+      v21 = buddy2;
       if (v20)
       {
-        v55 = v19;
+        v55 = buddy2;
       }
 
       else
       {
-        v22 = [(SMSuggestion *)self buddy];
-        v51 = [(SMSuggestion *)v6 buddy];
-        v52 = v22;
-        if (![v22 isEqual:v51])
+        buddy3 = [(SMSuggestion *)self buddy];
+        buddy4 = [(SMSuggestion *)v6 buddy];
+        v52 = buddy3;
+        if (![buddy3 isEqual:buddy4])
         {
           v14 = 0;
           v29 = v21;
@@ -279,7 +279,7 @@ LABEL_44:
 LABEL_40:
 
 LABEL_41:
-          if (v16 == v17)
+          if (destinationLocation == destinationLocation2)
           {
             goto LABEL_43;
           }
@@ -290,18 +290,18 @@ LABEL_41:
         v55 = v21;
       }
 
-      v23 = [(SMSuggestion *)self dateInterval];
-      v24 = [(SMSuggestion *)v6 dateInterval];
-      v53 = v23;
-      v54 = v3;
-      v20 = v23 == v24;
-      v25 = v24;
+      dateInterval = [(SMSuggestion *)self dateInterval];
+      dateInterval2 = [(SMSuggestion *)v6 dateInterval];
+      v53 = dateInterval;
+      v54 = destinationLocation3;
+      v20 = dateInterval == dateInterval2;
+      v25 = dateInterval2;
       if (!v20)
       {
-        v26 = [(SMSuggestion *)self dateInterval];
-        v45 = [(SMSuggestion *)v6 dateInterval];
-        v46 = v26;
-        if (![v26 isEqual:v45])
+        dateInterval3 = [(SMSuggestion *)self dateInterval];
+        dateInterval4 = [(SMSuggestion *)v6 dateInterval];
+        v46 = dateInterval3;
+        if (![dateInterval3 isEqual:dateInterval4])
         {
           v27 = v55;
           v14 = 0;
@@ -312,7 +312,7 @@ LABEL_39:
           v30 = v58;
           v29 = v27;
           v20 = v58 == v27;
-          v3 = v54;
+          destinationLocation3 = v54;
           if (v20)
           {
             goto LABEL_41;
@@ -322,39 +322,39 @@ LABEL_39:
         }
       }
 
-      v31 = [(SMSuggestion *)self creationDate];
-      v48 = [(SMSuggestion *)v6 creationDate];
-      v49 = v31;
+      creationDate = [(SMSuggestion *)self creationDate];
+      creationDate2 = [(SMSuggestion *)v6 creationDate];
+      v49 = creationDate;
       v50 = v25;
-      v47 = v17;
-      if (v31 == v48)
+      v47 = destinationLocation2;
+      if (creationDate == creationDate2)
       {
-        v44 = v16;
+        v44 = destinationLocation;
         v34 = v55;
       }
 
       else
       {
-        v32 = [(SMSuggestion *)self creationDate];
-        v42 = [(SMSuggestion *)v6 creationDate];
-        v43 = v32;
-        v33 = [v32 isEqual:v42];
+        creationDate3 = [(SMSuggestion *)self creationDate];
+        creationDate4 = [(SMSuggestion *)v6 creationDate];
+        v43 = creationDate3;
+        v33 = [creationDate3 isEqual:creationDate4];
         v34 = v55;
         if (!v33)
         {
           v14 = 0;
-          v41 = v48;
+          v41 = creationDate2;
           v40 = v49;
           goto LABEL_35;
         }
 
-        v44 = v16;
+        v44 = destinationLocation;
       }
 
-      v35 = [(SMSuggestion *)self locationOfInterest];
-      v36 = [(SMSuggestion *)v6 locationOfInterest];
-      v37 = v36;
-      if (v35 == v36)
+      locationOfInterest = [(SMSuggestion *)self locationOfInterest];
+      locationOfInterest2 = [(SMSuggestion *)v6 locationOfInterest];
+      v37 = locationOfInterest2;
+      if (locationOfInterest == locationOfInterest2)
       {
 
         v14 = 1;
@@ -364,23 +364,23 @@ LABEL_39:
       {
         [(SMSuggestion *)self locationOfInterest];
         v38 = v56 = v34;
-        v39 = [(SMSuggestion *)v6 locationOfInterest];
-        v14 = [v38 isEqual:v39];
+        locationOfInterest3 = [(SMSuggestion *)v6 locationOfInterest];
+        v14 = [v38 isEqual:locationOfInterest3];
 
         v34 = v56;
       }
 
-      v41 = v48;
+      v41 = creationDate2;
       v40 = v49;
-      v16 = v44;
-      if (v49 == v48)
+      destinationLocation = v44;
+      if (v49 == creationDate2)
       {
         v27 = v34;
 LABEL_37:
 
         v28 = v53;
         v25 = v50;
-        v17 = v47;
+        destinationLocation2 = v47;
         if (v53 == v50)
         {
           goto LABEL_39;

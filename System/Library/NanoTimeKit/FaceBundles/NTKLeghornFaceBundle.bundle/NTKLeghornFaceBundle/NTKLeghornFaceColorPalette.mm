@@ -1,5 +1,5 @@
 @interface NTKLeghornFaceColorPalette
-+ (id)_colorFromColorSetColor:(id)a3 fallbackBackgroundColor:(id)a4 backgroundMultiple:(double)a5 fallbackRootColor:(id)a6 rootMultiplier:(double)a7;
++ (id)_colorFromColorSetColor:(id)color fallbackBackgroundColor:(id)backgroundColor backgroundMultiple:(double)multiple fallbackRootColor:(id)rootColor rootMultiplier:(double)multiplier;
 - (BOOL)_isDuo;
 - (BOOL)_isFullScreen;
 - (UIColor)buttonBackgroundColor;
@@ -40,24 +40,24 @@
 - (id)_canonicalMultiColorPalette;
 - (id)_proxyPalette;
 - (id)isFullScreen;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 @end
 
 @implementation NTKLeghornFaceColorPalette
 
-+ (id)_colorFromColorSetColor:(id)a3 fallbackBackgroundColor:(id)a4 backgroundMultiple:(double)a5 fallbackRootColor:(id)a6 rootMultiplier:(double)a7
++ (id)_colorFromColorSetColor:(id)color fallbackBackgroundColor:(id)backgroundColor backgroundMultiple:(double)multiple fallbackRootColor:(id)rootColor rootMultiplier:(double)multiplier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v9 || *MEMORY[0x277D2BF30] == v9)
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  rootColorCopy = rootColor;
+  if (!colorCopy || *MEMORY[0x277D2BF30] == colorCopy)
   {
     v12 = NTKColorByPremultiplyingAlpha();
   }
 
   else
   {
-    v12 = v9;
+    v12 = colorCopy;
   }
 
   v13 = v12;
@@ -1292,11 +1292,11 @@
   return v3;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  isFullScreen = objc_msgSend__isFullScreen(self, a2, a3.width);
+  height = size.height;
+  width = size.width;
+  isFullScreen = objc_msgSend__isFullScreen(self, a2, size.width);
   isDuo = objc_msgSend__isDuo(self, v7, v8);
   v12 = isDuo;
   if ((isFullScreen & 1) != 0 || isDuo)
@@ -1314,8 +1314,8 @@
     v19 = NSStringFromCGSize(v38);
     v22 = objc_msgSend_stringWithFormat_(v14, v20, v21, @"%@-%@", v18, v19);
 
-    v13 = objc_msgSend_objectForKey_(qword_27E1DF040, v23, v24, v22);
-    if (!v13)
+    height = objc_msgSend_objectForKey_(qword_27E1DF040, v23, v24, v22);
+    if (!height)
     {
       if (v12)
       {
@@ -1329,8 +1329,8 @@
         objc_msgSend_primaryBackgroundColor(self, v30, v31);
       }
       v32 = ;
-      v13 = NTKSwatchTwoColorImage();
-      objc_msgSend_setObject_forKey_(qword_27E1DF040, v33, v34, v13, v22);
+      height = NTKSwatchTwoColorImage();
+      objc_msgSend_setObject_forKey_(qword_27E1DF040, v33, v34, height, v22);
     }
   }
 
@@ -1338,10 +1338,10 @@
   {
     v36.receiver = self;
     v36.super_class = NTKLeghornFaceColorPalette;
-    v13 = [(NTKFaceColorPalette *)&v36 swatchImageForSize:width, height];
+    height = [(NTKFaceColorPalette *)&v36 swatchImageForSize:width, height];
   }
 
-  return v13;
+  return height;
 }
 
 @end

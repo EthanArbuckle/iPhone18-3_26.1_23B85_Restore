@@ -1,24 +1,24 @@
 @interface EmergencyContactPicker.ContactPickerCoordinator
 - (_TtCV11MedicalIDUI22EmergencyContactPicker24ContactPickerCoordinator)init;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
 @end
 
 @implementation EmergencyContactPicker.ContactPickerCoordinator
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
-  v6 = self;
-  sub_258871BB8(v5, 0);
+  contactCopy = contact;
+  selfCopy = self;
+  sub_258871BB8(contactCopy, 0);
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v5 = a4;
-  v7 = self;
-  v6 = [v5 contact];
-  sub_258871BB8(v6, v5);
+  propertyCopy = property;
+  selfCopy = self;
+  contact = [propertyCopy contact];
+  sub_258871BB8(contact, propertyCopy);
 }
 
 - (_TtCV11MedicalIDUI22EmergencyContactPicker24ContactPickerCoordinator)init

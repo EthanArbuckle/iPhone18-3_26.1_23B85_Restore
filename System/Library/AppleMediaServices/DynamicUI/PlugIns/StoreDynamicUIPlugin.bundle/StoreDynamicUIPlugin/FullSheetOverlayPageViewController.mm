@@ -1,16 +1,16 @@
 @interface FullSheetOverlayPageViewController
 - (UINavigationItem)navigationItem;
-- (_TtC20StoreDynamicUIPlugin34FullSheetOverlayPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20StoreDynamicUIPlugin34FullSheetOverlayPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
-- (void)dismissButtonPressed:(id)a3;
+- (void)dismissButtonPressed:(id)pressed;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -18,7 +18,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_A72CC();
 
   return v3;
@@ -26,70 +26,70 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_A7394();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_A746C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_A76A4();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   sub_A778C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_A7884();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_A7968(a3);
+  selfCopy = self;
+  sub_A7968(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_A7B00();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_A7BA8();
 }
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_A7CB8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_A7D94(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_A7D94(change);
 }
 
-- (void)dismissButtonPressed:(id)a3
+- (void)dismissButtonPressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_13BF54();
     swift_unknownObjectRelease();
@@ -98,7 +98,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_A8894();
@@ -106,14 +106,14 @@
   sub_928C(v6, &unk_1A06F0);
 }
 
-- (_TtC20StoreDynamicUIPlugin34FullSheetOverlayPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20StoreDynamicUIPlugin34FullSheetOverlayPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_13BB84();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_A8CBC();
 }
 

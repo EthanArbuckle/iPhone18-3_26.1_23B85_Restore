@@ -43,7 +43,7 @@
 
     if (a5)
     {
-      v10 = [[a1 alloc] initWithSourceText:v8 targetPhrases:v9 selectedPhraseIndex:0];
+      v10 = [[self alloc] initWithSourceText:v8 targetPhrases:v9 selectedPhraseIndex:0];
       goto LABEL_16;
     }
 
@@ -83,7 +83,7 @@ LABEL_16:
   v9 = a4;
   if ([v8 is_final])
   {
-    v10 = [v8 n_best_translated_phrases];
+    n_best_translated_phrases = [v8 n_best_translated_phrases];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __89___LTDisambiguableSentence_Daemon__sentenceFromFTSpeechResponse_sourceText_censorSpeech___block_invoke;
@@ -92,8 +92,8 @@ LABEL_16:
     v11 = v9;
     v18 = v11;
     v19 = a5;
-    v12 = [v10 _ltCompactMap:v16];
-    v13 = [a1 _sentenceWithSourceString:v11 targetPhrases:v12 expectedNumberOfPhrases:{objc_msgSend(v10, "count")}];
+    v12 = [n_best_translated_phrases _ltCompactMap:v16];
+    v13 = [self _sentenceWithSourceString:v11 targetPhrases:v12 expectedNumberOfPhrases:{objc_msgSend(n_best_translated_phrases, "count")}];
   }
 
   else
@@ -113,19 +113,19 @@ LABEL_16:
 + (id)sentenceFromOspreyResponse:()Daemon
 {
   v4 = a3;
-  v5 = [v4 n_best_translated_phrases];
-  v6 = [v4 engine_input];
-  if (v6)
+  n_best_translated_phrases = [v4 n_best_translated_phrases];
+  engine_input = [v4 engine_input];
+  if (engine_input)
   {
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __63___LTDisambiguableSentence_Daemon__sentenceFromOspreyResponse___block_invoke;
     v15 = &unk_2789B5FE0;
     v16 = v4;
-    v7 = v6;
+    v7 = engine_input;
     v17 = v7;
-    v8 = [v5 _ltCompactMap:&v12];
-    v9 = [a1 _sentenceWithSourceString:v7 targetPhrases:v8 expectedNumberOfPhrases:{objc_msgSend(v5, "count", v12, v13, v14, v15)}];
+    v8 = [n_best_translated_phrases _ltCompactMap:&v12];
+    v9 = [self _sentenceWithSourceString:v7 targetPhrases:v8 expectedNumberOfPhrases:{objc_msgSend(n_best_translated_phrases, "count", v12, v13, v14, v15)}];
   }
 
   else
@@ -145,19 +145,19 @@ LABEL_16:
 + (id)sentenceFromOspreyBatchSentence:()Daemon
 {
   v4 = a3;
-  v5 = [v4 engine_input];
-  if (v5)
+  engine_input = [v4 engine_input];
+  if (engine_input)
   {
-    v6 = [v4 n_best_choices];
+    n_best_choices = [v4 n_best_choices];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __68___LTDisambiguableSentence_Daemon__sentenceFromOspreyBatchSentence___block_invoke;
     v15 = &unk_2789B6008;
     v16 = v4;
-    v7 = v5;
+    v7 = engine_input;
     v17 = v7;
-    v8 = [v6 _ltCompactMap:&v12];
-    v9 = [a1 _sentenceWithSourceString:v7 targetPhrases:v8 expectedNumberOfPhrases:{objc_msgSend(v6, "count", v12, v13, v14, v15)}];
+    v8 = [n_best_choices _ltCompactMap:&v12];
+    v9 = [self _sentenceWithSourceString:v7 targetPhrases:v8 expectedNumberOfPhrases:{objc_msgSend(n_best_choices, "count", v12, v13, v14, v15)}];
   }
 
   else

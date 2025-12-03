@@ -1,17 +1,17 @@
 @interface ATXSuggestedPagesStackLayoutFourSmallOnTop
-- (id)makeStacksFromWidgets:(id)a3 pageType:(int64_t)a4 environment:(id)a5;
-- (unint64_t)maxAppRowsForPageType:(int64_t)a3;
-- (void)layOutStacks:(id)a3 numberOfColumns:(unint64_t)a4 forPageType:(int64_t)a5;
+- (id)makeStacksFromWidgets:(id)widgets pageType:(int64_t)type environment:(id)environment;
+- (unint64_t)maxAppRowsForPageType:(int64_t)type;
+- (void)layOutStacks:(id)stacks numberOfColumns:(unint64_t)columns forPageType:(int64_t)type;
 @end
 
 @implementation ATXSuggestedPagesStackLayoutFourSmallOnTop
 
-- (id)makeStacksFromWidgets:(id)a3 pageType:(int64_t)a4 environment:(id)a5
+- (id)makeStacksFromWidgets:(id)widgets pageType:(int64_t)type environment:(id)environment
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (a4 == 4 || ([MEMORY[0x277D42590] isiPad] & 1) != 0)
+  widgetsCopy = widgets;
+  environmentCopy = environment;
+  if (type == 4 || ([MEMORY[0x277D42590] isiPad] & 1) != 0)
   {
     v9 = 0;
   }
@@ -23,7 +23,7 @@
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = v7;
+    v11 = widgetsCopy;
     v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v12)
     {
@@ -96,29 +96,29 @@ void __89__ATXSuggestedPagesStackLayoutFourSmallOnTop_makeStacksFromWidgets_page
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)layOutStacks:(id)a3 numberOfColumns:(unint64_t)a4 forPageType:(int64_t)a5
+- (void)layOutStacks:(id)stacks numberOfColumns:(unint64_t)columns forPageType:(int64_t)type
 {
-  v7 = a3;
-  if ([v7 count] != 4)
+  stacksCopy = stacks;
+  if ([stacksCopy count] != 4)
   {
     [ATXSuggestedPagesStackLayoutFourSmallOnTop layOutStacks:a2 numberOfColumns:self forPageType:?];
   }
 
-  v8 = [v7 objectAtIndexedSubscript:0];
+  v8 = [stacksCopy objectAtIndexedSubscript:0];
   [v8 assignWidgetSpaceCoordinateWithRow:0 column:0];
 
-  v9 = [v7 objectAtIndexedSubscript:1];
+  v9 = [stacksCopy objectAtIndexedSubscript:1];
   [v9 assignWidgetSpaceCoordinateWithRow:0 column:1];
 
-  v10 = [v7 objectAtIndexedSubscript:2];
+  v10 = [stacksCopy objectAtIndexedSubscript:2];
   [v10 assignWidgetSpaceCoordinateWithRow:1 column:0];
 
-  v11 = [v7 objectAtIndexedSubscript:3];
+  v11 = [stacksCopy objectAtIndexedSubscript:3];
 
   [v11 assignWidgetSpaceCoordinateWithRow:1 column:1];
 }
 
-- (unint64_t)maxAppRowsForPageType:(int64_t)a3
+- (unint64_t)maxAppRowsForPageType:(int64_t)type
 {
   if ([MEMORY[0x277D42590] isiPad])
   {

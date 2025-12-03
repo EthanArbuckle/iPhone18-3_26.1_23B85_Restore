@@ -1,8 +1,8 @@
 @interface SBFluidSwitcherItemContainerLayer
 - (SBFluidSwitcherItemContainerLayer)init;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)setPosition:(CGPoint)a3;
-- (void)setTransform:(CATransform3D *)a3;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)setPosition:(CGPoint)position;
+- (void)setTransform:(CATransform3D *)transform;
 @end
 
 @implementation SBFluidSwitcherItemContainerLayer
@@ -33,10 +33,10 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   p_previousPosition = &self->_previousPosition;
   [(SBFluidSwitcherItemContainerLayer *)self position];
   p_previousPosition->x = v7;
@@ -46,7 +46,7 @@
   [(SBFluidSwitcherItemContainerLayer *)&v9 setPosition:x, y];
 }
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
   p_previousTransform = &self->_previousTransform;
   [(SBFluidSwitcherItemContainerLayer *)self transform];
@@ -74,17 +74,17 @@
   v13 = *&p_previousTransform->m23;
   v31 = *&p_previousTransform->m21;
   v32 = v13;
-  v14 = *&a3->m33;
-  v28[5] = *&a3->m31;
+  v14 = *&transform->m33;
+  v28[5] = *&transform->m31;
   v28[6] = v14;
-  v15 = *&a3->m43;
-  v28[7] = *&a3->m41;
+  v15 = *&transform->m43;
+  v28[7] = *&transform->m41;
   v28[8] = v15;
-  v16 = *&a3->m13;
-  v28[1] = *&a3->m11;
+  v16 = *&transform->m13;
+  v28[1] = *&transform->m11;
   v28[2] = v16;
-  v17 = *&a3->m23;
-  v28[3] = *&a3->m21;
+  v17 = *&transform->m23;
+  v28[3] = *&transform->m21;
   v28[4] = v17;
   if (BSFloatEqualToFloat())
   {
@@ -109,17 +109,17 @@
 LABEL_6:
     v28[0].receiver = self;
     v28[0].super_class = SBFluidSwitcherItemContainerLayer;
-    v19 = *&a3->m33;
-    v33 = *&a3->m31;
+    v19 = *&transform->m33;
+    v33 = *&transform->m31;
     v34 = v19;
-    v20 = *&a3->m43;
-    v35 = *&a3->m41;
+    v20 = *&transform->m43;
+    v35 = *&transform->m41;
     v36 = v20;
-    v21 = *&a3->m13;
-    v29 = *&a3->m11;
+    v21 = *&transform->m13;
+    v29 = *&transform->m11;
     v30 = v21;
-    v22 = *&a3->m23;
-    v31 = *&a3->m21;
+    v22 = *&transform->m23;
+    v31 = *&transform->m21;
     v32 = v22;
     [(objc_super *)v28 setTransform:&v29];
   }
@@ -139,32 +139,32 @@ LABEL_6:
   *&p_previousTransform->m23 = v27;
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_positionAnimationsBeginFromModelState && [v7 isEqualToString:@"position"] && (self->_previousPosition.x == 1.79769313e308 ? (v9 = self->_previousPosition.y == 1.79769313e308) : (v9 = 0), !v9))
+  animationCopy = animation;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (self->_positionAnimationsBeginFromModelState && [keyCopy isEqualToString:@"position"] && (self->_previousPosition.x == 1.79769313e308 ? (v9 = self->_previousPosition.y == 1.79769313e308) : (v9 = 0), !v9))
   {
     v10 = objc_opt_class();
-    v11 = SBSafeCast(v10, v6);
+    v11 = SBSafeCast(v10, animationCopy);
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 fromValue];
-      if (v13)
+      fromValue = [v11 fromValue];
+      if (fromValue)
       {
-        v14 = v13;
-        v15 = [v12 toValue];
-        if (v15)
+        v14 = fromValue;
+        toValue = [v12 toValue];
+        if (toValue)
         {
         }
 
         else
         {
-          v22 = [v12 byValue];
+          byValue = [v12 byValue];
 
-          if (!v22)
+          if (!byValue)
           {
             previousPosition = self->_previousPosition;
             v23 = [MEMORY[0x277CCAE60] valueWithBytes:&previousPosition objCType:"{CGPoint=dd}"];
@@ -226,14 +226,14 @@ LABEL_6:
         v31[3] = v35;
         v20 = _UIInterfaceOrientationFromCATransform3D(v31);
         v21 = _UIInterfaceOrientationFromCATransform3D(v30);
-        _UIMakeBasicTransformAnimationUnambiguous(v6, v21, v20, 1, 0);
+        _UIMakeBasicTransformAnimationUnambiguous(animationCopy, v21, v20, 1, 0);
       }
     }
   }
 
   v29.receiver = self;
   v29.super_class = SBFluidSwitcherItemContainerLayer;
-  [(SBFluidSwitcherItemContainerLayer *)&v29 addAnimation:v6 forKey:v8];
+  [(SBFluidSwitcherItemContainerLayer *)&v29 addAnimation:animationCopy forKey:v8];
 }
 
 @end

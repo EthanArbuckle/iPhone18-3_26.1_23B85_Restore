@@ -1,16 +1,16 @@
 @interface AMSUICommonControl
-- (AMSUICommonControl)initWithCoder:(id)a3;
-- (AMSUICommonControl)initWithFrame:(CGRect)a3;
+- (AMSUICommonControl)initWithCoder:(id)coder;
+- (AMSUICommonControl)initWithFrame:(CGRect)frame;
 - (id)tintColor;
 @end
 
 @implementation AMSUICommonControl
 
-- (AMSUICommonControl)initWithCoder:(id)a3
+- (AMSUICommonControl)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonControl;
-  v3 = [(AMSUICommonControl *)&v6 initWithCoder:a3];
+  v3 = [(AMSUICommonControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -20,11 +20,11 @@
   return v4;
 }
 
-- (AMSUICommonControl)initWithFrame:(CGRect)a3
+- (AMSUICommonControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonControl;
-  v3 = [(AMSUICommonControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMSUICommonControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,19 +38,19 @@
 {
   v7.receiver = self;
   v7.super_class = AMSUICommonControl;
-  v2 = [(AMSUICommonControl *)&v7 tintColor];
-  v3 = v2;
-  if (v2)
+  tintColor = [(AMSUICommonControl *)&v7 tintColor];
+  v3 = tintColor;
+  if (tintColor)
   {
-    v4 = v2;
+    ams_appTint = tintColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] ams_appTint];
+    ams_appTint = [MEMORY[0x1E69DC888] ams_appTint];
   }
 
-  v5 = v4;
+  v5 = ams_appTint;
 
   return v5;
 }

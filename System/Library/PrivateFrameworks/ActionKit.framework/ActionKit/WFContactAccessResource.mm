@@ -1,13 +1,13 @@
 @interface WFContactAccessResource
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFContactAccessResource
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -32,8 +32,8 @@
   v12[2] = __76__WFContactAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
   v12[3] = &unk_278C20360;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   [v10 requestAccessForEntityType:0 completionHandler:v12];
 }
 

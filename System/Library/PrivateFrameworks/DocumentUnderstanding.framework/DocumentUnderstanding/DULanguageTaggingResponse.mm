@@ -1,10 +1,10 @@
 @interface DULanguageTaggingResponse
 - (NSArray)languageTags;
 - (_TtC21DocumentUnderstanding11DUDebugInfo)responseDebugInfo;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLanguageTags:(id)a3;
-- (void)setResponseDebugInfo:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLanguageTags:(id)tags;
+- (void)setResponseDebugInfo:(id)info;
 @end
 
 @implementation DULanguageTaggingResponse
@@ -17,10 +17,10 @@
   return v2;
 }
 
-- (void)setLanguageTags:(id)a3
+- (void)setLanguageTags:(id)tags
 {
   v4 = sub_232CE9FE0();
-  v5 = self;
+  selfCopy = self;
   sub_232BD880C(v4);
 }
 
@@ -31,16 +31,16 @@
   return v2;
 }
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v5 = a3;
-  v6 = self;
-  sub_232BD89A4(a3);
+  infoCopy = info;
+  selfCopy = self;
+  sub_232BD89A4(info);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232BD97A4(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232BD9898(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232BD9898(coderCopy);
 }
 
 @end

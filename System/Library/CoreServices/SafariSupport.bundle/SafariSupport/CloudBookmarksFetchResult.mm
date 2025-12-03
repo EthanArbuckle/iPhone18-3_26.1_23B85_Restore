@@ -4,7 +4,7 @@
 - (NSArray)bookmarkLeafRecords;
 - (NSArray)bookmarkListRecords;
 - (NSArray)deletedRecordIDs;
-- (void)addRecord:(id)a3;
+- (void)addRecord:(id)record;
 @end
 
 @implementation CloudBookmarksFetchResult
@@ -77,8 +77,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * i) recordID];
-        [v3 addObject:v9];
+        recordID = [*(*(&v21 + 1) + 8 * i) recordID];
+        [v3 addObject:recordID];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -106,8 +106,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * j) recordID];
-        [v3 addObject:v15];
+        recordID2 = [*(*(&v17 + 1) + 8 * j) recordID];
+        [v3 addObject:recordID2];
       }
 
       v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -119,37 +119,37 @@
   return v3;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   itemConfigurations = self->_itemConfigurations;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10004891C;
   v15[3] = &unk_100133188;
-  v7 = v5;
+  v7 = recordCopy;
   v16 = v7;
   v8 = [(NSArray *)itemConfigurations safari_firstObjectPassingTest:v15];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 itemType];
-    if (!v10)
+    itemType = [v8 itemType];
+    if (!itemType)
     {
       mutableBookmarkLeafRecords = self->_mutableBookmarkLeafRecords;
       goto LABEL_13;
     }
 
-    if (v10 == 1)
+    if (itemType == 1)
     {
-      v11 = [v7 safari_recordName];
-      v12 = [v11 isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark];
+      safari_recordName = [v7 safari_recordName];
+      v12 = [safari_recordName isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark];
 
       if (v12)
       {
         p_topBookmarkRecord = &self->_topBookmarkRecord;
 LABEL_11:
-        objc_storeStrong(p_topBookmarkRecord, a3);
+        objc_storeStrong(p_topBookmarkRecord, record);
         goto LABEL_14;
       }
 

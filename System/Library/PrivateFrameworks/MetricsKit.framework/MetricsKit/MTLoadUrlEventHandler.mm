@@ -1,11 +1,11 @@
 @interface MTLoadUrlEventHandler
-- (id)dnsServersIPAddresses:(id)a3;
+- (id)dnsServersIPAddresses:(id)addresses;
 - (id)eventType;
-- (id)eventVersion:(id)a3;
+- (id)eventVersion:(id)version;
 - (id)knownFields;
-- (id)metricsDataWithPerfMeasurement:(id)a3;
-- (id)xpSamplingPercentageUsers:(id)a3;
-- (id)xpSessionDuration:(id)a3;
+- (id)metricsDataWithPerfMeasurement:(id)measurement;
+- (id)xpSamplingPercentageUsers:(id)users;
+- (id)xpSessionDuration:(id)duration;
 @end
 
 @implementation MTLoadUrlEventHandler
@@ -14,11 +14,11 @@
 {
   v7.receiver = self;
   v7.super_class = MTLoadUrlEventHandler;
-  v2 = [(MTEventHandler *)&v7 eventType];
-  v3 = v2;
-  if (v2)
+  eventType = [(MTEventHandler *)&v7 eventType];
+  v3 = eventType;
+  if (eventType)
   {
-    v4 = v2;
+    v4 = eventType;
   }
 
   else
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = MTLoadUrlEventHandler;
-  v3 = [(MTEventHandler *)&v8 eventVersion:a3];
+  v3 = [(MTEventHandler *)&v8 eventVersion:version];
   v4 = v3;
   if (v3)
   {
@@ -55,20 +55,20 @@
 - (id)knownFields
 {
   v11[18] = *MEMORY[0x277D85DE8];
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MTLoadUrlEventHandler;
-    v5 = [(MTEventHandler *)&v10 knownFields];
+    delegate2 = [(MTEventHandler *)&v10 knownFields];
     v11[0] = @"fetchStartTime";
     v11[1] = @"domainLookupStartTime";
     v11[2] = @"domainLookupEndTime";
@@ -88,45 +88,45 @@
     v11[16] = @"xpSessionDuration";
     v11[17] = @"xpSamplingPercentageUsers";
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:18];
-    v6 = [v5 arrayByAddingObjectsFromArray:v7];
+    knownFields = [delegate2 arrayByAddingObjectsFromArray:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return knownFields;
 }
 
-- (id)xpSessionDuration:(id)a3
+- (id)xpSessionDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  durationCopy = duration;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpSessionDuration:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpSessionDuration:durationCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"xpSessionDuration"];
-  v7 = v9;
+  v9 = [durationCopy objectForKeyedSubscript:@"xpSessionDuration"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 config];
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __43__MTLoadUrlEventHandler_xpSessionDuration___block_invoke;
   v14[3] = &unk_2798CD4D0;
   v14[4] = self;
-  v10 = [v13 computeWithConfigSources:v14];
+  v10 = [config computeWithConfigSources:v14];
 
 LABEL_6:
 
@@ -144,37 +144,37 @@ id __43__MTLoadUrlEventHandler_xpSessionDuration___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (id)xpSamplingPercentageUsers:(id)a3
+- (id)xpSamplingPercentageUsers:(id)users
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  usersCopy = users;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpSamplingPercentageUsers:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpSamplingPercentageUsers:usersCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"xpSamplingPercentageUsers"];
-  v7 = v9;
+  v9 = [usersCopy objectForKeyedSubscript:@"xpSamplingPercentageUsers"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 config];
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__MTLoadUrlEventHandler_xpSamplingPercentageUsers___block_invoke;
   v14[3] = &unk_2798CD4D0;
   v14[4] = self;
-  v10 = [v13 computeWithConfigSources:v14];
+  v10 = [config computeWithConfigSources:v14];
 
 LABEL_6:
 
@@ -192,35 +192,35 @@ id __51__MTLoadUrlEventHandler_xpSamplingPercentageUsers___block_invoke(uint64_t
   return v6;
 }
 
-- (id)dnsServersIPAddresses:(id)a3
+- (id)dnsServersIPAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  addressesCopy = addresses;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 dnsServersIPAddresses:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 dnsServersIPAddresses:addressesCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"dnsServersIPAddresses"];
+    v8 = [addressesCopy objectForKeyedSubscript:@"dnsServersIPAddresses"];
   }
 
   return v8;
 }
 
-- (id)metricsDataWithPerfMeasurement:(id)a3
+- (id)metricsDataWithPerfMeasurement:(id)measurement
 {
-  v4 = a3;
-  v5 = [v4 eventData];
-  v6 = [(MTEventHandler *)self metricsDataWithEventData:v5];
+  measurementCopy = measurement;
+  eventData = [measurementCopy eventData];
+  v6 = [(MTEventHandler *)self metricsDataWithEventData:eventData];
 
-  v7 = [v4 additionalFields];
+  additionalFields = [measurementCopy additionalFields];
 
-  [v6 addFields:{v7, 0}];
+  [v6 addFields:{additionalFields, 0}];
 
   return v6;
 }

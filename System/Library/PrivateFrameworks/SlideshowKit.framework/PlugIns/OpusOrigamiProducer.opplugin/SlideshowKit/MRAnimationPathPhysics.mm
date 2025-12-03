@@ -1,32 +1,32 @@
 @interface MRAnimationPathPhysics
-- (MRAnimationPathPhysics)initWithMCAnimationPath:(id)a3;
-- (float)computeValueForTime:(double)a3 withContext:(id)a4;
+- (MRAnimationPathPhysics)initWithMCAnimationPath:(id)path;
+- (float)computeValueForTime:(double)time withContext:(id)context;
 @end
 
 @implementation MRAnimationPathPhysics
 
-- (MRAnimationPathPhysics)initWithMCAnimationPath:(id)a3
+- (MRAnimationPathPhysics)initWithMCAnimationPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = MRAnimationPathPhysics;
   v4 = [(MRAnimationPathPhysics *)&v6 init];
   if (v4)
   {
-    -[MCAnimationPath setKey:](v4, "setKey:", [a3 key]);
-    [a3 staticFriction];
+    -[MCAnimationPath setKey:](v4, "setKey:", [path key]);
+    [path staticFriction];
     [(MCAnimationPathPhysics *)v4 setStaticFriction:?];
-    [a3 kineticFriction];
+    [path kineticFriction];
     [(MCAnimationPathPhysics *)v4 setKineticFriction:?];
-    [a3 skinFriction];
+    [path skinFriction];
     [(MCAnimationPathPhysics *)v4 setSkinFriction:?];
   }
 
   return v4;
 }
 
-- (float)computeValueForTime:(double)a3 withContext:(id)a4
+- (float)computeValueForTime:(double)time withContext:(id)context
 {
-  v5 = a3 - *(&self->mVelocity + 1);
+  v5 = time - *(&self->mVelocity + 1);
   result = *(&self->super._skinFriction + 1) + self->mBaseValue;
   if (v5 > 0.0)
   {
@@ -76,7 +76,7 @@
 
     v23 = v15 + self->mDeltaValue;
     mBaseValue = self->mBaseValue;
-    *(&self->mVelocity + 1) = a3;
+    *(&self->mVelocity + 1) = time;
     self->mDeltaValue = v23;
     v25 = mBaseValue + (v23 * v5);
     self->mBaseValue = v25;

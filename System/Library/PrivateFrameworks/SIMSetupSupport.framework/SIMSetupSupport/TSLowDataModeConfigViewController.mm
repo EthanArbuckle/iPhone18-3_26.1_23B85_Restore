@@ -1,26 +1,26 @@
 @interface TSLowDataModeConfigViewController
-- (TSLowDataModeConfigViewController)initWithPlans:(id)a3;
+- (TSLowDataModeConfigViewController)initWithPlans:(id)plans;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_cancelButtonTapped;
 - (void)_continueButtonTapped;
-- (void)_sendTravelEventMetricForPlan:(id)a3 useLDM:(BOOL)a4;
+- (void)_sendTravelEventMetricForPlan:(id)plan useLDM:(BOOL)m;
 - (void)_setUpButtons;
 - (void)_setUpLearnMoreLink;
-- (void)prepare:(id)a3;
+- (void)prepare:(id)prepare;
 - (void)viewDidLoad;
 @end
 
 @implementation TSLowDataModeConfigViewController
 
-- (TSLowDataModeConfigViewController)initWithPlans:(id)a3
+- (TSLowDataModeConfigViewController)initWithPlans:(id)plans
 {
-  v5 = a3;
+  plansCopy = plans;
   v6 = @"TRAVEL_MODE_ESIM_LDM_BODY";
-  if ([v5 count] == 1)
+  if ([plansCopy count] == 1)
   {
-    v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v7 targetIccid];
-    v9 = [TSUtilities isIccidForPhySlot:v8];
+    v7 = [plansCopy objectAtIndexedSubscript:0];
+    targetIccid = [v7 targetIccid];
+    v9 = [TSUtilities isIccidForPhySlot:targetIccid];
 
     if (v9)
     {
@@ -44,19 +44,19 @@
     client = v14->_client;
     v14->_client = v16;
 
-    objc_storeStrong(&v14->_plans, a3);
+    objc_storeStrong(&v14->_plans, plans);
   }
 
   return v14;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prepareCopy = prepare;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v4[2](v4, 0);
+    prepareCopy[2](prepareCopy, 0);
     goto LABEL_12;
   }
 
@@ -86,24 +86,24 @@
 
 LABEL_11:
 
-    v4[2](v4, 0);
+    prepareCopy[2](prepareCopy, 0);
     goto LABEL_12;
   }
 
   v6 = [(NSArray *)self->_plans objectAtIndexedSubscript:0];
   objc_initWeak(location, self);
   client = self->_client;
-  v8 = [v6 targetIccid];
+  targetIccid = [v6 targetIccid];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __45__TSLowDataModeConfigViewController_prepare___block_invoke;
   v12[3] = &unk_279B44360;
   objc_copyWeak(&v16, location);
-  v15 = v4;
+  v15 = prepareCopy;
   v9 = v6;
   v13 = v9;
-  v14 = self;
-  [(CoreTelephonyClient *)client getTravelInfoForIccid:v8 completion:v12];
+  selfCopy = self;
+  [(CoreTelephonyClient *)client getTravelInfoForIccid:targetIccid completion:v12];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(location);
@@ -294,12 +294,12 @@ LABEL_16:
   [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
   [(OBBoldTrayButton *)self->_continueButton setEnabled:1];
-  v8 = [(TSLowDataModeConfigViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(TSLowDataModeConfigViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
-  v9 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   skipButton = self->_skipButton;
-  self->_skipButton = v9;
+  self->_skipButton = linkButton;
 
   [(OBLinkTrayButton *)self->_skipButton setRole:2];
   v11 = self->_skipButton;
@@ -308,26 +308,26 @@ LABEL_16:
   [(OBLinkTrayButton *)v11 setTitle:v13 forState:0];
 
   [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__cancelButtonTapped forControlEvents:64];
-  v14 = [(TSLowDataModeConfigViewController *)self buttonTray];
-  [v14 addButton:self->_skipButton];
+  buttonTray2 = [(TSLowDataModeConfigViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_skipButton];
 
-  v15 = [(TSLowDataModeConfigViewController *)self buttonTray];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonTray3 = [(TSLowDataModeConfigViewController *)self buttonTray];
+  [buttonTray3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_setUpLearnMoreLink
 {
   if (+[TSUtilities isWifiAvailable])
   {
-    v6 = [MEMORY[0x277D37638] accessoryButton];
+    accessoryButton = [MEMORY[0x277D37638] accessoryButton];
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = [v3 localizedStringForKey:@"TRAVEL_LEARN_MORE" value:&stru_28753DF48 table:@"Localizable"];
-    [v6 setTitle:v4 forState:0];
+    [accessoryButton setTitle:v4 forState:0];
 
-    [v6 addTarget:self action:sel__learnMoreButtonTapped forControlEvents:64];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(TSLowDataModeConfigViewController *)self headerView];
-    [v5 addAccessoryButton:v6];
+    [accessoryButton addTarget:self action:sel__learnMoreButtonTapped forControlEvents:64];
+    [accessoryButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    headerView = [(TSLowDataModeConfigViewController *)self headerView];
+    [headerView addAccessoryButton:accessoryButton];
   }
 }
 
@@ -345,40 +345,40 @@ LABEL_16:
   v3 = [(NSArray *)self->_plans objectAtIndexedSubscript:0];
   [(TSLowDataModeConfigViewController *)self _sendTravelEventMetricForPlan:v3 useLDM:0];
 
-  v4 = [(TSLowDataModeConfigViewController *)self delegate];
-  [v4 userDidTapCancel];
+  delegate = [(TSLowDataModeConfigViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
-- (void)_sendTravelEventMetricForPlan:(id)a3 useLDM:(BOOL)a4
+- (void)_sendTravelEventMetricForPlan:(id)plan useLDM:(BOOL)m
 {
-  v4 = a4;
-  v6 = a3;
+  mCopy = m;
+  planCopy = plan;
   v7 = objc_opt_new();
-  v8 = [v6 isPreInstalled];
+  isPreInstalled = [planCopy isPreInstalled];
   v9 = &TSTravelEventNotificationPostArrivalInstall;
-  if (v8)
+  if (isPreInstalled)
   {
     v9 = &TSTravelEventNotificationPostArrivalBuddy;
   }
 
   [v7 setObject:*v9 forKey:@"notificationType"];
-  v10 = [v6 useTravelOnly];
+  useTravelOnly = [planCopy useTravelOnly];
   v11 = &TSTravelActionPostArrivalUseTravelSIM;
-  if (!v10)
+  if (!useTravelOnly)
   {
     v11 = &TSTravelActionPostArrivalUseTravelAndHomeSIM;
   }
 
   [v7 setObject:*v11 forKey:@"finalAction"];
   v12 = &TSTravelActionPostArrivalLDMOn;
-  if (!v4)
+  if (!mCopy)
   {
     v12 = &TSTravelActionPostArrivalLDMOff;
   }
 
   [v7 setObject:*v12 forKey:@"finalActionSubtype"];
-  v13 = [v6 targetIccid];
-  [v7 setObject:v13 forKey:@"travelIccid"];
+  targetIccid = [planCopy targetIccid];
+  [v7 setObject:targetIccid forKey:@"travelIccid"];
   client = self->_client;
   v18 = 0;
   v15 = [(CoreTelephonyClient *)client sendTravelBuddyCAEvent:v7 error:&v18];

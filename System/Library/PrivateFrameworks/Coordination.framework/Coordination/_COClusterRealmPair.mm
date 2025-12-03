@@ -1,25 +1,25 @@
 @interface _COClusterRealmPair
 + (id)realmForCurrent;
-- (id)_identifierForGroupResult:(id)a3;
+- (id)_identifierForGroupResult:(id)result;
 @end
 
 @implementation _COClusterRealmPair
 
 + (id)realmForCurrent
 {
-  v2 = [MEMORY[0x277D27490] predicateForCurrentDevice];
-  v3 = [[_COClusterRealmPair alloc] _initWithPredicate:v2];
+  predicateForCurrentDevice = [MEMORY[0x277D27490] predicateForCurrentDevice];
+  v3 = [[_COClusterRealmPair alloc] _initWithPredicate:predicateForCurrentDevice];
 
   return v3;
 }
 
-- (id)_identifierForGroupResult:(id)a3
+- (id)_identifierForGroupResult:(id)result
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 HomeKitMediaSystemIdentifier];
-  v5 = [v4 UUIDString];
+  firstObject = [result firstObject];
+  homeKitMediaSystemIdentifier = [firstObject HomeKitMediaSystemIdentifier];
+  uUIDString = [homeKitMediaSystemIdentifier UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
 @end

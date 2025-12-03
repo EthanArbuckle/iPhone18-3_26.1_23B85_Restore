@@ -1,38 +1,38 @@
 @interface MTRMetrics
-- (MTRMetrics)initWithCapacity:(unint64_t)a3;
+- (MTRMetrics)initWithCapacity:(unint64_t)capacity;
 - (id)description;
-- (id)metricDataForKey:(id)a3;
-- (void)removeMetricDataForKey:(id)a3;
-- (void)setMetricData:(id)a3 forKey:(id)a4;
+- (id)metricDataForKey:(id)key;
+- (void)removeMetricDataForKey:(id)key;
+- (void)setMetricData:(id)data forKey:(id)key;
 @end
 
 @implementation MTRMetrics
 
-- (MTRMetrics)initWithCapacity:(unint64_t)a3
+- (MTRMetrics)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = MTRMetrics;
   v4 = [(MTRMetrics *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a3];
+    v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:capacity];
     metricsData = v4->_metricsData;
     v4->_metricsData = v5;
 
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uniqueIdentifier = v4->_uniqueIdentifier;
-    v4->_uniqueIdentifier = v7;
+    v4->_uniqueIdentifier = uUID;
   }
 
   return v4;
 }
 
-- (id)metricDataForKey:(id)a3
+- (id)metricDataForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_metricsData objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_metricsData objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -55,13 +55,13 @@
   return v5;
 }
 
-- (void)setMetricData:(id)a3 forKey:(id)a4
+- (void)setMetricData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  keyCopy = key;
+  if (keyCopy)
   {
-    [(NSMutableDictionary *)self->_metricsData setValue:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_metricsData setValue:dataCopy forKey:keyCopy];
   }
 
   else
@@ -80,12 +80,12 @@
   }
 }
 
-- (void)removeMetricDataForKey:(id)a3
+- (void)removeMetricDataForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    [(NSMutableDictionary *)self->_metricsData removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_metricsData removeObjectForKey:keyCopy];
   }
 
   else

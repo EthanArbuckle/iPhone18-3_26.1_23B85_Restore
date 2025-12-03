@@ -1,13 +1,13 @@
 @interface IRNDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
-- (void)logToFileForTacho:(const void *)a3;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (void)logToFileForTacho:(const void *)tacho;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation IRNDiagnosticExtension
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
   v3 = irn_get_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -18,7 +18,7 @@
   }
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
   v3 = irn_get_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -29,15 +29,15 @@
   }
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
-  v22 = v4;
+  parametersCopy = parameters;
+  v22 = parametersCopy;
   v5 = irn_get_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "attachmentsForParameters: %{public}@", &buf, 0xCu);
   }
 
@@ -100,7 +100,7 @@
   return v20;
 }
 
-- (void)logToFileForTacho:(const void *)a3
+- (void)logToFileForTacho:(const void *)tacho
 {
   v4 = +[NSFileManager defaultManager];
   v22 = NSFileProtectionKey;
@@ -141,7 +141,7 @@
     [@"/var/mobile/Library/Logs/IRNDiagnostics/" UTF8String];
     std::operator+<char>();
     sub_1000022D8(&v21, &__p);
-    if (*a3 != *(a3 + 1))
+    if (*tacho != *(tacho + 1))
     {
       sub_1000044F8(v15, 0, 0, 0, 2);
     }

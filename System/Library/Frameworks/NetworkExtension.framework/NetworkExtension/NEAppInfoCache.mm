@@ -1,11 +1,11 @@
 @interface NEAppInfoCache
 + (id)sharedAppInfoCache;
 - (NEAppInfoCache)init;
-- (id)bundleIDWithoutTeamID:(void *)a1;
-- (uint64_t)appInfo:(void *)a3 mismatchedWithUUID:(void *)a4 andBundleID:;
-- (void)addAppInfoToCache:(void *)a1;
-- (void)appInfoForPid:(void *)a3 UUID:(void *)a4 bundleID:(void *)a5 completionHandler:;
-- (void)performCustomLookupIfNecessaryForPid:(void *)a3 UUID:(void *)a4 bundleID:(void *)a5 completionHandler:;
+- (id)bundleIDWithoutTeamID:(void *)d;
+- (uint64_t)appInfo:(void *)info mismatchedWithUUID:(void *)d andBundleID:;
+- (void)addAppInfoToCache:(void *)cache;
+- (void)appInfoForPid:(void *)pid UUID:(void *)d bundleID:(void *)iD completionHandler:;
+- (void)performCustomLookupIfNecessaryForPid:(void *)pid UUID:(void *)d bundleID:(void *)iD completionHandler:;
 @end
 
 @implementation NEAppInfoCache
@@ -50,13 +50,13 @@ uint64_t __36__NEAppInfoCache_sharedAppInfoCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)appInfoForPid:(void *)a3 UUID:(void *)a4 bundleID:(void *)a5 completionHandler:
+- (void)appInfoForPid:(void *)pid UUID:(void *)d bundleID:(void *)iD completionHandler:
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v12 = a5;
-  if (a1)
+  pidCopy = pid;
+  dCopy = d;
+  iDCopy = iD;
+  if (self)
   {
     if (a2 < 0)
     {
@@ -70,21 +70,21 @@ uint64_t __36__NEAppInfoCache_sharedAppInfoCache__block_invoke()
         _os_log_fault_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_FAULT, "%s got invalid pid: %d", buf, 0x12u);
       }
 
-      v12[2](v12, 0);
+      iDCopy[2](iDCopy, 0);
     }
 
     else
     {
-      Property = objc_getProperty(a1, v11, 24, 1);
+      Property = objc_getProperty(self, v11, 24, 1);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __64__NEAppInfoCache_appInfoForPid_UUID_bundleID_completionHandler___block_invoke;
       block[3] = &unk_1E7F08BD0;
       v21 = a2;
-      v17 = v9;
-      v18 = v10;
-      v19 = a1;
-      v20 = v12;
+      v17 = pidCopy;
+      v18 = dCopy;
+      selfCopy = self;
+      v20 = iDCopy;
       dispatch_async(Property, block);
     }
   }
@@ -226,15 +226,15 @@ LABEL_6:
   (*(v5 + 16))(v5, *(*(*v6 + 8) + 40));
 }
 
-- (void)performCustomLookupIfNecessaryForPid:(void *)a3 UUID:(void *)a4 bundleID:(void *)a5 completionHandler:
+- (void)performCustomLookupIfNecessaryForPid:(void *)pid UUID:(void *)d bundleID:(void *)iD completionHandler:
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  pidCopy = pid;
+  dCopy = d;
+  iDCopy = iD;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     if (WeakRetained)
     {
       v13 = ne_log_obj();
@@ -243,9 +243,9 @@ LABEL_6:
         *length = 67109634;
         *&length[4] = a2;
         *&length[8] = 2112;
-        *&length[10] = v9;
+        *&length[10] = pidCopy;
         v43 = 2112;
-        v44 = v10;
+        v44 = dCopy;
         _os_log_debug_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_DEBUG, "Calling delegate lookup handler with pid: %d, uuid: %@, bundleID: %@", length, 0x1Cu);
       }
 
@@ -253,15 +253,15 @@ LABEL_6:
       v40[1] = 3221225472;
       v40[2] = __87__NEAppInfoCache_performCustomLookupIfNecessaryForPid_UUID_bundleID_completionHandler___block_invoke;
       v40[3] = &unk_1E7F069E8;
-      v40[4] = a1;
-      v41 = v11;
-      [WeakRetained fetchAppInfoForPID:a2 UUID:v9 bundleID:v10 completionHandler:v40];
+      v40[4] = self;
+      v41 = iDCopy;
+      [WeakRetained fetchAppInfoForPID:a2 UUID:pidCopy bundleID:dCopy completionHandler:v40];
 
 LABEL_38:
       goto LABEL_39;
     }
 
-    v14 = v10;
+    v14 = dCopy;
     v15 = ne_log_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -291,7 +291,7 @@ LABEL_38:
     v17 = NEHelperCopyAppInfo();
     v18 = v17;
     v39 = v14;
-    v37 = v9;
+    v37 = pidCopy;
     if (v17)
     {
       uuid = xpc_dictionary_get_uuid(v17, "app-euuid");
@@ -358,8 +358,8 @@ LABEL_35:
         _os_log_debug_impl(&dword_1BA83C000, v35, OS_LOG_TYPE_DEBUG, "Origin lookup created appInfo:\n%@", length, 0xCu);
       }
 
-      (*(v11 + 2))(v11, v29);
-      v9 = v37;
+      (*(iDCopy + 2))(iDCopy, v29);
+      pidCopy = v37;
       goto LABEL_38;
     }
 
@@ -450,25 +450,25 @@ LABEL_9:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)appInfo:(void *)a3 mismatchedWithUUID:(void *)a4 andBundleID:
+- (uint64_t)appInfo:(void *)info mismatchedWithUUID:(void *)d andBundleID:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  infoCopy = info;
+  dCopy = d;
+  if (self)
   {
-    if (v8 && ![v7[2] isEqual:v8])
+    if (infoCopy && ![v7[2] isEqual:infoCopy])
     {
       goto LABEL_7;
     }
 
-    if (!v9)
+    if (!dCopy)
     {
       goto LABEL_6;
     }
 
     v10 = v7[3];
-    v11 = v9;
+    v11 = dCopy;
     v12 = [NEAppInfoCache bundleIDWithoutTeamID:v10];
     v13 = [NEAppInfoCache bundleIDWithoutTeamID:v11];
     v14 = [v12 isEqual:v13];
@@ -476,25 +476,25 @@ LABEL_9:
     if (!v14)
     {
 LABEL_7:
-      a1 = 1;
+      self = 1;
     }
 
     else
     {
 LABEL_6:
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)addAppInfoToCache:(void *)a1
+- (void)addAppInfoToCache:(void *)cache
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (cache)
   {
     if (v3)
     {
@@ -503,7 +503,7 @@ LABEL_6:
       {
         v6 = v3;
         v7 = v5;
-        v10 = [objc_getProperty(a1 v8];
+        v10 = [objc_getProperty(cache v8];
         if (v10)
         {
           v11 = v6;
@@ -538,7 +538,7 @@ LABEL_6:
         }
 
 LABEL_14:
-        [objc_getProperty(a1 v9];
+        [objc_getProperty(cache v9];
 LABEL_15:
       }
     }
@@ -572,14 +572,14 @@ void __64__NEAppInfoCache_appInfoForPid_UUID_bundleID_completionHandler___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)bundleIDWithoutTeamID:(void *)a1
+- (id)bundleIDWithoutTeamID:(void *)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  v2 = v1;
-  if (v1)
+  dCopy = d;
+  v2 = dCopy;
+  if (dCopy)
   {
-    v3 = [v1 rangeOfString:@"." options:1];
+    v3 = [dCopy rangeOfString:@"." options:1];
     if (v3 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = [v2 copy];

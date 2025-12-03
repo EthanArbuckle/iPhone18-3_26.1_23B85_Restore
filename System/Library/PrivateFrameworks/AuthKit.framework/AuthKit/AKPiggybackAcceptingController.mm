@@ -1,22 +1,22 @@
 @interface AKPiggybackAcceptingController
 + (BOOL)isInCircle;
 - (AKPiggybackAcceptingController)init;
-- (id)_acceptSessionForPayload:(id)a3 error:(id *)a4;
-- (id)_authKitAccountForPayload:(id)a3;
+- (id)_acceptSessionForPayload:(id)payload error:(id *)error;
+- (id)_authKitAccountForPayload:(id)payload;
 - (id)_generateSecret;
 - (id)accountCode;
-- (id)replyContextWithPayload:(id)a3;
+- (id)replyContextWithPayload:(id)payload;
 - (id)secret;
-- (int)verificationFailed:(id *)a3;
-- (void)_checkForProximityIfNeededWithCircleStep:(unint64_t)a3 completion:(id)a4;
-- (void)_checkForProximityWithCompletion:(id)a3;
-- (void)_finishProcessingPushPayload:(id)a3 withReplyContext:(id)a4 completion:(id)a5;
+- (int)verificationFailed:(id *)failed;
+- (void)_checkForProximityIfNeededWithCircleStep:(unint64_t)step completion:(id)completion;
+- (void)_checkForProximityWithCompletion:(id)completion;
+- (void)_finishProcessingPushPayload:(id)payload withReplyContext:(id)context completion:(id)completion;
 - (void)_grabLockAssertion;
-- (void)_processProximityDetection:(BOOL)a3 withReplyContext:(id)a4 forPushPayload:(id)a5;
+- (void)_processProximityDetection:(BOOL)detection withReplyContext:(id)context forPushPayload:(id)payload;
 - (void)_releaseAssertion;
-- (void)_startProximityControllerIfNeededWithPushPayload:(id)a3;
-- (void)_startProximityControllerWithPresenceSID:(id)a3;
-- (void)processPushPayload:(id)a3 completion:(id)a4;
+- (void)_startProximityControllerIfNeededWithPushPayload:(id)payload;
+- (void)_startProximityControllerWithPresenceSID:(id)d;
+- (void)processPushPayload:(id)payload completion:(id)completion;
 @end
 
 @implementation AKPiggybackAcceptingController
@@ -47,19 +47,19 @@
   return v7;
 }
 
-- (void)processPushPayload:(id)a3 completion:(id)a4
+- (void)processPushPayload:(id)payload completion:(id)completion
 {
-  v67 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
-  objc_storeStrong(&v67->_lastPayload, location[0]);
+  objc_storeStrong(&v65, completion);
+  objc_storeStrong(&selfCopy->_lastPayload, location[0]);
   v21 = +[AKAccountManager sharedInstance];
-  v20 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v64 = [AKAccountManager authKitAccountWithAltDSID:v21 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v20);
+  _objc_release(altDSID);
   _objc_release(v21);
   v56 = _NSConcreteStackBlock;
   v57 = -1073741824;
@@ -93,19 +93,19 @@
 
   else
   {
-    v54 = [location[0] circleStep];
-    v14 = [NSNumber numberWithUnsignedInteger:v54];
-    v53 = [(NSNumber *)v14 stringValue];
+    circleStep = [location[0] circleStep];
+    v14 = [NSNumber numberWithUnsignedInteger:circleStep];
+    stringValue = [(NSNumber *)v14 stringValue];
     _objc_release(v14);
-    if (v54 > 1)
+    if (circleStep > 1)
     {
       goto LABEL_31;
     }
 
-    v67->_verificationFailed = 0;
-    v67->_verificationAttempts = 0;
-    objc_storeStrong(&v67->_initiatingPayload, location[0]);
-    if (v67->_acceptSession)
+    selfCopy->_verificationFailed = 0;
+    selfCopy->_verificationAttempts = 0;
+    objc_storeStrong(&selfCopy->_initiatingPayload, location[0]);
+    if (selfCopy->_acceptSession)
     {
       oslog = _AKLogSystem();
       type = OS_LOG_TYPE_DEFAULT;
@@ -142,7 +142,7 @@
     v41 = v44;
     if (v44 && v41 != -1 && os_signpost_enabled(v43))
     {
-      sub_1000333DC(v72, v53);
+      sub_1000333DC(v72, stringValue);
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v43, v42, v41, "PiggyAcceptSessionForAcceptController", " CircleStep=%{public,signpost.telemetry:string1,name=CircleStep}@  enableTelemetry=YES ", v72, 0xCu);
     }
 
@@ -151,17 +151,17 @@
     v39 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10003341C(v71, v44, v53);
+      sub_10003341C(v71, v44, stringValue);
       _os_log_impl(&_mh_execute_header, v40, v39, "BEGIN [%lld]: PiggyAcceptSessionForAcceptController  CircleStep=%{public,signpost.telemetry:string1,name=CircleStep}@  enableTelemetry=YES ", v71, 0x16u);
     }
 
     objc_storeStrong(&v40, 0);
     v45 = v44;
     v38 = v49;
-    v8 = [(AKPiggybackAcceptingController *)v67 _acceptSessionForPayload:location[0] error:&v38];
+    v8 = [(AKPiggybackAcceptingController *)selfCopy _acceptSessionForPayload:location[0] error:&v38];
     objc_storeStrong(&v49, v38);
-    acceptSession = v67->_acceptSession;
-    v67->_acceptSession = v8;
+    acceptSession = selfCopy->_acceptSession;
+    selfCopy->_acceptSession = v8;
     _objc_release(acceptSession);
     v37 = _AKSignpostGetNanoseconds() / 1000000000.0;
     v36 = _AKSignpostLogSystem();
@@ -169,7 +169,7 @@
     v34 = v45;
     if (v45 && v34 != -1 && os_signpost_enabled(v36))
     {
-      sub_10003346C(v70, v53, [v49 code]);
+      sub_10003346C(v70, stringValue, [v49 code]);
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v36, v35, v34, "PiggyAcceptSessionForAcceptController", " CircleStep=%{public,signpost.telemetry:string2,name=CircleStep}@  Error=%{public,signpost.telemetry:number2,name=Error}d ", v70, 0x12u);
     }
 
@@ -178,7 +178,7 @@
     v32 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000334C0(v69, v45, *&v37, v53, [v49 code]);
+      sub_1000334C0(v69, v45, *&v37, stringValue, [v49 code]);
       _os_log_impl(&_mh_execute_header, v33, v32, "END [%lld] %fs:PiggyAcceptSessionForAcceptController  CircleStep=%{public,signpost.telemetry:string2,name=CircleStep}@  Error=%{public,signpost.telemetry:number2,name=Error}d ", v69, 0x26u);
     }
 
@@ -207,15 +207,15 @@
     if (!v55)
     {
 LABEL_31:
-      [(AKPiggybackAcceptingController *)v67 _startProximityControllerIfNeededWithPushPayload:location[0]];
-      v7 = v67;
-      v6 = v54;
+      [(AKPiggybackAcceptingController *)selfCopy _startProximityControllerIfNeededWithPushPayload:location[0]];
+      v7 = selfCopy;
+      v6 = circleStep;
       v22 = _NSConcreteStackBlock;
       v23 = -1073741824;
       v24 = 0;
       v25 = sub_10003353C;
       v26 = &unk_10031F860;
-      v27 = _objc_retain(v67);
+      v27 = _objc_retain(selfCopy);
       v28 = _objc_retain(location[0]);
       v29 = _objc_retain(v63);
       [(AKPiggybackAcceptingController *)v7 _checkForProximityIfNeededWithCircleStep:v6 completion:&v22];
@@ -225,7 +225,7 @@ LABEL_31:
       v55 = 0;
     }
 
-    objc_storeStrong(&v53, 0);
+    objc_storeStrong(&stringValue, 0);
   }
 
   objc_storeStrong(&v63, 0);
@@ -236,20 +236,20 @@ LABEL_31:
   objc_storeStrong(location, 0);
 }
 
-- (void)_processProximityDetection:(BOOL)a3 withReplyContext:(id)a4 forPushPayload:(id)a5
+- (void)_processProximityDetection:(BOOL)detection withReplyContext:(id)context forPushPayload:(id)payload
 {
-  v70 = self;
+  selfCopy = self;
   v69 = a2;
-  v68 = a3;
+  detectionCopy = detection;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, context);
   v66 = 0;
-  objc_storeStrong(&v66, a5);
+  objc_storeStrong(&v66, payload);
   v65 = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
   {
-    if (v68)
+    if (detectionCopy)
     {
       v5 = @"YES";
     }
@@ -259,15 +259,15 @@ LABEL_31:
       v5 = @"NO";
     }
 
-    sub_100034214(v81, v70, v5, location, v66);
+    sub_100034214(v81, selfCopy, v5, location, v66);
     _os_log_debug_impl(&_mh_execute_header, v65, type, "%@: Processing physical proximity detection (%@) with replyContext (%@) for pushPayload (%@)", v81, 0x2Au);
   }
 
   objc_storeStrong(&v65, 0);
-  v63 = [v66 presenceFallbackApproved];
-  [(AKConfiguration *)v70->_configuration piggybackingIDMSPresenceOverride];
+  presenceFallbackApproved = [v66 presenceFallbackApproved];
+  [(AKConfiguration *)selfCopy->_configuration piggybackingIDMSPresenceOverride];
   v62 = AKConfigApplyOverride();
-  [(AKConfiguration *)v70->_configuration piggybackingLocalPresenceOverride];
+  [(AKConfiguration *)selfCopy->_configuration piggybackingLocalPresenceOverride];
   v61 = AKConfigApplyOverride();
   v21 = 1;
   if ((v62 & 1) == 0)
@@ -276,16 +276,16 @@ LABEL_31:
   }
 
   v60 = v21 & 1;
-  v59 = [v66 presenceMode];
+  presenceMode = [v66 presenceMode];
   v20 = 1;
-  if (v59)
+  if (presenceMode)
   {
-    v20 = v59 == 1;
+    v20 = presenceMode == 1;
   }
 
   v58 = v20;
   v6 = @"YES";
-  if (v63)
+  if (presenceFallbackApproved)
   {
     v7 = @"YES";
   }
@@ -295,7 +295,7 @@ LABEL_31:
     v7 = @"NO";
   }
 
-  if (!v68)
+  if (!detectionCopy)
   {
     v6 = @"NO";
   }
@@ -329,7 +329,7 @@ LABEL_31:
   v51 = v54;
   if (v54 && v51 != -1 && os_signpost_enabled(v53))
   {
-    sub_100034290(v80, v59);
+    sub_100034290(v80, presenceMode);
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v53, v52, v51, "PiggybackingProcessPressenceForAcceptController", " PresenceMode=%{public,signpost.telemetry:number1,name=PresenceMode}d  enableTelemetry=YES ", v80, 8u);
   }
 
@@ -338,7 +338,7 @@ LABEL_31:
   v49 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000342CC(v79, v54, v59);
+    sub_1000342CC(v79, v54, presenceMode);
     _os_log_impl(&_mh_execute_header, v50, v49, "BEGIN [%lld]: PiggybackingProcessPressenceForAcceptController  PresenceMode=%{public,signpost.telemetry:number1,name=PresenceMode}d  enableTelemetry=YES ", v79, 0x12u);
   }
 
@@ -385,14 +385,14 @@ LABEL_31:
 
   objc_storeStrong(&oslog, 0);
   v16 = [NSNumber numberWithBool:v60 & 1];
-  v15 = [location payload];
-  [v15 setPresenceCheckPassed:v16];
-  _objc_release(v15);
+  payload = [location payload];
+  [payload setPresenceCheckPassed:v16];
+  _objc_release(payload);
   _objc_release(v16);
   v18 = [NSNumber numberWithBool:v61 & 1];
-  v17 = [location payload];
-  [v17 setLocalPresenceFound:v18];
-  _objc_release(v17);
+  payload2 = [location payload];
+  [payload2 setLocalPresenceFound:v18];
+  _objc_release(payload2);
   _objc_release(v18);
   if ((v60 & 1) == 0 && v58)
   {
@@ -423,12 +423,12 @@ LABEL_31:
     v28 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      sub_10001B098(v73, v70, v66);
+      sub_10001B098(v73, selfCopy, v66);
       _os_log_error_impl(&_mh_execute_header, v29, v28, "%@: Proximity check failed while handling push (%@)", v73, 0x16u);
     }
 
     objc_storeStrong(&v29, 0);
-    v70->_proximityFailed = 1;
+    selfCopy->_proximityFailed = 1;
   }
 
   v27 = _AKSignpostGetNanoseconds() / 1000000000.0;
@@ -456,34 +456,34 @@ LABEL_31:
   objc_storeStrong(&location, 0);
 }
 
-- (void)_finishProcessingPushPayload:(id)a3 withReplyContext:(id)a4 completion:(id)a5
+- (void)_finishProcessingPushPayload:(id)payload withReplyContext:(id)context completion:(id)completion
 {
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v68 = 0;
-  objc_storeStrong(&v68, a4);
+  objc_storeStrong(&v68, context);
   v67 = 0;
-  objc_storeStrong(&v67, a5);
+  objc_storeStrong(&v67, completion);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
     log = oslog;
     v27 = type;
-    acceptSession = v70->_acceptSession;
-    v25 = [location[0] clientInfo];
-    v64 = _objc_retain(v25);
+    acceptSession = selfCopy->_acceptSession;
+    clientInfo = [location[0] clientInfo];
+    v64 = _objc_retain(clientInfo);
     sub_10001B098(v78, acceptSession, v64);
     _os_log_debug_impl(&_mh_execute_header, log, v27, "Will process message using session: %@ - %@", v78, 0x16u);
-    _objc_release(v25);
+    _objc_release(clientInfo);
     objc_storeStrong(&v64, 0);
   }
 
   objc_storeStrong(&oslog, 0);
   v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [location[0] circleStep]);
-  v63 = [(NSNumber *)v24 stringValue];
+  stringValue = [(NSNumber *)v24 stringValue];
   _objc_release(v24);
   v62 = 0;
   v61 = 0uLL;
@@ -496,7 +496,7 @@ LABEL_31:
   v57 = v60;
   if (v60 && v57 != -1 && os_signpost_enabled(v59))
   {
-    sub_1000333DC(v77, v63);
+    sub_1000333DC(v77, stringValue);
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v59, v58, v57, "PiggyClientInfoForAcceptController", " CircleStep=%{public,signpost.telemetry:string1,name=CircleStep}@  enableTelemetry=YES ", v77, 0xCu);
   }
 
@@ -505,29 +505,29 @@ LABEL_31:
   v55 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
   {
-    sub_10003341C(v76, v60, v63);
+    sub_10003341C(v76, v60, stringValue);
     _os_log_impl(&_mh_execute_header, v56, v55, "BEGIN [%lld]: PiggyClientInfoForAcceptController  CircleStep=%{public,signpost.telemetry:string1,name=CircleStep}@  enableTelemetry=YES ", v76, 0x16u);
   }
 
   objc_storeStrong(&v56, 0);
   v61 = v60;
-  v22 = v70->_acceptSession;
-  v21 = [location[0] clientInfo];
+  v22 = selfCopy->_acceptSession;
+  clientInfo2 = [location[0] clientInfo];
   v54 = v62;
   v20 = [KCJoiningAcceptSession processMessage:v22 error:"processMessage:error:"];
   objc_storeStrong(&v62, v54);
-  v19 = [v68 payload];
-  [v19 setClientInfo:v20];
-  _objc_release(v19);
+  payload = [v68 payload];
+  [payload setClientInfo:v20];
+  _objc_release(payload);
   _objc_release(v20);
-  _objc_release(v21);
+  _objc_release(clientInfo2);
   v53 = _AKSignpostGetNanoseconds() / 1000000000.0;
   v52 = _AKSignpostLogSystem();
   v51 = OS_SIGNPOST_INTERVAL_END;
   v50 = v61;
   if (v61 && v50 != -1 && os_signpost_enabled(v52))
   {
-    sub_10003346C(v75, v63, [v62 code]);
+    sub_10003346C(v75, stringValue, [v62 code]);
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v52, v51, v50, "PiggyClientInfoForAcceptController", " CircleStep=%{public,signpost.telemetry:string2,name=CircleStep}@  Error=%{public,signpost.telemetry:number2,name=Error}d ", v75, 0x12u);
   }
 
@@ -536,7 +536,7 @@ LABEL_31:
   v48 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000334C0(v74, v61, *&v53, v63, [v62 code]);
+    sub_1000334C0(v74, v61, *&v53, stringValue, [v62 code]);
     _os_log_impl(&_mh_execute_header, v49, v48, "END [%lld] %fs:PiggyClientInfoForAcceptController  CircleStep=%{public,signpost.telemetry:string2,name=CircleStep}@  Error=%{public,signpost.telemetry:number2,name=Error}d ", v74, 0x26u);
   }
 
@@ -545,49 +545,49 @@ LABEL_31:
   v46 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
   {
-    v18 = v70->_acceptSession;
-    v17 = [v68 payload];
-    v16 = [v17 clientInfo];
-    sub_10001B098(v73, v18, v16);
+    v18 = selfCopy->_acceptSession;
+    payload2 = [v68 payload];
+    clientInfo3 = [payload2 clientInfo];
+    sub_10001B098(v73, v18, clientInfo3);
     _os_log_debug_impl(&_mh_execute_header, v47, v46, "Did process message using session: %@ - %@", v73, 0x16u);
-    _objc_release(v16);
-    _objc_release(v17);
+    _objc_release(clientInfo3);
+    _objc_release(payload2);
   }
 
   objc_storeStrong(&v47, 0);
-  if (v70->_verificationFailed)
+  if (selfCopy->_verificationFailed)
   {
-    v70->_verificationFailed = 0;
-    v15 = [v68 payload];
-    [v15 setClientErrorCode:-9003];
-    _objc_release(v15);
+    selfCopy->_verificationFailed = 0;
+    payload3 = [v68 payload];
+    [payload3 setClientErrorCode:-9003];
+    _objc_release(payload3);
   }
 
-  else if (v70->_proximityFailed)
+  else if (selfCopy->_proximityFailed)
   {
     v45 = _AKLogSystem();
     v44 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
-      sub_1000194D4(v72, v70);
+      sub_1000194D4(v72, selfCopy);
       _os_log_error_impl(&_mh_execute_header, v45, v44, "%@: Proximity was not detected and is being enforced", v72, 0xCu);
     }
 
     objc_storeStrong(&v45, 0);
     [v68 setWaitForReply:0];
-    v14 = [v68 payload];
-    [v14 setClientErrorCode:-9005];
-    _objc_release(v14);
-    [(AKPiggybackAcceptingController *)v70 _releaseAssertion];
+    payload4 = [v68 payload];
+    [payload4 setClientErrorCode:-9005];
+    _objc_release(payload4);
+    [(AKPiggybackAcceptingController *)selfCopy _releaseAssertion];
   }
 
   else
   {
-    v13 = [v68 payload];
-    v12 = [v13 clientInfo];
-    _objc_release(v12);
-    _objc_release(v13);
-    if (!v12)
+    payload5 = [v68 payload];
+    clientInfo4 = [payload5 clientInfo];
+    _objc_release(clientInfo4);
+    _objc_release(payload5);
+    if (!clientInfo4)
     {
       v43 = _AKLogSystem();
       v42 = OS_LOG_TYPE_ERROR;
@@ -599,14 +599,14 @@ LABEL_31:
 
       objc_storeStrong(&v43, 0);
       [v68 setWaitForReply:0];
-      v11 = [v68 payload];
-      [v11 setClientErrorCode:-9001];
-      _objc_release(v11);
-      [(AKPiggybackAcceptingController *)v70 _releaseAssertion];
+      payload6 = [v68 payload];
+      [payload6 setClientErrorCode:-9001];
+      _objc_release(payload6);
+      [(AKPiggybackAcceptingController *)selfCopy _releaseAssertion];
     }
   }
 
-  if ([(AKPiggybackAcceptingController *)v70 isDone])
+  if ([(AKPiggybackAcceptingController *)selfCopy isDone])
   {
     v41 = _AKLogSystem();
     v40 = OS_LOG_TYPE_DEFAULT;
@@ -622,7 +622,7 @@ LABEL_31:
     [v68 setWaitForReply:0];
   }
 
-  objc_initWeak(&from, v70);
+  objc_initWeak(&from, selfCopy);
   v7 = +[AKPiggybackController sharedController];
   v8 = v68;
   v31 = _NSConcreteStackBlock;
@@ -638,20 +638,20 @@ LABEL_31:
   objc_destroyWeak(v37);
   objc_destroyWeak(&from);
   objc_storeStrong(&v62, 0);
-  objc_storeStrong(&v63, 0);
+  objc_storeStrong(&stringValue, 0);
   objc_storeStrong(&v67, 0);
   objc_storeStrong(&v68, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_acceptSessionForPayload:(id)a3 error:(id *)a4
+- (id)_acceptSessionForPayload:(id)payload error:(id *)error
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
-  v31 = [(AKPiggybackAcceptingController *)v34 _authKitAccountForPayload:location[0]];
+  objc_storeStrong(location, payload);
+  errorCopy = error;
+  v31 = [(AKPiggybackAcceptingController *)selfCopy _authKitAccountForPayload:location[0]];
   v30 = _AKLogSystem();
   v29 = 2;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -678,8 +678,8 @@ LABEL_31:
   }
 
   v5 = v4;
-  circleDelegate = v34->_circleDelegate;
-  v34->_circleDelegate = v5;
+  circleDelegate = selfCopy->_circleDelegate;
+  selfCopy->_circleDelegate = v5;
   _objc_release(circleDelegate);
   if (sub_100058B0C(0))
   {
@@ -698,20 +698,20 @@ LABEL_31:
       v23 = 0;
     }
 
-    v22 = [location[0] clientInfo];
-    v15 = v34;
-    v16 = v34->_circleDelegate;
+    clientInfo = [location[0] clientInfo];
+    v15 = selfCopy;
+    v16 = selfCopy->_circleDelegate;
     v21 = [v31 accountPropertyForKey:@"DSID"];
-    v17 = [v21 unsignedLongLongValue];
-    v20 = [location[0] altDSID];
+    unsignedLongLongValue = [v21 unsignedLongLongValue];
+    altDSID = [location[0] altDSID];
     v19 = +[AKAccountManager sharedInstance];
     v18 = [(AKAccountManager *)v19 telemetryDeviceSessionIDForAccount:v31];
-    v35 = [v23 sessionWithInitialMessage:v22 secretDelegate:v15 circleDelegate:v16 dsid:v17 altDSID:v20 flowID:0 deviceSessionID:v18 error:v32];
+    v35 = [v23 sessionWithInitialMessage:clientInfo secretDelegate:v15 circleDelegate:v16 dsid:unsignedLongLongValue altDSID:altDSID flowID:0 deviceSessionID:v18 error:errorCopy];
     _objc_release(v18);
     _objc_release(v19);
-    _objc_release(v20);
+    _objc_release(altDSID);
     _objc_release(v21);
-    _objc_release(v22);
+    _objc_release(clientInfo);
   }
 
   else
@@ -726,14 +726,14 @@ LABEL_31:
       v14 = 0;
     }
 
-    v13 = [location[0] clientInfo];
-    v10 = v34;
-    v11 = v34->_circleDelegate;
+    clientInfo2 = [location[0] clientInfo];
+    v10 = selfCopy;
+    v11 = selfCopy->_circleDelegate;
     v12 = [v31 accountPropertyForKey:@"DSID"];
-    v7 = [v12 unsignedLongLongValue];
-    v35 = [v14 sessionWithInitialMessage:v13 secretDelegate:v10 circleDelegate:v11 dsid:v7 error:v32];
+    unsignedLongLongValue2 = [v12 unsignedLongLongValue];
+    v35 = [v14 sessionWithInitialMessage:clientInfo2 secretDelegate:v10 circleDelegate:v11 dsid:unsignedLongLongValue2 error:errorCopy];
     _objc_release(v12);
-    _objc_release(v13);
+    _objc_release(clientInfo2);
   }
 
   objc_storeStrong(&v31, 0);
@@ -743,23 +743,23 @@ LABEL_31:
   return v8;
 }
 
-- (id)replyContextWithPayload:(id)a3
+- (id)replyContextWithPayload:(id)payload
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v11 = objc_opt_new();
-  v7 = [location[0] replyPayload];
+  replyPayload = [location[0] replyPayload];
   [v11 setPayload:?];
-  _objc_release(v7);
+  _objc_release(replyPayload);
   [v11 setWaitForReplyTimeout:1200.0];
   v9 = +[AKAppleIDPushHelperService sharedService];
-  v8 = [v9 publicAPSTokenString];
+  publicAPSTokenString = [v9 publicAPSTokenString];
   [v11 setPushToken:?];
-  _objc_release(v8);
+  _objc_release(publicAPSTokenString);
   _objc_release(v9);
-  v10 = [(AKPiggybackAcceptingController *)v13 _authKitAccountForPayload:location[0]];
+  v10 = [(AKPiggybackAcceptingController *)selfCopy _authKitAccountForPayload:location[0]];
   if (v10)
   {
     v6 = +[AKAccountManager sharedInstance];
@@ -777,16 +777,16 @@ LABEL_31:
   return v4;
 }
 
-- (id)_authKitAccountForPayload:(id)a3
+- (id)_authKitAccountForPayload:(id)payload
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v5 = +[AKAccountManager sharedInstance];
-  v4 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v6 = [AKAccountManager authKitAccountWithAltDSID:v5 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v4);
+  _objc_release(altDSID);
   _objc_release(v5);
   objc_storeStrong(location, 0);
 
@@ -796,28 +796,28 @@ LABEL_31:
 + (BOOL)isInCircle
 {
   v3 = +[AKDevice currentDevice];
-  v4 = [v3 isInCircle];
+  isInCircle = [v3 isInCircle];
   _objc_release(v3);
-  return v4;
+  return isInCircle;
 }
 
 - (id)secret
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   [(AKPiggybackAcceptingController *)self _grabLockAssertion];
-  v10[0] = [(AKPiggybackAcceptingController *)v11 _generateSecret];
+  v10[0] = [(AKPiggybackAcceptingController *)selfCopy _generateSecret];
   v5 = +[AKAppleIDPushHelperService sharedService];
   v4 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v10[0] longLongValue]);
-  v3 = [(AKCircleRequestPayload *)v11->_initiatingPayload responseMessage];
+  responseMessage = [(AKCircleRequestPayload *)selfCopy->_initiatingPayload responseMessage];
   [v5 showPigCode:v4 withIncomingMessage:?];
-  _objc_release(v3);
+  _objc_release(responseMessage);
   _objc_release(v4);
   _objc_release(v5);
   v7 = +[AKAccountManager sharedInstance];
-  v6 = [(AKCircleRequestPayload *)v11->_initiatingPayload altDSID];
+  altDSID = [(AKCircleRequestPayload *)selfCopy->_initiatingPayload altDSID];
   v9 = [AKAccountManager authKitAccountWithAltDSID:v7 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v6);
+  _objc_release(altDSID);
   _objc_release(v7);
   [AKAnalyticsSender sendAnalyticsEvent:@"com.apple.authkit.piggybackingSecretGeneration" context:0 account:v9 error:?];
   v8 = _objc_retain(v10[0]);
@@ -827,17 +827,17 @@ LABEL_31:
   return v8;
 }
 
-- (int)verificationFailed:(id *)a3
+- (int)verificationFailed:(id *)failed
 {
-  v11 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = failed;
   self->_verificationFailed = 1;
   location[0] = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithInteger:v11->_verificationAttempts];
+    v6 = [NSNumber numberWithInteger:selfCopy->_verificationAttempts];
     sub_1000194D4(v13, v6);
     _os_log_impl(&_mh_execute_header, location[0], v9, "Failed to verify requesting secret, attempts: %@", v13, 0xCu);
     _objc_release(v6);
@@ -845,20 +845,20 @@ LABEL_31:
 
   objc_storeStrong(location, 0);
   v5 = +[AKAccountManager sharedInstance];
-  v4 = [(AKCircleRequestPayload *)v11->_initiatingPayload altDSID];
+  altDSID = [(AKCircleRequestPayload *)selfCopy->_initiatingPayload altDSID];
   v8 = [AKAccountManager authKitAccountWithAltDSID:v5 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v4);
+  _objc_release(altDSID);
   _objc_release(v5);
   v7 = [NSError ak_errorWithCode:-7036];
   [AKAnalyticsSender sendAnalyticsEvent:@"com.apple.authkit.piggybackingVerificationFailure" context:0 account:v8 error:v7];
-  if (++v11->_verificationAttempts < 3)
+  if (++selfCopy->_verificationAttempts < 3)
   {
     v12 = 1;
   }
 
   else
   {
-    v11->_verificationAttempts = 0;
+    selfCopy->_verificationAttempts = 0;
     v12 = 2;
   }
 
@@ -876,11 +876,11 @@ LABEL_31:
   v3 = [AKAppleIDCodeGenerator generateLoginCode:&v5];
   objc_storeStrong(v7, v5);
   v6 = v3;
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(v7, 0);
 
-  return v4;
+  return stringValue;
 }
 
 - (id)_generateSecret
@@ -900,10 +900,10 @@ LABEL_31:
 
 - (void)_grabLockAssertion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   [(NSLock *)self->_assertionLock lock];
-  if (v25->_assertionRef)
+  if (selfCopy->_assertionRef)
   {
     oslog = _AKLogSystem();
     v9 = OS_LOG_TYPE_DEFAULT;
@@ -937,7 +937,7 @@ LABEL_31:
     v28[1] = &off_100338F50;
     v21 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
     v20 = 0;
-    v25->_assertionRef = MKBDeviceLockAssertion();
+    selfCopy->_assertionRef = MKBDeviceLockAssertion();
     v19 = v20;
     if (v20)
     {
@@ -952,7 +952,7 @@ LABEL_31:
       objc_storeStrong(&v18, 0);
     }
 
-    else if (v25->_assertionRef)
+    else if (selfCopy->_assertionRef)
     {
       +[NSXPCConnection beginTransaction];
       when = dispatch_time(0, 600000000000);
@@ -962,7 +962,7 @@ LABEL_31:
       v13 = 0;
       v14 = sub_100036458;
       v15 = &unk_10031F8B0;
-      v16 = _objc_retain(v25);
+      v16 = _objc_retain(selfCopy);
       dispatch_after(when, queue, &v11);
       _objc_release(queue);
       objc_storeStrong(&v16, 0);
@@ -972,12 +972,12 @@ LABEL_31:
     objc_storeStrong(&v21, 0);
   }
 
-  [(NSLock *)v25->_assertionLock unlock];
+  [(NSLock *)selfCopy->_assertionLock unlock];
 }
 
 - (void)_releaseAssertion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -990,39 +990,39 @@ LABEL_31:
   }
 
   objc_storeStrong(location, 0);
-  [(NSLock *)v7->_assertionLock lock];
-  if (v7->_assertionRef)
+  [(NSLock *)selfCopy->_assertionLock lock];
+  if (selfCopy->_assertionRef)
   {
-    CFRelease(v7->_assertionRef);
-    v7->_assertionRef = 0;
+    CFRelease(selfCopy->_assertionRef);
+    selfCopy->_assertionRef = 0;
   }
 
-  [(NSLock *)v7->_assertionLock unlock];
+  [(NSLock *)selfCopy->_assertionLock unlock];
 }
 
-- (void)_startProximityControllerIfNeededWithPushPayload:(id)a3
+- (void)_startProximityControllerIfNeededWithPushPayload:(id)payload
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [location[0] circleStep];
-  v10 = [location[0] presenceSID];
-  v9 = [location[0] supportsPresence];
-  if (v11 == 1 && (v9 & 1) != 0)
+  objc_storeStrong(location, payload);
+  circleStep = [location[0] circleStep];
+  presenceSID = [location[0] presenceSID];
+  supportsPresence = [location[0] supportsPresence];
+  if (circleStep == 1 && (supportsPresence & 1) != 0)
   {
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000194D4(v16, v13);
+      sub_1000194D4(v16, selfCopy);
       _os_log_impl(&_mh_execute_header, oslog, type, "%@: Determined proximity scanner should be started", v16, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v10)
+    if (presenceSID)
     {
-      [(AKPiggybackAcceptingController *)v13 _startProximityControllerWithPresenceSID:v10];
+      [(AKPiggybackAcceptingController *)selfCopy _startProximityControllerWithPresenceSID:presenceSID];
     }
 
     else
@@ -1031,7 +1031,7 @@ LABEL_31:
       v5 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        sub_10001B098(v15, v13, location[0]);
+        sub_10001B098(v15, selfCopy, location[0]);
         _os_log_error_impl(&_mh_execute_header, v6, v5, "%@: Unable to start proximity scanner with nil presenceSID from pushPayload (%@)", v15, 0x16u);
       }
 
@@ -1044,7 +1044,7 @@ LABEL_31:
     v4 = _AKLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      if (v9)
+      if (supportsPresence)
       {
         v3 = @"YES";
       }
@@ -1054,23 +1054,23 @@ LABEL_31:
         v3 = @"NO";
       }
 
-      sub_100036834(v14, v13, v3, v11, v10);
+      sub_100036834(v14, selfCopy, v3, circleStep, presenceSID);
       _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%@: Determined proximity scanner should not be started (wantsPresence: %@, circleStep: %lu, presenceSID: %@)", v14, 0x2Au);
     }
 
     objc_storeStrong(&v4, 0);
   }
 
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&presenceSID, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_startProximityControllerWithPresenceSID:(id)a3
+- (void)_startProximityControllerWithPresenceSID:(id)d
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v49 = 0uLL;
   v12 = _AKSignpostLogSystem();
   *&v48 = _AKSignpostCreate();
@@ -1112,7 +1112,7 @@ LABEL_31:
   v35 = v38;
   v36 = v48;
   v37 = objc_retainBlock(&v30);
-  objc_initWeak(&from, v51);
+  objc_initWeak(&from, selfCopy);
   v28 = [(AKProximityPiggybackEngine *)[AKProximityPiggybackAcceptingEngine alloc] initWithPresenceSID:location[0]];
   v21 = _NSConcreteStackBlock;
   v22 = -1073741824;
@@ -1123,13 +1123,13 @@ LABEL_31:
   objc_copyWeak(&v27, &from);
   [v28 setMatchHandler:&v21];
   v8 = [[AKFuture alloc] initWithMaxWait:@"proximityDetected" description:5.0];
-  proximityDetected = v51->_proximityDetected;
-  v51->_proximityDetected = v8;
+  proximityDetected = selfCopy->_proximityDetected;
+  selfCopy->_proximityDetected = v8;
   _objc_release(proximityDetected);
   v7 = [AKProximityController alloc];
   v6 = [(AKProximityController *)v7 initWithEngine:v28];
-  proximityController = v51->_proximityController;
-  v51->_proximityController = v6;
+  proximityController = selfCopy->_proximityController;
+  selfCopy->_proximityController = v6;
   _objc_release(proximityController);
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
@@ -1138,16 +1138,16 @@ LABEL_31:
   v18 = &unk_10031F900;
   v19 = _objc_retain(v37);
   objc_copyWeak(&v20, &from);
-  [(AKProximityController *)v51->_proximityController setInvalidationHandler:&v14];
+  [(AKProximityController *)selfCopy->_proximityController setInvalidationHandler:&v14];
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100037570(v52, v51, v51->_proximityController, 1752392040, location[0]);
+    sub_100037570(v52, selfCopy, selfCopy->_proximityController, 1752392040, location[0]);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%@: Setting up proximity controller (%@) with presenceSID (%{mask.hash}@)", v52, 0x2Au);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKProximityController *)v51->_proximityController activate];
+  [(AKProximityController *)selfCopy->_proximityController activate];
   objc_destroyWeak(&v20);
   objc_storeStrong(&v19, 0);
   objc_destroyWeak(&v27);
@@ -1159,25 +1159,25 @@ LABEL_31:
   objc_storeStrong(location, 0);
 }
 
-- (void)_checkForProximityIfNeededWithCircleStep:(unint64_t)a3 completion:(id)a4
+- (void)_checkForProximityIfNeededWithCircleStep:(unint64_t)step completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  stepCopy = step;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v17->_proximityController && v15 == 3)
+  objc_storeStrong(&location, completion);
+  if (selfCopy->_proximityController && stepCopy == 3)
   {
     v13 = _AKLogSystem();
     v12 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000194D4(v19, v17);
+      sub_1000194D4(v19, selfCopy);
       _os_log_impl(&_mh_execute_header, v13, v12, "%@: Determined checking for proximity is needed", v19, 0xCu);
     }
 
     objc_storeStrong(&v13, 0);
-    v4 = v17;
+    v4 = selfCopy;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
@@ -1193,7 +1193,7 @@ LABEL_31:
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000378DC(v18, v17, v15, v17->_proximityController);
+      sub_1000378DC(v18, selfCopy, stepCopy, selfCopy->_proximityController);
       _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "%@: Determined checking for proximity is not needed for circleStep (%lu) with controller (%@)", v18, 0x20u);
     }
 
@@ -1204,12 +1204,12 @@ LABEL_31:
   objc_storeStrong(&location, 0);
 }
 
-- (void)_checkForProximityWithCompletion:(id)a3
+- (void)_checkForProximityWithCompletion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v28 = 0uLL;
   v10 = _AKSignpostLogSystem();
   *&v27 = _AKSignpostCreate();
@@ -1239,9 +1239,9 @@ LABEL_31:
   objc_storeStrong(&v22, 0);
   v28 = v27;
   v5 = +[AKAccountManager sharedInstance];
-  v4 = [(AKCircleRequestPayload *)v30->_initiatingPayload altDSID];
+  altDSID = [(AKCircleRequestPayload *)selfCopy->_initiatingPayload altDSID];
   v20 = [AKAccountManager authKitAccountWithAltDSID:v5 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v4);
+  _objc_release(altDSID);
   _objc_release(v5);
   [AKAnalyticsSender sendAnalyticsEvent:@"com.apple.authkit.piggybackingProximityDetectionStart" context:0 account:v20 error:?];
   queue = dispatch_get_global_queue(33, 0);
@@ -1250,7 +1250,7 @@ LABEL_31:
   v13 = 0;
   v14 = sub_100037D0C;
   v15 = &unk_10031F950;
-  v16 = _objc_retain(v30);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(v20);
   v19 = v28;
   v18 = _objc_retain(location[0]);

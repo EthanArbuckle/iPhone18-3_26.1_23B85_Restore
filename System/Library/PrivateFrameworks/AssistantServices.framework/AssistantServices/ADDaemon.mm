@@ -1,27 +1,27 @@
 @interface ADDaemon
 + (id)sharedDaemon;
 - (ADDaemon)init;
-- (BOOL)_analyticsListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_analyticsObservationListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_audioSessionAssertionServiceListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_clientListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_dictationListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_locationServiceListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_managedStorageListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_notificationServiceListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_securityListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_settingsListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)_synapseSyncListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)siriCapabilitiesServiceListenerShouldAcceptNewConnection:(id)a3;
+- (BOOL)_analyticsListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_analyticsObservationListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_audioSessionAssertionServiceListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_clientListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_dictationListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_locationServiceListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_managedStorageListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_notificationServiceListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_securityListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_settingsListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)_synapseSyncListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)siriCapabilitiesServiceListenerShouldAcceptNewConnection:(id)connection;
 - (id)_peerLocationService;
 - (id)_proxyService;
-- (id)_synapseAppBundleIDFromPossibleDeamonBundleID:(id)a3;
-- (void)_bundleID:(id *)a3 andPath:(id *)a4 forXPCConnection:(id)a5;
-- (void)_daemonDidLaunchWithContext:(id)a3;
+- (id)_synapseAppBundleIDFromPossibleDeamonBundleID:(id)d;
+- (void)_bundleID:(id *)d andPath:(id *)path forXPCConnection:(id)connection;
+- (void)_daemonDidLaunchWithContext:(id)context;
 - (void)_daemonWillShutdown;
 - (void)_deleteSyncItemsDatabase;
-- (void)_enabledBitsChanged:(id)a3;
+- (void)_enabledBitsChanged:(id)changed;
 - (void)_registerForSyncNotifications;
 - (void)_registerSyncCoalescedJob;
 - (void)_setupAccessibility;
@@ -53,43 +53,43 @@
 - (void)_setupSyncListener;
 - (void)_setupTetherListener;
 - (void)_setupWirelessCoexManagerSubscription;
-- (void)_syncForReason:(id)a3 withCoalescing:(BOOL)a4;
+- (void)_syncForReason:(id)reason withCoalescing:(BOOL)coalescing;
 - (void)dealloc;
 - (void)keepAlive;
-- (void)runWithLaunchContext:(id)a3;
+- (void)runWithLaunchContext:(id)context;
 - (void)scheduleDestroyJob;
-- (void)scheduleUnlockedWork:(id)a3;
-- (void)scheduleValidationRefreshForInterval:(double)a3;
+- (void)scheduleUnlockedWork:(id)work;
+- (void)scheduleValidationRefreshForInterval:(double)interval;
 - (void)setupSiriCapabilitiesService;
 - (void)setupSiriCapabilitiesServiceListener;
-- (void)startUIRequestWithInfo:(id)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncForReason:(id)a3 withCoalescing:(BOOL)a4;
+- (void)startUIRequestWithInfo:(id)info;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncForReason:(id)reason withCoalescing:(BOOL)coalescing;
 @end
 
 @implementation ADDaemon
 
 - (void)_setupAccessibility
 {
-  v2 = [off_10058B1E0() sharedSystemShellSwitcher];
-  [v2 signalSiriAvailability];
+  sharedSystemShellSwitcher = [off_10058B1E0() sharedSystemShellSwitcher];
+  [sharedSystemShellSwitcher signalSiriAvailability];
 }
 
-- (void)scheduleUnlockedWork:(id)a3
+- (void)scheduleUnlockedWork:(id)work
 {
-  v4 = a3;
+  workCopy = work;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E5B78;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = workCopy;
+  v6 = workCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)scheduleValidationRefreshForInterval:(double)a3
+- (void)scheduleValidationRefreshForInterval:(double)interval
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -97,31 +97,31 @@
     v8 = 136315394;
     v9 = "_ADValidationRefreshCriteriaForInterval";
     v10 = 2048;
-    v11 = a3;
+    intervalCopy = interval;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s %lf", &v8, 0x16u);
   }
 
-  if (a3 >= 0.0)
+  if (interval >= 0.0)
   {
-    v5 = a3;
+    intervalCopy2 = interval;
   }
 
   else
   {
-    v5 = XPC_ACTIVITY_INTERVAL_1_DAY;
+    intervalCopy2 = XPC_ACTIVITY_INTERVAL_1_DAY;
   }
 
   v6 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v6, XPC_ACTIVITY_INTERVAL, v5);
-  if (v5 * 0.5 > a3)
+  xpc_dictionary_set_int64(v6, XPC_ACTIVITY_INTERVAL, intervalCopy2);
+  if (intervalCopy2 * 0.5 > interval)
   {
-    v7 = 0.0;
-    if (a3 >= 0.0)
+    intervalCopy3 = 0.0;
+    if (interval >= 0.0)
     {
-      v7 = a3;
+      intervalCopy3 = interval;
     }
 
-    xpc_dictionary_set_int64(v6, XPC_ACTIVITY_DELAY, v7);
+    xpc_dictionary_set_int64(v6, XPC_ACTIVITY_DELAY, intervalCopy3);
   }
 
   xpc_dictionary_set_int64(v6, XPC_ACTIVITY_GRACE_PERIOD, 0);
@@ -144,16 +144,16 @@
   sub_100286CD4("com.apple.siri.xpc_activity.destroy", xdict, &stru_100518AD8, &stru_100518AF8);
 }
 
-- (void)_syncForReason:(id)a3 withCoalescing:(BOOL)a4
+- (void)_syncForReason:(id)reason withCoalescing:(BOOL)coalescing
 {
-  v4 = a4;
-  v6 = a3;
+  coalescingCopy = coalescing;
+  reasonCopy = reason;
   if (sub_100009F40())
   {
     v7 = +[ADDaemon sharedDaemon];
     [v7 keepAlive];
 
-    sub_1002F3490(v6);
+    sub_1002F3490(reasonCopy);
     syncReasonsQueued = self->_syncReasonsQueued;
     if (!syncReasonsQueued)
     {
@@ -164,8 +164,8 @@
       syncReasonsQueued = self->_syncReasonsQueued;
     }
 
-    [(NSMutableSet *)syncReasonsQueued addObject:v6];
-    if (v4 && self->_lastSyncRequested && (v11 = mach_absolute_time(), v11 < AFMachAbsoluteTimeAddTimeInterval()))
+    [(NSMutableSet *)syncReasonsQueued addObject:reasonCopy];
+    if (coalescingCopy && self->_lastSyncRequested && (v11 = mach_absolute_time(), v11 < AFMachAbsoluteTimeAddTimeInterval()))
     {
       v12 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -203,9 +203,9 @@
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v16 = &stru_10051F508;
-      if (v6)
+      if (reasonCopy)
       {
-        v16 = v6;
+        v16 = reasonCopy;
       }
 
       *buf = 136315394;
@@ -217,18 +217,18 @@
   }
 }
 
-- (void)syncForReason:(id)a3 withCoalescing:(BOOL)a4
+- (void)syncForReason:(id)reason withCoalescing:(BOOL)coalescing
 {
-  v6 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E6214;
   block[3] = &unk_10051C890;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = reasonCopy;
+  coalescingCopy = coalescing;
+  v8 = reasonCopy;
   dispatch_async(queue, block);
 }
 
@@ -302,8 +302,8 @@
 
   v5 = +[ADCommandCenter sharedCommandCenter];
   v3 = +[ADPreferences sharedPreferences];
-  v4 = [v3 outputVoice];
-  [v5 _outputVoice_setOutputVoice:v4];
+  outputVoice = [v3 outputVoice];
+  [v5 _outputVoice_setOutputVoice:outputVoice];
 }
 
 - (void)_daemonWillShutdown
@@ -323,7 +323,7 @@
   [v4 unregisterClient];
 }
 
-- (void)_daemonDidLaunchWithContext:(id)a3
+- (void)_daemonDidLaunchWithContext:(id)context
 {
   AFLogInitIfNeeded();
   v4 = sub_10021532C();
@@ -450,9 +450,9 @@ LABEL_12:
   }
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -466,8 +466,8 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_1000E7C04;
   block[3] = &unk_10051DFE8;
-  v10 = v5;
-  v8 = v5;
+  v10 = sessionCopy;
+  v8 = sessionCopy;
   dispatch_async(queue, block);
 }
 
@@ -520,7 +520,7 @@ LABEL_12:
   [v4 startListening];
 }
 
-- (void)_enabledBitsChanged:(id)a3
+- (void)_enabledBitsChanged:(id)changed
 {
   v4 = sub_1002F3D78(@"ADPreferencesEnabledBitsDidChangeNotification");
   [(ADDaemon *)self syncForReason:v4 withCoalescing:1];
@@ -639,81 +639,81 @@ LABEL_12:
   xpc_set_event_stream_handler("com.apple.notifyd.matching", queue, handler);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_clientListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_clientListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _clientListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _clientListenerShouldAcceptNewConnection:connectionCopy];
 LABEL_26:
     v8 = v9;
     goto LABEL_27;
   }
 
-  if (self->_settingsListener == v6)
+  if (self->_settingsListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _settingsListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _settingsListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_dictationListener == v6)
+  if (self->_dictationListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _dictationListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _dictationListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_managedStorageListener == v6)
+  if (self->_managedStorageListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _managedStorageListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _managedStorageListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_synapseSyncListener == v6)
+  if (self->_synapseSyncListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _synapseSyncListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _synapseSyncListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_analyticsListener == v6)
+  if (self->_analyticsListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _analyticsListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _analyticsListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_securityListener == v6)
+  if (self->_securityListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _securityListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _securityListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_analyticsObservationListener == v6)
+  if (self->_analyticsObservationListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _analyticsObservationListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _analyticsObservationListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_notificationServiceListener == v6)
+  if (self->_notificationServiceListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _notificationServiceListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _notificationServiceListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_audioSessionAssertionServiceListener == v6)
+  if (self->_audioSessionAssertionServiceListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _audioSessionAssertionServiceListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _audioSessionAssertionServiceListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_locationServiceListener == v6)
+  if (self->_locationServiceListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self _locationServiceListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self _locationServiceListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
-  if (self->_siriCapabilitiesServiceListener == v6)
+  if (self->_siriCapabilitiesServiceListener == listenerCopy)
   {
-    v9 = [(ADDaemon *)self siriCapabilitiesServiceListenerShouldAcceptNewConnection:v7];
+    v9 = [(ADDaemon *)self siriCapabilitiesServiceListenerShouldAcceptNewConnection:connectionCopy];
     goto LABEL_26;
   }
 
@@ -723,22 +723,22 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)_audioSessionAssertionServiceListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_audioSessionAssertionServiceListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v5 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       *&buf[4] = "[ADDaemon _audioSessionAssertionServiceListenerShouldAcceptNewConnection:]";
       *&buf[12] = 2112;
-      *&buf[14] = v3;
+      *&buf[14] = connectionCopy;
       *&buf[22] = 1024;
-      LODWORD(v15) = v5;
+      LODWORD(v15) = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@ Audio Session Assertion Service Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
@@ -747,26 +747,26 @@ LABEL_27:
     *&buf[16] = 0x3032000000;
     v15 = sub_1000E99B0;
     v16 = sub_1000E99C0;
-    v17 = [[ADAudioSessionAssertionConnection alloc] initWithXPCConnection:v3];
+    v17 = [[ADAudioSessionAssertionConnection alloc] initWithXPCConnection:connectionCopy];
     v7 = AFAudioSessionAssertionServiceXPCInterface();
-    [v3 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    [v3 setExportedObject:*(*&buf[8] + 40)];
+    [connectionCopy setExportedObject:*(*&buf[8] + 40)];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000E99C8;
     v12[3] = &unk_100511280;
-    v13 = v5;
+    v13 = processIdentifier;
     v12[4] = buf;
-    [v3 setInvalidationHandler:v12];
+    [connectionCopy setInvalidationHandler:v12];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000E9AA8;
     v10[3] = &unk_100511280;
-    v11 = v5;
+    v11 = processIdentifier;
     v10[4] = buf;
-    [v3 setInterruptionHandler:v10];
-    [v3 resume];
+    [connectionCopy setInterruptionHandler:v10];
+    [connectionCopy resume];
     _Block_object_dispose(buf, 8);
   }
 
@@ -778,7 +778,7 @@ LABEL_27:
       *buf = 136315394;
       *&buf[4] = "[ADDaemon _audioSessionAssertionServiceListenerShouldAcceptNewConnection:]";
       *&buf[12] = 2112;
-      *&buf[14] = v3;
+      *&buf[14] = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %@ Audio Session Assertion Service Connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -798,47 +798,47 @@ LABEL_27:
   [(NSXPCListener *)v5 resume];
 }
 
-- (BOOL)_notificationServiceListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_notificationServiceListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v5 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v17 = "[ADDaemon _notificationServiceListenerShouldAcceptNewConnection:]";
       v18 = 2112;
-      v19 = v3;
+      v19 = connectionCopy;
       v20 = 1024;
-      v21 = v5;
+      v21 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@ Notification Service Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFUserNotificationService];
-    [v3 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    v8 = [[ADUserNotificationServiceProvider alloc] initWithConnection:v3 bundleIdentifier:0 notificationCategories:0];
-    [v3 setExportedObject:v8];
+    v8 = [[ADUserNotificationServiceProvider alloc] initWithConnection:connectionCopy bundleIdentifier:0 notificationCategories:0];
+    [connectionCopy setExportedObject:v8];
 
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFUserNotificationServiceDelegate];
-    [v3 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000E9E88;
     v14[3] = &unk_10051A380;
-    v15 = v5;
-    [v3 setInvalidationHandler:v14];
+    v15 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v14];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000E9F44;
     v12[3] = &unk_10051A380;
-    v13 = v5;
-    [v3 setInterruptionHandler:v12];
-    [v3 resume];
+    v13 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v12];
+    [connectionCopy resume];
   }
 
   else
@@ -849,7 +849,7 @@ LABEL_27:
       *buf = 136315394;
       v17 = "[ADDaemon _notificationServiceListenerShouldAcceptNewConnection:]";
       v18 = 2112;
-      v19 = v3;
+      v19 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s %@ Notification Service Connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -868,44 +868,44 @@ LABEL_27:
   v5 = +[ADUserNotificationServiceProvider personalDomainNotificationProvider];
 }
 
-- (BOOL)_securityListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_securityListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v5 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v16 = "[ADDaemon _securityListenerShouldAcceptNewConnection:]";
       v17 = 2112;
-      v18 = v3;
+      v18 = connectionCopy;
       v19 = 1024;
-      v20 = v5;
+      v20 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@ Security Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
     v7 = AFSecurityServiceGetXPCInterface();
-    [v3 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = +[ADSecurityService sharedService];
-    [v3 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000EA2BC;
     v13[3] = &unk_10051A380;
-    v14 = v5;
-    [v3 setInvalidationHandler:v13];
+    v14 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v13];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000EA378;
     v11[3] = &unk_10051A380;
-    v12 = v5;
-    [v3 setInterruptionHandler:v11];
-    [v3 resume];
+    v12 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v11];
+    [connectionCopy resume];
   }
 
   else
@@ -916,7 +916,7 @@ LABEL_27:
       *buf = 136315394;
       v16 = "[ADDaemon _securityListenerShouldAcceptNewConnection:]";
       v17 = 2112;
-      v18 = v3;
+      v18 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s %@ Security Connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -936,50 +936,50 @@ LABEL_27:
   [(NSXPCListener *)v5 resume];
 }
 
-- (BOOL)_analyticsObservationListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_analyticsObservationListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v5 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v18 = "[ADDaemon _analyticsObservationListenerShouldAcceptNewConnection:]";
       v19 = 2112;
-      v20 = v3;
+      v20 = connectionCopy;
       v21 = 1024;
-      v22 = v5;
+      v22 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@ Analytics Observation Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
     v7 = +[ADAnalyticsService sharedService];
-    [v3 setExportedObject:v7];
+    [connectionCopy setExportedObject:v7];
 
     v8 = AFAnalyticsObservationServiceGetXPCInterface();
-    [v3 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = AFAnalyticsObserverGetXPCInterface();
-    [v3 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000EA728;
     v15[3] = &unk_10051A380;
-    v16 = v5;
-    [v3 setInvalidationHandler:v15];
+    v16 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v15];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000EA804;
     v13[3] = &unk_10051A380;
-    v14 = v5;
-    [v3 setInterruptionHandler:v13];
+    v14 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v13];
     v10 = +[ADAnalyticsService sharedService];
-    [v10 setObserverConnection:v3];
+    [v10 setObserverConnection:connectionCopy];
 
-    [v3 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -990,7 +990,7 @@ LABEL_27:
       *buf = 136315394;
       v18 = "[ADDaemon _analyticsObservationListenerShouldAcceptNewConnection:]";
       v19 = 2112;
-      v20 = v3;
+      v20 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s %@ Analytics Observation Connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -1010,56 +1010,56 @@ LABEL_27:
   [(NSXPCListener *)v5 resume];
 }
 
-- (BOOL)_analyticsListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_analyticsListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 processIdentifier];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v24 = "[ADDaemon _analyticsListenerShouldAcceptNewConnection:]";
     v25 = 2112;
-    v26 = v3;
+    v26 = connectionCopy;
     v27 = 1024;
-    v28 = v4;
+    v28 = processIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@ Analytics Connection Connected (pid=%d])", buf, 0x1Cu);
   }
 
   v6 = AFAnalyticsServiceGetXPCInterface();
-  [v3 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = +[ADAnalyticsService sharedService];
-  [v3 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
 
   XPCInterface = AFAnalyticsServiceDelegateGetXPCInterface();
-  [v3 setRemoteObjectInterface:XPCInterface];
+  [connectionCopy setRemoteObjectInterface:XPCInterface];
 
-  objc_initWeak(buf, v3);
+  objc_initWeak(buf, connectionCopy);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000EABF0;
   v20[3] = &unk_100511258;
-  v22 = v4;
+  v22 = processIdentifier;
   objc_copyWeak(&v21, buf);
-  [v3 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1000EACE0;
   v17 = &unk_100511258;
-  v19 = v4;
+  v19 = processIdentifier;
   objc_copyWeak(&v18, buf);
-  [v3 setInterruptionHandler:&v14];
+  [connectionCopy setInterruptionHandler:&v14];
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_UTILITY, 0);
 
   v11 = dispatch_queue_create(0, v10);
-  [v3 _setQueue:{v11, v14, v15, v16, v17}];
+  [connectionCopy _setQueue:{v11, v14, v15, v16, v17}];
 
   v12 = +[ADAnalyticsService sharedService];
-  [v12 connectionConnected:v3];
+  [v12 connectionConnected:connectionCopy];
 
-  [v3 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
@@ -1092,39 +1092,39 @@ LABEL_27:
   [v2 setupXPCListener];
 }
 
-- (BOOL)_managedStorageListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_managedStorageListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v5 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v18 = "[ADDaemon _managedStorageListenerShouldAcceptNewConnection:]";
       v19 = 2112;
-      v20 = v3;
+      v20 = connectionCopy;
       v21 = 1024;
-      v22 = v5;
+      v22 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@ Managed Storage Connection Connected (pid=%d)", buf, 0x1Cu);
     }
 
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFManagedStorageService];
-    [v3 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = objc_alloc_init(ADManagedStorageConnection);
-    [v3 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000EB098;
     v14 = &unk_1005114D0;
     v15 = v8;
-    v16 = v5;
+    v16 = processIdentifier;
     v9 = v8;
-    [v3 setInvalidationHandler:&v11];
-    [v3 resume];
+    [connectionCopy setInvalidationHandler:&v11];
+    [connectionCopy resume];
   }
 
   return HasEntitlement;
@@ -1142,16 +1142,16 @@ LABEL_27:
   [(NSXPCListener *)v5 resume];
 }
 
-- (BOOL)_synapseSyncListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_synapseSyncListenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = kAssistantSiriDeveloperEntitlement;
   if (AFConnectionHasEntitlement() & 1) != 0 || (AFConnectionHasEntitlement())
   {
-    v6 = [v4 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v22 = 0;
     v23 = 0;
-    [(ADDaemon *)self _bundleID:&v23 andPath:&v22 forXPCConnection:v4];
+    [(ADDaemon *)self _bundleID:&v23 andPath:&v22 forXPCConnection:connectionCopy];
     v7 = v23;
     v8 = v22;
     v9 = [(ADDaemon *)self _synapseAppBundleIDFromPossibleDeamonBundleID:v7];
@@ -1165,11 +1165,11 @@ LABEL_27:
         *buf = 136315906;
         v27 = "[ADDaemon _synapseSyncListenerShouldAcceptNewConnection:]";
         v28 = 1024;
-        *v29 = v6;
+        *v29 = processIdentifier;
         *&v29[4] = 2112;
         *&v29[6] = v9;
         *&v29[14] = 2112;
-        *&v29[16] = v4;
+        *&v29[16] = connectionCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s assistantd accepted connection from app (pid=%d bundleID=%@) %@", buf, 0x26u);
       }
 
@@ -1186,16 +1186,16 @@ LABEL_27:
       v16 = [NSSet setWithArray:v15];
       [v12 setClasses:v16 forSelector:"recordVocabulary:forIntentSlot:onBehalfOf:withValidationCompletion:" argumentIndex:0 ofReply:0];
 
-      [v4 setExportedInterface:v12];
+      [connectionCopy setExportedInterface:v12];
       v17 = [[ADIntentVocabularyUpdateConnection alloc] initWithBundleID:v9 path:v8 canDonateOnBehalfOfApps:AFConnectionHasEntitlement()];
-      [v4 setExportedObject:v17];
+      [connectionCopy setExportedObject:v17];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_1000EB5FC;
       v20[3] = &unk_10051A380;
-      v21 = v6;
-      [v4 setInvalidationHandler:v20];
-      [v4 resume];
+      v21 = processIdentifier;
+      [connectionCopy setInvalidationHandler:v20];
+      [connectionCopy resume];
     }
 
     else if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -1203,9 +1203,9 @@ LABEL_27:
       *buf = 136315650;
       v27 = "[ADDaemon _synapseSyncListenerShouldAcceptNewConnection:]";
       v28 = 2112;
-      *v29 = v4;
+      *v29 = connectionCopy;
       *&v29[8] = 1024;
-      *&v29[10] = v6;
+      *&v29[10] = processIdentifier;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s %@ Rejecting connection, because no kCFBundleIdentifierKey could be found for pid=%d but we expected it to be a .app bundle", buf, 0x1Cu);
     }
   }
@@ -1220,7 +1220,7 @@ LABEL_27:
       v28 = 2112;
       *v29 = v5;
       *&v29[8] = 2114;
-      *&v29[10] = v4;
+      *&v29[10] = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s no '%@' entitlement for connection %{public}@", buf, 0x20u);
     }
 
@@ -1230,32 +1230,32 @@ LABEL_27:
   return v10;
 }
 
-- (id)_synapseAppBundleIDFromPossibleDeamonBundleID:(id)a3
+- (id)_synapseAppBundleIDFromPossibleDeamonBundleID:(id)d
 {
-  v3 = a3;
-  if ([(__CFString *)v3 isEqualToString:@"com.apple.imagent"])
+  dCopy = d;
+  if ([(__CFString *)dCopy isEqualToString:@"com.apple.imagent"])
   {
 
-    v3 = @"com.apple.MobileSMS";
+    dCopy = @"com.apple.MobileSMS";
   }
 
-  if ([&off_100533638 containsObject:v3])
+  if ([&off_100533638 containsObject:dCopy])
   {
 
-    v3 = @"com.apple.mobileslideshow";
+    dCopy = @"com.apple.mobileslideshow";
   }
 
-  return v3;
+  return dCopy;
 }
 
-- (void)_bundleID:(id *)a3 andPath:(id *)a4 forXPCConnection:(id)a5
+- (void)_bundleID:(id *)d andPath:(id *)path forXPCConnection:(id)connection
 {
-  v7 = a5;
-  v8 = v7;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   error = 0;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -1302,8 +1302,8 @@ LABEL_27:
 
     CFRelease(v10);
     v15 = 0;
-    v16 = a4 != 0;
-    if (a4 && v11)
+    v16 = path != 0;
+    if (path && v11)
     {
       v25 = 0;
       v15 = [LSBundleRecord bundleRecordWithBundleIdentifier:v11 allowPlaceholder:0 error:&v25];
@@ -1347,22 +1347,22 @@ LABEL_27:
 
     v11 = 0;
     v15 = 0;
-    v16 = a4 != 0;
+    v16 = path != 0;
   }
 
   v21 = [v15 URL];
-  v22 = [v21 path];
+  path = [v21 path];
 
-  if (a3)
+  if (d)
   {
     v23 = v11;
-    *a3 = v11;
+    *d = v11;
   }
 
   if (v16)
   {
-    v24 = v22;
-    *a4 = v22;
+    v24 = path;
+    *path = path;
   }
 }
 
@@ -1393,22 +1393,22 @@ LABEL_27:
   }
 }
 
-- (BOOL)_settingsListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_settingsListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = kAssistantSettingsEntitlement;
   if (AFConnectionHasEntitlement() & 1) != 0 || (v5 = kAssistantClientEntitlement, (AFConnectionHasEntitlement()))
   {
-    v6 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v24 = "[ADDaemon _settingsListenerShouldAcceptNewConnection:]";
       v25 = 2112;
-      *v26 = v3;
+      *v26 = connectionCopy;
       *&v26[8] = 1024;
-      *&v26[10] = v6;
+      *&v26[10] = processIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %@ Settings Connection Connected (pid=%d)", buf, 0x1Cu);
     }
 
@@ -1416,22 +1416,22 @@ LABEL_27:
     [v8 sanityCheckAutodownloadedAssetsForced:0];
 
     v9 = AFSettingsServiceDelegateXPCInterface();
-    [v3 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
     v10 = AFSettingsServiceXPCInterface();
-    [v3 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    v11 = [[ADSettingsClient alloc] initWithXPCConnection:v3];
-    [v3 setExportedObject:v11];
+    v11 = [[ADSettingsClient alloc] initWithXPCConnection:connectionCopy];
+    [connectionCopy setExportedObject:v11];
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_1000EBE40;
     v20 = &unk_1005114D0;
     v21 = v11;
-    v22 = v6;
+    v22 = processIdentifier;
     v12 = v11;
-    [v3 setInvalidationHandler:&v17];
-    [v3 resume];
+    [connectionCopy setInvalidationHandler:&v17];
+    [connectionCopy resume];
 
     v13 = 1;
   }
@@ -1445,7 +1445,7 @@ LABEL_27:
       *buf = 136315906;
       v24 = "[ADDaemon _settingsListenerShouldAcceptNewConnection:]";
       v25 = 1024;
-      *v26 = [v3 processIdentifier];
+      *v26 = [connectionCopy processIdentifier];
       *&v26[4] = 2112;
       *&v26[6] = v4;
       v27 = 2112;
@@ -1483,20 +1483,20 @@ LABEL_27:
   [(NSXPCListener *)v11 resume];
 }
 
-- (BOOL)_dictationListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_dictationListenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 processIdentifier];
-  v6 = [NSNumber numberWithInt:v5];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  v6 = [NSNumber numberWithInt:processIdentifier];
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v28 = "[ADDaemon _dictationListenerShouldAcceptNewConnection:]";
     v29 = 2112;
-    v30 = v4;
+    v30 = connectionCopy;
     v31 = 1024;
-    v32 = v5;
+    v32 = processIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %@ Dictation Connection Connected (pid=%d])", buf, 0x1Cu);
   }
 
@@ -1509,7 +1509,7 @@ LABEL_27:
       *buf = 136315394;
       v28 = "[ADDaemon _dictationListenerShouldAcceptNewConnection:]";
       v29 = 1024;
-      LODWORD(v30) = v5;
+      LODWORD(v30) = processIdentifier;
       _os_log_fault_impl(&_mh_execute_header, v17, OS_LOG_TYPE_FAULT, "%s Too many connections from pid %d, refusing connection", buf, 0x12u);
     }
   }
@@ -1524,52 +1524,52 @@ LABEL_27:
 
     [(NSCountedSet *)self->_dictationPidSet addObject:v6];
     v11 = AFDictationServiceDelegateXPCInterface();
-    [v4 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFDictationService];
-    [v4 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
-    v13 = [v4 remoteObjectProxy];
-    v14 = [[ADDictationConnection alloc] initWithServiceDelegate:v13];
-    [v4 setExportedObject:v14];
-    v15 = [(ADDictationConnection *)v14 queue];
-    [v4 _setQueue:v15];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    v14 = [[ADDictationConnection alloc] initWithServiceDelegate:remoteObjectProxy];
+    [connectionCopy setExportedObject:v14];
+    queue = [(ADDictationConnection *)v14 queue];
+    [connectionCopy _setQueue:queue];
 
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_1000EC2EC;
     v22 = &unk_10051B508;
-    v26 = v5;
+    v26 = processIdentifier;
     v23 = v14;
-    v24 = self;
+    selfCopy = self;
     v25 = v6;
     v16 = v14;
-    [v4 setInvalidationHandler:&v19];
-    [v4 resume];
+    [connectionCopy setInvalidationHandler:&v19];
+    [connectionCopy resume];
   }
 
   return v8 < 0x10;
 }
 
-- (void)startUIRequestWithInfo:(id)a3
+- (void)startUIRequestWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EC55C;
   block[3] = &unk_10051DFE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)_clientListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_clientListenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 processIdentifier];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   v36 = 0;
-  [(ADDaemon *)self _bundleID:&v36 andPath:0 forXPCConnection:v4];
+  [(ADDaemon *)self _bundleID:&v36 andPath:0 forXPCConnection:connectionCopy];
   v6 = v36;
   if ((AFIsHorseman() & 1) != 0 || ![v6 isEqualToString:@"com.apple.springboard"])
   {
@@ -1582,7 +1582,7 @@ LABEL_27:
         *v43 = 136315650;
         *&v43[4] = "[ADDaemon _clientListenerShouldAcceptNewConnection:]";
         *&v43[12] = 1024;
-        *&v43[14] = v5;
+        *&v43[14] = processIdentifier;
         *&v43[18] = 2112;
         *&v43[20] = v12;
         v9 = "%s Rejecting connection attempt by PID %d because it is missing the entitlement %@";
@@ -1661,40 +1661,40 @@ LABEL_21:
     *buf = 136315650;
     v38 = "[ADDaemon _clientListenerShouldAcceptNewConnection:]";
     v39 = 2112;
-    v40 = v4;
+    v40 = connectionCopy;
     v41 = 1024;
-    v42 = v5;
+    v42 = processIdentifier;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s %@ Client Connection Connected (pid=%d])", buf, 0x1Cu);
   }
 
   v19 = AFClientServiceDelegateXPCInterface();
-  [v4 setRemoteObjectInterface:v19];
+  [connectionCopy setRemoteObjectInterface:v19];
 
   v20 = AFClientServiceXPCInterface();
-  [v4 setExportedInterface:v20];
+  [connectionCopy setExportedInterface:v20];
 
   v21 = qword_100590558;
   v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v23 = dispatch_queue_attr_make_with_qos_class(v22, QOS_CLASS_UNSPECIFIED, 0);
 
   v24 = dispatch_queue_create_with_target_V2(0, v23, v21);
-  [v4 _setQueue:v24];
+  [connectionCopy _setQueue:v24];
 
-  v25 = [[ADClientConnection alloc] initWithXPCConnection:v4];
-  [v4 setExportedObject:v25];
+  v25 = [[ADClientConnection alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v25];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000ECAE4;
   v31[3] = &unk_1005111F0;
   v26 = v25;
   v32 = v26;
-  v35 = v5;
+  v35 = processIdentifier;
   v27 = v17;
   v33 = v27;
   v34 = v43;
-  [v4 setInvalidationHandler:v31];
+  [connectionCopy setInvalidationHandler:v31];
   [v27 clientConnected:v26];
-  [v4 resume];
+  [connectionCopy resume];
 
   _Block_object_dispose(v43, 8);
   v28 = 1;
@@ -1771,12 +1771,12 @@ LABEL_19:
 {
   if ((AFIsNano() & 1) == 0)
   {
-    v3 = [(ADDaemon *)self _proxyService];
-    v4 = [(ADDaemon *)self _peerLocationService];
+    _proxyService = [(ADDaemon *)self _proxyService];
+    _peerLocationService = [(ADDaemon *)self _peerLocationService];
   }
 
   v5 = +[ADCommandCenter sharedCommandCenter];
-  v6 = [v5 _sharedDataService];
+  _sharedDataService = [v5 _sharedDataService];
 
   v7 = +[ADCommandCenter sharedCommandCenter];
   [v7 listenForSharedDataFromCloud];
@@ -1785,30 +1785,30 @@ LABEL_19:
   [v8 startListeningForRemote];
 }
 
-- (BOOL)siriCapabilitiesServiceListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)siriCapabilitiesServiceListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   if (AFConnectionHasEntitlement() & 1) != 0 || (AFConnectionHasEntitlement() & 1) != 0 || (AFConnectionHasEntitlement())
   {
-    v4 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v11 = 136315650;
       v12 = "[ADDaemon siriCapabilitiesServiceListenerShouldAcceptNewConnection:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = connectionCopy;
       v15 = 1024;
-      v16 = v4;
+      v16 = processIdentifier;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %@ Siri Capabilities Service Connection Connected (pid=%d])", &v11, 0x1Cu);
     }
 
     v6 = +[ADSiriCapabilitiesService sharedService];
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFSiriCapabilitiesServiceClientInterface];
-    [v3 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    [v3 setExportedObject:v6];
-    [v3 resume];
+    [connectionCopy setExportedObject:v6];
+    [connectionCopy resume];
 
     v8 = 1;
   }
@@ -1821,7 +1821,7 @@ LABEL_19:
       v11 = 136315394;
       v12 = "[ADDaemon siriCapabilitiesServiceListenerShouldAcceptNewConnection:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s %@ Siri Capabilities Service Connection does not have required entitlements.", &v11, 0x16u);
     }
 
@@ -1848,34 +1848,34 @@ LABEL_19:
   v2 = +[ADSiriCapabilitiesService sharedService];
 }
 
-- (BOOL)_locationServiceListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_locationServiceListenerShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v5 = [v3 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 136315650;
       v13 = "[ADDaemon _locationServiceListenerShouldAcceptNewConnection:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = connectionCopy;
       v16 = 1024;
-      v17 = v5;
+      v17 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s %@ Location Service Connection Connected (pid=%d])", &v12, 0x1Cu);
     }
 
     v7 = +[ADLocationService sharedService];
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFLocationServiceInterface];
-    [v3 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v3 setExportedObject:v7];
-    v9 = [v7 dispatchQueue];
-    [v3 _setQueue:v9];
+    [connectionCopy setExportedObject:v7];
+    dispatchQueue = [v7 dispatchQueue];
+    [connectionCopy _setQueue:dispatchQueue];
 
-    [v3 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -1886,7 +1886,7 @@ LABEL_19:
       v12 = 136315394;
       v13 = "[ADDaemon _locationServiceListenerShouldAcceptNewConnection:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s %@ Location Service Connection does not have required entitlements.", &v12, 0x16u);
     }
   }
@@ -1903,8 +1903,8 @@ LABEL_19:
   [(NSXPCListener *)self->_locationServiceListener setDelegate:self];
   v5 = self->_locationServiceListener;
   v6 = +[ADLocationService sharedService];
-  v7 = [v6 dispatchQueue];
-  [(NSXPCListener *)v5 _setQueue:v7];
+  dispatchQueue = [v6 dispatchQueue];
+  [(NSXPCListener *)v5 _setQueue:dispatchQueue];
 
   v8 = self->_locationServiceListener;
 
@@ -1968,12 +1968,12 @@ LABEL_19:
   _Block_object_dispose(v6, 8);
 }
 
-- (void)runWithLaunchContext:(id)a3
+- (void)runWithLaunchContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v4 = objc_autoreleasePoolPush();
   CFBundleGetMainBundle();
-  [(ADDaemon *)self _daemonDidLaunchWithContext:v6];
+  [(ADDaemon *)self _daemonDidLaunchWithContext:contextCopy];
   objc_autoreleasePoolPop(v4);
   v5 = +[NSRunLoop mainRunLoop];
   [v5 run];

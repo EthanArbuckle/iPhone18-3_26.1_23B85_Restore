@@ -1,8 +1,8 @@
 @interface ATXHeuristicWindDown
 - (id)_contextDateInterval;
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
-- (void)_addRefreshTimeTriggerWithHour:(unint64_t)a3 refreshTriggers:(id)a4;
+- (void)_addRefreshTimeTriggerWithHour:(unint64_t)hour refreshTriggers:(id)triggers;
 @end
 
 @implementation ATXHeuristicWindDown
@@ -10,16 +10,16 @@
 - (id)permanentRefreshTriggers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(ATXHeuristicWindDown *)self _contextDateInterval];
+  _contextDateInterval = [(ATXHeuristicWindDown *)self _contextDateInterval];
   v3 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v2 startDate];
-    v5 = [v2 endDate];
+    startDate = [_contextDateInterval startDate];
+    endDate = [_contextDateInterval endDate];
     *buf = 138412546;
-    v14 = v4;
+    v14 = startDate;
     v15 = 2112;
-    v16 = v5;
+    v16 = endDate;
     _os_log_impl(&dword_23E3EA000, v3, OS_LOG_TYPE_DEFAULT, "ATXHeuristicWindDown permanentRefreshTriggers, context valid from %@ to %@", buf, 0x16u);
   }
 
@@ -35,10 +35,10 @@
   return v10;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,23 +49,23 @@
   if (_os_feature_enabled_impl())
   {
     v6 = objc_opt_new();
-    v7 = [(ATXHeuristicWindDown *)self _contextDateInterval];
+    _contextDateInterval = [(ATXHeuristicWindDown *)self _contextDateInterval];
     v8 = [MEMORY[0x277CBEAA8] now];
-    v9 = [v7 containsDate:v8];
+    v9 = [_contextDateInterval containsDate:v8];
 
     if (v9)
     {
-      v10 = [[ATXContextAlarmSuggestionProducer alloc] initWithValidDateInterval:v7 reasonCode:41 score:40.0];
-      v11 = [(ATXContextAlarmSuggestionProducer *)v10 editNextAlarmSuggestionsWithEnvironment:v4];
+      v10 = [[ATXContextAlarmSuggestionProducer alloc] initWithValidDateInterval:_contextDateInterval reasonCode:41 score:40.0];
+      v11 = [(ATXContextAlarmSuggestionProducer *)v10 editNextAlarmSuggestionsWithEnvironment:environmentCopy];
       [v6 addObjectsFromArray:v11];
 
-      v12 = [[ATXContextWebsiteSuggestionProducer alloc] initWithValidDateInterval:v7 reasonCode:41 score:40.0];
-      v13 = [(ATXContextWebsiteSuggestionProducer *)v12 websiteSuggestions];
+      v12 = [[ATXContextWebsiteSuggestionProducer alloc] initWithValidDateInterval:_contextDateInterval reasonCode:41 score:40.0];
+      websiteSuggestions = [(ATXContextWebsiteSuggestionProducer *)v12 websiteSuggestions];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v14 = [v13 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v14 = [websiteSuggestions countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v14)
       {
         v15 = v14;
@@ -76,23 +76,23 @@
           {
             if (*v26 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(websiteSuggestions);
             }
 
             [v6 addObject:*(*(&v25 + 1) + 8 * i)];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v15 = [websiteSuggestions countByEnumeratingWithState:&v25 objects:v30 count:16];
         }
 
         while (v15);
       }
 
-      v18 = [[ATXContextWeatherSuggestionProducer alloc] initWithValidDateInterval:v7 reasonCode:41 score:40.0];
-      v19 = [(ATXContextWeatherSuggestionProducer *)v18 dummySuggestion];
-      if (v19)
+      v18 = [[ATXContextWeatherSuggestionProducer alloc] initWithValidDateInterval:_contextDateInterval reasonCode:41 score:40.0];
+      dummySuggestion = [(ATXContextWeatherSuggestionProducer *)v18 dummySuggestion];
+      if (dummySuggestion)
       {
-        [v6 addObject:v19];
+        [v6 addObject:dummySuggestion];
       }
     }
 
@@ -119,11 +119,11 @@
   return v21;
 }
 
-- (void)_addRefreshTimeTriggerWithHour:(unint64_t)a3 refreshTriggers:(id)a4
+- (void)_addRefreshTimeTriggerWithHour:(unint64_t)hour refreshTriggers:(id)triggers
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [ATXHeuristicGoodMorning nextDateWithHour:a3];
+  triggersCopy = triggers;
+  v6 = [ATXHeuristicGoodMorning nextDateWithHour:hour];
   v7 = [[ATXInformationHeuristicRefreshTimeTrigger alloc] initWithFireDate:v6];
   v8 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -133,16 +133,16 @@
     _os_log_impl(&dword_23E3EA000, v8, OS_LOG_TYPE_DEFAULT, "ATXHeuristicWindDown _addRefreshTimeTriggerWithHour adding a trigger at %@", &v10, 0xCu);
   }
 
-  [v5 addObject:v7];
+  [triggersCopy addObject:v7];
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_contextDateInterval
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 dateBySettingHour:21 minute:0 second:0 ofDate:v2 options:0];
-  v5 = [v3 dateBySettingHour:23 minute:0 second:0 ofDate:v2 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar dateBySettingHour:21 minute:0 second:0 ofDate:date options:0];
+  v5 = [currentCalendar dateBySettingHour:23 minute:0 second:0 ofDate:date options:0];
   v6 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v4 endDate:v5];
 
   return v6;

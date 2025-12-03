@@ -1,21 +1,21 @@
 @interface SACacheUsageTelemetry
-+ (void)traversePath:(id)a3 BGTask:(id)a4 reply:(id)a5;
-- (BOOL)buildCacheUsageTelemetry:(id)a3 telemetryManager:(id)a4 appPathList:(id)a5 pathList:(id)a6 BGTask:(id)a7;
++ (void)traversePath:(id)path BGTask:(id)task reply:(id)reply;
+- (BOOL)buildCacheUsageTelemetry:(id)telemetry telemetryManager:(id)manager appPathList:(id)list pathList:(id)pathList BGTask:(id)task;
 - (SACacheUsageTelemetry)init;
-- (id)createAppCacheUsageInfoForBundleIDs:(id)a3;
-- (id)getSortedBundleIDs:(id)a3 by:(int64_t)a4;
-- (unint64_t)getValueForTelemetryEntry:(id)a3 bundleIDs:(id)a4;
-- (void)UpdateCacheAndTmpTelemetryEntries:(id)a3 appPathList:(id)a4 pathList:(id)a5 BGTask:(id)a6;
-- (void)addValueToTelemetryEntry:(id)a3 value:(unint64_t)a4 bundleIDs:(id)a5;
-- (void)calculateMovingAverageForKey:(id)a3 currentValueKey:(id)a4 numOfSamples:(unint64_t)a5 windowLength:(unint64_t)a6 appAverageInfo:(id)a7 bundleIDs:(id)a8;
+- (id)createAppCacheUsageInfoForBundleIDs:(id)ds;
+- (id)getSortedBundleIDs:(id)ds by:(int64_t)by;
+- (unint64_t)getValueForTelemetryEntry:(id)entry bundleIDs:(id)ds;
+- (void)UpdateCacheAndTmpTelemetryEntries:(id)entries appPathList:(id)list pathList:(id)pathList BGTask:(id)task;
+- (void)addValueToTelemetryEntry:(id)entry value:(unint64_t)value bundleIDs:(id)ds;
+- (void)calculateMovingAverageForKey:(id)key currentValueKey:(id)valueKey numOfSamples:(unint64_t)samples windowLength:(unint64_t)length appAverageInfo:(id)info bundleIDs:(id)ds;
 - (void)loadFromDisk;
 - (void)removeNonExistingAppsFromDiskData;
 - (void)saveToDisk;
-- (void)sendCacheUsageTelemetry:(id)a3 telemetryManager:(id)a4 appPathList:(id)a5 pathList:(id)a6 BGTask:(id)a7;
-- (void)setValueToTelemetryEntry:(id)a3 value:(unint64_t)a4 bundleIDs:(id)a5;
-- (void)updateAppsSizesAndUsageTimeInTelemetry:(id)a3 telemetryManager:(id)a4;
+- (void)sendCacheUsageTelemetry:(id)telemetry telemetryManager:(id)manager appPathList:(id)list pathList:(id)pathList BGTask:(id)task;
+- (void)setValueToTelemetryEntry:(id)entry value:(unint64_t)value bundleIDs:(id)ds;
+- (void)updateAppsSizesAndUsageTimeInTelemetry:(id)telemetry telemetryManager:(id)manager;
 - (void)updateMovingAveragesInTelemetry;
-- (void)updateTelemetryForBundleIDs:(id)a3 folderType:(int64_t)a4 size:(unint64_t)a5 fileCount:(unint64_t)a6 purgeableFileCount:(unint64_t)a7 purgeableFileSize:(unint64_t)a8 ageWeightedSize:(unint64_t)a9;
+- (void)updateTelemetryForBundleIDs:(id)ds folderType:(int64_t)type size:(unint64_t)size fileCount:(unint64_t)count purgeableFileCount:(unint64_t)fileCount purgeableFileSize:(unint64_t)fileSize ageWeightedSize:(unint64_t)weightedSize;
 @end
 
 @implementation SACacheUsageTelemetry
@@ -39,103 +39,103 @@
   return v2;
 }
 
-- (unint64_t)getValueForTelemetryEntry:(id)a3 bundleIDs:(id)a4
+- (unint64_t)getValueForTelemetryEntry:(id)entry bundleIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  dsCopy = ds;
   v8 = self->_cacheUsageTelemetry;
   objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)self->_cacheUsageTelemetry objectForKeyedSubscript:v7];
-  v10 = [v9 objectForKeyedSubscript:v6];
-  v11 = [v10 unsignedLongLongValue];
+  v9 = [(NSMutableDictionary *)self->_cacheUsageTelemetry objectForKeyedSubscript:dsCopy];
+  v10 = [v9 objectForKeyedSubscript:entryCopy];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
   objc_sync_exit(v8);
-  return v11;
+  return unsignedLongLongValue;
 }
 
-- (id)createAppCacheUsageInfoForBundleIDs:(id)a3
+- (id)createAppCacheUsageInfoForBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[SASupport getiCloudPlanSizeGB];
-  v6 = [SAQuery getLSBundleRecordForBundle:v4];
-  v7 = [v6 bundleVersion];
+  v6 = [SAQuery getLSBundleRecordForBundle:dsCopy];
+  bundleVersion = [v6 bundleVersion];
   v8 = objc_opt_new();
-  [v8 setObject:v7 forKeyedSubscript:@"app_version"];
-  [v8 setObject:v4 forKeyedSubscript:@"bundle_id"];
+  [v8 setObject:bundleVersion forKeyedSubscript:@"app_version"];
+  [v8 setObject:dsCopy forKeyedSubscript:@"bundle_id"];
   [v8 setObject:v5 forKeyedSubscript:@"icloud_plan"];
-  [(NSMutableDictionary *)self->_cacheUsageTelemetry setObject:v8 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_cacheUsageTelemetry setObject:v8 forKeyedSubscript:dsCopy];
 
   return v8;
 }
 
-- (void)addValueToTelemetryEntry:(id)a3 value:(unint64_t)a4 bundleIDs:(id)a5
+- (void)addValueToTelemetryEntry:(id)entry value:(unint64_t)value bundleIDs:(id)ds
 {
-  v13 = a3;
-  v8 = a5;
+  entryCopy = entry;
+  dsCopy = ds;
   v9 = self->_cacheUsageTelemetry;
   objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)self->_cacheUsageTelemetry objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_cacheUsageTelemetry objectForKeyedSubscript:dsCopy];
   if (v10)
   {
-    v11 = [(SACacheUsageTelemetry *)self getValueForTelemetryEntry:v13 bundleIDs:v8];
+    v11 = [(SACacheUsageTelemetry *)self getValueForTelemetryEntry:entryCopy bundleIDs:dsCopy];
   }
 
   else
   {
-    v10 = [(SACacheUsageTelemetry *)self createAppCacheUsageInfoForBundleIDs:v8];
+    v10 = [(SACacheUsageTelemetry *)self createAppCacheUsageInfoForBundleIDs:dsCopy];
     v11 = 0;
   }
 
-  v12 = [NSNumber numberWithUnsignedLongLong:v11 + a4];
-  [v10 setObject:v12 forKeyedSubscript:v13];
+  value = [NSNumber numberWithUnsignedLongLong:v11 + value];
+  [v10 setObject:value forKeyedSubscript:entryCopy];
 
   objc_sync_exit(v9);
 }
 
-- (void)setValueToTelemetryEntry:(id)a3 value:(unint64_t)a4 bundleIDs:(id)a5
+- (void)setValueToTelemetryEntry:(id)entry value:(unint64_t)value bundleIDs:(id)ds
 {
-  v12 = a3;
-  v8 = a5;
+  entryCopy = entry;
+  dsCopy = ds;
   v9 = self->_cacheUsageTelemetry;
   objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)self->_cacheUsageTelemetry objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_cacheUsageTelemetry objectForKeyedSubscript:dsCopy];
   if (!v10)
   {
-    v10 = [(SACacheUsageTelemetry *)self createAppCacheUsageInfoForBundleIDs:v8];
+    v10 = [(SACacheUsageTelemetry *)self createAppCacheUsageInfoForBundleIDs:dsCopy];
   }
 
-  v11 = [NSNumber numberWithUnsignedLongLong:a4];
-  [v10 setObject:v11 forKeyedSubscript:v12];
+  v11 = [NSNumber numberWithUnsignedLongLong:value];
+  [v10 setObject:v11 forKeyedSubscript:entryCopy];
 
   objc_sync_exit(v9);
 }
 
-- (void)updateTelemetryForBundleIDs:(id)a3 folderType:(int64_t)a4 size:(unint64_t)a5 fileCount:(unint64_t)a6 purgeableFileCount:(unint64_t)a7 purgeableFileSize:(unint64_t)a8 ageWeightedSize:(unint64_t)a9
+- (void)updateTelemetryForBundleIDs:(id)ds folderType:(int64_t)type size:(unint64_t)size fileCount:(unint64_t)count purgeableFileCount:(unint64_t)fileCount purgeableFileSize:(unint64_t)fileSize ageWeightedSize:(unint64_t)weightedSize
 {
-  v18 = a3;
+  dsCopy = ds;
   v15 = self->_cacheUsageTelemetry;
   objc_sync_enter(v15);
-  if (a4)
+  if (type)
   {
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_file_size" value:a5 bundleIDs:v18];
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_file_count" value:a6 bundleIDs:v18];
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_purgeable_count" value:a7 bundleIDs:v18];
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_purgeable_size" value:a8 bundleIDs:v18];
-    v16 = v18;
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_file_size" value:size bundleIDs:dsCopy];
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_file_count" value:count bundleIDs:dsCopy];
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_purgeable_count" value:fileCount bundleIDs:dsCopy];
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"tmp_purgeable_size" value:fileSize bundleIDs:dsCopy];
+    v16 = dsCopy;
     v17 = @"tmp_age_weighted_size";
   }
 
   else
   {
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_size" value:a5 bundleIDs:v18];
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_file_count" value:a6 bundleIDs:v18];
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_purgeable_count" value:a7 bundleIDs:v18];
-    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_purgeable_size" value:a8 bundleIDs:v18];
-    v16 = v18;
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_size" value:size bundleIDs:dsCopy];
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_file_count" value:count bundleIDs:dsCopy];
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_purgeable_count" value:fileCount bundleIDs:dsCopy];
+    [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:@"cache_purgeable_size" value:fileSize bundleIDs:dsCopy];
+    v16 = dsCopy;
     v17 = @"cache_age_weighted_size";
   }
 
-  [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:v17 value:a9 bundleIDs:v16];
+  [(SACacheUsageTelemetry *)self addValueToTelemetryEntry:v17 value:weightedSize bundleIDs:v16];
   objc_sync_exit(v15);
 }
 
@@ -208,8 +208,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_movingAveragesInfo allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_movingAveragesInfo allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -220,7 +220,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -232,7 +232,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -288,15 +288,15 @@
   }
 }
 
-+ (void)traversePath:(id)a3 BGTask:(id)a4 reply:(id)a5
++ (void)traversePath:(id)path BGTask:(id)task reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  pathCopy = path;
+  taskCopy = task;
+  replyCopy = reply;
+  v10 = replyCopy;
+  if (!pathCopy)
   {
-    (*(v9 + 2))(v9, 0, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, 0);
   }
 
   +[NSDate date];
@@ -320,7 +320,7 @@
   v14 = &v13;
   v15 = 0x2020000000;
   v11 = v16 = 0;
-  v12 = v8;
+  v12 = taskCopy;
   traverse_directory();
   v10[2](v10, v30[3], v26[3], v22[3], v18[3], v14[3]);
 
@@ -331,15 +331,15 @@
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)UpdateCacheAndTmpTelemetryEntries:(id)a3 appPathList:(id)a4 pathList:(id)a5 BGTask:(id)a6
+- (void)UpdateCacheAndTmpTelemetryEntries:(id)entries appPathList:(id)list pathList:(id)pathList BGTask:(id)task
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a4 appPathList];
-  v14 = [v13 allValues];
+  entriesCopy = entries;
+  pathListCopy = pathList;
+  taskCopy = task;
+  appPathList = [list appPathList];
+  allValues = [appPathList allValues];
 
-  v15 = [v14 count] / 1000;
+  v15 = [allValues count] / 1000;
   if (v15 <= 4)
   {
     v16 = 4;
@@ -357,22 +357,22 @@
   v23[1] = 3221225472;
   v23[2] = sub_100032FB4;
   v23[3] = &unk_100065B88;
-  v24 = v12;
-  v25 = v11;
-  v27 = v26 = v10;
-  v28 = self;
+  v24 = taskCopy;
+  v25 = pathListCopy;
+  v27 = v26 = entriesCopy;
+  selfCopy = self;
   v19 = v27;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  [SAUtilities processArrayConcurrently:v14 number:v16 queue:v18 group:v17 block:v23];
+  v20 = entriesCopy;
+  v21 = pathListCopy;
+  v22 = taskCopy;
+  [SAUtilities processArrayConcurrently:allValues number:v16 queue:v18 group:v17 block:v23];
   dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)updateAppsSizesAndUsageTimeInTelemetry:(id)a3 telemetryManager:(id)a4
+- (void)updateAppsSizesAndUsageTimeInTelemetry:(id)telemetry telemetryManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  telemetryCopy = telemetry;
+  managerCopy = manager;
   v8 = [NSDate dateWithTimeIntervalSinceNow:-86400.0];
   v9 = [SASupport getAllAppsUsageTime:v8];
 
@@ -382,12 +382,12 @@
   v14[2] = sub_100033424;
   v14[3] = &unk_100065BB0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = telemetryCopy;
+  v16 = managerCopy;
   v17 = v9;
   v11 = v9;
-  v12 = v7;
-  v13 = v6;
+  v12 = managerCopy;
+  v13 = telemetryCopy;
   [v10 enumerateKeysAndObjectsUsingBlock:v14];
 }
 
@@ -447,16 +447,16 @@
         }
 
         v13 = [v12 objectForKeyedSubscript:@"numOfAveragedDays"];
-        v14 = [v13 unsignedLongLongValue];
+        unsignedLongLongValue = [v13 unsignedLongLongValue];
 
-        if (v14 + v6 >= 0x1E)
+        if (unsignedLongLongValue + v6 >= 0x1E)
         {
           v15 = 30;
         }
 
         else
         {
-          v15 = v14 + v6;
+          v15 = unsignedLongLongValue + v6;
         }
 
         v16 = [NSNumber numberWithUnsignedLongLong:v15];
@@ -484,31 +484,31 @@
   [(SACacheUsageTelemetry *)self saveToDisk];
 }
 
-- (void)calculateMovingAverageForKey:(id)a3 currentValueKey:(id)a4 numOfSamples:(unint64_t)a5 windowLength:(unint64_t)a6 appAverageInfo:(id)a7 bundleIDs:(id)a8
+- (void)calculateMovingAverageForKey:(id)key currentValueKey:(id)valueKey numOfSamples:(unint64_t)samples windowLength:(unint64_t)length appAverageInfo:(id)info bundleIDs:(id)ds
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
-  v17 = [(SACacheUsageTelemetry *)self getValueForTelemetryEntry:a4 bundleIDs:v14];
-  v18 = [v15 objectForKeyedSubscript:v16];
-  v19 = [v18 unsignedLongLongValue];
+  dsCopy = ds;
+  infoCopy = info;
+  keyCopy = key;
+  v17 = [(SACacheUsageTelemetry *)self getValueForTelemetryEntry:valueKey bundleIDs:dsCopy];
+  v18 = [infoCopy objectForKeyedSubscript:keyCopy];
+  unsignedLongLongValue = [v18 unsignedLongLongValue];
 
-  v20 = [SASupport calculateMovingSumFor:v19 with:v17 numOfSamples:a5 windowLength:a6];
-  [(SACacheUsageTelemetry *)self setValueToTelemetryEntry:v16 value:v20 bundleIDs:v14];
+  v20 = [SASupport calculateMovingSumFor:unsignedLongLongValue with:v17 numOfSamples:samples windowLength:length];
+  [(SACacheUsageTelemetry *)self setValueToTelemetryEntry:keyCopy value:v20 bundleIDs:dsCopy];
 
   v21 = [NSNumber numberWithUnsignedLongLong:v20];
-  [v15 setObject:v21 forKeyedSubscript:v16];
+  [infoCopy setObject:v21 forKeyedSubscript:keyCopy];
 }
 
-- (BOOL)buildCacheUsageTelemetry:(id)a3 telemetryManager:(id)a4 appPathList:(id)a5 pathList:(id)a6 BGTask:(id)a7
+- (BOOL)buildCacheUsageTelemetry:(id)telemetry telemetryManager:(id)manager appPathList:(id)list pathList:(id)pathList BGTask:(id)task
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  [(SACacheUsageTelemetry *)self UpdateCacheAndTmpTelemetryEntries:v12 appPathList:a5 pathList:a6 BGTask:v14];
-  v15 = [v14 shouldDefer];
+  telemetryCopy = telemetry;
+  managerCopy = manager;
+  taskCopy = task;
+  [(SACacheUsageTelemetry *)self UpdateCacheAndTmpTelemetryEntries:telemetryCopy appPathList:list pathList:pathList BGTask:taskCopy];
+  shouldDefer = [taskCopy shouldDefer];
 
-  if (v15)
+  if (shouldDefer)
   {
     v16 = SALog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -520,42 +520,42 @@
 
   else
   {
-    [(SACacheUsageTelemetry *)self updateAppsSizesAndUsageTimeInTelemetry:v12 telemetryManager:v13];
+    [(SACacheUsageTelemetry *)self updateAppsSizesAndUsageTimeInTelemetry:telemetryCopy telemetryManager:managerCopy];
     [(SACacheUsageTelemetry *)self updateMovingAveragesInTelemetry];
   }
 
-  return v15 ^ 1;
+  return shouldDefer ^ 1;
 }
 
-- (id)getSortedBundleIDs:(id)a3 by:(int64_t)a4
+- (id)getSortedBundleIDs:(id)ds by:(int64_t)by
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100033CA8;
   v6[3] = &unk_100065BD8;
   v6[4] = self;
-  v6[5] = a4;
-  v4 = [a3 sortedArrayUsingComparator:v6];
+  v6[5] = by;
+  v4 = [ds sortedArrayUsingComparator:v6];
 
   return v4;
 }
 
-- (void)sendCacheUsageTelemetry:(id)a3 telemetryManager:(id)a4 appPathList:(id)a5 pathList:(id)a6 BGTask:(id)a7
+- (void)sendCacheUsageTelemetry:(id)telemetry telemetryManager:(id)manager appPathList:(id)list pathList:(id)pathList BGTask:(id)task
 {
-  v37 = a3;
-  v38 = a4;
-  v39 = a5;
-  v40 = a6;
-  v41 = a7;
-  if ([(SACacheUsageTelemetry *)self buildCacheUsageTelemetry:v37 telemetryManager:v38 appPathList:v39 pathList:v40 BGTask:?])
+  telemetryCopy = telemetry;
+  managerCopy = manager;
+  listCopy = list;
+  pathListCopy = pathList;
+  taskCopy = task;
+  if ([(SACacheUsageTelemetry *)self buildCacheUsageTelemetry:telemetryCopy telemetryManager:managerCopy appPathList:listCopy pathList:pathListCopy BGTask:?])
   {
     v12 = objc_opt_new();
     v71 = 0;
     v72 = &v71;
     v73 = 0x2020000000;
     v74 = 0;
-    v13 = [(NSMutableDictionary *)self->_cacheUsageTelemetry allKeys];
-    v14 = [(SACacheUsageTelemetry *)self getSortedBundleIDs:v13 by:0];
+    allKeys = [(NSMutableDictionary *)self->_cacheUsageTelemetry allKeys];
+    v14 = [(SACacheUsageTelemetry *)self getSortedBundleIDs:allKeys by:0];
 
     v69 = 0u;
     v70 = 0u;
@@ -589,7 +589,7 @@ LABEL_4:
           v62 = &unk_100065C00;
           v63 = v12;
           v64 = v19;
-          v65 = self;
+          selfCopy = self;
           v66 = &v71;
           if ((AnalyticsSendEventLazy() & 1) == 0)
           {
@@ -617,8 +617,8 @@ LABEL_4:
     }
 
     v72[6] = 0;
-    v21 = [(NSMutableDictionary *)self->_cacheUsageTelemetry allKeys];
-    v22 = [(SACacheUsageTelemetry *)self getSortedBundleIDs:v21 by:1];
+    allKeys2 = [(NSMutableDictionary *)self->_cacheUsageTelemetry allKeys];
+    v22 = [(SACacheUsageTelemetry *)self getSortedBundleIDs:allKeys2 by:1];
 
     v57 = 0u;
     v58 = 0u;
@@ -652,7 +652,7 @@ LABEL_18:
           v50 = &unk_100065C00;
           v51 = v12;
           v52 = v27;
-          v53 = self;
+          selfCopy2 = self;
           v54 = &v71;
           if ((AnalyticsSendEventLazy() & 1) == 0)
           {
@@ -680,8 +680,8 @@ LABEL_18:
     }
 
     v72[6] = 0;
-    v29 = [(NSMutableDictionary *)self->_cacheUsageTelemetry allKeys];
-    v30 = [(SACacheUsageTelemetry *)self getSortedBundleIDs:v29 by:2];
+    allKeys3 = [(NSMutableDictionary *)self->_cacheUsageTelemetry allKeys];
+    v30 = [(SACacheUsageTelemetry *)self getSortedBundleIDs:allKeys3 by:2];
 
     v45 = 0u;
     v46 = 0u;

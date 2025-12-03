@@ -14,8 +14,8 @@
 
 - (void)cancel
 {
-  v4 = self;
-  [-[ExpandedTrackingView systemApertureElementContext](v4 "systemApertureElementContext")];
+  selfCopy = self;
+  [-[ExpandedTrackingView systemApertureElementContext](selfCopy "systemApertureElementContext")];
   swift_unknownObjectRelease();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

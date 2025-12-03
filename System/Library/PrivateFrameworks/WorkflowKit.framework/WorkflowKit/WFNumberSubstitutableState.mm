@@ -1,74 +1,74 @@
 @interface WFNumberSubstitutableState
-+ (id)serializedRepresentationFromNumber:(id)a3;
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromNumber:(id)number;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (NSNumber)number;
-- (WFNumberSubstitutableState)initWithNumber:(id)a3;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (WFNumberSubstitutableState)initWithNumber:(id)number;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFNumberSubstitutableState
 
 - (NSNumber)number
 {
-  v2 = [(WFVariableSubstitutableParameterState *)self value];
-  v3 = [v2 number];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  number = [value number];
 
-  return v3;
+  return number;
 }
 
-- (WFNumberSubstitutableState)initWithNumber:(id)a3
+- (WFNumberSubstitutableState)initWithNumber:(id)number
 {
-  v4 = [WFNumberWrapper wrapperWithNumber:a3];
+  v4 = [WFNumberWrapper wrapperWithNumber:number];
   v5 = [(WFVariableSubstitutableParameterState *)self initWithValue:v4];
 
   return v5;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
     v13.receiver = self;
     v13.super_class = WFNumberSubstitutableState;
-    [(WFVariableSubstitutableParameterState *)&v13 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableSubstitutableParameterState *)&v13 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 
   else
   {
-    v12 = [(WFNumberSubstitutableState *)self number];
-    v10[2](v10, v12, 0);
+    number = [(WFNumberSubstitutableState *)self number];
+    valueHandlerCopy[2](valueHandlerCopy, number, 0);
   }
 }
 
-+ (id)serializedRepresentationFromNumber:(id)a3
++ (id)serializedRepresentationFromNumber:(id)number
 {
-  v4 = [WFNumberWrapper wrapperWithNumber:a3];
-  v5 = [a1 serializedRepresentationFromValue:v4];
+  v4 = [WFNumberWrapper wrapperWithNumber:number];
+  v5 = [self serializedRepresentationFromValue:v4];
 
   return v5;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFNumberSubstitutableState.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFNumberWrapper class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFNumberSubstitutableState.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFNumberWrapper class]]"}];
   }
 
-  v6 = [v5 number];
-  v7 = v6;
-  if (v6)
+  number = [valueCopy number];
+  v7 = number;
+  if (number)
   {
-    v8 = v6;
+    v8 = number;
   }
 
   else
@@ -81,10 +81,10 @@
   return v8;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -93,7 +93,7 @@
   }
 
   v7 = objc_opt_class();
-  v8 = v5;
+  v8 = representationCopy;
   if (v8)
   {
     v9 = v8;

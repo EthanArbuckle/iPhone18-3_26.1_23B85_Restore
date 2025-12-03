@@ -1,25 +1,25 @@
 @interface SLWebTokenHandlerController
-+ (id)emailAddressFromIdToken:(id)a3;
-- (SLWebTokenHandlerController)initWithWebClient:(id)a3;
-- (void)_exchangeAuthCode:(id)a3 usingRedirect:(id)a4 codeVerifier:(id)a5 forTokensWithCompletion:(id)a6;
-- (void)_fetchNamesForAuthResponse:(id)a3 completion:(id)a4;
-- (void)_fetchNamesForToken:(id)a3 usingFallbackURL:(id)a4 completion:(id)a5;
-- (void)exchangeAuthCode:(id)a3 usingRedirect:(id)a4 codeVerifier:(id)a5 forAccountResponse:(id)a6;
-- (void)exchangeAuthCode:(id)a3 usingRedirect:(id)a4 codeVerifier:(id)a5 forTokensAndUsernameWithCompletion:(id)a6;
++ (id)emailAddressFromIdToken:(id)token;
+- (SLWebTokenHandlerController)initWithWebClient:(id)client;
+- (void)_exchangeAuthCode:(id)code usingRedirect:(id)redirect codeVerifier:(id)verifier forTokensWithCompletion:(id)completion;
+- (void)_fetchNamesForAuthResponse:(id)response completion:(id)completion;
+- (void)_fetchNamesForToken:(id)token usingFallbackURL:(id)l completion:(id)completion;
+- (void)exchangeAuthCode:(id)code usingRedirect:(id)redirect codeVerifier:(id)verifier forAccountResponse:(id)response;
+- (void)exchangeAuthCode:(id)code usingRedirect:(id)redirect codeVerifier:(id)verifier forTokensAndUsernameWithCompletion:(id)completion;
 @end
 
 @implementation SLWebTokenHandlerController
 
-- (SLWebTokenHandlerController)initWithWebClient:(id)a3
+- (SLWebTokenHandlerController)initWithWebClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = SLWebTokenHandlerController;
   v6 = [(SLWebTokenHandlerController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webClient, a3);
+    objc_storeStrong(&v6->_webClient, client);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.social.exchangeAuthTokenQueue", v8);
     webClientQueue = v7->_webClientQueue;
@@ -29,16 +29,16 @@
   return v7;
 }
 
-- (void)exchangeAuthCode:(id)a3 usingRedirect:(id)a4 codeVerifier:(id)a5 forTokensAndUsernameWithCompletion:(id)a6
+- (void)exchangeAuthCode:(id)code usingRedirect:(id)redirect codeVerifier:(id)verifier forTokensAndUsernameWithCompletion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __110__SLWebTokenHandlerController_exchangeAuthCode_usingRedirect_codeVerifier_forTokensAndUsernameWithCompletion___block_invoke;
   v12[3] = &unk_1E8175810;
-  v13 = v10;
-  v11 = v10;
-  [(SLWebTokenHandlerController *)self exchangeAuthCode:a3 usingRedirect:a4 codeVerifier:a5 forAccountResponse:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(SLWebTokenHandlerController *)self exchangeAuthCode:code usingRedirect:redirect codeVerifier:verifier forAccountResponse:v12];
 }
 
 void __110__SLWebTokenHandlerController_exchangeAuthCode_usingRedirect_codeVerifier_forTokensAndUsernameWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -56,17 +56,17 @@ void __110__SLWebTokenHandlerController_exchangeAuthCode_usingRedirect_codeVerif
   (*(v4 + 16))(v4, v12, v7, v8, v9, v10, v11, v5);
 }
 
-- (void)exchangeAuthCode:(id)a3 usingRedirect:(id)a4 codeVerifier:(id)a5 forAccountResponse:(id)a6
+- (void)exchangeAuthCode:(id)code usingRedirect:(id)redirect codeVerifier:(id)verifier forAccountResponse:(id)response
 {
-  v10 = a6;
+  responseCopy = response;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __94__SLWebTokenHandlerController_exchangeAuthCode_usingRedirect_codeVerifier_forAccountResponse___block_invoke;
   v12[3] = &unk_1E8175860;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(SLWebTokenHandlerController *)self _exchangeAuthCode:a3 usingRedirect:a4 codeVerifier:a5 forTokensWithCompletion:v12];
+  v13 = responseCopy;
+  v11 = responseCopy;
+  [(SLWebTokenHandlerController *)self _exchangeAuthCode:code usingRedirect:redirect codeVerifier:verifier forTokensWithCompletion:v12];
 }
 
 void __94__SLWebTokenHandlerController_exchangeAuthCode_usingRedirect_codeVerifier_forAccountResponse___block_invoke(uint64_t a1, void *a2)
@@ -110,26 +110,26 @@ void __94__SLWebTokenHandlerController_exchangeAuthCode_usingRedirect_codeVerifi
   }
 }
 
-- (void)_exchangeAuthCode:(id)a3 usingRedirect:(id)a4 codeVerifier:(id)a5 forTokensWithCompletion:(id)a6
+- (void)_exchangeAuthCode:(id)code usingRedirect:(id)redirect codeVerifier:(id)verifier forTokensWithCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codeCopy = code;
+  redirectCopy = redirect;
+  verifierCopy = verifier;
+  completionCopy = completion;
   webClientQueue = self->_webClientQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__SLWebTokenHandlerController__exchangeAuthCode_usingRedirect_codeVerifier_forTokensWithCompletion___block_invoke;
   block[3] = &unk_1E81758B0;
   block[4] = self;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
+  v20 = redirectCopy;
+  v21 = codeCopy;
+  v22 = verifierCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = verifierCopy;
+  v17 = codeCopy;
+  v18 = redirectCopy;
   dispatch_async(webClientQueue, block);
 }
 
@@ -209,13 +209,13 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (id)emailAddressFromIdToken:(id)a3
++ (id)emailAddressFromIdToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tokenCopy = token;
+  v5 = tokenCopy;
+  if (tokenCopy)
   {
-    v6 = [v4 componentsSeparatedByString:@"."];
+    v6 = [tokenCopy componentsSeparatedByString:@"."];
     if ([v6 count] == 3)
     {
       v7 = [v6 objectAtIndexedSubscript:1];
@@ -263,20 +263,20 @@ LABEL_9:
   return v13;
 }
 
-- (void)_fetchNamesForAuthResponse:(id)a3 completion:(id)a4
+- (void)_fetchNamesForAuthResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   webClientQueue = self->_webClientQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__SLWebTokenHandlerController__fetchNamesForAuthResponse_completion___block_invoke;
   block[3] = &unk_1E8175900;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = responseCopy;
   dispatch_async(webClientQueue, block);
 }
 
@@ -382,23 +382,23 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_fetchNamesForToken:(id)a3 usingFallbackURL:(id)a4 completion:(id)a5
+- (void)_fetchNamesForToken:(id)token usingFallbackURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  lCopy = l;
+  completionCopy = completion;
   webClientQueue = self->_webClientQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__SLWebTokenHandlerController__fetchNamesForToken_usingFallbackURL_completion___block_invoke;
   v15[3] = &unk_1E8175928;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = tokenCopy;
+  v17 = lCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = lCopy;
+  v14 = tokenCopy;
   dispatch_async(webClientQueue, v15);
 }
 

@@ -1,13 +1,13 @@
 @interface PMServiceNamesCellView
-- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation PMServiceNamesCellView
 
-- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_12808();
     v9 = v8;
@@ -19,13 +19,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_FFC8(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_FFC8(style, v7, v9, specifier);
 }
 
-- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC17PasswordsSettings22PMServiceNamesCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_12808();
     v7 = v6;
@@ -37,10 +37,10 @@
   }
 
   v8 = OBJC_IVAR____TtC17PasswordsSettings22PMServiceNamesCellView_cachedShouldShowServiceNamesForPasswordAndPasskeyItems;
-  v9 = [objc_opt_self() sharedStore];
-  v10 = [v9 shouldShowServiceNamesForPasswordAndPasskeyItems];
+  sharedStore = [objc_opt_self() sharedStore];
+  shouldShowServiceNamesForPasswordAndPasskeyItems = [sharedStore shouldShowServiceNamesForPasswordAndPasskeyItems];
 
-  self->super.PSTableCell_opaque[v8] = v10;
+  self->super.PSTableCell_opaque[v8] = shouldShowServiceNamesForPasswordAndPasskeyItems;
   if (v7)
   {
     v11 = sub_127F8();
@@ -53,7 +53,7 @@
 
   v14.receiver = self;
   v14.super_class = type metadata accessor for PMServiceNamesCellView();
-  v12 = [(PMPopUpMenuCellView *)&v14 initWithStyle:a3 reuseIdentifier:v11];
+  v12 = [(PMPopUpMenuCellView *)&v14 initWithStyle:style reuseIdentifier:v11];
 
   return v12;
 }

@@ -1,22 +1,22 @@
 @interface PXPhotosDetailsAssetsTilingLayout
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGRect)_placeholderFrame;
 - (CGRect)contentBounds;
 - (UIEdgeInsets)contentInset;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
 - (void)prepareLayout;
-- (void)setPlaceholderMode:(int64_t)a3;
+- (void)setPlaceholderMode:(int64_t)mode;
 @end
 
 @implementation PXPhotosDetailsAssetsTilingLayout
 
 - (CGRect)_placeholderFrame
 {
-  v3 = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
-  v4 = v3;
-  if (v3)
+  layoutSnapshot = [(PXEngineDrivenAssetsTilingLayout *)self layoutSnapshot];
+  v4 = layoutSnapshot;
+  if (layoutSnapshot)
   {
-    [v3 contentRect];
+    [layoutSnapshot contentRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -50,11 +50,11 @@
   return result;
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  if (a6->length == 1 && a6->index[0] >> 1 == 16050)
+  if (identifier->length == 1 && identifier->index[0] >> 1 == 16050)
   {
-    v7 = [(PXPhotosDetailsAssetsTilingLayout *)self placeholderMode:a3];
+    v7 = [(PXPhotosDetailsAssetsTilingLayout *)self placeholderMode:geometry];
     if (v7)
     {
       [(PXPhotosDetailsAssetsTilingLayout *)self _placeholderFrame];
@@ -67,35 +67,35 @@
   {
     v13.receiver = self;
     v13.super_class = PXPhotosDetailsAssetsTilingLayout;
-    v8 = *&a6->index[5];
-    v11[2] = *&a6->index[3];
+    v8 = *&identifier->index[5];
+    v11[2] = *&identifier->index[3];
     v11[3] = v8;
-    v11[4] = *&a6->index[7];
-    v12 = a6->index[9];
-    v9 = *&a6->index[1];
-    v11[0] = *&a6->length;
+    v11[4] = *&identifier->index[7];
+    v12 = identifier->index[9];
+    v9 = *&identifier->index[1];
+    v11[0] = *&identifier->length;
     v11[1] = v9;
-    LOBYTE(v7) = [(PXEngineDrivenAssetsTilingLayout *)&v13 getGeometry:a3 group:a4 userData:a5 forTileWithIdentifier:v11];
+    LOBYTE(v7) = [(PXEngineDrivenAssetsTilingLayout *)&v13 getGeometry:geometry group:group userData:data forTileWithIdentifier:v11];
   }
 
   return v7;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v54.receiver = self;
   v54.super_class = PXPhotosDetailsAssetsTilingLayout;
-  [(PXEngineDrivenAssetsTilingLayout *)&v54 enumerateTilesInRect:a4 withOptions:v11 usingBlock:x, y, width, height];
-  v12 = [(PXPhotosDetailsAssetsTilingLayout *)self placeholderMode];
-  if ((v12 - 1) <= 1)
+  [(PXEngineDrivenAssetsTilingLayout *)&v54 enumerateTilesInRect:options withOptions:blockCopy usingBlock:x, y, width, height];
+  placeholderMode = [(PXPhotosDetailsAssetsTilingLayout *)self placeholderMode];
+  if ((placeholderMode - 1) <= 1)
   {
     v53 = 0;
-    if (v12 == 1)
+    if (placeholderMode == 1)
     {
       v13 = 32100;
     }
@@ -134,7 +134,7 @@
     *&v26 = 0;
     if ([(PXPhotosDetailsAssetsTilingLayout *)self getGeometry:&v41 group:&v40 userData:&v39 forTileWithIdentifier:&v21])
     {
-      v20 = v11[2];
+      v20 = blockCopy[2];
       v33[0] = 1;
       v33[1] = v13;
       v34 = 0u;
@@ -154,7 +154,7 @@
       v22 = v42;
       v23 = v43;
       v24 = v44;
-      v20(v11, v33, &v21, v40, v39, &v53);
+      v20(blockCopy, v33, &v21, v40, v39, &v53);
     }
   }
 }
@@ -198,8 +198,8 @@
   [(PXTilingLayout *)&v16 contentInset];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXPhotosDetailsAssetsTilingLayout *)self spec];
-  [v7 contentGuideInsets];
+  spec = [(PXPhotosDetailsAssetsTilingLayout *)self spec];
+  [spec contentGuideInsets];
   v9 = v8;
   v11 = v10;
 
@@ -214,11 +214,11 @@
   return result;
 }
 
-- (void)setPlaceholderMode:(int64_t)a3
+- (void)setPlaceholderMode:(int64_t)mode
 {
-  if (self->_placeholderMode != a3)
+  if (self->_placeholderMode != mode)
   {
-    self->_placeholderMode = a3;
+    self->_placeholderMode = mode;
     v5 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PXTilingLayoutInvalidationContext *)v5 invalidateContentBounds];

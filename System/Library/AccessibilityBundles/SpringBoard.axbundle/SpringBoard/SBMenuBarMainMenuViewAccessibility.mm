@@ -1,18 +1,18 @@
 @interface SBMenuBarMainMenuViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 @end
 
 @implementation SBMenuBarMainMenuViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMenuBarMainMenuView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMenuBarManager" hasInstanceMethod:@"windowControlsWrapperView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWindowControlsWrapperView"];
-  [v3 validateClass:@"SBWindowControlsWrapperView" hasInstanceMethod:@"pointInside:withEvent:" withFullSignature:{"B", "{CGPoint=dd}", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMenuBarMainMenuView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMenuBarManager" hasInstanceMethod:@"windowControlsWrapperView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWindowControlsWrapperView"];
+  [validationsCopy validateClass:@"SBWindowControlsWrapperView" hasInstanceMethod:@"pointInside:withEvent:" withFullSignature:{"B", "{CGPoint=dd}", "@", 0}];
 }
 
 - (CGPoint)accessibilityActivationPoint

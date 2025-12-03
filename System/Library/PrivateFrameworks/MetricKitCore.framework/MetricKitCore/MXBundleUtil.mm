@@ -1,12 +1,12 @@
 @interface MXBundleUtil
-- (BOOL)isAppExtensionFromBundleID:(id)a3;
-- (BOOL)isAppInstalledForBundleID:(id)a3;
+- (BOOL)isAppExtensionFromBundleID:(id)d;
+- (BOOL)isAppInstalledForBundleID:(id)d;
 - (MXBundleUtil)init;
-- (id)_bundleIDFromURL:(id)a3;
-- (id)bundleIDFromAuditToken:(id *)a3;
-- (id)bundleIDFromPid:(int)a3;
-- (id)mainAppBundleIDforExtension:(id)a3;
-- (id)teamIDFromAuditToken:(id *)a3;
+- (id)_bundleIDFromURL:(id)l;
+- (id)bundleIDFromAuditToken:(id *)token;
+- (id)bundleIDFromPid:(int)pid;
+- (id)mainAppBundleIDforExtension:(id)extension;
+- (id)teamIDFromAuditToken:(id *)token;
 @end
 
 @implementation MXBundleUtil
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (id)bundleIDFromPid:(int)a3
+- (id)bundleIDFromPid:(int)pid
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:proc_pidpath(a3 encoding:{buffer, 0x1000u), 4}];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:proc_pidpath(pid encoding:{buffer, 0x1000u), 4}];
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
   if (v5)
   {
@@ -52,10 +52,10 @@
   return v7;
 }
 
-- (id)bundleIDFromAuditToken:(id *)a3
+- (id)bundleIDFromAuditToken:(id *)token
 {
-  v4 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(0, &cf);
   if (v5)
@@ -89,10 +89,10 @@
   return v7;
 }
 
-- (id)teamIDFromAuditToken:(id *)a3
+- (id)teamIDFromAuditToken:(id *)token
 {
-  v4 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(0, &cf);
   if (v5)
@@ -126,20 +126,20 @@
   return v7;
 }
 
-- (BOOL)isAppExtensionFromBundleID:(id)a3
+- (BOOL)isAppExtensionFromBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v10 = 0;
-    v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v4 error:&v10];
+    v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:dCopy error:&v10];
     v6 = v10;
     if (v6)
     {
       logHandle = self->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        [(MXBundleUtil *)v4 isAppExtensionFromBundleID:v6];
+        [(MXBundleUtil *)dCopy isAppExtensionFromBundleID:v6];
       }
     }
 
@@ -159,29 +159,29 @@
   return v8;
 }
 
-- (id)mainAppBundleIDforExtension:(id)a3
+- (id)mainAppBundleIDforExtension:(id)extension
 {
-  v4 = a3;
-  if (v4)
+  extensionCopy = extension;
+  if (extensionCopy)
   {
     v11 = 0;
-    v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v4 error:&v11];
+    v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:extensionCopy error:&v11];
     v6 = v11;
     if (v6)
     {
       logHandle = self->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        [(MXBundleUtil *)v4 isAppExtensionFromBundleID:v6];
+        [(MXBundleUtil *)extensionCopy isAppExtensionFromBundleID:v6];
       }
 
-      v8 = 0;
+      bundleIdentifier = 0;
     }
 
     else
     {
-      v9 = [v5 containingBundleRecord];
-      v8 = [v9 bundleIdentifier];
+      containingBundleRecord = [v5 containingBundleRecord];
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
     }
   }
 
@@ -192,24 +192,24 @@
       [MXBundleUtil isAppExtensionFromBundleID:];
     }
 
-    v8 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v8;
+  return bundleIdentifier;
 }
 
-- (BOOL)isAppInstalledForBundleID:(id)a3
+- (BOOL)isAppInstalledForBundleID:(id)d
 {
-  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
-  v4 = [v3 appState];
-  v5 = [v4 isInstalled];
+  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:d];
+  appState = [v3 appState];
+  isInstalled = [appState isInstalled];
 
-  return v5;
+  return isInstalled;
 }
 
-- (id)_bundleIDFromURL:(id)a3
+- (id)_bundleIDFromURL:(id)l
 {
-  if (a3 && (v3 = *MEMORY[0x277CBECE8], (Unique = _CFBundleCreateUnique()) != 0))
+  if (l && (v3 = *MEMORY[0x277CBECE8], (Unique = _CFBundleCreateUnique()) != 0))
   {
     v5 = Unique;
     v6 = CFBundleGetIdentifier(Unique);

@@ -2,11 +2,11 @@
 + (id)batchingQueue;
 + (id)metricQueue;
 + (id)readPredictionData;
-+ (void)aggregateAndPostCAEvents:(id)a3;
-+ (void)incrementOccurrencesForKey:(id)a3 byCount:(int64_t)a4;
-+ (void)incrementOccurrencesForKeys:(id)a3 byCounts:(id)a4;
-+ (void)recordOccurrenceForKey:(id)a3;
-+ (void)savePredictionData:(id)a3;
++ (void)aggregateAndPostCAEvents:(id)events;
++ (void)incrementOccurrencesForKey:(id)key byCount:(int64_t)count;
++ (void)incrementOccurrencesForKeys:(id)keys byCounts:(id)counts;
++ (void)recordOccurrenceForKey:(id)key;
++ (void)savePredictionData:(id)data;
 @end
 
 @implementation _DASMetricRecorder
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10009EA70;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B688 != -1)
   {
     dispatch_once(&qword_10020B688, block);
@@ -40,69 +40,69 @@
   return v3;
 }
 
-+ (void)recordOccurrenceForKey:(id)a3
++ (void)recordOccurrenceForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 batchingQueue];
+  keyCopy = key;
+  batchingQueue = [self batchingQueue];
   v7[0] = @"key";
   v7[1] = @"value";
-  v8[0] = v4;
+  v8[0] = keyCopy;
   v8[1] = &off_1001CA2A0;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  [v5 addWorkItem:v6];
+  [batchingQueue addWorkItem:v6];
 }
 
-+ (void)incrementOccurrencesForKey:(id)a3 byCount:(int64_t)a4
++ (void)incrementOccurrencesForKey:(id)key byCount:(int64_t)count
 {
-  v6 = a3;
-  v7 = [a1 batchingQueue];
+  keyCopy = key;
+  batchingQueue = [self batchingQueue];
   v10[0] = @"key";
   v10[1] = @"value";
-  v11[0] = v6;
-  v8 = [NSNumber numberWithLongLong:a4];
+  v11[0] = keyCopy;
+  v8 = [NSNumber numberWithLongLong:count];
   v11[1] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  [v7 addWorkItem:v9];
+  [batchingQueue addWorkItem:v9];
 }
 
-+ (void)incrementOccurrencesForKeys:(id)a3 byCounts:(id)a4
++ (void)incrementOccurrencesForKeys:(id)keys byCounts:(id)counts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 == [v7 count])
+  keysCopy = keys;
+  countsCopy = counts;
+  v8 = [keysCopy count];
+  if (v8 == [countsCopy count])
   {
-    v9 = [v6 count];
+    v9 = [keysCopy count];
     if (v9)
     {
       v10 = v9;
       for (i = 0; i != v10; ++i)
       {
-        v12 = [a1 batchingQueue];
+        batchingQueue = [self batchingQueue];
         v16[0] = @"key";
-        v13 = [v6 objectAtIndexedSubscript:i];
+        v13 = [keysCopy objectAtIndexedSubscript:i];
         v16[1] = @"value";
         v17[0] = v13;
-        v14 = [v7 objectAtIndexedSubscript:i];
+        v14 = [countsCopy objectAtIndexedSubscript:i];
         v17[1] = v14;
         v15 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-        [v12 addWorkItem:v15];
+        [batchingQueue addWorkItem:v15];
       }
     }
   }
 }
 
-+ (void)aggregateAndPostCAEvents:(id)a3
++ (void)aggregateAndPostCAEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_alloc_init(NSMutableDictionary);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
@@ -120,12 +120,12 @@
         v9 = *(*(&v26 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:@"key"];
         v11 = [v4 objectForKeyedSubscript:v10];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
         v13 = [v9 objectForKeyedSubscript:v10];
         LODWORD(v11) = [v13 intValue];
 
-        v14 = [NSNumber numberWithInt:v11 + v12];
+        v14 = [NSNumber numberWithInt:v11 + intValue];
         [v4 setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -167,12 +167,12 @@
   }
 }
 
-+ (void)savePredictionData:(id)a3
++ (void)savePredictionData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v5 = +[_CDClientContext userContext];
   v4 = [_CDContextualKeyPath keyPathWithKey:@"/system/activityPrediction"];
-  [v5 setObject:v3 forKeyedSubscript:v4];
+  [v5 setObject:dataCopy forKeyedSubscript:v4];
 }
 
 + (id)readPredictionData

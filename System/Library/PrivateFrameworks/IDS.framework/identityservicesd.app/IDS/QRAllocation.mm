@@ -1,45 +1,45 @@
 @interface QRAllocation
-- (QRAllocation)initWithRequest:(id)a3;
-- (QRAllocation)initWithResponse:(id)a3;
+- (QRAllocation)initWithRequest:(id)request;
+- (QRAllocation)initWithResponse:(id)response;
 - (id)getAllocation;
 - (void)_allocationTimeout;
 - (void)_purgeAllocation;
-- (void)addAllocation:(id)a3;
+- (void)addAllocation:(id)allocation;
 - (void)cancelAllocationTimeoutTimer;
 - (void)dealloc;
-- (void)setPurgeAtExpiration:(double)a3;
+- (void)setPurgeAtExpiration:(double)expiration;
 @end
 
 @implementation QRAllocation
 
-- (QRAllocation)initWithRequest:(id)a3
+- (QRAllocation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v39.receiver = self;
   v39.super_class = QRAllocation;
   v6 = [(QRAllocation *)&v39 init];
   v7 = v6;
-  if (v5 && v6)
+  if (requestCopy && v6)
   {
     ids_monotonic_time();
     v7->_startTime = v8;
-    objc_storeStrong(&v7->_request, a3);
-    v9 = [v5 requestIDStr];
+    objc_storeStrong(&v7->_request, request);
+    requestIDStr = [requestCopy requestIDStr];
     requestIDStr = v7->_requestIDStr;
-    v7->_requestIDStr = v9;
+    v7->_requestIDStr = requestIDStr;
 
-    v11 = [v5 IDSSessionID];
-    v12 = [v11 length] == 16;
+    iDSSessionID = [requestCopy IDSSessionID];
+    v12 = [iDSSessionID length] == 16;
 
     if (v12)
     {
       v13 = [NSUUID alloc];
-      v14 = [v5 IDSSessionID];
-      v15 = v14;
-      v16 = [v13 initWithUUIDBytes:{objc_msgSend(v14, "bytes")}];
-      v17 = [v16 UUIDString];
+      iDSSessionID2 = [requestCopy IDSSessionID];
+      v15 = iDSSessionID2;
+      v16 = [v13 initWithUUIDBytes:{objc_msgSend(iDSSessionID2, "bytes")}];
+      uUIDString = [v16 UUIDString];
       sessionIDStr = v7->_sessionIDStr;
-      v7->_sessionIDStr = v17;
+      v7->_sessionIDStr = uUIDString;
     }
 
     else
@@ -47,8 +47,8 @@
       v19 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v5 IDSSessionID];
-        v21 = [v20 length];
+        iDSSessionID3 = [requestCopy IDSSessionID];
+        v21 = [iDSSessionID3 length];
         *buf = 134218240;
         v41 = v21;
         v42 = 2048;
@@ -60,22 +60,22 @@
       {
         if (_IDSShouldLogTransport())
         {
-          v22 = [v5 IDSSessionID];
-          v35 = [v22 length];
+          iDSSessionID4 = [requestCopy IDSSessionID];
+          v35 = [iDSSessionID4 length];
           v36 = 16;
           _IDSLogTransport();
 
           if (_IDSShouldLog())
           {
-            v23 = [v5 IDSSessionID];
-            v35 = [v23 length];
+            iDSSessionID5 = [requestCopy IDSSessionID];
+            v35 = [iDSSessionID5 length];
             v36 = 16;
             _IDSLogV();
           }
         }
       }
 
-      v14 = v7->_sessionIDStr;
+      iDSSessionID2 = v7->_sessionIDStr;
       v7->_sessionIDStr = 0;
     }
 
@@ -115,14 +115,14 @@
   return v7;
 }
 
-- (QRAllocation)initWithResponse:(id)a3
+- (QRAllocation)initWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v24.receiver = self;
   v24.super_class = QRAllocation;
   v5 = [(QRAllocation *)&v24 init];
   v6 = v5;
-  if (v4 && v5)
+  if (responseCopy && v5)
   {
     [(QRAllocation *)v5 startTime];
     if (v7 == 0.0)
@@ -142,11 +142,11 @@
     Value = kIDSQRAllocateKey_RequestID;
     if (kIDSQRAllocateKey_RequestID)
     {
-      Value = CFDictionaryGetValue(v4, kIDSQRAllocateKey_RequestID);
+      Value = CFDictionaryGetValue(responseCopy, kIDSQRAllocateKey_RequestID);
     }
 
     objc_storeStrong(&v6->_requestIDStr, Value);
-    v13 = [(__CFDictionary *)v4 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+    v13 = [(__CFDictionary *)responseCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
     sessionIDStr = v6->_sessionIDStr;
     v6->_sessionIDStr = v13;
 
@@ -173,10 +173,10 @@
       v19 = v6->_responses;
     }
 
-    [(NSMutableSet *)v19 addObject:v4];
+    [(NSMutableSet *)v19 addObject:responseCopy];
     if (kIDSQRAllocateKey_RelayExpiryTimestamp)
     {
-      v22 = CFDictionaryGetValue(v4, kIDSQRAllocateKey_RelayExpiryTimestamp);
+      v22 = CFDictionaryGetValue(responseCopy, kIDSQRAllocateKey_RelayExpiryTimestamp);
     }
 
     else
@@ -216,30 +216,30 @@
   request = self->_request;
   if (request)
   {
-    v5 = [(IDSQuickRelayAllocateMessage *)request recipients];
-    v6 = [v5 count];
+    recipients = [(IDSQuickRelayAllocateMessage *)request recipients];
+    v6 = [recipients count];
 
     if (v6 > [(NSMutableSet *)self->_responses count])
     {
       v7 = [IDSQuickRelayMetric alloc];
       v8 = [NSNumber numberWithInt:2];
-      v9 = [(IDSQuickRelayAllocateMessage *)self->_request provider];
-      v10 = [(IDSQuickRelayAllocateMessage *)self->_request allocateProtocolVersion];
-      v11 = [(IDSQuickRelayAllocateMessage *)self->_request appID];
-      v12 = [v7 initWithType:&off_100C3CB38 eventSubType:&off_100C3CB50 duration:0 resultCode:v8 providerType:v9 transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:v10 retryCount:0 serviceName:v11 subServiceName:0 participantCount:0];
+      provider = [(IDSQuickRelayAllocateMessage *)self->_request provider];
+      allocateProtocolVersion = [(IDSQuickRelayAllocateMessage *)self->_request allocateProtocolVersion];
+      appID = [(IDSQuickRelayAllocateMessage *)self->_request appID];
+      v12 = [v7 initWithType:&off_100C3CB38 eventSubType:&off_100C3CB50 duration:0 resultCode:v8 providerType:provider transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:allocateProtocolVersion retryCount:0 serviceName:appID subServiceName:0 participantCount:0];
 
       v13 = +[IDSCoreAnalyticsLogger defaultLogger];
       [v13 logMetric:v12];
 
       v14 = +[IDSAWDLogging sharedInstance];
       v15 = [NSNumber numberWithInt:2];
-      v16 = [(IDSQuickRelayAllocateMessage *)self->_request provider];
-      v17 = [(IDSQuickRelayAllocateMessage *)self->_request allocateProtocolVersion];
-      v18 = [(IDSQuickRelayAllocateMessage *)self->_request appID];
-      [v14 IDSQuickRelayEventType:&off_100C3CB38 eventSubType:&off_100C3CB50 duration:0 resultCode:v15 providerType:v16 transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:v17 retryCount:0 serviceName:v18 subServiceName:0 participantCount:0];
+      provider2 = [(IDSQuickRelayAllocateMessage *)self->_request provider];
+      allocateProtocolVersion2 = [(IDSQuickRelayAllocateMessage *)self->_request allocateProtocolVersion];
+      appID2 = [(IDSQuickRelayAllocateMessage *)self->_request appID];
+      [v14 IDSQuickRelayEventType:&off_100C3CB38 eventSubType:&off_100C3CB50 duration:0 resultCode:v15 providerType:provider2 transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:allocateProtocolVersion2 retryCount:0 serviceName:appID2 subServiceName:0 participantCount:0];
 
-      v19 = [(IDSQuickRelayAllocateMessage *)self->_request IDSSessionID];
-      v20 = sub_100592F04(v19);
+      iDSSessionID = [(IDSQuickRelayAllocateMessage *)self->_request IDSSessionID];
+      v20 = sub_100592F04(iDSSessionID);
 
       v21 = +[IDSDSessionController sharedInstance];
       v22 = [v21 sessionWithUniqueID:v20];
@@ -247,8 +247,8 @@
       if (v22)
       {
         Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        v24 = [(IDSQuickRelayAllocateMessage *)self->_request allocateProtocolVersion];
-        [(__CFDictionary *)Mutable setObject:v24 forKeyedSubscript:IDSDSessionReportQRVersionKey];
+        allocateProtocolVersion3 = [(IDSQuickRelayAllocateMessage *)self->_request allocateProtocolVersion];
+        [(__CFDictionary *)Mutable setObject:allocateProtocolVersion3 forKeyedSubscript:IDSDSessionReportQRVersionKey];
 
         [(__CFDictionary *)Mutable setObject:&off_100C3CB50 forKeyedSubscript:IDSDSessionReportQREventSubTypeKey];
         v25 = [NSNumber numberWithInt:2];
@@ -286,10 +286,10 @@
   [(QRAllocation *)&v27 dealloc];
 }
 
-- (void)setPurgeAtExpiration:(double)a3
+- (void)setPurgeAtExpiration:(double)expiration
 {
   IMTimeOfDay();
-  v6 = a3 + v5 * -1000.0;
+  v6 = expiration + v5 * -1000.0;
   if (v6 < 120000.0)
   {
     v6 = 120000.0;
@@ -317,7 +317,7 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v35 = self;
+  selfCopy = self;
   obj = [(QRAllocation *)self responses];
   v5 = 0;
   v6 = [obj countByEnumeratingWithState:&v40 objects:v51 count:16];
@@ -448,8 +448,8 @@
           }
 
           v25 = *(*(&v36 + 1) + 8 * j);
-          v26 = [(QRAllocation *)v35 responses];
-          [v26 removeObject:v25];
+          responses = [(QRAllocation *)selfCopy responses];
+          [responses removeObject:v25];
         }
 
         v22 = [v21 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -461,8 +461,8 @@
     [v21 removeAllObjects];
   }
 
-  v27 = [(QRAllocation *)v35 responses];
-  v28 = [v27 count] == 0;
+  responses2 = [(QRAllocation *)selfCopy responses];
+  v28 = [responses2 count] == 0;
 
   if (v28)
   {
@@ -486,7 +486,7 @@
     }
 
     v30 = +[IDSQuickRelayAllocator sharedInstance];
-    [v30 invalidateAllocation:v35];
+    [v30 invalidateAllocation:selfCopy];
   }
 }
 
@@ -521,13 +521,13 @@
   request = self->_request;
   if (request)
   {
-    v25 = [(IDSQuickRelayAllocateMessage *)request requestIDStr];
-    v4 = [(IDSQuickRelayAllocateMessage *)self->_request IDSSessionID];
-    v5 = sub_100592F04(v4);
+    requestIDStr = [(IDSQuickRelayAllocateMessage *)request requestIDStr];
+    iDSSessionID = [(IDSQuickRelayAllocateMessage *)self->_request IDSSessionID];
+    v5 = sub_100592F04(iDSSessionID);
 
-    v6 = [(IDSQuickRelayAllocateMessage *)self->_request allocateType];
+    allocateType = [(IDSQuickRelayAllocateMessage *)self->_request allocateType];
     v7 = +[IDSUTunController sharedInstance];
-    [v7 handleAllocateRequestFailureForDevice:v5 requestID:v25 errorCode:0];
+    [v7 handleAllocateRequestFailureForDevice:v5 requestID:requestIDStr errorCode:0];
 
     v8 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -552,7 +552,7 @@
     CFDictionarySetValue(v9, kIDSQRAllocateKey_ErrorCode, &off_100C3CB80);
     v35[0] = 0xAAAAAAAAAAAAAAAALL;
     v35[1] = 0xAAAAAAAAAAAAAAAALL;
-    v10 = [[NSUUID alloc] initWithUUIDString:v25];
+    v10 = [[NSUUID alloc] initWithUUIDString:requestIDStr];
     [v10 getUUIDBytes:v35];
 
     v11 = [NSData dataWithBytes:v35 length:16];
@@ -566,10 +566,10 @@
       sub_10092A258();
     }
 
-    v12 = [(IDSQuickRelayAllocateMessage *)self->_request appID];
-    if (v12)
+    appID = [(IDSQuickRelayAllocateMessage *)self->_request appID];
+    if (appID)
     {
-      CFDictionarySetValue(v9, kIDSQRAllocateKey_AppID, v12);
+      CFDictionarySetValue(v9, kIDSQRAllocateKey_AppID, appID);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -578,9 +578,9 @@
     }
 
     v13 = +[IMDeviceSupport sharedInstance];
-    v14 = [v13 userAgentString];
+    userAgentString = [v13 userAgentString];
 
-    v15 = v14;
+    v15 = userAgentString;
     if (v15)
     {
       CFDictionarySetValue(v9, kIDSQRAllocateKey_UserAgent, v15);
@@ -591,7 +591,7 @@
       sub_100919EE8();
     }
 
-    v16 = v6;
+    v16 = allocateType;
     if (v16)
     {
       CFDictionarySetValue(v9, kIDSQRAllocateKey_AllocateType, v16);
@@ -608,7 +608,7 @@
       *buf = 138412802;
       v30 = v5;
       v31 = 2112;
-      v32 = v25;
+      v32 = requestIDStr;
       v33 = 2112;
       v34 = v15;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Sending server message QR metrics allocation timeout report for session %@ requestID: %@, ua: %@", buf, 0x20u);
@@ -618,13 +618,13 @@
     {
       if (_IDSShouldLogTransport())
       {
-        v23 = v25;
+        v23 = requestIDStr;
         v24 = v15;
         v22 = v5;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v23 = v25;
+          v23 = requestIDStr;
           v24 = v15;
           v22 = v5;
           _IDSLogV();
@@ -648,22 +648,22 @@
   [(QRAllocation *)self cancelAllocationTimeoutTimer:v22];
 }
 
-- (void)addAllocation:(id)a3
+- (void)addAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   selfAllocations = self->_selfAllocations;
-  v8 = v4;
+  v8 = allocationCopy;
   if (!selfAllocations)
   {
     v6 = objc_alloc_init(QRSelfAllocationArray);
     v7 = self->_selfAllocations;
     self->_selfAllocations = v6;
 
-    v4 = v8;
+    allocationCopy = v8;
     selfAllocations = self->_selfAllocations;
   }
 
-  [(QRSelfAllocationArray *)selfAllocations addAllocation:v4];
+  [(QRSelfAllocationArray *)selfAllocations addAllocation:allocationCopy];
 }
 
 - (id)getAllocation

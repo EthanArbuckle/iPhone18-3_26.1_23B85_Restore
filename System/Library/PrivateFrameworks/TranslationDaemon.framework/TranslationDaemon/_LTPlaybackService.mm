@@ -1,8 +1,8 @@
 @interface _LTPlaybackService
 - (BOOL)_currentOutputRouteIsSpeaker;
 - (BOOL)isAudioQueueRunning;
-- (_LTPlaybackService)initWithContext:(id)a3 ASBD:(AudioStreamBasicDescription *)a4;
-- (id)enqueue:(id)a3 packetCount:(int64_t)a4 packetDescriptions:(id)a5;
+- (_LTPlaybackService)initWithContext:(id)context ASBD:(AudioStreamBasicDescription *)d;
+- (id)enqueue:(id)enqueue packetCount:(int64_t)count packetDescriptions:(id)descriptions;
 - (id)start;
 - (void)dealloc;
 - (void)flushAndStop;
@@ -17,10 +17,10 @@
 
 @implementation _LTPlaybackService
 
-- (_LTPlaybackService)initWithContext:(id)a3 ASBD:(AudioStreamBasicDescription *)a4
+- (_LTPlaybackService)initWithContext:(id)context ASBD:(AudioStreamBasicDescription *)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  contextCopy = context;
   v38.receiver = self;
   v38.super_class = _LTPlaybackService;
   v8 = [(_LTPlaybackService *)&v38 init];
@@ -32,13 +32,13 @@ LABEL_5:
     goto LABEL_20;
   }
 
-  v10 = *&a4->mSampleRate;
-  v11 = *&a4->mBytesPerPacket;
-  *(v8 + 5) = *&a4->mBitsPerChannel;
+  v10 = *&d->mSampleRate;
+  v11 = *&d->mBytesPerPacket;
+  *(v8 + 5) = *&d->mBitsPerChannel;
   *(v8 + 24) = v11;
   *(v8 + 8) = v10;
-  objc_storeStrong(v8 + 21, a3);
-  v12 = [v7 audioSessionID];
+  objc_storeStrong(v8 + 21, context);
+  audioSessionID = [contextCopy audioSessionID];
   *(v9 + 7) = 850045863;
   *(v9 + 4) = 0u;
   *(v9 + 5) = 0u;
@@ -60,7 +60,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [v7 ttsPlaybackRate];
+  [contextCopy ttsPlaybackRate];
   if (v16 != 1.0)
   {
     inData = 1;
@@ -68,21 +68,21 @@ LABEL_5:
     inData = 1953064047;
     AudioQueueSetProperty(*(v9 + 6), 0x71747061u, &inData, 4u);
     v17 = *(v9 + 6);
-    [v7 ttsPlaybackRate];
+    [contextCopy ttsPlaybackRate];
     *&v18 = v18;
     AudioQueueSetParameter(v17, 2u, *&v18);
   }
 
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = [MEMORY[0x277CB83F8] retrieveSessionWithID:v12];
-  v21 = [v20 currentRoute];
+  array = [MEMORY[0x277CBEB18] array];
+  v20 = [MEMORY[0x277CB83F8] retrieveSessionWithID:audioSessionID];
+  currentRoute = [v20 currentRoute];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = [v21 outputs];
-  v23 = [v22 countByEnumeratingWithState:&v34 objects:v41 count:16];
+  outputs = [currentRoute outputs];
+  v23 = [outputs countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (v23)
   {
     v24 = v23;
@@ -94,23 +94,23 @@ LABEL_5:
       {
         if (*v35 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(outputs);
         }
 
-        v27 = [*(*(&v34 + 1) + 8 * v26) portType];
-        [v19 addObject:v27];
+        portType = [*(*(&v34 + 1) + 8 * v26) portType];
+        [array addObject:portType];
 
         ++v26;
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v34 objects:v41 count:16];
+      v24 = [outputs countByEnumeratingWithState:&v34 objects:v41 count:16];
     }
 
     while (v24);
   }
 
-  v28 = [v19 componentsJoinedByString:{@", "}];
+  v28 = [array componentsJoinedByString:{@", "}];
   v29 = _LTOSLogTTS();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -119,14 +119,14 @@ LABEL_5:
     _os_log_impl(&dword_232E53000, v29, OS_LOG_TYPE_INFO, "Current audio output route: %@", &inData, 0xCu);
   }
 
-  v30 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v30 addObserver:v9 selector:sel_handleMediaServerReset name:*MEMORY[0x277CB80A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v9 selector:sel_handleMediaServerReset name:*MEMORY[0x277CB80A0] object:0];
 
   v31 = _LTOSLogTTS();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     inData = 67109120;
-    LODWORD(v40) = v12;
+    LODWORD(v40) = audioSessionID;
     _os_log_impl(&dword_232E53000, v31, OS_LOG_TYPE_INFO, "AudioQueue initialized with session id: %d", &inData, 8u);
   }
 
@@ -163,14 +163,14 @@ LABEL_20:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 currentRoute];
-    v5 = [v4 outputs];
+    currentRoute = [v2 currentRoute];
+    outputs = [currentRoute outputs];
 
-    if ([v5 count] == 1)
+    if ([outputs count] == 1)
     {
-      v6 = [v5 firstObject];
-      v7 = [v6 portType];
-      v8 = [v7 isEqualToString:@"Speaker"];
+      firstObject = [outputs firstObject];
+      portType = [firstObject portType];
+      v8 = [portType isEqualToString:@"Speaker"];
     }
 
     else
@@ -237,13 +237,13 @@ LABEL_20:
   return v8;
 }
 
-- (id)enqueue:(id)a3 packetCount:(int64_t)a4 packetDescriptions:(id)a5
+- (id)enqueue:(id)enqueue packetCount:(int64_t)count packetDescriptions:(id)descriptions
 {
-  v6 = a4;
+  countCopy = count;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (![v8 length])
+  enqueueCopy = enqueue;
+  descriptionsCopy = descriptions;
+  if (![enqueueCopy length])
   {
 LABEL_15:
     v13 = 0;
@@ -255,12 +255,12 @@ LABEL_15:
   {
     v11 = v10;
     LODWORD(buf.mSampleTime) = 134217984;
-    *(&buf.mSampleTime + 4) = [v8 length];
+    *(&buf.mSampleTime + 4) = [enqueueCopy length];
     _os_log_impl(&dword_232E53000, v11, OS_LOG_TYPE_INFO, "Creating buffer of length: %zu", &buf, 0xCu);
   }
 
   outBuffer = 0;
-  v12 = AudioQueueAllocateBuffer(self->_audioQueue, [v8 length], &outBuffer);
+  v12 = AudioQueueAllocateBuffer(self->_audioQueue, [enqueueCopy length], &outBuffer);
   if (v12)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v12 userInfo:0];
@@ -273,18 +273,18 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  memcpy(outBuffer->mAudioData, [v8 bytes], objc_msgSend(v8, "length"));
-  v15 = [v8 length];
+  memcpy(outBuffer->mAudioData, [enqueueCopy bytes], objc_msgSend(enqueueCopy, "length"));
+  v15 = [enqueueCopy length];
   outBuffer->mAudioDataByteSize = v15;
   memset(&buf, 0, sizeof(buf));
   AudioQueueGetCurrentTime(self->_audioQueue, 0, &buf, 0);
-  v16 = AudioQueueEnqueueBuffer(self->_audioQueue, outBuffer, v6, [v9 bytes]);
+  v16 = AudioQueueEnqueueBuffer(self->_audioQueue, outBuffer, countCopy, [descriptionsCopy bytes]);
   if (!v16)
   {
     v18 = _LTOSLogTTS();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      if (v9)
+      if (descriptionsCopy)
       {
         v19 = @"Opus";
       }
@@ -296,7 +296,7 @@ LABEL_15:
 
       mSampleTime = buf.mSampleTime;
       v21 = v18;
-      v22 = [v8 length];
+      v22 = [enqueueCopy length];
       *v26 = 138543874;
       v27 = v19;
       v28 = 2048;
@@ -397,7 +397,7 @@ LABEL_16:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_232E53000, a2, OS_LOG_TYPE_ERROR, "Encountered error setting MutesAudioBasedOnRingerSwitchState: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

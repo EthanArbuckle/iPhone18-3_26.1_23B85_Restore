@@ -1,6 +1,6 @@
 @interface MDLCheckerboardTexture
 - (MDLCheckerboardTexture)initWithDivisions:(float)divisions name:(NSString *)name dimensions:(vector_int2)dimensions channelCount:(int)channelCount channelEncoding:(MDLTextureChannelEncoding)channelEncoding color1:(CGColorRef)color1 color2:(CGColorRef)color2;
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4;
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector;
 - (void)dealloc;
 - (void)setColor1:(CGColorRef)color1;
 - (void)setColor2:(CGColorRef)color2;
@@ -66,14 +66,14 @@
   }
 }
 
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector
 {
   if (self->super._channelEncoding != 1)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = NSStringFromSelector(a4);
+    v10 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v7, v11, @"ModelIOException", @"[%@ %@]: Only 8 bit textures supported", v9, v10);
   }
 
@@ -82,12 +82,12 @@
     v12 = MEMORY[0x277CBEAD8];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = NSStringFromSelector(a4);
+    v15 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v12, v16, @"ModelIOException", @"[%@ %@]: Only 4 channel textures supported", v14, v15);
   }
 
   v50 = *self->super._anon_118;
-  v17 = objc_msgSend_allocateDataAtLevel_(self, a2, a3);
+  v17 = objc_msgSend_allocateDataAtLevel_(self, a2, level);
   v18 = v17;
   v21 = objc_msgSend_mutableBytes(v18, v19, v20);
   Components = CGColorGetComponents(*&self->_divisions);
@@ -98,7 +98,7 @@
   v28.i32[1] = v50.i32[1];
   v28.i32[0] = 1;
   v29 = vbsl_s8(vdup_lane_s32(vcgt_s32(v25, v50), 0), v28, v50);
-  v30 = vmax_s32(vshl_s32(vbsl_s8(vdup_lane_s32(vcgt_s32(v25, vdup_lane_s32(v29, 1)), 0), (v29.u32[0] | 0x100000000), v29), vneg_s32(vdup_n_s32(a3))), 0x100000001);
+  v30 = vmax_s32(vshl_s32(vbsl_s8(vdup_lane_s32(vcgt_s32(v25, vdup_lane_s32(v29, 1)), 0), (v29.u32[0] | 0x100000000), v29), vneg_s32(vdup_n_s32(level))), 0x100000001);
   v32 = *Components;
   v31 = *(Components + 2);
   v34 = *v23;

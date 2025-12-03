@@ -1,9 +1,9 @@
 @interface JavaUtilTreeMap_BoundedMap_BoundedValuesCollection
 - (BOOL)isEmpty;
-- (JavaUtilTreeMap_BoundedMap_BoundedValuesCollection)initWithJavaUtilTreeMap_BoundedMap:(id)a3;
+- (JavaUtilTreeMap_BoundedMap_BoundedValuesCollection)initWithJavaUtilTreeMap_BoundedMap:(id)map;
 - (id)iterator;
 - (int)size;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)__javaClone;
 @end
 
@@ -33,9 +33,9 @@
   return v5;
 }
 
-- (JavaUtilTreeMap_BoundedMap_BoundedValuesCollection)initWithJavaUtilTreeMap_BoundedMap:(id)a3
+- (JavaUtilTreeMap_BoundedMap_BoundedValuesCollection)initWithJavaUtilTreeMap_BoundedMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractCollection_init(self, v4);
   return self;
 }
@@ -47,20 +47,20 @@
   [(JavaUtilTreeMap_BoundedMap_BoundedValuesCollection *)&v3 __javaClone];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   Weak = objc_loadWeak(&self->this$0_);
-  if (!a3->var0)
+  if (!state->var0)
   {
     v10 = Weak;
-    a3->var3[1] = [Weak endpointWithBoolean:1];
-    a3->var3[2] = [v10 endpointWithBoolean:0];
+    state->var3[1] = [Weak endpointWithBoolean:1];
+    state->var3[2] = [v10 endpointWithBoolean:0];
   }
 
   v11 = *(objc_loadWeak(&self->this$0_) + 3);
   v12 = *(objc_loadWeak(&self->this$0_) + 32);
 
-  return sub_1001DE830(v11, a3, a4, a5, 2, v12);
+  return sub_1001DE830(v11, state, objects, count, 2, v12);
 }
 
 @end

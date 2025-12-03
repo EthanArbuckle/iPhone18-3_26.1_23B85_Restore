@@ -1,16 +1,16 @@
 @interface _UTDynamicTypeRecord
 + (id)_propertyClasses;
-- (BOOL)conformsToTypeIdentifier:(id)a3;
-- (BOOL)isChildOfTypeIdentifier:(id)a3;
-- (_UTDynamicTypeRecord)initWithCoder:(id)a3;
-- (id)_initWithContext:(LSContext *)a3 dynamicUTI:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToTypeIdentifier:(id)identifier;
+- (BOOL)isChildOfTypeIdentifier:(id)identifier;
+- (_UTDynamicTypeRecord)initWithCoder:(id)coder;
+- (id)_initWithContext:(LSContext *)context dynamicUTI:(id)i;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)declaration;
 - (id)parentTypeIdentifiers;
-- (id)pedigreeWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(id *)a6;
-- (id)preferredTagOfClass:(id)a3;
+- (id)pedigreeWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(id *)bytes;
+- (id)preferredTagOfClass:(id)class;
 - (id)tagSpecification;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UTDynamicTypeRecord
@@ -32,15 +32,15 @@
   return v3;
 }
 
-- (id)_initWithContext:(LSContext *)a3 dynamicUTI:(id)a4
+- (id)_initWithContext:(LSContext *)context dynamicUTI:(id)i
 {
-  v7 = *([(_LSDatabase *)a3->db schema]+ 16);
+  v7 = *([(_LSDatabase *)context->db schema]+ 16);
   v12.receiver = self;
   v12.super_class = _UTDynamicTypeRecord;
-  v8 = [(LSRecord *)&v12 _initWithContext:a3 tableID:v7 unitID:0];
+  v8 = [(LSRecord *)&v12 _initWithContext:context tableID:v7 unitID:0];
   if (v8)
   {
-    v9 = [a4 copy];
+    v9 = [i copy];
     v10 = v8[4];
     v8[4] = v9;
   }
@@ -63,31 +63,31 @@
   return v6;
 }
 
-- (id)preferredTagOfClass:(id)a3
+- (id)preferredTagOfClass:(id)class
 {
-  FirstTag = _UTDynamicGetFirstTag(self->_identifier, a3);
+  FirstTag = _UTDynamicGetFirstTag(self->_identifier, class);
 
   return FirstTag;
 }
 
-- (BOOL)conformsToTypeIdentifier:(id)a3
+- (BOOL)conformsToTypeIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(_UTDynamicTypeRecord *)self isChildOfTypeIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(_UTDynamicTypeRecord *)self isChildOfTypeIdentifier:identifierCopy])
   {
     v5 = 1;
-    v6 = v4;
+    lowercaseString = identifierCopy;
   }
 
   else
   {
-    v6 = [v4 lowercaseString];
+    lowercaseString = [identifierCopy lowercaseString];
 
-    v7 = [(_UTDynamicTypeRecord *)self pedigree];
-    v8 = v7;
-    if (v7)
+    pedigree = [(_UTDynamicTypeRecord *)self pedigree];
+    v8 = pedigree;
+    if (pedigree)
     {
-      v5 = [v7 containsObject:v6];
+      v5 = [pedigree containsObject:lowercaseString];
     }
 
     else
@@ -99,9 +99,9 @@
   return v5;
 }
 
-- (id)pedigreeWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(id *)a6
+- (id)pedigreeWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(id *)bytes
 {
-  Pedigree = _UTDynamicGetPedigree(a3, self->_identifier);
+  Pedigree = _UTDynamicGetPedigree(context, self->_identifier);
   v7 = Pedigree;
   if (Pedigree)
   {
@@ -136,7 +136,7 @@
   return v4;
 }
 
-- (BOOL)isChildOfTypeIdentifier:(id)a3
+- (BOOL)isChildOfTypeIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -147,7 +147,7 @@
   v6[1] = 3221225472;
   v6[2] = __48___UTDynamicTypeRecord_isChildOfTypeIdentifier___block_invoke;
   v6[3] = &unk_1E6A1F208;
-  v6[4] = a3;
+  v6[4] = identifier;
   v6[5] = &v7;
   _UTDynamicEnumerateParentIdentifiers(identifier, v6);
   v4 = *(v8 + 24);
@@ -166,22 +166,22 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UTDynamicTypeRecord;
   [(LSRecord *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_identifier forKey:@"identifier"];
+  [coder encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (_UTDynamicTypeRecord)initWithCoder:(id)a3
+- (_UTDynamicTypeRecord)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = _UTDynamicTypeRecord;
   v4 = [(LSRecord *)&v8 initWithCoder:?];
   if (v4)
   {
-    v5 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v4->_identifier;
     v4->_identifier = v5;
   }
@@ -189,11 +189,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _UTDynamicTypeRecord;
-  v4 = [(LSRecord *)&v7 copyWithZone:a3];
+  v4 = [(LSRecord *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

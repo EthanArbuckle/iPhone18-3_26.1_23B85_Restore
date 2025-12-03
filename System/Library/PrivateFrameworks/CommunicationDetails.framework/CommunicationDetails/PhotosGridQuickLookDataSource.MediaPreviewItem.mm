@@ -1,18 +1,18 @@
 @interface PhotosGridQuickLookDataSource.MediaPreviewItem
 - (NSURL)previewItemURL;
 - (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)init;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithCoder:(id)a3;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithData:(id)a3 contentType:(id)a4 previewTitle:(id)a5;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithDataProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithFPItem:(id)a3;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithPreviewItemProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5 fileSize:(id)a6;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)a3 applicationBundleIdentifier:(id)a4;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)a3 queryString:(id)a4 applicationBundleIdentifier:(id)a5 previewTitle:(id)a6;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)a3;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)a3 MIMEType:(id)a4;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)a3 previewTitle:(id)a4 editingMode:(int64_t)a5;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)a3;
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)a3 previewTitle:(id)a4 editingMode:(int64_t)a5;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithCoder:(id)coder;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithData:(id)data contentType:(id)type previewTitle:(id)title;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithDataProvider:(id)provider contentType:(id)type previewTitle:(id)title;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithFPItem:(id)item;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithPreviewItemProvider:(id)provider contentType:(id)type previewTitle:(id)title fileSize:(id)size;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)identifier applicationBundleIdentifier:(id)bundleIdentifier;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)identifier queryString:(id)string applicationBundleIdentifier:(id)bundleIdentifier previewTitle:(id)title;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)l;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)l MIMEType:(id)type;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)l previewTitle:(id)title editingMode:(int64_t)mode;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)wrapper;
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)wrapper previewTitle:(id)title editingMode:(int64_t)mode;
 @end
 
 @implementation PhotosGridQuickLookDataSource.MediaPreviewItem
@@ -40,7 +40,7 @@
   return v10;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithCoder:(id)a3
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem_itemProvider;
   *(&self->super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E696ACA0]) init];
@@ -53,7 +53,7 @@
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)a3
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)l
 {
   v3 = type metadata accessor for URL();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -63,7 +63,7 @@
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)a3 previewTitle:(id)a4 editingMode:(int64_t)a5
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)l previewTitle:(id)title editingMode:(int64_t)mode
 {
   v5 = type metadata accessor for URL();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -73,28 +73,28 @@
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)a3
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)wrapper
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)a3 previewTitle:(id)a4 editingMode:(int64_t)a5
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURLSandboxWrapper:(id)wrapper previewTitle:(id)title editingMode:(int64_t)mode
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithFPItem:(id)a3
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithFPItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)a3 MIMEType:(id)a4
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithURL:(id)l MIMEType:(id)type
 {
   v4 = type metadata accessor for URL();
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -104,9 +104,9 @@
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithData:(id)a3 contentType:(id)a4 previewTitle:(id)a5
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithData:(id)data contentType:(id)type previewTitle:(id)title
 {
-  v5 = a3;
+  dataCopy = data;
   static Data._unconditionallyBridgeFromObjectiveC(_:)();
 
   result = _swift_stdlib_reportUnimplementedInitializer();
@@ -114,28 +114,28 @@
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithDataProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithDataProvider:(id)provider contentType:(id)type previewTitle:(id)title
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithPreviewItemProvider:(id)a3 contentType:(id)a4 previewTitle:(id)a5 fileSize:(id)a6
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithPreviewItemProvider:(id)provider contentType:(id)type previewTitle:(id)title fileSize:(id)size
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)a3 queryString:(id)a4 applicationBundleIdentifier:(id)a5 previewTitle:(id)a6
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)identifier queryString:(id)string applicationBundleIdentifier:(id)bundleIdentifier previewTitle:(id)title
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)a3 applicationBundleIdentifier:(id)a4
+- (_TtCC20CommunicationDetails29PhotosGridQuickLookDataSource16MediaPreviewItem)initWithSearchableItemUniqueIdentifier:(id)identifier applicationBundleIdentifier:(id)bundleIdentifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

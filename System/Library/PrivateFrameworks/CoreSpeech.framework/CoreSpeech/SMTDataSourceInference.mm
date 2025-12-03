@@ -1,8 +1,8 @@
 @interface SMTDataSourceInference
-- (SMTDataSourceInference)initWithLength:(unint64_t)a3 contextKey:(id)a4 targetKey:(id)a5;
+- (SMTDataSourceInference)initWithLength:(unint64_t)length contextKey:(id)key targetKey:(id)targetKey;
 - (id).cxx_construct;
-- (id)dataPointAtIndex:(unint64_t)a3 error:(id *)a4;
-- (void)setVectorsWithProcessor:(id)a3;
+- (id)dataPointAtIndex:(unint64_t)index error:(id *)error;
+- (void)setVectorsWithProcessor:(id)processor;
 @end
 
 @implementation SMTDataSourceInference
@@ -15,29 +15,29 @@
   return self;
 }
 
-- (void)setVectorsWithProcessor:(id)a3
+- (void)setVectorsWithProcessor:(id)processor
 {
-  v14 = a3;
-  v4 = [v14 textSequence];
-  v5 = [v4 firstObject];
-  v6 = [v5 sequence];
+  processorCopy = processor;
+  textSequence = [processorCopy textSequence];
+  firstObject = [textSequence firstObject];
+  sequence = [firstObject sequence];
 
-  v7 = [v14 textSequence];
-  v8 = [v7 firstObject];
-  v9 = [v8 target];
+  textSequence2 = [processorCopy textSequence];
+  firstObject2 = [textSequence2 firstObject];
+  target = [firstObject2 target];
 
-  for (i = 0; i < [v6 count]; ++i)
+  for (i = 0; i < [sequence count]; ++i)
   {
-    v11 = [v6 objectAtIndexedSubscript:i];
+    v11 = [sequence objectAtIndexedSubscript:i];
     [v11 floatValue];
     *(*self->_contextData.__begin_ + 4 * i) = v12;
   }
 
-  [v9 floatValue];
+  [target floatValue];
   **self->_targetData.__begin_ = v13;
 }
 
-- (id)dataPointAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)dataPointAtIndex:(unint64_t)index error:(id *)error
 {
   v5 = objc_opt_new();
   v21[0] = &off_10003B1C8;
@@ -76,10 +76,10 @@
   return v5;
 }
 
-- (SMTDataSourceInference)initWithLength:(unint64_t)a3 contextKey:(id)a4 targetKey:(id)a5
+- (SMTDataSourceInference)initWithLength:(unint64_t)length contextKey:(id)key targetKey:(id)targetKey
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  targetKeyCopy = targetKey;
   v14.receiver = self;
   v14.super_class = SMTDataSourceInference;
   v11 = [(SMTDataSourceInference *)&v14 init];
@@ -88,11 +88,11 @@
   {
     sub_10001EAD0(v11 + 1, 1uLL);
     sub_10001EAD0(v12 + 4, 1uLL);
-    sub_10001ECA8(*(v12 + 1), a3);
-    sub_10001ECA8(*(v12 + 4), a3);
-    *(v12 + 7) = a3;
-    objc_storeStrong(v12 + 8, a4);
-    objc_storeStrong(v12 + 9, a5);
+    sub_10001ECA8(*(v12 + 1), length);
+    sub_10001ECA8(*(v12 + 4), length);
+    *(v12 + 7) = length;
+    objc_storeStrong(v12 + 8, key);
+    objc_storeStrong(v12 + 9, targetKey);
   }
 
   return v12;

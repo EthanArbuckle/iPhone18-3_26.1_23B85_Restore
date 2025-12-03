@@ -1,21 +1,21 @@
 @interface MUPlacePhotoHeaderAttributionFormatter
-+ (id)formattedHeaderStringForPhotoAttributions:(id)a3;
-- (id)formattedHeaderStringForAttributionItems:(id)a3;
++ (id)formattedHeaderStringForPhotoAttributions:(id)attributions;
+- (id)formattedHeaderStringForAttributionItems:(id)items;
 @end
 
 @implementation MUPlacePhotoHeaderAttributionFormatter
 
-- (id)formattedHeaderStringForAttributionItems:(id)a3
+- (id)formattedHeaderStringForAttributionItems:(id)items
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v3;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -31,11 +31,11 @@
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 visibility];
+        visibility = [v11 visibility];
         v13 = v4;
-        if (v12)
+        if (visibility)
         {
-          if (v12 != 1)
+          if (visibility != 1)
           {
             continue;
           }
@@ -98,9 +98,9 @@ id __83__MUPlacePhotoHeaderAttributionFormatter_formattedHeaderStringForAttribut
   return v5;
 }
 
-+ (id)formattedHeaderStringForPhotoAttributions:(id)a3
++ (id)formattedHeaderStringForPhotoAttributions:(id)attributions
 {
-  v3 = MUMap(a3, &__block_literal_global_39);
+  v3 = MUMap(attributions, &__block_literal_global_39);
   v4 = objc_alloc_init(MUPlacePhotoHeaderAttributionFormatter);
   v5 = [(MUPlacePhotoHeaderAttributionFormatter *)v4 formattedHeaderStringForAttributionItems:v3];
 

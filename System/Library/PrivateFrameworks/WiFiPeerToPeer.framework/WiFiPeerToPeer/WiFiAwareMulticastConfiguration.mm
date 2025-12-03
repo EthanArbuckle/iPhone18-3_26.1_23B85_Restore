@@ -1,11 +1,11 @@
 @interface WiFiAwareMulticastConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)multicastAddressConfigurationEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)multicastAddressConfigurationEqual:(id)equal;
 - (WiFiAwareMulticastConfiguration)init;
-- (WiFiAwareMulticastConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiAwareMulticastConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwareMulticastConfiguration
@@ -20,51 +20,51 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
-  [v5 encodeObject:v4 forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
+  coderCopy = coder;
+  multicastAddress = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
+  [coderCopy encodeObject:multicastAddress forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
 
-  [v5 encodeBool:-[WiFiAwareMulticastConfiguration dynamicLinkRate](self forKey:{"dynamicLinkRate"), @"WiFiAwarePublishConfiguration.dynamicLinkRate"}];
+  [coderCopy encodeBool:-[WiFiAwareMulticastConfiguration dynamicLinkRate](self forKey:{"dynamicLinkRate"), @"WiFiAwarePublishConfiguration.dynamicLinkRate"}];
 }
 
-- (WiFiAwareMulticastConfiguration)initWithCoder:(id)a3
+- (WiFiAwareMulticastConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WiFiAwareMulticastConfiguration *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishConfiguration.multicastAddress"];
   [(WiFiAwareMulticastConfiguration *)v5 setMulticastAddress:v6];
 
-  v7 = [v4 decodeBoolForKey:@"WiFiAwarePublishConfiguration.dynamicLinkRate"];
+  v7 = [coderCopy decodeBoolForKey:@"WiFiAwarePublishConfiguration.dynamicLinkRate"];
   [(WiFiAwareMulticastConfiguration *)v5 setDynamicLinkRate:v7];
   return v5;
 }
 
-- (BOOL)multicastAddressConfigurationEqual:(id)a3
+- (BOOL)multicastAddressConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
-  v6 = [v4 multicastAddress];
-  if (v5 == v6)
+  equalCopy = equal;
+  multicastAddress = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
+  multicastAddress2 = [equalCopy multicastAddress];
+  if (multicastAddress == multicastAddress2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
-    v8 = [v4 multicastAddress];
-    v9 = [v7 isEqual:v8];
+    multicastAddress3 = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
+    multicastAddress4 = [equalCopy multicastAddress];
+    v9 = [multicastAddress3 isEqual:multicastAddress4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_7:
@@ -80,11 +80,11 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if ([(WiFiAwareMulticastConfiguration *)self multicastAddressConfigurationEqual:v5])
   {
-    v6 = [(WiFiAwareMulticastConfiguration *)self dynamicLinkRate];
-    if (v6 == [(WiFiAwareMulticastConfiguration *)v5 dynamicLinkRate])
+    dynamicLinkRate = [(WiFiAwareMulticastConfiguration *)self dynamicLinkRate];
+    if (dynamicLinkRate == [(WiFiAwareMulticastConfiguration *)v5 dynamicLinkRate])
     {
       goto LABEL_7;
     }
@@ -99,24 +99,24 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
-  v5 = [(WiFiAwareMulticastConfiguration *)self dynamicLinkRate];
+  multicastAddress = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
+  dynamicLinkRate = [(WiFiAwareMulticastConfiguration *)self dynamicLinkRate];
   v6 = "NO";
-  if (v5)
+  if (dynamicLinkRate)
   {
     v6 = "YES";
   }
 
-  v7 = [v3 stringWithFormat:@"<WiFiAwareMulticastConfiguration: multicastAddress=%@, dynamicLinkRate=%s>", v4, v6];
+  v7 = [v3 stringWithFormat:@"<WiFiAwareMulticastConfiguration: multicastAddress=%@, dynamicLinkRate=%s>", multicastAddress, v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WiFiAwareMulticastConfiguration);
-  v5 = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
-  v6 = [v5 copy];
+  multicastAddress = [(WiFiAwareMulticastConfiguration *)self multicastAddress];
+  v6 = [multicastAddress copy];
   [(WiFiAwareMulticastConfiguration *)v4 setMulticastAddress:v6];
 
   [(WiFiAwareMulticastConfiguration *)v4 setDynamicLinkRate:[(WiFiAwareMulticastConfiguration *)self dynamicLinkRate]];

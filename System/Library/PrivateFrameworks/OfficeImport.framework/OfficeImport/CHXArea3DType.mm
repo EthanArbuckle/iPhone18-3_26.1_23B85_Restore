@@ -1,19 +1,19 @@
 @interface CHXArea3DType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXArea3DType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 chart];
-  v7 = [(CHDChartType *)CHDArea3DType chartTypeWithChart:v6];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v7 = [(CHDChartType *)CHDArea3DType chartTypeWithChart:chart];
 
-  [CHXArea2DType readFrom:a3 chartType:v7 state:v5];
-  v8 = [v5 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "gapDepth");
+  [CHXArea2DType readFrom:element chartType:v7 state:stateCopy];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(element, oAXChartNamespace, "gapDepth");
 
   if (v10)
   {

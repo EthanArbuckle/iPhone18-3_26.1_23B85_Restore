@@ -1,38 +1,38 @@
 @interface TSCEReferenceParsingContext
-- (TSCEReferenceParsingContext)initWithContextResolver:(id)a3 components:(id)a4;
-- (TSCEReferenceParsingContext)initWithContextTableResolver:(id)a3 components:(id)a4;
+- (TSCEReferenceParsingContext)initWithContextResolver:(id)resolver components:(id)components;
+- (TSCEReferenceParsingContext)initWithContextTableResolver:(id)resolver components:(id)components;
 - (TSCEReferenceResolving)contextResolver;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)reset;
 @end
 
 @implementation TSCEReferenceParsingContext
 
-- (TSCEReferenceParsingContext)initWithContextTableResolver:(id)a3 components:(id)a4
+- (TSCEReferenceParsingContext)initWithContextTableResolver:(id)resolver components:(id)components
 {
-  v6 = a3;
-  v7 = a4;
+  resolverCopy = resolver;
+  componentsCopy = components;
   v11.receiver = self;
   v11.super_class = TSCEReferenceParsingContext;
   v8 = [(TSCEReferenceParsingContext *)&v11 init];
   v9 = v8;
-  if (v6 && v8)
+  if (resolverCopy && v8)
   {
-    v8->_contextTableResolver = v6;
-    objc_storeStrong(&v8->_components, a4);
+    v8->_contextTableResolver = resolverCopy;
+    objc_storeStrong(&v8->_components, components);
   }
 
   return v9;
 }
 
-- (TSCEReferenceParsingContext)initWithContextResolver:(id)a3 components:(id)a4
+- (TSCEReferenceParsingContext)initWithContextResolver:(id)resolver components:(id)components
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_calcEngine(v6, v8, v9, v10, v11);
-  v16 = objc_msgSend_tableResolverForRefResolver_(v12, v13, v6, v14, v15);
+  resolverCopy = resolver;
+  componentsCopy = components;
+  v12 = objc_msgSend_calcEngine(resolverCopy, v8, v9, v10, v11);
+  v16 = objc_msgSend_tableResolverForRefResolver_(v12, v13, resolverCopy, v14, v15);
 
-  v19 = objc_msgSend_initWithContextTableResolver_components_(self, v17, v16, v7, v18);
+  v19 = objc_msgSend_initWithContextTableResolver_components_(self, v17, v16, componentsCopy, v18);
   return v19;
 }
 
@@ -48,7 +48,7 @@
   return contextTableResolver;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_contextTableResolver(self, v5, v6, v7, v8);

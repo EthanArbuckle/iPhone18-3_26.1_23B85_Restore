@@ -1,22 +1,22 @@
 @interface VCPImageLivePhotoBlurAnalyzer
-- (VCPImageLivePhotoBlurAnalyzer)initWithMovingObjectsResults:(id)a3;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
+- (VCPImageLivePhotoBlurAnalyzer)initWithMovingObjectsResults:(id)results;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
 @end
 
 @implementation VCPImageLivePhotoBlurAnalyzer
 
-- (VCPImageLivePhotoBlurAnalyzer)initWithMovingObjectsResults:(id)a3
+- (VCPImageLivePhotoBlurAnalyzer)initWithMovingObjectsResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v10.receiver = self;
   v10.super_class = VCPImageLivePhotoBlurAnalyzer;
   v6 = [(VCPImageLivePhotoBlurAnalyzer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (resultsCopy)
     {
-      objc_storeStrong(&v6->_movingObjects, a3);
+      objc_storeStrong(&v6->_movingObjects, results);
     }
 
     v8 = v7;
@@ -25,17 +25,17 @@
   return v7;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = v9;
-  if (!v9 || ((*(v9 + 2))(v9) & 1) == 0)
+  cancelCopy = cancel;
+  v10 = cancelCopy;
+  if (!cancelCopy || ((*(cancelCopy + 2))(cancelCopy) & 1) == 0)
   {
     v17 = 1065353216;
     if ([(NSArray *)self->_movingObjects count])
     {
-      v11 = [(VCPBlurAnalyzer *)self computeSharpnessScore:&v17 forObjects:self->_movingObjects inImage:a3];
+      v11 = [(VCPBlurAnalyzer *)self computeSharpnessScore:&v17 forObjects:self->_movingObjects inImage:buffer];
       if (v11)
       {
         goto LABEL_9;
@@ -57,7 +57,7 @@
     v20 = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     v22[0] = v15;
-    *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
+    *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
 
     v11 = 0;
     goto LABEL_9;

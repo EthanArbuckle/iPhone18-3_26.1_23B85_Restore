@@ -8,14 +8,14 @@
 
 - (id)_policyDescription
 {
-  v2 = [(MOUserSafetyScanningPolicy *)self policy];
+  policy = [(MOUserSafetyScanningPolicy *)self policy];
   v3 = @"None";
-  if (v2 == 1)
+  if (policy == 1)
   {
     v3 = @"NudityDetection";
   }
 
-  if (v2 == 2)
+  if (policy == 2)
   {
     return @"CommunicationSafety";
   }
@@ -28,11 +28,11 @@
 
 - (id)_interventionTypeDescription
 {
-  v2 = [(MOUserSafetyScanningPolicy *)self interventionType];
-  v3 = v2;
-  if (v2)
+  interventionType = [(MOUserSafetyScanningPolicy *)self interventionType];
+  v3 = interventionType;
+  if (interventionType)
   {
-    v4 = v2;
+    v4 = interventionType;
   }
 
   else
@@ -47,9 +47,9 @@
 
 - (id)description
 {
-  v3 = [(MOUserSafetyScanningPolicy *)self _policyDescription];
-  v4 = [(MOUserSafetyScanningPolicy *)self _interventionTypeDescription];
-  v5 = [NSString stringWithFormat:@"%@ (%@)", v3, v4];
+  _policyDescription = [(MOUserSafetyScanningPolicy *)self _policyDescription];
+  _interventionTypeDescription = [(MOUserSafetyScanningPolicy *)self _interventionTypeDescription];
+  v5 = [NSString stringWithFormat:@"%@ (%@)", _policyDescription, _interventionTypeDescription];
 
   return v5;
 }

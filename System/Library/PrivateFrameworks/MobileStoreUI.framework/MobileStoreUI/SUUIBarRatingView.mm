@@ -1,19 +1,19 @@
 @interface SUUIBarRatingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIBarRatingView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setBarRatingStyle:(int64_t)a3;
-- (void)setNumberOfBars:(int64_t)a3;
-- (void)setRatingValue:(float)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIBarRatingView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setBarRatingStyle:(int64_t)style;
+- (void)setNumberOfBars:(int64_t)bars;
+- (void)setRatingValue:(float)value;
 @end
 
 @implementation SUUIBarRatingView
 
-- (SUUIBarRatingView)initWithFrame:(CGRect)a3
+- (SUUIBarRatingView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUUIBarRatingView;
-  result = [(SUUIBarRatingView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SUUIBarRatingView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_numberOfBars = 11;
@@ -22,36 +22,36 @@
   return result;
 }
 
-- (void)setBarRatingStyle:(int64_t)a3
+- (void)setBarRatingStyle:(int64_t)style
 {
-  if (self->_barRatingStyle != a3)
+  if (self->_barRatingStyle != style)
   {
-    self->_barRatingStyle = a3;
+    self->_barRatingStyle = style;
     [(SUUIBarRatingView *)self setNeedsDisplay];
   }
 }
 
-- (void)setNumberOfBars:(int64_t)a3
+- (void)setNumberOfBars:(int64_t)bars
 {
-  if (self->_numberOfBars != a3)
+  if (self->_numberOfBars != bars)
   {
-    self->_numberOfBars = a3;
+    self->_numberOfBars = bars;
     [(SUUIBarRatingView *)self setNeedsDisplay];
   }
 }
 
-- (void)setRatingValue:(float)a3
+- (void)setRatingValue:(float)value
 {
-  if (self->_ratingValue != a3)
+  if (self->_ratingValue != value)
   {
-    self->_ratingValue = a3;
+    self->_ratingValue = value;
     [(SUUIBarRatingView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v18 = [(SUUIBarRatingView *)self tintColor:a3.origin.x];
+  v18 = [(SUUIBarRatingView *)self tintColor:rect.origin.x];
   v4 = [v18 colorWithAlphaComponent:0.15];
   v5 = [v18 colorWithAlphaComponent:0.45];
   numberOfBars = self->_numberOfBars;
@@ -112,7 +112,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   numberOfBars = self->_numberOfBars;
   v4 = numberOfBars;

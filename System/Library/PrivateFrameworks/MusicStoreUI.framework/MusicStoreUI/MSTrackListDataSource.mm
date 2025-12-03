@@ -1,22 +1,22 @@
 @interface MSTrackListDataSource
-- (BOOL)canDoubleTapIndexPath:(id)a3;
-- (BOOL)canShowPreviewForItem:(id)a3;
-- (Class)cellConfigurationClassForItem:(id)a3;
+- (BOOL)canDoubleTapIndexPath:(id)path;
+- (BOOL)canShowPreviewForItem:(id)item;
+- (Class)cellConfigurationClassForItem:(id)item;
 - (id)_stylesheetString;
-- (id)cellConfigurationForIndex:(int64_t)a3 item:(id)a4;
-- (id)cellForIndexPath:(id)a3;
-- (id)placeholderCellForIndexPath:(id)a3;
-- (void)configureCell:(id)a3 forIndexPath:(id)a4;
-- (void)configurePlaceholderCell:(id)a3 forIndexPath:(id)a4;
+- (id)cellConfigurationForIndex:(int64_t)index item:(id)item;
+- (id)cellForIndexPath:(id)path;
+- (id)placeholderCellForIndexPath:(id)path;
+- (void)configureCell:(id)cell forIndexPath:(id)path;
+- (void)configurePlaceholderCell:(id)cell forIndexPath:(id)path;
 - (void)reloadCellContexts;
 @end
 
 @implementation MSTrackListDataSource
 
-- (BOOL)canDoubleTapIndexPath:(id)a3
+- (BOOL)canDoubleTapIndexPath:(id)path
 {
   v3 = [objc_msgSend(*(&self->super.super.super.super.super.isa + *MEMORY[0x277D7FEF8]) "itemList")];
-  v4 = [v3 defaultStoreOffer];
+  defaultStoreOffer = [v3 defaultStoreOffer];
   if ([v3 itemType] == 1007)
   {
     LOBYTE(v5) = 0;
@@ -24,12 +24,12 @@
 
   else
   {
-    v5 = [objc_msgSend(v4 "offerMedia")];
+    v5 = [objc_msgSend(defaultStoreOffer "offerMedia")];
     if (v5)
     {
       v6 = [v3 firstItemLinkForType:0];
-      v7 = [v3 itemMediaKind];
-      LODWORD(v5) = [v7 isEqualToString:*MEMORY[0x277D6A298]];
+      itemMediaKind = [v3 itemMediaKind];
+      LODWORD(v5) = [itemMediaKind isEqualToString:*MEMORY[0x277D6A298]];
       if (v5)
       {
         LOBYTE(v5) = [v6 URL] != 0;
@@ -40,36 +40,36 @@
   return v5;
 }
 
-- (BOOL)canShowPreviewForItem:(id)a3
+- (BOOL)canShowPreviewForItem:(id)item
 {
-  v4 = [a3 itemMediaKind];
-  if ([v4 isEqualToString:*MEMORY[0x277D6A290]])
+  itemMediaKind = [item itemMediaKind];
+  if ([itemMediaKind isEqualToString:*MEMORY[0x277D6A290]])
   {
     return 0;
   }
 
-  v6 = [objc_msgSend(a3 "defaultStoreOffer")];
+  v6 = [objc_msgSend(item "defaultStoreOffer")];
   return [v6 isEqualToString:*MEMORY[0x277D6A2A0]] ^ 1;
 }
 
-- (Class)cellConfigurationClassForItem:(id)a3
+- (Class)cellConfigurationClassForItem:(id)item
 {
-  [a3 itemType];
+  [item itemType];
 
   return objc_opt_class();
 }
 
-- (id)cellConfigurationForIndex:(int64_t)a3 item:(id)a4
+- (id)cellConfigurationForIndex:(int64_t)index item:(id)item
 {
   v8.receiver = self;
   v8.super_class = MSTrackListDataSource;
-  v5 = [(SUStructuredPageTableDataSource *)&v8 cellConfigurationForIndex:a3 item:a4];
+  v5 = [(SUStructuredPageTableDataSource *)&v8 cellConfigurationForIndex:index item:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7[0] = a3;
+    v7[0] = index;
     v7[1] = 0x7FFFFFFFFFFFFFFFLL;
-    v7[2] = a3;
+    v7[2] = index;
     v7[3] = 0x7FFFFFFFFFFFFFFFLL;
     [v5 setPosition:v7];
   }
@@ -77,7 +77,7 @@
   return v5;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
   if ([objc_msgSend(objc_msgSend(*(&self->super.super.super.super.super.isa + *MEMORY[0x277D7FEF8]) "itemList")] == 2)
   {
@@ -94,18 +94,18 @@
   {
     v7.receiver = self;
     v7.super_class = MSTrackListDataSource;
-    return [(SUStructuredPageTableDataSource *)&v7 cellForIndexPath:a3];
+    return [(SUStructuredPageTableDataSource *)&v7 cellForIndexPath:path];
   }
 
   return result;
 }
 
-- (void)configureCell:(id)a3 forIndexPath:(id)a4
+- (void)configureCell:(id)cell forIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = MSTrackListDataSource;
   [MSStructuredPageTableDataSource configureCell:sel_configureCell_forIndexPath_ forIndexPath:?];
-  if ([a4 row])
+  if ([path row])
   {
     v6 = MSGetTrackListOddRowColor();
   }
@@ -115,13 +115,13 @@
     v6 = MSGetTrackListEvenRowColor();
   }
 
-  [a3 setBackgroundColor:v6];
+  [cell setBackgroundColor:v6];
 }
 
-- (void)configurePlaceholderCell:(id)a3 forIndexPath:(id)a4
+- (void)configurePlaceholderCell:(id)cell forIndexPath:(id)path
 {
-  [a3 setConfiguration:0];
-  if ([a4 row])
+  [cell setConfiguration:0];
+  if ([path row])
   {
     v6 = MSGetTrackListOddRowColor();
   }
@@ -131,7 +131,7 @@
     v6 = MSGetTrackListEvenRowColor();
   }
 
-  [a3 setBackgroundColor:v6];
+  [cell setBackgroundColor:v6];
 }
 
 - (void)reloadCellContexts
@@ -170,8 +170,8 @@
       }
 
       v12 = *(*(&v23 + 1) + 8 * v11);
-      v13 = [v12 itemType];
-      switch(v13)
+      itemType = [v12 itemType];
+      switch(itemType)
       {
         case 11:
           goto LABEL_12;
@@ -192,16 +192,16 @@ LABEL_12:
 
       if (SUItemTypeIsMediaType())
       {
-        v15 = [v12 artistName];
+        artistName = [v12 artistName];
         v10 = 0;
         if (v7)
         {
-          v8 |= [v7 isEqualToString:v15] ^ 1;
+          v8 |= [v7 isEqualToString:artistName] ^ 1;
         }
 
         else
         {
-          v7 = v15;
+          v7 = artistName;
         }
       }
 
@@ -234,21 +234,21 @@ LABEL_24:
   [v19 setShowSubtitle:v8 & 1];
   v20 = [*(&self->super.super.super.super.super.isa + v18) cacheForClass:objc_opt_class()];
   [objc_msgSend(v20 "cellContext")];
-  v21 = [v20 cellContext];
+  cellContext = [v20 cellContext];
   [objc_msgSend(MEMORY[0x277D759A0] "mainScreen")];
-  [v21 setWebViewWidth:v22];
+  [cellContext setWebViewWidth:v22];
 }
 
-- (id)placeholderCellForIndexPath:(id)a3
+- (id)placeholderCellForIndexPath:(id)path
 {
-  v3 = [-[SUTableDataSource cellReuseSource](self cellReuseSource];
-  if (!v3)
+  cellReuseSource = [-[SUTableDataSource cellReuseSource](self cellReuseSource];
+  if (!cellReuseSource)
   {
-    v3 = [objc_alloc(MEMORY[0x277D7FEA0]) initWithStyle:0 reuseIdentifier:@"ms1"];
-    [v3 setUserInteractionEnabled:0];
+    cellReuseSource = [objc_alloc(MEMORY[0x277D7FEA0]) initWithStyle:0 reuseIdentifier:@"ms1"];
+    [cellReuseSource setUserInteractionEnabled:0];
   }
 
-  return v3;
+  return cellReuseSource;
 }
 
 - (id)_stylesheetString

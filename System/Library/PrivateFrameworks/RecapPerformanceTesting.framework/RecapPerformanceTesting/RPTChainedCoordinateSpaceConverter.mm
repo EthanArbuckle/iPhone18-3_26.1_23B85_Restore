@@ -1,38 +1,38 @@
 @interface RPTChainedCoordinateSpaceConverter
-- (CGPoint)convertPoint:(CGPoint)a3;
-- (CGRect)convertRect:(CGRect)a3;
-- (CGSize)convertSize:(CGSize)a3;
-- (CGVector)convertVector:(CGVector)a3;
-- (RPTChainedCoordinateSpaceConverter)initWithPrimary:(id)a3 secondary:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point;
+- (CGRect)convertRect:(CGRect)rect;
+- (CGSize)convertSize:(CGSize)size;
+- (CGVector)convertVector:(CGVector)vector;
+- (RPTChainedCoordinateSpaceConverter)initWithPrimary:(id)primary secondary:(id)secondary;
 @end
 
 @implementation RPTChainedCoordinateSpaceConverter
 
-- (RPTChainedCoordinateSpaceConverter)initWithPrimary:(id)a3 secondary:(id)a4
+- (RPTChainedCoordinateSpaceConverter)initWithPrimary:(id)primary secondary:(id)secondary
 {
-  v7 = a3;
-  v8 = a4;
+  primaryCopy = primary;
+  secondaryCopy = secondary;
   v12.receiver = self;
   v12.super_class = RPTChainedCoordinateSpaceConverter;
   v9 = [(RPTChainedCoordinateSpaceConverter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_primary, a3);
-    objc_storeStrong(&v10->_secondary, a4);
+    objc_storeStrong(&v9->_primary, primary);
+    objc_storeStrong(&v10->_secondary, secondary);
   }
 
   return v10;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3
+- (CGPoint)convertPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(RPTChainedCoordinateSpaceConverter *)self secondary];
-  v7 = [(RPTChainedCoordinateSpaceConverter *)self primary];
-  [v7 convertPoint:{x, y}];
-  [v6 convertPoint:?];
+  y = point.y;
+  x = point.x;
+  secondary = [(RPTChainedCoordinateSpaceConverter *)self secondary];
+  primary = [(RPTChainedCoordinateSpaceConverter *)self primary];
+  [primary convertPoint:{x, y}];
+  [secondary convertPoint:?];
   v9 = v8;
   v11 = v10;
 
@@ -43,14 +43,14 @@
   return result;
 }
 
-- (CGSize)convertSize:(CGSize)a3
+- (CGSize)convertSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(RPTChainedCoordinateSpaceConverter *)self secondary];
-  v7 = [(RPTChainedCoordinateSpaceConverter *)self primary];
-  [v7 convertSize:{width, height}];
-  [v6 convertSize:?];
+  height = size.height;
+  width = size.width;
+  secondary = [(RPTChainedCoordinateSpaceConverter *)self secondary];
+  primary = [(RPTChainedCoordinateSpaceConverter *)self primary];
+  [primary convertSize:{width, height}];
+  [secondary convertSize:?];
   v9 = v8;
   v11 = v10;
 
@@ -61,16 +61,16 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3
+- (CGRect)convertRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(RPTChainedCoordinateSpaceConverter *)self secondary];
-  v9 = [(RPTChainedCoordinateSpaceConverter *)self primary];
-  [v9 convertRect:{x, y, width, height}];
-  [v8 convertRect:?];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  secondary = [(RPTChainedCoordinateSpaceConverter *)self secondary];
+  primary = [(RPTChainedCoordinateSpaceConverter *)self primary];
+  [primary convertRect:{x, y, width, height}];
+  [secondary convertRect:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -87,14 +87,14 @@
   return result;
 }
 
-- (CGVector)convertVector:(CGVector)a3
+- (CGVector)convertVector:(CGVector)vector
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  v6 = [(RPTChainedCoordinateSpaceConverter *)self secondary];
-  v7 = [(RPTChainedCoordinateSpaceConverter *)self primary];
-  [v7 convertVector:{dx, dy}];
-  [v6 convertVector:?];
+  dy = vector.dy;
+  dx = vector.dx;
+  secondary = [(RPTChainedCoordinateSpaceConverter *)self secondary];
+  primary = [(RPTChainedCoordinateSpaceConverter *)self primary];
+  [primary convertVector:{dx, dy}];
+  [secondary convertVector:?];
   v9 = v8;
   v11 = v10;
 

@@ -1,34 +1,34 @@
 @interface SiriSharedUITranscriptItem
-+ (id)transcriptItemWithAceObject:(id)a3;
++ (id)transcriptItemWithAceObject:(id)object;
 - (BOOL)isAnnouncementItem;
 - (BOOL)isConversationItem;
 - (BOOL)isHintItem;
 - (CGRect)previousFrame;
-- (SiriSharedUITranscriptItem)initWithAceObject:(id)a3;
+- (SiriSharedUITranscriptItem)initWithAceObject:(id)object;
 - (id)description;
 - (int64_t)platterCategory;
 @end
 
 @implementation SiriSharedUITranscriptItem
 
-+ (id)transcriptItemWithAceObject:(id)a3
++ (id)transcriptItemWithAceObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAceObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithAceObject:objectCopy];
 
   return v5;
 }
 
-- (SiriSharedUITranscriptItem)initWithAceObject:(id)a3
+- (SiriSharedUITranscriptItem)initWithAceObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = SiriSharedUITranscriptItem;
   v6 = [(SiriSharedUITranscriptItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_aceObject, a3);
+    objc_storeStrong(&v6->_aceObject, object);
     *&v7->_shouldBeExposed = 1;
   }
 
@@ -41,39 +41,39 @@
   v8.super_class = SiriSharedUITranscriptItem;
   v3 = [(SiriSharedUITranscriptItem *)&v8 description];
   v4 = objc_opt_class();
-  v5 = [(SiriSharedUITranscriptItem *)self viewController];
-  v6 = [v3 stringByAppendingFormat:@" aceObject=%@, viewController=%@", v4, v5];
+  viewController = [(SiriSharedUITranscriptItem *)self viewController];
+  v6 = [v3 stringByAppendingFormat:@" aceObject=%@, viewController=%@", v4, viewController];
 
   return v6;
 }
 
 - (BOOL)isConversationItem
 {
-  v3 = [(SiriSharedUITranscriptItem *)self aceObject];
-  v4 = [(SiriSharedUITranscriptItem *)self viewController];
+  aceObject = [(SiriSharedUITranscriptItem *)self aceObject];
+  viewController = [(SiriSharedUITranscriptItem *)self viewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 itemType];
-    [v5 isEqualToString:*MEMORY[0x277D47C58]];
+    itemType = [aceObject itemType];
+    [itemType isEqualToString:*MEMORY[0x277D47C58]];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 itemType];
-    [v6 isEqualToString:*MEMORY[0x277D47C60]];
+    itemType2 = [aceObject itemType];
+    [itemType2 isEqualToString:*MEMORY[0x277D47C60]];
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v3 itemType], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277D47C48]), v7, (v8) || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v3, "itemType"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277D47C68]), v9, (v10) || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v3, "sash"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([aceObject itemType], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277D47C48]), v7, (v8) || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(aceObject, "itemType"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277D47C68]), v9, (v10) || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(aceObject, "sash"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     LOBYTE(v12) = 0;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v12 = [v4 hasSash] ^ 1;
+    v12 = [viewController hasSash] ^ 1;
   }
 
   else
@@ -86,12 +86,12 @@
 
 - (BOOL)isHintItem
 {
-  v2 = [(SiriSharedUITranscriptItem *)self aceObject];
+  aceObject = [(SiriSharedUITranscriptItem *)self aceObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 itemType];
-    v4 = [v3 isEqualToString:*MEMORY[0x277D47C60]];
+    itemType = [aceObject itemType];
+    v4 = [itemType isEqualToString:*MEMORY[0x277D47C60]];
   }
 
   else
@@ -104,12 +104,12 @@
 
 - (BOOL)isAnnouncementItem
 {
-  v2 = [(SiriSharedUITranscriptItem *)self aceObject];
+  aceObject = [(SiriSharedUITranscriptItem *)self aceObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 itemType];
-    v4 = [v3 isEqualToString:*MEMORY[0x277D47C48]];
+    itemType = [aceObject itemType];
+    v4 = [itemType isEqualToString:*MEMORY[0x277D47C48]];
   }
 
   else

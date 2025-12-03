@@ -1,44 +1,44 @@
 @interface TNPageLayoutContainer
-- (BOOL)containsLayoutForInfo:(id)a3;
+- (BOOL)containsLayoutForInfo:(id)info;
 - (BOOL)hasValidatedHeadersAndFooters;
 - (BOOL)pageLayoutDirectionIsRTL;
 - (CGColor)backgroundColor;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)contentFrame;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
-- (TNPageLayoutContainer)initWithPageController:(id)a3 pageCoordinate:(TSUCellCoord)a4;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
+- (TNPageLayoutContainer)initWithPageController:(id)controller pageCoordinate:(TSUCellCoord)coordinate;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
 - (double)textScaleFactor;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (id)dependentsOfTextLayout:(id)a3;
+- (id)dependentsOfTextLayout:(id)layout;
 - (id)p_pageInfo;
 - (id)printableInfoProvider;
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3;
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout;
 - (unint64_t)pageCount;
 - (unint64_t)pageNumber;
 - (void)_addOverlayContentLayout;
 - (void)_removeOverlayContentLayout;
 - (void)_updateOverlayContentLayout;
-- (void)addChild:(id)a3;
-- (void)invalidateForAutosizingTextLayout:(id)a3;
+- (void)addChild:(id)child;
+- (void)invalidateForAutosizingTextLayout:(id)layout;
 - (void)invalidateSize;
 - (void)parentDidChange;
-- (void)performBlockForEachHeaderFooterLayout:(id)a3;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)setChildren:(id)a3;
+- (void)performBlockForEachHeaderFooterLayout:(id)layout;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)setChildren:(id)children;
 - (void)updateChildrenFromInfo;
-- (void)willBeAddedToLayoutController:(id)a3;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)willBeAddedToLayoutController:(id)controller;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation TNPageLayoutContainer
 
-- (TNPageLayoutContainer)initWithPageController:(id)a3 pageCoordinate:(TSUCellCoord)a4
+- (TNPageLayoutContainer)initWithPageController:(id)controller pageCoordinate:(TSUCellCoord)coordinate
 {
   v17.receiver = self;
   v17.super_class = TNPageLayoutContainer;
-  v4 = [(TNPageLayoutAbstract *)&v17 initWithPageController:a3 pageCoordinate:a4];
+  v4 = [(TNPageLayoutAbstract *)&v17 initWithPageController:controller pageCoordinate:coordinate];
   v7 = v4;
   if (v4)
   {
@@ -57,9 +57,9 @@
   return v7;
 }
 
-- (void)performBlockForEachHeaderFooterLayout:(id)a3
+- (void)performBlockForEachHeaderFooterLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = 0;
   v11 = 0;
   v6 = self + *MEMORY[0x277D80FC0];
@@ -72,7 +72,7 @@ LABEL_2:
     v10 = *&v6[24 * v5 + 8 * v8];
     if (v10)
     {
-      v4[2](v4, v10, v5, v8, &v11);
+      layoutCopy[2](layoutCopy, v10, v5, v8, &v11);
     }
 
     if (v11)
@@ -119,9 +119,9 @@ LABEL_2:
   return v6;
 }
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
-  v4 = objc_msgSend_printableInfoProvider(self, a2, a3);
+  v4 = objc_msgSend_printableInfoProvider(self, a2, controller);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_275F1763C;
@@ -136,9 +136,9 @@ LABEL_2:
   objc_msgSend_addObserver_forChangeSource_(v14, v18, self, v17);
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
-  v4 = objc_msgSend_printableInfoProvider(self, a2, a3);
+  v4 = objc_msgSend_printableInfoProvider(self, a2, controller);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_275F17738;
@@ -182,20 +182,20 @@ LABEL_2:
   return result;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
-  if (objc_msgSend_isHeaderFooterLayout_(self, v5, v4))
+  childCopy = child;
+  if (objc_msgSend_isHeaderFooterLayout_(self, v5, childCopy))
   {
     v10.receiver = self;
     v10.super_class = TNPageLayoutContainer;
-    [(TNPageLayoutContainer *)&v10 addChild:v4];
+    [(TNPageLayoutContainer *)&v10 addChild:childCopy];
   }
 
   else
   {
     v8 = objc_msgSend_contentLayout(self, v6, v7);
-    objc_msgSend_addChild_(v8, v9, v4);
+    objc_msgSend_addChild_(v8, v9, childCopy);
   }
 }
 
@@ -207,17 +207,17 @@ LABEL_2:
   return IsRightToLeft;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   v8 = objc_msgSend_contentLayout(self, v5, v6);
-  objc_msgSend_setChildren_(v8, v7, v4);
+  objc_msgSend_setChildren_(v8, v7, childrenCopy);
 }
 
-- (BOOL)containsLayoutForInfo:(id)a3
+- (BOOL)containsLayoutForInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_contentLayout(self, v5, v6);
   v10 = objc_msgSend_children(v7, v8, v9);
 
@@ -241,7 +241,7 @@ LABEL_2:
 
         v18 = objc_msgSend_info(*(*(&v20 + 1) + 8 * i), v13, v14, v20);
 
-        if (v18 == v4)
+        if (v18 == infoCopy)
         {
           LOBYTE(v15) = 1;
           goto LABEL_11;
@@ -330,11 +330,11 @@ LABEL_11:
   objc_msgSend_setOverlayContentLayout_(self, v7, 0);
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  sourceCopy = source;
   objc_opt_class();
   v8 = TSUDynamicCast();
   v11 = objc_msgSend_printableInfoProvider(self, v9, v10);
@@ -345,7 +345,7 @@ LABEL_11:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = v6;
+    v12 = changesCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v20, v24, 16);
     if (v14)
     {
@@ -386,17 +386,17 @@ LABEL_11:
   {
     v7 = objc_msgSend_pageController(self, v5, v6);
     v10 = objc_msgSend_pageCoordinate(self, v8, v9);
-    v12 = objc_msgSend_pageLayoutGeometryForPrintingAtPageCoordinate_(v7, v11, v10);
+    computeLayoutGeometry = objc_msgSend_pageLayoutGeometryForPrintingAtPageCoordinate_(v7, v11, v10);
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = TNPageLayoutContainer;
-    v12 = [(TNPageLayoutAbstract *)&v14 computeLayoutGeometry];
+    computeLayoutGeometry = [(TNPageLayoutAbstract *)&v14 computeLayoutGeometry];
   }
 
-  return v12;
+  return computeLayoutGeometry;
 }
 
 - (void)parentDidChange
@@ -462,9 +462,9 @@ LABEL_11:
   objc_msgSend_performBlockForEachHeaderFooterLayout_(self, v3, &unk_2884F5FD0);
 }
 
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout
 {
-  v4 = objc_msgSend_storage(a3, a2, a3);
+  v4 = objc_msgSend_storage(layout, a2, layout);
   if (objc_msgSend_wpKind(v4, v5, v6) == 1)
   {
     v9 = objc_msgSend_headerFooterProvider(self, v7, v8);
@@ -489,17 +489,17 @@ LABEL_11:
   return v13;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
   v10 = objc_msgSend_pageController(self, v8, v9);
   objc_msgSend_contentScale(v10, v11, v12);
   v14 = v13;
 
   v17 = (&self->super.super.super.super.super.isa + *MEMORY[0x277D80FC0]);
-  v18 = v17[3] == v7 || v17[4] == v7 || v17[5] == v7;
+  v18 = v17[3] == layoutCopy || v17[4] == layoutCopy || v17[5] == layoutCopy;
   v19 = objc_msgSend_pageController(self, v15, v16);
   v22 = objc_msgSend_printProperties(v19, v20, v21);
   v25 = objc_msgSend_pageController(self, v23, v24);
@@ -513,7 +513,7 @@ LABEL_11:
   v40 = objc_msgSend_headerFooterProvider(self, v38, v39);
   v43 = objc_msgSend_usesSingleHeaderFooter(v40, v41, v42);
 
-  if (*v17 == v7 || v17[3] == v7)
+  if (*v17 == layoutCopy || v17[3] == layoutCopy)
   {
 LABEL_14:
     if (v43)
@@ -524,9 +524,9 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (v17[1] != v7 && v17[4] != v7)
+  if (v17[1] != layoutCopy && v17[4] != layoutCopy)
   {
-    if (v17[2] != v7 && v17[5] != v7)
+    if (v17[2] != layoutCopy && v17[5] != layoutCopy)
     {
       v45 = MEMORY[0x277D81150];
       v46 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, "[TNPageLayoutContainer autosizedFrameForTextLayout:textSize:]");
@@ -579,17 +579,17 @@ LABEL_21:
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = objc_msgSend_contentLayout(self, a2, a3);
+  v3 = objc_msgSend_contentLayout(self, a2, layout);
   v7[0] = v3;
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v4, v7, 1);
 
   return v5;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -611,15 +611,15 @@ LABEL_21:
   return v7;
 }
 
-- (void)invalidateForAutosizingTextLayout:(id)a3
+- (void)invalidateForAutosizingTextLayout:(id)layout
 {
-  v34 = a3;
+  layoutCopy = layout;
   v6 = objc_msgSend_layoutController(self, v4, v5);
 
-  v9 = v34;
+  v9 = layoutCopy;
   if (v6)
   {
-    v10 = objc_msgSend_storage(v34, v7, v8);
+    v10 = objc_msgSend_storage(layoutCopy, v7, v8);
     v13 = objc_msgSend_wpKind(v10, v11, v12);
 
     v16 = objc_msgSend_pageController(self, v14, v15);
@@ -643,7 +643,7 @@ LABEL_21:
     v31 = objc_msgSend_contentLayout(self, v29, v30);
     objc_msgSend_invalidateSize(v31, v32, v33);
 
-    v9 = v34;
+    v9 = layoutCopy;
   }
 }
 
@@ -678,7 +678,7 @@ LABEL_21:
   return v12;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);

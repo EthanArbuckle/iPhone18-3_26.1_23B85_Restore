@@ -9,15 +9,15 @@
   nameTextColor = self->_nameTextColor;
   if (nameTextColor)
   {
-    v3 = nameTextColor;
+    systemBlackColor = nameTextColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] systemBlackColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
   }
 
-  return v3;
+  return systemBlackColor;
 }
 
 @end

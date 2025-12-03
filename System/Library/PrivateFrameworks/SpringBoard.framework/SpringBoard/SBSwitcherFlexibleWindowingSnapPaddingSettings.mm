@@ -9,11 +9,11 @@
 {
   v9.receiver = self;
   v9.super_class = SBSwitcherFlexibleWindowingSnapPaddingSettings;
-  v2 = [(SBSwitcherWindowingSnapPaddingSettings *)&v9 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(SBSwitcherWindowingSnapPaddingSettings *)&v9 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(SBSwitcherFlexibleWindowingSnapPaddingSettings *)v2 _statusBarHeight];
+    [(SBSwitcherFlexibleWindowingSnapPaddingSettings *)initWithDefaultValues _statusBarHeight];
     [(SBSwitcherWindowingSnapPaddingSettings *)v3 setEdgePadding:v4 * 0.5];
     [(SBSwitcherWindowingSnapPaddingSettings *)v3 setInterItemPadding:10.0];
     [(SBSwitcherWindowingSnapPaddingSettings *)v3 interItemPadding];

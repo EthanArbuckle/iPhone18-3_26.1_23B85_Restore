@@ -1,17 +1,17 @@
 @interface PBAStackViewController
-- (PBAStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PBAStackViewController)initWithRootViewController:(id)a3;
+- (PBAStackViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PBAStackViewController)initWithRootViewController:(id)controller;
 - (UIViewController)visibleViewController;
-- (void)_setViewControllers:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_setViewControllers:(id)controllers animated:(BOOL)animated completion:(id)completion;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)showViewController:(id)a3 sender:(id)a4;
+- (void)showViewController:(id)controller sender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation PBAStackViewController
 
-- (PBAStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PBAStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PBAStackViewController;
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (PBAStackViewController)initWithRootViewController:(id)a3
+- (PBAStackViewController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(PBAStackViewController *)self initWithNibName:0 bundle:0];
-  [(PBAStackViewController *)v5 pushViewController:v4 animated:0 completion:0];
+  [(PBAStackViewController *)v5 pushViewController:controllerCopy animated:0 completion:0];
 
   return v5;
 }
@@ -49,16 +49,16 @@
   [(PBAStackViewController *)self setView:v7];
 }
 
-- (void)_setViewControllers:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setViewControllers:(id)controllers animated:(BOOL)animated completion:(id)completion
 {
-  v35 = a4;
-  v7 = a3;
-  v40 = a5;
+  animatedCopy = animated;
+  controllersCopy = controllers;
+  completionCopy = completion;
   v8 = self->_viewControllers;
-  v9 = [v7 copy];
-  v10 = [(PBAStackViewController *)self topViewController];
-  v39 = v7;
-  v11 = [v7 lastObject];
+  v9 = [controllersCopy copy];
+  topViewController = [(PBAStackViewController *)self topViewController];
+  v39 = controllersCopy;
+  lastObject = [controllersCopy lastObject];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -84,7 +84,7 @@
         if (![(NSArray *)v8 containsObject:v18])
         {
           [(PBAStackViewController *)self addChildViewController:v18];
-          if (v18 == v11)
+          if (v18 == lastObject)
           {
             v15 = 1;
           }
@@ -130,7 +130,7 @@
         if (([v12 containsObject:v24] & 1) == 0)
         {
           [v24 willMoveToParentViewController:0];
-          if (v24 != v10)
+          if (v24 != topViewController)
           {
             [v24 removeFromParentViewController];
           }
@@ -144,12 +144,12 @@
   }
 
   objc_storeStrong(&self->_viewControllers, v36);
-  if (v10 != v11)
+  if (topViewController != lastObject)
   {
-    v25 = [v11 view];
+    view = [lastObject view];
     [(UIView *)self->_containerView bounds];
-    [v25 setFrame:?];
-    [v10 view];
+    [view setFrame:?];
+    [topViewController view];
     v65[0] = _NSConcreteStackBlock;
     v65[1] = 3221225472;
     v65[2] = sub_100004BE8;
@@ -160,7 +160,7 @@
     v63[1] = 3221225472;
     v63[2] = sub_100004BF4;
     v63[3] = &unk_10001C628;
-    v37 = v25;
+    v37 = view;
     v64 = v37;
     v33 = objc_retainBlock(v63);
     v60[0] = _NSConcreteStackBlock;
@@ -168,7 +168,7 @@
     v60[2] = sub_100004C00;
     v60[3] = &unk_10001C650;
     v62 = 0;
-    v26 = v10;
+    v26 = topViewController;
     v61 = v26;
     v38 = objc_retainBlock(v60);
     v56[0] = _NSConcreteStackBlock;
@@ -176,20 +176,20 @@
     v56[2] = sub_100004C18;
     v56[3] = &unk_10001C678;
     v59 = v15 & 1;
-    v27 = v11;
+    v27 = lastObject;
     v57 = v27;
-    v58 = self;
+    selfCopy = self;
     v28 = objc_retainBlock(v56);
-    if (!v35)
+    if (!animatedCopy)
     {
       v29 = v32;
       if (v26)
       {
         (v38[2])();
         [v32 removeFromSuperview];
-        if (v40)
+        if (completionCopy)
         {
-          v40[2]();
+          completionCopy[2]();
         }
       }
 
@@ -197,9 +197,9 @@
       {
         [(UIView *)self->_containerView addSubview:v37];
         (v28[2])(v28);
-        if (v40)
+        if (completionCopy)
         {
-          v40[2]();
+          completionCopy[2]();
         }
       }
 
@@ -215,7 +215,7 @@
       v52[3] = &unk_10001C6E0;
       v53 = v38;
       v54 = v28;
-      v55 = v40;
+      v55 = completionCopy;
       [(PBAStackViewController *)self transitionFromViewController:v26 toViewController:v27 duration:5242880 options:&stru_10001C6B8 animations:v52 completion:0.5];
 
       v29 = v32;
@@ -231,8 +231,8 @@
           goto LABEL_42;
         }
 
-        v31 = [(PBAStackViewController *)self view];
-        [v31 addSubview:v37];
+        view2 = [(PBAStackViewController *)self view];
+        [view2 addSubview:v37];
 
         [v37 setAlpha:0.0];
         v44[0] = _NSConcreteStackBlock;
@@ -245,7 +245,7 @@
         v41[2] = sub_100004D28;
         v41[3] = &unk_10001C758;
         v42 = v28;
-        v43 = v40;
+        v43 = completionCopy;
         [UIView animateWithDuration:v44 animations:v41 completion:0.5];
 
         v30 = v45;
@@ -264,7 +264,7 @@
         v46[3] = &unk_10001C730;
         v48 = v38;
         v47 = v32;
-        v49 = v40;
+        v49 = completionCopy;
         [UIView animateWithDuration:v50 animations:v46 completion:0.5];
 
         v30 = v51;
@@ -277,35 +277,35 @@ LABEL_42:
 
 - (UIViewController)visibleViewController
 {
-  v2 = [(PBAStackViewController *)self topViewController];
-  v3 = [v2 presentedViewController];
-  if (v3)
+  topViewController = [(PBAStackViewController *)self topViewController];
+  presentedViewController = [topViewController presentedViewController];
+  if (presentedViewController)
   {
-    v4 = v3;
+    presentedViewController2 = presentedViewController;
     do
     {
-      v5 = v4;
+      v5 = presentedViewController2;
 
-      v4 = [v5 presentedViewController];
+      presentedViewController2 = [v5 presentedViewController];
 
-      v2 = v5;
+      topViewController = v5;
     }
 
-    while (v4);
+    while (presentedViewController2);
   }
 
   else
   {
-    v5 = v2;
+    v5 = topViewController;
   }
 
   return v5;
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4
+- (void)showViewController:(id)controller sender:(id)sender
 {
-  v5 = a3;
-  [(PBAStackViewController *)self pushViewController:v5 animated:+[UIView completion:"areAnimationsEnabled"], 0];
+  controllerCopy = controller;
+  [(PBAStackViewController *)self pushViewController:controllerCopy animated:+[UIView completion:"areAnimationsEnabled"], 0];
 }
 
 - (void)viewDidLoad
@@ -313,25 +313,25 @@ LABEL_42:
   v8.receiver = self;
   v8.super_class = PBAStackViewController;
   [(PBAStackViewController *)&v8 viewDidLoad];
-  v3 = [(PBAStackViewController *)self topViewController];
-  v4 = [v3 parentViewController];
+  topViewController = [(PBAStackViewController *)self topViewController];
+  parentViewController = [topViewController parentViewController];
 
-  if (!v4)
+  if (!parentViewController)
   {
-    [(PBAStackViewController *)self addChildViewController:v3];
+    [(PBAStackViewController *)self addChildViewController:topViewController];
   }
 
-  v5 = [v3 view];
+  view = [topViewController view];
   [(UIView *)self->_containerView bounds];
-  [v5 setFrame:?];
+  [view setFrame:?];
 
   containerView = self->_containerView;
-  v7 = [v3 view];
-  [(UIView *)containerView addSubview:v7];
+  view2 = [topViewController view];
+  [(UIView *)containerView addSubview:view2];
 
-  if (!v4)
+  if (!parentViewController)
   {
-    [v3 didMoveToParentViewController:self];
+    [topViewController didMoveToParentViewController:self];
   }
 }
 

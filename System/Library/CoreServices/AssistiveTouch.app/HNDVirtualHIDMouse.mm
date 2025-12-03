@@ -1,30 +1,30 @@
 @interface HNDVirtualHIDMouse
-+ (BOOL)handleButtonNumber:(int64_t)a3 isDown:(BOOL)a4;
-+ (BOOL)handleEvent:(id)a3;
-+ (BOOL)handleEyeTrackingMovementWithDelta:(CGPoint)a3;
-+ (BOOL)handleHeadTrackingMovementWithPoint:(CGPoint)a3;
-+ (BOOL)handleMovementWithDelta:(CGPoint)a3;
-+ (BOOL)handleScrollWithDelta:(CGPoint)a3;
-+ (id)_createHNDMovementEventWithDelta:(CGPoint)a3;
-+ (id)addActiveClientWithReason:(id)a3;
++ (BOOL)handleButtonNumber:(int64_t)number isDown:(BOOL)down;
++ (BOOL)handleEvent:(id)event;
++ (BOOL)handleEyeTrackingMovementWithDelta:(CGPoint)delta;
++ (BOOL)handleHeadTrackingMovementWithPoint:(CGPoint)point;
++ (BOOL)handleMovementWithDelta:(CGPoint)delta;
++ (BOOL)handleScrollWithDelta:(CGPoint)delta;
++ (id)_createHNDMovementEventWithDelta:(CGPoint)delta;
++ (id)addActiveClientWithReason:(id)reason;
 + (unint64_t)eventServiceID;
 + (void)reevaluateDeviceCleanupTimer;
 + (void)setupSharedVirtualDeviceIfNecessary;
-- (BOOL)_handleButtonNumber:(int64_t)a3 isDown:(BOOL)a4;
-- (BOOL)_handleEyeTrackingMovementWithDelta:(CGPoint)a3;
-- (BOOL)_handleHeadTrackingMovementWithAbsolutePoint:(CGPoint)a3;
-- (BOOL)_handleMovementWithDelta:(CGPoint)a3;
-- (BOOL)_handleScrollWithDelta:(CGPoint)a3;
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5;
+- (BOOL)_handleButtonNumber:(int64_t)number isDown:(BOOL)down;
+- (BOOL)_handleEyeTrackingMovementWithDelta:(CGPoint)delta;
+- (BOOL)_handleHeadTrackingMovementWithAbsolutePoint:(CGPoint)point;
+- (BOOL)_handleMovementWithDelta:(CGPoint)delta;
+- (BOOL)_handleScrollWithDelta:(CGPoint)delta;
+- (BOOL)setOutputEvent:(id)event forService:(id)service;
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service;
 - (id)_init;
-- (id)copyEventMatching:(id)a3 forService:(id)a4;
-- (id)propertyForKey:(id)a3 forService:(id)a4;
-- (void)_attachEyeTrackingMetadataToHIDEventRef:(__IOHIDEvent *)a3;
+- (id)copyEventMatching:(id)matching forService:(id)service;
+- (id)propertyForKey:(id)key forService:(id)service;
+- (void)_attachEyeTrackingMetadataToHIDEventRef:(__IOHIDEvent *)ref;
 - (void)_disableUserInterfaceClient;
-- (void)_showBannerWithText:(id)a3;
+- (void)_showBannerWithText:(id)text;
 - (void)dealloc;
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5;
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service;
 - (void)unload;
 @end
 
@@ -34,7 +34,7 @@
 {
   if (sub_100042C64())
   {
-    [a1 reevaluateDeviceCleanupTimer];
+    [self reevaluateDeviceCleanupTimer];
     if (!qword_100218B48)
     {
       v3 = ASTLogMouse();
@@ -44,9 +44,9 @@
         _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Creating new shared virtual mouse device", buf, 2u);
       }
 
-      v4 = [[HNDVirtualHIDMouse alloc] _init];
+      _init = [[HNDVirtualHIDMouse alloc] _init];
       v5 = qword_100218B48;
-      qword_100218B48 = v4;
+      qword_100218B48 = _init;
     }
 
     if (!qword_100218B50)
@@ -67,9 +67,9 @@
 
 + (void)reevaluateDeviceCleanupTimer
 {
-  v2 = [qword_100218B50 hasActiveClients];
+  hasActiveClients = [qword_100218B50 hasActiveClients];
   v3 = qword_100218B58;
-  if (v2)
+  if (hasActiveClients)
   {
     if (qword_100218B58)
     {
@@ -111,11 +111,11 @@
   }
 }
 
-+ (id)addActiveClientWithReason:(id)a3
++ (id)addActiveClientWithReason:(id)reason
 {
-  v4 = a3;
-  [a1 setupSharedVirtualDeviceIfNecessary];
-  v5 = [qword_100218B50 addActiveClientWithReason:v4];
+  reasonCopy = reason;
+  [self setupSharedVirtualDeviceIfNecessary];
+  v5 = [qword_100218B50 addActiveClientWithReason:reasonCopy];
 
   return v5;
 }
@@ -131,16 +131,16 @@
     v4 = *(v2 + 1);
     *(v2 + 1) = v3;
 
-    v5 = [v2 uuid];
-    v6 = [v5 UUIDString];
-    v26 = [NSString stringWithFormat:@"ASTVirtualHIDMouse.%@", v6];
+    uuid = [v2 uuid];
+    uUIDString = [uuid UUIDString];
+    v26 = [NSString stringWithFormat:@"ASTVirtualHIDMouse.%@", uUIDString];
 
     v35[0] = @"Virtual-AssistiveTouch";
     v34[0] = @"Transport";
     v34[1] = @"PhysicalDeviceUniqueID";
-    v7 = [v2 uuid];
-    v8 = [v7 UUIDString];
-    v35[1] = v8;
+    uuid2 = [v2 uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    v35[1] = uUIDString2;
     v34[2] = @"PrimaryUsagePage";
     v9 = [NSNumber numberWithUnsignedShort:1];
     v35[2] = v9;
@@ -218,13 +218,13 @@
   [(HNDVirtualHIDMouse *)&v3 dealloc];
 }
 
-+ (BOOL)handleEvent:(id)a3
++ (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  [a1 setupSharedVirtualDeviceIfNecessary];
-  v5 = [qword_100218B48 waitForOpenGroup];
+  eventCopy = event;
+  [self setupSharedVirtualDeviceIfNecessary];
+  waitForOpenGroup = [qword_100218B48 waitForOpenGroup];
   v6 = dispatch_time(0, 2000000000);
-  dispatch_group_wait(v5, v6);
+  dispatch_group_wait(waitForOpenGroup, v6);
 
   v13 = 0;
   v14 = &v13;
@@ -235,9 +235,9 @@
   v10[1] = 3221225472;
   v10[2] = sub_1000A9088;
   v10[3] = &unk_1001D6930;
-  v11 = v4;
+  v11 = eventCopy;
   v12 = &v13;
-  v8 = v4;
+  v8 = eventCopy;
   dispatch_sync(v7, v10);
 
   LOBYTE(v7) = *(v14 + 24);
@@ -247,25 +247,25 @@
 
 + (unint64_t)eventServiceID
 {
-  v2 = [qword_100218B48 eventService];
-  v3 = [v2 serviceID];
+  eventService = [qword_100218B48 eventService];
+  serviceID = [eventService serviceID];
 
-  return v3;
+  return serviceID;
 }
 
-- (BOOL)_handleMovementWithDelta:(CGPoint)a3
+- (BOOL)_handleMovementWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   mach_absolute_time();
   v6 = +[HNDHandManager sharedManager];
-  v7 = [v6 systemPointerController];
-  v8 = [(HNDVirtualHIDMouse *)self eventService];
-  [v7 buttonMaskForSenderID:{objc_msgSend(v8, "serviceID")}];
+  systemPointerController = [v6 systemPointerController];
+  eventService = [(HNDVirtualHIDMouse *)self eventService];
+  [systemPointerController buttonMaskForSenderID:{objc_msgSend(eventService, "serviceID")}];
 
   MouseEvent = IOHIDEventCreateMouseEvent();
-  v10 = [(HNDVirtualHIDMouse *)self eventService];
-  v11 = [v10 dispatchEvent:MouseEvent];
+  eventService2 = [(HNDVirtualHIDMouse *)self eventService];
+  v11 = [eventService2 dispatchEvent:MouseEvent];
 
   v12 = ASTLogMouse();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -284,36 +284,36 @@
 - (void)_disableUserInterfaceClient
 {
   v3 = +[HNDHandManager sharedManager];
-  v2 = [v3 mainDisplayManager];
-  [v2 removeUserInterfaceClientEnabler:@"AssistiveTouchVirtualHIDMouse"];
+  mainDisplayManager = [v3 mainDisplayManager];
+  [mainDisplayManager removeUserInterfaceClientEnabler:@"AssistiveTouchVirtualHIDMouse"];
 }
 
-- (void)_showBannerWithText:(id)a3
+- (void)_showBannerWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_disableUserInterfaceClient" object:0];
   v5 = +[HNDHandManager sharedManager];
-  v7 = [v5 mainDisplayManager];
+  mainDisplayManager = [v5 mainDisplayManager];
 
-  [v7 addUserInterfaceClientEnabler:@"AssistiveTouchVirtualHIDMouse"];
+  [mainDisplayManager addUserInterfaceClientEnabler:@"AssistiveTouchVirtualHIDMouse"];
   v6 = sub_100042B24(@"ASSISTIVE_TOUCH");
-  [v7 showSimpleBannerWithTitle:v6 text:v4];
+  [mainDisplayManager showSimpleBannerWithTitle:v6 text:textCopy];
 
   [(HNDVirtualHIDMouse *)self performSelector:"_disableUserInterfaceClient" withObject:0 afterDelay:15.0];
 }
 
-- (BOOL)_handleEyeTrackingMovementWithDelta:(CGPoint)a3
+- (BOOL)_handleEyeTrackingMovementWithDelta:(CGPoint)delta
 {
   mach_absolute_time();
   v4 = +[HNDHandManager sharedManager];
-  v5 = [v4 systemPointerController];
-  v6 = [(HNDVirtualHIDMouse *)self eventService];
-  [v5 buttonMaskForSenderID:{objc_msgSend(v6, "serviceID")}];
+  systemPointerController = [v4 systemPointerController];
+  eventService = [(HNDVirtualHIDMouse *)self eventService];
+  [systemPointerController buttonMaskForSenderID:{objc_msgSend(eventService, "serviceID")}];
 
   MouseEvent = IOHIDEventCreateMouseEvent();
   [(HNDVirtualHIDMouse *)self _attachEyeTrackingMetadataToHIDEventRef:MouseEvent];
-  v8 = [(HNDVirtualHIDMouse *)self eventService];
-  v9 = [v8 dispatchEvent:MouseEvent];
+  eventService2 = [(HNDVirtualHIDMouse *)self eventService];
+  v9 = [eventService2 dispatchEvent:MouseEvent];
 
   if (MouseEvent)
   {
@@ -323,26 +323,26 @@
   return v9;
 }
 
-- (void)_attachEyeTrackingMetadataToHIDEventRef:(__IOHIDEvent *)a3
+- (void)_attachEyeTrackingMetadataToHIDEventRef:(__IOHIDEvent *)ref
 {
-  v4 = [AXEventRepresentation representationWithHIDEvent:a3 hidStreamIdentifier:@"AST-IOHIDFilter"];
+  v4 = [AXEventRepresentation representationWithHIDEvent:ref hidStreamIdentifier:@"AST-IOHIDFilter"];
   v3 = [AXEventData dataWithSender:5 page:0 usage:4 modifierFlags:0 eventValue1:0.0 eventValue2:0.0];
   [v4 setAccessibilityData:v3];
   [v4 applyAccessibilityDataToCreatorHIDEvent];
 }
 
-- (BOOL)_handleHeadTrackingMovementWithAbsolutePoint:(CGPoint)a3
+- (BOOL)_handleHeadTrackingMovementWithAbsolutePoint:(CGPoint)point
 {
   mach_absolute_time();
   v4 = +[HNDHandManager sharedManager];
-  v5 = [v4 systemPointerController];
-  v6 = [(HNDVirtualHIDMouse *)self eventService];
-  [v5 buttonMaskForSenderID:{objc_msgSend(v6, "serviceID")}];
+  systemPointerController = [v4 systemPointerController];
+  eventService = [(HNDVirtualHIDMouse *)self eventService];
+  [systemPointerController buttonMaskForSenderID:{objc_msgSend(eventService, "serviceID")}];
 
   MouseEvent = IOHIDEventCreateMouseEvent();
   [(HNDVirtualHIDMouse *)self _attachEyeTrackingMetadataToHIDEventRef:MouseEvent];
-  v8 = [(HNDVirtualHIDMouse *)self eventService];
-  v9 = [v8 dispatchEvent:MouseEvent];
+  eventService2 = [(HNDVirtualHIDMouse *)self eventService];
+  v9 = [eventService2 dispatchEvent:MouseEvent];
 
   if (MouseEvent)
   {
@@ -352,14 +352,14 @@
   return v9;
 }
 
-- (BOOL)_handleScrollWithDelta:(CGPoint)a3
+- (BOOL)_handleScrollWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   mach_absolute_time();
   ScrollEvent = IOHIDEventCreateScrollEvent();
-  v7 = [(HNDVirtualHIDMouse *)self eventService];
-  v8 = [v7 dispatchEvent:ScrollEvent];
+  eventService = [(HNDVirtualHIDMouse *)self eventService];
+  v8 = [eventService dispatchEvent:ScrollEvent];
 
   v9 = ASTLogMouse();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -375,17 +375,17 @@
   return v8;
 }
 
-- (BOOL)_handleButtonNumber:(int64_t)a3 isDown:(BOOL)a4
+- (BOOL)_handleButtonNumber:(int64_t)number isDown:(BOOL)down
 {
   mach_absolute_time();
   v6 = +[HNDHandManager sharedManager];
-  v7 = [v6 systemPointerController];
-  v8 = [(HNDVirtualHIDMouse *)self eventService];
-  [v7 buttonMaskForSenderID:{objc_msgSend(v8, "serviceID")}];
+  systemPointerController = [v6 systemPointerController];
+  eventService = [(HNDVirtualHIDMouse *)self eventService];
+  [systemPointerController buttonMaskForSenderID:{objc_msgSend(eventService, "serviceID")}];
 
   RelativePointerEvent = IOHIDEventCreateRelativePointerEvent();
-  v10 = [(HNDVirtualHIDMouse *)self eventService];
-  v11 = [v10 dispatchEvent:RelativePointerEvent];
+  eventService2 = [(HNDVirtualHIDMouse *)self eventService];
+  v11 = [eventService2 dispatchEvent:RelativePointerEvent];
 
   v12 = ASTLogMouse();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -393,7 +393,7 @@
     v14 = NSStringFromBOOL();
     v15 = NSStringFromBOOL();
     v16 = 134218498;
-    v17 = a3;
+    numberCopy = number;
     v18 = 2112;
     v19 = v14;
     v20 = 2112;
@@ -409,10 +409,10 @@
   return v11;
 }
 
-- (id)propertyForKey:(id)a3 forService:(id)a4
+- (id)propertyForKey:(id)key forService:(id)service
 {
-  v5 = a3;
-  if (sub_1000A9A5C(v5))
+  keyCopy = key;
+  if (sub_1000A9A5C(keyCopy))
   {
     [(HNDVirtualHIDMouse *)self dynamicMetaProperties];
   }
@@ -422,32 +422,32 @@
     [(HNDVirtualHIDMouse *)self properties];
   }
   v6 = ;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v9 = ASTLogMouse();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v14 = 138412546;
-    v15 = v7;
+    v15 = propertyCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = keyCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "setProperty: %@, forKey: %@", &v14, 0x16u);
   }
 
-  if (sub_1000A9A5C(v8))
+  if (sub_1000A9A5C(keyCopy))
   {
-    v10 = [(HNDVirtualHIDMouse *)self dynamicMetaProperties];
-    [v10 setObject:v7 forKeyedSubscript:v8];
+    dynamicMetaProperties = [(HNDVirtualHIDMouse *)self dynamicMetaProperties];
+    [dynamicMetaProperties setObject:propertyCopy forKeyedSubscript:keyCopy];
   }
 
-  v11 = [v8 isEqualToString:@"DeviceOpenedByEventSystem"];
+  v11 = [keyCopy isEqualToString:@"DeviceOpenedByEventSystem"];
   if (v11)
   {
     v12 = ASTLogMouse();
@@ -463,42 +463,42 @@
   return v11;
 }
 
-- (id)copyEventMatching:(id)a3 forService:(id)a4
+- (id)copyEventMatching:(id)matching forService:(id)service
 {
-  v4 = a3;
+  matchingCopy = matching;
   v5 = ASTLogMouse();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = matchingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "copyEventMatching: %@", &v7, 0xCu);
   }
 
   return 0;
 }
 
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4
+- (BOOL)setOutputEvent:(id)event forService:(id)service
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = ASTLogMouse();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "setOutputEvent: %@", &v7, 0xCu);
   }
 
   return 0;
 }
 
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service
 {
-  v6 = a4;
+  propertyCopy = property;
   v7 = ASTLogMouse();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = @"HIDVirtualServiceNotificationTypeTerminated";
-    if (a3 == 10)
+    if (notification == 10)
     {
       v8 = @"HIDVirtualServiceNotificationTypeEnumerated";
     }
@@ -507,60 +507,60 @@
     v10 = 138412546;
     v11 = v9;
     v12 = 2112;
-    v13 = v6;
+    v13 = propertyCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "notification: %@, property: %@", &v10, 0x16u);
   }
 }
 
-+ (BOOL)handleMovementWithDelta:(CGPoint)a3
++ (BOOL)handleMovementWithDelta:(CGPoint)delta
 {
-  v3 = a1;
-  v4 = [a1 _createHNDMovementEventWithDelta:{a3.x, a3.y}];
-  LOBYTE(v3) = [v3 handleEvent:v4];
+  selfCopy = self;
+  v4 = [self _createHNDMovementEventWithDelta:{delta.x, delta.y}];
+  LOBYTE(selfCopy) = [selfCopy handleEvent:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)handleEyeTrackingMovementWithDelta:(CGPoint)a3
++ (BOOL)handleEyeTrackingMovementWithDelta:(CGPoint)delta
 {
-  v3 = a1;
-  v4 = [a1 _createHNDMovementEventWithDelta:{a3.x, a3.y}];
+  selfCopy = self;
+  v4 = [self _createHNDMovementEventWithDelta:{delta.x, delta.y}];
   [v4 setIsEyeTrackingEvent:1];
-  LOBYTE(v3) = [v3 handleEvent:v4];
+  LOBYTE(selfCopy) = [selfCopy handleEvent:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)handleHeadTrackingMovementWithPoint:(CGPoint)a3
++ (BOOL)handleHeadTrackingMovementWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_alloc_init(HNDEvent);
   [(HNDEvent *)v6 setType:3];
   [(HNDEvent *)v6 setLocation:x, y];
   [(HNDEvent *)v6 setIsHeadTrackingEvent:1];
-  LOBYTE(a1) = [a1 handleEvent:v6];
+  LOBYTE(self) = [self handleEvent:v6];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)handleScrollWithDelta:(CGPoint)a3
++ (BOOL)handleScrollWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v6 = objc_alloc_init(HNDEvent);
   [(HNDEvent *)v6 setType:4];
   [(HNDEvent *)v6 setDeltaX:x];
   [(HNDEvent *)v6 setDeltaY:y];
-  LOBYTE(a1) = [a1 handleEvent:v6];
+  LOBYTE(self) = [self handleEvent:v6];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)handleButtonNumber:(int64_t)a3 isDown:(BOOL)a4
++ (BOOL)handleButtonNumber:(int64_t)number isDown:(BOOL)down
 {
-  v4 = a4;
-  if (a3 == 1 && a4)
+  downCopy = down;
+  if (number == 1 && down)
   {
     v7 = +[AXOutputManager sharedOutputManager];
     [v7 playMouseClickSound];
@@ -568,7 +568,7 @@
 
   v8 = objc_alloc_init(HNDEvent);
   v9 = v8;
-  if (v4)
+  if (downCopy)
   {
     v10 = 1;
   }
@@ -579,16 +579,16 @@
   }
 
   [(HNDEvent *)v8 setType:v10];
-  [(HNDEvent *)v9 setButtonNumber:a3];
-  v11 = [a1 handleEvent:v9];
+  [(HNDEvent *)v9 setButtonNumber:number];
+  v11 = [self handleEvent:v9];
 
   return v11;
 }
 
-+ (id)_createHNDMovementEventWithDelta:(CGPoint)a3
++ (id)_createHNDMovementEventWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v5 = objc_alloc_init(HNDEvent);
   [(HNDEvent *)v5 setType:3];
   [(HNDEvent *)v5 setDeltaX:x];

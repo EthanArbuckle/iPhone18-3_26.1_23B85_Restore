@@ -1,7 +1,7 @@
 @interface MNUserOptions
 - (MNUserOptions)init;
-- (MNUserOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MNUserOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MNUserOptions
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (MNUserOptions)initWithCoder:(id)a3
+- (MNUserOptions)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = MNUserOptions;
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [MNUserOptions allocWithZone:a3];
+  v3 = [MNUserOptions allocWithZone:zone];
 
   return [(MNUserOptions *)v3 init];
 }

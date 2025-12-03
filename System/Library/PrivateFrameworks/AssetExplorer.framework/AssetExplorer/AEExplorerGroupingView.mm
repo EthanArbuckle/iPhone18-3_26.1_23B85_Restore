@@ -1,20 +1,20 @@
 @interface AEExplorerGroupingView
 - (void)layoutSubviews;
-- (void)setSceneView:(id)a3;
+- (void)setSceneView:(id)view;
 @end
 
 @implementation AEExplorerGroupingView
 
-- (void)setSceneView:(id)a3
+- (void)setSceneView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   sceneView = self->_sceneView;
-  if (sceneView != v5)
+  if (sceneView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)sceneView removeFromSuperview];
     [(AEExplorerGroupingView *)self addSubview:v7];
-    objc_storeStrong(&self->_sceneView, a3);
+    objc_storeStrong(&self->_sceneView, view);
   }
 
   MEMORY[0x2821F96F8]();

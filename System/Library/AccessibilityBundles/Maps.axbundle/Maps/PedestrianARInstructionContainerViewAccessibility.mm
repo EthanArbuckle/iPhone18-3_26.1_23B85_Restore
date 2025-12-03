@@ -1,25 +1,25 @@
 @interface PedestrianARInstructionContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PedestrianARInstructionContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PedestrianARInstructionContainerView" hasInstanceMethod:@"topLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PedestrianARInstructionContainerView" hasInstanceMethod:@"bottomLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PedestrianARInstructionContainerView" hasInstanceMethod:@"topLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PedestrianARInstructionContainerView" hasInstanceMethod:@"bottomLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(PedestrianARInstructionContainerViewAccessibility *)self safeUIViewForKey:@"topLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(PedestrianARInstructionContainerViewAccessibility *)self safeUIViewForKey:@"bottomLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = __AXStringForVariables();
 

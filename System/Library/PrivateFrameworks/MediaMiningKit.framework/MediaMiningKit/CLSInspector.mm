@@ -1,27 +1,27 @@
 @interface CLSInspector
 - (CLSInspector)init;
-- (id)informantClassesForAnyIdentifier:(id)a3;
-- (id)profileIdentifierForHash:(unint64_t)a3;
-- (void)invalidateSharedPersistentCachesWithServiceManager:(id)a3 locationCache:(id)a4;
-- (void)performInvestigation:(id)a3 options:(unint64_t)a4 progressBlock:(id)a5;
+- (id)informantClassesForAnyIdentifier:(id)identifier;
+- (id)profileIdentifierForHash:(unint64_t)hash;
+- (void)invalidateSharedPersistentCachesWithServiceManager:(id)manager locationCache:(id)cache;
+- (void)performInvestigation:(id)investigation options:(unint64_t)options progressBlock:(id)block;
 @end
 
 @implementation CLSInspector
 
-- (void)invalidateSharedPersistentCachesWithServiceManager:(id)a3 locationCache:(id)a4
+- (void)invalidateSharedPersistentCachesWithServiceManager:(id)manager locationCache:(id)cache
 {
   obj = self;
   objc_sync_enter(obj);
   objc_sync_exit(obj);
 }
 
-- (void)performInvestigation:(id)a3 options:(unint64_t)a4 progressBlock:(id)a5
+- (void)performInvestigation:(id)investigation options:(unint64_t)options progressBlock:(id)block
 {
-  v119 = a4;
+  optionsCopy = options;
   v225 = *MEMORY[0x277D85DE8];
-  v142 = a3;
-  v122 = a5;
-  v141 = _Block_copy(v122);
+  investigationCopy = investigation;
+  blockCopy = block;
+  v141 = _Block_copy(blockCopy);
   v205 = 0;
   v206 = &v205;
   v207 = 0x2020000000;
@@ -37,9 +37,9 @@
   v203 = 0u;
   v202 = 0u;
   v201 = 0u;
-  v7 = [v142 profiles];
-  v8 = [v7 countByEnumeratingWithState:&v201 objects:v224 count:16];
-  obj = v7;
+  profiles = [investigationCopy profiles];
+  v8 = [profiles countByEnumeratingWithState:&v201 objects:v224 count:16];
+  obj = profiles;
   if (v8)
   {
     v120 = *v202;
@@ -56,22 +56,22 @@
 
         v124 = *(*(&v201 + 1) + 8 * v121);
         [v133 addObject:?];
-        v9 = [objc_opt_class() identifier];
-        [v130 setObject:v124 forKey:v9];
+        identifier = [objc_opt_class() identifier];
+        [v130 setObject:v124 forKey:identifier];
 
         v200 = 0u;
         v199 = 0u;
         v198 = 0u;
         v197 = 0u;
-        v10 = [objc_opt_class() profileDependenciesIdentifiers];
-        v11 = [v10 countByEnumeratingWithState:&v197 objects:v223 count:16];
+        profileDependenciesIdentifiers = [objc_opt_class() profileDependenciesIdentifiers];
+        v11 = [profileDependenciesIdentifiers countByEnumeratingWithState:&v197 objects:v223 count:16];
         if (!v11)
         {
           goto LABEL_29;
         }
 
         v131 = *v198;
-        v136 = v10;
+        v136 = profileDependenciesIdentifiers;
         while (2)
         {
           v12 = 0;
@@ -80,7 +80,7 @@
           {
             if (*v198 != v131)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(profileDependenciesIdentifiers);
             }
 
             v13 = *(*(&v197 + 1) + 8 * v12);
@@ -88,8 +88,8 @@
             v194 = 0u;
             v195 = 0u;
             v196 = 0u;
-            v14 = [v142 profiles];
-            v15 = [v14 countByEnumeratingWithState:&v193 objects:v222 count:16];
+            profiles2 = [investigationCopy profiles];
+            v15 = [profiles2 countByEnumeratingWithState:&v193 objects:v222 count:16];
             v138 = v12;
             if (v15)
             {
@@ -101,11 +101,11 @@
                 {
                   if (*v194 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(profiles2);
                   }
 
-                  v19 = [objc_opt_class() identifier];
-                  v20 = [v19 isEqualToString:v13];
+                  identifier2 = [objc_opt_class() identifier];
+                  v20 = [identifier2 isEqualToString:v13];
 
                   if (v20)
                   {
@@ -114,7 +114,7 @@
                   }
                 }
 
-                v15 = [v14 countByEnumeratingWithState:&v193 objects:v222 count:16];
+                v15 = [profiles2 countByEnumeratingWithState:&v193 objects:v222 count:16];
               }
 
               while (v15);
@@ -133,16 +133,16 @@
             if (!v21 || ![(objc_class *)v21 isSubclassOfClass:objc_opt_class()])
             {
               v64 = +[CLSLogging sharedLogging];
-              v30 = [v64 loggingConnection];
+              loggingConnection = [v64 loggingConnection];
 
-              if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
-                v65 = [v142 uuid];
+                uuid = [investigationCopy uuid];
                 *buf = 138412546;
-                v219 = v65;
+                v219 = uuid;
                 v220 = 2112;
                 v221 = v13;
-                _os_log_error_impl(&dword_22F907000, v30, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Profile dependency %@ cannot be found or is incompatible", buf, 0x16u);
+                _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Profile dependency %@ cannot be found or is incompatible", buf, 0x16u);
               }
 
               goto LABEL_106;
@@ -153,28 +153,28 @@
             if (!v22)
             {
               v71 = +[CLSLogging sharedLogging];
-              v30 = [v71 loggingConnection];
+              loggingConnection = [v71 loggingConnection];
 
-              if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
-                v72 = [v142 uuid];
+                uuid2 = [investigationCopy uuid];
                 *buf = 138412546;
-                v219 = v72;
+                v219 = uuid2;
                 v220 = 2112;
                 v221 = v21;
-                _os_log_error_impl(&dword_22F907000, v30, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Profile %@ cannot be instantiated", buf, 0x16u);
+                _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Profile %@ cannot be instantiated", buf, 0x16u);
               }
 
               goto LABEL_106;
             }
 
             [v133 addObject:v22];
-            v23 = [objc_opt_class() identifier];
-            [v130 setObject:v22 forKey:v23];
+            identifier3 = [objc_opt_class() identifier];
+            [v130 setObject:v22 forKey:identifier3];
 
 LABEL_27:
             v12 = v138 + 1;
-            v10 = v136;
+            profileDependenciesIdentifiers = v136;
           }
 
           while (v138 + 1 != v128);
@@ -193,19 +193,19 @@ LABEL_29:
         v192 = 0u;
         v189 = 0u;
         v190 = 0u;
-        v24 = [objc_opt_class() informantDependenciesIdentifiers];
-        v25 = [v24 countByEnumeratingWithState:&v189 objects:v217 count:16];
+        informantDependenciesIdentifiers = [objc_opt_class() informantDependenciesIdentifiers];
+        v25 = [informantDependenciesIdentifiers countByEnumeratingWithState:&v189 objects:v217 count:16];
         if (v25)
         {
           v26 = *v190;
-          v136 = v24;
+          v136 = informantDependenciesIdentifiers;
 LABEL_31:
           v27 = 0;
           while (1)
           {
             if (*v190 != v26)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(informantDependenciesIdentifiers);
             }
 
             v28 = *(*(&v189 + 1) + 8 * v27);
@@ -214,8 +214,8 @@ LABEL_31:
             v188 = 0u;
             v185 = 0u;
             v186 = 0u;
-            v30 = v29;
-            v31 = [v30 countByEnumeratingWithState:&v185 objects:v216 count:16];
+            loggingConnection = v29;
+            v31 = [loggingConnection countByEnumeratingWithState:&v185 objects:v216 count:16];
             if (!v31)
             {
               break;
@@ -228,33 +228,33 @@ LABEL_31:
               {
                 if (*v186 != v32)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(loggingConnection);
                 }
 
                 v34 = *(*(&v185 + 1) + 8 * j);
                 if (!v34 || ![v34 isSubclassOfClass:objc_opt_class()])
                 {
                   v68 = +[CLSLogging sharedLogging];
-                  v69 = [v68 loggingConnection];
+                  loggingConnection2 = [v68 loggingConnection];
 
-                  if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+                  if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
                   {
-                    v111 = [v142 uuid];
+                    uuid3 = [investigationCopy uuid];
                     *buf = 138412546;
-                    v219 = v111;
+                    v219 = uuid3;
                     v220 = 2112;
                     v221 = v28;
-                    _os_log_error_impl(&dword_22F907000, v69, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
+                    _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
                   }
 
-                  v70 = v30;
+                  loggingConnection3 = loggingConnection;
                   goto LABEL_99;
                 }
 
                 [v127 addObject:v34];
               }
 
-              v31 = [v30 countByEnumeratingWithState:&v185 objects:v216 count:16];
+              v31 = [loggingConnection countByEnumeratingWithState:&v185 objects:v216 count:16];
               if (v31)
               {
                 continue;
@@ -264,7 +264,7 @@ LABEL_31:
             }
 
             ++v27;
-            v24 = v136;
+            informantDependenciesIdentifiers = v136;
             if (v27 == v25)
             {
               v25 = [v136 countByEnumeratingWithState:&v189 objects:v217 count:16];
@@ -278,16 +278,16 @@ LABEL_31:
           }
 
           v113 = +[CLSLogging sharedLogging];
-          v70 = [v113 loggingConnection];
+          loggingConnection3 = [v113 loggingConnection];
 
-          if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
           {
-            v114 = [v142 uuid];
+            uuid4 = [investigationCopy uuid];
             *buf = 138412546;
-            v219 = v114;
+            v219 = uuid4;
             v220 = 2112;
             v221 = v28;
-            _os_log_error_impl(&dword_22F907000, v70, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
+            _os_log_error_impl(&dword_22F907000, loggingConnection3, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
           }
 
 LABEL_99:
@@ -302,7 +302,7 @@ LABEL_45:
         v36 = 0;
         while ([v35 count])
         {
-          v30 = objc_opt_new();
+          loggingConnection = objc_opt_new();
 
           v183 = 0u;
           v184 = 0u;
@@ -327,9 +327,9 @@ LABEL_45:
                 v178 = 0u;
                 v179 = 0u;
                 v180 = 0u;
-                v41 = [v40 informantDependenciesIdentifiers];
-                v42 = [v41 countByEnumeratingWithState:&v177 objects:v214 count:16];
-                v139 = v41;
+                informantDependenciesIdentifiers2 = [v40 informantDependenciesIdentifiers];
+                v42 = [informantDependenciesIdentifiers2 countByEnumeratingWithState:&v177 objects:v214 count:16];
+                v139 = informantDependenciesIdentifiers2;
                 if (v42)
                 {
                   v43 = *v178;
@@ -372,24 +372,24 @@ LABEL_54:
                         if (!v50 || ![v50 isSubclassOfClass:objc_opt_class()])
                         {
                           v73 = +[CLSLogging sharedLogging];
-                          v74 = [v73 loggingConnection];
+                          loggingConnection4 = [v73 loggingConnection];
 
-                          if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
+                          if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_ERROR))
                           {
-                            v112 = [v142 uuid];
+                            uuid5 = [investigationCopy uuid];
                             *buf = 138412546;
-                            v219 = v112;
+                            v219 = uuid5;
                             v220 = 2112;
                             v221 = v132;
-                            _os_log_error_impl(&dword_22F907000, v74, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
+                            _os_log_error_impl(&dword_22F907000, loggingConnection4, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
                           }
 
-                          v75 = v46;
+                          loggingConnection5 = v46;
                           goto LABEL_105;
                         }
 
                         [v127 addObject:v50];
-                        [v30 addObject:v50];
+                        [loggingConnection addObject:v50];
                       }
 
                       v47 = [v46 countByEnumeratingWithState:&v173 objects:v213 count:16];
@@ -419,16 +419,16 @@ LABEL_54:
                   }
 
                   v115 = +[CLSLogging sharedLogging];
-                  v75 = [v115 loggingConnection];
+                  loggingConnection5 = [v115 loggingConnection];
 
-                  if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
+                  if (os_log_type_enabled(loggingConnection5, OS_LOG_TYPE_ERROR))
                   {
-                    v116 = [v142 uuid];
+                    uuid6 = [investigationCopy uuid];
                     *buf = 138412546;
-                    v219 = v116;
+                    v219 = uuid6;
                     v220 = 2112;
                     v221 = v132;
-                    _os_log_error_impl(&dword_22F907000, v75, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
+                    _os_log_error_impl(&dword_22F907000, loggingConnection5, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be found or is incompatible", buf, 0x16u);
                   }
 
 LABEL_105:
@@ -449,8 +449,8 @@ LABEL_68:
             }
           }
 
-          v35 = [v30 copy];
-          v36 = v30;
+          v35 = [loggingConnection copy];
+          v36 = loggingConnection;
         }
 
         ++v121;
@@ -508,33 +508,33 @@ LABEL_132:
         if (!v58)
         {
           v66 = +[CLSLogging sharedLogging];
-          v67 = [v66 loggingConnection];
+          loggingConnection6 = [v66 loggingConnection];
 
-          if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection6, OS_LOG_TYPE_ERROR))
           {
-            v110 = [v142 uuid];
+            uuid7 = [investigationCopy uuid];
             *buf = 138412546;
-            v219 = v110;
+            v219 = uuid7;
             v220 = 2112;
             v221 = v57;
-            _os_log_error_impl(&dword_22F907000, v67, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be instantiated", buf, 0x16u);
+            _os_log_error_impl(&dword_22F907000, loggingConnection6, OS_LOG_TYPE_ERROR, "Investigation %@ cannot be performed: Informant %@ cannot be instantiated", buf, 0x16u);
           }
 
           goto LABEL_107;
         }
 
         [v135 addObject:v58];
-        v59 = [objc_opt_class() identifier];
-        [v137 setObject:v58 forKey:v59];
+        identifier4 = [objc_opt_class() identifier];
+        [v137 setObject:v58 forKey:identifier4];
 
-        v60 = [objc_opt_class() familyIdentifier];
-        v61 = [v134 objectForKey:v60];
+        familyIdentifier = [objc_opt_class() familyIdentifier];
+        v61 = [v134 objectForKey:familyIdentifier];
 
         if (!v61)
         {
           v61 = objc_opt_new();
-          v62 = [objc_opt_class() familyIdentifier];
-          [v137 setObject:v61 forKey:v62];
+          familyIdentifier2 = [objc_opt_class() familyIdentifier];
+          [v137 setObject:v61 forKey:familyIdentifier2];
         }
 
         [v61 addObject:v58];
@@ -570,15 +570,15 @@ LABEL_132:
     }
   }
 
-  [v142 _willBeginInvestigation:self];
-  if (v119)
+  [investigationCopy _willBeginInvestigation:self];
+  if (optionsCopy)
   {
-    v76 = [v142 feeder];
-    v77 = v76 == 0;
+    feeder = [investigationCopy feeder];
+    v77 = feeder == 0;
 
     if (v77)
     {
-      v85 = [v142 clueCollection];
+      clueCollection = [investigationCopy clueCollection];
       v83 = v167;
       v167[0] = MEMORY[0x277D85DD0];
       v167[1] = 3221225472;
@@ -586,16 +586,16 @@ LABEL_132:
       v167[3] = &unk_2788A8AA8;
       v167[4] = v141;
       v167[5] = &v205;
-      [v85 prepareWithProgressBlock:v167];
+      [clueCollection prepareWithProgressBlock:v167];
     }
 
     else
     {
-      v78 = [v142 feeder];
-      v79 = [v142 helper];
-      v80 = [v79 serviceManager];
-      v81 = [v142 helper];
-      v82 = [v81 locationCache];
+      feeder2 = [investigationCopy feeder];
+      helper = [investigationCopy helper];
+      serviceManager = [helper serviceManager];
+      helper2 = [investigationCopy helper];
+      locationCache = [helper2 locationCache];
       v83 = v164;
       v164[0] = MEMORY[0x277D85DD0];
       v164[1] = 3221225472;
@@ -604,7 +604,7 @@ LABEL_132:
       v84 = v141;
       v165 = v84;
       v166 = &v205;
-      v85 = [v78 prepareWithServiceManager:v80 locationCache:v82 progressBlock:v164];
+      clueCollection = [feeder2 prepareWithServiceManager:serviceManager locationCache:locationCache progressBlock:v164];
 
       if (*(v206 + 24) == 1)
       {
@@ -618,26 +618,26 @@ LABEL_132:
         goto LABEL_107;
       }
 
-      v86 = [v142 clueCollection];
-      v87 = [v85 inputClues];
-      [v86 mergeClues:v87];
+      clueCollection2 = [investigationCopy clueCollection];
+      inputClues = [clueCollection inputClues];
+      [clueCollection2 mergeClues:inputClues];
 
-      v88 = [v142 clueCollection];
-      v89 = [v85 outputClues];
-      [v88 mergeClues:v89];
+      clueCollection3 = [investigationCopy clueCollection];
+      outputClues = [clueCollection outputClues];
+      [clueCollection3 mergeClues:outputClues];
 
-      v90 = [v142 clueCollection];
-      v91 = [v85 meaningClues];
-      [v90 mergeClues:v91];
+      clueCollection4 = [investigationCopy clueCollection];
+      meaningClues = [clueCollection meaningClues];
+      [clueCollection4 mergeClues:meaningClues];
 
-      v92 = [v142 clueCollection];
+      clueCollection5 = [investigationCopy clueCollection];
       v161[0] = MEMORY[0x277D85DD0];
       v161[1] = 3221225472;
       v161[2] = __59__CLSInspector_performInvestigation_options_progressBlock___block_invoke_66;
       v161[3] = &unk_2788A8AA8;
       v162 = v84;
       v163 = &v205;
-      [v92 prepareWithProgressBlock:v161];
+      [clueCollection5 prepareWithProgressBlock:v161];
     }
 
     if (*(v206 + 24) == 1)
@@ -654,7 +654,7 @@ LABEL_132:
     }
   }
 
-  if ((v119 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v159 = 0u;
     v160 = 0u;
@@ -681,7 +681,7 @@ LABEL_132:
           v154[3] = &unk_2788A8AA8;
           v155 = v141;
           v156 = &v205;
-          v102 = [v101 gatherCluesForInvestigation:v142 progressBlock:v154];
+          v102 = [v101 gatherCluesForInvestigation:investigationCopy progressBlock:v154];
           v103 = v102;
           if (*(v206 + 24) == 1)
           {
@@ -722,8 +722,8 @@ LABEL_132:
             while (v105);
           }
 
-          v108 = [v142 clueCollection];
-          [v108 mergeClues:v104];
+          clueCollection6 = [investigationCopy clueCollection];
+          [clueCollection6 mergeClues:v104];
         }
 
         v98 = [v140 countByEnumeratingWithState:&v157 objects:v211 count:16];
@@ -757,7 +757,7 @@ LABEL_132:
     }
   }
 
-  if ((v119 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     v148 = 0u;
     v149 = 0u;
@@ -784,7 +784,7 @@ LABEL_132:
           v143[3] = &unk_2788A8AA8;
           v144 = v141;
           v145 = &v205;
-          [v97 processResultsSynchronouslyForInvestigation:v142 withProgressBlock:v143];
+          [v97 processResultsSynchronouslyForInvestigation:investigationCopy withProgressBlock:v143];
         }
 
         v94 = [v93 countByEnumeratingWithState:&v146 objects:v209 count:16];
@@ -796,7 +796,7 @@ LABEL_132:
 
   if (*(v206 + 24) != 1)
   {
-    [v142 _didEndInvestigation:1];
+    [investigationCopy _didEndInvestigation:1];
     goto LABEL_107;
   }
 
@@ -898,7 +898,7 @@ uint64_t __59__CLSInspector_performInvestigation_options_progressBlock___block_i
   return result;
 }
 
-- (id)profileIdentifierForHash:(unint64_t)a3
+- (id)profileIdentifierForHash:(unint64_t)hash
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -922,7 +922,7 @@ uint64_t __59__CLSInspector_performInvestigation_options_progressBlock___block_i
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) valueForKey:{@"identifier", v13}];
-        if ([v10 hash] == a3)
+        if ([v10 hash] == hash)
         {
           v11 = v10;
 
@@ -944,11 +944,11 @@ uint64_t __59__CLSInspector_performInvestigation_options_progressBlock___block_i
   return v7;
 }
 
-- (id)informantClassesForAnyIdentifier:(id)a3
+- (id)informantClassesForAnyIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CLSInspector *)self informantClassForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(CLSInspector *)self informantClassForIdentifier:identifierCopy];
   if (v5)
   {
     v9[0] = v5;
@@ -957,7 +957,7 @@ uint64_t __59__CLSInspector_performInvestigation_options_progressBlock___block_i
 
   else
   {
-    v6 = [(CLSInspector *)self informantClassesForFamilyIdentifier:v4];
+    v6 = [(CLSInspector *)self informantClassesForFamilyIdentifier:identifierCopy];
   }
 
   v7 = v6;
@@ -1002,8 +1002,8 @@ uint64_t __59__CLSInspector_performInvestigation_options_progressBlock___block_i
 
           v12 = *(*(&v39 + 1) + 8 * i);
           v13 = v3->_profileClassesByIdentifier;
-          v14 = [v12 identifier];
-          [(NSMutableDictionary *)v13 setObject:v12 forKey:v14];
+          identifier = [v12 identifier];
+          [(NSMutableDictionary *)v13 setObject:v12 forKey:identifier];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v39 objects:v46 count:16];
@@ -1049,19 +1049,19 @@ uint64_t __59__CLSInspector_performInvestigation_options_progressBlock___block_i
 
           v26 = *(*(&v35 + 1) + 8 * j);
           v27 = v3->_informantClassesByIdentifier;
-          v28 = [v26 identifier];
-          [(NSMutableDictionary *)v27 setObject:v26 forKey:v28];
+          identifier2 = [v26 identifier];
+          [(NSMutableDictionary *)v27 setObject:v26 forKey:identifier2];
 
           v29 = v3->_informantClassesByFamilyIdentifier;
-          v30 = [v26 familyIdentifier];
-          v31 = [(NSMutableDictionary *)v29 objectForKey:v30];
+          familyIdentifier = [v26 familyIdentifier];
+          v31 = [(NSMutableDictionary *)v29 objectForKey:familyIdentifier];
 
           if (!v31)
           {
             v31 = objc_opt_new();
             v32 = v3->_informantClassesByFamilyIdentifier;
-            v33 = [v26 familyIdentifier];
-            [(NSMutableDictionary *)v32 setObject:v31 forKey:v33];
+            familyIdentifier2 = [v26 familyIdentifier];
+            [(NSMutableDictionary *)v32 setObject:v31 forKey:familyIdentifier2];
           }
 
           [v31 addObject:v26];

@@ -1,39 +1,39 @@
 @interface CRBluetoothManager
-+ (BOOL)hasPairingSupportingCarPlayWithAddress:(id)a3;
-+ (BOOL)hasPairingWithAddress:(id)a3;
-+ (id)_sanitizeName:(id)a3;
-+ (id)addressStringForData:(id)a3;
++ (BOOL)hasPairingSupportingCarPlayWithAddress:(id)address;
++ (BOOL)hasPairingWithAddress:(id)address;
++ (id)_sanitizeName:(id)name;
++ (id)addressStringForData:(id)data;
 - (BOOL)isPowered;
-- (BOOL)unpairWithBluetoothAddress:(id)a3;
+- (BOOL)unpairWithBluetoothAddress:(id)address;
 - (CRBluetoothManager)init;
 - (CRBluetoothManagerPairingDelegate)pairingDelegate;
-- (id)_deviceForBluetoothAddress:(id)a3;
+- (id)_deviceForBluetoothAddress:(id)address;
 - (id)connectedBluetoothAddresses;
-- (unint64_t)connectedServicesCountForBluetoothAddress:(id)a3;
-- (void)_pairingCompletedForDevice:(id)a3;
-- (void)_requestConfirmationForDevice:(id)a3 numericCode:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)bluetoothPowerStateChanged:(id)a3;
-- (void)confirmPairingWithBluetoothAddress:(id)a3 numericCode:(id)a4;
-- (void)connectWithBluetoothAddress:(id)a3;
+- (unint64_t)connectedServicesCountForBluetoothAddress:(id)address;
+- (void)_pairingCompletedForDevice:(id)device;
+- (void)_requestConfirmationForDevice:(id)device numericCode:(id)code;
+- (void)addObserver:(id)observer;
+- (void)bluetoothPowerStateChanged:(id)changed;
+- (void)confirmPairingWithBluetoothAddress:(id)address numericCode:(id)code;
+- (void)connectWithBluetoothAddress:(id)address;
 - (void)dealloc;
-- (void)numericComparisonRequestHandler:(id)a3;
-- (void)pairWithBluetoothAddress:(id)a3;
-- (void)pairingFailureHandler:(id)a3;
-- (void)pairingSuccessHandler:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setContactsSyncEnabled:(BOOL)a3 forBluetoothAddress:(id)a4;
+- (void)numericComparisonRequestHandler:(id)handler;
+- (void)pairWithBluetoothAddress:(id)address;
+- (void)pairingFailureHandler:(id)handler;
+- (void)pairingSuccessHandler:(id)handler;
+- (void)removeObserver:(id)observer;
+- (void)setContactsSyncEnabled:(BOOL)enabled forBluetoothAddress:(id)address;
 @end
 
 @implementation CRBluetoothManager
 
-+ (id)addressStringForData:(id)a3
++ (id)addressStringForData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
+  dataCopy = data;
+  v4 = dataCopy;
   v11 = 0;
   v10 = 0;
-  if (!v3 || [v3 length] != 6)
+  if (!dataCopy || [dataCopy length] != 6)
   {
 LABEL_7:
     v8 = 0;
@@ -60,10 +60,10 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_sanitizeName:(id)a3
++ (id)_sanitizeName:(id)name
 {
-  v3 = a3;
-  v4 = [NSScanner scannerWithString:v3];
+  nameCopy = name;
+  v4 = [NSScanner scannerWithString:nameCopy];
   v5 = +[NSCharacterSet illegalCharacterSet];
   [v4 setCharactersToBeSkipped:v5];
 
@@ -151,31 +151,31 @@ LABEL_8:
   [(CRBluetoothManager *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRBluetoothManager *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(CRBluetoothManager *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRBluetoothManager *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(CRBluetoothManager *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (id)connectedBluetoothAddresses
 {
   v2 = +[NSMutableSet set];
   v3 = +[BluetoothManager sharedInstance];
-  v4 = [v3 connectedDevices];
+  connectedDevices = [v3 connectedDevices];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v4;
+  v5 = connectedDevices;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v6)
   {
@@ -190,10 +190,10 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v25 + 1) + 8 * i) address];
-        if (v10)
+        address = [*(*(&v25 + 1) + 8 * i) address];
+        if (address)
         {
-          [v2 addObject:v10];
+          [v2 addObject:address];
         }
       }
 
@@ -204,13 +204,13 @@ LABEL_8:
   }
 
   v11 = +[BluetoothManager sharedInstance];
-  v12 = [v11 connectingDevices];
+  connectingDevices = [v11 connectingDevices];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v12;
+  v13 = connectingDevices;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v14)
   {
@@ -225,10 +225,10 @@ LABEL_8:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * j) address];
-        if (v18)
+        address2 = [*(*(&v21 + 1) + 8 * j) address];
+        if (address2)
         {
-          [v2 addObject:v18];
+          [v2 addObject:address2];
         }
       }
 
@@ -249,19 +249,19 @@ LABEL_8:
   return v2;
 }
 
-- (id)_deviceForBluetoothAddress:(id)a3
+- (id)_deviceForBluetoothAddress:(id)address
 {
-  v3 = a3;
-  if (v3)
+  addressCopy = address;
+  if (addressCopy)
   {
     v4 = +[BluetoothManager sharedInstance];
-    v5 = [v4 pairedDevices];
+    pairedDevices = [v4 pairedDevices];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = v5;
+    v6 = pairedDevices;
     v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v7)
     {
@@ -277,8 +277,8 @@ LABEL_4:
         }
 
         v11 = *(*(&v27 + 1) + 8 * v10);
-        v12 = [v11 address];
-        v13 = [v3 isEqualToString:v12];
+        address = [v11 address];
+        v13 = [addressCopy isEqualToString:address];
 
         if (v13)
         {
@@ -315,9 +315,9 @@ LABEL_10:
     v23 = 0u;
     v24 = 0u;
     v15 = +[BluetoothManager sharedInstance];
-    v16 = [v15 connectingDevices];
+    connectingDevices = [v15 connectingDevices];
 
-    v14 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v14 = [connectingDevices countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v14)
     {
       v17 = *v24;
@@ -327,12 +327,12 @@ LABEL_10:
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(connectingDevices);
           }
 
           v19 = *(*(&v23 + 1) + 8 * i);
-          v20 = [v19 address];
-          v21 = [v3 isEqualToString:v20];
+          address2 = [v19 address];
+          v21 = [addressCopy isEqualToString:address2];
 
           if (v21)
           {
@@ -341,7 +341,7 @@ LABEL_10:
           }
         }
 
-        v14 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v14 = [connectingDevices countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v14)
         {
           continue;
@@ -364,12 +364,12 @@ LABEL_24:
   return v14;
 }
 
-- (void)pairWithBluetoothAddress:(id)a3
+- (void)pairWithBluetoothAddress:(id)address
 {
-  v4 = a3;
-  [(CRBluetoothManager *)self setCurrentlyPairingAddress:v4];
+  addressCopy = address;
+  [(CRBluetoothManager *)self setCurrentlyPairingAddress:addressCopy];
   v5 = +[BluetoothManager sharedInstance];
-  v6 = [v5 deviceFromAddressString:v4];
+  v6 = [v5 deviceFromAddressString:addressCopy];
 
   v7 = CarPairingLogging();
   v8 = v7;
@@ -380,7 +380,7 @@ LABEL_24:
       v12 = 141558275;
       v13 = 1752392040;
       v14 = 2113;
-      v15 = v4;
+      v15 = addressCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "starting pairing for device address %{private, mask.hash}@", &v12, 0x16u);
     }
 
@@ -390,8 +390,8 @@ LABEL_24:
     v10 = +[BluetoothManager sharedInstance];
     [v10 setConnectable:1];
 
-    v11 = +[BluetoothManager sharedInstance];
-    [v11 connectDevice:v6];
+    pairingDelegate = +[BluetoothManager sharedInstance];
+    [pairingDelegate connectDevice:v6];
   }
 
   else
@@ -401,21 +401,21 @@ LABEL_24:
       sub_100088F3C();
     }
 
-    v11 = [(CRBluetoothManager *)self pairingDelegate];
-    if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+    pairingDelegate = [(CRBluetoothManager *)self pairingDelegate];
+    if (pairingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v11 bluetoothManager:self failedPairingForDeviceAddress:v4 name:0 didTimeout:0];
+      [pairingDelegate bluetoothManager:self failedPairingForDeviceAddress:addressCopy name:0 didTimeout:0];
     }
   }
 }
 
-- (void)confirmPairingWithBluetoothAddress:(id)a3 numericCode:(id)a4
+- (void)confirmPairingWithBluetoothAddress:(id)address numericCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  [(CRBluetoothManager *)self setCurrentlyPairingAddress:v6];
+  addressCopy = address;
+  codeCopy = code;
+  [(CRBluetoothManager *)self setCurrentlyPairingAddress:addressCopy];
   v8 = +[BluetoothManager sharedInstance];
-  v9 = [v8 deviceFromAddressString:v6];
+  v9 = [v8 deviceFromAddressString:addressCopy];
 
   v10 = CarPairingLogging();
   v11 = v10;
@@ -426,7 +426,7 @@ LABEL_24:
       v15 = 141558275;
       v16 = 1752392040;
       v17 = 2113;
-      v18 = v6;
+      v18 = addressCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "confirming pairing for device address %{private, mask.hash}@", &v15, 0x16u);
     }
 
@@ -436,7 +436,7 @@ LABEL_24:
     v13 = +[BluetoothManager sharedInstance];
     [v13 setConnectable:1];
 
-    [(CRBluetoothManager *)self _requestConfirmationForDevice:v9 numericCode:v7];
+    [(CRBluetoothManager *)self _requestConfirmationForDevice:v9 numericCode:codeCopy];
   }
 
   else
@@ -446,18 +446,18 @@ LABEL_24:
       sub_100088F3C();
     }
 
-    v14 = [(CRBluetoothManager *)self pairingDelegate];
-    if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+    pairingDelegate = [(CRBluetoothManager *)self pairingDelegate];
+    if (pairingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v14 bluetoothManager:self failedPairingForDeviceAddress:v6 name:0 didTimeout:0];
+      [pairingDelegate bluetoothManager:self failedPairingForDeviceAddress:addressCopy name:0 didTimeout:0];
     }
   }
 }
 
-- (BOOL)unpairWithBluetoothAddress:(id)a3
+- (BOOL)unpairWithBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CRBluetoothManager *)self _deviceForBluetoothAddress:v4];
+  addressCopy = address;
+  v5 = [(CRBluetoothManager *)self _deviceForBluetoothAddress:addressCopy];
   v6 = +[BluetoothManager sharedInstance];
   [v6 setDevicePairingEnabled:1];
 
@@ -471,11 +471,11 @@ LABEL_24:
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 address];
+      address = [v5 address];
       v12 = 141558275;
       v13 = 1752392040;
       v14 = 2113;
-      v15 = v10;
+      v15 = address;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "unpaired device: %{private, mask.hash}@", &v12, 0x16u);
     }
   }
@@ -488,35 +488,35 @@ LABEL_24:
   return v5 != 0;
 }
 
-- (unint64_t)connectedServicesCountForBluetoothAddress:(id)a3
+- (unint64_t)connectedServicesCountForBluetoothAddress:(id)address
 {
-  v3 = [(CRBluetoothManager *)self _deviceForBluetoothAddress:a3];
+  v3 = [(CRBluetoothManager *)self _deviceForBluetoothAddress:address];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 connectedServicesCount];
+    connectedServicesCount = [v3 connectedServicesCount];
   }
 
   else
   {
-    v5 = 0;
+    connectedServicesCount = 0;
   }
 
-  return v5;
+  return connectedServicesCount;
 }
 
-- (void)setContactsSyncEnabled:(BOOL)a3 forBluetoothAddress:(id)a4
+- (void)setContactsSyncEnabled:(BOOL)enabled forBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = a4;
+  enabledCopy = enabled;
+  addressCopy = address;
   v6 = +[BluetoothManager sharedInstance];
-  v7 = [v6 deviceFromAddressString:v5];
+  v7 = [v6 deviceFromAddressString:addressCopy];
 
   if (v7)
   {
     v8 = [v7 syncSettings] & 0xFFFF00FF;
     v9 = &_mh_execute_header;
-    if (v4)
+    if (enabledCopy)
     {
       v9 = 0x100000100;
     }
@@ -527,7 +527,7 @@ LABEL_24:
     {
       v11 = @"NO";
       v12 = 138543875;
-      if (v4)
+      if (enabledCopy)
       {
         v11 = @"YES";
       }
@@ -536,7 +536,7 @@ LABEL_24:
       v14 = 2160;
       v15 = 1752392040;
       v16 = 2113;
-      v17 = v5;
+      v17 = addressCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "set contacts sync enabled: %{public}@ for device (%{private, mask.hash}@)", &v12, 0x20u);
     }
   }
@@ -551,62 +551,62 @@ LABEL_24:
   }
 }
 
-+ (BOOL)hasPairingSupportingCarPlayWithAddress:(id)a3
++ (BOOL)hasPairingSupportingCarPlayWithAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = +[BluetoothManager sharedInstance];
-  v5 = [v4 pairedDevices];
+  pairedDevices = [v4 pairedDevices];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006B244;
   v8[3] = &unk_1000DFD40;
-  v9 = v3;
-  v6 = v3;
-  LOBYTE(v4) = [v5 indexOfObjectPassingTest:v8] != 0x7FFFFFFFFFFFFFFFLL;
+  v9 = addressCopy;
+  v6 = addressCopy;
+  LOBYTE(v4) = [pairedDevices indexOfObjectPassingTest:v8] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (BOOL)hasPairingWithAddress:(id)a3
++ (BOOL)hasPairingWithAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = +[BluetoothManager sharedInstance];
-  v5 = [v4 pairedDevices];
+  pairedDevices = [v4 pairedDevices];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006B384;
   v8[3] = &unk_1000DFD40;
-  v9 = v3;
-  v6 = v3;
-  LOBYTE(v4) = [v5 indexOfObjectPassingTest:v8] != 0x7FFFFFFFFFFFFFFFLL;
+  v9 = addressCopy;
+  v6 = addressCopy;
+  LOBYTE(v4) = [pairedDevices indexOfObjectPassingTest:v8] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-- (void)connectWithBluetoothAddress:(id)a3
+- (void)connectWithBluetoothAddress:(id)address
 {
-  v3 = [(CRBluetoothManager *)self _deviceForBluetoothAddress:a3];
+  v3 = [(CRBluetoothManager *)self _deviceForBluetoothAddress:address];
   [v3 connect];
 }
 
 - (BOOL)isPowered
 {
   v2 = +[BluetoothManager sharedInstance];
-  v3 = [v2 powered];
+  powered = [v2 powered];
 
-  return v3;
+  return powered;
 }
 
-- (void)_requestConfirmationForDevice:(id)a3 numericCode:(id)a4
+- (void)_requestConfirmationForDevice:(id)device numericCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 address];
+  deviceCopy = device;
+  codeCopy = code;
+  address = [deviceCopy address];
   v9 = objc_opt_class();
-  v10 = [v6 name];
-  v11 = [v9 _sanitizeName:v10];
+  name = [deviceCopy name];
+  v11 = [v9 _sanitizeName:name];
 
   v12 = CarPairingLogging();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -614,32 +614,32 @@ LABEL_24:
     *buf = 141558275;
     v18 = 1752392040;
     v19 = 2113;
-    v20 = v8;
+    v20 = address;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "requesting numeric comparison confirmation for device %{private, mask.hash}@", buf, 0x16u);
   }
 
-  v13 = [(CRBluetoothManager *)self pairingDelegate];
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  pairingDelegate = [(CRBluetoothManager *)self pairingDelegate];
+  if (pairingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10006B680;
     v14[3] = &unk_1000DFD68;
     v14[4] = self;
-    v15 = v6;
-    v16 = v8;
-    [v13 bluetoothManager:self requestsConfirmationForDeviceAddress:v16 name:v11 numericCode:v7 responseHandler:v14];
+    v15 = deviceCopy;
+    v16 = address;
+    [pairingDelegate bluetoothManager:self requestsConfirmationForDeviceAddress:v16 name:v11 numericCode:codeCopy responseHandler:v14];
   }
 }
 
-- (void)_pairingCompletedForDevice:(id)a3
+- (void)_pairingCompletedForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 address];
+  deviceCopy = device;
+  address = [deviceCopy address];
   v6 = objc_opt_class();
-  v7 = [v4 name];
+  name = [deviceCopy name];
 
-  v8 = [v6 _sanitizeName:v7];
+  v8 = [v6 _sanitizeName:name];
 
   v9 = CarPairingLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -647,7 +647,7 @@ LABEL_24:
     v13 = 141558275;
     v14 = 1752392040;
     v15 = 2113;
-    v16 = v5;
+    v16 = address;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "pairing completed for device %{private, mask.hash}@", &v13, 0x16u);
   }
 
@@ -657,72 +657,72 @@ LABEL_24:
   v11 = +[BluetoothManager sharedInstance];
   [v11 setConnectable:0];
 
-  v12 = [(CRBluetoothManager *)self pairingDelegate];
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  pairingDelegate = [(CRBluetoothManager *)self pairingDelegate];
+  if (pairingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v12 bluetoothManager:self completedPairingForDeviceAddress:v5 deviceName:v8];
+    [pairingDelegate bluetoothManager:self completedPairingForDeviceAddress:address deviceName:v8];
   }
 }
 
-- (void)bluetoothPowerStateChanged:(id)a3
+- (void)bluetoothPowerStateChanged:(id)changed
 {
-  v4 = [(CRBluetoothManager *)self isPowered];
+  isPowered = [(CRBluetoothManager *)self isPowered];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithBool:v4];
+    v6 = [NSNumber numberWithBool:isPowered];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BT power state changed: %@", &v8, 0xCu);
   }
 
-  v7 = [(CRBluetoothManager *)self observers];
-  [v7 bluetoothManager:self didChangePowerState:v4];
+  observers = [(CRBluetoothManager *)self observers];
+  [observers bluetoothManager:self didChangePowerState:isPowered];
 }
 
-- (void)pairingFailureHandler:(id)a3
+- (void)pairingFailureHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [v4 object];
-  v5 = [v4 userInfo];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  userInfo = [handlerCopy userInfo];
 
-  v6 = [v5 objectForKey:BluetoothErrorKey];
+  v6 = [userInfo objectForKey:BluetoothErrorKey];
 
   v7 = v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v6 intValue] == 316;
-  [(CRBluetoothManager *)self _pairingFailedForDevice:v8 didTimeout:v7];
+  [(CRBluetoothManager *)self _pairingFailedForDevice:object didTimeout:v7];
 }
 
-- (void)pairingSuccessHandler:(id)a3
+- (void)pairingSuccessHandler:(id)handler
 {
-  v4 = [a3 object];
-  [(CRBluetoothManager *)self _pairingCompletedForDevice:v4];
+  object = [handler object];
+  [(CRBluetoothManager *)self _pairingCompletedForDevice:object];
 }
 
-- (void)numericComparisonRequestHandler:(id)a3
+- (void)numericComparisonRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
-    v7 = [v4 object];
+    name = [handlerCopy name];
+    object = [handlerCopy object];
     *buf = 138412546;
-    v16 = v6;
+    v16 = name;
     v17 = 2112;
-    v18 = v7;
+    v18 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "numericComparisonRequestHandler received %@ for %@", buf, 0x16u);
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:BluetoothPairingUserNumericComparisionNotification];
+  name2 = [handlerCopy name];
+  v9 = [name2 isEqualToString:BluetoothPairingUserNumericComparisionNotification];
 
   if (v9)
   {
-    v10 = [v4 object];
-    v11 = [v10 valueForKey:@"device"];
+    object2 = [handlerCopy object];
+    v11 = [object2 valueForKey:@"device"];
 
-    v12 = [v4 object];
-    v13 = [v12 valueForKey:@"value"];
+    object3 = [handlerCopy object];
+    v13 = [object3 valueForKey:@"value"];
 
     v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%06u", [v13 unsignedIntValue]);
     [(CRBluetoothManager *)self _requestConfirmationForDevice:v11 numericCode:v14];
@@ -733,7 +733,7 @@ LABEL_24:
     v11 = CarPairingLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_1000890EC(v4, v11);
+      sub_1000890EC(handlerCopy, v11);
     }
   }
 }

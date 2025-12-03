@@ -1,21 +1,21 @@
 @interface CKDeviceCapabilityCheckOptions
-- (CKDeviceCapabilityCheckOptions)initWithCoder:(id)a3;
-- (CKDeviceCapabilityCheckOptions)initWithExcludeDevicesWithoutCapabilityCheckingSupport:(BOOL)a3 excludeZoneAccessBefore:(id)a4;
+- (CKDeviceCapabilityCheckOptions)initWithCoder:(id)coder;
+- (CKDeviceCapabilityCheckOptions)initWithExcludeDevicesWithoutCapabilityCheckingSupport:(BOOL)support excludeZoneAccessBefore:(id)before;
 - (NSDate)excludeZoneAccessBefore;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDeviceCapabilityCheckOptions
 
-- (CKDeviceCapabilityCheckOptions)initWithExcludeDevicesWithoutCapabilityCheckingSupport:(BOOL)a3 excludeZoneAccessBefore:(id)a4
+- (CKDeviceCapabilityCheckOptions)initWithExcludeDevicesWithoutCapabilityCheckingSupport:(BOOL)support excludeZoneAccessBefore:(id)before
 {
   v5 = sub_18844E6FC(&unk_1EA90D7B0, &dword_1886F8780);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v12 - v7;
-  if (a4)
+  if (before)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Date();
@@ -51,24 +51,24 @@
   return isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKDeviceCapabilityCheckOptions.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKDeviceCapabilityCheckOptions.encode(with:)(coderCopy);
 }
 
-- (CKDeviceCapabilityCheckOptions)initWithCoder:(id)a3
+- (CKDeviceCapabilityCheckOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   CKDeviceCapabilityCheckOptions.init(coder:)();
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  CKDeviceCapabilityCheckOptions.copy(with:)(v3, v6);
+  selfCopy = self;
+  CKDeviceCapabilityCheckOptions.copy(with:)(selfCopy, v6);
 
   sub_188400B68(v6, v6[3]);
   v4 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -78,7 +78,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKDeviceCapabilityCheckOptions.hash.getter();
 
   return v3;

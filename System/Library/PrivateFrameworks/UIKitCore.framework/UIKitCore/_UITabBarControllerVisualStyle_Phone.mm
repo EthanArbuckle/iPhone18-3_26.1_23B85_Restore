@@ -1,28 +1,28 @@
 @interface _UITabBarControllerVisualStyle_Phone
 - (UIEdgeInsets)bottomAccessoryInsets;
-- (_UITabBarControllerVisualStyle_Phone)initWithInstance:(id)a3;
-- (_UITabBarControllerVisualStyle_Phone)initWithTabBarController:(id)a3;
-- (id)defaultAnimatorForFromViewController:(id)a3 toViewController:(id)a4;
+- (_UITabBarControllerVisualStyle_Phone)initWithInstance:(id)instance;
+- (_UITabBarControllerVisualStyle_Phone)initWithTabBarController:(id)controller;
+- (id)defaultAnimatorForFromViewController:(id)controller toViewController:(id)viewController;
 - (void)loadViews;
-- (void)navigationControllerDidUpdate:(id)a3;
+- (void)navigationControllerDidUpdate:(id)update;
 - (void)selectedViewControllerDidChange;
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBottomBarSuppressedByNavigation:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setBottomBarSuppressedByNavigation:(BOOL)navigation animated:(BOOL)animated;
 - (void)tabBarDidChange;
-- (void)tabContentDidChange:(id)a3;
-- (void)updateBottomAccessoryAnimated:(BOOL)a3;
+- (void)tabContentDidChange:(id)change;
+- (void)updateBottomAccessoryAnimated:(BOOL)animated;
 - (void)updateContainerBounds;
 - (void)updateTabBarLayout;
-- (void)updateViewControllers:(BOOL)a3;
+- (void)updateViewControllers:(BOOL)controllers;
 @end
 
 @implementation _UITabBarControllerVisualStyle_Phone
 
-- (_UITabBarControllerVisualStyle_Phone)initWithTabBarController:(id)a3
+- (_UITabBarControllerVisualStyle_Phone)initWithTabBarController:(id)controller
 {
   v5 = OBJC_IVAR____UITabBarControllerVisualStyle_Phone_scrollPocketContainerInteraction;
   v6 = objc_allocWithZone(_UIScrollPocketContainerInteraction);
-  v7 = a3;
+  controllerCopy = controller;
   *(&self->super.super.isa + v5) = [v6 initWithScrollView:0 edge:4];
   v8 = OBJC_IVAR____UITabBarControllerVisualStyle_Phone_containerWrapperView;
   type metadata accessor for _UITabBarContainerWrapperView();
@@ -30,57 +30,57 @@
   *(&self->super.super.isa + OBJC_IVAR____UITabBarControllerVisualStyle_Phone____lazy_storage___containerView) = 0;
   v11.receiver = self;
   v11.super_class = _UITabBarControllerVisualStyle_Phone;
-  v9 = [(_UITabBarControllerVisualStyle *)&v11 initWithTabBarController:v7];
+  v9 = [(_UITabBarControllerVisualStyle *)&v11 initWithTabBarController:controllerCopy];
 
   return v9;
 }
 
 - (void)updateTabBarLayout
 {
-  v2 = self;
-  [(_UITabBarControllerVisualStyle_Phone *)v2 updateContainerBounds];
-  v3.receiver = v2;
+  selfCopy = self;
+  [(_UITabBarControllerVisualStyle_Phone *)selfCopy updateContainerBounds];
+  v3.receiver = selfCopy;
   v3.super_class = _UITabBarControllerVisualStyle_Phone;
   [(_UITabBarControllerVisualStyle *)&v3 updateTabBarLayout];
 }
 
-- (void)updateViewControllers:(BOOL)a3
+- (void)updateViewControllers:(BOOL)controllers
 {
-  v3 = a3;
-  v5 = self;
-  v4 = [(_UITabBarControllerVisualStyle *)v5 tabBarController];
-  [(UITabBarController *)v4 _rebuildTabBarItemsAnimated:v3];
+  controllersCopy = controllers;
+  selfCopy = self;
+  tabBarController = [(_UITabBarControllerVisualStyle *)selfCopy tabBarController];
+  [(UITabBarController *)tabBarController _rebuildTabBarItemsAnimated:controllersCopy];
 }
 
 - (void)loadViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B7A15C();
 }
 
 - (void)updateContainerBounds
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B7E1B8();
 }
 
 - (void)selectedViewControllerDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B86768();
 }
 
-- (void)tabContentDidChange:(id)a3
+- (void)tabContentDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_188BF84E0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_188BF84E0(changeCopy);
 }
 
-- (void)updateBottomAccessoryAnimated:(BOOL)a3
+- (void)updateBottomAccessoryAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   v5 = sub_188B7E400();
   v6 = OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_layoutManager;
   v9 = v5;
@@ -103,10 +103,10 @@ LABEL_7:
   [v8 updateLayout];
 }
 
-- (void)navigationControllerDidUpdate:(id)a3
+- (void)navigationControllerDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   v6 = sub_188B7E400();
   v7 = OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_layoutManager;
   v10 = v6;
@@ -129,27 +129,27 @@ LABEL_7:
   [v9 updateLayout];
 }
 
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v6 = self;
-  sub_18904584C(a3, a4);
+  selfCopy = self;
+  sub_18904584C(hidden, animated);
 }
 
-- (void)setBottomBarSuppressedByNavigation:(BOOL)a3 animated:(BOOL)a4
+- (void)setBottomBarSuppressedByNavigation:(BOOL)navigation animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1890459D8(a3, a4);
+  selfCopy = self;
+  sub_1890459D8(navigation, animated);
 }
 
 - (void)tabBarDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_189045AE0();
 }
 
 - (UIEdgeInsets)bottomAccessoryInsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_189045D3C();
   v4 = v3;
   v6 = v5;
@@ -167,18 +167,18 @@ LABEL_7:
   return result;
 }
 
-- (id)defaultAnimatorForFromViewController:(id)a3 toViewController:(id)a4
+- (id)defaultAnimatorForFromViewController:(id)controller toViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
   sub_1890466B0();
   v10 = v9;
 
   return v10;
 }
 
-- (_UITabBarControllerVisualStyle_Phone)initWithInstance:(id)a3
+- (_UITabBarControllerVisualStyle_Phone)initWithInstance:(id)instance
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();

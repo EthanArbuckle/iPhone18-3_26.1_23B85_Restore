@@ -1,5 +1,5 @@
 @interface AnnotationCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -8,16 +8,16 @@
 
 @implementation AnnotationCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityDetailItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityCellIsExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityLinkLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityLinkLabelTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityIsSummaryExpandable" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityDetailItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityCellIsExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityLinkLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityLinkLabelTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AnnotationCollectionViewCell" hasInstanceMethod:@"accessibilityIsSummaryExpandable" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -43,17 +43,17 @@
   v3 = MEMORY[0x29EDB8DE8];
   v10.receiver = self;
   v10.super_class = AnnotationCollectionViewCellAccessibility;
-  v4 = [(AnnotationCollectionViewCellAccessibility *)&v10 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(AnnotationCollectionViewCellAccessibility *)&v10 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
   if ([(AnnotationCollectionViewCellAccessibility *)self _axIsAnnotationCellExpanded])
   {
-    v6 = [(AnnotationCollectionViewCellAccessibility *)self _axLinkLabel];
-    v7 = [v6 accessibilityLabel];
+    _axLinkLabel = [(AnnotationCollectionViewCellAccessibility *)self _axLinkLabel];
+    accessibilityLabel = [_axLinkLabel accessibilityLabel];
 
-    if ([v7 length])
+    if ([accessibilityLabel length])
     {
-      v8 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v7 target:self selector:sel__accessibilityPerformLinkAction_];
+      v8 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel target:self selector:sel__accessibilityPerformLinkAction_];
       [v5 axSafelyAddObject:v8];
     }
   }
@@ -65,30 +65,30 @@
 {
   v5.receiver = self;
   v5.super_class = AnnotationCollectionViewCellAccessibility;
-  v3 = [(AnnotationCollectionViewCellAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(AnnotationCollectionViewCellAccessibility *)&v5 accessibilityTraits];
   if ([(AnnotationCollectionViewCellAccessibility *)self _axIsSummaryExpandable]&& ![(AnnotationCollectionViewCellAccessibility *)self _axIsAnnotationCellExpanded])
   {
-    v3 |= *MEMORY[0x29EDC7F70];
+    accessibilityTraits |= *MEMORY[0x29EDC7F70];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityHint
 {
   if ([(AnnotationCollectionViewCellAccessibility *)self _axIsSummaryExpandable]&& ![(AnnotationCollectionViewCellAccessibility *)self _axIsAnnotationCellExpanded])
   {
-    v3 = accessibilityAppStoreLocalizedString(@"expand.annotation.cell");
+    accessibilityHint = accessibilityAppStoreLocalizedString(@"expand.annotation.cell");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AnnotationCollectionViewCellAccessibility;
-    v3 = [(AnnotationCollectionViewCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(AnnotationCollectionViewCellAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 @end

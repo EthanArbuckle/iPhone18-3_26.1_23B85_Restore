@@ -1,20 +1,20 @@
 @interface NEFlowNexus
-- (BOOL)setDiscoveredEndpoints:(id)a3 forClient:(id)a4;
-- (NEFlowNexus)initWithName:(id)a3 delegate:(id)a4;
+- (BOOL)setDiscoveredEndpoints:(id)endpoints forClient:(id)client;
+- (NEFlowNexus)initWithName:(id)name delegate:(id)delegate;
 - (void)dealloc;
-- (void)handleAssertFromClient:(id)a3;
-- (void)handleUnassertFromClient:(id)a3;
-- (void)setRemoteConnectionDirector:(id)a3;
+- (void)handleAssertFromClient:(id)client;
+- (void)handleUnassertFromClient:(id)client;
+- (void)setRemoteConnectionDirector:(id)director;
 @end
 
 @implementation NEFlowNexus
 
-- (void)handleUnassertFromClient:(id)a3
+- (void)handleUnassertFromClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = NEFlowNexus;
-  [(NENexus *)&v17 handleUnassertFromClient:v4];
+  [(NENexus *)&v17 handleUnassertFromClient:clientCopy];
   if (self)
   {
     Property = objc_getProperty(self, v5, 200, 1);
@@ -38,7 +38,7 @@
   }
 
   v10 = v9;
-  v11 = [v10 containsObject:v4];
+  v11 = [v10 containsObject:clientCopy];
 
   if (v11)
   {
@@ -55,11 +55,11 @@
     if (objc_opt_respondsToSelector())
     {
       v13 = objc_alloc_init(NENexusBrowse);
-      [(NENexusBrowse *)v13 setClientIdentifier:v4];
+      [(NENexusBrowse *)v13 setClientIdentifier:clientCopy];
       [WeakRetained stopBrowse:v13 fromNexus:self];
     }
 
-    [(NEFlowNexus *)self setDiscoveredEndpoints:0 forClient:v4];
+    [(NEFlowNexus *)self setDiscoveredEndpoints:0 forClient:clientCopy];
     if (self)
     {
       v15 = objc_getProperty(self, v14, 200, 1);
@@ -71,20 +71,20 @@
     }
 
     v16 = v15;
-    [v16 removeObject:v4];
+    [v16 removeObject:clientCopy];
   }
 
   objc_sync_exit(v7);
 }
 
-- (void)handleAssertFromClient:(id)a3
+- (void)handleAssertFromClient:(id)client
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clientCopy = client;
   v21.receiver = self;
   v21.super_class = NEFlowNexus;
-  [(NENexus *)&v21 handleAssertFromClient:v4];
-  v5 = [MEMORY[0x1E6977E48] pathForClientID:v4];
+  [(NENexus *)&v21 handleAssertFromClient:clientCopy];
+  v5 = [MEMORY[0x1E6977E48] pathForClientID:clientCopy];
   v6 = v5;
   if (!v5)
   {
@@ -92,7 +92,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v23 = v4;
+      v23 = clientCopy;
       _os_log_error_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_ERROR, "Failed to get path for assert client %@", buf, 0xCu);
     }
 
@@ -126,7 +126,7 @@
     }
 
     v13 = v12;
-    if (([(NENexusBrowse *)v13 containsObject:v4]& 1) == 0)
+    if (([(NENexusBrowse *)v13 containsObject:clientCopy]& 1) == 0)
     {
       v14 = objc_opt_respondsToSelector();
 
@@ -141,12 +141,12 @@ LABEL_16:
       }
 
       v13 = objc_alloc_init(NENexusBrowse);
-      [(NENexusBrowse *)v13 setClientIdentifier:v4];
-      v15 = [v6 browseDescriptor];
-      [(NENexusBrowse *)v13 setDescriptor:v15];
+      [(NENexusBrowse *)v13 setClientIdentifier:clientCopy];
+      browseDescriptor = [v6 browseDescriptor];
+      [(NENexusBrowse *)v13 setDescriptor:browseDescriptor];
 
-      v16 = [v6 parameters];
-      [(NENexusBrowse *)v13 setParameters:v16];
+      parameters = [v6 parameters];
+      [(NENexusBrowse *)v13 setParameters:parameters];
 
       [WeakRetained startBrowse:v13 fromNexus:self];
       if (self)
@@ -160,7 +160,7 @@ LABEL_16:
       }
 
       v19 = v18;
-      [v19 addObject:v4];
+      [v19 addObject:clientCopy];
     }
 
     goto LABEL_13;
@@ -171,12 +171,12 @@ LABEL_17:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setDiscoveredEndpoints:(id)a3 forClient:(id)a4
+- (BOOL)setDiscoveredEndpoints:(id)endpoints forClient:(id)client
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  endpointsCopy = endpoints;
+  clientCopy = client;
+  if (!clientCopy)
   {
     v10 = ne_log_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -199,27 +199,27 @@ LABEL_17:
     Property = 0;
   }
 
-  if (([Property containsObject:v8] & 1) == 0)
+  if (([Property containsObject:clientCopy] & 1) == 0)
   {
     v10 = ne_log_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v35 = v8;
+      v35 = clientCopy;
       _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, "Client %@ has not asserted browse, cannot assign discovered endpoints", buf, 0xCu);
     }
 
     goto LABEL_28;
   }
 
-  if ([v6 count])
+  if ([endpointsCopy count])
   {
     v10 = MEMORY[0x1BFAFAD90]();
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v6;
+    v11 = endpointsCopy;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
@@ -234,7 +234,7 @@ LABEL_17:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v29 + 1) + 8 * i) copyCEndpoint];
+          copyCEndpoint = [*(*(&v29 + 1) + 8 * i) copyCEndpoint];
           nw_array_append();
         }
 
@@ -281,7 +281,7 @@ LABEL_17:
 
   v22 = v20;
   v23 = [MEMORY[0x1E695DEF0] dataWithBytes:v19 length:0];
-  v24 = [(NEFlowNexus *)v22 assignNexusData:v23 toClient:v8];
+  v24 = [(NEFlowNexus *)v22 assignNexusData:v23 toClient:clientCopy];
 
   free(v19);
   if ((v24 & 1) == 0)
@@ -290,7 +290,7 @@ LABEL_17:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v35 = v8;
+      v35 = clientCopy;
       _os_log_error_impl(&dword_1BA83C000, v26, OS_LOG_TYPE_ERROR, "Could not assign browse result to client %@", buf, 0xCu);
     }
 
@@ -308,11 +308,11 @@ LABEL_29:
   return v25;
 }
 
-- (void)setRemoteConnectionDirector:(id)a3
+- (void)setRemoteConnectionDirector:(id)director
 {
   if (self)
   {
-    objc_setProperty_atomic(self, a2, a3, 192);
+    objc_setProperty_atomic(self, a2, director, 192);
   }
 }
 
@@ -329,12 +329,12 @@ LABEL_29:
   [(NENexus *)&v3 dealloc];
 }
 
-- (NEFlowNexus)initWithName:(id)a3 delegate:(id)a4
+- (NEFlowNexus)initWithName:(id)name delegate:(id)delegate
 {
   v83 = *MEMORY[0x1E69E9840];
   v64.receiver = self;
   v64.super_class = NEFlowNexus;
-  v4 = [(NENexus *)&v64 initWithLevel:4 name:a3 virtualInterfaceType:1 delegate:a4 channelCount:0];
+  v4 = [(NENexus *)&v64 initWithLevel:4 name:name virtualInterfaceType:1 delegate:delegate channelCount:0];
   if (!v4)
   {
     v33 = ne_log_obj();
@@ -364,8 +364,8 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v9 = [[NEFlowDivertFileHandle alloc] initFlowDivertControlSocket];
-  objc_setProperty_atomic(v4, v10, v9, 168);
+  initFlowDivertControlSocket = [[NEFlowDivertFileHandle alloc] initFlowDivertControlSocket];
+  objc_setProperty_atomic(v4, v10, initFlowDivertControlSocket, 168);
 
   if (!objc_getProperty(v4, v11, 168, 1))
   {
@@ -422,8 +422,8 @@ LABEL_16:
   v20 = NEFlowTLVMsgCreate();
   NEFlowTLVAdd();
   v22 = [objc_getProperty(v4 v21];
-  v23 = [v22 fileDescriptor];
-  v24 = send(v23, v20, v70 - v72, 0);
+  fileDescriptor = [v22 fileDescriptor];
+  v24 = send(fileDescriptor, v20, v70 - v72, 0);
 
   if (v24 < 0)
   {
@@ -452,8 +452,8 @@ LABEL_16:
     NEFlowTLVAdd();
     NEFlowTLVAdd();
     v28 = [objc_getProperty(v4 v27];
-    v29 = [v28 fileDescriptor];
-    v30 = send(v29, v26, v70 - v72, 0);
+    fileDescriptor2 = [v28 fileDescriptor];
+    v30 = send(fileDescriptor2, v26, v70 - v72, 0);
 
     if (v30 >= 0)
     {
@@ -509,8 +509,8 @@ LABEL_27:
   objc_destroyWeak(buf);
   v39 = [NEPolicy alloc];
   v40 = [NEPolicyResult divertSocketToControlUnit:v4->_flowDivertControlUnit];
-  v41 = [(NENexus *)v4 interfaceName];
-  v42 = [NEPolicyCondition scopedInterface:v41];
+  interfaceName = [(NENexus *)v4 interfaceName];
+  v42 = [NEPolicyCondition scopedInterface:interfaceName];
   *v74 = v42;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:1];
   v44 = [(NEPolicy *)v39 initWithOrder:0 result:v40 conditions:v43];
@@ -545,9 +545,9 @@ LABEL_27:
   }
 
   v49 = objc_getProperty(v4, v48, 120, 1);
-  v50 = [v49 apply];
+  apply = [v49 apply];
 
-  if ((v50 & 1) == 0)
+  if ((apply & 1) == 0)
   {
     v54 = ne_log_obj();
     if (!os_log_type_enabled(v54, OS_LOG_TYPE_FAULT))

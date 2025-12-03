@@ -1,8 +1,8 @@
 @interface UIAppIntentInteraction
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)setView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIAppIntentInteraction
@@ -14,25 +14,25 @@
   return v2;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1AE85AE00();
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1AE85B5A4();
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_1AE85B104(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1AE85B104(view);
 }
 
 @end

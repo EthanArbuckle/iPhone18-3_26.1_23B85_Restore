@@ -1,8 +1,8 @@
 @interface ACActivityCenter
 - (ACActivityCenter)init;
-- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)a3;
-- (id)observeContentUpdatesWithHandler:(id)a3;
-- (id)observeDescriptorsWithHandler:(id)a3;
+- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)handler;
+- (id)observeContentUpdatesWithHandler:(id)handler;
+- (id)observeDescriptorsWithHandler:(id)handler;
 @end
 
 @implementation ACActivityCenter
@@ -22,15 +22,15 @@
   return v2;
 }
 
-- (id)observeDescriptorsWithHandler:(id)a3
+- (id)observeDescriptorsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   activityCenter = self->_activityCenter;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__ACActivityCenter_observeDescriptorsWithHandler___block_invoke;
   v13[3] = &unk_1E76B69C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
   v7 = [(ActivityCenterObjcBridge *)activityCenter observeDescriptorsWithHandler:v13];
   if (v7)
@@ -62,15 +62,15 @@ void __50__ACActivityCenter_observeDescriptorsWithHandler___block_invoke(uint64_
   }
 }
 
-- (id)observeContentUpdatesWithHandler:(id)a3
+- (id)observeContentUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   activityCenter = self->_activityCenter;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__ACActivityCenter_observeContentUpdatesWithHandler___block_invoke;
   v13[3] = &unk_1E76B69E8;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
   v7 = [(ActivityCenterObjcBridge *)activityCenter observeActivityContentUpdatesWithHandler:v13];
   if (v7)
@@ -103,15 +103,15 @@ uint64_t __53__ACActivityCenter_observeContentUpdatesWithHandler___block_invoke(
   return result;
 }
 
-- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)a3
+- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   activityCenter = self->_activityCenter;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__ACActivityCenter_observeActivitiesExceedingReducedPushBudgetWithHandler___block_invoke;
   v13[3] = &unk_1E76B6A10;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
   v7 = [(ActivityCenterObjcBridge *)activityCenter observeActivitiesExceedingReducedPushBudgetWithHandler:v13];
   if (v7)

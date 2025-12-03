@@ -1,13 +1,13 @@
 @interface CHFriendDetailGoalCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CHFriendDetailGoalCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CHFriendDetailGoalCell)initWithFrame:(CGRect)frame;
 - (void)_setupCell;
 - (void)layoutSubviews;
-- (void)setCurrentValue:(id)a3;
-- (void)setCurrentValue:(id)a3 goalValue:(id)a4 unitString:(id)a5;
-- (void)setCurrentValue:(id)a3 unitString:(id)a4;
-- (void)setKeyColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setCurrentValue:(id)value;
+- (void)setCurrentValue:(id)value goalValue:(id)goalValue unitString:(id)string;
+- (void)setCurrentValue:(id)value unitString:(id)string;
+- (void)setKeyColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CHFriendDetailGoalCell
@@ -40,11 +40,11 @@
   [(CHFriendDetailGoalCell *)self addSubview:v11];
 }
 
-- (CHFriendDetailGoalCell)initWithFrame:(CGRect)a3
+- (CHFriendDetailGoalCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CHFriendDetailGoalCell;
-  v3 = [(CHFriendDetailGoalCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendDetailGoalCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -71,20 +71,20 @@
   CGRectGetHeight(v24);
   UIRoundToViewScale();
   v6 = v5;
-  v7 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
   v20 = NSFontAttributeName;
-  v8 = [(UILabel *)self->_titleLabel font];
-  v21 = v8;
+  font = [(UILabel *)self->_titleLabel font];
+  v21 = font;
   v9 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  [v7 sizeWithAttributes:v9];
+  [text sizeWithAttributes:v9];
   [(UILabel *)self->_titleLabel setFrame:0.0, v6, v4, v10];
 
   [(UILabel *)self->_titleLabel frame];
   v12 = v11;
   [(UILabel *)self->_titleLabel frame];
   v13 = CGRectGetMaxY(v25) + -5.0;
-  v14 = [(UILabel *)self->_subtitleLabel attributedText];
-  [v14 size];
+  attributedText = [(UILabel *)self->_subtitleLabel attributedText];
+  [attributedText size];
   [(UILabel *)self->_subtitleLabel setFrame:v12, v13, v4, v15];
 
   if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:0]== 1)
@@ -97,16 +97,16 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:title];
 
   [(CHFriendDetailGoalCell *)self setNeedsLayout];
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  v6 = [FIUIFormattingManager stringWithNumber:a3 decimalPrecision:1];
+  v6 = [FIUIFormattingManager stringWithNumber:value decimalPrecision:1];
   v4 = [[NSMutableAttributedString alloc] initWithString:v6];
   v5 = [UIFont fu_sausageFontOfSize:30.0];
   [v4 addAttribute:NSFontAttributeName value:v5 range:{0, objc_msgSend(v4, "length")}];
@@ -116,10 +116,10 @@
   [(CHFriendDetailGoalCell *)self setNeedsLayout];
 }
 
-- (void)setCurrentValue:(id)a3 unitString:(id)a4
+- (void)setCurrentValue:(id)value unitString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  valueCopy = value;
   v8 = [UIFont fu_sausageFontOfSize:30.0];
   v26 = UIFontDescriptorFeatureSettingsAttribute;
   v23[0] = UIFontFeatureTypeIdentifierKey;
@@ -132,18 +132,18 @@
   v27 = v10;
   v22 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
-  v11 = [v8 fontDescriptor];
-  v12 = [v11 fontDescriptorByAddingAttributes:v22];
+  fontDescriptor = [v8 fontDescriptor];
+  v12 = [fontDescriptor fontDescriptorByAddingAttributes:v22];
 
   v13 = [UIFont fontWithDescriptor:v12 size:30.0];
-  v14 = [FIUIFormattingManager stringWithNumber:v7 decimalPrecision:3];
+  v14 = [FIUIFormattingManager stringWithNumber:valueCopy decimalPrecision:3];
 
   v15 = [NSMutableAttributedString alloc];
-  v16 = [NSString stringWithFormat:@"%@%@", v14, v6];
-  v17 = [v15 initWithString:v16];
+  stringCopy = [NSString stringWithFormat:@"%@%@", v14, stringCopy];
+  v17 = [v15 initWithString:stringCopy];
 
-  v18 = [v17 string];
-  v19 = [v18 rangeOfString:v6];
+  string = [v17 string];
+  v19 = [string rangeOfString:stringCopy];
   v21 = v20;
 
   [v17 addAttribute:NSFontAttributeName value:v8 range:{0, v19}];
@@ -153,11 +153,11 @@
   [(CHFriendDetailGoalCell *)self setNeedsLayout];
 }
 
-- (void)setCurrentValue:(id)a3 goalValue:(id)a4 unitString:(id)a5
+- (void)setCurrentValue:(id)value goalValue:(id)goalValue unitString:(id)string
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  stringCopy = string;
+  goalValueCopy = goalValue;
+  valueCopy = value;
   v10 = [UIFont fu_sausageFontOfSize:30.0];
   v32 = UIFontDescriptorFeatureSettingsAttribute;
   v29[0] = UIFontFeatureTypeIdentifierKey;
@@ -170,54 +170,54 @@
   v33 = v12;
   v27 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
 
-  v13 = [v10 fontDescriptor];
-  v14 = [v13 fontDescriptorByAddingAttributes:v27];
+  fontDescriptor = [v10 fontDescriptor];
+  v14 = [fontDescriptor fontDescriptorByAddingAttributes:v27];
 
   v15 = [UIFont fontWithDescriptor:v14 size:30.0];
-  v16 = [NSString goalProgressAttrStringWithCurrentValue:v9 goalValue:v8 unitString:v7];
+  v16 = [NSString goalProgressAttrStringWithCurrentValue:valueCopy goalValue:goalValueCopy unitString:stringCopy];
 
   v17 = [v16 mutableCopy];
   [v17 removeAttribute:NSFontAttributeName range:{0, objc_msgSend(v17, "length")}];
-  v18 = [v17 string];
-  v19 = [v18 rangeOfString:v7];
+  string = [v17 string];
+  v19 = [string rangeOfString:stringCopy];
   v21 = v20;
 
-  v22 = [v17 string];
-  v23 = [v22 rangeOfString:@"/"];
+  string2 = [v17 string];
+  v23 = [string2 rangeOfString:@"/"];
   v25 = v24;
 
   [v17 addAttribute:NSFontAttributeName value:v15 range:{v19, v21}];
   [v17 addAttribute:NSFontAttributeName value:v10 range:{0, v19}];
-  v26 = [v10 fu_shortSlashFont];
-  [v17 addAttribute:NSFontAttributeName value:v26 range:{v23, v25}];
+  fu_shortSlashFont = [v10 fu_shortSlashFont];
+  [v17 addAttribute:NSFontAttributeName value:fu_shortSlashFont range:{v23, v25}];
 
   [v17 addAttribute:NSForegroundColorAttributeName value:self->_keyColor range:{0, objc_msgSend(v17, "length")}];
   [(UILabel *)self->_subtitleLabel setAttributedText:v17];
   [(CHFriendDetailGoalCell *)self setNeedsLayout];
 }
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
-  objc_storeStrong(&self->_keyColor, a3);
+  objc_storeStrong(&self->_keyColor, color);
 
   [(CHFriendDetailGoalCell *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UILabel *)self->_titleLabel text];
+  height = fits.height;
+  width = fits.width;
+  text = [(UILabel *)self->_titleLabel text];
   v20 = NSFontAttributeName;
-  v7 = [(UILabel *)self->_titleLabel font];
-  v21 = v7;
+  font = [(UILabel *)self->_titleLabel font];
+  v21 = font;
   v8 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  [v6 boundingRectWithSize:1 options:v8 attributes:0 context:{width, height}];
+  [text boundingRectWithSize:1 options:v8 attributes:0 context:{width, height}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UILabel *)self->_subtitleLabel attributedText];
-  [v13 boundingRectWithSize:1 options:0 context:{width, height}];
+  attributedText = [(UILabel *)self->_subtitleLabel attributedText];
+  [attributedText boundingRectWithSize:1 options:0 context:{width, height}];
   v15 = v14;
   v17 = v16;
 

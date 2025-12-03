@@ -1,18 +1,18 @@
 @interface AudioStreamEndpoint
-+ (id)aseTypeToString:(unsigned __int8)a3;
-+ (id)opcodeToString:(unsigned __int8)a3;
-+ (id)phySettingToString:(unsigned __int8)a3;
-+ (id)reasonCodeToString:(unsigned __int8)a3;
-+ (id)responseCodeToString:(unsigned __int8)a3;
-+ (id)stateToString:(unsigned __int8)a3;
-- (AudioStreamEndpoint)initWithAudioEnpointType:(unsigned __int8)a3 aseID:(unsigned __int8)a4;
-- (BOOL)matchPrefferedQoSParamsForASE:(id)a3;
++ (id)aseTypeToString:(unsigned __int8)string;
++ (id)opcodeToString:(unsigned __int8)string;
++ (id)phySettingToString:(unsigned __int8)string;
++ (id)reasonCodeToString:(unsigned __int8)string;
++ (id)responseCodeToString:(unsigned __int8)string;
++ (id)stateToString:(unsigned __int8)string;
+- (AudioStreamEndpoint)initWithAudioEnpointType:(unsigned __int8)type aseID:(unsigned __int8)d;
+- (BOOL)matchPrefferedQoSParamsForASE:(id)e;
 - (void)description;
 @end
 
 @implementation AudioStreamEndpoint
 
-- (AudioStreamEndpoint)initWithAudioEnpointType:(unsigned __int8)a3 aseID:(unsigned __int8)a4
+- (AudioStreamEndpoint)initWithAudioEnpointType:(unsigned __int8)type aseID:(unsigned __int8)d
 {
   v11.receiver = self;
   v11.super_class = AudioStreamEndpoint;
@@ -20,8 +20,8 @@
   v7 = v6;
   if (v6)
   {
-    v6[8] = a3;
-    v6[9] = a4;
+    v6[8] = type;
+    v6[9] = d;
     *(v6 + 10) = -65536;
     v8 = objc_alloc_init(Metadata);
     metadata = v7->_metadata;
@@ -33,24 +33,24 @@
   return v7;
 }
 
-- (BOOL)matchPrefferedQoSParamsForASE:(id)a3
+- (BOOL)matchPrefferedQoSParamsForASE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   if ([(AudioStreamEndpoint *)self preferredPhy])
   {
-    if ([v4 preferredPhy])
+    if ([eCopy preferredPhy])
     {
-      v5 = [(AudioStreamEndpoint *)self preferredPhy];
-      if (([v4 preferredPhy] & v5) == 0)
+      preferredPhy = [(AudioStreamEndpoint *)self preferredPhy];
+      if (([eCopy preferredPhy] & preferredPhy) == 0)
       {
         v13 = qword_1000A9FE0;
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v13;
           v15 = 67109376;
-          v16 = [(AudioStreamEndpoint *)self ASE_ID];
+          aSE_ID = [(AudioStreamEndpoint *)self ASE_ID];
           v17 = 1024;
-          v18 = [v4 ASE_ID];
+          aSE_ID2 = [eCopy ASE_ID];
           v11 = "Preferred PHYs don't match for ASE IDs %d and %d";
           goto LABEL_13;
         }
@@ -60,17 +60,17 @@
     }
   }
 
-  v6 = [(AudioStreamEndpoint *)self framing];
-  if (v6 != [v4 framing])
+  framing = [(AudioStreamEndpoint *)self framing];
+  if (framing != [eCopy framing])
   {
     v9 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
       v15 = 67109376;
-      v16 = [(AudioStreamEndpoint *)self ASE_ID];
+      aSE_ID = [(AudioStreamEndpoint *)self ASE_ID];
       v17 = 1024;
-      v18 = [v4 ASE_ID];
+      aSE_ID2 = [eCopy ASE_ID];
       v11 = "Framing doesn't match for ASE IDs %d and %d";
 LABEL_13:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v11, &v15, 0xEu);
@@ -81,17 +81,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = [(AudioStreamEndpoint *)self clientRetransmissionNumber];
-  if (v7 != [v4 clientRetransmissionNumber])
+  clientRetransmissionNumber = [(AudioStreamEndpoint *)self clientRetransmissionNumber];
+  if (clientRetransmissionNumber != [eCopy clientRetransmissionNumber])
   {
     v12 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v12;
       v15 = 67109376;
-      v16 = [(AudioStreamEndpoint *)self ASE_ID];
+      aSE_ID = [(AudioStreamEndpoint *)self ASE_ID];
       v17 = 1024;
-      v18 = [v4 ASE_ID];
+      aSE_ID2 = [eCopy ASE_ID];
       v11 = "Retransmission Numbers don't match for ASE IDs %d and %d";
       goto LABEL_13;
     }
@@ -197,67 +197,67 @@ LABEL_15:
   }
 }
 
-+ (id)stateToString:(unsigned __int8)a3
++ (id)stateToString:(unsigned __int8)string
 {
-  if (a3 > 6u)
+  if (string > 6u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_100094A90 + a3);
+    return *(&off_100094A90 + string);
   }
 }
 
-+ (id)opcodeToString:(unsigned __int8)a3
++ (id)opcodeToString:(unsigned __int8)string
 {
-  if ((a3 - 1) > 8)
+  if ((string - 1) > 8)
   {
     return @"Unknown Opcode";
   }
 
   else
   {
-    return *(&off_100094AC8 + (a3 - 1));
+    return *(&off_100094AC8 + (string - 1));
   }
 }
 
-+ (id)responseCodeToString:(unsigned __int8)a3
++ (id)responseCodeToString:(unsigned __int8)string
 {
-  if (a3 > 0xEu)
+  if (string > 0xEu)
   {
     return @"Unknown Response Code";
   }
 
   else
   {
-    return *(&off_100094B10 + a3);
+    return *(&off_100094B10 + string);
   }
 }
 
-+ (id)reasonCodeToString:(unsigned __int8)a3
++ (id)reasonCodeToString:(unsigned __int8)string
 {
-  if (a3 > 0xAu)
+  if (string > 0xAu)
   {
     return @"Unknown Reason Code";
   }
 
   else
   {
-    return *(&off_100094B88 + a3);
+    return *(&off_100094B88 + string);
   }
 }
 
-+ (id)aseTypeToString:(unsigned __int8)a3
++ (id)aseTypeToString:(unsigned __int8)string
 {
   v3 = @"Unknown Endpoint";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Source Endpoint";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -268,16 +268,16 @@ LABEL_15:
   }
 }
 
-+ (id)phySettingToString:(unsigned __int8)a3
++ (id)phySettingToString:(unsigned __int8)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown Phy Option";
   }
 
   else
   {
-    return *(&off_100094BE0 + (a3 - 1));
+    return *(&off_100094BE0 + (string - 1));
   }
 }
 

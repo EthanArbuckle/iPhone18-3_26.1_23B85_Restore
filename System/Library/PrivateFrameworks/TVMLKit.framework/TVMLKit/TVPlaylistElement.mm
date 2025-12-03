@@ -6,9 +6,9 @@
 
 - (NSArray)videos
 {
-  v2 = [(TVViewElement *)self childViewElements];
+  childViewElements = [(TVViewElement *)self childViewElements];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_13];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [childViewElements filteredArrayUsingPredicate:v3];
 
   v5 = [v4 copy];
 

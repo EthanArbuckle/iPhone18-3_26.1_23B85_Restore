@@ -1,22 +1,22 @@
 @interface DYGLGuestAppClient
 - (BOOL)_canTriggerCaptureOnNextGraphicsCommand;
-- (BOOL)armCaptureWithDescriptor:(id)a3;
-- (BOOL)startCaptureWithDescriptor:(id)a3;
+- (BOOL)armCaptureWithDescriptor:(id)descriptor;
+- (BOOL)startCaptureWithDescriptor:(id)descriptor;
 - (id)_copyContextsInfo;
-- (void)_appendLinkTimeLibrariesToVersionsDictionary:(id)a3;
-- (void)_appendToAllCaptureDataSentMessagePayload:(id)a3;
-- (void)_armCaptureWithTransportMessage:(id)a3;
+- (void)_appendLinkTimeLibrariesToVersionsDictionary:(id)dictionary;
+- (void)_appendToAllCaptureDataSentMessagePayload:(id)payload;
+- (void)_armCaptureWithTransportMessage:(id)message;
 - (void)_handleTurnOnCapture;
 - (void)_populateQueueAndThreadLabelMaps;
 - (void)_waitForGraphicsThreads;
-- (void)processMessage:(id)a3;
+- (void)processMessage:(id)message;
 - (void)sendContextInfoUpdate;
-- (void)setTraceMode:(int)a3;
+- (void)setTraceMode:(int)mode;
 @end
 
 @implementation DYGLGuestAppClient
 
-- (void)setTraceMode:(int)a3
+- (void)setTraceMode:(int)mode
 {
   v8.receiver = self;
   v8.super_class = DYGLGuestAppClient;
@@ -26,7 +26,7 @@
   v6[1] = 3221225472;
   v6[2] = __35__DYGLGuestAppClient_setTraceMode___block_invoke;
   v6[3] = &unk_20CF78;
-  v7 = ((a3 & 0xFFFFFFFE) == 4) & gCheckGLErrors;
+  v7 = ((mode & 0xFFFFFFFE) == 4) & gCheckGLErrors;
   v6[4] = self;
   v6[5] = v5;
   iter_contexts(v6);
@@ -64,77 +64,77 @@ void __35__DYGLGuestAppClient_setTraceMode___block_invoke(uint64_t a1, uint64_t 
   return v2;
 }
 
-- (void)processMessage:(id)a3
+- (void)processMessage:(id)message
 {
-  v5 = [a3 kind];
-  if (v5 > 1027)
+  kind = [message kind];
+  if (kind > 1027)
   {
-    if (v5 <= 1541)
+    if (kind <= 1541)
     {
-      if (v5 == 1028)
+      if (kind == 1028)
       {
 
-        UpdateResourceObject(a3);
+        UpdateResourceObject(message);
       }
 
       else
       {
-        if (v5 != 1029)
+        if (kind != 1029)
         {
           goto LABEL_67;
         }
 
-        ClearResourceOverrides(a3);
+        ClearResourceOverrides(message);
       }
     }
 
     else
     {
-      switch(v5)
+      switch(kind)
       {
         case 1794:
           [(DYGLGuestAppClient *)self lockGraphicsAndWaitForThreads:1];
           v19 = OBJC_IVAR___DYGuestAppClient__overrideFlags;
           v20 = *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__overrideFlags] & 0x100;
           v38 = v20;
-          if ([a3 BOOLForKey:kDYOverridesForceOneByOneScissor])
+          if ([message BOOLForKey:kDYOverridesForceOneByOneScissor])
           {
             v20 |= 4u;
             v38 = v20;
           }
 
-          if ([a3 BOOLForKey:kDYOverridesForceTwoByTwoTextures])
+          if ([message BOOLForKey:kDYOverridesForceTwoByTwoTextures])
           {
             v20 |= 0x20u;
             v38 = v20;
           }
 
-          if ([a3 BOOLForKey:kDYOverridesDisableAllDrawCommands])
+          if ([message BOOLForKey:kDYOverridesDisableAllDrawCommands])
           {
             v20 |= 8u;
             v38 = v20;
           }
 
-          if ([a3 BOOLForKey:kDYOverridesDisableAllGLCommands])
+          if ([message BOOLForKey:kDYOverridesDisableAllGLCommands])
           {
             v20 |= 0x10u;
             v38 = v20;
           }
 
-          v21 = [a3 uint32ForKey:kDYOverridesFlagsKey];
+          v21 = [message uint32ForKey:kDYOverridesFlagsKey];
           if (*&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__xcodeOverrideFlags] != v21)
           {
             v38 = (v21 << 19) & 0x300000 | (32 * (v21 & 1)) | (v21 >> 1) & 8 | v20 & 0x1D7;
             *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__xcodeOverrideFlags] = v21;
           }
 
-          update_overrides(a3, &v38);
+          update_overrides(message, &v38);
           *&self->DYGuestAppClient_opaque[v19] = v38;
           [(DYGLGuestAppClient *)self unlockGraphics];
           break;
         case 1793:
           [(DYGLGuestAppClient *)self lockGraphicsAndWaitForThreads:1];
-          v23 = [objc_msgSend(a3 attributeForKey:{kDYTraceModeKey), "unsignedIntValue"}];
+          v23 = [objc_msgSend(message attributeForKey:{kDYTraceModeKey), "unsignedIntValue"}];
           if (v23 == 5)
           {
             v30 = dy_abort();
@@ -144,14 +144,14 @@ void __35__DYGLGuestAppClient_setTraceMode___block_invoke(uint64_t a1, uint64_t 
           else
           {
             v24 = v23;
-            self->_includeBacktraceInFbufs = [a3 BOOLForKey:kDYTraceIncludeBacktracesKey];
-            self->_queryDriverEventsOnGraphicsCommands = [a3 BOOLForKey:kDYTraceIncludeDriverEventsKey];
-            gProfilingSendPeriod = [a3 uint64ForKey:kDYTraceProfilingSendPeriodKey];
-            v25 = [a3 uint64ForKey:kDYTraceProfilingFlagsKey];
+            self->_includeBacktraceInFbufs = [message BOOLForKey:kDYTraceIncludeBacktracesKey];
+            self->_queryDriverEventsOnGraphicsCommands = [message BOOLForKey:kDYTraceIncludeDriverEventsKey];
+            gProfilingSendPeriod = [message uint64ForKey:kDYTraceProfilingSendPeriodKey];
+            v25 = [message uint64ForKey:kDYTraceProfilingFlagsKey];
             gProfilingFlags = 0;
             enable_profiling_flag(v25);
-            self->_checkGLErrors = [a3 BOOLForKey:kDYTraceCheckGLErrorsKey];
-            v26 = [a3 BOOLForKey:kDYTraceTrapOnGLErrorsKey];
+            self->_checkGLErrors = [message BOOLForKey:kDYTraceCheckGLErrorsKey];
+            v26 = [message BOOLForKey:kDYTraceTrapOnGLErrorsKey];
             gTrapOnGLError = v26;
             checkGLErrors = 1;
             if ((gBreakOnError & 1) == 0 && (v26 & 1) == 0)
@@ -160,7 +160,7 @@ void __35__DYGLGuestAppClient_setTraceMode___block_invoke(uint64_t a1, uint64_t 
             }
 
             gCheckGLErrors = checkGLErrors;
-            v28 = [a3 attributeForKey:kDYTraceProfilingHardwareCountersConfigurationKey];
+            v28 = [message attributeForKey:kDYTraceProfilingHardwareCountersConfigurationKey];
             v29 = v28;
             if (v28 && ![v28 objectForKey:kDYProfilingHardwareCountersConfigurationTypeKey])
             {
@@ -183,8 +183,8 @@ void __35__DYGLGuestAppClient_setTraceMode___block_invoke(uint64_t a1, uint64_t 
 
           break;
         case 1542:
-          v32 = [(DYGLGuestAppClient *)self _copyContextsInfo];
-          [(DYGLGuestAppClient *)self sendMessage:[DYTransportMessage messageWithKind:1542 objectPayload:?], a3];
+          _copyContextsInfo = [(DYGLGuestAppClient *)self _copyContextsInfo];
+          [(DYGLGuestAppClient *)self sendMessage:[DYTransportMessage messageWithKind:1542 objectPayload:?], message];
 
           break;
         default:
@@ -195,33 +195,33 @@ void __35__DYGLGuestAppClient_setTraceMode___block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    if (v5 > 1024)
+    if (kind > 1024)
     {
-      if (v5 == 1025)
+      if (kind == 1025)
       {
 
-        HarvestResourceNames(a3);
+        HarvestResourceNames(message);
       }
 
-      else if (v5 == 1026)
+      else if (kind == 1026)
       {
-        v22 = [a3 attributes];
+        attributes = [message attributes];
 
-        HarvestResourceObject(v22);
+        HarvestResourceObject(attributes);
       }
 
       else
       {
 
-        HarvestState(a3);
+        HarvestState(message);
       }
 
       return;
     }
 
-    if (v5 != 512)
+    if (kind != 512)
     {
-      if (v5 == 513)
+      if (kind == 513)
       {
 
         breakpoint_continue();
@@ -231,7 +231,7 @@ void __35__DYGLGuestAppClient_setTraceMode___block_invoke(uint64_t a1, uint64_t 
 LABEL_67:
       v33.receiver = self;
       v33.super_class = DYGLGuestAppClient;
-      [(DYGLGuestAppClient *)&v33 processMessage:a3];
+      [(DYGLGuestAppClient *)&v33 processMessage:message];
       return;
     }
 
@@ -239,12 +239,12 @@ LABEL_67:
     bzero(breakpoint_flags, 0x46EuLL);
     GPUTools::DYLockUtils::Unlock(&breakpoint_flags_write_lock, v7);
     __dmb(0xBu);
-    v8 = [a3 objectPayload];
+    objectPayload = [message objectPayload];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v9 = [objectPayload countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v9)
     {
       v10 = v9;
@@ -255,36 +255,36 @@ LABEL_67:
         {
           if (*v35 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(objectPayload);
           }
 
           v13 = *(*(&v34 + 1) + 8 * i);
-          v14 = [v13 breakBefore];
+          breakBefore = [v13 breakBefore];
           if ([v13 breakAfter])
           {
-            v14 |= 2u;
+            breakBefore |= 2u;
           }
 
           if ([v13 noExec])
           {
-            v14 |= 4u;
+            breakBefore |= 4u;
           }
 
           [v13 fenum];
           unified_index = dy_fenum_get_unified_index();
           GPUTools::DYLockUtils::Lock(&breakpoint_flags_write_lock, v16);
-          breakpoint_flags[unified_index] = v14;
+          breakpoint_flags[unified_index] = breakBefore;
           GPUTools::DYLockUtils::Unlock(&breakpoint_flags_write_lock, v17);
           __dmb(0xBu);
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v10 = [objectPayload countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v10);
     }
 
-    gBreakOnError = [objc_msgSend(a3 attributeForKey:{kDYBreakpointBreakOnGLErrorsKey), "BOOLValue"}];
+    gBreakOnError = [objc_msgSend(message attributeForKey:{kDYBreakpointBreakOnGLErrorsKey), "BOOLValue"}];
     v18 = (gBreakOnError & 1) != 0 || (gTrapOnGLError & 1) != 0 || self->_checkGLErrors;
     gCheckGLErrors = v18;
     __dmb(0xBu);
@@ -293,8 +293,8 @@ LABEL_67:
 
 - (void)sendContextInfoUpdate
 {
-  v3 = [(DYGLGuestAppClient *)self _copyContextsInfo];
-  [(DYGLGuestAppClient *)self sendMessage:[DYTransportMessage messageWithKind:1542 objectPayload:v3]];
+  _copyContextsInfo = [(DYGLGuestAppClient *)self _copyContextsInfo];
+  [(DYGLGuestAppClient *)self sendMessage:[DYTransportMessage messageWithKind:1542 objectPayload:_copyContextsInfo]];
 }
 
 - (void)_populateQueueAndThreadLabelMaps
@@ -372,17 +372,17 @@ void *__54__DYGLGuestAppClient__populateQueueAndThreadLabelMaps__block_invoke(vo
   _Block_object_dispose(&v4, 8);
 }
 
-- (void)_appendToAllCaptureDataSentMessagePayload:(id)a3
+- (void)_appendToAllCaptureDataSentMessagePayload:(id)payload
 {
-  v4 = [(DYGLGuestAppClient *)self _copyContextsInfo];
-  [a3 setObject:v4 forKey:@"contexts info"];
+  _copyContextsInfo = [(DYGLGuestAppClient *)self _copyContextsInfo];
+  [payload setObject:_copyContextsInfo forKey:@"contexts info"];
 }
 
-- (void)_appendLinkTimeLibrariesToVersionsDictionary:(id)a3
+- (void)_appendLinkTimeLibrariesToVersionsDictionary:(id)dictionary
 {
   for (i = 0; i != 2; ++i)
   {
-    [(DYGLGuestAppClient *)self _appendLinkTimeLibrary:[DYGLGuestAppClient _appendLinkTimeLibrariesToVersionsDictionary:]::libraries[i] toVersionsDictionary:a3];
+    [(DYGLGuestAppClient *)self _appendLinkTimeLibrary:[DYGLGuestAppClient _appendLinkTimeLibrariesToVersionsDictionary:]::libraries[i] toVersionsDictionary:dictionary];
   }
 }
 
@@ -423,31 +423,31 @@ uint64_t __61__DYGLGuestAppClient__canTriggerCaptureOnNextGraphicsCommand__block
   }
 }
 
-- (void)_armCaptureWithTransportMessage:(id)a3
+- (void)_armCaptureWithTransportMessage:(id)message
 {
   if (!*&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__state])
   {
-    v4 = [a3 plistPayload];
+    plistPayload = [message plistPayload];
     v6 = objc_alloc_init(DYGLESCaptureDescriptor);
-    -[DYGLESCaptureDescriptor setSessionId:](v6, "setSessionId:", [objc_msgSend(v4 objectForKey:{@"Serial", "unsignedIntValue"}]);
+    -[DYGLESCaptureDescriptor setSessionId:](v6, "setSessionId:", [objc_msgSend(plistPayload objectForKey:{@"Serial", "unsignedIntValue"}]);
     if (![(DYGLESCaptureDescriptor *)v6 sessionId])
     {
       [DYGLGuestAppClient _armCaptureWithTransportMessage:];
     }
 
-    v5 = [(DYGLESCaptureDescriptor *)v6 sessionId];
-    *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__lastSessionSerial] = v5;
-    -[DYGLESCaptureDescriptor setFramesToCapture:](v6, "setFramesToCapture:", [objc_msgSend(v4 objectForKey:{@"FrameLimit", "unsignedLongLongValue"}]);
-    -[DYGLESCaptureDescriptor setTriggerFrame:](v6, "setTriggerFrame:", [objc_msgSend(v4 objectForKey:{@"TriggerFrame", "unsignedLongLongValue"}]);
-    -[DYGLESCaptureDescriptor setSuspendAfterCapture:](v6, "setSuspendAfterCapture:", [objc_msgSend(v4 objectForKey:{@"SuspendAfterCompletion", "BOOLValue"}]);
-    -[DYGLESCaptureDescriptor setLockGraphicsAfterCapture:](v6, "setLockGraphicsAfterCapture:", [objc_msgSend(v4 objectForKey:{@"LockOpenGLAfterCompletion", "BOOLValue"}]);
+    sessionId = [(DYGLESCaptureDescriptor *)v6 sessionId];
+    *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__lastSessionSerial] = sessionId;
+    -[DYGLESCaptureDescriptor setFramesToCapture:](v6, "setFramesToCapture:", [objc_msgSend(plistPayload objectForKey:{@"FrameLimit", "unsignedLongLongValue"}]);
+    -[DYGLESCaptureDescriptor setTriggerFrame:](v6, "setTriggerFrame:", [objc_msgSend(plistPayload objectForKey:{@"TriggerFrame", "unsignedLongLongValue"}]);
+    -[DYGLESCaptureDescriptor setSuspendAfterCapture:](v6, "setSuspendAfterCapture:", [objc_msgSend(plistPayload objectForKey:{@"SuspendAfterCompletion", "BOOLValue"}]);
+    -[DYGLESCaptureDescriptor setLockGraphicsAfterCapture:](v6, "setLockGraphicsAfterCapture:", [objc_msgSend(plistPayload objectForKey:{@"LockOpenGLAfterCompletion", "BOOLValue"}]);
     [(DYGLGuestAppClient *)self armCaptureWithDescriptor:v6];
   }
 }
 
-- (BOOL)armCaptureWithDescriptor:(id)a3
+- (BOOL)armCaptureWithDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     v3 = *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__state] == 0;
   }
@@ -460,9 +460,9 @@ uint64_t __61__DYGLGuestAppClient__canTriggerCaptureOnNextGraphicsCommand__block
   v4 = v3;
   if (v3)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
     v7 = OBJC_IVAR___DYGuestAppClient__activeCaptureDescriptor;
-    *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__activeCaptureDescriptor] = v6;
+    *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__activeCaptureDescriptor] = descriptorCopy;
     v8 = objc_alloc_init(DYGLESCaptureState);
     *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__activeCaptureState] = v8;
     [*&self->DYGuestAppClient_opaque[v7] setIncludeBacktraceInFbufs:self->_includeBacktraceInFbufs];
@@ -475,7 +475,7 @@ uint64_t __61__DYGLGuestAppClient__canTriggerCaptureOnNextGraphicsCommand__block
   return v4;
 }
 
-- (BOOL)startCaptureWithDescriptor:(id)a3
+- (BOOL)startCaptureWithDescriptor:(id)descriptor
 {
   if (*&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__traceMode] != 1)
   {
@@ -485,13 +485,13 @@ uint64_t __61__DYGLGuestAppClient__canTriggerCaptureOnNextGraphicsCommand__block
   v11 = v3;
   v12 = v4;
   result = 0;
-  if (a3)
+  if (descriptor)
   {
     if (!*&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__state])
     {
-      v7 = a3;
+      descriptorCopy = descriptor;
       v8 = OBJC_IVAR___DYGuestAppClient__activeCaptureDescriptor;
-      *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__activeCaptureDescriptor] = v7;
+      *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__activeCaptureDescriptor] = descriptorCopy;
       v9 = objc_alloc_init(DYGLESCaptureState);
       *&self->DYGuestAppClient_opaque[OBJC_IVAR___DYGuestAppClient__activeCaptureState] = v9;
       [*&self->DYGuestAppClient_opaque[v8] setIncludeBacktraceInFbufs:self->_includeBacktraceInFbufs];

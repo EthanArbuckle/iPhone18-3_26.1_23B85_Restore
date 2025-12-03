@@ -1,12 +1,12 @@
 @interface CPListImageRowItemCardElement
 + (CGSize)maximumFullHeightImageSize;
 + (CGSize)maximumImageSize;
-+ (id)convertImage:(id)a3 showsImageFullHeight:(BOOL)a4;
-- (CPListImageRowItemCardElement)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTitle:(id)a3;
++ (id)convertImage:(id)image showsImageFullHeight:(BOOL)height;
+- (CPListImageRowItemCardElement)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTintColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPListImageRowItemCardElement
@@ -45,17 +45,17 @@
   return result;
 }
 
-+ (id)convertImage:(id)a3 showsImageFullHeight:(BOOL)a4
++ (id)convertImage:(id)image showsImageFullHeight:(BOOL)height
 {
-  v6 = a3;
+  imageCopy = image;
   v7 = [CPImageSet alloc];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__CPListImageRowItemCardElement_convertImage_showsImageFullHeight___block_invoke;
   v10[3] = &__block_descriptor_41_e26___UIImage_16__0__UIImage_8l;
-  v11 = a4;
-  v10[4] = a1;
-  v8 = [(CPImageSet *)v7 initWithImage:v6 treatmentBlock:v10];
+  heightCopy = height;
+  v10[4] = self;
+  v8 = [(CPImageSet *)v7 initWithImage:imageCopy treatmentBlock:v10];
 
   return v8;
 }
@@ -80,12 +80,12 @@ id __67__CPListImageRowItemCardElement_convertImage_showsImageFullHeight___block
   return v7;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -93,68 +93,68 @@ id __67__CPListImageRowItemCardElement_convertImage_showsImageFullHeight___block
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_subtitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(CPListImageRowItemElement *)self _setNeedsUpdate];
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_tintColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_tintColor, a3);
+    objc_storeStrong(&self->_tintColor, color);
     [(CPListImageRowItemElement *)self _setNeedsUpdate];
   }
 }
 
-- (CPListImageRowItemCardElement)initWithCoder:(id)a3
+- (CPListImageRowItemCardElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CPListImageRowItemCardElement;
-  v5 = [(CPListImageRowItemElement *)&v13 initWithCoder:v4];
+  v5 = [(CPListImageRowItemElement *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCardElementTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCardElementTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCardElementSubtitleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCardElementSubtitleKey"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCardElementTintColorKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemCardElementTintColorKey"];
     tintColor = v5->_tintColor;
     v5->_tintColor = v10;
 
-    v5->_showsImageFullHeight = [v4 decodeBoolForKey:@"kCPListImageRowItemCardElementShowsImageFullHeightKey"];
+    v5->_showsImageFullHeight = [coderCopy decodeBoolForKey:@"kCPListImageRowItemCardElementShowsImageFullHeightKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CPListImageRowItemCardElement;
-  v4 = a3;
-  [(CPListImageRowItemElement *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPListImageRowItemElement *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CPListImageRowItemCardElement *)self title:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPListImageRowItemCardElementTitleKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPListImageRowItemCardElementTitleKey"];
 
-  v6 = [(CPListImageRowItemCardElement *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"kCPListImageRowItemCardElementSubtitleKey"];
+  subtitle = [(CPListImageRowItemCardElement *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"kCPListImageRowItemCardElementSubtitleKey"];
 
-  v7 = [(CPListImageRowItemCardElement *)self tintColor];
-  [v4 encodeObject:v7 forKey:@"kCPListImageRowItemCardElementTintColorKey"];
+  tintColor = [(CPListImageRowItemCardElement *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"kCPListImageRowItemCardElementTintColorKey"];
 
-  [v4 encodeBool:-[CPListImageRowItemCardElement showsImageFullHeight](self forKey:{"showsImageFullHeight"), @"kCPListImageRowItemCardElementShowsImageFullHeightKey"}];
+  [coderCopy encodeBool:-[CPListImageRowItemCardElement showsImageFullHeight](self forKey:{"showsImageFullHeight"), @"kCPListImageRowItemCardElementShowsImageFullHeightKey"}];
 }
 
 @end

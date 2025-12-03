@@ -1,30 +1,30 @@
 @interface RTFavoritePlace
-- (RTFavoritePlace)initWithTitle:(id)a3 mapItem:(id)a4;
+- (RTFavoritePlace)initWithTitle:(id)title mapItem:(id)item;
 @end
 
 @implementation RTFavoritePlace
 
-- (RTFavoritePlace)initWithTitle:(id)a3 mapItem:(id)a4
+- (RTFavoritePlace)initWithTitle:(id)title mapItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  titleCopy = title;
+  itemCopy = item;
+  if (itemCopy)
   {
     v14.receiver = self;
     v14.super_class = RTFavoritePlace;
     v8 = [(RTFavoritePlace *)&v14 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [titleCopy copy];
       title = v8->_title;
       v8->_title = v9;
 
-      objc_storeStrong(&v8->_mapItem, a4);
+      objc_storeStrong(&v8->_mapItem, item);
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -39,10 +39,10 @@
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mapItem (in %s:%d)", buf, 0x12u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

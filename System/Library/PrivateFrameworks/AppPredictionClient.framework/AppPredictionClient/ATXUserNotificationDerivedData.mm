@@ -1,17 +1,17 @@
 @interface ATXUserNotificationDerivedData
 - (ATXUserNotificationDerivedData)init;
-- (ATXUserNotificationDerivedData)initWithCoder:(id)a3;
-- (ATXUserNotificationDerivedData)initWithProto:(id)a3;
-- (ATXUserNotificationDerivedData)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUserNotificationDerivedData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXUserNotificationDerivedData)initWithCoder:(id)coder;
+- (ATXUserNotificationDerivedData)initWithProto:(id)proto;
+- (ATXUserNotificationDerivedData)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUserNotificationDerivedData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
-- (id)initFromModelScores:(id)a3;
+- (id)initFromJSON:(id)n;
+- (id)initFromModelScores:(id)scores;
 - (id)jsonRepresentation;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUserNotificationDerivedData
@@ -40,56 +40,56 @@
 
   if (v4 && [v4 count])
   {
-    v6 = [v3 scores];
-    [v6 addObjectsFromArray:v4];
+    scores = [v3 scores];
+    [scores addObjectsFromArray:v4];
   }
 
   return v3;
 }
 
-- (id)initFromModelScores:(id)a3
+- (id)initFromModelScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   v5 = [(ATXUserNotificationDerivedData *)self init];
   v6 = v5;
   if (v5)
   {
-    [(ATXUserNotificationDerivedData *)v5 addScores:v4];
+    [(ATXUserNotificationDerivedData *)v5 addScores:scoresCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXUserNotificationDerivedData allocWithZone:a3];
+  v4 = [ATXUserNotificationDerivedData allocWithZone:zone];
   internalScores = self->_internalScores;
 
   return [(ATXUserNotificationDerivedData *)v4 initFromModelScores:internalScores];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUserNotificationDerivedData *)self isEqualToATXUserNotificationDerivedData:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUserNotificationDerivedData *)self isEqualToATXUserNotificationDerivedData:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUserNotificationDerivedData:(id)a3
+- (BOOL)isEqualToATXUserNotificationDerivedData:(id)data
 {
   v4 = self->_internalScores;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(data + 1))
   {
     v6 = 1;
   }
@@ -102,10 +102,10 @@
   return v6;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUserNotificationDerivedData alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUserNotificationDerivedData alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUserNotificationDerivedData *)self initWithProto:v5];
   return v6;
@@ -113,46 +113,46 @@
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUserNotificationDerivedData *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUserNotificationDerivedData *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
-- (ATXUserNotificationDerivedData)initWithProtoData:(id)a3
+- (ATXUserNotificationDerivedData)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUserNotificationDerivedData alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUserNotificationDerivedData alloc] initWithData:dataCopy];
 
     self = [(ATXUserNotificationDerivedData *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUserNotificationDerivedData *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUserNotificationDerivedData *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUserNotificationDerivedData)initWithProto:(id)a3
+- (ATXUserNotificationDerivedData)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -168,8 +168,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = [v4 scores];
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_29];
+  scores = [protoCopy scores];
+  v6 = [scores _pas_mappedArrayWithTransform:&__block_literal_global_29];
 
   if (v6)
   {
@@ -183,10 +183,10 @@ LABEL_8:
 
   self = v7;
 
-  v9 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v9;
+  return selfCopy;
 }
 
 ATXUserNotificationModelScore *__48__ATXUserNotificationDerivedData_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -197,30 +197,30 @@ ATXUserNotificationModelScore *__48__ATXUserNotificationDerivedData_initWithProt
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUserNotificationDerivedData *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUserNotificationDerivedData *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUserNotificationDerivedData)initWithCoder:(id)a3
+- (ATXUserNotificationDerivedData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXUserNotificationDerivedData *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

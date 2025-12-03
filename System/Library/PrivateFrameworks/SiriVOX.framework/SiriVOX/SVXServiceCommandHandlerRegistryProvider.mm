@@ -1,13 +1,13 @@
 @interface SVXServiceCommandHandlerRegistryProvider
-- (id)createWithHandlers:(id)a3;
+- (id)createWithHandlers:(id)handlers;
 @end
 
 @implementation SVXServiceCommandHandlerRegistryProvider
 
-- (id)createWithHandlers:(id)a3
+- (id)createWithHandlers:(id)handlers
 {
-  v3 = a3;
-  v4 = [[SVXServiceCommandHandlerRegistry alloc] initWithHandlers:v3];
+  handlersCopy = handlers;
+  v4 = [[SVXServiceCommandHandlerRegistry alloc] initWithHandlers:handlersCopy];
 
   return v4;
 }

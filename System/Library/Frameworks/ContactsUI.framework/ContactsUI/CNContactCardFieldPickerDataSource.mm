@@ -1,22 +1,22 @@
 @interface CNContactCardFieldPickerDataSource
-+ (BOOL)canSharePronounsForContacts:(id)a3;
-+ (BOOL)isSharingMeContactForContacts:(id)a3;
-+ (id)shareableNamePropertiesForContact:(id)a3;
-- (BOOL)hasPhotoForContact:(id)a3;
-- (BOOL)isFieldHidden:(id)a3;
-- (CNContactCardFieldPickerDataSource)initWithContact:(id)a3;
-- (CNContactCardFieldPickerDataSource)initWithContacts:(id)a3 hiddenProperties:(id)a4;
++ (BOOL)canSharePronounsForContacts:(id)contacts;
++ (BOOL)isSharingMeContactForContacts:(id)contacts;
++ (id)shareableNamePropertiesForContact:(id)contact;
+- (BOOL)hasPhotoForContact:(id)contact;
+- (BOOL)isFieldHidden:(id)hidden;
+- (CNContactCardFieldPickerDataSource)initWithContact:(id)contact;
+- (CNContactCardFieldPickerDataSource)initWithContacts:(id)contacts hiddenProperties:(id)properties;
 - (id)_loadSectionsForContacts;
 - (id)firstContactContainingPhoto;
-- (id)groupItemForIndexPath:(id)a3;
-- (id)itemsForKey:(id)a3 forContact:(id)a4;
-- (id)itemsForKey:(id)a3 forContacts:(id)a4;
-- (id)keyForIndexPath:(id)a3;
+- (id)groupItemForIndexPath:(id)path;
+- (id)itemsForKey:(id)key forContact:(id)contact;
+- (id)itemsForKey:(id)key forContacts:(id)contacts;
+- (id)keyForIndexPath:(id)path;
 - (id)shareableCardProperties;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (int64_t)totalItemCount;
 @end
 
@@ -25,20 +25,20 @@
 - (id)shareableCardProperties
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = *MEMORY[0x1E695C208];
   v18[0] = *MEMORY[0x1E695C330];
   v18[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  [v3 addObjectsFromArray:v5];
+  [array addObjectsFromArray:v5];
 
   v6 = objc_opt_class();
-  v7 = [(CNContactCardFieldPickerDataSource *)self contacts];
-  LODWORD(v6) = [v6 canSharePronounsForContacts:v7];
+  contacts = [(CNContactCardFieldPickerDataSource *)self contacts];
+  LODWORD(v6) = [v6 canSharePronounsForContacts:contacts];
 
   if (v6)
   {
-    [v3 addObject:*MEMORY[0x1E695C1C0]];
+    [array addObject:*MEMORY[0x1E695C1C0]];
   }
 
   v8 = *MEMORY[0x1E695C360];
@@ -48,15 +48,15 @@
   v17[2] = @"birthdays";
   v17[3] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
-  [v3 addObjectsFromArray:v10];
+  [array addObjectsFromArray:v10];
 
   v11 = objc_opt_class();
-  v12 = [(CNContactCardFieldPickerDataSource *)self contacts];
-  LODWORD(v11) = [v11 isSharingMeContactForContacts:v12];
+  contacts2 = [(CNContactCardFieldPickerDataSource *)self contacts];
+  LODWORD(v11) = [v11 isSharingMeContactForContacts:contacts2];
 
   if (v11)
   {
-    [v3 addObject:*MEMORY[0x1E695C3A8]];
+    [array addObject:*MEMORY[0x1E695C3A8]];
   }
 
   v13 = *MEMORY[0x1E695C2B0];
@@ -64,90 +64,90 @@
   v16[1] = v13;
   v16[2] = *MEMORY[0x1E695C320];
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
-  [v3 addObjectsFromArray:v14];
+  [array addObjectsFromArray:v14];
 
-  return v3;
+  return array;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(CNContactCardFieldPickerDataSource *)self contacts];
-  v7 = [v6 count];
+  contacts = [(CNContactCardFieldPickerDataSource *)self contacts];
+  v7 = [contacts count];
 
   if (v7 >= 2)
   {
-    v9 = [(CNContactCardFieldPickerDataSource *)self sections];
-    v10 = [v9 objectAtIndexedSubscript:a4];
+    sections = [(CNContactCardFieldPickerDataSource *)self sections];
+    v10 = [sections objectAtIndexedSubscript:section];
 
-    v8 = [v10 displayTitle];
+    displayTitle = [v10 displayTitle];
   }
 
   else
   {
-    v8 = 0;
+    displayTitle = 0;
   }
 
-  return v8;
+  return displayTitle;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
-  v11 = [v10 items];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(CNContactCardFieldPickerDataSource *)self sections];
+  v10 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  items = [v10 items];
+  v12 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v13 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v14 = [v8 section];
+  sections2 = [(CNContactCardFieldPickerDataSource *)self sections];
+  section = [pathCopy section];
 
-  v15 = [v13 objectAtIndexedSubscript:v14];
-  v16 = [v15 sectionType];
-  LODWORD(v11) = [v16 isEqualToString:@"contactCardFieldPickerPhotoSection"];
+  v15 = [sections2 objectAtIndexedSubscript:section];
+  sectionType = [v15 sectionType];
+  LODWORD(items) = [sectionType isEqualToString:@"contactCardFieldPickerPhotoSection"];
 
-  if (v11 && (-[CNContactCardFieldPickerDataSource contacts](self, "contacts"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 count], v17, v18 == 1))
+  if (items && (-[CNContactCardFieldPickerDataSource contacts](self, "contacts"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 count], v17, v18 == 1))
   {
-    v19 = [v7 dequeueReusableCellWithIdentifier:@"contactCardFieldPickerPhotoCell"];
+    v19 = [viewCopy dequeueReusableCellWithIdentifier:@"contactCardFieldPickerPhotoCell"];
   }
 
   else
   {
-    v19 = [v7 dequeueReusableCellWithIdentifier:@"contactCardFieldPickerCell"];
-    v20 = [(CNContactCardFieldPickerDataSource *)self contacts];
-    [v19 setDisplaysValue:{objc_msgSend(v20, "count") == 1}];
+    v19 = [viewCopy dequeueReusableCellWithIdentifier:@"contactCardFieldPickerCell"];
+    contacts = [(CNContactCardFieldPickerDataSource *)self contacts];
+    [v19 setDisplaysValue:{objc_msgSend(contacts, "count") == 1}];
 
     [v19 setItem:v12];
   }
 
   if (!v19)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"CNContactCardFieldPickerDataSource.m" lineNumber:266 description:@"Cell is nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactCardFieldPickerDataSource.m" lineNumber:266 description:@"Cell is nil"];
   }
 
   [v19 setSelectionStyle:0];
-  v21 = [MEMORY[0x1E69DC888] clearColor];
-  v22 = [v19 textLabel];
-  [v22 setBackgroundColor:v21];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  textLabel = [v19 textLabel];
+  [textLabel setBackgroundColor:clearColor];
 
   return v19;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  sections = [(CNContactCardFieldPickerDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  items = [v6 items];
+  v8 = [items count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v4 = [v3 count];
+  sections = [(CNContactCardFieldPickerDataSource *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
@@ -159,8 +159,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sections = [(CNContactCardFieldPickerDataSource *)self sections];
+  v3 = [sections countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -172,14 +172,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(sections);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) items];
-        v5 += [v8 count];
+        items = [*(*(&v10 + 1) + 8 * i) items];
+        v5 += [items count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [sections countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -195,30 +195,30 @@
 
 - (id)firstContactContainingPhoto
 {
-  v3 = [(CNContactCardFieldPickerDataSource *)self contacts];
+  contacts = [(CNContactCardFieldPickerDataSource *)self contacts];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__CNContactCardFieldPickerDataSource_firstContactContainingPhoto__block_invoke;
   v6[3] = &unk_1E74E7880;
   v6[4] = self;
-  v4 = [v3 _cn_firstObjectPassingTest:v6];
+  v4 = [contacts _cn_firstObjectPassingTest:v6];
 
   return v4;
 }
 
-- (BOOL)hasPhotoForContact:(id)a3
+- (BOOL)hasPhotoForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 thumbnailImageData];
-  if (v4)
+  contactCopy = contact;
+  thumbnailImageData = [contactCopy thumbnailImageData];
+  if (thumbnailImageData)
   {
     v5 = 1;
   }
 
-  else if ([v3 isKeyAvailable:*MEMORY[0x1E695C278]])
+  else if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C278]])
   {
-    v6 = [v3 imageData];
-    v5 = v6 != 0;
+    imageData = [contactCopy imageData];
+    v5 = imageData != 0;
   }
 
   else
@@ -229,54 +229,54 @@
   return v5;
 }
 
-- (id)groupItemForIndexPath:(id)a3
+- (id)groupItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(CNContactCardFieldPickerDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v6 items];
-  v8 = [v4 row];
+  items = [v6 items];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
-  v10 = [v9 groupItem];
+  v9 = [items objectAtIndexedSubscript:v8];
+  groupItem = [v9 groupItem];
 
-  return v10;
+  return groupItem;
 }
 
-- (id)keyForIndexPath:(id)a3
+- (id)keyForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CNContactCardFieldPickerDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(CNContactCardFieldPickerDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v6 sectionType];
-  v8 = [v7 isEqualToString:@"contactCardFieldPickerPhotoSection"];
+  sectionType = [v6 sectionType];
+  v8 = [sectionType isEqualToString:@"contactCardFieldPickerPhotoSection"];
 
   if (v8)
   {
-    v9 = *MEMORY[0x1E695C278];
+    property = *MEMORY[0x1E695C278];
   }
 
   else
   {
-    v10 = [v6 items];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
-    v12 = [v11 groupItem];
-    v9 = [v12 property];
+    items = [v6 items];
+    v11 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    groupItem = [v11 groupItem];
+    property = [groupItem property];
   }
 
-  return v9;
+  return property;
 }
 
-- (id)itemsForKey:(id)a3 forContact:(id)a4
+- (id)itemsForKey:(id)key forContact:(id)contact
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x1E695C278]])
+  keyCopy = key;
+  contactCopy = contact;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E695C278]])
   {
-    if ([(CNContactCardFieldPickerDataSource *)self hasPhotoForContact:v7])
+    if ([(CNContactCardFieldPickerDataSource *)self hasPhotoForContact:contactCopy])
     {
       v31 = +[CNContactCardFieldItem photoItem];
       v39[0] = v31;
@@ -292,12 +292,12 @@
   }
 
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [CNCardPropertyGroup groupForProperty:v6 contact:v7 store:0 policy:0 linkedPolicies:0];
-  v10 = [v7 valueForKey:v6];
-  if ([CNContactView isMultiValueProperty:v6])
+  v9 = [CNCardPropertyGroup groupForProperty:keyCopy contact:contactCopy store:0 policy:0 linkedPolicies:0];
+  v10 = [contactCopy valueForKey:keyCopy];
+  if ([CNContactView isMultiValueProperty:keyCopy])
   {
     v29 = v10;
-    v30 = v6;
+    v30 = keyCopy;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -320,10 +320,10 @@
 
           v16 = v9;
           v17 = v9;
-          v18 = v7;
-          v19 = [CNPropertyGroupItem propertyGroupItemWithLabeledValue:*(*(&v34 + 1) + 8 * i) group:v17 contact:v7, v29, v30];
-          v20 = [v19 displayValue];
-          v21 = (*(v14 + 16))(v14, v20);
+          v18 = contactCopy;
+          v19 = [CNPropertyGroupItem propertyGroupItemWithLabeledValue:*(*(&v34 + 1) + 8 * i) group:v17 contact:contactCopy, v29, v30];
+          displayValue = [v19 displayValue];
+          v21 = (*(v14 + 16))(v14, displayValue);
 
           if (v21)
           {
@@ -331,7 +331,7 @@
             [v32 addObject:v22];
           }
 
-          v7 = v18;
+          contactCopy = v18;
           v9 = v16;
         }
 
@@ -342,15 +342,15 @@
     }
 
     v10 = v29;
-    v6 = v30;
+    keyCopy = v30;
     goto LABEL_18;
   }
 
   v23 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:v10];
-  v24 = [CNPropertyGroupItem propertyGroupItemWithLabeledValue:v23 group:v9 contact:v7];
+  v24 = [CNPropertyGroupItem propertyGroupItemWithLabeledValue:v23 group:v9 contact:contactCopy];
   v25 = *MEMORY[0x1E6996570];
-  v26 = [v24 displayValue];
-  LODWORD(v25) = (*(v25 + 16))(v25, v26);
+  displayValue2 = [v24 displayValue];
+  LODWORD(v25) = (*(v25 + 16))(v25, displayValue2);
 
   if (v25)
   {
@@ -370,26 +370,26 @@ LABEL_22:
   return v8;
 }
 
-- (id)itemsForKey:(id)a3 forContacts:(id)a4
+- (id)itemsForKey:(id)key forContacts:(id)contacts
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  contactsCopy = contacts;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __62__CNContactCardFieldPickerDataSource_itemsForKey_forContacts___block_invoke;
   v34[3] = &unk_1E74E2720;
   v34[4] = self;
-  v8 = v6;
+  v8 = keyCopy;
   v35 = v8;
-  v9 = [v7 _cn_flatMap:v34];
-  v10 = [(CNContactCardFieldPickerDataSource *)self contacts];
-  v11 = [v10 count];
+  v9 = [contactsCopy _cn_flatMap:v34];
+  contacts = [(CNContactCardFieldPickerDataSource *)self contacts];
+  v11 = [contacts count];
 
   if (v11 > 1)
   {
     v28 = v8;
-    v29 = v7;
+    v29 = contactsCopy;
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v30 = 0u;
     v31 = 0u;
@@ -413,17 +413,17 @@ LABEL_22:
           }
 
           v19 = *(*(&v30 + 1) + 8 * i);
-          v20 = [v19 groupItem];
-          v21 = [v20 displayLabel];
-          v22 = [v13 containsObject:v21];
+          groupItem = [v19 groupItem];
+          displayLabel = [groupItem displayLabel];
+          v22 = [v13 containsObject:displayLabel];
 
           if ((v22 & 1) == 0)
           {
             v23 = [v12 arrayByAddingObject:v19];
 
-            v24 = [v19 groupItem];
-            v25 = [v24 displayLabel];
-            [v13 addObject:v25];
+            groupItem2 = [v19 groupItem];
+            displayLabel2 = [groupItem2 displayLabel];
+            [v13 addObject:displayLabel2];
 
             v12 = v23;
           }
@@ -441,7 +441,7 @@ LABEL_22:
     }
 
     v8 = v28;
-    v7 = v29;
+    contactsCopy = v29;
     v9 = v27;
   }
 
@@ -459,13 +459,13 @@ LABEL_22:
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (![(CNContactCardFieldPickerDataSource *)self isFieldHidden:*MEMORY[0x1E695C278]])
   {
-    v3 = [(CNContactCardFieldPickerDataSource *)self contacts];
+    contacts = [(CNContactCardFieldPickerDataSource *)self contacts];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __62__CNContactCardFieldPickerDataSource__loadSectionsForContacts__block_invoke;
     v48[3] = &unk_1E74E7880;
     v48[4] = self;
-    v4 = [v3 _cn_any:v48];
+    v4 = [contacts _cn_any:v48];
 
     if (v4)
     {
@@ -479,22 +479,22 @@ LABEL_22:
     }
   }
 
-  v9 = [(CNContactCardFieldPickerDataSource *)self contacts];
-  v10 = [v9 count];
+  contacts2 = [(CNContactCardFieldPickerDataSource *)self contacts];
+  v10 = [contacts2 count];
 
   if (v10 <= 1)
   {
-    v12 = [(CNContactCardFieldPickerDataSource *)self contacts];
-    v11 = [v12 firstObject];
+    contacts3 = [(CNContactCardFieldPickerDataSource *)self contacts];
+    firstObject = [contacts3 firstObject];
   }
 
   else
   {
-    v11 = objc_alloc_init(MEMORY[0x1E695CD58]);
+    firstObject = objc_alloc_init(MEMORY[0x1E695CD58]);
   }
 
-  v38 = v11;
-  v13 = [CNContactCardFieldPickerDataSource shareableNamePropertiesForContact:v11];
+  v38 = firstObject;
+  v13 = [CNContactCardFieldPickerDataSource shareableNamePropertiesForContact:firstObject];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
   v45 = 0u;
@@ -518,8 +518,8 @@ LABEL_22:
         v20 = *(*(&v44 + 1) + 8 * i);
         if (![(CNContactCardFieldPickerDataSource *)self isFieldHidden:v20])
         {
-          v21 = [(CNContactCardFieldPickerDataSource *)self contacts];
-          v22 = [(CNContactCardFieldPickerDataSource *)self itemsForKey:v20 forContacts:v21];
+          contacts4 = [(CNContactCardFieldPickerDataSource *)self contacts];
+          v22 = [(CNContactCardFieldPickerDataSource *)self itemsForKey:v20 forContacts:contacts4];
           [v14 addObjectsFromArray:v22];
         }
       }
@@ -538,12 +538,12 @@ LABEL_22:
     [v39 addObject:v23];
   }
 
-  v24 = [(CNContactCardFieldPickerDataSource *)self shareableCardProperties];
+  shareableCardProperties = [(CNContactCardFieldPickerDataSource *)self shareableCardProperties];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v25 = [v24 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  v25 = [shareableCardProperties countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v25)
   {
     v26 = v25;
@@ -554,12 +554,12 @@ LABEL_22:
       {
         if (*v41 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(shareableCardProperties);
         }
 
         v29 = *(*(&v40 + 1) + 8 * j);
-        v30 = [(CNContactCardFieldPickerDataSource *)self contacts];
-        v31 = [(CNContactCardFieldPickerDataSource *)self itemsForKey:v29 forContacts:v30];
+        contacts5 = [(CNContactCardFieldPickerDataSource *)self contacts];
+        v31 = [(CNContactCardFieldPickerDataSource *)self itemsForKey:v29 forContacts:contacts5];
 
         if ([v31 count])
         {
@@ -571,7 +571,7 @@ LABEL_22:
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v26 = [shareableCardProperties countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v26);
@@ -580,15 +580,15 @@ LABEL_22:
   return v39;
 }
 
-- (BOOL)isFieldHidden:(id)a3
+- (BOOL)isFieldHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(CNContactCardFieldPickerDataSource *)self hiddenProperties];
+  hiddenCopy = hidden;
+  hiddenProperties = [(CNContactCardFieldPickerDataSource *)self hiddenProperties];
 
-  if (v5)
+  if (hiddenProperties)
   {
-    v6 = [(CNContactCardFieldPickerDataSource *)self hiddenProperties];
-    v7 = [v6 _cn_containsObject:v4];
+    hiddenProperties2 = [(CNContactCardFieldPickerDataSource *)self hiddenProperties];
+    v7 = [hiddenProperties2 _cn_containsObject:hiddenCopy];
   }
 
   else
@@ -599,21 +599,21 @@ LABEL_22:
   return v7;
 }
 
-- (CNContactCardFieldPickerDataSource)initWithContacts:(id)a3 hiddenProperties:(id)a4
+- (CNContactCardFieldPickerDataSource)initWithContacts:(id)contacts hiddenProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  contactsCopy = contacts;
+  propertiesCopy = properties;
   v15.receiver = self;
   v15.super_class = CNContactCardFieldPickerDataSource;
   v9 = [(CNContactCardFieldPickerDataSource *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contacts, a3);
-    objc_storeStrong(&v10->_hiddenProperties, a4);
-    v11 = [(CNContactCardFieldPickerDataSource *)v10 _loadSections];
+    objc_storeStrong(&v9->_contacts, contacts);
+    objc_storeStrong(&v10->_hiddenProperties, properties);
+    _loadSections = [(CNContactCardFieldPickerDataSource *)v10 _loadSections];
     sections = v10->_sections;
-    v10->_sections = v11;
+    v10->_sections = _loadSections;
 
     v13 = v10;
   }
@@ -621,26 +621,26 @@ LABEL_22:
   return v10;
 }
 
-- (CNContactCardFieldPickerDataSource)initWithContact:(id)a3
+- (CNContactCardFieldPickerDataSource)initWithContact:(id)contact
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  contactCopy2 = contact;
+  v6 = [v4 arrayWithObjects:&contactCopy count:1];
 
-  v7 = [(CNContactCardFieldPickerDataSource *)self initWithContacts:v6, v9, v10];
+  v7 = [(CNContactCardFieldPickerDataSource *)self initWithContacts:v6, contactCopy, v10];
   return v7;
 }
 
-+ (BOOL)isSharingMeContactForContacts:(id)a3
++ (BOOL)isSharingMeContactForContacts:(id)contacts
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
-    v4 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-    v5 = [v3 firstObject];
-    v6 = [v4 isMeContact:v5];
+    unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+    firstObject = [contactsCopy firstObject];
+    v6 = [unifiedMeContactMonitor isMeContact:firstObject];
   }
 
   else
@@ -651,16 +651,16 @@ LABEL_22:
   return v6;
 }
 
-+ (BOOL)canSharePronounsForContacts:(id)a3
++ (BOOL)canSharePronounsForContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:23];
+  contactsCopy = contacts;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:23];
 
   if (v7)
   {
-    v8 = [a1 isSharingMeContactForContacts:v4];
+    v8 = [self isSharingMeContactForContacts:contactsCopy];
   }
 
   else
@@ -671,13 +671,13 @@ LABEL_22:
   return v8;
 }
 
-+ (id)shareableNamePropertiesForContact:(id)a3
++ (id)shareableNamePropertiesForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x1E695CD80];
-  if (v3)
+  if (contactCopy)
   {
-    v5 = [MEMORY[0x1E695CD80] nameOrderForContact:v3];
+    v5 = [MEMORY[0x1E695CD80] nameOrderForContact:contactCopy];
   }
 
   else

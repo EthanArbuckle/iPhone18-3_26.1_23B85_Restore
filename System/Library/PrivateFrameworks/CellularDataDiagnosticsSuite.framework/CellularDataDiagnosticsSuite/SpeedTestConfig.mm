@@ -1,7 +1,7 @@
 @interface SpeedTestConfig
 - (SpeedTestConfig)init;
 - (void)dealloc;
-- (void)startDownloadTest:(id)a3;
+- (void)startDownloadTest:(id)test;
 @end
 
 @implementation SpeedTestConfig
@@ -28,9 +28,9 @@
     _os_log_impl(&dword_24335C000, v4, OS_LOG_TYPE_INFO, "CellularThroughput: Creating Configuration", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277D2B8C0] defaultConfigurationCellular];
-  v6 = v5;
-  if (!v5)
+  defaultConfigurationCellular = [MEMORY[0x277D2B8C0] defaultConfigurationCellular];
+  v6 = defaultConfigurationCellular;
+  if (!defaultConfigurationCellular)
   {
     v16 = DiagnosticsKitLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -43,13 +43,13 @@
     goto LABEL_20;
   }
 
-  [v5 setDownloadSize:50];
+  [defaultConfigurationCellular setDownloadSize:50];
   v7 = DiagnosticsKitLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 downloadSize];
+    downloadSize = [v6 downloadSize];
     *buf = 134217984;
-    v22 = v8;
+    v22 = downloadSize;
     _os_log_impl(&dword_24335C000, v7, OS_LOG_TYPE_INFO, "CellularThroughput: performanceTestWithConfig.downloadSize: %lu", buf, 0xCu);
   }
 
@@ -58,9 +58,9 @@
   v9 = DiagnosticsKitLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v6 testDuration];
+    testDuration = [v6 testDuration];
     *buf = 134217984;
-    v22 = v10;
+    v22 = testDuration;
     _os_log_impl(&dword_24335C000, v9, OS_LOG_TYPE_INFO, "CellularThroughput: performanceTestWithConfig.testDuration: %lu", buf, 0xCu);
   }
 
@@ -69,9 +69,9 @@
   v11 = DiagnosticsKitLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v6 interfaceType];
+    interfaceType = [v6 interfaceType];
     *buf = 67109120;
-    LODWORD(v22) = v12;
+    LODWORD(v22) = interfaceType;
     _os_log_impl(&dword_24335C000, v11, OS_LOG_TYPE_INFO, "CellularThroughput: performanceTestWithConfig.interfaceType: %d", buf, 8u);
   }
 
@@ -102,9 +102,9 @@ LABEL_21:
   return v15;
 }
 
-- (void)startDownloadTest:(id)a3
+- (void)startDownloadTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   if (!self->performanceTest)
   {
     v5 = DiagnosticsKitLogHandleForCategory();
@@ -114,9 +114,9 @@ LABEL_21:
       _os_log_impl(&dword_24335C000, v5, OS_LOG_TYPE_INFO, "CellularThroughput: NPTPerformanceTest instance nil, bailing out", buf, 2u);
     }
 
-    if (v4)
+    if (testCopy)
     {
-      v4[2](v4, @"NO");
+      testCopy[2](testCopy, @"NO");
     }
   }
 
@@ -129,9 +129,9 @@ LABEL_21:
       _os_log_impl(&dword_24335C000, v6, OS_LOG_TYPE_INFO, "CellularThroughput: Download task already started", buf, 2u);
     }
 
-    if (v4)
+    if (testCopy)
     {
-      v4[2](v4, @"NO");
+      testCopy[2](testCopy, @"NO");
     }
   }
 
@@ -166,8 +166,8 @@ LABEL_21:
   v16[2] = __37__SpeedTestConfig_startDownloadTest___block_invoke_12;
   v16[3] = &unk_278DAE610;
   v17 = v12;
-  v18 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = testCopy;
   v19 = v14;
   v15 = v12;
   [(NPTPerformanceTest *)v13 startDownloadWithCompletion:v16];

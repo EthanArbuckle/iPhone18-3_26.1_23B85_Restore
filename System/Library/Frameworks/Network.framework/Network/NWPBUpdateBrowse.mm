@@ -1,21 +1,21 @@
 @interface NWPBUpdateBrowse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NWPBUpdateBrowse
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((clientUUID = self->_clientUUID, !(clientUUID | v4[1])) || -[NSString isEqual:](clientUUID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((clientUUID = self->_clientUUID, !(clientUUID | equalCopy[1])) || -[NSString isEqual:](clientUUID, "isEqual:")))
   {
     discoveredEndpoints = self->_discoveredEndpoints;
-    if (discoveredEndpoints | v4[2])
+    if (discoveredEndpoints | equalCopy[2])
     {
       v7 = [(NSMutableArray *)discoveredEndpoints isEqual:?];
     }
@@ -34,11 +34,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientUUID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -62,7 +62,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         v14 = v5[2];
         if (!v14)
         {
@@ -88,10 +88,10 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_clientUUID)
   {
     PBDataWriterWriteStringField();
@@ -129,16 +129,16 @@
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v9 = 0;
@@ -147,18 +147,18 @@
       while (1)
       {
         LOBYTE(v21[0]) = 0;
-        v12 = [a3 position] + 1;
-        if (v12 >= [a3 position] && (v13 = objc_msgSend(a3, "position") + 1, v13 <= objc_msgSend(a3, "length")))
+        v12 = [from position] + 1;
+        if (v12 >= [from position] && (v13 = objc_msgSend(from, "position") + 1, v13 <= objc_msgSend(from, "length")))
         {
-          v14 = [a3 data];
-          [v14 getBytes:v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v11 |= (v21[0] & 0x7F) << v9;
@@ -175,11 +175,11 @@
         }
       }
 
-      v16 = [a3 hasError] ? 0 : v11;
+      v16 = [from hasError] ? 0 : v11;
 LABEL_19:
-      if (([a3 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v16 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v16 >> 3) == 2)
@@ -203,10 +203,10 @@ LABEL_4:
       }
 
 LABEL_5:
-      v8 = [a3 position];
-      if (v8 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -228,7 +228,7 @@ LABEL_5:
 
     v21[0] = 0;
     v21[1] = 0;
-    if (!PBReaderPlaceMark() || !NWPBEndpointReadFrom(clientUUID, a3))
+    if (!PBReaderPlaceMark() || !NWPBEndpointReadFrom(clientUUID, from))
     {
 
       return 0;
@@ -238,18 +238,18 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   clientUUID = self->_clientUUID;
   if (clientUUID)
   {
-    [v3 setObject:clientUUID forKey:@"clientUUID"];
+    [dictionary setObject:clientUUID forKey:@"clientUUID"];
   }
 
   if ([(NSMutableArray *)self->_discoveredEndpoints count])
@@ -274,8 +274,8 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -296,8 +296,8 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = NWPBUpdateBrowse;
   v4 = [(NWPBUpdateBrowse *)&v8 description];
-  v5 = [(NWPBUpdateBrowse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NWPBUpdateBrowse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

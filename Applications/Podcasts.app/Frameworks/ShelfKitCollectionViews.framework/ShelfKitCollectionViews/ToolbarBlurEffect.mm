@@ -1,6 +1,6 @@
 @interface ToolbarBlurEffect
 - (_TtC23ShelfKitCollectionViews17ToolbarBlurEffect)init;
-- (_TtC23ShelfKitCollectionViews17ToolbarBlurEffect)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews17ToolbarBlurEffect)initWithCoder:(id)coder;
 @end
 
 @implementation ToolbarBlurEffect
@@ -12,12 +12,12 @@
   return [(ToolbarBlurEffect *)&v3 init];
 }
 
-- (_TtC23ShelfKitCollectionViews17ToolbarBlurEffect)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews17ToolbarBlurEffect)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ToolbarBlurEffect();
-  v4 = a3;
-  v5 = [(ToolbarBlurEffect *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ToolbarBlurEffect *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,12 +1,12 @@
 @interface HVInteraction
-+ (id)domainIdForInteractionGroupId:(id)a3;
-+ (id)uniqueIdForInteractionIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HVInteraction)initWithInteraction:(id)a3 bundleIdentifier:(id)a4;
++ (id)domainIdForInteractionGroupId:(id)id;
++ (id)uniqueIdForInteractionIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (HVInteraction)initWithInteraction:(id)interaction bundleIdentifier:(id)identifier;
 - (NSString)domainId;
 - (NSString)uniqueId;
 - (double)absoluteTimestamp;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -14,20 +14,20 @@
 
 - (NSString)uniqueId
 {
-  v2 = [(INInteraction *)self->_interaction identifier];
-  v3 = [HVInteraction uniqueIdForInteractionIdentifier:v2];
+  identifier = [(INInteraction *)self->_interaction identifier];
+  v3 = [HVInteraction uniqueIdForInteractionIdentifier:identifier];
 
   return v3;
 }
 
 - (NSString)domainId
 {
-  v3 = [(INInteraction *)self->_interaction groupIdentifier];
+  groupIdentifier = [(INInteraction *)self->_interaction groupIdentifier];
 
-  if (v3)
+  if (groupIdentifier)
   {
-    v4 = [(INInteraction *)self->_interaction groupIdentifier];
-    v5 = [HVInteraction domainIdForInteractionGroupId:v4];
+    groupIdentifier2 = [(INInteraction *)self->_interaction groupIdentifier];
+    v5 = [HVInteraction domainIdForInteractionGroupId:groupIdentifier2];
   }
 
   else
@@ -40,18 +40,18 @@
 
 - (double)absoluteTimestamp
 {
-  v2 = [(INInteraction *)self->_interaction dateInterval];
-  v3 = [v2 startDate];
-  [v3 timeIntervalSinceReferenceDate];
+  dateInterval = [(INInteraction *)self->_interaction dateInterval];
+  startDate = [dateInterval startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -61,14 +61,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       interaction = self->_interaction;
-      v7 = [(HVInteraction *)v5 interaction];
-      if ([(INInteraction *)interaction isEqual:v7])
+      interaction = [(HVInteraction *)v5 interaction];
+      if ([(INInteraction *)interaction isEqual:interaction])
       {
         bundleIdentifier = self->_bundleIdentifier;
-        v9 = [(HVInteraction *)v5 bundleIdentifier];
-        v10 = [(NSString *)bundleIdentifier isEqualToString:v9];
+        bundleIdentifier = [(HVInteraction *)v5 bundleIdentifier];
+        v10 = [(NSString *)bundleIdentifier isEqualToString:bundleIdentifier];
       }
 
       else
@@ -86,7 +86,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HVInteraction alloc];
   v5 = [(INInteraction *)self->_interaction copy];
@@ -98,38 +98,38 @@
 
 - (unint64_t)hash
 {
-  v2 = [(INInteraction *)self->_interaction identifier];
-  v3 = [v2 hash];
+  identifier = [(INInteraction *)self->_interaction identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (HVInteraction)initWithInteraction:(id)a3 bundleIdentifier:(id)a4
+- (HVInteraction)initWithInteraction:(id)interaction bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HVInteraction;
   v9 = [(HVInteraction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_interaction, a3);
-    objc_storeStrong(&v10->_bundleIdentifier, a4);
+    objc_storeStrong(&v9->_interaction, interaction);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
   }
 
   return v10;
 }
 
-+ (id)domainIdForInteractionGroupId:(id)a3
++ (id)domainIdForInteractionGroupId:(id)id
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"%."];
-  v6 = [v5 invertedSet];
+  invertedSet = [v5 invertedSet];
 
-  v7 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+  v7 = [idCopy stringByAddingPercentEncodingWithAllowedCharacters:invertedSet];
   v12[0] = @"__ProactiveHarvesting__.HVInteraction";
   v12[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
@@ -141,11 +141,11 @@
   return v9;
 }
 
-+ (id)uniqueIdForInteractionIdentifier:(id)a3
++ (id)uniqueIdForInteractionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_autoreleasePoolPush();
-  v5 = [@"__ProactiveHarvesting__interactionIdentifier:" stringByAppendingString:v3];
+  v5 = [@"__ProactiveHarvesting__interactionIdentifier:" stringByAppendingString:identifierCopy];
   objc_autoreleasePoolPop(v4);
 
   return v5;

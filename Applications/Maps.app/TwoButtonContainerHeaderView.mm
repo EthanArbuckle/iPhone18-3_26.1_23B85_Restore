@@ -1,5 +1,5 @@
 @interface TwoButtonContainerHeaderView
-- (TwoButtonContainerHeaderView)initWithAdditionalCardButtonType:(unint64_t)a3 tintColor:(id)a4 buttonMenu:(id)a5;
+- (TwoButtonContainerHeaderView)initWithAdditionalCardButtonType:(unint64_t)type tintColor:(id)color buttonMenu:(id)menu;
 - (void)_customInitForSecondButton;
 @end
 
@@ -14,35 +14,35 @@
   [(CardButton *)self->_quickActionButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CardButton *)self->_quickActionButtonView setMenu:self->_quickActionButtonMenu];
   [(TwoButtonContainerHeaderView *)self addSubview:self->_quickActionButtonView];
-  v5 = [(CardButton *)self->_quickActionButtonView trailingAnchor];
-  v6 = [(TwoButtonContainerHeaderView *)self trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [(CardButton *)self->_quickActionButtonView trailingAnchor];
+  trailingAnchor2 = [(TwoButtonContainerHeaderView *)self trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v12[0] = v7;
-  v8 = [(CardButton *)self->_quickActionButtonView centerYAnchor];
-  v9 = [(TwoButtonContainerHeaderView *)self centerYAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  centerYAnchor = [(CardButton *)self->_quickActionButtonView centerYAnchor];
+  centerYAnchor2 = [(TwoButtonContainerHeaderView *)self centerYAnchor];
+  v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v12[1] = v10;
   v11 = [NSArray arrayWithObjects:v12 count:2];
   [NSLayoutConstraint activateConstraints:v11];
 }
 
-- (TwoButtonContainerHeaderView)initWithAdditionalCardButtonType:(unint64_t)a3 tintColor:(id)a4 buttonMenu:(id)a5
+- (TwoButtonContainerHeaderView)initWithAdditionalCardButtonType:(unint64_t)type tintColor:(id)color buttonMenu:(id)menu
 {
-  v8 = a4;
-  v9 = a5;
+  colorCopy = color;
+  menuCopy = menu;
   v15.receiver = self;
   v15.super_class = TwoButtonContainerHeaderView;
-  v10 = [(ContainerHeaderView *)&v15 initWithCardButtonType:1 cardButtonTintColor:v8];
+  v10 = [(ContainerHeaderView *)&v15 initWithCardButtonType:1 cardButtonTintColor:colorCopy];
   if (v10)
   {
     v11 = objc_opt_new();
-    [(CardButtonConfiguration *)v11 setType:a3];
-    [(CardButtonConfiguration *)v11 setTintColor:v8];
+    [(CardButtonConfiguration *)v11 setType:type];
+    [(CardButtonConfiguration *)v11 setTintColor:colorCopy];
     buttonConfig = v10->_buttonConfig;
     v10->_buttonConfig = v11;
     v13 = v11;
 
-    objc_storeStrong(&v10->_quickActionButtonMenu, a5);
+    objc_storeStrong(&v10->_quickActionButtonMenu, menu);
     [(TwoButtonContainerHeaderView *)v10 setAccessibilityIdentifier:@"TwoButtonContainerHeader"];
     [(TwoButtonContainerHeaderView *)v10 _customInitForSecondButton];
   }

@@ -1,9 +1,9 @@
 @interface AVCTextStreamConfig
-+ (int64_t)codecTypeWithClientCodecType:(int64_t)a3;
++ (int64_t)codecTypeWithClientCodecType:(int64_t)type;
 - (BOOL)isRedValid;
 - (BOOL)isValid;
 - (id)dictionary;
-- (void)setUpWithDictionary:(id)a3;
+- (void)setUpWithDictionary:(id)dictionary;
 @end
 
 @implementation AVCTextStreamConfig
@@ -18,16 +18,16 @@
   return [(AVCTextStreamConfig *)self isRedValid];
 }
 
-+ (int64_t)codecTypeWithClientCodecType:(int64_t)a3
++ (int64_t)codecTypeWithClientCodecType:(int64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     return 200;
   }
 
-  v3 = a3;
-  if (objc_opt_class() == a1)
+  typeCopy = type;
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -43,7 +43,7 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [a1 performSelector:sel_logPrefix];
+      v5 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -66,9 +66,9 @@
         v15 = 2112;
         v16 = v5;
         v17 = 2048;
-        v18 = a1;
+        selfCopy = self;
         v19 = 1024;
-        v20 = v3;
+        v20 = typeCopy;
         _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected codec type: %d", &v9, 0x36u);
       }
     }
@@ -92,13 +92,13 @@
   return self->_numRedundantPayloads < 4;
 }
 
-- (void)setUpWithDictionary:(id)a3
+- (void)setUpWithDictionary:(id)dictionary
 {
-  self->_codecType = +[AVCTextStreamConfig clientCodecTypeWithCodecType:](AVCTextStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTextCodecType", "integerValue"}]);
-  self->_numRedundantPayloads = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTextNumRedundantPayloads", "integerValue"}];
-  self->_txRedPayloadType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTextTxRedPayloadType", "integerValue"}];
-  self->_rxRedPayloadType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTextRxRedPayloadType", "integerValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTextTxIntervalMin", "floatValue"}];
+  self->_codecType = +[AVCTextStreamConfig clientCodecTypeWithCodecType:](AVCTextStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTextCodecType", "integerValue"}]);
+  self->_numRedundantPayloads = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTextNumRedundantPayloads", "integerValue"}];
+  self->_txRedPayloadType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTextTxRedPayloadType", "integerValue"}];
+  self->_rxRedPayloadType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTextRxRedPayloadType", "integerValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTextTxIntervalMin", "floatValue"}];
   self->_txIntervalMin = v5;
 }
 

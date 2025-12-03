@@ -1,5 +1,5 @@
 @interface CPSUserDefaultsResponse
-- (CPSUserDefaultsResponse)initWithCoder:(id)a3;
+- (CPSUserDefaultsResponse)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -9,14 +9,14 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_values withName:@"values"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (CPSUserDefaultsResponse)initWithCoder:(id)a3
+- (CPSUserDefaultsResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CPSUserDefaultsResponse;
   v5 = [(CPSUserDefaultsResponse *)&v16 init];
@@ -29,7 +29,7 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"values"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"values"];
     values = v5->_values;
     v5->_values = v13;
   }

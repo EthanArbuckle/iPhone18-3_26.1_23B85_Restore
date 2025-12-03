@@ -1,12 +1,12 @@
 @interface PRUISPosterSceneSettingsBuilder
 - (CGRect)canvasBounds;
 - (PRUISPosterSceneSettingsBuilder)init;
-- (id)buildWithPath:(id)a3 configuredProperties:(id)a4 snapshotDefinition:(id)a5 sceneDescriptor:(id)a6;
-- (void)applySceneSettings:(id)a3;
-- (void)applySnapshotDefinition:(id)a3;
+- (id)buildWithPath:(id)path configuredProperties:(id)properties snapshotDefinition:(id)definition sceneDescriptor:(id)descriptor;
+- (void)applySceneSettings:(id)settings;
+- (void)applySnapshotDefinition:(id)definition;
 - (void)reset;
-- (void)setCanvasBounds:(CGRect)a3;
-- (void)setDisplayConfiguration:(id)a3;
+- (void)setCanvasBounds:(CGRect)bounds;
+- (void)setDisplayConfiguration:(id)configuration;
 @end
 
 @implementation PRUISPosterSceneSettingsBuilder
@@ -25,17 +25,17 @@
   return v3;
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v4 = [MEMORY[0x1E699FAC0] pui_mainDisplayConfiguration];
+    configurationCopy = [MEMORY[0x1E699FAC0] pui_mainDisplayConfiguration];
   }
 
   displayConfiguration = self->_displayConfiguration;
-  self->_displayConfiguration = v4;
-  v6 = v4;
+  self->_displayConfiguration = configurationCopy;
+  v6 = configurationCopy;
 
   [(FBSDisplayConfiguration *)v6 bounds];
   v8 = v7;
@@ -49,13 +49,13 @@
   self->_canvasBounds.size.height = v14;
 }
 
-- (void)setCanvasBounds:(CGRect)a3
+- (void)setCanvasBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_canvasBounds))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(bounds, self->_canvasBounds))
   {
     self->_canvasBounds.origin.x = x;
     self->_canvasBounds.origin.y = y;
@@ -64,50 +64,50 @@
   }
 }
 
-- (void)applySceneSettings:(id)a3
+- (void)applySceneSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
-    v6 = v4;
+    v6 = settingsCopy;
     v5 = objc_autoreleasePoolPush();
     v6[2](v6, self->_sceneSettings);
     objc_autoreleasePoolPop(v5);
-    v4 = v6;
+    settingsCopy = v6;
   }
 }
 
-- (void)applySnapshotDefinition:(id)a3
+- (void)applySnapshotDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  definitionCopy = definition;
+  v5 = definitionCopy;
+  if (definitionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __59__PRUISPosterSceneSettingsBuilder_applySnapshotDefinition___block_invoke;
     v6[3] = &unk_1E83A77B0;
-    v7 = v4;
+    v7 = definitionCopy;
     [(PRUISPosterSceneSettingsBuilder *)self applySceneSettings:v6];
   }
 }
 
-- (id)buildWithPath:(id)a3 configuredProperties:(id)a4 snapshotDefinition:(id)a5 sceneDescriptor:(id)a6
+- (id)buildWithPath:(id)path configuredProperties:(id)properties snapshotDefinition:(id)definition sceneDescriptor:(id)descriptor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v68 = a6;
-  if (([v11 isServerPosterPath] & 1) == 0)
+  pathCopy = path;
+  propertiesCopy = properties;
+  definitionCopy = definition;
+  descriptorCopy = descriptor;
+  if (([pathCopy isServerPosterPath] & 1) == 0)
   {
     [PRUISPosterSceneSettingsBuilder buildWithPath:a2 configuredProperties:? snapshotDefinition:? sceneDescriptor:?];
   }
 
-  v14 = [v11 identity];
-  v15 = [v14 provider];
+  identity = [pathCopy identity];
+  provider = [identity provider];
 
   v75[0] = 0;
-  v16 = [v11 extendContentsReadAccessToAuditToken:0 error:v75];
+  v16 = [pathCopy extendContentsReadAccessToAuditToken:0 error:v75];
   v17 = v75[0];
   v70 = v16;
   if (!v16)
@@ -116,32 +116,32 @@
   }
 
   v67 = v17;
-  v18 = [v12 complicationLayout];
-  if ([v18 hasComplications])
+  complicationLayout = [propertiesCopy complicationLayout];
+  if ([complicationLayout hasComplications])
   {
-    v19 = [v13 includesComplications];
+    includesComplications = [definitionCopy includesComplications];
   }
 
   else
   {
-    v19 = 0;
+    includesComplications = 0;
   }
 
-  v20 = [(PRUISPosterSceneSettingsBuilder *)self snapshotOptions];
+  snapshotOptions = [(PRUISPosterSceneSettingsBuilder *)self snapshotOptions];
   v21 = self->_sceneSettings;
-  [(_PRUISPosterStagedSceneSettings *)v21 pui_setProvider:v15];
+  [(_PRUISPosterStagedSceneSettings *)v21 pui_setProvider:provider];
   [(_PRUISPosterStagedSceneSettings *)v21 pui_setRole:*MEMORY[0x1E69C5670]];
-  if (v13)
+  if (definitionCopy)
   {
-    [(PRUISPosterSceneSettingsBuilder *)self applySnapshotDefinition:v13];
+    [(PRUISPosterSceneSettingsBuilder *)self applySnapshotDefinition:definitionCopy];
   }
 
-  v69 = v15;
-  if (v20)
+  v69 = provider;
+  if (snapshotOptions)
   {
-    v64 = v11;
+    v64 = pathCopy;
     IsFloatingLayerOnly = PRSPosterSnapshotOptionsIsFloatingLayerOnly();
-    if ((v20 & 0x40) != 0)
+    if ((snapshotOptions & 0x40) != 0)
     {
       v22 = 1.0;
     }
@@ -151,12 +151,12 @@
       v22 = 0.0;
     }
 
-    v23 = [v12 complicationLayout];
-    v24 = [v23 inlineComplication];
-    v25 = (v20 >> 2) & 1;
-    if (v24)
+    complicationLayout2 = [propertiesCopy complicationLayout];
+    inlineComplication = [complicationLayout2 inlineComplication];
+    v25 = (snapshotOptions >> 2) & 1;
+    if (inlineComplication)
     {
-      v62 = [v13 includesComplications] & v25;
+      v62 = [definitionCopy includesComplications] & v25;
     }
 
     else
@@ -164,11 +164,11 @@
       v62 = 0;
     }
 
-    v26 = [v23 complications];
-    v65 = (v20 >> 2) & 1;
-    if ([v26 count])
+    complications = [complicationLayout2 complications];
+    v65 = (snapshotOptions >> 2) & 1;
+    if ([complications count])
     {
-      v27 = [v13 includesComplications] & v25;
+      v27 = [definitionCopy includesComplications] & v25;
     }
 
     else
@@ -176,14 +176,14 @@
       v27 = 0;
     }
 
-    v66 = v13;
+    v66 = definitionCopy;
 
-    v28 = [v12 titleStyleConfiguration];
-    [v28 prefersVerticalTitleLayout];
+    titleStyleConfiguration = [propertiesCopy titleStyleConfiguration];
+    [titleStyleConfiguration prefersVerticalTitleLayout];
 
-    v29 = [v23 sidebarComplications];
-    v30 = v12;
-    if ([v29 count])
+    sidebarComplications = [complicationLayout2 sidebarComplications];
+    v30 = propertiesCopy;
+    if ([sidebarComplications count])
     {
       v31 = [v66 includesComplications] & v65;
     }
@@ -194,8 +194,8 @@
     }
 
     [(PRUISPosterSceneSettingsBuilder *)self interfaceOrientation];
-    v32 = [v12 renderingConfiguration];
-    if ([v32 isDepthEffectDisabled])
+    renderingConfiguration = [propertiesCopy renderingConfiguration];
+    if ([renderingConfiguration isDepthEffectDisabled])
     {
       v33 = 1;
     }
@@ -210,33 +210,33 @@
     [(_PRUISPosterStagedSceneSettings *)v21 pui_setComplicationSidebarConfigured:v31];
     [(_PRUISPosterStagedSceneSettings *)v21 pr_setDepthEffectDisallowed:v33];
     [(_PRUISPosterStagedSceneSettings *)v21 pr_setUnlockProgress:v22];
-    if ((v20 & 2) != 0)
+    if ((snapshotOptions & 2) != 0)
     {
-      v34 = [v66 includesHeaderElements];
+      includesHeaderElements = [v66 includesHeaderElements];
     }
 
     else
     {
-      v34 = 0;
+      includesHeaderElements = 0;
     }
 
-    v12 = v30;
-    [(_PRUISPosterStagedSceneSettings *)v21 pui_setShowsHeaderElements:v34];
+    propertiesCopy = v30;
+    [(_PRUISPosterStagedSceneSettings *)v21 pui_setShowsHeaderElements:includesHeaderElements];
     [(_PRUISPosterStagedSceneSettings *)v21 pui_setFloatingLayerSnapshot:IsFloatingLayerOnly];
-    [(_PRUISPosterStagedSceneSettings *)v21 pui_setContent:(v20 >> 7) & 1];
-    [(_PRUISPosterStagedSceneSettings *)v21 pui_setShowsComplications:v65 & v19];
+    [(_PRUISPosterStagedSceneSettings *)v21 pui_setContent:(snapshotOptions >> 7) & 1];
+    [(_PRUISPosterStagedSceneSettings *)v21 pui_setShowsComplications:v65 & includesComplications];
 
-    v11 = v64;
-    v13 = v66;
+    pathCopy = v64;
+    definitionCopy = v66;
   }
 
   [(_PRUISPosterStagedSceneSettings *)v21 pui_setSnapshot:1];
-  v35 = [(PRUISPosterSceneSettingsBuilder *)self interfaceOrientation];
+  interfaceOrientation = [(PRUISPosterSceneSettingsBuilder *)self interfaceOrientation];
   v36 = MEMORY[0x1E69C53A8];
-  if (!v35)
+  if (!interfaceOrientation)
   {
-    v37 = [v70 role];
-    v38 = [v37 isEqualToString:*v36];
+    role = [v70 role];
+    v38 = [role isEqualToString:*v36];
 
     if (v38)
     {
@@ -245,21 +245,21 @@
     }
   }
 
-  if (!(v19 & 1 | ![(_PRUISPosterStagedSceneSettings *)v21 pui_showsComplications]))
+  if (!(includesComplications & 1 | ![(_PRUISPosterStagedSceneSettings *)v21 pui_showsComplications]))
   {
     [(_PRUISPosterStagedSceneSettings *)v21 pui_setShowsComplications:0];
   }
 
   v39 = objc_opt_new();
-  v40 = [(PRUISPosterSceneSettingsBuilder *)self displayConfiguration];
-  [v39 setDisplayConfiguration:v40];
+  displayConfiguration = [(PRUISPosterSceneSettingsBuilder *)self displayConfiguration];
+  [v39 setDisplayConfiguration:displayConfiguration];
 
   [(PRUISPosterSceneSettingsBuilder *)self canvasBounds];
   [v39 setCanvasBounds:?];
   [v39 setDeviceOrientation:{-[PRUISPosterSceneSettingsBuilder deviceOrientation](self, "deviceOrientation")}];
   [v39 setInterfaceOrientation:{-[PRUISPosterSceneSettingsBuilder interfaceOrientation](self, "interfaceOrientation")}];
-  v41 = [(PRUISPosterSceneSettingsBuilder *)self traitCollection];
-  v42 = [v41 copy];
+  traitCollection = [(PRUISPosterSceneSettingsBuilder *)self traitCollection];
+  v42 = [traitCollection copy];
   v43 = v42;
   if (v42)
   {
@@ -275,97 +275,97 @@
 
   [v39 setProvider:v69];
   [v39 setSnapshotOptions:self->_snapshotOptions];
-  v46 = [v12 titleStyleConfiguration];
-  [v39 setTitleStyleConfiguration:v46];
+  titleStyleConfiguration2 = [propertiesCopy titleStyleConfiguration];
+  [v39 setTitleStyleConfiguration:titleStyleConfiguration2];
 
-  v47 = [v12 ambientConfiguration];
-  [v39 setAmbientConfiguration:v47];
+  ambientConfiguration = [propertiesCopy ambientConfiguration];
+  [v39 setAmbientConfiguration:ambientConfiguration];
 
   v48 = v70;
   [v39 setPath:v70];
-  if (v68)
+  if (descriptorCopy)
   {
-    v49 = [v70 role];
-    v50 = [v49 isEqualToString:*v36];
+    role2 = [v70 role];
+    v50 = [role2 isEqualToString:*v36];
 
     v51 = v69;
     if ((v50 & 1) == 0)
     {
-      if ([v68 interfaceOrientation])
+      if ([descriptorCopy interfaceOrientation])
       {
-        [v39 setInterfaceOrientation:{objc_msgSend(v68, "interfaceOrientation")}];
+        [v39 setInterfaceOrientation:{objc_msgSend(descriptorCopy, "interfaceOrientation")}];
       }
 
-      if ([v68 deviceOrientation])
+      if ([descriptorCopy deviceOrientation])
       {
-        [v39 setDeviceOrientation:{objc_msgSend(v68, "deviceOrientation")}];
+        [v39 setDeviceOrientation:{objc_msgSend(descriptorCopy, "deviceOrientation")}];
       }
     }
 
-    v52 = [v68 displayConfiguration];
+    displayConfiguration2 = [descriptorCopy displayConfiguration];
 
-    if (v52)
+    if (displayConfiguration2)
     {
-      v53 = [v68 displayConfiguration];
-      [v39 setDisplayConfiguration:v53];
+      displayConfiguration3 = [descriptorCopy displayConfiguration];
+      [v39 setDisplayConfiguration:displayConfiguration3];
 
-      v54 = [v68 displayConfiguration];
-      [v54 bounds];
+      displayConfiguration4 = [descriptorCopy displayConfiguration];
+      [displayConfiguration4 bounds];
       [v39 setCanvasBounds:?];
     }
 
-    [v68 canvasBounds];
+    [descriptorCopy canvasBounds];
     if (!CGRectIsEmpty(v77))
     {
-      [v68 canvasBounds];
+      [descriptorCopy canvasBounds];
       [v39 setCanvasBounds:?];
     }
 
-    [v68 salientContentRectangle];
+    [descriptorCopy salientContentRectangle];
     if (!CGRectIsInfinite(v78))
     {
-      [v68 salientContentRectangle];
+      [descriptorCopy salientContentRectangle];
       if (!CGRectIsEmpty(v79))
       {
-        [v68 salientContentRectangle];
+        [descriptorCopy salientContentRectangle];
         [(_PRUISPosterStagedSceneSettings *)v21 pui_setSalientContentRectangle:?];
       }
     }
 
-    v55 = [v68 contentOcclusionRectangles];
+    contentOcclusionRectangles = [descriptorCopy contentOcclusionRectangles];
 
-    if (v55)
+    if (contentOcclusionRectangles)
     {
-      v56 = [v68 contentOcclusionRectangles];
-      [(_PRUISPosterStagedSceneSettings *)v21 pui_setContentOcclusionRectangles:v56];
+      contentOcclusionRectangles2 = [descriptorCopy contentOcclusionRectangles];
+      [(_PRUISPosterStagedSceneSettings *)v21 pui_setContentOcclusionRectangles:contentOcclusionRectangles2];
     }
 
-    if ([v68 accessibilityContrast] != -1)
+    if ([descriptorCopy accessibilityContrast] != -1)
     {
-      v57 = [v68 accessibilityContrast];
-      if (v57 != [v45 accessibilityContrast])
+      accessibilityContrast = [descriptorCopy accessibilityContrast];
+      if (accessibilityContrast != [v45 accessibilityContrast])
       {
         v73[0] = MEMORY[0x1E69E9820];
         v73[1] = 3221225472;
         v73[2] = __105__PRUISPosterSceneSettingsBuilder_buildWithPath_configuredProperties_snapshotDefinition_sceneDescriptor___block_invoke;
         v73[3] = &unk_1E83A77D8;
-        v74 = v68;
+        v74 = descriptorCopy;
         v58 = [v45 traitCollectionByModifyingTraits:v73];
 
         v45 = v58;
       }
     }
 
-    if ([v68 userInterfaceStyle])
+    if ([descriptorCopy userInterfaceStyle])
     {
-      v59 = [v68 userInterfaceStyle];
-      if (v59 != [v45 userInterfaceStyle])
+      userInterfaceStyle = [descriptorCopy userInterfaceStyle];
+      if (userInterfaceStyle != [v45 userInterfaceStyle])
       {
         v71[0] = MEMORY[0x1E69E9820];
         v71[1] = 3221225472;
         v71[2] = __105__PRUISPosterSceneSettingsBuilder_buildWithPath_configuredProperties_snapshotDefinition_sceneDescriptor___block_invoke_2;
         v71[3] = &unk_1E83A77D8;
-        v72 = v68;
+        v72 = descriptorCopy;
         v60 = [v45 traitCollectionByModifyingTraits:v71];
 
         v45 = v60;

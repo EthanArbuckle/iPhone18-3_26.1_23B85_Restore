@@ -1,6 +1,6 @@
 @interface _UIReturnToDocumentAction
 + (BOOL)_hasReturnToSenderFeature;
-+ (id)actionWithFileURL:(id)a3;
++ (id)actionWithFileURL:(id)l;
 @end
 
 @implementation _UIReturnToDocumentAction
@@ -15,18 +15,18 @@
   return _MergedGlobals_1299;
 }
 
-+ (id)actionWithFileURL:(id)a3
++ (id)actionWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47___UIReturnToDocumentAction_actionWithFileURL___block_invoke;
   v9[3] = &unk_1E7122F70;
-  v10 = v4;
-  v11 = a1;
-  v8.receiver = a1;
+  v10 = lCopy;
+  selfCopy = self;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____UIReturnToDocumentAction;
-  v5 = v4;
+  v5 = lCopy;
   v6 = objc_msgSendSuper2(&v8, sel_elementWithProvider_, v9);
 
   return v6;

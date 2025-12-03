@@ -118,7 +118,7 @@
     *&v26 = v26;
     v29 = __PAIR64__(LODWORD(v26), LODWORD(v31));
     v30 = *&v26;
-    v27 = [(CIVortexDistortion *)self _kernel];
+    _kernel = [(CIVortexDistortion *)self _kernel];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __33__CIVortexDistortion_outputImage__block_invoke;
@@ -129,7 +129,7 @@
     inputImage = self->inputImage;
     v35[0] = [CIVector vectorWithX:v31 Y:v30];
     v35[1] = v24;
-    return [v27 applyWithExtent:v32 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v35, 2), x, y, width, height}];
+    return [_kernel applyWithExtent:v32 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v35, 2), x, y, width, height}];
   }
 }
 

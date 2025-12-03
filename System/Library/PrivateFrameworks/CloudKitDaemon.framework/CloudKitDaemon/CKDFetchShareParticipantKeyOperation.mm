@@ -1,13 +1,13 @@
 @interface CKDFetchShareParticipantKeyOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDFetchShareParticipantKeyOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchShareParticipantKeyOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleFetchedShare:(id)a3 withID:(id)a4 error:(id)a5;
-- (void)_participantKeyFromShare:(id)a3 completionHandler:(id)a4;
-- (void)_performCallbackForShareID:(id)a3 withParticipantKey:(id)a4 error:(id)a5;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleFetchedShare:(id)share withID:(id)d error:(id)error;
+- (void)_participantKeyFromShare:(id)share completionHandler:(id)handler;
+- (void)_performCallbackForShareID:(id)d withParticipantKey:(id)key error:(id)error;
 - (void)_sendErrorForFailedShares;
 - (void)fetchSharesFromServer;
 - (void)main;
@@ -16,24 +16,24 @@
 
 @implementation CKDFetchShareParticipantKeyOperation
 
-- (CKDFetchShareParticipantKeyOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchShareParticipantKeyOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = CKDFetchShareParticipantKeyOperation;
-  v9 = [(CKDDatabaseOperation *)&v26 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v26 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_shareIDs(v6, v7, v8);
+    v10 = objc_msgSend_shareIDs(infoCopy, v7, v8);
     v13 = objc_msgSend_mutableCopy(v10, v11, v12);
     shareIDs = v9->_shareIDs;
     v9->_shareIDs = v13;
 
-    v17 = objc_msgSend_baseTokensByShareID(v6, v15, v16);
+    v17 = objc_msgSend_baseTokensByShareID(infoCopy, v15, v16);
     baseTokensByShareID = v9->_baseTokensByShareID;
     v9->_baseTokensByShareID = v17;
 
-    v21 = objc_msgSend_childRecordIDsByShareID(v6, v19, v20);
+    v21 = objc_msgSend_childRecordIDsByShareID(infoCopy, v19, v20);
     childRecordIDsByShareID = v9->_childRecordIDsByShareID;
     v9->_childRecordIDsByShareID = v21;
 
@@ -137,14 +137,14 @@ LABEL_4:
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Fetching Shares";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Updating Shares";
   }
@@ -153,7 +153,7 @@ LABEL_4:
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDFetchShareParticipantKeyOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -168,19 +168,19 @@ LABEL_4:
   return v2;
 }
 
-- (void)_performCallbackForShareID:(id)a3 withParticipantKey:(id)a4 error:(id)a5
+- (void)_performCallbackForShareID:(id)d withParticipantKey:(id)key error:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  keyCopy = key;
+  errorCopy = error;
   v13 = objc_msgSend_shareParticipantKeyFetchedBlock(self, v11, v12);
 
   if (v13)
   {
     v14 = *MEMORY[0x277CBC878];
     v15 = *MEMORY[0x277CBC880];
-    if (v9)
+    if (keyCopy)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -194,7 +194,7 @@ LABEL_4:
       }
 
       *buf = 138412290;
-      v30 = v8;
+      v30 = dCopy;
       v19 = "Returning participant key for share %@";
       v20 = v16;
       v21 = 12;
@@ -214,9 +214,9 @@ LABEL_4:
       }
 
       *buf = 138412546;
-      v30 = v8;
+      v30 = dCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = errorCopy;
       v19 = "Returning error for share %@: %@";
       v20 = v22;
       v21 = 22;
@@ -230,9 +230,9 @@ LABEL_10:
     v25[2] = sub_225233284;
     v25[3] = &unk_2785463D0;
     v25[4] = self;
-    v26 = v8;
-    v27 = v9;
-    v28 = v10;
+    v26 = dCopy;
+    v27 = keyCopy;
+    v28 = errorCopy;
     dispatch_async(v23, v25);
   }
 
@@ -278,11 +278,11 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_participantKeyFromShare:(id)a3 completionHandler:(id)a4
+- (void)_participantKeyFromShare:(id)share completionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v89 = 0;
   v90 = &v89;
   v91 = 0x3032000000;
@@ -302,11 +302,11 @@ LABEL_10:
   v81 = sub_2250735EC;
   v82 = 0;
   v10 = objc_msgSend_childRecordIDsByShareID(self, v8, v9);
-  v13 = objc_msgSend_recordID(v6, v11, v12);
+  v13 = objc_msgSend_recordID(shareCopy, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v10, v14, v13);
 
   v18 = objc_msgSend_container(self, v16, v17);
-  v23 = objc_msgSend_shortToken(v6, v19, v20);
+  v23 = objc_msgSend_shortToken(shareCopy, v19, v20);
   if (!v23)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -317,14 +317,14 @@ LABEL_10:
     v36 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
-      v67 = objc_msgSend_recordID(v6, v37, v38);
+      v67 = objc_msgSend_recordID(shareCopy, v37, v38);
       LODWORD(location[0]) = 138412290;
       *(location + 4) = v67;
       _os_log_debug_impl(&dword_22506F000, v36, OS_LOG_TYPE_DEBUG, "Couldn't get a short token for share %@", location, 0xCu);
     }
 
     v39 = MEMORY[0x277CBC560];
-    v42 = objc_msgSend_recordID(v6, v40, v41);
+    v42 = objc_msgSend_recordID(shareCopy, v40, v41);
     v44 = objc_msgSend_errorWithDomain_code_format_(v39, v43, *MEMORY[0x277CBC120], 2003, @"Couldn't get a short token for share %@", v42);
     v45 = v84[5];
     v84[5] = v44;
@@ -334,7 +334,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (objc_msgSend_publicPermission(v6, v21, v22) != 1)
+  if (objc_msgSend_publicPermission(shareCopy, v21, v22) != 1)
   {
     v48 = MEMORY[0x277CCACA8];
     v51 = objc_msgSend_containerScopedUserID(v18, v24, v25);
@@ -362,25 +362,25 @@ LABEL_10:
     v47 = 0;
     v46 = v78[5];
 LABEL_13:
-    v7[2](v7, v46, v47);
+    handlerCopy[2](handlerCopy, v46, v47);
     goto LABEL_14;
   }
 
   objc_initWeak(location, v18);
   v28 = objc_msgSend_pcsManager(v18, v26, v27);
-  v31 = objc_msgSend_currentUserParticipant(v6, v29, v30);
+  v31 = objc_msgSend_currentUserParticipant(shareCopy, v29, v30);
   v34 = objc_msgSend_protectionInfo(v31, v32, v33);
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = sub_2252339D4;
   v68[3] = &unk_27854AA88;
   objc_copyWeak(&v76, location);
-  v72 = v7;
+  v72 = handlerCopy;
   v73 = &v83;
   v69 = v15;
   v74 = &v89;
   v70 = v23;
-  v71 = v6;
+  v71 = shareCopy;
   v75 = &v77;
   objc_msgSend_createSharePCSFromData_ofType_withService_completionHandler_(v28, v35, v34, 4, 2, v68);
 
@@ -395,24 +395,24 @@ LABEL_14:
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFetchedShare:(id)a3 withID:(id)a4 error:(id)a5
+- (void)_handleFetchedShare:(id)share withID:(id)d error:(id)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  shareCopy = share;
+  dCopy = d;
+  errorCopy = error;
+  if (errorCopy)
   {
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!shareCopy)
   {
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 2003, @"Couldn't fetch a share with ID %@", v9);
-    v10 = LABEL_14:;
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 2003, @"Couldn't fetch a share with ID %@", dCopy);
+    errorCopy = LABEL_14:;
 LABEL_15:
-    v35 = v10;
-    objc_msgSend__performCallbackForShareID_withParticipantKey_error_(self, v11, v9, 0, v10);
+    v35 = errorCopy;
+    objc_msgSend__performCallbackForShareID_withParticipantKey_error_(self, v11, dCopy, 0, errorCopy);
 
     goto LABEL_16;
   }
@@ -420,16 +420,16 @@ LABEL_15:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 2020, @"Item with ID %@ was not a share", v9);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 2020, @"Item with ID %@ was not a share", dCopy);
     goto LABEL_14;
   }
 
   v14 = objc_msgSend_baseTokensByShareID(self, v12, v13);
-  v17 = objc_msgSend_recordID(v8, v15, v16);
+  v17 = objc_msgSend_recordID(shareCopy, v15, v16);
   v19 = objc_msgSend_objectForKeyedSubscript_(v14, v18, v17);
-  objc_msgSend_setBaseToken_(v8, v20, v19);
+  objc_msgSend_setBaseToken_(shareCopy, v20, v19);
 
-  v23 = objc_msgSend_baseToken(v8, v21, v22);
+  v23 = objc_msgSend_baseToken(shareCopy, v21, v22);
 
   if (v23)
   {
@@ -442,8 +442,8 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v51 = v26;
-      v54 = objc_msgSend_baseToken(v8, v52, v53);
-      v57 = objc_msgSend_recordID(v8, v55, v56);
+      v54 = objc_msgSend_baseToken(shareCopy, v52, v53);
+      v57 = objc_msgSend_recordID(shareCopy, v55, v56);
       *buf = 138543618;
       v61 = v54;
       v62 = 2112;
@@ -452,12 +452,12 @@ LABEL_15:
     }
   }
 
-  if (objc_msgSend_publicPermission(v8, v24, v25) != 1)
+  if (objc_msgSend_publicPermission(shareCopy, v24, v25) != 1)
   {
     goto LABEL_23;
   }
 
-  v29 = objc_msgSend_currentUserParticipant(v8, v27, v28);
+  v29 = objc_msgSend_currentUserParticipant(shareCopy, v27, v28);
   v32 = objc_msgSend_protectionInfo(v29, v30, v31);
   if (v32)
   {
@@ -471,13 +471,13 @@ LABEL_23:
     v58[2] = sub_225234478;
     v58[3] = &unk_27854AAB0;
     v58[4] = self;
-    v59 = v9;
-    objc_msgSend__participantKeyFromShare_completionHandler_(self, v50, v8, v58);
+    v59 = dCopy;
+    objc_msgSend__participantKeyFromShare_completionHandler_(self, v50, shareCopy, v58);
 
     goto LABEL_16;
   }
 
-  v37 = objc_msgSend_currentUserParticipant(v8, v33, v34);
+  v37 = objc_msgSend_currentUserParticipant(shareCopy, v33, v34);
   v40 = objc_msgSend_role(v37, v38, v39);
 
   if (v40 != 1)
@@ -494,13 +494,13 @@ LABEL_23:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v61 = v9;
+    v61 = dCopy;
     _os_log_debug_impl(&dword_22506F000, v41, OS_LOG_TYPE_DEBUG, "Share %@ needs to be updated on the server so that it gets a PPPCS for the owner", buf, 0xCu);
   }
 
   v44 = objc_msgSend_sharesNeedingUpdateByID(self, v42, v43);
-  v47 = objc_msgSend_recordID(v8, v45, v46);
-  objc_msgSend_setObject_forKeyedSubscript_(v44, v48, v8, v47);
+  v47 = objc_msgSend_recordID(shareCopy, v45, v46);
+  objc_msgSend_setObject_forKeyedSubscript_(v44, v48, shareCopy, v47);
 
 LABEL_16:
   v36 = *MEMORY[0x277D85DE8];
@@ -613,13 +613,13 @@ LABEL_16:
   objc_msgSend_makeStateTransition_(self, v8, v7);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setShareParticipantKeyFetchedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDFetchShareParticipantKeyOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (uint64_t)sb_effectiveInterfaceOrientation
 {
-  result = [a1 interfaceOrientation];
+  result = [self interfaceOrientation];
   if ((result - 1) >= 4)
   {
     return 1;

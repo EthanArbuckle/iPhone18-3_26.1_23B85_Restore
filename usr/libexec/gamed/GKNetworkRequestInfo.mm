@@ -26,9 +26,9 @@
 
 - (id)description
 {
-  v3 = [(GKNetworkRequestInfo *)self currentTasks];
-  v4 = [(GKNetworkRequestInfo *)self pendingRequests];
-  v5 = [NSString stringWithFormat:@"The current tasks are: %@ the pending tasks are:%@", v3, v4];
+  currentTasks = [(GKNetworkRequestInfo *)self currentTasks];
+  pendingRequests = [(GKNetworkRequestInfo *)self pendingRequests];
+  v5 = [NSString stringWithFormat:@"The current tasks are: %@ the pending tasks are:%@", currentTasks, pendingRequests];
 
   return v5;
 }

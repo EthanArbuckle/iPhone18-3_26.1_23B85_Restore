@@ -3,14 +3,14 @@
 - (NSArray)lastKnownAuthors;
 - (NSNumber)lastKnownAdminStatus;
 - (SUUIMediaSocialAdminPermissionsCoordinator)init;
-- (void)_authenticateOnCompletion:(id)a3;
-- (void)_fireResultsBlocksWithAuthors:(id)a3 error:(id)a4;
+- (void)_authenticateOnCompletion:(id)completion;
+- (void)_fireResultsBlocksWithAuthors:(id)authors error:(id)error;
 - (void)_getAuthors;
-- (void)_handleOperationResponseWithAuthors:(id)a3 error:(id)a4;
-- (void)_queueResultBlock:(id)a3;
-- (void)getAdminStatusWithOptions:(id)a3 resultBlock:(id)a4;
-- (void)getAuthorsAndWaitWithOptions:(id)a3 authorsBlock:(id)a4;
-- (void)getAuthorsWithOptions:(id)a3 authorsBlock:(id)a4;
+- (void)_handleOperationResponseWithAuthors:(id)authors error:(id)error;
+- (void)_queueResultBlock:(id)block;
+- (void)getAdminStatusWithOptions:(id)options resultBlock:(id)block;
+- (void)getAuthorsAndWaitWithOptions:(id)options authorsBlock:(id)block;
+- (void)getAuthorsWithOptions:(id)options authorsBlock:(id)block;
 - (void)reset;
 @end
 
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __63__SUUIMediaSocialAdminPermissionsCoordinator_sharedCoordinator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCoordinator_sOnce_0 != -1)
   {
     dispatch_once(&sharedCoordinator_sOnce_0, block);
@@ -67,11 +67,11 @@ uint64_t __63__SUUIMediaSocialAdminPermissionsCoordinator_sharedCoordinator__blo
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)getAdminStatusWithOptions:(id)a3 resultBlock:(id)a4
+- (void)getAdminStatusWithOptions:(id)options resultBlock:(id)block
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"SUUIMediaSocialAdminPermissionsOptionIgnoreCache"];
+  blockCopy = block;
+  v6 = [options objectForKeyedSubscript:@"SUUIMediaSocialAdminPermissionsOptionIgnoreCache"];
   v7 = v6;
   v8 = MEMORY[0x277CBEC28];
   if (v6)
@@ -84,25 +84,25 @@ uint64_t __63__SUUIMediaSocialAdminPermissionsCoordinator_sharedCoordinator__blo
   v12 = *MEMORY[0x277D6A600];
   v13[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v11 = [MEMORY[0x277D69CE0] sharedCoordinator];
+  mEMORY[0x277D69CE0] = [MEMORY[0x277D69CE0] sharedCoordinator];
 
-  [v11 getAdminStatusWithOptions:v10 resultBlock:v5];
+  [mEMORY[0x277D69CE0] getAdminStatusWithOptions:v10 resultBlock:blockCopy];
 }
 
-- (void)getAuthorsWithOptions:(id)a3 authorsBlock:(id)a4
+- (void)getAuthorsWithOptions:(id)options authorsBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__SUUIMediaSocialAdminPermissionsCoordinator_getAuthorsWithOptions_authorsBlock___block_invoke;
   block[3] = &unk_2798F9498;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionsCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  v10 = optionsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -156,20 +156,20 @@ LABEL_11:
   return MEMORY[0x2821F96F8](v11, v10);
 }
 
-- (void)getAuthorsAndWaitWithOptions:(id)a3 authorsBlock:(id)a4
+- (void)getAuthorsAndWaitWithOptions:(id)options authorsBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  optionsCopy = options;
   v8 = dispatch_semaphore_create(0);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__SUUIMediaSocialAdminPermissionsCoordinator_getAuthorsAndWaitWithOptions_authorsBlock___block_invoke;
   v11[3] = &unk_2798FA5E0;
   v12 = v8;
-  v13 = v6;
+  v13 = blockCopy;
   v9 = v8;
-  v10 = v6;
-  [(SUUIMediaSocialAdminPermissionsCoordinator *)self getAuthorsWithOptions:v7 authorsBlock:v11];
+  v10 = blockCopy;
+  [(SUUIMediaSocialAdminPermissionsCoordinator *)self getAuthorsWithOptions:optionsCopy authorsBlock:v11];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -192,8 +192,8 @@ intptr_t __88__SUUIMediaSocialAdminPermissionsCoordinator_getAuthorsAndWaitWithO
 - (NSNumber)lastKnownAdminStatus
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D69CE0] sharedCoordinator];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isCurrentUserAdmin")}];
+  mEMORY[0x277D69CE0] = [MEMORY[0x277D69CE0] sharedCoordinator];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D69CE0], "isCurrentUserAdmin")}];
 
   return v4;
 }
@@ -206,35 +206,35 @@ intptr_t __88__SUUIMediaSocialAdminPermissionsCoordinator_getAuthorsAndWaitWithO
   lastRequestDate = self->_lastRequestDate;
   self->_lastRequestDate = 0;
 
-  v5 = [MEMORY[0x277D69CE0] sharedCoordinator];
-  [v5 reset];
+  mEMORY[0x277D69CE0] = [MEMORY[0x277D69CE0] sharedCoordinator];
+  [mEMORY[0x277D69CE0] reset];
 }
 
-- (void)_authenticateOnCompletion:(id)a3
+- (void)_authenticateOnCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D69A20] defaultStore];
-  v5 = [v4 activeAccount];
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v5)
+  if (activeAccount)
   {
-    v6 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v5];
-    [v6 setPromptStyle:1];
-    [v6 setShouldCreateNewSession:1];
+    contextForSignIn = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
+    [contextForSignIn setPromptStyle:1];
+    [contextForSignIn setShouldCreateNewSession:1];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D69BC8] contextForSignIn];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
   }
 
-  v7 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:v6];
+  v7 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:contextForSignIn];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__SUUIMediaSocialAdminPermissionsCoordinator__authenticateOnCompletion___block_invoke;
   v9[3] = &unk_2798F6940;
-  v10 = v3;
-  v8 = v3;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 startWithAuthenticateResponseBlock:v9];
 }
 
@@ -265,16 +265,16 @@ uint64_t __72__SUUIMediaSocialAdminPermissionsCoordinator__authenticateOnComplet
   return result;
 }
 
-- (void)_fireResultsBlocksWithAuthors:(id)a3 error:(id)a4
+- (void)_fireResultsBlocksWithAuthors:(id)authors error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  authorsCopy = authors;
+  errorCopy = error;
+  if (authorsCopy)
   {
-    objc_storeStrong(&self->_lastKnownAuthors, a3);
-    v9 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&self->_lastKnownAuthors, authors);
+    date = [MEMORY[0x277CBEAA8] date];
     lastRequestDate = self->_lastRequestDate;
-    self->_lastRequestDate = v9;
+    self->_lastRequestDate = date;
   }
 
   v11 = [(NSMutableArray *)self->_resultBlocks copy];
@@ -287,8 +287,8 @@ uint64_t __72__SUUIMediaSocialAdminPermissionsCoordinator__authenticateOnComplet
     block[2] = __82__SUUIMediaSocialAdminPermissionsCoordinator__fireResultsBlocksWithAuthors_error___block_invoke;
     block[3] = &unk_2798F5BC0;
     v14 = v11;
-    v15 = v7;
-    v16 = v8;
+    v15 = authorsCopy;
+    v16 = errorCopy;
     dispatch_async(callbackQueue, block);
   }
 }
@@ -357,20 +357,20 @@ void __57__SUUIMediaSocialAdminPermissionsCoordinator__getAuthors__block_invoke(
   [WeakRetained _handleOperationResponseWithAuthors:v6 error:v5];
 }
 
-- (void)_handleOperationResponseWithAuthors:(id)a3 error:(id)a4
+- (void)_handleOperationResponseWithAuthors:(id)authors error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  authorsCopy = authors;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__SUUIMediaSocialAdminPermissionsCoordinator__handleOperationResponseWithAuthors_error___block_invoke;
   block[3] = &unk_2798F5BC0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = authorsCopy;
+  v9 = authorsCopy;
+  v10 = errorCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -426,11 +426,11 @@ void __88__SUUIMediaSocialAdminPermissionsCoordinator__handleOperationResponseWi
   }
 }
 
-- (void)_queueResultBlock:(id)a3
+- (void)_queueResultBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = [a3 copy];
+    v4 = [block copy];
     resultBlocks = self->_resultBlocks;
     aBlock = v4;
     if (!resultBlocks)

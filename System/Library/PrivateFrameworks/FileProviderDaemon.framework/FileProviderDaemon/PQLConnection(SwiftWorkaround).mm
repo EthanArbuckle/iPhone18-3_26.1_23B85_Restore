@@ -13,7 +13,7 @@
   v6[3] = &unk_1E83C1068;
   v7 = v4;
   v5 = v4;
-  [a1 setAutoRollbackHandler:v6];
+  [self setAutoRollbackHandler:v6];
 }
 
 @end

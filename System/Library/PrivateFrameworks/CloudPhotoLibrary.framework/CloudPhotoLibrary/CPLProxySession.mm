@@ -1,48 +1,48 @@
 @interface CPLProxySession
-+ (void)beginSessionForProxy:(id)a3 knownVersion:(id)a4 context:(id)a5 completionHandler:(id)a6;
++ (void)beginSessionForProxy:(id)proxy knownVersion:(id)version context:(id)context completionHandler:(id)handler;
 - (id)proxyLibraryManager;
-- (id)proxyWithErrorHandler:(id)a3;
-- (void)beginSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)dispatchBlockWhenLibraryIsOpen:(id)a3;
-- (void)finalizeWithCompletionHandler:(id)a3;
+- (id)proxyWithErrorHandler:(id)handler;
+- (void)beginSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler;
+- (void)dispatchBlockWhenLibraryIsOpen:(id)open;
+- (void)finalizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLProxySession
 
 - (id)proxyLibraryManager
 {
-  v2 = [(CPLPlatformObject *)self abstractObject];
-  v3 = [v2 libraryManager];
-  v4 = [v3 platformObject];
+  abstractObject = [(CPLPlatformObject *)self abstractObject];
+  libraryManager = [abstractObject libraryManager];
+  platformObject = [libraryManager platformObject];
 
-  return v4;
+  return platformObject;
 }
 
-- (id)proxyWithErrorHandler:(id)a3
+- (id)proxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLProxySession *)self proxyLibraryManager];
+  handlerCopy = handler;
+  proxyLibraryManager = [(CPLProxySession *)self proxyLibraryManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __41__CPLProxySession_proxyWithErrorHandler___block_invoke;
   v9[3] = &unk_1E861AAF0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 proxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [proxyLibraryManager proxyWithErrorHandler:v9];
 
   return v7;
 }
 
-+ (void)beginSessionForProxy:(id)a3 knownVersion:(id)a4 context:(id)a5 completionHandler:(id)a6
++ (void)beginSessionForProxy:(id)proxy knownVersion:(id)version context:(id)context completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
+  proxyCopy = proxy;
+  versionCopy = version;
+  contextCopy = context;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/Daemon/CPLProxySession.m"];
   v17 = NSStringFromSelector(a2);
-  [v15 handleFailureInMethod:a2 object:a1 file:v16 lineNumber:32 description:{@"%@ should be implemented by subclasses", v17}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:32 description:{@"%@ should be implemented by subclasses", v17}];
 
   abort();
 }
@@ -144,26 +144,26 @@ void __49__CPLProxySession_finalizeWithCompletionHandler___block_invoke_11(uint6
   dispatch_async(v5, v10);
 }
 
-- (void)dispatchBlockWhenLibraryIsOpen:(id)a3
+- (void)dispatchBlockWhenLibraryIsOpen:(id)open
 {
-  v4 = a3;
-  v5 = [(CPLProxySession *)self proxyLibraryManager];
-  [v5 dispatchBlockWhenLibraryIsOpen:v4];
+  openCopy = open;
+  proxyLibraryManager = [(CPLProxySession *)self proxyLibraryManager];
+  [proxyLibraryManager dispatchBlockWhenLibraryIsOpen:openCopy];
 }
 
-- (void)beginSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)beginSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  versionCopy = version;
+  contextCopy = context;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLSessionOSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEBUG, "Beginning %@", buf, 0xCu);
     }
 
@@ -183,12 +183,12 @@ void __49__CPLProxySession_finalizeWithCompletionHandler___block_invoke_11(uint6
   v17[2] = __81__CPLProxySession_beginSessionWithKnownLibraryVersion_context_completionHandler___block_invoke;
   v17[3] = &unk_1E861AE60;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v18 = versionCopy;
+  v19 = contextCopy;
+  v20 = handlerCopy;
+  v13 = contextCopy;
+  v14 = versionCopy;
+  v15 = handlerCopy;
   [(CPLProxySession *)self dispatchBlockWhenLibraryIsOpen:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -273,17 +273,17 @@ void __81__CPLProxySession_beginSessionWithKnownLibraryVersion_context_completio
   v11(v10);
 }
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLSessionOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "Finalizing %@", buf, 0xCu);
     }
   }
@@ -293,8 +293,8 @@ void __81__CPLProxySession_beginSessionWithKnownLibraryVersion_context_completio
   v8[2] = __49__CPLProxySession_finalizeWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E861AA50;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   [(CPLProxySession *)self dispatchBlockWhenLibraryIsOpen:v8];
 
   v7 = *MEMORY[0x1E69E9840];

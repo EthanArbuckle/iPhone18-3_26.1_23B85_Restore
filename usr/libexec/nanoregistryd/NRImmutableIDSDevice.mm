@@ -1,15 +1,15 @@
 @interface NRImmutableIDSDevice
-- (NRImmutableIDSDevice)initWithIDSDevice:(id)a3;
+- (NRImmutableIDSDevice)initWithIDSDevice:(id)device;
 - (id)description;
-- (void)setNSUUID:(id)a3;
+- (void)setNSUUID:(id)d;
 @end
 
 @implementation NRImmutableIDSDevice
 
-- (NRImmutableIDSDevice)initWithIDSDevice:(id)a3
+- (NRImmutableIDSDevice)initWithIDSDevice:(id)device
 {
-  v5 = a3;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v43.receiver = self;
     v43.super_class = NRImmutableIDSDevice;
@@ -17,98 +17,98 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_mutableIDSDevice, a3);
-      v8 = [v5 uniqueID];
+      objc_storeStrong(&v6->_mutableIDSDevice, device);
+      uniqueID = [deviceCopy uniqueID];
       uniqueID = v7->_uniqueID;
-      v7->_uniqueID = v8;
+      v7->_uniqueID = uniqueID;
 
-      v10 = [v5 uniqueIDOverride];
+      uniqueIDOverride = [deviceCopy uniqueIDOverride];
       uniqueIDOverride = v7->_uniqueIDOverride;
-      v7->_uniqueIDOverride = v10;
+      v7->_uniqueIDOverride = uniqueIDOverride;
 
-      v12 = [v5 modelIdentifier];
+      modelIdentifier = [deviceCopy modelIdentifier];
       modelIdentifier = v7->_modelIdentifier;
-      v7->_modelIdentifier = v12;
+      v7->_modelIdentifier = modelIdentifier;
 
-      v14 = [v5 productName];
+      productName = [deviceCopy productName];
       productName = v7->_productName;
-      v7->_productName = v14;
+      v7->_productName = productName;
 
-      v16 = [v5 productVersion];
+      productVersion = [deviceCopy productVersion];
       productVersion = v7->_productVersion;
-      v7->_productVersion = v16;
+      v7->_productVersion = productVersion;
 
-      [v5 operatingSystemVersion];
+      [deviceCopy operatingSystemVersion];
       *&v7->_operatingSystemVersion.majorVersion = v41;
       v7->_operatingSystemVersion.patchVersion = v42;
-      v18 = [v5 productBuildVersion];
+      productBuildVersion = [deviceCopy productBuildVersion];
       productBuildVersion = v7->_productBuildVersion;
-      v7->_productBuildVersion = v18;
+      v7->_productBuildVersion = productBuildVersion;
 
-      v20 = [v5 name];
+      name = [deviceCopy name];
       name = v7->_name;
-      v7->_name = v20;
+      v7->_name = name;
 
-      v22 = [v5 service];
+      service = [deviceCopy service];
       service = v7->_service;
-      v7->_service = v22;
+      v7->_service = service;
 
-      v24 = [v5 deviceColor];
+      deviceColor = [deviceCopy deviceColor];
       deviceColor = v7->_deviceColor;
-      v7->_deviceColor = v24;
+      v7->_deviceColor = deviceColor;
 
-      v26 = [v5 enclosureColor];
+      enclosureColor = [deviceCopy enclosureColor];
       enclosureColor = v7->_enclosureColor;
-      v7->_enclosureColor = v26;
+      v7->_enclosureColor = enclosureColor;
 
-      v7->_isHSATrusted = [v5 isHSATrusted];
-      v7->_isDefaultPairedDevice = [v5 isDefaultPairedDevice];
-      v7->_isLocallyPaired = [v5 isLocallyPaired];
-      v7->_isActive = [v5 isActive];
-      v7->_pairingProtocolVersion = [v5 pairingProtocolVersion];
-      v7->_minCompatibilityVersion = [v5 minCompatibilityVersion];
-      v7->_maxCompatibilityVersion = [v5 maxCompatibilityVersion];
-      v7->_nearby = [v5 isNearby];
-      v7->_connected = [v5 isConnected];
-      v7->_locallyPresent = [v5 locallyPresent];
-      v28 = [v5 linkedUserURIs];
-      v29 = [v28 copy];
+      v7->_isHSATrusted = [deviceCopy isHSATrusted];
+      v7->_isDefaultPairedDevice = [deviceCopy isDefaultPairedDevice];
+      v7->_isLocallyPaired = [deviceCopy isLocallyPaired];
+      v7->_isActive = [deviceCopy isActive];
+      v7->_pairingProtocolVersion = [deviceCopy pairingProtocolVersion];
+      v7->_minCompatibilityVersion = [deviceCopy minCompatibilityVersion];
+      v7->_maxCompatibilityVersion = [deviceCopy maxCompatibilityVersion];
+      v7->_nearby = [deviceCopy isNearby];
+      v7->_connected = [deviceCopy isConnected];
+      v7->_locallyPresent = [deviceCopy locallyPresent];
+      linkedUserURIs = [deviceCopy linkedUserURIs];
+      v29 = [linkedUserURIs copy];
       linkedUserURIs = v7->_linkedUserURIs;
       v7->_linkedUserURIs = v29;
 
-      v31 = [v5 nsuuid];
+      nsuuid = [deviceCopy nsuuid];
       nsuuid = v7->_nsuuid;
-      v7->_nsuuid = v31;
+      v7->_nsuuid = nsuuid;
 
-      v33 = [v5 identities];
+      identities = [deviceCopy identities];
       identities = v7->_identities;
-      v7->_identities = v33;
+      v7->_identities = identities;
 
-      v35 = [v5 pushToken];
+      pushToken = [deviceCopy pushToken];
       pushToken = v7->_pushToken;
-      v7->_pushToken = v35;
+      v7->_pushToken = pushToken;
 
-      v37 = [v5 lastActivityDate];
+      lastActivityDate = [deviceCopy lastActivityDate];
       lastActivityDate = v7->_lastActivityDate;
-      v7->_lastActivityDate = v37;
+      v7->_lastActivityDate = lastActivityDate;
     }
 
     self = v7;
-    v39 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v39 = 0;
+    selfCopy = 0;
   }
 
-  return v39;
+  return selfCopy;
 }
 
-- (void)setNSUUID:(id)a3
+- (void)setNSUUID:(id)d
 {
-  objc_storeStrong(&self->_nsuuid, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_nsuuid, d);
+  dCopy = d;
   [self->_mutableIDSDevice setNSUUID:self->_nsuuid];
 }
 

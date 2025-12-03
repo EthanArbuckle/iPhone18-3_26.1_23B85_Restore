@@ -1,20 +1,20 @@
 @interface AVCaptureAudioDataOutput
 - (AVCaptureAudioDataOutput)init;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
 - (NSDictionary)recommendedAudioSettingsForAssetWriterWithOutputFileType:(AVFileType)outputFileType;
 - (id)supportedAssetWriterOutputFileTypes;
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3;
-- (void)_handleSampleBufferEventForSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_updateLocalQueue:(localQueueOpaque *)a3;
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message;
+- (void)_handleNotification:(id)notification payload:(id)payload;
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation;
+- (void)_handleSampleBufferEventForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_updateLocalQueue:(localQueueOpaque *)queue;
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue;
 - (void)setSampleBufferDelegate:(id)sampleBufferDelegate queue:(dispatch_queue_t)sampleBufferCallbackQueue;
-- (void)setSpatialAudioChannelLayoutTag:(unsigned int)a3;
+- (void)setSpatialAudioChannelLayoutTag:(unsigned int)tag;
 @end
 
 @implementation AVCaptureAudioDataOutput
@@ -23,14 +23,14 @@
 {
   v5.receiver = self;
   v5.super_class = AVCaptureAudioDataOutput;
-  v2 = [(AVCaptureOutput *)&v5 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v5 initSubclass];
+  if (initSubclass)
   {
     v3 = objc_alloc_init(AVCaptureAudioDataOutputInternal);
-    v2->_internal = v3;
+    initSubclass->_internal = v3;
     if (v3)
     {
-      v2->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v2];
+      initSubclass->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
     }
 
     else
@@ -40,7 +40,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)setSpatialAudioChannelLayoutTag:(unsigned int)a3
+- (void)setSpatialAudioChannelLayoutTag:(unsigned int)tag
 {
   if ([&unk_1F1CEA590 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:")}])
   {
     internal = self->_internal;
-    if (internal->spatialAudioChannelLayoutTag != a3)
+    if (internal->spatialAudioChannelLayoutTag != tag)
     {
-      internal->spatialAudioChannelLayoutTag = a3;
+      internal->spatialAudioChannelLayoutTag = tag;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -123,8 +123,8 @@
 
 - (NSDictionary)recommendedAudioSettingsForAssetWriterWithOutputFileType:(AVFileType)outputFileType
 {
-  v5 = [(AVCaptureAudioDataOutput *)self supportedAssetWriterOutputFileTypes];
-  if ([v5 containsObject:outputFileType])
+  supportedAssetWriterOutputFileTypes = [(AVCaptureAudioDataOutput *)self supportedAssetWriterOutputFileTypes];
+  if ([supportedAssetWriterOutputFileTypes containsObject:outputFileType])
   {
     v6 = [(AVCaptureOutput *)self connectionWithMediaType:*MEMORY[0x1E69875A0]];
     if ([(AVCaptureConnection *)v6 isLive])
@@ -138,7 +138,7 @@
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid file type UTI - available file types are: %@", v5];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid file type UTI - available file types are: %@", supportedAssetWriterOutputFileTypes];
     v10 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
     {
@@ -151,10 +151,10 @@
   return 0;
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  v7 = [a3 mediaType];
-  if (![v7 isEqualToString:*MEMORY[0x1E69875A0]])
+  mediaType = [connection mediaType];
+  if (![mediaType isEqualToString:*MEMORY[0x1E69875A0]])
   {
     v8 = 1;
     goto LABEL_5;
@@ -164,61 +164,61 @@
   {
     v8 = 2;
 LABEL_5:
-    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, a3);
+    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, connection);
     result = 0;
-    *a4 = v9;
+    *reason = v9;
     return result;
   }
 
   return 1;
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 addListenerWithWeakReference:weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE48] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE40] object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE48] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE40] object:session flags:0];
   v7.receiver = self;
   v7.super_class = AVCaptureAudioDataOutput;
-  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE48] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE40] object:a3];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE48] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:ado_notificationHandler name:*MEMORY[0x1E698FE40] object:session];
   v6.receiver = self;
   v6.super_class = AVCaptureAudioDataOutput;
-  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
+  if ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E698FE48]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FE48]])
     {
-      v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
+      v7 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
 
       [(AVCaptureAudioDataOutput *)self _updateRemoteQueue:v7];
     }
 
-    else if ([a3 isEqualToString:*MEMORY[0x1E698FE40]])
+    else if ([notification isEqualToString:*MEMORY[0x1E698FE40]])
     {
-      v8 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
+      v8 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
 
       [(AVCaptureAudioDataOutput *)self _updateLocalQueue:v8];
     }
   }
 }
 
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   MessageReceiver = FigRemoteOperationReceiverCreateMessageReceiver();
-  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", a3, [MessageReceiver copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", queue, [MessageReceiver copy]);
 }
 
 void __47__AVCaptureAudioDataOutput__updateRemoteQueue___block_invoke(uint64_t a1, int a2, uint64_t a3)
@@ -242,20 +242,20 @@ void __47__AVCaptureAudioDataOutput__updateRemoteQueue___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation
 {
-  if (a3->var0 == 3)
+  if (operation->var0 == 3)
   {
-    [(AVCaptureAudioDataOutput *)self _handleSampleBufferEventForSampleBuffer:a3->var4.var4.var0];
+    [(AVCaptureAudioDataOutput *)self _handleSampleBufferEventForSampleBuffer:operation->var4.var4.var0];
   }
 
-  else if (a3->var0 == 5)
+  else if (operation->var0 == 5)
   {
-    [(AVCaptureAudioDataOutput *)self _handleConfigurationLiveEventForID:a3->var4.var4.var0 updatedFormatDescription:a3->var4.var2.var1];
+    [(AVCaptureAudioDataOutput *)self _handleConfigurationLiveEventForID:operation->var4.var4.var0 updatedFormatDescription:operation->var4.var2.var1];
   }
 }
 
-- (void)_updateLocalQueue:(localQueueOpaque *)a3
+- (void)_updateLocalQueue:(localQueueOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   v6[0] = MEMORY[0x1E69E9820];
@@ -263,7 +263,7 @@ void __47__AVCaptureAudioDataOutput__updateRemoteQueue___block_invoke(uint64_t a
   v6[2] = __46__AVCaptureAudioDataOutput__updateLocalQueue___block_invoke;
   v6[3] = &unk_1E786F260;
   v6[4] = v5;
-  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", a3, [v6 copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", queue, [v6 copy]);
 }
 
 void __46__AVCaptureAudioDataOutput__updateLocalQueue___block_invoke(uint64_t a1, __int128 *a2)
@@ -281,43 +281,43 @@ void __46__AVCaptureAudioDataOutput__updateLocalQueue___block_invoke(uint64_t a1
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message
 {
-  if (a3->var0 == 3)
+  if (message->var0 == 3)
   {
-    [(AVCaptureAudioDataOutput *)self _handleSampleBufferEventForSampleBuffer:*(&a3->var0 + 1)];
+    [(AVCaptureAudioDataOutput *)self _handleSampleBufferEventForSampleBuffer:*(&message->var0 + 1)];
   }
 
-  else if (a3->var0 == 5)
+  else if (message->var0 == 5)
   {
-    [(AVCaptureAudioDataOutput *)self _handleConfigurationLiveEventForID:*(&a3->var0 + 1) updatedFormatDescription:*(&a3->var1.var1.var0 + 4)];
+    [(AVCaptureAudioDataOutput *)self _handleConfigurationLiveEventForID:*(&message->var0 + 1) updatedFormatDescription:*(&message->var1.var1.var0 + 4)];
   }
 }
 
-- (void)_handleSampleBufferEventForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_handleSampleBufferEventForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeDelegate];
-  v6 = [(NSArray *)[(AVCaptureOutput *)self connections] firstObject];
-  if ([v6 isLive] && objc_msgSend(-[AVCaptureOutput session](self, "session"), "isRunning") && (objc_msgSend(-[AVCaptureOutput session](self, "session"), "isInterrupted") & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
+  activeDelegate = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeDelegate];
+  firstObject = [(NSArray *)[(AVCaptureOutput *)self connections] firstObject];
+  if ([firstObject isLive] && objc_msgSend(-[AVCaptureOutput session](self, "session"), "isRunning") && (objc_msgSend(-[AVCaptureOutput session](self, "session"), "isInterrupted") & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 captureOutput:self didOutputSampleBuffer:a3 fromConnection:v6];
+    [activeDelegate captureOutput:self didOutputSampleBuffer:buffer fromConnection:firstObject];
   }
 }
 
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
-    v7 = 0;
+    queueCopy = 0;
   }
 
   else
   {
-    v7 = a4;
+    queueCopy = queue;
   }
 
   v9 = 0;
-  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:a3 delegateOverrideCallbackQueue:v7 exceptionReason:&v9])
+  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:override delegateOverrideCallbackQueue:queueCopy exceptionReason:&v9])
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())

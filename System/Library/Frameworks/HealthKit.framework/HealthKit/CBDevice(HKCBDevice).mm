@@ -7,7 +7,7 @@
 
 - (id)btAddress
 {
-  v1 = [a1 btAddressData];
+  btAddressData = [self btAddressData];
   v2 = CUPrintNSDataAddress();
 
   return v2;
@@ -16,20 +16,20 @@
 - (uint64_t)hardwareVersion
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [a1 productID];
-  if (v2 > 21759)
+  productID = [self productID];
+  if (productID > 21759)
   {
-    if (v2 > 28943)
+    if (productID > 28943)
     {
-      if (v2 <= 29714)
+      if (productID <= 29714)
       {
-        if (v2 == 28944)
+        if (productID == 28944)
         {
           v3 = "AudioAccessory1,2";
           goto LABEL_69;
         }
 
-        if (v2 == 29455)
+        if (productID == 29455)
         {
           v3 = "AppleTV11,1";
           goto LABEL_69;
@@ -38,7 +38,7 @@
 
       else
       {
-        switch(v2)
+        switch(productID)
         {
           case 29715:
             v3 = "AudioAccessory5,1";
@@ -53,15 +53,15 @@
       }
     }
 
-    else if (v2 <= 28419)
+    else if (productID <= 28419)
     {
-      if (v2 == 21760)
+      if (productID == 21760)
       {
         v3 = "Device1,21760";
         goto LABEL_69;
       }
 
-      if (v2 == 22034)
+      if (productID == 22034)
       {
         v3 = "Device1,22034";
         goto LABEL_69;
@@ -70,7 +70,7 @@
 
     else
     {
-      switch(v2)
+      switch(productID)
       {
         case 28420:
           v3 = "AppleTV5,3";
@@ -89,9 +89,9 @@ LABEL_68:
     goto LABEL_69;
   }
 
-  if (v2 <= 8193)
+  if (productID <= 8193)
   {
-    switch(v2)
+    switch(productID)
     {
       case 0:
         v3 = "Invalid";
@@ -107,7 +107,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  switch(v2)
+  switch(productID)
   {
     case 8194:
       v3 = "AirPods1,1";

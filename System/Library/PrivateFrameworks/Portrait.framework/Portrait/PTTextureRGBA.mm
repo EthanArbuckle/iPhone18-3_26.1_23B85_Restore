@@ -1,20 +1,20 @@
 @interface PTTextureRGBA
-- (PTTextureRGBA)initWithTexture:(id)a3;
+- (PTTextureRGBA)initWithTexture:(id)texture;
 @end
 
 @implementation PTTextureRGBA
 
-- (PTTextureRGBA)initWithTexture:(id)a3
+- (PTTextureRGBA)initWithTexture:(id)texture
 {
   v8.receiver = self;
   v8.super_class = PTTextureRGBA;
-  v3 = a3;
+  textureCopy = texture;
   v4 = [(PTTextureRGBA *)&v8 init];
-  [(PTTextureRGBA *)v4 setTexRGBA:v3, v8.receiver, v8.super_class];
-  v5 = [v3 pixelFormat];
-  v6 = [v3 device];
+  [(PTTextureRGBA *)v4 setTexRGBA:textureCopy, v8.receiver, v8.super_class];
+  pixelFormat = [textureCopy pixelFormat];
+  device = [textureCopy device];
 
-  v4->_imageblockSize = [PTMetalTextureUtil macroBlockSizeForPixelFormat:v5 device:v6];
+  v4->_imageblockSize = [PTMetalTextureUtil macroBlockSizeForPixelFormat:pixelFormat device:device];
   return v4;
 }
 

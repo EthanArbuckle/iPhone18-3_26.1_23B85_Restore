@@ -1,19 +1,19 @@
 @interface HUEditableTextCollectionListCell
-- (HUEditableTextCollectionListCell)initWithFrame:(CGRect)a3;
+- (HUEditableTextCollectionListCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setContentConfiguration:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setContentConfiguration:(id)configuration;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setSelected:(BOOL)selected;
 - (void)updateConstraints;
 @end
 
 @implementation HUEditableTextCollectionListCell
 
-- (HUEditableTextCollectionListCell)initWithFrame:(CGRect)a3
+- (HUEditableTextCollectionListCell)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = HUEditableTextCollectionListCell;
-  v3 = [(HUEditableTextCollectionListCell *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUEditableTextCollectionListCell *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75BB8]);
@@ -21,43 +21,43 @@
     v3->_textField = v4;
 
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v7 = [(HUEditableTextCollectionListCell *)v3 textField];
-    [v7 setFont:v6];
+    textField = [(HUEditableTextCollectionListCell *)v3 textField];
+    [textField setFont:v6];
 
-    v8 = [(HUEditableTextCollectionListCell *)v3 textField];
-    [v8 setAdjustsFontForContentSizeCategory:1];
+    textField2 = [(HUEditableTextCollectionListCell *)v3 textField];
+    [textField2 setAdjustsFontForContentSizeCategory:1];
 
-    v9 = [(HUEditableTextCollectionListCell *)v3 textField];
-    [v9 setReturnKeyType:9];
+    textField3 = [(HUEditableTextCollectionListCell *)v3 textField];
+    [textField3 setReturnKeyType:9];
 
-    v10 = [(HUEditableTextCollectionListCell *)v3 textField];
-    [v10 setClearButtonMode:3];
+    textField4 = [(HUEditableTextCollectionListCell *)v3 textField];
+    [textField4 setClearButtonMode:3];
 
-    v11 = [(HUEditableTextCollectionListCell *)v3 contentView];
-    v12 = [(HUEditableTextCollectionListCell *)v3 textField];
-    [v11 addSubview:v12];
+    contentView = [(HUEditableTextCollectionListCell *)v3 contentView];
+    textField5 = [(HUEditableTextCollectionListCell *)v3 textField];
+    [contentView addSubview:textField5];
 
     v13 = objc_alloc(MEMORY[0x277D756E8]);
-    v14 = [(HUEditableTextCollectionListCell *)v3 defaultContentConfiguration];
-    v15 = [v13 initWithConfiguration:v14];
+    defaultContentConfiguration = [(HUEditableTextCollectionListCell *)v3 defaultContentConfiguration];
+    v15 = [v13 initWithConfiguration:defaultContentConfiguration];
     [(HUEditableTextCollectionListCell *)v3 setListContentView:v15];
 
-    v16 = [(HUEditableTextCollectionListCell *)v3 listContentView];
-    [v16 setHidden:1];
+    listContentView = [(HUEditableTextCollectionListCell *)v3 listContentView];
+    [listContentView setHidden:1];
 
-    v17 = [(HUEditableTextCollectionListCell *)v3 contentView];
-    v18 = [(HUEditableTextCollectionListCell *)v3 listContentView];
-    [v17 addSubview:v18];
+    contentView2 = [(HUEditableTextCollectionListCell *)v3 contentView];
+    listContentView2 = [(HUEditableTextCollectionListCell *)v3 listContentView];
+    [contentView2 addSubview:listContentView2];
   }
 
-  v19 = [MEMORY[0x277D756E0] cellConfiguration];
-  [v19 directionalLayoutMargins];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  [cellConfiguration directionalLayoutMargins];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [(HUEditableTextCollectionListCell *)v3 contentView];
-  [v28 setDirectionalLayoutMargins:{v21, v23, v25, v27}];
+  contentView3 = [(HUEditableTextCollectionListCell *)v3 contentView];
+  [contentView3 setDirectionalLayoutMargins:{v21, v23, v25, v27}];
 
   return v3;
 }
@@ -67,33 +67,33 @@
   v10.receiver = self;
   v10.super_class = HUEditableTextCollectionListCell;
   [(HUEditableTextCollectionListCell *)&v10 prepareForReuse];
-  v3 = [(HUEditableTextCollectionListCell *)self textField];
-  [v3 setText:0];
+  textField = [(HUEditableTextCollectionListCell *)self textField];
+  [textField setText:0];
 
-  v4 = [(HUEditableTextCollectionListCell *)self textField];
-  [v4 setPlaceholder:0];
+  textField2 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField2 setPlaceholder:0];
 
-  v5 = [(HUEditableTextCollectionListCell *)self textField];
-  [v5 setDelegate:0];
+  textField3 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField3 setDelegate:0];
 
-  v6 = [(HUEditableTextCollectionListCell *)self textField];
-  [v6 setEnabled:1];
+  textField4 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField4 setEnabled:1];
 
-  v7 = [(HUEditableTextCollectionListCell *)self textField];
-  [v7 endEditing:1];
+  textField5 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField5 endEditing:1];
 
-  v8 = [(HUEditableTextCollectionListCell *)self textField];
-  [v8 setHidden:0];
+  textField6 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField6 setHidden:0];
 
-  v9 = [(HUEditableTextCollectionListCell *)self listContentView];
-  [v9 setHidden:1];
+  listContentView = [(HUEditableTextCollectionListCell *)self listContentView];
+  [listContentView setHidden:1];
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
-  v14 = v4;
+  v14 = configurationCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v14;
@@ -106,28 +106,28 @@
 
   v6 = v5;
 
-  v7 = [(HUEditableTextCollectionListCell *)self listContentView];
-  [v7 setConfiguration:v6];
+  listContentView = [(HUEditableTextCollectionListCell *)self listContentView];
+  [listContentView setConfiguration:v6];
 
-  v8 = [v6 text];
-  v9 = [v8 length];
+  text = [v6 text];
+  v9 = [text length];
   v10 = v9 == 0;
   v11 = v9 != 0;
 
-  v12 = [(HUEditableTextCollectionListCell *)self textField];
-  [v12 setHidden:v11];
+  textField = [(HUEditableTextCollectionListCell *)self textField];
+  [textField setHidden:v11];
 
-  v13 = [(HUEditableTextCollectionListCell *)self listContentView];
-  [v13 setHidden:v10];
+  listContentView2 = [(HUEditableTextCollectionListCell *)self listContentView];
+  [listContentView2 setHidden:v10];
 
   [(HUEditableTextCollectionListCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v4 = !a3;
-  v5 = [(HUEditableTextCollectionListCell *)self textField];
-  [v5 setEnabled:v4];
+  v4 = !disabled;
+  textField = [(HUEditableTextCollectionListCell *)self textField];
+  [textField setEnabled:v4];
 
   if (v4)
   {
@@ -139,30 +139,30 @@
     [MEMORY[0x277D75348] systemGrayColor];
   }
   v6 = ;
-  v7 = [(HUEditableTextCollectionListCell *)self textField];
-  [v7 setTextColor:v6];
+  textField2 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField2 setTextColor:v6];
 
-  v8 = [(HUEditableTextCollectionListCell *)self textField];
-  [v8 setClearButtonMode:v4];
+  textField3 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField3 setClearButtonMode:v4];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = HUEditableTextCollectionListCell;
   [(HUEditableTextCollectionListCell *)&v8 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
-    v5 = [(HUEditableTextCollectionListCell *)self textField];
-    [v5 becomeFirstResponder];
+    textField = [(HUEditableTextCollectionListCell *)self textField];
+    [textField becomeFirstResponder];
   }
 
-  v6 = [(HUEditableTextCollectionListCell *)self textField];
-  [v6 setHidden:v3];
+  textField2 = [(HUEditableTextCollectionListCell *)self textField];
+  [textField2 setHidden:selectedCopy];
 
-  v7 = [(HUEditableTextCollectionListCell *)self listContentView];
-  [v7 setHidden:v3 ^ 1];
+  listContentView = [(HUEditableTextCollectionListCell *)self listContentView];
+  [listContentView setHidden:selectedCopy ^ 1];
 }
 
 - (void)updateConstraints
@@ -170,108 +170,108 @@
   v59.receiver = self;
   v59.super_class = HUEditableTextCollectionListCell;
   [(HUEditableTextCollectionListCell *)&v59 updateConstraints];
-  v3 = [(HUEditableTextCollectionListCell *)self textFieldConstraints];
+  textFieldConstraints = [(HUEditableTextCollectionListCell *)self textFieldConstraints];
 
-  if (!v3)
+  if (!textFieldConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUEditableTextCollectionListCell *)self textField];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    array = [MEMORY[0x277CBEB18] array];
+    textField = [(HUEditableTextCollectionListCell *)self textField];
+    [textField setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(HUEditableTextCollectionListCell *)self textField];
-    v7 = [v6 topAnchor];
-    v8 = [(HUEditableTextCollectionListCell *)self contentView];
-    v9 = [v8 layoutMarginsGuide];
-    v10 = [v9 topAnchor];
-    v11 = [v7 constraintEqualToAnchor:v10];
-    [v4 addObject:v11];
+    textField2 = [(HUEditableTextCollectionListCell *)self textField];
+    topAnchor = [textField2 topAnchor];
+    contentView = [(HUEditableTextCollectionListCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v11];
 
-    v12 = [(HUEditableTextCollectionListCell *)self textField];
-    v13 = [v12 bottomAnchor];
-    v14 = [(HUEditableTextCollectionListCell *)self contentView];
-    v15 = [v14 layoutMarginsGuide];
-    v16 = [v15 bottomAnchor];
-    v17 = [v13 constraintEqualToAnchor:v16];
-    [v4 addObject:v17];
+    textField3 = [(HUEditableTextCollectionListCell *)self textField];
+    bottomAnchor = [textField3 bottomAnchor];
+    contentView2 = [(HUEditableTextCollectionListCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v17];
 
-    v18 = [(HUEditableTextCollectionListCell *)self textField];
-    v19 = [v18 leadingAnchor];
-    v20 = [(HUEditableTextCollectionListCell *)self contentView];
-    v21 = [v20 layoutMarginsGuide];
-    v22 = [v21 leadingAnchor];
-    v23 = [v19 constraintEqualToAnchor:v22];
-    [v4 addObject:v23];
+    textField4 = [(HUEditableTextCollectionListCell *)self textField];
+    leadingAnchor = [textField4 leadingAnchor];
+    contentView3 = [(HUEditableTextCollectionListCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v23];
 
-    v24 = [(HUEditableTextCollectionListCell *)self textField];
-    v25 = [v24 trailingAnchor];
-    v26 = [(HUEditableTextCollectionListCell *)self contentView];
-    v27 = [v26 layoutMarginsGuide];
-    v28 = [v27 trailingAnchor];
-    v29 = [v25 constraintEqualToAnchor:v28];
-    [v4 addObject:v29];
+    textField5 = [(HUEditableTextCollectionListCell *)self textField];
+    trailingAnchor = [textField5 trailingAnchor];
+    contentView4 = [(HUEditableTextCollectionListCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v29];
 
-    [(HUEditableTextCollectionListCell *)self setTextFieldConstraints:v4];
+    [(HUEditableTextCollectionListCell *)self setTextFieldConstraints:array];
   }
 
-  v30 = [(HUEditableTextCollectionListCell *)self listContentViewConstraints];
+  listContentViewConstraints = [(HUEditableTextCollectionListCell *)self listContentViewConstraints];
 
-  if (!v30)
+  if (!listContentViewConstraints)
   {
-    v31 = [MEMORY[0x277CBEB18] array];
-    v32 = [(HUEditableTextCollectionListCell *)self listContentView];
-    [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+    array2 = [MEMORY[0x277CBEB18] array];
+    listContentView = [(HUEditableTextCollectionListCell *)self listContentView];
+    [listContentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v33 = [(HUEditableTextCollectionListCell *)self listContentView];
-    v34 = [v33 leadingAnchor];
-    v35 = [(HUEditableTextCollectionListCell *)self leadingAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
-    [v31 addObject:v36];
+    listContentView2 = [(HUEditableTextCollectionListCell *)self listContentView];
+    leadingAnchor3 = [listContentView2 leadingAnchor];
+    leadingAnchor4 = [(HUEditableTextCollectionListCell *)self leadingAnchor];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    [array2 addObject:v36];
 
-    v37 = [(HUEditableTextCollectionListCell *)self listContentView];
-    v38 = [v37 trailingAnchor];
-    v39 = [(HUEditableTextCollectionListCell *)self layoutMarginsGuide];
-    v40 = [v39 trailingAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
-    [v31 addObject:v41];
+    listContentView3 = [(HUEditableTextCollectionListCell *)self listContentView];
+    trailingAnchor3 = [listContentView3 trailingAnchor];
+    layoutMarginsGuide5 = [(HUEditableTextCollectionListCell *)self layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+    v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    [array2 addObject:v41];
 
-    v42 = [(HUEditableTextCollectionListCell *)self listContentView];
-    v43 = [v42 topAnchor];
-    v44 = [(HUEditableTextCollectionListCell *)self layoutMarginsGuide];
-    v45 = [v44 topAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
-    [v31 addObject:v46];
+    listContentView4 = [(HUEditableTextCollectionListCell *)self listContentView];
+    topAnchor3 = [listContentView4 topAnchor];
+    layoutMarginsGuide6 = [(HUEditableTextCollectionListCell *)self layoutMarginsGuide];
+    topAnchor4 = [layoutMarginsGuide6 topAnchor];
+    v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+    [array2 addObject:v46];
 
-    v47 = [(HUEditableTextCollectionListCell *)self listContentView];
-    v48 = [v47 bottomAnchor];
-    v49 = [(HUEditableTextCollectionListCell *)self layoutMarginsGuide];
-    v50 = [v49 bottomAnchor];
-    v51 = [v48 constraintEqualToAnchor:v50];
-    [v31 addObject:v51];
+    listContentView5 = [(HUEditableTextCollectionListCell *)self listContentView];
+    bottomAnchor3 = [listContentView5 bottomAnchor];
+    layoutMarginsGuide7 = [(HUEditableTextCollectionListCell *)self layoutMarginsGuide];
+    bottomAnchor4 = [layoutMarginsGuide7 bottomAnchor];
+    v51 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array2 addObject:v51];
 
-    [(HUEditableTextCollectionListCell *)self setListContentViewConstraints:v31];
+    [(HUEditableTextCollectionListCell *)self setListContentViewConstraints:array2];
   }
 
-  v52 = [(HUEditableTextCollectionListCell *)self textField];
-  v53 = [v52 isHidden];
+  textField6 = [(HUEditableTextCollectionListCell *)self textField];
+  isHidden = [textField6 isHidden];
 
   v54 = MEMORY[0x277CCAAD0];
-  v55 = [(HUEditableTextCollectionListCell *)self textFieldConstraints];
-  if (v53)
+  textFieldConstraints2 = [(HUEditableTextCollectionListCell *)self textFieldConstraints];
+  if (isHidden)
   {
-    [v54 deactivateConstraints:v55];
+    [v54 deactivateConstraints:textFieldConstraints2];
 
     v56 = MEMORY[0x277CCAAD0];
-    v57 = [(HUEditableTextCollectionListCell *)self listContentViewConstraints];
-    [v56 activateConstraints:v57];
+    listContentViewConstraints2 = [(HUEditableTextCollectionListCell *)self listContentViewConstraints];
+    [v56 activateConstraints:listContentViewConstraints2];
   }
 
   else
   {
-    [v54 activateConstraints:v55];
+    [v54 activateConstraints:textFieldConstraints2];
 
     v58 = MEMORY[0x277CCAAD0];
-    v57 = [(HUEditableTextCollectionListCell *)self listContentViewConstraints];
-    [v58 deactivateConstraints:v57];
+    listContentViewConstraints2 = [(HUEditableTextCollectionListCell *)self listContentViewConstraints];
+    [v58 deactivateConstraints:listContentViewConstraints2];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface PKBusinessChatAccountContext
-- (PKBusinessChatAccountContext)initWithAccount:(id)a3 topic:(id)a4;
+- (PKBusinessChatAccountContext)initWithAccount:(id)account topic:(id)topic;
 - (id)businessIdentifier;
 - (id)groupParameters;
 - (id)intentParameters;
@@ -7,18 +7,18 @@
 
 @implementation PKBusinessChatAccountContext
 
-- (PKBusinessChatAccountContext)initWithAccount:(id)a3 topic:(id)a4
+- (PKBusinessChatAccountContext)initWithAccount:(id)account topic:(id)topic
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  topicCopy = topic;
   v12.receiver = self;
   v12.super_class = PKBusinessChatAccountContext;
   v9 = [(PKBusinessChatAccountContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_topic, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_topic, topic);
   }
 
   return v10;
@@ -32,32 +32,32 @@
     v4 = v3;
     if (v3)
     {
-      v5 = v3;
+      businessChatIdentifier = v3;
     }
 
     else
     {
-      v6 = [(PKAccount *)self->_account savingsDetails];
-      v5 = [v6 businessChatIdentifier];
+      savingsDetails = [(PKAccount *)self->_account savingsDetails];
+      businessChatIdentifier = [savingsDetails businessChatIdentifier];
     }
   }
 
   else
   {
-    v5 = 0;
+    businessChatIdentifier = 0;
   }
 
-  return v5;
+  return businessChatIdentifier;
 }
 
 - (id)intentParameters
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKAccountSupportTopic *)self->_topic businessChatTargetDialog];
-  [v3 setObject:v4 forKeyedSubscript:@"targetDialog"];
+  businessChatTargetDialog = [(PKAccountSupportTopic *)self->_topic businessChatTargetDialog];
+  [v3 setObject:businessChatTargetDialog forKeyedSubscript:@"targetDialog"];
 
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"accountID"];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v3 setObject:accountIdentifier forKeyedSubscript:@"accountID"];
 
   v6 = [v3 copy];
 
@@ -72,8 +72,8 @@
   v6[0] = @"apple_pay";
   v6[1] = @"Wallet";
   v5[2] = @"page";
-  v2 = [(PKAccountSupportTopic *)self->_topic businessChatPage];
-  v6[2] = v2;
+  businessChatPage = [(PKAccountSupportTopic *)self->_topic businessChatPage];
+  v6[2] = businessChatPage;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:3];
 
   return v3;

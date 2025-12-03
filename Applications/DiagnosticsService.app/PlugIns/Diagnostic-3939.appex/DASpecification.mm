@@ -1,17 +1,17 @@
 @interface DASpecification
-+ (id)specificationFromArray:(id)a3;
-- (DASpecification)initWithDictionary:(id)a3;
++ (id)specificationFromArray:(id)array;
+- (DASpecification)initWithDictionary:(id)dictionary;
 @end
 
 @implementation DASpecification
 
-- (DASpecification)initWithDictionary:(id)a3
+- (DASpecification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = DASpecification;
   v5 = [(DASpecification *)&v8 init];
-  if (v5 && ![v4 count])
+  if (v5 && ![dictionaryCopy count])
   {
     v6 = 0;
   }
@@ -24,15 +24,15 @@
   return v6;
 }
 
-+ (id)specificationFromArray:(id)a3
++ (id)specificationFromArray:(id)array
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  arrayCopy = array;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -48,7 +48,7 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [a1 alloc];
+        v12 = [self alloc];
         v13 = [v12 initWithDictionary:{v11, v16}];
         if (!v13)
         {

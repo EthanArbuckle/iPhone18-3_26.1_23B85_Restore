@@ -1,25 +1,25 @@
 @interface MDLMaterial
-+ (id)decodeMaterialWithCoder:(id)a3 allocator:(id)a4;
++ (id)decodeMaterialWithCoder:(id)coder allocator:(id)allocator;
 - (BidirectionalScatteringDistributionFunction)bsdf;
 - (MDLMaterial)init;
 - (MDLMaterial)initWithName:(NSString *)name scatteringFunction:(MDLScatteringFunction *)scatteringFunction;
-- (MDLMaterial)initWithName:(id)a3;
-- (MDLMaterial)initWithName:(id)a3 physicallyPlausibleBSDF:(PhysicallyPlausibleDistribution *)a4;
+- (MDLMaterial)initWithName:(id)name;
+- (MDLMaterial)initWithName:(id)name physicallyPlausibleBSDF:(PhysicallyPlausibleDistribution *)f;
 - (MDLMaterialProperty)objectAtIndexedSubscript:(NSUInteger)idx;
 - (MDLMaterialProperty)objectForKeyedSubscript:(NSString *)name;
 - (MDLMaterialProperty)propertyNamed:(NSString *)name;
 - (MDLMaterialProperty)propertyWithSemantic:(MDLMaterialSemantic)semantic;
 - (MDLScatteringFunction)scatteringFunction;
 - (NSArray)propertiesWithSemantic:(MDLMaterialSemantic)semantic;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)conformToMatProperties;
-- (void)encodeMaterialWithCoder:(id)a3 allocator:(id)a4;
-- (void)loadTexturesUsingArchiveAssetResolver:(id)a3 cache:(id)a4;
-- (void)loadTexturesUsingResolver:(id)a3 cache:(id)a4;
+- (void)encodeMaterialWithCoder:(id)coder allocator:(id)allocator;
+- (void)loadTexturesUsingArchiveAssetResolver:(id)resolver cache:(id)cache;
+- (void)loadTexturesUsingResolver:(id)resolver cache:(id)cache;
 - (void)removeAllProperties;
 - (void)resolveTexturesWithResolver:(id)resolver;
 - (void)setProperty:(MDLMaterialProperty *)property;
-- (void)setScatteringFunction:(id)a3;
+- (void)setScatteringFunction:(id)function;
 @end
 
 @implementation MDLMaterial
@@ -38,10 +38,10 @@
   return scatteringFunction;
 }
 
-- (void)setScatteringFunction:(id)a3
+- (void)setScatteringFunction:(id)function
 {
-  v5 = a3;
-  objc_storeStrong(&self->_scatteringFunction, a3);
+  functionCopy = function;
+  objc_storeStrong(&self->_scatteringFunction, function);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   builtinProperties = self->_builtinProperties;
   self->_builtinProperties = v6;
@@ -59,7 +59,7 @@
         v12 = MEMORY[0x277CCACA8];
         Name = property_getName(v9[i]);
         v15 = objc_msgSend_stringWithFormat_(v12, v14, @"%s", Name);
-        v17 = objc_msgSend_valueForKey_(v5, v16, v15);
+        v17 = objc_msgSend_valueForKey_(functionCopy, v16, v15);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -70,7 +70,7 @@
   }
 
   free(v9);
-  v21 = objc_msgSend_superclass(v5, v19, v20);
+  v21 = objc_msgSend_superclass(functionCopy, v19, v20);
   v22 = class_copyPropertyList(v21, &outCount);
   if (outCount)
   {
@@ -82,7 +82,7 @@
         v25 = MEMORY[0x277CCACA8];
         v26 = property_getName(v22[j]);
         v28 = objc_msgSend_stringWithFormat_(v25, v27, @"%s", v26);
-        v30 = objc_msgSend_valueForKey_(v5, v29, v28);
+        v30 = objc_msgSend_valueForKey_(functionCopy, v29, v28);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -104,7 +104,7 @@
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v54 = self;
+  selfCopy = self;
   v6 = self->_builtinProperties;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v63, v69, 16);
   if (v10)
@@ -156,7 +156,7 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v23 = v54->_userProperties;
+  v23 = selfCopy->_userProperties;
   v27 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v59, v68, 16);
   if (v27)
   {
@@ -238,11 +238,11 @@
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadTexturesUsingArchiveAssetResolver:(id)a3 cache:(id)a4
+- (void)loadTexturesUsingArchiveAssetResolver:(id)resolver cache:(id)cache
 {
   v80 = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v6 = a4;
+  resolverCopy = resolver;
+  cacheCopy = cache;
   v64 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v75 = 0u;
   v76 = 0u;
@@ -263,7 +263,7 @@
         }
 
         v14 = *(*(&v73 + 1) + 8 * i);
-        v15 = objc_msgSend_stringValue(v14, v9, v10, v63);
+        v15 = objc_msgSend_stringValue(v14, v9, v10, resolverCopy);
         if (v15)
         {
           v16 = objc_msgSend_stringValue(v14, v9, v10);
@@ -301,7 +301,7 @@
         }
 
         v27 = *(*(&v69 + 1) + 8 * j);
-        v28 = objc_msgSend_stringValue(v27, v22, v23, v63);
+        v28 = objc_msgSend_stringValue(v27, v22, v23, resolverCopy);
         if (v28)
         {
           v29 = objc_msgSend_stringValue(v27, v22, v23);
@@ -339,31 +339,31 @@
         }
 
         v40 = *(*(&v65 + 1) + 8 * k);
-        if (!v6)
+        if (!cacheCopy)
         {
           v47 = objc_msgSend_stringValue(*(*(&v65 + 1) + 8 * k), v35, v36);
-          v49 = objc_msgSend_textureNamed_assetResolver_(MDLTexture, v50, v47, v63);
+          v49 = objc_msgSend_textureNamed_assetResolver_(MDLTexture, v50, v47, resolverCopy);
           goto LABEL_30;
         }
 
         v41 = objc_msgSend_stringValue(*(*(&v65 + 1) + 8 * k), v35, v36);
-        v43 = objc_msgSend_objectForKey_(v6, v42, v41);
+        v43 = objc_msgSend_objectForKey_(cacheCopy, v42, v41);
         v44 = v43 == 0;
 
         if (!v44)
         {
           v47 = objc_msgSend_stringValue(v40, v45, v46);
-          v49 = objc_msgSend_objectForKey_(v6, v48, v47);
+          v49 = objc_msgSend_objectForKey_(cacheCopy, v48, v47);
 LABEL_30:
           v51 = v49;
           goto LABEL_32;
         }
 
         v52 = objc_msgSend_stringValue(v40, v45, v46);
-        v51 = objc_msgSend_textureNamed_assetResolver_(MDLTexture, v53, v52, v63);
+        v51 = objc_msgSend_textureNamed_assetResolver_(MDLTexture, v53, v52, resolverCopy);
 
         v47 = objc_msgSend_stringValue(v40, v54, v55);
-        objc_msgSend_setObject_forKeyedSubscript_(v6, v56, v51, v47);
+        objc_msgSend_setObject_forKeyedSubscript_(cacheCopy, v56, v51, v47);
 LABEL_32:
 
         if (v51)
@@ -374,7 +374,7 @@ LABEL_32:
             v60 = objc_alloc_init(MDLTextureSampler);
           }
 
-          objc_msgSend_setTexture_(v60, v59, v51, v63);
+          objc_msgSend_setTexture_(v60, v59, v51, resolverCopy);
           objc_msgSend_setTextureSamplerValue_(v40, v61, v60);
         }
       }
@@ -388,16 +388,16 @@ LABEL_32:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadTexturesUsingResolver:(id)a3 cache:(id)a4
+- (void)loadTexturesUsingResolver:(id)resolver cache:(id)cache
 {
   v76 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v6 = a4;
+  resolverCopy = resolver;
+  cacheCopy = cache;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    objc_msgSend_resolveTexturesWithResolver_(self, v9, v60);
+    objc_msgSend_resolveTexturesWithResolver_(self, v9, resolverCopy);
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -490,10 +490,10 @@ LABEL_23:
       }
 
       v37 = *(*(&v61 + 1) + 8 * v36);
-      if (v6)
+      if (cacheCopy)
       {
         v38 = objc_msgSend_URLValue(*(*(&v61 + 1) + 8 * v36), v32, v33);
-        v40 = objc_msgSend_objectForKey_(v6, v39, v38);
+        v40 = objc_msgSend_objectForKey_(cacheCopy, v39, v38);
         v41 = v40 == 0;
 
         if (v41)
@@ -502,12 +502,12 @@ LABEL_23:
           v48 = objc_msgSend_textureWithURL_(MDLTexture, v50, v49);
 
           v44 = objc_msgSend_URLValue(v37, v51, v52);
-          objc_msgSend_setObject_forKeyedSubscript_(v6, v53, v48, v44);
+          objc_msgSend_setObject_forKeyedSubscript_(cacheCopy, v53, v48, v44);
           goto LABEL_32;
         }
 
         v44 = objc_msgSend_URLValue(v37, v42, v43);
-        v46 = objc_msgSend_objectForKeyedSubscript_(v6, v45, v44);
+        v46 = objc_msgSend_objectForKeyedSubscript_(cacheCopy, v45, v44);
       }
 
       else
@@ -544,7 +544,7 @@ LABEL_32:
     }
   }
 
-  objc_msgSend_loadTexturesUsingArchiveAssetResolver_cache_(self, v7, v60, v6);
+  objc_msgSend_loadTexturesUsingArchiveAssetResolver_cache_(self, v7, resolverCopy, cacheCopy);
 LABEL_39:
 
   v59 = *MEMORY[0x277D85DE8];
@@ -574,17 +574,17 @@ LABEL_39:
   return v3;
 }
 
-- (MDLMaterial)initWithName:(id)a3
+- (MDLMaterial)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = MDLMaterial;
   v6 = [(MDLMaterial *)&v14 init];
   if (v6)
   {
-    if (v4)
+    if (nameCopy)
     {
-      v7 = objc_msgSend_stringWithString_(MEMORY[0x277CCACA8], v5, v4);
+      v7 = objc_msgSend_stringWithString_(MEMORY[0x277CCACA8], v5, nameCopy);
     }
 
     else
@@ -641,17 +641,17 @@ LABEL_39:
   return v9;
 }
 
-- (MDLMaterial)initWithName:(id)a3 physicallyPlausibleBSDF:(PhysicallyPlausibleDistribution *)a4
+- (MDLMaterial)initWithName:(id)name physicallyPlausibleBSDF:(PhysicallyPlausibleDistribution *)f
 {
-  v6 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = MDLMaterial;
   v8 = [(MDLMaterial *)&v18 init];
   if (v8)
   {
-    if (v6)
+    if (nameCopy)
     {
-      v9 = objc_msgSend_stringWithString_(MEMORY[0x277CCACA8], v7, v6);
+      v9 = objc_msgSend_stringWithString_(MEMORY[0x277CCACA8], v7, nameCopy);
     }
 
     else
@@ -669,11 +669,11 @@ LABEL_39:
     v13 = objc_opt_new();
     objc_msgSend_setScatteringFunction_(v8, v14, v13);
     v15 = v13[11];
-    *(v15 + 112) = a4[1].var1.var2;
-    *(v15 + 120) = a4[1].var1.var3;
-    *(v15 + 96) = *&a4[1].var1.var0;
-    *(v15 + 128) = *&a4[1].var1.var5;
-    *(v15 + 136) = a4[1].var1.var7;
+    *(v15 + 112) = f[1].var1.var2;
+    *(v15 + 120) = f[1].var1.var3;
+    *(v15 + 96) = *&f[1].var1.var0;
+    *(v15 + 128) = *&f[1].var1.var5;
+    *(v15 + 136) = f[1].var1.var7;
     v16 = v8;
   }
 
@@ -1041,42 +1041,42 @@ LABEL_21:
   return scatteringFunction->_bsdf.__ptr_;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
+  var0 = state->var0;
   v12 = 0;
-  if (var0 < objc_msgSend_count(self->_builtinProperties, a2, a3) && a5 != 0)
+  if (var0 < objc_msgSend_count(self->_builtinProperties, a2, state) && count != 0)
   {
     v14 = var0;
     do
     {
       v15 = objc_msgSend_objectAtIndexedSubscript_(self->_builtinProperties, v10, v14);
-      a4[v12] = v15;
+      objects[v12] = v15;
 
       ++v14;
       ++v12;
     }
 
-    while (v14 < objc_msgSend_count(self->_builtinProperties, v16, v17) && v12 < a5);
+    while (v14 < objc_msgSend_count(self->_builtinProperties, v16, v17) && v12 < count);
   }
 
-  for (i = var0 - objc_msgSend_count(self->_builtinProperties, v10, v11); i < objc_msgSend_count(self->_userProperties, v19, v20) && v12 < a5; ++i)
+  for (i = var0 - objc_msgSend_count(self->_builtinProperties, v10, v11); i < objc_msgSend_count(self->_userProperties, v19, v20) && v12 < count; ++i)
   {
     v24 = objc_msgSend_objectAtIndexedSubscript_(self->_userProperties, v22, i);
-    a4[v12] = v24;
+    objects[v12] = v24;
 
     ++v12;
   }
 
-  if (a5 > v12)
+  if (count > v12)
   {
-    bzero(&a4[v12], 8 * (a5 - v12));
+    bzero(&objects[v12], 8 * (count - v12));
   }
 
   bzero(&unk_27DF90E20, 0x400uLL);
-  a3->var1 = a4;
-  a3->var2 = &unk_27DF90E20;
-  a3->var0 += a5;
+  state->var1 = objects;
+  state->var2 = &unk_27DF90E20;
+  state->var0 += count;
   return v12;
 }
 
@@ -1119,59 +1119,59 @@ LABEL_7:
   return v6;
 }
 
-- (void)encodeMaterialWithCoder:(id)a3 allocator:(id)a4
+- (void)encodeMaterialWithCoder:(id)coder allocator:(id)allocator
 {
-  v26 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  allocatorCopy = allocator;
   v9 = objc_msgSend_count(self->_userProperties, v7, v8);
-  objc_msgSend_encodeInteger_forKey_(v26, v10, v9, @"userProperties.count");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v10, v9, @"userProperties.count");
   if (v9 >= 1)
   {
     for (i = 0; i != v9; ++i)
     {
       v14 = objc_msgSend_objectAtIndexedSubscript_(self->_userProperties, v11, i);
       v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v15, @"userProperties[%ld]", i);
-      objc_msgSend_encodeMaterialPropertyWithCoder_forKey_allocator_(v14, v17, v26, v16, v6);
+      objc_msgSend_encodeMaterialPropertyWithCoder_forKey_allocator_(v14, v17, coderCopy, v16, allocatorCopy);
     }
   }
 
   v18 = objc_msgSend_count(self->_builtinProperties, v11, v12);
-  objc_msgSend_encodeInteger_forKey_(v26, v19, v18, @"builtinProperties.count");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v19, v18, @"builtinProperties.count");
   if (v18 >= 1)
   {
     for (j = 0; j != v18; ++j)
     {
       v22 = objc_msgSend_objectAtIndexedSubscript_(self->_builtinProperties, v20, j);
       v24 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v23, @"builtinProperties[%ld]", j);
-      objc_msgSend_encodeMaterialPropertyWithCoder_forKey_allocator_(v22, v25, v26, v24, v6);
+      objc_msgSend_encodeMaterialPropertyWithCoder_forKey_allocator_(v22, v25, coderCopy, v24, allocatorCopy);
     }
   }
 }
 
-+ (id)decodeMaterialWithCoder:(id)a3 allocator:(id)a4
++ (id)decodeMaterialWithCoder:(id)coder allocator:(id)allocator
 {
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  allocatorCopy = allocator;
   v7 = objc_alloc_init(MDLMaterial);
-  v10 = objc_msgSend_decodeIntegerForKey_(v5, v8, @"userProperties.count");
+  v10 = objc_msgSend_decodeIntegerForKey_(coderCopy, v8, @"userProperties.count");
   if (v10 >= 1)
   {
     for (i = 0; i != v10; ++i)
     {
       v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, @"userProperties[%ld]", i);
-      v14 = objc_msgSend_decodeMaterialPropertyWithCoder_forKey_allocator_(MDLMaterialProperty, v13, v5, v12, v6);
+      v14 = objc_msgSend_decodeMaterialPropertyWithCoder_forKey_allocator_(MDLMaterialProperty, v13, coderCopy, v12, allocatorCopy);
 
       objc_msgSend_addObject_(v7->_userProperties, v15, v14);
     }
   }
 
-  v17 = objc_msgSend_decodeIntegerForKey_(v5, v9, @"builtinProperties.count");
+  v17 = objc_msgSend_decodeIntegerForKey_(coderCopy, v9, @"builtinProperties.count");
   if (v17 >= 1)
   {
     for (j = 0; j != v17; ++j)
     {
       v19 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v16, @"builtinProperties[%ld]", j);
-      v21 = objc_msgSend_decodeMaterialPropertyWithCoder_forKey_allocator_(MDLMaterialProperty, v20, v5, v19, v6);
+      v21 = objc_msgSend_decodeMaterialPropertyWithCoder_forKey_allocator_(MDLMaterialProperty, v20, coderCopy, v19, allocatorCopy);
 
       objc_msgSend_addObject_(v7->_builtinProperties, v22, v21);
     }

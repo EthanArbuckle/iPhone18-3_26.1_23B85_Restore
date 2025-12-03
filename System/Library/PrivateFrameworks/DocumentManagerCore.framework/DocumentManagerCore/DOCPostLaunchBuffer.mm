@@ -1,7 +1,7 @@
 @interface DOCPostLaunchBuffer
 + (DOCPostLaunchBuffer)shared;
-- (DOCPostLaunchBuffer)initWithLabel:(id)a3 targetQueue:(id)a4;
-- (void)performAfterLaunchAlwaysAsync:(BOOL)a3 block:(id)a4;
+- (DOCPostLaunchBuffer)initWithLabel:(id)label targetQueue:(id)queue;
+- (void)performAfterLaunchAlwaysAsync:(BOOL)async block:(id)block;
 @end
 
 @implementation DOCPostLaunchBuffer
@@ -25,11 +25,11 @@ uint64_t __29__DOCPostLaunchBuffer_shared__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (DOCPostLaunchBuffer)initWithLabel:(id)a3 targetQueue:(id)a4
+- (DOCPostLaunchBuffer)initWithLabel:(id)label targetQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = DOCPostLaunchBuffer;
-  v4 = [(DOCOperationBuffer *)&v9 initWithLabel:a3 targetQueue:a4];
+  v4 = [(DOCOperationBuffer *)&v9 initWithLabel:label targetQueue:queue];
   if (v4)
   {
     v5 = dispatch_time(0, 5000000000);
@@ -44,13 +44,13 @@ uint64_t __29__DOCPostLaunchBuffer_shared__block_invoke()
   return v4;
 }
 
-- (void)performAfterLaunchAlwaysAsync:(BOOL)a3 block:(id)a4
+- (void)performAfterLaunchAlwaysAsync:(BOOL)async block:(id)block
 {
-  v6 = a4;
-  v9 = v6;
-  if (a3 || (v7 = -[DOCOperationBuffer locked](self, "locked"), v6 = v9, v7) || (v8 = [MEMORY[0x277CCACC8] isMainThread], v6 = v9, !v8))
+  blockCopy = block;
+  v9 = blockCopy;
+  if (async || (v7 = -[DOCOperationBuffer locked](self, "locked"), blockCopy = v9, v7) || (v8 = [MEMORY[0x277CCACC8] isMainThread], blockCopy = v9, !v8))
   {
-    [(DOCOperationBuffer *)self buffer:v6];
+    [(DOCOperationBuffer *)self buffer:blockCopy];
   }
 
   else

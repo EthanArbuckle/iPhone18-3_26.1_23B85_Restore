@@ -1,13 +1,13 @@
 @interface MetricEventsTracker
-- (void)sendAnalyticsEventFor:(int64_t)a3 interval:(double)a4 networkType:(unint64_t)a5 placementType:(unint64_t)a6 failed:(BOOL)a7;
+- (void)sendAnalyticsEventFor:(int64_t)for interval:(double)interval networkType:(unint64_t)type placementType:(unint64_t)placementType failed:(BOOL)failed;
 @end
 
 @implementation MetricEventsTracker
 
-- (void)sendAnalyticsEventFor:(int64_t)a3 interval:(double)a4 networkType:(unint64_t)a5 placementType:(unint64_t)a6 failed:(BOOL)a7
+- (void)sendAnalyticsEventFor:(int64_t)for interval:(double)interval networkType:(unint64_t)type placementType:(unint64_t)placementType failed:(BOOL)failed
 {
 
-  sub_1C1AF2D2C(a3, a5, a6, a7, a4);
+  sub_1C1AF2D2C(for, type, placementType, failed, interval);
 }
 
 @end

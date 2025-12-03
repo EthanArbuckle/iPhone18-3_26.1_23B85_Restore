@@ -1,27 +1,27 @@
 @interface ADSyncFlagManager
 + (id)sharedManager;
 - (ADSyncFlagManager)init;
-- (void)_clearSyncNeededFlagsForKeys:(id)a3;
+- (void)_clearSyncNeededFlagsForKeys:(id)keys;
 - (void)_fetchSyncFlagsOnDisk;
-- (void)_setSyncNeededFlagsForKeys:(id)a3;
+- (void)_setSyncNeededFlagsForKeys:(id)keys;
 - (void)clearAllFlags;
-- (void)clearFlagsForKeys:(id)a3;
-- (void)fetchKeysThatNeedToSync:(id)a3;
-- (void)setSyncNeededFlagForKeys:(id)a3;
+- (void)clearFlagsForKeys:(id)keys;
+- (void)fetchKeysThatNeedToSync:(id)sync;
+- (void)setSyncNeededFlagForKeys:(id)keys;
 @end
 
 @implementation ADSyncFlagManager
 
-- (void)_clearSyncNeededFlagsForKeys:(id)a3
+- (void)_clearSyncNeededFlagsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v15 = AFUserSupportDirectoryPath();
   v5 = +[NSFileManager defaultManager];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -56,16 +56,16 @@
   }
 }
 
-- (void)_setSyncNeededFlagsForKeys:(id)a3
+- (void)_setSyncNeededFlagsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v18 = AFUserSupportDirectoryPath();
   v5 = +[NSFileManager defaultManager];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v7)
   {
@@ -173,10 +173,10 @@
   dispatch_async(queue, block);
 }
 
-- (void)clearFlagsForKeys:(id)a3
+- (void)clearFlagsForKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     queue = self->_queue;
     v6[0] = _NSConcreteStackBlock;
@@ -184,15 +184,15 @@
     v6[2] = sub_1002EFDEC;
     v6[3] = &unk_10051E010;
     v6[4] = self;
-    v7 = v4;
+    v7 = keysCopy;
     dispatch_async(queue, v6);
   }
 }
 
-- (void)setSyncNeededFlagForKeys:(id)a3
+- (void)setSyncNeededFlagForKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     queue = self->_queue;
     v6[0] = _NSConcreteStackBlock;
@@ -200,16 +200,16 @@
     v6[2] = sub_1002EFEE0;
     v6[3] = &unk_10051E010;
     v6[4] = self;
-    v7 = v4;
+    v7 = keysCopy;
     dispatch_async(queue, v6);
   }
 }
 
-- (void)fetchKeysThatNeedToSync:(id)a3
+- (void)fetchKeysThatNeedToSync:(id)sync
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  syncCopy = sync;
+  v5 = syncCopy;
+  if (syncCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -217,7 +217,7 @@
     v7[2] = sub_1002EFFD0;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = syncCopy;
     dispatch_async(queue, v7);
   }
 }

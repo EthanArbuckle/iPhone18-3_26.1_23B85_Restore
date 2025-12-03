@@ -1,45 +1,45 @@
 @interface ACAccount
 - (id)fmipAccountInfoForProactiveChanges;
-- (id)fmipAccountInfoWithTokens:(BOOL)a3;
+- (id)fmipAccountInfoWithTokens:(BOOL)tokens;
 - (id)fmwAccountInfoForProactiveChanges;
-- (id)fmwAccountInfoWithTokens:(BOOL)a3;
+- (id)fmwAccountInfoWithTokens:(BOOL)tokens;
 @end
 
 @implementation ACAccount
 
-- (id)fmipAccountInfoWithTokens:(BOOL)a3
+- (id)fmipAccountInfoWithTokens:(BOOL)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v5 = +[NSMutableDictionary dictionary];
   v6 = off_100313398;
-  v7 = [(ACAccount *)self username];
-  [v5 fm_safelyMapKey:v6 toObject:v7];
+  username = [(ACAccount *)self username];
+  [v5 fm_safelyMapKey:v6 toObject:username];
 
   v8 = off_1003133A0;
-  v9 = [(ACAccount *)self aa_personID];
-  [v5 fm_safelyMapKey:v8 toObject:v9];
+  aa_personID = [(ACAccount *)self aa_personID];
+  [v5 fm_safelyMapKey:v8 toObject:aa_personID];
 
   v10 = off_1003133A8;
-  v11 = [(ACAccount *)self aa_altDSID];
-  [v5 fm_safelyMapKey:v10 toObject:v11];
+  aa_altDSID = [(ACAccount *)self aa_altDSID];
+  [v5 fm_safelyMapKey:v10 toObject:aa_altDSID];
 
-  if (v3)
+  if (tokensCopy)
   {
     v12 = off_1003133B0;
-    v13 = [(ACAccount *)self aa_fmipToken];
-    [v5 fm_safelyMapKey:v12 toObject:v13];
+    aa_fmipToken = [(ACAccount *)self aa_fmipToken];
+    [v5 fm_safelyMapKey:v12 toObject:aa_fmipToken];
 
     v14 = off_1003133B8;
-    v15 = [(ACAccount *)self aa_authToken];
-    [v5 fm_safelyMapKey:v14 toObject:v15];
+    aa_authToken = [(ACAccount *)self aa_authToken];
+    [v5 fm_safelyMapKey:v14 toObject:aa_authToken];
   }
 
   v16 = off_1003133C0;
-  v17 = [(ACAccount *)self identifier];
-  [v5 fm_safelyMapKey:v16 toObject:v17];
+  identifier = [(ACAccount *)self identifier];
+  [v5 fm_safelyMapKey:v16 toObject:identifier];
 
-  v18 = [(ACAccount *)self dataclassProperties];
-  v19 = [v18 objectForKeyedSubscript:@"com.apple.Dataclass.DeviceLocator"];
+  dataclassProperties = [(ACAccount *)self dataclassProperties];
+  v19 = [dataclassProperties objectForKeyedSubscript:@"com.apple.Dataclass.DeviceLocator"];
 
   v20 = off_1003133C8;
   v21 = [v19 objectForKeyedSubscript:@"hostname"];
@@ -118,31 +118,31 @@ LABEL_13:
   return v4;
 }
 
-- (id)fmwAccountInfoWithTokens:(BOOL)a3
+- (id)fmwAccountInfoWithTokens:(BOOL)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v5 = +[NSMutableDictionary dictionary];
   v6 = off_100313398;
-  v7 = [(ACAccount *)self username];
-  [v5 fm_safelyMapKey:v6 toObject:v7];
+  username = [(ACAccount *)self username];
+  [v5 fm_safelyMapKey:v6 toObject:username];
 
   v8 = off_1003133A0;
-  v9 = [(ACAccount *)self aa_personID];
-  [v5 fm_safelyMapKey:v8 toObject:v9];
+  aa_personID = [(ACAccount *)self aa_personID];
+  [v5 fm_safelyMapKey:v8 toObject:aa_personID];
 
   v10 = off_1003133A8;
-  v11 = [(ACAccount *)self aa_altDSID];
-  [v5 fm_safelyMapKey:v10 toObject:v11];
+  aa_altDSID = [(ACAccount *)self aa_altDSID];
+  [v5 fm_safelyMapKey:v10 toObject:aa_altDSID];
 
-  if (v3)
+  if (tokensCopy)
   {
     v12 = off_1003133B0;
-    v13 = [(ACAccount *)self aa_fmipToken];
-    [v5 fm_safelyMapKey:v12 toObject:v13];
+    aa_fmipToken = [(ACAccount *)self aa_fmipToken];
+    [v5 fm_safelyMapKey:v12 toObject:aa_fmipToken];
   }
 
-  v14 = [(ACAccount *)self dataclassProperties];
-  v15 = [v14 objectForKeyedSubscript:@"com.apple.Dataclass.DeviceLocator"];
+  dataclassProperties = [(ACAccount *)self dataclassProperties];
+  v15 = [dataclassProperties objectForKeyedSubscript:@"com.apple.Dataclass.DeviceLocator"];
 
   v16 = off_1003133C8;
   v17 = [v15 objectForKeyedSubscript:@"hostname"];

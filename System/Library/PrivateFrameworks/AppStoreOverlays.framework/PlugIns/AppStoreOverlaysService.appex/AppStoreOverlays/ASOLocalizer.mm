@@ -1,13 +1,13 @@
 @interface ASOLocalizer
 + (id)defaultLocalizer;
 - (ASOLocalizer)init;
-- (ASOLocalizer)initWithBundles:(id)a3 languageCodes:(id)a4;
-- (id)stringForKey:(id)a3;
+- (ASOLocalizer)initWithBundles:(id)bundles languageCodes:(id)codes;
+- (id)stringForKey:(id)key;
 @end
 
 @implementation ASOLocalizer
 
-- (ASOLocalizer)initWithBundles:(id)a3 languageCodes:(id)a4
+- (ASOLocalizer)initWithBundles:(id)bundles languageCodes:(id)codes
 {
   sub_10000F508();
   v4 = sub_1000184A8();
@@ -28,11 +28,11 @@
   return v5;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
   v4 = sub_100018458();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10000EF0C(v4, v6);
 
   v8 = sub_100018428();

@@ -1,41 +1,41 @@
 @interface IHKImageUtils
-+ (CGImage)CopyCGImageTosRGB:(CGImage *)a3;
-+ (CGImage)convertCGImageToBGRA_sRGB:(CGImage *)a3;
-+ (__CVBuffer)convertCGImageToBGRA_sRGB_PixelBuffer:(CGImage *)a3;
++ (CGImage)CopyCGImageTosRGB:(CGImage *)b;
++ (CGImage)convertCGImageToBGRA_sRGB:(CGImage *)b;
++ (__CVBuffer)convertCGImageToBGRA_sRGB_PixelBuffer:(CGImage *)buffer;
 @end
 
 @implementation IHKImageUtils
 
-+ (CGImage)CopyCGImageTosRGB:(CGImage *)a3
++ (CGImage)CopyCGImageTosRGB:(CGImage *)b
 {
   v4 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
-  CopyWithColorSpace = CGImageCreateCopyWithColorSpace(a3, v4);
+  CopyWithColorSpace = CGImageCreateCopyWithColorSpace(b, v4);
   CGColorSpaceRelease(v4);
   return CopyWithColorSpace;
 }
 
-+ (CGImage)convertCGImageToBGRA_sRGB:(CGImage *)a3
++ (CGImage)convertCGImageToBGRA_sRGB:(CGImage *)b
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(b);
+  Height = CGImageGetHeight(b);
   v6 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
+  BytesPerRow = CGImageGetBytesPerRow(b);
   v8 = CGBitmapContextCreate(0, Width, Height, 8uLL, BytesPerRow, v6, 0x2002u);
   v11.size.width = Width;
   v11.size.height = Height;
   v11.origin.x = 0.0;
   v11.origin.y = 0.0;
-  CGContextDrawImage(v8, v11, a3);
+  CGContextDrawImage(v8, v11, b);
   Image = CGBitmapContextCreateImage(v8);
   CGContextRelease(v8);
   CGColorSpaceRelease(v6);
   return Image;
 }
 
-+ (__CVBuffer)convertCGImageToBGRA_sRGB_PixelBuffer:(CGImage *)a3
++ (__CVBuffer)convertCGImageToBGRA_sRGB_PixelBuffer:(CGImage *)buffer
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(buffer);
+  Height = CGImageGetHeight(buffer);
   v25 = Height;
   v26 = 0;
   v27 = 0;
@@ -99,7 +99,7 @@
   v32.size.height = v6;
   v32.origin.x = 0.0;
   v32.origin.y = 0.0;
-  CGContextDrawImage(v18, v32, a3);
+  CGContextDrawImage(v18, v32, buffer);
   CVBufferSetAttachment(v14, *MEMORY[0x277CC4B78], v15, kCVAttachmentMode_ShouldNotPropagate);
   CGContextRelease(v18);
   CGColorSpaceRelease(v15);

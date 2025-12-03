@@ -1,27 +1,27 @@
 @interface SUUIProductPageTableInAppPurchasesSection
-- (SUUIProductPageTableInAppPurchasesSection)initWithInAppPurchases:(id)a3 clientContext:(id)a4;
-- (id)headerViewForTableView:(id)a3;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (SUUIProductPageTableInAppPurchasesSection)initWithInAppPurchases:(id)purchases clientContext:(id)context;
+- (id)headerViewForTableView:(id)view;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
 - (int64_t)numberOfRowsInSection;
 - (void)_reloadHeaderView;
-- (void)setColorScheme:(id)a3;
-- (void)setExpanded:(BOOL)a3;
+- (void)setColorScheme:(id)scheme;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation SUUIProductPageTableInAppPurchasesSection
 
-- (SUUIProductPageTableInAppPurchasesSection)initWithInAppPurchases:(id)a3 clientContext:(id)a4
+- (SUUIProductPageTableInAppPurchasesSection)initWithInAppPurchases:(id)purchases clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  purchasesCopy = purchases;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = SUUIProductPageTableInAppPurchasesSection;
   v8 = [(SUUIProductPageTableInAppPurchasesSection *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientContext, a4);
-    v10 = [v6 copy];
+    objc_storeStrong(&v8->_clientContext, context);
+    v10 = [purchasesCopy copy];
     inAppPurchases = v9->_inAppPurchases;
     v9->_inAppPurchases = v10;
   }
@@ -29,7 +29,7 @@
   return v9;
 }
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   if (!self->_headerView && ![(SUUITableViewSection *)self hidesHeaderView])
   {
@@ -73,37 +73,37 @@
   return [(NSArray *)inAppPurchases count];
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v6 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     [(SUUIProductPageTableExpandableHeaderView *)self->_headerView setColorScheme:v6];
-    v5 = v6;
+    schemeCopy = v6;
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
   v4.receiver = self;
   v4.super_class = SUUIProductPageTableInAppPurchasesSection;
-  [(SUUIProductPageTableSection *)&v4 setExpanded:a3];
+  [(SUUIProductPageTableSection *)&v4 setExpanded:expanded];
   [(SUUIProductPageTableInAppPurchasesSection *)self _reloadHeaderView];
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"IA"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"IA"];
   if (!v7)
   {
     v7 = [(SUUITableViewCell *)[SUUIProductPageInAppPurchaseTableCell alloc] initWithStyle:0 reuseIdentifier:@"IA"];
-    v8 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v8)
+    primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(SUUITableViewCell *)v7 setBottomBorderColor:v8];
+      [(SUUITableViewCell *)v7 setBottomBorderColor:primaryTextColor];
     }
 
     else
@@ -119,14 +119,14 @@
     [(SUUIProductPageInAppPurchaseTableCell *)v7 setContentInsets:0.0, 15.0, 0.0, 0.0];
   }
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   v11 = [(NSArray *)self->_inAppPurchases objectAtIndex:v10];
   [(SUUIProductPageInAppPurchaseTableCell *)v7 setColorScheme:self->_colorScheme];
-  v12 = [v11 formattedPrice];
-  [(SUUIProductPageInAppPurchaseTableCell *)v7 setPriceString:v12];
+  formattedPrice = [v11 formattedPrice];
+  [(SUUIProductPageInAppPurchaseTableCell *)v7 setPriceString:formattedPrice];
 
-  v13 = [v11 name];
-  [(SUUIProductPageInAppPurchaseTableCell *)v7 setProductName:v13];
+  name = [v11 name];
+  [(SUUIProductPageInAppPurchaseTableCell *)v7 setProductName:name];
 
   numberFormatter = self->_numberFormatter;
   if (!numberFormatter)
@@ -149,9 +149,9 @@
 
 - (void)_reloadHeaderView
 {
-  v3 = [(SUUIProductPageTableSection *)self isExpanded];
+  isExpanded = [(SUUIProductPageTableSection *)self isExpanded];
   headerView = self->_headerView;
-  if (v3)
+  if (isExpanded)
   {
     [(SUUIProductPageTableExpandableHeaderView *)self->_headerView setActionString:0];
   }
@@ -173,11 +173,11 @@
   }
 
   v7 = self->_headerView;
-  v8 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-  v10 = v8;
-  if (v8)
+  primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+  v10 = primaryTextColor;
+  if (primaryTextColor)
   {
-    [(SUUIProductPageTableExpandableHeaderView *)v7 setBottomBorderColor:v8];
+    [(SUUIProductPageTableExpandableHeaderView *)v7 setBottomBorderColor:primaryTextColor];
   }
 
   else

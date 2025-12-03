@@ -1,17 +1,17 @@
 @interface VKCCornerLookupButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VKCCornerLookupButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VKCCornerLookupButton" hasInstanceMethod:@"_symbolNameForItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCCornerLookupButton" hasInstanceMethod:@"resultItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCVisualSearchResultItem" hasInstanceMethod:@"domainInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MADVIVisualSearchGatingDomainInfo" hasInstanceMethod:@"domain" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VKCCornerLookupButton" hasInstanceMethod:@"_symbolNameForItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCCornerLookupButton" hasInstanceMethod:@"resultItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCVisualSearchResultItem" hasInstanceMethod:@"domainInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MADVIVisualSearchGatingDomainInfo" hasInstanceMethod:@"domain" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

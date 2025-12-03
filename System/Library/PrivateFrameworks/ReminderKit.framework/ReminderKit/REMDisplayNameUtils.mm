@@ -1,24 +1,24 @@
 @interface REMDisplayNameUtils
-+ (id)displayNameFromAccountName:(id)a3;
-+ (id)displayNameFromListName:(id)a3 isPlaceholder:(BOOL)a4;
++ (id)displayNameFromAccountName:(id)name;
++ (id)displayNameFromListName:(id)name isPlaceholder:(BOOL)placeholder;
 @end
 
 @implementation REMDisplayNameUtils
 
-+ (id)displayNameFromListName:(id)a3 isPlaceholder:(BOOL)a4
++ (id)displayNameFromListName:(id)name isPlaceholder:(BOOL)placeholder
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  placeholderCopy = placeholder;
+  nameCopy = name;
+  v6 = nameCopy;
+  if (nameCopy)
   {
-    if (![v5 length] && v4)
+    if (![nameCopy length] && placeholderCopy)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v4)
+  else if (placeholderCopy)
   {
 LABEL_4:
     v7 = 49;
@@ -40,11 +40,11 @@ LABEL_10:
   return v9;
 }
 
-+ (id)displayNameFromAccountName:(id)a3
++ (id)displayNameFromAccountName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"local"];
+  nameCopy = name;
+  lowercaseString = [nameCopy lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"local"];
 
   if (v5)
   {
@@ -53,7 +53,7 @@ LABEL_10:
 
   else
   {
-    v6 = v3;
+    v6 = nameCopy;
   }
 
   v7 = v6;

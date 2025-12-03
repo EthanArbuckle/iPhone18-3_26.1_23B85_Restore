@@ -1,23 +1,23 @@
 @interface CMAPencilFusion
-- (BOOL)startPencilFusionUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (BOOL)startPencilFusionUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (CMAPencilFusion)init;
 - (CMAPencilFusionResult)currentEstimation;
-- (uint64_t)logHostDeviceMotionQuaternion:(uint64_t)a3 rotationRate:(uint64_t)a4 acceleration:(__n128)a5 timestamp:(__n128)a6;
-- (uint64_t)logPencilDeviceMotionQuaternion:(uint64_t)a3 rotationRate:(uint64_t)a4 acceleration:(int)a5 gyroBias:(uint64_t)a6 temperatureGyroBias:(__n128)a7 temperatureGyro:(__n128)a8 status:(__n128)a9 sensorTime:(__n128)a10 timestamp:(double)a11;
+- (uint64_t)logHostDeviceMotionQuaternion:(uint64_t)quaternion rotationRate:(uint64_t)rate acceleration:(__n128)acceleration timestamp:(__n128)timestamp;
+- (uint64_t)logPencilDeviceMotionQuaternion:(uint64_t)quaternion rotationRate:(uint64_t)rate acceleration:(int)acceleration gyroBias:(uint64_t)bias temperatureGyroBias:(__n128)gyroBias temperatureGyro:(__n128)gyro status:(__n128)status sensorTime:(__n128)self0 timestamp:(double)self1;
 - (void)dealloc;
 - (void)flushMSL;
-- (void)logPencilFusionResult:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)logPencilFusionResult:(id)result;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)readUserDefaults;
-- (void)sendPencilSensorContactTypeStatistics:(CMAPencilSensorContactTypeStatistics *)a3 contactType:(int)a4;
+- (void)sendPencilSensorContactTypeStatistics:(CMAPencilSensorContactTypeStatistics *)statistics contactType:(int)type;
 - (void)sendPencilStatistics;
 - (void)startUserDefaults;
 - (void)stopPencilFusionUpdates;
 - (void)stopPencilFusionUpdatesPrivate;
 - (void)stopUserDefaults;
-- (void)updateEstimationsWithRealValuesWithQuaternion:(CMOQuaternion)a3 timestamp:(double)a4;
-- (void)updateHostDeviceMotionQuaternion:(uint64_t)a3 rotationRate:(uint64_t)a4 acceleration:(__n128)a5 timestamp:(__n128)a6;
-- (void)updatePencilDeviceMotionPayload:(id)a3;
+- (void)updateEstimationsWithRealValuesWithQuaternion:(CMOQuaternion)quaternion timestamp:(double)timestamp;
+- (void)updateHostDeviceMotionQuaternion:(uint64_t)quaternion rotationRate:(uint64_t)rate acceleration:(__n128)acceleration timestamp:(__n128)timestamp;
+- (void)updatePencilDeviceMotionPayload:(id)payload;
 @end
 
 @implementation CMAPencilFusion
@@ -46,7 +46,7 @@
   [(CMAPencilFusion *)&v3 dealloc];
 }
 
-- (BOOL)startPencilFusionUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (BOOL)startPencilFusionUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   if (qword_27EE374F0 != -1)
   {
@@ -67,8 +67,8 @@
   block[2] = sub_245F26298;
   block[3] = &unk_278E97130;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = queue;
+  block[6] = handler;
   dispatch_sync(v14, block);
   return objc_msgSend_isRunning(self, v15, v16, v17);
 }
@@ -157,16 +157,16 @@
   return v11;
 }
 
-- (void)updatePencilDeviceMotionPayload:(id)a3
+- (void)updatePencilDeviceMotionPayload:(id)payload
 {
   v97 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_length(a3, a2, a3, v3) == 43)
+  if (objc_msgSend_length(payload, a2, payload, v3) == 43)
   {
     v60[47] = 0;
     *&v60[43] = 0;
   }
 
-  else if (objc_msgSend_length(a3, v6, v7, v8) != 48)
+  else if (objc_msgSend_length(payload, v6, v7, v8) != 48)
   {
     if (objc_msgSend_verboseLoggingEnabled(self, v6, v9, v10))
     {
@@ -179,7 +179,7 @@
       if (os_log_type_enabled(qword_27EE374F8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134349312;
-        v62 = COERCE_DOUBLE(objc_msgSend_length(a3, v20, v21, v22));
+        v62 = COERCE_DOUBLE(objc_msgSend_length(payload, v20, v21, v22));
         v63 = 2050;
         v64 = 48;
         v16 = "updateHostDeviceMotionQuaternion: packet size %{public}zd != expected %{public}zd";
@@ -192,7 +192,7 @@
     goto LABEL_29;
   }
 
-  objc_msgSend_getBytes_length_(a3, v6, v60, 48);
+  objc_msgSend_getBytes_length_(payload, v6, v60, 48);
   if (v60[0] == 136)
   {
     if (v60[13] - 135 > 0xFFFFFFFD)
@@ -297,7 +297,7 @@
       v54 = v32;
       v55 = v33;
       v56 = v29;
-      v51 = self;
+      selfCopy = self;
       v52 = v30;
       v53 = v31;
       dispatch_async(v38, block);
@@ -344,10 +344,10 @@ LABEL_29:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateHostDeviceMotionQuaternion:(uint64_t)a3 rotationRate:(uint64_t)a4 acceleration:(__n128)a5 timestamp:(__n128)a6
+- (void)updateHostDeviceMotionQuaternion:(uint64_t)quaternion rotationRate:(uint64_t)rate acceleration:(__n128)acceleration timestamp:(__n128)timestamp
 {
   v47 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_verboseLoggingEnabled(a1, a2, a3, a4))
+  if (objc_msgSend_verboseLoggingEnabled(self, a2, quaternion, rate))
   {
     if (qword_27EE374F0 != -1)
     {
@@ -358,19 +358,19 @@ LABEL_29:
     if (os_log_type_enabled(qword_27EE374F8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134351616;
-      v26 = a5.n128_f32[0];
+      v26 = acceleration.n128_f32[0];
       v27 = 2050;
-      v28 = a5.n128_f32[1];
+      v28 = acceleration.n128_f32[1];
       v29 = 2050;
-      v30 = a5.n128_f32[2];
+      v30 = acceleration.n128_f32[2];
       v31 = 2050;
-      v32 = a5.n128_f32[3];
+      v32 = acceleration.n128_f32[3];
       v33 = 2050;
-      v34 = a6.n128_f32[0];
+      v34 = timestamp.n128_f32[0];
       v35 = 2050;
-      v36 = a6.n128_f32[1];
+      v36 = timestamp.n128_f32[1];
       v37 = 2050;
-      v38 = a6.n128_f32[2];
+      v38 = timestamp.n128_f32[2];
       v39 = 2050;
       v40 = a7.n128_f32[0];
       v41 = 2050;
@@ -383,30 +383,30 @@ LABEL_29:
     }
   }
 
-  v14 = objc_msgSend_queue(a1, v10, v11, v12);
+  v14 = objc_msgSend_queue(self, v10, v11, v12);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_245F27308;
   block[3] = &unk_278E971F8;
-  v23 = a1;
+  selfCopy = self;
   v24 = a8;
-  v20 = a5;
-  v21 = a6;
+  accelerationCopy = acceleration;
+  timestampCopy = timestamp;
   v22 = a7;
   dispatch_async(v14, block);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateEstimationsWithRealValuesWithQuaternion:(CMOQuaternion)a3 timestamp:(double)a4
+- (void)updateEstimationsWithRealValuesWithQuaternion:(CMOQuaternion)quaternion timestamp:(double)timestamp
 {
   v107 = *MEMORY[0x277D85DE8];
-  v96 = *a3.var0;
-  v97 = a3.var0[2];
-  v98 = a3.var0[3];
+  v96 = *quaternion.var0;
+  v97 = quaternion.var0[2];
+  v98 = quaternion.var0[3];
   v8 = objc_msgSend_queue(self, a2, v4, v5);
   dispatch_assert_queue_V2(v8);
   *buf = sub_245F24A60(&v96, v9);
-  v101 = COERCE_DOUBLE(__PAIR64__(v11, v10));
+  timestampCopy2 = COERCE_DOUBLE(__PAIR64__(v11, v10));
   *v102 = v12;
   v13 = sub_245F0F554(buf);
   v15 = v14;
@@ -422,13 +422,13 @@ LABEL_29:
     if (os_log_type_enabled(qword_27EE374F8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349824;
-      v101 = (v13 * 57.296);
+      timestampCopy2 = (v13 * 57.296);
       *v102 = 2050;
       *&v102[2] = (v15 * 57.296);
       v103 = 2050;
       v104 = (v17 * 57.296);
       v105 = 2050;
-      v106 = a4;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_245D80000, v24, OS_LOG_TYPE_DEBUG, "updateEstimationsWithRealValuesWithQuaternion angles:[%{public}.1f, %{public}.1f, %{public}.1f] timestamp:%{public}.3f", buf, 0x2Au);
     }
   }
@@ -458,10 +458,10 @@ LABEL_29:
 
         v39 = *(*(&v92 + 1) + 8 * v38);
         objc_msgSend_timestamp(v39, v32, v33, v34, v90);
-        if (v43 >= a4 + -0.001)
+        if (v43 >= timestamp + -0.001)
         {
           objc_msgSend_timestamp(v39, v40, v41, v42);
-          if (v55 <= a4 + 0.001)
+          if (v55 <= timestamp + 0.001)
           {
             v57 = COERCE_DOUBLE(objc_msgSend_copy(v39, v52, v53, v54));
             objc_msgSend_setEstimated_(*&v57, v58, 0, v59);
@@ -487,7 +487,7 @@ LABEL_29:
               if (os_log_type_enabled(qword_27EE374F8, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138543362;
-                v101 = v57;
+                timestampCopy2 = v57;
                 _os_log_impl(&dword_245D80000, v81, OS_LOG_TYPE_DEBUG, "Pushing real angles, %{public}@", buf, 0xCu);
               }
             }
@@ -516,7 +516,7 @@ LABEL_29:
             if (os_log_type_enabled(qword_27EE374F8, OS_LOG_TYPE_DEBUG))
             {
               *buf = v90;
-              v101 = a4;
+              timestampCopy2 = timestamp;
               _os_log_impl(&dword_245D80000, v56, OS_LOG_TYPE_DEBUG, "Received real angles for timestamp %{public}.3f without corresponding estimation", buf, 0xCu);
             }
           }
@@ -534,7 +534,7 @@ LABEL_29:
         {
           objc_msgSend_timestamp(v39, v45, v46, v47);
           *buf = v90;
-          v101 = v48;
+          timestampCopy2 = v48;
           _os_log_impl(&dword_245D80000, v44, OS_LOG_TYPE_DEBUG, "Missing real angles for timestamp %{public}.3f", buf, 0xCu);
         }
 
@@ -592,9 +592,9 @@ LABEL_32:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (objc_msgSend_defaults(self, a2, a3, a4) == a6)
+  if (objc_msgSend_defaults(self, a2, path, object) == context)
   {
 
     MEMORY[0x2821F9670](self, sel_readUserDefaults, v11, v12);
@@ -604,7 +604,7 @@ LABEL_32:
   {
     v13.receiver = self;
     v13.super_class = CMAPencilFusion;
-    [(CMAPencilFusion *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(CMAPencilFusion *)&v13 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
@@ -638,25 +638,25 @@ LABEL_32:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPencilFusionResult:(id)a3
+- (void)logPencilFusionResult:(id)result
 {
-  v6 = objc_msgSend_queue(self, a2, a3, v3);
+  v6 = objc_msgSend_queue(self, a2, result, v3);
   dispatch_assert_queue_V2(v6);
   sub_245E55178(v65);
   sub_245E7A578(v65);
   v7 = v66;
-  objc_msgSend_timestamp(a3, v8, v9, v10);
+  objc_msgSend_timestamp(result, v8, v9, v10);
   *(v7 + 76) |= 0x10u;
   *(v7 + 40) = v11;
   v12 = v66;
   if (objc_msgSend_preciseTipPositionLoggingEnabled(self, v13, v14, v15))
   {
-    objc_msgSend_position(a3, v16, v17, v18);
+    objc_msgSend_position(result, v16, v17, v18);
   }
 
   else
   {
-    objc_msgSend_position(a3, v16, v17, v18);
+    objc_msgSend_position(result, v16, v17, v18);
     v22 = floorf(v23 / 15.0) * 15.0;
   }
 
@@ -665,114 +665,114 @@ LABEL_32:
   v24 = v66;
   if (objc_msgSend_preciseTipPositionLoggingEnabled(self, v19, v20, v21))
   {
-    objc_msgSend_position(a3, v25, v26, v27);
+    objc_msgSend_position(result, v25, v26, v27);
     v32 = v31;
   }
 
   else
   {
-    objc_msgSend_position(a3, v25, v26, v27);
+    objc_msgSend_position(result, v25, v26, v27);
     v32 = floorf(v33 / 15.0) * 15.0;
   }
 
   *(v24 + 76) |= 0x40u;
   *(v24 + 56) = v32;
   v34 = v66;
-  objc_msgSend_position(a3, v28, v29, v30);
+  objc_msgSend_position(result, v28, v29, v30);
   *(v34 + 76) |= 0x80u;
   *(v34 + 64) = v35;
   v36 = v66;
-  objc_msgSend_altitudeAngle(a3, v37, v38, v39);
+  objc_msgSend_altitudeAngle(result, v37, v38, v39);
   *(v36 + 76) |= 1u;
   *(v36 + 8) = v40;
   v41 = v66;
-  objc_msgSend_azimuthAngle(a3, v42, v43, v44);
+  objc_msgSend_azimuthAngle(result, v42, v43, v44);
   *(v41 + 76) |= 2u;
   *(v41 + 16) = v45;
   v46 = v66;
-  objc_msgSend_rollAngle(a3, v47, v48, v49);
+  objc_msgSend_rollAngle(result, v47, v48, v49);
   *(v46 + 76) |= 8u;
   *(v46 + 32) = v50;
   v51 = v66;
-  updated = objc_msgSend_estimationUpdateIndex(a3, v52, v53, v54);
+  updated = objc_msgSend_estimationUpdateIndex(result, v52, v53, v54);
   v59 = objc_msgSend_unsignedLongLongValue(updated, v56, v57, v58);
   *(v51 + 76) |= 4u;
   *(v51 + 24) = v59;
   v60 = v66;
-  v64 = objc_msgSend_estimated(a3, v61, v62, v63);
+  v64 = objc_msgSend_estimated(result, v61, v62, v63);
   *(v60 + 76) |= 0x100u;
   *(v60 + 72) = v64;
   sub_245F21790(v65);
   sub_245E5ADCC(v65);
 }
 
-- (uint64_t)logPencilDeviceMotionQuaternion:(uint64_t)a3 rotationRate:(uint64_t)a4 acceleration:(int)a5 gyroBias:(uint64_t)a6 temperatureGyroBias:(__n128)a7 temperatureGyro:(__n128)a8 status:(__n128)a9 sensorTime:(__n128)a10 timestamp:(double)a11
+- (uint64_t)logPencilDeviceMotionQuaternion:(uint64_t)quaternion rotationRate:(uint64_t)rate acceleration:(int)acceleration gyroBias:(uint64_t)bias temperatureGyroBias:(__n128)gyroBias temperatureGyro:(__n128)gyro status:(__n128)status sensorTime:(__n128)self0 timestamp:(double)self1
 {
-  v14 = a4;
-  v15 = a3;
-  v16 = objc_msgSend_queue(a1, a2, a3, a4);
+  rateCopy = rate;
+  quaternionCopy = quaternion;
+  v16 = objc_msgSend_queue(self, a2, quaternion, rate);
   dispatch_assert_queue_V2(v16);
   sub_245E55178(v38);
   sub_245E7A4E8(v38);
   sub_245EED410(v39);
   v17 = *(v39 + 32);
   *(v17 + 152) |= 2u;
-  *(v17 + 136) = a11;
+  *(v17 + 136) = timestamp;
   v18 = *(v39 + 32);
-  v37 = a7.n128_u32[0];
+  v37 = gyroBias.n128_u32[0];
   sub_245F1E970((v18 + 56), &v37);
   v19 = *(v39 + 32);
-  v37 = a7.n128_u32[1];
+  v37 = gyroBias.n128_u32[1];
   sub_245F1E970((v19 + 56), &v37);
   v20 = *(v39 + 32);
-  v37 = a7.n128_u32[2];
+  v37 = gyroBias.n128_u32[2];
   sub_245F1E970((v20 + 56), &v37);
   v21 = *(v39 + 32);
-  v37 = a7.n128_u32[3];
+  v37 = gyroBias.n128_u32[3];
   sub_245F1E970((v21 + 56), &v37);
   v22 = *(v39 + 32);
-  v37 = a9.n128_u32[0];
+  v37 = status.n128_u32[0];
   sub_245F1E970((v22 + 104), &v37);
   v23 = *(v39 + 32);
-  v37 = a9.n128_u32[1];
+  v37 = status.n128_u32[1];
   sub_245F1E970((v23 + 104), &v37);
   v24 = *(v39 + 32);
-  v37 = a9.n128_u32[2];
+  v37 = status.n128_u32[2];
   sub_245F1E970((v24 + 104), &v37);
   v25 = *(v39 + 32);
-  v37 = a8.n128_u32[0];
+  v37 = gyro.n128_u32[0];
   sub_245F1E970((v25 + 80), &v37);
   v26 = *(v39 + 32);
-  v37 = a8.n128_u32[1];
+  v37 = gyro.n128_u32[1];
   sub_245F1E970((v26 + 80), &v37);
   v27 = *(v39 + 32);
-  v37 = a8.n128_u32[2];
+  v37 = gyro.n128_u32[2];
   sub_245F1E970((v27 + 80), &v37);
-  v37 = a10.n128_u32[0];
+  v37 = time.n128_u32[0];
   sub_245F1E970((v39 + 8), &v37);
-  v37 = a10.n128_u32[1];
+  v37 = time.n128_u32[1];
   sub_245F1E970((v39 + 8), &v37);
-  v37 = a10.n128_u32[2];
+  v37 = time.n128_u32[2];
   sub_245F1E970((v39 + 8), &v37);
   v28 = v39;
   *(v39 + 48) |= 2u;
-  *(v28 + 44) = v15;
+  *(v28 + 44) = quaternionCopy;
   v29 = v39;
   *(v39 + 48) |= 1u;
-  *(v29 + 40) = v14;
+  *(v29 + 40) = rateCopy;
   v30 = *(v39 + 32);
   *(v30 + 152) |= 4u;
-  *(v30 + 144) = a5;
+  *(v30 + 144) = acceleration;
   v31 = *(v39 + 32);
   *(v31 + 152) |= 1u;
-  *(v31 + 128) = a6;
+  *(v31 + 128) = bias;
   sub_245F21790(v38);
   return sub_245E5ADCC(v38);
 }
 
-- (uint64_t)logHostDeviceMotionQuaternion:(uint64_t)a3 rotationRate:(uint64_t)a4 acceleration:(__n128)a5 timestamp:(__n128)a6
+- (uint64_t)logHostDeviceMotionQuaternion:(uint64_t)quaternion rotationRate:(uint64_t)rate acceleration:(__n128)acceleration timestamp:(__n128)timestamp
 {
-  v9 = objc_msgSend_queue(a1, a2, a3, a4);
+  v9 = objc_msgSend_queue(self, a2, quaternion, rate);
   dispatch_assert_queue_V2(v9);
   sub_245E55178(v25);
   sub_245E7A608(v25);
@@ -781,16 +781,16 @@ LABEL_32:
   *(v10 + 40) = a8;
   v11 = v26;
   *(v26 + 124) |= 2u;
-  *(v11 + 16) = a5.n128_f32[0];
+  *(v11 + 16) = acceleration.n128_f32[0];
   v12 = v26;
   *(v26 + 124) |= 4u;
-  *(v12 + 24) = a5.n128_f32[1];
+  *(v12 + 24) = acceleration.n128_f32[1];
   v13 = v26;
   *(v26 + 124) |= 8u;
-  *(v13 + 32) = a5.n128_f32[2];
+  *(v13 + 32) = acceleration.n128_f32[2];
   v14 = v26;
   *(v26 + 124) |= 1u;
-  *(v14 + 8) = a5.n128_f32[3];
+  *(v14 + 8) = acceleration.n128_f32[3];
   v15 = v26;
   *(v26 + 124) |= 0x40000u;
   *(v15 + 100) = a7.n128_u32[0];
@@ -802,13 +802,13 @@ LABEL_32:
   *(v17 + 108) = a7.n128_u32[2];
   v18 = v26;
   *(v26 + 124) |= 0x2000u;
-  *(v18 + 80) = a6.n128_u32[0];
+  *(v18 + 80) = timestamp.n128_u32[0];
   v19 = v26;
   *(v26 + 124) |= 0x4000u;
-  *(v19 + 84) = a6.n128_u32[1];
+  *(v19 + 84) = timestamp.n128_u32[1];
   v20 = v26;
   *(v26 + 124) |= 0x8000u;
-  *(v20 + 88) = a6.n128_u32[2];
+  *(v20 + 88) = timestamp.n128_u32[2];
   sub_245F21790(v25);
   return sub_245E5ADCC(v25);
 }
@@ -881,12 +881,12 @@ LABEL_32:
   objc_msgSend_sendPencilTimingStatistics_(self, v4, &v12, v11);
 }
 
-- (void)sendPencilSensorContactTypeStatistics:(CMAPencilSensorContactTypeStatistics *)a3 contactType:(int)a4
+- (void)sendPencilSensorContactTypeStatistics:(CMAPencilSensorContactTypeStatistics *)statistics contactType:(int)type
 {
-  v4 = *&a3->var0;
-  v5 = *&a3->var4;
-  *v6 = *&a3->var8;
-  *&v6[12] = *&a3->var11;
+  v4 = *&statistics->var0;
+  v5 = *&statistics->var4;
+  *v6 = *&statistics->var8;
+  *&v6[12] = *&statistics->var11;
   AnalyticsSendEventLazy();
 }
 

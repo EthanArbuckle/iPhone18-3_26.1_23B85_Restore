@@ -1,43 +1,43 @@
 @interface nccp_wra_qmaxp_seq_modelInput
-- (id)featureValueForName:(id)a3;
-- (nccp_wra_qmaxp_seq_modelInput)initWithDaily_history_input:(id)a3 usage_history_input:(id)a4;
+- (id)featureValueForName:(id)name;
+- (nccp_wra_qmaxp_seq_modelInput)initWithDaily_history_input:(id)daily_history_input usage_history_input:(id)usage_history_input;
 @end
 
 @implementation nccp_wra_qmaxp_seq_modelInput
 
-- (nccp_wra_qmaxp_seq_modelInput)initWithDaily_history_input:(id)a3 usage_history_input:(id)a4
+- (nccp_wra_qmaxp_seq_modelInput)initWithDaily_history_input:(id)daily_history_input usage_history_input:(id)usage_history_input
 {
-  v7 = a3;
-  v8 = a4;
+  daily_history_inputCopy = daily_history_input;
+  usage_history_inputCopy = usage_history_input;
   v12.receiver = self;
   v12.super_class = nccp_wra_qmaxp_seq_modelInput;
   v9 = [(nccp_wra_qmaxp_seq_modelInput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daily_history_input, a3);
-    objc_storeStrong(&v10->_usage_history_input, a4);
+    objc_storeStrong(&v9->_daily_history_input, daily_history_input);
+    objc_storeStrong(&v10->_usage_history_input, usage_history_input);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"daily_history_input"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"daily_history_input"])
   {
-    v5 = [(nccp_wra_qmaxp_seq_modelInput *)self daily_history_input];
+    daily_history_input = [(nccp_wra_qmaxp_seq_modelInput *)self daily_history_input];
 LABEL_5:
-    v6 = v5;
-    v7 = [MLFeatureValue featureValueWithMultiArray:v5];
+    v6 = daily_history_input;
+    v7 = [MLFeatureValue featureValueWithMultiArray:daily_history_input];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"usage_history_input"])
+  if ([nameCopy isEqualToString:@"usage_history_input"])
   {
-    v5 = [(nccp_wra_qmaxp_seq_modelInput *)self usage_history_input];
+    daily_history_input = [(nccp_wra_qmaxp_seq_modelInput *)self usage_history_input];
     goto LABEL_5;
   }
 

@@ -1,14 +1,14 @@
 @interface SFShareAudioErrorViewController
-- (void)eventDismiss:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)eventDismiss:(id)dismiss;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioErrorViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioErrorViewController viewWillAppear:];
@@ -16,8 +16,8 @@
 
   v10.receiver = self;
   v10.super_class = SFShareAudioErrorViewController;
-  [(SFShareAudioBaseViewController *)&v10 viewWillAppear:v3];
-  v5 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+  [(SFShareAudioBaseViewController *)&v10 viewWillAppear:appearCopy];
+  mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
   v6 = SFLocalizedStringEx();
   [(UILabel *)self->super._titleLabel setText:v6];
 
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioErrorViewController viewWillDisappear:];
@@ -44,12 +44,12 @@
 
   v5.receiver = self;
   v5.super_class = SFShareAudioErrorViewController;
-  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:v3];
+  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)eventDismiss:(id)a3
+- (void)eventDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioErrorViewController eventDismiss:];

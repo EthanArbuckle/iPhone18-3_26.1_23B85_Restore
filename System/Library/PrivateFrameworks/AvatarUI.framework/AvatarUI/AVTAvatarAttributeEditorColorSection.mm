@@ -1,6 +1,6 @@
 @interface AVTAvatarAttributeEditorColorSection
-- (AVTAvatarAttributeEditorColorSection)initWithPrimaryItems:(id)a3 extendedItems:(id)a4 colorVariationStore:(id)a5 localizedName:(id)a6 identifier:(id)a7 intendedDestination:(unint64_t)a8 alwaysShowExtended:(BOOL)a9 options:(id)a10;
-- (BOOL)shouldDisplaySeparatorBeforeSection:(id)a3;
+- (AVTAvatarAttributeEditorColorSection)initWithPrimaryItems:(id)items extendedItems:(id)extendedItems colorVariationStore:(id)store localizedName:(id)name identifier:(id)identifier intendedDestination:(unint64_t)destination alwaysShowExtended:(BOOL)extended options:(id)self0;
+- (BOOL)shouldDisplaySeparatorBeforeSection:(id)section;
 - (BOOL)shouldDisplayTitle;
 - (NSArray)sections;
 - (NSString)description;
@@ -10,39 +10,39 @@
 
 @implementation AVTAvatarAttributeEditorColorSection
 
-- (AVTAvatarAttributeEditorColorSection)initWithPrimaryItems:(id)a3 extendedItems:(id)a4 colorVariationStore:(id)a5 localizedName:(id)a6 identifier:(id)a7 intendedDestination:(unint64_t)a8 alwaysShowExtended:(BOOL)a9 options:(id)a10
+- (AVTAvatarAttributeEditorColorSection)initWithPrimaryItems:(id)items extendedItems:(id)extendedItems colorVariationStore:(id)store localizedName:(id)name identifier:(id)identifier intendedDestination:(unint64_t)destination alwaysShowExtended:(BOOL)extended options:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  itemsCopy = items;
+  extendedItemsCopy = extendedItems;
+  storeCopy = store;
+  nameCopy = name;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v32.receiver = self;
   v32.super_class = AVTAvatarAttributeEditorColorSection;
   v22 = [(AVTAvatarAttributeEditorColorSection *)&v32 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [itemsCopy copy];
     primaryItems = v22->_primaryItems;
     v22->_primaryItems = v23;
 
-    v25 = [v17 copy];
+    v25 = [extendedItemsCopy copy];
     extendedItems = v22->_extendedItems;
     v22->_extendedItems = v25;
 
-    objc_storeStrong(&v22->_colorVariationStore, a5);
-    v27 = [v19 copy];
+    objc_storeStrong(&v22->_colorVariationStore, store);
+    v27 = [nameCopy copy];
     localizedName = v22->_localizedName;
     v22->_localizedName = v27;
 
-    v29 = [v20 copy];
+    v29 = [identifierCopy copy];
     identifier = v22->_identifier;
     v22->_identifier = v29;
 
-    v22->_intendedDestination = a8;
-    v22->_alwaysShowExtended = a9;
-    objc_storeStrong(&v22->_options, a10);
+    v22->_intendedDestination = destination;
+    v22->_alwaysShowExtended = extended;
+    objc_storeStrong(&v22->_options, options);
   }
 
   return v22;
@@ -51,15 +51,15 @@
 - (id)copyWithoutTitle
 {
   v3 = [AVTAvatarAttributeEditorColorSection alloc];
-  v4 = [(AVTAvatarAttributeEditorColorSection *)self primaryItems];
-  v5 = [(AVTAvatarAttributeEditorColorSection *)self extendedItems];
-  v6 = [(AVTAvatarAttributeEditorColorSection *)self colorVariationStore];
-  v7 = [(AVTAvatarAttributeEditorColorSection *)self identifier];
-  v8 = [(AVTAvatarAttributeEditorColorSection *)self intendedDestination];
-  v9 = [(AVTAvatarAttributeEditorColorSection *)self alwaysShowExtended];
-  v10 = [(AVTAvatarAttributeEditorColorSection *)self options];
-  LOBYTE(v13) = v9;
-  v11 = [(AVTAvatarAttributeEditorColorSection *)v3 initWithPrimaryItems:v4 extendedItems:v5 colorVariationStore:v6 localizedName:&stru_1F39618F0 identifier:v7 intendedDestination:v8 alwaysShowExtended:v13 options:v10];
+  primaryItems = [(AVTAvatarAttributeEditorColorSection *)self primaryItems];
+  extendedItems = [(AVTAvatarAttributeEditorColorSection *)self extendedItems];
+  colorVariationStore = [(AVTAvatarAttributeEditorColorSection *)self colorVariationStore];
+  identifier = [(AVTAvatarAttributeEditorColorSection *)self identifier];
+  intendedDestination = [(AVTAvatarAttributeEditorColorSection *)self intendedDestination];
+  alwaysShowExtended = [(AVTAvatarAttributeEditorColorSection *)self alwaysShowExtended];
+  options = [(AVTAvatarAttributeEditorColorSection *)self options];
+  LOBYTE(v13) = alwaysShowExtended;
+  v11 = [(AVTAvatarAttributeEditorColorSection *)v3 initWithPrimaryItems:primaryItems extendedItems:extendedItems colorVariationStore:colorVariationStore localizedName:&stru_1F39618F0 identifier:identifier intendedDestination:intendedDestination alwaysShowExtended:v13 options:options];
 
   return v11;
 }
@@ -71,27 +71,27 @@
   v3 = [(AVTAvatarAttributeEditorColorSection *)&v16 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTAvatarAttributeEditorColorSection *)self localizedName];
-  v6 = [(AVTAvatarAttributeEditorColorSection *)self identifier];
-  v7 = [(AVTAvatarAttributeEditorColorSection *)self primaryItems];
-  v8 = [v7 avt_description];
-  [v4 appendFormat:@" name: %@, identifier: %@, sectionItems: %@", v5, v6, v8];
+  localizedName = [(AVTAvatarAttributeEditorColorSection *)self localizedName];
+  identifier = [(AVTAvatarAttributeEditorColorSection *)self identifier];
+  primaryItems = [(AVTAvatarAttributeEditorColorSection *)self primaryItems];
+  avt_description = [primaryItems avt_description];
+  [v4 appendFormat:@" name: %@, identifier: %@, sectionItems: %@", localizedName, identifier, avt_description];
 
-  v9 = [(AVTAvatarAttributeEditorColorSection *)self supplementalPicker];
+  supplementalPicker = [(AVTAvatarAttributeEditorColorSection *)self supplementalPicker];
 
-  if (v9)
+  if (supplementalPicker)
   {
-    v10 = [(AVTAvatarAttributeEditorColorSection *)self supplementalPicker];
-    v11 = [v10 localizedTitle];
-    [v4 appendFormat:@", supplemental picker: %@", v11];
+    supplementalPicker2 = [(AVTAvatarAttributeEditorColorSection *)self supplementalPicker];
+    localizedTitle = [supplementalPicker2 localizedTitle];
+    [v4 appendFormat:@", supplemental picker: %@", localizedTitle];
   }
 
-  v12 = [(AVTAvatarAttributeEditorColorSection *)self options];
+  options = [(AVTAvatarAttributeEditorColorSection *)self options];
 
-  if (v12)
+  if (options)
   {
-    v13 = [(AVTAvatarAttributeEditorColorSection *)self options];
-    [v4 appendFormat:@", options: %@", v13];
+    options2 = [(AVTAvatarAttributeEditorColorSection *)self options];
+    [v4 appendFormat:@", options: %@", options2];
   }
 
   v14 = [v4 copy];
@@ -101,11 +101,11 @@
 
 - (BOOL)shouldDisplayTitle
 {
-  v3 = [(AVTAvatarAttributeEditorColorSection *)self localizedName];
-  if (v3)
+  localizedName = [(AVTAvatarAttributeEditorColorSection *)self localizedName];
+  if (localizedName)
   {
-    v4 = [(AVTAvatarAttributeEditorColorSection *)self localizedName];
-    v5 = [v4 length] != 0;
+    localizedName2 = [(AVTAvatarAttributeEditorColorSection *)self localizedName];
+    v5 = [localizedName2 length] != 0;
   }
 
   else
@@ -116,21 +116,21 @@
   return v5;
 }
 
-- (BOOL)shouldDisplaySeparatorBeforeSection:(id)a3
+- (BOOL)shouldDisplaySeparatorBeforeSection:(id)section
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 conformsToProtocol:&unk_1F39D2D00] & 1) == 0)
+  sectionCopy = section;
+  v4 = sectionCopy;
+  if (sectionCopy && ([sectionCopy conformsToProtocol:&unk_1F39D2D00] & 1) == 0)
   {
-    v5 = [v4 shouldDisplayTitle];
+    shouldDisplayTitle = [v4 shouldDisplayTitle];
   }
 
   else
   {
-    v5 = 0;
+    shouldDisplayTitle = 0;
   }
 
-  return v5;
+  return shouldDisplayTitle;
 }
 
 - (UIEdgeInsets)separatorInsets

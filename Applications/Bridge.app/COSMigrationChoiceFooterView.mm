@@ -1,18 +1,18 @@
 @interface COSMigrationChoiceFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (COSMigrationChoiceFooterDelegate)delegate;
-- (COSMigrationChoiceFooterView)initWithFrame:(CGRect)a3;
+- (COSMigrationChoiceFooterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)tappedContinue:(id)a3;
+- (void)tappedContinue:(id)continue;
 @end
 
 @implementation COSMigrationChoiceFooterView
 
-- (COSMigrationChoiceFooterView)initWithFrame:(CGRect)a3
+- (COSMigrationChoiceFooterView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = COSMigrationChoiceFooterView;
-  v3 = [(COSMigrationChoiceFooterView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSMigrationChoiceFooterView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = BPSSetupBackgroundColor();
@@ -86,9 +86,9 @@
   [(UIButton *)continueButton setFrame:v15, MaxY + 14.0, v11, v13];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(COSMigrationChoiceFooterView *)self layoutIfNeeded:a3.width];
+  [(COSMigrationChoiceFooterView *)self layoutIfNeeded:fits.width];
   [(COSMigrationChoiceFooterView *)self bounds];
   Width = CGRectGetWidth(v8);
   [(UIButton *)self->_continueButton frame];
@@ -99,7 +99,7 @@
   return result;
 }
 
-- (void)tappedContinue:(id)a3
+- (void)tappedContinue:(id)continue
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained userTappedContinue:self];

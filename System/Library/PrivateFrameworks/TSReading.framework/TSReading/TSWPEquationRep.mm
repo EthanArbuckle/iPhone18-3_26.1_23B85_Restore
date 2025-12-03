@@ -1,15 +1,15 @@
 @interface TSWPEquationRep
 - (CGRect)clipRect;
-- (CGRect)visibleBoundsForTilingLayer:(id)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (CGRect)visibleBoundsForTilingLayer:(id)layer;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawInLayerContext:(CGContext *)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)didUpdateLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawInLayerContext:(CGContext *)context;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)screenScaleDidChange;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 - (void)willBeRemoved;
 @end
 
@@ -19,9 +19,9 @@
 {
   if (self->_equationLayer)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationRep dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 33, @"layer should have been cleaned up in willBeRemoved"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 33, @"layer should have been cleaned up in willBeRemoved"}];
   }
 
   v5.receiver = self;
@@ -39,7 +39,7 @@
   [(TSDRep *)&v3 willBeRemoved];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v27.receiver = self;
   v27.super_class = TSWPEquationRep;
@@ -61,10 +61,10 @@
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(TSDRep *)self layout];
-    if (v14)
+    layout = [(TSDRep *)self layout];
+    if (layout)
     {
-      [(TSDAbstractLayout *)v14 transformInRoot];
+      [(TSDAbstractLayout *)layout transformInRoot];
     }
 
     else
@@ -106,14 +106,14 @@
     if (!CGRectEqualToRect(v32, v33))
     {
       [(CALayer *)self->_equationLayer setBounds:x, y, v23, v24];
-      [a3 bounds];
+      [layer bounds];
       [(CALayer *)self->_equationLayer setPosition:TSDSubtractPoints(x, y, v25)];
       [(CALayer *)self->_equationLayer setNeedsDisplay];
     }
 
-    if ([(CALayer *)self->_equationLayer superlayer:*&v26.a]!= a3)
+    if ([(CALayer *)self->_equationLayer superlayer:*&v26.a]!= layer)
     {
-      [a3 addSublayer:self->_equationLayer];
+      [layer addSublayer:self->_equationLayer];
     }
   }
 }
@@ -131,19 +131,19 @@
 {
   if ([(TSDLayout *)[(TSDRep *)self layout] equationIsValid]&& [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
   {
-    v3 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
     equationLayer = self->_equationLayer;
 
-    [(TSDInteractiveCanvasController *)v3 setNeedsDisplayOnLayer:equationLayer];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController setNeedsDisplayOnLayer:equationLayer];
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(TSDLayout *)[(TSDRep *)self layout] equationIsValid])
   {
     if ([(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
@@ -165,10 +165,10 @@
           v11 = v10;
           v13 = v12;
           v15 = v14;
-          v16 = [(TSDRep *)self interactiveCanvasController];
+          interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
           equationLayer = self->_equationLayer;
 
-          [(TSDInteractiveCanvasController *)v16 setNeedsDisplayInRect:equationLayer onLayer:v9, v11, v13, v15];
+          [(TSDInteractiveCanvasController *)interactiveCanvasController setNeedsDisplayInRect:equationLayer onLayer:v9, v11, v13, v15];
         }
       }
     }
@@ -177,12 +177,12 @@
 
 - (CGRect)clipRect
 {
-  v3 = [(TSDLayout *)[(TSDRep *)self layout] equationLayout];
-  if (!v3)
+  equationLayout = [(TSDLayout *)[(TSDRep *)self layout] equationLayout];
+  if (!equationLayout)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationRep clipRect]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 134, @"invalid nil value for '%s'", "equationLayout"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 134, @"invalid nil value for '%s'", "equationLayout"}];
   }
 
   v26.receiver = self;
@@ -194,19 +194,19 @@
   height = v12;
   if ([(TSDLayout *)[(TSDRep *)self layout] equationIsValid])
   {
-    [v3 erasableBounds];
+    [equationLayout erasableBounds];
     v28 = CGRectIntegral(v27);
     x = v28.origin.x;
     y = v28.origin.y;
     width = v28.size.width;
     height = v28.size.height;
-    [v3 height];
+    [equationLayout height];
     v7 = x + 0.0;
     v9 = v16 + y;
-    v17 = [(TSDLayout *)[(TSDRep *)self layout] textShadow];
-    if ([v17 isEnabled])
+    textShadow = [(TSDLayout *)[(TSDRep *)self layout] textShadow];
+    if ([textShadow isEnabled])
     {
-      [v17 shadowBoundsForRect:{v7, v9, width, height}];
+      [textShadow shadowBoundsForRect:{v7, v9, width, height}];
       v7 = v18;
       v9 = v19;
       width = v20;
@@ -225,70 +225,70 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   if ([(TSDLayout *)[(TSDRep *)self layout] equationIsValid])
   {
-    CGContextSaveGState(a3);
-    CGContextSetFillColorWithColor(a3, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
-    CGContextSetStrokeColorWithColor(a3, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
-    v5 = [(TSDLayout *)[(TSDRep *)self layout] textShadow];
+    CGContextSaveGState(context);
+    CGContextSetFillColorWithColor(context, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
+    CGContextSetStrokeColorWithColor(context, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
+    textShadow = [(TSDLayout *)[(TSDRep *)self layout] textShadow];
     [(TSDCanvas *)self->super.mCanvas viewScale];
-    [v5 applyToContext:a3 viewScale:0 flipped:?];
-    v6 = [(TSDLayout *)[(TSDRep *)self layout] equationLayout];
-    if (!v6)
+    [textShadow applyToContext:context viewScale:0 flipped:?];
+    equationLayout = [(TSDLayout *)[(TSDRep *)self layout] equationLayout];
+    if (!equationLayout)
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationRep drawInContext:]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 175, @"invalid nil value for '%s'", "equationLayout"}];
+      [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 175, @"invalid nil value for '%s'", "equationLayout"}];
     }
 
-    [v6 height];
-    [v6 renderIntoContext:a3 offset:{0.0, v9}];
+    [equationLayout height];
+    [equationLayout renderIntoContext:context offset:{0.0, v9}];
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationRep drawInLayerContext:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:185 description:@"shouldn't draw into our own layer"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:185 description:@"shouldn't draw into our own layer"];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  if (self->_equationLayer == a3)
+  if (self->_equationLayer == layer)
   {
-    CGContextSaveGState(a4);
-    [(TSDRep *)self setupForDrawingInLayer:self->_equationLayer context:a4];
-    CGContextSetFillColorWithColor(a4, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
-    CGContextSetStrokeColorWithColor(a4, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
-    v6 = [(TSDLayout *)[(TSDRep *)self layout] textShadow];
+    CGContextSaveGState(context);
+    [(TSDRep *)self setupForDrawingInLayer:self->_equationLayer context:context];
+    CGContextSetFillColorWithColor(context, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
+    CGContextSetStrokeColorWithColor(context, [(TSDLayout *)[(TSDRep *)self layout] textColor]);
+    textShadow = [(TSDLayout *)[(TSDRep *)self layout] textShadow];
     [(TSDCanvas *)self->super.mCanvas viewScale];
-    [v6 applyToContext:a4 viewScale:-[CALayer contentsAreFlipped](self->_equationLayer flipped:{"contentsAreFlipped"), v7}];
-    v8 = [(TSDLayout *)[(TSDRep *)self layout] equationLayout];
-    if (!v8)
+    [textShadow applyToContext:context viewScale:-[CALayer contentsAreFlipped](self->_equationLayer flipped:{"contentsAreFlipped"), v7}];
+    equationLayout = [(TSDLayout *)[(TSDRep *)self layout] equationLayout];
+    if (!equationLayout)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPEquationRep drawLayer:inContext:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 203, @"invalid nil value for '%s'", "equationLayout"}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPEquationRep.m"), 203, @"invalid nil value for '%s'", "equationLayout"}];
     }
 
-    [v8 height];
-    [v8 renderIntoContext:a4 offset:{0.0, v11}];
-    [(TSDRep *)self didDrawInLayer:self->_equationLayer context:a4];
+    [equationLayout height];
+    [equationLayout renderIntoContext:context offset:{0.0, v11}];
+    [(TSDRep *)self didDrawInLayer:self->_equationLayer context:context];
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  if (self->_equationLayer == a3)
+  if (self->_equationLayer == layer)
   {
     return [MEMORY[0x277CBEB68] null];
   }
@@ -299,11 +299,11 @@
   }
 }
 
-- (CGRect)visibleBoundsForTilingLayer:(id)a3
+- (CGRect)visibleBoundsForTilingLayer:(id)layer
 {
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v4 visibleBoundsForTilingLayer:a3];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController visibleBoundsForTilingLayer:layer];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;

@@ -1,20 +1,20 @@
 @interface MTShareUtilActivityViewController
-- (MTShareUtilActivityViewController)initWithDataSource:(id)a3;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
-- (id)_titleForActivity:(id)a3;
-- (id)customLocalizedActionTitleForActivityViewController:(id)a3;
-- (id)titleForShareFromMode:(int64_t)a3;
-- (int64_t)shareFromModeForShareMode:(int64_t)a3;
-- (int64_t)shareModeForShareFromMode:(int64_t)a3;
+- (MTShareUtilActivityViewController)initWithDataSource:(id)source;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
+- (id)_titleForActivity:(id)activity;
+- (id)customLocalizedActionTitleForActivityViewController:(id)controller;
+- (id)titleForShareFromMode:(int64_t)mode;
+- (int64_t)shareFromModeForShareMode:(int64_t)mode;
+- (int64_t)shareModeForShareFromMode:(int64_t)mode;
 @end
 
 @implementation MTShareUtilActivityViewController
 
-- (MTShareUtilActivityViewController)initWithDataSource:(id)a3
+- (MTShareUtilActivityViewController)initWithDataSource:(id)source
 {
-  v4 = a3;
-  [(MTShareUtilActivityViewController *)self setDataSource:v4];
-  v5 = [MTShareUtil shareActivityItems:v4];
+  sourceCopy = source;
+  [(MTShareUtilActivityViewController *)self setDataSource:sourceCopy];
+  v5 = [MTShareUtil shareActivityItems:sourceCopy];
 
   v8.receiver = self;
   v8.super_class = MTShareUtilActivityViewController;
@@ -23,9 +23,9 @@
   return v6;
 }
 
-- (id)_titleForActivity:(id)a3
+- (id)_titleForActivity:(id)activity
 {
-  if (UIActivityTypeCopyToPasteboard == a3)
+  if (UIActivityTypeCopyToPasteboard == activity)
   {
     v4 = +[NSBundle mainBundle];
     v3 = [v4 localizedStringForKey:@"Copy Link" value:&stru_1004F3018 table:0];
@@ -41,15 +41,15 @@
   return v3;
 }
 
-- (id)customLocalizedActionTitleForActivityViewController:(id)a3
+- (id)customLocalizedActionTitleForActivityViewController:(id)controller
 {
-  v4 = [(MTShareUtilActivityViewController *)self dataSource];
-  v5 = -[MTShareUtilActivityViewController titleForShareFromMode:](self, "titleForShareFromMode:", -[MTShareUtilActivityViewController shareFromModeForShareMode:](self, "shareFromModeForShareMode:", [v4 currentShareMode]));
+  dataSource = [(MTShareUtilActivityViewController *)self dataSource];
+  v5 = -[MTShareUtilActivityViewController titleForShareFromMode:](self, "titleForShareFromMode:", -[MTShareUtilActivityViewController shareFromModeForShareMode:](self, "shareFromModeForShareMode:", [dataSource currentShareMode]));
 
   return v5;
 }
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
   if ([(MTShareUtilActivityViewController *)self canShareFromTimestamp])
   {
@@ -58,13 +58,13 @@
     v6 = [(MTShareUtilActivityViewController *)self titleForShareFromMode:1];
     v7 = [v4 initWithObjects:{v5, v6, 0}];
 
-    v8 = [(MTShareUtilActivityViewController *)self dataSource];
+    dataSource = [(MTShareUtilActivityViewController *)self dataSource];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000CB150;
     v17[3] = &unk_1004DB6B8;
     v17[4] = self;
-    v9 = +[_UIActivityItemCustomization pickerCustomizationWithIdentifier:options:selectedOptionIndex:footerText:valueChangedHandler:](_UIActivityItemCustomization, "pickerCustomizationWithIdentifier:options:selectedOptionIndex:footerText:valueChangedHandler:", @"PodcastsShareFromPicker", v7, -[MTShareUtilActivityViewController shareFromModeForShareMode:](self, "shareFromModeForShareMode:", [v8 currentShareMode]), 0, v17);
+    v9 = +[_UIActivityItemCustomization pickerCustomizationWithIdentifier:options:selectedOptionIndex:footerText:valueChangedHandler:](_UIActivityItemCustomization, "pickerCustomizationWithIdentifier:options:selectedOptionIndex:footerText:valueChangedHandler:", @"PodcastsShareFromPicker", v7, -[MTShareUtilActivityViewController shareFromModeForShareMode:](self, "shareFromModeForShareMode:", [dataSource currentShareMode]), 0, v17);
 
     v10 = [_UIActivityItemCustomizationGroup alloc];
     v11 = +[NSBundle mainBundle];
@@ -85,11 +85,11 @@
   return v15;
 }
 
-- (id)titleForShareFromMode:(int64_t)a3
+- (id)titleForShareFromMode:(int64_t)mode
 {
   v5 = objc_alloc_init(AVTimeFormatter);
   [v5 setStyle:1];
-  if (a3 == 1)
+  if (mode == 1)
   {
     [(MTShareUtilDataSource *)self->_dataSource selectedPlayerTime];
     if (v8 <= 0.0)
@@ -125,7 +125,7 @@
 
   else
   {
-    if (a3)
+    if (mode)
     {
       v7 = &stru_1004F3018;
       goto LABEL_12;
@@ -140,9 +140,9 @@ LABEL_12:
   return v7;
 }
 
-- (int64_t)shareModeForShareFromMode:(int64_t)a3
+- (int64_t)shareModeForShareFromMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
     return 4;
   }
@@ -153,16 +153,16 @@ LABEL_12:
   }
 }
 
-- (int64_t)shareFromModeForShareMode:(int64_t)a3
+- (int64_t)shareFromModeForShareMode:(int64_t)mode
 {
-  if ((a3 - 1) > 6)
+  if ((mode - 1) > 6)
   {
     return 1;
   }
 
   else
   {
-    return qword_1003FE888[a3 - 1];
+    return qword_1003FE888[mode - 1];
   }
 }
 

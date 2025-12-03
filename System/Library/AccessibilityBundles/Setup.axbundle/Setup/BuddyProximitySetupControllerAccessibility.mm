@@ -13,9 +13,9 @@
   v2 = accessibilityLocalizedString(@"accessibility.button");
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setAccessibilityLabel:v2];
+  navigationItem = [v3 navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityLabel:v2];
 }
 
 - (void)loadView

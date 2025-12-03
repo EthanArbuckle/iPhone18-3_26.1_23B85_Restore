@@ -3,23 +3,23 @@
 - (BOOL)hasSharingReminderAccess;
 - (BOOL)hasSharingReminderFeatureAccess;
 - (NSString)name;
-- (SCDaemonClient)initWithConnection:(id)a3;
+- (SCDaemonClient)initWithConnection:(id)connection;
 - (id)clientBundle;
 @end
 
 @implementation SCDaemonClient
 
-- (SCDaemonClient)initWithConnection:(id)a3
+- (SCDaemonClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = SCDaemonClient;
   v6 = [(SCDaemonClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcConnection, a3);
-    v7->_pid = [v5 processIdentifier];
+    objc_storeStrong(&v6->_xpcConnection, connection);
+    v7->_pid = [connectionCopy processIdentifier];
   }
 
   return v7;
@@ -27,37 +27,37 @@
 
 - (BOOL)hasSharingReminderAccess
 {
-  v3 = [(SCDaemonClient *)self xpcConnection];
-  v4 = [v3 valueForEntitlement:kSCSharingRemindersEntitlement];
+  xpcConnection = [(SCDaemonClient *)self xpcConnection];
+  v4 = [xpcConnection valueForEntitlement:kSCSharingRemindersEntitlement];
   if ([v4 BOOLValue])
   {
-    v5 = 1;
+    hasSharingReminderFeatureAccess = 1;
   }
 
   else
   {
-    v5 = [(SCDaemonClient *)self hasSharingReminderFeatureAccess];
+    hasSharingReminderFeatureAccess = [(SCDaemonClient *)self hasSharingReminderFeatureAccess];
   }
 
-  return v5;
+  return hasSharingReminderFeatureAccess;
 }
 
 - (BOOL)hasSharingReminderFeatureAccess
 {
-  v2 = [(SCDaemonClient *)self xpcConnection];
-  v3 = [v2 valueForEntitlement:kSCSharingRemindersEntitlementInternal];
-  v4 = [v3 BOOLValue];
+  xpcConnection = [(SCDaemonClient *)self xpcConnection];
+  v3 = [xpcConnection valueForEntitlement:kSCSharingRemindersEntitlementInternal];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasBlockingAccess
 {
-  v2 = [(SCDaemonClient *)self xpcConnection];
-  v3 = [v2 valueForEntitlement:kSafetyCheckWhenBlockingEntitlement];
-  v4 = [v3 BOOLValue];
+  xpcConnection = [(SCDaemonClient *)self xpcConnection];
+  v3 = [xpcConnection valueForEntitlement:kSafetyCheckWhenBlockingEntitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)name
@@ -67,14 +67,14 @@
     goto LABEL_7;
   }
 
-  v3 = [(SCDaemonClient *)self clientBundle];
+  clientBundle = [(SCDaemonClient *)self clientBundle];
 
-  if (v3)
+  if (clientBundle)
   {
-    v4 = [(NSBundle *)self->_clientBundle bundleIdentifier];
+    bundleIdentifier = [(NSBundle *)self->_clientBundle bundleIdentifier];
 LABEL_6:
     name = self->_name;
-    self->_name = v4;
+    self->_name = bundleIdentifier;
 
 LABEL_7:
     v7 = self->_name;
@@ -84,7 +84,7 @@ LABEL_7:
   p_pid = &self->_pid;
   if (proc_name(self->_pid, buffer, 0x20u) >= 1)
   {
-    v4 = [NSString stringWithUTF8String:buffer];
+    bundleIdentifier = [NSString stringWithUTF8String:buffer];
     goto LABEL_6;
   }
 
@@ -112,8 +112,8 @@ LABEL_8:
   if (proc_pidpath(self->_pid, buffer, 0x1000u) >= 1)
   {
     v5 = [NSString stringWithUTF8String:buffer];
-    v6 = [v5 stringByDeletingLastPathComponent];
-    v7 = [NSBundle bundleWithPath:v6];
+    stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
+    v7 = [NSBundle bundleWithPath:stringByDeletingLastPathComponent];
     v8 = self->_clientBundle;
     self->_clientBundle = v7;
 

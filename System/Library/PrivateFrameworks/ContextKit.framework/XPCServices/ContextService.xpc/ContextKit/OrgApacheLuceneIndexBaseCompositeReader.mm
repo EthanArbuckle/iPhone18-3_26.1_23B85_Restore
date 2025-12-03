@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneIndexBaseCompositeReader
-- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)a3;
-- (int)getDocCountWithNSString:(id)a3;
-- (int64_t)getSumDocFreqWithNSString:(id)a3;
-- (int64_t)getSumTotalTermFreqWithNSString:(id)a3;
-- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)a3;
+- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)term;
+- (int)getDocCountWithNSString:(id)string;
+- (int64_t)getSumDocFreqWithNSString:(id)string;
+- (int64_t)getSumTotalTermFreqWithNSString:(id)string;
+- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)term;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexBaseCompositeReader
 
-- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)a3
+- (int)docFreqWithOrgApacheLuceneIndexTerm:(id)term
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   subReaders = self->subReaders_;
@@ -26,7 +26,7 @@ LABEL_6:
     v8 = (&subReaders->elementType_)[v6];
     if (v8)
     {
-      v7 += [(IOSClass *)v8 docFreqWithOrgApacheLuceneIndexTerm:a3];
+      v7 += [(IOSClass *)v8 docFreqWithOrgApacheLuceneIndexTerm:term];
       ++v6;
       subReaders = self->subReaders_;
       if (subReaders)
@@ -41,7 +41,7 @@ LABEL_6:
   return v7;
 }
 
-- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)a3
+- (int64_t)totalTermFreqWithOrgApacheLuceneIndexTerm:(id)term
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   subReaders = self->subReaders_;
@@ -61,7 +61,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v9 = [(IOSClass *)v8 totalTermFreqWithOrgApacheLuceneIndexTerm:a3];
+    v9 = [(IOSClass *)v8 totalTermFreqWithOrgApacheLuceneIndexTerm:term];
     if (v9 == -1)
     {
       return -1;
@@ -79,7 +79,7 @@ LABEL_7:
   return v7;
 }
 
-- (int64_t)getSumDocFreqWithNSString:(id)a3
+- (int64_t)getSumDocFreqWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   subReaders = self->subReaders_;
@@ -101,7 +101,7 @@ LABEL_8:
     }
 
     ++p_elementType;
-    v10 = [v9 getSumDocFreqWithNSString:a3];
+    v10 = [v9 getSumDocFreqWithNSString:string];
     v6 += v10;
     if (v10 == -1)
     {
@@ -112,7 +112,7 @@ LABEL_8:
   return v6;
 }
 
-- (int)getDocCountWithNSString:(id)a3
+- (int)getDocCountWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   subReaders = self->subReaders_;
@@ -134,7 +134,7 @@ LABEL_8:
     }
 
     ++p_elementType;
-    v10 = [v9 getDocCountWithNSString:a3];
+    v10 = [v9 getDocCountWithNSString:string];
     v6 += v10;
     if (v10 == -1)
     {
@@ -145,7 +145,7 @@ LABEL_8:
   return v6;
 }
 
-- (int64_t)getSumTotalTermFreqWithNSString:(id)a3
+- (int64_t)getSumTotalTermFreqWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   subReaders = self->subReaders_;
@@ -167,7 +167,7 @@ LABEL_8:
     }
 
     ++p_elementType;
-    v10 = [v9 getSumTotalTermFreqWithNSString:a3];
+    v10 = [v9 getSumTotalTermFreqWithNSString:string];
     v6 += v10;
     if (v10 == -1)
     {

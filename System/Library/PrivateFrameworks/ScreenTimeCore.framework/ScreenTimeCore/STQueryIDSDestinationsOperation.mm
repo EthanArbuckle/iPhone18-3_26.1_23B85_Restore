@@ -1,14 +1,14 @@
 @interface STQueryIDSDestinationsOperation
-- (STQueryIDSDestinationsOperation)initWithServiceName:(id)a3 destinations:(id)a4;
+- (STQueryIDSDestinationsOperation)initWithServiceName:(id)name destinations:(id)destinations;
 - (void)main;
 @end
 
 @implementation STQueryIDSDestinationsOperation
 
-- (STQueryIDSDestinationsOperation)initWithServiceName:(id)a3 destinations:(id)a4
+- (STQueryIDSDestinationsOperation)initWithServiceName:(id)name destinations:(id)destinations
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  destinationsCopy = destinations;
   v16.receiver = self;
   v16.super_class = STQueryIDSDestinationsOperation;
   v9 = [(STOperation *)&v16 init];
@@ -18,11 +18,11 @@
     serviceQueryQueue = v9->_serviceQueryQueue;
     v9->_serviceQueryQueue = v10;
 
-    v12 = [v8 copy];
+    v12 = [destinationsCopy copy];
     destinations = v9->_destinations;
     v9->_destinations = v12;
 
-    objc_storeStrong(&v9->_serviceName, a3);
+    objc_storeStrong(&v9->_serviceName, name);
   }
 
   v14 = +[STLog familyMessaging];
@@ -31,7 +31,7 @@
     *buf = 136446466;
     v18 = "[STQueryIDSDestinationsOperation initWithServiceName:destinations:]";
     v19 = 2114;
-    v20 = v8;
+    v20 = destinationsCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \ndestinations: %{public}@", buf, 0x16u);
   }
 
@@ -51,15 +51,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \ndestinations: %{public}@ - entered", buf, 0x16u);
   }
 
-  v5 = [(STQueryIDSDestinationsOperation *)self destinations];
-  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+  destinations = [(STQueryIDSDestinationsOperation *)self destinations];
+  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [destinations count]);
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(STQueryIDSDestinationsOperation *)self destinations];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  destinations2 = [(STQueryIDSDestinationsOperation *)self destinations];
+  v8 = [destinations2 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -71,7 +71,7 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(destinations2);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
@@ -82,7 +82,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [destinations2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -103,15 +103,15 @@
   }
 
   v17 = +[IDSIDQueryController sharedInstance];
-  v18 = [v6 allKeys];
-  v19 = [(STQueryIDSDestinationsOperation *)self serviceName];
-  v20 = [(STQueryIDSDestinationsOperation *)self serviceQueryQueue];
+  allKeys = [v6 allKeys];
+  serviceName = [(STQueryIDSDestinationsOperation *)self serviceName];
+  serviceQueryQueue = [(STQueryIDSDestinationsOperation *)self serviceQueryQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10005F1E4;
   v21[3] = &unk_1001A4CE8;
   v21[4] = self;
-  [v17 refreshIDStatusForDestinations:v18 service:v19 listenerID:@"STAgent" queue:v20 completionBlock:v21];
+  [v17 refreshIDStatusForDestinations:allKeys service:serviceName listenerID:@"STAgent" queue:serviceQueryQueue completionBlock:v21];
 }
 
 @end

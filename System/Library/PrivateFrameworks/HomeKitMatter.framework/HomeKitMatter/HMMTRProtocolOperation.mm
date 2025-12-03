@@ -1,9 +1,9 @@
 @interface HMMTRProtocolOperation
 + (id)logCategory;
 - (HMMTRClusterDescription)characteristicDescription;
-- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)a3 characteristic:(id)a4 matterDevice:(id)a5 clusterIDCharacteristicMap:(id)a6;
-- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)a3 characteristic:(id)a4 matterDevice:(id)a5 primaryArgument:(id)a6 clusterIDCharacteristicMap:(id)a7;
-- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)a3 characteristicHandlingType:(unint64_t)a4 targetCharacteristic:(id)a5 targetValue:(id)a6 matterDevice:(id)a7 clusterIDCharacteristicMap:(id)a8;
+- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)type characteristic:(id)characteristic matterDevice:(id)device clusterIDCharacteristicMap:(id)map;
+- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)type characteristic:(id)characteristic matterDevice:(id)device primaryArgument:(id)argument clusterIDCharacteristicMap:(id)map;
+- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)type characteristicHandlingType:(unint64_t)handlingType targetCharacteristic:(id)characteristic targetValue:(id)value matterDevice:(id)device clusterIDCharacteristicMap:(id)map;
 @end
 
 @implementation HMMTRProtocolOperation
@@ -14,8 +14,8 @@
   if (!characteristicDescription)
   {
     v4 = +[HMMTRProtocolMap protocolMap];
-    v5 = [(HAPCharacteristic *)self->_characteristic type];
-    v6 = [v4 descriptionOfMTRClusterForCharacteristicUUID:v5 operation:self->_type value:self->_value endpointID:self->_endpoint clusterIDCharacteristicMap:self->_clusterIDCharacteristicMap];
+    type = [(HAPCharacteristic *)self->_characteristic type];
+    v6 = [v4 descriptionOfMTRClusterForCharacteristicUUID:type operation:self->_type value:self->_value endpointID:self->_endpoint clusterIDCharacteristicMap:self->_clusterIDCharacteristicMap];
     v7 = self->_characteristicDescription;
     self->_characteristicDescription = v6;
 
@@ -25,19 +25,19 @@
   return characteristicDescription;
 }
 
-- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)a3 characteristicHandlingType:(unint64_t)a4 targetCharacteristic:(id)a5 targetValue:(id)a6 matterDevice:(id)a7 clusterIDCharacteristicMap:(id)a8
+- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)type characteristicHandlingType:(unint64_t)handlingType targetCharacteristic:(id)characteristic targetValue:(id)value matterDevice:(id)device clusterIDCharacteristicMap:(id)map
 {
-  v14 = a5;
-  obj = a6;
-  v34 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = [v14 service];
-  v18 = [v14 type];
-  v19 = [v17 characteristicsOfType:v18];
-  v20 = [v19 firstObject];
+  characteristicCopy = characteristic;
+  obj = value;
+  valueCopy = value;
+  deviceCopy = device;
+  mapCopy = map;
+  service = [characteristicCopy service];
+  type = [characteristicCopy type];
+  v19 = [service characteristicsOfType:type];
+  firstObject = [v19 firstObject];
 
-  if (v20)
+  if (firstObject)
   {
     v35.receiver = self;
     v35.super_class = HMMTRProtocolOperation;
@@ -45,20 +45,20 @@
     if (v21)
     {
       v22 = v21;
-      v23 = [v14 service];
-      v24 = [v14 type];
-      v25 = [v23 characteristicsOfType:v24];
+      service2 = [characteristicCopy service];
+      type2 = [characteristicCopy type];
+      v25 = [service2 characteristicsOfType:type2];
       [v25 firstObject];
-      v32 = a4;
-      v26 = v16;
-      v28 = v27 = v15;
-      v29 = [(HMMTRProtocolOperation *)v22 initWithOperationOfType:a3 characteristic:v28 matterDevice:v27 clusterIDCharacteristicMap:v26];
+      handlingTypeCopy = handlingType;
+      v26 = mapCopy;
+      v28 = v27 = deviceCopy;
+      v29 = [(HMMTRProtocolOperation *)v22 initWithOperationOfType:type characteristic:v28 matterDevice:v27 clusterIDCharacteristicMap:v26];
 
-      v15 = v27;
-      v16 = v26;
+      deviceCopy = v27;
+      mapCopy = v26;
 
       objc_storeStrong((v29 + 48), obj);
-      *(v29 + 32) = v32;
+      *(v29 + 32) = handlingTypeCopy;
     }
 
     else
@@ -67,30 +67,30 @@
     }
 
     self = v29;
-    v30 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v30 = 0;
+    selfCopy = 0;
   }
 
-  return v30;
+  return selfCopy;
 }
 
-- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)a3 characteristic:(id)a4 matterDevice:(id)a5 primaryArgument:(id)a6 clusterIDCharacteristicMap:(id)a7
+- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)type characteristic:(id)characteristic matterDevice:(id)device primaryArgument:(id)argument clusterIDCharacteristicMap:(id)map
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  characteristicCopy = characteristic;
+  deviceCopy = device;
+  argumentCopy = argument;
+  mapCopy = map;
   v19.receiver = self;
   v19.super_class = HMMTRProtocolOperation;
   v16 = [(HMMTRProtocolOperation *)&v19 init];
   if (v16)
   {
-    v17 = [(HMMTRProtocolOperation *)v16 initWithOperationOfType:a3 characteristic:v12 matterDevice:v13 clusterIDCharacteristicMap:v15];
-    objc_storeStrong(&v17->_value, a6);
+    v17 = [(HMMTRProtocolOperation *)v16 initWithOperationOfType:type characteristic:characteristicCopy matterDevice:deviceCopy clusterIDCharacteristicMap:mapCopy];
+    objc_storeStrong(&v17->_value, argument);
   }
 
   else
@@ -101,28 +101,28 @@
   return v17;
 }
 
-- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)a3 characteristic:(id)a4 matterDevice:(id)a5 clusterIDCharacteristicMap:(id)a6
+- (HMMTRProtocolOperation)initWithOperationOfType:(unint64_t)type characteristic:(id)characteristic matterDevice:(id)device clusterIDCharacteristicMap:(id)map
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  characteristicCopy = characteristic;
+  deviceCopy = device;
+  mapCopy = map;
   v22.receiver = self;
   v22.super_class = HMMTRProtocolOperation;
   v14 = [(HMMTRProtocolOperation *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_characteristic, a4);
-    objc_storeStrong(&v15->_matterDevice, a5);
+    v14->_type = type;
+    objc_storeStrong(&v14->_characteristic, characteristic);
+    objc_storeStrong(&v15->_matterDevice, device);
     v15->_endpoint = 1;
     v15->_handlingType = 0;
-    objc_storeStrong(&v15->_clusterIDCharacteristicMap, a6);
-    v16 = [v11 service];
+    objc_storeStrong(&v15->_clusterIDCharacteristicMap, map);
+    service = [characteristicCopy service];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = service;
     }
 
     else
@@ -132,12 +132,12 @@
 
     v18 = v17;
 
-    v19 = [v18 endpoint];
+    endpoint = [v18 endpoint];
 
-    if (v19)
+    if (endpoint)
     {
-      v20 = [v18 endpoint];
-      v15->_endpoint = [v20 intValue];
+      endpoint2 = [v18 endpoint];
+      v15->_endpoint = [endpoint2 intValue];
     }
   }
 

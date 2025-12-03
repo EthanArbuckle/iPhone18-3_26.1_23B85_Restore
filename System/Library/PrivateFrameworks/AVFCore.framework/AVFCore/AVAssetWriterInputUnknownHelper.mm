@@ -1,40 +1,40 @@
 @interface AVAssetWriterInputUnknownHelper
-- (AVAssetWriterInputUnknownHelper)initWithConfigurationState:(id)a3;
-- (AVAssetWriterInputUnknownHelper)initWithMediaType:(id)a3 outputSettings:(id)a4 sourceFormatHint:(opaqueCMFormatDescription *)a5;
-- (BOOL)_canAddTrackAssociationWithTrackOfInput:(id)a3 type:(id)a4 exceptionReason:(id *)a5;
-- (BOOL)_validateLanguageCode:(id)a3;
-- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)a3;
-- (void)addTrackAssociationWithTrackOfInput:(id)a3 type:(id)a4;
-- (void)setAlternateGroupID:(signed __int16)a3;
-- (void)setExpectsMediaDataInRealTime:(BOOL)a3;
-- (void)setExtendedLanguageTag:(id)a3;
-- (void)setLanguageCode:(id)a3;
-- (void)setLayer:(int64_t)a3;
-- (void)setMarksOutputTrackAsEnabled:(BOOL)a3;
-- (void)setMaximizePowerEfficiency:(BOOL)a3;
-- (void)setMediaDataLocation:(id)a3;
-- (void)setMediaTimeScale:(int)a3;
-- (void)setMetadata:(id)a3;
-- (void)setNaturalSize:(CGSize)a3;
-- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)a3;
-- (void)setPreferredMediaChunkAlignment:(int64_t)a3;
-- (void)setPreferredMediaChunkDuration:(id *)a3;
-- (void)setPreferredMediaChunkSize:(int64_t)a3;
-- (void)setPreferredVolume:(float)a3;
-- (void)setProvisionalAlternateGroupID:(signed __int16)a3;
-- (void)setSampleReferenceBaseURL:(id)a3;
-- (void)setSourcePixelBufferAttributes:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (AVAssetWriterInputUnknownHelper)initWithConfigurationState:(id)state;
+- (AVAssetWriterInputUnknownHelper)initWithMediaType:(id)type outputSettings:(id)settings sourceFormatHint:(opaqueCMFormatDescription *)hint;
+- (BOOL)_canAddTrackAssociationWithTrackOfInput:(id)input type:(id)type exceptionReason:(id *)reason;
+- (BOOL)_validateLanguageCode:(id)code;
+- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)reason;
+- (void)addTrackAssociationWithTrackOfInput:(id)input type:(id)type;
+- (void)setAlternateGroupID:(signed __int16)d;
+- (void)setExpectsMediaDataInRealTime:(BOOL)time;
+- (void)setExtendedLanguageTag:(id)tag;
+- (void)setLanguageCode:(id)code;
+- (void)setLayer:(int64_t)layer;
+- (void)setMarksOutputTrackAsEnabled:(BOOL)enabled;
+- (void)setMaximizePowerEfficiency:(BOOL)efficiency;
+- (void)setMediaDataLocation:(id)location;
+- (void)setMediaTimeScale:(int)scale;
+- (void)setMetadata:(id)metadata;
+- (void)setNaturalSize:(CGSize)size;
+- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)supported;
+- (void)setPreferredMediaChunkAlignment:(int64_t)alignment;
+- (void)setPreferredMediaChunkDuration:(id *)duration;
+- (void)setPreferredMediaChunkSize:(int64_t)size;
+- (void)setPreferredVolume:(float)volume;
+- (void)setProvisionalAlternateGroupID:(signed __int16)d;
+- (void)setSampleReferenceBaseURL:(id)l;
+- (void)setSourcePixelBufferAttributes:(id)attributes;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation AVAssetWriterInputUnknownHelper
 
-- (AVAssetWriterInputUnknownHelper)initWithConfigurationState:(id)a3
+- (AVAssetWriterInputUnknownHelper)initWithConfigurationState:(id)state
 {
   v19.receiver = self;
   v19.super_class = AVAssetWriterInputUnknownHelper;
   v5 = [(AVAssetWriterInputHelper *)&v19 initWithConfigurationState:?];
-  if (![a3 mediaType])
+  if (![state mediaType])
   {
     v7 = v5;
     v13 = MEMORY[0x1E695DF30];
@@ -43,7 +43,7 @@
     goto LABEL_8;
   }
 
-  if (![a3 metadataItems])
+  if (![state metadataItems])
   {
     v16 = v5;
     v13 = MEMORY[0x1E695DF30];
@@ -52,7 +52,7 @@
     goto LABEL_8;
   }
 
-  if (![a3 trackReferences])
+  if (![state trackReferences])
   {
     v17 = v5;
     v13 = MEMORY[0x1E695DF30];
@@ -66,12 +66,12 @@ LABEL_8:
   return v5;
 }
 
-- (AVAssetWriterInputUnknownHelper)initWithMediaType:(id)a3 outputSettings:(id)a4 sourceFormatHint:(opaqueCMFormatDescription *)a5
+- (AVAssetWriterInputUnknownHelper)initWithMediaType:(id)type outputSettings:(id)settings sourceFormatHint:(opaqueCMFormatDescription *)hint
 {
   v9 = objc_alloc_init(AVAssetWriterInputConfigurationState);
-  [(AVAssetWriterInputConfigurationState *)v9 setMediaType:a3];
-  [(AVAssetWriterInputConfigurationState *)v9 setOutputSettings:a4];
-  [(AVAssetWriterInputConfigurationState *)v9 setSourceFormatHint:a5];
+  [(AVAssetWriterInputConfigurationState *)v9 setMediaType:type];
+  [(AVAssetWriterInputConfigurationState *)v9 setOutputSettings:settings];
+  [(AVAssetWriterInputConfigurationState *)v9 setSourceFormatHint:hint];
   v10 = *(MEMORY[0x1E695EFD0] + 16);
   v16 = *MEMORY[0x1E695EFD0];
   v17 = v10;
@@ -81,7 +81,7 @@ LABEL_8:
   [(AVAssetWriterInputConfigurationState *)v9 setExpectsMediaDataInRealTime:0];
   [(AVAssetWriterInputConfigurationState *)v9 setNaturalSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   [(AVAssetWriterInputConfigurationState *)v9 setMarksOutputTrackAsEnabled:1];
-  v11 = [a3 isEqualToString:@"soun"];
+  v11 = [type isEqualToString:@"soun"];
   v12 = 0.0;
   if (v11)
   {
@@ -89,7 +89,7 @@ LABEL_8:
   }
 
   [(AVAssetWriterInputConfigurationState *)v9 setPreferredVolume:v12];
-  -[AVAssetWriterInputConfigurationState setLayer:](v9, "setLayer:", [a3 isEqualToString:@"clcp"] << 63 >> 63);
+  -[AVAssetWriterInputConfigurationState setLayer:](v9, "setLayer:", [type isEqualToString:@"clcp"] << 63 >> 63);
   [(AVAssetWriterInputConfigurationState *)v9 setAlternateGroupID:0];
   [(AVAssetWriterInputConfigurationState *)v9 setProvisionalAlternateGroupID:0];
   -[AVAssetWriterInputConfigurationState setTrackReferences:](v9, "setTrackReferences:", [MEMORY[0x1E695DF20] dictionary]);
@@ -98,7 +98,7 @@ LABEL_8:
   [(AVAssetWriterInputConfigurationState *)v9 setPreferredMediaChunkDuration:&v16];
   [(AVAssetWriterInputConfigurationState *)v9 setPreferredMediaChunkAlignment:FigGetCFPreferenceNumberWithDefault()];
   [(AVAssetWriterInputConfigurationState *)v9 setPreferredMediaChunkSize:0];
-  if (([a3 isEqualToString:@"meta"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"auxv"))
+  if (([type isEqualToString:@"meta"] & 1) != 0 || objc_msgSend(type, "isEqualToString:", @"auxv"))
   {
     v13 = @"AVAssetWriterInputMediaDataLocationSparselyInterleavedWithMainMediaData";
   }
@@ -115,26 +115,26 @@ LABEL_8:
   return v14;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [(AVAssetWriterInputConfigurationState *)v4 setTransform:v6];
+  v6[2] = *&transform->tx;
+  [(AVAssetWriterInputConfigurationState *)configurationState setTransform:v6];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setMetadataItems:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setMetadataItems:metadata];
 }
 
-- (void)setMediaTimeScale:(int)a3
+- (void)setMediaTimeScale:(int)scale
 {
-  v3 = *&a3;
+  v3 = *&scale;
   v6 = [(NSString *)[(AVAssetWriterInputHelper *)self mediaType] isEqualToString:@"soun"];
   if (v3 && v6)
   {
@@ -145,176 +145,176 @@ LABEL_8:
     objc_exception_throw(v16);
   }
 
-  v7 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v7 setMediaTimeScale:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setMediaTimeScale:v3];
 }
 
-- (void)setExpectsMediaDataInRealTime:(BOOL)a3
+- (void)setExpectsMediaDataInRealTime:(BOOL)time
 {
-  v3 = a3;
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  timeCopy = time;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setExpectsMediaDataInRealTime:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setExpectsMediaDataInRealTime:timeCopy];
 }
 
-- (void)setMaximizePowerEfficiency:(BOOL)a3
+- (void)setMaximizePowerEfficiency:(BOOL)efficiency
 {
-  v3 = a3;
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  efficiencyCopy = efficiency;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setMaximizePowerEfficiency:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setMaximizePowerEfficiency:efficiencyCopy];
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(AVAssetWriterInputHelper *)self configurationState];
+  height = size.height;
+  width = size.width;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v5 setNaturalSize:width, height];
+  [(AVAssetWriterInputConfigurationState *)configurationState setNaturalSize:width, height];
 }
 
-- (BOOL)_validateLanguageCode:(id)a3
+- (BOOL)_validateLanguageCode:(id)code
 {
-  v3 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:a3];
+  v3 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:code];
   v4 = [v3 objectForKey:*MEMORY[0x1E695D9B0]];
   return [v4 length] == 2 || objc_msgSend(v4, "length") == 3;
 }
 
-- (void)setLanguageCode:(id)a3
+- (void)setLanguageCode:(id)code
 {
-  if (a3 && [a3 length] && !-[AVAssetWriterInputUnknownHelper _validateLanguageCode:](self, "_validateLanguageCode:", a3))
+  if (code && [code length] && !-[AVAssetWriterInputUnknownHelper _validateLanguageCode:](self, "_validateLanguageCode:", code))
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
     v9 = objc_opt_class();
-    v15 = [v7 exceptionWithName:v8 reason:AVMethodExceptionReasonWithClassAndSelector(v9 userInfo:{a2, @"languageCode %@ does not conform to the ISO 639-2/T language code", v10, v11, v12, v13, v14, a3), 0}];
+    v15 = [v7 exceptionWithName:v8 reason:AVMethodExceptionReasonWithClassAndSelector(v9 userInfo:{a2, @"languageCode %@ does not conform to the ISO 639-2/T language code", v10, v11, v12, v13, v14, code), 0}];
     objc_exception_throw(v15);
   }
 
-  v6 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v6 setLanguageCode:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setLanguageCode:code];
 }
 
-- (void)setExtendedLanguageTag:(id)a3
+- (void)setExtendedLanguageTag:(id)tag
 {
-  if (a3 && [a3 length] && !-[AVAssetWriterInputUnknownHelper _validateLanguageCode:](self, "_validateLanguageCode:", a3))
+  if (tag && [tag length] && !-[AVAssetWriterInputUnknownHelper _validateLanguageCode:](self, "_validateLanguageCode:", tag))
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
     v9 = objc_opt_class();
-    v15 = [v7 exceptionWithName:v8 reason:AVMethodExceptionReasonWithClassAndSelector(v9 userInfo:{a2, @"extendedLanguageTag %@ does not conform to the IETF BCP 47 (RFC 4646) language identifier", v10, v11, v12, v13, v14, a3), 0}];
+    v15 = [v7 exceptionWithName:v8 reason:AVMethodExceptionReasonWithClassAndSelector(v9 userInfo:{a2, @"extendedLanguageTag %@ does not conform to the IETF BCP 47 (RFC 4646) language identifier", v10, v11, v12, v13, v14, tag), 0}];
     objc_exception_throw(v15);
   }
 
-  v6 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v6 setExtendedLanguageTag:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setExtendedLanguageTag:tag];
 }
 
-- (void)setMarksOutputTrackAsEnabled:(BOOL)a3
+- (void)setMarksOutputTrackAsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  enabledCopy = enabled;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setMarksOutputTrackAsEnabled:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setMarksOutputTrackAsEnabled:enabledCopy];
 }
 
-- (void)setPreferredVolume:(float)a3
+- (void)setPreferredVolume:(float)volume
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
-  *&v5 = a3;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
+  *&v5 = volume;
 
-  [(AVAssetWriterInputConfigurationState *)v4 setPreferredVolume:v5];
+  [(AVAssetWriterInputConfigurationState *)configurationState setPreferredVolume:v5];
 }
 
-- (void)setLayer:(int64_t)a3
+- (void)setLayer:(int64_t)layer
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setLayer:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setLayer:layer];
 }
 
-- (void)setAlternateGroupID:(signed __int16)a3
+- (void)setAlternateGroupID:(signed __int16)d
 {
-  v3 = a3;
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  dCopy = d;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setAlternateGroupID:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setAlternateGroupID:dCopy];
 }
 
-- (void)setProvisionalAlternateGroupID:(signed __int16)a3
+- (void)setProvisionalAlternateGroupID:(signed __int16)d
 {
-  v3 = a3;
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  dCopy = d;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setProvisionalAlternateGroupID:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setProvisionalAlternateGroupID:dCopy];
 }
 
-- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)a3
+- (void)setPerformsMultiPassEncodingIfSupported:(BOOL)supported
 {
-  v3 = a3;
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  supportedCopy = supported;
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setPerformsMultiPassEncodingIfSupported:v3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setPerformsMultiPassEncodingIfSupported:supportedCopy];
 }
 
-- (void)setSourcePixelBufferAttributes:(id)a3
+- (void)setSourcePixelBufferAttributes:(id)attributes
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setSourcePixelBufferAttributes:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setSourcePixelBufferAttributes:attributes];
 }
 
-- (void)setPreferredMediaChunkDuration:(id *)a3
+- (void)setPreferredMediaChunkDuration:(id *)duration
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
-  v5 = *a3;
-  [(AVAssetWriterInputConfigurationState *)v4 setPreferredMediaChunkDuration:&v5];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
+  v5 = *duration;
+  [(AVAssetWriterInputConfigurationState *)configurationState setPreferredMediaChunkDuration:&v5];
 }
 
-- (void)setPreferredMediaChunkAlignment:(int64_t)a3
+- (void)setPreferredMediaChunkAlignment:(int64_t)alignment
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setPreferredMediaChunkAlignment:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setPreferredMediaChunkAlignment:alignment];
 }
 
-- (void)setPreferredMediaChunkSize:(int64_t)a3
+- (void)setPreferredMediaChunkSize:(int64_t)size
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setPreferredMediaChunkSize:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setPreferredMediaChunkSize:size];
 }
 
-- (void)setMediaDataLocation:(id)a3
+- (void)setMediaDataLocation:(id)location
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setMediaDataLocation:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setMediaDataLocation:location];
 }
 
-- (void)setSampleReferenceBaseURL:(id)a3
+- (void)setSampleReferenceBaseURL:(id)l
 {
-  v4 = [(AVAssetWriterInputHelper *)self configurationState];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
 
-  [(AVAssetWriterInputConfigurationState *)v4 setSampleReferenceBaseURL:a3];
+  [(AVAssetWriterInputConfigurationState *)configurationState setSampleReferenceBaseURL:l];
 }
 
-- (BOOL)_canAddTrackAssociationWithTrackOfInput:(id)a3 type:(id)a4 exceptionReason:(id *)a5
+- (BOOL)_canAddTrackAssociationWithTrackOfInput:(id)input type:(id)type exceptionReason:(id *)reason
 {
-  if (![a4 isEqualToString:@"forc"])
+  if (![type isEqualToString:@"forc"])
   {
-    if ([a4 isEqualToString:@"folw"] && (!-[NSString isEqualToString:](-[AVAssetWriterInputHelper mediaType](self, "mediaType"), "isEqualToString:", @"soun") || (objc_msgSend(objc_msgSend(a3, "mediaType"), "isEqualToString:", @"sbtl") & 1) == 0))
+    if ([type isEqualToString:@"folw"] && (!-[NSString isEqualToString:](-[AVAssetWriterInputHelper mediaType](self, "mediaType"), "isEqualToString:", @"soun") || (objc_msgSend(objc_msgSend(input, "mediaType"), "isEqualToString:", @"sbtl") & 1) == 0))
     {
       v11 = MEMORY[0x1E696AEC0];
       v12 = @"Associations of type AVTrackAssociationTypeSelectionFollower are supported only between AVMediaTypeAudio and AVMediaTypeSubtitle tracks.";
       goto LABEL_26;
     }
 
-    if ([a4 isEqualToString:@"chap"])
+    if ([type isEqualToString:@"chap"])
     {
       if ([(NSString *)[(AVAssetWriterInputHelper *)self mediaType] isEqualToString:@"vide"])
       {
@@ -326,14 +326,14 @@ LABEL_8:
         v13 = ![(NSString *)[(AVAssetWriterInputHelper *)self mediaType] isEqualToString:@"soun"];
       }
 
-      if ([objc_msgSend(a3 "mediaType")] & 1) != 0 || (objc_msgSend(objc_msgSend(a3, "mediaType"), "isEqualToString:", @"text"))
+      if ([objc_msgSend(input "mediaType")] & 1) != 0 || (objc_msgSend(objc_msgSend(input, "mediaType"), "isEqualToString:", @"text"))
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = [objc_msgSend(a3 "mediaType")] ^ 1;
+        v15 = [objc_msgSend(input "mediaType")] ^ 1;
       }
 
       if ((v13 | v15))
@@ -346,24 +346,24 @@ LABEL_8:
 
     else
     {
-      if ([a4 isEqualToString:@"cdsc"] && !-[NSString isEqualToString:](-[AVAssetWriterInputHelper mediaType](self, "mediaType"), "isEqualToString:", @"meta"))
+      if ([type isEqualToString:@"cdsc"] && !-[NSString isEqualToString:](-[AVAssetWriterInputHelper mediaType](self, "mediaType"), "isEqualToString:", @"meta"))
       {
         v11 = MEMORY[0x1E696AEC0];
         v12 = @"Associations of type AVTrackAssociationTypeMetadataReferent are supported only between tracks of mediaType AVMediaTypeMetadata and other tracks.";
         goto LABEL_26;
       }
 
-      if ([a4 length] != 4)
+      if ([type length] != 4)
       {
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"trackAssociationType %@ must be 4 characters long.", a4];
+        type = [MEMORY[0x1E696AEC0] stringWithFormat:@"trackAssociationType %@ must be 4 characters long.", type];
         goto LABEL_27;
       }
     }
 
 LABEL_30:
-    v14 = 0;
+    type = 0;
     v16 = 1;
-    if (!a5)
+    if (!reason)
     {
       return v16;
     }
@@ -371,9 +371,9 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v9 = [(AVAssetWriterInputHelper *)self mediaType];
-  v10 = [a3 mediaType];
-  if (-[NSString isEqualToString:](v9, "isEqualToString:", @"sbtl") || -[NSString isEqualToString:](v9, "isEqualToString:", @"text")) && (([v10 isEqualToString:@"sbtl"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"text")))
+  mediaType = [(AVAssetWriterInputHelper *)self mediaType];
+  mediaType2 = [input mediaType];
+  if (-[NSString isEqualToString:](mediaType, "isEqualToString:", @"sbtl") || -[NSString isEqualToString:](mediaType, "isEqualToString:", @"text")) && (([mediaType2 isEqualToString:@"sbtl"] & 1) != 0 || (objc_msgSend(mediaType2, "isEqualToString:", @"text")))
   {
     goto LABEL_30;
   }
@@ -381,22 +381,22 @@ LABEL_30:
   v11 = MEMORY[0x1E696AEC0];
   v12 = @"Associations of type AVTrackAssociationTypeForcedSubtitlesOnly are supported only between tracks with media type AVMediaTypeSubtitle or AVMediaTypeText.";
 LABEL_26:
-  v14 = [v11 stringWithFormat:v12, v18];
+  type = [v11 stringWithFormat:v12, v18];
 LABEL_27:
   v16 = 0;
-  if (a5)
+  if (reason)
   {
 LABEL_28:
-    *a5 = v14;
+    *reason = type;
   }
 
   return v16;
 }
 
-- (void)addTrackAssociationWithTrackOfInput:(id)a3 type:(id)a4
+- (void)addTrackAssociationWithTrackOfInput:(id)input type:(id)type
 {
   v22 = 0;
-  if (![(AVAssetWriterInputUnknownHelper *)self _canAddTrackAssociationWithTrackOfInput:a3 type:a4 exceptionReason:&v22])
+  if (![(AVAssetWriterInputUnknownHelper *)self _canAddTrackAssociationWithTrackOfInput:input type:type exceptionReason:&v22])
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
@@ -405,29 +405,29 @@ LABEL_28:
     objc_exception_throw(v20);
   }
 
-  v8 = [(AVAssetWriterInputHelper *)self configurationState];
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[AVAssetWriterInputConfigurationState trackReferences](v8, "trackReferences")}];
-  v10 = [v9 objectForKey:a4];
+  configurationState = [(AVAssetWriterInputHelper *)self configurationState];
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[AVAssetWriterInputConfigurationState trackReferences](configurationState, "trackReferences")}];
+  v10 = [v9 objectForKey:type];
   if (v10)
   {
     v11 = [MEMORY[0x1E695DF70] arrayWithArray:v10];
-    [v11 addObject:a3];
+    [v11 addObject:input];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+    v11 = [MEMORY[0x1E695DEC8] arrayWithObject:input];
   }
 
-  [v9 setObject:v11 forKey:a4];
-  [(AVAssetWriterInputConfigurationState *)v8 setTrackReferences:v9];
+  [v9 setObject:v11 forKey:type];
+  [(AVAssetWriterInputConfigurationState *)configurationState setTrackReferences:v9];
 }
 
-- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)a3
+- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)reason
 {
-  if (a3)
+  if (reason)
   {
-    *a3 = @"cannot be called before attaching to an instance of AVAssetWriter and calling -startWriting on this attached asset writer";
+    *reason = @"cannot be called before attaching to an instance of AVAssetWriter and calling -startWriting on this attached asset writer";
   }
 
   return 0;

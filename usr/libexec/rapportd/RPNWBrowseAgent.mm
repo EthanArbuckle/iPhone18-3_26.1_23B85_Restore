@@ -1,7 +1,7 @@
 @interface RPNWBrowseAgent
 + (_TtC8rapportd15RPNWBrowseAgent)shared;
 - (_TtC8rapportd15RPNWBrowseAgent)init;
-- (id)filterEndpoints:(id)a3 serviceName:(id)a4 predicate:(id)a5;
+- (id)filterEndpoints:(id)endpoints serviceName:(id)name predicate:(id)predicate;
 @end
 
 @implementation RPNWBrowseAgent
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (id)filterEndpoints:(id)a3 serviceName:(id)a4 predicate:(id)a5
+- (id)filterEndpoints:(id)endpoints serviceName:(id)name predicate:(id)predicate
 {
   sub_10010D3B0();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a5;
-  v9 = self;
+  predicateCopy = predicate;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 

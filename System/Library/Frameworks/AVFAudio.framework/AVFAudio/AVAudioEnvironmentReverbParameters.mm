@@ -1,5 +1,5 @@
 @interface AVAudioEnvironmentReverbParameters
-- (AVAudioEnvironmentReverbParameters)initWithEnvironment:(void *)a3;
+- (AVAudioEnvironmentReverbParameters)initWithEnvironment:(void *)environment;
 - (AVAudioUnitEQFilterParameters)filterParameters;
 - (BOOL)enable;
 - (float)level;
@@ -150,14 +150,14 @@
   }
 }
 
-- (AVAudioEnvironmentReverbParameters)initWithEnvironment:(void *)a3
+- (AVAudioEnvironmentReverbParameters)initWithEnvironment:(void *)environment
 {
   v5.receiver = self;
   v5.super_class = AVAudioEnvironmentReverbParameters;
   result = [(AVAudioEnvironmentReverbParameters *)&v5 init];
   if (result)
   {
-    result->_impl = a3;
+    result->_impl = environment;
   }
 
   return result;

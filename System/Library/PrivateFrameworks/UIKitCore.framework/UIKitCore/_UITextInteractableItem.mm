@@ -1,14 +1,14 @@
 @interface _UITextInteractableItem
-+ (id)customItemWithTag:(id)a3 range:(id)a4 textItemInteractingView:(id)a5 location:(CGPoint)a6;
-+ (id)itemForAttachment:(id)a3 range:(id)a4 textItemInteractingView:(id)a5 location:(CGPoint)a6;
-+ (id)itemForLink:(id)a3 range:(id)a4 textItemInteractingView:(id)a5 location:(CGPoint)a6;
-- (BOOL)_actionPresentsMenu:(id)a3;
++ (id)customItemWithTag:(id)tag range:(id)range textItemInteractingView:(id)view location:(CGPoint)location;
++ (id)itemForAttachment:(id)attachment range:(id)range textItemInteractingView:(id)view location:(CGPoint)location;
++ (id)itemForLink:(id)link range:(id)range textItemInteractingView:(id)view location:(CGPoint)location;
+- (BOOL)_actionPresentsMenu:(id)menu;
 - (BOOL)_allowHighlight;
-- (BOOL)_allowInteraction:(int64_t)a3;
+- (BOOL)_allowInteraction:(int64_t)interaction;
 - (BOOL)canInvokeDefaultAction;
 - (BOOL)defaultActionPresentsMenu;
 - (BOOL)hasPrimaryAction;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showsMenuPreview;
 - (CGPoint)location;
 - (CGRect)bounds;
@@ -16,19 +16,19 @@
 - (UIContextMenuInteraction)contextMenuInteraction;
 - (UIEditMenuInteraction)editMenuInteraction;
 - (_UITextContent)textContent;
-- (_UITextInteractableItem)initWithRange:(id)a3 view:(id)a4 location:(CGPoint)a5;
+- (_UITextInteractableItem)initWithRange:(id)range view:(id)view location:(CGPoint)location;
 - (_UITextItemInteracting)textItemInteractingView;
-- (id)_itemRepresentationWithRange:(_NSRange)a3;
-- (id)_solverWithUnifyRects:(BOOL)a3;
+- (id)_itemRepresentationWithRange:(_NSRange)range;
+- (id)_solverWithUnifyRects:(BOOL)rects;
 - (id)contextMenuConfiguration;
-- (id)itemRepresentationWithRange:(_NSRange)a3;
-- (id)preparedPrimaryActionWithDefaultAction:(id)a3;
+- (id)itemRepresentationWithRange:(_NSRange)range;
+- (id)preparedPrimaryActionWithDefaultAction:(id)action;
 - (void)_defaultAction;
 - (void)_warnForInvalidAction;
 - (void)dealloc;
 - (void)highlight;
 - (void)invokeDefaultAction;
-- (void)prepareMenuConfigurationWithDefaultMenu:(id)a3;
+- (void)prepareMenuConfigurationWithDefaultMenu:(id)menu;
 - (void)unhighlight;
 @end
 
@@ -57,25 +57,25 @@
 - (NSArray)rects
 {
   v2 = [(_UITextInteractableItem *)self _solverWithUnifyRects:0];
-  v3 = [v2 rects];
+  rects = [v2 rects];
 
-  return v3;
+  return rects;
 }
 
-- (_UITextInteractableItem)initWithRange:(id)a3 view:(id)a4 location:(CGPoint)a5
+- (_UITextInteractableItem)initWithRange:(id)range view:(id)view location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
-  v11 = a4;
+  y = location.y;
+  x = location.x;
+  rangeCopy = range;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _UITextInteractableItem;
   v12 = [(_UITextInteractableItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_range, a3);
-    objc_storeWeak(&v13->_textItemInteractingView, v11);
+    objc_storeStrong(&v12->_range, range);
+    objc_storeWeak(&v13->_textItemInteractingView, viewCopy);
     v13->_location.x = x;
     v13->_location.y = y;
   }
@@ -83,75 +83,75 @@
   return v13;
 }
 
-+ (id)itemForLink:(id)a3 range:(id)a4 textItemInteractingView:(id)a5 location:(CGPoint)a6
++ (id)itemForLink:(id)link range:(id)range textItemInteractingView:(id)view location:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 _textInteractableItemCache];
-  v14 = [v13 itemForLink:v10 range:v11];
+  y = location.y;
+  x = location.x;
+  linkCopy = link;
+  rangeCopy = range;
+  viewCopy = view;
+  _textInteractableItemCache = [viewCopy _textInteractableItemCache];
+  v14 = [_textInteractableItemCache itemForLink:linkCopy range:rangeCopy];
 
   if (!v14)
   {
-    v14 = [(_UITextInteractableItem *)[_UITextInteractableLinkItem alloc] initWithRange:v11 view:v12 location:x, y];
-    [(_UITextInteractableLinkItem *)v14 setLink:v10];
-    v15 = [_UITextLinkInteractionHandler handlerForItem:v14 textContentView:v12];
+    v14 = [(_UITextInteractableItem *)[_UITextInteractableLinkItem alloc] initWithRange:rangeCopy view:viewCopy location:x, y];
+    [(_UITextInteractableLinkItem *)v14 setLink:linkCopy];
+    v15 = [_UITextLinkInteractionHandler handlerForItem:v14 textContentView:viewCopy];
     [(_UITextInteractableItem *)v14 setItemHandler:v15];
   }
 
   return v14;
 }
 
-+ (id)itemForAttachment:(id)a3 range:(id)a4 textItemInteractingView:(id)a5 location:(CGPoint)a6
++ (id)itemForAttachment:(id)attachment range:(id)range textItemInteractingView:(id)view location:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 _textInteractableItemCache];
-  v14 = [v13 itemForAttachment:v10 range:v11];
+  y = location.y;
+  x = location.x;
+  attachmentCopy = attachment;
+  rangeCopy = range;
+  viewCopy = view;
+  _textInteractableItemCache = [viewCopy _textInteractableItemCache];
+  v14 = [_textInteractableItemCache itemForAttachment:attachmentCopy range:rangeCopy];
 
   if (!v14)
   {
-    v14 = [(_UITextInteractableItem *)[_UITextInteractableAttachmentItem alloc] initWithRange:v11 view:v12 location:x, y];
-    [(_UITextInteractableAttachmentItem *)v14 setAttachment:v10];
-    v15 = [[_UITextAttachmentInteractionHandler alloc] initWithAttachmentItem:v14 textContentView:v12];
+    v14 = [(_UITextInteractableItem *)[_UITextInteractableAttachmentItem alloc] initWithRange:rangeCopy view:viewCopy location:x, y];
+    [(_UITextInteractableAttachmentItem *)v14 setAttachment:attachmentCopy];
+    v15 = [[_UITextAttachmentInteractionHandler alloc] initWithAttachmentItem:v14 textContentView:viewCopy];
     [(_UITextInteractableItem *)v14 setItemHandler:v15];
   }
 
   return v14;
 }
 
-+ (id)customItemWithTag:(id)a3 range:(id)a4 textItemInteractingView:(id)a5 location:(CGPoint)a6
++ (id)customItemWithTag:(id)tag range:(id)range textItemInteractingView:(id)view location:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 _textInteractableItemCache];
-  v14 = [v13 itemForTag:v10 range:v11];
+  y = location.y;
+  x = location.x;
+  tagCopy = tag;
+  rangeCopy = range;
+  viewCopy = view;
+  _textInteractableItemCache = [viewCopy _textInteractableItemCache];
+  v14 = [_textInteractableItemCache itemForTag:tagCopy range:rangeCopy];
 
   if (!v14)
   {
-    v14 = [(_UITextInteractableItem *)[_UITextInteractableTagItem alloc] initWithRange:v11 view:v12 location:x, y];
-    [(_UITextInteractableTagItem *)v14 setTag:v10];
-    v15 = [[_UITextItemInteractionHandler alloc] initWithItem:v14 textContentView:v12];
+    v14 = [(_UITextInteractableItem *)[_UITextInteractableTagItem alloc] initWithRange:rangeCopy view:viewCopy location:x, y];
+    [(_UITextInteractableTagItem *)v14 setTag:tagCopy];
+    v15 = [[_UITextItemInteractionHandler alloc] initWithItem:v14 textContentView:viewCopy];
     [(_UITextInteractableItem *)v14 setItemHandler:v15];
   }
 
   return v14;
 }
 
-- (id)itemRepresentationWithRange:(_NSRange)a3
+- (id)itemRepresentationWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   representedTextItem = self->_representedTextItem;
-  if (!representedTextItem || ([(UITextItem *)representedTextItem range]== a3.location ? (v8 = v7 == length) : (v8 = 0), !v8))
+  if (!representedTextItem || ([(UITextItem *)representedTextItem range]== range.location ? (v8 = v7 == length) : (v8 = 0), !v8))
   {
     v9 = [(_UITextInteractableItem *)self _itemRepresentationWithRange:location, length];
     v10 = self->_representedTextItem;
@@ -163,24 +163,24 @@
   return v11;
 }
 
-- (id)_itemRepresentationWithRange:(_NSRange)a3
+- (id)_itemRepresentationWithRange:(_NSRange)range
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UITextInteractableItem.m" lineNumber:183 description:@"itemRepresentation needs to be implemented by the subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextInteractableItem.m" lineNumber:183 description:@"itemRepresentation needs to be implemented by the subclass"];
 
   return 0;
 }
 
-- (id)preparedPrimaryActionWithDefaultAction:(id)a3
+- (id)preparedPrimaryActionWithDefaultAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[UIAction textInteractableItemDefaultAction];
   if ((*&self->_requested & 1) == 0)
   {
     *&self->_requested |= 1u;
-    v6 = [(_UITextInteractableItem *)self textItemInteractingView];
-    v7 = [v6 _textInteractableItemCache];
-    [v7 addItem:self];
+    textItemInteractingView = [(_UITextInteractableItem *)self textItemInteractingView];
+    _textInteractableItemCache = [textItemInteractingView _textInteractableItemCache];
+    [_textInteractableItemCache addItem:self];
 
     WeakRetained = objc_loadWeakRetained(&self->_textItemInteractingView);
     v9 = [WeakRetained _primaryActionForTextInteractableItem:self defaultAction:v5];
@@ -195,7 +195,7 @@
     }
   }
 
-  v14 = v4;
+  v14 = actionCopy;
   if (![(UIAction *)self->_primaryAction isEqual:v5])
   {
     v14 = self->_primaryAction;
@@ -206,71 +206,71 @@
   return v14;
 }
 
-- (void)prepareMenuConfigurationWithDefaultMenu:(id)a3
+- (void)prepareMenuConfigurationWithDefaultMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   if ((*&self->_requested & 2) == 0)
   {
     *&self->_requested |= 2u;
-    if (!v4)
+    if (!menuCopy)
     {
-      v4 = [UIMenu menuWithChildren:MEMORY[0x1E695E0F0]];
+      menuCopy = [UIMenu menuWithChildren:MEMORY[0x1E695E0F0]];
     }
 
-    v8 = v4;
+    v8 = menuCopy;
     WeakRetained = objc_loadWeakRetained(&self->_textItemInteractingView);
     v6 = [WeakRetained _menuConfigurationForTextInteractableItem:self defaultMenu:v8];
 
     preparedMenuConfiguration = self->_preparedMenuConfiguration;
     self->_preparedMenuConfiguration = v6;
 
-    v4 = v8;
+    menuCopy = v8;
   }
 }
 
 - (BOOL)showsMenuPreview
 {
-  v3 = [(_UITextInteractableItem *)self preparedMenuConfiguration];
-  v4 = [v3 preview];
+  preparedMenuConfiguration = [(_UITextInteractableItem *)self preparedMenuConfiguration];
+  preview = [preparedMenuConfiguration preview];
 
-  if (v4)
+  if (preview)
   {
-    v5 = [v4 _previewView];
-    if (v5)
+    _previewView = [preview _previewView];
+    if (_previewView)
     {
-      v6 = 1;
+      _showsPreviewByDefault = 1;
     }
 
     else
     {
-      v6 = [(_UITextInteractableItem *)self _showsPreviewByDefault];
+      _showsPreviewByDefault = [(_UITextInteractableItem *)self _showsPreviewByDefault];
     }
   }
 
   else
   {
-    v6 = 0;
+    _showsPreviewByDefault = 0;
   }
 
-  return v6;
+  return _showsPreviewByDefault;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
 
   else
   {
-    if ([(_UITextInteractableItem *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(_UITextInteractableItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = [(_UITextInteractableItem *)v4 textItemInteractingView];
-      v6 = [(_UITextInteractableItem *)self textItemInteractingView];
-      v7 = v5;
-      v8 = v6;
+      textItemInteractingView = [(_UITextInteractableItem *)equalCopy textItemInteractingView];
+      textItemInteractingView2 = [(_UITextInteractableItem *)self textItemInteractingView];
+      v7 = textItemInteractingView;
+      v8 = textItemInteractingView2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -297,10 +297,10 @@ LABEL_18:
         }
       }
 
-      v13 = [(_UITextInteractableItem *)v4 range];
-      v14 = [(_UITextInteractableItem *)self range];
-      v12 = v13;
-      v15 = v14;
+      range = [(_UITextInteractableItem *)equalCopy range];
+      range2 = [(_UITextInteractableItem *)self range];
+      v12 = range;
+      v15 = range2;
       v11 = v15;
       if (v12 == v15)
       {
@@ -329,15 +329,15 @@ LABEL_19:
 
 - (id)contextMenuConfiguration
 {
-  v3 = [(_UITextInteractableItem *)self itemHandler];
-  v4 = [v3 contextMenuConfiguration];
+  itemHandler = [(_UITextInteractableItem *)self itemHandler];
+  contextMenuConfiguration = [itemHandler contextMenuConfiguration];
 
-  if (!v4)
+  if (!contextMenuConfiguration)
   {
     [(_UITextInteractableItem *)self _warnForInvalidAction];
   }
 
-  return v4;
+  return contextMenuConfiguration;
 }
 
 - (void)_warnForInvalidAction
@@ -357,58 +357,58 @@ LABEL_19:
 
 - (void)_defaultAction
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[13];
+    selfCopy = self;
+    v3 = self[13];
     if (!v3)
     {
-      v4 = [a1 itemHandler];
-      v5 = [v4 primaryAction];
-      v6 = v2[13];
-      v2[13] = v5;
+      itemHandler = [self itemHandler];
+      primaryAction = [itemHandler primaryAction];
+      v6 = selfCopy[13];
+      selfCopy[13] = primaryAction;
 
-      v3 = v2[13];
+      v3 = selfCopy[13];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)canInvokeDefaultAction
 {
-  v3 = [(_UITextInteractableItem *)self textItemInteractingView];
+  textItemInteractingView = [(_UITextInteractableItem *)self textItemInteractingView];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_UITextInteractableItem *)self textItemInteractingView];
-    v6 = [v5 _delegatesAllowingTextItemInteractions];
+    textItemInteractingView2 = [(_UITextInteractableItem *)self textItemInteractingView];
+    _delegatesAllowingTextItemInteractions = [textItemInteractingView2 _delegatesAllowingTextItemInteractions];
 
-    if (v6)
+    if (_delegatesAllowingTextItemInteractions)
     {
       return 1;
     }
   }
 
-  v8 = [(_UITextInteractableItem *)self _defaultAction];
-  v7 = v8 != 0;
+  _defaultAction = [(_UITextInteractableItem *)self _defaultAction];
+  v7 = _defaultAction != 0;
 
   return v7;
 }
 
 - (void)invokeDefaultAction
 {
-  v3 = [(_UITextInteractableItem *)self _defaultAction];
-  if ([(_UITextInteractableItem *)self _allowInteraction:0]&& v3)
+  _defaultAction = [(_UITextInteractableItem *)self _defaultAction];
+  if ([(_UITextInteractableItem *)self _allowInteraction:0]&& _defaultAction)
   {
-    if ([(_UITextInteractableItem *)self _allowHighlight]&& ![(_UITextInteractableItem *)self _actionPresentsMenu:v3])
+    if ([(_UITextInteractableItem *)self _allowHighlight]&& ![(_UITextInteractableItem *)self _actionPresentsMenu:_defaultAction])
     {
       [(_UITextInteractableItem *)self highlight];
-      [v3 performWithSender:0 target:0];
+      [_defaultAction performWithSender:0 target:0];
       v4 = dispatch_time(0, 100000000);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -420,17 +420,17 @@ LABEL_19:
 
     else
     {
-      [v3 performWithSender:0 target:0];
+      [_defaultAction performWithSender:0 target:0];
     }
   }
 }
 
 - (BOOL)hasPrimaryAction
 {
-  v3 = [(_UITextInteractableItem *)self _defaultAction];
-  if (v3)
+  _defaultAction = [(_UITextInteractableItem *)self _defaultAction];
+  if (_defaultAction)
   {
-    v4 = ![(_UITextInteractableItem *)self _actionPresentsMenu:v3];
+    v4 = ![(_UITextInteractableItem *)self _actionPresentsMenu:_defaultAction];
   }
 
   else
@@ -443,10 +443,10 @@ LABEL_19:
 
 - (BOOL)defaultActionPresentsMenu
 {
-  v3 = [(_UITextInteractableItem *)self _defaultAction];
-  if (v3)
+  _defaultAction = [(_UITextInteractableItem *)self _defaultAction];
+  if (_defaultAction)
   {
-    v4 = [(_UITextInteractableItem *)self _actionPresentsMenu:v3];
+    v4 = [(_UITextInteractableItem *)self _actionPresentsMenu:_defaultAction];
   }
 
   else
@@ -457,29 +457,29 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)_actionPresentsMenu:(id)a3
+- (BOOL)_actionPresentsMenu:(id)menu
 {
-  v3 = [a3 identifier];
-  v4 = [v3 isEqualToString:0x1EFB17D30];
+  identifier = [menu identifier];
+  v4 = [identifier isEqualToString:0x1EFB17D30];
 
   return v4;
 }
 
-- (BOOL)_allowInteraction:(int64_t)a3
+- (BOOL)_allowInteraction:(int64_t)interaction
 {
-  if (a3)
+  if (interaction)
   {
-    v5 = [(_UITextInteractableItem *)self textItemInteractingView];
-    v6 = [v5 _allowsLinkPreviewInteractionInViewServices];
+    textItemInteractingView = [(_UITextInteractableItem *)self textItemInteractingView];
+    _allowsLinkPreviewInteractionInViewServices = [textItemInteractingView _allowsLinkPreviewInteractionInViewServices];
 
-    if (!v6)
+    if (!_allowsLinkPreviewInteractionInViewServices)
     {
       return 0;
     }
   }
 
-  v7 = [(_UITextInteractableItem *)self textItemInteractingView];
-  v8 = [v7 _allowInteraction:a3 forTextInteractableItem:self];
+  textItemInteractingView2 = [(_UITextInteractableItem *)self textItemInteractingView];
+  v8 = [textItemInteractingView2 _allowInteraction:interaction forTextInteractableItem:self];
 
   return v8;
 }
@@ -494,10 +494,10 @@ LABEL_19:
 
 - (BOOL)_allowHighlight
 {
-  v3 = [(_UITextInteractableItem *)self textItemInteractingView];
+  textItemInteractingView = [(_UITextInteractableItem *)self textItemInteractingView];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _allowHighlightForTextInteractableItem:self];
+    v4 = [textItemInteractingView _allowHighlightForTextInteractableItem:self];
   }
 
   else
@@ -510,10 +510,10 @@ LABEL_19:
 
 - (void)highlight
 {
-  v3 = [(_UITextInteractableItem *)self textItemInteractingView];
-  if (v3)
+  textItemInteractingView = [(_UITextInteractableItem *)self textItemInteractingView];
+  if (textItemInteractingView)
   {
-    v12 = v3;
+    v12 = textItemInteractingView;
     v4 = self->_highlightView;
     if (!self->_highlightView)
     {
@@ -522,27 +522,27 @@ LABEL_19:
 
       [(_UITextItemHighlightView *)v6 setCornerRadius:5.0];
       [(_UITextItemHighlightView *)v6 setHorizontalPadding:4.0];
-      v7 = [v12 textInputView];
-      [v7 addSubview:v6];
+      textInputView = [v12 textInputView];
+      [textInputView addSubview:v6];
 
       objc_storeStrong(&self->_highlightView, v6);
       v4 = v6;
     }
 
-    v8 = [(_UITextInteractableItem *)self rects];
-    [(_UITextItemHighlightView *)v4 setTextLineRects:v8];
+    rects = [(_UITextInteractableItem *)self rects];
+    [(_UITextItemHighlightView *)v4 setTextLineRects:rects];
 
     [(UIView *)v4 setNeedsDisplay];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v12 _selectionDisplayInteraction];
+      _selectionDisplayInteraction = [v12 _selectionDisplayInteraction];
       [(_UIInvalidatable *)self->_selectionHiddenAssertion _invalidate];
-      v10 = [v9 _obtainSelectionUIHiddenAssertionForReason:@"Link Interaction" animated:0];
+      v10 = [_selectionDisplayInteraction _obtainSelectionUIHiddenAssertionForReason:@"Link Interaction" animated:0];
       selectionHiddenAssertion = self->_selectionHiddenAssertion;
       self->_selectionHiddenAssertion = v10;
     }
 
-    v3 = v12;
+    textItemInteractingView = v12;
   }
 }
 
@@ -561,15 +561,15 @@ LABEL_19:
   }
 }
 
-- (id)_solverWithUnifyRects:(BOOL)a3
+- (id)_solverWithUnifyRects:(BOOL)rects
 {
-  v3 = a3;
-  v5 = [(_UITextInteractableItem *)self textItemInteractingView];
-  v6 = [v5 textContainer];
+  rectsCopy = rects;
+  textItemInteractingView = [(_UITextInteractableItem *)self textItemInteractingView];
+  textContainer = [textItemInteractingView textContainer];
 
   v7 = [_UIBoundingTextRectsSolver alloc];
-  v8 = [(_UITextInteractableItem *)self range];
-  v9 = [(_UIBoundingTextRectsSolver *)v7 initWithTextContainer:v6 range:v8 unifyRects:v3];
+  range = [(_UITextInteractableItem *)self range];
+  v9 = [(_UIBoundingTextRectsSolver *)v7 initWithTextContainer:textContainer range:range unifyRects:rectsCopy];
 
   return v9;
 }

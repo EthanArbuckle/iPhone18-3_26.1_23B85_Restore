@@ -1,23 +1,23 @@
 @interface SiriCoreMetricsPlugin
 - (SiriCoreMetricsPlugin)init;
-- (id)performTask:(id)a3 outError:(id *)a4;
+- (id)performTask:(id)task outError:(id *)error;
 - (void)stop;
 @end
 
 @implementation SiriCoreMetricsPlugin
 
-- (id)performTask:(id)a3 outError:(id *)a4
+- (id)performTask:(id)task outError:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = SiriCoreMetricsPlugin.perform(_:)(v5);
+  taskCopy = task;
+  selfCopy = self;
+  v7 = SiriCoreMetricsPlugin.perform(_:)(taskCopy);
 
   return v7;
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   SiriCoreMetricsPlugin.stop()();
 }
 

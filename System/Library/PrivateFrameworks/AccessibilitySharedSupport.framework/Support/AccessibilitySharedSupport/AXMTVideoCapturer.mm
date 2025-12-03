@@ -1,35 +1,35 @@
 @interface AXMTVideoCapturer
-+ (id)_idealFrameRateRangeForDeviceFormat:(id)a3;
-- (AXMTVideoCapturer)initWithInput:(id)a3;
++ (id)_idealFrameRateRangeForDeviceFormat:(id)format;
+- (AXMTVideoCapturer)initWithInput:(id)input;
 - (AXMTVideoCapturerDelegate)delegate;
-- (BOOL)_videoDimensionsMatchesDesiredResolutions:(id)a3;
+- (BOOL)_videoDimensionsMatchesDesiredResolutions:(id)resolutions;
 - (CGSize)resolution;
-- (id)_binnedFormatsForDevice:(id)a3;
-- (void)_avCaptureSessionDidStopRunningNotification:(id)a3;
-- (void)_avCaptureSessionRuntimeErrorNotification:(id)a3;
-- (void)_avCaptureSessionWasInterruptedNotification:(id)a3;
-- (void)_configureCaptureDevice:(id)a3;
+- (id)_binnedFormatsForDevice:(id)device;
+- (void)_avCaptureSessionDidStopRunningNotification:(id)notification;
+- (void)_avCaptureSessionRuntimeErrorNotification:(id)notification;
+- (void)_avCaptureSessionWasInterruptedNotification:(id)notification;
+- (void)_configureCaptureDevice:(id)device;
 - (void)_configureCaptureSession;
-- (void)_configureMetadataOutputWithObjectType:(id)a3 forCaptureSession:(id)a4 addFaceTracking:(BOOL)a5;
-- (void)_configureVideoDataOutputForCaptureSession:(id)a3;
-- (void)_informDelegateOfError:(id)a3;
-- (void)_timerFiredForDelayedCameraStolen:(id)a3;
+- (void)_configureMetadataOutputWithObjectType:(id)type forCaptureSession:(id)session addFaceTracking:(BOOL)tracking;
+- (void)_configureVideoDataOutputForCaptureSession:(id)session;
+- (void)_informDelegateOfError:(id)error;
+- (void)_timerFiredForDelayedCameraStolen:(id)stolen;
 - (void)_updateCaptureDeviceIfNeeded;
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4;
-- (void)reconfigureCaptureDeviceForBacklightOff:(BOOL)a3;
-- (void)setInput:(id)a3;
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection;
+- (void)reconfigureCaptureDeviceForBacklightOff:(BOOL)off;
+- (void)setInput:(id)input;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation AXMTVideoCapturer
 
-- (AXMTVideoCapturer)initWithInput:(id)a3
+- (AXMTVideoCapturer)initWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v10.receiver = self;
   v10.super_class = AXMTVideoCapturer;
   v5 = [(AXMTVideoCapturer *)&v10 init];
@@ -37,7 +37,7 @@
   if (v5)
   {
     v5->_pixelFormatType = 1111970369;
-    v7 = [v4 copy];
+    v7 = [inputCopy copy];
     input = v6->_input;
     v6->_input = v7;
   }
@@ -45,21 +45,21 @@
   return v6;
 }
 
-- (void)reconfigureCaptureDeviceForBacklightOff:(BOOL)a3
+- (void)reconfigureCaptureDeviceForBacklightOff:(BOOL)off
 {
-  v3 = a3;
-  if ([(AXMTVideoCapturer *)self _backlightIsOff]!= a3)
+  offCopy = off;
+  if ([(AXMTVideoCapturer *)self _backlightIsOff]!= off)
   {
-    [(AXMTVideoCapturer *)self set_backlightIsOff:v3];
-    v5 = [(AXMTVideoCapturer *)self _captureDevice];
-    [(AXMTVideoCapturer *)self _configureCaptureDevice:v5];
+    [(AXMTVideoCapturer *)self set_backlightIsOff:offCopy];
+    _captureDevice = [(AXMTVideoCapturer *)self _captureDevice];
+    [(AXMTVideoCapturer *)self _configureCaptureDevice:_captureDevice];
   }
 }
 
-- (void)_configureCaptureDevice:(id)a3
+- (void)_configureCaptureDevice:(id)device
 {
-  v3 = a3;
-  if (!v3)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     goto LABEL_68;
   }
@@ -67,15 +67,15 @@
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001D20C(v3);
+    sub_10001D20C(deviceCopy);
   }
 
-  v5 = [(AXMTVideoCapturer *)self _binnedFormatsForDevice:v3];
+  v5 = [(AXMTVideoCapturer *)self _binnedFormatsForDevice:deviceCopy];
   if (![v5 count])
   {
-    v6 = [v3 formats];
+    formats = [deviceCopy formats];
 
-    v5 = v6;
+    v5 = formats;
   }
 
   v73 = 0u;
@@ -87,7 +87,7 @@
   if (v8)
   {
     v9 = v8;
-    v52 = v3;
+    v52 = deviceCopy;
     v53 = 0;
     v58 = 0;
     v59 = 0;
@@ -109,10 +109,10 @@
         }
 
         v13 = *(*(&v71 + 1) + 8 * v12);
-        v14 = [v13 formatDescription];
-        if (CMFormatDescriptionGetMediaSubType(v14) == 875704422)
+        formatDescription = [v13 formatDescription];
+        if (CMFormatDescriptionGetMediaSubType(formatDescription) == 875704422)
         {
-          Dimensions = CMVideoFormatDescriptionGetDimensions(v14);
+          Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
           v16 = HIDWORD(Dimensions);
           v17 = [objc_opt_class() _idealFrameRateRangeForDeviceFormat:v13];
           v18 = [(AXMTVideoCapturer *)self _videoDimensionsMatchesDesiredResolutions:Dimensions];
@@ -191,7 +191,7 @@
 
     while (v9);
 
-    v3 = v52;
+    deviceCopy = v52;
     v34 = v58;
     v33 = v59;
     if (v59)
@@ -225,18 +225,18 @@ LABEL_40:
     block[2] = sub_10001AD40;
     v37 = block[3] = &unk_100048948;
     v69 = v37;
-    v70 = self;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
     v67 = 0;
-    v38 = [v3 lockForConfiguration:&v67];
+    v38 = [deviceCopy lockForConfiguration:&v67];
     v39 = v67;
     if (v38)
     {
-      [v3 setActiveFormat:v35];
+      [deviceCopy setActiveFormat:v35];
       v40 = AXSSLogForCategory();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        sub_10001D300(v3);
+        sub_10001D300(deviceCopy);
       }
 
       memset(&v66, 0, sizeof(v66));
@@ -261,9 +261,9 @@ LABEL_40:
       }
 
       time = v66;
-      [v3 setActiveVideoMinFrameDuration:&time];
+      [deviceCopy setActiveVideoMinFrameDuration:&time];
       time = v66;
-      [v3 setActiveVideoMaxFrameDuration:&time];
+      [deviceCopy setActiveVideoMaxFrameDuration:&time];
       time = v66;
       if (CMTimeGetSeconds(&time) > 0.0)
       {
@@ -283,27 +283,27 @@ LABEL_40:
         }
       }
 
-      if ([v3 isFaceDetectionSupported])
+      if ([deviceCopy isFaceDetectionSupported])
       {
-        [v3 setFaceDetectionDrivenImageProcessingEnabled:1];
+        [deviceCopy setFaceDetectionDrivenImageProcessingEnabled:1];
       }
 
-      if ([v3 canPerformReactionEffects])
+      if ([deviceCopy canPerformReactionEffects])
       {
         [AVCaptureDevice setReactionEffectsEnabled:0];
       }
 
-      v46 = [v3 isGeometricDistortionCorrectionEnabled];
-      v47 = [v3 activeFormat];
-      v48 = v47;
-      if (v46)
+      isGeometricDistortionCorrectionEnabled = [deviceCopy isGeometricDistortionCorrectionEnabled];
+      activeFormat = [deviceCopy activeFormat];
+      v48 = activeFormat;
+      if (isGeometricDistortionCorrectionEnabled)
       {
-        [v47 geometricDistortionCorrectedVideoFieldOfView];
+        [activeFormat geometricDistortionCorrectedVideoFieldOfView];
       }
 
       else
       {
-        [v47 videoFieldOfView];
+        [activeFormat videoFieldOfView];
       }
 
       [(AXMTVideoCapturer *)self setFieldOfView:?];
@@ -313,10 +313,10 @@ LABEL_40:
       v63[2] = sub_10001AD80;
       v63[3] = &unk_100048948;
       v64 = v37;
-      v65 = self;
+      selfCopy2 = self;
       dispatch_async(&_dispatch_main_q, v63);
 
-      [v3 unlockForConfiguration];
+      [deviceCopy unlockForConfiguration];
     }
 
     else
@@ -332,14 +332,14 @@ LABEL_40:
 LABEL_68:
 }
 
-- (BOOL)_videoDimensionsMatchesDesiredResolutions:(id)a3
+- (BOOL)_videoDimensionsMatchesDesiredResolutions:(id)resolutions
 {
-  if (a3.var0 == 1440.0 && a3.var1 == 1080.0)
+  if (resolutions.var0 == 1440.0 && resolutions.var1 == 1080.0)
   {
     return 1;
   }
 
-  return a3.var0 == 1920.0 && a3.var1 == 1440.0;
+  return resolutions.var0 == 1920.0 && resolutions.var1 == 1440.0;
 }
 
 - (void)_updateCaptureDeviceIfNeeded
@@ -350,18 +350,18 @@ LABEL_68:
     sub_10001D38C();
   }
 
-  v5 = [(AXMTVideoCapturer *)self input];
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([AXSSMotionTrackingCameraInput captureDeviceForMotionTrackingInput:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  input = [(AXMTVideoCapturer *)self input];
+  if (!input || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([AXSSMotionTrackingCameraInput captureDeviceForMotionTrackingInput:input], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
   }
 
-  v7 = [v6 uniqueID];
-  if (!v7)
+  uniqueID = [v6 uniqueID];
+  if (!uniqueID)
   {
-    v2 = [(AXMTVideoCapturer *)self _captureDevice];
-    v12 = [v2 uniqueID];
-    if (v12)
+    _captureDevice = [(AXMTVideoCapturer *)self _captureDevice];
+    uniqueID2 = [_captureDevice uniqueID];
+    if (uniqueID2)
     {
 
 LABEL_17:
@@ -371,8 +371,8 @@ LABEL_17:
         sub_10001D3C0(self);
       }
 
-      v15 = [(AXMTVideoCapturer *)self isStarted];
-      if (v15)
+      isStarted = [(AXMTVideoCapturer *)self isStarted];
+      if (isStarted)
       {
         [(AXMTVideoCapturer *)self stop];
       }
@@ -383,11 +383,11 @@ LABEL_17:
       }
 
       [(AXMTVideoCapturer *)self set_captureDevice:v6];
-      if (v15)
+      if (isStarted)
       {
-        v16 = [(AXMTVideoCapturer *)self _captureDevice];
+        _captureDevice2 = [(AXMTVideoCapturer *)self _captureDevice];
 
-        if (v16)
+        if (_captureDevice2)
         {
           [(AXMTVideoCapturer *)self start];
         }
@@ -397,12 +397,12 @@ LABEL_17:
     }
   }
 
-  v8 = [v6 uniqueID];
-  v9 = [(AXMTVideoCapturer *)self _captureDevice];
-  v10 = [v9 uniqueID];
-  v11 = [v8 isEqualToString:v10];
+  uniqueID3 = [v6 uniqueID];
+  _captureDevice3 = [(AXMTVideoCapturer *)self _captureDevice];
+  uniqueID4 = [_captureDevice3 uniqueID];
+  v11 = [uniqueID3 isEqualToString:uniqueID4];
 
-  if (v7)
+  if (uniqueID)
   {
 
     if ((v11 & 1) == 0)
@@ -429,12 +429,12 @@ LABEL_17:
 LABEL_26:
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
-  v4 = a3;
-  if (([(AXSSMotionTrackingCameraInput *)self->_input isEqual:v4]& 1) == 0)
+  inputCopy = input;
+  if (([(AXSSMotionTrackingCameraInput *)self->_input isEqual:inputCopy]& 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [inputCopy copy];
     input = self->_input;
     self->_input = v5;
 
@@ -447,11 +447,11 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v4 captureDeviceUniqueID];
-      v9 = [(AXMTVideoCapturer *)self _captureDevice];
-      v10 = [v9 uniqueID];
+      captureDeviceUniqueID = [inputCopy captureDeviceUniqueID];
+      _captureDevice = [(AXMTVideoCapturer *)self _captureDevice];
+      uniqueID = [_captureDevice uniqueID];
 
-      if (!v10 && v8 || ([v10 isEqualToString:v8] & 1) == 0)
+      if (!uniqueID && captureDeviceUniqueID || ([uniqueID isEqualToString:captureDeviceUniqueID] & 1) == 0)
       {
         [(AXMTVideoCapturer *)self _updateCaptureDeviceIfNeeded];
       }
@@ -465,9 +465,9 @@ LABEL_26:
   {
     [(AXMTVideoCapturer *)self _updateCaptureDeviceIfNeeded];
     [(AXMTVideoCapturer *)self setStarted:1];
-    v3 = [(AXMTVideoCapturer *)self _captureDevice];
+    _captureDevice = [(AXMTVideoCapturer *)self _captureDevice];
 
-    if (v3)
+    if (_captureDevice)
     {
       v4 = AXSSLogForCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -481,13 +481,13 @@ LABEL_26:
       v6 = dispatch_queue_create("com.apple.accessibility.AXMTVideoCapturer.session", v5);
       [(AXMTVideoCapturer *)self set_captureSessionQueue:v6];
 
-      v7 = [(AXMTVideoCapturer *)self _captureSessionQueue];
+      _captureSessionQueue = [(AXMTVideoCapturer *)self _captureSessionQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001B2E4;
       block[3] = &unk_1000488F8;
       block[4] = self;
-      dispatch_async(v7, block);
+      dispatch_async(_captureSessionQueue, block);
     }
   }
 }
@@ -503,24 +503,24 @@ LABEL_26:
     }
 
     [(AXMTVideoCapturer *)self setStarted:0];
-    v4 = [(AXMTVideoCapturer *)self captureSession];
-    [v4 stopRunning];
+    captureSession = [(AXMTVideoCapturer *)self captureSession];
+    [captureSession stopRunning];
 
-    v5 = [(AXMTVideoCapturer *)self captureSession];
+    captureSession2 = [(AXMTVideoCapturer *)self captureSession];
 
-    if (v5)
+    if (captureSession2)
     {
       v6 = +[NSNotificationCenter defaultCenter];
-      v7 = [(AXMTVideoCapturer *)self captureSession];
-      [v6 removeObserver:self name:AVCaptureSessionDidStopRunningNotification object:v7];
+      captureSession3 = [(AXMTVideoCapturer *)self captureSession];
+      [v6 removeObserver:self name:AVCaptureSessionDidStopRunningNotification object:captureSession3];
 
       v8 = +[NSNotificationCenter defaultCenter];
-      v9 = [(AXMTVideoCapturer *)self captureSession];
-      [v8 removeObserver:self name:AVCaptureSessionRuntimeErrorNotification object:v9];
+      captureSession4 = [(AXMTVideoCapturer *)self captureSession];
+      [v8 removeObserver:self name:AVCaptureSessionRuntimeErrorNotification object:captureSession4];
 
       v10 = +[NSNotificationCenter defaultCenter];
-      v11 = [(AXMTVideoCapturer *)self captureSession];
-      [v10 removeObserver:self name:AVCaptureSessionWasInterruptedNotification object:v11];
+      captureSession5 = [(AXMTVideoCapturer *)self captureSession];
+      [v10 removeObserver:self name:AVCaptureSessionWasInterruptedNotification object:captureSession5];
     }
 
     [(AXMTVideoCapturer *)self setCaptureSession:0];
@@ -533,23 +533,23 @@ LABEL_26:
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   AXMTLogFPS();
-  v7 = [(AXMTVideoCapturer *)self delegate];
-  if (v7)
+  delegate = [(AXMTVideoCapturer *)self delegate];
+  if (delegate)
   {
-    v9 = v7;
-    v8 = [[AXMTVideoCapturerResult alloc] initWithBuffer:a4 metadataObjects:0];
+    v9 = delegate;
+    v8 = [[AXMTVideoCapturerResult alloc] initWithBuffer:buffer metadataObjects:0];
     [v9 videoCapturer:self didCaptureBufferResult:v8];
 
-    v7 = v9;
+    delegate = v9;
   }
 }
 
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v6 = [(AXMTVideoCapturer *)self delegate:a3];
+  v6 = [(AXMTVideoCapturer *)self delegate:output];
   if (v6)
   {
     v7 = v6;
@@ -558,18 +558,18 @@ LABEL_26:
   }
 }
 
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   AXMTLogFPS();
-  v6 = [(AXMTVideoCapturer *)self _videoDataOutput];
-  v18 = [v5 synchronizedDataForCaptureOutput:v6];
+  _videoDataOutput = [(AXMTVideoCapturer *)self _videoDataOutput];
+  v18 = [collectionCopy synchronizedDataForCaptureOutput:_videoDataOutput];
 
-  v7 = [(AXMTVideoCapturer *)self _metadataOutput];
-  v8 = [v5 synchronizedDataForCaptureOutput:v7];
+  _metadataOutput = [(AXMTVideoCapturer *)self _metadataOutput];
+  v8 = [collectionCopy synchronizedDataForCaptureOutput:_metadataOutput];
 
-  v9 = [v8 metadataObjects];
-  v10 = [v9 count];
+  metadataObjects = [v8 metadataObjects];
+  v10 = [metadataObjects count];
 
   if (v10 || (v11 = [(AXMTVideoCapturer *)self _droppedFrames]+ 1, [(AXMTVideoCapturer *)self set_droppedFrames:v11], v11 >= 0x15))
   {
@@ -582,53 +582,53 @@ LABEL_26:
     v12 = 1;
   }
 
-  v13 = [(AXMTVideoCapturer *)self delegate];
-  if (v13)
+  delegate = [(AXMTVideoCapturer *)self delegate];
+  if (delegate)
   {
     if ([v18 sampleBufferWasDropped])
     {
-      [v13 videoCapturerDidDropFrame:self];
+      [delegate videoCapturerDidDropFrame:self];
     }
 
     else if ((v12 & 1) == 0)
     {
       v14 = [AXMTVideoCapturerResult alloc];
-      v15 = [v18 sampleBuffer];
-      v16 = [v8 metadataObjects];
-      v17 = [(AXMTVideoCapturerResult *)v14 initWithBuffer:v15 metadataObjects:v16];
+      sampleBuffer = [v18 sampleBuffer];
+      metadataObjects2 = [v8 metadataObjects];
+      v17 = [(AXMTVideoCapturerResult *)v14 initWithBuffer:sampleBuffer metadataObjects:metadataObjects2];
 
-      [v13 videoCapturer:self didCaptureBufferResult:v17];
+      [delegate videoCapturer:self didCaptureBufferResult:v17];
     }
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  objectsCopy = objects;
+  connectionCopy = connection;
   AXMTLogFPS();
-  v11 = [(AXMTVideoCapturer *)self delegate];
-  if (![v9 count])
+  delegate = [(AXMTVideoCapturer *)self delegate];
+  if (![objectsCopy count])
   {
-    [v11 videoCapturerReceivedNoMetadata:self];
+    [delegate videoCapturerReceivedNoMetadata:self];
   }
 
-  v12 = [[AXMTVideoCapturerResult alloc] initWithBuffer:0 metadataObjects:v9];
+  v12 = [[AXMTVideoCapturerResult alloc] initWithBuffer:0 metadataObjects:objectsCopy];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BC5C;
   block[3] = &unk_100049008;
-  v13 = v11;
+  v13 = delegate;
   v25 = v13;
-  v26 = self;
+  selfCopy = self;
   v14 = v12;
   v27 = v14;
   dispatch_async(&_dispatch_main_q, block);
-  v15 = [(AXMTVideoCapturer *)self _delayCameraStolenErrorTimer];
-  v16 = [v15 isValid];
+  _delayCameraStolenErrorTimer = [(AXMTVideoCapturer *)self _delayCameraStolenErrorTimer];
+  isValid = [_delayCameraStolenErrorTimer isValid];
 
-  if (v16)
+  if (isValid)
   {
     v17 = AXSSLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -638,8 +638,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s: clearing _delayCameraStolenErrorTimer", &buf, 0xCu);
     }
 
-    v18 = [(AXMTVideoCapturer *)self _delayCameraStolenErrorTimer];
-    [v18 invalidate];
+    _delayCameraStolenErrorTimer2 = [(AXMTVideoCapturer *)self _delayCameraStolenErrorTimer];
+    [_delayCameraStolenErrorTimer2 invalidate];
 
     [(AXMTVideoCapturer *)self set_delayCameraStolenErrorTimer:0];
   }
@@ -647,7 +647,7 @@ LABEL_26:
   if ([(AXMTVideoCapturer *)self _lastTimeFaceIDStoleCamera])
   {
     v19 = mach_absolute_time();
-    v20 = [(AXMTVideoCapturer *)self _lastTimeFaceIDStoleCamera];
+    _lastTimeFaceIDStoleCamera = [(AXMTVideoCapturer *)self _lastTimeFaceIDStoleCamera];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -671,7 +671,7 @@ LABEL_26:
       __break(1u);
     }
 
-    v22 = v21(v19 - v20);
+    v22 = v21(v19 - _lastTimeFaceIDStoleCamera);
     v23 = AXSSLogForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -684,22 +684,22 @@ LABEL_26:
   }
 }
 
-+ (id)_idealFrameRateRangeForDeviceFormat:(id)a3
++ (id)_idealFrameRateRangeForDeviceFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = sub_10001BD90;
   v12 = sub_10001BDA0;
   v13 = 0;
-  v4 = [v3 videoSupportedFrameRateRanges];
+  videoSupportedFrameRateRanges = [formatCopy videoSupportedFrameRateRanges];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001BDA8;
   v7[3] = &unk_100049030;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [videoSupportedFrameRateRanges enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -707,11 +707,11 @@ LABEL_26:
   return v5;
 }
 
-- (id)_binnedFormatsForDevice:(id)a3
+- (id)_binnedFormatsForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[NSMutableArray array];
-  v5 = [v3 formats];
+  formats = [deviceCopy formats];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -719,7 +719,7 @@ LABEL_26:
   v9[3] = &unk_100049058;
   v10 = v4;
   v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [formats enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -728,9 +728,9 @@ LABEL_26:
 
 - (void)_configureCaptureSession
 {
-  v3 = [(AXMTVideoCapturer *)self _captureDevice];
+  _captureDevice = [(AXMTVideoCapturer *)self _captureDevice];
   v33 = 0;
-  v4 = [AVCaptureDeviceInput deviceInputWithDevice:v3 error:&v33];
+  v4 = [AVCaptureDeviceInput deviceInputWithDevice:_captureDevice error:&v33];
   v5 = v33;
 
   if (v5)
@@ -754,10 +754,10 @@ LABEL_27:
   {
     [v7 addInput:v4];
     v6 = dispatch_queue_create("com.apple.accessibility.AXMTVideoCapturer.metadataOutput", 0);
-    v8 = [(AXMTVideoCapturer *)self input];
-    v9 = [v8 trackingType];
+    input = [(AXMTVideoCapturer *)self input];
+    trackingType = [input trackingType];
 
-    if (v9 == 3)
+    if (trackingType == 3)
     {
       [(AXMTVideoCapturer *)self _configureVideoDataOutputForCaptureSession:v7];
       v10 = &AVMetadataObjectTypeFace;
@@ -768,25 +768,25 @@ LABEL_27:
       v10 = &AVMetadataObjectTypeTrackedFaces;
     }
 
-    [(AXMTVideoCapturer *)self _configureMetadataOutputWithObjectType:*v10 forCaptureSession:v7 addFaceTracking:v9 != 3];
-    v12 = [(AXMTVideoCapturer *)self _metadataOutput];
-    [v12 setMetadataObjectsDelegate:self queue:v6];
+    [(AXMTVideoCapturer *)self _configureMetadataOutputWithObjectType:*v10 forCaptureSession:v7 addFaceTracking:trackingType != 3];
+    _metadataOutput = [(AXMTVideoCapturer *)self _metadataOutput];
+    [_metadataOutput setMetadataObjectsDelegate:self queue:v6];
 
-    v13 = [(AXMTVideoCapturer *)self _captureDevice];
+    _captureDevice2 = [(AXMTVideoCapturer *)self _captureDevice];
     v32 = 0;
-    v14 = [v13 lockForConfiguration:&v32];
+    v14 = [_captureDevice2 lockForConfiguration:&v32];
     v15 = v32;
 
     if (v14)
     {
-      v16 = [(AXMTVideoCapturer *)self _captureDevice];
-      [(AXMTVideoCapturer *)self _configureCaptureDevice:v16];
+      _captureDevice3 = [(AXMTVideoCapturer *)self _captureDevice];
+      [(AXMTVideoCapturer *)self _configureCaptureDevice:_captureDevice3];
     }
 
     else
     {
-      v16 = AXSSLogForCategory();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      _captureDevice3 = AXSSLogForCategory();
+      if (os_log_type_enabled(_captureDevice3, OS_LOG_TYPE_ERROR))
       {
         sub_10001D688();
       }
@@ -798,11 +798,11 @@ LABEL_27:
       sub_10001D708(self);
     }
 
-    v18 = [(AXMTVideoCapturer *)self _captureDevice];
-    v19 = v18;
-    if (v18)
+    _captureDevice4 = [(AXMTVideoCapturer *)self _captureDevice];
+    v19 = _captureDevice4;
+    if (_captureDevice4)
     {
-      [v18 activeVideoMaxFrameDuration];
+      [_captureDevice4 activeVideoMaxFrameDuration];
     }
 
     else
@@ -817,11 +817,11 @@ LABEL_27:
       v21 = AXSSLogForCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [(AXMTVideoCapturer *)self _captureDevice];
-        v31 = v25;
-        if (v25)
+        _captureDevice5 = [(AXMTVideoCapturer *)self _captureDevice];
+        v31 = _captureDevice5;
+        if (_captureDevice5)
         {
-          [v25 activeVideoMinFrameDuration];
+          [_captureDevice5 activeVideoMinFrameDuration];
         }
 
         else
@@ -831,11 +831,11 @@ LABEL_27:
 
         v26 = CMTimeCopyDescription(kCFAllocatorDefault, &time);
         v30 = v26;
-        v27 = [(AXMTVideoCapturer *)self _captureDevice];
-        v28 = v27;
-        if (v27)
+        _captureDevice6 = [(AXMTVideoCapturer *)self _captureDevice];
+        v28 = _captureDevice6;
+        if (_captureDevice6)
         {
-          [v27 activeVideoMaxFrameDuration];
+          [_captureDevice6 activeVideoMaxFrameDuration];
         }
 
         else
@@ -855,11 +855,11 @@ LABEL_27:
     }
 
     [v7 commitConfiguration];
-    if (v9 == 3)
+    if (trackingType == 3)
     {
       v22 = [AVCaptureDataOutputSynchronizer alloc];
-      v23 = [v7 outputs];
-      v24 = [v22 initWithDataOutputs:v23];
+      outputs = [v7 outputs];
+      v24 = [v22 initWithDataOutputs:outputs];
 
       [v24 setDelegate:self queue:v6];
       [(AXMTVideoCapturer *)self set_outputSynchronizer:v24];
@@ -877,9 +877,9 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)_configureVideoDataOutputForCaptureSession:(id)a3
+- (void)_configureVideoDataOutputForCaptureSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_opt_new();
   v14 = kCVPixelBufferPixelFormatTypeKey;
   v6 = [NSNumber numberWithUnsignedInt:[(AXMTVideoCapturer *)self pixelFormatType]];
@@ -891,18 +891,18 @@ LABEL_28:
   v8 = dispatch_queue_create("com.apple.accessibility.AXMTVideoCapturer.videoDataOutput", 0);
   [v5 setSampleBufferDelegate:self queue:v8];
   [(AXMTVideoCapturer *)self set_videoDataOutput:v5];
-  if ([v4 canAddOutput:v5])
+  if ([sessionCopy canAddOutput:v5])
   {
-    [v4 addOutput:v5];
-    v9 = [(AXMTVideoCapturer *)self _videoDataOutput];
-    v10 = [v9 connectionWithMediaType:AVMediaTypeVideo];
+    [sessionCopy addOutput:v5];
+    _videoDataOutput = [(AXMTVideoCapturer *)self _videoDataOutput];
+    v10 = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
 
     if (v10)
     {
-      v11 = [v10 isCameraIntrinsicMatrixDeliverySupported];
+      isCameraIntrinsicMatrixDeliverySupported = [v10 isCameraIntrinsicMatrixDeliverySupported];
       v12 = AXSSLogForCategory();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-      if (v11)
+      if (isCameraIntrinsicMatrixDeliverySupported)
       {
         if (v13)
         {
@@ -942,17 +942,17 @@ LABEL_28:
   }
 }
 
-- (void)_configureMetadataOutputWithObjectType:(id)a3 forCaptureSession:(id)a4 addFaceTracking:(BOOL)a5
+- (void)_configureMetadataOutputWithObjectType:(id)type forCaptureSession:(id)session addFaceTracking:(BOOL)tracking
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  trackingCopy = tracking;
+  typeCopy = type;
+  sessionCopy = session;
   v10 = objc_opt_new();
   [(AXMTVideoCapturer *)self set_metadataOutput:v10];
-  if ([v9 canAddOutput:v10])
+  if ([sessionCopy canAddOutput:v10])
   {
-    [v9 addOutput:v10];
-    if (v5)
+    [sessionCopy addOutput:v10];
+    if (trackingCopy)
     {
       if ([v10 isFaceTrackingSupported])
       {
@@ -973,12 +973,12 @@ LABEL_28:
       }
     }
 
-    v20 = [v10 availableMetadataObjectTypes];
-    v21 = [v20 containsObject:v8];
+    availableMetadataObjectTypes = [v10 availableMetadataObjectTypes];
+    v21 = [availableMetadataObjectTypes containsObject:typeCopy];
 
     if (v21)
     {
-      v24 = v8;
+      v24 = typeCopy;
       v22 = [NSArray arrayWithObjects:&v24 count:1];
       [v10 setMetadataObjectTypes:v22];
     }
@@ -988,7 +988,7 @@ LABEL_28:
       v22 = AXSSLogForCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        sub_10001D914(v8, v10, v22);
+        sub_10001D914(typeCopy, v10, v22);
       }
     }
   }
@@ -1000,45 +1000,45 @@ LABEL_28:
   }
 }
 
-- (void)_avCaptureSessionDidStopRunningNotification:(id)a3
+- (void)_avCaptureSessionDidStopRunningNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 object];
-    v6 = [v3 userInfo];
+    object = [notificationCopy object];
+    userInfo = [notificationCopy userInfo];
     v7 = 136315650;
     v8 = "[AXMTVideoCapturer _avCaptureSessionDidStopRunningNotification:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = object;
     v11 = 2112;
-    v12 = v6;
+    v12 = userInfo;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s: notification.object: %@, userInfo: %@", &v7, 0x20u);
   }
 }
 
-- (void)_avCaptureSessionRuntimeErrorNotification:(id)a3
+- (void)_avCaptureSessionRuntimeErrorNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    sub_10001DA70(v3, v4);
+    sub_10001DA70(notificationCopy, v4);
   }
 }
 
-- (void)_avCaptureSessionWasInterruptedNotification:(id)a3
+- (void)_avCaptureSessionWasInterruptedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:AVCaptureSessionInterruptionReasonKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:AVCaptureSessionInterruptionReasonKey];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:AVCaptureSessionInterruptionReasonKey];
-    v7 = [v6 integerValue];
+    v6 = [userInfo objectForKeyedSubscript:AVCaptureSessionInterruptionReasonKey];
+    integerValue = [v6 integerValue];
 
-    v8 = v7 == 3;
+    v8 = integerValue == 3;
   }
 
   else
@@ -1046,15 +1046,15 @@ LABEL_28:
     v8 = 0;
   }
 
-  v9 = [v4 objectForKeyedSubscript:AVCaptureSessionInterruptionSystemPressureStateKey];
+  v9 = [userInfo objectForKeyedSubscript:AVCaptureSessionInterruptionSystemPressureStateKey];
   v10 = AXSSLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v4 objectForKeyedSubscript:AVCaptureSessionInterruptionReasonKey];
+    v19 = [userInfo objectForKeyedSubscript:AVCaptureSessionInterruptionReasonKey];
     v20 = 136315650;
     v21 = "[AXMTVideoCapturer _avCaptureSessionWasInterruptedNotification:]";
     v22 = 2048;
-    v23 = [v19 integerValue];
+    integerValue2 = [v19 integerValue];
     v24 = 2112;
     v25 = v9;
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s: sessionInterruptionReason: %ld, systemPressureState: %@", &v20, 0x20u);
@@ -1070,8 +1070,8 @@ LABEL_28:
     v11 = 0;
   }
 
-  v12 = [NSError errorWithDomain:AXSSMotionTrackingErrorDomain code:v11 userInfo:v4];
-  v13 = [v4 objectForKeyedSubscript:AVCaptureSessionCameraStolenInterruptorKey];
+  v12 = [NSError errorWithDomain:AXSSMotionTrackingErrorDomain code:v11 userInfo:userInfo];
+  v13 = [userInfo objectForKeyedSubscript:AVCaptureSessionCameraStolenInterruptorKey];
   if (([v13 isEqualToString:@"com.apple.biometrickitd"] & v8) == 1 && (-[AXMTVideoCapturer _delayCameraStolenErrorTimer](self, "_delayCameraStolenErrorTimer"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isValid"), v14, (v15 & 1) == 0))
   {
     [(AXMTVideoCapturer *)self set_lastTimeFaceIDStoleCamera:mach_absolute_time()];
@@ -1083,8 +1083,8 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s: starting delay timer for camera stolen error", &v20, 0xCu);
     }
 
-    v17 = [(AXMTVideoCapturer *)self _delayCameraStolenErrorTimer];
-    [v17 invalidate];
+    _delayCameraStolenErrorTimer = [(AXMTVideoCapturer *)self _delayCameraStolenErrorTimer];
+    [_delayCameraStolenErrorTimer invalidate];
 
     v18 = [NSTimer scheduledTimerWithTimeInterval:self target:"_timerFiredForDelayedCameraStolen:" selector:v12 userInfo:0 repeats:2.0];
     [(AXMTVideoCapturer *)self set_delayCameraStolenErrorTimer:v18];
@@ -1096,24 +1096,24 @@ LABEL_28:
   }
 }
 
-- (void)_informDelegateOfError:(id)a3
+- (void)_informDelegateOfError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(AXMTVideoCapturer *)self delegate];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001CD3C;
   v8 = block[3] = &unk_100049008;
-  v9 = self;
-  v10 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v10 = errorCopy;
+  v5 = errorCopy;
   v6 = v8;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_timerFiredForDelayedCameraStolen:(id)a3
+- (void)_timerFiredForDelayedCameraStolen:(id)stolen
 {
-  v4 = a3;
+  stolenCopy = stolen;
   v5 = AXSSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1122,9 +1122,9 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s", &v7, 0xCu);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [stolenCopy userInfo];
 
-  [(AXMTVideoCapturer *)self _informDelegateOfError:v6];
+  [(AXMTVideoCapturer *)self _informDelegateOfError:userInfo];
 }
 
 - (AXMTVideoCapturerDelegate)delegate

@@ -1,6 +1,6 @@
 @interface PLBackgroundJobWorkerCriteriaTuple
-- (BOOL)isEqual:(id)a3;
-- (PLBackgroundJobWorkerCriteriaTuple)initWithWorker:(id)a3 withCriteria:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PLBackgroundJobWorkerCriteriaTuple)initWithWorker:(id)worker withCriteria:(id)criteria;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,19 +9,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PLBackgroundJobWorkerCriteriaTuple *)self worker];
-  v4 = [v3 workerDetailedName];
-  v5 = [v4 hash];
-  v6 = [(PLBackgroundJobWorkerCriteriaTuple *)self criteria];
-  v7 = [v6 hash];
+  worker = [(PLBackgroundJobWorkerCriteriaTuple *)self worker];
+  workerDetailedName = [worker workerDetailedName];
+  v5 = [workerDetailedName hash];
+  criteria = [(PLBackgroundJobWorkerCriteriaTuple *)self criteria];
+  v7 = [criteria hash];
 
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -30,17 +30,17 @@
   {
     v13.receiver = self;
     v13.super_class = PLBackgroundJobWorkerCriteriaTuple;
-    if ([(PLBackgroundJobWorkerCriteriaTuple *)&v13 isEqual:v4])
+    if ([(PLBackgroundJobWorkerCriteriaTuple *)&v13 isEqual:equalCopy])
     {
-      v5 = [(PLBackgroundJobWorkerCriteriaTuple *)self worker];
-      v6 = [v5 workerDetailedName];
-      v7 = [(PLBackgroundJobWorkerCriteriaTuple *)v4 worker];
-      v8 = [v7 workerDetailedName];
-      if ([v6 isEqualToString:v8])
+      worker = [(PLBackgroundJobWorkerCriteriaTuple *)self worker];
+      workerDetailedName = [worker workerDetailedName];
+      worker2 = [(PLBackgroundJobWorkerCriteriaTuple *)equalCopy worker];
+      workerDetailedName2 = [worker2 workerDetailedName];
+      if ([workerDetailedName isEqualToString:workerDetailedName2])
       {
-        v9 = [(PLBackgroundJobWorkerCriteriaTuple *)self criteria];
-        v10 = [(PLBackgroundJobWorkerCriteriaTuple *)v4 criteria];
-        v11 = [v9 isEqual:v10];
+        criteria = [(PLBackgroundJobWorkerCriteriaTuple *)self criteria];
+        criteria2 = [(PLBackgroundJobWorkerCriteriaTuple *)equalCopy criteria];
+        v11 = [criteria isEqual:criteria2];
       }
 
       else
@@ -61,25 +61,25 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLBackgroundJobCriteria *)self->_criteria shortCode];
-  v5 = [(PLBackgroundJobWorker *)self->_worker workerDetailedName];
-  v6 = [v3 stringWithFormat:@"[%@] - %@", v4, v5];
+  shortCode = [(PLBackgroundJobCriteria *)self->_criteria shortCode];
+  workerDetailedName = [(PLBackgroundJobWorker *)self->_worker workerDetailedName];
+  v6 = [v3 stringWithFormat:@"[%@] - %@", shortCode, workerDetailedName];
 
   return v6;
 }
 
-- (PLBackgroundJobWorkerCriteriaTuple)initWithWorker:(id)a3 withCriteria:(id)a4
+- (PLBackgroundJobWorkerCriteriaTuple)initWithWorker:(id)worker withCriteria:(id)criteria
 {
-  v7 = a3;
-  v8 = a4;
+  workerCopy = worker;
+  criteriaCopy = criteria;
   v12.receiver = self;
   v12.super_class = PLBackgroundJobWorkerCriteriaTuple;
   v9 = [(PLBackgroundJobWorkerCriteriaTuple *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_worker, a3);
-    objc_storeStrong(&v10->_criteria, a4);
+    objc_storeStrong(&v9->_worker, worker);
+    objc_storeStrong(&v10->_criteria, criteria);
   }
 
   return v10;

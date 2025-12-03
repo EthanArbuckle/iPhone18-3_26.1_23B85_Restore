@@ -1,25 +1,25 @@
 @interface BCSContextMenuController
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)showMenuForAction:(id)a3 fromView:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)showMenuForAction:(id)action fromView:(id)view;
 @end
 
 @implementation BCSContextMenuController
 
-- (void)showMenuForAction:(id)a3 fromView:(id)a4
+- (void)showMenuForAction:(id)action fromView:(id)view
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
-  objc_storeStrong(&self->_viewForMenu, a4);
-  v7 = [MEMORY[0x277CBEB18] array];
+  actionCopy = action;
+  viewCopy = view;
+  objc_storeStrong(&self->_viewForMenu, view);
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v22 = v6;
-  obj = [v6 actionPickerItems];
+  v22 = actionCopy;
+  obj = [actionCopy actionPickerItems];
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -36,17 +36,17 @@
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = MEMORY[0x277D750C8];
-        v14 = [v12 label];
-        v15 = [v12 icon];
+        label = [v12 label];
+        icon = [v12 icon];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __55__BCSContextMenuController_showMenuForAction_fromView___block_invoke;
         v24[3] = &unk_278D02448;
         v24[4] = self;
         v24[5] = v12;
-        v16 = [v13 actionWithTitle:v14 image:v15 identifier:0 handler:v24];
+        v16 = [v13 actionWithTitle:label image:icon identifier:0 handler:v24];
 
-        [v7 addObject:v16];
+        [array addObject:v16];
       }
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -55,7 +55,7 @@
     while (v9);
   }
 
-  v17 = [MEMORY[0x277D75710] menuWithChildren:v7];
+  v17 = [MEMORY[0x277D75710] menuWithChildren:array];
   actionPickerMenu = self->_actionPickerMenu;
   self->_actionPickerMenu = v17;
 
@@ -66,7 +66,7 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -78,9 +78,9 @@
   return v4;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  [(UIView *)self->_viewForMenu removeInteraction:a3, a4, a5];
+  [(UIView *)self->_viewForMenu removeInteraction:interaction, configuration, animator];
   finishAction = self->_finishAction;
   if (finishAction)
   {
@@ -91,12 +91,12 @@
   self->_selectedItem = 0;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v4 = [MEMORY[0x277D75EA8] defaultStyle];
-  [v4 setPreferredLayout:3];
+  defaultStyle = [MEMORY[0x277D75EA8] defaultStyle];
+  [defaultStyle setPreferredLayout:3];
 
-  return v4;
+  return defaultStyle;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface ABSSyncSession
 - (ABSSyncSession)init;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
-- (void)lateSetupForSession:(id)a3;
-- (void)resetDataStoreForSyncSession:(id)a3 completion:(id)a4;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
+- (void)lateSetupForSession:(id)session;
+- (void)resetDataStoreForSyncSession:(id)session completion:(id)completion;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation ABSSyncSession
@@ -31,16 +31,16 @@
   return v3;
 }
 
-- (void)lateSetupForSession:(id)a3
+- (void)lateSetupForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_opt_new();
   v6 = +[SYDevice targetableDevice];
-  v7 = [v6 systemBuildVersion];
-  [v5 setObject:v7 forKeyedSubscript:off_100071988];
+  systemBuildVersion = [v6 systemBuildVersion];
+  [v5 setObject:systemBuildVersion forKeyedSubscript:off_100071988];
 
-  v8 = [v4 sessionMetadata];
-  if (v8)
+  sessionMetadata = [sessionCopy sessionMetadata];
+  if (sessionMetadata)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -51,7 +51,7 @@
         sub_10003BBAC(v9);
       }
 
-      v8 = 0;
+      sessionMetadata = 0;
     }
   }
 
@@ -59,7 +59,7 @@
   if (!v10)
   {
     v11 = off_100071998;
-    v12 = [v8 objectForKeyedSubscript:off_100071990];
+    v12 = [sessionMetadata objectForKeyedSubscript:off_100071990];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,62 +131,62 @@ LABEL_25:
 
 LABEL_26:
   [v5 setObject:*v16 forKeyedSubscript:off_100071990];
-  v19 = [v8 objectForKeyedSubscript:off_1000719B8];
+  v19 = [sessionMetadata objectForKeyedSubscript:off_1000719B8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue = 0;
   }
 
-  v21 = [NSNumber numberWithBool:v20];
+  v21 = [NSNumber numberWithBool:bOOLValue];
   [v5 setObject:v21 forKeyedSubscript:off_1000719B8];
 
   v22 = [[ABSSerializer alloc] initWithOptions:v5];
-  [v4 setSerializer:v22];
+  [sessionCopy setSerializer:v22];
 
   [(ABSSyncSession *)self setOptions:v5];
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
   if (self->_isFirstEnqueue)
   {
     self->_isFirstEnqueue = 0;
-    [(ABSSyncSession *)self lateSetupForSession:a3, a4, a5, v5, v6];
+    [(ABSSyncSession *)self lateSetupForSession:session, changes, error, v5, v6];
   }
 
   return 2;
 }
 
-- (void)resetDataStoreForSyncSession:(id)a3 completion:(id)a4
+- (void)resetDataStoreForSyncSession:(id)session completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  sessionCopy = session;
   v8 = os_transaction_create();
-  v9 = [v7 targetQueue];
+  targetQueue = [sessionCopy targetQueue];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000339F0;
   block[3] = &unk_10005CF80;
   v13 = v8;
-  v14 = v6;
+  v14 = completionCopy;
   block[4] = self;
   v10 = v8;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(targetQueue, block);
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
-  v30 = a3;
-  v8 = a4;
-  v29 = a5;
+  sessionCopy = session;
+  changesCopy = changes;
+  completionCopy = completion;
   v9 = &qword_100071D00;
   v10 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -215,12 +215,12 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Applying changes", buf, 2u);
   }
 
-  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(changesCopy, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = v8;
+  v14 = changesCopy;
   v32 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v32)
   {
@@ -261,14 +261,14 @@ LABEL_26:
 
         else
         {
-          v20 = [v17 changeType];
-          if (v20 == 1)
+          changeType = [v17 changeType];
+          if (changeType == 1)
           {
             [v13 addObject:v17];
             goto LABEL_29;
           }
 
-          v21 = v20;
+          v21 = changeType;
           if ([v13 count])
           {
             v22 = v14;
@@ -280,8 +280,8 @@ LABEL_26:
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Flushing outstanding batch adds.", buf, 2u);
             }
 
-            v25 = [(ABSSyncSession *)self syncController];
-            [v25 addSyChanges:v13 forSession:self];
+            syncController = [(ABSSyncSession *)self syncController];
+            [syncController addSyChanges:v13 forSession:self];
 
             [v13 removeAllObjects];
             v9 = v23;
@@ -291,8 +291,8 @@ LABEL_26:
 
           if (v21 == 3)
           {
-            v26 = [(ABSSyncSession *)self syncController];
-            [v26 deleteSyChange:v17];
+            syncController2 = [(ABSSyncSession *)self syncController];
+            [syncController2 deleteSyChange:v17];
           }
 
           else
@@ -302,8 +302,8 @@ LABEL_26:
               goto LABEL_29;
             }
 
-            v26 = [(ABSSyncSession *)self syncController];
-            [v26 updateSyChange:v17 forSession:self];
+            syncController2 = [(ABSSyncSession *)self syncController];
+            [syncController2 updateSyChange:v17 forSession:self];
           }
         }
 
@@ -319,31 +319,31 @@ LABEL_29:
 
   if ([v13 count])
   {
-    v27 = [(ABSSyncSession *)self syncController];
-    [v27 addSyChanges:v13 forSession:self];
+    syncController3 = [(ABSSyncSession *)self syncController];
+    [syncController3 addSyChanges:v13 forSession:self];
   }
 
-  v29[2](v29, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 
   objc_autoreleasePoolPop(context);
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(ABSSyncSession *)self capturedError];
+  errorCopy = error;
+  capturedError = [(ABSSyncSession *)self capturedError];
 
-  if (!v5 && v6)
+  if (!errorCopy && capturedError)
   {
-    v5 = [(ABSSyncSession *)self capturedError];
+    errorCopy = [(ABSSyncSession *)self capturedError];
   }
 
   v7 = *(qword_100071D00 + 8);
-  if (v5)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10003BC98(v5, v7);
+      sub_10003BC98(errorCopy, v7);
     }
   }
 
@@ -353,12 +353,12 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sync complete with no error.", v12, 2u);
   }
 
-  v8 = [v5 domain];
-  v9 = [v8 isEqualToString:SYErrorDomain];
+  domain = [errorCopy domain];
+  v9 = [domain isEqualToString:SYErrorDomain];
 
   if (v9)
   {
-    v10 = [v5 code] != 2023;
+    v10 = [errorCopy code] != 2023;
   }
 
   else
@@ -366,8 +366,8 @@ LABEL_29:
     v10 = 1;
   }
 
-  v11 = [(ABSSyncSession *)self progressReporter];
-  [v11 doneForRealNotifyingPairedSync:v10];
+  progressReporter = [(ABSSyncSession *)self progressReporter];
+  [progressReporter doneForRealNotifyingPairedSync:v10];
 
   [(ABSSyncSession *)self setProgressReporter:0];
 }

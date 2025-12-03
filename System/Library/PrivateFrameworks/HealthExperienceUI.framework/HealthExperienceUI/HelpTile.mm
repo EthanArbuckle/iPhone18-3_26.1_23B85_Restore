@@ -1,16 +1,16 @@
 @interface HelpTile
 - (void)actionTapped;
 - (void)dismissTapped;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HelpTile
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA182078(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA182078(change);
 }
 
 - (void)actionTapped
@@ -20,7 +20,7 @@
   v4 = *(&self->super.super.super.isa + v3);
   swift_beginAccess();
   v5 = *(v4 + 16);
-  v6 = self;
+  selfCopy = self;
 
   v5(v7);
 }
@@ -32,7 +32,7 @@
   v4 = *(&self->super.super.super.isa + v3);
   swift_beginAccess();
   v5 = *(v4 + 32);
-  v6 = self;
+  selfCopy = self;
 
   v5(v7);
 }

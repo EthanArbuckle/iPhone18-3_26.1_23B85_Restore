@@ -1,24 +1,24 @@
 @interface _UISliderFluidVisualElementFactory
-+ (BOOL)visualElement:(id)a3 needsUpdateForStyle:(int64_t)a4 hasTrackImages:(BOOL)a5;
-+ (id)fluidVisualElementForStyle:(int64_t)a3 hasTrackImages:(BOOL)a4;
++ (BOOL)visualElement:(id)element needsUpdateForStyle:(int64_t)style hasTrackImages:(BOOL)images;
++ (id)fluidVisualElementForStyle:(int64_t)style hasTrackImages:(BOOL)images;
 - (_UISliderFluidVisualElementFactory)init;
 @end
 
 @implementation _UISliderFluidVisualElementFactory
 
-+ (id)fluidVisualElementForStyle:(int64_t)a3 hasTrackImages:(BOOL)a4
++ (id)fluidVisualElementForStyle:(int64_t)style hasTrackImages:(BOOL)images
 {
-  v4 = sub_188BFA838(a3, a4);
+  v4 = sub_188BFA838(style, images);
 
   return v4;
 }
 
-+ (BOOL)visualElement:(id)a3 needsUpdateForStyle:(int64_t)a4 hasTrackImages:(BOOL)a5
++ (BOOL)visualElement:(id)element needsUpdateForStyle:(int64_t)style hasTrackImages:(BOOL)images
 {
-  v5 = a5;
-  if ((a4 - 100) >= 0x15 || ((0x100C03u >> (a4 - 100)) & 1) == 0)
+  imagesCopy = images;
+  if ((style - 100) >= 0x15 || ((0x100C03u >> (style - 100)) & 1) == 0)
   {
-    v7 = a3;
+    elementCopy = element;
     if ((_UISolariumEnabled() & 1) == 0)
     {
       v6 = 0;
@@ -26,9 +26,9 @@
       return v6;
     }
 
-    if (v5)
+    if (imagesCopy)
     {
-      if (v7)
+      if (elementCopy)
       {
         objc_opt_self();
         v8 = swift_dynamicCastObjCClass();
@@ -39,7 +39,7 @@ LABEL_11:
       }
     }
 
-    else if (v7)
+    else if (elementCopy)
     {
       type metadata accessor for _UISliderGlassVisualElement();
       v8 = swift_dynamicCastClass();

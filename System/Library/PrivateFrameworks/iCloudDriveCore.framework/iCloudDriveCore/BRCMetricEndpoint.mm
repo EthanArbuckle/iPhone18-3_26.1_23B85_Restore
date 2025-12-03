@@ -1,10 +1,10 @@
 @interface BRCMetricEndpoint
-- (BRCMetricEndpoint)initWithSession:(id)a3;
+- (BRCMetricEndpoint)initWithSession:(id)session;
 @end
 
 @implementation BRCMetricEndpoint
 
-- (BRCMetricEndpoint)initWithSession:(id)a3
+- (BRCMetricEndpoint)initWithSession:(id)session
 {
   v4 = brc_bread_crumbs();
   v5 = brc_default_log();

@@ -1,12 +1,12 @@
 @interface _ICLLQueue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addItems:(uint64_t)a1;
+- (uint64_t)addItems:(uint64_t)items;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLQueue
@@ -50,16 +50,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   queueId = self->_queueId;
-  if (queueId | *(v4 + 7))
+  if (queueId | *(equalCopy + 7))
   {
     if (![(NSString *)queueId isEqual:?])
     {
@@ -68,22 +68,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 68);
+  v7 = *(equalCopy + 68);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_revision != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_revision != *(equalCopy + 16))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   items = self->_items;
-  if (items | *(v4 + 6))
+  if (items | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)items isEqual:?])
     {
@@ -93,12 +93,12 @@ LABEL_24:
     }
 
     has = self->_has;
-    v7 = *(v4 + 68);
+    v7 = *(equalCopy + 68);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_explicitSetting != *(v4 + 11))
+    if ((v7 & 2) == 0 || self->_explicitSetting != *(equalCopy + 11))
     {
       goto LABEL_24;
     }
@@ -115,7 +115,7 @@ LABEL_24:
   }
 
   currentRadioStationId = self->_currentRadioStationId;
-  if (currentRadioStationId | *(v4 + 4))
+  if (currentRadioStationId | *(equalCopy + 4))
   {
     if (![(NSString *)currentRadioStationId isEqual:?])
     {
@@ -123,10 +123,10 @@ LABEL_24:
     }
   }
 
-  v10 = (*(v4 + 68) & 1) == 0;
+  v10 = (*(equalCopy + 68) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_demarkationPos != *(v4 + 10))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_demarkationPos != *(equalCopy + 10))
     {
       goto LABEL_24;
     }
@@ -139,11 +139,11 @@ LABEL_25:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_queueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_queueId copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -173,7 +173,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{a3, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{zone, v17}];
         [(_ICLLQueue *)v5 addItems:v13];
 
         ++v12;
@@ -193,7 +193,7 @@ LABEL_25:
   }
 
   PBRepeatedInt32Copy();
-  v14 = [(NSString *)self->_currentRadioStationId copyWithZone:a3];
+  v14 = [(NSString *)self->_currentRadioStationId copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
@@ -206,21 +206,21 @@ LABEL_25:
   return v5;
 }
 
-- (uint64_t)addItems:(uint64_t)a1
+- (uint64_t)addItems:(uint64_t)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
-    v5 = *(a1 + 48);
+    v5 = *(items + 48);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 48);
-      *(a1 + 48) = v6;
+      v7 = *(items + 48);
+      *(items + 48) = v6;
 
-      v5 = *(a1 + 48);
+      v5 = *(items + 48);
     }
 
     v3 = [v5 addObject:v9];
@@ -230,10 +230,10 @@ LABEL_25:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_queueId)
   {
     PBDataWriterWriteStringField();
@@ -306,12 +306,12 @@ LABEL_25:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   queueId = self->_queueId;
   if (queueId)
   {
-    [v3 setObject:queueId forKey:@"queueId"];
+    [dictionary setObject:queueId forKey:@"queueId"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -342,8 +342,8 @@ LABEL_25:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -385,8 +385,8 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = _ICLLQueue;
   v4 = [(_ICLLQueue *)&v8 description];
-  v5 = [(_ICLLQueue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLQueue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

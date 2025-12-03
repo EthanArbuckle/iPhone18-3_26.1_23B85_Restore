@@ -1,10 +1,10 @@
 @interface PLVideoView
 + (id)_dequeueOverlayPlayButton;
-+ (id)videoViewForVideoFileAtURL:(id)a3;
-+ (void)_enqueueOverlayPlayButton:(id)a3;
++ (id)videoViewForVideoFileAtURL:(id)l;
++ (void)_enqueueOverlayPlayButton:(id)button;
 - (BOOL)_canAccessVideo;
 - (BOOL)_canAirPlayCurrentVideo;
-- (BOOL)_canHandleAdjustmentData:(id)a3;
+- (BOOL)_canHandleAdjustmentData:(id)data;
 - (BOOL)_canPlayCloudSharedStreamedVideoWithLocalVideo;
 - (BOOL)_didSetPhotoData;
 - (BOOL)_isFlattenedVideoUpToDate;
@@ -18,143 +18,143 @@
 - (BOOL)_shouldStreamSharedAlbumVideo;
 - (BOOL)_shouldStreamVideo;
 - (BOOL)canEdit;
-- (BOOL)moviePlayerShouldNotifyOnPreparationError:(id)a3;
+- (BOOL)moviePlayerShouldNotifyOnPreparationError:(id)error;
 - (NSString)_pathForPrebakedLandscapeScrubberThumbnails;
 - (NSString)_pathForPrebakedPortraitScrubberThumbnails;
 - (NSString)_pathForVideoPreviewFile;
 - (NSString)description;
 - (NSString)pathForVideoFile;
-- (PLVideoView)initWithFrame:(CGRect)a3 videoCameraImage:(id)a4 orientation:(int64_t)a5;
+- (PLVideoView)initWithFrame:(CGRect)frame videoCameraImage:(id)image orientation:(int64_t)orientation;
 - (double)_movieScrubberDuration;
-- (double)_movieTimeFromScrubberTime:(double)a3;
+- (double)_movieTimeFromScrubberTime:(double)time;
 - (double)_scrubberBackgroundHeight;
-- (double)_scrubberTimeFromMovieTime:(double)a3;
-- (double)_thumbnailTimeFromScrubberTime:(double)a3;
+- (double)_scrubberTimeFromMovieTime:(double)time;
+- (double)_thumbnailTimeFromScrubberTime:(double)time;
 - (double)currentTime;
 - (double)endTime;
-- (double)movieScrubberThumbnailAspectRatio:(id)a3;
+- (double)movieScrubberThumbnailAspectRatio:(id)ratio;
 - (double)scrubberWidth;
 - (double)startTime;
-- (id)_assetForVideoPath:(id)a3;
-- (id)_assetForVideoURL:(id)a3;
+- (id)_assetForVideoPath:(id)path;
+- (id)_assetForVideoURL:(id)l;
 - (id)_filePathForFlattenedVideo;
 - (id)_filePathForFlattenedVideoMetadata;
-- (id)_initWithFrame:(CGRect)a3 videoCameraImage:(id)a4 orientation:(int64_t)a5;
-- (id)_loadThumbnailsIntoDictionary:(id)a3 isLandscape:(BOOL)a4 aspectRatio:(float)a5;
+- (id)_initWithFrame:(CGRect)frame videoCameraImage:(id)image orientation:(int64_t)orientation;
+- (id)_loadThumbnailsIntoDictionary:(id)dictionary isLandscape:(BOOL)landscape aspectRatio:(float)ratio;
 - (id)_metadataForFlattenedVideo;
 - (id)_optionsForAVURLAsset;
 - (id)_pathForOriginalFile;
 - (id)_thumbnailSourceAsset;
 - (id)_videoSnapshot;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)movieScrubber:(id)a3 evenlySpacedTimestamps:(int)a4 startingAt:(id)a5 endingAt:(id)a6;
-- (id)newPreviewImageData:(id *)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)movieScrubber:(id)scrubber evenlySpacedTimestamps:(int)timestamps startingAt:(id)at endingAt:(id)endingAt;
+- (id)newPreviewImageData:(id *)data;
 - (void)_cancelAirplayExportSession;
 - (void)_cancelDelayedCommitPendingAdjustmentsUpdate;
-- (void)_commitPendingAdjustmentsUpdateAndWait:(BOOL)a3 completionHandler:(id)a4;
-- (void)_configureImageGenerator:(id)a3 thumbnailSize:(CGSize)thumbnailSize forSummaryThumbnails:(BOOL)a5;
+- (void)_commitPendingAdjustmentsUpdateAndWait:(BOOL)wait completionHandler:(id)handler;
+- (void)_configureImageGenerator:(id)generator thumbnailSize:(CGSize)thumbnailSize forSummaryThumbnails:(BOOL)thumbnails;
 - (void)_configurePlayerForStreamedVideoIfNecessary;
 - (void)_createImageGenerators;
 - (void)_createScrubberIfNeeded;
-- (void)_deleteFileAtPath:(id)a3;
+- (void)_deleteFileAtPath:(id)path;
 - (void)_didBeginPlayback;
-- (void)_didScrubToValue:(double)a3 withHandle:(int)a4;
+- (void)_didScrubToValue:(double)value withHandle:(int)handle;
 - (void)_displayPlaySpinner;
 - (void)_enqueueAdjustmentsForCommit;
 - (void)_fetchLocalContentEditingInput;
 - (void)_fetchNonlocalVideo;
-- (void)_flattenVideoWithCompletionHandler:(id)a3;
-- (void)_handleScreenConnectionChange:(BOOL)a3;
-- (void)_hideTrimMessageView:(BOOL)a3;
-- (void)_hideVideoOverlay:(BOOL)a3;
+- (void)_flattenVideoWithCompletionHandler:(id)handler;
+- (void)_handleScreenConnectionChange:(BOOL)change;
+- (void)_hideTrimMessageView:(BOOL)view;
+- (void)_hideVideoOverlay:(BOOL)overlay;
 - (void)_insertMoviePlayerViewIfNecessary;
-- (void)_networkReachabilityDidChange:(id)a3;
+- (void)_networkReachabilityDidChange:(id)change;
 - (void)_playbackFinished;
 - (void)_prepareAndResumePlayback;
 - (void)_reloadScrubberThumbnailsIfNeeded;
 - (void)_removePlaySpinner;
 - (void)_removeScrubber;
 - (void)_removeScrubberUpdateTimer;
-- (void)_requestPreviewPosterFrameForVideoSize:(CGSize)a3;
+- (void)_requestPreviewPosterFrameForVideoSize:(CGSize)size;
 - (void)_reset;
 - (void)_resetScrubberUpdateTimer;
 - (void)_saveCachedThumbnailsIfNecessary;
-- (void)_savePreviewPosterFrameImage:(CGImage *)a3;
-- (void)_scrubToMovieTime:(double)a3;
-- (void)_scrubToSlalomRegionEditorStartHandle:(BOOL)a3;
+- (void)_savePreviewPosterFrameImage:(CGImage *)image;
+- (void)_scrubToMovieTime:(double)time;
+- (void)_scrubToSlalomRegionEditorStartHandle:(BOOL)handle;
 - (void)_serviceImageGenerationRequests;
-- (void)_setDuration:(double)a3;
-- (void)_setLocalVideoUnavailable:(BOOL)a3;
-- (void)_setMoviePlayerActive:(BOOL)a3;
-- (void)_setNeedsReloadScrubberThumbnails:(BOOL)a3;
-- (void)_setPlaybackDidBegin:(BOOL)a3;
-- (void)_setPlaying:(BOOL)a3;
+- (void)_setDuration:(double)duration;
+- (void)_setLocalVideoUnavailable:(BOOL)unavailable;
+- (void)_setMoviePlayerActive:(BOOL)active;
+- (void)_setNeedsReloadScrubberThumbnails:(BOOL)thumbnails;
+- (void)_setPlaybackDidBegin:(BOOL)begin;
+- (void)_setPlaying:(BOOL)playing;
 - (void)_setupMoviePlayerIfNecessary;
 - (void)_showVideoOverlay;
 - (void)_tearDownMoviePlayer;
 - (void)_updatePosterFrameVisibility;
 - (void)_updatePosterImageView;
-- (void)_updateScaleModeForSize:(CGSize)a3;
+- (void)_updateScaleModeForSize:(CGSize)size;
 - (void)_updateScrubberForSlowMotion;
 - (void)_updateScrubberFrame;
 - (void)_updateScrubberValue;
-- (void)_updateScrubberVisibilityWithDuration:(double)a3;
+- (void)_updateScrubberVisibilityWithDuration:(double)duration;
 - (void)_updateSlalomRegionEditorRange;
 - (void)_updateSlalomRegionEditorState;
 - (void)_updateSnapshotImage;
-- (void)_updateVideoAVObjectBuilderFromContentEditingInput:(id)a3;
+- (void)_updateVideoAVObjectBuilderFromContentEditingInput:(id)input;
 - (void)_verifyOrRestartPlayback;
 - (void)_videoOverlayFadeOutDidFinish;
-- (void)_writeMetadata:(id)a3 toPath:(id)a4;
+- (void)_writeMetadata:(id)metadata toPath:(id)path;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)handleDoubleTap;
 - (void)layoutSubviews;
-- (void)moviePlayerBufferingStateDidChange:(id)a3;
-- (void)moviePlayerControllerDidBecomeActiveController:(id)a3;
-- (void)moviePlayerControllerWillResignAsActiveController:(id)a3;
-- (void)moviePlayerDidChangeExternalPlaybackType:(id)a3;
-- (void)moviePlayerDurationAvailable:(id)a3;
-- (void)moviePlayerEncounteredAuthenticationError:(id)a3;
-- (void)moviePlayerHeadsetNextTrackPressed:(id)a3;
-- (void)moviePlayerHeadsetPlayPausePressed:(id)a3;
-- (void)moviePlayerHeadsetPreviousTrackPressed:(id)a3;
-- (void)moviePlayerPlaybackRateDidChange:(id)a3;
-- (void)moviePlayerPlaybackStateDidChange:(id)a3 fromPlaybackState:(unint64_t)a4;
-- (void)moviePlayerReadyToDisplay:(id)a3;
-- (void)moviePlayerReadyToPlay:(id)a3;
-- (void)movieScrubber:(id)a3 requestThumbnailImageForTimestamp:(id)a4 isSummaryThumbnail:(BOOL)a5;
-- (void)movieScrubber:(id)a3 widthDelta:(float)a4 originXDelta:(float)a5;
-- (void)movieScrubberDidBeginScrubbing:(id)a3 withHandle:(int)a4;
-- (void)movieScrubberDidEndScrubbing:(id)a3 withHandle:(int)a4;
-- (void)movieScrubberDidFinishRequestingThumbnails:(id)a3;
-- (void)notifyOfChange:(id)a3 shouldReloadBlock:(id)a4;
+- (void)moviePlayerBufferingStateDidChange:(id)change;
+- (void)moviePlayerControllerDidBecomeActiveController:(id)controller;
+- (void)moviePlayerControllerWillResignAsActiveController:(id)controller;
+- (void)moviePlayerDidChangeExternalPlaybackType:(id)type;
+- (void)moviePlayerDurationAvailable:(id)available;
+- (void)moviePlayerEncounteredAuthenticationError:(id)error;
+- (void)moviePlayerHeadsetNextTrackPressed:(id)pressed;
+- (void)moviePlayerHeadsetPlayPausePressed:(id)pressed;
+- (void)moviePlayerHeadsetPreviousTrackPressed:(id)pressed;
+- (void)moviePlayerPlaybackRateDidChange:(id)change;
+- (void)moviePlayerPlaybackStateDidChange:(id)change fromPlaybackState:(unint64_t)state;
+- (void)moviePlayerReadyToDisplay:(id)display;
+- (void)moviePlayerReadyToPlay:(id)play;
+- (void)movieScrubber:(id)scrubber requestThumbnailImageForTimestamp:(id)timestamp isSummaryThumbnail:(BOOL)thumbnail;
+- (void)movieScrubber:(id)scrubber widthDelta:(float)delta originXDelta:(float)xDelta;
+- (void)movieScrubberDidBeginScrubbing:(id)scrubbing withHandle:(int)handle;
+- (void)movieScrubberDidEndScrubbing:(id)scrubbing withHandle:(int)handle;
+- (void)movieScrubberDidFinishRequestingThumbnails:(id)thumbnails;
+- (void)notifyOfChange:(id)change shouldReloadBlock:(id)block;
 - (void)notifyRequiredResourcesDownloaded;
 - (void)pause;
 - (void)play;
 - (void)removeVideoOverlay;
-- (void)setCanEdit:(BOOL)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setLoadMediaImmediately:(BOOL)a3;
-- (void)setPosterFrameImage:(id)a3;
-- (void)setScrubberIsSubview:(BOOL)a3;
-- (void)setShowsPlayOverlay:(BOOL)a3;
-- (void)setShowsScrubber:(BOOL)a3 duration:(double)a4;
-- (void)showTrimMessage:(id)a3 withBottomY:(float)a4;
-- (void)slalomRegionEditorDidBeginEditing:(id)a3 withStartHandle:(BOOL)a4;
-- (void)slalomRegionEditorDidEndEditing:(id)a3;
+- (void)setCanEdit:(BOOL)edit;
+- (void)setCurrentTime:(double)time;
+- (void)setDelegate:(id)delegate;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setLoadMediaImmediately:(BOOL)immediately;
+- (void)setPosterFrameImage:(id)image;
+- (void)setScrubberIsSubview:(BOOL)subview;
+- (void)setShowsPlayOverlay:(BOOL)overlay;
+- (void)setShowsScrubber:(BOOL)scrubber duration:(double)duration;
+- (void)showTrimMessage:(id)message withBottomY:(float)y;
+- (void)slalomRegionEditorDidBeginEditing:(id)editing withStartHandle:(BOOL)handle;
+- (void)slalomRegionEditorDidEndEditing:(id)editing;
 - (void)stop;
-- (void)toggleScaleMode:(float)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)updateForRotationWithDuration:(double)a3 isLandscape:(BOOL)a4;
+- (void)toggleScaleMode:(float)mode;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)updateForRotationWithDuration:(double)duration isLandscape:(BOOL)landscape;
 - (void)updateScaleMode;
 - (void)viewDidAppear;
 - (void)viewDidDisappear;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PLVideoView
@@ -166,16 +166,16 @@
   self->_airplayExportSession = 0;
 }
 
-- (void)_flattenVideoWithCompletionHandler:(id)a3
+- (void)_flattenVideoWithCompletionHandler:(id)handler
 {
   [(PLVideoView *)self _cancelAirplayExportSession];
   if (self->__videoAVObjectBuilder)
   {
-    v5 = [(PLVideoView *)self _filePathForFlattenedVideo];
-    v6 = [(PLVideoView *)self _filePathForFlattenedVideoMetadata];
-    [(PLVideoView *)self _deleteFileAtPath:v5];
-    [(PLVideoView *)self _deleteFileAtPath:v6];
-    v7 = [(PLVideoView *)self _metadataForFlattenedVideo];
+    _filePathForFlattenedVideo = [(PLVideoView *)self _filePathForFlattenedVideo];
+    _filePathForFlattenedVideoMetadata = [(PLVideoView *)self _filePathForFlattenedVideoMetadata];
+    [(PLVideoView *)self _deleteFileAtPath:_filePathForFlattenedVideo];
+    [(PLVideoView *)self _deleteFileAtPath:_filePathForFlattenedVideoMetadata];
+    _metadataForFlattenedVideo = [(PLVideoView *)self _metadataForFlattenedVideo];
     videoAVObjectBuilder = self->__videoAVObjectBuilder;
     v9 = *MEMORY[0x277CE5C78];
     v14[0] = MEMORY[0x277D85DD0];
@@ -186,7 +186,7 @@
     [(PFVideoAVObjectBuilder *)videoAVObjectBuilder requestExportSessionWithExportPreset:v9 resultHandler:v14];
     if (self->_airplayExportSession)
     {
-      v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:0];
+      v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:_filePathForFlattenedVideo isDirectory:0];
       [(AVAssetExportSession *)self->_airplayExportSession setOutputFileType:*MEMORY[0x277CE5DA8]];
       [(AVAssetExportSession *)self->_airplayExportSession setOutputURL:v10];
       airplayExportSession = self->_airplayExportSession;
@@ -196,24 +196,24 @@
       v13[3] = &unk_2782A22A0;
       v13[4] = airplayExportSession;
       v13[5] = self;
-      v13[6] = v7;
-      v13[7] = v6;
+      v13[6] = _metadataForFlattenedVideo;
+      v13[7] = _filePathForFlattenedVideoMetadata;
       v13[8] = v10;
-      v13[9] = a3;
+      v13[9] = handler;
       [(AVAssetExportSession *)airplayExportSession exportAsynchronouslyWithCompletionHandler:v13];
     }
 
-    else if (a3)
+    else if (handler)
     {
-      (*(a3 + 2))(a3, 0);
+      (*(handler + 2))(handler, 0);
     }
   }
 
-  else if (a3)
+  else if (handler)
   {
-    v12 = *(a3 + 2);
+    v12 = *(handler + 2);
 
-    v12(a3, 0);
+    v12(handler, 0);
   }
 }
 
@@ -259,25 +259,25 @@ uint64_t __50__PLVideoView__flattenVideoWithCompletionHandler___block_invoke_3(u
   return result;
 }
 
-- (void)_deleteFileAtPath:(id)a3
+- (void)_deleteFileAtPath:(id)path
 {
   v5 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:a3 isDirectory:0])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:path isDirectory:0])
   {
-    [v4 removeItemAtPath:a3 error:&v5];
+    [defaultManager removeItemAtPath:path error:&v5];
     if (v5)
     {
-      NSLog(&cfstr_FailedToDelete.isa, a3, v5);
+      NSLog(&cfstr_FailedToDelete.isa, path, v5);
     }
   }
 }
 
 - (id)_filePathForFlattenedVideoMetadata
 {
-  v2 = [(PLVideoView *)self _filePathForFlattenedVideo];
+  _filePathForFlattenedVideo = [(PLVideoView *)self _filePathForFlattenedVideo];
 
-  return [v2 stringByAppendingPathExtension:@"MD"];
+  return [_filePathForFlattenedVideo stringByAppendingPathExtension:@"MD"];
 }
 
 - (id)_filePathForFlattenedVideo
@@ -288,47 +288,47 @@ uint64_t __50__PLVideoView__flattenVideoWithCompletionHandler___block_invoke_3(u
   return [(NSString *)v3 stringByAppendingPathComponent:v2];
 }
 
-- (void)_writeMetadata:(id)a3 toPath:(id)a4
+- (void)_writeMetadata:(id)metadata toPath:(id)path
 {
-  if (a3)
+  if (metadata)
   {
-    [objc_msgSend(MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:100 options:0 error:{0), "writeToFile:options:error:", a4, 1073741825, 0}];
+    [objc_msgSend(MEMORY[0x277CCAC58] dataWithPropertyList:metadata format:100 options:0 error:{0), "writeToFile:options:error:", path, 1073741825, 0}];
   }
 
   if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
   {
-    NSLog(&cfstr_FailedToWriteM.isa, a4);
+    NSLog(&cfstr_FailedToWriteM.isa, path);
   }
 }
 
 - (id)_metadataForFlattenedVideo
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   [(PLManagedAsset *)self->_videoCameraImage duration];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:"), @"duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:"), @"duration"}];
   v4 = [-[PFVideoAVObjectBuilder videoAdjustments](self->__videoAVObjectBuilder "videoAdjustments")];
   if (v4)
   {
-    [v3 setObject:v4 forKey:@"plist"];
+    [dictionary setObject:v4 forKey:@"plist"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (BOOL)_isFlattenedVideoUpToDate
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(PLVideoView *)self _filePathForFlattenedVideo];
-  v5 = [(PLVideoView *)self _filePathForFlattenedVideoMetadata];
-  if (![v3 fileExistsAtPath:v4] || !objc_msgSend(v3, "fileExistsAtPath:", v5))
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _filePathForFlattenedVideo = [(PLVideoView *)self _filePathForFlattenedVideo];
+  _filePathForFlattenedVideoMetadata = [(PLVideoView *)self _filePathForFlattenedVideoMetadata];
+  if (![defaultManager fileExistsAtPath:_filePathForFlattenedVideo] || !objc_msgSend(defaultManager, "fileExistsAtPath:", _filePathForFlattenedVideoMetadata))
   {
     return 0;
   }
 
-  v6 = [(PLVideoView *)self _readMetadataFromPath:v5];
-  v7 = [(PLVideoView *)self _metadataForFlattenedVideo];
+  v6 = [(PLVideoView *)self _readMetadataFromPath:_filePathForFlattenedVideoMetadata];
+  _metadataForFlattenedVideo = [(PLVideoView *)self _metadataForFlattenedVideo];
 
-  return [v6 isEqual:v7];
+  return [v6 isEqual:_metadataForFlattenedVideo];
 }
 
 - (BOOL)_shouldPlayFlattenedVideo
@@ -381,10 +381,10 @@ uint64_t __38__PLVideoView__canAirPlayCurrentVideo__block_invoke(uint64_t a1, ui
   return result;
 }
 
-- (void)_scrubToSlalomRegionEditorStartHandle:(BOOL)a3
+- (void)_scrubToSlalomRegionEditorStartHandle:(BOOL)handle
 {
   slalomRegionEditor = self->_slalomRegionEditor;
-  if (a3)
+  if (handle)
   {
     [(PLSlalomRegionEditor *)slalomRegionEditor startValue];
   }
@@ -399,9 +399,9 @@ uint64_t __38__PLVideoView__canAirPlayCurrentVideo__block_invoke(uint64_t a1, ui
   [(PLVideoView *)self _scrubToMovieTime:?];
 }
 
-- (void)_commitPendingAdjustmentsUpdateAndWait:(BOOL)a3 completionHandler:(id)a4
+- (void)_commitPendingAdjustmentsUpdateAndWait:(BOOL)wait completionHandler:(id)handler
 {
-  v5 = a3;
+  waitCopy = wait;
   [(PLVideoView *)self _cancelDelayedCommitPendingAdjustmentsUpdate];
   adjustmentsToCommit = self->__adjustmentsToCommit;
   if (adjustmentsToCommit)
@@ -416,15 +416,15 @@ uint64_t __38__PLVideoView__canAirPlayCurrentVideo__block_invoke(uint64_t a1, ui
       ++self->__expectedNotificationsCount;
       v11 = [objc_alloc(MEMORY[0x277CD97A0]) initWithFormatIdentifier:-[PFVideoAdjustments adjustmentFormatIdentifier](v8 formatVersion:"adjustmentFormatIdentifier") data:{-[PFVideoAdjustments adjustmentFormatVersion](v8, "adjustmentFormatVersion"), -[PFVideoAdjustments adjustmentData](v8, "adjustmentData")}];
       v12 = pl_appPhotoLibrary();
-      v13 = [v12 photoLibraryURL];
+      photoLibraryURL = [v12 photoLibraryURL];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __72__PLVideoView__commitPendingAdjustmentsUpdateAndWait_completionHandler___block_invoke;
       v18[3] = &unk_2782A20C0;
       v18[4] = v10;
-      v18[5] = v13;
+      v18[5] = photoLibraryURL;
       v18[6] = v11;
-      if (v5)
+      if (waitCopy)
       {
         *buf = 0;
         if (![v12 performChangesAndWait:v18 error:buf] || *buf)
@@ -432,9 +432,9 @@ uint64_t __38__PLVideoView__canAirPlayCurrentVideo__block_invoke(uint64_t a1, ui
           NSLog(&cfstr_FailedToCommit.isa, *buf);
         }
 
-        if (a4)
+        if (handler)
         {
-          (*(a4 + 2))(a4, *buf);
+          (*(handler + 2))(handler, *buf);
         }
       }
 
@@ -444,7 +444,7 @@ uint64_t __38__PLVideoView__canAirPlayCurrentVideo__block_invoke(uint64_t a1, ui
         v16[1] = 3221225472;
         v16[2] = __72__PLVideoView__commitPendingAdjustmentsUpdateAndWait_completionHandler___block_invoke_2;
         v16[3] = &unk_2782A2228;
-        v16[4] = a4;
+        v16[4] = handler;
         [v12 performChanges:v18 completionHandler:v16];
       }
     }
@@ -458,18 +458,18 @@ uint64_t __38__PLVideoView__canAirPlayCurrentVideo__block_invoke(uint64_t a1, ui
         _os_log_impl(&dword_21ACCD000, Log, OS_LOG_TYPE_ERROR, "No PHAsset for committing pending adjustment changes", buf, 2u);
       }
 
-      if (a4)
+      if (handler)
       {
-        (*(a4 + 2))(a4, 0);
+        (*(handler + 2))(handler, 0);
       }
     }
   }
 
-  else if (a4)
+  else if (handler)
   {
-    v14 = *(a4 + 2);
+    v14 = *(handler + 2);
 
-    v14(a4, 0);
+    v14(handler, 0);
   }
 }
 
@@ -510,11 +510,11 @@ uint64_t __72__PLVideoView__commitPendingAdjustmentsUpdateAndWait_completionHand
 
 - (void)_enqueueAdjustmentsForCommit
 {
-  v3 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
+  videoAdjustments = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
   adjustmentsToCommit = self->__adjustmentsToCommit;
-  if (adjustmentsToCommit != v3)
+  if (adjustmentsToCommit != videoAdjustments)
   {
-    v5 = v3;
+    v5 = videoAdjustments;
 
     self->__adjustmentsToCommit = v5;
   }
@@ -524,23 +524,23 @@ uint64_t __72__PLVideoView__commitPendingAdjustmentsUpdateAndWait_completionHand
   [(PLVideoView *)self performSelector:sel__commitPendingAdjustmentsUpdate withObject:0 afterDelay:40.0];
 }
 
-- (void)slalomRegionEditorDidEndEditing:(id)a3
+- (void)slalomRegionEditorDidEndEditing:(id)editing
 {
-  v3 = a3;
-  [a3 startValue];
+  editingCopy = editing;
+  [editing startValue];
   v6 = v5;
-  [v3 endValue];
+  [editingCopy endValue];
   v8 = v7;
-  LODWORD(v3) = [MEMORY[0x277D3B4D8] preferredTimeScale];
+  LODWORD(editingCopy) = [MEMORY[0x277D3B4D8] preferredTimeScale];
   memset(&v21, 0, sizeof(v21));
-  CMTimeMakeWithSeconds(&start.start, v6, v3);
-  CMTimeMakeWithSeconds(&end.start, v8, v3);
+  CMTimeMakeWithSeconds(&start.start, v6, editingCopy);
+  CMTimeMakeWithSeconds(&end.start, v8, editingCopy);
   CMTimeRangeFromTimeToTime(&v21, &start.start, &end.start);
   memset(&start, 0, sizeof(start));
-  v9 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
-  if (v9)
+  videoAdjustments = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
+  if (videoAdjustments)
   {
-    [v9 slowMotionTimeRange];
+    [videoAdjustments slowMotionTimeRange];
   }
 
   else
@@ -557,8 +557,8 @@ uint64_t __72__PLVideoView__commitPendingAdjustmentsUpdateAndWait_completionHand
     v12 = objc_alloc(MEMORY[0x277D3B518]);
     end = v21;
     v13 = [v12 initWithSlowMotionTimeRange:&end rate:{COERCE_DOUBLE(__PAIR64__(v21.duration.flags, v11))}];
-    v14 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAsset];
-    v15 = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:v14 videoAdjustments:v13];
+    videoAsset = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAsset];
+    v15 = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:videoAsset videoAdjustments:v13];
 
     self->__videoAVObjectBuilder = v15;
     [(PLVideoView *)self _updateScrubberForSlowMotion];
@@ -584,26 +584,26 @@ uint64_t __72__PLVideoView__commitPendingAdjustmentsUpdateAndWait_completionHand
   }
 }
 
-- (void)slalomRegionEditorDidBeginEditing:(id)a3 withStartHandle:(BOOL)a4
+- (void)slalomRegionEditorDidBeginEditing:(id)editing withStartHandle:(BOOL)handle
 {
-  v4 = a4;
+  handleCopy = handle;
   [(PLVideoView *)self pause];
   *(self + 650) &= ~1u;
 
-  [(PLVideoView *)self _scrubToSlalomRegionEditorStartHandle:v4];
+  [(PLVideoView *)self _scrubToSlalomRegionEditorStartHandle:handleCopy];
 }
 
-- (void)updateForRotationWithDuration:(double)a3 isLandscape:(BOOL)a4
+- (void)updateForRotationWithDuration:(double)duration isLandscape:(BOOL)landscape
 {
-  if (self->_useLandscapeCache != a4)
+  if (self->_useLandscapeCache != landscape)
   {
-    self->_useLandscapeCache = a4;
+    self->_useLandscapeCache = landscape;
     [(PLVideoView *)self _setNeedsReloadScrubberThumbnails:1];
     [(PLVideoView *)self setShowsScrubber:0 duration:0.0];
     if (self->_scaleMode == 2)
     {
 
-      *&v6 = a3;
+      *&v6 = duration;
       [(PLVideoView *)self toggleScaleMode:v6];
     }
   }
@@ -674,10 +674,10 @@ LABEL_14:
   {
     memset(v9, 0, sizeof(v9));
     v8 = 0u;
-    v5 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
-    if (v5)
+    videoAdjustments = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
+    if (videoAdjustments)
     {
-      [v5 slowMotionTimeRange];
+      [videoAdjustments slowMotionTimeRange];
     }
 
     else
@@ -701,11 +701,11 @@ LABEL_14:
   [(PLSlalomRegionEditor *)self->_slalomRegionEditor setEndValue:v4];
 }
 
-- (void)_setDuration:(double)a3
+- (void)_setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     [(PLVideoView *)self _updateSlalomRegionEditorRange];
   }
 }
@@ -748,7 +748,7 @@ LABEL_14:
   }
 }
 
-- (void)_handleScreenConnectionChange:(BOOL)a3
+- (void)_handleScreenConnectionChange:(BOOL)change
 {
   if ((*(self + 652) & 2) != 0)
   {
@@ -760,12 +760,12 @@ LABEL_14:
   }
 }
 
-- (double)_scrubberTimeFromMovieTime:(double)a3
+- (double)_scrubberTimeFromMovieTime:(double)time
 {
   if ([(PLVideoView *)self _scrubberTimeNeedsMapping])
   {
     memset(&v8, 0, sizeof(v8));
-    CMTimeMakeWithSeconds(&v8, a3, [MEMORY[0x277D3B4D8] preferredTimeScale]);
+    CMTimeMakeWithSeconds(&v8, time, [MEMORY[0x277D3B4D8] preferredTimeScale]);
     memset(&v7[32], 0, 24);
     videoAVObjectBuilder = self->__videoAVObjectBuilder;
     if (videoAVObjectBuilder)
@@ -778,15 +778,15 @@ LABEL_14:
     return CMTimeGetSeconds(v7);
   }
 
-  return a3;
+  return time;
 }
 
-- (double)_movieTimeFromScrubberTime:(double)a3
+- (double)_movieTimeFromScrubberTime:(double)time
 {
   if ([(PLVideoView *)self _scrubberTimeNeedsMapping])
   {
     memset(&v8, 0, sizeof(v8));
-    CMTimeMakeWithSeconds(&v8, a3, [MEMORY[0x277D3B4D8] preferredTimeScale]);
+    CMTimeMakeWithSeconds(&v8, time, [MEMORY[0x277D3B4D8] preferredTimeScale]);
     memset(&v7[32], 0, 24);
     videoAVObjectBuilder = self->__videoAVObjectBuilder;
     if (videoAVObjectBuilder)
@@ -799,15 +799,15 @@ LABEL_14:
     return CMTimeGetSeconds(v7);
   }
 
-  return a3;
+  return time;
 }
 
-- (double)_thumbnailTimeFromScrubberTime:(double)a3
+- (double)_thumbnailTimeFromScrubberTime:(double)time
 {
   if (![(PLVideoView *)self _scrubberTimeNeedsMapping])
   {
     memset(&v8, 0, sizeof(v8));
-    CMTimeMakeWithSeconds(&v8, a3, [MEMORY[0x277D3B4D8] preferredTimeScale]);
+    CMTimeMakeWithSeconds(&v8, time, [MEMORY[0x277D3B4D8] preferredTimeScale]);
     memset(&v7[32], 0, 24);
     videoAVObjectBuilder = self->__videoAVObjectBuilder;
     if (videoAVObjectBuilder)
@@ -820,7 +820,7 @@ LABEL_14:
     return CMTimeGetSeconds(v7);
   }
 
-  return a3;
+  return time;
 }
 
 - (id)_thumbnailSourceAsset
@@ -834,9 +834,9 @@ LABEL_14:
 
   else
   {
-    v5 = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
+    currentItem = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
 
-    return [(AVPlayerItem *)v5 asset];
+    return [(AVPlayerItem *)currentItem asset];
   }
 }
 
@@ -845,10 +845,10 @@ LABEL_14:
   duration = self->_duration;
   if ([(PLVideoView *)self _scrubberTimeNeedsMapping])
   {
-    v4 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAsset];
-    if (v4)
+    videoAsset = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAsset];
+    if (videoAsset)
     {
-      [v4 duration];
+      [videoAsset duration];
     }
 
     else
@@ -864,18 +864,18 @@ LABEL_14:
 
 - (BOOL)_scrubberTimeNeedsMapping
 {
-  v3 = [(PLVideoView *)self _shouldShowSlalomEditor];
-  if (v3)
+  _shouldShowSlalomEditor = [(PLVideoView *)self _shouldShowSlalomEditor];
+  if (_shouldShowSlalomEditor)
   {
-    v4 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
+    videoAdjustments = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
 
-    LOBYTE(v3) = [v4 hasSlowMotionAdjustments];
+    LOBYTE(_shouldShowSlalomEditor) = [videoAdjustments hasSlowMotionAdjustments];
   }
 
-  return v3;
+  return _shouldShowSlalomEditor;
 }
 
-- (void)notifyOfChange:(id)a3 shouldReloadBlock:(id)a4
+- (void)notifyOfChange:(id)change shouldReloadBlock:(id)block
 {
   if (![-[PFVideoAVObjectBuilder videoAdjustments](self->__videoAVObjectBuilder "videoAdjustments")])
   {
@@ -884,7 +884,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([objc_msgSend(a3 changeDetailsForObject:{-[PLManagedAsset pl_PHAssetFromPhotoLibrary:](self->_videoCameraImage, "pl_PHAssetFromPhotoLibrary:", pl_appPhotoLibrary())), "assetContentChanged"}])
+  if ([objc_msgSend(change changeDetailsForObject:{-[PLManagedAsset pl_PHAssetFromPhotoLibrary:](self->_videoCameraImage, "pl_PHAssetFromPhotoLibrary:", pl_appPhotoLibrary())), "assetContentChanged"}])
   {
     expectedNotificationsCount = self->__expectedNotificationsCount;
     v8 = expectedNotificationsCount < 1;
@@ -901,17 +901,17 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  v11 = *(a4 + 2);
+  v11 = *(block + 2);
 
-  v11(a4, v10);
+  v11(block, v10);
 }
 
-- (void)_scrubToMovieTime:(double)a3
+- (void)_scrubToMovieTime:(double)time
 {
   [(PLVideoView *)self _scrubberTimeFromMovieTime:?];
   v6 = v5;
   [(UIMovieScrubber *)self->_scrubber setValue:?];
-  [(PLVideoView *)self setCurrentTime:a3];
+  [(PLVideoView *)self setCurrentTime:time];
   self->_lastScrubbedValue = v6;
 }
 
@@ -927,18 +927,18 @@ LABEL_7:
   return result;
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->_cachedCurrentPlaybackTime = a3;
+  self->_cachedCurrentPlaybackTime = time;
   if ((*(self + 651) & 8) != 0)
   {
     [(PLMoviePlayerController *)self->_moviePlayer setCurrentTime:2 timeSnapOption:?];
   }
 }
 
-- (void)setLoadMediaImmediately:(BOOL)a3
+- (void)setLoadMediaImmediately:(BOOL)immediately
 {
-  if (a3)
+  if (immediately)
   {
     v3 = 8;
   }
@@ -951,9 +951,9 @@ LABEL_7:
   *(self + 649) = *(self + 649) & 0xF7 | v3;
 }
 
-- (void)setScrubberIsSubview:(BOOL)a3
+- (void)setScrubberIsSubview:(BOOL)subview
 {
-  if (a3)
+  if (subview)
   {
     v3 = 16;
   }
@@ -985,21 +985,21 @@ LABEL_7:
   return v2;
 }
 
-- (void)_setLocalVideoUnavailable:(BOOL)a3
+- (void)_setLocalVideoUnavailable:(BOOL)unavailable
 {
-  if (self->__localVideoUnavailable != a3)
+  if (self->__localVideoUnavailable != unavailable)
   {
-    self->__localVideoUnavailable = a3;
+    self->__localVideoUnavailable = unavailable;
     [(PLVideoView *)self _updateScrubberVisibilityWithDuration:0.0];
   }
 }
 
-- (void)setCanEdit:(BOOL)a3
+- (void)setCanEdit:(BOOL)edit
 {
   v3 = *(self + 649);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ edit) & 1) == 0)
   {
-    if (a3)
+    if (edit)
     {
       v4 = 4;
     }
@@ -1023,12 +1023,12 @@ LABEL_7:
   }
 }
 
-- (void)setShowsScrubber:(BOOL)a3 duration:(double)a4
+- (void)setShowsScrubber:(BOOL)scrubber duration:(double)duration
 {
   v4 = *(self + 649);
-  if (((((v4 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 2) == 0) ^ scrubber) & 1) == 0)
   {
-    if (a3)
+    if (scrubber)
     {
       v7 = 2;
     }
@@ -1039,13 +1039,13 @@ LABEL_7:
     }
 
     *(self + 649) = v4 & 0xFD | v7;
-    if (a3 && self->_prepareMoviePlayerForScrubberAutomatically)
+    if (scrubber && self->_prepareMoviePlayerForScrubberAutomatically)
     {
       dispatch_time(0, 200000000);
       pl_dispatch_after();
     }
 
-    [(PLVideoView *)self _updateScrubberVisibilityWithDuration:a4];
+    [(PLVideoView *)self _updateScrubberVisibilityWithDuration:duration];
   }
 }
 
@@ -1057,9 +1057,9 @@ uint64_t __41__PLVideoView_setShowsScrubber_duration___block_invoke(uint64_t a1)
   return [v2 _prepareMoviePlayerIfNeeded];
 }
 
-- (void)setShowsPlayOverlay:(BOOL)a3
+- (void)setShowsPlayOverlay:(BOOL)overlay
 {
-  v4 = [(PLVideoView *)self _canAccessVideo]&& a3;
+  v4 = [(PLVideoView *)self _canAccessVideo]&& overlay;
   v5 = *(self + 649);
   if (v4 != (v5 & 1))
   {
@@ -1081,9 +1081,9 @@ uint64_t __41__PLVideoView_setShowsScrubber_duration___block_invoke(uint64_t a1)
 - (void)_updatePosterFrameVisibility
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(PLMoviePlayerController *)self->_moviePlayer view];
-  [(PLMoviePlayerView *)v3 setScaleMode:self->_scaleMode];
-  if ([(PLMoviePlayerView *)v3 destinationPlaceholderStyle])
+  view = [(PLMoviePlayerController *)self->_moviePlayer view];
+  [(PLMoviePlayerView *)view setScaleMode:self->_scaleMode];
+  if ([(PLMoviePlayerView *)view destinationPlaceholderStyle])
   {
     v4 = (*(self + 652) & 2) == 0;
   }
@@ -1093,13 +1093,13 @@ uint64_t __41__PLVideoView_setShowsScrubber_duration___block_invoke(uint64_t a1)
     v4 = 0;
   }
 
-  v5 = [(PLVideoView *)self _playerIsAirplay];
+  _playerIsAirplay = [(PLVideoView *)self _playerIsAirplay];
   if ((*(self + 651) & 8) == 0)
   {
     goto LABEL_5;
   }
 
-  if (v5)
+  if (_playerIsAirplay)
   {
     if (!v4)
     {
@@ -1137,7 +1137,7 @@ LABEL_6:
   }
 
   [(PLVideoPosterFrameView *)self->_posterFrameView setHidden:v6 ^ 1u];
-  [(PLMoviePlayerView *)v3 setDestinationPlaceholderHidden:v4];
+  [(PLMoviePlayerView *)view setDestinationPlaceholderHidden:v4];
 }
 
 - (void)_updatePosterImageView
@@ -1151,8 +1151,8 @@ LABEL_6:
       {
         if (PLGetPhotoLibraryClient() == 1)
         {
-          v4 = [(PLManagedAsset *)self->_videoCameraImage pathForVideoPreviewFile];
-          posterFrameImage = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:v4];
+          pathForVideoPreviewFile = [(PLManagedAsset *)self->_videoCameraImage pathForVideoPreviewFile];
+          posterFrameImage = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:pathForVideoPreviewFile];
           self->_posterFrameImage = posterFrameImage;
         }
 
@@ -1207,15 +1207,15 @@ LABEL_6:
   }
 }
 
-- (void)setPosterFrameImage:(id)a3
+- (void)setPosterFrameImage:(id)image
 {
-  if (a3)
+  if (image)
   {
     posterFrameImage = self->_posterFrameImage;
-    if (posterFrameImage != a3)
+    if (posterFrameImage != image)
     {
 
-      self->_posterFrameImage = a3;
+      self->_posterFrameImage = image;
 
       [(PLVideoView *)self _updatePosterImageView];
     }
@@ -1224,27 +1224,27 @@ LABEL_6:
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PLVideoView *)self superview];
+  superview = [(PLVideoView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 bounds];
+    [superview bounds];
     [(PLVideoView *)self setBounds:?];
     UIRectGetCenter();
     [(PLVideoView *)self setCenter:?];
-    v4 = [(PLMoviePlayerController *)self->_moviePlayer view];
-    if ([(PLMoviePlayerView *)v4 superview]== self)
+    view = [(PLMoviePlayerController *)self->_moviePlayer view];
+    if ([(PLMoviePlayerView *)view superview]== self)
     {
       [(PLVideoView *)self bounds];
 
-      [(PLMoviePlayerView *)v4 setFrame:?];
+      [(PLMoviePlayerView *)view setFrame:?];
     }
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (a3)
+  if (superview)
   {
     if ((*(self + 650) & 4) != 0)
     {
@@ -1258,12 +1258,12 @@ LABEL_6:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PLVideoView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -1341,7 +1341,7 @@ LABEL_6:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   *(self + 649) |= 0x40u;
   if ((*(self + 649) & 0x20) == 0)
@@ -1364,7 +1364,7 @@ LABEL_6:
   }
 }
 
-- (void)_updateScrubberVisibilityWithDuration:(double)a3
+- (void)_updateScrubberVisibilityWithDuration:(double)duration
 {
   if ((*(self + 649) & 2) != 0 && (*(self + 651) & 8) != 0 && self->_duration > 0.0 && [(PLVideoView *)self _canAccessVideo])
   {
@@ -1408,7 +1408,7 @@ LABEL_6:
   v9[2] = __53__PLVideoView__updateScrubberVisibilityWithDuration___block_invoke;
   v9[3] = &unk_2782A2020;
   v9[4] = self;
-  [MEMORY[0x277D75D18] animateWithDuration:v9 animations:a3];
+  [MEMORY[0x277D75D18] animateWithDuration:v9 animations:duration];
 }
 
 uint64_t __53__PLVideoView__updateScrubberVisibilityWithDuration___block_invoke(uint64_t a1)
@@ -1508,10 +1508,10 @@ LABEL_8:
         [(PLVideoView *)self _displayPlaySpinner];
       }
 
-      v7 = [(PLVideoView *)self _prepareMoviePlayerIfNeeded];
+      _prepareMoviePlayerIfNeeded = [(PLVideoView *)self _prepareMoviePlayerIfNeeded];
       v8 = *(self + 650);
       [(PLVideoView *)self _setPlaying:1];
-      if (v7)
+      if (_prepareMoviePlayerIfNeeded)
       {
         if (*(self + 650))
         {
@@ -1523,9 +1523,9 @@ LABEL_8:
             [(PLVideoView *)self setCurrentTime:?];
             [(PLVideoView *)self endTime];
             CMTimeMakeWithSeconds(&v19, v13, 1);
-            v14 = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
+            currentItem = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
             buf = v19;
-            [(AVPlayerItem *)v14 setForwardPlaybackEndTime:&buf];
+            [(AVPlayerItem *)currentItem setForwardPlaybackEndTime:&buf];
             [(PLMoviePlayerController *)self->_moviePlayer play];
           }
 
@@ -1562,12 +1562,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(PLManagedAsset *)self->_videoCameraImage cachedNonPersistedVideoPlaybackURLError];
-  if (v9)
+  cachedNonPersistedVideoPlaybackURLError = [(PLManagedAsset *)self->_videoCameraImage cachedNonPersistedVideoPlaybackURLError];
+  if (cachedNonPersistedVideoPlaybackURLError)
   {
-    v10 = v9;
+    v10 = cachedNonPersistedVideoPlaybackURLError;
     v11 = PLLocalizedFrameworkString();
-    v12 = [v10 localizedDescription];
+    localizedDescription = [v10 localizedDescription];
     [-[PLVideoView window](self "window")];
     [(PLManagedAsset *)self->_videoCameraImage setCachedNonPersistedVideoPlaybackURLError:0];
     return;
@@ -1582,9 +1582,9 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v15 = [(PLManagedAsset *)self->_videoCameraImage cachedNonPersistedVideoPlaybackURL];
+    cachedNonPersistedVideoPlaybackURL = [(PLManagedAsset *)self->_videoCameraImage cachedNonPersistedVideoPlaybackURL];
     LODWORD(buf.value) = 138412290;
-    *(&buf.value + 4) = v15;
+    *(&buf.value + 4) = cachedNonPersistedVideoPlaybackURL;
     v6 = "(streamed-video-playback) already have a cachedNonPersistedVideoPlaybackURL %@";
     goto LABEL_7;
   }
@@ -1754,9 +1754,9 @@ uint64_t __19__PLVideoView_play__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)toggleScaleMode:(float)a3
+- (void)toggleScaleMode:(float)mode
 {
-  v5 = [(PLMoviePlayerController *)self->_moviePlayer view];
+  view = [(PLMoviePlayerController *)self->_moviePlayer view];
   if (self->_scaleMode == 1)
   {
     v6 = 2;
@@ -1768,7 +1768,7 @@ uint64_t __19__PLVideoView_play__block_invoke_2(uint64_t a1)
   }
 
   self->_scaleMode = v6;
-  [(PLMoviePlayerView *)v5 setScaleMode:a3 duration:?];
+  [(PLMoviePlayerView *)view setScaleMode:mode duration:?];
   [(PLVideoView *)self _invalidateSnapshotImage];
   posterFrameView = self->_posterFrameView;
   if (posterFrameView)
@@ -1777,16 +1777,16 @@ uint64_t __19__PLVideoView_play__block_invoke_2(uint64_t a1)
     v8[1] = 3221225472;
     v8[2] = __31__PLVideoView_toggleScaleMode___block_invoke;
     v8[3] = &unk_2782A2020;
-    v9 = self;
-    if (a3 <= 0.0)
+    selfCopy = self;
+    if (mode <= 0.0)
     {
       [(PLVideoPosterFrameView *)posterFrameView setScaleMode:self->_scaleMode];
-      [(PLVideoPosterFrameView *)v9->_posterFrameView layoutIfNeeded];
+      [(PLVideoPosterFrameView *)selfCopy->_posterFrameView layoutIfNeeded];
     }
 
     else
     {
-      [MEMORY[0x277D75D18] animateWithDuration:v8 animations:a3];
+      [MEMORY[0x277D75D18] animateWithDuration:v8 animations:mode];
     }
   }
 }
@@ -1801,11 +1801,11 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
 
 - (id)_videoSnapshot
 {
-  v3 = [(PLMoviePlayerView *)[(PLMoviePlayerController *)self->_moviePlayer view] videoView];
-  v4 = v3;
-  if (v3)
+  videoView = [(PLMoviePlayerView *)[(PLMoviePlayerController *)self->_moviePlayer view] videoView];
+  v4 = videoView;
+  if (videoView)
   {
-    if ((*(self + 651) & 8) != 0 && (v5 = [(UIView *)v3 _createIOSurfaceWithPadding:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)]) != 0)
+    if ((*(self + 651) & 8) != 0 && (v5 = [(UIView *)videoView _createIOSurfaceWithPadding:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)]) != 0)
     {
       v6 = v5;
       IOSurfaceLock(v5, 1u, 0);
@@ -1857,10 +1857,10 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)newPreviewImageData:(id *)a3
+- (id)newPreviewImageData:(id *)data
 {
-  v5 = [(AVPlayerItem *)[(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem] asset];
-  v6 = [MEMORY[0x277D3B450] tracksWithMediaType:*MEMORY[0x277CE5EA8] forAsset:v5];
+  asset = [(AVPlayerItem *)[(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem] asset];
+  v6 = [MEMORY[0x277D3B450] tracksWithMediaType:*MEMORY[0x277CE5EA8] forAsset:asset];
   if ([v6 count])
   {
     [objc_msgSend(v6 objectAtIndex:{0), "naturalSize"}];
@@ -1874,7 +1874,7 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
 
   v9 = v7 / v8;
   v10 = rint(v9 * 110.0);
-  v11 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:v5];
+  v11 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:asset];
   [v11 setApertureMode:*MEMORY[0x277CE5CA8]];
   [v11 setMaximumSize:{v10, 110.0}];
   [v11 setAppliesPreferredTrackTransform:1];
@@ -1889,9 +1889,9 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
     NSLog(&cfstr_UnableToCopyCg.isa, v15, v19);
   }
 
-  if (a3)
+  if (data)
   {
-    *a3 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v14];
+    *data = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v14];
   }
 
   v16 = UIImageJPEGRepresentation([MEMORY[0x277D755B8] imageWithCGImage:v14], 0.899999976);
@@ -1965,9 +1965,9 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
   [(PLVideoView *)self viewDidAppear];
 }
 
-- (void)_setPlaybackDidBegin:(BOOL)a3
+- (void)_setPlaybackDidBegin:(BOOL)begin
 {
-  if (a3)
+  if (begin)
   {
     v3 = 2;
   }
@@ -1981,9 +1981,9 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
   [(PLVideoView *)self _updatePosterFrameVisibility];
 }
 
-- (void)_setPlaying:(BOOL)a3
+- (void)_setPlaying:(BOOL)playing
 {
-  if (a3)
+  if (playing)
   {
     v3 = 4;
   }
@@ -2013,11 +2013,11 @@ uint64_t __31__PLVideoView_toggleScaleMode___block_invoke(uint64_t a1)
   [(PLSlalomRegionEditor *)slalomRegionEditor setEnabled:v3];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v5 = *(self + 650);
   v6 = v5 & 8;
-  if ((((v5 & 8) == 0) ^ a3))
+  if ((((v5 & 8) == 0) ^ editing))
   {
 LABEL_7:
     if (!v6)
@@ -2028,8 +2028,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (editing)
   {
     v8 = 8;
   }
@@ -2041,7 +2041,7 @@ LABEL_7:
 
   *(self + 650) = v5 & 0xF7 | v8;
   [(PLVideoView *)self _updateForEditing];
-  [(UIMovieScrubber *)self->_scrubber setEditing:(*(self + 650) >> 3) & 1 animated:v7];
+  [(UIMovieScrubber *)self->_scrubber setEditing:(*(self + 650) >> 3) & 1 animated:animatedCopy];
   if ((*(self + 650) & 8) == 0)
   {
     [(UIMovieScrubber *)self->_scrubber value];
@@ -2058,7 +2058,7 @@ LABEL_8:
   [(PLVideoView *)self pause];
 }
 
-- (void)showTrimMessage:(id)a3 withBottomY:(float)a4
+- (void)showTrimMessage:(id)message withBottomY:(float)y
 {
   if ((*(self + 650) & 4) == 0)
   {
@@ -2067,47 +2067,47 @@ LABEL_8:
     {
       [(PLVideoView *)self bounds];
       v11 = CGRectInset(v10, 10.0, 0.0);
-      v8 = [[PLVideoEditingOverlayView alloc] initWithFrame:v11.origin.x, (a4 + -90.0), v11.size.width, 90.0];
+      v8 = [[PLVideoEditingOverlayView alloc] initWithFrame:v11.origin.x, (y + -90.0), v11.size.width, 90.0];
       self->_trimMessageView = v8;
-      [(PLVideoEditingOverlayView *)v8 setTitle:a3];
+      [(PLVideoEditingOverlayView *)v8 setTitle:message];
       [(PLVideoEditingOverlayView *)self->_trimMessageView setBody:PLLocalizedFrameworkString()];
       [(PLVideoEditingOverlayView *)self->_trimMessageView setAutoresizingMask:10];
       [(PLVideoView *)self insertSubview:self->_trimMessageView aboveSubview:self->_posterFrameView];
       trimMessageView = self->_trimMessageView;
     }
 
-    [(PLVideoEditingOverlayView *)trimMessageView setAlpha:a3, 1.0];
+    [(PLVideoEditingOverlayView *)trimMessageView setAlpha:message, 1.0];
   }
 }
 
 - (void)_createImageGenerators
 {
-  v3 = [(PLVideoView *)self _thumbnailSourceAsset];
-  v4 = [[PLAssetImageGenerator alloc] initWithAsset:v3];
-  v5 = [[PLAssetImageGenerator alloc] initWithAsset:v3];
+  _thumbnailSourceAsset = [(PLVideoView *)self _thumbnailSourceAsset];
+  v4 = [[PLAssetImageGenerator alloc] initWithAsset:_thumbnailSourceAsset];
+  v5 = [[PLAssetImageGenerator alloc] initWithAsset:_thumbnailSourceAsset];
   self->_imageGenerators = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v4, v5, 0}];
 }
 
-- (void)_configureImageGenerator:(id)a3 thumbnailSize:(CGSize)thumbnailSize forSummaryThumbnails:(BOOL)a5
+- (void)_configureImageGenerator:(id)generator thumbnailSize:(CGSize)thumbnailSize forSummaryThumbnails:(BOOL)thumbnails
 {
   if (thumbnailSize.width == *MEMORY[0x277CBF3A8] && thumbnailSize.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     thumbnailSize = self->_thumbnailSize;
   }
 
-  [a3 setMaximumSize:{thumbnailSize.width, thumbnailSize.height}];
-  [a3 setApertureMode:*MEMORY[0x277CE5CA8]];
-  [a3 setAppliesPreferredTrackTransform:1];
-  if (!a5 && ([(PLManagedAsset *)self->_videoCameraImage isStreamedVideo]& 1) == 0)
+  [generator setMaximumSize:{thumbnailSize.width, thumbnailSize.height}];
+  [generator setApertureMode:*MEMORY[0x277CE5CA8]];
+  [generator setAppliesPreferredTrackTransform:1];
+  if (!thumbnails && ([(PLManagedAsset *)self->_videoCameraImage isStreamedVideo]& 1) == 0)
   {
     v11 = *MEMORY[0x277CC08F0];
     v10 = v11;
     v12 = *(MEMORY[0x277CC08F0] + 16);
     v9 = v12;
-    [a3 setRequestedTimeToleranceBefore:&v11];
+    [generator setRequestedTimeToleranceBefore:&v11];
     v11 = v10;
     v12 = v9;
-    [a3 setRequestedTimeToleranceAfter:&v11];
+    [generator setRequestedTimeToleranceAfter:&v11];
   }
 }
 
@@ -2316,16 +2316,16 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   return [*(*(a1 + 32) + *v1) addObject:*(a1 + 40)];
 }
 
-- (void)movieScrubber:(id)a3 widthDelta:(float)a4 originXDelta:(float)a5
+- (void)movieScrubber:(id)scrubber widthDelta:(float)delta originXDelta:(float)xDelta
 {
   [(UIMovieScrubber *)self->_scrubber frame];
   scrubber = self->_scrubber;
-  v9 = v8 + a5;
+  v9 = v8 + xDelta;
 
   [(UIMovieScrubber *)scrubber setFrame:v9];
 }
 
-- (void)movieScrubberDidFinishRequestingThumbnails:(id)a3
+- (void)movieScrubberDidFinishRequestingThumbnails:(id)thumbnails
 {
   if ((*(self + 651) & 4) != 0)
   {
@@ -2335,37 +2335,37 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   [(PLVideoView *)self _serviceImageGenerationRequests];
 }
 
-- (void)_didScrubToValue:(double)a3 withHandle:(int)a4
+- (void)_didScrubToValue:(double)value withHandle:(int)handle
 {
   [(PLVideoView *)self _hideVideoOverlay:1];
   [(PLVideoView *)self _hideTrimMessageView:1];
   if ((*(self + 650) & 0x20) != 0)
   {
     *(self + 650) &= ~1u;
-    *(self + 650) = *(self + 650) & 0xBF | ((self->_lastScrubbedValue < a3) << 6);
-    self->_lastScrubbedValue = a3;
+    *(self + 650) = *(self + 650) & 0xBF | ((self->_lastScrubbedValue < value) << 6);
+    self->_lastScrubbedValue = value;
   }
 
-  if ((a4 - 1) <= 1 && (*(self + 649) & 0x80000000) == 0)
+  if ((handle - 1) <= 1 && (*(self + 649) & 0x80000000) == 0)
   {
     *(self + 650) |= 1u;
     self->_lastScrubbedValue = -1.0;
   }
 
-  [(PLVideoView *)self _movieTimeFromScrubberTime:a3];
+  [(PLVideoView *)self _movieTimeFromScrubberTime:value];
 
   [(PLVideoView *)self setCurrentTime:?];
 }
 
-- (void)movieScrubberDidEndScrubbing:(id)a3 withHandle:(int)a4
+- (void)movieScrubberDidEndScrubbing:(id)scrubbing withHandle:(int)handle
 {
   *(self + 650) &= ~0x20u;
   if (*(self + 649) < 0)
   {
-    if ((a4 - 1) <= 1)
+    if ((handle - 1) <= 1)
     {
       lastScrubbedValue = self->_lastScrubbedValue;
-      if (a4 == 2 && (*(self + 650) & 0x40) != 0)
+      if (handle == 2 && (*(self + 650) & 0x40) != 0)
       {
         *(self + 650) &= ~0x40u;
       }
@@ -2403,17 +2403,17 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
         v7 = self->_lastActualValue;
       }
 
-      [(UIMovieScrubber *)self->_scrubber setValue:a3, v7];
+      [(UIMovieScrubber *)self->_scrubber setValue:scrubbing, v7];
       [(PLVideoView *)self _movieTimeFromScrubberTime:self->_lastActualValue];
       [(PLVideoView *)self setCurrentTime:?];
       self->_lastScrubbedValue = self->_lastActualValue;
-      if (a4 == 2)
+      if (handle == 2)
       {
         [(PLVideoView *)self _movieTimeFromScrubberTime:lastScrubbedValue];
         CMTimeMakeWithSeconds(&v17, v14, 1);
-        v15 = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
+        currentItem = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
         v16 = v17;
-        [(AVPlayerItem *)v15 setForwardPlaybackEndTime:&v16];
+        [(AVPlayerItem *)currentItem setForwardPlaybackEndTime:&v16];
       }
     }
 
@@ -2423,11 +2423,11 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   else
   {
 
-    [(PLVideoView *)self _invalidateSnapshotImage:a3];
+    [(PLVideoView *)self _invalidateSnapshotImage:scrubbing];
   }
 }
 
-- (void)movieScrubberDidBeginScrubbing:(id)a3 withHandle:(int)a4
+- (void)movieScrubberDidBeginScrubbing:(id)scrubbing withHandle:(int)handle
 {
   [(PLVideoView *)self _removeScrubberUpdateTimer];
   if ([(PLVideoView *)self playingToAirTunes])
@@ -2454,12 +2454,12 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   if (*(self + 649) < 0)
   {
     [(PLVideoView *)self pause];
-    if (a4 == 2)
+    if (handle == 2)
     {
       CMTimeMakeWithSeconds(&v10, self->_duration, 1);
-      v8 = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
+      currentItem = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
       v9 = v10;
-      [(AVPlayerItem *)v8 setForwardPlaybackEndTime:&v9];
+      [(AVPlayerItem *)currentItem setForwardPlaybackEndTime:&v9];
     }
   }
 }
@@ -2479,12 +2479,12 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   self->_scrubberUpdateTimer = 0;
 }
 
-- (double)movieScrubberThumbnailAspectRatio:(id)a3
+- (double)movieScrubberThumbnailAspectRatio:(id)ratio
 {
-  v4 = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
-  if (v4)
+  currentItem = [(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem];
+  if (currentItem)
   {
-    [(AVPlayerItem *)v4 presentationSize];
+    [(AVPlayerItem *)currentItem presentationSize];
   }
 
   else
@@ -2501,18 +2501,18 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
     height = self->_thumbnailSize.height;
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
     {
-      v12 = [MEMORY[0x277D3B228] defaultFormatChooser];
+      defaultFormatChooser = [MEMORY[0x277D3B228] defaultFormatChooser];
       if (v8 <= 1.0)
       {
-        v13 = [v12 portraitScrubberThumbnailFormat];
+        portraitScrubberThumbnailFormat = [defaultFormatChooser portraitScrubberThumbnailFormat];
       }
 
       else
       {
-        v13 = [v12 landscapeScrubberThumbnailFormat];
+        portraitScrubberThumbnailFormat = [defaultFormatChooser landscapeScrubberThumbnailFormat];
       }
 
-      [v13 size];
+      [portraitScrubberThumbnailFormat size];
       width = rint(height * v8);
       self->_thumbnailSize.width = width;
       self->_thumbnailSize.height = height;
@@ -2540,9 +2540,9 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
       }
 
       *&width = v8;
-      v17 = [(PLVideoView *)self _loadThumbnailsIntoDictionary:cachedThumbnails isLandscape:useLandscapeCache aspectRatio:width, height];
+      height = [(PLVideoView *)self _loadThumbnailsIntoDictionary:cachedThumbnails isLandscape:useLandscapeCache aspectRatio:width, height];
       v18 = self->_useLandscapeCache;
-      v19 = v17;
+      v19 = height;
       v20 = &OBJC_IVAR___PLVideoView__bakedPortraitThumbnails;
       if (v18)
       {
@@ -2558,34 +2558,34 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   return v7;
 }
 
-- (id)_loadThumbnailsIntoDictionary:(id)a3 isLandscape:(BOOL)a4 aspectRatio:(float)a5
+- (id)_loadThumbnailsIntoDictionary:(id)dictionary isLandscape:(BOOL)landscape aspectRatio:(float)ratio
 {
-  if (a4)
+  if (landscape)
   {
-    v7 = [(PLVideoView *)self _pathForPrebakedLandscapeScrubberThumbnails];
+    _pathForPrebakedLandscapeScrubberThumbnails = [(PLVideoView *)self _pathForPrebakedLandscapeScrubberThumbnails];
   }
 
   else
   {
-    v7 = [(PLVideoView *)self _pathForPrebakedPortraitScrubberThumbnails];
+    _pathForPrebakedLandscapeScrubberThumbnails = [(PLVideoView *)self _pathForPrebakedPortraitScrubberThumbnails];
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = _pathForPrebakedLandscapeScrubberThumbnails;
+  if (_pathForPrebakedLandscapeScrubberThumbnails)
   {
-    v9 = [MEMORY[0x277D3B228] defaultFormatChooser];
-    if (a5 <= 1.0)
+    defaultFormatChooser = [MEMORY[0x277D3B228] defaultFormatChooser];
+    if (ratio <= 1.0)
     {
-      v10 = [v9 portraitScrubberThumbnailFormat];
+      portraitScrubberThumbnailFormat = [defaultFormatChooser portraitScrubberThumbnailFormat];
     }
 
     else
     {
-      v10 = [v9 landscapeScrubberThumbnailFormat];
+      portraitScrubberThumbnailFormat = [defaultFormatChooser landscapeScrubberThumbnailFormat];
     }
 
-    v11 = [v10 formatID];
-    v8 = [MEMORY[0x277D3AD08] thumbnailsWithContentsOfFile:v8 format:v11];
+    formatID = [portraitScrubberThumbnailFormat formatID];
+    v8 = [MEMORY[0x277D3AD08] thumbnailsWithContentsOfFile:v8 format:formatID];
     v12 = [-[NSString options](v8 "options")];
     v13 = [(NSString *)v8 count];
     if (v13 >= 1)
@@ -2593,7 +2593,7 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
       v14 = v13;
       for (i = 0; i != v14; ++i)
       {
-        [a3 setObject:-[NSString thumbnailImageAtIndex:](v8 forKey:{"thumbnailImageAtIndex:", i), objc_msgSend(v12, "objectAtIndex:", i)}];
+        [dictionary setObject:-[NSString thumbnailImageAtIndex:](v8 forKey:{"thumbnailImageAtIndex:", i), objc_msgSend(v12, "objectAtIndex:", i)}];
       }
     }
   }
@@ -2601,22 +2601,22 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   return v8;
 }
 
-- (void)movieScrubber:(id)a3 requestThumbnailImageForTimestamp:(id)a4 isSummaryThumbnail:(BOOL)a5
+- (void)movieScrubber:(id)scrubber requestThumbnailImageForTimestamp:(id)timestamp isSummaryThumbnail:(BOOL)thumbnail
 {
-  v5 = a5;
-  v8 = [(NSMutableDictionary *)self->_cachedThumbnails objectForKey:a4];
+  thumbnailCopy = thumbnail;
+  v8 = [(NSMutableDictionary *)self->_cachedThumbnails objectForKey:timestamp];
   if (v8)
   {
     v9 = v8;
     scrubber = self->_scrubber;
 
-    [(UIMovieScrubber *)scrubber setThumbnailImage:v9 forTimestamp:a4];
+    [(UIMovieScrubber *)scrubber setThumbnailImage:v9 forTimestamp:timestamp];
   }
 
   else
   {
 
-    [(PLVideoView *)self _addThumbnailRequestForTimestamp:a4 isSummaryThumbnail:v5];
+    [(PLVideoView *)self _addThumbnailRequestForTimestamp:timestamp isSummaryThumbnail:thumbnailCopy];
   }
 }
 
@@ -2641,10 +2641,10 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
     return 0;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   pathToOriginalVideo = self->_pathToOriginalVideo;
 
-  return [v4 fileExistsAtPath:pathToOriginalVideo];
+  return [defaultManager fileExistsAtPath:pathToOriginalVideo];
 }
 
 - (BOOL)_shouldStreamVideo
@@ -2741,14 +2741,14 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
 
 - (id)_pathForOriginalFile
 {
-  v3 = [(NSURL *)self->_videoURL path];
+  path = [(NSURL *)self->_videoURL path];
   if ([(PLVideoView *)self _mediaIsCloudSharedStreamedVideo])
   {
     if (!self->_pathToOriginalVideo || ([MEMORY[0x277D3AD48] debugAlwaysStreamSharedVideos] & 1) != 0)
     {
-      v4 = [(PLManagedAsset *)self->_videoCameraImage cachedNonPersistedVideoPlaybackURL];
+      cachedNonPersistedVideoPlaybackURL = [(PLManagedAsset *)self->_videoCameraImage cachedNonPersistedVideoPlaybackURL];
 
-      return [v4 absoluteString];
+      return [cachedNonPersistedVideoPlaybackURL absoluteString];
     }
 
     return self->_pathToOriginalVideo;
@@ -2757,7 +2757,7 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   videoCameraImage = self->_videoCameraImage;
   if (!videoCameraImage)
   {
-    return v3;
+    return path;
   }
 
   return [(PLManagedAsset *)videoCameraImage pathForOriginalFile];
@@ -2832,32 +2832,32 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
     if (v14 == [v5 count])
     {
       v15 = *(self + 652);
-      v16 = [MEMORY[0x277D3B228] defaultFormatChooser];
+      defaultFormatChooser = [MEMORY[0x277D3B228] defaultFormatChooser];
       if ((v15 & 8) != 0)
       {
-        v17 = [v16 landscapeScrubberThumbnailFormat];
+        landscapeScrubberThumbnailFormat = [defaultFormatChooser landscapeScrubberThumbnailFormat];
       }
 
       else
       {
-        v17 = [v16 portraitScrubberThumbnailFormat];
+        landscapeScrubberThumbnailFormat = [defaultFormatChooser portraitScrubberThumbnailFormat];
       }
 
-      v18 = [v17 formatID];
+      formatID = [landscapeScrubberThumbnailFormat formatID];
       v19 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v5, @"timestamps", 0}];
-      v20 = [objc_alloc(MEMORY[0x277D3AD08]) initWithImages:v8 format:v18 options:v19 delegate:0];
+      v20 = [objc_alloc(MEMORY[0x277D3AD08]) initWithImages:v8 format:formatID options:v19 delegate:0];
 
       if (useLandscapeCache)
       {
-        v21 = [(PLVideoView *)self _pathForPrebakedLandscapeScrubberThumbnails];
+        _pathForPrebakedLandscapeScrubberThumbnails = [(PLVideoView *)self _pathForPrebakedLandscapeScrubberThumbnails];
       }
 
       else
       {
-        v21 = [(PLVideoView *)self _pathForPrebakedPortraitScrubberThumbnails];
+        _pathForPrebakedLandscapeScrubberThumbnails = [(PLVideoView *)self _pathForPrebakedPortraitScrubberThumbnails];
       }
 
-      if (v21 && [(objc_class *)v20 saveToFile:v21])
+      if (_pathForPrebakedLandscapeScrubberThumbnails && [(objc_class *)v20 saveToFile:_pathForPrebakedLandscapeScrubberThumbnails])
       {
         if (useLandscapeCache)
         {
@@ -2879,23 +2879,23 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
   }
 }
 
-- (id)movieScrubber:(id)a3 evenlySpacedTimestamps:(int)a4 startingAt:(id)a5 endingAt:(id)a6
+- (id)movieScrubber:(id)scrubber evenlySpacedTimestamps:(int)timestamps startingAt:(id)at endingAt:(id)endingAt
 {
-  [a5 doubleValue];
+  [at doubleValue];
   v11 = v10;
-  [a6 doubleValue];
+  [endingAt doubleValue];
   v13 = v12;
-  [(PLVideoView *)self movieScrubberDuration:a3];
+  [(PLVideoView *)self movieScrubberDuration:scrubber];
   v15 = v14;
   if (v13 == 0.0)
   {
     goto LABEL_8;
   }
 
-  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-  if (a4 >= 1)
+  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:timestamps];
+  if (timestamps >= 1)
   {
-    v18 = (v13 - v11) / (a4 - 1);
+    v18 = (v13 - v11) / (timestamps - 1);
     v19 = v11;
     do
     {
@@ -2912,10 +2912,10 @@ uint64_t __67__PLVideoView__addThumbnailRequestForTimestamp_isSummaryThumbnail__
         }
       }
 
-      --a4;
+      --timestamps;
     }
 
-    while (a4);
+    while (timestamps);
   }
 
   if (!v16)
@@ -2947,23 +2947,23 @@ LABEL_8:
   return v16;
 }
 
-- (void)moviePlayerHeadsetPreviousTrackPressed:(id)a3
+- (void)moviePlayerHeadsetPreviousTrackPressed:(id)pressed
 {
   if ((*(self + 651) & 4) != 0 && ((*(self + 650) & 4) != 0 || (*(self + 652) & 2) != 0))
   {
-    [(PLVideoView *)self _scrubToMovieTime:a3, 0.0];
+    [(PLVideoView *)self _scrubToMovieTime:pressed, 0.0];
   }
 }
 
-- (void)moviePlayerHeadsetNextTrackPressed:(id)a3
+- (void)moviePlayerHeadsetNextTrackPressed:(id)pressed
 {
   if ((*(self + 651) & 4) != 0 && ((*(self + 650) & 4) != 0 || (*(self + 652) & 2) != 0))
   {
-    [(PLVideoView *)self _scrubToMovieTime:a3, self->_duration];
+    [(PLVideoView *)self _scrubToMovieTime:pressed, self->_duration];
   }
 }
 
-- (void)moviePlayerHeadsetPlayPausePressed:(id)a3
+- (void)moviePlayerHeadsetPlayPausePressed:(id)pressed
 {
   if ((*(self + 651) & 4) != 0 && (*(self + 650) & 0x20) == 0)
   {
@@ -2995,12 +2995,12 @@ LABEL_8:
   }
 }
 
-- (void)moviePlayerDidChangeExternalPlaybackType:(id)a3
+- (void)moviePlayerDidChangeExternalPlaybackType:(id)type
 {
-  v4 = [(PLVideoView *)self _playerIsAirplay];
-  if (self->_isAirPlay != v4)
+  _playerIsAirplay = [(PLVideoView *)self _playerIsAirplay];
+  if (self->_isAirPlay != _playerIsAirplay)
   {
-    self->_isAirPlay = v4;
+    self->_isAirPlay = _playerIsAirplay;
     if (![(PLVideoView *)self _canAirPlayCurrentVideo])
     {
       pl_dispatch_async();
@@ -3020,7 +3020,7 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
   return result;
 }
 
-- (void)moviePlayerEncounteredAuthenticationError:(id)a3
+- (void)moviePlayerEncounteredAuthenticationError:(id)error
 {
   [(PLManagedAsset *)self->_videoCameraImage setCachedNonPersistedVideoPlaybackURL:0];
   [(PLManagedAsset *)self->_videoCameraImage setCachedNonPersistedVideoPlaybackURLExpiration:0];
@@ -3030,10 +3030,10 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
   [(PLVideoView *)self play];
 }
 
-- (BOOL)moviePlayerShouldNotifyOnPreparationError:(id)a3
+- (BOOL)moviePlayerShouldNotifyOnPreparationError:(id)error
 {
-  v4 = [(PLVideoView *)self _canAttemptFetchingVideoDerivative];
-  if (v4)
+  _canAttemptFetchingVideoDerivative = [(PLVideoView *)self _canAttemptFetchingVideoDerivative];
+  if (_canAttemptFetchingVideoDerivative)
   {
     [(PLVideoView *)self _setCanAttemptFetchingVideoDerivative:0];
     [(PLMoviePlayerController *)self->_moviePlayer resetPlayer];
@@ -3041,10 +3041,10 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
     [(PLVideoView *)self _fetchNonlocalVideo];
   }
 
-  return !v4;
+  return !_canAttemptFetchingVideoDerivative;
 }
 
-- (void)moviePlayerControllerWillResignAsActiveController:(id)a3
+- (void)moviePlayerControllerWillResignAsActiveController:(id)controller
 {
   if (!self->_snapshotImage)
   {
@@ -3053,7 +3053,7 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
 
   if ((*(self + 651) & 2) != 0)
   {
-    [a3 currentTime];
+    [controller currentTime];
     self->_cachedCurrentPlaybackTime = v5;
   }
 
@@ -3064,7 +3064,7 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
   [(PLVideoView *)self _updatePosterFrameVisibility];
 }
 
-- (void)moviePlayerControllerDidBecomeActiveController:(id)a3
+- (void)moviePlayerControllerDidBecomeActiveController:(id)controller
 {
   [(PLVideoView *)self _setMoviePlayerActive:1];
   if ((*(self + 651) & 2) == 0)
@@ -3078,9 +3078,9 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
   *(self + 650) &= ~0x40u;
 }
 
-- (void)_setMoviePlayerActive:(BOOL)a3
+- (void)_setMoviePlayerActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 4;
   }
@@ -3109,28 +3109,28 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
   {
     if (![(PLVideoView *)self _canPlayCloudSharedStreamedVideoWithLocalVideo])
     {
-      v3 = [(PLMoviePlayerController *)self->_moviePlayer player];
+      player = [(PLMoviePlayerController *)self->_moviePlayer player];
       v4[0] = *MEMORY[0x277CE5D98];
-      -[AVPlayer setExpectedAssetTypes:](v3, "setExpectedAssetTypes:", [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:1]);
+      -[AVPlayer setExpectedAssetTypes:](player, "setExpectedAssetTypes:", [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:1]);
     }
   }
 }
 
-- (id)_assetForVideoURL:(id)a3
+- (id)_assetForVideoURL:(id)l
 {
-  v4 = [(PLVideoView *)self _optionsForAVURLAsset];
+  _optionsForAVURLAsset = [(PLVideoView *)self _optionsForAVURLAsset];
   v5 = MEMORY[0x277CE6650];
 
-  return [v5 URLAssetWithURL:a3 options:v4];
+  return [v5 URLAssetWithURL:l options:_optionsForAVURLAsset];
 }
 
-- (id)_assetForVideoPath:(id)a3
+- (id)_assetForVideoPath:(id)path
 {
-  v4 = [PLMoviePlayerController AVAssetURLWithPath:a3];
-  v5 = [(PLVideoView *)self _optionsForAVURLAsset];
+  v4 = [PLMoviePlayerController AVAssetURLWithPath:path];
+  _optionsForAVURLAsset = [(PLVideoView *)self _optionsForAVURLAsset];
   v6 = MEMORY[0x277CE6650];
 
-  return [v6 URLAssetWithURL:v4 options:v5];
+  return [v6 URLAssetWithURL:v4 options:_optionsForAVURLAsset];
 }
 
 - (id)_optionsForAVURLAsset
@@ -3140,45 +3140,45 @@ uint64_t __56__PLVideoView_moviePlayerDidChangeExternalPlaybackType___block_invo
     return 0;
   }
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v3 setObject:v5 forKey:*MEMORY[0x277CE6270]];
+  [dictionary setObject:v5 forKey:*MEMORY[0x277CE6270]];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v3 setObject:v6 forKey:*MEMORY[0x277CE6230]];
+  [dictionary setObject:v6 forKey:*MEMORY[0x277CE6230]];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v3 setObject:v7 forKey:*MEMORY[0x277CE6258]];
+  [dictionary setObject:v7 forKey:*MEMORY[0x277CE6258]];
   if (([MEMORY[0x277D3AD48] debugAlwaysStreamSharedVideos] & 1) == 0)
   {
-    v8 = [MEMORY[0x277D3AD48] streamdVideoCache];
-    [v3 setObject:v8 forKey:*MEMORY[0x277CE61F8]];
+    streamdVideoCache = [MEMORY[0x277D3AD48] streamdVideoCache];
+    [dictionary setObject:streamdVideoCache forKey:*MEMORY[0x277CE61F8]];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_updateVideoAVObjectBuilderFromContentEditingInput:(id)a3
+- (void)_updateVideoAVObjectBuilderFromContentEditingInput:(id)input
 {
-  v5 = [a3 audiovisualAsset];
+  audiovisualAsset = [input audiovisualAsset];
 
-  v6 = [a3 adjustmentData];
-  if (v6)
+  adjustmentData = [input adjustmentData];
+  if (adjustmentData)
   {
-    v7 = [objc_alloc(MEMORY[0x277D3B518]) initWithFormatIdentifier:objc_msgSend(v6 formatVersion:"formatIdentifier") data:objc_msgSend(v6 baseVersion:"formatVersion") editorBundleID:objc_msgSend(v6 renderTypes:{"data"), 0, 0, 0}];
-    self->__videoAVObjectBuilder = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:v5 videoAdjustments:v7];
+    v7 = [objc_alloc(MEMORY[0x277D3B518]) initWithFormatIdentifier:objc_msgSend(adjustmentData formatVersion:"formatIdentifier") data:objc_msgSend(adjustmentData baseVersion:"formatVersion") editorBundleID:objc_msgSend(adjustmentData renderTypes:{"data"), 0, 0, 0}];
+    self->__videoAVObjectBuilder = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:audiovisualAsset videoAdjustments:v7];
   }
 
   else
   {
-    self->__videoAVObjectBuilder = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:v5 videoAdjustments:0];
+    self->__videoAVObjectBuilder = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:audiovisualAsset videoAdjustments:0];
   }
 }
 
-- (BOOL)_canHandleAdjustmentData:(id)a3
+- (BOOL)_canHandleAdjustmentData:(id)data
 {
-  v3 = [objc_alloc(MEMORY[0x277D3B518]) initWithFormatIdentifier:objc_msgSend(a3 formatVersion:"formatIdentifier") data:objc_msgSend(a3 baseVersion:"formatVersion") editorBundleID:objc_msgSend(a3 renderTypes:{"data"), 0, 0, 0}];
-  v4 = [v3 isRecognizedFormat];
+  v3 = [objc_alloc(MEMORY[0x277D3B518]) initWithFormatIdentifier:objc_msgSend(data formatVersion:"formatIdentifier") data:objc_msgSend(data baseVersion:"formatVersion") editorBundleID:objc_msgSend(data renderTypes:{"data"), 0, 0, 0}];
+  isRecognizedFormat = [v3 isRecognizedFormat];
 
-  return v4;
+  return isRecognizedFormat;
 }
 
 - (BOOL)_prepareMoviePlayerIfNeeded
@@ -3234,9 +3234,9 @@ LABEL_11:
       }
 
 LABEL_12:
-      v5 = [(PLVideoView *)self _shouldPlayFlattenedVideo];
-      v6 = v5;
-      if (!v5 || [(PLVideoView *)self _isFlattenedVideoUpToDate])
+      _shouldPlayFlattenedVideo = [(PLVideoView *)self _shouldPlayFlattenedVideo];
+      v6 = _shouldPlayFlattenedVideo;
+      if (!_shouldPlayFlattenedVideo || [(PLVideoView *)self _isFlattenedVideoUpToDate])
       {
         *(self + 651) |= 2u;
         [(PLVideoView *)self _configurePlayerForStreamedVideoIfNecessary];
@@ -3271,9 +3271,9 @@ LABEL_12:
         }
 
         [(PLMoviePlayerController *)self->_moviePlayer setPlayerItem:v18[5] startTime:self->_cachedCurrentPlaybackTime];
-        v11 = [(PLMoviePlayerController *)self->_moviePlayer view];
-        [(PLMoviePlayerView *)v11 setClipsToBounds:1];
-        [(PLMoviePlayerView *)v11 setScaleMode:self->_scaleMode];
+        view = [(PLMoviePlayerController *)self->_moviePlayer view];
+        [(PLMoviePlayerView *)view setClipsToBounds:1];
+        [(PLMoviePlayerView *)view setScaleMode:self->_scaleMode];
         *(self + 651) &= ~1u;
         [(PLVideoView *)self _clearImageGenerators];
         [(PLVideoView *)self _createImageGenerators];
@@ -3293,10 +3293,10 @@ LABEL_12:
 
       if (!self->_airplayExportSession)
       {
-        v12 = [(AVPlayerItem *)[(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem] asset];
-        if ([(AVAsset *)v12 isMemberOfClass:objc_opt_class()])
+        asset = [(AVPlayerItem *)[(AVPlayer *)[(PLMoviePlayerController *)self->_moviePlayer player] currentItem] asset];
+        if ([(AVAsset *)asset isMemberOfClass:objc_opt_class()])
         {
-          v13 = [(AVAsset *)v12 URL];
+          v13 = [(AVAsset *)asset URL];
           if ([v13 isFileURL])
           {
             if ([objc_msgSend(v13 "path")])
@@ -3399,14 +3399,14 @@ uint64_t __45__PLVideoView__fetchLocalContentEditingInput__block_invoke_3(id *a1
   [v3 setVersion:0];
   self->__isFetchingVideo = 1;
   v4 = [(PLManagedAsset *)self->_videoCameraImage pl_PHAssetFromPhotoLibrary:pl_appPhotoLibrary()];
-  v5 = [MEMORY[0x277CD9898] defaultManager];
+  defaultManager = [MEMORY[0x277CD9898] defaultManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__PLVideoView__fetchNonlocalVideo__block_invoke;
   v6[3] = &unk_2782A20E8;
   v6[4] = self;
   v6[5] = v4;
-  [v5 requestPlayerItemForVideo:v4 options:v3 resultHandler:v6];
+  [defaultManager requestPlayerItemForVideo:v4 options:v3 resultHandler:v6];
 }
 
 void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
@@ -3440,16 +3440,16 @@ void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
 
 - (void)_prepareAndResumePlayback
 {
-  v3 = [(PLVideoView *)self isPlaying];
+  isPlaying = [(PLVideoView *)self isPlaying];
   [(PLVideoView *)self _prepareMoviePlayerIfNeeded];
-  if (v3 && ![(PLVideoView *)self isPlaying])
+  if (isPlaying && ![(PLVideoView *)self isPlaying])
   {
 
     [(PLVideoView *)self play];
   }
 }
 
-- (void)moviePlayerDurationAvailable:(id)a3
+- (void)moviePlayerDurationAvailable:(id)available
 {
   [(PLMoviePlayerController *)self->_moviePlayer duration];
   if (self->_duration != v4)
@@ -3460,10 +3460,10 @@ void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)moviePlayerReadyToDisplay:(id)a3
+- (void)moviePlayerReadyToDisplay:(id)display
 {
   [(PLVideoView *)self _insertMoviePlayerViewIfNecessary];
-  v5 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "view")];
+  v5 = [objc_msgSend(objc_msgSend(objc_msgSend(display "view")];
   v6 = *(self + 651);
   if (((v5 ^ ((v6 & 0x10) == 0)) & 1) == 0)
   {
@@ -3483,7 +3483,7 @@ void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)moviePlayerReadyToPlay:(id)a3
+- (void)moviePlayerReadyToPlay:(id)play
 {
   [(PLVideoView *)self _insertMoviePlayerViewIfNecessary];
   if ((*(self + 651) & 8) == 0 && (*(self + 651) & 1) == 0)
@@ -3522,20 +3522,20 @@ void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_savePreviewPosterFrameImage:(CGImage *)a3
+- (void)_savePreviewPosterFrameImage:(CGImage *)image
 {
-  v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:a3];
+  v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:image];
   [(PLVideoPosterFrameView *)self->_posterFrameView setImage:v5];
 
-  v6 = [(PLVideoView *)self _pathForVideoPreviewFile];
-  if (v6)
+  _pathForVideoPreviewFile = [(PLVideoView *)self _pathForVideoPreviewFile];
+  if (_pathForVideoPreviewFile)
   {
-    v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 isDirectory:0];
+    v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:_pathForVideoPreviewFile isDirectory:0];
     v8 = CGImageDestinationCreateWithURL(v7, [*MEMORY[0x277CE1DC0] identifier], 1uLL, 0);
     if (v8)
     {
       v9 = v8;
-      CGImageDestinationAddImage(v8, a3, 0);
+      CGImageDestinationAddImage(v8, image, 0);
       CGImageDestinationFinalize(v9);
 
       CFRelease(v9);
@@ -3543,10 +3543,10 @@ void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_requestPreviewPosterFrameForVideoSize:(CGSize)a3
+- (void)_requestPreviewPosterFrameForVideoSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15[1] = *MEMORY[0x277D85DE8];
   [-[PLVideoView px_screen](self "px_screen")];
   [(PLVideoView *)self convertRect:0 fromView:?];
@@ -3554,8 +3554,8 @@ void __34__PLVideoView__fetchNonlocalVideo__block_invoke_2(uint64_t a1)
   v8 = width / height;
   v9 = v6 * v8;
   v10 = rintf(v9);
-  v11 = [(PLVideoView *)self _thumbnailSourceAsset];
-  v12 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:v11];
+  _thumbnailSourceAsset = [(PLVideoView *)self _thumbnailSourceAsset];
+  v12 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:_thumbnailSourceAsset];
   [(PLVideoView *)self _configureImageGenerator:v12 thumbnailSize:1 forSummaryThumbnails:v10, v7];
   v15[0] = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
@@ -3593,9 +3593,9 @@ void __54__PLVideoView__requestPreviewPosterFrameForVideoSize___block_invoke_2(u
   }
 }
 
-- (void)moviePlayerPlaybackStateDidChange:(id)a3 fromPlaybackState:(unint64_t)a4
+- (void)moviePlayerPlaybackStateDidChange:(id)change fromPlaybackState:(unint64_t)state
 {
-  v5 = [(PLMoviePlayerController *)self->_moviePlayer playbackState:a3];
+  v5 = [(PLMoviePlayerController *)self->_moviePlayer playbackState:change];
   if (v5 == 3)
   {
     [(PLVideoView *)self _removePlaySpinner];
@@ -3639,7 +3639,7 @@ LABEL_8:
   }
 }
 
-- (void)moviePlayerPlaybackRateDidChange:(id)a3
+- (void)moviePlayerPlaybackRateDidChange:(id)change
 {
   [(PLMoviePlayerController *)self->_moviePlayer playbackRate];
   if (v4 == 1)
@@ -3670,17 +3670,17 @@ LABEL_8:
   }
 }
 
-- (void)moviePlayerBufferingStateDidChange:(id)a3
+- (void)moviePlayerBufferingStateDidChange:(id)change
 {
-  v4 = [(PLMoviePlayerController *)self->_moviePlayer bufferingState];
+  bufferingState = [(PLMoviePlayerController *)self->_moviePlayer bufferingState];
   if ([(PLVideoView *)self _shouldStreamVideo])
   {
-    v5 = (v4 & 0xA) != 0;
+    v5 = (bufferingState & 0xA) != 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = bufferingState;
   }
 
   if (v5)
@@ -3696,7 +3696,7 @@ LABEL_8:
     [(PLVideoView *)self _verifyOrRestartPlayback];
   }
 
-  else if ([(PLVideoView *)self _shouldStreamVideo]&& (v4 & 4) != 0)
+  else if ([(PLVideoView *)self _shouldStreamVideo]&& (bufferingState & 4) != 0)
   {
     v7 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3723,9 +3723,9 @@ LABEL_8:
   }
 }
 
-- (void)_setNeedsReloadScrubberThumbnails:(BOOL)a3
+- (void)_setNeedsReloadScrubberThumbnails:(BOOL)thumbnails
 {
-  if (a3)
+  if (thumbnails)
   {
     v3 = 2;
   }
@@ -3763,11 +3763,11 @@ LABEL_8:
   [(PLVideoView *)self _reloadScrubberThumbnailsIfNeeded];
 }
 
-- (void)_updateScaleModeForSize:(CGSize)a3
+- (void)_updateScaleModeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.width >= a3.height;
+  height = size.height;
+  width = size.width;
+  v6 = size.width >= size.height;
   [(PLVideoView *)self bounds];
   v8 = v7;
   [(PLVideoView *)self bounds];
@@ -3794,9 +3794,9 @@ LABEL_8:
   }
 }
 
-- (void)_hideTrimMessageView:(BOOL)a3
+- (void)_hideTrimMessageView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(PLVideoEditingOverlayView *)self->_trimMessageView alpha];
   if (v5 == 1.0)
   {
@@ -3809,8 +3809,8 @@ LABEL_8:
     v7 = 3221225472;
     v8 = __36__PLVideoView__hideTrimMessageView___block_invoke_2;
     v9 = &unk_2782A2048;
-    v10 = self;
-    if (v3)
+    selfCopy = self;
+    if (viewCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v11 animations:&v6 completion:0.25];
     }
@@ -3832,7 +3832,7 @@ LABEL_8:
   *(self + 651) &= ~0x40u;
 }
 
-- (void)_hideVideoOverlay:(BOOL)a3
+- (void)_hideVideoOverlay:(BOOL)overlay
 {
   if ((*(self + 651) & 0x40) != 0)
   {
@@ -3846,8 +3846,8 @@ LABEL_8:
     v4 = 3221225472;
     v5 = __33__PLVideoView__hideVideoOverlay___block_invoke_2;
     v6 = &unk_2782A2048;
-    v7 = self;
-    if (a3)
+    selfCopy = self;
+    if (overlay)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v8 animations:&v3 completion:0.25];
     }
@@ -3933,9 +3933,9 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
+  videoAdjustments = [(PFVideoAVObjectBuilder *)self->__videoAVObjectBuilder videoAdjustments];
 
-  return [v4 isRecognizedFormat];
+  return [videoAdjustments isRecognizedFormat];
 }
 
 - (void)_removeScrubber
@@ -3956,10 +3956,10 @@ LABEL_8:
 
 - (void)_createScrubberIfNeeded
 {
-  v3 = [(PLVideoView *)self _shouldShowSlalomEditor];
-  v4 = [(PLVideoView *)self canEdit];
+  _shouldShowSlalomEditor = [(PLVideoView *)self _shouldShowSlalomEditor];
+  canEdit = [(PLVideoView *)self canEdit];
   scrubber = self->_scrubber;
-  if (scrubber && (self->__slalomRegionEditorCreatedForScrubber != v3 || v4 != [(UIMovieScrubber *)scrubber isEditable]))
+  if (scrubber && (self->__slalomRegionEditorCreatedForScrubber != _shouldShowSlalomEditor || canEdit != [(UIMovieScrubber *)scrubber isEditable]))
   {
     [(PLVideoView *)self _removeScrubber];
   }
@@ -3982,9 +3982,9 @@ LABEL_8:
   {
     v10 = [objc_alloc(MEMORY[0x277D75740]) initWithFrame:{0.0, 1.0, v9, 0.0}];
     self->_scrubber = v10;
-    [(UIMovieScrubber *)v10 setEditable:v4];
+    [(UIMovieScrubber *)v10 setEditable:canEdit];
     v11 = 8.0;
-    if (!v4)
+    if (!canEdit)
     {
       v11 = 0.0;
     }
@@ -4007,7 +4007,7 @@ LABEL_8:
       [(UIMovieScrubber *)self->_scrubber setEditing:1 animated:1];
     }
 
-    if (!self->_slalomRegionEditor && v3)
+    if (!self->_slalomRegionEditor && _shouldShowSlalomEditor)
     {
       [(UIMovieScrubber *)self->_scrubber frame];
       v12 = [[PLSlalomRegionEditor alloc] initWithFrame:v15.origin.x, CGRectGetMaxY(v15), v15.size.width, 30.0];
@@ -4019,7 +4019,7 @@ LABEL_8:
       [(UIView *)self->_scrubberBackgroundView addSubview:self->_slalomRegionEditor];
     }
 
-    self->__slalomRegionEditorCreatedForScrubber = v3;
+    self->__slalomRegionEditorCreatedForScrubber = _shouldShowSlalomEditor;
 
     [(PLVideoView *)self _updateForEditing];
   }
@@ -4027,9 +4027,9 @@ LABEL_8:
 
 - (double)_scrubberBackgroundHeight
 {
-  v2 = [(PLVideoView *)self _shouldShowSlalomEditor];
+  _shouldShowSlalomEditor = [(PLVideoView *)self _shouldShowSlalomEditor];
   result = 42.0;
-  if (v2)
+  if (_shouldShowSlalomEditor)
   {
     return 72.0;
   }
@@ -4084,22 +4084,22 @@ LABEL_8:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(UIMovieScrubber *)self->_scrubber superview];
+  y = test.y;
+  x = test.x;
+  superview = [(UIMovieScrubber *)self->_scrubber superview];
   scrubberBackgroundView = self->_scrubberBackgroundView;
-  v10 = v8 != scrubberBackgroundView || scrubberBackgroundView == 0;
-  if (v10 || (scrubber = self->_scrubber, [(UIMovieScrubber *)scrubber convertPoint:self fromView:x, y], result = [(UIMovieScrubber *)scrubber hitTest:a4 withEvent:?], !result && ((slalomRegionEditor = self->_slalomRegionEditor) == 0 || ([(PLSlalomRegionEditor *)self->_slalomRegionEditor convertPoint:self fromView:x, y], (result = [(PLSlalomRegionEditor *)slalomRegionEditor hitTest:a4 withEvent:?]) == 0))))
+  v10 = superview != scrubberBackgroundView || scrubberBackgroundView == 0;
+  if (v10 || (scrubber = self->_scrubber, [(UIMovieScrubber *)scrubber convertPoint:self fromView:x, y], result = [(UIMovieScrubber *)scrubber hitTest:event withEvent:?], !result && ((slalomRegionEditor = self->_slalomRegionEditor) == 0 || ([(PLSlalomRegionEditor *)self->_slalomRegionEditor convertPoint:self fromView:x, y], (result = [(PLSlalomRegionEditor *)slalomRegionEditor hitTest:event withEvent:?]) == 0))))
   {
-    if ([(PLVideoView *)self pointInside:a4 withEvent:x, y])
+    if ([(PLVideoView *)self pointInside:event withEvent:x, y])
     {
       if ((*(self + 651) & 0x40) != 0)
       {
         videoOverlayPlayButton = self->_videoOverlayPlayButton;
         [(PLVideoOverlayButton *)videoOverlayPlayButton convertPoint:[(PLVideoOverlayButton *)videoOverlayPlayButton superview] fromView:x, y];
-        result = [(PLVideoOverlayButton *)videoOverlayPlayButton hitTest:a4 withEvent:?];
+        result = [(PLVideoOverlayButton *)videoOverlayPlayButton hitTest:event withEvent:?];
       }
 
       else
@@ -4122,11 +4122,11 @@ LABEL_8:
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = PLVideoView;
-  [(PLVideoView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(PLVideoView *)&v5 touchesEnded:ended withEvent:event];
   [(PLVideoView *)self _hideTrimMessageView:1];
 }
 
@@ -4137,12 +4137,12 @@ LABEL_8:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ path:%@>", -[PLVideoView description](&v3, sel_description), -[PLVideoView pathForVideoFile](self, "pathForVideoFile")];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
-    if (a3)
+    self->_delegate = delegate;
+    if (delegate)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -4164,7 +4164,7 @@ LABEL_8:
 
       *(self + 652) = *(self + 652) & 0xEF | v4;
       scrubber = self->_scrubber;
-      a3 = self;
+      delegate = self;
     }
 
     else
@@ -4172,7 +4172,7 @@ LABEL_8:
       scrubber = self->_scrubber;
     }
 
-    [(UIMovieScrubber *)scrubber setDelegate:a3];
+    [(UIMovieScrubber *)scrubber setDelegate:delegate];
   }
 }
 
@@ -4195,11 +4195,11 @@ LABEL_8:
   [(PLVideoView *)self _setupMoviePlayerIfNecessary];
   if (![(PLVideoView *)self _didInsertMoviePlayerView])
   {
-    v3 = [(PLMoviePlayerController *)self->_moviePlayer view];
+    view = [(PLMoviePlayerController *)self->_moviePlayer view];
     [(PLVideoView *)self bounds];
-    [(PLMoviePlayerView *)v3 setFrame:?];
-    [(PLMoviePlayerView *)v3 setAutoresizingMask:18];
-    [(PLVideoView *)self insertSubview:v3 belowSubview:self->_posterFrameView];
+    [(PLMoviePlayerView *)view setFrame:?];
+    [(PLMoviePlayerView *)view setAutoresizingMask:18];
+    [(PLVideoView *)self insertSubview:view belowSubview:self->_posterFrameView];
     self->__didInsertMoviePlayerView = 1;
   }
 }
@@ -4260,7 +4260,7 @@ LABEL_8:
   [(PLVideoView *)&v6 dealloc];
 }
 
-- (void)_networkReachabilityDidChange:(id)a3
+- (void)_networkReachabilityDidChange:(id)change
 {
   videoCameraImage = self->_videoCameraImage;
   if (videoCameraImage && [(PLManagedAsset *)videoCameraImage cachedNonPersistedVideoPlaybackURL])
@@ -4278,16 +4278,16 @@ LABEL_8:
   }
 }
 
-- (id)_initWithFrame:(CGRect)a3 videoCameraImage:(id)a4 orientation:(int64_t)a5
+- (id)_initWithFrame:(CGRect)frame videoCameraImage:(id)image orientation:(int64_t)orientation
 {
   v18.receiver = self;
   v18.super_class = PLVideoView;
-  v7 = [(PLVideoView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(PLVideoView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v7->_useLandscapeCache = (a5 - 3) < 2;
-    v7->_videoCameraImage = a4;
+    v7->_useLandscapeCache = (orientation - 3) < 2;
+    v7->_videoCameraImage = image;
     v8->_summaryThumbnailRequestTimestamps = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8->_detailThumbnailRequestTimestamps = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8->_scrubberWidth = 0.0;
@@ -4307,9 +4307,9 @@ LABEL_8:
     [(PLVideoPosterFrameView *)v13 setScaleMode:v8->_scaleMode];
     [(PLVideoPosterFrameView *)v8->_posterFrameView setAutoresizingMask:18];
     [(PLVideoView *)v8 addSubview:v8->_posterFrameView];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v8 selector:sel__screenDidConnect_ name:*MEMORY[0x277D76E98] object:0];
-    [v14 addObserver:v8 selector:sel__screenDidDisconnect_ name:*MEMORY[0x277D76EA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__screenDidConnect_ name:*MEMORY[0x277D76E98] object:0];
+    [defaultCenter addObserver:v8 selector:sel__screenDidDisconnect_ name:*MEMORY[0x277D76EA0] object:0];
     v15 = MEMORY[0x277D76620];
     NSClassFromString(&cfstr_Plphotosapplic_0.isa);
     if (objc_opt_isKindOfClass())
@@ -4323,7 +4323,7 @@ LABEL_8:
     }
 
     [v16 enableNetworkObservation];
-    [v14 addObserver:v8 selector:sel__networkReachabilityDidChange_ name:*MEMORY[0x277D3ADF0] object:0];
+    [defaultCenter addObserver:v8 selector:sel__networkReachabilityDidChange_ name:*MEMORY[0x277D3ADF0] object:0];
     v8->_thumbnailReqQueue = dispatch_queue_create("com.apple.mobileslideshow.videoThumbnails", 0);
     v8->_prepareMoviePlayerForScrubberAutomatically = 1;
   }
@@ -4331,16 +4331,16 @@ LABEL_8:
   return v8;
 }
 
-- (PLVideoView)initWithFrame:(CGRect)a3 videoCameraImage:(id)a4 orientation:(int64_t)a5
+- (PLVideoView)initWithFrame:(CGRect)frame videoCameraImage:(id)image orientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([a4 isVideo] & 1) != 0 || (objc_msgSend(a4, "isStreamedVideo") & 1) != 0 || (objc_msgSend(a4, "isAudio"))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ([image isVideo] & 1) != 0 || (objc_msgSend(image, "isStreamedVideo") & 1) != 0 || (objc_msgSend(image, "isAudio"))
   {
 
-    return [(PLVideoView *)self _initWithFrame:a4 videoCameraImage:a5 orientation:x, y, width, height];
+    return [(PLVideoView *)self _initWithFrame:image videoCameraImage:orientation orientation:x, y, width, height];
   }
 
   else
@@ -4350,9 +4350,9 @@ LABEL_8:
   }
 }
 
-+ (void)_enqueueOverlayPlayButton:(id)a3
++ (void)_enqueueOverlayPlayButton:(id)button
 {
-  if (a3)
+  if (button)
   {
     [_overlayButtonQueue addObject:?];
   }
@@ -4367,11 +4367,11 @@ LABEL_8:
     _overlayButtonQueue = v2;
   }
 
-  v3 = [v2 firstObject];
-  if (v3)
+  firstObject = [v2 firstObject];
+  if (firstObject)
   {
-    v4 = v3;
-    v5 = v3;
+    v4 = firstObject;
+    v5 = firstObject;
     [_overlayButtonQueue removeObjectAtIndex:0];
     return v4;
   }
@@ -4384,11 +4384,11 @@ LABEL_8:
   }
 }
 
-+ (id)videoViewForVideoFileAtURL:(id)a3
++ (id)videoViewForVideoFileAtURL:(id)l
 {
-  v4 = [[a1 alloc] _initWithFrame:0 videoCameraImage:1 orientation:{0.0, 0.0, 1.0, 1.0}];
+  v4 = [[self alloc] _initWithFrame:0 videoCameraImage:1 orientation:{0.0, 0.0, 1.0, 1.0}];
   v5 = v4;
-  *(v4 + 424) = [a3 copy];
+  *(v4 + 424) = [l copy];
   *(v4 + 649) = *(v4 + 649) & 0xFE | [v4 _canAccessVideo];
   return v4;
 }

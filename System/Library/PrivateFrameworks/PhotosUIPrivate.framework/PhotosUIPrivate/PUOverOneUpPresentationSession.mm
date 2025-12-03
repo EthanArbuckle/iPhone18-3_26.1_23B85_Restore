@@ -1,77 +1,77 @@
 @interface PUOverOneUpPresentationSession
-- (BOOL)_dismissActivityViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (BOOL)_dismissAvalancheReviewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (BOOL)_dismissEditViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (BOOL)_dismissPhotoMarkupViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (BOOL)_dismissSlideshowViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (BOOL)_popToOneUpFromViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)_presentActivityViewController:(id)a3;
-- (BOOL)_presentAvalancheReviewController:(id)a3;
-- (BOOL)_presentEditViewController:(id)a3;
-- (BOOL)_presentPhotoMarkupViewController:(id)a3;
-- (BOOL)_presentScreenRoutePickerViewController:(id)a3;
-- (BOOL)_presentSlideshowViewController:(id)a3;
+- (BOOL)_dismissActivityViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)_dismissAvalancheReviewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)_dismissEditViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)_dismissPhotoMarkupViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)_dismissSlideshowViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)_popToOneUpFromViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)_presentActivityViewController:(id)controller;
+- (BOOL)_presentAvalancheReviewController:(id)controller;
+- (BOOL)_presentEditViewController:(id)controller;
+- (BOOL)_presentPhotoMarkupViewController:(id)controller;
+- (BOOL)_presentScreenRoutePickerViewController:(id)controller;
+- (BOOL)_presentSlideshowViewController:(id)controller;
 - (BOOL)isPresentingAnOverOneUpViewController;
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
-- (BOOL)presentViewController:(id)a3 animated:(BOOL)a4;
-- (CGPoint)photosSharingTransition:(id)a3 contentOffsetForAssetReference:(id)a4;
-- (CGRect)_frameAtIndexPath:(id)a3;
-- (CGRect)_frameForAssetReference:(id)a3;
-- (CGRect)_frameForItemAtIndexPath:(id)a3 inAssetCollectionsDataSource:(id)a4 allowZoom:(BOOL)a5;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
+- (BOOL)presentViewController:(id)controller animated:(BOOL)animated;
+- (CGPoint)photosSharingTransition:(id)transition contentOffsetForAssetReference:(id)reference;
+- (CGRect)_frameAtIndexPath:(id)path;
+- (CGRect)_frameForAssetReference:(id)reference;
+- (CGRect)_frameForItemAtIndexPath:(id)path inAssetCollectionsDataSource:(id)source allowZoom:(BOOL)zoom;
 - (CGSize)collectionViewContentSize;
-- (PUOverOneUpPresentationSession)initWithActivitySharingActionPerformer:(id)a3;
+- (PUOverOneUpPresentationSession)initWithActivitySharingActionPerformer:(id)performer;
 - (PUOverOneUpPresentationSessionBarsDelegate)barsDelegate;
 - (PUOverOneUpPresentationSessionDelegate)delegate;
 - (PXActivitySharingControllerDelegate)activitySharingControllerDelegate;
 - (id)_assetCollectionsDataSourceForCurrentModalViewController;
-- (id)_assetReferenceAtGlobalIndex:(int64_t)a3;
-- (id)_assetReferenceFromAsset:(id)a3 hintIndexPath:(id)a4 hintCollection:(id)a5;
+- (id)_assetReferenceAtGlobalIndex:(int64_t)index;
+- (id)_assetReferenceFromAsset:(id)asset hintIndexPath:(id)path hintCollection:(id)collection;
 - (id)_assetsDataSource;
 - (id)_currentTileController;
-- (id)_indexPathForGlobalIndex:(int64_t)a3;
+- (id)_indexPathForGlobalIndex:(int64_t)index;
 - (id)_tilingView;
 - (id)_viewModel;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)photosSharingTransition:(id)a3 layoutForAssetReference:(id)a4;
-- (id)photosSharingTransitionTransitioningView:(id)a3;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)photosSharingTransition:(id)transition layoutForAssetReference:(id)reference;
+- (id)photosSharingTransitionTransitioningView:(id)view;
 - (id)ppt_activityViewController;
 - (id)viewController;
-- (id)viewToHideWhilePresentingWithTransition:(id)a3;
-- (int64_t)_globalIndexForAssetReference:(id)a3;
-- (int64_t)_globalIndexForIndexPath:(id)a3;
+- (id)viewToHideWhilePresentingWithTransition:(id)transition;
+- (int64_t)_globalIndexForAssetReference:(id)reference;
+- (int64_t)_globalIndexForIndexPath:(id)path;
 - (int64_t)_numberOfItems;
 - (int64_t)_tileCountForCurrentModalViewController;
-- (void)_activitySharingController:(id)a3 didCompleteWithActivityType:(id)a4 success:(BOOL)a5;
-- (void)_activitySharingControllerDidCancel:(id)a3;
+- (void)_activitySharingController:(id)controller didCompleteWithActivityType:(id)type success:(BOOL)success;
+- (void)_activitySharingControllerDidCancel:(id)cancel;
 - (void)_finalizeAvalancheReviewControllerDismiss;
-- (void)_finishOverOneUpPresentationSessionDismissForced:(BOOL)a3 animated:(BOOL)a4;
+- (void)_finishOverOneUpPresentationSessionDismissForced:(BOOL)forced animated:(BOOL)animated;
 - (void)_invalidatePresentedViewControllers;
-- (void)_performNavigationRequestForAssetDisplayDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)_prepareForActivitySharingControllerDismiss:(id)a3 completionHandler:(id)a4;
-- (void)_removeViewController:(id)a3;
+- (void)_performNavigationRequestForAssetDisplayDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)_prepareForActivitySharingControllerDismiss:(id)dismiss completionHandler:(id)handler;
+- (void)_removeViewController:(id)controller;
 - (void)_updatePresentedViewControllersIfNeeded;
-- (void)activitySharingController:(id)a3 didCompleteWithActivityType:(id)a4 success:(BOOL)a5;
-- (void)activitySharingControllerDidCancel:(id)a3;
-- (void)activitySharingControllerWillDismissActivityViewController:(id)a3;
-- (void)avalancheReviewControllerDidComplete:(id)a3 animated:(BOOL)a4;
-- (void)avalancheReviewControllerDidComplete:(id)a3 withAsset:(id)a4 animated:(BOOL)a5;
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)editController:(id)a3 didFinishPreparingForTransitionAfterEditingPhoto:(id)a4;
-- (void)editController:(id)a3 didFinishPreparingForTransitionAfterEditingVideo:(id)a4 modificationDate:(id)a5 seekTime:(id *)a6;
-- (void)oneUpSharingAnimationController:(id)a3 setVisibility:(BOOL)a4 forAssetReference:(id)a5;
-- (void)photoMarkupController:(id)a3 didFinishWithSavedAsset:(id)a4;
-- (void)photosSharingTransition:(id)a3 setVisibility:(BOOL)a4 forAssetReference:(id)a5;
+- (void)activitySharingController:(id)controller didCompleteWithActivityType:(id)type success:(BOOL)success;
+- (void)activitySharingControllerDidCancel:(id)cancel;
+- (void)activitySharingControllerWillDismissActivityViewController:(id)controller;
+- (void)avalancheReviewControllerDidComplete:(id)complete animated:(BOOL)animated;
+- (void)avalancheReviewControllerDidComplete:(id)complete withAsset:(id)asset animated:(BOOL)animated;
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (void)editController:(id)controller didFinishPreparingForTransitionAfterEditingPhoto:(id)photo;
+- (void)editController:(id)controller didFinishPreparingForTransitionAfterEditingVideo:(id)video modificationDate:(id)date seekTime:(id *)time;
+- (void)oneUpSharingAnimationController:(id)controller setVisibility:(BOOL)visibility forAssetReference:(id)reference;
+- (void)photoMarkupController:(id)controller didFinishWithSavedAsset:(id)asset;
+- (void)photosSharingTransition:(id)transition setVisibility:(BOOL)visibility forAssetReference:(id)reference;
 - (void)ppt_cancelActivity;
-- (void)ppt_dismissShareSheetWithCompletion:(id)a3;
+- (void)ppt_dismissShareSheetWithCompletion:(id)completion;
 - (void)ppt_presentPhotoEditor;
-- (void)ppt_presentShareSheetWithCompletion:(id)a3;
-- (void)ppt_shareUsingActivityOfType:(id)a3;
-- (void)setBarsDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)slideshowViewControllerDidFinish:(id)a3 withVisibleAssets:(id)a4;
+- (void)ppt_presentShareSheetWithCompletion:(id)completion;
+- (void)ppt_shareUsingActivityOfType:(id)type;
+- (void)setBarsDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)slideshowViewControllerDidFinish:(id)finish withVisibleAssets:(id)assets;
 @end
 
 @implementation PUOverOneUpPresentationSession
@@ -99,111 +99,111 @@
 
 - (void)ppt_presentPhotoEditor
 {
-  v9 = [(PUOverOneUpPresentationSession *)self viewController];
-  if (v9)
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  if (viewController)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v9 px_descriptionForAssertionMessage];
-      [v5 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1183 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewController", v7, v8}];
+      px_descriptionForAssertionMessage = [viewController px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1183 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewController", v7, px_descriptionForAssertionMessage}];
     }
   }
 
-  v4 = [v9 ppt_actionsController];
-  [v4 performSimpleActionWithActionType:15];
+  ppt_actionsController = [viewController ppt_actionsController];
+  [ppt_actionsController performSimpleActionWithActionType:15];
 }
 
-- (void)ppt_dismissShareSheetWithCompletion:(id)a3
+- (void)ppt_dismissShareSheetWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(PUOverOneUpPresentationSession *)self activitySharingController];
-  v11 = [v6 activityViewControllerIfAvailable];
+  completionCopy = completion;
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  activityViewControllerIfAvailable = [activitySharingController activityViewControllerIfAvailable];
 
-  if (v11)
+  if (activityViewControllerIfAvailable)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v11 px_descriptionForAssertionMessage];
-      [v7 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1178 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.activitySharingController.activityViewControllerIfAvailable", v9, v10}];
+      px_descriptionForAssertionMessage = [activityViewControllerIfAvailable px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1178 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.activitySharingController.activityViewControllerIfAvailable", v9, px_descriptionForAssertionMessage}];
     }
   }
 
-  [(PUOverOneUpPresentationSession *)self _dismissActivityViewController:v11 animated:1 completionHandler:v5];
+  [(PUOverOneUpPresentationSession *)self _dismissActivityViewController:activityViewControllerIfAvailable animated:1 completionHandler:completionCopy];
 }
 
 - (void)ppt_cancelActivity
 {
-  v4 = [(PUOverOneUpPresentationSession *)self activitySharingController];
-  v9 = [v4 activityViewControllerIfAvailable];
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  activityViewControllerIfAvailable = [activitySharingController activityViewControllerIfAvailable];
 
-  if (v9)
+  if (activityViewControllerIfAvailable)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v9 px_descriptionForAssertionMessage];
-      [v5 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1173 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.activitySharingController.activityViewControllerIfAvailable", v7, v8}];
+      px_descriptionForAssertionMessage = [activityViewControllerIfAvailable px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1173 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.activitySharingController.activityViewControllerIfAvailable", v7, px_descriptionForAssertionMessage}];
     }
   }
 
-  [v9 ppt_cancelActivity];
+  [activityViewControllerIfAvailable ppt_cancelActivity];
 }
 
-- (void)ppt_shareUsingActivityOfType:(id)a3
+- (void)ppt_shareUsingActivityOfType:(id)type
 {
-  v5 = a3;
-  v6 = [(PUOverOneUpPresentationSession *)self activitySharingController];
-  v11 = [v6 activityViewControllerIfAvailable];
+  typeCopy = type;
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  activityViewControllerIfAvailable = [activitySharingController activityViewControllerIfAvailable];
 
-  if (v11)
+  if (activityViewControllerIfAvailable)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v11 px_descriptionForAssertionMessage];
-      [v7 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1164 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.activitySharingController.activityViewControllerIfAvailable", v9, v10}];
+      px_descriptionForAssertionMessage = [activityViewControllerIfAvailable px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1164 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.activitySharingController.activityViewControllerIfAvailable", v9, px_descriptionForAssertionMessage}];
     }
   }
 
-  [v11 ppt_performActivityOfType:v5];
+  [activityViewControllerIfAvailable ppt_performActivityOfType:typeCopy];
 }
 
 - (id)ppt_activityViewController
 {
-  v2 = [(PUOverOneUpPresentationSession *)self activitySharingController];
-  v3 = [v2 activityViewControllerIfAvailable];
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  activityViewControllerIfAvailable = [activitySharingController activityViewControllerIfAvailable];
 
-  return v3;
+  return activityViewControllerIfAvailable;
 }
 
-- (void)ppt_presentShareSheetWithCompletion:(id)a3
+- (void)ppt_presentShareSheetWithCompletion:(id)completion
 {
-  aBlock = a3;
-  v5 = [(PUOverOneUpPresentationSession *)self viewController];
-  if (v5)
+  aBlock = completion;
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  if (viewController)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v5 px_descriptionForAssertionMessage];
-      [v9 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1152 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewController", v11, v12}];
+      px_descriptionForAssertionMessage = [viewController px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:1152 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewController", v11, px_descriptionForAssertionMessage}];
     }
   }
 
@@ -214,19 +214,19 @@
     v7 = pptAfterPresentationCompletion;
     pptAfterPresentationCompletion = v6;
 
-    v8 = [v5 ppt_actionsController];
-    [v8 performShareAction];
+    ppt_actionsController = [viewController ppt_actionsController];
+    [ppt_actionsController performShareAction];
   }
 }
 
-- (id)_assetReferenceAtGlobalIndex:(int64_t)a3
+- (id)_assetReferenceAtGlobalIndex:(int64_t)index
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = [(PUOverOneUpPresentationSession *)self _indexPathForGlobalIndex:?];
   if (v5)
   {
-    v6 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
-    v7 = [v6 assetReferenceAtIndexPath:v5];
+    _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+    v7 = [_assetsDataSource assetReferenceAtIndexPath:v5];
   }
 
   else
@@ -235,7 +235,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 134217984;
-      v11 = a3;
+      indexCopy = index;
       _os_log_error_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "globalIndex %li out of bounds", &v10, 0xCu);
     }
 
@@ -245,20 +245,20 @@
   return v7;
 }
 
-- (int64_t)_globalIndexForAssetReference:(id)a3
+- (int64_t)_globalIndexForAssetReference:(id)reference
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
-  v6 = [v5 assetReferenceForAssetReference:v4];
+  referenceCopy = reference;
+  _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+  v6 = [_assetsDataSource assetReferenceForAssetReference:referenceCopy];
 
-  if (!v4 || ([v6 indexPath], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[PUOverOneUpPresentationSession _globalIndexForIndexPath:](self, "_globalIndexForIndexPath:", v7), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!referenceCopy || ([v6 indexPath], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[PUOverOneUpPresentationSession _globalIndexForIndexPath:](self, "_globalIndexForIndexPath:", v7), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = referenceCopy;
       _os_log_error_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_ERROR, "global index not found for assetReference %@", &v11, 0xCu);
     }
 
@@ -270,9 +270,9 @@
 
 - (int64_t)_numberOfItems
 {
-  v2 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+  _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
   v3 = objc_alloc_init(MEMORY[0x1E696AC88]);
-  v4 = [v2 numberOfSubItemsAtIndexPath:v3];
+  v4 = [_assetsDataSource numberOfSubItemsAtIndexPath:v3];
   if (v4)
   {
     v5 = v4;
@@ -280,7 +280,7 @@
     for (i = 0; i != v5; ++i)
     {
       v8 = [MEMORY[0x1E696AC88] indexPathWithIndex:i];
-      v6 += [v2 numberOfSubItemsAtIndexPath:v8];
+      v6 += [_assetsDataSource numberOfSubItemsAtIndexPath:v8];
     }
   }
 
@@ -292,18 +292,18 @@
   return v6;
 }
 
-- (id)_indexPathForGlobalIndex:(int64_t)a3
+- (id)_indexPathForGlobalIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || [(PUOverOneUpPresentationSession *)self _numberOfItems]<= a3)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || [(PUOverOneUpPresentationSession *)self _numberOfItems]<= index)
   {
     v13 = 0;
   }
 
   else
   {
-    v5 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+    _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
     v6 = objc_alloc_init(MEMORY[0x1E696AC88]);
-    v7 = [v5 numberOfSubItemsAtIndexPath:v6];
+    v7 = [_assetsDataSource numberOfSubItemsAtIndexPath:v6];
     if (v7)
     {
       v8 = v7;
@@ -312,8 +312,8 @@
       while (1)
       {
         v11 = [MEMORY[0x1E696AC88] indexPathWithIndex:v10];
-        v12 = [v5 numberOfSubItemsAtIndexPath:v11] + v9;
-        if (v12 > a3)
+        v12 = [_assetsDataSource numberOfSubItemsAtIndexPath:v11] + v9;
+        if (v12 > index)
         {
           break;
         }
@@ -326,7 +326,7 @@
         }
       }
 
-      v13 = [MEMORY[0x1E696AC88] indexPathForItem:a3 - v9 inSection:v10];
+      v13 = [MEMORY[0x1E696AC88] indexPathForItem:index - v9 inSection:v10];
     }
 
     else
@@ -339,31 +339,31 @@ LABEL_7:
   return v13;
 }
 
-- (int64_t)_globalIndexForIndexPath:(id)a3
+- (int64_t)_globalIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+    _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
     v6 = objc_alloc_init(MEMORY[0x1E696AC88]);
-    v7 = [v5 numberOfSubItemsAtIndexPath:v6];
-    v8 = [v4 section];
-    v9 = [v4 item];
-    if (v8 >= v7)
+    v7 = [_assetsDataSource numberOfSubItemsAtIndexPath:v6];
+    section = [pathCopy section];
+    item = [pathCopy item];
+    if (section >= v7)
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v10 = v9;
-      v11 = [MEMORY[0x1E696AC88] indexPathWithIndex:v8];
-      if (v10 >= [v5 numberOfSubItemsAtIndexPath:v11])
+      v10 = item;
+      v11 = [MEMORY[0x1E696AC88] indexPathWithIndex:section];
+      if (v10 >= [_assetsDataSource numberOfSubItemsAtIndexPath:v11])
       {
         v10 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      else if (v8 >= 1)
+      else if (section >= 1)
       {
         v12 = 0;
         v13 = v11;
@@ -371,12 +371,12 @@ LABEL_7:
         {
           v11 = [MEMORY[0x1E696AC88] indexPathWithIndex:v12];
 
-          v10 += [v5 numberOfSubItemsAtIndexPath:v11];
+          v10 += [_assetsDataSource numberOfSubItemsAtIndexPath:v11];
           ++v12;
           v13 = v11;
         }
 
-        while (v8 != v12);
+        while (section != v12);
       }
     }
   }
@@ -389,34 +389,34 @@ LABEL_7:
   return v10;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"PUPhotosSharingSelectionBadgeKind"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"PUPhotosSharingOptionBadgeKind") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"PUAvalancheReviewBadgeKind"))
+  kindCopy = kind;
+  pathCopy = path;
+  if (([kindCopy isEqualToString:@"PUPhotosSharingSelectionBadgeKind"] & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"PUPhotosSharingOptionBadgeKind") & 1) != 0 || objc_msgSend(kindCopy, "isEqualToString:", @"PUAvalancheReviewBadgeKind"))
   {
-    v8 = [(PUOverOneUpPresentationSession *)self layoutAttributesForItemAtIndexPath:v7];
+    v8 = [(PUOverOneUpPresentationSession *)self layoutAttributesForItemAtIndexPath:pathCopy];
     [v8 frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(PUOverOneUpPresentationSession *)self activitySharingController];
+    activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
 
-    if (v17)
+    if (activitySharingController)
     {
       v18 = *MEMORY[0x1E695F058];
       v19 = *(MEMORY[0x1E695F058] + 8);
       v20 = *(MEMORY[0x1E695F058] + 16);
       v21 = *(MEMORY[0x1E695F058] + 24);
-      v22 = [(PUActivitySharingController *)self->_activitySharingController carouselViewController];
-      [v22 frameForBadgeOfKind:v6 forItemFrame:v7 atIndexPath:{v10, v12, v14, v16}];
+      carouselViewController = [(PUActivitySharingController *)self->_activitySharingController carouselViewController];
+      [carouselViewController frameForBadgeOfKind:kindCopy forItemFrame:pathCopy atIndexPath:{v10, v12, v14, v16}];
     }
 
     else
     {
-      v23 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
-      [v23 selectionBadgeFrameForItemFrame:v7 atIndexPath:{v10, v12, v14, v16}];
+      _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+      [_avalancheReviewController selectionBadgeFrameForItemFrame:pathCopy atIndexPath:{v10, v12, v14, v16}];
       v25 = v24;
       v27 = v26;
       v20 = v28;
@@ -426,7 +426,7 @@ LABEL_7:
       v19 = v12 + v27;
     }
 
-    v30 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:v6 withIndexPath:v7];
+    v30 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:kindCopy withIndexPath:pathCopy];
 
     [v30 setFrame:{v18, v19, v20, v21}];
     [v30 setZIndex:1];
@@ -441,32 +441,32 @@ LABEL_7:
   return v30;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUOverOneUpPresentationSession *)self _assetCollectionsDataSourceForCurrentModalViewController];
-  [(PUOverOneUpPresentationSession *)self _frameForItemAtIndexPath:v4 inAssetCollectionsDataSource:v5 allowZoom:1];
+  pathCopy = path;
+  _assetCollectionsDataSourceForCurrentModalViewController = [(PUOverOneUpPresentationSession *)self _assetCollectionsDataSourceForCurrentModalViewController];
+  [(PUOverOneUpPresentationSession *)self _frameForItemAtIndexPath:pathCopy inAssetCollectionsDataSource:_assetCollectionsDataSourceForCurrentModalViewController allowZoom:1];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [MEMORY[0x1E69DC858] layoutAttributesForCellWithIndexPath:v4];
+  v14 = [MEMORY[0x1E69DC858] layoutAttributesForCellWithIndexPath:pathCopy];
 
   [v14 setFrame:{v7, v9, v11, v13}];
 
   return v14;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PUOverOneUpPresentationSession *)self _tileCountForCurrentModalViewController];
-  v9 = [(PUOverOneUpPresentationSession *)self viewController];
-  v10 = [v9 view];
-  [v10 frame];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _tileCountForCurrentModalViewController = [(PUOverOneUpPresentationSession *)self _tileCountForCurrentModalViewController];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  view = [viewController view];
+  [view frame];
   v12 = v11;
 
   v21.origin.x = x;
@@ -474,24 +474,24 @@ LABEL_7:
   v21.size.width = width;
   v21.size.height = height;
   v13 = fmax(CGRectGetMinX(v21) / v12, 0.0);
-  v14 = [MEMORY[0x1E695DF70] array];
-  if (v8 > v13)
+  array = [MEMORY[0x1E695DF70] array];
+  if (_tileCountForCurrentModalViewController > v13)
   {
     while (1)
     {
-      v15 = [(PUOverOneUpPresentationSession *)self activitySharingController];
-      if (v15)
+      activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
+      if (activitySharingController)
       {
         v16 = [(PUOverOneUpPresentationSession *)self _assetReferenceAtGlobalIndex:v13];
-        v17 = [v16 indexPath];
+        indexPath = [v16 indexPath];
       }
 
       else
       {
-        v17 = [MEMORY[0x1E696AC88] indexPathForItem:v13 inSection:0];
+        indexPath = [MEMORY[0x1E696AC88] indexPathForItem:v13 inSection:0];
       }
 
-      v18 = [(PUOverOneUpPresentationSession *)self layoutAttributesForItemAtIndexPath:v17];
+      v18 = [(PUOverOneUpPresentationSession *)self layoutAttributesForItemAtIndexPath:indexPath];
       [v18 frame];
       v22.size.width = v12 - (v22.origin.x - v13 * v12);
       v23.origin.x = x;
@@ -503,10 +503,10 @@ LABEL_7:
         break;
       }
 
-      [v14 addObject:v18];
+      [array addObject:v18];
       ++v13;
 
-      if (v8 == v13)
+      if (_tileCountForCurrentModalViewController == v13)
       {
         goto LABEL_9;
       }
@@ -515,19 +515,19 @@ LABEL_7:
 
 LABEL_9:
 
-  return v14;
+  return array;
 }
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(PUOverOneUpPresentationSession *)self _tileCountForCurrentModalViewController];
-  v4 = [(PUOverOneUpPresentationSession *)self viewController];
-  v5 = [v4 view];
-  [v5 frame];
+  _tileCountForCurrentModalViewController = [(PUOverOneUpPresentationSession *)self _tileCountForCurrentModalViewController];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  view = [viewController view];
+  [view frame];
   v7 = v6;
   v9 = v8;
 
-  v10 = v7 * v3;
+  v10 = v7 * _tileCountForCurrentModalViewController;
   v11 = v9;
   result.height = v11;
   result.width = v10;
@@ -536,9 +536,9 @@ LABEL_9:
 
 - (int64_t)_tileCountForCurrentModalViewController
 {
-  v3 = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
 
-  if (v3)
+  if (activitySharingController)
   {
 
     return [(PUOverOneUpPresentationSession *)self _numberOfItems];
@@ -546,17 +546,17 @@ LABEL_9:
 
   else
   {
-    v5 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+    _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
 
-    if (!v5)
+    if (!_avalancheReviewController)
     {
       return 0;
     }
 
-    v6 = [(PUOverOneUpPresentationSession *)self _assetCollectionsDataSourceForCurrentModalViewController];
-    v7 = [v6 assetCollectionsFetchResult];
-    v8 = [v6 assetCollectionsFetchResult];
-    v9 = [v8 count];
+    _assetCollectionsDataSourceForCurrentModalViewController = [(PUOverOneUpPresentationSession *)self _assetCollectionsDataSourceForCurrentModalViewController];
+    assetCollectionsFetchResult = [_assetCollectionsDataSourceForCurrentModalViewController assetCollectionsFetchResult];
+    assetCollectionsFetchResult2 = [_assetCollectionsDataSourceForCurrentModalViewController assetCollectionsFetchResult];
+    v9 = [assetCollectionsFetchResult2 count];
 
     v10 = 0;
     if (v9)
@@ -564,13 +564,13 @@ LABEL_9:
       v11 = 0;
       do
       {
-        v12 = [v7 objectAtIndex:v11];
-        v13 = [v6 assetsInAssetCollection:v12];
+        v12 = [assetCollectionsFetchResult objectAtIndex:v11];
+        v13 = [_assetCollectionsDataSourceForCurrentModalViewController assetsInAssetCollection:v12];
         v10 += [v13 count];
 
         ++v11;
-        v14 = [v6 assetCollectionsFetchResult];
-        v15 = [v14 count];
+        assetCollectionsFetchResult3 = [_assetCollectionsDataSourceForCurrentModalViewController assetCollectionsFetchResult];
+        v15 = [assetCollectionsFetchResult3 count];
       }
 
       while (v11 < v15);
@@ -582,118 +582,118 @@ LABEL_9:
 
 - (id)_assetCollectionsDataSourceForCurrentModalViewController
 {
-  v3 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+  _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
 
-  if (v3)
+  if (_avalancheReviewController)
   {
-    v4 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+    _avalancheReviewController2 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
   }
 
   else
   {
-    v5 = [(PUOverOneUpPresentationSession *)self activitySharingController];
+    activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
 
-    if (v5)
+    if (activitySharingController)
     {
-      v4 = [(PUActivitySharingController *)self->_activitySharingController carouselViewController];
+      _avalancheReviewController2 = [(PUActivitySharingController *)self->_activitySharingController carouselViewController];
     }
 
     else
     {
-      v4 = 0;
+      _avalancheReviewController2 = 0;
     }
   }
 
-  return v4;
+  return _avalancheReviewController2;
 }
 
-- (void)oneUpSharingAnimationController:(id)a3 setVisibility:(BOOL)a4 forAssetReference:(id)a5
+- (void)oneUpSharingAnimationController:(id)controller setVisibility:(BOOL)visibility forAssetReference:(id)reference
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(PUOverOneUpPresentationSession *)self viewController];
-  v9 = v8;
-  if (v5)
+  visibilityCopy = visibility;
+  controllerCopy = controller;
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  v9 = viewController;
+  if (visibilityCopy)
   {
-    [v8 oneUpAssetTransitionDidEnd:v7];
+    [viewController oneUpAssetTransitionDidEnd:controllerCopy];
   }
 
   else
   {
-    [v8 oneUpAssetTransitionWillBegin:v7];
+    [viewController oneUpAssetTransitionWillBegin:controllerCopy];
   }
 }
 
-- (id)viewToHideWhilePresentingWithTransition:(id)a3
+- (id)viewToHideWhilePresentingWithTransition:(id)transition
 {
-  v5 = [(PUOverOneUpPresentationSession *)self viewController];
-  if (v5)
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  if (viewController)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [v5 px_descriptionForAssertionMessage];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:929 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewController", v12, v13}];
+      px_descriptionForAssertionMessage = [viewController px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:929 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewController", v12, px_descriptionForAssertionMessage}];
     }
   }
 
-  v6 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+  _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
 
-  if (v6)
+  if (_avalancheReviewController)
   {
-    v7 = [v5 chromeView];
+    chromeView = [viewController chromeView];
   }
 
   else
   {
-    v7 = [(PUOverOneUpPresentationSession *)self activitySharingController];
+    chromeView = [(PUOverOneUpPresentationSession *)self activitySharingController];
 
-    if (v7)
+    if (chromeView)
     {
-      v8 = [v5 navigationController];
-      v7 = [v8 toolbar];
+      navigationController = [viewController navigationController];
+      chromeView = [navigationController toolbar];
     }
   }
 
-  return v7;
+  return chromeView;
 }
 
-- (id)photosSharingTransitionTransitioningView:(id)a3
+- (id)photosSharingTransitionTransitioningView:(id)view
 {
-  v3 = [(PUOverOneUpPresentationSession *)self viewController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  view = [viewController view];
+  superview = [view superview];
 
-  return v5;
+  return superview;
 }
 
-- (void)photosSharingTransition:(id)a3 setVisibility:(BOOL)a4 forAssetReference:(id)a5
+- (void)photosSharingTransition:(id)transition setVisibility:(BOOL)visibility forAssetReference:(id)reference
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(PUOverOneUpPresentationSession *)self viewController];
-  v9 = v8;
-  if (v5)
+  visibilityCopy = visibility;
+  transitionCopy = transition;
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  v9 = viewController;
+  if (visibilityCopy)
   {
-    [v8 oneUpAssetTransitionDidEnd:v7];
+    [viewController oneUpAssetTransitionDidEnd:transitionCopy];
   }
 
   else
   {
-    [v8 oneUpAssetTransitionWillBegin:v7];
+    [viewController oneUpAssetTransitionWillBegin:transitionCopy];
   }
 }
 
-- (CGPoint)photosSharingTransition:(id)a3 contentOffsetForAssetReference:(id)a4
+- (CGPoint)photosSharingTransition:(id)transition contentOffsetForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUOverOneUpPresentationSession *)self _assetCollectionsDataSourceForCurrentModalViewController];
-  v7 = [v5 indexPath];
+  referenceCopy = reference;
+  _assetCollectionsDataSourceForCurrentModalViewController = [(PUOverOneUpPresentationSession *)self _assetCollectionsDataSourceForCurrentModalViewController];
+  indexPath = [referenceCopy indexPath];
 
-  [(PUOverOneUpPresentationSession *)self _frameForItemAtIndexPath:v7 inAssetCollectionsDataSource:v6 allowZoom:0];
+  [(PUOverOneUpPresentationSession *)self _frameForItemAtIndexPath:indexPath inAssetCollectionsDataSource:_assetCollectionsDataSourceForCurrentModalViewController allowZoom:0];
   v9 = v8;
   v11 = v10;
 
@@ -704,33 +704,33 @@ LABEL_9:
   return result;
 }
 
-- (id)photosSharingTransition:(id)a3 layoutForAssetReference:(id)a4
+- (id)photosSharingTransition:(id)transition layoutForAssetReference:(id)reference
 {
   v4 = [[PUCollectionViewLayoutCache alloc] initWithProvider:self];
 
   return v4;
 }
 
-- (CGRect)_frameAtIndexPath:(id)a3
+- (CGRect)_frameAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUOverOneUpPresentationSession *)self _tilingView];
-  v6 = [v5 layout];
-  v7 = [v6 layoutInfoForTileWithIndexPath:v4 kind:@"PUTileKindItemContent"];
+  pathCopy = path;
+  _tilingView = [(PUOverOneUpPresentationSession *)self _tilingView];
+  layout = [_tilingView layout];
+  v7 = [layout layoutInfoForTileWithIndexPath:pathCopy kind:@"PUTileKindItemContent"];
 
   [v7 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 coordinateSystem];
-  v17 = [v5 contentCoordinateSystem];
-  v18 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v16, v17, v9, v11);
+  coordinateSystem = [v7 coordinateSystem];
+  contentCoordinateSystem = [_tilingView contentCoordinateSystem];
+  v18 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v9, v11);
   v20 = v19;
 
-  v21 = [(PUOverOneUpPresentationSession *)self viewController];
-  v22 = [v21 view];
-  [v5 convertRect:v22 toView:{v18, v20, v13, v15}];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  view = [viewController view];
+  [_tilingView convertRect:view toView:{v18, v20, v13, v15}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -747,31 +747,31 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)_frameForAssetReference:(id)a3
+- (CGRect)_frameForAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
-  v7 = [v5 indexPath];
-  v8 = [v6 assetAtIndexPath:v7];
-  v9 = [v8 isEqual:v5];
+  referenceCopy = reference;
+  _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+  indexPath = [referenceCopy indexPath];
+  v8 = [_assetsDataSource assetAtIndexPath:indexPath];
+  v9 = [v8 isEqual:referenceCopy];
 
-  v10 = v5;
+  v10 = referenceCopy;
   if ((v9 & 1) == 0)
   {
-    v11 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
-    v10 = [v11 assetReferenceForAssetReference:v5];
+    _assetsDataSource2 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+    v10 = [_assetsDataSource2 assetReferenceForAssetReference:referenceCopy];
   }
 
-  v12 = [(PUOverOneUpPresentationSession *)self _tilingView];
-  v13 = [v12 layout];
-  if (!v13)
+  _tilingView = [(PUOverOneUpPresentationSession *)self _tilingView];
+  layout = [_tilingView layout];
+  if (!layout)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:869 description:@"Missing layout"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:869 description:@"Missing layout"];
   }
 
-  v14 = [v10 indexPath];
-  v15 = [v13 layoutInfoForTileWithIndexPath:v14 kind:@"PUTileKindItemContent"];
+  indexPath2 = [v10 indexPath];
+  v15 = [layout layoutInfoForTileWithIndexPath:indexPath2 kind:@"PUTileKindItemContent"];
 
   if (v15)
   {
@@ -780,14 +780,14 @@ LABEL_9:
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [v15 coordinateSystem];
-    v25 = [v12 contentCoordinateSystem];
-    v26 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v24, v25, v17, v19);
+    coordinateSystem = [v15 coordinateSystem];
+    contentCoordinateSystem = [_tilingView contentCoordinateSystem];
+    v26 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v17, v19);
     v28 = v27;
 
-    v29 = [(PUOverOneUpPresentationSession *)self viewController];
-    v30 = [v29 view];
-    [v12 convertRect:v30 toView:{v26, v28, v21, v23}];
+    viewController = [(PUOverOneUpPresentationSession *)self viewController];
+    view = [viewController view];
+    [_tilingView convertRect:view toView:{v26, v28, v21, v23}];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -813,81 +813,81 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)_frameForItemAtIndexPath:(id)a3 inAssetCollectionsDataSource:(id)a4 allowZoom:(BOOL)a5
+- (CGRect)_frameForItemAtIndexPath:(id)path inAssetCollectionsDataSource:(id)source allowZoom:(BOOL)zoom
 {
-  v67 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 assetCollectionsFetchResult];
-  v11 = [(PUOverOneUpPresentationSession *)self _viewModel];
-  v12 = [v11 currentAssetReference];
+  zoomCopy = zoom;
+  pathCopy = path;
+  sourceCopy = source;
+  assetCollectionsFetchResult = [sourceCopy assetCollectionsFetchResult];
+  _viewModel = [(PUOverOneUpPresentationSession *)self _viewModel];
+  currentAssetReference = [_viewModel currentAssetReference];
 
-  if (v10 && (v13 = [v10 count], v13 > objc_msgSend(v8, "section")))
+  if (assetCollectionsFetchResult && (v13 = [assetCollectionsFetchResult count], v13 > objc_msgSend(pathCopy, "section")))
   {
-    v14 = [v10 objectAtIndex:{objc_msgSend(v8, "section")}];
-    v15 = [v9 assetsInAssetCollection:v14];
+    v14 = [assetCollectionsFetchResult objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+    v15 = [sourceCopy assetsInAssetCollection:v14];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:817 description:@"No datasource or index out of bounds"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:817 description:@"No datasource or index out of bounds"];
 
     v15 = 0;
     v14 = 0;
   }
 
   v17 = [v15 count];
-  v69 = v10;
-  v70 = v9;
+  v69 = assetCollectionsFetchResult;
+  v70 = sourceCopy;
   v68 = v14;
-  if ([v8 item] >= v17)
+  if ([pathCopy item] >= v17)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [v14 uuid];
-    v18 = [v22 stringWithFormat:@"PUOverOneUpPresentationSession: IndexPath %@ does not exist in collection %@ with count %lu", v8, v23, v17];
+    uuid = [v14 uuid];
+    v18 = [v22 stringWithFormat:@"PUOverOneUpPresentationSession: IndexPath %@ does not exist in collection %@ with count %lu", pathCopy, uuid, v17];
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:828 description:v18];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:828 description:v18];
     v24 = 0;
   }
 
   else
   {
-    v18 = [v15 objectAtIndex:{objc_msgSend(v8, "item")}];
-    v19 = [v12 indexPath];
-    if (v19)
+    v18 = [v15 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
+    indexPath = [currentAssetReference indexPath];
+    if (indexPath)
     {
-      v20 = [MEMORY[0x1E696AFB0] UUID];
-      v21 = [v20 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      currentHandler2 = [uUID UUIDString];
     }
 
     else
     {
-      v21 = 0;
+      currentHandler2 = 0;
     }
 
     v25 = [PUAssetReference alloc];
-    v26 = [v12 assetCollection];
-    v27 = [v12 indexPath];
-    v24 = [(PUAssetReference *)v25 initWithAsset:v18 assetCollection:v26 indexPath:v27 dataSourceIdentifier:v21];
+    assetCollection = [currentAssetReference assetCollection];
+    indexPath2 = [currentAssetReference indexPath];
+    v24 = [(PUAssetReference *)v25 initWithAsset:v18 assetCollection:assetCollection indexPath:indexPath2 dataSourceIdentifier:currentHandler2];
   }
 
-  v28 = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
 
-  if (v28)
+  if (activitySharingController)
   {
     if (v24)
     {
-      v29 = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
-      v30 = [v29 assetReferenceForAssetReference:v24];
+      _assetsDataSource = [(PUOverOneUpPresentationSession *)self _assetsDataSource];
+      v30 = [_assetsDataSource assetReferenceForAssetReference:v24];
 
       v31 = [(PUOverOneUpPresentationSession *)self _globalIndexForAssetReference:v30];
       if (v30)
       {
-        v32 = [(PUAssetReference *)v30 asset];
-        v33 = [v12 asset];
-        v34 = [v32 isEqual:v33];
+        asset = [(PUAssetReference *)v30 asset];
+        asset2 = [currentAssetReference asset];
+        v34 = [asset isEqual:asset2];
 
         v24 = v30;
       }
@@ -908,42 +908,42 @@ LABEL_9:
 
   else
   {
-    v35 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+    _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
 
     v34 = 1;
     v31 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v15 && v35)
+    if (v15 && _avalancheReviewController)
     {
-      v36 = [v12 asset];
-      v37 = [v15 indexOfObject:v36];
+      asset3 = [currentAssetReference asset];
+      v37 = [v15 indexOfObject:asset3];
 
-      v38 = [v8 item];
-      v31 = v38;
-      v34 = v37 == 0x7FFFFFFFFFFFFFFFLL || v38 == 0x7FFFFFFFFFFFFFFFLL || v38 == v37;
+      item = [pathCopy item];
+      v31 = item;
+      v34 = v37 == 0x7FFFFFFFFFFFFFFFLL || item == 0x7FFFFFFFFFFFFFFFLL || item == v37;
     }
   }
 
-  v41 = [(PUOverOneUpPresentationSession *)self viewController];
-  v42 = [v41 view];
-  [v42 frame];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  view = [viewController view];
+  [view frame];
   v44 = v43;
   v46 = v45;
   v48 = v47;
   v50 = v49;
 
-  if (!v24 || (v34 & v67 & 1) != 0)
+  if (!v24 || (v34 & zoomCopy & 1) != 0)
   {
-    [(PUOverOneUpPresentationSession *)self _frameForAssetReference:v12];
+    [(PUOverOneUpPresentationSession *)self _frameForAssetReference:currentAssetReference];
   }
 
   else
   {
-    v51 = [(PUAssetReference *)v24 asset];
-    v52 = [v51 pixelWidth];
-    v53 = [(PUAssetReference *)v24 asset];
-    v54 = [v53 pixelHeight];
+    asset4 = [(PUAssetReference *)v24 asset];
+    pixelWidth = [asset4 pixelWidth];
+    asset5 = [(PUAssetReference *)v24 asset];
+    pixelHeight = [asset5 pixelHeight];
 
-    v55 = PURectWithSizeThatFitsInRect(v52, v54, v44, v46, v48, v50);
+    v55 = PURectWithSizeThatFitsInRect(pixelWidth, pixelHeight, v44, v46, v48, v50);
   }
 
   v59 = v56;
@@ -962,14 +962,14 @@ LABEL_9:
   return result;
 }
 
-- (void)_activitySharingController:(id)a3 didCompleteWithActivityType:(id)a4 success:(BOOL)a5
+- (void)_activitySharingController:(id)controller didCompleteWithActivityType:(id)type success:(BOOL)success
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PUOverOneUpPresentationSession *)self activitySharingController];
+  successCopy = success;
+  controllerCopy = controller;
+  typeCopy = type;
+  activitySharingController = [(PUOverOneUpPresentationSession *)self activitySharingController];
 
-  if (!v10)
+  if (!activitySharingController)
   {
     v14 = PLUIGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -981,20 +981,20 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (v5)
+  if (successCopy)
   {
     [(PUOverOneUpPresentationSession *)self setActivitySharingController:0];
-    v11 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
-    [v8 setDelegate:v11];
+    activitySharingControllerDelegate = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
+    [controllerCopy setDelegate:activitySharingControllerDelegate];
     [(PUOverOneUpPresentationSession *)self setActivitySharingControllerDelegate:0];
-    if (([v9 isEqualToString:*MEMORY[0x1E69C3DB8]] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69C3D78]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69C3F30]) & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69C3F28]))
+    if (([typeCopy isEqualToString:*MEMORY[0x1E69C3DB8]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C3D78]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C3F30]) & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C3F28]))
     {
-      v12 = [v8 selectedAssetsByAssetCollection];
+      selectedAssetsByAssetCollection = [controllerCopy selectedAssetsByAssetCollection];
     }
 
     else
     {
-      v12 = 0;
+      selectedAssetsByAssetCollection = 0;
     }
 
     v15[0] = MEMORY[0x1E69E9820];
@@ -1002,12 +1002,12 @@ LABEL_9:
     v15[2] = __97__PUOverOneUpPresentationSession__activitySharingController_didCompleteWithActivityType_success___block_invoke;
     v15[3] = &unk_1E7B7EA98;
     v15[4] = self;
-    v16 = v8;
-    v17 = v11;
-    v18 = v9;
-    v19 = v12;
-    v13 = v12;
-    v14 = v11;
+    v16 = controllerCopy;
+    v17 = activitySharingControllerDelegate;
+    v18 = typeCopy;
+    v19 = selectedAssetsByAssetCollection;
+    v13 = selectedAssetsByAssetCollection;
+    v14 = activitySharingControllerDelegate;
     [(PUOverOneUpPresentationSession *)self _prepareForActivitySharingControllerDismiss:v16 completionHandler:v15];
 
 LABEL_11:
@@ -1040,11 +1040,11 @@ void __97__PUOverOneUpPresentationSession__activitySharingController_didComplete
   }
 }
 
-- (void)_activitySharingControllerDidCancel:(id)a3
+- (void)_activitySharingControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
-  [v4 setDelegate:v5];
+  cancelCopy = cancel;
+  activitySharingControllerDelegate = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
+  [cancelCopy setDelegate:activitySharingControllerDelegate];
 
   [(PUOverOneUpPresentationSession *)self setActivitySharingControllerDelegate:0];
   [(PUOverOneUpPresentationSession *)self setActivitySharingController:0];
@@ -1052,19 +1052,19 @@ void __97__PUOverOneUpPresentationSession__activitySharingController_didComplete
   [(PUOverOneUpPresentationSession *)self _finishOverOneUpPresentationSessionDismissForced:0 animated:1];
 }
 
-- (void)_prepareForActivitySharingControllerDismiss:(id)a3 completionHandler:(id)a4
+- (void)_prepareForActivitySharingControllerDismiss:(id)dismiss completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 currentAsset];
-  v8 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:v7 hintIndexPath:0 hintCollection:0];
+  handlerCopy = handler;
+  currentAsset = [dismiss currentAsset];
+  v8 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:currentAsset hintIndexPath:0 hintCollection:0];
 
   v9 = [PUAssetDisplayDescriptor assetDisplayDescriptorForSimpleNavigationToAssetReference:v8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96__PUOverOneUpPresentationSession__prepareForActivitySharingControllerDismiss_completionHandler___block_invoke;
   v11[3] = &unk_1E7B7C940;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(PUOverOneUpPresentationSession *)self _performNavigationRequestForAssetDisplayDescriptor:v9 completionHandler:v11];
 }
 
@@ -1079,15 +1079,15 @@ uint64_t __96__PUOverOneUpPresentationSession__prepareForActivitySharingControll
   return result;
 }
 
-- (void)activitySharingController:(id)a3 didCompleteWithActivityType:(id)a4 success:(BOOL)a5
+- (void)activitySharingController:(id)controller didCompleteWithActivityType:(id)type success:(BOOL)success
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
-  [v11 activitySharingController:v9 didCompleteWithActivityType:v10 success:v5];
+  successCopy = success;
+  controllerCopy = controller;
+  typeCopy = type;
+  activitySharingControllerDelegate = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
+  [activitySharingControllerDelegate activitySharingController:controllerCopy didCompleteWithActivityType:typeCopy success:successCopy];
 
-  v17 = v9;
+  v17 = controllerCopy;
   if (v17)
   {
     objc_opt_class();
@@ -1096,38 +1096,38 @@ uint64_t __96__PUOverOneUpPresentationSession__prepareForActivitySharingControll
       goto LABEL_3;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v17 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:742 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController", v14, v16}];
+    px_descriptionForAssertionMessage = [v17 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:742 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController", v14, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:742 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:742 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController", v14}];
   }
 
 LABEL_3:
-  [(PUOverOneUpPresentationSession *)self _activitySharingController:v17 didCompleteWithActivityType:v10 success:v5];
+  [(PUOverOneUpPresentationSession *)self _activitySharingController:v17 didCompleteWithActivityType:typeCopy success:successCopy];
 }
 
-- (void)activitySharingControllerWillDismissActivityViewController:(id)a3
+- (void)activitySharingControllerWillDismissActivityViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
+  controllerCopy = controller;
+  activitySharingControllerDelegate = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
-    [v8 activitySharingControllerWillDismissActivityViewController:v5];
+    activitySharingControllerDelegate2 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
+    [activitySharingControllerDelegate2 activitySharingControllerWillDismissActivityViewController:controllerCopy];
   }
 
-  v14 = v5;
+  v14 = controllerCopy;
   if (v14)
   {
     objc_opt_class();
@@ -1136,32 +1136,32 @@ LABEL_3:
       goto LABEL_5;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v14 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:735 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController", v11, v13}];
+    px_descriptionForAssertionMessage = [v14 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:735 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:735 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:735 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController", v11}];
   }
 
 LABEL_5:
   [(PUOverOneUpPresentationSession *)self _activitySharingControllerWillDismissActivityViewController:v14];
 }
 
-- (void)activitySharingControllerDidCancel:(id)a3
+- (void)activitySharingControllerDidCancel:(id)cancel
 {
-  v5 = a3;
-  v6 = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
-  [v6 activitySharingControllerDidCancel:v5];
+  cancelCopy = cancel;
+  activitySharingControllerDelegate = [(PUOverOneUpPresentationSession *)self activitySharingControllerDelegate];
+  [activitySharingControllerDelegate activitySharingControllerDidCancel:cancelCopy];
 
-  v12 = v5;
+  v12 = cancelCopy;
   if (v12)
   {
     objc_opt_class();
@@ -1170,19 +1170,19 @@ LABEL_5:
       goto LABEL_3;
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v9 = NSStringFromClass(v10);
-    v11 = [v12 px_descriptionForAssertionMessage];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:726 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController", v9, v11}];
+    px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:726 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController", v9, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:726 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:726 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController", v9}];
   }
 
 LABEL_3:
@@ -1191,35 +1191,35 @@ LABEL_3:
 
 - (void)_finalizeAvalancheReviewControllerDismiss
 {
-  v3 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
-  [v3 setDelegate:0];
+  _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+  [_avalancheReviewController setDelegate:0];
 
   [(PUOverOneUpPresentationSession *)self _setAvalancheReviewController:0];
 }
 
-- (void)avalancheReviewControllerDidComplete:(id)a3 animated:(BOOL)a4
+- (void)avalancheReviewControllerDidComplete:(id)complete animated:(BOOL)animated
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__PUOverOneUpPresentationSession_avalancheReviewControllerDidComplete_animated___block_invoke;
   v4[3] = &unk_1E7B80DD0;
   v4[4] = self;
-  [(PUOverOneUpPresentationSession *)self dismissViewController:a3 animated:a4 completionHandler:v4];
+  [(PUOverOneUpPresentationSession *)self dismissViewController:complete animated:animated completionHandler:v4];
 }
 
-- (void)avalancheReviewControllerDidComplete:(id)a3 withAsset:(id)a4 animated:(BOOL)a5
+- (void)avalancheReviewControllerDidComplete:(id)complete withAsset:(id)asset animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:a4 hintIndexPath:0 hintCollection:0];
+  completeCopy = complete;
+  v9 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:asset hintIndexPath:0 hintCollection:0];
   v10 = [PUAssetDisplayDescriptor assetDisplayDescriptorForSimpleNavigationToAssetReference:v9];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__PUOverOneUpPresentationSession_avalancheReviewControllerDidComplete_withAsset_animated___block_invoke;
   v12[3] = &unk_1E7B7A3F0;
   v12[4] = self;
-  v13 = v8;
-  v14 = a5;
-  v11 = v8;
+  v13 = completeCopy;
+  animatedCopy = animated;
+  v11 = completeCopy;
   [(PUOverOneUpPresentationSession *)self _performNavigationRequestForAssetDisplayDescriptor:v10 completionHandler:v12];
 }
 
@@ -1236,43 +1236,43 @@ uint64_t __90__PUOverOneUpPresentationSession_avalancheReviewControllerDidComple
   return [v2 dismissViewController:v1 animated:v3 completionHandler:v5];
 }
 
-- (void)photoMarkupController:(id)a3 didFinishWithSavedAsset:(id)a4
+- (void)photoMarkupController:(id)controller didFinishWithSavedAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 reviewAsset];
-  v7 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:v6 hintIndexPath:0 hintCollection:0];
+  controllerCopy = controller;
+  reviewAsset = [controllerCopy reviewAsset];
+  v7 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:reviewAsset hintIndexPath:0 hintCollection:0];
   v8 = [PUAssetDisplayDescriptor assetDisplayDescriptorForSimpleNavigationToAssetReference:v7];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __80__PUOverOneUpPresentationSession_photoMarkupController_didFinishWithSavedAsset___block_invoke;
   v13 = &unk_1E7B7FB70;
-  v14 = self;
-  v15 = v5;
-  v9 = v5;
+  selfCopy = self;
+  v15 = controllerCopy;
+  v9 = controllerCopy;
   [(PUOverOneUpPresentationSession *)self _performNavigationRequestForAssetDisplayDescriptor:v8 completionHandler:&v10];
-  [v9 unregisterObserver:{self, v10, v11, v12, v13, v14}];
+  [v9 unregisterObserver:{self, v10, v11, v12, v13, selfCopy}];
 }
 
-- (void)editController:(id)a3 didFinishPreparingForTransitionAfterEditingVideo:(id)a4 modificationDate:(id)a5 seekTime:(id *)a6
+- (void)editController:(id)controller didFinishPreparingForTransitionAfterEditingVideo:(id)video modificationDate:(id)date seekTime:(id *)time
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:a4 hintIndexPath:0 hintCollection:0];
+  controllerCopy = controller;
+  dateCopy = date;
+  v12 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:video hintIndexPath:0 hintCollection:0];
   v13 = [PUAssetDisplayDescriptor alloc];
-  buf = *a6;
-  v14 = [(PUAssetDisplayDescriptor *)v13 initWithAssetReference:v12 modifiedAfterDate:v11 videoSeekTime:&buf];
+  buf = *time;
+  v14 = [(PUAssetDisplayDescriptor *)v13 initWithAssetReference:v12 modifiedAfterDate:dateCopy videoSeekTime:&buf];
 
-  v15 = [(PUOverOneUpPresentationSession *)self viewController];
-  v16 = [v15 navigationController];
-  v17 = [v16 presentingViewController];
-  v18 = [v17 parentViewController];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController = [viewController navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  parentViewController = [presentingViewController parentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v18 tabBar];
-    [v19 setHidden:0];
+    tabBar = [parentViewController tabBar];
+    [tabBar setHidden:0];
   }
 
   v20 = PLOneUpGetLog();
@@ -1281,7 +1281,7 @@ uint64_t __90__PUOverOneUpPresentationSession_avalancheReviewControllerDidComple
     LODWORD(buf.var0) = 138412546;
     *(&buf.var0 + 4) = v14;
     LOWORD(buf.var2) = 2112;
-    *(&buf.var2 + 2) = v18;
+    *(&buf.var2 + 2) = parentViewController;
     _os_log_impl(&dword_1B36F3000, v20, OS_LOG_TYPE_DEBUG, "Preparing to perform dismiss Edit for displayDescriptor: %@, parentController: %@", &buf, 0x16u);
   }
 
@@ -1290,8 +1290,8 @@ uint64_t __90__PUOverOneUpPresentationSession_avalancheReviewControllerDidComple
   v22[2] = __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForTransitionAfterEditingVideo_modificationDate_seekTime___block_invoke;
   v22[3] = &unk_1E7B7FB70;
   v22[4] = self;
-  v23 = v10;
-  v21 = v10;
+  v23 = controllerCopy;
+  v21 = controllerCopy;
   [(PUOverOneUpPresentationSession *)self _performNavigationRequestForAssetDisplayDescriptor:v14 completionHandler:v22];
 }
 
@@ -1313,21 +1313,21 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
   [*(a1 + 32) dismissViewController:*(a1 + 40) animated:1 completionHandler:0];
 }
 
-- (void)editController:(id)a3 didFinishPreparingForTransitionAfterEditingPhoto:(id)a4
+- (void)editController:(id)controller didFinishPreparingForTransitionAfterEditingPhoto:(id)photo
 {
-  v6 = a3;
-  v7 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:a4 hintIndexPath:0 hintCollection:0];
+  controllerCopy = controller;
+  v7 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:photo hintIndexPath:0 hintCollection:0];
   v8 = [PUAssetDisplayDescriptor assetDisplayDescriptorForSimpleNavigationToAssetReference:v7];
-  v9 = [(PUOverOneUpPresentationSession *)self viewController];
-  v10 = [v9 navigationController];
-  v11 = [v10 presentingViewController];
-  v12 = [v11 parentViewController];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController = [viewController navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  parentViewController = [presentingViewController parentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 tabBar];
-    [v13 setHidden:0];
+    tabBar = [parentViewController tabBar];
+    [tabBar setHidden:0];
   }
 
   v15[0] = MEMORY[0x1E69E9820];
@@ -1335,72 +1335,72 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
   v15[2] = __98__PUOverOneUpPresentationSession_editController_didFinishPreparingForTransitionAfterEditingPhoto___block_invoke;
   v15[3] = &unk_1E7B7FB70;
   v15[4] = self;
-  v16 = v6;
-  v14 = v6;
+  v16 = controllerCopy;
+  v14 = controllerCopy;
   [(PUOverOneUpPresentationSession *)self _performNavigationRequestForAssetDisplayDescriptor:v8 completionHandler:v15];
 }
 
-- (void)slideshowViewControllerDidFinish:(id)a3 withVisibleAssets:(id)a4
+- (void)slideshowViewControllerDidFinish:(id)finish withVisibleAssets:(id)assets
 {
-  v6 = a3;
-  v7 = [a4 firstObject];
-  v8 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:v7 hintIndexPath:0 hintCollection:0];
+  finishCopy = finish;
+  firstObject = [assets firstObject];
+  v8 = [(PUOverOneUpPresentationSession *)self _assetReferenceFromAsset:firstObject hintIndexPath:0 hintCollection:0];
   v9 = [PUAssetDisplayDescriptor assetDisplayDescriptorForSimpleNavigationToAssetReference:v8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__PUOverOneUpPresentationSession_slideshowViewControllerDidFinish_withVisibleAssets___block_invoke;
   v11[3] = &unk_1E7B7FB70;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = finishCopy;
+  v10 = finishCopy;
   [(PUOverOneUpPresentationSession *)self _performNavigationRequestForAssetDisplayDescriptor:v9 completionHandler:v11];
 }
 
-- (void)_performNavigationRequestForAssetDisplayDescriptor:(id)a3 completionHandler:(id)a4
+- (void)_performNavigationRequestForAssetDisplayDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  descriptorCopy = descriptor;
   v10 = [v6 dateWithTimeIntervalSinceNow:2.0];
-  v9 = [(PUOverOneUpPresentationSession *)self viewController];
-  [v9 navigateToAssetDisplayDescriptor:v8 beforeDate:v10 completionHandler:v7];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  [viewController navigateToAssetDisplayDescriptor:descriptorCopy beforeDate:v10 completionHandler:handlerCopy];
 }
 
-- (id)_assetReferenceFromAsset:(id)a3 hintIndexPath:(id)a4 hintCollection:(id)a5
+- (id)_assetReferenceFromAsset:(id)asset hintIndexPath:(id)path hintCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  assetCopy = asset;
+  pathCopy = path;
+  collectionCopy = collection;
+  if (assetCopy)
   {
-    v11 = v9;
-    v12 = v10;
-    if (!v11)
+    _stashedAssetReference = pathCopy;
+    _stashedAssetReference3 = collectionCopy;
+    if (!_stashedAssetReference)
     {
-      v11 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
+      _stashedAssetReference = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
 
-      if (v11)
+      if (_stashedAssetReference)
       {
-        v13 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
-        v11 = [v13 indexPath];
+        _stashedAssetReference2 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
+        _stashedAssetReference = [_stashedAssetReference2 indexPath];
       }
     }
 
-    if (!v12)
+    if (!_stashedAssetReference3)
     {
-      v12 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
+      _stashedAssetReference3 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
 
-      if (v12)
+      if (_stashedAssetReference3)
       {
-        v14 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
-        v12 = [v14 assetCollection];
+        _stashedAssetReference4 = [(PUOverOneUpPresentationSession *)self _stashedAssetReference];
+        _stashedAssetReference3 = [_stashedAssetReference4 assetCollection];
       }
     }
 
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v17 = [[PUAssetReference alloc] initWithAsset:v8 assetCollection:v12 indexPath:v11 dataSourceIdentifier:v16];
+    v17 = [[PUAssetReference alloc] initWithAsset:assetCopy assetCollection:_stashedAssetReference3 indexPath:_stashedAssetReference dataSourceIdentifier:uUIDString];
   }
 
   else
@@ -1411,9 +1411,9 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
   return v17;
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v19 = *MEMORY[0x1E69E9840];
   [(PUOverOneUpPresentationSession *)self _invalidatePresentedViewControllers];
   [(PUOverOneUpPresentationSession *)self _updatePresentedViewControllersIfNeeded];
@@ -1421,8 +1421,8 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(PUOverOneUpPresentationSession *)self _presentedViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _presentedViewControllers = [(PUOverOneUpPresentationSession *)self _presentedViewControllers];
+  v6 = [_presentedViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v6)
   {
     v9 = 1;
@@ -1438,14 +1438,14 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(_presentedViewControllers);
       }
 
       v11 = *(*(&v14 + 1) + 8 * i);
       v12 = [v11 conformsToProtocol:&unk_1F2BCA758];
       if ((v9 & v12) == 1)
       {
-        v9 = [v11 prepareForDismissingForced:v3];
+        v9 = [v11 prepareForDismissingForced:forcedCopy];
         if (v9)
         {
           continue;
@@ -1461,14 +1461,14 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
         }
       }
 
-      if (!v3)
+      if (!forcedCopy)
       {
         v9 = 0;
         goto LABEL_16;
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [_presentedViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       continue;
@@ -1479,44 +1479,44 @@ void __124__PUOverOneUpPresentationSession_editController_didFinishPreparingForT
 
 LABEL_16:
 
-  [(PUOverOneUpPresentationSession *)self _finishOverOneUpPresentationSessionDismissForced:v9 | v3 animated:0];
+  [(PUOverOneUpPresentationSession *)self _finishOverOneUpPresentationSessionDismissForced:v9 | forcedCopy animated:0];
   return v9;
 }
 
-- (void)_removeViewController:(id)a3
+- (void)_removeViewController:(id)controller
 {
-  v9 = a3;
-  v4 = [(PUOverOneUpPresentationSession *)self _photoMarkupViewController];
+  controllerCopy = controller;
+  _photoMarkupViewController = [(PUOverOneUpPresentationSession *)self _photoMarkupViewController];
 
-  if (v4 == v9)
+  if (_photoMarkupViewController == controllerCopy)
   {
     [(PUOverOneUpPresentationSession *)self _setPhotoMarkupViewController:0];
   }
 
   else
   {
-    v5 = [(PUOverOneUpPresentationSession *)self _slideshowViewController];
+    _slideshowViewController = [(PUOverOneUpPresentationSession *)self _slideshowViewController];
 
-    if (v5 == v9)
+    if (_slideshowViewController == controllerCopy)
     {
       [(PUOverOneUpPresentationSession *)self _setSlideshowViewController:0];
     }
 
     else
     {
-      v6 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+      _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
 
-      if (v6 == v9)
+      if (_avalancheReviewController == controllerCopy)
       {
         [(PUOverOneUpPresentationSession *)self _setAvalancheReviewController:0];
       }
 
       else
       {
-        v7 = [(PUOverOneUpPresentationSession *)self _editViewController];
+        _editViewController = [(PUOverOneUpPresentationSession *)self _editViewController];
 
-        v8 = v9;
-        if (v7 != v9)
+        v8 = controllerCopy;
+        if (_editViewController != controllerCopy)
         {
           goto LABEL_10;
         }
@@ -1526,21 +1526,21 @@ LABEL_16:
     }
   }
 
-  v8 = v9;
+  v8 = controllerCopy;
 LABEL_10:
 }
 
-- (BOOL)_popToOneUpFromViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)_popToOneUpFromViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PUOverOneUpPresentationSession *)self viewController];
-  v8 = [v7 navigationController];
-  v9 = [v8 viewControllers];
-  v10 = [v9 indexOfObject:v7];
-  v11 = [v9 containsObject:v6];
-  if (v8)
+  controllerCopy = controller;
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController = [viewController navigationController];
+  viewControllers = [navigationController viewControllers];
+  v10 = [viewControllers indexOfObject:viewController];
+  v11 = [viewControllers containsObject:controllerCopy];
+  if (navigationController)
   {
     v12 = v10 == 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -1554,8 +1554,8 @@ LABEL_10:
   v14 = v13 & v11;
   if ((v13 & v11) == 1)
   {
-    v21 = v4;
-    v15 = [v9 px_subarrayAfterIndex:v10];
+    v21 = animatedCopy;
+    v15 = [viewControllers px_subarrayAfterIndex:v10];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -1583,25 +1583,25 @@ LABEL_10:
       while (v17);
     }
 
-    [v8 pu_popToViewController:v7 animated:v21 interactive:0];
+    [navigationController pu_popToViewController:viewController animated:v21 interactive:0];
   }
 
   return v14;
 }
 
-- (BOOL)_dismissAvalancheReviewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)_dismissAvalancheReviewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(PUOverOneUpPresentationSession *)self viewController];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95__PUOverOneUpPresentationSession__dismissAvalancheReviewController_animated_completionHandler___block_invoke;
   v11[3] = &unk_1E7B80B48;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
-  [v8 pu_dismissViewControllerAnimated:v5 interactive:0 completion:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  [viewController pu_dismissViewControllerAnimated:animatedCopy interactive:0 completion:v11];
 
   return 1;
 }
@@ -1620,18 +1620,18 @@ uint64_t __95__PUOverOneUpPresentationSession__dismissAvalancheReviewController_
   return result;
 }
 
-- (BOOL)_dismissActivityViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)_dismissActivityViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __92__PUOverOneUpPresentationSession__dismissActivityViewController_animated_completionHandler___block_invoke;
   v11[3] = &unk_1E7B80B48;
   v11[4] = self;
-  v12 = v8;
-  v9 = v8;
-  [a3 pu_dismissViewControllerAnimated:v5 interactive:0 completion:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  [controller pu_dismissViewControllerAnimated:animatedCopy interactive:0 completion:v11];
 
   return 1;
 }
@@ -1655,21 +1655,21 @@ uint64_t __92__PUOverOneUpPresentationSession__dismissActivityViewController_ani
   return result;
 }
 
-- (BOOL)_dismissPhotoMarkupViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)_dismissPhotoMarkupViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PUOverOneUpPresentationSession *)self viewController];
-  v11 = [v10 navigationController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController = [viewController navigationController];
   [(PUOverOneUpPresentationSession *)self _setPhotoMarkupViewController:0];
-  v12 = [v11 presentedViewController];
+  presentedViewController = [navigationController presentedViewController];
 
-  if (v12 == v8)
+  if (presentedViewController == controllerCopy)
   {
     v13 = 1;
-    [v11 dismissViewControllerAnimated:1 completion:0];
-    if (!v9)
+    [navigationController dismissViewControllerAnimated:1 completion:0];
+    if (!handlerCopy)
     {
       goto LABEL_4;
     }
@@ -1677,11 +1677,11 @@ uint64_t __92__PUOverOneUpPresentationSession__dismissActivityViewController_ani
     goto LABEL_3;
   }
 
-  v13 = [(PUOverOneUpPresentationSession *)self _popToOneUpFromViewController:v8 animated:v6];
-  if (v9)
+  v13 = [(PUOverOneUpPresentationSession *)self _popToOneUpFromViewController:controllerCopy animated:animatedCopy];
+  if (handlerCopy)
   {
 LABEL_3:
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_4:
@@ -1689,16 +1689,16 @@ LABEL_4:
   return v13;
 }
 
-- (BOOL)_dismissEditViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)_dismissEditViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
+  animatedCopy = animated;
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(PUOverOneUpPresentationSession *)self _popToOneUpFromViewController:a3 animated:v5];
+  handlerCopy = handler;
+  v9 = [(PUOverOneUpPresentationSession *)self _popToOneUpFromViewController:controller animated:animatedCopy];
   [(PUOverOneUpPresentationSession *)self _setEditViewController:0];
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
   v10 = PLOneUpGetLog();
@@ -1713,53 +1713,53 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)_dismissSlideshowViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)_dismissSlideshowViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  [a3 dismissViewControllerAnimated:a4 completion:a5];
+  [controller dismissViewControllerAnimated:animated completion:handler];
   [(PUOverOneUpPresentationSession *)self _setSlideshowViewController:0];
   return 1;
 }
 
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
+  animatedCopy = animated;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__PUOverOneUpPresentationSession_dismissViewController_animated_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7B7B3B0;
-  v10 = v9;
+  v10 = handlerCopy;
   v22 = v10;
   objc_copyWeak(&v23, &location);
   v11 = _Block_copy(aBlock);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(PUOverOneUpPresentationSession *)self _dismissPhotoMarkupViewController:v8 animated:v6 completionHandler:v11];
+    v12 = [(PUOverOneUpPresentationSession *)self _dismissPhotoMarkupViewController:controllerCopy animated:animatedCopy completionHandler:v11];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(PUOverOneUpPresentationSession *)self _dismissSlideshowViewController:v8 animated:v6 completionHandler:v11];
+    v12 = [(PUOverOneUpPresentationSession *)self _dismissSlideshowViewController:controllerCopy animated:animatedCopy completionHandler:v11];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(PUOverOneUpPresentationSession *)self _dismissAvalancheReviewController:v8 animated:v6 completionHandler:v11];
+    v12 = [(PUOverOneUpPresentationSession *)self _dismissAvalancheReviewController:controllerCopy animated:animatedCopy completionHandler:v11];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(PUOverOneUpPresentationSession *)self _dismissEditViewController:v8 animated:v6 completionHandler:v11])
+    if ([(PUOverOneUpPresentationSession *)self _dismissEditViewController:controllerCopy animated:animatedCopy completionHandler:v11])
     {
       goto LABEL_15;
     }
@@ -1767,12 +1767,12 @@ LABEL_4:
     v18 = PLOneUpGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v8 presentingViewController];
-      v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "modalPresentationStyle")}];
+      presentingViewController = [controllerCopy presentingViewController];
+      v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(controllerCopy, "modalPresentationStyle")}];
       *buf = 138412802;
-      v26 = v8;
+      v26 = controllerCopy;
       v27 = 2112;
-      v28 = v19;
+      v28 = presentingViewController;
       v29 = 2112;
       v30 = v20;
       _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_ERROR, "Failed to dismiss view controller: %@. presentingVC: %@, modalPresentationStyle: %@", buf, 0x20u);
@@ -1784,7 +1784,7 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(PUOverOneUpPresentationSession *)self _dismissActivityViewController:v8 animated:v6 completionHandler:v11];
+      v12 = [(PUOverOneUpPresentationSession *)self _dismissActivityViewController:controllerCopy animated:animatedCopy completionHandler:v11];
 LABEL_7:
       if (v12)
       {
@@ -1793,15 +1793,15 @@ LABEL_7:
     }
   }
 
-  v13 = [v8 presentingViewController];
-  v14 = v13 == 0;
+  presentingViewController2 = [controllerCopy presentingViewController];
+  v14 = presentingViewController2 == 0;
 
   if (!v14)
   {
-    if ([v8 modalPresentationStyle] != 7)
+    if ([controllerCopy modalPresentationStyle] != 7)
     {
-      v17 = [(PUOverOneUpPresentationSession *)self viewController];
-      [v17 dismissViewControllerAnimated:v6 completion:v11];
+      viewController = [(PUOverOneUpPresentationSession *)self viewController];
+      [viewController dismissViewControllerAnimated:animatedCopy completion:v11];
 
       goto LABEL_15;
     }
@@ -1809,11 +1809,11 @@ LABEL_7:
     v15 = PLUIGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(PUOverOneUpPresentationSession *)self viewController];
+      viewController2 = [(PUOverOneUpPresentationSession *)self viewController];
       *buf = 138412546;
-      v26 = v8;
+      v26 = controllerCopy;
       v27 = 2112;
-      v28 = v16;
+      v28 = viewController2;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_DEFAULT, "can't dismiss %@ from presumed presenting view controller %@", buf, 0x16u);
     }
   }
@@ -1837,13 +1837,13 @@ void __83__PUOverOneUpPresentationSession_dismissViewController_animated_complet
   [WeakRetained _finishOverOneUpPresentationSessionDismissForced:0 animated:0];
 }
 
-- (BOOL)_presentScreenRoutePickerViewController:(id)a3
+- (BOOL)_presentScreenRoutePickerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (self->_barsDelegateFlags.respondsToBarButtonItem)
   {
-    v5 = [(PUOverOneUpPresentationSession *)self barsDelegate];
-    v6 = [v5 overOneUpPresentationSession:self barButtonItemForActivityType:*MEMORY[0x1E69C3CF0]];
+    barsDelegate = [(PUOverOneUpPresentationSession *)self barsDelegate];
+    v6 = [barsDelegate overOneUpPresentationSession:self barButtonItemForActivityType:*MEMORY[0x1E69C3CF0]];
   }
 
   else
@@ -1851,50 +1851,50 @@ void __83__PUOverOneUpPresentationSession_dismissViewController_animated_complet
     v6 = 0;
   }
 
-  v7 = [v4 popoverPresentationController];
-  [v7 setBarButtonItem:v6];
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:v6];
 
-  v8 = [(PUOverOneUpPresentationSession *)self viewController];
-  [v8 presentViewController:v4 animated:1 completion:0];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  [viewController presentViewController:controllerCopy animated:1 completion:0];
 
   return 1;
 }
 
-- (BOOL)_presentSlideshowViewController:(id)a3
+- (BOOL)_presentSlideshowViewController:(id)controller
 {
-  v4 = a3;
-  [(PUOverOneUpPresentationSession *)self _setSlideshowViewController:v4];
-  [v4 setDelegate:self];
-  v5 = [[PUSlideshowNavigationController alloc] initWithRootViewController:v4];
+  controllerCopy = controller;
+  [(PUOverOneUpPresentationSession *)self _setSlideshowViewController:controllerCopy];
+  [controllerCopy setDelegate:self];
+  v5 = [[PUSlideshowNavigationController alloc] initWithRootViewController:controllerCopy];
 
   [(PUSlideshowNavigationController *)v5 setModalTransitionStyle:2];
-  v6 = [(PUOverOneUpPresentationSession *)self viewController];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  [viewController presentViewController:v5 animated:1 completion:0];
 
   return 1;
 }
 
-- (BOOL)_presentAvalancheReviewController:(id)a3
+- (BOOL)_presentAvalancheReviewController:(id)controller
 {
-  v5 = a3;
-  [(PUOverOneUpPresentationSession *)self _setAvalancheReviewController:v5];
-  [v5 setDelegate:self];
-  v6 = [[PUNavigationController alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  [(PUOverOneUpPresentationSession *)self _setAvalancheReviewController:controllerCopy];
+  [controllerCopy setDelegate:self];
+  v6 = [[PUNavigationController alloc] initWithRootViewController:controllerCopy];
 
   v37 = v6;
   [(PUNavigationController *)v6 setModalPresentationStyle:0];
-  v7 = [(PUOverOneUpPresentationSession *)self _viewModel];
-  v8 = [v7 currentAssetReference];
+  _viewModel = [(PUOverOneUpPresentationSession *)self _viewModel];
+  currentAssetReference = [_viewModel currentAssetReference];
 
-  v9 = [v8 asset];
-  v10 = [v9 burstIdentifier];
-  if (!v10)
+  asset = [currentAssetReference asset];
+  burstIdentifier = [asset burstIdentifier];
+  if (!burstIdentifier)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:380 description:@"Current asset must have an avalanche UUID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:380 description:@"Current asset must have an avalanche UUID"];
   }
 
-  if ([v9 sourceType] == 4)
+  if ([asset sourceType] == 4)
   {
     v11 = 2;
   }
@@ -1905,62 +1905,62 @@ void __83__PUOverOneUpPresentationSession_dismissViewController_animated_complet
   }
 
   v12 = objc_alloc(MEMORY[0x1E69BE2B0]);
-  v13 = [v9 photoLibrary];
-  v14 = [v13 mainQueueConcurrencyPhotoLibrary];
-  v15 = [v12 initWithUUID:v10 sourceType:v11 photoLibrary:v14];
+  photoLibrary = [asset photoLibrary];
+  mainQueueConcurrencyPhotoLibrary = [photoLibrary mainQueueConcurrencyPhotoLibrary];
+  v15 = [v12 initWithUUID:burstIdentifier sourceType:v11 photoLibrary:mainQueueConcurrencyPhotoLibrary];
 
-  v16 = [v9 pl_managedAsset];
+  pl_managedAsset = [asset pl_managedAsset];
   v36 = v15;
-  v17 = [v15 assets];
-  v18 = [v17 indexOfObject:v16];
+  assets = [v15 assets];
+  v18 = [assets indexOfObject:pl_managedAsset];
 
-  v35 = v10;
+  v35 = burstIdentifier;
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:386 description:@"expect asset"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:386 description:@"expect asset"];
   }
 
   v19 = [MEMORY[0x1E696AC88] indexPathForItem:v18 inSection:0];
-  v20 = [MEMORY[0x1E696AFB0] UUID];
-  v21 = [v20 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v22 = [PUAssetReference alloc];
-  v23 = [v8 asset];
-  v24 = [v8 assetCollection];
-  v25 = [(PUAssetReference *)v22 initWithAsset:v23 assetCollection:v24 indexPath:v19 dataSourceIdentifier:v21];
+  asset2 = [currentAssetReference asset];
+  assetCollection = [currentAssetReference assetCollection];
+  v25 = [(PUAssetReference *)v22 initWithAsset:asset2 assetCollection:assetCollection indexPath:v19 dataSourceIdentifier:uUIDString];
 
   v26 = objc_alloc_init(PUOneUpPhotosSharingTransitionContext);
-  v27 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
-  [(PUPhotosSharingTransitionContext *)v26 setAssetCollectionsDataSource:v27];
+  _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+  [(PUPhotosSharingTransitionContext *)v26 setAssetCollectionsDataSource:_avalancheReviewController];
 
   [(PUOneUpPhotosSharingTransitionContext *)v26 setCurrentAssetReference:v25];
   v28 = [(PUViewControllerTransition *)[PUOneUpPhotosSharingTransition alloc] initWithDuration:0.300000012];
-  v29 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
-  [(PUOneUpPhotosSharingTransition *)v28 setSharingTransitionViewController:v29];
+  _avalancheReviewController2 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+  [(PUOneUpPhotosSharingTransition *)v28 setSharingTransitionViewController:_avalancheReviewController2];
 
-  v30 = [(PUOverOneUpPresentationSession *)self viewController];
-  [(PUOneUpPhotosSharingTransition *)v28 setPresentingViewController:v30];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  [(PUOneUpPhotosSharingTransition *)v28 setPresentingViewController:viewController];
 
   [(PUOneUpPhotosSharingTransition *)v28 setOneUpPhotosSharingTransitionContext:v26];
   [(PUOneUpPhotosSharingTransition *)v28 setDelegate:self];
-  v31 = [(PUOverOneUpPresentationSession *)self viewController];
-  [v31 pu_presentViewController:v37 transition:v28 animated:1 interactive:0 completion:0];
+  viewController2 = [(PUOverOneUpPresentationSession *)self viewController];
+  [viewController2 pu_presentViewController:v37 transition:v28 animated:1 interactive:0 completion:0];
 
   return 1;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v8 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v9 = [v8 enableOneUpAnimation];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  enableOneUpAnimation = [mEMORY[0x1E69C3A18] enableOneUpAnimation];
 
-  if (v9)
+  if (enableOneUpAnimation)
   {
-    v10 = v7 == 1;
+    v10 = userInterfaceIdiom == 1;
   }
 
   else
@@ -1975,14 +1975,14 @@ void __83__PUOverOneUpPresentationSession_dismissViewController_animated_complet
 
   else
   {
-    v11 = [(PUOverOneUpPresentationSession *)self _viewModel];
-    v12 = [v11 currentAssetReference];
+    _viewModel = [(PUOverOneUpPresentationSession *)self _viewModel];
+    currentAssetReference = [_viewModel currentAssetReference];
 
     v13 = objc_alloc_init(PUOneUpPhotosSharingTransitionContext);
-    [(PUOneUpPhotosSharingTransitionContext *)v13 setCurrentAssetReference:v12];
+    [(PUOneUpPhotosSharingTransitionContext *)v13 setCurrentAssetReference:currentAssetReference];
     v14 = [PUOneUpSharingAnimationController alloc];
-    v15 = [(PUOverOneUpPresentationSession *)self viewController];
-    v16 = [(PUOneUpSharingAnimationController *)v14 initWithTransitionContext:v13 presentingViewController:v15];
+    viewController = [(PUOverOneUpPresentationSession *)self viewController];
+    v16 = [(PUOneUpSharingAnimationController *)v14 initWithTransitionContext:v13 presentingViewController:viewController];
 
     [(PUOneUpSharingAnimationController *)v16 setDelegate:self];
   }
@@ -1990,110 +1990,110 @@ void __83__PUOverOneUpPresentationSession_dismissViewController_animated_complet
   return v16;
 }
 
-- (BOOL)_presentActivityViewController:(id)a3
+- (BOOL)_presentActivityViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 activitySharingController];
-  if (!v6)
+  controllerCopy = controller;
+  activitySharingController = [controllerCopy activitySharingController];
+  if (!activitySharingController)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"activitySharingController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOverOneUpPresentationSession.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"activitySharingController"}];
   }
 
-  objc_storeStrong(&self->_activitySharingController, v6);
-  v7 = [v6 delegate];
-  objc_storeWeak(&self->_activitySharingControllerDelegate, v7);
+  objc_storeStrong(&self->_activitySharingController, activitySharingController);
+  delegate = [activitySharingController delegate];
+  objc_storeWeak(&self->_activitySharingControllerDelegate, delegate);
 
-  [v6 setDelegate:self];
+  [activitySharingController setDelegate:self];
   if (pptAfterPresentationCompletion)
   {
     v8 = [pptAfterPresentationCompletion copy];
-    [v5 setPpt_readyToInteractHandler:v8];
+    [controllerCopy setPpt_readyToInteractHandler:v8];
 
     v9 = pptAfterPresentationCompletion;
     pptAfterPresentationCompletion = 0;
   }
 
-  [v5 setTransitioningDelegate:self];
-  v10 = [(PUOverOneUpPresentationSession *)self viewController];
-  [v10 presentViewController:v5 animated:1 completion:0];
+  [controllerCopy setTransitioningDelegate:self];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  [viewController presentViewController:controllerCopy animated:1 completion:0];
 
   return 1;
 }
 
-- (BOOL)_presentPhotoMarkupViewController:(id)a3
+- (BOOL)_presentPhotoMarkupViewController:(id)controller
 {
-  v4 = a3;
-  [(PUOverOneUpPresentationSession *)self _setPhotoMarkupViewController:v4];
-  [v4 registerObserver:self];
-  v5 = [(PUOverOneUpPresentationSession *)self viewController];
-  v6 = [v5 navigationController];
+  controllerCopy = controller;
+  [(PUOverOneUpPresentationSession *)self _setPhotoMarkupViewController:controllerCopy];
+  [controllerCopy registerObserver:self];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController = [viewController navigationController];
 
-  if ([v6 isNavigationBarHidden])
+  if ([navigationController isNavigationBarHidden])
   {
     v7 = objc_alloc_init(PUCrossfadeNavigationTransition);
-    [v6 pu_pushViewController:v4 withTransition:v7 animated:1 isInteractive:0];
+    [navigationController pu_pushViewController:controllerCopy withTransition:v7 animated:1 isInteractive:0];
   }
 
   else
   {
     v7 = objc_alloc_init(PUCrossfadeModalTransition);
-    [v6 pu_presentViewController:v4 transition:v7 animated:1 interactive:0 completion:0];
+    [navigationController pu_presentViewController:controllerCopy transition:v7 animated:1 interactive:0 completion:0];
   }
 
   return 1;
 }
 
-- (BOOL)_presentEditViewController:(id)a3
+- (BOOL)_presentEditViewController:(id)controller
 {
-  v4 = a3;
-  [(PUOverOneUpPresentationSession *)self _setEditViewController:v4];
+  controllerCopy = controller;
+  [(PUOverOneUpPresentationSession *)self _setEditViewController:controllerCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setPresentationDelegate:self];
+    [controllerCopy setPresentationDelegate:self];
   }
 
   v5 = objc_alloc_init(PUOneUpAssetNavigationTransition);
-  v6 = [(PUOverOneUpPresentationSession *)self viewController];
-  v7 = [v6 navigationController];
-  v8 = [v7 presentingViewController];
-  v9 = [v8 parentViewController];
+  viewController = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController = [viewController navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  parentViewController = [presentingViewController parentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 tabBar];
-    [v10 setHidden:1];
+    tabBar = [parentViewController tabBar];
+    [tabBar setHidden:1];
   }
 
-  v11 = [(PUOverOneUpPresentationSession *)self viewController];
-  v12 = [v11 navigationController];
-  [v12 pu_pushViewController:v4 withTransition:v5 animated:1 isInteractive:0];
+  viewController2 = [(PUOverOneUpPresentationSession *)self viewController];
+  navigationController2 = [viewController2 navigationController];
+  [navigationController2 pu_pushViewController:controllerCopy withTransition:v5 animated:1 isInteractive:0];
 
   return 1;
 }
 
-- (BOOL)presentViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)presentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if (!self->_delegateFlags.respondsToIsReady || (-[PUOverOneUpPresentationSession delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 overOneUpPresentationSessionPresentingViewControllerIsReady:self], v7, v8))
   {
-    v9 = [(PUOverOneUpPresentationSession *)self _viewModel];
-    v10 = [v9 currentAssetReference];
+    _viewModel = [(PUOverOneUpPresentationSession *)self _viewModel];
+    currentAssetReference = [_viewModel currentAssetReference];
 
-    v11 = [v10 copy];
+    v11 = [currentAssetReference copy];
     [(PUOverOneUpPresentationSession *)self _setStashedAssetReference:v11];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![(PUOverOneUpPresentationSession *)self _presentPhotoMarkupViewController:v6])
+      if (![(PUOverOneUpPresentationSession *)self _presentPhotoMarkupViewController:controllerCopy])
       {
 LABEL_23:
-        v13 = [(PUOverOneUpPresentationSession *)self viewController];
-        [v13 presentViewController:v6 animated:v4 completion:0];
+        viewController = [(PUOverOneUpPresentationSession *)self viewController];
+        [viewController presentViewController:controllerCopy animated:animatedCopy completion:0];
         v12 = 0;
         goto LABEL_24;
       }
@@ -2104,7 +2104,7 @@ LABEL_23:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (![(PUOverOneUpPresentationSession *)self _presentAvalancheReviewController:v6])
+        if (![(PUOverOneUpPresentationSession *)self _presentAvalancheReviewController:controllerCopy])
         {
           goto LABEL_23;
         }
@@ -2115,7 +2115,7 @@ LABEL_23:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (![(PUOverOneUpPresentationSession *)self _presentSlideshowViewController:v6])
+          if (![(PUOverOneUpPresentationSession *)self _presentSlideshowViewController:controllerCopy])
           {
             goto LABEL_23;
           }
@@ -2126,7 +2126,7 @@ LABEL_23:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if (![(PUOverOneUpPresentationSession *)self _presentScreenRoutePickerViewController:v6])
+            if (![(PUOverOneUpPresentationSession *)self _presentScreenRoutePickerViewController:controllerCopy])
             {
               goto LABEL_23;
             }
@@ -2137,7 +2137,7 @@ LABEL_23:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (![(PUOverOneUpPresentationSession *)self _presentEditViewController:v6])
+              if (![(PUOverOneUpPresentationSession *)self _presentEditViewController:controllerCopy])
               {
                 goto LABEL_23;
               }
@@ -2146,7 +2146,7 @@ LABEL_23:
             else
             {
               objc_opt_class();
-              if ((objc_opt_isKindOfClass() & 1) == 0 || ![(PUOverOneUpPresentationSession *)self _presentActivityViewController:v6])
+              if ((objc_opt_isKindOfClass() & 1) == 0 || ![(PUOverOneUpPresentationSession *)self _presentActivityViewController:controllerCopy])
               {
                 goto LABEL_23;
               }
@@ -2162,8 +2162,8 @@ LABEL_23:
       goto LABEL_26;
     }
 
-    v13 = [(PUOverOneUpPresentationSession *)self delegate];
-    [v13 overOneUpPresentationSession:self didPresent:v6];
+    viewController = [(PUOverOneUpPresentationSession *)self delegate];
+    [viewController overOneUpPresentationSession:self didPresent:controllerCopy];
     v12 = 1;
 LABEL_24:
 
@@ -2179,16 +2179,16 @@ LABEL_27:
 
 - (id)_currentTileController
 {
-  v3 = [(PUOverOneUpPresentationSession *)self _viewModel];
-  v4 = [(PUOverOneUpPresentationSession *)self _tilingView];
-  v5 = v4;
+  _viewModel = [(PUOverOneUpPresentationSession *)self _viewModel];
+  _tilingView = [(PUOverOneUpPresentationSession *)self _tilingView];
+  v5 = _tilingView;
   v6 = 0;
-  if (v3 && v4)
+  if (_viewModel && _tilingView)
   {
-    v7 = [v3 currentAssetReference];
-    v8 = [v7 indexPath];
-    v9 = [v7 dataSourceIdentifier];
-    v10 = [v5 presentedTileControllerWithIndexPath:v8 kind:@"PUTileKindItemContent" dataSourceIdentifier:v9];
+    currentAssetReference = [_viewModel currentAssetReference];
+    indexPath = [currentAssetReference indexPath];
+    dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+    v10 = [v5 presentedTileControllerWithIndexPath:indexPath kind:@"PUTileKindItemContent" dataSourceIdentifier:dataSourceIdentifier];
 
     v6 = v10;
   }
@@ -2198,18 +2198,18 @@ LABEL_27:
 
 - (id)_assetsDataSource
 {
-  v2 = [(PUOverOneUpPresentationSession *)self _viewModel];
-  v3 = [v2 assetsDataSource];
+  _viewModel = [(PUOverOneUpPresentationSession *)self _viewModel];
+  assetsDataSource = [_viewModel assetsDataSource];
 
-  return v3;
+  return assetsDataSource;
 }
 
 - (id)_viewModel
 {
   if (self->_delegateFlags.respondsToBrowsingViewModel)
   {
-    v3 = [(PUOverOneUpPresentationSession *)self delegate];
-    v4 = [v3 overOneUpPresentationSessionBrowserViewModel:self];
+    delegate = [(PUOverOneUpPresentationSession *)self delegate];
+    v4 = [delegate overOneUpPresentationSessionBrowserViewModel:self];
   }
 
   else
@@ -2224,8 +2224,8 @@ LABEL_27:
 {
   if (self->_delegateFlags.respondsToTilingView)
   {
-    v3 = [(PUOverOneUpPresentationSession *)self delegate];
-    v4 = [v3 overOneUpPresentationSessionTilingView:self];
+    delegate = [(PUOverOneUpPresentationSession *)self delegate];
+    v4 = [delegate overOneUpPresentationSessionTilingView:self];
   }
 
   else
@@ -2240,8 +2240,8 @@ LABEL_27:
 {
   if (self->_delegateFlags.respondsToViewController)
   {
-    v3 = [(PUOverOneUpPresentationSession *)self delegate];
-    v4 = [v3 overOneUpPresentationSessionViewController:self];
+    delegate = [(PUOverOneUpPresentationSession *)self delegate];
+    v4 = [delegate overOneUpPresentationSessionViewController:self];
   }
 
   else
@@ -2252,23 +2252,23 @@ LABEL_27:
   return v4;
 }
 
-- (void)_finishOverOneUpPresentationSessionDismissForced:(BOOL)a3 animated:(BOOL)a4
+- (void)_finishOverOneUpPresentationSessionDismissForced:(BOOL)forced animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  forcedCopy = forced;
   v19 = *MEMORY[0x1E69E9840];
   [(PUOverOneUpPresentationSession *)self _invalidatePresentedViewControllers];
   [(PUOverOneUpPresentationSession *)self _updatePresentedViewControllersIfNeeded];
-  if (![(PUOverOneUpPresentationSession *)self isPresentingAnOverOneUpViewController]|| v5)
+  if (![(PUOverOneUpPresentationSession *)self isPresentingAnOverOneUpViewController]|| forcedCopy)
   {
-    v7 = [(PUOverOneUpPresentationSession *)self _presentedViewControllers];
-    if ([v7 count])
+    _presentedViewControllers = [(PUOverOneUpPresentationSession *)self _presentedViewControllers];
+    if ([_presentedViewControllers count])
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v8 = v7;
+      v8 = _presentedViewControllers;
       v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
@@ -2284,7 +2284,7 @@ LABEL_27:
               objc_enumerationMutation(v8);
             }
 
-            [(PUOverOneUpPresentationSession *)self dismissViewController:*(*(&v14 + 1) + 8 * v12++) animated:v4 completionHandler:0, v14];
+            [(PUOverOneUpPresentationSession *)self dismissViewController:*(*(&v14 + 1) + 8 * v12++) animated:animatedCopy completionHandler:0, v14];
           }
 
           while (v10 != v12);
@@ -2297,18 +2297,18 @@ LABEL_27:
 
     if (self->_delegateFlags.respondsToDidFinish)
     {
-      v13 = [(PUOverOneUpPresentationSession *)self delegate];
-      [v13 overOneUpPresentationSessionDidFinish:self];
+      delegate = [(PUOverOneUpPresentationSession *)self delegate];
+      [delegate overOneUpPresentationSessionDidFinish:self];
     }
   }
 }
 
 - (BOOL)isPresentingAnOverOneUpViewController
 {
-  v2 = [(PUOverOneUpPresentationSession *)self _presentedViewControllers];
-  v3 = [v2 anyObject];
+  _presentedViewControllers = [(PUOverOneUpPresentationSession *)self _presentedViewControllers];
+  anyObject = [_presentedViewControllers anyObject];
 
-  return v3 != 0;
+  return anyObject != 0;
 }
 
 - (void)_updatePresentedViewControllersIfNeeded
@@ -2316,40 +2316,40 @@ LABEL_27:
   if ([(PUOverOneUpPresentationSession *)self _needsUpdatePresentedViewControllers])
   {
     [(PUOverOneUpPresentationSession *)self _setNeedsUpdatePresentedViewControllers:0];
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v3 = [(PUOverOneUpPresentationSession *)self _slideshowViewController];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    _slideshowViewController = [(PUOverOneUpPresentationSession *)self _slideshowViewController];
 
-    if (v3)
+    if (_slideshowViewController)
     {
-      v4 = [(PUOverOneUpPresentationSession *)self _slideshowViewController];
-      [v11 addObject:v4];
+      _slideshowViewController2 = [(PUOverOneUpPresentationSession *)self _slideshowViewController];
+      [weakObjectsHashTable addObject:_slideshowViewController2];
     }
 
-    v5 = [(PUOverOneUpPresentationSession *)self _editViewController];
+    _editViewController = [(PUOverOneUpPresentationSession *)self _editViewController];
 
-    if (v5)
+    if (_editViewController)
     {
-      v6 = [(PUOverOneUpPresentationSession *)self _editViewController];
-      [v11 addObject:v6];
+      _editViewController2 = [(PUOverOneUpPresentationSession *)self _editViewController];
+      [weakObjectsHashTable addObject:_editViewController2];
     }
 
-    v7 = [(PUOverOneUpPresentationSession *)self _photoMarkupViewController];
+    _photoMarkupViewController = [(PUOverOneUpPresentationSession *)self _photoMarkupViewController];
 
-    if (v7)
+    if (_photoMarkupViewController)
     {
-      v8 = [(PUOverOneUpPresentationSession *)self _photoMarkupViewController];
-      [v11 addObject:v8];
+      _photoMarkupViewController2 = [(PUOverOneUpPresentationSession *)self _photoMarkupViewController];
+      [weakObjectsHashTable addObject:_photoMarkupViewController2];
     }
 
-    v9 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+    _avalancheReviewController = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
 
-    if (v9)
+    if (_avalancheReviewController)
     {
-      v10 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
-      [v11 addObject:v10];
+      _avalancheReviewController2 = [(PUOverOneUpPresentationSession *)self _avalancheReviewController];
+      [weakObjectsHashTable addObject:_avalancheReviewController2];
     }
 
-    [(PUOverOneUpPresentationSession *)self _setPresentedViewControllers:v11];
+    [(PUOverOneUpPresentationSession *)self _setPresentedViewControllers:weakObjectsHashTable];
   }
 }
 
@@ -2363,9 +2363,9 @@ LABEL_27:
   }
 }
 
-- (void)setBarsDelegate:(id)a3
+- (void)setBarsDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_barsDelegate);
 
   if (WeakRetained != obj)
@@ -2376,24 +2376,24 @@ LABEL_27:
   }
 }
 
-- (PUOverOneUpPresentationSession)initWithActivitySharingActionPerformer:(id)a3
+- (PUOverOneUpPresentationSession)initWithActivitySharingActionPerformer:(id)performer
 {
-  v4 = a3;
+  performerCopy = performer;
   v8.receiver = self;
   v8.super_class = PUOverOneUpPresentationSession;
   v5 = [(PUOverOneUpPresentationSession *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PUOverOneUpPresentationSession *)v5 setSharingActionPerformer:v4];
+    [(PUOverOneUpPresentationSession *)v5 setSharingActionPerformer:performerCopy];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

@@ -11,9 +11,9 @@
   v4[1] = 3221225472;
   v4[2] = __44__NSArray_MSVJSONConvertible__msv_jsonValue__block_invoke;
   v4[3] = &unk_1E7981E70;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
-  v2 = [a1 msv_map:v4];
+  v2 = [self msv_map:v4];
 
   return v2;
 }
@@ -30,7 +30,7 @@
       v9[1] = 3221225472;
       v9[2] = __53__NSArray_MSVJSONConvertible__msv_initWithJSONValue___block_invoke;
       v9[3] = &unk_1E7981E48;
-      v9[4] = a1;
+      v9[4] = self;
       v9[5] = a2;
       v7 = [v6 msv_map:v9];
     }

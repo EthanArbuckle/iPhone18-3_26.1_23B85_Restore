@@ -1,27 +1,27 @@
 @interface NicknameFieldCollectionViewCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_TtC12GameCenterUI20DynamicTypeTextField)accessibilityTextLabel;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChangeSelection:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChangeSelection:(id)selection;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
 @end
 
 @implementation NicknameFieldCollectionViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2D6454();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_24E2D673C(width);
   v7 = v6;
 
@@ -34,7 +34,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2D6BAC();
 }
 
@@ -45,46 +45,46 @@
   return v2;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E2D7FB8(v4);
+  returnCopy = return;
+  selfCopy = self;
+  sub_24E2D7FB8(returnCopy);
 
   return 1;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_24E2D806C();
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = sub_24E347CF8();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = sub_24E2D821C(v12, location, length, v9, v11);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_24E2D821C(fieldCopy, location, length, v9, v11);
 
   return length & 1;
 }
 
-- (void)textFieldDidChangeSelection:(id)a3
+- (void)textFieldDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   sub_24E2D865C();
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_24E2D8754();
 }
 

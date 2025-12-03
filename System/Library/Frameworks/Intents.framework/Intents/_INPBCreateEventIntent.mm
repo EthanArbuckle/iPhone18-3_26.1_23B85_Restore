@@ -1,14 +1,14 @@
 @interface _INPBCreateEventIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateEventIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateEventIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParticipants:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParticipants:(id)participants;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateEventIntent
@@ -16,22 +16,22 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCreateEventIntent *)self dateTimeRange];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dateTimeRange"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dateTimeRange = [(_INPBCreateEventIntent *)self dateTimeRange];
+  dictionaryRepresentation = [dateTimeRange dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dateTimeRange"];
 
-  v6 = [(_INPBCreateEventIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBCreateEventIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBCreateEventIntent *)self location];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"location"];
+  location = [(_INPBCreateEventIntent *)self location];
+  dictionaryRepresentation3 = [location dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"location"];
 
   if ([(NSArray *)self->_participants count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -51,8 +51,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -61,19 +61,19 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   if (self->_title)
   {
-    v17 = [(_INPBCreateEventIntent *)self title];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"title"];
+    title = [(_INPBCreateEventIntent *)self title];
+    v18 = [title copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"title"];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -85,28 +85,28 @@
   return v6 ^ [(NSString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBCreateEventIntent *)self dateTimeRange];
-  v6 = [v4 dateTimeRange];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBCreateEventIntent *)self dateTimeRange];
+  dateTimeRange2 = [equalCopy dateTimeRange];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBCreateEventIntent *)self dateTimeRange];
-  if (v7)
+  dateTimeRange3 = [(_INPBCreateEventIntent *)self dateTimeRange];
+  if (dateTimeRange3)
   {
-    v8 = v7;
-    v9 = [(_INPBCreateEventIntent *)self dateTimeRange];
-    v10 = [v4 dateTimeRange];
-    v11 = [v9 isEqual:v10];
+    v8 = dateTimeRange3;
+    dateTimeRange4 = [(_INPBCreateEventIntent *)self dateTimeRange];
+    dateTimeRange5 = [equalCopy dateTimeRange];
+    v11 = [dateTimeRange4 isEqual:dateTimeRange5];
 
     if (!v11)
     {
@@ -118,20 +118,20 @@
   {
   }
 
-  v5 = [(_INPBCreateEventIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBCreateEventIntent *)self intentMetadata];
+  dateTimeRange2 = [equalCopy intentMetadata];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBCreateEventIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBCreateEventIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBCreateEventIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBCreateEventIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -143,20 +143,20 @@
   {
   }
 
-  v5 = [(_INPBCreateEventIntent *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBCreateEventIntent *)self location];
+  dateTimeRange2 = [equalCopy location];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBCreateEventIntent *)self location];
-  if (v17)
+  location = [(_INPBCreateEventIntent *)self location];
+  if (location)
   {
-    v18 = v17;
-    v19 = [(_INPBCreateEventIntent *)self location];
-    v20 = [v4 location];
-    v21 = [v19 isEqual:v20];
+    v18 = location;
+    location2 = [(_INPBCreateEventIntent *)self location];
+    location3 = [equalCopy location];
+    v21 = [location2 isEqual:location3];
 
     if (!v21)
     {
@@ -168,20 +168,20 @@
   {
   }
 
-  v5 = [(_INPBCreateEventIntent *)self participants];
-  v6 = [v4 participants];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBCreateEventIntent *)self participants];
+  dateTimeRange2 = [equalCopy participants];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBCreateEventIntent *)self participants];
-  if (v22)
+  participants = [(_INPBCreateEventIntent *)self participants];
+  if (participants)
   {
-    v23 = v22;
-    v24 = [(_INPBCreateEventIntent *)self participants];
-    v25 = [v4 participants];
-    v26 = [v24 isEqual:v25];
+    v23 = participants;
+    participants2 = [(_INPBCreateEventIntent *)self participants];
+    participants3 = [equalCopy participants];
+    v26 = [participants2 isEqual:participants3];
 
     if (!v26)
     {
@@ -193,12 +193,12 @@
   {
   }
 
-  v5 = [(_INPBCreateEventIntent *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  dateTimeRange = [(_INPBCreateEventIntent *)self title];
+  dateTimeRange2 = [equalCopy title];
+  if ((dateTimeRange != 0) != (dateTimeRange2 == 0))
   {
-    v27 = [(_INPBCreateEventIntent *)self title];
-    if (!v27)
+    title = [(_INPBCreateEventIntent *)self title];
+    if (!title)
     {
 
 LABEL_30:
@@ -206,10 +206,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBCreateEventIntent *)self title];
-    v30 = [v4 title];
-    v31 = [v29 isEqual:v30];
+    v28 = title;
+    title2 = [(_INPBCreateEventIntent *)self title];
+    title3 = [equalCopy title];
+    v31 = [title2 isEqual:title3];
 
     if (v31)
     {
@@ -229,76 +229,76 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateEventIntent allocWithZone:](_INPBCreateEventIntent init];
-  v6 = [(_INPBDateTimeRangeValue *)self->_dateTimeRange copyWithZone:a3];
+  v6 = [(_INPBDateTimeRangeValue *)self->_dateTimeRange copyWithZone:zone];
   [(_INPBCreateEventIntent *)v5 setDateTimeRange:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBCreateEventIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBLocation *)self->_location copyWithZone:a3];
+  v8 = [(_INPBLocation *)self->_location copyWithZone:zone];
   [(_INPBCreateEventIntent *)v5 setLocation:v8];
 
-  v9 = [(NSArray *)self->_participants copyWithZone:a3];
+  v9 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBCreateEventIntent *)v5 setParticipants:v9];
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   [(_INPBCreateEventIntent *)v5 setTitle:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateEventIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateEventIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateEventIntent)initWithCoder:(id)a3
+- (_INPBCreateEventIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateEventIntent *)self initWithData:v6];
+    self = [(_INPBCreateEventIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBCreateEventIntent *)self dateTimeRange];
+  toCopy = to;
+  dateTimeRange = [(_INPBCreateEventIntent *)self dateTimeRange];
 
-  if (v5)
+  if (dateTimeRange)
   {
-    v6 = [(_INPBCreateEventIntent *)self dateTimeRange];
+    dateTimeRange2 = [(_INPBCreateEventIntent *)self dateTimeRange];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBCreateEventIntent *)self intentMetadata];
+  intentMetadata = [(_INPBCreateEventIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBCreateEventIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBCreateEventIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBCreateEventIntent *)self location];
+  location = [(_INPBCreateEventIntent *)self location];
 
-  if (v9)
+  if (location)
   {
-    v10 = [(_INPBCreateEventIntent *)self location];
+    location2 = [(_INPBCreateEventIntent *)self location];
     PBDataWriterWriteSubmessage();
   }
 
@@ -334,9 +334,9 @@ LABEL_28:
     while (v13);
   }
 
-  v17 = [(_INPBCreateEventIntent *)self title];
+  title = [(_INPBCreateEventIntent *)self title];
 
-  if (v17)
+  if (title)
   {
     title = self->_title;
     PBDataWriterWriteStringField();
@@ -345,36 +345,36 @@ LABEL_28:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
   MEMORY[0x1EEE66BB8](v4, title);
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 

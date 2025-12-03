@@ -1,7 +1,7 @@
 @interface WiFiRemoteClientCountryCodeMonitor
 - (WiFiRemoteClientCountryCodeMonitor)init;
 - (id)exportedInterface;
-- (void)setCountryCode:(id)a3;
+- (void)setCountryCode:(id)code;
 @end
 
 @implementation WiFiRemoteClientCountryCodeMonitor
@@ -35,15 +35,15 @@
   return v2;
 }
 
-- (void)setCountryCode:(id)a3
+- (void)setCountryCode:(id)code
 {
-  v6 = a3;
-  v4 = [(WiFiRemoteClientCountryCodeMonitor *)self setCountryCodeHandler];
+  codeCopy = code;
+  setCountryCodeHandler = [(WiFiRemoteClientCountryCodeMonitor *)self setCountryCodeHandler];
 
-  if (v4)
+  if (setCountryCodeHandler)
   {
-    v5 = [(WiFiRemoteClientCountryCodeMonitor *)self setCountryCodeHandler];
-    (v5)[2](v5, v6);
+    setCountryCodeHandler2 = [(WiFiRemoteClientCountryCodeMonitor *)self setCountryCodeHandler];
+    (setCountryCodeHandler2)[2](setCountryCodeHandler2, codeCopy);
   }
 }
 

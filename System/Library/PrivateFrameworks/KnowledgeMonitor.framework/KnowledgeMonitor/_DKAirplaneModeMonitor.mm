@@ -1,5 +1,5 @@
 @interface _DKAirplaneModeMonitor
-+ (id)_eventWithState:(BOOL)a3;
++ (id)_eventWithState:(BOOL)state;
 - (void)deactivate;
 - (void)dealloc;
 - (void)start;
@@ -9,9 +9,9 @@
 
 @implementation _DKAirplaneModeMonitor
 
-+ (id)_eventWithState:(BOOL)a3
++ (id)_eventWithState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [MEMORY[0x277CFE1A0] yes];
   }
@@ -22,10 +22,10 @@
   }
   v3 = ;
   v4 = MEMORY[0x277CFE1D8];
-  v5 = [MEMORY[0x277CFE298] airplaneModeStream];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  v8 = [v4 eventWithStream:v5 startDate:v6 endDate:v7 value:v3];
+  airplaneModeStream = [MEMORY[0x277CFE298] airplaneModeStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v8 = [v4 eventWithStream:airplaneModeStream startDate:date endDate:distantFuture value:v3];
 
   return v8;
 }
@@ -60,7 +60,7 @@
 - (void)deactivate
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_1_0(&dword_22595A000, a1, a3, "%s: Deactivated _DKAirplaneModeMonitor", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_1_0(&dword_22595A000, self, a3, "%s: Deactivated _DKAirplaneModeMonitor", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

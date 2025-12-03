@@ -1,25 +1,25 @@
 @interface DNDSContactMonitor
-- (BOOL)_fetchContactHistoryWithToken:(id)a3 monitoredContacts:(id)a4 handler:(id)a5;
-- (DNDSContactMonitor)initWithContactStore:(id)a3 contactProvider:(id)a4;
-- (id)_contactsWithCNContacts:(id)a3;
+- (BOOL)_fetchContactHistoryWithToken:(id)token monitoredContacts:(id)contacts handler:(id)handler;
+- (DNDSContactMonitor)initWithContactStore:(id)store contactProvider:(id)provider;
+- (id)_contactsWithCNContacts:(id)contacts;
 - (id)_lock_listenersByContactHistoryToken;
 - (id)_lock_monitoredContactsByContactHistoryToken;
-- (void)_contactStoreChanged:(id)a3;
-- (void)_fetchContactsForMonitoredContacts:(id)a3 handler:(id)a4;
-- (void)_fetchUpdatesWithContactHistoryToken:(id)a3 monitoredContacts:(id)a4 handler:(id)a5;
-- (void)_queue_fetchUpdatesWithContactHistoryToken:(id)a3 monitoredContacts:(id)a4 handler:(id)a5;
+- (void)_contactStoreChanged:(id)changed;
+- (void)_fetchContactsForMonitoredContacts:(id)contacts handler:(id)handler;
+- (void)_fetchUpdatesWithContactHistoryToken:(id)token monitoredContacts:(id)contacts handler:(id)handler;
+- (void)_queue_fetchUpdatesWithContactHistoryToken:(id)token monitoredContacts:(id)contacts handler:(id)handler;
 - (void)_updateContactsWithIdentifiers;
 - (void)_updateContactsWithoutIdentifiers;
-- (void)addListener:(id)a3;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation DNDSContactMonitor
 
-- (DNDSContactMonitor)initWithContactStore:(id)a3 contactProvider:(id)a4
+- (DNDSContactMonitor)initWithContactStore:(id)store contactProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = DNDSContactMonitor;
   v9 = [(DNDSContactMonitor *)&v17 init];
@@ -31,35 +31,35 @@
     v9->_fetchQueue = v11;
 
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v9->_contactProvider, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v9->_contactProvider, provider);
     v13 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     listeners = v9->_listeners;
     v9->_listeners = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v9 selector:sel__contactStoreChanged_ name:*MEMORY[0x277CBD140] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__contactStoreChanged_ name:*MEMORY[0x277CBD140] object:0];
   }
 
   return v9;
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_listeners addObject:v4];
-  v5 = [v4 monitoredContacts];
+  [(NSHashTable *)self->_listeners addObject:listenerCopy];
+  monitoredContacts = [listenerCopy monitoredContacts];
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [v4 contactHistoryToken];
+  contactHistoryToken = [listenerCopy contactHistoryToken];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__DNDSContactMonitor_addListener___block_invoke;
   v8[3] = &unk_278F8A370;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [(DNDSContactMonitor *)self _fetchUpdatesWithContactHistoryToken:v6 monitoredContacts:v5 handler:v8];
+  v9 = listenerCopy;
+  v7 = listenerCopy;
+  [(DNDSContactMonitor *)self _fetchUpdatesWithContactHistoryToken:contactHistoryToken monitoredContacts:monitoredContacts handler:v8];
 }
 
 void __34__DNDSContactMonitor_addListener___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -71,25 +71,25 @@ void __34__DNDSContactMonitor_addListener___block_invoke(uint64_t a1, uint64_t a
   [*(a1 + 40) contactMonitor:*(a1 + 32) didReceiveUpdatedContacts:v10 deletedContactIdentifiers:v9 withContactHistoryToken:v8];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_listeners removeObject:v4];
+  [(NSHashTable *)self->_listeners removeObject:listenerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_contactsWithCNContacts:(id)a3
+- (id)_contactsWithCNContacts:(id)contacts
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  contactsCopy = contacts;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = contactsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -105,7 +105,7 @@ void __34__DNDSContactMonitor_addListener___block_invoke(uint64_t a1, uint64_t a
         }
 
         v10 = [MEMORY[0x277D058F0] contactWithCNContact:{*(*(&v13 + 1) + 8 * i), v13}];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -116,10 +116,10 @@ void __34__DNDSContactMonitor_addListener___block_invoke(uint64_t a1, uint64_t a
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (void)_contactStoreChanged:(id)a3
+- (void)_contactStoreChanged:(id)changed
 {
   fetchQueue = self->_fetchQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -148,14 +148,14 @@ uint64_t __43__DNDSContactMonitor__contactStoreChanged___block_invoke(uint64_t a
   v36 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_fetchQueue);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(DNDSContactMonitor *)self _lock_listenersByContactHistoryToken];
-  v19 = [(DNDSContactMonitor *)self _lock_monitoredContactsByContactHistoryToken];
+  _lock_listenersByContactHistoryToken = [(DNDSContactMonitor *)self _lock_listenersByContactHistoryToken];
+  _lock_monitoredContactsByContactHistoryToken = [(DNDSContactMonitor *)self _lock_monitoredContactsByContactHistoryToken];
   os_unfair_lock_unlock(&self->_lock);
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = _lock_listenersByContactHistoryToken;
   v20 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v20)
   {
@@ -171,7 +171,7 @@ uint64_t __43__DNDSContactMonitor__contactStoreChanged___block_invoke(uint64_t a
         }
 
         v5 = *(*(&v30 + 1) + 8 * i);
-        v6 = [v19 objectForKeyedSubscript:{v5, v17}];
+        v6 = [_lock_monitoredContactsByContactHistoryToken objectForKeyedSubscript:{v5, v17}];
         v7 = [MEMORY[0x277CBEB58] set];
         v26 = 0u;
         v27 = 0u;
@@ -193,9 +193,9 @@ uint64_t __43__DNDSContactMonitor__contactStoreChanged___block_invoke(uint64_t a
               }
 
               v13 = *(*(&v26 + 1) + 8 * j);
-              v14 = [v13 contactIdentifier];
+              contactIdentifier = [v13 contactIdentifier];
 
-              if (v14)
+              if (contactIdentifier)
               {
                 [v7 addObject:v13];
               }
@@ -271,13 +271,13 @@ void __52__DNDSContactMonitor__updateContactsWithIdentifiers__block_invoke(uint6
   v29 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_fetchQueue);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_listeners allObjects];
+  allObjects = [(NSHashTable *)self->_listeners allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = allObjects;
   v18 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v18)
   {
@@ -292,13 +292,13 @@ void __52__DNDSContactMonitor__updateContactsWithIdentifiers__block_invoke(uint6
         }
 
         v5 = *(*(&v23 + 1) + 8 * i);
-        v6 = [MEMORY[0x277CBEB38] dictionary];
-        v7 = [v5 monitoredContacts];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        monitoredContacts = [v5 monitoredContacts];
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v8 = [monitoredContacts countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v8)
         {
           v9 = v8;
@@ -309,31 +309,31 @@ void __52__DNDSContactMonitor__updateContactsWithIdentifiers__block_invoke(uint6
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(monitoredContacts);
               }
 
               v12 = *(*(&v19 + 1) + 8 * j);
-              v13 = [v12 contactIdentifier];
+              contactIdentifier = [v12 contactIdentifier];
 
-              if (!v13)
+              if (!contactIdentifier)
               {
                 v14 = [(DNDSContactProviding *)self->_contactProvider contactForContact:v12];
                 if (v14)
                 {
-                  [v6 setObject:v14 forKeyedSubscript:v12];
+                  [dictionary setObject:v14 forKeyedSubscript:v12];
                 }
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v9 = [monitoredContacts countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v9);
         }
 
-        if ([v7 count])
+        if ([monitoredContacts count])
         {
-          [v5 contactMonitor:self didReceiveUpdatedContactsForContactsWithoutIdentifiers:v6];
+          [v5 contactMonitor:self didReceiveUpdatedContactsForContactsWithoutIdentifiers:dictionary];
         }
       }
 
@@ -346,17 +346,17 @@ void __52__DNDSContactMonitor__updateContactsWithIdentifiers__block_invoke(uint6
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchContactsForMonitoredContacts:(id)a3 handler:(id)a4
+- (void)_fetchContactsForMonitoredContacts:(id)contacts handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CBEB58] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = contactsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -372,10 +372,10 @@ void __52__DNDSContactMonitor__updateContactsWithIdentifiers__block_invoke(uint6
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * v13) contactIdentifier];
-        if (v14)
+        contactIdentifier = [*(*(&v20 + 1) + 8 * v13) contactIdentifier];
+        if (contactIdentifier)
         {
-          [v8 addObject:v14];
+          [v8 addObject:contactIdentifier];
         }
 
         ++v13;
@@ -388,15 +388,15 @@ void __52__DNDSContactMonitor__updateContactsWithIdentifiers__block_invoke(uint6
     while (v11);
   }
 
-  v15 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block_invoke;
   v18[3] = &unk_278F8A3E8;
   v18[4] = self;
-  v19 = v7;
-  v16 = v7;
-  [v15 enumerateBatchesOfSize:10 handler:v18];
+  v19 = handlerCopy;
+  v16 = handlerCopy;
+  [allObjects enumerateBatchesOfSize:10 handler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -474,16 +474,16 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
   [v5 addObject:v6];
 }
 
-- (BOOL)_fetchContactHistoryWithToken:(id)a3 monitoredContacts:(id)a4 handler:(id)a5
+- (BOOL)_fetchContactHistoryWithToken:(id)token monitoredContacts:(id)contacts handler:(id)handler
 {
   v67 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MEMORY[0x277CBDA50]);
-  [v11 setStartingToken:v8];
-  v12 = [MEMORY[0x277D058F0] keysToFetch];
-  [v11 setAdditionalContactKeyDescriptors:v12];
+  [v11 setStartingToken:tokenCopy];
+  keysToFetch = [MEMORY[0x277D058F0] keysToFetch];
+  [v11 setAdditionalContactKeyDescriptors:keysToFetch];
 
   contactStore = self->_contactStore;
   v60 = 0;
@@ -500,15 +500,15 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
 
   else
   {
-    v49 = v10;
-    v51 = v8;
+    v49 = handlerCopy;
+    v51 = tokenCopy;
     v23 = [MEMORY[0x277CBEB58] set];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v50 = v9;
-    v24 = v9;
+    v50 = contactsCopy;
+    v24 = contactsCopy;
     v25 = [v24 countByEnumeratingWithState:&v56 objects:v66 count:16];
     if (v25)
     {
@@ -524,12 +524,12 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
           }
 
           v29 = *(*(&v56 + 1) + 8 * i);
-          v30 = [v29 contactIdentifier];
+          contactIdentifier = [v29 contactIdentifier];
 
-          if (v30)
+          if (contactIdentifier)
           {
-            v31 = [v29 contactIdentifier];
-            [v23 addObject:v31];
+            contactIdentifier2 = [v29 contactIdentifier];
+            [v23 addObject:contactIdentifier2];
           }
         }
 
@@ -544,8 +544,8 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v33 = [v14 value];
-    v34 = [v33 countByEnumeratingWithState:&v52 objects:v65 count:16];
+    value = [v14 value];
+    v34 = [value countByEnumeratingWithState:&v52 objects:v65 count:16];
     if (v34)
     {
       v35 = v34;
@@ -556,13 +556,13 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
         {
           if (*v53 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(value);
           }
 
           [*(*(&v52 + 1) + 8 * j) acceptEventVisitor:v32];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v52 objects:v65 count:16];
+        v35 = [value countByEnumeratingWithState:&v52 objects:v65 count:16];
       }
 
       while (v35);
@@ -572,10 +572,10 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
     if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
     {
       v39 = v38;
-      v40 = [(DNDSContactMonitorChangeCollector *)v32 updatedContacts];
-      v41 = [v40 count];
-      v42 = [(DNDSContactMonitorChangeCollector *)v32 deletedContactIdentifiers];
-      v43 = [v42 count];
+      updatedContacts = [(DNDSContactMonitorChangeCollector *)v32 updatedContacts];
+      v41 = [updatedContacts count];
+      deletedContactIdentifiers = [(DNDSContactMonitorChangeCollector *)v32 deletedContactIdentifiers];
+      v43 = [deletedContactIdentifiers count];
       *buf = 134349312;
       v62 = v41;
       v63 = 2050;
@@ -583,62 +583,62 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
       _os_log_impl(&dword_24912E000, v39, OS_LOG_TYPE_DEFAULT, "Collected %{public}lld changed contacts and %{public}lld", buf, 0x16u);
     }
 
-    v44 = [(DNDSContactMonitorChangeCollector *)v32 updatedContacts];
-    v45 = [(DNDSContactMonitorChangeCollector *)v32 deletedContactIdentifiers];
-    v46 = [v14 currentHistoryToken];
-    v10 = v49;
-    v49[2](v49, v44, v45, v46);
+    updatedContacts2 = [(DNDSContactMonitorChangeCollector *)v32 updatedContacts];
+    deletedContactIdentifiers2 = [(DNDSContactMonitorChangeCollector *)v32 deletedContactIdentifiers];
+    currentHistoryToken = [v14 currentHistoryToken];
+    handlerCopy = v49;
+    v49[2](v49, updatedContacts2, deletedContactIdentifiers2, currentHistoryToken);
 
-    v9 = v50;
-    v8 = v51;
+    contactsCopy = v50;
+    tokenCopy = v51;
   }
 
   v47 = *MEMORY[0x277D85DE8];
   return v15 == 0;
 }
 
-- (void)_fetchUpdatesWithContactHistoryToken:(id)a3 monitoredContacts:(id)a4 handler:(id)a5
+- (void)_fetchUpdatesWithContactHistoryToken:(id)token monitoredContacts:(id)contacts handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   fetchQueue = self->_fetchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__DNDSContactMonitor__fetchUpdatesWithContactHistoryToken_monitoredContacts_handler___block_invoke;
   v15[3] = &unk_278F8A410;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = tokenCopy;
+  v17 = contactsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contactsCopy;
+  v14 = tokenCopy;
   dispatch_async(fetchQueue, v15);
 }
 
-- (void)_queue_fetchUpdatesWithContactHistoryToken:(id)a3 monitoredContacts:(id)a4 handler:(id)a5
+- (void)_queue_fetchUpdatesWithContactHistoryToken:(id)token monitoredContacts:(id)contacts handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_fetchQueue);
-  if ([v9 count])
+  if ([contactsCopy count])
   {
-    v11 = [MEMORY[0x277CBEA90] data];
-    v12 = [v8 isEqualToData:v11];
+    data = [MEMORY[0x277CBEA90] data];
+    v12 = [tokenCopy isEqualToData:data];
 
     if (v12)
     {
 
-      v8 = 0;
+      tokenCopy = 0;
     }
 
     v13 = objc_alloc_init(MEMORY[0x277CBDA50]);
-    [v13 setStartingToken:v8];
-    v14 = [MEMORY[0x277D058F0] keysToFetch];
-    [v13 setAdditionalContactKeyDescriptors:v14];
+    [v13 setStartingToken:tokenCopy];
+    keysToFetch = [MEMORY[0x277D058F0] keysToFetch];
+    [v13 setAdditionalContactKeyDescriptors:keysToFetch];
 
     contactStore = self->_contactStore;
     v29 = 0;
@@ -655,24 +655,24 @@ void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block
 
     else
     {
-      v26 = [v16 value];
-      v27 = [v26 integerValue];
+      value = [v16 value];
+      integerValue = [value integerValue];
 
       v28 = DNDSLogSettings;
       if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349056;
-        v31 = v27;
+        v31 = integerValue;
         _os_log_impl(&dword_24912E000, v28, OS_LOG_TYPE_DEFAULT, "History contains %{public}lld events", buf, 0xCu);
       }
 
-      if (v27 < 1 || v27 <= 9 && [(DNDSContactMonitor *)self _fetchContactHistoryWithToken:v8 monitoredContacts:v9 handler:v10])
+      if (integerValue < 1 || integerValue <= 9 && [(DNDSContactMonitor *)self _fetchContactHistoryWithToken:tokenCopy monitoredContacts:contactsCopy handler:handlerCopy])
       {
         goto LABEL_8;
       }
     }
 
-    [(DNDSContactMonitor *)self _fetchContactsForMonitoredContacts:v9 handler:v10];
+    [(DNDSContactMonitor *)self _fetchContactsForMonitoredContacts:contactsCopy handler:handlerCopy];
 LABEL_8:
   }
 
@@ -683,7 +683,7 @@ LABEL_8:
 {
   v22 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -704,28 +704,28 @@ LABEL_8:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 contactHistoryToken];
-        v11 = v10;
-        if (v10)
+        contactHistoryToken = [v9 contactHistoryToken];
+        v11 = contactHistoryToken;
+        if (contactHistoryToken)
         {
-          v12 = v10;
+          data = contactHistoryToken;
         }
 
         else
         {
-          v12 = [MEMORY[0x277CBEA90] data];
+          data = [MEMORY[0x277CBEA90] data];
         }
 
-        v13 = v12;
+        v13 = data;
 
-        v14 = [v3 objectForKeyedSubscript:v13];
-        if (!v14)
+        array = [dictionary objectForKeyedSubscript:v13];
+        if (!array)
         {
-          v14 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
         }
 
-        [v14 addObject:v9];
-        [v3 setObject:v14 forKeyedSubscript:v13];
+        [array addObject:v9];
+        [dictionary setObject:array forKeyedSubscript:v13];
       }
 
       v6 = [(NSHashTable *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -736,14 +736,14 @@ LABEL_8:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_lock_monitoredContactsByContactHistoryToken
 {
   v23 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -764,30 +764,30 @@ LABEL_8:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 contactHistoryToken];
-        v11 = v10;
-        if (v10)
+        contactHistoryToken = [v9 contactHistoryToken];
+        v11 = contactHistoryToken;
+        if (contactHistoryToken)
         {
-          v12 = v10;
+          data = contactHistoryToken;
         }
 
         else
         {
-          v12 = [MEMORY[0x277CBEA90] data];
+          data = [MEMORY[0x277CBEA90] data];
         }
 
-        v13 = v12;
+        v13 = data;
 
-        v14 = [v3 objectForKeyedSubscript:v13];
+        v14 = [dictionary objectForKeyedSubscript:v13];
         if (!v14)
         {
           v14 = [MEMORY[0x277CBEB58] set];
         }
 
-        v15 = [v9 monitoredContacts];
-        [v14 unionSet:v15];
+        monitoredContacts = [v9 monitoredContacts];
+        [v14 unionSet:monitoredContacts];
 
-        [v3 setObject:v14 forKeyedSubscript:v13];
+        [dictionary setObject:v14 forKeyedSubscript:v13];
       }
 
       v6 = [(NSHashTable *)v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -798,7 +798,7 @@ LABEL_8:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 void __65__DNDSContactMonitor__fetchContactsForMonitoredContacts_handler___block_invoke_cold_1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

@@ -1,24 +1,24 @@
 @interface MSDBiomeAppInFocusStream
-+ (BOOL)timeRange:(id)a3 subsumes:(id)a4;
-+ (id)collectAppUsageDataFrom:(id)a3 to:(id)a4;
-+ (id)eventSessionToAppUsage:(id)a3;
-+ (void)printBMAppInfocusEvent:(id)a3;
++ (BOOL)timeRange:(id)range subsumes:(id)subsumes;
++ (id)collectAppUsageDataFrom:(id)from to:(id)to;
++ (id)eventSessionToAppUsage:(id)usage;
++ (void)printBMAppInfocusEvent:(id)event;
 @end
 
 @implementation MSDBiomeAppInFocusStream
 
-+ (id)collectAppUsageDataFrom:(id)a3 to:(id)a4
++ (id)collectAppUsageDataFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
+  fromCopy = from;
+  toCopy = to;
+  v7 = fromCopy;
+  v8 = toCopy;
   v9 = +[NSMutableArray array];
   v10 = BiomeLibrary();
   v11 = [v10 App];
-  v12 = [v11 InFocus];
-  v13 = [v12 publisher];
-  v14 = [BMPairedEventSession sessionPublisherWithStreamPublisher:v13 startingBlock:&stru_10016C538 sessionKeyBlock:&stru_10016C578 options:0];
+  inFocus = [v11 InFocus];
+  publisher = [inFocus publisher];
+  v14 = [BMPairedEventSession sessionPublisherWithStreamPublisher:publisher startingBlock:&stru_10016C538 sessionKeyBlock:&stru_10016C578 options:0];
 
   v36 = 0;
   v37 = &v36;
@@ -70,16 +70,16 @@
   return v25;
 }
 
-+ (id)eventSessionToAppUsage:(id)a3
++ (id)eventSessionToAppUsage:(id)usage
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [a3.var0 absoluteTimestamp];
-  v6 = [var1 absoluteTimestamp];
-  v7 = v6;
-  if (v6)
+  var1 = usage.var1;
+  var0 = usage.var0;
+  absoluteTimestamp = [usage.var0 absoluteTimestamp];
+  absoluteTimestamp2 = [var1 absoluteTimestamp];
+  v7 = absoluteTimestamp2;
+  if (absoluteTimestamp2)
   {
-    [v6 timeIntervalSinceDate:v5];
+    [absoluteTimestamp2 timeIntervalSinceDate:absoluteTimestamp];
     [NSNumber numberWithDouble:?];
   }
 
@@ -89,26 +89,26 @@
     [NSNumber numberWithDouble:0.0];
   }
   v8 = ;
-  v9 = [var0 bundleID];
-  if ([(__CFString *)v9 containsString:@"/"])
+  bundleID = [var0 bundleID];
+  if ([(__CFString *)bundleID containsString:@"/"])
   {
-    v10 = [(__CFString *)v9 lastPathComponent];
+    lastPathComponent = [(__CFString *)bundleID lastPathComponent];
 
-    v9 = @"<unknown>";
+    bundleID = @"<unknown>";
   }
 
   else
   {
-    v10 = @"<unknown>";
+    lastPathComponent = @"<unknown>";
   }
 
   v13[0] = @"bundleID";
   v13[1] = @"executableName";
-  v14[0] = v9;
-  v14[1] = v10;
+  v14[0] = bundleID;
+  v14[1] = lastPathComponent;
   v13[2] = @"sessionStartTime";
   v13[3] = @"sessionEndTime";
-  v14[2] = v5;
+  v14[2] = absoluteTimestamp;
   v14[3] = v7;
   v13[4] = @"appDuration";
   v14[4] = v8;
@@ -117,13 +117,13 @@
   return v11;
 }
 
-+ (BOOL)timeRange:(id)a3 subsumes:(id)a4
++ (BOOL)timeRange:(id)range subsumes:(id)subsumes
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v6 = a3.var1;
-  v7 = a3.var0;
-  if ([a3.var0 isEarlierDateThan:a4.var0])
+  var1 = subsumes.var1;
+  var0 = subsumes.var0;
+  v6 = range.var1;
+  v7 = range.var0;
+  if ([range.var0 isEarlierDateThan:subsumes.var0])
   {
     v8 = [v6 isLaterDateThan:var1];
   }
@@ -136,7 +136,7 @@
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 toString];
+    toString = [v7 toString];
     [v6 toString];
     objc_claimAutoreleasedReturnValue();
     sub_1000EABDC();
@@ -145,7 +145,7 @@
   v11 = sub_100063A54();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [var0 toString];
+    toString2 = [var0 toString];
     [var1 toString];
     objc_claimAutoreleasedReturnValue();
     sub_1000EAC34();
@@ -160,37 +160,37 @@
   return v8;
 }
 
-+ (void)printBMAppInfocusEvent:(id)a3
++ (void)printBMAppInfocusEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000EAD04(v3);
+    sub_1000EAD04(eventCopy);
   }
 
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000EAD94(v3);
+    sub_1000EAD94(eventCopy);
   }
 
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000EAE18(v3);
+    sub_1000EAE18(eventCopy);
   }
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000EAEA8(v3);
+    sub_1000EAEA8(eventCopy);
   }
 
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000EAF2C(v3);
+    sub_1000EAF2C(eventCopy);
   }
 }
 

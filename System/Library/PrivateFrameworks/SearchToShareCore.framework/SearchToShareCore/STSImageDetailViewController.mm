@@ -1,21 +1,21 @@
 @interface STSImageDetailViewController
-- (void)setContentURL:(id)a3;
+- (void)setContentURL:(id)l;
 @end
 
 @implementation STSImageDetailViewController
 
-- (void)setContentURL:(id)a3
+- (void)setContentURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v30.receiver = self;
   v30.super_class = STSImageDetailViewController;
-  v5 = [(STSResultDetailViewController *)&v30 contentURL];
+  contentURL = [(STSResultDetailViewController *)&v30 contentURL];
 
-  if (v5 != v4)
+  if (contentURL != lCopy)
   {
     v29.receiver = self;
     v29.super_class = STSImageDetailViewController;
-    [(STSResultDetailViewController *)&v29 setContentURL:v4];
+    [(STSResultDetailViewController *)&v29 setContentURL:lCopy];
     objc_initWeak(&location, self);
     v26[0] = 0;
     v26[1] = v26;
@@ -29,20 +29,20 @@
     v25[3] = 0;
     v24.receiver = self;
     v24.super_class = STSImageDetailViewController;
-    v6 = [(STSResultDetailViewController *)&v24 contentURL];
+    contentURL2 = [(STSResultDetailViewController *)&v24 contentURL];
     v23.receiver = self;
     v23.super_class = STSImageDetailViewController;
-    v7 = [(STSResultDetailViewController *)&v23 queryString];
+    queryString = [(STSResultDetailViewController *)&v23 queryString];
     v8 = +[STSImageCache sharedCache];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __46__STSImageDetailViewController_setContentURL___block_invoke;
     v17[3] = &unk_279B8ADD8;
-    v18 = v6;
+    v18 = contentURL2;
     v21 = v26;
-    v9 = v7;
+    v9 = queryString;
     v19 = v9;
-    v20 = self;
+    selfCopy = self;
     v22 = v25;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -53,7 +53,7 @@
     v12 = v10;
     v15 = v26;
     objc_copyWeak(&v16, &location);
-    v13 = self;
+    selfCopy2 = self;
     [v8 fetchImageWithURL:v10 priority:4 isSource:1 begin:v17 progress:0 completion:v11];
 
     objc_destroyWeak(&v16);

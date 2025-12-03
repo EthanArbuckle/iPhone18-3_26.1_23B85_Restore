@@ -1,13 +1,13 @@
 @interface MLCLayerNormalizationLayer
 + (MLCLayerNormalizationLayer)layerWithNormalizedShape:(NSArray *)normalizedShape beta:(MLCTensor *)beta gamma:(MLCTensor *)gamma varianceEpsilon:(float)varianceEpsilon;
-- (BOOL)allocateDataForOptimizer:(id)a3;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (BOOL)isSupportedShapeForTensorSources:(id)a3;
+- (BOOL)allocateDataForOptimizer:(id)optimizer;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (BOOL)isSupportedShapeForTensorSources:(id)sources;
 - (BOOL)isValidTrainingParameters;
-- (MLCLayerNormalizationLayer)initWithNormalizedShape:(id)a3 beta:(id)a4 gamma:(id)a5 varianceEpsilon:(float)a6;
+- (MLCLayerNormalizationLayer)initWithNormalizedShape:(id)shape beta:(id)beta gamma:(id)gamma varianceEpsilon:(float)epsilon;
 - (id)description;
 - (id)summarizedDOTDescription;
-- (unint64_t)allocatedDataSizeForTraining:(BOOL)a3 optimizer:(id)a4;
+- (unint64_t)allocatedDataSizeForTraining:(BOOL)training optimizer:(id)optimizer;
 - (unint64_t)parametersCount;
 - (void)linkAssociatedTensors;
 - (void)unlinkAssociatedTensors;
@@ -20,19 +20,19 @@
   v10 = gamma;
   v11 = beta;
   v12 = normalizedShape;
-  v13 = [a1 alloc];
+  v13 = [self alloc];
   *&v14 = varianceEpsilon;
   v15 = [v13 initWithNormalizedShape:v12 beta:v11 gamma:v10 varianceEpsilon:v14];
 
   return v15;
 }
 
-- (MLCLayerNormalizationLayer)initWithNormalizedShape:(id)a3 beta:(id)a4 gamma:(id)a5 varianceEpsilon:(float)a6
+- (MLCLayerNormalizationLayer)initWithNormalizedShape:(id)shape beta:(id)beta gamma:(id)gamma varianceEpsilon:(float)epsilon
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (![v12 count] || objc_msgSend(v12, "count") >= 4)
+  shapeCopy = shape;
+  betaCopy = beta;
+  gammaCopy = gamma;
+  if (![shapeCopy count] || objc_msgSend(shapeCopy, "count") >= 4)
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -42,11 +42,11 @@
 
 LABEL_5:
 
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
-  if (a6 < 0.0)
+  if (epsilon < 0.0)
   {
     v15 = +[MLCLog framework];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -58,21 +58,21 @@ LABEL_5:
   }
 
   v40 = a2;
-  v18 = [v12 count];
-  v41 = v14;
-  v42 = v13;
-  if (v13)
+  v18 = [shapeCopy count];
+  v41 = gammaCopy;
+  v42 = betaCopy;
+  if (betaCopy)
   {
-    v19 = [v13 descriptor];
-    v20 = [v19 dimensionCount];
+    descriptor = [betaCopy descriptor];
+    dimensionCount = [descriptor dimensionCount];
 
-    v21 = [v42 descriptor];
-    v22 = [v21 shape];
-    v23 = [v22 subarrayWithRange:{v20 - v18, v18}];
-    v24 = [v23 isEqualToArray:v12];
+    descriptor2 = [v42 descriptor];
+    shape = [descriptor2 shape];
+    v23 = [shape subarrayWithRange:{dimensionCount - v18, v18}];
+    v24 = [v23 isEqualToArray:shapeCopy];
 
-    v14 = v41;
-    v13 = v42;
+    gammaCopy = v41;
+    betaCopy = v42;
     if ((v24 & 1) == 0)
     {
       v15 = +[MLCLog framework];
@@ -85,20 +85,20 @@ LABEL_5:
     }
   }
 
-  if (!v14)
+  if (!gammaCopy)
   {
     goto LABEL_14;
   }
 
-  v25 = [v14 descriptor];
-  v26 = [v25 dimensionCount];
+  descriptor3 = [gammaCopy descriptor];
+  dimensionCount2 = [descriptor3 dimensionCount];
 
-  v27 = [v14 descriptor];
-  v28 = [v27 shape];
-  v29 = [v28 subarrayWithRange:{v26 - v18, v18}];
-  v30 = [v29 isEqualToArray:v12];
+  descriptor4 = [gammaCopy descriptor];
+  shape2 = [descriptor4 shape];
+  v29 = [shape2 subarrayWithRange:{dimensionCount2 - v18, v18}];
+  v30 = [v29 isEqualToArray:shapeCopy];
 
-  v14 = v41;
+  gammaCopy = v41;
   if ((v30 & 1) == 0)
   {
     v35 = +[MLCLog framework];
@@ -107,15 +107,15 @@ LABEL_5:
       [MLCLayerNormalizationLayer initWithNormalizedShape:v40 beta:? gamma:? varianceEpsilon:?];
     }
 
-    v16 = 0;
-    v13 = v42;
+    selfCopy = 0;
+    betaCopy = v42;
   }
 
   else
   {
 LABEL_14:
-    v13 = v42;
-    if ((v42 == 0) != (v14 == 0))
+    betaCopy = v42;
+    if ((v42 == 0) != (gammaCopy == 0))
     {
       v15 = +[MLCLog framework];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -132,10 +132,10 @@ LABEL_14:
     v32 = v31;
     if (v31)
     {
-      objc_storeStrong(&v31->_normalizedShape, a3);
-      objc_storeStrong(&v32->_beta, a4);
-      objc_storeStrong(&v32->_gamma, a5);
-      v32->_varianceEpsilon = a6;
+      objc_storeStrong(&v31->_normalizedShape, shape);
+      objc_storeStrong(&v32->_beta, beta);
+      objc_storeStrong(&v32->_gamma, gamma);
+      v32->_varianceEpsilon = epsilon;
       if (v42)
       {
         v33 = [MLCTensorParameter parameterWithTensor:v42];
@@ -151,9 +151,9 @@ LABEL_14:
         v32->_betaParameter = 0;
       }
 
-      if (v14)
+      if (gammaCopy)
       {
-        v37 = [MLCTensorParameter parameterWithTensor:v14];
+        v37 = [MLCTensorParameter parameterWithTensor:gammaCopy];
         gammaParameter = v32->_gammaParameter;
         v32->_gammaParameter = v37;
 
@@ -172,34 +172,34 @@ LABEL_14:
     }
 
     self = v32;
-    v16 = self;
+    selfCopy = self;
   }
 
 LABEL_6:
 
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
   v12 = [&unk_284BA60B0 mutableCopy];
-  if ([v9 type] == 3)
+  if ([deviceCopy type] == 3)
   {
     [v12 addObject:&unk_284BA5B40];
   }
 
-  v13 = [(MLCLayerNormalizationLayer *)self beta];
+  beta = [(MLCLayerNormalizationLayer *)self beta];
 
-  if (!v13)
+  if (!beta)
   {
     goto LABEL_8;
   }
 
-  v14 = [(MLCLayerNormalizationLayer *)self beta];
-  v15 = [v14 isTensorDataTypeInListOfDataTypes:v12];
+  beta2 = [(MLCLayerNormalizationLayer *)self beta];
+  v15 = [beta2 isTensorDataTypeInListOfDataTypes:v12];
 
   if ((v15 & 1) == 0)
   {
@@ -212,19 +212,19 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  v16 = [(MLCLayerNormalizationLayer *)self beta];
-  v17 = [v16 parentLayers];
-  v18 = [v17 count];
+  beta3 = [(MLCLayerNormalizationLayer *)self beta];
+  parentLayers = [beta3 parentLayers];
+  v18 = [parentLayers count];
 
   if (!v18)
   {
 LABEL_8:
-    v20 = [(MLCLayerNormalizationLayer *)self gamma];
+    gamma = [(MLCLayerNormalizationLayer *)self gamma];
 
-    if (v20)
+    if (gamma)
     {
-      v21 = [(MLCLayerNormalizationLayer *)self gamma];
-      v22 = [v21 isTensorDataTypeInListOfDataTypes:v12];
+      gamma2 = [(MLCLayerNormalizationLayer *)self gamma];
+      v22 = [gamma2 isTensorDataTypeInListOfDataTypes:v12];
 
       if ((v22 & 1) == 0)
       {
@@ -237,9 +237,9 @@ LABEL_8:
         goto LABEL_21;
       }
 
-      v23 = [(MLCLayerNormalizationLayer *)self gamma];
-      v24 = [v23 parentLayers];
-      v25 = [v24 count];
+      gamma3 = [(MLCLayerNormalizationLayer *)self gamma];
+      parentLayers2 = [gamma3 parentLayers];
+      v25 = [parentLayers2 count];
 
       if (v25)
       {
@@ -254,72 +254,72 @@ LABEL_8:
     }
 
     v55 = a2;
-    v56 = v11;
-    v19 = [v10 objectAtIndexedSubscript:0];
-    v26 = [(MLCLayerNormalizationLayer *)self normalizedShape];
-    v27 = [v26 count];
+    v56 = tensorCopy;
+    v19 = [tensorsCopy objectAtIndexedSubscript:0];
+    normalizedShape = [(MLCLayerNormalizationLayer *)self normalizedShape];
+    v27 = [normalizedShape count];
 
-    v28 = [v19 descriptor];
-    v29 = [v28 dimensionCount];
+    descriptor = [v19 descriptor];
+    dimensionCount = [descriptor dimensionCount];
 
-    v30 = [v19 descriptor];
-    v31 = [v30 shape];
-    v32 = [v31 subarrayWithRange:{v29 - v27, v27}];
-    v33 = [(MLCLayerNormalizationLayer *)self normalizedShape];
-    v34 = [v32 isEqualToArray:v33];
+    descriptor2 = [v19 descriptor];
+    shape = [descriptor2 shape];
+    v32 = [shape subarrayWithRange:{dimensionCount - v27, v27}];
+    normalizedShape2 = [(MLCLayerNormalizationLayer *)self normalizedShape];
+    v34 = [v32 isEqualToArray:normalizedShape2];
 
     if (v34)
     {
-      v35 = [(MLCLayer *)self fusedLayers];
-      v36 = [v35 count];
+      fusedLayers = [(MLCLayer *)self fusedLayers];
+      v36 = [fusedLayers count];
 
       if (!v36)
       {
         goto LABEL_18;
       }
 
-      v37 = [(MLCLayer *)self fusedLayers];
-      v38 = [v37 objectAtIndexedSubscript:0];
+      fusedLayers2 = [(MLCLayer *)self fusedLayers];
+      v38 = [fusedLayers2 objectAtIndexedSubscript:0];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v46 = [(MLCLayer *)self fusedLayers];
-        v54 = [v46 objectAtIndexedSubscript:0];
+        fusedLayers3 = [(MLCLayer *)self fusedLayers];
+        v54 = [fusedLayers3 objectAtIndexedSubscript:0];
 
-        v41 = [v9 computeEngine];
-        v42 = [v54 descriptor];
-        v43 = [(MLCLayerNormalizationLayer *)self normalizedShape];
-        v53 = [(MLCLayerNormalizationLayer *)self beta];
-        v47 = [(MLCLayerNormalizationLayer *)self gamma];
+        computeEngine = [deviceCopy computeEngine];
+        descriptor3 = [v54 descriptor];
+        normalizedShape3 = [(MLCLayerNormalizationLayer *)self normalizedShape];
+        beta4 = [(MLCLayerNormalizationLayer *)self beta];
+        gamma4 = [(MLCLayerNormalizationLayer *)self gamma];
         [(MLCLayerNormalizationLayer *)self varianceEpsilon];
-        v44 = [v41 fusedLayerNormalizationAndNeuronLayerWithDescriptor:v42 normalizedShape:v43 beta:v53 gamma:v47 varianceEpsilon:?];
+        v44 = [computeEngine fusedLayerNormalizationAndNeuronLayerWithDescriptor:descriptor3 normalizedShape:normalizedShape3 beta:beta4 gamma:gamma4 varianceEpsilon:?];
 
-        v40 = v54;
+        computeEngine2 = v54;
       }
 
       else
       {
 LABEL_18:
-        v40 = [v9 computeEngine];
-        v41 = [(MLCLayerNormalizationLayer *)self normalizedShape];
-        v42 = [(MLCLayerNormalizationLayer *)self beta];
-        v43 = [(MLCLayerNormalizationLayer *)self gamma];
+        computeEngine2 = [deviceCopy computeEngine];
+        computeEngine = [(MLCLayerNormalizationLayer *)self normalizedShape];
+        descriptor3 = [(MLCLayerNormalizationLayer *)self beta];
+        normalizedShape3 = [(MLCLayerNormalizationLayer *)self gamma];
         [(MLCLayerNormalizationLayer *)self varianceEpsilon];
-        v44 = [v40 layerNormalizationLayerWithNormalizedShape:v41 beta:v42 gamma:v43 varianceEpsilon:1 isFusedWithArithmeticLayer:?];
+        v44 = [computeEngine2 layerNormalizationLayerWithNormalizedShape:computeEngine beta:descriptor3 gamma:normalizedShape3 varianceEpsilon:1 isFusedWithArithmeticLayer:?];
       }
 
       if (v44 && [v44 count])
       {
-        v48 = [v9 computeEngine];
+        computeEngine3 = [deviceCopy computeEngine];
         v49 = objc_opt_respondsToSelector();
 
-        v11 = v56;
+        tensorCopy = v56;
         if (v49)
         {
-          v50 = [v9 computeEngine];
-          v45 = [v50 compileLayerDeviceOps:v44 sourceTensors:v10 resultTensor:v56];
+          computeEngine4 = [deviceCopy computeEngine];
+          v45 = [computeEngine4 compileLayerDeviceOps:v44 sourceTensors:tensorsCopy resultTensor:v56];
         }
 
         else
@@ -329,12 +329,12 @@ LABEL_18:
 
         v57.receiver = self;
         v57.super_class = MLCLayerNormalizationLayer;
-        [(MLCLayer *)&v57 bindDevice:v9 deviceOps:v44];
+        [(MLCLayer *)&v57 bindDevice:deviceCopy deviceOps:v44];
         goto LABEL_33;
       }
 
       v51 = +[MLCLog framework];
-      v11 = v56;
+      tensorCopy = v56;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
         [MLCScatterLayer compileForDevice:v55 sourceTensors:? resultTensor:?];
@@ -344,7 +344,7 @@ LABEL_18:
     else
     {
       v44 = +[MLCLog framework];
-      v11 = v56;
+      tensorCopy = v56;
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
         [MLCLayerNormalizationLayer compileForDevice:v55 sourceTensors:? resultTensor:?];
@@ -370,51 +370,51 @@ LABEL_34:
   return v45;
 }
 
-- (BOOL)allocateDataForOptimizer:(id)a3
+- (BOOL)allocateDataForOptimizer:(id)optimizer
 {
-  v4 = a3;
-  v5 = [(MLCLayerNormalizationLayer *)self beta];
+  optimizerCopy = optimizer;
+  beta = [(MLCLayerNormalizationLayer *)self beta];
 
-  if (v5)
+  if (beta)
   {
-    v6 = [(MLCLayerNormalizationLayer *)self betaParameter];
-    v7 = [(MLCLayer *)self device];
-    [v6 allocateDataForOptimizer:v4 device:v7 isVector:1];
+    betaParameter = [(MLCLayerNormalizationLayer *)self betaParameter];
+    device = [(MLCLayer *)self device];
+    [betaParameter allocateDataForOptimizer:optimizerCopy device:device isVector:1];
   }
 
-  v8 = [(MLCLayerNormalizationLayer *)self gamma];
+  gamma = [(MLCLayerNormalizationLayer *)self gamma];
 
-  if (v8)
+  if (gamma)
   {
-    v9 = [(MLCLayerNormalizationLayer *)self gammaParameter];
-    v10 = [(MLCLayer *)self device];
-    [v9 allocateDataForOptimizer:v4 device:v10 isVector:1];
+    gammaParameter = [(MLCLayerNormalizationLayer *)self gammaParameter];
+    device2 = [(MLCLayer *)self device];
+    [gammaParameter allocateDataForOptimizer:optimizerCopy device:device2 isVector:1];
   }
 
-  v11 = [(MLCLayer *)self device];
-  v12 = [v11 computeEngine];
-  v13 = [(MLCLayer *)self deviceOps];
-  v14 = [(MLCLayerNormalizationLayer *)self beta];
-  v15 = [(MLCLayerNormalizationLayer *)self gamma];
-  [v12 setNormalizationLayerOptimizerDataForDeviceOps:v13 beta:v14 gamma:v15];
+  device3 = [(MLCLayer *)self device];
+  computeEngine = [device3 computeEngine];
+  deviceOps = [(MLCLayer *)self deviceOps];
+  beta2 = [(MLCLayerNormalizationLayer *)self beta];
+  gamma2 = [(MLCLayerNormalizationLayer *)self gamma];
+  [computeEngine setNormalizationLayerOptimizerDataForDeviceOps:deviceOps beta:beta2 gamma:gamma2];
 
   return 1;
 }
 
-- (unint64_t)allocatedDataSizeForTraining:(BOOL)a3 optimizer:(id)a4
+- (unint64_t)allocatedDataSizeForTraining:(BOOL)training optimizer:(id)optimizer
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MLCLayerNormalizationLayer *)self beta];
-  v8 = [v7 descriptor];
-  v9 = [v8 tensorAllocationSizeInBytes];
-  v10 = [(MLCLayerNormalizationLayer *)self gamma];
-  v11 = [v10 descriptor];
-  v12 = [v11 tensorAllocationSizeInBytes] + v9;
+  trainingCopy = training;
+  optimizerCopy = optimizer;
+  beta = [(MLCLayerNormalizationLayer *)self beta];
+  descriptor = [beta descriptor];
+  tensorAllocationSizeInBytes = [descriptor tensorAllocationSizeInBytes];
+  gamma = [(MLCLayerNormalizationLayer *)self gamma];
+  descriptor2 = [gamma descriptor];
+  v12 = [descriptor2 tensorAllocationSizeInBytes] + tensorAllocationSizeInBytes;
 
-  if (v4)
+  if (trainingCopy)
   {
-    v12 += v12 * [v6 numOptimizerDataBuffers];
+    v12 += v12 * [optimizerCopy numOptimizerDataBuffers];
   }
 
   return v12;
@@ -425,13 +425,13 @@ LABEL_34:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayerNormalizationLayer *)self beta];
-  v7 = [(MLCLayerNormalizationLayer *)self gamma];
+  beta = [(MLCLayerNormalizationLayer *)self beta];
+  gamma = [(MLCLayerNormalizationLayer *)self gamma];
   [(MLCLayerNormalizationLayer *)self varianceEpsilon];
   v9 = v8;
-  v10 = [(MLCLayer *)self conditionalTreeNode];
-  v11 = [(MLCLayer *)self resultTensors];
-  v12 = [v3 stringWithFormat:@"%@: { beta=%@ : gamma=%@ : varianceEpsilon=%f : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, *&v9, v10, v11];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v12 = [v3 stringWithFormat:@"%@: { beta=%@ : gamma=%@ : varianceEpsilon=%f : conditionalTreeNode=%@ : resultTensor=%@ }", v5, beta, gamma, *&v9, conditionalTreeNode, resultTensors];
 
   return v12;
 }
@@ -441,43 +441,43 @@ LABEL_34:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
-  v7 = [(MLCLayerNormalizationLayer *)self normalizedShape];
+  layerID = [(MLCLayer *)self layerID];
+  normalizedShape = [(MLCLayerNormalizationLayer *)self normalizedShape];
   [(MLCLayerNormalizationLayer *)self varianceEpsilon];
-  v9 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Normalized Shape: %@<BR />Variance Epsilon: %.03f</FONT>>", v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Normalized Shape: %@<BR />Variance Epsilon: %.03f</FONT>>", v5, layerID, normalizedShape, v8];
 
   return v9;
 }
 
 - (void)linkAssociatedTensors
 {
-  v3 = [(MLCLayerNormalizationLayer *)self beta];
-  v4 = [v3 childLayers];
-  [v4 addObject:self];
+  beta = [(MLCLayerNormalizationLayer *)self beta];
+  childLayers = [beta childLayers];
+  [childLayers addObject:self];
 
-  v6 = [(MLCLayerNormalizationLayer *)self gamma];
-  v5 = [v6 childLayers];
-  [v5 addObject:self];
+  gamma = [(MLCLayerNormalizationLayer *)self gamma];
+  childLayers2 = [gamma childLayers];
+  [childLayers2 addObject:self];
 }
 
 - (void)unlinkAssociatedTensors
 {
-  v3 = [(MLCLayerNormalizationLayer *)self beta];
-  v4 = [v3 childLayers];
-  [v4 removeObject:self];
+  beta = [(MLCLayerNormalizationLayer *)self beta];
+  childLayers = [beta childLayers];
+  [childLayers removeObject:self];
 
-  v6 = [(MLCLayerNormalizationLayer *)self gamma];
-  v5 = [v6 childLayers];
-  [v5 removeObject:self];
+  gamma = [(MLCLayerNormalizationLayer *)self gamma];
+  childLayers2 = [gamma childLayers];
+  [childLayers2 removeObject:self];
 }
 
 - (BOOL)isValidTrainingParameters
 {
-  v3 = [(MLCLayerNormalizationLayer *)self beta];
-  if (v3)
+  beta = [(MLCLayerNormalizationLayer *)self beta];
+  if (beta)
   {
-    v4 = [(MLCLayerNormalizationLayer *)self gamma];
-    v5 = v4 != 0;
+    gamma = [(MLCLayerNormalizationLayer *)self gamma];
+    v5 = gamma != 0;
   }
 
   else
@@ -488,18 +488,18 @@ LABEL_34:
   return v5;
 }
 
-- (BOOL)isSupportedShapeForTensorSources:(id)a3
+- (BOOL)isSupportedShapeForTensorSources:(id)sources
 {
-  v3 = a3;
-  if ([v3 count])
+  sourcesCopy = sources;
+  if ([sourcesCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndexedSubscript:v4];
-      v6 = [v5 descriptor];
-      v7 = [v6 shape];
-      v8 = [v7 count];
+      v5 = [sourcesCopy objectAtIndexedSubscript:v4];
+      descriptor = [v5 descriptor];
+      shape = [descriptor shape];
+      v8 = [shape count];
 
       v9 = v8 > 1;
       if (v8 <= 1)
@@ -510,7 +510,7 @@ LABEL_34:
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [sourcesCopy count]);
   }
 
   else
@@ -523,24 +523,24 @@ LABEL_34:
 
 - (unint64_t)parametersCount
 {
-  v3 = [(MLCLayerNormalizationLayer *)self betaParameter];
+  betaParameter = [(MLCLayerNormalizationLayer *)self betaParameter];
 
-  v4 = [(MLCLayerNormalizationLayer *)self gammaParameter];
+  gammaParameter = [(MLCLayerNormalizationLayer *)self gammaParameter];
 
   v5 = 1;
-  if (v3)
+  if (betaParameter)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (gammaParameter)
   {
     return v5;
   }
 
   else
   {
-    return v3 != 0;
+    return betaParameter != 0;
   }
 }
 

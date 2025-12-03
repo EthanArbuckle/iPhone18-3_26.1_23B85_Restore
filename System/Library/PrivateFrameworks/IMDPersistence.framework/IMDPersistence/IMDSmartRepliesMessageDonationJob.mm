@@ -1,10 +1,10 @@
 @interface IMDSmartRepliesMessageDonationJob
-- (BOOL)isMessageTimeWithinBoundsForSmartRepliesDonation:(id)a3;
+- (BOOL)isMessageTimeWithinBoundsForSmartRepliesDonation:(id)donation;
 - (IMDSmartRepliesMessageDonationJob)init;
-- (id)srMessageFromMessageDictionary:(id)a3;
-- (id)srRequestForMessage:(id)a3;
-- (void)finishWithCompletion:(id)a3;
-- (void)processMessageDictionary:(id)a3 chatDictionary:(id)a4;
+- (id)srMessageFromMessageDictionary:(id)dictionary;
+- (id)srRequestForMessage:(id)message;
+- (void)finishWithCompletion:(id)completion;
+- (void)processMessageDictionary:(id)dictionary chatDictionary:(id)chatDictionary;
 @end
 
 @implementation IMDSmartRepliesMessageDonationJob
@@ -24,28 +24,28 @@
   return v2;
 }
 
-- (BOOL)isMessageTimeWithinBoundsForSmartRepliesDonation:(id)a3
+- (BOOL)isMessageTimeWithinBoundsForSmartRepliesDonation:(id)donation
 {
-  if (!a3)
+  if (!donation)
   {
     return 0;
   }
 
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
+  donationCopy = donation;
   v7 = objc_msgSend_date(v3, v5, v6);
-  objc_msgSend_timeIntervalSinceDate_(v7, v8, v4);
+  objc_msgSend_timeIntervalSinceDate_(v7, v8, donationCopy);
   v10 = v9;
 
   v11 = v10 < 180.0;
   return v11;
 }
 
-- (id)srMessageFromMessageDictionary:(id)a3
+- (id)srMessageFromMessageDictionary:(id)dictionary
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"guid");
-  v8 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"time");
+  dictionaryCopy = dictionary;
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"guid");
+  v8 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v7, @"time");
   if (objc_msgSend_isMessageTimeWithinBoundsForSmartRepliesDonation_(self, v9, v8))
   {
     v57 = 0;
@@ -67,10 +67,10 @@
     v13 = v12;
     _Block_object_dispose(&v57, 8);
     v14 = objc_alloc_init(v12);
-    v16 = objc_msgSend_objectForKeyedSubscript_(v4, v15, @"plainBody");
+    v16 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v15, @"plainBody");
     if (objc_msgSend_length(v16, v17, v18))
     {
-      v20 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"associatedMessageType");
+      v20 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v19, @"associatedMessageType");
       v23 = objc_msgSend_integerValue(v20, v21, v22);
 
       if ((v23 - 2000) >= 7 && (v23 - 3000) >= 7)
@@ -83,7 +83,7 @@
         objc_msgSend_setTapBack_(v14, v24, 1);
       }
 
-      v28 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"timeRead");
+      v28 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v26, @"timeRead");
       if (v28)
       {
         v29 = objc_alloc(MEMORY[0x1E695DF00]);
@@ -98,7 +98,7 @@
       }
 
       objc_msgSend_setEmote_(v14, v36, 0);
-      v40 = objc_msgSend_objectForKeyedSubscript_(v4, v39, @"flags");
+      v40 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v39, @"flags");
       v43 = objc_msgSend_unsignedLongLongValue(v40, v41, v42);
 
       if ((v43 & 4) != 0)
@@ -108,7 +108,7 @@
 
       else
       {
-        v45 = objc_msgSend_objectForKeyedSubscript_(v4, v44, @"handle");
+        v45 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v44, @"handle");
         v48 = objc_msgSend_copy(v45, v46, v47);
         objc_msgSend_setSenderIdentifier_(v14, v49, v48);
       }
@@ -150,14 +150,14 @@
   return v37;
 }
 
-- (id)srRequestForMessage:(id)a3
+- (id)srRequestForMessage:(id)message
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v6 = v3;
-  if (v3)
+  messageCopy = message;
+  v6 = messageCopy;
+  if (messageCopy)
   {
-    v7 = objc_msgSend_senderIdentifier(v3, v4, v5);
+    v7 = objc_msgSend_senderIdentifier(messageCopy, v4, v5);
 
     v32[0] = v6;
     v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v32, 1);
@@ -221,9 +221,9 @@
   return v18;
 }
 
-- (void)processMessageDictionary:(id)a3 chatDictionary:(id)a4
+- (void)processMessageDictionary:(id)dictionary chatDictionary:(id)chatDictionary
 {
-  v5 = objc_msgSend_srMessageFromMessageDictionary_(self, a2, a3, a4);
+  v5 = objc_msgSend_srMessageFromMessageDictionary_(self, a2, dictionary, chatDictionary);
   if (v5)
   {
     v10 = v5;
@@ -234,10 +234,10 @@
   }
 }
 
-- (void)finishWithCompletion:(id)a3
+- (void)finishWithCompletion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v33 = a3;
+  completionCopy = completion;
   v6 = objc_msgSend_srMessages(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
 
@@ -309,18 +309,18 @@
     block[1] = 3221225472;
     block[2] = sub_1B7B8F198;
     block[3] = &unk_1E7CB67C0;
-    v36 = v33;
+    v36 = completionCopy;
     dispatch_group_notify(v17, v30, block);
 
-    v31 = v33;
+    v31 = completionCopy;
   }
 
   else
   {
-    v31 = v33;
-    if (v33)
+    v31 = completionCopy;
+    if (completionCopy)
     {
-      (*(v33 + 2))(v33, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 

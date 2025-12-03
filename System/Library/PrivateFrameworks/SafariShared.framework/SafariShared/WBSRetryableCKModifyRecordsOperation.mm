@@ -9,16 +9,16 @@
 - (id)perRecordProgressBlock;
 - (id)perRecordSaveBlock;
 - (int64_t)savePolicy;
-- (void)_setUpOperation:(id)a3;
-- (void)setAtomic:(BOOL)a3;
-- (void)setClientChangeTokenData:(id)a3;
-- (void)setModifyRecordsCompletionBlock:(id)a3;
-- (void)setPerRecordDeleteBlock:(id)a3;
-- (void)setPerRecordProgressBlock:(id)a3;
-- (void)setPerRecordSaveBlock:(id)a3;
-- (void)setRecordIDsToDelete:(id)a3;
-- (void)setRecordsToSave:(id)a3;
-- (void)setSavePolicy:(int64_t)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setAtomic:(BOOL)atomic;
+- (void)setClientChangeTokenData:(id)data;
+- (void)setModifyRecordsCompletionBlock:(id)block;
+- (void)setPerRecordDeleteBlock:(id)block;
+- (void)setPerRecordProgressBlock:(id)block;
+- (void)setPerRecordSaveBlock:(id)block;
+- (void)setRecordIDsToDelete:(id)delete;
+- (void)setRecordsToSave:(id)save;
+- (void)setSavePolicy:(int64_t)policy;
 @end
 
 @implementation WBSRetryableCKModifyRecordsOperation
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (void)setRecordsToSave:(id)a3
+- (void)setRecordsToSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [saveCopy copy];
 
   recordsToSave = self->_recordsToSave;
   self->_recordsToSave = v5;
@@ -55,11 +55,11 @@
   return v3;
 }
 
-- (void)setRecordIDsToDelete:(id)a3
+- (void)setRecordIDsToDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [deleteCopy copy];
 
   recordIDsToDelete = self->_recordIDsToDelete;
   self->_recordIDsToDelete = v5;
@@ -77,10 +77,10 @@
   return savePolicy;
 }
 
-- (void)setSavePolicy:(int64_t)a3
+- (void)setSavePolicy:(int64_t)policy
 {
   os_unfair_lock_lock(&self->super.super._internalLock);
-  self->_savePolicy = a3;
+  self->_savePolicy = policy;
   [(NSMutableSet *)self->super.super._explicitlySetProperties addObject:@"savePolicy"];
 
   os_unfair_lock_unlock(&self->super.super._internalLock);
@@ -95,11 +95,11 @@
   return v3;
 }
 
-- (void)setClientChangeTokenData:(id)a3
+- (void)setClientChangeTokenData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [dataCopy copy];
 
   clientChangeTokenData = self->_clientChangeTokenData;
   self->_clientChangeTokenData = v5;
@@ -117,10 +117,10 @@
   return atomic;
 }
 
-- (void)setAtomic:(BOOL)a3
+- (void)setAtomic:(BOOL)atomic
 {
   os_unfair_lock_lock(&self->super.super._internalLock);
-  self->_atomic = a3;
+  self->_atomic = atomic;
   [(NSMutableSet *)self->super.super._explicitlySetProperties addObject:@"atomic"];
 
   os_unfair_lock_unlock(&self->super.super._internalLock);
@@ -135,11 +135,11 @@
   return v3;
 }
 
-- (void)setPerRecordProgressBlock:(id)a3
+- (void)setPerRecordProgressBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordProgressBlock = self->_perRecordProgressBlock;
   self->_perRecordProgressBlock = v5;
@@ -158,11 +158,11 @@
   return v3;
 }
 
-- (void)setPerRecordSaveBlock:(id)a3
+- (void)setPerRecordSaveBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordSaveBlock = self->_perRecordSaveBlock;
   self->_perRecordSaveBlock = v5;
@@ -181,11 +181,11 @@
   return v3;
 }
 
-- (void)setPerRecordDeleteBlock:(id)a3
+- (void)setPerRecordDeleteBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordDeleteBlock = self->_perRecordDeleteBlock;
   self->_perRecordDeleteBlock = v5;
@@ -204,11 +204,11 @@
   return v3;
 }
 
-- (void)setModifyRecordsCompletionBlock:(id)a3
+- (void)setModifyRecordsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   modifyRecordsCompletionBlock = self->_modifyRecordsCompletionBlock;
   self->_modifyRecordsCompletionBlock = v5;
@@ -225,35 +225,35 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v14.receiver = self;
   v14.super_class = WBSRetryableCKModifyRecordsOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v14 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v14 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordsToSave"])
   {
-    [v4 setRecordsToSave:self->_recordsToSave];
+    [operationCopy setRecordsToSave:self->_recordsToSave];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordIDsToDelete"])
   {
-    [v4 setRecordIDsToDelete:self->_recordIDsToDelete];
+    [operationCopy setRecordIDsToDelete:self->_recordIDsToDelete];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"savePolicy"])
   {
-    [v4 setSavePolicy:self->_savePolicy];
+    [operationCopy setSavePolicy:self->_savePolicy];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"clientChangeTokenData"])
   {
-    [v4 setClientChangeTokenData:self->_clientChangeTokenData];
+    [operationCopy setClientChangeTokenData:self->_clientChangeTokenData];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"atomic"])
   {
-    [v4 setAtomic:self->_atomic];
+    [operationCopy setAtomic:self->_atomic];
   }
 
   if (self->_perRecordProgressBlock)
@@ -264,7 +264,7 @@
     v11[2] = __56__WBSRetryableCKModifyRecordsOperation__setUpOperation___block_invoke;
     v11[3] = &unk_1E7FCA090;
     objc_copyWeak(&v12, &location);
-    [v4 setPerRecordProgressBlock:v11];
+    [operationCopy setPerRecordProgressBlock:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -277,7 +277,7 @@
     v9[2] = __56__WBSRetryableCKModifyRecordsOperation__setUpOperation___block_invoke_3;
     v9[3] = &unk_1E7FC9F28;
     objc_copyWeak(&v10, &location);
-    [v4 setPerRecordSaveBlock:v9];
+    [operationCopy setPerRecordSaveBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -290,7 +290,7 @@
     v7[2] = __56__WBSRetryableCKModifyRecordsOperation__setUpOperation___block_invoke_5;
     v7[3] = &unk_1E7FCA0B8;
     objc_copyWeak(&v8, &location);
-    [v4 setPerRecordDeleteBlock:v7];
+    [operationCopy setPerRecordDeleteBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -301,7 +301,7 @@
   v5[2] = __56__WBSRetryableCKModifyRecordsOperation__setUpOperation___block_invoke_7;
   v5[3] = &unk_1E7FCA0E0;
   objc_copyWeak(&v6, &location);
-  [v4 setModifyRecordsCompletionBlock:v5];
+  [operationCopy setModifyRecordsCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

@@ -1,12 +1,12 @@
 @interface MXStreamingSpeechProfileBegin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXStreamingSpeechProfileBegin
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = MXStreamingSpeechProfileBegin;
   v4 = [(MXStreamingSpeechProfileBegin *)&v8 description];
-  v5 = [(MXStreamingSpeechProfileBegin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXStreamingSpeechProfileBegin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestId = self->_requestId;
   if (requestId)
   {
-    [v3 setObject:requestId forKey:@"request_id"];
+    [dictionary setObject:requestId forKey:@"request_id"];
   }
 
   locale = self->_locale;
@@ -48,77 +48,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locale)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneSetVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestId)
   {
-    [v4 setRequestId:?];
-    v4 = v5;
+    [toCopy setRequestId:?];
+    toCopy = v5;
   }
 
   if (self->_locale)
   {
     [v5 setLocale:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneSetVersion)
   {
     [v5 setPhoneSetVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_locale copyWithZone:a3];
+  v8 = [(NSString *)self->_locale copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_phoneSetVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_phoneSetVersion copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | v4[3])) || -[NSString isEqual:](requestId, "isEqual:")) && ((locale = self->_locale, !(locale | v4[1])) || -[NSString isEqual:](locale, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | equalCopy[3])) || -[NSString isEqual:](requestId, "isEqual:")) && ((locale = self->_locale, !(locale | equalCopy[1])) || -[NSString isEqual:](locale, "isEqual:")))
   {
     phoneSetVersion = self->_phoneSetVersion;
-    if (phoneSetVersion | v4[2])
+    if (phoneSetVersion | equalCopy[2])
     {
       v8 = [(NSString *)phoneSetVersion isEqual:?];
     }
@@ -144,26 +144,26 @@
   return v4 ^ [(NSString *)self->_phoneSetVersion hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(MXStreamingSpeechProfileBegin *)self setRequestId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(MXStreamingSpeechProfileBegin *)self setLocale:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(MXStreamingSpeechProfileBegin *)self setPhoneSetVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

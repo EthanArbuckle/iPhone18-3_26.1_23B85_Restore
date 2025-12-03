@@ -1,19 +1,19 @@
 @interface _MFBlockIterationHandler
-- (BOOL)handleMessage:(id)a3;
-- (_MFBlockIterationHandler)initWithBlock:(id)a3;
+- (BOOL)handleMessage:(id)message;
+- (_MFBlockIterationHandler)initWithBlock:(id)block;
 @end
 
 @implementation _MFBlockIterationHandler
 
-- (_MFBlockIterationHandler)initWithBlock:(id)a3
+- (_MFBlockIterationHandler)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = _MFBlockIterationHandler;
   v5 = [(_MFBlockIterationHandler *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (BOOL)handleMessage:(id)a3
+- (BOOL)handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (![(_MFBlockIterationHandler *)self shouldCancel])
   {
     v5 = objc_autoreleasePoolPush();

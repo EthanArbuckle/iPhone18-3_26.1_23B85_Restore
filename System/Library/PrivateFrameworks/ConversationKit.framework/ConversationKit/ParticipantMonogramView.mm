@@ -4,7 +4,7 @@
 - (_TtC15ConversationKit33ParticipantViewLabelContainerView)titleLabelContainer;
 - (void)didTapRingButton;
 - (void)layoutSubviews;
-- (void)setRingButton:(id)a3;
+- (void)setRingButton:(id)button;
 @end
 
 @implementation ParticipantMonogramView
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setRingButton:(id)a3
+- (void)setRingButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  ParticipantMonogramView.ringButton.setter(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  ParticipantMonogramView.ringButton.setter(buttonCopy);
 }
 
 - (_TtC15ConversationKit33ParticipantViewLabelContainerView)titleLabelContainer
@@ -39,13 +39,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantMonogramView.layoutSubviews()();
 }
 
 - (void)didTapRingButton
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantMonogramView.didTapRingButton()();
 }
 

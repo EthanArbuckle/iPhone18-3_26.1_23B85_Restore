@@ -1,26 +1,26 @@
 @interface _WKWebExtensionDeclarativeNetRequestRule
 - (NSArray)ruleInWebKitFormat;
-- (_WKWebExtensionDeclarativeNetRequestRule)initWithDictionary:(id)a3 errorString:(id *)a4;
-- (id)_allChromeResourceTypesForCondition:(id)a3;
-- (id)_combineRequestDomain:(id)a3 withURLFilter:(id)a4;
-- (id)_convertRulesWithModifiedCondition:(id)a3 webKitActionType:(id)a4 chromeActionType:(id)a5;
-- (id)_convertedResourceTypesForChromeResourceTypes:(id)a3;
-- (id)_findLongestCommonSubstringWithString:(id)a3 andString:(id)a4;
-- (id)_regexURLFilterForChromeURLFilter:(id)a3;
+- (_WKWebExtensionDeclarativeNetRequestRule)initWithDictionary:(id)dictionary errorString:(id *)string;
+- (id)_allChromeResourceTypesForCondition:(id)condition;
+- (id)_combineRequestDomain:(id)domain withURLFilter:(id)filter;
+- (id)_convertRulesWithModifiedCondition:(id)condition webKitActionType:(id)type chromeActionType:(id)actionType;
+- (id)_convertedResourceTypesForChromeResourceTypes:(id)types;
+- (id)_findLongestCommonSubstringWithString:(id)string andString:(id)andString;
+- (id)_regexURLFilterForChromeURLFilter:(id)filter;
 - (id)_resourcesToTargetWhenNoneAreSpecifiedInRule;
-- (id)_validateHeaderInfoDictionary:(id)a3;
-- (id)_webKitRuleWithWebKitActionType:(id)a3 chromeActionType:(id)a4 condition:(id)a5;
+- (id)_validateHeaderInfoDictionary:(id)dictionary;
+- (id)_webKitRuleWithWebKitActionType:(id)type chromeActionType:(id)actionType condition:(id)condition;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)removeInvalidResourceTypesForKey:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)removeInvalidResourceTypesForKey:(id)key;
 @end
 
 @implementation _WKWebExtensionDeclarativeNetRequestRule
 
-- (_WKWebExtensionDeclarativeNetRequestRule)initWithDictionary:(id)a3 errorString:(id *)a4
+- (_WKWebExtensionDeclarativeNetRequestRule)initWithDictionary:(id)dictionary errorString:(id *)string
 {
   v196[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v163.receiver = self;
   v163.super_class = _WKWebExtensionDeclarativeNetRequestRule;
   v7 = [(_WKWebExtensionDeclarativeNetRequestRule *)&v163 init];
@@ -53,41 +53,41 @@
     byte_1ED641721 = 1;
   }
 
-  v8 = WebKit::objectForKey<NSNumber>(v6, @"id");
+  v8 = WebKit::objectForKey<NSNumber>(dictionaryCopy, @"id");
   v7->_ruleID = [v8 integerValue];
 
   if (v7->_ruleID)
   {
     v162 = 0;
-    v9 = WebKit::validateDictionary(v6, 0, qword_1ED641730, *algn_1ED641738, &v162);
+    v9 = WebKit::validateDictionary(dictionaryCopy, 0, qword_1ED641730, *algn_1ED641738, &v162);
     v10 = v162;
     if (!v9)
     {
       v15 = 0;
-      if (a4)
+      if (string)
       {
-        *a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. %@", v7->_ruleID, v10];
+        *string = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. %@", v7->_ruleID, v10];
       }
 
       goto LABEL_69;
     }
 
-    v11 = WebKit::objectForKey<NSNumber>(v6, @"priority");
+    v11 = WebKit::objectForKey<NSNumber>(dictionaryCopy, @"priority");
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 integerValue];
-      v7->_priority = v13;
+      integerValue = [v11 integerValue];
+      v7->_priority = integerValue;
       if (v7->_ruleID >= 1)
       {
-        if (v13 <= 0)
+        if (integerValue <= 0)
         {
-          if (a4)
+          if (string)
           {
             v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. Rule priority must be non-negative.", v7->_ruleID];
 LABEL_33:
             v15 = 0;
-            *a4 = v14;
+            *string = v14;
 LABEL_68:
 
 LABEL_69:
@@ -98,7 +98,7 @@ LABEL_69:
         }
 
 LABEL_20:
-        v16 = WebKit::objectForKey<NSDictionary>(v6, @"action", 1, 0);
+        v16 = WebKit::objectForKey<NSDictionary>(dictionaryCopy, @"action", 1, 0);
         action = v7->_action;
         v7->_action = v16;
 
@@ -147,7 +147,7 @@ LABEL_20:
 
           if (v22)
           {
-            v24 = WebKit::objectForKey<NSDictionary>(v6, @"condition", 1, 0);
+            v24 = WebKit::objectForKey<NSDictionary>(dictionaryCopy, @"condition", 1, 0);
             condition = v7->_condition;
             v7->_condition = v24;
 
@@ -209,9 +209,9 @@ LABEL_20:
 
             if (!v27)
             {
-              if (a4)
+              if (string)
               {
-                v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. %@", v7->_ruleID, v134];
+                v134 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. %@", v7->_ruleID, v134];
                 goto LABEL_42;
               }
 
@@ -228,11 +228,11 @@ LABEL_65:
 
               if (!v30)
               {
-                if (a4)
+                if (string)
                 {
 LABEL_42:
                   v15 = 0;
-                  *a4 = v31;
+                  *string = v134;
 LABEL_66:
                   v10 = v134;
                   goto LABEL_67;
@@ -268,7 +268,7 @@ LABEL_46:
 
                     if (!v41)
                     {
-                      if (a4)
+                      if (string)
                       {
                         goto LABEL_42;
                       }
@@ -283,7 +283,7 @@ LABEL_46:
                     v128 = v44;
                     if (![v44 count])
                     {
-                      if (a4)
+                      if (string)
                       {
                         v15 = 0;
 LABEL_199:
@@ -299,11 +299,11 @@ LABEL_199:
 
                     if (![v45 count])
                     {
-                      if (a4)
+                      if (string)
                       {
 LABEL_118:
                         v15 = 0;
-                        *a4 = v72;
+                        *string = v72;
 LABEL_200:
 
                         goto LABEL_66;
@@ -361,7 +361,7 @@ LABEL_135:
                           v54 = *(*(&v156 + 1) + 8 * i);
                           if (([v54 isEqualToString:@"main_frame"] & 1) == 0 && (objc_msgSend(v54, "isEqualToString:", @"sub_frame") & 1) == 0)
                           {
-                            if (a4)
+                            if (string)
                             {
                             }
 
@@ -390,7 +390,7 @@ LABEL_86:
                       v60 = v59;
                       if (v59 && (isArrayOfDomainsValid(v59) & 1) == 0)
                       {
-                        if (a4)
+                        if (string)
                         {
                         }
                       }
@@ -402,7 +402,7 @@ LABEL_86:
                         v60 = v61;
                         if (v61 && (isArrayOfDomainsValid(v61) & 1) == 0)
                         {
-                          if (a4)
+                          if (string)
                           {
                           }
                         }
@@ -414,7 +414,7 @@ LABEL_86:
                           v60 = v62;
                           if (v62 && (isArrayOfExcludedDomainsValid(v62) & 1) == 0)
                           {
-                            if (a4)
+                            if (string)
                             {
                             }
                           }
@@ -426,7 +426,7 @@ LABEL_86:
                             v60 = v63;
                             if (v63 && (isArrayOfExcludedDomainsValid(v63) & 1) == 0)
                             {
-                              if (a4)
+                              if (string)
                               {
                               }
                             }
@@ -438,7 +438,7 @@ LABEL_86:
                               v60 = v64;
                               if (v64 && (isArrayOfDomainsValid(v64) & 1) == 0)
                               {
-                                if (a4)
+                                if (string)
                                 {
                                 }
                               }
@@ -455,7 +455,7 @@ LABEL_86:
                                   v55 = v66;
                                   if (v66 && (isArrayOfRequestMethodsValid(v66) & 1) == 0)
                                   {
-                                    if (a4)
+                                    if (string)
                                     {
                                       v73 = objc_alloc(MEMORY[0x1E696AEC0]);
                                       ruleID = v7->_ruleID;
@@ -486,11 +486,11 @@ LABEL_86:
                                       v124 = WebKit::objectForKey<NSDictionary>(obja, @"transform", 0, 0);
                                       if (!v126 && !v122 && !v124 && !v120)
                                       {
-                                        if (a4)
+                                        if (string)
                                         {
 LABEL_111:
                                           v71 = 0;
-                                          *a4 = v70;
+                                          *string = v70;
                                           goto LABEL_164;
                                         }
 
@@ -502,7 +502,7 @@ LABEL_111:
                                         v79 = [MEMORY[0x1E695DFF8] URLWithString:v126];
                                         if (!v79)
                                         {
-                                          if (a4)
+                                          if (string)
                                           {
                                             v83 = objc_alloc(MEMORY[0x1E696AEC0]);
                                             goto LABEL_161;
@@ -526,11 +526,11 @@ LABEL_163:
 
                                         if ((v81 & 2) == 0)
                                         {
-                                          if (a4)
+                                          if (string)
                                           {
                                             v83 = objc_alloc(MEMORY[0x1E696AEC0]);
 LABEL_161:
-                                            *a4 = [v83 initWithFormat:v84, v7->_ruleID];
+                                            *string = [v83 initWithFormat:v84, v7->_ruleID];
                                             goto LABEL_162;
                                           }
 
@@ -545,7 +545,7 @@ LABEL_161:
 
                                         if (v100)
                                         {
-                                          if (a4)
+                                          if (string)
                                           {
                                             goto LABEL_111;
                                           }
@@ -556,7 +556,7 @@ LABEL_161:
 
                                       if (v122 && ([v122 hasPrefix:@"/"] & 1) == 0)
                                       {
-                                        if (a4)
+                                        if (string)
                                         {
                                           goto LABEL_111;
                                         }
@@ -566,7 +566,7 @@ LABEL_161:
 
                                       if (v124 && ![v124 count])
                                       {
-                                        if (a4)
+                                        if (string)
                                         {
                                           goto LABEL_111;
                                         }
@@ -607,7 +607,7 @@ LABEL_161:
                                         if (!v101)
                                         {
                                           v71 = 0;
-                                          if (a4)
+                                          if (string)
                                           {
                                           }
 
@@ -654,10 +654,10 @@ LABEL_188:
                                                       v92 = [(_WKWebExtensionDeclarativeNetRequestRule *)v7 _validateHeaderInfoDictionary:*(*(&v143 + 1) + 8 * j)];
                                                       if (v92)
                                                       {
-                                                        if (a4)
+                                                        if (string)
                                                         {
                                                           v92 = v92;
-                                                          *a4 = v92;
+                                                          *string = v92;
                                                         }
 
                                                         goto LABEL_197;
@@ -695,10 +695,10 @@ LABEL_188:
                                                       v97 = [(_WKWebExtensionDeclarativeNetRequestRule *)v7 _validateHeaderInfoDictionary:*(*(&v139 + 1) + 8 * k)];
                                                       if (v97)
                                                       {
-                                                        if (a4)
+                                                        if (string)
                                                         {
                                                           v97 = v97;
-                                                          *a4 = v97;
+                                                          *string = v97;
                                                         }
 
                                                         goto LABEL_198;
@@ -718,7 +718,7 @@ LABEL_188:
                                                 goto LABEL_188;
                                               }
 
-                                              if (!a4)
+                                              if (!string)
                                               {
                                                 goto LABEL_197;
                                               }
@@ -726,7 +726,7 @@ LABEL_188:
 
                                             else
                                             {
-                                              if (!a4)
+                                              if (!string)
                                               {
 LABEL_197:
 
@@ -734,7 +734,7 @@ LABEL_197:
                                               }
                                             }
 
-                                            *a4 = v98;
+                                            *string = v98;
                                             goto LABEL_197;
                                           }
 
@@ -750,7 +750,7 @@ LABEL_198:
                                       if (v118 && ![v118 count])
                                       {
                                         v71 = 0;
-                                        if (a4)
+                                        if (string)
                                         {
                                         }
                                       }
@@ -789,7 +789,7 @@ LABEL_220:
                                           if (v116 && ![v116 count])
                                           {
                                             v71 = 0;
-                                            if (a4)
+                                            if (string)
                                             {
                                             }
                                           }
@@ -820,7 +820,7 @@ LABEL_220:
                                             if (v115 && ![v115 count])
                                             {
                                               v71 = 0;
-                                              if (a4)
+                                              if (string)
                                               {
                                               }
                                             }
@@ -855,7 +855,7 @@ LABEL_220:
                                                     if (!v110)
                                                     {
                                                       v71 = 0;
-                                                      if (a4)
+                                                      if (string)
                                                       {
                                                       }
 
@@ -886,7 +886,7 @@ LABEL_261:
                                         }
 
                                         v71 = 0;
-                                        if (a4)
+                                        if (string)
                                         {
                                         }
 
@@ -898,7 +898,7 @@ LABEL_264:
                                       goto LABEL_164;
                                     }
 
-                                    if (a4)
+                                    if (string)
                                     {
                                       v76 = objc_alloc(MEMORY[0x1E696AEC0]);
                                       v77 = v7->_ruleID;
@@ -911,7 +911,7 @@ LABEL_150:
                                   goto LABEL_198;
                                 }
 
-                                if (a4)
+                                if (string)
                                 {
                                 }
                               }
@@ -923,14 +923,14 @@ LABEL_150:
                       goto LABEL_198;
                     }
 
-                    if (a4)
+                    if (string)
                     {
                     }
 
                     goto LABEL_150;
                   }
 
-                  if (a4)
+                  if (string)
                   {
                     v45 = 0;
                     goto LABEL_118;
@@ -940,7 +940,7 @@ LABEL_150:
                   goto LABEL_135;
                 }
 
-                if (a4)
+                if (string)
                 {
                 }
 
@@ -949,7 +949,7 @@ LABEL_64:
                 goto LABEL_65;
               }
 
-              if (!a4)
+              if (!string)
               {
                 goto LABEL_64;
               }
@@ -959,7 +959,7 @@ LABEL_64:
 
             else
             {
-              if (!a4)
+              if (!string)
               {
                 goto LABEL_64;
               }
@@ -967,11 +967,11 @@ LABEL_64:
               v42 = objc_alloc(MEMORY[0x1E696AEC0]);
             }
 
-            *a4 = [v42 initWithFormat:v43, v7->_ruleID];
+            *string = [v42 initWithFormat:v43, v7->_ruleID];
             goto LABEL_64;
           }
 
-          if (a4)
+          if (string)
           {
             v33 = objc_alloc(MEMORY[0x1E696AEC0]);
             v34 = v7->_ruleID;
@@ -979,11 +979,11 @@ LABEL_64:
           }
         }
 
-        else if (a4)
+        else if (string)
         {
           v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. %@", v7->_ruleID, v21];
           v15 = 0;
-          *a4 = v32;
+          *string = v32;
 LABEL_67:
 
           goto LABEL_68;
@@ -1003,7 +1003,7 @@ LABEL_67:
       }
     }
 
-    if (a4)
+    if (string)
     {
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Rule with id %ld is invalid. Rule id must be non-negative.", v7->_ruleID];
       goto LABEL_33;
@@ -1014,10 +1014,10 @@ LABEL_36:
     goto LABEL_68;
   }
 
-  if (a4)
+  if (string)
   {
     v15 = 0;
-    *a4 = @"Missing rule id.";
+    *string = @"Missing rule id.";
   }
 
   else
@@ -1031,10 +1031,10 @@ LABEL_70:
   return v15;
 }
 
-- (id)_validateHeaderInfoDictionary:(id)a3
+- (id)_validateHeaderInfoDictionary:(id)dictionary
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ((byte_1ED641728 & 1) == 0)
   {
     v25[0] = @"header";
@@ -1062,7 +1062,7 @@ LABEL_70:
   }
 
   v22 = 0;
-  v6 = WebKit::validateDictionary(v4, 0, qword_1ED641770, v5, &v22);
+  v6 = WebKit::validateDictionary(dictionaryCopy, 0, qword_1ED641770, v5, &v22);
   v7 = v22;
   if (!v6)
   {
@@ -1070,15 +1070,15 @@ LABEL_70:
     goto LABEL_26;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"operation"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"operation"];
   v9 = [v8 isEqual:@"set"];
   v10 = [v8 isEqual:@"append"];
   v11 = [v8 isEqual:@"remove"];
   if ((v9 | v10 | v11))
   {
-    v12 = [v4 objectForKeyedSubscript:@"header"];
-    v13 = [v12 lowercaseString];
-    v14 = [&unk_1F1184C80 containsObject:v13];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"header"];
+    lowercaseString = [v12 lowercaseString];
+    v14 = [&unk_1F1184C80 containsObject:lowercaseString];
 
     if ((v14 & 1) == 0)
     {
@@ -1087,7 +1087,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"value"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     v16 = v15;
     if (v15)
     {
@@ -1142,10 +1142,10 @@ LABEL_26:
   return v20;
 }
 
-- (void)removeInvalidResourceTypesForKey:(id)a3
+- (void)removeInvalidResourceTypesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_condition objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self->_condition objectForKeyedSubscript:keyCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77___WKWebExtensionDeclarativeNetRequestRule_removeInvalidResourceTypesForKey___block_invoke;
@@ -1156,7 +1156,7 @@ LABEL_26:
   if (v7 != [v5 count])
   {
     v8 = [(NSDictionary *)self->_condition mutableCopy];
-    [(NSDictionary *)v8 setObject:v6 forKeyedSubscript:v4];
+    [(NSDictionary *)v8 setObject:v6 forKeyedSubscript:keyCopy];
     condition = self->_condition;
     self->_condition = v8;
   }
@@ -1183,7 +1183,7 @@ LABEL_26:
     byte_1ED64172A = 1;
   }
 
-  v51 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [(NSDictionary *)self->_action objectForKeyedSubscript:@"type"];
   v50 = [qword_1ED641780 objectForKeyedSubscript:v3];
   v37 = [v3 isEqualToString:@"allowAllRequests"];
@@ -1216,7 +1216,7 @@ LABEL_26:
           if ((v41 == 0) | v37 & 1)
           {
             v6 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:v5 webKitActionType:@"ignore-following-rules" chromeActionType:v3];
-            [v51 addObjectsFromArray:v6];
+            [array addObjectsFromArray:v6];
           }
 
           else
@@ -1241,7 +1241,7 @@ LABEL_26:
 
                   v10 = __62___WKWebExtensionDeclarativeNetRequestRule_ruleInWebKitFormat__block_invoke_2(v5, *(*(&v68 + 1) + 8 * j));
                   v11 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:v10 webKitActionType:@"ignore-following-rules" chromeActionType:v3];
-                  [v51 addObjectsFromArray:v11];
+                  [array addObjectsFromArray:v11];
                 }
 
                 v7 = [v6 countByEnumeratingWithState:&v68 objects:v80 count:16];
@@ -1285,7 +1285,7 @@ LABEL_29:
 
           v15 = __62___WKWebExtensionDeclarativeNetRequestRule_ruleInWebKitFormat__block_invoke_2(self->_condition, *(*(&v64 + 1) + 8 * k));
           v16 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:v15 webKitActionType:@"ignore-following-rules" chromeActionType:v3];
-          [v51 addObjectsFromArray:v16];
+          [array addObjectsFromArray:v16];
         }
 
         v12 = [obj countByEnumeratingWithState:&v64 objects:v79 count:16];
@@ -1327,7 +1327,7 @@ LABEL_30:
           if ((v40 == 0) | v37 & 1)
           {
             v30 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:v29 webKitActionType:v50 chromeActionType:v3];
-            [v51 addObjectsFromArray:v30];
+            [array addObjectsFromArray:v30];
           }
 
           else
@@ -1352,7 +1352,7 @@ LABEL_30:
 
                   v34 = __62___WKWebExtensionDeclarativeNetRequestRule_ruleInWebKitFormat__block_invoke_2(v29, *(*(&v56 + 1) + 8 * n));
                   v35 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:v34 webKitActionType:v50 chromeActionType:v3];
-                  [v51 addObjectsFromArray:v35];
+                  [array addObjectsFromArray:v35];
                 }
 
                 v31 = [v30 countByEnumeratingWithState:&v56 objects:v77 count:16];
@@ -1375,7 +1375,7 @@ LABEL_30:
   else if ((v40 == 0) | v37 & 1)
   {
     v19 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:self->_condition webKitActionType:v50 chromeActionType:v3];
-    [v51 addObjectsFromArray:v19];
+    [array addObjectsFromArray:v19];
   }
 
   else
@@ -1400,7 +1400,7 @@ LABEL_30:
 
           v23 = __62___WKWebExtensionDeclarativeNetRequestRule_ruleInWebKitFormat__block_invoke_2(self->_condition, *(*(&v52 + 1) + 8 * ii));
           v24 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertRulesWithModifiedCondition:v23 webKitActionType:v50 chromeActionType:v3];
-          [v51 addObjectsFromArray:v24];
+          [array addObjectsFromArray:v24];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v52 objects:v76 count:16];
@@ -1410,67 +1410,67 @@ LABEL_30:
     }
   }
 
-  return v51;
+  return array;
 }
 
-- (id)_convertRulesWithModifiedCondition:(id)a3 webKitActionType:(id)a4 chromeActionType:(id)a5
+- (id)_convertRulesWithModifiedCondition:(id)condition webKitActionType:(id)type chromeActionType:(id)actionType
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [v8 objectForKeyedSubscript:@"initiatorDomains"];
+  conditionCopy = condition;
+  typeCopy = type;
+  actionTypeCopy = actionType;
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = [conditionCopy objectForKeyedSubscript:@"initiatorDomains"];
   if (v12)
   {
-    v13 = [v8 objectForKeyedSubscript:@"excludedInitiatorDomains"];
+    v13 = [conditionCopy objectForKeyedSubscript:@"excludedInitiatorDomains"];
     if (v13)
     {
-      v14 = [v10 isEqualToString:@"allowAllRequests"];
+      v14 = [actionTypeCopy isEqualToString:@"allowAllRequests"];
 
       if (v14)
       {
         goto LABEL_6;
       }
 
-      v12 = [v8 mutableCopy];
+      v12 = [conditionCopy mutableCopy];
       v15 = [v12 objectForKeyedSubscript:@"excludedInitiatorDomains"];
       [v12 setObject:v15 forKeyedSubscript:@"initiatorDomains"];
 
       [v12 setObject:0 forKeyedSubscript:@"excludedInitiatorDomains"];
-      v16 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _webKitRuleWithWebKitActionType:@"ignore-following-rules" chromeActionType:v10 condition:v12];
-      [v11 addObject:v16];
+      v16 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _webKitRuleWithWebKitActionType:@"ignore-following-rules" chromeActionType:actionTypeCopy condition:v12];
+      [array addObject:v16];
     }
   }
 
 LABEL_6:
-  v17 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _webKitRuleWithWebKitActionType:v9 chromeActionType:v10 condition:v8];
-  [v11 addObject:v17];
+  v17 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _webKitRuleWithWebKitActionType:typeCopy chromeActionType:actionTypeCopy condition:conditionCopy];
+  [array addObject:v17];
 
-  if ([v9 isEqualToString:@"make-https"])
+  if ([typeCopy isEqualToString:@"make-https"])
   {
-    v18 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _webKitRuleWithWebKitActionType:@"ignore-following-rules" chromeActionType:v10 condition:v8];
-    [v11 addObject:v18];
+    v18 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _webKitRuleWithWebKitActionType:@"ignore-following-rules" chromeActionType:actionTypeCopy condition:conditionCopy];
+    [array addObject:v18];
   }
 
-  v19 = [v11 copy];
+  v19 = [array copy];
 
   return v19;
 }
 
-- (id)_webKitRuleWithWebKitActionType:(id)a3 chromeActionType:(id)a4 condition:(id)a5
+- (id)_webKitRuleWithWebKitActionType:(id)type chromeActionType:(id)actionType condition:(id)condition
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v72 = a4;
-  v9 = a5;
+  typeCopy = type;
+  actionTypeCopy = actionType;
+  conditionCopy = condition;
   v78 = @"type";
-  v79[0] = v8;
-  v68 = v8;
+  v79[0] = typeCopy;
+  v68 = typeCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
   v71 = [v10 mutableCopy];
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [v9 objectForKeyedSubscript:@"isUrlFilterCaseSensitive"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v12 = [conditionCopy objectForKeyedSubscript:@"isUrlFilterCaseSensitive"];
   v13 = v12;
   v14 = MEMORY[0x1E695E110];
   if (v12)
@@ -1483,23 +1483,23 @@ LABEL_6:
   v76[0] = @"action";
   v76[1] = @"trigger";
   v77[0] = v71;
-  v77[1] = v11;
+  v77[1] = dictionary;
   v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:2];
-  if ([v72 isEqualToString:@"allowAllRequests"])
+  if ([actionTypeCopy isEqualToString:@"allowAllRequests"])
   {
-    [v11 setObject:@".*" forKeyedSubscript:@"url-filter"];
-    v15 = [v9 objectForKeyedSubscript:@"resourceTypes"];
+    [dictionary setObject:@".*" forKeyedSubscript:@"url-filter"];
+    v15 = [conditionCopy objectForKeyedSubscript:@"resourceTypes"];
     v16 = [v15 containsObject:@"main_frame"];
 
     if (v16)
     {
-      v17 = [v9 objectForKeyedSubscript:@"urlFilter"];
+      v17 = [conditionCopy objectForKeyedSubscript:@"urlFilter"];
       v18 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _regexURLFilterForChromeURLFilter:v17];
       v19 = v18;
       if (!v18)
       {
-        v20 = [v9 objectForKeyedSubscript:@"regexFilter"];
-        v8 = v20;
+        v20 = [conditionCopy objectForKeyedSubscript:@"regexFilter"];
+        typeCopy = v20;
         if (v20)
         {
           v19 = v20;
@@ -1513,7 +1513,7 @@ LABEL_6:
 
       v75 = v19;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
-      [v11 setObject:v21 forKeyedSubscript:@"if-top-url"];
+      [dictionary setObject:v21 forKeyedSubscript:@"if-top-url"];
 
       if (!v18)
       {
@@ -1522,13 +1522,13 @@ LABEL_6:
 
     else
     {
-      v25 = [v9 objectForKeyedSubscript:@"urlFilter"];
+      v25 = [conditionCopy objectForKeyedSubscript:@"urlFilter"];
       v26 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _regexURLFilterForChromeURLFilter:v25];
       v27 = v26;
       if (!v26)
       {
-        v28 = [v9 objectForKeyedSubscript:@"regexFilter"];
-        v8 = v28;
+        v28 = [conditionCopy objectForKeyedSubscript:@"regexFilter"];
+        typeCopy = v28;
         if (v28)
         {
           v27 = v28;
@@ -1542,13 +1542,13 @@ LABEL_6:
 
       v74 = v27;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
-      [v11 setObject:v29 forKeyedSubscript:@"if-frame-url"];
+      [dictionary setObject:v29 forKeyedSubscript:@"if-frame-url"];
 
       if (!v26)
       {
       }
 
-      [v11 setObject:&unk_1F1184C68 forKeyedSubscript:@"load-context"];
+      [dictionary setObject:&unk_1F1184C68 forKeyedSubscript:@"load-context"];
     }
 
     v30 = [v70 copy];
@@ -1556,7 +1556,7 @@ LABEL_6:
 
   else
   {
-    v22 = [v9 objectForKeyedSubscript:@"urlFilter"];
+    v22 = [conditionCopy objectForKeyedSubscript:@"urlFilter"];
     v23 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _regexURLFilterForChromeURLFilter:v22];
     v24 = v23;
     if (v23)
@@ -1566,7 +1566,7 @@ LABEL_6:
 
     else
     {
-      v31 = [v9 objectForKeyedSubscript:@"regexFilter"];
+      v31 = [conditionCopy objectForKeyedSubscript:@"regexFilter"];
       v32 = v31;
       v33 = @".*";
       if (v31)
@@ -1577,16 +1577,16 @@ LABEL_6:
       v66 = v33;
     }
 
-    v34 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _allChromeResourceTypesForCondition:v9];
+    v34 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _allChromeResourceTypesForCondition:conditionCopy];
     v67 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _convertedResourceTypesForChromeResourceTypes:v34];
 
-    [v11 setObject:v66 forKeyedSubscript:@"url-filter"];
+    [dictionary setObject:v66 forKeyedSubscript:@"url-filter"];
     if ([v69 BOOLValue])
     {
-      [v11 setObject:v69 forKeyedSubscript:@"url-filter-is-case-sensitive"];
+      [dictionary setObject:v69 forKeyedSubscript:@"url-filter-is-case-sensitive"];
     }
 
-    if ([v72 isEqualToString:@"modifyHeaders"])
+    if ([actionTypeCopy isEqualToString:@"modifyHeaders"])
     {
       v35 = [(NSDictionary *)self->_action objectForKeyedSubscript:@"requestHeaders"];
       v36 = [(NSDictionary *)self->_action objectForKeyedSubscript:@"responseHeaders"];
@@ -1596,18 +1596,18 @@ LABEL_6:
       [v71 setObject:v37 forKeyedSubscript:@"priority"];
     }
 
-    if ([v72 isEqualToString:@"redirect"])
+    if ([actionTypeCopy isEqualToString:@"redirect"])
     {
       v38 = [(NSDictionary *)self->_action objectForKeyedSubscript:@"redirect"];
-      v39 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v40 = [v38 objectForKeyedSubscript:@"url"];
-      [v39 setObject:v40 forKeyedSubscript:@"url"];
+      [dictionary2 setObject:v40 forKeyedSubscript:@"url"];
 
       v41 = [v38 objectForKeyedSubscript:@"regexSubstitution"];
-      [v39 setObject:v41 forKeyedSubscript:@"regex-substitution"];
+      [dictionary2 setObject:v41 forKeyedSubscript:@"regex-substitution"];
 
       v42 = [v38 objectForKeyedSubscript:@"extensionPath"];
-      [v39 setObject:v42 forKeyedSubscript:@"extension-path"];
+      [dictionary2 setObject:v42 forKeyedSubscript:@"extension-path"];
 
       v43 = [v38 objectForKeyedSubscript:@"transform"];
       v44 = [v43 mutableCopy];
@@ -1625,67 +1625,67 @@ LABEL_6:
       [v46 setObject:0 forKeyedSubscript:@"addOrReplaceParams"];
       [v46 setObject:v48 forKeyedSubscript:@"remove-parameters"];
       [v46 setObject:0 forKeyedSubscript:@"removeParams"];
-      [v39 setObject:v44 forKeyedSubscript:@"transform"];
-      [v71 setObject:v39 forKeyedSubscript:@"redirect"];
+      [dictionary2 setObject:v44 forKeyedSubscript:@"transform"];
+      [v71 setObject:dictionary2 forKeyedSubscript:@"redirect"];
     }
 
     if (v67)
     {
-      [v11 setObject:v67 forKeyedSubscript:@"resource-type"];
+      [dictionary setObject:v67 forKeyedSubscript:@"resource-type"];
     }
 
-    v50 = [v9 objectForKeyedSubscript:@"domainType"];
+    v50 = [conditionCopy objectForKeyedSubscript:@"domainType"];
     if (v50)
     {
-      v51 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeDomainTypeToWebKitDomainType];
-      v52 = [v51 objectForKeyedSubscript:v50];
+      _chromeDomainTypeToWebKitDomainType = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeDomainTypeToWebKitDomainType];
+      v52 = [_chromeDomainTypeToWebKitDomainType objectForKeyedSubscript:v50];
       v73 = v52;
       v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
-      [v11 setObject:v53 forKeyedSubscript:@"load-type"];
+      [dictionary setObject:v53 forKeyedSubscript:@"load-type"];
     }
 
-    v54 = [v9 objectForKeyedSubscript:@"domains"];
+    v54 = [conditionCopy objectForKeyedSubscript:@"domains"];
     v55 = v54;
     if (v54)
     {
       v56 = WebKit::mapObjects<NSArray>(v54, &__block_literal_global_362);
-      [v11 setObject:v56 forKeyedSubscript:@"if-domain"];
+      [dictionary setObject:v56 forKeyedSubscript:@"if-domain"];
     }
 
     else
     {
-      v57 = [v9 objectForKeyedSubscript:@"excludedDomains"];
+      v57 = [conditionCopy objectForKeyedSubscript:@"excludedDomains"];
       v56 = v57;
       if (v57)
       {
         v58 = WebKit::mapObjects<NSArray>(v57, &__block_literal_global_362);
-        [v11 setObject:v58 forKeyedSubscript:@"unless-domain"];
+        [dictionary setObject:v58 forKeyedSubscript:@"unless-domain"];
       }
     }
 
-    v59 = [v9 objectForKeyedSubscript:@"initiatorDomains"];
+    v59 = [conditionCopy objectForKeyedSubscript:@"initiatorDomains"];
     v60 = v59;
     if (v59)
     {
       v61 = WebKit::mapObjects<NSArray>(v59, &__block_literal_global_373);
-      [v11 setObject:v61 forKeyedSubscript:@"if-frame-url"];
+      [dictionary setObject:v61 forKeyedSubscript:@"if-frame-url"];
     }
 
     else
     {
-      v62 = [v9 objectForKeyedSubscript:@"excludedInitiatorDomains"];
+      v62 = [conditionCopy objectForKeyedSubscript:@"excludedInitiatorDomains"];
       v61 = v62;
       if (v62)
       {
         v63 = WebKit::mapObjects<NSArray>(v62, &__block_literal_global_373);
-        [v11 setObject:v63 forKeyedSubscript:@"unless-frame-url"];
+        [dictionary setObject:v63 forKeyedSubscript:@"unless-frame-url"];
       }
     }
 
-    v64 = [v9 objectForKeyedSubscript:@"requestMethods"];
+    v64 = [conditionCopy objectForKeyedSubscript:@"requestMethods"];
     if (v64)
     {
-      [v11 setObject:v64 forKeyedSubscript:@"request-method"];
+      [dictionary setObject:v64 forKeyedSubscript:@"request-method"];
     }
 
     v30 = [v70 copy];
@@ -1699,13 +1699,13 @@ LABEL_6:
   v3 = [_WKWebExtensionDeclarativeNetRequestRule _resourcesToTargetWhenNoneAreSpecifiedInRule]::resourceTypesExceptMainFrame;
   if (![_WKWebExtensionDeclarativeNetRequestRule _resourcesToTargetWhenNoneAreSpecifiedInRule]::resourceTypesExceptMainFrame)
   {
-    v4 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeResourceTypeToWebKitResourceType];
-    v5 = [v4 mutableCopy];
+    _chromeResourceTypeToWebKitResourceType = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeResourceTypeToWebKitResourceType];
+    v5 = [_chromeResourceTypeToWebKitResourceType mutableCopy];
 
     [v5 removeObjectForKey:@"main_frame"];
-    v6 = [v5 allKeys];
+    allKeys = [v5 allKeys];
     v7 = [_WKWebExtensionDeclarativeNetRequestRule _resourcesToTargetWhenNoneAreSpecifiedInRule]::resourceTypesExceptMainFrame;
-    [_WKWebExtensionDeclarativeNetRequestRule _resourcesToTargetWhenNoneAreSpecifiedInRule]::resourceTypesExceptMainFrame = v6;
+    [_WKWebExtensionDeclarativeNetRequestRule _resourcesToTargetWhenNoneAreSpecifiedInRule]::resourceTypesExceptMainFrame = allKeys;
 
     v3 = [_WKWebExtensionDeclarativeNetRequestRule _resourcesToTargetWhenNoneAreSpecifiedInRule]::resourceTypesExceptMainFrame;
   }
@@ -1713,24 +1713,24 @@ LABEL_6:
   return v3;
 }
 
-- (id)_allChromeResourceTypesForCondition:(id)a3
+- (id)_allChromeResourceTypesForCondition:(id)condition
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"resourceTypes"];
-  v6 = [v4 objectForKeyedSubscript:@"excludedResourceTypes"];
+  conditionCopy = condition;
+  v5 = [conditionCopy objectForKeyedSubscript:@"resourceTypes"];
+  v6 = [conditionCopy objectForKeyedSubscript:@"excludedResourceTypes"];
   if (v5 | v6)
   {
     if (v5)
     {
       v7 = [MEMORY[0x1E695DFD8] setWithArray:v5];
-      v8 = [v7 allObjects];
+      allObjects = [v7 allObjects];
     }
 
     else
     {
-      v9 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeResourceTypeToWebKitResourceType];
-      v10 = [v9 mutableCopy];
+      _chromeResourceTypeToWebKitResourceType = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeResourceTypeToWebKitResourceType];
+      v10 = [_chromeResourceTypeToWebKitResourceType mutableCopy];
 
       v18 = 0u;
       v19 = 0u;
@@ -1759,57 +1759,57 @@ LABEL_6:
         while (v12);
       }
 
-      v8 = [v10 allKeys];
+      allObjects = [v10 allKeys];
     }
   }
 
   else
   {
-    v8 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _resourcesToTargetWhenNoneAreSpecifiedInRule];
+    allObjects = [(_WKWebExtensionDeclarativeNetRequestRule *)self _resourcesToTargetWhenNoneAreSpecifiedInRule];
   }
 
-  return v8;
+  return allObjects;
 }
 
-- (id)_convertedResourceTypesForChromeResourceTypes:(id)a3
+- (id)_convertedResourceTypesForChromeResourceTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeResourceTypeToWebKitResourceType];
+  typesCopy = types;
+  _chromeResourceTypeToWebKitResourceType = [(_WKWebExtensionDeclarativeNetRequestRule *)self _chromeResourceTypeToWebKitResourceType];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __90___WKWebExtensionDeclarativeNetRequestRule__convertedResourceTypesForChromeResourceTypes___block_invoke;
   v9[3] = &unk_1E762FD18;
-  v10 = v5;
-  v6 = v5;
-  v7 = WebKit::mapObjects<NSArray>(v4, v9);
+  v10 = _chromeResourceTypeToWebKitResourceType;
+  v6 = _chromeResourceTypeToWebKitResourceType;
+  v7 = WebKit::mapObjects<NSArray>(typesCopy, v9);
 
   return v7;
 }
 
-- (id)_findLongestCommonSubstringWithString:(id)a3 andString:(id)a4
+- (id)_findLongestCommonSubstringWithString:(id)string andString:(id)andString
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  stringCopy = string;
+  andStringCopy = andString;
+  if ([stringCopy length] && objc_msgSend(andStringCopy, "length"))
   {
     v7 = 0;
     v8 = &stru_1F1147748;
-    while (v7 < [v5 length])
+    while (v7 < [stringCopy length])
     {
-      for (i = 0; i < [v6 length]; ++i)
+      for (i = 0; i < [andStringCopy length]; ++i)
       {
-        v10 = [v5 characterAtIndex:v7];
-        if (v10 == [v6 characterAtIndex:i])
+        v10 = [stringCopy characterAtIndex:v7];
+        if (v10 == [andStringCopy characterAtIndex:i])
         {
-          for (j = 1; v7 + j < [v5 length]; ++j)
+          for (j = 1; v7 + j < [stringCopy length]; ++j)
           {
-            if (i + j >= [v6 length])
+            if (i + j >= [andStringCopy length])
             {
               break;
             }
 
-            v12 = [v5 characterAtIndex:v7 + j];
-            if (v12 != [v6 characterAtIndex:i + j])
+            v12 = [stringCopy characterAtIndex:v7 + j];
+            if (v12 != [andStringCopy characterAtIndex:i + j])
             {
               break;
             }
@@ -1817,7 +1817,7 @@ LABEL_6:
 
           if (j)
           {
-            v13 = [v5 substringWithRange:{v7, j}];
+            v13 = [stringCopy substringWithRange:{v7, j}];
             v14 = [v13 length];
             if (v14 > [(__CFString *)v8 length])
             {
@@ -1853,18 +1853,18 @@ LABEL_6:
   return v16;
 }
 
-- (id)_combineRequestDomain:(id)a3 withURLFilter:(id)a4
+- (id)_combineRequestDomain:(id)domain withURLFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  domainCopy = domain;
+  filterCopy = filter;
+  if (!filterCopy)
   {
-    v15 = [@"||" stringByAppendingString:v6];
+    v15 = [@"||" stringByAppendingString:domainCopy];
     goto LABEL_34;
   }
 
-  v8 = v6;
-  v9 = v7;
+  v8 = domainCopy;
+  v9 = filterCopy;
   for (i = v8; ([i hasPrefix:@"."] & 1) != 0; i = v11)
   {
     v11 = [i substringFromIndex:1];
@@ -1930,19 +1930,19 @@ LABEL_28:
     v22 = [v21 componentsSeparatedByString:@"/"];
     v23 = [v22 mutableCopy];
 
-    v24 = [v23 firstObject];
-    LOBYTE(v22) = [v24 hasSuffix:@"*"];
+    firstObject = [v23 firstObject];
+    LOBYTE(v22) = [firstObject hasSuffix:@"*"];
 
-    v25 = [v23 firstObject];
+    firstObject2 = [v23 firstObject];
     if (v22)
     {
-      v26 = [v25 stringByAppendingString:v8];
+      v26 = [firstObject2 stringByAppendingString:v8];
       [v23 replaceObjectAtIndex:0 withObject:v26];
     }
 
     else
     {
-      v26 = [v25 stringByAppendingString:@"*"];
+      v26 = [firstObject2 stringByAppendingString:@"*"];
       v31 = [v26 stringByAppendingString:v8];
       [v23 replaceObjectAtIndex:0 withObject:v31];
     }
@@ -1972,44 +1972,44 @@ LABEL_34:
   return v15;
 }
 
-- (id)_regexURLFilterForChromeURLFilter:(id)a3
+- (id)_regexURLFilterForChromeURLFilter:(id)filter
 {
-  v3 = a3;
-  if (![v3 length])
+  filterCopy = filter;
+  if (![filterCopy length])
   {
     v6 = 0;
     goto LABEL_18;
   }
 
-  v4 = [v3 hasPrefix:@"||"];
+  v4 = [filterCopy hasPrefix:@"||"];
   if (v4)
   {
-    v5 = [v3 substringFromIndex:2];
+    v5 = [filterCopy substringFromIndex:2];
 LABEL_7:
     v7 = v5;
     v8 = v4 ^ 1;
 
-    v3 = v7;
+    filterCopy = v7;
     goto LABEL_9;
   }
 
-  if ([v3 hasPrefix:@"|"])
+  if ([filterCopy hasPrefix:@"|"])
   {
-    v5 = [v3 substringFromIndex:1];
+    v5 = [filterCopy substringFromIndex:1];
     goto LABEL_7;
   }
 
   v8 = 0;
 LABEL_9:
-  v10 = [v3 hasSuffix:@"|"];
+  v10 = [filterCopy hasSuffix:@"|"];
   if (v10)
   {
-    v11 = [v3 substringToIndex:{objc_msgSend(v3, "length") - 1}];
+    v11 = [filterCopy substringToIndex:{objc_msgSend(filterCopy, "length") - 1}];
 
-    v3 = v11;
+    filterCopy = v11;
   }
 
-  v12 = WebKit::escapeCharactersInString(v3, &stru_1F1148A28.isa, v9);
+  v12 = WebKit::escapeCharactersInString(filterCopy, &stru_1F1148A28.isa, v9);
   v13 = [v12 stringByReplacingOccurrencesOfString:@"*" withString:@".*"];
 
   v14 = [v13 stringByReplacingOccurrencesOfString:@"^" withString:@"[^a-zA-Z0-9_.%-]"];
@@ -2056,17 +2056,17 @@ LABEL_18:
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   priority = self->_priority;
-  if (priority < [v4 priority])
+  if (priority < [compareCopy priority])
   {
     goto LABEL_2;
   }
 
   v7 = self->_priority;
-  if (v7 > [v4 priority])
+  if (v7 > [compareCopy priority])
   {
     v6 = -1;
     goto LABEL_9;
@@ -2074,8 +2074,8 @@ LABEL_18:
 
   v8 = [(NSDictionary *)self->_action objectForKeyedSubscript:@"type"];
   v9 = priorityForRuleType(v8);
-  v10 = [v4 action];
-  v11 = [v10 objectForKeyedSubscript:@"type"];
+  action = [compareCopy action];
+  v11 = [action objectForKeyedSubscript:@"type"];
   v12 = priorityForRuleType(v11);
 
   if (v9 < v12)
@@ -2088,8 +2088,8 @@ LABEL_2:
   {
     v13 = [(NSDictionary *)self->_action objectForKeyedSubscript:@"type"];
     v14 = priorityForRuleType(v13);
-    v15 = [v4 action];
-    v16 = [v15 objectForKeyedSubscript:@"type"];
+    action2 = [compareCopy action];
+    v16 = [action2 objectForKeyedSubscript:@"type"];
     v17 = priorityForRuleType(v16);
 
     if (v14 <= v17)

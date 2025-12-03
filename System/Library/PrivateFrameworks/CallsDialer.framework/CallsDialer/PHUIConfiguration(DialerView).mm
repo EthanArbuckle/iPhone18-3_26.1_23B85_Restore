@@ -40,12 +40,12 @@
 
 + (double)yOffsetForSmartDialerLCDView
 {
-  v0 = [MEMORY[0x277D3A7E0] screenSize];
-  if (v0 > 8)
+  screenSize = [MEMORY[0x277D3A7E0] screenSize];
+  if (screenSize > 8)
   {
-    if (v0 != 13)
+    if (screenSize != 13)
     {
-      if (v0 != 9)
+      if (screenSize != 9)
       {
         return 43.0;
       }
@@ -58,9 +58,9 @@
 
   else
   {
-    if (v0)
+    if (screenSize)
     {
-      if (v0 != 1)
+      if (screenSize != 1)
       {
         return 43.0;
       }
@@ -75,23 +75,23 @@
 + (double)yOffsetForSmartDialerLCDViewForOrientation:()DialerView
 {
   v0 = objc_opt_new();
-  v1 = [MEMORY[0x277D3A7E0] screenSize];
-  if (v1 > 0xD)
+  screenSize = [MEMORY[0x277D3A7E0] screenSize];
+  if (screenSize > 0xD)
   {
     goto LABEL_9;
   }
 
   v2 = -25.0;
-  if (((1 << v1) & 0x2202) == 0)
+  if (((1 << screenSize) & 0x2202) == 0)
   {
-    if (((1 << v1) & 0x104) != 0)
+    if (((1 << screenSize) & 0x104) != 0)
     {
       if ([v0 phoneLargeFormatUIEnabled])
       {
-        v3 = [MEMORY[0x277D75418] currentDevice];
-        v4 = [v3 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
           v2 = -120.0;
           goto LABEL_10;
@@ -99,7 +99,7 @@
       }
     }
 
-    else if (!v1)
+    else if (!screenSize)
     {
       v2 = 5.0;
       goto LABEL_10;

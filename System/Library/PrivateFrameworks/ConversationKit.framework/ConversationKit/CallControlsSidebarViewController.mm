@@ -1,6 +1,6 @@
 @interface CallControlsSidebarViewController
 - (BOOL)isCaptioningEnabled;
-- (_TtC15ConversationKit33CallControlsSidebarViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit33CallControlsSidebarViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 - (void)wantsDismissal;
 @end
@@ -9,24 +9,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CallControlsSidebarViewController.viewDidLoad()();
 }
 
-- (_TtC15ConversationKit33CallControlsSidebarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit33CallControlsSidebarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CallControlsSidebarViewController.init(nibName:bundle:)();
 }
 
 - (BOOL)isCaptioningEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CallControlsSidebarViewController.isCaptioningEnabled.getter();
 
   return v3 & 1;
@@ -34,7 +34,7 @@
 
 - (void)wantsDismissal
 {
-  v2 = self;
+  selfCopy = self;
   CallControlsSidebarViewController.wantsDismissal()();
 }
 

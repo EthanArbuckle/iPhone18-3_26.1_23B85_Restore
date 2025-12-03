@@ -1,31 +1,31 @@
 @interface TSTStrokeLayer
 + (id)strokeLayer;
-- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)a3;
-- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)a3;
-- (TSTStrokeLayer)initWithContext:(id)a3 columnOrRowIndex:(unsigned int)a4;
+- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)index;
+- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)range;
+- (TSTStrokeLayer)initWithContext:(id)context columnOrRowIndex:(unsigned int)index;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)findStrokeAndRangeAtIndex:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)nextStrokeAndRange:(id)a3;
-- (id)strokeLayerAtIndex:(unint64_t)a3;
-- (id)strokeLayerModifiedByInsertingSpaceAt:(TSTSimpleRange)a3;
-- (id)strokeLayerModifiedByRemovingRangeAt:(TSTSimpleRange)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)findStrokeAndRangeAtIndex:(int64_t)index;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)nextStrokeAndRange:(id)range;
+- (id)strokeLayerAtIndex:(unint64_t)index;
+- (id)strokeLayerModifiedByInsertingSpaceAt:(TSTSimpleRange)at;
+- (id)strokeLayerModifiedByRemovingRangeAt:(TSTSimpleRange)at;
 - (int)startingStrokeOrder;
 - (int64_t)startingIndex;
-- (void)enumerateStrokesInRange:(TSTSimpleRange)a3 usingBlock:(id)a4;
-- (void)enumerateStrokesUsingBlock:(id)a3;
-- (void)enumerateWidthsInRange:(TSTSimpleRange)a3 usingBlock:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_appendStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5;
+- (void)enumerateStrokesInRange:(TSTSimpleRange)range usingBlock:(id)block;
+- (void)enumerateStrokesUsingBlock:(id)block;
+- (void)enumerateWidthsInRange:(TSTSimpleRange)range usingBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_appendStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order;
 - (void)p_flattenStrokeOrder;
-- (void)p_insertSpaceAtRange:(TSTSimpleRange)a3;
+- (void)p_insertSpaceAtRange:(TSTSimpleRange)range;
 - (void)p_invalidate;
-- (void)p_invalidateRange:(TSTSimpleRange)a3;
-- (void)p_mergeStrokeRunsAtPosition:(unint64_t)a3;
-- (void)p_removeRange:(TSTSimpleRange)a3;
-- (void)p_setStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5;
-- (void)saveToArchiver:(id)a3;
+- (void)p_invalidateRange:(TSTSimpleRange)range;
+- (void)p_mergeStrokeRunsAtPosition:(unint64_t)position;
+- (void)p_removeRange:(TSTSimpleRange)range;
+- (void)p_setStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTStrokeLayer
@@ -39,14 +39,14 @@
   return v10;
 }
 
-- (TSTStrokeLayer)initWithContext:(id)a3 columnOrRowIndex:(unsigned int)a4
+- (TSTStrokeLayer)initWithContext:(id)context columnOrRowIndex:(unsigned int)index
 {
   v6.receiver = self;
   v6.super_class = TSTStrokeLayer;
-  result = [(TSTStrokeLayer *)&v6 initWithContext:a3];
+  result = [(TSTStrokeLayer *)&v6 initWithContext:context];
   if (result)
   {
-    result->_columnOrRowIndex = a4;
+    result->_columnOrRowIndex = index;
   }
 
   return result;
@@ -80,12 +80,12 @@
   }
 }
 
-- (id)findStrokeAndRangeAtIndex:(int64_t)a3
+- (id)findStrokeAndRangeAtIndex:(int64_t)index
 {
   p_strokeRuns = &self->_strokeRuns;
   begin = self->_strokeRuns.__begin_;
   end = self->_strokeRuns.__end_;
-  sub_2213FFC6C(v19, 0, a3, 1, 0);
+  sub_2213FFC6C(v19, 0, index, 1, 0);
   if (end != begin)
   {
     v7 = (end - begin) >> 5;
@@ -115,7 +115,7 @@
   v14 = end - p_strokeRuns->__begin_;
   v15 = v14 >> 5;
   v16 = (p_strokeRuns->__end_ - p_strokeRuns->__begin_) >> 5;
-  if (v14 >> 5 < v16 && *(v13 + v14 + 16) + *(v13 + v14 + 8) <= a3)
+  if (v14 >> 5 < v16 && *(v13 + v14 + 16) + *(v13 + v14 + 8) <= index)
   {
     ++v15;
   }
@@ -133,9 +133,9 @@
   return v17;
 }
 
-- (id)nextStrokeAndRange:(id)a3
+- (id)nextStrokeAndRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   objc_opt_class();
   v5 = TSUCheckedDynamicCast();
   v10 = objc_msgSend_position(v5, v6, v7, v8, v9);
@@ -152,7 +152,7 @@
   return v13;
 }
 
-- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)a3
+- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)index
 {
   retstr->var1.length = 0;
   *&retstr->var2 = 0;
@@ -212,7 +212,7 @@
   return result;
 }
 
-- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)a3
+- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)range
 {
   retstr->var1.length = 0;
   *&retstr->var2 = 0;
@@ -227,7 +227,7 @@
     if (v7 < (self[1].var3 - v9) >> 5)
     {
       v10 = *(v9 + 32 * v7);
-      objc_msgSend_width(v10, a3, a4, v4, v5);
+      objc_msgSend_width(v10, range, a4, v4, v5);
       retstr->var0 = v11;
       retstr->var1 = *(*p_var2 + 32 * v7 + 8);
       self = objc_msgSend_isPortalStroke(v10, v12, v13, v14, v15);
@@ -239,15 +239,15 @@
   return self;
 }
 
-- (void)enumerateStrokesUsingBlock:(id)a3
+- (void)enumerateStrokesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
   begin = self->_strokeRuns.__begin_;
   for (i = self->_strokeRuns.__end_; begin != i; begin = (begin + 32))
   {
     v7 = *begin;
-    (*(v4 + 2))(v4, v7, *(begin + 1), *(begin + 2), *(begin + 6), &v9);
+    (*(blockCopy + 2))(blockCopy, v7, *(begin + 1), *(begin + 2), *(begin + 6), &v9);
     v8 = v9;
 
     if (v8)
@@ -257,11 +257,11 @@
   }
 }
 
-- (void)enumerateStrokesInRange:(TSTSimpleRange)a3 usingBlock:(id)a4
+- (void)enumerateStrokesInRange:(TSTSimpleRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  origin = a3.origin;
-  v7 = a4;
+  length = range.length;
+  origin = range.origin;
+  blockCopy = block;
   v47 = 0;
   v11 = objc_msgSend_findStrokeAndRangeAtIndex_(self, v8, origin, v9, v10);
   if (v11)
@@ -332,7 +332,7 @@
           v35 = v25 == 0x7FFFFFFFFFFFFFFFLL ? 0 : v33;
           v36 = objc_msgSend_stroke(v17, v26, v27, v28, v29);
           v41 = objc_msgSend_order(v17, v37, v38, v39, v40);
-          v7[2](v7, v36, v34, v35, v41, &v47);
+          blockCopy[2](blockCopy, v36, v34, v35, v41, &v47);
 
           v45 = objc_msgSend_nextStrokeAndRange_(self, v42, v17, v43, v44);
 
@@ -352,11 +352,11 @@ LABEL_32:
   }
 }
 
-- (void)enumerateWidthsInRange:(TSTSimpleRange)a3 usingBlock:(id)a4
+- (void)enumerateWidthsInRange:(TSTSimpleRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  origin = a3.origin;
-  v7 = a4;
+  length = range.length;
+  origin = range.origin;
+  blockCopy = block;
   v27 = 0;
   v26 = 0;
   v24 = 0u;
@@ -390,7 +390,7 @@ LABEL_32:
         break;
       }
 
-      v7[2](v7, *&v24);
+      blockCopy[2](blockCopy, *&v24);
       v19[0] = v24;
       v19[1] = v25;
       v20 = v26;
@@ -405,30 +405,30 @@ LABEL_32:
   }
 }
 
-- (id)strokeLayerModifiedByInsertingSpaceAt:(TSTSimpleRange)a3
+- (id)strokeLayerModifiedByInsertingSpaceAt:(TSTSimpleRange)at
 {
-  length = a3.length;
-  origin = a3.origin;
-  v6 = objc_msgSend_mutableCopy(self, a2, a3.origin, a3.length, v3);
+  length = at.length;
+  origin = at.origin;
+  v6 = objc_msgSend_mutableCopy(self, a2, at.origin, at.length, v3);
   objc_msgSend_insertSpaceAtRange_(v6, v7, origin, length, v8);
 
   return v6;
 }
 
-- (id)strokeLayerModifiedByRemovingRangeAt:(TSTSimpleRange)a3
+- (id)strokeLayerModifiedByRemovingRangeAt:(TSTSimpleRange)at
 {
-  length = a3.length;
-  origin = a3.origin;
-  v6 = objc_msgSend_mutableCopy(self, a2, a3.origin, a3.length, v3);
+  length = at.length;
+  origin = at.origin;
+  v6 = objc_msgSend_mutableCopy(self, a2, at.origin, at.length, v3);
   objc_msgSend_removeRange_(v6, v7, origin, length, v8);
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_context(self, v10, v11, v12, v13);
   v18 = objc_msgSend_initWithContext_(v9, v15, v14, v16, v17);
 
@@ -445,9 +445,9 @@ LABEL_32:
   return v18;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v6 = objc_msgSend_allocWithZone_(TSTMutableStrokeLayer, a2, a3, v3, v4);
+  v6 = objc_msgSend_allocWithZone_(TSTMutableStrokeLayer, a2, zone, v3, v4);
   v11 = objc_msgSend_context(self, v7, v8, v9, v10);
   v15 = objc_msgSend_initWithContext_(v6, v12, v11, v13, v14);
 
@@ -464,9 +464,9 @@ LABEL_32:
   return v15;
 }
 
-- (id)strokeLayerAtIndex:(unint64_t)a3
+- (id)strokeLayerAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeLayer strokeLayerAtIndex:]", v3, v4);
@@ -479,36 +479,36 @@ LABEL_32:
   return self;
 }
 
-- (void)p_appendStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5
+- (void)p_appendStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order
 {
-  length = a4.length;
-  origin = a4.origin;
-  v9 = a3;
+  length = range.length;
+  origin = range.origin;
+  strokeCopy = stroke;
   if (length)
   {
-    sub_2213FFC6C(v10, v9, origin, length, a5);
+    sub_2213FFC6C(v10, strokeCopy, origin, length, order);
     sub_2213FD474(&self->_strokeRuns.__begin_, v10);
   }
 }
 
-- (void)p_setStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5
+- (void)p_setStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order
 {
-  length = a4.length;
-  origin = a4.origin;
-  v9 = a3;
+  length = range.length;
+  origin = range.origin;
+  strokeCopy = stroke;
   p_strokeRuns = &self->_strokeRuns;
   end = self->_strokeRuns.__end_;
   begin = self->_strokeRuns.__begin_;
   if (begin == end)
   {
-    sub_2213FFC6C(v58, v9, origin, length, a5);
+    sub_2213FFC6C(v58, strokeCopy, origin, length, order);
     sub_2213FD8F0(&self->_strokeRuns, begin, v58);
 LABEL_36:
 
     goto LABEL_39;
   }
 
-  sub_2213FFC6C(v58, v9, origin, length, a5);
+  sub_2213FFC6C(v58, strokeCopy, origin, length, order);
   v13 = (end - begin) >> 5;
   do
   {
@@ -543,7 +543,7 @@ LABEL_36:
     if (v24 > origin || v25 + v24 - 1 < (length + origin - 1))
     {
       v28 = v24 == 0x7FFFFFFFFFFFFFFFLL || v25 == 0 || origin == 0x7FFFFFFFFFFFFFFFLL || length == 0;
-      if (!v28 && ((v47 = v25 + v24, origin + length != v24) ? (v48 = v47 == origin) : (v48 = 1), v48 && *(v23 + 24) == a5 && (v49 = sub_2213FC7C4(*v23, v9), v50 = *p_strokeRuns + v20, v24 = *(v50 + 8), v49)))
+      if (!v28 && ((v47 = v25 + v24, origin + length != v24) ? (v48 = v47 == origin) : (v48 = 1), v48 && *(v23 + 24) == order && (v49 = sub_2213FC7C4(*v23, strokeCopy), v50 = *p_strokeRuns + v20, v24 = *(v50 + 8), v49)))
       {
         v51 = *(v50 + 16);
         if (v24 >= origin)
@@ -590,7 +590,7 @@ LABEL_36:
 
       else if (origin >= v24)
       {
-        sub_2213FFC6C(v58, v9, origin, length, a5);
+        sub_2213FFC6C(v58, strokeCopy, origin, length, order);
         sub_2213FD8F0(&self->_strokeRuns, begin + 32, v58);
 
         ++v21;
@@ -598,7 +598,7 @@ LABEL_36:
 
       else
       {
-        sub_2213FFC6C(v58, v9, origin, length, a5);
+        sub_2213FFC6C(v58, strokeCopy, origin, length, order);
         sub_2213FD8F0(&self->_strokeRuns, begin, v58);
       }
 
@@ -613,15 +613,15 @@ LABEL_36:
   v34 = *(v33 + 8);
   v35 = *(v33 + 16);
   v38 = v34 == 0x7FFFFFFFFFFFFFFFLL || v35 == 0 || origin == 0x7FFFFFFFFFFFFFFFLL || length == 0;
-  if (v38 || ((v39 = v35 + v34, v40 = origin + length, origin + length != v34) ? (v41 = v39 == origin) : (v41 = 1), !v41 || *(v33 + 24) != a5))
+  if (v38 || ((v39 = v35 + v34, v40 = origin + length, origin + length != v34) ? (v41 = v39 == origin) : (v41 = 1), !v41 || *(v33 + 24) != order))
   {
 LABEL_35:
-    sub_2213FFC6C(v58, v9, origin, length, a5);
+    sub_2213FFC6C(v58, strokeCopy, origin, length, order);
     sub_2213FD8F0(p_strokeRuns, v19, v58);
     goto LABEL_36;
   }
 
-  if ((sub_2213FC7C4(*v33, v9) & 1) == 0)
+  if ((sub_2213FC7C4(*v33, strokeCopy) & 1) == 0)
   {
     v19 = p_strokeRuns[1];
     goto LABEL_35;
@@ -663,14 +663,14 @@ LABEL_39:
   p_strokeRuns->__end_ = begin;
 }
 
-- (void)p_invalidateRange:(TSTSimpleRange)a3
+- (void)p_invalidateRange:(TSTSimpleRange)range
 {
-  length = a3.length;
-  origin = a3.origin;
+  length = range.length;
+  origin = range.origin;
   p_strokeRuns = &self->_strokeRuns;
   begin = self->_strokeRuns.__begin_;
   end = self->_strokeRuns.__end_;
-  sub_2213FFC6C(v54, 0, a3.origin, a3.length, 0);
+  sub_2213FFC6C(v54, 0, range.origin, range.length, 0);
   if (end != begin)
   {
     v8 = (end - begin) >> 5;
@@ -956,14 +956,14 @@ LABEL_41:
   }
 }
 
-- (void)p_mergeStrokeRunsAtPosition:(unint64_t)a3
+- (void)p_mergeStrokeRunsAtPosition:(unint64_t)position
 {
-  v3 = a3 + 1;
+  v3 = position + 1;
   p_strokeRuns = &self->_strokeRuns;
   begin = self->_strokeRuns.__begin_;
-  if (a3 + 1 < (self->_strokeRuns.__end_ - begin) >> 5)
+  if (position + 1 < (self->_strokeRuns.__end_ - begin) >> 5)
   {
-    v7 = begin + 32 * a3;
+    v7 = begin + 32 * position;
     v8 = begin + 32 * v3;
     v9 = *(v7 + 2);
     v10 = *(v7 + 1);
@@ -973,7 +973,7 @@ LABEL_41:
     {
       v14 = sub_2213FC7C4(*v7, *v8);
       begin = p_strokeRuns->__begin_;
-      v15 = p_strokeRuns->__begin_ + 32 * a3;
+      v15 = p_strokeRuns->__begin_ + 32 * position;
       v10 = *(v15 + 8);
       v9 = *(v15 + 16);
       v16 = p_strokeRuns->__begin_ + 32 * v3;
@@ -1008,7 +1008,7 @@ LABEL_41:
       if (v21 > v20)
       {
 LABEL_26:
-        v22 = begin + 32 * a3;
+        v22 = begin + 32 * position;
         if (v10 >= v12)
         {
           v23 = v12;
@@ -1091,14 +1091,14 @@ LABEL_26:
   }
 }
 
-- (void)p_insertSpaceAtRange:(TSTSimpleRange)a3
+- (void)p_insertSpaceAtRange:(TSTSimpleRange)range
 {
-  length = a3.length;
-  origin = a3.origin;
+  length = range.length;
+  origin = range.origin;
   p_strokeRuns = &self->_strokeRuns;
   begin = self->_strokeRuns.__begin_;
   end = self->_strokeRuns.__end_;
-  sub_2213FFC6C(&v37, 0, a3.origin, a3.length, 0);
+  sub_2213FFC6C(&v37, 0, range.origin, range.length, 0);
   if (end != begin)
   {
     v8 = (end - begin) >> 5;
@@ -1243,14 +1243,14 @@ LABEL_26:
   }
 }
 
-- (void)p_removeRange:(TSTSimpleRange)a3
+- (void)p_removeRange:(TSTSimpleRange)range
 {
-  length = a3.length;
-  origin = a3.origin;
+  length = range.length;
+  origin = range.origin;
   p_strokeRuns = &self->_strokeRuns;
   begin = self->_strokeRuns.__begin_;
   end = self->_strokeRuns.__end_;
-  sub_2213FFC6C(v40, 0, a3.origin, a3.length, 0);
+  sub_2213FFC6C(v40, 0, range.origin, range.length, 0);
   if (end != begin)
   {
     v8 = (end - begin) >> 5;
@@ -1498,11 +1498,11 @@ LABEL_71:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v15 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v15, v4, off_2812E4498[94], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[94], v5, v6);
 
   if (*(v7 + 16))
   {
@@ -1518,12 +1518,12 @@ LABEL_71:
       v12 = *(*(v7 + 40) + 8 * v10 + 8);
       if (*(v12 + 24))
       {
-        objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v8, *(v12 + 24), v15, v9);
+        objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v8, *(v12 + 24), unarchiverCopy, v9);
       }
 
       else
       {
-        objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v8, v11, v15, v9);
+        objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v8, v11, unarchiverCopy, v9);
       }
       v13 = ;
       objc_msgSend_p_appendStroke_inRange_order_(self, v14, v13, *(v12 + 32), *(v12 + 36), *(v12 + 40));
@@ -1535,11 +1535,11 @@ LABEL_71:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v27 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v27, v4, sub_2214005C8, off_2812E4498[94], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2214005C8, off_2812E4498[94], v5);
 
   v11 = objc_msgSend_columnOrRowIndex(self, v7, v8, v9, v10);
   *(v6 + 16) |= 1u;
@@ -1598,7 +1598,7 @@ LABEL_10:
       v21[3] = v25;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v16, v14, v25, v27, v15);
+    objc_msgSend_saveToArchive_archiver_(v16, v14, v25, archiverCopy, v15);
 
     begin = (begin + 32);
   }

@@ -1,47 +1,47 @@
 @interface PKConfigurablePassDetailSectionsController
-- (BOOL)_validateField:(id)a3;
-- (BOOL)hasArbitraryInfoField:(id)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (BOOL)_validateField:(id)field;
+- (BOOL)hasArbitraryInfoField:(id)field;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 - (NSArray)sectionIdentifiers;
-- (PKConfigurablePassDetailSectionsController)initWithPaymentPass:(id)a3 forSelectSections:(id)a4;
+- (PKConfigurablePassDetailSectionsController)initWithPaymentPass:(id)pass forSelectSections:(id)sections;
 - (PKConfigurablePassDetailSectionsControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)_initWithPaymentPass:(id)a3 visibleSectionIdentifiers:(id)a4 clientReservedIdentifiers:(id)a5 renderUnclaimedFields:(BOOL)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)titleForFooterInSectionIdentifier:(id)a3;
-- (id)titleForHeaderInSectionIdentifier:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)_initWithPaymentPass:(id)pass visibleSectionIdentifiers:(id)identifiers clientReservedIdentifiers:(id)reservedIdentifiers renderUnclaimedFields:(BOOL)fields;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)titleForFooterInSectionIdentifier:(id)identifier;
+- (id)titleForHeaderInSectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKConfigurablePassDetailSectionsController
 
-- (PKConfigurablePassDetailSectionsController)initWithPaymentPass:(id)a3 forSelectSections:(id)a4
+- (PKConfigurablePassDetailSectionsController)initWithPaymentPass:(id)pass forSelectSections:(id)sections
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithArray:v7];
+  sectionsCopy = sections;
+  passCopy = pass;
+  v9 = [[v6 alloc] initWithArray:sectionsCopy];
 
-  v10 = [(PKConfigurablePassDetailSectionsController *)self _initWithPaymentPass:v8 visibleSectionIdentifiers:v9 clientReservedIdentifiers:0 renderUnclaimedFields:0];
+  v10 = [(PKConfigurablePassDetailSectionsController *)self _initWithPaymentPass:passCopy visibleSectionIdentifiers:v9 clientReservedIdentifiers:0 renderUnclaimedFields:0];
   return v10;
 }
 
-- (id)_initWithPaymentPass:(id)a3 visibleSectionIdentifiers:(id)a4 clientReservedIdentifiers:(id)a5 renderUnclaimedFields:(BOOL)a6
+- (id)_initWithPaymentPass:(id)pass visibleSectionIdentifiers:(id)identifiers clientReservedIdentifiers:(id)reservedIdentifiers renderUnclaimedFields:(BOOL)fields
 {
-  v6 = a6;
+  fieldsCopy = fields;
   v120 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v66 = a4;
-  v11 = a5;
+  passCopy = pass;
+  identifiersCopy = identifiers;
+  reservedIdentifiersCopy = reservedIdentifiers;
   v113.receiver = self;
   v113.super_class = PKConfigurablePassDetailSectionsController;
   v84 = [(PKPaymentPassDetailSectionController *)&v113 init];
   if (v84)
   {
-    v61 = v6;
-    v72 = v11;
-    v75 = [v10 passDetailSections];
+    v61 = fieldsCopy;
+    v72 = reservedIdentifiersCopy;
+    passDetailSections = [passCopy passDetailSections];
     v73 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v70 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v67 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -50,8 +50,8 @@
     v110 = 0u;
     v111 = 0u;
     v112 = 0u;
-    v65 = v10;
-    obj = [v10 backFieldBuckets];
+    v65 = passCopy;
+    obj = [passCopy backFieldBuckets];
     v13 = [obj countByEnumeratingWithState:&v109 objects:v119 count:16];
     if (v13)
     {
@@ -123,9 +123,9 @@
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v25 = v75;
+    v25 = passDetailSections;
     v26 = [v25 countByEnumeratingWithState:&v97 objects:v117 count:16];
-    v11 = v72;
+    reservedIdentifiersCopy = v72;
     v71 = v25;
     if (v26)
     {
@@ -144,10 +144,10 @@
           }
 
           v30 = *(*(&v97 + 1) + 8 * v29);
-          v31 = [v30 identifier];
-          if (v66)
+          identifier = [v30 identifier];
+          if (identifiersCopy)
           {
-            if (([v66 containsObject:v31] & 1) == 0)
+            if (([identifiersCopy containsObject:identifier] & 1) == 0)
             {
               goto LABEL_28;
             }
@@ -158,23 +158,23 @@
             goto LABEL_28;
           }
 
-          if ([v11 containsObject:v31])
+          if ([reservedIdentifiersCopy containsObject:identifier])
           {
 LABEL_28:
-            v32 = [v30 rows];
-            [v12 removeObjectsForKeys:v32];
+            rows = [v30 rows];
+            [v12 removeObjectsForKeys:rows];
             goto LABEL_40;
           }
 
-          v82 = v31;
-          v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
+          v82 = identifier;
+          rows = objc_alloc_init(MEMORY[0x1E695DF70]);
           v93 = 0u;
           v94 = 0u;
           v95 = 0u;
           v96 = 0u;
           obja = v30;
-          v33 = [v30 rows];
-          v34 = [v33 countByEnumeratingWithState:&v93 objects:v116 count:16];
+          rows2 = [v30 rows];
+          v34 = [rows2 countByEnumeratingWithState:&v93 objects:v116 count:16];
           if (v34)
           {
             v35 = v34;
@@ -185,7 +185,7 @@ LABEL_28:
               {
                 if (*v94 != v36)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(rows2);
                 }
 
                 v38 = *(*(&v93 + 1) + 8 * k);
@@ -193,22 +193,22 @@ LABEL_28:
                 if (v39 && [(PKConfigurablePassDetailSectionsController *)v84 _validateField:v39])
                 {
                   [v12 removeObjectForKey:v38];
-                  [v32 addObject:v39];
+                  [rows addObject:v39];
                 }
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v93 objects:v116 count:16];
+              v35 = [rows2 countByEnumeratingWithState:&v93 objects:v116 count:16];
             }
 
             while (v35);
           }
 
-          v74[2](v74, obja, v32);
+          v74[2](v74, obja, rows);
           v25 = v71;
-          v11 = v72;
+          reservedIdentifiersCopy = v72;
           v28 = v68;
           v27 = v76;
-          v31 = v82;
+          identifier = v82;
 LABEL_40:
 
           ++v29;
@@ -221,10 +221,10 @@ LABEL_40:
       while (v27);
     }
 
-    v40 = [v12 allKeys];
-    v41 = v40;
-    v10 = v65;
-    if (v61 && [v40 count])
+    allKeys = [v12 allKeys];
+    v41 = allKeys;
+    passCopy = v65;
+    if (v61 && [allKeys count])
     {
       v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -232,8 +232,8 @@ LABEL_40:
       v90 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v69 = [v65 backFieldBuckets];
-      objb = [v69 countByEnumeratingWithState:&v89 objects:v115 count:16];
+      backFieldBuckets = [v65 backFieldBuckets];
+      objb = [backFieldBuckets countByEnumeratingWithState:&v89 objects:v115 count:16];
       if (objb)
       {
         v77 = *v90;
@@ -244,7 +244,7 @@ LABEL_40:
           {
             if (*v90 != v77)
             {
-              objc_enumerationMutation(v69);
+              objc_enumerationMutation(backFieldBuckets);
             }
 
             v83 = v44;
@@ -287,7 +287,7 @@ LABEL_40:
           }
 
           while ((v83 + 1) != objb);
-          objb = [v69 countByEnumeratingWithState:&v89 objects:v115 count:16];
+          objb = [backFieldBuckets countByEnumeratingWithState:&v89 objects:v115 count:16];
         }
 
         while (objb);
@@ -297,9 +297,9 @@ LABEL_40:
       [v53 setInsertAfterSection:@"PassesInGroup"];
       v74[2](v74, v53, v42);
 
-      v10 = v65;
+      passCopy = v65;
       v25 = v71;
-      v11 = v72;
+      reservedIdentifiersCopy = v72;
     }
 
     v54 = [v63 copy];
@@ -333,29 +333,29 @@ void __141__PKConfigurablePassDetailSectionsController__initWithPaymentPass_visi
   }
 }
 
-- (BOOL)hasArbitraryInfoField:(id)a3
+- (BOOL)hasArbitraryInfoField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v5 = *MEMORY[0x1E69BB768];
-  if ([v4 hasPrefix:*MEMORY[0x1E69BB768]])
+  if ([fieldCopy hasPrefix:*MEMORY[0x1E69BB768]])
   {
-    v6 = v4;
+    v6 = fieldCopy;
   }
 
   else
   {
-    v6 = [v5 stringByAppendingString:v4];
+    v6 = [v5 stringByAppendingString:fieldCopy];
   }
 
   v7 = v6;
-  v8 = [(NSDictionary *)self->_fieldMap allValues];
+  allValues = [(NSDictionary *)self->_fieldMap allValues];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField___block_invoke;
   v12[3] = &unk_1E801F5A8;
   v13 = v7;
   v9 = v7;
-  v10 = [v8 pk_containsObjectPassingTest:v12];
+  v10 = [allValues pk_containsObjectPassingTest:v12];
 
   return v10;
 }
@@ -411,34 +411,34 @@ uint64_t __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField_
   return allSectionIdentifiers;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier
 {
-  v4 = [(NSDictionary *)self->_fieldMap objectForKeyedSubscript:a4];
+  v4 = [(NSDictionary *)self->_fieldMap objectForKeyedSubscript:identifier];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  identifierCopy = identifier;
   fieldMap = self->_fieldMap;
-  v11 = a4;
-  v12 = [(NSDictionary *)fieldMap objectForKey:v9];
-  v13 = [v11 row];
+  pathCopy = path;
+  v12 = [(NSDictionary *)fieldMap objectForKey:identifierCopy];
+  v13 = [pathCopy row];
 
   v14 = [v12 objectAtIndex:v13];
 
   if (v14)
   {
-    v15 = [v14 valueImage];
-    if (v15)
+    valueImage = [v14 valueImage];
+    if (valueImage)
     {
       v16 = MEMORY[0x1E69DCAB8];
-      v17 = v8;
-      v18 = [v15 image];
-      v19 = [v16 imageWithPKImage:v18];
+      v17 = viewCopy;
+      image = [valueImage image];
+      v19 = [v16 imageWithPKImage:image];
 
       v20 = [v17 dequeueReusableCellWithIdentifier:@"imageViewCell"];
 
@@ -450,8 +450,8 @@ uint64_t __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField_
       }
 
       v21 = MEMORY[0x1E69DC888];
-      v22 = [v15 backgroundColor];
-      v23 = [v21 pkui_colorWithPKColor:v22];
+      backgroundColor = [valueImage backgroundColor];
+      v23 = [v21 pkui_colorWithPKColor:backgroundColor];
       [(PKImageViewCell *)v20 setBackgroundColor:v23];
 
       [(PKImageViewCell *)v20 setImage:v19];
@@ -460,9 +460,9 @@ uint64_t __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField_
     else
     {
       useBridgeStyle = self->_useBridgeStyle;
-      v19 = v9;
+      v19 = identifierCopy;
       v25 = v14;
-      v20 = [v8 dequeueReusableCellWithIdentifier:v19];
+      v20 = [viewCopy dequeueReusableCellWithIdentifier:v19];
       if (!v20)
       {
         v20 = [[PKBackFieldTableCell alloc] initWithBridgeStyle:useBridgeStyle reuseIdentifier:v19];
@@ -484,59 +484,59 @@ uint64_t __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField_
   return v20;
 }
 
-- (id)titleForHeaderInSectionIdentifier:(id)a3
+- (id)titleForHeaderInSectionIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_sectionMap objectForKey:a3];
-  v4 = [v3 header];
+  v3 = [(NSDictionary *)self->_sectionMap objectForKey:identifier];
+  header = [v3 header];
 
-  return v4;
+  return header;
 }
 
-- (id)titleForFooterInSectionIdentifier:(id)a3
+- (id)titleForFooterInSectionIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_sectionMap objectForKey:a3];
-  v4 = [v3 footer];
+  v3 = [(NSDictionary *)self->_sectionMap objectForKey:identifier];
+  footer = [v3 footer];
 
-  return v4;
+  return footer;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSDictionary *)self->_fieldMap objectForKey:a5];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v9, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [(NSDictionary *)self->_fieldMap objectForKey:identifier];
+  v11 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   if (([v11 isDrillInField] & 1) != 0 || (objc_msgSend(v11, "link"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    LOBYTE(v13) = 1;
+    LOBYTE(containsURL) = 1;
   }
 
   else
   {
-    v15 = [v11 valueImage];
+    valueImage = [v11 valueImage];
 
-    if (v15)
+    if (valueImage)
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(containsURL) = 0;
     }
 
     else
     {
-      v16 = [v8 cellForRowAtIndexPath:v9];
-      v13 = [v16 containsURL];
+      v16 = [viewCopy cellForRowAtIndexPath:pathCopy];
+      containsURL = [v16 containsURL];
     }
   }
 
-  return v13;
+  return containsURL;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSDictionary *)self->_fieldMap objectForKey:a5];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v9, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [(NSDictionary *)self->_fieldMap objectForKey:identifier];
+  v11 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   if (v11)
   {
@@ -544,25 +544,25 @@ uint64_t __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField_
     {
       v12 = v11;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v14 = [v12 authRequirement];
+      authRequirement = [v12 authRequirement];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __98__PKConfigurablePassDetailSectionsController_tableView_didSelectRowAtIndexPath_sectionIdentifier___block_invoke;
       v17[3] = &unk_1E801F5D0;
       v17[4] = self;
       v18 = v12;
-      v19 = v8;
-      v20 = v9;
+      v19 = viewCopy;
+      v20 = pathCopy;
       v15 = v12;
-      [WeakRetained presentAuthRequestForPolicy:v14 completion:v17];
+      [WeakRetained presentAuthRequestForPolicy:authRequirement completion:v17];
     }
 
     else
     {
-      v15 = [v8 cellForRowAtIndexPath:v9];
-      v16 = [v15 containsURL];
-      [v8 deselectRowAtIndexPath:v9 animated:1];
-      if (v16)
+      v15 = [viewCopy cellForRowAtIndexPath:pathCopy];
+      containsURL = [v15 containsURL];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      if (containsURL)
       {
         [v15 openFirstURL];
       }
@@ -571,7 +571,7 @@ uint64_t __68__PKConfigurablePassDetailSectionsController_hasArbitraryInfoField_
 
   else
   {
-    [v8 deselectRowAtIndexPath:v9 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
@@ -592,31 +592,31 @@ void __98__PKConfigurablePassDetailSectionsController_tableView_didSelectRowAtIn
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   fieldMap = self->_fieldMap;
-  v7 = a4;
-  v8 = [(NSDictionary *)fieldMap objectForKey:a5];
-  v9 = [v7 row];
+  pathCopy = path;
+  v8 = [(NSDictionary *)fieldMap objectForKey:identifier];
+  v9 = [pathCopy row];
 
   v10 = [v8 objectAtIndex:v9];
 
-  v11 = [v10 valueImage];
-  v12 = v11;
-  if (!v11)
+  valueImage = [v10 valueImage];
+  v12 = valueImage;
+  if (!valueImage)
   {
     goto LABEL_11;
   }
 
-  v13 = [v11 image];
-  if (!v13)
+  image = [valueImage image];
+  if (!image)
   {
     v21 = 0.0;
     goto LABEL_13;
   }
 
-  v14 = v13;
-  [v13 size];
+  v14 = image;
+  [image size];
   v17 = v16;
   v18 = v15;
   v19 = *MEMORY[0x1E695F060];
@@ -634,14 +634,14 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)_validateField:(id)a3
+- (BOOL)_validateField:(id)field
 {
-  v3 = [a3 valueImage];
-  v4 = v3;
-  if (v3)
+  valueImage = [field valueImage];
+  v4 = valueImage;
+  if (valueImage)
   {
-    v5 = [v3 image];
-    v6 = v5 != 0;
+    image = [valueImage image];
+    v6 = image != 0;
   }
 
   else

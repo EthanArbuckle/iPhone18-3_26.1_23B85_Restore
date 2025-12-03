@@ -1,11 +1,11 @@
 @interface AKBaseDaemonConnection
 - (AKBaseDaemonConnection)init;
-- (AKBaseDaemonConnection)initWithListenerEndpoint:(id)a3;
+- (AKBaseDaemonConnection)initWithListenerEndpoint:(id)endpoint;
 - (id)XPCInterface;
 - (id)_connection;
 - (id)machServiceName;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_connectionInterruptionHandler;
 - (void)_connectionInvalidationHandler;
 - (void)dealloc;
@@ -22,75 +22,75 @@
   return v3;
 }
 
-- (AKBaseDaemonConnection)initWithListenerEndpoint:(id)a3
+- (AKBaseDaemonConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, endpoint);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKBaseDaemonConnection;
-  v8 = [(AKBaseDaemonConnection *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKBaseDaemonConnection *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_listenerEndpoint, location[0]);
-    v8->_unfairLock._os_unfair_lock_opaque = 0;
+    objc_storeStrong(&selfCopy->_listenerEndpoint, location[0]);
+    selfCopy->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
-  v5 = MEMORY[0x1E69E5928](v8);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)dealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v3 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v6, v5);
+    __os_log_helper_16_2_1_8_64(v6, selfCopy);
     _os_log_debug_impl(&dword_193225000, location[0], v3, "%@ deallocated", v6, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  [(NSXPCConnection *)v5->_connection invalidate];
-  objc_storeStrong(&v5->_connection, 0);
-  v2.receiver = v5;
+  [(NSXPCConnection *)selfCopy->_connection invalidate];
+  objc_storeStrong(&selfCopy->_connection, 0);
+  v2.receiver = selfCopy;
   v2.super_class = AKBaseDaemonConnection;
   [(AKBaseDaemonConnection *)&v2 dealloc];
   *MEMORY[0x1E69E9840];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKBaseDaemonConnection *)v7 _connection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:location[0]];
-  MEMORY[0x1E69E5920](v4);
+  objc_storeStrong(location, handler);
+  _connection = [(AKBaseDaemonConnection *)selfCopy _connection];
+  v5 = [_connection remoteObjectProxyWithErrorHandler:location[0]];
+  MEMORY[0x1E69E5920](_connection);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKBaseDaemonConnection *)v7 _connection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:location[0]];
-  MEMORY[0x1E69E5920](v4);
+  objc_storeStrong(location, handler);
+  _connection = [(AKBaseDaemonConnection *)selfCopy _connection];
+  v5 = [_connection synchronousRemoteObjectProxyWithErrorHandler:location[0]];
+  MEMORY[0x1E69E5920](_connection);
   objc_storeStrong(location, 0);
 
   return v5;
@@ -205,11 +205,11 @@ uint64_t __37__AKBaseDaemonConnection__connection__block_invoke_3(uint64_t a1)
 - (void)_connectionInvalidationHandler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   v13[2] = a2;
-  v3 = [(NSXPCConnection *)self->_connection _xpcConnection];
+  _xpcConnection = [(NSXPCConnection *)self->_connection _xpcConnection];
   v4 = xpc_connection_copy_invalidation_reason();
-  MEMORY[0x1E69E5920](v3);
+  MEMORY[0x1E69E5920](_xpcConnection);
   v13[1] = v4;
   v13[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", v4];
   location = _AKLogSystem();
@@ -221,13 +221,13 @@ uint64_t __37__AKBaseDaemonConnection__connection__block_invoke_3(uint64_t a1)
   }
 
   objc_storeStrong(&location, 0);
-  p_unfairLock = &v14->_unfairLock;
+  p_unfairLock = &selfCopy->_unfairLock;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __56__AKBaseDaemonConnection__connectionInvalidationHandler__block_invoke;
   v9 = &unk_1E73D34C0;
-  v10 = MEMORY[0x1E69E5928](v14);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   ak_unfair_lock_perform_2(p_unfairLock, &v5);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(v13, 0);

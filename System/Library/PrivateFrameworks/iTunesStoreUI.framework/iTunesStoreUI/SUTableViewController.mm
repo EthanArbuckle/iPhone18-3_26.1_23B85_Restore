@@ -1,21 +1,21 @@
 @interface SUTableViewController
-- (BOOL)deleteRowAtIndexPath:(id)a3;
-- (BOOL)indexPathIsPlaceholder:(id)a3;
+- (BOOL)deleteRowAtIndexPath:(id)path;
+- (BOOL)indexPathIsPlaceholder:(id)placeholder;
 - (SUTableViewController)init;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)copyArchivableContext;
 - (id)copyDefaultScriptProperties;
 - (id)copyScriptProperties;
 - (id)newTableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int)clippedCornersForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int)clippedCornersForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)numberOfRows;
-- (void)_deliverTapCount:(int64_t)a3 forIndexPath:(id)a4;
+- (void)_deliverTapCount:(int64_t)count forIndexPath:(id)path;
 - (void)_doubleTapTimeout;
 - (void)_reloadPlaceholderCells;
 - (void)_resetTableView;
@@ -23,20 +23,20 @@
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
 - (void)reloadData;
-- (void)scrollToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4 animated:(BOOL)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setScriptProperties:(id)a3;
-- (void)setTableViewStyle:(int64_t)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)scrollToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position animated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setDataSource:(id)source;
+- (void)setScriptProperties:(id)properties;
+- (void)setTableViewStyle:(int64_t)style;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SUTableViewController
@@ -70,15 +70,15 @@
   [(SUViewController *)&v3 dealloc];
 }
 
-- (int)clippedCornersForIndexPath:(id)a3
+- (int)clippedCornersForIndexPath:(id)path
 {
   if (self->_tableViewStyle != 1)
   {
     return 0;
   }
 
-  v5 = [a3 row];
-  v6 = -[SUTableDataSource numberOfRowsInSection:](self->_dataSource, "numberOfRowsInSection:", [a3 section]) - 1;
+  v5 = [path row];
+  v6 = -[SUTableDataSource numberOfRowsInSection:](self->_dataSource, "numberOfRowsInSection:", [path section]) - 1;
   if (v5)
   {
     v7 = 4;
@@ -100,29 +100,29 @@
   }
 }
 
-- (BOOL)deleteRowAtIndexPath:(id)a3
+- (BOOL)deleteRowAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(SUTableDataSource *)self->_dataSource numberOfSections];
-  v6 = [(SUTableDataSource *)self->_dataSource deleteIndexPath:a3];
+  numberOfSections = [(SUTableDataSource *)self->_dataSource numberOfSections];
+  v6 = [(SUTableDataSource *)self->_dataSource deleteIndexPath:path];
   if (v6)
   {
-    v7 = [(SUTableViewController *)self tableView];
+    tableView = [(SUTableViewController *)self tableView];
     [(SUTableViewController *)self reloadForChangedRowCount:[(SUTableViewController *)self numberOfRows]- 1];
-    [(UITableView *)v7 beginUpdates];
-    if (v5 >= 2 && v5 > [(SUTableDataSource *)self->_dataSource numberOfSections])
+    [(UITableView *)tableView beginUpdates];
+    if (numberOfSections >= 2 && numberOfSections > [(SUTableDataSource *)self->_dataSource numberOfSections])
     {
-      -[UITableView deleteSections:withRowAnimation:](v7, "deleteSections:withRowAnimation:", [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(a3, "section")}], 1);
+      -[UITableView deleteSections:withRowAnimation:](tableView, "deleteSections:withRowAnimation:", [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(path, "section")}], 1);
     }
 
-    -[UITableView deleteRowsAtIndexPaths:withRowAnimation:](v7, "deleteRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, 0}], 1);
-    [(UITableView *)v7 endUpdates];
-    v8 = [(UITableView *)v7 indexPathsForVisibleRows];
+    -[UITableView deleteRowsAtIndexPaths:withRowAnimation:](tableView, "deleteRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{path, 0}], 1);
+    [(UITableView *)tableView endUpdates];
+    indexPathsForVisibleRows = [(UITableView *)tableView indexPathsForVisibleRows];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v9 = [(NSArray *)indexPathsForVisibleRows countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -134,15 +134,15 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(indexPathsForVisibleRows);
           }
 
-          [(SUTableDataSource *)self->_dataSource configureCell:[(UITableView *)v7 cellForRowAtIndexPath:*(*(&v14 + 1) + 8 * v12)] forIndexPath:*(*(&v14 + 1) + 8 * v12)];
+          [(SUTableDataSource *)self->_dataSource configureCell:[(UITableView *)tableView cellForRowAtIndexPath:*(*(&v14 + 1) + 8 * v12)] forIndexPath:*(*(&v14 + 1) + 8 * v12)];
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [(NSArray *)indexPathsForVisibleRows countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -152,7 +152,7 @@
   return v6;
 }
 
-- (BOOL)indexPathIsPlaceholder:(id)a3
+- (BOOL)indexPathIsPlaceholder:(id)placeholder
 {
   if (self->_placeholderRowCount < 1)
   {
@@ -160,13 +160,13 @@
   }
 
   v5 = [(SUTableViewController *)self numberOfSectionsInTableView:self->_tableView];
-  if ([a3 section] != v5 - 1)
+  if ([placeholder section] != v5 - 1)
   {
     return 0;
   }
 
-  v6 = -[SUTableViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", self->_tableView, [a3 section]);
-  return [a3 row] >= v6 - self->_placeholderRowCount;
+  v6 = -[SUTableViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", self->_tableView, [placeholder section]);
+  return [placeholder row] >= v6 - self->_placeholderRowCount;
 }
 
 - (id)newTableView
@@ -177,9 +177,9 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SUTableViewController *)self tableViewStyle];
+  tableViewStyle = [(SUTableViewController *)self tableViewStyle];
 
-  return [(SUTableView *)v3 initWithFrame:v12 style:v5, v7, v9, v11];
+  return [(SUTableView *)v3 initWithFrame:tableViewStyle style:v5, v7, v9, v11];
 }
 
 - (void)reloadData
@@ -212,38 +212,38 @@
     [(SUViewController *)self resetRestoredContext];
   }
 
-  v11 = [(SUTableViewController *)self numberOfRows];
+  numberOfRows = [(SUTableViewController *)self numberOfRows];
 
-  [(SUTableViewController *)self reloadForChangedRowCount:v11];
+  [(SUTableViewController *)self reloadForChangedRowCount:numberOfRows];
 }
 
-- (void)scrollToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4 animated:(BOOL)a5
+- (void)scrollToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = [(SUTableViewController *)self tableView];
-  [(UITableView *)v8 scrollToRowAtIndexPath:a3 atScrollPosition:1 animated:v5];
-  v9 = [(UITableView *)v8 delegate];
-  if (a4 == 1)
+  animatedCopy = animated;
+  tableView = [(SUTableViewController *)self tableView];
+  [(UITableView *)tableView scrollToRowAtIndexPath:path atScrollPosition:1 animated:animatedCopy];
+  delegate = [(UITableView *)tableView delegate];
+  if (position == 1)
   {
-    v10 = v9;
+    v10 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      [v10 tableView:v8 heightForHeaderInSection:0];
+      [v10 tableView:tableView heightForHeaderInSection:0];
       if (v11 > 0.00000011920929)
       {
-        [(UITableView *)v8 contentOffset];
+        [(UITableView *)tableView contentOffset];
 
-        [(UITableView *)v8 setContentOffset:v5 animated:?];
+        [(UITableView *)tableView setContentOffset:animatedCopy animated:?];
       }
     }
   }
 }
 
-- (void)setTableViewStyle:(int64_t)a3
+- (void)setTableViewStyle:(int64_t)style
 {
-  if (self->_tableViewStyle != a3)
+  if (self->_tableViewStyle != style)
   {
-    self->_tableViewStyle = a3;
+    self->_tableViewStyle = style;
     [(SUTableViewController *)self _resetTableView];
   }
 }
@@ -252,7 +252,7 @@
 {
   v7.receiver = self;
   v7.super_class = SUTableViewController;
-  v3 = [(SUViewController *)&v7 copyArchivableContext];
+  copyArchivableContext = [(SUViewController *)&v7 copyArchivableContext];
   if (![(SUViewController *)self shouldExcludeFromNavigationHistory])
   {
     tableView = self->_tableView;
@@ -261,8 +261,8 @@
       [(SUTableView *)tableView contentOffset];
       v5 = NSStringFromCGPoint(v8);
 LABEL_6:
-      [v3 setValue:v5 forMetadataKey:@"offset"];
-      return v3;
+      [copyArchivableContext setValue:v5 forMetadataKey:@"offset"];
+      return copyArchivableContext;
     }
 
     if ([(SUViewController *)self _restoredContext])
@@ -272,32 +272,32 @@ LABEL_6:
     }
   }
 
-  return v3;
+  return copyArchivableContext;
 }
 
 - (id)copyDefaultScriptProperties
 {
   v4.receiver = self;
   v4.super_class = SUTableViewController;
-  v2 = [(SUViewController *)&v4 copyDefaultScriptProperties];
-  [v2 setScrollingDisabled:0];
-  [v2 setShowsBackgroundShadow:0];
-  return v2;
+  copyDefaultScriptProperties = [(SUViewController *)&v4 copyDefaultScriptProperties];
+  [copyDefaultScriptProperties setScrollingDisabled:0];
+  [copyDefaultScriptProperties setShowsBackgroundShadow:0];
+  return copyDefaultScriptProperties;
 }
 
 - (id)copyScriptProperties
 {
-  v3 = [(SUTableViewController *)self copyDefaultScriptProperties];
+  copyDefaultScriptProperties = [(SUTableViewController *)self copyDefaultScriptProperties];
   tableView = self->_tableView;
   if (tableView)
   {
-    [v3 setBackgroundColor:{-[SUTableView backgroundColor](tableView, "backgroundColor")}];
-    [v3 setScrollingDisabled:{-[SUTableView isScrollEnabled](self->_tableView, "isScrollEnabled") ^ 1}];
-    [v3 setShowsBackgroundShadow:{-[SUTableView _showsBackgroundShadow](self->_tableView, "_showsBackgroundShadow")}];
-    [v3 setTopExtensionColor:{-[UIScrollView topExtensionViewColor](self->_tableView, "topExtensionViewColor")}];
+    [copyDefaultScriptProperties setBackgroundColor:{-[SUTableView backgroundColor](tableView, "backgroundColor")}];
+    [copyDefaultScriptProperties setScrollingDisabled:{-[SUTableView isScrollEnabled](self->_tableView, "isScrollEnabled") ^ 1}];
+    [copyDefaultScriptProperties setShowsBackgroundShadow:{-[SUTableView _showsBackgroundShadow](self->_tableView, "_showsBackgroundShadow")}];
+    [copyDefaultScriptProperties setTopExtensionColor:{-[UIScrollView topExtensionViewColor](self->_tableView, "topExtensionViewColor")}];
   }
 
-  return v3;
+  return copyDefaultScriptProperties;
 }
 
 - (void)didReceiveMemoryWarning
@@ -318,41 +318,41 @@ LABEL_6:
   [(SUTableViewController *)self reloadData];
 }
 
-- (void)setScriptProperties:(id)a3
+- (void)setScriptProperties:(id)properties
 {
   v5.receiver = self;
   v5.super_class = SUTableViewController;
   [(SUViewController *)&v5 setScriptProperties:?];
-  if ([a3 backgroundColor])
+  if ([properties backgroundColor])
   {
-    -[SUTableView setBackgroundColor:](self->_tableView, "setBackgroundColor:", [a3 backgroundColor]);
+    -[SUTableView setBackgroundColor:](self->_tableView, "setBackgroundColor:", [properties backgroundColor]);
   }
 
-  -[SUTableView setScrollEnabled:](self->_tableView, "setScrollEnabled:", [a3 isScrollingDisabled] ^ 1);
-  -[SUTableView _setShowsBackgroundShadow:](self->_tableView, "_setShowsBackgroundShadow:", [a3 showsBackgroundShadow]);
-  if ([a3 topExtensionColor])
+  -[SUTableView setScrollEnabled:](self->_tableView, "setScrollEnabled:", [properties isScrollingDisabled] ^ 1);
+  -[SUTableView _setShowsBackgroundShadow:](self->_tableView, "_setShowsBackgroundShadow:", [properties showsBackgroundShadow]);
+  if ([properties topExtensionColor])
   {
-    -[UIScrollView setTopExtensionViewColor:](self->_tableView, "setTopExtensionViewColor:", [a3 topExtensionColor]);
+    -[UIScrollView setTopExtensionViewColor:](self->_tableView, "setTopExtensionViewColor:", [properties topExtensionColor]);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUTableView *)self->_tableView flashScrollIndicators];
   v5.receiver = self;
   v5.super_class = SUTableViewController;
-  [(SUViewController *)&v5 viewDidAppear:v3];
+  [(SUViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   disappearOrientation = self->_disappearOrientation;
   if (disappearOrientation == [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")])
   {
     [(SUTableViewController *)self _reloadPlaceholderCells];
-    [(SUTableView *)self->_tableView deselectRowAtIndexPath:[(SUTableView *)self->_tableView indexPathForSelectedRow] animated:v3];
+    [(SUTableView *)self->_tableView deselectRowAtIndexPath:[(SUTableView *)self->_tableView indexPathForSelectedRow] animated:appearCopy];
   }
 
   else
@@ -363,76 +363,76 @@ LABEL_6:
 
   v6.receiver = self;
   v6.super_class = SUTableViewController;
-  [(SUViewController *)&v6 viewWillAppear:v3];
+  [(SUViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   self->_disappearOrientation = [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__doubleTapTimeout object:0];
   v5.receiver = self;
   v5.super_class = SUTableViewController;
-  [(SUViewController *)&v5 viewWillDisappear:v3];
+  [(SUViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   [(SUTableDataSource *)self->_dataSource resetLayoutCaches];
   [(SUTableViewController *)self reloadData];
   v7.receiver = self;
   v7.super_class = SUTableViewController;
-  [(SUViewController *)&v7 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(SUViewController *)&v7 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
 - (unint64_t)numberOfRows
 {
-  v2 = [(SUTableViewController *)self tableView];
-  v3 = [(UITableView *)v2 numberOfSections];
-  if (!v3)
+  tableView = [(SUTableViewController *)self tableView];
+  numberOfSections = [(UITableView *)tableView numberOfSections];
+  if (!numberOfSections)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = numberOfSections;
   v5 = 0;
   for (i = 0; i != v4; ++i)
   {
-    v5 += [(UITableView *)v2 numberOfRowsInSection:i];
+    v5 += [(UITableView *)tableView numberOfRowsInSection:i];
   }
 
   return v5;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   dataSource = self->_dataSource;
-  if (dataSource != a3)
+  if (dataSource != source)
   {
     [(SUTableDataSource *)dataSource setCellReuseSource:0];
 
-    v6 = a3;
-    self->_dataSource = v6;
-    [(SUTableDataSource *)v6 setCellReuseSource:self->_tableView];
+    sourceCopy = source;
+    self->_dataSource = sourceCopy;
+    [(SUTableDataSource *)sourceCopy setCellReuseSource:self->_tableView];
     v7 = self->_dataSource;
     if (v7)
     {
-      v8 = [(SUTableDataSource *)v7 tableViewStyle];
+      tableViewStyle = [(SUTableDataSource *)v7 tableViewStyle];
 
-      [(SUTableViewController *)self setTableViewStyle:v8];
+      [(SUTableViewController *)self setTableViewStyle:tableViewStyle];
     }
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4 && self->_preferUserInteractionWhileScrolling)
+  if (!decelerate && self->_preferUserInteractionWhileScrolling)
   {
     [(SUTableDataSource *)self->_dataSource endPreferringUserInteraction];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_preferUserInteractionWhileScrolling)
   {
@@ -440,7 +440,7 @@ LABEL_6:
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (self->_preferUserInteractionWhileScrolling)
   {
@@ -448,39 +448,39 @@ LABEL_6:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [(SUTableViewController *)self indexPathIsPlaceholder:a4];
+  v6 = [(SUTableViewController *)self indexPathIsPlaceholder:path];
   dataSource = self->_dataSource;
   if (v6)
   {
-    v8 = [(SUTableDataSource *)dataSource placeholderCellForIndexPath:a4];
+    v8 = [(SUTableDataSource *)dataSource placeholderCellForIndexPath:path];
   }
 
   else
   {
-    v8 = [(SUTableDataSource *)dataSource cellForIndexPath:a4];
+    v8 = [(SUTableDataSource *)dataSource cellForIndexPath:path];
   }
 
   v9 = v8;
-  [v8 setClipCorners:{-[SUTableViewController clippedCornersForIndexPath:](self, "clippedCornersForIndexPath:", a4)}];
+  [v8 setClipCorners:{-[SUTableViewController clippedCornersForIndexPath:](self, "clippedCornersForIndexPath:", path)}];
   return v9;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    [(SUTableViewController *)self deleteRowAtIndexPath:a5];
+    [(SUTableViewController *)self deleteRowAtIndexPath:path];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v7 = [(SUTableDataSource *)self->_dataSource numberOfRowsInSection:a4];
-  v8 = [(SUTableViewController *)self numberOfSectionsInTableView:a3];
+  v7 = [(SUTableDataSource *)self->_dataSource numberOfRowsInSection:section];
+  v8 = [(SUTableViewController *)self numberOfSectionsInTableView:view];
   placeholderRowCount = self->_placeholderRowCount;
-  if (v8 - 1 != a4 || placeholderRowCount <= 0)
+  if (v8 - 1 != section || placeholderRowCount <= 0)
   {
     placeholderRowCount = 0;
   }
@@ -488,40 +488,40 @@ LABEL_6:
   return placeholderRowCount + v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = [(SUTableViewController *)self indexPathIsPlaceholder:a5];
+  v8 = [(SUTableViewController *)self indexPathIsPlaceholder:path];
   dataSource = self->_dataSource;
   if (v8)
   {
-    [(SUTableDataSource *)dataSource configurePlaceholderCell:a4 forIndexPath:a5];
+    [(SUTableDataSource *)dataSource configurePlaceholderCell:cell forIndexPath:path];
   }
 
   else
   {
-    [(SUTableDataSource *)dataSource configureCell:a4 forIndexPath:a5];
+    [(SUTableDataSource *)dataSource configureCell:cell forIndexPath:path];
   }
 
-  v10 = [a4 accessoryView];
-  if (!v10)
+  accessoryView = [cell accessoryView];
+  if (!accessoryView)
   {
-    v13 = [a4 isUserInteractionEnabled];
+    isUserInteractionEnabled = [cell isUserInteractionEnabled];
     goto LABEL_9;
   }
 
-  v11 = [v10 isUserInteractionEnabled];
-  v12 = [a4 isUserInteractionEnabled];
-  if (v12 && (v11 & 1) == 0)
+  isUserInteractionEnabled2 = [accessoryView isUserInteractionEnabled];
+  isUserInteractionEnabled3 = [cell isUserInteractionEnabled];
+  if (isUserInteractionEnabled3 && (isUserInteractionEnabled2 & 1) == 0)
   {
-    v13 = [(SUTableViewController *)self canSelectRowAtIndexPath:a5];
+    isUserInteractionEnabled = [(SUTableViewController *)self canSelectRowAtIndexPath:path];
 LABEL_9:
-    v12 = v13;
+    isUserInteractionEnabled3 = isUserInteractionEnabled;
   }
 
-  [a4 setUserInteractionEnabled:v12];
+  [cell setUserInteractionEnabled:isUserInteractionEnabled3];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   result = [(SUTableDataSource *)self->_dataSource numberOfSections];
   if (result <= 1)
@@ -532,22 +532,22 @@ LABEL_9:
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__doubleTapTimeout object:0];
   v7 = self->_firstTapIndexPath;
 
   self->_firstTapIndexPath = 0;
-  if (v7 && ([(NSIndexPath *)v7 isEqual:a4]& 1) != 0)
+  if (v7 && ([(NSIndexPath *)v7 isEqual:path]& 1) != 0)
   {
     v6 = 2;
   }
 
   else
   {
-    if ([(SUTableDataSource *)self->_dataSource canDoubleTapIndexPath:a4])
+    if ([(SUTableDataSource *)self->_dataSource canDoubleTapIndexPath:path])
     {
-      self->_firstTapIndexPath = a4;
+      self->_firstTapIndexPath = path;
       [(SUTableViewController *)self performSelector:sel__doubleTapTimeout withObject:0 afterDelay:0.349999994];
       goto LABEL_8;
     }
@@ -555,36 +555,36 @@ LABEL_9:
     v6 = 1;
   }
 
-  [(SUTableViewController *)self _deliverTapCount:v6 forIndexPath:a4];
+  [(SUTableViewController *)self _deliverTapCount:v6 forIndexPath:path];
 LABEL_8:
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  if ([(SUTableViewController *)self indexPathIsPlaceholder:a4])
+  if ([(SUTableViewController *)self indexPathIsPlaceholder:path])
   {
     return 0;
   }
 
   else
   {
-    return [(SUTableDataSource *)self->_dataSource canDeleteIndexPath:a4];
+    return [(SUTableDataSource *)self->_dataSource canDeleteIndexPath:path];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v7 = [(SUTableDataSource *)self->_dataSource headerViewForSection:a4];
+  v7 = [(SUTableDataSource *)self->_dataSource headerViewForSection:section];
   if (v7)
   {
     [v7 frame];
     return v8;
   }
 
-  else if ([(SUTableDataSource *)self->_dataSource titleForHeaderInSection:a4])
+  else if ([(SUTableDataSource *)self->_dataSource titleForHeaderInSection:section])
   {
 
-    [a3 sectionHeaderHeight];
+    [view sectionHeaderHeight];
   }
 
   else
@@ -595,11 +595,11 @@ LABEL_8:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   if (self->_dataSource)
   {
-    v6 = [(SUTableViewController *)self indexPathIsPlaceholder:a4];
+    v6 = [(SUTableViewController *)self indexPathIsPlaceholder:path];
     dataSource = self->_dataSource;
     if (v6)
     {
@@ -608,7 +608,7 @@ LABEL_8:
 
     else
     {
-      [(SUTableDataSource *)dataSource cellHeightForIndexPath:a4];
+      [(SUTableDataSource *)dataSource cellHeightForIndexPath:path];
     }
   }
 
@@ -620,20 +620,20 @@ LABEL_8:
   return fmax(v8, 1.0);
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = [a3 cellForRowAtIndexPath:a4];
+  v6 = [view cellForRowAtIndexPath:path];
   if (!v6 || [v6 isUserInteractionEnabled])
   {
     dataSource = self->_dataSource;
-    if (!dataSource || [(SUTableDataSource *)dataSource canSelectIndexPath:a4])
+    if (!dataSource || [(SUTableDataSource *)dataSource canSelectIndexPath:path])
     {
-      v8 = [(SUTableViewController *)self canSelectRowAtIndexPath:a4];
-      if (a4)
+      v8 = [(SUTableViewController *)self canSelectRowAtIndexPath:path];
+      if (path)
       {
         if (v8)
         {
-          return a4;
+          return path;
         }
       }
     }
@@ -655,13 +655,13 @@ LABEL_8:
   }
 }
 
-- (void)_deliverTapCount:(int64_t)a3 forIndexPath:(id)a4
+- (void)_deliverTapCount:(int64_t)count forIndexPath:(id)path
 {
-  if (![(SUTableViewController *)self handleSelectionForIndexPath:a4 tapCount:a3])
+  if (![(SUTableViewController *)self handleSelectionForIndexPath:path tapCount:count])
   {
-    v6 = [(SUTableViewController *)self tableView];
+    tableView = [(SUTableViewController *)self tableView];
 
-    [(UITableView *)v6 deselectRowAtIndexPath:a4 animated:1];
+    [(UITableView *)tableView deselectRowAtIndexPath:path animated:1];
   }
 }
 
@@ -745,16 +745,16 @@ LABEL_8:
 
   if ([(SUTableViewController *)self isViewLoaded])
   {
-    v3 = [(SUTableViewController *)self newTableView];
-    self->_tableView = v3;
-    [(SUTableView *)v3 setAutoresizingMask:18];
+    newTableView = [(SUTableViewController *)self newTableView];
+    self->_tableView = newTableView;
+    [(SUTableView *)newTableView setAutoresizingMask:18];
     [(SUTableView *)self->_tableView setDataSource:self];
     [(SUTableView *)self->_tableView setDelegate:self];
     [(SUTableDataSource *)self->_dataSource setCellReuseSource:self->_tableView];
-    v4 = [(SUTableViewController *)self view];
+    view = [(SUTableViewController *)self view];
     tableView = self->_tableView;
 
-    [v4 addSubview:tableView];
+    [view addSubview:tableView];
   }
 }
 

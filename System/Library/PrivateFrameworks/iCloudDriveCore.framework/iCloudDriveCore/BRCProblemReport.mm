@@ -1,18 +1,18 @@
 @interface BRCProblemReport
 - (BOOL)shouldResetAfterFixingState;
 - (BRCProblemReport)init;
-- (BRCProblemReport)initWithCoder:(id)a3;
-- (BRCProblemReport)initWithProblemReport:(id)a3;
+- (BRCProblemReport)initWithCoder:(id)coder;
+- (BRCProblemReport)initWithProblemReport:(id)report;
 - (NSSet)effectedRecordNames;
 - (NSString)effectiveProblemMessage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)_effectiveProblemType;
-- (int)_priorityForProblemType:(int)a3;
-- (int)_zoneStateForProblemType:(int)a3;
-- (void)_addProblem:(id)a3;
+- (int)_priorityForProblemType:(int)type;
+- (int)_zoneStateForProblemType:(int)type;
+- (void)_addProblem:(id)problem;
 - (void)effectiveProblemMessage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BRCProblemReport
@@ -34,43 +34,43 @@
   return v2;
 }
 
-- (BRCProblemReport)initWithProblemReport:(id)a3
+- (BRCProblemReport)initWithProblemReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   v9.receiver = self;
   v9.super_class = BRCProblemReport;
   v5 = [(BRCProblemReport *)&v9 init];
   if (v5)
   {
-    v6 = [*(v4 + 1) mutableCopy];
+    v6 = [*(reportCopy + 1) mutableCopy];
     problems = v5->_problems;
     v5->_problems = v6;
 
-    v5->_state = *(v4 + 5);
-    v5->_needsSyncUp = *(v4 + 16);
-    objc_storeStrong(&v5->_pendingRequestID, *(v4 + 3));
+    v5->_state = *(reportCopy + 5);
+    v5->_needsSyncUp = *(reportCopy + 16);
+    objc_storeStrong(&v5->_pendingRequestID, *(reportCopy + 3));
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithProblemReport:self];
 }
 
-- (BRCProblemReport)initWithCoder:(id)a3
+- (BRCProblemReport)initWithCoder:(id)coder
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = BRCProblemReport;
   v5 = [(BRCProblemReport *)&v16 init];
   if (v5)
   {
-    v5->_state = [v4 decodeInt32ForKey:@"state"];
+    v5->_state = [coderCopy decodeInt32ForKey:@"state"];
     v6 = MEMORY[0x277CBEB98];
     v17[0] = objc_opt_class();
     v17[1] = objc_opt_class();
@@ -79,54 +79,54 @@
     v8 = [v6 setWithArray:v7];
     v9 = [v8 mutableCopy];
 
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"problems"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"problems"];
     problems = v5->_problems;
     v5->_problems = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pendingRequestID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pendingRequestID"];
     pendingRequestID = v5->_pendingRequestID;
     v5->_pendingRequestID = v12;
 
-    v5->_needsSyncUp = [v4 decodeBoolForKey:@"needsSync"];
+    v5->_needsSyncUp = [coderCopy decodeBoolForKey:@"needsSync"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInt32:state forKey:@"state"];
-  [v5 encodeObject:self->_problems forKey:@"problems"];
-  [v5 encodeObject:self->_pendingRequestID forKey:@"pendingRequestID"];
-  [v5 encodeBool:self->_needsSyncUp forKey:@"needsSync"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:state forKey:@"state"];
+  [coderCopy encodeObject:self->_problems forKey:@"problems"];
+  [coderCopy encodeObject:self->_pendingRequestID forKey:@"pendingRequestID"];
+  [coderCopy encodeBool:self->_needsSyncUp forKey:@"needsSync"];
 }
 
-- (int)_zoneStateForProblemType:(int)a3
+- (int)_zoneStateForProblemType:(int)type
 {
-  if (a3 > 0x13)
+  if (type > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return dword_2241AC050[a3];
+    return dword_2241AC050[type];
   }
 }
 
-- (int)_priorityForProblemType:(int)a3
+- (int)_priorityForProblemType:(int)type
 {
-  if (a3 > 0x13)
+  if (type > 0x13)
   {
     return -99;
   }
 
   else
   {
-    return dword_2241AC0A0[a3];
+    return dword_2241AC0A0[type];
   }
 }
 
@@ -137,12 +137,12 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSMutableDictionary *)self->_problems allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_problems allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    intValue = 0;
     v7 = *v16;
     v8 = -100;
     do
@@ -151,7 +151,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -159,12 +159,12 @@
         if (v11 > v8)
         {
           v12 = v11;
-          v6 = [v10 intValue];
+          intValue = [v10 intValue];
           v8 = v12;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -172,11 +172,11 @@
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v6;
+  return intValue;
 }
 
 - (NSString)effectiveProblemMessage
@@ -240,10 +240,10 @@
     case 0x13:
       v3 = MEMORY[0x277CCACA8];
       v4 = [BRCUserDefaults defaultsForMangledID:0];
-      v5 = [v4 healthZoneMaxNumberOfResets];
+      healthZoneMaxNumberOfResets = [v4 healthZoneMaxNumberOfResets];
       v6 = [BRCUserDefaults defaultsForMangledID:0];
       [v6 healthZoneTimeIntervalForMaxNumberOfResets];
-      v2 = [v3 stringWithFormat:@"zone resetted more than %lu times in %f seconds", v5, v7];
+      v2 = [v3 stringWithFormat:@"zone resetted more than %lu times in %f seconds", healthZoneMaxNumberOfResets, v7];
 
       break;
     default:
@@ -266,15 +266,15 @@
   problems = self->_problems;
   v3 = [MEMORY[0x277CCABB0] numberWithInt:{-[BRCProblemReport _effectiveProblemType](self, "_effectiveProblemType")}];
   v4 = [(NSMutableDictionary *)problems objectForKeyedSubscript:v3];
-  v5 = [v4 effectedRecordNames];
+  effectedRecordNames = [v4 effectedRecordNames];
 
-  return v5;
+  return effectedRecordNames;
 }
 
-- (void)_addProblem:(id)a3
+- (void)_addProblem:(id)problem
 {
-  v10 = a3;
-  v4 = -[BRCProblemReport _zoneStateForProblemType:](self, "_zoneStateForProblemType:", [v10 type]);
+  problemCopy = problem;
+  v4 = -[BRCProblemReport _zoneStateForProblemType:](self, "_zoneStateForProblemType:", [problemCopy type]);
   if (v4 > self->_state)
   {
     self->_state = v4;
@@ -282,27 +282,27 @@
   }
 
   problems = self->_problems;
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "type")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(problemCopy, "type")}];
   v7 = [(NSMutableDictionary *)problems objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    [v7 mergeWithProblem:v10];
+    [v7 mergeWithProblem:problemCopy];
   }
 
   else
   {
     v8 = self->_problems;
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "type")}];
-    [(NSMutableDictionary *)v8 setObject:v10 forKeyedSubscript:v9];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(problemCopy, "type")}];
+    [(NSMutableDictionary *)v8 setObject:problemCopy forKeyedSubscript:v9];
   }
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BRCProblemReport *)self effectiveProblemMessage];
-  v5 = [(BRCProblemReport *)self needsSyncUp];
+  effectiveProblemMessage = [(BRCProblemReport *)self effectiveProblemMessage];
+  needsSyncUp = [(BRCProblemReport *)self needsSyncUp];
   v6 = [(BRCProblemReport *)self _zoneStateForProblemType:[(BRCProblemReport *)self _effectiveProblemType]];
   if (v6 > 2)
   {
@@ -314,7 +314,7 @@
     v7 = off_2785064E0[v6];
   }
 
-  if (v5)
+  if (needsSyncUp)
   {
     v8 = @"Yes";
   }
@@ -325,8 +325,8 @@
   }
 
   pendingRequestID = self->_pendingRequestID;
-  v10 = [(BRCProblemReport *)self effectedRecordNames];
-  v11 = [v3 stringWithFormat:@"problem{msg:%@, needs-sync:%@, zone-state:%@, pending-request:%@, records:%@}", v4, v8, v7, pendingRequestID, v10];
+  effectedRecordNames = [(BRCProblemReport *)self effectedRecordNames];
+  v11 = [v3 stringWithFormat:@"problem{msg:%@, needs-sync:%@, zone-state:%@, pending-request:%@, records:%@}", effectiveProblemMessage, v8, v7, pendingRequestID, effectedRecordNames];
 
   return v11;
 }
@@ -338,8 +338,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NSMutableDictionary *)self->_problems allKeys];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_problems allKeys];
+  v3 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -349,13 +349,13 @@
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
         v7 = [BRCUserDefaults defaultsForMangledID:0];
-        v8 = [v7 healthErrorsForReset];
-        LOBYTE(v6) = [v8 containsObject:v6];
+        healthErrorsForReset = [v7 healthErrorsForReset];
+        LOBYTE(v6) = [healthErrorsForReset containsObject:v6];
 
         if (v6)
         {
@@ -364,7 +364,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -384,7 +384,7 @@ LABEL_11:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: unknown effective problem type%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

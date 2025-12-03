@@ -30,7 +30,7 @@
     os_activity_scope_enter(v20, &state);
 
     v24 = 0;
-    v21 = [a1 connectClientSendSynchronousServerMessage:v12 proxyObject:v13 errorPtr:&v24];
+    v21 = [self connectClientSendSynchronousServerMessage:v12 proxyObject:v13 errorPtr:&v24];
     v22 = v24;
     (v19)[2](v19, v21, v22);
   }
@@ -40,7 +40,7 @@
     v23 = _os_activity_create(&dword_197AD5000, "Client:SendAsync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     os_activity_scope_enter(v23, &state);
 
-    [a1 connectClientSendServerMessage:v12 proxyObject:v13 withReply:v19];
+    [self connectClientSendServerMessage:v12 proxyObject:v13 withReply:v19];
   }
 
   os_activity_scope_leave(&state);

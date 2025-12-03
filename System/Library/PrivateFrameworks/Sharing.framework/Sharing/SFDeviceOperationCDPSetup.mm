@@ -3,11 +3,11 @@
 - (int)_runCDPApprovalServerStart;
 - (int)_runCDPSetupRequest;
 - (void)_activate;
-- (void)_complete:(id)a3;
+- (void)_complete:(id)_complete;
 - (void)_run;
 - (void)activate;
 - (void)invalidate;
-- (void)uiController:(id)a3 didPresentRootViewController:(id)a4;
+- (void)uiController:(id)controller didPresentRootViewController:(id)viewController;
 @end
 
 @implementation SFDeviceOperationCDPSetup
@@ -101,9 +101,9 @@ void __39__SFDeviceOperationCDPSetup_invalidate__block_invoke(uint64_t a1)
   [v1 _complete:v2];
 }
 
-- (void)_complete:(id)a3
+- (void)_complete:(id)_complete
 {
-  v14 = a3;
+  _completeCopy = _complete;
   v4 = _Block_copy(self->_completionHandler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = 0;
@@ -114,7 +114,7 @@ void __39__SFDeviceOperationCDPSetup_invalidate__block_invoke(uint64_t a1)
     startTicks = self->_startTicks;
     UpTicksToSecondsF();
     self->_metricSeconds = metricSeconds;
-    if (!v14)
+    if (!_completeCopy)
     {
       if (gLogCategory_SFDeviceOperationCDPSetup > 30)
       {
@@ -161,7 +161,7 @@ LABEL_11:
 
   if (v4)
   {
-    v4[2](v4, v14);
+    v4[2](v4, _completeCopy);
   }
 }
 
@@ -196,22 +196,22 @@ LABEL_11:
       }
 
       self->_cdpApprovalServerState = 1;
-      v5 = [(SFSession *)self->_sfSession messageSessionTemplate];
-      if (v5)
+      messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+      if (messageSessionTemplate)
       {
-        v6 = v5;
-        v7 = [(objc_class *)getACAccountStoreClass_2() defaultStore];
-        v8 = [v7 aa_primaryAppleAccount];
+        v6 = messageSessionTemplate;
+        defaultStore = [(objc_class *)getACAccountStoreClass_2() defaultStore];
+        aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
         v9 = objc_alloc_init(getCDPContextClass());
         cdpContext = self->_cdpContext;
         self->_cdpContext = v9;
 
-        v11 = [v8 username];
-        [(CDPContext *)self->_cdpContext setAppleID:v11];
+        username = [aa_primaryAppleAccount username];
+        [(CDPContext *)self->_cdpContext setAppleID:username];
 
         v12 = MEMORY[0x1E696AD98];
-        v13 = [v8 aa_personID];
-        v14 = [v12 numberWithLongLong:{objc_msgSend(v13, "longLongValue")}];
+        aa_personID = [aa_primaryAppleAccount aa_personID];
+        v14 = [v12 numberWithLongLong:{objc_msgSend(aa_personID, "longLongValue")}];
         [(CDPContext *)self->_cdpContext setDsid:v14];
 
         [(CDPContext *)self->_cdpContext setSharingChannel:v6];
@@ -372,10 +372,10 @@ void __48__SFDeviceOperationCDPSetup__runCDPSetupRequest__block_invoke(uint64_t 
   }
 }
 
-- (void)uiController:(id)a3 didPresentRootViewController:(id)a4
+- (void)uiController:(id)controller didPresentRootViewController:(id)viewController
 {
-  v6 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   if (gLogCategory_SFDeviceOperationCDPSetup <= 30 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationCDPSetup uiController:didPresentRootViewController:];
@@ -387,8 +387,8 @@ void __48__SFDeviceOperationCDPSetup__runCDPSetupRequest__block_invoke(uint64_t 
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled && self->_completionHandler)
   {
-    v3 = [(SFDeviceOperationCDPSetup *)self _runCDPApprovalServerStart];
-    if (v3 == 4 || v3 == 2)
+    _runCDPApprovalServerStart = [(SFDeviceOperationCDPSetup *)self _runCDPApprovalServerStart];
+    if (_runCDPApprovalServerStart == 4 || _runCDPApprovalServerStart == 2)
     {
       if (self->_skipSetupRequest || ((v5 = [(SFDeviceOperationCDPSetup *)self _runCDPSetupRequest], v5 != 4) ? (v6 = v5 == 2) : (v6 = 1), v6))
       {

@@ -1,11 +1,11 @@
 @interface RMConfigurationSubscriberServicePlugin
-+ (BOOL)_validPluginWithURL:(id)a3;
++ (BOOL)_validPluginWithURL:(id)l;
 + (id)loadPlugins;
-- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)a3;
-- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)a3 identifier:(id)a4 configurationTypes:(id)a5;
+- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)l;
+- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)l identifier:(id)identifier configurationTypes:(id)types;
 - (id)_serviceConnection;
 - (id)reportDetails;
-- (void)applyChangedConfigurationsTypes:(id)a3;
+- (void)applyChangedConfigurationsTypes:(id)types;
 - (void)fetchMissingConfigurationUIs;
 @end
 
@@ -17,7 +17,7 @@
   v17[1] = 3221225472;
   v17[2] = sub_100026174;
   v17[3] = &unk_1000D1988;
-  v17[4] = a1;
+  v17[4] = self;
   v2 = [RMPluginDiscovery discoverPluginsWithType:@"configuration" checkValidURL:v17];
   v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
   v13 = 0u;
@@ -54,11 +54,11 @@
   return v3;
 }
 
-+ (BOOL)_validPluginWithURL:(id)a3
++ (BOOL)_validPluginWithURL:(id)l
 {
-  v3 = [NSBundle bundleWithURL:a3];
-  v4 = [v3 infoDictionary];
-  v5 = [RMConfigurationSubscriberDescription descriptionWithServiceDictionary:v4];
+  v3 = [NSBundle bundleWithURL:l];
+  infoDictionary = [v3 infoDictionary];
+  v5 = [RMConfigurationSubscriberDescription descriptionWithServiceDictionary:infoDictionary];
 
   v6 = +[RMModelSharedDefinitions currentPlatform];
   v7 = +[RMBundle managementScope];
@@ -66,8 +66,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v5 types];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  types = [v5 types];
+  v9 = [types countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -79,7 +79,7 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(types);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -90,7 +90,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [types countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -112,28 +112,28 @@ LABEL_12:
   return v14;
 }
 
-- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)a3
+- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = RMConfigurationSubscriberServicePlugin;
   v6 = [(RMConfigurationSubscriberServicePlugin *)&v24 init];
   if (v6)
   {
-    v7 = [NSBundle bundleWithURL:v5];
-    v8 = [v7 bundleIdentifier];
+    v7 = [NSBundle bundleWithURL:lCopy];
+    bundleIdentifier = [v7 bundleIdentifier];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = bundleIdentifier;
 
-    v10 = [v7 infoDictionary];
-    v11 = [RMConfigurationSubscriberDescription descriptionWithServiceDictionary:v10];
+    infoDictionary = [v7 infoDictionary];
+    v11 = [RMConfigurationSubscriberDescription descriptionWithServiceDictionary:infoDictionary];
 
-    v12 = [v11 types];
+    types = [v11 types];
 
-    if (v12)
+    if (types)
     {
-      v13 = [v11 types];
-      v14 = [NSSet setWithArray:v13];
+      types2 = [v11 types];
+      v14 = [NSSet setWithArray:types2];
       configurationTypes = v6->_configurationTypes;
       v6->_configurationTypes = v14;
     }
@@ -143,24 +143,24 @@ LABEL_12:
       v16 = +[RMLog configurationSubscriberServicePlugin];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        sub_100026D8C(v5);
+        sub_100026D8C(lCopy);
       }
 
       v17 = objc_opt_new();
-      v13 = v6->_configurationTypes;
+      types2 = v6->_configurationTypes;
       v6->_configurationTypes = v17;
     }
 
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v18 = +[RMLog configurationSubscriberServicePlugin];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v5 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
       v21 = v6->_identifier;
-      v22 = [(NSSet *)v6->_configurationTypes allObjects];
-      v23 = [v22 componentsJoinedByString:{@", "}];
+      allObjects = [(NSSet *)v6->_configurationTypes allObjects];
+      v23 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v26 = v20;
+      v26 = lastPathComponent;
       v27 = 2114;
       v28 = v21;
       v29 = 2114;
@@ -172,31 +172,31 @@ LABEL_12:
   return v6;
 }
 
-- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)a3 identifier:(id)a4 configurationTypes:(id)a5
+- (RMConfigurationSubscriberServicePlugin)initWithURL:(id)l identifier:(id)identifier configurationTypes:(id)types
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  typesCopy = types;
   v20.receiver = self;
   v20.super_class = RMConfigurationSubscriberServicePlugin;
   v12 = [(RMConfigurationSubscriberServicePlugin *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    objc_storeStrong(&v13->_identifier, a4);
-    objc_storeStrong(&v13->_configurationTypes, a5);
+    objc_storeStrong(&v12->_url, l);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v13->_configurationTypes, types);
     v14 = +[RMLog configurationSubscriberServicePlugin];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v9 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
       identifier = v13->_identifier;
-      v18 = [(NSSet *)v13->_configurationTypes allObjects];
-      v19 = [v18 componentsJoinedByString:{@", "}];
+      allObjects = [(NSSet *)v13->_configurationTypes allObjects];
+      v19 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v22 = v16;
+      v22 = lastPathComponent;
       v23 = 2114;
-      v24 = identifier;
+      identifierCopy2 = identifier;
       v25 = 2114;
       v26 = v19;
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Created XPC service plugin: %{public}@ %{public}@ %{public}@", buf, 0x20u);
@@ -206,55 +206,55 @@ LABEL_12:
   return v13;
 }
 
-- (void)applyChangedConfigurationsTypes:(id)a3
+- (void)applyChangedConfigurationsTypes:(id)types
 {
-  v4 = [(RMConfigurationSubscriberServicePlugin *)self _serviceConnection];
+  _serviceConnection = [(RMConfigurationSubscriberServicePlugin *)self _serviceConnection];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100026838;
   v7[3] = &unk_1000D1020;
   v7[4] = self;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v5 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000268A4;
   v6[3] = &unk_1000D1020;
   v6[4] = self;
   [v5 fetchThenApplyConfigurationsWithScope:+[RMStoreHelper storeScope](RMStoreHelper completionHandler:{"storeScope"), v6}];
-  [v4 invalidate];
+  [_serviceConnection invalidate];
 }
 
 - (void)fetchMissingConfigurationUIs
 {
-  v3 = [(RMConfigurationSubscriberServicePlugin *)self _serviceConnection];
+  _serviceConnection = [(RMConfigurationSubscriberServicePlugin *)self _serviceConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100026A30;
   v6[3] = &unk_1000D1020;
   v6[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  v4 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100026A9C;
   v5[3] = &unk_1000D1020;
   v5[4] = self;
   [v4 fetchThenUpdateConfigurationUIsWithScope:+[RMStoreHelper storeScope](RMStoreHelper completionHandler:{"storeScope"), v5}];
-  [v3 invalidate];
+  [_serviceConnection invalidate];
 }
 
 - (id)reportDetails
 {
   v11[0] = @"Location";
   v3 = [(RMConfigurationSubscriberServicePlugin *)self url];
-  v4 = [v3 path];
-  v12[0] = v4;
+  path = [v3 path];
+  v12[0] = path;
   v11[1] = @"Identifier";
-  v5 = [(RMConfigurationSubscriberServicePlugin *)self identifier];
-  v12[1] = v5;
+  identifier = [(RMConfigurationSubscriberServicePlugin *)self identifier];
+  v12[1] = identifier;
   v11[2] = @"ConfigurationTypes";
-  v6 = [(RMConfigurationSubscriberServicePlugin *)self configurationTypes];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+  configurationTypes = [(RMConfigurationSubscriberServicePlugin *)self configurationTypes];
+  allObjects = [configurationTypes allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
   v12[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -264,8 +264,8 @@ LABEL_12:
 - (id)_serviceConnection
 {
   v3 = [NSXPCConnection alloc];
-  v4 = [(RMConfigurationSubscriberServicePlugin *)self identifier];
-  v5 = [v3 initWithServiceName:v4];
+  identifier = [(RMConfigurationSubscriberServicePlugin *)self identifier];
+  v5 = [v3 initWithServiceName:identifier];
 
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RMConfigurationSubscriberXPCService];
   [v5 setRemoteObjectInterface:v6];

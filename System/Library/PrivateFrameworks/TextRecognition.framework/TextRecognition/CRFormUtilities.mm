@@ -1,34 +1,34 @@
 @interface CRFormUtilities
-+ (BOOL)isRegion:(id)a3 verticallyAlignedWithRegionBelow:(id)a4 maxRelativeDistance:(double)a5;
-+ (id)_filterFieldsToNotSurface:(id)a3;
-+ (id)debugDescriptionForField:(id)a3;
-+ (id)detectedFieldRegionsInDocument:(id)a3 excludingFields:(id)a4 updateExcludedFields:(BOOL)a5;
-+ (id)proposedFieldForPoint:(CGPoint)a3 inDocument:(id)a4 existingFields:(id)a5;
++ (BOOL)isRegion:(id)region verticallyAlignedWithRegionBelow:(id)below maxRelativeDistance:(double)distance;
++ (id)_filterFieldsToNotSurface:(id)surface;
++ (id)debugDescriptionForField:(id)field;
++ (id)detectedFieldRegionsInDocument:(id)document excludingFields:(id)fields updateExcludedFields:(BOOL)excludedFields;
++ (id)proposedFieldForPoint:(CGPoint)point inDocument:(id)document existingFields:(id)fields;
 @end
 
 @implementation CRFormUtilities
 
-+ (id)debugDescriptionForField:(id)a3
++ (id)debugDescriptionForField:(id)field
 {
   swift_unknownObjectRetain();
-  sub_1B4101B44(a3);
+  sub_1B4101B44(field);
   swift_unknownObjectRelease();
   v4 = sub_1B429FB88();
 
   return v4;
 }
 
-+ (id)_filterFieldsToNotSurface:(id)a3
++ (id)_filterFieldsToNotSurface:(id)surface
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  surfaceCopy = surface;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(surfaceCopy, "count")}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CRFormUtilities__filterFieldsToNotSurface___block_invoke;
   v7[3] = &unk_1E7BC2048;
   v5 = v4;
   v8 = v5;
-  [CRFormPostProcessingManager enumerateDetectedFields:v3 block:v7];
+  [CRFormPostProcessingManager enumerateDetectedFields:surfaceCopy block:v7];
 
   return v5;
 }
@@ -56,12 +56,12 @@ void __45__CRFormUtilities__filterFieldsToNotSurface___block_invoke(uint64_t a1,
   }
 }
 
-+ (id)detectedFieldRegionsInDocument:(id)a3 excludingFields:(id)a4 updateExcludedFields:(BOOL)a5
++ (id)detectedFieldRegionsInDocument:(id)document excludingFields:(id)fields updateExcludedFields:(BOOL)excludedFields
 {
-  v5 = a5;
+  excludedFieldsCopy = excludedFields;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  documentCopy = document;
+  fieldsCopy = fields;
   if (qword_1ED9602E0 != -1)
   {
     dispatch_once(&qword_1ED9602E0, &__block_literal_global_32);
@@ -70,31 +70,31 @@ void __45__CRFormUtilities__filterFieldsToNotSurface___block_invoke(uint64_t a1,
   v10 = CROSLogForCategory(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v8 formFieldRegions];
+    formFieldRegions = [documentCopy formFieldRegions];
     *buf = 136315906;
     v26 = "+[CRFormUtilities detectedFieldRegionsInDocument:excludingFields:updateExcludedFields:]";
     v27 = 2048;
-    v28 = [v11 count];
+    v28 = [formFieldRegions count];
     v29 = 2048;
-    v30 = [v9 count];
+    v30 = [fieldsCopy count];
     v31 = 1024;
-    v32 = v5;
+    v32 = excludedFieldsCopy;
     _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_DEBUG, "%s: #internalFields:%lu #externalFields:%lu updateExcludedFields:%d", buf, 0x26u);
   }
 
-  if ((_MergedGlobals_37 & 1) != 0 || v9 && [v9 count] || (objc_msgSend(v8, "formFieldRegions"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count") == 0, v12, v13))
+  if ((_MergedGlobals_37 & 1) != 0 || fieldsCopy && [fieldsCopy count] || (objc_msgSend(documentCopy, "formFieldRegions"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count") == 0, v12, v13))
   {
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:{v5, @"ShouldUpdateExternalFieldsOption"}];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:{excludedFieldsCopy, @"ShouldUpdateExternalFieldsOption"}];
     v24 = v17;
-    v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+    formFieldRegions3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
-    v18 = [MEMORY[0x1E695DF70] arrayWithArray:v9];
-    v19 = [v8 formFieldRegions];
-    [v18 addObjectsFromArray:v19];
+    v18 = [MEMORY[0x1E695DF70] arrayWithArray:fieldsCopy];
+    formFieldRegions2 = [documentCopy formFieldRegions];
+    [v18 addObjectsFromArray:formFieldRegions2];
 
     v20 = +[CRFormPostProcessingManager postProcessingManagerWithDefaultSequence];
-    v21 = [v20 process:v18 externalFields:v9 document:v8 options:v15];
-    v16 = [a1 _filterFieldsToNotSurface:v21];
+    v21 = [v20 process:v18 externalFields:fieldsCopy document:documentCopy options:formFieldRegions3];
+    v16 = [self _filterFieldsToNotSurface:v21];
   }
 
   else
@@ -107,8 +107,8 @@ void __45__CRFormUtilities__filterFieldsToNotSurface___block_invoke(uint64_t a1,
       _os_log_impl(&dword_1B40D2000, v14, OS_LOG_TYPE_DEFAULT, "%s: Returning cached results as no external field is given.", buf, 0xCu);
     }
 
-    v15 = [v8 formFieldRegions];
-    v16 = [a1 _filterFieldsToNotSurface:v15];
+    formFieldRegions3 = [documentCopy formFieldRegions];
+    v16 = [self _filterFieldsToNotSurface:formFieldRegions3];
   }
 
   return v16;
@@ -121,13 +121,13 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
   _MergedGlobals_37 = [v0 BOOLValue];
 }
 
-+ (id)proposedFieldForPoint:(CGPoint)a3 inDocument:(id)a4 existingFields:(id)a5
++ (id)proposedFieldForPoint:(CGPoint)point inDocument:(id)document existingFields:(id)fields
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  documentCopy = document;
+  fieldsCopy = fields;
   v10 = CROSLogForCategory(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -138,7 +138,7 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
     *&buf[22] = 2048;
     v55 = *&y;
     LOWORD(v56) = 2048;
-    *(&v56 + 2) = [v9 count];
+    *(&v56 + 2) = [fieldsCopy count];
     _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_DEBUG, "%s: x:%lf y:%lf #existingFields:%lu", buf, 0x2Au);
   }
 
@@ -162,7 +162,7 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
   v41[1] = v41;
   v41[2] = 0x2020000000;
   v41[3] = 0x7FEFFFFFFFFFFFFFLL;
-  v11 = [v8 formFieldRegions];
+  formFieldRegions = [documentCopy formFieldRegions];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __67__CRFormUtilities_proposedFieldForPoint_inDocument_existingFields___block_invoke_2;
@@ -173,7 +173,7 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
   v40[5] = buf;
   v40[6] = v41;
   v40[7] = &v42;
-  [CRFormPostProcessingManager enumerateFieldsInFields:v11 filter:&__block_literal_global_18 block:v40];
+  [CRFormPostProcessingManager enumerateFieldsInFields:formFieldRegions filter:&__block_literal_global_18 block:v40];
   if (*(*&buf[8] + 40))
   {
     v12 = CROSLogForCategory(6);
@@ -194,9 +194,9 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
     v15 = v43[5];
     if (v15)
     {
-      v16 = [v15 boundingQuad];
-      v17 = [v16 denormalizedQuad];
-      [v17 size];
+      boundingQuad = [v15 boundingQuad];
+      denormalizedQuad = [boundingQuad denormalizedQuad];
+      [denormalizedQuad size];
       v19 = v18;
     }
 
@@ -205,11 +205,11 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
       v19 = 30.0;
     }
 
-    [v8 rectifiedSize];
+    [documentCopy rectifiedSize];
     v22 = normalizedSizeForSize(150.0, v19, v20, v21);
     v24 = v23;
     v25 = [CRNormalizedQuad alloc];
-    [v8 rectifiedSize];
+    [documentCopy rectifiedSize];
     v12 = [(CRNormalizedQuad *)v25 initWithNormalizedBoundingBox:x size:y - v24, v22, v24, v26, v27];
     v28 = [[CRFormTextFieldOutputRegion alloc] initWithQuad:v12 labelRegion:0 subFields:0 contentType:0 source:1];
     v29 = *(*&buf[8] + 40);
@@ -218,7 +218,7 @@ void __87__CRFormUtilities_detectedFieldRegionsInDocument_excludingFields_update
     v30 = +[CRFormPostProcessingManager postProcessingManagerWithDefaultSequence];
     v49 = *(*&buf[8] + 40);
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-    v32 = [v30 process:v31 externalFields:MEMORY[0x1E695E0F0] document:v8 options:0];
+    v32 = [v30 process:v31 externalFields:MEMORY[0x1E695E0F0] document:documentCopy options:0];
 
     v33 = [v32 objectAtIndexedSubscript:0];
     v34 = *(*&buf[8] + 40);
@@ -303,30 +303,30 @@ void __67__CRFormUtilities_proposedFieldForPoint_inDocument_existingFields___blo
   }
 }
 
-+ (BOOL)isRegion:(id)a3 verticallyAlignedWithRegionBelow:(id)a4 maxRelativeDistance:(double)a5
++ (BOOL)isRegion:(id)region verticallyAlignedWithRegionBelow:(id)below maxRelativeDistance:(double)distance
 {
-  v7 = a4;
-  v8 = [a3 boundingQuad];
-  v9 = [v7 boundingQuad];
-  [v8 topRight];
+  belowCopy = below;
+  boundingQuad = [region boundingQuad];
+  boundingQuad2 = [belowCopy boundingQuad];
+  [boundingQuad topRight];
   v11 = v10;
-  [v9 topRight];
+  [boundingQuad2 topRight];
   v13 = v12;
-  [v8 topLeft];
+  [boundingQuad topLeft];
   v15 = v14;
-  [v9 topLeft];
+  [boundingQuad2 topLeft];
   v17 = v16;
-  [v9 size];
-  if (fmax(fmin(v11, v13) - fmax(v15, v17), 0.0) / v18 > 0.5 && ([v9 topLeft], v20 = v19, objc_msgSend(v8, "bottomLeft"), v20 >= v21 + -2.22044605e-16))
+  [boundingQuad2 size];
+  if (fmax(fmin(v11, v13) - fmax(v15, v17), 0.0) / v18 > 0.5 && ([boundingQuad2 topLeft], v20 = v19, objc_msgSend(boundingQuad, "bottomLeft"), v20 >= v21 + -2.22044605e-16))
   {
-    [v9 topLeft];
+    [boundingQuad2 topLeft];
     v24 = v23;
-    [v8 bottomLeft];
+    [boundingQuad bottomLeft];
     v26 = v25;
-    [v8 size];
+    [boundingQuad size];
     v28 = v27;
-    [v9 size];
-    v22 = v24 - v26 <= (v28 + v29) * 0.5 * a5;
+    [boundingQuad2 size];
+    v22 = v24 - v26 <= (v28 + v29) * 0.5 * distance;
   }
 
   else

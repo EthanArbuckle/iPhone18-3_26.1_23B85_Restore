@@ -4,23 +4,23 @@
 - (BOOL)deviceSupportsAlwaysOn;
 - (BOOL)isAlwaysOnEnabled;
 - (BOOL)isTransitioning;
-- (id)initWithEndpoint:(void *)a1;
+- (id)initWithEndpoint:(void *)endpoint;
 - (id)lock_allDidChangeAlwaysOnEnabledObservers;
 - (id)lock_allDidCompleteUpdateToStateObservers;
-- (id)lock_allObserversPassingTest:(id *)a1;
-- (id)performChangeRequest:(id)a3;
+- (id)lock_allObserversPassingTest:(id *)test;
+- (id)performChangeRequest:(id)request;
 - (int64_t)backlightState;
 - (int64_t)flipbookState;
 - (void)_reactivate;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)didChangeAlwaysOnEnabled:(id)a3;
-- (void)didCompleteUpdateToState:(id)a3 forEvents:(id)a4 abortedEvents:(id)a5;
+- (void)didChangeAlwaysOnEnabled:(id)enabled;
+- (void)didCompleteUpdateToState:(id)state forEvents:(id)events abortedEvents:(id)abortedEvents;
 - (void)invalidate;
-- (void)lock_enumerateObserversWithBlock:(uint64_t)a1;
-- (void)lock_updateHostObservationMask:(uint64_t)a1;
-- (void)performingEvent:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)lock_enumerateObserversWithBlock:(uint64_t)block;
+- (void)lock_updateHostObservationMask:(uint64_t)mask;
+- (void)performingEvent:(id)event;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BLSXPCBacklightProxy
@@ -35,8 +35,8 @@
 
   else
   {
-    v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-    lock_isAlwaysOnEnabled = [v4 isAlwaysOnEnabled];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    lock_isAlwaysOnEnabled = [remoteTarget isAlwaysOnEnabled];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -45,13 +45,13 @@
 
 - (id)lock_allDidChangeAlwaysOnEnabledObservers
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(BLSXPCBacklightProxy *)a1 lock_allObserversPassingTest:?];
+    self = [(BLSXPCBacklightProxy *)self lock_allObserversPassingTest:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (int64_t)backlightState
@@ -64,9 +64,9 @@
 
   else
   {
-    v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-    v5 = [v4 getBacklightState];
-    lock_backlightState = [v5 integerValue];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    getBacklightState = [remoteTarget getBacklightState];
+    lock_backlightState = [getBacklightState integerValue];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -77,9 +77,9 @@
 {
   objc_opt_self();
   v0 = MEMORY[0x277CF3288];
-  v1 = [MEMORY[0x277CF3288] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x277CF3288] defaultShellMachName];
   v2 = +[BLSXPCBacklightProxySpecification identifier];
-  v3 = [v0 endpointForMachName:v1 service:v2 instance:0];
+  v3 = [v0 endpointForMachName:defaultShellMachName service:v2 instance:0];
   v4 = v3;
   if (v3)
   {
@@ -104,12 +104,12 @@
   return v4;
 }
 
-- (id)initWithEndpoint:(void *)a1
+- (id)initWithEndpoint:(void *)endpoint
 {
   v39 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (endpoint)
   {
     v5 = v3;
     NSClassFromString(&cfstr_Bsserviceconne.isa);
@@ -123,24 +123,24 @@
       [BLSXPCBacklightProxy initWithEndpoint:?];
     }
 
-    v32.receiver = a1;
+    v32.receiver = endpoint;
     v32.super_class = BLSXPCBacklightProxy;
     v6 = objc_msgSendSuper2(&v32, sel_init);
     v7 = v6;
     if (v6)
     {
       v6[8] = 0;
-      v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
       v9 = *(v7 + 1);
-      *(v7 + 1) = v8;
+      *(v7 + 1) = weakToStrongObjectsMapTable;
 
       v10 = [MEMORY[0x277CF3280] connectionWithEndpoint:v5];
       v11 = *(v7 + 3);
       *(v7 + 3) = v10;
 
       v12 = +[BLSXPCBacklightProxySpecification serviceQuality];
-      v13 = [MEMORY[0x277CF0C18] serial];
-      v14 = [v13 serviceClass:objc_msgSend(v12 relativePriority:{"serviceClass"), objc_msgSend(v12, "relativePriority")}];
+      serial = [MEMORY[0x277CF0C18] serial];
+      v14 = [serial serviceClass:objc_msgSend(v12 relativePriority:{"serviceClass"), objc_msgSend(v12, "relativePriority")}];
       v15 = BSDispatchQueueCreate();
       v16 = *(v7 + 2);
       *(v7 + 2) = v15;
@@ -218,11 +218,11 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
 - (void)_reactivate
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
     v6 = a2;
-    _os_log_impl(&dword_21FE25000, a1, OS_LOG_TYPE_DEFAULT, "%p Reset BLSXPCBacklightProxy for reconnect because there are no observers.", &v5, 0xCu);
+    _os_log_impl(&dword_21FE25000, self, OS_LOG_TYPE_DEFAULT, "%p Reset BLSXPCBacklightProxy for reconnect because there are no observers.", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x277D85DE8];
@@ -242,7 +242,7 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0();
@@ -257,22 +257,22 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
 - (int64_t)flipbookState
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v4 = [v3 getFlipbookState];
-  v5 = [v4 integerValue];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  getFlipbookState = [remoteTarget getFlipbookState];
+  integerValue = [getFlipbookState integerValue];
 
   os_unfair_lock_unlock(&self->_lock);
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)isTransitioning
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v4 = [v3 isTransitioning];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  isTransitioning = [remoteTarget isTransitioning];
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return isTransitioning;
 }
 
 - (BOOL)deviceSupportsAlwaysOn
@@ -285,8 +285,8 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
 
   else
   {
-    v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-    lock_deviceSupportsAlwaysOn = [v4 deviceSupportsAlwaysOn];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    lock_deviceSupportsAlwaysOn = [remoteTarget deviceSupportsAlwaysOn];
 
     if (!self->_lock_deviceSupportsAlwaysOnCached)
     {
@@ -299,24 +299,24 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
   return lock_deviceSupportsAlwaysOn;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [BLSXPCBacklightProxyObserverMask maskForObserver:v4];
+  observerCopy = observer;
+  v5 = [BLSXPCBacklightProxyObserverMask maskForObserver:observerCopy];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_lock_observers setObject:v5 forKey:v4];
+  [(NSMapTable *)self->_lock_observers setObject:v5 forKey:observerCopy];
 
   [(BLSXPCBacklightProxy *)self lock_updateHostObservationMask:?];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)lock_updateHostObservationMask:(uint64_t)a1
+- (void)lock_updateHostObservationMask:(uint64_t)mask
 {
-  if (a1)
+  if (mask)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
+    os_unfair_lock_assert_owner((mask + 32));
     memset(&enumerator, 0, sizeof(enumerator));
-    NSEnumerateMapTable(&enumerator, *(a1 + 8));
+    NSEnumerateMapTable(&enumerator, *(mask + 8));
     value = 0;
     key = 0;
     if (NSNextMapEnumeratorPair(&enumerator, &key, &value))
@@ -365,25 +365,25 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
     v17[3] = &unk_278428F10;
     v17[4] = &v18;
     v11 = MEMORY[0x223D716E0](v17);
-    v11[2](v11, a1 + 36, v4);
-    v11[2](v11, a1 + 40, v5);
-    v11[2](v11, a1 + 44, v6);
-    v11[2](v11, a1 + 48, v7);
-    v11[2](v11, a1 + 52, v8);
-    v11[2](v11, a1 + 56, v9);
+    v11[2](v11, mask + 36, v4);
+    v11[2](v11, mask + 40, v5);
+    v11[2](v11, mask + 44, v6);
+    v11[2](v11, mask + 48, v7);
+    v11[2](v11, mask + 52, v8);
+    v11[2](v11, mask + 56, v9);
     if (v4 <= 0 && v5 <= 0)
     {
-      *(a1 + 72) = 0;
+      *(mask + 72) = 0;
     }
 
     if (v6 <= 0)
     {
-      *(a1 + 74) = 0;
+      *(mask + 74) = 0;
     }
 
     if ((v19[3] & 1) != 0 || a2)
     {
-      v12 = [*(a1 + 24) remoteTarget];
+      remoteTarget = [*(mask + 24) remoteTarget];
       v13 = [BLSXPCBacklightProxyObserverMask maskForObservingDidCompleteUpdateToState:v4 > 0 observingEventsArray:v5 > 0 didChangeAlwaysOnEnabled:v6 > 0 activatingWithEvent:v7 > 0 deactivatingWithEvent:v8 > 0 performingEvent:v9 > 0];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -391,7 +391,7 @@ void __41__BLSXPCBacklightProxy_initWithEndpoint___block_invoke_2(uint64_t a1)
       v15[3] = &unk_278428CE8;
       v14 = v13;
       v16 = v14;
-      [v12 nowObservingWithMask:v14 completion:v15];
+      [remoteTarget nowObservingWithMask:v14 completion:v15];
     }
 
     _Block_object_dispose(&v18, 8);
@@ -443,47 +443,47 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_lock_observers removeObjectForKey:v4];
+  [(NSMapTable *)self->_lock_observers removeObjectForKey:observerCopy];
 
   [(BLSXPCBacklightProxy *)self lock_updateHostObservationMask:?];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)performChangeRequest:(id)a3
+- (id)performChangeRequest:(id)request
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  v6 = [v5 performChangeRequest:v4];
+  requestCopy = request;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v6 = [remoteTarget performChangeRequest:requestCopy];
 
   return v6;
 }
 
-- (void)didCompleteUpdateToState:(id)a3 forEvents:(id)a4 abortedEvents:(id)a5
+- (void)didCompleteUpdateToState:(id)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v22 = a5;
+  stateCopy = state;
+  eventsCopy = events;
+  abortedEventsCopy = abortedEvents;
   os_unfair_lock_lock(&self->_lock);
   self->_lock_isBacklightStateCached = 1;
-  v20 = v8;
-  v10 = [v8 integerValue];
-  self->_lock_backlightState = v10;
-  v11 = [(BLSXPCBacklightProxy *)&self->super.isa lock_allDidCompleteUpdateToStateObservers];
+  v20 = stateCopy;
+  integerValue = [stateCopy integerValue];
+  self->_lock_backlightState = integerValue;
+  lock_allDidCompleteUpdateToStateObservers = [(BLSXPCBacklightProxy *)&self->super.isa lock_allDidCompleteUpdateToStateObservers];
   os_unfair_lock_unlock(&self->_lock);
-  v12 = v9;
-  v21 = [v9 firstObject];
+  v12 = eventsCopy;
+  firstObject = [eventsCopy firstObject];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v11;
+  v13 = lock_allDidCompleteUpdateToStateObservers;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -502,12 +502,12 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
         v18 = *(*(&v23 + 1) + 8 * v17);
         if (objc_opt_respondsToSelector())
         {
-          [v18 backlight:self didCompleteUpdateToState:v10 forEvents:v12 abortedEvents:v22];
+          [v18 backlight:self didCompleteUpdateToState:integerValue forEvents:v12 abortedEvents:abortedEventsCopy];
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          [v18 backlight:self didCompleteUpdateToState:v10 forEvent:v21];
+          [v18 backlight:self didCompleteUpdateToState:integerValue forEvent:firstObject];
         }
 
         ++v17;
@@ -523,21 +523,21 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeAlwaysOnEnabled:(id)a3
+- (void)didChangeAlwaysOnEnabled:(id)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_lock);
   self->_lock_isAlwaysOnEnabledCached = 1;
-  v5 = [v4 BOOLValue];
-  self->_lock_isAlwaysOnEnabled = v5;
-  v6 = [(BLSXPCBacklightProxy *)&self->super.isa lock_allDidChangeAlwaysOnEnabledObservers];
+  bOOLValue = [enabledCopy BOOLValue];
+  self->_lock_isAlwaysOnEnabled = bOOLValue;
+  lock_allDidChangeAlwaysOnEnabledObservers = [(BLSXPCBacklightProxy *)&self->super.isa lock_allDidChangeAlwaysOnEnabledObservers];
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = lock_allDidChangeAlwaysOnEnabledObservers;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -553,7 +553,7 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) backlight:self didChangeAlwaysOnEnabled:{v5, v13}];
+        [*(*(&v13 + 1) + 8 * v11++) backlight:self didChangeAlwaysOnEnabled:{bOOLValue, v13}];
       }
 
       while (v9 != v11);
@@ -566,12 +566,12 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performingEvent:(id)a3
+- (void)performingEvent:(id)event
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  IsActive = BLSBacklightStateIsActive([v4 previousState]);
-  v6 = BLSBacklightStateIsActive([v4 state]);
+  eventCopy = event;
+  IsActive = BLSBacklightStateIsActive([eventCopy previousState]);
+  v6 = BLSBacklightStateIsActive([eventCopy state]);
   v7 = !IsActive && v6;
   v8 = IsActive && !v6;
   os_unfair_lock_lock(&self->_lock);
@@ -613,7 +613,7 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
           objc_enumerationMutation(v16);
         }
 
-        [*(*(&v40 + 1) + 8 * v20++) backlight:self activatingWithEvent:v4];
+        [*(*(&v40 + 1) + 8 * v20++) backlight:self activatingWithEvent:eventCopy];
       }
 
       while (v18 != v20);
@@ -643,7 +643,7 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
           objc_enumerationMutation(v21);
         }
 
-        [*(*(&v36 + 1) + 8 * v25++) backlight:self deactivatingWithEvent:v4];
+        [*(*(&v36 + 1) + 8 * v25++) backlight:self deactivatingWithEvent:eventCopy];
       }
 
       while (v23 != v25);
@@ -673,7 +673,7 @@ void __55__BLSXPCBacklightProxy_lock_updateHostObservationMask___block_invoke_2(
           objc_enumerationMutation(v26);
         }
 
-        [*(*(&v32 + 1) + 8 * v30++) backlight:self performingEvent:{v4, v32}];
+        [*(*(&v32 + 1) + 8 * v30++) backlight:self performingEvent:{eventCopy, v32}];
       }
 
       while (v28 != v30);
@@ -724,22 +724,22 @@ void __53__BLSXPCBacklightProxy_lock_allObserversPassingTest___block_invoke(uint
 
 - (id)lock_allDidCompleteUpdateToStateObservers
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(BLSXPCBacklightProxy *)a1 lock_allObserversPassingTest:?];
+    self = [(BLSXPCBacklightProxy *)self lock_allObserversPassingTest:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)lock_enumerateObserversWithBlock:(uint64_t)a1
+- (void)lock_enumerateObserversWithBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
     memset(&enumerator, 0, sizeof(enumerator));
-    NSEnumerateMapTable(&enumerator, *(a1 + 8));
+    NSEnumerateMapTable(&enumerator, *(block + 8));
     value = 0;
     key = 0;
     while (NSNextMapEnumeratorPair(&enumerator, &key, &value))
@@ -754,12 +754,12 @@ void __53__BLSXPCBacklightProxy_lock_allObserversPassingTest___block_invoke(uint
   }
 }
 
-- (id)lock_allObserversPassingTest:(id *)a1
+- (id)lock_allObserversPassingTest:(id *)test
 {
   v3 = a2;
-  if (a1)
+  if (test)
   {
-    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1[1], "count")}];
+    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(test[1], "count")}];
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __53__BLSXPCBacklightProxy_lock_allObserversPassingTest___block_invoke;
@@ -767,11 +767,11 @@ void __53__BLSXPCBacklightProxy_lock_allObserversPassingTest___block_invoke(uint
     v11 = v4;
     v12 = v3;
     v5 = v4;
-    [(BLSXPCBacklightProxy *)a1 lock_enumerateObserversWithBlock:?];
-    a1 = [v5 copy];
+    [(BLSXPCBacklightProxy *)test lock_enumerateObserversWithBlock:?];
+    test = [v5 copy];
   }
 
-  return a1;
+  return test;
 }
 
 - (void)initWithEndpoint:(const char *)a1 .cold.1(const char *a1)

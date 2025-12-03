@@ -1,8 +1,8 @@
 @interface RCPPlayerPlaybackOptions
 - (CGAffineTransform)transform;
 - (RCPPlayerPlaybackOptions)init;
-- (unint64_t)timestampForEventReplay:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (unint64_t)timestampForEventReplay:(id)replay;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation RCPPlayerPlaybackOptions
@@ -37,24 +37,24 @@
   return v3;
 }
 
-- (unint64_t)timestampForEventReplay:(id)a3
+- (unint64_t)timestampForEventReplay:(id)replay
 {
   if (self->_useHIDEventTimestampsForDelivery)
   {
-    return [a3 timestamp];
+    return [replay timestamp];
   }
 
   else
   {
-    return [a3 deliveryTimestamp];
+    return [replay deliveryTimestamp];
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_transform.c = *&transform->c;
   *&self->_transform.tx = v4;
   *&self->_transform.a = v3;
 }

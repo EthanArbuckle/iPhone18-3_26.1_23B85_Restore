@@ -1,17 +1,17 @@
 @interface BKSMutableHIDEventDeferringSelectionChangeRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBasis:(id)a3;
-- (void)setPathIdentifier:(id)a3;
-- (void)setSelectionTarget:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBasis:(id)basis;
+- (void)setPathIdentifier:(id)identifier;
+- (void)setSelectionTarget:(id)target;
 @end
 
 @implementation BKSMutableHIDEventDeferringSelectionChangeRequest
 
-- (void)setBasis:(id)a3
+- (void)setBasis:(id)basis
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  basisCopy = basis;
+  if (!basisCopy)
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = objc_opt_class();
@@ -28,7 +28,7 @@
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringSelectionChangeRequest.m";
       v33 = 1024;
@@ -44,18 +44,18 @@
     JUMPOUT(0x1863716ACLL);
   }
 
-  v6 = v5;
+  v6 = basisCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(BKSHIDEventDeferringChangeBasis *)v6 classForCoder];
-    if (!v17)
+    classForCoder = [(BKSHIDEventDeferringChangeBasis *)v6 classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"basis", v18, v20];
@@ -70,7 +70,7 @@
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringSelectionChangeRequest.m";
       v33 = 1024;
@@ -91,11 +91,11 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSelectionTarget:(id)a3
+- (void)setSelectionTarget:(id)target
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  targetCopy = target;
+  if (!targetCopy)
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = objc_opt_class();
@@ -112,7 +112,7 @@
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringSelectionChangeRequest.m";
       v33 = 1024;
@@ -128,18 +128,18 @@
     JUMPOUT(0x1863719B0);
   }
 
-  v6 = v5;
+  v6 = targetCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(BKSHIDEventDeferringSelectionTarget *)v6 classForCoder];
-    if (!v17)
+    classForCoder = [(BKSHIDEventDeferringSelectionTarget *)v6 classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"selectionTarget", v18, v20];
@@ -154,7 +154,7 @@
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringSelectionChangeRequest.m";
       v33 = 1024;
@@ -175,10 +175,10 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPathIdentifier:(id)a3
+- (void)setPathIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -188,7 +188,7 @@
   {
     v6 = +[BKSHIDEventDeferringSelectionPathIdentifier everySelectionPath];
 
-    if (v6 != v5)
+    if (v6 != identifierCopy)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must be a valid path or symbol"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -201,7 +201,7 @@
         v15 = 2114;
         v16 = v12;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = @"BKSHIDEventDeferringSelectionChangeRequest.m";
         v21 = 1024;
@@ -219,11 +219,11 @@
   }
 
   pathIdentifier = self->super._pathIdentifier;
-  self->super._pathIdentifier = v5;
+  self->super._pathIdentifier = identifierCopy;
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSHIDEventDeferringSelectionChangeRequest alloc];
 

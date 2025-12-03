@@ -6,7 +6,7 @@
 - (void)_fetchBatchFetchEnabled;
 - (void)_lpmDidChange;
 - (void)_reCheck;
-- (void)checkAutoDownloadsForUuids:(id)a3;
+- (void)checkAutoDownloadsForUuids:(id)uuids;
 - (void)startIfNeeded;
 - (void)stop;
 @end
@@ -26,8 +26,8 @@
 {
   v7.receiver = self;
   v7.super_class = MTFeedUpdateProcessor;
-  v3 = [(MTBaseProcessor *)&v7 start];
-  if (v3)
+  start = [(MTBaseProcessor *)&v7 start];
+  if (start)
   {
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 addObserver:self selector:"_lpmDidChange" name:NSProcessInfoPowerStateDidChangeNotification object:0];
@@ -39,21 +39,21 @@
     [(MTFeedUpdateProcessor *)self _fetchBatchFetchEnabled];
   }
 
-  return v3;
+  return start;
 }
 
 - (void)_fetchBatchFetchEnabled
 {
   objc_initWeak(&location, self);
   v3 = +[IMURLBag sharedInstance];
-  v4 = [v3 batchFeedFetchIsEnabled];
-  v5 = [(MTBaseProcessor *)self workQueue];
+  batchFeedFetchIsEnabled = [v3 batchFeedFetchIsEnabled];
+  workQueue = [(MTBaseProcessor *)self workQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100120FA0;
   v6[3] = &unk_1004DD160;
   objc_copyWeak(&v7, &location);
-  [v4 asyncValueOnQueue:v5 withCompletion:v6];
+  [batchFeedFetchIsEnabled asyncValueOnQueue:workQueue withCompletion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -92,10 +92,10 @@
   [v3 removeObserver:self];
 }
 
-- (void)checkAutoDownloadsForUuids:(id)a3
+- (void)checkAutoDownloadsForUuids:(id)uuids
 {
-  v4 = a3;
-  if ([v4 count])
+  uuidsCopy = uuids;
+  if ([uuidsCopy count])
   {
     if ([(MTFeedUpdateProcessor *)self _isLPMEnabled])
     {
@@ -103,7 +103,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v11 = [v4 count];
+        v11 = [uuidsCopy count];
         v6 = "Skipping feed update for %lu podcasts because of Low Power Mode";
 LABEL_8:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -119,7 +119,7 @@ LABEL_8:
         v8[1] = 3221225472;
         v8[2] = sub_100120C0C;
         v8[3] = &unk_1004D8358;
-        v9 = v4;
+        v9 = uuidsCopy;
         [(MTBaseProcessor *)self enqueueWorkBlock:v8];
         v5 = v9;
         goto LABEL_10;
@@ -129,7 +129,7 @@ LABEL_8:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v11 = [v4 count];
+        v11 = [uuidsCopy count];
         v6 = "Skipping feed update for %lu podcasts because the feed update interval is 0.";
         goto LABEL_8;
       }
@@ -152,9 +152,9 @@ LABEL_10:
 - (BOOL)_isLPMEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
 - (void)_reCheck

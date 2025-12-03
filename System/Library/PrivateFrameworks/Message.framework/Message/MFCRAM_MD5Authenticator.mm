@@ -1,22 +1,22 @@
 @interface MFCRAM_MD5Authenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 @end
 
 @implementation MFCRAM_MD5Authenticator
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [(ECSASLAuthenticator *)self account];
-    v6 = [v5 username];
-    v7 = [v6 dataUsingEncoding:4];
+    account = [(ECSASLAuthenticator *)self account];
+    username = [account username];
+    v7 = [username dataUsingEncoding:4];
 
-    v8 = [(ECSASLAuthenticator *)self account];
-    v9 = [v8 password];
-    v10 = [v9 dataUsingEncoding:4];
+    account2 = [(ECSASLAuthenticator *)self account];
+    password = [account2 password];
+    v10 = [password dataUsingEncoding:4];
 
     v11 = 0;
     if (v7 && v10)
@@ -42,7 +42,7 @@
       CFDataAppendBytes(Mutable, [v7 bytes], objc_msgSend(v7, "length"));
       CFDataAppendBytes(Mutable, &bytes, 1);
       MF_MD5HMAC_Init();
-      v14 = v4;
+      v14 = dataCopy;
       v15 = v14;
       CC_MD5_Update(c, [v14 bytes], objc_msgSend(v14, "length"));
 

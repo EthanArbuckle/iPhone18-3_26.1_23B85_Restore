@@ -2,8 +2,8 @@
 - (BSCoreTelephonyUtilities)init;
 - (CTXPCServiceSubscriptionInfo)subscriptionInfo;
 - (id)defaultSubscriptionContextFromSubscriptionInfo;
-- (id)subscriptionContextForSimID:(id)a3;
-- (id)subscriptionsFromInfo:(id)a3;
+- (id)subscriptionContextForSimID:(id)d;
+- (id)subscriptionsFromInfo:(id)info;
 - (void)activeSubscriptionsDidChange;
 - (void)dualSimCapabilityDidChange;
 - (void)subscriptionInfoDidChange;
@@ -35,11 +35,11 @@
   return v2;
 }
 
-- (id)subscriptionsFromInfo:(id)a3
+- (id)subscriptionsFromInfo:(id)info
 {
-  v4 = [a3 subscriptionsInUse];
-  v5 = [(BSCoreTelephonyUtilities *)self subscriptionFilterPredicate];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  subscriptionsInUse = [info subscriptionsInUse];
+  subscriptionFilterPredicate = [(BSCoreTelephonyUtilities *)self subscriptionFilterPredicate];
+  v6 = [subscriptionsInUse filteredArrayUsingPredicate:subscriptionFilterPredicate];
   v7 = v6;
   if (v6)
   {
@@ -98,18 +98,18 @@ LABEL_8:
   return v3;
 }
 
-- (id)subscriptionContextForSimID:(id)a3
+- (id)subscriptionContextForSimID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(BSCoreTelephonyUtilities *)self subscriptionInfo];
-    v6 = [(BSCoreTelephonyUtilities *)self subscriptionsFromInfo:v5];
+    subscriptionInfo = [(BSCoreTelephonyUtilities *)self subscriptionInfo];
+    v6 = [(BSCoreTelephonyUtilities *)self subscriptionsFromInfo:subscriptionInfo];
 
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v7)
@@ -126,11 +126,11 @@ LABEL_8:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 labelID];
-          if ([v12 length])
+          labelID = [v11 labelID];
+          if ([labelID length])
           {
-            v13 = [v11 labelID];
-            v14 = [v13 isEqualToString:v4];
+            labelID2 = [v11 labelID];
+            v14 = [labelID2 isEqualToString:dCopy];
 
             if (v14)
             {
@@ -139,7 +139,7 @@ LABEL_8:
                 *buf = 138412546;
                 v24 = v11;
                 v25 = 2112;
-                v26 = v4;
+                v26 = dCopy;
                 _os_log_debug_impl(&dword_2155AF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Found subscription context %@ for SIM ID: %@ ", buf, 0x16u);
               }
 
@@ -168,7 +168,7 @@ LABEL_8:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = dCopy;
     _os_log_error_impl(&dword_2155AF000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "SIM ID given is nil %@ ", buf, 0xCu);
   }
 
@@ -183,8 +183,8 @@ LABEL_20:
 - (id)defaultSubscriptionContextFromSubscriptionInfo
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = [(BSCoreTelephonyUtilities *)self subscriptionInfo];
-  v5 = [(BSCoreTelephonyUtilities *)self subscriptionsFromInfo:v4];
+  subscriptionInfo = [(BSCoreTelephonyUtilities *)self subscriptionInfo];
+  v5 = [(BSCoreTelephonyUtilities *)self subscriptionsFromInfo:subscriptionInfo];
 
   v37 = 0u;
   v38 = 0u;
@@ -207,18 +207,18 @@ LABEL_20:
         }
 
         v11 = *(*(&v35 + 1) + 8 * v10);
-        v12 = [v11 phoneNumber];
-        v13 = [v12 length];
+        phoneNumber = [v11 phoneNumber];
+        v13 = [phoneNumber length];
         if (v13 || ([v11 labelID], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "length")))
         {
-          v14 = [v11 userDefaultVoice];
-          v15 = [v14 BOOLValue];
+          userDefaultVoice = [v11 userDefaultVoice];
+          bOOLValue = [userDefaultVoice BOOLValue];
 
           if (!v13)
           {
           }
 
-          if (v15)
+          if (bOOLValue)
           {
             v17 = v11;
 
@@ -273,8 +273,8 @@ LABEL_17:
         }
 
         v25 = *(*(&v31 + 1) + 8 * i);
-        v26 = [v25 phoneNumber];
-        if ([v26 length])
+        phoneNumber2 = [v25 phoneNumber];
+        if ([phoneNumber2 length])
         {
 
 LABEL_29:
@@ -282,8 +282,8 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v27 = [v25 labelID];
-        v28 = [v27 length];
+        labelID = [v25 labelID];
+        v28 = [labelID length];
 
         if (v28)
         {

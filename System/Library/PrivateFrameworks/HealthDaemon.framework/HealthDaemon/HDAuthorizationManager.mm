@@ -1,59 +1,59 @@
 @interface HDAuthorizationManager
-- (BOOL)_hasRequiredAuthorizationStatusesForBundleIdentifier:(id)a3 requiredReadTypes:(id)a4 error:(id *)a5;
-- (BOOL)isAuthorizedForObjectType:(id)a3 authorizationStatus:(id)a4 clientEntitlements:(id)a5 sharing:(BOOL)a6 error:(id *)a7;
-- (HDAuthorizationManager)initWithProfile:(id)a3;
+- (BOOL)_hasRequiredAuthorizationStatusesForBundleIdentifier:(id)identifier requiredReadTypes:(id)types error:(id *)error;
+- (BOOL)isAuthorizedForObjectType:(id)type authorizationStatus:(id)status clientEntitlements:(id)entitlements sharing:(BOOL)sharing error:(id *)error;
+- (HDAuthorizationManager)initWithProfile:(id)profile;
 - (id)_builtInSchemas;
-- (id)_schemaProviderForType:(id)a3;
-- (id)authorizationStatusForTypes:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
+- (id)_schemaProviderForType:(id)type;
+- (id)authorizationStatusForTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error;
 - (id)diagnosticDescription;
-- (id)enqueueAuthorizationRequestForBundleIdentifier:(id)a3 writeTypes:(id)a4 readTypes:(id)a5 authorizationNeededHandler:(id)a6 completion:(id)a7;
-- (id)enqueueConceptAuthorizationRequestForBundleIdentifier:(id)a3 forObjectType:(id)a4 promptIfNeeded:(BOOL)a5 authorizationNeededHandler:(id)a6 completionHandler:(id)a7;
-- (id)enqueueObjectAuthorizationRequestForBundleIdentifier:(id)a3 context:(id)a4 promptIfNeeded:(BOOL)a5 authorizationNeededHandler:(id)a6 completion:(id)a7;
-- (id)fetchAuthorizationContextForPromptSession:(id)a3 error:(id *)a4;
-- (id)fetchConceptAuthorizationContextForPromptSession:(id)a3 error:(id *)a4;
-- (id)filterForClientUserAnnotatedMedications:(id)a3 bundleIdentifier:(id)a4 clientEntitlements:(id)a5 error:(id *)a6;
-- (id)filteredAuthorizedObjectsForClient:(id)a3 anchor:(id)a4 bundleIdentifier:(id)a5 clientEntitlements:(id)a6 error:(id *)a7;
+- (id)enqueueAuthorizationRequestForBundleIdentifier:(id)identifier writeTypes:(id)types readTypes:(id)readTypes authorizationNeededHandler:(id)handler completion:(id)completion;
+- (id)enqueueConceptAuthorizationRequestForBundleIdentifier:(id)identifier forObjectType:(id)type promptIfNeeded:(BOOL)needed authorizationNeededHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)enqueueObjectAuthorizationRequestForBundleIdentifier:(id)identifier context:(id)context promptIfNeeded:(BOOL)needed authorizationNeededHandler:(id)handler completion:(id)completion;
+- (id)fetchAuthorizationContextForPromptSession:(id)session error:(id *)error;
+- (id)fetchConceptAuthorizationContextForPromptSession:(id)session error:(id *)error;
+- (id)filterForClientUserAnnotatedMedications:(id)medications bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements error:(id *)error;
+- (id)filteredAuthorizedObjectsForClient:(id)client anchor:(id)anchor bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements error:(id *)error;
 - (id)unitTest_schemaProviderMap;
-- (int64_t)isClientAuthorizedToReadObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToReadType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToWriteObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)isClientAuthorizedToWriteType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7;
-- (int64_t)objectAuthorizationRecordForSource:(id)a3 objectUUID:(id)a4 resolveAssociations:(BOOL)a5 error:(id *)a6;
-- (uint64_t)_authorizationRequestStatusForClientBundleIdentifier:(void *)a3 writeTypes:(void *)a4 readTypes:(uint64_t)a5 updateAuthorizationStatuses:(uint64_t)a6 error:;
+- (int64_t)isClientAuthorizedToReadObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToReadType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToWriteObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)isClientAuthorizedToWriteType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error;
+- (int64_t)objectAuthorizationRecordForSource:(id)source objectUUID:(id)d resolveAssociations:(BOOL)associations error:(id *)error;
+- (uint64_t)_authorizationRequestStatusForClientBundleIdentifier:(void *)identifier writeTypes:(void *)types readTypes:(uint64_t)readTypes updateAuthorizationStatuses:(uint64_t)statuses error:;
 - (void)_isRecalibrateEstimatesRequestSessionExpiredWithCreationDate:(void *)result;
-- (void)_queue_cancelAuthorizationRequestsWithIdentifiers:(uint64_t)a1;
+- (void)_queue_cancelAuthorizationRequestsWithIdentifiers:(uint64_t)identifiers;
 - (void)_queue_handleNextAuthorizationRequestGroup;
-- (void)_queue_requestGroupDidFinishPrompting:(void *)a3 error:;
-- (void)applicationsUninstalledNotification:(id)a3;
-- (void)beginAuthorizationDelegateTransactionWithSessionIdentifier:(id)a3 completion:(id)a4;
-- (void)cancelAuthorizationRequestsWithIdentifiers:(id)a3;
-- (void)createRecalibrateEstimatesRequestRecordForSource:(id)a3 sampleType:(id)a4 effectiveDate:(id)a5 handler:(id)a6;
-- (void)daemonReady:(id)a3;
-- (void)endAuthorizationDelegateTransactionWithSessionIdentifier:(id)a3 error:(id)a4;
-- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchConceptAuthorizationRecordsForSource:(id)a3 completion:(id)a4;
-- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 completion:(id)a4;
-- (void)handleAuthorizationRequestsForBundleIdentifier:(id)a3 promptHandler:(id)a4 completion:(id)a5;
-- (void)handleHealthConceptAuthorizationRequestsForBundleIdentifier:(id)a3 objectType:(id)a4 promptHandler:(id)a5 completion:(id)a6;
-- (void)handleObjectAuthorizationRequestsForBundleIdentifier:(id)a3 objectType:(id)a4 promptHandler:(id)a5 completion:(id)a6;
+- (void)_queue_requestGroupDidFinishPrompting:(void *)prompting error:;
+- (void)applicationsUninstalledNotification:(id)notification;
+- (void)beginAuthorizationDelegateTransactionWithSessionIdentifier:(id)identifier completion:(id)completion;
+- (void)cancelAuthorizationRequestsWithIdentifiers:(id)identifiers;
+- (void)createRecalibrateEstimatesRequestRecordForSource:(id)source sampleType:(id)type effectiveDate:(id)date handler:(id)handler;
+- (void)daemonReady:(id)ready;
+- (void)endAuthorizationDelegateTransactionWithSessionIdentifier:(id)identifier error:(id)error;
+- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchConceptAuthorizationRecordsForSource:(id)source completion:(id)completion;
+- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain completion:(id)completion;
+- (void)handleAuthorizationRequestsForBundleIdentifier:(id)identifier promptHandler:(id)handler completion:(id)completion;
+- (void)handleHealthConceptAuthorizationRequestsForBundleIdentifier:(id)identifier objectType:(id)type promptHandler:(id)handler completion:(id)completion;
+- (void)handleObjectAuthorizationRequestsForBundleIdentifier:(id)identifier objectType:(id)type promptHandler:(id)handler completion:(id)completion;
 - (void)invalidateAndWait;
-- (void)openAppForAuthorization:(id)a3 sessionIdentifier:(id)a4 completion:(id)a5;
-- (void)performObjectAuthorizationForSource:(id)a3 samples:(id)a4 associatedWithSamplesOfType:(id)a5 completion:(id)a6;
-- (void)resetAllAuthorizationRecordsWithCompletion:(id)a3;
-- (void)setAuthorizationStatuses:(id)a3 authorizationModes:(id)a4 forBundleIdentifier:(id)a5 options:(unint64_t)a6 completion:(id)a7;
-- (void)setObjectAuthorizationStatusContext:(id)a3 forObjectType:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
-- (void)validateRecalibrateEstimatesRequestRecord:(id)a3 completion:(id)a4;
+- (void)openAppForAuthorization:(id)authorization sessionIdentifier:(id)identifier completion:(id)completion;
+- (void)performObjectAuthorizationForSource:(id)source samples:(id)samples associatedWithSamplesOfType:(id)type completion:(id)completion;
+- (void)resetAllAuthorizationRecordsWithCompletion:(id)completion;
+- (void)setAuthorizationStatuses:(id)statuses authorizationModes:(id)modes forBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion;
+- (void)setObjectAuthorizationStatusContext:(id)context forObjectType:(id)type bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)validateRecalibrateEstimatesRequestRecord:(id)record completion:(id)completion;
 @end
 
 @implementation HDAuthorizationManager
 
-- (HDAuthorizationManager)initWithProfile:(id)a3
+- (HDAuthorizationManager)initWithProfile:(id)profile
 {
-  v5 = a3;
-  if (!v5)
+  profileCopy = profile;
+  if (!profileCopy)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:350 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:350 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
   }
 
   v33.receiver = self;
@@ -62,7 +62,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_profile, v5);
+    objc_storeWeak(&v6->_profile, profileCopy);
     v8 = HKCreateSerialDispatchQueue();
     queue = v7->_queue;
     v7->_queue = v8;
@@ -104,13 +104,13 @@
     activeRecalibrateEstimatesRequestSessionsByBundleIdentifier = v7->_activeRecalibrateEstimatesRequestSessionsByBundleIdentifier;
     v7->_activeRecalibrateEstimatesRequestSessionsByBundleIdentifier = v26;
 
-    v28 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v28 addObject:v7];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v7];
 
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v7 selector:sel_applicationsUninstalledNotification_ name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
-    v30 = [v5 daemon];
-    [v30 registerDaemonReadyObserver:v7 queue:v7->_observationQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_applicationsUninstalledNotification_ name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
+    daemon = [profileCopy daemon];
+    [daemon registerDaemonReadyObserver:v7 queue:v7->_observationQueue];
 
     v7->_lock._os_unfair_lock_opaque = 0;
   }
@@ -120,34 +120,34 @@
 
 - (void)invalidateAndWait
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"HDHealthDaemonApplicationsUninstalledNotification" object:0];
 }
 
-- (void)setAuthorizationStatuses:(id)a3 authorizationModes:(id)a4 forBundleIdentifier:(id)a5 options:(unint64_t)a6 completion:(id)a7
+- (void)setAuthorizationStatuses:(id)statuses authorizationModes:(id)modes forBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  statusesCopy = statuses;
+  modesCopy = modes;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __109__HDAuthorizationManager_setAuthorizationStatuses_authorizationModes_forBundleIdentifier_options_completion___block_invoke;
   v21[3] = &unk_2786141B0;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a6;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = statusesCopy;
+  v23 = modesCopy;
+  v24 = identifierCopy;
+  v25 = completionCopy;
+  optionsCopy = options;
+  v17 = completionCopy;
+  v18 = identifierCopy;
+  v19 = modesCopy;
+  v20 = statusesCopy;
   dispatch_async(queue, v21);
 }
 
@@ -215,13 +215,13 @@ LABEL_4:
 LABEL_9:
 }
 
-- (uint64_t)_authorizationRequestStatusForClientBundleIdentifier:(void *)a3 writeTypes:(void *)a4 readTypes:(uint64_t)a5 updateAuthorizationStatuses:(uint64_t)a6 error:
+- (uint64_t)_authorizationRequestStatusForClientBundleIdentifier:(void *)identifier writeTypes:(void *)types readTypes:(uint64_t)readTypes updateAuthorizationStatuses:(uint64_t)statuses error:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  typesCopy = types;
   v27 = v10;
-  if (a1)
+  if (self)
   {
     v45 = 0;
     v46 = &v45;
@@ -231,7 +231,7 @@ LABEL_9:
     v43[1] = v43;
     v43[2] = 0x2020000000;
     v44 = 0;
-    v13 = [MEMORY[0x277CBEB98] hk_setByUnioningSet:v11 otherSet:v12];
+    v13 = [MEMORY[0x277CBEB98] hk_setByUnioningSet:identifierCopy otherSet:typesCopy];
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -240,20 +240,20 @@ LABEL_9:
     v34 = v10;
     v15 = v13;
     v35 = v15;
-    v36 = a1;
+    selfCopy = self;
     v40 = &v45;
-    v37 = v11;
-    v38 = v12;
+    v37 = identifierCopy;
+    v38 = typesCopy;
     v16 = v14;
     v39 = v16;
     v41 = v43;
-    v42 = a5;
+    readTypesCopy = readTypes;
     v17 = _Block_copy(aBlock);
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    v19 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 48));
+    database = [WeakRetained database];
 
     v20 = +[HDDatabaseTransactionContext highPriorityContext];
-    if (a5)
+    if (readTypes)
     {
       v21 = 0;
     }
@@ -263,8 +263,8 @@ LABEL_9:
       v21 = v20;
     }
 
-    v22 = [(HDHealthEntity *)HDAuthorizationEntity transactionContextForWriting:a5 baseContext:v21];
-    if (![v19 performTransactionWithContext:v22 error:a6 block:v17 inaccessibilityHandler:0])
+    v22 = [(HDHealthEntity *)HDAuthorizationEntity transactionContextForWriting:readTypes baseContext:v21];
+    if (![database performTransactionWithContext:v22 error:statuses block:v17 inaccessibilityHandler:0])
     {
       goto LABEL_11;
     }
@@ -280,9 +280,9 @@ LABEL_9:
     v29[2] = __134__HDAuthorizationManager__authorizationRequestStatusForClientBundleIdentifier_writeTypes_readTypes_updateAuthorizationStatuses_error___block_invoke_401;
     v29[3] = &unk_278615F88;
     v30 = v16;
-    v31 = a1;
+    selfCopy2 = self;
     v32 = &v45;
-    v24 = [v19 performTransactionWithContext:v23 error:a6 block:v29 inaccessibilityHandler:0];
+    v24 = [database performTransactionWithContext:v23 error:statuses block:v29 inaccessibilityHandler:0];
 
     if (v24)
     {
@@ -316,16 +316,16 @@ LABEL_11:
   return v25;
 }
 
-- (BOOL)_hasRequiredAuthorizationStatusesForBundleIdentifier:(id)a3 requiredReadTypes:(id)a4 error:(id *)a5
+- (BOOL)_hasRequiredAuthorizationStatusesForBundleIdentifier:(id)identifier requiredReadTypes:(id)types error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  identifierCopy = identifier;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = a4;
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  typesCopy = types;
+  v10 = [typesCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -336,19 +336,19 @@ LABEL_11:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(typesCopy);
         }
 
         if (([*(*(&v30 + 1) + 8 * i) isClinicalType] & 1) == 0)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"Required authorization check only permitted for clinical types"];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Required authorization check only permitted for clinical types"];
           v23 = 0;
-          v15 = v9;
+          v15 = typesCopy;
           goto LABEL_25;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v11 = [typesCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v11)
       {
         continue;
@@ -359,7 +359,7 @@ LABEL_11:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [HDAuthorizationEntity authorizationRecordsByTypeForBundleIdentifier:v8 types:v9 profile:WeakRetained error:a5];
+  v15 = [HDAuthorizationEntity authorizationRecordsByTypeForBundleIdentifier:identifierCopy types:typesCopy profile:WeakRetained error:error];
 
   if (v15)
   {
@@ -367,7 +367,7 @@ LABEL_11:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v16 = v9;
+    v16 = typesCopy;
     v17 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v17)
     {
@@ -386,7 +386,7 @@ LABEL_11:
           v22 = [v15 objectForKeyedSubscript:{v21, v26}];
           if (!v22 || [v16 containsObject:v21] && (objc_msgSend(v22, "readingEnabled") & 1) == 0)
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a5 code:10 format:@"Required authorization not granted"];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:10 format:@"Required authorization not granted"];
 
             v23 = 0;
             goto LABEL_23;
@@ -418,32 +418,32 @@ LABEL_25:
   return v23;
 }
 
-- (id)enqueueAuthorizationRequestForBundleIdentifier:(id)a3 writeTypes:(id)a4 readTypes:(id)a5 authorizationNeededHandler:(id)a6 completion:(id)a7
+- (id)enqueueAuthorizationRequestForBundleIdentifier:(id)identifier writeTypes:(id)types readTypes:(id)readTypes authorizationNeededHandler:(id)handler completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [MEMORY[0x277CCAD78] UUID];
+  identifierCopy = identifier;
+  typesCopy = types;
+  readTypesCopy = readTypes;
+  handlerCopy = handler;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __132__HDAuthorizationManager_enqueueAuthorizationRequestForBundleIdentifier_writeTypes_readTypes_authorizationNeededHandler_completion___block_invoke;
   block[3] = &unk_278621A50;
   block[4] = self;
-  v19 = v17;
+  v19 = uUID;
   v29 = v19;
-  v30 = v12;
-  v31 = v13;
-  v32 = v14;
-  v33 = v15;
-  v34 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
+  v30 = identifierCopy;
+  v31 = typesCopy;
+  v32 = readTypesCopy;
+  v33 = handlerCopy;
+  v34 = completionCopy;
+  v20 = completionCopy;
+  v21 = handlerCopy;
+  v22 = readTypesCopy;
+  v23 = typesCopy;
+  v24 = identifierCopy;
   dispatch_async(queue, block);
   v25 = v34;
   v26 = v19;
@@ -697,13 +697,13 @@ LABEL_38:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAuthorizationRequestsForBundleIdentifier:(id)a3 promptHandler:(id)a4 completion:(id)a5
+- (void)handleAuthorizationRequestsForBundleIdentifier:(id)identifier promptHandler:(id)handler completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (identifierCopy)
   {
     queue = self->_queue;
     v15[0] = MEMORY[0x277D85DD0];
@@ -711,13 +711,13 @@ LABEL_38:
     v15[2] = __98__HDAuthorizationManager_handleAuthorizationRequestsForBundleIdentifier_promptHandler_completion___block_invoke;
     v15[3] = &unk_2786173A0;
     v15[4] = self;
-    v16 = v9;
-    v17 = v10;
+    v16 = identifierCopy;
+    v17 = handlerCopy;
     v18 = v12;
     dispatch_async(queue, v15);
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
     v14 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"nil bundle identifier"];
     (v12)[2](v12, 0, v14);
@@ -772,22 +772,22 @@ uint64_t __98__HDAuthorizationManager_handleAuthorizationRequestsForBundleIdenti
 - (void)_queue_handleNextAuthorizationRequestGroup
 {
   v41 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = (a1 + 88);
-    if (!*(a1 + 88))
+    v2 = (self + 88);
+    if (!*(self + 88))
     {
-      v3 = [*(a1 + 80) firstObject];
-      v4 = [(_HDAuthorizationRequestGroup *)v3 bundleIdentifier];
-      if (!v3)
+      firstObject = [*(self + 80) firstObject];
+      bundleIdentifier = [(_HDAuthorizationRequestGroup *)firstObject bundleIdentifier];
+      if (!firstObject)
       {
 LABEL_19:
 
         goto LABEL_20;
       }
 
-      [*(a1 + 80) removeObjectAtIndex:0];
-      [*(a1 + 72) removeObjectForKey:v4];
+      [*(self + 80) removeObjectAtIndex:0];
+      [*(self + 72) removeObjectForKey:bundleIdentifier];
       _HKInitializeLogging();
       v5 = HKLogAuthorization();
       v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -797,32 +797,32 @@ LABEL_19:
         v7 = HKLogAuthorization();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          v27 = v3[1];
-          v28 = [v27 allObjects];
-          v29 = v3[2];
-          v30 = [v29 allObjects];
+          v27 = firstObject[1];
+          allObjects = [v27 allObjects];
+          v29 = firstObject[2];
+          allObjects2 = [v29 allObjects];
           *buf = 138412802;
-          v36 = v3;
+          v36 = firstObject;
           v37 = 2112;
-          v38 = v28;
+          v38 = allObjects;
           v39 = 2112;
-          v40 = v30;
+          v40 = allObjects2;
           _os_log_debug_impl(&dword_228986000, v7, OS_LOG_TYPE_DEBUG, "activating request group %@ (write: %@, read: %@)", buf, 0x20u);
         }
       }
 
-      v8 = [v3[7] bundleIdentifier];
-      v10 = v3[1];
-      v9 = v3[2];
+      bundleIdentifier2 = [firstObject[7] bundleIdentifier];
+      v10 = firstObject[1];
+      v9 = firstObject[2];
       v34 = 0;
       v11 = v9;
       v12 = v10;
-      v13 = [(HDAuthorizationManager *)a1 _authorizationRequestStatusForClientBundleIdentifier:v8 writeTypes:v12 readTypes:v11 updateAuthorizationStatuses:1 error:&v34];
+      v13 = [(HDAuthorizationManager *)self _authorizationRequestStatusForClientBundleIdentifier:bundleIdentifier2 writeTypes:v12 readTypes:v11 updateAuthorizationStatuses:1 error:&v34];
       v14 = v34;
 
       if (v13)
       {
-        if (v13 == 1 && (v15 = v3[9]) != 0 && (v16 = *(a1 + 44), v15, (v16 & 1) == 0))
+        if (v13 == 1 && (v15 = firstObject[9]) != 0 && (v16 = *(self + 44), v15, (v16 & 1) == 0))
         {
           _HKInitializeLogging();
           v22 = HKLogAuthorization();
@@ -833,24 +833,24 @@ LABEL_19:
             v24 = HKLogAuthorization();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
-              v25 = [v3[7] bundleIdentifier];
+              bundleIdentifier3 = [firstObject[7] bundleIdentifier];
               *buf = 138412290;
-              v36 = v25;
+              v36 = bundleIdentifier3;
               _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_INFO, "prompting for authorization for %@", buf, 0xCu);
             }
           }
 
-          v26 = *(a1 + 136);
+          v26 = *(self + 136);
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = __68__HDAuthorizationManager__queue_handleNextAuthorizationRequestGroup__block_invoke;
           v31[3] = &unk_278613630;
-          v31[4] = a1;
-          v32 = v3;
-          v33 = v4;
+          v31[4] = self;
+          v32 = firstObject;
+          v33 = bundleIdentifier;
           if ([(_HDAuthorizationRequestGroup *)v32 promptIfNecessaryWithTimeout:v31 completion:v26])
           {
-            objc_storeStrong(v2, v3);
+            objc_storeStrong(v2, firstObject);
 
             goto LABEL_18;
           }
@@ -867,9 +867,9 @@ LABEL_19:
             v19 = HKLogAuthorization();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v20 = [(_HDAuthorizationRequestGroup *)v3 bundleIdentifier];
+              bundleIdentifier4 = [(_HDAuthorizationRequestGroup *)firstObject bundleIdentifier];
               *buf = 138412290;
-              v36 = v20;
+              v36 = bundleIdentifier4;
               _os_log_debug_impl(&dword_228986000, v19, OS_LOG_TYPE_DEBUG, "NOT prompting for authorization for %@", buf, 0xCu);
 LABEL_29:
 
@@ -881,7 +881,7 @@ LABEL_29:
         }
 
 LABEL_17:
-        [(HDAuthorizationManager *)a1 _queue_requestGroupDidFinishPrompting:v3 error:v14];
+        [(HDAuthorizationManager *)self _queue_requestGroupDidFinishPrompting:firstObject error:v14];
 LABEL_18:
 
         goto LABEL_19;
@@ -891,9 +891,9 @@ LABEL_18:
       v19 = HKLogAuthorization();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(_HDAuthorizationRequestGroup *)v3 bundleIdentifier];
+        bundleIdentifier4 = [(_HDAuthorizationRequestGroup *)firstObject bundleIdentifier];
         *buf = 138543618;
-        v36 = v20;
+        v36 = bundleIdentifier4;
         v37 = 2114;
         v38 = v14;
         _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "failed to determine authorization request status for %{public}@: %{public}@", buf, 0x16u);
@@ -910,43 +910,43 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelAuthorizationRequestsWithIdentifiers:(id)a3
+- (void)cancelAuthorizationRequestsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HDAuthorizationManager_cancelAuthorizationRequestsWithIdentifiers___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_cancelAuthorizationRequestsWithIdentifiers:(uint64_t)a1
+- (void)_queue_cancelAuthorizationRequestsWithIdentifiers:(uint64_t)identifiers
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifiers)
   {
     if (!v3)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
-      [v22 handleFailureInMethod:sel__queue_cancelAuthorizationRequestsWithIdentifiers_ object:a1 file:@"HDAuthorizationManager.m" lineNumber:758 description:{@"Invalid parameter not satisfying: %@", @"identifiers != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__queue_cancelAuthorizationRequestsWithIdentifiers_ object:identifiers file:@"HDAuthorizationManager.m" lineNumber:758 description:{@"Invalid parameter not satisfying: %@", @"identifiers != nil"}];
     }
 
     v23 = v4;
     v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
     v6 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Authorization request canceled"];
-    [(_HDAuthorizationRequestGroup *)*(a1 + 88) cancelRequestsWithIdentifiers:v5 error:v6];
+    [(_HDAuthorizationRequestGroup *)*(identifiers + 88) cancelRequestsWithIdentifiers:v5 error:v6];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = [*(a1 + 72) allValues];
-    v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    allValues = [*(identifiers + 72) allValues];
+    v8 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v8)
     {
       v9 = v8;
@@ -957,13 +957,13 @@ LABEL_20:
         {
           if (*v29 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [(_HDAuthorizationRequestGroup *)*(*(&v28 + 1) + 8 * i) cancelRequestsWithIdentifiers:v5 error:v6];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v9);
@@ -973,8 +973,8 @@ LABEL_20:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = [*(a1 + 128) allKeys];
-    v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    allKeys = [*(identifiers + 128) allKeys];
+    v13 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v13)
     {
       v14 = v13;
@@ -985,26 +985,26 @@ LABEL_20:
         {
           if (*v25 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allKeys);
           }
 
           v17 = *(*(&v24 + 1) + 8 * j);
-          v18 = [*(a1 + 128) objectForKeyedSubscript:v17];
+          v18 = [*(identifiers + 128) objectForKeyedSubscript:v17];
           v19 = v18;
           if (v18)
           {
             v18 = v18[1];
           }
 
-          v20 = [v18 sessionIdentifier];
+          sessionIdentifier = [v18 sessionIdentifier];
 
-          if ([v5 containsObject:v20])
+          if ([v5 containsObject:sessionIdentifier])
           {
-            [*(a1 + 128) removeObjectForKey:v17];
+            [*(identifiers + 128) removeObjectForKey:v17];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v14);
@@ -1016,20 +1016,20 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginAuthorizationDelegateTransactionWithSessionIdentifier:(id)a3 completion:(id)a4
+- (void)beginAuthorizationDelegateTransactionWithSessionIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__HDAuthorizationManager_beginAuthorizationDelegateTransactionWithSessionIdentifier_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -1247,14 +1247,14 @@ LABEL_37:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endAuthorizationDelegateTransactionWithSessionIdentifier:(id)a3 error:(id)a4
+- (void)endAuthorizationDelegateTransactionWithSessionIdentifier:(id)identifier error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:525 description:{@"Invalid parameter not satisfying: %@", @"sessionIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:525 description:{@"Invalid parameter not satisfying: %@", @"sessionIdentifier != nil"}];
   }
 
   queue = self->_queue;
@@ -1263,10 +1263,10 @@ LABEL_37:
   block[2] = __89__HDAuthorizationManager_endAuthorizationDelegateTransactionWithSessionIdentifier_error___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v14 = identifierCopy;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -1388,9 +1388,9 @@ void __89__HDAuthorizationManager_endAuthorizationDelegateTransactionWithSession
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetAllAuthorizationRecordsWithCompletion:(id)a3
+- (void)resetAllAuthorizationRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1406,10 +1406,10 @@ void __89__HDAuthorizationManager_endAuthorizationDelegateTransactionWithSession
   block[2] = __69__HDAuthorizationManager_resetAllAuthorizationRecordsWithCompletion___block_invoke;
   block[3] = &unk_278616D18;
   v11 = v6;
-  v12 = v4;
+  v12 = completionCopy;
   block[4] = self;
   v8 = v6;
-  v9 = v4;
+  v9 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1476,12 +1476,12 @@ void __69__HDAuthorizationManager_resetAllAuthorizationRecordsWithCompletion___b
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openAppForAuthorization:(id)a3 sessionIdentifier:(id)a4 completion:(id)a5
+- (void)openAppForAuthorization:(id)authorization sessionIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v9 placeholder:0];
+  authorizationCopy = authorization;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v12 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:authorizationCopy placeholder:0];
   if (v12)
   {
     queue = self->_queue;
@@ -1490,17 +1490,17 @@ void __69__HDAuthorizationManager_resetAllAuthorizationRecordsWithCompletion___b
     block[2] = __79__HDAuthorizationManager_openAppForAuthorization_sessionIdentifier_completion___block_invoke;
     block[3] = &unk_278621AA0;
     block[4] = self;
-    v16 = v9;
-    v19 = v11;
+    v16 = authorizationCopy;
+    v19 = completionCopy;
     v17 = v12;
-    v18 = v10;
+    v18 = identifierCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
     v14 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"No app with the requested bundle identifier."];
-    (*(v11 + 2))(v11, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -1767,10 +1767,10 @@ void __79__HDAuthorizationManager_openAppForAuthorization_sessionIdentifier_comp
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsUninstalledNotification:(id)a3
+- (void)applicationsUninstalledNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HDHealthDaemonApplicationsUninstalledBundleIdentifiersKey"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HDHealthDaemonApplicationsUninstalledBundleIdentifiersKey"];
 
   v6 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:@"ApplicationsUninstalled"];
   queue = self->_queue;
@@ -1779,7 +1779,7 @@ void __79__HDAuthorizationManager_openAppForAuthorization_sessionIdentifier_comp
   block[2] = __62__HDAuthorizationManager_applicationsUninstalledNotification___block_invoke;
   block[3] = &unk_278613830;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v13 = v6;
   v8 = v6;
   v9 = v5;
@@ -1887,27 +1887,27 @@ LABEL_15:
   return result;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_observationQueue);
-  v4 = [(HDAuthorizationManager *)self _builtInSchemas];
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v4];
+  _builtInSchemas = [(HDAuthorizationManager *)self _builtInSchemas];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:_builtInSchemas];
   schemaProviderMap = self->_schemaProviderMap;
   self->_schemaProviderMap = v5;
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained daemon];
+  daemon = [WeakRetained daemon];
 
-  v9 = [v8 pluginManager];
-  v10 = [v9 pluginsConformingToProtocol:&unk_283D713D8];
-  v11 = [v10 allValues];
+  pluginManager = [daemon pluginManager];
+  v10 = [pluginManager pluginsConformingToProtocol:&unk_283D713D8];
+  allValues = [v10 allValues];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = v11;
+  v12 = allValues;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -1923,8 +1923,8 @@ LABEL_15:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) schemaProviderMap];
-        [(NSMutableDictionary *)self->_schemaProviderMap hk_addEntriesFromNonNilDictionary:v17];
+        schemaProviderMap = [*(*(&v19 + 1) + 8 * v16) schemaProviderMap];
+        [(NSMutableDictionary *)self->_schemaProviderMap hk_addEntriesFromNonNilDictionary:schemaProviderMap];
 
         ++v16;
       }
@@ -2323,20 +2323,20 @@ void __68__HDAuthorizationManager__queue_handleNextAuthorizationRequestGroup__bl
   }
 }
 
-- (void)_queue_requestGroupDidFinishPrompting:(void *)a3 error:
+- (void)_queue_requestGroupDidFinishPrompting:(void *)prompting error:
 {
   v55 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  promptingCopy = prompting;
+  v7 = promptingCopy;
+  if (!self)
   {
     goto LABEL_47;
   }
 
   if (v5)
   {
-    if (v6)
+    if (promptingCopy)
     {
       goto LABEL_23;
     }
@@ -2346,8 +2346,8 @@ void __68__HDAuthorizationManager__queue_handleNextAuthorizationRequestGroup__bl
 
   else
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:sel__queue_requestGroupDidFinishPrompting_error_ object:a1 file:@"HDAuthorizationManager.m" lineNumber:1015 description:{@"Invalid parameter not satisfying: %@", @"requestGroup != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__queue_requestGroupDidFinishPrompting_error_ object:self file:@"HDAuthorizationManager.m" lineNumber:1015 description:{@"Invalid parameter not satisfying: %@", @"requestGroup != nil"}];
 
     if (v7)
     {
@@ -2377,9 +2377,9 @@ LABEL_23:
     v13 = HKLogAuthorization();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v38 = [v9 bundleIdentifier];
+      bundleIdentifier = [v9 bundleIdentifier];
       *buf = 138543618;
-      v52 = v38;
+      v52 = bundleIdentifier;
       v53 = 2114;
       v54 = v11;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "Failed to look up bundle for %{public}@: %{public}@", buf, 0x16u);
@@ -2412,9 +2412,9 @@ LABEL_13:
     v16 = [v14 count];
     if (v16 >= *MEMORY[0x277CCC568])
     {
-      v18 = [(_HDAuthorizationRequestGroup *)v5 bundleIdentifier];
+      bundleIdentifier2 = [(_HDAuthorizationRequestGroup *)v5 bundleIdentifier];
       *&v42 = v15;
-      v40 = [a1 _hasRequiredAuthorizationStatusesForBundleIdentifier:v18 requiredReadTypes:v14 error:&v42];
+      v40 = [self _hasRequiredAuthorizationStatusesForBundleIdentifier:bundleIdentifier2 requiredReadTypes:v14 error:&v42];
       v19 = v42;
 
       if (v40)
@@ -2542,32 +2542,32 @@ LABEL_26:
     v5[5] = 0;
   }
 
-  v33 = a1[11];
+  v33 = self[11];
   if (v33 == v5)
   {
-    a1[11] = 0;
+    self[11] = 0;
   }
 
-  v34 = a1[7];
+  v34 = self[7];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HDAuthorizationManager__queue_requestGroupDidFinishPrompting_error___block_invoke;
   block[3] = &unk_278613968;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v34, block);
 LABEL_47:
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObjectAuthorizationStatusContext:(id)a3 forObjectType:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)setObjectAuthorizationStatusContext:(id)context forObjectType:(id)type bundleIdentifier:(id)identifier completion:(id)completion
 {
   v75 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HDAuthorizationManager *)self _schemaProviderForType:v11];
+  contextCopy = context;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v14 = [(HDAuthorizationManager *)self _schemaProviderForType:typeCopy];
   if (objc_opt_respondsToSelector())
   {
     if (self)
@@ -2581,10 +2581,10 @@ LABEL_47:
     }
 
     v73 = 0;
-    v16 = [v14 setObjectAuthorizationStatusContext:v10 forObjectType:v11 bundleIdentifier:v12 profile:WeakRetained error:&v73];
+    v16 = [v14 setObjectAuthorizationStatusContext:contextCopy forObjectType:typeCopy bundleIdentifier:identifierCopy profile:WeakRetained error:&v73];
     v17 = v73;
 
-    v13[2](v13, v16, v17);
+    completionCopy[2](completionCopy, v16, v17);
   }
 
   else
@@ -2599,14 +2599,14 @@ LABEL_47:
       v18 = 0;
     }
 
-    v19 = [v18 sourceManager];
+    sourceManager = [v18 sourceManager];
     v72 = 0;
-    v20 = [v19 localSourceForBundleIdentifier:v12 error:&v72];
+    v20 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v72];
     v17 = v72;
 
     if (v20)
     {
-      v59 = v13;
+      v59 = completionCopy;
       if (self)
       {
         v21 = objc_loadWeakRetained(&self->_profile);
@@ -2625,17 +2625,17 @@ LABEL_47:
       v58 = v20;
       if (v22)
       {
-        v60 = self;
-        v61 = v11;
+        selfCopy = self;
+        v61 = typeCopy;
         v56 = v14;
-        v57 = v12;
+        v57 = identifierCopy;
         v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v24 = [v10 objectAuthorizationStatuses];
+        objectAuthorizationStatuses = [contextCopy objectAuthorizationStatuses];
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v65 = [v24 countByEnumeratingWithState:&v67 objects:v74 count:16];
+        v65 = [objectAuthorizationStatuses countByEnumeratingWithState:&v67 objects:v74 count:16];
         if (v65)
         {
           v25 = @"HKHealthConceptDomainHealthKit";
@@ -2648,39 +2648,39 @@ LABEL_47:
             {
               if (*v68 != v26)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(objectAuthorizationStatuses);
               }
 
               v29 = *(*(&v67 + 1) + 8 * i);
-              v30 = [v29 domain];
-              v31 = [v30 isEqualToString:v25];
+              domain = [v29 domain];
+              v31 = [domain isEqualToString:v25];
 
               if (v31)
               {
                 v32 = objc_alloc(MEMORY[0x277CCAD78]);
-                v33 = [v29 underlyingIdentifier];
-                v34 = [v32 initWithUUIDString:v33];
+                underlyingIdentifier = [v29 underlyingIdentifier];
+                v34 = [v32 initWithUUIDString:underlyingIdentifier];
 
                 v35 = objc_alloc(MEMORY[0x277CCD710]);
-                v36 = [v10 sessionIdentifier];
-                v37 = [v24 objectForKeyedSubscript:v29];
+                sessionIdentifier = [contextCopy sessionIdentifier];
+                v37 = [objectAuthorizationStatuses objectForKeyedSubscript:v29];
                 v38 = v25;
-                v39 = v24;
+                v39 = objectAuthorizationStatuses;
                 v40 = v27;
-                v41 = v10;
+                v41 = contextCopy;
                 v42 = HKObjectAuthorizationStatusForNumber();
                 Current = CFAbsoluteTimeGetCurrent();
                 v44 = v35;
                 v45 = v34;
                 v46 = v34;
-                v47 = v36;
+                v47 = sessionIdentifier;
                 v48 = v42;
-                v10 = v41;
+                contextCopy = v41;
                 v27 = v40;
-                v24 = v39;
+                objectAuthorizationStatuses = v39;
                 v25 = v38;
                 v26 = v62;
-                v49 = [v44 initWithObjectUUID:v46 sourceUUID:v64 sessionUUID:v36 status:v48 modificationDate:Current];
+                v49 = [v44 initWithObjectUUID:v46 sourceUUID:v64 sessionUUID:sessionIdentifier status:v48 modificationDate:Current];
 
                 [v63 addObject:v49];
               }
@@ -2691,7 +2691,7 @@ LABEL_47:
               }
             }
 
-            v65 = [v24 countByEnumeratingWithState:&v67 objects:v74 count:16];
+            v65 = [objectAuthorizationStatuses countByEnumeratingWithState:&v67 objects:v74 count:16];
           }
 
           while (v65);
@@ -2702,42 +2702,42 @@ LABEL_47:
           v27 = v23;
         }
 
-        v13 = v59;
+        completionCopy = v59;
         if (!v63 && v27)
         {
           v59[2](v59, 0, v27);
         }
 
         v50 = v27;
-        if (v60)
+        if (selfCopy)
         {
-          v51 = objc_loadWeakRetained(&v60->_profile);
-          v52 = [v51 currentSyncIdentityPersistentID];
-          v53 = objc_loadWeakRetained(&v60->_profile);
+          v51 = objc_loadWeakRetained(&selfCopy->_profile);
+          currentSyncIdentityPersistentID = [v51 currentSyncIdentityPersistentID];
+          v53 = objc_loadWeakRetained(&selfCopy->_profile);
         }
 
         else
         {
-          v52 = [0 currentSyncIdentityPersistentID];
+          currentSyncIdentityPersistentID = [0 currentSyncIdentityPersistentID];
           v51 = 0;
           v53 = 0;
         }
 
         v66 = v27;
-        v54 = [HDObjectAuthorizationEntity setObjectAuthorizationRecords:v63 syncProvenance:0 syncIdentity:v52 profile:v53 error:&v66];
+        v54 = [HDObjectAuthorizationEntity setObjectAuthorizationRecords:v63 syncProvenance:0 syncIdentity:currentSyncIdentityPersistentID profile:v53 error:&v66];
         v17 = v66;
 
         v59[2](v59, v54, v17);
-        v11 = v61;
+        typeCopy = v61;
         v14 = v56;
-        v12 = v57;
+        identifierCopy = v57;
       }
 
       else
       {
         v59[2](v59, 0, v23);
         v17 = v23;
-        v13 = v59;
+        completionCopy = v59;
       }
 
       v20 = v58;
@@ -2745,27 +2745,27 @@ LABEL_47:
 
     else
     {
-      v13[2](v13, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
     }
   }
 
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (id)enqueueObjectAuthorizationRequestForBundleIdentifier:(id)a3 context:(id)a4 promptIfNeeded:(BOOL)a5 authorizationNeededHandler:(id)a6 completion:(id)a7
+- (id)enqueueObjectAuthorizationRequestForBundleIdentifier:(id)identifier context:(id)context promptIfNeeded:(BOOL)needed authorizationNeededHandler:(id)handler completion:(id)completion
 {
-  v87 = a5;
+  neededCopy = needed;
   v126 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  contextCopy = context;
+  handlerCopy = handler;
+  completionCopy = completion;
   v16 = [_HDObjectAuthorizationRequest alloc];
-  v17 = [v13 samples];
-  v18 = [v13 metadata];
-  v19 = v17;
-  v20 = v18;
-  v21 = v15;
+  samples = [contextCopy samples];
+  metadata = [contextCopy metadata];
+  v19 = samples;
+  v20 = metadata;
+  v21 = completionCopy;
   if (v16)
   {
     v122.receiver = v16;
@@ -2773,9 +2773,9 @@ LABEL_47:
     v16 = [(HDAuthorizationManager *)&v122 init];
     if (v16)
     {
-      v22 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       identifier = v16->_identifier;
-      v16->_identifier = v22;
+      v16->_identifier = uUID;
 
       v24 = [v19 copy];
       samples = v16->_samples;
@@ -2791,16 +2791,16 @@ LABEL_47:
     }
   }
 
-  v30 = [v13 promptWithAllSamples];
+  promptWithAllSamples = [contextCopy promptWithAllSamples];
   if (v16)
   {
-    v16->_promptWithAllSamples = v30;
+    v16->_promptWithAllSamples = promptWithAllSamples;
   }
 
-  if (!v12)
+  if (!identifierCopy)
   {
-    v77 = [MEMORY[0x277CCA890] currentHandler];
-    [v77 handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:1326 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:1326 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
 
     completionQueue = self->_completionQueue;
     v119[0] = MEMORY[0x277D85DD0];
@@ -2827,12 +2827,12 @@ LABEL_47:
     goto LABEL_55;
   }
 
-  v90 = v14;
+  v90 = handlerCopy;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v32 = [WeakRetained sourceManager];
+  sourceManager = [WeakRetained sourceManager];
   v118 = 0;
-  v91 = v12;
-  v33 = [v32 localSourceForBundleIdentifier:v12 error:&v118];
+  v91 = identifierCopy;
+  v33 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v118];
   v34 = v118;
 
   if (!v33)
@@ -2858,20 +2858,20 @@ LABEL_47:
       v46 = 0;
     }
 
-    v14 = v90;
+    handlerCopy = v90;
     v47 = v46;
 
     v48 = v117;
     goto LABEL_54;
   }
 
-  v89 = self;
+  selfCopy = self;
   v86 = v21;
-  v35 = [MEMORY[0x277CCAD78] UUID];
-  v85 = v35;
-  if ([v13 persistSession])
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  v85 = uUID2;
+  if ([contextCopy persistSession])
   {
-    v36 = v35;
+    v36 = uUID2;
   }
 
   else
@@ -2885,16 +2885,16 @@ LABEL_47:
     objc_setProperty_nonatomic_copy(v16, v37, v38, 56);
   }
 
-  v39 = [v13 samples];
-  v40 = objc_loadWeakRetained(&v89->_profile);
+  samples2 = [contextCopy samples];
+  v40 = objc_loadWeakRetained(&selfCopy->_profile);
   v113 = v34;
   v83 = v38;
-  v41 = [HDObjectAuthorizationEntity authorizationRecordsForSamples:v39 sourceEntity:v33 sessionIdentifier:v38 profile:v40 error:&v113];
+  v41 = [HDObjectAuthorizationEntity authorizationRecordsForSamples:samples2 sourceEntity:v33 sessionIdentifier:v38 profile:v40 error:&v113];
   v84 = v113;
 
-  v42 = [v13 promptWithNoSamples];
+  promptWithNoSamples = [contextCopy promptWithNoSamples];
   v88 = v41;
-  if (![v13 promptWithAllSamples])
+  if (![contextCopy promptWithAllSamples])
   {
     v111 = 0u;
     v112 = 0u;
@@ -2902,7 +2902,7 @@ LABEL_47:
     v110 = 0u;
     v49 = v41;
     v50 = [v49 countByEnumeratingWithState:&v109 objects:v125 count:16];
-    v14 = v90;
+    handlerCopy = v90;
     if (v50)
     {
       v51 = v50;
@@ -2920,7 +2920,7 @@ LABEL_47:
           if (![*(*(&v109 + 1) + 8 * i) status])
           {
             [(HDSmoothingTask *)v16 setTransaction:v49];
-            v42 = 1;
+            promptWithNoSamples = 1;
             goto LABEL_29;
           }
         }
@@ -2935,28 +2935,28 @@ LABEL_47:
       }
 
 LABEL_29:
-      v14 = v90;
+      handlerCopy = v90;
       v33 = v81;
     }
 
     v21 = v86;
-    if (!v42 || !v87)
+    if (!promptWithNoSamples || !neededCopy)
     {
       goto LABEL_33;
     }
 
 LABEL_32:
-    queue = v89->_queue;
+    queue = selfCopy->_queue;
     v104[0] = MEMORY[0x277D85DD0];
     v104[1] = 3221225472;
     v104[2] = __140__HDAuthorizationManager_enqueueObjectAuthorizationRequestForBundleIdentifier_context_promptIfNeeded_authorizationNeededHandler_completion___block_invoke_3;
     v104[3] = &unk_27861F9C0;
-    v104[4] = v89;
-    v105 = v12;
+    v104[4] = selfCopy;
+    v105 = identifierCopy;
     v48 = v85;
     v106 = v85;
     v107 = v16;
-    v108 = v14;
+    v108 = handlerCopy;
     dispatch_async(queue, v104);
 
     goto LABEL_51;
@@ -2964,8 +2964,8 @@ LABEL_32:
 
   [(HDSmoothingTask *)v16 setTransaction:v41];
   v21 = v86;
-  v14 = v90;
-  if (v87)
+  handlerCopy = v90;
+  if (neededCopy)
   {
     goto LABEL_32;
   }
@@ -2997,8 +2997,8 @@ LABEL_33:
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v57 = [v13 samples];
-  v58 = [v57 countByEnumeratingWithState:&v100 objects:v124 count:16];
+  samples3 = [contextCopy samples];
+  v58 = [samples3 countByEnumeratingWithState:&v100 objects:v124 count:16];
   if (v58)
   {
     v59 = v58;
@@ -3009,15 +3009,15 @@ LABEL_33:
       {
         if (*v101 != v60)
         {
-          objc_enumerationMutation(v57);
+          objc_enumerationMutation(samples3);
         }
 
         v62 = *(*(&v100 + 1) + 8 * j);
-        v63 = [v62 UUID];
-        [v56 setObject:v62 forKeyedSubscript:v63];
+        uUID3 = [v62 UUID];
+        [v56 setObject:v62 forKeyedSubscript:uUID3];
       }
 
-      v59 = [v57 countByEnumeratingWithState:&v100 objects:v124 count:16];
+      v59 = [samples3 countByEnumeratingWithState:&v100 objects:v124 count:16];
     }
 
     while (v59);
@@ -3045,8 +3045,8 @@ LABEL_33:
         v69 = *(*(&v96 + 1) + 8 * k);
         if ([v69 status] == 2)
         {
-          v70 = [v69 objectUUID];
-          v71 = [v56 objectForKeyedSubscript:v70];
+          objectUUID = [v69 objectUUID];
+          v71 = [v56 objectForKeyedSubscript:objectUUID];
           [v55 addObject:v71];
         }
       }
@@ -3057,7 +3057,7 @@ LABEL_33:
     while (v66);
   }
 
-  v72 = v89->_queue;
+  v72 = selfCopy->_queue;
   v92[0] = MEMORY[0x277D85DD0];
   v92[1] = 3221225472;
   v92[2] = __140__HDAuthorizationManager_enqueueObjectAuthorizationRequestForBundleIdentifier_context_promptIfNeeded_authorizationNeededHandler_completion___block_invoke_5;
@@ -3069,8 +3069,8 @@ LABEL_33:
   v73 = v55;
   dispatch_async(v72, v92);
 
-  v14 = v90;
-  v12 = v91;
+  handlerCopy = v90;
+  identifierCopy = v91;
   v33 = v82;
   v48 = v85;
 LABEL_51:
@@ -3218,26 +3218,26 @@ uint64_t __140__HDAuthorizationManager_enqueueObjectAuthorizationRequestForBundl
   return (*(v2 + 16))(v2, v4, a1[5], 0);
 }
 
-- (void)handleObjectAuthorizationRequestsForBundleIdentifier:(id)a3 objectType:(id)a4 promptHandler:(id)a5 completion:(id)a6
+- (void)handleObjectAuthorizationRequestsForBundleIdentifier:(id)identifier objectType:(id)type promptHandler:(id)handler completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  typeCopy = type;
+  handlerCopy = handler;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __115__HDAuthorizationManager_handleObjectAuthorizationRequestsForBundleIdentifier_objectType_promptHandler_completion___block_invoke;
   block[3] = &unk_278621B18;
   block[4] = self;
-  v20 = v10;
-  v22 = v13;
-  v23 = v12;
-  v21 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
-  v18 = v10;
+  v20 = identifierCopy;
+  v22 = completionCopy;
+  v23 = handlerCopy;
+  v21 = typeCopy;
+  v15 = typeCopy;
+  v16 = handlerCopy;
+  v17 = completionCopy;
+  v18 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -3488,14 +3488,14 @@ void __115__HDAuthorizationManager_handleObjectAuthorizationRequestsForBundleIde
   }
 }
 
-- (id)fetchAuthorizationContextForPromptSession:(id)a3 error:(id *)a4
+- (id)fetchAuthorizationContextForPromptSession:(id)session error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   activeObjectPromptSessionsBySessionIdentifier = self->_activeObjectPromptSessionsBySessionIdentifier;
-  v66 = v6;
-  v8 = [v6 sessionIdentifier];
-  v9 = [(NSMutableDictionary *)activeObjectPromptSessionsBySessionIdentifier objectForKeyedSubscript:v8];
+  v66 = sessionCopy;
+  sessionIdentifier = [sessionCopy sessionIdentifier];
+  v9 = [(NSMutableDictionary *)activeObjectPromptSessionsBySessionIdentifier objectForKeyedSubscript:sessionIdentifier];
 
   v67 = v9;
   if (!v9)
@@ -3504,9 +3504,9 @@ void __115__HDAuthorizationManager_handleObjectAuthorizationRequestsForBundleIde
   }
 
   v10 = *(v9 + 48);
-  v11 = [v66 bundleIdentifier];
-  v12 = v11;
-  if (v10 == v11)
+  bundleIdentifier = [v66 bundleIdentifier];
+  v12 = bundleIdentifier;
+  if (v10 == bundleIdentifier)
   {
 
 LABEL_7:
@@ -3522,11 +3522,11 @@ LABEL_7:
 LABEL_54:
 
       v57 = objc_alloc(MEMORY[0x277CCD700]);
-      v58 = [v67[2] firstObject];
-      v59 = v58;
-      if (v58)
+      firstObject = [v67[2] firstObject];
+      v59 = firstObject;
+      if (firstObject)
       {
-        v60 = *(v58 + 40);
+        v60 = *(firstObject + 40);
       }
 
       else
@@ -3580,15 +3580,15 @@ LABEL_9:
 
             v25 = *(*(&v85 + 1) + 8 * i);
             v26 = objc_alloc(MEMORY[0x277CCD710]);
-            v27 = [v25 objectUUID];
-            v28 = [v25 sourceUUID];
-            v29 = [v25 sessionUUID];
-            v30 = [v25 status];
+            objectUUID = [v25 objectUUID];
+            sourceUUID = [v25 sourceUUID];
+            sessionUUID = [v25 sessionUUID];
+            status = [v25 status];
             [v25 modificationDate];
-            v31 = [v26 initWithObjectUUID:v27 sourceUUID:v28 sessionUUID:v29 status:v30 modificationDate:?];
+            v31 = [v26 initWithObjectUUID:objectUUID sourceUUID:sourceUUID sessionUUID:sessionUUID status:status modificationDate:?];
 
-            v32 = [v25 objectUUID];
-            [v20 setObject:v31 forKeyedSubscript:v32];
+            objectUUID2 = [v25 objectUUID];
+            [v20 setObject:v31 forKeyedSubscript:objectUUID2];
           }
 
           v22 = [v75 countByEnumeratingWithState:&v85 objects:v91 count:16];
@@ -3624,8 +3624,8 @@ LABEL_9:
             }
 
             v38 = *(*(&v81 + 1) + 8 * j);
-            v39 = [v38 UUID];
-            v40 = [v20 objectForKeyedSubscript:v39];
+            uUID = [v38 UUID];
+            v40 = [v20 objectForKeyedSubscript:uUID];
             if (v40)
             {
               [v33 setObject:v40 forKeyedSubscript:v38];
@@ -3689,19 +3689,19 @@ LABEL_34:
       }
 
       v46 = *(*(&v81 + 1) + 8 * v45);
-      v47 = [v46 UUID];
-      v48 = [v20 objectForKeyedSubscript:v47];
+      uUID2 = [v46 UUID];
+      v48 = [v20 objectForKeyedSubscript:uUID2];
       if (!v48)
       {
         break;
       }
 
       v49 = v48;
-      v50 = [v46 UUID];
-      v51 = [v20 objectForKeyedSubscript:v50];
-      v52 = [v51 status];
+      uUID3 = [v46 UUID];
+      v51 = [v20 objectForKeyedSubscript:uUID3];
+      status2 = [v51 status];
 
-      if (!v52)
+      if (!status2)
       {
         goto LABEL_41;
       }
@@ -3722,8 +3722,8 @@ LABEL_45:
     }
 
 LABEL_41:
-    v53 = [v46 UUID];
-    v54 = [v20 objectForKeyedSubscript:v53];
+    uUID4 = [v46 UUID];
+    v54 = [v20 objectForKeyedSubscript:uUID4];
     if (v54)
     {
       [v74 setObject:v54 forKeyedSubscript:v46];
@@ -3738,13 +3738,13 @@ LABEL_41:
     goto LABEL_45;
   }
 
-  v13 = [v66 bundleIdentifier];
-  if (v13)
+  bundleIdentifier2 = [v66 bundleIdentifier];
+  if (bundleIdentifier2)
   {
-    v14 = v13;
+    v14 = bundleIdentifier2;
     v15 = v67[6];
-    v16 = [v66 bundleIdentifier];
-    v17 = [v15 isEqualToString:v16];
+    bundleIdentifier3 = [v66 bundleIdentifier];
+    v17 = [v15 isEqualToString:bundleIdentifier3];
 
     v9 = v67;
     if ((v17 & 1) == 0)
@@ -3759,10 +3759,10 @@ LABEL_58:
   v62 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Could not locate prompt session"];
   if (v62)
   {
-    if (a4)
+    if (error)
     {
       v63 = v62;
-      *a4 = v62;
+      *error = v62;
     }
 
     else
@@ -3779,28 +3779,28 @@ LABEL_63:
   return v61;
 }
 
-- (int64_t)objectAuthorizationRecordForSource:(id)a3 objectUUID:(id)a4 resolveAssociations:(BOOL)a5 error:(id *)a6
+- (int64_t)objectAuthorizationRecordForSource:(id)source objectUUID:(id)d resolveAssociations:(BOOL)associations error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  sourceCopy = source;
+  dCopy = d;
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained database];
+  database = [WeakRetained database];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __98__HDAuthorizationManager_objectAuthorizationRecordForSource_objectUUID_resolveAssociations_error___block_invoke;
   v26[3] = &unk_278621B40;
-  v15 = v11;
-  v31 = a5;
+  v15 = dCopy;
+  associationsCopy = associations;
   v27 = v15;
-  v28 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = sourceCopy;
   v29 = v16;
   v17 = v12;
   v30 = v17;
-  LODWORD(a6) = [(HDHealthEntity *)HDObjectAuthorizationEntity performReadTransactionWithHealthDatabase:v14 error:a6 block:v26];
+  LODWORD(error) = [(HDHealthEntity *)HDObjectAuthorizationEntity performReadTransactionWithHealthDatabase:database error:error block:v26];
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -3938,25 +3938,25 @@ BOOL __98__HDAuthorizationManager_objectAuthorizationRecordForSource_objectUUID_
   return v11 != 0;
 }
 
-- (void)performObjectAuthorizationForSource:(id)a3 samples:(id)a4 associatedWithSamplesOfType:(id)a5 completion:(id)a6
+- (void)performObjectAuthorizationForSource:(id)source samples:(id)samples associatedWithSamplesOfType:(id)type completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v39 = self;
+  sourceCopy = source;
+  samplesCopy = samples;
+  typeCopy = type;
+  completionCopy = completion;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v47 = 0;
-  v15 = [HDObjectAuthorizationEntity authorizationStatusForSamplesOfType:v12 sourceEntity:v10 profile:WeakRetained error:&v47];
+  v15 = [HDObjectAuthorizationEntity authorizationStatusForSamplesOfType:typeCopy sourceEntity:sourceCopy profile:WeakRetained error:&v47];
   v16 = v47;
 
   if (v15)
   {
-    v34 = v13;
-    v35 = v12;
-    v36 = v11;
-    v37 = v10;
+    v34 = completionCopy;
+    v35 = typeCopy;
+    v36 = samplesCopy;
+    v37 = sourceCopy;
     v38 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v43 = 0u;
     v44 = 0u;
@@ -3983,10 +3983,10 @@ BOOL __98__HDAuthorizationManager_objectAuthorizationRecordForSource_objectUUID_
           v23 = *(*(&v43 + 1) + 8 * v21);
           if ([v23 status] == 2)
           {
-            v24 = [v23 objectUUID];
-            v25 = objc_loadWeakRetained(&v39->_profile);
+            objectUUID = [v23 objectUUID];
+            v25 = objc_loadWeakRetained(&selfCopy->_profile);
             v42 = v22;
-            v26 = [HDAssociationEntity objectUUIDsAssociatedWithObjectUUID:v24 subObjectReference:0 excludeDeleted:1 profile:v25 error:&v42];
+            v26 = [HDAssociationEntity objectUUIDsAssociatedWithObjectUUID:objectUUID subObjectReference:0 excludeDeleted:1 profile:v25 error:&v42];
             v16 = v42;
 
             if (v26)
@@ -4006,7 +4006,7 @@ BOOL __98__HDAuthorizationManager_objectAuthorizationRecordForSource_objectUUID_
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412546;
-                  v49 = v24;
+                  v49 = objectUUID;
                   v50 = 2112;
                   v51 = v16;
                   _os_log_impl(&dword_228986000, v29, OS_LOG_TYPE_INFO, "[database] Error looking up samples associated with %@: %@", buf, 0x16u);
@@ -4038,19 +4038,19 @@ BOOL __98__HDAuthorizationManager_objectAuthorizationRecordForSource_objectUUID_
     v40[3] = &unk_278617BF0;
     v41 = v38;
     v30 = v38;
-    v11 = v36;
+    samplesCopy = v36;
     v31 = [v36 hk_filter:v40];
-    v13 = v34;
+    completionCopy = v34;
     (v34)[2](v34, v31, 0);
 
-    v10 = v37;
-    v12 = v35;
+    sourceCopy = v37;
+    typeCopy = v35;
     v15 = v33;
   }
 
   else
   {
-    v13[2](v13, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -4065,30 +4065,30 @@ uint64_t __109__HDAuthorizationManager_performObjectAuthorizationForSource_sampl
   return v4;
 }
 
-- (id)enqueueConceptAuthorizationRequestForBundleIdentifier:(id)a3 forObjectType:(id)a4 promptIfNeeded:(BOOL)a5 authorizationNeededHandler:(id)a6 completionHandler:(id)a7
+- (id)enqueueConceptAuthorizationRequestForBundleIdentifier:(id)identifier forObjectType:(id)type promptIfNeeded:(BOOL)needed authorizationNeededHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x277CCAD78] UUID];
+  identifierCopy = identifier;
+  typeCopy = type;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __154__HDAuthorizationManager_enqueueConceptAuthorizationRequestForBundleIdentifier_forObjectType_promptIfNeeded_authorizationNeededHandler_completionHandler___block_invoke;
   block[3] = &unk_278621B68;
   block[4] = self;
-  v18 = v16;
+  v18 = uUID;
   v27 = v18;
-  v28 = v12;
-  v32 = a5;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v28 = identifierCopy;
+  neededCopy = needed;
+  v29 = typeCopy;
+  v30 = handlerCopy;
+  v31 = completionHandlerCopy;
+  v19 = completionHandlerCopy;
+  v20 = handlerCopy;
+  v21 = typeCopy;
+  v22 = identifierCopy;
   dispatch_async(queue, block);
   v23 = v31;
   v24 = v18;
@@ -4392,26 +4392,26 @@ BOOL __170__HDAuthorizationManager__queue_enqueueConceptAuthorizationRequestWith
   return v12;
 }
 
-- (void)handleHealthConceptAuthorizationRequestsForBundleIdentifier:(id)a3 objectType:(id)a4 promptHandler:(id)a5 completion:(id)a6
+- (void)handleHealthConceptAuthorizationRequestsForBundleIdentifier:(id)identifier objectType:(id)type promptHandler:(id)handler completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  typeCopy = type;
+  handlerCopy = handler;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __122__HDAuthorizationManager_handleHealthConceptAuthorizationRequestsForBundleIdentifier_objectType_promptHandler_completion___block_invoke;
   block[3] = &unk_278621B18;
   block[4] = self;
-  v20 = v10;
-  v22 = v13;
-  v23 = v12;
-  v21 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
-  v18 = v10;
+  v20 = identifierCopy;
+  v22 = completionCopy;
+  v23 = handlerCopy;
+  v21 = typeCopy;
+  v15 = typeCopy;
+  v16 = handlerCopy;
+  v17 = completionCopy;
+  v18 = identifierCopy;
   dispatch_async(queue, block);
 }
 
@@ -4675,33 +4675,33 @@ void __122__HDAuthorizationManager_handleHealthConceptAuthorizationRequestsForBu
   }
 }
 
-- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)a3 completion:(id)a4
+- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v14 = 0;
-    v10 = [HDConceptAuthorizationEntity authorizationRecordsForHealthConceptIdentifier:v7 profile:WeakRetained error:&v14];
+    v10 = [HDConceptAuthorizationEntity authorizationRecordsForHealthConceptIdentifier:identifierCopy profile:WeakRetained error:&v14];
     v11 = v14;
 
     if (v10)
     {
       v12 = [v10 hk_map:&__block_literal_global_474];
-      v8[2](v8, v12, 0);
+      completionCopy[2](completionCopy, v12, 0);
     }
 
     else
     {
-      (v8)[2](v8, 0, v11);
+      (completionCopy)[2](completionCopy, 0, v11);
     }
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"healthConceptIdentifier may not be nil"];
-    (v8)[2](v8, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
   }
 }
 
@@ -4714,13 +4714,13 @@ void __90__HDAuthorizationManager_fetchAuthorizationStatusesForHealthConceptIden
   (a4)[2](v8, v9, v10);
 }
 
-- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 completion:(id)a4
+- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  domainCopy = domain;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v13 = 0;
-  v9 = [HDConceptAuthorizationEntity fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:v7 profile:WeakRetained error:&v13];
+  v9 = [HDConceptAuthorizationEntity fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:domainCopy profile:WeakRetained error:&v13];
 
   v10 = v13;
   if (v9)
@@ -4735,16 +4735,16 @@ void __90__HDAuthorizationManager_fetchAuthorizationStatusesForHealthConceptIden
     v12 = v10;
   }
 
-  v6[2](v6, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
 }
 
-- (id)fetchConceptAuthorizationContextForPromptSession:(id)a3 error:(id *)a4
+- (id)fetchConceptAuthorizationContextForPromptSession:(id)session error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   activeHealthConceptPromptSessionsBySessionIdentifier = self->_activeHealthConceptPromptSessionsBySessionIdentifier;
-  v8 = [v6 sessionIdentifier];
-  v9 = [(NSMutableDictionary *)activeHealthConceptPromptSessionsBySessionIdentifier objectForKeyedSubscript:v8];
+  sessionIdentifier = [sessionCopy sessionIdentifier];
+  v9 = [(NSMutableDictionary *)activeHealthConceptPromptSessionsBySessionIdentifier objectForKeyedSubscript:sessionIdentifier];
 
   if (!v9)
   {
@@ -4752,26 +4752,26 @@ void __90__HDAuthorizationManager_fetchAuthorizationStatusesForHealthConceptIden
   }
 
   v10 = v9[6];
-  v11 = [v6 bundleIdentifier];
-  v12 = v11;
-  if (v10 == v11)
+  bundleIdentifier = [sessionCopy bundleIdentifier];
+  v12 = bundleIdentifier;
+  if (v10 == bundleIdentifier)
   {
   }
 
   else
   {
-    v13 = [v6 bundleIdentifier];
-    if (!v13)
+    bundleIdentifier2 = [sessionCopy bundleIdentifier];
+    if (!bundleIdentifier2)
     {
 
 LABEL_20:
       v28 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Could not locate prompt session for health concept"];
       if (v28)
       {
-        if (a4)
+        if (error)
         {
           v29 = v28;
-          *a4 = v28;
+          *error = v28;
         }
 
         else
@@ -4784,10 +4784,10 @@ LABEL_20:
       goto LABEL_25;
     }
 
-    v14 = v13;
+    v14 = bundleIdentifier2;
     v15 = v9[6];
-    v16 = [v6 bundleIdentifier];
-    v17 = [v15 isEqualToString:v16];
+    bundleIdentifier3 = [sessionCopy bundleIdentifier];
+    v17 = [v15 isEqualToString:bundleIdentifier3];
 
     if ((v17 & 1) == 0)
     {
@@ -4847,16 +4847,16 @@ LABEL_25:
   return v27;
 }
 
-- (void)createRecalibrateEstimatesRequestRecordForSource:(id)a3 sampleType:(id)a4 effectiveDate:(id)a5 handler:(id)a6
+- (void)createRecalibrateEstimatesRequestRecordForSource:(id)source sampleType:(id)type effectiveDate:(id)date handler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  typeCopy = type;
+  dateCopy = date;
+  handlerCopy = handler;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained sourceManager];
+  sourceManager = [WeakRetained sourceManager];
   v25 = 0;
-  v16 = [v15 clientSourceForSourceEntity:v13 error:&v25];
+  v16 = [sourceManager clientSourceForSourceEntity:sourceCopy error:&v25];
 
   v17 = v25;
   if (v16)
@@ -4867,16 +4867,16 @@ LABEL_25:
     v19[2] = __108__HDAuthorizationManager_createRecalibrateEstimatesRequestRecordForSource_sampleType_effectiveDate_handler___block_invoke;
     v19[3] = &unk_278621AA0;
     v20 = v16;
-    v21 = self;
-    v24 = v12;
-    v22 = v10;
-    v23 = v11;
+    selfCopy = self;
+    v24 = handlerCopy;
+    v22 = typeCopy;
+    v23 = dateCopy;
     dispatch_async(queue, v19);
   }
 
   else
   {
-    (*(v12 + 2))(v12, 0, v17);
+    (*(handlerCopy + 2))(handlerCopy, 0, v17);
   }
 }
 
@@ -4931,60 +4931,60 @@ LABEL_9:
     v2 = result;
     v3 = MEMORY[0x277CBEAA8];
     v4 = a2;
-    v5 = [v3 date];
+    date = [v3 date];
     [v2 requestSessionTimeout];
     v6 = [v4 dateByAddingTimeInterval:?];
 
-    v7 = [v5 hk_isAfterDate:v6];
+    v7 = [date hk_isAfterDate:v6];
     return v7;
   }
 
   return result;
 }
 
-- (id)authorizationStatusForTypes:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (id)authorizationStatusForTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  typesCopy = types;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [HDAuthorizationStatus authorizationStatusForTypes:v9 bundleIdentifier:v8 profile:WeakRetained error:a5];
+  v11 = [HDAuthorizationStatus authorizationStatusForTypes:typesCopy bundleIdentifier:identifierCopy profile:WeakRetained error:error];
 
   return v11;
 }
 
-- (BOOL)isAuthorizedForObjectType:(id)a3 authorizationStatus:(id)a4 clientEntitlements:(id)a5 sharing:(BOOL)a6 error:(id *)a7
+- (BOOL)isAuthorizedForObjectType:(id)type authorizationStatus:(id)status clientEntitlements:(id)entitlements sharing:(BOOL)sharing error:(id *)error
 {
-  v7 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v13)
+  sharingCopy = sharing;
+  typeCopy = type;
+  statusCopy = status;
+  entitlementsCopy = entitlements;
+  if (!statusCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:1903 description:{@"Invalid parameter not satisfying: %@", @"authorizationStatus != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:1903 description:{@"Invalid parameter not satisfying: %@", @"authorizationStatus != nil"}];
   }
 
-  v27 = self;
-  v15 = [v13 integerValue];
+  selfCopy = self;
+  integerValue = [statusCopy integerValue];
   v16 = HKAuthorizationStatusAllowsSharing();
   v17 = HKAuthorizationStatusAllowsReading();
   v18 = *MEMORY[0x277CCCCE0];
-  v19 = v12;
-  v20 = [v12 identifier];
-  v21 = [v14 arrayEntitlement:v18 containsString:v20];
+  v19 = typeCopy;
+  identifier = [typeCopy identifier];
+  v21 = [entitlementsCopy arrayEntitlement:v18 containsString:identifier];
 
-  if ((v15 - 101) >= 4)
+  if ((integerValue - 101) >= 4)
   {
-    if (v15 == 100)
+    if (integerValue == 100)
     {
-      v22 = v7 | v21 ^ 1;
+      v22 = sharingCopy | v21 ^ 1;
       v23 = v22 ^ 1;
     }
 
     else
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v27 file:@"HDAuthorizationManager.m" lineNumber:1925 description:{@"Unexpected authorization status %@", v13}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"HDAuthorizationManager.m" lineNumber:1925 description:{@"Unexpected authorization status %@", statusCopy}];
 
       v23 = 0;
       v22 = 0;
@@ -4994,7 +4994,7 @@ LABEL_9:
   else
   {
     v22 = 0;
-    if (v7)
+    if (sharingCopy)
     {
       v23 = v16;
     }
@@ -5005,7 +5005,7 @@ LABEL_9:
     }
   }
 
-  if (a7 && (v23 & 1) == 0)
+  if (error && (v23 & 1) == 0)
   {
     if (v22)
     {
@@ -5016,26 +5016,26 @@ LABEL_9:
     {
       [MEMORY[0x277CCA9B8] hk_error:4 format:@"Not authorized"];
     }
-    *a7 = ;
+    *error = ;
   }
 
   return v23 & 1;
 }
 
-- (void)validateRecalibrateEstimatesRequestRecord:(id)a3 completion:(id)a4
+- (void)validateRecalibrateEstimatesRequestRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HDAuthorizationManager_validateRecalibrateEstimatesRequestRecord_completion___block_invoke;
   block[3] = &unk_278614160;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = recordCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(queue, block);
 }
 
@@ -5073,18 +5073,18 @@ LABEL_7:
 - (id)diagnosticDescription
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = self->_promptingRequestGroup;
   if (v4)
   {
-    [v3 appendFormat:@"Prompting request group:"];
-    [v3 appendFormat:@"\n%@\n\n", v4];
+    [string appendFormat:@"Prompting request group:"];
+    [string appendFormat:@"\n%@\n\n", v4];
   }
 
   v5 = [(NSMutableArray *)self->_pendingRequestGroups copy];
   if ([v5 count])
   {
-    [v3 appendFormat:@"Pending request groups:"];
+    [string appendFormat:@"Pending request groups:"];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -5106,7 +5106,7 @@ LABEL_7:
           }
 
           v11 = *(*(&v17 + 1) + 8 * v10);
-          v12 = [(_HDAuthorizationRequestGroup *)v11 bundleIdentifier];
+          bundleIdentifier = [(_HDAuthorizationRequestGroup *)v11 bundleIdentifier];
           if (v11)
           {
             v13 = [v11[4] count];
@@ -5117,7 +5117,7 @@ LABEL_7:
             v13 = 0;
           }
 
-          [v3 appendFormat:@"\n%@ (%lu requests)", v12, v13, v17];
+          [string appendFormat:@"\n%@ (%lu requests)", bundleIdentifier, v13, v17];
 
           ++v10;
         }
@@ -5130,17 +5130,17 @@ LABEL_7:
       while (v14);
     }
 
-    [v3 appendFormat:@"\n\n"];
+    [string appendFormat:@"\n\n"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
-- (id)_schemaProviderForType:(id)a3
+- (id)_schemaProviderForType:(id)type
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a3, "code")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(type, "code")}];
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_schemaProviderMap objectForKeyedSubscript:v4];
   if (!v5)
@@ -5163,106 +5163,106 @@ LABEL_7:
   return v3;
 }
 
-- (int64_t)isClientAuthorizedToReadObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToReadObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  objectCopy = object;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v17 = 0;
 LABEL_6:
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:2000 format:{@"Unable to determine the provider for the object %@", v12}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Unable to determine the provider for the object %@", objectCopy}];
     v18 = 3;
     goto LABEL_7;
   }
 
-  v16 = [v12 hk_objectType];
-  v17 = [(HDAuthorizationManager *)self _schemaProviderForType:v16];
+  hk_objectType = [objectCopy hk_objectType];
+  v17 = [(HDAuthorizationManager *)self _schemaProviderForType:hk_objectType];
 
   if (!v17 || (objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v18 = [v17 isClientAuthorizedToReadObject:v12 sourceBundleIdentifier:v13 clientEntitlements:v14 profile:v15 error:a7];
+  v18 = [v17 isClientAuthorizedToReadObject:objectCopy sourceBundleIdentifier:identifierCopy clientEntitlements:entitlementsCopy profile:profileCopy error:error];
 LABEL_7:
 
   return v18;
 }
 
-- (int64_t)isClientAuthorizedToReadType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToReadType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(HDAuthorizationManager *)self _schemaProviderForType:v15];
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  typeCopy = type;
+  v16 = [(HDAuthorizationManager *)self _schemaProviderForType:typeCopy];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v16 isClientAuthorizedToReadType:v15 sourceBundleIdentifier:v12 clientEntitlements:v13 profile:v14 error:a7];
+    v17 = [v16 isClientAuthorizedToReadType:typeCopy sourceBundleIdentifier:identifierCopy clientEntitlements:entitlementsCopy profile:profileCopy error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:2000 format:{@"Unable to determine the provider for this type %@", v15}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Unable to determine the provider for this type %@", typeCopy}];
     v17 = 3;
   }
 
   return v17;
 }
 
-- (int64_t)isClientAuthorizedToWriteObject:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToWriteObject:(id)object sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
-  v16 = [v15 hd_sampleType];
-  v17 = [(HDAuthorizationManager *)self _schemaProviderForType:v16];
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  objectCopy = object;
+  hd_sampleType = [objectCopy hd_sampleType];
+  v17 = [(HDAuthorizationManager *)self _schemaProviderForType:hd_sampleType];
 
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v17 isClientAuthorizedToWriteObject:v15 sourceBundleIdentifier:v12 clientEntitlements:v13 profile:v14 error:a7];
+    v18 = [v17 isClientAuthorizedToWriteObject:objectCopy sourceBundleIdentifier:identifierCopy clientEntitlements:entitlementsCopy profile:profileCopy error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:2000 format:{@"Unable to determine the provider for this object %@", v15}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Unable to determine the provider for this object %@", objectCopy}];
     v18 = 3;
   }
 
   return v18;
 }
 
-- (int64_t)isClientAuthorizedToWriteType:(id)a3 sourceBundleIdentifier:(id)a4 clientEntitlements:(id)a5 profile:(id)a6 error:(id *)a7
+- (int64_t)isClientAuthorizedToWriteType:(id)type sourceBundleIdentifier:(id)identifier clientEntitlements:(id)entitlements profile:(id)profile error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(HDAuthorizationManager *)self _schemaProviderForType:v15];
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  profileCopy = profile;
+  typeCopy = type;
+  v16 = [(HDAuthorizationManager *)self _schemaProviderForType:typeCopy];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v16 isClientAuthorizedToWriteType:v15 sourceBundleIdentifier:v12 clientEntitlements:v13 profile:v14 error:a7];
+    v17 = [v16 isClientAuthorizedToWriteType:typeCopy sourceBundleIdentifier:identifierCopy clientEntitlements:entitlementsCopy profile:profileCopy error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:2000 format:{@"Unable to determine the provider for this type %@", v15}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Unable to determine the provider for this type %@", typeCopy}];
     v17 = 3;
   }
 
   return v17;
 }
 
-- (id)filteredAuthorizedObjectsForClient:(id)a3 anchor:(id)a4 bundleIdentifier:(id)a5 clientEntitlements:(id)a6 error:(id *)a7
+- (id)filteredAuthorizedObjectsForClient:(id)client anchor:(id)anchor bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  clientCopy = client;
+  anchorCopy = anchor;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v38 = 0;
@@ -5278,17 +5278,17 @@ LABEL_7:
   v36[4] = self;
   v18 = v17;
   v37 = v18;
-  [v12 enumerateObjectsUsingBlock:v36];
+  [clientCopy enumerateObjectsUsingBlock:v36];
   if (v18)
   {
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __110__HDAuthorizationManager_filteredAuthorizedObjectsForClient_anchor_bundleIdentifier_clientEntitlements_error___block_invoke_2;
     v29[3] = &unk_278621C48;
-    v30 = v13;
-    v31 = v14;
-    v32 = v15;
-    v33 = self;
+    v30 = anchorCopy;
+    v31 = identifierCopy;
+    v32 = entitlementsCopy;
+    selfCopy = self;
     v35 = &v38;
     v19 = v16;
     v34 = v19;
@@ -5298,10 +5298,10 @@ LABEL_7:
     {
       v21 = v20;
       v22 = v21;
-      if (a7)
+      if (error)
       {
         v23 = v21;
-        *a7 = v22;
+        *error = v22;
       }
 
       else
@@ -5322,14 +5322,14 @@ LABEL_7:
 
   else
   {
-    v24 = [MEMORY[0x277CCA9B8] hk_error:2000 format:{@"Unable to determine the authorization providers for the objects %@, hence returning nil", v12}];
+    v24 = [MEMORY[0x277CCA9B8] hk_error:2000 format:{@"Unable to determine the authorization providers for the objects %@, hence returning nil", clientCopy}];
     v25 = v24;
     if (v24)
     {
-      if (a7)
+      if (error)
       {
         v26 = v24;
-        *a7 = v25;
+        *error = v25;
       }
 
       else
@@ -5425,26 +5425,26 @@ void __110__HDAuthorizationManager_filteredAuthorizedObjectsForClient_anchor_bun
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filterForClientUserAnnotatedMedications:(id)a3 bundleIdentifier:(id)a4 clientEntitlements:(id)a5 error:(id *)a6
+- (id)filterForClientUserAnnotatedMedications:(id)medications bundleIdentifier:(id)identifier clientEntitlements:(id)entitlements error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  medicationsCopy = medications;
+  identifierCopy = identifier;
+  entitlementsCopy = entitlements;
+  if (!medicationsCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:2187 description:{@"Invalid parameter not satisfying: %@", @"userAnnotatedMedicationObjects != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationManager.m" lineNumber:2187 description:{@"Invalid parameter not satisfying: %@", @"userAnnotatedMedicationObjects != nil"}];
   }
 
-  v14 = [MEMORY[0x277CCD720] userAnnotatedMedicationType];
-  v15 = [(HDAuthorizationManager *)self _schemaProviderForType:v14];
+  userAnnotatedMedicationType = [MEMORY[0x277CCD720] userAnnotatedMedicationType];
+  v15 = [(HDAuthorizationManager *)self _schemaProviderForType:userAnnotatedMedicationType];
   if (v15)
   {
     if (objc_opt_respondsToSelector())
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v17 = [v15 filterForClientUserAnnotatedMedications:v11 bundleIdentifier:v12 clientEntitlements:v13 profile:WeakRetained error:a6];
+      v17 = [v15 filterForClientUserAnnotatedMedications:medicationsCopy bundleIdentifier:identifierCopy clientEntitlements:entitlementsCopy profile:WeakRetained error:error];
 
       goto LABEL_11;
     }
@@ -5458,17 +5458,17 @@ void __110__HDAuthorizationManager_filteredAuthorizedObjectsForClient_anchor_bun
       v27 = 2112;
       v28 = v15;
       v29 = 2112;
-      v30 = v11;
+      v30 = medicationsCopy;
       v21 = v26;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%@: Provider %@: does not respond to the selector for the following objects %@:", buf, 0x20u);
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:2000 format:{@"%@: Provider %@: does not respond to the selector for the following objects %@:", objc_opt_class(), v15, v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"%@: Provider %@: does not respond to the selector for the following objects %@:", objc_opt_class(), v15, medicationsCopy}];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:2000 format:{@"Unable to determine the authorization provider for the objects %@, returning nil", v11, v23, v24}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Unable to determine the authorization provider for the objects %@, returning nil", medicationsCopy, v23, v24}];
   }
 
   v17 = 0;
@@ -5479,12 +5479,12 @@ LABEL_11:
   return v17;
 }
 
-- (void)fetchConceptAuthorizationRecordsForSource:(id)a3 completion:(id)a4
+- (void)fetchConceptAuthorizationRecordsForSource:(id)source completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  sourceCopy = source;
+  completionCopy = completion;
+  if (sourceCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v10 = *MEMORY[0x277D10C08];
@@ -5495,10 +5495,10 @@ LABEL_11:
     if ([v11 count])
     {
       v13 = objc_loadWeakRetained(&self->_profile);
-      v14 = [v13 sourceManager];
-      v15 = [v7 bundleIdentifier];
+      sourceManager = [v13 sourceManager];
+      bundleIdentifier = [sourceCopy bundleIdentifier];
       v32 = v12;
-      v16 = [v14 localSourceForBundleIdentifier:v15 copyIfNecessary:1 error:&v32];
+      v16 = [sourceManager localSourceForBundleIdentifier:bundleIdentifier copyIfNecessary:1 error:&v32];
       v17 = v32;
 
       if (v16)
@@ -5524,7 +5524,7 @@ LABEL_11:
             }
           }
 
-          v8[2](v8, v19, 0);
+          completionCopy[2](completionCopy, v19, 0);
         }
 
         else
@@ -5540,13 +5540,13 @@ LABEL_11:
             }
           }
 
-          (v8)[2](v8, 0, v12);
+          (completionCopy)[2](completionCopy, 0, v12);
         }
       }
 
       else
       {
-        (v8)[2](v8, 0, v17);
+        (completionCopy)[2](completionCopy, 0, v17);
         v12 = v17;
       }
     }
@@ -5575,14 +5575,14 @@ LABEL_11:
         }
       }
 
-      (v8)[2](v8, 0, v12);
+      (completionCopy)[2](completionCopy, 0, v12);
     }
   }
 
   else
   {
     v23 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Source may not be nil"];
-    (v8)[2](v8, 0, v23);
+    (completionCopy)[2](completionCopy, 0, v23);
   }
 
   v28 = *MEMORY[0x277D85DE8];

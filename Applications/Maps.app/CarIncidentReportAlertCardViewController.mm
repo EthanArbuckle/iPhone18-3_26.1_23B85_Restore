@@ -1,14 +1,14 @@
 @interface CarIncidentReportAlertCardViewController
-- (CarIncidentReportAlertCardViewController)initWithDelegate:(id)a3 incidentLayoutItem:(id)a4 report:(id)a5;
+- (CarIncidentReportAlertCardViewController)initWithDelegate:(id)delegate incidentLayoutItem:(id)item report:(id)report;
 - (CarIncidentReportAlertViewControllerDelegate)delegate;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
 - (void)_cancelDismissTimer;
 - (void)_dismissTrafficAlert;
 - (void)loadView;
-- (void)updateIncidentLayoutItem:(id)a3 report:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateIncidentLayoutItem:(id)item report:(id)report;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarIncidentReportAlertCardViewController
@@ -22,69 +22,69 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
-  v3 = [v2 preferredFocusEnvironments];
+  trafficAlertView = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
+  preferredFocusEnvironments = [trafficAlertView preferredFocusEnvironments];
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
 - (NSArray)focusOrderSubItems
 {
-  v2 = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
-  v3 = [v2 focusOrderSubItems];
+  trafficAlertView = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
+  focusOrderSubItems = [trafficAlertView focusOrderSubItems];
 
-  return v3;
+  return focusOrderSubItems;
 }
 
 - (void)_dismissTrafficAlert
 {
   [(CarIncidentReportAlertCardViewController *)self _cancelDismissTimer];
-  v3 = [(CarIncidentReportAlertCardViewController *)self delegate];
-  [v3 trafficAlertCardViewControllerDismiss:self];
+  delegate = [(CarIncidentReportAlertCardViewController *)self delegate];
+  [delegate trafficAlertCardViewControllerDismiss:self];
 }
 
 - (void)_cancelDismissTimer
 {
-  v3 = [(CarIncidentReportAlertCardViewController *)self dismissTimer];
-  [v3 invalidate];
+  dismissTimer = [(CarIncidentReportAlertCardViewController *)self dismissTimer];
+  [dismissTimer invalidate];
 
   [(CarIncidentReportAlertCardViewController *)self setDismissTimer:0];
 }
 
-- (void)updateIncidentLayoutItem:(id)a3 report:(id)a4
+- (void)updateIncidentLayoutItem:(id)item report:(id)report
 {
-  v6 = a3;
-  objc_storeStrong(&self->_report, a4);
-  v7 = a4;
+  itemCopy = item;
+  objc_storeStrong(&self->_report, report);
+  reportCopy = report;
   incidentLayoutItem = self->_incidentLayoutItem;
-  self->_incidentLayoutItem = v6;
-  v9 = v6;
+  self->_incidentLayoutItem = itemCopy;
+  v9 = itemCopy;
 
   v10 = self->_incidentLayoutItem;
-  v11 = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
-  [v11 setIncidentLayoutItem:v10];
+  trafficAlertView = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
+  [trafficAlertView setIncidentLayoutItem:v10];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CarIncidentReportAlertCardViewController;
-  [(CarIncidentReportAlertCardViewController *)&v4 viewWillDisappear:a3];
+  [(CarIncidentReportAlertCardViewController *)&v4 viewWillDisappear:disappear];
   [(CarIncidentReportAlertCardViewController *)self _cancelDismissTimer];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = CarIncidentReportAlertCardViewController;
-  [(CarIncidentReportAlertCardViewController *)&v16 viewDidAppear:a3];
+  [(CarIncidentReportAlertCardViewController *)&v16 viewDidAppear:appear];
   GEOConfigGetDouble();
   if (v4 > 0.0)
   {
     v5 = v4;
     objc_initWeak(&location, self);
-    v6 = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
-    [v6 startProgressAnimationWithDuration:v5];
+    trafficAlertView = [(CarIncidentReportAlertCardViewController *)self trafficAlertView];
+    [trafficAlertView startProgressAnimationWithDuration:v5];
 
     [(CarIncidentReportAlertCardViewController *)self _cancelDismissTimer];
     v10 = _NSConcreteStackBlock;
@@ -102,8 +102,8 @@
   if (![(TrafficIncidentReport *)self->_report isSiriContext])
   {
     v8 = +[MKMapService sharedService];
-    v9 = [(TrafficIncidentLayoutItem *)self->_incidentLayoutItem incidentTypeAsString];
-    [v8 captureUserAction:2152 onTarget:1001 eventValue:v9];
+    incidentTypeAsString = [(TrafficIncidentLayoutItem *)self->_incidentLayoutItem incidentTypeAsString];
+    [v8 captureUserAction:2152 onTarget:1001 eventValue:incidentTypeAsString];
   }
 
   [(TrafficIncidentReport *)self->_report submitWithCompletionHandler:0];
@@ -118,20 +118,20 @@
   [(CarIncidentReportAlertCardViewController *)self setTrafficAlertView:v3];
 }
 
-- (CarIncidentReportAlertCardViewController)initWithDelegate:(id)a3 incidentLayoutItem:(id)a4 report:(id)a5
+- (CarIncidentReportAlertCardViewController)initWithDelegate:(id)delegate incidentLayoutItem:(id)item report:(id)report
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  itemCopy = item;
+  reportCopy = report;
   v14.receiver = self;
   v14.super_class = CarIncidentReportAlertCardViewController;
   v11 = [(CarIncidentReportAlertCardViewController *)&v14 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_incidentLayoutItem, a4);
-    objc_storeStrong(&v12->_report, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_incidentLayoutItem, item);
+    objc_storeStrong(&v12->_report, report);
   }
 
   return v12;

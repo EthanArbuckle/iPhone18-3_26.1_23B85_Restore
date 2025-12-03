@@ -1,11 +1,11 @@
 @interface HMDBackingStoreTransactionActions
 + (id)logCategory;
-- (BOOL)addPostApplyActionIfNotPresent:(id)a3 usingBlock:(id)a4;
+- (BOOL)addPostApplyActionIfNotPresent:(id)present usingBlock:(id)block;
 - (HMDBackingStore)backingStore;
-- (HMDBackingStoreTransactionActions)initWithBackingStore:(id)a3 options:(id)a4;
+- (HMDBackingStoreTransactionActions)initWithBackingStore:(id)store options:(id)options;
 - (NSMutableDictionary)userInfo;
 - (id)description;
-- (void)addPostApplyActionUsingBlock:(id)a3;
+- (void)addPostApplyActionUsingBlock:(id)block;
 - (void)invokePostApplyActions;
 @end
 
@@ -21,8 +21,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDBackingStoreTransactionOptions *)self _description];
-  v5 = v4;
+  _description = [(HMDBackingStoreTransactionOptions *)self _description];
+  v5 = _description;
   v6 = "n";
   if (self->_local)
   {
@@ -59,7 +59,7 @@
     v6 = "y";
   }
 
-  v10 = [v3 stringWithFormat:@"<actions: %@ local=%s change=%s assistant=%s account=%s>", v4, v7, v8, v9, v6];
+  v10 = [v3 stringWithFormat:@"<actions: %@ local=%s change=%s assistant=%s account=%s>", _description, v7, v8, v9, v6];
 
   return v10;
 }
@@ -130,10 +130,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addPostApplyActionIfNotPresent:(id)a3 usingBlock:(id)a4
+- (BOOL)addPostApplyActionIfNotPresent:(id)present usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  presentCopy = present;
+  blockCopy = block;
   if (self->_postApplyActionsInvoked)
   {
     goto LABEL_4;
@@ -142,19 +142,19 @@
   postApplyActionNames = self->_postApplyActionNames;
   if (!postApplyActionNames)
   {
-    v10 = [MEMORY[0x277CBEB58] setWithObject:v6];
+    v10 = [MEMORY[0x277CBEB58] setWithObject:presentCopy];
     v11 = self->_postApplyActionNames;
     self->_postApplyActionNames = v10;
 
 LABEL_7:
-    [(HMDBackingStoreTransactionActions *)self addPostApplyActionUsingBlock:v7];
+    [(HMDBackingStoreTransactionActions *)self addPostApplyActionUsingBlock:blockCopy];
     v9 = 1;
     goto LABEL_8;
   }
 
-  if (([(NSMutableSet *)postApplyActionNames containsObject:v6]& 1) == 0)
+  if (([(NSMutableSet *)postApplyActionNames containsObject:presentCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_postApplyActionNames addObject:v6];
+    [(NSMutableSet *)self->_postApplyActionNames addObject:presentCopy];
     goto LABEL_7;
   }
 
@@ -165,49 +165,49 @@ LABEL_8:
   return v9;
 }
 
-- (void)addPostApplyActionUsingBlock:(id)a3
+- (void)addPostApplyActionUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_postApplyActionsInvoked)
   {
     postApplyActions = self->_postApplyActions;
-    v10 = v4;
+    v10 = blockCopy;
     if (postApplyActions)
     {
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(blockCopy);
       [(NSMutableArray *)postApplyActions addObject:v6];
     }
 
     else
     {
       v7 = MEMORY[0x277CBEB18];
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(blockCopy);
       v8 = [v7 arrayWithObject:v6];
       v9 = self->_postApplyActions;
       self->_postApplyActions = v8;
     }
 
-    v4 = v10;
+    blockCopy = v10;
   }
 }
 
-- (HMDBackingStoreTransactionActions)initWithBackingStore:(id)a3 options:(id)a4
+- (HMDBackingStoreTransactionActions)initWithBackingStore:(id)store options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 source];
-  v9 = [v7 destination];
-  v10 = [v7 label];
-  v11 = [v7 mustReplay];
-  v12 = [v7 mustPush];
+  storeCopy = store;
+  optionsCopy = options;
+  source = [optionsCopy source];
+  destination = [optionsCopy destination];
+  label = [optionsCopy label];
+  mustReplay = [optionsCopy mustReplay];
+  mustPush = [optionsCopy mustPush];
 
   v16.receiver = self;
   v16.super_class = HMDBackingStoreTransactionActions;
-  v13 = [(HMDBackingStoreTransactionOptions *)&v16 initWithSource:v8 destination:v9 label:v10 mustReplay:v11 mustPush:v12];
+  v13 = [(HMDBackingStoreTransactionOptions *)&v16 initWithSource:source destination:destination label:label mustReplay:mustReplay mustPush:mustPush];
 
   if (v13)
   {
-    objc_storeWeak(&v13->_backingStore, v6);
+    objc_storeWeak(&v13->_backingStore, storeCopy);
     v14 = v13;
   }
 

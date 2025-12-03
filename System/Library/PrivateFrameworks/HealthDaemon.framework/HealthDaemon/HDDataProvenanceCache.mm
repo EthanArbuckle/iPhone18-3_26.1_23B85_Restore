@@ -1,15 +1,15 @@
 @interface HDDataProvenanceCache
-- (HDDataProvenanceCache)initWithProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5;
+- (HDDataProvenanceCache)initWithProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose;
 - (id)allCodableObjectCollections;
 - (id)allCodableObjectCollectionsByProvenance;
-- (id)codableObjectCollectionForProvenance:(id)a3 profile:(id)a4;
-- (id)codableProvenanceWithProvenance:(id)a3;
-- (id)codableSourceWithProvenance:(id)a3 profile:(id)a4;
-- (id)contributorForReference:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)deviceForPersistentID:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)deviceUUIDBytesWithProvenance:(id)a3;
-- (id)provenanceWithID:(id)a3;
-- (id)sourceRevisionForProvenanceID:(id)a3 dataProvenance:(id)a4 profile:(id)a5 error:(id *)a6;
+- (id)codableObjectCollectionForProvenance:(id)provenance profile:(id)profile;
+- (id)codableProvenanceWithProvenance:(id)provenance;
+- (id)codableSourceWithProvenance:(id)provenance profile:(id)profile;
+- (id)contributorForReference:(id)reference profile:(id)profile error:(id *)error;
+- (id)deviceForPersistentID:(id)d profile:(id)profile error:(id *)error;
+- (id)deviceUUIDBytesWithProvenance:(id)provenance;
+- (id)provenanceWithID:(id)d;
+- (id)sourceRevisionForProvenanceID:(id)d dataProvenance:(id)provenance profile:(id)profile error:(id *)error;
 - (void)clearCodableObjectCollections;
 @end
 
@@ -20,15 +20,15 @@
   codableObjectCollectionsByProvenance = self->_codableObjectCollectionsByProvenance;
   if (codableObjectCollectionsByProvenance)
   {
-    v4 = [(NSMutableDictionary *)codableObjectCollectionsByProvenance allValues];
+    allValues = [(NSMutableDictionary *)codableObjectCollectionsByProvenance allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return allValues;
 }
 
 - (void)clearCodableObjectCollections
@@ -38,22 +38,22 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (HDDataProvenanceCache)initWithProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5
+- (HDDataProvenanceCache)initWithProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose
 {
-  v8 = a3;
-  v9 = a4;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v33.receiver = self;
   v33.super_class = HDDataProvenanceCache;
   v10 = [(HDDataProvenanceCache *)&v33 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_profile, v8);
-    v12 = [v8 dataProvenanceManager];
+    objc_storeWeak(&v10->_profile, profileCopy);
+    dataProvenanceManager = [profileCopy dataProvenanceManager];
     provenanceManager = v11->_provenanceManager;
-    v11->_provenanceManager = v12;
+    v11->_provenanceManager = dataProvenanceManager;
 
-    objc_storeStrong(&v11->_transaction, a4);
+    objc_storeStrong(&v11->_transaction, transaction);
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
     provenanceByID = v11->_provenanceByID;
     v11->_provenanceByID = v14;
@@ -86,7 +86,7 @@
     contributorByReferenceCache = v11->_contributorByReferenceCache;
     v11->_contributorByReferenceCache = v28;
 
-    v30 = [HDSourceEntity entityEncoderForProfile:v8 transaction:v9 purpose:a5 encodingOptions:0 authorizationFilter:0];
+    v30 = [HDSourceEntity entityEncoderForProfile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:0 authorizationFilter:0];
     sourceEncoder = v11->_sourceEncoder;
     v11->_sourceEncoder = v30;
   }
@@ -94,11 +94,11 @@
   return v11;
 }
 
-- (id)provenanceWithID:(id)a3
+- (id)provenanceWithID:(id)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_provenanceByID objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_provenanceByID objectForKeyedSubscript:dCopy];
   if (v5)
   {
     v6 = v5;
@@ -108,7 +108,7 @@
   provenanceManager = self->_provenanceManager;
   transaction = self->_transaction;
   v36 = 0;
-  v9 = [(HDDataProvenanceManager *)provenanceManager originProvenanceForPersistentID:v4 transaction:transaction error:&v36];
+  v9 = [(HDDataProvenanceManager *)provenanceManager originProvenanceForPersistentID:dCopy transaction:transaction error:&v36];
   v10 = v36;
   if (!v9)
   {
@@ -117,7 +117,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v39 = v4;
+      v39 = dCopy;
       v40 = 2114;
       v41 = v10;
       _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "failed to find provenance for provenance %{public}@: %{public}@", buf, 0x16u);
@@ -128,10 +128,10 @@
   }
 
   v11 = v9;
-  v12 = [v11 contributorReference];
+  contributorReference = [v11 contributorReference];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v37 = 0;
-  v14 = [HDContributorEntity externalReferenceForContributorReference:v12 profile:WeakRetained error:&v37];
+  v14 = [HDContributorEntity externalReferenceForContributorReference:contributorReference profile:WeakRetained error:&v37];
   v15 = v37;
 
   v35 = v14;
@@ -153,18 +153,18 @@
 
     v35 = +[HDContributorReference contributorReferenceForNoContributor];
 LABEL_14:
-    v32 = [v11 syncProvenance];
-    v31 = [v11 syncIdentity];
-    v21 = [v11 productType];
-    v22 = [v11 systemBuild];
+    syncProvenance = [v11 syncProvenance];
+    syncIdentity = [v11 syncIdentity];
+    productType = [v11 productType];
+    systemBuild = [v11 systemBuild];
     [v11 operatingSystemVersion];
-    v23 = [v11 sourceVersion];
+    sourceVersion = [v11 sourceVersion];
     [v11 timeZoneName];
     v24 = v34 = v15;
     [v11 sourceID];
     v25 = v33 = v10;
-    v26 = [v11 deviceID];
-    v18 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:v32 syncIdentity:v31 productType:v21 systemBuild:v22 operatingSystemVersion:buf sourceVersion:v23 timeZoneName:v24 sourceID:v25 deviceID:v26 contributorReference:v35];
+    deviceID = [v11 deviceID];
+    v18 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:syncProvenance syncIdentity:syncIdentity productType:productType systemBuild:systemBuild operatingSystemVersion:buf sourceVersion:sourceVersion timeZoneName:v24 sourceID:v25 deviceID:deviceID contributorReference:v35];
 
     v10 = v33;
     v15 = v34;
@@ -191,7 +191,7 @@ LABEL_16:
 
   if (v18)
   {
-    [(NSMutableDictionary *)self->_provenanceByID setObject:v18 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_provenanceByID setObject:v18 forKeyedSubscript:dCopy];
     v6 = v18;
   }
 
@@ -202,7 +202,7 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v39 = v4;
+      v39 = dCopy;
       v40 = 2114;
       v41 = v27;
       _os_log_error_impl(&dword_228986000, v28, OS_LOG_TYPE_ERROR, "failed to externalize contributor for provenance %{public}@: %{public}@", buf, 0x16u);
@@ -220,35 +220,35 @@ LABEL_23:
   return v6;
 }
 
-- (id)codableSourceWithProvenance:(id)a3 profile:(id)a4
+- (id)codableSourceWithProvenance:(id)provenance profile:(id)profile
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  provenanceCopy = provenance;
+  profileCopy = profile;
   if ([(HDEntityEncoder *)self->_sourceEncoder purpose])
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceCache.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"[_sourceEncoder purpose] == HDEntityEncodingPurposeCodableObjectCreation"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataProvenanceCache.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"[_sourceEncoder purpose] == HDEntityEncodingPurposeCodableObjectCreation"}];
   }
 
-  v9 = [v7 sourceID];
-  v10 = [(NSMutableDictionary *)self->_codableSourcesByID objectForKeyedSubscript:v9];
+  sourceID = [provenanceCopy sourceID];
+  v10 = [(NSMutableDictionary *)self->_codableSourcesByID objectForKeyedSubscript:sourceID];
   if (!v10)
   {
-    v11 = -[HDSQLiteEntity initWithPersistentID:]([HDSourceEntity alloc], "initWithPersistentID:", [v9 longLongValue]);
-    v12 = [(HDDatabaseTransaction *)self->_transaction unprotectedDatabase];
-    v13 = [(HDSQLiteEntity *)v11 existsInDatabase:v12];
+    v11 = -[HDSQLiteEntity initWithPersistentID:]([HDSourceEntity alloc], "initWithPersistentID:", [sourceID longLongValue]);
+    unprotectedDatabase = [(HDDatabaseTransaction *)self->_transaction unprotectedDatabase];
+    v13 = [(HDSQLiteEntity *)v11 existsInDatabase:unprotectedDatabase];
 
     if (v13)
     {
       transaction = self->_transaction;
       sourceEncoder = self->_sourceEncoder;
       v21 = 0;
-      v10 = [(HDSourceEntity *)v11 codableSourceWithEncoder:sourceEncoder transaction:transaction profile:v8 error:&v21];
+      v10 = [(HDSourceEntity *)v11 codableSourceWithEncoder:sourceEncoder transaction:transaction profile:profileCopy error:&v21];
       v16 = v21;
       if (v10)
       {
-        [(NSMutableDictionary *)self->_codableSourcesByID setObject:v10 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)self->_codableSourcesByID setObject:v10 forKeyedSubscript:sourceID];
       }
 
       else
@@ -258,7 +258,7 @@ LABEL_23:
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v23 = v9;
+          v23 = sourceID;
           v24 = 2114;
           v25 = v16;
           _os_log_error_impl(&dword_228986000, v17, OS_LOG_TYPE_ERROR, "Failed to get codable source for sourceID %{public}@: %{public}@", buf, 0x16u);
@@ -277,23 +277,23 @@ LABEL_23:
   return v10;
 }
 
-- (id)deviceUUIDBytesWithProvenance:(id)a3
+- (id)deviceUUIDBytesWithProvenance:(id)provenance
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 deviceID];
-  v5 = [(NSMutableDictionary *)self->_deviceUUIDBytesByID objectForKeyedSubscript:v4];
-  if (!v5)
+  deviceID = [provenance deviceID];
+  hk_dataForUUIDBytes = [(NSMutableDictionary *)self->_deviceUUIDBytesByID objectForKeyedSubscript:deviceID];
+  if (!hk_dataForUUIDBytes)
   {
-    v6 = -[HDSQLiteEntity initWithPersistentID:]([HDDeviceEntity alloc], "initWithPersistentID:", [v4 longLongValue]);
-    v7 = [(HDDatabaseTransaction *)self->_transaction unprotectedDatabase];
+    v6 = -[HDSQLiteEntity initWithPersistentID:]([HDDeviceEntity alloc], "initWithPersistentID:", [deviceID longLongValue]);
+    unprotectedDatabase = [(HDDatabaseTransaction *)self->_transaction unprotectedDatabase];
     v13 = 0;
-    v8 = [(HDDeviceEntity *)v6 deviceUUIDInDatabase:v7 error:&v13];
+    v8 = [(HDDeviceEntity *)v6 deviceUUIDInDatabase:unprotectedDatabase error:&v13];
     v9 = v13;
 
     if (v8)
     {
-      v5 = [v8 hk_dataForUUIDBytes];
-      [(NSMutableDictionary *)self->_deviceUUIDBytesByID setObject:v5 forKeyedSubscript:v4];
+      hk_dataForUUIDBytes = [v8 hk_dataForUUIDBytes];
+      [(NSMutableDictionary *)self->_deviceUUIDBytesByID setObject:hk_dataForUUIDBytes forKeyedSubscript:deviceID];
     }
 
     else
@@ -303,53 +303,53 @@ LABEL_23:
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = v4;
+        v15 = deviceID;
         v16 = 2114;
         v17 = v9;
         _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "Failed to find device %{public}@: %{public}@", buf, 0x16u);
       }
 
-      v5 = 0;
+      hk_dataForUUIDBytes = 0;
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return hk_dataForUUIDBytes;
 }
 
-- (id)codableProvenanceWithProvenance:(id)a3
+- (id)codableProvenanceWithProvenance:(id)provenance
 {
-  v4 = a3;
+  provenanceCopy = provenance;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [(HDDataProvenanceCache *)self codableSourceWithProvenance:v4 profile:WeakRetained];
+  v6 = [(HDDataProvenanceCache *)self codableSourceWithProvenance:provenanceCopy profile:WeakRetained];
 
   if (v6)
   {
-    v7 = [(HDDataProvenanceCache *)self deviceUUIDBytesWithProvenance:v4];
-    v8 = [v4 sourceVersion];
+    v7 = [(HDDataProvenanceCache *)self deviceUUIDBytesWithProvenance:provenanceCopy];
+    sourceVersion = [provenanceCopy sourceVersion];
     v9 = objc_alloc_init(HDCodableProvenance);
-    v10 = [v4 systemBuild];
-    [(HDCodableProvenance *)v9 setOriginBuild:v10];
+    systemBuild = [provenanceCopy systemBuild];
+    [(HDCodableProvenance *)v9 setOriginBuild:systemBuild];
 
-    v11 = [v4 productType];
-    [(HDCodableProvenance *)v9 setOriginProductType:v11];
+    productType = [provenanceCopy productType];
+    [(HDCodableProvenance *)v9 setOriginProductType:productType];
 
-    v12 = [v4 timeZoneName];
-    [(HDCodableProvenance *)v9 setTimeZoneName:v12];
+    timeZoneName = [provenanceCopy timeZoneName];
+    [(HDCodableProvenance *)v9 setTimeZoneName:timeZoneName];
 
-    v13 = [v6 uuid];
-    [(HDCodableProvenance *)v9 setSourceUUID:v13];
+    uuid = [v6 uuid];
+    [(HDCodableProvenance *)v9 setSourceUUID:uuid];
 
-    [(HDCodableProvenance *)v9 setSourceVersion:v8];
+    [(HDCodableProvenance *)v9 setSourceVersion:sourceVersion];
     [(HDCodableProvenance *)v9 setDeviceUUID:v7];
-    if (v4)
+    if (provenanceCopy)
     {
-      [v4 operatingSystemVersion];
+      [provenanceCopy operatingSystemVersion];
       [(HDCodableProvenance *)v9 setOriginMajorVersion:v23];
-      [v4 operatingSystemVersion];
+      [provenanceCopy operatingSystemVersion];
       [(HDCodableProvenance *)v9 setOriginMinorVersion:v22];
-      [v4 operatingSystemVersion];
+      [provenanceCopy operatingSystemVersion];
       v14 = v21;
     }
 
@@ -361,15 +361,15 @@ LABEL_23:
     }
 
     [(HDCodableProvenance *)v9 setOriginPatchVersion:v14];
-    v15 = [v4 contributorReference];
-    v16 = [v15 contributorType];
+    contributorReference = [provenanceCopy contributorReference];
+    contributorType = [contributorReference contributorType];
 
-    if (v16 != 2)
+    if (contributorType != 2)
     {
-      v17 = [v4 contributorReference];
-      v18 = [v17 UUID];
-      v19 = [v18 hk_dataForUUIDBytes];
-      [(HDCodableProvenance *)v9 setContributorUUID:v19];
+      contributorReference2 = [provenanceCopy contributorReference];
+      uUID = [contributorReference2 UUID];
+      hk_dataForUUIDBytes = [uUID hk_dataForUUIDBytes];
+      [(HDCodableProvenance *)v9 setContributorUUID:hk_dataForUUIDBytes];
     }
   }
 
@@ -381,11 +381,11 @@ LABEL_23:
   return v9;
 }
 
-- (id)codableObjectCollectionForProvenance:(id)a3 profile:(id)a4
+- (id)codableObjectCollectionForProvenance:(id)provenance profile:(id)profile
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  provenanceCopy = provenance;
+  profileCopy = profile;
   codableObjectCollectionsByProvenance = self->_codableObjectCollectionsByProvenance;
   if (!codableObjectCollectionsByProvenance)
   {
@@ -396,38 +396,38 @@ LABEL_23:
     codableObjectCollectionsByProvenance = self->_codableObjectCollectionsByProvenance;
   }
 
-  v11 = [(NSMutableDictionary *)codableObjectCollectionsByProvenance objectForKeyedSubscript:v6];
+  v11 = [(NSMutableDictionary *)codableObjectCollectionsByProvenance objectForKeyedSubscript:provenanceCopy];
   if (v11)
   {
     goto LABEL_9;
   }
 
-  v12 = [(HDDataProvenanceCache *)self codableSourceWithProvenance:v6 profile:v7];
+  v12 = [(HDDataProvenanceCache *)self codableSourceWithProvenance:provenanceCopy profile:profileCopy];
   if (!v12)
   {
     v11 = 0;
     goto LABEL_8;
   }
 
-  v13 = [(HDDataProvenanceCache *)self codableProvenanceWithProvenance:v6];
+  v13 = [(HDDataProvenanceCache *)self codableProvenanceWithProvenance:provenanceCopy];
   v11 = objc_alloc_init(HDCodableObjectCollection);
   [(HDCodableObjectCollection *)v11 setSource:v12];
   [(HDCodableObjectCollection *)v11 setProvenance:v13];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained syncIdentityManager];
-  v16 = [v6 syncIdentity];
+  syncIdentityManager = [WeakRetained syncIdentityManager];
+  syncIdentity = [provenanceCopy syncIdentity];
   transaction = self->_transaction;
   v26 = 0;
-  v18 = [v15 identityForEntityID:v16 transaction:transaction error:&v26];
+  v18 = [syncIdentityManager identityForEntityID:syncIdentity transaction:transaction error:&v26];
   v19 = v26;
 
   if (v18)
   {
-    v20 = [v18 identity];
-    v21 = [v20 codableSyncIdentity];
-    [(HDCodableObjectCollection *)v11 setSyncIdentity:v21];
+    identity = [v18 identity];
+    codableSyncIdentity = [identity codableSyncIdentity];
+    [(HDCodableObjectCollection *)v11 setSyncIdentity:codableSyncIdentity];
 
-    [(NSMutableDictionary *)self->_codableObjectCollectionsByProvenance setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_codableObjectCollectionsByProvenance setObject:v11 forKeyedSubscript:provenanceCopy];
 LABEL_8:
 
 LABEL_9:
@@ -466,18 +466,18 @@ LABEL_10:
   }
 }
 
-- (id)sourceRevisionForProvenanceID:(id)a3 dataProvenance:(id)a4 profile:(id)a5 error:(id *)a6
+- (id)sourceRevisionForProvenanceID:(id)d dataProvenance:(id)provenance profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  provenanceCopy = provenance;
+  profileCopy = profile;
   if ([(HDEntityEncoder *)self->_sourceEncoder purpose]!= 1)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceCache.m" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"[_sourceEncoder purpose] == HDEntityEncodingPurposeObjectInstantiation"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataProvenanceCache.m" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"[_sourceEncoder purpose] == HDEntityEncodingPurposeObjectInstantiation"}];
   }
 
-  v14 = [(NSMutableDictionary *)self->_sourceRevisionByDataProvenanceIDCache objectForKeyedSubscript:v11];
+  v14 = [(NSMutableDictionary *)self->_sourceRevisionByDataProvenanceIDCache objectForKeyedSubscript:dCopy];
   if (v14)
   {
     v15 = v14;
@@ -485,23 +485,23 @@ LABEL_10:
 
   else
   {
-    v16 = [v12 sourceID];
-    v17 = v13;
+    sourceID = [provenanceCopy sourceID];
+    v17 = profileCopy;
     if ([(HDEntityEncoder *)self->_sourceEncoder purpose]!= 1)
     {
-      v37 = [MEMORY[0x277CCA890] currentHandler];
-      [v37 handleFailureInMethod:sel__sourceForPersistentID_profile_error_ object:self file:@"HDDataProvenanceCache.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"[_sourceEncoder purpose] == HDEntityEncodingPurposeObjectInstantiation"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__sourceForPersistentID_profile_error_ object:self file:@"HDDataProvenanceCache.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"[_sourceEncoder purpose] == HDEntityEncodingPurposeObjectInstantiation"}];
     }
 
-    v18 = [(NSMutableDictionary *)self->_sourceByPersistentIDCache objectForKeyedSubscript:v16];
+    v18 = [(NSMutableDictionary *)self->_sourceByPersistentIDCache objectForKeyedSubscript:sourceID];
     if (!v18)
     {
-      v19 = [v17 sourceManager];
-      v18 = [v19 clientSourceForPersistentID:v16 error:a6];
+      sourceManager = [v17 sourceManager];
+      v18 = [sourceManager clientSourceForPersistentID:sourceID error:error];
 
       if (v18)
       {
-        [(NSMutableDictionary *)self->_sourceByPersistentIDCache setObject:v18 forKeyedSubscript:v16];
+        [(NSMutableDictionary *)self->_sourceByPersistentIDCache setObject:v18 forKeyedSubscript:sourceID];
       }
     }
 
@@ -514,23 +514,23 @@ LABEL_10:
         [(NSMutableDictionary *)self->_sourceRevisionsDictionaryBySourceCache setObject:v20 forKeyedSubscript:v18];
       }
 
-      v40 = v13;
+      v40 = profileCopy;
       v43 = 0uLL;
       v44 = 0;
-      if (v12)
+      if (provenanceCopy)
       {
-        [v12 operatingSystemVersion];
+        [provenanceCopy operatingSystemVersion];
       }
 
-      v21 = [v12 sourceVersion];
-      v22 = [v12 productType];
+      sourceVersion = [provenanceCopy sourceVersion];
+      productType = [provenanceCopy productType];
       v41 = v43;
       v42 = v44;
       v23 = HKNSOperatingSystemVersionString();
       v24 = @"<null>";
-      if (v21)
+      if (sourceVersion)
       {
-        v25 = v21;
+        v25 = sourceVersion;
       }
 
       else
@@ -538,9 +538,9 @@ LABEL_10:
         v25 = @"<null>";
       }
 
-      if (v22)
+      if (productType)
       {
-        v26 = v22;
+        v26 = productType;
       }
 
       else
@@ -557,26 +557,26 @@ LABEL_10:
       v28 = [v20 objectForKeyedSubscript:v27];
       if (!v28)
       {
-        if ([(__CFString *)v21 isEqualToString:&stru_283BF39C8])
+        if ([(__CFString *)sourceVersion isEqualToString:&stru_283BF39C8])
         {
           v29 = 0;
         }
 
         else
         {
-          v29 = v21;
+          v29 = sourceVersion;
         }
 
         v39 = v20;
         v30 = v29;
-        if ([(__CFString *)v22 isEqualToString:@"UnknownDevice"])
+        if ([(__CFString *)productType isEqualToString:@"UnknownDevice"])
         {
           v31 = 0;
         }
 
         else
         {
-          v31 = v22;
+          v31 = productType;
         }
 
         v32 = MEMORY[0x277CCDA18];
@@ -592,10 +592,10 @@ LABEL_10:
         [v39 setObject:v28 forKeyedSubscript:v27];
       }
 
-      [(NSMutableDictionary *)self->_sourceRevisionByDataProvenanceIDCache setObject:v28 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_sourceRevisionByDataProvenanceIDCache setObject:v28 forKeyedSubscript:dCopy];
       v15 = v28;
 
-      v13 = v40;
+      profileCopy = v40;
     }
 
     else
@@ -607,38 +607,38 @@ LABEL_10:
   return v15;
 }
 
-- (id)deviceForPersistentID:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)deviceForPersistentID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_deviceByPersistentIDCache objectForKeyedSubscript:v8];
+  dCopy = d;
+  profileCopy = profile;
+  v10 = [(NSMutableDictionary *)self->_deviceByPersistentIDCache objectForKeyedSubscript:dCopy];
   if (!v10)
   {
-    v11 = [v9 deviceManager];
-    v10 = [v11 deviceForPersistentID:v8 error:a5];
+    deviceManager = [profileCopy deviceManager];
+    v10 = [deviceManager deviceForPersistentID:dCopy error:error];
 
     if (v10)
     {
-      [(NSMutableDictionary *)self->_deviceByPersistentIDCache setObject:v10 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_deviceByPersistentIDCache setObject:v10 forKeyedSubscript:dCopy];
     }
   }
 
   return v10;
 }
 
-- (id)contributorForReference:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)contributorForReference:(id)reference profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_contributorByReferenceCache objectForKeyedSubscript:v8];
+  referenceCopy = reference;
+  profileCopy = profile;
+  v10 = [(NSMutableDictionary *)self->_contributorByReferenceCache objectForKeyedSubscript:referenceCopy];
   if (!v10)
   {
-    v11 = [v9 contributorManager];
-    v10 = [v11 contributorForReference:v8 error:a5];
+    contributorManager = [profileCopy contributorManager];
+    v10 = [contributorManager contributorForReference:referenceCopy error:error];
 
     if (v10)
     {
-      [(NSMutableDictionary *)self->_contributorByReferenceCache setObject:v10 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_contributorByReferenceCache setObject:v10 forKeyedSubscript:referenceCopy];
     }
   }
 

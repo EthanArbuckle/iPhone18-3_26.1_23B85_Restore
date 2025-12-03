@@ -1,17 +1,17 @@
 @interface TSPUnknownObject
-- (BOOL)validatedLoadFromUnarchiver:(id)a3;
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver;
 - (OS_dispatch_data)serializedData;
-- (TSPUnknownObject)initWithContext:(id)a3;
+- (TSPUnknownObject)initWithContext:(id)context;
 - (id).cxx_construct;
-- (void)saveToArchiver:(id)a3;
+- (void)saveToArchiver:(id)archiver;
 - (void)willModify;
 @end
 
 @implementation TSPUnknownObject
 
-- (TSPUnknownObject)initWithContext:(id)a3
+- (TSPUnknownObject)initWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSPUnknownObject initWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnknownObject.mm");
@@ -82,9 +82,9 @@ LABEL_13:
   objc_msgSend_logBacktraceThrottled(v23, v21, v22);
 }
 
-- (BOOL)validatedLoadFromUnarchiver:(id)a3
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v8 = v5;
@@ -154,7 +154,7 @@ LABEL_13:
     goto LABEL_34;
   }
 
-  v65 = self;
+  selfCopy = self;
   v37 = 0;
   v38 = 0;
   do
@@ -222,7 +222,7 @@ LABEL_21:
         v52 = *(*(v39 + 104) + v50);
         v69 |= 1u;
         v70 = v52;
-        v55 = objc_msgSend_readDataReferenceMessage_(v4, v53, &v68);
+        v55 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v53, &v68);
         if (v55)
         {
           if (!v38)
@@ -246,7 +246,7 @@ LABEL_21:
   while (v37 != current_size);
   if (v72 <= 0)
   {
-    self = v65;
+    self = selfCopy;
   }
 
   else
@@ -255,9 +255,9 @@ LABEL_21:
     v67[1] = 3221225472;
     v67[2] = sub_276AC5C8C;
     v67[3] = &unk_27A6E4220;
-    self = v65;
-    v67[4] = v65;
-    objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(v4, v20, &v71, 0, v67);
+    self = selfCopy;
+    v67[4] = selfCopy;
+    objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(unarchiverCopy, v20, &v71, 0, v67);
   }
 
 LABEL_34:
@@ -270,17 +270,17 @@ LABEL_35:
   return v66 != 0;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
-  v6 = v4;
+  archiverCopy = archiver;
+  v6 = archiverCopy;
   objects = self->_objects;
   if (objects)
   {
     v9 = 0;
     v10 = 0;
     v11 = 0;
-    objc_msgSend_setStrongLazyReferenceArray_message_(v4, v5, objects, &v9);
+    objc_msgSend_setStrongLazyReferenceArray_message_(archiverCopy, v5, objects, &v9);
     sub_276A07EA8(&v9);
   }
 

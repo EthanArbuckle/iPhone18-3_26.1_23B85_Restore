@@ -1,19 +1,19 @@
 @interface _REBoolFeatureValue
-+ (id)featureValueWithBool:(BOOL)a3;
++ (id)featureValueWithBool:(BOOL)bool;
 @end
 
 @implementation _REBoolFeatureValue
 
-+ (id)featureValueWithBool:(BOOL)a3
++ (id)featureValueWithBool:(BOOL)bool
 {
-  v3 = a3;
+  boolCopy = bool;
   if (featureValueWithBool__onceToken != -1)
   {
     +[_REBoolFeatureValue featureValueWithBool:];
   }
 
   v4 = &featureValueWithBool__TrueValue;
-  if (!v3)
+  if (!boolCopy)
   {
     v4 = &featureValueWithBool__FalseValue;
   }

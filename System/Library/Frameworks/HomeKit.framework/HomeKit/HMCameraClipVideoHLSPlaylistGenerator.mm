@@ -1,9 +1,9 @@
 @interface HMCameraClipVideoHLSPlaylistGenerator
-+ (id)_hlsPlaylistEncryptionMethodNameForScheme:(unint64_t)a3;
-- (HMCameraClipVideoHLSPlaylistGenerator)initWithClip:(id)a3 url:(id)a4;
++ (id)_hlsPlaylistEncryptionMethodNameForScheme:(unint64_t)scheme;
+- (HMCameraClipVideoHLSPlaylistGenerator)initWithClip:(id)clip url:(id)url;
 - (NSData)hlsPlaylist;
-- (void)addSegment:(id)a3;
-- (void)addSegments:(id)a3;
+- (void)addSegment:(id)segment;
+- (void)addSegments:(id)segments;
 - (void)finish;
 @end
 
@@ -11,19 +11,19 @@
 
 - (void)finish
 {
-  v2 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
-  [v2 appendString:@"#EXT-X-ENDLIST\n"];
+  hlsPlaylistString = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+  [hlsPlaylistString appendString:@"#EXT-X-ENDLIST\n"];
 }
 
-- (void)addSegments:(id)a3
+- (void)addSegments:(id)segments
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  segmentsCopy = segments;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [segmentsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -35,14 +35,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(segmentsCopy);
         }
 
         [(HMCameraClipVideoHLSPlaylistGenerator *)self addSegment:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [segmentsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -51,14 +51,14 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSegment:(id)a3
+- (void)addSegment:(id)segment
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  segmentCopy = segment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = segmentCopy;
   }
 
   else
@@ -69,18 +69,18 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+    hlsPlaylistString = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
     v8 = [(HMCameraClipVideoHLSPlaylistGenerator *)self url];
-    v9 = [v8 absoluteString];
-    [v7 appendFormat:@"#EXT-X-MAP:URI=%@, ", v9];
+    absoluteString = [v8 absoluteString];
+    [hlsPlaylistString appendFormat:@"#EXT-X-MAP:URI=%@, ", absoluteString];
 
-    v10 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
-    [v10 appendFormat:@"BYTERANGE=%llu@%llu\n", objc_msgSend(v6, "byteLength"), objc_msgSend(v6, "byteOffset")];
+    hlsPlaylistString2 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+    [hlsPlaylistString2 appendFormat:@"BYTERANGE=%llu@%llu\n", objc_msgSend(v6, "byteLength"), objc_msgSend(v6, "byteOffset")];
   }
 
   else
   {
-    v11 = v4;
+    v11 = segmentCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,27 +92,27 @@
       v12 = 0;
     }
 
-    v10 = v12;
+    hlsPlaylistString2 = v12;
 
-    if (v10)
+    if (hlsPlaylistString2)
     {
-      v13 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
-      [v10 duration];
-      [v13 appendFormat:@"#EXTINF:%.6f, \n", v14];
+      hlsPlaylistString3 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+      [hlsPlaylistString2 duration];
+      [hlsPlaylistString3 appendFormat:@"#EXTINF:%.6f, \n", v14];
 
-      v15 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
-      [v15 appendFormat:@"#EXT-X-BYTERANGE:%llu@%llu\n", objc_msgSend(v10, "byteLength"), objc_msgSend(v10, "byteOffset")];
+      hlsPlaylistString4 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+      [hlsPlaylistString4 appendFormat:@"#EXT-X-BYTERANGE:%llu@%llu\n", objc_msgSend(hlsPlaylistString2, "byteLength"), objc_msgSend(hlsPlaylistString2, "byteOffset")];
 
-      v16 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+      hlsPlaylistString5 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
       v17 = [(HMCameraClipVideoHLSPlaylistGenerator *)self url];
-      v18 = [v17 absoluteString];
-      [v16 appendFormat:@"%@\n", v18];
+      absoluteString2 = [v17 absoluteString];
+      [hlsPlaylistString5 appendFormat:@"%@\n", absoluteString2];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -135,17 +135,17 @@
 
 - (NSData)hlsPlaylist
 {
-  v2 = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
-  v3 = [v2 dataUsingEncoding:4];
+  hlsPlaylistString = [(HMCameraClipVideoHLSPlaylistGenerator *)self hlsPlaylistString];
+  v3 = [hlsPlaylistString dataUsingEncoding:4];
 
   return v3;
 }
 
-- (HMCameraClipVideoHLSPlaylistGenerator)initWithClip:(id)a3 url:(id)a4
+- (HMCameraClipVideoHLSPlaylistGenerator)initWithClip:(id)clip url:(id)url
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  urlCopy = url;
   v28.receiver = self;
   v28.super_class = HMCameraClipVideoHLSPlaylistGenerator;
   v8 = [(HMCameraClipVideoHLSPlaylistGenerator *)&v28 init];
@@ -154,20 +154,20 @@
     goto LABEL_6;
   }
 
-  v9 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   hlsPlaylistString = v8->_hlsPlaylistString;
-  v8->_hlsPlaylistString = v9;
+  v8->_hlsPlaylistString = string;
 
-  objc_storeStrong(&v8->_url, a4);
+  objc_storeStrong(&v8->_url, url);
   [(NSMutableString *)v8->_hlsPlaylistString appendString:@"#EXTM3U\n"];
   [(NSMutableString *)v8->_hlsPlaylistString appendFormat:@"#EXT-X-VERSION:%u\n", 7];
   v11 = v8->_hlsPlaylistString;
-  [v6 targetFragmentDuration];
+  [clipCopy targetFragmentDuration];
   [(NSMutableString *)v11 appendFormat:@"#EXT-X-TARGETDURATION:%u\n", v12];
   v13 = v8->_hlsPlaylistString;
-  v14 = [v6 isComplete];
+  isComplete = [clipCopy isComplete];
   v15 = @"EVENT";
-  if (v14)
+  if (isComplete)
   {
     v15 = @"VOD";
   }
@@ -175,8 +175,8 @@
   [(NSMutableString *)v13 appendFormat:@"#EXT-X-PLAYLIST-TYPE:%@\n", v15];
   [(NSMutableString *)v8->_hlsPlaylistString appendString:@"#EXT-X-INDEPENDENT-SEGMENTS\n"];
   v16 = objc_opt_class();
-  v17 = [v6 encryptionContext];
-  v18 = [v16 _hlsPlaylistEncryptionMethodNameForScheme:{objc_msgSend(v17, "scheme")}];
+  encryptionContext = [clipCopy encryptionContext];
+  v18 = [v16 _hlsPlaylistEncryptionMethodNameForScheme:{objc_msgSend(encryptionContext, "scheme")}];
 
   if (v18)
   {
@@ -194,12 +194,12 @@ LABEL_6:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v6 encryptionContext];
-    v25 = [v24 scheme];
+    encryptionContext2 = [clipCopy encryptionContext];
+    scheme = [encryptionContext2 scheme];
     *buf = 138543618;
     v30 = v23;
     v31 = 2048;
-    v32 = v25;
+    v32 = scheme;
     _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@Could not determine HLS playlist encryption method name for scheme: %lu", buf, 0x16u);
   }
 
@@ -211,9 +211,9 @@ LABEL_10:
   return v19;
 }
 
-+ (id)_hlsPlaylistEncryptionMethodNameForScheme:(unint64_t)a3
++ (id)_hlsPlaylistEncryptionMethodNameForScheme:(unint64_t)scheme
 {
-  if (a3 == 1)
+  if (scheme == 1)
   {
     return @"AES-256-GCM";
   }

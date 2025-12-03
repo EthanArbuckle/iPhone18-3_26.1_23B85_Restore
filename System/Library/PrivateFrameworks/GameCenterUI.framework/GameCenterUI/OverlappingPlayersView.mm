@@ -1,16 +1,16 @@
 @interface OverlappingPlayersView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (void)applyWithPlayerAvatars:(id)a3 playerSize:(CGSize)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (void)applyWithPlayerAvatars:(id)avatars playerSize:(CGSize)size;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation OverlappingPlayersView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFB64A4();
   v5 = v4;
   v7 = v6;
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_24E07AE2C();
   v8 = v7;
   v10 = v9;
@@ -45,23 +45,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E07AFB8();
 }
 
-- (void)applyWithPlayerAvatars:(id)a3 playerSize:(CGSize)a4
+- (void)applyWithPlayerAvatars:(id)avatars playerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   sub_24DF88A8C(0, &qword_280BE0110);
   v7 = sub_24E347F08();
-  v8 = self;
+  selfCopy = self;
   sub_24E07B19C(v7, width, height);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E07B400();
 }
 

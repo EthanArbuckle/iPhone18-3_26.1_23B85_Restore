@@ -1,15 +1,15 @@
 @interface CRXFPrescriptionRecordCollector
-- (CRXFPrescriptionRecordCollector)initWithDeviceModel:(id)a3 timeout:(double)a4;
-- (id)prescriptionRecordWithEnrollmentName:(id)a3 enrollmentDate:(id)a4 accPayload:(id)a5;
-- (void)addRecordFetchAnalyticsEventWithFetchSummary:(id)a3;
-- (void)fetchPrescriptionRecordsWithCompletion:(id)a3;
+- (CRXFPrescriptionRecordCollector)initWithDeviceModel:(id)model timeout:(double)timeout;
+- (id)prescriptionRecordWithEnrollmentName:(id)name enrollmentDate:(id)date accPayload:(id)payload;
+- (void)addRecordFetchAnalyticsEventWithFetchSummary:(id)summary;
+- (void)fetchPrescriptionRecordsWithCompletion:(id)completion;
 @end
 
 @implementation CRXFPrescriptionRecordCollector
 
-- (CRXFPrescriptionRecordCollector)initWithDeviceModel:(id)a3 timeout:(double)a4
+- (CRXFPrescriptionRecordCollector)initWithDeviceModel:(id)model timeout:(double)timeout
 {
-  v6 = a3;
+  modelCopy = model;
   v22.receiver = self;
   v22.super_class = CRXFPrescriptionRecordCollector;
   v7 = [(CRXFPrescriptionRecordCollector *)&v22 init];
@@ -19,21 +19,21 @@
     log = v7->_log;
     v7->_log = v8;
 
-    v10 = [[CRXFHealthDataProvider alloc] initWithDeviceModel:v6];
+    v10 = [[CRXFHealthDataProvider alloc] initWithDeviceModel:modelCopy];
     healthDataProvider = v7->_healthDataProvider;
     v7->_healthDataProvider = v10;
 
-    v12 = 2.0;
-    if (a4 >= 2.0)
+    timeoutCopy = 2.0;
+    if (timeout >= 2.0)
     {
-      v12 = a4;
+      timeoutCopy = timeout;
     }
 
-    v13 = [[CRXFCorePrescriptionServiceClient alloc] initWithServer:0 serverVersion:0 timeout:v12 + -1.0];
+    v13 = [[CRXFCorePrescriptionServiceClient alloc] initWithServer:0 serverVersion:0 timeout:timeoutCopy + -1.0];
     serviceClient = v7->_serviceClient;
     v7->_serviceClient = v13;
 
-    v15 = [[CRXFKeychainAccess alloc] initWithDeviceModel:v6];
+    v15 = [[CRXFKeychainAccess alloc] initWithDeviceModel:modelCopy];
     keychainAccess = v7->_keychainAccess;
     v7->_keychainAccess = v15;
 
@@ -49,14 +49,14 @@
   return v7;
 }
 
-- (void)fetchPrescriptionRecordsWithCompletion:(id)a3
+- (void)fetchPrescriptionRecordsWithCompletion:(id)completion
 {
   v118 = *MEMORY[0x277D85DE8];
-  v50 = a3;
+  completionCopy = completion;
   v4 = [[CRXUDispatchGroup alloc] initWithName:@"PrescriptionRecordCollectorGroup"];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v106[0] = 0;
   v106[1] = v106;
   v106[2] = 0x3032000000;
@@ -81,8 +81,8 @@
   v101[1] = v101;
   v101[2] = 0x2020000000;
   v101[3] = 0;
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [v8 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v10 = v9;
 
   serialQueue = self->_serialQueue;
@@ -105,7 +105,7 @@
   v96[2] = __74__CRXFPrescriptionRecordCollector_fetchPrescriptionRecordsWithCompletion___block_invoke_348;
   v96[3] = &unk_278EA06D0;
   v96[4] = self;
-  v14 = v6;
+  v14 = array2;
   v97 = v14;
   v99 = v106;
   v15 = v4;
@@ -123,7 +123,7 @@
   v92[2] = __74__CRXFPrescriptionRecordCollector_fetchPrescriptionRecordsWithCompletion___block_invoke_355;
   v92[3] = &unk_278EA06D0;
   v92[4] = self;
-  v17 = v7;
+  v17 = array3;
   v93 = v17;
   v95 = v104;
   v18 = v15;
@@ -131,17 +131,17 @@
   [(CRXFKeychainAccess *)keychainAccess fetchASAKeysWithCompletion:v92];
   [(CRXUDispatchGroup *)v18 waitFor:1.0];
   v55 = v18;
-  v51 = [MEMORY[0x277CBEB18] array];
-  v52 = [MEMORY[0x277CBEB18] array];
-  v19 = v5;
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  v19 = array;
   objc_sync_enter(v19);
-  [v51 addObjectsFromArray:v19];
+  [array4 addObjectsFromArray:v19];
   objc_sync_exit(v19);
   v49 = v19;
 
   v20 = v17;
   objc_sync_enter(v20);
-  [v52 addObjectsFromArray:v20];
+  [array5 addObjectsFromArray:v20];
   objc_sync_exit(v20);
   v48 = v20;
 
@@ -189,7 +189,7 @@
         }
 
         serviceClient = self->_serviceClient;
-        v31 = [v25 accPayload];
+        accPayload = [v25 accPayload];
         v32 = self->_serialQueue;
         v78[0] = MEMORY[0x277D85DD0];
         v78[1] = 3221225472;
@@ -202,7 +202,7 @@
         v78[4] = self;
         v78[5] = v25;
         v79 = v55;
-        [(CRXFCorePrescriptionServiceClient *)serviceClient downloadCalibrationDataForACCPayload:v31 completionQueue:v32 completion:v78];
+        [(CRXFCorePrescriptionServiceClient *)serviceClient downloadCalibrationDataForACCPayload:accPayload completionQueue:v32 completion:v78];
 
         ++v22;
       }
@@ -223,13 +223,13 @@
   v77[1] = v77;
   v77[2] = 0x2020000000;
   v77[3] = 0;
-  if (v52)
+  if (array5)
   {
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v33 = v52;
+    v33 = array5;
     v34 = [v33 countByEnumeratingWithState:&v73 objects:v108 count:16];
     if (v34)
     {
@@ -265,7 +265,7 @@
           }
 
           v42 = self->_serviceClient;
-          v43 = [v37 privateKey];
+          privateKey = [v37 privateKey];
           v44 = self->_serialQueue;
           v66[0] = MEMORY[0x277D85DD0];
           v66[1] = 3221225472;
@@ -279,7 +279,7 @@
           v71 = v103;
           v72 = v35;
           v67 = v55;
-          [(CRXFCorePrescriptionServiceClient *)v42 downloadCalibrationDataForASAKey:v43 completionQueue:v44 completion:v66];
+          [(CRXFCorePrescriptionServiceClient *)v42 downloadCalibrationDataForASAKey:privateKey completionQueue:v44 completion:v66];
 
           ++v35;
         }
@@ -310,7 +310,7 @@
   v62 = &v88;
   v63 = v77;
   v64 = v103;
-  v46 = v50;
+  v46 = completionCopy;
   v57 = v46;
   [(CRXUDispatchGroup *)v55 notifyOnQueue:v45 withBlock:v56];
 
@@ -654,14 +654,14 @@ void __74__CRXFPrescriptionRecordCollector_fetchPrescriptionRecordsWithCompletio
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)prescriptionRecordWithEnrollmentName:(id)a3 enrollmentDate:(id)a4 accPayload:(id)a5
+- (id)prescriptionRecordWithEnrollmentName:(id)name enrollmentDate:(id)date accPayload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dateCopy = date;
+  payloadCopy = payload;
   accTranscoder = self->_accTranscoder;
   v34 = 0;
-  v12 = [(CRXFAppClipCodeTranscoder *)accTranscoder decodeAppClipCodeFromData:v10 allowUnsupportedRX:0 error:&v34];
+  v12 = [(CRXFAppClipCodeTranscoder *)accTranscoder decodeAppClipCodeFromData:payloadCopy allowUnsupportedRX:0 error:&v34];
   v13 = v34;
   if (v12)
   {
@@ -670,20 +670,20 @@ void __74__CRXFPrescriptionRecordCollector_fetchPrescriptionRecordsWithCompletio
     v16 = v15;
     [v12 leftDisplayCylinder];
     v18 = v17;
-    v19 = [v12 leftDisplayAxis];
+    leftDisplayAxis = [v12 leftDisplayAxis];
     LODWORD(v20) = v16;
     LODWORD(v21) = v18;
-    v22 = [(CRXFRXValues *)v14 initWithSphere:v19 cylinder:v20 axis:v21];
+    v22 = [(CRXFRXValues *)v14 initWithSphere:leftDisplayAxis cylinder:v20 axis:v21];
     v23 = [CRXFRXValues alloc];
     [v12 rightDisplaySphere];
     v25 = v24;
     [v12 rightDisplayCylinder];
     v27 = v26;
-    v28 = [v12 rightDisplayAxis];
+    rightDisplayAxis = [v12 rightDisplayAxis];
     LODWORD(v29) = v25;
     LODWORD(v30) = v27;
-    v31 = [(CRXFRXValues *)v23 initWithSphere:v28 cylinder:v29 axis:v30];
-    v32 = [[CRXFPrescriptionRecord alloc] initWithACCPayload:v10 enrollmentName:v8 enrollmentDate:v9 leftEyeRX:v22 rightEyeRX:v31];
+    v31 = [(CRXFRXValues *)v23 initWithSphere:rightDisplayAxis cylinder:v29 axis:v30];
+    v32 = [[CRXFPrescriptionRecord alloc] initWithACCPayload:payloadCopy enrollmentName:nameCopy enrollmentDate:dateCopy leftEyeRX:v22 rightEyeRX:v31];
   }
 
   else
@@ -699,10 +699,10 @@ void __74__CRXFPrescriptionRecordCollector_fetchPrescriptionRecordsWithCompletio
   return v32;
 }
 
-- (void)addRecordFetchAnalyticsEventWithFetchSummary:(id)a3
+- (void)addRecordFetchAnalyticsEventWithFetchSummary:(id)summary
 {
-  v4 = a3;
-  v3 = v4;
+  summaryCopy = summary;
+  v3 = summaryCopy;
   AnalyticsSendEventLazy();
 }
 

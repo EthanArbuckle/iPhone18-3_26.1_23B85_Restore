@@ -1,6 +1,6 @@
 @interface CESRSpeechProfileConfig
 + (id)_defaultConfigFilePath;
-- (BOOL)_parseJsonObject:(id)a3;
+- (BOOL)_parseJsonObject:(id)object;
 - (CESRSpeechProfileConfig)init;
 - (id)_init;
 @end
@@ -14,14 +14,14 @@
   return [(CESRSpeechProfileConfig *)&v3 init];
 }
 
-- (BOOL)_parseJsonObject:(id)a3
+- (BOOL)_parseJsonObject:(id)object
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [v5 objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -203,9 +203,9 @@ LABEL_13:
 + (id)_defaultConfigFilePath
 {
   v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [v2 bundlePath];
+  bundlePath = [v2 bundlePath];
 
-  v4 = [v3 stringByAppendingPathComponent:@"assets_SIRI_SPEECH_SV_SPEECH_PROFILE/SpeechProfileConfig.json"];
+  v4 = [bundlePath stringByAppendingPathComponent:@"assets_SIRI_SPEECH_SV_SPEECH_PROFILE/SpeechProfileConfig.json"];
 
   return v4;
 }

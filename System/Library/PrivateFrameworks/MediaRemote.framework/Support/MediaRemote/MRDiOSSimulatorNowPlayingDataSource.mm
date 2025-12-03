@@ -67,11 +67,11 @@
 
 - (int)nowPlayingApplicationPID
 {
-  v2 = [(MRDiOSSimulatorNowPlayingDataSource *)self _mostRecentlyUpdatedClient];
-  v3 = [v2 client];
-  v4 = [v3 processIdentifier];
+  _mostRecentlyUpdatedClient = [(MRDiOSSimulatorNowPlayingDataSource *)self _mostRecentlyUpdatedClient];
+  client = [_mostRecentlyUpdatedClient client];
+  processIdentifier = [client processIdentifier];
 
-  return v4;
+  return processIdentifier;
 }
 
 - (id)nowPlayingApplicationDisplayID
@@ -79,7 +79,7 @@
   v2 = proc_pidpath([(MRDiOSSimulatorNowPlayingDataSource *)self nowPlayingApplicationPID], buffer, 0x1000u);
   if (v2 < 1)
   {
-    v9 = 0;
+    bundleIdentifier = 0;
   }
 
   else
@@ -94,13 +94,13 @@
       {
         v7 = v6;
         v8 = [NSBundle bundleWithURL:v6];
-        v9 = [v8 bundleIdentifier];
+        bundleIdentifier = [v8 bundleIdentifier];
         CFRelease(v7);
       }
 
       else
       {
-        v9 = 0;
+        bundleIdentifier = 0;
       }
 
       CFRelease(v5);
@@ -108,11 +108,11 @@
 
     else
     {
-      v9 = 0;
+      bundleIdentifier = 0;
     }
   }
 
-  return v9;
+  return bundleIdentifier;
 }
 
 - (BOOL)nowPlayingApplicationIsPlaying
@@ -160,8 +160,8 @@
 - (void)_reloadCachedNowPlayingClients
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 allLocalNowPlayingInfoClients];
+  nowPlayingServer = [v3 nowPlayingServer];
+  allLocalNowPlayingInfoClients = [nowPlayingServer allLocalNowPlayingInfoClients];
 
   serialQueue = self->_serialQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -169,8 +169,8 @@
   v8[2] = sub_100170BDC;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = allLocalNowPlayingInfoClients;
+  v7 = allLocalNowPlayingInfoClients;
   dispatch_sync(serialQueue, v8);
 }
 
@@ -239,14 +239,14 @@
         v6 = *(*(&v20 + 1) + 8 * i);
         if (v3)
         {
-          v7 = [v3 activePlayerClient];
-          v8 = [v7 playbackQueue];
+          activePlayerClient = [v3 activePlayerClient];
+          playbackQueue = [activePlayerClient playbackQueue];
 
           v9 = MRPlaybackQueueGetContentItemAtOffset();
           MRContentItemGetElapsedTimeTimestamp();
           v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-          v11 = [v6 activePlayerClient];
-          v12 = [v11 playbackQueue];
+          activePlayerClient2 = [v6 activePlayerClient];
+          playbackQueue2 = [activePlayerClient2 playbackQueue];
 
           v13 = MRPlaybackQueueGetContentItemAtOffset();
           MRContentItemGetElapsedTimeTimestamp();

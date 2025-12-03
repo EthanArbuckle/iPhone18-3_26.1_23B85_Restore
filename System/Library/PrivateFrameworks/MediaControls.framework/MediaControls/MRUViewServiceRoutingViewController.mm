@@ -2,26 +2,26 @@
 - (MRUViewServiceRoutingViewController)init;
 - (MRUViewServiceRoutingViewControllerDelegate)delegate;
 - (void)dealloc;
-- (void)didSelectListState:(id)a3;
-- (void)didSelectQuickControl:(id)a3;
-- (void)endpointsManager:(id)a3 defersRoutesReplacement:(id)a4;
+- (void)didSelectListState:(id)state;
+- (void)didSelectQuickControl:(id)control;
+- (void)endpointsManager:(id)manager defersRoutesReplacement:(id)replacement;
 - (void)loadView;
-- (void)nowPlayingController:(id)a3 didChangeQuickControlItem:(id)a4;
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeArtwork:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5;
-- (void)routingViewController:(id)a3 didSelectRoutingViewItem:(id)a4;
-- (void)routingViewControllerDidUpdateItems:(id)a3;
-- (void)setAlertViewController:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setRoutingViewController:(id)a3;
-- (void)setSelectedNowPlayingController:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forIdentifier:(id)a4;
-- (void)updateCellForIdentifier:(id)a3;
+- (void)nowPlayingController:(id)controller didChangeQuickControlItem:(id)item;
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeArtwork:(id)artwork;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info;
+- (void)routingViewController:(id)controller didSelectRoutingViewItem:(id)item;
+- (void)routingViewControllerDidUpdateItems:(id)items;
+- (void)setAlertViewController:(id)controller;
+- (void)setConfiguration:(id)configuration;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setRoutingViewController:(id)controller;
+- (void)setSelectedNowPlayingController:(id)controller;
+- (void)setState:(int64_t)state;
+- (void)setStylingProvider:(id)provider;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forIdentifier:(id)identifier;
+- (void)updateCellForIdentifier:(id)identifier;
 - (void)updateDiscoveryMode;
 - (void)updateMoreButtonVisibility;
 - (void)updateNowPlayingControllers;
@@ -29,8 +29,8 @@
 - (void)updateRoutingViewControllerScrollIndicatorInsets;
 - (void)updateSelectedViewController;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MRUViewServiceRoutingViewController
@@ -42,9 +42,9 @@
   v2 = [(MRUViewServiceRoutingViewController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     nowPlayingControllers = v2->_nowPlayingControllers;
-    v2->_nowPlayingControllers = v3;
+    v2->_nowPlayingControllers = dictionary;
   }
 
   return v2;
@@ -71,13 +71,13 @@
   v42.super_class = MRUViewServiceRoutingViewController;
   [(MRUViewServiceRoutingViewController *)&v42 viewDidLoad];
   stylingProvider = self->_stylingProvider;
-  v4 = [(MRUViewServiceRoutingViewController *)self view];
-  [v4 setStylingProvider:stylingProvider];
+  view = [(MRUViewServiceRoutingViewController *)self view];
+  [view setStylingProvider:stylingProvider];
 
   [(MPMediaControlsConfiguration *)self->_configuration preferredWidth];
   v6 = v5;
-  v7 = [(MRUViewServiceRoutingViewController *)self view];
-  [v7 setPreferredWidth:v6];
+  view2 = [(MRUViewServiceRoutingViewController *)self view];
+  [view2 setPreferredWidth:v6];
 
   if ([(MPMediaControlsConfiguration *)self->_configuration useGenericDevicesIconInHeader])
   {
@@ -87,9 +87,9 @@
   else
   {
     v9 = +[MRUStringsProvider airplayTitle];
-    v10 = [(MRUViewServiceRoutingViewController *)self view];
-    v11 = [v10 headerView];
-    [v11 setTitle:v9];
+    view3 = [(MRUViewServiceRoutingViewController *)self view];
+    headerView = [view3 headerView];
+    [headerView setTitle:v9];
 
     if ([(MPMediaControlsConfiguration *)self->_configuration sortByIsVideoRoute])
     {
@@ -104,41 +104,41 @@
   }
 
   v12 = v8;
-  v13 = [(MRUViewServiceRoutingViewController *)self view];
-  v14 = [v13 headerView];
-  [v14 setImage:v12];
+  view4 = [(MRUViewServiceRoutingViewController *)self view];
+  headerView2 = [view4 headerView];
+  [headerView2 setImage:v12];
 
-  v15 = [(MRURoutingViewController *)self->_routingViewController view];
-  v16 = [(MRUViewServiceRoutingViewController *)self view];
-  [v16 setContentView:v15];
+  view5 = [(MRURoutingViewController *)self->_routingViewController view];
+  view6 = [(MRUViewServiceRoutingViewController *)self view];
+  [view6 setContentView:view5];
 
   [(MRURoutingViewController *)self->_routingViewController setStylingProvider:self->_stylingProvider];
-  v17 = [(MRUViewServiceRoutingViewController *)self view];
-  v18 = [v17 footerView];
-  v19 = [v18 button];
-  [v19 addTarget:self action:sel_didSelectListState_ forControlEvents:64];
+  view7 = [(MRUViewServiceRoutingViewController *)self view];
+  footerView = [view7 footerView];
+  button = [footerView button];
+  [button addTarget:self action:sel_didSelectListState_ forControlEvents:64];
 
-  v20 = [(MRUViewServiceRoutingViewController *)self view];
-  v21 = [v20 tableView];
-  [v21 setDelegate:self];
+  view8 = [(MRUViewServiceRoutingViewController *)self view];
+  tableView = [view8 tableView];
+  [tableView setDelegate:self];
 
-  v22 = [(MRUViewServiceRoutingViewController *)self view];
-  v23 = [v22 tableView];
+  view9 = [(MRUViewServiceRoutingViewController *)self view];
+  tableView2 = [view9 tableView];
   v24 = objc_opt_class();
   v25 = objc_opt_class();
   v26 = NSStringFromClass(v25);
-  [v23 registerClass:v24 forCellReuseIdentifier:v26];
+  [tableView2 registerClass:v24 forCellReuseIdentifier:v26];
 
   objc_initWeak(&location, self);
   v27 = objc_alloc(MEMORY[0x1E69DD040]);
-  v28 = [(MRUViewServiceRoutingViewController *)self view];
-  v29 = [v28 tableView];
+  view10 = [(MRUViewServiceRoutingViewController *)self view];
+  tableView3 = [view10 tableView];
   v36 = MEMORY[0x1E69E9820];
   v37 = 3221225472;
   v38 = __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke;
   v39 = &unk_1E7663D08;
   objc_copyWeak(&v40, &location);
-  v30 = [v27 initWithTableView:v29 cellProvider:&v36];
+  v30 = [v27 initWithTableView:tableView3 cellProvider:&v36];
   dataSource = self->_dataSource;
   self->_dataSource = v30;
 
@@ -169,34 +169,34 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
   return v12;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MRUViewServiceRoutingViewController;
-  [(MRUViewServiceRoutingViewController *)&v4 viewWillAppear:a3];
+  [(MRUViewServiceRoutingViewController *)&v4 viewWillAppear:appear];
   [(MRUViewServiceRoutingViewController *)self setOnScreen:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRUViewServiceRoutingViewController;
-  [(MRUViewServiceRoutingViewController *)&v4 viewWillDisappear:a3];
+  [(MRUViewServiceRoutingViewController *)&v4 viewWillDisappear:disappear];
   [(MRUViewServiceRoutingViewController *)self setOnScreen:0];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
+    self->_onScreen = screen;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSMutableDictionary *)self->_nowPlayingControllers allValues];
-    v5 = [v4 copy];
+    allValues = [(NSMutableDictionary *)self->_nowPlayingControllers allValues];
+    v5 = [allValues copy];
 
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
@@ -227,10 +227,10 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(MRUViewServiceRoutingViewController *)self view];
-  [v5 setState:a3];
+  view = [(MRUViewServiceRoutingViewController *)self view];
+  [view setState:state];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -239,13 +239,13 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v23 = a3;
+  configurationCopy = configuration;
   if (([(MPMediaControlsConfiguration *)self->_configuration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_configuration, a3);
-    v5 = [[MediaControlsEndpointsManager alloc] initWithConfiguration:v23];
+    objc_storeStrong(&self->_configuration, configuration);
+    v5 = [[MediaControlsEndpointsManager alloc] initWithConfiguration:configurationCopy];
     endpointsManager = self->_endpointsManager;
     self->_endpointsManager = v5;
 
@@ -258,8 +258,8 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
     else
     {
       v7 = MEMORY[0x1E696AAE8];
-      v8 = [v23 presentingAppBundleID];
-      if ([v7 mru_isSpringBoardBundleIdentifier:v8])
+      presentingAppBundleID = [configurationCopy presentingAppBundleID];
+      if ([v7 mru_isSpringBoardBundleIdentifier:presentingAppBundleID])
       {
         self->_canShowRemoteDevices = 1;
       }
@@ -267,8 +267,8 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
       else
       {
         v9 = MEMORY[0x1E696AAE8];
-        v10 = [v23 presentingAppBundleID];
-        self->_canShowRemoteDevices = [v9 mru_isMediaRemoteUIBundleIdentifier:v10];
+        presentingAppBundleID2 = [configurationCopy presentingAppBundleID];
+        self->_canShowRemoteDevices = [v9 mru_isMediaRemoteUIBundleIdentifier:presentingAppBundleID2];
       }
     }
 
@@ -280,8 +280,8 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
     else
     {
       v11 = MEMORY[0x1E696AAE8];
-      v12 = [v23 presentingAppBundleID];
-      if ([v11 mru_isSpringBoardBundleIdentifier:v12])
+      presentingAppBundleID3 = [configurationCopy presentingAppBundleID];
+      if ([v11 mru_isSpringBoardBundleIdentifier:presentingAppBundleID3])
       {
         self->_supportsQueueHandoff = 1;
       }
@@ -289,8 +289,8 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
       else
       {
         v13 = MEMORY[0x1E696AAE8];
-        v14 = [v23 presentingAppBundleID];
-        if ([v13 mru_isHomeBundleIdentifier:v14])
+        presentingAppBundleID4 = [configurationCopy presentingAppBundleID];
+        if ([v13 mru_isHomeBundleIdentifier:presentingAppBundleID4])
         {
           self->_supportsQueueHandoff = 1;
         }
@@ -298,8 +298,8 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
         else
         {
           v15 = MEMORY[0x1E696AAE8];
-          v16 = [v23 presentingAppBundleID];
-          if ([v15 mru_isProximityControlBundleIdentifier:v16])
+          presentingAppBundleID5 = [configurationCopy presentingAppBundleID];
+          if ([v15 mru_isProximityControlBundleIdentifier:presentingAppBundleID5])
           {
             self->_supportsQueueHandoff = 1;
           }
@@ -307,20 +307,20 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
           else
           {
             v17 = MEMORY[0x1E696AAE8];
-            v18 = [v23 presentingAppBundleID];
-            self->_supportsQueueHandoff = [v17 mru_isMediaRemoteUIBundleIdentifier:v18];
+            presentingAppBundleID6 = [configurationCopy presentingAppBundleID];
+            self->_supportsQueueHandoff = [v17 mru_isMediaRemoteUIBundleIdentifier:presentingAppBundleID6];
           }
         }
       }
     }
 
-    [v23 preferredWidth];
+    [configurationCopy preferredWidth];
     v20 = v19;
-    v21 = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
-    [v21 setPreferredWidth:v20];
+    viewIfLoaded = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
+    [viewIfLoaded setPreferredWidth:v20];
 
-    v22 = [(MRUViewServiceRoutingViewController *)self endpointsManager];
-    [v22 prewarm];
+    endpointsManager = [(MRUViewServiceRoutingViewController *)self endpointsManager];
+    [endpointsManager prewarm];
 
     [(MRUViewServiceRoutingViewController *)self updateDiscoveryMode];
     [(MRUViewServiceRoutingViewController *)self updateNowPlayingControllers];
@@ -328,92 +328,92 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
-    v6 = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
-    [v6 setStylingProvider:v7];
+    v7 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
+    viewIfLoaded = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
+    [viewIfLoaded setStylingProvider:v7];
 
     [(MRURoutingViewController *)self->_routingViewController setStylingProvider:v7];
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
-- (void)setRoutingViewController:(id)a3
+- (void)setRoutingViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_routingViewController != v5)
+  controllerCopy = controller;
+  if (self->_routingViewController != controllerCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_routingViewController, a3);
+    v10 = controllerCopy;
+    objc_storeStrong(&self->_routingViewController, controller);
     [(MRUViewServiceRoutingViewController *)self addChildViewController:self->_routingViewController];
     if ([(MRUViewServiceRoutingViewController *)self isViewLoaded])
     {
-      v6 = [(MRURoutingViewController *)self->_routingViewController view];
-      v7 = [(MRUViewServiceRoutingViewController *)self view];
-      [v7 setContentView:v6];
+      view = [(MRURoutingViewController *)self->_routingViewController view];
+      view2 = [(MRUViewServiceRoutingViewController *)self view];
+      [view2 setContentView:view];
     }
 
     [(MRUViewServiceRoutingViewController *)self updateRoutingViewControllerScrollIndicatorInsets];
-    v8 = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
-    v9 = [v8 stylingProvider];
-    [(MRURoutingViewController *)self->_routingViewController setStylingProvider:v9];
+    viewIfLoaded = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
+    stylingProvider = [viewIfLoaded stylingProvider];
+    [(MRURoutingViewController *)self->_routingViewController setStylingProvider:stylingProvider];
 
     [(MRURoutingViewController *)self->_routingViewController didMoveToParentViewController:self];
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
-- (void)setSelectedNowPlayingController:(id)a3
+- (void)setSelectedNowPlayingController:(id)controller
 {
-  v5 = a3;
-  if (self->_selectedNowPlayingController != v5)
+  controllerCopy = controller;
+  if (self->_selectedNowPlayingController != controllerCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_selectedNowPlayingController, a3);
-    v6 = [(MRUNowPlayingController *)v11 endpointController];
-    v7 = [v6 route];
-    [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setEndpointRoute:v7];
+    v11 = controllerCopy;
+    objc_storeStrong(&self->_selectedNowPlayingController, controller);
+    endpointController = [(MRUNowPlayingController *)v11 endpointController];
+    route = [endpointController route];
+    [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setEndpointRoute:route];
 
-    v8 = [(MRUNowPlayingController *)v11 endpointController];
-    v9 = [v8 route];
-    [(MRURoutingViewController *)self->_routingViewController setEndpointRoute:v9];
+    endpointController2 = [(MRUNowPlayingController *)v11 endpointController];
+    route2 = [endpointController2 route];
+    [(MRURoutingViewController *)self->_routingViewController setEndpointRoute:route2];
 
-    v10 = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
-    [v10 setNeedsLayout];
+    viewIfLoaded = [(MRUViewServiceRoutingViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
-    v5 = v11;
+    controllerCopy = v11;
   }
 }
 
-- (void)setAlertViewController:(id)a3
+- (void)setAlertViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   alertViewController = self->_alertViewController;
-  if (alertViewController != v5)
+  if (alertViewController != controllerCopy)
   {
     v7 = alertViewController;
-    objc_storeStrong(&self->_alertViewController, a3);
+    objc_storeStrong(&self->_alertViewController, controller);
     [(UIViewController *)v7 willMoveToParentViewController:0];
-    if (v5)
+    if (controllerCopy)
     {
-      [(MRUViewServiceRoutingViewController *)self addChildViewController:v5];
-      v8 = [(UIViewController *)v5 view];
-      v9 = [(MRUViewServiceRoutingViewController *)self view];
-      [v9 setAlertView:v8];
+      [(MRUViewServiceRoutingViewController *)self addChildViewController:controllerCopy];
+      view = [(UIViewController *)controllerCopy view];
+      view2 = [(MRUViewServiceRoutingViewController *)self view];
+      [view2 setAlertView:view];
 
-      v10 = [(MRUViewServiceRoutingViewController *)self view];
-      [v10 layoutIfNeeded];
+      view3 = [(MRUViewServiceRoutingViewController *)self view];
+      [view3 layoutIfNeeded];
     }
 
     else
     {
-      v10 = [(MRUViewServiceRoutingViewController *)self view];
-      [v10 setAlertView:0];
+      view3 = [(MRUViewServiceRoutingViewController *)self view];
+      [view3 setAlertView:0];
     }
 
     v11 = MEMORY[0x1E69DD250];
@@ -422,15 +422,15 @@ id __50__MRUViewServiceRoutingViewController_viewDidLoad__block_invoke(uint64_t 
     v17[2] = __62__MRUViewServiceRoutingViewController_setAlertViewController___block_invoke;
     v17[3] = &unk_1E7663D30;
     v18 = v7;
-    v19 = self;
-    v20 = v5;
+    selfCopy = self;
+    v20 = controllerCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __62__MRUViewServiceRoutingViewController_setAlertViewController___block_invoke_2;
     v13[3] = &unk_1E7663D58;
     v14 = v18;
     v15 = v20;
-    v16 = self;
+    selfCopy2 = self;
     v12 = v18;
     [v11 mru_animateUsingType:0 animations:v17 completion:v13];
   }
@@ -467,7 +467,7 @@ uint64_t __62__MRUViewServiceRoutingViewController_setAlertViewController___bloc
   return [v3 didMoveToParentViewController:v4];
 }
 
-- (void)didSelectListState:(id)a3
+- (void)didSelectListState:(id)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -484,42 +484,42 @@ void __58__MRUViewServiceRoutingViewController_didSelectListState___block_invoke
   [v2 layoutIfNeeded];
 }
 
-- (void)didSelectQuickControl:(id)a3
+- (void)didSelectQuickControl:(id)control
 {
   nowPlayingControllers = self->_nowPlayingControllers;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)nowPlayingControllers objectForKeyedSubscript:v4];
-  v6 = [v5 quickControlItem];
-  v8 = [v6 mainAction];
+  identifier = [control identifier];
+  v5 = [(NSMutableDictionary *)nowPlayingControllers objectForKeyedSubscript:identifier];
+  quickControlItem = [v5 quickControlItem];
+  mainAction = [quickControlItem mainAction];
 
-  v7 = v8;
-  if (v8)
+  v7 = mainAction;
+  if (mainAction)
   {
-    (*(v8 + 16))(v8);
-    v7 = v8;
+    (*(mainAction + 16))(mainAction);
+    v7 = mainAction;
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
   v9 = [(NSMutableDictionary *)self->_nowPlayingControllers objectForKeyedSubscript:v8];
-  v10 = [v9 endpointController];
+  endpointController = [v9 endpointController];
 
-  v11 = [v10 route];
+  route = [endpointController route];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__MRUViewServiceRoutingViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v13[3] = &unk_1E7663D80;
   objc_copyWeak(&v16, &location);
-  v12 = v11;
+  v12 = route;
   v14 = v12;
-  v15 = self;
-  [v10 connectAllowingAuthenticationWithCompletion:v13];
+  selfCopy = self;
+  [endpointController connectAllowingAuthenticationWithCompletion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -560,61 +560,61 @@ void __73__MRUViewServiceRoutingViewController_tableView_didSelectRowAtIndexPath
   }
 }
 
-- (void)endpointsManager:(id)a3 defersRoutesReplacement:(id)a4
+- (void)endpointsManager:(id)manager defersRoutesReplacement:(id)replacement
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(replacement);
   replaceRoutes = self->_replaceRoutes;
   self->_replaceRoutes = v5;
 
   [(MRUViewServiceRoutingViewController *)self updateNowPlayingControllers];
 }
 
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route
 {
-  v6 = [a3 identifier];
-  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:v6];
+  identifier = [controller identifier];
+  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:identifier];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeArtwork:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeArtwork:(id)artwork
 {
-  v6 = [a3 identifier];
-  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:v6];
+  identifier = [controller identifier];
+  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:identifier];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info
 {
-  v6 = [a3 identifier];
-  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:v6];
+  identifier = [controller identifier];
+  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:identifier];
 }
 
-- (void)nowPlayingController:(id)a3 didChangeQuickControlItem:(id)a4
+- (void)nowPlayingController:(id)controller didChangeQuickControlItem:(id)item
 {
-  v5 = [a3 identifier];
-  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:v5];
+  identifier = [controller identifier];
+  [(MRUViewServiceRoutingViewController *)self updateCellForIdentifier:identifier];
 }
 
-- (void)routingViewController:(id)a3 didSelectRoutingViewItem:(id)a4
+- (void)routingViewController:(id)controller didSelectRoutingViewItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 actionIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E696F8A8]];
+  controllerCopy = controller;
+  itemCopy = item;
+  actionIdentifier = [itemCopy actionIdentifier];
+  v9 = [actionIdentifier isEqualToString:*MEMORY[0x1E696F8A8]];
 
   if (!v9)
   {
-    if ([v7 type] == 6)
+    if ([itemCopy type] == 6)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v11 = [v7 vendorSpecificCustomRowIdentifier];
-      [WeakRetained viewServiceRoutingViewControllerDidDismiss:self withCustomRowTapped:v11];
+      vendorSpecificCustomRowIdentifier = [itemCopy vendorSpecificCustomRowIdentifier];
+      [WeakRetained viewServiceRoutingViewControllerDidDismiss:self withCustomRowTapped:vendorSpecificCustomRowIdentifier];
     }
 
     else
     {
-      v12 = [v7 mainRoute];
-      v13 = [v12 isGroupSession];
+      mainRoute = [itemCopy mainRoute];
+      isGroupSession = [mainRoute isGroupSession];
 
-      if (!v13)
+      if (!isGroupSession)
       {
         goto LABEL_8;
       }
@@ -674,11 +674,11 @@ void __86__MRUViewServiceRoutingViewController_routingViewController_didSelectRo
   [*(a1 + 32) setAlertViewController:0];
 }
 
-- (void)routingViewControllerDidUpdateItems:(id)a3
+- (void)routingViewControllerDidUpdateItems:(id)items
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(MRUViewServiceRoutingViewController *)self view];
-  if ([v4 state])
+  view = [(MRUViewServiceRoutingViewController *)self view];
+  if ([view state])
   {
   }
 
@@ -705,19 +705,19 @@ void __86__MRUViewServiceRoutingViewController_routingViewController_didSelectRo
   }
 
   v6 = MEMORY[0x1E695DF70];
-  v7 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(routes, "count")}];
 
   v9 = MEMORY[0x1E695DFA8];
-  v10 = [(NSMutableDictionary *)self->_nowPlayingControllers allKeys];
-  v33 = [v9 setWithArray:v10];
+  allKeys = [(NSMutableDictionary *)self->_nowPlayingControllers allKeys];
+  v33 = [v9 setWithArray:allKeys];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v12 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  routes2 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v12 = [routes2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   v32 = v8;
   if (v12)
   {
@@ -731,16 +731,16 @@ void __86__MRUViewServiceRoutingViewController_routingViewController_didSelectRo
       {
         if (*v35 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(routes2);
         }
 
         v17 = *(*(&v34 + 1) + 8 * i);
-        v18 = [v17 routeUID];
-        if (v18)
+        routeUID = [v17 routeUID];
+        if (routeUID)
         {
-          [v8 addObject:v18];
-          [v33 removeObject:v18];
-          v19 = [(NSMutableDictionary *)self->_nowPlayingControllers objectForKeyedSubscript:v18];
+          [v8 addObject:routeUID];
+          [v33 removeObject:routeUID];
+          v19 = [(NSMutableDictionary *)self->_nowPlayingControllers objectForKeyedSubscript:routeUID];
 
           if (v19)
           {
@@ -751,7 +751,7 @@ void __86__MRUViewServiceRoutingViewController_routingViewController_didSelectRo
           v21 = [[MRUEndpointController alloc] initWithEndpointController:v20];
           v22 = [[MRUNowPlayingController alloc] initWithEndpointController:v21];
           [(MRUNowPlayingController *)v22 addObserver:self];
-          [(NSMutableDictionary *)self->_nowPlayingControllers setObject:v22 forKeyedSubscript:v18];
+          [(NSMutableDictionary *)self->_nowPlayingControllers setObject:v22 forKeyedSubscript:routeUID];
 
           v8 = v32;
         }
@@ -773,15 +773,15 @@ void __86__MRUViewServiceRoutingViewController_routingViewController_didSelectRo
 LABEL_14:
       }
 
-      v14 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v14 = [routes2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v14);
   }
 
   nowPlayingControllers = self->_nowPlayingControllers;
-  v25 = [v33 allObjects];
-  [(NSMutableDictionary *)nowPlayingControllers removeObjectsForKeys:v25];
+  allObjects = [v33 allObjects];
+  [(NSMutableDictionary *)nowPlayingControllers removeObjectsForKeys:allObjects];
 
   v26 = objc_alloc_init(MEMORY[0x1E69955A0]);
   [v26 appendSectionsWithIdentifiers:&unk_1F148B310];
@@ -789,12 +789,12 @@ LABEL_14:
   [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v26 animatingDifferences:1];
   [(MRUViewServiceRoutingViewController *)self updateSelectedViewController];
   [(MRUViewServiceRoutingViewController *)self updateMoreButtonVisibility];
-  v27 = [(NSMutableDictionary *)self->_nowPlayingControllers allValues];
-  [(MRURoutingViewController *)self->_routingViewController setNowPlayingControllers:v27];
+  allValues = [(NSMutableDictionary *)self->_nowPlayingControllers allValues];
+  [(MRURoutingViewController *)self->_routingViewController setNowPlayingControllers:allValues];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v29 = [(MRUViewServiceRoutingViewController *)self view];
-  if ([v29 state] == 1)
+  view = [(MRUViewServiceRoutingViewController *)self view];
+  if ([view state] == 1)
   {
     v30 = objc_opt_respondsToSelector();
 
@@ -826,9 +826,9 @@ LABEL_14:
 
     else
     {
-      v5 = [(MRUViewServiceRoutingViewController *)self canShowMoreButton];
-      v6 = [(MRUViewServiceRoutingViewController *)self view];
-      [v6 setFooterVisible:v5];
+      canShowMoreButton = [(MRUViewServiceRoutingViewController *)self canShowMoreButton];
+      view = [(MRUViewServiceRoutingViewController *)self view];
+      [view setFooterVisible:canShowMoreButton];
     }
 
     [(MRUViewServiceRoutingViewController *)self updateRoutingViewControllerScrollIndicatorInsets];
@@ -889,71 +889,71 @@ void __65__MRUViewServiceRoutingViewController_updateMoreButtonVisibility__block
   outputDeviceRoutingDataSource = self->_outputDeviceRoutingDataSource;
   self->_outputDeviceRoutingDataSource = v7;
 
-  v9 = [(MRUNowPlayingController *)self->_selectedNowPlayingController endpointController];
-  v10 = [v9 route];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setEndpointRoute:v10];
+  endpointController = [(MRUNowPlayingController *)self->_selectedNowPlayingController endpointController];
+  route = [endpointController route];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setEndpointRoute:route];
 
   [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setDetachesRoutesToGroup:1];
-  v11 = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setRoutingContextUID:v11];
+  routingContextUID = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setRoutingContextUID:routingContextUID];
 
   [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setInitiator:*MEMORY[0x1E698A718]];
   [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setSupportsQueueHandoff:self->_supportsQueueHandoff];
-  v12 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setPresentingAppBundleID:v12];
+  presentingAppBundleID = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setPresentingAppBundleID:presentingAppBundleID];
 
-  v13 = [(MPMediaControlsConfiguration *)self->_configuration nowPlayingAppBundleID];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setNowPlayingAppBundleID:v13];
+  nowPlayingAppBundleID = [(MPMediaControlsConfiguration *)self->_configuration nowPlayingAppBundleID];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setNowPlayingAppBundleID:nowPlayingAppBundleID];
 
-  v14 = [(MPMediaControlsConfiguration *)self->_configuration visibleMediaApps];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setVisibleMediaApps:v14];
+  visibleMediaApps = [(MPMediaControlsConfiguration *)self->_configuration visibleMediaApps];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setVisibleMediaApps:visibleMediaApps];
 
-  v15 = [(MPMediaControlsConfiguration *)self->_configuration donatingAppBundleID];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setDonatingAppBundleID:v15];
+  donatingAppBundleID = [(MPMediaControlsConfiguration *)self->_configuration donatingAppBundleID];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setDonatingAppBundleID:donatingAppBundleID];
 
   [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setDonatingAppEligible:[(MPMediaControlsConfiguration *)self->_configuration isDonatingAppEligible]];
-  v16 = [(MPMediaControlsConfiguration *)self->_configuration style];
-  if (v16 <= 5 && ((0x2Fu >> v16) & 1) != 0)
+  style = [(MPMediaControlsConfiguration *)self->_configuration style];
+  if (style <= 5 && ((0x2Fu >> style) & 1) != 0)
   {
-    [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setSupportsMultipleSelection:(0xDu >> v16) & 1];
+    [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setSupportsMultipleSelection:(0xDu >> style) & 1];
     [(MPAVRoutingDataSource *)self->_outputDeviceRoutingDataSource setFilterMode:0];
   }
 
   v17 = [objc_alloc(MEMORY[0x1E6970490]) initWithDataSource:self->_outputDeviceRoutingDataSource name:v6];
-  v18 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
-  [v17 setPresentedBundleID:v18];
+  presentingAppBundleID2 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+  [v17 setPresentedBundleID:presentingAppBundleID2];
 
   [v17 setPlaybackDataSource:self->_endpointsManager];
   [v17 setFetchAvailableRoutesSynchronously:1];
   vendorSpecificManager = self->_vendorSpecificManager;
-  v20 = [v17 availableRoutes];
-  [(MRUVendorSpecificDeviceManager *)vendorSpecificManager resolverAddNativeRoutes:v20];
+  availableRoutes = [v17 availableRoutes];
+  [(MRUVendorSpecificDeviceManager *)vendorSpecificManager resolverAddNativeRoutes:availableRoutes];
 
   [v17 setFetchAvailableRoutesSynchronously:0];
   v21 = [[MRURoutingViewController alloc] initWithRoutingController:v17];
   [(MRUViewServiceRoutingViewController *)self setRoutingViewController:v21];
 
   [(MRURoutingViewController *)self->_routingViewController setPresentingAppProcessIdentifier:[(MPMediaControlsConfiguration *)self->_configuration presentingAppProcessIdentifier]];
-  v22 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
-  [(MRURoutingViewController *)self->_routingViewController setPresentingAppBundleID:v22];
+  presentingAppBundleID3 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+  [(MRURoutingViewController *)self->_routingViewController setPresentingAppBundleID:presentingAppBundleID3];
 
-  v23 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
-  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setPresentingAppBundleID:v23];
+  presentingAppBundleID4 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+  [(MRUOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setPresentingAppBundleID:presentingAppBundleID4];
 
-  v24 = [(MPMediaControlsConfiguration *)self->_configuration nowPlayingAppBundleID];
-  [(MRURoutingViewController *)self->_routingViewController setNowPlayingAppBundleID:v24];
+  nowPlayingAppBundleID2 = [(MPMediaControlsConfiguration *)self->_configuration nowPlayingAppBundleID];
+  [(MRURoutingViewController *)self->_routingViewController setNowPlayingAppBundleID:nowPlayingAppBundleID2];
 
-  v25 = [(MPMediaControlsConfiguration *)self->_configuration visibleMediaApps];
-  [(MRURoutingViewController *)self->_routingViewController setVisibleMediaApps:v25];
+  visibleMediaApps2 = [(MPMediaControlsConfiguration *)self->_configuration visibleMediaApps];
+  [(MRURoutingViewController *)self->_routingViewController setVisibleMediaApps:visibleMediaApps2];
 
-  v26 = [(MPMediaControlsConfiguration *)self->_configuration donatingAppBundleID];
-  [(MRURoutingViewController *)self->_routingViewController setDonatingAppBundleID:v26];
+  donatingAppBundleID2 = [(MPMediaControlsConfiguration *)self->_configuration donatingAppBundleID];
+  [(MRURoutingViewController *)self->_routingViewController setDonatingAppBundleID:donatingAppBundleID2];
 
   [(MRURoutingViewController *)self->_routingViewController setDonatingAppEligible:[(MPMediaControlsConfiguration *)self->_configuration isDonatingAppEligible]];
   [(MRURoutingViewController *)self->_routingViewController setVendorSpecificManager:self->_vendorSpecificManager];
-  v27 = [(MRUNowPlayingController *)self->_selectedNowPlayingController endpointController];
-  v28 = [v27 route];
-  [(MRURoutingViewController *)self->_routingViewController setEndpointRoute:v28];
+  endpointController2 = [(MRUNowPlayingController *)self->_selectedNowPlayingController endpointController];
+  route2 = [endpointController2 route];
+  [(MRURoutingViewController *)self->_routingViewController setEndpointRoute:route2];
 
   [(MRURoutingViewController *)self->_routingViewController setDelegate:self];
   [(MRURoutingViewController *)self->_routingViewController setSortByIsVideoRoute:[(MPMediaControlsConfiguration *)self->_configuration sortByIsVideoRoute]];
@@ -962,27 +962,27 @@ void __65__MRUViewServiceRoutingViewController_updateMoreButtonVisibility__block
   v29 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [(MPMediaControlsConfiguration *)self->_configuration customRows];
+    customRows = [(MPMediaControlsConfiguration *)self->_configuration customRows];
     *buf = 138412290;
-    v33 = v30;
+    v33 = customRows;
     _os_log_impl(&dword_1A20FC000, v29, OS_LOG_TYPE_DEFAULT, "config customRows: %@", buf, 0xCu);
   }
 
-  v31 = [(MPMediaControlsConfiguration *)self->_configuration customRows];
-  [(MRURoutingViewController *)self->_routingViewController setCustomRows:v31];
+  customRows2 = [(MPMediaControlsConfiguration *)self->_configuration customRows];
+  [(MRURoutingViewController *)self->_routingViewController setCustomRows:customRows2];
 }
 
 - (void)updateSelectedViewController
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(MPMediaControlsConfiguration *)self->_configuration routeUID];
-  v4 = [v3 length];
+  routeUID = [(MPMediaControlsConfiguration *)self->_configuration routeUID];
+  v4 = [routeUID length];
 
   if (v4)
   {
     nowPlayingControllers = self->_nowPlayingControllers;
-    v6 = [(MPMediaControlsConfiguration *)self->_configuration routeUID];
-    v7 = [(NSMutableDictionary *)nowPlayingControllers objectForKeyedSubscript:v6];
+    routeUID2 = [(MPMediaControlsConfiguration *)self->_configuration routeUID];
+    v7 = [(NSMutableDictionary *)nowPlayingControllers objectForKeyedSubscript:routeUID2];
 
     if (!v7)
     {
@@ -990,8 +990,8 @@ void __65__MRUViewServiceRoutingViewController_updateMoreButtonVisibility__block
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v8 = [(NSMutableDictionary *)self->_nowPlayingControllers allValues];
-      v7 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      allValues = [(NSMutableDictionary *)self->_nowPlayingControllers allValues];
+      v7 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v7)
       {
         v9 = *v23;
@@ -1001,13 +1001,13 @@ void __65__MRUViewServiceRoutingViewController_updateMoreButtonVisibility__block
           {
             if (*v23 != v9)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allValues);
             }
 
             v11 = *(*(&v22 + 1) + 8 * i);
-            v12 = [v11 endpointController];
-            v13 = [(MPMediaControlsConfiguration *)self->_configuration routeUID];
-            v14 = [v12 containsOutputDeviceWithRouteUID:v13];
+            endpointController = [v11 endpointController];
+            routeUID3 = [(MPMediaControlsConfiguration *)self->_configuration routeUID];
+            v14 = [endpointController containsOutputDeviceWithRouteUID:routeUID3];
 
             if (v14)
             {
@@ -1016,7 +1016,7 @@ void __65__MRUViewServiceRoutingViewController_updateMoreButtonVisibility__block
             }
           }
 
-          v7 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v7 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v7)
           {
             continue;
@@ -1034,32 +1034,32 @@ LABEL_18:
   {
     if (self->_canShowRemoteDevices)
     {
-      v15 = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
-      v16 = [v15 canModifyGroupMembership];
+      activeSystemRoute = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
+      canModifyGroupMembership = [activeSystemRoute canModifyGroupMembership];
 
-      if ((v16 & 1) == 0)
+      if ((canModifyGroupMembership & 1) == 0)
       {
         [(MRUViewServiceRoutingViewController *)self setState:1];
-        v21 = [(MRUViewServiceRoutingViewController *)self view];
-        [v21 layoutIfNeeded];
+        view = [(MRUViewServiceRoutingViewController *)self view];
+        [view layoutIfNeeded];
 
         v7 = 0;
         goto LABEL_20;
       }
 
       v17 = self->_nowPlayingControllers;
-      v18 = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
+      activeSystemRoute2 = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
     }
 
     else
     {
       v17 = self->_nowPlayingControllers;
-      v18 = [MEMORY[0x1E6970490] systemRoute];
+      activeSystemRoute2 = [MEMORY[0x1E6970490] systemRoute];
     }
 
-    v19 = v18;
-    v20 = [v18 routeUID];
-    v7 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:v20];
+    v19 = activeSystemRoute2;
+    routeUID4 = [activeSystemRoute2 routeUID];
+    v7 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:routeUID4];
   }
 
 LABEL_20:
@@ -1081,80 +1081,80 @@ LABEL_20:
 
   else
   {
-    v9 = [(MRUViewServiceRoutingViewController *)self view];
-    [v9 cornerRadius];
+    view = [(MRUViewServiceRoutingViewController *)self view];
+    [view cornerRadius];
     [(MRURoutingViewController *)self->_routingViewController setScrollIndicatorInsets:0.0, 0.0, v8, 0.0];
   }
 }
 
-- (void)updateCellForIdentifier:(id)a3
+- (void)updateCellForIdentifier:(id)identifier
 {
   dataSource = self->_dataSource;
-  v5 = a3;
-  v9 = [(UITableViewDiffableDataSource *)dataSource indexPathForItemIdentifier:v5];
-  v6 = [(MRUViewServiceRoutingViewController *)self view];
-  v7 = [v6 tableView];
-  v8 = [v7 cellForRowAtIndexPath:v9];
+  identifierCopy = identifier;
+  v9 = [(UITableViewDiffableDataSource *)dataSource indexPathForItemIdentifier:identifierCopy];
+  view = [(MRUViewServiceRoutingViewController *)self view];
+  tableView = [view tableView];
+  v8 = [tableView cellForRowAtIndexPath:v9];
 
-  [(MRUViewServiceRoutingViewController *)self updateCell:v8 forIdentifier:v5];
+  [(MRUViewServiceRoutingViewController *)self updateCell:v8 forIdentifier:identifierCopy];
 }
 
-- (void)updateCell:(id)a3 forIdentifier:(id)a4
+- (void)updateCell:(id)cell forIdentifier:(id)identifier
 {
   nowPlayingControllers = self->_nowPlayingControllers;
-  v6 = a3;
-  v34 = [(NSMutableDictionary *)nowPlayingControllers objectForKeyedSubscript:a4];
-  v7 = [v34 endpointController];
-  v32 = [v7 route];
+  cellCopy = cell;
+  v34 = [(NSMutableDictionary *)nowPlayingControllers objectForKeyedSubscript:identifier];
+  endpointController = [v34 endpointController];
+  route = [endpointController route];
 
-  v8 = [v34 metadataController];
-  v9 = [v8 artwork];
+  metadataController = [v34 metadataController];
+  artwork = [metadataController artwork];
 
-  v10 = [v34 metadataController];
-  v11 = [v10 nowPlayingInfo];
+  metadataController2 = [v34 metadataController];
+  nowPlayingInfo = [metadataController2 nowPlayingInfo];
 
-  v12 = [v34 quickControlItem];
-  v13 = [v6 cellContentView];
-  v14 = [v13 artworkView];
+  quickControlItem = [v34 quickControlItem];
+  cellContentView = [cellCopy cellContentView];
+  artworkView = [cellContentView artworkView];
 
-  v15 = [v6 cellContentView];
-  v16 = [v15 headerView];
+  cellContentView2 = [cellCopy cellContentView];
+  headerView = [cellContentView2 headerView];
 
-  v17 = [v6 cellContentView];
-  v18 = [v17 headerView];
-  v19 = [v18 labelView];
+  cellContentView3 = [cellCopy cellContentView];
+  headerView2 = [cellContentView3 headerView];
+  labelView = [headerView2 labelView];
 
-  [v14 setArtwork:v9];
+  [artworkView setArtwork:artwork];
   v20 = MEMORY[0x1E69DCAB8];
-  v21 = [v34 deviceSymbolName];
-  v22 = [v20 _systemImageNamed:v21];
-  [v14 setPlaceholderImage:v22];
+  deviceSymbolName = [v34 deviceSymbolName];
+  v22 = [v20 _systemImageNamed:deviceSymbolName];
+  [artworkView setPlaceholderImage:v22];
 
-  [v19 setRoute:v32];
-  v23 = [v11 stringForComponents:59];
-  [v19 setTitle:v23];
+  [labelView setRoute:route];
+  v23 = [nowPlayingInfo stringForComponents:59];
+  [labelView setTitle:v23];
 
-  v24 = [v11 placeholder];
-  [v19 setPlaceholder:v24];
+  placeholder = [nowPlayingInfo placeholder];
+  [labelView setPlaceholder:placeholder];
 
-  [v19 setShowPlaceholder:{objc_msgSend(v11, "showPlaceholder")}];
-  v25 = [v34 identifier];
-  v26 = [v16 transportButton];
-  [v26 setIdentifier:v25];
+  [labelView setShowPlaceholder:{objc_msgSend(nowPlayingInfo, "showPlaceholder")}];
+  identifier = [v34 identifier];
+  transportButton = [headerView transportButton];
+  [transportButton setIdentifier:identifier];
 
-  [v16 setShowTransportButton:{objc_msgSend(v12, "isEnabled")}];
-  v27 = [v16 transportButton];
-  v28 = [v12 asset];
-  [v27 setAsset:v28];
+  [headerView setShowTransportButton:{objc_msgSend(quickControlItem, "isEnabled")}];
+  transportButton2 = [headerView transportButton];
+  asset = [quickControlItem asset];
+  [transportButton2 setAsset:asset];
 
-  v29 = [v16 transportButton];
-  [v29 addTarget:self action:sel_didSelectQuickControl_ forControlEvents:64];
+  transportButton3 = [headerView transportButton];
+  [transportButton3 addTarget:self action:sel_didSelectQuickControl_ forControlEvents:64];
 
-  v30 = [(MRUViewServiceRoutingViewController *)self view];
-  v31 = [v30 stylingProvider];
-  [v6 setStylingProvider:v31];
+  view = [(MRUViewServiceRoutingViewController *)self view];
+  stylingProvider = [view stylingProvider];
+  [cellCopy setStylingProvider:stylingProvider];
 
-  [v6 setContentEdgeInsets:{24.0, 24.0, 24.0, 24.0}];
+  [cellCopy setContentEdgeInsets:{24.0, 24.0, 24.0, 24.0}];
 }
 
 - (MRUViewServiceRoutingViewControllerDelegate)delegate

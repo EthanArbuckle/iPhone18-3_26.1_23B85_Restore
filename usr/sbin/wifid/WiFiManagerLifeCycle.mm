@@ -1,9 +1,9 @@
 @interface WiFiManagerLifeCycle
 - (WiFiManagerLifeCycle)init;
-- (id)handleSignal:(int)a3 onQueue:(id)a4;
+- (id)handleSignal:(int)signal onQueue:(id)queue;
 - (void)dealloc;
-- (void)startOnQueue:(id)a3 group:(id)a4;
-- (void)stopOnQueue:(id)a3;
+- (void)startOnQueue:(id)queue group:(id)group;
+- (void)stopOnQueue:(id)queue;
 @end
 
 @implementation WiFiManagerLifeCycle
@@ -30,9 +30,9 @@
   [(WiFiManagerLifeCycle *)&v3 dealloc];
 }
 
-- (void)startOnQueue:(id)a3 group:(id)a4
+- (void)startOnQueue:(id)queue group:(id)group
 {
-  if (a3)
+  if (queue)
   {
     NSLog(@"----- WiFiManager starting, version: %s -----", a2, "WiFiManager-1980.15 Oct 22 2025 22:39:39");
     v7 = objc_autoreleasePoolPush();
@@ -42,7 +42,7 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    v8 = sub_10006F8F0(kCFAllocatorDefault, a3);
+    v8 = sub_10006F8F0(kCFAllocatorDefault, queue);
     self->_manager = v8;
     if (!v8)
     {
@@ -58,7 +58,7 @@
       goto LABEL_7;
     }
 
-    sub_1001740C0(&self->super.isa, a3, &self->_manager, a4);
+    sub_1001740C0(&self->super.isa, queue, &self->_manager, group);
   }
 
   v9 = objc_autoreleasePoolPush();
@@ -75,7 +75,7 @@ LABEL_8:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)stopOnQueue:(id)a3
+- (void)stopOnQueue:(id)queue
 {
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -84,7 +84,7 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v5);
-  sub_100076304(self->_manager, a3);
+  sub_100076304(self->_manager, queue);
   sub_100076284(self->_manager, 0);
   [(NSMutableArray *)self->_signals enumerateObjectsUsingBlock:&stru_1002610C8];
   manager = self->_manager;
@@ -97,17 +97,17 @@ LABEL_8:
   NSLog(@"WiFiManager stopped");
 }
 
-- (id)handleSignal:(int)a3 onQueue:(id)a4
+- (id)handleSignal:(int)signal onQueue:(id)queue
 {
-  signal(a3, 1);
-  v7 = dispatch_source_create(&_dispatch_source_type_signal, a3, 0, a4);
+  signal(signal, 1);
+  v7 = dispatch_source_create(&_dispatch_source_type_signal, signal, 0, queue);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10009A0FC;
   handler[3] = &unk_1002610F0;
-  v10 = a3;
+  signalCopy = signal;
   handler[4] = self;
-  handler[5] = a4;
+  handler[5] = queue;
   dispatch_source_set_event_handler(v7, handler);
   dispatch_activate(v7);
   return v7;

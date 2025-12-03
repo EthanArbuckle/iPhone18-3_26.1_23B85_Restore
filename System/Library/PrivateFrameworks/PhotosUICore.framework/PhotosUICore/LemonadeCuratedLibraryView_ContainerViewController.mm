@@ -1,22 +1,22 @@
 @interface LemonadeCuratedLibraryView_ContainerViewController
-- (CGRect)layout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4;
-- (LemonadeCuratedLibraryView_ContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGRect)layout:(id)layout visibleRectForRequestedVisibleRect:(CGRect)rect;
+- (LemonadeCuratedLibraryView_ContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UINavigationItem)navigationItem;
-- (void)curatedLibraryViewDidUpdateBars:(id)a3;
-- (void)curatedLibraryViewRequestImmediateUpdate:(id)a3;
-- (void)scrollViewControllerContentInsetDidChange:(id)a3;
-- (void)scrollViewControllerDidEndScrolling:(id)a3;
-- (void)scrollViewControllerDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)scrollViewControllerWillBeginScrollingAnimation:(id)a3 towardsContentEdges:(unint64_t)a4;
+- (void)curatedLibraryViewDidUpdateBars:(id)bars;
+- (void)curatedLibraryViewRequestImmediateUpdate:(id)update;
+- (void)scrollViewControllerContentInsetDidChange:(id)change;
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling;
+- (void)scrollViewControllerDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)scrollViewControllerWillBeginScrollingAnimation:(id)animation towardsContentEdges:(unint64_t)edges;
 - (void)setNeedsUpdate;
 - (void)updateBarItems;
 - (void)updateCuratedLibraryViewModel;
 - (void)updateResetCuratedLibraryView;
 - (void)updateScrollView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,12 +28,12 @@
   v6.super_class = type metadata accessor for LemonadeCuratedLibraryView.ContainerViewController();
   v2 = v6.receiver;
   [(LemonadeCuratedLibraryView_ContainerViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     v5 = OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_clippingView;
-    [v3 addSubview_];
+    [view addSubview_];
 
     [*&v2[v5] setClipsToBounds_];
   }
@@ -44,93 +44,93 @@
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1A3EF06C0(a3);
+  selfCopy = self;
+  sub_1A3EF06C0(appearing);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for LemonadeCuratedLibraryView.ContainerViewController();
   v4 = v5.receiver;
-  [(LemonadeCuratedLibraryView_ContainerViewController *)&v5 viewDidAppear:v3];
+  [(LemonadeCuratedLibraryView_ContainerViewController *)&v5 viewDidAppear:appearCopy];
   sub_1A3EF2A74(1);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3EF0CB4();
 }
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A46E0BEC();
-  v4 = [v3 navigationItem];
+  navigationItem = [v3 navigationItem];
 
-  return v4;
+  return navigationItem;
 }
 
 - (void)setNeedsUpdate
 {
-  v3 = self;
-  v2 = [(LemonadeCuratedLibraryView_ContainerViewController *)v3 viewIfLoaded];
-  [v2 setNeedsLayout];
+  selfCopy = self;
+  viewIfLoaded = [(LemonadeCuratedLibraryView_ContainerViewController *)selfCopy viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)updateScrollView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3EF3D2C();
 }
 
 - (void)updateBarItems
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_1A46E0BEC();
-  v3 = [v2 toolbarItems];
+  toolbarItems = [v2 toolbarItems];
 
-  [(LemonadeCuratedLibraryView_ContainerViewController *)v4 setToolbarItems:v3];
+  [(LemonadeCuratedLibraryView_ContainerViewController *)selfCopy setToolbarItems:toolbarItems];
 }
 
 - (void)updateResetCuratedLibraryView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3EF3F6C();
 }
 
 - (void)updateCuratedLibraryViewModel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3EF4594();
 }
 
-- (void)curatedLibraryViewDidUpdateBars:(id)a3
+- (void)curatedLibraryViewDidUpdateBars:(id)bars
 {
-  v4 = a3;
-  v5 = self;
+  barsCopy = bars;
+  selfCopy = self;
   sub_1A3EF698C();
 }
 
-- (void)curatedLibraryViewRequestImmediateUpdate:(id)a3
+- (void)curatedLibraryViewRequestImmediateUpdate:(id)update
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A3EF01D0();
 }
 
-- (CGRect)layout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4
+- (CGRect)layout:(id)layout visibleRectForRequestedVisibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = self;
-  v11 = sub_1A3EF4E4C(v9, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
+  selfCopy = self;
+  v11 = sub_1A3EF4E4C(layoutCopy, x, y, width, height);
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -146,24 +146,24 @@
   return result;
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3EF5A90(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1A3EF5A90(scrollCopy);
 }
 
-- (void)scrollViewControllerContentInsetDidChange:(id)a3
+- (void)scrollViewControllerContentInsetDidChange:(id)change
 {
-  v8 = a3;
-  v4 = self;
-  v5 = [(LemonadeCuratedLibraryView_ContainerViewController *)v4 view];
-  if (v5)
+  changeCopy = change;
+  selfCopy = self;
+  view = [(LemonadeCuratedLibraryView_ContainerViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setNeedsLayout];
+    v6 = view;
+    [view setNeedsLayout];
 
-    [v8 contentInset];
+    [changeCopy contentInset];
     sub_1A46E42D0(v7);
   }
 
@@ -173,19 +173,19 @@
   }
 }
 
-- (void)scrollViewControllerWillBeginScrollingAnimation:(id)a3 towardsContentEdges:(unint64_t)a4
+- (void)scrollViewControllerWillBeginScrollingAnimation:(id)animation towardsContentEdges:(unint64_t)edges
 {
-  v5 = a3;
-  v6 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_1A3EF6D04();
 }
 
-- (void)scrollViewControllerDidEndScrollingAnimation:(id)a3
+- (void)scrollViewControllerDidEndScrollingAnimation:(id)animation
 {
   v4 = OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_isPerformingScrollAnimation;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_isPerformingScrollAnimation);
   *(&self->super.super.super.isa + OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_isPerformingScrollAnimation) = 0;
-  v7 = self;
+  selfCopy = self;
   if (v5 == 1)
   {
     v6 = sub_1A3EF04D4();
@@ -195,20 +195,20 @@
   sub_1A3EF58D4(0);
 }
 
-- (void)scrollViewControllerDidEndScrolling:(id)a3
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling
 {
   v3 = OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_isPerformingScrollAnimation;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_isPerformingScrollAnimation);
   *(&self->super.super.super.isa + OBJC_IVAR___LemonadeCuratedLibraryView_ContainerViewController_isPerformingScrollAnimation) = 0;
   if (v4 == 1)
   {
-    v7 = self;
+    selfCopy = self;
     v6 = sub_1A3EF04D4();
     (*(*v6 + 184))(*(&self->super.super.super.isa + v3));
   }
 }
 
-- (LemonadeCuratedLibraryView_ContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (LemonadeCuratedLibraryView_ContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

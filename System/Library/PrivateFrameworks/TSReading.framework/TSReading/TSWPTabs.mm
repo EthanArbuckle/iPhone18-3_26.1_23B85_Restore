@@ -1,16 +1,16 @@
 @interface TSWPTabs
 + (id)tabs;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSWPTabs)init;
-- (TSWPTabs)initWithTabs:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPTabs)initWithTabs:(id)tabs;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)tabAfterPosition:(double)a3;
-- (id)tabAtPosition:(double)a3;
-- (unint64_t)indexForTabWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5;
+- (id)tabAfterPosition:(double)position;
+- (id)tabAtPosition:(double)position;
+- (unint64_t)indexForTabWithPosition:(double)position alignment:(int)alignment leader:(id)leader;
 - (void)dealloc;
-- (void)insertTab:(id)a3;
-- (void)setPosition:(double)a3 forTab:(id)a4;
+- (void)insertTab:(id)tab;
+- (void)setPosition:(double)position forTab:(id)tab;
 @end
 
 @implementation TSWPTabs
@@ -35,14 +35,14 @@
   return v2;
 }
 
-- (TSWPTabs)initWithTabs:(id)a3
+- (TSWPTabs)initWithTabs:(id)tabs
 {
   v6.receiver = self;
   v6.super_class = TSWPTabs;
   v4 = [(TSWPTabs *)&v6 init];
   if (v4)
   {
-    v4->_tabs = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:*(a3 + 1) copyItems:1];
+    v4->_tabs = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:*(tabs + 1) copyItems:1];
   }
 
   return v4;
@@ -55,14 +55,14 @@
   [(TSWPTabs *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithTabs:self];
 }
 
-- (id)tabAtPosition:(double)a3
+- (id)tabAtPosition:(double)position
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -89,7 +89,7 @@ LABEL_3:
 
     v9 = *(*(&v12 + 1) + 8 * v8);
     [v9 position];
-    if (vabdd_f64(a3, v10) <= 0.0000999999975)
+    if (vabdd_f64(position, v10) <= 0.0000999999975)
     {
       return v9;
     }
@@ -107,7 +107,7 @@ LABEL_3:
   }
 }
 
-- (id)tabAfterPosition:(double)a3
+- (id)tabAfterPosition:(double)position
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -134,7 +134,7 @@ LABEL_3:
 
     v9 = *(*(&v12 + 1) + 8 * v8);
     [v9 position];
-    if (v10 > a3)
+    if (v10 > position)
     {
       return v9;
     }
@@ -152,12 +152,12 @@ LABEL_3:
   }
 }
 
-- (void)insertTab:(id)a3
+- (void)insertTab:(id)tab
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (tab)
   {
-    [a3 position];
+    [tab position];
     v6 = v5;
     v15 = 0u;
     v16 = 0u;
@@ -210,32 +210,32 @@ LABEL_3:
     }
 
 LABEL_13:
-    [(NSMutableArray *)self->_tabs insertObject:a3 atIndex:v10];
+    [(NSMutableArray *)self->_tabs insertObject:tab atIndex:v10];
   }
 }
 
-- (void)setPosition:(double)a3 forTab:(id)a4
+- (void)setPosition:(double)position forTab:(id)tab
 {
-  [a4 position];
-  if (v6 != a3)
+  [tab position];
+  if (v6 != position)
   {
-    if ([(TSWPTabs *)self tabAtPosition:a3])
+    if ([(TSWPTabs *)self tabAtPosition:position])
     {
 
-      [a4 setPosition:a3];
+      [tab setPosition:position];
     }
 
     else
     {
-      v7 = a4;
-      [(NSMutableArray *)self->_tabs removeObjectIdenticalTo:a4];
-      [a4 setPosition:a3];
-      [(TSWPTabs *)self insertTab:a4];
+      tabCopy = tab;
+      [(NSMutableArray *)self->_tabs removeObjectIdenticalTo:tab];
+      [tab setPosition:position];
+      [(TSWPTabs *)self insertTab:tab];
     }
   }
 }
 
-- (unint64_t)indexForTabWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5
+- (unint64_t)indexForTabWithPosition:(double)position alignment:(int)alignment leader:(id)leader
 {
   v9 = [(NSMutableArray *)self->_tabs count];
   if (!v9)
@@ -245,22 +245,22 @@ LABEL_13:
 
   v10 = v9;
   v11 = 0;
-  if (!a5)
+  if (!leader)
   {
-    a5 = @" ";
+    leader = @" ";
   }
 
   while (1)
   {
     v12 = [(NSMutableArray *)self->_tabs objectAtIndexedSubscript:v11];
-    if ([v12 alignment] == a4)
+    if ([v12 alignment] == alignment)
     {
       [v12 position];
-      if (vabdd_f64(a3, v13) <= 0.0000999999975)
+      if (vabdd_f64(position, v13) <= 0.0000999999975)
       {
-        v14 = [v12 leader];
-        v15 = v14 ? v14 : @" ";
-        if ([a5 isEqualToString:v15])
+        leader = [v12 leader];
+        v15 = leader ? leader : @" ";
+        if ([leader isEqualToString:v15])
         {
           break;
         }
@@ -276,7 +276,7 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

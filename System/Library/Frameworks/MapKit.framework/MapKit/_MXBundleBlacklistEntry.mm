@@ -1,23 +1,23 @@
 @interface _MXBundleBlacklistEntry
-+ (id)blacklistEntriesFromDefaultsValue:(id)a3;
-- (BOOL)_isVersionValueAllowed:(id)a3;
-- (BOOL)isBundleRecordAllowed:(id)a3;
-- (BOOL)isExtensionAllowed:(id)a3;
-- (_MXBundleBlacklistEntry)initWithBundleIdentifier:(id)a3 minimumDisallowedVersion:(id)a4 maximumDisallowedVersion:(id)a5;
++ (id)blacklistEntriesFromDefaultsValue:(id)value;
+- (BOOL)_isVersionValueAllowed:(id)allowed;
+- (BOOL)isBundleRecordAllowed:(id)allowed;
+- (BOOL)isExtensionAllowed:(id)allowed;
+- (_MXBundleBlacklistEntry)initWithBundleIdentifier:(id)identifier minimumDisallowedVersion:(id)version maximumDisallowedVersion:(id)disallowedVersion;
 @end
 
 @implementation _MXBundleBlacklistEntry
 
-- (BOOL)isExtensionAllowed:(id)a3
+- (BOOL)isExtensionAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:self->_bundleIdentifier];
+  allowedCopy = allowed;
+  identifier = [allowedCopy identifier];
+  v6 = [identifier isEqualToString:self->_bundleIdentifier];
 
   if (v6)
   {
-    v7 = [v4 version];
-    v8 = [(_MXBundleBlacklistEntry *)self _isVersionValueAllowed:v7];
+    version = [allowedCopy version];
+    v8 = [(_MXBundleBlacklistEntry *)self _isVersionValueAllowed:version];
   }
 
   else
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (BOOL)isBundleRecordAllowed:(id)a3
+- (BOOL)isBundleRecordAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:self->_bundleIdentifier];
+  allowedCopy = allowed;
+  bundleIdentifier = [allowedCopy bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:self->_bundleIdentifier];
 
   if (v6)
   {
-    v7 = [v4 bundleVersion];
-    v8 = [(_MXBundleBlacklistEntry *)self _isVersionValueAllowed:v7];
+    bundleVersion = [allowedCopy bundleVersion];
+    v8 = [(_MXBundleBlacklistEntry *)self _isVersionValueAllowed:bundleVersion];
   }
 
   else
@@ -48,17 +48,17 @@
   return v8;
 }
 
-- (BOOL)_isVersionValueAllowed:(id)a3
+- (BOOL)_isVersionValueAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   if (*&self->_minimum != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_MXVersion *)v4 stringValue];
+      stringValue = [(_MXVersion *)allowedCopy stringValue];
 
-      if (v5)
+      if (stringValue)
       {
         goto LABEL_4;
       }
@@ -69,23 +69,23 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v5 = 0;
+        stringValue = 0;
         v8 = 0;
         goto LABEL_16;
       }
 
-      v5 = v4;
-      if (v4)
+      stringValue = allowedCopy;
+      if (allowedCopy)
       {
 LABEL_4:
-        v4 = [[_MXVersion alloc] initWithVersionString:v5];
+        allowedCopy = [[_MXVersion alloc] initWithVersionString:stringValue];
         minimum = self->_minimum;
         maximum = self->_maximum;
         if (minimum)
         {
           if (maximum)
           {
-            if ([(_MXVersion *)maximum compare:v4]== -1)
+            if ([(_MXVersion *)maximum compare:allowedCopy]== -1)
             {
               v8 = 1;
               goto LABEL_16;
@@ -94,23 +94,23 @@ LABEL_4:
             minimum = self->_minimum;
           }
 
-          maximum = v4;
+          maximum = allowedCopy;
         }
 
         else
         {
-          minimum = v4;
+          minimum = allowedCopy;
         }
 
         v8 = [(_MXVersion *)maximum compare:minimum]== -1;
 LABEL_16:
 
-        v4 = v5;
+        allowedCopy = stringValue;
         goto LABEL_17;
       }
     }
 
-    v4 = 0;
+    allowedCopy = 0;
   }
 
   v8 = 0;
@@ -119,31 +119,31 @@ LABEL_17:
   return v8;
 }
 
-- (_MXBundleBlacklistEntry)initWithBundleIdentifier:(id)a3 minimumDisallowedVersion:(id)a4 maximumDisallowedVersion:(id)a5
+- (_MXBundleBlacklistEntry)initWithBundleIdentifier:(id)identifier minimumDisallowedVersion:(id)version maximumDisallowedVersion:(id)disallowedVersion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  versionCopy = version;
+  disallowedVersionCopy = disallowedVersion;
   v15.receiver = self;
   v15.super_class = _MXBundleBlacklistEntry;
   v11 = [(_MXBundleBlacklistEntry *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    objc_storeStrong(&v11->_minimum, a4);
-    objc_storeStrong(&v11->_maximum, a5);
+    objc_storeStrong(&v11->_minimum, version);
+    objc_storeStrong(&v11->_maximum, disallowedVersion);
   }
 
   return v11;
 }
 
-+ (id)blacklistEntriesFromDefaultsValue:(id)a3
++ (id)blacklistEntriesFromDefaultsValue:(id)value
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -152,8 +152,8 @@ LABEL_17:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = v4;
-    v6 = v4;
+    v21 = valueCopy;
+    v6 = valueCopy;
     v25 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (!v25)
     {
@@ -199,8 +199,8 @@ LABEL_17:
           }
 
           v14 = v5;
-          v15 = a1;
-          v16 = [a1 alloc];
+          selfCopy = self;
+          v16 = [self alloc];
           if (v12)
           {
             v17 = [[_MXVersion alloc] initWithVersionString:v12];
@@ -235,7 +235,7 @@ LABEL_16:
           {
           }
 
-          a1 = v15;
+          self = selfCopy;
           v8 = MEMORY[0x1E695E118];
           if (v12)
           {
@@ -245,7 +245,7 @@ LABEL_16:
           goto LABEL_24;
         }
 
-        v12 = [[a1 alloc] initWithBundleIdentifier:v10 minimumDisallowedVersion:0 maximumDisallowedVersion:0];
+        v12 = [[self alloc] initWithBundleIdentifier:v10 minimumDisallowedVersion:0 maximumDisallowedVersion:0];
         [v5 addObject:v12];
 LABEL_24:
 
@@ -257,7 +257,7 @@ LABEL_25:
       {
 LABEL_27:
 
-        v4 = v21;
+        valueCopy = v21;
         goto LABEL_29;
       }
     }

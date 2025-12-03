@@ -1,7 +1,7 @@
 @interface HeadphoneAudioNotificationModel
 + (_TtC24SoundsAndHapticsSettings31HeadphoneAudioNotificationModel)shared;
 - (_TtC24SoundsAndHapticsSettings31HeadphoneAudioNotificationModel)init;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation HeadphoneAudioNotificationModel
@@ -30,11 +30,11 @@
   return [(HeadphoneAudioNotificationModel *)&v4 init];
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280028560, &qword_2658B90A0);
   v4 = sub_2658B6E78();
-  v5 = self;
+  selfCopy = self;
   HeadphoneAudioNotificationModel.setData(_:)(v4);
 }
 

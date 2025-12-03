@@ -1,18 +1,18 @@
 @interface PRUISForwardExtensionAppearanceNotificationAction
 - (NSString)notificationName;
-- (PRUISForwardExtensionAppearanceNotificationAction)initWithNotificationName:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (PRUISForwardExtensionAppearanceNotificationAction)initWithNotificationName:(id)name;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation PRUISForwardExtensionAppearanceNotificationAction
 
-- (PRUISForwardExtensionAppearanceNotificationAction)initWithNotificationName:(id)a3
+- (PRUISForwardExtensionAppearanceNotificationAction)initWithNotificationName:(id)name
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 copy];
+  v7 = [nameCopy copy];
 
   [v6 setObject:v7 forSetting:1];
   v10.receiver = self;
@@ -24,15 +24,15 @@
 
 - (NSString)notificationName
 {
-  v2 = [(PRUISForwardExtensionAppearanceNotificationAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(PRUISForwardExtensionAppearanceNotificationAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"notificationName";
   }
@@ -43,11 +43,11 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 1)
+  if (setting == 1)
   {
-    v7 = [(PRUISForwardExtensionAppearanceNotificationAction *)self notificationName:a3];
+    v7 = [(PRUISForwardExtensionAppearanceNotificationAction *)self notificationName:flag];
   }
 
   else

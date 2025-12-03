@@ -167,8 +167,8 @@ void __36__SFSiriWordTimingPlayer_invalidate__block_invoke(uint64_t a1)
 
 - (void)_processWord
 {
-  v20 = [(SFSiriWordTimingInfo *)self->_wordInfo wordID];
-  if (v20)
+  wordID = [(SFSiriWordTimingInfo *)self->_wordInfo wordID];
+  if (wordID)
   {
     wordHandler = self->_wordHandler;
     if (!wordHandler)
@@ -176,19 +176,19 @@ void __36__SFSiriWordTimingPlayer_invalidate__block_invoke(uint64_t a1)
       goto LABEL_18;
     }
 
-    v4 = [(SFSiriWordTimingInfo *)self->_wordInfo localizedText];
+    localizedText = [(SFSiriWordTimingInfo *)self->_wordInfo localizedText];
     v5 = wordHandler[2];
     v6 = wordHandler;
-    v7 = v20;
-    v8 = v4;
+    v7 = wordID;
+    v8 = localizedText;
   }
 
   else
   {
-    v9 = [(SFSiriWordTimingInfo *)self->_wordInfo textRange];
+    textRange = [(SFSiriWordTimingInfo *)self->_wordInfo textRange];
     v11 = v10;
     v12 = [(NSString *)self->_text length];
-    if (v12 < v9 || v12 - v9 < v11)
+    if (v12 < textRange || v12 - textRange < v11)
     {
       v14 = self->_wordHandler;
       if (!v14)
@@ -196,11 +196,11 @@ void __36__SFSiriWordTimingPlayer_invalidate__block_invoke(uint64_t a1)
         goto LABEL_18;
       }
 
-      v18 = v9;
+      v18 = textRange;
       v19 = v11;
       v17 = v12;
-      v4 = NSErrorWithOSStatusF();
-      (*(v14 + 2))(v14, &stru_1F1D30528, 0, 0, v4);
+      localizedText = NSErrorWithOSStatusF();
+      (*(v14 + 2))(v14, &stru_1F1D30528, 0, 0, localizedText);
       goto LABEL_17;
     }
 
@@ -212,7 +212,7 @@ void __36__SFSiriWordTimingPlayer_invalidate__block_invoke(uint64_t a1)
         goto LABEL_18;
       }
 
-      v16 = [(NSString *)self->_text substringToIndex:v9 + v11];
+      v16 = [(NSString *)self->_text substringToIndex:textRange + v11];
     }
 
     else
@@ -222,13 +222,13 @@ void __36__SFSiriWordTimingPlayer_invalidate__block_invoke(uint64_t a1)
         goto LABEL_18;
       }
 
-      v16 = [(NSString *)self->_text substringWithRange:v9, v11];
+      v16 = [(NSString *)self->_text substringWithRange:textRange, v11];
     }
 
-    v4 = v16;
+    localizedText = v16;
     v5 = v15[2];
     v6 = v15;
-    v7 = v4;
+    v7 = localizedText;
     v8 = 0;
   }
 

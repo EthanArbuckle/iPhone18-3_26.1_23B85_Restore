@@ -1,18 +1,18 @@
 @interface DDSMobileAssetv2QueryAdapter
-+ (id)maAssetQueryForddsAssetQuery:(id)a3 compatiblilityVersion:(int64_t)a4 platformVersion:(id)a5 internalInstall:(BOOL)a6;
++ (id)maAssetQueryForddsAssetQuery:(id)query compatiblilityVersion:(int64_t)version platformVersion:(id)platformVersion internalInstall:(BOOL)install;
 @end
 
 @implementation DDSMobileAssetv2QueryAdapter
 
-+ (id)maAssetQueryForddsAssetQuery:(id)a3 compatiblilityVersion:(int64_t)a4 platformVersion:(id)a5 internalInstall:(BOOL)a6
++ (id)maAssetQueryForddsAssetQuery:(id)query compatiblilityVersion:(int64_t)version platformVersion:(id)platformVersion internalInstall:(BOOL)install
 {
-  v6 = a6;
+  installCopy = install;
   v40[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  queryCopy = query;
+  platformVersionCopy = platformVersion;
   v11 = objc_alloc(MEMORY[0x1E69B18E8]);
-  v12 = [v9 assetType];
-  v13 = [v11 initWithType:v12];
+  assetType = [queryCopy assetType];
+  v13 = [v11 initWithType:assetType];
 
   [v13 setDoNotBlockBeforeFirstUnlock:1];
   if (objc_opt_respondsToSelector())
@@ -35,19 +35,19 @@
     }
   }
 
-  v15 = [v9 filter];
-  v16 = [v15 filters];
+  filter = [queryCopy filter];
+  filters = [filter filters];
   v30 = MEMORY[0x1E69E9820];
   v31 = 3221225472;
   v32 = __115__DDSMobileAssetv2QueryAdapter_maAssetQueryForddsAssetQuery_compatiblilityVersion_platformVersion_internalInstall___block_invoke;
   v33 = &unk_1E86C5D38;
   v17 = v13;
   v34 = v17;
-  [v16 enumerateKeysAndObjectsUsingBlock:&v30];
+  [filters enumerateKeysAndObjectsUsingBlock:&v30];
 
-  if (a4 >= 1)
+  if (version >= 1)
   {
-    v18 = [objc_opt_class() stringFromInteger:{a4, v30, v31, v32, v33}];
+    v18 = [objc_opt_class() stringFromInteger:{version, v30, v31, v32, v33}];
     v19 = *MEMORY[0x1E69B1840];
     if ([v17 addKeyValuePair:*MEMORY[0x1E69B1840] with:v18])
     {
@@ -58,9 +58,9 @@
       }
     }
 
-    if (v6)
+    if (installCopy)
     {
-      v21 = [objc_opt_class() stringFromInteger:a4];
+      v21 = [objc_opt_class() stringFromInteger:version];
       if ([v17 addKeyValuePair:v19 with:v21])
       {
         v22 = QueryLog();
@@ -72,9 +72,9 @@
     }
   }
 
-  if (v10)
+  if (platformVersionCopy)
   {
-    v40[0] = v10;
+    v40[0] = platformVersionCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
     v24 = [v23 mutableCopy];
     v25 = [v17 addKeyValueArray:@"_SupportedPlatforms" with:v24];
@@ -84,7 +84,7 @@
       v26 = QueryLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v35 = v10;
+        v35 = platformVersionCopy;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
         *buf = 138543618;
         v37 = @"_SupportedPlatforms";

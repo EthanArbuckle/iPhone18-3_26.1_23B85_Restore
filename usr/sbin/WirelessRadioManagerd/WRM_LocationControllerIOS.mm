@@ -1,7 +1,7 @@
 @interface WRM_LocationControllerIOS
-- (WRM_LocationControllerIOS)initWithDesiredAccuracy:(double)a3 distanceFilter:(double)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (WRM_LocationControllerIOS)initWithDesiredAccuracy:(double)accuracy distanceFilter:(double)filter;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 - (void)updateLocationAuthorized_sync;
@@ -20,7 +20,7 @@
   dispatch_async(mAlarmQueue, block);
 }
 
-- (WRM_LocationControllerIOS)initWithDesiredAccuracy:(double)a3 distanceFilter:(double)a4
+- (WRM_LocationControllerIOS)initWithDesiredAccuracy:(double)accuracy distanceFilter:(double)filter
 {
   v15.receiver = self;
   v15.super_class = WRM_LocationControllerIOS;
@@ -39,8 +39,8 @@
     block[2] = sub_1000EBF14;
     block[3] = &unk_100242168;
     v12 = v6;
-    v13 = a3;
-    v14 = a4;
+    accuracyCopy = accuracy;
+    filterCopy = filter;
     dispatch_async(v9, block);
   }
 
@@ -60,55 +60,55 @@
 
 - (void)updateLocationAuthorized_sync
 {
-  v3 = [(WRM_LocationControllerIOS *)self clientLocationAuthorized];
+  clientLocationAuthorized = [(WRM_LocationControllerIOS *)self clientLocationAuthorized];
 
-  if (v3)
+  if (clientLocationAuthorized)
   {
     [WCM_Logging logLevel:22 message:@"LocationController: updateLocationAuthorized"];
-    v4 = [(WRM_LocationControllerIOS *)self clientLocationAuthorized];
-    v4[2](v4, self->_isLocationAuthorized);
+    clientLocationAuthorized2 = [(WRM_LocationControllerIOS *)self clientLocationAuthorized];
+    clientLocationAuthorized2[2](clientLocationAuthorized2, self->_isLocationAuthorized);
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v28 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if (self->_isMonitoringLocation)
   {
-    if (v6)
+    if (locationsCopy)
     {
-      [WCM_Logging logLevel:22 message:@"LocationController: didUpdateLocations %@", v6];
-      v7 = [v6 lastObject];
-      [(WRM_LocationControllerIOS *)self setLocation:v7];
-      v8 = [(WRM_LocationControllerIOS *)self clientLocationHandler];
+      [WCM_Logging logLevel:22 message:@"LocationController: didUpdateLocations %@", locationsCopy];
+      lastObject = [locationsCopy lastObject];
+      [(WRM_LocationControllerIOS *)self setLocation:lastObject];
+      clientLocationHandler = [(WRM_LocationControllerIOS *)self clientLocationHandler];
 
-      if (v8)
+      if (clientLocationHandler)
       {
-        v9 = [(WRM_LocationControllerIOS *)self location];
-        [v9 coordinate];
+        location = [(WRM_LocationControllerIOS *)self location];
+        [location coordinate];
         v11 = v10;
 
-        v12 = [(WRM_LocationControllerIOS *)self location];
-        [v12 coordinate];
+        location2 = [(WRM_LocationControllerIOS *)self location];
+        [location2 coordinate];
         v14 = v13;
 
-        v15 = [(WRM_LocationControllerIOS *)self location];
-        [v15 altitude];
+        location3 = [(WRM_LocationControllerIOS *)self location];
+        [location3 altitude];
         v17 = v16;
 
-        v18 = [(WRM_LocationControllerIOS *)self location];
-        [v18 horizontalAccuracy];
+        location4 = [(WRM_LocationControllerIOS *)self location];
+        [location4 horizontalAccuracy];
         v20 = v19;
 
         [WCM_Logging logLevel:22 message:@"LocationController: invoke clientLocationHandler"];
-        v21 = [(WRM_LocationControllerIOS *)self clientLocationHandler];
-        v22 = [v7 timestamp];
-        [v22 timeIntervalSinceReferenceDate];
+        clientLocationHandler2 = [(WRM_LocationControllerIOS *)self clientLocationHandler];
+        timestamp = [lastObject timestamp];
+        [timestamp timeIntervalSinceReferenceDate];
         v24 = v23;
-        v25 = [(WRM_LocationControllerIOS *)self location];
-        [v25 speed];
-        v21[2](v21, 0, v11, v14, v17, v20, v24, v26);
+        location5 = [(WRM_LocationControllerIOS *)self location];
+        [location5 speed];
+        clientLocationHandler2[2](clientLocationHandler2, 0, v11, v14, v17, v20, v24, v26);
       }
     }
 
@@ -120,15 +120,15 @@
 
   else
   {
-    [WCM_Logging logLevel:22 message:@"LocationController: location received while stopped %@", v6];
+    [WCM_Logging logLevel:22 message:@"LocationController: location received while stopped %@", locationsCopy];
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  if (a4)
+  if (error)
   {
-    [WCM_Logging logLevel:22 message:@"LocationController: didFailWithError, %@", a4];
+    [WCM_Logging logLevel:22 message:@"LocationController: didFailWithError, %@", error];
   }
 }
 

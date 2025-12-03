@@ -1,21 +1,21 @@
 @interface NLPLearnerUtils
-+ (BOOL)checkVietnameseCharactersInText:(id)a3;
++ (BOOL)checkVietnameseCharactersInText:(id)text;
 + (BOOL)isInternalInstall;
-+ (id)getAttachmentURLByName:(id)a3 attachments:(id)a4 error:(id *)a5;
-+ (id)getAttachmentURLByName:(id)a3 inDirectory:(id)a4 error:(id *)a5;
-+ (id)languageForText:(id)a3 checkVietnamese:(BOOL)a4;
-+ (id)messageContentForEvent:(id)a3;
-+ (id)messageContentForEvent:(id)a3 andLanguage:(id)a4;
-+ (unint64_t)sourceForEvent:(id)a3;
++ (id)getAttachmentURLByName:(id)name attachments:(id)attachments error:(id *)error;
++ (id)getAttachmentURLByName:(id)name inDirectory:(id)directory error:(id *)error;
++ (id)languageForText:(id)text checkVietnamese:(BOOL)vietnamese;
++ (id)messageContentForEvent:(id)event;
++ (id)messageContentForEvent:(id)event andLanguage:(id)language;
++ (unint64_t)sourceForEvent:(id)event;
 + (void)initialize;
-+ (void)removeTemporaryFile:(id)a3;
++ (void)removeTemporaryFile:(id)file;
 @end
 
 @implementation NLPLearnerUtils
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog_0 = os_log_create("com.apple.NLPLearner", "NLPLearnerUtils");
 
@@ -40,30 +40,30 @@ uint64_t __36__NLPLearnerUtils_isInternalInstall__block_invoke()
   return result;
 }
 
-+ (id)getAttachmentURLByName:(id)a3 inDirectory:(id)a4 error:(id *)a5
++ (id)getAttachmentURLByName:(id)name inDirectory:(id)directory error:(id *)error
 {
   v7 = MEMORY[0x277CCAA00];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultManager];
-  v11 = [v10 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:0 options:0 error:a5];
+  directoryCopy = directory;
+  nameCopy = name;
+  defaultManager = [v7 defaultManager];
+  v11 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:0 error:error];
 
-  v12 = [NLPLearnerUtils getAttachmentURLByName:v9 attachments:v11 error:a5];
+  v12 = [NLPLearnerUtils getAttachmentURLByName:nameCopy attachments:v11 error:error];
 
   return v12;
 }
 
-+ (id)getAttachmentURLByName:(id)a3 attachments:(id)a4 error:(id *)a5
++ (id)getAttachmentURLByName:(id)name attachments:(id)attachments error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  nameCopy = name;
+  attachmentsCopy = attachments;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v8;
+  v10 = attachmentsCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v11)
   {
@@ -79,32 +79,32 @@ uint64_t __36__NLPLearnerUtils_isInternalInstall__block_invoke()
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v15 lastPathComponent];
-        v17 = [v16 hasSuffix:v7];
+        lastPathComponent = [v15 lastPathComponent];
+        v17 = [lastPathComponent hasSuffix:nameCopy];
 
         if (v17)
         {
-          v21 = [v15 path];
-          v22 = [v9 fileExistsAtPath:v21 isDirectory:0];
+          path = [v15 path];
+          v22 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
           if (v22)
           {
-            a5 = v15;
+            error = v15;
           }
 
-          else if (a5)
+          else if (error)
           {
             v23 = MEMORY[0x277CCA9B8];
             v34 = *MEMORY[0x277CCA450];
-            v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ resource not downloaded", v7];
-            v35 = v24;
+            nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ resource not downloaded", nameCopy];
+            v35 = nameCopy;
             v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-            *a5 = [v23 errorWithDomain:@"com.apple.QuickTypeDESPlugin" code:5 userInfo:v25];
+            *error = [v23 errorWithDomain:@"com.apple.QuickTypeDESPlugin" code:5 userInfo:v25];
 
-            a5 = 0;
+            error = 0;
           }
 
-          v19 = v10;
+          nameCopy2 = v10;
           goto LABEL_16;
         }
       }
@@ -119,30 +119,30 @@ uint64_t __36__NLPLearnerUtils_isInternalInstall__block_invoke()
     }
   }
 
-  if (a5)
+  if (error)
   {
     v18 = MEMORY[0x277CCA9B8];
     v32 = *MEMORY[0x277CCA450];
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"missing %@ resource for PFL", v7];
-    v33 = v19;
+    nameCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"missing %@ resource for PFL", nameCopy];
+    v33 = nameCopy2;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    *a5 = [v18 errorWithDomain:@"com.apple.QuickTypeDESPlugin" code:5 userInfo:v20];
+    *error = [v18 errorWithDomain:@"com.apple.QuickTypeDESPlugin" code:5 userInfo:v20];
 
-    a5 = 0;
+    error = 0;
 LABEL_16:
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
-+ (void)removeTemporaryFile:(id)a3
++ (void)removeTemporaryFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v7 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v7];
+  v5 = [v4 removeItemAtPath:fileCopy error:&v7];
   v6 = v7;
   if (v5)
   {
@@ -158,16 +158,16 @@ LABEL_16:
   }
 }
 
-+ (id)messageContentForEvent:(id)a3
++ (id)messageContentForEvent:(id)event
 {
-  v3 = [a3 interaction];
+  interaction = [event interaction];
   v4 = INTypedInteractionWithInteraction();
 
-  v5 = [v4 intent];
+  intent = [v4 intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 content];
+    content = [intent content];
     if (os_log_type_enabled(sLog_0, OS_LOG_TYPE_DEBUG))
     {
       +[NLPLearnerUtils messageContentForEvent:];
@@ -177,9 +177,9 @@ LABEL_16:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 _nonNilParameters], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", @"userTypedContent"), v7, v8))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([intent _nonNilParameters], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", @"userTypedContent"), v7, v8))
     {
-      v6 = [v5 userTypedContent];
+      content = [intent userTypedContent];
       if (os_log_type_enabled(sLog_0, OS_LOG_TYPE_DEBUG))
       {
         +[NLPLearnerUtils messageContentForEvent:];
@@ -194,20 +194,20 @@ LABEL_16:
         [NLPLearnerUtils messageContentForEvent:v9];
       }
 
-      v6 = 0;
+      content = 0;
     }
   }
 
-  return v6;
+  return content;
 }
 
-+ (id)messageContentForEvent:(id)a3 andLanguage:(id)a4
++ (id)messageContentForEvent:(id)event andLanguage:(id)language
 {
-  v5 = a4;
-  v6 = [NLPLearnerUtils messageContentForEvent:a3];
-  if (v6 && (+[NLPLearnerUtils languageForText:](NLPLearnerUtils, "languageForText:", v6), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:v5], v7, (v8 & 1) != 0))
+  languageCopy = language;
+  v6 = [NLPLearnerUtils messageContentForEvent:event];
+  if (v6 && (+[NLPLearnerUtils languageForText:](NLPLearnerUtils, "languageForText:", v6), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:languageCopy], v7, (v8 & 1) != 0))
   {
-    if ([v6 length] > 0x1D || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CD8790]) & 1) != 0)
+    if ([v6 length] > 0x1D || (objc_msgSend(languageCopy, "isEqualToString:", *MEMORY[0x277CD8790]) & 1) != 0)
     {
       v9 = v6;
       goto LABEL_9;
@@ -230,12 +230,12 @@ LABEL_9:
   return v9;
 }
 
-+ (unint64_t)sourceForEvent:(id)a3
++ (unint64_t)sourceForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 source];
-  v5 = [v4 bundleID];
-  v6 = [v5 containsString:@"MobileSMS"];
+  eventCopy = event;
+  source = [eventCopy source];
+  bundleID = [source bundleID];
+  v6 = [bundleID containsString:@"MobileSMS"];
 
   if (v6)
   {
@@ -244,9 +244,9 @@ LABEL_9:
 
   else
   {
-    v8 = [v3 source];
-    v9 = [v8 bundleID];
-    v10 = [v9 containsString:@"mobilemail"];
+    source2 = [eventCopy source];
+    bundleID2 = [source2 bundleID];
+    v10 = [bundleID2 containsString:@"mobilemail"];
 
     if (v10)
     {
@@ -267,11 +267,11 @@ LABEL_9:
   return v7;
 }
 
-+ (id)languageForText:(id)a3 checkVietnamese:(BOOL)a4
++ (id)languageForText:(id)text checkVietnamese:(BOOL)vietnamese
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4 && ([objc_opt_class() checkVietnameseCharactersInText:v5] & 1) != 0)
+  vietnameseCopy = vietnamese;
+  textCopy = text;
+  if (vietnameseCopy && ([objc_opt_class() checkVietnameseCharactersInText:textCopy] & 1) != 0)
   {
     v6 = 0x277CD89A0;
   }
@@ -282,18 +282,18 @@ LABEL_9:
   }
 
   v7 = objc_alloc_init(*v6);
-  [v7 processString:v5];
-  v8 = [v7 dominantLanguage];
+  [v7 processString:textCopy];
+  dominantLanguage = [v7 dominantLanguage];
 
-  return v8;
+  return dominantLanguage;
 }
 
-+ (BOOL)checkVietnameseCharactersInText:(id)a3
++ (BOOL)checkVietnameseCharactersInText:(id)text
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 vietnameseCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  textCopy = text;
+  vietnameseCharacterSet = [v3 vietnameseCharacterSet];
+  v6 = [textCopy rangeOfCharacterFromSet:vietnameseCharacterSet];
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }

@@ -1,24 +1,24 @@
 @interface TPSAssetFileInfo
-- (BOOL)isEqual:(id)a3;
-- (TPSAssetFileInfo)initWithCoder:(id)a3;
-- (TPSAssetFileInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSAssetFileInfo)initWithCoder:(id)coder;
+- (TPSAssetFileInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSAssetFileInfo
 
-- (TPSAssetFileInfo)initWithDictionary:(id)a3
+- (TPSAssetFileInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = TPSAssetFileInfo;
-  v5 = [(TPSSerializableObject *)&v15 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v15 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 TPSSafeStringForKey:@"fileId"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"fileId"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -28,7 +28,7 @@
       goto LABEL_8;
     }
 
-    v8 = [v4 TPSSafeIntegerForKey:@"scale"];
+    v8 = [dictionaryCopy TPSSafeIntegerForKey:@"scale"];
     v9 = 0x7FFFFFFFFFFFFFFFLL;
     if (v8)
     {
@@ -36,9 +36,9 @@
     }
 
     v5->_scale = v9;
-    v10 = [v4 TPSSafeStringForKey:@"userInterface"];
+    v10 = [dictionaryCopy TPSSafeStringForKey:@"userInterface"];
     v5->_userInterface = [v10 isEqualToString:@"dark"];
-    v11 = [[TPSSize alloc] initWithDictionary:v4];
+    v11 = [[TPSSize alloc] initWithDictionary:dictionaryCopy];
     size = v5->_size;
     v5->_size = v11;
   }
@@ -49,15 +49,15 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = TPSAssetFileInfo;
-  v4 = [(TPSSerializableObject *)&v8 copyWithZone:a3];
+  v4 = [(TPSSerializableObject *)&v8 copyWithZone:zone];
   [v4 setScale:{-[TPSAssetFileInfo scale](self, "scale")}];
   [v4 setUserInterface:{-[TPSAssetFileInfo userInterface](self, "userInterface")}];
-  v5 = [(TPSAssetFileInfo *)self identifier];
-  [v4 setIdentifier:v5];
+  identifier = [(TPSAssetFileInfo *)self identifier];
+  [v4 setIdentifier:identifier];
 
   v6 = [(TPSAssetFileInfo *)self size];
   [v4 setSize:v6];
@@ -65,21 +65,21 @@ LABEL_8:
   return v4;
 }
 
-- (TPSAssetFileInfo)initWithCoder:(id)a3
+- (TPSAssetFileInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TPSAssetFileInfo;
-  v5 = [(TPSSerializableObject *)&v11 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_scale = [v4 decodeIntegerForKey:@"scale"];
-    v5->_userInterface = [v4 decodeIntegerForKey:@"userInterface"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileId"];
+    v5->_scale = [coderCopy decodeIntegerForKey:@"scale"];
+    v5->_userInterface = [coderCopy decodeIntegerForKey:@"userInterface"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileId"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     size = v5->_size;
     v5->_size = v8;
   }
@@ -87,19 +87,19 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSAssetFileInfo;
-  v4 = a3;
-  [(TPSSerializableObject *)&v7 encodeWithCoder:v4];
-  [v4 encodeInteger:-[TPSAssetFileInfo scale](self forKey:{"scale", v7.receiver, v7.super_class), @"scale"}];
-  [v4 encodeInteger:-[TPSAssetFileInfo userInterface](self forKey:{"userInterface"), @"userInterface"}];
-  v5 = [(TPSAssetFileInfo *)self identifier];
-  [v4 encodeObject:v5 forKey:@"fileId"];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[TPSAssetFileInfo scale](self forKey:{"scale", v7.receiver, v7.super_class), @"scale"}];
+  [coderCopy encodeInteger:-[TPSAssetFileInfo userInterface](self forKey:{"userInterface"), @"userInterface"}];
+  identifier = [(TPSAssetFileInfo *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"fileId"];
 
   v6 = [(TPSAssetFileInfo *)self size];
-  [v4 encodeObject:v6 forKey:@"size"];
+  [coderCopy encodeObject:v6 forKey:@"size"];
 }
 
 - (id)debugDescription
@@ -110,8 +110,8 @@ LABEL_8:
   v4 = [(TPSSerializableObject *)&v11 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSAssetFileInfo *)self identifier];
-  [v5 appendFormat:@"\n  %@ = %@", @"fileId", v6];
+  identifier = [(TPSAssetFileInfo *)self identifier];
+  [v5 appendFormat:@"\n  %@ = %@", @"fileId", identifier];
 
   [v5 appendFormat:@"\n  %@ = %ld", @"userInterface", -[TPSAssetFileInfo userInterface](self, "userInterface")];
   [v5 appendFormat:@"\n  %@ = %ld", @"scale", -[TPSAssetFileInfo scale](self, "scale")];
@@ -176,19 +176,19 @@ uint64_t __31__TPSAssetFileInfo_na_identity__block_invoke_6(uint64_t a1, void *a
   return [v2 numberWithInteger:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

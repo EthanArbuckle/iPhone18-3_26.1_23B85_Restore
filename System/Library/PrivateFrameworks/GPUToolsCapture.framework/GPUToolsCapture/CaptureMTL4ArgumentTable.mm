@@ -1,27 +1,27 @@
 @interface CaptureMTL4ArgumentTable
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4ArgumentTable)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4ArgumentTable)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4;
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4;
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4;
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index;
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index;
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index;
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index;
 - (void)touch;
 @end
 
 @implementation CaptureMTL4ArgumentTable
 
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTL4ArgumentTableSPI *)self->_baseObject setTexture:a3._impl atIndex:a4];
+  [(MTL4ArgumentTableSPI *)self->_baseObject setTexture:texture._impl atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15178;
   v9 = BYTE9(v19);
@@ -41,10 +41,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTL4ArgumentTable *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTL4ArgumentTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -53,22 +53,22 @@
   }
 
   v10->_impl = var0;
-  v10[1]._impl = a3._impl;
-  v10[2]._impl = a4;
+  v10[1]._impl = texture._impl;
+  v10[2]._impl = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTL4ArgumentTableSPI *)self->_baseObject setSamplerState:a3._impl atIndex:a4];
+  [(MTL4ArgumentTableSPI *)self->_baseObject setSamplerState:state._impl atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15179;
   v9 = BYTE9(v19);
@@ -88,10 +88,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTL4ArgumentTable *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTL4ArgumentTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -100,22 +100,22 @@
   }
 
   v10->_impl = var0;
-  v10[1]._impl = a3._impl;
-  v10[2]._impl = a4;
+  v10[1]._impl = state._impl;
+  v10[2]._impl = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTL4ArgumentTableSPI *)self->_baseObject setResource:a3._impl atBufferIndex:a4];
+  [(MTL4ArgumentTableSPI *)self->_baseObject setResource:resource._impl atBufferIndex:index];
   v8 = v18;
   *(v18 + 8) = -15180;
   v9 = BYTE9(v19);
@@ -135,10 +135,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTL4ArgumentTable *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTL4ArgumentTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -147,22 +147,22 @@
   }
 
   v10->_impl = var0;
-  v10[1]._impl = a3._impl;
-  v10[2]._impl = a4;
+  v10[1]._impl = resource._impl;
+  v10[2]._impl = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTL4ArgumentTableSPI *)self->_baseObject setAddress:a3 attributeStride:a4 atIndex:a5];
+  [(MTL4ArgumentTableSPI *)self->_baseObject setAddress:address attributeStride:stride atIndex:index];
   v10 = v20;
   *(v20 + 8) = -14848;
   v11 = BYTE9(v21);
@@ -182,10 +182,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTL4ArgumentTable *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTL4ArgumentTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -194,23 +194,23 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = address;
+  *(v12 + 2) = stride;
+  *(v12 + 3) = index;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTL4ArgumentTableSPI *)self->_baseObject setAddress:a3 atIndex:a4];
+  [(MTL4ArgumentTableSPI *)self->_baseObject setAddress:address atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15181;
   v9 = BYTE9(v19);
@@ -230,10 +230,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTL4ArgumentTable *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTL4ArgumentTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -242,8 +242,8 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = address;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
@@ -276,10 +276,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4ArgumentTable *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4ArgumentTable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -298,13 +298,13 @@
   [(CaptureMTL4ArgumentTable *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4ArgumentTableSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4ArgumentTableSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -359,22 +359,22 @@
   }
 }
 
-- (CaptureMTL4ArgumentTable)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTL4ArgumentTable)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTL4ArgumentTable;
   v9 = [(CaptureMTL4ArgumentTable *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

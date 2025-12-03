@@ -1,33 +1,33 @@
 @interface SGM2HarvestCost
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDocumentSource:(id)a3;
-- (int)StringAsHarvestSource:(id)a3;
+- (int)StringAsDocumentSource:(id)source;
+- (int)StringAsHarvestSource:(id)source;
 - (int)documentSource;
 - (int)harvestSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHarvestSource:(BOOL)a3;
-- (void)setHasHarvestedOnBattery:(BOOL)a3;
-- (void)setHasHighPriority:(BOOL)a3;
-- (void)setHasReceivedOnBattery:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHarvestSource:(BOOL)source;
+- (void)setHasHarvestedOnBattery:(BOOL)battery;
+- (void)setHasHighPriority:(BOOL)priority;
+- (void)setHasReceivedOnBattery:(BOOL)battery;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2HarvestCost
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_documentSource = *(v4 + 2);
+    self->_documentSource = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -40,14 +40,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 8) == 0)
+  else if ((*(fromCopy + 20) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_highPriority = *(v4 + 17);
+  self->_highPriority = *(fromCopy + 17);
   *&self->_has |= 8u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -60,9 +60,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_receivedOnBattery = *(v4 + 18);
+  self->_receivedOnBattery = *(fromCopy + 18);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -75,12 +75,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_harvestedOnBattery = *(v4 + 16);
+  self->_harvestedOnBattery = *(fromCopy + 16);
   *&self->_has |= 4u;
-  if ((*(v4 + 20) & 2) != 0)
+  if ((*(fromCopy + 20) & 2) != 0)
   {
 LABEL_6:
-    self->_harvestSource = *(v4 + 3);
+    self->_harvestSource = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 
@@ -155,84 +155,84 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_documentSource != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_documentSource != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 20) & 8) == 0)
+    if ((*(equalCopy + 20) & 8) == 0)
     {
       goto LABEL_34;
     }
 
-    v6 = *(v4 + 17);
+    v6 = *(equalCopy + 17);
     if (self->_highPriority)
     {
-      if ((*(v4 + 17) & 1) == 0)
+      if ((*(equalCopy + 17) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 17))
+    else if (*(equalCopy + 17))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 20) & 8) != 0)
+  else if ((*(equalCopy + 20) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 20) & 0x10) == 0)
+    if ((*(equalCopy + 20) & 0x10) == 0)
     {
       goto LABEL_34;
     }
 
-    v7 = *(v4 + 18);
+    v7 = *(equalCopy + 18);
     if (self->_receivedOnBattery)
     {
-      if ((*(v4 + 18) & 1) == 0)
+      if ((*(equalCopy + 18) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 18))
+    else if (*(equalCopy + 18))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 20) & 0x10) != 0)
+  else if ((*(equalCopy + 20) & 0x10) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 20) & 4) == 0)
+    if ((*(equalCopy + 20) & 4) == 0)
     {
       goto LABEL_13;
     }
@@ -242,30 +242,30 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ((*(v4 + 20) & 4) == 0)
+  if ((*(equalCopy + 20) & 4) == 0)
   {
     goto LABEL_34;
   }
 
-  v8 = *(v4 + 16);
+  v8 = *(equalCopy + 16);
   if (self->_harvestedOnBattery)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_34;
   }
 
 LABEL_13:
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_harvestSource != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_harvestSource != *(equalCopy + 3))
     {
       goto LABEL_34;
     }
@@ -278,9 +278,9 @@ LABEL_35:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -347,14 +347,14 @@ LABEL_6:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_documentSource;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_documentSource;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 17) = self->_highPriority;
-  *(v4 + 20) |= 8u;
+  *(toCopy + 17) = self->_highPriority;
+  *(toCopy + 20) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(v4 + 18) = self->_receivedOnBattery;
-  *(v4 + 20) |= 0x10u;
+  *(toCopy + 18) = self->_receivedOnBattery;
+  *(toCopy + 20) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -403,21 +403,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(v4 + 16) = self->_harvestedOnBattery;
-  *(v4 + 20) |= 4u;
+  *(toCopy + 16) = self->_harvestedOnBattery;
+  *(toCopy + 20) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    v4[3] = self->_harvestSource;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_harvestSource;
+    *(toCopy + 20) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -485,7 +485,7 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
@@ -500,7 +500,7 @@ LABEL_7:
       v6 = off_27894BEA0[documentSource];
     }
 
-    [v3 setObject:v6 forKey:@"documentSource"];
+    [dictionary setObject:v6 forKey:@"documentSource"];
 
     has = self->_has;
   }
@@ -508,7 +508,7 @@ LABEL_7:
   if ((has & 8) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_highPriority];
-    [v3 setObject:v7 forKey:@"highPriority"];
+    [dictionary setObject:v7 forKey:@"highPriority"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -521,7 +521,7 @@ LABEL_8:
 
 LABEL_13:
       v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_harvestedOnBattery];
-      [v3 setObject:v9 forKey:@"harvestedOnBattery"];
+      [dictionary setObject:v9 forKey:@"harvestedOnBattery"];
 
       if ((*&self->_has & 2) == 0)
       {
@@ -540,7 +540,7 @@ LABEL_14:
         v11 = off_27894BEE0[harvestSource];
       }
 
-      [v3 setObject:v11 forKey:@"harvestSource"];
+      [dictionary setObject:v11 forKey:@"harvestSource"];
 
       goto LABEL_18;
     }
@@ -552,7 +552,7 @@ LABEL_14:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_receivedOnBattery];
-  [v3 setObject:v8 forKey:@"receivedOnBattery"];
+  [dictionary setObject:v8 forKey:@"receivedOnBattery"];
 
   has = self->_has;
   if ((has & 4) != 0)
@@ -568,7 +568,7 @@ LABEL_9:
 
 LABEL_18:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -577,56 +577,56 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = SGM2HarvestCost;
   v4 = [(SGM2HarvestCost *)&v8 description];
-  v5 = [(SGM2HarvestCost *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2HarvestCost *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsHarvestSource:(id)a3
+- (int)StringAsHarvestSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGM2HarvestSourceInMemory"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"SGM2HarvestSourceInMemory"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceRealtime"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceRealtime"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceRealtimeNoBudget"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceRealtimeNoBudget"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceOnDiskOverflow"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceOnDiskOverflow"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceOnDiskNoBudget"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceOnDiskNoBudget"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceOnDiskTimeout"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceOnDiskTimeout"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceOnDiskClosed"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceOnDiskClosed"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceOnDiskLegacy"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceOnDiskLegacy"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SGM2HarvestSourceProactiveHarvesting"])
+  else if ([sourceCopy isEqualToString:@"SGM2HarvestSourceProactiveHarvesting"])
   {
     v4 = 8;
   }
@@ -639,9 +639,9 @@ LABEL_18:
   return v4;
 }
 
-- (void)setHasHarvestSource:(BOOL)a3
+- (void)setHasHarvestSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -667,9 +667,9 @@ LABEL_18:
   }
 }
 
-- (void)setHasHarvestedOnBattery:(BOOL)a3
+- (void)setHasHarvestedOnBattery:(BOOL)battery
 {
-  if (a3)
+  if (battery)
   {
     v3 = 4;
   }
@@ -682,9 +682,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasReceivedOnBattery:(BOOL)a3
+- (void)setHasReceivedOnBattery:(BOOL)battery
 {
-  if (a3)
+  if (battery)
   {
     v3 = 16;
   }
@@ -697,9 +697,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHighPriority:(BOOL)a3
+- (void)setHasHighPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 8;
   }
@@ -712,45 +712,45 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsDocumentSource:(id)a3
+- (int)StringAsDocumentSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"otherFirstParty"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"otherFirstParty"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"otherThirdParty"])
+  else if ([sourceCopy isEqualToString:@"otherThirdParty"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Safari"])
+  else if ([sourceCopy isEqualToString:@"Safari"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"News"])
+  else if ([sourceCopy isEqualToString:@"News"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([sourceCopy isEqualToString:@"Mail"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([sourceCopy isEqualToString:@"Messages"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Notes"])
+  else if ([sourceCopy isEqualToString:@"Notes"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Reminders"])
+  else if ([sourceCopy isEqualToString:@"Reminders"])
   {
     v4 = 7;
   }

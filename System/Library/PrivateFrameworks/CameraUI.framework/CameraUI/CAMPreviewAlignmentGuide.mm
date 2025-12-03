@@ -1,16 +1,16 @@
 @interface CAMPreviewAlignmentGuide
-- (CAMPreviewAlignmentGuide)initWithFrame:(CGRect)a3;
+- (CAMPreviewAlignmentGuide)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)previewAlignmentModelDidChangeOpacity:(id)a3;
+- (void)previewAlignmentModelDidChangeOpacity:(id)opacity;
 @end
 
 @implementation CAMPreviewAlignmentGuide
 
-- (CAMPreviewAlignmentGuide)initWithFrame:(CGRect)a3
+- (CAMPreviewAlignmentGuide)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = CAMPreviewAlignmentGuide;
-  v3 = [(CAMPreviewAlignmentGuide *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMPreviewAlignmentGuide *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,7 +31,7 @@
     v4->__targetCrosshair = v9;
 
     [(CAMPreviewAlignmentGuide *)v4 addSubview:v4->__targetCrosshair];
-    v11 = [(CAMLevelCrosshair *)v4->__targetCrosshair layer];
+    layer = [(CAMLevelCrosshair *)v4->__targetCrosshair layer];
     v12 = *(MEMORY[0x1E69792E8] + 48);
     v17[2] = *(MEMORY[0x1E69792E8] + 32);
     v17[3] = v12;
@@ -45,7 +45,7 @@
     v15 = *(MEMORY[0x1E69792E8] + 112);
     v20 = *(MEMORY[0x1E69792E8] + 96);
     v21 = v15;
-    [v11 setSublayerTransform:v17];
+    [layer setSublayerTransform:v17];
   }
 
   return v4;
@@ -54,8 +54,8 @@
 - (void)layoutSubviews
 {
   [(CAMPreviewAlignmentGuide *)self bounds];
-  v3 = [(CAMPreviewAlignmentGuide *)self alignmentModel];
-  v4 = v3;
+  alignmentModel = [(CAMPreviewAlignmentGuide *)self alignmentModel];
+  v4 = alignmentModel;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -64,21 +64,21 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  if (v3)
+  if (alignmentModel)
   {
-    [v3 alignmentTransform];
+    [alignmentModel alignmentTransform];
   }
 
-  v5 = [v4 isAligned];
+  isAligned = [v4 isAligned];
   UIRectCenteredIntegralRectScale();
   UIRectGetCenter();
   v7 = v6;
   v9 = v8;
-  v10 = [(CAMPreviewAlignmentGuide *)self _guidanceCrosshair];
-  v11 = [v10 layer];
+  _guidanceCrosshair = [(CAMPreviewAlignmentGuide *)self _guidanceCrosshair];
+  layer = [_guidanceCrosshair layer];
 
-  [v11 setBounds:{0.0, 0.0, 60.0, 60.0}];
-  [v11 setPosition:{v7, v9}];
+  [layer setBounds:{0.0, 0.0, 60.0, 60.0}];
+  [layer setPosition:{v7, v9}];
   v13[4] = v18;
   v13[5] = v19;
   v13[6] = v20;
@@ -87,26 +87,26 @@
   v13[1] = v15;
   v13[2] = v16;
   v13[3] = v17;
-  [v11 setTransform:v13];
-  v12 = [(CAMPreviewAlignmentGuide *)self _targetCrosshair];
-  [v12 setBounds:{0.0, 0.0, 60.0, 60.0}];
-  [v12 setCenter:{v7, v9}];
-  [v12 setHighlighted:v5];
+  [layer setTransform:v13];
+  _targetCrosshair = [(CAMPreviewAlignmentGuide *)self _targetCrosshair];
+  [_targetCrosshair setBounds:{0.0, 0.0, 60.0, 60.0}];
+  [_targetCrosshair setCenter:{v7, v9}];
+  [_targetCrosshair setHighlighted:isAligned];
 }
 
-- (void)previewAlignmentModelDidChangeOpacity:(id)a3
+- (void)previewAlignmentModelDidChangeOpacity:(id)opacity
 {
-  v4 = a3;
-  [v4 opacity];
+  opacityCopy = opacity;
+  [opacityCopy opacity];
   v6 = v5;
-  v7 = [(CAMPreviewAlignmentGuide *)self _guidanceCrosshair];
-  [v7 setAlpha:v6];
+  _guidanceCrosshair = [(CAMPreviewAlignmentGuide *)self _guidanceCrosshair];
+  [_guidanceCrosshair setAlpha:v6];
 
-  [v4 opacity];
+  [opacityCopy opacity];
   v9 = v8;
 
-  v10 = [(CAMPreviewAlignmentGuide *)self _targetCrosshair];
-  [v10 setAlpha:v9];
+  _targetCrosshair = [(CAMPreviewAlignmentGuide *)self _targetCrosshair];
+  [_targetCrosshair setAlpha:v9];
 }
 
 @end

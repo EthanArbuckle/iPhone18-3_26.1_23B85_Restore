@@ -1,52 +1,52 @@
 @interface BMPBGroupActivitySessionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMemberHandles:(id)a3;
-- (void)addParticipantHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMemberHandles:(id)handles;
+- (void)addParticipantHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBGroupActivitySessionEvent
 
-- (void)addParticipantHandles:(id)a3
+- (void)addParticipantHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   participantHandles = self->_participantHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!participantHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_participantHandles;
     self->_participantHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     participantHandles = self->_participantHandles;
   }
 
-  [(NSMutableArray *)participantHandles addObject:v4];
+  [(NSMutableArray *)participantHandles addObject:handlesCopy];
 }
 
-- (void)addMemberHandles:(id)a3
+- (void)addMemberHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   memberHandles = self->_memberHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!memberHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_memberHandles;
     self->_memberHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     memberHandles = self->_memberHandles;
   }
 
-  [(NSMutableArray *)memberHandles addObject:v4];
+  [(NSMutableArray *)memberHandles addObject:handlesCopy];
 }
 
 - (id)description
@@ -55,70 +55,70 @@
   v8.receiver = self;
   v8.super_class = BMPBGroupActivitySessionEvent;
   v4 = [(BMPBGroupActivitySessionEvent *)&v8 description];
-  v5 = [(BMPBGroupActivitySessionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBGroupActivitySessionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_isActive];
-    [v3 setObject:v4 forKey:@"isActive"];
+    [dictionary setObject:v4 forKey:@"isActive"];
   }
 
   sourceBundleId = self->_sourceBundleId;
   if (sourceBundleId)
   {
-    [v3 setObject:sourceBundleId forKey:@"sourceBundleId"];
+    [dictionary setObject:sourceBundleId forKey:@"sourceBundleId"];
   }
 
   activitySessionId = self->_activitySessionId;
   if (activitySessionId)
   {
-    [v3 setObject:activitySessionId forKey:@"activitySessionId"];
+    [dictionary setObject:activitySessionId forKey:@"activitySessionId"];
   }
 
   activityId = self->_activityId;
   if (activityId)
   {
-    [v3 setObject:activityId forKey:@"activityId"];
+    [dictionary setObject:activityId forKey:@"activityId"];
   }
 
   messagesChatGuid = self->_messagesChatGuid;
   if (messagesChatGuid)
   {
-    [v3 setObject:messagesChatGuid forKey:@"messagesChatGuid"];
+    [dictionary setObject:messagesChatGuid forKey:@"messagesChatGuid"];
   }
 
   experienceType = self->_experienceType;
   if (experienceType)
   {
-    [v3 setObject:experienceType forKey:@"experienceType"];
+    [dictionary setObject:experienceType forKey:@"experienceType"];
   }
 
   participantHandles = self->_participantHandles;
   if (participantHandles)
   {
-    [v3 setObject:participantHandles forKey:@"participantHandles"];
+    [dictionary setObject:participantHandles forKey:@"participantHandles"];
   }
 
   memberHandles = self->_memberHandles;
   if (memberHandles)
   {
-    [v3 setObject:memberHandles forKey:@"memberHandles"];
+    [dictionary setObject:memberHandles forKey:@"memberHandles"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     isActive = self->_isActive;
@@ -217,19 +217,19 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[64] = self->_isActive;
-    v4[68] |= 1u;
+    toCopy[64] = self->_isActive;
+    toCopy[68] |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_sourceBundleId)
   {
-    [v4 setSourceBundleId:?];
+    [toCopy setSourceBundleId:?];
   }
 
   if (self->_activitySessionId)
@@ -255,10 +255,10 @@
   if ([(BMPBGroupActivitySessionEvent *)self participantHandlesCount])
   {
     [v13 clearParticipantHandles];
-    v5 = [(BMPBGroupActivitySessionEvent *)self participantHandlesCount];
-    if (v5)
+    participantHandlesCount = [(BMPBGroupActivitySessionEvent *)self participantHandlesCount];
+    if (participantHandlesCount)
     {
-      v6 = v5;
+      v6 = participantHandlesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBGroupActivitySessionEvent *)self participantHandlesAtIndex:i];
@@ -270,10 +270,10 @@
   if ([(BMPBGroupActivitySessionEvent *)self memberHandlesCount])
   {
     [v13 clearMemberHandles];
-    v9 = [(BMPBGroupActivitySessionEvent *)self memberHandlesCount];
-    if (v9)
+    memberHandlesCount = [(BMPBGroupActivitySessionEvent *)self memberHandlesCount];
+    if (memberHandlesCount)
     {
-      v10 = v9;
+      v10 = memberHandlesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(BMPBGroupActivitySessionEvent *)self memberHandlesAtIndex:j];
@@ -283,10 +283,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -294,23 +294,23 @@
     *(v5 + 68) |= 1u;
   }
 
-  v7 = [(NSString *)self->_sourceBundleId copyWithZone:a3];
+  v7 = [(NSString *)self->_sourceBundleId copyWithZone:zone];
   v8 = v6[7];
   v6[7] = v7;
 
-  v9 = [(NSString *)self->_activitySessionId copyWithZone:a3];
+  v9 = [(NSString *)self->_activitySessionId copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(NSString *)self->_activityId copyWithZone:a3];
+  v11 = [(NSString *)self->_activityId copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(NSString *)self->_messagesChatGuid copyWithZone:a3];
+  v13 = [(NSString *)self->_messagesChatGuid copyWithZone:zone];
   v14 = v6[5];
   v6[5] = v13;
 
-  v15 = [(NSString *)self->_experienceType copyWithZone:a3];
+  v15 = [(NSString *)self->_experienceType copyWithZone:zone];
   v16 = v6[3];
   v6[3] = v15;
 
@@ -334,7 +334,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v35 + 1) + 8 * v21) copyWithZone:a3];
+        v22 = [*(*(&v35 + 1) + 8 * v21) copyWithZone:zone];
         [v6 addParticipantHandles:v22];
 
         ++v21;
@@ -367,7 +367,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * v27) copyWithZone:{a3, v31}];
+        v28 = [*(*(&v31 + 1) + 8 * v27) copyWithZone:{zone, v31}];
         [v6 addMemberHandles:v28];
 
         ++v27;
@@ -384,26 +384,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 68) & 1) == 0)
+  if ((*(equalCopy + 68) & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (!self->_isActive)
   {
 LABEL_3:
@@ -417,20 +417,20 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((*(v4 + 64) & 1) == 0)
+  if ((*(equalCopy + 64) & 1) == 0)
   {
     goto LABEL_19;
   }
 
 LABEL_4:
   sourceBundleId = self->_sourceBundleId;
-  if (sourceBundleId | *(v4 + 7) && ![(NSString *)sourceBundleId isEqual:?])
+  if (sourceBundleId | *(equalCopy + 7) && ![(NSString *)sourceBundleId isEqual:?])
   {
     goto LABEL_19;
   }
 
   activitySessionId = self->_activitySessionId;
-  if (activitySessionId | *(v4 + 2))
+  if (activitySessionId | *(equalCopy + 2))
   {
     if (![(NSString *)activitySessionId isEqual:?])
     {
@@ -439,7 +439,7 @@ LABEL_4:
   }
 
   activityId = self->_activityId;
-  if (activityId | *(v4 + 1))
+  if (activityId | *(equalCopy + 1))
   {
     if (![(NSString *)activityId isEqual:?])
     {
@@ -448,7 +448,7 @@ LABEL_4:
   }
 
   messagesChatGuid = self->_messagesChatGuid;
-  if (messagesChatGuid | *(v4 + 5))
+  if (messagesChatGuid | *(equalCopy + 5))
   {
     if (![(NSString *)messagesChatGuid isEqual:?])
     {
@@ -457,7 +457,7 @@ LABEL_4:
   }
 
   experienceType = self->_experienceType;
-  if (experienceType | *(v4 + 3))
+  if (experienceType | *(equalCopy + 3))
   {
     if (![(NSString *)experienceType isEqual:?])
     {
@@ -466,7 +466,7 @@ LABEL_4:
   }
 
   participantHandles = self->_participantHandles;
-  if (participantHandles | *(v4 + 6))
+  if (participantHandles | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)participantHandles isEqual:?])
     {
@@ -475,7 +475,7 @@ LABEL_4:
   }
 
   memberHandles = self->_memberHandles;
-  if (memberHandles | *(v4 + 4))
+  if (memberHandles | *(equalCopy + 4))
   {
     v13 = [(NSMutableArray *)memberHandles isEqual:?];
   }
@@ -511,18 +511,18 @@ LABEL_20:
   return v9 ^ [(NSMutableArray *)self->_memberHandles hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[68])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[68])
   {
-    self->_isActive = v4[64];
+    self->_isActive = fromCopy[64];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBGroupActivitySessionEvent *)self setSourceBundleId:?];
   }

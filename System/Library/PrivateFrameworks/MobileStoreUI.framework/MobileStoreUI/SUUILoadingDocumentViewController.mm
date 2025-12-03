@@ -1,47 +1,47 @@
 @interface SUUILoadingDocumentViewController
 - (CGRect)_computedFrameForActivityIndicatorView;
-- (SUUILoadingDocumentViewController)initWithActivityIndicatorElement:(id)a3;
-- (SUUILoadingDocumentViewController)initWithTemplateElement:(id)a3;
+- (SUUILoadingDocumentViewController)initWithActivityIndicatorElement:(id)element;
+- (SUUILoadingDocumentViewController)initWithTemplateElement:(id)element;
 - (id)_activityIndicator;
 - (id)_layoutCache;
 - (id)_viewLayoutContext;
 - (void)_reloadViewStyling;
 - (void)_showActivityIndicator;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SUUILoadingDocumentViewController
 
-- (SUUILoadingDocumentViewController)initWithActivityIndicatorElement:(id)a3
+- (SUUILoadingDocumentViewController)initWithActivityIndicatorElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUILoadingDocumentViewController;
   v6 = [(SUUILoadingDocumentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityIndicatorElement, a3);
+    objc_storeStrong(&v6->_activityIndicatorElement, element);
   }
 
   return v7;
 }
 
-- (SUUILoadingDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUILoadingDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUILoadingDocumentViewController;
   v6 = [(SUUILoadingDocumentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
+    objc_storeStrong(&v6->_templateElement, element);
   }
 
   return v7;
@@ -79,9 +79,9 @@
   [(SUUILoadingDocumentViewController *)self _reloadViewStyling];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_activityIndicatorView && !self->_delayTimer)
   {
     v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
@@ -106,7 +106,7 @@
 
   v10.receiver = self;
   v10.super_class = SUUILoadingDocumentViewController;
-  [(SUUILoadingDocumentViewController *)&v10 viewDidAppear:v3];
+  [(SUUILoadingDocumentViewController *)&v10 viewDidAppear:appearCopy];
 }
 
 void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64_t a1)
@@ -115,9 +115,9 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
   [WeakRetained _showActivityIndicator];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   delayTimer = self->_delayTimer;
   if (delayTimer)
   {
@@ -128,7 +128,7 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
 
   v7.receiver = self;
   v7.super_class = SUUILoadingDocumentViewController;
-  [(SUUILoadingDocumentViewController *)&v7 viewWillDisappear:v3];
+  [(SUUILoadingDocumentViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -145,11 +145,11 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
   [(SUUILoadingDocumentViewController *)&v4 viewWillLayoutSubviews];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   [(SUUILoadingDocumentViewController *)self _reloadViewStyling];
 }
@@ -158,15 +158,15 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
 {
   if (self->_templateElement)
   {
-    v2 = [(SUUILoadingTemplateViewElement *)self->_templateElement activityIndicator];
+    activityIndicator = [(SUUILoadingTemplateViewElement *)self->_templateElement activityIndicator];
   }
 
   else
   {
-    v2 = self->_activityIndicatorElement;
+    activityIndicator = self->_activityIndicatorElement;
   }
 
-  return v2;
+  return activityIndicator;
 }
 
 - (id)_layoutCache
@@ -186,20 +186,20 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
 
 - (void)_reloadViewStyling
 {
-  v7 = [(SUUILoadingDocumentViewController *)self view];
-  v3 = [(SUUILoadingTemplateViewElement *)self->_templateElement style];
-  v4 = [v3 ikBackgroundColor];
-  v5 = [v4 color];
+  view = [(SUUILoadingDocumentViewController *)self view];
+  style = [(SUUILoadingTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v5)
+  if (color)
   {
-    [v7 setBackgroundColor:v5];
+    [view setBackgroundColor:color];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [v7 setBackgroundColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [view setBackgroundColor:whiteColor];
   }
 
   if (self->_activityIndicatorView)
@@ -218,7 +218,7 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
     self->_delayTimer = 0;
   }
 
-  v16 = [(SUUILoadingDocumentViewController *)self view];
+  view = [(SUUILoadingDocumentViewController *)self view];
   if (!self->_activityIndicatorView)
   {
     v5 = objc_alloc_init(SUUIActivityIndicatorView);
@@ -226,40 +226,40 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
     self->_activityIndicatorView = v5;
   }
 
-  v7 = [(SUUILoadingDocumentViewController *)self _activityIndicator];
-  v8 = [(SUUILoadingDocumentViewController *)self _viewLayoutContext];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 bounds];
+  _activityIndicator = [(SUUILoadingDocumentViewController *)self _activityIndicator];
+  _viewLayoutContext = [(SUUILoadingDocumentViewController *)self _viewLayoutContext];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v11 = v10;
 
-  [objc_opt_class() requestLayoutForViewElement:v7 width:v8 context:v11];
-  v12 = [(SUUILoadingDocumentViewController *)self _layoutCache];
-  [v12 commitLayoutRequests];
+  [objc_opt_class() requestLayoutForViewElement:_activityIndicator width:_viewLayoutContext context:v11];
+  _layoutCache = [(SUUILoadingDocumentViewController *)self _layoutCache];
+  [_layoutCache commitLayoutRequests];
 
-  [(SUUIActivityIndicatorView *)self->_activityIndicatorView reloadWithViewElement:v7 width:v8 context:v11];
+  [(SUUIActivityIndicatorView *)self->_activityIndicatorView reloadWithViewElement:_activityIndicator width:_viewLayoutContext context:v11];
   v13 = self->_activityIndicatorView;
   [(SUUILoadingDocumentViewController *)self _computedFrameForActivityIndicatorView];
   [(SUUIActivityIndicatorView *)v13 setFrame:?];
   [(SUUIActivityIndicatorView *)self->_activityIndicatorView setAutoresizingMask:45];
   v14 = self->_activityIndicatorView;
-  v15 = [v16 backgroundColor];
-  [(SUUIViewReuseView *)v14 setBackgroundColor:v15];
+  backgroundColor = [view backgroundColor];
+  [(SUUIViewReuseView *)v14 setBackgroundColor:backgroundColor];
 
-  [v16 addSubview:self->_activityIndicatorView];
+  [view addSubview:self->_activityIndicatorView];
 }
 
 - (CGRect)_computedFrameForActivityIndicatorView
 {
-  v3 = [(SUUILoadingDocumentViewController *)self view];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  view = [(SUUILoadingDocumentViewController *)self view];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
 
   [(SUUIActivityIndicatorView *)self->_activityIndicatorView frame];
   [(SUUIActivityIndicatorView *)self->_activityIndicatorView sizeThatFits:1.79769313e308, v6];
   v8 = v7;
   v10 = v9;
-  [v3 frame];
+  [view frame];
   v12 = (v11 - v8) * 0.5;
   v13 = floorf(v12);
   v14 = v6 * 0.5 - v10;
@@ -286,16 +286,16 @@ void __51__SUUILoadingDocumentViewController_viewDidAppear___block_invoke(uint64
     self->_viewLayoutContext = v4;
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setParentViewController:self];
-    v6 = [(SUUIViewController *)self clientContext];
-    [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setClientContext:v6];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setClientContext:clientContext];
     v7 = [SUUIViewElementTextLayoutCache alloc];
-    v8 = [(SUUILoadingDocumentViewController *)self _layoutCache];
-    v9 = [(SUUIViewElementTextLayoutCache *)v7 initWithLayoutCache:v8];
+    _layoutCache = [(SUUILoadingDocumentViewController *)self _layoutCache];
+    v9 = [(SUUIViewElementTextLayoutCache *)v7 initWithLayoutCache:_layoutCache];
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setLabelLayoutCache:v9];
     v10 = [SUUIResourceLoader alloc];
-    v11 = [(SUUIViewController *)self operationQueue];
-    v12 = [(SUUIResourceLoader *)v10 initWithOperationQueue:v11 clientContext:v6];
+    operationQueue = [(SUUIViewController *)self operationQueue];
+    v12 = [(SUUIResourceLoader *)v10 initWithOperationQueue:operationQueue clientContext:clientContext];
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setResourceLoader:v12];
     viewLayoutContext = self->_viewLayoutContext;

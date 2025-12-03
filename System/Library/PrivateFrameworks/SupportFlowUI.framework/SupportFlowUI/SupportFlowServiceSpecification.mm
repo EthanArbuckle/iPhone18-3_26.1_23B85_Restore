@@ -6,7 +6,7 @@
 
 - (id)userActivity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26BCC5834();
 
   return v3;

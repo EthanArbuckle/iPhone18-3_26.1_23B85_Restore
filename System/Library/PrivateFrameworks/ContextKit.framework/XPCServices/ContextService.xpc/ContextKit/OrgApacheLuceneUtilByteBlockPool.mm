@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneUtilByteBlockPool
 + (void)initialize;
-- (int)newSliceWithInt:(int)a3;
-- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (int)newSliceWithInt:(int)int;
+- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
 - (void)nextBuffer;
-- (void)setBytesRefWithOrgApacheLuceneUtilBytesRef:(id)a3 withInt:(int)a4;
+- (void)setBytesRefWithOrgApacheLuceneUtilBytesRef:(id)ref withInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilByteBlockPool
@@ -45,17 +45,17 @@ LABEL_8:
   *&self->byteOffset_ = vadd_s32(*&self->byteOffset_, 0x100008000);
 }
 
-- (int)newSliceWithInt:(int)a3
+- (int)newSliceWithInt:(int)int
 {
   byteUpto = self->byteUpto_;
-  if (byteUpto > 0x8000 - a3)
+  if (byteUpto > 0x8000 - int)
   {
     [(OrgApacheLuceneUtilByteBlockPool *)self nextBuffer];
     byteUpto = self->byteUpto_;
   }
 
-  v6 = byteUpto + a3;
-  self->byteUpto_ = byteUpto + a3;
+  v6 = byteUpto + int;
+  self->byteUpto_ = byteUpto + int;
   buffer = self->buffer_;
   if (!buffer)
   {
@@ -73,22 +73,22 @@ LABEL_8:
   return byteUpto;
 }
 
-- (void)setBytesRefWithOrgApacheLuceneUtilBytesRef:(id)a3 withInt:(int)a4
+- (void)setBytesRefWithOrgApacheLuceneUtilBytesRef:(id)ref withInt:(int)int
 {
-  if (!a3 || (buffers = self->buffers_) == 0)
+  if (!ref || (buffers = self->buffers_) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = a4;
+  intCopy = int;
   size = buffers->super.size_;
-  if (a4 >> 15 < 0 || a4 >> 15 >= size)
+  if (int >> 15 < 0 || int >> 15 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a4 >> 15);
+    IOSArray_throwOutOfBoundsWithMsg(size, int >> 15);
   }
 
-  v8 = JreStrongAssign(a3 + 1, (&buffers->elementType_)[a4 >> 15]);
-  v9 = v5 & 0x7FFF;
+  v8 = JreStrongAssign(ref + 1, (&buffers->elementType_)[int >> 15]);
+  v9 = intCopy & 0x7FFF;
   v10 = v8[2];
   if (v9 >= v10)
   {
@@ -124,21 +124,21 @@ LABEL_8:
     v14 = 1;
   }
 
-  *(a3 + 5) = v13;
-  *(a3 + 4) = v9 + v14;
+  *(ref + 5) = v13;
+  *(ref + 4) = v9 + v14;
 }
 
-- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 5);
+  v4 = *(ref + 5);
   if (v4)
   {
-    v6 = *(a3 + 4);
+    v6 = *(ref + 4);
     byteUpto = self->byteUpto_;
     v8 = byteUpto + v4;
     if (byteUpto + v4 - 0x8000 >= 1)
@@ -151,7 +151,7 @@ LABEL_8:
         v4 = (v4 + v9);
         if (v4 >= 1)
         {
-          JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), v6, self->buffer_, self->byteUpto_, v4);
+          JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), v6, self->buffer_, self->byteUpto_, v4);
           v6 = (v9 + v11 + v6);
         }
 
@@ -167,7 +167,7 @@ LABEL_8:
       v4 = ((v11 + v10) & ((v11 + v10) >> 31)) + v8;
     }
 
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), v6, self->buffer_, byteUpto, v4);
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), v6, self->buffer_, byteUpto, v4);
     self->byteUpto_ += v4;
   }
 }
@@ -181,7 +181,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = 0x900000009;
     v5[0] = xmmword_1003140F0;

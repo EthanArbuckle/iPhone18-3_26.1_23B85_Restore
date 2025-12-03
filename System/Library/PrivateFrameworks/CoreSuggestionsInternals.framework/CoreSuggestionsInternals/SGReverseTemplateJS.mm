@@ -1,55 +1,55 @@
 @interface SGReverseTemplateJS
-+ (id)fakeFlightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5;
-- (BOOL)shouldDownloadFull:(id)a3;
++ (id)fakeFlightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date;
+- (BOOL)shouldDownloadFull:(id)full;
 - (SGReverseTemplateJS)init;
-- (id)_callJSFunction:(id)a3 withArguments:(id)a4;
-- (id)_diffSchemas:(id)a3 withExpectedSchemas:(id)a4;
-- (id)_eventClassificationForEntity:(id)a3;
-- (id)_getFlightReferencesAndReservationId:(id)a3;
-- (id)_mergeSchemas:(id)a3 withExpectedSchemas:(id)a4;
-- (id)_prepareArguments:(id)a3;
-- (id)_prepareEntity:(id)a3;
-- (id)_privacyAwareLogsForMLExtractions:(id)a3;
-- (id)_resolveCandidatesForJSDict:(id)a3;
-- (id)_stringFromMemoryPressureStatus:(unint64_t)a3;
-- (id)dictionaryFromTimezone:(id)a3;
-- (id)flightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5;
-- (id)formattedDate:(id)a3 withTimezone:(id)a4;
+- (id)_callJSFunction:(id)function withArguments:(id)arguments;
+- (id)_diffSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas;
+- (id)_eventClassificationForEntity:(id)entity;
+- (id)_getFlightReferencesAndReservationId:(id)id;
+- (id)_mergeSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas;
+- (id)_prepareArguments:(id)arguments;
+- (id)_prepareEntity:(id)entity;
+- (id)_privacyAwareLogsForMLExtractions:(id)extractions;
+- (id)_resolveCandidatesForJSDict:(id)dict;
+- (id)_stringFromMemoryPressureStatus:(unint64_t)status;
+- (id)dictionaryFromTimezone:(id)timezone;
+- (id)flightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date;
+- (id)formattedDate:(id)date withTimezone:(id)timezone;
 - (id)getJSContext;
-- (id)loadJSFromASCIIFile:(id)a3;
-- (id)loadTrieWithFileName:(id)a3;
-- (id)mappedArrayBufferForFileName:(id)a3;
-- (id)outputExceptionsFromOutput:(id)a3;
-- (id)payloadToOutputWithEntryPoint:(id)a3 arguments:(id)a4;
-- (id)preprocessPackedSGMessage:(id)a3;
-- (id)processLoadRequestWithFileName:(id)a3;
-- (id)reverseMapEntity:(id)a3 forCategory:(id)a4 withSchemaExpectation:(id)a5;
-- (id)sfAirportToDictionnary:(id)a3;
-- (id)sfFlightStatusToString:(int)a3;
-- (id)sfFlightsToDictionary:(id)a3;
-- (void)LLMSchemaToOutput:(id)a3 reply:(id)a4;
-- (void)_handleMemoryPressureStatus:(unint64_t)a3;
+- (id)loadJSFromASCIIFile:(id)file;
+- (id)loadTrieWithFileName:(id)name;
+- (id)mappedArrayBufferForFileName:(id)name;
+- (id)outputExceptionsFromOutput:(id)output;
+- (id)payloadToOutputWithEntryPoint:(id)point arguments:(id)arguments;
+- (id)preprocessPackedSGMessage:(id)message;
+- (id)processLoadRequestWithFileName:(id)name;
+- (id)reverseMapEntity:(id)entity forCategory:(id)category withSchemaExpectation:(id)expectation;
+- (id)sfAirportToDictionnary:(id)dictionnary;
+- (id)sfFlightStatusToString:(int)string;
+- (id)sfFlightsToDictionary:(id)dictionary;
+- (void)LLMSchemaToOutput:(id)output reply:(id)reply;
+- (void)_handleMemoryPressureStatus:(unint64_t)status;
 - (void)dealloc;
-- (void)diffSchemas:(id)a3 withExpectedSchemas:(id)a4 reply:(id)a5;
-- (void)emailToJsonLd:(id)a3 reply:(id)a4;
-- (void)emailToOutput:(id)a3 reply:(id)a4;
-- (void)eventClassificationForEntity:(id)a3 reply:(id)a4;
-- (void)flightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5 reply:(id)a6;
+- (void)diffSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas reply:(id)reply;
+- (void)emailToJsonLd:(id)ld reply:(id)reply;
+- (void)emailToOutput:(id)output reply:(id)reply;
+- (void)eventClassificationForEntity:(id)entity reply:(id)reply;
+- (void)flightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date reply:(id)reply;
 - (void)freeJSContext;
-- (void)getFlightReferencesAndReservationId:(id)a3 reply:(id)a4;
+- (void)getFlightReferencesAndReservationId:(id)id reply:(id)reply;
 - (void)holdXpcTransactionForShortDelay;
 - (void)initCurrentAsset;
-- (void)mergeSchemas:(id)a3 withExpectedSchemas:(id)a4 reply:(id)a5;
-- (void)parseHTML:(id)a3 reply:(id)a4;
-- (void)payloadToOutputWithEntryPoint:(id)a3 arguments:(id)a4 reply:(id)a5;
-- (void)privacyAwareLogsForMLExtractions:(id)a3 reply:(id)a4;
+- (void)mergeSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas reply:(id)reply;
+- (void)parseHTML:(id)l reply:(id)reply;
+- (void)payloadToOutputWithEntryPoint:(id)point arguments:(id)arguments reply:(id)reply;
+- (void)privacyAwareLogsForMLExtractions:(id)extractions reply:(id)reply;
 - (void)refreshAssetPath;
-- (void)resolveCandidatesForJSDict:(id)a3 reply:(id)a4;
-- (void)schemaOrgToJsonLd:(id)a3 reply:(id)a4;
-- (void)schemaOrgToOutput:(id)a3 reply:(id)a4;
-- (void)setAssetPath:(id)a3;
-- (void)shouldDownloadFull:(id)a3 reply:(id)a4;
-- (void)textMessageToOutput:(id)a3 reply:(id)a4;
+- (void)resolveCandidatesForJSDict:(id)dict reply:(id)reply;
+- (void)schemaOrgToJsonLd:(id)ld reply:(id)reply;
+- (void)schemaOrgToOutput:(id)output reply:(id)reply;
+- (void)setAssetPath:(id)path;
+- (void)shouldDownloadFull:(id)full reply:(id)reply;
+- (void)textMessageToOutput:(id)output reply:(id)reply;
 @end
 
 @implementation SGReverseTemplateJS
@@ -127,8 +127,8 @@
   v5 = v8;
   if (!v8)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"assetPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"assetPath"}];
 
     v5 = 0;
   }
@@ -151,16 +151,16 @@
   [v3 runAsyncOnQueue:v4 afterDelaySeconds:v6 block:0.1];
 }
 
-- (id)_prepareArguments:(id)a3
+- (id)_prepareArguments:(id)arguments
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  argumentsCopy = arguments;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(argumentsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = argumentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -200,40 +200,40 @@
   return v5;
 }
 
-- (id)_prepareEntity:(id)a3
+- (id)_prepareEntity:(id)entity
 {
-  v5 = a3;
+  entityCopy = entity;
   if (!self->_jsContext)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:1188 description:{@"Invalid parameter not satisfying: %@", @"_jsContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:1188 description:{@"Invalid parameter not satisfying: %@", @"_jsContext"}];
   }
 
-  return v5;
+  return entityCopy;
 }
 
-- (id)outputExceptionsFromOutput:(id)a3
+- (id)outputExceptionsFromOutput:(id)output
 {
-  v3 = [a3 objectForKeyedSubscript:@"exceptions"];
+  v3 = [output objectForKeyedSubscript:@"exceptions"];
   v4 = [MEMORY[0x277D01FE0] simpleDedupe:v3];
 
   return v4;
 }
 
-- (void)schemaOrgToJsonLd:(id)a3 reply:(id)a4
+- (void)schemaOrgToJsonLd:(id)ld reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  ldCopy = ld;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__SGReverseTemplateJS_schemaOrgToJsonLd_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = ldCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = ldCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -252,20 +252,20 @@ void __47__SGReverseTemplateJS_schemaOrgToJsonLd_reply___block_invoke(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emailToJsonLd:(id)a3 reply:(id)a4
+- (void)emailToJsonLd:(id)ld reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  ldCopy = ld;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__SGReverseTemplateJS_emailToJsonLd_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = ldCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = ldCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -284,20 +284,20 @@ void __43__SGReverseTemplateJS_emailToJsonLd_reply___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)LLMSchemaToOutput:(id)a3 reply:(id)a4
+- (void)LLMSchemaToOutput:(id)output reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__SGReverseTemplateJS_LLMSchemaToOutput_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = outputCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = outputCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -313,20 +313,20 @@ void __47__SGReverseTemplateJS_LLMSchemaToOutput_reply___block_invoke(void *a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)schemaOrgToOutput:(id)a3 reply:(id)a4
+- (void)schemaOrgToOutput:(id)output reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__SGReverseTemplateJS_schemaOrgToOutput_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = outputCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = outputCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -342,20 +342,20 @@ void __47__SGReverseTemplateJS_schemaOrgToOutput_reply___block_invoke(void *a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)textMessageToOutput:(id)a3 reply:(id)a4
+- (void)textMessageToOutput:(id)output reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__SGReverseTemplateJS_textMessageToOutput_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = outputCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = outputCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -371,11 +371,11 @@ void __49__SGReverseTemplateJS_textMessageToOutput_reply___block_invoke(void *a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emailToOutput:(id)a3 reply:(id)a4
+- (void)emailToOutput:(id)output reply:(id)reply
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -387,11 +387,11 @@ void __49__SGReverseTemplateJS_textMessageToOutput_reply___block_invoke(void *a1
   v27[2] = __43__SGReverseTemplateJS_emailToOutput_reply___block_invoke;
   v27[3] = &unk_278950BE0;
   v27[4] = &v28;
-  [(SGReverseTemplateJS *)self privacyAwareLogsForMLExtractions:v6 reply:v27];
+  [(SGReverseTemplateJS *)self privacyAwareLogsForMLExtractions:outputCopy reply:v27];
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = v7;
+    v20 = replyCopy;
     v23 = [v29[5] objectForKeyedSubscript:@"domain"];
     v22 = [v29[5] objectForKeyedSubscript:@"documentDateReceived"];
     v21 = [v29[5] objectForKeyedSubscript:@"hashedSubject"];
@@ -424,7 +424,7 @@ void __49__SGReverseTemplateJS_textMessageToOutput_reply___block_invoke(void *a1
     v53 = v15;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEFAULT, "Email: %@ %@ %@ %@ %@ %@ %@ %@ %@ %@", buf, 0x66u);
 
-    v7 = v20;
+    replyCopy = v20;
   }
 
   v16 = MEMORY[0x277D42668];
@@ -433,9 +433,9 @@ void __49__SGReverseTemplateJS_textMessageToOutput_reply___block_invoke(void *a1
   v24[2] = __43__SGReverseTemplateJS_emailToOutput_reply___block_invoke_511;
   v24[3] = &unk_278955A98;
   v24[4] = self;
-  v17 = v6;
+  v17 = outputCopy;
   v25 = v17;
-  v18 = v7;
+  v18 = replyCopy;
   v26 = v18;
   [v16 runWithExceptionBarrier:v24];
 
@@ -455,32 +455,32 @@ void __43__SGReverseTemplateJS_emailToOutput_reply___block_invoke_511(void *a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)payloadToOutputWithEntryPoint:(id)a3 arguments:(id)a4 reply:(id)a5
+- (void)payloadToOutputWithEntryPoint:(id)point arguments:(id)arguments reply:(id)reply
 {
-  v8 = a5;
-  v13 = [(SGReverseTemplateJS *)self payloadToOutputWithEntryPoint:a3 arguments:a4];
+  replyCopy = reply;
+  v13 = [(SGReverseTemplateJS *)self payloadToOutputWithEntryPoint:point arguments:arguments];
   v9 = [v13 objectForKeyedSubscript:@"outputs"];
   v10 = [v13 objectForKeyedSubscript:@"sourceMetadata"];
   v11 = [(SGReverseTemplateJS *)self outputExceptionsFromOutput:v13];
   v12 = [v13 objectForKeyedSubscript:@"jsMessageLogs"];
   [(SGReverseTemplateJS *)self holdXpcTransactionForShortDelay];
-  v8[2](v8, v9, v10, v11, v12);
+  replyCopy[2](replyCopy, v9, v10, v11, v12);
 }
 
-- (void)parseHTML:(id)a3 reply:(id)a4
+- (void)parseHTML:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__SGReverseTemplateJS_parseHTML_reply___block_invoke;
   v11[3] = &unk_278955A98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = lCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -492,23 +492,23 @@ void __39__SGReverseTemplateJS_parseHTML_reply___block_invoke(uint64_t a1)
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)mergeSchemas:(id)a3 withExpectedSchemas:(id)a4 reply:(id)a5
+- (void)mergeSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schemasCopy = schemas;
+  expectedSchemasCopy = expectedSchemas;
+  replyCopy = reply;
   v11 = MEMORY[0x277D42668];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__SGReverseTemplateJS_mergeSchemas_withExpectedSchemas_reply___block_invoke;
   v15[3] = &unk_27894E090;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = schemasCopy;
+  v17 = expectedSchemasCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = expectedSchemasCopy;
+  v14 = schemasCopy;
   [v11 runWithExceptionBarrier:v15];
 }
 
@@ -519,23 +519,23 @@ void __62__SGReverseTemplateJS_mergeSchemas_withExpectedSchemas_reply___block_in
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)diffSchemas:(id)a3 withExpectedSchemas:(id)a4 reply:(id)a5
+- (void)diffSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schemasCopy = schemas;
+  expectedSchemasCopy = expectedSchemas;
+  replyCopy = reply;
   v11 = MEMORY[0x277D42668];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__SGReverseTemplateJS_diffSchemas_withExpectedSchemas_reply___block_invoke;
   v15[3] = &unk_27894E090;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = schemasCopy;
+  v17 = expectedSchemasCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = expectedSchemasCopy;
+  v14 = schemasCopy;
   [v11 runWithExceptionBarrier:v15];
 }
 
@@ -546,20 +546,20 @@ void __61__SGReverseTemplateJS_diffSchemas_withExpectedSchemas_reply___block_inv
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)resolveCandidatesForJSDict:(id)a3 reply:(id)a4
+- (void)resolveCandidatesForJSDict:(id)dict reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dictCopy = dict;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__SGReverseTemplateJS_resolveCandidatesForJSDict_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dictCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -570,20 +570,20 @@ void __56__SGReverseTemplateJS_resolveCandidatesForJSDict_reply___block_invoke(u
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getFlightReferencesAndReservationId:(id)a3 reply:(id)a4
+- (void)getFlightReferencesAndReservationId:(id)id reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__SGReverseTemplateJS_getFlightReferencesAndReservationId_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = idCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -597,20 +597,20 @@ void __65__SGReverseTemplateJS_getFlightReferencesAndReservationId_reply___block
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)privacyAwareLogsForMLExtractions:(id)a3 reply:(id)a4
+- (void)privacyAwareLogsForMLExtractions:(id)extractions reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  extractionsCopy = extractions;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__SGReverseTemplateJS_privacyAwareLogsForMLExtractions_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = extractionsCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = extractionsCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -624,20 +624,20 @@ void __62__SGReverseTemplateJS_privacyAwareLogsForMLExtractions_reply___block_in
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)eventClassificationForEntity:(id)a3 reply:(id)a4
+- (void)eventClassificationForEntity:(id)entity reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__SGReverseTemplateJS_eventClassificationForEntity_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = entityCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = entityCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -651,20 +651,20 @@ void __58__SGReverseTemplateJS_eventClassificationForEntity_reply___block_invoke
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)shouldDownloadFull:(id)a3 reply:(id)a4
+- (void)shouldDownloadFull:(id)full reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  fullCopy = full;
+  replyCopy = reply;
   v8 = MEMORY[0x277D42668];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__SGReverseTemplateJS_shouldDownloadFull_reply___block_invoke;
   v11[3] = &unk_278955A98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = fullCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = fullCopy;
   [v8 runWithExceptionBarrier:v11];
 }
 
@@ -680,10 +680,10 @@ uint64_t __48__SGReverseTemplateJS_shouldDownloadFull_reply___block_invoke(uint6
   return v4();
 }
 
-- (id)payloadToOutputWithEntryPoint:(id)a3 arguments:(id)a4
+- (id)payloadToOutputWithEntryPoint:(id)point arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  pointCopy = point;
+  argumentsCopy = arguments;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -695,11 +695,11 @@ uint64_t __48__SGReverseTemplateJS_shouldDownloadFull_reply___block_invoke(uint6
   v14 = 3221225472;
   v15 = __63__SGReverseTemplateJS_payloadToOutputWithEntryPoint_arguments___block_invoke;
   v16 = &unk_278953EC0;
-  v17 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = pointCopy;
   v18 = v9;
   v20 = &v21;
-  v10 = v7;
+  v10 = argumentsCopy;
   v19 = v10;
   dispatch_sync(queue, &v13);
   v11 = [v22[5] copy];
@@ -774,11 +774,11 @@ void __63__SGReverseTemplateJS_payloadToOutputWithEntryPoint_arguments___block_i
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)reverseMapEntity:(id)a3 forCategory:(id)a4 withSchemaExpectation:(id)a5
+- (id)reverseMapEntity:(id)entity forCategory:(id)category withSchemaExpectation:(id)expectation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entityCopy = entity;
+  categoryCopy = category;
+  expectationCopy = expectation;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -790,14 +790,14 @@ void __63__SGReverseTemplateJS_payloadToOutputWithEntryPoint_arguments___block_i
   block[1] = 3221225472;
   block[2] = __74__SGReverseTemplateJS_reverseMapEntity_forCategory_withSchemaExpectation___block_invoke;
   block[3] = &unk_27894E068;
-  v20 = v10;
+  v20 = expectationCopy;
   v21 = &v22;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = entityCopy;
+  v19 = categoryCopy;
+  v12 = expectationCopy;
+  v13 = categoryCopy;
+  v14 = entityCopy;
   dispatch_sync(queue, block);
   v15 = v23[5];
 
@@ -940,10 +940,10 @@ LABEL_24:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mergeSchemas:(id)a3 withExpectedSchemas:(id)a4
+- (id)_mergeSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas
 {
-  v6 = a3;
-  v7 = a4;
+  schemasCopy = schemas;
+  expectedSchemasCopy = expectedSchemas;
   v8 = sgEventsLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -963,11 +963,11 @@ LABEL_24:
   v14[2] = __57__SGReverseTemplateJS__mergeSchemas_withExpectedSchemas___block_invoke;
   v14[3] = &unk_278953EC0;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = expectedSchemasCopy;
+  v16 = schemasCopy;
   v17 = buf;
-  v10 = v6;
-  v11 = v7;
+  v10 = schemasCopy;
+  v11 = expectedSchemasCopy;
   dispatch_sync(queue, v14);
   v12 = *(v19 + 5);
 
@@ -1045,10 +1045,10 @@ void __57__SGReverseTemplateJS__mergeSchemas_withExpectedSchemas___block_invoke(
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_diffSchemas:(id)a3 withExpectedSchemas:(id)a4
+- (id)_diffSchemas:(id)schemas withExpectedSchemas:(id)expectedSchemas
 {
-  v6 = a3;
-  v7 = a4;
+  schemasCopy = schemas;
+  expectedSchemasCopy = expectedSchemas;
   v8 = sgEventsLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1068,11 +1068,11 @@ void __57__SGReverseTemplateJS__mergeSchemas_withExpectedSchemas___block_invoke(
   v14[2] = __56__SGReverseTemplateJS__diffSchemas_withExpectedSchemas___block_invoke;
   v14[3] = &unk_278953EC0;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = expectedSchemasCopy;
+  v16 = schemasCopy;
   v17 = buf;
-  v10 = v6;
-  v11 = v7;
+  v10 = schemasCopy;
+  v11 = expectedSchemasCopy;
   dispatch_sync(queue, v14);
   v12 = *(v19 + 5);
 
@@ -1150,9 +1150,9 @@ void __56__SGReverseTemplateJS__diffSchemas_withExpectedSchemas___block_invoke(u
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getFlightReferencesAndReservationId:(id)a3
+- (id)_getFlightReferencesAndReservationId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = sgEventsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1171,10 +1171,10 @@ void __56__SGReverseTemplateJS__diffSchemas_withExpectedSchemas___block_invoke(u
   block[1] = 3221225472;
   block[2] = __60__SGReverseTemplateJS__getFlightReferencesAndReservationId___block_invoke;
   block[3] = &unk_2789561A8;
-  v11 = v4;
+  v11 = idCopy;
   v12 = buf;
   block[4] = self;
-  v7 = v4;
+  v7 = idCopy;
   dispatch_sync(queue, block);
   v8 = *(v14 + 5);
 
@@ -1247,9 +1247,9 @@ void __60__SGReverseTemplateJS__getFlightReferencesAndReservationId___block_invo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_privacyAwareLogsForMLExtractions:(id)a3
+- (id)_privacyAwareLogsForMLExtractions:(id)extractions
 {
-  v4 = a3;
+  extractionsCopy = extractions;
   v5 = sgEventsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1268,10 +1268,10 @@ void __60__SGReverseTemplateJS__getFlightReferencesAndReservationId___block_invo
   block[1] = 3221225472;
   block[2] = __57__SGReverseTemplateJS__privacyAwareLogsForMLExtractions___block_invoke;
   block[3] = &unk_2789561A8;
-  v11 = v4;
+  v11 = extractionsCopy;
   v12 = buf;
   block[4] = self;
-  v7 = v4;
+  v7 = extractionsCopy;
   dispatch_sync(queue, block);
   v8 = *(v14 + 5);
 
@@ -1344,9 +1344,9 @@ void __57__SGReverseTemplateJS__privacyAwareLogsForMLExtractions___block_invoke(
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_resolveCandidatesForJSDict:(id)a3
+- (id)_resolveCandidatesForJSDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = sgEventsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1365,10 +1365,10 @@ void __57__SGReverseTemplateJS__privacyAwareLogsForMLExtractions___block_invoke(
   block[1] = 3221225472;
   block[2] = __51__SGReverseTemplateJS__resolveCandidatesForJSDict___block_invoke;
   block[3] = &unk_2789561A8;
-  v11 = v4;
+  v11 = dictCopy;
   v12 = buf;
   block[4] = self;
-  v7 = v4;
+  v7 = dictCopy;
   dispatch_sync(queue, block);
   v8 = *(v14 + 5);
 
@@ -1445,9 +1445,9 @@ void __51__SGReverseTemplateJS__resolveCandidatesForJSDict___block_invoke(uint64
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_eventClassificationForEntity:(id)a3
+- (id)_eventClassificationForEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = sgEventsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1466,10 +1466,10 @@ void __51__SGReverseTemplateJS__resolveCandidatesForJSDict___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __53__SGReverseTemplateJS__eventClassificationForEntity___block_invoke;
   block[3] = &unk_2789561A8;
-  v11 = v4;
+  v11 = entityCopy;
   v12 = buf;
   block[4] = self;
-  v7 = v4;
+  v7 = entityCopy;
   dispatch_sync(queue, block);
   v8 = *(v14 + 5);
 
@@ -1542,9 +1542,9 @@ void __53__SGReverseTemplateJS__eventClassificationForEntity___block_invoke(uint
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldDownloadFull:(id)a3
+- (BOOL)shouldDownloadFull:(id)full
 {
-  v4 = a3;
+  fullCopy = full;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1554,10 +1554,10 @@ void __53__SGReverseTemplateJS__eventClassificationForEntity___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __42__SGReverseTemplateJS_shouldDownloadFull___block_invoke;
   block[3] = &unk_2789561A8;
-  v9 = v4;
+  v9 = fullCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = fullCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -1624,28 +1624,28 @@ void __42__SGReverseTemplateJS_shouldDownloadFull___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadJSFromASCIIFile:(id)a3
+- (id)loadJSFromASCIIFile:(id)file
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  fileCopy = file;
+  if (fileCopy)
   {
     context = objc_autoreleasePoolPush();
     v56 = 0;
-    v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v5 options:1 error:&v56];
+    v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:fileCopy options:1 error:&v56];
     v55 = v56;
     if (v6)
     {
-      v7 = [v5 lastPathComponent];
-      if (!v7)
+      lastPathComponent = [fileCopy lastPathComponent];
+      if (!lastPathComponent)
       {
-        v40 = [MEMORY[0x277CCA890] currentHandler];
-        [v40 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:771 description:@"File URL must be a valid path."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:771 description:@"File URL must be a valid path."];
       }
 
       [(NSMutableArray *)self->_memoryMappedFiles addObject:v6];
-      [(NSMutableArray *)self->_memoryMappedFileNames addObject:v7];
-      v53 = [(JSContext *)self->_jsContext JSGlobalContextRef];
+      [(NSMutableArray *)self->_memoryMappedFileNames addObject:lastPathComponent];
+      jSGlobalContextRef = [(JSContext *)self->_jsContext JSGlobalContextRef];
       v57 = 0;
       v58 = &v57;
       v59 = 0x2020000000;
@@ -1668,10 +1668,10 @@ void __42__SGReverseTemplateJS_shouldDownloadFull___block_invoke(uint64_t a1)
       _Block_object_dispose(&v57, 8);
       if (v8)
       {
-        v11 = v8(v53);
-        v12 = [v5 absoluteString];
-        v13 = v12;
-        v14 = [v12 UTF8String];
+        v11 = v8(jSGlobalContextRef);
+        absoluteString = [fileCopy absoluteString];
+        v13 = absoluteString;
+        uTF8String = [absoluteString UTF8String];
         v57 = 0;
         v58 = &v57;
         v59 = 0x2020000000;
@@ -1694,10 +1694,10 @@ void __42__SGReverseTemplateJS_shouldDownloadFull___block_invoke(uint64_t a1)
         _Block_object_dispose(&v57, 8);
         if (v15)
         {
-          v18 = v15(v14);
+          v18 = v15(uTF8String);
 
           v19 = v6;
-          v20 = [v6 bytes];
+          bytes = [v6 bytes];
           v21 = [v6 length];
           v57 = 0;
           v58 = &v57;
@@ -1721,7 +1721,7 @@ void __42__SGReverseTemplateJS_shouldDownloadFull___block_invoke(uint64_t a1)
           _Block_object_dispose(&v57, 8);
           if (v22)
           {
-            v25 = (v22)(v11, v18, 0, v20, v21, 0, 0);
+            v25 = (v22)(v11, v18, 0, bytes, v21, 0, 0);
             v57 = 0;
             v58 = &v57;
             v59 = 0x2020000000;
@@ -1767,7 +1767,7 @@ void __42__SGReverseTemplateJS_shouldDownloadFull___block_invoke(uint64_t a1)
               _Block_object_dispose(&v57, 8);
               if (v29)
               {
-                v32 = (v29)(v53, v25, 0, 0);
+                v32 = (v29)(jSGlobalContextRef, v25, 0, 0);
                 v57 = 0;
                 v58 = &v57;
                 v59 = 0x2020000000;
@@ -1798,61 +1798,61 @@ LABEL_30:
                   goto LABEL_31;
                 }
 
-                v51 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
                 v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"void SGJSScriptRelease(JSScriptRef)"];
-                [v51 handleFailureInFunction:v52 file:@"SGReverseTemplateJS.m" lineNumber:55 description:{@"%s", dlerror()}];
+                [currentHandler2 handleFailureInFunction:v52 file:@"SGReverseTemplateJS.m" lineNumber:55 description:{@"%s", dlerror()}];
               }
 
               else
               {
-                v49 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
                 v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"JSValueRef SGJSScriptEvaluate(JSContextRef, JSScriptRef, JSValueRef, JSValueRef *)"}];
-                [v49 handleFailureInFunction:v50 file:@"SGReverseTemplateJS.m" lineNumber:54 description:{@"%s", dlerror()}];
+                [currentHandler3 handleFailureInFunction:v50 file:@"SGReverseTemplateJS.m" lineNumber:54 description:{@"%s", dlerror()}];
               }
             }
 
             else
             {
-              v47 = [MEMORY[0x277CCA890] currentHandler];
+              currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
               v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"void SGJSStringRelease(JSStringRef)"];
-              [v47 handleFailureInFunction:v48 file:@"SGReverseTemplateJS.m" lineNumber:53 description:{@"%s", dlerror()}];
+              [currentHandler4 handleFailureInFunction:v48 file:@"SGReverseTemplateJS.m" lineNumber:53 description:{@"%s", dlerror()}];
             }
           }
 
           else
           {
-            v45 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
             v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"JSScriptRef SGJSScriptCreateReferencingImmortalASCIIText(JSContextGroupRef, JSStringRef, int, const char *, size_t, JSStringRef *, int *)"}];
-            [v45 handleFailureInFunction:v46 file:@"SGReverseTemplateJS.m" lineNumber:52 description:{@"%s", dlerror()}];
+            [currentHandler5 handleFailureInFunction:v46 file:@"SGReverseTemplateJS.m" lineNumber:52 description:{@"%s", dlerror()}];
           }
         }
 
         else
         {
-          v43 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
           v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"JSStringRef SGJSStringCreateWithUTF8CString(const char *)"];
-          [v43 handleFailureInFunction:v44 file:@"SGReverseTemplateJS.m" lineNumber:51 description:{@"%s", dlerror()}];
+          [currentHandler6 handleFailureInFunction:v44 file:@"SGReverseTemplateJS.m" lineNumber:51 description:{@"%s", dlerror()}];
         }
       }
 
       else
       {
-        v41 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
         v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"JSContextGroupRef SGJSContextGetGroup(JSContextRef)"];
-        [v41 handleFailureInFunction:v42 file:@"SGReverseTemplateJS.m" lineNumber:50 description:{@"%s", dlerror()}];
+        [currentHandler7 handleFailureInFunction:v42 file:@"SGReverseTemplateJS.m" lineNumber:50 description:{@"%s", dlerror()}];
       }
 
       __break(1u);
     }
 
-    v7 = sgEventsLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    lastPathComponent = sgEventsLogHandle();
+    if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v5;
+      *&buf[4] = fileCopy;
       *&buf[12] = 2112;
       *&buf[14] = v55;
-      _os_log_fault_impl(&dword_231E60000, v7, OS_LOG_TYPE_FAULT, "SGReverseTemplateJS loadJSFromASCIIFile: Error loading JS file %@: %@", buf, 0x16u);
+      _os_log_fault_impl(&dword_231E60000, lastPathComponent, OS_LOG_TYPE_FAULT, "SGReverseTemplateJS loadJSFromASCIIFile: Error loading JS file %@: %@", buf, 0x16u);
     }
 
     v36 = 0;
@@ -1874,56 +1874,56 @@ LABEL_31:
   return v36;
 }
 
-- (id)sfFlightStatusToString:(int)a3
+- (id)sfFlightStatusToString:(int)string
 {
-  if ((a3 - 1) > 8)
+  if ((string - 1) > 8)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_27894E0C8[a3 - 1];
+    return off_27894E0C8[string - 1];
   }
 }
 
-- (id)dictionaryFromTimezone:(id)a3
+- (id)dictionaryFromTimezone:(id)timezone
 {
-  v3 = a3;
+  timezoneCopy = timezone;
   v4 = objc_opt_new();
-  v5 = [v3 name];
+  name = [timezoneCopy name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    [v4 setObject:v6 forKeyedSubscript:@"name"];
+    name2 = [timezoneCopy name];
+    [v4 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "secondsFromGMT")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(timezoneCopy, "secondsFromGMT")}];
   [v4 setObject:v7 forKeyedSubscript:@"secondsFromGMT"];
 
   return v4;
 }
 
-- (id)sfAirportToDictionnary:(id)a3
+- (id)sfAirportToDictionnary:(id)dictionnary
 {
-  v4 = a3;
+  dictionnaryCopy = dictionnary;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
-  v7 = [v4 code];
-  if (v7)
+  code = [dictionnaryCopy code];
+  if (code)
   {
-    [v6 setObject:v7 forKeyedSubscript:@"code"];
+    [v6 setObject:code forKeyedSubscript:@"code"];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v8 forKeyedSubscript:@"code"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null forKeyedSubscript:@"code"];
   }
 
-  v9 = [v4 timezone];
-  v10 = [(SGReverseTemplateJS *)self dictionaryFromTimezone:v9];
+  timezone = [dictionnaryCopy timezone];
+  v10 = [(SGReverseTemplateJS *)self dictionaryFromTimezone:timezone];
   if (v10)
   {
     [v6 setObject:v10 forKeyedSubscript:@"timezone"];
@@ -1931,110 +1931,110 @@ LABEL_31:
 
   else
   {
-    v11 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v11 forKeyedSubscript:@"timezone"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null2 forKeyedSubscript:@"timezone"];
   }
 
-  v12 = [v4 city];
-  if (v12)
+  city = [dictionnaryCopy city];
+  if (city)
   {
-    [v6 setObject:v12 forKeyedSubscript:@"city"];
-  }
-
-  else
-  {
-    v13 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v13 forKeyedSubscript:@"city"];
-  }
-
-  v14 = [v4 street];
-  if (v14)
-  {
-    [v6 setObject:v14 forKeyedSubscript:@"street"];
+    [v6 setObject:city forKeyedSubscript:@"city"];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v15 forKeyedSubscript:@"street"];
+    null3 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null3 forKeyedSubscript:@"city"];
   }
 
-  v16 = [v4 district];
-  if (v16)
+  street = [dictionnaryCopy street];
+  if (street)
   {
-    [v6 setObject:v16 forKeyedSubscript:@"district"];
-  }
-
-  else
-  {
-    v17 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v17 forKeyedSubscript:@"district"];
-  }
-
-  v18 = [v4 state];
-  if (v18)
-  {
-    [v6 setObject:v18 forKeyedSubscript:@"state"];
+    [v6 setObject:street forKeyedSubscript:@"street"];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v19 forKeyedSubscript:@"state"];
+    null4 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null4 forKeyedSubscript:@"street"];
   }
 
-  v20 = [v4 postalCode];
-  if (v20)
+  district = [dictionnaryCopy district];
+  if (district)
   {
-    [v6 setObject:v20 forKeyedSubscript:@"postalCode"];
-  }
-
-  else
-  {
-    v21 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v21 forKeyedSubscript:@"postalCode"];
-  }
-
-  v22 = [v4 countryCode];
-  if (v22)
-  {
-    [v6 setObject:v22 forKeyedSubscript:@"countryCode"];
+    [v6 setObject:district forKeyedSubscript:@"district"];
   }
 
   else
   {
-    v23 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v23 forKeyedSubscript:@"countryCode"];
+    null5 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null5 forKeyedSubscript:@"district"];
   }
 
-  v24 = [v4 country];
-  if (v24)
+  state = [dictionnaryCopy state];
+  if (state)
   {
-    [v6 setObject:v24 forKeyedSubscript:@"country"];
-  }
-
-  else
-  {
-    v25 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v25 forKeyedSubscript:@"country"];
-  }
-
-  v26 = [v4 name];
-  if (v26)
-  {
-    [v6 setObject:v26 forKeyedSubscript:@"name"];
+    [v6 setObject:state forKeyedSubscript:@"state"];
   }
 
   else
   {
-    v27 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v27 forKeyedSubscript:@"name"];
+    null6 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null6 forKeyedSubscript:@"state"];
+  }
+
+  postalCode = [dictionnaryCopy postalCode];
+  if (postalCode)
+  {
+    [v6 setObject:postalCode forKeyedSubscript:@"postalCode"];
+  }
+
+  else
+  {
+    null7 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null7 forKeyedSubscript:@"postalCode"];
+  }
+
+  countryCode = [dictionnaryCopy countryCode];
+  if (countryCode)
+  {
+    [v6 setObject:countryCode forKeyedSubscript:@"countryCode"];
+  }
+
+  else
+  {
+    null8 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null8 forKeyedSubscript:@"countryCode"];
+  }
+
+  country = [dictionnaryCopy country];
+  if (country)
+  {
+    [v6 setObject:country forKeyedSubscript:@"country"];
+  }
+
+  else
+  {
+    null9 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null9 forKeyedSubscript:@"country"];
+  }
+
+  name = [dictionnaryCopy name];
+  if (name)
+  {
+    [v6 setObject:name forKeyedSubscript:@"name"];
+  }
+
+  else
+  {
+    null10 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null10 forKeyedSubscript:@"name"];
   }
 
   v28 = objc_opt_new();
   v29 = MEMORY[0x277CCABB0];
-  v30 = [v4 location];
-  [v30 lat];
+  location = [dictionnaryCopy location];
+  [location lat];
   v31 = [v29 numberWithDouble:?];
   if (v31)
   {
@@ -2043,13 +2043,13 @@ LABEL_31:
 
   else
   {
-    v32 = [MEMORY[0x277CBEB68] null];
-    [v28 setObject:v32 forKeyedSubscript:@"lat"];
+    null11 = [MEMORY[0x277CBEB68] null];
+    [v28 setObject:null11 forKeyedSubscript:@"lat"];
   }
 
   v33 = MEMORY[0x277CCABB0];
-  v34 = [v4 location];
-  [v34 lng];
+  location2 = [dictionnaryCopy location];
+  [location2 lng];
   v35 = [v33 numberWithDouble:?];
   if (v35)
   {
@@ -2058,8 +2058,8 @@ LABEL_31:
 
   else
   {
-    v36 = [MEMORY[0x277CBEB68] null];
-    [v28 setObject:v36 forKeyedSubscript:@"lng"];
+    null12 = [MEMORY[0x277CBEB68] null];
+    [v28 setObject:null12 forKeyedSubscript:@"lng"];
   }
 
   if (v28)
@@ -2069,8 +2069,8 @@ LABEL_31:
 
   else
   {
-    v37 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v37 forKeyedSubscript:@"location"];
+    null13 = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null13 forKeyedSubscript:@"location"];
   }
 
   v38 = [v6 copy];
@@ -2080,25 +2080,25 @@ LABEL_31:
   return v38;
 }
 
-- (id)formattedDate:(id)a3 withTimezone:(id)a4
+- (id)formattedDate:(id)date withTimezone:(id)timezone
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  timezoneCopy = timezone;
   v9 = objc_autoreleasePoolPush();
-  if (!v7)
+  if (!dateCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:676 description:{@"Can't create formattedDate, date is nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:676 description:{@"Can't create formattedDate, date is nil"}];
   }
 
   dateFormatter = self->_dateFormatter;
   if (dateFormatter)
   {
-    if (v8)
+    if (timezoneCopy)
     {
 LABEL_5:
       v11 = dateFormatter;
-      [(NSISO8601DateFormatter *)v11 setTimeZone:v8];
+      [(NSISO8601DateFormatter *)v11 setTimeZone:timezoneCopy];
       v12 = [(NSISO8601DateFormatter *)v11 formatOptions]| 0x40;
       goto LABEL_8;
     }
@@ -2110,7 +2110,7 @@ LABEL_5:
     v13 = self->_dateFormatter;
     self->_dateFormatter = dateFormatter;
 
-    if (v8)
+    if (timezoneCopy)
     {
       goto LABEL_5;
     }
@@ -2124,23 +2124,23 @@ LABEL_5:
   v12 = [(NSISO8601DateFormatter *)v15 formatOptions]& 0xFFFFFFFFFFFFFFBFLL;
 LABEL_8:
   [(NSISO8601DateFormatter *)dateFormatter setFormatOptions:v12];
-  v17 = [(NSISO8601DateFormatter *)dateFormatter stringFromDate:v7];
+  v17 = [(NSISO8601DateFormatter *)dateFormatter stringFromDate:dateCopy];
 
   objc_autoreleasePoolPop(v9);
 
   return v17;
 }
 
-- (id)sfFlightsToDictionary:(id)a3
+- (id)sfFlightsToDictionary:(id)dictionary
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v74 = objc_opt_new();
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  obj = v4;
+  obj = dictionaryCopy;
   v75 = [obj countByEnumeratingWithState:&v86 objects:v91 count:16];
   if (v75)
   {
@@ -2159,89 +2159,89 @@ LABEL_8:
         v6 = *(*(&v86 + 1) + 8 * v5);
         context = objc_autoreleasePoolPush();
         v7 = objc_opt_new();
-        v8 = [v6 flightNumber];
-        if (v8)
+        flightNumber = [v6 flightNumber];
+        if (flightNumber)
         {
-          [v7 setObject:v8 forKeyedSubscript:@"flightNumber"];
+          [v7 setObject:flightNumber forKeyedSubscript:@"flightNumber"];
         }
 
         else
         {
-          v9 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v9 forKeyedSubscript:@"flightNumber"];
+          null = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null forKeyedSubscript:@"flightNumber"];
         }
 
-        v10 = [v6 carrierCode];
-        if (v10)
+        carrierCode = [v6 carrierCode];
+        if (carrierCode)
         {
-          [v7 setObject:v10 forKeyedSubscript:@"carrierCode"];
+          [v7 setObject:carrierCode forKeyedSubscript:@"carrierCode"];
         }
 
         else
         {
-          v11 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v11 forKeyedSubscript:@"carrierCode"];
+          null2 = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null2 forKeyedSubscript:@"carrierCode"];
         }
 
-        v12 = [v6 carrierName];
-        if (v12)
+        carrierName = [v6 carrierName];
+        if (carrierName)
         {
-          [v7 setObject:v12 forKeyedSubscript:@"carrierName"];
+          [v7 setObject:carrierName forKeyedSubscript:@"carrierName"];
         }
 
         else
         {
-          v13 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v13 forKeyedSubscript:@"carrierName"];
+          null3 = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null3 forKeyedSubscript:@"carrierName"];
         }
 
-        v14 = [v6 carrierPhoneNumber];
-        if (v14)
+        carrierPhoneNumber = [v6 carrierPhoneNumber];
+        if (carrierPhoneNumber)
         {
-          [v7 setObject:v14 forKeyedSubscript:@"carrierPhoneNumber"];
+          [v7 setObject:carrierPhoneNumber forKeyedSubscript:@"carrierPhoneNumber"];
         }
 
         else
         {
-          v15 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v15 forKeyedSubscript:@"carrierPhoneNumber"];
+          null4 = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null4 forKeyedSubscript:@"carrierPhoneNumber"];
         }
 
-        v16 = [v6 flightID];
-        if (v16)
+        flightID = [v6 flightID];
+        if (flightID)
         {
-          [v7 setObject:v16 forKeyedSubscript:@"flightID"];
+          [v7 setObject:flightID forKeyedSubscript:@"flightID"];
         }
 
         else
         {
-          v17 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v17 forKeyedSubscript:@"flightID"];
+          null5 = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null5 forKeyedSubscript:@"flightID"];
         }
 
-        v18 = [v6 operatorCarrierCode];
-        if (v18)
+        operatorCarrierCode = [v6 operatorCarrierCode];
+        if (operatorCarrierCode)
         {
-          [v7 setObject:v18 forKeyedSubscript:@"operatorCarrierCode"];
+          [v7 setObject:operatorCarrierCode forKeyedSubscript:@"operatorCarrierCode"];
         }
 
         else
         {
-          v19 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v19 forKeyedSubscript:@"operatorCarrierCode"];
+          null6 = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null6 forKeyedSubscript:@"operatorCarrierCode"];
         }
 
-        v20 = [v6 operatorFlightNumber];
+        operatorFlightNumber = [v6 operatorFlightNumber];
         v76 = v7;
-        if (v20)
+        if (operatorFlightNumber)
         {
-          [v7 setObject:v20 forKeyedSubscript:@"operatorFlightNumber"];
+          [v7 setObject:operatorFlightNumber forKeyedSubscript:@"operatorFlightNumber"];
         }
 
         else
         {
-          v21 = [MEMORY[0x277CBEB68] null];
-          [v7 setObject:v21 forKeyedSubscript:@"operatorFlightNumber"];
+          null7 = [MEMORY[0x277CBEB68] null];
+          [v7 setObject:null7 forKeyedSubscript:@"operatorFlightNumber"];
         }
 
         v22 = objc_opt_new();
@@ -2249,8 +2249,8 @@ LABEL_8:
         v83 = 0u;
         v84 = 0u;
         v85 = 0u;
-        v79 = [v6 legs];
-        v81 = [v79 countByEnumeratingWithState:&v82 objects:v90 count:16];
+        legs = [v6 legs];
+        v81 = [legs countByEnumeratingWithState:&v82 objects:v90 count:16];
         if (v81)
         {
           v80 = *v83;
@@ -2260,7 +2260,7 @@ LABEL_8:
             {
               if (*v83 != v80)
               {
-                objc_enumerationMutation(v79);
+                objc_enumerationMutation(legs);
               }
 
               v24 = *(*(&v82 + 1) + 8 * i);
@@ -2273,26 +2273,26 @@ LABEL_8:
 
               else
               {
-                v27 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v27 forKeyedSubscript:@"status"];
+                null8 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null8 forKeyedSubscript:@"status"];
               }
 
-              v28 = [v24 title];
-              if (v28)
+              title = [v24 title];
+              if (title)
               {
-                [v25 setObject:v28 forKeyedSubscript:@"title"];
+                [v25 setObject:title forKeyedSubscript:@"title"];
               }
 
               else
               {
-                v29 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v29 forKeyedSubscript:@"title"];
+                null9 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null9 forKeyedSubscript:@"title"];
               }
 
-              v30 = [v24 departurePublishedTime];
-              v31 = [v24 departureAirport];
-              v32 = [v31 timezone];
-              v33 = [(SGReverseTemplateJS *)self formattedDate:v30 withTimezone:v32];
+              departurePublishedTime = [v24 departurePublishedTime];
+              departureAirport = [v24 departureAirport];
+              timezone = [departureAirport timezone];
+              v33 = [(SGReverseTemplateJS *)self formattedDate:departurePublishedTime withTimezone:timezone];
               if (v33)
               {
                 [v25 setObject:v33 forKeyedSubscript:@"departurePublishedTime"];
@@ -2300,14 +2300,14 @@ LABEL_8:
 
               else
               {
-                v34 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v34 forKeyedSubscript:@"departurePublishedTime"];
+                null10 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null10 forKeyedSubscript:@"departurePublishedTime"];
               }
 
-              v35 = [v24 departureActualTime];
-              v36 = [v24 departureAirport];
-              v37 = [v36 timezone];
-              v38 = [(SGReverseTemplateJS *)self formattedDate:v35 withTimezone:v37];
+              departureActualTime = [v24 departureActualTime];
+              departureAirport2 = [v24 departureAirport];
+              timezone2 = [departureAirport2 timezone];
+              v38 = [(SGReverseTemplateJS *)self formattedDate:departureActualTime withTimezone:timezone2];
               if (v38)
               {
                 [v25 setObject:v38 forKeyedSubscript:@"departureActualTime"];
@@ -2315,38 +2315,38 @@ LABEL_8:
 
               else
               {
-                v39 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v39 forKeyedSubscript:@"departureActualTime"];
+                null11 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null11 forKeyedSubscript:@"departureActualTime"];
               }
 
-              v40 = [v24 departureTerminal];
-              if (v40)
+              departureTerminal = [v24 departureTerminal];
+              if (departureTerminal)
               {
-                [v25 setObject:v40 forKeyedSubscript:@"departureTerminal"];
+                [v25 setObject:departureTerminal forKeyedSubscript:@"departureTerminal"];
               }
 
               else
               {
-                v41 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v41 forKeyedSubscript:@"departureTerminal"];
+                null12 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null12 forKeyedSubscript:@"departureTerminal"];
               }
 
-              v42 = [v24 departureGate];
-              if (v42)
+              departureGate = [v24 departureGate];
+              if (departureGate)
               {
-                [v25 setObject:v42 forKeyedSubscript:@"departureGate"];
+                [v25 setObject:departureGate forKeyedSubscript:@"departureGate"];
               }
 
               else
               {
-                v43 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v43 forKeyedSubscript:@"departureGate"];
+                null13 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null13 forKeyedSubscript:@"departureGate"];
               }
 
-              v44 = [v24 arrivalPublishedTime];
-              v45 = [v24 arrivalAirport];
-              v46 = [v45 timezone];
-              v47 = [(SGReverseTemplateJS *)self formattedDate:v44 withTimezone:v46];
+              arrivalPublishedTime = [v24 arrivalPublishedTime];
+              arrivalAirport = [v24 arrivalAirport];
+              timezone3 = [arrivalAirport timezone];
+              v47 = [(SGReverseTemplateJS *)self formattedDate:arrivalPublishedTime withTimezone:timezone3];
               if (v47)
               {
                 [v25 setObject:v47 forKeyedSubscript:@"arrivalPublishedTime"];
@@ -2354,14 +2354,14 @@ LABEL_8:
 
               else
               {
-                v48 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v48 forKeyedSubscript:@"arrivalPublishedTime"];
+                null14 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null14 forKeyedSubscript:@"arrivalPublishedTime"];
               }
 
-              v49 = [v24 arrivalActualTime];
-              v50 = [v24 arrivalAirport];
-              v51 = [v50 timezone];
-              v52 = [(SGReverseTemplateJS *)self formattedDate:v49 withTimezone:v51];
+              arrivalActualTime = [v24 arrivalActualTime];
+              arrivalAirport2 = [v24 arrivalAirport];
+              timezone4 = [arrivalAirport2 timezone];
+              v52 = [(SGReverseTemplateJS *)self formattedDate:arrivalActualTime withTimezone:timezone4];
               if (v52)
               {
                 [v25 setObject:v52 forKeyedSubscript:@"arrivalActualTime"];
@@ -2369,36 +2369,36 @@ LABEL_8:
 
               else
               {
-                v53 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v53 forKeyedSubscript:@"arrivalActualTime"];
+                null15 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null15 forKeyedSubscript:@"arrivalActualTime"];
               }
 
-              v54 = [v24 arrivalTerminal];
-              if (v54)
+              arrivalTerminal = [v24 arrivalTerminal];
+              if (arrivalTerminal)
               {
-                [v25 setObject:v54 forKeyedSubscript:@"arrivalTerminal"];
+                [v25 setObject:arrivalTerminal forKeyedSubscript:@"arrivalTerminal"];
               }
 
               else
               {
-                v55 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v55 forKeyedSubscript:@"arrivalTerminal"];
+                null16 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null16 forKeyedSubscript:@"arrivalTerminal"];
               }
 
-              v56 = [v24 arrivalGate];
-              if (v56)
+              arrivalGate = [v24 arrivalGate];
+              if (arrivalGate)
               {
-                [v25 setObject:v56 forKeyedSubscript:@"arrivalGate"];
+                [v25 setObject:arrivalGate forKeyedSubscript:@"arrivalGate"];
               }
 
               else
               {
-                v57 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v57 forKeyedSubscript:@"arrivalGate"];
+                null17 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null17 forKeyedSubscript:@"arrivalGate"];
               }
 
-              v58 = [v24 departureAirport];
-              v59 = [(SGReverseTemplateJS *)self sfAirportToDictionnary:v58];
+              departureAirport3 = [v24 departureAirport];
+              v59 = [(SGReverseTemplateJS *)self sfAirportToDictionnary:departureAirport3];
               if (v59)
               {
                 [v25 setObject:v59 forKeyedSubscript:@"departureAirport"];
@@ -2406,12 +2406,12 @@ LABEL_8:
 
               else
               {
-                v60 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v60 forKeyedSubscript:@"departureAirport"];
+                null18 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null18 forKeyedSubscript:@"departureAirport"];
               }
 
-              v61 = [v24 arrivalAirport];
-              v62 = [(SGReverseTemplateJS *)self sfAirportToDictionnary:v61];
+              arrivalAirport3 = [v24 arrivalAirport];
+              v62 = [(SGReverseTemplateJS *)self sfAirportToDictionnary:arrivalAirport3];
               if (v62)
               {
                 [v25 setObject:v62 forKeyedSubscript:@"arrivalAirport"];
@@ -2419,12 +2419,12 @@ LABEL_8:
 
               else
               {
-                v63 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v63 forKeyedSubscript:@"arrivalAirport"];
+                null19 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null19 forKeyedSubscript:@"arrivalAirport"];
               }
 
-              v64 = [v24 divertedAirport];
-              v65 = [(SGReverseTemplateJS *)self sfAirportToDictionnary:v64];
+              divertedAirport = [v24 divertedAirport];
+              v65 = [(SGReverseTemplateJS *)self sfAirportToDictionnary:divertedAirport];
               if (v65)
               {
                 [v25 setObject:v65 forKeyedSubscript:@"divertedAirport"];
@@ -2432,14 +2432,14 @@ LABEL_8:
 
               else
               {
-                v66 = [MEMORY[0x277CBEB68] null];
-                [v25 setObject:v66 forKeyedSubscript:@"divertedAirport"];
+                null20 = [MEMORY[0x277CBEB68] null];
+                [v25 setObject:null20 forKeyedSubscript:@"divertedAirport"];
               }
 
               [v22 addObject:v25];
             }
 
-            v81 = [v79 countByEnumeratingWithState:&v82 objects:v90 count:16];
+            v81 = [legs countByEnumeratingWithState:&v82 objects:v90 count:16];
           }
 
           while (v81);
@@ -2453,9 +2453,9 @@ LABEL_8:
 
         else
         {
-          v68 = [MEMORY[0x277CBEB68] null];
+          null21 = [MEMORY[0x277CBEB68] null];
           v67 = v76;
-          [v76 setObject:v68 forKeyedSubscript:@"legs"];
+          [v76 setObject:null21 forKeyedSubscript:@"legs"];
         }
 
         [v74 addObject:v67];
@@ -2477,26 +2477,26 @@ LABEL_8:
   return v69;
 }
 
-- (void)flightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5 reply:(id)a6
+- (void)flightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codeCopy = code;
+  numberCopy = number;
+  dateCopy = date;
+  replyCopy = reply;
   v14 = MEMORY[0x277D42668];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __86__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_flightDate_reply___block_invoke;
   v19[3] = &unk_27894E040;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = codeCopy;
+  v21 = numberCopy;
+  v22 = dateCopy;
+  v23 = replyCopy;
+  v15 = replyCopy;
+  v16 = dateCopy;
+  v17 = numberCopy;
+  v18 = codeCopy;
   [v14 runWithExceptionBarrier:v19];
 }
 
@@ -2507,23 +2507,23 @@ void __86__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_fli
   (*(*(a1 + 64) + 16))();
 }
 
-- (id)flightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5
+- (id)flightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date
 {
   v77 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  codeCopy = code;
+  numberCopy = number;
+  dateCopy = date;
+  v12 = dateCopy;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
   v63 = __Block_byref_object_copy__14927;
   v64 = __Block_byref_object_dispose__14928;
   v65 = 0;
-  if (!v9)
+  if (!codeCopy)
   {
-    v13 = sgEventsLogHandle();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    numberCopy = sgEventsLogHandle();
+    if (!os_log_type_enabled(numberCopy, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_20;
     }
@@ -2531,14 +2531,14 @@ void __86__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_fli
     *buf = 0;
     v29 = "SGReverseTemplateJS flightInformationWithAirlineCode: Can't get flightInformation, airlineCode is nil";
 LABEL_19:
-    _os_log_fault_impl(&dword_231E60000, v13, OS_LOG_TYPE_FAULT, v29, buf, 2u);
+    _os_log_fault_impl(&dword_231E60000, numberCopy, OS_LOG_TYPE_FAULT, v29, buf, 2u);
     goto LABEL_20;
   }
 
-  if (!v10)
+  if (!numberCopy)
   {
-    v13 = sgEventsLogHandle();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    numberCopy = sgEventsLogHandle();
+    if (!os_log_type_enabled(numberCopy, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_20;
     }
@@ -2548,10 +2548,10 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
-    v13 = sgEventsLogHandle();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    numberCopy = sgEventsLogHandle();
+    if (os_log_type_enabled(numberCopy, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
       v29 = "SGReverseTemplateJS flightInformationWithAirlineCode: Can't get flightInformation, flightDate is nil";
@@ -2563,7 +2563,7 @@ LABEL_20:
     goto LABEL_32;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@", v9, v10];
+  numberCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@", codeCopy, numberCopy];
   v14 = objc_opt_new();
   [v14 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
   v15 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
@@ -2573,10 +2573,10 @@ LABEL_20:
   v45 = [v14 dateFromString:v12];
   if (v45)
   {
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (!v17)
+    if (!bundleIdentifier)
     {
       v18 = sgEventsLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2585,19 +2585,19 @@ LABEL_20:
         _os_log_error_impl(&dword_231E60000, v18, OS_LOG_TYPE_ERROR, "SGReverseTemplateJS flightInformationWithAirlineCode: bundleIdentifier is undefined.", buf, 2u);
       }
 
-      v17 = @"com.apple.undefined";
+      bundleIdentifier = @"com.apple.undefined";
     }
 
-    v42 = v17;
-    v19 = [MEMORY[0x277D007B0] flightRequestForQuery:v13 date:v45 appBundleId:v17];
+    v42 = bundleIdentifier;
+    v19 = [MEMORY[0x277D007B0] flightRequestForQuery:numberCopy date:v45 appBundleId:bundleIdentifier];
     if (!v19)
     {
-      v41 = [MEMORY[0x277CCA890] currentHandler];
-      [v41 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"request"}];
     }
 
     v44 = v19;
-    v20 = [MEMORY[0x277D007C0] sharedSession];
+    mEMORY[0x277D007C0] = [MEMORY[0x277D007C0] sharedSession];
     *buf = 0;
     v55 = buf;
     v56 = 0x3032000000;
@@ -2612,16 +2612,16 @@ LABEL_20:
     v52 = &v60;
     v53 = buf;
     v47[4] = self;
-    v22 = v9;
+    v22 = codeCopy;
     v48 = v22;
-    v23 = v10;
+    v23 = numberCopy;
     v49 = v23;
     v24 = v12;
     v50 = v24;
     v25 = v21;
     v51 = v25;
-    v43 = v20;
-    v26 = [v20 taskWithRequest:v44 completion:v47];
+    v43 = mEMORY[0x277D007C0];
+    v26 = [mEMORY[0x277D007C0] taskWithRequest:v44 completion:v47];
     [v26 resume];
     if ([MEMORY[0x277D425A0] waitForSemaphore:v25 timeoutSeconds:60.0])
     {
@@ -2657,8 +2657,8 @@ LABEL_20:
           v33 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v32, "code")}];
           v67[1] = v33;
           v66[2] = @"userInfo";
-          v34 = [*(v55 + 5) userInfo];
-          v67[2] = v34;
+          userInfo = [*(v55 + 5) userInfo];
+          v67[2] = userInfo;
           v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:3];
           v68 = v35;
           v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v68 count:1];
@@ -2732,36 +2732,36 @@ void __80__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_fli
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)preprocessPackedSGMessage:(id)a3
+- (id)preprocessPackedSGMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"html"];
+  messageCopy = message;
+  v4 = [messageCopy objectForKeyedSubscript:@"html"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [messageCopy mutableCopy];
     v7 = MEMORY[0x277CCACA8];
     v8 = [v6 objectForKeyedSubscript:@"html"];
     v9 = [v7 _pas_stringWithDataNoCopy:v8 encoding:4 nullTerminated:0];
     [v6 setObject:v9 forKeyedSubscript:@"html"];
 
-    v3 = v6;
+    messageCopy = v6;
   }
 
-  return v3;
+  return messageCopy;
 }
 
-- (id)mappedArrayBufferForFileName:(id)a3
+- (id)mappedArrayBufferForFileName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = +[SGAsset asset];
   v6 = [v5 filesystemPathForAssetDataRelativePath:@"ReverseTemplateJS"];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [v6 stringByAppendingPathComponent:v4];
+  v8 = [v6 stringByAppendingPathComponent:nameCopy];
   objc_autoreleasePoolPop(v7);
   v27 = 0;
   v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v8 options:1 error:&v27];
@@ -2769,11 +2769,11 @@ void __80__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_fli
   if (v9)
   {
     CFRetain(v9);
-    v26 = [(JSContext *)self->_jsContext JSGlobalContextRef];
+    jSGlobalContextRef = [(JSContext *)self->_jsContext JSGlobalContextRef];
     v11 = v9;
-    v12 = [v9 bytes];
+    bytes = [v9 bytes];
     v13 = [v9 length];
-    v14 = v4;
+    v14 = nameCopy;
     v15 = v10;
     v28 = 0;
     v29 = &v28;
@@ -2797,16 +2797,16 @@ void __80__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_fli
     _Block_object_dispose(&v28, 8);
     if (!v16)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"JSObjectRef SGJSObjectMakeArrayBufferWithBytesNoCopy(JSContextRef, void *, size_t, JSTypedArrayBytesDeallocator, void *, JSValueRef *)"}];
-      [v24 handleFailureInFunction:v25 file:@"SGReverseTemplateJS.m" lineNumber:49 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v25 file:@"SGReverseTemplateJS.m" lineNumber:49 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
-    v19 = v16(v26, v12, v13, typedArrayDeallocatorRelease, v9, 0);
+    v19 = v16(jSGlobalContextRef, bytes, v13, typedArrayDeallocatorRelease, v9, 0);
     v10 = v15;
-    v4 = v14;
+    nameCopy = v14;
     v20 = [getJSValueClass() valueWithJSValueRef:v19 inContext:self->_jsContext];
   }
 
@@ -2910,16 +2910,16 @@ void __80__SGReverseTemplateJS_flightInformationWithAirlineCode_flightNumber_fli
   [(JSContext *)self->_jsContext setObject:&__block_literal_global_130 forKeyedSubscript:@"decodeEntitiesInString"];
   [(JSContext *)self->_jsContext setObject:&__block_literal_global_136 forKeyedSubscript:@"detectLanguageForString"];
   v17 = +[SGAsset asset];
-  v18 = [v17 assetVersion];
+  assetVersion = [v17 assetVersion];
 
-  if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+  if (assetVersion == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = v18;
+    v19 = assetVersion;
   }
 
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
@@ -3438,14 +3438,14 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
   [WeakRetained freeJSContext];
 }
 
-- (id)loadTrieWithFileName:(id)a3
+- (id)loadTrieWithFileName:(id)name
 {
-  v5 = a3;
-  v6 = [v5 stringByAppendingPathExtension:@"trie"];
+  nameCopy = name;
+  v6 = [nameCopy stringByAppendingPathExtension:@"trie"];
   if (!v6)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"fileNameWithPathExtension"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"fileNameWithPathExtension"}];
   }
 
   v7 = objc_autoreleasePoolPush();
@@ -3455,8 +3455,8 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
   objc_autoreleasePoolPop(v7);
   if (!v9)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:288 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:288 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v10 = [(_PASCFBurstTrie *)[SGJSBurstTrie alloc] initWithPath:v9];
@@ -3464,21 +3464,21 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
   return v10;
 }
 
-- (id)processLoadRequestWithFileName:(id)a3
+- (id)processLoadRequestWithFileName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [getJSValueClass() valueWithUndefinedInContext:self->_jsContext];
-  if (v5 && [v5 length] > 2)
+  if (nameCopy && [nameCopy length] > 2)
   {
-    v8 = [v5 substringFromIndex:{objc_msgSend(v5, "length") - 3}];
+    v8 = [nameCopy substringFromIndex:{objc_msgSend(nameCopy, "length") - 3}];
     if ([v8 isEqualToString:@".js"])
     {
       v9 = sgEventsLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v19 = v5;
+        v19 = nameCopy;
         _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGReverseTemplateJS: loading %@ in JS context.", buf, 0xCu);
       }
 
@@ -3487,13 +3487,13 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
 
       if (!v11)
       {
-        v17 = [MEMORY[0x277CCA890] currentHandler];
-        [v17 handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"parentDir"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"parentDir"}];
       }
 
       v12 = objc_autoreleasePoolPush();
       v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v11];
-      v14 = [v13 URLByAppendingPathComponent:v5];
+      v14 = [v13 URLByAppendingPathComponent:nameCopy];
 
       objc_autoreleasePoolPop(v12);
       v7 = [(SGReverseTemplateJS *)self loadJSFromASCIIFile:v14];
@@ -3515,12 +3515,12 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
   return v7;
 }
 
-- (void)setAssetPath:(id)a3
+- (void)setAssetPath:(id)path
 {
   queue = self->_queue;
-  v5 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(queue);
-  obj = [v5 URLByStandardizingPath];
+  obj = [pathCopy URLByStandardizingPath];
 
   assetPath = self->_assetPath;
   if (!assetPath || ([(NSURL *)assetPath isEqual:obj]& 1) == 0)
@@ -3569,16 +3569,16 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
   [(SGReverseTemplateJS *)&v5 dealloc];
 }
 
-- (id)_stringFromMemoryPressureStatus:(unint64_t)a3
+- (id)_stringFromMemoryPressureStatus:(unint64_t)status
 {
-  if (a3 > 3)
+  if (status > 3)
   {
-    if (a3 == 4)
+    if (status == 4)
     {
       return @"DISPATCH_MEMORYPRESSURE_CRITICAL";
     }
 
-    if (a3 == 16)
+    if (status == 16)
     {
       return @"DISPATCH_MEMORYPRESSURE_PROC_LIMIT_WARN";
     }
@@ -3586,18 +3586,18 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
 
   else
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       return @"DISPATCH_MEMORYPRESSURE_NORMAL";
     }
 
-    if (a3 == 2)
+    if (status == 2)
     {
       return @"DISPATCH_MEMORYPRESSURE_WARN";
     }
   }
 
-  if (a3 == 32)
+  if (status == 32)
   {
     return @"DISPATCH_MEMORYPRESSURE_PROC_LIMIT_CRITICAL";
   }
@@ -3608,19 +3608,19 @@ void __39__SGReverseTemplateJS_initCurrentAsset__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_handleMemoryPressureStatus:(unint64_t)a3
+- (void)_handleMemoryPressureStatus:(unint64_t)status
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = sgEventsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(SGReverseTemplateJS *)self _stringFromMemoryPressureStatus:a3];
+    v6 = [(SGReverseTemplateJS *)self _stringFromMemoryPressureStatus:status];
     *buf = 138412290;
     v11 = v6;
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "SGReverseTemplateJS: Received %@ notification.", buf, 0xCu);
   }
 
-  if (a3 == 32 || a3 == 16)
+  if (status == 32 || status == 16)
   {
     objc_initWeak(buf, self);
     memoryPressureQueue = self->_memoryPressureQueue;
@@ -3696,18 +3696,18 @@ uint64_t __51__SGReverseTemplateJS__handleMemoryPressureStatus___block_invoke_2(
   return result;
 }
 
-- (id)_callJSFunction:(id)a3 withArguments:(id)a4
+- (id)_callJSFunction:(id)function withArguments:(id)arguments
 {
   v6 = dispatch_get_global_queue(2, 0);
-  v7 = a4;
-  v8 = a3;
+  argumentsCopy = arguments;
+  functionCopy = function;
   v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v6);
 
   dispatch_source_set_event_handler(v9, &__block_literal_global_15350);
   v10 = dispatch_time(0, 5000000000);
   dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   dispatch_resume(v9);
-  v11 = [v8 callWithArguments:v7];
+  v11 = [functionCopy callWithArguments:argumentsCopy];
 
   dispatch_source_cancel(v9);
 
@@ -3815,10 +3815,10 @@ void __27__SGReverseTemplateJS_init__block_invoke_2(uint64_t a1)
   [WeakRetained freeJSContext];
 }
 
-+ (id)fakeFlightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5
++ (id)fakeFlightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"SGReverseTemplateJS.m" lineNumber:1207 description:@"This method must be stubbed!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGReverseTemplateJS.m" lineNumber:1207 description:@"This method must be stubbed!"];
 
   return 0;
 }

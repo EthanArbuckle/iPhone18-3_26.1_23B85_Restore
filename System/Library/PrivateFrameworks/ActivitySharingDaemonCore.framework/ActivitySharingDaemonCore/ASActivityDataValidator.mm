@@ -1,34 +1,34 @@
 @interface ASActivityDataValidator
-+ (id)_copyAchievement:(id)a3;
-+ (id)_shiftedAchievements:(id)a3 friendTimeZones:(id)a4 friendListManager:(id)a5;
-+ (id)_unhiddenSamplesInFilterableSamples:(id)a3 friendTimeZones:(id)a4 friendListManager:(id)a5 isInvitationData:(BOOL)a6;
-+ (id)validatedSamplesFromAchievements:(id)a3 workouts:(id)a4 activitySnapshots:(id)a5 friendListManager:(id)a6 isInvitationData:(BOOL)a7;
++ (id)_copyAchievement:(id)achievement;
++ (id)_shiftedAchievements:(id)achievements friendTimeZones:(id)zones friendListManager:(id)manager;
++ (id)_unhiddenSamplesInFilterableSamples:(id)samples friendTimeZones:(id)zones friendListManager:(id)manager isInvitationData:(BOOL)data;
++ (id)validatedSamplesFromAchievements:(id)achievements workouts:(id)workouts activitySnapshots:(id)snapshots friendListManager:(id)manager isInvitationData:(BOOL)data;
 @end
 
 @implementation ASActivityDataValidator
 
-+ (id)validatedSamplesFromAchievements:(id)a3 workouts:(id)a4 activitySnapshots:(id)a5 friendListManager:(id)a6 isInvitationData:(BOOL)a7
++ (id)validatedSamplesFromAchievements:(id)achievements workouts:(id)workouts activitySnapshots:(id)snapshots friendListManager:(id)manager isInvitationData:(BOOL)data
 {
-  v68 = a7;
+  dataCopy = data;
   v101 = *MEMORY[0x277D85DE8];
-  v70 = a6;
+  managerCopy = manager;
   v10 = MEMORY[0x277CBEBF8];
-  if (a4)
+  if (workouts)
   {
-    v11 = a4;
+    workoutsCopy = workouts;
   }
 
   else
   {
-    v11 = MEMORY[0x277CBEBF8];
+    workoutsCopy = MEMORY[0x277CBEBF8];
   }
 
-  v64 = v11;
-  v12 = a5;
-  v13 = a3;
-  if (v12)
+  v64 = workoutsCopy;
+  snapshotsCopy = snapshots;
+  achievementsCopy = achievements;
+  if (snapshotsCopy)
   {
-    v14 = v12;
+    v14 = snapshotsCopy;
   }
 
   else
@@ -38,9 +38,9 @@
 
   v15 = v14;
 
-  if (v13)
+  if (achievementsCopy)
   {
-    v16 = v13;
+    v16 = achievementsCopy;
   }
 
   else
@@ -73,8 +73,8 @@
           objc_enumerationMutation(v19);
         }
 
-        v25 = [*(*(&v83 + 1) + 8 * v23) friendUUID];
-        v18 = [v24 setByAddingObject:v25];
+        friendUUID = [*(*(&v83 + 1) + 8 * v23) friendUUID];
+        v18 = [v24 setByAddingObject:friendUUID];
 
         ++v23;
         v24 = v18;
@@ -87,7 +87,7 @@
     while (v21);
   }
 
-  v73 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
@@ -117,10 +117,10 @@
         v32 = [v19 filteredArrayUsingPredicate:v31];
 
         v33 = _HKMostRecentActivitySnapshotInSnapshots();
-        v34 = [v33 timeZone];
-        if (v34)
+        timeZone = [v33 timeZone];
+        if (timeZone)
         {
-          [v73 setObject:v34 forKeyedSubscript:v30];
+          [dictionary setObject:timeZone forKeyedSubscript:v30];
         }
       }
 
@@ -130,19 +130,19 @@
     while (v27);
   }
 
-  v35 = [a1 _removeInvalidWorkouts:v64];
+  v35 = [self _removeInvalidWorkouts:v64];
 
-  v36 = [a1 _shiftedAchievements:v63 friendTimeZones:v73 friendListManager:v70];
+  v36 = [self _shiftedAchievements:v63 friendTimeZones:dictionary friendListManager:managerCopy];
 
   obja = [v19 count];
   v37 = [v35 count];
   v38 = [v36 count];
-  v39 = [a1 _unhiddenSamplesInFilterableSamples:v19 friendTimeZones:v73 friendListManager:v70 isInvitationData:v68];
+  v39 = [self _unhiddenSamplesInFilterableSamples:v19 friendTimeZones:dictionary friendListManager:managerCopy isInvitationData:dataCopy];
 
-  v40 = [a1 _unhiddenSamplesInFilterableSamples:v35 friendTimeZones:v73 friendListManager:v70 isInvitationData:v68];
+  v40 = [self _unhiddenSamplesInFilterableSamples:v35 friendTimeZones:dictionary friendListManager:managerCopy isInvitationData:dataCopy];
 
   v41 = v40;
-  v42 = [a1 _unhiddenSamplesInFilterableSamples:v36 friendTimeZones:v73 friendListManager:v70 isInvitationData:v68];
+  v42 = [self _unhiddenSamplesInFilterableSamples:v36 friendTimeZones:dictionary friendListManager:managerCopy isInvitationData:dataCopy];
 
   ASLoggingInitialize();
   v43 = *MEMORY[0x277CE8FC8];
@@ -208,12 +208,12 @@
           if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
           {
             v58 = v57;
-            v59 = [v56 filter_friendUUID];
-            v60 = [v56 filter_description];
+            filter_friendUUID = [v56 filter_friendUUID];
+            filter_description = [v56 filter_description];
             *buf = 138412546;
-            v90 = v59;
+            v90 = filter_friendUUID;
             v91 = 2112;
-            v92 = v60;
+            v92 = filter_description;
             _os_log_impl(&dword_23E5E3000, v58, OS_LOG_TYPE_DEFAULT, "%@ -> %@", buf, 0x16u);
           }
         }
@@ -243,20 +243,20 @@ BOOL __50__ASActivityDataValidator__removeInvalidWorkouts___block_invoke(uint64_
   return v6 > v8;
 }
 
-+ (id)_shiftedAchievements:(id)a3 friendTimeZones:(id)a4 friendListManager:(id)a5
++ (id)_shiftedAchievements:(id)achievements friendTimeZones:(id)zones friendListManager:(id)manager
 {
-  v8 = a4;
-  v9 = a5;
+  zonesCopy = zones;
+  managerCopy = manager;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__ASActivityDataValidator__shiftedAchievements_friendTimeZones_friendListManager___block_invoke;
   v14[3] = &unk_278C4B840;
-  v15 = v8;
-  v16 = v9;
-  v17 = a1;
-  v10 = v9;
-  v11 = v8;
-  v12 = [a3 hk_map:v14];
+  v15 = zonesCopy;
+  v16 = managerCopy;
+  selfCopy = self;
+  v10 = managerCopy;
+  v11 = zonesCopy;
+  v12 = [achievements hk_map:v14];
 
   return v12;
 }
@@ -291,27 +291,27 @@ id __82__ASActivityDataValidator__shiftedAchievements_friendTimeZones_friendList
   return v12;
 }
 
-+ (id)_unhiddenSamplesInFilterableSamples:(id)a3 friendTimeZones:(id)a4 friendListManager:(id)a5 isInvitationData:(BOOL)a6
++ (id)_unhiddenSamplesInFilterableSamples:(id)samples friendTimeZones:(id)zones friendListManager:(id)manager isInvitationData:(BOOL)data
 {
-  v9 = a4;
-  v10 = a5;
+  zonesCopy = zones;
+  managerCopy = manager;
   v11 = MEMORY[0x277CBEA80];
-  v12 = a3;
-  v13 = [v11 hk_gregorianCalendar];
+  samplesCopy = samples;
+  hk_gregorianCalendar = [v11 hk_gregorianCalendar];
   v14 = MEMORY[0x277CCAC30];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __114__ASActivityDataValidator__unhiddenSamplesInFilterableSamples_friendTimeZones_friendListManager_isInvitationData___block_invoke;
   v24 = &unk_278C4B868;
-  v25 = v10;
-  v26 = v13;
-  v27 = v9;
-  v28 = a6;
-  v15 = v9;
-  v16 = v13;
-  v17 = v10;
+  v25 = managerCopy;
+  v26 = hk_gregorianCalendar;
+  v27 = zonesCopy;
+  dataCopy = data;
+  v15 = zonesCopy;
+  v16 = hk_gregorianCalendar;
+  v17 = managerCopy;
   v18 = [v14 predicateWithBlock:&v21];
-  v19 = [v12 filteredArrayUsingPredicate:{v18, v21, v22, v23, v24}];
+  v19 = [samplesCopy filteredArrayUsingPredicate:{v18, v21, v22, v23, v24}];
 
   return v19;
 }
@@ -445,19 +445,19 @@ LABEL_24:
   return v31;
 }
 
-+ (id)_copyAchievement:(id)a3
++ (id)_copyAchievement:(id)achievement
 {
   v3 = MEMORY[0x277CCDDC0];
-  v4 = a3;
-  v5 = [v4 templateUniqueName];
-  v6 = [v4 completedDate];
-  v7 = [v4 value];
-  v8 = [v4 friendUUID];
-  v9 = [v3 achievementWithTemplateUniqueName:v5 completedDate:v6 value:v7 friendUUID:v8];
+  achievementCopy = achievement;
+  templateUniqueName = [achievementCopy templateUniqueName];
+  completedDate = [achievementCopy completedDate];
+  value = [achievementCopy value];
+  friendUUID = [achievementCopy friendUUID];
+  v9 = [v3 achievementWithTemplateUniqueName:templateUniqueName completedDate:completedDate value:value friendUUID:friendUUID];
 
-  v10 = [v4 UUID];
+  uUID = [achievementCopy UUID];
 
-  v11 = [v10 copy];
+  v11 = [uUID copy];
   [v9 _setUUID:v11];
 
   return v9;

@@ -1,61 +1,61 @@
 @interface TypistKeyboardDataInProcess
-+ (BOOL)_activeInputModesContainsInputMode:(id)a3;
-+ (BOOL)generatePopupKeySubtrees:(id)a3 key:(id)a4 plane:(id)a5 layout:(id)a6 keyplaneKeycaps:(id)a7;
++ (BOOL)_activeInputModesContainsInputMode:(id)mode;
++ (BOOL)generatePopupKeySubtrees:(id)subtrees key:(id)key plane:(id)plane layout:(id)layout keyplaneKeycaps:(id)keycaps;
 + (BOOL)hasMarkedText;
-+ (BOOL)isCandidateCellVisible:(id)a3;
++ (BOOL)isCandidateCellVisible:(id)visible;
 + (BOOL)isExtendedCandidateViewMode;
-+ (BOOL)keyHasAccentedVariants:(id)a3 plane:(id)a4 keyplaneKeycaps:(id)a5;
++ (BOOL)keyHasAccentedVariants:(id)variants plane:(id)plane keyplaneKeycaps:(id)keycaps;
 + (BOOL)shouldShowDictationKey;
 + (BOOL)shouldShowGlobeKey;
-+ (BOOL)switchToKeyboard:(id)a3;
-+ (BOOL)switchToPlane:(id)a3;
-+ (CGPoint)centerOfKey:(CGPoint)a3 withOffset:(CGPoint)a4;
++ (BOOL)switchToKeyboard:(id)keyboard;
++ (BOOL)switchToPlane:(id)plane;
++ (CGPoint)centerOfKey:(CGPoint)key withOffset:(CGPoint)offset;
 + (CGPoint)floatingKeyboardDraggablePoint;
-+ (CGPoint)getCandidateCenter:(id)a3;
-+ (CGPoint)getCandidateCenterAtIndex:(int64_t)a3;
++ (CGPoint)getCandidateCenter:(id)center;
++ (CGPoint)getCandidateCenterAtIndex:(int64_t)index;
 + (CGPoint)getExtendedCandidateViewToggleButtonCenter;
-+ (CGRect)findKeyBoundsInKeyboard:(id)a3;
++ (CGRect)findKeyBoundsInKeyboard:(id)keyboard;
 + (CGRect)getCandidateBarRect;
 + (__n128)getKeyboardScaleTransform;
-+ (id)_variantsByAppendingDualStringKey:(id)a3 toVariants:(id)a4;
-+ (id)addKeyboardGestureKeys:(id)a3 keys:(id)a4 inPlane:(id)a5 addTo:(id)a6;
-+ (id)addKeyboardPopupKeys:(id)a3 keys:(id)a4 inPlane:(id)a5 addTo:(id)a6 keyplaneKeycaps:(id)a7;
-+ (id)addKeyboards:(id)a3;
-+ (id)appendingSecondaryStringToVariantsTop:(id)a3 secondaryString:(id)a4 withDirection:(id)a5;
-+ (id)cleanUpSwitchTableBasedOnDefaultPlane:(id)a3 defaultPlaneName:(id)a4;
-+ (id)determineDefaultPlane10Key:(id)a3 basePlaneName:(id)a4;
-+ (id)determineDefaultPlane:(id)a3 basePlaneName:(id)a4;
-+ (id)generateKeyplaneSwitchTable:(id)a3;
-+ (id)generateKeyplaneSwitchTableFor10Key:(id)a3;
++ (id)_variantsByAppendingDualStringKey:(id)key toVariants:(id)variants;
++ (id)addKeyboardGestureKeys:(id)keys keys:(id)a4 inPlane:(id)plane addTo:(id)to;
++ (id)addKeyboardPopupKeys:(id)keys keys:(id)a4 inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps;
++ (id)addKeyboards:(id)keyboards;
++ (id)appendingSecondaryStringToVariantsTop:(id)top secondaryString:(id)string withDirection:(id)direction;
++ (id)cleanUpSwitchTableBasedOnDefaultPlane:(id)plane defaultPlaneName:(id)name;
++ (id)determineDefaultPlane10Key:(id)key basePlaneName:(id)name;
++ (id)determineDefaultPlane:(id)plane basePlaneName:(id)name;
++ (id)generateKeyplaneSwitchTable:(id)table;
++ (id)generateKeyplaneSwitchTableFor10Key:(id)key;
 + (id)getAllCandidates;
-+ (id)getKeyboardLayout:(id)a3;
-+ (id)getKeyboardPlaneKeys:(id)a3 keys:(id)a4 inPlane:(id)a5;
++ (id)getKeyboardLayout:(id)layout;
++ (id)getKeyboardPlaneKeys:(id)keys keys:(id)a4 inPlane:(id)plane;
 + (id)getKeyboardUISettings;
-+ (id)getKeyplaneDescription:(id)a3;
-+ (id)getRepresentedStringFromKey:(id)a3;
++ (id)getKeyplaneDescription:(id)description;
++ (id)getRepresentedStringFromKey:(id)key;
 + (id)getTIPreferences;
-+ (id)getVisibleCandidateList:(id)a3;
++ (id)getVisibleCandidateList:(id)list;
 + (id)getVisibleKeyplaneName;
 + (id)markedText;
-+ (id)removeKeyboards:(id)a3;
-+ (id)setKeyboardUISettings:(id)a3;
-+ (id)setKeyboards:(id)a3;
-+ (id)setOneHandedKeyboardHandBias:(id)a3;
-+ (id)setTIPreferences:(id)a3;
-+ (id)updateCachedKeyplaneKeycaps:(id)a3;
-+ (int)getShuangpinEnumeration:(id)a3;
-+ (int)getWubiEnumeration:(id)a3;
-+ (unint64_t)downActionFlagsForKey:(id)a3 plane:(id)a4 keyplaneKeycaps:(id)a5;
-+ (void)showCandidateAtIndex:(int64_t)a3;
-+ (void)showPopupVariantsForKey:(id)a3 key:(id)a4 plane:(id)a5 keyplaneKeycaps:(id)a6;
++ (id)removeKeyboards:(id)keyboards;
++ (id)setKeyboardUISettings:(id)settings;
++ (id)setKeyboards:(id)keyboards;
++ (id)setOneHandedKeyboardHandBias:(id)bias;
++ (id)setTIPreferences:(id)preferences;
++ (id)updateCachedKeyplaneKeycaps:(id)keycaps;
++ (int)getShuangpinEnumeration:(id)enumeration;
++ (int)getWubiEnumeration:(id)enumeration;
++ (unint64_t)downActionFlagsForKey:(id)key plane:(id)plane keyplaneKeycaps:(id)keycaps;
++ (void)showCandidateAtIndex:(int64_t)index;
++ (void)showPopupVariantsForKey:(id)key key:(id)a4 plane:(id)plane keyplaneKeycaps:(id)keycaps;
 @end
 
 @implementation TypistKeyboardDataInProcess
 
-+ (id)getKeyboardLayout:(id)a3
++ (id)getKeyboardLayout:(id)layout
 {
   v96 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v93[0] = 0;
@@ -63,14 +63,14 @@
   v93[2] = 0x3032000000;
   v93[3] = __Block_byref_object_copy__4;
   v93[4] = __Block_byref_object_dispose__4;
-  v94 = [MEMORY[0x277D75658] activeKeyboard];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
   [MEMORY[0x277D75678] activeInstance];
   v91[0] = 0;
   v91[1] = v91;
   v91[2] = 0x3032000000;
   v91[3] = __Block_byref_object_copy__4;
   v36 = v91[4] = __Block_byref_object_dispose__4;
-  v92 = [v36 _layout];
+  _layout = [v36 _layout];
   v85 = 0;
   v86 = &v85;
   v87 = 0x3032000000;
@@ -87,10 +87,10 @@
   if ([v86[5] containsString:@"_"])
   {
     v6 = [v86[5] componentsSeparatedByString:@"_"];
-    v7 = [v6 lastObject];
-    v8 = [v7 lowercaseString];
+    lastObject = [v6 lastObject];
+    lowercaseString = [lastObject lowercaseString];
     v9 = v86[5];
-    v86[5] = v8;
+    v86[5] = lowercaseString;
   }
 
   v78 = 0;
@@ -105,10 +105,10 @@
   v71[3] = &unk_279DF4A40;
   v74 = v91;
   v75 = &v78;
-  v39 = v4;
+  v39 = layoutCopy;
   v72 = v39;
   v76 = &v85;
-  v77 = a1;
+  selfCopy = self;
   v10 = v5;
   v73 = v10;
   [TypistKeyboardUtilities runOnMainThread:v71];
@@ -117,13 +117,13 @@
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v11 = [v79[5] allKeys];
-  v19 = [v11 countByEnumeratingWithState:&v67 objects:v95 count:16];
+  allKeys = [v79[5] allKeys];
+  v19 = [allKeys countByEnumeratingWithState:&v67 objects:v95 count:16];
   if (v19)
   {
     v38 = *v68;
     v20 = *MEMORY[0x277D76AA8];
-    obj = v11;
+    obj = allKeys;
     do
     {
       for (i = 0; i != v19; ++i)
@@ -162,18 +162,18 @@
         v44 = v91;
         v45 = &v61;
         v47 = &v49;
-        v48 = a1;
+        selfCopy2 = self;
         v46 = &v55;
         v23 = v39;
         v42 = v23;
         [TypistKeyboardUtilities runOnMainThread:v41];
-        v24 = [a1 getKeyboardUISettings];
-        v25 = [v24 objectForKeyedSubscript:v20];
-        v26 = [v25 BOOLValue];
+        getKeyboardUISettings = [self getKeyboardUISettings];
+        v25 = [getKeyboardUISettings objectForKeyedSubscript:v20];
+        bOOLValue = [v25 BOOLValue];
 
-        if (v26)
+        if (bOOLValue)
         {
-          v27 = [a1 addKeyboardGestureKeys:v23 keys:v62[5] inPlane:v22 addTo:v50[5]];
+          v27 = [self addKeyboardGestureKeys:v23 keys:v62[5] inPlane:v22 addTo:v50[5]];
           v28 = v50[5];
           v50[5] = v27;
         }
@@ -193,7 +193,7 @@
         _Block_object_dispose(&v61, 8);
       }
 
-      v11 = obj;
+      allKeys = obj;
       v19 = [obj countByEnumeratingWithState:&v67 objects:v95 count:16];
     }
 
@@ -329,112 +329,112 @@ uint64_t __49__TypistKeyboardDataInProcess_getKeyboardLayout___block_invoke_3(ui
 + (id)getTIPreferences
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0] = [MEMORY[0x277D756A0] sharedPreferencesController];
   v4 = *MEMORY[0x277D6F7B8];
-  v5 = [v3 BOOLForPreferenceKey:*MEMORY[0x277D6F7B8]];
+  v5 = [mEMORY[0x277D756A0] BOOLForPreferenceKey:*MEMORY[0x277D6F7B8]];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
   [v2 setObject:v6 forKey:v4];
 
-  v7 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]2 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v8 = *MEMORY[0x277D6F7C0];
-  v9 = [v7 BOOLForPreferenceKey:*MEMORY[0x277D6F7C0]];
+  v9 = [mEMORY[0x277D756A0]2 BOOLForPreferenceKey:*MEMORY[0x277D6F7C0]];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
   [v2 setObject:v10 forKey:v8];
 
-  v11 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]3 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v12 = *MEMORY[0x277D6F820];
-  v13 = [v11 BOOLForPreferenceKey:*MEMORY[0x277D6F820]];
+  v13 = [mEMORY[0x277D756A0]3 BOOLForPreferenceKey:*MEMORY[0x277D6F820]];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:v13];
   [v2 setObject:v14 forKey:v12];
 
-  v15 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]4 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v16 = *MEMORY[0x277D6F920];
-  v17 = [v15 BOOLForPreferenceKey:*MEMORY[0x277D6F920]];
+  v17 = [mEMORY[0x277D756A0]4 BOOLForPreferenceKey:*MEMORY[0x277D6F920]];
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:v17];
   [v2 setObject:v18 forKey:v16];
 
-  v19 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]5 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v20 = *MEMORY[0x277D6F818];
-  v21 = [v19 BOOLForPreferenceKey:*MEMORY[0x277D6F818]];
+  v21 = [mEMORY[0x277D756A0]5 BOOLForPreferenceKey:*MEMORY[0x277D6F818]];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:v21];
   [v2 setObject:v22 forKey:v20];
 
-  v23 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]6 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v24 = *MEMORY[0x277D6F928];
-  v25 = [v23 BOOLForPreferenceKey:*MEMORY[0x277D6F928]];
+  v25 = [mEMORY[0x277D756A0]6 BOOLForPreferenceKey:*MEMORY[0x277D6F928]];
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:v25];
   [v2 setObject:v26 forKey:v24];
 
-  v27 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
   v28 = *MEMORY[0x277D6F630];
-  v29 = [v27 BOOLForPreferenceKey:*MEMORY[0x277D6F630]];
+  v29 = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F630]];
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:v29];
   [v2 setObject:v30 forKey:v28];
 
-  v31 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]7 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v32 = *MEMORY[0x277D6FA78];
-  v33 = [v31 BOOLForPreferenceKey:*MEMORY[0x277D6FA78]];
+  v33 = [mEMORY[0x277D756A0]7 BOOLForPreferenceKey:*MEMORY[0x277D6FA78]];
 
   v34 = [MEMORY[0x277CCABB0] numberWithBool:v33];
   [v2 setObject:v34 forKey:v32];
 
-  v35 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]8 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v36 = *MEMORY[0x277D6FA88];
-  v37 = [v35 BOOLForPreferenceKey:*MEMORY[0x277D6FA88]];
+  v37 = [mEMORY[0x277D756A0]8 BOOLForPreferenceKey:*MEMORY[0x277D6FA88]];
 
   v38 = [MEMORY[0x277CCABB0] numberWithBool:v37];
   [v2 setObject:v38 forKey:v36];
 
-  v39 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]9 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v40 = *MEMORY[0x277D6F7A0];
-  v41 = [v39 BOOLForPreferenceKey:*MEMORY[0x277D6F7A0]];
+  v41 = [mEMORY[0x277D756A0]9 BOOLForPreferenceKey:*MEMORY[0x277D6F7A0]];
 
   v42 = [MEMORY[0x277CCABB0] numberWithBool:v41];
   [v2 setObject:v42 forKey:v40];
 
-  v43 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]10 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v44 = *MEMORY[0x277D6FD08];
-  v45 = [v43 BOOLForPreferenceKey:*MEMORY[0x277D6FD08]];
+  v45 = [mEMORY[0x277D756A0]10 BOOLForPreferenceKey:*MEMORY[0x277D6FD08]];
 
   v46 = [MEMORY[0x277CCABB0] numberWithBool:v45];
   [v2 setObject:v46 forKey:v44];
 
-  v47 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]11 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v48 = *MEMORY[0x277D6FA80];
-  v49 = [v47 BOOLForPreferenceKey:*MEMORY[0x277D6FA80]];
+  v49 = [mEMORY[0x277D756A0]11 BOOLForPreferenceKey:*MEMORY[0x277D6FA80]];
 
   v50 = [MEMORY[0x277CCABB0] numberWithBool:v49];
   [v2 setObject:v50 forKey:v48];
 
-  v51 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
   v52 = *MEMORY[0x277D6F640];
-  v53 = [v51 valueForPreferenceKey:*MEMORY[0x277D6F640]];
+  v53 = [mEMORY[0x277D6F470]2 valueForPreferenceKey:*MEMORY[0x277D6F640]];
   v54 = v53 != 0;
 
   v55 = [MEMORY[0x277CCABB0] numberWithBool:v54];
   [v2 setObject:v55 forKey:v52];
 
-  v56 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
   v57 = *MEMORY[0x277D6FD18];
-  v58 = [v56 valueForPreferenceKey:*MEMORY[0x277D6FD18]];
-  v59 = [v58 intValue];
+  v58 = [mEMORY[0x277D6F470]3 valueForPreferenceKey:*MEMORY[0x277D6FD18]];
+  intValue = [v58 intValue];
 
-  v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v59];
+  v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:intValue];
   [v2 setObject:v60 forKey:v57];
 
-  v61 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
   v62 = *MEMORY[0x277D6FA70];
-  v63 = [v61 valueForPreferenceKey:*MEMORY[0x277D6FA70]];
-  v64 = [v63 intValue];
+  v63 = [mEMORY[0x277D6F470]4 valueForPreferenceKey:*MEMORY[0x277D6FA70]];
+  intValue2 = [v63 intValue];
 
-  v65 = [MEMORY[0x277CCABB0] numberWithInt:v64];
+  v65 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
   [v2 setObject:v65 forKey:v62];
 
   return v2;
@@ -456,27 +456,27 @@ uint64_t __49__TypistKeyboardDataInProcess_getKeyboardLayout___block_invoke_3(ui
   v4 = [MEMORY[0x277CCABB0] numberWithBool:*(v28 + 24)];
   [v3 setObject:v4 forKey:@"floatingKeyboard"];
 
-  v5 = [MEMORY[0x277D75698] _showSmallDisplayKeyplane];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  _showSmallDisplayKeyplane = [MEMORY[0x277D75698] _showSmallDisplayKeyplane];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:_showSmallDisplayKeyplane];
   [v3 setObject:v6 forKey:@"LowerCaseKeyboard"];
 
-  v7 = [MEMORY[0x277D756A0] sharedPreferencesController];
-  v8 = [v7 preferencesActions];
+  mEMORY[0x277D756A0] = [MEMORY[0x277D756A0] sharedPreferencesController];
+  preferencesActions = [mEMORY[0x277D756A0] preferencesActions];
   v9 = *MEMORY[0x277D76AA8];
-  v10 = [v8 BOOLForPreferenceKey:*MEMORY[0x277D76AA8]];
+  v10 = [preferencesActions BOOLForPreferenceKey:*MEMORY[0x277D76AA8]];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:v10];
   [v3 setObject:v11 forKey:v9];
 
-  v12 = [MEMORY[0x277CEF368] sharedPreferences];
-  v13 = [v12 dictationIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  dictationIsEnabled = [mEMORY[0x277CEF368] dictationIsEnabled];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v13];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:dictationIsEnabled];
   [v3 setObject:v14 forKey:@"dictation"];
 
-  v15 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0]2 = [MEMORY[0x277D756A0] sharedPreferencesController];
   v16 = *MEMORY[0x277D6F7C8];
-  v17 = [v15 valueForPreferenceKey:*MEMORY[0x277D6F7C8]];
+  v17 = [mEMORY[0x277D756A0]2 valueForPreferenceKey:*MEMORY[0x277D6F7C8]];
   v18 = v17;
   v19 = @"Unknown";
   if (v17)
@@ -487,12 +487,12 @@ uint64_t __49__TypistKeyboardDataInProcess_getKeyboardLayout___block_invoke_3(ui
   v20 = v19;
 
   [v3 setObject:v20 forKey:v16];
-  v21 = [a1 shouldShowDictationKey];
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:v21];
+  shouldShowDictationKey = [self shouldShowDictationKey];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:shouldShowDictationKey];
   [v3 setObject:v22 forKey:@"shouldShowDictationKey"];
 
-  v23 = [a1 shouldShowGlobeKey];
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:v23];
+  shouldShowGlobeKey = [self shouldShowGlobeKey];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:shouldShowGlobeKey];
   [v3 setObject:v24 forKey:@"shouldShowGlobeKey"];
 
   _Block_object_dispose(&v27, 8);
@@ -507,263 +507,263 @@ uint64_t __52__TypistKeyboardDataInProcess_getKeyboardUISettings__block_invoke(u
   return result;
 }
 
-+ (id)setTIPreferences:(id)a3
++ (id)setTIPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAC0] dictionary];
-  v6 = [a1 getTIPreferences];
-  v7 = [v4 allKeys];
-  v8 = v7;
-  if (v7 && [v7 count])
+  preferencesCopy = preferences;
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  getTIPreferences = [self getTIPreferences];
+  allKeys = [preferencesCopy allKeys];
+  v8 = allKeys;
+  if (allKeys && [allKeys count])
   {
     v9 = *MEMORY[0x277D6F7B8];
     if ([v8 containsObject:*MEMORY[0x277D6F7B8]])
     {
-      v10 = [v6 objectForKeyedSubscript:v9];
-      v11 = [v10 BOOLValue];
-      v12 = [v4 objectForKeyedSubscript:v9];
+      v10 = [getTIPreferences objectForKeyedSubscript:v9];
+      bOOLValue = [v10 BOOLValue];
+      v12 = [preferencesCopy objectForKeyedSubscript:v9];
       [v12 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing AutoCapitalization Settings: Current=%d ChangeTo=%d", v13, v14, v15, v16, v17, v18, v11);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing AutoCapitalization Settings: Current=%d ChangeTo=%d", v13, v14, v15, v16, v17, v18, bOOLValue);
 
-      v19 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v20 = [v4 objectForKeyedSubscript:v9];
-      [v19 setValue:v20 forKey:9];
+      mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v20 = [preferencesCopy objectForKeyedSubscript:v9];
+      [mEMORY[0x277D6F470] setValue:v20 forKey:9];
     }
 
     v21 = *MEMORY[0x277D6F7C0];
     if ([v8 containsObject:*MEMORY[0x277D6F7C0]])
     {
-      v22 = [v6 objectForKeyedSubscript:v21];
-      v23 = [v22 BOOLValue];
-      v24 = [v4 objectForKeyedSubscript:v21];
+      v22 = [getTIPreferences objectForKeyedSubscript:v21];
+      bOOLValue2 = [v22 BOOLValue];
+      v24 = [preferencesCopy objectForKeyedSubscript:v21];
       [v24 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing AutoCorrection Settings: Current=%d ChangeTo=%d", v25, v26, v27, v28, v29, v30, v23);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing AutoCorrection Settings: Current=%d ChangeTo=%d", v25, v26, v27, v28, v29, v30, bOOLValue2);
 
-      v31 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v32 = [v4 objectForKeyedSubscript:v21];
-      [v31 setValue:v32 forKey:8];
+      mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v32 = [preferencesCopy objectForKeyedSubscript:v21];
+      [mEMORY[0x277D6F470]2 setValue:v32 forKey:8];
     }
 
     v33 = *MEMORY[0x277D6F820];
     if ([v8 containsObject:*MEMORY[0x277D6F820]])
     {
-      v34 = [v6 objectForKeyedSubscript:v33];
-      v35 = [v34 BOOLValue];
-      v36 = [v4 objectForKeyedSubscript:v33];
+      v34 = [getTIPreferences objectForKeyedSubscript:v33];
+      bOOLValue3 = [v34 BOOLValue];
+      v36 = [preferencesCopy objectForKeyedSubscript:v33];
       [v36 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing CheckSpelling Settings: Current=%d ChangeTo=%d", v37, v38, v39, v40, v41, v42, v35);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing CheckSpelling Settings: Current=%d ChangeTo=%d", v37, v38, v39, v40, v41, v42, bOOLValue3);
 
-      v43 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v44 = [v4 objectForKeyedSubscript:v33];
-      [v43 setValue:v44 forKey:10];
+      mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v44 = [preferencesCopy objectForKeyedSubscript:v33];
+      [mEMORY[0x277D6F470]3 setValue:v44 forKey:10];
     }
 
     v45 = *MEMORY[0x277D6F920];
     if ([v8 containsObject:*MEMORY[0x277D6F920]])
     {
-      v46 = [v6 objectForKeyedSubscript:v45];
-      v47 = [v46 BOOLValue];
-      v48 = [v4 objectForKeyedSubscript:v45];
+      v46 = [getTIPreferences objectForKeyedSubscript:v45];
+      bOOLValue4 = [v46 BOOLValue];
+      v48 = [preferencesCopy objectForKeyedSubscript:v45];
       [v48 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing PeriodShortcut Settings: Current=%d ChangeTo=%d", v49, v50, v51, v52, v53, v54, v47);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing PeriodShortcut Settings: Current=%d ChangeTo=%d", v49, v50, v51, v52, v53, v54, bOOLValue4);
 
-      v55 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v56 = [v4 objectForKeyedSubscript:v45];
-      [v55 setValue:v56 forKey:11];
+      mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v56 = [preferencesCopy objectForKeyedSubscript:v45];
+      [mEMORY[0x277D6F470]4 setValue:v56 forKey:11];
     }
 
     v57 = *MEMORY[0x277D6F818];
     if ([v8 containsObject:*MEMORY[0x277D6F818]])
     {
-      v58 = [v6 objectForKeyedSubscript:v57];
-      v59 = [v58 BOOLValue];
-      v60 = [v4 objectForKeyedSubscript:v57];
+      v58 = [getTIPreferences objectForKeyedSubscript:v57];
+      bOOLValue5 = [v58 BOOLValue];
+      v60 = [preferencesCopy objectForKeyedSubscript:v57];
       [v60 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing CapsLock Settings: Current=%d ChangeTo=%d", v61, v62, v63, v64, v65, v66, v59);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing CapsLock Settings: Current=%d ChangeTo=%d", v61, v62, v63, v64, v65, v66, bOOLValue5);
 
-      v67 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v68 = [v4 objectForKeyedSubscript:v57];
-      [v67 setValue:v68 forKey:12];
+      mEMORY[0x277D6F470]5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v68 = [preferencesCopy objectForKeyedSubscript:v57];
+      [mEMORY[0x277D6F470]5 setValue:v68 forKey:12];
     }
 
     v69 = *MEMORY[0x277D6F928];
     if ([v8 containsObject:*MEMORY[0x277D6F928]])
     {
-      v70 = [v6 objectForKeyedSubscript:v69];
-      v71 = [v70 BOOLValue];
-      v72 = [v4 objectForKeyedSubscript:v69];
+      v70 = [getTIPreferences objectForKeyedSubscript:v69];
+      bOOLValue6 = [v70 BOOLValue];
+      v72 = [preferencesCopy objectForKeyedSubscript:v69];
       [v72 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Predictive Settings: Current=%d ChangeTo=%d", v73, v74, v75, v76, v77, v78, v71);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Predictive Settings: Current=%d ChangeTo=%d", v73, v74, v75, v76, v77, v78, bOOLValue6);
 
-      v79 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v80 = [v4 objectForKeyedSubscript:v69];
-      [v79 setValue:v80 forKey:36];
+      mEMORY[0x277D6F470]6 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v80 = [preferencesCopy objectForKeyedSubscript:v69];
+      [mEMORY[0x277D6F470]6 setValue:v80 forKey:36];
     }
 
     v81 = *MEMORY[0x277D6F630];
     if ([v8 containsObject:*MEMORY[0x277D6F630]])
     {
-      v82 = [v6 objectForKeyedSubscript:v81];
-      v83 = [v82 BOOLValue];
-      v84 = [v4 objectForKeyedSubscript:v81];
+      v82 = [getTIPreferences objectForKeyedSubscript:v81];
+      bOOLValue7 = [v82 BOOLValue];
+      v84 = [preferencesCopy objectForKeyedSubscript:v81];
       [v84 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Fuzzy Settings: Current=%d ChangeTo=%d", v85, v86, v87, v88, v89, v90, v83);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Fuzzy Settings: Current=%d ChangeTo=%d", v85, v86, v87, v88, v89, v90, bOOLValue7);
 
-      v91 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v92 = [v4 objectForKeyedSubscript:v81];
-      [v91 setValue:v92 forPreferenceKey:v81];
+      mEMORY[0x277D6F470]7 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v92 = [preferencesCopy objectForKeyedSubscript:v81];
+      [mEMORY[0x277D6F470]7 setValue:v92 forPreferenceKey:v81];
     }
 
     v93 = *MEMORY[0x277D6FA78];
     if ([v8 containsObject:*MEMORY[0x277D6FA78]])
     {
-      v94 = [v6 objectForKeyedSubscript:v93];
-      v95 = [v94 BOOLValue];
-      v96 = [v4 objectForKeyedSubscript:v93];
+      v94 = [getTIPreferences objectForKeyedSubscript:v93];
+      bOOLValue8 = [v94 BOOLValue];
+      v96 = [preferencesCopy objectForKeyedSubscript:v93];
       [v96 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Smart Dashes Settings: Current=%d ChangeTo=%d", v97, v98, v99, v100, v101, v102, v95);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Smart Dashes Settings: Current=%d ChangeTo=%d", v97, v98, v99, v100, v101, v102, bOOLValue8);
 
-      v103 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v104 = [v4 objectForKeyedSubscript:v93];
-      [v103 setValue:v104 forPreferenceKey:v93];
+      mEMORY[0x277D6F470]8 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v104 = [preferencesCopy objectForKeyedSubscript:v93];
+      [mEMORY[0x277D6F470]8 setValue:v104 forPreferenceKey:v93];
     }
 
     v105 = *MEMORY[0x277D6FA88];
     if ([v8 containsObject:*MEMORY[0x277D6FA88]])
     {
-      v106 = [v6 objectForKeyedSubscript:v105];
-      v107 = [v106 BOOLValue];
-      v108 = [v4 objectForKeyedSubscript:v93];
+      v106 = [getTIPreferences objectForKeyedSubscript:v105];
+      bOOLValue9 = [v106 BOOLValue];
+      v108 = [preferencesCopy objectForKeyedSubscript:v93];
       [v108 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Smart Quotes Settings: Current=%d ChangeTo=%d", v109, v110, v111, v112, v113, v114, v107);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Smart Quotes Settings: Current=%d ChangeTo=%d", v109, v110, v111, v112, v113, v114, bOOLValue9);
 
-      v115 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v116 = [v4 objectForKeyedSubscript:v105];
-      [v115 setValue:v116 forPreferenceKey:v105];
+      mEMORY[0x277D6F470]9 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v116 = [preferencesCopy objectForKeyedSubscript:v105];
+      [mEMORY[0x277D6F470]9 setValue:v116 forPreferenceKey:v105];
     }
 
     v117 = *MEMORY[0x277D6F7A0];
     if ([v8 containsObject:*MEMORY[0x277D6F7A0]])
     {
-      v118 = [v6 objectForKeyedSubscript:v117];
-      v119 = [v118 BOOLValue];
-      v120 = [v4 objectForKeyedSubscript:v117];
+      v118 = [getTIPreferences objectForKeyedSubscript:v117];
+      bOOLValue10 = [v118 BOOLValue];
+      v120 = [preferencesCopy objectForKeyedSubscript:v117];
       [v120 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing KeyPaddle Settings: Current=%d ChangeTo=%d", v121, v122, v123, v124, v125, v126, v119);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing KeyPaddle Settings: Current=%d ChangeTo=%d", v121, v122, v123, v124, v125, v126, bOOLValue10);
 
-      v127 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v128 = [v4 objectForKeyedSubscript:v117];
-      [v127 setValue:v128 forKey:38];
+      mEMORY[0x277D6F470]10 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v128 = [preferencesCopy objectForKeyedSubscript:v117];
+      [mEMORY[0x277D6F470]10 setValue:v128 forKey:38];
     }
 
     v129 = *MEMORY[0x277D6FD08];
     if ([v8 containsObject:*MEMORY[0x277D6FD08]])
     {
-      v130 = [v6 objectForKeyedSubscript:v129];
-      v131 = [v130 BOOLValue];
-      v132 = [v4 objectForKeyedSubscript:v129];
+      v130 = [getTIPreferences objectForKeyedSubscript:v129];
+      bOOLValue11 = [v130 BOOLValue];
+      v132 = [preferencesCopy objectForKeyedSubscript:v129];
       [v132 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Typology Settings: Current=%d ChangeTo=%d", v133, v134, v135, v136, v137, v138, v131);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Typology Settings: Current=%d ChangeTo=%d", v133, v134, v135, v136, v137, v138, bOOLValue11);
 
-      v139 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v140 = [v4 objectForKeyedSubscript:v129];
-      [v139 setValue:v140 forKey:53];
+      mEMORY[0x277D6F470]11 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v140 = [preferencesCopy objectForKeyedSubscript:v129];
+      [mEMORY[0x277D6F470]11 setValue:v140 forKey:53];
     }
 
     v141 = *MEMORY[0x277D6FA80];
     if ([v8 containsObject:*MEMORY[0x277D6FA80]])
     {
-      v142 = [v6 objectForKeyedSubscript:v141];
-      v143 = [v142 BOOLValue];
-      v144 = [v4 objectForKeyedSubscript:v141];
+      v142 = [getTIPreferences objectForKeyedSubscript:v141];
+      bOOLValue12 = [v142 BOOLValue];
+      v144 = [preferencesCopy objectForKeyedSubscript:v141];
       [v144 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Smart Full-width Settings: Current=%d ChangeTo=%d", v145, v146, v147, v148, v149, v150, v143);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Smart Full-width Settings: Current=%d ChangeTo=%d", v145, v146, v147, v148, v149, v150, bOOLValue12);
 
-      v151 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v152 = [v4 objectForKeyedSubscript:v141];
-      [v151 setValue:v152 forPreferenceKey:v141];
+      mEMORY[0x277D6F470]12 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v152 = [preferencesCopy objectForKeyedSubscript:v141];
+      [mEMORY[0x277D6F470]12 setValue:v152 forPreferenceKey:v141];
     }
 
     v153 = *MEMORY[0x277D6F640];
     if ([v8 containsObject:*MEMORY[0x277D6F640]])
     {
-      v154 = [v6 objectForKeyedSubscript:v153];
-      v155 = [v154 BOOLValue];
-      v156 = [v4 objectForKeyedSubscript:v153];
+      v154 = [getTIPreferences objectForKeyedSubscript:v153];
+      bOOLValue13 = [v154 BOOLValue];
+      v156 = [preferencesCopy objectForKeyedSubscript:v153];
       [v156 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing Use CapsLock as Roman Switch Settings: Current=%d ChangeTo=%d", v157, v158, v159, v160, v161, v162, v155);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing Use CapsLock as Roman Switch Settings: Current=%d ChangeTo=%d", v157, v158, v159, v160, v161, v162, bOOLValue13);
 
-      v163 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v164 = [v4 objectForKeyedSubscript:v153];
-      [v163 setValue:v164 forPreferenceKey:v153];
+      mEMORY[0x277D6F470]13 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v164 = [preferencesCopy objectForKeyedSubscript:v153];
+      [mEMORY[0x277D6F470]13 setValue:v164 forPreferenceKey:v153];
     }
 
     v165 = *MEMORY[0x277D6FD18];
     if ([v8 containsObject:*MEMORY[0x277D6FD18]])
     {
-      v166 = [v4 objectForKeyedSubscript:v165];
-      v167 = [a1 getWubiEnumeration:v166];
+      v166 = [preferencesCopy objectForKeyedSubscript:v165];
+      v167 = [self getWubiEnumeration:v166];
 
-      v168 = [v6 objectForKeyedSubscript:v165];
+      v168 = [getTIPreferences objectForKeyedSubscript:v165];
       TYLogl(OS_LOG_TYPE_INFO, @"Changing Wubi Standard Settings: Current=%i, ChangeTo=%i", v169, v170, v171, v172, v173, v174, v168);
 
-      v175 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      mEMORY[0x277D6F470]14 = [MEMORY[0x277D6F470] sharedPreferencesController];
       v176 = [MEMORY[0x277CCABB0] numberWithInt:v167];
-      [v175 setValue:v176 forPreferenceKey:v165];
+      [mEMORY[0x277D6F470]14 setValue:v176 forPreferenceKey:v165];
     }
 
     v177 = *MEMORY[0x277D6FA70];
     if ([v8 containsObject:*MEMORY[0x277D6FA70]])
     {
-      v178 = [v4 objectForKeyedSubscript:v177];
-      v179 = [a1 getShuangpinEnumeration:v178];
+      v178 = [preferencesCopy objectForKeyedSubscript:v177];
+      v179 = [self getShuangpinEnumeration:v178];
 
-      v180 = [v6 objectForKeyedSubscript:v177];
+      v180 = [getTIPreferences objectForKeyedSubscript:v177];
       TYLogl(OS_LOG_TYPE_INFO, @"Changing Shaungpin Settings: Current=%i, ChangeTo=%i", v181, v182, v183, v184, v185, v186, v180);
 
-      v187 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      mEMORY[0x277D6F470]15 = [MEMORY[0x277D6F470] sharedPreferencesController];
       v188 = [MEMORY[0x277CCABB0] numberWithInt:v179];
-      [v187 setValue:v188 forPreferenceKey:v177];
+      [mEMORY[0x277D6F470]15 setValue:v188 forPreferenceKey:v177];
     }
   }
 
-  v189 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v189 synchronizePreferences];
+  mEMORY[0x277D6F470]16 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]16 synchronizePreferences];
 
   [TypistKeyboardUtilities waitFor:0.5];
-  v190 = [a1 getTIPreferences];
+  getTIPreferences2 = [self getTIPreferences];
 
-  return v190;
+  return getTIPreferences2;
 }
 
-+ (id)setKeyboardUISettings:(id)a3
++ (id)setKeyboardUISettings:(id)settings
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [a1 getKeyboardUISettings];
-  v7 = [v4 allKeys];
-  v8 = v7;
+  settingsCopy = settings;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  getKeyboardUISettings = [self getKeyboardUISettings];
+  allKeys = [settingsCopy allKeys];
+  v8 = allKeys;
   v9 = 0x277D75000;
   v10 = 0x279DF4000;
-  if (!v7 || ![v7 count])
+  if (!allKeys || ![allKeys count])
   {
     goto LABEL_22;
   }
 
   if ([v8 containsObject:@"floatingKeyboard"])
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v12 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v13 = [v4 objectForKeyedSubscript:@"floatingKeyboard"];
-      v14 = [v13 BOOLValue];
+      v13 = [settingsCopy objectForKeyedSubscript:@"floatingKeyboard"];
+      bOOLValue = [v13 BOOLValue];
 
-      v15 = [v6 objectForKeyedSubscript:@"floatingKeyboard"];
-      v16 = [v15 BOOLValue];
+      v15 = [getKeyboardUISettings objectForKeyedSubscript:@"floatingKeyboard"];
+      bOOLValue2 = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue2)
       {
         v24 = @"Floating";
       }
@@ -778,9 +778,9 @@ uint64_t __52__TypistKeyboardDataInProcess_getKeyboardUISettings__block_invoke(u
       v81[1] = 3221225472;
       v81[2] = __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke;
       v81[3] = &__block_descriptor_34_e5_v8__0l;
-      v82 = v14;
+      v82 = bOOLValue;
       v9 = 0x277D75000;
-      v83 = v16;
+      v83 = bOOLValue2;
       [TypistKeyboardUtilities runOnMainThread:v81];
     }
   }
@@ -788,30 +788,30 @@ uint64_t __52__TypistKeyboardDataInProcess_getKeyboardUISettings__block_invoke(u
   v25 = *MEMORY[0x277D76AA8];
   if ([v8 containsObject:*MEMORY[0x277D76AA8]])
   {
-    v26 = [MEMORY[0x277D75418] currentDevice];
-    if ([v26 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v27 = [v6 objectForKeyedSubscript:@"floatingKeyboard"];
-    v28 = [v27 BOOLValue];
+    v27 = [getKeyboardUISettings objectForKeyedSubscript:@"floatingKeyboard"];
+    bOOLValue3 = [v27 BOOLValue];
 
     v9 = 0x277D75000;
-    if ((v28 & 1) == 0)
+    if ((bOOLValue3 & 1) == 0)
     {
-      v29 = [v6 objectForKeyedSubscript:v25];
-      v30 = [v29 BOOLValue];
-      v31 = [v4 objectForKeyedSubscript:v25];
+      v29 = [getKeyboardUISettings objectForKeyedSubscript:v25];
+      bOOLValue4 = [v29 BOOLValue];
+      v31 = [settingsCopy objectForKeyedSubscript:v25];
       [v31 BOOLValue];
-      TYLogl(OS_LOG_TYPE_INFO, @"Changing GestureKey Settings: Current=%d ChangeTo=%d", v32, v33, v34, v35, v36, v37, v30);
+      TYLogl(OS_LOG_TYPE_INFO, @"Changing GestureKey Settings: Current=%d ChangeTo=%d", v32, v33, v34, v35, v36, v37, bOOLValue4);
 
-      v26 = [MEMORY[0x277D756A0] sharedPreferencesController];
-      v38 = [v26 preferencesActions];
-      v39 = [v4 objectForKeyedSubscript:v25];
-      [v38 setValue:v39 forPreferenceKey:v25];
+      currentDevice2 = [MEMORY[0x277D756A0] sharedPreferencesController];
+      preferencesActions = [currentDevice2 preferencesActions];
+      v39 = [settingsCopy objectForKeyedSubscript:v25];
+      [preferencesActions setValue:v39 forPreferenceKey:v25];
 
       v9 = 0x277D75000;
       goto LABEL_13;
@@ -821,15 +821,15 @@ LABEL_13:
 LABEL_14:
   if ([v8 containsObject:@"LowerCaseKeyboard"])
   {
-    v40 = [v6 objectForKeyedSubscript:@"LowerCaseKeyboard"];
-    v41 = [v40 BOOLValue];
-    v42 = [v4 objectForKeyedSubscript:@"LowerCaseKeyboard"];
-    v78 = v41;
+    v40 = [getKeyboardUISettings objectForKeyedSubscript:@"LowerCaseKeyboard"];
+    bOOLValue5 = [v40 BOOLValue];
+    v42 = [settingsCopy objectForKeyedSubscript:@"LowerCaseKeyboard"];
+    v78 = bOOLValue5;
     [v42 BOOLValue];
     v9 = 0x277D75000;
     TYLogl(OS_LOG_TYPE_INFO, @"Changing SmallDisplay Settings: Current=%d ChangeTo=%d", v43, v44, v45, v46, v47, v48, v78);
 
-    v49 = [v4 objectForKeyedSubscript:@"LowerCaseKeyboard"];
+    v49 = [settingsCopy objectForKeyedSubscript:@"LowerCaseKeyboard"];
     v50 = MEMORY[0x277CBED28];
     if (!v49)
     {
@@ -841,47 +841,47 @@ LABEL_14:
 
   if ([v8 containsObject:@"dictation"])
   {
-    v51 = [v6 objectForKeyedSubscript:@"dictation"];
-    v52 = [v51 BOOLValue];
-    v53 = [v4 objectForKeyedSubscript:@"dictation"];
-    v79 = v52;
+    v51 = [getKeyboardUISettings objectForKeyedSubscript:@"dictation"];
+    bOOLValue6 = [v51 BOOLValue];
+    v53 = [settingsCopy objectForKeyedSubscript:@"dictation"];
+    v79 = bOOLValue6;
     [v53 BOOLValue];
     v9 = 0x277D75000;
     TYLogl(OS_LOG_TYPE_INFO, @"Changing Dictation Settings: Current=%d ChangeTo=%d", v54, v55, v56, v57, v58, v59, v79);
 
-    v60 = [MEMORY[0x277CEF368] sharedPreferences];
-    [v60 setSuppressDictationOptIn:1];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    [mEMORY[0x277CEF368] setSuppressDictationOptIn:1];
 
-    v61 = [MEMORY[0x277CEF368] sharedPreferences];
-    v62 = [v4 objectForKeyedSubscript:@"dictation"];
-    [v61 setDictationIsEnabled:{objc_msgSend(v62, "BOOLValue")}];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    v62 = [settingsCopy objectForKeyedSubscript:@"dictation"];
+    [mEMORY[0x277CEF368]2 setDictationIsEnabled:{objc_msgSend(v62, "BOOLValue")}];
   }
 
   v63 = *MEMORY[0x277D6F7C8];
   v10 = 0x279DF4000uLL;
   if ([v8 containsObject:*MEMORY[0x277D6F7C8]])
   {
-    v64 = [v6 objectForKeyedSubscript:v63];
-    v80 = [v4 objectForKeyedSubscript:v63];
+    v64 = [getKeyboardUISettings objectForKeyedSubscript:v63];
+    v80 = [settingsCopy objectForKeyedSubscript:v63];
     TYLogl(OS_LOG_TYPE_INFO, @"Changing Dictation Settings: Current=%@ ChangeTo=%@", v65, v66, v67, v68, v69, v70, v64);
 
     v9 = 0x277D75000uLL;
-    v71 = [v4 objectForKeyedSubscript:v63];
-    v72 = [a1 setOneHandedKeyboardHandBias:v71];
+    v71 = [settingsCopy objectForKeyedSubscript:v63];
+    v72 = [self setOneHandedKeyboardHandBias:v71];
   }
 
 LABEL_22:
-  v73 = [*(v9 + 1696) sharedPreferencesController];
-  v74 = [v73 preferencesActions];
-  [v74 synchronizePreferences];
+  sharedPreferencesController = [*(v9 + 1696) sharedPreferencesController];
+  preferencesActions2 = [sharedPreferencesController preferencesActions];
+  [preferencesActions2 synchronizePreferences];
 
-  v75 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v75 synchronize];
+  mEMORY[0x277CEF368]3 = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368]3 synchronize];
 
   [*(v10 + 560) waitFor:0.5];
-  v76 = [a1 getKeyboardUISettings];
+  getKeyboardUISettings2 = [self getKeyboardUISettings];
 
-  return v76;
+  return getKeyboardUISettings2;
 }
 
 void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint64_t a1)
@@ -906,52 +906,52 @@ void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint
   }
 }
 
-+ (id)setKeyboards:(id)a3
++ (id)setKeyboards:(id)keyboards
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  keyboardsCopy = keyboards;
+  v4 = [keyboardsCopy objectAtIndexedSubscript:0];
   TYLog(@"Replacing keyboards with: %@", v5, v6, v7, v8, v9, v10, v11, v4);
 
-  v12 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v13 = [v12 valueForKey:0];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v13 = [mEMORY[0x277D6F470] valueForKey:0];
   TYLog(@"Current Keyboards are\n%@", v14, v15, v16, v17, v18, v19, v20, v13);
 
-  v21 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v21 setValue:v3 forKey:0];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]2 setValue:keyboardsCopy forKey:0];
 
-  v22 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v22 setValue:MEMORY[0x277CBEC38] forKey:1];
+  mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]3 setValue:MEMORY[0x277CBEC38] forKey:1];
 
-  v23 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v23 synchronizePreferences];
+  mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]4 synchronizePreferences];
 
-  v24 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v25 = [v24 valueForKey:0];
+  mEMORY[0x277D6F470]5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v25 = [mEMORY[0x277D6F470]5 valueForKey:0];
 
   TYLog(@"New Keyboard is\n%@", v26, v27, v28, v29, v30, v31, v32, v25);
 
   return v25;
 }
 
-+ (id)addKeyboards:(id)a3
++ (id)addKeyboards:(id)keyboards
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v5 = [v4 valueForKey:0];
-  v6 = [v5 mutableCopy];
+  keyboardsCopy = keyboards;
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v5 = [mEMORY[0x277D6F470] valueForKey:0];
+  array = [v5 mutableCopy];
 
-  TYLog(@"Appending keyboards: %@\n to current list: %@", v7, v8, v9, v10, v11, v12, v13, v3);
-  if (!v6)
+  TYLog(@"Appending keyboards: %@\n to current list: %@", v7, v8, v9, v10, v11, v12, v13, keyboardsCopy);
+  if (!array)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v14 = v3;
+  v14 = keyboardsCopy;
   v15 = [v14 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v15)
   {
@@ -967,11 +967,11 @@ void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint
         }
 
         v19 = *(*(&v43 + 1) + 8 * i);
-        v27 = [v6 containsObject:v19];
+        v27 = [array containsObject:v19];
         v28 = @"Keyboard [%@] already exists. Skipping...";
         if ((v27 & 1) == 0)
         {
-          [v6 addObject:v19];
+          [array addObject:v19];
           v28 = @"Added [%@] to list of keyboard IDs.";
         }
 
@@ -984,17 +984,17 @@ void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint
     while (v16);
   }
 
-  v29 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v29 setValue:v6 forKey:0];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]2 setValue:array forKey:0];
 
-  v30 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v30 setValue:MEMORY[0x277CBEC38] forKey:1];
+  mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]3 setValue:MEMORY[0x277CBEC38] forKey:1];
 
-  v31 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v31 synchronizePreferences];
+  mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]4 synchronizePreferences];
 
-  v32 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v33 = [v32 valueForKey:0];
+  mEMORY[0x277D6F470]5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v33 = [mEMORY[0x277D6F470]5 valueForKey:0];
 
   TYLog(@"New Keyboards are:\n%@", v34, v35, v36, v37, v38, v39, v40, v33);
   v41 = *MEMORY[0x277D85DE8];
@@ -1002,13 +1002,13 @@ void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint
   return v33;
 }
 
-+ (id)removeKeyboards:(id)a3
++ (id)removeKeyboards:(id)keyboards
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  TYLog(@"Removing keyboard: %@", v4, v5, v6, v7, v8, v9, v10, v3);
-  v11 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v12 = [v11 valueForKey:0];
+  keyboardsCopy = keyboards;
+  TYLog(@"Removing keyboard: %@", v4, v5, v6, v7, v8, v9, v10, keyboardsCopy);
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v12 = [mEMORY[0x277D6F470] valueForKey:0];
   v13 = [v12 mutableCopy];
 
   TYLog(@"Current Keyboards are\n%@", v14, v15, v16, v17, v18, v19, v20, v13);
@@ -1016,7 +1016,7 @@ void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v21 = v3;
+  v21 = keyboardsCopy;
   v22 = [v21 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v22)
   {
@@ -1061,14 +1061,14 @@ void __53__TypistKeyboardDataInProcess_setKeyboardUISettings___block_invoke(uint
 
 LABEL_13:
 
-  v43 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v43 setValue:v13 forKey:0];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]2 setValue:v13 forKey:0];
 
-  v44 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v44 synchronizePreferences];
+  mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]3 synchronizePreferences];
 
-  v45 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v46 = [v45 valueForKey:0];
+  mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v46 = [mEMORY[0x277D6F470]4 valueForKey:0];
 
   TYLog(@"New Keyboards are\n%@", v47, v48, v49, v50, v51, v52, v53, v46);
   v54 = *MEMORY[0x277D85DE8];
@@ -1076,9 +1076,9 @@ LABEL_13:
   return v46;
 }
 
-+ (BOOL)switchToKeyboard:(id)a3
++ (BOOL)switchToKeyboard:(id)keyboard
 {
-  v3 = a3;
+  keyboardCopy = keyboard;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1089,7 +1089,7 @@ LABEL_13:
   v16[1] = 3221225472;
   v16[2] = __48__TypistKeyboardDataInProcess_switchToKeyboard___block_invoke;
   v16[3] = &unk_279DF4650;
-  v4 = v3;
+  v4 = keyboardCopy;
   v17 = v4;
   [TypistKeyboardUtilities runOnMainThread:v16];
   v5 = 10.0;
@@ -1145,22 +1145,22 @@ void __46__TypistKeyboardDataInProcess_dismissKeyboard__block_invoke()
   [v0 dismissKeyboard];
 }
 
-+ (BOOL)switchToPlane:(id)a3
++ (BOOL)switchToPlane:(id)plane
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D75658] activeKeyboard];
-  v5 = [MEMORY[0x277D75678] activeInstance];
-  v6 = [v5 _layout];
+  planeCopy = plane;
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  _layout = [activeInstance _layout];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__TypistKeyboardDataInProcess_switchToPlane___block_invoke;
   v11[3] = &unk_279DF4AB0;
-  v12 = v4;
-  v13 = v6;
-  v14 = v3;
-  v7 = v3;
-  v8 = v6;
-  v9 = v4;
+  v12 = activeKeyboard;
+  v13 = _layout;
+  v14 = planeCopy;
+  v7 = planeCopy;
+  v8 = _layout;
+  v9 = activeKeyboard;
   [TypistKeyboardUtilities runOnMainThread:v11];
 
   return 1;
@@ -1203,22 +1203,22 @@ void __53__TypistKeyboardDataInProcess_getVisibleKeyplaneName__block_invoke(uint
   *(v4 + 40) = v3;
 }
 
-+ (id)getKeyplaneDescription:(id)a3
++ (id)getKeyplaneDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__4;
   v21 = __Block_byref_object_dispose__4;
   v22 = objc_opt_new();
-  v4 = [MEMORY[0x277D75678] activeInstance];
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__4;
   v15[4] = __Block_byref_object_dispose__4;
-  v16 = [v4 _layout];
+  _layout = [activeInstance _layout];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -1231,7 +1231,7 @@ void __53__TypistKeyboardDataInProcess_getVisibleKeyplaneName__block_invoke(uint
   v8[3] = &unk_279DF4AD8;
   v10 = v13;
   v11 = v15;
-  v5 = v3;
+  v5 = descriptionCopy;
   v9 = v5;
   v12 = &v17;
   [TypistKeyboardUtilities runOnMainThread:v8];
@@ -1300,10 +1300,10 @@ void __47__TypistKeyboardDataInProcess_getAllCandidates__block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-+ (id)getVisibleCandidateList:(id)a3
++ (id)getVisibleCandidateList:(id)list
 {
-  v4 = a3;
-  if ([v4 isEqual:@"typistCandidateBarTypeMecabra"])
+  listCopy = list;
+  if ([listCopy isEqual:@"typistCandidateBarTypeMecabra"])
   {
     v9 = 0;
     v10 = &v9;
@@ -1323,21 +1323,21 @@ void __47__TypistKeyboardDataInProcess_getAllCandidates__block_invoke(uint64_t a
       v5 = MEMORY[0x277CBEBF8];
     }
 
-    v6 = v5;
+    getAllCandidates = v5;
     _Block_object_dispose(&v9, 8);
   }
 
-  else if ([v4 isEqual:@"typistCandidateBarTypeFavonious"])
+  else if ([listCopy isEqual:@"typistCandidateBarTypeFavonious"])
   {
-    v6 = [a1 getAllCandidates];
+    getAllCandidates = [self getAllCandidates];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    getAllCandidates = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return getAllCandidates;
 }
 
 void __55__TypistKeyboardDataInProcess_getVisibleCandidateList___block_invoke(uint64_t a1)
@@ -1355,9 +1355,9 @@ void __55__TypistKeyboardDataInProcess_getVisibleCandidateList___block_invoke(ui
   }
 }
 
-+ (CGPoint)getCandidateCenter:(id)a3
++ (CGPoint)getCandidateCenter:(id)center
 {
-  v4 = a3;
+  centerCopy = center;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3010000000;
@@ -1368,9 +1368,9 @@ void __55__TypistKeyboardDataInProcess_getVisibleCandidateList___block_invoke(ui
   v10[1] = 3221225472;
   v10[2] = __50__TypistKeyboardDataInProcess_getCandidateCenter___block_invoke;
   v10[3] = &unk_279DF4B00;
-  v5 = v4;
+  v5 = centerCopy;
   v12 = &v14;
-  v13 = a1;
+  selfCopy = self;
   v11 = v5;
   [TypistKeyboardUtilities runOnMainThread:v10];
   v6 = v15[4];
@@ -1559,7 +1559,7 @@ LABEL_39:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-+ (CGPoint)getCandidateCenterAtIndex:(int64_t)a3
++ (CGPoint)getCandidateCenterAtIndex:(int64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -1572,8 +1572,8 @@ LABEL_39:
   v7[2] = __57__TypistKeyboardDataInProcess_getCandidateCenterAtIndex___block_invoke;
   v7[3] = &unk_279DF4B28;
   v7[4] = &v8;
-  v7[5] = a3;
-  v7[6] = a1;
+  v7[5] = index;
+  v7[6] = self;
   [TypistKeyboardUtilities runOnMainThread:v7];
   v3 = v9[4];
   v4 = v9[5];
@@ -1938,13 +1938,13 @@ void __41__TypistKeyboardDataInProcess_markedText__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (void)showCandidateAtIndex:(int64_t)a3
++ (void)showCandidateAtIndex:(int64_t)index
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__TypistKeyboardDataInProcess_showCandidateAtIndex___block_invoke;
   v3[3] = &__block_descriptor_40_e5_v8__0l;
-  v3[4] = a3;
+  v3[4] = index;
   [TypistKeyboardUtilities runOnMainThread:v3];
 }
 
@@ -1955,9 +1955,9 @@ void __52__TypistKeyboardDataInProcess_showCandidateAtIndex___block_invoke(uint6
   [v2 showCandidateAtIndex:*(a1 + 32)];
 }
 
-+ (CGRect)findKeyBoundsInKeyboard:(id)a3
++ (CGRect)findKeyBoundsInKeyboard:(id)keyboard
 {
-  v3 = a3;
+  keyboardCopy = keyboard;
   v20 = 0;
   v21 = &v20;
   v22 = 0x4010000000;
@@ -1976,7 +1976,7 @@ void __52__TypistKeyboardDataInProcess_showCandidateAtIndex___block_invoke(uint6
   v14[2] = __55__TypistKeyboardDataInProcess_findKeyBoundsInKeyboard___block_invoke;
   v14[3] = &unk_279DF4B50;
   v16 = v18;
-  v5 = v3;
+  v5 = keyboardCopy;
   v15 = v5;
   v17 = &v20;
   [TypistKeyboardUtilities runOnMainThread:v14];
@@ -2067,17 +2067,17 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)generateKeyplaneSwitchTable:(id)a3
++ (id)generateKeyplaneSwitchTable:(id)table
 {
   v86 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tableCopy = table;
   v67 = objc_opt_new();
   v4 = objc_opt_new();
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v3;
+  obj = tableCopy;
   v12 = [obj countByEnumeratingWithState:&v80 objects:v85 count:16];
   if (v12)
   {
@@ -2113,14 +2113,14 @@ LABEL_11:
         v73[4] = v15;
         v73[5] = &v74;
         [TypistKeyboardUtilities runOnMainThread:v73];
-        v24 = [v75[5] isAlphabeticPlane];
+        isAlphabeticPlane = [v75[5] isAlphabeticPlane];
         [v75[5] isShiftKeyplane];
         [v75[5] isShiftKeyPlaneChooser];
         [v75[5] isLetters];
-        TYLog(@"          { isAlphabet:%d, isShift:%d, isShiftChooser:%d, isLetters:%d }", v25, v26, v27, v28, v29, v30, v31, v24);
+        TYLog(@"          { isAlphabet:%d, isShift:%d, isShiftChooser:%d, isLetters:%d }", v25, v26, v27, v28, v29, v30, v31, isAlphabeticPlane);
         v32 = [v75[5] stringForProperty:@"shift-alternate"];
-        v33 = [a1 getKeyboardUISettings];
-        v34 = [v33 objectForKeyedSubscript:@"LowerCaseKeyboard"];
+        getKeyboardUISettings = [self getKeyboardUISettings];
+        v34 = [getKeyboardUISettings objectForKeyedSubscript:@"LowerCaseKeyboard"];
         if (([v34 BOOLValue] & 1) == 0)
         {
 
@@ -2133,7 +2133,7 @@ LABEL_11:
         if (!v36)
         {
           [v75[5] stringForProperty:@"shift-alternate-small-display"];
-          v32 = v33 = v32;
+          v32 = getKeyboardUISettings = v32;
 LABEL_12:
         }
 
@@ -2146,8 +2146,8 @@ LABEL_12:
 
         v44 = [v75[5] stringForProperty:@"more-alternate"];
 
-        v45 = [a1 getKeyboardUISettings];
-        v46 = [v45 objectForKeyedSubscript:@"LowerCaseKeyboard"];
+        getKeyboardUISettings2 = [self getKeyboardUISettings];
+        v46 = [getKeyboardUISettings2 objectForKeyedSubscript:@"LowerCaseKeyboard"];
         if (([v46 BOOLValue] & 1) == 0)
         {
 
@@ -2160,7 +2160,7 @@ LABEL_12:
         if (!v48)
         {
           [v75[5] stringForProperty:@"more-alternate-small-display"];
-          v44 = v45 = v44;
+          v44 = getKeyboardUISettings2 = v44;
 LABEL_20:
         }
 
@@ -2195,8 +2195,8 @@ LABEL_20:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v58 = [v67 allKeys];
-  v59 = [v58 countByEnumeratingWithState:&v69 objects:v84 count:16];
+  allKeys = [v67 allKeys];
+  v59 = [allKeys countByEnumeratingWithState:&v69 objects:v84 count:16];
   if (v59)
   {
     v60 = *v70;
@@ -2206,7 +2206,7 @@ LABEL_20:
       {
         if (*v70 != v60)
         {
-          objc_enumerationMutation(v58);
+          objc_enumerationMutation(allKeys);
         }
 
         v62 = *(*(&v69 + 1) + 8 * j);
@@ -2216,7 +2216,7 @@ LABEL_20:
         }
       }
 
-      v59 = [v58 countByEnumeratingWithState:&v69 objects:v84 count:16];
+      v59 = [allKeys countByEnumeratingWithState:&v69 objects:v84 count:16];
     }
 
     while (v59);
@@ -2237,16 +2237,16 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
   *(v4 + 40) = v3;
 }
 
-+ (id)generateKeyplaneSwitchTableFor10Key:(id)a3
++ (id)generateKeyplaneSwitchTableFor10Key:(id)key
 {
   v69 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v53 = objc_opt_new();
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v3;
+  obj = keyCopy;
   v4 = [obj countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v4)
   {
@@ -2275,9 +2275,9 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
         {
           v58 = v14;
           v23 = objc_opt_new();
-          v24 = [MEMORY[0x277D75678] activeInstance];
-          v25 = [v24 _layout];
-          v26 = [v25 keyplaneNamed:v15];
+          activeInstance = [MEMORY[0x277D75678] activeInstance];
+          _layout = [activeInstance _layout];
+          v26 = [_layout keyplaneNamed:v15];
 
           v27 = [v26 stringForProperty:@"shift-alternate"];
           if ([v27 length])
@@ -2292,8 +2292,8 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
           v62 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v35 = [v26 keys];
-          v36 = [v35 countByEnumeratingWithState:&v59 objects:v67 count:16];
+          keys = [v26 keys];
+          v36 = [keys countByEnumeratingWithState:&v59 objects:v67 count:16];
           if (v36)
           {
             v37 = v36;
@@ -2304,20 +2304,20 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
               {
                 if (*v60 != v38)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(keys);
                 }
 
-                v40 = [*(*(&v59 + 1) + 8 * i) representedString];
-                v41 = [v40 lowercaseString];
+                representedString = [*(*(&v59 + 1) + 8 * i) representedString];
+                lowercaseString = [representedString lowercaseString];
 
-                if ([v41 hasSuffix:@"-plane"] && (objc_msgSend(v41, "isEqualToString:", v15) & 1) == 0)
+                if ([lowercaseString hasSuffix:@"-plane"] && (objc_msgSend(lowercaseString, "isEqualToString:", v15) & 1) == 0)
                 {
-                  [v23 setObject:v41 forKey:v41];
-                  TYLog(@"      --> Switch --> %@", v42, v43, v44, v45, v46, v47, v48, v41);
+                  [v23 setObject:lowercaseString forKey:lowercaseString];
+                  TYLog(@"      --> Switch --> %@", v42, v43, v44, v45, v46, v47, v48, lowercaseString);
                 }
               }
 
-              v37 = [v35 countByEnumeratingWithState:&v59 objects:v67 count:16];
+              v37 = [keys countByEnumeratingWithState:&v59 objects:v67 count:16];
             }
 
             while (v37);
@@ -2344,18 +2344,18 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
   return v53;
 }
 
-+ (id)determineDefaultPlane:(id)a3 basePlaneName:(id)a4
++ (id)determineDefaultPlane:(id)plane basePlaneName:(id)name
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v43 = a4;
+  planeCopy = plane;
+  nameCopy = name;
   v48 = [MEMORY[0x277CBEB58] set];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [v5 allKeys];
-  v49 = v5;
+  obj = [planeCopy allKeys];
+  v49 = planeCopy;
   v46 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (v46)
   {
@@ -2375,11 +2375,11 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v9 = [v5 objectForKeyedSubscript:v8];
-        v10 = [v9 allKeys];
+        v9 = [planeCopy objectForKeyedSubscript:v8];
+        allKeys = [v9 allKeys];
 
-        v51 = v10;
-        v11 = [v10 countByEnumeratingWithState:&v56 objects:v65 count:16];
+        v51 = allKeys;
+        v11 = [allKeys countByEnumeratingWithState:&v56 objects:v65 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2400,18 +2400,18 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
 
               v13 = *(*(&v56 + 1) + 8 * v15);
 
-              v17 = [v5 objectForKeyedSubscript:v8];
+              v17 = [planeCopy objectForKeyedSubscript:v8];
               v18 = [v17 objectForKeyedSubscript:v13];
               if ([v18 isEqualToString:v6])
               {
-                [v5 objectForKeyedSubscript:v13];
+                [planeCopy objectForKeyedSubscript:v13];
                 v19 = v14;
                 v20 = v8;
                 v22 = v21 = v6;
                 v23 = [v22 objectForKeyedSubscript:@"maybeDefaultPlane"];
                 v24 = [v23 isEqualToString:@"YES"];
 
-                v5 = v49;
+                planeCopy = v49;
                 v6 = v21;
                 v8 = v20;
                 v14 = v19;
@@ -2452,7 +2452,7 @@ void __59__TypistKeyboardDataInProcess_generateKeyplaneSwitchTable___block_invok
   v53 = 0u;
   v25 = v48;
   v26 = [v25 countByEnumeratingWithState:&v52 objects:v64 count:16];
-  v27 = v43;
+  v27 = nameCopy;
   if (v26)
   {
     v28 = v26;
@@ -2479,17 +2479,17 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v33 = [v5 objectForKeyedSubscript:v29];
+        v33 = [planeCopy objectForKeyedSubscript:v29];
         v34 = [v33 objectForKeyedSubscript:v27];
         if (v34)
         {
           v35 = v34;
-          v36 = [v5 objectForKeyedSubscript:v29];
+          v36 = [planeCopy objectForKeyedSubscript:v29];
           v37 = [v36 objectForKeyedSubscript:v27];
           v38 = [v37 isEqualToString:@"⇧"];
 
-          v27 = v43;
-          v5 = v49;
+          v27 = nameCopy;
+          planeCopy = v49;
 
           if (v38)
           {
@@ -2518,8 +2518,8 @@ LABEL_35:
 
   if ([v25 count])
   {
-    v39 = [v25 allObjects];
-    v40 = [v39 objectAtIndex:0];
+    allObjects = [v25 allObjects];
+    v40 = [allObjects objectAtIndex:0];
   }
 
   else
@@ -2534,26 +2534,26 @@ LABEL_36:
   return v40;
 }
 
-+ (id)determineDefaultPlane10Key:(id)a3 basePlaneName:(id)a4
++ (id)determineDefaultPlane10Key:(id)key basePlaneName:(id)name
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
-  v6 = [MEMORY[0x277D75678] activeInstance];
-  v7 = [v6 _layout];
-  v8 = [v7 performSelector:sel_keyboard];
+  keyCopy = key;
+  nameCopy = name;
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  _layout = [activeInstance _layout];
+  v8 = [_layout performSelector:sel_keyboard];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
   v25 = v8;
-  v9 = [v8 subtrees];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  subtrees = [v8 subtrees];
+  v10 = [subtrees countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
-    v12 = 0;
+    lowercaseString = 0;
     v13 = *v28;
 LABEL_3:
     v14 = 0;
@@ -2561,25 +2561,25 @@ LABEL_3:
     {
       if (*v28 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(subtrees);
       }
 
-      v15 = [*(*(&v27 + 1) + 8 * v14) name];
+      name = [*(*(&v27 + 1) + 8 * v14) name];
 
-      if ([v15 containsString:@"_"])
+      if ([name containsString:@"_"])
       {
-        v16 = [v15 componentsSeparatedByString:@"_"];
-        v17 = [v16 lastObject];
-        v12 = [v17 lowercaseString];
+        v16 = [name componentsSeparatedByString:@"_"];
+        lastObject = [v16 lastObject];
+        lowercaseString = [lastObject lowercaseString];
       }
 
       else
       {
-        v12 = v15;
+        lowercaseString = name;
       }
 
-      v18 = [v5 allKeys];
-      v19 = [v18 containsObject:v12];
+      allKeys = [keyCopy allKeys];
+      v19 = [allKeys containsObject:lowercaseString];
 
       if (v19)
       {
@@ -2588,7 +2588,7 @@ LABEL_3:
 
       if (v11 == ++v14)
       {
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v11 = [subtrees countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -2601,19 +2601,19 @@ LABEL_3:
 
   else
   {
-    v12 = 0;
+    lowercaseString = 0;
   }
 
-  if ([v12 length])
+  if ([lowercaseString length])
   {
-    v20 = v12;
-    v21 = v26;
+    v20 = lowercaseString;
+    v21 = nameCopy;
   }
 
   else
   {
-    v21 = v26;
-    v20 = [a1 determineDefaultPlane:v5 basePlaneName:v26];
+    v21 = nameCopy;
+    v20 = [self determineDefaultPlane:keyCopy basePlaneName:nameCopy];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -2621,22 +2621,22 @@ LABEL_3:
   return v20;
 }
 
-+ (id)cleanUpSwitchTableBasedOnDefaultPlane:(id)a3 defaultPlaneName:(id)a4
++ (id)cleanUpSwitchTableBasedOnDefaultPlane:(id)plane defaultPlaneName:(id)name
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  planeCopy = plane;
+  nameCopy = name;
   v7 = objc_opt_new();
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v37 = v6;
-  v8 = [v5 objectForKeyedSubscript:v6];
-  v9 = [v8 allKeys];
+  v37 = nameCopy;
+  v8 = [planeCopy objectForKeyedSubscript:nameCopy];
+  allKeys = [v8 allKeys];
 
-  obj = v9;
-  v40 = [v9 countByEnumeratingWithState:&v62 objects:v70 count:16];
+  obj = allKeys;
+  v40 = [allKeys countByEnumeratingWithState:&v62 objects:v70 count:16];
   if (v40)
   {
     v39 = *v63;
@@ -2657,11 +2657,11 @@ LABEL_3:
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v12 = [v5 objectForKeyedSubscript:v11];
-        v13 = [v12 allKeys];
+        v12 = [planeCopy objectForKeyedSubscript:v11];
+        allKeys2 = [v12 allKeys];
 
-        v42 = v13;
-        v44 = [v13 countByEnumeratingWithState:&v58 objects:v69 count:16];
+        v42 = allKeys2;
+        v44 = [allKeys2 countByEnumeratingWithState:&v58 objects:v69 count:16];
         if (v44)
         {
           v43 = *v59;
@@ -2682,10 +2682,10 @@ LABEL_3:
               v57 = 0u;
               v54 = 0u;
               v55 = 0u;
-              v16 = [v5 objectForKeyedSubscript:v15];
-              v17 = [v16 allKeys];
+              v16 = [planeCopy objectForKeyedSubscript:v15];
+              allKeys3 = [v16 allKeys];
 
-              v18 = [v17 countByEnumeratingWithState:&v54 objects:v68 count:16];
+              v18 = [allKeys3 countByEnumeratingWithState:&v54 objects:v68 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -2696,7 +2696,7 @@ LABEL_3:
                   {
                     if (*v55 != v20)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(allKeys3);
                     }
 
                     v22 = *(*(&v54 + 1) + 8 * i);
@@ -2705,10 +2705,10 @@ LABEL_3:
                     v53 = 0u;
                     v50 = 0u;
                     v51 = 0u;
-                    v23 = [v5 objectForKeyedSubscript:v22];
-                    v24 = [v23 allKeys];
+                    v23 = [planeCopy objectForKeyedSubscript:v22];
+                    allKeys4 = [v23 allKeys];
 
-                    v25 = [v24 countByEnumeratingWithState:&v50 objects:v67 count:16];
+                    v25 = [allKeys4 countByEnumeratingWithState:&v50 objects:v67 count:16];
                     if (v25)
                     {
                       v26 = v25;
@@ -2719,20 +2719,20 @@ LABEL_3:
                         {
                           if (*v51 != v27)
                           {
-                            objc_enumerationMutation(v24);
+                            objc_enumerationMutation(allKeys4);
                           }
 
                           [v7 addObject:*(*(&v50 + 1) + 8 * j)];
                         }
 
-                        v26 = [v24 countByEnumeratingWithState:&v50 objects:v67 count:16];
+                        v26 = [allKeys4 countByEnumeratingWithState:&v50 objects:v67 count:16];
                       }
 
                       while (v26);
                     }
                   }
 
-                  v19 = [v17 countByEnumeratingWithState:&v54 objects:v68 count:16];
+                  v19 = [allKeys3 countByEnumeratingWithState:&v54 objects:v68 count:16];
                 }
 
                 while (v19);
@@ -2762,8 +2762,8 @@ LABEL_3:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v29 = [v5 allKeys];
-  v30 = [v29 countByEnumeratingWithState:&v46 objects:v66 count:16];
+  allKeys5 = [planeCopy allKeys];
+  v30 = [allKeys5 countByEnumeratingWithState:&v46 objects:v66 count:16];
   if (v30)
   {
     v31 = v30;
@@ -2774,17 +2774,17 @@ LABEL_3:
       {
         if (*v47 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(allKeys5);
         }
 
         v34 = *(*(&v46 + 1) + 8 * k);
         if (([v7 containsObject:v34] & 1) == 0)
         {
-          [v5 removeObjectForKey:v34];
+          [planeCopy removeObjectForKey:v34];
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v46 objects:v66 count:16];
+      v31 = [allKeys5 countByEnumeratingWithState:&v46 objects:v66 count:16];
     }
 
     while (v31);
@@ -2792,27 +2792,27 @@ LABEL_3:
 
   v35 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return planeCopy;
 }
 
-+ (id)getKeyboardPlaneKeys:(id)a3 keys:(id)a4 inPlane:(id)a5
++ (id)getKeyboardPlaneKeys:(id)keys keys:(id)a4 inPlane:(id)plane
 {
   v124[13] = *MEMORY[0x277D85DE8];
-  v106 = a3;
+  keysCopy = keys;
   v102 = a4;
-  v93 = a5;
-  v89 = [MEMORY[0x277D75678] activeInstance];
-  v90 = [v106 shouldShowDictationKey];
-  v88 = [v106 shouldShowGlobeKey];
-  v7 = [v89 _layout];
-  v8 = [v7 globeKeyDisplaysAsEmojiKey];
+  planeCopy = plane;
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  shouldShowDictationKey = [keysCopy shouldShowDictationKey];
+  shouldShowGlobeKey = [keysCopy shouldShowGlobeKey];
+  _layout = [activeInstance _layout];
+  globeKeyDisplaysAsEmojiKey = [_layout globeKeyDisplaysAsEmojiKey];
 
-  v9 = [v89 _layout];
-  v10 = [v9 showsDedicatedEmojiKeyAlongsideGlobeButton];
+  _layout2 = [activeInstance _layout];
+  showsDedicatedEmojiKeyAlongsideGlobeButton = [_layout2 showsDedicatedEmojiKeyAlongsideGlobeButton];
 
-  v86 = [v89 keyplaneView];
-  v85 = [v86 factory];
-  [v85 dynamicInsets];
+  keyplaneView = [activeInstance keyplaneView];
+  factory = [keyplaneView factory];
+  [factory dynamicInsets];
   v97 = v12;
   v98 = v11;
   v91 = v14;
@@ -2821,51 +2821,51 @@ LABEL_3:
   if ([v102 count])
   {
     v16 = 0;
-    v87 = v8 ^ 1 | v10;
+    v87 = globeKeyDisplaysAsEmojiKey ^ 1 | showsDedicatedEmojiKeyAlongsideGlobeButton;
     v94 = *(MEMORY[0x277CBF348] + 8);
     v95 = *MEMORY[0x277CBF348];
     while (1)
     {
       v101 = v16;
       v107 = [v102 objectAtIndexedSubscript:?];
-      v17 = [v107 name];
-      v18 = [v106 changeKeyNameToGenericCharacter:v17];
+      name = [v107 name];
+      v18 = [keysCopy changeKeyNameToGenericCharacter:name];
 
-      v19 = [v107 name];
-      v20 = [v19 lowercaseString];
-      if ([v20 hasPrefix:@"copy-"])
+      name2 = [v107 name];
+      lowercaseString = [name2 lowercaseString];
+      if ([lowercaseString hasPrefix:@"copy-"])
       {
         goto LABEL_6;
       }
 
-      v21 = [v107 name];
-      v22 = [v21 lowercaseString];
-      if ([v22 hasPrefix:@"cut-"])
+      name3 = [v107 name];
+      lowercaseString2 = [name3 lowercaseString];
+      if ([lowercaseString2 hasPrefix:@"cut-"])
       {
         break;
       }
 
-      v25 = [v107 name];
-      v26 = [v25 lowercaseString];
-      v27 = [v26 hasPrefix:@"paste-"];
+      name4 = [v107 name];
+      lowercaseString3 = [name4 lowercaseString];
+      v27 = [lowercaseString3 hasPrefix:@"paste-"];
 
       if (v27)
       {
         goto LABEL_7;
       }
 
-      v23 = v18;
+      representedString = v18;
       if (v18)
       {
 LABEL_9:
-        v103 = v93;
-        v104 = v23;
-        if (([(__CFString *)v23 isEqualToString:@"Dictation"]& 1) != 0)
+        v103 = planeCopy;
+        v104 = representedString;
+        if (([(__CFString *)representedString isEqualToString:@"Dictation"]& 1) != 0)
         {
-          v24 = v90;
+          visible = shouldShowDictationKey;
         }
 
-        else if ([(__CFString *)v23 isEqualToString:@"🌐"])
+        else if ([(__CFString *)representedString isEqualToString:@"🌐"])
         {
           if ((v87 & 1) == 0)
           {
@@ -2873,12 +2873,12 @@ LABEL_9:
             v104 = @"Emoji";
           }
 
-          v24 = v88;
+          visible = shouldShowGlobeKey;
         }
 
         else
         {
-          v24 = [v107 visible];
+          visible = [v107 visible];
         }
 
         [v107 frame];
@@ -2887,19 +2887,19 @@ LABEL_9:
         v37 = v36;
         v39 = v38;
         UIRectGetCenter();
-        [a1 centerOfKey:? withOffset:?];
+        [self centerOfKey:? withOffset:?];
         v41 = v40;
         v43 = v42;
         UIRectGetCenter();
-        [a1 centerOfKey:? withOffset:?];
+        [self centerOfKey:? withOffset:?];
         v45 = v44;
         v47 = v46;
-        v105 = [v106 convertRepresentedStringsIfNecessary:v104];
+        v105 = [keysCopy convertRepresentedStringsIfNecessary:v104];
         v124[0] = v105;
         v123[0] = @"key";
         v123[1] = @"keyname";
-        v100 = [v107 name];
-        v124[1] = v100;
+        name5 = [v107 name];
+        v124[1] = name5;
         v124[2] = @"tap";
         v123[2] = @"action";
         v123[3] = @"x";
@@ -2914,8 +2914,8 @@ LABEL_9:
         v124[6] = v103;
         v123[6] = @"plane";
         v123[7] = @"more-after";
-        v50 = [v107 cache];
-        v51 = [v50 objectForKey:@"more-after"];
+        cache = [v107 cache];
+        v51 = [cache objectForKey:@"more-after"];
         v52 = v51;
         v53 = &unk_2880299D0;
         if (v51)
@@ -2928,19 +2928,19 @@ LABEL_9:
         v123[8] = @"type";
         v123[9] = @"visible";
         v54 = MEMORY[0x277CBEC28];
-        if (v24)
+        if (visible)
         {
           v54 = MEMORY[0x277CBEC38];
         }
 
         v124[9] = v54;
         v123[10] = @"secondaryDisplayString";
-        v55 = [v107 secondaryDisplayStrings];
-        v56 = v55;
+        secondaryDisplayStrings = [v107 secondaryDisplayStrings];
+        v56 = secondaryDisplayStrings;
         v57 = &stru_288014100;
-        if (v55)
+        if (secondaryDisplayStrings)
         {
-          v57 = v55;
+          v57 = secondaryDisplayStrings;
         }
 
         v124[10] = v57;
@@ -2963,11 +2963,11 @@ LABEL_9:
         v116[3] = &unk_279DF4710;
         v116[4] = &v117;
         [TypistKeyboardUtilities runOnMainThread:v116];
-        v61 = [MEMORY[0x277D75418] currentDevice];
-        if ([v61 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
-          v62 = [MEMORY[0x277D75418] currentDevice];
-          if ([v62 userInterfaceIdiom] == 1)
+          currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice2 userInterfaceIdiom] == 1)
           {
             v63 = *(v118 + 24);
 
@@ -2981,8 +2981,8 @@ LABEL_32:
             v115 = 0u;
             v112 = 0u;
             v113 = 0u;
-            v61 = [v107 secondaryDisplayStrings];
-            v64 = [v61 countByEnumeratingWithState:&v112 objects:v122 count:16];
+            currentDevice = [v107 secondaryDisplayStrings];
+            v64 = [currentDevice countByEnumeratingWithState:&v112 objects:v122 count:16];
             if (v64)
             {
               v65 = *v113;
@@ -2992,14 +2992,14 @@ LABEL_32:
                 {
                   if (*v113 != v65)
                   {
-                    objc_enumerationMutation(v61);
+                    objc_enumerationMutation(currentDevice);
                   }
 
                   v67 = [@"⊎" stringByAppendingString:*(*(&v112 + 1) + 8 * i)];
                   [v15 setValue:v60 forKey:v67];
                 }
 
-                v64 = [v61 countByEnumeratingWithState:&v112 objects:v122 count:16];
+                v64 = [currentDevice countByEnumeratingWithState:&v112 objects:v122 count:16];
               }
 
               while (v64);
@@ -3011,21 +3011,21 @@ LABEL_32:
           }
 
 LABEL_42:
-          if ([v106 isTenKey])
+          if ([keysCopy isTenKey])
           {
-            [v106 setupTenKey:v15 forKey:v107 keyName:v105 planeName:v103];
+            [keysCopy setupTenKey:v15 forKey:v107 keyName:v105 planeName:v103];
           }
 
-          else if (([v106 isTenKey] & 1) == 0 && objc_msgSend(v106, "isKanaKeyboard"))
+          else if (([keysCopy isTenKey] & 1) == 0 && objc_msgSend(keysCopy, "isKanaKeyboard"))
           {
-            v68 = [MEMORY[0x277D75418] currentDevice];
-            if ([v68 userInterfaceIdiom] == 1)
+            currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+            if ([currentDevice3 userInterfaceIdiom] == 1)
             {
               v69 = *(v118 + 24);
 
               if ((v69 & 1) == 0)
               {
-                [v106 setup50OnFlick:v15 forKey:v107 keyName:v105 planeName:v103];
+                [keysCopy setup50OnFlick:v15 forKey:v107 keyName:v105 planeName:v103];
               }
             }
 
@@ -3042,21 +3042,21 @@ LABEL_42:
         goto LABEL_32;
       }
 
-      if (![v93 isEqual:@"second-alternate"] || (objc_msgSend(v107, "secondaryRepresentedStrings"), v28 = objc_claimAutoreleasedReturnValue(), v29 = v28 == 0, v28, v29))
+      if (![planeCopy isEqual:@"second-alternate"] || (objc_msgSend(v107, "secondaryRepresentedStrings"), v28 = objc_claimAutoreleasedReturnValue(), v29 = v28 == 0, v28, v29))
       {
-        v23 = [v107 representedString];
+        representedString = [v107 representedString];
       }
 
       else
       {
-        v30 = [v107 secondaryRepresentedStrings];
-        v31 = [v30 objectAtIndexedSubscript:0];
+        secondaryRepresentedStrings = [v107 secondaryRepresentedStrings];
+        v31 = [secondaryRepresentedStrings objectAtIndexedSubscript:0];
 
-        v23 = v31;
+        representedString = v31;
       }
 
 LABEL_8:
-      if (v23)
+      if (representedString)
       {
         goto LABEL_9;
       }
@@ -3073,7 +3073,7 @@ LABEL_51:
 
 LABEL_6:
 LABEL_7:
-    v23 = [v107 name];
+    representedString = [v107 name];
 
     goto LABEL_8;
   }
@@ -3107,7 +3107,7 @@ LABEL_54:
     while (v73);
   }
 
-  TYLog(@"Plane: %@, Keys -> %@", v76, v77, v78, v79, v80, v81, v82, v93);
+  TYLog(@"Plane: %@, Keys -> %@", v76, v77, v78, v79, v80, v81, v82, planeCopy);
   v83 = *MEMORY[0x277D85DE8];
 
   return v72;
@@ -3120,17 +3120,17 @@ uint64_t __65__TypistKeyboardDataInProcess_getKeyboardPlaneKeys_keys_inPlane___b
   return result;
 }
 
-+ (id)updateCachedKeyplaneKeycaps:(id)a3
++ (id)updateCachedKeyplaneKeycaps:(id)keycaps
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keycapsCopy = keycaps;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v3;
+  v6 = keycapsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -3146,20 +3146,20 @@ uint64_t __65__TypistKeyboardDataInProcess_getKeyboardPlaneKeys_keys_inPlane___b
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 displayString];
-        if (v12)
+        displayString = [v11 displayString];
+        if (displayString)
         {
-          v13 = v12;
-          v14 = [v11 interactionType];
+          v13 = displayString;
+          interactionType = [v11 interactionType];
 
-          if (v14 != 10)
+          if (interactionType != 10)
           {
-            v15 = [MEMORY[0x277D75698] _showSmallDisplayKeyplane];
-            v16 = [v11 displayString];
-            v17 = v16;
-            if ((v15 & 1) == 0)
+            _showSmallDisplayKeyplane = [MEMORY[0x277D75698] _showSmallDisplayKeyplane];
+            displayString2 = [v11 displayString];
+            v17 = displayString2;
+            if ((_showSmallDisplayKeyplane & 1) == 0)
             {
-              v18 = [v16 uppercaseStringWithLocale:v5];
+              v18 = [displayString2 uppercaseStringWithLocale:currentLocale];
 
               v17 = v18;
             }
@@ -3180,12 +3180,12 @@ uint64_t __65__TypistKeyboardDataInProcess_getKeyboardPlaneKeys_keys_inPlane___b
   return v4;
 }
 
-+ (CGPoint)centerOfKey:(CGPoint)a3 withOffset:(CGPoint)a4
++ (CGPoint)centerOfKey:(CGPoint)key withOffset:(CGPoint)offset
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
-  v6 = [MEMORY[0x277D75678] activeInstance];
-  v7 = [v6 _layout];
+  v4 = key.x + offset.x;
+  v5 = key.y + offset.y;
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  _layout = [activeInstance _layout];
 
   v18 = 0;
   v19 = &v18;
@@ -3198,7 +3198,7 @@ uint64_t __65__TypistKeyboardDataInProcess_getKeyboardPlaneKeys_keys_inPlane___b
   v13[2] = __54__TypistKeyboardDataInProcess_centerOfKey_withOffset___block_invoke;
   v13[3] = &unk_279DF4BA0;
   v15 = &v18;
-  v8 = v7;
+  v8 = _layout;
   v14 = v8;
   v16 = v4;
   v17 = v5;
@@ -3223,25 +3223,25 @@ void __54__TypistKeyboardDataInProcess_centerOfKey_withOffset___block_invoke(uin
   *(v2 + 40) = v4;
 }
 
-+ (id)addKeyboardGestureKeys:(id)a3 keys:(id)a4 inPlane:(id)a5 addTo:(id)a6
++ (id)addKeyboardGestureKeys:(id)keys keys:(id)a4 inPlane:(id)plane addTo:(id)to
 {
   v122[1] = *MEMORY[0x277D85DE8];
-  v102 = a3;
+  keysCopy = keys;
   v9 = a4;
-  v10 = a5;
-  v101 = a6;
+  planeCopy = plane;
+  toCopy = to;
   v92 = v9;
-  v94 = v10;
-  if (!v9 || !v10)
+  v94 = planeCopy;
+  if (!v9 || !planeCopy)
   {
     TYLogl(OS_LOG_TYPE_ERROR, @"[addKeyboardGestureKeys] - FAILURE - keys or planeName is missing!", v11, v12, v13, v14, v15, v16, v88);
     goto LABEL_53;
   }
 
-  v91 = [MEMORY[0x277D75678] activeInstance];
-  v90 = [v91 keyplaneView];
-  v89 = [v90 factory];
-  [v89 dynamicInsets];
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  keyplaneView = [activeInstance keyplaneView];
+  factory = [keyplaneView factory];
+  [factory dynamicInsets];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -3261,37 +3261,37 @@ LABEL_4:
   if ([v92 count] > v93)
   {
     v97 = [v92 objectAtIndexedSubscript:?];
-    v25 = [v97 name];
-    v103 = [v102 changeKeyNameToGenericCharacter:v25];
+    name = [v97 name];
+    representedString = [keysCopy changeKeyNameToGenericCharacter:name];
 
-    if (!v103)
+    if (!representedString)
     {
       if (![v94 isEqual:@"second-alternate"] || (objc_msgSend(v97, "secondaryRepresentedStrings"), v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v27))
       {
-        v103 = [v97 representedString];
+        representedString = [v97 representedString];
       }
 
       else
       {
-        v28 = [v97 secondaryRepresentedStrings];
-        v103 = [v28 objectAtIndexedSubscript:0];
+        secondaryRepresentedStrings = [v97 secondaryRepresentedStrings];
+        representedString = [secondaryRepresentedStrings objectAtIndexedSubscript:0];
       }
     }
 
-    v29 = [v97 secondaryRepresentedStrings];
-    if ([v29 count])
+    secondaryRepresentedStrings2 = [v97 secondaryRepresentedStrings];
+    if ([secondaryRepresentedStrings2 count])
     {
       if ([v97 displayTypeHint] == 10)
       {
 
 LABEL_13:
-        v30 = [v97 secondaryRepresentedStrings];
+        secondaryRepresentedStrings3 = [v97 secondaryRepresentedStrings];
 LABEL_23:
         v111 = 0u;
         v112 = 0u;
         v109 = 0u;
         v110 = 0u;
-        obj = v30;
+        obj = secondaryRepresentedStrings3;
         v36 = [obj countByEnumeratingWithState:&v109 objects:v121 count:16];
         if (!v36)
         {
@@ -3317,26 +3317,26 @@ LABEL_23:
               v104 = @"↓";
               v100 = @"flick-down";
 LABEL_35:
-              v48 = [v101 objectForKey:v103];
+              v48 = [toCopy objectForKey:representedString];
               v49 = [v48 objectForKeyedSubscript:@"x"];
               [v49 floatValue];
               v51 = v50;
-              v52 = [v101 objectForKey:v103];
+              v52 = [toCopy objectForKey:representedString];
               v53 = [v52 objectForKeyedSubscript:@"y"];
               [v53 floatValue];
               v55 = v54;
 
               LODWORD(v56) = 1118175232;
-              [v102 calculateCoordinatesForFlickGesture:v104 direction:v51 offset:{v55, v56}];
+              [keysCopy calculateCoordinatesForFlickGesture:v104 direction:v51 offset:{v55, v56}];
               v58 = v57;
               v60 = v59;
               v119[0] = @"key";
-              v61 = [v102 convertRepresentedStringsIfNecessary:v38];
+              v61 = [keysCopy convertRepresentedStringsIfNecessary:v38];
               v120[0] = v61;
               v119[1] = @"keyname";
-              v62 = [v97 name];
-              v120[1] = v62;
-              v120[2] = v103;
+              name2 = [v97 name];
+              v120[1] = name2;
+              v120[2] = representedString;
               v119[2] = @"basekey";
               v119[3] = @"action";
               v120[3] = v100;
@@ -3359,9 +3359,9 @@ LABEL_35:
               v67 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:{v18, v20, v22, v24}];
               v120[9] = v67;
               v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v120 forKeys:v119 count:10];
-              v69 = [v102 convertRepresentedStringsIfNecessary:v38];
+              v69 = [keysCopy convertRepresentedStringsIfNecessary:v38];
               v70 = [(__CFString *)v104 stringByAppendingString:v69];
-              [v101 setValue:v68 forKey:v70];
+              [toCopy setValue:v68 forKey:v70];
 
               ++v99;
               continue;
@@ -3386,7 +3386,7 @@ LABEL_35:
               goto LABEL_35;
             }
 
-            TYLogl(OS_LOG_TYPE_ERROR, @"Too many secondaryRepresentedStrings on key '%@'. Unable to determine gesture direction.", v40, v41, v42, v43, v44, v45, v103);
+            TYLogl(OS_LOG_TYPE_ERROR, @"Too many secondaryRepresentedStrings on key '%@'. Unable to determine gesture direction.", v40, v41, v42, v43, v44, v45, representedString);
           }
 
           v36 = [obj countByEnumeratingWithState:&v109 objects:v121 count:16];
@@ -3402,8 +3402,8 @@ LABEL_39:
 
       if ([v97 displayType] == 7)
       {
-        v31 = [MEMORY[0x277D75418] currentDevice];
-        if ([v31 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
           v32 = *(v115 + 24);
 
@@ -3413,19 +3413,19 @@ LABEL_39:
           }
 
 LABEL_20:
-          v33 = [v97 gestureKey];
+          gestureKey = [v97 gestureKey];
 
-          if (v33)
+          if (gestureKey)
           {
-            v34 = [v97 gestureKey];
-            v35 = [v34 representedString];
-            v122[0] = v35;
-            v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:1];
+            gestureKey2 = [v97 gestureKey];
+            representedString2 = [gestureKey2 representedString];
+            v122[0] = representedString2;
+            secondaryRepresentedStrings3 = [MEMORY[0x277CBEA60] arrayWithObjects:v122 count:1];
           }
 
           else
           {
-            v30 = 0;
+            secondaryRepresentedStrings3 = 0;
           }
 
           goto LABEL_23;
@@ -3441,7 +3441,7 @@ LABEL_20:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v72 = v101;
+  v72 = toCopy;
   v73 = [v72 countByEnumeratingWithState:&v105 objects:v118 count:16];
   if (v73)
   {
@@ -3476,7 +3476,7 @@ LABEL_20:
 LABEL_53:
   v86 = *MEMORY[0x277D85DE8];
 
-  return v101;
+  return toCopy;
 }
 
 uint64_t __73__TypistKeyboardDataInProcess_addKeyboardGestureKeys_keys_inPlane_addTo___block_invoke(uint64_t a1)
@@ -3486,23 +3486,23 @@ uint64_t __73__TypistKeyboardDataInProcess_addKeyboardGestureKeys_keys_inPlane_a
   return result;
 }
 
-+ (id)addKeyboardPopupKeys:(id)a3 keys:(id)a4 inPlane:(id)a5 addTo:(id)a6 keyplaneKeycaps:(id)a7
++ (id)addKeyboardPopupKeys:(id)keys keys:(id)a4 inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps
 {
   v132 = *MEMORY[0x277D85DE8];
-  v89 = a3;
+  keysCopy = keys;
   v11 = a4;
-  v12 = a5;
-  v95 = a6;
-  v85 = a7;
-  v81 = [MEMORY[0x277D75678] activeInstance];
-  v80 = [v81 keyplaneView];
-  v79 = [v80 factory];
-  [v79 dynamicInsets];
+  planeCopy = plane;
+  toCopy = to;
+  keycapsCopy = keycaps;
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  keyplaneView = [activeInstance keyplaneView];
+  factory = [keyplaneView factory];
+  [factory dynamicInsets];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v81 _layout];
+  _layout = [activeInstance _layout];
   v121 = 0;
   v122 = &v121;
   v123 = 0x3032000000;
@@ -3518,14 +3518,14 @@ uint64_t __73__TypistKeyboardDataInProcess_addKeyboardGestureKeys_keys_inPlane_a
   v112[2] = __87__TypistKeyboardDataInProcess_addKeyboardPopupKeys_keys_inPlane_addTo_keyplaneKeycaps___block_invoke;
   v112[3] = &unk_279DF4BC8;
   v115 = &v121;
-  v84 = v21;
+  v84 = _layout;
   v113 = v84;
-  v91 = v12;
+  v91 = planeCopy;
   v114 = v91;
   v116 = &v117;
   [TypistKeyboardUtilities runOnMainThread:v112];
-  v22 = [MEMORY[0x277D759A0] mainScreen];
-  [v22 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v134) <= 1194.0)
   {
     v82 = 0;
@@ -3557,47 +3557,47 @@ uint64_t __73__TypistKeyboardDataInProcess_addKeyboardGestureKeys_keys_inPlane_a
         }
 
         v94 = *(*(&v108 + 1) + 8 * i);
-        v98 = [v94 representedString];
-        v90 = [MEMORY[0x277CCAB68] string];
-        if (![v98 length])
+        representedString = [v94 representedString];
+        string = [MEMORY[0x277CCAB68] string];
+        if (![representedString length])
         {
           goto LABEL_37;
         }
 
         if ([v94 displayType] == 7)
         {
-          v25 = [v94 secondaryRepresentedStrings];
-          if (![v25 count])
+          secondaryRepresentedStrings = [v94 secondaryRepresentedStrings];
+          if (![secondaryRepresentedStrings count])
           {
             goto LABEL_14;
           }
 
-          v26 = [v122[5] isShiftKeyplane];
+          isShiftKeyplane = [v122[5] isShiftKeyplane];
 
-          if (v26)
+          if (isShiftKeyplane)
           {
-            v25 = [v94 secondaryRepresentedStrings];
-            v27 = [v25 firstObject];
+            secondaryRepresentedStrings = [v94 secondaryRepresentedStrings];
+            firstObject = [secondaryRepresentedStrings firstObject];
 
-            v98 = v27;
+            representedString = firstObject;
 LABEL_14:
           }
         }
 
-        if ([a1 generatePopupKeySubtrees:v89 key:v94 plane:v122[5] layout:v84 keyplaneKeycaps:v85])
+        if ([self generatePopupKeySubtrees:keysCopy key:v94 plane:v122[5] layout:v84 keyplaneKeycaps:keycapsCopy])
         {
-          v28 = [v95 objectForKeyedSubscript:v98];
+          v28 = [toCopy objectForKeyedSubscript:representedString];
           v29 = v28 == 0;
 
           if (!v29)
           {
-            v30 = [v94 subtrees];
-            if ([v30 count] == 1)
+            subtrees = [v94 subtrees];
+            if ([subtrees count] == 1)
             {
-              v31 = [v94 subtrees];
-              v32 = [v31 objectAtIndexedSubscript:0];
-              v33 = [v32 secondaryDisplayStrings];
-              v34 = v33 != 0;
+              subtrees2 = [v94 subtrees];
+              v32 = [subtrees2 objectAtIndexedSubscript:0];
+              secondaryDisplayStrings = [v32 secondaryDisplayStrings];
+              v34 = secondaryDisplayStrings != 0;
 
               if (v34 & v82)
               {
@@ -3613,12 +3613,12 @@ LABEL_14:
             v107 = 0u;
             v104 = 0u;
             v105 = 0u;
-            v35 = [v94 subtrees];
-            v97 = [v35 countByEnumeratingWithState:&v104 objects:v130 count:16];
+            subtrees3 = [v94 subtrees];
+            v97 = [subtrees3 countByEnumeratingWithState:&v104 objects:v130 count:16];
             if (v97)
             {
               v96 = *v105;
-              v93 = v35;
+              v93 = subtrees3;
               do
               {
                 for (j = 0; j != v97; ++j)
@@ -3629,19 +3629,19 @@ LABEL_14:
                   }
 
                   v37 = *(*(&v104 + 1) + 8 * j);
-                  v38 = [v37 representedString];
-                  if (([v38 isEqualToString:v98] & 1) == 0)
+                  representedString2 = [v37 representedString];
+                  if (([representedString2 isEqualToString:representedString] & 1) == 0)
                   {
                     [v37 frame];
                     UIRectGetCenter();
-                    [a1 centerOfKey:? withOffset:?];
+                    [self centerOfKey:? withOffset:?];
                     v40 = v39;
                     v42 = v41;
-                    v129[0] = v38;
+                    v129[0] = representedString2;
                     v128[0] = @"key";
                     v128[1] = @"keyname";
-                    v43 = [v37 name];
-                    v129[1] = v43;
+                    name = [v37 name];
+                    v129[1] = name;
                     v129[2] = @"drag";
                     v128[2] = @"action";
                     v128[3] = @"x";
@@ -3658,12 +3658,12 @@ LABEL_14:
                     v129[6] = @"popover";
                     v128[6] = @"type";
                     v128[7] = @"basekey";
-                    v129[7] = v98;
+                    v129[7] = representedString;
                     v129[8] = v91;
                     v128[8] = @"plane";
                     v128[9] = @"more-after";
-                    v48 = [v94 cache];
-                    v49 = [v48 objectForKey:@"more-after"];
+                    cache = [v94 cache];
+                    v49 = [cache objectForKey:@"more-after"];
                     v50 = v49;
                     v51 = &unk_2880299D0;
                     if (v49)
@@ -3677,33 +3677,33 @@ LABEL_14:
                     v129[10] = v52;
                     v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v129 forKeys:v128 count:11];
 
-                    v54 = [v95 objectForKeyedSubscript:v38];
+                    v54 = [toCopy objectForKeyedSubscript:representedString2];
                     v55 = v54 == 0;
 
                     if (v55)
                     {
-                      [v95 setValue:v53 forKey:v38];
-                      [v90 appendString:v38];
+                      [toCopy setValue:v53 forKey:representedString2];
+                      [string appendString:representedString2];
                     }
 
                     else
                     {
-                      v56 = [v89 keyboardID];
-                      v57 = [v56 hasPrefix:@"am"];
+                      keyboardID = [keysCopy keyboardID];
+                      v57 = [keyboardID hasPrefix:@"am"];
 
                       if (v57)
                       {
-                        v58 = [@"‍" stringByAppendingString:v38];
-                        [v95 setValue:v53 forKey:v58];
+                        v58 = [@"‍" stringByAppendingString:representedString2];
+                        [toCopy setValue:v53 forKey:v58];
 
-                        v59 = [@"‍" stringByAppendingString:v38];
-                        [v90 appendString:v59];
+                        v59 = [@"‍" stringByAppendingString:representedString2];
+                        [string appendString:v59];
                       }
                     }
                   }
                 }
 
-                v35 = v93;
+                subtrees3 = v93;
                 v97 = [v93 countByEnumeratingWithState:&v104 objects:v130 count:16];
               }
 
@@ -3726,7 +3726,7 @@ LABEL_37:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v60 = v95;
+  v60 = toCopy;
   v61 = [v60 countByEnumeratingWithState:&v100 objects:v127 count:16];
   if (v61)
   {
@@ -3780,54 +3780,54 @@ uint64_t __87__TypistKeyboardDataInProcess_addKeyboardPopupKeys_keys_inPlane_add
   return result;
 }
 
-+ (BOOL)generatePopupKeySubtrees:(id)a3 key:(id)a4 plane:(id)a5 layout:(id)a6 keyplaneKeycaps:(id)a7
++ (BOOL)generatePopupKeySubtrees:(id)subtrees key:(id)key plane:(id)plane layout:(id)layout keyplaneKeycaps:(id)keycaps
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 state];
-  if (v13 && ([a1 downActionFlagsForKey:v13 plane:v14 keyplaneKeycaps:v16] & 0x1000F8000) != 0)
+  subtreesCopy = subtrees;
+  keyCopy = key;
+  planeCopy = plane;
+  layoutCopy = layout;
+  keycapsCopy = keycaps;
+  state = [keyCopy state];
+  if (keyCopy && ([self downActionFlagsForKey:keyCopy plane:planeCopy keyplaneKeycaps:keycapsCopy] & 0x1000F8000) != 0)
   {
-    [a1 showPopupVariantsForKey:v12 key:v13 plane:v14 keyplaneKeycaps:v16];
+    [self showPopupVariantsForKey:subtreesCopy key:keyCopy plane:planeCopy keyplaneKeycaps:keycapsCopy];
   }
 
-  v18 = [v13 subtrees];
-  if (v18)
+  subtrees = [keyCopy subtrees];
+  if (subtrees)
   {
-    v19 = [v13 state];
+    state2 = [keyCopy state];
 
-    if (v19 == 16)
+    if (state2 == 16)
     {
-      v20 = [v13 selectedVariantIndex];
-      v18 = [v13 highlightedVariantsList];
-      [v13 setSelectedVariantIndex:0];
-      [v13 setHighlightedVariantsList:0];
+      selectedVariantIndex = [keyCopy selectedVariantIndex];
+      subtrees = [keyCopy highlightedVariantsList];
+      [keyCopy setSelectedVariantIndex:0];
+      [keyCopy setHighlightedVariantsList:0];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout_keyplaneKeycaps___block_invoke;
       v23[3] = &unk_279DF4AB0;
-      v21 = v13;
+      v21 = keyCopy;
       v24 = v21;
-      v25 = v15;
-      v26 = v14;
+      v25 = layoutCopy;
+      v26 = planeCopy;
       [TypistKeyboardUtilities runOnMainThread:v23];
-      [v21 setSelectedVariantIndex:v20];
-      [v21 setHighlightedVariantsList:v18];
+      [v21 setSelectedVariantIndex:selectedVariantIndex];
+      [v21 setHighlightedVariantsList:subtrees];
 
-      LOBYTE(v18) = 1;
+      LOBYTE(subtrees) = 1;
     }
 
     else
     {
-      LOBYTE(v18) = 0;
+      LOBYTE(subtrees) = 0;
     }
   }
 
-  [v13 setState:v17];
+  [keyCopy setState:state];
 
-  return v18;
+  return subtrees;
 }
 
 void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout_keyplaneKeycaps___block_invoke(uint64_t a1)
@@ -3850,24 +3850,24 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
   }
 }
 
-+ (void)showPopupVariantsForKey:(id)a3 key:(id)a4 plane:(id)a5 keyplaneKeycaps:(id)a6
++ (void)showPopupVariantsForKey:(id)key key:(id)a4 plane:(id)plane keyplaneKeycaps:(id)keycaps
 {
   v122 = *MEMORY[0x277D85DE8];
-  v88 = a3;
+  keyCopy = key;
   v10 = a4;
-  v90 = a5;
-  v89 = a6;
+  planeCopy = plane;
+  keycapsCopy = keycaps;
   v91 = v10;
   if (!v10 || [v10 state] == 16)
   {
     goto LABEL_93;
   }
 
-  v77 = [v10 representedString];
-  v11 = [MEMORY[0x277D75678] activeInstance];
+  representedString = [v10 representedString];
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
   v81 = UIKeyboardGetCurrentUILanguage();
-  v86 = [MEMORY[0x277CBEAF8] currentLocale];
-  v87 = [a1 downActionFlagsForKey:v10 plane:v90 keyplaneKeycaps:v89];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v87 = [self downActionFlagsForKey:v10 plane:planeCopy keyplaneKeycaps:keycapsCopy];
   v116 = 0;
   v117 = &v116;
   v118 = 0x2020000000;
@@ -3885,13 +3885,13 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
   v103[2] = __81__TypistKeyboardDataInProcess_showPopupVariantsForKey_key_plane_keyplaneKeycaps___block_invoke_2;
   v103[3] = &unk_279DF4BF0;
   v105 = &v116;
-  v74 = v11;
+  v74 = activeInstance;
   v104 = v74;
   v106 = &v112;
   v107 = &v108;
   [TypistKeyboardUtilities runOnMainThread:v103];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  if ([v12 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v13 = *(v109 + 24);
   }
@@ -3903,8 +3903,8 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
 
   v82 = v13;
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v123) <= 1194.0)
   {
     v15 = 1;
@@ -3919,24 +3919,24 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
   {
     v17 = UIKeyboardGetCurrentInputMode();
 
-    v18 = v77;
+    v18 = representedString;
     v19 = v18;
     if ((v87 & 0x80000) != 0)
     {
-      v20 = [v90 componentName];
-      v19 = [v18 stringByAppendingFormat:@"-%@", v20];
+      componentName = [planeCopy componentName];
+      v19 = [v18 stringByAppendingFormat:@"-%@", componentName];
     }
 
     if ([v91 displayType] == 7)
     {
-      v21 = [v91 secondaryRepresentedStrings];
-      v22 = [v21 count] == 0;
+      secondaryRepresentedStrings = [v91 secondaryRepresentedStrings];
+      v22 = [secondaryRepresentedStrings count] == 0;
 
       if (!v22)
       {
-        v23 = [v91 secondaryRepresentedStrings];
-        v24 = [v23 firstObject];
-        v25 = [v19 stringByAppendingString:v24];
+        secondaryRepresentedStrings2 = [v91 secondaryRepresentedStrings];
+        firstObject = [secondaryRepresentedStrings2 firstObject];
+        v25 = [v19 stringByAppendingString:firstObject];
 
         v19 = v25;
       }
@@ -3947,8 +3947,8 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
     {
       if (*(v117 + 24) == 1 && *(v113 + 24) != 1)
       {
-        v65 = [v91 secondaryRepresentedStrings];
-        v66 = [v65 objectAtIndex:0];
+        secondaryRepresentedStrings3 = [v91 secondaryRepresentedStrings];
+        v66 = [secondaryRepresentedStrings3 objectAtIndex:0];
         v67 = v66;
         if (v66)
         {
@@ -3957,14 +3957,14 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
 
         else
         {
-          v69 = [v91 representedString];
-          v68 = [v69 substringFromIndex:1];
+          representedString2 = [v91 representedString];
+          v68 = [representedString2 substringFromIndex:1];
         }
 
         if ((v87 & 0x80000) != 0)
         {
-          v70 = [v90 componentName];
-          v71 = [v18 stringByAppendingFormat:@"-%@", v70];
+          componentName2 = [planeCopy componentName];
+          v71 = [v18 stringByAppendingFormat:@"-%@", componentName2];
 
           v68 = v71;
         }
@@ -3976,7 +3976,7 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
 
       else
       {
-        v16 = [a1 _variantsByAppendingDualStringKey:v91 toVariants:v26];
+        v16 = [self _variantsByAppendingDualStringKey:v91 toVariants:v26];
       }
     }
 
@@ -4001,8 +4001,8 @@ void __89__TypistKeyboardDataInProcess_generatePopupKeySubtrees_key_plane_layout
       v102 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v55 = [v10 secondaryRepresentedStrings];
-      v56 = [v55 countByEnumeratingWithState:&v99 objects:v121 count:16];
+      secondaryRepresentedStrings4 = [v10 secondaryRepresentedStrings];
+      v56 = [secondaryRepresentedStrings4 countByEnumeratingWithState:&v99 objects:v121 count:16];
       if (v56)
       {
         v57 = *v100;
@@ -4012,7 +4012,7 @@ LABEL_69:
         {
           if (*v100 != v57)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(secondaryRepresentedStrings4);
           }
 
           v59 = *(*(&v99 + 1) + 8 * v58);
@@ -4024,7 +4024,7 @@ LABEL_69:
 
           if (v56 == ++v58)
           {
-            v56 = [v55 countByEnumeratingWithState:&v99 objects:v121 count:16];
+            v56 = [secondaryRepresentedStrings4 countByEnumeratingWithState:&v99 objects:v121 count:16];
             if (v56)
             {
               goto LABEL_69;
@@ -4064,7 +4064,7 @@ LABEL_79:
       }
     }
 
-    v16 = [a1 _variantsByAppendingDualStringKey:v91 toVariants:v19];
+    v16 = [self _variantsByAppendingDualStringKey:v91 toVariants:v19];
   }
 
 LABEL_24:
@@ -4105,15 +4105,15 @@ LABEL_25:
       v97[3] = &unk_279DF4650;
       v98 = v74;
       [TypistKeyboardUtilities runOnMainThread:v97];
-      v31 = [MEMORY[0x277CBEB18] array];
-      v73 = [MEMORY[0x277CBEB18] array];
-      v79 = [v91 representedString];
-      if ([v91 displayType] == 7 && objc_msgSend(v77, "length") >= 2)
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
+      representedString3 = [v91 representedString];
+      if ([v91 displayType] == 7 && objc_msgSend(representedString, "length") >= 2)
       {
-        v96 = [v77 characterAtIndex:0];
+        v96 = [representedString characterAtIndex:0];
         v32 = [MEMORY[0x277CCACA8] stringWithCharacters:&v96 length:1];
 
-        v79 = v32;
+        representedString3 = v32;
       }
 
       if (v80)
@@ -4123,27 +4123,27 @@ LABEL_25:
         while (1)
         {
           v35 = [v85 objectAtIndex:v33];
-          if (([v90 isShiftKeyplane] & 1) != 0 || !objc_msgSend(MEMORY[0x277D75698], "_showSmallDisplayKeyplane"))
+          if (([planeCopy isShiftKeyplane] & 1) != 0 || !objc_msgSend(MEMORY[0x277D75698], "_showSmallDisplayKeyplane"))
           {
-            v36 = [v35 uppercaseStringWithLocale:v86];
+            v36 = [v35 uppercaseStringWithLocale:currentLocale];
           }
 
           else
           {
-            v36 = [v35 lowercaseStringWithLocale:v86];
+            v36 = [v35 lowercaseStringWithLocale:currentLocale];
           }
 
           v37 = v36;
           v38 = (v87 & 0x40000) != 0 ? v35 : v36;
           v39 = v38;
-          v40 = [v91 displayString];
-          if (([v40 isEqual:v39] & 1) != 0 || !objc_msgSend(v89, "containsObject:", v37) || objc_msgSend(v91, "variantType") == 9)
+          displayString = [v91 displayString];
+          if (([displayString isEqual:v39] & 1) != 0 || !objc_msgSend(keycapsCopy, "containsObject:", v37) || objc_msgSend(v91, "variantType") == 9)
           {
             break;
           }
 
-          v53 = [v88 keyboardID];
-          v54 = [v53 hasPrefix:@"am"];
+          keyboardID = [keyCopy keyboardID];
+          v54 = [keyboardID hasPrefix:@"am"];
 
           if (v54)
           {
@@ -4160,7 +4160,7 @@ LABEL_62:
 
 LABEL_53:
         v41 = [v83 objectAtIndex:v33];
-        v42 = [v41 isEqual:v79];
+        v42 = [v41 isEqual:representedString3];
         v43 = 2;
         if (!v42)
         {
@@ -4175,25 +4175,25 @@ LABEL_53:
           [v44 setDisplayString:v35];
           [v44 setDisplayType:0];
           v45 = MEMORY[0x277CCACA8];
-          v46 = [v91 name];
-          v47 = [v44 representedString];
-          v48 = [v45 stringWithFormat:@"%@/%@", v46, v47];
+          name = [v91 name];
+          representedString4 = [v44 representedString];
+          v48 = [v45 stringWithFormat:@"%@/%@", name, representedString4];
           [v44 setName:v48];
 
           [v44 setOverrideDisplayString:0];
           v49 = [v35 length];
-          v50 = v31;
+          v50 = array;
           if (v49 == 1)
           {
             v51 = [v35 characterAtIndex:0];
-            v50 = v73;
+            v50 = array2;
             if (v51 != 170)
             {
               v52 = [v35 characterAtIndex:0];
-              v50 = v31;
+              v50 = array;
               if (v52 == 186)
               {
-                v50 = v73;
+                v50 = array2;
               }
             }
           }
@@ -4212,7 +4212,7 @@ LABEL_81:
       v95 = 0u;
       v92 = 0u;
       v93 = 0u;
-      v60 = v73;
+      v60 = array2;
       v61 = [v60 countByEnumeratingWithState:&v92 objects:v120 count:16];
       if (v61)
       {
@@ -4226,7 +4226,7 @@ LABEL_81:
               objc_enumerationMutation(v60);
             }
 
-            [v31 addObject:*(*(&v92 + 1) + 8 * i)];
+            [array addObject:*(*(&v92 + 1) + 8 * i)];
           }
 
           v61 = [v60 countByEnumeratingWithState:&v92 objects:v120 count:16];
@@ -4235,11 +4235,11 @@ LABEL_81:
         while (v61);
       }
 
-      if ([v31 count] >= v34)
+      if ([array count] >= v34)
       {
         [v91 updateVariantTypeForActions:v87];
         [v91 setVariantPopupBias:v72];
-        [v91 setSubtrees:v31];
+        [v91 setSubtrees:array];
         [v91 setState:16];
       }
     }
@@ -4298,60 +4298,60 @@ void __81__TypistKeyboardDataInProcess_showPopupVariantsForKey_key_plane_keyplan
   }
 }
 
-+ (unint64_t)downActionFlagsForKey:(id)a3 plane:(id)a4 keyplaneKeycaps:(id)a5
++ (unint64_t)downActionFlagsForKey:(id)key plane:(id)plane keyplaneKeycaps:(id)keycaps
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 visible])
+  keyCopy = key;
+  planeCopy = plane;
+  keycapsCopy = keycaps;
+  if (![keyCopy visible])
   {
     goto LABEL_63;
   }
 
-  v11 = [v8 interactionType];
-  v12 = [v8 variantType];
+  interactionType = [keyCopy interactionType];
+  variantType = [keyCopy variantType];
   v13 = 5;
-  if (v11 == 15 || v11 == 13)
+  if (interactionType == 15 || interactionType == 13)
   {
     goto LABEL_64;
   }
 
-  if (v11 == 4)
+  if (interactionType == 4)
   {
     v13 = 69;
     goto LABEL_64;
   }
 
-  if ((v11 - 1) > 1)
+  if ((interactionType - 1) > 1)
   {
-    if (v11 > 9)
+    if (interactionType > 9)
     {
-      if (v11 > 0x28)
+      if (interactionType > 0x28)
       {
         goto LABEL_45;
       }
 
-      if (((1 << v11) & 0x10000031000) != 0)
+      if (((1 << interactionType) & 0x10000031000) != 0)
       {
         goto LABEL_28;
       }
 
-      if (v11 == 14)
+      if (interactionType == 14)
       {
         v13 = 20;
         goto LABEL_64;
       }
 
-      if (v11 != 38)
+      if (interactionType != 38)
       {
 LABEL_45:
-        if (v11 == 10)
+        if (interactionType == 10)
         {
           v13 = 536870916;
           goto LABEL_64;
         }
 
-        if (v11 == 11)
+        if (interactionType == 11)
         {
           v13 = 36;
           goto LABEL_64;
@@ -4363,15 +4363,15 @@ LABEL_45:
 
     else
     {
-      if (v11 > 6)
+      if (interactionType > 6)
       {
-        if (v11 == 7)
+        if (interactionType == 7)
         {
           v13 = 1048581;
           goto LABEL_64;
         }
 
-        if (v11 == 9)
+        if (interactionType == 9)
         {
           v13 = 4229;
           goto LABEL_64;
@@ -4380,9 +4380,9 @@ LABEL_45:
         goto LABEL_60;
       }
 
-      if (v11 != 3)
+      if (interactionType != 3)
       {
-        if (v11 == 6)
+        if (interactionType == 6)
         {
           if ([MEMORY[0x277D75678] rivenTranslationPreference])
           {
@@ -4398,11 +4398,11 @@ LABEL_45:
         }
 
 LABEL_60:
-        if ((v11 & 0xFFFFFFFE) != 0x14)
+        if ((interactionType & 0xFFFFFFFE) != 0x14)
         {
-          if ((v11 - 24) <= 0xD)
+          if ((interactionType - 24) <= 0xD)
           {
-            v13 = qword_2701A44E8[v11 - 24];
+            v13 = qword_2701A44E8[interactionType - 24];
             goto LABEL_64;
           }
 
@@ -4421,7 +4421,7 @@ LABEL_28:
     goto LABEL_64;
   }
 
-  v14 = v12;
+  v14 = variantType;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -4432,9 +4432,9 @@ LABEL_28:
   v23[3] = &unk_279DF4710;
   v23[4] = &v24;
   [TypistKeyboardUtilities runOnMainThread:v23];
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 _referenceBounds];
-  if (CGRectGetHeight(v28) <= 1194.0 || (v25[3] & 1) != 0 || [v8 displayType] != 7)
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
+  if (CGRectGetHeight(v28) <= 1194.0 || (v25[3] & 1) != 0 || [keyCopy displayType] != 7)
   {
 
     v13 = 5;
@@ -4513,10 +4513,10 @@ LABEL_53:
 LABEL_37:
     if ((v14 - 11) > 1)
     {
-      if ([a1 keyHasAccentedVariants:v8 plane:v9 keyplaneKeycaps:v10])
+      if ([self keyHasAccentedVariants:keyCopy plane:planeCopy keyplaneKeycaps:keycapsCopy])
       {
-        v21 = [v8 name];
-        v22 = [v21 hasPrefix:@"Assist"];
+        name = [keyCopy name];
+        v22 = [name hasPrefix:@"Assist"];
 
         if ((v22 & 1) == 0)
         {
@@ -4533,11 +4533,11 @@ LABEL_37:
 
   v13 = 32901;
 LABEL_54:
-  v17 = [v8 name];
-  if ([v17 hasPrefix:@"NumberPad-"])
+  name2 = [keyCopy name];
+  if ([name2 hasPrefix:@"NumberPad-"])
   {
-    v18 = [v8 name];
-    v19 = [v18 hasSuffix:@"-0-Plus"];
+    name3 = [keyCopy name];
+    v19 = [name3 hasSuffix:@"-0-Plus"];
 
     if (v19)
     {
@@ -4562,15 +4562,15 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
   return result;
 }
 
-+ (id)_variantsByAppendingDualStringKey:(id)a3 toVariants:(id)a4
++ (id)_variantsByAppendingDualStringKey:(id)key toVariants:(id)variants
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 displayType] == 7)
+  keyCopy = key;
+  variantsCopy = variants;
+  if ([keyCopy displayType] == 7)
   {
-    v8 = [v6 secondaryDisplayStrings];
-    v9 = [v8 objectAtIndex:0];
+    secondaryDisplayStrings = [keyCopy secondaryDisplayStrings];
+    v9 = [secondaryDisplayStrings objectAtIndex:0];
     v10 = v9;
     if (v9)
     {
@@ -4579,12 +4579,12 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
 
     else
     {
-      v11 = [v6 displayString];
-      v30 = [v11 substringFromIndex:1];
+      displayString = [keyCopy displayString];
+      v30 = [displayString substringFromIndex:1];
     }
 
-    v12 = [v6 secondaryRepresentedStrings];
-    v13 = [v12 objectAtIndex:0];
+    secondaryRepresentedStrings = [keyCopy secondaryRepresentedStrings];
+    v13 = [secondaryRepresentedStrings objectAtIndex:0];
     v14 = v13;
     if (v13)
     {
@@ -4593,23 +4593,23 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
 
     else
     {
-      v15 = [v6 representedString];
-      v29 = [v15 substringFromIndex:1];
+      representedString = [keyCopy representedString];
+      v29 = [representedString substringFromIndex:1];
     }
 
     v16 = *MEMORY[0x277D76C38];
-    v17 = [v7 objectForKey:*MEMORY[0x277D76C38]];
+    v17 = [variantsCopy objectForKey:*MEMORY[0x277D76C38]];
     v18 = *MEMORY[0x277D76C40];
-    v19 = [v7 objectForKey:*MEMORY[0x277D76C40]];
+    v19 = [variantsCopy objectForKey:*MEMORY[0x277D76C40]];
     v20 = *MEMORY[0x277D76C30];
-    v21 = [v7 objectForKey:*MEMORY[0x277D76C30]];
-    v22 = [a1 appendingSecondaryStringToVariantsTop:v17 secondaryString:v30 withDirection:v21];
+    v21 = [variantsCopy objectForKey:*MEMORY[0x277D76C30]];
+    v22 = [self appendingSecondaryStringToVariantsTop:v17 secondaryString:v30 withDirection:v21];
 
-    v23 = [v7 objectForKey:v20];
-    v24 = [a1 appendingSecondaryStringToVariantsTop:v19 secondaryString:v29 withDirection:v23];
+    v23 = [variantsCopy objectForKey:v20];
+    v24 = [self appendingSecondaryStringToVariantsTop:v19 secondaryString:v29 withDirection:v23];
 
     v31[0] = v20;
-    v25 = [v7 objectForKey:v20];
+    v25 = [variantsCopy objectForKey:v20];
     v32[0] = v25;
     v32[1] = v22;
     v31[1] = v16;
@@ -4617,45 +4617,45 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
     v32[2] = v24;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:3];
 
-    v7 = v26;
+    variantsCopy = v26;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return variantsCopy;
 }
 
-+ (id)appendingSecondaryStringToVariantsTop:(id)a3 secondaryString:(id)a4 withDirection:(id)a5
++ (id)appendingSecondaryStringToVariantsTop:(id)top secondaryString:(id)string withDirection:(id)direction
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 mutableCopy];
-  v10 = [v9 indexOfObject:v7];
+  stringCopy = string;
+  directionCopy = direction;
+  v9 = [top mutableCopy];
+  v10 = [v9 indexOfObject:stringCopy];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v9 removeObjectAtIndex:v10];
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x277D6FFB8]])
+  if ([directionCopy isEqualToString:*MEMORY[0x277D6FFB8]])
   {
-    [v9 addObject:v7];
+    [v9 addObject:stringCopy];
   }
 
   else
   {
-    [v9 insertObject:v7 atIndex:0];
+    [v9 insertObject:stringCopy atIndex:0];
   }
 
   return v9;
 }
 
-+ (BOOL)keyHasAccentedVariants:(id)a3 plane:(id)a4 keyplaneKeycaps:(id)a5
++ (BOOL)keyHasAccentedVariants:(id)variants plane:(id)plane keyplaneKeycaps:(id)keycaps
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 name];
-  v11 = [v10 hasPrefix:@"NumberPad"];
+  variantsCopy = variants;
+  planeCopy = plane;
+  keycapsCopy = keycaps;
+  name = [variantsCopy name];
+  v11 = [name hasPrefix:@"NumberPad"];
 
   if (v11)
   {
@@ -4666,33 +4666,33 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v15 = [v7 representedString];
-    if ([v7 variantType] == 8)
+    representedString = [variantsCopy representedString];
+    if ([variantsCopy variantType] == 8)
     {
-      v16 = [v8 componentName];
-      v17 = [v15 stringByAppendingFormat:@"-%@", v16];
+      componentName = [planeCopy componentName];
+      v17 = [representedString stringByAppendingFormat:@"-%@", componentName];
 
-      v15 = v17;
+      representedString = v17;
     }
 
-    if ([v7 displayType] == 7)
+    if ([variantsCopy displayType] == 7)
     {
-      v18 = [v7 secondaryRepresentedStrings];
-      v19 = [v18 count];
+      secondaryRepresentedStrings = [variantsCopy secondaryRepresentedStrings];
+      v19 = [secondaryRepresentedStrings count];
 
       if (v19)
       {
-        v20 = [v7 secondaryRepresentedStrings];
-        v21 = [v20 firstObject];
-        v22 = [v15 stringByAppendingString:v21];
+        secondaryRepresentedStrings2 = [variantsCopy secondaryRepresentedStrings];
+        firstObject = [secondaryRepresentedStrings2 firstObject];
+        v22 = [representedString stringByAppendingString:firstObject];
 
-        v15 = v22;
+        representedString = v22;
       }
     }
 
-    if (v15 && ([v13 containsObject:v15] & 1) == 0)
+    if (representedString && ([v13 containsObject:representedString] & 1) == 0)
     {
-      [v13 addObject:v15];
+      [v13 addObject:representedString];
       v23 = UIKeyboardGetCurrentInputMode();
       v24 = UIKeyboardRomanAccentVariants();
 
@@ -4701,27 +4701,27 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
       v29[1] = 3221225472;
       v29[2] = __76__TypistKeyboardDataInProcess_keyHasAccentedVariants_plane_keyplaneKeycaps___block_invoke;
       v29[3] = &unk_279DF4C18;
-      v30 = v9;
+      v30 = keycapsCopy;
       v26 = [v25 indexesOfObjectsPassingTest:v29];
       v27 = [v25 objectsAtIndexes:v26];
 
       if ([v27 count])
       {
-        [v14 addObject:v15];
+        [v14 addObject:representedString];
       }
     }
 
-    v12 = [v14 containsObject:v15];
+    v12 = [v14 containsObject:representedString];
   }
 
   return v12;
 }
 
-+ (id)setOneHandedKeyboardHandBias:(id)a3
++ (id)setOneHandedKeyboardHandBias:(id)bias
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"left"];
+  biasCopy = bias;
+  lowercaseString = [biasCopy lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"left"];
 
   if (v5)
   {
@@ -4730,8 +4730,8 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
 
   else
   {
-    v7 = [v3 lowercaseString];
-    v8 = [v7 isEqualToString:@"right"];
+    lowercaseString2 = [biasCopy lowercaseString];
+    v8 = [lowercaseString2 isEqualToString:@"right"];
 
     if (v8)
     {
@@ -4744,9 +4744,9 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
     }
   }
 
-  v9 = [MEMORY[0x277D756A0] sharedPreferencesController];
+  mEMORY[0x277D756A0] = [MEMORY[0x277D756A0] sharedPreferencesController];
   v10 = *MEMORY[0x277D6F7C8];
-  v11 = [v9 valueForPreferenceKey:*MEMORY[0x277D6F7C8]];
+  v11 = [mEMORY[0x277D756A0] valueForPreferenceKey:*MEMORY[0x277D6F7C8]];
 
   TYLog(@"Changing HandBias for One-Handed Keyboard: Current=%@ ChangeTo=%@", v12, v13, v14, v15, v16, v17, v18, v11);
   if ([v11 isEqualToString:v6])
@@ -4756,14 +4756,14 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
 
   else
   {
-    v26 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    [v26 updateKeyboardHandBias:v6];
+    mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+    [mEMORY[0x277D6F470] updateKeyboardHandBias:v6];
 
-    v27 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    [v27 synchronizePreferences];
+    mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+    [mEMORY[0x277D6F470]2 synchronizePreferences];
 
-    v28 = [MEMORY[0x277D756A0] sharedPreferencesController];
-    v6 = [v28 valueForPreferenceKey:v10];
+    mEMORY[0x277D756A0]2 = [MEMORY[0x277D756A0] sharedPreferencesController];
+    v6 = [mEMORY[0x277D756A0]2 valueForPreferenceKey:v10];
 
     if ([(__CFString *)v6 isEqualToString:v11])
     {
@@ -4772,11 +4772,11 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
       {
         v37 = v6;
         [TypistKeyboardUtilities waitFor:0.2];
-        v38 = [MEMORY[0x277D6F470] sharedPreferencesController];
-        [v38 synchronizePreferences];
+        mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+        [mEMORY[0x277D6F470]3 synchronizePreferences];
 
-        v39 = [MEMORY[0x277D756A0] sharedPreferencesController];
-        v6 = [v39 valueForPreferenceKey:v10];
+        mEMORY[0x277D756A0]3 = [MEMORY[0x277D756A0] sharedPreferencesController];
+        v6 = [mEMORY[0x277D756A0]3 valueForPreferenceKey:v10];
 
         v36 = v36 + 0.2;
         if ([(__CFString *)v6 isEqualToString:v11])
@@ -4799,10 +4799,10 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
   return v6;
 }
 
-+ (BOOL)_activeInputModesContainsInputMode:(id)a3
++ (BOOL)_activeInputModesContainsInputMode:(id)mode
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modeCopy = mode;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -4837,12 +4837,12 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v27 + 1) + 8 * i) identifier];
-          v10 = [v9 isEqualToString:v3];
+          identifier = [*(*(&v27 + 1) + 8 * i) identifier];
+          v10 = [identifier isEqualToString:modeCopy];
 
           if (v10)
           {
-            TYLog(@"Active input mode list now contains %@", v11, v12, v13, v14, v15, v16, v17, v3);
+            TYLog(@"Active input mode list now contains %@", v11, v12, v13, v14, v15, v16, v17, modeCopy);
 
             v24 = 1;
             goto LABEL_13;
@@ -4863,7 +4863,7 @@ uint64_t __75__TypistKeyboardDataInProcess_downActionFlagsForKey_plane_keyplaneK
   }
 
   while (v4 > 0.0);
-  TYLogl(OS_LOG_TYPE_ERROR, @"Timed out while waiting for activeInputMode to contain %@", v18, v19, v20, v21, v22, v23, v3);
+  TYLogl(OS_LOG_TYPE_ERROR, @"Timed out while waiting for activeInputMode to contain %@", v18, v19, v20, v21, v22, v23, modeCopy);
   v24 = 0;
 LABEL_13:
   _Block_object_dispose(&v32, 8);
@@ -4881,19 +4881,19 @@ void __66__TypistKeyboardDataInProcess__activeInputModesContainsInputMode___bloc
   *(v3 + 40) = v2;
 }
 
-+ (int)getWubiEnumeration:(id)a3
++ (int)getWubiEnumeration:(id)enumeration
 {
   v3 = getWubiEnumeration__wubiOnceToken;
-  v4 = a3;
+  enumerationCopy = enumeration;
   if (v3 != -1)
   {
     +[TypistKeyboardDataInProcess getWubiEnumeration:];
   }
 
-  v5 = [getWubiEnumeration__wubiDictionary valueForKey:v4];
+  v5 = [getWubiEnumeration__wubiDictionary valueForKey:enumerationCopy];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 void __50__TypistKeyboardDataInProcess_getWubiEnumeration___block_invoke()
@@ -4902,19 +4902,19 @@ void __50__TypistKeyboardDataInProcess_getWubiEnumeration___block_invoke()
   getWubiEnumeration__wubiDictionary = &unk_28802A618;
 }
 
-+ (int)getShuangpinEnumeration:(id)a3
++ (int)getShuangpinEnumeration:(id)enumeration
 {
   v3 = getShuangpinEnumeration__shuangpinOnceToken;
-  v4 = a3;
+  enumerationCopy = enumeration;
   if (v3 != -1)
   {
     +[TypistKeyboardDataInProcess getShuangpinEnumeration:];
   }
 
-  v5 = [getShuangpinEnumeration__shuangpinSchemaDictionary valueForKey:v4];
+  v5 = [getShuangpinEnumeration__shuangpinSchemaDictionary valueForKey:enumerationCopy];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 void __55__TypistKeyboardDataInProcess_getShuangpinEnumeration___block_invoke()
@@ -4969,9 +4969,9 @@ void __49__TypistKeyboardDataInProcess_shouldShowGlobeKey__block_invoke(uint64_t
   *(*(*(a1 + 32) + 8) + 24) = [v2 shouldShowInternationalKey];
 }
 
-+ (id)getRepresentedStringFromKey:(id)a3
++ (id)getRepresentedStringFromKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -4983,7 +4983,7 @@ void __49__TypistKeyboardDataInProcess_shouldShowGlobeKey__block_invoke(uint64_t
   v7[2] = __59__TypistKeyboardDataInProcess_getRepresentedStringFromKey___block_invoke;
   v7[3] = &unk_279DF4B78;
   v9 = &v10;
-  v4 = v3;
+  v4 = keyCopy;
   v8 = v4;
   [TypistKeyboardUtilities runOnMainThread:v7];
   v5 = v11[5];
@@ -5046,30 +5046,30 @@ void __61__TypistKeyboardDataInProcess_floatingKeyboardDraggablePoint__block_inv
   *(v12 + 40) = v14;
 }
 
-+ (BOOL)isCandidateCellVisible:(id)a3
++ (BOOL)isCandidateCellVisible:(id)visible
 {
-  v4 = a3;
-  if (v4)
+  visibleCopy = visible;
+  if (visibleCopy)
   {
     NSClassFromString(&cfstr_Uikeyboardcand_0.isa);
     if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(&cfstr_Uikeyboardcand_1.isa), (objc_opt_isKindOfClass()) || (NSClassFromString(&cfstr_Tuicandidatece.isa), (objc_opt_isKindOfClass()))
     {
-      LODWORD(a1) = [v4 isHidden] ^ 1;
+      LODWORD(self) = [visibleCopy isHidden] ^ 1;
     }
 
     else
     {
-      v6 = [v4 superview];
-      LOBYTE(a1) = [a1 isCandidateCellVisible:v6];
+      superview = [visibleCopy superview];
+      LOBYTE(self) = [self isCandidateCellVisible:superview];
     }
   }
 
   else
   {
-    LOBYTE(a1) = 0;
+    LOBYTE(self) = 0;
   }
 
-  return a1;
+  return self;
 }
 
 @end

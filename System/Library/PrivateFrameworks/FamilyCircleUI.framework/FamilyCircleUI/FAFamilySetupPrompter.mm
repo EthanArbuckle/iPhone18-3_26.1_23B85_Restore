@@ -1,38 +1,38 @@
 @interface FAFamilySetupPrompter
-- (FAFamilySetupPrompter)initWithiTunesAccount:(id)a3;
+- (FAFamilySetupPrompter)initWithiTunesAccount:(id)account;
 - (FAFamilySetupPrompterDelegate)delegate;
 - (void)_goToFamilySetup;
 - (void)_goToInvitations;
-- (void)_handleFamilyEligibilityResponse:(id)a3 isFirstRun:(BOOL)a4;
+- (void)_handleFamilyEligibilityResponse:(id)response isFirstRun:(BOOL)run;
 - (void)_showConfirmationForStartingFamilySetup;
 - (void)_showConfirmationForStartingFamilySetupWithPendingInvite;
 - (void)_showPendingInvitesDialog;
-- (void)_showUnderageAlertWithEligibilityResponse:(id)a3;
-- (void)_startFamilySetupFlowWithEligibilityResponse:(id)a3;
+- (void)_showUnderageAlertWithEligibilityResponse:(id)response;
+- (void)_startFamilySetupFlowWithEligibilityResponse:(id)response;
 - (void)dealloc;
-- (void)familySetupViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
-- (void)promptIfEligibleWithPresentingViewController:(id)a3 isFirstRun:(BOOL)a4;
+- (void)familySetupViewController:(id)controller didCompleteWithSuccess:(BOOL)success;
+- (void)promptIfEligibleWithPresentingViewController:(id)controller isFirstRun:(BOOL)run;
 @end
 
 @implementation FAFamilySetupPrompter
 
-- (FAFamilySetupPrompter)initWithiTunesAccount:(id)a3
+- (FAFamilySetupPrompter)initWithiTunesAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = FAFamilySetupPrompter;
   v6 = [(FAFamilySetupPrompter *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     accountStore = v6->_accountStore;
-    v6->_accountStore = v7;
+    v6->_accountStore = defaultStore;
 
     v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
     networkingQueue = v6->_networkingQueue;
     v6->_networkingQueue = v9;
 
-    objc_storeStrong(&v6->_iTunesAccount, a3);
+    objc_storeStrong(&v6->_iTunesAccount, account);
     v6->_isRequestInFlight = 0;
   }
 
@@ -47,7 +47,7 @@
   [(FAFamilySetupPrompter *)&v3 dealloc];
 }
 
-- (void)promptIfEligibleWithPresentingViewController:(id)a3 isFirstRun:(BOOL)a4
+- (void)promptIfEligibleWithPresentingViewController:(id)controller isFirstRun:(BOOL)run
 {
   if (self->_isRequestInFlight)
   {
@@ -61,7 +61,7 @@
 
   else
   {
-    objc_storeWeak(&self->_presentingViewController, a3);
+    objc_storeWeak(&self->_presentingViewController, controller);
     self->_isRequestInFlight = 1;
     v7 = dispatch_get_global_queue(25, 0);
     v8[0] = MEMORY[0x277D85DD0];
@@ -69,7 +69,7 @@
     v8[2] = __81__FAFamilySetupPrompter_promptIfEligibleWithPresentingViewController_isFirstRun___block_invoke;
     v8[3] = &unk_2782F2E48;
     v8[4] = self;
-    v9 = a4;
+    runCopy = run;
     dispatch_async(v7, v8);
   }
 }
@@ -226,17 +226,17 @@ void __81__FAFamilySetupPrompter_promptIfEligibleWithPresentingViewController_is
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFamilyEligibilityResponse:(id)a3 isFirstRun:(BOOL)a4
+- (void)_handleFamilyEligibilityResponse:(id)response isFirstRun:(BOOL)run
 {
-  v6 = a3;
+  responseCopy = response;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__FAFamilySetupPrompter__handleFamilyEligibilityResponse_isFirstRun___block_invoke;
   block[3] = &unk_2782F4148;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = responseCopy;
+  runCopy = run;
+  v7 = responseCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -426,18 +426,18 @@ uint64_t __50__FAFamilySetupPrompter__showPendingInvitesDialog__block_invoke(uin
   }
 }
 
-- (void)_showUnderageAlertWithEligibilityResponse:(id)a3
+- (void)_showUnderageAlertWithEligibilityResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 underageEligibilityAlertTitle];
-  v6 = [v4 underageEligibilityAlertMessage];
+  responseCopy = response;
+  underageEligibilityAlertTitle = [responseCopy underageEligibilityAlertTitle];
+  underageEligibilityAlertMessage = [responseCopy underageEligibilityAlertMessage];
 
-  if (v5 | v6)
+  if (underageEligibilityAlertTitle | underageEligibilityAlertMessage)
   {
     v9 = MEMORY[0x277D75110];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"OK" value:&stru_282D9AA68 table:@"Localizable"];
-    v8 = [v9 alertWithTitle:v5 message:v6 buttonTitle:v11];
+    v8 = [v9 alertWithTitle:underageEligibilityAlertTitle message:underageEligibilityAlertMessage buttonTitle:v11];
 
     WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
     [WeakRetained presentViewController:v8 animated:1 completion:0];
@@ -468,8 +468,8 @@ uint64_t __50__FAFamilySetupPrompter__showPendingInvitesDialog__block_invoke(uin
 
   v7 = 0;
   v4 = [MEMORY[0x277D08358] urlDestinationTo:5 error:&v7];
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v5 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained familySetupPrompterDidFinish:self];
@@ -486,26 +486,26 @@ uint64_t __50__FAFamilySetupPrompter__showPendingInvitesDialog__block_invoke(uin
 
   v7 = 0;
   v4 = [MEMORY[0x277D08358] urlDestinationTo:6 error:&v7];
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v5 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained familySetupPrompterDidFinish:self];
 }
 
-- (void)_startFamilySetupFlowWithEligibilityResponse:(id)a3
+- (void)_startFamilySetupFlowWithEligibilityResponse:(id)response
 {
   v4 = MEMORY[0x277CEC808];
-  v5 = a3;
+  responseCopy = response;
   v6 = [v4 alloc];
   v7 = [v6 initWithAccountStore:self->_accountStore grandSlamAccount:self->_grandSlamAccount appTokenID:*MEMORY[0x277CEC6F0]];
-  v8 = [[FAFamilySetupViewController alloc] initWithAccount:self->_appleAccount grandSlamSigner:v7 familyEligibilityResponse:v5];
+  v8 = [[FAFamilySetupViewController alloc] initWithAccount:self->_appleAccount grandSlamSigner:v7 familyEligibilityResponse:responseCopy];
 
   [(FAFamilySetupViewController *)v8 setDelegate:self];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(FAFamilySetupViewController *)v8 setModalPresentationStyle:2 * ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+  [(FAFamilySetupViewController *)v8 setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
 
   if (WeakRetained)
@@ -528,7 +528,7 @@ uint64_t __50__FAFamilySetupPrompter__showPendingInvitesDialog__block_invoke(uin
   }
 }
 
-- (void)familySetupViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)familySetupViewController:(id)controller didCompleteWithSuccess:(BOOL)success
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   [WeakRetained dismissViewControllerAnimated:1 completion:0];

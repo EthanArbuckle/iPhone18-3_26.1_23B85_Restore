@@ -1,5 +1,5 @@
 @interface ICInAppMessageConfiguration
-- (ICInAppMessageConfiguration)initWithDictionary:(id)a3;
+- (ICInAppMessageConfiguration)initWithDictionary:(id)dictionary;
 - (NSURL)reportEventURL;
 - (NSURL)resourceDomainURL;
 - (NSURL)serialCheckURL;
@@ -72,15 +72,15 @@
   return v3;
 }
 
-- (ICInAppMessageConfiguration)initWithDictionary:(id)a3
+- (ICInAppMessageConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICInAppMessageConfiguration;
   v5 = [(ICInAppMessageConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }

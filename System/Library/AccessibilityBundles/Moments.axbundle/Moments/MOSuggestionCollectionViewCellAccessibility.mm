@@ -1,5 +1,5 @@
 @interface MOSuggestionCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityGridCollectionView;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -8,20 +8,20 @@
 
 @implementation MOSuggestionCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"subtitleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"journalButton" withSwiftType:"MOSuggestionSheetJournalButton"];
-  [v3 validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"assetGridView" withSwiftType:"MOSuggestionSheetAssetGridView"];
-  [v3 validateClass:@"MomentsUIService.MOSuggestionSheetAssetGridView" hasSwiftField:@"gridCollectionView" withSwiftType:"Optional<MOSuggestionSheetGridCollectionView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"subtitleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"journalButton" withSwiftType:"MOSuggestionSheetJournalButton"];
+  [validationsCopy validateClass:@"MomentsUIService.MOSuggestionCollectionViewCell" hasSwiftField:@"assetGridView" withSwiftType:"MOSuggestionSheetAssetGridView"];
+  [validationsCopy validateClass:@"MomentsUIService.MOSuggestionSheetAssetGridView" hasSwiftField:@"gridCollectionView" withSwiftType:"Optional<MOSuggestionSheetGridCollectionView>"];
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(MOSuggestionCollectionViewCellAccessibility *)self _accessibilityGridCollectionView];
-  v3 = [v2 visibleCells];
+  _accessibilityGridCollectionView = [(MOSuggestionCollectionViewCellAccessibility *)self _accessibilityGridCollectionView];
+  visibleCells = [_accessibilityGridCollectionView visibleCells];
   v4 = MEMORY[0x29C2E21A0]();
 
   v5 = __UIAXStringForVariables();
@@ -33,22 +33,22 @@
 {
   v3 = [(MOSuggestionCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
   v4 = [(MOSuggestionCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"subtitleLabel"];
-  v5 = [(MOSuggestionCollectionViewCellAccessibility *)self _accessibilityGridCollectionView];
-  v6 = [v5 visibleCells];
-  v7 = [v6 count];
+  _accessibilityGridCollectionView = [(MOSuggestionCollectionViewCellAccessibility *)self _accessibilityGridCollectionView];
+  visibleCells = [_accessibilityGridCollectionView visibleCells];
+  v7 = [visibleCells count];
 
   if (v7 < 2)
   {
-    v8 = [v3 accessibilityLabel];
-    v9 = [v4 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
+    accessibilityLabel2 = [v4 accessibilityLabel];
     v11 = __UIAXStringForVariables();
   }
 
   else
   {
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%lu", v7];
-    v9 = [v3 accessibilityLabel];
-    v10 = [v4 accessibilityLabel];
+    accessibilityLabel = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%lu", v7];
+    accessibilityLabel2 = [v3 accessibilityLabel];
+    accessibilityLabel3 = [v4 accessibilityLabel];
     v13 = accessibilityJurassicLocalizedString(@"suggestion.elements");
     v11 = __UIAXStringForVariables();
   }
@@ -63,20 +63,20 @@
   v4 = [v3 safeSwiftValueForKey:@"gridCollectionView"];
   v30.receiver = self;
   v30.super_class = MOSuggestionCollectionViewCellAccessibility;
-  v5 = [(MOSuggestionCollectionViewCellAccessibility *)&v30 accessibilityCustomActions];
-  v6 = [v5 mutableCopy];
+  accessibilityCustomActions = [(MOSuggestionCollectionViewCellAccessibility *)&v30 accessibilityCustomActions];
+  array = [accessibilityCustomActions mutableCopy];
 
-  if (!v6)
+  if (!array)
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v4 visibleCells];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  visibleCells = [v4 visibleCells];
+  v8 = [visibleCells countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -87,14 +87,14 @@
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visibleCells);
         }
 
-        v12 = [*(*(&v26 + 1) + 8 * i) accessibilityCustomActions];
-        [v6 addObjectsFromArray:v12];
+        accessibilityCustomActions2 = [*(*(&v26 + 1) + 8 * i) accessibilityCustomActions];
+        [array addObjectsFromArray:accessibilityCustomActions2];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [visibleCells countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v9);
@@ -116,12 +116,12 @@
     v24 = v14;
     v17 = [v15 initWithName:v16 actionHandler:&v20];
 
-    [v6 addObject:{v17, v20, v21, v22, v23}];
+    [array addObject:{v17, v20, v21, v22, v23}];
   }
 
   v18 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return array;
 }
 
 - (id)_accessibilityGridCollectionView

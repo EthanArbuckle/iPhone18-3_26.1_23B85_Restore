@@ -1,5 +1,5 @@
 @interface PDFPageViewController
-- (PDFPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PDFPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)autoScaleFactor;
 - (id)pdfView;
 - (void)_buildPDFPageView;
@@ -10,27 +10,27 @@
 - (void)dealloc;
 - (void)enforceAutoScaleFactor;
 - (void)removeAKOverlay;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setAutoScales:(BOOL)a3;
-- (void)setBackgroundImage:(id)a3 atBackgroundQuality:(int)a4;
-- (void)setMinScaleFactor:(double)a3 withMaxScaleFactor:(double)a4;
-- (void)setScaleFactor:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setAutoScales:(BOOL)scales;
+- (void)setBackgroundImage:(id)image atBackgroundQuality:(int)quality;
+- (void)setMinScaleFactor:(double)factor withMaxScaleFactor:(double)scaleFactor;
+- (void)setScaleFactor:(double)factor;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PDFPageViewController
 
-- (void)setAutoScales:(BOOL)a3
+- (void)setAutoScales:(BOOL)scales
 {
-  if (a3)
+  if (scales)
   {
     [(PDFPageViewController *)self enforceAutoScaleFactor];
   }
@@ -60,23 +60,23 @@
   [(UIScrollView *)scrollView setZoomScale:v4];
 }
 
-- (void)setMinScaleFactor:(double)a3 withMaxScaleFactor:(double)a4
+- (void)setMinScaleFactor:(double)factor withMaxScaleFactor:(double)scaleFactor
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   if (WeakRetained)
   {
-    self->_private->minScale = a3;
-    self->_private->maxScale = a4;
+    self->_private->minScale = factor;
+    self->_private->maxScale = scaleFactor;
     v11 = WeakRetained;
-    [(UIScrollView *)self->_private->scrollView setMinimumZoomScale:a3];
-    [(UIScrollView *)self->_private->scrollView setMaximumZoomScale:a4];
+    [(UIScrollView *)self->_private->scrollView setMinimumZoomScale:factor];
+    [(UIScrollView *)self->_private->scrollView setMaximumZoomScale:scaleFactor];
     if ([v11 autoScales])
     {
       scrollView = self->_private->scrollView;
       if (scrollView)
       {
         [(UIScrollView *)scrollView zoomScale];
-        if (v9 < a3 || v9 > a4)
+        if (v9 < factor || v9 > scaleFactor)
         {
           [v11 setAutoScales:0];
         }
@@ -89,13 +89,13 @@
   }
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   if (WeakRetained)
   {
     v11 = WeakRetained;
-    v6 = CGFloatClamp(a3, self->_private->minScale, self->_private->maxScale);
+    v6 = CGFloatClamp(factor, self->_private->minScale, self->_private->maxScale);
     if ([v11 autoScales])
     {
       scrollView = self->_private->scrollView;
@@ -143,12 +143,12 @@
   return v21;
 }
 
-- (void)setBackgroundImage:(id)a3 atBackgroundQuality:(int)a4
+- (void)setBackgroundImage:(id)image atBackgroundQuality:(int)quality
 {
-  v7 = a3;
+  imageCopy = image;
   v8 = self->_private;
   pageView = v8->pageView;
-  v10 = v7;
+  v10 = imageCopy;
   if (pageView)
   {
     [PDFPageView setBackgroundImage:"setBackgroundImage:atBackgroundQuality:" atBackgroundQuality:?];
@@ -156,12 +156,12 @@
 
   else
   {
-    objc_storeStrong(&v8->backgroundImage, a3);
-    self->_private->backgroundQuality = a4;
+    objc_storeStrong(&v8->backgroundImage, image);
+    self->_private->backgroundQuality = quality;
   }
 }
 
-- (PDFPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PDFPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PDFPageViewController;
@@ -193,30 +193,30 @@
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   if (v6)
   {
-    v4 = [(PDFPage *)self->_private->page document];
-    v5 = [v4 indexForPage:self->_private->page];
+    document = [(PDFPage *)self->_private->page document];
+    v5 = [document indexForPage:self->_private->page];
 
     [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v6 atPageIndex:v5];
     [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v6 atPageIndex:v5];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PDFPageViewController;
-  [(PDFPageViewController *)&v8 viewWillAppear:a3];
+  [(PDFPageViewController *)&v8 viewWillAppear:appear];
   if (self->_private->page)
   {
     [(PDFPageViewController *)self _buildPDFPageView];
     [(PDFPageView *)self->_private->pageView setEnableTileUpdates:1];
     [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate];
     WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-    v5 = [WeakRetained currentSelection];
-    [WeakRetained setCurrentSelection:v5];
+    currentSelection = [WeakRetained currentSelection];
+    [WeakRetained setCurrentSelection:currentSelection];
 
-    v6 = [(PDFPage *)self->_private->page document];
-    v7 = [v6 indexForPage:self->_private->page];
+    document = [(PDFPage *)self->_private->page document];
+    v7 = [document indexForPage:self->_private->page];
 
     [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:self->_private->pageView atPageIndex:v7];
     [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:self->_private->pageView atPageIndex:v7];
@@ -224,28 +224,28 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PDFPageViewController;
-  [(PDFPageViewController *)&v4 viewDidAppear:a3];
+  [(PDFPageViewController *)&v4 viewDidAppear:appear];
   [(PDFPageView *)self->_private->pageView setEnableTileUpdates:1];
   [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PDFPageViewController;
-  [(PDFPageViewController *)&v4 viewWillDisappear:a3];
+  [(PDFPageViewController *)&v4 viewWillDisappear:disappear];
   [(PDFPageView *)self->_private->pageView setEnableTileUpdates:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PDFPageViewController;
-  [(PDFPageViewController *)&v4 viewDidDisappear:a3];
+  [(PDFPageViewController *)&v4 viewDidDisappear:disappear];
   [(PDFPage *)self->_private->page setView:0];
   [(PDFPageViewController *)self removeAKOverlay];
   [(PDFPageView *)self->_private->pageView setBackgroundImage:0 atBackgroundQuality:2];
@@ -257,16 +257,16 @@
   v7.super_class = PDFPageViewController;
   [(PDFPageViewController *)&v7 viewWillLayoutSubviews];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v4 = [WeakRetained autoScales];
+  autoScales = [WeakRetained autoScales];
 
-  if (v4)
+  if (autoScales)
   {
     [(PDFPageViewController *)self enforceAutoScaleFactor];
   }
 
   scrollView = self->_private->scrollView;
-  v6 = [(PDFPageViewController *)self view];
-  [v6 bounds];
+  view = [(PDFPageViewController *)self view];
+  [view bounds];
   [(UIScrollView *)scrollView setFrame:?];
 
   [(PDFPageViewController *)self _centerAlign];
@@ -297,12 +297,12 @@
     v13 = v12;
     [(PDFPageView *)self->_private->pageView setFrame:PDFPointMake(0.0, 0.0)];
     v36 = v4;
-    v14 = [v4 highlightedSelections];
+    highlightedSelections = [v4 highlightedSelections];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    v15 = [highlightedSelections countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v15)
     {
       v16 = v15;
@@ -313,12 +313,12 @@
         {
           if (*v38 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(highlightedSelections);
           }
 
           v19 = *(*(&v37 + 1) + 8 * i);
-          v20 = [v19 pages];
-          v21 = [v20 containsObject:self->_private->page];
+          pages = [v19 pages];
+          v21 = [pages containsObject:self->_private->page];
 
           if (v21)
           {
@@ -326,15 +326,15 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v16 = [highlightedSelections countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v16);
     }
 
     v22 = objc_alloc(MEMORY[0x1E69DCEF8]);
-    v23 = [(PDFPageViewController *)self view];
-    [v23 bounds];
+    view = [(PDFPageViewController *)self view];
+    [view bounds];
     v24 = [v22 initWithFrame:?];
     v25 = self->_private;
     scrollView = v25->scrollView;
@@ -357,31 +357,31 @@
     [(PDFTextInputView *)self->_private->pageViewContainerView addSubview:self->_private->pageView];
     [(PDFPageView *)self->_private->pageView setBackgroundImage:self->_private->backgroundImage atBackgroundQuality:self->_private->backgroundQuality];
     [(UIScrollView *)self->_private->scrollView addSubview:self->_private->pageViewContainerView];
-    v32 = [(PDFPageViewController *)self view];
-    [v32 addSubview:self->_private->scrollView];
+    view2 = [(PDFPageViewController *)self view];
+    [view2 addSubview:self->_private->scrollView];
 
     [(PDFPageViewController *)self _setupGestureRecognizerDependencies];
     [(PDFPageViewController *)self enforceAutoScaleFactor];
     [(PDFPageViewController *)self _centerAlign];
-    v33 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v33 addObserver:self selector:sel_changedBoundsForBoxNotification_ name:@"PDFPageChangedBoundsForBox" object:self->_private->page];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_changedBoundsForBoxNotification_ name:@"PDFPageChangedBoundsForBox" object:self->_private->page];
 
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidRotate" object:self->_private->page];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidRotate" object:self->_private->page];
 
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:self->_private->page];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:self->_private->page];
   }
 }
 
 - (void)_setupGestureRecognizerDependencies
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v3 = [WeakRetained longPressGestureRecognizer];
-  if (v3)
+  longPressGestureRecognizer = [WeakRetained longPressGestureRecognizer];
+  if (longPressGestureRecognizer)
   {
-    v4 = [(UIScrollView *)self->_private->scrollView panGestureRecognizer];
-    [v4 requireGestureRecognizerToFail:v3];
+    panGestureRecognizer = [(UIScrollView *)self->_private->scrollView panGestureRecognizer];
+    [panGestureRecognizer requireGestureRecognizerToFail:longPressGestureRecognizer];
   }
 
   [(PDFTextInputView *)self->_private->pageViewContainerView updateGestureRecognizerDependencies];
@@ -407,12 +407,12 @@
 - (void)_updateAnnotations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PDFPage *)self->_private->page annotations];
+  annotations = [(PDFPage *)self->_private->page annotations];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [annotations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -424,13 +424,13 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(annotations);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
         WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-        v10 = [(PDFPageView *)self->_private->pageView pageLayer];
-        [WeakRetained convertRectToRootView:v10 fromPageLayer:{0.0, 0.0, 1.0, 1.0}];
+        pageLayer = [(PDFPageView *)self->_private->pageView pageLayer];
+        [WeakRetained convertRectToRootView:pageLayer fromPageLayer:{0.0, 0.0, 1.0, 1.0}];
         v12 = v11;
 
         [v8 setScaleFactor:v12];
@@ -440,7 +440,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [annotations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -454,49 +454,49 @@
   return WeakRetained;
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate:a3];
+  [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate:zooming];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   [WeakRetained setAutoScales:0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"PDFTextSelectionMenuWillChangeScrollPosition" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFTextSelectionMenuWillChangeScrollPosition" object:self];
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate:a3];
+  [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate:zooming];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   [WeakRetained setAutoScales:0];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"PDFViewScaleChanged" object:WeakRetained];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFViewScaleChanged" object:WeakRetained];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"PDFScrollViewDidChangeZoomFactor" object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"PDFScrollViewDidChangeZoomFactor" object:self];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"PDFTextSelectionMenuDidChangeScrollPosition" object:self];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 postNotificationName:@"PDFTextSelectionMenuDidChangeScrollPosition" object:self];
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
   [(PDFPageView *)self->_private->pageView setNeedsTilesUpdate];
   [(PDFPageViewController *)self _centerAlign];
   [(PDFPageView *)self->_private->pageView updateBookmark];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PDFScrollViewDidChangeZoomFactor" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFScrollViewDidChangeZoomFactor" object:self];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PDFTextSelectionMenuWillChangeScrollPosition" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFTextSelectionMenuWillChangeScrollPosition" object:self];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"PDFTextSelectionMenuDidChangeScrollPosition" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFTextSelectionMenuDidChangeScrollPosition" object:self];
 }
 
 - (void)_centerAlign

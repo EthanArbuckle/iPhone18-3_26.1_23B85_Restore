@@ -1,26 +1,26 @@
 @interface DiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[DSMutableArchive archive];
   v19 = v5;
   [LogArchiveAggregator addLogTypes:238 archive:&v19 prefix:@"FieldDiagnosticsLogs"];
   v6 = v19;
 
-  if (v3)
+  if (parametersCopy)
   {
-    v7 = [v3 objectForKey:@"shouldCreateTarBall"];
+    v7 = [parametersCopy objectForKey:@"shouldCreateTarBall"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
 
-      if ((v8 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v9 = [@"FieldDiagnosticsLogs" stringByAppendingString:@".XXXXXX"];
         v17 = 0;

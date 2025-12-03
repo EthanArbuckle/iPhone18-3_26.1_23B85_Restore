@@ -12,8 +12,8 @@
   v15 = __Block_byref_object_copy__11;
   v16 = __Block_byref_object_dispose__11;
   v17 = 0;
-  v6 = [a1 viewControllers];
-  v7 = v6;
+  viewControllers = [self viewControllers];
+  v7 = viewControllers;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__UINavigationController_MFUtilities__mf_viewControllerOfClass_startFromTopOfStack___block_invoke;
@@ -30,7 +30,7 @@
 
   v11[4] = &v12;
   v11[5] = a3;
-  [v6 enumerateObjectsWithOptions:v8 usingBlock:v11];
+  [viewControllers enumerateObjectsWithOptions:v8 usingBlock:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);

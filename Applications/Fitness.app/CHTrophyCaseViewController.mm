@@ -1,52 +1,52 @@
 @interface CHTrophyCaseViewController
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3;
-- (CHTrophyCaseViewController)initWithBadgeImageFactory:(id)a3 formattingManager:(id)a4 localizationProvider:(id)a5 initialAchievement:(id)a6 shouldShowCelebration:(BOOL)a7;
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller;
+- (CHTrophyCaseViewController)initWithBadgeImageFactory:(id)factory formattingManager:(id)manager localizationProvider:(id)provider initialAchievement:(id)achievement shouldShowCelebration:(BOOL)celebration;
 - (CHTrophyCaseViewControllerDelegate)delegate;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (void)_presentInitialAchievementIfNeeded;
-- (void)achievementsDataProviderDidFinishInitialLoad:(id)a3;
+- (void)achievementsDataProviderDidFinishInitialLoad:(id)load;
 - (void)dealloc;
 - (void)detachPalette;
-- (void)presentDetailForAchievement:(id)a3 badgeRect:(CGRect)a4 conversionView:(id)a5 cell:(id)a6;
-- (void)setWheelchairUseCache:(id)a3;
-- (void)unitPreferencesDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)presentDetailForAchievement:(id)achievement badgeRect:(CGRect)rect conversionView:(id)view cell:(id)cell;
+- (void)setWheelchairUseCache:(id)cache;
+- (void)unitPreferencesDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation CHTrophyCaseViewController
 
-- (CHTrophyCaseViewController)initWithBadgeImageFactory:(id)a3 formattingManager:(id)a4 localizationProvider:(id)a5 initialAchievement:(id)a6 shouldShowCelebration:(BOOL)a7
+- (CHTrophyCaseViewController)initWithBadgeImageFactory:(id)factory formattingManager:(id)manager localizationProvider:(id)provider initialAchievement:(id)achievement shouldShowCelebration:(BOOL)celebration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  factoryCopy = factory;
+  managerCopy = manager;
+  providerCopy = provider;
+  achievementCopy = achievement;
   v27.receiver = self;
   v27.super_class = CHTrophyCaseViewController;
   v17 = [(CHTrophyCaseViewController *)&v27 initWithNibName:0 bundle:0];
   if (v17)
   {
     +[NSBundle mainBundle];
-    v18 = v26 = a7;
+    v18 = v26 = celebration;
     [v18 localizedStringForKey:@"AWARDS" value:&stru_1008680E8 table:@"Localizable"];
-    obj = a6;
-    v19 = v16;
-    v20 = v15;
-    v21 = v14;
-    v23 = v22 = v13;
+    obj = achievement;
+    v19 = achievementCopy;
+    v20 = providerCopy;
+    v21 = managerCopy;
+    v23 = v22 = factoryCopy;
     [(CHTrophyCaseViewController *)v17 setTitle:v23];
 
-    v13 = v22;
-    v14 = v21;
-    v15 = v20;
-    v16 = v19;
+    factoryCopy = v22;
+    managerCopy = v21;
+    providerCopy = v20;
+    achievementCopy = v19;
 
-    objc_storeStrong(&v17->_badgeImageFactory, a3);
-    objc_storeStrong(&v17->_formattingManager, a4);
-    objc_storeStrong(&v17->_localizationProvider, a5);
+    objc_storeStrong(&v17->_badgeImageFactory, factory);
+    objc_storeStrong(&v17->_formattingManager, manager);
+    objc_storeStrong(&v17->_localizationProvider, provider);
     objc_storeStrong(&v17->_initialAchievement, obj);
     v17->_shouldShowCelebration = v26;
   }
@@ -60,12 +60,12 @@
   v111.super_class = CHTrophyCaseViewController;
   [(CHTrophyCaseViewController *)&v111 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(CHTrophyCaseViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CHTrophyCaseViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v107 = objc_alloc_init(UICollectionViewFlowLayout);
-  v5 = [v107 _rowAlignmentOptions];
-  v106 = [v5 mutableCopy];
+  _rowAlignmentOptions = [v107 _rowAlignmentOptions];
+  v106 = [_rowAlignmentOptions mutableCopy];
 
   [v106 setObject:&off_10086E368 forKeyedSubscript:UIFlowLayoutRowVerticalAlignmentKey];
   v6 = [v106 copy];
@@ -79,78 +79,78 @@
   [(CHTrophyCaseViewController *)self setMainCollectionView:v11];
 
   v12 = +[UIColor systemBackgroundColor];
-  v13 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  [v13 setBackgroundColor:v12];
+  mainCollectionView = [(CHTrophyCaseViewController *)self mainCollectionView];
+  [mainCollectionView setBackgroundColor:v12];
 
-  v14 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  [v14 setPrefetchingEnabled:1];
+  mainCollectionView2 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  [mainCollectionView2 setPrefetchingEnabled:1];
 
-  v15 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mainCollectionView3 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  [mainCollectionView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(CHTrophyCaseViewController *)self view];
-  v17 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  [v16 addSubview:v17];
+  view2 = [(CHTrophyCaseViewController *)self view];
+  mainCollectionView4 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  [view2 addSubview:mainCollectionView4];
 
   v105 = objc_alloc_init(CHRecentAndRelevantAchievementsCollectionViewFlowLayout);
   v18 = [[UICollectionView alloc] initWithFrame:v105 collectionViewLayout:{CGRectZero.origin.x, y, width, height}];
   [(CHTrophyCaseViewController *)self setRecentAndRelevantCollectionView:v18];
 
   v19 = +[UIColor systemBackgroundColor];
-  v20 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  [v20 setBackgroundColor:v19];
+  recentAndRelevantCollectionView = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  [recentAndRelevantCollectionView setBackgroundColor:v19];
 
-  v21 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  [v21 setPrefetchingEnabled:1];
+  recentAndRelevantCollectionView2 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  [recentAndRelevantCollectionView2 setPrefetchingEnabled:1];
 
-  v22 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  recentAndRelevantCollectionView3 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  [recentAndRelevantCollectionView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  [v23 setShowsHorizontalScrollIndicator:0];
+  recentAndRelevantCollectionView4 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  [recentAndRelevantCollectionView4 setShowsHorizontalScrollIndicator:0];
 
   [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)v105 setSectionHeadersPinToVisibleBounds:1];
   v24 = [CHAchievementsRecentAndRelevantDataSource alloc];
-  v25 = [(CHTrophyCaseViewController *)self dataProvider];
-  v26 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  v27 = [(CHTrophyCaseViewController *)self localizationProvider];
-  v28 = [(CHTrophyCaseViewController *)self badgeImageFactory];
-  v29 = [(CHAchievementsRecentAndRelevantDataSource *)v24 initWithDataProvider:v25 collectionView:v26 localizationProvider:v27 badgeImageFactory:v28];
+  dataProvider = [(CHTrophyCaseViewController *)self dataProvider];
+  recentAndRelevantCollectionView5 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  localizationProvider = [(CHTrophyCaseViewController *)self localizationProvider];
+  badgeImageFactory = [(CHTrophyCaseViewController *)self badgeImageFactory];
+  v29 = [(CHAchievementsRecentAndRelevantDataSource *)v24 initWithDataProvider:dataProvider collectionView:recentAndRelevantCollectionView5 localizationProvider:localizationProvider badgeImageFactory:badgeImageFactory];
   [(CHTrophyCaseViewController *)self setRecentAndRelevantDataSource:v29];
 
   v30 = [CHAchievementsDataSource alloc];
-  v31 = [(CHTrophyCaseViewController *)self dataProvider];
-  v32 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  v33 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  v34 = [(CHTrophyCaseViewController *)self recentAndRelevantDataSource];
-  v35 = [(CHTrophyCaseViewController *)self localizationProvider];
-  v36 = [(CHTrophyCaseViewController *)self badgeImageFactory];
-  v37 = [(CHAchievementsDataSource *)v30 initWithDataProvider:v31 collectionView:v32 recentAndRelevantCollectionView:v33 recentAndRelevantDataSource:v34 localizationProvider:v35 badgeImageFactory:v36];
+  dataProvider2 = [(CHTrophyCaseViewController *)self dataProvider];
+  mainCollectionView5 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  recentAndRelevantCollectionView6 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  recentAndRelevantDataSource = [(CHTrophyCaseViewController *)self recentAndRelevantDataSource];
+  localizationProvider2 = [(CHTrophyCaseViewController *)self localizationProvider];
+  badgeImageFactory2 = [(CHTrophyCaseViewController *)self badgeImageFactory];
+  v37 = [(CHAchievementsDataSource *)v30 initWithDataProvider:dataProvider2 collectionView:mainCollectionView5 recentAndRelevantCollectionView:recentAndRelevantCollectionView6 recentAndRelevantDataSource:recentAndRelevantDataSource localizationProvider:localizationProvider2 badgeImageFactory:badgeImageFactory2];
   [(CHTrophyCaseViewController *)self setMainSectionDataSource:v37];
 
-  v38 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  v39 = [v38 topAnchor];
-  v40 = [(CHTrophyCaseViewController *)self view];
-  v41 = [v40 topAnchor];
-  v103 = [v39 constraintEqualToAnchor:v41];
+  mainCollectionView6 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  topAnchor = [mainCollectionView6 topAnchor];
+  view3 = [(CHTrophyCaseViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v103 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v42 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  v43 = [v42 bottomAnchor];
-  v44 = [(CHTrophyCaseViewController *)self view];
-  v45 = [v44 bottomAnchor];
-  v102 = [v43 constraintEqualToAnchor:v45];
+  mainCollectionView7 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  bottomAnchor = [mainCollectionView7 bottomAnchor];
+  view4 = [(CHTrophyCaseViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v102 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v46 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  v47 = [v46 leadingAnchor];
-  v48 = [(CHTrophyCaseViewController *)self view];
-  v49 = [v48 leadingAnchor];
-  v101 = [v47 constraintEqualToAnchor:v49];
+  mainCollectionView8 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  leadingAnchor = [mainCollectionView8 leadingAnchor];
+  view5 = [(CHTrophyCaseViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v101 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v50 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  v51 = [v50 trailingAnchor];
-  v52 = [(CHTrophyCaseViewController *)self view];
-  v53 = [v52 trailingAnchor];
-  v100 = [v51 constraintEqualToAnchor:v53];
+  mainCollectionView9 = [(CHTrophyCaseViewController *)self mainCollectionView];
+  trailingAnchor = [mainCollectionView9 trailingAnchor];
+  view6 = [(CHTrophyCaseViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v100 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v113[0] = v103;
   v113[1] = v102;
@@ -166,49 +166,49 @@
   v108[3] = &unk_10083CBE0;
   objc_copyWeak(&v109, &location);
   v104 = objc_retainBlock(v108);
-  v55 = [(CHTrophyCaseViewController *)self mainSectionDataSource];
-  [v55 setAchievementTappedHandler:v104];
+  mainSectionDataSource = [(CHTrophyCaseViewController *)self mainSectionDataSource];
+  [mainSectionDataSource setAchievementTappedHandler:v104];
 
-  v56 = [(CHTrophyCaseViewController *)self recentAndRelevantDataSource];
-  [v56 setAchievementTappedHandler:v104];
+  recentAndRelevantDataSource2 = [(CHTrophyCaseViewController *)self recentAndRelevantDataSource];
+  [recentAndRelevantDataSource2 setAchievementTappedHandler:v104];
 
   v57 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CHTrophyCaseViewController *)self setLoadingView:v57];
 
-  v58 = [(CHTrophyCaseViewController *)self loadingView];
-  [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
+  loadingView = [(CHTrophyCaseViewController *)self loadingView];
+  [loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v59 = +[UIColor systemBackgroundColor];
-  v60 = [(CHTrophyCaseViewController *)self loadingView];
-  [v60 setBackgroundColor:v59];
+  loadingView2 = [(CHTrophyCaseViewController *)self loadingView];
+  [loadingView2 setBackgroundColor:v59];
 
-  v61 = [(CHTrophyCaseViewController *)self view];
-  v62 = [(CHTrophyCaseViewController *)self loadingView];
-  [v61 addSubview:v62];
+  view7 = [(CHTrophyCaseViewController *)self view];
+  loadingView3 = [(CHTrophyCaseViewController *)self loadingView];
+  [view7 addSubview:loadingView3];
 
-  v63 = [(CHTrophyCaseViewController *)self loadingView];
-  v64 = [v63 centerXAnchor];
-  v65 = [(CHTrophyCaseViewController *)self view];
-  v66 = [v65 centerXAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66];
+  loadingView4 = [(CHTrophyCaseViewController *)self loadingView];
+  centerXAnchor = [loadingView4 centerXAnchor];
+  view8 = [(CHTrophyCaseViewController *)self view];
+  centerXAnchor2 = [view8 centerXAnchor];
+  v67 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v68 = [(CHTrophyCaseViewController *)self loadingView];
-  v69 = [v68 centerYAnchor];
-  v70 = [(CHTrophyCaseViewController *)self view];
-  v71 = [v70 centerYAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71];
+  loadingView5 = [(CHTrophyCaseViewController *)self loadingView];
+  centerYAnchor = [loadingView5 centerYAnchor];
+  view9 = [(CHTrophyCaseViewController *)self view];
+  centerYAnchor2 = [view9 centerYAnchor];
+  v72 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-  v73 = [(CHTrophyCaseViewController *)self loadingView];
-  v74 = [v73 widthAnchor];
-  v75 = [(CHTrophyCaseViewController *)self view];
-  v76 = [v75 widthAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
+  loadingView6 = [(CHTrophyCaseViewController *)self loadingView];
+  widthAnchor = [loadingView6 widthAnchor];
+  view10 = [(CHTrophyCaseViewController *)self view];
+  widthAnchor2 = [view10 widthAnchor];
+  v77 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
-  v78 = [(CHTrophyCaseViewController *)self loadingView];
-  v79 = [v78 heightAnchor];
-  v80 = [(CHTrophyCaseViewController *)self view];
-  v81 = [v80 heightAnchor];
-  v82 = [v79 constraintEqualToAnchor:v81];
+  loadingView7 = [(CHTrophyCaseViewController *)self loadingView];
+  heightAnchor = [loadingView7 heightAnchor];
+  view11 = [(CHTrophyCaseViewController *)self view];
+  heightAnchor2 = [view11 heightAnchor];
+  v82 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   v112[0] = v67;
   v112[1] = v72;
@@ -220,29 +220,29 @@
   v84 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [(CHTrophyCaseViewController *)self setSpinner:v84];
 
-  v85 = [(CHTrophyCaseViewController *)self spinner];
-  [v85 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spinner = [(CHTrophyCaseViewController *)self spinner];
+  [spinner setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v86 = [(CHTrophyCaseViewController *)self loadingView];
-  v87 = [(CHTrophyCaseViewController *)self spinner];
-  [v86 addSubview:v87];
+  loadingView8 = [(CHTrophyCaseViewController *)self loadingView];
+  spinner2 = [(CHTrophyCaseViewController *)self spinner];
+  [loadingView8 addSubview:spinner2];
 
-  v88 = [(CHTrophyCaseViewController *)self spinner];
-  v89 = [v88 centerXAnchor];
-  v90 = [(CHTrophyCaseViewController *)self loadingView];
-  v91 = [v90 centerXAnchor];
-  v92 = [v89 constraintEqualToAnchor:v91];
+  spinner3 = [(CHTrophyCaseViewController *)self spinner];
+  centerXAnchor3 = [spinner3 centerXAnchor];
+  loadingView9 = [(CHTrophyCaseViewController *)self loadingView];
+  centerXAnchor4 = [loadingView9 centerXAnchor];
+  v92 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v92 setActive:1];
 
-  v93 = [(CHTrophyCaseViewController *)self spinner];
-  v94 = [v93 centerYAnchor];
-  v95 = [(CHTrophyCaseViewController *)self loadingView];
-  v96 = [v95 centerYAnchor];
-  v97 = [v94 constraintEqualToAnchor:v96];
+  spinner4 = [(CHTrophyCaseViewController *)self spinner];
+  centerYAnchor3 = [spinner4 centerYAnchor];
+  loadingView10 = [(CHTrophyCaseViewController *)self loadingView];
+  centerYAnchor4 = [loadingView10 centerYAnchor];
+  v97 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v97 setActive:1];
 
-  v98 = [(CHTrophyCaseViewController *)self spinner];
-  [v98 startAnimating];
+  spinner5 = [(CHTrophyCaseViewController *)self spinner];
+  [spinner5 startAnimating];
 
   v99 = +[NSNotificationCenter defaultCenter];
   [v99 addObserver:self selector:"unitPreferencesDidChange:" name:kFIUIFitnessUnitPreferencesDidChangeNotification object:0];
@@ -251,35 +251,35 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CHTrophyCaseViewController;
-  [(CHTrophyCaseViewController *)&v8 viewWillAppear:a3];
+  [(CHTrophyCaseViewController *)&v8 viewWillAppear:appear];
   if (!self->_observerSetupComplete)
   {
     self->_observerSetupComplete = 1;
-    v4 = [(CHTrophyCaseViewController *)self dataProvider];
-    [v4 addInitialLoadObserver:self];
+    dataProvider = [(CHTrophyCaseViewController *)self dataProvider];
+    [dataProvider addInitialLoadObserver:self];
   }
 
-  v5 = [(CHTrophyCaseViewController *)self navigationController];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
+  navigationController = [(CHTrophyCaseViewController *)self navigationController];
+  v6 = [navigationController conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
 
   if (v6)
   {
-    v7 = [(CHTrophyCaseViewController *)self navigationController];
-    [v7 detachPalette];
+    navigationController2 = [(CHTrophyCaseViewController *)self navigationController];
+    [navigationController2 detachPalette];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CHTrophyCaseViewController;
-  [(CHTrophyCaseViewController *)&v5 viewDidAppear:a3];
-  v4 = [(CHTrophyCaseViewController *)self navigationController];
-  [v4 setDelegate:self];
+  [(CHTrophyCaseViewController *)&v5 viewDidAppear:appear];
+  navigationController = [(CHTrophyCaseViewController *)self navigationController];
+  [navigationController setDelegate:self];
 
   [(CHTrophyCaseViewController *)self setTransitionAnimator:0];
   [(CHTrophyCaseViewController *)self _presentInitialAchievementIfNeeded];
@@ -287,32 +287,32 @@
 
 - (void)dealloc
 {
-  v3 = [(CHTrophyCaseViewController *)self dataProvider];
-  [v3 removeInitialLoadObserver:self];
+  dataProvider = [(CHTrophyCaseViewController *)self dataProvider];
+  [dataProvider removeInitialLoadObserver:self];
 
   v4.receiver = self;
   v4.super_class = CHTrophyCaseViewController;
   [(CHTrophyCaseViewController *)&v4 dealloc];
 }
 
-- (void)unitPreferencesDidChange:(id)a3
+- (void)unitPreferencesDidChange:(id)change
 {
-  v4 = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
-  [v4 reloadData];
+  recentAndRelevantCollectionView = [(CHTrophyCaseViewController *)self recentAndRelevantCollectionView];
+  [recentAndRelevantCollectionView reloadData];
 
-  v5 = [(CHTrophyCaseViewController *)self mainCollectionView];
-  [v5 reloadData];
+  mainCollectionView = [(CHTrophyCaseViewController *)self mainCollectionView];
+  [mainCollectionView reloadData];
 }
 
-- (void)presentDetailForAchievement:(id)a3 badgeRect:(CGRect)a4 conversionView:(id)a5 cell:(id)a6
+- (void)presentDetailForAchievement:(id)achievement badgeRect:(CGRect)rect conversionView:(id)view cell:(id)cell
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  achievementCopy = achievement;
+  viewCopy = view;
+  cellCopy = cell;
   v16 = ACHLogDefault();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -322,42 +322,42 @@
     v33.size.height = height;
     v17 = NSStringFromCGRect(v33);
     *buf = 138543874;
-    v28 = v13;
+    v28 = achievementCopy;
     v29 = 2114;
     v30 = v17;
     v31 = 2114;
-    v32 = v14;
+    v32 = viewCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Presenting detail for achievement %{public}@ badgeRect %{public}@ conversionView %{public}@", buf, 0x20u);
   }
 
   v18 = [CHAchievementDetailViewController alloc];
-  v19 = [(CHTrophyCaseViewController *)self localizationProvider];
-  v20 = [(CHAchievementDetailViewController *)v18 initWithAchievement:v13 locProvider:v19 formatsForFriend:0 forDayView:0 forModalPresentation:0 shouldShowCelebration:0];
+  localizationProvider = [(CHTrophyCaseViewController *)self localizationProvider];
+  v20 = [(CHAchievementDetailViewController *)v18 initWithAchievement:achievementCopy locProvider:localizationProvider formatsForFriend:0 forDayView:0 forModalPresentation:0 shouldShowCelebration:0];
 
-  LODWORD(v19) = [v13 unearned];
+  LODWORD(localizationProvider) = [achievementCopy unearned];
   v21 = [AAUIAchievementDetailTransitionAnimator alloc];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100119864;
   v25[3] = &unk_10083B8E0;
-  v26 = v15;
-  v22 = v15;
-  v23 = [v21 initWithPresentingViewController:self detailViewController:v20 shouldPlayFlipInAnimation:v19 ^ 1 initialBadgeFrame:v14 conversionView:&stru_10083CC20 presentAlongsideBlock:&stru_10083CC40 dismissAlongsideBlock:x completionBlock:{y, width, height, v25}];
+  v26 = cellCopy;
+  v22 = cellCopy;
+  v23 = [v21 initWithPresentingViewController:self detailViewController:v20 shouldPlayFlipInAnimation:localizationProvider ^ 1 initialBadgeFrame:viewCopy conversionView:&stru_10083CC20 presentAlongsideBlock:&stru_10083CC40 dismissAlongsideBlock:x completionBlock:{y, width, height, v25}];
   [(CHTrophyCaseViewController *)self setTransitionAnimator:v23];
 
-  v24 = [(CHTrophyCaseViewController *)self navigationController];
-  [v24 pushViewController:v20 animated:1];
+  navigationController = [(CHTrophyCaseViewController *)self navigationController];
+  [navigationController pushViewController:v20 animated:1];
 }
 
 - (void)detachPalette
 {
-  v3 = [(CHTrophyCaseViewController *)self navigationController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
+  navigationController = [(CHTrophyCaseViewController *)self navigationController];
+  v4 = [navigationController conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
 
   if (v4)
   {
-    v5 = [(CHTrophyCaseViewController *)self navigationController];
-    [v5 detachPalette];
+    navigationController2 = [(CHTrophyCaseViewController *)self navigationController];
+    [navigationController2 detachPalette];
   }
 }
 
@@ -368,8 +368,8 @@
     self->_initialAchievementPresented = 1;
     v3 = [CHAchievementDetailViewController alloc];
     initialAchievement = self->_initialAchievement;
-    v5 = [(CHTrophyCaseViewController *)self localizationProvider];
-    v6 = [(CHAchievementDetailViewController *)v3 initWithAchievement:initialAchievement locProvider:v5 formatsForFriend:0 forDayView:0 forModalPresentation:1 shouldShowCelebration:self->_shouldShowCelebration];
+    localizationProvider = [(CHTrophyCaseViewController *)self localizationProvider];
+    v6 = [(CHAchievementDetailViewController *)v3 initWithAchievement:initialAchievement locProvider:localizationProvider formatsForFriend:0 forDayView:0 forModalPresentation:1 shouldShowCelebration:self->_shouldShowCelebration];
 
     v7 = ACHLogDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -378,58 +378,58 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Pushing achievement detail sheet for initial achievement", v10, 2u);
     }
 
-    v8 = [(CHTrophyCaseViewController *)self navigationController];
-    [v8 pushViewController:v6 animated:0];
+    navigationController = [(CHTrophyCaseViewController *)self navigationController];
+    [navigationController pushViewController:v6 animated:0];
 
-    v9 = [(CHTrophyCaseViewController *)self delegate];
-    [v9 trophyCaseDidBeginCelebration:self];
+    delegate = [(CHTrophyCaseViewController *)self delegate];
+    [delegate trophyCaseDidBeginCelebration:self];
   }
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 == 2)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  if (operation == 2)
   {
-    v14 = [(CHTrophyCaseViewController *)self transitionAnimatorFromViewController];
-    if (v14 == v12)
+    transitionAnimatorFromViewController = [(CHTrophyCaseViewController *)self transitionAnimatorFromViewController];
+    if (transitionAnimatorFromViewController == toViewControllerCopy)
     {
-      v13 = [(CHTrophyCaseViewController *)self transitionAnimator];
+      transitionAnimator = [(CHTrophyCaseViewController *)self transitionAnimator];
     }
 
     else
     {
-      v13 = 0;
+      transitionAnimator = 0;
     }
   }
 
-  else if (a4 == 1)
+  else if (operation == 1)
   {
-    [(CHTrophyCaseViewController *)self setTransitionAnimatorFromViewController:v11];
-    v13 = [(CHTrophyCaseViewController *)self transitionAnimator];
+    [(CHTrophyCaseViewController *)self setTransitionAnimatorFromViewController:viewControllerCopy];
+    transitionAnimator = [(CHTrophyCaseViewController *)self transitionAnimator];
   }
 
   else
   {
-    v13 = 0;
+    transitionAnimator = 0;
   }
 
-  return v13;
+  return transitionAnimator;
 }
 
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller
 {
-  v3 = [(CHTrophyCaseViewController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(CHTrophyCaseViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)achievementsDataProviderDidFinishInitialLoad:(id)a3
+- (void)achievementsDataProviderDidFinishInitialLoad:(id)load
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -439,18 +439,18 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setWheelchairUseCache:(id)a3
+- (void)setWheelchairUseCache:(id)cache
 {
-  objc_storeStrong(&self->_wheelchairUseCache, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_wheelchairUseCache, cache);
+  cacheCopy = cache;
   [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCache addObserver:self];
 }
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
-  v4 = a4;
-  v5 = [(CHTrophyCaseViewController *)self localizationProvider];
-  [v5 setWheelchairUser:v4];
+  changeCopy = change;
+  localizationProvider = [(CHTrophyCaseViewController *)self localizationProvider];
+  [localizationProvider setWheelchairUser:changeCopy];
 }
 
 - (CHTrophyCaseViewControllerDelegate)delegate

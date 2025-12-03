@@ -1,18 +1,18 @@
 @interface BWRenderList
 - (BOOL)hasMetalColorCubeRenderer;
 - (BOOL)isPrepared;
-- (BWRenderList)initWithAnimationSupported:(BOOL)a3 affectsMetadata:(BOOL)a4;
-- (BWRenderList)initWithResourceProvider:(id)a3 originalFilters:(id)a4 processedFilters:(id)a5 optimizationStrategy:(signed __int16)a6 stillImageSettings:(id)a7;
+- (BWRenderList)initWithAnimationSupported:(BOOL)supported affectsMetadata:(BOOL)metadata;
+- (BWRenderList)initWithResourceProvider:(id)provider originalFilters:(id)filters processedFilters:(id)processedFilters optimizationStrategy:(signed __int16)strategy stillImageSettings:(id)settings;
 - (NSString)description;
-- (uint64_t)_appendBatchRendererFromProvider:(void *)a3 toRendererList:(void *)a4 parameterList:(uint64_t)a5 withContext:;
-- (uint64_t)_appendSingleRendererOfType:(uint64_t)a3 forFilter:(void *)a4 fromProvider:(void *)a5 toRendererList:(void *)a6 parameterList:(uint64_t)a7 withContext:;
-- (uint64_t)_continueOptimizingRendererList:(void *)a3 parameterList:(id)a4 withFilter:(void *)a5 fromProvider:(id *)a6 context:;
-- (uint64_t)_finishOptimizingRendererList:(void *)a3 parameterList:(void *)a4 fromProvider:(unsigned __int16 *)a5 context:(void *)a6 stillImageSettings:;
-- (uint64_t)_shouldStreamingSDOFRendererConsumeFilter:(uint64_t)a1;
-- (uint64_t)_shouldUseMetalRendererForFilterWithName:(uint64_t)a1;
+- (uint64_t)_appendBatchRendererFromProvider:(void *)provider toRendererList:(void *)list parameterList:(uint64_t)parameterList withContext:;
+- (uint64_t)_appendSingleRendererOfType:(uint64_t)type forFilter:(void *)filter fromProvider:(void *)provider toRendererList:(void *)list parameterList:(uint64_t)parameterList withContext:;
+- (uint64_t)_continueOptimizingRendererList:(void *)list parameterList:(id)parameterList withFilter:(void *)filter fromProvider:(id *)provider context:;
+- (uint64_t)_finishOptimizingRendererList:(void *)list parameterList:(void *)parameterList fromProvider:(unsigned __int16 *)provider context:(void *)context stillImageSettings:;
+- (uint64_t)_shouldStreamingSDOFRendererConsumeFilter:(uint64_t)filter;
+- (uint64_t)_shouldUseMetalRendererForFilterWithName:(uint64_t)name;
 - (void)dealloc;
-- (void)prepareWithParameters:(id)a3 forInputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
-- (void)setPrepared:(BOOL)a3;
+- (void)prepareWithParameters:(id)parameters forInputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
+- (void)setPrepared:(BOOL)prepared;
 @end
 
 @implementation BWRenderList
@@ -110,7 +110,7 @@
   return v3;
 }
 
-- (BWRenderList)initWithAnimationSupported:(BOOL)a3 affectsMetadata:(BOOL)a4
+- (BWRenderList)initWithAnimationSupported:(BOOL)supported affectsMetadata:(BOOL)metadata
 {
   v8.receiver = self;
   v8.super_class = BWRenderList;
@@ -121,22 +121,22 @@
     v6->_originalMarkerRendererNode = 0;
     v6->_parameterList.slh_first = 0;
     v6->_rendererList.slh_first = 0;
-    v6->_affectsMetadata = a4;
-    v6->_supportsAnimation = a3;
+    v6->_affectsMetadata = metadata;
+    v6->_supportsAnimation = supported;
   }
 
   return v6;
 }
 
-- (BWRenderList)initWithResourceProvider:(id)a3 originalFilters:(id)a4 processedFilters:(id)a5 optimizationStrategy:(signed __int16)a6 stillImageSettings:(id)a7
+- (BWRenderList)initWithResourceProvider:(id)provider originalFilters:(id)filters processedFilters:(id)processedFilters optimizationStrategy:(signed __int16)strategy stillImageSettings:(id)settings
 {
-  v8 = a6;
+  strategyCopy = strategy;
   v44.receiver = self;
   v44.super_class = BWRenderList;
   v12 = [(BWRenderList *)&v44 init];
   if (v12)
   {
-    v27 = a7;
+    settingsCopy = settings;
     v14 = dispatch_queue_create("com.apple.coremedia.bwrenderlist.preparation-isolation", 0);
     v12->_rendererList.slh_first = 0;
     p_rendererList = &v12->_rendererList;
@@ -144,15 +144,15 @@
     v12->_parameterList.slh_first = 0;
     v43 = 0;
     v42 = 4uLL;
-    v38 = v8;
+    v38 = strategyCopy;
     v39 = 0uLL;
-    v40 = [a4 lastObject];
+    lastObject = [filters lastObject];
     v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v16 = [a4 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    v16 = [filters countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v16)
     {
       v17 = v16;
@@ -163,13 +163,13 @@
         {
           if (*v35 != v18)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(filters);
           }
 
-          [(BWRenderList *)v12 _continueOptimizingRendererList:&v12->_parameterList.slh_first parameterList:*(*(&v34 + 1) + 8 * i) withFilter:a3 fromProvider:&v38 context:?];
+          [(BWRenderList *)v12 _continueOptimizingRendererList:&v12->_parameterList.slh_first parameterList:*(*(&v34 + 1) + 8 * i) withFilter:provider fromProvider:&v38 context:?];
         }
 
-        v17 = [a4 countByEnumeratingWithState:&v34 objects:v33 count:16];
+        v17 = [filters countByEnumeratingWithState:&v34 objects:v33 count:16];
       }
 
       while (v17);
@@ -179,7 +179,7 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v20 = [a5 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    v20 = [processedFilters countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v20)
     {
       v21 = v20;
@@ -190,20 +190,20 @@
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(processedFilters);
           }
 
-          [(BWRenderList *)v12 _continueOptimizingRendererList:&v12->_parameterList.slh_first parameterList:*(*(&v29 + 1) + 8 * j) withFilter:a3 fromProvider:&v38 context:?];
+          [(BWRenderList *)v12 _continueOptimizingRendererList:&v12->_parameterList.slh_first parameterList:*(*(&v29 + 1) + 8 * j) withFilter:provider fromProvider:&v38 context:?];
         }
 
-        v21 = [a5 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v21 = [processedFilters countByEnumeratingWithState:&v29 objects:v28 count:16];
       }
 
       while (v21);
     }
 
-    [(BWRenderList *)v12 _finishOptimizingRendererList:&v12->_parameterList.slh_first parameterList:a3 fromProvider:&v38 context:v27 stillImageSettings:?];
-    if (v8 == 4)
+    [(BWRenderList *)v12 _finishOptimizingRendererList:&v12->_parameterList.slh_first parameterList:provider fromProvider:&v38 context:settingsCopy stillImageSettings:?];
+    if (strategyCopy == 4)
     {
       slh_first = p_rendererList->slh_first;
       if (p_rendererList->slh_first)
@@ -236,14 +236,14 @@
     v12->_originalMarkerRendererNode = *(&v39 + 1);
     v12->_affectsMetadata = v43;
     v12->_supportsAnimation = v26;
-    v12->_originalFilterNames = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:{objc_msgSend(a4, "valueForKeyPath:", @"name"}];
-    v12->_processedFilterNames = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:{objc_msgSend(a5, "valueForKeyPath:", @"name"}];
+    v12->_originalFilterNames = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:{objc_msgSend(filters, "valueForKeyPath:", @"name"}];
+    v12->_processedFilterNames = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:{objc_msgSend(processedFilters, "valueForKeyPath:", @"name"}];
   }
 
   return v12;
 }
 
-- (uint64_t)_continueOptimizingRendererList:(void *)a3 parameterList:(id)a4 withFilter:(void *)a5 fromProvider:(id *)a6 context:
+- (uint64_t)_continueOptimizingRendererList:(void *)list parameterList:(id)parameterList withFilter:(void *)filter fromProvider:(id *)provider context:
 {
   if (!result)
   {
@@ -251,47 +251,47 @@
   }
 
   v11 = result;
-  v12 = [a4 name];
-  v13 = [objc_opt_class() shallowDepthOfFieldFilterName];
-  v14 = [v12 isEqualToString:@"CIDepthEffectMakeBlurMap"];
-  v15 = [v12 isEqualToString:v13];
+  name = [parameterList name];
+  shallowDepthOfFieldFilterName = [objc_opt_class() shallowDepthOfFieldFilterName];
+  v14 = [name isEqualToString:@"CIDepthEffectMakeBlurMap"];
+  v15 = [name isEqualToString:shallowDepthOfFieldFilterName];
   v16 = [BWRenderList _shouldUseMetalRendererForFilterWithName:v11];
-  if (!*(a6 + 24))
+  if (!*(provider + 24))
   {
     if ([BWRenderList _shouldStreamingSDOFRendererConsumeFilter:v11])
     {
-      [a6[5] addObject:a4];
-      if (a6[4] == a4)
+      [provider[5] addObject:parameterList];
+      if (provider[4] == parameterList)
       {
-        *(a6 + 50) = 1;
+        *(provider + 50) = 1;
       }
 
-      return [(BWRenderList *)v11 _appendBatchRendererFromProvider:a5 toRendererList:a2 parameterList:a3 withContext:a6];
+      return [(BWRenderList *)v11 _appendBatchRendererFromProvider:filter toRendererList:a2 parameterList:list withContext:provider];
     }
 
-    [(BWRenderList *)v11 _appendBatchRendererFromProvider:a5 toRendererList:a2 parameterList:a3 withContext:a6];
+    [(BWRenderList *)v11 _appendBatchRendererFromProvider:filter toRendererList:a2 parameterList:list withContext:provider];
   }
 
   if ((v15 | v14))
   {
-    result = [(BWRenderList *)v11 _appendBatchRendererFromProvider:a5 toRendererList:a2 parameterList:a3 withContext:a6];
-    v17 = *a6;
+    result = [(BWRenderList *)v11 _appendBatchRendererFromProvider:filter toRendererList:a2 parameterList:list withContext:provider];
+    v17 = *provider;
     if (v17 <= 1)
     {
-      if (*a6)
+      if (*provider)
       {
         if (v17 != 1)
         {
           return result;
         }
 
-        a6[7] = a4;
+        provider[7] = parameterList;
         v18 = v11;
         v19 = 1;
         goto LABEL_29;
       }
 
-      return [BWRenderList _continueOptimizingRendererList:a6 parameterList:a4 withFilter:? fromProvider:? context:?];
+      return [BWRenderList _continueOptimizingRendererList:provider parameterList:parameterList withFilter:? fromProvider:? context:?];
     }
 
     if (v17 != 2)
@@ -301,28 +301,28 @@
         return result;
       }
 
-      return [BWRenderList _continueOptimizingRendererList:a6 parameterList:a4 withFilter:? fromProvider:? context:?];
+      return [BWRenderList _continueOptimizingRendererList:provider parameterList:parameterList withFilter:? fromProvider:? context:?];
     }
 
-    if (([objc_msgSend(a4 "name")] & 1) == 0)
+    if (([objc_msgSend(parameterList "name")] & 1) == 0)
     {
-      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"CIFilter must be of type CIDepthEffectMakeBlurMap.  Received: %@.", objc_msgSend(a4, "name")), 0}]);
+      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"CIFilter must be of type CIDepthEffectMakeBlurMap.  Received: %@.", objc_msgSend(parameterList, "name")), 0}]);
     }
 
     v18 = v11;
     v19 = 3;
 LABEL_29:
 
-    return [(BWRenderList *)v18 _appendSingleRendererOfType:v19 forFilter:a4 fromProvider:a5 toRendererList:a2 parameterList:a3 withContext:a6];
+    return [(BWRenderList *)v18 _appendSingleRendererOfType:v19 forFilter:parameterList fromProvider:filter toRendererList:a2 parameterList:list withContext:provider];
   }
 
-  v20 = *(a6 + 24);
+  v20 = *(provider + 24);
   if (v16)
   {
     if (v20 != 5)
     {
-      [(BWRenderList *)v11 _appendBatchRendererFromProvider:a5 toRendererList:a2 parameterList:a3 withContext:a6];
-      *(a6 + 24) = 5;
+      [(BWRenderList *)v11 _appendBatchRendererFromProvider:filter toRendererList:a2 parameterList:list withContext:provider];
+      *(provider + 24) = 5;
     }
 
     v18 = v11;
@@ -332,14 +332,14 @@ LABEL_29:
 
   if (v20 != 4)
   {
-    [(BWRenderList *)v11 _appendBatchRendererFromProvider:a5 toRendererList:a2 parameterList:a3 withContext:a6];
-    *(a6 + 24) = 4;
+    [(BWRenderList *)v11 _appendBatchRendererFromProvider:filter toRendererList:a2 parameterList:list withContext:provider];
+    *(provider + 24) = 4;
   }
 
-  result = [a6[5] addObject:a4];
-  if (a6[4] == a4)
+  result = [provider[5] addObject:parameterList];
+  if (provider[4] == parameterList)
   {
-    *(a6 + 50) = 1;
+    *(provider + 50) = 1;
   }
 
   return result;
@@ -413,7 +413,7 @@ LABEL_29:
   return v3;
 }
 
-- (void)setPrepared:(BOOL)a3
+- (void)setPrepared:(BOOL)prepared
 {
   preparationIsolationQueue = self->_preparationIsolationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -421,17 +421,17 @@ LABEL_29:
   v4[2] = __28__BWRenderList_setPrepared___block_invoke;
   v4[3] = &unk_1E7990078;
   v4[4] = self;
-  v5 = a3;
+  preparedCopy = prepared;
   dispatch_sync(preparationIsolationQueue, v4);
 }
 
-- (void)prepareWithParameters:(id)a3 forInputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (void)prepareWithParameters:(id)parameters forInputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
   if (![(BWRenderList *)self isPrepared])
   {
-    if (a3)
+    if (parameters)
     {
-      p_parameterList = [a3 parameterList];
+      p_parameterList = [parameters parameterList];
     }
 
     else
@@ -449,7 +449,7 @@ LABEL_29:
       }
 
       p_parameterList = p_parameterList->slh_first;
-      if ([(BWRenderListRendererNode *)p_rendererList[1].slh_first prepareForRenderingWithParameters:p_parameterList[1].slh_first inputVideoFormat:a4 inputMediaPropertiesByAttachedMediaKey:a5])
+      if ([(BWRenderListRendererNode *)p_rendererList[1].slh_first prepareForRenderingWithParameters:p_parameterList[1].slh_first inputVideoFormat:format inputMediaPropertiesByAttachedMediaKey:key])
       {
         [BWRenderList prepareWithParameters:forInputVideoFormat:inputMediaPropertiesByAttachedMediaKey:];
         return;
@@ -460,19 +460,19 @@ LABEL_29:
   }
 }
 
-- (uint64_t)_appendBatchRendererFromProvider:(void *)a3 toRendererList:(void *)a4 parameterList:(uint64_t)a5 withContext:
+- (uint64_t)_appendBatchRendererFromProvider:(void *)provider toRendererList:(void *)list parameterList:(uint64_t)parameterList withContext:
 {
   if (result)
   {
-    if (a5)
+    if (parameterList)
     {
-      v9 = *(a5 + 40);
+      v9 = *(parameterList + 40);
       result = [v9 count];
       if (result)
       {
-        v10 = *(a5 + 48);
-        v11 = *(a5 + 50);
-        v12 = *(a5 + 32);
+        v10 = *(parameterList + 48);
+        v11 = *(parameterList + 50);
+        v12 = *(parameterList + 32);
         v21 = 0;
         v22 = 0;
         result = rl_concreteRendererWithParametersForType(v10, a2, &v22, &v21, v9, v12, v11);
@@ -480,57 +480,57 @@ LABEL_29:
         {
           v13 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
           v14 = v22;
-          v15 = *(a5 + 8);
-          if (!v15)
+          providerCopy = *(parameterList + 8);
+          if (!providerCopy)
           {
-            v15 = a3;
+            providerCopy = provider;
           }
 
-          *v13 = *v15;
+          *v13 = *providerCopy;
           v13[1] = v14;
-          *v15 = v13;
-          *(a5 + 8) = v13;
+          *providerCopy = v13;
+          *(parameterList + 8) = v13;
           v16 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
           v17 = v21;
-          v18 = *(a5 + 16);
-          if (!v18)
+          listCopy = *(parameterList + 16);
+          if (!listCopy)
           {
-            v18 = a4;
+            listCopy = list;
           }
 
-          *v16 = *v18;
+          *v16 = *listCopy;
           v16[1] = v17;
-          *v18 = v16;
-          *(a5 + 16) = v16;
+          *listCopy = v16;
+          *(parameterList + 16) = v16;
           if (v11)
           {
-            *(a5 + 24) = v13;
+            *(parameterList + 24) = v13;
           }
 
-          if (*(a5 + 64))
+          if (*(parameterList + 64))
           {
-            v19 = 1;
+            adjustsMetadata = 1;
           }
 
           else
           {
-            v19 = [v22 adjustsMetadata];
+            adjustsMetadata = [v22 adjustsMetadata];
           }
 
-          *(a5 + 64) = v19;
-          if (*(a5 + 65))
+          *(parameterList + 64) = adjustsMetadata;
+          if (*(parameterList + 65))
           {
-            v20 = 1;
+            supportsAnimation = 1;
           }
 
           else
           {
-            v20 = [v22 supportsAnimation];
+            supportsAnimation = [v22 supportsAnimation];
           }
 
-          *(a5 + 65) = v20;
+          *(parameterList + 65) = supportsAnimation;
           result = [v9 removeAllObjects];
-          *(a5 + 50) = 0;
+          *(parameterList + 50) = 0;
         }
       }
     }
@@ -557,12 +557,12 @@ LABEL_29:
   return p_rendererList != 0;
 }
 
-- (uint64_t)_finishOptimizingRendererList:(void *)a3 parameterList:(void *)a4 fromProvider:(unsigned __int16 *)a5 context:(void *)a6 stillImageSettings:
+- (uint64_t)_finishOptimizingRendererList:(void *)list parameterList:(void *)parameterList fromProvider:(unsigned __int16 *)provider context:(void *)context stillImageSettings:
 {
   if (result)
   {
-    [(BWRenderList *)result _appendBatchRendererFromProvider:a4 toRendererList:a2 parameterList:a3 withContext:a5];
-    if (*(a5 + 7) && *a5 - 1 <= 2)
+    [(BWRenderList *)result _appendBatchRendererFromProvider:parameterList toRendererList:a2 parameterList:list withContext:provider];
+    if (*(provider + 7) && *provider - 1 <= 2)
     {
       OUTLINED_FUNCTION_1_98();
       [(BWRenderList *)v15 _appendSingleRendererOfType:v16 forFilter:v17 fromProvider:v18 toRendererList:v19 parameterList:v20 withContext:v21];
@@ -570,10 +570,10 @@ LABEL_29:
 
     if (!FigCaptureCurrentProcessIsDeferredmediad() && FigCaptureMetadataUtilitiesShouldIncludeDiagnosticMetadata())
     {
-      [objc_msgSend(a6 "captureSettings")];
+      [objc_msgSend(context "captureSettings")];
     }
 
-    result = BWIsSmartStyleAllowedForAdjustedImage(a6);
+    result = BWIsSmartStyleAllowedForAdjustedImage(context);
     if (result)
     {
       OUTLINED_FUNCTION_1_98();
@@ -585,9 +585,9 @@ LABEL_29:
   return result;
 }
 
-- (uint64_t)_shouldUseMetalRendererForFilterWithName:(uint64_t)a1
+- (uint64_t)_shouldUseMetalRendererForFilterWithName:(uint64_t)name
 {
-  if (a1)
+  if (name)
   {
     NSClassFromString(&cfstr_Ciphotoeffect.isa);
     v1 = OUTLINED_FUNCTION_2_85();
@@ -624,9 +624,9 @@ LABEL_29:
   return v4 & 1;
 }
 
-- (uint64_t)_shouldStreamingSDOFRendererConsumeFilter:(uint64_t)a1
+- (uint64_t)_shouldStreamingSDOFRendererConsumeFilter:(uint64_t)filter
 {
-  if (a1)
+  if (filter)
   {
     NSClassFromString(&cfstr_Ciphotoeffect.isa);
     v1 = OUTLINED_FUNCTION_0_85();
@@ -675,19 +675,19 @@ LABEL_29:
   return v5 & 1;
 }
 
-- (uint64_t)_appendSingleRendererOfType:(uint64_t)a3 forFilter:(void *)a4 fromProvider:(void *)a5 toRendererList:(void *)a6 parameterList:(uint64_t)a7 withContext:
+- (uint64_t)_appendSingleRendererOfType:(uint64_t)type forFilter:(void *)filter fromProvider:(void *)provider toRendererList:(void *)list parameterList:(uint64_t)parameterList withContext:
 {
   if (result)
   {
-    v12 = *(a7 + 32);
-    v13 = a3 && v12 == a3;
+    v12 = *(parameterList + 32);
+    v13 = type && v12 == type;
     v14 = v13;
     v24 = 0;
     v25 = 0;
-    if (a3)
+    if (type)
     {
-      v23 = a3;
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
+      typeCopy = type;
+      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&typeCopy count:1];
     }
 
     else
@@ -695,50 +695,50 @@ LABEL_29:
       v15 = MEMORY[0x1E695E0F0];
     }
 
-    result = rl_concreteRendererWithParametersForType(a2, a4, &v25, &v24, v15, v12, v14);
+    result = rl_concreteRendererWithParametersForType(a2, filter, &v25, &v24, v15, v12, v14);
     if (v25)
     {
       v16 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
       v17 = v25;
-      v18 = *(a7 + 8);
-      if (!v18)
+      providerCopy = *(parameterList + 8);
+      if (!providerCopy)
       {
-        v18 = a5;
+        providerCopy = provider;
       }
 
-      *v16 = *v18;
+      *v16 = *providerCopy;
       v16[1] = v17;
-      *v18 = v16;
-      *(a7 + 8) = v16;
+      *providerCopy = v16;
+      *(parameterList + 8) = v16;
       v19 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
       v20 = v24;
-      v21 = *(a7 + 16);
-      if (!v21)
+      listCopy = *(parameterList + 16);
+      if (!listCopy)
       {
-        v21 = a6;
+        listCopy = list;
       }
 
-      *v19 = *v21;
+      *v19 = *listCopy;
       v19[1] = v20;
-      *v21 = v19;
-      *(a7 + 16) = v19;
+      *listCopy = v19;
+      *(parameterList + 16) = v19;
       if (v14)
       {
-        *(a7 + 24) = v16;
+        *(parameterList + 24) = v16;
       }
 
-      if (*(a7 + 64))
+      if (*(parameterList + 64))
       {
-        v22 = 1;
+        adjustsMetadata = 1;
       }
 
       else
       {
-        v22 = [v25 adjustsMetadata];
+        adjustsMetadata = [v25 adjustsMetadata];
       }
 
-      *(a7 + 64) = v22;
-      if (*(a7 + 65))
+      *(parameterList + 64) = adjustsMetadata;
+      if (*(parameterList + 65))
       {
         result = 1;
       }
@@ -748,7 +748,7 @@ LABEL_29:
         result = [v25 supportsAnimation];
       }
 
-      *(a7 + 65) = result;
+      *(parameterList + 65) = result;
     }
   }
 

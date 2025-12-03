@@ -1,14 +1,14 @@
 @interface SBSwitcherWallpaperPageContentView
 - (CGRect)_wallpaperFrame;
-- (SBSwitcherWallpaperPageContentView)initWithFrame:(CGRect)a3;
+- (SBSwitcherWallpaperPageContentView)initWithFrame:(CGRect)frame;
 - (void)_updateCornerRadius;
 - (void)_updateWallpaperOrientation;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setDesiredWallpaperOrientation:(int64_t)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setWallpaperStyle:(int64_t)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setDesiredWallpaperOrientation:(int64_t)orientation;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setWallpaperStyle:(int64_t)style;
 @end
 
 @implementation SBSwitcherWallpaperPageContentView
@@ -16,8 +16,8 @@
 - (void)_updateCornerRadius
 {
   [(SBWallpaperEffectView *)self->_wallpaperEffectView _setContinuousCornerRadius:self->_cornerRadius];
-  v3 = [(SBWallpaperEffectView *)self->_wallpaperEffectView layer];
-  [v3 setMaskedCorners:self->_maskedCorners];
+  layer = [(SBWallpaperEffectView *)self->_wallpaperEffectView layer];
+  [layer setMaskedCorners:self->_maskedCorners];
 }
 
 - (void)layoutSubviews
@@ -41,8 +41,8 @@
   v10 = v9;
   if (self->_wallpaperStyle != 1)
   {
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
 
     UIRectInset();
     v4 = v12;
@@ -95,11 +95,11 @@
   [(BSUIOrientationTransformWrapperView *)wallpaperWrapperView setContainerOrientation:desiredWallpaperOrientation];
 }
 
-- (SBSwitcherWallpaperPageContentView)initWithFrame:(CGRect)a3
+- (SBSwitcherWallpaperPageContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBSwitcherWallpaperPageContentView;
-  v3 = [(SBSwitcherWallpaperPageContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSwitcherWallpaperPageContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -112,31 +112,31 @@
   return v4;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(SBSwitcherWallpaperPageContentView *)self _updateCornerRadius];
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  if (self->_maskedCorners != a3)
+  if (self->_maskedCorners != corners)
   {
-    self->_maskedCorners = a3;
+    self->_maskedCorners = corners;
     [(SBSwitcherWallpaperPageContentView *)self _updateCornerRadius];
   }
 }
 
-- (void)setWallpaperStyle:(int64_t)a3
+- (void)setWallpaperStyle:(int64_t)style
 {
-  if (self->_wallpaperStyle != a3)
+  if (self->_wallpaperStyle != style)
   {
-    self->_wallpaperStyle = a3;
+    self->_wallpaperStyle = style;
     wallpaperEffectView = self->_wallpaperEffectView;
-    if (a3 == 1)
+    if (style == 1)
     {
       if (wallpaperEffectView)
       {
@@ -173,8 +173,8 @@
         self->_wallpaperWrapperView = v10;
 
         [(BSUIOrientationTransformWrapperView *)self->_wallpaperWrapperView addContentView:self->_wallpaperEffectView];
-        v12 = [(SBSwitcherWallpaperPageContentView *)self _viewForWallpaperWrapper];
-        [v12 insertSubview:self->_wallpaperWrapperView atIndex:0];
+        _viewForWallpaperWrapper = [(SBSwitcherWallpaperPageContentView *)self _viewForWallpaperWrapper];
+        [_viewForWallpaperWrapper insertSubview:self->_wallpaperWrapperView atIndex:0];
       }
 
       [(SBSwitcherWallpaperPageContentView *)self _updateWallpaperOrientation];
@@ -186,20 +186,20 @@
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(SBSwitcherWallpaperPageContentView *)self _updateWallpaperOrientation];
   }
 }
 
-- (void)setDesiredWallpaperOrientation:(int64_t)a3
+- (void)setDesiredWallpaperOrientation:(int64_t)orientation
 {
-  if (self->_desiredWallpaperOrientation != a3)
+  if (self->_desiredWallpaperOrientation != orientation)
   {
-    self->_desiredWallpaperOrientation = a3;
+    self->_desiredWallpaperOrientation = orientation;
     [(SBSwitcherWallpaperPageContentView *)self _updateWallpaperOrientation];
   }
 }

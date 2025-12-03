@@ -9,9 +9,9 @@
   v16 = *MEMORY[0x1E69E9840];
   if (a4)
   {
-    if (a3 < [a1 length] && a3 + a4 <= objc_msgSend(a1, "length"))
+    if (a3 < [self length] && a3 + a4 <= objc_msgSend(self, "length"))
     {
-      v8 = [a1 substringWithRange:{a3, a4}];
+      v8 = [self substringWithRange:{a3, a4}];
     }
 
     else
@@ -24,7 +24,7 @@
         v12 = 2048;
         v13 = a4;
         v14 = 2048;
-        v15 = [a1 length];
+        v15 = [self length];
         _os_log_impl(&dword_1B40D2000, v7, OS_LOG_TYPE_FAULT, "safeSubstringWithRange: range out of bounds NSMakeRange(%lu, %lu), in string of length %lu", &v10, 0x20u);
       }
 

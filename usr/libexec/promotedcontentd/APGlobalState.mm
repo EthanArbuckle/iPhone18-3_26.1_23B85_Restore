@@ -1,8 +1,8 @@
 @interface APGlobalState
 + (APOnDeviceAttributionObjCBridge)attributionObjCBridge;
-+ (void)createWithTimerXPCActivity:(id)a3 database:(id)a4 signing:(id)a5;
-+ (void)prepareDevicePipelinesWithMetricNotificationRegister:(id)a3;
-+ (void)registerJetPackCacheRequestTaskWithMigrationContext:(id)a3;
++ (void)createWithTimerXPCActivity:(id)activity database:(id)database signing:(id)signing;
++ (void)prepareDevicePipelinesWithMetricNotificationRegister:(id)register;
++ (void)registerJetPackCacheRequestTaskWithMigrationContext:(id)context;
 + (void)startDevicePipelines;
 + (void)startPeriodicFetch;
 + (void)startWorkCoordinator;
@@ -26,12 +26,12 @@
   return v3;
 }
 
-+ (void)createWithTimerXPCActivity:(id)a3 database:(id)a4 signing:(id)a5
++ (void)createWithTimerXPCActivity:(id)activity database:(id)database signing:(id)signing
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  databaseCopy = database;
   swift_unknownObjectRetain();
-  sub_1001F4C8C(v7, v8, a5);
+  sub_1001F4C8C(activityCopy, databaseCopy, signing);
 
   swift_unknownObjectRelease();
 }
@@ -50,7 +50,7 @@
   }
 }
 
-+ (void)prepareDevicePipelinesWithMetricNotificationRegister:(id)a3
++ (void)prepareDevicePipelinesWithMetricNotificationRegister:(id)register
 {
   sub_1003983A8();
   swift_unknownObjectRetain();
@@ -58,7 +58,7 @@
   {
     v4 = *(*off_1004D4BC8 + 128);
 
-    v4(a3);
+    v4(register);
   }
 
   swift_unknownObjectRelease();
@@ -75,10 +75,10 @@
   }
 }
 
-+ (void)registerJetPackCacheRequestTaskWithMigrationContext:(id)a3
++ (void)registerJetPackCacheRequestTaskWithMigrationContext:(id)context
 {
-  v4 = a3;
-  sub_1001F5070(a3);
+  contextCopy = context;
+  sub_1001F5070(context);
 }
 
 - (APGlobalState)init

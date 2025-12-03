@@ -5,9 +5,9 @@
 - (NSString)stream_id;
 - (OPTTSAudioDescription)decoder_description;
 - (OPTTSAudioDescription)playback_description;
-- (OPTTSBeginTextToSpeechStreamingResponse)initWithFlatbuffData:(id)a3 root:(const BeginTextToSpeechStreamingResponse *)a4 verify:(BOOL)a5;
+- (OPTTSBeginTextToSpeechStreamingResponse)initWithFlatbuffData:(id)data root:(const BeginTextToSpeechStreamingResponse *)root verify:(BOOL)verify;
 - (OPTTSTextToSpeechMeta)meta_info;
-- (Offset<siri::speech::schema_fb::BeginTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::BeginTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (float)streaming_playback_buffer_size_in_seconds;
 - (id)flatbuffData;
 - (int)error_code;
@@ -45,90 +45,90 @@ apple::aiml::flatbuffers2::DetachedBuffer *__55__OPTTSBeginTextToSpeechStreaming
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::BeginTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::BeginTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSBeginTextToSpeechStreamingResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(OPTTSBeginTextToSpeechStreamingResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_1F28C4E90;
+    speech_id = &stru_1F28C4E90;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(OPTTSBeginTextToSpeechStreamingResponse *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(OPTTSBeginTextToSpeechStreamingResponse *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_1F28C4E90;
+    session_id = &stru_1F28C4E90;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(OPTTSBeginTextToSpeechStreamingResponse *)self error_code];
-  v16 = [(OPTTSBeginTextToSpeechStreamingResponse *)self error_str];
-  v17 = v16;
-  if (!v16)
+  error_code = [(OPTTSBeginTextToSpeechStreamingResponse *)self error_code];
+  error_str = [(OPTTSBeginTextToSpeechStreamingResponse *)self error_str];
+  v17 = error_str;
+  if (!error_str)
   {
-    v16 = &stru_1F28C4E90;
+    error_str = &stru_1F28C4E90;
   }
 
-  v18 = [(__CFString *)v16 UTF8String];
-  v19 = strlen(v18);
-  v20 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v18, v19);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v19 = strlen(uTF8String3);
+  v20 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v19);
 
-  v21 = [(OPTTSBeginTextToSpeechStreamingResponse *)self stream_id];
-  v22 = v21;
-  if (!v21)
+  stream_id = [(OPTTSBeginTextToSpeechStreamingResponse *)self stream_id];
+  v22 = stream_id;
+  if (!stream_id)
   {
-    v21 = &stru_1F28C4E90;
+    stream_id = &stru_1F28C4E90;
   }
 
-  v23 = [(__CFString *)v21 UTF8String];
-  v24 = strlen(v23);
-  v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v23, v24);
+  uTF8String4 = [(__CFString *)stream_id UTF8String];
+  v24 = strlen(uTF8String4);
+  v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String4, v24);
 
-  LODWORD(v23) = [(OPTTSBeginTextToSpeechStreamingResponse *)self audio_type];
-  v26 = [(OPTTSBeginTextToSpeechStreamingResponse *)self decoder_description];
-  v27 = [v26 addObjectToBuffer:a3];
+  LODWORD(uTF8String4) = [(OPTTSBeginTextToSpeechStreamingResponse *)self audio_type];
+  decoder_description = [(OPTTSBeginTextToSpeechStreamingResponse *)self decoder_description];
+  v27 = [decoder_description addObjectToBuffer:buffer];
 
-  v28 = [(OPTTSBeginTextToSpeechStreamingResponse *)self playback_description];
-  v40 = [v28 addObjectToBuffer:a3];
+  playback_description = [(OPTTSBeginTextToSpeechStreamingResponse *)self playback_description];
+  v40 = [playback_description addObjectToBuffer:buffer];
   v38 = v27;
-  v39 = v23;
-  LODWORD(v23) = v25;
+  v39 = uTF8String4;
+  LODWORD(uTF8String4) = v25;
 
-  v29 = [(OPTTSBeginTextToSpeechStreamingResponse *)self meta_info];
-  v30 = [v29 addObjectToBuffer:a3];
+  meta_info = [(OPTTSBeginTextToSpeechStreamingResponse *)self meta_info];
+  v30 = [meta_info addObjectToBuffer:buffer];
 
   [(OPTTSBeginTextToSpeechStreamingResponse *)self streaming_playback_buffer_size_in_seconds];
   v32 = v31;
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v33 = *(a3 + 5);
-  v34 = *(a3 + 6);
-  v35 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 6, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v15);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 10, v20);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 12, v23);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v39);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 16, v38);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 18, v40);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v33 = *(buffer + 5);
+  v34 = *(buffer + 6);
+  v35 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 6, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 10, v20);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 12, uTF8String4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, v39);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 16, v38);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 18, v40);
   if (v30)
   {
-    v36 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v30);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 20, v36);
+    v36 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v30);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 20, v36);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 22, v32);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 22, v32);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v35 - v34 + v33);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v35 - v34 + v33);
 }
 
 - (float)streaming_playback_buffer_size_in_seconds
@@ -345,10 +345,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__55__OPTTSBeginTextToSpeechStreaming
   return v6;
 }
 
-- (OPTTSBeginTextToSpeechStreamingResponse)initWithFlatbuffData:(id)a3 root:(const BeginTextToSpeechStreamingResponse *)a4 verify:(BOOL)a5
+- (OPTTSBeginTextToSpeechStreamingResponse)initWithFlatbuffData:(id)data root:(const BeginTextToSpeechStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSBeginTextToSpeechStreamingResponse;
   v10 = [(OPTTSBeginTextToSpeechStreamingResponse *)&v25 init];
@@ -357,35 +357,35 @@ apple::aiml::flatbuffers2::DetachedBuffer *__55__OPTTSBeginTextToSpeechStreaming
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

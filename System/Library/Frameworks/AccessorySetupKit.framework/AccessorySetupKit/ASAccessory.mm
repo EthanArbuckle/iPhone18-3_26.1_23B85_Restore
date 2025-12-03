@@ -1,77 +1,77 @@
 @interface ASAccessory
-- (ASAccessory)initWithCoder:(id)a3;
-- (ASAccessory)initWithDADevice:(id)a3 bundleID:(id)a4;
-- (ASAccessory)initWithXPCObject:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (ASAccessory)initWithCoder:(id)coder;
+- (ASAccessory)initWithDADevice:(id)device bundleID:(id)d;
+- (ASAccessory)initWithXPCObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   bluetoothTransportBridgingIdentifier = self->_bluetoothTransportBridgingIdentifier;
-  v12 = v4;
+  v12 = coderCopy;
   if (bluetoothTransportBridgingIdentifier)
   {
-    [v4 encodeObject:bluetoothTransportBridgingIdentifier forKey:@"btBdgId"];
-    v4 = v12;
+    [coderCopy encodeObject:bluetoothTransportBridgingIdentifier forKey:@"btBdgId"];
+    coderCopy = v12;
   }
 
   bluetoothIdentifier = self->_bluetoothIdentifier;
   if (bluetoothIdentifier)
   {
     [v12 encodeObject:bluetoothIdentifier forKey:@"bId"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v12 encodeObject:identifier forKey:@"aSi"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   descriptor = self->_descriptor;
   if (descriptor)
   {
     [v12 encodeObject:descriptor forKey:@"aDr"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   displayName = self->_displayName;
   if (displayName)
   {
     [v12 encodeObject:displayName forKey:@"dNm"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   SSID = self->_SSID;
   if (SSID)
   {
     [v12 encodeObject:SSID forKey:@"wsd"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   state = self->_state;
   if (state)
   {
     [v12 encodeInteger:state forKey:@"aSt"];
-    v4 = v12;
+    coderCopy = v12;
   }
 }
 
-- (ASAccessory)initWithCoder:(id)a3
+- (ASAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASAccessory *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -104,24 +104,24 @@
 
   else
   {
-    [ASAccessory initWithCoder:v4];
+    [ASAccessory initWithCoder:coderCopy];
   }
 
   return v5;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   bluetoothTransportBridgingIdentifier = self->_bluetoothTransportBridgingIdentifier;
   if (bluetoothTransportBridgingIdentifier)
   {
     v6 = bluetoothTransportBridgingIdentifier;
-    v7 = [(NSData *)v6 bytes];
-    if (v7)
+    bytes = [(NSData *)v6 bytes];
+    if (bytes)
     {
-      v8 = v7;
+      v8 = bytes;
     }
 
     else
@@ -131,41 +131,41 @@
 
     v9 = [(NSData *)v6 length];
 
-    xpc_dictionary_set_data(v4, "btBdgId", v8, v9);
+    xpc_dictionary_set_data(objectCopy, "btBdgId", v8, v9);
   }
 
   bluetoothIdentifier = self->_bluetoothIdentifier;
   if (bluetoothIdentifier)
   {
-    v11 = v4;
+    v11 = objectCopy;
     [(NSUUID *)bluetoothIdentifier getUUIDBytes:uuid];
     xpc_dictionary_set_uuid(v11, "bId", uuid);
   }
 
   identifier = self->_identifier;
-  v13 = v4;
-  v14 = [(NSString *)identifier UTF8String];
-  if (v14)
+  v13 = objectCopy;
+  uTF8String = [(NSString *)identifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v13, "aSi", v14);
+    xpc_dictionary_set_string(v13, "aSi", uTF8String);
   }
 
   descriptor = self->_descriptor;
   CUXPCEncodeObject();
   displayName = self->_displayName;
   v17 = v13;
-  v18 = [(NSString *)displayName UTF8String];
-  if (v18)
+  uTF8String2 = [(NSString *)displayName UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v17, "dNm", v18);
+    xpc_dictionary_set_string(v17, "dNm", uTF8String2);
   }
 
   SSID = self->_SSID;
   v20 = v17;
-  v21 = [(NSString *)SSID UTF8String];
-  if (v21)
+  uTF8String3 = [(NSString *)SSID UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v20, "wsd", v21);
+    xpc_dictionary_set_string(v20, "wsd", uTF8String3);
   }
 
   state = self->_state;
@@ -177,13 +177,13 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (ASAccessory)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASAccessory)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ASAccessory *)self init];
   if (v7)
   {
-    if (MEMORY[0x2383B4C90](v6) == MEMORY[0x277D86468])
+    if (MEMORY[0x2383B4C90](objectCopy) == MEMORY[0x277D86468])
     {
       CUXPCDecodeNSData();
       CUXPCDecodeNSUUID();
@@ -201,10 +201,10 @@
       v14 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
       ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v16);
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -215,16 +215,16 @@
 
   else
   {
-    [ASAccessory initWithXPCObject:a4 error:&v17];
+    [ASAccessory initWithXPCObject:error error:&v17];
     v14 = v17;
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSUUID *)self->_bluetoothIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;
@@ -253,13 +253,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (![(ASAccessory *)v6 isMemberOfClass:objc_opt_class()])
     {
       v13 = 0;
@@ -269,9 +269,9 @@ LABEL_49:
     }
 
     bluetoothIdentifier = self->_bluetoothIdentifier;
-    v8 = [(ASAccessory *)v6 bluetoothIdentifier];
+    bluetoothIdentifier = [(ASAccessory *)v6 bluetoothIdentifier];
     v9 = bluetoothIdentifier;
-    v10 = v8;
+    v10 = bluetoothIdentifier;
     v11 = v10;
     if (v9 == v10)
     {
@@ -300,9 +300,9 @@ LABEL_48:
     }
 
     bluetoothTransportBridgingIdentifier = self->_bluetoothTransportBridgingIdentifier;
-    v15 = [(ASAccessory *)v6 bluetoothTransportBridgingIdentifier];
+    bluetoothTransportBridgingIdentifier = [(ASAccessory *)v6 bluetoothTransportBridgingIdentifier];
     v16 = bluetoothTransportBridgingIdentifier;
-    v17 = v15;
+    v17 = bluetoothTransportBridgingIdentifier;
     v9 = v17;
     if (v16 == v17)
     {
@@ -331,9 +331,9 @@ LABEL_47:
     }
 
     identifier = self->_identifier;
-    v20 = [(ASAccessory *)v6 identifier];
+    identifier = [(ASAccessory *)v6 identifier];
     p_isa = identifier;
-    v22 = v20;
+    v22 = identifier;
     v16 = v22;
     if (p_isa == v22)
     {
@@ -360,9 +360,9 @@ LABEL_44:
     }
 
     descriptor = self->_descriptor;
-    v25 = [(ASAccessory *)v6 descriptor];
+    descriptor = [(ASAccessory *)v6 descriptor];
     v26 = descriptor;
-    v27 = v25;
+    v27 = descriptor;
     p_isa = &v27->super.isa;
     if (v26 == v27)
     {
@@ -389,9 +389,9 @@ LABEL_43:
     }
 
     displayName = self->_displayName;
-    v30 = [(ASAccessory *)v6 displayName];
+    displayName = [(ASAccessory *)v6 displayName];
     v31 = displayName;
-    v32 = v30;
+    v32 = displayName;
     v26 = v32;
     if (v31 == v32)
     {
@@ -415,9 +415,9 @@ LABEL_43:
     }
 
     SSID = self->_SSID;
-    v35 = [(ASAccessory *)v6 SSID];
+    sSID = [(ASAccessory *)v6 SSID];
     v36 = SSID;
-    v37 = v35;
+    v37 = sSID;
     v31 = v37;
     if (v36 == v37)
     {
@@ -451,9 +451,9 @@ LABEL_50:
   return v13;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -540,15 +540,15 @@ LABEL_50:
   return v19;
 }
 
-- (ASAccessory)initWithDADevice:(id)a3 bundleID:(id)a4
+- (ASAccessory)initWithDADevice:(id)device bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  dCopy = d;
   v8 = [(ASAccessory *)self init];
-  if (v8 && ([v6 flags] & 8) != 0)
+  if (v8 && ([deviceCopy flags] & 8) != 0)
   {
-    v9 = [v6 appAccessInfoMap];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    appAccessInfoMap = [deviceCopy appAccessInfoMap];
+    v10 = [appAccessInfoMap objectForKeyedSubscript:dCopy];
 
     if (!v10 || ([v10 accessoryOptions] & 0x40000000) != 0)
     {
@@ -557,11 +557,11 @@ LABEL_50:
 
     else
     {
-      v11 = [v6 identifier];
-      v12 = v11;
-      if (v11)
+      identifier = [deviceCopy identifier];
+      v12 = identifier;
+      if (identifier)
       {
-        v13 = v11;
+        v13 = identifier;
         identifier = v8->_identifier;
         v8->_identifier = v13;
       }
@@ -569,44 +569,44 @@ LABEL_50:
       else
       {
         identifier = [MEMORY[0x277CCAD78] UUID];
-        v15 = [identifier UUIDString];
+        uUIDString = [identifier UUIDString];
         v16 = v8->_identifier;
-        v8->_identifier = v15;
+        v8->_identifier = uUIDString;
       }
 
       if ([v10 accessoryOptions])
       {
-        v17 = [v6 bluetoothIdentifier];
+        bluetoothIdentifier = [deviceCopy bluetoothIdentifier];
       }
 
       else
       {
-        v17 = 0;
+        bluetoothIdentifier = 0;
       }
 
       bluetoothIdentifier = v8->_bluetoothIdentifier;
-      v8->_bluetoothIdentifier = v17;
+      v8->_bluetoothIdentifier = bluetoothIdentifier;
 
-      if (([v6 flags] & 0x200) != 0)
+      if (([deviceCopy flags] & 0x200) != 0)
       {
-        v19 = [v6 bluetoothClassicAddress];
+        bluetoothClassicAddress = [deviceCopy bluetoothClassicAddress];
       }
 
       else
       {
-        v19 = 0;
+        bluetoothClassicAddress = 0;
       }
 
       bluetoothTransportBridgingIdentifier = v8->_bluetoothTransportBridgingIdentifier;
-      v8->_bluetoothTransportBridgingIdentifier = v19;
+      v8->_bluetoothTransportBridgingIdentifier = bluetoothClassicAddress;
 
-      v21 = [v6 appAccessInfoMap];
-      v22 = [v21 objectForKeyedSubscript:v7];
-      v23 = [v22 appDiscoveryConfiguration];
+      appAccessInfoMap2 = [deviceCopy appAccessInfoMap];
+      v22 = [appAccessInfoMap2 objectForKeyedSubscript:dCopy];
+      appDiscoveryConfiguration = [v22 appDiscoveryConfiguration];
 
-      if (v23)
+      if (appDiscoveryConfiguration)
       {
-        v24 = [[ASDiscoveryDescriptor alloc] initWithDiscoveryConfiguration:v23];
+        v24 = [[ASDiscoveryDescriptor alloc] initWithDiscoveryConfiguration:appDiscoveryConfiguration];
       }
 
       else
@@ -615,61 +615,61 @@ LABEL_50:
       }
 
       objc_storeStrong(&v8->_descriptor, v24);
-      v25 = [v6 name];
-      v26 = v25;
-      if (v25)
+      name = [deviceCopy name];
+      v26 = name;
+      if (name)
       {
-        v27 = v25;
+        displayName = name;
       }
 
       else
       {
-        v27 = [v23 displayName];
+        displayName = [appDiscoveryConfiguration displayName];
       }
 
       displayName = v8->_displayName;
-      v8->_displayName = v27;
+      v8->_displayName = displayName;
 
-      v29 = [v6 appAccessInfoMap];
-      v30 = [v29 objectForKeyedSubscript:v7];
-      v31 = [v30 state];
+      appAccessInfoMap3 = [deviceCopy appAccessInfoMap];
+      v30 = [appAccessInfoMap3 objectForKeyedSubscript:dCopy];
+      state = [v30 state];
 
-      v32 = v31 == 20 || v31 == 10;
+      v32 = state == 20 || state == 10;
       v33 = 10;
       if (!v32)
       {
         v33 = 0;
       }
 
-      if (v31 == 25)
+      if (state == 25)
       {
         v33 = 20;
       }
 
       v8->_state = v33;
-      v34 = [v10 accessoryOptions];
-      v35 = 0;
-      if ((v34 & 2) != 0)
+      accessoryOptions = [v10 accessoryOptions];
+      sSID = 0;
+      if ((accessoryOptions & 2) != 0)
       {
-        v35 = [v6 SSID];
+        sSID = [deviceCopy SSID];
       }
 
       SSID = v8->_SSID;
-      v8->_SSID = v35;
+      v8->_SSID = sSID;
 
       if (([v10 accessoryOptions] & 2) != 0)
       {
-        v37 = [v10 wifiAwarePairingID];
+        wifiAwarePairingID = [v10 wifiAwarePairingID];
       }
 
       else
       {
-        v37 = 0;
+        wifiAwarePairingID = 0;
       }
 
-      v8->_wifiAwarePairedDeviceID = v37;
-      v8->_wifiAwarePairingID = v37;
-      if (v8->_bluetoothIdentifier || v8->_SSID || v37)
+      v8->_wifiAwarePairedDeviceID = wifiAwarePairingID;
+      v8->_wifiAwarePairingID = wifiAwarePairingID;
+      if (v8->_bluetoothIdentifier || v8->_SSID || wifiAwarePairingID)
       {
         v38 = v8;
       }

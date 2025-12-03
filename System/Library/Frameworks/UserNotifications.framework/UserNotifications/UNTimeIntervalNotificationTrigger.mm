@@ -1,11 +1,11 @@
 @interface UNTimeIntervalNotificationTrigger
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)nextTriggerDate;
-- (UNTimeIntervalNotificationTrigger)initWithCoder:(id)a3;
+- (UNTimeIntervalNotificationTrigger)initWithCoder:(id)coder;
 - (id)description;
-- (id)nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4;
+- (id)nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNTimeIntervalNotificationTrigger
@@ -23,15 +23,15 @@
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = UNTimeIntervalNotificationTrigger, [(UNNotificationTrigger *)&v10 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = UNTimeIntervalNotificationTrigger, [(UNNotificationTrigger *)&v10 isEqual:equalCopy]))
   {
     [(UNTimeIntervalNotificationTrigger *)self timeInterval];
     v6 = v5;
-    [v4 timeInterval];
+    [equalCopy timeInterval];
     v8 = v6 == v7;
   }
 
@@ -59,19 +59,19 @@
 {
   v4.receiver = self;
   v4.super_class = UNTimeIntervalNotificationTrigger;
-  v2 = [(UNNotificationTrigger *)&v4 nextTriggerDate];
+  nextTriggerDate = [(UNNotificationTrigger *)&v4 nextTriggerDate];
 
-  return v2;
+  return nextTriggerDate;
 }
 
-- (id)nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4
+- (id)nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dateCopy = date;
+  requestedDateCopy = requestedDate;
+  v8 = requestedDateCopy;
+  if (dateCopy)
   {
-    if (v7)
+    if (requestedDateCopy)
     {
       goto LABEL_3;
     }
@@ -88,22 +88,22 @@
 
   [UNTimeIntervalNotificationTrigger nextTriggerDateAfterDate:withRequestedDate:];
 LABEL_3:
-  v9 = [v6 laterDate:v8];
+  v9 = [dateCopy laterDate:v8];
   [v9 timeIntervalSinceReferenceDate];
   v11 = v10;
   [v8 timeIntervalSinceReferenceDate];
   v13 = v12;
   [(UNTimeIntervalNotificationTrigger *)self timeInterval];
   v15 = v14;
-  v16 = [(UNNotificationTrigger *)self repeats];
+  repeats = [(UNNotificationTrigger *)self repeats];
   v17 = 1.0;
-  if (v16)
+  if (repeats)
   {
     v17 = ((v11 - v13) / v15 + 1.0);
   }
 
   v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v13 + v17 * v15];
-  if ([v18 compare:v6] != 1)
+  if ([v18 compare:dateCopy] != 1)
   {
 
     v18 = 0;
@@ -112,25 +112,25 @@ LABEL_3:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UNTimeIntervalNotificationTrigger;
-  v4 = a3;
-  [(UNNotificationTrigger *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UNNotificationTrigger *)&v5 encodeWithCoder:coderCopy];
   [(UNTimeIntervalNotificationTrigger *)self timeInterval:v5.receiver];
-  [v4 encodeDouble:@"timeInterval" forKey:?];
+  [coderCopy encodeDouble:@"timeInterval" forKey:?];
 }
 
-- (UNTimeIntervalNotificationTrigger)initWithCoder:(id)a3
+- (UNTimeIntervalNotificationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = UNTimeIntervalNotificationTrigger;
-  v5 = [(UNNotificationTrigger *)&v8 initWithCoder:v4];
+  v5 = [(UNNotificationTrigger *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timeInterval"];
+    [coderCopy decodeDoubleForKey:@"timeInterval"];
     v5->_timeInterval = v6;
   }
 

@@ -1,15 +1,15 @@
 @interface TRDeviceSetupAuthenticateAction
-+ (id)actionForCancelledRequestWithOriginalAction:(id)a3;
-+ (id)actionForFailedAttemptWithOriginalAction:(id)a3 requestMessage:(id)a4 failureMessage:(id)a5;
-+ (id)actionForFinishedRequestWithOriginalAction:(id)a3 accountID:(id)a4 accountPassword:(id)a5 accountTypesWithSharedCredentials:(id)a6;
-+ (id)actionForInitialAttemptWithAccountType:(unint64_t)a3 requestMessage:(id)a4;
++ (id)actionForCancelledRequestWithOriginalAction:(id)action;
++ (id)actionForFailedAttemptWithOriginalAction:(id)action requestMessage:(id)message failureMessage:(id)failureMessage;
++ (id)actionForFinishedRequestWithOriginalAction:(id)action accountID:(id)d accountPassword:(id)password accountTypesWithSharedCredentials:(id)credentials;
++ (id)actionForInitialAttemptWithAccountType:(unint64_t)type requestMessage:(id)message;
 - (NSArray)accountTypesWithSharedCredentials;
 - (NSString)accountID;
 - (NSString)accountPassword;
 - (NSString)failureMessage;
 - (NSString)requestMessage;
 - (TRDeviceSetupAuthenticateAction)init;
-- (id)_initWithAccountType:(unint64_t)a3 accountID:(id)a4 accountPassword:(id)a5 accountTypesWithSharedCredentials:(id)a6 attemptCount:(unint64_t)a7 requestMessage:(id)a8 failureMessage:(id)a9;
+- (id)_initWithAccountType:(unint64_t)type accountID:(id)d accountPassword:(id)password accountTypesWithSharedCredentials:(id)credentials attemptCount:(unint64_t)count requestMessage:(id)message failureMessage:(id)failureMessage;
 - (unint64_t)accountType;
 - (unint64_t)attemptCount;
 @end
@@ -23,45 +23,45 @@
   return [(TRDeviceSetupAction *)&v3 _initWithActionType:@"auth" parameters:0];
 }
 
-- (id)_initWithAccountType:(unint64_t)a3 accountID:(id)a4 accountPassword:(id)a5 accountTypesWithSharedCredentials:(id)a6 attemptCount:(unint64_t)a7 requestMessage:(id)a8 failureMessage:(id)a9
+- (id)_initWithAccountType:(unint64_t)type accountID:(id)d accountPassword:(id)password accountTypesWithSharedCredentials:(id)credentials attemptCount:(unint64_t)count requestMessage:(id)message failureMessage:(id)failureMessage
 {
   v50 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  dCopy = d;
+  passwordCopy = password;
+  credentialsCopy = credentials;
+  messageCopy = message;
+  failureMessageCopy = failureMessage;
   v20 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v21 = v20;
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     v22 = &stru_287F58968;
   }
 
   else
   {
-    v22 = off_279DCF478[a3 - 1];
+    v22 = off_279DCF478[type - 1];
   }
 
   [v20 setObject:v22 forKeyedSubscript:@"at"];
-  if (v15)
+  if (dCopy)
   {
-    v23 = [v15 copy];
+    v23 = [dCopy copy];
     [v21 setObject:v23 forKeyedSubscript:@"ai"];
   }
 
-  if (v16)
+  if (passwordCopy)
   {
-    v24 = [v16 copy];
+    v24 = [passwordCopy copy];
     [v21 setObject:v24 forKeyedSubscript:@"ap"];
   }
 
-  if ([v17 count])
+  if ([credentialsCopy count])
   {
-    v41 = a7;
-    v42 = self;
-    v43 = v15;
-    v25 = v17;
+    countCopy = count;
+    selfCopy = self;
+    v43 = dCopy;
+    v25 = credentialsCopy;
     v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v25, "count")}];
     v45 = 0u;
     v46 = 0u;
@@ -85,16 +85,16 @@
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v45 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v45 + 1) + 8 * i) unsignedIntegerValue];
         v33 = 0;
-        if (v32 <= 1)
+        if (unsignedIntegerValue <= 1)
         {
-          if (!v32)
+          if (!unsignedIntegerValue)
           {
             continue;
           }
 
-          if (v32 == 1)
+          if (unsignedIntegerValue == 1)
           {
             v33 = @"it";
           }
@@ -102,7 +102,7 @@
 
         else
         {
-          switch(v32)
+          switch(unsignedIntegerValue)
           {
             case 2:
               v33 = @"ic";
@@ -127,29 +127,29 @@ LABEL_27:
         v34 = [v26 copy];
         [v21 setObject:v34 forKeyedSubscript:@"sa"];
 
-        v15 = v43;
-        self = v42;
-        a7 = v41;
+        dCopy = v43;
+        self = selfCopy;
+        count = countCopy;
         break;
       }
     }
   }
 
-  if (a7)
+  if (count)
   {
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
     [v21 setObject:v35 forKeyedSubscript:@"a"];
   }
 
-  if (v18)
+  if (messageCopy)
   {
-    v36 = [v18 copy];
+    v36 = [messageCopy copy];
     [v21 setObject:v36 forKeyedSubscript:@"rm"];
   }
 
-  if (v19)
+  if (failureMessageCopy)
   {
-    v37 = [v19 copy];
+    v37 = [failureMessageCopy copy];
     [v21 setObject:v37 forKeyedSubscript:@"fm"];
   }
 
@@ -161,61 +161,61 @@ LABEL_27:
   return v38;
 }
 
-+ (id)actionForInitialAttemptWithAccountType:(unint64_t)a3 requestMessage:(id)a4
++ (id)actionForInitialAttemptWithAccountType:(unint64_t)type requestMessage:(id)message
 {
-  v6 = a4;
-  v7 = [[a1 alloc] _initWithAccountType:a3 accountID:0 accountPassword:0 accountTypesWithSharedCredentials:0 attemptCount:0 requestMessage:v6 failureMessage:0];
+  messageCopy = message;
+  v7 = [[self alloc] _initWithAccountType:type accountID:0 accountPassword:0 accountTypesWithSharedCredentials:0 attemptCount:0 requestMessage:messageCopy failureMessage:0];
 
   return v7;
 }
 
-+ (id)actionForFailedAttemptWithOriginalAction:(id)a3 requestMessage:(id)a4 failureMessage:(id)a5
++ (id)actionForFailedAttemptWithOriginalAction:(id)action requestMessage:(id)message failureMessage:(id)failureMessage
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v12 = [v10 accountType];
-  v13 = [v10 accountID];
-  v14 = [v10 accountPassword];
-  v15 = [v10 attemptCount];
+  failureMessageCopy = failureMessage;
+  messageCopy = message;
+  actionCopy = action;
+  v11 = [self alloc];
+  accountType = [actionCopy accountType];
+  accountID = [actionCopy accountID];
+  accountPassword = [actionCopy accountPassword];
+  attemptCount = [actionCopy attemptCount];
 
-  v16 = [v11 _initWithAccountType:v12 accountID:v13 accountPassword:v14 accountTypesWithSharedCredentials:0 attemptCount:v15 + 1 requestMessage:v9 failureMessage:v8];
+  v16 = [v11 _initWithAccountType:accountType accountID:accountID accountPassword:accountPassword accountTypesWithSharedCredentials:0 attemptCount:attemptCount + 1 requestMessage:messageCopy failureMessage:failureMessageCopy];
 
   return v16;
 }
 
-+ (id)actionForFinishedRequestWithOriginalAction:(id)a3 accountID:(id)a4 accountPassword:(id)a5 accountTypesWithSharedCredentials:(id)a6
++ (id)actionForFinishedRequestWithOriginalAction:(id)action accountID:(id)d accountPassword:(id)password accountTypesWithSharedCredentials:(id)credentials
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 alloc];
-  v15 = [v13 accountType];
-  v16 = [v13 attemptCount];
+  credentialsCopy = credentials;
+  passwordCopy = password;
+  dCopy = d;
+  actionCopy = action;
+  v14 = [self alloc];
+  accountType = [actionCopy accountType];
+  attemptCount = [actionCopy attemptCount];
 
-  v17 = [v14 _initWithAccountType:v15 accountID:v12 accountPassword:v11 accountTypesWithSharedCredentials:v10 attemptCount:v16 requestMessage:0 failureMessage:0];
+  v17 = [v14 _initWithAccountType:accountType accountID:dCopy accountPassword:passwordCopy accountTypesWithSharedCredentials:credentialsCopy attemptCount:attemptCount requestMessage:0 failureMessage:0];
 
   return v17;
 }
 
-+ (id)actionForCancelledRequestWithOriginalAction:(id)a3
++ (id)actionForCancelledRequestWithOriginalAction:(id)action
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 accountType];
-  v7 = [v4 attemptCount];
+  actionCopy = action;
+  v5 = [self alloc];
+  accountType = [actionCopy accountType];
+  attemptCount = [actionCopy attemptCount];
 
-  v8 = [v5 _initWithAccountType:v6 accountID:0 accountPassword:0 accountTypesWithSharedCredentials:0 attemptCount:v7 requestMessage:0 failureMessage:0];
+  v8 = [v5 _initWithAccountType:accountType accountID:0 accountPassword:0 accountTypesWithSharedCredentials:0 attemptCount:attemptCount requestMessage:0 failureMessage:0];
 
   return v8;
 }
 
 - (unint64_t)accountType
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"at"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"at"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -236,8 +236,8 @@ LABEL_27:
 
 - (NSString)accountID
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"ai"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"ai"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -257,8 +257,8 @@ LABEL_27:
 
 - (NSString)accountPassword
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"ap"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"ap"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -279,8 +279,8 @@ LABEL_27:
 - (NSArray)accountTypesWithSharedCredentials
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"sa"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"sa"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -337,8 +337,8 @@ LABEL_27:
 
 - (unint64_t)attemptCount
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"a"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"a"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -353,14 +353,14 @@ LABEL_27:
 
   v5 = v4;
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)requestMessage
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"rm"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"rm"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -380,8 +380,8 @@ LABEL_27:
 
 - (NSString)failureMessage
 {
-  v2 = [(TRDeviceSetupAction *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"fm"];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"fm"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

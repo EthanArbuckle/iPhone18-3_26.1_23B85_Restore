@@ -1,19 +1,19 @@
 @interface SKUIBrowseHeaderPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIBrowseHeaderPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIBrowseHeaderPageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
-- (id)cellForIndexPath:(id)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)willAppearInContext:(id)a3;
+- (id)cellForIndexPath:(id)path;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUIBrowseHeaderPageSection
 
-- (SKUIBrowseHeaderPageSection)initWithPageComponent:(id)a3
+- (SKUIBrowseHeaderPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBrowseHeaderPageSection initWithPageComponent:];
@@ -21,43 +21,43 @@
 
   v7.receiver = self;
   v7.super_class = SKUIBrowseHeaderPageSection;
-  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:componentCopy];
 
   return v5;
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 collectionView];
-  v9 = [v8 dequeueReusableCellWithReuseIdentifier:@"SKUIBrowseHeaderPageSectionReuseIdentifier" forIndexPath:v4];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v9 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIBrowseHeaderPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
-  v10 = [v6 titleLabels];
-  v11 = [v10 firstObject];
-  v12 = [v11 text];
-  v13 = [v12 string];
-  [v9 setTitle:v13];
+  titleLabels = [viewElement titleLabels];
+  firstObject = [titleLabels firstObject];
+  text = [firstObject text];
+  string = [text string];
+  [v9 setTitle:string];
 
   return v9;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v3 = [(SKUIStorePageSection *)self context];
-  v4 = [v3 collectionView];
-  [v4 bounds];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v6 = v5;
 
   v7 = 44.0;
@@ -67,34 +67,34 @@
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUIBrowseHeaderPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUIBrowseHeaderPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
 - (UIEdgeInsets)sectionContentInset
@@ -110,15 +110,15 @@
   return result;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIBrowseHeaderPageSectionReuseIdentifier"];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIBrowseHeaderPageSectionReuseIdentifier"];
 
   v6.receiver = self;
   v6.super_class = SKUIBrowseHeaderPageSection;
-  [(SKUIStorePageSection *)&v6 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v6 willAppearInContext:contextCopy];
 }
 
 - (void)initWithPageComponent:.cold.1()

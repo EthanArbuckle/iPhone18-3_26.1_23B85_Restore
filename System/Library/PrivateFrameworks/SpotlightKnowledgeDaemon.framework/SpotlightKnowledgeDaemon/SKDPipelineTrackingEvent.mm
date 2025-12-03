@@ -1,21 +1,21 @@
 @interface SKDPipelineTrackingEvent
-- (SKDPipelineTrackingEvent)initWithName:(id)a3 event:(id)a4 domain:(id)a5;
+- (SKDPipelineTrackingEvent)initWithName:(id)name event:(id)event domain:(id)domain;
 - (void)begin;
 - (void)end;
 @end
 
 @implementation SKDPipelineTrackingEvent
 
-- (SKDPipelineTrackingEvent)initWithName:(id)a3 event:(id)a4 domain:(id)a5
+- (SKDPipelineTrackingEvent)initWithName:(id)name event:(id)event domain:(id)domain
 {
-  v8 = a5;
+  domainCopy = domain;
   v15.receiver = self;
   v15.super_class = SKDPipelineTrackingEvent;
-  v9 = [(SKDTrackingEvent *)&v15 initWithName:a3 event:a4 domain:v8];
+  v9 = [(SKDTrackingEvent *)&v15 initWithName:name event:event domain:domainCopy];
   if (v9)
   {
     v10 = +[SKDLogManager sharedManager];
-    v11 = [v10 logForDomain:v8];
+    v11 = [v10 logForDomain:domainCopy];
     log = v9->_log;
     v9->_log = v11;
 
@@ -31,11 +31,11 @@
 - (void)begin
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SKDTrackingEvent *)self event];
-  v4 = [v3 typeMessage];
+  event = [(SKDTrackingEvent *)self event];
+  typeMessage = [event typeMessage];
 
-  v5 = [(SKDTrackingEvent *)self event];
-  v6 = [v5 identifier];
+  event2 = [(SKDTrackingEvent *)self event];
+  identifier = [event2 identifier];
 
   v7 = [(SKDLog *)self->_log log];
   v8 = v7;
@@ -43,9 +43,9 @@
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = typeMessage;
     v13 = 2114;
-    v14 = v6;
+    v14 = identifier;
     _os_signpost_emit_with_name_impl(&dword_231B25000, v8, OS_SIGNPOST_INTERVAL_BEGIN, spid, "Pipeline", "%{public}@ %{public}@", &v11, 0x16u);
   }
 
@@ -55,11 +55,11 @@
 - (void)end
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SKDTrackingEvent *)self event];
-  v4 = [v3 typeMessage];
+  event = [(SKDTrackingEvent *)self event];
+  typeMessage = [event typeMessage];
 
-  v5 = [(SKDTrackingEvent *)self event];
-  v6 = [v5 identifier];
+  event2 = [(SKDTrackingEvent *)self event];
+  identifier = [event2 identifier];
 
   v7 = [(SKDLog *)self->_log log];
   v8 = v7;
@@ -67,9 +67,9 @@
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = typeMessage;
     v13 = 2114;
-    v14 = v6;
+    v14 = identifier;
     _os_signpost_emit_with_name_impl(&dword_231B25000, v8, OS_SIGNPOST_INTERVAL_END, spid, "Pipeline", "%{public}@ %{public}@", &v11, 0x16u);
   }
 

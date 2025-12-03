@@ -1,11 +1,11 @@
 @interface CKLocationQueryController
-- (id)chatGUIDForSearchableItem:(id)a3;
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3;
+- (id)chatGUIDForSearchableItem:(id)item;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
-- (void)postProcessAndUpdateResults:(id)a3;
+- (id)queryAttributesForText:(id)text;
+- (void)postProcessAndUpdateResults:(id)results;
 @end
 
 @implementation CKLocationQueryController
@@ -40,10 +40,10 @@
   return v9;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v12[7] = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([text length])
   {
     v3 = *MEMORY[0x1E6964BD0];
     v12[0] = *MEMORY[0x1E6964BB0];
@@ -83,16 +83,16 @@
   return v3;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
@@ -126,7 +126,7 @@
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__71;
   v21 = __Block_byref_object_dispose__71;
-  v22 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__CKLocationQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -164,16 +164,16 @@ void __62__CKLocationQueryController_detailsFilterQueriesForChatGUIDs___block_in
   }
 }
 
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -204,28 +204,28 @@ void __62__CKLocationQueryController_detailsFilterQueriesForChatGUIDs___block_in
   return v4;
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 attributeSet];
-  v5 = [v4 accountIdentifier];
+  itemCopy = item;
+  attributeSet = [itemCopy attributeSet];
+  accountIdentifier = [attributeSet accountIdentifier];
 
-  if (![v5 length])
+  if (![accountIdentifier length])
   {
-    v6 = [v3 attributeSet];
-    v7 = [v6 domainIdentifier];
+    attributeSet2 = [itemCopy attributeSet];
+    domainIdentifier = [attributeSet2 domainIdentifier];
 
-    v5 = v7;
+    accountIdentifier = domainIdentifier;
   }
 
-  return v5;
+  return accountIdentifier;
 }
 
-- (void)postProcessAndUpdateResults:(id)a3
+- (void)postProcessAndUpdateResults:(id)results
 {
-  [(CKQueryController *)self setResults:a3];
-  v4 = [(CKQueryController *)self delegate];
-  [v4 searchQueryResultsDidChange:self];
+  [(CKQueryController *)self setResults:results];
+  delegate = [(CKQueryController *)self delegate];
+  [delegate searchQueryResultsDidChange:self];
 }
 
 @end

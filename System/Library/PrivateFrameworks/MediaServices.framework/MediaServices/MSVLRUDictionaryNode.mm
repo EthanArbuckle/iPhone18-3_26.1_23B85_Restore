@@ -1,8 +1,8 @@
 @interface MSVLRUDictionaryNode
-- (MSVLRUDictionaryNode)initWithKey:(id)a3 object:(id)a4;
+- (MSVLRUDictionaryNode)initWithKey:(id)key object:(id)object;
 - (MSVLRUDictionaryNode)next;
 - (MSVLRUDictionaryNode)prev;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MSVLRUDictionaryNode
@@ -21,7 +21,7 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MSVLRUDictionaryNode alloc];
   key = self->_key;
@@ -30,18 +30,18 @@
   return [(MSVLRUDictionaryNode *)v4 initWithKey:key object:object];
 }
 
-- (MSVLRUDictionaryNode)initWithKey:(id)a3 object:(id)a4
+- (MSVLRUDictionaryNode)initWithKey:(id)key object:(id)object
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = MSVLRUDictionaryNode;
   v9 = [(MSVLRUDictionaryNode *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_object, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_object, object);
   }
 
   return v10;

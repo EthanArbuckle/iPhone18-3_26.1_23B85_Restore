@@ -1,23 +1,23 @@
 @interface AXMMediaAnalysisTextDetectorNode
-- (AXMMediaAnalysisTextDetectorNode)initWithCoder:(id)a3;
+- (AXMMediaAnalysisTextDetectorNode)initWithCoder:(id)coder;
 - (AXMSemanticTextFactory)semanticTextFactory;
 - (AXMTextLayoutManager)textLayoutManager;
 - (AXMTextSpecialCase)specialCaseManager;
-- (double)detectTextSkew:(id)a3;
-- (id)_sequencesForObservations:(id)a3 canvasSize:(CGSize)a4;
-- (id)_textDetectionOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
-- (void)processResults:(id)a3 context:(id)a4 metrics:(id)a5 textDetectionLocales:(id)a6 textDetectionOptions:(id)a7 requestID:(int)a8 error:(id)a9;
+- (double)detectTextSkew:(id)skew;
+- (id)_sequencesForObservations:(id)observations canvasSize:(CGSize)size;
+- (id)_textDetectionOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
+- (void)processResults:(id)results context:(id)context metrics:(id)metrics textDetectionLocales:(id)locales textDetectionOptions:(id)options requestID:(int)d error:(id)error;
 @end
 
 @implementation AXMMediaAnalysisTextDetectorNode
 
-- (AXMMediaAnalysisTextDetectorNode)initWithCoder:(id)a3
+- (AXMMediaAnalysisTextDetectorNode)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AXMMediaAnalysisTextDetectorNode;
-  v3 = [(AXMEvaluationNode *)&v7 initWithCoder:a3];
+  v3 = [(AXMEvaluationNode *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = dispatch_queue_create("process-results-queue-axmedia", 0);
@@ -28,63 +28,63 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = AXMMediaAnalysisTextDetectorNode;
-  [(AXMEvaluationNode *)&v3 encodeWithCoder:a3];
+  [(AXMEvaluationNode *)&v3 encodeWithCoder:coder];
 }
 
-- (void)processResults:(id)a3 context:(id)a4 metrics:(id)a5 textDetectionLocales:(id)a6 textDetectionOptions:(id)a7 requestID:(int)a8 error:(id)a9
+- (void)processResults:(id)results context:(id)context metrics:(id)metrics textDetectionLocales:(id)locales textDetectionOptions:(id)options requestID:(int)d error:(id)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  resultsCopy = results;
+  contextCopy = context;
+  metricsCopy = metrics;
+  localesCopy = locales;
+  optionsCopy = options;
+  errorCopy = error;
   v21 = AXMediaLogCommon();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v41 = [v15 results];
+    results = [resultsCopy results];
     *buf = 67109634;
-    *&buf[4] = a8;
+    *&buf[4] = d;
     *&buf[8] = 2112;
-    *&buf[10] = v20;
+    *&buf[10] = errorCopy;
     *&buf[18] = 2112;
-    *&buf[20] = v41;
+    *&buf[20] = results;
     _os_log_debug_impl(&dword_1AE37B000, v21, OS_LOG_TYPE_DEBUG, "AXM Media analysis: Text Detection results: requestID: %d error: %@ results: %@", buf, 0x1Cu);
   }
 
-  if (v20)
+  if (errorCopy)
   {
-    v22 = AXMediaLogCommon();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+    ciImage = AXMediaLogCommon();
+    if (os_log_type_enabled(ciImage, OS_LOG_TYPE_DEBUG))
     {
-      [AXMMediaAnalysisTextDetectorNode processResults:v20 context:v22 metrics:? textDetectionLocales:? textDetectionOptions:? requestID:? error:?];
+      [AXMMediaAnalysisTextDetectorNode processResults:errorCopy context:ciImage metrics:? textDetectionLocales:? textDetectionOptions:? requestID:? error:?];
     }
 
     goto LABEL_32;
   }
 
-  if (a8 != -1)
+  if (d != -1)
   {
-    v23 = [v16 sourceInput];
-    v22 = [v23 ciImage];
+    sourceInput = [contextCopy sourceInput];
+    ciImage = [sourceInput ciImage];
 
-    if (!v22)
+    if (!ciImage)
     {
-      v22 = [v16 generateImageRepresentation];
+      ciImage = [contextCopy generateImageRepresentation];
     }
 
-    v47 = [v15 results];
-    if (![v47 count])
+    results2 = [resultsCopy results];
+    if (![results2 count])
     {
       goto LABEL_31;
     }
 
-    v24 = [v47 firstObject];
+    firstObject = [results2 firstObject];
     v49 = 0;
     v50 = &v49;
     v51 = 0x2050000000;
@@ -111,49 +111,49 @@
       goto LABEL_31;
     }
 
-    v45 = [v47 firstObject];
-    v28 = [v45 observations];
-    v44 = [v28 firstObject];
+    firstObject2 = [results2 firstObject];
+    observations = [firstObject2 observations];
+    firstObject3 = [observations firstObject];
 
-    v46 = [v44 blocksWithTypes:4 inRegion:{0.0, 0.0, 1.0, 1.0}];
+    v46 = [firstObject3 blocksWithTypes:4 inRegion:{0.0, 0.0, 1.0, 1.0}];
     if ([v46 count])
     {
-      v43 = [v16 mediaAnalysisSceneLabelsForOCRDocumentTypeDetection];
+      mediaAnalysisSceneLabelsForOCRDocumentTypeDetection = [contextCopy mediaAnalysisSceneLabelsForOCRDocumentTypeDetection];
       v29 = AXMediaLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
-        [AXMMediaAnalysisTextDetectorNode processResults:v43 context:v29 metrics:? textDetectionLocales:? textDetectionOptions:? requestID:? error:?];
+        [AXMMediaAnalysisTextDetectorNode processResults:mediaAnalysisSceneLabelsForOCRDocumentTypeDetection context:v29 metrics:? textDetectionLocales:? textDetectionOptions:? requestID:? error:?];
       }
 
-      if (![v43 count])
+      if (![mediaAnalysisSceneLabelsForOCRDocumentTypeDetection count])
       {
-        v30 = [v16 analysisOptions];
-        v31 = [v30 detectMADScenes];
+        analysisOptions = [contextCopy analysisOptions];
+        detectMADScenes = [analysisOptions detectMADScenes];
 
-        if (v31)
+        if (detectMADScenes)
         {
           v32 = [(AXMVisionEngineNode *)[AXMMediaAnalysisSceneDetectorNode alloc] initWithIdentifier:@"mad-scene"];
           [(AXMMediaAnalysisSceneDetectorNode *)v32 setTaxonomyOptions:7];
-          [(AXMMediaAnalysisSceneDetectorNode *)v32 evaluate:v16 metrics:v17];
+          [(AXMMediaAnalysisSceneDetectorNode *)v32 evaluate:contextCopy metrics:metricsCopy];
         }
       }
 
-      if (v22)
+      if (ciImage)
       {
-        [v16 size];
+        [contextCopy size];
         v33 = [(AXMMediaAnalysisTextDetectorNode *)self _sequencesForObservations:v46 canvasSize:?];
-        v34 = [(AXMMediaAnalysisTextDetectorNode *)self textLayoutManager];
-        [v16 size];
+        textLayoutManager = [(AXMMediaAnalysisTextDetectorNode *)self textLayoutManager];
+        [contextCopy size];
         v48 = 0;
-        v37 = [v34 documentWithTextFeatures:v33 canvasSize:v18 preferredLocales:objc_msgSend(v19 applySemanticAnalysis:"shouldApplySemanticTextFiltering") error:{&v48, v35, v36}];
+        v37 = [textLayoutManager documentWithTextFeatures:v33 canvasSize:localesCopy preferredLocales:objc_msgSend(optionsCopy applySemanticAnalysis:"shouldApplySemanticTextFiltering") error:{&v48, v35, v36}];
         v38 = v48;
-        v39 = v34;
+        v39 = textLayoutManager;
         v40 = v38;
 
         if (v37)
         {
-          [v16 appendFeature:v37];
-          [v16 setEffectiveTextDetectionLocales:v18];
+          [contextCopy appendFeature:v37];
+          [contextCopy setEffectiveTextDetectionLocales:localesCopy];
 LABEL_30:
 
 LABEL_31:
@@ -184,36 +184,36 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v22 = AXMediaLogCommon();
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+  ciImage = AXMediaLogCommon();
+  if (os_log_type_enabled(ciImage, OS_LOG_TYPE_DEBUG))
   {
-    [AXMMediaAnalysisTextDetectorNode processResults:v22 context:? metrics:? textDetectionLocales:? textDetectionOptions:? requestID:? error:?];
+    [AXMMediaAnalysisTextDetectorNode processResults:ciImage context:? metrics:? textDetectionLocales:? textDetectionOptions:? requestID:? error:?];
   }
 
 LABEL_32:
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  evaluateCopy = evaluate;
   v47.receiver = self;
   v47.super_class = AXMMediaAnalysisTextDetectorNode;
-  v35 = a4;
-  [(AXMEvaluationNode *)&v47 evaluate:v6 metrics:?];
-  v7 = [v6 sourceInput];
-  v36 = [v7 phAssetLocalIdentifier];
+  metricsCopy = metrics;
+  [(AXMEvaluationNode *)&v47 evaluate:evaluateCopy metrics:?];
+  sourceInput = [evaluateCopy sourceInput];
+  phAssetLocalIdentifier = [sourceInput phAssetLocalIdentifier];
 
-  v8 = [v6 sourceInput];
-  v37 = [v8 photoLibraryURL];
+  sourceInput2 = [evaluateCopy sourceInput];
+  photoLibraryURL = [sourceInput2 photoLibraryURL];
 
-  v9 = [v6 sourceInput];
-  v34 = [v9 ciImage];
+  sourceInput3 = [evaluateCopy sourceInput];
+  ciImage = [sourceInput3 ciImage];
 
-  v10 = [v6 sourceInput];
-  v33 = [v10 pixelBuffer];
+  sourceInput4 = [evaluateCopy sourceInput];
+  pixelBuffer = [sourceInput4 pixelBuffer];
 
-  v11 = [(AXMMediaAnalysisTextDetectorNode *)self _textDetectionOptions:v6];
+  v11 = [(AXMMediaAnalysisTextDetectorNode *)self _textDetectionOptions:evaluateCopy];
   v12 = [AXMTextDetectorNode recognitionLevelFromOptions:v11];
   v38 = [AXMTextDetectorNode effectiveLanguagesFromOptions:v11];
   if ([v38 count])
@@ -254,8 +254,8 @@ LABEL_32:
     objc_copyWeak(&v46, location);
     v31 = v16;
     v40 = v31;
-    v41 = v6;
-    v42 = v35;
+    v41 = evaluateCopy;
+    v42 = metricsCopy;
     v30 = v13;
     v43 = v30;
     v44 = v11;
@@ -263,25 +263,25 @@ LABEL_32:
     v45 = v19;
     v32 = MEMORY[0x1B2700900](v39);
     v20 = +[AXMMADSService sharedInstance];
-    v21 = [v20 service];
+    service = [v20 service];
 
-    if (v37 && v36)
+    if (photoLibraryURL && phAssetLocalIdentifier)
     {
       v55[0] = v31;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
-      v23 = [v21 performRequests:v22 onAssetWithLocalIdentifier:v36 fromPhotoLibraryWithURL:v37 completionHandler:v32];
+      v23 = [service performRequests:v22 onAssetWithLocalIdentifier:phAssetLocalIdentifier fromPhotoLibraryWithURL:photoLibraryURL completionHandler:v32];
     }
 
-    else if (v34)
+    else if (ciImage)
     {
       v54 = v31;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
-      v23 = [v21 performRequests:v22 onCIImage:v34 withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v32];
+      v23 = [service performRequests:v22 onCIImage:ciImage withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v32];
     }
 
     else
     {
-      if (!v33)
+      if (!pixelBuffer)
       {
         v25 = 0xFFFFFFFFLL;
         goto LABEL_14;
@@ -289,7 +289,7 @@ LABEL_32:
 
       v53 = v31;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-      v23 = [v21 performRequests:v22 onPixelBuffer:objc_msgSend(v33 withOrientation:"pixelBuffer") andIdentifier:objc_msgSend(v33 completionHandler:{"orientation"), &stru_1F23EA908, v32}];
+      v23 = [service performRequests:v22 onPixelBuffer:objc_msgSend(pixelBuffer withOrientation:"pixelBuffer") andIdentifier:objc_msgSend(pixelBuffer completionHandler:{"orientation"), &stru_1F23EA908, v32}];
     }
 
     v25 = v23;
@@ -309,7 +309,7 @@ LABEL_14:
             [(AXMMediaAnalysisTextDetectorNode *)buf evaluate:v28 metrics:?];
           }
 
-          [v21 cancelRequestID:v25];
+          [service cancelRequestID:v25];
         }
 
         v29 = dispatch_time(0, 100000000);
@@ -406,8 +406,8 @@ intptr_t __53__AXMMediaAnalysisTextDetectorNode_evaluate_metrics___block_invoke_
   if (!textLayoutManager)
   {
     v4 = [AXMTextLayoutManager alloc];
-    v5 = [(AXMMediaAnalysisTextDetectorNode *)self semanticTextFactory];
-    v6 = [(AXMTextLayoutManager *)v4 initWithSemanticTextFactory:v5];
+    semanticTextFactory = [(AXMMediaAnalysisTextDetectorNode *)self semanticTextFactory];
+    v6 = [(AXMTextLayoutManager *)v4 initWithSemanticTextFactory:semanticTextFactory];
     v7 = self->_textLayoutManager;
     self->_textLayoutManager = v6;
 
@@ -432,18 +432,18 @@ intptr_t __53__AXMMediaAnalysisTextDetectorNode_evaluate_metrics___block_invoke_
   return specialCaseManager;
 }
 
-- (id)_sequencesForObservations:(id)a3 canvasSize:(CGSize)a4
+- (id)_sequencesForObservations:(id)observations canvasSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  observationsCopy = observations;
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v6;
+  v8 = observationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
@@ -460,17 +460,17 @@ intptr_t __53__AXMMediaAnalysisTextDetectorNode_evaluate_metrics___block_invoke_
 
         v13 = *(*(&v31 + 1) + 8 * i);
         v14 = [v13 topCandidates:{1, v31}];
-        v15 = [v14 firstObject];
+        firstObject = [v14 firstObject];
 
-        if (v15)
+        if (firstObject)
         {
-          v16 = [v15 string];
-          if ([v16 length])
+          string = [firstObject string];
+          if ([string length])
           {
-            [v16 rangeOfComposedCharacterSequenceAtIndex:0];
-            if (v17 != 1 || [v16 characterAtIndex:0] != 0xFFFF)
+            [string rangeOfComposedCharacterSequenceAtIndex:0];
+            if (v17 != 1 || [string characterAtIndex:0] != 0xFFFF)
             {
-              v18 = -[AXMVisionFeatureRecognizedText initWithRecognizedText:range:]([AXMVisionFeatureRecognizedText alloc], "initWithRecognizedText:range:", v15, 0, [v16 length]);
+              v18 = -[AXMVisionFeatureRecognizedText initWithRecognizedText:range:]([AXMVisionFeatureRecognizedText alloc], "initWithRecognizedText:range:", firstObject, 0, [string length]);
               [v13 boundingBox];
               v20 = v19;
               v22 = v21;
@@ -478,10 +478,10 @@ intptr_t __53__AXMMediaAnalysisTextDetectorNode_evaluate_metrics___block_invoke_
               v26 = v25;
               v35 = v18;
               v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-              [v15 confidence];
-              v29 = [AXMVisionFeature textSequence:v16 boundingBox:v27 recognizedTextFeatures:v20 confidence:v22 canvasSize:v24, v26, v28, width, height];
+              [firstObject confidence];
+              height = [AXMVisionFeature textSequence:string boundingBox:v27 recognizedTextFeatures:v20 confidence:v22 canvasSize:v24, v26, v28, width, height];
 
-              [v7 addObject:v29];
+              [array addObject:height];
             }
           }
         }
@@ -493,46 +493,46 @@ intptr_t __53__AXMMediaAnalysisTextDetectorNode_evaluate_metrics___block_invoke_
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)_textDetectionOptions:(id)a3
+- (id)_textDetectionOptions:(id)options
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [a3 analysisOptions];
-  v4 = [v3 textDetectionOptions];
+  analysisOptions = [options analysisOptions];
+  textDetectionOptions = [analysisOptions textDetectionOptions];
 
-  if (!v4)
+  if (!textDetectionOptions)
   {
-    v4 = +[AXMTextDetectionOptions defaultOptions];
+    textDetectionOptions = +[AXMTextDetectionOptions defaultOptions];
   }
 
   v5 = AXMediaLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = textDetectionOptions;
     _os_log_impl(&dword_1AE37B000, v5, OS_LOG_TYPE_INFO, "AXM Media analysis: Will detect text with options: %@", &v7, 0xCu);
   }
 
-  return v4;
+  return textDetectionOptions;
 }
 
-- (double)detectTextSkew:(id)a3
+- (double)detectTextSkew:(id)skew
 {
-  v3 = a3;
-  if ([v3 count])
+  skewCopy = skew;
+  if ([skewCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 topCandidates:1];
-    v6 = [v5 firstObject];
+    firstObject = [skewCopy firstObject];
+    v5 = [firstObject topCandidates:1];
+    firstObject2 = [v5 firstObject];
 
     v22 = 0;
-    v7 = [v6 boundingBoxForRange:1 error:{1, &v22}];
+    v7 = [firstObject2 boundingBoxForRange:1 error:{1, &v22}];
     v8 = v22;
-    v9 = [v6 string];
+    string = [firstObject2 string];
     v21 = v8;
-    v10 = [v6 boundingBoxForRange:objc_msgSend(v9 error:{"length") - 2, 1, &v21}];
+    v10 = [firstObject2 boundingBoxForRange:objc_msgSend(string error:{"length") - 2, 1, &v21}];
     v11 = v21;
 
     [v7 bottomLeft];

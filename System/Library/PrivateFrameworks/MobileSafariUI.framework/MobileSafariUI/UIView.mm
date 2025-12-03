@@ -1,37 +1,37 @@
 @interface UIView
-+ (void)safari_animate:(char)a3 withDuration:(void *)a4 animations:;
-+ (void)safari_animate:(uint64_t)a3 withDuration:(char)a4 delay:(uint64_t)a5 options:(void *)a6 animations:(void *)a7 completion:;
++ (void)safari_animate:(char)safari_animate withDuration:(void *)duration animations:;
++ (void)safari_animate:(uint64_t)safari_animate withDuration:(char)duration delay:(uint64_t)delay options:(void *)options animations:(void *)animations completion:;
 @end
 
 @implementation UIView
 
-+ (void)safari_animate:(char)a3 withDuration:(void *)a4 animations:
++ (void)safari_animate:(char)safari_animate withDuration:(void *)duration animations:
 {
-  v7 = a4;
+  durationCopy = duration;
   v6 = objc_opt_self();
-  [(UIView *)a1 safari_animate:v6 withDuration:a3 delay:0 options:v7 animations:0 completion:?];
+  [(UIView *)self safari_animate:v6 withDuration:safari_animate delay:0 options:durationCopy animations:0 completion:?];
 }
 
-+ (void)safari_animate:(uint64_t)a3 withDuration:(char)a4 delay:(uint64_t)a5 options:(void *)a6 animations:(void *)a7 completion:
++ (void)safari_animate:(uint64_t)safari_animate withDuration:(char)duration delay:(uint64_t)delay options:(void *)options animations:(void *)animations completion:
 {
-  v15 = a6;
-  v12 = a7;
+  optionsCopy = options;
+  animationsCopy = animations;
   v13 = objc_opt_self();
-  v14 = _Block_copy(v12);
+  v14 = _Block_copy(animationsCopy);
 
-  if (a4)
+  if (duration)
   {
-    [v13 animateWithDuration:a5 delay:v15 options:v14 animations:a1 completion:a2];
+    [v13 animateWithDuration:delay delay:optionsCopy options:v14 animations:self completion:a2];
   }
 
   else
   {
-    if (v15)
+    if (optionsCopy)
     {
-      v15[2](v15);
+      optionsCopy[2](optionsCopy);
     }
 
-    if (v12)
+    if (animationsCopy)
     {
       v14[2](v14, 1);
     }

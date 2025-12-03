@@ -1,25 +1,25 @@
 @interface BRCZonePurgeOperation
-- (BRCZonePurgeOperation)initWithServerZone:(id)a3 sessionContext:(id)a4;
+- (BRCZonePurgeOperation)initWithServerZone:(id)zone sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCZonePurgeOperation
 
-- (BRCZonePurgeOperation)initWithServerZone:(id)a3 sessionContext:(id)a4
+- (BRCZonePurgeOperation)initWithServerZone:(id)zone sessionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 session];
-  v10 = [v9 syncContextProvider];
-  v11 = [v10 defaultSyncContext];
+  zoneCopy = zone;
+  contextCopy = context;
+  session = [zoneCopy session];
+  syncContextProvider = [session syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v14.receiver = self;
   v14.super_class = BRCZonePurgeOperation;
-  v12 = [(_BRCOperation *)&v14 initWithName:@"sync/zone-purge" syncContext:v11 sessionContext:v8];
+  v12 = [(_BRCOperation *)&v14 initWithName:@"sync/zone-purge" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_serverZone, a3);
+    objc_storeStrong(&v12->_serverZone, zone);
     [(_BRCOperation *)v12 setNonDiscretionary:1];
   }
 
@@ -38,7 +38,7 @@
   v39[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = self->_serverZone;
-  v5 = [(BRCServerZone *)self->_serverZone session];
+  session = [(BRCServerZone *)self->_serverZone session];
   v6 = dispatch_group_create();
   v37[0] = 0;
   v37[1] = v37;
@@ -52,17 +52,17 @@
   v35 = v7;
   v8 = v3;
   v36 = v8;
-  [v5 enumerateServerZones:v34];
+  [session enumerateServerZones:v34];
   v9 = objc_alloc(MEMORY[0x277CBC490]);
-  v10 = [(BRCServerZone *)v7 zoneID];
-  v39[0] = v10;
+  zoneID = [(BRCServerZone *)v7 zoneID];
+  v39[0] = zoneID;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
   v12 = [v9 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v11];
 
   [v12 setMarkZonesAsUserPurged:1];
-  v13 = [v12 callbackQueue];
-  v14 = [(_BRCOperation *)self callbackQueue];
-  dispatch_set_target_queue(v13, v14);
+  callbackQueue = [v12 callbackQueue];
+  callbackQueue2 = [(_BRCOperation *)self callbackQueue];
+  dispatch_set_target_queue(callbackQueue, callbackQueue2);
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -81,9 +81,9 @@
   {
     v17 = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:v8];
 
-    v18 = [v17 callbackQueue];
-    v19 = [(_BRCOperation *)self callbackQueue];
-    dispatch_set_target_queue(v18, v19);
+    callbackQueue3 = [v17 callbackQueue];
+    callbackQueue4 = [(_BRCOperation *)self callbackQueue];
+    dispatch_set_target_queue(callbackQueue3, callbackQueue4);
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -96,9 +96,9 @@
     v28 = v20;
     [v17 setModifyRecordZonesCompletionBlock:v26];
     dispatch_group_enter(v20);
-    v21 = [v5 syncContextProvider];
-    v22 = [v21 sharedMetadataSyncContext];
-    [(_BRCOperation *)self addSubOperation:v17 overrideContext:v22 allowsCellularAccess:0];
+    syncContextProvider = [session syncContextProvider];
+    sharedMetadataSyncContext = [syncContextProvider sharedMetadataSyncContext];
+    [(_BRCOperation *)self addSubOperation:v17 overrideContext:sharedMetadataSyncContext allowsCellularAccess:0];
   }
 
   else
@@ -106,14 +106,14 @@
     v17 = v12;
   }
 
-  v23 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue5 = [(_BRCOperation *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__BRCZonePurgeOperation_main__block_invoke_6;
   block[3] = &unk_278502000;
   block[4] = self;
   block[5] = v37;
-  dispatch_group_notify(v16, v23, block);
+  dispatch_group_notify(v16, callbackQueue5, block);
 
   _Block_object_dispose(v37, 8);
   v24 = *MEMORY[0x277D85DE8];

@@ -1,37 +1,37 @@
 @interface MFMailIntentTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation MFMailIntentTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(MEMORY[0x1E69ADD38]);
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC78]];
+  v5 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC78]];
   [v4 _setLaunchId:*MEMORY[0x1E69B17F0]];
   if (v5)
   {
     [v4 setSender:v5];
   }
 
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC88]];
+  v6 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC88]];
   [v4 setTo:v6];
 
-  v7 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC68]];
+  v7 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC68]];
   [v4 setCc:v7];
 
-  v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC60]];
+  v8 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC60]];
   [v4 setBcc:v8];
 
-  v9 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC80]];
+  v9 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC80]];
   [v4 setSubject:v9];
 
-  v10 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC70]];
+  v10 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC70]];
   [v4 setBody:v10];
 
-  v11 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ADC90]];
+  v11 = [valueCopy objectForKeyedSubscript:*MEMORY[0x1E69ADC90]];
   [v4 setUserTypedContent:v11];
 
   v12 = objc_alloc_init(MEMORY[0x1E69ADD40]);
@@ -41,27 +41,27 @@
   return v4;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 sender];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69ADC78]];
+  sender = [valueCopy sender];
+  [v4 setObject:sender forKeyedSubscript:*MEMORY[0x1E69ADC78]];
 
-  v6 = [v3 to];
+  v6 = [valueCopy to];
   [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69ADC88]];
 
-  v7 = [v3 cc];
+  v7 = [valueCopy cc];
   [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69ADC68]];
 
-  v8 = [v3 bcc];
+  v8 = [valueCopy bcc];
   [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69ADC60]];
 
-  v9 = [v3 subject];
-  [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69ADC80]];
+  subject = [valueCopy subject];
+  [v4 setObject:subject forKeyedSubscript:*MEMORY[0x1E69ADC80]];
 
-  v10 = [v3 body];
-  [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69ADC70]];
+  body = [valueCopy body];
+  [v4 setObject:body forKeyedSubscript:*MEMORY[0x1E69ADC70]];
 
   return v4;
 }

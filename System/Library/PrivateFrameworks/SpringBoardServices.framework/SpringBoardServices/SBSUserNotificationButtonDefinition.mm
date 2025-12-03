@@ -1,28 +1,28 @@
 @interface SBSUserNotificationButtonDefinition
-+ (id)_buttonDefinitionsFromSerializedDefinitions:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_buttonDefinitionsFromSerializedDefinitions:(id)definitions;
+- (BOOL)isEqual:(id)equal;
 - (SBSUserNotificationButtonDefinition)init;
-- (SBSUserNotificationButtonDefinition)initWithTitle:(id)a3;
-- (id)_initWithDictionary:(id)a3;
+- (SBSUserNotificationButtonDefinition)initWithTitle:(id)title;
+- (id)_initWithDictionary:(id)dictionary;
 - (id)build;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_copyPropertiesToDefinition:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_copyPropertiesToDefinition:(id)definition;
 @end
 
 @implementation SBSUserNotificationButtonDefinition
 
 - (SBSUserNotificationButtonDefinition)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSCFUserNotificationButtonDefinition.m" lineNumber:29 description:@"[SBSUserNotificationButtonDefinition init] is unavailable for use."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSCFUserNotificationButtonDefinition.m" lineNumber:29 description:@"[SBSUserNotificationButtonDefinition init] is unavailable for use."];
 
   return 0;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     [(SBSUserNotificationButtonDefinition *)a2 _initWithDictionary:?];
   }
@@ -38,36 +38,36 @@
   self = [(SBSUserNotificationButtonDefinition *)&v11 init];
   if (self)
   {
-    v6 = [v5 bs_safeStringForKey:@"_SBSButtonTitle"];
+    v6 = [dictionaryCopy bs_safeStringForKey:@"_SBSButtonTitle"];
     title = self->_title;
     self->_title = v6;
 
     if (self->_title)
     {
-      v8 = [v5 bs_safeNumberForKey:@"_SBSButtonPresentationStyle"];
+      v8 = [dictionaryCopy bs_safeNumberForKey:@"_SBSButtonPresentationStyle"];
       self->_presentationStyle = [v8 intValue];
 
-      self->_isPreferredButton = [v5 bs_BOOLForKey:@"_SBSButtonPreferred"];
+      self->_isPreferredButton = [dictionaryCopy bs_BOOLForKey:@"_SBSButtonPreferred"];
       goto LABEL_7;
     }
 
 LABEL_8:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
 LABEL_7:
   self = self;
-  v9 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v9;
+  return selfCopy;
 }
 
-- (SBSUserNotificationButtonDefinition)initWithTitle:(id)a3
+- (SBSUserNotificationButtonDefinition)initWithTitle:(id)title
 {
-  v5 = a3;
-  if (!v5)
+  titleCopy = title;
+  if (!titleCopy)
   {
     [(SBSUserNotificationButtonDefinition *)a2 initWithTitle:?];
   }
@@ -77,7 +77,7 @@ LABEL_9:
   v6 = [(SBSUserNotificationButtonDefinition *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [titleCopy copy];
     title = v6->_title;
     v6->_title = v7;
   }
@@ -85,16 +85,16 @@ LABEL_9:
   return v6;
 }
 
-+ (id)_buttonDefinitionsFromSerializedDefinitions:(id)a3
++ (id)_buttonDefinitionsFromSerializedDefinitions:(id)definitions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  definitionsCopy = definitions;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = definitionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -142,10 +142,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -155,12 +155,12 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (BSEqualBools() && self->_presentationStyle == v5->_presentationStyle)
       {
         title = self->_title;
-        v7 = [(SBSUserNotificationButtonDefinition *)v5 title];
-        v8 = [(NSString *)title isEqualToString:v7];
+        title = [(SBSUserNotificationButtonDefinition *)v5 title];
+        v8 = [(NSString *)title isEqualToString:title];
       }
 
       else
@@ -178,15 +178,15 @@ LABEL_9:
   return v8;
 }
 
-- (void)_copyPropertiesToDefinition:(id)a3
+- (void)_copyPropertiesToDefinition:(id)definition
 {
-  objc_storeStrong(a3 + 1, self->_title);
-  v5 = a3;
-  v5[4] = self->_presentationStyle;
-  *(v5 + 20) = self->_isPreferredButton;
+  objc_storeStrong(definition + 1, self->_title);
+  definitionCopy = definition;
+  definitionCopy[4] = self->_presentationStyle;
+  *(definitionCopy + 20) = self->_isPreferredButton;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(SBSUserNotificationButtonDefinition *)[SBSMutableUserNotificationButtonDefinition alloc] initWithTitle:self->_title];
   [(SBSUserNotificationButtonDefinition *)self _copyPropertiesToDefinition:v4];

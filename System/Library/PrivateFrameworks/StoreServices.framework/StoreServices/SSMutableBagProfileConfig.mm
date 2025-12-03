@@ -1,7 +1,7 @@
 @interface SSMutableBagProfileConfig
 - (SSMutableBagProfileConfig)init;
 - (id)bagKeysDictionary;
-- (void)registerBagKey:(id)a3 valueType:(unint64_t)a4 defaultValue:(id)a5;
+- (void)registerBagKey:(id)key valueType:(unint64_t)type defaultValue:(id)value;
 @end
 
 @implementation SSMutableBagProfileConfig
@@ -23,20 +23,20 @@
 
 - (id)bagKeysDictionary
 {
-  v2 = [(SSMutableBagProfileConfig *)self mutableBagKeysDictionary];
-  v3 = [v2 copy];
+  mutableBagKeysDictionary = [(SSMutableBagProfileConfig *)self mutableBagKeysDictionary];
+  v3 = [mutableBagKeysDictionary copy];
 
   return v3;
 }
 
-- (void)registerBagKey:(id)a3 valueType:(unint64_t)a4 defaultValue:(id)a5
+- (void)registerBagKey:(id)key valueType:(unint64_t)type defaultValue:(id)value
 {
-  v8 = a5;
-  v9 = a3;
-  v11 = [[SSBagKey alloc] initWithStringRepresentation:v9 valueType:a4 defaultValue:v8];
+  valueCopy = value;
+  keyCopy = key;
+  v11 = [[SSBagKey alloc] initWithStringRepresentation:keyCopy valueType:type defaultValue:valueCopy];
 
-  v10 = [(SSMutableBagProfileConfig *)self mutableBagKeysDictionary];
-  [v10 setObject:v11 forKeyedSubscript:v9];
+  mutableBagKeysDictionary = [(SSMutableBagProfileConfig *)self mutableBagKeysDictionary];
+  [mutableBagKeysDictionary setObject:v11 forKeyedSubscript:keyCopy];
 }
 
 @end

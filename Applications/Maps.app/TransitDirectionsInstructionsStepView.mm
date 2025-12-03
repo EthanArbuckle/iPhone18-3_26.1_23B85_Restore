@@ -4,35 +4,35 @@
 - (BOOL)_useSingleInstructionMetrics;
 - (TransitDirectionsExpandableCellDelegate)expandableCellDelegate;
 - (TransitDirectionsListExpandableItem)expandableItem;
-- (double)_availableWidthForInstructionType:(int64_t)a3;
+- (double)_availableWidthForInstructionType:(int64_t)type;
 - (double)_detailButtonBaselineToLabelBaselineDistance;
-- (double)_extraSpacingAboveView:(id)a3;
+- (double)_extraSpacingAboveView:(id)view;
 - (double)_minPlatformArtworkBottomToBottomDistance;
 - (double)_secondaryFirstBaselineToBottomPlatformArtworkDistance;
-- (id)_constraintsForCellStyle:(unint64_t)a3;
-- (id)_fontForInstructionType:(int64_t)a3;
+- (id)_constraintsForCellStyle:(unint64_t)style;
+- (id)_fontForInstructionType:(int64_t)type;
 - (id)_imageViewPositionConstraints;
-- (id)_labelViewForInstructionType:(int64_t)a3;
-- (id)_layoutItemForInstructionType:(int64_t)a3;
+- (id)_labelViewForInstructionType:(int64_t)type;
+- (id)_layoutItemForInstructionType:(int64_t)type;
 - (id)_platformArtworkHorizontalPositioningConstraint;
-- (id)_textAttributesForInstructionType:(int64_t)a3;
+- (id)_textAttributesForInstructionType:(int64_t)type;
 - (unint64_t)_bestCellStyleForCurrentState;
-- (void)_configureLabelForInstruction:(int64_t)a3;
+- (void)_configureLabelForInstruction:(int64_t)instruction;
 - (void)_contentSizeCategoryDidChange;
 - (void)_createSubviews;
-- (void)_detailButtonTapped:(id)a3;
+- (void)_detailButtonTapped:(id)tapped;
 - (void)_setCellStyle:(unint64_t)cellStyle;
 - (void)_updateAccessoryLabelCompressionHuggingPriorities;
 - (void)_updateConstraintValues;
 - (void)_updateConstraints;
 - (void)_updateMultipleInstructionImagePositionConstraint;
-- (void)_updateNavigationStateAlpha:(double)a3;
+- (void)_updateNavigationStateAlpha:(double)alpha;
 - (void)_updateNavigationStateDependentFonts;
-- (void)configureWithItem:(id)a3;
+- (void)configureWithItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setNavigationState:(int64_t)a3;
-- (void)setUseNavigationMetrics:(BOOL)a3;
+- (void)setNavigationState:(int64_t)state;
+- (void)setUseNavigationMetrics:(BOOL)metrics;
 - (void)updateExpandCollapseStyling;
 @end
 
@@ -45,56 +45,56 @@
   return WeakRetained;
 }
 
-- (void)_updateNavigationStateAlpha:(double)a3
+- (void)_updateNavigationStateAlpha:(double)alpha
 {
   v11.receiver = self;
   v11.super_class = TransitDirectionsInstructionsStepView;
   [(TransitDirectionsIconStepView *)&v11 _updateNavigationStateAlpha:?];
-  v5 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-  [v5 setAlpha:a3];
+  primaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+  [primaryLabel setAlpha:alpha];
 
-  v6 = [(TransitDirectionsInstructionsStepView *)self secondaryLabel];
-  [v6 setAlpha:a3];
+  secondaryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryLabel];
+  [secondaryLabel setAlpha:alpha];
 
-  v7 = [(TransitDirectionsInstructionsStepView *)self tertiaryLabel];
-  [v7 setAlpha:a3];
+  tertiaryLabel = [(TransitDirectionsInstructionsStepView *)self tertiaryLabel];
+  [tertiaryLabel setAlpha:alpha];
 
-  v8 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-  [v8 setAlpha:a3];
+  primaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  [primaryAccessoryLabel setAlpha:alpha];
 
-  v9 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-  [v9 setAlpha:a3];
+  secondaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+  [secondaryAccessoryLabel setAlpha:alpha];
 
-  v10 = [(TransitDirectionsInstructionsStepView *)self platformArtworkImageView];
-  [v10 setAlpha:a3];
+  platformArtworkImageView = [(TransitDirectionsInstructionsStepView *)self platformArtworkImageView];
+  [platformArtworkImageView setAlpha:alpha];
 }
 
-- (void)setNavigationState:(int64_t)a3
+- (void)setNavigationState:(int64_t)state
 {
-  v5 = [(TransitDirectionsStepView *)self navigationState];
+  navigationState = [(TransitDirectionsStepView *)self navigationState];
   v6.receiver = self;
   v6.super_class = TransitDirectionsInstructionsStepView;
-  [(TransitDirectionsStepView *)&v6 setNavigationState:a3];
-  if (v5 != [(TransitDirectionsStepView *)self navigationState])
+  [(TransitDirectionsStepView *)&v6 setNavigationState:state];
+  if (navigationState != [(TransitDirectionsStepView *)self navigationState])
   {
     [(TransitDirectionsInstructionsStepView *)self _updateNavigationStateDependentFonts];
     [(TransitDirectionsInstructionsStepView *)self _updateMultipleInstructionImagePositionConstraint];
   }
 }
 
-- (void)setUseNavigationMetrics:(BOOL)a3
+- (void)setUseNavigationMetrics:(BOOL)metrics
 {
   v4.receiver = self;
   v4.super_class = TransitDirectionsInstructionsStepView;
-  [(TransitDirectionsStepView *)&v4 setUseNavigationMetrics:a3];
+  [(TransitDirectionsStepView *)&v4 setUseNavigationMetrics:metrics];
   [(TransitDirectionsInstructionsStepView *)self _setCellStyle:[(TransitDirectionsInstructionsStepView *)self _bestCellStyleForCurrentState]];
 }
 
-- (id)_textAttributesForInstructionType:(int64_t)a3
+- (id)_textAttributesForInstructionType:(int64_t)type
 {
-  if ((a3 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
-    if (a3)
+    if (type)
     {
       v15 = 0;
       goto LABEL_14;
@@ -119,8 +119,8 @@
 
   else
   {
-    v4 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
+    traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
     v6 = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
     if (v6)
@@ -147,69 +147,69 @@ LABEL_14:
   return v15;
 }
 
-- (id)_labelViewForInstructionType:(int64_t)a3
+- (id)_labelViewForInstructionType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     v3 = &OBJC_IVAR___TransitDirectionsInstructionsStepView__tertiaryLabel;
   }
 
   else
   {
-    v3 = off_10165DD30[a3];
+    v3 = off_10165DD30[type];
   }
 
   return *(&self->super.super.super.super.super.isa + *v3);
 }
 
-- (id)_fontForInstructionType:(int64_t)a3
+- (id)_fontForInstructionType:(int64_t)type
 {
-  v3 = 0;
-  if (a3 <= 1)
+  font = 0;
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_13;
       }
 
-      v4 = [(TransitDirectionsInstructionsStepView *)self secondaryLabel];
+      secondaryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryLabel];
     }
 
     else
     {
-      v4 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+      secondaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
-        v4 = [(TransitDirectionsInstructionsStepView *)self tertiaryLabel];
+        secondaryLabel = [(TransitDirectionsInstructionsStepView *)self tertiaryLabel];
         break;
       case 3:
-        v4 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+        secondaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
         break;
       case 4:
-        v4 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+        secondaryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  v5 = v4;
-  v3 = [v4 font];
+  v5 = secondaryLabel;
+  font = [secondaryLabel font];
 
 LABEL_13:
 
-  return v3;
+  return font;
 }
 
-- (double)_availableWidthForInstructionType:(int64_t)a3
+- (double)_availableWidthForInstructionType:(int64_t)type
 {
   [(TransitDirectionsInstructionsStepView *)self bounds];
   v6 = v5;
@@ -217,26 +217,26 @@ LABEL_13:
   v8 = v7;
   [(TransitDirectionsStepView *)self _trailingGuideToContentViewDistance];
   v10 = v9;
-  v11 = [(TransitDirectionsStepView *)self trailingView];
-  [v11 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  trailingView = [(TransitDirectionsStepView *)self trailingView];
+  [trailingView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v13 = v6 - (v8 + v10 + v12);
 
-  switch(a3)
+  switch(type)
   {
     case 2:
       return v13 + -16.0;
     case 1:
-      v19 = [(TransitDirectionsStepView *)self transitListItem];
-      v20 = [v19 minorStringImage];
+      transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+      minorStringImage = [transitListItem minorStringImage];
 
-      if (v20)
+      if (minorStringImage)
       {
-        v21 = [(TransitDirectionsStepView *)self transitListItem];
-        v22 = [v21 minorStringImage];
-        [v22 size];
+        transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+        minorStringImage2 = [transitListItem2 minorStringImage];
+        [minorStringImage2 size];
         v24 = v23;
-        v25 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-        if ([v25 userInterfaceIdiom] == 5)
+        traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+        if ([traitCollection userInterfaceIdiom] == 5)
         {
           v26 = 6.0;
         }
@@ -251,14 +251,14 @@ LABEL_13:
 
       break;
     case 0:
-      v14 = [(TransitDirectionsInstructionsStepView *)self expandableItem];
-      if (v14)
+      expandableItem = [(TransitDirectionsInstructionsStepView *)self expandableItem];
+      if (expandableItem)
       {
-        v15 = v14;
-        v16 = [(TransitDirectionsInstructionsStepView *)self expandableItem];
-        v17 = [v16 shouldDisplayExpandButton];
+        v15 = expandableItem;
+        expandableItem2 = [(TransitDirectionsInstructionsStepView *)self expandableItem];
+        shouldDisplayExpandButton = [expandableItem2 shouldDisplayExpandButton];
 
-        if (v17)
+        if (shouldDisplayExpandButton)
         {
           [(TransitDirectionsInstructionsStepView *)self _instructionsLabelToTrailingLayoutGuideDistance];
           return v13 - v18;
@@ -278,9 +278,9 @@ LABEL_13:
   {
     if (cellStyle == 1)
     {
-      v5 = [(MKArtworkImageView *)self->_platformArtworkImageView trailingAnchor];
-      v6 = [(MKArtworkImageView *)self->super._iconImageView trailingAnchor];
-      v7 = [v5 constraintEqualToAnchor:v6];
+      trailingAnchor = [(MKArtworkImageView *)self->_platformArtworkImageView trailingAnchor];
+      trailingAnchor2 = [(MKArtworkImageView *)self->super._iconImageView trailingAnchor];
+      v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v8 = v7;
       v9 = @"platformArtworkTrailingToIconTrailing";
       goto LABEL_6;
@@ -292,9 +292,9 @@ LABEL_13:
     }
   }
 
-  v5 = [(MKArtworkImageView *)self->_platformArtworkImageView leadingAnchor];
-  v6 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [(MKArtworkImageView *)self->_platformArtworkImageView leadingAnchor];
+  trailingAnchor2 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v8 = v7;
   v9 = @"platformArtworkLeadingToPrimaryLeading";
 LABEL_6:
@@ -305,12 +305,12 @@ LABEL_7:
   return v2;
 }
 
-- (id)_layoutItemForInstructionType:(int64_t)a3
+- (id)_layoutItemForInstructionType:(int64_t)type
 {
   [(TransitDirectionsInstructionsStepView *)self _availableWidthForInstructionType:?];
   v6 = v5;
   layoutItemsByType = self->_layoutItemsByType;
-  v8 = [NSNumber numberWithInteger:a3];
+  v8 = [NSNumber numberWithInteger:type];
   v9 = [(NSMutableDictionary *)layoutItemsByType objectForKeyedSubscript:v8];
 
   if (v9)
@@ -321,18 +321,18 @@ LABEL_7:
 
   else
   {
-    v11 = [(TransitDirectionsInstructionsStepView *)self _fontForInstructionType:a3];
-    v12 = [(TransitDirectionsStepView *)self transitListItem];
-    v13 = [v12 formattedStringsForType:a3];
+    v11 = [(TransitDirectionsInstructionsStepView *)self _fontForInstructionType:type];
+    transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+    v13 = [transitListItem formattedStringsForType:type];
 
-    if ((a3 - 3) <= 1 && [(TransitDirectionsInstructionsStepView *)self _combineAccessoryLabels])
+    if ((type - 3) <= 1 && [(TransitDirectionsInstructionsStepView *)self _combineAccessoryLabels])
     {
-      v14 = a3 == 3;
-      if (a3 == 3)
+      v14 = type == 3;
+      if (type == 3)
       {
         v15 = [v13 mutableCopy];
-        v16 = [(TransitDirectionsStepView *)self transitListItem];
-        v17 = [v16 formattedStringsForType:4];
+        transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+        v17 = [transitListItem2 formattedStringsForType:4];
         [v15 addObjectsFromArray:v17];
 
         v18 = [v15 copy];
@@ -352,7 +352,7 @@ LABEL_7:
       v14 = 0;
     }
 
-    v19 = [(TransitDirectionsInstructionsStepView *)self _textAttributesForInstructionType:a3];
+    v19 = [(TransitDirectionsInstructionsStepView *)self _textAttributesForInstructionType:type];
     if (v11 && [v13 count])
     {
       if (!self->_layoutItemsByType)
@@ -365,7 +365,7 @@ LABEL_7:
       v22 = [[TransitInstructionLayoutItem alloc] initWithStrings:v13 font:v11 width:v19 extraTextAttributes:v6];
       [(TransitInstructionLayoutItem *)v22 setCombineStrings:v14];
       v23 = self->_layoutItemsByType;
-      v24 = [NSNumber numberWithInteger:a3];
+      v24 = [NSNumber numberWithInteger:type];
       [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
 
       v10 = v22;
@@ -380,14 +380,14 @@ LABEL_7:
   return v10;
 }
 
-- (void)_configureLabelForInstruction:(int64_t)a3
+- (void)_configureLabelForInstruction:(int64_t)instruction
 {
   v5 = [(TransitDirectionsInstructionsStepView *)self _layoutItemForInstructionType:?];
-  if (a3 > 1)
+  if (instruction > 1)
   {
-    if (a3 != 2)
+    if (instruction != 2)
     {
-      if (a3 == 3)
+      if (instruction == 3)
       {
         v21 = v5;
         if ([(TransitDirectionsInstructionsStepView *)self _combineAccessoryLabels])
@@ -396,38 +396,38 @@ LABEL_7:
           [(_MKUILabel *)self->_primaryAccessoryLabel setTextColor:v17];
         }
 
-        v6 = [v21 bestFittingMultiPartString];
-        v7 = [v6 attributedString];
+        bestFittingMultiPartString = [v21 bestFittingMultiPartString];
+        attributedString = [bestFittingMultiPartString attributedString];
         v8 = 368;
       }
 
       else
       {
-        if (a3 != 4)
+        if (instruction != 4)
         {
           goto LABEL_24;
         }
 
         v21 = v5;
-        v6 = [v5 bestFittingMultiPartString];
-        v7 = [v6 attributedString];
+        bestFittingMultiPartString = [v5 bestFittingMultiPartString];
+        attributedString = [bestFittingMultiPartString attributedString];
         v8 = 376;
       }
 
-      [*(&self->super.super.super.super.super.isa + v8) setAttributedText:v7];
+      [*(&self->super.super.super.super.super.isa + v8) setAttributedText:attributedString];
 
-      v18 = [*(&self->super.super.super.super.super.isa + v8) attributedText];
-      [*(&self->super.super.super.super.super.isa + v8) setHidden:{objc_msgSend(v18, "length") == 0}];
+      attributedText = [*(&self->super.super.super.super.super.isa + v8) attributedText];
+      [*(&self->super.super.super.super.super.isa + v8) setHidden:{objc_msgSend(attributedText, "length") == 0}];
       goto LABEL_18;
     }
 
     v21 = v5;
-    v13 = [v5 strings];
-    v14 = [v13 firstObject];
+    strings = [v5 strings];
+    firstObject = [strings firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v11 = [v21 bestFittingMultiPartString];
+      bestFittingMultiPartString2 = [v21 bestFittingMultiPartString];
       v12 = 352;
       goto LABEL_12;
     }
@@ -436,23 +436,23 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  if (a3)
+  if (instruction)
   {
-    if (a3 != 1)
+    if (instruction != 1)
     {
       goto LABEL_24;
     }
 
     v21 = v5;
-    v9 = [v5 strings];
-    v10 = [v9 firstObject];
+    strings2 = [v5 strings];
+    firstObject2 = [strings2 firstObject];
 
-    if (v10)
+    if (firstObject2)
     {
-      v11 = [v21 bestFittingMultiPartString];
+      bestFittingMultiPartString2 = [v21 bestFittingMultiPartString];
       v12 = 344;
 LABEL_12:
-      [*(&self->super.super.super.super.super.isa + v12) setMultiPartString:v11];
+      [*(&self->super.super.super.super.super.isa + v12) setMultiPartString:bestFittingMultiPartString2];
 
       v15 = *(&self->super.super.super.super.super.isa + v12);
       v16 = 0;
@@ -470,9 +470,9 @@ LABEL_21:
   }
 
   v21 = v5;
-  v18 = [v5 bestFittingMultiPartString];
-  v19 = [v18 attributedString];
-  [(_MKUILabel *)self->_primaryLabel setAttributedText:v19];
+  attributedText = [v5 bestFittingMultiPartString];
+  attributedString2 = [attributedText attributedString];
+  [(_MKUILabel *)self->_primaryLabel setAttributedText:attributedString2];
 
 LABEL_18:
 LABEL_23:
@@ -480,38 +480,38 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = TransitDirectionsInstructionsStepView;
-  [(TransitDirectionsIconStepView *)&v20 configureWithItem:v4];
+  [(TransitDirectionsIconStepView *)&v20 configureWithItem:itemCopy];
   self->_checkedItemIsExpandable = 0;
   layoutItemsByType = self->_layoutItemsByType;
   self->_layoutItemsByType = 0;
 
-  v6 = [(UIStackView *)self->_textStackView arrangedSubviews];
-  v7 = [v6 valueForKeyPath:@"isHidden"];
+  arrangedSubviews = [(UIStackView *)self->_textStackView arrangedSubviews];
+  v7 = [arrangedSubviews valueForKeyPath:@"isHidden"];
 
   [(TransitDirectionsInstructionsStepView *)self _configureLabelForInstruction:0];
   [(TransitDirectionsInstructionsStepView *)self _configureLabelForInstruction:1];
   [(TransitDirectionsInstructionsStepView *)self _configureLabelForInstruction:2];
   [(TransitDirectionsInstructionsStepView *)self _configureLabelForInstruction:3];
   [(TransitDirectionsInstructionsStepView *)self _configureLabelForInstruction:4];
-  v8 = [(TransitDirectionsStepView *)self transitListItem];
-  v9 = [v8 minorStringImage];
-  [(MKArtworkImageView *)self->_platformArtworkImageView setImageSource:v9];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  minorStringImage = [transitListItem minorStringImage];
+  [(MKArtworkImageView *)self->_platformArtworkImageView setImageSource:minorStringImage];
 
-  v10 = [(TransitDirectionsStepView *)self transitListItem];
-  v11 = [v10 minorStringImage];
-  [(MKArtworkImageView *)self->_platformArtworkImageView setHidden:v11 == 0];
+  transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+  minorStringImage2 = [transitListItem2 minorStringImage];
+  [(MKArtworkImageView *)self->_platformArtworkImageView setHidden:minorStringImage2 == 0];
 
-  v12 = [v4 badges];
-  v13 = [v12 count];
+  badges = [itemCopy badges];
+  v13 = [badges count];
   if (v13)
   {
-    v14 = [v4 badges];
-    v15 = [GEOTransitStepBadge _maps_artworkListFromStepBadges:v14];
+    badges2 = [itemCopy badges];
+    v15 = [GEOTransitStepBadge _maps_artworkListFromStepBadges:badges2];
     p_badgesArtworkListView = &self->_badgesArtworkListView;
     [(TransitArtworkListView *)self->_badgesArtworkListView setArtworkData:v15];
   }
@@ -524,14 +524,14 @@ LABEL_24:
 
   [(TransitArtworkListView *)*p_badgesArtworkListView setHidden:v13 == 0];
   [(TransitDirectionsInstructionsStepView *)self _updateAccessoryLabelCompressionHuggingPriorities];
-  v17 = [(TransitDirectionsInstructionsStepView *)self expandableItem];
-  if (v17)
+  expandableItem = [(TransitDirectionsInstructionsStepView *)self expandableItem];
+  if (expandableItem)
   {
     [(TransitDirectionsInstructionsStepView *)self updateExpandCollapseStyling];
   }
 
-  v18 = [(UIStackView *)self->_textStackView arrangedSubviews];
-  v19 = [v18 valueForKeyPath:@"isHidden"];
+  arrangedSubviews2 = [(UIStackView *)self->_textStackView arrangedSubviews];
+  v19 = [arrangedSubviews2 valueForKeyPath:@"isHidden"];
 
   if (([v19 isEqualToArray:v7] & 1) == 0)
   {
@@ -581,8 +581,8 @@ LABEL_24:
   self->_layoutItemsByType = 0;
 
   detailButton = self->_detailButton;
-  v5 = self;
-  if (sub_10000FA08(v5) == 5)
+  selfCopy = self;
+  if (sub_10000FA08(selfCopy) == 5)
   {
     +[UIFont system17];
   }
@@ -592,10 +592,10 @@ LABEL_24:
     +[UIFont system15];
   }
   v6 = ;
-  v7 = [v6 _mapkit_fontByAddingFeaturesForTimeDisplay];
+  _mapkit_fontByAddingFeaturesForTimeDisplay = [v6 _mapkit_fontByAddingFeaturesForTimeDisplay];
 
-  [(MapsLargerHitTargetButton *)detailButton _setFont:v7];
-  v8 = v5;
+  [(MapsLargerHitTargetButton *)detailButton _setFont:_mapkit_fontByAddingFeaturesForTimeDisplay];
+  v8 = selfCopy;
   if (![v8 useNavigationMetrics])
   {
     if (sub_10000FA08(v8) == 5)
@@ -611,9 +611,9 @@ LABEL_24:
     goto LABEL_15;
   }
 
-  v9 = [v8 navigationState];
+  navigationState = [v8 navigationState];
   v10 = sub_10000FA08(v8);
-  if (v9 != 4)
+  if (navigationState != 4)
   {
     if (v10 != 5)
     {
@@ -664,14 +664,14 @@ LABEL_15:
     +[UIFont system15];
   }
   v19 = ;
-  v20 = [v19 _mapkit_fontByAddingFeaturesForTimeDisplay];
+  _mapkit_fontByAddingFeaturesForTimeDisplay2 = [v19 _mapkit_fontByAddingFeaturesForTimeDisplay];
 
-  [v18[44] setFont:v20];
+  [v18[44] setFont:_mapkit_fontByAddingFeaturesForTimeDisplay2];
   v21 = v18;
-  v22 = [v21 traitCollection];
-  v23 = [v22 userInterfaceIdiom];
+  traitCollection = [v21 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v24 = UIFontTextStyleBody;
-  if (v23 != 5)
+  if (userInterfaceIdiom != 5)
   {
     v24 = UIFontTextStyleSubheadline;
   }
@@ -680,23 +680,23 @@ LABEL_15:
 
   v26 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:v25];
 
-  v27 = [v26 fontDescriptor];
-  v28 = [v27 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
+  fontDescriptor = [v26 fontDescriptor];
+  v28 = [fontDescriptor _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
 
   v29 = [UIFont fontWithDescriptor:v28 size:0.0];
 
   [v21[46] setFont:v29];
   v30 = v21;
   v31 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleSubheadline];
-  v32 = [v30 traitCollection];
-  v33 = [v32 userInterfaceIdiom];
+  traitCollection2 = [v30 traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v33 == 5)
+  if (userInterfaceIdiom2 == 5)
   {
-    v34 = [v31 fontDescriptor];
-    v35 = [v34 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplay];
+    fontDescriptor2 = [v31 fontDescriptor];
+    _mapkit_fontDescriptorByAddingFeaturesForTimeDisplay = [fontDescriptor2 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplay];
 
-    v36 = [UIFont fontWithDescriptor:v35 size:0.0];
+    v36 = [UIFont fontWithDescriptor:_mapkit_fontDescriptorByAddingFeaturesForTimeDisplay size:0.0];
 
     v31 = v36;
   }
@@ -709,10 +709,10 @@ LABEL_15:
 {
   [(NSMutableDictionary *)self->_layoutItemsByType setObject:0 forKeyedSubscript:&off_1016EA448];
   [(NSMutableDictionary *)self->_layoutItemsByType setObject:0 forKeyedSubscript:&off_1016EA460];
-  v3 = self;
-  if (![(TransitDirectionsStepView *)v3 useNavigationMetrics])
+  selfCopy = self;
+  if (![(TransitDirectionsStepView *)selfCopy useNavigationMetrics])
   {
-    if (sub_10000FA08(v3) == 5)
+    if (sub_10000FA08(selfCopy) == 5)
     {
       +[UIFont system17];
     }
@@ -725,9 +725,9 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v4 = [(TransitDirectionsStepView *)v3 navigationState];
-  v5 = sub_10000FA08(v3);
-  if (v4 != 4)
+  navigationState = [(TransitDirectionsStepView *)selfCopy navigationState];
+  v5 = sub_10000FA08(selfCopy);
+  if (navigationState != 4)
   {
     if (v5 != 5)
     {
@@ -749,8 +749,8 @@ LABEL_9:
 LABEL_12:
   v7 = v6;
 
-  [(_MKUILabel *)v3->_primaryLabel setFont:v7];
-  v8 = v3;
+  [(_MKUILabel *)selfCopy->_primaryLabel setFont:v7];
+  v8 = selfCopy;
   LODWORD(v7) = [v8 useNavigationMetrics];
   v9 = sub_10000FA08(v8);
   if (v7 || v9 == 5)
@@ -771,11 +771,11 @@ LABEL_12:
   [v8 _configureLabelForInstruction:1];
 }
 
-- (void)_detailButtonTapped:(id)a3
+- (void)_detailButtonTapped:(id)tapped
 {
-  v5 = [(TransitDirectionsInstructionsStepView *)self expandableCellDelegate];
-  v4 = [(TransitDirectionsInstructionsStepView *)self expandableItem];
-  [v5 transitDirectionsCell:self wantsToExpandOrCollapseItem:v4];
+  expandableCellDelegate = [(TransitDirectionsInstructionsStepView *)self expandableCellDelegate];
+  expandableItem = [(TransitDirectionsInstructionsStepView *)self expandableItem];
+  [expandableCellDelegate transitDirectionsCell:self wantsToExpandOrCollapseItem:expandableItem];
 }
 
 - (double)_minPlatformArtworkBottomToBottomDistance
@@ -788,9 +788,9 @@ LABEL_12:
 
 - (double)_detailButtonBaselineToLabelBaselineDistance
 {
-  v3 = [(MKMultiPartLabel *)self->_secondaryLabel font];
-  v4 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-  if ([v4 userInterfaceIdiom] == 5)
+  font = [(MKMultiPartLabel *)self->_secondaryLabel font];
+  traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     v5 = 8.0;
   }
@@ -800,7 +800,7 @@ LABEL_12:
     v5 = 20.0;
   }
 
-  [v3 _scaledValueForValue:v5];
+  [font _scaledValueForValue:v5];
 
   UIRoundToViewScale();
   return result;
@@ -808,8 +808,8 @@ LABEL_12:
 
 - (double)_secondaryFirstBaselineToBottomPlatformArtworkDistance
 {
-  v2 = [(MKMultiPartLabel *)self->_secondaryLabel font];
-  [v2 _scaledValueForValue:2.0];
+  font = [(MKMultiPartLabel *)self->_secondaryLabel font];
+  [font _scaledValueForValue:2.0];
 
   UIRoundToViewScale();
   return result;
@@ -821,8 +821,8 @@ LABEL_12:
   *&retstr->var1 = 0u;
   retstr->var5 = 0.0;
   retstr->var6 = 10.0;
-  v5 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-  if ([v5 userInterfaceIdiom] == 5)
+  traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     v6 = 30.0;
   }
@@ -833,26 +833,26 @@ LABEL_12:
   }
 
   retstr->var3 = v6;
-  v7 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-  [v7 userInterfaceIdiom];
+  traitCollection2 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+  [traitCollection2 userInterfaceIdiom];
 
   retstr->var4 = 30.0;
-  v8 = [(TransitDirectionsStepView *)self transitListItem];
-  v9 = [v8 type];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  type = [transitListItem type];
 
-  if ((v9 - 2) >= 0xD || (v10 = 0.0, ((0x130Bu >> (v9 - 2)) & 1) == 0))
+  if ((type - 2) >= 0xD || (v10 = 0.0, ((0x130Bu >> (type - 2)) & 1) == 0))
   {
-    v11 = [(TransitDirectionsStepView *)self useNavigationMetrics];
-    v12 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    useNavigationMetrics = [(TransitDirectionsStepView *)self useNavigationMetrics];
+    traitCollection3 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection3 userInterfaceIdiom];
 
     v10 = 70.0;
-    if (v11)
+    if (useNavigationMetrics)
     {
       v10 = 82.0;
     }
 
-    if (v13 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v10 = 43.0;
     }
@@ -869,8 +869,8 @@ LABEL_12:
     v14 = 16.0;
   }
 
-  v15 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-  if ([v15 userInterfaceIdiom] == 5)
+  traitCollection4 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+  if ([traitCollection4 userInterfaceIdiom] == 5)
   {
     v14 = 10.0;
   }
@@ -900,10 +900,10 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(UIStackView *)self->_textStackView arrangedSubviews];
-  v4 = [v3 reverseObjectEnumerator];
+  arrangedSubviews = [(UIStackView *)self->_textStackView arrangedSubviews];
+  reverseObjectEnumerator = [arrangedSubviews reverseObjectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -914,7 +914,7 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -925,7 +925,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -943,26 +943,26 @@ LABEL_12:
 
 - (void)updateExpandCollapseStyling
 {
-  v3 = [(TransitDirectionsInstructionsStepView *)self expandableItem];
-  v4 = [(MapsLargerHitTargetButton *)self->_detailButton currentTitle];
-  if (v3)
+  expandableItem = [(TransitDirectionsInstructionsStepView *)self expandableItem];
+  currentTitle = [(MapsLargerHitTargetButton *)self->_detailButton currentTitle];
+  if (expandableItem)
   {
-    v5 = [v3 expandingButtonTitleForExpandedState:{objc_msgSend(v3, "expanded")}];
+    v5 = [expandableItem expandingButtonTitleForExpandedState:{objc_msgSend(expandableItem, "expanded")}];
 
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100F42694;
     v8[3] = &unk_101661A40;
     v8[4] = self;
-    v4 = v5;
-    v9 = v4;
-    v10 = v3;
+    currentTitle = v5;
+    v9 = currentTitle;
+    v10 = expandableItem;
     [UIView performWithoutAnimation:v8];
   }
 
-  if ([v4 length])
+  if ([currentTitle length])
   {
-    v6 = [v3 shouldDisplayExpandButton] ^ 1;
+    v6 = [expandableItem shouldDisplayExpandButton] ^ 1;
   }
 
   else
@@ -971,11 +971,11 @@ LABEL_12:
   }
 
   [(MapsLargerHitTargetButton *)self->_detailButton setHidden:v6];
-  if (v3)
+  if (expandableItem)
   {
     [(TransitDirectionsInstructionsStepView *)self _updateConstraints];
-    v7 = [(TransitDirectionsInstructionsStepView *)self detailButton];
-    [v7 sizeToFit];
+    detailButton = [(TransitDirectionsInstructionsStepView *)self detailButton];
+    [detailButton sizeToFit];
   }
 }
 
@@ -983,11 +983,11 @@ LABEL_12:
 {
   if (!self->_checkedItemIsExpandable)
   {
-    v3 = [(TransitDirectionsStepView *)self transitListItem];
-    if ([v3 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
+    transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+    if ([transitListItem conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
     {
-      v4 = [(TransitDirectionsStepView *)self transitListItem];
-      objc_storeWeak(&self->_expandableItem, v4);
+      transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+      objc_storeWeak(&self->_expandableItem, transitListItem2);
     }
 
     else
@@ -1008,10 +1008,10 @@ LABEL_12:
   v38.receiver = self;
   v38.super_class = TransitDirectionsInstructionsStepView;
   [(TransitDirectionsIconStepView *)&v38 layoutSubviews];
-  v3 = [(TransitDirectionsInstructionsStepView *)self _bestCellStyleForCurrentState];
-  if (v3 != self->_cellStyle)
+  _bestCellStyleForCurrentState = [(TransitDirectionsInstructionsStepView *)self _bestCellStyleForCurrentState];
+  if (_bestCellStyleForCurrentState != self->_cellStyle)
   {
-    [(TransitDirectionsInstructionsStepView *)self _setCellStyle:v3];
+    [(TransitDirectionsInstructionsStepView *)self _setCellStyle:_bestCellStyleForCurrentState];
     [(TransitDirectionsInstructionsStepView *)self updateConstraints];
     [(TransitDirectionsInstructionsStepView *)self layoutSubviews];
     return;
@@ -1043,9 +1043,9 @@ LABEL_12:
         objc_enumerationMutation(&off_1016EDB98);
       }
 
-      v8 = [*(*(&v34 + 1) + 8 * v7) integerValue];
-      v9 = [(TransitDirectionsInstructionsStepView *)self _layoutItemForInstructionType:v8];
-      v10 = [(TransitDirectionsInstructionsStepView *)self _labelViewForInstructionType:v8];
+      integerValue = [*(*(&v34 + 1) + 8 * v7) integerValue];
+      v9 = [(TransitDirectionsInstructionsStepView *)self _layoutItemForInstructionType:integerValue];
+      v10 = [(TransitDirectionsInstructionsStepView *)self _labelViewForInstructionType:integerValue];
       v11 = v10;
       if (v9)
       {
@@ -1063,17 +1063,17 @@ LABEL_12:
         if (objc_opt_isKindOfClass())
         {
           v13 = v11;
-          v14 = [v13 text];
-          if ([v14 length])
+          text = [v13 text];
+          if ([text length])
           {
-            v15 = [v9 bestFittingMultiPartString];
-            v16 = [v15 attributedString];
-            if ([v16 length])
+            bestFittingMultiPartString = [v9 bestFittingMultiPartString];
+            attributedString = [bestFittingMultiPartString attributedString];
+            if ([attributedString length])
             {
-              v17 = [v13 multiPartString];
-              v18 = [v9 bestFittingMultiPartString];
-              v19 = v17;
-              v20 = v18;
+              multiPartString = [v13 multiPartString];
+              bestFittingMultiPartString2 = [v9 bestFittingMultiPartString];
+              v19 = multiPartString;
+              v20 = bestFittingMultiPartString2;
               if (!(v19 | v20))
               {
 
@@ -1092,8 +1092,8 @@ LABEL_31:
                 goto LABEL_32;
               }
 
-              v14 = [v9 bestFittingMultiPartString];
-              [v13 setMultiPartString:v14];
+              text = [v9 bestFittingMultiPartString];
+              [v13 setMultiPartString:text];
 LABEL_29:
               v6 = v31;
               v5 = v32;
@@ -1116,22 +1116,22 @@ LABEL_29:
           }
 
           v21 = v11;
-          v22 = [v9 bestFittingMultiPartString];
-          v14 = [v22 attributedString];
+          bestFittingMultiPartString3 = [v9 bestFittingMultiPartString];
+          text = [bestFittingMultiPartString3 attributedString];
 
-          v23 = [v21 attributedText];
-          if ([v23 length] && objc_msgSend(v14, "length"))
+          attributedText = [v21 attributedText];
+          if ([attributedText length] && objc_msgSend(text, "length"))
           {
-            v24 = [v21 attributedText];
-            v25 = v14;
-            if (v25 | v24)
+            attributedText2 = [v21 attributedText];
+            v25 = text;
+            if (v25 | attributedText2)
             {
-              v14 = v25;
-              v27 = [v24 isEqual:v25];
+              text = v25;
+              v27 = [attributedText2 isEqual:v25];
 
               if ((v27 & 1) == 0)
               {
-                [v21 setAttributedText:v14];
+                [v21 setAttributedText:text];
                 v29 = 1;
               }
 
@@ -1141,7 +1141,7 @@ LABEL_29:
             else
             {
 
-              v14 = 0;
+              text = 0;
             }
           }
 
@@ -1181,19 +1181,19 @@ LABEL_32:
   v29 = 0u;
   v27 = 0u;
   [(TransitDirectionsInstructionsStepView *)self _metrics];
-  v3 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints minimumCellHeightConstraint];
-  [v3 setConstant:0.0];
+  minimumCellHeightConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints minimumCellHeightConstraint];
+  [minimumCellHeightConstraint setConstant:0.0];
 
-  v4 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints contentLayoutGuideToPrimaryLeadingConstraint];
-  [v4 setConstant:0.0];
+  contentLayoutGuideToPrimaryLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints contentLayoutGuideToPrimaryLeadingConstraint];
+  [contentLayoutGuideToPrimaryLeadingConstraint setConstant:0.0];
 
-  v5 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints topToPrimaryConstraint];
-  [v5 setConstant:0.0];
+  topToPrimaryConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints topToPrimaryConstraint];
+  [topToPrimaryConstraint setConstant:0.0];
 
   [(TransitDirectionsInstructionsStepView *)self _secondaryFirstBaselineToBottomPlatformArtworkDistance];
   v7 = v6;
-  v8 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
-  [v8 setConstant:v7];
+  secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
+  [secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint setConstant:v7];
 
   cellStyle = self->_cellStyle;
   if (cellStyle == 2)
@@ -1202,14 +1202,14 @@ LABEL_4:
     textStackView = self->_textStackView;
     [(TransitDirectionsInstructionsStepView *)self _extraSpacingAboveView:self->_badgesArtworkListView];
     v12 = v11;
-    v13 = [(TransitDirectionsInstructionsStepView *)self tertiaryLabel];
-    [(UIStackView *)textStackView setCustomSpacing:v13 afterView:v12];
+    tertiaryLabel = [(TransitDirectionsInstructionsStepView *)self tertiaryLabel];
+    [(UIStackView *)textStackView setCustomSpacing:tertiaryLabel afterView:v12];
 
     v14 = 0.0;
     if ([(TransitDirectionsStepView *)self useNavigationMetrics])
     {
-      v15 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-      if ([v15 userInterfaceIdiom] == 5)
+      traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+      if ([traitCollection userInterfaceIdiom] == 5)
       {
         v14 = 0.0;
       }
@@ -1222,20 +1222,20 @@ LABEL_4:
 
     if ([(TransitDirectionsInstructionsStepView *)self _hasTrailingContent])
     {
-      v16 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-      [v16 userInterfaceIdiom];
+      traitCollection2 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+      [traitCollection2 userInterfaceIdiom];
 
       v14 = 10.0;
     }
 
-    v17 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints primaryLabelTrailingToTrailingContentConstraint];
-    [v17 setConstant:v14];
+    primaryLabelTrailingToTrailingContentConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints primaryLabelTrailingToTrailingContentConstraint];
+    [primaryLabelTrailingToTrailingContentConstraint setConstant:v14];
 
-    v18 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints primaryLabelTrailingToTrailingContentConstraint];
-    [v18 constant];
+    primaryLabelTrailingToTrailingContentConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints primaryLabelTrailingToTrailingContentConstraint];
+    [primaryLabelTrailingToTrailingContentConstraint2 constant];
     v20 = v19;
-    v21 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints secondaryLabelTrailingToTrailingContentConstraint];
-    [v21 setConstant:v20];
+    secondaryLabelTrailingToTrailingContentConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints secondaryLabelTrailingToTrailingContentConstraint];
+    [secondaryLabelTrailingToTrailingContentConstraint setConstant:v20];
     goto LABEL_13;
   }
 
@@ -1249,54 +1249,54 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v22 = [(UIStackView *)self->_textStackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->_textStackView arrangedSubviews];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100F42E48;
   v23[3] = &unk_10165DD10;
-  v25 = self;
-  v26 = [v22 count];
-  v24 = v22;
-  v18 = v22;
-  [v18 enumerateObjectsUsingBlock:v23];
-  v21 = v24;
+  selfCopy = self;
+  v26 = [arrangedSubviews count];
+  v24 = arrangedSubviews;
+  primaryLabelTrailingToTrailingContentConstraint2 = arrangedSubviews;
+  [primaryLabelTrailingToTrailingContentConstraint2 enumerateObjectsUsingBlock:v23];
+  secondaryLabelTrailingToTrailingContentConstraint = v24;
 LABEL_13:
 }
 
 - (void)_updateConstraints
 {
   [(TransitDirectionsInstructionsStepView *)self _updateConstraintValues];
-  v3 = [(TransitDirectionsInstructionsStepView *)self _hasTrailingContent];
-  v4 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints primaryAccessoryMaximumWidthFactorConstraint];
-  [v4 setActive:v3];
+  _hasTrailingContent = [(TransitDirectionsInstructionsStepView *)self _hasTrailingContent];
+  primaryAccessoryMaximumWidthFactorConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints primaryAccessoryMaximumWidthFactorConstraint];
+  [primaryAccessoryMaximumWidthFactorConstraint setActive:_hasTrailingContent];
 
   [(TransitDirectionsInstructionsStepView *)self _updateAccessoryLabelCompressionHuggingPriorities];
-  v5 = [(TransitDirectionsInstructionsStepView *)self _useSingleInstructionMetrics];
-  LODWORD(v3) = v5;
-  [(NSLayoutConstraint *)self->_imageViewSingleInstructionConstraint setActive:v5];
-  [(NSLayoutConstraint *)self->_imageViewMultipleInstructionsConstraint setActive:v3 ^ 1];
-  v6 = [(TransitDirectionsStepView *)self transitListItem];
-  v7 = [v6 minorStringImage];
+  _useSingleInstructionMetrics = [(TransitDirectionsInstructionsStepView *)self _useSingleInstructionMetrics];
+  LODWORD(_hasTrailingContent) = _useSingleInstructionMetrics;
+  [(NSLayoutConstraint *)self->_imageViewSingleInstructionConstraint setActive:_useSingleInstructionMetrics];
+  [(NSLayoutConstraint *)self->_imageViewMultipleInstructionsConstraint setActive:_hasTrailingContent ^ 1];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  minorStringImage = [transitListItem minorStringImage];
 
   styleConstraints = self->_styleConstraints;
-  if (v7)
+  if (minorStringImage)
   {
-    v9 = [(_TransitDirectionsInstructionsCellConstraints *)styleConstraints textStackLeadingToPrimaryLabelLeadingConstraint];
-    [v9 setActive:0];
+    textStackLeadingToPrimaryLabelLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)styleConstraints textStackLeadingToPrimaryLabelLeadingConstraint];
+    [textStackLeadingToPrimaryLabelLeadingConstraint setActive:0];
 
-    v10 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints platformArtworkTrailingToTextStackLabelLeadingConstraint];
-    [v10 setActive:1];
+    platformArtworkTrailingToTextStackLabelLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints platformArtworkTrailingToTextStackLabelLeadingConstraint];
+    [platformArtworkTrailingToTextStackLabelLeadingConstraint setActive:1];
 
     [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints platformArtworkBottomToBottomConstraint];
   }
 
   else
   {
-    v11 = [(_TransitDirectionsInstructionsCellConstraints *)styleConstraints platformArtworkBottomToBottomConstraint];
-    [v11 setActive:0];
+    platformArtworkBottomToBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)styleConstraints platformArtworkBottomToBottomConstraint];
+    [platformArtworkBottomToBottomConstraint setActive:0];
 
-    v12 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints platformArtworkTrailingToTextStackLabelLeadingConstraint];
-    [v12 setActive:0];
+    platformArtworkTrailingToTextStackLabelLeadingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints platformArtworkTrailingToTextStackLabelLeadingConstraint];
+    [platformArtworkTrailingToTextStackLabelLeadingConstraint2 setActive:0];
 
     [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints textStackLeadingToPrimaryLabelLeadingConstraint];
   }
@@ -1310,17 +1310,17 @@ LABEL_13:
 
 - (void)_updateMultipleInstructionImagePositionConstraint
 {
-  v3 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-  [v3 userInterfaceIdiom];
+  traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   v4 = 6.0;
   if ([(TransitDirectionsStepView *)self useNavigationMetrics])
   {
-    v5 = [(TransitDirectionsStepView *)self navigationState];
-    v6 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-    [v6 userInterfaceIdiom];
+    navigationState = [(TransitDirectionsStepView *)self navigationState];
+    traitCollection2 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+    [traitCollection2 userInterfaceIdiom];
 
-    if (v5 == 4)
+    if (navigationState == 4)
     {
       v4 = 10.0;
     }
@@ -1331,31 +1331,31 @@ LABEL_13:
     }
   }
 
-  v10 = [(_MKUILabel *)self->_primaryLabel font];
-  v7 = self;
-  if (v10)
+  font = [(_MKUILabel *)self->_primaryLabel font];
+  selfCopy = self;
+  if (font)
   {
-    [v10 _scaledValueForValue:v4];
+    [font _scaledValueForValue:v4];
   }
 
   UIRoundToViewScale();
   v9 = v8;
 
-  [(NSLayoutConstraint *)v7->_imageViewMultipleInstructionsConstraint setConstant:v9];
+  [(NSLayoutConstraint *)selfCopy->_imageViewMultipleInstructionsConstraint setConstant:v9];
 }
 
 - (id)_imageViewPositionConstraints
 {
   v21.receiver = self;
   v21.super_class = TransitDirectionsInstructionsStepView;
-  v3 = [(TransitDirectionsIconStepView *)&v21 _imageViewPositionConstraints];
-  v4 = [v3 mutableCopy];
+  _imageViewPositionConstraints = [(TransitDirectionsIconStepView *)&v21 _imageViewPositionConstraints];
+  v4 = [_imageViewPositionConstraints mutableCopy];
 
   if (!self->_imageViewSingleInstructionConstraint)
   {
-    v5 = [(MKArtworkImageView *)self->super._iconImageView centerYAnchor];
-    v6 = [(UIStackView *)self->_textStackView centerYAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    centerYAnchor = [(MKArtworkImageView *)self->super._iconImageView centerYAnchor];
+    centerYAnchor2 = [(UIStackView *)self->_textStackView centerYAnchor];
+    v7 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v8 = [v7 _maps_withIdentifier:@"imageViewCenterToTextStackCenter"];
     imageViewSingleInstructionConstraint = self->_imageViewSingleInstructionConstraint;
     self->_imageViewSingleInstructionConstraint = v8;
@@ -1363,9 +1363,9 @@ LABEL_13:
 
   if (!self->_imageViewMultipleInstructionsConstraint)
   {
-    v10 = [(MKArtworkImageView *)self->super._iconImageView topAnchor];
-    v11 = [(UIStackView *)self->_textStackView topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    topAnchor = [(MKArtworkImageView *)self->super._iconImageView topAnchor];
+    topAnchor2 = [(UIStackView *)self->_textStackView topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v13 = [v12 _maps_withIdentifier:@"imageViewTopToTextStackTop"];
     imageViewMultipleInstructionsConstraint = self->_imageViewMultipleInstructionsConstraint;
     self->_imageViewMultipleInstructionsConstraint = v13;
@@ -1373,14 +1373,14 @@ LABEL_13:
 
   [v4 addObject:self->_imageViewSingleInstructionConstraint];
   [v4 addObject:self->_imageViewMultipleInstructionsConstraint];
-  v15 = [(MKArtworkImageView *)self->super._iconImageView widthAnchor];
+  widthAnchor = [(MKArtworkImageView *)self->super._iconImageView widthAnchor];
   [(TransitDirectionsInstructionsStepView *)self _maximumIconWidth];
-  v16 = [v15 constraintEqualToConstant:?];
+  v16 = [widthAnchor constraintEqualToConstant:?];
   [v4 addObject:v16];
 
-  v17 = [(MKArtworkImageView *)self->super._iconImageView heightAnchor];
+  heightAnchor = [(MKArtworkImageView *)self->super._iconImageView heightAnchor];
   [(TransitDirectionsInstructionsStepView *)self _maximumIconHeight];
-  v18 = [v17 constraintEqualToConstant:?];
+  v18 = [heightAnchor constraintEqualToConstant:?];
   [v4 addObject:v18];
 
   v19 = [v4 copy];
@@ -1388,95 +1388,95 @@ LABEL_13:
   return v19;
 }
 
-- (id)_constraintsForCellStyle:(unint64_t)a3
+- (id)_constraintsForCellStyle:(unint64_t)style
 {
   v4 = objc_alloc_init(NSMutableArray);
   v5 = objc_alloc_init(_TransitDirectionsInstructionsCellConstraints);
-  v6 = [(TransitDirectionsInstructionsStepView *)self heightAnchor];
-  v7 = [v6 constraintGreaterThanOrEqualToConstant:0.0];
+  heightAnchor = [(TransitDirectionsInstructionsStepView *)self heightAnchor];
+  v7 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
   v8 = [v7 _maps_withIdentifier:@"minimumCellHeightConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setMinimumCellHeightConstraint:v8];
 
-  v9 = [(_TransitDirectionsInstructionsCellConstraints *)v5 minimumCellHeightConstraint];
-  [v4 addObject:v9];
+  minimumCellHeightConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 minimumCellHeightConstraint];
+  [v4 addObject:minimumCellHeightConstraint];
 
-  v10 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v11 = [v10 bottomAnchor];
-  v12 = [(MKArtworkImageView *)self->_platformArtworkImageView bottomAnchor];
+  contentLayoutGuide = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  bottomAnchor = [contentLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(MKArtworkImageView *)self->_platformArtworkImageView bottomAnchor];
   [(TransitDirectionsInstructionsStepView *)self _minPlatformArtworkBottomToBottomDistance];
-  v13 = [v11 constraintGreaterThanOrEqualToAnchor:v12 constant:?];
+  v13 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:?];
   v14 = [v13 _maps_withIdentifier:@"platformArtworkBottomToBottomConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPlatformArtworkBottomToBottomConstraint:v14];
 
-  v15 = [(_TransitDirectionsInstructionsCellConstraints *)v5 platformArtworkBottomToBottomConstraint];
-  [v4 addObject:v15];
+  platformArtworkBottomToBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 platformArtworkBottomToBottomConstraint];
+  [v4 addObject:platformArtworkBottomToBottomConstraint];
 
-  v16 = [(MapsLargerHitTargetButton *)self->_detailButton trailingAnchor];
-  v17 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  trailingAnchor = [(MapsLargerHitTargetButton *)self->_detailButton trailingAnchor];
+  contentLayoutGuide2 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  trailingAnchor2 = [contentLayoutGuide2 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20 = [v19 _maps_withIdentifier:@"detailButtonTrailingToContentTrailing"];
   [v4 addObject:v20];
 
-  v21 = [(MapsLargerHitTargetButton *)self->_detailButton firstBaselineAnchor];
-  v22 = [(_MKUILabel *)self->_primaryLabel firstBaselineAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  firstBaselineAnchor = [(MapsLargerHitTargetButton *)self->_detailButton firstBaselineAnchor];
+  firstBaselineAnchor2 = [(_MKUILabel *)self->_primaryLabel firstBaselineAnchor];
+  v23 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v24 = [v23 _maps_withIdentifier:@"detailButtonBaselineToPrimaryLabelBaseline"];
   [v4 addObject:v24];
 
-  v25 = [(MKArtworkImageView *)self->_platformArtworkImageView bottomAnchor];
-  v26 = [(MKMultiPartLabel *)self->_secondaryLabel firstBaselineAnchor];
+  bottomAnchor3 = [(MKArtworkImageView *)self->_platformArtworkImageView bottomAnchor];
+  firstBaselineAnchor3 = [(MKMultiPartLabel *)self->_secondaryLabel firstBaselineAnchor];
   [(TransitDirectionsInstructionsStepView *)self _secondaryFirstBaselineToBottomPlatformArtworkDistance];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:?];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:firstBaselineAnchor3 constant:?];
   v28 = [v27 _maps_withIdentifier:@"secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setSecondaryLabelFirstBaselineToPlatformArtworkBottomConstraint:v28];
 
-  v29 = [(_TransitDirectionsInstructionsCellConstraints *)v5 secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
-  [v4 addObject:v29];
+  secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
+  [v4 addObject:secondaryLabelFirstBaselineToPlatformArtworkBottomConstraint];
 
-  v30 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v31 = [v30 bottomAnchor];
-  v32 = [(UIStackView *)self->_textStackView bottomAnchor];
-  v33 = [v31 constraintGreaterThanOrEqualToAnchor:v32];
+  contentLayoutGuide3 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  bottomAnchor4 = [contentLayoutGuide3 bottomAnchor];
+  bottomAnchor5 = [(UIStackView *)self->_textStackView bottomAnchor];
+  v33 = [bottomAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor5];
   v34 = [v33 _maps_withIdentifier:@"contentBottomToTextStackBaseline"];
   [v4 addObject:v34];
 
   v35 = v4;
-  v36 = [(TransitDirectionsInstructionsStepView *)self _platformArtworkHorizontalPositioningConstraint];
-  v37 = [v36 _maps_withIdentifier:@"platformArtworkHorizontalPositioning"];
+  _platformArtworkHorizontalPositioningConstraint = [(TransitDirectionsInstructionsStepView *)self _platformArtworkHorizontalPositioningConstraint];
+  v37 = [_platformArtworkHorizontalPositioningConstraint _maps_withIdentifier:@"platformArtworkHorizontalPositioning"];
   [v4 addObject:v37];
 
   v172 = v5;
-  v177 = self;
+  selfCopy = self;
   v178 = v4;
-  if (a3 != 2)
+  if (style != 2)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v91 = [(UIStackView *)self->_textStackView leadingAnchor];
-      v92 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-      v93 = [v92 leadingAnchor];
-      v94 = [v91 constraintEqualToAnchor:v93];
+      leadingAnchor = [(UIStackView *)self->_textStackView leadingAnchor];
+      contentLayoutGuide4 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+      leadingAnchor2 = [contentLayoutGuide4 leadingAnchor];
+      v94 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v95 = [v94 _maps_withIdentifier:@"contentLayoutGuideToPrimaryLeadingConstraint"];
       [(_TransitDirectionsInstructionsCellConstraints *)v5 setContentLayoutGuideToPrimaryLeadingConstraint:v95];
 
-      v96 = [(_TransitDirectionsInstructionsCellConstraints *)v5 contentLayoutGuideToPrimaryLeadingConstraint];
-      [v4 addObject:v96];
+      contentLayoutGuideToPrimaryLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 contentLayoutGuideToPrimaryLeadingConstraint];
+      [v4 addObject:contentLayoutGuideToPrimaryLeadingConstraint];
 
-      v97 = [(UIStackView *)self->_textStackView topAnchor];
-      v98 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-      v99 = [v98 topAnchor];
-      v100 = [v97 constraintEqualToAnchor:v99];
+      topAnchor = [(UIStackView *)self->_textStackView topAnchor];
+      contentLayoutGuide5 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+      topAnchor2 = [contentLayoutGuide5 topAnchor];
+      v100 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v101 = [v100 _maps_withIdentifier:@"topToPrimaryConstraint"];
       [(_TransitDirectionsInstructionsCellConstraints *)v5 setTopToPrimaryConstraint:v101];
 
-      v102 = [(_TransitDirectionsInstructionsCellConstraints *)v5 topToPrimaryConstraint];
-      [v4 addObject:v102];
+      topToPrimaryConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 topToPrimaryConstraint];
+      [v4 addObject:topToPrimaryConstraint];
 
-      v103 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-      v104 = [v103 trailingAnchor];
-      v105 = [(UIStackView *)self->_textStackView trailingAnchor];
-      v106 = [v104 constraintEqualToAnchor:v105];
+      contentLayoutGuide6 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+      trailingAnchor3 = [contentLayoutGuide6 trailingAnchor];
+      trailingAnchor4 = [(UIStackView *)self->_textStackView trailingAnchor];
+      v106 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v107 = [v106 _maps_withIdentifier:@"contentTrailingToTextStackTrailing"];
       [v4 addObject:v107];
 
@@ -1500,18 +1500,18 @@ LABEL_13:
             }
 
             v112 = *(*(&v179 + 1) + 8 * i);
-            v113 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-            v114 = [v113 trailingAnchor];
-            v115 = [(_MKUILabel *)v112 trailingAnchor];
-            v116 = [v114 constraintEqualToAnchor:v115];
+            contentLayoutGuide7 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+            trailingAnchor5 = [contentLayoutGuide7 trailingAnchor];
+            trailingAnchor6 = [(_MKUILabel *)v112 trailingAnchor];
+            v116 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
             v117 = [v116 _maps_withIdentifier:@"contentTrailingToLabelTrailing"];
 
-            self = v177;
-            if (v112 == v177->_primaryLabel)
+            self = selfCopy;
+            if (v112 == selfCopy->_primaryLabel)
             {
               [(_TransitDirectionsInstructionsCellConstraints *)v172 setPrimaryAccessoryToTrailingConstraint:v117];
-              v118 = [(_TransitDirectionsInstructionsCellConstraints *)v172 primaryAccessoryToTrailingConstraint];
-              [v118 setIdentifier:@"primaryAccessoryToTrailingConstraint"];
+              primaryAccessoryToTrailingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v172 primaryAccessoryToTrailingConstraint];
+              [primaryAccessoryToTrailingConstraint setIdentifier:@"primaryAccessoryToTrailingConstraint"];
             }
 
             v35 = v178;
@@ -1527,49 +1527,49 @@ LABEL_13:
       goto LABEL_27;
     }
 
-    if (a3)
+    if (style)
     {
       goto LABEL_28;
     }
   }
 
-  v38 = [(_MKUILabel *)self->_primaryLabel topAnchor];
-  v39 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v40 = [v39 topAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  topAnchor3 = [(_MKUILabel *)self->_primaryLabel topAnchor];
+  contentLayoutGuide8 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  topAnchor4 = [contentLayoutGuide8 topAnchor];
+  v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v42 = [v41 _maps_withIdentifier:@"topToPrimaryConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setTopToPrimaryConstraint:v42];
 
-  v43 = [(_TransitDirectionsInstructionsCellConstraints *)v5 topToPrimaryConstraint];
-  [v4 addObject:v43];
+  topToPrimaryConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)v5 topToPrimaryConstraint];
+  [v4 addObject:topToPrimaryConstraint2];
 
-  v44 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v45 = [v44 bottomAnchor];
-  v46 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-  v47 = [v46 bottomAnchor];
-  v48 = [v45 constraintGreaterThanOrEqualToAnchor:v47];
+  contentLayoutGuide9 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  bottomAnchor6 = [contentLayoutGuide9 bottomAnchor];
+  primaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+  bottomAnchor7 = [primaryLabel bottomAnchor];
+  v48 = [bottomAnchor6 constraintGreaterThanOrEqualToAnchor:bottomAnchor7];
   v49 = [v48 _maps_withIdentifier:@"primaryToContentBottomConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPrimaryBaselineToBottomConstraint:v49];
 
-  v50 = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryBaselineToBottomConstraint];
-  [v4 addObject:v50];
+  primaryBaselineToBottomConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryBaselineToBottomConstraint];
+  [v4 addObject:primaryBaselineToBottomConstraint];
 
-  v51 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-  v52 = [v51 leadingAnchor];
-  v53 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v54 = [v53 leadingAnchor];
-  v55 = [v52 constraintEqualToAnchor:v54];
+  primaryLabel2 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+  leadingAnchor3 = [primaryLabel2 leadingAnchor];
+  contentLayoutGuide10 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  leadingAnchor4 = [contentLayoutGuide10 leadingAnchor];
+  v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v56 = [v55 _maps_withIdentifier:@"contentLayoutGuideToPrimaryLeadingConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setContentLayoutGuideToPrimaryLeadingConstraint:v56];
 
   v35 = v4;
-  v57 = [(_TransitDirectionsInstructionsCellConstraints *)v5 contentLayoutGuideToPrimaryLeadingConstraint];
-  [v4 addObject:v57];
+  contentLayoutGuideToPrimaryLeadingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)v5 contentLayoutGuideToPrimaryLeadingConstraint];
+  [v4 addObject:contentLayoutGuideToPrimaryLeadingConstraint2];
 
-  v58 = [(UIStackView *)self->_textStackView leadingAnchor];
-  v59 = [(MKArtworkImageView *)self->_platformArtworkImageView trailingAnchor];
-  v60 = [(TransitDirectionsInstructionsStepView *)self traitCollection];
-  if ([v60 userInterfaceIdiom] == 5)
+  leadingAnchor5 = [(UIStackView *)self->_textStackView leadingAnchor];
+  trailingAnchor7 = [(MKArtworkImageView *)self->_platformArtworkImageView trailingAnchor];
+  traitCollection = [(TransitDirectionsInstructionsStepView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     v61 = 6.0;
   }
@@ -1579,54 +1579,54 @@ LABEL_13:
     v61 = 4.0;
   }
 
-  v62 = [v58 constraintEqualToAnchor:v59 constant:v61];
+  v62 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor7 constant:v61];
   v63 = [v62 _maps_withIdentifier:@"platformArtworkTrailingToTextStackLabelLeadingConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPlatformArtworkTrailingToTextStackLabelLeadingConstraint:v63];
 
-  v64 = [(UIStackView *)self->_textStackView leadingAnchor];
-  v65 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  leadingAnchor6 = [(UIStackView *)self->_textStackView leadingAnchor];
+  leadingAnchor7 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
+  v66 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v67 = [v66 _maps_withIdentifier:@"textStackLeadingToPrimaryLabelLeadingConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setTextStackLeadingToPrimaryLabelLeadingConstraint:v67];
 
-  v68 = [(_TransitDirectionsInstructionsCellConstraints *)v5 textStackLeadingToPrimaryLabelLeadingConstraint];
+  textStackLeadingToPrimaryLabelLeadingConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 textStackLeadingToPrimaryLabelLeadingConstraint];
   LODWORD(v69) = 1148829696;
-  [v68 setPriority:v69];
+  [textStackLeadingToPrimaryLabelLeadingConstraint setPriority:v69];
 
-  v70 = [(_TransitDirectionsInstructionsCellConstraints *)v5 textStackLeadingToPrimaryLabelLeadingConstraint];
-  [v4 addObject:v70];
+  textStackLeadingToPrimaryLabelLeadingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)v5 textStackLeadingToPrimaryLabelLeadingConstraint];
+  [v4 addObject:textStackLeadingToPrimaryLabelLeadingConstraint2];
 
-  v71 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
-  v72 = [(_MKUILabel *)self->_primaryLabel trailingAnchor];
-  v73 = [v71 constraintEqualToAnchor:v72];
+  leadingAnchor8 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
+  trailingAnchor8 = [(_MKUILabel *)self->_primaryLabel trailingAnchor];
+  v73 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor8];
   v74 = [v73 _maps_withIdentifier:@"primaryLabelTrailingToTrailingContentConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPrimaryLabelTrailingToTrailingContentConstraint:v74];
 
-  v75 = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryLabelTrailingToTrailingContentConstraint];
-  [v4 addObject:v75];
+  primaryLabelTrailingToTrailingContentConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryLabelTrailingToTrailingContentConstraint];
+  [v4 addObject:primaryLabelTrailingToTrailingContentConstraint];
 
-  v76 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
-  v77 = [(MKMultiPartLabel *)self->_secondaryLabel trailingAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77];
+  leadingAnchor9 = [(UILayoutGuide *)self->_trailingContentLayoutGuide leadingAnchor];
+  trailingAnchor9 = [(MKMultiPartLabel *)self->_secondaryLabel trailingAnchor];
+  v78 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor9];
   v79 = [v78 _maps_withIdentifier:@"secondaryLabelTrailingToTrailingContentConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setSecondaryLabelTrailingToTrailingContentConstraint:v79];
 
-  v80 = [(_TransitDirectionsInstructionsCellConstraints *)v5 secondaryLabelTrailingToTrailingContentConstraint];
-  [v4 addObject:v80];
+  secondaryLabelTrailingToTrailingContentConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 secondaryLabelTrailingToTrailingContentConstraint];
+  [v4 addObject:secondaryLabelTrailingToTrailingContentConstraint];
 
-  v81 = [(MKMultiPartLabel *)self->_tertiaryLabel trailingAnchor];
-  v82 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v83 = [v82 trailingAnchor];
-  v84 = [v81 constraintEqualToAnchor:v83];
+  trailingAnchor10 = [(MKMultiPartLabel *)self->_tertiaryLabel trailingAnchor];
+  contentLayoutGuide11 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  trailingAnchor11 = [contentLayoutGuide11 trailingAnchor];
+  v84 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
   v85 = [v84 _maps_withIdentifier:@"tertiaryLabelTrailingToContentTrailing"];
   [v4 addObject:v85];
 
   if ([(TransitDirectionsInstructionsStepView *)self _combineAccessoryLabels])
   {
-    v86 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-    v87 = [v86 trailingAnchor];
-    v88 = [(UIStackView *)self->_textStackView trailingAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88];
+    contentLayoutGuide12 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+    trailingAnchor12 = [contentLayoutGuide12 trailingAnchor];
+    trailingAnchor13 = [(UIStackView *)self->_textStackView trailingAnchor];
+    v89 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
     v90 = [v89 _maps_withIdentifier:@"contentTrailingToTextStackTrailing"];
     [v4 addObject:v90];
 
@@ -1634,49 +1634,49 @@ LABEL_13:
     goto LABEL_28;
   }
 
-  v119 = [(_MKUILabel *)self->_primaryAccessoryLabel trailingAnchor];
-  v120 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v121 = [v120 trailingAnchor];
-  v122 = [v119 constraintEqualToAnchor:v121];
+  trailingAnchor14 = [(_MKUILabel *)self->_primaryAccessoryLabel trailingAnchor];
+  contentLayoutGuide13 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  trailingAnchor15 = [contentLayoutGuide13 trailingAnchor];
+  v122 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15];
   v123 = [v122 _maps_withIdentifier:@"primaryAccessoryToTrailingConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPrimaryAccessoryToTrailingConstraint:v123];
 
-  v124 = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryAccessoryToTrailingConstraint];
-  [v4 addObject:v124];
+  primaryAccessoryToTrailingConstraint2 = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryAccessoryToTrailingConstraint];
+  [v4 addObject:primaryAccessoryToTrailingConstraint2];
 
-  v125 = [(_MKUILabel *)self->_secondaryAccessoryLabel trailingAnchor];
-  v126 = [(_MKUILabel *)self->_primaryAccessoryLabel trailingAnchor];
-  v127 = [v125 constraintEqualToAnchor:v126];
+  trailingAnchor16 = [(_MKUILabel *)self->_secondaryAccessoryLabel trailingAnchor];
+  trailingAnchor17 = [(_MKUILabel *)self->_primaryAccessoryLabel trailingAnchor];
+  v127 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17];
   v128 = [v127 _maps_withIdentifier:@"secondaryAccessoryTrailingToPrimaryAccessoryTrailing"];
   [v4 addObject:v128];
 
-  v129 = [(_MKUILabel *)self->_secondaryAccessoryLabel bottomAnchor];
-  v130 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v131 = [v130 bottomAnchor];
-  v132 = [v129 constraintLessThanOrEqualToAnchor:v131];
+  bottomAnchor8 = [(_MKUILabel *)self->_secondaryAccessoryLabel bottomAnchor];
+  contentLayoutGuide14 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  bottomAnchor9 = [contentLayoutGuide14 bottomAnchor];
+  v132 = [bottomAnchor8 constraintLessThanOrEqualToAnchor:bottomAnchor9];
   v133 = [v132 _maps_withIdentifier:@"secondaryAccessoryBaselineToContentBottom"];
   [v4 addObject:v133];
 
-  v134 = [(_MKUILabel *)self->_secondaryAccessoryLabel topAnchor];
-  v135 = [(_MKUILabel *)self->_primaryAccessoryLabel bottomAnchor];
-  v136 = [v134 constraintEqualToAnchor:v135];
+  topAnchor5 = [(_MKUILabel *)self->_secondaryAccessoryLabel topAnchor];
+  bottomAnchor10 = [(_MKUILabel *)self->_primaryAccessoryLabel bottomAnchor];
+  v136 = [topAnchor5 constraintEqualToAnchor:bottomAnchor10];
   v137 = [v136 _maps_withIdentifier:@"primaryAccessoryToSecondaryAccessoryConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPrimaryAccessoryToSecondaryAccessoryConstraint:v137];
 
-  v138 = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryAccessoryToSecondaryAccessoryConstraint];
-  [v4 addObject:v138];
+  primaryAccessoryToSecondaryAccessoryConstraint = [(_TransitDirectionsInstructionsCellConstraints *)v5 primaryAccessoryToSecondaryAccessoryConstraint];
+  [v4 addObject:primaryAccessoryToSecondaryAccessoryConstraint];
 
-  v139 = [(_MKUILabel *)self->_primaryAccessoryLabel firstBaselineAnchor];
-  v140 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-  v141 = [v140 firstBaselineAnchor];
-  v142 = [v139 constraintEqualToAnchor:v141];
+  firstBaselineAnchor4 = [(_MKUILabel *)self->_primaryAccessoryLabel firstBaselineAnchor];
+  primaryLabel3 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+  firstBaselineAnchor5 = [primaryLabel3 firstBaselineAnchor];
+  v142 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5];
   v143 = [v142 _maps_withIdentifier:@"primaryAccessoryBaselineToPrimaryBaseline"];
   [v4 addObject:v143];
 
-  v144 = [(_MKUILabel *)self->_primaryAccessoryLabel widthAnchor];
-  v145 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v146 = [v145 widthAnchor];
-  v147 = [v144 constraintLessThanOrEqualToAnchor:v146 multiplier:0.5];
+  widthAnchor = [(_MKUILabel *)self->_primaryAccessoryLabel widthAnchor];
+  contentLayoutGuide15 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  widthAnchor2 = [contentLayoutGuide15 widthAnchor];
+  v147 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 multiplier:0.5];
   v148 = [v147 _maps_withIdentifier:@"primaryAccessoryMaximumWidthFactorConstraint"];
   [(_TransitDirectionsInstructionsCellConstraints *)v5 setPrimaryAccessoryMaximumWidthFactorConstraint:v148];
 
@@ -1703,27 +1703,27 @@ LABEL_13:
         }
 
         v153 = *(*(&v183 + 1) + 8 * j);
-        v154 = [v153 topAnchor];
-        v155 = [(UILayoutGuide *)v177->_trailingContentLayoutGuide topAnchor];
-        v156 = [v154 constraintGreaterThanOrEqualToAnchor:v155];
+        topAnchor6 = [v153 topAnchor];
+        topAnchor7 = [(UILayoutGuide *)selfCopy->_trailingContentLayoutGuide topAnchor];
+        v156 = [topAnchor6 constraintGreaterThanOrEqualToAnchor:topAnchor7];
         v157 = [v156 _maps_withIdentifier:@"accessoryTopToTrailingContentTop"];
         [v4 addObject:v157];
 
-        v158 = [v153 leadingAnchor];
-        v159 = [(UILayoutGuide *)v177->_trailingContentLayoutGuide leadingAnchor];
-        v160 = [v158 constraintEqualToAnchor:v159];
+        leadingAnchor10 = [v153 leadingAnchor];
+        leadingAnchor11 = [(UILayoutGuide *)selfCopy->_trailingContentLayoutGuide leadingAnchor];
+        v160 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
         v161 = [v160 _maps_withIdentifier:@"accessoryLeadingToTrailingContentLeading"];
         [v4 addObject:v161];
 
-        v162 = [(UILayoutGuide *)v177->_trailingContentLayoutGuide trailingAnchor];
-        v163 = [v153 trailingAnchor];
-        v164 = [v162 constraintEqualToAnchor:v163];
+        trailingAnchor18 = [(UILayoutGuide *)selfCopy->_trailingContentLayoutGuide trailingAnchor];
+        trailingAnchor19 = [v153 trailingAnchor];
+        v164 = [trailingAnchor18 constraintEqualToAnchor:trailingAnchor19];
         v165 = [v164 _maps_withIdentifier:@"accessoryTrailingToTrailingContentTrailing"];
         [v4 addObject:v165];
 
-        v166 = [(UILayoutGuide *)v177->_trailingContentLayoutGuide bottomAnchor];
-        v167 = [v153 bottomAnchor];
-        v168 = [v166 constraintGreaterThanOrEqualToAnchor:v167];
+        bottomAnchor11 = [(UILayoutGuide *)selfCopy->_trailingContentLayoutGuide bottomAnchor];
+        bottomAnchor12 = [v153 bottomAnchor];
+        v168 = [bottomAnchor11 constraintGreaterThanOrEqualToAnchor:bottomAnchor12];
         v169 = [v168 _maps_withIdentifier:@"accessoryBottomToTrailingContentBottom"];
         [v4 addObject:v169];
       }
@@ -1744,23 +1744,23 @@ LABEL_28:
   return v5;
 }
 
-- (double)_extraSpacingAboveView:(id)a3
+- (double)_extraSpacingAboveView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = 0.0;
-  if (self->_primaryAccessoryLabel == v4)
+  if (self->_primaryAccessoryLabel == viewCopy)
   {
     [(TransitDirectionsInstructionsStepView *)self _metrics];
     v5 = v9;
   }
 
-  if (self->_secondaryLabel == v4)
+  if (self->_secondaryLabel == viewCopy)
   {
     [(TransitDirectionsInstructionsStepView *)self _metrics];
     v5 = v8;
   }
 
-  if (self->_badgesArtworkListView == v4)
+  if (self->_badgesArtworkListView == viewCopy)
   {
     v6 = 4.0;
   }
@@ -1813,9 +1813,9 @@ LABEL_17:
       break;
     case 0uLL:
 LABEL_6:
-      v6 = [(TransitDirectionsInstructionsStepView *)self _combineAccessoryLabels];
+      _combineAccessoryLabels = [(TransitDirectionsInstructionsStepView *)self _combineAccessoryLabels];
       v7 = self->_textStackView;
-      if (v6)
+      if (_combineAccessoryLabels)
       {
         v8 = self->_primaryAccessoryLabel;
         v28[0] = self->_primaryLabel;
@@ -1879,8 +1879,8 @@ LABEL_6:
   v24 = self->_styleConstraints;
   self->_styleConstraints = v23;
 
-  v25 = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints initialConstraints];
-  [NSLayoutConstraint activateConstraints:v25];
+  initialConstraints = [(_TransitDirectionsInstructionsCellConstraints *)self->_styleConstraints initialConstraints];
+  [NSLayoutConstraint activateConstraints:initialConstraints];
 
   [(TransitDirectionsInstructionsStepView *)self _cellStyleDidChange];
   [(TransitDirectionsInstructionsStepView *)self _updateConstraints];
@@ -1889,8 +1889,8 @@ LABEL_6:
 - (unint64_t)_bestCellStyleForCurrentState
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -1937,10 +1937,10 @@ LABEL_6:
 
   [(_MKUILabel *)self->_primaryLabel setNumberOfLines:0];
   [(_MKUILabel *)self->_primaryLabel setUserInteractionEnabled:0];
-  v10 = self;
-  if (![(TransitDirectionsStepView *)v10 useNavigationMetrics])
+  selfCopy = self;
+  if (![(TransitDirectionsStepView *)selfCopy useNavigationMetrics])
   {
-    if (sub_10000FA08(v10) == 5)
+    if (sub_10000FA08(selfCopy) == 5)
     {
       +[UIFont system17];
     }
@@ -1953,9 +1953,9 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v11 = [(TransitDirectionsStepView *)v10 navigationState];
-  v12 = sub_10000FA08(v10);
-  if (v11 != 4)
+  navigationState = [(TransitDirectionsStepView *)selfCopy navigationState];
+  v12 = sub_10000FA08(selfCopy);
+  if (navigationState != 4)
   {
     if (v12 != 5)
     {
@@ -1984,17 +1984,17 @@ LABEL_15:
   [(_MKUILabel *)self->_primaryLabel _mapkit_setContentHuggingPriority:1 forAxis:v16];
   v17 = width;
   v18 = [[MKMultiPartLabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-  secondaryLabel = v10->_secondaryLabel;
-  v10->_secondaryLabel = v18;
+  secondaryLabel = selfCopy->_secondaryLabel;
+  selfCopy->_secondaryLabel = v18;
 
-  [(MKMultiPartLabel *)v10->_secondaryLabel setAccessibilityIdentifier:@"SecondaryLabel"];
-  [(MKMultiPartLabel *)v10->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = v10;
-  v21 = [(TransitDirectionsStepView *)v20 useNavigationMetrics];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setAccessibilityIdentifier:@"SecondaryLabel"];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  v20 = selfCopy;
+  useNavigationMetrics = [(TransitDirectionsStepView *)v20 useNavigationMetrics];
   v22 = v20;
   v23 = sub_10000FA08(v22);
   v24 = y;
-  if (v21 || v23 == 5)
+  if (useNavigationMetrics || v23 == 5)
   {
     x = CGRectZero.origin.x;
     v26 = +[UIFont system17];
@@ -2008,23 +2008,23 @@ LABEL_15:
 
   v27 = v26;
 
-  [(MKMultiPartLabel *)v10->_secondaryLabel setFont:v27];
-  [(MKMultiPartLabel *)v10->_secondaryLabel setNumberOfLines:0];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setFont:v27];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setNumberOfLines:0];
   v28 = +[UIColor secondaryLabelColor];
-  [(MKMultiPartLabel *)v10->_secondaryLabel setTextColor:v28];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setTextColor:v28];
 
-  v29 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
-  [(MKMultiPartLabel *)v10->_secondaryLabel setHighlightedTextColor:v29];
+  highlightedTextColor = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setHighlightedTextColor:highlightedTextColor];
 
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  [(MKMultiPartLabel *)v10->_secondaryLabel setTextInset:UIEdgeInsetsZero.top, left, bottom, right];
-  [(MKMultiPartLabel *)v10->_secondaryLabel setUserInteractionEnabled:0];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setTextInset:UIEdgeInsetsZero.top, left, bottom, right];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel setUserInteractionEnabled:0];
   LODWORD(v33) = 1148846080;
-  [(MKMultiPartLabel *)v10->_secondaryLabel _mapkit_setContentCompressionResistancePriority:1 forAxis:v33];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel _mapkit_setContentCompressionResistancePriority:1 forAxis:v33];
   LODWORD(v34) = 1148846080;
-  [(MKMultiPartLabel *)v10->_secondaryLabel _mapkit_setContentHuggingPriority:1 forAxis:v34];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel _mapkit_setContentHuggingPriority:1 forAxis:v34];
   v35 = [[MKMultiPartLabel alloc] initWithFrame:{x, v24, v17, height}];
   v36 = v22[44];
   v22[44] = v35;
@@ -2042,15 +2042,15 @@ LABEL_15:
     +[UIFont system15];
   }
   v38 = ;
-  v39 = [v38 _mapkit_fontByAddingFeaturesForTimeDisplay];
+  _mapkit_fontByAddingFeaturesForTimeDisplay = [v38 _mapkit_fontByAddingFeaturesForTimeDisplay];
 
-  [v22[44] setFont:v39];
+  [v22[44] setFont:_mapkit_fontByAddingFeaturesForTimeDisplay];
   [v22[44] setNumberOfLines:0];
   v40 = +[UIColor secondaryLabelColor];
   [v22[44] setTextColor:v40];
 
-  v41 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
-  [v22[44] setHighlightedTextColor:v41];
+  highlightedTextColor2 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
+  [v22[44] setHighlightedTextColor:highlightedTextColor2];
 
   [v22[44] setTextInset:{UIEdgeInsetsZero.top, left, bottom, right}];
   [v22[44] setUserInteractionEnabled:0];
@@ -2058,9 +2058,9 @@ LABEL_15:
   [v22[44] _mapkit_setContentCompressionResistancePriority:1 forAxis:v42];
   LODWORD(v43) = 1148846080;
   [v22[44] _mapkit_setContentHuggingPriority:1 forAxis:v43];
-  v44 = [[TransitArtworkListView alloc] initWithFrame:x, v24, v17, height];
+  height = [[TransitArtworkListView alloc] initWithFrame:x, v24, v17, height];
   v45 = v37[45];
-  v37[45] = v44;
+  v37[45] = height;
 
   [v37[45] setAccessibilityIdentifier:@"BadgesArtworkListView"];
   [v37[45] setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2076,10 +2076,10 @@ LABEL_15:
   [v37[46] setAccessibilityIdentifier:@"PrimaryAccessoryLabel"];
   [v37[46] setTranslatesAutoresizingMaskIntoConstraints:0];
   v50 = v37;
-  v51 = [v50 traitCollection];
-  v52 = [v51 userInterfaceIdiom];
+  traitCollection = [v50 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v53 = UIFontTextStyleBody;
-  if (v52 != 5)
+  if (userInterfaceIdiom != 5)
   {
     v53 = UIFontTextStyleSubheadline;
   }
@@ -2088,15 +2088,15 @@ LABEL_15:
 
   v55 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:v54];
 
-  v56 = [v55 fontDescriptor];
-  v57 = [v56 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
+  fontDescriptor = [v55 fontDescriptor];
+  v57 = [fontDescriptor _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
 
   v58 = [UIFont fontWithDescriptor:v57 size:0.0];
 
   [v37[46] setFont:v58];
   [v37[46] _setMultilineLabelRequiresCarefulMeasurement:1];
-  v59 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
-  [v37[46] setHighlightedTextColor:v59];
+  highlightedTextColor3 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
+  [v37[46] setHighlightedTextColor:highlightedTextColor3];
 
   [v37[46] setUserInteractionEnabled:0];
   LODWORD(v60) = 1148846080;
@@ -2111,15 +2111,15 @@ LABEL_15:
   [v50[47] setTranslatesAutoresizingMaskIntoConstraints:0];
   v64 = v50;
   v65 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleSubheadline];
-  v66 = [v64 traitCollection];
-  v67 = [v66 userInterfaceIdiom];
+  traitCollection2 = [v64 traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v67 == 5)
+  if (userInterfaceIdiom2 == 5)
   {
-    v68 = [v65 fontDescriptor];
-    v69 = [v68 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplay];
+    fontDescriptor2 = [v65 fontDescriptor];
+    _mapkit_fontDescriptorByAddingFeaturesForTimeDisplay = [fontDescriptor2 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplay];
 
-    v70 = [UIFont fontWithDescriptor:v69 size:0.0];
+    v70 = [UIFont fontWithDescriptor:_mapkit_fontDescriptorByAddingFeaturesForTimeDisplay size:0.0];
 
     v65 = v70;
   }
@@ -2128,8 +2128,8 @@ LABEL_15:
   v71 = +[UIColor systemGrayColor];
   [v50[47] setTextColor:v71];
 
-  v72 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
-  [v50[47] setHighlightedTextColor:v72];
+  highlightedTextColor4 = [(_MKUILabel *)self->_primaryLabel highlightedTextColor];
+  [v50[47] setHighlightedTextColor:highlightedTextColor4];
 
   [v50[47] setUserInteractionEnabled:0];
   LODWORD(v73) = 1148846080;
@@ -2160,15 +2160,15 @@ LABEL_15:
   v64[33] = v81;
 
   [v64 addLayoutGuide:v64[33]];
-  v83 = [v64 _createImageView];
+  _createImageView = [v64 _createImageView];
   v84 = v64[48];
-  v64[48] = v83;
+  v64[48] = _createImageView;
 
   [v64[48] setAccessibilityIdentifier:@"PlatformArtworkImageView"];
-  [(MKMultiPartLabel *)v10->_secondaryLabel _mapkit_contentHuggingPriorityForAxis:0];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel _mapkit_contentHuggingPriorityForAxis:0];
   *&v86 = v85 + 1.0;
   [v64[48] _mapkit_setContentHuggingPriority:0 forAxis:v86];
-  [(MKMultiPartLabel *)v10->_secondaryLabel _mapkit_contentCompressionResistancePriorityForAxis:0];
+  [(MKMultiPartLabel *)selfCopy->_secondaryLabel _mapkit_contentCompressionResistancePriorityForAxis:0];
   *&v88 = v87 + 1.0;
   [v64[48] _mapkit_setContentCompressionResistancePriority:0 forAxis:v88];
   [v64 addSubview:v64[48]];
@@ -2178,10 +2178,10 @@ LABEL_15:
 
   [v64[49] setTranslatesAutoresizingMaskIntoConstraints:0];
   [v64[49] setAccessibilityIdentifier:@"DetailButton"];
-  v91 = [v64 traitCollection];
-  v92 = [v91 userInterfaceIdiom];
+  traitCollection3 = [v64 traitCollection];
+  userInterfaceIdiom3 = [traitCollection3 userInterfaceIdiom];
 
-  if (v92 == 5)
+  if (userInterfaceIdiom3 == 5)
   {
     v93 = -6.0;
   }
@@ -2191,8 +2191,8 @@ LABEL_15:
     v93 = -8.0;
   }
 
-  v94 = [v64 detailButton];
-  [v94 setTouchInsets:{v93, -16.0, v93, -16.0}];
+  detailButton = [v64 detailButton];
+  [detailButton setTouchInsets:{v93, -16.0, v93, -16.0}];
 
   v95 = v64[49];
   v96 = v64;
@@ -2207,9 +2207,9 @@ LABEL_15:
   }
   v97 = ;
 
-  v98 = [v97 _mapkit_fontByAddingFeaturesForTimeDisplay];
+  _mapkit_fontByAddingFeaturesForTimeDisplay2 = [v97 _mapkit_fontByAddingFeaturesForTimeDisplay];
 
-  [v95 _setFont:v98];
+  [v95 _setFont:_mapkit_fontByAddingFeaturesForTimeDisplay2];
   v99 = v64[49];
   v100 = +[UIColor systemGrayColor];
   [v99 setTitleColor:v100 forStates:2];

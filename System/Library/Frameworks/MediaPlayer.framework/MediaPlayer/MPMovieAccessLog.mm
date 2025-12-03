@@ -1,6 +1,6 @@
 @interface MPMovieAccessLog
 - (NSArray)events;
-- (id)_initWithAVItemAccessLog:(id)a3;
+- (id)_initWithAVItemAccessLog:(id)log;
 @end
 
 @implementation MPMovieAccessLog
@@ -8,15 +8,15 @@
 - (NSArray)events
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(AVPlayerItemAccessLog *)self->_accessLog events];
-  if ([v2 count])
+  events = [(AVPlayerItemAccessLog *)self->_accessLog events];
+  if ([events count])
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v2, "count")}];
+    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(events, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v2;
+    v4 = events;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -52,10 +52,10 @@
   return v3;
 }
 
-- (id)_initWithAVItemAccessLog:(id)a3
+- (id)_initWithAVItemAccessLog:(id)log
 {
-  v5 = a3;
-  if (v5)
+  logCopy = log;
+  if (logCopy)
   {
     v10.receiver = self;
     v10.super_class = MPMovieAccessLog;
@@ -63,19 +63,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_accessLog, a3);
+      objc_storeStrong(&v6->_accessLog, log);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

@@ -8,7 +8,7 @@
 {
   v4 = a3;
   v5 = +[SHSheetGroupActivity groupActivityType];
-  v6 = [a1 hasItemConformingToTypeIdentifier:v5];
+  v6 = [self hasItemConformingToTypeIdentifier:v5];
 
   if (v6)
   {
@@ -18,7 +18,7 @@
     v8[2] = __80__NSItemProvider_SHSheetGroupActivity__loadGroupActivityMetadataWithCompletion___block_invoke;
     v8[3] = &unk_1E71FA4C0;
     v9 = v4;
-    [a1 loadItemForTypeIdentifier:v7 options:0 completionHandler:v8];
+    [self loadItemForTypeIdentifier:v7 options:0 completionHandler:v8];
   }
 
   else

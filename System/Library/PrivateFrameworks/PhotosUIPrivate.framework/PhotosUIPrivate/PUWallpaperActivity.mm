@@ -1,19 +1,19 @@
 @interface PUWallpaperActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (PUWallpaperActivity)init;
 - (id)_systemImageName;
-- (void)_restrictionsChanged:(id)a3;
+- (void)_restrictionsChanged:(id)changed;
 - (void)_updateWallpaperModificationAllowedIfNeeded;
 - (void)dealloc;
-- (void)inlineEditingViewController:(id)a3 didDismissWithResponse:(id)a4;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)inlineEditingViewController:(id)controller didDismissWithResponse:(id)response;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation PUWallpaperActivity
 
-- (void)inlineEditingViewController:(id)a3 didDismissWithResponse:(id)a4
+- (void)inlineEditingViewController:(id)controller didDismissWithResponse:(id)response
 {
-  v5 = [a4 entryPointResult] == 1;
+  v5 = [response entryPointResult] == 1;
 
   [(UIActivity *)self activityDidFinish:v5];
 }
@@ -41,14 +41,14 @@
 
     v4 = v3;
     _Block_object_dispose(&v8, 8);
-    v5 = [v3 sharedConnection];
-    v6 = [v5 isWallpaperModificationAllowed];
+    sharedConnection = [v3 sharedConnection];
+    isWallpaperModificationAllowed = [sharedConnection isWallpaperModificationAllowed];
 
-    [(PUWallpaperActivity *)self _setWallpaperModificationAllowed:v6];
+    [(PUWallpaperActivity *)self _setWallpaperModificationAllowed:isWallpaperModificationAllowed];
   }
 }
 
-- (void)_restrictionsChanged:(id)a3
+- (void)_restrictionsChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -74,10 +74,10 @@ uint64_t __44__PUWallpaperActivity__restrictionsChanged___block_invoke(uint64_t 
   return result;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 assets];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
   v6 = PXMap();
   v7 = [v6 count];
   v8 = PXCreateMutablePosterConfigurationForLockScreenRole();
@@ -99,9 +99,9 @@ uint64_t __44__PUWallpaperActivity__restrictionsChanged___block_invoke(uint64_t 
   }
 
   [v8 setDisplayNameLocalizationKey:v11];
-  v12 = [v8 assetDirectory];
+  assetDirectory = [v8 assetDirectory];
   v17 = 0;
-  [v9 saveToURL:v12 error:&v17];
+  [v9 saveToURL:assetDirectory error:&v17];
   v13 = v17;
 
   v14 = PXCreateWallpaperPosterEditingEntryPoint();
@@ -124,49 +124,49 @@ id __48__PUWallpaperActivity_prepareWithActivityItems___block_invoke(uint64_t a1
   return v6;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   if (PLIsEDUMode())
   {
     return 0;
   }
 
-  v5 = [(PXActivity *)self itemSourceController];
-  if ([v5 isPreparingIndividualItems])
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  if ([itemSourceController isPreparingIndividualItems])
   {
-    if (v5)
+    if (itemSourceController)
     {
-      [v5 requestAssetsMediaTypeCount];
+      [itemSourceController requestAssetsMediaTypeCount];
     }
 
-    v6 = [v5 assets];
-    v7 = [v6 count];
+    assets = [itemSourceController assets];
+    v7 = [assets count];
 
-    v8 = [(PUWallpaperActivity *)self allowsMultipleAssetsInWallpaper];
-    if (v8 && v7 > 1)
+    allowsMultipleAssetsInWallpaper = [(PUWallpaperActivity *)self allowsMultipleAssetsInWallpaper];
+    if (allowsMultipleAssetsInWallpaper && v7 > 1)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = (v7 == 1) & ~v8;
+      v9 = (v7 == 1) & ~allowsMultipleAssetsInWallpaper;
     }
 
-    v4 = 0;
+    _isWallpaperModificationAllowed = 0;
     if (v9 && v7 == v11)
     {
       [(PUWallpaperActivity *)self _updateWallpaperModificationAllowedIfNeeded];
-      v4 = [(PUWallpaperActivity *)self _isWallpaperModificationAllowed];
+      _isWallpaperModificationAllowed = [(PUWallpaperActivity *)self _isWallpaperModificationAllowed];
     }
   }
 
   else
   {
-    v4 = 0;
+    _isWallpaperModificationAllowed = 0;
   }
 
-  return v4;
+  return _isWallpaperModificationAllowed;
 }
 
 - (id)_systemImageName
@@ -183,8 +183,8 @@ id __48__PUWallpaperActivity_prepareWithActivityItems___block_invoke(uint64_t a1
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUWallpaperActivity;
@@ -201,7 +201,7 @@ id __48__PUWallpaperActivity_prepareWithActivityItems___block_invoke(uint64_t a1
     return v2;
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -224,15 +224,15 @@ id __48__PUWallpaperActivity_prepareWithActivityItems___block_invoke(uint64_t a1
   _Block_object_dispose(&v16, 8);
   if (v4)
   {
-    [v3 addObserver:v2 selector:sel__restrictionsChanged_ name:*v4 object:0];
+    [defaultCenter addObserver:v2 selector:sel__restrictionsChanged_ name:*v4 object:0];
 
     [(PUWallpaperActivity *)v2 _setNeedsUpdateWallpaperModificationAllowed:1];
     return v2;
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMCEffectiveSettingsChangedNotification(void)"];
-  [v8 handleFailureInFunction:v9 file:@"PUWallpaperActivity.m" lineNumber:35 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v9 file:@"PUWallpaperActivity.m" lineNumber:35 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

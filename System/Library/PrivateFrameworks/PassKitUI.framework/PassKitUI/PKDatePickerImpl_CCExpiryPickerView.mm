@@ -1,25 +1,25 @@
 @interface PKDatePickerImpl_CCExpiryPickerView
 - (BOOL)_useDoubleMonthStyle;
 - (NSDate)date;
-- (double)_calculateWidthForComponent:(int64_t)a3 usingFont:(id)a4;
-- (id)_dateFormatForCalendarUnit:(unint64_t)a3;
-- (id)_dateWithCalendarUnit:(unint64_t)a3 value:(int64_t)a4;
-- (id)_stringForComponent:(int64_t)a3 index:(unint64_t)a4;
-- (id)initShowingDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 locale:(id)a6 calendar:(id)a7;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
-- (unint64_t)_defaultIndexForComponent:(int64_t)a3;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setDate:(id)a3;
-- (void)setDateValueChangedTarget:(id)a3 action:(SEL)a4;
+- (double)_calculateWidthForComponent:(int64_t)component usingFont:(id)font;
+- (id)_dateFormatForCalendarUnit:(unint64_t)unit;
+- (id)_dateWithCalendarUnit:(unint64_t)unit value:(int64_t)value;
+- (id)_stringForComponent:(int64_t)component index:(unint64_t)index;
+- (id)initShowingDay:(BOOL)day month:(BOOL)month year:(BOOL)year locale:(id)locale calendar:(id)calendar;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
+- (unint64_t)_defaultIndexForComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setDate:(id)date;
+- (void)setDateValueChangedTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PKDatePickerImpl_CCExpiryPickerView
 
-- (id)initShowingDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 locale:(id)a6 calendar:(id)a7
+- (id)initShowingDay:(BOOL)day month:(BOOL)month year:(BOOL)year locale:(id)locale calendar:(id)calendar
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a6;
+  yearCopy = year;
+  monthCopy = month;
+  localeCopy = locale;
   v47.receiver = self;
   v47.super_class = PKDatePickerImpl_CCExpiryPickerView;
   v13 = [(PKDatePickerImpl_CCExpiryPickerView *)&v47 init];
@@ -32,14 +32,14 @@
     calendar = v14->_calendar;
     v14->_calendar = v15;
 
-    objc_storeStrong(&v14->_locale, a6);
+    objc_storeStrong(&v14->_locale, locale);
     v18 = [MEMORY[0x1E69DB878] systemFontOfSize:23.5];
     v19 = 648;
     font = v14->_font;
     v14->_font = v18;
 
-    v45 = v12;
-    if (v9 && v8 && !a3)
+    v45 = localeCopy;
+    if (monthCopy && yearCopy && !day)
     {
       *v14->_calendarUnit = xmmword_1BE1165D0;
     }
@@ -104,7 +104,7 @@
     [(PKDatePickerImpl_CCExpiryPickerView *)v14 reloadAllComponents];
     [(PKDatePickerImpl_CCExpiryPickerView *)v14 selectRow:[(PKDatePickerImpl_CCExpiryPickerView *)v14 _defaultIndexForComponent:0] inComponent:0 animated:0];
     [(PKDatePickerImpl_CCExpiryPickerView *)v14 selectRow:[(PKDatePickerImpl_CCExpiryPickerView *)v14 _defaultIndexForComponent:1] inComponent:1 animated:0];
-    v12 = v45;
+    localeCopy = v45;
   }
 
   return v14;
@@ -130,7 +130,7 @@
   return v7;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v5 = 0;
   calendarUnit = self->_calendarUnit;
@@ -138,7 +138,7 @@
   do
   {
     v8 = v7;
-    v9 = [(NSCalendar *)self->_calendar component:calendarUnit[v5] fromDate:a3];
+    v9 = [(NSCalendar *)self->_calendar component:calendarUnit[v5] fromDate:date];
     v10 = &self->_possibleRange[v5];
     v11 = v9 >= v10->location;
     v12 = v9 - v10->location;
@@ -162,30 +162,30 @@
   while ((v8 & 1) != 0);
 }
 
-- (void)setDateValueChangedTarget:(id)a3 action:(SEL)a4
+- (void)setDateValueChangedTarget:(id)target action:(SEL)action
 {
-  objc_storeStrong(&self->_changeTarget, a3);
-  if (a4)
+  objc_storeStrong(&self->_changeTarget, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_changeAction = v6;
+  self->_changeAction = actionCopy;
 }
 
-- (id)_dateFormatForCalendarUnit:(unint64_t)a3
+- (id)_dateFormatForCalendarUnit:(unint64_t)unit
 {
-  if (a3 == 4)
+  if (unit == 4)
   {
     v4 = @"yyyy";
   }
 
-  else if (a3 == 8)
+  else if (unit == 8)
   {
     if ([(PKDatePickerImpl_CCExpiryPickerView *)self _useDoubleMonthStyle])
     {
@@ -207,7 +207,7 @@
     v4 = &stru_1F3BD7330;
   }
 
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v10 = PKLocaleWithOverriddenCalendar();
 
   v3 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:v4 options:0 locale:v10];
@@ -239,9 +239,9 @@ LABEL_9:
     v10 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(NSNumber *)self->_useDoubleMonthStyle BOOLValue];
+      bOOLValue = [(NSNumber *)self->_useDoubleMonthStyle BOOLValue];
       v13[0] = 67109634;
-      v13[1] = v11;
+      v13[1] = bOOLValue;
       v14 = 2112;
       v15 = v6;
       v16 = 2112;
@@ -255,31 +255,31 @@ LABEL_9:
   return [(NSNumber *)useDoubleMonthStyle BOOLValue];
 }
 
-- (id)_dateWithCalendarUnit:(unint64_t)a3 value:(int64_t)a4
+- (id)_dateWithCalendarUnit:(unint64_t)unit value:(int64_t)value
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v7 setCalendar:self->_calendar];
-  [v7 setValue:a4 forComponent:a3];
+  [v7 setValue:value forComponent:unit];
   v8 = [(NSCalendar *)self->_calendar dateFromComponents:v7];
 
   return v8;
 }
 
-- (double)_calculateWidthForComponent:(int64_t)a3 usingFont:(id)a4
+- (double)_calculateWidthForComponent:(int64_t)component usingFont:(id)font
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = self->_calendarUnit[a3];
-  v8 = &self->_possibleRange[a3];
+  fontCopy = font;
+  v7 = self->_calendarUnit[component];
+  v8 = &self->_possibleRange[component];
   location = v8->location;
   length = v8->length;
-  v11 = self->_dateFormatter[a3];
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = v12;
+  v11 = self->_dateFormatter[component];
+  date = [MEMORY[0x1E695DF00] date];
+  v13 = date;
   v14 = 0.0;
   if (location < length + location)
   {
-    v26 = v12;
+    v26 = date;
     v27 = *MEMORY[0x1E69DB648];
     do
     {
@@ -288,23 +288,23 @@ LABEL_9:
       {
         v16 = [(NSDateFormatter *)v11 stringFromDate:v15];
         v30 = v27;
-        v31[0] = v6;
+        v31[0] = fontCopy;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
         [v16 sizeWithAttributes:v17];
         if (v18 > v14)
         {
           v28 = v27;
-          v29 = v6;
+          v29 = fontCopy;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
           v19 = v11;
           v20 = v7;
-          v21 = self;
-          v23 = v22 = v6;
+          selfCopy = self;
+          v23 = v22 = fontCopy;
           [v16 sizeWithAttributes:v23];
           v14 = v24;
 
-          v6 = v22;
-          self = v21;
+          fontCopy = v22;
+          self = selfCopy;
           v7 = v20;
           v11 = v19;
           v13 = v26;
@@ -321,22 +321,22 @@ LABEL_9:
   return ceil(v14) + 2.0;
 }
 
-- (unint64_t)_defaultIndexForComponent:(int64_t)a3
+- (unint64_t)_defaultIndexForComponent:(int64_t)component
 {
-  v5 = self->_calendarUnit[a3];
+  v5 = self->_calendarUnit[component];
   calendar = self->_calendar;
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [(NSCalendar *)calendar component:v5 fromDate:v7]- self->_possibleRange[a3].location;
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [(NSCalendar *)calendar component:v5 fromDate:date]- self->_possibleRange[component].location;
 
   return v8;
 }
 
-- (id)_stringForComponent:(int64_t)a3 index:(unint64_t)a4
+- (id)_stringForComponent:(int64_t)component index:(unint64_t)index
 {
-  v6 = [(PKDatePickerImpl_CCExpiryPickerView *)self _dateForComponent:a3 index:a4];
+  v6 = [(PKDatePickerImpl_CCExpiryPickerView *)self _dateForComponent:component index:index];
   if (v6)
   {
-    v7 = [(NSDateFormatter *)self->_dateFormatter[a3] stringFromDate:v6];
+    v7 = [(NSDateFormatter *)self->_dateFormatter[component] stringFromDate:v6];
   }
 
   else
@@ -347,18 +347,18 @@ LABEL_9:
   return v7;
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v9 = a6;
-  v10 = v9;
-  if (!v9)
+  reusingViewCopy = reusingView;
+  v10 = reusingViewCopy;
+  if (!reusingViewCopy)
   {
     v10 = objc_alloc_init(PKDatePickerLabel);
   }
 
-  v11 = [(PKDatePickerImpl_CCExpiryPickerView *)self _stringForComponent:a5 index:a4];
+  v11 = [(PKDatePickerImpl_CCExpiryPickerView *)self _stringForComponent:component index:row];
   [(PKDatePickerLabel *)v10 setText:v11];
-  if (a5)
+  if (component)
   {
     v12 = 10.0;
   }
@@ -368,7 +368,7 @@ LABEL_9:
     v12 = 5.0;
   }
 
-  if (a5)
+  if (component)
   {
     v13 = 5.0;
   }
@@ -378,26 +378,26 @@ LABEL_9:
     v13 = 10.0;
   }
 
-  [(PKDatePickerLabel *)v10 setTextAlignment:2 * (a5 != 0)];
+  [(PKDatePickerLabel *)v10 setTextAlignment:2 * (component != 0)];
   [(PKDatePickerLabel *)v10 setFont:self->_font];
-  v14 = [(PKDatePickerImpl_CCExpiryPickerView *)self _textColor];
-  [(PKDatePickerLabel *)v10 setTextColor:v14];
+  _textColor = [(PKDatePickerImpl_CCExpiryPickerView *)self _textColor];
+  [(PKDatePickerLabel *)v10 setTextColor:_textColor];
 
   [(PKDatePickerLabel *)v10 setContentInset:0.0, v12, 0.0, v13];
 
   return v10;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = a3;
+  viewCopy = view;
   if (self->_changeTarget)
   {
     if (self->_changeAction)
     {
-      v9 = v6;
+      v9 = viewCopy;
       v7 = objc_opt_respondsToSelector();
-      v6 = v9;
+      viewCopy = v9;
       if (v7)
       {
         if (self->_changeAction)
@@ -411,7 +411,7 @@ LABEL_9:
         }
 
         [self->_changeTarget performSelector:changeAction withObject:self];
-        v6 = v9;
+        viewCopy = v9;
       }
     }
   }

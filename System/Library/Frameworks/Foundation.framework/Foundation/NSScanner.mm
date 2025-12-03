@@ -1,8 +1,8 @@
 @interface NSScanner
-+ (NSScanner)allocWithZone:(_NSZone *)a3;
++ (NSScanner)allocWithZone:(_NSZone *)zone;
 + (NSScanner)scannerWithString:(NSString *)string;
 + (id)localizedScannerWithString:(NSString *)string;
-- (BOOL)_scanDecimal:(unint64_t)a3 into:(int64_t *)a4;
+- (BOOL)_scanDecimal:(unint64_t)decimal into:(int64_t *)into;
 - (BOOL)isAtEnd;
 - (BOOL)scanCharactersFromSet:(NSCharacterSet *)set intoString:(NSString *)result;
 - (BOOL)scanDecimal:(NSDecimal *)dcm;
@@ -21,7 +21,7 @@
 - (NSScanner)initWithString:(NSString *)string;
 - (id)_invertedSkipSet;
 - (id)_remainingString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setCaseSensitive:(BOOL)caseSensitive;
 - (void)setCharactersToBeSkipped:(NSCharacterSet *)charactersToBeSkipped;
 - (void)setLocale:(id)locale;
@@ -32,51 +32,51 @@
 
 - (BOOL)isAtEnd
 {
-  v3 = [(NSScanner *)self string];
-  v4 = [(NSScanner *)self scanLocation];
-  v5 = [(NSString *)v3 length];
-  v6 = [(NSScanner *)self _invertedSkipSet];
-  if (v6)
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
+  v5 = [(NSString *)string length];
+  _invertedSkipSet = [(NSScanner *)self _invertedSkipSet];
+  if (_invertedSkipSet)
   {
-    v7 = [(NSString *)v3 rangeOfCharacterFromSet:v6 options:0 range:v4, v5 - v4];
+    v7 = [(NSString *)string rangeOfCharacterFromSet:_invertedSkipSet options:0 range:scanLocation, v5 - scanLocation];
     if (v8)
     {
-      v4 = v7;
+      scanLocation = v7;
     }
 
     else
     {
-      v4 = v5;
+      scanLocation = v5;
     }
   }
 
-  return v4 == v5;
+  return scanLocation == v5;
 }
 
 - (id)_remainingString
 {
-  v3 = [(NSScanner *)self string];
-  v4 = [(NSScanner *)self scanLocation];
-  v5 = [(NSString *)v3 length]- v4;
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
+  v5 = [(NSString *)string length]- scanLocation;
 
-  return [(NSString *)v3 substringWithRange:v4, v5];
+  return [(NSString *)string substringWithRange:scanLocation, v5];
 }
 
-- (BOOL)_scanDecimal:(unint64_t)a3 into:(int64_t *)a4
+- (BOOL)_scanDecimal:(unint64_t)decimal into:(int64_t *)into
 {
-  v7 = [(NSScanner *)self scanLocation];
-  v8 = [(NSScanner *)self string];
-  v9 = [(NSString *)v8 length];
-  if (!a3)
+  scanLocation = [(NSScanner *)self scanLocation];
+  string = [(NSScanner *)self string];
+  v9 = [(NSString *)string length];
+  if (!decimal)
   {
     return 0;
   }
 
   v10 = 0;
   v11 = 0;
-  if (v9 >= v7)
+  if (v9 >= scanLocation)
   {
-    v12 = v9 - v7;
+    v12 = v9 - scanLocation;
   }
 
   else
@@ -84,10 +84,10 @@
     v12 = 0;
   }
 
-  v13 = v7;
+  v13 = scanLocation;
   while (v12 != v10)
   {
-    v14 = [(NSString *)v8 characterAtIndex:v13];
+    v14 = [(NSString *)string characterAtIndex:v13];
     if (v14 - 58 < 0xFFFFFFF6)
     {
       v12 = v10;
@@ -97,21 +97,21 @@
     v11 = 10 * v11 + v14 - 48;
     ++v10;
     ++v13;
-    if (a3 == v10)
+    if (decimal == v10)
     {
       goto LABEL_12;
     }
   }
 
-  a3 = v12;
+  decimal = v12;
   if (!v12)
   {
     return 0;
   }
 
 LABEL_12:
-  [(NSScanner *)self setScanLocation:a3 + v7];
-  *a4 = v11;
+  [(NSScanner *)self setScanLocation:decimal + scanLocation];
+  *into = v11;
   return 1;
 }
 
@@ -120,10 +120,10 @@ LABEL_12:
   v57 = *MEMORY[0x1E69E9840];
   v47 = 0uLL;
   v48 = 0;
-  v5 = [(NSScanner *)self scanLocation];
-  v6 = [(NSScanner *)self string];
-  v7 = [(NSScanner *)self charactersToBeSkipped];
-  v8 = [(NSScanner *)self locale];
+  scanLocation = [(NSScanner *)self scanLocation];
+  string = [(NSScanner *)self string];
+  charactersToBeSkipped = [(NSScanner *)self charactersToBeSkipped];
+  locale = [(NSScanner *)self locale];
   v56 = 0u;
   v54 = 0u;
   memset(v55, 0, sizeof(v55));
@@ -131,10 +131,10 @@ LABEL_12:
   v46 = &v52 + 15;
   v49 = 0uLL;
   v50 = 0;
-  v9 = [v8 objectForKey:*MEMORY[0x1E695D990]];
+  v9 = [locale objectForKey:*MEMORY[0x1E695D990]];
   if (!v9)
   {
-    v9 = [v8 objectForKey:@"NSDecimalSeparator"];
+    v9 = [locale objectForKey:@"NSDecimalSeparator"];
   }
 
   if (v9)
@@ -157,11 +157,11 @@ LABEL_12:
     v44 = 46;
   }
 
-  v11 = [(NSString *)v6 length];
+  v11 = [(NSString *)string length];
   *(&v54 + 1) = v11;
-  v55[0] = v5;
-  *&v54 = v6;
-  if (v11 <= v5)
+  v55[0] = scanLocation;
+  *&v54 = string;
+  if (v11 <= scanLocation)
   {
     *&v53 = 0;
     v13 = 0xFFFFLL;
@@ -169,28 +169,28 @@ LABEL_12:
 
   else
   {
-    if (v11 - v5 >= 0x20)
+    if (v11 - scanLocation >= 0x20)
     {
       v12 = 32;
     }
 
     else
     {
-      v12 = v11 - v5;
+      v12 = v11 - scanLocation;
     }
 
     *&v53 = v12;
-    [v6 getUid("getCharacters:&v55[1] range:{v5, v12}")];
+    [string getUid("getCharacters:&v55[1] range:{scanLocation, v12}")];
     v13 = LOWORD(v55[1]);
   }
 
   WORD4(v56) = v13;
   *(&v53 + 1) = 1;
   v42 = dcm;
-  v43 = self;
-  if (v7)
+  selfCopy = self;
+  if (charactersToBeSkipped)
   {
-    if ([(NSCharacterSet *)v7 characterIsMember:v13])
+    if ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:v13])
     {
       do
       {
@@ -237,7 +237,7 @@ LABEL_12:
         WORD4(v56) = v15;
       }
 
-      while ([(NSCharacterSet *)v7 characterIsMember:?]);
+      while ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:?]);
     }
 
     LODWORD(v13) = WORD4(v56);
@@ -375,19 +375,19 @@ LABEL_53:
     *&v42->_mantissa[6] = v48;
   }
 
-  [(NSScanner *)v43 setScanLocation:&v38[v41 + v40 - v24], v40];
+  [(NSScanner *)selfCopy setScanLocation:&v38[v41 + v40 - v24], v40];
   return 1;
 }
 
-+ (NSScanner)allocWithZone:(_NSZone *)a3
++ (NSScanner)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_self() == a1)
+  selfCopy = self;
+  if (objc_opt_self() == self)
   {
-    v4 = objc_opt_self();
+    selfCopy = objc_opt_self();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
 - (NSScanner)initWithString:(NSString *)string
@@ -412,7 +412,7 @@ LABEL_53:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_allocWithZone(NSConcreteScanner) initWithString:{-[NSScanner string](self, "string")}];
   [v4 setCharactersToBeSkipped:{-[NSScanner charactersToBeSkipped](self, "charactersToBeSkipped")}];
@@ -424,9 +424,9 @@ LABEL_53:
 
 - (id)_invertedSkipSet
 {
-  v2 = [(NSScanner *)self charactersToBeSkipped];
+  charactersToBeSkipped = [(NSScanner *)self charactersToBeSkipped];
 
-  return [(NSCharacterSet *)v2 invertedSet];
+  return [(NSCharacterSet *)charactersToBeSkipped invertedSet];
 }
 
 - (BOOL)scanDouble:(double *)result
@@ -446,8 +446,8 @@ LABEL_53:
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v9[0] = 0.0;
-  v8 = [(NSScanner *)self scanLocation];
-  v5 = _NSScanDoubleFromString([(NSScanner *)self string], [(NSScanner *)self charactersToBeSkipped], v9, &v8, [(NSScanner *)self locale]);
+  scanLocation = [(NSScanner *)self scanLocation];
+  v5 = _NSScanDoubleFromString([(NSScanner *)self string], [(NSScanner *)self charactersToBeSkipped], v9, &scanLocation, [(NSScanner *)self locale]);
   if (v5)
   {
     if (result)
@@ -456,7 +456,7 @@ LABEL_53:
       *result = v6;
     }
 
-    [(NSScanner *)self setScanLocation:v8];
+    [(NSScanner *)self setScanLocation:scanLocation];
   }
 
   return v5;
@@ -479,8 +479,8 @@ LABEL_53:
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v9[0] = 0.0;
-  v8 = [(NSScanner *)self scanLocation];
-  v5 = _NSScanHexDoubleFromString([(NSScanner *)self string], [(NSScanner *)self charactersToBeSkipped], v9, &v8, [(NSScanner *)self locale]);
+  scanLocation = [(NSScanner *)self scanLocation];
+  v5 = _NSScanHexDoubleFromString([(NSScanner *)self string], [(NSScanner *)self charactersToBeSkipped], v9, &scanLocation, [(NSScanner *)self locale]);
   if (v5)
   {
     if (result)
@@ -489,7 +489,7 @@ LABEL_53:
       *result = v6;
     }
 
-    [(NSScanner *)self setScanLocation:v8];
+    [(NSScanner *)self setScanLocation:scanLocation];
   }
 
   return v5;
@@ -498,17 +498,17 @@ LABEL_53:
 - (BOOL)scanUnsignedLongLong:(unint64_t *)result
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [(NSScanner *)self scanLocation];
-  v5 = [(NSScanner *)self string];
-  v6 = [(NSScanner *)self charactersToBeSkipped];
+  scanLocation = [(NSScanner *)self scanLocation];
+  string = [(NSScanner *)self string];
+  charactersToBeSkipped = [(NSScanner *)self charactersToBeSkipped];
   *c = 0u;
   memset(v44, 0, sizeof(v44));
   v41 = 0u;
-  v7 = [(NSString *)v5 length];
+  v7 = [(NSString *)string length];
   v43 = v7;
-  *&v44[0] = v4;
-  v42 = v5;
-  if (v7 <= v4)
+  *&v44[0] = scanLocation;
+  v42 = string;
+  if (v7 <= scanLocation)
   {
     *&v41 = 0;
     v9 = 0xFFFF;
@@ -516,26 +516,26 @@ LABEL_53:
 
   else
   {
-    if (v7 - v4 >= 0x20)
+    if (v7 - scanLocation >= 0x20)
     {
       v8 = 32;
     }
 
     else
     {
-      v8 = v7 - v4;
+      v8 = v7 - scanLocation;
     }
 
     *&v41 = v8;
-    [v5 getUid("getCharacters:v44 + 8 range:{v4, v8}")];
+    [string getUid("getCharacters:v44 + 8 range:{scanLocation, v8}")];
     v9 = WORD4(v44[0]);
   }
 
   LOWORD(c[2]) = v9;
   *(&v41 + 1) = 1;
-  if (v6)
+  if (charactersToBeSkipped)
   {
-    if ([(NSCharacterSet *)v6 characterIsMember:?])
+    if ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:?])
     {
       do
       {
@@ -581,7 +581,7 @@ LABEL_53:
         LOWORD(c[2]) = v11;
       }
 
-      while ([(NSCharacterSet *)v6 characterIsMember:?]);
+      while ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:?]);
     }
 
     v9 = LOWORD(c[2]);
@@ -612,7 +612,7 @@ LABEL_53:
       [v42 getUid("getCharacters:v44 + 8 range:{v16, v17}")];
       LOWORD(c[2]) = WORD4(v44[0]);
       *(&v41 + 1) = 1;
-      if (!v6)
+      if (!charactersToBeSkipped)
       {
         goto LABEL_44;
       }
@@ -631,13 +631,13 @@ LABEL_53:
   }
 
   LOWORD(c[2]) = v15;
-  if (!v6)
+  if (!charactersToBeSkipped)
   {
     goto LABEL_44;
   }
 
 LABEL_32:
-  if ([(NSCharacterSet *)v6 characterIsMember:?])
+  if ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:?])
   {
     do
     {
@@ -683,7 +683,7 @@ LABEL_32:
       LOWORD(c[2]) = v19;
     }
 
-    while ([(NSCharacterSet *)v6 characterIsMember:?]);
+    while ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:?]);
   }
 
 LABEL_44:
@@ -699,7 +699,7 @@ LABEL_44:
   if (v24)
   {
     v38 = v24;
-    v39 = self;
+    selfCopy = self;
     v25 = 0;
     while (1)
     {
@@ -833,7 +833,7 @@ LABEL_77:
           *result = v25;
         }
 
-        [(NSScanner *)v39 setScanLocation:*&v44[0] + *(&v41 + 1) - 1];
+        [(NSScanner *)selfCopy setScanLocation:*&v44[0] + *(&v41 + 1) - 1];
         return v38;
       }
     }
@@ -871,15 +871,15 @@ LABEL_77:
 - (BOOL)scanHexLongLong:(unint64_t *)result
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [(NSScanner *)self string];
-  v6 = [(NSScanner *)self scanLocation];
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
   v41 = 0u;
   memset(v40, 0, sizeof(v40));
-  v7 = [(NSString *)v5 length:0];
+  v7 = [(NSString *)string length:0];
   v39 = v7;
-  *&v40[0] = v6;
-  v38 = v5;
-  if (v7 <= v6)
+  *&v40[0] = scanLocation;
+  v38 = string;
+  if (v7 <= scanLocation)
   {
     *&v37 = 0;
     v9 = -1;
@@ -887,28 +887,28 @@ LABEL_77:
 
   else
   {
-    if (v7 - v6 >= 0x20)
+    if (v7 - scanLocation >= 0x20)
     {
       v8 = 32;
     }
 
     else
     {
-      v8 = v7 - v6;
+      v8 = v7 - scanLocation;
     }
 
     *&v37 = v8;
-    [v5 getUid("getCharacters:v40 + 8 range:{v6, v8}")];
+    [string getUid("getCharacters:v40 + 8 range:{scanLocation, v8}")];
     v9 = WORD4(v40[0]);
   }
 
   WORD4(v41) = v9;
   *(&v37 + 1) = 1;
-  v10 = [(NSScanner *)self charactersToBeSkipped];
-  if (v10)
+  charactersToBeSkipped = [(NSScanner *)self charactersToBeSkipped];
+  if (charactersToBeSkipped)
   {
-    v11 = v10;
-    if ([(NSCharacterSet *)v10 characterIsMember:WORD4(v41)])
+    v11 = charactersToBeSkipped;
+    if ([(NSCharacterSet *)charactersToBeSkipped characterIsMember:WORD4(v41)])
     {
       do
       {
@@ -1230,26 +1230,26 @@ LABEL_7:
 
 - (BOOL)scanCharactersFromSet:(NSCharacterSet *)set intoString:(NSString *)result
 {
-  v7 = [(NSScanner *)self string];
-  v8 = [(NSScanner *)self scanLocation];
-  v9 = [(NSString *)v7 length];
-  v10 = [(NSScanner *)self _invertedSkipSet];
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
+  v9 = [(NSString *)string length];
+  _invertedSkipSet = [(NSScanner *)self _invertedSkipSet];
   v11 = [(NSScanner *)self caseSensitive]^ 1;
-  if (v10)
+  if (_invertedSkipSet)
   {
-    v12 = [(NSString *)v7 rangeOfCharacterFromSet:v10 options:0 range:v8, v9 - v8];
+    v12 = [(NSString *)string rangeOfCharacterFromSet:_invertedSkipSet options:0 range:scanLocation, v9 - scanLocation];
     if (v13)
     {
-      v8 = v12;
+      scanLocation = v12;
     }
 
     else
     {
-      v8 = v9;
+      scanLocation = v9;
     }
   }
 
-  v14 = [(NSString *)v7 rangeOfCharacterFromSet:[(NSCharacterSet *)set invertedSet] options:v11 range:v8, v9 - v8];
+  v14 = [(NSString *)string rangeOfCharacterFromSet:[(NSCharacterSet *)set invertedSet] options:v11 range:scanLocation, v9 - scanLocation];
   if (v15)
   {
     v16 = v14;
@@ -1260,42 +1260,42 @@ LABEL_7:
     v16 = v9;
   }
 
-  v17 = v16 - v8;
-  if (v16 != v8)
+  v17 = v16 - scanLocation;
+  if (v16 != scanLocation)
   {
     if (result)
     {
-      *result = [(NSString *)v7 substringWithRange:v8, v17];
+      *result = [(NSString *)string substringWithRange:scanLocation, v17];
     }
 
     [(NSScanner *)self setScanLocation:v16, v17];
   }
 
-  return v16 != v8;
+  return v16 != scanLocation;
 }
 
 - (BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)set intoString:(NSString *)result
 {
-  v7 = [(NSScanner *)self string];
-  v8 = [(NSScanner *)self scanLocation];
-  v9 = [(NSString *)v7 length];
-  v10 = [(NSScanner *)self _invertedSkipSet];
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
+  v9 = [(NSString *)string length];
+  _invertedSkipSet = [(NSScanner *)self _invertedSkipSet];
   v11 = [(NSScanner *)self caseSensitive]^ 1;
-  if (v10)
+  if (_invertedSkipSet)
   {
-    v12 = [(NSString *)v7 rangeOfCharacterFromSet:v10 options:0 range:v8, v9 - v8];
+    v12 = [(NSString *)string rangeOfCharacterFromSet:_invertedSkipSet options:0 range:scanLocation, v9 - scanLocation];
     if (v13)
     {
-      v8 = v12;
+      scanLocation = v12;
     }
 
     else
     {
-      v8 = v9;
+      scanLocation = v9;
     }
   }
 
-  v14 = [(NSString *)v7 rangeOfCharacterFromSet:set options:v11 range:v8, v9 - v8];
+  v14 = [(NSString *)string rangeOfCharacterFromSet:set options:v11 range:scanLocation, v9 - scanLocation];
   if (v15)
   {
     v16 = v14;
@@ -1306,49 +1306,49 @@ LABEL_7:
     v16 = v9;
   }
 
-  v17 = v16 - v8;
-  if (v16 != v8)
+  v17 = v16 - scanLocation;
+  if (v16 != scanLocation)
   {
     if (result)
     {
-      *result = [(NSString *)v7 substringWithRange:v8, v17];
+      *result = [(NSString *)string substringWithRange:scanLocation, v17];
     }
 
     [(NSScanner *)self setScanLocation:v16, v17];
   }
 
-  return v16 != v8;
+  return v16 != scanLocation;
 }
 
 - (BOOL)scanString:(NSString *)string intoString:(NSString *)result
 {
-  v7 = [(NSScanner *)self string];
-  v8 = [(NSScanner *)self scanLocation];
-  v9 = [(NSString *)v7 length];
-  v10 = [(NSScanner *)self _invertedSkipSet];
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
+  v9 = [(NSString *)string length];
+  _invertedSkipSet = [(NSScanner *)self _invertedSkipSet];
   v11 = [(NSScanner *)self caseSensitive]^ 1;
-  if (v10)
+  if (_invertedSkipSet)
   {
-    v12 = [(NSString *)v7 rangeOfCharacterFromSet:v10 options:0 range:v8, v9 - v8];
+    v12 = [(NSString *)string rangeOfCharacterFromSet:_invertedSkipSet options:0 range:scanLocation, v9 - scanLocation];
     if (v13)
     {
-      v8 = v12;
+      scanLocation = v12;
     }
 
     else
     {
-      v8 = v9;
+      scanLocation = v9;
     }
   }
 
-  v14 = [(NSString *)v7 rangeOfString:string options:v11 | 8 range:v8, v9 - v8];
+  v14 = [(NSString *)string rangeOfString:string options:v11 | 8 range:scanLocation, v9 - scanLocation];
   v16 = v15;
   if (v15)
   {
     v17 = v14 + v15;
     if (result)
     {
-      *result = [(NSString *)v7 substringWithRange:v8, v17 - v8];
+      *result = [(NSString *)string substringWithRange:scanLocation, v17 - scanLocation];
     }
 
     [(NSScanner *)self setScanLocation:v17];
@@ -1359,26 +1359,26 @@ LABEL_7:
 
 - (BOOL)scanUpToString:(NSString *)string intoString:(NSString *)result
 {
-  v7 = [(NSScanner *)self string];
-  v8 = [(NSScanner *)self scanLocation];
-  v9 = [(NSString *)v7 length];
-  v10 = [(NSScanner *)self _invertedSkipSet];
+  string = [(NSScanner *)self string];
+  scanLocation = [(NSScanner *)self scanLocation];
+  v9 = [(NSString *)string length];
+  _invertedSkipSet = [(NSScanner *)self _invertedSkipSet];
   v11 = [(NSScanner *)self caseSensitive]^ 1;
-  if (v10)
+  if (_invertedSkipSet)
   {
-    v12 = [(NSString *)v7 rangeOfCharacterFromSet:v10 options:0 range:v8, v9 - v8];
+    v12 = [(NSString *)string rangeOfCharacterFromSet:_invertedSkipSet options:0 range:scanLocation, v9 - scanLocation];
     if (v13)
     {
-      v8 = v12;
+      scanLocation = v12;
     }
 
     else
     {
-      v8 = v9;
+      scanLocation = v9;
     }
   }
 
-  v14 = [(NSString *)v7 rangeOfString:string options:v11 range:v8, v9 - v8];
+  v14 = [(NSString *)string rangeOfString:string options:v11 range:scanLocation, v9 - scanLocation];
   if (v15)
   {
     v16 = v14;
@@ -1389,18 +1389,18 @@ LABEL_7:
     v16 = v9;
   }
 
-  v17 = v16 - v8;
-  if (v16 != v8)
+  v17 = v16 - scanLocation;
+  if (v16 != scanLocation)
   {
     if (result)
     {
-      *result = [(NSString *)v7 substringWithRange:v8, v17];
+      *result = [(NSString *)string substringWithRange:scanLocation, v17];
     }
 
     [(NSScanner *)self setScanLocation:v16, v17];
   }
 
-  return v16 != v8;
+  return v16 != scanLocation;
 }
 
 - (void)setScanLocation:(NSUInteger)scanLocation

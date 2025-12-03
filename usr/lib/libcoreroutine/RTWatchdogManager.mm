@@ -1,35 +1,35 @@
 @interface RTWatchdogManager
-- (RTWatchdogManager)initWithLifeCycleManager:(id)a3 defaultsManager:(id)a4 platform:(id)a5;
-- (RTWatchdogManager)initWithTimerManager:(id)a3 lifeCycleManager:(id)a4 defaultsManager:(id)a5 platform:(id)a6;
-- (id)_getRecordsWithCriteria:(BOOL)a3;
-- (void)_addObject:(id)a3;
+- (RTWatchdogManager)initWithLifeCycleManager:(id)manager defaultsManager:(id)defaultsManager platform:(id)platform;
+- (RTWatchdogManager)initWithTimerManager:(id)manager lifeCycleManager:(id)cycleManager defaultsManager:(id)defaultsManager platform:(id)platform;
+- (id)_getRecordsWithCriteria:(BOOL)criteria;
+- (void)_addObject:(id)object;
 - (void)_checkInAllRecords;
-- (void)_checkInAllStartedRecords:(id)a3;
-- (void)_checkInAllStoppedRecords:(id)a3;
-- (void)_removeObject:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_timeoutExceeded:(id)a3;
-- (void)addObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)_checkInAllStartedRecords:(id)records;
+- (void)_checkInAllStoppedRecords:(id)records;
+- (void)_removeObject:(id)object;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_timeoutExceeded:(id)exceeded;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 - (void)setTimeoutAndFireInterval;
-- (void)shutdownWithHandler:(id)a3;
+- (void)shutdownWithHandler:(id)handler;
 @end
 
 @implementation RTWatchdogManager
 
-- (RTWatchdogManager)initWithLifeCycleManager:(id)a3 defaultsManager:(id)a4 platform:(id)a5
+- (RTWatchdogManager)initWithLifeCycleManager:(id)manager defaultsManager:(id)defaultsManager platform:(id)platform
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  platformCopy = platform;
+  if (!managerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_7:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -41,7 +41,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!defaultsManagerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -56,21 +56,21 @@ LABEL_10:
   }
 
   v11 = objc_opt_new();
-  self = [(RTWatchdogManager *)self initWithTimerManager:v11 lifeCycleManager:v8 defaultsManager:v9 platform:v10];
+  self = [(RTWatchdogManager *)self initWithTimerManager:v11 lifeCycleManager:managerCopy defaultsManager:defaultsManagerCopy platform:platformCopy];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v12;
+  return selfCopy;
 }
 
-- (RTWatchdogManager)initWithTimerManager:(id)a3 lifeCycleManager:(id)a4 defaultsManager:(id)a5 platform:(id)a6
+- (RTWatchdogManager)initWithTimerManager:(id)manager lifeCycleManager:(id)cycleManager defaultsManager:(id)defaultsManager platform:(id)platform
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12)
+  managerCopy = manager;
+  cycleManagerCopy = cycleManager;
+  defaultsManagerCopy = defaultsManager;
+  platformCopy = platform;
+  if (!cycleManagerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v11)
+  if (!managerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v13)
+  if (!defaultsManagerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -110,7 +110,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -120,24 +120,24 @@ LABEL_14:
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_lifecycleManager, a4);
-    objc_storeStrong(p_isa + 2, a3);
-    objc_storeStrong(p_isa + 6, a5);
+    objc_storeStrong(&v15->_lifecycleManager, cycleManager);
+    objc_storeStrong(p_isa + 2, manager);
+    objc_storeStrong(p_isa + 6, defaultsManager);
     v17 = p_isa;
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v17 UTF8String];
+      uTF8String = [v17 UTF8String];
     }
 
     else
     {
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v17];
-      v19 = [v23 UTF8String];
+      uTF8String = [v23 UTF8String];
     }
 
-    v24 = dispatch_queue_create(v19, v18);
+    v24 = dispatch_queue_create(uTF8String, v18);
 
     v25 = v17[7];
     v17[7] = v24;
@@ -150,17 +150,17 @@ LABEL_14:
     v29 = v17[5];
     v17[5] = v28;
 
-    objc_storeStrong(v17 + 8, a6);
+    objc_storeStrong(v17 + 8, platform);
     [v17 setTimeoutAndFireInterval];
     v30 = p_isa[2];
-    v31 = [v17 queue];
+    queue = [v17 queue];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __84__RTWatchdogManager_initWithTimerManager_lifeCycleManager_defaultsManager_platform___block_invoke;
     v36[3] = &unk_2788C4EA0;
     v32 = v17;
     v37 = v32;
-    v33 = [v30 timerWithIdentifier:@"RTWatchdogHeartbeatTimer" queue:v31 handler:v36];
+    v33 = [v30 timerWithIdentifier:@"RTWatchdogHeartbeatTimer" queue:queue handler:v36];
     v34 = v32[1];
     v32[1] = v33;
 
@@ -169,10 +169,10 @@ LABEL_14:
   }
 
   self = p_isa;
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)setTimeoutAndFireInterval
@@ -214,32 +214,32 @@ LABEL_18:
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  v5 = [(RTWatchdogManager *)self queue];
+  objectCopy = object;
+  queue = [(RTWatchdogManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__RTWatchdogManager_addObject___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = objectCopy;
+  v6 = objectCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_addObject:(id)a3
+- (void)_addObject:(id)object
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   timeout = self->_timeout;
   if (objc_opt_respondsToSelector())
   {
-    [v4 timeout];
+    [objectCopy timeout];
     timeout = v6;
   }
 
-  v7 = [[RTWatchdogRecord alloc] initWithObject:v4 timeout:timeout];
+  v7 = [[RTWatchdogRecord alloc] initWithObject:objectCopy timeout:timeout];
   [(NSMutableArray *)self->_records addObject:v7];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -253,30 +253,30 @@ LABEL_18:
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
-  v5 = [(RTWatchdogManager *)self queue];
+  objectCopy = object;
+  queue = [(RTWatchdogManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__RTWatchdogManager_removeObject___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = objectCopy;
+  v6 = objectCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_removeObject:(id)a3
+- (void)_removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x277CCAC30];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__RTWatchdogManager__removeObject___block_invoke;
   v8[3] = &unk_2788CD7C0;
-  v9 = v4;
-  v6 = v4;
+  v9 = objectCopy;
+  v6 = objectCopy;
   v7 = [v5 predicateWithBlock:v8];
   [(NSMutableArray *)self->_records filterUsingPredicate:v7];
 }
@@ -289,17 +289,17 @@ uint64_t __35__RTWatchdogManager__removeObject___block_invoke(uint64_t a1, void 
   return a1 ^ 1;
 }
 
-- (id)_getRecordsWithCriteria:(BOOL)a3
+- (id)_getRecordsWithCriteria:(BOOL)criteria
 {
-  v3 = a3;
+  criteriaCopy = criteria;
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(RTWatchdogManager *)self records];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  records = [(RTWatchdogManager *)self records];
+  v7 = [records countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -310,17 +310,17 @@ uint64_t __35__RTWatchdogManager__removeObject___block_invoke(uint64_t a1, void 
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(records);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 isPendingCheckIn] == v3)
+        if ([v11 isPendingCheckIn] == criteriaCopy)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [records countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -329,16 +329,16 @@ uint64_t __35__RTWatchdogManager__removeObject___block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (void)_checkInAllStartedRecords:(id)a3
+- (void)_checkInAllStartedRecords:(id)records
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordsCopy = records;
   v5 = [MEMORY[0x277CBEAA8] now];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = recordsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
@@ -357,8 +357,8 @@ uint64_t __35__RTWatchdogManager__removeObject___block_invoke(uint64_t a1, void 
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 checkInStartDate];
-        [v5 timeIntervalSinceDate:v14];
+        checkInStartDate = [v13 checkInStartDate];
+        [v5 timeIntervalSinceDate:checkInStartDate];
         v16 = v15;
 
         [v13 timeout];
@@ -388,37 +388,37 @@ uint64_t __35__RTWatchdogManager__removeObject___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_timeoutExceeded:(id)a3
+- (void)_timeoutExceeded:(id)exceeded
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  exceededCopy = exceeded;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityWatchdog);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = exceededCopy;
     _os_log_fault_impl(&dword_2304B3000, v5, OS_LOG_TYPE_FAULT, "Hung record, %@, exiting", &v11, 0xCu);
   }
 
-  v6 = [(RTWatchdogManager *)self metrics];
-  v7 = [v4 object];
+  metrics = [(RTWatchdogManager *)self metrics];
+  object = [exceededCopy object];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v4 getLatency];
-  [v6 submitToCoreAnalytics:v9 type:2 duration:?];
+  [exceededCopy getLatency];
+  [metrics submitToCoreAnalytics:v9 type:2 duration:?];
 
-  v10 = [(RTWatchdogManager *)self lifecycleManager];
-  [v10 exit];
+  lifecycleManager = [(RTWatchdogManager *)self lifecycleManager];
+  [lifecycleManager exit];
 }
 
-- (void)_checkInAllStoppedRecords:(id)a3
+- (void)_checkInAllStoppedRecords:(id)records
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = a3;
+  obj = records;
   v4 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -439,14 +439,14 @@ uint64_t __35__RTWatchdogManager__removeObject___block_invoke(uint64_t a1, void 
         [v8 setCheckInStartDate:v9];
 
         [v8 setCheckInStopDate:0];
-        v10 = [v8 object];
+        object = [v8 object];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __47__RTWatchdogManager__checkInAllStoppedRecords___block_invoke;
         v12[3] = &unk_2788C7E48;
         v12[4] = self;
         v12[5] = v8;
-        [v10 checkInWithHandler:v12];
+        [object checkInWithHandler:v12];
 
         ++v7;
       }
@@ -511,33 +511,33 @@ void __47__RTWatchdogManager__checkInAllStoppedRecords___block_invoke_2(uint64_t
   [(RTWatchdogManager *)self _checkInAllStoppedRecords:v4];
 }
 
-- (void)shutdownWithHandler:(id)a3
+- (void)shutdownWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTWatchdogManager *)self queue];
+  handlerCopy = handler;
+  queue = [(RTWatchdogManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__RTWatchdogManager_shutdownWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   [(RTTimer *)self->_watchdogHeartbeatTimer invalidate];
   watchdogHeartbeatTimer = self->_watchdogHeartbeatTimer;
   self->_watchdogHeartbeatTimer = 0;
 
   [(NSMutableArray *)self->_records removeAllObjects];
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 

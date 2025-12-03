@@ -1,8 +1,8 @@
 @interface SGHistoryObserver
-- (SGHistoryObserver)initWithStore:(id)a3;
+- (SGHistoryObserver)initWithStore:(id)store;
 - (void)hashesDidChange;
-- (void)processNewConfirmOrRejectEventHashes:(id)a3;
-- (void)processNewConfirmedOrRejectedReminderHashes:(id)a3;
+- (void)processNewConfirmOrRejectEventHashes:(id)hashes;
+- (void)processNewConfirmedOrRejectedReminderHashes:(id)hashes;
 @end
 
 @implementation SGHistoryObserver
@@ -18,15 +18,15 @@
   }
 }
 
-- (void)processNewConfirmedOrRejectedReminderHashes:(id)a3
+- (void)processNewConfirmedOrRejectedReminderHashes:(id)hashes
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hashesCopy = hashes;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained duplicateKeysMatchingAnyReminderHash:v4];
+    [WeakRetained duplicateKeysMatchingAnyReminderHash:hashesCopy];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -73,21 +73,21 @@
               v14 = [v6 loadReminderByKey:*(*(&v23 + 1) + 8 * v13)];
               if (v14)
               {
-                v15 = [v6 journal];
+                journal = [v6 journal];
                 v16 = [[SGJournalEntry alloc] initWithOperation:20 reminder:v14];
-                [v15 addEntry:v16];
+                [journal addEntry:v16];
 LABEL_14:
 
                 goto LABEL_16;
               }
 
-              v15 = sgRemindersLogHandle();
-              if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+              journal = sgRemindersLogHandle();
+              if (os_log_type_enabled(journal, OS_LOG_TYPE_ERROR))
               {
                 v16 = [v8 base64EncodedDataWithOptions:0];
                 *buf = 138412290;
                 v32 = v16;
-                _os_log_error_impl(&dword_231E60000, v15, OS_LOG_TYPE_ERROR, "SGDSuggestManager - Database inconsistency: Found key for reminder hash %@ but reminder is missing", buf, 0xCu);
+                _os_log_error_impl(&dword_231E60000, journal, OS_LOG_TYPE_ERROR, "SGDSuggestManager - Database inconsistency: Found key for reminder hash %@ but reminder is missing", buf, 0xCu);
                 goto LABEL_14;
               }
 
@@ -121,15 +121,15 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processNewConfirmOrRejectEventHashes:(id)a3
+- (void)processNewConfirmOrRejectEventHashes:(id)hashes
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hashesCopy = hashes;
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained duplicateKeysMatchingAnyEventHash:v4];
+    [WeakRetained duplicateKeysMatchingAnyEventHash:hashesCopy];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -174,22 +174,22 @@ LABEL_22:
                 v15 = [v6 loadEventByDuplicateKey:*(*(&v25 + 1) + 8 * i)];
                 if (v15)
                 {
-                  v16 = [v6 journal];
+                  journal = [v6 journal];
                   v17 = [[SGJournalEntry alloc] initWithOperation:8 event:v15];
-                  [v16 addEntry:v17];
+                  [journal addEntry:v17];
 
                   v7 = 1;
                 }
 
                 else
                 {
-                  v16 = sgLogHandle();
-                  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+                  journal = sgLogHandle();
+                  if (os_log_type_enabled(journal, OS_LOG_TYPE_DEFAULT))
                   {
                     v18 = [v24 base64EncodedDataWithOptions:0];
                     *buf = 138412290;
                     v34 = v18;
-                    _os_log_impl(&dword_231E60000, v16, OS_LOG_TYPE_DEFAULT, "Database inconsistency; found key for event hash %@ but event is missing", buf, 0xCu);
+                    _os_log_impl(&dword_231E60000, journal, OS_LOG_TYPE_DEFAULT, "Database inconsistency; found key for event hash %@ but event is missing", buf, 0xCu);
                   }
                 }
               }
@@ -218,16 +218,16 @@ LABEL_22:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (SGHistoryObserver)initWithStore:(id)a3
+- (SGHistoryObserver)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = SGHistoryObserver;
   v5 = [(SGHistoryObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_store, v4);
+    objc_storeWeak(&v5->_store, storeCopy);
   }
 
   return v6;

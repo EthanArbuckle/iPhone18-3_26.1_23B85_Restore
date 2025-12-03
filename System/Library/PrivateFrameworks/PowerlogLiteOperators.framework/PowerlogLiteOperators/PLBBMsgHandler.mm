@@ -2,8 +2,8 @@
 + (id)getMsgHandler;
 - (PLBBMsgHandler)init;
 - (id)decodeMsgHeader;
-- (void)handleMsg:(id)a3 forAgent:(id)a4;
-- (void)registerWithHandlerAs:(id)a3 forType:(unint64_t)a4;
+- (void)handleMsg:(id)msg forAgent:(id)agent;
+- (void)registerWithHandlerAs:(id)as forType:(unint64_t)type;
 @end
 
 @implementation PLBBMsgHandler
@@ -29,9 +29,9 @@
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgHandler init]", block, v13, v14, v15, v16];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgHandler.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgHandler init]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:53];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:53];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -75,9 +75,9 @@ uint64_t __22__PLBBMsgHandler_init__block_invoke(uint64_t a1)
       v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "+[PLBBMsgHandler getMsgHandler]", block, v17, v18, v19, v20];
       v4 = MEMORY[0x277D3F178];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgHandler.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLBBMsgHandler getMsgHandler]"];
-      [v4 logMessage:v3 fromFile:v6 fromFunction:v7 fromLineNumber:59];
+      [v4 logMessage:v3 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:59];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -115,11 +115,11 @@ uint64_t __31__PLBBMsgHandler_getMsgHandler__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)registerWithHandlerAs:(id)a3 forType:(unint64_t)a4
+- (void)registerWithHandlerAs:(id)as forType:(unint64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D3F180];
-  v6 = a3;
+  asCopy = as;
   if ([v5 debugEnabled])
   {
     v7 = objc_opt_class();
@@ -138,9 +138,9 @@ uint64_t __31__PLBBMsgHandler_getMsgHandler__block_invoke(uint64_t a1)
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgHandler registerWithHandlerAs:forType:]", block, v18, v19, v20, v21];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgHandler.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgHandler registerWithHandlerAs:forType:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:86];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:86];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -153,8 +153,8 @@ uint64_t __31__PLBBMsgHandler_getMsgHandler__block_invoke(uint64_t a1)
   }
 
   v14 = qword_2811F7D68;
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v14 setObject:v6 forKey:v15];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [v14 setObject:asCopy forKey:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -166,7 +166,7 @@ uint64_t __48__PLBBMsgHandler_registerWithHandlerAs_forType___block_invoke(uint6
   return result;
 }
 
-- (void)handleMsg:(id)a3 forAgent:(id)a4
+- (void)handleMsg:(id)msg forAgent:(id)agent
 {
   v23 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -187,9 +187,9 @@ uint64_t __48__PLBBMsgHandler_registerWithHandlerAs_forType___block_invoke(uint6
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgHandler handleMsg:forAgent:]", block, v17, v18, v19, v20];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgHandler.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgHandler handleMsg:forAgent:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:95];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:95];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -201,10 +201,10 @@ uint64_t __48__PLBBMsgHandler_registerWithHandlerAs_forType___block_invoke(uint6
     }
   }
 
-  v12 = [(PLBBMsgHandler *)self decodeMsgHeader];
-  v13 = [v12 unsignedCharValue];
+  decodeMsgHeader = [(PLBBMsgHandler *)self decodeMsgHeader];
+  unsignedCharValue = [decodeMsgHeader unsignedCharValue];
 
-  switch(v13)
+  switch(unsignedCharValue)
   {
     case 1:
       v14 = &unk_282C11A30;
@@ -251,9 +251,9 @@ uint64_t __37__PLBBMsgHandler_handleMsg_forAgent___block_invoke(uint64_t a1)
       v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgHandler decodeMsgHeader]", block, v12, v13, v14, v15];
       v4 = MEMORY[0x277D3F178];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgHandler.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgHandler decodeMsgHeader]"];
-      [v4 logMessage:v3 fromFile:v6 fromFunction:v7 fromLineNumber:130];
+      [v4 logMessage:v3 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:130];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))

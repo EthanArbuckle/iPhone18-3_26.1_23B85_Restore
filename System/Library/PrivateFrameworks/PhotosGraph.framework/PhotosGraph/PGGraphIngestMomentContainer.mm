@@ -16,7 +16,7 @@
 - (double)inhabitationScore;
 - (double)scenesProcessedRatio;
 - (id)assetsInExtendedCuration;
-- (id)initMomentContainerWithFeeder:(id)a3 clueCollection:(id)a4 curationManager:(id)a5 topTierAestheticScore:(double)a6 curationContext:(id)a7;
+- (id)initMomentContainerWithFeeder:(id)feeder clueCollection:(id)collection curationManager:(id)manager topTierAestheticScore:(double)score curationContext:(id)context;
 - (unint64_t)numberOfAssetsInExtendedCuration;
 - (unint64_t)numberOfItemsWithPersons;
 - (unint64_t)totalNumberOfPersons;
@@ -42,15 +42,15 @@
 
     else
     {
-      v7 = [(PGCurationManager *)self->_curationManager curationLoggingConnection];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      curationLoggingConnection = [(PGCurationManager *)self->_curationManager curationLoggingConnection];
+      if (os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(PGGraphIngestMomentContainer *)self uuid];
+        uuid = [(PGGraphIngestMomentContainer *)self uuid];
         *buf = 138412546;
-        v13 = v10;
+        v13 = uuid;
         v14 = 2112;
         v15 = v5;
-        _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "Failed to extract moment CLIP feature vector for moment with uuid: %@, error: %@", buf, 0x16u);
+        _os_log_error_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_ERROR, "Failed to extract moment CLIP feature vector for moment with uuid: %@, error: %@", buf, 0x16u);
       }
 
       v6 = &stru_2843F5C58;
@@ -70,9 +70,9 @@
 - (BOOL)happensAtSensitiveLocation
 {
   v3 = objc_alloc(MEMORY[0x277CCA970]);
-  v4 = [(PGGraphIngestMomentContainer *)self localStartDate];
-  v5 = [(PGGraphIngestMomentContainer *)self localEndDate];
-  v6 = [v3 initWithStartDate:v4 endDate:v5];
+  localStartDate = [(PGGraphIngestMomentContainer *)self localStartDate];
+  localEndDate = [(PGGraphIngestMomentContainer *)self localEndDate];
+  v6 = [v3 initWithStartDate:localStartDate endDate:localEndDate];
 
   v13 = 0;
   v14 = &v13;
@@ -112,7 +112,7 @@ void __58__PGGraphIngestMomentContainer_happensAtSensitiveLocation__block_invoke
 
 - (unsigned)sharingComposition
 {
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
+  assetCollection = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -121,17 +121,17 @@ void __58__PGGraphIngestMomentContainer_happensAtSensitiveLocation__block_invoke
     return 0;
   }
 
-  v5 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
-  v6 = [v5 sharingComposition];
+  assetCollection2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
+  sharingComposition = [assetCollection2 sharingComposition];
 
-  return v6;
+  return sharingComposition;
 }
 
 - (double)facesProcessedRatio
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-  v4 = [v3 count];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+  v4 = [allItems count];
 
   if (v4)
   {
@@ -139,8 +139,8 @@ void __58__PGGraphIngestMomentContainer_happensAtSensitiveLocation__block_invoke
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allItems2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+    v6 = [allItems2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -152,13 +152,13 @@ void __58__PGGraphIngestMomentContainer_happensAtSensitiveLocation__block_invoke
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allItems2);
           }
 
           v8 += [*(*(&v14 + 1) + 8 * i) clsIsFaceProcessed];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allItems2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -193,8 +193,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v4 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-  v5 = [v4 count];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+  v5 = [allItems count];
 
   if (v5)
   {
@@ -202,8 +202,8 @@ LABEL_14:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allItems2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+    v7 = [allItems2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -215,13 +215,13 @@ LABEL_14:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allItems2);
           }
 
           v9 += [*(*(&v17 + 1) + 8 * i) clsIsSceneProcessed];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [allItems2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
@@ -249,10 +249,10 @@ LABEL_15:
 
 - (NSString)uuid
 {
-  v2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
-  v3 = [v2 uuid];
+  assetCollection = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
+  uuid = [assetCollection uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (BOOL)hasAssetsWithInterestingScenes
@@ -262,8 +262,8 @@ LABEL_15:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+  v3 = [allItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -273,7 +273,7 @@ LABEL_15:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allItems);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -284,7 +284,7 @@ LABEL_15:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [allItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -307,8 +307,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+  v3 = [allItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -319,7 +319,7 @@ LABEL_12:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allItems);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -331,7 +331,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [allItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -350,16 +350,16 @@ LABEL_12:
 - (double)inhabitationScore
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder numberOfItems];
-  if (v3)
+  numberOfItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder numberOfItems];
+  if (numberOfItems)
   {
-    v4 = v3;
+    v4 = numberOfItems;
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+    v6 = [allItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -371,13 +371,13 @@ LABEL_12:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allItems);
           }
 
           v8 += [*(*(&v14 + 1) + 8 * i) clsIsInhabited];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allItems countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -422,8 +422,8 @@ LABEL_12:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self->_feeder allItems];
+  v3 = [allItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -435,7 +435,7 @@ LABEL_12:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allItems);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) clsPeopleCount])
@@ -444,7 +444,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -461,8 +461,8 @@ LABEL_12:
 
 - (unint64_t)numberOfAssetsInExtendedCuration
 {
-  v2 = [(PGGraphIngestMomentContainer *)self assetsInExtendedCuration];
-  v3 = [v2 count];
+  assetsInExtendedCuration = [(PGGraphIngestMomentContainer *)self assetsInExtendedCuration];
+  v3 = [assetsInExtendedCuration count];
 
   return v3;
 }
@@ -473,20 +473,20 @@ LABEL_12:
   assetsInExtendedCuration = self->_assetsInExtendedCuration;
   if (!assetsInExtendedCuration)
   {
-    v4 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
-    v5 = [v4 photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    assetCollection = [(CLSInvestigationPhotoKitFeeder *)self->_feeder assetCollection];
+    photoLibrary = [assetCollection photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"highlightBeingExtendedAssets != nil"];
-    [v6 setInternalPredicate:v7];
+    [librarySpecificFetchOptions setInternalPredicate:v7];
 
     v13[0] = *MEMORY[0x277CD9AA8];
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v6 setFetchPropertySets:v8];
+    [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-    [v6 setShouldPrefetchCount:1];
-    [v6 setIncludeGuestAssets:1];
-    v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v4 options:v6];
+    [librarySpecificFetchOptions setShouldPrefetchCount:1];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
+    v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:assetCollection options:librarySpecificFetchOptions];
     v10 = self->_assetsInExtendedCuration;
     self->_assetsInExtendedCuration = v9;
 
@@ -500,76 +500,76 @@ LABEL_12:
 
 - (NSDate)universalEndDate
 {
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder universalEndDate];
-  v4 = v3;
-  if (v3)
+  universalEndDate = [(CLSInvestigationPhotoKitFeeder *)self->_feeder universalEndDate];
+  v4 = universalEndDate;
+  if (universalEndDate)
   {
-    v5 = v3;
+    universalEndDate2 = universalEndDate;
   }
 
   else
   {
-    v5 = [(CLSClueCollection *)self->_clueCollection universalEndDate];
+    universalEndDate2 = [(CLSClueCollection *)self->_clueCollection universalEndDate];
   }
 
-  v6 = v5;
+  v6 = universalEndDate2;
 
   return v6;
 }
 
 - (NSDate)universalStartDate
 {
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder universalStartDate];
-  v4 = v3;
-  if (v3)
+  universalStartDate = [(CLSInvestigationPhotoKitFeeder *)self->_feeder universalStartDate];
+  v4 = universalStartDate;
+  if (universalStartDate)
   {
-    v5 = v3;
+    universalStartDate2 = universalStartDate;
   }
 
   else
   {
-    v5 = [(CLSClueCollection *)self->_clueCollection universalStartDate];
+    universalStartDate2 = [(CLSClueCollection *)self->_clueCollection universalStartDate];
   }
 
-  v6 = v5;
+  v6 = universalStartDate2;
 
   return v6;
 }
 
 - (NSDate)localEndDate
 {
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder localEndDate];
-  v4 = v3;
-  if (v3)
+  localEndDate = [(CLSInvestigationPhotoKitFeeder *)self->_feeder localEndDate];
+  v4 = localEndDate;
+  if (localEndDate)
   {
-    v5 = v3;
+    localEndDate2 = localEndDate;
   }
 
   else
   {
-    v5 = [(CLSClueCollection *)self->_clueCollection localEndDate];
+    localEndDate2 = [(CLSClueCollection *)self->_clueCollection localEndDate];
   }
 
-  v6 = v5;
+  v6 = localEndDate2;
 
   return v6;
 }
 
 - (NSDate)localStartDate
 {
-  v3 = [(CLSInvestigationPhotoKitFeeder *)self->_feeder localStartDate];
-  v4 = v3;
-  if (v3)
+  localStartDate = [(CLSInvestigationPhotoKitFeeder *)self->_feeder localStartDate];
+  v4 = localStartDate;
+  if (localStartDate)
   {
-    v5 = v3;
+    localStartDate2 = localStartDate;
   }
 
   else
   {
-    v5 = [(CLSClueCollection *)self->_clueCollection localStartDate];
+    localStartDate2 = [(CLSClueCollection *)self->_clueCollection localStartDate];
   }
 
-  v6 = v5;
+  v6 = localStartDate2;
 
   return v6;
 }
@@ -662,23 +662,23 @@ LABEL_12:
   return [(NSNumber *)isInterestingNumber BOOLValue];
 }
 
-- (id)initMomentContainerWithFeeder:(id)a3 clueCollection:(id)a4 curationManager:(id)a5 topTierAestheticScore:(double)a6 curationContext:(id)a7
+- (id)initMomentContainerWithFeeder:(id)feeder clueCollection:(id)collection curationManager:(id)manager topTierAestheticScore:(double)score curationContext:(id)context
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  feederCopy = feeder;
+  collectionCopy = collection;
+  managerCopy = manager;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = PGGraphIngestMomentContainer;
   v17 = [(PGGraphIngestMomentContainer *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_feeder, a3);
-    objc_storeStrong(&v18->_clueCollection, a4);
-    objc_storeStrong(&v18->_curationManager, a5);
-    v18->_topTierAestheticScore = a6;
-    objc_storeStrong(&v18->_curationContext, a7);
+    objc_storeStrong(&v17->_feeder, feeder);
+    objc_storeStrong(&v18->_clueCollection, collection);
+    objc_storeStrong(&v18->_curationManager, manager);
+    v18->_topTierAestheticScore = score;
+    objc_storeStrong(&v18->_curationContext, context);
   }
 
   return v18;

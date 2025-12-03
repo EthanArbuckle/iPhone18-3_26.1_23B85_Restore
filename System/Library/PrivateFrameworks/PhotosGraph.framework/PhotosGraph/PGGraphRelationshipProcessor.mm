@@ -1,30 +1,30 @@
 @interface PGGraphRelationshipProcessor
-- (PGGraphRelationshipProcessor)initWithPersonNodes:(id)a3 runOptions:(unint64_t)a4 serviceManager:(id)a5;
-- (id)_socialGroupNodesIncludingPersonLocalIdentifiers:(id)a3 minimumMatches:(unint64_t)a4 amongSocialGroupNodes:(id)a5;
-- (id)relationshipAnalyzerPropertiesForPersonLocalIdentifier:(id)a3;
+- (PGGraphRelationshipProcessor)initWithPersonNodes:(id)nodes runOptions:(unint64_t)options serviceManager:(id)manager;
+- (id)_socialGroupNodesIncludingPersonLocalIdentifiers:(id)identifiers minimumMatches:(unint64_t)matches amongSocialGroupNodes:(id)nodes;
+- (id)relationshipAnalyzerPropertiesForPersonLocalIdentifier:(id)identifier;
 - (void)_aggregateScores;
-- (void)_enumerateInferredParentsUsingBlock:(id)a3;
-- (void)_enumerateInferredPartnerUsingBlock:(id)a3;
-- (void)_enumerateInferredRelationshipMembersFromScores:(id)a3 cumulativeThreshold:(double)a4 minimumConfidence:(double)a5 usingBlock:(id)a6;
+- (void)_enumerateInferredParentsUsingBlock:(id)block;
+- (void)_enumerateInferredPartnerUsingBlock:(id)block;
+- (void)_enumerateInferredRelationshipMembersFromScores:(id)scores cumulativeThreshold:(double)threshold minimumConfidence:(double)confidence usingBlock:(id)block;
 - (void)_extractSignalsFromRunOptions;
-- (void)enumerateHighRecallInferredRelationshipsExcludingPersonNodes:(id)a3 usingBlock:(id)a4;
-- (void)enumerateInferredRelationshipsUsingBlock:(id)a3;
-- (void)runRelationshipAnalysisWithLoggingConnection:(id)a3 progressBlock:(id)a4;
+- (void)enumerateHighRecallInferredRelationshipsExcludingPersonNodes:(id)nodes usingBlock:(id)block;
+- (void)enumerateInferredRelationshipsUsingBlock:(id)block;
+- (void)runRelationshipAnalysisWithLoggingConnection:(id)connection progressBlock:(id)block;
 @end
 
 @implementation PGGraphRelationshipProcessor
 
-- (id)relationshipAnalyzerPropertiesForPersonLocalIdentifier:(id)a3
+- (id)relationshipAnalyzerPropertiesForPersonLocalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PGGraph *)self->_graph personNodeForPersonLocalIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(PGGraph *)self->_graph personNodeForPersonLocalIdentifier:identifierCopy];
   if (v5 && [(MANodeCollection *)self->_personNodes containsNode:v5])
   {
-    v6 = [(NSMutableDictionary *)self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier objectForKeyedSubscript:identifierCopy];
     if (!v6)
     {
       v6 = objc_alloc_init(PGPersonRelationshipAnalyzerProperties);
-      [(NSMutableDictionary *)self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier setObject:v6 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier setObject:v6 forKeyedSubscript:identifierCopy];
     }
   }
 
@@ -36,9 +36,9 @@
   return v6;
 }
 
-- (void)_enumerateInferredParentsUsingBlock:(id)a3
+- (void)_enumerateInferredParentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -82,7 +82,7 @@
   v10 = v18;
   v11 = v16;
   v12 = v20;
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
   [(NSMutableDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -137,17 +137,17 @@ void __68__PGGraphRelationshipProcessor__enumerateInferredParentsUsingBlock___bl
   (*(a1[4] + 16))(v6);
 }
 
-- (id)_socialGroupNodesIncludingPersonLocalIdentifiers:(id)a3 minimumMatches:(unint64_t)a4 amongSocialGroupNodes:(id)a5
+- (id)_socialGroupNodesIncludingPersonLocalIdentifiers:(id)identifiers minimumMatches:(unint64_t)matches amongSocialGroupNodes:(id)nodes
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalIdentifiers_minimumMatches_amongSocialGroupNodes___block_invoke;
   v11[3] = &unk_278880998;
-  v12 = v7;
-  v13 = a4;
-  v8 = v7;
-  v9 = [a5 filteredCollectionUsingBlock:v11];
+  v12 = identifiersCopy;
+  matchesCopy = matches;
+  v8 = identifiersCopy;
+  v9 = [nodes filteredCollectionUsingBlock:v11];
 
   return v9;
 }
@@ -172,20 +172,20 @@ BOOL __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalId
   return v4;
 }
 
-- (void)_enumerateInferredRelationshipMembersFromScores:(id)a3 cumulativeThreshold:(double)a4 minimumConfidence:(double)a5 usingBlock:(id)a6
+- (void)_enumerateInferredRelationshipMembersFromScores:(id)scores cumulativeThreshold:(double)threshold minimumConfidence:(double)confidence usingBlock:(id)block
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  scoresCopy = scores;
+  blockCopy = block;
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
   v71 = 0;
-  if ([v10 count])
+  if ([scoresCopy count])
   {
     v12 = MEMORY[0x277CCA9C0];
-    v13 = [v10 allValues];
-    v48 = [v12 expressionForConstantValue:v13];
+    allValues = [scoresCopy allValues];
+    v48 = [v12 expressionForConstantValue:allValues];
 
     v14 = MEMORY[0x277CCA9C0];
     v75[0] = v48;
@@ -206,8 +206,8 @@ BOOL __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalId
     v26 = [MEMORY[0x277CBEB58] set];
     v27 = [MEMORY[0x277CBEB58] set];
     v28 = MEMORY[0x277CBEB58];
-    v29 = [v10 allKeys];
-    v46 = [v28 setWithArray:v29];
+    allKeys = [scoresCopy allKeys];
+    v46 = [v28 setWithArray:allKeys];
 
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
@@ -216,10 +216,10 @@ BOOL __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalId
     v64 = &v68;
     v65 = v19;
     v66 = v25;
-    v67 = a4;
+    thresholdCopy = threshold;
     v30 = v26;
     v63 = v30;
-    [v10 enumerateKeysAndObjectsUsingBlock:v62];
+    [scoresCopy enumerateKeysAndObjectsUsingBlock:v62];
     if ([v30 count])
     {
       v31 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:self->_graph, v46];
@@ -228,9 +228,9 @@ BOOL __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalId
       v57[1] = 3221225472;
       v57[2] = __129__PGGraphRelationshipProcessor__enumerateInferredRelationshipMembersFromScores_cumulativeThreshold_minimumConfidence_usingBlock___block_invoke_2;
       v57[3] = &unk_278880970;
-      v58 = v10;
+      v58 = scoresCopy;
       v60 = &v68;
-      v61 = a5;
+      confidenceCopy = confidence;
       v59 = v27;
       [v32 enumerateIdentifiersAsCollectionsWithBlock:v57];
     }
@@ -255,9 +255,9 @@ BOOL __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalId
           }
 
           v37 = *(*(&v53 + 1) + 8 * i);
-          v38 = [v10 objectForKeyedSubscript:v37];
+          v38 = [scoresCopy objectForKeyedSubscript:v37];
           [v38 doubleValue];
-          v11[2](v11, v37, v39 / v69[3]);
+          blockCopy[2](blockCopy, v37, v39 / v69[3]);
         }
 
         v34 = [v33 countByEnumeratingWithState:&v53 objects:v73 count:16];
@@ -287,7 +287,7 @@ BOOL __118__PGGraphRelationshipProcessor__socialGroupNodesIncludingPersonLocalId
           v44 = *(*(&v49 + 1) + 8 * j);
           if (([v33 containsObject:v44] & 1) == 0)
           {
-            v11[2](v11, v44, 0.0);
+            blockCopy[2](blockCopy, v44, 0.0);
           }
         }
 
@@ -345,9 +345,9 @@ void __129__PGGraphRelationshipProcessor__enumerateInferredRelationshipMembersFr
   }
 }
 
-- (void)_enumerateInferredPartnerUsingBlock:(id)a3
+- (void)_enumerateInferredPartnerUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -378,7 +378,7 @@ void __129__PGGraphRelationshipProcessor__enumerateInferredRelationshipMembersFr
   v8[3] = &unk_2788808F8;
   v10 = v14;
   v11 = v16;
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
   [(NSMutableDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -416,29 +416,29 @@ void __68__PGGraphRelationshipProcessor__enumerateInferredPartnerUsingBlock___bl
 
 - (void)_aggregateScores
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   partnerScoreByPersonLocalIdentifier = self->_partnerScoreByPersonLocalIdentifier;
-  self->_partnerScoreByPersonLocalIdentifier = v3;
+  self->_partnerScoreByPersonLocalIdentifier = dictionary;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   parentScoreByPersonLocalIdentifier = self->_parentScoreByPersonLocalIdentifier;
-  self->_parentScoreByPersonLocalIdentifier = v5;
+  self->_parentScoreByPersonLocalIdentifier = dictionary2;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   childScoreByPersonLocalIdentifier = self->_childScoreByPersonLocalIdentifier;
-  self->_childScoreByPersonLocalIdentifier = v7;
+  self->_childScoreByPersonLocalIdentifier = dictionary3;
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
   familyScoreByPersonLocalIdentifier = self->_familyScoreByPersonLocalIdentifier;
-  self->_familyScoreByPersonLocalIdentifier = v9;
+  self->_familyScoreByPersonLocalIdentifier = dictionary4;
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary5 = [MEMORY[0x277CBEB38] dictionary];
   coworkerScoreByPersonLocalIdentifier = self->_coworkerScoreByPersonLocalIdentifier;
-  self->_coworkerScoreByPersonLocalIdentifier = v11;
+  self->_coworkerScoreByPersonLocalIdentifier = dictionary5;
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary6 = [MEMORY[0x277CBEB38] dictionary];
   friendScoreByPersonLocalIdentifier = self->_friendScoreByPersonLocalIdentifier;
-  self->_friendScoreByPersonLocalIdentifier = v13;
+  self->_friendScoreByPersonLocalIdentifier = dictionary6;
 
   relationshipAnalyzerPropertiesByPersonLocalIdentifier = self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier;
   v16[0] = MEMORY[0x277D85DD0];
@@ -591,20 +591,20 @@ void __48__PGGraphRelationshipProcessor__aggregateScores__block_invoke(uint64_t 
   self->_numberOfSignals = [(NSMutableArray *)self->_analyzersToRun count];
 }
 
-- (void)enumerateHighRecallInferredRelationshipsExcludingPersonNodes:(id)a3 usingBlock:(id)a4
+- (void)enumerateHighRecallInferredRelationshipsExcludingPersonNodes:(id)nodes usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PGGraphRelationshipProcessor *)self personNodes];
-  v9 = [v8 collectionBySubtracting:v7];
+  blockCopy = block;
+  nodesCopy = nodes;
+  personNodes = [(PGGraphRelationshipProcessor *)self personNodes];
+  v9 = [personNodes collectionBySubtracting:nodesCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __104__PGGraphRelationshipProcessor_enumerateHighRecallInferredRelationshipsExcludingPersonNodes_usingBlock___block_invoke;
   v11[3] = &unk_278880880;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [v9 enumerateLocalIdentifiersUsingBlock:v11];
 }
 
@@ -622,9 +622,9 @@ void __104__PGGraphRelationshipProcessor_enumerateHighRecallInferredRelationship
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateInferredRelationshipsUsingBlock:(id)a3
+- (void)enumerateInferredRelationshipsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
@@ -634,18 +634,18 @@ void __104__PGGraphRelationshipProcessor_enumerateHighRecallInferredRelationship
   v33[2] = __73__PGGraphRelationshipProcessor_enumerateInferredRelationshipsUsingBlock___block_invoke;
   v33[3] = &unk_278880830;
   v33[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   v34 = v5;
   v35 = v36;
   [(PGGraphRelationshipProcessor *)self _enumerateInferredPartnerUsingBlock:v33];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __73__PGGraphRelationshipProcessor_enumerateInferredRelationshipsUsingBlock___block_invoke_2;
   v28[3] = &unk_278880858;
-  v7 = v6;
+  v7 = dictionary;
   v29 = v7;
-  v30 = self;
+  selfCopy = self;
   v8 = v5;
   v31 = v8;
   v32 = v36;
@@ -656,7 +656,7 @@ void __104__PGGraphRelationshipProcessor_enumerateHighRecallInferredRelationship
   v23[3] = &unk_278880858;
   v9 = v7;
   v24 = v9;
-  v25 = self;
+  selfCopy2 = self;
   v10 = v8;
   v26 = v10;
   v27 = v36;
@@ -787,22 +787,22 @@ void __73__PGGraphRelationshipProcessor_enumerateInferredRelationshipsUsingBlock
   (*(a1[5] + 16))(a3);
 }
 
-- (void)runRelationshipAnalysisWithLoggingConnection:(id)a3 progressBlock:(id)a4
+- (void)runRelationshipAnalysisWithLoggingConnection:(id)connection progressBlock:(id)block
 {
   v78 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  aBlock = a4;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  connectionCopy = connection;
+  aBlock = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   relationshipAnalyzerPropertiesByPersonLocalIdentifier = self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier;
-  self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier = v5;
+  self->_relationshipAnalyzerPropertiesByPersonLocalIdentifier = dictionary;
 
   v7 = [PGPeopleInferencesConveniences personLocalIdentifierByContactIdentifierFromPersonNodes:self->_personNodes];
   personLocalIdentifierByContactIdentifier = self->_personLocalIdentifierByContactIdentifier;
   self->_personLocalIdentifierByContactIdentifier = v7;
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(NSDictionary *)self->_personLocalIdentifierByContactIdentifier allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [(NSDictionary *)self->_personLocalIdentifierByContactIdentifier allKeys];
+  v11 = [v9 setWithArray:allKeys];
   contactIdentifiers = self->_contactIdentifiers;
   self->_contactIdentifiers = v11;
 
@@ -864,7 +864,7 @@ void __73__PGGraphRelationshipProcessor_enumerateInferredRelationshipsUsingBlock
 
           v19 = *(*(&v54 + 1) + 8 * i);
           v20 = v59[3];
-          v21 = v42;
+          v21 = connectionCopy;
           v22 = os_signpost_id_generate(v21);
           v23 = v21;
           v24 = v23;
@@ -899,9 +899,9 @@ void __73__PGGraphRelationshipProcessor_enumerateInferredRelationshipsUsingBlock
           v30 = v29;
           if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
           {
-            v31 = [v19 name];
+            name = [v19 name];
             *v70 = 138412290;
-            *v71 = v31;
+            *v71 = name;
             _os_signpost_emit_with_name_impl(&dword_22F0FC000, v30, OS_SIGNPOST_INTERVAL_END, v22, "RelationshipAnalyzer", "Relationship Analyzer: %@", v70, 0xCu);
           }
 
@@ -909,8 +909,8 @@ void __73__PGGraphRelationshipProcessor_enumerateInferredRelationshipsUsingBlock
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
             v33 = MEMORY[0x277CCACA8];
-            v34 = [v19 name];
-            v35 = [v33 stringWithFormat:@"Relationship Analyzer: %@", v34];
+            name2 = [v19 name];
+            v35 = [v33 stringWithFormat:@"Relationship Analyzer: %@", name2];
             *v70 = 136315650;
             *v71 = "RelationshipAnalyzer";
             *&v71[8] = 2112;
@@ -981,38 +981,38 @@ void __91__PGGraphRelationshipProcessor_runRelationshipAnalysisWithLoggingConnec
   }
 }
 
-- (PGGraphRelationshipProcessor)initWithPersonNodes:(id)a3 runOptions:(unint64_t)a4 serviceManager:(id)a5
+- (PGGraphRelationshipProcessor)initWithPersonNodes:(id)nodes runOptions:(unint64_t)options serviceManager:(id)manager
 {
-  v9 = a3;
-  v10 = a5;
+  nodesCopy = nodes;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = PGGraphRelationshipProcessor;
   v11 = [(PGGraphRelationshipProcessor *)&v23 init];
   if (v11)
   {
-    v12 = [v9 graph];
+    graph = [nodesCopy graph];
     graph = v11->_graph;
-    v11->_graph = v12;
+    v11->_graph = graph;
 
-    objc_storeStrong(&v11->_personNodes, a3);
-    v14 = [v9 momentNodes];
+    objc_storeStrong(&v11->_personNodes, nodes);
+    momentNodes = [nodesCopy momentNodes];
     momentNodes = v11->_momentNodes;
-    v11->_momentNodes = v14;
+    v11->_momentNodes = momentNodes;
 
     v16 = [MEMORY[0x277CBEB98] set];
     contactIdentifiers = v11->_contactIdentifiers;
     v11->_contactIdentifiers = v16;
 
-    v18 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     personLocalIdentifierByContactIdentifier = v11->_personLocalIdentifierByContactIdentifier;
-    v11->_personLocalIdentifierByContactIdentifier = v18;
+    v11->_personLocalIdentifierByContactIdentifier = dictionary;
 
-    v11->_runOptions = a4;
-    v20 = [MEMORY[0x277CBEB18] array];
+    v11->_runOptions = options;
+    array = [MEMORY[0x277CBEB18] array];
     analyzersToRun = v11->_analyzersToRun;
-    v11->_analyzersToRun = v20;
+    v11->_analyzersToRun = array;
 
-    objc_storeStrong(&v11->_serviceManager, a5);
+    objc_storeStrong(&v11->_serviceManager, manager);
     [(PGGraphRelationshipProcessor *)v11 _extractSignalsFromRunOptions];
   }
 

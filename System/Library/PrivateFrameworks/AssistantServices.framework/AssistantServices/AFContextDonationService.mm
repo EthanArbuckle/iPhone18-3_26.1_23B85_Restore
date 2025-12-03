@@ -2,10 +2,10 @@
 + (id)defaultService;
 - (id)_connection;
 - (id)_init;
-- (void)deviceContextConnectionDidInvalidate:(id)a3;
-- (void)donateContext:(id)a3 withMetadata:(id)a4 pushToRemote:(BOOL)a5 completion:(id)a6;
-- (void)registerContextTransformer:(id)a3 forType:(id)a4;
-- (void)setDonationService:(id)a3;
+- (void)deviceContextConnectionDidInvalidate:(id)invalidate;
+- (void)donateContext:(id)context withMetadata:(id)metadata pushToRemote:(BOOL)remote completion:(id)completion;
+- (void)registerContextTransformer:(id)transformer forType:(id)type;
+- (void)setDonationService:(id)service;
 @end
 
 @implementation AFContextDonationService
@@ -22,19 +22,19 @@
   return v3;
 }
 
-- (void)deviceContextConnectionDidInvalidate:(id)a3
+- (void)deviceContextConnectionDidInvalidate:(id)invalidate
 {
   connection = self->_connection;
   self->_connection = 0;
 }
 
-- (void)donateContext:(id)a3 withMetadata:(id)a4 pushToRemote:(BOOL)a5 completion:(id)a6
+- (void)donateContext:(id)context withMetadata:(id)metadata pushToRemote:(BOOL)remote completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 type];
-  if (v13)
+  contextCopy = context;
+  metadataCopy = metadata;
+  completionCopy = completion;
+  type = [metadataCopy type];
+  if (type)
   {
     queue = self->_queue;
     v15[0] = MEMORY[0x1E69E9820];
@@ -42,11 +42,11 @@
     v15[2] = __79__AFContextDonationService_donateContext_withMetadata_pushToRemote_completion___block_invoke;
     v15[3] = &unk_1E7349578;
     v15[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v20 = a5;
-    v19 = v12;
-    v18 = v13;
+    v16 = contextCopy;
+    v17 = metadataCopy;
+    remoteCopy = remote;
+    v19 = completionCopy;
+    v18 = type;
     dispatch_async(queue, v15);
   }
 }
@@ -264,20 +264,20 @@ uint64_t __79__AFContextDonationService_donateContext_withMetadata_pushToRemote_
   return result;
 }
 
-- (void)registerContextTransformer:(id)a3 forType:(id)a4
+- (void)registerContextTransformer:(id)transformer forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  transformerCopy = transformer;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__AFContextDonationService_registerContextTransformer_forType___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = transformerCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = transformerCopy;
   dispatch_async(queue, block);
 }
 
@@ -295,17 +295,17 @@ uint64_t __63__AFContextDonationService_registerContextTransformer_forType___blo
   }
 }
 
-- (void)setDonationService:(id)a3
+- (void)setDonationService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AFContextDonationService_setDonationService___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serviceCopy;
+  v6 = serviceCopy;
   dispatch_async(queue, v7);
 }
 
@@ -367,9 +367,9 @@ void __47__AFContextDonationService_setDonationService___block_invoke(uint64_t a
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     transformersByType = v2->_transformersByType;
-    v2->_transformersByType = v5;
+    v2->_transformersByType = strongToWeakObjectsMapTable;
   }
 
   return v2;

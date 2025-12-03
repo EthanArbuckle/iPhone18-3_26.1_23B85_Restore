@@ -1,32 +1,32 @@
 @interface HKSampleCountQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - (BOOL)queue_validate;
-- (HKSampleCountQuery)initWithQueryDescriptors:(id)a3 resultsHandler:(id)a4;
-- (HKSampleCountQuery)initWithResultsHandler:(id)a3;
-- (HKSampleCountQuery)initWithSampleType:(id)a3 predicate:(id)a4 resultsHandler:(id)a5;
-- (HKSampleCountQuery)initWithSampleTypes:(id)a3 predicate:(id)a4 resultsHandler:(id)a5;
+- (HKSampleCountQuery)initWithQueryDescriptors:(id)descriptors resultsHandler:(id)handler;
+- (HKSampleCountQuery)initWithResultsHandler:(id)handler;
+- (HKSampleCountQuery)initWithSampleType:(id)type predicate:(id)predicate resultsHandler:(id)handler;
+- (HKSampleCountQuery)initWithSampleTypes:(id)types predicate:(id)predicate resultsHandler:(id)handler;
 - (NSSet)sampleTypes;
-- (void)client_deliverSampleCountDictionary:(id)a3 forQuery:(id)a4;
-- (void)client_deliverSampleTypeCountDictionary:(id)a3 forQuery:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)client_deliverSampleCountDictionary:(id)dictionary forQuery:(id)query;
+- (void)client_deliverSampleTypeCountDictionary:(id)dictionary forQuery:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKSampleCountQuery
 
-- (HKSampleCountQuery)initWithQueryDescriptors:(id)a3 resultsHandler:(id)a4
+- (HKSampleCountQuery)initWithQueryDescriptors:(id)descriptors resultsHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 allObjects];
+  handlerCopy = handler;
+  allObjects = [descriptors allObjects];
   v13.receiver = self;
   v13.super_class = HKSampleCountQuery;
-  v8 = [(HKQuery *)&v13 initWithQueryDescriptors:v7];
+  v8 = [(HKQuery *)&v13 initWithQueryDescriptors:allObjects];
 
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(handlerCopy);
     resultsHandler = v8->_resultsHandler;
     v8->_resultsHandler = v9;
 
@@ -37,18 +37,18 @@
   return v8;
 }
 
-- (HKSampleCountQuery)initWithSampleTypes:(id)a3 predicate:(id)a4 resultsHandler:(id)a5
+- (HKSampleCountQuery)initWithSampleTypes:(id)types predicate:(id)predicate resultsHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___block_invoke;
   v19[3] = &unk_1E73847E8;
-  v11 = v9;
+  v11 = predicateCopy;
   v20 = v11;
-  v12 = [a3 hk_map:v19];
-  if (v10)
+  v12 = [types hk_map:v19];
+  if (handlerCopy)
   {
     v13 = v17;
     v17[0] = MEMORY[0x1E69E9820];
@@ -56,7 +56,7 @@
     v17[2] = __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___block_invoke_2;
     v17[3] = &unk_1E7385170;
     v5 = &v18;
-    v18 = v10;
+    v18 = handlerCopy;
   }
 
   else
@@ -67,7 +67,7 @@
   v14 = _Block_copy(v13);
   v15 = [(HKSampleCountQuery *)self initWithQueryDescriptors:v12 resultsHandler:v14];
 
-  if (v10)
+  if (handlerCopy)
   {
   }
 
@@ -133,13 +133,13 @@ void __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___blo
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (HKSampleCountQuery)initWithSampleType:(id)a3 predicate:(id)a4 resultsHandler:(id)a5
+- (HKSampleCountQuery)initWithSampleType:(id)type predicate:(id)predicate resultsHandler:(id)handler
 {
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 setWithObject:a3];
-  v12 = [(HKSampleCountQuery *)self initWithSampleTypes:v11 predicate:v10 resultsHandler:v9];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  v11 = [v8 setWithObject:type];
+  v12 = [(HKSampleCountQuery *)self initWithSampleTypes:v11 predicate:predicateCopy resultsHandler:handlerCopy];
 
   return v12;
 }
@@ -148,15 +148,15 @@ void __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___blo
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v4 = [(HKQuery *)self queryDescriptors];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  queryDescriptors = [(HKQuery *)self queryDescriptors];
+  v5 = [v3 initWithCapacity:{objc_msgSend(queryDescriptors, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(HKQuery *)self queryDescriptors];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  queryDescriptors2 = [(HKQuery *)self queryDescriptors];
+  v7 = [queryDescriptors2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -167,14 +167,14 @@ void __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___blo
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(queryDescriptors2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) sampleType];
-        [v5 addObject:v11];
+        sampleType = [*(*(&v15 + 1) + 8 * i) sampleType];
+        [v5 addObject:sampleType];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [queryDescriptors2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -186,10 +186,10 @@ void __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___blo
   return v12;
 }
 
-- (HKSampleCountQuery)initWithResultsHandler:(id)a3
+- (HKSampleCountQuery)initWithResultsHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(HKSampleCountQuery *)a2 initWithResultsHandler:?];
   }
@@ -203,7 +203,7 @@ void __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___blo
     resultsHandler = v6->_resultsHandler;
     v6->_resultsHandler = 0;
 
-    v9 = _Block_copy(v5);
+    v9 = _Block_copy(handlerCopy);
     sampleTypeCountResultsHandler = v7->_sampleTypeCountResultsHandler;
     v7->_sampleTypeCountResultsHandler = v9;
   }
@@ -211,21 +211,21 @@ void __67__HKSampleCountQuery_initWithSampleTypes_predicate_resultsHandler___blo
   return v7;
 }
 
-- (void)client_deliverSampleCountDictionary:(id)a3 forQuery:(id)a4
+- (void)client_deliverSampleCountDictionary:(id)dictionary forQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  dictionaryCopy = dictionary;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__HKSampleCountQuery_client_deliverSampleCountDictionary_forQuery___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = dictionaryCopy;
+  v9 = dictionaryCopy;
+  v10 = queryCopy;
+  dispatch_async(queue, block);
 }
 
 void __67__HKSampleCountQuery_client_deliverSampleCountDictionary_forQuery___block_invoke(uint64_t a1)
@@ -249,21 +249,21 @@ void __67__HKSampleCountQuery_client_deliverSampleCountDictionary_forQuery___blo
   }
 }
 
-- (void)client_deliverSampleTypeCountDictionary:(id)a3 forQuery:(id)a4
+- (void)client_deliverSampleTypeCountDictionary:(id)dictionary forQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  dictionaryCopy = dictionary;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__HKSampleCountQuery_client_deliverSampleTypeCountDictionary_forQuery___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = dictionaryCopy;
+  v9 = dictionaryCopy;
+  v10 = queryCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__HKSampleCountQuery_client_deliverSampleTypeCountDictionary_forQuery___block_invoke(uint64_t a1)
@@ -287,32 +287,32 @@ void __71__HKSampleCountQuery_client_deliverSampleTypeCountDictionary_forQuery__
   }
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___HKSampleCountQuery;
-  v3 = a3;
-  objc_msgSendSuper2(&v12, sel_configureClientInterface_, v3);
+  interfaceCopy = interface;
+  objc_msgSendSuper2(&v12, sel_configureClientInterface_, interfaceCopy);
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v5, v6, objc_opt_class(), 0}];
-  [v3 setClasses:v7 forSelector:sel_client_deliverSampleCountDictionary_forQuery_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v7 forSelector:sel_client_deliverSampleCountDictionary_forQuery_ argumentIndex:0 ofReply:0];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-  [v3 setClasses:v11 forSelector:sel_client_deliverSampleTypeCountDictionary_forQuery_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v11 forSelector:sel_client_deliverSampleTypeCountDictionary_forQuery_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   resultsHandler = self->_resultsHandler;
   if (resultsHandler)
   {
     v6 = _Block_copy(resultsHandler);
-    v7 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __41__HKSampleCountQuery_queue_deliverError___block_invoke;
@@ -321,11 +321,11 @@ void __71__HKSampleCountQuery_client_deliverSampleTypeCountDictionary_forQuery__
     v19 = v6;
     v17[4] = self;
     v9 = &v18;
-    v18 = v4;
+    v18 = errorCopy;
     v10 = v6;
     v11 = v17;
 LABEL_5:
-    dispatch_async(v7, v11);
+    dispatch_async(clientQueue, v11);
 
     goto LABEL_6;
   }
@@ -334,7 +334,7 @@ LABEL_5:
   if (sampleTypeCountResultsHandler)
   {
     v13 = _Block_copy(sampleTypeCountResultsHandler);
-    v7 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __41__HKSampleCountQuery_queue_deliverError___block_invoke_2;
@@ -343,7 +343,7 @@ LABEL_5:
     v16 = v13;
     v14[4] = self;
     v9 = &v15;
-    v15 = v4;
+    v15 = errorCopy;
     v10 = v13;
     v11 = v14;
     goto LABEL_5;
@@ -352,14 +352,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = HKSampleCountQuery;
-  v4 = a3;
-  [(HKQuery *)&v6 queue_populateConfiguration:v4];
+  configurationCopy = configuration;
+  [(HKQuery *)&v6 queue_populateConfiguration:configurationCopy];
   v5 = [(HKQuery *)self queryDescriptors:v6.receiver];
-  [v4 setQueryDescriptors:v5];
+  [configurationCopy setQueryDescriptors:v5];
 }
 
 - (void)queue_validate
@@ -400,8 +400,8 @@ LABEL_6:
   }
 
 LABEL_3:
-  v5 = [(HKQuery *)self queryDescriptors];
-  v6 = [v5 count];
+  queryDescriptors = [(HKQuery *)self queryDescriptors];
+  v6 = [queryDescriptors count];
 
   if (!v6)
   {
@@ -439,7 +439,7 @@ LABEL_7:
           [v13 raise:v10 format:{@"%@ sample query description must be of class %@", v14, objc_opt_class()}];
         }
 
-        v15 = [v12 sampleType];
+        sampleType = [v12 sampleType];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -461,11 +461,11 @@ LABEL_7:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKSampleCountQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }
@@ -478,8 +478,8 @@ LABEL_7:
 
 - (BOOL)queue_validate
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a1 file:@"HKSampleCountQuery.m" lineNumber:159 description:{@"%@ cannot have two completion handlers", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKSampleCountQuery.m" lineNumber:159 description:{@"%@ cannot have two completion handlers", objc_opt_class()}];
 
   return *a3 == 0;
 }

@@ -1,14 +1,14 @@
 @interface ICCloudOperationObserver
 - (ICCloudOperationObserver)init;
-- (ICCloudOperationObserver)initWithQueue:(id)a3;
+- (ICCloudOperationObserver)initWithQueue:(id)queue;
 @end
 
 @implementation ICCloudOperationObserver
 
-- (ICCloudOperationObserver)initWithQueue:(id)a3
+- (ICCloudOperationObserver)initWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = sub_214F5CF50(v3);
+  queueCopy = queue;
+  v4 = sub_214F5CF50(queueCopy);
 
   return v4;
 }

@@ -58,9 +58,9 @@ void __64__NSString_EmailFoundationAdditions__ef_isUnsignedIntegerString__block_
 
 - (id)_escapeForXML
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 mutableCopy];
+    v1 = [self mutableCopy];
     [v1 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:{0, objc_msgSend(v1, "length")}];
     [v1 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:{0, objc_msgSend(v1, "length")}];
     [v1 replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:{0, objc_msgSend(v1, "length")}];

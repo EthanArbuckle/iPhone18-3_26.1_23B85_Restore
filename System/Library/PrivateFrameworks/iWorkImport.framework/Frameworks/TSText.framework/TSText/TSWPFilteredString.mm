@@ -1,90 +1,90 @@
 @interface TSWPFilteredString
-+ (id)stringWithString:(id)a3;
-- (BOOL)adjustRangesByDelta:(int64_t)a3 startingAt:(unint64_t)a4;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3;
++ (id)stringWithString:(id)string;
+- (BOOL)adjustRangesByDelta:(int64_t)delta startingAt:(unint64_t)at;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index;
 - (NSString)string;
-- (TSWPFilteredString)initWithString:(id)a3;
-- (TSWPFilteredString)initWithString:(id)a3 subrange:(_NSRange)a4 removeRanges:(id)a5;
-- (TSWPFilteredString)initWithTextSource:(id)a3 subrange:(_NSRange)a4 removeRanges:(id)a5;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3;
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5;
-- (id)attachmentAtCharIndex:(unint64_t)a3;
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)characterStyleForDropCapAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)dropCapStyleAtCharIndex:(unint64_t)a3;
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3;
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6;
+- (TSWPFilteredString)initWithString:(id)string;
+- (TSWPFilteredString)initWithString:(id)string subrange:(_NSRange)subrange removeRanges:(id)ranges;
+- (TSWPFilteredString)initWithTextSource:(id)source subrange:(_NSRange)subrange removeRanges:(id)ranges;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage;
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation;
+- (id)attachmentAtCharIndex:(unint64_t)index;
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index;
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)characterStyleForDropCapAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)dropCapStyleAtCharIndex:(unint64_t)index;
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index;
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char;
 - (unint64_t)changeCount;
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3;
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3;
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3;
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage;
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage;
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage;
 - (unint64_t)length;
 - (unint64_t)storageLength;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL *)a4 attributesTable:(id *)a5 effectiveRange:(_NSRange *)a6;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL *)interest attributesTable:(id *)table effectiveRange:(_NSRange *)range;
 - (void)checkDebug;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 - (void)updateStorageChangeCount;
 @end
 
 @implementation TSWPFilteredString
 
-+ (id)stringWithString:(id)a3
++ (id)stringWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithString_(v4, v5, v3);
+  v6 = objc_msgSend_initWithString_(v4, v5, stringCopy);
 
   return v6;
 }
 
-- (TSWPFilteredString)initWithTextSource:(id)a3 subrange:(_NSRange)a4 removeRanges:(id)a5
+- (TSWPFilteredString)initWithTextSource:(id)source subrange:(_NSRange)subrange removeRanges:(id)ranges
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
-  v14 = objc_msgSend_string(v10, v12, v13);
-  v16 = objc_msgSend_initWithString_subrange_removeRanges_(self, v15, v14, location, length, v11);
+  length = subrange.length;
+  location = subrange.location;
+  sourceCopy = source;
+  rangesCopy = ranges;
+  v14 = objc_msgSend_string(sourceCopy, v12, v13);
+  v16 = objc_msgSend_initWithString_subrange_removeRanges_(self, v15, v14, location, length, rangesCopy);
 
   if (v16)
   {
-    objc_storeStrong(&v16->_textSource, a3);
-    v16->_changeCount = objc_msgSend_changeCount(v10, v17, v18);
-    v16->_storageLength = objc_msgSend_storageLength(v10, v19, v20);
+    objc_storeStrong(&v16->_textSource, source);
+    v16->_changeCount = objc_msgSend_changeCount(sourceCopy, v17, v18);
+    v16->_storageLength = objc_msgSend_storageLength(sourceCopy, v19, v20);
   }
 
   return v16;
 }
 
-- (TSWPFilteredString)initWithString:(id)a3 subrange:(_NSRange)a4 removeRanges:(id)a5
+- (TSWPFilteredString)initWithString:(id)string subrange:(_NSRange)subrange removeRanges:(id)ranges
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = subrange.length;
+  location = subrange.location;
+  stringCopy = string;
+  rangesCopy = ranges;
   v27.receiver = self;
   v27.super_class = TSWPFilteredString;
   v13 = [(TSWPFilteredString *)&v27 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v9, v11, v12);
+    v14 = objc_msgSend_copy(stringCopy, v11, v12);
     sourceString = v13->_sourceString;
     v13->_sourceString = v14;
 
     v16 = [TSWPDeletionRangeMap alloc];
-    v18 = objc_msgSend_initWithSubRange_removeRanges_(v16, v17, location, length, v10);
+    v18 = objc_msgSend_initWithSubRange_removeRanges_(v16, v17, location, length, rangesCopy);
     rangeMap = v13->_rangeMap;
     v13->_rangeMap = v18;
 
@@ -94,29 +94,29 @@
 
     v13->_length = objc_msgSend_mappedCharIndex_(v13->_rangeMap, v23, location + length);
     v13->_changeCount = 0x7FFFFFFFFFFFFFFFLL;
-    v13->_storageLength = objc_msgSend_length(v9, v24, v25);
+    v13->_storageLength = objc_msgSend_length(stringCopy, v24, v25);
   }
 
   return v13;
 }
 
-- (TSWPFilteredString)initWithString:(id)a3
+- (TSWPFilteredString)initWithString:(id)string
 {
-  v4 = a3;
-  v7 = objc_msgSend_length(v4, v5, v6);
+  stringCopy = string;
+  v7 = objc_msgSend_length(stringCopy, v5, v6);
   v10 = objc_msgSend_rangeArray(TSWPRangeArray, v8, v9);
-  v12 = objc_msgSend_initWithString_subrange_removeRanges_(self, v11, v4, 0, v7, v10);
+  v12 = objc_msgSend_initWithString_subrange_removeRanges_(self, v11, stringCopy, 0, v7, v10);
 
   return v12;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   textSource = self->_textSource;
   if (textSource)
   {
     changeCount = self->_changeCount;
-    if (changeCount != objc_msgSend_changeCount(textSource, a2, a3))
+    if (changeCount != objc_msgSend_changeCount(textSource, a2, index))
     {
       v7 = MEMORY[0x277D81150];
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString characterAtIndex:]");
@@ -127,23 +127,23 @@
     }
   }
 
-  v14 = objc_msgSend_sourceString(self, a2, a3);
+  v14 = objc_msgSend_sourceString(self, a2, index);
   v17 = objc_msgSend_rangeMap(self, v15, v16);
-  v19 = objc_msgSend_unmappedCharIndex_(v17, v18, a3);
+  v19 = objc_msgSend_unmappedCharIndex_(v17, v18, index);
   v21 = objc_msgSend_characterAtIndex_(v14, v20, v19);
 
   return v21;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   textSource = self->_textSource;
   if (textSource)
   {
     changeCount = self->_changeCount;
-    if (changeCount != objc_msgSend_changeCount(textSource, a2, a3))
+    if (changeCount != objc_msgSend_changeCount(textSource, a2, characters))
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString getCharacters:range:]");
@@ -154,7 +154,7 @@
     }
   }
 
-  v17 = objc_msgSend_rangeMap(self, a2, a3);
+  v17 = objc_msgSend_rangeMap(self, a2, characters);
   v19 = objc_msgSend_unmappedCharRange_(v17, v18, location, length);
   v21 = v20;
 
@@ -168,20 +168,20 @@
   v26[2] = sub_276D12F18;
   v26[3] = &unk_27A6F3588;
   v26[5] = v27;
-  v26[6] = a3;
+  v26[6] = characters;
   v26[4] = self;
   objc_msgSend_enumerateRangesInRange_usingBlock_(v24, v25, v19, v21, v26);
 
   _Block_object_dispose(v27, 8);
 }
 
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage
 {
   textSource = self->_textSource;
   if (textSource)
   {
     changeCount = self->_changeCount;
-    if (changeCount != objc_msgSend_changeCount(textSource, a2, a3))
+    if (changeCount != objc_msgSend_changeCount(textSource, a2, storage))
     {
       v7 = MEMORY[0x277D81150];
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString charIndexMappedToStorage:]");
@@ -192,8 +192,8 @@
     }
   }
 
-  v14 = objc_msgSend_rangeMap(self, a2, a3);
-  v16 = objc_msgSend_unmappedCharIndex_(v14, v15, a3);
+  v14 = objc_msgSend_rangeMap(self, a2, storage);
+  v16 = objc_msgSend_unmappedCharIndex_(v14, v15, storage);
 
   v18 = self->_textSource;
   if (!v18)
@@ -204,14 +204,14 @@
   return objc_msgSend_charIndexMappedToStorage_(v18, v17, v16);
 }
 
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   textSource = self->_textSource;
   if (textSource)
   {
     changeCount = self->_changeCount;
-    if (changeCount != objc_msgSend_changeCount(textSource, a2, a3))
+    if (changeCount != objc_msgSend_changeCount(textSource, a2, storage))
     {
       v7 = MEMORY[0x277D81150];
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString charIndexMappedFromStorage:]");
@@ -224,25 +224,25 @@
     v14 = self->_textSource;
     if (v14)
     {
-      v3 = objc_msgSend_charIndexMappedFromStorage_(v14, a2, v3);
+      storageCopy = objc_msgSend_charIndexMappedFromStorage_(v14, a2, storageCopy);
     }
   }
 
-  v15 = objc_msgSend_rangeMap(self, a2, a3);
-  v17 = objc_msgSend_mappedCharIndex_(v15, v16, v3);
+  v15 = objc_msgSend_rangeMap(self, a2, storage);
+  v17 = objc_msgSend_mappedCharIndex_(v15, v16, storageCopy);
 
   return v17;
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   textSource = self->_textSource;
   if (textSource)
   {
     changeCount = self->_changeCount;
-    if (changeCount != objc_msgSend_changeCount(textSource, a2, a3.location))
+    if (changeCount != objc_msgSend_changeCount(textSource, a2, storage.location))
     {
       v8 = MEMORY[0x277D81150];
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString charRangeMappedToStorage:]");
@@ -271,15 +271,15 @@
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   textSource = self->_textSource;
   if (textSource)
   {
     changeCount = self->_changeCount;
-    if (changeCount != objc_msgSend_changeCount(textSource, a2, a3.location))
+    if (changeCount != objc_msgSend_changeCount(textSource, a2, storage.location))
     {
       v8 = MEMORY[0x277D81150];
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString charRangeMappedFromStorage:]");
@@ -325,10 +325,10 @@
   return self->_length;
 }
 
-- (BOOL)adjustRangesByDelta:(int64_t)a3 startingAt:(unint64_t)a4
+- (BOOL)adjustRangesByDelta:(int64_t)delta startingAt:(unint64_t)at
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString adjustRangesByDelta:startingAt:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString adjustRangesByDelta:startingAt:]", at);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 125, 0, "Do not call method");
 
@@ -342,7 +342,7 @@
   objc_exception_throw(v16);
 }
 
-- (id)attachmentAtCharIndex:(unint64_t)a3
+- (id)attachmentAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString attachmentAtCharIndex:]");
@@ -359,7 +359,7 @@
   objc_exception_throw(v15);
 }
 
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString attachmentOrFootnoteAtCharIndex:]");
@@ -376,11 +376,11 @@
   objc_exception_throw(v15);
 }
 
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL *)a4 attributesTable:(id *)a5 effectiveRange:(_NSRange *)a6
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL *)interest attributesTable:(id *)table effectiveRange:(_NSRange *)range
 {
-  if (a6)
+  if (range)
   {
-    *a6 = *MEMORY[0x277D81490];
+    *range = *MEMORY[0x277D81490];
   }
 }
 
@@ -404,18 +404,18 @@
   return self->_changeCount;
 }
 
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage
 {
-  v5 = objc_msgSend_charIndexMappedFromStorage_(self, a2, a3);
+  v5 = objc_msgSend_charIndexMappedFromStorage_(self, a2, storage);
 
   return objc_msgSend_charIndexMappedToStorage_(self, v4, v5);
 }
 
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_charIndexRemappedFromStorage_(self, a2, a3.location);
+  length = storage.length;
+  location = storage.location;
+  v6 = objc_msgSend_charIndexRemappedFromStorage_(self, a2, storage.location);
   v8 = objc_msgSend_charIndexRemappedFromStorage_(self, v7, location + length) - v6;
   v9 = v6;
   result.length = v8;
@@ -423,10 +423,10 @@
   return result;
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString characterStyleAtCharIndex:effectiveRange:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString characterStyleAtCharIndex:effectiveRange:]", range);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 158, 0, "Do not call method");
 
@@ -457,10 +457,10 @@
   objc_exception_throw(v14);
 }
 
-- (id)characterStyleForDropCapAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleForDropCapAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString characterStyleForDropCapAtCharIndex:effectiveRange:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString characterStyleForDropCapAtCharIndex:effectiveRange:]", range);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 166, 0, "Do not call method");
 
@@ -474,7 +474,7 @@
   objc_exception_throw(v16);
 }
 
-- (id)dropCapStyleAtCharIndex:(unint64_t)a3
+- (id)dropCapStyleAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString dropCapStyleAtCharIndex:]");
@@ -491,7 +491,7 @@
   objc_exception_throw(v15);
 }
 
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString footnoteReferenceAtCharIndex:]");
@@ -508,7 +508,7 @@
   objc_exception_throw(v15);
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString hasColumnBreakAtCharIndex:]");
@@ -525,7 +525,7 @@
   objc_exception_throw(v15);
 }
 
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString hasColumnStyleForParagraphBreakAtCharIndex:]");
@@ -542,9 +542,9 @@
   objc_exception_throw(v15);
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char
 {
-  v6 = a5;
+  localeCopy = locale;
   v7 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSWPFilteredString hyphenationLocationBeforeIndex:inRange:locale:hyphenChar:]");
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
@@ -560,7 +560,7 @@
   objc_exception_throw(v20);
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString isWritingDirectionRightToLeftForParagraphAtCharIndex:]");
@@ -577,10 +577,10 @@
   objc_exception_throw(v15);
 }
 
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString objectAtLocationPriorToMappedCharIndex:forAttributeKind:effectiveRange:]", a4, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString objectAtLocationPriorToMappedCharIndex:forAttributeKind:effectiveRange:]", kind, range);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 194, 0, "Do not call method");
 
@@ -594,10 +594,10 @@
   objc_exception_throw(v17);
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString paragraphStyleAtCharIndex:effectiveRange:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString paragraphStyleAtCharIndex:effectiveRange:]", range);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 198, 0, "Do not call method");
 
@@ -611,7 +611,7 @@
   objc_exception_throw(v16);
 }
 
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString rangeOfDropCapAtCharIndex:]");
@@ -628,7 +628,7 @@
   objc_exception_throw(v15);
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
   v26 = *MEMORY[0x277D81490];
   textSource = self->_textSource;
@@ -638,7 +638,7 @@
   }
 
   changeCount = self->_changeCount;
-  if (changeCount != objc_msgSend_changeCount(textSource, a2, a3))
+  if (changeCount != objc_msgSend_changeCount(textSource, a2, index))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPFilteredString smartFieldAtCharIndex:attributeKind:effectiveRange:]");
@@ -651,12 +651,12 @@
   v19 = self->_textSource;
   if (v19)
   {
-    v20 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, v11, a3);
-    v23 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(v19, v21, v20, a4, &v26);
-    if (a5)
+    v20 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, v11, index);
+    v23 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(v19, v21, v20, kind, &v26);
+    if (range)
     {
-      a5->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v22, v26, *(&v26 + 1));
-      a5->length = v24;
+      range->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v22, v26, *(&v26 + 1));
+      range->length = v24;
     }
   }
 
@@ -669,10 +669,10 @@ LABEL_7:
   return v23;
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString smartFieldsWithAttributeKind:intersectingRange:]", a4.location, a4.length);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString smartFieldsWithAttributeKind:intersectingRange:]", range.location, range.length);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 220, 0, "Do not call method");
 
@@ -743,10 +743,10 @@ LABEL_7:
   objc_exception_throw(v14);
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString wordAtCharIndex:includePreviousWord:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString wordAtCharIndex:includePreviousWord:]", word);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 238, 0, "Do not call method");
 
@@ -760,10 +760,10 @@ LABEL_7:
   objc_exception_throw(v16);
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString wordAtCharIndex:includePreviousWord:includeHyphenation:]", a4, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPFilteredString wordAtCharIndex:includePreviousWord:includeHyphenation:]", word, hyphenation);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFilteredString.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 242, 0, "Do not call method");
 

@@ -1,8 +1,8 @@
 @interface DBGPoint
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withPoint:(CGPoint)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withPoint:(CGPoint)point;
 - (CGPoint)point;
-- (DBGPoint)initWithCGPoint:(CGPoint)a3;
+- (DBGPoint)initWithCGPoint:(CGPoint)point;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,17 +10,17 @@
 
 @implementation DBGPoint
 
-+ (id)withPoint:(CGPoint)a3
++ (id)withPoint:(CGPoint)point
 {
-  v3 = [[a1 alloc] initWithCGPoint:{a3.x, a3.y}];
+  v3 = [[self alloc] initWithCGPoint:{point.x, point.y}];
 
   return v3;
 }
 
-- (DBGPoint)initWithCGPoint:(CGPoint)a3
+- (DBGPoint)initWithCGPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6.receiver = self;
   v6.super_class = DBGPoint;
   result = [(DBGPoint *)&v6 init];
@@ -35,8 +35,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGPoint *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGPoint *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -61,7 +61,7 @@
   return result;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
@@ -70,10 +70,10 @@
   {
     x = CGPointZero.x;
     y = CGPointZero.y;
-    if (a5)
+    if (error)
     {
       v12 = v8;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -94,7 +94,7 @@
     x = valuePtr.x;
   }
 
-  v17 = [a1 withPoint:{x, y}];
+  v17 = [self withPoint:{x, y}];
 
   return v17;
 }

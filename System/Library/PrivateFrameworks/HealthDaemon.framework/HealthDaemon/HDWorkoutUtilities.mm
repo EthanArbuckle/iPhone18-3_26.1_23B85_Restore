@@ -1,30 +1,30 @@
 @interface HDWorkoutUtilities
-+ (BOOL)enumerateQuantitiesOfType:(id)a3 from:(id)a4 to:(id)a5 transaction:(id)a6 profile:(id)a7 error:(id *)a8 handler:(id)a9;
-+ (void)submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:(id)a3 event:(id)a4 sessionIdentifier:(id)a5 activityType:(unint64_t)a6 duration:(int64_t)a7 activityCount:(int64_t)a8 extendedMode:(BOOL)a9 totalLocations:(int64_t)a10 routeSmoothingRetryCount:(int64_t)a11 activityID:(id)a12 failure:(BOOL)a13;
-+ (void)submitWorkoutPerformanceAnalyticsWithCoordinator:(id)a3 event:(id)a4 sessionIdentifier:(id)a5 activityType:(unint64_t)a6 duration:(int64_t)a7 activityCount:(int64_t)a8 failure:(BOOL)a9;
-- (BOOL)shouldAllowDatabaseAccessWhileLockedForProfile:(id)a3 error:(id *)a4;
++ (BOOL)enumerateQuantitiesOfType:(id)type from:(id)from to:(id)to transaction:(id)transaction profile:(id)profile error:(id *)error handler:(id)handler;
++ (void)submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:(id)coordinator event:(id)event sessionIdentifier:(id)identifier activityType:(unint64_t)type duration:(int64_t)duration activityCount:(int64_t)count extendedMode:(BOOL)mode totalLocations:(int64_t)self0 routeSmoothingRetryCount:(int64_t)self1 activityID:(id)self2 failure:(BOOL)self3;
++ (void)submitWorkoutPerformanceAnalyticsWithCoordinator:(id)coordinator event:(id)event sessionIdentifier:(id)identifier activityType:(unint64_t)type duration:(int64_t)duration activityCount:(int64_t)count failure:(BOOL)failure;
+- (BOOL)shouldAllowDatabaseAccessWhileLockedForProfile:(id)profile error:(id *)error;
 - (BOOL)shouldAllowWorkoutDatabaseAccessWhileLocked;
 - (BOOL)shouldDisplayWorkoutTransparencyAlert;
-- (HDWorkoutUtilities)initWithProfile:(id)a3;
-- (void)didUpdateKeyValueDomain:(id)a3;
-- (void)profileDidInitialize:(id)a3;
+- (HDWorkoutUtilities)initWithProfile:(id)profile;
+- (void)didUpdateKeyValueDomain:(id)domain;
+- (void)profileDidInitialize:(id)initialize;
 @end
 
 @implementation HDWorkoutUtilities
 
-- (HDWorkoutUtilities)initWithProfile:(id)a3
+- (HDWorkoutUtilities)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDWorkoutUtilities;
   v5 = [(HDWorkoutUtilities *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = [HDKeyValueDomain alloc];
-    v8 = [(HDKeyValueDomain *)v7 initWithCategory:0 domainName:*MEMORY[0x277CCE5B0] profile:v4];
+    v8 = [(HDKeyValueDomain *)v7 initWithCategory:0 domainName:*MEMORY[0x277CCE5B0] profile:profileCopy];
     domain = v6->_domain;
     v6->_domain = v8;
 
@@ -53,7 +53,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
         v14 = v5;
         _os_log_error_impl(&dword_228986000, v6, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch workout database access while locked with error %{public}@", buf, 0x16u);
@@ -169,7 +169,7 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)shouldAllowDatabaseAccessWhileLockedForProfile:(id)a3 error:(id *)a4
+- (BOOL)shouldAllowDatabaseAccessWhileLockedForProfile:(id)profile error:(id *)error
 {
   domain = self->_domain;
   v6 = *MEMORY[0x277CCE540];
@@ -191,12 +191,12 @@ LABEL_18:
   {
     if (v7)
     {
-      v11 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v11 = 1;
+      bOOLValue = 1;
     }
   }
 
@@ -210,28 +210,28 @@ LABEL_18:
       _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "Failed to fetch database access while locked value", v16, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v9;
-      v11 = 0;
-      *a4 = v9;
+      bOOLValue = 0;
+      *error = v9;
     }
 
     else
     {
       _HKLogDroppedError();
-      v11 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v11;
+  return bOOLValue;
 }
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 domainName];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCE5B0]];
+  domainName = [domain domainName];
+  v5 = [domainName isEqualToString:*MEMORY[0x277CCE5B0]];
 
   if (v5)
   {
@@ -241,7 +241,7 @@ LABEL_18:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Workout KV domain updated", buf, 0xCu);
     }
 
@@ -260,7 +260,7 @@ LABEL_18:
       if (os_log_type_enabled(*v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2114;
         v17 = v10;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch workout database access while locked with error %{public}@", buf, 0x16u);
@@ -271,16 +271,16 @@ LABEL_18:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileDidInitialize:(id)a3
+- (void)profileDidInitialize:(id)initialize
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
+  database = [WeakRetained database];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__HDWorkoutUtilities_profileDidInitialize___block_invoke;
   v6[3] = &unk_278616048;
   v6[4] = self;
-  [v5 performInFirstUnprotectedWriteTransaction:v6];
+  [database performInFirstUnprotectedWriteTransaction:v6];
 }
 
 uint64_t __43__HDWorkoutUtilities_profileDidInitialize___block_invoke(uint64_t a1)
@@ -314,19 +314,19 @@ uint64_t __43__HDWorkoutUtilities_profileDidInitialize___block_invoke(uint64_t a
   return 1;
 }
 
-+ (BOOL)enumerateQuantitiesOfType:(id)a3 from:(id)a4 to:(id)a5 transaction:(id)a6 profile:(id)a7 error:(id *)a8 handler:(id)a9
++ (BOOL)enumerateQuantitiesOfType:(id)type from:(id)from to:(id)to transaction:(id)transaction profile:(id)profile error:(id *)error handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  [v14 timeIntervalSinceReferenceDate];
+  typeCopy = type;
+  fromCopy = from;
+  toCopy = to;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  handlerCopy = handler;
+  [fromCopy timeIntervalSinceReferenceDate];
   v20 = v19;
-  [v15 timeIntervalSinceReferenceDate];
+  [toCopy timeIntervalSinceReferenceDate];
   v22 = v21;
-  v23 = [(HDDataEntity *)HDQuantitySampleSeriesEntity entityEnumeratorWithProfile:v17];
+  v23 = [(HDDataEntity *)HDQuantitySampleSeriesEntity entityEnumeratorWithProfile:profileCopy];
   [v23 setIgnoreEntityClassAdditionalPredicateForEnumeration:1];
   v46[0] = 0;
   v46[1] = v46;
@@ -342,23 +342,23 @@ uint64_t __43__HDWorkoutUtilities_profileDidInitialize___block_invoke(uint64_t a
   v33[1] = 3221225472;
   v33[2] = __90__HDWorkoutUtilities_enumerateQuantitiesOfType_from_to_transaction_profile_error_handler___block_invoke;
   v33[3] = &unk_2786286B8;
-  v24 = v14;
+  v24 = fromCopy;
   v34 = v24;
   v42 = v20;
-  v25 = v15;
+  v25 = toCopy;
   v43 = v22;
   v35 = v25;
   v40 = v46;
   v41 = v44;
   v26 = v23;
   v36 = v26;
-  v27 = v16;
+  v27 = transactionCopy;
   v37 = v27;
-  v28 = v13;
+  v28 = typeCopy;
   v38 = v28;
-  v29 = v18;
+  v29 = handlerCopy;
   v39 = v29;
-  v30 = [HDQuantitySampleValueEnumerator quantityValuesForType:v28 from:v24 to:v25 transaction:v27 error:a8 handler:v33];
+  v30 = [HDQuantitySampleValueEnumerator quantityValuesForType:v28 from:v24 to:v25 transaction:v27 error:error handler:v33];
 
   _Block_object_dispose(v44, 8);
   _Block_object_dispose(v46, 8);
@@ -414,53 +414,53 @@ uint64_t __90__HDWorkoutUtilities_enumerateQuantitiesOfType_from_to_transaction_
   return 1;
 }
 
-+ (void)submitWorkoutPerformanceAnalyticsWithCoordinator:(id)a3 event:(id)a4 sessionIdentifier:(id)a5 activityType:(unint64_t)a6 duration:(int64_t)a7 activityCount:(int64_t)a8 failure:(BOOL)a9
++ (void)submitWorkoutPerformanceAnalyticsWithCoordinator:(id)coordinator event:(id)event sessionIdentifier:(id)identifier activityType:(unint64_t)type duration:(int64_t)duration activityCount:(int64_t)count failure:(BOOL)failure
 {
   v14 = MEMORY[0x277CCABB0];
   v15 = MEMORY[0x277CBEAA8];
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  identifierCopy = identifier;
+  eventCopy = event;
+  coordinatorCopy = coordinator;
   v19 = [v15 now];
   [v19 timeIntervalSince1970];
   v21 = [v14 numberWithDouble:floor(v20 * 1000.0)];
-  v25 = [v21 stringValue];
+  stringValue = [v21 stringValue];
 
-  v22 = [v16 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  LOBYTE(v24) = a9;
+  LOBYTE(v24) = failure;
   LOBYTE(v23) = 0;
-  [v18 workout_reportEvent:v17 timestamp:v25 sessionID:v22 activityType:a6 sessionDuration:a7 activityCount:a8 extendedMode:v23 totalLocations:-1 routeSmoothingRetryCount:-1 activityID:&stru_283BF39C8 failure:v24];
+  [coordinatorCopy workout_reportEvent:eventCopy timestamp:stringValue sessionID:uUIDString activityType:type sessionDuration:duration activityCount:count extendedMode:v23 totalLocations:-1 routeSmoothingRetryCount:-1 activityID:&stru_283BF39C8 failure:v24];
 }
 
-+ (void)submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:(id)a3 event:(id)a4 sessionIdentifier:(id)a5 activityType:(unint64_t)a6 duration:(int64_t)a7 activityCount:(int64_t)a8 extendedMode:(BOOL)a9 totalLocations:(int64_t)a10 routeSmoothingRetryCount:(int64_t)a11 activityID:(id)a12 failure:(BOOL)a13
++ (void)submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:(id)coordinator event:(id)event sessionIdentifier:(id)identifier activityType:(unint64_t)type duration:(int64_t)duration activityCount:(int64_t)count extendedMode:(BOOL)mode totalLocations:(int64_t)self0 routeSmoothingRetryCount:(int64_t)self1 activityID:(id)self2 failure:(BOOL)self3
 {
-  v31 = a3;
-  v15 = a4;
-  v16 = a12;
+  coordinatorCopy = coordinator;
+  eventCopy = event;
+  dCopy = d;
   v17 = MEMORY[0x277CCABB0];
   v18 = MEMORY[0x277CBEAA8];
-  v19 = a5;
+  identifierCopy = identifier;
   v20 = [v18 now];
   [v20 timeIntervalSince1970];
   v22 = [v17 numberWithDouble:floor(v21 * 1000.0)];
-  v23 = [v22 stringValue];
+  stringValue = [v22 stringValue];
 
-  v24 = [v19 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  if (v16)
+  if (dCopy)
   {
-    v25 = [v16 UUIDString];
-    LOBYTE(v27) = a13;
-    LOBYTE(v26) = a9;
-    [v31 workout_reportEvent:v15 timestamp:v23 sessionID:v24 activityType:a6 sessionDuration:a7 activityCount:a8 extendedMode:v26 totalLocations:a10 routeSmoothingRetryCount:a11 activityID:v25 failure:v27];
+    uUIDString2 = [dCopy UUIDString];
+    LOBYTE(v27) = failure;
+    LOBYTE(v26) = mode;
+    [coordinatorCopy workout_reportEvent:eventCopy timestamp:stringValue sessionID:uUIDString activityType:type sessionDuration:duration activityCount:count extendedMode:v26 totalLocations:locations routeSmoothingRetryCount:retryCount activityID:uUIDString2 failure:v27];
   }
 
   else
   {
-    LOBYTE(v27) = a13;
-    LOBYTE(v26) = a9;
-    [v31 workout_reportEvent:v15 timestamp:v23 sessionID:v24 activityType:a6 sessionDuration:a7 activityCount:a8 extendedMode:v26 totalLocations:a10 routeSmoothingRetryCount:a11 activityID:&stru_283BF39C8 failure:v27];
+    LOBYTE(v27) = failure;
+    LOBYTE(v26) = mode;
+    [coordinatorCopy workout_reportEvent:eventCopy timestamp:stringValue sessionID:uUIDString activityType:type sessionDuration:duration activityCount:count extendedMode:v26 totalLocations:locations routeSmoothingRetryCount:retryCount activityID:&stru_283BF39C8 failure:v27];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface MTLTelemetryCommandBuffer
-- (MTLTelemetryCommandBuffer)initWithCommandBuffer:(id)a3 commandQueue:(id)a4 descriptor:(id)a5;
+- (MTLTelemetryCommandBuffer)initWithCommandBuffer:(id)buffer commandQueue:(id)queue descriptor:(id)descriptor;
 - (id).cxx_construct;
 - (id)blitCommandEncoder;
-- (id)blitCommandEncoderWithDescriptor:(id)a3;
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor;
 - (id)computeCommandEncoder;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
 - (void)dealloc;
 - (void)initDistributions;
 - (void)mergeDistributions;
@@ -58,11 +58,11 @@
   getKernelTelemetryState(&self->_initKernelState);
 }
 
-- (MTLTelemetryCommandBuffer)initWithCommandBuffer:(id)a3 commandQueue:(id)a4 descriptor:(id)a5
+- (MTLTelemetryCommandBuffer)initWithCommandBuffer:(id)buffer commandQueue:(id)queue descriptor:(id)descriptor
 {
   v8.receiver = self;
   v8.super_class = MTLTelemetryCommandBuffer;
-  v5 = [(MTLToolsCommandBuffer *)&v8 initWithCommandBuffer:a3 parent:a4 descriptor:a5];
+  v5 = [(MTLToolsCommandBuffer *)&v8 initWithCommandBuffer:buffer parent:queue descriptor:descriptor];
   v6 = v5;
   if (v5)
   {
@@ -75,7 +75,7 @@
 
 - (void)mergeDistributions
 {
-  v2 = self;
+  selfCopy2 = self;
   encoderCount = self->encoderCount;
   var0 = encoderCount->var0;
   if (var0)
@@ -644,7 +644,7 @@ LABEL_148:
   do
   {
     v260 = (next + 3);
-    telemetryDevice = v2->_telemetryDevice;
+    telemetryDevice = selfCopy2->_telemetryDevice;
     *&v263.pbAlloc = next + 2;
     v78 = std::__hash_table<std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>,std::__unordered_map_hasher<MTLPixelFormat,std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>,std::hash<unsigned long long>,std::equal_to<MTLPixelFormat>,true>,std::__unordered_map_equal<MTLPixelFormat,std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>,std::equal_to<MTLPixelFormat>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<MTLPixelFormat,MTLTelemetryRenderTargetDistribution>>>::__emplace_unique_key_args<MTLPixelFormat,std::piecewise_construct_t const&,std::tuple<MTLPixelFormat const&>,std::tuple<>>(&telemetryDevice->renderTargetMap.__table_.__bucket_list_.__ptr_, next + 2);
     v79 = 0;
@@ -934,23 +934,23 @@ LABEL_224:
     }
 
     while (v79 != 10);
-    v2 = self;
+    selfCopy2 = self;
     next = *v259;
   }
 
   while (*v259);
 LABEL_230:
-  cbDraws = v2->cbDraws;
+  cbDraws = selfCopy2->cbDraws;
   if (!cbDraws)
   {
     goto LABEL_239;
   }
 
-  commandBufferDrawCallDistribution = v2->_telemetryDevice->commandBufferDrawCallDistribution;
+  commandBufferDrawCallDistribution = selfCopy2->_telemetryDevice->commandBufferDrawCallDistribution;
   if (!commandBufferDrawCallDistribution->count)
   {
     commandBufferDrawCallDistribution->max = cbDraws;
-    commandBufferDrawCallDistribution = v2->_telemetryDevice->commandBufferDrawCallDistribution;
+    commandBufferDrawCallDistribution = selfCopy2->_telemetryDevice->commandBufferDrawCallDistribution;
 LABEL_237:
     commandBufferDrawCallDistribution->min = cbDraws;
     goto LABEL_238;
@@ -959,7 +959,7 @@ LABEL_237:
   if (cbDraws > commandBufferDrawCallDistribution->max)
   {
     commandBufferDrawCallDistribution->max = cbDraws;
-    commandBufferDrawCallDistribution = v2->_telemetryDevice->commandBufferDrawCallDistribution;
+    commandBufferDrawCallDistribution = selfCopy2->_telemetryDevice->commandBufferDrawCallDistribution;
   }
 
   if (cbDraws < commandBufferDrawCallDistribution->min)
@@ -968,21 +968,21 @@ LABEL_237:
   }
 
 LABEL_238:
-  v2->_telemetryDevice->commandBufferDrawCallDistribution->total += cbDraws;
-  ++v2->_telemetryDevice->commandBufferDrawCallDistribution->count;
+  selfCopy2->_telemetryDevice->commandBufferDrawCallDistribution->total += cbDraws;
+  ++selfCopy2->_telemetryDevice->commandBufferDrawCallDistribution->count;
 LABEL_239:
-  renderEncoderDrawCallDistribution = v2->renderEncoderDrawCallDistribution;
+  renderEncoderDrawCallDistribution = selfCopy2->renderEncoderDrawCallDistribution;
   v120 = renderEncoderDrawCallDistribution->count;
   if (v120)
   {
-    v121 = v2->_telemetryDevice->renderEncoderDrawCallDistribution;
+    v121 = selfCopy2->_telemetryDevice->renderEncoderDrawCallDistribution;
     v122 = renderEncoderDrawCallDistribution->min;
     if (v121->count)
     {
       if (v122 < v121->min)
       {
         v121->min = v122;
-        v121 = v2->_telemetryDevice->renderEncoderDrawCallDistribution;
+        v121 = selfCopy2->_telemetryDevice->renderEncoderDrawCallDistribution;
       }
 
       v123 = renderEncoderDrawCallDistribution->max;
@@ -995,30 +995,30 @@ LABEL_239:
     else
     {
       v121->min = v122;
-      v2->_telemetryDevice->renderEncoderDrawCallDistribution->max = renderEncoderDrawCallDistribution->max;
+      selfCopy2->_telemetryDevice->renderEncoderDrawCallDistribution->max = renderEncoderDrawCallDistribution->max;
     }
 
-    v2->_telemetryDevice->renderEncoderDrawCallDistribution->total += renderEncoderDrawCallDistribution->total;
-    v2->_telemetryDevice->renderEncoderDrawCallDistribution->count += v120;
+    selfCopy2->_telemetryDevice->renderEncoderDrawCallDistribution->total += renderEncoderDrawCallDistribution->total;
+    selfCopy2->_telemetryDevice->renderEncoderDrawCallDistribution->count += v120;
   }
 
-  cbDispatches = v2->cbDispatches;
+  cbDispatches = selfCopy2->cbDispatches;
   if (cbDispatches)
   {
-    commandBufferDispatchDistribution = v2->_telemetryDevice->commandBufferDispatchDistribution;
+    commandBufferDispatchDistribution = selfCopy2->_telemetryDevice->commandBufferDispatchDistribution;
     if (commandBufferDispatchDistribution->count)
     {
       if (cbDispatches > commandBufferDispatchDistribution->max)
       {
         commandBufferDispatchDistribution->max = cbDispatches;
-        commandBufferDispatchDistribution = v2->_telemetryDevice->commandBufferDispatchDistribution;
+        commandBufferDispatchDistribution = selfCopy2->_telemetryDevice->commandBufferDispatchDistribution;
       }
 
       if (cbDispatches >= commandBufferDispatchDistribution->min)
       {
 LABEL_255:
-        v2->_telemetryDevice->commandBufferDispatchDistribution->total += cbDispatches;
-        ++v2->_telemetryDevice->commandBufferDispatchDistribution->count;
+        selfCopy2->_telemetryDevice->commandBufferDispatchDistribution->total += cbDispatches;
+        ++selfCopy2->_telemetryDevice->commandBufferDispatchDistribution->count;
         goto LABEL_256;
       }
     }
@@ -1026,7 +1026,7 @@ LABEL_255:
     else
     {
       commandBufferDispatchDistribution->max = cbDispatches;
-      commandBufferDispatchDistribution = v2->_telemetryDevice->commandBufferDispatchDistribution;
+      commandBufferDispatchDistribution = selfCopy2->_telemetryDevice->commandBufferDispatchDistribution;
     }
 
     commandBufferDispatchDistribution->min = cbDispatches;
@@ -1034,18 +1034,18 @@ LABEL_255:
   }
 
 LABEL_256:
-  computeEncoderDispatchDistribution = v2->computeEncoderDispatchDistribution;
+  computeEncoderDispatchDistribution = selfCopy2->computeEncoderDispatchDistribution;
   v127 = computeEncoderDispatchDistribution->count;
   if (v127)
   {
-    v128 = v2->_telemetryDevice->computeEncoderDispatchDistribution;
+    v128 = selfCopy2->_telemetryDevice->computeEncoderDispatchDistribution;
     v129 = computeEncoderDispatchDistribution->min;
     if (v128->count)
     {
       if (v129 < v128->min)
       {
         v128->min = v129;
-        v128 = v2->_telemetryDevice->computeEncoderDispatchDistribution;
+        v128 = selfCopy2->_telemetryDevice->computeEncoderDispatchDistribution;
       }
 
       v130 = computeEncoderDispatchDistribution->max;
@@ -1058,30 +1058,30 @@ LABEL_256:
     else
     {
       v128->min = v129;
-      v2->_telemetryDevice->computeEncoderDispatchDistribution->max = computeEncoderDispatchDistribution->max;
+      selfCopy2->_telemetryDevice->computeEncoderDispatchDistribution->max = computeEncoderDispatchDistribution->max;
     }
 
-    v2->_telemetryDevice->computeEncoderDispatchDistribution->total += computeEncoderDispatchDistribution->total;
-    v2->_telemetryDevice->computeEncoderDispatchDistribution->count += v127;
+    selfCopy2->_telemetryDevice->computeEncoderDispatchDistribution->total += computeEncoderDispatchDistribution->total;
+    selfCopy2->_telemetryDevice->computeEncoderDispatchDistribution->count += v127;
   }
 
-  cbBlits = v2->cbBlits;
+  cbBlits = selfCopy2->cbBlits;
   if (cbBlits)
   {
-    commandBufferBlitDistribution = v2->_telemetryDevice->commandBufferBlitDistribution;
+    commandBufferBlitDistribution = selfCopy2->_telemetryDevice->commandBufferBlitDistribution;
     if (commandBufferBlitDistribution->count)
     {
       if (cbBlits > commandBufferBlitDistribution->max)
       {
         commandBufferBlitDistribution->max = cbBlits;
-        commandBufferBlitDistribution = v2->_telemetryDevice->commandBufferBlitDistribution;
+        commandBufferBlitDistribution = selfCopy2->_telemetryDevice->commandBufferBlitDistribution;
       }
 
       if (cbBlits >= commandBufferBlitDistribution->min)
       {
 LABEL_272:
-        v2->_telemetryDevice->commandBufferBlitDistribution->total += cbBlits;
-        ++v2->_telemetryDevice->commandBufferBlitDistribution->count;
+        selfCopy2->_telemetryDevice->commandBufferBlitDistribution->total += cbBlits;
+        ++selfCopy2->_telemetryDevice->commandBufferBlitDistribution->count;
         goto LABEL_273;
       }
     }
@@ -1089,7 +1089,7 @@ LABEL_272:
     else
     {
       commandBufferBlitDistribution->max = cbBlits;
-      commandBufferBlitDistribution = v2->_telemetryDevice->commandBufferBlitDistribution;
+      commandBufferBlitDistribution = selfCopy2->_telemetryDevice->commandBufferBlitDistribution;
     }
 
     commandBufferBlitDistribution->min = cbBlits;
@@ -1097,18 +1097,18 @@ LABEL_272:
   }
 
 LABEL_273:
-  blitEncoderBlitDistribution = v2->blitEncoderBlitDistribution;
+  blitEncoderBlitDistribution = selfCopy2->blitEncoderBlitDistribution;
   v134 = blitEncoderBlitDistribution->count;
   if (v134)
   {
-    v135 = v2->_telemetryDevice->blitEncoderBlitDistribution;
+    v135 = selfCopy2->_telemetryDevice->blitEncoderBlitDistribution;
     v136 = blitEncoderBlitDistribution->min;
     if (v135->count)
     {
       if (v136 < v135->min)
       {
         v135->min = v136;
-        v135 = v2->_telemetryDevice->blitEncoderBlitDistribution;
+        v135 = selfCopy2->_telemetryDevice->blitEncoderBlitDistribution;
       }
 
       v137 = blitEncoderBlitDistribution->max;
@@ -1121,30 +1121,30 @@ LABEL_273:
     else
     {
       v135->min = v136;
-      v2->_telemetryDevice->blitEncoderBlitDistribution->max = blitEncoderBlitDistribution->max;
+      selfCopy2->_telemetryDevice->blitEncoderBlitDistribution->max = blitEncoderBlitDistribution->max;
     }
 
-    v2->_telemetryDevice->blitEncoderBlitDistribution->total += blitEncoderBlitDistribution->total;
-    v2->_telemetryDevice->blitEncoderBlitDistribution->count += v134;
+    selfCopy2->_telemetryDevice->blitEncoderBlitDistribution->total += blitEncoderBlitDistribution->total;
+    selfCopy2->_telemetryDevice->blitEncoderBlitDistribution->count += v134;
   }
 
-  cbMemoryBarriers = v2->cbMemoryBarriers;
+  cbMemoryBarriers = selfCopy2->cbMemoryBarriers;
   if (cbMemoryBarriers)
   {
-    commandBufferMemoryBarrierDistribution = v2->_telemetryDevice->commandBufferMemoryBarrierDistribution;
+    commandBufferMemoryBarrierDistribution = selfCopy2->_telemetryDevice->commandBufferMemoryBarrierDistribution;
     if (commandBufferMemoryBarrierDistribution->count)
     {
       if (cbMemoryBarriers > commandBufferMemoryBarrierDistribution->max)
       {
         commandBufferMemoryBarrierDistribution->max = cbMemoryBarriers;
-        commandBufferMemoryBarrierDistribution = v2->_telemetryDevice->commandBufferMemoryBarrierDistribution;
+        commandBufferMemoryBarrierDistribution = selfCopy2->_telemetryDevice->commandBufferMemoryBarrierDistribution;
       }
 
       if (cbMemoryBarriers >= commandBufferMemoryBarrierDistribution->min)
       {
 LABEL_289:
-        v2->_telemetryDevice->commandBufferMemoryBarrierDistribution->total += cbMemoryBarriers;
-        ++v2->_telemetryDevice->commandBufferMemoryBarrierDistribution->count;
+        selfCopy2->_telemetryDevice->commandBufferMemoryBarrierDistribution->total += cbMemoryBarriers;
+        ++selfCopy2->_telemetryDevice->commandBufferMemoryBarrierDistribution->count;
         goto LABEL_290;
       }
     }
@@ -1152,7 +1152,7 @@ LABEL_289:
     else
     {
       commandBufferMemoryBarrierDistribution->max = cbMemoryBarriers;
-      commandBufferMemoryBarrierDistribution = v2->_telemetryDevice->commandBufferMemoryBarrierDistribution;
+      commandBufferMemoryBarrierDistribution = selfCopy2->_telemetryDevice->commandBufferMemoryBarrierDistribution;
     }
 
     commandBufferMemoryBarrierDistribution->min = cbMemoryBarriers;
@@ -1162,7 +1162,7 @@ LABEL_289:
 LABEL_290:
   v140 = 0;
   v141 = 0;
-  drawDistribution = v2->drawDistribution;
+  drawDistribution = selfCopy2->drawDistribution;
   while (2)
   {
     v143 = 0;
@@ -1176,13 +1176,13 @@ LABEL_290:
         v147 = v144->var0[0][0][v146 / 0x38].var0;
         if (v147)
         {
-          v148 = v2->_telemetryDevice->drawDistribution + v145;
+          v148 = selfCopy2->_telemetryDevice->drawDistribution + v145;
           *&v148[v146] += v147;
           v149 = (v144 + v146);
           v150 = v144->var0[0][0][v146 / 0x38].var1.count;
           if (v150)
           {
-            v151 = v2->_telemetryDevice->drawDistribution;
+            v151 = selfCopy2->_telemetryDevice->drawDistribution;
             v152 = v151 + v145 + v146;
             v153 = v149->var0[0][0][0].var1.min;
             if (*(v152 + 6))
@@ -1190,7 +1190,7 @@ LABEL_290:
               if (v153 < *(v152 + 2))
               {
                 *(v152 + 2) = v153;
-                v151 = v2->_telemetryDevice->drawDistribution;
+                v151 = selfCopy2->_telemetryDevice->drawDistribution;
               }
 
               v154 = v144->var0[0][0][v146 / 0x38].var1.max;
@@ -1204,19 +1204,19 @@ LABEL_290:
             else
             {
               *(v152 + 2) = v153;
-              *(&v2->_telemetryDevice->drawDistribution->var0[0][0][0].var1.max + v145 + v146) = v144->var0[0][0][v146 / 0x38].var1.max;
+              *(&selfCopy2->_telemetryDevice->drawDistribution->var0[0][0][0].var1.max + v145 + v146) = v144->var0[0][0][v146 / 0x38].var1.max;
             }
 
-            v156 = v2->_telemetryDevice->drawDistribution + v145 + v146;
+            v156 = selfCopy2->_telemetryDevice->drawDistribution + v145 + v146;
             *(v156 + 2) += v144->var0[0][0][v146 / 0x38].var1.total;
-            v157 = v2->_telemetryDevice->drawDistribution + v145 + v146;
+            v157 = selfCopy2->_telemetryDevice->drawDistribution + v145 + v146;
             *(v157 + 6) += v150;
           }
 
           v158 = v149->var0[0][0][0].var2.count;
           if (v158)
           {
-            v159 = v2->_telemetryDevice->drawDistribution;
+            v159 = selfCopy2->_telemetryDevice->drawDistribution;
             v160 = v159 + v145 + v146;
             v161 = v149->var0[0][0][0].var2.min;
             if (*(v160 + 12))
@@ -1224,7 +1224,7 @@ LABEL_290:
               if (v161 < *(v160 + 8))
               {
                 *(v160 + 8) = v161;
-                v159 = v2->_telemetryDevice->drawDistribution;
+                v159 = selfCopy2->_telemetryDevice->drawDistribution;
               }
 
               v162 = v144->var0[0][0][v146 / 0x38].var2.max;
@@ -1232,9 +1232,9 @@ LABEL_290:
               if (v162 <= *(v163 + 9))
               {
 LABEL_310:
-                v164 = v2->_telemetryDevice->drawDistribution + v145 + v146;
+                v164 = selfCopy2->_telemetryDevice->drawDistribution + v145 + v146;
                 *(v164 + 5) += v144->var0[0][0][v146 / 0x38].var2.total;
-                v165 = v2->_telemetryDevice->drawDistribution + v145 + v146;
+                v165 = selfCopy2->_telemetryDevice->drawDistribution + v145 + v146;
                 *(v165 + 12) += v158;
                 goto LABEL_311;
               }
@@ -1244,7 +1244,7 @@ LABEL_310:
             {
               *(v160 + 8) = v161;
               v162 = v144->var0[0][0][v146 / 0x38].var2.max;
-              v163 = v2->_telemetryDevice->drawDistribution + v145 + v146;
+              v163 = selfCopy2->_telemetryDevice->drawDistribution + v145 + v146;
             }
 
             *(v163 + 9) = v162;
@@ -1284,21 +1284,21 @@ LABEL_311:
     break;
   }
 
-  dispatchDistribution = v2->dispatchDistribution;
+  dispatchDistribution = selfCopy2->dispatchDistribution;
   if (dispatchDistribution->var0)
   {
-    v2->_telemetryDevice->dispatchDistribution->var0 += dispatchDistribution->var0;
+    selfCopy2->_telemetryDevice->dispatchDistribution->var0 += dispatchDistribution->var0;
     v167 = dispatchDistribution->var1.count;
     if (v167)
     {
-      v168 = v2->_telemetryDevice->dispatchDistribution;
+      v168 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v169 = dispatchDistribution->var1.min;
       if (v168->var1.count)
       {
         if (v169 < v168->var1.min)
         {
           v168->var1.min = v169;
-          v168 = v2->_telemetryDevice->dispatchDistribution;
+          v168 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v170 = dispatchDistribution->var1.max;
@@ -1311,24 +1311,24 @@ LABEL_311:
       else
       {
         v168->var1.min = v169;
-        v2->_telemetryDevice->dispatchDistribution->var1.max = dispatchDistribution->var1.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var1.max = dispatchDistribution->var1.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var1.total += dispatchDistribution->var1.total;
-      v2->_telemetryDevice->dispatchDistribution->var1.count += v167;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var1.total += dispatchDistribution->var1.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var1.count += v167;
     }
 
     v171 = dispatchDistribution->var2.count;
     if (v171)
     {
-      v172 = v2->_telemetryDevice->dispatchDistribution;
+      v172 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v173 = dispatchDistribution->var2.min;
       if (v172->var2.count)
       {
         if (v173 < v172->var2.min)
         {
           v172->var2.min = v173;
-          v172 = v2->_telemetryDevice->dispatchDistribution;
+          v172 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v174 = dispatchDistribution->var2.max;
@@ -1341,24 +1341,24 @@ LABEL_311:
       else
       {
         v172->var2.min = v173;
-        v2->_telemetryDevice->dispatchDistribution->var2.max = dispatchDistribution->var2.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var2.max = dispatchDistribution->var2.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var2.total += dispatchDistribution->var2.total;
-      v2->_telemetryDevice->dispatchDistribution->var2.count += v171;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var2.total += dispatchDistribution->var2.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var2.count += v171;
     }
 
     v175 = dispatchDistribution->var3.count;
     if (v175)
     {
-      v176 = v2->_telemetryDevice->dispatchDistribution;
+      v176 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v177 = dispatchDistribution->var3.min;
       if (v176->var3.count)
       {
         if (v177 < v176->var3.min)
         {
           v176->var3.min = v177;
-          v176 = v2->_telemetryDevice->dispatchDistribution;
+          v176 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v178 = dispatchDistribution->var3.max;
@@ -1371,24 +1371,24 @@ LABEL_311:
       else
       {
         v176->var3.min = v177;
-        v2->_telemetryDevice->dispatchDistribution->var3.max = dispatchDistribution->var3.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var3.max = dispatchDistribution->var3.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var3.total += dispatchDistribution->var3.total;
-      v2->_telemetryDevice->dispatchDistribution->var3.count += v175;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var3.total += dispatchDistribution->var3.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var3.count += v175;
     }
 
     v179 = dispatchDistribution->var4.count;
     if (v179)
     {
-      v180 = v2->_telemetryDevice->dispatchDistribution;
+      v180 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v181 = dispatchDistribution->var4.min;
       if (v180->var4.count)
       {
         if (v181 < v180->var4.min)
         {
           v180->var4.min = v181;
-          v180 = v2->_telemetryDevice->dispatchDistribution;
+          v180 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v182 = dispatchDistribution->var4.max;
@@ -1401,24 +1401,24 @@ LABEL_311:
       else
       {
         v180->var4.min = v181;
-        v2->_telemetryDevice->dispatchDistribution->var4.max = dispatchDistribution->var4.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var4.max = dispatchDistribution->var4.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var4.total += dispatchDistribution->var4.total;
-      v2->_telemetryDevice->dispatchDistribution->var4.count += v179;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var4.total += dispatchDistribution->var4.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var4.count += v179;
     }
 
     v183 = dispatchDistribution->var5.count;
     if (v183)
     {
-      v184 = v2->_telemetryDevice->dispatchDistribution;
+      v184 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v185 = dispatchDistribution->var5.min;
       if (v184->var5.count)
       {
         if (v185 < v184->var5.min)
         {
           v184->var5.min = v185;
-          v184 = v2->_telemetryDevice->dispatchDistribution;
+          v184 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v186 = dispatchDistribution->var5.max;
@@ -1431,24 +1431,24 @@ LABEL_311:
       else
       {
         v184->var5.min = v185;
-        v2->_telemetryDevice->dispatchDistribution->var5.max = dispatchDistribution->var5.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var5.max = dispatchDistribution->var5.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var5.total += dispatchDistribution->var5.total;
-      v2->_telemetryDevice->dispatchDistribution->var5.count += v183;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var5.total += dispatchDistribution->var5.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var5.count += v183;
     }
 
     v187 = dispatchDistribution->var6.count;
     if (v187)
     {
-      v188 = v2->_telemetryDevice->dispatchDistribution;
+      v188 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v189 = dispatchDistribution->var6.min;
       if (v188->var6.count)
       {
         if (v189 < v188->var6.min)
         {
           v188->var6.min = v189;
-          v188 = v2->_telemetryDevice->dispatchDistribution;
+          v188 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v190 = dispatchDistribution->var6.max;
@@ -1461,24 +1461,24 @@ LABEL_311:
       else
       {
         v188->var6.min = v189;
-        v2->_telemetryDevice->dispatchDistribution->var6.max = dispatchDistribution->var6.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var6.max = dispatchDistribution->var6.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var6.total += dispatchDistribution->var6.total;
-      v2->_telemetryDevice->dispatchDistribution->var6.count += v187;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var6.total += dispatchDistribution->var6.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var6.count += v187;
     }
 
     v191 = dispatchDistribution->var7.count;
     if (v191)
     {
-      v192 = v2->_telemetryDevice->dispatchDistribution;
+      v192 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v193 = dispatchDistribution->var7.min;
       if (v192->var7.count)
       {
         if (v193 < v192->var7.min)
         {
           v192->var7.min = v193;
-          v192 = v2->_telemetryDevice->dispatchDistribution;
+          v192 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v194 = dispatchDistribution->var7.max;
@@ -1491,24 +1491,24 @@ LABEL_311:
       else
       {
         v192->var7.min = v193;
-        v2->_telemetryDevice->dispatchDistribution->var7.max = dispatchDistribution->var7.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var7.max = dispatchDistribution->var7.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var7.total += dispatchDistribution->var7.total;
-      v2->_telemetryDevice->dispatchDistribution->var7.count += v191;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var7.total += dispatchDistribution->var7.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var7.count += v191;
     }
 
     v195 = dispatchDistribution->var8.count;
     if (v195)
     {
-      v196 = v2->_telemetryDevice->dispatchDistribution;
+      v196 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v197 = dispatchDistribution->var8.min;
       if (v196->var8.count)
       {
         if (v197 < v196->var8.min)
         {
           v196->var8.min = v197;
-          v196 = v2->_telemetryDevice->dispatchDistribution;
+          v196 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v198 = dispatchDistribution->var8.max;
@@ -1521,24 +1521,24 @@ LABEL_311:
       else
       {
         v196->var8.min = v197;
-        v2->_telemetryDevice->dispatchDistribution->var8.max = dispatchDistribution->var8.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var8.max = dispatchDistribution->var8.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var8.total += dispatchDistribution->var8.total;
-      v2->_telemetryDevice->dispatchDistribution->var8.count += v195;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var8.total += dispatchDistribution->var8.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var8.count += v195;
     }
 
     v199 = dispatchDistribution->var9.count;
     if (v199)
     {
-      v200 = v2->_telemetryDevice->dispatchDistribution;
+      v200 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v201 = dispatchDistribution->var9.min;
       if (v200->var9.count)
       {
         if (v201 < v200->var9.min)
         {
           v200->var9.min = v201;
-          v200 = v2->_telemetryDevice->dispatchDistribution;
+          v200 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v202 = dispatchDistribution->var9.max;
@@ -1551,24 +1551,24 @@ LABEL_311:
       else
       {
         v200->var9.min = v201;
-        v2->_telemetryDevice->dispatchDistribution->var9.max = dispatchDistribution->var9.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var9.max = dispatchDistribution->var9.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var9.total += dispatchDistribution->var9.total;
-      v2->_telemetryDevice->dispatchDistribution->var9.count += v199;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var9.total += dispatchDistribution->var9.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var9.count += v199;
     }
 
     v203 = dispatchDistribution->var10.count;
     if (v203)
     {
-      v204 = v2->_telemetryDevice->dispatchDistribution;
+      v204 = selfCopy2->_telemetryDevice->dispatchDistribution;
       v205 = dispatchDistribution->var10.min;
       if (v204->var10.count)
       {
         if (v205 < v204->var10.min)
         {
           v204->var10.min = v205;
-          v204 = v2->_telemetryDevice->dispatchDistribution;
+          v204 = selfCopy2->_telemetryDevice->dispatchDistribution;
         }
 
         v206 = dispatchDistribution->var10.max;
@@ -1581,17 +1581,17 @@ LABEL_311:
       else
       {
         v204->var10.min = v205;
-        v2->_telemetryDevice->dispatchDistribution->var10.max = dispatchDistribution->var10.max;
+        selfCopy2->_telemetryDevice->dispatchDistribution->var10.max = dispatchDistribution->var10.max;
       }
 
-      v2->_telemetryDevice->dispatchDistribution->var10.total += dispatchDistribution->var10.total;
-      v2->_telemetryDevice->dispatchDistribution->var10.count += v203;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var10.total += dispatchDistribution->var10.total;
+      selfCopy2->_telemetryDevice->dispatchDistribution->var10.count += v203;
     }
   }
 
-  for (m = v2->blitMap.__table_.__first_node_.__next_; m; m = *m)
+  for (m = selfCopy2->blitMap.__table_.__first_node_.__next_; m; m = *m)
   {
-    v208 = v2->_telemetryDevice;
+    v208 = selfCopy2->_telemetryDevice;
     *&v263.pbAlloc = m + 2;
     v209 = std::__hash_table<std::__hash_value_type<MTLPixelFormat,MTLTelemetryBlitDistribution>,std::__unordered_map_hasher<MTLPixelFormat,std::__hash_value_type<MTLPixelFormat,MTLTelemetryBlitDistribution>,std::hash<unsigned long long>,std::equal_to<MTLPixelFormat>,true>,std::__unordered_map_equal<MTLPixelFormat,std::__hash_value_type<MTLPixelFormat,MTLTelemetryBlitDistribution>,std::equal_to<MTLPixelFormat>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<MTLPixelFormat,MTLTelemetryBlitDistribution>>>::__emplace_unique_key_args<MTLPixelFormat,std::piecewise_construct_t const&,std::tuple<MTLPixelFormat const&>,std::tuple<>>(&v208->blitMap.__table_.__bucket_list_.__ptr_, m + 2);
     v210 = 0;
@@ -1750,23 +1750,23 @@ LABEL_311:
     while (v210 != 6);
   }
 
-  depthClipModeClampCount = v2->depthClipModeClampCount;
+  depthClipModeClampCount = selfCopy2->depthClipModeClampCount;
   if (depthClipModeClampCount)
   {
-    depthClipModeClampDistribution = v2->_telemetryDevice->depthClipModeClampDistribution;
+    depthClipModeClampDistribution = selfCopy2->_telemetryDevice->depthClipModeClampDistribution;
     if (depthClipModeClampDistribution->count)
     {
       if (depthClipModeClampCount > depthClipModeClampDistribution->max)
       {
         depthClipModeClampDistribution->max = depthClipModeClampCount;
-        depthClipModeClampDistribution = v2->_telemetryDevice->depthClipModeClampDistribution;
+        depthClipModeClampDistribution = selfCopy2->_telemetryDevice->depthClipModeClampDistribution;
       }
 
       if (depthClipModeClampCount >= depthClipModeClampDistribution->min)
       {
 LABEL_444:
-        v2->_telemetryDevice->depthClipModeClampDistribution->total += depthClipModeClampCount;
-        ++v2->_telemetryDevice->depthClipModeClampDistribution->count;
+        selfCopy2->_telemetryDevice->depthClipModeClampDistribution->total += depthClipModeClampCount;
+        ++selfCopy2->_telemetryDevice->depthClipModeClampDistribution->count;
         goto LABEL_445;
       }
     }
@@ -1774,7 +1774,7 @@ LABEL_444:
     else
     {
       depthClipModeClampDistribution->max = depthClipModeClampCount;
-      depthClipModeClampDistribution = v2->_telemetryDevice->depthClipModeClampDistribution;
+      depthClipModeClampDistribution = selfCopy2->_telemetryDevice->depthClipModeClampDistribution;
     }
 
     depthClipModeClampDistribution->min = depthClipModeClampCount;
@@ -1783,24 +1783,24 @@ LABEL_444:
 
 LABEL_445:
   getKernelTelemetryState(&v263);
-  pbAlloc = v2->_initKernelState.pbAlloc;
+  pbAlloc = selfCopy2->_initKernelState.pbAlloc;
   v241 = v263.pbAlloc - pbAlloc;
   if (v263.pbAlloc != pbAlloc)
   {
-    kernelDistribution = v2->_telemetryDevice->kernelDistribution;
+    kernelDistribution = selfCopy2->_telemetryDevice->kernelDistribution;
     if (kernelDistribution->var0.var3)
     {
       if (v241 > kernelDistribution->var0.var1)
       {
         kernelDistribution->var0.var1 = v241;
-        kernelDistribution = v2->_telemetryDevice->kernelDistribution;
+        kernelDistribution = selfCopy2->_telemetryDevice->kernelDistribution;
       }
 
       if (v241 >= kernelDistribution->var0.var0)
       {
 LABEL_453:
-        v2->_telemetryDevice->kernelDistribution->var0.var2 += v241;
-        ++v2->_telemetryDevice->kernelDistribution->var0.var3;
+        selfCopy2->_telemetryDevice->kernelDistribution->var0.var2 += v241;
+        ++selfCopy2->_telemetryDevice->kernelDistribution->var0.var3;
         goto LABEL_454;
       }
     }
@@ -1808,7 +1808,7 @@ LABEL_453:
     else
     {
       kernelDistribution->var0.var1 = v241;
-      kernelDistribution = v2->_telemetryDevice->kernelDistribution;
+      kernelDistribution = selfCopy2->_telemetryDevice->kernelDistribution;
     }
 
     kernelDistribution->var0.var0 = v241;
@@ -1816,12 +1816,12 @@ LABEL_453:
   }
 
 LABEL_454:
-  v243 = v263.spmRenderCount - v2->_initKernelState.spmRenderCount;
-  v244 = v2->_telemetryDevice->kernelDistribution;
+  v243 = v263.spmRenderCount - selfCopy2->_initKernelState.spmRenderCount;
+  v244 = selfCopy2->_telemetryDevice->kernelDistribution;
   if (!v244->var1.var3)
   {
     v244->var1.var1 = v243;
-    v245 = &v2->_telemetryDevice->kernelDistribution->var1;
+    v245 = &selfCopy2->_telemetryDevice->kernelDistribution->var1;
 LABEL_460:
     v245->var0 = v243;
     goto LABEL_461;
@@ -1830,7 +1830,7 @@ LABEL_460:
   if (v243 > v244->var1.var1)
   {
     v244->var1.var1 = v243;
-    v244 = v2->_telemetryDevice->kernelDistribution;
+    v244 = selfCopy2->_telemetryDevice->kernelDistribution;
   }
 
   v246 = v244->var1.var0;
@@ -1841,20 +1841,20 @@ LABEL_460:
   }
 
 LABEL_461:
-  v2->_telemetryDevice->kernelDistribution->var1.var2 += v243;
-  ++v2->_telemetryDevice->kernelDistribution->var1.var3;
-  tiledSceneBytes = v2->_initKernelState.tiledSceneBytes;
+  selfCopy2->_telemetryDevice->kernelDistribution->var1.var2 += v243;
+  ++selfCopy2->_telemetryDevice->kernelDistribution->var1.var3;
+  tiledSceneBytes = selfCopy2->_initKernelState.tiledSceneBytes;
   v248 = v263.tiledSceneBytes - tiledSceneBytes;
   if (v263.tiledSceneBytes == tiledSceneBytes)
   {
     goto LABEL_470;
   }
 
-  v249 = v2->_telemetryDevice->kernelDistribution;
+  v249 = selfCopy2->_telemetryDevice->kernelDistribution;
   if (!v249->var2.var3)
   {
     v249->var2.var1 = v248;
-    v250 = &v2->_telemetryDevice->kernelDistribution->var2;
+    v250 = &selfCopy2->_telemetryDevice->kernelDistribution->var2;
 LABEL_468:
     v250->var0 = v248;
     goto LABEL_469;
@@ -1863,7 +1863,7 @@ LABEL_468:
   if (v248 > v249->var2.var1)
   {
     v249->var2.var1 = v248;
-    v249 = v2->_telemetryDevice->kernelDistribution;
+    v249 = selfCopy2->_telemetryDevice->kernelDistribution;
   }
 
   v251 = v249->var2.var0;
@@ -1874,19 +1874,19 @@ LABEL_468:
   }
 
 LABEL_469:
-  v2->_telemetryDevice->kernelDistribution->var2.var2 += v248;
-  ++v2->_telemetryDevice->kernelDistribution->var2.var3;
+  selfCopy2->_telemetryDevice->kernelDistribution->var2.var2 += v248;
+  ++selfCopy2->_telemetryDevice->kernelDistribution->var2.var3;
 LABEL_470:
-  v252 = v263.renderCount - v2->_initKernelState.renderCount;
+  v252 = v263.renderCount - selfCopy2->_initKernelState.renderCount;
   if (v252)
   {
-    v253 = v2->_telemetryDevice->kernelDistribution;
+    v253 = selfCopy2->_telemetryDevice->kernelDistribution;
     if (v253->var3.var3)
     {
       if (v252 > v253->var3.var1)
       {
         v253->var3.var1 = v252;
-        v253 = v2->_telemetryDevice->kernelDistribution;
+        v253 = selfCopy2->_telemetryDevice->kernelDistribution;
       }
 
       v255 = v253->var3.var0;
@@ -1894,8 +1894,8 @@ LABEL_470:
       if (v252 >= v255)
       {
 LABEL_478:
-        v2->_telemetryDevice->kernelDistribution->var3.var2 += v252;
-        ++v2->_telemetryDevice->kernelDistribution->var3.var3;
+        selfCopy2->_telemetryDevice->kernelDistribution->var3.var2 += v252;
+        ++selfCopy2->_telemetryDevice->kernelDistribution->var3.var3;
         goto LABEL_479;
       }
     }
@@ -1903,7 +1903,7 @@ LABEL_478:
     else
     {
       v253->var3.var1 = v252;
-      v254 = &v2->_telemetryDevice->kernelDistribution->var3;
+      v254 = &selfCopy2->_telemetryDevice->kernelDistribution->var3;
     }
 
     v254->var0 = v252;
@@ -1912,10 +1912,10 @@ LABEL_478:
 
 LABEL_479:
   v256 = 0;
-  anisoClippedCounts = v2->anisoClippedCounts;
+  anisoClippedCounts = selfCopy2->anisoClippedCounts;
   do
   {
-    v2->_telemetryDevice->anisoClippedCounts->var0[v256] += anisoClippedCounts->var0[v256];
+    selfCopy2->_telemetryDevice->anisoClippedCounts->var0[v256] += anisoClippedCounts->var0[v256];
     ++v256;
   }
 
@@ -1959,12 +1959,12 @@ uint64_t __51__MTLTelemetryCommandBuffer_postCompletionHandlers__block_invoke(ui
   return result;
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
-    v6 = [[MTLTelemetryRenderCommandEncoder alloc] initWithRenderCommandEncoder:result parent:self descriptor:a3];
+    v6 = [[MTLTelemetryRenderCommandEncoder alloc] initWithRenderCommandEncoder:result parent:self descriptor:descriptor];
     ++self->encoderCount->var0;
 
     return v6;
@@ -1987,12 +1987,12 @@ uint64_t __51__MTLTelemetryCommandBuffer_postCompletionHandlers__block_invoke(ui
   return result;
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
-    v6 = [[MTLTelemetryComputeCommandEncoder alloc] initWithComputeCommandEncoder:result commandBuffer:self descriptor:a3];
+    v6 = [[MTLTelemetryComputeCommandEncoder alloc] initWithComputeCommandEncoder:result commandBuffer:self descriptor:descriptor];
     ++self->encoderCount->var2;
 
     return v6;
@@ -2001,12 +2001,12 @@ uint64_t __51__MTLTelemetryCommandBuffer_postCompletionHandlers__block_invoke(ui
   return result;
 }
 
-- (id)blitCommandEncoderWithDescriptor:(id)a3
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
-    v6 = [[MTLTelemetryBlitCommandEncoder alloc] initWithBlitCommandEncoder:result commandBuffer:self descriptor:a3];
+    v6 = [[MTLTelemetryBlitCommandEncoder alloc] initWithBlitCommandEncoder:result commandBuffer:self descriptor:descriptor];
     ++self->encoderCount->var1;
 
     return v6;
@@ -2015,12 +2015,12 @@ uint64_t __51__MTLTelemetryCommandBuffer_postCompletionHandlers__block_invoke(ui
   return result;
 }
 
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
-    v6 = [[MTLTelemetryParallelRenderCommandEncoder alloc] initWithBaseRenderPass:result commandBuffer:self descriptor:a3];
+    v6 = [[MTLTelemetryParallelRenderCommandEncoder alloc] initWithBaseRenderPass:result commandBuffer:self descriptor:descriptor];
     ++self->encoderCount->var3;
 
     return v6;

@@ -1,6 +1,6 @@
 @interface AccountPageViewControllerDelegate
 - (_TtC18ASMessagesProviderP33_8593DF36867E5E4F61FE17D5FBD3E0CF33AccountPageViewControllerDelegate)init;
-- (void)accountPageViewControllerDidFinish:(id)a3;
+- (void)accountPageViewControllerDidFinish:(id)finish;
 @end
 
 @implementation AccountPageViewControllerDelegate
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (void)accountPageViewControllerDidFinish:(id)a3
+- (void)accountPageViewControllerDidFinish:(id)finish
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
@@ -29,10 +29,10 @@
   v9[2] = sub_23F0CC;
   v9[3] = &unk_892A60;
   v6 = _Block_copy(v9);
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  finishCopy = finish;
 
-  [v8 dismissViewControllerAnimated:1 completion:v6];
+  [finishCopy dismissViewControllerAnimated:1 completion:v6];
 
   _Block_release(v6);
 }

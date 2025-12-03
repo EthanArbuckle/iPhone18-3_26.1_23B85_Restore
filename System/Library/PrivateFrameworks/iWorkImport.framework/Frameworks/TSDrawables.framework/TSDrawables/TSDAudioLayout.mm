@@ -1,9 +1,9 @@
 @interface TSDAudioLayout
 + (CGSize)scaledAudioSize;
 - (CGRect)alignmentFrame;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
-- (TSDAudioLayout)initWithInfo:(id)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
+- (TSDAudioLayout)initWithInfo:(id)info;
 - (TSDMovieInfo)movieInfo;
 - (id)layoutGeometryFromInfo;
 - (id)visibleGeometries;
@@ -11,11 +11,11 @@
 
 @implementation TSDAudioLayout
 
-- (TSDAudioLayout)initWithInfo:(id)a3
+- (TSDAudioLayout)initWithInfo:(id)info
 {
   v11.receiver = self;
   v11.super_class = TSDAudioLayout;
-  v3 = [(TSDMediaLayout *)&v11 initWithInfo:a3];
+  v3 = [(TSDMediaLayout *)&v11 initWithInfo:info];
   v6 = v3;
   if (v3)
   {
@@ -75,11 +75,11 @@
   return v21;
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   memset(&v21, 0, sizeof(v21));
-  v5 = objc_msgSend_geometry(self, a2, a3);
+  v5 = objc_msgSend_geometry(self, a2, root);
   v8 = v5;
   if (v5)
   {
@@ -91,7 +91,7 @@
     memset(&v21, 0, sizeof(v21));
   }
 
-  if (v3)
+  if (rootCopy)
   {
     v11 = objc_msgSend_parent(self, v9, v10);
 
@@ -143,15 +143,15 @@
   return result;
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
   v37.receiver = self;
   v37.super_class = TSDAudioLayout;
-  v5 = *&a4->c;
-  v36[0] = *&a4->a;
+  v5 = *&transform->c;
+  v36[0] = *&transform->a;
   v36[1] = v5;
-  v36[2] = *&a4->tx;
-  [(TSDStyledLayout *)&v37 frameForCullingWithBaseFrame:v36 additionalTransform:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v36[2] = *&transform->tx;
+  [(TSDStyledLayout *)&v37 frameForCullingWithBaseFrame:v36 additionalTransform:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   v9 = v8;
   v11 = v10;

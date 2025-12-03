@@ -1,14 +1,14 @@
 @interface HUTAFField
 - (_TtC6HomeUI10HUTAFField)init;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation HUTAFField
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
+  initCopy = init;
   v7 = sub_20D564E68();
   v8 = (self + OBJC_IVAR____TtC6HomeUI10HUTAFField_label);
   *v8 = v7;

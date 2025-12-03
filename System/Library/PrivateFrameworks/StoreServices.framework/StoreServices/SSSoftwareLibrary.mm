@@ -1,18 +1,18 @@
 @interface SSSoftwareLibrary
 - (SSSoftwareLibrary)init;
-- (void)_getItemsWithMessage:(id)a3 completionBlock:(id)a4;
-- (void)_sendDemotionMessage:(id)a3 completionBlock:(id)a4;
-- (void)demoteApplicationWithBundleIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)getLibraryItemForBundleIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)getLibraryItemsForITunesStoreItemIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)getRemovableSytemApplicationsWithCompletionBlock:(id)a3;
-- (void)hasDemotedApplicationsWithCompletionBlock:(id)a3;
-- (void)isInstalledApplicationWithBundleIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)isRemovedSystemApplicationWithBundleIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)playableApplicationsWithBundleIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)refreshReceiptsWithCompletionBlock:(id)a3;
-- (void)restoreAllDemotedApplicationsWithOptions:(id)a3 completionBlock:(id)a4;
-- (void)restoreDemotedApplicationWithBundleIdentifier:(id)a3 options:(id)a4 completionBlock:(id)a5;
+- (void)_getItemsWithMessage:(id)message completionBlock:(id)block;
+- (void)_sendDemotionMessage:(id)message completionBlock:(id)block;
+- (void)demoteApplicationWithBundleIdentifier:(id)identifier completionBlock:(id)block;
+- (void)getLibraryItemForBundleIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)getLibraryItemsForITunesStoreItemIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)getRemovableSytemApplicationsWithCompletionBlock:(id)block;
+- (void)hasDemotedApplicationsWithCompletionBlock:(id)block;
+- (void)isInstalledApplicationWithBundleIdentifier:(id)identifier completionBlock:(id)block;
+- (void)isRemovedSystemApplicationWithBundleIdentifier:(id)identifier completionBlock:(id)block;
+- (void)playableApplicationsWithBundleIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)refreshReceiptsWithCompletionBlock:(id)block;
+- (void)restoreAllDemotedApplicationsWithOptions:(id)options completionBlock:(id)block;
+- (void)restoreDemotedApplicationWithBundleIdentifier:(id)identifier options:(id)options completionBlock:(id)block;
 @end
 
 @implementation SSSoftwareLibrary
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)demoteApplicationWithBundleIdentifier:(id)a3 completionBlock:(id)a4
+- (void)demoteApplicationWithBundleIdentifier:(id)identifier completionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -45,19 +45,19 @@
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -81,9 +81,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -91,16 +91,16 @@ LABEL_15:
 
 LABEL_16:
   v20 = SSXPCCreateMessageDictionary(161);
-  SSXPCDictionarySetObject(v20, "1", v7);
+  SSXPCDictionarySetObject(v20, "1", identifierCopy);
 
-  [(SSSoftwareLibrary *)self _sendDemotionMessage:v20 completionBlock:v6];
+  [(SSSoftwareLibrary *)self _sendDemotionMessage:v20 completionBlock:blockCopy];
 }
 
-- (void)getLibraryItemForBundleIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)getLibraryItemForBundleIdentifiers:(id)identifiers completionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifiersCopy = identifiers;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -109,19 +109,19 @@ LABEL_16:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
     }
@@ -145,9 +145,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -155,25 +155,25 @@ LABEL_15:
 
 LABEL_16:
   v20 = SSXPCCreateMessageDictionary(89);
-  SSXPCDictionarySetObject(v20, "1", v7);
+  SSXPCDictionarySetObject(v20, "1", identifiersCopy);
 
-  [(SSSoftwareLibrary *)self _getItemsWithMessage:v20 completionBlock:v6];
+  [(SSSoftwareLibrary *)self _getItemsWithMessage:v20 completionBlock:blockCopy];
 }
 
-- (void)getLibraryItemsForITunesStoreItemIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)getLibraryItemsForITunesStoreItemIdentifiers:(id)identifiers completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifiersCopy = identifiers;
   v8 = SSXPCCreateMessageDictionary(89);
-  SSXPCDictionarySetObject(v8, "2", v7);
+  SSXPCDictionarySetObject(v8, "2", identifiersCopy);
 
-  [(SSSoftwareLibrary *)self _getItemsWithMessage:v8 completionBlock:v6];
+  [(SSSoftwareLibrary *)self _getItemsWithMessage:v8 completionBlock:blockCopy];
 }
 
-- (void)getRemovableSytemApplicationsWithCompletionBlock:(id)a3
+- (void)getRemovableSytemApplicationsWithCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -182,19 +182,19 @@ LABEL_16:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -218,9 +218,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v19, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v19, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -228,13 +228,13 @@ LABEL_15:
 
 LABEL_16:
   v17 = SSXPCCreateMessageDictionary(172);
-  [(SSSoftwareLibrary *)self _getItemsWithMessage:v17 completionBlock:v4];
+  [(SSSoftwareLibrary *)self _getItemsWithMessage:v17 completionBlock:blockCopy];
 }
 
-- (void)hasDemotedApplicationsWithCompletionBlock:(id)a3
+- (void)hasDemotedApplicationsWithCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -243,19 +243,19 @@ LABEL_16:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -279,9 +279,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v23, v20}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v23, v20}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -294,8 +294,8 @@ LABEL_16:
   v21[1] = 3221225472;
   v21[2] = __63__SSSoftwareLibrary_hasDemotedApplicationsWithCompletionBlock___block_invoke;
   v21[3] = &unk_1E84AE2D8;
-  v22 = v4;
-  v19 = v4;
+  v22 = blockCopy;
+  v19 = blockCopy;
   [(SSXPCConnection *)connection sendMessage:v17 withReply:v21];
 }
 
@@ -331,11 +331,11 @@ LABEL_12:
   }
 }
 
-- (void)isInstalledApplicationWithBundleIdentifier:(id)a3 completionBlock:(id)a4
+- (void)isInstalledApplicationWithBundleIdentifier:(id)identifier completionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -344,19 +344,19 @@ LABEL_12:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -380,9 +380,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v23}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -390,15 +390,15 @@ LABEL_15:
 
 LABEL_16:
   v20 = SSXPCCreateMessageDictionary(167);
-  SSXPCDictionarySetObject(v20, "1", v7);
+  SSXPCDictionarySetObject(v20, "1", identifierCopy);
 
   connection = self->_connection;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __80__SSSoftwareLibrary_isInstalledApplicationWithBundleIdentifier_completionBlock___block_invoke;
   v24[3] = &unk_1E84AE2D8;
-  v25 = v6;
-  v22 = v6;
+  v25 = blockCopy;
+  v22 = blockCopy;
   [(SSXPCConnection *)connection sendMessage:v20 withReply:v24];
 }
 
@@ -434,11 +434,11 @@ LABEL_12:
   }
 }
 
-- (void)isRemovedSystemApplicationWithBundleIdentifier:(id)a3 completionBlock:(id)a4
+- (void)isRemovedSystemApplicationWithBundleIdentifier:(id)identifier completionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -447,19 +447,19 @@ LABEL_12:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
     }
@@ -483,9 +483,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v23}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -493,15 +493,15 @@ LABEL_15:
 
 LABEL_16:
   v20 = SSXPCCreateMessageDictionary(168);
-  SSXPCDictionarySetObject(v20, "1", v7);
+  SSXPCDictionarySetObject(v20, "1", identifierCopy);
 
   connection = self->_connection;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __84__SSSoftwareLibrary_isRemovedSystemApplicationWithBundleIdentifier_completionBlock___block_invoke;
   v24[3] = &unk_1E84AE2D8;
-  v25 = v6;
-  v22 = v6;
+  v25 = blockCopy;
+  v22 = blockCopy;
   [(SSXPCConnection *)connection sendMessage:v20 withReply:v24];
 }
 
@@ -537,11 +537,11 @@ LABEL_12:
   }
 }
 
-- (void)playableApplicationsWithBundleIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)playableApplicationsWithBundleIdentifiers:(id)identifiers completionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifiersCopy = identifiers;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -550,19 +550,19 @@ LABEL_12:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
     }
@@ -586,9 +586,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v23}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -596,15 +596,15 @@ LABEL_15:
 
 LABEL_16:
   v20 = SSXPCCreateMessageDictionary(186);
-  SSXPCDictionarySetObject(v20, "1", v7);
+  SSXPCDictionarySetObject(v20, "1", identifiersCopy);
 
   connection = self->_connection;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __79__SSSoftwareLibrary_playableApplicationsWithBundleIdentifiers_completionBlock___block_invoke;
   v24[3] = &unk_1E84AE2D8;
-  v25 = v6;
-  v22 = v6;
+  v25 = blockCopy;
+  v22 = blockCopy;
   [(SSXPCConnection *)connection sendMessage:v20 withReply:v24];
 }
 
@@ -638,10 +638,10 @@ LABEL_11:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)refreshReceiptsWithCompletionBlock:(id)a3
+- (void)refreshReceiptsWithCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -650,19 +650,19 @@ LABEL_11:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -686,9 +686,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v23, v20}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v23, v20}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -701,8 +701,8 @@ LABEL_16:
   v21[1] = 3221225472;
   v21[2] = __56__SSSoftwareLibrary_refreshReceiptsWithCompletionBlock___block_invoke;
   v21[3] = &unk_1E84AE2D8;
-  v22 = v4;
-  v19 = v4;
+  v22 = blockCopy;
+  v19 = blockCopy;
   [(SSXPCConnection *)connection sendMessage:v17 withReply:v21];
 }
 
@@ -726,11 +726,11 @@ void __56__SSSoftwareLibrary_refreshReceiptsWithCompletionBlock___block_invoke(u
   }
 }
 
-- (void)restoreAllDemotedApplicationsWithOptions:(id)a3 completionBlock:(id)a4
+- (void)restoreAllDemotedApplicationsWithOptions:(id)options completionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  optionsCopy = options;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -739,19 +739,19 @@ void __56__SSSoftwareLibrary_refreshReceiptsWithCompletionBlock___block_invoke(u
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -775,9 +775,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -785,17 +785,17 @@ LABEL_15:
 
 LABEL_16:
   v20 = SSXPCCreateMessageDictionary(162);
-  SSXPCDictionarySetObject(v20, "2", v7);
+  SSXPCDictionarySetObject(v20, "2", optionsCopy);
 
-  [(SSSoftwareLibrary *)self _sendDemotionMessage:v20 completionBlock:v6];
+  [(SSSoftwareLibrary *)self _sendDemotionMessage:v20 completionBlock:blockCopy];
 }
 
-- (void)restoreDemotedApplicationWithBundleIdentifier:(id)a3 options:(id)a4 completionBlock:(id)a5
+- (void)restoreDemotedApplicationWithBundleIdentifier:(id)identifier options:(id)options completionBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  optionsCopy = options;
+  identifierCopy = identifier;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v11 = +[SSLogConfig sharedStoreServicesConfig];
@@ -804,19 +804,19 @@ LABEL_16:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v15 = v13;
     }
@@ -840,9 +840,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v14 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v25, v24}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v25, v24}];
       free(v16);
-      SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, v14);
+      SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, oSLogObject);
     }
 
     goto LABEL_15;
@@ -850,23 +850,23 @@ LABEL_15:
 
 LABEL_16:
   v23 = SSXPCCreateMessageDictionary(162);
-  SSXPCDictionarySetObject(v23, "1", v10);
+  SSXPCDictionarySetObject(v23, "1", identifierCopy);
 
-  SSXPCDictionarySetObject(v23, "2", v9);
-  [(SSSoftwareLibrary *)self _sendDemotionMessage:v23 completionBlock:v8];
+  SSXPCDictionarySetObject(v23, "2", optionsCopy);
+  [(SSSoftwareLibrary *)self _sendDemotionMessage:v23 completionBlock:blockCopy];
 }
 
-- (void)_getItemsWithMessage:(id)a3 completionBlock:(id)a4
+- (void)_getItemsWithMessage:(id)message completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   connection = self->_connection;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SSSoftwareLibrary__getItemsWithMessage_completionBlock___block_invoke;
   v9[3] = &unk_1E84AE2D8;
-  v10 = v6;
-  v8 = v6;
-  [(SSXPCConnection *)connection sendMessage:a3 withReply:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [(SSXPCConnection *)connection sendMessage:message withReply:v9];
 }
 
 void __58__SSSoftwareLibrary__getItemsWithMessage_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -928,17 +928,17 @@ uint64_t __58__SSSoftwareLibrary__getItemsWithMessage_completionBlock___block_in
   return 1;
 }
 
-- (void)_sendDemotionMessage:(id)a3 completionBlock:(id)a4
+- (void)_sendDemotionMessage:(id)message completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   connection = self->_connection;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SSSoftwareLibrary__sendDemotionMessage_completionBlock___block_invoke;
   v9[3] = &unk_1E84AE2D8;
-  v10 = v6;
-  v8 = v6;
-  [(SSXPCConnection *)connection sendMessage:a3 withReply:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [(SSXPCConnection *)connection sendMessage:message withReply:v9];
 }
 
 void __58__SSSoftwareLibrary__sendDemotionMessage_completionBlock___block_invoke(uint64_t a1, void *a2)

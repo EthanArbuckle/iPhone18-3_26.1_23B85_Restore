@@ -1,15 +1,15 @@
 @interface WFJavaScriptDetection
-+ (BOOL)htmlStringContainsJavaScript:(id)a3;
++ (BOOL)htmlStringContainsJavaScript:(id)script;
 @end
 
 @implementation WFJavaScriptDetection
 
-+ (BOOL)htmlStringContainsJavaScript:(id)a3
++ (BOOL)htmlStringContainsJavaScript:(id)script
 {
-  v3 = a3;
-  if ([v3 length])
+  scriptCopy = script;
+  if ([scriptCopy length])
   {
-    v4 = [v3 lowercaseString];
+    lowercaseString = [scriptCopy lowercaseString];
     v5 = [MEMORY[0x277CBEB98] setWithArray:&unk_282F7BED8];
     v12 = 0;
     v13 = &v12;
@@ -19,7 +19,7 @@
     v9[1] = 3221225472;
     v9[2] = __54__WFJavaScriptDetection_htmlStringContainsJavaScript___block_invoke;
     v9[3] = &unk_27834A4F8;
-    v6 = v4;
+    v6 = lowercaseString;
     v10 = v6;
     v11 = &v12;
     [v5 enumerateObjectsUsingBlock:v9];

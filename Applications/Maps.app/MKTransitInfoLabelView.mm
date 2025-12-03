@@ -1,18 +1,18 @@
 @interface MKTransitInfoLabelView
-+ (int64_t)clusteredShieldSizeForContentSizeCategory:(id)a3;
++ (int64_t)clusteredShieldSizeForContentSizeCategory:(id)category;
 @end
 
 @implementation MKTransitInfoLabelView
 
-+ (int64_t)clusteredShieldSizeForContentSizeCategory:(id)a3
++ (int64_t)clusteredShieldSizeForContentSizeCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", UIContentSizeCategoryAccessibilityMedium) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", UIContentSizeCategoryAccessibilityLarge) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraLarge) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraLarge))
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge] & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", UIContentSizeCategoryAccessibilityMedium) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", UIContentSizeCategoryAccessibilityLarge) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraLarge) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", UIContentSizeCategoryAccessibilityExtraExtraLarge))
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge])
+  else if ([categoryCopy isEqualToString:UIContentSizeCategoryAccessibilityExtraExtraExtraLarge])
   {
     v4 = 6;
   }

@@ -1,34 +1,34 @@
 @interface KNAbstractSlide
-+ (BOOL)chunk:(id)a3 isFirstInDeliveryGroupForChunks:(id)a4;
-+ (Class)classForUnarchiver:(id)a3;
-+ (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)a3 inBuildChunks:(id)a4;
-+ (id)p_firstActiveChunkInChunks:(id)a3;
-+ (id)parentSlideForInfo:(id)a3;
-+ (unint64_t)deliveryGroupCountForBuildChunks:(id)a3;
-+ (unint64_t)deliveryGroupIndexForBuildChunk:(id)a3 inBuildChunks:(id)a4;
-- (BOOL)areBuildChunksInValidOrderIgnoringInactiveChunks:(id)a3;
++ (BOOL)chunk:(id)chunk isFirstInDeliveryGroupForChunks:(id)chunks;
++ (Class)classForUnarchiver:(id)unarchiver;
++ (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)index inBuildChunks:(id)chunks;
++ (id)p_firstActiveChunkInChunks:(id)chunks;
++ (id)parentSlideForInfo:(id)info;
++ (unint64_t)deliveryGroupCountForBuildChunks:(id)chunks;
++ (unint64_t)deliveryGroupIndexForBuildChunk:(id)chunk inBuildChunks:(id)chunks;
+- (BOOL)areBuildChunksInValidOrderIgnoringInactiveChunks:(id)chunks;
 - (BOOL)backgroundIsNoFillOrColorFillWithAlpha;
-- (BOOL)canMoveDeliveryGroupFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (BOOL)canMoveDrawables:(id)a3 toIndexes:(id)a4;
-- (BOOL)canSetChunksToAutomaticWith:(id)a3;
-- (BOOL)hasComplementForBuildChunk:(id)a3 inBuildChunks:(id)a4;
+- (BOOL)canMoveDeliveryGroupFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (BOOL)canMoveDrawables:(id)drawables toIndexes:(id)indexes;
+- (BOOL)canSetChunksToAutomaticWith:(id)with;
+- (BOOL)hasComplementForBuildChunk:(id)chunk inBuildChunks:(id)chunks;
 - (BOOL)hasFreeformTextPlaceholders;
-- (BOOL)hasTagForInfo:(id)a3;
-- (BOOL)infoExistsForTag:(id)a3;
-- (BOOL)infoIsPlaceholder:(id)a3;
+- (BOOL)hasTagForInfo:(id)info;
+- (BOOL)infoExistsForTag:(id)tag;
+- (BOOL)infoIsPlaceholder:(id)placeholder;
 - (BOOL)isBodyVisible;
 - (BOOL)isSlideNumberVisible;
 - (BOOL)isTemplateSlide;
 - (BOOL)isTitleVisible;
-- (BOOL)p_activeChunks:(id)a3 areInOrderForBuild:(id)a4;
-- (BOOL)p_activeChunks:(id)a3 interleaveChunksForComplementOfBuild:(id)a4;
-- (BOOL)p_areActiveBuildChunksInValidOrder:(id)a3;
-- (BOOL)p_canMoveDeliveryGroupBuildChunks:(id)a3 toIndex:(unint64_t)a4;
-- (BOOL)p_canMoveDeliveryGroupBuildChunksFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (BOOL)p_isChildPlaceholderInfo:(id)a3;
-- (BOOL)p_isValidToMoveChunk:(id)a3 toIndex:(unint64_t)a4;
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4;
-- (KNAbstractSlide)initWithSlideNode:(id)a3 context:(id)a4;
+- (BOOL)p_activeChunks:(id)chunks areInOrderForBuild:(id)build;
+- (BOOL)p_activeChunks:(id)chunks interleaveChunksForComplementOfBuild:(id)build;
+- (BOOL)p_areActiveBuildChunksInValidOrder:(id)order;
+- (BOOL)p_canMoveDeliveryGroupBuildChunks:(id)chunks toIndex:(unint64_t)index;
+- (BOOL)p_canMoveDeliveryGroupBuildChunksFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (BOOL)p_isChildPlaceholderInfo:(id)info;
+- (BOOL)p_isValidToMoveChunk:(id)chunk toIndex:(unint64_t)index;
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint;
+- (KNAbstractSlide)initWithSlideNode:(id)node context:(id)context;
 - (KNMotionBackgroundStyle)motionBackgroundStyle;
 - (KNSlideBackgroundInfo)background;
 - (KNSlideNode)slideNode;
@@ -40,129 +40,129 @@
 - (TSDFill)backgroundFill;
 - (TSUMutablePointerSet)drawablesWithInvalidatedGhosts;
 - (TSUPointerKeyDictionary)drawableToGhostInfosMap;
-- (_NSRange)p_activeChunkRangeForBuild:(id)a3 inActiveChunks:(id)a4;
-- (double)highestScaleFactorForRenderingDrawableInfo:(id)a3;
-- (id)activeChunksForDrawable:(id)a3;
-- (id)activeChunksForDrawable:(id)a3 animationType:(int64_t)a4;
-- (id)availableEventTriggersForBuildChunks:(id)a3;
-- (id)boxedObjectForProperty:(int)a3;
-- (id)buildChunksForActiveBuildChunkIndexes:(id)a3;
-- (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)a3;
-- (id)buildsForDrawable:(id)a3;
-- (id)buildsForDrawable:(id)a3 type:(int64_t)a4;
-- (id)buildsForDrawables:(id)a3;
+- (_NSRange)p_activeChunkRangeForBuild:(id)build inActiveChunks:(id)chunks;
+- (double)highestScaleFactorForRenderingDrawableInfo:(id)info;
+- (id)activeChunksForDrawable:(id)drawable;
+- (id)activeChunksForDrawable:(id)drawable animationType:(int64_t)type;
+- (id)availableEventTriggersForBuildChunks:(id)chunks;
+- (id)boxedObjectForProperty:(int)property;
+- (id)buildChunksForActiveBuildChunkIndexes:(id)indexes;
+- (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)index;
+- (id)buildsForDrawable:(id)drawable;
+- (id)buildsForDrawable:(id)drawable type:(int64_t)type;
+- (id)buildsForDrawables:(id)drawables;
 - (id)childEnumerator;
-- (id)chunksForDrawable:(id)a3 animationType:(int64_t)a4;
-- (id)chunksWhichPlayWithChunk:(id)a3;
-- (id)contentBuildForDrawable:(id)a3;
+- (id)chunksForDrawable:(id)drawable animationType:(int64_t)type;
+- (id)chunksWhichPlayWithChunk:(id)chunk;
+- (id)contentBuildForDrawable:(id)drawable;
 - (id)defaultBodyPlaceholder;
-- (id)defaultBodyPlaceholderWithContext:(id)a3;
+- (id)defaultBodyPlaceholderWithContext:(id)context;
 - (id)defaultSlideNumberPlaceholder;
-- (id)defaultSlideNumberPlaceholderWithContext:(id)a3;
+- (id)defaultSlideNumberPlaceholderWithContext:(id)context;
 - (id)defaultTitlePlaceholder;
-- (id)defaultTitlePlaceholderWithContext:(id)a3;
-- (id)deliveryGroupIndexesForBuilds:(id)a3;
-- (id)imageUsingDocumentRoot:(id)a3;
-- (id)inBuildForDrawable:(id)a3;
-- (id)infoCorrespondingToInfo:(id)a3;
-- (id)infoForTag:(id)a3;
-- (id)instructionalTextForInfo:(id)a3;
-- (id)objectForProperty:(int)a3;
+- (id)defaultTitlePlaceholderWithContext:(id)context;
+- (id)deliveryGroupIndexesForBuilds:(id)builds;
+- (id)imageUsingDocumentRoot:(id)root;
+- (id)inBuildForDrawable:(id)drawable;
+- (id)infoCorrespondingToInfo:(id)info;
+- (id)infoForTag:(id)tag;
+- (id)instructionalTextForInfo:(id)info;
+- (id)objectForProperty:(int)property;
 - (id)objectUUIDPath;
-- (id)outBuildForDrawable:(id)a3;
-- (id)p_ChunksForDrawable:(id)a3 animationType:(int64_t)a4 onlyActiveChunks:(BOOL)a5;
+- (id)outBuildForDrawable:(id)drawable;
+- (id)p_ChunksForDrawable:(id)drawable animationType:(int64_t)type onlyActiveChunks:(BOOL)chunks;
 - (id)p_calculateActiveBuildChunks;
-- (id)p_chunksWhichWillPlayWithChunksToSetToWith:(id)a3;
-- (id)p_complementForBuild:(id)a3;
-- (id)p_firstActiveChunkInChunksForBuild:(id)a3;
-- (id)p_invalidBuildsOnDrawable:(id)a3;
-- (id)p_lastActiveChunkInChunksForBuild:(id)a3;
-- (id)pdfDataUsingDocumentRoot:(id)a3;
-- (id)placeholderOfClass:(Class)a3 withGeometry:(id)a4 stylesheet:(id)a5 shapePresetIndex:(int64_t)a6 textPresetIndex:(int64_t)a7 layoutPropertyMap:(id)a8 paragraphPropertyMap:(id)a9 listPropertyMap:(id)a10 context:(id)a11;
-- (id)placeholderOfClass:(Class)a3 withGeometry:(id)a4 stylesheet:(id)a5 shapePresetIndex:(int64_t)a6 textPresetStyle:(id)a7 layoutPropertyMap:(id)a8 paragraphPropertyMap:(id)a9 listPropertyMap:(id)a10 context:(id)a11;
-- (id)placeholderOfClass:(Class)a3 withGeometry:(id)a4 stylesheet:(id)a5 shapePresetIndex:(int64_t)a6 textPresetStyle:(id)a7 listStyle:(id)a8 layoutPropertyMap:(id)a9 paragraphPropertyMap:(id)a10 listPropertyMap:(id)a11 context:(id)a12;
-- (id)placeholderWithPlaceholder:(id)a3 context:(id)a4;
-- (id)placeholderWithPlaceholder:(id)a3 context:(id)a4 placeholderClass:(Class)a5;
-- (id)tagForInfo:(id)a3;
-- (int64_t)canMoveBuildChunk:(id)a3 toIndex:(unint64_t)a4;
-- (int64_t)validateMoveActiveBuildChunks:(id)a3 toActiveIndex:(unint64_t)a4;
+- (id)p_chunksWhichWillPlayWithChunksToSetToWith:(id)with;
+- (id)p_complementForBuild:(id)build;
+- (id)p_firstActiveChunkInChunksForBuild:(id)build;
+- (id)p_invalidBuildsOnDrawable:(id)drawable;
+- (id)p_lastActiveChunkInChunksForBuild:(id)build;
+- (id)pdfDataUsingDocumentRoot:(id)root;
+- (id)placeholderOfClass:(Class)class withGeometry:(id)geometry stylesheet:(id)stylesheet shapePresetIndex:(int64_t)index textPresetIndex:(int64_t)presetIndex layoutPropertyMap:(id)map paragraphPropertyMap:(id)propertyMap listPropertyMap:(id)self0 context:(id)self1;
+- (id)placeholderOfClass:(Class)class withGeometry:(id)geometry stylesheet:(id)stylesheet shapePresetIndex:(int64_t)index textPresetStyle:(id)style layoutPropertyMap:(id)map paragraphPropertyMap:(id)propertyMap listPropertyMap:(id)self0 context:(id)self1;
+- (id)placeholderOfClass:(Class)class withGeometry:(id)geometry stylesheet:(id)stylesheet shapePresetIndex:(int64_t)index textPresetStyle:(id)style listStyle:(id)listStyle layoutPropertyMap:(id)map paragraphPropertyMap:(id)self0 listPropertyMap:(id)self1 context:(id)self2;
+- (id)placeholderWithPlaceholder:(id)placeholder context:(id)context;
+- (id)placeholderWithPlaceholder:(id)placeholder context:(id)context placeholderClass:(Class)class;
+- (id)tagForInfo:(id)info;
+- (int64_t)canMoveBuildChunk:(id)chunk toIndex:(unint64_t)index;
+- (int64_t)validateMoveActiveBuildChunks:(id)chunks toActiveIndex:(unint64_t)index;
 - (unint64_t)deliveryGroupCount;
-- (unint64_t)deliveryGroupIndexForBuildChunk:(id)a3;
-- (unint64_t)p_keynoteVersionFromUnarchiver:(id)a3;
-- (void)addBuild:(id)a3;
-- (void)addChildInfo:(id)a3;
-- (void)addDrawable:(id)a3 dolcContext:(id)a4;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (unint64_t)deliveryGroupIndexForBuildChunk:(id)chunk;
+- (unint64_t)p_keynoteVersionFromUnarchiver:(id)unarchiver;
+- (void)addBuild:(id)build;
+- (void)addChildInfo:(id)info;
+- (void)addDrawable:(id)drawable dolcContext:(id)context;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)didInitFromSOS;
-- (void)i_primitiveAddBuild:(id)a3;
-- (void)i_primitiveInsertBuildChunk:(id)a3 afterChunk:(id)a4 generateIdentifier:(BOOL)a5;
-- (void)insertBuildChunk:(id)a3 afterChunk:(id)a4 generateIdentifier:(BOOL)a5;
-- (void)insertChildInfo:(id)a3 above:(id)a4;
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChildInfo:(id)a3 below:(id)a4;
-- (void)insertContainedModel:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertDrawable:(id)a3 atIndex:(unint64_t)a4 dolcContext:(id)a5;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)moveChildren:(id)a3 toIndexes:(id)a4;
-- (void)moveModel:(id)a3 toIndex:(unint64_t)a4;
-- (void)p_assertChunksInSequenceForBuild:(id)a3;
-- (void)p_checkChildInfosForDuplicates:(id)a3;
-- (void)p_insertChildInfos:(id)a3 atIndex:(unint64_t)a4 dolcContext:(id)a5;
+- (void)i_primitiveAddBuild:(id)build;
+- (void)i_primitiveInsertBuildChunk:(id)chunk afterChunk:(id)afterChunk generateIdentifier:(BOOL)identifier;
+- (void)insertBuildChunk:(id)chunk afterChunk:(id)afterChunk generateIdentifier:(BOOL)identifier;
+- (void)insertChildInfo:(id)info above:(id)above;
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index;
+- (void)insertChildInfo:(id)info below:(id)below;
+- (void)insertContainedModel:(id)model atIndex:(unint64_t)index;
+- (void)insertDrawable:(id)drawable atIndex:(unint64_t)index dolcContext:(id)context;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)moveChildren:(id)children toIndexes:(id)indexes;
+- (void)moveModel:(id)model toIndex:(unint64_t)index;
+- (void)p_assertChunksInSequenceForBuild:(id)build;
+- (void)p_checkChildInfosForDuplicates:(id)duplicates;
+- (void)p_insertChildInfos:(id)infos atIndex:(unint64_t)index dolcContext:(id)context;
 - (void)p_invalidateAllChunkAndBuildCaches;
-- (void)p_invalidateCachesForBuildUpdate:(id)a3 isForRemoval:(BOOL)a4;
-- (void)p_invalidateCachesForChunkUpdate:(id)a3 isForRemoval:(BOOL)a4;
+- (void)p_invalidateCachesForBuildUpdate:(id)update isForRemoval:(BOOL)removal;
+- (void)p_invalidateCachesForChunkUpdate:(id)update isForRemoval:(BOOL)removal;
 - (void)p_invalidateSlideNodeBuildEventCountCaches;
-- (void)p_setChildInfosAsOrderedSet:(id)a3 usingDOLC:(BOOL)a4 dolcContext:(id)a5;
-- (void)p_updateBuildEffects:(BOOL)a3 version:(unint64_t)a4;
-- (void)p_updateBuildsReplacingPlaceholder:(id)a3 withPlaceholder:(id)a4;
+- (void)p_setChildInfosAsOrderedSet:(id)set usingDOLC:(BOOL)c dolcContext:(id)context;
+- (void)p_updateBuildEffects:(BOOL)effects version:(unint64_t)version;
+- (void)p_updateBuildsReplacingPlaceholder:(id)placeholder withPlaceholder:(id)withPlaceholder;
 - (void)p_updateOverlappingBuildEventTriggers;
-- (void)performBlockOnInfos:(id)a3;
-- (void)referencedStyleWasUpdated:(id)a3;
-- (void)removeBuild:(id)a3;
-- (void)removeBuildChunk:(id)a3 rollbackGeneratedIdentifier:(BOOL)a4;
-- (void)removeChildInfo:(id)a3;
-- (void)removeContainedModel:(id)a3;
-- (void)removeDrawable:(id)a3;
-- (void)removeTagForDrawable:(id)a3;
-- (void)replaceChildInfo:(id)a3 with:(id)a4;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setBodyPlaceholder:(id)a3;
-- (void)setBuildChunks:(id)a3 generateIdentifiers:(BOOL)a4;
-- (void)setBuilds:(id)a3;
-- (void)setChildInfos:(id)a3;
-- (void)setChildInfosWithoutDOLC:(id)a3;
-- (void)setInDocument:(BOOL)a3;
-- (void)setInfo:(id)a3 forSageTag:(id)a4;
-- (void)setInstructionalText:(id)a3 forInfo:(id)a4;
-- (void)setMotionBackgroundStyle:(id)a3;
-- (void)setObjectPlaceholder:(id)a3;
-- (void)setPlaceholdersForTags:(id)a3;
-- (void)setSlideNode:(id)a3;
-- (void)setSlideNumberPlaceholder:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setTitlePlaceholder:(id)a3;
-- (void)setTransition:(id)a3;
+- (void)performBlockOnInfos:(id)infos;
+- (void)referencedStyleWasUpdated:(id)updated;
+- (void)removeBuild:(id)build;
+- (void)removeBuildChunk:(id)chunk rollbackGeneratedIdentifier:(BOOL)identifier;
+- (void)removeChildInfo:(id)info;
+- (void)removeContainedModel:(id)model;
+- (void)removeDrawable:(id)drawable;
+- (void)removeTagForDrawable:(id)drawable;
+- (void)replaceChildInfo:(id)info with:(id)with;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setBodyPlaceholder:(id)placeholder;
+- (void)setBuildChunks:(id)chunks generateIdentifiers:(BOOL)identifiers;
+- (void)setBuilds:(id)builds;
+- (void)setChildInfos:(id)infos;
+- (void)setChildInfosWithoutDOLC:(id)c;
+- (void)setInDocument:(BOOL)document;
+- (void)setInfo:(id)info forSageTag:(id)tag;
+- (void)setInstructionalText:(id)text forInfo:(id)info;
+- (void)setMotionBackgroundStyle:(id)style;
+- (void)setObjectPlaceholder:(id)placeholder;
+- (void)setPlaceholdersForTags:(id)tags;
+- (void)setSlideNode:(id)node;
+- (void)setSlideNumberPlaceholder:(id)placeholder;
+- (void)setStyle:(id)style;
+- (void)setTitlePlaceholder:(id)placeholder;
+- (void)setTransition:(id)transition;
 - (void)updateMotionBackground;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation KNAbstractSlide
 
-- (KNAbstractSlide)initWithSlideNode:(id)a3 context:(id)a4
+- (KNAbstractSlide)initWithSlideNode:(id)node context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  contextCopy = context;
   v40.receiver = self;
   v40.super_class = KNAbstractSlide;
-  v8 = [(KNAbstractSlide *)&v40 initWithContext:v7];
+  v8 = [(KNAbstractSlide *)&v40 initWithContext:contextCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_slideNode, v6);
+    objc_storeWeak(&v8->_slideNode, nodeCopy);
     v10 = objc_alloc_init(MEMORY[0x277CBEB98]);
     builds = v9->_builds;
     v9->_builds = v10;
@@ -289,14 +289,14 @@
   return v8;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v21 = a3;
-  if (self->_style != v21)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_motionBackgroundStyle(self, v7, v8);
-    objc_storeStrong(&self->_style, a3);
+    objc_storeStrong(&self->_style, style);
     v12 = objc_msgSend_slideNode(self, v10, v11);
     objc_msgSend_updateBackgroundIsNoFillOrColorFillWithAlpha(v12, v13, v14);
 
@@ -355,16 +355,16 @@
   return v9;
 }
 
-- (void)setMotionBackgroundStyle:(id)a3
+- (void)setMotionBackgroundStyle:(id)style
 {
-  v27 = a3;
+  styleCopy = style;
   v6 = objc_msgSend_motionBackgroundStyle(self, v4, v5);
 
-  if (v6 != v27)
+  if (v6 != styleCopy)
   {
     objc_msgSend_willModify(self, v7, v8);
     v9 = [KNMotionBackgroundFill alloc];
-    v11 = objc_msgSend_initWithMotionBackgroundStyle_(v9, v10, v27);
+    v11 = objc_msgSend_initWithMotionBackgroundStyle_(v9, v10, styleCopy);
     v12 = objc_alloc(MEMORY[0x277D80AB8]);
     v14 = objc_msgSend_initWithPropertiesAndValues_(v12, v13, 516, v11, 0);
     v17 = objc_msgSend_documentRoot(self, v15, v16);
@@ -376,43 +376,43 @@
   }
 }
 
-- (void)setTransition:(id)a3
+- (void)setTransition:(id)transition
 {
-  v7 = a3;
-  if (self->_transition != v7)
+  transitionCopy = transition;
+  if (self->_transition != transitionCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_transition, a3);
+    objc_storeStrong(&self->_transition, transition);
   }
 }
 
-- (void)setPlaceholdersForTags:(id)a3
+- (void)setPlaceholdersForTags:(id)tags
 {
-  v12 = a3;
-  if (self->_placeholdersForTags != v12)
+  tagsCopy = tags;
+  if (self->_placeholdersForTags != tagsCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_placeholdersForTags, a3);
+    objc_storeStrong(&self->_placeholdersForTags, tags);
     v9 = objc_msgSend_slideNode(self, v7, v8);
     objc_msgSend_updateLiveVideoSourceUsage(v9, v10, v11);
   }
 }
 
-- (void)setInDocument:(BOOL)a3
+- (void)setInDocument:(BOOL)document
 {
-  if (self->_inDocument != a3)
+  if (self->_inDocument != document)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_inDocument = a3;
+    objc_msgSend_willModify(self, a2, document);
+    self->_inDocument = document;
   }
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v40 = objc_msgSend_mappedStyleForStyle_(v7, v8, self->_style);
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
+  v40 = objc_msgSend_mappedStyleForStyle_(mapperCopy, v8, self->_style);
   if (!v40)
   {
     v10 = MEMORY[0x277D81150];
@@ -461,7 +461,7 @@
           objc_enumerationMutation(v30);
         }
 
-        objc_msgSend_adoptStylesheet_withMapper_(*(*(&v45 + 1) + 8 * i), v32, v6, v7);
+        objc_msgSend_adoptStylesheet_withMapper_(*(*(&v45 + 1) + 8 * i), v32, stylesheetCopy, mapperCopy);
       }
 
       v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(v30, v32, &v45, v49, 16);
@@ -476,9 +476,9 @@
   aBlock[3] = &unk_27A6978A0;
   v36 = v30;
   v42 = v36;
-  v37 = v6;
+  v37 = stylesheetCopy;
   v43 = v37;
-  v38 = v7;
+  v38 = mapperCopy;
   v44 = v38;
   v39 = _Block_copy(aBlock);
   v39[2](v39, self->_titlePlaceholder);
@@ -487,12 +487,12 @@
   v39[2](v39, self->_slideNumberPlaceholder);
 }
 
-+ (id)parentSlideForInfo:(id)a3
++ (id)parentSlideForInfo:(id)info
 {
-  v3 = a3;
-  if (v3)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v6 = v3;
+    v6 = infoCopy;
     do
     {
       v7 = objc_msgSend_parentInfo(v6, v4, v5);
@@ -520,37 +520,37 @@
   return v9;
 }
 
-- (void)setChildInfos:(id)a3
+- (void)setChildInfos:(id)infos
 {
-  v11 = a3;
-  objc_msgSend_p_checkChildInfosForDuplicates_(self, v4, v11);
-  v6 = objc_msgSend_orderedSetWithArray_(MEMORY[0x277CBEB70], v5, v11);
+  infosCopy = infos;
+  objc_msgSend_p_checkChildInfosForDuplicates_(self, v4, infosCopy);
+  v6 = objc_msgSend_orderedSetWithArray_(MEMORY[0x277CBEB70], v5, infosCopy);
   v9 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v7, v8);
   objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v10, v6, 1, v9);
 }
 
-- (void)setChildInfosWithoutDOLC:(id)a3
+- (void)setChildInfosWithoutDOLC:(id)c
 {
-  v11 = a3;
-  objc_msgSend_p_checkChildInfosForDuplicates_(self, v4, v11);
-  v6 = objc_msgSend_orderedSetWithArray_(MEMORY[0x277CBEB70], v5, v11);
+  cCopy = c;
+  objc_msgSend_p_checkChildInfosForDuplicates_(self, v4, cCopy);
+  v6 = objc_msgSend_orderedSetWithArray_(MEMORY[0x277CBEB70], v5, cCopy);
   v9 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v7, v8);
   objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v10, v6, 0, v9);
 }
 
-- (void)p_checkChildInfosForDuplicates:(id)a3
+- (void)p_checkChildInfosForDuplicates:(id)duplicates
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  duplicatesCopy = duplicates;
   v4 = objc_alloc(MEMORY[0x277CCA940]);
-  v6 = objc_msgSend_initWithArray_(v4, v5, v3);
+  v6 = objc_msgSend_initWithArray_(v4, v5, duplicatesCopy);
   v9 = objc_msgSend_count(v6, v7, v8);
-  if (v9 != objc_msgSend_count(v3, v10, v11))
+  if (v9 != objc_msgSend_count(duplicatesCopy, v10, v11))
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[KNAbstractSlide p_checkChildInfosForDuplicates:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
-    v18 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v3, v17, &unk_2884D4B00);
+    v18 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(duplicatesCopy, v17, &unk_2884D4B00);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v16, 461, 0, "Attempting to set child infos array %{public}@ which contains duplicates.", v18);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
@@ -590,28 +590,28 @@
   }
 }
 
-- (void)p_setChildInfosAsOrderedSet:(id)a3 usingDOLC:(BOOL)a4 dolcContext:(id)a5
+- (void)p_setChildInfosAsOrderedSet:(id)set usingDOLC:(BOOL)c dolcContext:(id)context
 {
-  v6 = a4;
+  cCopy = c;
   v108 = *MEMORY[0x277D85DE8];
-  v85 = a3;
-  v86 = a5;
+  setCopy = set;
+  contextCopy = context;
   objc_msgSend_willModify(self, v8, v9);
-  if (self->_childInfos == v85)
+  if (self->_childInfos == setCopy)
   {
     goto LABEL_53;
   }
 
   v82 = objc_msgSend_inDocument(self, v10, v11);
-  v79 = v6 & v82;
-  if ((v6 & v82) == 1)
+  v79 = cCopy & v82;
+  if ((cCopy & v82) == 1)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v87 = objc_msgSend_documentRoot(self, v16, v17);
     v80 = v15;
     v81 = v14;
-    if (!v6)
+    if (!cCopy)
     {
       goto LABEL_36;
     }
@@ -636,7 +636,7 @@ LABEL_6:
           }
 
           v22 = *(*(&v100 + 1) + 8 * i);
-          if ((objc_msgSend_containsObject_(v85, v19, v22) & 1) == 0 && (objc_msgSend_p_isChildPlaceholderInfo_(self, v19, v22) & 1) == 0)
+          if ((objc_msgSend_containsObject_(setCopy, v19, v22) & 1) == 0 && (objc_msgSend_p_isChildPlaceholderInfo_(self, v19, v22) & 1) == 0)
           {
             if (v82)
             {
@@ -682,7 +682,7 @@ LABEL_6:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v44 = v85;
+    v44 = setCopy;
     v47 = objc_msgSend_countByEnumeratingWithState_objects_count_(v44, v45, &v96, v106, 16);
     if (v47)
     {
@@ -708,7 +708,7 @@ LABEL_6:
               v53 = v51;
               if (v51)
               {
-                objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v51, v52, v87, v86, &unk_2884F6548);
+                objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v51, v52, v87, contextCopy, &unk_2884F6548);
                 objc_msgSend_addObject_(v80, v54, v53);
               }
             }
@@ -727,13 +727,13 @@ LABEL_6:
   v87 = 0;
   v80 = 0;
   v81 = 0;
-  if (v6)
+  if (cCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_36:
-  v55 = objc_msgSend_copy(v85, v12, v13, v78);
+  v55 = objc_msgSend_copy(setCopy, v12, v13, v78);
   childInfos = self->_childInfos;
   self->_childInfos = v55;
 
@@ -788,7 +788,7 @@ LABEL_36:
             objc_enumerationMutation(v72);
           }
 
-          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v88 + 1) + 8 * m), v74, v87, v86);
+          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v88 + 1) + 8 * m), v74, v87, contextCopy);
         }
 
         v75 = objc_msgSend_countByEnumeratingWithState_objects_count_(v72, v74, &v88, v104, 16);
@@ -801,11 +801,11 @@ LABEL_36:
 LABEL_53:
 }
 
-- (BOOL)p_isChildPlaceholderInfo:(id)a3
+- (BOOL)p_isChildPlaceholderInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9 = objc_msgSend_titlePlaceholder(self, v5, v6);
-  if (v9 == v4)
+  if (v9 == infoCopy)
   {
     v17 = 1;
   }
@@ -813,7 +813,7 @@ LABEL_53:
   else
   {
     v12 = objc_msgSend_bodyPlaceholder(self, v7, v8);
-    if (v12 == v4)
+    if (v12 == infoCopy)
     {
       v17 = 1;
     }
@@ -821,7 +821,7 @@ LABEL_53:
     else
     {
       v15 = objc_msgSend_slideNumberPlaceholder(self, v10, v11);
-      if (v15 == v4)
+      if (v15 == infoCopy)
       {
         v17 = 1;
       }
@@ -829,7 +829,7 @@ LABEL_53:
       else
       {
         v16 = objc_msgSend_objectPlaceholder(self, v13, v14);
-        v17 = v16 == v4;
+        v17 = v16 == infoCopy;
       }
     }
   }
@@ -944,39 +944,39 @@ LABEL_53:
   return v7;
 }
 
-- (void)addDrawable:(id)a3 dolcContext:(id)a4
+- (void)addDrawable:(id)drawable dolcContext:(id)context
 {
-  v11 = a3;
-  v6 = a4;
+  drawableCopy = drawable;
+  contextCopy = context;
   v9 = objc_msgSend_count(self->_childInfos, v7, v8);
-  objc_msgSend_insertDrawable_atIndex_dolcContext_(self, v10, v11, v9, v6);
+  objc_msgSend_insertDrawable_atIndex_dolcContext_(self, v10, drawableCopy, v9, contextCopy);
 }
 
-- (void)insertDrawable:(id)a3 atIndex:(unint64_t)a4 dolcContext:(id)a5
+- (void)insertDrawable:(id)drawable atIndex:(unint64_t)index dolcContext:(id)context
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v13[0] = v8;
+  drawableCopy = drawable;
+  contextCopy = context;
+  v13[0] = drawableCopy;
   v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v10, v13, 1);
-  objc_msgSend_insertDrawables_atIndex_dolcContext_(self, v12, v11, a4, v9);
+  objc_msgSend_insertDrawables_atIndex_dolcContext_(self, v12, v11, index, contextCopy);
 }
 
-- (void)removeDrawable:(id)a3
+- (void)removeDrawable:(id)drawable
 {
-  v8 = a3;
+  drawableCopy = drawable;
   objc_msgSend_willModify(self, v4, v5);
-  objc_msgSend_removeChildInfo_(self, v6, v8);
-  objc_msgSend_removeTagForDrawable_(self, v7, v8);
+  objc_msgSend_removeChildInfo_(self, v6, drawableCopy);
+  objc_msgSend_removeTagForDrawable_(self, v7, drawableCopy);
 }
 
-- (BOOL)canMoveDrawables:(id)a3 toIndexes:(id)a4
+- (BOOL)canMoveDrawables:(id)drawables toIndexes:(id)indexes
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = v7;
-  if (!v6)
+  drawablesCopy = drawables;
+  indexesCopy = indexes;
+  v10 = indexesCopy;
+  if (!drawablesCopy)
   {
     v42 = MEMORY[0x277D81150];
     v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[KNAbstractSlide canMoveDrawables:toIndexes:]");
@@ -1001,12 +1001,12 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v7)
+  if (!indexesCopy)
   {
     goto LABEL_17;
   }
 
-  v11 = objc_msgSend_count(v6, v8, v9);
+  v11 = objc_msgSend_count(drawablesCopy, v8, v9);
   v67 = objc_msgSend_count(v10, v12, v13);
   Index = objc_msgSend_lastIndex(v10, v14, v15);
   v19 = objc_msgSend_count(self->_childInfos, v16, v17);
@@ -1034,7 +1034,7 @@ LABEL_17:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v34 = v6;
+  v34 = drawablesCopy;
   v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v35, &v68, v72, 16);
   if (v37)
   {
@@ -1097,11 +1097,11 @@ LABEL_25:
   return v56;
 }
 
-- (void)moveChildren:(id)a3 toIndexes:(id)a4
+- (void)moveChildren:(id)children toIndexes:(id)indexes
 {
-  v78 = a3;
-  v8 = a4;
-  if (!v78)
+  childrenCopy = children;
+  indexesCopy = indexes;
+  if (!childrenCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNAbstractSlide moveChildren:toIndexes:]");
@@ -1111,7 +1111,7 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (!v8)
+  if (!indexesCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNAbstractSlide moveChildren:toIndexes:]");
@@ -1121,23 +1121,23 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
-  if (v78)
+  if (childrenCopy)
   {
-    v23 = objc_msgSend_count(v78, v6, v7);
-    if (v8)
+    v23 = objc_msgSend_count(childrenCopy, v6, v7);
+    if (indexesCopy)
     {
-      if (v23 && objc_msgSend_count(v8, v24, v25))
+      if (v23 && objc_msgSend_count(indexesCopy, v24, v25))
       {
-        v28 = objc_msgSend_count(v78, v26, v27);
-        v31 = objc_msgSend_count(v8, v29, v30);
-        Index = objc_msgSend_lastIndex(v8, v32, v33);
+        v28 = objc_msgSend_count(childrenCopy, v26, v27);
+        v31 = objc_msgSend_count(indexesCopy, v29, v30);
+        Index = objc_msgSend_lastIndex(indexesCopy, v32, v33);
         v37 = objc_msgSend_count(self->_childInfos, v35, v36);
         v39 = v37;
         if (v28 == v31)
         {
           if (Index < v37)
           {
-            v40 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v78, v38, &unk_2884D4B40);
+            v40 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(childrenCopy, v38, &unk_2884D4B40);
             v43 = objc_msgSend_mutableCopy(self->_childInfos, v41, v42);
             objc_msgSend_removeObjectsInArray_(v43, v44, v40);
             v49 = v39 - v28;
@@ -1154,7 +1154,7 @@ LABEL_25:
             if (objc_msgSend_count(v43, v47, v48) == v49)
             {
               objc_msgSend_willModify(self, v57, v58);
-              objc_msgSend_insertObjects_atIndexes_(v43, v59, v40, v8);
+              objc_msgSend_insertObjects_atIndexes_(v43, v59, v40, indexesCopy);
               v62 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v60, v61);
               objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v63, v43, 1, v62);
             }
@@ -1180,7 +1180,7 @@ LABEL_25:
         v71 = MEMORY[0x277D81150];
         v72 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "[KNAbstractSlide moveChildren:toIndexes:]");
         v74 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v73, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v71, v75, v72, v74, 652, 0, "Can't move drawables to indexes, one or more indexes out of range. movingCount: %lu, childInfosCount: %lu, indexes: %{public}@", v28, v39, v8);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v71, v75, v72, v74, 652, 0, "Can't move drawables to indexes, one or more indexes out of range. movingCount: %lu, childInfosCount: %lu, indexes: %{public}@", v28, v39, indexesCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v76, v77);
       }
@@ -1190,9 +1190,9 @@ LABEL_25:
 LABEL_18:
 }
 
-- (void)performBlockOnInfos:(id)a3
+- (void)performBlockOnInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v12 = 0;
   v5 = objc_alloc(MEMORY[0x277D80660]);
   v9 = objc_msgSend_initWithRootModelObject_filter_(v5, v6, self, &unk_2884D4B60);
@@ -1206,7 +1206,7 @@ LABEL_18:
       break;
     }
 
-    v4[2](v4, v11, &v12);
+    infosCopy[2](infosCopy, v11, &v12);
     v10 = v11;
   }
 
@@ -1229,9 +1229,9 @@ LABEL_18:
   return v6;
 }
 
-- (id)defaultTitlePlaceholderWithContext:(id)a3
+- (id)defaultTitlePlaceholderWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAbstractSlide defaultTitlePlaceholderWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
@@ -1251,9 +1251,9 @@ LABEL_18:
   objc_exception_throw(v21);
 }
 
-- (id)defaultBodyPlaceholderWithContext:(id)a3
+- (id)defaultBodyPlaceholderWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAbstractSlide defaultBodyPlaceholderWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
@@ -1281,9 +1281,9 @@ LABEL_18:
   return v6;
 }
 
-- (id)defaultSlideNumberPlaceholderWithContext:(id)a3
+- (id)defaultSlideNumberPlaceholderWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAbstractSlide defaultSlideNumberPlaceholderWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
@@ -1303,11 +1303,11 @@ LABEL_18:
   objc_exception_throw(v21);
 }
 
-- (id)placeholderWithPlaceholder:(id)a3 context:(id)a4 placeholderClass:(Class)a5
+- (id)placeholderWithPlaceholder:(id)placeholder context:(id)context placeholderClass:(Class)class
 {
-  v7 = a3;
-  v8 = a4;
-  if (objc_opt_class() != a5)
+  placeholderCopy = placeholder;
+  contextCopy = context;
+  if (objc_opt_class() != class)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[KNAbstractSlide placeholderWithPlaceholder:context:placeholderClass:]");
@@ -1317,62 +1317,62 @@ LABEL_18:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  v18 = objc_msgSend_geometry(v7, v9, v10);
-  v21 = objc_msgSend_style(v7, v19, v20);
-  v24 = objc_msgSend_textStorage(v7, v22, v23);
-  v26 = objc_msgSend_newSubstorageWithRange_context_flags_(v24, v25, 0, 0, v8, 0);
+  v18 = objc_msgSend_geometry(placeholderCopy, v9, v10);
+  v21 = objc_msgSend_style(placeholderCopy, v19, v20);
+  v24 = objc_msgSend_textStorage(placeholderCopy, v22, v23);
+  v26 = objc_msgSend_newSubstorageWithRange_context_flags_(v24, v25, 0, 0, contextCopy, 0);
 
-  v29 = objc_msgSend_pathSource(v7, v27, v28);
-  v30 = [a5 alloc];
-  v32 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(v30, v31, v8, v18, v21, v29, v26);
-  v35 = objc_msgSend_hyperlinkURL(v7, v33, v34);
+  v29 = objc_msgSend_pathSource(placeholderCopy, v27, v28);
+  v30 = [class alloc];
+  v32 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(v30, v31, contextCopy, v18, v21, v29, v26);
+  v35 = objc_msgSend_hyperlinkURL(placeholderCopy, v33, v34);
   objc_msgSend_setHyperlinkURL_(v32, v36, v35);
 
   return v32;
 }
 
-- (id)placeholderWithPlaceholder:(id)a3 context:(id)a4
+- (id)placeholderWithPlaceholder:(id)placeholder context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  placeholderCopy = placeholder;
+  contextCopy = context;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_placeholderWithPlaceholder_context_placeholderClass_(self, v9, v6, v7, v8);
+  v10 = objc_msgSend_placeholderWithPlaceholder_context_placeholderClass_(self, v9, placeholderCopy, contextCopy, v8);
 
   return v10;
 }
 
-- (id)placeholderOfClass:(Class)a3 withGeometry:(id)a4 stylesheet:(id)a5 shapePresetIndex:(int64_t)a6 textPresetIndex:(int64_t)a7 layoutPropertyMap:(id)a8 paragraphPropertyMap:(id)a9 listPropertyMap:(id)a10 context:(id)a11
+- (id)placeholderOfClass:(Class)class withGeometry:(id)geometry stylesheet:(id)stylesheet shapePresetIndex:(int64_t)index textPresetIndex:(int64_t)presetIndex layoutPropertyMap:(id)map paragraphPropertyMap:(id)propertyMap listPropertyMap:(id)self0 context:(id)self1
 {
-  v40 = a4;
-  v39 = a5;
-  v41 = a8;
-  v38 = a9;
-  v17 = a10;
-  v18 = a11;
+  geometryCopy = geometry;
+  stylesheetCopy = stylesheet;
+  mapCopy = map;
+  propertyMapCopy = propertyMap;
+  listPropertyMapCopy = listPropertyMap;
+  contextCopy = context;
   objc_opt_class();
   v21 = objc_msgSend_documentRoot(self, v19, v20);
   v24 = objc_msgSend_theme(v21, v22, v23);
   v25 = TSUDynamicCast();
 
   v37 = v25;
-  v27 = objc_msgSend_presetOfKind_index_(v25, v26, *MEMORY[0x277D80BB0], a7);
+  v27 = objc_msgSend_presetOfKind_index_(v25, v26, *MEMORY[0x277D80BB0], presetIndex);
   v30 = objc_msgSend_paragraphStyle(v27, v28, v29);
   v33 = objc_msgSend_listStyle(v27, v31, v32);
-  v35 = objc_msgSend_placeholderOfClass_withGeometry_stylesheet_shapePresetIndex_textPresetStyle_listStyle_layoutPropertyMap_paragraphPropertyMap_listPropertyMap_context_(self, v34, a3, v40, v39, a6, v30, v33, v41, v38, v17, v18);
+  v35 = objc_msgSend_placeholderOfClass_withGeometry_stylesheet_shapePresetIndex_textPresetStyle_listStyle_layoutPropertyMap_paragraphPropertyMap_listPropertyMap_context_(self, v34, class, geometryCopy, stylesheetCopy, index, v30, v33, mapCopy, propertyMapCopy, listPropertyMapCopy, contextCopy);
 
   return v35;
 }
 
-- (id)placeholderOfClass:(Class)a3 withGeometry:(id)a4 stylesheet:(id)a5 shapePresetIndex:(int64_t)a6 textPresetStyle:(id)a7 layoutPropertyMap:(id)a8 paragraphPropertyMap:(id)a9 listPropertyMap:(id)a10 context:(id)a11
+- (id)placeholderOfClass:(Class)class withGeometry:(id)geometry stylesheet:(id)stylesheet shapePresetIndex:(int64_t)index textPresetStyle:(id)style layoutPropertyMap:(id)map paragraphPropertyMap:(id)propertyMap listPropertyMap:(id)self0 context:(id)self1
 {
-  v39 = a4;
-  v38 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
-  v19 = a11;
-  v22 = objc_msgSend_initialListStyle(v15, v20, v21);
+  geometryCopy = geometry;
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
+  mapCopy = map;
+  propertyMapCopy = propertyMap;
+  listPropertyMapCopy = listPropertyMap;
+  contextCopy = context;
+  v22 = objc_msgSend_initialListStyle(styleCopy, v20, v21);
   v25 = v22;
   if (v22)
   {
@@ -1386,67 +1386,67 @@ LABEL_18:
     v26 = objc_msgSend_defaultListStyle(v30, v31, v32);
   }
 
-  v34 = objc_msgSend_placeholderOfClass_withGeometry_stylesheet_shapePresetIndex_textPresetStyle_listStyle_layoutPropertyMap_paragraphPropertyMap_listPropertyMap_context_(self, v33, a3, v39, v38, a6, v15, v26, v16, v17, v18, v19);
+  v34 = objc_msgSend_placeholderOfClass_withGeometry_stylesheet_shapePresetIndex_textPresetStyle_listStyle_layoutPropertyMap_paragraphPropertyMap_listPropertyMap_context_(self, v33, class, geometryCopy, stylesheetCopy, index, styleCopy, v26, mapCopy, propertyMapCopy, listPropertyMapCopy, contextCopy);
 
   return v34;
 }
 
-- (id)placeholderOfClass:(Class)a3 withGeometry:(id)a4 stylesheet:(id)a5 shapePresetIndex:(int64_t)a6 textPresetStyle:(id)a7 listStyle:(id)a8 layoutPropertyMap:(id)a9 paragraphPropertyMap:(id)a10 listPropertyMap:(id)a11 context:(id)a12
+- (id)placeholderOfClass:(Class)class withGeometry:(id)geometry stylesheet:(id)stylesheet shapePresetIndex:(int64_t)index textPresetStyle:(id)style listStyle:(id)listStyle layoutPropertyMap:(id)map paragraphPropertyMap:(id)self0 listPropertyMap:(id)self1 context:(id)self2
 {
-  v62 = a4;
-  v17 = a5;
-  v61 = a7;
-  v60 = a8;
-  v64 = a9;
-  v18 = a10;
-  v65 = a11;
-  v19 = a12;
-  v59 = v17;
-  v63 = v18;
+  geometryCopy = geometry;
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
+  listStyleCopy = listStyle;
+  mapCopy = map;
+  propertyMapCopy = propertyMap;
+  listPropertyMapCopy = listPropertyMap;
+  contextCopy = context;
+  v59 = stylesheetCopy;
+  v63 = propertyMapCopy;
   objc_opt_class();
   v22 = objc_msgSend_documentRoot(self, v20, v21);
   v25 = objc_msgSend_theme(v22, v23, v24);
   v26 = TSUDynamicCast();
 
   v58 = v26;
-  v30 = objc_msgSend_presetOfKind_index_(v26, v27, *MEMORY[0x277D80BB8], a6);
-  if (v64 && objc_msgSend_count(v64, v28, v29))
+  v30 = objc_msgSend_presetOfKind_index_(v26, v27, *MEMORY[0x277D80BB8], index);
+  if (mapCopy && objc_msgSend_count(mapCopy, v28, v29))
   {
-    v32 = objc_msgSend_variationOfStyle_propertyMap_context_(v17, v31, v30, v64, v19);
+    v32 = objc_msgSend_variationOfStyle_propertyMap_context_(stylesheetCopy, v31, v30, mapCopy, contextCopy);
 
     v30 = v32;
   }
 
-  v33 = v61;
-  v36 = objc_msgSend_count(v18, v34, v35);
+  v33 = styleCopy;
+  v36 = objc_msgSend_count(propertyMapCopy, v34, v35);
   v38 = v33;
   if (v36)
   {
-    v38 = objc_msgSend_variationOfStyle_propertyMap_context_(v17, v37, v33, v63, v19);
+    v38 = objc_msgSend_variationOfStyle_propertyMap_context_(stylesheetCopy, v37, v33, v63, contextCopy);
   }
 
-  v39 = v60;
+  v39 = listStyleCopy;
   v43 = v39;
-  if (objc_msgSend_count(v65, v40, v41))
+  if (objc_msgSend_count(listPropertyMapCopy, v40, v41))
   {
-    v43 = objc_msgSend_variationOfStyle_propertyMap_context_(v17, v42, v39, v65, v19);
+    v43 = objc_msgSend_variationOfStyle_propertyMap_context_(stylesheetCopy, v42, v39, listPropertyMapCopy, contextCopy);
   }
 
   v44 = objc_alloc(MEMORY[0x277D80F28]);
-  v46 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(v44, v45, v19, &stru_2884D8E20, 3, v17, v38, v43, 0, 0);
+  v46 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(v44, v45, contextCopy, &stru_2884D8E20, 3, stylesheetCopy, v38, v43, 0, 0);
   v47 = objc_alloc(MEMORY[0x277D801C8]);
-  objc_msgSend_size(v62, v48, v49);
+  objc_msgSend_size(geometryCopy, v48, v49);
   v52 = objc_msgSend_initWithNaturalSize_(v47, v50, v51);
-  v53 = [a3 alloc];
-  v55 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(v53, v54, v19, v62, v30, v52, v46);
+  v53 = [class alloc];
+  v55 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(v53, v54, contextCopy, geometryCopy, v30, v52, v46);
 
   return v55;
 }
 
-- (void)setTitlePlaceholder:(id)a3
+- (void)setTitlePlaceholder:(id)placeholder
 {
-  v43 = a3;
-  if (v43)
+  placeholderCopy = placeholder;
+  if (placeholderCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1461,7 +1461,7 @@ LABEL_18:
     }
   }
 
-  if (self->_titlePlaceholder != v43)
+  if (self->_titlePlaceholder != placeholderCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
     v15 = self->_titlePlaceholder;
@@ -1489,7 +1489,7 @@ LABEL_18:
     }
 
     v26 = v21 ^ 1;
-    if (!v43)
+    if (!placeholderCopy)
     {
       v26 = 1;
     }
@@ -1503,10 +1503,10 @@ LABEL_18:
         if (v29)
         {
           v34 = objc_msgSend_documentRoot(self, v19, v20);
-          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v43, v35, v34, 0);
+          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(placeholderCopy, v35, v34, 0);
         }
 
-        objc_storeStrong(&self->_titlePlaceholder, a3);
+        objc_storeStrong(&self->_titlePlaceholder, placeholder);
         objc_msgSend_setParentInfo_(self->_titlePlaceholder, v36, self);
         if (v25)
         {
@@ -1517,7 +1517,7 @@ LABEL_18:
         if (v29)
         {
           v41 = objc_msgSend_documentRoot(self, v37, v38);
-          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v43, v42, v41, 0);
+          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(placeholderCopy, v42, v41, 0);
         }
 
         goto LABEL_25;
@@ -1527,7 +1527,7 @@ LABEL_18:
     else
     {
       v27 = objc_msgSend_childInfos(self, v19, v20);
-      v29 = objc_msgSend_containsObject_(v27, v28, v43) ^ 1;
+      v29 = objc_msgSend_containsObject_(v27, v28, placeholderCopy) ^ 1;
 
       if (!v25)
       {
@@ -1546,10 +1546,10 @@ LABEL_18:
 LABEL_25:
 }
 
-- (void)setBodyPlaceholder:(id)a3
+- (void)setBodyPlaceholder:(id)placeholder
 {
-  v43 = a3;
-  if (v43)
+  placeholderCopy = placeholder;
+  if (placeholderCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1564,7 +1564,7 @@ LABEL_25:
     }
   }
 
-  if (self->_bodyPlaceholder != v43)
+  if (self->_bodyPlaceholder != placeholderCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
     v15 = self->_bodyPlaceholder;
@@ -1592,7 +1592,7 @@ LABEL_25:
     }
 
     v26 = v21 ^ 1;
-    if (!v43)
+    if (!placeholderCopy)
     {
       v26 = 1;
     }
@@ -1606,10 +1606,10 @@ LABEL_18:
         if (v29)
         {
           v34 = objc_msgSend_documentRoot(self, v19, v20);
-          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v43, v35, v34, 0);
+          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(placeholderCopy, v35, v34, 0);
         }
 
-        objc_storeStrong(&self->_bodyPlaceholder, a3);
+        objc_storeStrong(&self->_bodyPlaceholder, placeholder);
         objc_msgSend_setParentInfo_(self->_bodyPlaceholder, v36, self);
         if (v25)
         {
@@ -1620,7 +1620,7 @@ LABEL_18:
         if (v29)
         {
           v41 = objc_msgSend_documentRoot(self, v37, v38);
-          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v43, v42, v41, 0);
+          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(placeholderCopy, v42, v41, 0);
         }
 
         goto LABEL_25;
@@ -1630,7 +1630,7 @@ LABEL_18:
     else
     {
       v27 = objc_msgSend_childInfos(self, v19, v20);
-      v29 = objc_msgSend_containsObject_(v27, v28, v43) ^ 1;
+      v29 = objc_msgSend_containsObject_(v27, v28, placeholderCopy) ^ 1;
 
       if (!v25)
       {
@@ -1649,10 +1649,10 @@ LABEL_18:
 LABEL_25:
 }
 
-- (void)setObjectPlaceholder:(id)a3
+- (void)setObjectPlaceholder:(id)placeholder
 {
-  v35 = a3;
-  if (self->_objectPlaceholder == v35)
+  placeholderCopy = placeholder;
+  if (self->_objectPlaceholder == placeholderCopy)
   {
     goto LABEL_22;
   }
@@ -1683,7 +1683,7 @@ LABEL_25:
   }
 
   v18 = v13 ^ 1;
-  if (!v35)
+  if (!placeholderCopy)
   {
     v18 = 1;
   }
@@ -1691,7 +1691,7 @@ LABEL_25:
   if ((v18 & 1) == 0)
   {
     v19 = objc_msgSend_childInfos(self, v11, v12);
-    v21 = objc_msgSend_containsObject_(v19, v20, v35) ^ 1;
+    v21 = objc_msgSend_containsObject_(v19, v20, placeholderCopy) ^ 1;
 
     if (!v17)
     {
@@ -1716,10 +1716,10 @@ LABEL_15:
   if (v21)
   {
     v26 = objc_msgSend_documentRoot(self, v11, v12);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v35, v27, v26, 0);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(placeholderCopy, v27, v26, 0);
   }
 
-  objc_storeStrong(&self->_objectPlaceholder, a3);
+  objc_storeStrong(&self->_objectPlaceholder, placeholder);
   objc_msgSend_setParentInfo_(self->_objectPlaceholder, v28, self);
   if (v17)
   {
@@ -1730,16 +1730,16 @@ LABEL_15:
   if (v21)
   {
     v33 = objc_msgSend_documentRoot(self, v29, v30);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v35, v34, v33, 0);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(placeholderCopy, v34, v33, 0);
   }
 
 LABEL_22:
 }
 
-- (void)setSlideNumberPlaceholder:(id)a3
+- (void)setSlideNumberPlaceholder:(id)placeholder
 {
-  v35 = a3;
-  if (self->_slideNumberPlaceholder == v35)
+  placeholderCopy = placeholder;
+  if (self->_slideNumberPlaceholder == placeholderCopy)
   {
     goto LABEL_22;
   }
@@ -1770,7 +1770,7 @@ LABEL_22:
   }
 
   v18 = v13 ^ 1;
-  if (!v35)
+  if (!placeholderCopy)
   {
     v18 = 1;
   }
@@ -1778,7 +1778,7 @@ LABEL_22:
   if ((v18 & 1) == 0)
   {
     v19 = objc_msgSend_childInfos(self, v11, v12);
-    v21 = objc_msgSend_containsObject_(v19, v20, v35) ^ 1;
+    v21 = objc_msgSend_containsObject_(v19, v20, placeholderCopy) ^ 1;
 
     if (!v17)
     {
@@ -1803,10 +1803,10 @@ LABEL_15:
   if (v21)
   {
     v26 = objc_msgSend_documentRoot(self, v11, v12);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v35, v27, v26, 0);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(placeholderCopy, v27, v26, 0);
   }
 
-  objc_storeStrong(&self->_slideNumberPlaceholder, a3);
+  objc_storeStrong(&self->_slideNumberPlaceholder, placeholder);
   objc_msgSend_setParentInfo_(self->_slideNumberPlaceholder, v28, self);
   if (v17)
   {
@@ -1817,7 +1817,7 @@ LABEL_15:
   if (v21)
   {
     v33 = objc_msgSend_documentRoot(self, v29, v30);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v35, v34, v33, 0);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(placeholderCopy, v34, v33, 0);
   }
 
 LABEL_22:
@@ -1862,11 +1862,11 @@ LABEL_22:
   return v6;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -1886,7 +1886,7 @@ LABEL_22:
           objc_enumerationMutation(v10);
         }
 
-        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v36 + 1) + 8 * v15++), v12, v6, v7);
+        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v36 + 1) + 8 * v15++), v12, rootCopy, contextCopy);
       }
 
       while (v13 != v15);
@@ -1899,37 +1899,37 @@ LABEL_22:
   if ((objc_msgSend_isTitleVisible(self, v16, v17) & 1) == 0)
   {
     v20 = objc_msgSend_titlePlaceholder(self, v18, v19);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v20, v21, v6, v7);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v20, v21, rootCopy, contextCopy);
   }
 
   if ((objc_msgSend_isBodyVisible(self, v18, v19) & 1) == 0)
   {
     v24 = objc_msgSend_bodyPlaceholder(self, v22, v23);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v24, v25, v6, v7);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v24, v25, rootCopy, contextCopy);
   }
 
   if ((objc_msgSend_isObjectVisible(self, v22, v23) & 1) == 0)
   {
     v28 = objc_msgSend_objectPlaceholder(self, v26, v27);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v28, v29, v6, v7);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v28, v29, rootCopy, contextCopy);
   }
 
   if ((objc_msgSend_isSlideNumberVisible(self, v26, v27) & 1) == 0)
   {
     v32 = objc_msgSend_slideNumberPlaceholder(self, v30, v31);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v32, v33, v6, v7);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v32, v33, rootCopy, contextCopy);
   }
 
   v34 = objc_msgSend_background(self, v30, v31);
-  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v34, v35, v6, v7);
+  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v34, v35, rootCopy, contextCopy);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_context(v6, v8, v9);
+  rootCopy = root;
+  contextCopy = context;
+  v10 = objc_msgSend_context(rootCopy, v8, v9);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v11, v10);
 
   objc_msgSend_setInDocument_(self, v12, 1);
@@ -1952,7 +1952,7 @@ LABEL_22:
           objc_enumerationMutation(v15);
         }
 
-        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v73 + 1) + 8 * v20++), v17, v6, v7);
+        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v73 + 1) + 8 * v20++), v17, rootCopy, contextCopy);
       }
 
       while (v18 != v20);
@@ -1965,25 +1965,25 @@ LABEL_22:
   if ((objc_msgSend_isTitleVisible(self, v21, v22) & 1) == 0)
   {
     v25 = objc_msgSend_titlePlaceholder(self, v23, v24);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v25, v26, v6, v7);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v25, v26, rootCopy, contextCopy);
   }
 
   if ((objc_msgSend_isBodyVisible(self, v23, v24) & 1) == 0)
   {
     v29 = objc_msgSend_bodyPlaceholder(self, v27, v28);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v29, v30, v6, v7);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v29, v30, rootCopy, contextCopy);
   }
 
   if ((objc_msgSend_isObjectVisible(self, v27, v28) & 1) == 0)
   {
     v33 = objc_msgSend_objectPlaceholder(self, v31, v32);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v33, v34, v6, v7);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v33, v34, rootCopy, contextCopy);
   }
 
   if ((objc_msgSend_isSlideNumberVisible(self, v31, v32) & 1) == 0)
   {
     v37 = objc_msgSend_slideNumberPlaceholder(self, v35, v36);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v37, v38, v6, v7);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v37, v38, rootCopy, contextCopy);
   }
 
   v71 = 0u;
@@ -2006,7 +2006,7 @@ LABEL_22:
         }
 
         v46 = *(*(&v69 + 1) + 8 * v45);
-        v47 = objc_msgSend_context(v6, v41, v42);
+        v47 = objc_msgSend_context(rootCopy, v41, v42);
         objc_msgSend_wasAddedToDocumentWithContext_(v46, v48, v47);
 
         ++v45;
@@ -2039,7 +2039,7 @@ LABEL_22:
         }
 
         v58 = *(*(&v65 + 1) + 8 * v57);
-        v59 = objc_msgSend_context(v6, v53, v54);
+        v59 = objc_msgSend_context(rootCopy, v53, v54);
         objc_msgSend_wasAddedToDocumentWithContext_(v58, v60, v59);
 
         ++v57;
@@ -2053,13 +2053,13 @@ LABEL_22:
   }
 
   v63 = objc_msgSend_background(self, v61, v62);
-  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v63, v64, v6, v7);
+  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v63, v64, rootCopy, contextCopy);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
@@ -2079,7 +2079,7 @@ LABEL_22:
           objc_enumerationMutation(v7);
         }
 
-        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v70 + 1) + 8 * v12++), v9, v4);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v70 + 1) + 8 * v12++), v9, rootCopy);
       }
 
       while (v10 != v12);
@@ -2092,25 +2092,25 @@ LABEL_22:
   if ((objc_msgSend_isTitleVisible(self, v13, v14) & 1) == 0)
   {
     v17 = objc_msgSend_titlePlaceholder(self, v15, v16);
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v17, v18, v4);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(v17, v18, rootCopy);
   }
 
   if ((objc_msgSend_isBodyVisible(self, v15, v16) & 1) == 0)
   {
     v21 = objc_msgSend_bodyPlaceholder(self, v19, v20);
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v21, v22, v4);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(v21, v22, rootCopy);
   }
 
   if ((objc_msgSend_isObjectVisible(self, v19, v20) & 1) == 0)
   {
     v25 = objc_msgSend_objectPlaceholder(self, v23, v24);
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v25, v26, v4);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(v25, v26, rootCopy);
   }
 
   if ((objc_msgSend_isSlideNumberVisible(self, v23, v24) & 1) == 0)
   {
     v29 = objc_msgSend_slideNumberPlaceholder(self, v27, v28);
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v29, v30, v4);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(v29, v30, rootCopy);
   }
 
   v68 = 0u;
@@ -2133,7 +2133,7 @@ LABEL_22:
         }
 
         v38 = *(*(&v66 + 1) + 8 * v37);
-        v39 = objc_msgSend_context(v4, v33, v34);
+        v39 = objc_msgSend_context(rootCopy, v33, v34);
         objc_msgSend_willBeRemovedFromDocumentWithContext_(v38, v40, v39);
 
         ++v37;
@@ -2166,7 +2166,7 @@ LABEL_22:
         }
 
         v50 = *(*(&v62 + 1) + 8 * v49);
-        v51 = objc_msgSend_context(v4, v45, v46);
+        v51 = objc_msgSend_context(rootCopy, v45, v46);
         objc_msgSend_willBeRemovedFromDocumentWithContext_(v50, v52, v51);
 
         ++v49;
@@ -2180,18 +2180,18 @@ LABEL_22:
   }
 
   v55 = objc_msgSend_background(self, v53, v54);
-  objc_msgSend_willBeRemovedFromDocumentRoot_(v55, v56, v4);
+  objc_msgSend_willBeRemovedFromDocumentRoot_(v55, v56, rootCopy);
 
-  v59 = objc_msgSend_context(v4, v57, v58);
+  v59 = objc_msgSend_context(rootCopy, v57, v58);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v60, v59);
 
   objc_msgSend_setInDocument_(self, v61, 0);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -2211,7 +2211,7 @@ LABEL_22:
           objc_enumerationMutation(v7);
         }
 
-        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v33 + 1) + 8 * v12++), v9, v4);
+        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v33 + 1) + 8 * v12++), v9, rootCopy);
       }
 
       while (v10 != v12);
@@ -2224,65 +2224,65 @@ LABEL_22:
   if ((objc_msgSend_isTitleVisible(self, v13, v14) & 1) == 0)
   {
     v17 = objc_msgSend_titlePlaceholder(self, v15, v16);
-    objc_msgSend_wasRemovedFromDocumentRoot_(v17, v18, v4);
+    objc_msgSend_wasRemovedFromDocumentRoot_(v17, v18, rootCopy);
   }
 
   if ((objc_msgSend_isBodyVisible(self, v15, v16) & 1) == 0)
   {
     v21 = objc_msgSend_bodyPlaceholder(self, v19, v20);
-    objc_msgSend_wasRemovedFromDocumentRoot_(v21, v22, v4);
+    objc_msgSend_wasRemovedFromDocumentRoot_(v21, v22, rootCopy);
   }
 
   if ((objc_msgSend_isObjectVisible(self, v19, v20) & 1) == 0)
   {
     v25 = objc_msgSend_objectPlaceholder(self, v23, v24);
-    objc_msgSend_wasRemovedFromDocumentRoot_(v25, v26, v4);
+    objc_msgSend_wasRemovedFromDocumentRoot_(v25, v26, rootCopy);
   }
 
   if ((objc_msgSend_isSlideNumberVisible(self, v23, v24) & 1) == 0)
   {
     v29 = objc_msgSend_slideNumberPlaceholder(self, v27, v28);
-    objc_msgSend_wasRemovedFromDocumentRoot_(v29, v30, v4);
+    objc_msgSend_wasRemovedFromDocumentRoot_(v29, v30, rootCopy);
   }
 
   v31 = objc_msgSend_background(self, v27, v28);
-  objc_msgSend_wasRemovedFromDocumentRoot_(v31, v32, v4);
+  objc_msgSend_wasRemovedFromDocumentRoot_(v31, v32, rootCopy);
 }
 
-- (void)setInfo:(id)a3 forSageTag:(id)a4
+- (void)setInfo:(id)info forSageTag:(id)tag
 {
-  v14 = a3;
-  v6 = a4;
+  infoCopy = info;
+  tagCopy = tag;
   objc_msgSend_willModify(self, v7, v8);
   v9 = objc_alloc(MEMORY[0x277CBEB38]);
   v11 = objc_msgSend_initWithDictionary_(v9, v10, self->_placeholdersForTags);
-  objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v14, v6);
+  objc_msgSend_setObject_forKeyedSubscript_(v11, v12, infoCopy, tagCopy);
   objc_msgSend_setPlaceholdersForTags_(self, v13, v11);
 }
 
-- (id)infoForTag:(id)a3
+- (id)infoForTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   objc_opt_class();
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->_placeholdersForTags, v5, v4);
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->_placeholdersForTags, v5, tagCopy);
   v7 = TSUDynamicCast();
 
   return v7;
 }
 
-- (BOOL)infoExistsForTag:(id)a3
+- (BOOL)infoExistsForTag:(id)tag
 {
-  v3 = objc_msgSend_infoForTag_(self, a2, a3);
+  v3 = objc_msgSend_infoForTag_(self, a2, tag);
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)tagForInfo:(id)a3
+- (id)tagForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_placeholdersForTags(self, v5, v6);
-  v9 = objc_msgSend_allKeysForObject_(v7, v8, v4);
+  v9 = objc_msgSend_allKeysForObject_(v7, v8, infoCopy);
 
   if (objc_msgSend_count(v9, v10, v11))
   {
@@ -2307,27 +2307,27 @@ LABEL_22:
   return v22;
 }
 
-- (BOOL)hasTagForInfo:(id)a3
+- (BOOL)hasTagForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_placeholdersForTags(self, v5, v6);
   v10 = objc_msgSend_allValues(v7, v8, v9);
-  v12 = objc_msgSend_containsObject_(v10, v11, v4);
+  v12 = objc_msgSend_containsObject_(v10, v11, infoCopy);
 
   return v12;
 }
 
-- (BOOL)infoIsPlaceholder:(id)a3
+- (BOOL)infoIsPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   v9 = objc_msgSend_titlePlaceholder(self, v5, v6);
-  if (v9 == v4)
+  if (v9 == placeholderCopy)
   {
     goto LABEL_8;
   }
 
   v12 = objc_msgSend_bodyPlaceholder(self, v7, v8);
-  if (v12 == v4)
+  if (v12 == placeholderCopy)
   {
 LABEL_7:
 
@@ -2338,7 +2338,7 @@ LABEL_8:
 
   v13 = objc_msgSend_objectPlaceholder(self, v10, v11);
   v16 = v13;
-  if (v13 == v4)
+  if (v13 == placeholderCopy)
   {
 
     goto LABEL_7;
@@ -2346,13 +2346,13 @@ LABEL_8:
 
   v17 = objc_msgSend_slideNumberPlaceholder(self, v14, v15);
 
-  if (v17 == v4)
+  if (v17 == placeholderCopy)
   {
     v19 = 1;
     goto LABEL_10;
   }
 
-  v9 = objc_msgSend_tagForInfo_(self, v18, v4);
+  v9 = objc_msgSend_tagForInfo_(self, v18, placeholderCopy);
   v19 = v9 != 0;
 LABEL_9:
 
@@ -2360,13 +2360,13 @@ LABEL_10:
   return v19;
 }
 
-- (void)removeTagForDrawable:(id)a3
+- (void)removeTagForDrawable:(id)drawable
 {
-  v13 = a3;
+  drawableCopy = drawable;
   objc_msgSend_willModify(self, v4, v5);
   v6 = objc_alloc(MEMORY[0x277CBEB38]);
   v8 = objc_msgSend_initWithDictionary_(v6, v7, self->_placeholdersForTags);
-  v10 = objc_msgSend_allKeysForObject_(self->_placeholdersForTags, v9, v13);
+  v10 = objc_msgSend_allKeysForObject_(self->_placeholdersForTags, v9, drawableCopy);
   objc_msgSend_removeObjectsForKeys_(v8, v11, v10);
 
   objc_msgSend_setPlaceholdersForTags_(self, v12, v8);
@@ -2422,27 +2422,27 @@ LABEL_11:
   return v9;
 }
 
-- (id)instructionalTextForInfo:(id)a3
+- (id)instructionalTextForInfo:(id)info
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(self->_instructionalTextForInfos, a2, a3);
+  v3 = objc_msgSend_objectForKeyedSubscript_(self->_instructionalTextForInfos, a2, info);
 
   return v3;
 }
 
-- (void)setInstructionalText:(id)a3 forInfo:(id)a4
+- (void)setInstructionalText:(id)text forInfo:(id)info
 {
-  v12 = a3;
-  v6 = a4;
+  textCopy = text;
+  infoCopy = info;
   objc_msgSend_willModify(self, v7, v8);
-  v10 = v12;
-  if (v12 && (v11 = objc_msgSend_length(v12, v12, v9), v10 = v12, v11))
+  v10 = textCopy;
+  if (textCopy && (v11 = objc_msgSend_length(textCopy, textCopy, v9), v10 = textCopy, v11))
   {
-    objc_msgSend_setObject_forKeyedSubscript_(self->_instructionalTextForInfos, v12, v12, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_instructionalTextForInfos, textCopy, textCopy, infoCopy);
   }
 
   else
   {
-    objc_msgSend_removeObjectForKey_(self->_instructionalTextForInfos, v10, v6);
+    objc_msgSend_removeObjectForKey_(self->_instructionalTextForInfos, v10, infoCopy);
   }
 }
 
@@ -2508,11 +2508,11 @@ LABEL_11:
   objc_msgSend_p_invalidateSlideNodeBuildEventCountCaches(self, v19, v20);
 }
 
-- (void)p_invalidateCachesForChunkUpdate:(id)a3 isForRemoval:(BOOL)a4
+- (void)p_invalidateCachesForChunkUpdate:(id)update isForRemoval:(BOOL)removal
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  updateCopy = update;
+  if (!updateCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNAbstractSlide p_invalidateCachesForChunkUpdate:isForRemoval:]");
@@ -2522,7 +2522,7 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v18 = objc_msgSend_build(v8, v6, v7);
+  v18 = objc_msgSend_build(updateCopy, v6, v7);
   if (!v18)
   {
     v19 = MEMORY[0x277D81150];
@@ -2534,9 +2534,9 @@ LABEL_11:
   }
 
   objc_msgSend_i_invalidateChunkCache(v18, v16, v17);
-  if (!a4)
+  if (!removal)
   {
-    if ((objc_msgSend_containsObject_(self->_buildChunks, v26, v8) & 1) == 0)
+    if ((objc_msgSend_containsObject_(self->_buildChunks, v26, updateCopy) & 1) == 0)
     {
       v29 = MEMORY[0x277D81150];
       v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, "[KNAbstractSlide p_invalidateCachesForChunkUpdate:isForRemoval:]");
@@ -2578,11 +2578,11 @@ LABEL_11:
   objc_msgSend_i_invalidateActiveChunkCache(self, v43, v44);
 }
 
-- (void)p_invalidateCachesForBuildUpdate:(id)a3 isForRemoval:(BOOL)a4
+- (void)p_invalidateCachesForBuildUpdate:(id)update isForRemoval:(BOOL)removal
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  updateCopy = update;
+  if (!updateCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNAbstractSlide p_invalidateCachesForBuildUpdate:isForRemoval:]");
@@ -2596,7 +2596,7 @@ LABEL_11:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = objc_msgSend_chunks(v8, v6, v7);
+  v16 = objc_msgSend_chunks(updateCopy, v6, v7);
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v26, v30, 16);
   if (v20)
   {
@@ -2619,10 +2619,10 @@ LABEL_11:
     while (v20);
   }
 
-  if (!a4)
+  if (!removal)
   {
-    objc_msgSend_i_invalidateChunkCache(v8, v23, v24);
-    objc_msgSend_p_assertChunksInSequenceForBuild_(self, v25, v8);
+    objc_msgSend_i_invalidateChunkCache(updateCopy, v23, v24);
+    objc_msgSend_p_assertChunksInSequenceForBuild_(self, v25, updateCopy);
   }
 
   objc_msgSend_p_invalidateSlideNodeBuildEventCountCaches(self, v23, v24);
@@ -2647,13 +2647,13 @@ LABEL_11:
   self->_needsSlideNodeEventCountUpdate = v7;
 }
 
-- (void)setBuilds:(id)a3
+- (void)setBuilds:(id)builds
 {
-  v12 = a3;
+  buildsCopy = builds;
   objc_msgSend_willModify(self, v4, v5);
-  if (self->_builds != v12)
+  if (self->_builds != buildsCopy)
   {
-    v8 = objc_msgSend_copy(v12, v6, v7);
+    v8 = objc_msgSend_copy(buildsCopy, v6, v7);
     builds = self->_builds;
     self->_builds = v8;
 
@@ -2661,93 +2661,93 @@ LABEL_11:
   }
 }
 
-- (void)addBuild:(id)a3
+- (void)addBuild:(id)build
 {
-  v6 = a3;
-  objc_msgSend_i_primitiveAddBuild_(self, v4, v6);
-  objc_msgSend_p_invalidateCachesForBuildUpdate_isForRemoval_(self, v5, v6, 0);
+  buildCopy = build;
+  objc_msgSend_i_primitiveAddBuild_(self, v4, buildCopy);
+  objc_msgSend_p_invalidateCachesForBuildUpdate_isForRemoval_(self, v5, buildCopy, 0);
 }
 
-- (void)removeBuild:(id)a3
+- (void)removeBuild:(id)build
 {
-  v15 = a3;
+  buildCopy = build;
   objc_msgSend_willModify(self, v4, v5);
   v6 = objc_alloc(MEMORY[0x277CBEB58]);
   v8 = objc_msgSend_initWithSet_(v6, v7, self->_builds);
   v11 = objc_msgSend_context(self, v9, v10);
-  objc_msgSend_willBeRemovedFromDocumentWithContext_(v15, v12, v11);
+  objc_msgSend_willBeRemovedFromDocumentWithContext_(buildCopy, v12, v11);
 
-  objc_msgSend_removeObject_(v8, v13, v15);
+  objc_msgSend_removeObject_(v8, v13, buildCopy);
   objc_storeStrong(&self->_builds, v8);
-  objc_msgSend_p_invalidateCachesForBuildUpdate_isForRemoval_(self, v14, v15, 1);
+  objc_msgSend_p_invalidateCachesForBuildUpdate_isForRemoval_(self, v14, buildCopy, 1);
 }
 
-- (id)buildsForDrawables:(id)a3
+- (id)buildsForDrawables:(id)drawables
 {
-  v4 = a3;
+  drawablesCopy = drawables;
   v7 = objc_msgSend_builds(self, v5, v6);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_275D4C180;
   v12[3] = &unk_27A697928;
-  v8 = v4;
+  v8 = drawablesCopy;
   v13 = v8;
   v10 = objc_msgSend_objectsPassingTest_(v7, v9, v12);
 
   return v10;
 }
 
-- (id)buildsForDrawable:(id)a3 type:(int64_t)a4
+- (id)buildsForDrawable:(id)drawable type:(int64_t)type
 {
-  v6 = a3;
+  drawableCopy = drawable;
   v9 = objc_msgSend_builds(self, v7, v8);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_275D4C2D0;
   v14[3] = &unk_27A697950;
-  v10 = v6;
+  v10 = drawableCopy;
   v15 = v10;
-  v16 = a4;
+  typeCopy = type;
   v12 = objc_msgSend_objectsPassingTest_(v9, v11, v14);
 
   return v12;
 }
 
-- (id)buildsForDrawable:(id)a3
+- (id)buildsForDrawable:(id)drawable
 {
-  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, a3, 0);
+  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, drawable, 0);
 
   return v3;
 }
 
-- (id)inBuildForDrawable:(id)a3
+- (id)inBuildForDrawable:(id)drawable
 {
-  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, a3, 1);
+  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, drawable, 1);
   v6 = objc_msgSend_tsu_onlyObject(v3, v4, v5);
 
   return v6;
 }
 
-- (id)outBuildForDrawable:(id)a3
+- (id)outBuildForDrawable:(id)drawable
 {
-  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, a3, 2);
+  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, drawable, 2);
   v6 = objc_msgSend_tsu_onlyObject(v3, v4, v5);
 
   return v6;
 }
 
-- (id)contentBuildForDrawable:(id)a3
+- (id)contentBuildForDrawable:(id)drawable
 {
-  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, a3, 5);
+  v3 = objc_msgSend_buildsForDrawable_type_(self, a2, drawable, 5);
   v6 = objc_msgSend_tsu_onlyObject(v3, v4, v5);
 
   return v6;
 }
 
-- (id)p_invalidBuildsOnDrawable:(id)a3
+- (id)p_invalidBuildsOnDrawable:(id)drawable
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  drawableCopy = drawable;
   v6 = objc_msgSend_setWithCapacity_(MEMORY[0x277CBEB58], v5, 1);
   v28 = 0u;
   v29 = 0u;
@@ -2769,11 +2769,11 @@ LABEL_11:
 
         v16 = *(*(&v26 + 1) + 8 * i);
         v17 = objc_msgSend_drawable(v16, v11, v12);
-        v18 = v17 == v4;
+        v18 = v17 == drawableCopy;
 
         if (v18)
         {
-          v19 = objc_msgSend_animationFilters(v4, v11, v12);
+          v19 = objc_msgSend_animationFilters(drawableCopy, v11, v12);
           v22 = objc_msgSend_animationFilter(v16, v20, v21);
           v24 = objc_msgSend_containsObject_(v19, v23, v22);
 
@@ -2793,21 +2793,21 @@ LABEL_11:
   return v6;
 }
 
-- (void)setBuildChunks:(id)a3 generateIdentifiers:(BOOL)a4
+- (void)setBuildChunks:(id)chunks generateIdentifiers:(BOOL)identifiers
 {
-  v4 = a4;
+  identifiersCopy = identifiers;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  chunksCopy = chunks;
   objc_msgSend_willModify(self, v7, v8);
-  if (self->_buildChunks != v6)
+  if (self->_buildChunks != chunksCopy)
   {
-    if (v4)
+    if (identifiersCopy)
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v11 = v6;
+      v11 = chunksCopy;
       v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v26, v30, 16);
       if (v15)
       {
@@ -2834,7 +2834,7 @@ LABEL_11:
       }
     }
 
-    v22 = objc_msgSend_copy(v6, v9, v10, v26);
+    v22 = objc_msgSend_copy(chunksCopy, v9, v10, v26);
     buildChunks = self->_buildChunks;
     self->_buildChunks = v22;
 
@@ -2842,10 +2842,10 @@ LABEL_11:
   }
 }
 
-- (void)p_assertChunksInSequenceForBuild:(id)a3
+- (void)p_assertChunksInSequenceForBuild:(id)build
 {
   v43 = *MEMORY[0x277D85DE8];
-  v33 = objc_msgSend_chunks(a3, a2, a3);
+  v33 = objc_msgSend_chunks(build, a2, build);
   v37 = objc_msgSend_buildChunks(self, v4, v5);
   v8 = objc_msgSend_firstObject(v33, v6, v7);
   v36 = objc_msgSend_indexOfObject_(v37, v9, v8);
@@ -2905,32 +2905,32 @@ LABEL_11:
   }
 }
 
-- (void)insertBuildChunk:(id)a3 afterChunk:(id)a4 generateIdentifier:(BOOL)a5
+- (void)insertBuildChunk:(id)chunk afterChunk:(id)afterChunk generateIdentifier:(BOOL)identifier
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  objc_msgSend_i_primitiveInsertBuildChunk_afterChunk_generateIdentifier_(self, v9, v11, v8, v5);
-  objc_msgSend_p_invalidateCachesForChunkUpdate_isForRemoval_(self, v10, v11, 0);
+  identifierCopy = identifier;
+  chunkCopy = chunk;
+  afterChunkCopy = afterChunk;
+  objc_msgSend_i_primitiveInsertBuildChunk_afterChunk_generateIdentifier_(self, v9, chunkCopy, afterChunkCopy, identifierCopy);
+  objc_msgSend_p_invalidateCachesForChunkUpdate_isForRemoval_(self, v10, chunkCopy, 0);
 }
 
-- (void)removeBuildChunk:(id)a3 rollbackGeneratedIdentifier:(BOOL)a4
+- (void)removeBuildChunk:(id)chunk rollbackGeneratedIdentifier:(BOOL)identifier
 {
-  v4 = a4;
-  v34 = a3;
+  identifierCopy = identifier;
+  chunkCopy = chunk;
   objc_msgSend_willModify(self, v6, v7);
-  if (v4)
+  if (identifierCopy)
   {
-    v10 = objc_msgSend_build(v34, v8, v9);
-    objc_msgSend_i_rollbackChunkIDSeedForChunk_(v10, v11, v34);
+    v10 = objc_msgSend_build(chunkCopy, v8, v9);
+    objc_msgSend_i_rollbackChunkIDSeedForChunk_(v10, v11, chunkCopy);
   }
 
   v12 = objc_alloc(MEMORY[0x277CBEB18]);
   v14 = objc_msgSend_initWithArray_(v12, v13, self->_buildChunks);
   v17 = objc_msgSend_context(self, v15, v16);
-  objc_msgSend_willBeRemovedFromDocumentWithContext_(v34, v18, v17);
+  objc_msgSend_willBeRemovedFromDocumentWithContext_(chunkCopy, v18, v17);
 
-  objc_msgSend_removeObject_(v14, v19, v34);
+  objc_msgSend_removeObject_(v14, v19, chunkCopy);
   v22 = objc_msgSend_count(v14, v20, v21);
   if (v22 >= objc_msgSend_count(self->_buildChunks, v23, v24))
   {
@@ -2943,12 +2943,12 @@ LABEL_11:
   }
 
   objc_storeStrong(&self->_buildChunks, v14);
-  objc_msgSend_p_invalidateCachesForChunkUpdate_isForRemoval_(self, v33, v34, 1);
+  objc_msgSend_p_invalidateCachesForChunkUpdate_isForRemoval_(self, v33, chunkCopy, 1);
 }
 
-- (id)availableEventTriggersForBuildChunks:(id)a3
+- (id)availableEventTriggersForBuildChunks:(id)chunks
 {
-  if (objc_msgSend_canSetChunksToAutomaticWith_(self, a2, a3))
+  if (objc_msgSend_canSetChunksToAutomaticWith_(self, a2, chunks))
   {
     return &unk_2884F3D48;
   }
@@ -2959,11 +2959,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)canSetChunksToAutomaticWith:(id)a3
+- (BOOL)canSetChunksToAutomaticWith:(id)with
 {
   v95 = *MEMORY[0x277D85DE8];
-  v84 = a3;
-  if (!v84)
+  withCopy = with;
+  if (!withCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[KNAbstractSlide canSetChunksToAutomaticWith:]");
@@ -2977,14 +2977,14 @@ LABEL_11:
   v16 = objc_msgSend_firstObject(v13, v14, v15);
 
   v81 = v16;
-  if (objc_msgSend_containsObject_(v84, v17, v16))
+  if (objc_msgSend_containsObject_(withCopy, v17, v16))
   {
     v19 = 0;
   }
 
   else
   {
-    v20 = objc_msgSend_p_chunksWhichWillPlayWithChunksToSetToWith_(self, v18, v84);
+    v20 = objc_msgSend_p_chunksWhichWillPlayWithChunksToSetToWith_(self, v18, withCopy);
     v21 = MEMORY[0x277CBEB58];
     v75 = v20;
     v24 = objc_msgSend_count(v20, v22, v23);
@@ -3116,30 +3116,30 @@ LABEL_38:
   return v19;
 }
 
-- (id)chunksWhichPlayWithChunk:(id)a3
+- (id)chunksWhichPlayWithChunk:(id)chunk
 {
-  v4 = a3;
-  if (objc_msgSend_isAutomatic(v4, v5, v6))
+  chunkCopy = chunk;
+  if (objc_msgSend_isAutomatic(chunkCopy, v5, v6))
   {
-    v8 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v7, v4);
+    v8 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v7, chunkCopy);
     v10 = objc_msgSend_p_chunksWhichWillPlayWithChunksToSetToWith_(self, v9, v8);
   }
 
   else
   {
-    v10 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v7, v4);
+    v10 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v7, chunkCopy);
   }
 
   return v10;
 }
 
-- (id)p_chunksWhichWillPlayWithChunksToSetToWith:(id)a3
+- (id)p_chunksWhichWillPlayWithChunksToSetToWith:(id)with
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  withCopy = with;
   v7 = objc_msgSend_buildChunks(self, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9, v7);
-  v13 = objc_msgSend_mutableCopy(v4, v11, v12);
+  v13 = objc_msgSend_mutableCopy(withCopy, v11, v12);
   v15 = objc_msgSend_setWithCapacity_(MEMORY[0x277CBEB58], v14, v10);
   v43 = objc_msgSend_lastObject(v7, v16, v17);
   v46 = 0u;
@@ -3179,7 +3179,7 @@ LABEL_38:
           }
         }
 
-        if (objc_msgSend_containsObject_(v4, v28, v27))
+        if (objc_msgSend_containsObject_(withCopy, v28, v27))
         {
           objc_msgSend_unionSet_(v13, v32, v15);
           objc_msgSend_removeAllObjects(v15, v34, v35);
@@ -3223,25 +3223,25 @@ LABEL_38:
   return v41;
 }
 
-- (id)activeChunksForDrawable:(id)a3
+- (id)activeChunksForDrawable:(id)drawable
 {
-  v3 = objc_msgSend_activeChunksForDrawable_animationType_(self, a2, a3, 0);
+  v3 = objc_msgSend_activeChunksForDrawable_animationType_(self, a2, drawable, 0);
 
   return v3;
 }
 
-- (id)p_ChunksForDrawable:(id)a3 animationType:(int64_t)a4 onlyActiveChunks:(BOOL)a5
+- (id)p_ChunksForDrawable:(id)drawable animationType:(int64_t)type onlyActiveChunks:(BOOL)chunks
 {
-  v5 = a5;
+  chunksCopy = chunks;
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  drawableCopy = drawable;
   v30 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
   v12 = objc_msgSend_buildChunks(self, v10, v11);
-  v31 = self;
+  selfCopy = self;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v33, v37, 16);
   if (v16)
   {
@@ -3256,16 +3256,16 @@ LABEL_38:
         }
 
         v19 = *(*(&v33 + 1) + 8 * i);
-        if (!v5 || v31->_shouldConsiderAllChunksActive || objc_msgSend_isActive(*(*(&v33 + 1) + 8 * i), v14, v15))
+        if (!chunksCopy || selfCopy->_shouldConsiderAllChunksActive || objc_msgSend_isActive(*(*(&v33 + 1) + 8 * i), v14, v15))
         {
           v20 = objc_msgSend_build(v19, v14, v15);
           v23 = objc_msgSend_drawable(v20, v21, v22);
           v26 = v23;
-          if (v23 == v7)
+          if (v23 == drawableCopy)
           {
-            if (a4)
+            if (type)
             {
-              v27 = objc_msgSend_animationType(v20, v24, v25) == a4;
+              v27 = objc_msgSend_animationType(v20, v24, v25) == type;
 
               if (!v27)
               {
@@ -3299,32 +3299,32 @@ LABEL_16:
   return v30;
 }
 
-- (id)activeChunksForDrawable:(id)a3 animationType:(int64_t)a4
+- (id)activeChunksForDrawable:(id)drawable animationType:(int64_t)type
 {
-  v4 = objc_msgSend_p_ChunksForDrawable_animationType_onlyActiveChunks_(self, a2, a3, a4, 1);
+  v4 = objc_msgSend_p_ChunksForDrawable_animationType_onlyActiveChunks_(self, a2, drawable, type, 1);
 
   return v4;
 }
 
-- (id)chunksForDrawable:(id)a3 animationType:(int64_t)a4
+- (id)chunksForDrawable:(id)drawable animationType:(int64_t)type
 {
-  v4 = objc_msgSend_p_ChunksForDrawable_animationType_onlyActiveChunks_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_p_ChunksForDrawable_animationType_onlyActiveChunks_(self, a2, drawable, type, 0);
 
   return v4;
 }
 
-- (id)p_complementForBuild:(id)a3
+- (id)p_complementForBuild:(id)build
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_isActionBuild(v4, v5, v6) & 1) != 0 || (objc_msgSend_isContentBuild(v4, v7, v8))
+  buildCopy = build;
+  if (objc_msgSend_isActionBuild(buildCopy, v5, v6) & 1) != 0 || (objc_msgSend_isContentBuild(buildCopy, v7, v8))
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = objc_msgSend_drawable(v4, v9, v10);
+    v12 = objc_msgSend_drawable(buildCopy, v9, v10);
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -3344,7 +3344,7 @@ LABEL_16:
           }
 
           v21 = *(*(&v25 + 1) + 8 * i);
-          if (v21 != v4 && (objc_msgSend_isActionBuild(*(*(&v25 + 1) + 8 * i), v17, v18) & 1) == 0 && (objc_msgSend_isContentBuild(v21, v17, v18) & 1) == 0)
+          if (v21 != buildCopy && (objc_msgSend_isActionBuild(*(*(&v25 + 1) + 8 * i), v17, v18) & 1) == 0 && (objc_msgSend_isContentBuild(v21, v17, v18) & 1) == 0)
           {
             v22 = objc_msgSend_drawable(v21, v17, v18);
             v23 = v22 == v12;
@@ -3373,10 +3373,10 @@ LABEL_17:
   return v11;
 }
 
-- (id)p_firstActiveChunkInChunksForBuild:(id)a3
+- (id)p_firstActiveChunkInChunksForBuild:(id)build
 {
-  v3 = a3;
-  ActiveChunkIndexInBuild = objc_msgSend_firstActiveChunkIndexInBuild(v3, v4, v5);
+  buildCopy = build;
+  ActiveChunkIndexInBuild = objc_msgSend_firstActiveChunkIndexInBuild(buildCopy, v4, v5);
   if (ActiveChunkIndexInBuild == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -3384,17 +3384,17 @@ LABEL_17:
 
   else
   {
-    v10 = objc_msgSend_chunks(v3, v6, v7);
+    v10 = objc_msgSend_chunks(buildCopy, v6, v7);
     v9 = objc_msgSend_objectAtIndex_(v10, v11, ActiveChunkIndexInBuild);
   }
 
   return v9;
 }
 
-- (id)p_lastActiveChunkInChunksForBuild:(id)a3
+- (id)p_lastActiveChunkInChunksForBuild:(id)build
 {
-  v3 = a3;
-  ActiveChunkIndexInBuild = objc_msgSend_lastActiveChunkIndexInBuild(v3, v4, v5);
+  buildCopy = build;
+  ActiveChunkIndexInBuild = objc_msgSend_lastActiveChunkIndexInBuild(buildCopy, v4, v5);
   if (ActiveChunkIndexInBuild == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -3402,17 +3402,17 @@ LABEL_17:
 
   else
   {
-    v10 = objc_msgSend_chunks(v3, v6, v7);
+    v10 = objc_msgSend_chunks(buildCopy, v6, v7);
     v9 = objc_msgSend_objectAtIndex_(v10, v11, ActiveChunkIndexInBuild);
   }
 
   return v9;
 }
 
-- (BOOL)p_isValidToMoveChunk:(id)a3 toIndex:(unint64_t)a4
+- (BOOL)p_isValidToMoveChunk:(id)chunk toIndex:(unint64_t)index
 {
-  v6 = a3;
-  v9 = objc_msgSend_build(v6, v7, v8);
+  chunkCopy = chunk;
+  v9 = objc_msgSend_build(chunkCopy, v7, v8);
   v11 = objc_msgSend_p_complementForBuild_(self, v10, v9);
   v14 = objc_msgSend_chunks(v9, v12, v13);
   v17 = v14;
@@ -3427,34 +3427,34 @@ LABEL_17:
     if (v25 == 1)
     {
       v27 = 1;
-      v28 = a4;
+      indexCopy2 = index;
     }
 
     else
     {
       v30 = objc_msgSend_indexOnSlide(v20, v25, v26);
       v33 = objc_msgSend_indexOnSlide(v22, v31, v32);
-      if (v30 >= a4)
+      if (v30 >= index)
       {
-        v28 = a4;
+        indexCopy2 = index;
       }
 
       else
       {
-        v28 = v30;
+        indexCopy2 = v30;
       }
 
-      if (v33 <= a4)
+      if (v33 <= index)
       {
-        v34 = a4;
+        indexCopy3 = index;
       }
 
       else
       {
-        v34 = v33;
+        indexCopy3 = v33;
       }
 
-      v27 = v34 - v28 + 1;
+      v27 = indexCopy3 - indexCopy2 + 1;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_slideNode);
@@ -3464,7 +3464,7 @@ LABEL_17:
     active = objc_msgSend_p_activeChunkRangeForBuild_inActiveChunks_(self, v42, v11, v41);
     v45 = v44;
 
-    if (objc_msgSend_indexOnSlide(v6, v46, v47) <= active)
+    if (objc_msgSend_indexOnSlide(chunkCopy, v46, v47) <= active)
     {
       v48 = active - 1;
     }
@@ -3475,15 +3475,15 @@ LABEL_17:
     }
 
     v56.length = v45;
-    v55.location = v28;
+    v55.location = indexCopy2;
     v55.length = v27;
     v56.location = v48;
     if (NSIntersectionRange(v55, v56).length)
     {
-      v29 = v48 >= a4 || v45 + v48 + 1 <= a4;
+      v29 = v48 >= index || v45 + v48 + 1 <= index;
       if (v29 && v45 == 1)
       {
-        LOBYTE(v29) = v48 < v28 || v48 - v28 >= v27;
+        LOBYTE(v29) = v48 < indexCopy2 || v48 - indexCopy2 >= v27;
       }
     }
 
@@ -3503,10 +3503,10 @@ LABEL_17:
   return v29;
 }
 
-- (int64_t)canMoveBuildChunk:(id)a3 toIndex:(unint64_t)a4
+- (int64_t)canMoveBuildChunk:(id)chunk toIndex:(unint64_t)index
 {
-  v6 = a3;
-  v9 = objc_msgSend_build(v6, v7, v8);
+  chunkCopy = chunk;
+  v9 = objc_msgSend_build(chunkCopy, v7, v8);
   v12 = objc_msgSend_drawable(v9, v10, v11);
   isLocked = objc_msgSend_isLocked(v12, v13, v14);
 
@@ -3520,14 +3520,14 @@ LABEL_17:
     v18 = 0;
   }
 
-  v19 = objc_msgSend_build(v6, v16, v17);
+  v19 = objc_msgSend_build(chunkCopy, v16, v17);
   v22 = objc_msgSend_chunks(v19, v20, v21);
 
   if (objc_msgSend_count(v22, v23, v24) >= 2)
   {
-    v27 = objc_msgSend_indexInBuild(v6, v25, v26);
+    v27 = objc_msgSend_indexInBuild(chunkCopy, v25, v26);
     v30 = objc_msgSend_count(v22, v28, v29);
-    isFirstInBuild = objc_msgSend_isFirstInBuild(v6, v31, v32);
+    isFirstInBuild = objc_msgSend_isFirstInBuild(chunkCopy, v31, v32);
     v36 = isFirstInBuild;
     v37 = v30 - 1;
     if (v27 == v30 - 1)
@@ -3553,7 +3553,7 @@ LABEL_7:
     v39 = objc_msgSend_tsu_rangeCheckedObjectAtIndex_(v22, v34, v27 - 1);
 LABEL_12:
     v41 = objc_msgSend_buildChunks(self, v34, v35);
-    if (objc_msgSend_indexOfObject_(v41, v42, v6) == a4)
+    if (objc_msgSend_indexOfObject_(v41, v42, chunkCopy) == index)
     {
 LABEL_13:
       v40 = 1;
@@ -3562,9 +3562,9 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (objc_msgSend_isFirstInBuild(v6, v43, v44))
+    if (objc_msgSend_isFirstInBuild(chunkCopy, v43, v44))
     {
-      if (objc_msgSend_indexOfObject_(v41, v45, v38) <= a4)
+      if (objc_msgSend_indexOfObject_(v41, v45, v38) <= index)
       {
         v47 = objc_msgSend_indexOfObject_(v41, v46, v38);
         goto LABEL_28;
@@ -3575,12 +3575,12 @@ LABEL_31:
 
     if (v27 == v37)
     {
-      if (objc_msgSend_indexOfObject_(v41, v45, v39) >= a4)
+      if (objc_msgSend_indexOfObject_(v41, v45, v39) >= index)
       {
 LABEL_27:
         v47 = objc_msgSend_indexOfObject_(v41, v48, v39);
 LABEL_28:
-        if (v47 == a4)
+        if (v47 == index)
         {
           v40 = 1;
         }
@@ -3594,9 +3594,9 @@ LABEL_28:
       }
     }
 
-    else if (objc_msgSend_indexOfObject_(v41, v45, v39) >= a4 || objc_msgSend_indexOfObject_(v41, v49, v38) <= a4)
+    else if (objc_msgSend_indexOfObject_(v41, v45, v39) >= index || objc_msgSend_indexOfObject_(v41, v49, v38) <= index)
     {
-      if (objc_msgSend_indexOfObject_(v41, v49, v38) == a4)
+      if (objc_msgSend_indexOfObject_(v41, v49, v38) == index)
       {
         goto LABEL_13;
       }
@@ -3616,7 +3616,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  if (objc_msgSend_p_isValidToMoveChunk_toIndex_(self, v25, v6, a4))
+  if (objc_msgSend_p_isValidToMoveChunk_toIndex_(self, v25, chunkCopy, index))
   {
     v40 = v18;
   }
@@ -3631,19 +3631,19 @@ LABEL_32:
   return v40;
 }
 
-- (int64_t)validateMoveActiveBuildChunks:(id)a3 toActiveIndex:(unint64_t)a4
+- (int64_t)validateMoveActiveBuildChunks:(id)chunks toActiveIndex:(unint64_t)index
 {
-  v6 = a3;
+  chunksCopy = chunks;
   v9 = objc_msgSend_activeBuildChunks(self, v7, v8);
   v12 = objc_msgSend_mutableCopy(v9, v10, v11);
 
-  v16 = objc_msgSend_tsu_indexesOfObjects_(v12, v13, v6);
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  v16 = objc_msgSend_tsu_indexesOfObjects_(v12, v13, chunksCopy);
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a4 = objc_msgSend_count(v12, v14, v15);
+    index = objc_msgSend_count(v12, v14, v15);
   }
 
-  objc_msgSend_kn_moveObjectsLocatedAtIndexes_nearIndex_(v12, v14, v16, a4);
+  objc_msgSend_kn_moveObjectsLocatedAtIndexes_nearIndex_(v12, v14, v16, index);
   if (objc_msgSend_p_areActiveBuildChunksInValidOrder_(self, v17, v12))
   {
     v18 = 0;
@@ -3657,24 +3657,24 @@ LABEL_32:
   return v18;
 }
 
-- (BOOL)areBuildChunksInValidOrderIgnoringInactiveChunks:(id)a3
+- (BOOL)areBuildChunksInValidOrderIgnoringInactiveChunks:(id)chunks
 {
-  v4 = objc_msgSend_tsu_arrayOfObjectsPassingTest_(a3, a2, &unk_2884D4B80);
+  v4 = objc_msgSend_tsu_arrayOfObjectsPassingTest_(chunks, a2, &unk_2884D4B80);
   LOBYTE(self) = objc_msgSend_p_areActiveBuildChunksInValidOrder_(self, v5, v4);
 
   return self;
 }
 
-- (BOOL)p_areActiveBuildChunksInValidOrder:(id)a3
+- (BOOL)p_areActiveBuildChunksInValidOrder:(id)order
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  orderCopy = order;
   v7 = objc_msgSend_set(MEMORY[0x277CBEB58], v5, v6);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v4;
+  v8 = orderCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v22, v26, 16);
   if (v12)
   {
@@ -3717,20 +3717,20 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)p_activeChunks:(id)a3 areInOrderForBuild:(id)a4
+- (BOOL)p_activeChunks:(id)chunks areInOrderForBuild:(id)build
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_chunks(v6, v7, v8);
-  ActiveChunkIndexInBuild = objc_msgSend_firstActiveChunkIndexInBuild(v6, v10, v11);
-  v16 = objc_msgSend_lastActiveChunkIndexInBuild(v6, v13, v14);
+  chunksCopy = chunks;
+  buildCopy = build;
+  v9 = objc_msgSend_chunks(buildCopy, v7, v8);
+  ActiveChunkIndexInBuild = objc_msgSend_firstActiveChunkIndexInBuild(buildCopy, v10, v11);
+  v16 = objc_msgSend_lastActiveChunkIndexInBuild(buildCopy, v13, v14);
   if (ActiveChunkIndexInBuild <= v16)
   {
     v18 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
       v19 = objc_msgSend_objectAtIndexedSubscript_(v9, v15, ActiveChunkIndexInBuild);
-      v21 = objc_msgSend_indexOfObject_(v5, v20, v19);
+      v21 = objc_msgSend_indexOfObject_(chunksCopy, v20, v19);
       v22 = v21;
       v17 = v18 == 0x7FFFFFFFFFFFFFFFLL || v18 <= v21;
 
@@ -3749,20 +3749,20 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)p_activeChunks:(id)a3 interleaveChunksForComplementOfBuild:(id)a4
+- (BOOL)p_activeChunks:(id)chunks interleaveChunksForComplementOfBuild:(id)build
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_p_complementForBuild_(self, v8, v7);
+  chunksCopy = chunks;
+  buildCopy = build;
+  v11 = objc_msgSend_p_complementForBuild_(self, v8, buildCopy);
   if (!v11)
   {
     goto LABEL_8;
   }
 
-  active = objc_msgSend_chunks(v7, v9, v10);
+  active = objc_msgSend_chunks(buildCopy, v9, v10);
   if (active)
   {
-    v15 = objc_msgSend_chunks(v7, v12, v13);
+    v15 = objc_msgSend_chunks(buildCopy, v12, v13);
     if (objc_msgSend_count(v15, v16, v17) && (objc_msgSend_chunks(v11, v18, v19), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v23 = objc_msgSend_chunks(v11, v20, v21);
@@ -3770,9 +3770,9 @@ LABEL_13:
 
       if (v26)
       {
-        active = objc_msgSend_p_activeChunkRangeForBuild_inActiveChunks_(self, v27, v7, v6);
+        active = objc_msgSend_p_activeChunkRangeForBuild_inActiveChunks_(self, v27, buildCopy, chunksCopy);
         v29 = v28;
-        v33.location = objc_msgSend_p_activeChunkRangeForBuild_inActiveChunks_(self, v28, v11, v6);
+        v33.location = objc_msgSend_p_activeChunkRangeForBuild_inActiveChunks_(self, v28, v11, chunksCopy);
         v33.length = v30;
         v32.location = active;
         v32.length = v29;
@@ -3794,17 +3794,17 @@ LABEL_9:
   return active;
 }
 
-- (_NSRange)p_activeChunkRangeForBuild:(id)a3 inActiveChunks:(id)a4
+- (_NSRange)p_activeChunkRangeForBuild:(id)build inActiveChunks:(id)chunks
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_chunks(v5, v7, v8);
-  ActiveChunkIndexInBuild = objc_msgSend_firstActiveChunkIndexInBuild(v5, v10, v11);
+  buildCopy = build;
+  chunksCopy = chunks;
+  v9 = objc_msgSend_chunks(buildCopy, v7, v8);
+  ActiveChunkIndexInBuild = objc_msgSend_firstActiveChunkIndexInBuild(buildCopy, v10, v11);
   v14 = objc_msgSend_objectAtIndexedSubscript_(v9, v13, ActiveChunkIndexInBuild);
-  v17 = objc_msgSend_lastActiveChunkIndexInBuild(v5, v15, v16);
+  v17 = objc_msgSend_lastActiveChunkIndexInBuild(buildCopy, v15, v16);
   v19 = objc_msgSend_objectAtIndexedSubscript_(v9, v18, v17);
-  v21 = objc_msgSend_indexOfObject_(v6, v20, v14);
-  v23 = objc_msgSend_indexOfObject_(v6, v22, v19) - v21;
+  v21 = objc_msgSend_indexOfObject_(chunksCopy, v20, v14);
+  v23 = objc_msgSend_indexOfObject_(chunksCopy, v22, v19) - v21;
 
   v24 = v23 + 1;
   v25 = v21;
@@ -3875,22 +3875,22 @@ LABEL_9:
   return v19;
 }
 
-- (id)buildChunksForActiveBuildChunkIndexes:(id)a3
+- (id)buildChunksForActiveBuildChunkIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v7 = objc_msgSend_activeBuildChunks(self, v5, v6);
   v8 = MEMORY[0x277CBEB98];
-  v10 = objc_msgSend_objectsAtIndexes_(v7, v9, v4);
+  v10 = objc_msgSend_objectsAtIndexes_(v7, v9, indexesCopy);
   v12 = objc_msgSend_setWithArray_(v8, v11, v10);
 
   return v12;
 }
 
-- (BOOL)hasComplementForBuildChunk:(id)a3 inBuildChunks:(id)a4
+- (BOOL)hasComplementForBuildChunk:(id)chunk inBuildChunks:(id)chunks
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_build(v5, v7, v8);
+  chunkCopy = chunk;
+  chunksCopy = chunks;
+  v9 = objc_msgSend_build(chunkCopy, v7, v8);
   if (objc_msgSend_isActionBuild(v9, v10, v11))
   {
 LABEL_4:
@@ -3900,28 +3900,28 @@ LABEL_5:
     goto LABEL_17;
   }
 
-  v14 = objc_msgSend_build(v5, v12, v13);
+  v14 = objc_msgSend_build(chunkCopy, v12, v13);
   if (objc_msgSend_isContentBuild(v14, v15, v16))
   {
 
     goto LABEL_4;
   }
 
-  v20 = objc_msgSend_indexOnSlide(v5, v17, v18);
+  v20 = objc_msgSend_indexOnSlide(chunkCopy, v17, v18);
 
   if (v20)
   {
-    v24 = objc_msgSend_indexOfObject_(v6, v21, v5);
+    v24 = objc_msgSend_indexOfObject_(chunksCopy, v21, chunkCopy);
     if (v24 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v24 = objc_msgSend_count(v6, v22, v23);
+      v24 = objc_msgSend_count(chunksCopy, v22, v23);
     }
 
     if (v24 - 1 >= 0)
     {
       do
       {
-        v9 = objc_msgSend_objectAtIndexedSubscript_(v6, v22, --v24);
+        v9 = objc_msgSend_objectAtIndexedSubscript_(chunksCopy, v22, --v24);
         v27 = objc_msgSend_build(v9, v25, v26);
         if (objc_msgSend_isActionBuild(v27, v28, v29))
         {
@@ -3936,7 +3936,7 @@ LABEL_5:
           {
             v38 = objc_msgSend_build(v9, v36, v37);
             v41 = objc_msgSend_drawable(v38, v39, v40);
-            v44 = objc_msgSend_build(v5, v42, v43);
+            v44 = objc_msgSend_build(chunkCopy, v42, v43);
             v47 = objc_msgSend_drawable(v44, v45, v46);
 
             v19 = v41 == v47;
@@ -3963,12 +3963,12 @@ LABEL_17:
   return v19;
 }
 
-+ (unint64_t)deliveryGroupIndexForBuildChunk:(id)a3 inBuildChunks:(id)a4
++ (unint64_t)deliveryGroupIndexForBuildChunk:(id)chunk inBuildChunks:(id)chunks
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!objc_msgSend_isActive(v6, v8, v9) || !objc_msgSend_containsObject_(v7, v10, v6))
+  chunkCopy = chunk;
+  chunksCopy = chunks;
+  if (!objc_msgSend_isActive(chunkCopy, v8, v9) || !objc_msgSend_containsObject_(chunksCopy, v10, chunkCopy))
   {
     v19 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_14;
@@ -3978,7 +3978,7 @@ LABEL_17:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v7;
+  v11 = chunksCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v21, v25, 16);
   if (!v14)
   {
@@ -4000,8 +4000,8 @@ LABEL_5:
     }
 
     v18 = *(*(&v21 + 1) + 8 * v17);
-    v15 += objc_msgSend_chunk_isFirstInDeliveryGroupForChunks_(a1, v13, v18, v11, v21) & 1;
-    if (v18 == v6)
+    v15 += objc_msgSend_chunk_isFirstInDeliveryGroupForChunks_(self, v13, v18, v11, v21) & 1;
+    if (v18 == chunkCopy)
     {
       break;
     }
@@ -4029,16 +4029,16 @@ LABEL_14:
   return v19;
 }
 
-+ (BOOL)chunk:(id)a3 isFirstInDeliveryGroupForChunks:(id)a4
++ (BOOL)chunk:(id)chunk isFirstInDeliveryGroupForChunks:(id)chunks
 {
-  v6 = a3;
-  v9 = a4;
-  if (v6 && objc_msgSend_isActive(v6, v7, v8))
+  chunkCopy = chunk;
+  chunksCopy = chunks;
+  if (chunkCopy && objc_msgSend_isActive(chunkCopy, v7, v8))
   {
-    if (objc_msgSend_isAutomatic(v6, v10, v11))
+    if (objc_msgSend_isAutomatic(chunkCopy, v10, v11))
     {
-      v13 = objc_msgSend_p_firstActiveChunkInChunks_(a1, v12, v9);
-      v14 = v13 == v6;
+      v13 = objc_msgSend_p_firstActiveChunkInChunks_(self, v12, chunksCopy);
+      v14 = v13 == chunkCopy;
     }
 
     else
@@ -4055,15 +4055,15 @@ LABEL_14:
   return v14;
 }
 
-+ (id)p_firstActiveChunkInChunks:(id)a3
++ (id)p_firstActiveChunkInChunks:(id)chunks
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v12, v16, 16);
+  chunksCopy = chunks;
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(chunksCopy, v4, &v12, v16, 16);
   if (v7)
   {
     v8 = *v13;
@@ -4073,7 +4073,7 @@ LABEL_14:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(chunksCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -4084,7 +4084,7 @@ LABEL_14:
         }
       }
 
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v5, &v12, v16, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(chunksCopy, v5, &v12, v16, 16);
       if (v7)
       {
         continue;
@@ -4099,25 +4099,25 @@ LABEL_11:
   return v7;
 }
 
-- (unint64_t)deliveryGroupIndexForBuildChunk:(id)a3
+- (unint64_t)deliveryGroupIndexForBuildChunk:(id)chunk
 {
-  v4 = a3;
+  chunkCopy = chunk;
   v5 = objc_opt_class();
-  v7 = objc_msgSend_deliveryGroupIndexForBuildChunk_inBuildChunks_(v5, v6, v4, self->_buildChunks);
+  v7 = objc_msgSend_deliveryGroupIndexForBuildChunk_inBuildChunks_(v5, v6, chunkCopy, self->_buildChunks);
 
   return v7;
 }
 
-- (id)deliveryGroupIndexesForBuilds:(id)a3
+- (id)deliveryGroupIndexesForBuilds:(id)builds
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v5, v6, v4);
+  buildsCopy = builds;
+  v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v5, v6, buildsCopy);
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = buildsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v28, v33, 16);
   if (v11)
   {
@@ -4173,16 +4173,16 @@ LABEL_11:
   return v7;
 }
 
-+ (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)a3 inBuildChunks:(id)a4
++ (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)index inBuildChunks:(id)chunks
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  chunksCopy = chunks;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v6;
+  v10 = chunksCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v20, v24, 16);
   if (v14)
   {
@@ -4199,13 +4199,13 @@ LABEL_11:
         v17 = *(*(&v20 + 1) + 8 * i);
         if (objc_msgSend_isActive(v17, v12, v13, v20))
         {
-          v18 = objc_msgSend_deliveryGroupIndexForBuildChunk_inBuildChunks_(a1, v12, v17, v10);
-          if (v18 == a3)
+          v18 = objc_msgSend_deliveryGroupIndexForBuildChunk_inBuildChunks_(self, v12, v17, v10);
+          if (v18 == index)
           {
             objc_msgSend_addObject_(v9, v12, v17);
           }
 
-          else if (v18 > a3)
+          else if (v18 > index)
           {
             goto LABEL_12;
           }
@@ -4223,18 +4223,18 @@ LABEL_12:
   return v9;
 }
 
-- (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)a3
+- (id)buildChunksInDeliveryGroupAtIndex:(unint64_t)index
 {
   v4 = objc_opt_class();
 
-  return MEMORY[0x2821F9670](v4, sel_buildChunksInDeliveryGroupAtIndex_inBuildChunks_, a3);
+  return MEMORY[0x2821F9670](v4, sel_buildChunksInDeliveryGroupAtIndex_inBuildChunks_, index);
 }
 
-- (BOOL)p_canMoveDeliveryGroupBuildChunksFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (BOOL)p_canMoveDeliveryGroupBuildChunksFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_buildChunksInDeliveryGroupAtIndex_(self, a2, a3);
-  objc_msgSend_buildChunksInDeliveryGroupAtIndex_(self, v7, a4);
+  v6 = objc_msgSend_buildChunksInDeliveryGroupAtIndex_(self, a2, index);
+  objc_msgSend_buildChunksInDeliveryGroupAtIndex_(self, v7, toIndex);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -4276,19 +4276,19 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)p_canMoveDeliveryGroupBuildChunks:(id)a3 toIndex:(unint64_t)a4
+- (BOOL)p_canMoveDeliveryGroupBuildChunks:(id)chunks toIndex:(unint64_t)index
 {
   v49 = *MEMORY[0x277D85DE8];
-  v43 = a3;
+  chunksCopy = chunks;
   v8 = objc_msgSend_buildChunks(self, v6, v7);
-  if (objc_msgSend_count(v8, v9, v10) <= a4)
+  if (objc_msgSend_count(v8, v9, v10) <= index)
   {
     v23 = 0;
   }
 
   else
   {
-    v42 = objc_msgSend_objectAtIndexedSubscript_(v8, v11, a4);
+    v42 = objc_msgSend_objectAtIndexedSubscript_(v8, v11, index);
     v14 = objc_msgSend_build(v42, v12, v13);
     v17 = objc_msgSend_drawable(v14, v15, v16);
     isLocked = objc_msgSend_isLocked(v17, v18, v19);
@@ -4305,7 +4305,7 @@ LABEL_11:
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v25 = v43;
+      v25 = chunksCopy;
       v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, &v44, v48, 16);
       if (v29)
       {
@@ -4363,16 +4363,16 @@ LABEL_18:
   return v23;
 }
 
-+ (unint64_t)deliveryGroupCountForBuildChunks:(id)a3
++ (unint64_t)deliveryGroupCountForBuildChunks:(id)chunks
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
+  chunksCopy = chunks;
   v6 = 0;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(chunksCopy, v5, &v12, v16, 16);
   if (v8)
   {
     v9 = *v13;
@@ -4383,14 +4383,14 @@ LABEL_18:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(chunksCopy);
         }
 
-        v6 += objc_msgSend_chunk_isFirstInDeliveryGroupForChunks_(a1, v7, *(*(&v12 + 1) + 8 * v10++), v4, v12);
+        v6 += objc_msgSend_chunk_isFirstInDeliveryGroupForChunks_(self, v7, *(*(&v12 + 1) + 8 * v10++), chunksCopy, v12);
       }
 
       while (v8 != v10);
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v12, v16, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(chunksCopy, v7, &v12, v16, 16);
     }
 
     while (v8);
@@ -4467,15 +4467,15 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)canMoveDeliveryGroupFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (BOOL)canMoveDeliveryGroupFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v8 = objc_msgSend_deliveryGroupCount(self, a2, a3);
+  v8 = objc_msgSend_deliveryGroupCount(self, a2, index);
   result = 0;
-  if (a3 != a4 && v8 > a3 && v8 > a4)
+  if (index != toIndex && v8 > index && v8 > toIndex)
   {
-    if (a3 <= a4)
+    if (index <= toIndex)
     {
-      if (a4 <= a3)
+      if (toIndex <= index)
       {
         return 1;
       }
@@ -4484,10 +4484,10 @@ LABEL_18:
       {
         do
         {
-          result = objc_msgSend_p_canMoveDeliveryGroupBuildChunksFromIndex_toIndex_(self, v7, a4--, a3);
+          result = objc_msgSend_p_canMoveDeliveryGroupBuildChunksFromIndex_toIndex_(self, v7, toIndex--, index);
         }
 
-        while (a4 > a3 && result);
+        while (toIndex > index && result);
       }
     }
 
@@ -4495,50 +4495,50 @@ LABEL_18:
     {
       do
       {
-        result = objc_msgSend_p_canMoveDeliveryGroupBuildChunksFromIndex_toIndex_(self, v7, a3, a4++);
+        result = objc_msgSend_p_canMoveDeliveryGroupBuildChunksFromIndex_toIndex_(self, v7, index, toIndex++);
       }
 
-      while (a4 < a3 && result);
+      while (toIndex < index && result);
     }
   }
 
   return result;
 }
 
-- (void)i_primitiveAddBuild:(id)a3
+- (void)i_primitiveAddBuild:(id)build
 {
-  v17 = a3;
+  buildCopy = build;
   objc_msgSend_willModify(self, v4, v5);
   v6 = objc_alloc(MEMORY[0x277CBEB58]);
   v8 = objc_msgSend_initWithSet_(v6, v7, self->_builds);
-  objc_msgSend_setSlide_(v17, v9, self);
-  objc_msgSend_addObject_(v8, v10, v17);
+  objc_msgSend_setSlide_(buildCopy, v9, self);
+  objc_msgSend_addObject_(v8, v10, buildCopy);
   objc_storeStrong(&self->_builds, v8);
   if (objc_msgSend_inDocument(self, v11, v12))
   {
     v15 = objc_msgSend_context(self, v13, v14);
-    objc_msgSend_wasAddedToDocumentWithContext_(v17, v16, v15);
+    objc_msgSend_wasAddedToDocumentWithContext_(buildCopy, v16, v15);
   }
 }
 
-- (void)i_primitiveInsertBuildChunk:(id)a3 afterChunk:(id)a4 generateIdentifier:(BOOL)a5
+- (void)i_primitiveInsertBuildChunk:(id)chunk afterChunk:(id)afterChunk generateIdentifier:(BOOL)identifier
 {
-  v5 = a5;
-  v70 = a3;
-  v69 = a4;
-  v10 = objc_msgSend_build(v70, v8, v9);
-  v14 = objc_msgSend_containsObject_(self->_buildChunks, v11, v70);
+  identifierCopy = identifier;
+  chunkCopy = chunk;
+  afterChunkCopy = afterChunk;
+  v10 = objc_msgSend_build(chunkCopy, v8, v9);
+  v14 = objc_msgSend_containsObject_(self->_buildChunks, v11, chunkCopy);
   if (v14)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[KNAbstractSlide i_primitiveInsertBuildChunk:afterChunk:generateIdentifier:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 2458, 0, "Trying to insert duplicate chunk %@.", v70);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 2458, 0, "Trying to insert duplicate chunk %@.", chunkCopy);
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v20, v21);
   }
 
-  v22 = objc_msgSend_chunkIdentifier(v70, v12, v13);
+  v22 = objc_msgSend_chunkIdentifier(chunkCopy, v12, v13);
   v24 = objc_msgSend_resolveToChunkOnSlide_(v22, v23, self);
 
   if (v24)
@@ -4546,11 +4546,11 @@ LABEL_18:
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "[KNAbstractSlide i_primitiveInsertBuildChunk:afterChunk:generateIdentifier:]");
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v31, v28, v30, 2463, 0, "Trying to insert chunk with duplicate chunk identifier %@.", v70);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v31, v28, v30, 2463, 0, "Trying to insert chunk with duplicate chunk identifier %@.", chunkCopy);
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v32, v33);
     v34 = 0;
-    if (v5)
+    if (identifierCopy)
     {
       goto LABEL_9;
     }
@@ -4559,13 +4559,13 @@ LABEL_18:
   else
   {
     v34 = v14 ^ 1;
-    if (v5)
+    if (identifierCopy)
     {
       goto LABEL_9;
     }
   }
 
-  v35 = objc_msgSend_chunkIdentifier(v70, v25, v26);
+  v35 = objc_msgSend_chunkIdentifier(chunkCopy, v25, v26);
   v38 = objc_msgSend_chunkID(v35, v36, v37);
   v41 = objc_msgSend_i_chunkIDSeed(v10, v39, v40);
 
@@ -4599,10 +4599,10 @@ LABEL_9:
 
   v57 = objc_alloc(MEMORY[0x277CBEB18]);
   v60 = objc_msgSend_initWithArray_(v57, v58, self->_buildChunks);
-  if (v69)
+  if (afterChunkCopy)
   {
-    v61 = objc_msgSend_indexOfObject_(self->_buildChunks, v59, v69) + 1;
-    if (!v5)
+    v61 = objc_msgSend_indexOfObject_(self->_buildChunks, v59, afterChunkCopy) + 1;
+    if (!identifierCopy)
     {
       goto LABEL_17;
     }
@@ -4611,20 +4611,20 @@ LABEL_9:
   }
 
   v61 = 0;
-  if (v5)
+  if (identifierCopy)
   {
 LABEL_16:
-    objc_msgSend_i_generateAndApplyNewChunkIdentifierToChunk_(v10, v59, v70);
+    objc_msgSend_i_generateAndApplyNewChunkIdentifierToChunk_(v10, v59, chunkCopy);
   }
 
 LABEL_17:
-  objc_msgSend_i_registerBuildChunkIdentifierForChunk_(v10, v59, v70);
-  objc_msgSend_insertObject_atIndex_(v60, v62, v70, v61);
+  objc_msgSend_i_registerBuildChunkIdentifierForChunk_(v10, v59, chunkCopy);
+  objc_msgSend_insertObject_atIndex_(v60, v62, chunkCopy, v61);
   objc_storeStrong(&self->_buildChunks, v60);
   if (objc_msgSend_inDocument(self, v63, v64))
   {
     v67 = objc_msgSend_context(self, v65, v66);
-    objc_msgSend_wasAddedToDocumentWithContext_(v70, v68, v67);
+    objc_msgSend_wasAddedToDocumentWithContext_(chunkCopy, v68, v67);
   }
 
 LABEL_20:
@@ -4660,13 +4660,13 @@ LABEL_20:
   return drawablesWithInvalidatedGhosts;
 }
 
-- (void)insertContainedModel:(id)a3 atIndex:(unint64_t)a4
+- (void)insertContainedModel:(id)model atIndex:(unint64_t)index
 {
   v6 = TSUProtocolCast();
   v15 = v6;
   if (v6)
   {
-    objc_msgSend_insertChildInfo_atIndex_(self, v6, v6, a4, &unk_2884F6E18);
+    objc_msgSend_insertChildInfo_atIndex_(self, v6, v6, index, &unk_2884F6E18);
   }
 
   else
@@ -4680,7 +4680,7 @@ LABEL_20:
   }
 }
 
-- (void)removeContainedModel:(id)a3
+- (void)removeContainedModel:(id)model
 {
   v4 = TSUProtocolCast();
   v13 = v4;
@@ -4700,17 +4700,17 @@ LABEL_20:
   }
 }
 
-- (void)moveModel:(id)a3 toIndex:(unint64_t)a4
+- (void)moveModel:(id)model toIndex:(unint64_t)index
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   v7 = TSUProtocolCast();
   v9 = v7;
   if (v7)
   {
     v21[0] = v7;
     v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v21, 1, &unk_2884F6E18);
-    v12 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v11, a4);
+    v12 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v11, index);
     objc_msgSend_moveChildren_toIndexes_(self, v13, v10, v12);
   }
 
@@ -4725,62 +4725,62 @@ LABEL_20:
   }
 }
 
-- (void)p_insertChildInfos:(id)a3 atIndex:(unint64_t)a4 dolcContext:(id)a5
+- (void)p_insertChildInfos:(id)infos atIndex:(unint64_t)index dolcContext:(id)context
 {
-  v22 = a3;
-  v8 = a5;
+  infosCopy = infos;
+  contextCopy = context;
   objc_msgSend_willModify(self, v9, v10);
   v11 = objc_alloc(MEMORY[0x277CBEB40]);
   v13 = objc_msgSend_initWithOrderedSet_(v11, v12, self->_childInfos);
   v14 = objc_alloc(MEMORY[0x277CCAA78]);
-  v17 = objc_msgSend_count(v22, v15, v16);
-  v19 = objc_msgSend_initWithIndexesInRange_(v14, v18, a4, v17);
-  objc_msgSend_insertObjects_atIndexes_(v13, v20, v22, v19);
-  objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v21, v13, 1, v8);
+  v17 = objc_msgSend_count(infosCopy, v15, v16);
+  v19 = objc_msgSend_initWithIndexesInRange_(v14, v18, index, v17);
+  objc_msgSend_insertObjects_atIndexes_(v13, v20, infosCopy, v19);
+  objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v21, v13, 1, contextCopy);
 }
 
-- (void)addChildInfo:(id)a3
+- (void)addChildInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   v6 = objc_msgSend_count(self->_childInfos, v4, v5);
-  objc_msgSend_insertChildInfo_atIndex_(self, v7, v8, v6);
+  objc_msgSend_insertChildInfo_atIndex_(self, v7, infoCopy, v6);
 }
 
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   objc_opt_class();
   v7 = TSUCheckedDynamicCast();
   v14[0] = v7;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v14, 1);
   v12 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v10, v11);
-  objc_msgSend_p_insertChildInfos_atIndex_dolcContext_(self, v13, v9, a4, v12);
+  objc_msgSend_p_insertChildInfos_atIndex_dolcContext_(self, v13, v9, index, v12);
 }
 
-- (void)insertChildInfo:(id)a3 below:(id)a4
+- (void)insertChildInfo:(id)info below:(id)below
 {
-  v11 = a3;
-  v6 = a4;
+  infoCopy = info;
+  belowCopy = below;
   objc_opt_class();
   v7 = TSUCheckedDynamicCast();
   v9 = objc_msgSend_indexOfObject_(self->_childInfos, v8, v7);
-  objc_msgSend_insertChildInfo_atIndex_(self, v10, v11, v9 + 1);
+  objc_msgSend_insertChildInfo_atIndex_(self, v10, infoCopy, v9 + 1);
 }
 
-- (void)insertChildInfo:(id)a3 above:(id)a4
+- (void)insertChildInfo:(id)info above:(id)above
 {
-  v11 = a3;
-  v6 = a4;
+  infoCopy = info;
+  aboveCopy = above;
   objc_opt_class();
   v7 = TSUCheckedDynamicCast();
   v9 = objc_msgSend_indexOfObject_(self->_childInfos, v8, v7);
-  objc_msgSend_insertChildInfo_atIndex_(self, v10, v11, v9);
+  objc_msgSend_insertChildInfo_atIndex_(self, v10, infoCopy, v9);
 }
 
-- (void)removeChildInfo:(id)a3
+- (void)removeChildInfo:(id)info
 {
-  v15 = a3;
+  infoCopy = info;
   objc_msgSend_willModify(self, v4, v5);
   v6 = objc_alloc(MEMORY[0x277CBEB40]);
   v8 = objc_msgSend_initWithOrderedSet_(v6, v7, self->_childInfos);
@@ -4791,10 +4791,10 @@ LABEL_20:
   objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v14, v8, 1, v13);
 }
 
-- (void)replaceChildInfo:(id)a3 with:(id)a4
+- (void)replaceChildInfo:(id)info with:(id)with
 {
-  v21 = a3;
-  v6 = a4;
+  infoCopy = info;
+  withCopy = with;
   objc_msgSend_willModify(self, v7, v8);
   v9 = objc_alloc(MEMORY[0x277CBEB40]);
   v11 = objc_msgSend_initWithOrderedSet_(v9, v10, self->_childInfos);
@@ -4808,18 +4808,18 @@ LABEL_20:
   objc_msgSend_p_setChildInfosAsOrderedSet_usingDOLC_dolcContext_(self, v20, v11, 1, v19);
 }
 
-- (id)infoCorrespondingToInfo:(id)a3
+- (id)infoCorrespondingToInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
-  v7 = objc_msgSend_parentInfo(v4, v5, v6);
+  v7 = objc_msgSend_parentInfo(infoCopy, v5, v6);
   v8 = TSUDynamicCast();
 
   if (v8)
   {
     v11 = objc_msgSend_titlePlaceholder(v8, v9, v10);
 
-    if (v11 == v4)
+    if (v11 == infoCopy)
     {
       v23 = objc_msgSend_titlePlaceholder(self, v12, v13);
     }
@@ -4828,7 +4828,7 @@ LABEL_20:
     {
       v14 = objc_msgSend_bodyPlaceholder(v8, v12, v13);
 
-      if (v14 == v4)
+      if (v14 == infoCopy)
       {
         v23 = objc_msgSend_bodyPlaceholder(self, v15, v16);
       }
@@ -4837,9 +4837,9 @@ LABEL_20:
       {
         v17 = objc_msgSend_slideNumberPlaceholder(v8, v15, v16);
 
-        if (v17 != v4)
+        if (v17 != infoCopy)
         {
-          v21 = objc_msgSend_tagForInfo_(v8, v18, v4);
+          v21 = objc_msgSend_tagForInfo_(v8, v18, infoCopy);
           if (v21)
           {
             v22 = objc_msgSend_infoForTag_(self, v20, v21);
@@ -4870,10 +4870,10 @@ LABEL_14:
   return v22;
 }
 
-- (double)highestScaleFactorForRenderingDrawableInfo:(id)a3
+- (double)highestScaleFactorForRenderingDrawableInfo:(id)info
 {
   v27 = *MEMORY[0x277D85DE8];
-  objc_msgSend_activeChunksForDrawable_(self, a2, a3);
+  objc_msgSend_activeChunksForDrawable_(self, a2, info);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -4921,7 +4921,7 @@ LABEL_14:
   return v10;
 }
 
-- (CGSize)targetSizeForImageData:(id)a3 associatedHint:(id)a4
+- (CGSize)targetSizeForImageData:(id)data associatedHint:(id)hint
 {
   objc_opt_class();
   v7 = objc_msgSend_backgroundFill(self, v5, v6);
@@ -4984,9 +4984,9 @@ LABEL_14:
   return v31;
 }
 
-- (id)boxedObjectForProperty:(int)a3
+- (id)boxedObjectForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v6 = String();
   v7 = 0;
   if (v6 > 1)
@@ -5044,18 +5044,18 @@ LABEL_14:
   return v7;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 4215:
-      v3 = objc_msgSend_placeholdersForTags(self, a2, *&a3);
+      v3 = objc_msgSend_placeholdersForTags(self, a2, *&property);
       break;
     case 4214:
-      v3 = objc_msgSend_childInfos(self, a2, *&a3);
+      v3 = objc_msgSend_childInfos(self, a2, *&property);
       break;
     case 515:
-      v3 = objc_msgSend_style(self, a2, *&a3);
+      v3 = objc_msgSend_style(self, a2, *&property);
       break;
     default:
       v3 = 0;
@@ -5077,11 +5077,11 @@ LABEL_14:
   return v7;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v25 = a3;
+  blockCopy = block;
   v6 = objc_msgSend_style(self, v4, v5);
-  v8 = v25[2](v25, v6);
+  v8 = blockCopy[2](blockCopy, v6);
   if (!v8)
   {
     v9 = MEMORY[0x277D81150];
@@ -5107,18 +5107,18 @@ LABEL_14:
   objc_msgSend_setStyle_(self, v16, v17);
 }
 
-- (void)referencedStyleWasUpdated:(id)a3
+- (void)referencedStyleWasUpdated:(id)updated
 {
-  v14 = a3;
+  updatedCopy = updated;
   v8 = objc_msgSend_motionBackgroundStyle(self, v4, v5);
-  if (v8 == v14)
+  if (v8 == updatedCopy)
   {
 
     goto LABEL_5;
   }
 
   v9 = objc_msgSend_motionBackgroundStyle(self, v6, v7);
-  isDescendentOf = objc_msgSend_isDescendentOf_(v9, v10, v14);
+  isDescendentOf = objc_msgSend_isDescendentOf_(v9, v10, updatedCopy);
 
   if (isDescendentOf)
   {
@@ -5127,22 +5127,22 @@ LABEL_5:
   }
 }
 
-- (void)setSlideNode:(id)a3
+- (void)setSlideNode:(id)node
 {
-  v8 = a3;
-  objc_storeWeak(&self->_slideNode, v8);
+  nodeCopy = node;
+  objc_storeWeak(&self->_slideNode, nodeCopy);
   if (self->_needsSlideNodeEventCountUpdate && (objc_msgSend_isTemplateSlide(self, v4, v5) & 1) == 0)
   {
-    objc_msgSend_invalidateBuildEventCountCaches(v8, v6, v7);
+    objc_msgSend_invalidateBuildEventCountCaches(nodeCopy, v6, v7);
     self->_needsSlideNodeEventCountUpdate = 0;
   }
 }
 
-+ (Class)classForUnarchiver:(id)a3
++ (Class)classForUnarchiver:(id)unarchiver
 {
-  v3 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  objc_msgSend_messageWithDescriptor_(v3, v4, off_2812EA908[32]);
+  objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[32]);
 
   v5 = objc_opt_class();
   v6 = v5;
@@ -5150,11 +5150,11 @@ LABEL_5:
   return v5;
 }
 
-- (void)p_updateBuildsReplacingPlaceholder:(id)a3 withPlaceholder:(id)a4
+- (void)p_updateBuildsReplacingPlaceholder:(id)placeholder withPlaceholder:(id)withPlaceholder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  placeholderCopy = placeholder;
+  withPlaceholderCopy = withPlaceholder;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -5175,11 +5175,11 @@ LABEL_5:
 
         v17 = *(*(&v20 + 1) + 8 * i);
         v18 = objc_msgSend_drawable(v17, v12, v13);
-        v19 = v18 == v6;
+        v19 = v18 == placeholderCopy;
 
         if (v19)
         {
-          objc_msgSend_setDrawable_(v17, v12, v7);
+          objc_msgSend_setDrawable_(v17, v12, withPlaceholderCopy);
         }
       }
 
@@ -5190,18 +5190,18 @@ LABEL_5:
   }
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v121 = objc_msgSend_sourceType(v6, v7, v8);
+  unarchiverCopy = unarchiver;
+  v121 = objc_msgSend_sourceType(unarchiverCopy, v7, v8);
   v9 = v121 == 1;
-  v10 = *(a3 + 36);
+  v10 = *(archive + 36);
   v154[0] = MEMORY[0x277D85DD0];
   v154[1] = 3221225472;
   v154[2] = sub_275D52930;
   v154[3] = &unk_27A697998;
   v154[4] = self;
-  v11 = v6;
+  v11 = unarchiverCopy;
   v13 = objc_opt_class();
   if (v10)
   {
@@ -5214,9 +5214,9 @@ LABEL_5:
   }
 
   v14 = [KNTransition alloc];
-  if (*(a3 + 37))
+  if (*(archive + 37))
   {
-    v16 = objc_msgSend_initWithArchive_unarchiver_owner_(v14, v15, *(a3 + 37), v11, self);
+    v16 = objc_msgSend_initWithArchive_unarchiver_owner_(v14, v15, *(archive + 37), v11, self);
   }
 
   else
@@ -5233,9 +5233,9 @@ LABEL_5:
   v152[3] = sub_275D52944;
   v152[4] = sub_275D52954;
   v153 = 0;
-  v20 = *(a3 + 20);
-  v122 = self;
-  v125 = a3;
+  v20 = *(archive + 20);
+  selfCopy = self;
+  archiveCopy = archive;
   if ((v20 & 0x80000000) != 0)
   {
     v113 = MEMORY[0x277D81150];
@@ -5257,9 +5257,9 @@ LABEL_5:
   v151 = v121 == 1;
   v21 = v11;
   v22 = objc_opt_class();
-  objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v21, v23, a3 + 72, v22, 0, v150);
+  objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v21, v23, archive + 72, v22, 0, v150);
 
-  v24 = *(a3 + 50);
+  v24 = *(archive + 50);
   if (v24)
   {
     v149[0] = MEMORY[0x277D85DD0];
@@ -5270,10 +5270,10 @@ LABEL_5:
     v149[4] = self;
     v25 = v21;
     v26 = objc_opt_class();
-    objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v25, v27, a3 + 192, v26, 0, v149);
+    objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v25, v27, archive + 192, v26, 0, v149);
   }
 
-  if (*(a3 + 8) >= 1)
+  if (*(archive + 8) >= 1)
   {
     v148[0] = MEMORY[0x277D85DD0];
     v148[1] = 3221225472;
@@ -5282,13 +5282,13 @@ LABEL_5:
     v148[4] = self;
     v28 = v21;
     v29 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v28, v30, a3 + 24, v29, 0, v148);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v28, v30, archive + 24, v29, 0, v148);
   }
 
   v31 = v21;
-  if (*(a3 + 56) < 1)
+  if (*(archive + 56) < 1)
   {
-    v35 = *(a3 + 14);
+    v35 = *(archive + 14);
     if (v35 >= 1)
     {
       v36 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -5304,7 +5304,7 @@ LABEL_5:
         v51 = objc_msgSend_context(self, v49, v50);
         objc_msgSend_wasAddedToDocumentDuringUnarchiveWithContext_(v45, v52, v51);
 
-        objc_msgSend_loadFromArchive_unarchiver_(v45, v53, *(*(a3 + 8) + 8 * i + 8), v31);
+        objc_msgSend_loadFromArchive_unarchiver_(v45, v53, *(*(archive + 8) + 8 * i + 8), v31);
         objc_msgSend_addObject_(v38, v54, v45);
       }
 
@@ -5324,7 +5324,7 @@ LABEL_5:
     v147[4] = self;
     v32 = v21;
     v33 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v32, v34, a3 + 216, v33, 0, v147);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v32, v34, archive + 216, v33, 0, v147);
   }
 
   v145[0] = 0;
@@ -5333,12 +5333,12 @@ LABEL_5:
   v145[3] = sub_275D52944;
   v145[4] = sub_275D52954;
   v146 = 0;
-  v56 = a3;
-  v57 = *(a3 + 4);
-  v120 = v6;
+  archiveCopy2 = archive;
+  v57 = *(archive + 4);
+  v120 = unarchiverCopy;
   if ((v57 & 0x20) != 0)
   {
-    v58 = *(a3 + 38);
+    v58 = *(archive + 38);
     v144[0] = MEMORY[0x277D85DD0];
     v144[1] = 3221225472;
     v144[2] = sub_275D52DDC;
@@ -5346,9 +5346,9 @@ LABEL_5:
     v144[4] = v145;
     v59 = v31;
     v60 = objc_opt_class();
-    objc_msgSend_readReferenceMessage_class_protocol_completion_(v59, v61, v58, v60, 0, v144, v6);
+    objc_msgSend_readReferenceMessage_class_protocol_completion_(v59, v61, v58, v60, 0, v144, unarchiverCopy);
 
-    v57 = *(a3 + 4);
+    v57 = *(archive + 4);
   }
 
   v142[0] = 0;
@@ -5359,7 +5359,7 @@ LABEL_5:
   v143 = 0;
   if ((v57 & 0x40) != 0)
   {
-    v62 = *(a3 + 39);
+    v62 = *(archive + 39);
     v141[0] = MEMORY[0x277D85DD0];
     v141[1] = 3221225472;
     v141[2] = sub_275D52DEC;
@@ -5369,7 +5369,7 @@ LABEL_5:
     v64 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v63, v65, v62, v64, 0, v141);
 
-    v57 = *(a3 + 4);
+    v57 = *(archive + 4);
   }
 
   v139[0] = 0;
@@ -5380,7 +5380,7 @@ LABEL_5:
   v140 = 0;
   if ((v57 & 0x20000) != 0)
   {
-    v66 = *(a3 + 50);
+    v66 = *(archive + 50);
     v138[0] = MEMORY[0x277D85DD0];
     v138[1] = 3221225472;
     v138[2] = sub_275D52DFC;
@@ -5390,12 +5390,12 @@ LABEL_5:
     v68 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v67, v69, v66, v68, 0, v138);
 
-    v57 = *(a3 + 4);
+    v57 = *(archive + 4);
   }
 
   if ((v57 & 0x400) != 0)
   {
-    v70 = *(a3 + 43);
+    v70 = *(archive + 43);
     v136[0] = MEMORY[0x277D85DD0];
     v136[1] = 3221225472;
     v136[2] = sub_275D52E0C;
@@ -5407,7 +5407,7 @@ LABEL_5:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v71, v73, v70, v72, 0, v136);
   }
 
-  v74 = *(a3 + 32);
+  v74 = *(archive + 32);
   v75 = objc_alloc(MEMORY[0x277CBEB38]);
   obj = objc_msgSend_initWithCapacity_(v75, v76, v74);
   if (v74 >= 1)
@@ -5415,7 +5415,7 @@ LABEL_5:
     v78 = 8;
     do
     {
-      v79 = *(v56[17] + v78);
+      v79 = *(archiveCopy2[17] + v78);
       v80 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v77, *(v79 + 24) & 0xFFFFFFFFFFFFFFFELL, v120);
       v81 = *(v79 + 32);
       v133[0] = MEMORY[0x277D85DD0];
@@ -5439,7 +5439,7 @@ LABEL_5:
 
       v78 += 8;
       --v74;
-      v56 = v125;
+      archiveCopy2 = archiveCopy;
     }
 
     while (v74);
@@ -5447,9 +5447,9 @@ LABEL_5:
 
   objc_storeStrong(&self->_placeholdersForTags, obj);
   v123 = objc_msgSend_weakToStrongObjectsMapTable(MEMORY[0x277CCAB00], v86, v87);
-  if ((*(v56 + 18) & 0x10) != 0)
+  if ((*(archiveCopy2 + 18) & 0x10) != 0)
   {
-    v89 = v125[53];
+    v89 = archiveCopy[53];
     v90 = *(v89 + 24);
     if (v90 >= 1)
     {
@@ -5486,8 +5486,8 @@ LABEL_5:
     }
   }
 
-  objc_storeStrong(&v122->_instructionalTextForInfos, v123);
-  if (*(v125 + 457) == 1 && v121 == 1)
+  objc_storeStrong(&selfCopy->_instructionalTextForInfos, v123);
+  if (*(archiveCopy + 457) == 1 && v121 == 1)
   {
     hasPreUFFVersion = 1;
     v102 = 1;
@@ -5499,11 +5499,11 @@ LABEL_5:
     v102 = v121 == 1;
   }
 
-  v122->_inDocument = hasPreUFFVersion;
+  selfCopy->_inDocument = hasPreUFFVersion;
   v103 = objc_msgSend_fileFormatVersion(v31, v99, v100, v120);
   v106 = objc_msgSend_hasPreUFFVersion(v31, v104, v105);
   v109 = objc_msgSend_preUFFVersion(v31, v107, v108);
-  v111 = objc_msgSend_p_keynoteVersionFromUnarchiver_(v122, v110, v31);
+  v111 = objc_msgSend_p_keynoteVersionFromUnarchiver_(selfCopy, v110, v31);
   v126[0] = MEMORY[0x277D85DD0];
   v126[1] = 3221225472;
   v126[2] = sub_275D52F64;
@@ -5512,7 +5512,7 @@ LABEL_5:
   v128 = v103 < 0x2000000000007;
   v126[10] = v111;
   v126[11] = v103;
-  v126[4] = v122;
+  v126[4] = selfCopy;
   v126[5] = v152;
   v129 = v102;
   v126[6] = v145;
@@ -5528,47 +5528,47 @@ LABEL_5:
   _Block_object_dispose(v152, 8);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v223[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v189 = v6;
-  v190 = self;
+  archiverCopy = archiver;
+  v189 = archiverCopy;
+  selfCopy = self;
   style = self->_style;
-  *(a3 + 4) |= 8u;
-  v9 = *(a3 + 36);
+  *(archive + 4) |= 8u;
+  v9 = *(archive + 36);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = MEMORY[0x277C8F050](v10);
-    *(a3 + 36) = v9;
-    v6 = v189;
+    *(archive + 36) = v9;
+    archiverCopy = v189;
   }
 
-  objc_msgSend_setStrongReference_message_(v6, v7, style, v9);
-  v14 = objc_msgSend_transition(v190, v11, v12);
-  *(a3 + 4) |= 0x10u;
-  v15 = *(a3 + 37);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v7, style, v9);
+  v14 = objc_msgSend_transition(selfCopy, v11, v12);
+  *(archive + 4) |= 0x10u;
+  v15 = *(archive + 37);
   if (!v15)
   {
-    v16 = *(a3 + 1);
+    v16 = *(archive + 1);
     if (v16)
     {
       v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v15 = sub_275E1F6F8(v16);
-    *(a3 + 37) = v15;
+    *(archive + 37) = v15;
   }
 
   objc_msgSend_saveToArchive_archiver_(v14, v13, v15, v189);
 
-  v19 = objc_msgSend_count(v190->_builds, v17, v18);
+  v19 = objc_msgSend_count(selfCopy->_builds, v17, v18);
   v20 = objc_alloc(MEMORY[0x277CBEB18]);
   v188 = objc_msgSend_initWithCapacity_(v20, v21, v19);
   v22 = [KNAbstractSlideAlternateArchiveBuildFilter alloc];
@@ -5585,7 +5585,7 @@ LABEL_5:
   v214 = 0u;
   v211 = 0u;
   v212 = 0u;
-  obj = v190->_builds;
+  obj = selfCopy->_builds;
   v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v31, &v211, v222, 16);
   if (v33)
   {
@@ -5689,99 +5689,99 @@ LABEL_5:
     while (v33);
   }
 
-  objc_msgSend_setStrongReferenceArray_message_(v189, v59, v188, a3 + 24);
-  objc_msgSend_setStrongReferenceArray_message_(v189, v60, v190->_buildChunks, a3 + 216);
-  objc_msgSend_setWeakReferenceOrderedSet_message_(v189, v61, v190->_childInfos, a3 + 192);
-  v64 = objc_msgSend_ownedChildInfos(v190, v62, v63);
-  objc_msgSend_setStrongReferenceArray_message_(v189, v65, v64, a3 + 72);
+  objc_msgSend_setStrongReferenceArray_message_(v189, v59, v188, archive + 24);
+  objc_msgSend_setStrongReferenceArray_message_(v189, v60, selfCopy->_buildChunks, archive + 216);
+  objc_msgSend_setWeakReferenceOrderedSet_message_(v189, v61, selfCopy->_childInfos, archive + 192);
+  v64 = objc_msgSend_ownedChildInfos(selfCopy, v62, v63);
+  objc_msgSend_setStrongReferenceArray_message_(v189, v65, v64, archive + 72);
 
-  v68 = objc_msgSend_titlePlaceholder(v190, v66, v67);
+  v68 = objc_msgSend_titlePlaceholder(selfCopy, v66, v67);
   LOBYTE(v64) = v68 == 0;
 
   if ((v64 & 1) == 0)
   {
-    v72 = objc_msgSend_titlePlaceholder(v190, v69, v70);
-    *(a3 + 4) |= 0x20u;
-    v73 = *(a3 + 38);
+    v72 = objc_msgSend_titlePlaceholder(selfCopy, v69, v70);
+    *(archive + 4) |= 0x20u;
+    v73 = *(archive + 38);
     if (!v73)
     {
-      v74 = *(a3 + 1);
+      v74 = *(archive + 1);
       if (v74)
       {
         v74 = *(v74 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v73 = MEMORY[0x277C8F050](v74);
-      *(a3 + 38) = v73;
+      *(archive + 38) = v73;
     }
 
     objc_msgSend_setStrongReference_message_(v189, v71, v72, v73);
   }
 
-  v75 = objc_msgSend_bodyPlaceholder(v190, v69, v70);
+  v75 = objc_msgSend_bodyPlaceholder(selfCopy, v69, v70);
   v76 = v75 == 0;
 
   if (!v76)
   {
-    v80 = objc_msgSend_bodyPlaceholder(v190, v77, v78);
-    *(a3 + 4) |= 0x40u;
-    v81 = *(a3 + 39);
+    v80 = objc_msgSend_bodyPlaceholder(selfCopy, v77, v78);
+    *(archive + 4) |= 0x40u;
+    v81 = *(archive + 39);
     if (!v81)
     {
-      v82 = *(a3 + 1);
+      v82 = *(archive + 1);
       if (v82)
       {
         v82 = *(v82 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v81 = MEMORY[0x277C8F050](v82);
-      *(a3 + 39) = v81;
+      *(archive + 39) = v81;
     }
 
     objc_msgSend_setStrongReference_message_(v189, v79, v80, v81);
   }
 
-  v83 = objc_msgSend_objectPlaceholder(v190, v77, v78);
+  v83 = objc_msgSend_objectPlaceholder(selfCopy, v77, v78);
   v84 = v83 == 0;
 
   if (!v84)
   {
-    v88 = objc_msgSend_objectPlaceholder(v190, v85, v86);
-    *(a3 + 4) |= 0x20000u;
-    v89 = *(a3 + 50);
+    v88 = objc_msgSend_objectPlaceholder(selfCopy, v85, v86);
+    *(archive + 4) |= 0x20000u;
+    v89 = *(archive + 50);
     if (!v89)
     {
-      v90 = *(a3 + 1);
+      v90 = *(archive + 1);
       if (v90)
       {
         v90 = *(v90 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v89 = MEMORY[0x277C8F050](v90);
-      *(a3 + 50) = v89;
+      *(archive + 50) = v89;
     }
 
     objc_msgSend_setStrongReference_message_(v189, v87, v88, v89);
   }
 
-  v91 = objc_msgSend_slideNumberPlaceholder(v190, v85, v86);
+  v91 = objc_msgSend_slideNumberPlaceholder(selfCopy, v85, v86);
   v92 = v91 == 0;
 
   if (!v92)
   {
-    v96 = objc_msgSend_slideNumberPlaceholder(v190, v93, v94);
-    *(a3 + 4) |= 0x400u;
-    v97 = *(a3 + 43);
+    v96 = objc_msgSend_slideNumberPlaceholder(selfCopy, v93, v94);
+    *(archive + 4) |= 0x400u;
+    v97 = *(archive + 43);
     if (!v97)
     {
-      v98 = *(a3 + 1);
+      v98 = *(archive + 1);
       if (v98)
       {
         v98 = *(v98 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v97 = MEMORY[0x277C8F050](v98);
-      *(a3 + 43) = v97;
+      *(archive + 43) = v97;
     }
 
     objc_msgSend_setStrongReference_message_(v189, v95, v96, v97);
@@ -5791,7 +5791,7 @@ LABEL_5:
   v202 = 0u;
   v199 = 0u;
   v200 = 0u;
-  v99 = objc_msgSend_keyEnumerator(v190->_placeholdersForTags, v93, v94);
+  v99 = objc_msgSend_keyEnumerator(selfCopy->_placeholdersForTags, v93, v94);
   v180 = v99;
   v102 = objc_msgSend_countByEnumeratingWithState_objects_count_(v99, v100, &v199, v219, 16);
   if (v102)
@@ -5807,35 +5807,35 @@ LABEL_5:
         }
 
         v104 = *(*(&v199 + 1) + 8 * k);
-        v107 = objc_msgSend_objectForKeyedSubscript_(v190->_placeholdersForTags, v101, v104);
-        v108 = *(a3 + 17);
+        v107 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_placeholdersForTags, v101, v104);
+        v108 = *(archive + 17);
         if (!v108)
         {
           goto LABEL_72;
         }
 
-        v109 = *(a3 + 32);
+        v109 = *(archive + 32);
         v110 = *v108;
         if (v109 < *v108)
         {
-          *(a3 + 32) = v109 + 1;
+          *(archive + 32) = v109 + 1;
           v111 = *&v108[2 * v109 + 2];
           goto LABEL_74;
         }
 
-        if (v110 == *(a3 + 33))
+        if (v110 == *(archive + 33))
         {
 LABEL_72:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 120));
-          v108 = *(a3 + 17);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 120));
+          v108 = *(archive + 17);
           v110 = *v108;
         }
 
         *v108 = v110 + 1;
-        v111 = sub_275E1FE50(*(a3 + 15));
-        v112 = *(a3 + 32);
-        v113 = *(a3 + 17) + 8 * v112;
-        *(a3 + 32) = v112 + 1;
+        v111 = sub_275E1FE50(*(archive + 15));
+        v112 = *(archive + 32);
+        v113 = *(archive + 17) + 8 * v112;
+        *(archive + 32) = v112 + 1;
         *(v113 + 8) = v111;
 LABEL_74:
         v114 = objc_msgSend_tsp_protobufString(v104, v105, v106);
@@ -5847,7 +5847,7 @@ LABEL_74:
           operator delete(__p[0]);
         }
 
-        v117 = objc_msgSend_childInfos(v190, v115, v116);
+        v117 = objc_msgSend_childInfos(selfCopy, v115, v116);
         v119 = objc_msgSend_containsObject_(v117, v118, v107);
 
         if ((v119 & 1) == 0)
@@ -5855,7 +5855,7 @@ LABEL_74:
           v121 = MEMORY[0x277D81150];
           v122 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v120, "[KNAbstractSlide saveToArchive:archiver:]");
           v124 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v123, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAbstractSlide.mm");
-          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v121, v125, v122, v124, 3808, 0, "Saving tagged drawable %@ with tag %@ that is not among the childInfos for %@", v107, v104, v190);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v121, v125, v122, v124, 3808, 0, "Saving tagged drawable %@ with tag %@ that is not among the childInfos for %@", v107, v104, selfCopy);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v126, v127);
         }
@@ -5884,25 +5884,25 @@ LABEL_74:
     while (v102);
   }
 
-  *(a3 + 4) |= 0x100000u;
-  v132 = *(a3 + 53);
+  *(archive + 4) |= 0x100000u;
+  v132 = *(archive + 53);
   if (!v132)
   {
-    v133 = *(a3 + 1);
+    v133 = *(archive + 1);
     if (v133)
     {
       v133 = *(v133 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v132 = sub_275E1FF68(v133);
-    *(a3 + 53) = v132;
+    *(archive + 53) = v132;
   }
 
   v197 = 0u;
   v198 = 0u;
   v195 = 0u;
   v196 = 0u;
-  v134 = objc_msgSend_keyEnumerator(v190->_instructionalTextForInfos, v130, v131);
+  v134 = objc_msgSend_keyEnumerator(selfCopy->_instructionalTextForInfos, v130, v131);
   v137 = objc_msgSend_countByEnumeratingWithState_objects_count_(v134, v135, &v195, v218, 16);
   if (v137)
   {
@@ -5962,7 +5962,7 @@ LABEL_100:
         }
 
         objc_msgSend_setWeakReference_message_(v189, v136, v140, v147);
-        v150 = objc_msgSend_objectForKeyedSubscript_(v190->_instructionalTextForInfos, v149, v140);
+        v150 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_instructionalTextForInfos, v149, v140);
         v153 = objc_msgSend_tsp_protobufString(v150, v151, v152);
         *(v144 + 16) |= 1u;
         sub_275D55B98(__p, v153);
@@ -5979,10 +5979,10 @@ LABEL_100:
     while (v137);
   }
 
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v189, v154, 45, a3);
-  inDocument = v190->_inDocument;
-  *(a3 + 4) |= 0x10000000u;
-  *(a3 + 457) = inDocument;
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v189, v154, 45, archive);
+  inDocument = selfCopy->_inDocument;
+  *(archive + 4) |= 0x10000000u;
+  *(archive + 457) = inDocument;
   v191 = 0u;
   v192 = 0u;
   v193 = 0u;
@@ -6008,13 +6008,13 @@ LABEL_100:
         {
           v163 = objc_msgSend_filteredBuildsForBuilds_(v162, v157, v188);
           v166 = objc_msgSend_excludedBuildMinVersion(v162, v164, v165);
-          v168 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(v189, v167, v166, v185, a3);
+          v168 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(v189, v167, v166, v185, archive);
           google::protobuf::internal::AssignDescriptors();
           v170 = objc_msgSend_messageWithNewFunction_descriptor_(v168, v169, sub_275D55CF8, off_2812EA908[32]);
 
           objc_msgSend_removeField_message_(v168, v171, 2, v170);
           objc_msgSend_setStrongReferenceArray_message_(v168, v172, v163, v170 + 24);
-          v174 = objc_msgSend_filteredBuildChunksForBuildChunks_(v162, v173, v190->_buildChunks);
+          v174 = objc_msgSend_filteredBuildChunksForBuildChunks_(v162, v173, selfCopy->_buildChunks);
           objc_msgSend_removeField_message_(v168, v175, 43, v170);
           objc_msgSend_setStrongReferenceArray_message_(v168, v176, v174, v170 + 216);
           objc_msgSend_requiresDocumentReadVersion_writeVersion_(v189, v177, v181, v27);
@@ -6064,17 +6064,17 @@ LABEL_100:
   }
 }
 
-- (unint64_t)p_keynoteVersionFromUnarchiver:(id)a3
+- (unint64_t)p_keynoteVersionFromUnarchiver:(id)unarchiver
 {
-  v3 = a3;
-  if (objc_msgSend_hasPreUFFVersion(v3, v4, v5))
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_hasPreUFFVersion(unarchiverCopy, v4, v5))
   {
-    v8 = objc_msgSend_preUFFVersion(v3, v6, v7);
+    v8 = objc_msgSend_preUFFVersion(unarchiverCopy, v6, v7);
   }
 
   else
   {
-    v9 = objc_msgSend_fileFormatVersion(v3, v6, v7);
+    v9 = objc_msgSend_fileFormatVersion(unarchiverCopy, v6, v7);
     if (v9 >= *MEMORY[0x277D80958])
     {
       if (v9 >= *MEMORY[0x277D80988])
@@ -6107,11 +6107,11 @@ LABEL_100:
   return v8;
 }
 
-- (void)p_updateBuildEffects:(BOOL)a3 version:(unint64_t)a4
+- (void)p_updateBuildEffects:(BOOL)effects version:(unint64_t)version
 {
-  v75 = a3;
+  effectsCopy = effects;
   v88 = *MEMORY[0x277D85DE8];
-  v78 = objc_msgSend_instance(KNAnimationRegistry, a2, a3);
+  v78 = objc_msgSend_instance(KNAnimationRegistry, a2, effects);
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
@@ -6137,7 +6137,7 @@ LABEL_100:
         v18 = objc_msgSend_drawable(v11, v16, v17);
         v20 = objc_msgSend_animationInfoForEffectIdentifier_animationType_includeObsoleteNames_drawable_(v78, v19, v12, v15, 1, v18);
         v23 = v20;
-        if (a4 < 0xE94D0C4B44)
+        if (version < 0xE94D0C4B44)
         {
           v24 = objc_msgSend_effectIdentifier(v20, v21, v22);
           objc_msgSend_isEqualToString_(v24, v25, v12);
@@ -6153,7 +6153,7 @@ LABEL_100:
           v36 = objc_msgSend_effectIdentifier(v23, v34, v35);
           v81 = 0;
           v39 = objc_msgSend_animationType(v11, v37, v38);
-          objc_msgSend_upgradeAttributes_animationName_oldAnimationName_warning_type_isFromClassic_version_(v26, v40, &v82, v36, v12, &v81, v39, v75, a4);
+          objc_msgSend_upgradeAttributes_animationName_oldAnimationName_warning_type_isFromClassic_version_(v26, v40, &v82, v36, v12, &v81, v39, effectsCopy, version);
           v41 = v82;
 
           v42 = v81;
@@ -6162,7 +6162,7 @@ LABEL_100:
           objc_msgSend_setAttributes_(v11, v48, v47);
         }
 
-        if (objc_msgSend_conformsToProtocol_(v26, v28, &unk_28852EBF0) && objc_msgSend_shouldWarnOnUpgradeWithOldAnimationName_version_(v26, v49, v12, a4))
+        if (objc_msgSend_conformsToProtocol_(v26, v28, &unk_28852EBF0) && objc_msgSend_shouldWarnOnUpgradeWithOldAnimationName_version_(v26, v49, v12, version))
         {
           v74 = objc_msgSend_context(self, v50, v51);
           v54 = objc_msgSend_delegate(v74, v52, v53);
@@ -6197,17 +6197,17 @@ LABEL_100:
   return WeakRetained;
 }
 
-- (id)pdfDataUsingDocumentRoot:(id)a3
+- (id)pdfDataUsingDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v5 = [KNImager alloc];
-  v7 = objc_msgSend_initWithDocumentRoot_(v5, v6, v4);
+  v7 = objc_msgSend_initWithDocumentRoot_(v5, v6, rootCopy);
   v10 = objc_msgSend_slideNode(self, v8, v9);
   objc_msgSend_setIsPrinting_(v7, v11, 1);
   v14 = objc_msgSend_blackColor(MEMORY[0x277D81180], v12, v13);
   objc_msgSend_setBackgroundColor_(v7, v15, v14);
 
-  v18 = objc_msgSend_show(v4, v16, v17);
+  v18 = objc_msgSend_show(rootCopy, v16, v17);
   objc_msgSend_size(v18, v19, v20);
   TSURectWithSize();
   objc_msgSend_setUnscaledClipRect_(v7, v21, v22);
@@ -6215,7 +6215,7 @@ LABEL_100:
   v25 = objc_msgSend_infosToDisplay(self, v23, v24);
   objc_msgSend_setInfos_(v7, v26, v25);
 
-  v29 = objc_msgSend_show(v4, v27, v28);
+  v29 = objc_msgSend_show(rootCopy, v27, v28);
 
   v32 = objc_msgSend_slideTree(v29, v30, v31);
   v34 = objc_msgSend_slideNumberForSlideNode_(v32, v33, v10);
@@ -6229,16 +6229,16 @@ LABEL_100:
   return v42;
 }
 
-- (id)imageUsingDocumentRoot:(id)a3
+- (id)imageUsingDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v5 = [KNImager alloc];
-  v7 = objc_msgSend_initWithDocumentRoot_(v5, v6, v4);
+  v7 = objc_msgSend_initWithDocumentRoot_(v5, v6, rootCopy);
   v10 = objc_msgSend_slideNode(self, v8, v9);
   v13 = objc_msgSend_blackColor(MEMORY[0x277D81180], v11, v12);
   objc_msgSend_setBackgroundColor_(v7, v14, v13);
 
-  v17 = objc_msgSend_show(v4, v15, v16);
+  v17 = objc_msgSend_show(rootCopy, v15, v16);
   objc_msgSend_size(v17, v18, v19);
   TSURectWithSize();
   objc_msgSend_setUnscaledClipRect_(v7, v20, v21);
@@ -6246,7 +6246,7 @@ LABEL_100:
   v24 = objc_msgSend_infosToDisplay(self, v22, v23);
   objc_msgSend_setInfos_(v7, v25, v24);
 
-  v28 = objc_msgSend_show(v4, v26, v27);
+  v28 = objc_msgSend_show(rootCopy, v26, v27);
 
   v31 = objc_msgSend_slideTree(v28, v29, v30);
   v33 = objc_msgSend_slideNumberForSlideNode_(v31, v32, v10);

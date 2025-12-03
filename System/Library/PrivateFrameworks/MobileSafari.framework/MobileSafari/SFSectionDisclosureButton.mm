@@ -1,34 +1,34 @@
 @interface SFSectionDisclosureButton
 - (CGSize)sizeIncludingLabels;
-- (SFSectionDisclosureButton)initWithFrame:(CGRect)a3 expanded:(BOOL)a4 modally:(BOOL)a5;
+- (SFSectionDisclosureButton)initWithFrame:(CGRect)frame expanded:(BOOL)expanded modally:(BOOL)modally;
 - (void)buttonShapesEnabledDidChange;
 - (void)dealloc;
-- (void)setExpanded:(BOOL)a3;
-- (void)setLabelHidden:(BOOL)a3;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setLabelHidden:(BOOL)hidden;
 - (void)toggleExpanded;
 - (void)updateExpanded;
 @end
 
 @implementation SFSectionDisclosureButton
 
-- (SFSectionDisclosureButton)initWithFrame:(CGRect)a3 expanded:(BOOL)a4 modally:(BOOL)a5
+- (SFSectionDisclosureButton)initWithFrame:(CGRect)frame expanded:(BOOL)expanded modally:(BOOL)modally
 {
   v76[15] = *MEMORY[0x1E69E9840];
   v75.receiver = self;
   v75.super_class = SFSectionDisclosureButton;
-  v7 = [(SFSectionDisclosureButton *)&v75 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(SFSectionDisclosureButton *)&v75 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v7->_expanded = a4;
-    v7->_expandsModally = a5;
+    v7->_expanded = expanded;
+    v7->_expandsModally = modally;
     v9 = makeLabel();
     labelWhenExpanded = v8->_labelWhenExpanded;
     v8->_labelWhenExpanded = v9;
 
-    v11 = [(UILabel *)v8->_labelWhenExpanded leadingAnchor];
-    v12 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
-    v13 = [v11 constraintGreaterThanOrEqualToAnchor:v12];
+    leadingAnchor = [(UILabel *)v8->_labelWhenExpanded leadingAnchor];
+    leadingAnchor2 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
+    v13 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     labelWhenExpandedLeadingConstraint = v8->_labelWhenExpandedLeadingConstraint;
     v8->_labelWhenExpandedLeadingConstraint = v13;
 
@@ -37,9 +37,9 @@
     labelWhenCollapsed = v8->_labelWhenCollapsed;
     v8->_labelWhenCollapsed = v15;
 
-    v17 = [(UILabel *)v8->_labelWhenCollapsed leadingAnchor];
-    v18 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18];
+    leadingAnchor3 = [(UILabel *)v8->_labelWhenCollapsed leadingAnchor];
+    leadingAnchor4 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
+    v19 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
     labelWhenCollapsedLeadingConstraint = v8->_labelWhenCollapsedLeadingConstraint;
     v8->_labelWhenCollapsedLeadingConstraint = v19;
 
@@ -54,73 +54,73 @@
 
     [(SFSectionDisclosureButton *)v8 addSubview:v8->_imageView];
     v57 = MEMORY[0x1E696ACD8];
-    v74 = [(UILabel *)v8->_labelWhenExpanded centerYAnchor];
-    v73 = [(SFSectionDisclosureButton *)v8 centerYAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    centerYAnchor = [(UILabel *)v8->_labelWhenExpanded centerYAnchor];
+    centerYAnchor2 = [(SFSectionDisclosureButton *)v8 centerYAnchor];
+    v72 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v76[0] = v72;
-    v71 = [(UILabel *)v8->_labelWhenCollapsed centerYAnchor];
-    v70 = [(SFSectionDisclosureButton *)v8 centerYAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    centerYAnchor3 = [(UILabel *)v8->_labelWhenCollapsed centerYAnchor];
+    centerYAnchor4 = [(SFSectionDisclosureButton *)v8 centerYAnchor];
+    v69 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v76[1] = v69;
-    v68 = [(UIImageView *)v8->_imageView centerYAnchor];
-    v67 = [(SFSectionDisclosureButton *)v8 centerYAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    centerYAnchor5 = [(UIImageView *)v8->_imageView centerYAnchor];
+    centerYAnchor6 = [(SFSectionDisclosureButton *)v8 centerYAnchor];
+    v66 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v76[2] = v66;
-    v65 = [(UILabel *)v8->_labelWhenExpanded heightAnchor];
-    v64 = [(SFSectionDisclosureButton *)v8 heightAnchor];
-    v63 = [v65 constraintLessThanOrEqualToAnchor:v64];
+    heightAnchor = [(UILabel *)v8->_labelWhenExpanded heightAnchor];
+    heightAnchor2 = [(SFSectionDisclosureButton *)v8 heightAnchor];
+    v63 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
     v76[3] = v63;
-    v62 = [(UILabel *)v8->_labelWhenCollapsed heightAnchor];
-    v61 = [(SFSectionDisclosureButton *)v8 heightAnchor];
-    v60 = [v62 constraintLessThanOrEqualToAnchor:v61];
+    heightAnchor3 = [(UILabel *)v8->_labelWhenCollapsed heightAnchor];
+    heightAnchor4 = [(SFSectionDisclosureButton *)v8 heightAnchor];
+    v60 = [heightAnchor3 constraintLessThanOrEqualToAnchor:heightAnchor4];
     v76[4] = v60;
-    v59 = [(UIImageView *)v8->_imageView heightAnchor];
-    v58 = [(SFSectionDisclosureButton *)v8 heightAnchor];
-    v56 = [v59 constraintLessThanOrEqualToAnchor:v58];
+    heightAnchor5 = [(UIImageView *)v8->_imageView heightAnchor];
+    heightAnchor6 = [(SFSectionDisclosureButton *)v8 heightAnchor];
+    v56 = [heightAnchor5 constraintLessThanOrEqualToAnchor:heightAnchor6];
     v76[5] = v56;
-    v55 = [(SFSectionDisclosureButton *)v8 heightAnchor];
-    v54 = [v55 constraintEqualToConstant:0.0];
+    heightAnchor7 = [(SFSectionDisclosureButton *)v8 heightAnchor];
+    v54 = [heightAnchor7 constraintEqualToConstant:0.0];
     LODWORD(v24) = 1132068864;
     v53 = [v54 sf_withPriority:v24];
     v76[6] = v53;
-    v52 = [(UILabel *)v8->_labelWhenExpanded leadingAnchor];
-    v51 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    leadingAnchor5 = [(UILabel *)v8->_labelWhenExpanded leadingAnchor];
+    leadingAnchor6 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
+    v50 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     LODWORD(v25) = 1131413504;
     v49 = [v50 sf_withPriority:v25];
     v76[7] = v49;
     v76[8] = v8->_labelWhenExpandedLeadingConstraint;
-    v48 = [(UILabel *)v8->_labelWhenCollapsed leadingAnchor];
-    v47 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    leadingAnchor7 = [(UILabel *)v8->_labelWhenCollapsed leadingAnchor];
+    leadingAnchor8 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
+    v46 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     LODWORD(v26) = 1131413504;
     v45 = [v46 sf_withPriority:v26];
     v76[9] = v45;
     v76[10] = v8->_labelWhenCollapsedLeadingConstraint;
-    v44 = [(UIImageView *)v8->_imageView leadingAnchor];
-    v43 = [(UILabel *)v8->_labelWhenExpanded trailingAnchor];
-    v42 = [v44 constraintEqualToSystemSpacingAfterAnchor:v43 multiplier:0.75];
+    leadingAnchor9 = [(UIImageView *)v8->_imageView leadingAnchor];
+    trailingAnchor = [(UILabel *)v8->_labelWhenExpanded trailingAnchor];
+    v42 = [leadingAnchor9 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:0.75];
     v76[11] = v42;
-    v41 = [(UIImageView *)v8->_imageView leadingAnchor];
-    v40 = [(UILabel *)v8->_labelWhenCollapsed trailingAnchor];
-    v27 = [v41 constraintEqualToSystemSpacingAfterAnchor:v40 multiplier:0.75];
+    leadingAnchor10 = [(UIImageView *)v8->_imageView leadingAnchor];
+    trailingAnchor2 = [(UILabel *)v8->_labelWhenCollapsed trailingAnchor];
+    v27 = [leadingAnchor10 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:0.75];
     v76[12] = v27;
-    v28 = [(UIImageView *)v8->_imageView leadingAnchor];
-    v29 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    leadingAnchor11 = [(UIImageView *)v8->_imageView leadingAnchor];
+    leadingAnchor12 = [(SFSectionDisclosureButton *)v8 leadingAnchor];
+    v30 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     LODWORD(v31) = 1132068864;
     v32 = [v30 sf_withPriority:v31];
     v76[13] = v32;
-    v33 = [(UIImageView *)v8->_imageView trailingAnchor];
-    v34 = [(SFSectionDisclosureButton *)v8 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    trailingAnchor3 = [(UIImageView *)v8->_imageView trailingAnchor];
+    trailingAnchor4 = [(SFSectionDisclosureButton *)v8 trailingAnchor];
+    v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v76[14] = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:15];
     [v57 activateConstraints:v36];
 
     [(SFSectionDisclosureButton *)v8 buttonShapesEnabledDidChange];
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v8 selector:sel_buttonShapesEnabledDidChange name:*MEMORY[0x1E69DD8A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_buttonShapesEnabledDidChange name:*MEMORY[0x1E69DD8A8] object:0];
 
     [(SFSectionDisclosureButton *)v8 updateExpanded];
     [(SFSectionDisclosureButton *)v8 addTarget:v8 action:sel_toggleExpanded forControlEvents:0x2000];
@@ -130,11 +130,11 @@
   return v8;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(SFSectionDisclosureButton *)self updateExpanded];
   }
 }
@@ -164,9 +164,9 @@ LABEL_5:
 
 LABEL_6:
   v8 = v9;
-  v6 = [(SFSectionDisclosureButton *)self chevron];
+  chevron = [(SFSectionDisclosureButton *)self chevron];
   v7 = v8;
-  [v6 setTransform:&v7];
+  [chevron setTransform:&v7];
 }
 
 - (void)toggleExpanded
@@ -192,8 +192,8 @@ uint64_t __43__SFSectionDisclosureButton_toggleExpanded__block_invoke(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD8A8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD8A8] object:0];
 
   v4.receiver = self;
   v4.super_class = SFSectionDisclosureButton;
@@ -310,18 +310,18 @@ uint64_t __43__SFSectionDisclosureButton_toggleExpanded__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setLabelHidden:(BOOL)a3
+- (void)setLabelHidden:(BOOL)hidden
 {
-  if (self->_labelHidden != a3)
+  if (self->_labelHidden != hidden)
   {
-    v4 = a3;
-    self->_labelHidden = a3;
+    hiddenCopy = hidden;
+    self->_labelHidden = hidden;
     [(UILabel *)self->_labelWhenExpanded setHidden:?];
-    [(UILabel *)self->_labelWhenCollapsed setHidden:v4];
-    [(NSLayoutConstraint *)self->_labelWhenExpandedLeadingConstraint setActive:v4 ^ 1];
+    [(UILabel *)self->_labelWhenCollapsed setHidden:hiddenCopy];
+    [(NSLayoutConstraint *)self->_labelWhenExpandedLeadingConstraint setActive:hiddenCopy ^ 1];
     labelWhenCollapsedLeadingConstraint = self->_labelWhenCollapsedLeadingConstraint;
 
-    [(NSLayoutConstraint *)labelWhenCollapsedLeadingConstraint setActive:v4 ^ 1];
+    [(NSLayoutConstraint *)labelWhenCollapsedLeadingConstraint setActive:hiddenCopy ^ 1];
   }
 }
 

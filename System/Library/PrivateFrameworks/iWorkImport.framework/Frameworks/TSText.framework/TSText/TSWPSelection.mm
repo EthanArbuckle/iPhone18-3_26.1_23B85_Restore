@@ -1,51 +1,51 @@
 @interface TSWPSelection
-+ (BOOL)p_checkEndOfLineFlagForRange:(_NSRange *)a3 leadingEdge:(BOOL *)a4 type:(int64_t *)a5 endOfLine:(BOOL)a6 storage:(id)a7;
-+ (id)selectionFromWPSelection:(id)a3;
-+ (id)selectionWithRange:(_NSRange)a3;
-+ (id)selectionWithRange:(_NSRange)a3 type:(int64_t)a4 leadingEdge:(BOOL)a5 storage:(id)a6;
-+ (id)selectionWithRanges:(id)a3;
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3;
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 withOptions:(unint64_t)a4;
-- (BOOL)intersectsRange:(_NSRange)a3;
++ (BOOL)p_checkEndOfLineFlagForRange:(_NSRange *)range leadingEdge:(BOOL *)edge type:(int64_t *)type endOfLine:(BOOL)line storage:(id)storage;
++ (id)selectionFromWPSelection:(id)selection;
++ (id)selectionWithRange:(_NSRange)range;
++ (id)selectionWithRange:(_NSRange)range type:(int64_t)type leadingEdge:(BOOL)edge storage:(id)storage;
++ (id)selectionWithRanges:(id)ranges;
+- (BOOL)containsCharacterAtIndex:(unint64_t)index;
+- (BOOL)containsCharacterAtIndex:(unint64_t)index withOptions:(unint64_t)options;
+- (BOOL)intersectsRange:(_NSRange)range;
 - (BOOL)isDiscontiguous;
-- (BOOL)isEquivalentForInsertionStyle:(id)a3;
+- (BOOL)isEquivalentForInsertionStyle:(id)style;
 - (BOOL)isInsertionPoint;
 - (BOOL)isValid;
-- (BOOL)p_isEqual:(id)a3;
+- (BOOL)p_isEqual:(id)equal;
 - (BOOL)p_isRange;
 - (BOOL)validVisualRanges;
 - (NSString)description;
 - (TSWPRangeArray)visualRanges;
-- (TSWPSelection)initWithArchive:(const void *)a3;
-- (TSWPSelection)initWithRangeArray:(id)a3;
-- (TSWPSelection)initWithType:(int64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int64_t)a5 caretAffinity:(int64_t)a6 caretIsLeadingEdge:(BOOL)a7 leadingCharIndex:(unint64_t)a8;
-- (TSWPSelection)initWithType:(int64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int64_t)a5 caretAffinity:(int64_t)a6 caretIsLeadingEdge:(BOOL)a7 storage:(id)a8;
-- (TSWPSelection)initWithType:(int64_t)a3 ranges:(id)a4;
-- (TSWPSelection)initWithType:(int64_t)a3 ranges:(id)a4 validVisualRanges:(BOOL)a5 styleInsertionBehavior:(int64_t)a6 caretAffinity:(int64_t)a7 caretIsLeadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9 headCharIndex:(unint64_t)a10 tailCharIndex:(unint64_t)a11;
+- (TSWPSelection)initWithArchive:(const void *)archive;
+- (TSWPSelection)initWithRangeArray:(id)array;
+- (TSWPSelection)initWithType:(int64_t)type range:(_NSRange)range styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index;
+- (TSWPSelection)initWithType:(int64_t)type range:(_NSRange)range styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge storage:(id)storage;
+- (TSWPSelection)initWithType:(int64_t)type ranges:(id)ranges;
+- (TSWPSelection)initWithType:(int64_t)type ranges:(id)ranges validVisualRanges:(BOOL)visualRanges styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index headCharIndex:(unint64_t)self0 tailCharIndex:(unint64_t)self1;
 - (_NSRange)DEPRECATED_range;
 - (_NSRange)firstRange;
 - (_NSRange)insertionPointRange;
 - (_NSRange)superRange;
 - (_NSRange)visualDefinitionRange;
-- (id)constrainToRange:(_NSRange)a3;
-- (id)copyWithNewLogicalRanges:(id)a3;
-- (id)copyWithNewRange:(_NSRange)a3 newCaretAffinity:(int64_t)a4;
-- (id)copyWithNewStyleInsertionBehavior:(int64_t)a3 newCaretAffinity:(int64_t)a4;
-- (id)copyWithNewType:(int64_t)a3;
-- (id)copyWithNewType:(int64_t)a3 range:(_NSRange)a4;
-- (id)copyWithNewVisualTypeRange:(_NSRange)a3 head:(unint64_t)a4 tail:(unint64_t)a5;
-- (id)copyWithVisualRanges:(id)a3 headCharIndex:(unint64_t)a4 tailCharIndex:(unint64_t)a5 rightToLeft:(BOOL)a6 sameLine:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)p_copyWithClass:(Class)a3;
+- (id)constrainToRange:(_NSRange)range;
+- (id)copyWithNewLogicalRanges:(id)ranges;
+- (id)copyWithNewRange:(_NSRange)range newCaretAffinity:(int64_t)affinity;
+- (id)copyWithNewStyleInsertionBehavior:(int64_t)behavior newCaretAffinity:(int64_t)affinity;
+- (id)copyWithNewType:(int64_t)type;
+- (id)copyWithNewType:(int64_t)type range:(_NSRange)range;
+- (id)copyWithNewVisualTypeRange:(_NSRange)range head:(unint64_t)head tail:(unint64_t)tail;
+- (id)copyWithVisualRanges:(id)ranges headCharIndex:(unint64_t)index tailCharIndex:(unint64_t)charIndex rightToLeft:(BOOL)left sameLine:(BOOL)line;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)p_copyWithClass:(Class)class;
 - (id)shortDescription;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 - (unint64_t)rangeCount;
-- (void)enumerateRanges:(id)a3;
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)reverseEnumerateRanges:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setI_logicalRanges:(id)a3;
+- (void)enumerateRanges:(id)ranges;
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block;
+- (void)reverseEnumerateRanges:(id)ranges;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setI_logicalRanges:(id)ranges;
 @end
 
 @implementation TSWPSelection
@@ -84,12 +84,12 @@
   return result;
 }
 
-- (TSWPSelection)initWithType:(int64_t)a3 ranges:(id)a4 validVisualRanges:(BOOL)a5 styleInsertionBehavior:(int64_t)a6 caretAffinity:(int64_t)a7 caretIsLeadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9 headCharIndex:(unint64_t)a10 tailCharIndex:(unint64_t)a11
+- (TSWPSelection)initWithType:(int64_t)type ranges:(id)ranges validVisualRanges:(BOOL)visualRanges styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index headCharIndex:(unint64_t)self0 tailCharIndex:(unint64_t)self1
 {
-  v154 = a5;
-  v15 = a4;
+  visualRangesCopy = visualRanges;
+  rangesCopy = ranges;
   v18 = MEMORY[0x277D81490];
-  if (!v15)
+  if (!rangesCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
@@ -97,14 +97,14 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v23, v20, v22, 144, 0, "Bad parameter: ranges must be non-nil");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
-    v15 = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, v26, *v18, v18[1]);
+    rangesCopy = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, v26, *v18, v18[1]);
   }
 
-  v27 = v15;
-  v151 = a8;
-  v149 = a6;
-  v150 = a7;
-  v28 = objc_msgSend_superRange(v15, v16, v17);
+  v27 = rangesCopy;
+  edgeCopy = edge;
+  behaviorCopy = behavior;
+  affinityCopy = affinity;
+  v28 = objc_msgSend_superRange(rangesCopy, v16, v17);
   v31 = v28;
   v32 = v29;
   v34 = v28 == *v18 && v29 == v18[1];
@@ -124,9 +124,9 @@
     v27 = v44;
   }
 
-  if (v154 && v32)
+  if (visualRangesCopy && v32)
   {
-    if (a10 == 0x7FFFFFFFFFFFFFFFLL)
+    if (charIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v45 = MEMORY[0x277D81150];
       v46 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
@@ -136,7 +136,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51);
     }
 
-    if (a11 == 0x7FFFFFFFFFFFFFFFLL)
+    if (tailCharIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v52 = MEMORY[0x277D81150];
       v53 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
@@ -146,8 +146,8 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v57, v58);
     }
 
-    v60 = a10 != 0x7FFFFFFFFFFFFFFFLL && a11 != 0x7FFFFFFFFFFFFFFFLL;
-    v154 = v60;
+    v60 = charIndex != 0x7FFFFFFFFFFFFFFFLL && tailCharIndex != 0x7FFFFFFFFFFFFFFFLL;
+    visualRangesCopy = v60;
   }
 
   v155.receiver = self;
@@ -157,7 +157,7 @@
   v65 = v61;
   if (v61)
   {
-    v61->_type = a3;
+    v61->_type = type;
     if (!objc_msgSend_rangeCount(v27, v62, v63))
     {
       v68 = MEMORY[0x277D81150];
@@ -186,7 +186,7 @@
     ranges = v65->_ranges;
     v65->_ranges = v79;
 
-    v83 = a3 != 7 || v154;
+    v83 = type != 7 || visualRangesCopy;
     if (v83)
     {
       Range = objc_msgSend_superRange(v27, v81, v82);
@@ -216,33 +216,33 @@
       v93 = 0;
     }
 
-    v94 = a9;
-    v95 = a9 != 0x7FFFFFFFFFFFFFFFLL && a9 >= 0x7FFFFFFF;
+    indexCopy = index;
+    v95 = index != 0x7FFFFFFFFFFFFFFFLL && index >= 0x7FFFFFFF;
     v96 = !v95;
     if (v95)
     {
       v97 = MEMORY[0x277D81150];
       v98 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v91, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
       v100 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v99, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPSelection.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v97, v101, v98, v100, 213, 0, "Illegal leadingCharIndex (%lu)", a9);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v97, v101, v98, v100, 213, 0, "Illegal leadingCharIndex (%lu)", index);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v102, v103);
     }
 
     v104 = !v93;
-    if (a9 != 0x7FFFFFFFFFFFFFFFLL)
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
       v104 = 1;
     }
 
     if ((v104 & 1) == 0)
     {
-      v94 = objc_msgSend_firstRange(v27, v91, v92);
+      indexCopy = objc_msgSend_firstRange(v27, v91, v92);
     }
 
     if (v96)
     {
-      v105 = v94;
+      v105 = indexCopy;
     }
 
     else
@@ -256,23 +256,23 @@
     }
 
     v65->_leadingCharIndex = v105;
-    v65->_caretIsLeadingEdge = objc_msgSend_isInsertionPoint(v65, v91, v92) ^ 1 | v151;
-    v65->_styleInsertionBehavior = v149;
-    v65->_caretLFAffinity = v150;
-    v109 = a11 == 0x7FFFFFFFFFFFFFFFLL || a11 < 0x7FFFFFFF;
-    if (a10 != 0x7FFFFFFFFFFFFFFFLL && a10 >= 0x7FFFFFFF)
+    v65->_caretIsLeadingEdge = objc_msgSend_isInsertionPoint(v65, v91, v92) ^ 1 | edgeCopy;
+    v65->_styleInsertionBehavior = behaviorCopy;
+    v65->_caretLFAffinity = affinityCopy;
+    v109 = tailCharIndex == 0x7FFFFFFFFFFFFFFFLL || tailCharIndex < 0x7FFFFFFF;
+    if (charIndex != 0x7FFFFFFFFFFFFFFFLL && charIndex >= 0x7FFFFFFF)
     {
       v110 = MEMORY[0x277D81150];
       v111 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v106, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
       v113 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v112, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPSelection.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v110, v114, v111, v113, 227, 0, "Illegal headCharIndex (%lu)", a10);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v110, v114, v111, v113, 227, 0, "Illegal headCharIndex (%lu)", charIndex);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v115, v116);
     }
 
     if (v109)
     {
-      v117 = a11;
+      tailCharIndexCopy = tailCharIndex;
     }
 
     else
@@ -280,21 +280,21 @@
       v118 = MEMORY[0x277D81150];
       v119 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v106, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
       v121 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v120, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPSelection.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v118, v122, v119, v121, 228, 0, "Illegal tailCharIndex (%lu)", a11);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v118, v122, v119, v121, 228, 0, "Illegal tailCharIndex (%lu)", tailCharIndex);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v123, v124);
-      v117 = 0x7FFFFFFFFFFFFFFFLL;
+      tailCharIndexCopy = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v125 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a10 < 0x7FFFFFFF)
+    charIndexCopy = 0x7FFFFFFFFFFFFFFFLL;
+    if (charIndex < 0x7FFFFFFF)
     {
-      v125 = a10;
+      charIndexCopy = charIndex;
     }
 
-    v65->_headCharIndex = v125;
-    v65->_tailCharIndex = v117;
-    if (v154 && ((a3 == 7) & isRange) == 0)
+    v65->_headCharIndex = charIndexCopy;
+    v65->_tailCharIndex = tailCharIndexCopy;
+    if (visualRangesCopy && ((type == 7) & isRange) == 0)
     {
       v126 = MEMORY[0x277D81150];
       v127 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v106, "[TSWPSelection initWithType:ranges:validVisualRanges:styleInsertionBehavior:caretAffinity:caretIsLeadingEdge:leadingCharIndex:headCharIndex:tailCharIndex:]");
@@ -304,8 +304,8 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v131, v132);
     }
 
-    v133 = v154;
-    if (a3 != 7)
+    v133 = visualRangesCopy;
+    if (type != 7)
     {
       v133 = 0;
     }
@@ -331,28 +331,28 @@
   return v65;
 }
 
-- (TSWPSelection)initWithType:(int64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int64_t)a5 caretAffinity:(int64_t)a6 caretIsLeadingEdge:(BOOL)a7 leadingCharIndex:(unint64_t)a8
+- (TSWPSelection)initWithType:(int64_t)type range:(_NSRange)range styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index
 {
-  v8 = a7;
-  v13 = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, a2, a4.location, a4.length);
-  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v14, a3, v13, 0, a5, a6, v8, a8, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+  edgeCopy = edge;
+  v13 = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, a2, range.location, range.length);
+  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v14, type, v13, 0, behavior, affinity, edgeCopy, index, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
 
   return IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex;
 }
 
-- (TSWPSelection)initWithType:(int64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int64_t)a5 caretAffinity:(int64_t)a6 caretIsLeadingEdge:(BOOL)a7 storage:(id)a8
+- (TSWPSelection)initWithType:(int64_t)type range:(_NSRange)range styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge storage:(id)storage
 {
-  v8 = a7;
-  length = a4.length;
-  location = a4.location;
-  CharacterIndex = a4.location;
-  v16 = a8;
-  v19 = v16;
+  edgeCopy = edge;
+  length = range.length;
+  location = range.location;
+  CharacterIndex = range.location;
+  storageCopy = storage;
+  v19 = storageCopy;
   v29 = length;
-  v30 = self;
-  if (a3 != 7 || v16 || v8)
+  selfCopy = self;
+  if (type != 7 || storageCopy || edgeCopy)
   {
-    if (v16 && !v8 && location < objc_msgSend_length(v16, v17, v18))
+    if (storageCopy && !edgeCopy && location < objc_msgSend_length(storageCopy, v17, v18))
     {
       CharacterIndex = objc_msgSend_nextCharacterIndex_(v19, v17, CharacterIndex);
     }
@@ -368,17 +368,17 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
   }
 
-  IsLeadingEdge_leadingCharIndex = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(v30, v17, a3, location, v29, a5, a6, v8, CharacterIndex);
+  IsLeadingEdge_leadingCharIndex = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(selfCopy, v17, type, location, v29, behavior, affinity, edgeCopy, CharacterIndex);
 
   return IsLeadingEdge_leadingCharIndex;
 }
 
-- (TSWPSelection)initWithRangeArray:(id)a3
+- (TSWPSelection)initWithRangeArray:(id)array
 {
-  v4 = a3;
-  Range = objc_msgSend_firstRange(v4, v5, v6);
+  arrayCopy = array;
+  Range = objc_msgSend_firstRange(arrayCopy, v5, v6);
   v9 = v8;
-  v11 = objc_msgSend_rangeCount(v4, v8, v10);
+  v11 = objc_msgSend_rangeCount(arrayCopy, v8, v10);
   if (v9)
   {
     v13 = 0;
@@ -391,12 +391,12 @@
 
   if (v13)
   {
-    IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v12, 8, v4, 0, 0, 0, 1, Range, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+    IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v12, 8, arrayCopy, 0, 0, 0, 1, Range, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v12, 8, v4, 0, 0, 0, 1, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+    IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v12, 8, arrayCopy, 0, 0, 0, 1, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
   }
 
   v15 = IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex;
@@ -404,10 +404,10 @@
   return v15;
 }
 
-- (TSWPSelection)initWithType:(int64_t)a3 ranges:(id)a4
+- (TSWPSelection)initWithType:(int64_t)type ranges:(id)ranges
 {
-  v7 = a4;
-  if (a3 == 7)
+  rangesCopy = ranges;
+  if (type == 7)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSWPSelection initWithType:ranges:]");
@@ -417,12 +417,12 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v6, a3, v7, 0, 0, 0, 1, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(self, v6, type, rangesCopy, 0, 0, 0, 1, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
 
   return IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex;
 }
 
-- (TSWPSelection)initWithArchive:(const void *)a3
+- (TSWPSelection)initWithArchive:(const void *)archive
 {
   v26.receiver = self;
   v26.super_class = TSWPSelection;
@@ -430,11 +430,11 @@
   v6 = v4;
   if (v4)
   {
-    v7 = *(a3 + 4);
-    v8 = a3 + 84;
+    v7 = *(archive + 4);
+    v8 = archive + 84;
     if ((v7 & 0x80) == 0)
     {
-      v8 = a3 + 64;
+      v8 = archive + 64;
     }
 
     v4->_type = *v8;
@@ -451,7 +451,7 @@
 
     v6->_visualDefinitionRange.location = v9;
     v6->_visualDefinitionRange.length = v10;
-    if (*(a3 + 8) < 1)
+    if (*(archive + 8) < 1)
     {
       v17 = 0;
     }
@@ -459,18 +459,18 @@
     else
     {
       v13 = objc_alloc_init(TSWPMutableRangeArray);
-      if (*(a3 + 8) >= 1)
+      if (*(archive + 8) >= 1)
       {
         v14 = 0;
         do
         {
-          sub_276D742D8(a3 + 24, v14);
+          sub_276D742D8(archive + 24, v14);
           v15 = TSPNSRangeFromMessage();
           objc_msgSend_addRange_(v13, v16, v15, v16);
           ++v14;
         }
 
-        while (v14 < *(a3 + 8));
+        while (v14 < *(archive + 8));
       }
 
       v17 = objc_msgSend_copy(v13, v11, v12);
@@ -486,16 +486,16 @@
 
     objc_storeStrong(&v6->_ranges, v17);
     v6->_validVisualRanges = 0;
-    v22 = *(a3 + 4);
-    v6->_styleInsertionBehavior = *(a3 + 17) & (v22 << 28 >> 31);
-    v23 = *(a3 + 18);
+    v22 = *(archive + 4);
+    v6->_styleInsertionBehavior = *(archive + 17) & (v22 << 28 >> 31);
+    v23 = *(archive + 18);
     if ((v22 & 0x10) == 0)
     {
       v23 = 1;
     }
 
     v6->_caretLFAffinity = v23;
-    v6->_caretIsLeadingEdge = ((v22 & 0x20) == 0) | *(a3 + 76) & 1;
+    v6->_caretIsLeadingEdge = ((v22 & 0x20) == 0) | *(archive + 76) & 1;
     if ((v22 & 0x40) != 0)
     {
       v24 = TSPNSUIntegerFromUInt32();
@@ -515,16 +515,16 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   objc_msgSend_p_copyWithClass_(self, v5, v4);
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (id)p_copyWithClass:(Class)a3
+- (id)p_copyWithClass:(Class)class
 {
-  v4 = [a3 alloc];
+  v4 = [class alloc];
   v7 = objc_msgSend_type(self, v5, v6);
   ranges = self->_ranges;
   valid = objc_msgSend_validVisualRanges(self, v9, v10);
@@ -539,47 +539,47 @@
   return IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex;
 }
 
-+ (id)selectionWithRange:(_NSRange)a3
++ (id)selectionWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [a1 alloc];
+  length = range.length;
+  location = range.location;
+  v5 = [self alloc];
   v7 = objc_msgSend_initWithRange_(v5, v6, location, length);
 
   return v7;
 }
 
-+ (id)selectionWithRange:(_NSRange)a3 type:(int64_t)a4 leadingEdge:(BOOL)a5 storage:(id)a6
++ (id)selectionWithRange:(_NSRange)range type:(int64_t)type leadingEdge:(BOOL)edge storage:(id)storage
 {
-  v6 = a5;
-  length = a3.length;
-  location = a3.location;
-  v11 = a6;
-  v12 = [a1 alloc];
-  IsLeadingEdge_storage = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_storage_(v12, v13, a4, location, length, 0, 0, v6, v11);
+  edgeCopy = edge;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v12 = [self alloc];
+  IsLeadingEdge_storage = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_storage_(v12, v13, type, location, length, 0, 0, edgeCopy, storageCopy);
 
   return IsLeadingEdge_storage;
 }
 
-+ (id)selectionWithRanges:(id)a3
++ (id)selectionWithRanges:(id)ranges
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithRangeArray_(v5, v6, v4);
+  rangesCopy = ranges;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithRangeArray_(v5, v6, rangesCopy);
 
   return v7;
 }
 
-+ (id)selectionFromWPSelection:(id)a3
++ (id)selectionFromWPSelection:(id)selection
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  selectionCopy = selection;
+  v6 = selectionCopy;
+  if (selectionCopy)
   {
-    v8 = v4;
-    if ((objc_msgSend_isMemberOfClass_(v4, v5, a1) & 1) == 0)
+    v8 = selectionCopy;
+    if ((objc_msgSend_isMemberOfClass_(selectionCopy, v5, self) & 1) == 0)
     {
-      v8 = objc_msgSend_p_copyWithClass_(v6, v7, a1);
+      v8 = objc_msgSend_p_copyWithClass_(v6, v7, self);
     }
   }
 
@@ -591,10 +591,10 @@
   return v8;
 }
 
-- (BOOL)p_isEqual:(id)a3
+- (BOOL)p_isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqualToRangeArray = 1;
   }
@@ -644,9 +644,9 @@
   return v24;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7 && objc_msgSend_isValid(self, v5, v6) && objc_msgSend_isValid(v7, v8, v9))
@@ -734,10 +734,10 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)isEquivalentForInsertionStyle:(id)a3
+- (BOOL)isEquivalentForInsertionStyle:(id)style
 {
-  v4 = a3;
-  if (v4 == self)
+  styleCopy = style;
+  if (styleCopy == self)
   {
     v12 = 1;
   }
@@ -750,9 +750,9 @@ LABEL_7:
       v7 = objc_msgSend_DEPRECATED_range(self, v5, v6);
       v9 = v8;
       v12 = 0;
-      if (v7 == objc_msgSend_DEPRECATED_range(v4, v8, v10) && v9 == v11)
+      if (v7 == objc_msgSend_DEPRECATED_range(styleCopy, v8, v10) && v9 == v11)
       {
-        v12 = self->_type == v4->_type;
+        v12 = self->_type == styleCopy->_type;
       }
     }
 
@@ -765,28 +765,28 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyWithNewType:(int64_t)a3 range:(_NSRange)a4
+- (id)copyWithNewType:(int64_t)type range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8 = objc_alloc(objc_opt_class());
-  return objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(v8, v9, a3, location, length, self->_styleInsertionBehavior, self->_caretLFAffinity, 1, location);
+  return objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(v8, v9, type, location, length, self->_styleInsertionBehavior, self->_caretLFAffinity, 1, location);
 }
 
-- (id)copyWithNewVisualTypeRange:(_NSRange)a3 head:(unint64_t)a4 tail:(unint64_t)a5
+- (id)copyWithNewVisualTypeRange:(_NSRange)range head:(unint64_t)head tail:(unint64_t)tail
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10 = objc_alloc(objc_opt_class());
   IsLeadingEdge_leadingCharIndex = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(v10, v11, 7, location, length, self->_styleInsertionBehavior, self->_caretLFAffinity, self->_caretIsLeadingEdge, self->_leadingCharIndex);
-  objc_msgSend_i_setHeadCharIndex_tailCharIndex_(IsLeadingEdge_leadingCharIndex, v13, a4, a5);
+  objc_msgSend_i_setHeadCharIndex_tailCharIndex_(IsLeadingEdge_leadingCharIndex, v13, head, tail);
   objc_msgSend_setVisualDefinitionRange_(IsLeadingEdge_leadingCharIndex, v14, location, length);
   return IsLeadingEdge_leadingCharIndex;
 }
 
-- (id)copyWithNewType:(int64_t)a3
+- (id)copyWithNewType:(int64_t)type
 {
-  if (a3 == 7)
+  if (type == 7)
   {
     v5 = objc_msgSend_visualDefinitionRange(self, a2, 7);
     objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, v6, v5, v6);
@@ -794,23 +794,23 @@ LABEL_7:
 
   else
   {
-    objc_msgSend_ranges(self, a2, a3);
+    objc_msgSend_ranges(self, a2, type);
   }
   v7 = ;
   v8 = objc_alloc(objc_opt_class());
-  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(v8, v9, a3, v7, 0, self->_styleInsertionBehavior, self->_caretLFAffinity, self->_caretIsLeadingEdge, self->_leadingCharIndex, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(v8, v9, type, v7, 0, self->_styleInsertionBehavior, self->_caretLFAffinity, self->_caretIsLeadingEdge, self->_leadingCharIndex, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
   v13 = objc_msgSend_visualDefinitionRange(self, v11, v12);
   objc_msgSend_setVisualDefinitionRange_(IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex, v14, v13, v14);
 
   return IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex;
 }
 
-- (id)copyWithNewRange:(_NSRange)a3 newCaretAffinity:(int64_t)a4
+- (id)copyWithNewRange:(_NSRange)range newCaretAffinity:(int64_t)affinity
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = objc_alloc(objc_opt_class());
-  IsLeadingEdge_leadingCharIndex = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(v8, v9, self->_type, location, length, self->_styleInsertionBehavior, a4, 1, location);
+  IsLeadingEdge_leadingCharIndex = objc_msgSend_initWithType_range_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_(v8, v9, self->_type, location, length, self->_styleInsertionBehavior, affinity, 1, location);
   if (IsLeadingEdge_leadingCharIndex)
   {
     if (location == objc_msgSend_superRange(self, v10, v11) && length == v13 || location == objc_msgSend_visualDefinitionRange(self, v13, v14) && length == v13)
@@ -846,11 +846,11 @@ LABEL_7:
   return IsLeadingEdge_leadingCharIndex;
 }
 
-- (id)copyWithNewStyleInsertionBehavior:(int64_t)a3 newCaretAffinity:(int64_t)a4
+- (id)copyWithNewStyleInsertionBehavior:(int64_t)behavior newCaretAffinity:(int64_t)affinity
 {
   caretIsLeadingEdge = self->_caretIsLeadingEdge;
   v10 = self->_ranges;
-  if (!a4 && self->_caretLFAffinity == 1)
+  if (!affinity && self->_caretLFAffinity == 1)
   {
     if (objc_msgSend_isInsertionPoint(self, v8, v9))
     {
@@ -867,7 +867,7 @@ LABEL_7:
   }
 
   v13 = objc_alloc(objc_opt_class());
-  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(v13, v14, self->_type, v10, 0, a3, a4, caretIsLeadingEdge, self->_leadingCharIndex, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(v13, v14, self->_type, v10, 0, behavior, affinity, caretIsLeadingEdge, self->_leadingCharIndex, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
   if (self->_type == 7)
   {
     v18 = objc_msgSend_superRange(v10, v15, v16);
@@ -877,12 +877,12 @@ LABEL_7:
   return IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex;
 }
 
-- (id)constrainToRange:(_NSRange)a3
+- (id)constrainToRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
-  v8 = objc_msgSend_superRange(v5, v6, v7);
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  v8 = objc_msgSend_superRange(selfCopy, v6, v7);
   v10 = v9;
   v11 = TSUIntersectionRangeWithEdge();
   v14 = v11;
@@ -893,12 +893,12 @@ LABEL_7:
     {
       if (&v10[v8] <= location + length)
       {
-        v22 = objc_msgSend_copyWithNewRange_(v5, v12, location, 0);
+        v22 = objc_msgSend_copyWithNewRange_(selfCopy, v12, location, 0);
       }
 
       else
       {
-        v22 = objc_msgSend_copyWithNewRange_(v5, v12, location + length, 0);
+        v22 = objc_msgSend_copyWithNewRange_(selfCopy, v12, location + length, 0);
       }
 
       v21 = v22;
@@ -906,28 +906,28 @@ LABEL_7:
 
     else
     {
-      v17 = objc_msgSend_ranges(v5, v12, v13);
+      v17 = objc_msgSend_ranges(selfCopy, v12, v13);
       v19 = objc_msgSend_intersection_(v17, v18, v14, v15);
 
-      v21 = objc_msgSend_copyWithNewLogicalRanges_(v5, v20, v19);
-      v5 = v19;
+      v21 = objc_msgSend_copyWithNewLogicalRanges_(selfCopy, v20, v19);
+      selfCopy = v19;
     }
 
-    v5 = v21;
+    selfCopy = v21;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)copyWithNewLogicalRanges:(id)a3
+- (id)copyWithNewLogicalRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v7 = objc_msgSend_ranges(self, v5, v6);
-  isEqualToRangeArray = objc_msgSend_isEqualToRangeArray_(v4, v8, v7);
+  isEqualToRangeArray = objc_msgSend_isEqualToRangeArray_(rangesCopy, v8, v7);
 
   if (isEqualToRangeArray)
   {
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -943,27 +943,27 @@ LABEL_7:
       v15 = objc_msgSend_copyWithNewType_(self, v19, v18);
     }
 
-    v12 = v15;
-    v20 = objc_msgSend_superRange(v4, v16, v17);
+    selfCopy = v15;
+    v20 = objc_msgSend_superRange(rangesCopy, v16, v17);
     if ((v21 != *(MEMORY[0x277D81490] + 8) || v20 != *MEMORY[0x277D81490]) && v21 == 0)
     {
-      objc_msgSend_setP_leadingCharIndex_(v12, v21, v20);
+      objc_msgSend_setP_leadingCharIndex_(selfCopy, v21, v20);
     }
 
-    objc_msgSend_setI_logicalRanges_(v12, v21, v4);
-    v26 = objc_msgSend_superRange(v4, v24, v25);
-    objc_msgSend_setVisualDefinitionRange_(v12, v27, v26, v27);
-    objc_msgSend_setI_validVisualRanges_(v12, v28, 0);
+    objc_msgSend_setI_logicalRanges_(selfCopy, v21, rangesCopy);
+    v26 = objc_msgSend_superRange(rangesCopy, v24, v25);
+    objc_msgSend_setVisualDefinitionRange_(selfCopy, v27, v26, v27);
+    objc_msgSend_setI_validVisualRanges_(selfCopy, v28, 0);
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)copyWithVisualRanges:(id)a3 headCharIndex:(unint64_t)a4 tailCharIndex:(unint64_t)a5 rightToLeft:(BOOL)a6 sameLine:(BOOL)a7
+- (id)copyWithVisualRanges:(id)ranges headCharIndex:(unint64_t)index tailCharIndex:(unint64_t)charIndex rightToLeft:(BOOL)left sameLine:(BOOL)line
 {
-  v42 = a7;
-  v7 = a6;
-  v43 = a3;
+  lineCopy = line;
+  leftCopy = left;
+  rangesCopy = ranges;
   if (self->_type != 7)
   {
     v12 = MEMORY[0x277D81150];
@@ -974,7 +974,7 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPSelection copyWithVisualRanges:headCharIndex:tailCharIndex:rightToLeft:sameLine:]");
@@ -984,7 +984,7 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
   }
 
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (charIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v26 = MEMORY[0x277D81150];
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPSelection copyWithVisualRanges:headCharIndex:tailCharIndex:rightToLeft:sameLine:]");
@@ -994,23 +994,23 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32);
   }
 
-  if (v7 && v42)
+  if (leftCopy && lineCopy)
   {
-    v33 = a5;
+    indexCopy = charIndex;
   }
 
   else
   {
-    v33 = a4;
+    indexCopy = index;
   }
 
-  if (v7 && v42)
+  if (leftCopy && lineCopy)
   {
-    a5 = a4;
+    charIndex = index;
   }
 
   v34 = objc_alloc(objc_opt_class());
-  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(v34, v35, self->_type, v43, 1, self->_styleInsertionBehavior, self->_caretLFAffinity, self->_caretIsLeadingEdge, self->_leadingCharIndex, v33, a5);
+  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex = objc_msgSend_initWithType_ranges_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_(v34, v35, self->_type, rangesCopy, 1, self->_styleInsertionBehavior, self->_caretLFAffinity, self->_caretIsLeadingEdge, self->_leadingCharIndex, indexCopy, charIndex);
   v39 = objc_msgSend_visualDefinitionRange(self, v37, v38);
   objc_msgSend_setVisualDefinitionRange_(IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex, v40, v39, v40);
 
@@ -1099,47 +1099,47 @@ LABEL_7:
   return result;
 }
 
-- (void)enumerateRanges:(id)a3
+- (void)enumerateRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   if (objc_msgSend_isInsertionPoint(self, v5, v6))
   {
     v13 = 0;
     v9 = objc_msgSend_insertionPointRange(self, v7, v8);
-    v4[2](v4, v9, v10, 0, &v13);
+    rangesCopy[2](rangesCopy, v9, v10, 0, &v13);
   }
 
   else
   {
     v11 = objc_msgSend_ranges(self, v7, v8);
-    objc_msgSend_enumerateRanges_(v11, v12, v4);
+    objc_msgSend_enumerateRanges_(v11, v12, rangesCopy);
   }
 }
 
-- (void)reverseEnumerateRanges:(id)a3
+- (void)reverseEnumerateRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   if (objc_msgSend_isInsertionPoint(self, v5, v6))
   {
     v13 = 0;
     v9 = objc_msgSend_insertionPointRange(self, v7, v8);
-    v4[2](v4, v9, v10, 0, &v13);
+    rangesCopy[2](rangesCopy, v9, v10, 0, &v13);
   }
 
   else
   {
     v11 = objc_msgSend_ranges(self, v7, v8);
-    objc_msgSend_reverseEnumerateRanges_(v11, v12, v4);
+    objc_msgSend_reverseEnumerateRanges_(v11, v12, rangesCopy);
   }
 }
 
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v9 = objc_msgSend_ranges(self, v7, v8);
-  objc_msgSend_enumerateRangesInRange_usingBlock_(v9, v10, location, length, v11);
+  objc_msgSend_enumerateRangesInRange_usingBlock_(v9, v10, location, length, blockCopy);
 }
 
 - (unint64_t)rangeCount
@@ -1163,13 +1163,13 @@ LABEL_7:
   }
 }
 
-- (void)setI_logicalRanges:(id)a3
+- (void)setI_logicalRanges:(id)ranges
 {
-  v4 = a3;
-  v16 = v4;
-  if (v4)
+  rangesCopy = ranges;
+  v16 = rangesCopy;
+  if (rangesCopy)
   {
-    v7 = objc_msgSend_copy(v4, v5, v6);
+    v7 = objc_msgSend_copy(rangesCopy, v5, v6);
     ranges = self->_ranges;
     self->_ranges = v7;
   }
@@ -1185,16 +1185,16 @@ LABEL_7:
   }
 }
 
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3
+- (BOOL)containsCharacterAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  v4 = objc_msgSend_ranges(self, a2, a3);
-  LOBYTE(v3) = objc_msgSend_containsCharacterAtIndex_(v4, v5, v3);
+  indexCopy = index;
+  v4 = objc_msgSend_ranges(self, a2, index);
+  LOBYTE(indexCopy) = objc_msgSend_containsCharacterAtIndex_(v4, v5, indexCopy);
 
-  return v3;
+  return indexCopy;
 }
 
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 withOptions:(unint64_t)a4
+- (BOOL)containsCharacterAtIndex:(unint64_t)index withOptions:(unint64_t)options
 {
   v7 = 0;
   v8 = &v7;
@@ -1205,19 +1205,19 @@ LABEL_7:
   v6[2] = sub_276D7355C;
   v6[3] = &unk_27A6F40F0;
   v6[4] = &v7;
-  v6[5] = a3;
-  v6[6] = a4;
+  v6[5] = index;
+  v6[6] = options;
   objc_msgSend_enumerateRanges_(self, a2, v6);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (BOOL)intersectsRange:(_NSRange)a3
+- (BOOL)intersectsRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_superRange(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  objc_msgSend_superRange(self, a2, range.location);
   if (length)
   {
     if (v6)
@@ -1243,9 +1243,9 @@ LABEL_7:
   return objc_msgSend_containsCharacterAtIndex_(self, v6, location);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   if (objc_msgSend_type(self, v7, v8) == 8)
   {
     v11 = 0;
@@ -1256,8 +1256,8 @@ LABEL_7:
     v11 = objc_msgSend_type(self, v9, v10);
   }
 
-  *(a3 + 4) |= 4u;
-  *(a3 + 16) = v11;
+  *(archive + 4) |= 4u;
+  *(archive + 16) = v11;
   if (!objc_msgSend_type(self, v9, v10))
   {
     v14 = MEMORY[0x277D81150];
@@ -1269,53 +1269,53 @@ LABEL_7:
   }
 
   v21 = objc_msgSend_type(self, v12, v13);
-  *(a3 + 4) |= 0x80u;
-  *(a3 + 21) = v21;
+  *(archive + 4) |= 0x80u;
+  *(archive + 21) = v21;
   ranges = self->_ranges;
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = sub_276D739E4;
   v57[3] = &unk_27A6F4110;
-  v57[4] = a3;
+  v57[4] = archive;
   objc_msgSend_enumerateRanges_(ranges, v23, v57);
   objc_msgSend_visualDefinitionRange(self, v24, v25);
-  *(a3 + 4) |= 1u;
-  if (!*(a3 + 6))
+  *(archive + 4) |= 1u;
+  if (!*(archive + 6))
   {
-    v26 = *(a3 + 1);
+    v26 = *(archive + 1);
     if (v26)
     {
       v26 = *(v26 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 6) = MEMORY[0x277CA3230](v26);
+    *(archive + 6) = MEMORY[0x277CA3230](v26);
   }
 
   TSPNSRangeCopyToMessage();
   v29 = objc_msgSend_styleInsertionBehavior(self, v27, v28);
-  *(a3 + 4) |= 8u;
-  *(a3 + 17) = v29;
+  *(archive + 4) |= 8u;
+  *(archive + 17) = v29;
   v32 = objc_msgSend_caretLFAffinity(self, v30, v31);
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 18) = v32;
+  *(archive + 4) |= 0x10u;
+  *(archive + 18) = v32;
   IsLeadingEdge = objc_msgSend_caretIsLeadingEdge(self, v33, v34);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 76) = IsLeadingEdge;
+  *(archive + 4) |= 0x20u;
+  *(archive + 76) = IsLeadingEdge;
   objc_msgSend_leadingCharIndex(self, v36, v37);
   v38 = TSPUInt32FromNSUInteger();
-  v39 = *(a3 + 4);
-  *(a3 + 20) = v38;
+  v39 = *(archive + 4);
+  *(archive + 20) = v38;
   v40 = MEMORY[0x277D81490];
-  *(a3 + 4) = v39 | 0x42;
-  if (!*(a3 + 7))
+  *(archive + 4) = v39 | 0x42;
+  if (!*(archive + 7))
   {
-    v41 = *(a3 + 1);
+    v41 = *(archive + 1);
     if (v41)
     {
       v41 = *(v41 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 7) = MEMORY[0x277CA3230](v41);
+    *(archive + 7) = MEMORY[0x277CA3230](v41);
   }
 
   TSPNSRangeCopyToMessage();
@@ -1330,16 +1330,16 @@ LABEL_7:
   }
 }
 
-+ (BOOL)p_checkEndOfLineFlagForRange:(_NSRange *)a3 leadingEdge:(BOOL *)a4 type:(int64_t *)a5 endOfLine:(BOOL)a6 storage:(id)a7
++ (BOOL)p_checkEndOfLineFlagForRange:(_NSRange *)range leadingEdge:(BOOL *)edge type:(int64_t *)type endOfLine:(BOOL)line storage:(id)storage
 {
-  LOBYTE(v7) = a6;
-  v11 = a7;
-  v13 = v11;
-  if ((v7 & 1) == 0 && !a3->length)
+  LOBYTE(v7) = line;
+  storageCopy = storage;
+  v13 = storageCopy;
+  if ((v7 & 1) == 0 && !range->length)
   {
-    if (v11)
+    if (storageCopy)
     {
-      objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(v11, v12, a3->location, 0);
+      objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(storageCopy, v12, range->location, 0);
     }
 
     else
@@ -1353,10 +1353,10 @@ LABEL_7:
     v19 = objc_msgSend_hiddenRangesInRange_(v13, v18, v14, v16);
     v21 = objc_msgSend_initWithStorage_subRange_removeRanges_(v17, v20, v13, v14, v16, v19);
 
-    v23 = objc_msgSend_charIndexMappedFromStorage_(v21, v22, a3->location);
-    if (*a4)
+    v23 = objc_msgSend_charIndexMappedFromStorage_(v21, v22, range->location);
+    if (*edge)
     {
-      CharacterIndex = objc_msgSend_charIndexMappedFromStorage_(v21, v24, a3->location);
+      CharacterIndex = objc_msgSend_charIndexMappedFromStorage_(v21, v24, range->location);
     }
 
     else
@@ -1380,12 +1380,12 @@ LABEL_7:
 
         else
         {
-          if (*a4)
+          if (*edge)
           {
-            *a4 = 0;
+            *edge = 0;
             v44 = objc_msgSend_previousCharacterIndex_(v21, v41, v7);
-            a3->location = objc_msgSend_charIndexMappedToStorage_(v21, v45, v44);
-            *a5 = 7;
+            range->location = objc_msgSend_charIndexMappedToStorage_(v21, v45, v44);
+            *type = 7;
           }
 
           LOBYTE(v7) = 1;

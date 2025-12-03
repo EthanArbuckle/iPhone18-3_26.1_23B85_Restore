@@ -4,14 +4,14 @@
 - (AFAccessibilityState)state;
 - (BOOL)_fetchIsVibrationDisabled;
 - (id)currentState;
-- (void)_setState:(id)a3 clearDirtyFlags:(unint64_t)a4;
+- (void)_setState:(id)state clearDirtyFlags:(unint64_t)flags;
 - (void)_updateVibrationDisabledPreference;
 - (void)_updateVoiceOverTouchEnabledPreference;
-- (void)addListener:(id)a3;
-- (void)getStateWithCompletion:(id)a3;
-- (void)removeListener:(id)a3;
-- (void)vibrationDisabledPreferenceDidChange:(id)a3;
-- (void)voiceOverTouchEnabledPreferenceDidChange:(id)a3;
+- (void)addListener:(id)listener;
+- (void)getStateWithCompletion:(id)completion;
+- (void)removeListener:(id)listener;
+- (void)vibrationDisabledPreferenceDidChange:(id)change;
+- (void)voiceOverTouchEnabledPreferenceDidChange:(id)change;
 @end
 
 @implementation AFAccessibilityObserver
@@ -76,26 +76,26 @@
   return v3;
 }
 
-- (void)_setState:(id)a3 clearDirtyFlags:(unint64_t)a4
+- (void)_setState:(id)state clearDirtyFlags:(unint64_t)flags
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  stateCopy = state;
   state = self->_state;
-  if (state != v7 && ![(AFAccessibilityState *)state isEqual:v7])
+  if (state != stateCopy && ![(AFAccessibilityState *)state isEqual:stateCopy])
   {
     v9 = self->_state;
-    v18 = v7;
-    v10 = v7;
+    v18 = stateCopy;
+    v10 = stateCopy;
     os_unfair_lock_lock(&self->_stateLock);
-    objc_storeStrong(&self->_state, a3);
-    self->_stateDirtyFlags &= ~a4;
+    objc_storeStrong(&self->_state, state);
+    self->_stateDirtyFlags &= ~flags;
     os_unfair_lock_unlock(&self->_stateLock);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [(NSHashTable *)self->_listeners setRepresentation];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    setRepresentation = [(NSHashTable *)self->_listeners setRepresentation];
+    v12 = [setRepresentation countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -107,7 +107,7 @@
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(setRepresentation);
           }
 
           v16 = *(*(&v19 + 1) + 8 * v15);
@@ -120,13 +120,13 @@
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [setRepresentation countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
     }
 
-    v7 = v18;
+    stateCopy = v18;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -136,7 +136,7 @@
 {
   if (AFSupportsVibration())
   {
-    v3 = [(AFAccessibilityObserver *)self _fetchIsVibrationDisabled];
+    _fetchIsVibrationDisabled = [(AFAccessibilityObserver *)self _fetchIsVibrationDisabled];
     state = self->_state;
     if (state)
     {
@@ -144,7 +144,7 @@
       v9[1] = 3221225472;
       v9[2] = __61__AFAccessibilityObserver__updateVibrationDisabledPreference__block_invoke;
       v9[3] = &__block_descriptor_33_e40_v16__0___AFAccessibilityStateMutating__8l;
-      v10 = v3;
+      v10 = _fetchIsVibrationDisabled;
       v5 = [(AFAccessibilityState *)state mutatedCopyWithMutator:v9];
     }
 
@@ -154,7 +154,7 @@
       v7[1] = 3221225472;
       v7[2] = __61__AFAccessibilityObserver__updateVibrationDisabledPreference__block_invoke_2;
       v7[3] = &__block_descriptor_33_e40_v16__0___AFAccessibilityStateMutating__8l;
-      v8 = v3;
+      v8 = _fetchIsVibrationDisabled;
       v5 = [AFAccessibilityState newWithBuilder:v7];
     }
 
@@ -195,7 +195,7 @@ uint64_t __61__AFAccessibilityObserver__updateVibrationDisabledPreference__block
 
 - (void)_updateVoiceOverTouchEnabledPreference
 {
-  v3 = [(AFAccessibilityObserver *)self _fetchIsVoiceOverTouchEnabled];
+  _fetchIsVoiceOverTouchEnabled = [(AFAccessibilityObserver *)self _fetchIsVoiceOverTouchEnabled];
   state = self->_state;
   if (state)
   {
@@ -203,7 +203,7 @@ uint64_t __61__AFAccessibilityObserver__updateVibrationDisabledPreference__block
     v9[1] = 3221225472;
     v9[2] = __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__block_invoke;
     v9[3] = &__block_descriptor_33_e40_v16__0___AFAccessibilityStateMutating__8l;
-    v10 = v3;
+    v10 = _fetchIsVoiceOverTouchEnabled;
     v5 = [(AFAccessibilityState *)state mutatedCopyWithMutator:v9];
   }
 
@@ -213,7 +213,7 @@ uint64_t __61__AFAccessibilityObserver__updateVibrationDisabledPreference__block
     v7[1] = 3221225472;
     v7[2] = __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__block_invoke_2;
     v7[3] = &__block_descriptor_33_e40_v16__0___AFAccessibilityStateMutating__8l;
-    v8 = v3;
+    v8 = _fetchIsVoiceOverTouchEnabled;
     v5 = [AFAccessibilityState newWithBuilder:v7];
   }
 
@@ -262,7 +262,7 @@ uint64_t __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__b
   return v2;
 }
 
-- (void)vibrationDisabledPreferenceDidChange:(id)a3
+- (void)vibrationDisabledPreferenceDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_stateLock);
   self->_stateDirtyFlags |= 2uLL;
@@ -276,7 +276,7 @@ uint64_t __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__b
   dispatch_async(queue, block);
 }
 
-- (void)voiceOverTouchEnabledPreferenceDidChange:(id)a3
+- (void)voiceOverTouchEnabledPreferenceDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_stateLock);
   self->_stateDirtyFlags |= 1uLL;
@@ -290,11 +290,11 @@ uint64_t __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__b
   dispatch_async(queue, block);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -302,16 +302,16 @@ uint64_t __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__b
     v7[2] = __42__AFAccessibilityObserver_removeListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -319,16 +319,16 @@ uint64_t __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__b
     v7[2] = __39__AFAccessibilityObserver_addListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getStateWithCompletion:(id)a3
+- (void)getStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -336,7 +336,7 @@ uint64_t __65__AFAccessibilityObserver__updateVoiceOverTouchEnabledPreference__b
     v7[2] = __50__AFAccessibilityObserver_getStateWithCompletion___block_invoke;
     v7[3] = &unk_1E7349838;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }

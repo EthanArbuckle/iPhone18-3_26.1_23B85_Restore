@@ -1,43 +1,43 @@
 @interface ASCLockupProductDetails
-+ (id)URLForLockupID:(id)a3 ofKind:(id)a4 offerFlags:(int64_t)a5 queryParameters:(id)a6;
-+ (id)URLForLockupID:(id)a3 ofKind:(id)a4 withOfferFlags:(int64_t)a5;
-+ (id)gamesURLForLockupID:(id)a3 ofKind:(id)a4 withOfferFlags:(int64_t)a5;
-+ (id)queryParametersForLockup:(id)a3 withBaseQueryParams:(id)a4;
-- (ASCLockupProductDetails)initWithLockup:(id)a3 storeSheetHostBundleID:(id)a4 storeSheetUsageContext:(id)a5 parameters:(id)a6;
++ (id)URLForLockupID:(id)d ofKind:(id)kind offerFlags:(int64_t)flags queryParameters:(id)parameters;
++ (id)URLForLockupID:(id)d ofKind:(id)kind withOfferFlags:(int64_t)flags;
++ (id)gamesURLForLockupID:(id)d ofKind:(id)kind withOfferFlags:(int64_t)flags;
++ (id)queryParametersForLockup:(id)lockup withBaseQueryParams:(id)params;
+- (ASCLockupProductDetails)initWithLockup:(id)lockup storeSheetHostBundleID:(id)d storeSheetUsageContext:(id)context parameters:(id)parameters;
 - (ASCLockupProductDetailsObserver)observer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)present:(id)a3;
+- (void)present:(id)present;
 @end
 
 @implementation ASCLockupProductDetails
 
-+ (id)URLForLockupID:(id)a3 ofKind:(id)a4 withOfferFlags:(int64_t)a5
++ (id)URLForLockupID:(id)d ofKind:(id)kind withOfferFlags:(int64_t)flags
 {
-  v8 = a4;
-  v9 = a3;
+  kindCopy = kind;
+  dCopy = d;
   +[ASCEligibility assertCurrentProcessEligibility];
-  v10 = [a1 URLForLockupID:v9 ofKind:v8 offerFlags:a5 queryParameters:0];
+  v10 = [self URLForLockupID:dCopy ofKind:kindCopy offerFlags:flags queryParameters:0];
 
   return v10;
 }
 
-+ (id)URLForLockupID:(id)a3 ofKind:(id)a4 offerFlags:(int64_t)a5 queryParameters:(id)a6
++ (id)URLForLockupID:(id)d ofKind:(id)kind offerFlags:(int64_t)flags queryParameters:(id)parameters
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  dCopy = d;
+  kindCopy = kind;
+  parametersCopy = parameters;
   +[ASCEligibility assertCurrentProcessEligibility];
-  v11 = [v8 stringValue];
-  v12 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-  v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+  stringValue = [dCopy stringValue];
+  uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+  v13 = [stringValue stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   v14 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v14 setScheme:@"itms-apps"];
-  if (![v9 isEqualToString:@"app"])
+  if (![kindCopy isEqualToString:@"app"])
   {
-    ASCUnknownEnumCase(@"ASCLockupKind", v9);
+    ASCUnknownEnumCase(@"ASCLockupKind", kindCopy);
   }
 
   [v14 setPercentEncodedHost:@"apps.apple.com"];
@@ -50,25 +50,25 @@
   v18 = [v15 pathWithComponents:v17];
   [v14 setPercentEncodedPath:v18];
 
-  if (v10)
+  if (parametersCopy)
   {
-    v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(parametersCopy, "count")}];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParameters___block_invoke;
     v27[3] = &unk_2784B14C0;
     v28 = v19;
     v20 = v19;
-    [v10 enumerateKeysAndObjectsUsingBlock:v27];
+    [parametersCopy enumerateKeysAndObjectsUsingBlock:v27];
     [v14 setQueryItems:v20];
   }
 
   v21 = [v14 URL];
   if (!v21)
   {
-    v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Lockup id %@ of kind %@ is invalid", v8, v9];
+    kindCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Lockup id %@ of kind %@ is invalid", dCopy, kindCopy];
     v26 = objc_alloc(MEMORY[0x277CBEAD8]);
-    objc_exception_throw([v26 initWithName:*MEMORY[0x277CBE660] reason:v25 userInfo:0]);
+    objc_exception_throw([v26 initWithName:*MEMORY[0x277CBE660] reason:kindCopy userInfo:0]);
   }
 
   v22 = v21;
@@ -85,29 +85,29 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
   [v3 addObject:v4];
 }
 
-+ (id)gamesURLForLockupID:(id)a3 ofKind:(id)a4 withOfferFlags:(int64_t)a5
++ (id)gamesURLForLockupID:(id)d ofKind:(id)kind withOfferFlags:(int64_t)flags
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  kindCopy = kind;
   +[ASCEligibility assertCurrentProcessEligibility];
   v8 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v8 setScheme:@"games"];
   [v8 setHost:@"games.apple.com"];
-  if (![v7 isEqualToString:@"app"])
+  if (![kindCopy isEqualToString:@"app"])
   {
-    ASCUnknownEnumCase(@"ASCLockupKind", v7);
+    ASCUnknownEnumCase(@"ASCLockupKind", kindCopy);
   }
 
-  v9 = [v6 stringValue];
-  v10 = [@"/game/id" stringByAppendingString:v9];
+  stringValue = [dCopy stringValue];
+  v10 = [@"/game/id" stringByAppendingString:stringValue];
   [v8 setPath:v10];
 
   v11 = [v8 URL];
   if (!v11)
   {
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Lockup id %@ of kind %@ is invalid", v6, v7];
+    kindCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Lockup id %@ of kind %@ is invalid", dCopy, kindCopy];
     v15 = objc_alloc(MEMORY[0x277CBEAD8]);
-    objc_exception_throw([v15 initWithName:*MEMORY[0x277CBE660] reason:v14 userInfo:0]);
+    objc_exception_throw([v15 initWithName:*MEMORY[0x277CBE660] reason:kindCopy userInfo:0]);
   }
 
   v12 = v11;
@@ -115,14 +115,14 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
   return v12;
 }
 
-+ (id)queryParametersForLockup:(id)a3 withBaseQueryParams:(id)a4
++ (id)queryParametersForLockup:(id)lockup withBaseQueryParams:(id)params
 {
-  v5 = a3;
-  v6 = a4;
+  lockupCopy = lockup;
+  paramsCopy = params;
   +[ASCEligibility assertCurrentProcessEligibility];
-  if (v6)
+  if (paramsCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+    v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:paramsCopy];
   }
 
   else
@@ -131,18 +131,18 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
   }
 
   v8 = v7;
-  v9 = [v5 productVariantID];
+  productVariantID = [lockupCopy productVariantID];
 
-  if (v9)
+  if (productVariantID)
   {
-    v10 = [v5 productVariantID];
-    [v8 setObject:v10 forKeyedSubscript:@"ppid"];
+    productVariantID2 = [lockupCopy productVariantID];
+    [v8 setObject:productVariantID2 forKeyedSubscript:@"ppid"];
   }
 
-  v11 = [v5 offer];
-  v12 = [v11 flags];
+  offer = [lockupCopy offer];
+  flags = [offer flags];
 
-  if ((v12 & 0x200) != 0)
+  if ((flags & 0x200) != 0)
   {
     [v8 setObject:@"1" forKeyedSubscript:@"isViewOnly"];
   }
@@ -160,31 +160,31 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
   return v13;
 }
 
-- (ASCLockupProductDetails)initWithLockup:(id)a3 storeSheetHostBundleID:(id)a4 storeSheetUsageContext:(id)a5 parameters:(id)a6
+- (ASCLockupProductDetails)initWithLockup:(id)lockup storeSheetHostBundleID:(id)d storeSheetUsageContext:(id)context parameters:(id)parameters
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lockupCopy = lockup;
+  dCopy = d;
+  contextCopy = context;
+  parametersCopy = parameters;
   +[ASCEligibility assertCurrentProcessEligibility];
   v24.receiver = self;
   v24.super_class = ASCLockupProductDetails;
   v14 = [(ASCLockupProductDetails *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [lockupCopy copy];
     lockup = v14->_lockup;
     v14->_lockup = v15;
 
-    v17 = [v11 copy];
+    v17 = [dCopy copy];
     storeSheetHostBundleID = v14->_storeSheetHostBundleID;
     v14->_storeSheetHostBundleID = v17;
 
-    v19 = [v12 copy];
+    v19 = [contextCopy copy];
     storeSheetUsageContext = v14->_storeSheetUsageContext;
     v14->_storeSheetUsageContext = v19;
 
-    v21 = [v13 copy];
+    v21 = [parametersCopy copy];
     parameters = v14->_parameters;
     v14->_parameters = v21;
   }
@@ -192,12 +192,12 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
   return v14;
 }
 
-- (void)present:(id)a3
+- (void)present:(id)present
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASCLockupProductDetails *)self lockup];
-  v6 = [v5 id];
+  presentCopy = present;
+  lockup = [(ASCLockupProductDetails *)self lockup];
+  v6 = [lockup id];
   v7 = +[ASCAdamID invalidAdamID];
   v8 = [v6 isEqual:v7];
 
@@ -205,30 +205,30 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v9 = [(ASCLockupProductDetails *)self lockup];
-      v10 = [v9 id];
+      lockup2 = [(ASCLockupProductDetails *)self lockup];
+      v10 = [lockup2 id];
       *buf = 138543362;
       v33 = v10;
       _os_log_impl(&dword_222629000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Not presenting product details for lockup %{public}@ because ID is invalid.", buf, 0xCu);
     }
 
-    if (v4)
+    if (presentCopy)
     {
-      v4[2](v4, 0);
+      presentCopy[2](presentCopy, 0);
     }
   }
 
   else
   {
-    v11 = [(ASCLockupProductDetails *)self lockup];
-    v12 = [ASCLockupProductDetails queryParametersForLockup:v11 withBaseQueryParams:0];
+    lockup3 = [(ASCLockupProductDetails *)self lockup];
+    v12 = [ASCLockupProductDetails queryParametersForLockup:lockup3 withBaseQueryParams:0];
 
-    v13 = [(ASCLockupProductDetails *)self parameters];
+    parameters = [(ASCLockupProductDetails *)self parameters];
 
-    if (v13)
+    if (parameters)
     {
-      v14 = [(ASCLockupProductDetails *)self parameters];
-      v15 = [v14 mutableCopy];
+      parameters2 = [(ASCLockupProductDetails *)self parameters];
+      v15 = [parameters2 mutableCopy];
 
       if (v12)
       {
@@ -244,31 +244,31 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
     v28 = v12;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v16 = [(ASCLockupProductDetails *)self lockup];
-      v17 = [v16 id];
+      lockup4 = [(ASCLockupProductDetails *)self lockup];
+      v17 = [lockup4 id];
       *buf = 138543362;
       v33 = v17;
       _os_log_impl(&dword_222629000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Presenting product details for lockup %{public}@", buf, 0xCu);
     }
 
-    v18 = [(ASCLockupProductDetails *)self lockup];
-    v19 = [v18 id];
-    v20 = [(ASCLockupProductDetails *)self lockup];
-    v21 = [v20 kind];
-    v22 = [(ASCLockupProductDetails *)self lockup];
-    v23 = [v22 offer];
-    v24 = +[ASCLockupProductDetails URLForLockupID:ofKind:offerFlags:queryParameters:](ASCLockupProductDetails, "URLForLockupID:ofKind:offerFlags:queryParameters:", v19, v21, [v23 flags], v15);
+    lockup5 = [(ASCLockupProductDetails *)self lockup];
+    v19 = [lockup5 id];
+    lockup6 = [(ASCLockupProductDetails *)self lockup];
+    kind = [lockup6 kind];
+    lockup7 = [(ASCLockupProductDetails *)self lockup];
+    offer = [lockup7 offer];
+    v24 = +[ASCLockupProductDetails URLForLockupID:ofKind:offerFlags:queryParameters:](ASCLockupProductDetails, "URLForLockupID:ofKind:offerFlags:queryParameters:", v19, kind, [offer flags], v15);
 
     v25 = +[ASCWorkspace sharedWorkspace];
     v26 = [v25 openURL:v24];
 
-    if (v4)
+    if (presentCopy)
     {
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __35__ASCLockupProductDetails_present___block_invoke;
       v30[3] = &unk_2784B17A8;
-      v31 = v4;
+      v31 = presentCopy;
       [v26 addFinishBlock:v30];
     }
   }
@@ -278,21 +278,21 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
 
 - (unint64_t)hash
 {
-  v2 = [(ASCLockupProductDetails *)self lockup];
-  v3 = [v2 hash];
+  lockup = [(ASCLockupProductDetails *)self lockup];
+  v3 = [lockup hash];
 
   return v3 + 2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  v4 = self;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = selfCopy;
     }
 
     else
@@ -310,17 +310,17 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
 
   if (v6)
   {
-    v7 = [(ASCLockupProductDetails *)v4 lockup];
-    v8 = [(ASCLockupProductDetails *)v6 lockup];
-    v9 = v8;
-    if (v7 && v8)
+    lockup = [(ASCLockupProductDetails *)selfCopy lockup];
+    lockup2 = [(ASCLockupProductDetails *)v6 lockup];
+    v9 = lockup2;
+    if (lockup && lockup2)
     {
-      v10 = [v7 isEqual:v8];
+      v10 = [lockup isEqual:lockup2];
     }
 
     else
     {
-      v10 = v7 == v8;
+      v10 = lockup == lockup2;
     }
   }
 
@@ -335,12 +335,12 @@ void __76__ASCLockupProductDetails_URLForLockupID_ofKind_offerFlags_queryParamet
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupProductDetails *)self lockup];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"lockup"];
+  lockup = [(ASCLockupProductDetails *)self lockup];
+  [(ASCDescriber *)v3 addObject:lockup withName:@"lockup"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 - (ASCLockupProductDetailsObserver)observer

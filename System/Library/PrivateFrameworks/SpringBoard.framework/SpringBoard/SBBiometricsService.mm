@@ -1,7 +1,7 @@
 @interface SBBiometricsService
 + (id)sharedInstance;
 - (SBBiometricsService)init;
-- (void)systemServiceServer:(id)a3 client:(id)a4 fetchUnlockCredentialSet:(id)a5;
+- (void)systemServiceServer:(id)server client:(id)client fetchUnlockCredentialSet:(id)set;
 @end
 
 @implementation SBBiometricsService
@@ -35,9 +35,9 @@ uint64_t __37__SBBiometricsService_sharedInstance__block_invoke()
   v2 = [(SBBiometricsService *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D67C98] sharedInstance];
+    mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
     biometricResource = v2->_biometricResource;
-    v2->_biometricResource = v3;
+    v2->_biometricResource = mEMORY[0x277D67C98];
 
     v5 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.mesa.unlockCredential"];
     unlockCredentialAuthenticator = v2->_unlockCredentialAuthenticator;
@@ -50,26 +50,26 @@ uint64_t __37__SBBiometricsService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 fetchUnlockCredentialSet:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client fetchUnlockCredentialSet:(id)set
 {
-  v7 = a5;
-  if (v7)
+  setCopy = set;
+  if (setCopy)
   {
-    v10 = v7;
-    if ([(FBServiceClientAuthenticator *)self->_unlockCredentialAuthenticator authenticateClient:a4])
+    v10 = setCopy;
+    if ([(FBServiceClientAuthenticator *)self->_unlockCredentialAuthenticator authenticateClient:client])
     {
-      v8 = [(SBUIBiometricResource *)self->_biometricResource unlockCredentialSet];
-      v9 = [v8 serializedCredentialSet];
+      unlockCredentialSet = [(SBUIBiometricResource *)self->_biometricResource unlockCredentialSet];
+      serializedCredentialSet = [unlockCredentialSet serializedCredentialSet];
     }
 
     else
     {
-      v9 = 0;
+      serializedCredentialSet = 0;
     }
 
-    v10[2](v10, v9);
+    v10[2](v10, serializedCredentialSet);
 
-    v7 = v10;
+    setCopy = v10;
   }
 }
 

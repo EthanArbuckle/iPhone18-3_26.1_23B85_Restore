@@ -1,18 +1,18 @@
 @interface CCDError
 + (id)_cloudConfigErrorResponses;
-+ (id)_errorStringForResponse:(id)a3;
++ (id)_errorStringForResponse:(id)response;
 + (id)badFormatError;
-+ (id)cleanNSError:(id)a3;
-+ (id)cloudConfigErrorInResponse:(id)a3;
++ (id)cleanNSError:(id)error;
++ (id)cloudConfigErrorInResponse:(id)response;
 + (id)deviceAlreadyEnrolledError;
 + (id)deviceNotEnrolledError;
 + (id)deviceNotFoundError;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 underlyingError:(id)a6 errorType:(id)a7;
-+ (id)internalErrorWithCode:(int64_t)a3 underlyingError:(id)a4;
++ (id)errorWithDomain:(id)domain code:(int64_t)code description:(id)description underlyingError:(id)error errorType:(id)type;
++ (id)internalErrorWithCode:(int64_t)code underlyingError:(id)error;
 + (id)invalidDeviceError;
 + (id)invalidProfileError;
 + (id)invalidSignatureError;
-+ (id)maxRetriesExceededErrorWithUnderlyingError:(id)a3;
++ (id)maxRetriesExceededErrorWithUnderlyingError:(id)error;
 + (id)nonceExpiredError;
 + (id)profileNotActiveError;
 + (id)profileNotFoundError;
@@ -23,18 +23,18 @@
 
 @implementation CCDError
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 underlyingError:(id)a6 errorType:(id)a7
++ (id)errorWithDomain:(id)domain code:(int64_t)code description:(id)description underlyingError:(id)error errorType:(id)type
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  domainCopy = domain;
+  descriptionCopy = description;
+  errorCopy = error;
+  typeCopy = type;
   v16 = +[NSMutableDictionary dictionary];
   v17 = v16;
-  if (v13)
+  if (descriptionCopy)
   {
-    [v16 setObject:v13 forKey:NSLocalizedDescriptionKey];
-    if (!v15)
+    [v16 setObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
+    if (!typeCopy)
     {
       goto LABEL_4;
     }
@@ -46,30 +46,30 @@
   v22 = [v21 localizedStringForKey:@"Unknown error" value:&stru_10001DC98 table:0];
   [v17 setObject:v22 forKey:NSLocalizedDescriptionKey];
 
-  if (v15)
+  if (typeCopy)
   {
 LABEL_3:
-    [v17 setObject:v15 forKey:@"CloudConfigurationErrorType"];
+    [v17 setObject:typeCopy forKey:@"CloudConfigurationErrorType"];
   }
 
 LABEL_4:
-  if (v14)
+  if (errorCopy)
   {
-    v18 = [a1 cleanNSError:v14];
+    v18 = [self cleanNSError:errorCopy];
     [v17 setObject:v18 forKey:NSUnderlyingErrorKey];
   }
 
-  v19 = [NSError errorWithDomain:v12 code:a4 userInfo:v17];
+  v19 = [NSError errorWithDomain:domainCopy code:code userInfo:v17];
 
   return v19;
 }
 
-+ (id)internalErrorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)internalErrorWithCode:(int64_t)code underlyingError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"The device failed to request configuration from the cloud." value:&stru_10001DC98 table:0];
-  v9 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:a3 description:v8 underlyingError:v6 errorType:@"CloudConfigurationFatalError"];
+  v9 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:code description:v8 underlyingError:errorCopy errorType:@"CloudConfigurationFatalError"];
 
   return v9;
 }
@@ -78,17 +78,17 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"The cloud configuration for this device is invalid." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34003 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34003 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
 
-+ (id)maxRetriesExceededErrorWithUnderlyingError:(id)a3
++ (id)maxRetriesExceededErrorWithUnderlyingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"The cloud configuration server is unavailable." value:&stru_10001DC98 table:0];
-  v7 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34006 description:v6 underlyingError:v4 errorType:@"CloudConfigurationFatalError"];
+  v7 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34006 description:v6 underlyingError:errorCopy errorType:@"CloudConfigurationFatalError"];
 
   return v7;
 }
@@ -97,7 +97,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"The cloud configuration service could not verify the identity of this device." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33023 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33023 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -106,7 +106,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"The cloud configuration server is unavailable or busy." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34004 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34004 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -115,7 +115,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"The cloud configuration server is busy. Please try again later." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34005 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34005 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -124,7 +124,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"The cloud configuration server could not be verified." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34008 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:34008 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -133,7 +133,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Invalid signature." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33016 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33016 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -142,7 +142,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Invalid Device Enrollment Program configuration." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33002 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33002 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -151,7 +151,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Device Enrollment Program configuration is not active." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33017 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33017 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -160,7 +160,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Device Enrollment Program configuration can not be found." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33024 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33024 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -169,7 +169,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Device can not be found." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33025 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33025 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -178,7 +178,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"This device is already enrolled in the Device Enrollment Program." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33018 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33018 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -187,7 +187,7 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"This device is not enrolled in the Device Enrollment Program." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33005 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33005 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
@@ -196,15 +196,15 @@ LABEL_4:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Nonce expired." value:&stru_10001DC98 table:0];
-  v5 = [a1 errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33014 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
+  v5 = [self errorWithDomain:@"MCCloudConfigurationErrorDomain" code:33014 description:v4 underlyingError:0 errorType:@"CloudConfigurationFatalError"];
 
   return v5;
 }
 
-+ (id)_errorStringForResponse:(id)a3
++ (id)_errorStringForResponse:(id)response
 {
-  v3 = a3;
-  if (v3 && (v4 = [[NSString alloc] initWithData:v3 encoding:4]) != 0)
+  responseCopy = response;
+  if (responseCopy && (v4 = [[NSString alloc] initWithData:responseCopy encoding:4]) != 0)
   {
     v5 = v4;
     v6 = +[NSCharacterSet whitespaceCharacterSet];
@@ -227,11 +227,11 @@ LABEL_4:
   return v7;
 }
 
-+ (id)cloudConfigErrorInResponse:(id)a3
++ (id)cloudConfigErrorInResponse:(id)response
 {
-  v4 = [a1 _errorStringForResponse:a3];
-  v5 = [a1 _cloudConfigErrorResponses];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [self _errorStringForResponse:response];
+  _cloudConfigErrorResponses = [self _cloudConfigErrorResponses];
+  v6 = [_cloudConfigErrorResponses objectForKeyedSubscript:v4];
 
   return v6;
 }
@@ -242,7 +242,7 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = sub_100007834;
   block[3] = &unk_10001C670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100025A90 != -1)
   {
     dispatch_once(&qword_100025A90, block);
@@ -253,19 +253,19 @@ LABEL_4:
   return v2;
 }
 
-+ (id)cleanNSError:(id)a3
++ (id)cleanNSError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v18 = 0;
     goto LABEL_23;
   }
 
-  v5 = [v3 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  if (!v5)
+  if (!userInfo)
   {
     v18 = v4;
     goto LABEL_23;
@@ -276,10 +276,10 @@ LABEL_4:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v4 userInfo];
-  v8 = [v7 allKeys];
+  userInfo2 = [v4 userInfo];
+  allKeys = [userInfo2 allKeys];
 
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v9)
   {
     goto LABEL_18;
@@ -293,12 +293,12 @@ LABEL_4:
     {
       if (*v22 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allKeys);
       }
 
       v13 = *(*(&v21 + 1) + 8 * i);
-      v14 = [v4 userInfo];
-      v15 = [v14 objectForKeyedSubscript:v13];
+      userInfo3 = [v4 userInfo];
+      v15 = [userInfo3 objectForKeyedSubscript:v13];
 
       if ([v13 isEqualToString:NSUnderlyingErrorKey])
       {
@@ -308,7 +308,7 @@ LABEL_4:
           goto LABEL_15;
         }
 
-        v16 = [a1 cleanNSError:v15];
+        v16 = [self cleanNSError:v15];
 
         v15 = v16;
       }
@@ -335,7 +335,7 @@ LABEL_4:
 LABEL_15:
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v10 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v10);
@@ -347,8 +347,8 @@ LABEL_18:
     v6 = 0;
   }
 
-  v17 = [v4 domain];
-  v18 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v17, [v4 code], v6);
+  domain = [v4 domain];
+  v18 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v4 code], v6);
 
 LABEL_23:
 

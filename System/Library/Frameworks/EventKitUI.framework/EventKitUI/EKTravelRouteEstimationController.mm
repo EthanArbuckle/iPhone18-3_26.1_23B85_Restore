@@ -1,14 +1,14 @@
 @interface EKTravelRouteEstimationController
 + (id)_basedOnLocationLocalizedString;
-- (EKTravelRouteEstimationController)initWithDestinationStructuredLocation:(id)a3 eventStore:(id)a4;
+- (EKTravelRouteEstimationController)initWithDestinationStructuredLocation:(id)location eventStore:(id)store;
 - (EKTravelRouteEstimationControllerDelegate)delegate;
-- (double)estimatedTravelTimeValueAtRowIndex:(unint64_t)a3;
-- (id)_imageForCellAtIndex:(int64_t)a3;
+- (double)estimatedTravelTimeValueAtRowIndex:(unint64_t)index;
+- (id)_imageForCellAtIndex:(int64_t)index;
 - (id)_routingModeTypesAsArray;
-- (id)estimatedTravelTimeRowErrorAtRowIndex:(unint64_t)a3;
-- (id)estimatedTravelTimeTableViewCellWithRowIndex:(unint64_t)a3 tableView:(id)a4;
-- (int64_t)_estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)a3;
-- (int64_t)estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)a3;
+- (id)estimatedTravelTimeRowErrorAtRowIndex:(unint64_t)index;
+- (id)estimatedTravelTimeTableViewCellWithRowIndex:(unint64_t)index tableView:(id)view;
+- (int64_t)_estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)index;
+- (int64_t)estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)index;
 - (unint64_t)numberOfOutputRows;
 - (void)_beginOriginLocationEstimationCoreRoutineLookup;
 - (void)_beginOriginLocationEstimationEventKitLookup;
@@ -18,23 +18,23 @@
 - (void)beginOriginLocationEstimationLookup;
 - (void)beginTravelTimeEstimationLookup;
 - (void)dealloc;
-- (void)setOriginStructuredLocation:(id)a3;
+- (void)setOriginStructuredLocation:(id)location;
 @end
 
 @implementation EKTravelRouteEstimationController
 
-- (EKTravelRouteEstimationController)initWithDestinationStructuredLocation:(id)a3 eventStore:(id)a4
+- (EKTravelRouteEstimationController)initWithDestinationStructuredLocation:(id)location eventStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = EKTravelRouteEstimationController;
   v8 = [(EKTravelRouteEstimationController *)&v10 init];
   if (v8)
   {
     EKUILogInitIfNeeded();
-    [(EKTravelRouteEstimationController *)v8 setDestinationStructuredLocation:v6];
-    objc_storeStrong(&v8->_eventStore, a4);
+    [(EKTravelRouteEstimationController *)v8 setDestinationStructuredLocation:locationCopy];
+    objc_storeStrong(&v8->_eventStore, store);
   }
 
   return v8;
@@ -50,9 +50,9 @@
 
 - (void)beginOriginLocationEstimationLookup
 {
-  v3 = [(EKTravelRouteEstimationController *)self arrivalDate];
+  arrivalDate = [(EKTravelRouteEstimationController *)self arrivalDate];
 
-  if (!v3)
+  if (!arrivalDate)
   {
     v7 = kEKUILogHandle;
     if (!os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -82,13 +82,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v4 = [(EKTravelRouteEstimationController *)self delegate];
+  delegate = [(EKTravelRouteEstimationController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKTravelRouteEstimationController *)self delegate];
-    [v6 routeEstimationControllerDidBeginOriginLocationLookup:self];
+    delegate2 = [(EKTravelRouteEstimationController *)self delegate];
+    [delegate2 routeEstimationControllerDidBeginOriginLocationLookup:self];
   }
 
   [(EKTravelRouteEstimationController *)self _beginOriginLocationEstimationEventKitLookup];
@@ -394,13 +394,13 @@ void __88__EKTravelRouteEstimationController__originLocationEstimationCompletedC
   rows = self->_rows;
   self->_rows = 0;
 
-  v4 = [(EKTravelRouteEstimationController *)self delegate];
+  delegate = [(EKTravelRouteEstimationController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKTravelRouteEstimationController *)self delegate];
-    [v6 routeEstimationControllerDidBeginTravelTimeLookup:self];
+    delegate2 = [(EKTravelRouteEstimationController *)self delegate];
+    [delegate2 routeEstimationControllerDidBeginTravelTimeLookup:self];
   }
 
   [(EKTravelRouteEstimationController *)self performSelector:sel__lookupTimedOut withObject:0 afterDelay:60.0];
@@ -630,8 +630,8 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _routingModeTypesAsArray = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
+  v5 = [_routingModeTypesAsArray countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -643,7 +643,7 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_routingModeTypesAsArray);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -654,7 +654,7 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_routingModeTypesAsArray countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -664,19 +664,19 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
   [(EKTravelRouteEstimationController *)self setTravelTimeLookupErrors:v3];
   [(EKTravelRouteEstimationController *)self setRowData:MEMORY[0x1E695E0F0]];
   self->_isEstimating = 0;
-  v11 = [(EKTravelRouteEstimationController *)self delegate];
+  delegate = [(EKTravelRouteEstimationController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(EKTravelRouteEstimationController *)self delegate];
-    [v13 routeEstimationControllerDidFinishTravelTimeLookup:self];
+    delegate2 = [(EKTravelRouteEstimationController *)self delegate];
+    [delegate2 routeEstimationControllerDidFinishTravelTimeLookup:self];
   }
 }
 
-- (void)setOriginStructuredLocation:(id)a3
+- (void)setOriginStructuredLocation:(id)location
 {
-  objc_storeStrong(&self->_originStructuredLocation, a3);
+  objc_storeStrong(&self->_originStructuredLocation, location);
   [(EKTravelRouteEstimationController *)self setTravelTimeEstimatedValues:0];
   [(EKTravelRouteEstimationController *)self setTravelTimeLookupErrors:0];
   v4 = MEMORY[0x1E695E0F0];
@@ -684,10 +684,10 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
   [(EKTravelRouteEstimationController *)self setRowData:v4];
 }
 
-- (double)estimatedTravelTimeValueAtRowIndex:(unint64_t)a3
+- (double)estimatedTravelTimeValueAtRowIndex:(unint64_t)index
 {
   travelTimeEstimatedValues = self->_travelTimeEstimatedValues;
-  v4 = [(NSArray *)self->_rowData objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_rowData objectAtIndexedSubscript:index];
   v5 = [(NSDictionary *)travelTimeEstimatedValues objectForKeyedSubscript:v4];
   [v5 doubleValue];
   v7 = v6;
@@ -695,7 +695,7 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
   return v7;
 }
 
-- (id)estimatedTravelTimeRowErrorAtRowIndex:(unint64_t)a3
+- (id)estimatedTravelTimeRowErrorAtRowIndex:(unint64_t)index
 {
   if (self->_isEstimating)
   {
@@ -717,8 +717,8 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
     return 1;
   }
 
-  v4 = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
-  if ([v4 count])
+  _routingModeTypesAsArray = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
+  if ([_routingModeTypesAsArray count])
   {
     v5 = 0;
     v2 = 0;
@@ -737,8 +737,8 @@ void __68__EKTravelRouteEstimationController_beginTravelTimeEstimationLookup__bl
       }
 
       ++v5;
-      v4 = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
-      if (v5 >= [v4 count])
+      _routingModeTypesAsArray = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
+      if (v5 >= [_routingModeTypesAsArray count])
       {
         goto LABEL_12;
       }
@@ -754,23 +754,23 @@ LABEL_12:
   return v2;
 }
 
-- (int64_t)estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)a3
+- (int64_t)estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_rowData objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_rowData objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)_imageForCellAtIndex:(int64_t)a3
+- (id)_imageForCellAtIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_rowData objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_rowData objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
   v5 = 0;
-  if (v4 > 1)
+  if (integerValue > 1)
   {
-    switch(v4)
+    switch(integerValue)
     {
       case 2:
         v6 = WalkmanImage();
@@ -788,7 +788,7 @@ LABEL_12:
 
   else
   {
-    if ((v4 + 1) >= 3)
+    if ((integerValue + 1) >= 3)
     {
       goto LABEL_11;
     }
@@ -803,26 +803,26 @@ LABEL_11:
   return v7;
 }
 
-- (int64_t)_estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)a3
+- (int64_t)_estimatedTravelTimeRoutingModeAtRowIndex:(unint64_t)index
 {
-  v4 = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
-  if ([v4 count] <= a3)
+  _routingModeTypesAsArray = [(EKTravelRouteEstimationController *)self _routingModeTypesAsArray];
+  if ([_routingModeTypesAsArray count] <= index)
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
-    v6 = [v5 integerValue];
+    v5 = [_routingModeTypesAsArray objectAtIndexedSubscript:index];
+    integerValue = [v5 integerValue];
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (id)estimatedTravelTimeTableViewCellWithRowIndex:(unint64_t)a3 tableView:(id)a4
+- (id)estimatedTravelTimeTableViewCellWithRowIndex:(unint64_t)index tableView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   rows = self->_rows;
   if (!rows)
   {
@@ -833,21 +833,21 @@ LABEL_11:
     rows = self->_rows;
   }
 
-  if ([(NSMutableArray *)rows count]<= a3 || ([(NSMutableArray *)self->_rows objectAtIndex:a3], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([(NSMutableArray *)rows count]<= index || ([(NSMutableArray *)self->_rows objectAtIndex:index], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v10 = [(EKCalendarChooserCell *)[EKEventEstimatedTravelTimeResultCell alloc] initWithStyle:1 reuseIdentifier:0];
     [(EKEventEstimatedTravelTimeResultCell *)v10 frame];
     v12 = v11;
     v14 = v13;
-    [v6 frame];
+    [viewCopy frame];
     [(EKEventEstimatedTravelTimeResultCell *)v10 setFrame:v12, v14];
-    v15 = [objc_opt_class() _basedOnLocationLocalizedString];
-    v16 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
-    [v16 setText:v15];
+    _basedOnLocationLocalizedString = [objc_opt_class() _basedOnLocationLocalizedString];
+    textLabel = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
+    [textLabel setText:_basedOnLocationLocalizedString];
 
     v17 = CUIKDisplayStringForTravelTimeUsingShortFormat();
-    v18 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
-    [v18 setText:v17];
+    detailTextLabel = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
+    [detailTextLabel setText:v17];
 
     [(EKCalendarChooserCell *)v10 layoutSubviews];
     v19 = BicycleImage();
@@ -856,15 +856,15 @@ LABEL_11:
     [(EKCalendarChooserCell *)v10 setShowsColorDot:1];
     [(EKCalendarChooserCell *)v10 textLeadingIndent];
     v21 = v20;
-    [v6 layoutMargins];
+    [viewCopy layoutMargins];
     v23 = v22;
-    [v6 layoutMargins];
+    [viewCopy layoutMargins];
     v25 = v21 + v23 + v24;
-    v26 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
-    [v26 frame];
+    detailTextLabel2 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
+    [detailTextLabel2 frame];
     v28 = v27;
-    v29 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
-    [v29 frame];
+    textLabel2 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
+    [textLabel2 frame];
     v31 = v25 + v28 + v30;
     [(EKEventEstimatedTravelTimeResultCell *)v10 frame];
     v33 = v32 * 0.95;
@@ -873,52 +873,52 @@ LABEL_11:
     {
       v34 = [(EKCalendarChooserCell *)[EKEventEstimatedTravelTimeResultCell alloc] initWithStyle:3 reuseIdentifier:0];
 
-      v35 = [(EKEventEstimatedTravelTimeResultCell *)v34 textLabel];
-      [v35 setNumberOfLines:0];
+      textLabel3 = [(EKEventEstimatedTravelTimeResultCell *)v34 textLabel];
+      [textLabel3 setNumberOfLines:0];
 
       v10 = v34;
     }
 
-    v36 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
-    [v36 setText:0];
+    textLabel4 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
+    [textLabel4 setText:0];
 
-    v37 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
-    [v37 setText:0];
+    detailTextLabel3 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
+    [detailTextLabel3 setText:0];
 
     [(EKCalendarChooserCell *)v10 setColorDotImage:0];
     [(EKCalendarChooserCell *)v10 setShowsColorDot:0];
-    [(NSMutableArray *)self->_rows insertObject:v10 atIndex:a3];
+    [(NSMutableArray *)self->_rows insertObject:v10 atIndex:index];
   }
 
   if (self->_isEstimating)
   {
     v38 = EventKitUIBundle();
     v39 = [v38 localizedStringForKey:@"Estimating travel time…" value:&stru_1F4EF6790 table:0];
-    v40 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
-    [v40 setText:v39];
+    textLabel5 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
+    [textLabel5 setText:v39];
 
     [MEMORY[0x1E69DC888] lightGrayColor];
   }
 
   else
   {
-    v41 = [objc_opt_class() _basedOnLocationLocalizedString];
-    [(EKCalendarChooserCell *)v10 setTextLabelText:v41];
+    _basedOnLocationLocalizedString2 = [objc_opt_class() _basedOnLocationLocalizedString];
+    [(EKCalendarChooserCell *)v10 setTextLabelText:_basedOnLocationLocalizedString2];
 
-    [(EKTravelRouteEstimationController *)self estimatedTravelTimeValueAtRowIndex:a3];
+    [(EKTravelRouteEstimationController *)self estimatedTravelTimeValueAtRowIndex:index];
     v42 = CUIKDisplayStringForTravelTimeUsingShortFormat();
-    v43 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
-    [v43 setText:v42];
+    detailTextLabel4 = [(EKEventEstimatedTravelTimeResultCell *)v10 detailTextLabel];
+    [detailTextLabel4 setText:v42];
 
-    v44 = [(EKTravelRouteEstimationController *)self _imageForCellAtIndex:a3];
+    v44 = [(EKTravelRouteEstimationController *)self _imageForCellAtIndex:index];
     [(EKCalendarChooserCell *)v10 setColorDotImage:v44];
 
     [(EKCalendarChooserCell *)v10 setShowsColorDot:1];
     [MEMORY[0x1E69DC888] blackColor];
   }
   v45 = ;
-  v46 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
-  [v46 setTextColor:v45];
+  textLabel6 = [(EKEventEstimatedTravelTimeResultCell *)v10 textLabel];
+  [textLabel6 setTextColor:v45];
 
   return v10;
 }

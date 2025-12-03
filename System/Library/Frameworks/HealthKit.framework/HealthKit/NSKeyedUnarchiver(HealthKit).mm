@@ -24,7 +24,7 @@
   v19 = a3;
   v12 = v10;
   v17 = v12;
-  if ([a1 _hk_performUnarchivingWithData:v11 error:a6 handler:v16])
+  if ([self _hk_performUnarchivingWithData:v11 error:a6 handler:v16])
   {
     v13 = v21[5];
   }
@@ -61,7 +61,7 @@
   v19 = v13;
   v14 = v11;
   v20 = v14;
-  if ([a1 _hk_performUnarchivingWithData:v12 error:a6 handler:v18])
+  if ([self _hk_performUnarchivingWithData:v12 error:a6 handler:v18])
   {
     v15 = v23[5];
   }
@@ -94,23 +94,23 @@ LABEL_9:
 
   v7[2](v7, v10);
   [v10 finishDecoding];
-  v11 = [v10 error];
+  error = [v10 error];
 
-  if (v11)
+  if (error)
   {
-    v12 = [v10 error];
-    v13 = v12;
-    if (v12)
+    error2 = [v10 error];
+    v13 = error2;
+    if (error2)
     {
       if (a4)
       {
-        v14 = v12;
+        v14 = error2;
         *a4 = v13;
       }
 
       else
       {
-        _HKLogDroppedError(v12);
+        _HKLogDroppedError(error2);
       }
     }
 

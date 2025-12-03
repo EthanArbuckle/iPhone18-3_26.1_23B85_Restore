@@ -1,9 +1,9 @@
 @interface PHInCallUtilities
-+ (__CFPhoneNumber)newPhoneNumberRefForDestinationID:(id)a3 useNetworkCountryCode:(BOOL)a4;
-+ (id)contactStoreForCall:(id)a3;
-+ (id)formattedPhoneNumberFromString:(id)a3;
++ (__CFPhoneNumber)newPhoneNumberRefForDestinationID:(id)d useNetworkCountryCode:(BOOL)code;
++ (id)contactStoreForCall:(id)call;
++ (id)formattedPhoneNumberFromString:(id)string;
 + (id)sharedInstance;
-+ (void)performBlockWithSharedInstanceOverride:(id)a3 block:(id)a4;
++ (void)performBlockWithSharedInstanceOverride:(id)override block:(id)block;
 - (BOOL)faceTimeAudioIsAvailable;
 - (BOOL)faceTimeAudioIsSupported;
 - (BOOL)faceTimeVideoIsAvailable;
@@ -17,13 +17,13 @@
 - (BOOL)isSetupAssistantRunning;
 - (PHInCallUtilities)init;
 - (void)dealloc;
-- (void)requestPasscodeUnlockWithCompletion:(id)a3;
-- (void)setRequestedVCPresentationWithStatusBar:(BOOL)a3 withReasonLog:(id)a4;
+- (void)requestPasscodeUnlockWithCompletion:(id)completion;
+- (void)setRequestedVCPresentationWithStatusBar:(BOOL)bar withReasonLog:(id)log;
 - (void)startAllowingRingingCallStatusIndicator;
-- (void)startSuppressingInCallStatusBarForReason:(id)a3;
+- (void)startSuppressingInCallStatusBarForReason:(id)reason;
 - (void)stopAllowingRingingCallStatusIndicator;
 - (void)stopSuppressingInCallStatusBar;
-- (void)stopSuppressingInCallStatusBarForReason:(id)a3;
+- (void)stopSuppressingInCallStatusBarForReason:(id)reason;
 - (void)updateInCallStatusBarSuppression;
 @end
 
@@ -73,9 +73,9 @@
 - (BOOL)faceTimeVideoIsSupported
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 faceTimeSupported];
+  faceTimeSupported = [v2 faceTimeSupported];
 
-  return v3;
+  return faceTimeSupported;
 }
 
 - (BOOL)isSetupAssistantRunning
@@ -97,8 +97,8 @@
 {
   if ((byte_1003B0CD8 & 1) == 0)
   {
-    v2 = [CUTWeakLinkClass() sharedInstance];
-    byte_1003B0CD9 = [v2 lostModeIsActive];
+    cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+    byte_1003B0CD9 = [cUTWeakLinkClass() lostModeIsActive];
 
     byte_1003B0CD8 = 1;
   }
@@ -115,50 +115,50 @@
   v5 = v4;
   if (v3)
   {
-    v6 = [v3 applicationState];
-    v7 = [v6 isRestricted];
+    applicationState = [v3 applicationState];
+    isRestricted = [applicationState isRestricted];
   }
 
   else
   {
     if (!v4)
     {
-      v7 = 0;
+      isRestricted = 0;
       goto LABEL_8;
     }
 
-    v6 = sub_100004F84();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    applicationState = sub_100004F84();
+    if (os_log_type_enabled(applicationState, OS_LOG_TYPE_ERROR))
     {
-      sub_1002547D4(v2, v5, v6);
+      sub_1002547D4(v2, v5, applicationState);
     }
 
-    v7 = 0;
+    isRestricted = 0;
   }
 
 LABEL_8:
-  return v7;
+  return isRestricted;
 }
 
-+ (void)performBlockWithSharedInstanceOverride:(id)a3 block:(id)a4
++ (void)performBlockWithSharedInstanceOverride:(id)override block:(id)block
 {
-  v6 = a4;
-  [a1 setSharedInstanceOverride:a3];
-  if (v6)
+  blockCopy = block;
+  [self setSharedInstanceOverride:override];
+  if (blockCopy)
   {
-    v6[2]();
+    blockCopy[2]();
   }
 
-  [a1 unsetSharedInstanceOverride];
+  [self unsetSharedInstanceOverride];
 }
 
-+ (__CFPhoneNumber)newPhoneNumberRefForDestinationID:(id)a3 useNetworkCountryCode:(BOOL)a4
++ (__CFPhoneNumber)newPhoneNumberRefForDestinationID:(id)d useNetworkCountryCode:(BOOL)code
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 destinationIdIsPhoneNumber])
+  codeCopy = code;
+  dCopy = d;
+  if ([dCopy destinationIdIsPhoneNumber])
   {
-    if (v4 && (TUNetworkCountryCode(), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (codeCopy && (TUNetworkCountryCode(), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
       v8 = TUNetworkCountryCode();
@@ -170,7 +170,7 @@ LABEL_8:
     }
 
     v9 = 0;
-    if (v5 && v8)
+    if (dCopy && v8)
     {
       v9 = CFPhoneNumberCreate();
     }
@@ -184,11 +184,11 @@ LABEL_8:
   return v9;
 }
 
-+ (id)formattedPhoneNumberFromString:(id)a3
++ (id)formattedPhoneNumberFromString:(id)string
 {
-  v3 = a3;
-  v4 = [PHInCallUtilities newPhoneNumberRefForDestinationID:v3 useNetworkCountryCode:1];
-  String = v3;
+  stringCopy = string;
+  v4 = [PHInCallUtilities newPhoneNumberRefForDestinationID:stringCopy useNetworkCountryCode:1];
+  String = stringCopy;
   if (v4)
   {
     v6 = v4;
@@ -249,25 +249,25 @@ LABEL_8:
   [(PHInCallUtilities *)&v7 dealloc];
 }
 
-- (void)startSuppressingInCallStatusBarForReason:(id)a3
+- (void)startSuppressingInCallStatusBarForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
-  v6 = [v5 containsObject:v4];
+  reasonCopy = reason;
+  inCallStatusBarSuppressionReasons = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+  v6 = [inCallStatusBarSuppressionReasons containsObject:reasonCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
-    [v7 addObject:v4];
+    inCallStatusBarSuppressionReasons2 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+    [inCallStatusBarSuppressionReasons2 addObject:reasonCopy];
 
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+      inCallStatusBarSuppressionReasons3 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
       v10 = 138412546;
-      v11 = v4;
+      v11 = reasonCopy;
       v12 = 2112;
-      v13 = v9;
+      v13 = inCallStatusBarSuppressionReasons3;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "added reason: %@, reasons: %@", &v10, 0x16u);
     }
   }
@@ -275,25 +275,25 @@ LABEL_8:
   [(PHInCallUtilities *)self updateInCallStatusBarSuppression];
 }
 
-- (void)stopSuppressingInCallStatusBarForReason:(id)a3
+- (void)stopSuppressingInCallStatusBarForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
-  v6 = [v5 containsObject:v4];
+  reasonCopy = reason;
+  inCallStatusBarSuppressionReasons = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+  v6 = [inCallStatusBarSuppressionReasons containsObject:reasonCopy];
 
   if (v6)
   {
-    v7 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
-    [v7 removeObject:v4];
+    inCallStatusBarSuppressionReasons2 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+    [inCallStatusBarSuppressionReasons2 removeObject:reasonCopy];
 
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+      inCallStatusBarSuppressionReasons3 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
       v10 = 138412546;
-      v11 = v4;
+      v11 = reasonCopy;
       v12 = 2112;
-      v13 = v9;
+      v13 = inCallStatusBarSuppressionReasons3;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "removed reason: %@, reasons: %@", &v10, 0x16u);
     }
   }
@@ -306,14 +306,14 @@ LABEL_8:
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+    inCallStatusBarSuppressionReasons = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
     v6 = 138412290;
-    v7 = v4;
+    v7 = inCallStatusBarSuppressionReasons;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "removing all status bar suppression reasons: %@", &v6, 0xCu);
   }
 
-  v5 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
-  [v5 removeAllObjects];
+  inCallStatusBarSuppressionReasons2 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+  [inCallStatusBarSuppressionReasons2 removeAllObjects];
 
   [(PHInCallUtilities *)self updateInCallStatusBarSuppression];
 }
@@ -332,18 +332,18 @@ LABEL_8:
 
 - (BOOL)hasStatusBarSuppressionReasons
 {
-  v2 = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
-  v3 = [v2 count] != 0;
+  inCallStatusBarSuppressionReasons = [(PHInCallUtilities *)self inCallStatusBarSuppressionReasons];
+  v3 = [inCallStatusBarSuppressionReasons count] != 0;
 
   return v3;
 }
 
 - (void)updateInCallStatusBarSuppression
 {
-  v2 = [(PHInCallUtilities *)self hasStatusBarSuppressionReasons];
-  if (dword_1003A84E8 != v2)
+  hasStatusBarSuppressionReasons = [(PHInCallUtilities *)self hasStatusBarSuppressionReasons];
+  if (dword_1003A84E8 != hasStatusBarSuppressionReasons)
   {
-    v3 = v2;
+    v3 = hasStatusBarSuppressionReasons;
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -365,10 +365,10 @@ LABEL_8:
   }
 }
 
-- (void)requestPasscodeUnlockWithCompletion:(id)a3
+- (void)requestPasscodeUnlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (+[PHInCallUIUtilities isSpringBoardPasscodeLocked])
     {
@@ -391,12 +391,12 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "In lost mode and no passcode, not displaying UI", v7, 2u);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v4[2](v4, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
@@ -417,9 +417,9 @@ LABEL_8:
 - (BOOL)faceTimeAudioIsSupported
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 callingSupported];
+  callingSupported = [v2 callingSupported];
 
-  return v3;
+  return callingSupported;
 }
 
 - (BOOL)faceTimeAudioIsAvailable
@@ -435,13 +435,13 @@ LABEL_8:
   return v3;
 }
 
-- (void)setRequestedVCPresentationWithStatusBar:(BOOL)a3 withReasonLog:(id)a4
+- (void)setRequestedVCPresentationWithStatusBar:(BOOL)bar withReasonLog:(id)log
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_requestedVCPresentationWithStatusBar != v4)
+  barCopy = bar;
+  logCopy = log;
+  if (self->_requestedVCPresentationWithStatusBar != barCopy)
   {
-    self->_requestedVCPresentationWithStatusBar = v4;
+    self->_requestedVCPresentationWithStatusBar = barCopy;
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -449,7 +449,7 @@ LABEL_8:
       v9 = 138412546;
       v10 = v8;
       v11 = 2112;
-      v12 = v6;
+      v12 = logCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "set requestedPresentationWithStatusBar: %@ because: %@", &v9, 0x16u);
     }
   }
@@ -481,10 +481,10 @@ LABEL_8:
   return v4;
 }
 
-+ (id)contactStoreForCall:(id)a3
++ (id)contactStoreForCall:(id)call
 {
-  v3 = a3;
-  v4 = sub_100173248(v3);
+  callCopy = call;
+  v4 = sub_100173248(callCopy);
 
   return v4;
 }

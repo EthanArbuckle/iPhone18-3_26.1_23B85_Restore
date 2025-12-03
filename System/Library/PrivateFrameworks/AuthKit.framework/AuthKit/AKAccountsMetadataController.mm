@@ -1,37 +1,37 @@
 @interface AKAccountsMetadataController
 - (AKAccountsMetadataController)init;
-- (AKAccountsMetadataController)initWithMediaServiceController:(id)a3 localStorageController:(id)a4 metadataService:(id)a5;
-- (void)cancelAppIconRequestForClientID:(NSString *)a3 completionHandler:(id)a4;
-- (void)fetchAppIconForClientID:(NSString *)a3 iconSize:(CGSize)a4 completionHandler:(id)a5;
-- (void)updatePrimaryAppsMetadataWithDeveloperTeams:(NSArray *)a3 forAltDSID:(NSString *)a4 completionHandler:(id)a5;
+- (AKAccountsMetadataController)initWithMediaServiceController:(id)controller localStorageController:(id)storageController metadataService:(id)service;
+- (void)cancelAppIconRequestForClientID:(NSString *)d completionHandler:(id)handler;
+- (void)fetchAppIconForClientID:(NSString *)d iconSize:(CGSize)size completionHandler:(id)handler;
+- (void)updatePrimaryAppsMetadataWithDeveloperTeams:(NSArray *)teams forAltDSID:(NSString *)d completionHandler:(id)handler;
 @end
 
 @implementation AKAccountsMetadataController
 
-- (AKAccountsMetadataController)initWithMediaServiceController:(id)a3 localStorageController:(id)a4 metadataService:(id)a5
+- (AKAccountsMetadataController)initWithMediaServiceController:(id)controller localStorageController:(id)storageController metadataService:(id)service
 {
-  *(&self->super.isa + OBJC_IVAR___AKAccountsMetadataController_mediaServicesController) = a3;
-  *(&self->super.isa + OBJC_IVAR___AKAccountsMetadataController_localStorageController) = a4;
-  *(&self->super.isa + OBJC_IVAR___AKAccountsMetadataController_metadataService) = a5;
+  *(&self->super.isa + OBJC_IVAR___AKAccountsMetadataController_mediaServicesController) = controller;
+  *(&self->super.isa + OBJC_IVAR___AKAccountsMetadataController_localStorageController) = storageController;
+  *(&self->super.isa + OBJC_IVAR___AKAccountsMetadataController_metadataService) = service;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AccountsMetadataController();
-  v6 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   return [(AKAccountsMetadataController *)&v8 init];
 }
 
-- (void)fetchAppIconForClientID:(NSString *)a3 iconSize:(CGSize)a4 completionHandler:(id)a5
+- (void)fetchAppIconForClientID:(NSString *)d iconSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v11 = *(*(v10 - 8) + 64);
   __chkstk_darwin(v10 - 8);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  *(v15 + 2) = a3;
+  *(v15 + 2) = d;
   v15[3] = width;
   v15[4] = height;
   *(v15 + 5) = v14;
@@ -48,20 +48,20 @@
   v18[3] = 0;
   v18[4] = &unk_10029F620;
   v18[5] = v17;
-  v19 = a3;
-  v20 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_100244978(0, 0, v13, &unk_10029F628, v18);
 }
 
-- (void)cancelAppIconRequestForClientID:(NSString *)a3 completionHandler:(id)a4
+- (void)cancelAppIconRequestForClientID:(NSString *)d completionHandler:(id)handler
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = d;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -76,21 +76,21 @@
   v15[3] = 0;
   v15[4] = &unk_10029F600;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029F608, v15);
 }
 
-- (void)updatePrimaryAppsMetadataWithDeveloperTeams:(NSArray *)a3 forAltDSID:(NSString *)a4 completionHandler:(id)a5
+- (void)updatePrimaryAppsMetadataWithDeveloperTeams:(NSArray *)teams forAltDSID:(NSString *)d completionHandler:(id)handler
 {
   v9 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = teams;
+  v14[3] = d;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -105,9 +105,9 @@
   v17[3] = 0;
   v17[4] = &unk_10029C6A0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  teamsCopy = teams;
+  dCopy = d;
+  selfCopy = self;
   sub_100244978(0, 0, v12, &unk_10029CEE0, v17);
 }
 

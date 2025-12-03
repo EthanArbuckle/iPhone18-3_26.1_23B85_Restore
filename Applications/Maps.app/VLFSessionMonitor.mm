@@ -1,7 +1,7 @@
 @interface VLFSessionMonitor
-- (VLFSessionMonitor)initWithObserver:(id)a3;
+- (VLFSessionMonitor)initWithObserver:(id)observer;
 - (VLFSessionMonitorObserver)observer;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation VLFSessionMonitor
@@ -13,9 +13,9 @@
   return WeakRetained;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     if (qword_10195CA60 != -1)
     {
@@ -29,12 +29,12 @@
       v7 = NSStringFromClass(v6);
       v8 = v7;
       v9 = @"Hide";
-      if (a3 == 1)
+      if (state == 1)
       {
         v9 = @"EnablePuck";
       }
 
-      if (a3 == 2)
+      if (state == 2)
       {
         v9 = @"EnablePuckAndBanner";
       }
@@ -46,16 +46,16 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@: updating state: %@", &v11, 0x16u);
     }
 
-    self->_state = a3;
-    v10 = [(VLFSessionMonitor *)self observer];
-    [v10 monitor:self didChangeState:{-[VLFSessionMonitor state](self, "state")}];
+    self->_state = state;
+    observer = [(VLFSessionMonitor *)self observer];
+    [observer monitor:self didChangeState:{-[VLFSessionMonitor state](self, "state")}];
   }
 }
 
-- (VLFSessionMonitor)initWithObserver:(id)a3
+- (VLFSessionMonitor)initWithObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v8 = sub_10006D178();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -90,7 +90,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
   }
 
   return v6;

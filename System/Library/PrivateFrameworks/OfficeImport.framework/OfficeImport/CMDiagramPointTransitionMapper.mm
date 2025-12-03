@@ -1,38 +1,38 @@
 @interface CMDiagramPointTransitionMapper
-- (CMDiagramPointTransitionMapper)initWithPoint:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 shapeType:(int)a6 adjustValues:(id)a7 parent:(id)a8;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (CMDiagramPointTransitionMapper)initWithPoint:(id)point drawingContext:(id)context orientedBounds:(id)bounds shapeType:(int)type adjustValues:(id)values parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramPointTransitionMapper
 
-- (CMDiagramPointTransitionMapper)initWithPoint:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 shapeType:(int)a6 adjustValues:(id)a7 parent:(id)a8
+- (CMDiagramPointTransitionMapper)initWithPoint:(id)point drawingContext:(id)context orientedBounds:(id)bounds shapeType:(int)type adjustValues:(id)values parent:(id)parent
 {
-  v15 = a7;
+  valuesCopy = values;
   v19.receiver = self;
   v19.super_class = CMDiagramPointTransitionMapper;
-  v16 = [(CMDiagramPointMapper *)&v19 initWithPoint:a3 drawingContext:a4 orientedBounds:a5 parent:a8];
+  v16 = [(CMDiagramPointMapper *)&v19 initWithPoint:point drawingContext:context orientedBounds:bounds parent:parent];
   v17 = v16;
   if (v16)
   {
-    v16->mShapeType = a6;
-    objc_storeStrong(&v16->mAdjustValues, a7);
+    v16->mShapeType = type;
+    objc_storeStrong(&v16->mAdjustValues, values);
   }
 
   return v17;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v9 = a4;
+  stateCopy = state;
   v5 = [(CMDiagramPointMapper *)self presentationWithName:@"sibTrans"];
 
   if (v5)
   {
     [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
     mShapeType = self->mShapeType;
-    v7 = [(CMDiagramPointMapper *)self fill];
-    v8 = [(CMDiagramPointMapper *)self stroke];
-    [CMShapeRenderer renderCanonicalShape:mShapeType fill:v7 stroke:v8 adjustValues:self->mAdjustValues orientedBounds:self->super.mOrientedBounds state:v9 drawingContext:self->super.mDrawingContext];
+    fill = [(CMDiagramPointMapper *)self fill];
+    stroke = [(CMDiagramPointMapper *)self stroke];
+    [CMShapeRenderer renderCanonicalShape:mShapeType fill:fill stroke:stroke adjustValues:self->mAdjustValues orientedBounds:self->super.mOrientedBounds state:stateCopy drawingContext:self->super.mDrawingContext];
   }
 }
 

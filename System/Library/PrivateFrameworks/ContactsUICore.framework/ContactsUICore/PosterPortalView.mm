@@ -1,6 +1,6 @@
 @interface PosterPortalView
 + (Class)layerClass;
-- (_TtC14ContactsUICore16PosterPortalView)initWithCoder:(id)a3;
+- (_TtC14ContactsUICore16PosterPortalView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -13,7 +13,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC14ContactsUICore16PosterPortalView)initWithCoder:(id)a3
+- (_TtC14ContactsUICore16PosterPortalView)initWithCoder:(id)coder
 {
   result = sub_1A34CDC10();
   __break(1u);
@@ -26,14 +26,14 @@
   v15.super_class = type metadata accessor for PosterPortalView();
   v2 = v15.receiver;
   [(PosterPortalView *)&v15 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
   if (v4)
   {
     v5 = v4;
-    v6 = [v2 layer];
-    [v6 bounds];
+    layer2 = [v2 layer];
+    [layer2 bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;

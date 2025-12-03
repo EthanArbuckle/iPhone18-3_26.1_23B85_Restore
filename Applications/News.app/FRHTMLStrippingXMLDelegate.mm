@@ -1,7 +1,7 @@
 @interface FRHTMLStrippingXMLDelegate
 - (FRHTMLStrippingXMLDelegate)init;
 - (NSString)strippedString;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation FRHTMLStrippingXMLDelegate
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
-  v6 = [(FRHTMLStrippingXMLDelegate *)self strings];
-  [v6 addObject:v5];
+  charactersCopy = characters;
+  strings = [(FRHTMLStrippingXMLDelegate *)self strings];
+  [strings addObject:charactersCopy];
 }
 
 - (NSString)strippedString
 {
-  v2 = [(FRHTMLStrippingXMLDelegate *)self strings];
-  v3 = [v2 componentsJoinedByString:&stru_1000C67A8];
+  strings = [(FRHTMLStrippingXMLDelegate *)self strings];
+  v3 = [strings componentsJoinedByString:&stru_1000C67A8];
 
   return v3;
 }

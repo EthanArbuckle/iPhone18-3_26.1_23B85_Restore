@@ -1,20 +1,20 @@
 @interface TSgPTPNetworkPort
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4;
-- (TSgPTPNetworkPort)initWithImplDC:(id)a3;
-- (void)addClient:(id)a3;
-- (void)didAnnounceTimeoutForPort:(id)a3;
-- (void)didSyncTimeoutForPort:(id)a3;
-- (void)didSyncTimeoutWithMean:(int64_t)a3 median:(int64_t)a4 standardDeviation:(unint64_t)a5 minimum:(int64_t)a6 maximum:(int64_t)a7 numberOfSamples:(unsigned int)a8 forPort:(id)a9;
-- (void)didTerminateServiceForPort:(id)a3;
-- (void)didTimeoutOnMACLookupForPort:(id)a3;
-- (void)removeClient:(id)a3;
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent;
+- (TSgPTPNetworkPort)initWithImplDC:(id)c;
+- (void)addClient:(id)client;
+- (void)didAnnounceTimeoutForPort:(id)port;
+- (void)didSyncTimeoutForPort:(id)port;
+- (void)didSyncTimeoutWithMean:(int64_t)mean median:(int64_t)median standardDeviation:(unint64_t)deviation minimum:(int64_t)minimum maximum:(int64_t)maximum numberOfSamples:(unsigned int)samples forPort:(id)port;
+- (void)didTerminateServiceForPort:(id)port;
+- (void)didTimeoutOnMACLookupForPort:(id)port;
+- (void)removeClient:(id)client;
 @end
 
 @implementation TSgPTPNetworkPort
 
-- (TSgPTPNetworkPort)initWithImplDC:(id)a3
+- (TSgPTPNetworkPort)initWithImplDC:(id)c
 {
-  v5 = a3;
+  cCopy = c;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -26,34 +26,34 @@
 
   v11.receiver = self;
   v11.super_class = TSgPTPNetworkPort;
-  v6 = [(TSgPTPPort *)&v11 initWithImplDC:v5];
+  v6 = [(TSgPTPPort *)&v11 initWithImplDC:cCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, c);
     v7->_clientLock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     clients = v7->_clients;
-    v7->_clients = v8;
+    v7->_clients = weakObjectsPointerArray;
 LABEL_4:
   }
 
   return v7;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 description];
-    v6 = [v5 UTF8String];
+    v5 = [clientCopy description];
+    uTF8String = [v5 UTF8String];
     v7 = [(TSgPTPNetworkPort *)self description];
     *buf = 136315394;
-    v20 = v6;
+    v20 = uTF8String;
     v21 = 2080;
-    v22 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Adding Client %s to port %s\n", buf, 0x16u);
   }
 
@@ -79,7 +79,7 @@ LABEL_4:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v14 + 1) + 8 * v12) == v4)
+        if (*(*(&v14 + 1) + 8 * v12) == clientCopy)
         {
 
           goto LABEL_14;
@@ -99,7 +99,7 @@ LABEL_4:
     }
   }
 
-  [(NSPointerArray *)self->_clients addPointer:v4, v14];
+  [(NSPointerArray *)self->_clients addPointer:clientCopy, v14];
   if ([(NSPointerArray *)self->_clients count]== 1)
   {
     [(_TSF_TSDgPTPNetworkPort *)self->_impl addClient:self];
@@ -111,19 +111,19 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 description];
-    v6 = [v5 UTF8String];
+    v5 = [clientCopy description];
+    uTF8String = [v5 UTF8String];
     v7 = [(TSgPTPNetworkPort *)self description];
     *buf = 136315394;
-    v22 = v6;
+    v22 = uTF8String;
     v23 = 2080;
-    v24 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Removing Client %s from port %s\n", buf, 0x16u);
   }
 
@@ -152,7 +152,7 @@ LABEL_14:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v16 + 1) + 8 * v13) == v4)
+        if (*(*(&v16 + 1) + 8 * v13) == clientCopy)
         {
 
           [(NSPointerArray *)self->_clients removePointerAtIndex:v14, v16];
@@ -185,7 +185,7 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTimeoutOnMACLookupForPort:(id)a3
+- (void)didTimeoutOnMACLookupForPort:(id)port
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_clientLock);
@@ -197,9 +197,9 @@ LABEL_13:
     *buf = 138412802;
     v19 = v5;
     v20 = 2048;
-    v21 = [(TSgPTPPort *)self clockIdentifier];
+    clockIdentifier = [(TSgPTPPort *)self clockIdentifier];
     v22 = 1024;
-    v23 = [(TSgPTPPort *)self portNumber];
+    portNumber = [(TSgPTPPort *)self portNumber];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSgPTPNetworkPort(%@,%016llx.%hu): timedoutMACLookup", buf, 0x1Cu);
   }
 
@@ -243,7 +243,7 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didAnnounceTimeoutForPort:(id)a3
+- (void)didAnnounceTimeoutForPort:(id)port
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_clientLock);
@@ -255,9 +255,9 @@ LABEL_13:
     *buf = 138412802;
     v19 = v5;
     v20 = 2048;
-    v21 = [(TSgPTPPort *)self clockIdentifier];
+    clockIdentifier = [(TSgPTPPort *)self clockIdentifier];
     v22 = 1024;
-    v23 = [(TSgPTPPort *)self portNumber];
+    portNumber = [(TSgPTPPort *)self portNumber];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSgPTPNetworkPort(%@,%016llx.%hu): announceTimeout", buf, 0x1Cu);
   }
 
@@ -301,7 +301,7 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didSyncTimeoutForPort:(id)a3
+- (void)didSyncTimeoutForPort:(id)port
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_clientLock);
@@ -313,9 +313,9 @@ LABEL_13:
     *buf = 138412802;
     v19 = v5;
     v20 = 2048;
-    v21 = [(TSgPTPPort *)self clockIdentifier];
+    clockIdentifier = [(TSgPTPPort *)self clockIdentifier];
     v22 = 1024;
-    v23 = [(TSgPTPPort *)self portNumber];
+    portNumber = [(TSgPTPPort *)self portNumber];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSgPTPNetworkPort(%@,%016llx.%hu): syncTimeout", buf, 0x1Cu);
   }
 
@@ -359,7 +359,7 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didSyncTimeoutWithMean:(int64_t)a3 median:(int64_t)a4 standardDeviation:(unint64_t)a5 minimum:(int64_t)a6 maximum:(int64_t)a7 numberOfSamples:(unsigned int)a8 forPort:(id)a9
+- (void)didSyncTimeoutWithMean:(int64_t)mean median:(int64_t)median standardDeviation:(unint64_t)deviation minimum:(int64_t)minimum maximum:(int64_t)maximum numberOfSamples:(unsigned int)samples forPort:(id)port
 {
   v48 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_clientLock);
@@ -371,21 +371,21 @@ LABEL_13:
     *buf = 138414338;
     v31 = v14;
     v32 = 2048;
-    v33 = [(TSgPTPPort *)self clockIdentifier];
+    clockIdentifier = [(TSgPTPPort *)self clockIdentifier];
     v34 = 1024;
-    v35 = [(TSgPTPPort *)self portNumber];
+    portNumber = [(TSgPTPPort *)self portNumber];
     v36 = 2048;
-    v37 = a3;
+    meanCopy = mean;
     v38 = 2048;
-    v39 = a4;
+    medianCopy = median;
     v40 = 2048;
-    v41 = a5;
+    deviationCopy = deviation;
     v42 = 2048;
-    v43 = a6;
+    minimumCopy = minimum;
     v44 = 2048;
-    v45 = a7;
+    maximumCopy = maximum;
     v46 = 1024;
-    v47 = a8;
+    samplesCopy = samples;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSgPTPNetworkPort(%@,%016llx.%hu): syncTimeoutWithMean:%lld median:%lld standardDeviation:%llu minimum:%lld maximum:%lld numberOfSamples:%u", buf, 0x54u);
   }
 
@@ -411,7 +411,7 @@ LABEL_13:
         v20 = *(*(&v25 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v20 didSyncTimeoutWithMean:a3 median:a4 standardDeviation:a5 minimum:a6 maximum:a7 numberOfSamples:a8 forPort:self];
+          [v20 didSyncTimeoutWithMean:mean median:median standardDeviation:deviation minimum:minimum maximum:maximum numberOfSamples:samples forPort:self];
         }
       }
 
@@ -425,7 +425,7 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTerminateServiceForPort:(id)a3
+- (void)didTerminateServiceForPort:(id)port
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_clientLock);
@@ -437,9 +437,9 @@ LABEL_13:
     *buf = 138412802;
     v19 = v5;
     v20 = 2048;
-    v21 = [(TSgPTPPort *)self clockIdentifier];
+    clockIdentifier = [(TSgPTPPort *)self clockIdentifier];
     v22 = 1024;
-    v23 = [(TSgPTPPort *)self portNumber];
+    portNumber = [(TSgPTPPort *)self portNumber];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSgPTPNetworkPort(%@,%016llx.%hu): terminatedService", buf, 0x1Cu);
   }
 
@@ -484,15 +484,15 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent
 {
-  v6 = a3;
-  v7 = a4;
-  v65.receiver = a1;
+  infoCopy = info;
+  indentCopy = indent;
+  v65.receiver = self;
   v65.super_class = &OBJC_METACLASS___TSgPTPNetworkPort;
-  v8 = objc_msgSendSuper2(&v65, sel_diagnosticDescriptionForInfo_withIndent_, v6, v7);
-  v9 = [v6 objectForKeyedSubscript:@"InterfaceName"];
-  [v8 appendFormat:@"%@    Interface: ", v7];
+  v8 = objc_msgSendSuper2(&v65, sel_diagnosticDescriptionForInfo_withIndent_, infoCopy, indentCopy);
+  v9 = [infoCopy objectForKeyedSubscript:@"InterfaceName"];
+  [v8 appendFormat:@"%@    Interface: ", indentCopy];
   if (v9)
   {
     [v8 appendFormat:@"%@\n", v9];
@@ -503,8 +503,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Source Address: ", v7];
-  v10 = [v6 objectForKeyedSubscript:@"SourceAddress"];
+  [v8 appendFormat:@"%@    Source Address: ", indentCopy];
+  v10 = [infoCopy objectForKeyedSubscript:@"SourceAddress"];
   v11 = v10;
   if (v10)
   {
@@ -516,8 +516,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Destination Address: ", v7];
-  v12 = [v6 objectForKeyedSubscript:@"DestinationAddress"];
+  [v8 appendFormat:@"%@    Destination Address: ", indentCopy];
+  v12 = [infoCopy objectForKeyedSubscript:@"DestinationAddress"];
 
   if (v12)
   {
@@ -529,8 +529,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Clock Priority 1: ", v7];
-  v13 = [v6 objectForKeyedSubscript:@"ClockPriority1"];
+  [v8 appendFormat:@"%@    Announce Clock Priority 1: ", indentCopy];
+  v13 = [infoCopy objectForKeyedSubscript:@"ClockPriority1"];
   v14 = v13;
   if (v13)
   {
@@ -542,8 +542,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Clock Class: ", v7];
-  v15 = [v6 objectForKeyedSubscript:@"ClockClass"];
+  [v8 appendFormat:@"%@    Announce Clock Class: ", indentCopy];
+  v15 = [infoCopy objectForKeyedSubscript:@"ClockClass"];
 
   if (v15)
   {
@@ -555,8 +555,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Clock Accuracy: ", v7];
-  v16 = [v6 objectForKeyedSubscript:@"ClockAccuracy"];
+  [v8 appendFormat:@"%@    Announce Clock Accuracy: ", indentCopy];
+  v16 = [infoCopy objectForKeyedSubscript:@"ClockAccuracy"];
 
   if (v16)
   {
@@ -568,8 +568,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Offset Scaled Log Variance: ", v7];
-  v17 = [v6 objectForKeyedSubscript:@"OffsetScaledLogVariance"];
+  [v8 appendFormat:@"%@    Announce Offset Scaled Log Variance: ", indentCopy];
+  v17 = [infoCopy objectForKeyedSubscript:@"OffsetScaledLogVariance"];
 
   if (v17)
   {
@@ -581,8 +581,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Clock Priority 2: ", v7];
-  v18 = [v6 objectForKeyedSubscript:@"ClockPriority2"];
+  [v8 appendFormat:@"%@    Announce Clock Priority 2: ", indentCopy];
+  v18 = [infoCopy objectForKeyedSubscript:@"ClockPriority2"];
 
   if (v18)
   {
@@ -594,8 +594,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Grandmaster Identity: ", v7];
-  v19 = [v6 objectForKeyedSubscript:@"GrandmasterID"];
+  [v8 appendFormat:@"%@    Announce Grandmaster Identity: ", indentCopy];
+  v19 = [infoCopy objectForKeyedSubscript:@"GrandmasterID"];
 
   if (v19)
   {
@@ -607,8 +607,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Steps Removed: ", v7];
-  v20 = [v6 objectForKeyedSubscript:@"StepsRemoved"];
+  [v8 appendFormat:@"%@    Announce Steps Removed: ", indentCopy];
+  v20 = [infoCopy objectForKeyedSubscript:@"StepsRemoved"];
 
   if (v20)
   {
@@ -620,8 +620,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Announce Time Source: ", v7];
-  v21 = [v6 objectForKeyedSubscript:@"TimeSource"];
+  [v8 appendFormat:@"%@    Announce Time Source: ", indentCopy];
+  v21 = [infoCopy objectForKeyedSubscript:@"TimeSource"];
 
   if (v21)
   {
@@ -633,8 +633,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Clock Priority 1: ", v7];
-  v22 = [v6 objectForKeyedSubscript:@"ReceivedClockPriority1"];
+  [v8 appendFormat:@"%@    Received Clock Priority 1: ", indentCopy];
+  v22 = [infoCopy objectForKeyedSubscript:@"ReceivedClockPriority1"];
 
   if (v22)
   {
@@ -646,8 +646,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Clock Class: ", v7];
-  v23 = [v6 objectForKeyedSubscript:@"ReceivedClockClass"];
+  [v8 appendFormat:@"%@    Received Clock Class: ", indentCopy];
+  v23 = [infoCopy objectForKeyedSubscript:@"ReceivedClockClass"];
 
   if (v23)
   {
@@ -659,8 +659,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Clock Accuracy: ", v7];
-  v24 = [v6 objectForKeyedSubscript:@"ReceivedClockAccuracy"];
+  [v8 appendFormat:@"%@    Received Clock Accuracy: ", indentCopy];
+  v24 = [infoCopy objectForKeyedSubscript:@"ReceivedClockAccuracy"];
 
   if (v24)
   {
@@ -672,8 +672,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Offset Scaled Log Variance: ", v7];
-  v25 = [v6 objectForKeyedSubscript:@"ReceivedOffsetScaledLogVariance"];
+  [v8 appendFormat:@"%@    Received Offset Scaled Log Variance: ", indentCopy];
+  v25 = [infoCopy objectForKeyedSubscript:@"ReceivedOffsetScaledLogVariance"];
 
   if (v25)
   {
@@ -685,8 +685,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Clock Priority 2: ", v7];
-  v26 = [v6 objectForKeyedSubscript:@"ReceivedClockPriority2"];
+  [v8 appendFormat:@"%@    Received Clock Priority 2: ", indentCopy];
+  v26 = [infoCopy objectForKeyedSubscript:@"ReceivedClockPriority2"];
 
   if (v26)
   {
@@ -698,8 +698,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Grandmaster Identity: ", v7];
-  v27 = [v6 objectForKeyedSubscript:@"ReceivedGrandmasterID"];
+  [v8 appendFormat:@"%@    Received Grandmaster Identity: ", indentCopy];
+  v27 = [infoCopy objectForKeyedSubscript:@"ReceivedGrandmasterID"];
 
   if (v27)
   {
@@ -711,8 +711,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Steps Removed: ", v7];
-  v28 = [v6 objectForKeyedSubscript:@"ReceivedStepsRemoved"];
+  [v8 appendFormat:@"%@    Received Steps Removed: ", indentCopy];
+  v28 = [infoCopy objectForKeyedSubscript:@"ReceivedStepsRemoved"];
 
   if (v28)
   {
@@ -724,8 +724,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Received Time Source: ", v7];
-  v29 = [v6 objectForKeyedSubscript:@"ReceivedTimeSource"];
+  [v8 appendFormat:@"%@    Received Time Source: ", indentCopy];
+  v29 = [infoCopy objectForKeyedSubscript:@"ReceivedTimeSource"];
 
   if (v29)
   {
@@ -737,8 +737,8 @@ LABEL_13:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Local Link Type: ", v7];
-  v30 = [v6 objectForKeyedSubscript:@"LocalLinkType"];
+  [v8 appendFormat:@"%@    Local Link Type: ", indentCopy];
+  v30 = [infoCopy objectForKeyedSubscript:@"LocalLinkType"];
 
   if (!v30)
   {
@@ -746,22 +746,22 @@ LABEL_13:
     goto LABEL_64;
   }
 
-  v31 = [v30 unsignedCharValue];
-  if (v31 <= 2)
+  unsignedCharValue = [v30 unsignedCharValue];
+  if (unsignedCharValue <= 2)
   {
-    if (!v31)
+    if (!unsignedCharValue)
     {
       v32 = @"Unknown\n";
       goto LABEL_64;
     }
 
-    if (v31 == 1)
+    if (unsignedCharValue == 1)
     {
       v32 = @"AVB Ethernet\n";
       goto LABEL_64;
     }
 
-    if (v31 != 2)
+    if (unsignedCharValue != 2)
     {
       goto LABEL_190;
     }
@@ -772,9 +772,9 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  if (v31 <= 4)
+  if (unsignedCharValue <= 4)
   {
-    if (v31 == 3)
+    if (unsignedCharValue == 3)
     {
       v32 = @"Infrastructure WiFi\n";
     }
@@ -787,13 +787,13 @@ LABEL_64:
     goto LABEL_64;
   }
 
-  if (v31 == 5)
+  if (unsignedCharValue == 5)
   {
     v32 = @"Timing Measurement\n";
     goto LABEL_64;
   }
 
-  if (v31 == 6)
+  if (unsignedCharValue == 6)
   {
     v32 = @"Fine Timing Measurement\n";
     goto LABEL_64;
@@ -802,8 +802,8 @@ LABEL_64:
 LABEL_190:
   [v8 appendFormat:@"Undefined link type %hhu\n", objc_msgSend(v30, "unsignedCharValue")];
 LABEL_65:
-  [v8 appendFormat:@"%@    Remote Link Type: ", v7];
-  v33 = [v6 objectForKeyedSubscript:@"RemoteLinkType"];
+  [v8 appendFormat:@"%@    Remote Link Type: ", indentCopy];
+  v33 = [infoCopy objectForKeyedSubscript:@"RemoteLinkType"];
 
   if (!v33)
   {
@@ -811,22 +811,22 @@ LABEL_65:
     goto LABEL_71;
   }
 
-  v34 = [v33 unsignedCharValue];
-  if (v34 <= 2)
+  unsignedCharValue2 = [v33 unsignedCharValue];
+  if (unsignedCharValue2 <= 2)
   {
-    if (!v34)
+    if (!unsignedCharValue2)
     {
       v35 = @"Unknown\n";
       goto LABEL_71;
     }
 
-    if (v34 == 1)
+    if (unsignedCharValue2 == 1)
     {
       v35 = @"AVB Ethernet\n";
       goto LABEL_71;
     }
 
-    if (v34 != 2)
+    if (unsignedCharValue2 != 2)
     {
       goto LABEL_191;
     }
@@ -837,9 +837,9 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if (v34 <= 4)
+  if (unsignedCharValue2 <= 4)
   {
-    if (v34 == 3)
+    if (unsignedCharValue2 == 3)
     {
       v35 = @"Infrastructure WiFi\n";
     }
@@ -852,13 +852,13 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  if (v34 == 5)
+  if (unsignedCharValue2 == 5)
   {
     v35 = @"Timing Measurement\n";
     goto LABEL_71;
   }
 
-  if (v34 == 6)
+  if (unsignedCharValue2 == 6)
   {
     v35 = @"Fine Timing Measurement\n";
     goto LABEL_71;
@@ -867,8 +867,8 @@ LABEL_71:
 LABEL_191:
   [v8 appendFormat:@"Undefined link type %hhu\n", objc_msgSend(v33, "unsignedCharValue")];
 LABEL_72:
-  [v8 appendFormat:@"%@    Local Timestamping Mode: ", v7];
-  v36 = [v6 objectForKeyedSubscript:@"LocalTimestampingMode"];
+  [v8 appendFormat:@"%@    Local Timestamping Mode: ", indentCopy];
+  v36 = [infoCopy objectForKeyedSubscript:@"LocalTimestampingMode"];
 
   if (!v36)
   {
@@ -876,16 +876,16 @@ LABEL_72:
     goto LABEL_98;
   }
 
-  v37 = [v36 unsignedCharValue];
-  if (v37 > 1)
+  unsignedCharValue3 = [v36 unsignedCharValue];
+  if (unsignedCharValue3 > 1)
   {
-    if (v37 == 2)
+    if (unsignedCharValue3 == 2)
     {
       v38 = @"Interrupt\n";
       goto LABEL_98;
     }
 
-    if (v37 == 3)
+    if (unsignedCharValue3 == 3)
     {
       v38 = @"Software\n";
       goto LABEL_98;
@@ -896,13 +896,13 @@ LABEL_95:
     goto LABEL_99;
   }
 
-  if (!v37)
+  if (!unsignedCharValue3)
   {
     v38 = @"Unknown\n";
     goto LABEL_98;
   }
 
-  if (v37 != 1)
+  if (unsignedCharValue3 != 1)
   {
     goto LABEL_95;
   }
@@ -911,8 +911,8 @@ LABEL_95:
 LABEL_98:
   [v8 appendString:v38];
 LABEL_99:
-  [v8 appendFormat:@"%@    Remote Timestamping Mode: ", v7];
-  v39 = [v6 objectForKeyedSubscript:@"RemoteTimestampingMode"];
+  [v8 appendFormat:@"%@    Remote Timestamping Mode: ", indentCopy];
+  v39 = [infoCopy objectForKeyedSubscript:@"RemoteTimestampingMode"];
 
   if (!v39)
   {
@@ -920,16 +920,16 @@ LABEL_99:
     goto LABEL_111;
   }
 
-  v40 = [v39 unsignedCharValue];
-  if (v40 > 1)
+  unsignedCharValue4 = [v39 unsignedCharValue];
+  if (unsignedCharValue4 > 1)
   {
-    if (v40 == 2)
+    if (unsignedCharValue4 == 2)
     {
       v41 = @"Interrupt\n";
       goto LABEL_111;
     }
 
-    if (v40 == 3)
+    if (unsignedCharValue4 == 3)
     {
       v41 = @"Software\n";
       goto LABEL_111;
@@ -940,13 +940,13 @@ LABEL_108:
     goto LABEL_112;
   }
 
-  if (!v40)
+  if (!unsignedCharValue4)
   {
     v41 = @"Unknown\n";
     goto LABEL_111;
   }
 
-  if (v40 != 1)
+  if (unsignedCharValue4 != 1)
   {
     goto LABEL_108;
   }
@@ -955,8 +955,8 @@ LABEL_108:
 LABEL_111:
   [v8 appendString:v41];
 LABEL_112:
-  [v8 appendFormat:@"%@    Local Oscillator Type: ", v7];
-  v42 = [v6 objectForKeyedSubscript:@"LocalOscillatorType"];
+  [v8 appendFormat:@"%@    Local Oscillator Type: ", indentCopy];
+  v42 = [infoCopy objectForKeyedSubscript:@"LocalOscillatorType"];
 
   if (!v42)
   {
@@ -964,12 +964,12 @@ LABEL_112:
     goto LABEL_119;
   }
 
-  v43 = [v42 unsignedCharValue];
-  if (v43 > 4)
+  unsignedCharValue5 = [v42 unsignedCharValue];
+  if (unsignedCharValue5 > 4)
   {
-    if (v43 <= 6)
+    if (unsignedCharValue5 <= 6)
     {
-      if (v43 == 5)
+      if (unsignedCharValue5 == 5)
       {
         v44 = @"VCYCXO\n";
       }
@@ -982,19 +982,19 @@ LABEL_112:
       goto LABEL_119;
     }
 
-    if (v43 == 7)
+    if (unsignedCharValue5 == 7)
     {
       v44 = @"DOCXO\n";
       goto LABEL_119;
     }
 
-    if (v43 == 8)
+    if (unsignedCharValue5 == 8)
     {
       v44 = @"VCOCXO\n";
       goto LABEL_119;
     }
 
-    if (v43 != 9)
+    if (unsignedCharValue5 != 9)
     {
       goto LABEL_210;
     }
@@ -1005,14 +1005,14 @@ LABEL_119:
     goto LABEL_120;
   }
 
-  if (v43 > 1)
+  if (unsignedCharValue5 > 1)
   {
-    if (v43 == 2)
+    if (unsignedCharValue5 == 2)
     {
       v44 = @"MEMS\n";
     }
 
-    else if (v43 == 3)
+    else if (unsignedCharValue5 == 3)
     {
       v44 = @"TCXO\n";
     }
@@ -1025,13 +1025,13 @@ LABEL_119:
     goto LABEL_119;
   }
 
-  if (!v43)
+  if (!unsignedCharValue5)
   {
     v44 = @"Unknown\n";
     goto LABEL_119;
   }
 
-  if (v43 == 1)
+  if (unsignedCharValue5 == 1)
   {
     v44 = @"Crystal\n";
     goto LABEL_119;
@@ -1040,8 +1040,8 @@ LABEL_119:
 LABEL_210:
   [v8 appendFormat:@"Undefined oscillator type %hhu\n", objc_msgSend(v42, "unsignedCharValue")];
 LABEL_120:
-  [v8 appendFormat:@"%@    Remote Oscillator Type: ", v7];
-  v45 = [v6 objectForKeyedSubscript:@"RemoteOscillatorType"];
+  [v8 appendFormat:@"%@    Remote Oscillator Type: ", indentCopy];
+  v45 = [infoCopy objectForKeyedSubscript:@"RemoteOscillatorType"];
 
   if (!v45)
   {
@@ -1049,12 +1049,12 @@ LABEL_120:
     goto LABEL_127;
   }
 
-  v46 = [v45 unsignedCharValue];
-  if (v46 > 4)
+  unsignedCharValue6 = [v45 unsignedCharValue];
+  if (unsignedCharValue6 > 4)
   {
-    if (v46 <= 6)
+    if (unsignedCharValue6 <= 6)
     {
-      if (v46 == 5)
+      if (unsignedCharValue6 == 5)
       {
         v47 = @"VCYCXO\n";
       }
@@ -1067,19 +1067,19 @@ LABEL_120:
       goto LABEL_127;
     }
 
-    if (v46 == 7)
+    if (unsignedCharValue6 == 7)
     {
       v47 = @"DOCXO\n";
       goto LABEL_127;
     }
 
-    if (v46 == 8)
+    if (unsignedCharValue6 == 8)
     {
       v47 = @"VCOCXO\n";
       goto LABEL_127;
     }
 
-    if (v46 != 9)
+    if (unsignedCharValue6 != 9)
     {
       goto LABEL_211;
     }
@@ -1090,14 +1090,14 @@ LABEL_127:
     goto LABEL_128;
   }
 
-  if (v46 > 1)
+  if (unsignedCharValue6 > 1)
   {
-    if (v46 == 2)
+    if (unsignedCharValue6 == 2)
     {
       v47 = @"MEMS\n";
     }
 
-    else if (v46 == 3)
+    else if (unsignedCharValue6 == 3)
     {
       v47 = @"TCXO\n";
     }
@@ -1110,13 +1110,13 @@ LABEL_127:
     goto LABEL_127;
   }
 
-  if (!v46)
+  if (!unsignedCharValue6)
   {
     v47 = @"Unknown\n";
     goto LABEL_127;
   }
 
-  if (v46 == 1)
+  if (unsignedCharValue6 == 1)
   {
     v47 = @"Crystal\n";
     goto LABEL_127;
@@ -1125,8 +1125,8 @@ LABEL_127:
 LABEL_211:
   [v8 appendFormat:@"Undefined oscillator type %hhu\n", objc_msgSend(v45, "unsignedCharValue")];
 LABEL_128:
-  [v8 appendFormat:@"%@    Local Frequency Tolerance Lower: ", v7];
-  v48 = [v6 objectForKeyedSubscript:@"LocalFrequencyToleranceLower"];
+  [v8 appendFormat:@"%@    Local Frequency Tolerance Lower: ", indentCopy];
+  v48 = [infoCopy objectForKeyedSubscript:@"LocalFrequencyToleranceLower"];
 
   if (v48)
   {
@@ -1138,8 +1138,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Local Frequency Tolerance Upper: ", v7];
-  v49 = [v6 objectForKeyedSubscript:@"LocalFrequencyToleranceUpper"];
+  [v8 appendFormat:@"%@    Local Frequency Tolerance Upper: ", indentCopy];
+  v49 = [infoCopy objectForKeyedSubscript:@"LocalFrequencyToleranceUpper"];
 
   if (v49)
   {
@@ -1151,8 +1151,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Remote Frequency Tolerance Lower: ", v7];
-  v50 = [v6 objectForKeyedSubscript:@"RemoteFrequencyToleranceLower"];
+  [v8 appendFormat:@"%@    Remote Frequency Tolerance Lower: ", indentCopy];
+  v50 = [infoCopy objectForKeyedSubscript:@"RemoteFrequencyToleranceLower"];
 
   if (v50)
   {
@@ -1164,8 +1164,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Remote Frequency Tolerance Upper: ", v7];
-  v51 = [v6 objectForKeyedSubscript:@"RemoteFrequencyToleranceUpper"];
+  [v8 appendFormat:@"%@    Remote Frequency Tolerance Upper: ", indentCopy];
+  v51 = [infoCopy objectForKeyedSubscript:@"RemoteFrequencyToleranceUpper"];
 
   if (v51)
   {
@@ -1177,8 +1177,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Local Frequency Stability Lower: ", v7];
-  v52 = [v6 objectForKeyedSubscript:@"LocalFrequencyStabilityLower"];
+  [v8 appendFormat:@"%@    Local Frequency Stability Lower: ", indentCopy];
+  v52 = [infoCopy objectForKeyedSubscript:@"LocalFrequencyStabilityLower"];
 
   if (v52)
   {
@@ -1190,8 +1190,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Local Frequency Stability Upper: ", v7];
-  v53 = [v6 objectForKeyedSubscript:@"LocalFrequencyStabilityUpper"];
+  [v8 appendFormat:@"%@    Local Frequency Stability Upper: ", indentCopy];
+  v53 = [infoCopy objectForKeyedSubscript:@"LocalFrequencyStabilityUpper"];
 
   if (v53)
   {
@@ -1203,8 +1203,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Remote Frequency Stability Lower: ", v7];
-  v54 = [v6 objectForKeyedSubscript:@"RemoteFrequencyStabilityLower"];
+  [v8 appendFormat:@"%@    Remote Frequency Stability Lower: ", indentCopy];
+  v54 = [infoCopy objectForKeyedSubscript:@"RemoteFrequencyStabilityLower"];
 
   if (v54)
   {
@@ -1216,8 +1216,8 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Remote Frequency Stability Upper: ", v7];
-  v55 = [v6 objectForKeyedSubscript:@"RemoteFrequencyStabilityUpper"];
+  [v8 appendFormat:@"%@    Remote Frequency Stability Upper: ", indentCopy];
+  v55 = [infoCopy objectForKeyedSubscript:@"RemoteFrequencyStabilityUpper"];
 
   if (v55)
   {
@@ -1229,7 +1229,7 @@ LABEL_128:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  v56 = [v6 objectForKeyedSubscript:@"OverridenReceiveMatching"];
+  v56 = [infoCopy objectForKeyedSubscript:@"OverridenReceiveMatching"];
 
   if (v56)
   {
@@ -1243,9 +1243,9 @@ LABEL_128:
       v57 = @"NO";
     }
 
-    [v8 appendFormat:@"%@    Overriden Receive Matching: %@\n", v7, v57];
-    [v8 appendFormat:@"%@    Overriden Receive Clock Identity: ", v7];
-    v58 = [v6 objectForKeyedSubscript:@"OverridenReceiveClockIdentity"];
+    [v8 appendFormat:@"%@    Overriden Receive Matching: %@\n", indentCopy, v57];
+    [v8 appendFormat:@"%@    Overriden Receive Clock Identity: ", indentCopy];
+    v58 = [infoCopy objectForKeyedSubscript:@"OverridenReceiveClockIdentity"];
 
     if (v58)
     {
@@ -1257,8 +1257,8 @@ LABEL_128:
       [v8 appendString:@"Could not read property\n"];
     }
 
-    [v8 appendFormat:@"%@    Overriden Receive Port Number: ", v7];
-    v59 = [v6 objectForKeyedSubscript:@"OverridenReceivePortNumber"];
+    [v8 appendFormat:@"%@    Overriden Receive Port Number: ", indentCopy];
+    v59 = [infoCopy objectForKeyedSubscript:@"OverridenReceivePortNumber"];
 
     if (v59)
     {
@@ -1271,7 +1271,7 @@ LABEL_128:
     }
   }
 
-  v60 = [v6 objectForKeyedSubscript:@"PTPPortEnabled"];
+  v60 = [infoCopy objectForKeyedSubscript:@"PTPPortEnabled"];
   v61 = v60;
   if (v60)
   {
@@ -1285,7 +1285,7 @@ LABEL_128:
       v62 = @"NO";
     }
 
-    [v8 appendFormat:@"%@    PTP Port Enabled: %@\n", v7, v62];
+    [v8 appendFormat:@"%@    PTP Port Enabled: %@\n", indentCopy, v62];
   }
 
   v63 = v8;

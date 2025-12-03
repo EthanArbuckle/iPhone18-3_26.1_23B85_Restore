@@ -1,6 +1,6 @@
 @interface MTRBasicInformationClusterStartUpEvent
 - (MTRBasicInformationClusterStartUpEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBasicInformationClusterStartUpEvent);
-  v5 = [(MTRBasicInformationClusterStartUpEvent *)self softwareVersion];
-  [(MTRBasicInformationClusterStartUpEvent *)v4 setSoftwareVersion:v5];
+  softwareVersion = [(MTRBasicInformationClusterStartUpEvent *)self softwareVersion];
+  [(MTRBasicInformationClusterStartUpEvent *)v4 setSoftwareVersion:softwareVersion];
 
   return v4;
 }

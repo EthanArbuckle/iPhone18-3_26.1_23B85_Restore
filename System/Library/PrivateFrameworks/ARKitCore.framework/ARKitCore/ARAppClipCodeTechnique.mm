@@ -1,16 +1,16 @@
 @interface ARAppClipCodeTechnique
-- (ARAppClipCodeTechnique)initWithIgnoreURLLimitation:(BOOL)a3;
+- (ARAppClipCodeTechnique)initWithIgnoreURLLimitation:(BOOL)limitation;
 - (BOOL)deterministicMode;
-- (BOOL)isEqual:(id)a3;
-- (id)processData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)processData:(id)data;
 - (void)dealloc;
-- (void)prepare:(BOOL)a3;
-- (void)setPowerUsage:(unint64_t)a3;
+- (void)prepare:(BOOL)prepare;
+- (void)setPowerUsage:(unint64_t)usage;
 @end
 
 @implementation ARAppClipCodeTechnique
 
-- (ARAppClipCodeTechnique)initWithIgnoreURLLimitation:(BOOL)a3
+- (ARAppClipCodeTechnique)initWithIgnoreURLLimitation:(BOOL)limitation
 {
   v13.receiver = self;
   v13.super_class = ARAppClipCodeTechnique;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_ignoreURLLimitation = a3;
+    v4->_ignoreURLLimitation = limitation;
     v6 = objc_opt_new();
     decodedURLs = v5->_decodedURLs;
     v5->_decodedURLs = v6;
@@ -50,7 +50,7 @@
       *buf = 138543874;
       v12 = v5;
       v13 = 2048;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2048;
       v16 = appClipCodeSession;
       _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Releasing app clip code session: %p …", buf, 0x20u);
@@ -65,7 +65,7 @@
       *buf = 138543618;
       v12 = v9;
       v13 = 2048;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: App clip code session released", buf, 0x16u);
     }
   }
@@ -75,7 +75,7 @@
   [(ARAppClipCodeTechnique *)&v10 dealloc];
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   v42 = *MEMORY[0x1E69E9840];
   if (self->_prepared)
@@ -88,14 +88,14 @@
       *buf = 138543618;
       v37 = v6;
       v38 = 2048;
-      v39 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: App clip code session already exists, not recreating it.", buf, 0x16u);
     }
   }
 
   else
   {
-    v7 = a3;
+    prepareCopy = prepare;
     kdebug_trace();
     if ([(NSMutableDictionary *)self->_decodedURLs count])
     {
@@ -125,7 +125,7 @@
         }
 
         v38 = 2048;
-        v39 = self;
+        selfCopy6 = self;
         v40 = 2112;
         *v41 = v12;
         _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Running in '%@' performance test mode", buf, 0x20u);
@@ -159,7 +159,7 @@
           *buf = 138544130;
           v37 = v18;
           v38 = 2048;
-          v39 = self;
+          selfCopy6 = self;
           v40 = 1024;
           *v41 = v13;
           *&v41[4] = 2112;
@@ -175,7 +175,7 @@
         *buf = 138544130;
         v37 = v20;
         v38 = 2048;
-        v39 = self;
+        selfCopy6 = self;
         v40 = 1024;
         *v41 = v13;
         *&v41[4] = 2112;
@@ -184,16 +184,16 @@
       }
 
       AppC3DConfigRelease();
-      v21 = [(ARTechnique *)self delegate];
+      delegate = [(ARTechnique *)self delegate];
       v22 = ARErrorWithCodeAndUserInfo(151, 0);
-      [v21 technique:self didFailWithError:v22];
+      [delegate technique:self didFailWithError:v22];
     }
 
     else
     {
       AppC3DConfigSetMaxNumberCodesToTrack();
       v34 = *MEMORY[0x1E698AAE0];
-      v23 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+      v23 = [MEMORY[0x1E696AD98] numberWithBool:prepareCopy];
       v35 = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       appClipCodeTrackingOptions = self->_appClipCodeTrackingOptions;
@@ -203,10 +203,10 @@
       AppC3DConfigRelease();
       AppC3DSetUpdateCallback();
       [(ARAppClipCodeTechnique *)self setPowerUsage:[(ARTechnique *)self powerUsage]];
-      v26 = [(ARAppClipCodeTechnique *)self deterministicMode];
+      deterministicMode = [(ARAppClipCodeTechnique *)self deterministicMode];
       v27 = _ARLogTechnique();
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
-      if (v26)
+      if (deterministicMode)
       {
         if (v28)
         {
@@ -215,7 +215,7 @@
           *buf = 138543618;
           v37 = v30;
           v38 = 2048;
-          v39 = self;
+          selfCopy6 = self;
           _os_log_impl(&dword_1C241C000, v27, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: prepared for deterministic mode.", buf, 0x16u);
         }
       }
@@ -227,7 +227,7 @@
         *buf = 138543618;
         v37 = v32;
         v38 = 2048;
-        v39 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_1C241C000, v27, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: prepared for non-deterministic mode.", buf, 0x16u);
       }
 
@@ -238,23 +238,23 @@
   }
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v25.receiver = self;
     v25.super_class = ARAppClipCodeTechnique;
-    v7 = [(ARImageBasedTechnique *)&v25 processData:v4];
+    v7 = [(ARImageBasedTechnique *)&v25 processData:dataCopy];
     goto LABEL_13;
   }
 
   v24.receiver = self;
   v24.super_class = ARAppClipCodeTechnique;
-  v5 = [(ARImageBasedTechnique *)&v24 processData:v4];
-  v6 = v4;
+  v5 = [(ARImageBasedTechnique *)&v24 processData:dataCopy];
+  v6 = dataCopy;
   v7 = v6;
   if (self->_prepared)
   {
@@ -308,18 +308,18 @@ LABEL_13:
 - (BOOL)deterministicMode
 {
   v2 = [(NSDictionary *)self->_appClipCodeTrackingOptions objectForKey:*MEMORY[0x1E698AAE0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSDictionary *)self->_appClipCodeTrackingOptions isEqual:v4[12]];
+    v5 = [(NSDictionary *)self->_appClipCodeTrackingOptions isEqual:equalCopy[12]];
   }
 
   else
@@ -330,7 +330,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)setPowerUsage:(unint64_t)a3
+- (void)setPowerUsage:(unint64_t)usage
 {
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -338,14 +338,14 @@ LABEL_13:
   [(ARTechnique *)&v9 setPowerUsage:?];
   if (self->_appClipCodeSession)
   {
-    if (a3 == 1)
+    if (usage == 1)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = 2 * (a3 == 2);
+      v5 = 2 * (usage == 2);
     }
 
     AppC3DSetPerformanceMode();
@@ -357,9 +357,9 @@ LABEL_13:
       *buf = 138544130;
       v11 = v8;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 1024;
       v17 = v5;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ARAppClipCodeTechnique(%p): Setting performance mode %i.", buf, 0x26u);

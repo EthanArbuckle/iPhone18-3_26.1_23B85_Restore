@@ -1,15 +1,15 @@
 @interface MDMRequestBase
-- (BOOL)_validateAccessRights:(unint64_t)a3 requiredAccessRights:(unint64_t)a4 error:(id *)a5;
-- (BOOL)isRequestAllowedWithError:(id *)a3;
+- (BOOL)_validateAccessRights:(unint64_t)rights requiredAccessRights:(unint64_t)accessRights error:(id *)error;
+- (BOOL)isRequestAllowedWithError:(id *)error;
 - (MDMRequestHandlerProtocol)delegate;
 - (id)_notAuthorizedError;
 @end
 
 @implementation MDMRequestBase
 
-- (BOOL)isRequestAllowedWithError:(id *)a3
+- (BOOL)isRequestAllowedWithError:(id *)error
 {
-  if (-[MDMRequestBase isUserEnrollment](self, "isUserEnrollment") || (v5 = -[MDMRequestBase _validateAccessRights:requiredAccessRights:error:](self, "_validateAccessRights:requiredAccessRights:error:", -[MDMRequestBase accessRights](self, "accessRights"), [objc_opt_class() requiredAccessRights], a3)))
+  if (-[MDMRequestBase isUserEnrollment](self, "isUserEnrollment") || (v5 = -[MDMRequestBase _validateAccessRights:requiredAccessRights:error:](self, "_validateAccessRights:requiredAccessRights:error:", -[MDMRequestBase accessRights](self, "accessRights"), [objc_opt_class() requiredAccessRights], error)))
   {
     LOBYTE(v5) = 1;
   }
@@ -17,15 +17,15 @@
   return v5;
 }
 
-- (BOOL)_validateAccessRights:(unint64_t)a3 requiredAccessRights:(unint64_t)a4 error:(id *)a5
+- (BOOL)_validateAccessRights:(unint64_t)rights requiredAccessRights:(unint64_t)accessRights error:(id *)error
 {
-  v6 = a4 & a3;
-  if ((a4 & a3) != a4 && a5 != 0)
+  v6 = accessRights & rights;
+  if ((accessRights & rights) != accessRights && error != 0)
   {
-    *a5 = [(MDMRequestBase *)self _notAuthorizedError];
+    *error = [(MDMRequestBase *)self _notAuthorizedError];
   }
 
-  return v6 == a4;
+  return v6 == accessRights;
 }
 
 - (id)_notAuthorizedError

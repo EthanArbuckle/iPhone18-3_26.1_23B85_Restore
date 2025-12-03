@@ -1,16 +1,16 @@
 @interface SKUIChartColumnHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation SKUIChartColumnHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIChartColumnHeaderView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
-  [v3 validateClass:@"SKUIChartColumnHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIChartColumnHeaderView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
+  [validationsCopy validateClass:@"SKUIChartColumnHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,82 +1,82 @@
 @interface MBRestoreSnapshotIntegrityVerifier
-+ (BOOL)shouldRunVerifierForRestoreWithSnapshotFormat:(int64_t)a3 account:(id)a4;
-- (BOOL)_verifyContainerizedDataAfterBackgroundRestore:(id)a3 domainPlan:(id)a4 error:(id *)a5;
-- (BOOL)_verifyDomain:(id)a3 snapshotUUID:(id)a4 errors:(id)a5 cancellationError:(id *)a6 pathForFile:(id)a7;
-- (BOOL)verifyContainerizedDataAfterBackgroundRestore:(id)a3 domainPlan:(id)a4 error:(id *)a5;
-- (BOOL)verifyIntermediateDirectoryAfterForegroundRestoreWithDomainManager:(id)a3 plan:(id)a4 overridePath:(id)a5 error:(id *)a6;
-- (MBRestoreSnapshotIntegrityVerifier)initWithPolicy:(id)a3 snapshotFormat:(int64_t)a4 snapshotDir:(id)a5 snapshotUUID:(id)a6 delegate:(id)a7;
-- (id)_domainNamesFromFileListWithCommitID:(id)a3 snapshotDir:(id)a4 error:(id *)a5;
-- (id)_verifyRestoreMetadataForFile:(id)a3 localPath:(id)a4 fileList:(id)a5;
++ (BOOL)shouldRunVerifierForRestoreWithSnapshotFormat:(int64_t)format account:(id)account;
+- (BOOL)_verifyContainerizedDataAfterBackgroundRestore:(id)restore domainPlan:(id)plan error:(id *)error;
+- (BOOL)_verifyDomain:(id)domain snapshotUUID:(id)d errors:(id)errors cancellationError:(id *)error pathForFile:(id)file;
+- (BOOL)verifyContainerizedDataAfterBackgroundRestore:(id)restore domainPlan:(id)plan error:(id *)error;
+- (BOOL)verifyIntermediateDirectoryAfterForegroundRestoreWithDomainManager:(id)manager plan:(id)plan overridePath:(id)path error:(id *)error;
+- (MBRestoreSnapshotIntegrityVerifier)initWithPolicy:(id)policy snapshotFormat:(int64_t)format snapshotDir:(id)dir snapshotUUID:(id)d delegate:(id)delegate;
+- (id)_domainNamesFromFileListWithCommitID:(id)d snapshotDir:(id)dir error:(id *)error;
+- (id)_verifyRestoreMetadataForFile:(id)file localPath:(id)path fileList:(id)list;
 @end
 
 @implementation MBRestoreSnapshotIntegrityVerifier
 
-- (MBRestoreSnapshotIntegrityVerifier)initWithPolicy:(id)a3 snapshotFormat:(int64_t)a4 snapshotDir:(id)a5 snapshotUUID:(id)a6 delegate:(id)a7
+- (MBRestoreSnapshotIntegrityVerifier)initWithPolicy:(id)policy snapshotFormat:(int64_t)format snapshotDir:(id)dir snapshotUUID:(id)d delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  policyCopy = policy;
+  dirCopy = dir;
+  dCopy = d;
+  delegateCopy = delegate;
+  if (!policyCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier initWithPolicy:snapshotFormat:snapshotDir:snapshotUUID:delegate:]", "MBSnapshotIntegrityVerifier.m", 86, "policy");
   }
 
-  if (!v14)
+  if (!dirCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier initWithPolicy:snapshotFormat:snapshotDir:snapshotUUID:delegate:]", "MBSnapshotIntegrityVerifier.m", 87, "snapshotDir");
   }
 
-  if (a4 == -1)
+  if (format == -1)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier initWithPolicy:snapshotFormat:snapshotDir:snapshotUUID:delegate:]", "MBSnapshotIntegrityVerifier.m", 88, "snapshotFormat != MBSnapshotFormatUnspecified");
   }
 
-  if (!v15)
+  if (!dCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier initWithPolicy:snapshotFormat:snapshotDir:snapshotUUID:delegate:]", "MBSnapshotIntegrityVerifier.m", 89, "snapshotUUID");
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = delegateCopy;
+  if (!delegateCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier initWithPolicy:snapshotFormat:snapshotDir:snapshotUUID:delegate:]", "MBSnapshotIntegrityVerifier.m", 90, "delegate");
   }
 
   v24.receiver = self;
   v24.super_class = MBRestoreSnapshotIntegrityVerifier;
-  v18 = [(MBSnapshotIntegrityVerifier *)&v24 _initWithDelegate:v16];
+  v18 = [(MBSnapshotIntegrityVerifier *)&v24 _initWithDelegate:delegateCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(v18 + 4, a3);
-    objc_storeStrong(&v19->_snapshotDir, a5);
-    objc_storeStrong(&v19->_snapshotUUID, a6);
-    v19->_snapshotFormat = a4;
+    objc_storeStrong(v18 + 4, policy);
+    objc_storeStrong(&v19->_snapshotDir, dir);
+    objc_storeStrong(&v19->_snapshotUUID, d);
+    v19->_snapshotFormat = format;
     v20 = +[MBBehaviorOptions sharedOptions];
-    v21 = [v20 restorePathsToFailVerifyingRegex];
-    v22 = [MBErrorInjector errorInjectorForRegex:v21 maxFailureCount:0];
+    restorePathsToFailVerifyingRegex = [v20 restorePathsToFailVerifyingRegex];
+    v22 = [MBErrorInjector errorInjectorForRegex:restorePathsToFailVerifyingRegex maxFailureCount:0];
     [(MBSnapshotIntegrityVerifier *)v19 setErrorInjector:v22];
   }
 
   return v19;
 }
 
-+ (BOOL)shouldRunVerifierForRestoreWithSnapshotFormat:(int64_t)a3 account:(id)a4
++ (BOOL)shouldRunVerifierForRestoreWithSnapshotFormat:(int64_t)format account:(id)account
 {
-  v4 = a4;
+  accountCopy = account;
   if (MBSnapshotFormatContainsFileLists())
   {
     v5 = +[MBBehaviorOptions sharedOptions];
-    v6 = [v5 shouldVerifyRestore];
+    shouldVerifyRestore = [v5 shouldVerifyRestore];
 
-    if (v6)
+    if (shouldVerifyRestore)
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [shouldVerifyRestore BOOLValue];
       v8 = MBGetDefaultLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        if (v7)
+        if (bOOLValue)
         {
           v9 = "enabled";
         }
@@ -100,21 +100,21 @@ LABEL_15:
     if (MBIsInternalInstall())
     {
       v8 = MBGetDefaultLog();
-      LOBYTE(v7) = 1;
+      LOBYTE(bOOLValue) = 1;
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         goto LABEL_15;
       }
 
       *buf = 0;
-      LOBYTE(v7) = 1;
+      LOBYTE(bOOLValue) = 1;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "=verifier= Restore verification enabled, because AppleInternal", buf, 2u);
     }
 
     else
     {
       v10 = +[MBRemoteConfiguration sharedInstance];
-      v7 = [v10 restoreVerificationEnabledForAccount:v4];
+      bOOLValue = [v10 restoreVerificationEnabledForAccount:accountCopy];
 
       v8 = MBGetDefaultLog();
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -123,7 +123,7 @@ LABEL_15:
       }
 
       *buf = 67109120;
-      LODWORD(v13) = v7;
+      LODWORD(v13) = bOOLValue;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "=verifier= Restore verification enabled from server: %d", buf, 8u);
     }
 
@@ -132,31 +132,31 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  LOBYTE(v7) = 0;
+  LOBYTE(bOOLValue) = 0;
 LABEL_16:
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)verifyIntermediateDirectoryAfterForegroundRestoreWithDomainManager:(id)a3 plan:(id)a4 overridePath:(id)a5 error:(id *)a6
+- (BOOL)verifyIntermediateDirectoryAfterForegroundRestoreWithDomainManager:(id)manager plan:(id)plan overridePath:(id)path error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v48 = a5;
-  if (!v10)
+  managerCopy = manager;
+  planCopy = plan;
+  pathCopy = path;
+  if (!managerCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier verifyIntermediateDirectoryAfterForegroundRestoreWithDomainManager:plan:overridePath:error:]", "MBSnapshotIntegrityVerifier.m", 132, "domainManager");
   }
 
-  if (!a6)
+  if (!error)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier verifyIntermediateDirectoryAfterForegroundRestoreWithDomainManager:plan:overridePath:error:]", "MBSnapshotIntegrityVerifier.m", 133, "error");
   }
 
-  if ([(MBSnapshotIntegrityVerifier *)self _checkForCancellation:a6])
+  if ([(MBSnapshotIntegrityVerifier *)self _checkForCancellation:error])
   {
-    v49 = a6;
-    v47 = [(MBRestoreSnapshotIntegrityVerifier *)self _domainNamesFromFileListWithCommitID:self->_snapshotUUID snapshotDir:self->_snapshotDir error:a6];
+    errorCopy = error;
+    v47 = [(MBRestoreSnapshotIntegrityVerifier *)self _domainNamesFromFileListWithCommitID:self->_snapshotUUID snapshotDir:self->_snapshotDir error:error];
     if (v47)
     {
       v12 = MBGetDefaultLog();
@@ -183,8 +183,8 @@ LABEL_16:
         v45 = 0;
         v50 = *v67;
         v14 = &selRef_consolidatedDomainsInFileListSynchronization;
-        v42 = v11;
-        v43 = v10;
+        v42 = planCopy;
+        v43 = managerCopy;
 LABEL_9:
         v15 = 0;
         while (1)
@@ -197,30 +197,30 @@ LABEL_9:
           v16 = *(*(&v66 + 1) + 8 * v15);
           if ([*(&self->super.super.isa + *(v14 + 827)) shouldForegroundRestoreDomain:{v16, v37, v38, v39, v41}])
           {
-            if (![(MBSnapshotIntegrityVerifier *)self _checkForCancellation:v49])
+            if (![(MBSnapshotIntegrityVerifier *)self _checkForCancellation:errorCopy])
             {
               goto LABEL_44;
             }
 
-            v17 = [v10 domainForName:v16];
+            v17 = [managerCopy domainForName:v16];
             if ([v17 hasRootPath])
             {
-              v18 = [v11 planForDomain:v17 restoreType:1 error:v49];
+              v18 = [planCopy planForDomain:v17 restoreType:1 error:errorCopy];
               v19 = v18;
               if (!v18)
               {
                 v34 = MBGetDefaultLog();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                 {
-                  v35 = *v49;
+                  v35 = *errorCopy;
                   *buf = 138412802;
                   v71 = v16;
                   v72 = 2112;
-                  v73 = v11;
+                  v73 = planCopy;
                   v74 = 2112;
                   v75 = v35;
                   _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "=verifier= Failed to find domain %@ in plan %@: %@", buf, 0x20u);
-                  v40 = *v49;
+                  v40 = *errorCopy;
                   _MBLog();
                 }
 
@@ -249,12 +249,12 @@ LABEL_44:
                 v53[4] = self;
                 v56 = &v58;
                 v57 = &v62;
-                v54 = v48;
+                v54 = pathCopy;
                 v22 = v17;
                 v55 = v22;
-                LODWORD(v23) = [(MBRestoreSnapshotIntegrityVerifier *)self _verifyDomain:v22 snapshotUUID:snapshotUUID errors:v21 cancellationError:v49 pathForFile:v53];
+                LODWORD(v23) = [(MBRestoreSnapshotIntegrityVerifier *)self _verifyDomain:v22 snapshotUUID:snapshotUUID errors:v21 cancellationError:errorCopy pathForFile:v53];
 
-                v10 = v43;
+                managerCopy = v43;
                 v14 = &selRef_consolidatedDomainsInFileListSynchronization;
 
                 if (v23)
@@ -267,7 +267,7 @@ LABEL_44:
                   if (v26)
                   {
                     v27 = MBGetDefaultLog();
-                    v10 = v43;
+                    managerCopy = v43;
                     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                     {
                       v28 = v63[3];
@@ -288,13 +288,13 @@ LABEL_44:
                       _MBLog();
                     }
 
-                    v11 = v42;
+                    planCopy = v42;
                     v14 = &selRef_consolidatedDomainsInFileListSynchronization;
                     v23 = [MBError errorWithErrors:v21];
-                    if (([v19 recordVerificationFailure:v23 error:v49]& 1) != 0)
+                    if (([v19 recordVerificationFailure:v23 error:errorCopy]& 1) != 0)
                     {
                       v30 = v23;
-                      *v49 = v23;
+                      *errorCopy = v23;
                     }
 
                     LOBYTE(v23) = 0;
@@ -302,9 +302,9 @@ LABEL_44:
 
                   else
                   {
-                    LOBYTE(v23) = [v19 recordVerificationSuccess:v49];
-                    v10 = v43;
-                    v11 = v42;
+                    LOBYTE(v23) = [v19 recordVerificationSuccess:errorCopy];
+                    managerCopy = v43;
+                    planCopy = v42;
                     v14 = &selRef_consolidatedDomainsInFileListSynchronization;
                   }
                 }
@@ -399,64 +399,64 @@ LABEL_45:
   return v31;
 }
 
-- (BOOL)verifyContainerizedDataAfterBackgroundRestore:(id)a3 domainPlan:(id)a4 error:(id *)a5
+- (BOOL)verifyContainerizedDataAfterBackgroundRestore:(id)restore domainPlan:(id)plan error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  restoreCopy = restore;
+  planCopy = plan;
+  if (!planCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier verifyContainerizedDataAfterBackgroundRestore:domainPlan:error:]", "MBSnapshotIntegrityVerifier.m", 216, "domainPlan");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier verifyContainerizedDataAfterBackgroundRestore:domainPlan:error:]", "MBSnapshotIntegrityVerifier.m", 217, "error");
   }
 
-  v10 = v9;
+  v10 = planCopy;
   v36 = 0;
-  v11 = [(MBRestoreSnapshotIntegrityVerifier *)self _verifyContainerizedDataAfterBackgroundRestore:v8 domainPlan:v9 error:&v36];
+  v11 = [(MBRestoreSnapshotIntegrityVerifier *)self _verifyContainerizedDataAfterBackgroundRestore:restoreCopy domainPlan:planCopy error:&v36];
   v12 = v36;
   if (v11)
   {
-    v13 = [v10 recordVerificationSuccess:a5];
+    v13 = [v10 recordVerificationSuccess:error];
     goto LABEL_19;
   }
 
-  v14 = [(MBRestorePolicy *)self->_policy serviceRestoreMode];
-  v15 = [v14 isBackgroundApp];
+  serviceRestoreMode = [(MBRestorePolicy *)self->_policy serviceRestoreMode];
+  isBackgroundApp = [serviceRestoreMode isBackgroundApp];
 
-  if (v15)
+  if (isBackgroundApp)
   {
-    v16 = [(MBRestorePolicy *)self->_policy serviceRestoreMode];
-    v17 = [v16 bundleID];
+    serviceRestoreMode2 = [(MBRestorePolicy *)self->_policy serviceRestoreMode];
+    bundleID = [serviceRestoreMode2 bundleID];
 
-    v18 = [(MBRestorePolicy *)self->_policy appManager];
-    v19 = [(MBRestorePolicy *)self->_policy persona];
+    appManager = [(MBRestorePolicy *)self->_policy appManager];
+    persona = [(MBRestorePolicy *)self->_policy persona];
     v35 = 0;
-    v20 = [v18 fetchAppWithIdentifier:v17 persona:v19 error:&v35];
+    v20 = [appManager fetchAppWithIdentifier:bundleID persona:persona error:&v35];
     v21 = v35;
 
     if (v20)
     {
       v22 = +[NSFileManager defaultManager];
-      v23 = [v22 fileExistsAtPath:v8];
+      v23 = [v22 fileExistsAtPath:restoreCopy];
 
       if ((v23 & 1) == 0)
       {
         v24 = MBGetDefaultLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v10 domain];
-          v26 = [v25 name];
+          domain = [v10 domain];
+          name = [domain name];
           *buf = 138412546;
-          v39 = v26;
+          v39 = name;
           v40 = 2112;
-          v41 = v8;
+          v41 = restoreCopy;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "=verifier= Marking verification success for %@ because container %@ was removed during verification", buf, 0x16u);
 
-          v27 = [v10 domain];
-          v28 = [v27 name];
+          domain2 = [v10 domain];
+          name2 = [domain2 name];
 LABEL_13:
           _MBLog();
 
@@ -472,40 +472,40 @@ LABEL_13:
       v24 = MBGetDefaultLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v10 domain];
-        v30 = [v29 name];
+        domain3 = [v10 domain];
+        name3 = [domain3 name];
         *buf = 138412546;
-        v39 = v30;
+        v39 = name3;
         v40 = 2112;
-        v41 = v17;
+        v41 = bundleID;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "=verifier= Marking verification success for %@ because parent app %@ was uninstalled during verification", buf, 0x16u);
 
-        v27 = [v10 domain];
-        v28 = [v27 name];
+        domain2 = [v10 domain];
+        name2 = [domain2 name];
         goto LABEL_13;
       }
 
 LABEL_14:
 
-      v13 = [v10 recordVerificationSuccess:a5];
+      v13 = [v10 recordVerificationSuccess:error];
       goto LABEL_19;
     }
   }
 
-  if ([v10 recordVerificationFailure:v12 error:a5])
+  if ([v10 recordVerificationFailure:v12 error:error])
   {
     v31 = v12;
     v13 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
   {
-    v32 = *a5;
+    v32 = *error;
     v37[0] = v12;
     v37[1] = v32;
     v33 = [NSArray arrayWithObjects:v37 count:2];
-    *a5 = [MBError errorWithErrors:v33];
+    *error = [MBError errorWithErrors:v33];
 
     v13 = 0;
   }
@@ -515,32 +515,32 @@ LABEL_19:
   return v13;
 }
 
-- (BOOL)_verifyContainerizedDataAfterBackgroundRestore:(id)a3 domainPlan:(id)a4 error:(id *)a5
+- (BOOL)_verifyContainerizedDataAfterBackgroundRestore:(id)restore domainPlan:(id)plan error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  restoreCopy = restore;
+  planCopy = plan;
+  if (!planCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyContainerizedDataAfterBackgroundRestore:domainPlan:error:]", "MBSnapshotIntegrityVerifier.m", 249, "domainPlan");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyContainerizedDataAfterBackgroundRestore:domainPlan:error:]", "MBSnapshotIntegrityVerifier.m", 250, "error");
   }
 
-  v10 = v9;
-  v11 = [v9 domain];
-  if (!v11)
+  v10 = planCopy;
+  domain = [planCopy domain];
+  if (!domain)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyContainerizedDataAfterBackgroundRestore:domainPlan:error:]", "MBSnapshotIntegrityVerifier.m", 252, "domain");
   }
 
-  if ([(MBSnapshotIntegrityVerifier *)self _checkForCancellation:a5])
+  if ([(MBSnapshotIntegrityVerifier *)self _checkForCancellation:error])
   {
-    if (!v8)
+    if (!restoreCopy)
     {
-      v8 = [v11 rootPath];
+      restoreCopy = [domain rootPath];
     }
 
     v32 = 0;
@@ -560,9 +560,9 @@ LABEL_19:
     v24[4] = self;
     v26 = &v28;
     v27 = &v32;
-    v8 = v8;
-    v25 = v8;
-    v14 = [(MBRestoreSnapshotIntegrityVerifier *)self _verifyDomain:v11 snapshotUUID:snapshotUUID errors:v12 cancellationError:a5 pathForFile:v24];
+    restoreCopy = restoreCopy;
+    v25 = restoreCopy;
+    v14 = [(MBRestoreSnapshotIntegrityVerifier *)self _verifyDomain:domain snapshotUUID:snapshotUUID errors:v12 cancellationError:error pathForFile:v24];
 
     if (v14)
     {
@@ -573,11 +573,11 @@ LABEL_19:
         v17 = v16;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v11 name];
+          name = [domain name];
           v19 = v33[3];
           v20 = v29[3];
           *buf = 138413314;
-          v37 = v18;
+          v37 = name;
           v38 = 2048;
           v39 = v20 + v19;
           v40 = 2048;
@@ -589,7 +589,7 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "=verifier= Finished background verification for %@ total: %llu, checked: %llu, ignored: %llu, failed: %llu", buf, 0x34u);
         }
 
-        v21 = [v11 name];
+        name2 = [domain name];
         v23 = v29[3] + v33[3];
         _MBLog();
       }
@@ -597,7 +597,7 @@ LABEL_19:
       if (v15)
       {
         [MBError errorWithErrors:v12];
-        *a5 = LOBYTE(v14) = 0;
+        *error = LOBYTE(v14) = 0;
       }
 
       else
@@ -618,52 +618,52 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)_verifyDomain:(id)a3 snapshotUUID:(id)a4 errors:(id)a5 cancellationError:(id *)a6 pathForFile:(id)a7
+- (BOOL)_verifyDomain:(id)domain snapshotUUID:(id)d errors:(id)errors cancellationError:(id *)error pathForFile:(id)file
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!v12)
+  domainCopy = domain;
+  dCopy = d;
+  errorsCopy = errors;
+  fileCopy = file;
+  if (!domainCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyDomain:snapshotUUID:errors:cancellationError:pathForFile:]", "MBSnapshotIntegrityVerifier.m", 292, "domain");
   }
 
-  if (!v13)
+  if (!dCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyDomain:snapshotUUID:errors:cancellationError:pathForFile:]", "MBSnapshotIntegrityVerifier.m", 293, "snapshotUUID");
   }
 
-  if (!v14)
+  if (!errorsCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyDomain:snapshotUUID:errors:cancellationError:pathForFile:]", "MBSnapshotIntegrityVerifier.m", 294, "errors");
   }
 
-  if (!a6)
+  if (!error)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyDomain:snapshotUUID:errors:cancellationError:pathForFile:]", "MBSnapshotIntegrityVerifier.m", 295, "cancellationError");
   }
 
-  if (!v15)
+  if (!fileCopy)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _verifyDomain:snapshotUUID:errors:cancellationError:pathForFile:]", "MBSnapshotIntegrityVerifier.m", 296, "pathForFile");
   }
 
-  v31 = a6;
-  v32 = v15;
-  v16 = [v12 name];
+  errorCopy = error;
+  v32 = fileCopy;
+  name = [domainCopy name];
   v17 = MBGetDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v16;
+    *(&buf + 4) = name;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "=verifier= Verifying domain: %@", &buf, 0xCu);
     _MBLog();
   }
 
   snapshotDir = self->_snapshotDir;
   v40 = 0;
-  v19 = [MBFileListDB openDatabaseIn:snapshotDir commitID:v13 domainName:v16 error:&v40];
+  v19 = [MBFileListDB openDatabaseIn:snapshotDir commitID:dCopy domainName:name error:&v40];
   v20 = v40;
   v21 = v20;
   if (v19)
@@ -684,9 +684,9 @@ LABEL_19:
     v37 = v32;
     v22 = v19;
     v35 = v22;
-    v23 = v14;
+    v23 = errorsCopy;
     v36 = v23;
-    v24 = [v22 enumerateFilesWithDomain:v12 error:&v39 block:v34];
+    v24 = [v22 enumerateFilesWithDomain:domainCopy error:&v39 block:v34];
     v25 = v39;
 
     if (v25)
@@ -717,7 +717,7 @@ LABEL_19:
     v29 = v28 == 0;
     if (v28)
     {
-      *v31 = v28;
+      *errorCopy = v28;
     }
 
     _Block_object_dispose(&buf, 8);
@@ -725,21 +725,21 @@ LABEL_19:
 
   else
   {
-    [v14 addObject:v20];
+    [errorsCopy addObject:v20];
     v29 = 1;
   }
 
   return v29;
 }
 
-- (id)_verifyRestoreMetadataForFile:(id)a3 localPath:(id)a4 fileList:(id)a5
+- (id)_verifyRestoreMetadataForFile:(id)file localPath:(id)path fileList:(id)list
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 relativePath];
+  fileCopy = file;
+  pathCopy = path;
+  listCopy = list;
+  relativePath = [fileCopy relativePath];
   v26 = 0;
-  v12 = [(MBSnapshotIntegrityVerifier *)self _fetchMetadataFromFetchedFileList:v10 relativePath:v11 metadata:&v26];
+  v12 = [(MBSnapshotIntegrityVerifier *)self _fetchMetadataFromFetchedFileList:listCopy relativePath:relativePath metadata:&v26];
 
   v13 = v26;
   if (v12)
@@ -751,7 +751,7 @@ LABEL_19:
   else
   {
     v25 = 0;
-    v14 = [(MBSnapshotIntegrityVerifier *)self _fetchMetadataFromDiskForPath:v9 modifiedDate:0 metadata:&v25];
+    v14 = [(MBSnapshotIntegrityVerifier *)self _fetchMetadataFromDiskForPath:pathCopy modifiedDate:0 metadata:&v25];
     v16 = v25;
     if (v14)
     {
@@ -760,17 +760,17 @@ LABEL_19:
 
     else
     {
-      v17 = [v8 domain];
-      v18 = [MBSnapshotIntegrityVerifier _differencesBetweenCloudMetadata:v13 localMetadata:v16 domain:v17 path:v9 isBackup:0];
+      domain = [fileCopy domain];
+      v18 = [MBSnapshotIntegrityVerifier _differencesBetweenCloudMetadata:v13 localMetadata:v16 domain:domain path:pathCopy isBackup:0];
 
-      if (v18 && ([v8 domain], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isBackupDomain"), v19, (v20 & 1) == 0))
+      if (v18 && ([fileCopy domain], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isBackupDomain"), v19, (v20 & 1) == 0))
       {
-        v21 = [v8 typeString];
+        typeString = [fileCopy typeString];
         v22 = [v18 componentsJoinedByString:{@", "}];
-        v23 = [NSString stringWithFormat:@"Metadata mismatch [%@] for %@ %@:\n\tcloud: %@\n\tlocal: %@", v21, v22, v9, v13, v16];
+        v23 = [NSString stringWithFormat:@"Metadata mismatch [%@] for %@ %@:\n\tcloud: %@\n\tlocal: %@", typeString, v22, pathCopy, v13, v16];
 
         [(MBSnapshotIntegrityVerifier *)self _logFailureAndAppendToAttemptSummary:v23];
-        v15 = [MBError errorWithCode:501 path:v9 format:@"Verification failed: %@", v23];
+        v15 = [MBError errorWithCode:501 path:pathCopy format:@"Verification failed: %@", v23];
       }
 
       else
@@ -783,17 +783,17 @@ LABEL_19:
   return v15;
 }
 
-- (id)_domainNamesFromFileListWithCommitID:(id)a3 snapshotDir:(id)a4 error:(id *)a5
+- (id)_domainNamesFromFileListWithCommitID:(id)d snapshotDir:(id)dir error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  dCopy = d;
+  dirCopy = dir;
+  if (!error)
   {
     __assert_rtn("[MBRestoreSnapshotIntegrityVerifier _domainNamesFromFileListWithCommitID:snapshotDir:error:]", "MBSnapshotIntegrityVerifier.m", 369, "error");
   }
 
-  v10 = v9;
-  if ([(MBSnapshotIntegrityVerifier *)self _checkForCancellation:a5])
+  v10 = dirCopy;
+  if ([(MBSnapshotIntegrityVerifier *)self _checkForCancellation:error])
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -801,7 +801,7 @@ LABEL_19:
     v19[3] = &unk_1003BC450;
     v11 = objc_opt_new();
     v20 = v11;
-    if (MBEnumerateDomainNamesForSnapshot(v10, v8, a5, v19))
+    if (MBEnumerateDomainNamesForSnapshot(v10, dCopy, error, v19))
     {
 
       v11 = v11;
@@ -812,11 +812,11 @@ LABEL_19:
     v14 = MBGetDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = *a5;
+      v15 = *error;
       *buf = 138412290;
       v22 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "=verifier= Foreground restore verification: failed to acquire all file lists %@", buf, 0xCu);
-      v18 = *a5;
+      v18 = *error;
       _MBLog();
     }
   }
@@ -826,11 +826,11 @@ LABEL_19:
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a5;
+      v13 = *error;
       *buf = 138412290;
       v22 = v13;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "=verifier= Foreground restore verification cancelled %@", buf, 0xCu);
-      v17 = *a5;
+      v17 = *error;
       _MBLog();
     }
   }

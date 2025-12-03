@@ -23,10 +23,10 @@
 
 - (id)mainDevice
 {
-  v2 = [(NUPlatform *)self devices];
-  v3 = [v2 firstObject];
+  devices = [(NUPlatform *)self devices];
+  firstObject = [devices firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NUPlatform_iOS)init

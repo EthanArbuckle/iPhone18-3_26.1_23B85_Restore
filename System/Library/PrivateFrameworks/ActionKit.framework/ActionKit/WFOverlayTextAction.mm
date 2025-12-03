@@ -1,7 +1,7 @@
 @interface WFOverlayTextAction
 - (BOOL)strokeEnabled;
 - (BOOL)useProportionalSizing;
-- (CGRect)drawingRectForImage:(id)a3;
+- (CGRect)drawingRectForImage:(id)image;
 - (double)boxWidth;
 - (double)fontSize;
 - (double)offset;
@@ -21,8 +21,8 @@
 - (id)textColor;
 - (id)textPosition;
 - (int64_t)textAlignment;
-- (void)overlayImage:(id)a3 inContext:(id)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)overlayImage:(id)image inContext:(id)context;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFOverlayTextAction
@@ -44,9 +44,9 @@
 
 - (double)strokeWidth
 {
-  v3 = [(WFOverlayTextAction *)self useProportionalSizing];
+  useProportionalSizing = [(WFOverlayTextAction *)self useProportionalSizing];
   v4 = objc_opt_class();
-  if (v3)
+  if (useProportionalSizing)
   {
     v5 = [(WFOverlayTextAction *)self parameterValueForKey:@"WFPercentageTextStrokeWidth" ofClass:v4];
     [v5 floatValue];
@@ -83,9 +83,9 @@
 
 - (double)fontSize
 {
-  v3 = [(WFOverlayTextAction *)self useProportionalSizing];
+  useProportionalSizing = [(WFOverlayTextAction *)self useProportionalSizing];
   v4 = objc_opt_class();
-  if (v3)
+  if (useProportionalSizing)
   {
     v5 = [(WFOverlayTextAction *)self parameterValueForKey:@"WFPercentageFontSize" ofClass:v4];
     [v5 floatValue];
@@ -114,24 +114,24 @@
 - (BOOL)strokeEnabled
 {
   v2 = [(WFOverlayTextAction *)self parameterValueForKey:@"WFTextOutlineEnabled" ofClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)offset
 {
   if ([(WFOverlayTextAction *)self useProportionalSizing])
   {
-    v3 = [(WFOverlayTextAction *)self textPosition];
-    if (WFTextPositionIsTopPosition(v3))
+    textPosition = [(WFOverlayTextAction *)self textPosition];
+    if (WFTextPositionIsTopPosition(textPosition))
     {
     }
 
     else
     {
-      v7 = [(WFOverlayTextAction *)self textPosition];
-      IsBottomPosition = WFTextPositionIsBottomPosition(v7);
+      textPosition2 = [(WFOverlayTextAction *)self textPosition];
+      IsBottomPosition = WFTextPositionIsBottomPosition(textPosition2);
 
       if (!IsBottomPosition)
       {
@@ -162,9 +162,9 @@ LABEL_9:
 
 - (double)yPosition
 {
-  v3 = [(WFOverlayTextAction *)self useProportionalSizing];
+  useProportionalSizing = [(WFOverlayTextAction *)self useProportionalSizing];
   v4 = objc_opt_class();
-  if (v3)
+  if (useProportionalSizing)
   {
     v5 = [(WFOverlayTextAction *)self parameterValueForKey:@"WFPercentageTextY" ofClass:v4];
     [v5 floatValue];
@@ -185,9 +185,9 @@ LABEL_9:
 
 - (double)xPosition
 {
-  v3 = [(WFOverlayTextAction *)self useProportionalSizing];
+  useProportionalSizing = [(WFOverlayTextAction *)self useProportionalSizing];
   v4 = objc_opt_class();
-  if (v3)
+  if (useProportionalSizing)
   {
     v5 = [(WFOverlayTextAction *)self parameterValueForKey:@"WFPercentageTextX" ofClass:v4];
     [v5 floatValue];
@@ -276,9 +276,9 @@ LABEL_11:
 
 - (id)font
 {
-  v3 = [(WFOverlayTextAction *)self fontDescriptor];
+  fontDescriptor = [(WFOverlayTextAction *)self fontDescriptor];
   [(WFOverlayTextAction *)self fontSize];
-  v4 = [v3 fontWithSize:?];
+  v4 = [fontDescriptor fontWithSize:?];
 
   if (v4)
   {
@@ -329,8 +329,8 @@ LABEL_11:
 - (id)outlinedTextAttributes
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v3 = [(WFOverlayTextAction *)self textAttributes];
-  v4 = [v3 mutableCopy];
+  textAttributes = [(WFOverlayTextAction *)self textAttributes];
+  v4 = [textAttributes mutableCopy];
 
   v22 = 0;
   v23 = &v22;
@@ -348,18 +348,18 @@ LABEL_11:
   _Block_object_dispose(&v22, 8);
   if (!v5)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNSStrokeColorAttributeName(void)"];
-    [v18 handleFailureInFunction:v19 file:@"WFOverlayTextAction.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v19 file:@"WFOverlayTextAction.m" lineNumber:22 description:{@"%s", dlerror()}];
 
     goto LABEL_12;
   }
 
   v7 = *v5;
   v26 = v7;
-  v8 = [(WFOverlayTextAction *)self strokeColor];
-  v9 = [v8 platformColor];
-  v28[0] = v9;
+  strokeColor = [(WFOverlayTextAction *)self strokeColor];
+  platformColor = [strokeColor platformColor];
+  v28[0] = platformColor;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -376,9 +376,9 @@ LABEL_11:
   _Block_object_dispose(&v22, 8);
   if (!v10)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNSStrokeWidthAttributeName(void)"];
-    [v20 handleFailureInFunction:v21 file:@"WFOverlayTextAction.m" lineNumber:21 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v21 file:@"WFOverlayTextAction.m" lineNumber:21 description:{@"%s", dlerror()}];
 
 LABEL_12:
     __break(1u);
@@ -386,8 +386,8 @@ LABEL_12:
 
   v27 = *v10;
   v12 = v27;
-  v13 = [(WFOverlayTextAction *)self strokeWidthPercentage];
-  v28[1] = v13;
+  strokeWidthPercentage = [(WFOverlayTextAction *)self strokeWidthPercentage];
+  v28[1] = strokeWidthPercentage;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v26 count:2];
   [v4 addEntriesFromDictionary:v14];
 
@@ -416,18 +416,18 @@ LABEL_12:
   _Block_object_dispose(&v25, 8);
   if (!v3)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNSForegroundColorAttributeName(void)"];
-    [v19 handleFailureInFunction:v20 file:@"WFOverlayTextAction.m" lineNumber:18 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v20 file:@"WFOverlayTextAction.m" lineNumber:18 description:{@"%s", dlerror()}];
 
     goto LABEL_16;
   }
 
   v5 = *v3;
   v29[0] = v5;
-  v6 = [(WFOverlayTextAction *)self textColor];
-  v7 = [v6 platformColor];
-  v31[0] = v7;
+  textColor = [(WFOverlayTextAction *)self textColor];
+  platformColor = [textColor platformColor];
+  v31[0] = platformColor;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -444,17 +444,17 @@ LABEL_12:
   _Block_object_dispose(&v25, 8);
   if (!v8)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNSFontAttributeName(void)"];
-    [v21 handleFailureInFunction:v22 file:@"WFOverlayTextAction.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v22 file:@"WFOverlayTextAction.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     goto LABEL_16;
   }
 
   v10 = *v8;
   v29[1] = v10;
-  v11 = [(WFOverlayTextAction *)self font];
-  v31[1] = v11;
+  font = [(WFOverlayTextAction *)self font];
+  v31[1] = font;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -471,9 +471,9 @@ LABEL_12:
   _Block_object_dispose(&v25, 8);
   if (!v12)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNSParagraphStyleAttributeName(void)"];
-    [v23 handleFailureInFunction:v24 file:@"WFOverlayTextAction.m" lineNumber:20 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v24 file:@"WFOverlayTextAction.m" lineNumber:20 description:{@"%s", dlerror()}];
 
 LABEL_16:
     __break(1u);
@@ -481,8 +481,8 @@ LABEL_16:
 
   v30 = *v12;
   v14 = v30;
-  v15 = [(WFOverlayTextAction *)self paragraphStyle];
-  v31[2] = v15;
+  paragraphStyle = [(WFOverlayTextAction *)self paragraphStyle];
+  v31[2] = paragraphStyle;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v29 count:3];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -510,8 +510,8 @@ LABEL_16:
 
   v4 = v3;
   _Block_object_dispose(&v10, 8);
-  v5 = [v3 defaultParagraphStyle];
-  v6 = [v5 mutableCopy];
+  defaultParagraphStyle = [v3 defaultParagraphStyle];
+  v6 = [defaultParagraphStyle mutableCopy];
 
   [v6 setAlignment:{-[WFOverlayTextAction textAlignment](self, "textAlignment")}];
   [v6 setLineBreakMode:0];
@@ -520,16 +520,16 @@ LABEL_16:
   return v7;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__WFOverlayTextAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __50__WFOverlayTextAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -622,22 +622,22 @@ void __50__WFOverlayTextAction_runAsynchronouslyWithInput___block_invoke_5(uint6
   }
 }
 
-- (CGRect)drawingRectForImage:(id)a3
+- (CGRect)drawingRectForImage:(id)image
 {
-  v4 = a3;
-  [v4 CGImageSize];
+  imageCopy = image;
+  [imageCopy CGImageSize];
   v6 = v5;
-  [v4 CGImageSize];
+  [imageCopy CGImageSize];
   v8 = v7;
 
   [(WFOverlayTextAction *)self boxWidth];
   v10 = v9;
-  v11 = [(WFOverlayTextAction *)self text];
+  text = [(WFOverlayTextAction *)self text];
   if (v10 == 0.0)
   {
-    v16 = [(WFOverlayTextAction *)self textAttributes];
+    textAttributes = [(WFOverlayTextAction *)self textAttributes];
     v18 = 1.79769313e308;
-    v17 = v11;
+    v17 = text;
     v19 = 1.79769313e308;
     v20 = 2;
   }
@@ -648,19 +648,19 @@ void __50__WFOverlayTextAction_runAsynchronouslyWithInput___block_invoke_5(uint6
     v13 = v12;
     [(WFOverlayTextAction *)self imageHeight];
     v15 = v14;
-    v16 = [(WFOverlayTextAction *)self textAttributes];
-    v17 = v11;
+    textAttributes = [(WFOverlayTextAction *)self textAttributes];
+    v17 = text;
     v18 = v13;
     v19 = v15;
     v20 = 3;
   }
 
-  [v17 boundingRectWithSize:v20 options:v16 attributes:0 context:{v18, v19}];
+  [v17 boundingRectWithSize:v20 options:textAttributes attributes:0 context:{v18, v19}];
   v22 = v21;
   v24 = v23;
 
-  v25 = [(WFOverlayTextAction *)self textPosition];
-  if (([v25 isEqualToString:@"Top Left"] & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"Middle Left"))
+  textPosition = [(WFOverlayTextAction *)self textPosition];
+  if (([textPosition isEqualToString:@"Top Left"] & 1) != 0 || objc_msgSend(textPosition, "isEqualToString:", @"Middle Left"))
   {
 
 LABEL_7:
@@ -669,15 +669,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v41 = [v25 isEqualToString:@"Bottom Left"];
+  v41 = [textPosition isEqualToString:@"Bottom Left"];
 
   if (v41)
   {
     goto LABEL_7;
   }
 
-  v42 = [(WFOverlayTextAction *)self textPosition];
-  if (([v42 isEqualToString:@"Top Center"] & 1) != 0 || objc_msgSend(v42, "isEqualToString:", @"Center"))
+  textPosition2 = [(WFOverlayTextAction *)self textPosition];
+  if (([textPosition2 isEqualToString:@"Top Center"] & 1) != 0 || objc_msgSend(textPosition2, "isEqualToString:", @"Center"))
   {
 
 LABEL_21:
@@ -685,15 +685,15 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  v47 = [v42 isEqualToString:@"Bottom Center"];
+  v47 = [textPosition2 isEqualToString:@"Bottom Center"];
 
   if (v47)
   {
     goto LABEL_21;
   }
 
-  v48 = [(WFOverlayTextAction *)self textPosition];
-  if (([v48 isEqualToString:@"Top Right"] & 1) != 0 || objc_msgSend(v48, "isEqualToString:", @"Middle Right"))
+  textPosition3 = [(WFOverlayTextAction *)self textPosition];
+  if (([textPosition3 isEqualToString:@"Top Right"] & 1) != 0 || objc_msgSend(textPosition3, "isEqualToString:", @"Middle Right"))
   {
 
 LABEL_29:
@@ -702,7 +702,7 @@ LABEL_29:
     goto LABEL_8;
   }
 
-  v50 = [v48 isEqualToString:@"Bottom Right"];
+  v50 = [textPosition3 isEqualToString:@"Bottom Right"];
 
   v27 = 0.0;
   if (v50)
@@ -711,8 +711,8 @@ LABEL_29:
   }
 
 LABEL_8:
-  v28 = [(WFOverlayTextAction *)self textPosition];
-  IsTopPosition = WFTextPositionIsTopPosition(v28);
+  textPosition4 = [(WFOverlayTextAction *)self textPosition];
+  IsTopPosition = WFTextPositionIsTopPosition(textPosition4);
 
   if (IsTopPosition)
   {
@@ -721,8 +721,8 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v32 = [(WFOverlayTextAction *)self textPosition];
-  if (([v32 isEqualToString:@"Middle Left"] & 1) != 0 || objc_msgSend(v32, "isEqualToString:", @"Center"))
+  textPosition5 = [(WFOverlayTextAction *)self textPosition];
+  if (([textPosition5 isEqualToString:@"Middle Left"] & 1) != 0 || objc_msgSend(textPosition5, "isEqualToString:", @"Center"))
   {
 
 LABEL_13:
@@ -730,15 +730,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v43 = [v32 isEqualToString:@"Middle Right"];
+  v43 = [textPosition5 isEqualToString:@"Middle Right"];
 
   if (v43)
   {
     goto LABEL_13;
   }
 
-  v44 = [(WFOverlayTextAction *)self textPosition];
-  IsBottomPosition = WFTextPositionIsBottomPosition(v44);
+  textPosition6 = [(WFOverlayTextAction *)self textPosition];
+  IsBottomPosition = WFTextPositionIsBottomPosition(textPosition6);
 
   v31 = 0.0;
   if (IsBottomPosition)
@@ -748,8 +748,8 @@ LABEL_13:
   }
 
 LABEL_14:
-  v33 = [(WFOverlayTextAction *)self textPosition];
-  v34 = [v33 isEqualToString:@"Custom Position"];
+  textPosition7 = [(WFOverlayTextAction *)self textPosition];
+  v34 = [textPosition7 isEqualToString:@"Custom Position"];
 
   if (v34)
   {
@@ -772,9 +772,9 @@ LABEL_14:
 
 - (double)boxWidth
 {
-  v3 = [(WFOverlayTextAction *)self useProportionalSizing];
+  useProportionalSizing = [(WFOverlayTextAction *)self useProportionalSizing];
   v4 = objc_opt_class();
-  if (v3)
+  if (useProportionalSizing)
   {
     v5 = [(WFOverlayTextAction *)self parameterValueForKey:@"WFPercentageTextBoxWidth" ofClass:v4];
     [v5 floatValue];
@@ -793,25 +793,25 @@ LABEL_14:
   return v9;
 }
 
-- (void)overlayImage:(id)a3 inContext:(id)a4
+- (void)overlayImage:(id)image inContext:(id)context
 {
-  v36 = a4;
-  v6 = a3;
-  [v6 CGImageSize];
+  contextCopy = context;
+  imageCopy = image;
+  [imageCopy CGImageSize];
   v8 = v7;
-  [v6 CGImageSize];
+  [imageCopy CGImageSize];
   v10 = v9;
-  [v6 CGImageSize];
+  [imageCopy CGImageSize];
   [(WFOverlayTextAction *)self setImageWidth:?];
-  [v6 CGImageSize];
+  [imageCopy CGImageSize];
   [(WFOverlayTextAction *)self setImageHeight:v11];
-  [(WFOverlayTextAction *)self drawingRectForImage:v6];
+  [(WFOverlayTextAction *)self drawingRectForImage:imageCopy];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v36 becomeCurrent];
-  [v6 drawInContext:v36 inRect:{0.0, 0.0, v8, v10}];
+  [contextCopy becomeCurrent];
+  [imageCopy drawInContext:contextCopy inRect:{0.0, 0.0, v8, v10}];
 
   v38.origin.x = v13;
   v38.origin.y = v15;
@@ -823,14 +823,14 @@ LABEL_14:
   v39.size.width = v17;
   v39.size.height = v19;
   MidY = CGRectGetMidY(v39);
-  v22 = v36;
-  CGContextSaveGState([v36 CGContext]);
-  v23 = v36;
-  CGContextTranslateCTM([v36 CGContext], MidX, MidY);
-  v24 = v36;
-  v25 = [v36 CGContext];
+  v22 = contextCopy;
+  CGContextSaveGState([contextCopy CGContext]);
+  v23 = contextCopy;
+  CGContextTranslateCTM([contextCopy CGContext], MidX, MidY);
+  v24 = contextCopy;
+  cGContext = [contextCopy CGContext];
   [(WFOverlayTextAction *)self rotation];
-  CGContextRotateCTM(v25, v26 * 3.14159265 / 180.0);
+  CGContextRotateCTM(cGContext, v26 * 3.14159265 / 180.0);
   [(WFOverlayTextAction *)self boxWidth];
   if (v27 == 0.0)
   {
@@ -847,24 +847,24 @@ LABEL_14:
     [(WFOverlayTextAction *)self strokeWidth];
     if (v29 != 0.0)
     {
-      v30 = [(WFOverlayTextAction *)self strokeColor];
+      strokeColor = [(WFOverlayTextAction *)self strokeColor];
 
-      if (v30)
+      if (strokeColor)
       {
-        v31 = [(WFOverlayTextAction *)self text];
-        v32 = [(WFOverlayTextAction *)self outlinedTextAttributes];
-        [v31 drawWithRect:v28 options:v32 attributes:0 context:{v17 * -0.5, v19 * -0.5, v17, v19}];
+        text = [(WFOverlayTextAction *)self text];
+        outlinedTextAttributes = [(WFOverlayTextAction *)self outlinedTextAttributes];
+        [text drawWithRect:v28 options:outlinedTextAttributes attributes:0 context:{v17 * -0.5, v19 * -0.5, v17, v19}];
       }
     }
   }
 
-  v33 = [(WFOverlayTextAction *)self text];
-  v34 = [(WFOverlayTextAction *)self textAttributes];
-  [v33 drawWithRect:v28 options:v34 attributes:0 context:{v17 * -0.5, v19 * -0.5, v17, v19}];
+  text2 = [(WFOverlayTextAction *)self text];
+  textAttributes = [(WFOverlayTextAction *)self textAttributes];
+  [text2 drawWithRect:v28 options:textAttributes attributes:0 context:{v17 * -0.5, v19 * -0.5, v17, v19}];
 
-  v35 = v36;
-  CGContextRestoreGState([v36 CGContext]);
-  [v36 resignCurrent];
+  v35 = contextCopy;
+  CGContextRestoreGState([contextCopy CGContext]);
+  [contextCopy resignCurrent];
 }
 
 @end

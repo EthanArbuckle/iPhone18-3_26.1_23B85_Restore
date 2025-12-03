@@ -1,20 +1,20 @@
 @interface DNDMode
 + (id)defaultMode;
 + (id)defaultReduceInterruptionsMode;
-+ (id)placeholderModeFromMode:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (DNDMode)initWithCoder:(id)a3;
-- (DNDMode)initWithName:(id)a3 modeIdentifier:(id)a4 symbolImageName:(id)a5 tintColorName:(id)a6 symbolDescriptor:(id)a7 semanticType:(int64_t)a8 visibility:(unint64_t)a9 identifier:(id)a10;
++ (id)placeholderModeFromMode:(id)mode;
+- (BOOL)isEqual:(id)equal;
+- (DNDMode)initWithCoder:(id)coder;
+- (DNDMode)initWithName:(id)name modeIdentifier:(id)identifier symbolImageName:(id)imageName tintColorName:(id)colorName symbolDescriptor:(id)descriptor semanticType:(int64_t)type visibility:(unint64_t)visibility identifier:(id)self0;
 - (NSString)name;
 - (NSString)symbolImageName;
 - (NSString)tintColorName;
 - (NSURL)settingsURL;
 - (NSURL)setupURL;
-- (id)_initWithMode:(id)a3;
+- (id)_initWithMode:(id)mode;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDMode
@@ -43,58 +43,58 @@
   return v8;
 }
 
-+ (id)placeholderModeFromMode:(id)a3
++ (id)placeholderModeFromMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = [DNDMode alloc];
-  v5 = [v3 name];
-  v6 = [v3 modeIdentifier];
-  v7 = [v3 symbolImageName];
-  v8 = [v3 tintColorName];
-  v9 = [v3 symbolDescriptor];
-  v10 = [v3 semanticType];
-  v11 = [v3 identifier];
+  name = [modeCopy name];
+  modeIdentifier = [modeCopy modeIdentifier];
+  symbolImageName = [modeCopy symbolImageName];
+  tintColorName = [modeCopy tintColorName];
+  symbolDescriptor = [modeCopy symbolDescriptor];
+  semanticType = [modeCopy semanticType];
+  identifier = [modeCopy identifier];
 
-  v12 = [(DNDMode *)v4 initWithName:v5 modeIdentifier:v6 symbolImageName:v7 tintColorName:v8 symbolDescriptor:v9 semanticType:v10 visibility:1 identifier:v11];
+  v12 = [(DNDMode *)v4 initWithName:name modeIdentifier:modeIdentifier symbolImageName:symbolImageName tintColorName:tintColorName symbolDescriptor:symbolDescriptor semanticType:semanticType visibility:1 identifier:identifier];
 
   return v12;
 }
 
-- (DNDMode)initWithName:(id)a3 modeIdentifier:(id)a4 symbolImageName:(id)a5 tintColorName:(id)a6 symbolDescriptor:(id)a7 semanticType:(int64_t)a8 visibility:(unint64_t)a9 identifier:(id)a10
+- (DNDMode)initWithName:(id)name modeIdentifier:(id)identifier symbolImageName:(id)imageName tintColorName:(id)colorName symbolDescriptor:(id)descriptor semanticType:(int64_t)type visibility:(unint64_t)visibility identifier:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  imageNameCopy = imageName;
+  colorNameCopy = colorName;
+  descriptorCopy = descriptor;
   v21 = a10;
   v36.receiver = self;
   v36.super_class = DNDMode;
   v22 = [(DNDMode *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [nameCopy copy];
     name = v22->_name;
     v22->_name = v23;
 
-    v25 = [v17 copy];
+    v25 = [identifierCopy copy];
     modeIdentifier = v22->_modeIdentifier;
     v22->_modeIdentifier = v25;
 
-    v27 = [v18 copy];
+    v27 = [imageNameCopy copy];
     symbolImageName = v22->_symbolImageName;
     v22->_symbolImageName = v27;
 
-    v29 = [v19 copy];
+    v29 = [colorNameCopy copy];
     tintColorName = v22->_tintColorName;
     v22->_tintColorName = v29;
 
-    v31 = [v20 copy];
+    v31 = [descriptorCopy copy];
     symbolDescriptor = v22->_symbolDescriptor;
     v22->_symbolDescriptor = v31;
 
-    v22->_semanticType = a8;
-    v22->_visibility = a9;
+    v22->_semanticType = type;
+    v22->_visibility = visibility;
     if (v21)
     {
       v33 = v21;
@@ -112,19 +112,19 @@
   return v22;
 }
 
-- (id)_initWithMode:(id)a3
+- (id)_initWithMode:(id)mode
 {
-  v4 = a3;
-  v5 = [v4 _name];
-  v6 = [v4 modeIdentifier];
-  v7 = [v4 _symbolImageName];
-  v8 = [v4 _tintColorName];
-  v9 = [v4 symbolDescriptor];
-  v10 = [v4 semanticType];
-  v11 = [v4 visibility];
-  v12 = [v4 identifier];
+  modeCopy = mode;
+  _name = [modeCopy _name];
+  modeIdentifier = [modeCopy modeIdentifier];
+  _symbolImageName = [modeCopy _symbolImageName];
+  _tintColorName = [modeCopy _tintColorName];
+  symbolDescriptor = [modeCopy symbolDescriptor];
+  semanticType = [modeCopy semanticType];
+  visibility = [modeCopy visibility];
+  identifier = [modeCopy identifier];
 
-  v13 = [(DNDMode *)self initWithName:v5 modeIdentifier:v6 symbolImageName:v7 tintColorName:v8 symbolDescriptor:v9 semanticType:v10 visibility:v11 identifier:v12];
+  v13 = [(DNDMode *)self initWithName:_name modeIdentifier:modeIdentifier symbolImageName:_symbolImageName tintColorName:_tintColorName symbolDescriptor:symbolDescriptor semanticType:semanticType visibility:visibility identifier:identifier];
   return v13;
 }
 
@@ -133,8 +133,8 @@
   v3 = DNDModeLocalizedNameKeyForSemanticType([(DNDMode *)self semanticType]);
   if (v3)
   {
-    v4 = [MEMORY[0x277CCA8D8] dnd_doNotDisturbLocalizationBundle];
-    v5 = [v4 localizedStringForKey:v3 value:&stru_2833C9B78 table:0];
+    dnd_doNotDisturbLocalizationBundle = [MEMORY[0x277CCA8D8] dnd_doNotDisturbLocalizationBundle];
+    v5 = [dnd_doNotDisturbLocalizationBundle localizedStringForKey:v3 value:&stru_2833C9B78 table:0];
   }
 
   else
@@ -150,20 +150,20 @@
   symbolDescriptor = self->_symbolDescriptor;
   if (symbolDescriptor && ([(DNDModeSymbolDescriptor *)symbolDescriptor imageName], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(DNDModeSymbolDescriptor *)self->_symbolDescriptor imageName];
+    imageName = [(DNDModeSymbolDescriptor *)self->_symbolDescriptor imageName];
   }
 
   else if (DNDSupportedSemanticType(self->_semanticType))
   {
-    v5 = self->_symbolImageName;
+    imageName = self->_symbolImageName;
   }
 
   else
   {
-    v5 = DNDSystemImageNameForModeSemanticType(self->_semanticType);
+    imageName = DNDSystemImageNameForModeSemanticType(self->_semanticType);
   }
 
-  return v5;
+  return imageName;
 }
 
 - (NSString)tintColorName
@@ -171,27 +171,27 @@
   symbolDescriptor = self->_symbolDescriptor;
   if (symbolDescriptor && ([(DNDModeSymbolDescriptor *)symbolDescriptor primaryTintColorName], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(DNDModeSymbolDescriptor *)self->_symbolDescriptor primaryTintColorName];
+    primaryTintColorName = [(DNDModeSymbolDescriptor *)self->_symbolDescriptor primaryTintColorName];
   }
 
   else if (DNDSupportedSemanticType(self->_semanticType))
   {
-    v5 = self->_tintColorName;
+    primaryTintColorName = self->_tintColorName;
   }
 
   else
   {
-    v5 = DNDSystemColorNameForModeSemanticType(self->_semanticType);
+    primaryTintColorName = DNDSystemColorNameForModeSemanticType(self->_semanticType);
   }
 
-  return v5;
+  return primaryTintColorName;
 }
 
 - (NSURL)settingsURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(DNDMode *)self modeIdentifier];
-  v4 = [v2 dnd_settingsURLWithModeIdentifier:v3];
+  modeIdentifier = [(DNDMode *)self modeIdentifier];
+  v4 = [v2 dnd_settingsURLWithModeIdentifier:modeIdentifier];
 
   return v4;
 }
@@ -199,35 +199,35 @@
 - (NSURL)setupURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(DNDMode *)self semanticType];
+  semanticType = [(DNDMode *)self semanticType];
 
-  return [v2 dnd_setupURLWithSemanticType:v3];
+  return [v2 dnd_setupURLWithSemanticType:semanticType];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DNDMode *)self _name];
-  v4 = [v3 hash];
-  v5 = [(DNDMode *)self modeIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDMode *)self _symbolImageName];
-  v8 = [v7 hash];
-  v9 = [(DNDMode *)self _tintColorName];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDMode *)self symbolDescriptor];
-  v12 = [v11 hash];
+  _name = [(DNDMode *)self _name];
+  v4 = [_name hash];
+  modeIdentifier = [(DNDMode *)self modeIdentifier];
+  v6 = [modeIdentifier hash] ^ v4;
+  _symbolImageName = [(DNDMode *)self _symbolImageName];
+  v8 = [_symbolImageName hash];
+  _tintColorName = [(DNDMode *)self _tintColorName];
+  v10 = v6 ^ v8 ^ [_tintColorName hash];
+  symbolDescriptor = [(DNDMode *)self symbolDescriptor];
+  v12 = [symbolDescriptor hash];
   v13 = v12 ^ [(DNDMode *)self semanticType];
   v14 = v10 ^ v13 ^ [(DNDMode *)self visibility];
-  v15 = [(DNDMode *)self identifier];
-  v16 = [v15 hash];
+  identifier = [(DNDMode *)self identifier];
+  v16 = [identifier hash];
 
   return v14 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -237,20 +237,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDMode *)self _name];
-      v8 = [(DNDMode *)v6 _name];
-      if (v7 != v8)
+      v6 = equalCopy;
+      _name = [(DNDMode *)self _name];
+      _name2 = [(DNDMode *)v6 _name];
+      if (_name != _name2)
       {
-        v87 = [(DNDMode *)self _name];
-        if (!v87)
+        _name3 = [(DNDMode *)self _name];
+        if (!_name3)
         {
           v11 = 0;
           goto LABEL_65;
         }
 
-        v85 = [(DNDMode *)v6 _name];
-        if (!v85)
+        _name4 = [(DNDMode *)v6 _name];
+        if (!_name4)
         {
           v11 = 0;
 LABEL_64:
@@ -258,9 +258,9 @@ LABEL_64:
           goto LABEL_65;
         }
 
-        v9 = [(DNDMode *)self _name];
-        v10 = [(DNDMode *)v6 _name];
-        if (![v9 isEqual:v10])
+        _name5 = [(DNDMode *)self _name];
+        _name6 = [(DNDMode *)v6 _name];
+        if (![_name5 isEqual:_name6])
         {
           v11 = 0;
 LABEL_63:
@@ -268,28 +268,28 @@ LABEL_63:
           goto LABEL_64;
         }
 
-        v83 = v10;
-        v84 = v9;
+        v83 = _name6;
+        v84 = _name5;
       }
 
-      v12 = [(DNDMode *)self modeIdentifier];
-      v86 = [(DNDMode *)v6 modeIdentifier];
-      if (v12 != v86)
+      modeIdentifier = [(DNDMode *)self modeIdentifier];
+      modeIdentifier2 = [(DNDMode *)v6 modeIdentifier];
+      if (modeIdentifier != modeIdentifier2)
       {
-        v13 = [(DNDMode *)self modeIdentifier];
-        if (v13)
+        modeIdentifier3 = [(DNDMode *)self modeIdentifier];
+        if (modeIdentifier3)
         {
-          v14 = v13;
-          v15 = [(DNDMode *)v6 modeIdentifier];
-          if (v15)
+          v14 = modeIdentifier3;
+          modeIdentifier4 = [(DNDMode *)v6 modeIdentifier];
+          if (modeIdentifier4)
           {
-            v81 = v15;
-            v16 = [(DNDMode *)self modeIdentifier];
-            v17 = [(DNDMode *)v6 modeIdentifier];
-            if ([v16 isEqual:v17])
+            v81 = modeIdentifier4;
+            modeIdentifier5 = [(DNDMode *)self modeIdentifier];
+            modeIdentifier6 = [(DNDMode *)v6 modeIdentifier];
+            if ([modeIdentifier5 isEqual:modeIdentifier6])
             {
-              v77 = v17;
-              v79 = v16;
+              v77 = modeIdentifier6;
+              v79 = modeIdentifier5;
               v78 = v14;
               goto LABEL_16;
             }
@@ -304,112 +304,112 @@ LABEL_61:
       }
 
 LABEL_16:
-      v18 = [(DNDMode *)self _symbolImageName];
-      v19 = [(DNDMode *)v6 _symbolImageName];
-      v82 = v18;
-      if (v18 == v19)
+      _symbolImageName = [(DNDMode *)self _symbolImageName];
+      _symbolImageName2 = [(DNDMode *)v6 _symbolImageName];
+      v82 = _symbolImageName;
+      if (_symbolImageName == _symbolImageName2)
       {
         goto LABEL_23;
       }
 
-      v20 = [(DNDMode *)self _symbolImageName];
-      if (v20)
+      _symbolImageName3 = [(DNDMode *)self _symbolImageName];
+      if (_symbolImageName3)
       {
-        v21 = v20;
-        v22 = [(DNDMode *)v6 _symbolImageName];
-        if (v22)
+        v21 = _symbolImageName3;
+        _symbolImageName4 = [(DNDMode *)v6 _symbolImageName];
+        if (_symbolImageName4)
         {
-          v23 = v19;
+          v23 = _symbolImageName2;
           v24 = v21;
-          v76 = v22;
-          v25 = [(DNDMode *)self _symbolImageName];
-          v3 = [(DNDMode *)v6 _symbolImageName];
-          if ([v25 isEqual:v3])
+          v76 = _symbolImageName4;
+          _symbolImageName5 = [(DNDMode *)self _symbolImageName];
+          _symbolImageName6 = [(DNDMode *)v6 _symbolImageName];
+          if ([_symbolImageName5 isEqual:_symbolImageName6])
           {
-            v72 = v25;
+            v72 = _symbolImageName5;
             v73 = v24;
-            v19 = v23;
+            _symbolImageName2 = v23;
 LABEL_23:
-            v26 = [(DNDMode *)self _tintColorName];
-            v80 = [(DNDMode *)v6 _tintColorName];
-            if (v26 == v80)
+            _tintColorName = [(DNDMode *)self _tintColorName];
+            _tintColorName2 = [(DNDMode *)v6 _tintColorName];
+            if (_tintColorName == _tintColorName2)
             {
               goto LABEL_31;
             }
 
-            v27 = [(DNDMode *)self _tintColorName];
-            if (v27)
+            _tintColorName3 = [(DNDMode *)self _tintColorName];
+            if (_tintColorName3)
             {
-              v74 = v27;
-              v28 = [(DNDMode *)v6 _tintColorName];
-              if (v28)
+              v74 = _tintColorName3;
+              _tintColorName4 = [(DNDMode *)v6 _tintColorName];
+              if (_tintColorName4)
               {
-                v67 = v28;
-                v68 = v3;
-                v29 = [(DNDMode *)self _tintColorName];
-                v30 = [(DNDMode *)v6 _tintColorName];
-                if ([v29 isEqual:v30])
+                v67 = _tintColorName4;
+                v68 = _symbolImageName6;
+                _tintColorName5 = [(DNDMode *)self _tintColorName];
+                _tintColorName6 = [(DNDMode *)v6 _tintColorName];
+                if ([_tintColorName5 isEqual:_tintColorName6])
                 {
-                  v64 = v30;
-                  v65 = v29;
-                  v3 = v68;
+                  v64 = _tintColorName6;
+                  v65 = _tintColorName5;
+                  _symbolImageName6 = v68;
 LABEL_31:
-                  v31 = [(DNDMode *)self symbolDescriptor];
-                  v75 = [(DNDMode *)v6 symbolDescriptor];
-                  if (v31 == v75)
+                  symbolDescriptor = [(DNDMode *)self symbolDescriptor];
+                  symbolDescriptor2 = [(DNDMode *)v6 symbolDescriptor];
+                  if (symbolDescriptor == symbolDescriptor2)
                   {
-                    v40 = v3;
-                    v38 = v31;
-                    v70 = v26;
+                    v40 = _symbolImageName6;
+                    v38 = symbolDescriptor;
+                    v70 = _tintColorName;
                     v39 = v40;
                     goto LABEL_43;
                   }
 
-                  v32 = [(DNDMode *)self symbolDescriptor];
-                  if (v32)
+                  symbolDescriptor3 = [(DNDMode *)self symbolDescriptor];
+                  if (symbolDescriptor3)
                   {
-                    v66 = v32;
-                    v33 = [(DNDMode *)v6 symbolDescriptor];
-                    if (v33)
+                    v66 = symbolDescriptor3;
+                    symbolDescriptor4 = [(DNDMode *)v6 symbolDescriptor];
+                    if (symbolDescriptor4)
                     {
-                      v69 = v3;
-                      v63 = v33;
-                      v34 = [(DNDMode *)self symbolDescriptor];
-                      v35 = [(DNDMode *)v6 symbolDescriptor];
-                      v62 = v34;
-                      v36 = v34;
-                      v37 = v35;
-                      if ([v36 isEqual:v35])
+                      v69 = _symbolImageName6;
+                      v63 = symbolDescriptor4;
+                      symbolDescriptor5 = [(DNDMode *)self symbolDescriptor];
+                      symbolDescriptor6 = [(DNDMode *)v6 symbolDescriptor];
+                      v62 = symbolDescriptor5;
+                      v36 = symbolDescriptor5;
+                      v37 = symbolDescriptor6;
+                      if ([v36 isEqual:symbolDescriptor6])
                       {
                         v61 = v37;
-                        v38 = v31;
-                        v70 = v26;
+                        v38 = symbolDescriptor;
+                        v70 = _tintColorName;
                         v39 = v69;
 LABEL_43:
-                        v41 = [(DNDMode *)self semanticType];
-                        if (v41 == [(DNDMode *)v6 semanticType]&& (v42 = [(DNDMode *)self visibility], v42 == [(DNDMode *)v6 visibility]))
+                        semanticType = [(DNDMode *)self semanticType];
+                        if (semanticType == [(DNDMode *)v6 semanticType]&& (v42 = [(DNDMode *)self visibility], v42 == [(DNDMode *)v6 visibility]))
                         {
-                          v43 = [(DNDMode *)self identifier];
-                          v44 = [(DNDMode *)v6 identifier];
-                          if (v43 != v44)
+                          identifier = [(DNDMode *)self identifier];
+                          identifier2 = [(DNDMode *)v6 identifier];
+                          if (identifier != identifier2)
                           {
-                            v59 = v44;
-                            v60 = v43;
-                            v45 = [(DNDMode *)self identifier];
+                            v59 = identifier2;
+                            v60 = identifier;
+                            identifier3 = [(DNDMode *)self identifier];
                             v46 = v70;
-                            if (v45)
+                            if (identifier3)
                             {
-                              v58 = v45;
-                              v47 = [(DNDMode *)v6 identifier];
-                              if (v47)
+                              v58 = identifier3;
+                              identifier4 = [(DNDMode *)v6 identifier];
+                              if (identifier4)
                               {
-                                v57 = v47;
-                                v56 = [(DNDMode *)self identifier];
-                                v48 = [(DNDMode *)v6 identifier];
-                                v11 = [v56 isEqual:v48];
+                                v57 = identifier4;
+                                identifier5 = [(DNDMode *)self identifier];
+                                identifier6 = [(DNDMode *)v6 identifier];
+                                v11 = [identifier5 isEqual:identifier6];
 
                                 v46 = v70;
-                                v47 = v57;
+                                identifier4 = v57;
                               }
 
                               else
@@ -424,8 +424,8 @@ LABEL_43:
                               v11 = 0;
                             }
 
-                            v49 = v75;
-                            if (v38 == v75)
+                            v49 = symbolDescriptor2;
+                            if (v38 == symbolDescriptor2)
                             {
                               goto LABEL_80;
                             }
@@ -441,9 +441,9 @@ LABEL_43:
                           v11 = 0;
                         }
 
-                        v49 = v75;
+                        v49 = symbolDescriptor2;
                         v46 = v70;
-                        if (v38 == v75)
+                        if (v38 == symbolDescriptor2)
                         {
 LABEL_80:
 
@@ -459,22 +459,22 @@ LABEL_51:
                         v46 = v71;
 LABEL_81:
 
-                        if (v46 != v80)
+                        if (v46 != _tintColorName2)
                         {
                         }
 
-                        if (v82 != v19)
+                        if (v82 != _symbolImageName2)
                         {
                         }
 
-                        if (v12 != v86)
+                        if (modeIdentifier != modeIdentifier2)
                         {
                         }
 
 LABEL_62:
-                        v10 = v83;
-                        v9 = v84;
-                        if (v7 != v8)
+                        _name6 = v83;
+                        _name5 = v84;
+                        if (_name != _name2)
                         {
                           goto LABEL_63;
                         }
@@ -484,22 +484,22 @@ LABEL_65:
                         goto LABEL_66;
                       }
 
-                      v33 = v63;
-                      v3 = v69;
+                      symbolDescriptor4 = v63;
+                      _symbolImageName6 = v69;
                     }
                   }
 
-                  if (v26 != v80)
+                  if (_tintColorName != _tintColorName2)
                   {
                   }
 
                   v54 = v79;
-                  if (v82 != v19)
+                  if (v82 != _symbolImageName2)
                   {
                   }
 
-                  v53 = v86;
-                  if (v12 == v86)
+                  v53 = modeIdentifier2;
+                  if (modeIdentifier == modeIdentifier2)
                   {
                     goto LABEL_60;
                   }
@@ -508,13 +508,13 @@ LABEL_65:
                 }
 
                 v52 = v82;
-                if (v82 == v19)
+                if (v82 == _symbolImageName2)
                 {
 LABEL_58:
 
-                  v53 = v86;
+                  v53 = modeIdentifier2;
                   v54 = v79;
-                  if (v12 == v86)
+                  if (modeIdentifier == modeIdentifier2)
                   {
 LABEL_60:
 
@@ -532,7 +532,7 @@ LABEL_57:
             }
 
             v52 = v82;
-            if (v82 == v19)
+            if (v82 == _symbolImageName2)
             {
               goto LABEL_58;
             }
@@ -545,7 +545,7 @@ LABEL_57:
       }
 
 LABEL_39:
-      if (v12 != v86)
+      if (modeIdentifier != modeIdentifier2)
       {
       }
 
@@ -564,45 +564,45 @@ LABEL_66:
 {
   v17 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
-  v3 = [(DNDMode *)self _name];
-  v4 = [(DNDMode *)self modeIdentifier];
-  v5 = [(DNDMode *)self _symbolImageName];
-  v6 = [(DNDMode *)self _tintColorName];
-  v7 = [(DNDMode *)self symbolDescriptor];
-  v8 = [(DNDMode *)self semanticType];
-  v9 = [(DNDMode *)self visibility];
-  v10 = [(DNDMode *)self identifier];
-  v11 = [v10 UUIDString];
-  v12 = [(DNDMode *)self isPlaceholder];
+  _name = [(DNDMode *)self _name];
+  modeIdentifier = [(DNDMode *)self modeIdentifier];
+  _symbolImageName = [(DNDMode *)self _symbolImageName];
+  _tintColorName = [(DNDMode *)self _tintColorName];
+  symbolDescriptor = [(DNDMode *)self symbolDescriptor];
+  semanticType = [(DNDMode *)self semanticType];
+  visibility = [(DNDMode *)self visibility];
+  identifier = [(DNDMode *)self identifier];
+  uUIDString = [identifier UUIDString];
+  isPlaceholder = [(DNDMode *)self isPlaceholder];
   v13 = @"NO";
-  if (v12)
+  if (isPlaceholder)
   {
     v13 = @"YES";
   }
 
-  v14 = [v17 stringWithFormat:@"<%@: %p name: %@; modeIdentifier: %@; symbolImageName: %@; tintColorName: %@; symbolDescriptor: %@; semanticType: %zd; visibility: %lu; identifier: %@; isPlaceHolder: %@>", v16, self, v3, v4, v5, v6, v7, v8, v9, v11, v13];;
+  v14 = [v17 stringWithFormat:@"<%@: %p name: %@; modeIdentifier: %@; symbolImageName: %@; tintColorName: %@; symbolDescriptor: %@; semanticType: %zd; visibility: %lu; identifier: %@; isPlaceHolder: %@>", v16, self, _name, modeIdentifier, _symbolImageName, _tintColorName, symbolDescriptor, semanticType, visibility, uUIDString, v13];;
 
   return v14;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableMode alloc];
 
   return [(DNDMode *)v4 _initWithMode:self];
 }
 
-- (DNDMode)initWithCoder:(id)a3
+- (DNDMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolImageName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColorName"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolDescriptor"];
-  if ([v4 containsValueForKey:@"semanticType"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolImageName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColorName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolDescriptor"];
+  if ([coderCopy containsValueForKey:@"semanticType"])
   {
-    v10 = [v4 decodeIntegerForKey:@"semanticType"];
+    v10 = [coderCopy decodeIntegerForKey:@"semanticType"];
   }
 
   else
@@ -610,9 +610,9 @@ LABEL_66:
     v10 = 0;
   }
 
-  if ([v4 containsValueForKey:@"visibility"])
+  if ([coderCopy containsValueForKey:@"visibility"])
   {
-    v11 = [v4 decodeIntegerForKey:@"visibility"];
+    v11 = [coderCopy decodeIntegerForKey:@"visibility"];
   }
 
   else
@@ -620,9 +620,9 @@ LABEL_66:
     v11 = 0;
   }
 
-  if ([v4 containsValueForKey:@"identifier"])
+  if ([coderCopy containsValueForKey:@"identifier"])
   {
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   }
 
   else
@@ -635,28 +635,28 @@ LABEL_66:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDMode *)self _name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  _name = [(DNDMode *)self _name];
+  [coderCopy encodeObject:_name forKey:@"name"];
 
-  v6 = [(DNDMode *)self modeIdentifier];
-  [v4 encodeObject:v6 forKey:@"modeIdentifier"];
+  modeIdentifier = [(DNDMode *)self modeIdentifier];
+  [coderCopy encodeObject:modeIdentifier forKey:@"modeIdentifier"];
 
-  v7 = [(DNDMode *)self _symbolImageName];
-  [v4 encodeObject:v7 forKey:@"symbolImageName"];
+  _symbolImageName = [(DNDMode *)self _symbolImageName];
+  [coderCopy encodeObject:_symbolImageName forKey:@"symbolImageName"];
 
-  v8 = [(DNDMode *)self _tintColorName];
-  [v4 encodeObject:v8 forKey:@"tintColorName"];
+  _tintColorName = [(DNDMode *)self _tintColorName];
+  [coderCopy encodeObject:_tintColorName forKey:@"tintColorName"];
 
-  v9 = [(DNDMode *)self symbolDescriptor];
-  [v4 encodeObject:v9 forKey:@"symbolDescriptor"];
+  symbolDescriptor = [(DNDMode *)self symbolDescriptor];
+  [coderCopy encodeObject:symbolDescriptor forKey:@"symbolDescriptor"];
 
-  [v4 encodeInteger:-[DNDMode semanticType](self forKey:{"semanticType"), @"semanticType"}];
-  [v4 encodeInteger:-[DNDMode visibility](self forKey:{"visibility"), @"visibility"}];
-  v10 = [(DNDMode *)self identifier];
-  [v4 encodeObject:v10 forKey:@"identifier"];
+  [coderCopy encodeInteger:-[DNDMode semanticType](self forKey:{"semanticType"), @"semanticType"}];
+  [coderCopy encodeInteger:-[DNDMode visibility](self forKey:{"visibility"), @"visibility"}];
+  identifier = [(DNDMode *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 @end

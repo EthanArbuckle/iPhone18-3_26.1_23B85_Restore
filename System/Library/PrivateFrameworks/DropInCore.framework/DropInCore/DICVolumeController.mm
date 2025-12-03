@@ -1,17 +1,17 @@
 @interface DICVolumeController
-- (BOOL)setVolumeForCategory:(id)a3 volume:(float)a4 error:(id *)a5;
-- (id)volumeForCategory:(id)a3 error:(id *)a4;
+- (BOOL)setVolumeForCategory:(id)category volume:(float)volume error:(id *)error;
+- (id)volumeForCategory:(id)category error:(id *)error;
 @end
 
 @implementation DICVolumeController
 
-- (id)volumeForCategory:(id)a3 error:(id *)a4
+- (id)volumeForCategory:(id)category error:(id *)error
 {
   v5 = MEMORY[0x277D26E58];
-  v6 = a3;
-  v7 = [v5 sharedAVSystemController];
+  categoryCopy = category;
+  sharedAVSystemController = [v5 sharedAVSystemController];
   v12 = 0;
-  v8 = [v7 getVolume:&v12 forCategory:v6];
+  v8 = [sharedAVSystemController getVolume:&v12 forCategory:categoryCopy];
 
   if (v8)
   {
@@ -22,26 +22,26 @@
   else
   {
     v10 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.dropincore.volumecontroller" code:1 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.dropincore.volumecontroller" code:1 userInfo:0];
     }
   }
 
   return v10;
 }
 
-- (BOOL)setVolumeForCategory:(id)a3 volume:(float)a4 error:(id *)a5
+- (BOOL)setVolumeForCategory:(id)category volume:(float)volume error:(id *)error
 {
   v7 = MEMORY[0x277D26E58];
-  v8 = a3;
-  v9 = [v7 sharedAVSystemController];
-  *&v10 = a4;
-  v11 = [v9 setVolumeTo:v8 forCategory:v10];
+  categoryCopy = category;
+  sharedAVSystemController = [v7 sharedAVSystemController];
+  *&v10 = volume;
+  v11 = [sharedAVSystemController setVolumeTo:categoryCopy forCategory:v10];
 
-  if (a5 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
-    *a5 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.dropincore.volumecontroller" code:2 userInfo:0];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.dropincore.volumecontroller" code:2 userInfo:0];
   }
 
   return v11;

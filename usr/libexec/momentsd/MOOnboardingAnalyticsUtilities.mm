@@ -1,15 +1,15 @@
 @interface MOOnboardingAnalyticsUtilities
-+ (unint64_t)convertMGDeviceClassToAnalyticsDeviceType:(id)a3;
-+ (unint64_t)onboardingDurationBinFrom:(id)a3;
++ (unint64_t)convertMGDeviceClassToAnalyticsDeviceType:(id)type;
++ (unint64_t)onboardingDurationBinFrom:(id)from;
 @end
 
 @implementation MOOnboardingAnalyticsUtilities
 
-+ (unint64_t)onboardingDurationBinFrom:(id)a3
++ (unint64_t)onboardingDurationBinFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = +[NSDate date];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:fromCopy];
   v6 = v5;
 
   if (v6 < 0.0 || v6 > 604800.0)
@@ -109,13 +109,13 @@
   return v7;
 }
 
-+ (unint64_t)convertMGDeviceClassToAnalyticsDeviceType:(id)a3
++ (unint64_t)convertMGDeviceClassToAnalyticsDeviceType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    if ([v3 isEqualToString:@"iPhone"])
+    if ([typeCopy isEqualToString:@"iPhone"])
     {
       v5 = 1;
     }

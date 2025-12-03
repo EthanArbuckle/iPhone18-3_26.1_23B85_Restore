@@ -1,32 +1,32 @@
 @interface MBPeerPreflightResponse
-- (MBPeerPreflightResponse)initWithDictionary:(id)a3 error:(id *)a4;
-- (MBPeerPreflightResponse)initWithUploadSize:(unint64_t)a3 uploadFileCount:(unint64_t)a4 uploadSizeExcludingHardlinksAndClones:(unint64_t)a5 freeDiskSpace:(unint64_t)a6 purgeableDiskSpace:(unint64_t)a7;
+- (MBPeerPreflightResponse)initWithDictionary:(id)dictionary error:(id *)error;
+- (MBPeerPreflightResponse)initWithUploadSize:(unint64_t)size uploadFileCount:(unint64_t)count uploadSizeExcludingHardlinksAndClones:(unint64_t)clones freeDiskSpace:(unint64_t)space purgeableDiskSpace:(unint64_t)diskSpace;
 - (NSString)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation MBPeerPreflightResponse
 
-- (MBPeerPreflightResponse)initWithUploadSize:(unint64_t)a3 uploadFileCount:(unint64_t)a4 uploadSizeExcludingHardlinksAndClones:(unint64_t)a5 freeDiskSpace:(unint64_t)a6 purgeableDiskSpace:(unint64_t)a7
+- (MBPeerPreflightResponse)initWithUploadSize:(unint64_t)size uploadFileCount:(unint64_t)count uploadSizeExcludingHardlinksAndClones:(unint64_t)clones freeDiskSpace:(unint64_t)space purgeableDiskSpace:(unint64_t)diskSpace
 {
   v13.receiver = self;
   v13.super_class = MBPeerPreflightResponse;
   result = [(MBPeerPreflightResponse *)&v13 init];
   if (result)
   {
-    result->_uploadSize = a3;
-    result->_uploadSizeExcludingHardlinksAndClones = a5;
-    result->_uploadFileCount = a4;
-    result->_freeDiskSpace = a6;
-    result->_purgeableDiskSpace = a7;
+    result->_uploadSize = size;
+    result->_uploadSizeExcludingHardlinksAndClones = clones;
+    result->_uploadFileCount = count;
+    result->_freeDiskSpace = space;
+    result->_purgeableDiskSpace = diskSpace;
   }
 
   return result;
 }
 
-- (MBPeerPreflightResponse)initWithDictionary:(id)a3 error:(id *)a4
+- (MBPeerPreflightResponse)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = MBPeerPreflightResponse;
   v7 = [(MBPeerPreflightResponse *)&v20 init];
@@ -35,21 +35,21 @@
     goto LABEL_19;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"MBUploadSize"];
-  v9 = [v6 objectForKeyedSubscript:@"MBUploadFileCount"];
-  v10 = [v6 objectForKeyedSubscript:@"MBUploadSizeExcludingHardlinksAndClones"];
-  v11 = [v6 objectForKeyedSubscript:@"MBFreeDiskSpace"];
-  v12 = [v6 objectForKeyedSubscript:@"MBPurgeableDiskSpace"];
-  v13 = [v6 objectForKeyedSubscript:@"MBPropertiesData"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"MBUploadSize"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"MBUploadFileCount"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"MBUploadSizeExcludingHardlinksAndClones"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"MBFreeDiskSpace"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"MBPurgeableDiskSpace"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"MBPropertiesData"];
   v14 = !v8 || v9 == 0;
   v15 = v14 || v11 == 0;
   v16 = v15 || v12 == 0;
   v17 = !v16;
   if (v16)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError errorWithCode:11 format:@"Failed to decode request. Missing property in dictionary %@", v6];
+      *error = [MBError errorWithCode:11 format:@"Failed to decode request. Missing property in dictionary %@", dictionaryCopy];
     }
   }
 
@@ -136,12 +136,12 @@ LABEL_19:
 {
   v3 = objc_opt_class();
   Name = class_getName(v3);
-  v5 = [(MBPeerPreflightResponse *)self uploadSize];
-  v6 = [(MBPeerPreflightResponse *)self uploadSizeExcludingHardlinksAndClones];
-  v7 = [(MBPeerPreflightResponse *)self uploadFileCount];
-  v8 = [(MBPeerPreflightResponse *)self freeDiskSpace];
-  v9 = [(MBPeerPreflightResponse *)self propertiesData];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%s: %p size=%llu(%llu), fileCount=%llu, freeDiskSpace=%llu, properties.length=%lu>", Name, self, v5, v6, v7, v8, [v9 length]);;
+  uploadSize = [(MBPeerPreflightResponse *)self uploadSize];
+  uploadSizeExcludingHardlinksAndClones = [(MBPeerPreflightResponse *)self uploadSizeExcludingHardlinksAndClones];
+  uploadFileCount = [(MBPeerPreflightResponse *)self uploadFileCount];
+  freeDiskSpace = [(MBPeerPreflightResponse *)self freeDiskSpace];
+  propertiesData = [(MBPeerPreflightResponse *)self propertiesData];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%s: %p size=%llu(%llu), fileCount=%llu, freeDiskSpace=%llu, properties.length=%lu>", Name, self, uploadSize, uploadSizeExcludingHardlinksAndClones, uploadFileCount, freeDiskSpace, [propertiesData length]);;
 
   return v10;
 }

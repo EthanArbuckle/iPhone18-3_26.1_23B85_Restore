@@ -1,8 +1,8 @@
 @interface ML3ArtworkTokenSet
-- (ML3ArtworkTokenSet)initWithEntity:(id)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5;
+- (ML3ArtworkTokenSet)initWithEntity:(id)entity artworkType:(int64_t)type artworkVariantType:(int64_t)variantType;
 - (NSString)availableArtworkToken;
 - (NSString)fetchableArtworkToken;
-- (id)artworkTokenForSource:(int64_t)a3;
+- (id)artworkTokenForSource:(int64_t)source;
 - (int64_t)fetchableArtworkSourceType;
 - (void)_faultInBestTokens;
 - (void)_faultInTokens;
@@ -13,19 +13,19 @@
 - (void)_faultInTokens
 {
   self->_faultedInTokens = 1;
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(ML3Entity *)self->_entity library];
-  v5 = [(ML3Entity *)self->_entity persistentID];
-  v6 = [objc_opt_class() revisionTrackingCode];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  library = [(ML3Entity *)self->_entity library];
+  persistentID = [(ML3Entity *)self->_entity persistentID];
+  revisionTrackingCode = [objc_opt_class() revisionTrackingCode];
   artworkType = self->_artworkType;
   artworkVariantType = self->_artworkVariantType;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __36__ML3ArtworkTokenSet__faultInTokens__block_invoke;
   v12[3] = &unk_27875CDF8;
-  v13 = v3;
-  v9 = v3;
-  [v4 enumerateArtworkTokensForEntityPersistentID:v5 entityType:v6 artworkType:artworkType variantType:artworkVariantType usingBlock:v12];
+  v13 = dictionary;
+  v9 = dictionary;
+  [library enumerateArtworkTokensForEntityPersistentID:persistentID entityType:revisionTrackingCode artworkType:artworkType variantType:artworkVariantType usingBlock:v12];
 
   v10 = [v9 copy];
   artworkSourceToTokenMap = self->_artworkSourceToTokenMap;
@@ -45,9 +45,9 @@ void __36__ML3ArtworkTokenSet__faultInTokens__block_invoke(uint64_t a1, void *a2
 {
   self->_faultedInBestTokens = 1;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(ML3Entity *)self->_entity library];
-  v5 = [(ML3Entity *)self->_entity persistentID];
-  v6 = [objc_opt_class() revisionTrackingCode];
+  library = [(ML3Entity *)self->_entity library];
+  persistentID = [(ML3Entity *)self->_entity persistentID];
+  revisionTrackingCode = [objc_opt_class() revisionTrackingCode];
   artworkType = self->_artworkType;
   artworkVariantType = self->_artworkVariantType;
   retrievalTime = self->_retrievalTime;
@@ -58,7 +58,7 @@ void __36__ML3ArtworkTokenSet__faultInTokens__block_invoke(uint64_t a1, void *a2
   v11[4] = self;
   v12 = v3;
   v10 = v3;
-  [v4 retrieveBestArtworkTokensForEntityPersistentID:v5 entityType:v6 artworkType:artworkType variantType:artworkVariantType retrievalTime:v11 completionHandler:retrievalTime];
+  [library retrieveBestArtworkTokensForEntityPersistentID:persistentID entityType:revisionTrackingCode artworkType:artworkType variantType:artworkVariantType retrievalTime:v11 completionHandler:retrievalTime];
 
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -81,7 +81,7 @@ void __40__ML3ArtworkTokenSet__faultInBestTokens__block_invoke(uint64_t a1, void
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)artworkTokenForSource:(int64_t)a3
+- (id)artworkTokenForSource:(int64_t)source
 {
   if (!self->_faultedInTokens)
   {
@@ -89,7 +89,7 @@ void __40__ML3ArtworkTokenSet__faultInBestTokens__block_invoke(uint64_t a1, void
   }
 
   artworkSourceToTokenMap = self->_artworkSourceToTokenMap;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   v7 = [(NSDictionary *)artworkSourceToTokenMap objectForKeyedSubscript:v6];
 
   return v7;
@@ -129,13 +129,13 @@ void __40__ML3ArtworkTokenSet__faultInBestTokens__block_invoke(uint64_t a1, void
   return availableArtworkToken;
 }
 
-- (ML3ArtworkTokenSet)initWithEntity:(id)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5
+- (ML3ArtworkTokenSet)initWithEntity:(id)entity artworkType:(int64_t)type artworkVariantType:(int64_t)variantType
 {
-  v10 = a3;
-  if (!v10)
+  entityCopy = entity;
+  if (!entityCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"ML3ArtworkTokenSet.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"entity != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3ArtworkTokenSet.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"entity != nil"}];
   }
 
   v15.receiver = self;
@@ -144,9 +144,9 @@ void __40__ML3ArtworkTokenSet__faultInBestTokens__block_invoke(uint64_t a1, void
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_entity, a3);
-    v12->_artworkType = a4;
-    v12->_artworkVariantType = a5;
+    objc_storeStrong(&v11->_entity, entity);
+    v12->_artworkType = type;
+    v12->_artworkVariantType = variantType;
   }
 
   return v12;

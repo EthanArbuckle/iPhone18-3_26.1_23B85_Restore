@@ -14,17 +14,17 @@
   {
     v8.receiver = self;
     v8.super_class = _TVRatingViewCellAccessibility;
-    v6 = [(_TVRatingViewCellAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(_TVRatingViewCellAccessibility *)&v8 accessibilityLabel];
   }
 
   else
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = accessibilityLocalizedString(@"star.rating");
-    v6 = [v4 stringWithFormat:v5, v3];
+    accessibilityLabel = [v4 stringWithFormat:v5, v3];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (_NSRange)accessibilityRowRange

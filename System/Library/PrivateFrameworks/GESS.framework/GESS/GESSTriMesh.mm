@@ -1,18 +1,18 @@
 @interface GESSTriMesh
-- (BOOL)getFaceGroupIDs:(unsigned __int16 *)a3 size:(unint64_t)a4;
-- (BOOL)getFaceVertexNormalIndices:(unsigned int *)a3 size:(unint64_t)a4;
-- (BOOL)getFaceVertexUVIndices:(unsigned int *)a3 size:(unint64_t)a4;
-- (BOOL)getFaces:(unsigned int *)a3 size:(unint64_t)a4;
-- (BOOL)getGroupIDToMaterialNameDict:(id)a3;
-- (BOOL)getMaterial:(id)a3;
-- (BOOL)getPositions:(float *)a3 size:(unint64_t)a4;
-- (BOOL)getUVs:(float *)a3 size:(unint64_t)a4;
-- (BOOL)getVertexColors:(float *)a3 size:(unint64_t)a4;
-- (BOOL)getVertexNormals:(float *)a3 size:(unint64_t)a4;
-- (BOOL)setFaceCrossField:(float *)a3 size:(unint64_t)a4;
+- (BOOL)getFaceGroupIDs:(unsigned __int16 *)ds size:(unint64_t)size;
+- (BOOL)getFaceVertexNormalIndices:(unsigned int *)indices size:(unint64_t)size;
+- (BOOL)getFaceVertexUVIndices:(unsigned int *)indices size:(unint64_t)size;
+- (BOOL)getFaces:(unsigned int *)faces size:(unint64_t)size;
+- (BOOL)getGroupIDToMaterialNameDict:(id)dict;
+- (BOOL)getMaterial:(id)material;
+- (BOOL)getPositions:(float *)positions size:(unint64_t)size;
+- (BOOL)getUVs:(float *)vs size:(unint64_t)size;
+- (BOOL)getVertexColors:(float *)colors size:(unint64_t)size;
+- (BOOL)getVertexNormals:(float *)normals size:(unint64_t)size;
+- (BOOL)setFaceCrossField:(float *)field size:(unint64_t)size;
 - (GESSTriMesh)init;
 - (void)meshImpl;
-- (void)setMeshImpl:(const void *)a3;
+- (void)setMeshImpl:(const void *)impl;
 @end
 
 @implementation GESSTriMesh
@@ -38,10 +38,10 @@
   return [(GESSPolyMesh *)&v3 meshImpl];
 }
 
-- (void)setMeshImpl:(const void *)a3
+- (void)setMeshImpl:(const void *)impl
 {
-  v3 = *(a3 + 1);
-  v5 = *a3;
+  v3 = *(impl + 1);
+  v5 = *impl;
   v6 = v3;
   if (v3)
   {
@@ -57,143 +57,143 @@
   }
 }
 
-- (BOOL)getPositions:(float *)a3 size:(unint64_t)a4
+- (BOOL)getPositions:(float *)positions size:(unint64_t)size
 {
-  v7 = objc_msgSend_vertexSize(self, a2, a3, a4);
-  if (3 * v7 != a4)
+  v7 = objc_msgSend_vertexSize(self, a2, positions, size);
+  if (3 * v7 != size)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 12 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, positions, 12 * v8, 0);
   PositionData = objc_msgSend_getPositionData_(self, v12, v11, v13);
 
   return PositionData;
 }
 
-- (BOOL)getFaces:(unsigned int *)a3 size:(unint64_t)a4
+- (BOOL)getFaces:(unsigned int *)faces size:(unint64_t)size
 {
-  v7 = objc_msgSend_faceSize(self, a2, a3, a4);
-  if (3 * v7 != a4)
+  v7 = objc_msgSend_faceSize(self, a2, faces, size);
+  if (3 * v7 != size)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 12 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, faces, 12 * v8, 0);
   FaceData = objc_msgSend_getFaceData_(self, v12, v11, v13);
 
   return FaceData;
 }
 
-- (BOOL)getUVs:(float *)a3 size:(unint64_t)a4
+- (BOOL)getUVs:(float *)vs size:(unint64_t)size
 {
-  v7 = objc_msgSend_uvSize(self, a2, a3, a4);
-  if (a4 != 2 * v7)
+  v7 = objc_msgSend_uvSize(self, a2, vs, size);
+  if (size != 2 * v7)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 8 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, vs, 8 * v8, 0);
   UVData = objc_msgSend_getUVData_(self, v12, v11, v13);
 
   return UVData;
 }
 
-- (BOOL)getFaceVertexUVIndices:(unsigned int *)a3 size:(unint64_t)a4
+- (BOOL)getFaceVertexUVIndices:(unsigned int *)indices size:(unint64_t)size
 {
-  v7 = objc_msgSend_faceSize(self, a2, a3, a4);
-  if (3 * v7 != a4)
+  v7 = objc_msgSend_faceSize(self, a2, indices, size);
+  if (3 * v7 != size)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 12 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, indices, 12 * v8, 0);
   FaceVertexUVIndexData = objc_msgSend_getFaceVertexUVIndexData_(self, v12, v11, v13);
 
   return FaceVertexUVIndexData;
 }
 
-- (BOOL)getVertexNormals:(float *)a3 size:(unint64_t)a4
+- (BOOL)getVertexNormals:(float *)normals size:(unint64_t)size
 {
-  v7 = objc_msgSend_vertexNormalSize(self, a2, a3, a4);
-  if (3 * v7 != a4)
+  v7 = objc_msgSend_vertexNormalSize(self, a2, normals, size);
+  if (3 * v7 != size)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 12 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, normals, 12 * v8, 0);
   VertexNormalData = objc_msgSend_getVertexNormalData_(self, v12, v11, v13);
 
   return VertexNormalData;
 }
 
-- (BOOL)getFaceVertexNormalIndices:(unsigned int *)a3 size:(unint64_t)a4
+- (BOOL)getFaceVertexNormalIndices:(unsigned int *)indices size:(unint64_t)size
 {
-  v7 = objc_msgSend_faceSize(self, a2, a3, a4);
-  if (3 * v7 != a4)
+  v7 = objc_msgSend_faceSize(self, a2, indices, size);
+  if (3 * v7 != size)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 12 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, indices, 12 * v8, 0);
   FaceVertexNormalIndexData = objc_msgSend_getFaceVertexNormalIndexData_(self, v12, v11, v13);
 
   return FaceVertexNormalIndexData;
 }
 
-- (BOOL)getVertexColors:(float *)a3 size:(unint64_t)a4
+- (BOOL)getVertexColors:(float *)colors size:(unint64_t)size
 {
-  v7 = objc_msgSend_vertexSize(self, a2, a3, a4);
-  if (3 * v7 != a4)
+  v7 = objc_msgSend_vertexSize(self, a2, colors, size);
+  if (3 * v7 != size)
   {
     return 0;
   }
 
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, a3, 12 * v8, 0);
+  v11 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v9, v10, colors, 12 * v8, 0);
   VertexColorData = objc_msgSend_getVertexColorData_(self, v12, v11, v13);
 
   return VertexColorData;
 }
 
-- (BOOL)getFaceGroupIDs:(unsigned __int16 *)a3 size:(unint64_t)a4
+- (BOOL)getFaceGroupIDs:(unsigned __int16 *)ds size:(unint64_t)size
 {
-  if (objc_msgSend_faceSize(self, a2, a3, a4) != a4)
+  if (objc_msgSend_faceSize(self, a2, ds, size) != size)
   {
     return 0;
   }
 
   v7 = objc_alloc(MEMORY[0x277CBEA90]);
-  v9 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v7, v8, a3, 2 * a4, 0);
+  v9 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v7, v8, ds, 2 * size, 0);
   FaceGroupIDData = objc_msgSend_getFaceGroupIDData_(self, v10, v9, v11);
 
   return FaceGroupIDData;
 }
 
-- (BOOL)setFaceCrossField:(float *)a3 size:(unint64_t)a4
+- (BOOL)setFaceCrossField:(float *)field size:(unint64_t)size
 {
-  v4 = a4;
-  v6 = objc_msgSend_meshImpl(self, a2, a3, a4);
+  sizeCopy = size;
+  v6 = objc_msgSend_meshImpl(self, a2, field, size);
 
-  return sub_24BCDB4B8(v6, a3, v4);
+  return sub_24BCDB4B8(v6, field, sizeCopy);
 }
 
-- (BOOL)getGroupIDToMaterialNameDict:(id)a3
+- (BOOL)getGroupIDToMaterialNameDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) != 0 && (objc_msgSend_meshType(self, v8, v9, v10) == 1 || objc_msgSend_meshType(self, v11, v12, v13) == 11))
   {
     v14 = objc_msgSend_meshImpl(self, v11, v12, v13);
@@ -224,7 +224,7 @@
       sub_24BC9EC78(v18);
     }
 
-    sub_24BE759D8(*(v19 + 40), v4);
+    sub_24BE759D8(*(v19 + 40), dictCopy);
   }
 
   else
@@ -237,9 +237,9 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)getMaterial:(id)a3
+- (BOOL)getMaterial:(id)material
 {
-  v4 = a3;
+  materialCopy = material;
   if ((objc_msgSend_valid(self, v5, v6, v7) & 1) == 0 || objc_msgSend_meshType(self, v8, v9, v10) != 1 && objc_msgSend_meshType(self, v11, v12, v13) != 11)
   {
     goto LABEL_6;
@@ -262,9 +262,9 @@ LABEL_6:
     LOBYTE(v15) = sub_24BE752F4(v15, v17, v18, v19);
     if (v15)
     {
-      objc_msgSend_setSubMaterialNameToIndex_(v4, v20, v17, v21);
-      objc_msgSend_setSubMaterials_(v4, v22, v18, v23);
-      objc_msgSend_setMaterialParameterData_(v4, v24, v19, v25);
+      objc_msgSend_setSubMaterialNameToIndex_(materialCopy, v20, v17, v21);
+      objc_msgSend_setSubMaterials_(materialCopy, v22, v18, v23);
+      objc_msgSend_setMaterialParameterData_(materialCopy, v24, v19, v25);
     }
   }
 

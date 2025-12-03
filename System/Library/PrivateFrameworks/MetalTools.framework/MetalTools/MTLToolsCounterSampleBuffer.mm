@@ -1,6 +1,6 @@
 @interface MTLToolsCounterSampleBuffer
 - (NSString)label;
-- (id)resolveCounterRange:(_NSRange)a3;
+- (id)resolveCounterRange:(_NSRange)range;
 - (unint64_t)sampleCount;
 @end
 
@@ -8,25 +8,25 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (unint64_t)sampleCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 sampleCount];
+  return [baseObject sampleCount];
 }
 
-- (id)resolveCounterRange:(_NSRange)a3
+- (id)resolveCounterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v5 resolveCounterRange:{location, length}];
+  return [baseObject resolveCounterRange:{location, length}];
 }
 
 @end

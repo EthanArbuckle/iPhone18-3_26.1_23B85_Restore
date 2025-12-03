@@ -1,11 +1,11 @@
 @interface CUFindMyLocateMeDevice
 - (CUFindMyLocateMeDevice)init;
-- (CUFindMyLocateMeDevice)initWithFindMyIdentifier:(id)a3 idsID:(id)a4 isThisDevice:(BOOL)a5 name:(id)a6;
+- (CUFindMyLocateMeDevice)initWithFindMyIdentifier:(id)identifier idsID:(id)d isThisDevice:(BOOL)device name:(id)name;
 @end
 
 @implementation CUFindMyLocateMeDevice
 
-- (CUFindMyLocateMeDevice)initWithFindMyIdentifier:(id)a3 idsID:(id)a4 isThisDevice:(BOOL)a5 name:(id)a6
+- (CUFindMyLocateMeDevice)initWithFindMyIdentifier:(id)identifier idsID:(id)d isThisDevice:(BOOL)device name:(id)name
 {
   v8 = sub_247C12C40();
   v10 = v9;
@@ -18,7 +18,7 @@
   v16 = (self + OBJC_IVAR___CUFindMyLocateMeDevice_idsID);
   *v16 = v11;
   v16[1] = v13;
-  *(self + OBJC_IVAR___CUFindMyLocateMeDevice_isThisDevice) = a5;
+  *(self + OBJC_IVAR___CUFindMyLocateMeDevice_isThisDevice) = device;
   v17 = (self + OBJC_IVAR___CUFindMyLocateMeDevice_name);
   *v17 = v14;
   v17[1] = v18;

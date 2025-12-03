@@ -1,35 +1,35 @@
 @interface UIKeyboardPathEffectView
 - ($01BB1521EC52D44A8E7628F5261DCEC8)_currentThemeSettings;
-- (UIKeyboardPathEffectView)initWithFrame:(CGRect)a3;
+- (UIKeyboardPathEffectView)initWithFrame:(CGRect)frame;
 - (id)_currentPath;
 - (id)_pushNewPath;
 - (int64_t)keyboardAppearance;
-- (void)_addDrawingPoint:(CGPoint)a3 force:(double)a4 sentinel:(BOOL)a5;
+- (void)_addDrawingPoint:(CGPoint)point force:(double)force sentinel:(BOOL)sentinel;
 - (void)_clearPointInterpolators;
-- (void)_displayLinkFired:(id)a3;
-- (void)addPoint:(CGPoint)a3 force:(double)a4 timestamp:(double)a5;
+- (void)_displayLinkFired:(id)fired;
+- (void)addPoint:(CGPoint)point force:(double)force timestamp:(double)timestamp;
 - (void)buildOut;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)reset;
 @end
 
 @implementation UIKeyboardPathEffectView
 
-- (UIKeyboardPathEffectView)initWithFrame:(CGRect)a3
+- (UIKeyboardPathEffectView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = UIKeyboardPathEffectView;
-  v3 = [(UIView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setUserInteractionEnabled:0];
-    v5 = [(UIView *)v4 layer];
-    [v5 setAllowsHitTesting:0];
+    layer = [(UIView *)v4 layer];
+    [layer setAllowsHitTesting:0];
 
-    v6 = [(UIView *)v4 layer];
-    [v6 setDrawsAsynchronously:1];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setDrawsAsynchronously:1];
 
     v7 = +[UIColor clearColor];
     [(UIView *)v4 setBackgroundColor:v7];
@@ -50,8 +50,8 @@
     v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
     [(UIKeyboardPathEffectView *)v4 setPointDecayQueue:v11];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v4 selector:sel_accessibilityValueChanged_ name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_accessibilityValueChanged_ name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -103,14 +103,14 @@ void __42__UIKeyboardPathEffectView_initWithFrame___block_invoke(uint64_t a1, vo
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
+  pointDecayDisplayLink = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
 
-  if (v3)
+  if (pointDecayDisplayLink)
   {
-    v4 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
-    v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    pointDecayDisplayLink2 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
     v6 = *MEMORY[0x1E695DA28];
-    [v4 removeFromRunLoop:v5 forMode:*MEMORY[0x1E695DA28]];
+    [pointDecayDisplayLink2 removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   else
@@ -118,41 +118,41 @@ void __42__UIKeyboardPathEffectView_initWithFrame___block_invoke(uint64_t a1, vo
     v6 = *MEMORY[0x1E695DA28];
   }
 
-  v7 = [(UIView *)self window];
-  v8 = [v7 screen];
-  v9 = [v8 displayLinkWithTarget:self selector:sel__displayLinkFired_];
+  window = [(UIView *)self window];
+  screen = [window screen];
+  v9 = [screen displayLinkWithTarget:self selector:sel__displayLinkFired_];
   [(UIKeyboardPathEffectView *)self setPointDecayDisplayLink:v9];
 
-  v10 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
-  [v10 setPaused:1];
+  pointDecayDisplayLink3 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
+  [pointDecayDisplayLink3 setPaused:1];
 
-  v12 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
-  v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v12 addToRunLoop:v11 forMode:v6];
+  pointDecayDisplayLink4 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
+  mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [pointDecayDisplayLink4 addToRunLoop:mainRunLoop2 forMode:v6];
 }
 
 - (id)_pushNewPath
 {
   v3 = objc_alloc_init(_PointQueue);
-  v4 = [(UIKeyboardPathEffectView *)self paths];
-  [v4 addObject:v3];
+  paths = [(UIKeyboardPathEffectView *)self paths];
+  [paths addObject:v3];
 
   return v3;
 }
 
 - (id)_currentPath
 {
-  v2 = [(UIKeyboardPathEffectView *)self paths];
-  v3 = [v2 lastObject];
+  paths = [(UIKeyboardPathEffectView *)self paths];
+  lastObject = [paths lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardPathEffectView *)self paths];
-  v4 = [v3 count];
+  paths = [(UIKeyboardPathEffectView *)self paths];
+  v4 = [paths count];
 
   if (v4 && (v4 != 1 || (-[UIKeyboardPathEffectView _currentPath](self, "_currentPath"), v5 = objc_claimAutoreleasedReturnValue(), [v5 nonSentinelPoints], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, v7)))
   {
@@ -177,24 +177,24 @@ void __42__UIKeyboardPathEffectView_initWithFrame___block_invoke(uint64_t a1, vo
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
-          v13 = [v12 nonSentinelPoints];
-          v14 = [v13 count];
+          nonSentinelPoints = [v12 nonSentinelPoints];
+          v14 = [nonSentinelPoints count];
 
           if (v14)
           {
-            v15 = [v12 effectiveStartIndexBasedOnLength];
+            effectiveStartIndexBasedOnLength = [v12 effectiveStartIndexBasedOnLength];
             Current = CFAbsoluteTimeGetCurrent();
-            v17 = [MEMORY[0x1E696AD50] indexSet];
-            v18 = [v12 nonSentinelPoints];
-            v19 = [v18 count];
+            indexSet = [MEMORY[0x1E696AD50] indexSet];
+            nonSentinelPoints2 = [v12 nonSentinelPoints];
+            v19 = [nonSentinelPoints2 count];
 
-            v20 = v15;
-            if (v15 < v19)
+            v20 = effectiveStartIndexBasedOnLength;
+            if (effectiveStartIndexBasedOnLength < v19)
             {
               while (1)
               {
-                v21 = [v12 nonSentinelPoints];
-                v22 = [v21 objectAtIndex:v20];
+                nonSentinelPoints3 = [v12 nonSentinelPoints];
+                v22 = [nonSentinelPoints3 objectAtIndex:v20];
 
                 if (!v22)
                 {
@@ -208,7 +208,7 @@ void __42__UIKeyboardPathEffectView_initWithFrame___block_invoke(uint64_t a1, vo
                   goto LABEL_15;
                 }
 
-                [v17 addIndex:v20];
+                [indexSet addIndex:v20];
 LABEL_16:
 
                 if (v19 == ++v20)
@@ -224,16 +224,16 @@ LABEL_15:
             }
 
 LABEL_17:
-            [v17 addIndexesInRange:{0, v15}];
-            v25 = [v12 nonSentinelPoints];
-            [v25 removeObjectsAtIndexes:v17];
+            [indexSet addIndexesInRange:{0, effectiveStartIndexBasedOnLength}];
+            nonSentinelPoints4 = [v12 nonSentinelPoints];
+            [nonSentinelPoints4 removeObjectsAtIndexes:indexSet];
           }
 
           else
           {
-            v26 = [(UIKeyboardPathEffectView *)self _currentPath];
+            _currentPath = [(UIKeyboardPathEffectView *)self _currentPath];
 
-            if (v12 != v26)
+            if (v12 != _currentPath)
             {
               [v29 addObject:v12];
             }
@@ -246,9 +246,9 @@ LABEL_17:
       while (v9);
     }
 
-    v27 = [(UIKeyboardPathEffectView *)self paths];
-    v28 = [v29 allObjects];
-    [v27 removeObjectsInArray:v28];
+    paths2 = [(UIKeyboardPathEffectView *)self paths];
+    allObjects = [v29 allObjects];
+    [paths2 removeObjectsInArray:allObjects];
 
     [(UIView *)self setNeedsDisplay];
   }
@@ -260,71 +260,71 @@ LABEL_17:
   }
 }
 
-- (void)_addDrawingPoint:(CGPoint)a3 force:(double)a4 sentinel:(BOOL)a5
+- (void)_addDrawingPoint:(CGPoint)point force:(double)force sentinel:(BOOL)sentinel
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  sentinelCopy = sentinel;
+  y = point.y;
+  x = point.x;
   Current = CFAbsoluteTimeGetCurrent();
   if (self->_startTime == 0.0)
   {
     self->_startTime = Current;
   }
 
-  v11 = [(UIKeyboardPathEffectView *)self _currentPath];
-  if (!v11)
+  _currentPath = [(UIKeyboardPathEffectView *)self _currentPath];
+  if (!_currentPath)
   {
-    v11 = [(UIKeyboardPathEffectView *)self _pushNewPath];
+    _currentPath = [(UIKeyboardPathEffectView *)self _pushNewPath];
   }
 
-  v21 = v11;
-  v12 = [v11 nonSentinelPoints];
-  v13 = [v12 lastObject];
+  v21 = _currentPath;
+  nonSentinelPoints = [_currentPath nonSentinelPoints];
+  lastObject = [nonSentinelPoints lastObject];
 
   v14 = objc_alloc_init(_PathPoint);
   [(_PathPoint *)v14 setPoint:x, y];
-  [(_PathPoint *)v14 setForce:a4];
+  [(_PathPoint *)v14 setForce:force];
   [(_PathPoint *)v14 setRelativeTime:Current - self->_startTime];
   [(_PathPoint *)v14 setAbsoluteTime:Current];
-  [(_PathPoint *)v14 setSentinelPoint:v5];
+  [(_PathPoint *)v14 setSentinelPoint:sentinelCopy];
   [(_PathPoint *)v14 setLength:0.0];
-  if (v13 && !v5)
+  if (lastObject && !sentinelCopy)
   {
-    [v13 point];
+    [lastObject point];
     v17 = hypot(x - v15, y - v16);
-    [v13 length];
+    [lastObject length];
     [(_PathPoint *)v14 setLength:v17 + v18];
   }
 
-  if (!v5)
+  if (!sentinelCopy)
   {
-    v19 = [v21 nonSentinelPoints];
-    [v19 addObject:v14];
+    nonSentinelPoints2 = [v21 nonSentinelPoints];
+    [nonSentinelPoints2 addObject:v14];
   }
 
-  v20 = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
-  [v20 setPaused:0];
+  pointDecayDisplayLink = [(UIKeyboardPathEffectView *)self pointDecayDisplayLink];
+  [pointDecayDisplayLink setPaused:0];
 }
 
-- (void)addPoint:(CGPoint)a3 force:(double)a4 timestamp:(double)a5
+- (void)addPoint:(CGPoint)point force:(double)force timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(UIKeyboardPathEffectView *)self pointInterpolator:a3.x];
+  y = point.y;
+  x = point.x;
+  v7 = [(UIKeyboardPathEffectView *)self pointInterpolator:point.x];
   [v7 addPoint:{x, y, 1.0}];
 }
 
 - (void)_clearPointInterpolators
 {
-  v2 = [(UIKeyboardPathEffectView *)self pointInterpolator];
-  [v2 clear];
+  pointInterpolator = [(UIKeyboardPathEffectView *)self pointInterpolator];
+  [pointInterpolator clear];
 }
 
 - (void)buildOut
 {
   self->_done = 1;
   [(UIKeyboardPathEffectView *)self _clearPointInterpolators];
-  v3 = [(UIKeyboardPathEffectView *)self _pushNewPath];
+  _pushNewPath = [(UIKeyboardPathEffectView *)self _pushNewPath];
 }
 
 - (void)reset
@@ -339,10 +339,10 @@ LABEL_17:
 - (int64_t)keyboardAppearance
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 keyboardAppearance];
+  textInputTraits = [v2 textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
-  return v4;
+  return keyboardAppearance;
 }
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)_currentThemeSettings
@@ -383,10 +383,10 @@ LABEL_17:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v48 = *MEMORY[0x1E69E9840];
-  [(UIKeyboardPathEffectView *)self _currentThemeSettings:a3.origin.x];
+  [(UIKeyboardPathEffectView *)self _currentThemeSettings:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -427,28 +427,28 @@ LABEL_17:
         }
 
         v18 = *(*(&v43 + 1) + 8 * v17);
-        v19 = [v18 nonSentinelPoints];
-        v20 = [v19 count];
+        nonSentinelPoints = [v18 nonSentinelPoints];
+        v20 = [nonSentinelPoints count];
 
         if (v20 >= 2)
         {
-          v21 = [v18 effectiveStartIndexBasedOnLength];
-          v22 = [v18 nonSentinelPoints];
-          v23 = [v22 objectAtIndex:v21];
+          effectiveStartIndexBasedOnLength = [v18 effectiveStartIndexBasedOnLength];
+          nonSentinelPoints2 = [v18 nonSentinelPoints];
+          v23 = [nonSentinelPoints2 objectAtIndex:effectiveStartIndexBasedOnLength];
 
           [v23 point];
           v25 = v24;
           [v23 point];
           CGContextMoveToPoint(v13, v25, v26);
-          v27 = v21 + 1;
-          if (v21 + 1 < v20)
+          v27 = effectiveStartIndexBasedOnLength + 1;
+          if (effectiveStartIndexBasedOnLength + 1 < v20)
           {
-            v28 = (v20 - v21);
-            v29 = v21;
+            v28 = (v20 - effectiveStartIndexBasedOnLength);
+            v29 = effectiveStartIndexBasedOnLength;
             do
             {
-              v30 = [v18 nonSentinelPoints];
-              v31 = [v30 objectAtIndex:v27];
+              nonSentinelPoints3 = [v18 nonSentinelPoints];
+              v31 = [nonSentinelPoints3 objectAtIndex:v27];
 
               [v31 decay];
               v33 = 19.7 - (1.0 - (v27 - (v32 * v28 + v29)) / v28) * 19.7;

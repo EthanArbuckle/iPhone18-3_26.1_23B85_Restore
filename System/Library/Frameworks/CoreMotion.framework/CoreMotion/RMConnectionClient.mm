@@ -1,23 +1,23 @@
 @interface RMConnectionClient
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6;
-- (void)endpoint:(id)a3 didReceiveStreamedData:(id)a4;
-- (void)endpointWasInterrupted:(id)a3;
-- (void)endpointWasInvalidated:(id)a3;
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block;
+- (void)endpoint:(id)endpoint didReceiveStreamedData:(id)data;
+- (void)endpointWasInterrupted:(id)interrupted;
+- (void)endpointWasInvalidated:(id)invalidated;
 @end
 
 @implementation RMConnectionClient
 
-- (void)endpointWasInterrupted:(id)a3
+- (void)endpointWasInterrupted:(id)interrupted
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  interruptedCopy = interrupted;
   if (!self)
   {
     goto LABEL_14;
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  for (i = self->_endpoint; i != v8; i = 0)
+  for (i = self->_endpoint; i != interruptedCopy; i = 0)
   {
     v6 = sub_19B60A530();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -71,10 +71,10 @@ LABEL_14:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endpointWasInvalidated:(id)a3
+- (void)endpointWasInvalidated:(id)invalidated
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   if (self)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -87,7 +87,7 @@ LABEL_14:
     endpoint = 0;
   }
 
-  if (endpoint != v4)
+  if (endpoint != invalidatedCopy)
   {
     v14 = sub_19B60A530();
     self = "endpoint == self.endpoint";
@@ -118,8 +118,8 @@ LABEL_14:
       _os_signpost_emit_with_name_impl(&dword_19B41C000, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Received invalidation event for an unmanaged endpoint", "{msg%{public}.0s:Received invalidation event for an unmanaged endpoint, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
-    v4 = sub_19B60A530();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    invalidatedCopy = sub_19B60A530();
+    if (os_log_type_enabled(invalidatedCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
       v18 = 0;
@@ -129,7 +129,7 @@ LABEL_14:
       v22 = "assert";
       v23 = 2081;
       v24 = "endpoint == self.endpoint";
-      _os_log_impl(&dword_19B41C000, v4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Received invalidation event for an unmanaged endpoint, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B41C000, invalidatedCopy, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Received invalidation event for an unmanaged endpoint, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -137,10 +137,10 @@ LABEL_14:
   }
 
   sub_19B60ABA4(self);
-  if (v4)
+  if (invalidatedCopy)
   {
-    objc_storeWeak(&v4[3].isa, 0);
-    objc_storeWeak(&v4[2].isa, 0);
+    objc_storeWeak(&invalidatedCopy[3].isa, 0);
+    objc_storeWeak(&invalidatedCopy[2].isa, 0);
   }
 
   if (self)
@@ -190,9 +190,9 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endpoint:(id)a3 didReceiveStreamedData:(id)a4
+- (void)endpoint:(id)endpoint didReceiveStreamedData:(id)data
 {
-  streamingDataCallback = a4;
+  streamingDataCallback = data;
   v6 = streamingDataCallback;
   if (self)
   {
@@ -208,17 +208,17 @@ LABEL_13:
   MEMORY[0x1EEE66BB8](streamingDataCallback, v6);
 }
 
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
+  messageCopy = message;
+  dataCopy = data;
+  blockCopy = block;
   if (self)
   {
     messageHandler = self->_messageHandler;
     if (messageHandler)
     {
-      messageHandler[2](messageHandler, v12, v9, v10);
+      messageHandler[2](messageHandler, messageCopy, dataCopy, blockCopy);
     }
   }
 }

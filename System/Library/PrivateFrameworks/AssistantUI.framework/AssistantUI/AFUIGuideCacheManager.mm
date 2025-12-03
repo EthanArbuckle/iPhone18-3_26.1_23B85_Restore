@@ -1,19 +1,19 @@
 @interface AFUIGuideCacheManager
 + (id)sharedManager;
 - (AFUIGuideCacheManager)init;
-- (BOOL)_shouldCheckForUpdateAtDate:(id)a3 lastAppUpdateTime:(id)a4;
-- (BOOL)shouldCheckForUpdateWithLastAppUpdateTime:(id)a3;
+- (BOOL)_shouldCheckForUpdateAtDate:(id)date lastAppUpdateTime:(id)time;
+- (BOOL)shouldCheckForUpdateWithLastAppUpdateTime:(id)time;
 - (NSNumber)cachedGuideTag;
 - (SAGuidanceGuideSnippet)cachedGuideSnippet;
 - (SAGuidanceSuggestedUtterances)cachedSuggestedUtterances;
-- (id)_aceObjectDictionaryAtFilepath:(id)a3;
+- (id)_aceObjectDictionaryAtFilepath:(id)filepath;
 - (id)_cachedGuideUpdate;
-- (void)_checkGuideUpdateUsingAFClientLiteWithTag:(id)a3;
+- (void)_checkGuideUpdateUsingAFClientLiteWithTag:(id)tag;
 - (void)_clearCachedGuide;
-- (void)_updateLastCheckedWithDate:(id)a3;
+- (void)_updateLastCheckedWithDate:(id)date;
 - (void)checkGuideUpdate;
 - (void)dealloc;
-- (void)updateCacheWithGuideUpdate:(id)a3 completion:(id)a4;
+- (void)updateCacheWithGuideUpdate:(id)update completion:(id)completion;
 - (void)updateLastCheckedDate;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __38__AFUIGuideCacheManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -72,56 +72,56 @@ uint64_t __38__AFUIGuideCacheManager_sharedManager__block_invoke(uint64_t a1)
 
 - (NSNumber)cachedGuideTag
 {
-  v2 = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
-  v3 = [v2 guideTag];
+  _cachedGuideUpdate = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
+  guideTag = [_cachedGuideUpdate guideTag];
 
-  return v3;
+  return guideTag;
 }
 
 - (SAGuidanceGuideSnippet)cachedGuideSnippet
 {
-  v2 = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
-  v3 = [v2 guideSnippet];
+  _cachedGuideUpdate = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
+  guideSnippet = [_cachedGuideUpdate guideSnippet];
 
-  return v3;
+  return guideSnippet;
 }
 
 - (SAGuidanceSuggestedUtterances)cachedSuggestedUtterances
 {
-  v2 = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
-  v3 = [v2 suggestedUtterances];
+  _cachedGuideUpdate = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
+  suggestedUtterances = [_cachedGuideUpdate suggestedUtterances];
 
-  return v3;
+  return suggestedUtterances;
 }
 
-- (BOOL)shouldCheckForUpdateWithLastAppUpdateTime:(id)a3
+- (BOOL)shouldCheckForUpdateWithLastAppUpdateTime:(id)time
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  LOBYTE(self) = [(AFUIGuideCacheManager *)self _shouldCheckForUpdateAtDate:v6 lastAppUpdateTime:v5];
+  timeCopy = time;
+  date = [v4 date];
+  LOBYTE(self) = [(AFUIGuideCacheManager *)self _shouldCheckForUpdateAtDate:date lastAppUpdateTime:timeCopy];
 
   return self;
 }
 
 - (void)updateLastCheckedDate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(AFUIGuideCacheManager *)self _updateLastCheckedWithDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(AFUIGuideCacheManager *)self _updateLastCheckedWithDate:date];
 }
 
-- (void)updateCacheWithGuideUpdate:(id)a3 completion:(id)a4
+- (void)updateCacheWithGuideUpdate:(id)update completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[AFUIGuideCacheManager updateCacheWithGuideUpdate:completion:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = updateCopy;
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -130,11 +130,11 @@ uint64_t __38__AFUIGuideCacheManager_sharedManager__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __63__AFUIGuideCacheManager_updateCacheWithGuideUpdate_completion___block_invoke;
   block[3] = &unk_278CD6380;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = updateCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = updateCopy;
   dispatch_barrier_async(cacheFileQueue, block);
 }
 
@@ -226,18 +226,18 @@ void __63__AFUIGuideCacheManager_updateCacheWithGuideUpdate_completion___block_i
     _os_log_impl(&dword_241432000, v3, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v4 = [(AFUIGuideCacheManager *)self _pathForCachedGuideUpdate];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  _pathForCachedGuideUpdate = [(AFUIGuideCacheManager *)self _pathForCachedGuideUpdate];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   cacheFileQueue = self->_cacheFileQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__AFUIGuideCacheManager__clearCachedGuide__block_invoke;
   block[3] = &unk_278CD5A80;
-  v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
-  v8 = v5;
+  v10 = defaultManager;
+  v11 = _pathForCachedGuideUpdate;
+  selfCopy = self;
+  v7 = _pathForCachedGuideUpdate;
+  v8 = defaultManager;
   dispatch_barrier_async(cacheFileQueue, block);
 }
 
@@ -287,16 +287,16 @@ void __42__AFUIGuideCacheManager__clearCachedGuide__block_invoke(void *a1)
   }
 }
 
-- (void)_checkGuideUpdateUsingAFClientLiteWithTag:(id)a3
+- (void)_checkGuideUpdateUsingAFClientLiteWithTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   if (!self->_isCheckingGuideUpdate)
   {
     self->_isCheckingGuideUpdate = 1;
     v5 = objc_alloc_init(MEMORY[0x277D47318]);
-    [v5 setCurrentGuideTag:v4];
-    v6 = [MEMORY[0x277D47318] afui_guideCheckSupportedFeatures];
-    [v5 setSupportedFeatures:v6];
+    [v5 setCurrentGuideTag:tagCopy];
+    afui_guideCheckSupportedFeatures = [MEMORY[0x277D47318] afui_guideCheckSupportedFeatures];
+    [v5 setSupportedFeatures:afui_guideCheckSupportedFeatures];
 
     v7 = objc_alloc_init(MEMORY[0x277CEF1D8]);
     objc_initWeak(&location, self);
@@ -413,37 +413,37 @@ LABEL_9:
 
 - (void)checkGuideUpdate
 {
-  v3 = [(AFUIGuideCacheManager *)self cachedGuideTag];
-  [(AFUIGuideCacheManager *)self _checkGuideUpdateUsingAFClientLiteWithTag:v3];
+  cachedGuideTag = [(AFUIGuideCacheManager *)self cachedGuideTag];
+  [(AFUIGuideCacheManager *)self _checkGuideUpdateUsingAFClientLiteWithTag:cachedGuideTag];
 }
 
-- (BOOL)_shouldCheckForUpdateAtDate:(id)a3 lastAppUpdateTime:(id)a4
+- (BOOL)_shouldCheckForUpdateAtDate:(id)date lastAppUpdateTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  timeCopy = time;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v8 = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
-  v9 = [v8 languageCode];
+  _cachedGuideUpdate = [(AFUIGuideCacheManager *)self _cachedGuideUpdate];
+  languageCode = [_cachedGuideUpdate languageCode];
 
-  if (v9 && (AFUIGetLanguageCode(), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isEqualToString:v10], v10, (v11 & 1) != 0))
+  if (languageCode && (AFUIGetLanguageCode(), v10 = objc_claimAutoreleasedReturnValue(), v11 = [languageCode isEqualToString:v10], v10, (v11 & 1) != 0))
   {
-    v12 = [(AFUIGuideCacheManager *)self _pathForCachedGuideUpdate];
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
+    _pathForCachedGuideUpdate = [(AFUIGuideCacheManager *)self _pathForCachedGuideUpdate];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     cacheFileQueue = self->_cacheFileQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__AFUIGuideCacheManager__shouldCheckForUpdateAtDate_lastAppUpdateTime___block_invoke;
     block[3] = &unk_278CD63F0;
-    v20 = v13;
-    v21 = v12;
-    v22 = v7;
+    v20 = defaultManager;
+    v21 = _pathForCachedGuideUpdate;
+    v22 = timeCopy;
     v24 = &v25;
-    v23 = v6;
-    v15 = v12;
-    v16 = v13;
+    v23 = dateCopy;
+    v15 = _pathForCachedGuideUpdate;
+    v16 = defaultManager;
     dispatch_sync(cacheFileQueue, block);
 
     v17 = *(v26 + 24);
@@ -514,22 +514,22 @@ void __71__AFUIGuideCacheManager__shouldCheckForUpdateAtDate_lastAppUpdateTime__
   }
 }
 
-- (void)_updateLastCheckedWithDate:(id)a3
+- (void)_updateLastCheckedWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(AFUIGuideCacheManager *)self _pathForCachedGuideUpdate];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  dateCopy = date;
+  _pathForCachedGuideUpdate = [(AFUIGuideCacheManager *)self _pathForCachedGuideUpdate];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   cacheFileQueue = self->_cacheFileQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__AFUIGuideCacheManager__updateLastCheckedWithDate___block_invoke;
   block[3] = &unk_278CD5A80;
-  v12 = v4;
-  v13 = v6;
-  v14 = v5;
-  v8 = v5;
-  v9 = v6;
-  v10 = v4;
+  v12 = dateCopy;
+  v13 = defaultManager;
+  v14 = _pathForCachedGuideUpdate;
+  v8 = _pathForCachedGuideUpdate;
+  v9 = defaultManager;
+  v10 = dateCopy;
   dispatch_barrier_async(cacheFileQueue, block);
 }
 
@@ -656,11 +656,11 @@ void __43__AFUIGuideCacheManager__cachedGuideUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_aceObjectDictionaryAtFilepath:(id)a3
+- (id)_aceObjectDictionaryAtFilepath:(id)filepath
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+  filepathCopy = filepath;
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:filepathCopy];
   if (v4)
   {
     v10 = 0;
@@ -680,7 +680,7 @@ void __43__AFUIGuideCacheManager__cachedGuideUpdate__block_invoke(uint64_t a1)
         *buf = 136315650;
         v12 = "[AFUIGuideCacheManager _aceObjectDictionaryAtFilepath:]";
         v13 = 2112;
-        v14 = v3;
+        v14 = filepathCopy;
         v15 = 2112;
         v16 = v6;
         _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s Can't load aceObject dictionary at: %@, %@", buf, 0x20u);

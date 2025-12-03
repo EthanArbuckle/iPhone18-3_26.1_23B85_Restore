@@ -6,16 +6,16 @@
 
 - (BOOL)isUserInteractingWithScrubber
 {
-  v3 = [(QLVideoScrubberViewAccessibility *)self accessibilityIdentification];
-  if (![v3 isEqualToString:@"MediaScrubber"])
+  accessibilityIdentification = [(QLVideoScrubberViewAccessibility *)self accessibilityIdentification];
+  if (![accessibilityIdentification isEqualToString:@"MediaScrubber"])
   {
 
     goto LABEL_7;
   }
 
-  v4 = [(QLVideoScrubberViewAccessibility *)self _axIsScrubbering];
+  _axIsScrubbering = [(QLVideoScrubberViewAccessibility *)self _axIsScrubbering];
 
-  if (!v4)
+  if (!_axIsScrubbering)
   {
 LABEL_7:
     v6.receiver = self;

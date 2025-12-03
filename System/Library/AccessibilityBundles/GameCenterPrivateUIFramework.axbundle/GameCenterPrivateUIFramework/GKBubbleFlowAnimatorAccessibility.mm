@@ -1,16 +1,16 @@
 @interface GKBubbleFlowAnimatorAccessibility
-- (void)_finishTransitionWithInfo:(id)a3;
+- (void)_finishTransitionWithInfo:(id)info;
 @end
 
 @implementation GKBubbleFlowAnimatorAccessibility
 
-- (void)_finishTransitionWithInfo:(id)a3
+- (void)_finishTransitionWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = GKBubbleFlowAnimatorAccessibility;
-  v3 = a3;
-  [(GKBubbleFlowAnimatorAccessibility *)&v5 _finishTransitionWithInfo:v3];
-  v4 = [v3 safeBoolForKey:{@"animated", v5.receiver, v5.super_class}];
+  infoCopy = info;
+  [(GKBubbleFlowAnimatorAccessibility *)&v5 _finishTransitionWithInfo:infoCopy];
+  v4 = [infoCopy safeBoolForKey:{@"animated", v5.receiver, v5.super_class}];
 
   if (v4)
   {

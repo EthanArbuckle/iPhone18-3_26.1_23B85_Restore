@@ -6,10 +6,10 @@
 
 - (VSJSAlert)init
 {
-  v3 = [MEMORY[0x277D1B028] currentAppContext];
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
   v9.receiver = self;
   v9.super_class = VSJSAlert;
-  v4 = [(IKJSObject *)&v9 initWithAppContext:v3];
+  v4 = [(IKJSObject *)&v9 initWithAppContext:currentAppContext];
 
   if (v4)
   {

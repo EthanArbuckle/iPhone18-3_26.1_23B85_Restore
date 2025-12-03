@@ -1,18 +1,18 @@
 @interface SUSUIUserDefaultsBasedTestSession
 + (id)current;
-- (Class)strategyClassForServiceType:(int64_t)a3;
+- (Class)strategyClassForServiceType:(int64_t)type;
 - (NSString)correlationId;
 - (SUSUIUserDefaultsBasedTestSession)init;
-- (SUSUIUserDefaultsBasedTestSession)initWithStoredSession:(id)a3;
-- (id)strategyForServiceType:(int64_t)a3;
+- (SUSUIUserDefaultsBasedTestSession)initWithStoredSession:(id)session;
+- (id)strategyForServiceType:(int64_t)type;
 - (int64_t)currentExecutionResult;
 - (int64_t)currentPhase;
 - (void)dealloc;
-- (void)handleChangedPhase:(int64_t)a3;
+- (void)handleChangedPhase:(int64_t)phase;
 - (void)handlePhaseConfigurationSealed;
 - (void)handlePhaseFinished;
 - (void)handlePhaseRunning;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SUSUIUserDefaultsBasedTestSession
@@ -20,7 +20,7 @@
 - (SUSUIUserDefaultsBasedTestSession)init
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = _SUSUIInternalLoggingFacility();
   v7 = 16;
@@ -28,100 +28,100 @@
   {
     log = v8[0];
     type = v7;
-    v5 = [v9 correlationId];
-    v6 = MEMORY[0x277D82BE0](v5);
+    correlationId = [selfCopy correlationId];
+    v6 = MEMORY[0x277D82BE0](correlationId);
     __os_log_helper_16_2_1_8_64(v10, v6);
     _os_log_error_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] [SUSUIUserDefaultsBasedTestSession init] shouldn't be invoked directly.", v10, 0xCu);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](correlationId);
     objc_storeStrong(&v6, 0);
   }
 
   objc_storeStrong(v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (SUSUIUserDefaultsBasedTestSession)initWithStoredSession:(id)a3
+- (SUSUIUserDefaultsBasedTestSession)initWithStoredSession:(id)session
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v20;
-  v20 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v18.receiver = v3;
   v18.super_class = SUSUIUserDefaultsBasedTestSession;
   v17 = [(SUSUIUserDefaultsBasedTestSession *)&v18 init];
-  v20 = v17;
-  objc_storeStrong(&v20, v17);
+  selfCopy = v17;
+  objc_storeStrong(&selfCopy, v17);
   if (v17)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    services = v20->_services;
-    v20->_services = v4;
+    services = selfCopy->_services;
+    selfCopy->_services = v4;
     MEMORY[0x277D82BD8](services);
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    servicesClasses = v20->_servicesClasses;
-    v20->_servicesClasses = v6;
+    servicesClasses = selfCopy->_servicesClasses;
+    selfCopy->_servicesClasses = v6;
     MEMORY[0x277D82BD8](servicesClasses);
-    objc_storeStrong(&v20->_session, location[0]);
-    if ([(SUSUIUserDefaultsBasedTestSession *)v20 currentPhase]> 2)
+    objc_storeStrong(&selfCopy->_session, location[0]);
+    if ([(SUSUIUserDefaultsBasedTestSession *)selfCopy currentPhase]> 2)
     {
-      v16 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-      v15 = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
-      [v16 setObject:&unk_287B85570 forKey:?];
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+      uIUnitTestingCurrentPhase = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
+      [softwareUpdateShared setObject:&unk_287B85570 forKey:?];
+      MEMORY[0x277D82BD8](uIUnitTestingCurrentPhase);
+      MEMORY[0x277D82BD8](softwareUpdateShared);
     }
 
     v10 = objc_alloc(MEMORY[0x277CBEBD0]);
-    v14 = [getSUSUIUserDefaultsKeysClass() SoftwareUpdateSettingsSuiteName];
+    softwareUpdateSettingsSuiteName = [getSUSUIUserDefaultsKeysClass() SoftwareUpdateSettingsSuiteName];
     v13 = [v10 initWithSuiteName:?];
-    v11 = v20;
-    v12 = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
+    v11 = selfCopy;
+    uIUnitTestingCurrentPhase2 = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
     [v13 addObserver:v11 forKeyPath:? options:? context:?];
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](uIUnitTestingCurrentPhase2);
     MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](softwareUpdateSettingsSuiteName);
   }
 
-  v9 = MEMORY[0x277D82BE0](v20);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v3 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-  v2 = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
-  [v3 removeObserver:v6 forKeyPath:?];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
-  v4.receiver = v6;
+  softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+  uIUnitTestingCurrentPhase = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
+  [softwareUpdateShared removeObserver:selfCopy forKeyPath:?];
+  MEMORY[0x277D82BD8](uIUnitTestingCurrentPhase);
+  MEMORY[0x277D82BD8](softwareUpdateShared);
+  v4.receiver = selfCopy;
   v4.super_class = SUSUIUserDefaultsBasedTestSession;
   [(SUSUIUserDefaultsBasedTestSession *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, object);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v26 = a6;
+  objc_storeStrong(&v27, change);
+  contextCopy = context;
   v15 = location[0];
-  v16 = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
+  uIUnitTestingCurrentPhase = [getSUSUIUserDefaultsKeysClass() UIUnitTestingCurrentPhase];
   v17 = [v15 isEqualToString:?];
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](uIUnitTestingCurrentPhase);
   if (v17)
   {
     v25 = [v27 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
@@ -129,14 +129,14 @@
     v11 = 1;
     if (v25)
     {
-      v24 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v23 = 1;
       v11 = [v25 isEqual:?];
     }
 
     if (v23)
     {
-      MEMORY[0x277D82BD8](v24);
+      MEMORY[0x277D82BD8](null);
     }
 
     if (v11)
@@ -147,14 +147,14 @@
       {
         log = v22;
         type = v21;
-        v10 = [(SUSUIUserDefaultsBasedTestSession *)v30 correlationId];
-        v6 = MEMORY[0x277D82BE0](v10);
+        correlationId = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+        v6 = MEMORY[0x277D82BE0](correlationId);
         v20 = v6;
         v9 = [v27 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
         __os_log_helper_16_2_2_8_64_8_64(v31, v6, v9);
         _os_log_error_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] Failed to decode the changed phase into an NSNumber. Got: %@", v31, 0x16u);
         MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](correlationId);
         objc_storeStrong(&v20, 0);
       }
 
@@ -164,7 +164,7 @@
 
     else
     {
-      -[SUSUIUserDefaultsBasedTestSession handleChangedPhase:](v30, "handleChangedPhase:", [v25 integerValue]);
+      -[SUSUIUserDefaultsBasedTestSession handleChangedPhase:](selfCopy, "handleChangedPhase:", [v25 integerValue]);
       v19 = 1;
     }
 
@@ -173,9 +173,9 @@
 
   else
   {
-    v18.receiver = v30;
+    v18.receiver = selfCopy;
     v18.super_class = SUSUIUserDefaultsBasedTestSession;
-    [(SUSUIUserDefaultsBasedTestSession *)&v18 observeValueForKeyPath:location[0] ofObject:v28 change:v27 context:v26];
+    [(SUSUIUserDefaultsBasedTestSession *)&v18 observeValueForKeyPath:location[0] ofObject:v28 change:v27 context:contextCopy];
     v19 = 0;
   }
 
@@ -185,20 +185,20 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (id)strategyForServiceType:(int64_t)a3
+- (id)strategyForServiceType:(int64_t)type
 {
   services = self->_services;
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:type];
   v6 = [(NSMutableDictionary *)services objectForKey:?];
   MEMORY[0x277D82BD8](v5);
 
   return v6;
 }
 
-- (Class)strategyClassForServiceType:(int64_t)a3
+- (Class)strategyClassForServiceType:(int64_t)type
 {
   servicesClasses = self->_servicesClasses;
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:type];
   v6 = [(NSMutableDictionary *)servicesClasses objectForKey:?];
   MEMORY[0x277D82BD8](v5);
 
@@ -207,10 +207,10 @@
 
 - (int64_t)currentExecutionResult
 {
-  v3 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-  v4 = [v3 unitTestingCurrentTestResult];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+  unitTestingCurrentTestResult = [softwareUpdateShared unitTestingCurrentTestResult];
+  MEMORY[0x277D82BD8](softwareUpdateShared);
+  return unitTestingCurrentTestResult;
 }
 
 - (NSString)correlationId
@@ -218,9 +218,9 @@
   v4 = 0;
   if (self->_session)
   {
-    v5 = [(SUSMKUserDefaultsCodedTestCaseSession *)self->_session correlationId];
+    correlationId = [(SUSMKUserDefaultsCodedTestCaseSession *)self->_session correlationId];
     v4 = 1;
-    v2 = MEMORY[0x277D82BE0](v5);
+    v2 = MEMORY[0x277D82BE0](correlationId);
   }
 
   else
@@ -231,7 +231,7 @@
   v6 = v2;
   if (v4)
   {
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](correlationId);
   }
 
   return v6;
@@ -239,66 +239,66 @@
 
 - (int64_t)currentPhase
 {
-  v3 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-  v4 = [v3 unitTestingCurrentPhase];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+  unitTestingCurrentPhase = [softwareUpdateShared unitTestingCurrentPhase];
+  MEMORY[0x277D82BD8](softwareUpdateShared);
+  return unitTestingCurrentPhase;
 }
 
 + (id)current
 {
   v3 = +[SUSUITestAutomationManager sharedManager];
-  v4 = [v3 currentSession];
+  currentSession = [v3 currentSession];
   MEMORY[0x277D82BD8](v3);
 
-  return v4;
+  return currentSession;
 }
 
-- (void)handleChangedPhase:(int64_t)a3
+- (void)handleChangedPhase:(int64_t)phase
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  phaseCopy = phase;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     log = v13;
     type = v12;
-    v9 = [(SUSUIUserDefaultsBasedTestSession *)v16 correlationId];
-    v5 = MEMORY[0x277D82BE0](v9);
+    correlationId = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+    v5 = MEMORY[0x277D82BE0](correlationId);
     v11 = v5;
-    v8 = [getSUSMKTestCaseSessionPhaseUtilityClass() descriptionForPhase:v14];
+    v8 = [getSUSMKTestCaseSessionPhaseUtilityClass() descriptionForPhase:phaseCopy];
     v10 = MEMORY[0x277D82BE0](v8);
     __os_log_helper_16_2_2_8_64_8_64(v17, v5, v10);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] Changed XCUI testing session phase into: %@", v17, 0x16u);
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
     objc_storeStrong(&v10, 0);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  switch(v14)
+  switch(phaseCopy)
   {
     case 2:
-      [(SUSUIUserDefaultsBasedTestSession *)v16 handlePhaseConfigurationSealed];
-      [(SUSUIUserDefaultsBasedTestSession *)v16 handlePhaseRunning];
+      [(SUSUIUserDefaultsBasedTestSession *)selfCopy handlePhaseConfigurationSealed];
+      [(SUSUIUserDefaultsBasedTestSession *)selfCopy handlePhaseRunning];
       break;
     case 3:
-      v3 = [MEMORY[0x277D64AE0] sharedDefaults];
-      v4 = [v3 shouldKeepPreviousMockingKitSession];
-      MEMORY[0x277D82BD8](v3);
-      if (v4)
+      mEMORY[0x277D64AE0] = [MEMORY[0x277D64AE0] sharedDefaults];
+      shouldKeepPreviousMockingKitSession = [mEMORY[0x277D64AE0] shouldKeepPreviousMockingKitSession];
+      MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]);
+      if (shouldKeepPreviousMockingKitSession)
       {
-        [(SUSUIUserDefaultsBasedTestSession *)v16 handlePhaseConfigurationSealed];
+        [(SUSUIUserDefaultsBasedTestSession *)selfCopy handlePhaseConfigurationSealed];
       }
 
-      [(SUSUIUserDefaultsBasedTestSession *)v16 handlePhaseRunning];
+      [(SUSUIUserDefaultsBasedTestSession *)selfCopy handlePhaseRunning];
       break;
     case 4:
-      [(SUSUIUserDefaultsBasedTestSession *)v16 handlePhaseFinished];
+      [(SUSUIUserDefaultsBasedTestSession *)selfCopy handlePhaseFinished];
       break;
   }
 
@@ -308,14 +308,14 @@
 - (void)handlePhaseConfigurationSealed
 {
   v113 = *MEMORY[0x277D85DE8];
-  v105 = self;
+  selfCopy = self;
   v104[1] = a2;
   v104[0] = [getSUSMKMockedServiceTypeUtilityClass() allOptionClasses];
-  v67 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-  v103 = [v67 unitTestingRegisteredServicesDictionary];
-  MEMORY[0x277D82BD8](v67);
+  softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+  unitTestingRegisteredServicesDictionary = [softwareUpdateShared unitTestingRegisteredServicesDictionary];
+  MEMORY[0x277D82BD8](softwareUpdateShared);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v103);
+  obj = MEMORY[0x277D82BE0](unitTestingRegisteredServicesDictionary);
   v69 = [obj countByEnumeratingWithState:__b objects:v112 count:16];
   if (v69)
   {
@@ -339,7 +339,7 @@
       [v58 addObject:objc_opt_class()];
       v60 = MEMORY[0x277CCAAC8];
       v59 = v99;
-      v62 = [v103 objectForKeyedSubscript:v102];
+      v62 = [unitTestingRegisteredServicesDictionary objectForKeyedSubscript:v102];
       v97 = v100;
       v61 = [v60 unarchivedObjectOfClasses:v59 fromData:? error:?];
       objc_storeStrong(&v100, v97);
@@ -348,14 +348,14 @@
       if (v98 && !v100)
       {
         SUSMKMockedServiceTypeUtilityClass = getSUSMKMockedServiceTypeUtilityClass();
-        v51 = [v98 mockedStrategyClassName];
-        v52 = [SUSMKMockedServiceTypeUtilityClass acceptibleStrategyClassName:v51 forType:{objc_msgSend(v98, "mockedService")}];
-        MEMORY[0x277D82BD8](v51);
+        mockedStrategyClassName = [v98 mockedStrategyClassName];
+        v52 = [SUSMKMockedServiceTypeUtilityClass acceptibleStrategyClassName:mockedStrategyClassName forType:{objc_msgSend(v98, "mockedService")}];
+        MEMORY[0x277D82BD8](mockedStrategyClassName);
         if (v52)
         {
-          v42 = [v98 mockedStrategyClassName];
-          v86 = NSClassFromString(v42);
-          MEMORY[0x277D82BD8](v42);
+          mockedStrategyClassName2 = [v98 mockedStrategyClassName];
+          v86 = NSClassFromString(mockedStrategyClassName2);
+          MEMORY[0x277D82BD8](mockedStrategyClassName2);
           if (!v86)
           {
             v85 = _SUSUIInternalLoggingFacility();
@@ -364,19 +364,19 @@
             {
               v37 = v85;
               v38 = v84;
-              v41 = [(SUSUIUserDefaultsBasedTestSession *)v105 correlationId];
-              v35 = MEMORY[0x277D82BE0](v41);
+              correlationId = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+              v35 = MEMORY[0x277D82BE0](correlationId);
               v83 = v35;
-              v40 = [v98 mockedStrategyClassName];
-              v36 = MEMORY[0x277D82BE0](v40);
+              mockedStrategyClassName3 = [v98 mockedStrategyClassName];
+              v36 = MEMORY[0x277D82BE0](mockedStrategyClassName3);
               v82 = v36;
               v39 = [getSUSMKMockedServiceTypeUtilityClass() descriptionForType:{objc_msgSend(v102, "integerValue")}];
               v81 = MEMORY[0x277D82BE0](v39);
               __os_log_helper_16_2_3_8_64_8_64_8_64(v109, v35, v36, v81);
               _os_log_error_impl(&dword_26AC94000, v37, v38, "[XCUI correlationId: %@] Could not fetch an NSClass instance from the class name string: '%@' for type: '%@'", v109, 0x20u);
               MEMORY[0x277D82BD8](v39);
-              MEMORY[0x277D82BD8](v40);
-              MEMORY[0x277D82BD8](v41);
+              MEMORY[0x277D82BD8](mockedStrategyClassName3);
+              MEMORY[0x277D82BD8](correlationId);
               objc_storeStrong(&v81, 0);
               objc_storeStrong(&v82, 0);
               objc_storeStrong(&v83, 0);
@@ -386,17 +386,17 @@
           }
 
           v27 = [v86 alloc];
-          v26 = v105;
-          v28 = [v98 mockedStrategyOptions];
+          v26 = selfCopy;
+          mockedStrategyOptions = [v98 mockedStrategyOptions];
           v80 = [v27 initForSession:v26 usingOptions:?];
-          MEMORY[0x277D82BD8](v28);
+          MEMORY[0x277D82BD8](mockedStrategyOptions);
           v29 = v80;
-          services = v105->_services;
+          services = selfCopy->_services;
           v31 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v98, "mockedService")}];
           [(NSMutableDictionary *)services setObject:v29 forKeyedSubscript:?];
           MEMORY[0x277D82BD8](v31);
           v32 = v86;
-          servicesClasses = v105->_servicesClasses;
+          servicesClasses = selfCopy->_servicesClasses;
           v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v98, "mockedService")}];
           [(NSMutableDictionary *)servicesClasses setObject:v32 forKeyedSubscript:?];
           MEMORY[0x277D82BD8](v34);
@@ -406,8 +406,8 @@
           {
             v22 = v79;
             v23 = v78;
-            v25 = [(SUSUIUserDefaultsBasedTestSession *)v105 correlationId];
-            v20 = MEMORY[0x277D82BE0](v25);
+            correlationId2 = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+            v20 = MEMORY[0x277D82BE0](correlationId2);
             v77 = v20;
             v21 = v86;
             v24 = [getSUSMKMockedServiceTypeUtilityClass() descriptionForType:{objc_msgSend(v98, "mockedService")}];
@@ -415,7 +415,7 @@
             __os_log_helper_16_2_3_8_64_8_64_8_64(v108, v20, v21, v76);
             _os_log_impl(&dword_26AC94000, v22, v23, "[XCUI correlationId: %@] Creating mocked service class: %@ for service '%@'", v108, 0x20u);
             MEMORY[0x277D82BD8](v24);
-            MEMORY[0x277D82BD8](v25);
+            MEMORY[0x277D82BD8](correlationId2);
             objc_storeStrong(&v76, 0);
             objc_storeStrong(&v77, 0);
           }
@@ -433,19 +433,19 @@
           {
             v45 = v91;
             v46 = v90;
-            v49 = [(SUSUIUserDefaultsBasedTestSession *)v105 correlationId];
-            v43 = MEMORY[0x277D82BE0](v49);
+            correlationId3 = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+            v43 = MEMORY[0x277D82BE0](correlationId3);
             v89 = v43;
-            v48 = [v98 mockedStrategyClassName];
-            v44 = MEMORY[0x277D82BE0](v48);
+            mockedStrategyClassName4 = [v98 mockedStrategyClassName];
+            v44 = MEMORY[0x277D82BE0](mockedStrategyClassName4);
             v88 = v44;
             v47 = [getSUSMKMockedServiceTypeUtilityClass() descriptionForType:{objc_msgSend(v98, "mockedService")}];
             v87 = MEMORY[0x277D82BE0](v47);
             __os_log_helper_16_2_3_8_64_8_64_8_64(v110, v43, v44, v87);
             _os_log_error_impl(&dword_26AC94000, v45, v46, "[XCUI correlationId: %@] The supplied strategy class name '%@' for type '%@' is not acceptible. Each strategy must be manually registered in the Service Type class.", v110, 0x20u);
             MEMORY[0x277D82BD8](v47);
-            MEMORY[0x277D82BD8](v48);
-            MEMORY[0x277D82BD8](v49);
+            MEMORY[0x277D82BD8](mockedStrategyClassName4);
+            MEMORY[0x277D82BD8](correlationId3);
             objc_storeStrong(&v87, 0);
             objc_storeStrong(&v88, 0);
             objc_storeStrong(&v89, 0);
@@ -464,15 +464,15 @@
         {
           log = oslog;
           v55 = type;
-          v57 = [(SUSUIUserDefaultsBasedTestSession *)v105 correlationId];
-          v53 = MEMORY[0x277D82BE0](v57);
+          correlationId4 = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+          v53 = MEMORY[0x277D82BE0](correlationId4);
           v94 = v53;
           v56 = [getSUSMKMockedServiceTypeUtilityClass() descriptionForType:{objc_msgSend(v102, "integerValue")}];
           v93 = MEMORY[0x277D82BE0](v56);
           __os_log_helper_16_2_3_8_64_8_64_8_64(v111, v53, v93, v100);
           _os_log_error_impl(&dword_26AC94000, log, v55, "[XCUI correlationId: %@] Could not instantiate SUSMKUserDefaultsCodedMockedStrategy for type: '%@'.\nError: %@", v111, 0x20u);
           MEMORY[0x277D82BD8](v56);
-          MEMORY[0x277D82BD8](v57);
+          MEMORY[0x277D82BD8](correlationId4);
           objc_storeStrong(&v93, 0);
           objc_storeStrong(&v94, 0);
         }
@@ -499,8 +499,8 @@
 
   MEMORY[0x277D82BD8](obj);
   memset(v74, 0, sizeof(v74));
-  v18 = [getSUSMKMockedServiceTypeUtilityClass() allCases];
-  v19 = [v18 countByEnumeratingWithState:v74 objects:v107 count:16];
+  allCases = [getSUSMKMockedServiceTypeUtilityClass() allCases];
+  v19 = [allCases countByEnumeratingWithState:v74 objects:v107 count:16];
   if (v19)
   {
     v15 = *v74[2];
@@ -511,11 +511,11 @@
       v14 = v16;
       if (*v74[2] != v15)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(allCases);
       }
 
       v75 = *(v74[1] + 8 * v16);
-      v13 = [(NSMutableDictionary *)v105->_services objectForKeyedSubscript:v75];
+      v13 = [(NSMutableDictionary *)selfCopy->_services objectForKeyedSubscript:v75];
       MEMORY[0x277D82BD8](v13);
       if (v13)
       {
@@ -525,34 +525,34 @@
         {
           v9 = v73;
           v10 = v72;
-          v12 = [(SUSUIUserDefaultsBasedTestSession *)v105 correlationId];
-          v8 = MEMORY[0x277D82BE0](v12);
+          correlationId5 = [(SUSUIUserDefaultsBasedTestSession *)selfCopy correlationId];
+          v8 = MEMORY[0x277D82BE0](correlationId5);
           v71 = v8;
           v11 = [getSUSMKMockedServiceTypeUtilityClass() descriptionForType:{objc_msgSend(v75, "integerValue")}];
           v70 = MEMORY[0x277D82BE0](v11);
           __os_log_helper_16_2_2_8_64_8_64(v106, v8, v70);
           _os_log_impl(&dword_26AC94000, v9, v10, "[XCUI correlationId: %@] Registering the default implementation for service type: %@", v106, 0x16u);
           MEMORY[0x277D82BD8](v11);
-          MEMORY[0x277D82BD8](v12);
+          MEMORY[0x277D82BD8](correlationId5);
           objc_storeStrong(&v70, 0);
           objc_storeStrong(&v71, 0);
         }
 
         objc_storeStrong(&v73, 0);
         v6 = getSUSMKMockedServiceTypeUtilityClass();
-        v3 = [v75 integerValue];
-        v7 = [v6 instantiateDefaultStrategyHandlerForType:v3 withSession:v105];
+        integerValue = [v75 integerValue];
+        v7 = [v6 instantiateDefaultStrategyHandlerForType:integerValue withSession:selfCopy];
         [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
         MEMORY[0x277D82BD8](v7);
         v4 = [getSUSMKMockedServiceTypeUtilityClass() defaultStrategyClassHandlerForType:{objc_msgSend(v75, "integerValue")}];
-        [(NSMutableDictionary *)v105->_servicesClasses setObject:v4 forKeyedSubscript:v75];
+        [(NSMutableDictionary *)selfCopy->_servicesClasses setObject:v4 forKeyedSubscript:v75];
       }
 
       ++v16;
       if (v14 + 1 >= v17)
       {
         v16 = 0;
-        v17 = [v18 countByEnumeratingWithState:v74 objects:v107 count:16];
+        v17 = [allCases countByEnumeratingWithState:v74 objects:v107 count:16];
         if (!v17)
         {
           break;
@@ -561,25 +561,25 @@
     }
   }
 
-  MEMORY[0x277D82BD8](v18);
-  v5 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-  [v5 setUnitTestingCurrentPhase:3];
-  MEMORY[0x277D82BD8](v5);
-  objc_storeStrong(&v103, 0);
+  MEMORY[0x277D82BD8](allCases);
+  softwareUpdateShared2 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+  [softwareUpdateShared2 setUnitTestingCurrentPhase:3];
+  MEMORY[0x277D82BD8](softwareUpdateShared2);
+  objc_storeStrong(&unitTestingRegisteredServicesDictionary, 0);
   objc_storeStrong(v104, 0);
   *MEMORY[0x277D85DE8];
 }
 
 - (void)handlePhaseRunning
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
-  v6 = [MEMORY[0x277D64AE0] sharedDefaults];
-  v7 = [v6 shouldKeepPreviousMockingKitSession];
-  MEMORY[0x277D82BD8](v6);
-  if ((v7 & 1) != 0 && ![(NSMutableDictionary *)v14->_services count])
+  mEMORY[0x277D64AE0] = [MEMORY[0x277D64AE0] sharedDefaults];
+  shouldKeepPreviousMockingKitSession = [mEMORY[0x277D64AE0] shouldKeepPreviousMockingKitSession];
+  MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]);
+  if ((shouldKeepPreviousMockingKitSession & 1) != 0 && ![(NSMutableDictionary *)selfCopy->_services count])
   {
-    [(SUSUIUserDefaultsBasedTestSession *)v14 handlePhaseConfigurationSealed];
+    [(SUSUIUserDefaultsBasedTestSession *)selfCopy handlePhaseConfigurationSealed];
   }
 
   when = dispatch_time(0, 100000000);
@@ -591,7 +591,7 @@
   v10 = 0;
   v11 = __55__SUSUIUserDefaultsBasedTestSession_handlePhaseRunning__block_invoke;
   v12 = &unk_279CB93E8;
-  v13[0] = MEMORY[0x277D82BE0](v14);
+  v13[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_after(when, queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v13, 0);
@@ -662,7 +662,7 @@ uint64_t __55__SUSUIUserDefaultsBasedTestSession_handlePhaseRunning__block_invok
 
 - (void)handlePhaseFinished
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   when = dispatch_time(0, 100000000);
   v3 = MEMORY[0x277D85CD0];
@@ -673,7 +673,7 @@ uint64_t __55__SUSUIUserDefaultsBasedTestSession_handlePhaseRunning__block_invok
   v8 = 0;
   v9 = __56__SUSUIUserDefaultsBasedTestSession_handlePhaseFinished__block_invoke;
   v10 = &unk_279CB93E8;
-  v11[0] = MEMORY[0x277D82BE0](v12);
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_after(when, queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);

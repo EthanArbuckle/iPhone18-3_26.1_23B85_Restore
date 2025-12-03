@@ -1,10 +1,10 @@
 @interface _LSPersonaWithAttributes
-- (BOOL)isEqual:(id)a3;
-- (_LSPersonaWithAttributes)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LSPersonaWithAttributes)initWithCoder:(id)coder;
 - (uint64_t)personaType;
 - (uint64_t)personaUniqueString;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithPersonaType:(void *)a3 personaUniqueString:;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithPersonaType:(void *)type personaUniqueString:;
 @end
 
 @implementation _LSPersonaWithAttributes
@@ -29,59 +29,59 @@
   return result;
 }
 
-- (void)initWithPersonaType:(void *)a3 personaUniqueString:
+- (void)initWithPersonaType:(void *)type personaUniqueString:
 {
-  v5 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = _LSPersonaWithAttributes;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v9, sel_init);
+    if (self)
     {
-      v6 = [v5 copy];
-      v7 = a1[1];
-      a1[1] = v6;
+      v6 = [typeCopy copy];
+      v7 = self[1];
+      self[1] = v6;
 
-      a1[2] = a2;
+      self[2] = a2;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (_LSPersonaWithAttributes)initWithCoder:(id)a3
+- (_LSPersonaWithAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _LSPersonaWithAttributes;
   v5 = [(_LSPersonaWithAttributes *)&v9 init];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
     personaUniqueString = v5->_personaUniqueString;
     v5->_personaUniqueString = v6;
 
-    v5->_personaType = [v4 decodeIntegerForKey:@"personaType"];
+    v5->_personaType = [coderCopy decodeIntegerForKey:@"personaType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_personaUniqueString forKey:@"personaUniqueString"];
-  [v4 encodeInteger:self->_personaType forKey:@"personaType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_personaUniqueString forKey:@"personaUniqueString"];
+  [coderCopy encodeInteger:self->_personaType forKey:@"personaType"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v4[2] == self->_personaType)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy[2] == self->_personaType)
   {
-    v5 = [v4[1] isEqualToString:self->_personaUniqueString];
+    v5 = [equalCopy[1] isEqualToString:self->_personaUniqueString];
   }
 
   else

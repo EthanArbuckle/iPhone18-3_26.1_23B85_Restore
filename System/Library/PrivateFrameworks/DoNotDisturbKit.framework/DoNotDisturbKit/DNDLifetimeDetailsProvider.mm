@@ -1,13 +1,13 @@
 @interface DNDLifetimeDetailsProvider
 - (DNDLifetimeDetailsProvider)init;
 - (DNDLifetimeDetailsProviderDelegate)delegate;
-- (id)_eventStoreQueue_eventForCalendarEventLifetime:(id)a3;
-- (id)_lifetimeDetailsUntilEveningOrMorningForDate:(id)a3;
+- (id)_eventStoreQueue_eventForCalendarEventLifetime:(id)lifetime;
+- (id)_lifetimeDetailsUntilEveningOrMorningForDate:(id)date;
 - (id)_nextRefreshTimerFireDate;
-- (id)lifetimeDetailsForAssertionDetails:(id)a3 error:(id *)a4;
-- (id)lifetimeForLifetimeDetails:(id)a3 error:(id *)a4;
+- (id)lifetimeDetailsForAssertionDetails:(id)details error:(id *)error;
+- (id)lifetimeForLifetimeDetails:(id)details error:(id *)error;
 - (void)_eventStoreQueue_requestRelevantEvent;
-- (void)_queue_gotPlaceInferences:(id)a3;
+- (void)_queue_gotPlaceInferences:(id)inferences;
 - (void)_queue_rebuildAvailableLifetimeDetails;
 - (void)_queue_requestLifetimeDetails;
 - (void)_queue_resetLifetimeDetails;
@@ -16,7 +16,7 @@
 - (void)_scheduleRefreshTimerIfNeeded;
 - (void)_systemTimeChanged;
 - (void)dealloc;
-- (void)lifetimeDetailsWithMetadataForAssertionDetails:(id)a3 completionHandler:(id)a4;
+- (void)lifetimeDetailsWithMetadataForAssertionDetails:(id)details completionHandler:(id)handler;
 - (void)requestLifetimeDetails;
 - (void)resetLifetimeDetails;
 - (void)startUpdatingLifetimeDetails;
@@ -66,8 +66,8 @@
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v13, DNDHandleSignificantTimeChange, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v13 selector:sel__systemTimeChanged name:*MEMORY[0x277CBE778] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__systemTimeChanged name:*MEMORY[0x277CBE778] object:0];
   }
 
   return v2;
@@ -88,8 +88,8 @@ void __34__DNDLifetimeDetailsProvider_init__block_invoke(uint64_t a1)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CBE778] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE778] object:0];
 
   [(NSTimer *)self->_refreshTimer invalidate];
   refreshTimer = self->_refreshTimer;
@@ -163,38 +163,38 @@ void __52__DNDLifetimeDetailsProvider_requestLifetimeDetails__block_invoke_2(uin
   }
 }
 
-- (id)lifetimeForLifetimeDetails:(id)a3 error:(id *)a4
+- (id)lifetimeForLifetimeDetails:(id)details error:(id *)error
 {
-  v5 = a3;
+  detailsCopy = details;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy_;
   v26 = __Block_byref_object_dispose_;
   v27 = 0;
-  v6 = [v5 identifier];
-  if ([v6 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"])
+  identifier = [detailsCopy identifier];
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"])
   {
-    v7 = [MEMORY[0x277D05970] lifetimeWithDuration:3600.0];
+    lifetimeWithCurrentLocation = [MEMORY[0x277D05970] lifetimeWithDuration:3600.0];
 LABEL_3:
     v8 = v23[5];
-    v23[5] = v7;
+    v23[5] = lifetimeWithCurrentLocation;
 
     goto LABEL_15;
   }
 
-  if (([v6 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.donotdisturb.kit.lifetime.morning"))
+  if (([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"com.apple.donotdisturb.kit.lifetime.morning"))
   {
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
     v21 = 0;
-    [v9 getHour:&v21 minute:0 second:0 nanosecond:0 fromDate:v10];
+    [currentCalendar getHour:&v21 minute:0 second:0 nanosecond:0 fromDate:date];
     if (v21 >= 4)
     {
       if (v21 > 0x11)
       {
-        v13 = [v9 dateBySettingHour:7 minute:0 second:0 ofDate:v10 options:1];
-        v12 = [v9 dateByAddingUnit:16 value:1 toDate:v13 options:0];
+        v13 = [currentCalendar dateBySettingHour:7 minute:0 second:0 ofDate:date options:1];
+        v12 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v13 options:0];
 
         goto LABEL_14;
       }
@@ -207,9 +207,9 @@ LABEL_3:
       v11 = 7;
     }
 
-    v12 = [v9 dateBySettingHour:v11 minute:0 second:0 ofDate:v10 options:1];
+    v12 = [currentCalendar dateBySettingHour:v11 minute:0 second:0 ofDate:date options:1];
 LABEL_14:
-    v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v10 endDate:v12];
+    v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:date endDate:v12];
     v15 = [MEMORY[0x277D05970] lifetimeWithDateInterval:v14];
     v16 = v23[5];
     v23[5] = v15;
@@ -217,13 +217,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.location"])
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.location"])
   {
-    v7 = [MEMORY[0x277D05970] lifetimeWithCurrentLocation];
+    lifetimeWithCurrentLocation = [MEMORY[0x277D05970] lifetimeWithCurrentLocation];
     goto LABEL_3;
   }
 
-  if ([v6 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.event"])
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.event"])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -260,10 +260,10 @@ void __63__DNDLifetimeDetailsProvider_lifetimeForLifetimeDetails_error___block_i
   }
 }
 
-- (id)lifetimeDetailsForAssertionDetails:(id)a3 error:(id *)a4
+- (id)lifetimeDetailsForAssertionDetails:(id)details error:(id *)error
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"])
+  identifier = [details identifier];
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"])
   {
     v5 = +[DNDLifetimeDetails lifetimeDetailsForOneHour];
 LABEL_9:
@@ -271,28 +271,28 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"])
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"])
   {
     v5 = +[DNDLifetimeDetails lifetimeDetailsUntilEvening];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.morning"])
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.morning"])
   {
     v5 = +[DNDLifetimeDetails lifetimeDetailsUntilMorning];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.location"])
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.location"])
   {
     v5 = [DNDLifetimeDetails lifetimeDetailsForPlaceInference:0];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.event"])
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.event"])
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v6 = [DNDLifetimeDetails lifetimeDetailsForEvent:0 relativeToDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [DNDLifetimeDetails lifetimeDetailsForEvent:0 relativeToDate:date];
   }
 
   else
@@ -305,24 +305,24 @@ LABEL_10:
   return v6;
 }
 
-- (void)lifetimeDetailsWithMetadataForAssertionDetails:(id)a3 completionHandler:(id)a4
+- (void)lifetimeDetailsWithMetadataForAssertionDetails:(id)details completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  if ([v8 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"])
+  detailsCopy = details;
+  handlerCopy = handler;
+  identifier = [detailsCopy identifier];
+  if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"])
   {
     v9 = +[DNDLifetimeDetails lifetimeDetailsForOneHour];
   }
 
-  else if ([v8 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"])
+  else if ([identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"])
   {
     v9 = +[DNDLifetimeDetails lifetimeDetailsUntilEvening];
   }
 
   else
   {
-    if (![v8 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.morning"])
+    if (![identifier isEqualToString:@"com.apple.donotdisturb.kit.lifetime.morning"])
     {
       goto LABEL_9;
     }
@@ -333,29 +333,29 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
 
     goto LABEL_13;
   }
 
 LABEL_9:
-  v11 = [v6 lifetime];
-  v12 = [v11 lifetimeType];
+  lifetime = [detailsCopy lifetime];
+  lifetimeType = [lifetime lifetimeType];
 
-  if (v12 == 3)
+  if (lifetimeType == 3)
   {
     v13 = [DNDLifetimeDetails lifetimeDetailsForPlaceInference:self->_currentPlaceInference];
-    v7[2](v7, v13, 0);
+    handlerCopy[2](handlerCopy, v13, 0);
   }
 
   else
   {
-    v14 = [v6 lifetime];
-    v15 = [v14 lifetimeType];
+    lifetime2 = [detailsCopy lifetime];
+    lifetimeType2 = [lifetime2 lifetimeType];
 
-    if (v15 == 1)
+    if (lifetimeType2 == 1)
     {
-      v16 = [v6 lifetime];
+      lifetime3 = [detailsCopy lifetime];
       objc_initWeak(&location, self);
       eventStoreQueue = self->_eventStoreQueue;
       v19[0] = MEMORY[0x277D85DD0];
@@ -363,9 +363,9 @@ LABEL_9:
       v19[2] = __95__DNDLifetimeDetailsProvider_lifetimeDetailsWithMetadataForAssertionDetails_completionHandler___block_invoke;
       v19[3] = &unk_278F88678;
       objc_copyWeak(&v22, &location);
-      v20 = v16;
-      v21 = v7;
-      v18 = v16;
+      v20 = lifetime3;
+      v21 = handlerCopy;
+      v18 = lifetime3;
       dispatch_async(eventStoreQueue, v19);
 
       objc_destroyWeak(&v22);
@@ -403,37 +403,37 @@ uint64_t __95__DNDLifetimeDetailsProvider_lifetimeDetailsWithMetadataForAssertio
 - (void)_queue_rebuildAvailableLifetimeDetails
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = +[DNDLifetimeDetails lifetimeDetailsForOneHour];
-  [v4 addObject:v5];
+  [array addObject:v5];
 
-  v6 = [(DNDLifetimeDetailsProvider *)self _lifetimeDetailsUntilEveningOrMorningForDate:v3];
-  [v4 addObject:v6];
+  v6 = [(DNDLifetimeDetailsProvider *)self _lifetimeDetailsUntilEveningOrMorningForDate:date];
+  [array addObject:v6];
 
   v7 = MEMORY[0x277CBFC10];
-  v8 = [MEMORY[0x277CCA8D8] dnd_locationBundle];
-  v9 = [v8 bundlePath];
-  LODWORD(v7) = [v7 authorizationStatusForBundlePath:v9];
+  dnd_locationBundle = [MEMORY[0x277CCA8D8] dnd_locationBundle];
+  bundlePath = [dnd_locationBundle bundlePath];
+  LODWORD(v7) = [v7 authorizationStatusForBundlePath:bundlePath];
 
   if (v7 == 3)
   {
     v10 = [DNDLifetimeDetails lifetimeDetailsForPlaceInference:self->_currentPlaceInference];
-    [v4 addObject:v10];
+    [array addObject:v10];
   }
 
   relevantEvent = self->_relevantEvent;
   if (relevantEvent)
   {
-    v12 = [DNDLifetimeDetails lifetimeDetailsForEvent:relevantEvent relativeToDate:v3];
-    [v4 addObject:v12];
+    v12 = [DNDLifetimeDetails lifetimeDetailsForEvent:relevantEvent relativeToDate:date];
+    [array addObject:v12];
   }
 
-  v13 = [v4 copy];
+  v13 = [array copy];
   if (![(NSArray *)self->_availableLifetimeDetails isEqualToArray:v13])
   {
     objc_storeStrong(&self->_availableLifetimeDetails, v13);
-    v14 = [(DNDLifetimeDetailsProvider *)self delegate];
+    delegate = [(DNDLifetimeDetailsProvider *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       calloutQueue = self->_calloutQueue;
@@ -441,21 +441,21 @@ uint64_t __95__DNDLifetimeDetailsProvider_lifetimeDetailsWithMetadataForAssertio
       block[1] = 3221225472;
       block[2] = __68__DNDLifetimeDetailsProvider__queue_rebuildAvailableLifetimeDetails__block_invoke;
       block[3] = &unk_278F886A0;
-      v17 = v14;
-      v18 = self;
+      v17 = delegate;
+      selfCopy = self;
       v19 = v13;
       dispatch_async(calloutQueue, block);
     }
   }
 }
 
-- (id)_lifetimeDetailsUntilEveningOrMorningForDate:(id)a3
+- (id)_lifetimeDetailsUntilEveningOrMorningForDate:(id)date
 {
   v8 = 0;
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  [v5 getHour:&v8 minute:0 second:0 nanosecond:0 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  [currentCalendar getHour:&v8 minute:0 second:0 nanosecond:0 fromDate:dateCopy];
 
   if ((v8 - 4) > 0xD)
   {
@@ -498,14 +498,14 @@ void __62__DNDLifetimeDetailsProvider__requestRelevantLocationMetadata__block_in
   [*(a1 + 32) _queue_gotPlaceInferences:v5];
 }
 
-- (void)_queue_gotPlaceInferences:(id)a3
+- (void)_queue_gotPlaceInferences:(id)inferences
 {
   queue = self->_queue;
-  v5 = a3;
+  inferencesCopy = inferences;
   dispatch_assert_queue_V2(queue);
-  v6 = [v5 firstObject];
+  firstObject = [inferencesCopy firstObject];
 
-  v7 = [v6 copy];
+  v7 = [firstObject copy];
   currentPlaceInference = self->_currentPlaceInference;
   self->_currentPlaceInference = v7;
 
@@ -535,14 +535,14 @@ void __62__DNDLifetimeDetailsProvider__requestRelevantLocationMetadata__block_in
 {
   v34 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_eventStoreQueue);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:900.0];
-  v25 = [(EKCalendarVisibilityManager *)self->_calendarVisibilityManager visibleCalendars];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:900.0];
+  visibleCalendars = [(EKCalendarVisibilityManager *)self->_calendarVisibilityManager visibleCalendars];
   v26 = v4;
-  v24 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v3 endDate:v4 calendars:?];
+  v24 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:date endDate:v4 calendars:?];
   v23 = [(EKEventStore *)self->_eventStore eventsMatchingPredicate:?];
   v5 = [v23 bs_filter:&__block_literal_global_30];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -563,18 +563,18 @@ void __62__DNDLifetimeDetailsProvider__requestRelevantLocationMetadata__block_in
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        [v13 timeIntervalSinceDate:v3];
+        startDate = [v12 startDate];
+        [startDate timeIntervalSinceDate:date];
         v15 = fabs(v14);
-        v16 = [v6 startDate];
-        [v16 timeIntervalSinceDate:v3];
+        startDate2 = [firstObject startDate];
+        [startDate2 timeIntervalSinceDate:date];
         v18 = fabs(v17);
 
         if (v15 < v18)
         {
           v19 = v12;
 
-          v6 = v19;
+          firstObject = v19;
         }
       }
 
@@ -590,8 +590,8 @@ void __62__DNDLifetimeDetailsProvider__requestRelevantLocationMetadata__block_in
   block[2] = __67__DNDLifetimeDetailsProvider__eventStoreQueue_requestRelevantEvent__block_invoke_2;
   block[3] = &unk_278F88500;
   block[4] = self;
-  v28 = v6;
-  v21 = v6;
+  v28 = firstObject;
+  v21 = firstObject;
   dispatch_async(queue, block);
 
   v22 = *MEMORY[0x277D85DE8];
@@ -613,13 +613,13 @@ uint64_t __67__DNDLifetimeDetailsProvider__eventStoreQueue_requestRelevantEvent_
   return [v2 _queue_rebuildAvailableLifetimeDetails];
 }
 
-- (id)_eventStoreQueue_eventForCalendarEventLifetime:(id)a3
+- (id)_eventStoreQueue_eventForCalendarEventLifetime:(id)lifetime
 {
-  v4 = a3;
+  lifetimeCopy = lifetime;
   dispatch_assert_queue_V2(self->_eventStoreQueue);
-  if ([v4 isOnlyDuringEvent])
+  if ([lifetimeCopy isOnlyDuringEvent])
   {
-    [v4 occurrenceDate];
+    [lifetimeCopy occurrenceDate];
   }
 
   else
@@ -628,19 +628,19 @@ uint64_t __67__DNDLifetimeDetailsProvider__eventStoreQueue_requestRelevantEvent_
   }
   v5 = ;
   v6 = [v5 dateByAddingTimeInterval:900.0];
-  v7 = [(EKCalendarVisibilityManager *)self->_calendarVisibilityManager visibleCalendars];
-  v8 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v5 endDate:v6 calendars:v7];
+  visibleCalendars = [(EKCalendarVisibilityManager *)self->_calendarVisibilityManager visibleCalendars];
+  v8 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v5 endDate:v6 calendars:visibleCalendars];
   v9 = [(EKEventStore *)self->_eventStore eventsMatchingPredicate:v8];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__DNDLifetimeDetailsProvider__eventStoreQueue_eventForCalendarEventLifetime___block_invoke;
   v14[3] = &unk_278F88710;
-  v15 = v4;
-  v10 = v4;
+  v15 = lifetimeCopy;
+  v10 = lifetimeCopy;
   v11 = [v9 bs_filter:v14];
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 uint64_t __77__DNDLifetimeDetailsProvider__eventStoreQueue_eventForCalendarEventLifetime___block_invoke(uint64_t a1, void *a2)
@@ -666,15 +666,15 @@ uint64_t __77__DNDLifetimeDetailsProvider__eventStoreQueue_eventForCalendarEvent
 - (void)_queue_scheduleRefreshTimerIfNeeded
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(DNDLifetimeDetailsProvider *)self _nextRefreshTimerFireDate];
+  _nextRefreshTimerFireDate = [(DNDLifetimeDetailsProvider *)self _nextRefreshTimerFireDate];
   refreshTimer = self->_refreshTimer;
   if (!refreshTimer)
   {
     goto LABEL_5;
   }
 
-  v5 = [(NSTimer *)refreshTimer fireDate];
-  v6 = [v5 isEqual:v3];
+  fireDate = [(NSTimer *)refreshTimer fireDate];
+  v6 = [fireDate isEqual:_nextRefreshTimerFireDate];
 
   if ((v6 & 1) == 0)
   {
@@ -693,12 +693,12 @@ LABEL_5:
     v14 = __65__DNDLifetimeDetailsProvider__queue_scheduleRefreshTimerIfNeeded__block_invoke;
     v15 = &unk_278F88738;
     objc_copyWeak(&v16, &location);
-    v9 = [v8 initWithFireDate:v3 interval:0 repeats:&v12 block:0.0];
+    v9 = [v8 initWithFireDate:_nextRefreshTimerFireDate interval:0 repeats:&v12 block:0.0];
     v10 = self->_refreshTimer;
     self->_refreshTimer = v9;
 
-    v11 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v11 addTimer:self->_refreshTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_refreshTimer forMode:*MEMORY[0x277CBE738]];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -723,15 +723,15 @@ void __65__DNDLifetimeDetailsProvider__queue_scheduleRefreshTimerIfNeeded__block
 
 - (id)_nextRefreshTimerFireDate
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
   v8 = 0;
-  [v2 getHour:&v8 minute:0 second:0 nanosecond:0 fromDate:v3];
+  [currentCalendar getHour:&v8 minute:0 second:0 nanosecond:0 fromDate:date];
   if (v8 <= 3)
   {
     v4 = 4;
 LABEL_5:
-    v5 = [v2 dateBySettingHour:v4 minute:0 second:0 ofDate:v3 options:1];
+    v5 = [currentCalendar dateBySettingHour:v4 minute:0 second:0 ofDate:date options:1];
     goto LABEL_7;
   }
 
@@ -741,8 +741,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [v2 dateBySettingHour:4 minute:0 second:0 ofDate:v3 options:1];
-  v5 = [v2 dateByAddingUnit:16 value:1 toDate:v6 options:0];
+  v6 = [currentCalendar dateBySettingHour:4 minute:0 second:0 ofDate:date options:1];
+  v5 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v6 options:0];
 
 LABEL_7:
 

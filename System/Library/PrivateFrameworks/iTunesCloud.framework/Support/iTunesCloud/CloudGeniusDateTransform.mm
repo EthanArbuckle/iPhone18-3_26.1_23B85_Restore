@@ -1,16 +1,16 @@
 @interface CloudGeniusDateTransform
-- (id)geniusValueForMLValue:(id)a3;
+- (id)geniusValueForMLValue:(id)value;
 @end
 
 @implementation CloudGeniusDateTransform
 
-- (id)geniusValueForMLValue:(id)a3
+- (id)geniusValueForMLValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 doubleValue], v4 > 2.22044605e-16))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([valueCopy doubleValue], v4 > 2.22044605e-16))
   {
-    [v3 doubleValue];
+    [valueCopy doubleValue];
     v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   }
 

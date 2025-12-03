@@ -1,17 +1,17 @@
 @interface SPUIFeedbackManager
-+ (void)cardViewDidDisappearWithEvent:(unint64_t)a3 withQueryId:(unint64_t)a4;
-+ (void)didAppearFromSource:(unint64_t)a3 withQueryId:(unint64_t)a4 queryString:(id)a5 deviceIsAuthenticated:(BOOL)a6;
-+ (void)didClearInputWithEvent:(unint64_t)a3 withQueryId:(unint64_t)a4;
-+ (void)didDisappearWithReason:(unint64_t)a3 withQueryId:(unint64_t)a4;
-+ (void)flushFeedbackWithCompletion:(id)a3;
-+ (void)resultsDidFinishWithSections:(id)a3 withQueryString:(id)a4;
++ (void)cardViewDidDisappearWithEvent:(unint64_t)event withQueryId:(unint64_t)id;
++ (void)didAppearFromSource:(unint64_t)source withQueryId:(unint64_t)id queryString:(id)string deviceIsAuthenticated:(BOOL)authenticated;
++ (void)didClearInputWithEvent:(unint64_t)event withQueryId:(unint64_t)id;
++ (void)didDisappearWithReason:(unint64_t)reason withQueryId:(unint64_t)id;
++ (void)flushFeedbackWithCompletion:(id)completion;
++ (void)resultsDidFinishWithSections:(id)sections withQueryString:(id)string;
 @end
 
 @implementation SPUIFeedbackManager
 
-+ (void)didAppearFromSource:(unint64_t)a3 withQueryId:(unint64_t)a4 queryString:(id)a5 deviceIsAuthenticated:(BOOL)a6
++ (void)didAppearFromSource:(unint64_t)source withQueryId:(unint64_t)id queryString:(id)string deviceIsAuthenticated:(BOOL)authenticated
 {
-  v10 = a5;
+  stringCopy = string;
   if (didAppearFromSource_withQueryId_queryString_deviceIsAuthenticated__onceToken != -1)
   {
     +[SPUIFeedbackManager didAppearFromSource:withQueryId:queryString:deviceIsAuthenticated:];
@@ -22,12 +22,12 @@
   block[1] = 3221225472;
   block[2] = __89__SPUIFeedbackManager_didAppearFromSource_withQueryId_queryString_deviceIsAuthenticated___block_invoke_4;
   block[3] = &unk_279D06E98;
-  v14 = v10;
-  v15 = a3;
-  v18 = a6;
-  v16 = a4;
-  v17 = a1;
-  v12 = v10;
+  v14 = stringCopy;
+  sourceCopy = source;
+  authenticatedCopy = authenticated;
+  idCopy = id;
+  selfCopy = self;
+  v12 = stringCopy;
   dispatch_async(v11, block);
 }
 
@@ -132,76 +132,76 @@ void __89__SPUIFeedbackManager_didAppearFromSource_withQueryId_queryString_devic
   [v4 searchViewDidAppear:v5];
 }
 
-+ (void)didClearInputWithEvent:(unint64_t)a3 withQueryId:(unint64_t)a4
++ (void)didClearInputWithEvent:(unint64_t)event withQueryId:(unint64_t)id
 {
-  v7 = [objc_alloc(MEMORY[0x277D4C260]) initWithEvent:a3];
-  [v7 setQueryId:a4];
-  v6 = [a1 feedbackListener];
-  [v6 didClearInput:v7];
+  v7 = [objc_alloc(MEMORY[0x277D4C260]) initWithEvent:event];
+  [v7 setQueryId:id];
+  feedbackListener = [self feedbackListener];
+  [feedbackListener didClearInput:v7];
 }
 
-+ (void)cardViewDidDisappearWithEvent:(unint64_t)a3 withQueryId:(unint64_t)a4
++ (void)cardViewDidDisappearWithEvent:(unint64_t)event withQueryId:(unint64_t)id
 {
-  v7 = [objc_alloc(MEMORY[0x277D4C258]) initWithEvent:a3];
-  [v7 setQueryId:a4];
-  v6 = [a1 feedbackListener];
-  [v6 cardViewDidDisappear:v7];
+  v7 = [objc_alloc(MEMORY[0x277D4C258]) initWithEvent:event];
+  [v7 setQueryId:id];
+  feedbackListener = [self feedbackListener];
+  [feedbackListener cardViewDidDisappear:v7];
 }
 
-+ (void)didDisappearWithReason:(unint64_t)a3 withQueryId:(unint64_t)a4
++ (void)didDisappearWithReason:(unint64_t)reason withQueryId:(unint64_t)id
 {
-  if (a3 - 1 > 7)
+  if (reason - 1 > 7)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_26B867178[a3 - 1];
+    v6 = qword_26B867178[reason - 1];
   }
 
   v8 = [objc_alloc(MEMORY[0x277D4C5E8]) initWithEvent:v6];
-  [v8 setQueryId:a4];
-  v7 = [a1 feedbackListener];
-  [v7 searchViewDidDisappear:v8];
+  [v8 setQueryId:id];
+  feedbackListener = [self feedbackListener];
+  [feedbackListener searchViewDidDisappear:v8];
 }
 
-+ (void)resultsDidFinishWithSections:(id)a3 withQueryString:(id)a4
++ (void)resultsDidFinishWithSections:(id)sections withQueryString:(id)string
 {
-  if (a3 && a4)
+  if (sections && string)
   {
     v6 = MEMORY[0x277D4C7F8];
-    v7 = a4;
-    v8 = a3;
-    v10 = [[v6 alloc] initWithResultSections:v8 queryString:v7];
+    stringCopy = string;
+    sectionsCopy = sections;
+    v10 = [[v6 alloc] initWithResultSections:sectionsCopy queryString:stringCopy];
 
     if (v10)
     {
-      v9 = [a1 feedbackListener];
-      [v9 sendResultSectionsDidLoadFeedback:v10];
+      feedbackListener = [self feedbackListener];
+      [feedbackListener sendResultSectionsDidLoadFeedback:v10];
     }
   }
 }
 
-+ (void)flushFeedbackWithCompletion:(id)a3
++ (void)flushFeedbackWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_group_create();
-  v5 = [MEMORY[0x277D4BEB0] sharedManager];
-  v6 = [v5 parsecFeedbackListener];
+  mEMORY[0x277D4BEB0] = [MEMORY[0x277D4BEB0] sharedManager];
+  parsecFeedbackListener = [mEMORY[0x277D4BEB0] parsecFeedbackListener];
 
-  v7 = [v6 connection];
+  connection = [parsecFeedbackListener connection];
 
-  if (v7)
+  if (connection)
   {
     dispatch_group_enter(v4);
-    v8 = [v6 connection];
+    connection2 = [parsecFeedbackListener connection];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__SPUIFeedbackManager_flushFeedbackWithCompletion___block_invoke;
     v13[3] = &unk_279D06C78;
     v14 = v4;
-    [v8 scheduleSendBarrierBlock:v13];
+    [connection2 scheduleSendBarrierBlock:v13];
   }
 
   dispatch_group_enter(v4);
@@ -213,7 +213,7 @@ void __89__SPUIFeedbackManager_didAppearFromSource_withQueryId_queryString_devic
   v12 = v4;
   v10 = v4;
   [v9 flushFeedbackWithCompletion:v11];
-  dispatch_group_notify(v10, MEMORY[0x277D85CD0], v3);
+  dispatch_group_notify(v10, MEMORY[0x277D85CD0], completionCopy);
 }
 
 @end

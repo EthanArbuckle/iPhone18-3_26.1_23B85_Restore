@@ -1,27 +1,27 @@
 @interface BaseDateProvider
-- (BaseDateProvider)initWithCalendar:(id)a3 locale:(id)a4 timeZone:(id)a5;
-- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)a3 andRemovingDesignator:(BOOL)a4 designatorExists:(BOOL *)a5;
+- (BaseDateProvider)initWithCalendar:(id)calendar locale:(id)locale timeZone:(id)zone;
+- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)format andRemovingDesignator:(BOOL)designator designatorExists:(BOOL *)exists;
 - (id)formattedString;
-- (id)formattedStringInContext:(id)a3;
+- (id)formattedStringInContext:(id)context;
 - (id)updateInterval;
 @end
 
 @implementation BaseDateProvider
 
-- (BaseDateProvider)initWithCalendar:(id)a3 locale:(id)a4 timeZone:(id)a5
+- (BaseDateProvider)initWithCalendar:(id)calendar locale:(id)locale timeZone:(id)zone
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  calendarCopy = calendar;
+  localeCopy = locale;
+  zoneCopy = zone;
   v15.receiver = self;
   v15.super_class = BaseDateProvider;
   v12 = [(BaseDateProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_calendar, a3);
-    objc_storeStrong(&v13->_locale, a4);
-    objc_storeStrong(&v13->_timeZone, a5);
+    objc_storeStrong(&v12->_calendar, calendar);
+    objc_storeStrong(&v13->_locale, locale);
+    objc_storeStrong(&v13->_timeZone, zone);
   }
 
   return v13;
@@ -35,13 +35,13 @@
   return v4;
 }
 
-- (id)formattedStringInContext:(id)a3
+- (id)formattedStringInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 referenceDate];
-  [(BaseDateProvider *)self _startSessionWithDate:v5];
+  contextCopy = context;
+  referenceDate = [contextCopy referenceDate];
+  [(BaseDateProvider *)self _startSessionWithDate:referenceDate];
 
-  v6 = [(BaseDateProvider *)self _sessionTextForIndex:0 context:v4];
+  v6 = [(BaseDateProvider *)self _sessionTextForIndex:0 context:contextCopy];
 
   [(BaseDateProvider *)self _endSession];
 
@@ -50,24 +50,24 @@
 
 - (id)updateInterval
 {
-  v2 = [(BaseDateProvider *)self _updateFrequency];
-  if ((v2 - 1) > 2)
+  _updateFrequency = [(BaseDateProvider *)self _updateFrequency];
+  if ((_updateFrequency - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E7242310 + v2 - 1);
+    return *(&off_1E7242310 + _updateFrequency - 1);
   }
 }
 
-- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)a3 andRemovingDesignator:(BOOL)a4 designatorExists:(BOOL *)a5
+- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)format andRemovingDesignator:(BOOL)designator designatorExists:(BOOL *)exists
 {
-  v6 = a4;
+  designatorCopy = designator;
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [MEMORY[0x1E696AB78] _componentsFromFormatString:v8];
+  formatCopy = format;
+  [MEMORY[0x1E696AB78] _componentsFromFormatString:formatCopy];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -76,10 +76,10 @@
   if (v10)
   {
     v11 = v10;
-    v39 = a5;
-    v40 = self;
-    v41 = v6;
-    v42 = v8;
+    existsCopy = exists;
+    selfCopy = self;
+    v41 = designatorCopy;
+    v42 = formatCopy;
     v12 = *v44;
     v13 = *MEMORY[0x1E695D900];
     v14 = *MEMORY[0x1E695D910];
@@ -93,7 +93,7 @@
         }
 
         v16 = *(*(&v43 + 1) + 8 * i);
-        v17 = [v16 objectForKeyedSubscript:{v13, v39, v40}];
+        v17 = [v16 objectForKeyedSubscript:{v13, existsCopy, selfCopy}];
         if (([v17 BOOLValue] & 1) == 0)
         {
           v18 = [v16 objectForKeyedSubscript:v14];
@@ -117,10 +117,10 @@
 
     v19 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_13:
-    v8 = v42;
-    v6 = v41;
-    a5 = v39;
-    self = v40;
+    formatCopy = v42;
+    designatorCopy = v41;
+    exists = existsCopy;
+    self = selfCopy;
   }
 
   else
@@ -128,16 +128,16 @@ LABEL_13:
     v19 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a5)
+  if (exists)
   {
-    *a5 = v19 != 0x7FFFFFFFFFFFFFFFLL;
+    *exists = v19 != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(BaseDateProvider *)self locale];
 
-    if (v6)
+    if (designatorCopy)
     {
       if (v19)
       {
@@ -146,8 +146,8 @@ LABEL_13:
         if ([v21 BOOLValue])
         {
           v22 = [v20 objectForKeyedSubscript:*MEMORY[0x1E695D910]];
-          v23 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v24 = [v22 stringByTrimmingCharactersInSet:v23];
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v24 = [v22 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           v25 = [v24 length] == 0;
         }
@@ -170,14 +170,14 @@ LABEL_13:
 
       else
       {
-        v26 = v8;
+        v26 = formatCopy;
         v27 = [v9 objectAtIndexedSubscript:v19 + 1];
         v28 = [v27 objectForKeyedSubscript:*MEMORY[0x1E695D900]];
         if ([v28 BOOLValue])
         {
           v29 = [v27 objectForKeyedSubscript:*MEMORY[0x1E695D910]];
-          v30 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v31 = [v29 stringByTrimmingCharactersInSet:v30];
+          whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v31 = [v29 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
           v32 = [v31 length] == 0;
         }
@@ -194,7 +194,7 @@ LABEL_13:
           [v34 removeObjectAtIndex:v19 + 1];
         }
 
-        v8 = v26;
+        formatCopy = v26;
       }
 
       [v33 removeObjectAtIndex:v19];
@@ -207,14 +207,14 @@ LABEL_13:
 
       v36 = [MEMORY[0x1E696AB78] _formatStringFromComponents:v35];
 
-      v8 = v36;
+      formatCopy = v36;
       v9 = v35;
     }
   }
 
-  v37 = v8;
+  v37 = formatCopy;
 
-  return v8;
+  return formatCopy;
 }
 
 @end

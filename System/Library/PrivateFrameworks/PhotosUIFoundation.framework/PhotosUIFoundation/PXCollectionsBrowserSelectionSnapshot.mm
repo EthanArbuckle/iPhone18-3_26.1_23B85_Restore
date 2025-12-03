@@ -1,13 +1,13 @@
 @interface PXCollectionsBrowserSelectionSnapshot
 - (NSArray)modelObjects;
-- (PXCollectionsBrowserSelectionSnapshot)initWithIndexPaths:(id)a3 dataSource:(id)a4;
-- (id)assetReferenceAtIndex:(int64_t)a3;
-- (id)displayAssetAtIndex:(int64_t)a3;
+- (PXCollectionsBrowserSelectionSnapshot)initWithIndexPaths:(id)paths dataSource:(id)source;
+- (id)assetReferenceAtIndex:(int64_t)index;
+- (id)displayAssetAtIndex:(int64_t)index;
 @end
 
 @implementation PXCollectionsBrowserSelectionSnapshot
 
-- (id)displayAssetAtIndex:(int64_t)a3
+- (id)displayAssetAtIndex:(int64_t)index
 {
   v3 = PXAssertGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (id)assetReferenceAtIndex:(int64_t)a3
+- (id)assetReferenceAtIndex:(int64_t)index
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXBrowserSnapshot.m" lineNumber:302 description:@"Accessing asset references from a collections selection snapshot is unsupported"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXBrowserSnapshot.m" lineNumber:302 description:@"Accessing asset references from a collections selection snapshot is unsupported"];
 
   abort();
 }
@@ -84,20 +84,20 @@
   return modelObjects;
 }
 
-- (PXCollectionsBrowserSelectionSnapshot)initWithIndexPaths:(id)a3 dataSource:(id)a4
+- (PXCollectionsBrowserSelectionSnapshot)initWithIndexPaths:(id)paths dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = PXCollectionsBrowserSelectionSnapshot;
   v8 = [(PXCollectionsBrowserSelectionSnapshot *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [pathsCopy copy];
     indexPaths = v8->_indexPaths;
     v8->_indexPaths = v9;
 
-    objc_storeStrong(&v8->_dataSource, a4);
+    objc_storeStrong(&v8->_dataSource, source);
   }
 
   return v8;

@@ -1,42 +1,42 @@
 @interface DBHelloLockOutView
-- (DBHelloLockOutView)initWithMode:(int64_t)a3 environmentConfiguration:(id)a4;
-- (DBHelloLockOutView)initWithMode:(int64_t)a3 environmentConfiguration:(id)a4 wallpaperView:(id)a5;
+- (DBHelloLockOutView)initWithMode:(int64_t)mode environmentConfiguration:(id)configuration;
+- (DBHelloLockOutView)initWithMode:(int64_t)mode environmentConfiguration:(id)configuration wallpaperView:(id)view;
 - (void)_handleFinishedAnimating;
 - (void)didMoveToWindow;
 @end
 
 @implementation DBHelloLockOutView
 
-- (DBHelloLockOutView)initWithMode:(int64_t)a3 environmentConfiguration:(id)a4 wallpaperView:(id)a5
+- (DBHelloLockOutView)initWithMode:(int64_t)mode environmentConfiguration:(id)configuration wallpaperView:(id)view
 {
   v49[4] = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  viewCopy = view;
   v46.receiver = self;
   v46.super_class = DBHelloLockOutView;
-  v10 = [(DBLockOutView *)&v46 initWithMode:a3 environmentConfiguration:a4];
+  v10 = [(DBLockOutView *)&v46 initWithMode:mode environmentConfiguration:configuration];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_wallpaperView, a5);
+    objc_storeStrong(&v10->_wallpaperView, view);
     [(UIView *)v11->_wallpaperView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v11->_wallpaperView setUserInteractionEnabled:0];
     [(DBHelloLockOutView *)v11 addSubview:v11->_wallpaperView];
-    v43 = [(UIView *)v11->_wallpaperView leadingAnchor];
-    v41 = [(DBHelloLockOutView *)v11 leadingAnchor];
-    v39 = [v43 constraintEqualToAnchor:v41];
+    leadingAnchor = [(UIView *)v11->_wallpaperView leadingAnchor];
+    leadingAnchor2 = [(DBHelloLockOutView *)v11 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v49[0] = v39;
-    v37 = [(UIView *)v11->_wallpaperView trailingAnchor];
-    v35 = [(DBHelloLockOutView *)v11 trailingAnchor];
-    v12 = [v37 constraintEqualToAnchor:v35];
+    trailingAnchor = [(UIView *)v11->_wallpaperView trailingAnchor];
+    trailingAnchor2 = [(DBHelloLockOutView *)v11 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v49[1] = v12;
-    v13 = [(UIView *)v11->_wallpaperView topAnchor];
-    v14 = [(DBHelloLockOutView *)v11 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [(UIView *)v11->_wallpaperView topAnchor];
+    topAnchor2 = [(DBHelloLockOutView *)v11 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[2] = v15;
-    v16 = [(UIView *)v11->_wallpaperView bottomAnchor];
-    v17 = [(DBHelloLockOutView *)v11 bottomAnchor];
-    [v16 constraintEqualToAnchor:v17];
-    v18 = v45 = v9;
+    bottomAnchor = [(UIView *)v11->_wallpaperView bottomAnchor];
+    bottomAnchor2 = [(DBHelloLockOutView *)v11 bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    v18 = v45 = viewCopy;
     v49[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
     [(DBHelloLockOutView *)v11 addConstraints:v19];
@@ -48,10 +48,10 @@
     [v20 setValue:MEMORY[0x277CBEC38] forKey:@"inputHardEdges"];
     [v20 setValue:v21 forKey:@"inputNormalizeEdges"];
     [v20 setValue:v21 forKey:@"inputDither"];
-    v22 = [(UIView *)v11->_wallpaperView layer];
+    layer = [(UIView *)v11->_wallpaperView layer];
     v48 = v20;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
-    [v22 setFilters:v23];
+    [layer setFilters:v23];
 
     v24 = objc_alloc_init(DBHelloView);
     helloView = v11->_helloView;
@@ -60,37 +60,37 @@
     [(DBHelloView *)v11->_helloView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DBHelloView *)v11->_helloView setUserInteractionEnabled:0];
     [(DBHelloLockOutView *)v11 addSubview:v11->_helloView];
-    v44 = [(DBHelloView *)v11->_helloView leadingAnchor];
-    v42 = [(DBHelloLockOutView *)v11 leadingAnchor];
-    v40 = [v44 constraintEqualToAnchor:v42];
+    leadingAnchor3 = [(DBHelloView *)v11->_helloView leadingAnchor];
+    leadingAnchor4 = [(DBHelloLockOutView *)v11 leadingAnchor];
+    v40 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v47[0] = v40;
-    v38 = [(DBHelloView *)v11->_helloView trailingAnchor];
-    v36 = [(DBHelloLockOutView *)v11 trailingAnchor];
-    v26 = [v38 constraintEqualToAnchor:v36];
+    trailingAnchor3 = [(DBHelloView *)v11->_helloView trailingAnchor];
+    trailingAnchor4 = [(DBHelloLockOutView *)v11 trailingAnchor];
+    v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v47[1] = v26;
-    v27 = [(DBHelloView *)v11->_helloView topAnchor];
-    v28 = [(DBHelloLockOutView *)v11 topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    topAnchor3 = [(DBHelloView *)v11->_helloView topAnchor];
+    topAnchor4 = [(DBHelloLockOutView *)v11 topAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v47[2] = v29;
-    v30 = [(DBHelloView *)v11->_helloView bottomAnchor];
-    v31 = [(DBHelloLockOutView *)v11 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    bottomAnchor3 = [(DBHelloView *)v11->_helloView bottomAnchor];
+    bottomAnchor4 = [(DBHelloLockOutView *)v11 bottomAnchor];
+    v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v47[3] = v32;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:4];
     [(DBHelloLockOutView *)v11 addConstraints:v33];
 
-    v9 = v45;
+    viewCopy = v45;
   }
 
   return v11;
 }
 
-- (DBHelloLockOutView)initWithMode:(int64_t)a3 environmentConfiguration:(id)a4
+- (DBHelloLockOutView)initWithMode:(int64_t)mode environmentConfiguration:(id)configuration
 {
   v6 = MEMORY[0x277D75D18];
-  v7 = a4;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(v6);
-  v9 = [(DBHelloLockOutView *)self initWithMode:a3 environmentConfiguration:v7 wallpaperView:v8];
+  v9 = [(DBHelloLockOutView *)self initWithMode:mode environmentConfiguration:configurationCopy wallpaperView:v8];
 
   return v9;
 }
@@ -100,18 +100,18 @@
   v9.receiver = self;
   v9.super_class = DBHelloLockOutView;
   [(DBHelloLockOutView *)&v9 didMoveToWindow];
-  v3 = [(DBHelloLockOutView *)self window];
+  window = [(DBHelloLockOutView *)self window];
 
-  if (v3)
+  if (window)
   {
     objc_initWeak(&location, self);
-    v4 = [(DBHelloLockOutView *)self helloView];
+    helloView = [(DBHelloLockOutView *)self helloView];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__DBHelloLockOutView_didMoveToWindow__block_invoke;
     v6[3] = &unk_278F01CF0;
     objc_copyWeak(&v7, &location);
-    [v4 startAnimatingWithCompletion:v6];
+    [helloView startAnimatingWithCompletion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -119,8 +119,8 @@
 
   else
   {
-    v5 = [(DBHelloLockOutView *)self helloView];
-    [v5 stopAnimating];
+    helloView2 = [(DBHelloLockOutView *)self helloView];
+    [helloView2 stopAnimating];
   }
 }
 
@@ -132,10 +132,10 @@ void __37__DBHelloLockOutView_didMoveToWindow__block_invoke(uint64_t a1)
 
 - (void)_handleFinishedAnimating
 {
-  v3 = [(DBLockOutView *)self delegate];
-  if (v3)
+  delegate = [(DBLockOutView *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 lockOutViewWantsToDismiss:self];

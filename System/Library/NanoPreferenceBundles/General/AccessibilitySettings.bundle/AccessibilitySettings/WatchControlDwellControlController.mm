@@ -2,9 +2,9 @@
 - (id)dwellControlEnabled;
 - (id)dwellControlShakeToStartEnabled;
 - (id)specifiers;
-- (void)setDwellControlEnabled:(id)a3;
-- (void)setDwellControlShakeToStartEnabled:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDwellControlEnabled:(id)enabled;
+- (void)setDwellControlShakeToStartEnabled:(id)enabled;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WatchControlDwellControlController
@@ -16,26 +16,26 @@
   if (!v3)
   {
     v36 = *MEMORY[0x277D3FC48];
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v4 addObject:v5];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [array addObject:emptyGroupSpecifier];
 
     v6 = MEMORY[0x277D3FAD8];
     v7 = settingsLocString(@"WATCH_CONTROL_DWELL_CONTROL_TITLE", @"AccessibilitySettings-watchcontrol");
-    v37 = self;
+    selfCopy = self;
     v8 = [v6 preferenceSpecifierNamed:v7 target:self set:sel_setDwellControlEnabled_ get:sel_dwellControlEnabled detail:0 cell:6 edit:0];
-    [v4 addObject:v8];
+    [array addObject:v8];
 
     v9 = MEMORY[0x277D3FAD8];
     v10 = settingsLocString(@"WATCH_CONTROL_DWELL_CONTROL_TIMER_ACTION", @"AccessibilitySettings-watchcontrol");
     v11 = [v9 groupSpecifierWithID:@"GroupDefaultAction" name:v10];
 
     [v11 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
-    v12 = v4;
+    v12 = array;
     v35 = v11;
-    [v4 addObject:v11];
-    v13 = [MEMORY[0x277D7A910] sharedInstance];
-    v14 = [v13 dwellControlTimerAction];
+    [array addObject:v11];
+    mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+    dwellControlTimerAction = [mEMORY[0x277D7A910] dwellControlTimerAction];
 
     v40 = 0u;
     v41 = 0u;
@@ -57,16 +57,16 @@
             objc_enumerationMutation(&unk_284E7E730);
           }
 
-          v21 = [*(*(&v38 + 1) + 8 * i) unsignedIntegerValue];
+          unsignedIntegerValue = [*(*(&v38 + 1) + 8 * i) unsignedIntegerValue];
           v22 = MEMORY[0x277D3FAD8];
           v23 = WCNameForAction();
           v24 = [v22 preferenceSpecifierNamed:v23 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-          v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
+          v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
           [v24 setProperty:v25 forKey:v19];
 
           [v12 addObject:v24];
-          if (v21 == v14)
+          if (unsignedIntegerValue == dwellControlTimerAction)
           {
             v26 = v24;
 
@@ -86,19 +86,19 @@
     }
 
     [v35 setProperty:v17 forKey:*MEMORY[0x277D40090]];
-    v27 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v12 addObject:v27];
+    emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v12 addObject:emptyGroupSpecifier2];
 
     v28 = MEMORY[0x277D3FAD8];
     v29 = settingsLocString(@"WATCH_CONTROL_DWELL_CONTROL_SHAKE_TO_START", @"AccessibilitySettings-watchcontrol");
-    v30 = [v28 preferenceSpecifierNamed:v29 target:v37 set:sel_setDwellControlShakeToStartEnabled_ get:sel_dwellControlShakeToStartEnabled detail:0 cell:6 edit:0];
+    v30 = [v28 preferenceSpecifierNamed:v29 target:selfCopy set:sel_setDwellControlShakeToStartEnabled_ get:sel_dwellControlShakeToStartEnabled detail:0 cell:6 edit:0];
     [v12 addObject:v30];
 
-    v31 = *(&v37->super.super.super.super.super.super.isa + v36);
-    *(&v37->super.super.super.super.super.super.isa + v36) = v12;
+    v31 = *(&selfCopy->super.super.super.super.super.super.isa + v36);
+    *(&selfCopy->super.super.super.super.super.super.isa + v36) = v12;
     v32 = v12;
 
-    v3 = *(&v37->super.super.super.super.super.super.isa + v36);
+    v3 = *(&selfCopy->super.super.super.super.super.super.isa + v36);
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -106,33 +106,33 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = WatchControlDwellControlController;
-  v6 = a4;
-  [(WatchControlDwellControlController *)&v18 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(WatchControlDwellControlController *)self indexForIndexPath:v6, v18.receiver, v18.super_class];
-  v8 = [(WatchControlDwellControlController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(WatchControlDwellControlController *)&v18 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(WatchControlDwellControlController *)self indexForIndexPath:pathCopy, v18.receiver, v18.super_class];
+  specifiers = [(WatchControlDwellControlController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(WatchControlDwellControlController *)self specifierAtIndex:[(WatchControlDwellControlController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(WatchControlDwellControlController *)self specifierAtIndex:[(WatchControlDwellControlController *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
-    v14 = [v11 identifier];
-    v15 = [v14 isEqualToString:@"GroupDefaultAction"];
+    identifier = [v11 identifier];
+    v15 = [identifier isEqualToString:@"GroupDefaultAction"];
 
     if (v15)
     {
       v16 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
       if (v16)
       {
-        v17 = [MEMORY[0x277D7A910] sharedInstance];
-        [v17 setDwellControlTimerAction:{objc_msgSend(v16, "unsignedIntegerValue")}];
+        mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+        [mEMORY[0x277D7A910] setDwellControlTimerAction:{objc_msgSend(v16, "unsignedIntegerValue")}];
 
         [(WatchControlDwellControlController *)self reloadSpecifiers];
       }
@@ -143,39 +143,39 @@
 - (id)dwellControlEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "dwellControlEnabled")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "dwellControlEnabled")}];
 
   return v4;
 }
 
-- (void)setDwellControlEnabled:(id)a3
+- (void)setDwellControlEnabled:(id)enabled
 {
   v3 = MEMORY[0x277D7A910];
-  v4 = a3;
-  v6 = [v3 sharedInstance];
-  v5 = [v4 BOOLValue];
+  enabledCopy = enabled;
+  sharedInstance = [v3 sharedInstance];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setDwellControlEnabled:v5];
+  [sharedInstance setDwellControlEnabled:bOOLValue];
 }
 
 - (id)dwellControlShakeToStartEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "dwellControlShakeToStart")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "dwellControlShakeToStart")}];
 
   return v4;
 }
 
-- (void)setDwellControlShakeToStartEnabled:(id)a3
+- (void)setDwellControlShakeToStartEnabled:(id)enabled
 {
   v3 = MEMORY[0x277D7A910];
-  v4 = a3;
-  v6 = [v3 sharedInstance];
-  v5 = [v4 BOOLValue];
+  enabledCopy = enabled;
+  sharedInstance = [v3 sharedInstance];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setDwellControlShakeToStart:v5];
+  [sharedInstance setDwellControlShakeToStart:bOOLValue];
 }
 
 @end

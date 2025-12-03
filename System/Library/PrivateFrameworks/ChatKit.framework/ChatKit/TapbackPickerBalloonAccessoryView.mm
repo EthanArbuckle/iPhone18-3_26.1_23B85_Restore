@@ -1,7 +1,7 @@
 @interface TapbackPickerBalloonAccessoryView
 - (UIColor)tintColor;
-- (void)hoverRecognized:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)hoverRecognized:(id)recognized;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation TapbackPickerBalloonAccessoryView
@@ -10,22 +10,22 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TapbackPickerBalloonAccessoryView();
-  v2 = [(TapbackPickerContainerView *)&v4 tintColor];
+  tintColor = [(TapbackPickerContainerView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for TapbackPickerBalloonAccessoryView();
   v4 = v10.receiver;
-  v5 = a3;
-  [(TapbackPickerContainerView *)&v10 setTintColor:v5];
-  v6 = [v4 tintColor];
-  if (v6)
+  colorCopy = color;
+  [(TapbackPickerContainerView *)&v10 setTintColor:colorCopy];
+  tintColor = [v4 tintColor];
+  if (tintColor)
   {
-    v7 = v6;
+    v7 = tintColor;
     v8 = sub_190BF420C();
     if (v8)
     {
@@ -45,10 +45,10 @@
   }
 }
 
-- (void)hoverRecognized:(id)a3
+- (void)hoverRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
+  recognizedCopy = recognized;
+  selfCopy = self;
   sub_190BF455C(&unk_1F041E400, sub_190BF4C90, &block_descriptor_73_1);
 }
 

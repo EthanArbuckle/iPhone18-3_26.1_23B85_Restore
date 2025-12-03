@@ -8,21 +8,21 @@
 
 - (void)didReorder
 {
-  ++a1[3];
-  a1[7] = 0;
-  if (!a1[8])
+  ++self[3];
+  self[7] = 0;
+  if (!self[8])
   {
-    a1[8] = 1;
-    v3 = [a1 _reorderCadenceSettings];
-    v4 = a1[4];
-    a1[4] = v3;
+    self[8] = 1;
+    _reorderCadenceSettings = [self _reorderCadenceSettings];
+    v4 = self[4];
+    self[4] = _reorderCadenceSettings;
   }
 }
 
 - (id)_reorderCadenceSettings
 {
-  v3 = [(_UIDragDestinationControllerReorderingState *)self collectionView];
-  v4 = [v3 reorderingCadence];
+  collectionView = [(_UIDragDestinationControllerReorderingState *)self collectionView];
+  reorderingCadence = [collectionView reorderingCadence];
 
   v5 = 0.0;
   if (_UIInternalPreferenceUsesDefault_1(&unk_1ED48AB10, @"DraggingCadenceVelocityThreshold"))
@@ -42,7 +42,7 @@
 
   if (v6 == 0.0 && v5 == 0.0)
   {
-    v7 = [_UIDragMovementCadenceSettings defaultSettingsForMovementPhase:[(_UIDragDestinationControllerReorderingState *)self dragMovementPhase] cadence:v4];
+    v7 = [_UIDragMovementCadenceSettings defaultSettingsForMovementPhase:[(_UIDragDestinationControllerReorderingState *)self dragMovementPhase] cadence:reorderingCadence];
   }
 
   else

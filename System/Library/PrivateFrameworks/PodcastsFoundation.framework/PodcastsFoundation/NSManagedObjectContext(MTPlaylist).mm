@@ -7,24 +7,24 @@
 - (void)deletePlaylist:()MTPlaylist
 {
   v4 = a3;
-  v5 = [v4 settings];
-  v6 = [v5 copy];
+  settings = [v4 settings];
+  v6 = [settings copy];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__NSManagedObjectContext_MTPlaylist__deletePlaylist___block_invoke;
   v9[3] = &unk_1E856A0F0;
-  v9[4] = a1;
+  v9[4] = self;
   [v6 enumerateObjectsUsingBlock:v9];
-  v7 = [v4 defaultSettings];
+  defaultSettings = [v4 defaultSettings];
 
-  if (v7)
+  if (defaultSettings)
   {
-    v8 = [v4 defaultSettings];
-    [a1 deleteObject:v8];
+    defaultSettings2 = [v4 defaultSettings];
+    [self deleteObject:defaultSettings2];
   }
 
-  [a1 deleteObject:v4];
+  [self deleteObject:v4];
 }
 
 @end

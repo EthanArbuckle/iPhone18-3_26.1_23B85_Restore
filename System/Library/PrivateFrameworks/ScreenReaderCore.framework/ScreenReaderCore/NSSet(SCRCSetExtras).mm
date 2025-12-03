@@ -8,15 +8,15 @@
 - (void)scrc_deepMutableCopyWithZone:()SCRCSetExtras
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(MEMORY[0x277CBEB58] "allocWithZone:{"initWithCapacity:", objc_msgSend(a1, "count")}")];
+  v5 = [objc_msgSend(MEMORY[0x277CBEB58] "allocWithZone:{"initWithCapacity:", objc_msgSend(self, "count")}")];
   if (v5)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -28,7 +28,7 @@
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v17 + 1) + 8 * v10);
@@ -45,7 +45,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
@@ -65,8 +65,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -76,7 +76,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (objc_opt_isKindOfClass())
@@ -86,7 +86,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

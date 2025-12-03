@@ -7,8 +7,8 @@
 
 - (NSString)titleString
 {
-  v2 = [(PHSOSKappaRestingViewModel *)self dateOfSOSEvent];
-  v3 = sub_100062E8C(v2);
+  dateOfSOSEvent = [(PHSOSKappaRestingViewModel *)self dateOfSOSEvent];
+  v3 = sub_100062E8C(dateOfSOSEvent);
 
   return v3;
 }

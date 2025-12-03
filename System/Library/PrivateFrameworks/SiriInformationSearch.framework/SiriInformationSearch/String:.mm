@@ -20,12 +20,12 @@
 
 - (uint64_t)Float
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySSSfGMd, &_sSDySSSfGMR);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

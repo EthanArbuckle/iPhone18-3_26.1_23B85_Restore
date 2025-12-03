@@ -1,17 +1,17 @@
 @interface GEOStructuredAddress
-- (id)_cellContent_subtitleWithTitle:(id)a3;
-- (id)localityWithFallback:(BOOL)a3;
+- (id)_cellContent_subtitleWithTitle:(id)title;
+- (id)localityWithFallback:(BOOL)fallback;
 @end
 
 @implementation GEOStructuredAddress
 
-- (id)_cellContent_subtitleWithTitle:(id)a3
+- (id)_cellContent_subtitleWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(GEOStructuredAddress *)self administrativeArea];
-  if ([v5 length])
+  titleCopy = title;
+  administrativeArea = [(GEOStructuredAddress *)self administrativeArea];
+  if ([administrativeArea length])
   {
-    v6 = v5;
+    v6 = administrativeArea;
   }
 
   else
@@ -19,21 +19,21 @@
     v6 = 0;
   }
 
-  v7 = [(GEOStructuredAddress *)self country];
-  v8 = [v6 uppercaseString];
-  if (v8)
+  country = [(GEOStructuredAddress *)self country];
+  uppercaseString = [v6 uppercaseString];
+  if (uppercaseString)
   {
-    v9 = v8;
-    v10 = [v4 uppercaseString];
-    v11 = [v6 uppercaseString];
-    if (![v10 isEqualToString:v11] && objc_msgSend(v6, "length"))
+    v9 = uppercaseString;
+    uppercaseString2 = [titleCopy uppercaseString];
+    uppercaseString3 = [v6 uppercaseString];
+    if (![uppercaseString2 isEqualToString:uppercaseString3] && objc_msgSend(v6, "length"))
     {
 
 LABEL_13:
       goto LABEL_14;
     }
 
-    v12 = [v7 length];
+    v12 = [country length];
 
     if (!v12)
     {
@@ -42,11 +42,11 @@ LABEL_13:
 
 LABEL_12:
     v9 = v6;
-    v6 = v7;
+    v6 = country;
     goto LABEL_13;
   }
 
-  if (![v6 length] && objc_msgSend(v7, "length"))
+  if (![v6 length] && objc_msgSend(country, "length"))
   {
     goto LABEL_12;
   }
@@ -57,19 +57,19 @@ LABEL_14:
   return v6;
 }
 
-- (id)localityWithFallback:(BOOL)a3
+- (id)localityWithFallback:(BOOL)fallback
 {
-  v3 = a3;
+  fallbackCopy = fallback;
   if ([(GEOStructuredAddress *)self hasLocality])
   {
-    v5 = [(GEOStructuredAddress *)self locality];
+    locality = [(GEOStructuredAddress *)self locality];
   }
 
-  else if (v3)
+  else if (fallbackCopy)
   {
     if ([(GEOStructuredAddress *)self hasSubAdministrativeArea])
     {
-      v5 = [(GEOStructuredAddress *)self subAdministrativeArea];
+      locality = [(GEOStructuredAddress *)self subAdministrativeArea];
     }
 
     else
@@ -83,16 +83,16 @@ LABEL_14:
       {
         [(GEOStructuredAddress *)self country];
       }
-      v5 = ;
+      locality = ;
     }
   }
 
   else
   {
-    v5 = 0;
+    locality = 0;
   }
 
-  return v5;
+  return locality;
 }
 
 @end

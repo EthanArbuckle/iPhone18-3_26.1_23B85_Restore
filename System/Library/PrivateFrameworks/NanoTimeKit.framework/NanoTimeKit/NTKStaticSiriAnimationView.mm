@@ -1,24 +1,24 @@
 @interface NTKStaticSiriAnimationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKStaticSiriAnimationView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKStaticSiriAnimationView)initWithFrame:(CGRect)frame forDevice:(id)device;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKStaticSiriAnimationView
 
-- (NTKStaticSiriAnimationView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKStaticSiriAnimationView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKStaticSiriAnimationView;
-  v11 = [(NTKStaticSiriAnimationView *)&v14 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(NTKStaticSiriAnimationView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v12 = objc_alloc(MEMORY[0x277D755E8]);
     NTKImageNamed(@"SiriHero");
   }
@@ -26,9 +26,9 @@
   return 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(CLKDevice *)self->_device sizeClass:a3.width];
+  v3 = [(CLKDevice *)self->_device sizeClass:fits.width];
   v4 = 33.0;
   if (!v3)
   {

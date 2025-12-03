@@ -11,10 +11,10 @@
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   *a3 = 0;
   *a5 = 1;
-  v35 = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
-  v9 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v10 = [v9 invertedSet];
-  [v35 formIntersectionWithCharacterSet:v10];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  invertedSet = [whitespaceCharacterSet invertedSet];
+  [whitespaceAndNewlineCharacterSet formIntersectionWithCharacterSet:invertedSet];
 
   v11 = MEMORY[0x277CCAB50];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v34];
@@ -22,8 +22,8 @@
   v30 = a5;
   v31 = a3;
 
-  [v13 formUnionWithCharacterSet:v35];
-  v14 = [MEMORY[0x277CCAC80] scannerWithString:a1];
+  [v13 formUnionWithCharacterSet:whitespaceAndNewlineCharacterSet];
+  v14 = [MEMORY[0x277CCAC80] scannerWithString:self];
   [v14 setCharactersToBeSkipped:0];
   while (2)
   {
@@ -56,7 +56,7 @@
       }
 
       v36 = v21;
-      v23 = [v14 scanCharactersFromSet:v35 intoString:&v36];
+      v23 = [v14 scanCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v36];
       v22 = v36;
 
       if (v23)
@@ -100,8 +100,8 @@ LABEL_12:
         [v15 addObject:v16];
         v25 = objc_alloc_init(MEMORY[0x277CCAB68]);
 
-        v26 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        [v14 scanCharactersFromSet:v26 intoString:0];
+        whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        [v14 scanCharactersFromSet:whitespaceCharacterSet2 intoString:0];
 
         v17 = 0;
         v18 = 0;
@@ -151,12 +151,12 @@ LABEL_34:
 - (void)copyCsvRows:()CSVStringExtensions rowLimit:
 {
   v14 = 0;
-  v7 = [a1 _copyCsvRows:a3 usingDelimiter:@" columnCountIsConstant:" rowLimit:{&v14, a4}];
+  v7 = [self _copyCsvRows:a3 usingDelimiter:@" columnCountIsConstant:" rowLimit:{&v14, a4}];
   if (*a3 == 1 || (v14 & 1) == 0)
   {
     v13 = 0;
     v12 = 0;
-    v8 = [a1 _copyCsvRows:&v13 usingDelimiter:@";" columnCountIsConstant:&v12 rowLimit:a4];
+    v8 = [self _copyCsvRows:&v13 usingDelimiter:@";" columnCountIsConstant:&v12 rowLimit:a4];
     v9 = v8;
     if (v13 >= 2 && v12 == 1)
     {

@@ -1,14 +1,14 @@
 @interface MOVStreamSampleTimeBuffer
-- (MOVStreamSampleTimeBuffer)initWithCapacity:(unint64_t)a3;
+- (MOVStreamSampleTimeBuffer)initWithCapacity:(unint64_t)capacity;
 - (id).cxx_construct;
 - (id)description;
 - (id)timeline;
-- (void)appendTime:(id *)a3;
+- (void)appendTime:(id *)time;
 @end
 
 @implementation MOVStreamSampleTimeBuffer
 
-- (MOVStreamSampleTimeBuffer)initWithCapacity:(unint64_t)a3
+- (MOVStreamSampleTimeBuffer)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = MOVStreamSampleTimeBuffer;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    std::vector<CMTime>::reserve(&v4->_times.__begin_, 100 * (a3 / 0x64) + 100);
+    std::vector<CMTime>::reserve(&v4->_times.__begin_, 100 * (capacity / 0x64) + 100);
   }
 
   return v5;
@@ -61,12 +61,12 @@
     v9 = self->_times.__end_;
   }
 
-  v10 = [(MOVStreamSampleTimeBuffer *)self name];
-  if ([v10 length])
+  name = [(MOVStreamSampleTimeBuffer *)self name];
+  if ([name length])
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(MOVStreamSampleTimeBuffer *)self name];
-    v13 = [v11 stringWithFormat:@" name=%@", v12];
+    name2 = [(MOVStreamSampleTimeBuffer *)self name];
+    v13 = [v11 stringWithFormat:@" name=%@", name2];
   }
 
   else
@@ -98,7 +98,7 @@
   return v22;
 }
 
-- (void)appendTime:(id *)a3
+- (void)appendTime:(id *)time
 {
   end = self->_times.__end_;
   cap = self->_times.__cap_;
@@ -134,8 +134,8 @@
     }
 
     v13 = 24 * v9;
-    v14 = *&a3->var0;
-    *(v13 + 16) = a3->var3;
+    v14 = *&time->var0;
+    *(v13 + 16) = time->var3;
     *v13 = v14;
     v7 = (24 * v9 + 24);
     v15 = self->_times.__begin_;
@@ -154,8 +154,8 @@
 
   else
   {
-    v6 = *&a3->var0;
-    *(end + 2) = a3->var3;
+    v6 = *&time->var0;
+    *(end + 2) = time->var3;
     *end = v6;
     v7 = (end + 24);
   }

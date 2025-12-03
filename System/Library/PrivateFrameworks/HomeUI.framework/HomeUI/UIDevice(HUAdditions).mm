@@ -6,10 +6,10 @@
 
 + (id)hu_modelAndNetworkLocalizedStringKeyForKey:()HUAdditions
 {
-  v1 = [a1 modelSpecificLocalizedStringKeyForKey:?];
-  v2 = [MEMORY[0x277D14CE8] useWLANInsteadOfWiFi];
+  v1 = [self modelSpecificLocalizedStringKeyForKey:?];
+  useWLANInsteadOfWiFi = [MEMORY[0x277D14CE8] useWLANInsteadOfWiFi];
   v3 = @"WIFI";
-  if (v2)
+  if (useWLANInsteadOfWiFi)
   {
     v3 = @"WLAN";
   }

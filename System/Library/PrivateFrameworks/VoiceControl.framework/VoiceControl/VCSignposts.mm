@@ -28,55 +28,55 @@
 
 - (void)synthesizedAudioInputFirstSample
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.synthesizedAudioInputFirstSample()();
 }
 
 - (void)synthesizedAudioInputLastSample
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.synthesizedAudioInputLastSample()();
 }
 
 - (void)asrPartialResultReceived
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.asrPartialResultReceived()();
 }
 
 - (void)asrFinalResultReceived
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.asrFinalResultReceived()();
 }
 
 - (void)partialCommandReceivedInUI
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.partialCommandReceivedInUI()();
 }
 
 - (void)finalCommandReceivedInUI
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.finalCommandReceivedInUI()();
 }
 
 - (void)axPartialTextInsertion
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.axPartialTextInsertion()();
 }
 
 - (void)axFinalTextInsertion
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.axFinalTextInsertion()();
 }
 
 - (void)axPress
 {
-  v2 = self;
+  selfCopy = self;
   VCSignposts.axPress()();
 }
 

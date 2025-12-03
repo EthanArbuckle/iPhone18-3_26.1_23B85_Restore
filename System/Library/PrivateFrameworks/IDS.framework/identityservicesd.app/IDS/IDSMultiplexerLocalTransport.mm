@@ -1,17 +1,17 @@
 @interface IDSMultiplexerLocalTransport
-- (BOOL)addListenerConnection:(id)a3;
-- (BOOL)tryConsumePacketBuffer:(id *)a3;
-- (IDSMultiplexerLocalTransport)initWithIdentifier:(id)a3;
-- (id)routeClientConnections:(id)a3;
-- (void)cancelClientConnection:(id)a3;
-- (void)setPacketBufferReadHandler:(id)a3;
+- (BOOL)addListenerConnection:(id)connection;
+- (BOOL)tryConsumePacketBuffer:(id *)buffer;
+- (IDSMultiplexerLocalTransport)initWithIdentifier:(id)identifier;
+- (id)routeClientConnections:(id)connections;
+- (void)cancelClientConnection:(id)connection;
+- (void)setPacketBufferReadHandler:(id)handler;
 @end
 
 @implementation IDSMultiplexerLocalTransport
 
-- (IDSMultiplexerLocalTransport)initWithIdentifier:(id)a3
+- (IDSMultiplexerLocalTransport)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = IDSMultiplexerLocalTransport;
   v6 = [(IDSMultiplexerLocalTransport *)&v14 init];
@@ -29,15 +29,15 @@
     listeners = v6->_listeners;
     v6->_listeners = v11;
 
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v6;
 }
 
-- (void)cancelClientConnection:(id)a3
+- (void)cancelClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -47,7 +47,7 @@
   v16[1] = 3221225472;
   v16[2] = sub_10046FBC0;
   v16[3] = &unk_100BDB4C8;
-  v6 = v4;
+  v6 = connectionCopy;
   v17 = v6;
   v18 = &v19;
   [(NSMutableArray *)routedConnections enumerateObjectsUsingBlock:v16];
@@ -79,13 +79,13 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (id)routeClientConnections:(id)a3
+- (id)routeClientConnections:(id)connections
 {
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = connections;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
@@ -106,9 +106,9 @@
         v10 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 portsSignature];
+          portsSignature = [v9 portsSignature];
           *buf = v17;
-          v25 = v11;
+          v25 = portsSignature;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[IDSLocalMultiplexer routeClientConnections] portsSignature:%08X", buf, 8u);
         }
 
@@ -140,20 +140,20 @@
   return obj;
 }
 
-- (BOOL)addListenerConnection:(id)a3
+- (BOOL)addListenerConnection:(id)connection
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_listeners addObject:v4];
+  connectionCopy = connection;
+  [(NSMutableArray *)self->_listeners addObject:connectionCopy];
   v5 = +[IDSFoundationLog Multiplexer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     listeners = self->_listeners;
     *buf = 138412802;
-    v17 = v4;
+    v17 = connectionCopy;
     v18 = 2112;
     v19 = listeners;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "added listener connection %@ to listeners %@\nLocalMUXTransport %@", buf, 0x20u);
   }
 
@@ -161,24 +161,24 @@
   v11 = 3221225472;
   v12 = sub_100470048;
   v13 = &unk_100BDB568;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
+  selfCopy2 = self;
+  v15 = connectionCopy;
+  v7 = connectionCopy;
   v8 = objc_retainBlock(&v10);
-  [v7 setPacketBufferReadHandler:{v8, v10, v11, v12, v13, v14}];
+  [v7 setPacketBufferReadHandler:{v8, v10, v11, v12, v13, selfCopy2}];
   [v7 startReadOnTransportThread];
 
   return 1;
 }
 
-- (BOOL)tryConsumePacketBuffer:(id *)a3
+- (BOOL)tryConsumePacketBuffer:(id *)buffer
 {
-  if (a3->var2 <= 3)
+  if (buffer->var2 <= 3)
   {
     v4 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      var2 = a3->var2;
+      var2 = buffer->var2;
       LODWORD(buf) = 134217984;
       *(&buf + 4) = var2;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "not enough header %ld to consume", &buf, 0xCu);
@@ -187,7 +187,7 @@
     return 0;
   }
 
-  if (bswap32(*a3->var0) != -87133353)
+  if (bswap32(*buffer->var0) != -87133353)
   {
     return 0;
   }
@@ -195,10 +195,10 @@
   kdebug_trace();
   [(IDSMultiplexerLocalTransport *)self packetizationHeadroom];
   IDSLinkPacketBufferAddBufferStart();
-  if (a3->var2 > 3)
+  if (buffer->var2 > 3)
   {
-    v10 = *a3->var0;
-    v11 = __rev16(*(a3->var0 + 1));
+    v10 = *buffer->var0;
+    v11 = __rev16(*(buffer->var0 + 1));
     v12 = __PAIR64__(v11, bswap32(v10)) >> 16;
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -221,7 +221,7 @@
         *v27 = 138412546;
         *v28 = listeners;
         *&v28[8] = 2112;
-        v29 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "check listeners %@\nLocalMUXTransport %@", v27, 0x16u);
       }
 
@@ -243,7 +243,7 @@ LABEL_20:
             objc_enumerationMutation(v14);
           }
 
-          if ([*(*(&v21 + 1) + 8 * v19) tryConsumePacketBuffer:{a3, v21}])
+          if ([*(*(&v21 + 1) + 8 * v19) tryConsumePacketBuffer:{buffer, v21}])
           {
             break;
           }
@@ -268,14 +268,14 @@ LABEL_26:
         v14 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(&v14->super.super, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = sub_10050F958(a3->var0, a3->var2);
+          v20 = sub_10050F958(buffer->var0, buffer->var2);
           *v27 = 67109890;
           *v28 = v11;
           *&v28[4] = 1024;
           *&v28[6] = __rev16(v10);
-          LOWORD(v29) = 1024;
-          *(&v29 + 2) = v12;
-          HIWORD(v29) = 2080;
+          LOWORD(selfCopy) = 1024;
+          *(&selfCopy + 2) = v12;
+          HIWORD(selfCopy) = 2080;
           v30 = v20;
           _os_log_impl(&_mh_execute_header, &v14->super.super, OS_LOG_TYPE_DEFAULT, "Cannot find corresponding connection (localPort:%d, remotePort:%d, portSignature %08X), for incoming packet %s", v27, 0x1Eu);
         }
@@ -285,7 +285,7 @@ LABEL_26:
     else
     {
       v14 = [(NSMutableArray *)self->_routedConnections objectAtIndexedSubscript:?];
-      [(NSMutableArray *)v14 writePacketBuffer:a3];
+      [(NSMutableArray *)v14 writePacketBuffer:buffer];
     }
 
     _Block_object_dispose(&buf, 8);
@@ -296,7 +296,7 @@ LABEL_26:
     v7 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = a3->var2;
+      v8 = buffer->var2;
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Cannot retrieve port signature, invalid packetBuffer size: %ld", &buf, 0xCu);
@@ -306,9 +306,9 @@ LABEL_26:
   return 1;
 }
 
-- (void)setPacketBufferReadHandler:(id)a3
+- (void)setPacketBufferReadHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   readHandler = self->_readHandler;
   self->_readHandler = v4;
 

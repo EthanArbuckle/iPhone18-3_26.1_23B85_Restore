@@ -1,26 +1,26 @@
 @interface MKTransitInfoLabelView
-+ (id)stringAttributesForFont:(id)a3 lineBreakMode:(int64_t)a4;
-+ (int64_t)iconSizeForContentSizeCategory:(id)a3;
-+ (int64_t)shieldSizeForContentSizeCategory:(id)a3;
++ (id)stringAttributesForFont:(id)font lineBreakMode:(int64_t)mode;
++ (int64_t)iconSizeForContentSizeCategory:(id)category;
++ (int64_t)shieldSizeForContentSizeCategory:(id)category;
 - (MKArtworkDataSourceCache)artworkCache;
-- (MKTransitInfoLabelView)initWithLabelItems:(id)a3 iconSize:(int64_t)a4 shieldSize:(int64_t)a5 spaceBetweenShields:(double)a6 maxWidth:(double)a7;
-- (MKTransitInfoLabelView)initWithMapItem:(id)a3 maxWidth:(double)a4;
+- (MKTransitInfoLabelView)initWithLabelItems:(id)items iconSize:(int64_t)size shieldSize:(int64_t)shieldSize spaceBetweenShields:(double)shields maxWidth:(double)width;
+- (MKTransitInfoLabelView)initWithMapItem:(id)item maxWidth:(double)width;
 - (id)_generateText;
-- (id)_imageForArtworkDataSource:(id)a3;
-- (id)_imageForLabelItem:(id)a3;
-- (id)_imageForShieldDataSource:(id)a3;
+- (id)_imageForArtworkDataSource:(id)source;
+- (id)_imageForLabelItem:(id)item;
+- (id)_imageForShieldDataSource:(id)source;
 - (id)_stringAttributes;
 - (void)_contentSizeCategoryDidChange;
-- (void)_setFont:(id)a3 custom:(BOOL)a4;
+- (void)_setFont:(id)font custom:(BOOL)custom;
 - (void)_setupLabelInfo;
 - (void)dealloc;
-- (void)setIconSize:(int64_t)a3;
-- (void)setLabelItems:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setMaxWidth:(double)a3 textForTruncationGenerator:(id)a4;
-- (void)setShieldSize:(int64_t)a3;
-- (void)setSpaceBetweenIcons:(double)a3;
-- (void)setSpaceBetweenShields:(double)a3;
+- (void)setIconSize:(int64_t)size;
+- (void)setLabelItems:(id)items;
+- (void)setMapItem:(id)item;
+- (void)setMaxWidth:(double)width textForTruncationGenerator:(id)generator;
+- (void)setShieldSize:(int64_t)size;
+- (void)setSpaceBetweenIcons:(double)icons;
+- (void)setSpaceBetweenShields:(double)shields;
 @end
 
 @implementation MKTransitInfoLabelView
@@ -30,41 +30,41 @@
   if (!self->_hasCustomFont)
   {
     v3 = +[MKFontManager sharedManager];
-    v4 = [v3 smallAttributionFont];
-    [(MKTransitInfoLabelView *)self _setFont:v4 custom:0];
+    smallAttributionFont = [v3 smallAttributionFont];
+    [(MKTransitInfoLabelView *)self _setFont:smallAttributionFont custom:0];
   }
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
   if (!self->_hasCustomShieldSize)
   {
-    self->_shieldSize = [objc_opt_class() shieldSizeForContentSizeCategory:v6];
+    self->_shieldSize = [objc_opt_class() shieldSizeForContentSizeCategory:preferredContentSizeCategory];
   }
 
   if (!self->_hasCustomIconSize)
   {
-    self->_iconSize = [objc_opt_class() iconSizeForContentSizeCategory:v6];
+    self->_iconSize = [objc_opt_class() iconSizeForContentSizeCategory:preferredContentSizeCategory];
   }
 
   [(MKTransitInfoLabelView *)self _setupLabelInfo];
 }
 
-- (void)_setFont:(id)a3 custom:(BOOL)a4
+- (void)_setFont:(id)font custom:(BOOL)custom
 {
-  if (a4)
+  if (custom)
   {
     self->_hasCustomFont = 1;
   }
 
-  v5 = a3;
-  v6 = [(MKTransitInfoLabelView *)self font];
+  fontCopy = font;
+  font = [(MKTransitInfoLabelView *)self font];
   v9.receiver = self;
   v9.super_class = MKTransitInfoLabelView;
-  [(MKTransitInfoLabelView *)&v9 setFont:v5];
+  [(MKTransitInfoLabelView *)&v9 setFont:fontCopy];
 
-  v7 = [(MKTransitInfoLabelView *)self font];
-  v8 = [v6 isEqual:v7];
+  font2 = [(MKTransitInfoLabelView *)self font];
+  v8 = [font isEqual:font2];
 
   if ((v8 & 1) == 0)
   {
@@ -87,108 +87,108 @@
   return artworkCache;
 }
 
-- (id)_imageForShieldDataSource:(id)a3
+- (id)_imageForShieldDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(MKTransitInfoLabelView *)self window];
-  v6 = [v5 screen];
-  v7 = v6;
-  if (v6)
+  sourceCopy = source;
+  window = [(MKTransitInfoLabelView *)self window];
+  screen = [window screen];
+  v7 = screen;
+  if (screen)
   {
-    [v6 scale];
+    [screen scale];
     v9 = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = v11;
   }
 
   v12 = [MKTransitArtwork alloc];
-  v13 = [v4 shieldText];
-  v14 = [(MKTransitArtwork *)v12 initWithShield:v4 accessibilityText:v13];
+  shieldText = [sourceCopy shieldText];
+  v14 = [(MKTransitArtwork *)v12 initWithShield:sourceCopy accessibilityText:shieldText];
 
-  v15 = [(MKTransitInfoLabelView *)self artworkCache];
-  v16 = [v15 imageForArtwork:v14 size:-[MKTransitInfoLabelView shieldSize](self featureType:"shieldSize") scale:2 nightMode:{-[UIView _mapkit_isDarkModeEnabled](self, "_mapkit_isDarkModeEnabled"), v9}];
+  artworkCache = [(MKTransitInfoLabelView *)self artworkCache];
+  v16 = [artworkCache imageForArtwork:v14 size:-[MKTransitInfoLabelView shieldSize](self featureType:"shieldSize") scale:2 nightMode:{-[UIView _mapkit_isDarkModeEnabled](self, "_mapkit_isDarkModeEnabled"), v9}];
 
   return v16;
 }
 
-- (id)_imageForArtworkDataSource:(id)a3
+- (id)_imageForArtworkDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(MKTransitInfoLabelView *)self window];
-  v6 = [v5 screen];
-  v7 = v6;
-  if (v6)
+  sourceCopy = source;
+  window = [(MKTransitInfoLabelView *)self window];
+  screen = [window screen];
+  v7 = screen;
+  if (screen)
   {
-    [v6 scale];
+    [screen scale];
     v9 = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = v11;
   }
 
-  v12 = [v4 artworkSourceType];
+  artworkSourceType = [sourceCopy artworkSourceType];
   v13 = &OBJC_IVAR___MKTransitInfoLabelView__shieldSize;
-  if (v12 == 2)
+  if (artworkSourceType == 2)
   {
     v13 = &OBJC_IVAR___MKTransitInfoLabelView__iconSize;
   }
 
   v14 = *(&self->super.super.super.super.super.isa + *v13);
-  v15 = [(MKTransitInfoLabelView *)self artworkCache];
-  v16 = [v15 imageForArtwork:v4 size:v14 featureType:2 scale:-[UIView _mapkit_isDarkModeEnabled](self nightMode:{"_mapkit_isDarkModeEnabled"), v9}];
+  artworkCache = [(MKTransitInfoLabelView *)self artworkCache];
+  v16 = [artworkCache imageForArtwork:sourceCopy size:v14 featureType:2 scale:-[UIView _mapkit_isDarkModeEnabled](self nightMode:{"_mapkit_isDarkModeEnabled"), v9}];
 
   return v16;
 }
 
-- (id)_imageForLabelItem:(id)a3
+- (id)_imageForLabelItem:(id)item
 {
-  v4 = a3;
-  if ([v4 type] == 1)
+  itemCopy = item;
+  if ([itemCopy type] == 1)
   {
-    v5 = [v4 labelArtwork];
+    labelArtwork = [itemCopy labelArtwork];
 
-    v6 = [(MKTransitInfoLabelView *)self _imageForArtworkDataSource:v5];
+    v6 = [(MKTransitInfoLabelView *)self _imageForArtworkDataSource:labelArtwork];
   }
 
   else
   {
-    v7 = [v4 type];
+    type = [itemCopy type];
 
-    if (v7 == 3)
+    if (type == 3)
     {
-      v8 = [(MKTransitInfoLabelView *)self font];
-      [v8 _mapkit_lineHeight];
+      font = [(MKTransitInfoLabelView *)self font];
+      [font _mapkit_lineHeight];
       v10 = v9;
 
-      v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v11 nativeScale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen nativeScale];
       v12 = 1.0;
       if (v13 > 1.0)
       {
-        v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v14 nativeScale];
+        mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen2 nativeScale];
         v12 = v15;
       }
 
       v16 = 1.0 / v12;
-      v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v17 scale];
+      mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen3 scale];
       v19 = v18;
       v24.width = v16;
       v24.height = v10;
       UIGraphicsBeginImageContextWithOptions(v24, 0, v19);
 
-      v20 = [MEMORY[0x1E69DC888] lightGrayColor];
-      [v20 setFill];
+      lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+      [lightGrayColor setFill];
 
       CurrentContext = UIGraphicsGetCurrentContext();
       v25.origin.y = v10 * 0.125;
@@ -212,27 +212,27 @@
 - (id)_stringAttributes
 {
   v3 = objc_opt_class();
-  v4 = [(MKTransitInfoLabelView *)self font];
-  v5 = [v3 stringAttributesForFont:v4 lineBreakMode:{-[MKTransitInfoLabelView lineBreakMode](self, "lineBreakMode")}];
+  font = [(MKTransitInfoLabelView *)self font];
+  v5 = [v3 stringAttributesForFont:font lineBreakMode:{-[MKTransitInfoLabelView lineBreakMode](self, "lineBreakMode")}];
 
   return v5;
 }
 
-- (void)setSpaceBetweenIcons:(double)a3
+- (void)setSpaceBetweenIcons:(double)icons
 {
-  if (a3 >= 0.0 && self->_spaceBetweenIcons != a3)
+  if (icons >= 0.0 && self->_spaceBetweenIcons != icons)
   {
-    self->_spaceBetweenIcons = a3;
+    self->_spaceBetweenIcons = icons;
     [(MKTransitInfoLabelView *)self _setupLabelInfo];
   }
 }
 
-- (void)setIconSize:(int64_t)a3
+- (void)setIconSize:(int64_t)size
 {
   self->_hasCustomIconSize = 1;
-  if (self->_iconSize != a3)
+  if (self->_iconSize != size)
   {
-    self->_iconSize = a3;
+    self->_iconSize = size;
     [(MKTransitInfoLabelView *)self _setupLabelInfo];
   }
 }
@@ -254,7 +254,7 @@
     v40[2] = 0x2020000000;
     v41 = 0;
     v3 = [MEMORY[0x1E695DFA8] set];
-    v4 = [(MKTransitInfoLabelView *)self _stringAttributes];
+    _stringAttributes = [(MKTransitInfoLabelView *)self _stringAttributes];
     v34 = 0;
     v35 = &v34;
     v36 = 0x3032000000;
@@ -271,7 +271,7 @@
       v6 = @"\u200E";
     }
 
-    v39 = [v5 initWithString:v6 attributes:v4];
+    v39 = [v5 initWithString:v6 attributes:_stringAttributes];
     v32[0] = 0;
     v32[1] = v32;
     v32[2] = 0x3032000000;
@@ -279,11 +279,11 @@
     v32[4] = __Block_byref_object_dispose__1610;
     v33 = 0;
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [MEMORY[0x1E696AEC0] _mapkit_commaListDelimiter];
-    v9 = [v7 initWithString:v8 attributes:v4];
+    _mapkit_commaListDelimiter = [MEMORY[0x1E696AEC0] _mapkit_commaListDelimiter];
+    v9 = [v7 initWithString:_mapkit_commaListDelimiter attributes:_stringAttributes];
 
-    v10 = [(MKTransitInfoLabelView *)self font];
-    [v10 capHeight];
+    font = [(MKTransitInfoLabelView *)self font];
+    [font capHeight];
     v12 = v11;
 
     v13 = [MEMORY[0x1E695DFA8] set];
@@ -304,7 +304,7 @@
     v29 = &v34;
     v17 = v9;
     v24 = v17;
-    v18 = v4;
+    v18 = _stringAttributes;
     v25 = v18;
     v30 = v32;
     [(NSArray *)labelItems enumerateObjectsWithOptions:0 usingBlock:v21];
@@ -677,18 +677,18 @@ LABEL_70:
 
 - (void)_setupLabelInfo
 {
-  v3 = [(MKTransitInfoLabelView *)self _generateText];
-  [(MKTransitInfoLabelView *)self setAttributedText:v3];
+  _generateText = [(MKTransitInfoLabelView *)self _generateText];
+  [(MKTransitInfoLabelView *)self setAttributedText:_generateText];
 }
 
-- (void)setMaxWidth:(double)a3 textForTruncationGenerator:(id)a4
+- (void)setMaxWidth:(double)width textForTruncationGenerator:(id)generator
 {
-  v6 = a4;
+  generatorCopy = generator;
   textForTruncationGenerator = self->_textForTruncationGenerator;
-  v14 = v6;
-  if (self->_maxWidth == a3)
+  v14 = generatorCopy;
+  if (self->_maxWidth == width)
   {
-    if (textForTruncationGenerator == v6)
+    if (textForTruncationGenerator == generatorCopy)
     {
       goto LABEL_10;
     }
@@ -696,11 +696,11 @@ LABEL_70:
     goto LABEL_5;
   }
 
-  self->_maxWidth = a3;
-  if (textForTruncationGenerator != v6)
+  self->_maxWidth = width;
+  if (textForTruncationGenerator != generatorCopy)
   {
 LABEL_5:
-    v8 = [v6 copy];
+    v8 = [generatorCopy copy];
     v9 = v8;
     if (v8)
     {
@@ -719,35 +719,35 @@ LABEL_5:
   }
 
   [(MKTransitInfoLabelView *)self _setupLabelInfo];
-  v6 = v14;
+  generatorCopy = v14;
 LABEL_10:
 }
 
-- (void)setSpaceBetweenShields:(double)a3
+- (void)setSpaceBetweenShields:(double)shields
 {
-  if (a3 >= 0.0 && self->_spaceBetweenShields != a3)
+  if (shields >= 0.0 && self->_spaceBetweenShields != shields)
   {
-    self->_spaceBetweenShields = a3;
+    self->_spaceBetweenShields = shields;
     [(MKTransitInfoLabelView *)self _setupLabelInfo];
   }
 }
 
-- (void)setShieldSize:(int64_t)a3
+- (void)setShieldSize:(int64_t)size
 {
   self->_hasCustomShieldSize = 1;
-  if (self->_shieldSize != a3)
+  if (self->_shieldSize != size)
   {
-    self->_shieldSize = a3;
+    self->_shieldSize = size;
     [(MKTransitInfoLabelView *)self _setupLabelInfo];
   }
 }
 
-- (void)setLabelItems:(id)a3
+- (void)setLabelItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (![(NSArray *)self->_labelItems isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     labelItems = self->_labelItems;
     self->_labelItems = v4;
 
@@ -755,14 +755,14 @@ LABEL_10:
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v4 = [a3 _transitInfo];
-  v5 = [v4 labelItems];
-  v6 = v5;
-  if (v5)
+  _transitInfo = [item _transitInfo];
+  labelItems = [_transitInfo labelItems];
+  v6 = labelItems;
+  if (labelItems)
   {
-    v7 = v5;
+    v7 = labelItems;
   }
 
   else
@@ -777,68 +777,68 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = MKTransitInfoLabelView;
   [(MKTransitInfoLabelView *)&v4 dealloc];
 }
 
-- (MKTransitInfoLabelView)initWithLabelItems:(id)a3 iconSize:(int64_t)a4 shieldSize:(int64_t)a5 spaceBetweenShields:(double)a6 maxWidth:(double)a7
+- (MKTransitInfoLabelView)initWithLabelItems:(id)items iconSize:(int64_t)size shieldSize:(int64_t)shieldSize spaceBetweenShields:(double)shields maxWidth:(double)width
 {
-  v12 = a3;
+  itemsCopy = items;
   v23.receiver = self;
   v23.super_class = MKTransitInfoLabelView;
   v13 = [(MKTransitInfoLabelView *)&v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v14 = v13;
   if (v13)
   {
-    v13->_hasCustomShieldSize = a5 != 0x8000000000000000;
-    v13->_hasCustomIconSize = a4 != 0x8000000000000000;
-    v15 = [MEMORY[0x1E69DC668] sharedApplication];
-    v16 = [v15 preferredContentSizeCategory];
+    v13->_hasCustomShieldSize = shieldSize != 0x8000000000000000;
+    v13->_hasCustomIconSize = size != 0x8000000000000000;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
     if (!v14->_hasCustomShieldSize)
     {
-      a5 = [objc_opt_class() shieldSizeForContentSizeCategory:v16];
+      shieldSize = [objc_opt_class() shieldSizeForContentSizeCategory:preferredContentSizeCategory];
     }
 
     if (!v14->_hasCustomIconSize)
     {
-      a4 = [objc_opt_class() iconSizeForContentSizeCategory:v16];
+      size = [objc_opt_class() iconSizeForContentSizeCategory:preferredContentSizeCategory];
     }
 
-    v14->_iconSize = a4;
-    v14->_shieldSize = a5;
-    v14->_maxWidth = a7;
-    v14->_spaceBetweenShields = a6;
+    v14->_iconSize = size;
+    v14->_shieldSize = shieldSize;
+    v14->_maxWidth = width;
+    v14->_spaceBetweenShields = shields;
     v14->_spaceBetweenIcons = 5.0;
     v17 = [&__block_literal_global_1533 copy];
     textForTruncationGenerator = v14->_textForTruncationGenerator;
     v14->_textForTruncationGenerator = v17;
 
     v19 = +[MKFontManager sharedManager];
-    v20 = [v19 smallAttributionFont];
-    [(MKTransitInfoLabelView *)v14 _setFont:v20 custom:0];
+    smallAttributionFont = [v19 smallAttributionFont];
+    [(MKTransitInfoLabelView *)v14 _setFont:smallAttributionFont custom:0];
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v14 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
-    [(MKTransitInfoLabelView *)v14 setLabelItems:v12];
+    [(MKTransitInfoLabelView *)v14 setLabelItems:itemsCopy];
   }
 
   return v14;
 }
 
-- (MKTransitInfoLabelView)initWithMapItem:(id)a3 maxWidth:(double)a4
+- (MKTransitInfoLabelView)initWithMapItem:(id)item maxWidth:(double)width
 {
-  v6 = [a3 _transitInfo];
-  v7 = [v6 labelItems];
-  v8 = v7;
-  if (v7)
+  _transitInfo = [item _transitInfo];
+  labelItems = [_transitInfo labelItems];
+  v8 = labelItems;
+  if (labelItems)
   {
-    v9 = v7;
+    v9 = labelItems;
   }
 
   else
@@ -846,20 +846,20 @@ LABEL_10:
     v9 = MEMORY[0x1E695E0F0];
   }
 
-  v10 = [(MKTransitInfoLabelView *)self initWithLabelItems:v9 iconSize:0x8000000000000000 shieldSize:0x8000000000000000 spaceBetweenShields:4.0 maxWidth:a4];
+  v10 = [(MKTransitInfoLabelView *)self initWithLabelItems:v9 iconSize:0x8000000000000000 shieldSize:0x8000000000000000 spaceBetweenShields:4.0 maxWidth:width];
 
   return v10;
 }
 
-+ (int64_t)iconSizeForContentSizeCategory:(id)a3
++ (int64_t)iconSizeForContentSizeCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC28]))
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC28]))
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DDC20]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E69DDC20]])
   {
     v4 = 6;
   }
@@ -872,15 +872,15 @@ LABEL_10:
   return v4;
 }
 
-+ (int64_t)shieldSizeForContentSizeCategory:(id)a3
++ (int64_t)shieldSizeForContentSizeCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC28]))
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69DDC28]))
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DDC20]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E69DDC20]])
   {
     v4 = 6;
   }
@@ -893,19 +893,19 @@ LABEL_10:
   return v4;
 }
 
-+ (id)stringAttributesForFont:(id)a3 lineBreakMode:(int64_t)a4
++ (id)stringAttributesForFont:(id)font lineBreakMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v7 = [v6 mutableCopy];
+  fontCopy = font;
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v7 = [defaultParagraphStyle mutableCopy];
 
   [v7 setLineSpacing:2.0];
-  [v7 setLineBreakMode:a4];
+  [v7 setLineBreakMode:mode];
   v8 = [MEMORY[0x1E695DF90] dictionaryWithObject:v7 forKey:*MEMORY[0x1E69DB688]];
   v9 = v8;
-  if (v5)
+  if (fontCopy)
   {
-    [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+    [v8 setObject:fontCopy forKeyedSubscript:*MEMORY[0x1E69DB648]];
   }
 
   return v9;

@@ -8,10 +8,10 @@
 - (void)_showInternalOnlySkipButton;
 - (void)_skipUpdateAndContinue;
 - (void)abortPairing;
-- (void)alternateButtonPressed:(id)a3;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSUpdateWatchViewController
@@ -23,16 +23,16 @@
   v2 = [(COSOptinViewController *)&v10 init];
   if (v2)
   {
-    v3 = [UIApp setupController];
-    v4 = [v3 pairingCompatiblity];
+    setupController = [UIApp setupController];
+    pairingCompatiblity = [setupController pairingCompatiblity];
     pairingCompatibility = v2->_pairingCompatibility;
-    v2->_pairingCompatibility = v4;
+    v2->_pairingCompatibility = pairingCompatiblity;
 
     if ([(COSPairingCompatibility *)v2->_pairingCompatibility requiresZeroDayUpdate])
     {
-      v6 = [(COSPairingCompatibility *)v2->_pairingCompatibility zeroDayUpdateLearnMoreLink];
+      zeroDayUpdateLearnMoreLink = [(COSPairingCompatibility *)v2->_pairingCompatibility zeroDayUpdateLearnMoreLink];
 
-      if (v6)
+      if (zeroDayUpdateLearnMoreLink)
       {
         v7 = 90;
       }
@@ -65,9 +65,9 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (sub_100009A74() && [(COSPairingCompatibility *)self->_pairingCompatibility requiresZeroDayUpdate])
   {
     [(COSUpdateWatchViewController *)self _showInternalOnlySkipButton];
@@ -75,7 +75,7 @@
 
   v5.receiver = self;
   v5.super_class = COSUpdateWatchViewController;
-  [(COSUpdateWatchViewController *)&v5 viewWillAppear:v3];
+  [(COSUpdateWatchViewController *)&v5 viewWillAppear:appearCopy];
 }
 
 - (id)titleString
@@ -130,7 +130,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -140,19 +140,19 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(COSUpdateWatchViewController *)self suggestedChoiceButton];
-  [v5 setEnabled:0];
+  suggestedChoiceButton = [(COSUpdateWatchViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 
-  v6 = [(COSUpdateWatchViewController *)self alternateChoiceButton];
-  [v6 setEnabled:0];
+  alternateChoiceButton = [(COSUpdateWatchViewController *)self alternateChoiceButton];
+  [alternateChoiceButton setEnabled:0];
 
   setupUpdateManager = self->_setupUpdateManager;
   if (!setupUpdateManager)
   {
-    v8 = [UIApp setupController];
-    v9 = [v8 setupSoftwareUpdateManager];
+    setupController = [UIApp setupController];
+    setupSoftwareUpdateManager = [setupController setupSoftwareUpdateManager];
     v10 = self->_setupUpdateManager;
-    self->_setupUpdateManager = v9;
+    self->_setupUpdateManager = setupSoftwareUpdateManager;
 
     setupUpdateManager = self->_setupUpdateManager;
   }
@@ -166,7 +166,7 @@
   [(COSSetupSoftwareUpdateManager *)setupUpdateManager startUpdateInSetupWithController:self forcedUpdateOrUpdateInBackup:isSkippable completion:v12];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -186,19 +186,19 @@
 
   else
   {
-    v6 = [UIApp setupController];
-    v7 = [v6 pairingReportManager];
+    setupController = [UIApp setupController];
+    pairingReportManager = [setupController pairingReportManager];
 
-    [v7 addPairingTimeEventToPairingReportPlist:56 withValue:&__kCFBooleanTrue withError:0];
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:56 withValue:&__kCFBooleanTrue withError:0];
     [(COSUpdateWatchViewController *)self abortPairing];
   }
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v3 = UIApp;
-  v4 = [(COSPairingCompatibility *)self->_pairingCompatibility zeroDayUpdateLearnMoreLink];
-  [v3 openURL:v4 withCompletionHandler:&stru_100269778];
+  zeroDayUpdateLearnMoreLink = [(COSPairingCompatibility *)self->_pairingCompatibility zeroDayUpdateLearnMoreLink];
+  [v3 openURL:zeroDayUpdateLearnMoreLink withCompletionHandler:&stru_100269778];
 }
 
 - (void)abortPairing
@@ -206,14 +206,14 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [UIApp activeWatch];
-  v5 = [v4 valueForProperty:NRDevicePropertyIsPaired];
-  v6 = [v5 BOOLValue];
+  activeWatch = [UIApp activeWatch];
+  v5 = [activeWatch valueForProperty:NRDevicePropertyIsPaired];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [UIApp isActivated];
+  isActivated = [UIApp isActivated];
   v8 = pbb_bridge_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v4 && ((v6 | v7) & 1) != 0)
+  if (activeWatch && ((bOOLValue | isActivated) & 1) != 0)
   {
     if (v9)
     {
@@ -227,7 +227,7 @@
     v14[1] = &__kCFBooleanTrue;
     v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
     v11 = +[NRPairedDeviceRegistry sharedInstance];
-    [v11 unpairWithDevice:v4 withOptions:v10 operationHasBegun:&stru_100269798];
+    [v11 unpairWithDevice:activeWatch withOptions:v10 operationHasBegun:&stru_100269798];
   }
 
   else
@@ -245,26 +245,26 @@
 
 - (void)_skipUpdateAndContinue
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 linkUpgradeMonitor];
-  [v4 indicateSoftwareUpdateStateResolved];
+  setupController = [UIApp setupController];
+  linkUpgradeMonitor = [setupController linkUpgradeMonitor];
+  [linkUpgradeMonitor indicateSoftwareUpdateStateResolved];
 
-  v5 = [UIApp setupController];
-  v6 = [v5 pairingCompatiblity];
-  [v6 reset];
+  setupController2 = [UIApp setupController];
+  pairingCompatiblity = [setupController2 pairingCompatiblity];
+  [pairingCompatiblity reset];
 
   v7 = +[UIApplication sharedApplication];
-  v11 = [v7 activeWatch];
+  activeWatch = [v7 activeWatch];
 
-  v8 = [v11 valueForProperty:NRDevicePropertySystemVersion];
+  v8 = [activeWatch valueForProperty:NRDevicePropertySystemVersion];
   if (v8)
   {
     v9 = +[COSBackupManager sharedBackupManager];
     [v9 setMinWatchOSVersion:v8];
   }
 
-  v10 = [(COSUpdateWatchViewController *)self delegate];
-  [v10 buddyControllerDone:self];
+  delegate = [(COSUpdateWatchViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (void)_showInternalOnlySkipButton
@@ -293,45 +293,45 @@
   [v9 setSpacing:8.0];
   [v9 addArrangedSubview:v3];
   [v9 addArrangedSubview:v5];
-  v10 = [(COSUpdateWatchViewController *)self view];
-  [v10 addSubview:v9];
+  view = [(COSUpdateWatchViewController *)self view];
+  [view addSubview:v9];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [v9 topAnchor];
-  v12 = [(COSUpdateWatchViewController *)self illustratedWatchView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  topAnchor = [v9 topAnchor];
+  illustratedWatchView = [(COSUpdateWatchViewController *)self illustratedWatchView];
+  bottomAnchor = [illustratedWatchView bottomAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v14 setActive:1];
 
-  v15 = [v9 bottomAnchor];
-  v16 = [(COSUpdateWatchViewController *)self contentView];
-  v17 = [v16 bottomAnchor];
-  v37 = [v15 constraintEqualToAnchor:v17];
+  bottomAnchor2 = [v9 bottomAnchor];
+  contentView = [(COSUpdateWatchViewController *)self contentView];
+  bottomAnchor3 = [contentView bottomAnchor];
+  v37 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
 
   [v37 setActive:1];
-  v18 = [v9 centerXAnchor];
-  v19 = [(COSUpdateWatchViewController *)self view];
-  v20 = [v19 centerXAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  centerXAnchor = [v9 centerXAnchor];
+  view2 = [(COSUpdateWatchViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v21 setActive:1];
 
-  v35 = [v9 bottomAnchor];
-  v36 = [(COSUpdateWatchViewController *)self buttonTray];
-  v34 = [v36 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  bottomAnchor4 = [v9 bottomAnchor];
+  buttonTray = [(COSUpdateWatchViewController *)self buttonTray];
+  topAnchor2 = [buttonTray topAnchor];
+  v33 = [bottomAnchor4 constraintEqualToAnchor:topAnchor2];
   v40[0] = v33;
-  v31 = [v9 leftAnchor];
-  v32 = [(COSUpdateWatchViewController *)self contentView];
-  v22 = [v32 leftAnchor];
-  v23 = [v31 constraintEqualToAnchor:v22];
+  leftAnchor = [v9 leftAnchor];
+  contentView2 = [(COSUpdateWatchViewController *)self contentView];
+  leftAnchor2 = [contentView2 leftAnchor];
+  v23 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v40[1] = v23;
-  v24 = [v9 rightAnchor];
-  v25 = [(COSUpdateWatchViewController *)self contentView];
-  v26 = [v25 rightAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  rightAnchor = [v9 rightAnchor];
+  contentView3 = [(COSUpdateWatchViewController *)self contentView];
+  rightAnchor2 = [contentView3 rightAnchor];
+  v27 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v40[2] = v27;
-  v28 = [v9 heightAnchor];
-  v29 = [v28 constraintEqualToConstant:100.0];
+  heightAnchor = [v9 heightAnchor];
+  v29 = [heightAnchor constraintEqualToConstant:100.0];
   v40[3] = v29;
   v30 = [NSArray arrayWithObjects:v40 count:4];
   [NSLayoutConstraint activateConstraints:v30];

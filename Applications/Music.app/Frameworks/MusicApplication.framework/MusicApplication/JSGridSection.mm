@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   JSGridSection.description.getter();
 
   v3 = sub_AB9260();

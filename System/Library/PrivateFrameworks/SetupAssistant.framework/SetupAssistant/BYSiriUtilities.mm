@@ -3,16 +3,16 @@
 + (BOOL)deviceSupportsSystemAssistantExperience;
 + (BOOL)isVoiceTriggerEnabled;
 + (uint64_t)deviceSupportsSystemAssistantExperience;
-+ (void)requiresAcknowledgementForDataSharing:(id)a3;
++ (void)requiresAcknowledgementForDataSharing:(id)sharing;
 @end
 
 @implementation BYSiriUtilities
 
-+ (void)requiresAcknowledgementForDataSharing:(id)a3
++ (void)requiresAcknowledgementForDataSharing:(id)sharing
 {
-  v3 = a3;
-  v4 = [getVTPreferencesClass() sharedPreferences];
-  v5 = [v4 voiceTriggerEnabled];
+  sharingCopy = sharing;
+  sharedPreferences = [getVTPreferencesClass() sharedPreferences];
+  voiceTriggerEnabled = [sharedPreferences voiceTriggerEnabled];
 
   v22 = 0;
   v23 = &v22;
@@ -32,10 +32,10 @@
 
   v7 = v6;
   _Block_object_dispose(&v22, 8);
-  v8 = [v6 sharedPreferences];
-  v9 = [v8 assistantIsEnabled];
+  sharedPreferences2 = [v6 sharedPreferences];
+  assistantIsEnabled = [sharedPreferences2 assistantIsEnabled];
 
-  if ((v5 | v9))
+  if ((voiceTriggerEnabled | assistantIsEnabled))
   {
     v16 = 0;
     v17 = &v16;
@@ -67,15 +67,15 @@
     v13[2] = __57__BYSiriUtilities_requiresAcknowledgementForDataSharing___block_invoke;
     v13[3] = &unk_1E7D02708;
     v15 = &v16;
-    v14 = v3;
+    v14 = sharingCopy;
     [v12 getSiriDataSharingOptInStatusWithCompletion:v13];
 
     _Block_object_dispose(&v16, 8);
   }
 
-  else if (v3)
+  else if (sharingCopy)
   {
-    (*(v3 + 2))(v3, 0);
+    (*(sharingCopy + 2))(sharingCopy, 0);
   }
 }
 
@@ -104,10 +104,10 @@ void __57__BYSiriUtilities_requiresAcknowledgementForDataSharing___block_invoke(
 
 + (BOOL)isVoiceTriggerEnabled
 {
-  v2 = [getVTPreferencesClass() sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  sharedPreferences = [getVTPreferencesClass() sharedPreferences];
+  voiceTriggerEnabled = [sharedPreferences voiceTriggerEnabled];
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
 + (BOOL)deviceSupportsSystemAssistantExperience
@@ -183,12 +183,12 @@ void __57__BYSiriUtilities_requiresAcknowledgementForDataSharing___block_invoke(
 
   v6 = v5;
   _Block_object_dispose(&v19, 8);
-  v7 = [v4 languageCode];
-  v8 = [v5 voiceInfoForSessionLanguageCode:v7];
+  languageCode = [v4 languageCode];
+  v8 = [v5 voiceInfoForSessionLanguageCode:languageCode];
 
-  v9 = [v4 name];
-  v10 = [v8 name];
-  v11 = [v9 isEqualToString:v10];
+  name = [v4 name];
+  name2 = [v8 name];
+  v11 = [name isEqualToString:name2];
 
   return v11;
 }

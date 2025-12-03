@@ -1,20 +1,20 @@
 @interface HMDStructuredDataFoundationReader
-+ (uint64_t)tokenForValue:(uint64_t)a1;
-- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)a3;
++ (uint64_t)tokenForValue:(uint64_t)value;
+- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)token;
 - (void)_push;
-- (void)failWithError:(id)a3;
-- (void)initWithInput:(void *)a1;
+- (void)failWithError:(id)error;
+- (void)initWithInput:(void *)input;
 @end
 
 @implementation HMDStructuredDataFoundationReader
 
-- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)a3
+- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)token
 {
-  if (a3 && a3->type == 5)
+  if (token && token->type == 5)
   {
-    v4 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:a3->value];
+    nextObject = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:token->value];
     v5 = 1;
-    if (!v4)
+    if (!nextObject)
     {
       goto LABEL_4;
     }
@@ -22,29 +22,29 @@
 
   else
   {
-    v4 = [(NSEnumerator *)self->_enumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
     v5 = 0;
-    if (!v4)
+    if (!nextObject)
     {
 LABEL_4:
       if ([(NSMutableArray *)self->_stack count])
       {
         dictionary = self->_dictionary;
-        v7 = [(NSMutableArray *)self->_stack lastObject];
+        lastObject = [(NSMutableArray *)self->_stack lastObject];
         enumerator = self->_enumerator;
-        self->_enumerator = v7;
+        self->_enumerator = lastObject;
 
         [(NSMutableArray *)self->_stack removeLastObject];
-        v9 = [(NSMutableArray *)self->_stack lastObject];
-        v10 = v9;
-        if (*MEMORY[0x277CBEEE8] == v9)
+        lastObject2 = [(NSMutableArray *)self->_stack lastObject];
+        v10 = lastObject2;
+        if (*MEMORY[0x277CBEEE8] == lastObject2)
         {
           v11 = 0;
         }
 
         else
         {
-          v11 = v9;
+          v11 = lastObject2;
         }
 
         v12 = v11;
@@ -88,15 +88,15 @@ LABEL_4:
 
   if (v5)
   {
-    v16 = [HMDStructuredDataFoundationReader tokenForValue:v4];
+    v16 = [HMDStructuredDataFoundationReader tokenForValue:nextObject];
     v14 = v17;
     if (v16 == 3)
     {
       [(HMDStructuredDataFoundationReader *)self _push];
-      objc_storeStrong(&self->_dictionary, v4);
-      v33 = [(NSDictionary *)self->_dictionary keyEnumerator];
+      objc_storeStrong(&self->_dictionary, nextObject);
+      keyEnumerator = [(NSDictionary *)self->_dictionary keyEnumerator];
       v34 = self->_enumerator;
-      self->_enumerator = v33;
+      self->_enumerator = keyEnumerator;
 
       v15 = 3;
     }
@@ -107,9 +107,9 @@ LABEL_4:
       if (v16 == 1)
       {
         [(HMDStructuredDataFoundationReader *)self _push];
-        v18 = [v4 objectEnumerator];
+        objectEnumerator = [nextObject objectEnumerator];
         v19 = self->_enumerator;
-        self->_enumerator = v18;
+        self->_enumerator = objectEnumerator;
 
         v15 = 1;
       }
@@ -118,10 +118,10 @@ LABEL_4:
 
   else
   {
-    v20 = CFGetTypeID(v4);
+    v20 = CFGetTypeID(nextObject);
     if (v20 == CFStringGetTypeID())
     {
-      v14 = v4;
+      v14 = nextObject;
       v15 = 5;
     }
 
@@ -143,7 +143,7 @@ LABEL_23:
   return result;
 }
 
-+ (uint64_t)tokenForValue:(uint64_t)a1
++ (uint64_t)tokenForValue:(uint64_t)value
 {
   v2 = a2;
   objc_opt_self();
@@ -190,8 +190,8 @@ LABEL_9:
 
   else if (v3 == tokenForValue__BOOLeanTypeID)
   {
-    v8 = [v2 BOOLValue];
-    [MEMORY[0x277CCABB0] numberWithBool:v8];
+    bOOLValue = [v2 BOOLValue];
+    [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     objc_claimAutoreleasedReturnValue();
     v6 = 7;
   }
@@ -244,10 +244,10 @@ LABEL_27:
 
 - (void)_push
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 40);
-    v3 = *(a1 + 32);
+    v2 = *(self + 40);
+    v3 = *(self + 32);
     if (!v3)
     {
       v3 = *MEMORY[0x277CBEEE8];
@@ -256,12 +256,12 @@ LABEL_27:
     v4 = v3;
     [v2 addObject:v4];
 
-    v5 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v5 = *(self + 32);
+    *(self + 32) = 0;
 
-    [*(a1 + 40) addObject:*(a1 + 24)];
-    v6 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [*(self + 40) addObject:*(self + 24)];
+    v6 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
@@ -279,11 +279,11 @@ CFTypeID __51__HMDStructuredDataFoundationReader_tokenForValue___block_invoke()
   return result;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v7.receiver = self;
   v7.super_class = HMDStructuredDataFoundationReader;
-  [(HMDTokenBasedStructuredReader *)&v7 failWithError:a3];
+  [(HMDTokenBasedStructuredReader *)&v7 failWithError:error];
   enumerator = self->_enumerator;
   self->_enumerator = 0;
 
@@ -294,31 +294,31 @@ CFTypeID __51__HMDStructuredDataFoundationReader_tokenForValue___block_invoke()
   self->_stack = 0;
 }
 
-- (void)initWithInput:(void *)a1
+- (void)initWithInput:(void *)input
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (input)
   {
-    v11.receiver = a1;
+    v11.receiver = input;
     v11.super_class = HMDStructuredDataFoundationReader;
-    a1 = objc_msgSendSuper2(&v11, sel_init);
-    if (a1)
+    input = objc_msgSendSuper2(&v11, sel_init);
+    if (input)
     {
       v12[0] = v3;
       v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-      v5 = [v4 objectEnumerator];
-      v6 = a1[3];
-      a1[3] = v5;
+      objectEnumerator = [v4 objectEnumerator];
+      v6 = input[3];
+      input[3] = objectEnumerator;
 
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = a1[5];
-      a1[5] = v7;
+      v8 = input[5];
+      input[5] = v7;
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return a1;
+  return input;
 }
 
 @end

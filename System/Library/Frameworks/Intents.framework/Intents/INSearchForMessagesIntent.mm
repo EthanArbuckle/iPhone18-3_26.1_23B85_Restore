@@ -11,8 +11,8 @@
 - (INMessageAttributeOptions)attributes;
 - (INSearchForMessagesIntent)initWithRecipients:(NSArray *)recipients senders:(NSArray *)senders searchTerms:(NSArray *)searchTerms attributes:(INMessageAttributeOptions)attributes dateTimeRange:(INDateComponentsRange *)dateTimeRange identifiers:(NSArray *)identifiers notificationIdentifiers:(NSArray *)notificationIdentifiers groupNames:(NSArray *)groupNames;
 - (INSearchForMessagesIntent)initWithRecipients:(NSArray *)recipients senders:(NSArray *)senders searchTerms:(NSArray *)searchTerms attributes:(INMessageAttributeOptions)attributes dateTimeRange:(INDateComponentsRange *)dateTimeRange identifiers:(NSArray *)identifiers notificationIdentifiers:(NSArray *)notificationIdentifiers speakableGroupNames:(NSArray *)speakableGroupNames conversationIdentifiers:(NSArray *)conversationIdentifiers;
-- (INSearchForMessagesIntent)initWithRecipients:(id)a3 senders:(id)a4 contents:(id)a5 attributes:(unint64_t)a6 dateTimeRange:(id)a7 identifiers:(id)a8;
-- (INSearchForMessagesIntent)initWithRecipients:(id)a3 senders:(id)a4 contents:(id)a5 attributes:(unint64_t)a6 dateTimeRange:(id)a7 identifiers:(id)a8 notificationIdentifiers:(id)a9;
+- (INSearchForMessagesIntent)initWithRecipients:(id)recipients senders:(id)senders contents:(id)contents attributes:(unint64_t)attributes dateTimeRange:(id)range identifiers:(id)identifiers;
+- (INSearchForMessagesIntent)initWithRecipients:(id)recipients senders:(id)senders contents:(id)contents attributes:(unint64_t)attributes dateTimeRange:(id)range identifiers:(id)identifiers notificationIdentifiers:(id)notificationIdentifiers;
 - (NSArray)conversationIdentifiers;
 - (NSArray)groupNames;
 - (NSArray)identifiers;
@@ -24,37 +24,37 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAttributes:(unint64_t)a3;
-- (void)setConversationIdentifiers:(id)a3;
-- (void)setDateTimeRange:(id)a3;
-- (void)setGroupNames:(id)a3;
-- (void)setIdentifiers:(id)a3;
-- (void)setNotificationIdentifiers:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setSearchTerms:(id)a3;
-- (void)setSenders:(id)a3;
-- (void)setSpeakableGroupNames:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAttributes:(unint64_t)attributes;
+- (void)setConversationIdentifiers:(id)identifiers;
+- (void)setDateTimeRange:(id)range;
+- (void)setGroupNames:(id)names;
+- (void)setIdentifiers:(id)identifiers;
+- (void)setNotificationIdentifiers:(id)identifiers;
+- (void)setRecipients:(id)recipients;
+- (void)setSearchTerms:(id)terms;
+- (void)setSenders:(id)senders;
+- (void)setSpeakableGroupNames:(id)names;
 @end
 
 @implementation INSearchForMessagesIntent
 
 - (id)_metadata
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -71,104 +71,104 @@
 {
   v33[9] = *MEMORY[0x1E69E9840];
   v32[0] = @"recipients";
-  v3 = [(INSearchForMessagesIntent *)self recipients];
-  v4 = v3;
-  if (!v3)
+  recipients = [(INSearchForMessagesIntent *)self recipients];
+  v4 = recipients;
+  if (!recipients)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    recipients = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v3;
-  v33[0] = v3;
+  v28 = recipients;
+  v33[0] = recipients;
   v32[1] = @"senders";
-  v5 = [(INSearchForMessagesIntent *)self senders];
-  v6 = v5;
-  if (!v5)
+  senders = [(INSearchForMessagesIntent *)self senders];
+  v6 = senders;
+  if (!senders)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    senders = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v5;
-  v33[1] = v5;
+  v27 = senders;
+  v33[1] = senders;
   v32[2] = @"searchTerms";
-  v7 = [(INSearchForMessagesIntent *)self searchTerms];
-  v8 = v7;
-  if (!v7)
+  searchTerms = [(INSearchForMessagesIntent *)self searchTerms];
+  v8 = searchTerms;
+  if (!searchTerms)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    searchTerms = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v7;
-  v33[2] = v7;
+  v26 = searchTerms;
+  v33[2] = searchTerms;
   v32[3] = @"attributes";
-  v9 = INMessageAttributeOptionsGetNames([(INSearchForMessagesIntent *)self attributes]);
-  v10 = v9;
-  if (!v9)
+  null = INMessageAttributeOptionsGetNames([(INSearchForMessagesIntent *)self attributes]);
+  v10 = null;
+  if (!null)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v9;
-  v33[3] = v9;
+  v25 = null;
+  v33[3] = null;
   v32[4] = @"dateTimeRange";
-  v11 = [(INSearchForMessagesIntent *)self dateTimeRange];
-  v12 = v11;
-  if (!v11)
+  dateTimeRange = [(INSearchForMessagesIntent *)self dateTimeRange];
+  v12 = dateTimeRange;
+  if (!dateTimeRange)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    dateTimeRange = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v4;
-  v24 = v11;
-  v33[4] = v11;
+  v24 = dateTimeRange;
+  v33[4] = dateTimeRange;
   v32[5] = @"identifiers";
-  v13 = [(INSearchForMessagesIntent *)self identifiers];
-  v14 = v13;
-  if (!v13)
+  identifiers = [(INSearchForMessagesIntent *)self identifiers];
+  v14 = identifiers;
+  if (!identifiers)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    identifiers = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v6;
-  v23 = v13;
-  v33[5] = v13;
+  v23 = identifiers;
+  v33[5] = identifiers;
   v32[6] = @"notificationIdentifiers";
-  v15 = [(INSearchForMessagesIntent *)self notificationIdentifiers];
-  v16 = v15;
-  if (!v15)
+  notificationIdentifiers = [(INSearchForMessagesIntent *)self notificationIdentifiers];
+  null2 = notificationIdentifiers;
+  if (!notificationIdentifiers)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[6] = v16;
+  v33[6] = null2;
   v32[7] = @"speakableGroupNames";
-  v17 = [(INSearchForMessagesIntent *)self speakableGroupNames];
-  v18 = v17;
-  if (!v17)
+  speakableGroupNames = [(INSearchForMessagesIntent *)self speakableGroupNames];
+  null3 = speakableGroupNames;
+  if (!speakableGroupNames)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[7] = v18;
+  v33[7] = null3;
   v32[8] = @"conversationIdentifiers";
-  v19 = [(INSearchForMessagesIntent *)self conversationIdentifiers];
-  v20 = v19;
-  if (!v19)
+  conversationIdentifiers = [(INSearchForMessagesIntent *)self conversationIdentifiers];
+  null4 = conversationIdentifiers;
+  if (!conversationIdentifiers)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[8] = v20;
+  v33[8] = null4;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:9];
-  if (!v19)
+  if (!conversationIdentifiers)
   {
   }
 
-  if (!v17)
+  if (!speakableGroupNames)
   {
   }
 
-  if (!v15)
+  if (!notificationIdentifiers)
   {
   }
 
@@ -203,33 +203,33 @@
 
 - (NSArray)recipients
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 recipient];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  recipient = [_typedBackingStore recipient];
 
-  v4 = [v3 contacts];
-  v5 = INIntentSlotValueTransformFromContacts(v4);
+  contacts = [recipient contacts];
+  v5 = INIntentSlotValueTransformFromContacts(contacts);
 
   return v5;
 }
 
 - (NSArray)searchTerms
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 searchTerm];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  searchTerm = [_typedBackingStore searchTerm];
 
-  v4 = [v3 dataStrings];
-  v5 = INIntentSlotValueTransformFromStrings(v4);
+  dataStrings = [searchTerm dataStrings];
+  v5 = INIntentSlotValueTransformFromStrings(dataStrings);
 
   return v5;
 }
 
 - (NSArray)senders
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 sender];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  sender = [_typedBackingStore sender];
 
-  v4 = [v3 contacts];
-  v5 = INIntentSlotValueTransformFromContacts(v4);
+  contacts = [sender contacts];
+  v5 = INIntentSlotValueTransformFromContacts(contacts);
 
   return v5;
 }
@@ -237,18 +237,18 @@
 - (INMessageAttributeOptions)attributes
 {
   v8 = 0;
-  v3 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v4 = [v3 attributesCount];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  attributesCount = [_typedBackingStore attributesCount];
 
-  if (!v4)
+  if (!attributesCount)
   {
     return 0;
   }
 
-  for (i = 0; i != v4; ++i)
+  for (i = 0; i != attributesCount; ++i)
   {
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    INMessageAttributeOptionsAddBackingType(&v8, [v6 attributeAtIndex:i]);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    INMessageAttributeOptionsAddBackingType(&v8, [_typedBackingStore2 attributeAtIndex:i]);
   }
 
   return v8;
@@ -256,105 +256,105 @@
 
 - (INDateComponentsRange)dateTimeRange
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 dateTimeRange];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  dateTimeRange = [_typedBackingStore dateTimeRange];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(dateTimeRange);
 
   return v4;
 }
 
 - (NSArray)identifiers
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 identifier];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  identifier = [_typedBackingStore identifier];
 
-  v4 = [v3 dataStrings];
-  v5 = INIntentSlotValueTransformFromStrings(v4);
+  dataStrings = [identifier dataStrings];
+  v5 = INIntentSlotValueTransformFromStrings(dataStrings);
 
   return v5;
 }
 
 - (NSArray)notificationIdentifiers
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 notificationIdentifier];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  notificationIdentifier = [_typedBackingStore notificationIdentifier];
 
-  v4 = [v3 dataStrings];
-  v5 = INIntentSlotValueTransformFromStrings(v4);
+  dataStrings = [notificationIdentifier dataStrings];
+  v5 = INIntentSlotValueTransformFromStrings(dataStrings);
 
   return v5;
 }
 
 - (NSArray)speakableGroupNames
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 speakableGroupName];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
 
-  v4 = [v3 dataStrings];
-  v5 = INIntentSlotValueTransformFromDataStrings(v4);
+  dataStrings = [speakableGroupName dataStrings];
+  v5 = INIntentSlotValueTransformFromDataStrings(dataStrings);
 
   return v5;
 }
 
 - (NSArray)conversationIdentifiers
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 conversationIdentifier];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  conversationIdentifier = [_typedBackingStore conversationIdentifier];
 
-  v4 = [v3 dataStrings];
-  v5 = INIntentSlotValueTransformFromStrings(v4);
+  dataStrings = [conversationIdentifier dataStrings];
+  v5 = INIntentSlotValueTransformFromStrings(dataStrings);
 
   return v5;
 }
 
-- (INSearchForMessagesIntent)initWithRecipients:(id)a3 senders:(id)a4 contents:(id)a5 attributes:(unint64_t)a6 dateTimeRange:(id)a7 identifiers:(id)a8 notificationIdentifiers:(id)a9
+- (INSearchForMessagesIntent)initWithRecipients:(id)recipients senders:(id)senders contents:(id)contents attributes:(unint64_t)attributes dateTimeRange:(id)range identifiers:(id)identifiers notificationIdentifiers:(id)notificationIdentifiers
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [[INDateComponentsRange alloc] initWithDateInterval:v18 onCalendar:0 inTimeZone:0];
+  notificationIdentifiersCopy = notificationIdentifiers;
+  identifiersCopy = identifiers;
+  rangeCopy = range;
+  contentsCopy = contents;
+  sendersCopy = senders;
+  recipientsCopy = recipients;
+  v22 = [[INDateComponentsRange alloc] initWithDateInterval:rangeCopy onCalendar:0 inTimeZone:0];
 
-  v23 = [(INSearchForMessagesIntent *)self initWithRecipients:v21 senders:v20 searchTerms:v19 attributes:a6 dateTimeRange:v22 identifiers:v17 notificationIdentifiers:v16 speakableGroupNames:0];
+  v23 = [(INSearchForMessagesIntent *)self initWithRecipients:recipientsCopy senders:sendersCopy searchTerms:contentsCopy attributes:attributes dateTimeRange:v22 identifiers:identifiersCopy notificationIdentifiers:notificationIdentifiersCopy speakableGroupNames:0];
   return v23;
 }
 
-- (INSearchForMessagesIntent)initWithRecipients:(id)a3 senders:(id)a4 contents:(id)a5 attributes:(unint64_t)a6 dateTimeRange:(id)a7 identifiers:(id)a8
+- (INSearchForMessagesIntent)initWithRecipients:(id)recipients senders:(id)senders contents:(id)contents attributes:(unint64_t)attributes dateTimeRange:(id)range identifiers:(id)identifiers
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [[INDateComponentsRange alloc] initWithDateInterval:v15 onCalendar:0 inTimeZone:0];
+  identifiersCopy = identifiers;
+  rangeCopy = range;
+  contentsCopy = contents;
+  sendersCopy = senders;
+  recipientsCopy = recipients;
+  v19 = [[INDateComponentsRange alloc] initWithDateInterval:rangeCopy onCalendar:0 inTimeZone:0];
 
-  v20 = [(INSearchForMessagesIntent *)self initWithRecipients:v18 senders:v17 searchTerms:v16 attributes:a6 dateTimeRange:v19 identifiers:v14 notificationIdentifiers:0 speakableGroupNames:0];
+  v20 = [(INSearchForMessagesIntent *)self initWithRecipients:recipientsCopy senders:sendersCopy searchTerms:contentsCopy attributes:attributes dateTimeRange:v19 identifiers:identifiersCopy notificationIdentifiers:0 speakableGroupNames:0];
   return v20;
 }
 
 - (INConditionalOperator)groupNamesOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 speakableGroupName];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
 
-  v4 = [v3 conditionType];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  conditionType = [speakableGroupName conditionType];
+  v5 = INIntentSlotValueTransformFromCondition(conditionType);
 
   return v5;
 }
 
-- (void)setGroupNames:(id)a3
+- (void)setGroupNames:(id)names
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  namesCopy = names;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -373,7 +373,7 @@
         v11 = *(*(&v18 + 1) + 8 * v10);
         v12 = [INSpeakableString alloc];
         v13 = [(INSpeakableString *)v12 initWithSpokenPhrase:v11, v18];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v10;
       }
@@ -385,10 +385,10 @@
     while (v8);
   }
 
-  v14 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v15 = INIntentSlotValueTransformToDataStringList(v5);
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  v15 = INIntentSlotValueTransformToDataStringList(array);
   v16 = [v15 mutableCopy];
-  [v14 setSpeakableGroupName:v16];
+  [_typedBackingStore setSpeakableGroupName:v16];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -396,11 +396,11 @@
 - (NSArray)groupNames
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 speakableGroupName];
-  v4 = INIntentSlotValueTransformFromDataStringList(v3);
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
+  v4 = INIntentSlotValueTransformFromDataStringList(speakableGroupName);
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -420,10 +420,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) spokenPhrase];
-        v12 = [v11 copy];
+        spokenPhrase = [*(*(&v15 + 1) + 8 * i) spokenPhrase];
+        v12 = [spokenPhrase copy];
 
-        [v5 addObject:v12];
+        [array addObject:v12];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -434,7 +434,7 @@
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 - (INSearchForMessagesIntent)initWithRecipients:(NSArray *)recipients senders:(NSArray *)senders searchTerms:(NSArray *)searchTerms attributes:(INMessageAttributeOptions)attributes dateTimeRange:(INDateComponentsRange *)dateTimeRange identifiers:(NSArray *)identifiers notificationIdentifiers:(NSArray *)notificationIdentifiers groupNames:(NSArray *)groupNames
@@ -447,7 +447,7 @@
   v15 = identifiers;
   v16 = notificationIdentifiers;
   v17 = groupNames;
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -469,7 +469,7 @@
         }
 
         v24 = [[INSpeakableString alloc] initWithSpokenPhrase:*(*(&v34 + 1) + 8 * v23)];
-        [v18 addObject:v24];
+        [array addObject:v24];
 
         ++v23;
       }
@@ -481,189 +481,189 @@
     while (v21);
   }
 
-  v25 = [v18 copy];
+  v25 = [array copy];
   v26 = [(INSearchForMessagesIntent *)self initWithRecipients:v33 senders:v32 searchTerms:v31 attributes:attributes dateTimeRange:v14 identifiers:v15 notificationIdentifiers:v16 speakableGroupNames:v25];
 
   v27 = *MEMORY[0x1E69E9840];
   return v26;
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v31 = v6;
-  v26 = v7;
-  v8 = [v7 copy];
-  v29 = [v8 recipient];
-  v9 = [v29 contacts];
-  v28 = INIntentSlotValueRedactedContactsFromContacts(v9, a3, v31);
+  idCopy = id;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  v31 = idCopy;
+  v26 = _typedBackingStore;
+  v8 = [_typedBackingStore copy];
+  recipient = [v8 recipient];
+  contacts = [recipient contacts];
+  v28 = INIntentSlotValueRedactedContactsFromContacts(contacts, options, v31);
 
-  [v29 setContacts:v28];
-  v10 = [v8 sender];
-  v11 = [v10 contacts];
-  v27 = INIntentSlotValueRedactedContactsFromContacts(v11, a3, v31);
+  [recipient setContacts:v28];
+  sender = [v8 sender];
+  contacts2 = [sender contacts];
+  v27 = INIntentSlotValueRedactedContactsFromContacts(contacts2, options, v31);
 
-  [v10 setContacts:v27];
-  v12 = [v8 searchTerm];
-  v13 = [v12 dataStrings];
-  v25 = INIntentSlotValueRedactedStringsFromStrings(v13, a3, v31);
+  [sender setContacts:v27];
+  searchTerm = [v8 searchTerm];
+  dataStrings = [searchTerm dataStrings];
+  v25 = INIntentSlotValueRedactedStringsFromStrings(dataStrings, options, v31);
 
-  [v12 setDataStrings:v25];
-  v14 = [v7 dateTimeRange];
-  v15 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v14, a3);
+  [searchTerm setDataStrings:v25];
+  dateTimeRange = [_typedBackingStore dateTimeRange];
+  v15 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(dateTimeRange, options);
   [v8 setDateTimeRange:v15];
 
-  v16 = [v8 identifier];
-  v17 = [v16 dataStrings];
-  v18 = INIntentSlotValueRedactedStringsFromStrings(v17, a3, v31);
+  identifier = [v8 identifier];
+  dataStrings2 = [identifier dataStrings];
+  v18 = INIntentSlotValueRedactedStringsFromStrings(dataStrings2, options, v31);
 
-  [v16 setDataStrings:v18];
-  v19 = [v8 notificationIdentifier];
-  v20 = [v19 dataStrings];
-  v21 = INIntentSlotValueRedactedStringsFromStrings(v20, a3, v31);
+  [identifier setDataStrings:v18];
+  notificationIdentifier = [v8 notificationIdentifier];
+  dataStrings3 = [notificationIdentifier dataStrings];
+  v21 = INIntentSlotValueRedactedStringsFromStrings(dataStrings3, options, v31);
 
-  [v19 setDataStrings:v21];
-  v22 = [v8 conversationIdentifier];
-  v23 = [v22 dataStrings];
-  v24 = INIntentSlotValueRedactedStringsFromStrings(v23, a3, v31);
+  [notificationIdentifier setDataStrings:v21];
+  conversationIdentifier = [v8 conversationIdentifier];
+  dataStrings4 = [conversationIdentifier dataStrings];
+  v24 = INIntentSlotValueRedactedStringsFromStrings(dataStrings4, options, v31);
 
-  [v22 setDataStrings:v24];
+  [conversationIdentifier setDataStrings:v24];
   [(INIntent *)self setBackingStore:v8];
 }
 
-- (void)setConversationIdentifiers:(id)a3
+- (void)setConversationIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 conversationIdentifier];
+  identifiersCopy = identifiers;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  conversationIdentifier = [_typedBackingStore conversationIdentifier];
 
-  if (!v5)
+  if (!conversationIdentifier)
   {
-    v5 = objc_alloc_init(_INPBStringList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setConversationIdentifier:v5];
+    conversationIdentifier = objc_alloc_init(_INPBStringList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setConversationIdentifier:conversationIdentifier];
   }
 
-  v7 = INIntentSlotValueTransformToStrings(v8);
-  [(_INPBStringList *)v5 setDataStrings:v7];
+  v7 = INIntentSlotValueTransformToStrings(identifiersCopy);
+  [(_INPBStringList *)conversationIdentifier setDataStrings:v7];
 }
 
 - (INConditionalOperator)conversationIdentifiersOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 conversationIdentifier];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  conversationIdentifier = [_typedBackingStore conversationIdentifier];
 
-  v4 = [v3 conditionType];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  conditionType = [conversationIdentifier conditionType];
+  v5 = INIntentSlotValueTransformFromCondition(conditionType);
 
   return v5;
 }
 
-- (void)setSpeakableGroupNames:(id)a3
+- (void)setSpeakableGroupNames:(id)names
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 speakableGroupName];
+  namesCopy = names;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
 
-  if (!v5)
+  if (!speakableGroupName)
   {
-    v5 = objc_alloc_init(_INPBDataStringList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setSpeakableGroupName:v5];
+    speakableGroupName = objc_alloc_init(_INPBDataStringList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setSpeakableGroupName:speakableGroupName];
   }
 
-  v7 = INIntentSlotValueTransformToDataStrings(v8);
-  [(_INPBDataStringList *)v5 setDataStrings:v7];
+  v7 = INIntentSlotValueTransformToDataStrings(namesCopy);
+  [(_INPBDataStringList *)speakableGroupName setDataStrings:v7];
 }
 
 - (INConditionalOperator)speakableGroupNamesOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 speakableGroupName];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
 
-  v4 = [v3 conditionType];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  conditionType = [speakableGroupName conditionType];
+  v5 = INIntentSlotValueTransformFromCondition(conditionType);
 
   return v5;
 }
 
-- (void)setNotificationIdentifiers:(id)a3
+- (void)setNotificationIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 notificationIdentifier];
+  identifiersCopy = identifiers;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  notificationIdentifier = [_typedBackingStore notificationIdentifier];
 
-  if (!v5)
+  if (!notificationIdentifier)
   {
-    v5 = objc_alloc_init(_INPBStringList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setNotificationIdentifier:v5];
+    notificationIdentifier = objc_alloc_init(_INPBStringList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setNotificationIdentifier:notificationIdentifier];
   }
 
-  v7 = INIntentSlotValueTransformToStrings(v8);
-  [(_INPBStringList *)v5 setDataStrings:v7];
+  v7 = INIntentSlotValueTransformToStrings(identifiersCopy);
+  [(_INPBStringList *)notificationIdentifier setDataStrings:v7];
 }
 
 - (INConditionalOperator)notificationIdentifiersOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 notificationIdentifier];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  notificationIdentifier = [_typedBackingStore notificationIdentifier];
 
-  v4 = [v3 conditionType];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  conditionType = [notificationIdentifier conditionType];
+  v5 = INIntentSlotValueTransformFromCondition(conditionType);
 
   return v5;
 }
 
-- (void)setIdentifiers:(id)a3
+- (void)setIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 identifier];
+  identifiersCopy = identifiers;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  identifier = [_typedBackingStore identifier];
 
-  if (!v5)
+  if (!identifier)
   {
-    v5 = objc_alloc_init(_INPBStringList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setIdentifier:v5];
+    identifier = objc_alloc_init(_INPBStringList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setIdentifier:identifier];
   }
 
-  v7 = INIntentSlotValueTransformToStrings(v8);
-  [(_INPBStringList *)v5 setDataStrings:v7];
+  v7 = INIntentSlotValueTransformToStrings(identifiersCopy);
+  [(_INPBStringList *)identifier setDataStrings:v7];
 }
 
 - (INConditionalOperator)identifiersOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 identifier];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  identifier = [_typedBackingStore identifier];
 
-  v4 = [v3 conditionType];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  conditionType = [identifier conditionType];
+  v5 = INIntentSlotValueTransformFromCondition(conditionType);
 
   return v5;
 }
 
-- (void)setDateTimeRange:(id)a3
+- (void)setDateTimeRange:(id)range
 {
-  v4 = a3;
-  v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  rangeCopy = range;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(rangeCopy);
 
-  [v6 setDateTimeRange:v5];
+  [_typedBackingStore setDateTimeRange:v5];
 }
 
-- (void)setAttributes:(unint64_t)a3
+- (void)setAttributes:(unint64_t)attributes
 {
-  v5 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  [v5 clearAttributes];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  [_typedBackingStore clearAttributes];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__INSearchForMessagesIntent_setAttributes___block_invoke;
   v6[3] = &unk_1E7288628;
   v6[4] = self;
-  INMessageAttributeOptionsEnumerateBackingTypes(a3, v6);
+  INMessageAttributeOptionsEnumerateBackingTypes(attributes, v6);
 }
 
 void __43__INSearchForMessagesIntent_setAttributes___block_invoke(uint64_t a1, uint64_t a2)
@@ -672,86 +672,86 @@ void __43__INSearchForMessagesIntent_setAttributes___block_invoke(uint64_t a1, u
   [v3 addAttribute:a2];
 }
 
-- (void)setSearchTerms:(id)a3
+- (void)setSearchTerms:(id)terms
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 searchTerm];
+  termsCopy = terms;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  searchTerm = [_typedBackingStore searchTerm];
 
-  if (!v5)
+  if (!searchTerm)
   {
-    v5 = objc_alloc_init(_INPBStringList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setSearchTerm:v5];
+    searchTerm = objc_alloc_init(_INPBStringList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setSearchTerm:searchTerm];
   }
 
-  v7 = INIntentSlotValueTransformToStrings(v8);
-  [(_INPBStringList *)v5 setDataStrings:v7];
+  v7 = INIntentSlotValueTransformToStrings(termsCopy);
+  [(_INPBStringList *)searchTerm setDataStrings:v7];
 }
 
 - (INConditionalOperator)searchTermsOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 searchTerm];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  searchTerm = [_typedBackingStore searchTerm];
 
-  v4 = [v3 conditionType];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  conditionType = [searchTerm conditionType];
+  v5 = INIntentSlotValueTransformFromCondition(conditionType);
 
   return v5;
 }
 
-- (void)setSenders:(id)a3
+- (void)setSenders:(id)senders
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 sender];
+  sendersCopy = senders;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  sender = [_typedBackingStore sender];
 
-  if (!v5)
+  if (!sender)
   {
-    v5 = objc_alloc_init(_INPBContactList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setSender:v5];
+    sender = objc_alloc_init(_INPBContactList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setSender:sender];
   }
 
-  v7 = INIntentSlotValueTransformToContacts(v8);
-  [(_INPBContactList *)v5 setContacts:v7];
+  v7 = INIntentSlotValueTransformToContacts(sendersCopy);
+  [(_INPBContactList *)sender setContacts:v7];
 }
 
 - (INConditionalOperator)sendersOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 sender];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  sender = [_typedBackingStore sender];
 
-  v4 = [v3 condition];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  condition = [sender condition];
+  v5 = INIntentSlotValueTransformFromCondition(condition);
 
   return v5;
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v8 = a3;
-  v4 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v5 = [v4 recipient];
+  recipientsCopy = recipients;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  recipient = [_typedBackingStore recipient];
 
-  if (!v5)
+  if (!recipient)
   {
-    v5 = objc_alloc_init(_INPBContactList);
-    v6 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-    [v6 setRecipient:v5];
+    recipient = objc_alloc_init(_INPBContactList);
+    _typedBackingStore2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
+    [_typedBackingStore2 setRecipient:recipient];
   }
 
-  v7 = INIntentSlotValueTransformToContacts(v8);
-  [(_INPBContactList *)v5 setContacts:v7];
+  v7 = INIntentSlotValueTransformToContacts(recipientsCopy);
+  [(_INPBContactList *)recipient setContacts:v7];
 }
 
 - (INConditionalOperator)recipientsOperator
 {
-  v2 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  v3 = [v2 recipient];
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  recipient = [_typedBackingStore recipient];
 
-  v4 = [v3 condition];
-  v5 = INIntentSlotValueTransformFromCondition(v4);
+  condition = [recipient condition];
+  v5 = INIntentSlotValueTransformFromCondition(condition);
 
   return v5;
 }
@@ -786,11 +786,11 @@ void __43__INSearchForMessagesIntent_setAttributes___block_invoke(uint64_t a1, u
   return v26;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSearchForMessagesIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSearchForMessagesIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 @end

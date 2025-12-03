@@ -1,20 +1,20 @@
 @interface CRLPropertyMap
-- (BOOL)containsProperty:(unint64_t)a3;
+- (BOOL)containsProperty:(unint64_t)property;
 - (BOOL)isEmpty;
 - (_TtC8Freeform14CRLPropertyMap)init;
 - (int64_t)count;
-- (void)enumeratePropertiesUsingBlock:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(unint64_t)a4;
-- (void)setProperty:(unint64_t)a3 value:(id)a4;
+- (void)enumeratePropertiesUsingBlock:(id)block;
+- (void)setObject:(id)object forKeyedSubscript:(unint64_t)subscript;
+- (void)setProperty:(unint64_t)property value:(id)value;
 @end
 
 @implementation CRLPropertyMap
 
-- (void)setProperty:(unint64_t)a3 value:(id)a4
+- (void)setProperty:(unint64_t)property value:(id)value
 {
-  if (a4)
+  if (value)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -23,20 +23,20 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v7 = self;
+    selfCopy2 = self;
   }
 
   sub_100601584(v9, v8);
   swift_beginAccess();
-  sub_100BC1F00(v8, a3);
+  sub_100BC1F00(v8, property);
   swift_endAccess();
 
   sub_10000CAAC(v9, &unk_1019F4D00);
 }
 
-- (BOOL)containsProperty:(unint64_t)a3
+- (BOOL)containsProperty:(unint64_t)property
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100BE4E9C();
 
   return v4 & 1;
@@ -56,11 +56,11 @@
   return (*(&self->super.isa + v3))[2];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(unint64_t)a4
+- (void)setObject:(id)object forKeyedSubscript:(unint64_t)subscript
 {
-  if (a3)
+  if (object)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -69,23 +69,23 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v7 = self;
+    selfCopy2 = self;
   }
 
   sub_100601584(v9, v8);
   swift_beginAccess();
-  sub_100BC1F00(v8, a4);
+  sub_100BC1F00(v8, subscript);
   swift_endAccess();
 
   sub_10000CAAC(v9, &unk_1019F4D00);
 }
 
-- (void)enumeratePropertiesUsingBlock:(id)a3
+- (void)enumeratePropertiesUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_100BE5598(v5, v4);
+  selfCopy = self;
+  sub_100BE5598(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

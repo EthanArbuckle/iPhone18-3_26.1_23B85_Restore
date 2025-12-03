@@ -1,7 +1,7 @@
 @interface RTTLiveCaptionsObjC
 + (RTTLiveCaptionsObjC)shared;
-- (BOOL)startWithSource:(int64_t)a3 locale:(id)a4 sharedRoute:(BOOL)a5 excludePIDs:(id)a6 error:(id *)a7 transcriptionResult:(id)a8;
-- (BOOL)stop:(int64_t)a3 error:(id *)a4;
+- (BOOL)startWithSource:(int64_t)source locale:(id)locale sharedRoute:(BOOL)route excludePIDs:(id)ds error:(id *)error transcriptionResult:(id)result;
+- (BOOL)stop:(int64_t)stop error:(id *)error;
 - (RTTLiveCaptionsObjC)init;
 @end
 
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (BOOL)startWithSource:(int64_t)a3 locale:(id)a4 sharedRoute:(BOOL)a5 excludePIDs:(id)a6 error:(id *)a7 transcriptionResult:(id)a8
+- (BOOL)startWithSource:(int64_t)source locale:(id)locale sharedRoute:(BOOL)route excludePIDs:(id)ds error:(id *)error transcriptionResult:(id)result
 {
   v11 = sub_26177D490();
   v12 = *(v11 - 8);
@@ -29,8 +29,8 @@
   v16 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FEB92C8, &qword_26177FCD8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v18 = &v25[-v17];
-  v19 = _Block_copy(a8);
-  if (a4)
+  v19 = _Block_copy(result);
+  if (locale)
   {
     sub_26177D480();
     (*(v12 + 32))(v18, v15, v11);
@@ -45,7 +45,7 @@
   v20 = swift_allocObject();
   *(v20 + 16) = v19;
   v21 = *(&self->super.isa + OBJC_IVAR___RTTLiveCaptionsObjC_rootObject);
-  v22 = self;
+  selfCopy = self;
   sub_26177D510();
   v23 = swift_allocObject();
   *(v23 + 16) = sub_26177C0CC;
@@ -58,10 +58,10 @@
   return 1;
 }
 
-- (BOOL)stop:(int64_t)a3 error:(id *)a4
+- (BOOL)stop:(int64_t)stop error:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR___RTTLiveCaptionsObjC_rootObject);
-  v5 = self;
+  selfCopy = self;
   sub_26177D510();
   sub_26177D4C0();
 

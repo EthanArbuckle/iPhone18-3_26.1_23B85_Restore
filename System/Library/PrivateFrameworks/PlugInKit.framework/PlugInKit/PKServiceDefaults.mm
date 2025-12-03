@@ -1,55 +1,55 @@
 @interface PKServiceDefaults
 - (BOOL)synchronize;
-- (PKServiceDefaults)initWithPersonality:(id)a3;
+- (PKServiceDefaults)initWithPersonality:(id)personality;
 - (PKServicePersonality)personality;
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation PKServiceDefaults
 
-- (PKServiceDefaults)initWithPersonality:(id)a3
+- (PKServiceDefaults)initWithPersonality:(id)personality
 {
-  v4 = a3;
+  personalityCopy = personality;
   v8.receiver = self;
   v8.super_class = PKServiceDefaults;
   v5 = [(PKServiceDefaults *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKServiceDefaults *)v5 setPersonality:v4];
+    [(PKServiceDefaults *)v5 setPersonality:personalityCopy];
   }
 
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKServiceDefaults *)self personality];
-  v6 = [v5 identifier];
+  keyCopy = key;
+  personality = [(PKServiceDefaults *)self personality];
+  identifier = [personality identifier];
 
-  v7 = CFPreferencesCopyAppValue(v4, v6);
+  v7 = CFPreferencesCopyAppValue(keyCopy, identifier);
 
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  value = a3;
-  v7 = [(PKServiceDefaults *)self personality];
-  v8 = [v7 identifier];
+  keyCopy = key;
+  value = object;
+  personality = [(PKServiceDefaults *)self personality];
+  identifier = [personality identifier];
 
-  CFPreferencesSetAppValue(v6, value, v8);
+  CFPreferencesSetAppValue(keyCopy, value, identifier);
 }
 
 - (BOOL)synchronize
 {
-  v2 = [(PKServiceDefaults *)self personality];
-  v3 = [v2 identifier];
+  personality = [(PKServiceDefaults *)self personality];
+  identifier = [personality identifier];
 
-  return CFPreferencesAppSynchronize(v3) != 0;
+  return CFPreferencesAppSynchronize(identifier) != 0;
 }
 
 - (PKServicePersonality)personality

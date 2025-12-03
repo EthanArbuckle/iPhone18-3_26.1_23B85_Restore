@@ -1,25 +1,25 @@
 @interface SemanticStylesStage
-+ (int)prewarmShaders:(id)a3;
-- (SemanticStylesStage)initWithMetalContext:(id)a3;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 label:(id)a5;
-- (id)newTexture2DWithFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5 usage:(unint64_t)a6 label:(id)a7;
-- (int)calculateHistogramStatsWithLumaTex:(id)a3 chromaTex:(id)a4;
-- (int)createGuideImage:(id)a3;
-- (int)processPersonMaskTex:(id)a3 skinMaskTex:(id)a4 skyMaskTex:(id)a5;
-- (int)renderWithLumaTex:(id)a3 chromaTex:(id)a4 gainMapTex:(id)a5 outputGainMapTex:(id)a6;
-- (int)runWithStyle:(id)a3 tuningParams:(id)a4 refFrameMetadata:(const frameMetadata *)a5 sceneType:(id)a6 lumaTex:(id)a7 chromaTex:(id)a8 gainMapTex:(id)a9 outputGainMapTex:(id)a10 personMaskTex:(id)a11 skinMaskTex:(id)a12 skyMaskTex:(id)a13 isLowLight:(BOOL)a14;
++ (int)prewarmShaders:(id)shaders;
+- (SemanticStylesStage)initWithMetalContext:(id)context;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options label:(id)label;
+- (id)newTexture2DWithFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height usage:(unint64_t)usage label:(id)label;
+- (int)calculateHistogramStatsWithLumaTex:(id)tex chromaTex:(id)chromaTex;
+- (int)createGuideImage:(id)image;
+- (int)processPersonMaskTex:(id)tex skinMaskTex:(id)maskTex skyMaskTex:(id)skyMaskTex;
+- (int)renderWithLumaTex:(id)tex chromaTex:(id)chromaTex gainMapTex:(id)mapTex outputGainMapTex:(id)gainMapTex;
+- (int)runWithStyle:(id)style tuningParams:(id)params refFrameMetadata:(const frameMetadata *)metadata sceneType:(id)type lumaTex:(id)tex chromaTex:(id)chromaTex gainMapTex:(id)mapTex outputGainMapTex:(id)self0 personMaskTex:(id)self1 skinMaskTex:(id)self2 skyMaskTex:(id)self3 isLowLight:(BOOL)self4;
 - (int)upsampleLightMap;
-- (void)calculateAdjustmentParametersWithParamsBuffer:(id)a3 statsBuffer:(id)a4;
+- (void)calculateAdjustmentParametersWithParamsBuffer:(id)buffer statsBuffer:(id)statsBuffer;
 - (void)releaseResources;
 - (void)remapSliderValueForRendering;
 @end
 
 @implementation SemanticStylesStage
 
-- (SemanticStylesStage)initWithMetalContext:(id)a3
+- (SemanticStylesStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_29588BC3C(self);
 LABEL_12:
@@ -37,7 +37,7 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v11 = objc_msgSend_sharedInstance(SemanticStylesShared, v8, v9, v10);
   v14 = objc_msgSend_getShaders_(v11, v12, v7->_metalContext, v13);
   shaders = v7->_shaders;
@@ -50,7 +50,7 @@ LABEL_12:
   }
 
   v16 = [GuidedFilter alloc];
-  v19 = objc_msgSend_initWithMetalContext_(v16, v17, v5, v18);
+  v19 = objc_msgSend_initWithMetalContext_(v16, v17, contextCopy, v18);
   guidedFilter = v7->_guidedFilter;
   v7->_guidedFilter = v19;
 
@@ -75,17 +75,17 @@ LABEL_6:
   return v7;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
-  if (v3)
+  shadersCopy = shaders;
+  if (shadersCopy)
   {
     v4 = [SemanticStylesShaders alloc];
-    v7 = objc_msgSend_initWithMetalContext_(v4, v5, v3, v6);
+    v7 = objc_msgSend_initWithMetalContext_(v4, v5, shadersCopy, v6);
     if (v7)
     {
       v10 = v7;
-      objc_msgSend_prewarmShaders_(GuidedFilter, v8, v3, v9);
+      objc_msgSend_prewarmShaders_(GuidedFilter, v8, shadersCopy, v9);
 
       v11 = 0;
     }
@@ -106,18 +106,18 @@ LABEL_6:
   return v11;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 label:(id)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options label:(id)label
 {
-  v7 = objc_msgSend_device(self->_metalContext, a2, a3, a4, a5);
-  v9 = objc_msgSend_newBufferWithLength_options_(v7, v8, a3, a4);
+  v7 = objc_msgSend_device(self->_metalContext, a2, length, options, label);
+  v9 = objc_msgSend_newBufferWithLength_options_(v7, v8, length, options);
 
   objc_msgSend_setLabel_(v9, v10, 0, v11);
   return v9;
 }
 
-- (id)newTexture2DWithFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5 usage:(unint64_t)a6 label:(id)a7
+- (id)newTexture2DWithFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height usage:(unint64_t)usage label:(id)label
 {
-  v12 = objc_msgSend_allocator(self->_metalContext, a2, a3, a4, a5, a6, a7);
+  v12 = objc_msgSend_allocator(self->_metalContext, a2, format, width, height, usage, label);
   v16 = objc_msgSend_newTextureDescriptor(v12, v13, v14, v15);
 
   if (v16)
@@ -127,19 +127,19 @@ LABEL_6:
     objc_msgSend_setTextureType_(v22, v23, 2, v24);
 
     v28 = objc_msgSend_desc(v16, v25, v26, v27);
-    objc_msgSend_setPixelFormat_(v28, v29, a3, v30);
+    objc_msgSend_setPixelFormat_(v28, v29, format, v30);
 
     v34 = objc_msgSend_desc(v16, v31, v32, v33);
-    objc_msgSend_setWidth_(v34, v35, a4, v36);
+    objc_msgSend_setWidth_(v34, v35, width, v36);
 
     v40 = objc_msgSend_desc(v16, v37, v38, v39);
-    objc_msgSend_setHeight_(v40, v41, a5, v42);
+    objc_msgSend_setHeight_(v40, v41, height, v42);
 
     v46 = objc_msgSend_desc(v16, v43, v44, v45);
     objc_msgSend_setDepth_(v46, v47, 1, v48);
 
     v52 = objc_msgSend_desc(v16, v49, v50, v51);
-    objc_msgSend_setUsage_(v52, v53, a6, v54);
+    objc_msgSend_setUsage_(v52, v53, usage, v54);
 
     v58 = objc_msgSend_allocator(self->_metalContext, v55, v56, v57);
     v61 = objc_msgSend_newTextureWithDescriptor_(v58, v59, v16, v60);
@@ -176,10 +176,10 @@ LABEL_6:
   FigMetalDecRef();
 }
 
-- (int)calculateHistogramStatsWithLumaTex:(id)a3 chromaTex:(id)a4
+- (int)calculateHistogramStatsWithLumaTex:(id)tex chromaTex:(id)chromaTex
 {
-  v6 = a3;
-  v10 = a4;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
   shaders = self->_shaders;
   if (!shaders)
   {
@@ -246,8 +246,8 @@ LABEL_26:
 
   v28 = self->_shaders->_ssCalculateLocalHistogramStats;
   objc_msgSend_setComputePipelineState_(v22, v29, v28, v30);
-  objc_msgSend_setTexture_atIndex_(v22, v31, v6, 0);
-  objc_msgSend_setTexture_atIndex_(v22, v32, v10, 1);
+  objc_msgSend_setTexture_atIndex_(v22, v31, texCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v22, v32, chromaTexCopy, 1);
   objc_msgSend_setTexture_atIndex_(v22, v33, self->_lightMapSmallTex, 8);
   objc_msgSend_setBuffer_offset_atIndex_(v22, v34, self->_paramsBuf, 0, 0);
   objc_msgSend_setBuffer_offset_atIndex_(v22, v35, self->_statsBuf, 0, 1);
@@ -343,12 +343,12 @@ LABEL_17:
   return v83;
 }
 
-- (void)calculateAdjustmentParametersWithParamsBuffer:(id)a3 statsBuffer:(id)a4
+- (void)calculateAdjustmentParametersWithParamsBuffer:(id)buffer statsBuffer:(id)statsBuffer
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = objc_msgSend_contents(a3, v9, v10, v11);
-  v13 = v8;
+  bufferCopy = buffer;
+  statsBufferCopy = statsBuffer;
+  v12 = objc_msgSend_contents(buffer, v9, v10, v11);
+  v13 = statsBufferCopy;
   v17 = (objc_msgSend_contents(v13, v14, v15, v16) + 1056768);
 
   v18 = *(v12 + 16);
@@ -633,9 +633,9 @@ LABEL_56:
   *(v12 + 104) = vmul_n_f32(*&v99.f64[0], v98);
 }
 
-- (int)createGuideImage:(id)a3
+- (int)createGuideImage:(id)image
 {
-  v7 = a3;
+  imageCopy = image;
   shaders = self->_shaders;
   if (!shaders)
   {
@@ -660,8 +660,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v17 = objc_msgSend_width(v7, v14, v15, v16) >> 1;
-  v21 = objc_msgSend_height(v7, v18, v19, v20);
+  v17 = objc_msgSend_width(imageCopy, v14, v15, v16) >> 1;
+  v21 = objc_msgSend_height(imageCopy, v18, v19, v20);
   v23 = objc_msgSend_newTexture2DWithFormat_width_height_usage_label_(self, v22, 25, v17, v21 >> 1, 7, @"ss_tex_guide");
   guideTex = self->_guideTex;
   self->_guideTex = v23;
@@ -682,7 +682,7 @@ LABEL_15:
   v29 = v28;
   v30 = self->_shaders->_ssCreateGuide;
   objc_msgSend_setComputePipelineState_(v29, v31, v30, v32);
-  objc_msgSend_setTexture_atIndex_(v29, v33, v7, 0);
+  objc_msgSend_setTexture_atIndex_(v29, v33, imageCopy, 0);
   objc_msgSend_setTexture_atIndex_(v29, v34, self->_guideTex, 7);
   objc_msgSend_setImageblockWidth_height_(v29, v35, 32, 32);
   v39 = objc_msgSend_width(self->_guideTex, v36, v37, v38);
@@ -781,11 +781,11 @@ LABEL_9:
   return v42;
 }
 
-- (int)processPersonMaskTex:(id)a3 skinMaskTex:(id)a4 skyMaskTex:(id)a5
+- (int)processPersonMaskTex:(id)tex skinMaskTex:(id)maskTex skyMaskTex:(id)skyMaskTex
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = a5;
+  texCopy = tex;
+  maskTexCopy = maskTex;
+  skyMaskTexCopy = skyMaskTex;
   if (!self->_shaders)
   {
     sub_29588CCE0(&v55);
@@ -823,7 +823,7 @@ LABEL_14:
   }
 
   LODWORD(v31) = 1028443341;
-  v33 = objc_msgSend_encodeToCommandBuffer_inputTexture_guideTexture_outputTexture_kernelRadius_epsilon_(self->_guidedFilter, v30, v18, v8, self->_guideTex, v32, 5, v31);
+  v33 = objc_msgSend_encodeToCommandBuffer_inputTexture_guideTexture_outputTexture_kernelRadius_epsilon_(self->_guidedFilter, v30, v18, texCopy, self->_guideTex, v32, 5, v31);
   if (v33)
   {
     v53 = v33;
@@ -832,10 +832,10 @@ LABEL_14:
 
   else
   {
-    objc_storeStrong(&self->_skinMatteTex, a4);
+    objc_storeStrong(&self->_skinMatteTex, maskTex);
     skinMatteTex = self->_skinMatteTex;
     FigMetalIncRef();
-    objc_storeStrong(&self->_skyMatteTex, a5);
+    objc_storeStrong(&self->_skyMatteTex, skyMaskTex);
     skyMatteTex = self->_skyMatteTex;
     FigMetalIncRef();
     if (*MEMORY[0x29EDB9270])
@@ -859,12 +859,12 @@ LABEL_9:
   return v53;
 }
 
-- (int)renderWithLumaTex:(id)a3 chromaTex:(id)a4 gainMapTex:(id)a5 outputGainMapTex:(id)a6
+- (int)renderWithLumaTex:(id)tex chromaTex:(id)chromaTex gainMapTex:(id)mapTex outputGainMapTex:(id)gainMapTex
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v16 = a6;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
+  mapTexCopy = mapTex;
+  gainMapTexCopy = gainMapTex;
   shaders = self->_shaders;
   if (!shaders)
   {
@@ -900,10 +900,10 @@ LABEL_13:
   v28 = v27;
   v29 = self->_shaders->_ssRenderAdjustments;
   objc_msgSend_setComputePipelineState_(v28, v30, v29, v31);
-  objc_msgSend_setTexture_atIndex_(v28, v32, v10, 0);
-  objc_msgSend_setTexture_atIndex_(v28, v33, v11, 1);
-  objc_msgSend_setTexture_atIndex_(v28, v34, v12, 2);
-  objc_msgSend_setTexture_atIndex_(v28, v35, v16, 3);
+  objc_msgSend_setTexture_atIndex_(v28, v32, texCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v28, v33, chromaTexCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v28, v34, mapTexCopy, 2);
+  objc_msgSend_setTexture_atIndex_(v28, v35, gainMapTexCopy, 3);
   objc_msgSend_setTexture_atIndex_(v28, v36, self->_lightMapTex, 9);
   objc_msgSend_setTexture_atIndex_(v28, v37, self->_fgbgMatteTex, 10);
   objc_msgSend_setTexture_atIndex_(v28, v38, self->_skinMatteTex, 11);
@@ -911,8 +911,8 @@ LABEL_13:
   objc_msgSend_setBuffer_offset_atIndex_(v28, v40, self->_paramsBuf, 0, 0);
 
   objc_msgSend_setImageblockWidth_height_(v28, v41, 32, 32);
-  v73[0] = objc_msgSend_width(v10, v42, v43, v44);
-  v73[1] = objc_msgSend_height(v10, v45, v46, v47);
+  v73[0] = objc_msgSend_width(texCopy, v42, v43, v44);
+  v73[1] = objc_msgSend_height(texCopy, v45, v46, v47);
   v73[2] = 1;
   v71 = vdupq_n_s64(0x20uLL);
   v72 = 1;
@@ -967,20 +967,20 @@ LABEL_8:
   }
 }
 
-- (int)runWithStyle:(id)a3 tuningParams:(id)a4 refFrameMetadata:(const frameMetadata *)a5 sceneType:(id)a6 lumaTex:(id)a7 chromaTex:(id)a8 gainMapTex:(id)a9 outputGainMapTex:(id)a10 personMaskTex:(id)a11 skinMaskTex:(id)a12 skyMaskTex:(id)a13 isLowLight:(BOOL)a14
+- (int)runWithStyle:(id)style tuningParams:(id)params refFrameMetadata:(const frameMetadata *)metadata sceneType:(id)type lumaTex:(id)tex chromaTex:(id)chromaTex gainMapTex:(id)mapTex outputGainMapTex:(id)self0 personMaskTex:(id)self1 skinMaskTex:(id)self2 skyMaskTex:(id)self3 isLowLight:(BOOL)self4
 {
-  v104 = a3;
-  obj = a4;
-  v100 = a4;
-  v103 = a6;
-  v20 = a7;
-  v21 = a8;
-  v102 = a9;
-  v101 = a10;
-  v22 = a11;
-  v23 = a12;
-  v25 = a13;
-  if (!v20)
+  styleCopy = style;
+  obj = params;
+  paramsCopy = params;
+  typeCopy = type;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
+  mapTexCopy = mapTex;
+  gainMapTexCopy = gainMapTex;
+  maskTexCopy = maskTex;
+  skinMaskTexCopy = skinMaskTex;
+  skyMaskTexCopy = skyMaskTex;
+  if (!texCopy)
   {
     sub_29588D528(v107);
 LABEL_30:
@@ -988,7 +988,7 @@ LABEL_30:
     goto LABEL_26;
   }
 
-  if (!v21)
+  if (!chromaTexCopy)
   {
     sub_29588D48C(v107);
     goto LABEL_30;
@@ -1004,28 +1004,28 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v105 = objc_msgSend_width(v20, v28, v29, v30);
-  v34 = objc_msgSend_height(v20, v31, v32, v33);
+  v105 = objc_msgSend_width(texCopy, v28, v29, v30);
+  v34 = objc_msgSend_height(texCopy, v31, v32, v33);
   v35.f32[0] = v105;
   v35.f32[1] = v34;
   v106 = v35;
-  v36.f64[0] = a5->ROI.origin.x;
-  v37 = sub_295862268(v36, a5->ROI.origin.y);
-  v38.f64[0] = a5->ROI.size.width;
-  *&v39 = sub_295862268(v38, a5->ROI.size.height);
+  v36.f64[0] = metadata->ROI.origin.x;
+  v37 = sub_295862268(v36, metadata->ROI.origin.y);
+  v38.f64[0] = metadata->ROI.size.width;
+  *&v39 = sub_295862268(v38, metadata->ROI.size.height);
   __asm { FMOV            V1.2S, #1.0 }
 
   v45 = vdiv_f32(_D1, vdiv_f32(v39, v106));
   v49 = objc_msgSend_contents(self->_paramsBuf, v46, v47, v48);
   *v49 = vmul_f32(vdiv_f32(vneg_f32(*&v37), v106), v45);
   v49[1] = v45;
-  v49[2].i32[0] = LODWORD(a5->exposureParams.luxLevel);
-  v49[2].i8[4] = a14;
-  objc_msgSend_toneBias(v104, v50, v51, v52);
+  v49[2].i32[0] = LODWORD(metadata->exposureParams.luxLevel);
+  v49[2].i8[4] = light;
+  objc_msgSend_toneBias(styleCopy, v50, v51, v52);
   v49[3].i32[0] = v53;
-  objc_msgSend_warmthBias(v104, v54, v55, v56);
+  objc_msgSend_warmthBias(styleCopy, v54, v55, v56);
   v49[3].i32[1] = v57;
-  v58 = v103;
+  v58 = typeCopy;
   if (objc_msgSend_isEqualToString_(v58, v59, *MEMORY[0x29EDC07C0], v60))
   {
     v63 = 0;
@@ -1084,7 +1084,7 @@ LABEL_33:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  v83 = objc_msgSend_calculateHistogramStatsWithLumaTex_chromaTex_(self, v81, v20, v21);
+  v83 = objc_msgSend_calculateHistogramStatsWithLumaTex_chromaTex_(self, v81, texCopy, chromaTexCopy);
   if (v83)
   {
     v97 = v83;
@@ -1093,7 +1093,7 @@ LABEL_33:
 
   else
   {
-    GuideImage = objc_msgSend_createGuideImage_(self, v84, v20, v85);
+    GuideImage = objc_msgSend_createGuideImage_(self, v84, texCopy, v85);
     if (GuideImage)
     {
       v97 = GuideImage;
@@ -1109,7 +1109,7 @@ LABEL_33:
         sub_29588D114();
       }
 
-      else if (v22 && v23 && v25 && (v92 = objc_msgSend_processPersonMaskTex_skinMaskTex_skyMaskTex_(self, v91, v22, v23, v25)) != 0)
+      else if (maskTexCopy && skinMaskTexCopy && skyMaskTexCopy && (v92 = objc_msgSend_processPersonMaskTex_skinMaskTex_skyMaskTex_(self, v91, maskTexCopy, skinMaskTexCopy, skyMaskTexCopy)) != 0)
       {
         v97 = v92;
         sub_29588D1A0();
@@ -1118,7 +1118,7 @@ LABEL_33:
       else
       {
         FigMetalDecRef();
-        v97 = objc_msgSend_renderWithLumaTex_chromaTex_gainMapTex_outputGainMapTex_(self, v93, v20, v21, v102, v101);
+        v97 = objc_msgSend_renderWithLumaTex_chromaTex_gainMapTex_outputGainMapTex_(self, v93, texCopy, chromaTexCopy, mapTexCopy, gainMapTexCopy);
         if (v97)
         {
           sub_29588D22C();

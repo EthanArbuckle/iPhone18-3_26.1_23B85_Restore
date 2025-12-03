@@ -1,20 +1,20 @@
 @interface PLFeatureAvailability
-+ (id)_computeAvailabilityStatusFromSnapshot:(id)a3;
-+ (id)availabilityFromFeatureAvailability:(id)a3 withGraphIsAvailable:(BOOL)a4;
-+ (id)availabilityFromInvalidatingSearchIndexInFeatureAvailability:(id)a3;
++ (id)_computeAvailabilityStatusFromSnapshot:(id)snapshot;
++ (id)availabilityFromFeatureAvailability:(id)availability withGraphIsAvailable:(BOOL)available;
++ (id)availabilityFromInvalidatingSearchIndexInFeatureAvailability:(id)availability;
 - (NSDictionary)dictionary;
-- (PLFeatureAvailability)initWithDictionary:(id)a3;
-- (PLFeatureAvailability)initWithProcessingSnapshot:(id)a3;
-- (id)fractionForFeature:(id)a3;
+- (PLFeatureAvailability)initWithDictionary:(id)dictionary;
+- (PLFeatureAvailability)initWithProcessingSnapshot:(id)snapshot;
+- (id)fractionForFeature:(id)feature;
 @end
 
 @implementation PLFeatureAvailability
 
-- (id)fractionForFeature:(id)a3
+- (id)fractionForFeature:(id)feature
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 unsignedIntegerValue] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  featureCopy = feature;
+  if (([featureCopy unsignedIntegerValue] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v5 = MEMORY[0x1E696AD98];
     [(PLFeatureProcessingSnapshot *)self->_processingSnapshot fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9[0] = 67109120;
-      v9[1] = [v4 intValue];
+      v9[1] = [featureCopy intValue];
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Requesting fractionForFeature:%d not implemented", v9, 8u);
     }
 
@@ -41,22 +41,22 @@
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v6[0] = @"snapshotDictionary";
-  v3 = [(PLFeatureProcessingSnapshot *)self->_processingSnapshot dictionary];
+  dictionary = [(PLFeatureProcessingSnapshot *)self->_processingSnapshot dictionary];
   v6[1] = @"availabilityByFeature";
-  v7[0] = v3;
+  v7[0] = dictionary;
   v7[1] = self->_availabilityByFeature;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-- (PLFeatureAvailability)initWithDictionary:(id)a3
+- (PLFeatureAvailability)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PLFeatureAvailability *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"availabilityByFeature"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"availabilityByFeature"];
     v7 = v6;
     if (v6)
     {
@@ -71,7 +71,7 @@
     availabilityByFeature = v5->_availabilityByFeature;
     v5->_availabilityByFeature = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"snapshotDictionary"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"snapshotDictionary"];
     if (v10)
     {
       v11 = [[PLFeatureProcessingSnapshot alloc] initWithDictionary:v10];
@@ -91,17 +91,17 @@
   return v5;
 }
 
-- (PLFeatureAvailability)initWithProcessingSnapshot:(id)a3
+- (PLFeatureAvailability)initWithProcessingSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   v12.receiver = self;
   v12.super_class = PLFeatureAvailability;
   v6 = [(PLFeatureAvailability *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processingSnapshot, a3);
-    v8 = [PLFeatureAvailability _computeAvailabilityStatusFromSnapshot:v5];
+    objc_storeStrong(&v6->_processingSnapshot, snapshot);
+    v8 = [PLFeatureAvailability _computeAvailabilityStatusFromSnapshot:snapshotCopy];
     availabilityByFeature = v7->_availabilityByFeature;
     v7->_availabilityByFeature = v8;
 
@@ -111,10 +111,10 @@
   return v7;
 }
 
-+ (id)_computeAvailabilityStatusFromSnapshot:(id)a3
++ (id)_computeAvailabilityStatusFromSnapshot:(id)snapshot
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v60 = 0u;
   v61 = 0u;
@@ -135,20 +135,20 @@
           objc_enumerationMutation(&unk_1F0FC0030);
         }
 
-        v8 = [*(*(&v60 + 1) + 8 * i) unsignedIntegerValue];
-        v9 = v3;
-        v10 = [objc_alloc(*(v6 + 3496)) initWithFeature:v8];
+        unsignedIntegerValue = [*(*(&v60 + 1) + 8 * i) unsignedIntegerValue];
+        v9 = snapshotCopy;
+        v10 = [objc_alloc(*(v6 + 3496)) initWithFeature:unsignedIntegerValue];
         v11 = 0;
-        if (v8 <= 1)
+        if (unsignedIntegerValue <= 1)
         {
-          if (!v8)
+          if (!unsignedIntegerValue)
           {
             goto LABEL_9;
           }
 
-          if (v8 == 1)
+          if (unsignedIntegerValue == 1)
           {
-            v58 = [v9 hasConsistentMediaAnalysisImageVersion];
+            hasConsistentMediaAnalysisImageVersion = [v9 hasConsistentMediaAnalysisImageVersion];
             [v9 fractionOfCuratedAssetsWithCaptions];
             v16 = v15;
             [v10 fractionOfCuratedAssetsWithCaptionsThreshold];
@@ -165,14 +165,14 @@
             v28 = v27;
             [v10 fractionOfCuratedAssetsWithSceneAnalysisInSearchIndexThreshold];
             v30 = v29;
-            v31 = [v9 totalCuratedAssetCount];
+            totalCuratedAssetCount = [v9 totalCuratedAssetCount];
             v32 = v6;
             v33 = v5;
-            v34 = v3;
-            v35 = [v10 minimumNumberOfCuratedAssets];
-            v36 = [v9 photosKnowledgeGraphIsReady];
-            v37 = [v9 vuIndexIsFullClustered];
-            v38 = v58;
+            v34 = snapshotCopy;
+            minimumNumberOfCuratedAssets = [v10 minimumNumberOfCuratedAssets];
+            photosKnowledgeGraphIsReady = [v9 photosKnowledgeGraphIsReady];
+            vuIndexIsFullClustered = [v9 vuIndexIsFullClustered];
+            v38 = hasConsistentMediaAnalysisImageVersion;
             if (v16 < v18)
             {
               v38 = 0;
@@ -193,8 +193,8 @@
               v38 = 0;
             }
 
-            v39 = v31 >= v35;
-            v3 = v34;
+            v39 = totalCuratedAssetCount >= minimumNumberOfCuratedAssets;
+            snapshotCopy = v34;
             v5 = v33;
             v6 = v32;
             v4 = v57;
@@ -203,23 +203,23 @@
               v38 = 0;
             }
 
-            v11 = v38 & v36 & v37;
+            v11 = v38 & photosKnowledgeGraphIsReady & vuIndexIsFullClustered;
           }
         }
 
         else
         {
-          if (v8 > 8)
+          if (unsignedIntegerValue > 8)
           {
             goto LABEL_32;
           }
 
-          if (((1 << v8) & 0x1B0) != 0)
+          if (((1 << unsignedIntegerValue) & 0x1B0) != 0)
           {
             goto LABEL_9;
           }
 
-          if (((1 << v8) & 0xC) != 0)
+          if (((1 << unsignedIntegerValue) & 0xC) != 0)
           {
             [v9 fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
             v13 = v12;
@@ -228,7 +228,7 @@
             goto LABEL_33;
           }
 
-          if (v8 == 6)
+          if (unsignedIntegerValue == 6)
           {
             [v9 fractionOfCuratedAssetsWithCaptions];
             v41 = v40;
@@ -242,20 +242,20 @@
             v49 = v48;
             [v10 fractionOfHighlightsEnrichedThreshold];
             v51 = v50;
-            v52 = [v9 photosKnowledgeGraphIsReady];
+            photosKnowledgeGraphIsReady2 = [v9 photosKnowledgeGraphIsReady];
             v53 = v45 >= v47 && v43;
             if (v49 < v51)
             {
               v53 = 0;
             }
 
-            v11 = v53 & v52;
+            v11 = v53 & photosKnowledgeGraphIsReady2;
           }
 
           else
           {
 LABEL_32:
-            if (v8 == 100)
+            if (unsignedIntegerValue == 100)
             {
 LABEL_9:
               v11 = 1;
@@ -266,7 +266,7 @@ LABEL_9:
 LABEL_33:
 
         v54 = [MEMORY[0x1E696AD98] numberWithBool:v11];
-        v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+        v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue];
         [v4 setObject:v54 forKeyedSubscript:v55];
       }
 
@@ -279,10 +279,10 @@ LABEL_33:
   return v4;
 }
 
-+ (id)availabilityFromInvalidatingSearchIndexInFeatureAvailability:(id)a3
++ (id)availabilityFromInvalidatingSearchIndexInFeatureAvailability:(id)availability
 {
-  v3 = [a3 processingSnapshot];
-  v4 = [v3 copy];
+  processingSnapshot = [availability processingSnapshot];
+  v4 = [processingSnapshot copy];
 
   [v4 resetSearchIndexState];
   v5 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:v4];
@@ -290,13 +290,13 @@ LABEL_33:
   return v5;
 }
 
-+ (id)availabilityFromFeatureAvailability:(id)a3 withGraphIsAvailable:(BOOL)a4
++ (id)availabilityFromFeatureAvailability:(id)availability withGraphIsAvailable:(BOOL)available
 {
-  v4 = a4;
-  v5 = [a3 processingSnapshot];
-  v6 = [v5 copy];
+  availableCopy = available;
+  processingSnapshot = [availability processingSnapshot];
+  v6 = [processingSnapshot copy];
 
-  [v6 setPhotosKnowledgeGraphIsReady:v4];
+  [v6 setPhotosKnowledgeGraphIsReady:availableCopy];
   v7 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:v6];
 
   return v7;

@@ -1,8 +1,8 @@
 @interface HDMenstrualCyclesPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
 - (HDMenstrualCyclesPlugin)init;
-- (HDMenstrualCyclesPlugin)initWithLocalUserDefaults:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (HDMenstrualCyclesPlugin)initWithLocalUserDefaults:(id)defaults;
+- (id)extensionForProfile:(id)profile;
 - (id)stateSyncEntityClasses;
 - (id)taskServerClasses;
 - (void)handleDatabaseObliteration;
@@ -12,44 +12,44 @@
 
 - (HDMenstrualCyclesPlugin)init
 {
-  v3 = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
-  v4 = [(HDMenstrualCyclesPlugin *)self initWithLocalUserDefaults:v3];
+  hkmc_menstrualCyclesDefaults = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
+  v4 = [(HDMenstrualCyclesPlugin *)self initWithLocalUserDefaults:hkmc_menstrualCyclesDefaults];
 
   return v4;
 }
 
-- (HDMenstrualCyclesPlugin)initWithLocalUserDefaults:(id)a3
+- (HDMenstrualCyclesPlugin)initWithLocalUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = HDMenstrualCyclesPlugin;
   v6 = [(HDMenstrualCyclesPlugin *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
   }
 
   return v7;
 }
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
-  v3 = [a3 behavior];
-  v4 = [v3 isRealityDevice];
+  behavior = [daemon behavior];
+  isRealityDevice = [behavior isRealityDevice];
 
-  return v4 ^ 1;
+  return isRealityDevice ^ 1;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [HDMCProfileExtension alloc];
     v6 = [objc_alloc(MEMORY[0x277D119F8]) initWithUserDefaults:self->_userDefaults];
-    v7 = [(HDMCProfileExtension *)v5 initWithProfile:v4 settingsManager:v6];
+    v7 = [(HDMCProfileExtension *)v5 initWithProfile:profileCopy settingsManager:v6];
   }
 
   else

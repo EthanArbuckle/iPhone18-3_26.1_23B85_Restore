@@ -1,11 +1,11 @@
 @interface NPKProtoCreateShareForPartialShareInvitationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCreateShareForPartialShareInvitationResponse
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCreateShareForPartialShareInvitationResponse;
   v4 = [(NPKProtoCreateShareForPartialShareInvitationResponse *)&v8 description];
-  v5 = [(NPKProtoCreateShareForPartialShareInvitationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCreateShareForPartialShareInvitationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   shareURLData = self->_shareURLData;
   if (shareURLData)
   {
-    [v3 setObject:shareURLData forKey:@"shareURLData"];
+    [dictionary setObject:shareURLData forKey:@"shareURLData"];
   }
 
   errorData = self->_errorData;
@@ -41,61 +41,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_shareURLData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_shareURLData)
   {
-    [v4 setShareURLData:?];
-    v4 = v5;
+    [toCopy setShareURLData:?];
+    toCopy = v5;
   }
 
   if (self->_errorData)
   {
     [v5 setErrorData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_shareURLData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_shareURLData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((shareURLData = self->_shareURLData, !(shareURLData | v4[2])) || -[NSData isEqual:](shareURLData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((shareURLData = self->_shareURLData, !(shareURLData | equalCopy[2])) || -[NSData isEqual:](shareURLData, "isEqual:")))
   {
     errorData = self->_errorData;
-    if (errorData | v4[1])
+    if (errorData | equalCopy[1])
     {
       v7 = [(NSData *)errorData isEqual:?];
     }
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKProtoCreateShareForPartialShareInvitationResponse *)self setShareURLData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoCreateShareForPartialShareInvitationResponse *)self setErrorData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

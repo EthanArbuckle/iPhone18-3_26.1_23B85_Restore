@@ -1,16 +1,16 @@
 @interface PKPaymentSetupFieldBuiltInPhoneNumber
-- (PKPaymentSetupFieldBuiltInPhoneNumber)initWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (id)_submissionStringForValue:(id)a3;
+- (PKPaymentSetupFieldBuiltInPhoneNumber)initWithIdentifier:(id)identifier type:(unint64_t)type;
+- (id)_submissionStringForValue:(id)value;
 - (id)submissionAttribute;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInPhoneNumber
 
-- (PKPaymentSetupFieldBuiltInPhoneNumber)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInPhoneNumber)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = PKPaymentSetupFieldBuiltInPhoneNumber;
-  v4 = [(PKPaymentSetupFieldText *)&v11 initWithIdentifier:@"phoneNumber" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v11 initWithIdentifier:@"phoneNumber" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_Phone_0.isa, 0);
@@ -28,8 +28,8 @@
     v7 = [&unk_1F23B3C38 componentsJoinedByString:&stru_1F227FD28];
     v8 = [v6 characterSetWithCharactersInString:v7];
 
-    v9 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    [v8 formUnionWithCharacterSet:v9];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    [v8 formUnionWithCharacterSet:decimalDigitCharacterSet];
 
     [v8 addCharactersInString:@"+"];
     [(PKPaymentSetupFieldText *)v4 setAllowedCharacters:v8];
@@ -40,27 +40,27 @@
 
 - (id)submissionAttribute
 {
-  v3 = [(PKPaymentSetupField *)self attribute];
-  v4 = [(PKPaymentSetupField *)self currentValue];
-  v5 = [(PKPaymentSetupFieldBuiltInPhoneNumber *)self _submissionStringForValue:v4];
-  [v3 setCurrentValue:v5];
+  attribute = [(PKPaymentSetupField *)self attribute];
+  currentValue = [(PKPaymentSetupField *)self currentValue];
+  v5 = [(PKPaymentSetupFieldBuiltInPhoneNumber *)self _submissionStringForValue:currentValue];
+  [attribute setCurrentValue:v5];
 
-  return v3;
+  return attribute;
 }
 
-- (id)_submissionStringForValue:(id)a3
+- (id)_submissionStringForValue:(id)value
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = PKPaymentSetupFieldBuiltInPhoneNumber;
-  v4 = [(PKPaymentSetupFieldText *)&v17 _submissionStringForValue:a3];
+  v4 = [(PKPaymentSetupFieldText *)&v17 _submissionStringForValue:value];
   v5 = PKBestGuessNormalizedPhoneNumber(v4);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PKPaymentSetupFieldText *)self paddingCharacters];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  paddingCharacters = [(PKPaymentSetupFieldText *)self paddingCharacters];
+  v7 = [paddingCharacters countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -73,7 +73,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(paddingCharacters);
         }
 
         v5 = [v11 stringByReplacingOccurrencesOfString:*(*(&v13 + 1) + 8 * v10) withString:&stru_1F227FD28];
@@ -83,7 +83,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [paddingCharacters countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v8);

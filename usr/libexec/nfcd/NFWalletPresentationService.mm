@@ -1,20 +1,20 @@
 @interface NFWalletPresentationService
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (BOOL)_shouldSuppressNotify;
-- (BOOL)assert:(unint64_t)a3 requestor:(id)a4 isFirst:(BOOL *)a5 updatedVal:(int64_t *)a6;
-- (BOOL)deassert:(unint64_t)a3 requestor:(id)a4 isLast:(BOOL *)a5 updatedVal:(int64_t *)a6;
+- (BOOL)assert:(unint64_t)assert requestor:(id)requestor isFirst:(BOOL *)first updatedVal:(int64_t *)val;
+- (BOOL)deassert:(unint64_t)deassert requestor:(id)requestor isLast:(BOOL *)last updatedVal:(int64_t *)val;
 - (BOOL)fieldDetectRequested;
-- (BOOL)forceNotifyFieldDetectPresentmentWithFieldNotification:(id)a3 walletDomain:(unint64_t)a4;
-- (BOOL)isAsserted:(unint64_t)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)notifyFieldDetectPresentmentWithFieldNotification:(id)a3;
+- (BOOL)forceNotifyFieldDetectPresentmentWithFieldNotification:(id)notification walletDomain:(unint64_t)domain;
+- (BOOL)isAsserted:(unint64_t)asserted;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)notifyFieldDetectPresentmentWithFieldNotification:(id)notification;
 - (id)dumpState;
 - (id)walletBundleIdentifier;
 - (unint64_t)walletDomain;
-- (void)currentAssertionCounts:(int64_t *)a3;
+- (void)currentAssertionCounts:(int64_t *)counts;
 - (void)notifyPresentmentFieldExit;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentWithUserInfo:(id)a3 completion:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentWithUserInfo:(id)info completion:(id)completion;
 - (void)updateNFCDefaultForCA;
 @end
 
@@ -22,11 +22,11 @@
 
 - (BOOL)fieldDetectRequested
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    walletPresentationEventPublisher = v2->_walletPresentationEventPublisher;
+    walletPresentationEventPublisher = selfCopy->_walletPresentationEventPublisher;
   }
 
   else
@@ -35,7 +35,7 @@
   }
 
   v4 = walletPresentationEventPublisher;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if ([(os_unfair_lock_s *)v4 walletDomain]== 2 || [(os_unfair_lock_s *)v4 walletDomain]== 1)
   {
@@ -70,11 +70,11 @@
 
 - (BOOL)_shouldSuppressNotify
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    referenceCounter = v2->_referenceCounter;
+    referenceCounter = selfCopy->_referenceCounter;
   }
 
   else
@@ -86,9 +86,9 @@
   v5 = 1;
   if ((sub_100147A68(v4, 1uLL, 0) & 1) == 0)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v6 = v2->_referenceCounter;
+      v6 = selfCopy->_referenceCounter;
     }
 
     else
@@ -99,13 +99,13 @@
     v5 = sub_100147A68(v6, 2uLL, 0);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -150,7 +150,7 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, connectionCopy);
   if (self)
   {
     v16 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NFWalletPresentationInterface];
@@ -161,10 +161,10 @@
     v16 = 0;
   }
 
-  [v6 setExportedInterface:v16];
+  [connectionCopy setExportedInterface:v16];
 
-  [v6 setExportedObject:self];
-  [v6 setRemoteObjectInterface:0];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setRemoteObjectInterface:0];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_100046214;
@@ -172,7 +172,7 @@
   objc_copyWeak(v45, &location);
   v44[4] = self;
   v45[1] = a2;
-  [v6 setInvalidationHandler:v44];
+  [connectionCopy setInvalidationHandler:v44];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_100046470;
@@ -180,12 +180,12 @@
   objc_copyWeak(v43, &location);
   v42[4] = self;
   v43[1] = a2;
-  [v6 setInterruptionHandler:v42];
-  sub_1001E4C54(v6);
-  v17 = sub_1001E4F9C(v6);
+  [connectionCopy setInterruptionHandler:v42];
+  sub_1001E4C54(connectionCopy);
+  v17 = sub_1001E4F9C(connectionCopy);
   if (v17)
   {
-    [v6 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -209,8 +209,8 @@
       v41 = v21;
       v22 = object_getClassName(self);
       v23 = sel_getName(a2);
-      v24 = [v6 processIdentifier];
-      v25 = sub_1001E4B84(v6);
+      processIdentifier = [connectionCopy processIdentifier];
+      v25 = sub_1001E4B84(connectionCopy);
       v26 = v25;
       if (v25)
       {
@@ -223,7 +223,7 @@
       }
 
       v28 = v27;
-      v19(3, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) does not entitle to access service", v41, v22, v23, 164, v24, v28);
+      v19(3, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) does not entitle to access service", v41, v22, v23, 164, processIdentifier, v28);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -243,8 +243,8 @@
 
       v32 = object_getClassName(self);
       v33 = sel_getName(a2);
-      v34 = [v6 processIdentifier];
-      v35 = sub_1001E4B84(v6);
+      processIdentifier2 = [connectionCopy processIdentifier];
+      v35 = sub_1001E4B84(connectionCopy);
       v36 = v35;
       if (v35)
       {
@@ -266,7 +266,7 @@
       v53 = 1024;
       v54 = 164;
       v55 = 1024;
-      v56 = v34;
+      v56 = processIdentifier2;
       v57 = 2114;
       v58 = v38;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i PID %d (%{public}@) does not entitle to access service", buf, 0x32u);
@@ -280,10 +280,10 @@
   return v17;
 }
 
-- (void)presentWithUserInfo:(id)a3 completion:(id)a4
+- (void)presentWithUserInfo:(id)info completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v9 = +[NSXPCConnection currentConnection];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -294,18 +294,18 @@
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v16 = self;
+    selfCopy = self;
     v17 = a2;
-    v18 = v7;
+    v18 = completionCopy;
     v19 = Name;
     sub_1001E4B84(v9);
-    v44 = v8;
+    v44 = infoCopy;
     v21 = v20 = v9;
     v22 = [v21 debugDescription];
     v43 = v19;
-    v7 = v18;
+    completionCopy = v18;
     a2 = v17;
-    self = v16;
+    self = selfCopy;
     v23 = 45;
     if (isMetaClass)
     {
@@ -315,7 +315,7 @@
     v11(6, "%c[%{public}s %{public}s]:%i %@", v23, ClassName, v43, 181, v22);
 
     v9 = v20;
-    v8 = v44;
+    infoCopy = v44;
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -358,11 +358,11 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v32, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "[XPC]presentWithCompletion:", &unk_1002E8B7A, buf, 2u);
   }
 
-  v33 = self;
-  objc_sync_enter(v33);
-  if (v33)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2)
   {
-    walletPresentationEventPublisher = v33->_walletPresentationEventPublisher;
+    walletPresentationEventPublisher = selfCopy2->_walletPresentationEventPublisher;
   }
 
   else
@@ -371,7 +371,7 @@
   }
 
   sub_100048DC4(walletPresentationEventPublisher);
-  objc_sync_exit(v33);
+  objc_sync_exit(selfCopy2);
 
   v35 = NFSharedSignpostLog();
   if (os_signpost_enabled(v35))
@@ -380,16 +380,16 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v35, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "[XPC]presentWithCompletion:", &unk_1002E8B7A, buf, 2u);
   }
 
-  v36 = [v8 NF_numberForKey:@"SignpostBeginTime"];
+  v36 = [infoCopy NF_numberForKey:@"SignpostBeginTime"];
 
   if (v36)
   {
     v37 = NFSharedSignpostLog();
     if (os_signpost_enabled(v37))
     {
-      v38 = [v36 unsignedLongLongValue];
+      unsignedLongLongValue = [v36 unsignedLongLongValue];
       *buf = 134349056;
-      *v46 = v38;
+      *v46 = unsignedLongLongValue;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v37, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "WalletPresentTotalDuration", "%{public, signpost.description:begin_time}llu", buf, 0xCu);
     }
   }
@@ -417,31 +417,31 @@
     _os_log_fault_impl(&_mh_execute_header, v42, OS_LOG_TYPE_FAULT, "Exceed %{public}f time limit", buf, 0xCu);
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"walletDomain"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"walletDomain"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NFWalletPresentationService;
-    v5 = objc_msgSendSuper2(&v7, "automaticallyNotifiesObserversForKey:", v4);
+    v5 = objc_msgSendSuper2(&v7, "automaticallyNotifiesObserversForKey:", keyCopy);
   }
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a5;
-  if (off_10035B2A0 == a6)
+  changeCopy = change;
+  if (off_10035B2A0 == context)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -458,7 +458,7 @@
         v16 = 43;
       }
 
-      v13(6, "%c[%{public}s %{public}s]:%i change=%@", v16, ClassName, Name, 223, v11);
+      v13(6, "%c[%{public}s %{public}s]:%i change=%@", v16, ClassName, Name, 223, changeCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -485,7 +485,7 @@
       v29 = 1024;
       v30 = 223;
       v31 = 2112;
-      v32 = v11;
+      v32 = changeCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i change=%@", buf, 0x2Cu);
     }
 
@@ -497,17 +497,17 @@
   {
     v22.receiver = self;
     v22.super_class = NFWalletPresentationService;
-    [(NFWalletPresentationService *)&v22 observeValueForKeyPath:a3 ofObject:a4 change:v11 context:a6];
+    [(NFWalletPresentationService *)&v22 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 
 - (unint64_t)walletDomain
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    walletPresentationEventPublisher = v2->_walletPresentationEventPublisher;
+    walletPresentationEventPublisher = selfCopy->_walletPresentationEventPublisher;
   }
 
   else
@@ -515,19 +515,19 @@
     walletPresentationEventPublisher = 0;
   }
 
-  v4 = [(NFWalletPresentationEventPublisher *)walletPresentationEventPublisher walletDomain];
-  objc_sync_exit(v2);
+  walletDomain = [(NFWalletPresentationEventPublisher *)walletPresentationEventPublisher walletDomain];
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return walletDomain;
 }
 
 - (id)walletBundleIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    walletPresentationEventPublisher = v2->_walletPresentationEventPublisher;
+    walletPresentationEventPublisher = selfCopy->_walletPresentationEventPublisher;
   }
 
   else
@@ -536,7 +536,7 @@
   }
 
   v4 = sub_100048C40(walletPresentationEventPublisher);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -555,9 +555,9 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)notifyFieldDetectPresentmentWithFieldNotification:(id)a3
+- (BOOL)notifyFieldDetectPresentmentWithFieldNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ([(NFWalletPresentationService *)self _shouldSuppressNotify])
   {
     v5 = 0;
@@ -565,11 +565,11 @@
 
   else
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    if (v6)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      walletPresentationEventPublisher = v6->_walletPresentationEventPublisher;
+      walletPresentationEventPublisher = selfCopy->_walletPresentationEventPublisher;
     }
 
     else
@@ -577,16 +577,16 @@
       walletPresentationEventPublisher = 0;
     }
 
-    v5 = sub_10004A14C(walletPresentationEventPublisher, v4);
-    objc_sync_exit(v6);
+    v5 = sub_10004A14C(walletPresentationEventPublisher, notificationCopy);
+    objc_sync_exit(selfCopy);
   }
 
   return v5;
 }
 
-- (BOOL)forceNotifyFieldDetectPresentmentWithFieldNotification:(id)a3 walletDomain:(unint64_t)a4
+- (BOOL)forceNotifyFieldDetectPresentmentWithFieldNotification:(id)notification walletDomain:(unint64_t)domain
 {
-  v6 = a3;
+  notificationCopy = notification;
   if ([(NFWalletPresentationService *)self _shouldSuppressNotify])
   {
     v7 = 0;
@@ -594,11 +594,11 @@
 
   else
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    if (v8)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      walletPresentationEventPublisher = v8->_walletPresentationEventPublisher;
+      walletPresentationEventPublisher = selfCopy->_walletPresentationEventPublisher;
     }
 
     else
@@ -606,24 +606,24 @@
       walletPresentationEventPublisher = 0;
     }
 
-    v7 = sub_10004A9E4(walletPresentationEventPublisher, v6, a4);
-    objc_sync_exit(v8);
+    v7 = sub_10004A9E4(walletPresentationEventPublisher, notificationCopy, domain);
+    objc_sync_exit(selfCopy);
   }
 
   return v7;
 }
 
-- (BOOL)assert:(unint64_t)a3 requestor:(id)a4 isFirst:(BOOL *)a5 updatedVal:(int64_t *)a6
+- (BOOL)assert:(unint64_t)assert requestor:(id)requestor isFirst:(BOOL *)first updatedVal:(int64_t *)val
 {
   v37 = 0;
   v38 = 0;
-  v10 = self;
-  v11 = a4;
-  objc_sync_enter(v10);
-  if (v10)
+  selfCopy = self;
+  requestorCopy = requestor;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v12 = v10->_walletPresentationEventPublisher;
-    referenceCounter = v10->_referenceCounter;
+    v12 = selfCopy->_walletPresentationEventPublisher;
+    referenceCounter = selfCopy->_referenceCounter;
   }
 
   else
@@ -632,10 +632,10 @@
     referenceCounter = 0;
   }
 
-  v14 = sub_100147A68(referenceCounter, a3, &v38);
-  if (v10)
+  v14 = sub_100147A68(referenceCounter, assert, &v38);
+  if (selfCopy)
   {
-    v15 = v10->_referenceCounter;
+    v15 = selfCopy->_referenceCounter;
   }
 
   else
@@ -643,12 +643,12 @@
     v15 = 0;
   }
 
-  v16 = sub_100147314(v15, a3, v11, &v37);
+  v16 = sub_100147314(v15, assert, requestorCopy, &v37);
 
-  objc_sync_exit(v10);
-  if (a6)
+  objc_sync_exit(selfCopy);
+  if (val)
   {
-    *a6 = v37;
+    *val = v37;
   }
 
   v17 = v14 ^ 1;
@@ -657,13 +657,13 @@
   if (Logger)
   {
     v19 = Logger;
-    Class = object_getClass(v10);
+    Class = object_getClass(selfCopy);
     isMetaClass = class_isMetaClass(Class);
     v22 = v14;
     v23 = v16;
     v24 = v12;
-    v25 = a5;
-    ClassName = object_getClassName(v10);
+    firstCopy = first;
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
     v28 = 43;
     if (!isMetaClass)
@@ -672,18 +672,18 @@
     }
 
     v35 = ClassName;
-    a5 = v25;
+    first = firstCopy;
     v12 = v24;
     v16 = v23;
     LOBYTE(v14) = v22;
-    v19(6, "%c[%{public}s %{public}s]:%i (type=%lu) isFirstAssert=%d, currentVal=%ld, updatedVal=%ld", v28, v35, Name, 321, a3, v17, v38, v37);
+    v19(6, "%c[%{public}s %{public}s]:%i (type=%lu) isFirstAssert=%d, currentVal=%ld, updatedVal=%ld", v28, v35, Name, 321, assert, v17, v38, v37);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v29 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = object_getClass(v10);
+    v30 = object_getClass(selfCopy);
     if (class_isMetaClass(v30))
     {
       v31 = 43;
@@ -694,7 +694,7 @@
       v31 = 45;
     }
 
-    v32 = object_getClassName(v10);
+    v32 = object_getClassName(selfCopy);
     v33 = sel_getName(a2);
     *buf = 67110914;
     v40 = v31;
@@ -705,7 +705,7 @@
     v45 = 1024;
     v46 = 321;
     v47 = 2048;
-    v48 = a3;
+    assertCopy = assert;
     v49 = 1024;
     v50 = v17;
     v51 = 2048;
@@ -717,7 +717,7 @@
 
   if (!(v14 & 1 | ((v16 & 1) == 0)))
   {
-    switch(a3)
+    switch(assert)
     {
       case 3uLL:
         sub_10004A0A0(v12, 1);
@@ -731,24 +731,24 @@
     }
   }
 
-  if (a5)
+  if (first)
   {
-    *a5 = v17;
+    *first = v17;
   }
 
   return v16;
 }
 
-- (BOOL)deassert:(unint64_t)a3 requestor:(id)a4 isLast:(BOOL *)a5 updatedVal:(int64_t *)a6
+- (BOOL)deassert:(unint64_t)deassert requestor:(id)requestor isLast:(BOOL *)last updatedVal:(int64_t *)val
 {
   v47 = 0;
-  v11 = self;
-  v12 = a4;
-  objc_sync_enter(v11);
-  if (v11)
+  selfCopy = self;
+  requestorCopy = requestor;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v13 = v11->_walletPresentationEventPublisher;
-    referenceCounter = v11->_referenceCounter;
+    v13 = selfCopy->_walletPresentationEventPublisher;
+    referenceCounter = selfCopy->_referenceCounter;
   }
 
   else
@@ -757,13 +757,13 @@
     referenceCounter = 0;
   }
 
-  v15 = sub_100147588(referenceCounter, a3, v12, &v47);
+  v15 = sub_100147588(referenceCounter, deassert, requestorCopy, &v47);
 
   if (v15)
   {
-    if (v11)
+    if (selfCopy)
     {
-      v16 = v11->_referenceCounter;
+      v16 = selfCopy->_referenceCounter;
     }
 
     else
@@ -772,12 +772,12 @@
     }
 
     sel = a2;
-    v17 = sub_100147A68(v16, a3, 0);
-    objc_sync_exit(v11);
+    v17 = sub_100147A68(v16, deassert, 0);
+    objc_sync_exit(selfCopy);
 
-    if (a6)
+    if (val)
     {
-      *a6 = v47;
+      *val = v47;
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -785,14 +785,14 @@
     if (Logger)
     {
       v19 = Logger;
-      Class = object_getClass(v11);
+      Class = object_getClass(selfCopy);
       v21 = v13;
-      v22 = a5;
+      lastCopy = last;
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v11);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(sel);
       v26 = !isMetaClass;
-      a5 = v22;
+      last = lastCopy;
       v13 = v21;
       v27 = 43;
       if (v26)
@@ -800,14 +800,14 @@
         v27 = 45;
       }
 
-      v19(6, "%c[%{public}s %{public}s]:%i (type=%lu) lastAssertion=%d, updatedVal=%ld", v27, ClassName, Name, 375, a3, v17 ^ 1, v47);
+      v19(6, "%c[%{public}s %{public}s]:%i (type=%lu) lastAssertion=%d, updatedVal=%ld", v27, ClassName, Name, 375, deassert, v17 ^ 1, v47);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v28 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = object_getClass(v11);
+      v29 = object_getClass(selfCopy);
       if (class_isMetaClass(v29))
       {
         v30 = 43;
@@ -818,7 +818,7 @@
         v30 = 45;
       }
 
-      v31 = object_getClassName(v11);
+      v31 = object_getClassName(selfCopy);
       v32 = sel_getName(sel);
       *buf = 67110658;
       v49 = v30;
@@ -829,7 +829,7 @@
       v54 = 1024;
       v55 = 375;
       v56 = 2048;
-      v57 = a3;
+      deassertCopy2 = deassert;
       v58 = 1024;
       v59 = v17 ^ 1;
       v60 = 2048;
@@ -839,12 +839,12 @@
 
     if ((v17 & 1) == 0)
     {
-      if (a5)
+      if (last)
       {
-        *a5 = 1;
+        *last = 1;
       }
 
-      switch(a3)
+      switch(deassert)
       {
         case 3uLL:
           sub_10004A0A0(v13, 0);
@@ -866,9 +866,9 @@
     if (v33)
     {
       v34 = v33;
-      v35 = object_getClass(v11);
+      v35 = object_getClass(selfCopy);
       v36 = class_isMetaClass(v35);
-      v44 = object_getClassName(v11);
+      v44 = object_getClassName(selfCopy);
       v45 = sel_getName(a2);
       v37 = 45;
       if (v36)
@@ -876,14 +876,14 @@
         v37 = 43;
       }
 
-      v34(3, "%c[%{public}s %{public}s]:%i Missing assertion (%lu)", v37, v44, v45, 365, a3);
+      v34(3, "%c[%{public}s %{public}s]:%i Missing assertion (%lu)", v37, v44, v45, 365, deassert);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v38 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      v39 = object_getClass(v11);
+      v39 = object_getClass(selfCopy);
       if (class_isMetaClass(v39))
       {
         v40 = 43;
@@ -894,7 +894,7 @@
         v40 = 45;
       }
 
-      v41 = object_getClassName(v11);
+      v41 = object_getClassName(selfCopy);
       v42 = sel_getName(a2);
       *buf = 67110146;
       v49 = v40;
@@ -905,23 +905,23 @@
       v54 = 1024;
       v55 = 365;
       v56 = 2048;
-      v57 = a3;
+      deassertCopy2 = deassert;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Missing assertion (%lu)", buf, 0x2Cu);
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   return v15;
 }
 
-- (BOOL)isAsserted:(unint64_t)a3
+- (BOOL)isAsserted:(unint64_t)asserted
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    referenceCounter = v4->_referenceCounter;
+    referenceCounter = selfCopy->_referenceCounter;
   }
 
   else
@@ -929,24 +929,24 @@
     referenceCounter = 0;
   }
 
-  v6 = sub_100147A68(referenceCounter, a3, 0);
-  objc_sync_exit(v4);
+  v6 = sub_100147A68(referenceCounter, asserted, 0);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)currentAssertionCounts:(int64_t *)a3
+- (void)currentAssertionCounts:(int64_t *)counts
 {
-  if (a3)
+  if (counts)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     for (i = 0; i != 4; ++i)
     {
       v7 = 0;
-      if (v4)
+      if (selfCopy)
       {
-        referenceCounter = v4->_referenceCounter;
+        referenceCounter = selfCopy->_referenceCounter;
       }
 
       else
@@ -955,21 +955,21 @@
       }
 
       sub_100147A68(referenceCounter, i, &v7);
-      a3[i] = v7;
+      counts[i] = v7;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (id)dumpState
 {
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    walletPresentationEventPublisher = v4->_walletPresentationEventPublisher;
+    walletPresentationEventPublisher = selfCopy->_walletPresentationEventPublisher;
   }
 
   else
@@ -978,11 +978,11 @@
   }
 
   v6 = walletPresentationEventPublisher;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  if (v4)
+  if (selfCopy)
   {
-    referenceCounter = v4->_referenceCounter;
+    referenceCounter = selfCopy->_referenceCounter;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface WFAccessibilityWorkflowRunnerClient
-- (WFAccessibilityWorkflowRunnerClient)initWithAccessibilityWorkflow:(id)a3;
-- (WFAccessibilityWorkflowRunnerClient)initWithWorkflowIdentifier:(id)a3;
+- (WFAccessibilityWorkflowRunnerClient)initWithAccessibilityWorkflow:(id)workflow;
+- (WFAccessibilityWorkflowRunnerClient)initWithWorkflowIdentifier:(id)identifier;
 @end
 
 @implementation WFAccessibilityWorkflowRunnerClient
 
-- (WFAccessibilityWorkflowRunnerClient)initWithWorkflowIdentifier:(id)a3
+- (WFAccessibilityWorkflowRunnerClient)initWithWorkflowIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithIdentifier:identifierCopy];
 
   v6 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:1];
   [(WFWorkflowRunRequest *)v6 setRunSource:@"accessibility_gesture"];
@@ -19,10 +19,10 @@
   return v7;
 }
 
-- (WFAccessibilityWorkflowRunnerClient)initWithAccessibilityWorkflow:(id)a3
+- (WFAccessibilityWorkflowRunnerClient)initWithAccessibilityWorkflow:(id)workflow
 {
-  v4 = [a3 identifier];
-  v5 = [(WFAccessibilityWorkflowRunnerClient *)self initWithWorkflowIdentifier:v4];
+  identifier = [workflow identifier];
+  v5 = [(WFAccessibilityWorkflowRunnerClient *)self initWithWorkflowIdentifier:identifier];
 
   return v5;
 }

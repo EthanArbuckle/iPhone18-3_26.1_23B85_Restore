@@ -1,26 +1,26 @@
 @interface UAFileChunkInputStream
 - (BOOL)hasBytesAvailable;
-- (UAFileChunkInputStream)initWithFileHandle:(id)a3 offsetInFile:(id)a4 size:(int64_t)a5;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (UAFileChunkInputStream)initWithFileHandle:(id)handle offsetInFile:(id)file size:(int64_t)size;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (void)open;
 @end
 
 @implementation UAFileChunkInputStream
 
-- (UAFileChunkInputStream)initWithFileHandle:(id)a3 offsetInFile:(id)a4 size:(int64_t)a5
+- (UAFileChunkInputStream)initWithFileHandle:(id)handle offsetInFile:(id)file size:(int64_t)size
 {
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  fileCopy = file;
   v13.receiver = self;
   v13.super_class = UAFileChunkInputStream;
   v10 = [(UAFileChunkInputStream *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(UAFileChunkInputStream *)v10 setFile:v8];
-    [(UAFileChunkInputStream *)v11 setChunkOffset:v9];
-    [(UAFileChunkInputStream *)v11 setChunkSize:a5];
-    [(UAFileChunkInputStream *)v11 setCurrentOffset:v9];
+    [(UAFileChunkInputStream *)v10 setFile:handleCopy];
+    [(UAFileChunkInputStream *)v11 setChunkOffset:fileCopy];
+    [(UAFileChunkInputStream *)v11 setChunkSize:size];
+    [(UAFileChunkInputStream *)v11 setCurrentOffset:fileCopy];
     [(UAFileChunkInputStream *)v11 setReadSize:0];
     [(UAFileChunkInputStream *)v11 setStatus:0];
   }
@@ -30,17 +30,17 @@
 
 - (BOOL)hasBytesAvailable
 {
-  v3 = [(UAFileChunkInputStream *)self status];
-  if (v3 > 3 || v3 == 1)
+  status = [(UAFileChunkInputStream *)self status];
+  if (status > 3 || status == 1)
   {
     return 0;
   }
 
-  v5 = [(UAFileChunkInputStream *)self readSize];
-  return v5 < [(UAFileChunkInputStream *)self chunkSize];
+  readSize = [(UAFileChunkInputStream *)self readSize];
+  return readSize < [(UAFileChunkInputStream *)self chunkSize];
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   v23 = *MEMORY[0x277D85DE8];
   if ([(UAFileChunkInputStream *)self status]== 5 || [(UAFileChunkInputStream *)self status]== 6 || [(UAFileChunkInputStream *)self status]== 7)
@@ -48,8 +48,8 @@
     goto LABEL_15;
   }
 
-  v7 = [(UAFileChunkInputStream *)self readSize];
-  if (v7 >= [(UAFileChunkInputStream *)self chunkSize])
+  readSize = [(UAFileChunkInputStream *)self readSize];
+  if (readSize >= [(UAFileChunkInputStream *)self chunkSize])
   {
     [(UAFileChunkInputStream *)self setStatus:5];
 LABEL_15:
@@ -58,48 +58,48 @@ LABEL_15:
   }
 
   [(UAFileChunkInputStream *)self setStatus:3];
-  v8 = [(UAFileChunkInputStream *)self chunkSize];
-  v9 = [(UAFileChunkInputStream *)self readSize];
-  if (v8 - v9 >= a4)
+  chunkSize = [(UAFileChunkInputStream *)self chunkSize];
+  readSize2 = [(UAFileChunkInputStream *)self readSize];
+  if (chunkSize - readSize2 >= length)
   {
-    v10 = a4;
+    lengthCopy = length;
   }
 
   else
   {
-    v10 = v8 - v9;
+    lengthCopy = chunkSize - readSize2;
   }
 
-  v11 = [(UAFileChunkInputStream *)self file];
-  objc_sync_enter(v11);
-  v12 = [(UAFileChunkInputStream *)self currentOffset];
-  v13 = [v12 unsignedLongLongValue];
+  file = [(UAFileChunkInputStream *)self file];
+  objc_sync_enter(file);
+  currentOffset = [(UAFileChunkInputStream *)self currentOffset];
+  unsignedLongLongValue = [currentOffset unsignedLongLongValue];
 
-  v14 = [(UAFileChunkInputStream *)self file];
-  v15 = [v14 offsetInFile];
+  file2 = [(UAFileChunkInputStream *)self file];
+  offsetInFile = [file2 offsetInFile];
 
-  if (v13 != v15)
+  if (unsignedLongLongValue != offsetInFile)
   {
-    v16 = [(UAFileChunkInputStream *)self file];
-    [v16 seekToFileOffset:v13];
+    file3 = [(UAFileChunkInputStream *)self file];
+    [file3 seekToFileOffset:unsignedLongLongValue];
   }
 
-  v17 = [(UAFileChunkInputStream *)self file];
-  v18 = [v17 fileDescriptor];
+  file4 = [(UAFileChunkInputStream *)self file];
+  fileDescriptor = [file4 fileDescriptor];
 
-  v19 = read(v18, a3, v10);
+  v19 = read(fileDescriptor, read, lengthCopy);
   [(UAFileChunkInputStream *)self setReadSize:[(UAFileChunkInputStream *)self readSize]+ v19];
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19 + v13];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19 + unsignedLongLongValue];
   [(UAFileChunkInputStream *)self setCurrentOffset:v20];
 
-  if (a4 && !v19)
+  if (length && !v19)
   {
     [(UAFileChunkInputStream *)self setStatus:5];
     [(UAFileChunkInputStream *)self setReadSize:[(UAFileChunkInputStream *)self chunkSize]];
     v19 = 0;
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(file);
 
 LABEL_16:
   v21 = *MEMORY[0x277D85DE8];

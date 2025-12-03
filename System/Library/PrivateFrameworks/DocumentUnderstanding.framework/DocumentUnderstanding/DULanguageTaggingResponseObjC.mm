@@ -1,14 +1,14 @@
 @interface DULanguageTaggingResponseObjC
 - (DUDebugInfoObjC)responseDebugInfo;
 - (DULanguageTaggingResponseObjC)init;
-- (void)setResponseDebugInfo:(id)a3;
+- (void)setResponseDebugInfo:(id)info;
 @end
 
 @implementation DULanguageTaggingResponseObjC
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v9 = objc_msgSend_debugInfoForObjCDebugInfo_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_debugInfoForObjCDebugInfo_(DUObjCCompatibilityUtils, a2, info, v3, v4);
   objc_msgSend_setResponseDebugInfo_(self->_underlying, v6, v9, v7, v8);
 }
 

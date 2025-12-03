@@ -6,41 +6,41 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)resume;
-- (void)search:(id)a3;
-- (void)search:(id)a3 hasPartialResults:(id)a4;
-- (void)searchDidBegin:(id)a3;
-- (void)searchDidFinish:(id)a3;
-- (void)searchDidTimeOut:(id)a3;
-- (void)searchLimitHit:(id)a3;
-- (void)searchWasCancelled:(id)a3;
-- (void)setDocumentToSearch:(id)a3;
+- (void)search:(id)search;
+- (void)search:(id)search hasPartialResults:(id)results;
+- (void)searchDidBegin:(id)begin;
+- (void)searchDidFinish:(id)finish;
+- (void)searchDidTimeOut:(id)out;
+- (void)searchLimitHit:(id)hit;
+- (void)searchWasCancelled:(id)cancelled;
+- (void)setDocumentToSearch:(id)search;
 @end
 
 @implementation UIWebPDFSearchController
 
-- (void)setDocumentToSearch:(id)a3
+- (void)setDocumentToSearch:(id)search
 {
-  if (self->_documentToSearch != a3)
+  if (self->_documentToSearch != search)
   {
-    v6 = a3;
+    searchCopy = search;
 
-    self->_documentToSearch = a3;
-    v7 = [(NSOperationQueue *)self->_searchQueue operations];
+    self->_documentToSearch = search;
+    operations = [(NSOperationQueue *)self->_searchQueue operations];
     documentToSearch = self->_documentToSearch;
 
-    [(NSArray *)v7 makeObjectsPerformSelector:sel_setDocumentToSearch_ withObject:documentToSearch];
+    [(NSArray *)operations makeObjectsPerformSelector:sel_setDocumentToSearch_ withObject:documentToSearch];
   }
 }
 
 - (BOOL)searching
 {
-  v3 = [(NSOperationQueue *)self->_searchQueue operationCount];
-  if (v3)
+  operationCount = [(NSOperationQueue *)self->_searchQueue operationCount];
+  if (operationCount)
   {
-    LOBYTE(v3) = ![(UIWebPDFSearchController *)self paused];
+    LOBYTE(operationCount) = ![(UIWebPDFSearchController *)self paused];
   }
 
-  return v3;
+  return operationCount;
 }
 
 - (UIWebPDFSearchController)init
@@ -80,16 +80,16 @@
   return result;
 }
 
-- (void)search:(id)a3
+- (void)search:(id)search
 {
   if (![(NSString *)self->_searchString isEqualToString:?])
   {
     [(UIWebPDFSearchController *)self cancel];
 
-    self->_searchString = a3;
+    self->_searchString = search;
   }
 
-  if (-[UIWebPDFSearchController searchDelegate](self, "searchDelegate") && -[UIWebPDFSearchController documentToSearch](self, "documentToSearch") && [a3 length])
+  if (-[UIWebPDFSearchController searchDelegate](self, "searchDelegate") && -[UIWebPDFSearchController documentToSearch](self, "documentToSearch") && [search length])
   {
     if (!self->_searchQueue)
     {
@@ -108,7 +108,7 @@
     [(UIWebPDFSearchOperation *)v6 setStartingPageIndex:[(UIWebPDFSearchController *)self _actualStartingPageIndex]];
     [(UIWebPDFSearchOperation *)v6 setResultLimit:[(UIWebPDFSearchController *)self resultLimit]];
     [(UIWebPDFSearchOperation *)v6 setNumberOfResultsToSkip:self->_pageIndexWhenLimitHit];
-    [(UIWebPDFSearchOperation *)v6 setSearchString:a3];
+    [(UIWebPDFSearchOperation *)v6 setSearchString:search];
     [(UIWebPDFSearchOperation *)v6 setSearchDelegate:self];
     [(UIWebPDFSearchController *)self documentScale];
     [(UIWebPDFSearchOperation *)v6 setDocumentScale:?];
@@ -124,8 +124,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSOperationQueue *)self->_searchQueue operations];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  operations = [(NSOperationQueue *)self->_searchQueue operations];
+  v4 = [(NSArray *)operations countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -137,14 +137,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setSearchDelegate:0];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSArray *)operations countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -170,7 +170,7 @@
   [(UIWebPDFSearchController *)self search:searchString];
 }
 
-- (void)searchDidBegin:(id)a3
+- (void)searchDidBegin:(id)begin
 {
   if (!self->_notifiedThatSearchBegin)
   {
@@ -184,7 +184,7 @@
   }
 }
 
-- (void)searchDidTimeOut:(id)a3
+- (void)searchDidTimeOut:(id)out
 {
   if (objc_opt_respondsToSelector())
   {
@@ -194,7 +194,7 @@
   }
 }
 
-- (void)searchWasCancelled:(id)a3
+- (void)searchWasCancelled:(id)cancelled
 {
   if (objc_opt_respondsToSelector())
   {
@@ -204,10 +204,10 @@
   }
 }
 
-- (void)searchLimitHit:(id)a3
+- (void)searchLimitHit:(id)hit
 {
-  self->_pageIndexWhenLimitHit = [a3 currentPageIndex];
-  self->_resultIndexWhenLimitHit = [a3 currentPageResultCount];
+  self->_pageIndexWhenLimitHit = [hit currentPageIndex];
+  self->_resultIndexWhenLimitHit = [hit currentPageResultCount];
   if (objc_opt_respondsToSelector())
   {
     searchDelegate = self->searchDelegate;
@@ -216,7 +216,7 @@
   }
 }
 
-- (void)searchDidFinish:(id)a3
+- (void)searchDidFinish:(id)finish
 {
   if (objc_opt_respondsToSelector())
   {
@@ -228,14 +228,14 @@
   [(UIWebPDFSearchController *)self setSearchString:0];
 }
 
-- (void)search:(id)a3 hasPartialResults:(id)a4
+- (void)search:(id)search hasPartialResults:(id)results
 {
-  [(NSMutableArray *)self->_results addObjectsFromArray:a4];
+  [(NSMutableArray *)self->_results addObjectsFromArray:results];
   if (objc_opt_respondsToSelector())
   {
     searchDelegate = self->searchDelegate;
 
-    [(UIWebPDFSearchControllerDelegate *)searchDelegate search:self hasPartialResults:a4];
+    [(UIWebPDFSearchControllerDelegate *)searchDelegate search:self hasPartialResults:results];
   }
 }
 

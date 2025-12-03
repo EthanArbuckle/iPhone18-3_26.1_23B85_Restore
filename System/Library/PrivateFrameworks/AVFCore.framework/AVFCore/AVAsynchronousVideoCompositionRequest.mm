@@ -3,17 +3,17 @@
 - (CMSampleBufferRef)sourceSampleBufferByTrackID:(CMPersistentTrackID)trackID;
 - (CMTime)compositionTime;
 - (CVPixelBufferRef)sourceFrameByTrackID:(CMPersistentTrackID)trackID;
-- (OpaqueCMTaggedBufferGroup)sourceTaggedBufferGroupByTrackID:(int)a3;
-- (id)initUsingSession:(id)a3 withRenderContext:(id)a4 compositionFrame:(OpaqueFigVideoCompositorFrame *)a5 atTime:(id *)a6 usingSources:(id)a7 instruction:(id)a8 withSampleBuffers:(id)a9 lookupableSpatialVideoConfigurations:(id)a10;
-- (id)sourceTimedMetadataByTrackID:(int)a3 atIndexInWindow:(int64_t)a4 presentationTimeStamp:(id *)a5;
-- (int64_t)numberOfSourceFramesInWindowForTrackID:(int)a3;
-- (int64_t)numberOfSourceSampleBuffersInWindowForTrackID:(int)a3;
-- (void)_validateAttachedSpatialVideoConfigurationInTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 reportingObject:(id)a4 reportingSelector:(SEL)a5;
+- (OpaqueCMTaggedBufferGroup)sourceTaggedBufferGroupByTrackID:(int)d;
+- (id)initUsingSession:(id)session withRenderContext:(id)context compositionFrame:(OpaqueFigVideoCompositorFrame *)frame atTime:(id *)time usingSources:(id)sources instruction:(id)instruction withSampleBuffers:(id)buffers lookupableSpatialVideoConfigurations:(id)self0;
+- (id)sourceTimedMetadataByTrackID:(int)d atIndexInWindow:(int64_t)window presentationTimeStamp:(id *)stamp;
+- (int64_t)numberOfSourceFramesInWindowForTrackID:(int)d;
+- (int64_t)numberOfSourceSampleBuffersInWindowForTrackID:(int)d;
+- (void)_validateAttachedSpatialVideoConfigurationInTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group reportingObject:(id)object reportingSelector:(SEL)selector;
 - (void)_willDeallocOrFinalize;
-- (void)attachSpatialVideoConfiguration:(id)a3 toPixelBuffer:(__CVBuffer *)a4;
+- (void)attachSpatialVideoConfiguration:(id)configuration toPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)finishCancelledRequest;
-- (void)finishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a3;
+- (void)finishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group;
 - (void)finishWithComposedVideoFrame:(CVPixelBufferRef)composedVideoFrame;
 - (void)finishWithError:(NSError *)error;
 @end
@@ -28,9 +28,9 @@
     if (![(AVAsynchronousVideoCompositionRequestInternal *)internal isFinished])
     {
       NSLog(&cfstr_UnfinishedAvas.isa);
-      v4 = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
-      v5 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
-      [v4 compositionFrame:v5 didFinishWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"AVFoundationErrorDomain", -11841, 0)}];
+      referencedObject = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
+      compositionFrame = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
+      [referencedObject compositionFrame:compositionFrame didFinishWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"AVFoundationErrorDomain", -11841, 0)}];
     }
 
     v6 = self->_internal;
@@ -68,8 +68,8 @@
 - (CVPixelBufferRef)sourceFrameByTrackID:(CMPersistentTrackID)trackID
 {
   v3 = *&trackID;
-  v5 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceVideoFrameTimedSamplesByTrackID];
-  result = -[NSDictionary objectForKey:](v5, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
+  sourceVideoFrameTimedSamplesByTrackID = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceVideoFrameTimedSamplesByTrackID];
+  result = -[NSDictionary objectForKey:](sourceVideoFrameTimedSamplesByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
   if (result)
   {
     internal = self->_internal;
@@ -102,8 +102,8 @@
 - (CMSampleBufferRef)sourceSampleBufferByTrackID:(CMPersistentTrackID)trackID
 {
   v3 = *&trackID;
-  v5 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceSampleBufferTimedSamplesByTrackID];
-  result = -[NSDictionary objectForKey:](v5, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
+  sourceSampleBufferTimedSamplesByTrackID = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceSampleBufferTimedSamplesByTrackID];
+  result = -[NSDictionary objectForKey:](sourceSampleBufferTimedSamplesByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
   if (result)
   {
     internal = self->_internal;
@@ -133,11 +133,11 @@
   return result;
 }
 
-- (OpaqueCMTaggedBufferGroup)sourceTaggedBufferGroupByTrackID:(int)a3
+- (OpaqueCMTaggedBufferGroup)sourceTaggedBufferGroupByTrackID:(int)d
 {
-  v3 = *&a3;
-  v5 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceVideoFrameTimedSamplesByTrackID];
-  result = -[NSDictionary objectForKey:](v5, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
+  v3 = *&d;
+  sourceVideoFrameTimedSamplesByTrackID = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceVideoFrameTimedSamplesByTrackID];
+  result = -[NSDictionary objectForKey:](sourceVideoFrameTimedSamplesByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
   if (result)
   {
     internal = self->_internal;
@@ -174,18 +174,18 @@
   else
   {
     [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal setIsFinished:1];
-    v10 = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
-    v11 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
+    referencedObject = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
+    compositionFrame = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
 
-    [v10 compositionFrame:v11 didFinishWithComposedPixelBuffer:composedVideoFrame];
+    [referencedObject compositionFrame:compositionFrame didFinishWithComposedPixelBuffer:composedVideoFrame];
   }
 }
 
-- (void)_validateAttachedSpatialVideoConfigurationInTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 reportingObject:(id)a4 reportingSelector:(SEL)a5
+- (void)_validateAttachedSpatialVideoConfigurationInTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group reportingObject:(id)object reportingSelector:(SEL)selector
 {
-  v6 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal lookupableSpatialVideoConfigurations];
-  Count = CMTaggedBufferGroupGetCount(a3);
-  v8 = [(NSArray *)v6 count];
+  lookupableSpatialVideoConfigurations = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal lookupableSpatialVideoConfigurations];
+  Count = CMTaggedBufferGroupGetCount(group);
+  v8 = [(NSArray *)lookupableSpatialVideoConfigurations count];
   if (Count < 1)
   {
     LOBYTE(v16) = 0;
@@ -206,7 +206,7 @@
   v20 = 1;
   while (1)
   {
-    CVPixelBufferAtIndex = CMTaggedBufferGroupGetCVPixelBufferAtIndex(a3, v14);
+    CVPixelBufferAtIndex = CMTaggedBufferGroupGetCVPixelBufferAtIndex(group, v14);
     if (!CVPixelBufferAtIndex)
     {
       v24 = v16;
@@ -259,7 +259,7 @@ LABEL_23:
 
   else
   {
-    [-[NSArray objectAtIndex:](v6 objectAtIndex:{0), "lookupID"}];
+    [-[NSArray objectAtIndex:](lookupableSpatialVideoConfigurations objectAtIndex:{0), "lookupID"}];
     if (FigCFEqual())
     {
       LOBYTE(v16) = 1;
@@ -276,7 +276,7 @@ LABEL_23:
           break;
         }
 
-        [-[NSArray objectAtIndex:](v6 objectAtIndex:{v26), "lookupID"}];
+        [-[NSArray objectAtIndex:](lookupableSpatialVideoConfigurations objectAtIndex:{v26), "lookupID"}];
         v27 = FigCFEqual();
         v26 = v16 + 1;
       }
@@ -337,14 +337,14 @@ LABEL_29:
     v29 = *MEMORY[0x1E695D940];
     v30 = @"AVVideoComposition has non-empty spatialVideoConfigurations. Expect spatial video configuration attached to the pixel buffers in composed tagged buffers to equal to that from the AVVideoComposition's spatialVideoConfigurations";
 LABEL_37:
-    v31 = [v28 exceptionWithName:v29 reason:AVMethodExceptionReasonWithObjectAndSelector(a4 userInfo:{a5, v30, v9, v10, v11, v12, v13, v32), 0}];
+    v31 = [v28 exceptionWithName:v29 reason:AVMethodExceptionReasonWithObjectAndSelector(object userInfo:{selector, v30, v9, v10, v11, v12, v13, v32), 0}];
     objc_exception_throw(v31);
   }
 }
 
-- (void)finishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)a3
+- (void)finishWithComposedTaggedBufferGroup:(OpaqueCMTaggedBufferGroup *)group
 {
-  if (!a3)
+  if (!group)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"finishWithComposedTaggedBufferGroup requires a CMTaggedBufferGroupRef", v3, v4, v5, v6, v7, v14), 0}];
     objc_exception_throw(v13);
@@ -357,23 +357,23 @@ LABEL_37:
 
   else
   {
-    [(AVAsynchronousVideoCompositionRequest *)self _validateAttachedSpatialVideoConfigurationInTaggedBufferGroup:a3 reportingObject:self reportingSelector:a2];
+    [(AVAsynchronousVideoCompositionRequest *)self _validateAttachedSpatialVideoConfigurationInTaggedBufferGroup:group reportingObject:self reportingSelector:a2];
     [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal setIsFinished:1];
-    v11 = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
-    v12 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
+    referencedObject = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
+    compositionFrame = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
 
-    [v11 compositionFrame:v12 didFinishWithComposedTaggedBufferGroup:a3];
+    [referencedObject compositionFrame:compositionFrame didFinishWithComposedTaggedBufferGroup:group];
   }
 }
 
-- (void)attachSpatialVideoConfiguration:(id)a3 toPixelBuffer:(__CVBuffer *)a4
+- (void)attachSpatialVideoConfiguration:(id)configuration toPixelBuffer:(__CVBuffer *)buffer
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal lookupableSpatialVideoConfigurations];
-  if (a3)
+  lookupableSpatialVideoConfigurations = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal lookupableSpatialVideoConfigurations];
+  if (configuration)
   {
-    v9 = v8;
-    if (![(NSArray *)v8 count])
+    v9 = lookupableSpatialVideoConfigurations;
+    if (![(NSArray *)lookupableSpatialVideoConfigurations count])
     {
       v21 = MEMORY[0x1E695DF30];
       v22 = *MEMORY[0x1E695D940];
@@ -405,7 +405,7 @@ LABEL_5:
       }
 
       v19 = *(*(&v25 + 1) + 8 * v18);
-      if ([a3 isEqual:{objc_msgSend(v19, "spatialVideoConfiguration")}])
+      if ([configuration isEqual:{objc_msgSend(v19, "spatialVideoConfiguration")}])
       {
         break;
       }
@@ -426,13 +426,13 @@ LABEL_15:
       }
     }
 
-    v20 = [v19 lookupID];
-    if (!v20)
+    lookupID = [v19 lookupID];
+    if (!lookupID)
     {
       goto LABEL_15;
     }
 
-    CVBufferSetAttachment(a4, *MEMORY[0x1E6965F28], v20, kCVAttachmentMode_ShouldPropagate);
+    CVBufferSetAttachment(buffer, *MEMORY[0x1E6965F28], lookupID, kCVAttachmentMode_ShouldPropagate);
   }
 }
 
@@ -446,10 +446,10 @@ LABEL_15:
   else
   {
     [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal setIsFinished:1];
-    v5 = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
-    v6 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
+    referencedObject = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
+    compositionFrame = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
 
-    [v5 compositionFrame:v6 didFinishWithError:error];
+    [referencedObject compositionFrame:compositionFrame didFinishWithError:error];
   }
 }
 
@@ -463,34 +463,34 @@ LABEL_15:
   else
   {
     [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal setIsFinished:1];
-    v3 = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
-    v4 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
+    referencedObject = [(AVWeakReference *)[(AVAsynchronousVideoCompositionRequestInternal *)self->_internal session] referencedObject];
+    compositionFrame = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal compositionFrame];
 
-    [v3 compositionFrameDidCancel:v4];
+    [referencedObject compositionFrameDidCancel:compositionFrame];
   }
 }
 
-- (int64_t)numberOfSourceFramesInWindowForTrackID:(int)a3
+- (int64_t)numberOfSourceFramesInWindowForTrackID:(int)d
 {
-  v3 = *&a3;
-  v4 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceVideoFrameTimedSamplesByTrackID];
-  v5 = -[NSDictionary objectForKey:](v4, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
+  v3 = *&d;
+  sourceVideoFrameTimedSamplesByTrackID = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceVideoFrameTimedSamplesByTrackID];
+  v5 = -[NSDictionary objectForKey:](sourceVideoFrameTimedSamplesByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
 
   return [v5 count];
 }
 
-- (int64_t)numberOfSourceSampleBuffersInWindowForTrackID:(int)a3
+- (int64_t)numberOfSourceSampleBuffersInWindowForTrackID:(int)d
 {
-  v3 = *&a3;
-  v4 = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceSampleBufferTimedSamplesByTrackID];
-  v5 = -[NSDictionary objectForKey:](v4, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
+  v3 = *&d;
+  sourceSampleBufferTimedSamplesByTrackID = [(AVAsynchronousVideoCompositionRequestInternal *)self->_internal sourceSampleBufferTimedSamplesByTrackID];
+  v5 = -[NSDictionary objectForKey:](sourceSampleBufferTimedSamplesByTrackID, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:v3]);
 
   return [v5 count];
 }
 
-- (id)sourceTimedMetadataByTrackID:(int)a3 atIndexInWindow:(int64_t)a4 presentationTimeStamp:(id *)a5
+- (id)sourceTimedMetadataByTrackID:(int)d atIndexInWindow:(int64_t)window presentationTimeStamp:(id *)stamp
 {
-  result = [(AVAsynchronousVideoCompositionRequest *)self sourceSampleBufferByTrackID:*&a3 atIndexInWindow:a4 presentationTimeStamp:a5];
+  result = [(AVAsynchronousVideoCompositionRequest *)self sourceSampleBufferByTrackID:*&d atIndexInWindow:window presentationTimeStamp:stamp];
   if (result)
   {
     v6 = [[AVTimedMetadataGroup alloc] initWithSampleBuffer:result];
@@ -501,7 +501,7 @@ LABEL_15:
   return result;
 }
 
-- (id)initUsingSession:(id)a3 withRenderContext:(id)a4 compositionFrame:(OpaqueFigVideoCompositorFrame *)a5 atTime:(id *)a6 usingSources:(id)a7 instruction:(id)a8 withSampleBuffers:(id)a9 lookupableSpatialVideoConfigurations:(id)a10
+- (id)initUsingSession:(id)session withRenderContext:(id)context compositionFrame:(OpaqueFigVideoCompositorFrame *)frame atTime:(id *)time usingSources:(id)sources instruction:(id)instruction withSampleBuffers:(id)buffers lookupableSpatialVideoConfigurations:(id)self0
 {
   v47 = *MEMORY[0x1E69E9840];
   v44.receiver = self;
@@ -512,26 +512,26 @@ LABEL_15:
     v17 = objc_alloc_init(AVAsynchronousVideoCompositionRequestInternal);
     v16->_internal = v17;
     CFRetain(v17);
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSession:[[AVWeakReference alloc] initWithReferencedObject:a3]];
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setRenderContext:a4];
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setCompositionFrame:a5];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSession:[[AVWeakReference alloc] initWithReferencedObject:session]];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setRenderContext:context];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setCompositionFrame:frame];
     internal = v16->_internal;
-    v42 = *&a6->var0;
-    var3 = a6->var3;
+    v42 = *&time->var0;
+    var3 = time->var3;
     [(AVAsynchronousVideoCompositionRequestInternal *)internal setCompositionTime:&v42];
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceVideoFrameTimedSamplesByTrackID:a7];
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceSampleBufferTimedSamplesByTrackID:a9];
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setInstruction:a8];
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setLookupableSpatialVideoConfigurations:a10];
-    if ([a8 requiredSourceTrackIDs])
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceVideoFrameTimedSamplesByTrackID:sources];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceSampleBufferTimedSamplesByTrackID:buffers];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setInstruction:instruction];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setLookupableSpatialVideoConfigurations:configurations];
+    if ([instruction requiredSourceTrackIDs])
     {
-      v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(a8, "requiredSourceTrackIDs"), "count")}];
+      allKeys = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(instruction, "requiredSourceTrackIDs"), "count")}];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v20 = [a8 requiredSourceTrackIDs];
-      v21 = [v20 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      requiredSourceTrackIDs = [instruction requiredSourceTrackIDs];
+      v21 = [requiredSourceTrackIDs countByEnumeratingWithState:&v38 objects:v46 count:16];
       if (v21)
       {
         v22 = v21;
@@ -542,17 +542,17 @@ LABEL_15:
           {
             if (*v39 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(requiredSourceTrackIDs);
             }
 
             v25 = *(*(&v38 + 1) + 8 * i);
-            if ([a7 objectForKey:v25])
+            if ([sources objectForKey:v25])
             {
-              [v19 addObject:v25];
+              [allKeys addObject:v25];
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          v22 = [requiredSourceTrackIDs countByEnumeratingWithState:&v38 objects:v46 count:16];
         }
 
         while (v22);
@@ -561,19 +561,19 @@ LABEL_15:
 
     else
     {
-      v19 = [a7 allKeys];
+      allKeys = [sources allKeys];
     }
 
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceTrackIDsInClientOrder:v19];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [a8 requiredSourceSampleDataTrackIDs])
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceTrackIDsInClientOrder:allKeys];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [instruction requiredSourceSampleDataTrackIDs])
     {
-      v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(a8, "requiredSourceSampleDataTrackIDs"), "count")}];
+      allKeys2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(instruction, "requiredSourceSampleDataTrackIDs"), "count")}];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v27 = [a8 requiredSourceSampleDataTrackIDs];
-      v28 = [v27 countByEnumeratingWithState:&v34 objects:v45 count:16];
+      requiredSourceSampleDataTrackIDs = [instruction requiredSourceSampleDataTrackIDs];
+      v28 = [requiredSourceSampleDataTrackIDs countByEnumeratingWithState:&v34 objects:v45 count:16];
       if (v28)
       {
         v29 = v28;
@@ -584,17 +584,17 @@ LABEL_15:
           {
             if (*v35 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(requiredSourceSampleDataTrackIDs);
             }
 
             v32 = *(*(&v34 + 1) + 8 * j);
-            if ([a9 objectForKey:v32])
+            if ([buffers objectForKey:v32])
             {
-              [v26 addObject:v32];
+              [allKeys2 addObject:v32];
             }
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v34 objects:v45 count:16];
+          v29 = [requiredSourceSampleDataTrackIDs countByEnumeratingWithState:&v34 objects:v45 count:16];
         }
 
         while (v29);
@@ -603,10 +603,10 @@ LABEL_15:
 
     else
     {
-      v26 = [a9 allKeys];
+      allKeys2 = [buffers allKeys];
     }
 
-    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceSampleBufferTrackIDsInClientOrder:v26];
+    [(AVAsynchronousVideoCompositionRequestInternal *)v16->_internal setSourceSampleBufferTrackIDsInClientOrder:allKeys2];
   }
 
   return v16;

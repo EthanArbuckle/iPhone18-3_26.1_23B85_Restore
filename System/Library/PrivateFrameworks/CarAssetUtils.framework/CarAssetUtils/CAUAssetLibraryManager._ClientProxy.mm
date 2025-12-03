@@ -16,13 +16,13 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_242C00080();
 }
 
 - (void)refreshVariants
 {
-  v2 = self;
+  selfCopy = self;
   sub_242C001C8("refreshVariants");
 }
 

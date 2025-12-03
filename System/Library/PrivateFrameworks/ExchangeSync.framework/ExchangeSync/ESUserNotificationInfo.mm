@@ -1,15 +1,15 @@
 @interface ESUserNotificationInfo
 - (id)handler;
-- (void)setHandler:(id)a3;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation ESUserNotificationInfo
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  if (self->_handler != a3)
+  if (self->_handler != handler)
   {
-    v5 = [a3 copy];
+    v5 = [handler copy];
     handler = self->_handler;
     self->_handler = v5;
 

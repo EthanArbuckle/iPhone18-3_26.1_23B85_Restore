@@ -1,28 +1,28 @@
 @interface _SFPBCalendarImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCalendarImage)initWithDictionary:(id)a3;
-- (_SFPBCalendarImage)initWithFacade:(id)a3;
-- (_SFPBCalendarImage)initWithJSON:(id)a3;
+- (_SFPBCalendarImage)initWithDictionary:(id)dictionary;
+- (_SFPBCalendarImage)initWithFacade:(id)facade;
+- (_SFPBCalendarImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCalendarImage
 
-- (_SFPBCalendarImage)initWithFacade:(id)a3
+- (_SFPBCalendarImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCalendarImage *)self init];
   if (v5)
   {
-    v6 = [v4 date];
+    date = [facadeCopy date];
 
-    if (v6)
+    if (date)
     {
       v7 = [_SFPBDate alloc];
-      v8 = [v4 date];
-      v9 = [(_SFPBDate *)v7 initWithNSDate:v8];
+      date2 = [facadeCopy date];
+      v9 = [(_SFPBDate *)v7 initWithNSDate:date2];
       [(_SFPBCalendarImage *)v5 setDate:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBCalendarImage)initWithDictionary:(id)a3
+- (_SFPBCalendarImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBCalendarImage;
   v5 = [(_SFPBCalendarImage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"date"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBCalendarImage)initWithJSON:(id)a3
+- (_SFPBCalendarImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCalendarImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCalendarImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCalendarImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_date)
   {
-    v4 = [(_SFPBCalendarImage *)self date];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    date = [(_SFPBCalendarImage *)self date];
+    dictionaryRepresentation = [date dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"date"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"date"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"date"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"date"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBCalendarImage *)self date];
-    v6 = [v4 date];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    date = [(_SFPBCalendarImage *)self date];
+    date2 = [equalCopy date];
+    v7 = date2;
+    if ((date != 0) != (date2 == 0))
     {
-      v8 = [(_SFPBCalendarImage *)self date];
-      if (!v8)
+      date3 = [(_SFPBCalendarImage *)self date];
+      if (!date3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBCalendarImage *)self date];
-      v11 = [v4 date];
-      v12 = [v10 isEqual:v11];
+      v9 = date3;
+      date4 = [(_SFPBCalendarImage *)self date];
+      date5 = [equalCopy date];
+      v12 = [date4 isEqual:date5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBCalendarImage *)self date];
-  if (v4)
+  toCopy = to;
+  date = [(_SFPBCalendarImage *)self date];
+  if (date)
   {
     PBDataWriterWriteSubmessage();
   }

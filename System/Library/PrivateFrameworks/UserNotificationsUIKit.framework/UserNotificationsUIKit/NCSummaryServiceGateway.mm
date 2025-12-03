@@ -1,13 +1,13 @@
 @interface NCSummaryServiceGateway
-- (void)donateStateDump:(id)a3;
+- (void)donateStateDump:(id)dump;
 @end
 
 @implementation NCSummaryServiceGateway
 
-- (void)donateStateDump:(id)a3
+- (void)donateStateDump:(id)dump
 {
   v4 = sub_21E92A3E8();
-  v5 = self;
+  selfCopy = self;
   sub_21E9166C8(v4);
 }
 

@@ -1,39 +1,39 @@
 @interface DSArchiveExportedService
-- (AAByteStream_impl)_openAppleArchiveReadStreamWithFD:(int)a3 url:(id)a4 progress:(id)a5 passphrases:(id)a6 addToKeychain:(BOOL)a7 aeaContext:(AEAContext_impl *)a8 formats:(unint64_t)a9 error:(id *)a10;
-- (AAByteStream_impl)_openAppleArchiveWriteStreamWithArchiveURL:(id)a3 itemURLs:(id)a4 progress:(id)a5 passphrase:(id)a6 aeaContext:(AEAContext_impl *)a7 compressionFormat:(unint64_t)a8 error:(id *)a9;
-- (BOOL)_archiveFromItemURLs:(id)a3 passphrase:(id)a4 addToKeychain:(BOOL)a5 compressionFormat:(unint64_t)a6 archiveURL:(id)a7 fd:(int)a8 progress:(id)a9 error:(id *)a10;
-- (BOOL)_archiveItemURL:(id)a3 itemArchivePath:(id)a4 isDirectory:(BOOL)a5 archive:(archive *)a6 entry:(archive_entry *)a7 stat:(stat *)a8 writeProgressHandler:(id)a9 error:(id *)a10;
-- (BOOL)_createAppleArchiveOfItemURLs:(id)a3 passphrase:(id)a4 addToKeychain:(BOOL)a5 compressionFormat:(unint64_t)a6 archiveURL:(id)a7 archiveFD:(int)a8 progress:(id)a9 error:(id *)a10;
-- (BOOL)_createArchiveOfItemURLs:(id)a3 compressionFormat:(unint64_t)a4 archive:(archive *)a5 entry:(archive_entry *)a6 archiveURL:(id)a7 fd:(int)a8 progress:(id)a9 error:(id *)a10;
-- (BOOL)_createMetadataFileWithAppleDoubleFormatOfItemURL:(id)a3 destinationURL:(id)a4 error:(id *)a5;
-- (BOOL)_enumerateItemURL:(id)a3 itemActionBlock:(id)a4 error:(id *)a5;
-- (BOOL)_getIsDirectoryProperty:(BOOL *)a3 forItemURL:(id)a4 error:(id *)a5;
-- (BOOL)_isAppleArchive:(id)a3;
+- (AAByteStream_impl)_openAppleArchiveReadStreamWithFD:(int)d url:(id)url progress:(id)progress passphrases:(id)passphrases addToKeychain:(BOOL)keychain aeaContext:(AEAContext_impl *)context formats:(unint64_t)formats error:(id *)self0;
+- (AAByteStream_impl)_openAppleArchiveWriteStreamWithArchiveURL:(id)l itemURLs:(id)ls progress:(id)progress passphrase:(id)passphrase aeaContext:(AEAContext_impl *)context compressionFormat:(unint64_t)format error:(id *)error;
+- (BOOL)_archiveFromItemURLs:(id)ls passphrase:(id)passphrase addToKeychain:(BOOL)keychain compressionFormat:(unint64_t)format archiveURL:(id)l fd:(int)fd progress:(id)progress error:(id *)self0;
+- (BOOL)_archiveItemURL:(id)l itemArchivePath:(id)path isDirectory:(BOOL)directory archive:(archive *)archive entry:(archive_entry *)entry stat:(stat *)stat writeProgressHandler:(id)handler error:(id *)self0;
+- (BOOL)_createAppleArchiveOfItemURLs:(id)ls passphrase:(id)passphrase addToKeychain:(BOOL)keychain compressionFormat:(unint64_t)format archiveURL:(id)l archiveFD:(int)d progress:(id)progress error:(id *)self0;
+- (BOOL)_createArchiveOfItemURLs:(id)ls compressionFormat:(unint64_t)format archive:(archive *)archive entry:(archive_entry *)entry archiveURL:(id)l fd:(int)fd progress:(id)progress error:(id *)self0;
+- (BOOL)_createMetadataFileWithAppleDoubleFormatOfItemURL:(id)l destinationURL:(id)rL error:(id *)error;
+- (BOOL)_enumerateItemURL:(id)l itemActionBlock:(id)block error:(id *)error;
+- (BOOL)_getIsDirectoryProperty:(BOOL *)property forItemURL:(id)l error:(id *)error;
+- (BOOL)_isAppleArchive:(id)archive;
 - (BOOL)_isCancelled;
-- (BOOL)_openArchiveWithFD:(int)a3 url:(id)a4 progress:(id)a5 passphrases:(id)a6 formats:(unint64_t)a7 archive:(archive *)a8 entry:(archive_entry *)a9 readItemHandler:(id)a10 error:(id *)a11;
-- (BOOL)_unarchiveEntryAtPath:(const char *)a3 entry:(archive_entry *)a4 fromArchive:(archive *)a5 archiveURL:(id)a6 destinationURL:(id)a7 progress:(id)a8 error:(id *)a9;
-- (BOOL)_writeOnArchiveEntryAtPath:(const char *)a3 entry:(archive_entry *)a4 archive:(archive *)a5 writeProgressHandler:(id)a6 error:(id *)a7;
-- (BOOL)_writeXattrEntryForURL:(id)a3 compressionFormat:(unint64_t)a4 archive:(archive *)a5 entry:(archive_entry *)a6 archiveURL:(id)a7 commonParentPath:(id)a8 stat:(stat *)a9 error:(id *)a10;
+- (BOOL)_openArchiveWithFD:(int)d url:(id)url progress:(id)progress passphrases:(id)passphrases formats:(unint64_t)formats archive:(archive *)archive entry:(archive_entry *)entry readItemHandler:(id)self0 error:(id *)self1;
+- (BOOL)_unarchiveEntryAtPath:(const char *)path entry:(archive_entry *)entry fromArchive:(archive *)archive archiveURL:(id)l destinationURL:(id)rL progress:(id)progress error:(id *)error;
+- (BOOL)_writeOnArchiveEntryAtPath:(const char *)path entry:(archive_entry *)entry archive:(archive *)archive writeProgressHandler:(id)handler error:(id *)error;
+- (BOOL)_writeXattrEntryForURL:(id)l compressionFormat:(unint64_t)format archive:(archive *)archive entry:(archive_entry *)entry archiveURL:(id)rL commonParentPath:(id)path stat:(stat *)stat error:(id *)self0;
 - (DSArchiveExportedService)init;
-- (id)__temporaryURLAppropriateForURL:(id)a3 calledFromLegacyAPI:(BOOL)a4 error:(id *)a5;
-- (id)_createArchivePlaceholderForItems:(id)a3 inFolder:(id)a4 compressionFormat:(unint64_t)a5 error:(id *)a6;
-- (id)_createUnarchivePlaceholderForDescriptors:(id)a3 describingArchive:(id)a4 inFolder:(id)a5 hasMultipleTopLevelItems:(BOOL *)a6 placeholderIsFolder:(BOOL *)a7 error:(id *)a8;
-- (id)_createUniquePlaceholderWithName:(id)a3 inFolder:(id)a4 asFolder:(BOOL)a5 isArchiving:(BOOL)a6 error:(id *)a7;
-- (id)_errorForAppleArchive:(int)a3 itemURL:(id)a4;
-- (id)_errorForArchive:(archive *)a3 itemURL:(id)a4;
-- (id)_filepathForFd:(int)a3 error:(id *)a4;
-- (id)_passwordFromKeychainWithArchiveID:(char *)a3 archiveIDSize:(unint64_t)a4;
-- (id)_replacePathComponent:(id)a3 withComponent:(id)a4 inFilePath:(id)a5;
-- (id)_sanitizedPathWithCString:(const char *)a3 length:(unint64_t)a4;
-- (id)archiveItemsWithURLWrappers:(id)a3 passphrase:(id)a4 addToKeychain:(BOOL)a5 compressionFormat:(unint64_t)a6 destinationFolderURLWrapper:(id)a7 usePlaceholder:(BOOL)a8 completionHandler:(id)a9;
-- (id)archiveItemsWithURLWrappers:(id)a3 toURLWrapper:(id)a4 options:(unint64_t)a5 compressionFormat:(unint64_t)a6 passphrase:(id)a7 completionHandler:(id)a8;
-- (id)performActionOfKind:(unint64_t)a3 onResourcesWithURLWrappers:(id)a4 clientDestinationFolderURLWrapper:(id)a5 calledFromLegacyAPI:(BOOL)a6 actionHandler:(id)a7 completionHandler:(id)a8;
-- (id)unarchiveItemWithURLWrapper:(id)a3 passphrases:(id)a4 addToKeychain:(BOOL)a5 destinationFolderURLWrapper:(id)a6 acceptedFormats:(unint64_t)a7 exportsStreamingReceiver:(BOOL)a8 usePlaceholder:(BOOL)a9 completionHandler:(id)a10;
-- (id)unarchiveItemWithURLWrapper:(id)a3 toURLWrapper:(id)a4 options:(unint64_t)a5 passphrases:(id)a6 acceptedFormats:(unint64_t)a7 completionHandler:(id)a8;
-- (int)openArchiveFile:(id)a3 error:(id *)a4;
+- (id)__temporaryURLAppropriateForURL:(id)l calledFromLegacyAPI:(BOOL)i error:(id *)error;
+- (id)_createArchivePlaceholderForItems:(id)items inFolder:(id)folder compressionFormat:(unint64_t)format error:(id *)error;
+- (id)_createUnarchivePlaceholderForDescriptors:(id)descriptors describingArchive:(id)archive inFolder:(id)folder hasMultipleTopLevelItems:(BOOL *)items placeholderIsFolder:(BOOL *)isFolder error:(id *)error;
+- (id)_createUniquePlaceholderWithName:(id)name inFolder:(id)folder asFolder:(BOOL)asFolder isArchiving:(BOOL)archiving error:(id *)error;
+- (id)_errorForAppleArchive:(int)archive itemURL:(id)l;
+- (id)_errorForArchive:(archive *)archive itemURL:(id)l;
+- (id)_filepathForFd:(int)fd error:(id *)error;
+- (id)_passwordFromKeychainWithArchiveID:(char *)d archiveIDSize:(unint64_t)size;
+- (id)_replacePathComponent:(id)component withComponent:(id)withComponent inFilePath:(id)path;
+- (id)_sanitizedPathWithCString:(const char *)string length:(unint64_t)length;
+- (id)archiveItemsWithURLWrappers:(id)wrappers passphrase:(id)passphrase addToKeychain:(BOOL)keychain compressionFormat:(unint64_t)format destinationFolderURLWrapper:(id)wrapper usePlaceholder:(BOOL)placeholder completionHandler:(id)handler;
+- (id)archiveItemsWithURLWrappers:(id)wrappers toURLWrapper:(id)wrapper options:(unint64_t)options compressionFormat:(unint64_t)format passphrase:(id)passphrase completionHandler:(id)handler;
+- (id)performActionOfKind:(unint64_t)kind onResourcesWithURLWrappers:(id)wrappers clientDestinationFolderURLWrapper:(id)wrapper calledFromLegacyAPI:(BOOL)i actionHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)unarchiveItemWithURLWrapper:(id)wrapper passphrases:(id)passphrases addToKeychain:(BOOL)keychain destinationFolderURLWrapper:(id)lWrapper acceptedFormats:(unint64_t)formats exportsStreamingReceiver:(BOOL)receiver usePlaceholder:(BOOL)placeholder completionHandler:(id)self0;
+- (id)unarchiveItemWithURLWrapper:(id)wrapper toURLWrapper:(id)lWrapper options:(unint64_t)options passphrases:(id)passphrases acceptedFormats:(unint64_t)formats completionHandler:(id)handler;
+- (int)openArchiveFile:(id)file error:(id *)error;
 - (void)_cancel;
-- (void)_cleanupWithResult:(id)a3 error:(id)a4 securityScopedURLs:(id)a5 completionHandler:(id)a6;
-- (void)itemDescriptorsForItemWithURLWrapper:(id)a3 passphrases:(id)a4 completionHandler:(id)a5;
+- (void)_cleanupWithResult:(id)result error:(id)error securityScopedURLs:(id)ls completionHandler:(id)handler;
+- (void)itemDescriptorsForItemWithURLWrapper:(id)wrapper passphrases:(id)passphrases completionHandler:(id)handler;
 @end
 
 @implementation DSArchiveExportedService
@@ -59,23 +59,23 @@
   return v2;
 }
 
-- (id)_filepathForFd:(int)a3 error:(id *)a4
+- (id)_filepathForFd:(int)fd error:(id *)error
 {
-  if (fcntl(a3, 50, __s) == -1)
+  if (fcntl(fd, 50, __s) == -1)
   {
     v8 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:0 debugDescription:@"couldn't get filename from a file descriptor"];
     v6 = v8;
-    if (a4)
+    if (error)
     {
       v9 = v8;
-      *a4 = v6;
+      *error = v6;
     }
 
     v10 = LogObj(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v13 = a3;
+      fdCopy = fd;
       v14 = 2112;
       v15 = v6;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Couldn't get the path of a file from a fd (%d): %@", buf, 0x12u);
@@ -93,19 +93,19 @@
   return v7;
 }
 
-- (void)itemDescriptorsForItemWithURLWrapper:(id)a3 passphrases:(id)a4 completionHandler:(id)a5
+- (void)itemDescriptorsForItemWithURLWrapper:(id)wrapper passphrases:(id)passphrases completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v20 = v8;
-  v11 = [v8 url];
-  v12 = [v11 startAccessingSecurityScopedResource];
-  if (((v11 != 0) & v12) != 0)
+  wrapperCopy = wrapper;
+  passphrasesCopy = passphrases;
+  handlerCopy = handler;
+  v20 = wrapperCopy;
+  v11 = [wrapperCopy url];
+  startAccessingSecurityScopedResource = [v11 startAccessingSecurityScopedResource];
+  if (((v11 != 0) & startAccessingSecurityScopedResource) != 0)
   {
     v13 = [NSFileAccessIntent readingIntentWithURL:v11 options:0x20000];
     v14 = objc_opt_new();
-    v15 = v9;
+    v15 = passphrasesCopy;
     v27 = v13;
     v16 = [NSArray arrayWithObjects:&v27 count:1];
     operationQueue = self->_operationQueue;
@@ -118,11 +118,11 @@
     v18 = v13;
     v23 = v18;
     v24 = v15;
-    v26 = v12;
-    v25 = v10;
+    v26 = startAccessingSecurityScopedResource;
+    v25 = handlerCopy;
     [v14 coordinateAccessWithIntents:v16 queue:operationQueue byAccessor:v21];
 
-    v9 = v15;
+    passphrasesCopy = v15;
   }
 
   else
@@ -140,46 +140,46 @@
     }
 
     v19 = [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:v18];
-    (*(v10 + 2))(v10, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, v19);
   }
 }
 
-- (id)_createUniquePlaceholderWithName:(id)a3 inFolder:(id)a4 asFolder:(BOOL)a5 isArchiving:(BOOL)a6 error:(id *)a7
+- (id)_createUniquePlaceholderWithName:(id)name inFolder:(id)folder asFolder:(BOOL)asFolder isArchiving:(BOOL)archiving error:(id *)error
 {
-  v7 = a6;
-  v9 = a3;
-  a4;
-  v15 = v9;
-  if (v7)
+  archivingCopy = archiving;
+  nameCopy = name;
+  folder;
+  v15 = nameCopy;
+  if (archivingCopy)
   {
-    v9 = [v9 stringByDeletingPathExtension];
+    nameCopy = [nameCopy stringByDeletingPathExtension];
   }
 
-  v10 = [NSString ds_fileNameHasClaimedFileExtension:v9];
-  if (v7)
+  v10 = [NSString ds_fileNameHasClaimedFileExtension:nameCopy];
+  if (archivingCopy)
   {
 
-    v11 = [v15 pathExtension];
+    pathExtension = [v15 pathExtension];
     v17 = &stru_10002D580;
     CFRetain(&stru_10002D580);
-    TString::SetStringRefAsImmutable(&v17, v11);
+    TString::SetStringRefAsImmutable(&v17, pathExtension);
 
     v18 = 1;
-    v12 = [v15 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [v15 stringByDeletingPathExtension];
   }
 
   else
   {
     LOBYTE(v17) = 0;
     v18 = 0;
-    v12 = v15;
+    stringByDeletingPathExtension = v15;
   }
 
   v16 = &off_10002DEA8;
-  [v12 fp_stringByDeletingPathBounceNo:&v16 andPathExtension:0 isFolder:v10 ^ 1];
+  [stringByDeletingPathExtension fp_stringByDeletingPathBounceNo:&v16 andPathExtension:0 isFolder:v10 ^ 1];
   objc_claimAutoreleasedReturnValue();
   v13 = v16;
-  if (v7)
+  if (archivingCopy)
   {
   }
 
@@ -187,19 +187,19 @@
   sub_100004D50();
 }
 
-- (id)_createArchivePlaceholderForItems:(id)a3 inFolder:(id)a4 compressionFormat:(unint64_t)a5 error:(id *)a6
+- (id)_createArchivePlaceholderForItems:(id)items inFolder:(id)folder compressionFormat:(unint64_t)format error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  itemsCopy = items;
+  folderCopy = folder;
   v24 = &stru_10002D580;
   CFRetain(&stru_10002D580);
-  if ([v10 count] == 1)
+  if ([itemsCopy count] == 1)
   {
-    v12 = [v10 objectAtIndexedSubscript:0];
-    v13 = [v12 lastPathComponent];
-    if (v24 != v13)
+    v12 = [itemsCopy objectAtIndexedSubscript:0];
+    lastPathComponent = [v12 lastPathComponent];
+    if (v24 != lastPathComponent)
     {
-      TString::SetStringRefAsImmutable(&v24, v13);
+      TString::SetStringRefAsImmutable(&v24, lastPathComponent);
     }
 
     if (BRContainerClass() && [v12 br_isDocumentsContainer])
@@ -216,10 +216,10 @@
     if ([NSString ds_fileNameHasClaimedFileExtension:v24])
     {
       v14 = v24;
-      v15 = [(__CFString *)v14 stringByDeletingPathExtension];
-      if (v24 != v15)
+      stringByDeletingPathExtension = [(__CFString *)v14 stringByDeletingPathExtension];
+      if (v24 != stringByDeletingPathExtension)
       {
-        TString::SetStringRefAsImmutable(&v24, v15);
+        TString::SetStringRefAsImmutable(&v24, stringByDeletingPathExtension);
       }
     }
   }
@@ -238,12 +238,12 @@
     sub_100004348(&theString);
   }
 
-  if (a5 > 2)
+  if (format > 2)
   {
-    switch(a5)
+    switch(format)
     {
       case 3uLL:
-        v17 = @"tar";
+        preferredFilenameExtension = @"tar";
         goto LABEL_32;
       case 4uLL:
         v18 = &UTTypeAppleArchive;
@@ -252,63 +252,63 @@
         v18 = &_UTTypeAppleEncryptedArchive;
         break;
       default:
-        v17 = 0;
+        preferredFilenameExtension = 0;
         goto LABEL_32;
     }
 
 LABEL_31:
-    v17 = [*v18 preferredFilenameExtension];
+    preferredFilenameExtension = [*v18 preferredFilenameExtension];
     goto LABEL_32;
   }
 
-  if (!a5)
+  if (!format)
   {
     v18 = &UTTypeZIP;
     goto LABEL_31;
   }
 
   v16 = @"cpgz";
-  if (a5 != 2)
+  if (format != 2)
   {
     v16 = 0;
   }
 
-  if (a5 == 1)
+  if (format == 1)
   {
-    v17 = @"cpio";
+    preferredFilenameExtension = @"cpio";
   }
 
   else
   {
-    v17 = v16;
+    preferredFilenameExtension = v16;
   }
 
 LABEL_32:
   v19 = v24;
-  v20 = [(__CFString *)v19 stringByAppendingPathExtension:v17];
+  v20 = [(__CFString *)v19 stringByAppendingPathExtension:preferredFilenameExtension];
   if (v24 != v20)
   {
     TString::SetStringRefAsImmutable(&v24, v20);
   }
 
-  v21 = [(DSArchiveExportedService *)self _createUniquePlaceholderWithName:v24 inFolder:v11 asFolder:0 isArchiving:1 error:a6];
+  v21 = [(DSArchiveExportedService *)self _createUniquePlaceholderWithName:v24 inFolder:folderCopy asFolder:0 isArchiving:1 error:error];
 
   sub_100004348(&v24);
 
   return v21;
 }
 
-- (id)_createUnarchivePlaceholderForDescriptors:(id)a3 describingArchive:(id)a4 inFolder:(id)a5 hasMultipleTopLevelItems:(BOOL *)a6 placeholderIsFolder:(BOOL *)a7 error:(id *)a8
+- (id)_createUnarchivePlaceholderForDescriptors:(id)descriptors describingArchive:(id)archive inFolder:(id)folder hasMultipleTopLevelItems:(BOOL *)items placeholderIsFolder:(BOOL *)isFolder error:(id *)error
 {
-  v36 = self;
-  v11 = a3;
-  v41 = a4;
-  v40 = a5;
+  selfCopy = self;
+  descriptorsCopy = descriptors;
+  archiveCopy = archive;
+  folderCopy = folder;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v11;
+  obj = descriptorsCopy;
   v12 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (!v12)
   {
@@ -333,13 +333,13 @@ LABEL_32:
 
       v14 = *(*(&v52 + 1) + 8 * v13);
       context = objc_autoreleasePoolPush();
-      v15 = [v14 filePath];
-      v16 = [v15 pathComponents];
+      filePath = [v14 filePath];
+      pathComponents = [filePath pathComponents];
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v17 = v16;
+      v17 = pathComponents;
       v18 = [v17 countByEnumeratingWithState:&v48 objects:v59 count:16];
       if (!v18)
       {
@@ -362,7 +362,7 @@ LABEL_8:
         }
 
         v21 = *(*(&v48 + 1) + 8 * v20);
-        if (([v21 isEqualToString:{@"/", v36}] & 1) == 0 && (objc_msgSend(v21, "isEqualToString:", @".") & 1) == 0)
+        if (([v21 isEqualToString:{@"/", selfCopy}] & 1) == 0 && (objc_msgSend(v21, "isEqualToString:", @".") & 1) == 0)
         {
           break;
         }
@@ -428,22 +428,22 @@ LABEL_28:
 
   if (v43)
   {
-    if (a6)
+    if (items)
     {
-      *a6 = v38 & 1;
+      *items = v38 & 1;
     }
 
     if (v38)
     {
-      v26 = [(__CFString *)v41 lastPathComponent];
-      v27 = [v26 stringByDeletingPathExtension];
+      lastPathComponent = [(__CFString *)archiveCopy lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-      v28 = [v27 pathExtension];
-      if (![v28 caseInsensitiveCompare:@"tar"] || !objc_msgSend(v28, "caseInsensitiveCompare:", @"cpio"))
+      pathExtension = [stringByDeletingPathExtension pathExtension];
+      if (![pathExtension caseInsensitiveCompare:@"tar"] || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"cpio"))
       {
-        v29 = [v27 stringByDeletingPathExtension];
+        v27StringByDeletingPathExtension = [stringByDeletingPathExtension stringByDeletingPathExtension];
 
-        v27 = v29;
+        stringByDeletingPathExtension = v27StringByDeletingPathExtension;
       }
 
       v42 = 1;
@@ -451,75 +451,75 @@ LABEL_28:
 
     else
     {
-      v27 = v43;
+      stringByDeletingPathExtension = v43;
     }
 
-    if (a7)
+    if (isFolder)
     {
-      *a7 = v42 & 1;
+      *isFolder = v42 & 1;
     }
 
-    v34 = [(DSArchiveExportedService *)v36 _createUniquePlaceholderWithName:v27 inFolder:v40 asFolder:v42 & 1 isArchiving:0 error:a8, v36];
+    selfCopy = [(DSArchiveExportedService *)selfCopy _createUniquePlaceholderWithName:stringByDeletingPathExtension inFolder:folderCopy asFolder:v42 & 1 isArchiving:0 error:error, selfCopy];
     goto LABEL_46;
   }
 
 LABEL_37:
-  v58[0] = v41;
+  v58[0] = archiveCopy;
   v57[0] = NSURLErrorKey;
   v57[1] = NSLocalizedDescriptionKey;
-  TCFURLInfo::LocalizedStringWithFileName(@"ArchiveIsEmpty", v41, buf);
+  TCFURLInfo::LocalizedStringWithFileName(@"ArchiveIsEmpty", archiveCopy, buf);
   v30 = *buf;
   v58[1] = v30;
   v43 = [NSDictionary dictionaryWithObjects:v58 forKeys:v57 count:2];
 
   sub_100004348(buf);
-  v27 = [NSError errorWithDomain:@"com.apple.desktopservices.ArchiveService" code:-1001 userInfo:v43];
+  stringByDeletingPathExtension = [NSError errorWithDomain:@"com.apple.desktopservices.ArchiveService" code:-1001 userInfo:v43];
   v31 = LogObj(0);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
-    v32 = SanitizedURL(v41);
+    v32 = SanitizedURL(archiveCopy);
     *buf = 138543362;
     *&buf[4] = v32;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "No top level items in %{public}@", buf, 0xCu);
   }
 
-  if (a8)
+  if (error)
   {
-    v33 = v27;
-    v34 = 0;
-    *a8 = v27;
+    v33 = stringByDeletingPathExtension;
+    selfCopy = 0;
+    *error = stringByDeletingPathExtension;
   }
 
   else
   {
-    v34 = 0;
+    selfCopy = 0;
   }
 
 LABEL_46:
 
-  return v34;
+  return selfCopy;
 }
 
-- (id)archiveItemsWithURLWrappers:(id)a3 toURLWrapper:(id)a4 options:(unint64_t)a5 compressionFormat:(unint64_t)a6 passphrase:(id)a7 completionHandler:(id)a8
+- (id)archiveItemsWithURLWrappers:(id)wrappers toURLWrapper:(id)wrapper options:(unint64_t)options compressionFormat:(unint64_t)format passphrase:(id)passphrase completionHandler:(id)handler
 {
-  v10 = a5;
+  optionsCopy = options;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100010B84;
   v17[3] = &unk_10002D060;
-  v18 = a8;
-  v14 = v18;
-  v15 = [(DSArchiveExportedService *)self archiveItemsWithURLWrappers:a3 passphrase:a7 addToKeychain:v10 & 1 compressionFormat:a6 destinationFolderURLWrapper:a4 usePlaceholder:1 completionHandler:v17];
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  v15 = [(DSArchiveExportedService *)self archiveItemsWithURLWrappers:wrappers passphrase:passphrase addToKeychain:optionsCopy & 1 compressionFormat:format destinationFolderURLWrapper:wrapper usePlaceholder:1 completionHandler:v17];
 
   return v15;
 }
 
-- (id)archiveItemsWithURLWrappers:(id)a3 passphrase:(id)a4 addToKeychain:(BOOL)a5 compressionFormat:(unint64_t)a6 destinationFolderURLWrapper:(id)a7 usePlaceholder:(BOOL)a8 completionHandler:(id)a9
+- (id)archiveItemsWithURLWrappers:(id)wrappers passphrase:(id)passphrase addToKeychain:(BOOL)keychain compressionFormat:(unint64_t)format destinationFolderURLWrapper:(id)wrapper usePlaceholder:(BOOL)placeholder completionHandler:(id)handler
 {
-  v9 = a8;
-  v15 = a4;
-  v16 = a7;
-  v17 = a9;
+  placeholderCopy = placeholder;
+  passphraseCopy = passphrase;
+  wrapperCopy = wrapper;
+  handlerCopy = handler;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
@@ -536,15 +536,15 @@ LABEL_46:
   v28[1] = 3221225472;
   v28[2] = sub_100010F2C;
   v28[3] = &unk_10002D0B0;
-  v35 = v9;
+  v35 = placeholderCopy;
   v32 = v37;
   v28[4] = self;
-  v29 = v16;
-  v34 = a6;
+  v29 = wrapperCopy;
+  formatCopy = format;
   v33 = v39;
-  v30 = v15;
-  v31 = v17;
-  v36 = a5;
+  v30 = passphraseCopy;
+  v31 = handlerCopy;
+  keychainCopy = keychain;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100011534;
@@ -555,8 +555,8 @@ LABEL_46:
   v25 = v31;
   v18 = v29;
   v19 = v31;
-  v20 = v15;
-  v21 = [(DSArchiveExportedService *)self performActionOfKind:0 onResourcesWithURLWrappers:a3 clientDestinationFolderURLWrapper:v18 calledFromLegacyAPI:!v9 actionHandler:v28 completionHandler:v23];
+  v20 = passphraseCopy;
+  v21 = [(DSArchiveExportedService *)self performActionOfKind:0 onResourcesWithURLWrappers:wrappers clientDestinationFolderURLWrapper:v18 calledFromLegacyAPI:!placeholderCopy actionHandler:v28 completionHandler:v23];
 
   _Block_object_dispose(v37, 8);
   _Block_object_dispose(v39, 8);
@@ -564,38 +564,38 @@ LABEL_46:
   return v21;
 }
 
-- (id)unarchiveItemWithURLWrapper:(id)a3 toURLWrapper:(id)a4 options:(unint64_t)a5 passphrases:(id)a6 acceptedFormats:(unint64_t)a7 completionHandler:(id)a8
+- (id)unarchiveItemWithURLWrapper:(id)wrapper toURLWrapper:(id)lWrapper options:(unint64_t)options passphrases:(id)passphrases acceptedFormats:(unint64_t)formats completionHandler:(id)handler
 {
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100011B18;
   v18[3] = &unk_10002D100;
-  v19 = a8;
-  v14 = v19;
+  handlerCopy = handler;
+  v14 = handlerCopy;
   LOBYTE(v17) = 1;
-  v15 = [(DSArchiveExportedService *)self unarchiveItemWithURLWrapper:a3 passphrases:a6 addToKeychain:a5 & 1 destinationFolderURLWrapper:a4 acceptedFormats:a7 exportsStreamingReceiver:(a5 >> 20) & 1 usePlaceholder:v17 completionHandler:v18];
+  v15 = [(DSArchiveExportedService *)self unarchiveItemWithURLWrapper:wrapper passphrases:passphrases addToKeychain:options & 1 destinationFolderURLWrapper:lWrapper acceptedFormats:formats exportsStreamingReceiver:(options >> 20) & 1 usePlaceholder:v17 completionHandler:v18];
 
   return v15;
 }
 
-- (id)unarchiveItemWithURLWrapper:(id)a3 passphrases:(id)a4 addToKeychain:(BOOL)a5 destinationFolderURLWrapper:(id)a6 acceptedFormats:(unint64_t)a7 exportsStreamingReceiver:(BOOL)a8 usePlaceholder:(BOOL)a9 completionHandler:(id)a10
+- (id)unarchiveItemWithURLWrapper:(id)wrapper passphrases:(id)passphrases addToKeychain:(BOOL)keychain destinationFolderURLWrapper:(id)lWrapper acceptedFormats:(unint64_t)formats exportsStreamingReceiver:(BOOL)receiver usePlaceholder:(BOOL)placeholder completionHandler:(id)self0
 {
-  v10 = a8;
-  v32 = a3;
-  v16 = a4;
-  v30 = a6;
-  v31 = a10;
+  receiverCopy = receiver;
+  wrapperCopy = wrapper;
+  passphrasesCopy = passphrases;
+  lWrapperCopy = lWrapper;
+  handlerCopy = handler;
   v17 = +[NSXPCConnection currentConnection];
   v25 = v17;
   v29 = dispatch_group_create();
-  if (v10)
+  if (receiverCopy)
   {
-    v27 = [v17 remoteObjectProxy];
+    remoteObjectProxy = [v17 remoteObjectProxy];
   }
 
   else
   {
-    v27 = 0;
+    remoteObjectProxy = 0;
   }
 
   v67[0] = 0;
@@ -630,7 +630,7 @@ LABEL_46:
   v57[3] = sub_100010F14;
   v57[4] = sub_100010F24;
   v58 = 0;
-  v69 = v32;
+  v69 = wrapperCopy;
   v18 = [NSArray arrayWithObjects:&v69 count:1];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
@@ -638,21 +638,21 @@ LABEL_46:
   v42[3] = &unk_10002D150;
   v48 = v61;
   v49 = v63;
-  v26 = v27;
+  v26 = remoteObjectProxy;
   v43 = v26;
-  v44 = self;
-  v24 = v16;
-  v55 = a9;
-  v54 = a7;
-  v28 = v16;
+  selfCopy = self;
+  v24 = passphrasesCopy;
+  placeholderCopy = placeholder;
+  formatsCopy = formats;
+  v28 = passphrasesCopy;
   v45 = v28;
   v50 = v59;
-  v19 = v30;
+  v19 = lWrapperCopy;
   v46 = v19;
   v51 = v65;
   v52 = v67;
   v53 = v57;
-  v56 = a5;
+  keychainCopy = keychain;
   v47 = v29;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
@@ -663,12 +663,12 @@ LABEL_46:
   v39 = v63;
   v20 = v47;
   v34 = v20;
-  v35 = self;
-  v21 = v31;
+  selfCopy2 = self;
+  v21 = handlerCopy;
   v36 = v21;
   v40 = v61;
   v41 = v65;
-  v22 = [(DSArchiveExportedService *)self performActionOfKind:1 onResourcesWithURLWrappers:v18 clientDestinationFolderURLWrapper:v19 calledFromLegacyAPI:!a9 actionHandler:v42 completionHandler:v33, v24];
+  v22 = [(DSArchiveExportedService *)self performActionOfKind:1 onResourcesWithURLWrappers:v18 clientDestinationFolderURLWrapper:v19 calledFromLegacyAPI:!placeholder actionHandler:v42 completionHandler:v33, v24];
 
   _Block_object_dispose(v57, 8);
   _Block_object_dispose(v59, 8);
@@ -691,21 +691,21 @@ LABEL_46:
 
 - (BOOL)_isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return cancelled;
 }
 
-- (id)_errorForAppleArchive:(int)a3 itemURL:(id)a4
+- (id)_errorForAppleArchive:(int)archive itemURL:(id)l
 {
-  v4 = a3;
-  v5 = a4;
-  if ((v4 & 0x3FF) != 0)
+  archiveCopy = archive;
+  lCopy = l;
+  if ((archiveCopy & 0x3FF) != 0)
   {
-    v6 = v4 & 0x3FF;
+    v6 = archiveCopy & 0x3FF;
   }
 
   else
@@ -724,18 +724,18 @@ LABEL_46:
     v8 = 0;
   }
 
-  v9 = [NSError ds_errorWithPOSIXCode:v6 itemURL:v5 debugDescription:v8];
+  v9 = [NSError ds_errorWithPOSIXCode:v6 itemURL:lCopy debugDescription:v8];
 
   return v9;
 }
 
-- (id)_errorForArchive:(archive *)a3 itemURL:(id)a4
+- (id)_errorForArchive:(archive *)archive itemURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v6 = archive_errno();
   if (v6 == -1 && archive_read_has_encrypted_entries() == 1)
   {
-    v7 = [(DSArchiveExportedService *)self _archiveDecryptionError];
+    _archiveDecryptionError = [(DSArchiveExportedService *)self _archiveDecryptionError];
   }
 
   else
@@ -761,23 +761,23 @@ LABEL_46:
       v10 = v6;
     }
 
-    v7 = [NSError ds_errorWithPOSIXCode:v10 itemURL:v5 debugDescription:v9];
+    _archiveDecryptionError = [NSError ds_errorWithPOSIXCode:v10 itemURL:lCopy debugDescription:v9];
   }
 
-  return v7;
+  return _archiveDecryptionError;
 }
 
-- (id)__temporaryURLAppropriateForURL:(id)a3 calledFromLegacyAPI:(BOOL)a4 error:(id *)a5
+- (id)__temporaryURLAppropriateForURL:(id)l calledFromLegacyAPI:(BOOL)i error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  lCopy = l;
+  if (lCopy)
   {
-    v8 = v7;
-    if (!a4)
+    v8 = lCopy;
+    if (!i)
     {
       v35 = 0;
       v34 = 0;
-      v9 = [v7 getResourceValue:&v35 forKey:NSURLIsDirectoryKey error:&v34];
+      v9 = [lCopy getResourceValue:&v35 forKey:NSURLIsDirectoryKey error:&v34];
       v10 = v35;
       v11 = v34;
       if ((v9 & 1) == 0)
@@ -800,7 +800,7 @@ LABEL_46:
     }
 
     v14 = +[NSFileManager defaultManager];
-    v15 = [v14 URLForDirectory:99 inDomain:1 appropriateForURL:v8 create:1 error:a5];
+    v15 = [v14 URLForDirectory:99 inDomain:1 appropriateForURL:v8 create:1 error:error];
 
     goto LABEL_32;
   }
@@ -817,10 +817,10 @@ LABEL_46:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Couldn't get temporary directory", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_32;
     }
 
@@ -834,10 +834,10 @@ LABEL_46:
   {
     v25 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:v18 debugDescription:@"Couldn't copy temporary directory name"];
     v26 = v25;
-    if (a5)
+    if (error)
     {
       v27 = v25;
-      *a5 = v26;
+      *error = v26;
     }
 
     v28 = LogObj(0);
@@ -857,10 +857,10 @@ LABEL_46:
   {
     v29 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:v18 debugDescription:@"Couldn't create temporary directory"];
     v30 = v29;
-    if (a5)
+    if (error)
     {
       v31 = v29;
-      *a5 = v30;
+      *error = v30;
     }
 
     v32 = LogObj(0);
@@ -879,7 +879,7 @@ LABEL_31:
 
   v15 = [NSURL fileURLWithFileSystemRepresentation:v21 isDirectory:1 relativeToURL:0];
   v22 = +[NSFileManager defaultManager];
-  v23 = [v22 createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:a5];
+  v23 = [v22 createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:error];
 
   free(v20);
   if ((v23 & 1) == 0)
@@ -893,16 +893,16 @@ LABEL_32:
   return v15;
 }
 
-- (void)_cleanupWithResult:(id)a3 error:(id)a4 securityScopedURLs:(id)a5 completionHandler:(id)a6
+- (void)_cleanupWithResult:(id)result error:(id)error securityScopedURLs:(id)ls completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v10[2](v10, a3, a4);
+  lsCopy = ls;
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, result, error);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v11 = v9;
+  v11 = lsCopy;
   v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v12)
   {
@@ -929,31 +929,31 @@ LABEL_32:
   }
 }
 
-- (id)performActionOfKind:(unint64_t)a3 onResourcesWithURLWrappers:(id)a4 clientDestinationFolderURLWrapper:(id)a5 calledFromLegacyAPI:(BOOL)a6 actionHandler:(id)a7 completionHandler:(id)a8
+- (id)performActionOfKind:(unint64_t)kind onResourcesWithURLWrappers:(id)wrappers clientDestinationFolderURLWrapper:(id)wrapper calledFromLegacyAPI:(BOOL)i actionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v40 = a4;
-  v37 = a5;
-  v36 = a7;
-  v39 = a8;
+  wrappersCopy = wrappers;
+  wrapperCopy = wrapper;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v13 = objc_opt_new();
   v14 = sub_10001149C();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014980;
   block[3] = &unk_10002D218;
-  v56 = self;
-  v57 = a3;
+  selfCopy = self;
+  kindCopy = kind;
   v38 = v13;
   v55 = v38;
   dispatch_async(v14, block);
 
-  v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v40 count]);
-  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v40 count]);
+  v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [wrappersCopy count]);
+  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [wrappersCopy count]);
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v17 = v40;
+  v17 = wrappersCopy;
   v18 = [(NSURL *)v17 countByEnumeratingWithState:&v50 objects:v64 count:16];
   if (v18)
   {
@@ -1001,7 +1001,7 @@ LABEL_3:
     v29 = 0;
 LABEL_14:
     v30 = [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:v29];
-    [(DSArchiveExportedService *)self _cleanupWithResult:0 error:v30 securityScopedURLs:v15 completionHandler:v39];
+    [(DSArchiveExportedService *)self _cleanupWithResult:0 error:v30 securityScopedURLs:v15 completionHandler:completionHandlerCopy];
 
     v28 = 0;
     v24 = v17;
@@ -1010,7 +1010,7 @@ LABEL_14:
 
 LABEL_10:
 
-  v24 = [v37 url];
+  v24 = [wrapperCopy url];
   if ([(NSURL *)v24 startAccessingSecurityScopedResource])
   {
     [v15 addObject:v24];
@@ -1021,13 +1021,13 @@ LABEL_10:
     v41[2] = sub_100014AF4;
     v41[3] = &unk_10002D240;
     v42 = v16;
-    v43 = self;
+    selfCopy2 = self;
     v44 = v15;
-    v47 = v39;
+    v47 = completionHandlerCopy;
     v27 = v24;
     v45 = v27;
-    v49 = a6;
-    v48 = v36;
+    iCopy = i;
+    v48 = handlerCopy;
     v28 = v38;
     v46 = v28;
     [v25 coordinateAccessWithIntents:v42 queue:operationQueue byAccessor:v41];
@@ -1052,7 +1052,7 @@ LABEL_10:
     v59 = v24;
     v22 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v33 = [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:v22];
-    [(DSArchiveExportedService *)self _cleanupWithResult:0 error:v33 securityScopedURLs:v15 completionHandler:v39];
+    [(DSArchiveExportedService *)self _cleanupWithResult:0 error:v33 securityScopedURLs:v15 completionHandler:completionHandlerCopy];
 
     v28 = 0;
   }
@@ -1062,12 +1062,12 @@ LABEL_18:
   return v28;
 }
 
-- (BOOL)_getIsDirectoryProperty:(BOOL *)a3 forItemURL:(id)a4 error:(id *)a5
+- (BOOL)_getIsDirectoryProperty:(BOOL *)property forItemURL:(id)l error:(id *)error
 {
-  v7 = a4;
+  lCopy = l;
   v17 = 0;
   v16 = 0;
-  v8 = [v7 getResourceValue:&v17 forKey:NSURLIsDirectoryKey error:&v16];
+  v8 = [lCopy getResourceValue:&v17 forKey:NSURLIsDirectoryKey error:&v16];
   v9 = v17;
   v10 = v16;
   if ((v8 & 1) == 0)
@@ -1080,11 +1080,11 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to get isDirectory info: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = v10;
       v11 = 0;
-      *a5 = v10;
+      *error = v10;
       goto LABEL_11;
     }
 
@@ -1095,53 +1095,53 @@ LABEL_10:
 
   if (!v9)
   {
-    if (a5)
+    if (error)
     {
       v18 = NSURLErrorKey;
-      v19 = v7;
+      v19 = lCopy;
       v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v14];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v14];
     }
 
     goto LABEL_10;
   }
 
-  *a3 = [v9 BOOLValue];
+  *property = [v9 BOOLValue];
   v11 = 1;
 LABEL_11:
 
   return v11;
 }
 
-- (id)_replacePathComponent:(id)a3 withComponent:(id)a4 inFilePath:(id)a5
+- (id)_replacePathComponent:(id)component withComponent:(id)withComponent inFilePath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v11 = [v9 rangeOfString:v7];
+  componentCopy = component;
+  withComponentCopy = withComponent;
+  pathCopy = path;
+  v11 = [pathCopy rangeOfString:componentCopy];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v9 stringByReplacingCharactersInRange:v11 withString:{v10, v8}];
+    v12 = [pathCopy stringByReplacingCharactersInRange:v11 withString:{v10, withComponentCopy}];
 
-    v9 = v12;
+    pathCopy = v12;
   }
 
-  return v9;
+  return pathCopy;
 }
 
-- (BOOL)_createMetadataFileWithAppleDoubleFormatOfItemURL:(id)a3 destinationURL:(id)a4 error:(id *)a5
+- (BOOL)_createMetadataFileWithAppleDoubleFormatOfItemURL:(id)l destinationURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = copyfile([v7 fileSystemRepresentation], objc_msgSend(v8, "fileSystemRepresentation"), 0, 0x4C0005u);
+  lCopy = l;
+  rLCopy = rL;
+  v9 = copyfile([lCopy fileSystemRepresentation], objc_msgSend(rLCopy, "fileSystemRepresentation"), 0, 0x4C0005u);
   if (v9)
   {
-    v10 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:v7 debugDescription:@"Couldn't set extended attributes / ACLs"];
+    v10 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:lCopy debugDescription:@"Couldn't set extended attributes / ACLs"];
     v11 = v10;
-    if (a5)
+    if (error)
     {
       v12 = v10;
-      *a5 = v11;
+      *error = v11;
     }
 
     v13 = LogObj(0);
@@ -1156,7 +1156,7 @@ LABEL_11:
   return v9 == 0;
 }
 
-- (id)_sanitizedPathWithCString:(const char *)a3 length:(unint64_t)a4
+- (id)_sanitizedPathWithCString:(const char *)string length:(unint64_t)length
 {
   v6 = [NSString stringWithUTF8String:?];
   if (!v6)
@@ -1170,46 +1170,46 @@ LABEL_11:
     v15[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-    v10 = [NSData dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+    v10 = [NSData dataWithBytesNoCopy:string length:length freeWhenDone:0];
     v12 = 0;
     [NSString stringEncodingForData:v10 encodingOptions:v9 convertedString:&v12 usedLossyConversion:0];
     v6 = v12;
 
     if (!v6)
     {
-      v6 = [NSString stringWithCString:a3 encoding:1];
+      v6 = [NSString stringWithCString:string encoding:1];
     }
   }
 
   return v6;
 }
 
-- (BOOL)_enumerateItemURL:(id)a3 itemActionBlock:(id)a4 error:(id *)a5
+- (BOOL)_enumerateItemURL:(id)l itemActionBlock:(id)block error:(id *)error
 {
-  v10 = a3;
-  v35 = a4;
+  lCopy = l;
+  blockCopy = block;
   v38 = 0;
-  v32 = v10;
-  v7 = [[NSMutableArray alloc] initWithObjects:{v10, 0}];
+  v32 = lCopy;
+  v7 = [[NSMutableArray alloc] initWithObjects:{lCopy, 0}];
   v8 = 0;
   v9 = 0;
   v33 = 0;
-  LOBYTE(v10) = 1;
-  while (!-[DSArchiveExportedService _isCancelled](self, "_isCancelled") && (v10 & 1) != 0 && [v7 count])
+  LOBYTE(lCopy) = 1;
+  while (!-[DSArchiveExportedService _isCancelled](self, "_isCancelled") && (lCopy & 1) != 0 && [v7 count])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 
-    v9 = v12;
+    v9 = firstObject;
     [v7 removeObjectAtIndex:0];
     v37 = v8;
-    LODWORD(v10) = [(DSArchiveExportedService *)self _getIsDirectoryProperty:&v38 forItemURL:v12 error:&v37];
+    LODWORD(lCopy) = [(DSArchiveExportedService *)self _getIsDirectoryProperty:&v38 forItemURL:firstObject error:&v37];
     v13 = v37;
 
-    if (v10)
+    if (lCopy)
     {
       v36 = v13;
-      v14 = v35[2](v35, v9, v38, &v36);
+      v14 = blockCopy[2](blockCopy, v9, v38, &v36);
       v8 = v36;
 
       if (v14)
@@ -1235,7 +1235,7 @@ LABEL_31:
 
 LABEL_32:
 
-            LOBYTE(v10) = 0;
+            LOBYTE(lCopy) = 0;
             v24 = 1;
             v8 = v26;
             goto LABEL_33;
@@ -1258,8 +1258,8 @@ LABEL_32:
               if (d_type <= 0xA && ((1 << d_type) & 0x510) != 0)
               {
                 v21 = [[NSURL alloc] initFileURLWithFileSystemRepresentation:v18->d_name isDirectory:d_type == 4 relativeToURL:v9];
-                v22 = [v21 lastPathComponent];
-                v23 = [v9 URLByAppendingPathComponent:v22 isDirectory:d_type == 4];
+                lastPathComponent = [v21 lastPathComponent];
+                v23 = [v9 URLByAppendingPathComponent:lastPathComponent isDirectory:d_type == 4];
                 [v7 addObject:v23];
               }
             }
@@ -1316,12 +1316,12 @@ LABEL_32:
           v24 = 0;
         }
 
-        LOBYTE(v10) = 1;
+        LOBYTE(lCopy) = 1;
       }
 
       else
       {
-        LOBYTE(v10) = 0;
+        LOBYTE(lCopy) = 0;
         v24 = 1;
       }
     }
@@ -1340,18 +1340,18 @@ LABEL_33:
     }
   }
 
-  if (a5 && (v10 & 1) == 0)
+  if (error && (lCopy & 1) == 0)
   {
     v30 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
-  return v10 & 1;
+  return lCopy & 1;
 }
 
-- (BOOL)_writeOnArchiveEntryAtPath:(const char *)a3 entry:(archive_entry *)a4 archive:(archive *)a5 writeProgressHandler:(id)a6 error:(id *)a7
+- (BOOL)_writeOnArchiveEntryAtPath:(const char *)path entry:(archive_entry *)entry archive:(archive *)archive writeProgressHandler:(id)handler error:(id *)error
 {
-  v7 = __chkstk_darwin(self, a2, a3, a4, a5, a6, a7);
+  v7 = __chkstk_darwin(self, a2, path, entry, archive, handler, error);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1498,29 +1498,29 @@ LABEL_32:
   return v36;
 }
 
-- (BOOL)_archiveItemURL:(id)a3 itemArchivePath:(id)a4 isDirectory:(BOOL)a5 archive:(archive *)a6 entry:(archive_entry *)a7 stat:(stat *)a8 writeProgressHandler:(id)a9 error:(id *)a10
+- (BOOL)_archiveItemURL:(id)l itemArchivePath:(id)path isDirectory:(BOOL)directory archive:(archive *)archive entry:(archive_entry *)entry stat:(stat *)stat writeProgressHandler:(id)handler error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v36 = a9;
-  v18 = [v16 fileSystemRepresentation];
-  v19 = v18;
-  if (a8)
+  lCopy = l;
+  pathCopy = path;
+  handlerCopy = handler;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  v19 = fileSystemRepresentation;
+  if (stat)
   {
     archive_entry_copy_stat();
-    st_mode = a8->st_mode;
+    st_mode = stat->st_mode;
   }
 
   else
   {
-    if (lstat(v18, buf))
+    if (lstat(fileSystemRepresentation, buf))
     {
-      v29 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:v16 debugDescription:@"Couldn't get info from the file"];
+      v29 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:lCopy debugDescription:@"Couldn't get info from the file"];
       v30 = v29;
-      if (a10)
+      if (error)
       {
         v31 = v29;
-        *a10 = v30;
+        *error = v30;
       }
 
       v32 = LogObj(0);
@@ -1538,8 +1538,8 @@ LABEL_32:
     st_mode = buf[0].st_mode;
   }
 
-  v21 = v17;
-  [v17 fileSystemRepresentation];
+  v21 = pathCopy;
+  [pathCopy fileSystemRepresentation];
   archive_entry_set_pathname();
   v22 = st_mode & 0xF000;
   if (v22 == 40960)
@@ -1552,12 +1552,12 @@ LABEL_32:
       goto LABEL_6;
     }
 
-    v33 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:v16 debugDescription:@"readlink failed"];
+    v33 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:lCopy debugDescription:@"readlink failed"];
     v30 = v33;
-    if (a10)
+    if (error)
     {
       v34 = v33;
-      *a10 = v30;
+      *error = v30;
     }
 
     v32 = LogObj(0);
@@ -1577,12 +1577,12 @@ LABEL_26:
 LABEL_6:
   if (archive_write_header())
   {
-    v24 = [(DSArchiveExportedService *)self _errorForArchive:a6 itemURL:v16];
+    v24 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:lCopy];
     v25 = v24;
-    if (a10)
+    if (error)
     {
       v26 = v24;
-      *a10 = v25;
+      *error = v25;
     }
 
     v27 = LogObj(0);
@@ -1599,9 +1599,9 @@ LABEL_6:
   else
   {
     v28 = 1;
-    if (!a5 && v22 != 40960)
+    if (!directory && v22 != 40960)
     {
-      v28 = [(DSArchiveExportedService *)self _writeOnArchiveEntryAtPath:v19 entry:a7 archive:a6 writeProgressHandler:v36 error:a10];
+      v28 = [(DSArchiveExportedService *)self _writeOnArchiveEntryAtPath:v19 entry:entry archive:archive writeProgressHandler:handlerCopy error:error];
     }
   }
 
@@ -1611,22 +1611,22 @@ LABEL_27:
   return v28;
 }
 
-- (BOOL)_writeXattrEntryForURL:(id)a3 compressionFormat:(unint64_t)a4 archive:(archive *)a5 entry:(archive_entry *)a6 archiveURL:(id)a7 commonParentPath:(id)a8 stat:(stat *)a9 error:(id *)a10
+- (BOOL)_writeXattrEntryForURL:(id)l compressionFormat:(unint64_t)format archive:(archive *)archive entry:(archive_entry *)entry archiveURL:(id)rL commonParentPath:(id)path stat:(stat *)stat error:(id *)self0
 {
-  v16 = a3;
-  v17 = a7;
-  v37 = a8;
-  if ((a9->st_mode & 0xF000) == 0xA000 || (copyfile([v16 fileSystemRepresentation], 0, 0, 0x10005u) & 5) == 0)
+  lCopy = l;
+  rLCopy = rL;
+  pathCopy = path;
+  if ((stat->st_mode & 0xF000) == 0xA000 || (copyfile([lCopy fileSystemRepresentation], 0, 0, 0x10005u) & 5) == 0)
   {
     v25 = 0;
     v20 = 0;
     goto LABEL_7;
   }
 
-  v36 = [v17 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [rLCopy URLByDeletingLastPathComponent];
   v18 = +[NSUUID UUID];
-  v19 = [v18 UUIDString];
-  v20 = [v36 URLByAppendingPathComponent:v19 isDirectory:0];
+  uUIDString = [v18 UUIDString];
+  v20 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:uUIDString isDirectory:0];
 
   v35 = v20;
   if (!v20)
@@ -1637,28 +1637,28 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v21 = [v16 URLByDeletingLastPathComponent];
-  [v21 path];
-  if (a4)
+  uRLByDeletingLastPathComponent2 = [lCopy URLByDeletingLastPathComponent];
+  [uRLByDeletingLastPathComponent2 path];
+  if (format)
     v22 = {;
     v20 = [v22 stringByAppendingString:@"/"];
 
-    v23 = [(DSArchiveExportedService *)self _replacePathComponent:v37 withComponent:&stru_10002D580 inFilePath:v20];
-    v24 = [v16 lastPathComponent];
-    v25 = [v23 stringByAppendingFormat:@"._%@", v24];
+    lastPathComponent2 = [(DSArchiveExportedService *)self _replacePathComponent:pathCopy withComponent:&stru_10002D580 inFilePath:v20];
+    lastPathComponent = [lCopy lastPathComponent];
+    v25 = [lastPathComponent2 stringByAppendingFormat:@"._%@", lastPathComponent];
   }
 
   else
     v27 = {;
     v20 = [v27 stringByAppendingString:@"/"];
 
-    v24 = [@"__MACOSX" stringByAppendingString:@"/"];
-    v28 = [(DSArchiveExportedService *)self _replacePathComponent:v37 withComponent:v24 inFilePath:v20];
-    v23 = [v16 lastPathComponent];
-    v25 = [v28 stringByAppendingFormat:@"._%@", v23];
+    lastPathComponent = [@"__MACOSX" stringByAppendingString:@"/"];
+    v28 = [(DSArchiveExportedService *)self _replacePathComponent:pathCopy withComponent:lastPathComponent inFilePath:v20];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    v25 = [v28 stringByAppendingFormat:@"._%@", lastPathComponent2];
   }
 
-  if (![(DSArchiveExportedService *)self _createMetadataFileWithAppleDoubleFormatOfItemURL:v16 destinationURL:v35 error:a10]|| ![(DSArchiveExportedService *)self _archiveItemURL:v35 itemArchivePath:v25 isDirectory:0 archive:a5 entry:a6 stat:0 writeProgressHandler:0 error:a10])
+  if (![(DSArchiveExportedService *)self _createMetadataFileWithAppleDoubleFormatOfItemURL:lCopy destinationURL:v35 error:error]|| ![(DSArchiveExportedService *)self _archiveItemURL:v35 itemArchivePath:v25 isDirectory:0 archive:archive entry:entry stat:0 writeProgressHandler:0 error:error])
   {
     goto LABEL_15;
   }
@@ -1666,13 +1666,13 @@ LABEL_15:
   v29 = v35;
   v30 = unlink([v35 fileSystemRepresentation]);
   v31 = v30;
-  if (a10 && v30)
+  if (error && v30)
   {
     v32 = *__error();
     v38 = NSURLErrorKey;
     v39 = v35;
     v33 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-    *a10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v32 userInfo:v33];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v32 userInfo:v33];
 
 LABEL_16:
 LABEL_17:
@@ -1692,15 +1692,15 @@ LABEL_18:
   return v26;
 }
 
-- (BOOL)_createAppleArchiveOfItemURLs:(id)a3 passphrase:(id)a4 addToKeychain:(BOOL)a5 compressionFormat:(unint64_t)a6 archiveURL:(id)a7 archiveFD:(int)a8 progress:(id)a9 error:(id *)a10
+- (BOOL)_createAppleArchiveOfItemURLs:(id)ls passphrase:(id)passphrase addToKeychain:(BOOL)keychain compressionFormat:(unint64_t)format archiveURL:(id)l archiveFD:(int)d progress:(id)progress error:(id *)self0
 {
-  v53 = a5;
-  v13 = a3;
-  v56 = a4;
-  v57 = a7;
-  v58 = v13;
-  v59 = a9;
-  v14 = [NSString ds_commonParentPathForItemURLs:v13];
+  keychainCopy = keychain;
+  lsCopy = ls;
+  passphraseCopy = passphrase;
+  lCopy = l;
+  v58 = lsCopy;
+  progressCopy = progress;
+  v14 = [NSString ds_commonParentPathForItemURLs:lsCopy];
   if (!v14)
   {
     v32 = LogObj(0);
@@ -1710,10 +1710,10 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Couldn't fetch common parent", &msg_data, 2u);
     }
 
-    if (a10)
+    if (error)
     {
       [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-      *a10 = LOBYTE(v31) = 0;
+      *error = LOBYTE(v31) = 0;
       goto LABEL_59;
     }
 
@@ -1723,7 +1723,7 @@ LABEL_22:
   }
 
   context = 0;
-  stream = [(DSArchiveExportedService *)self _openAppleArchiveWriteStreamWithArchiveURL:v57 itemURLs:v13 progress:v59 passphrase:v56 aeaContext:&context compressionFormat:a6 error:a10];
+  stream = [(DSArchiveExportedService *)self _openAppleArchiveWriteStreamWithArchiveURL:lCopy itemURLs:lsCopy progress:progressCopy passphrase:passphraseCopy aeaContext:&context compressionFormat:format error:error];
   if (!stream)
   {
     goto LABEL_22;
@@ -1735,7 +1735,7 @@ LABEL_22:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v13;
+  obj = lsCopy;
   v15 = [obj countByEnumeratingWithState:&v67 objects:v88 count:16];
   if (v15)
   {
@@ -1755,8 +1755,8 @@ LABEL_5:
         goto LABEL_16;
       }
 
-      v19 = [v18 path];
-      v20 = [(DSArchiveExportedService *)self _replacePathComponent:v14 withComponent:&stru_10002D580 inFilePath:v19];
+      path = [v18 path];
+      v20 = [(DSArchiveExportedService *)self _replacePathComponent:v14 withComponent:&stru_10002D580 inFilePath:path];
 
       v65 = 0;
       v66 = 0;
@@ -1773,9 +1773,9 @@ LABEL_5:
         msg_data = 0u;
         v73 = 0u;
         *(&msg_data + 1) = v14;
-        v24 = [*(&msg_data + 1) fileSystemRepresentation];
+        fileSystemRepresentation = [*(&msg_data + 1) fileSystemRepresentation];
         v25 = v20;
-        v26 = AAPathListCreateWithDirectoryContents(v24, [v20 fileSystemRepresentation], &msg_data, sub_100017128, 0, 0);
+        v26 = AAPathListCreateWithDirectoryContents(fileSystemRepresentation, [v20 fileSystemRepresentation], &msg_data, sub_100017128, 0, 0);
 
         if (!v26)
         {
@@ -1786,9 +1786,9 @@ LABEL_5:
       else
       {
         v27 = v14;
-        v28 = [v14 fileSystemRepresentation];
+        fileSystemRepresentation2 = [v14 fileSystemRepresentation];
         v29 = v20;
-        v26 = AAPathListCreateWithPath(v28, [v20 fileSystemRepresentation]);
+        v26 = AAPathListCreateWithPath(fileSystemRepresentation2, [v20 fileSystemRepresentation]);
         if (!v26)
         {
 LABEL_31:
@@ -1854,7 +1854,7 @@ LABEL_16:
     *&msg_data = self;
     v33 = v14;
     *(&msg_data + 1) = v33;
-    v73 = v59;
+    v73 = progressCopy;
     v30 = AAEncodeArchiveOutputStreamOpen(stream, &msg_data, sub_100017128, 1uLL, 0);
     if (v30)
     {
@@ -1894,7 +1894,7 @@ LABEL_38:
   block[1] = 3221225472;
   block[2] = sub_1000173E4;
   block[3] = &unk_10002D268;
-  v63 = v59;
+  v63 = progressCopy;
   dispatch_async(v42, block);
 
   AAPathListDestroy(path_list);
@@ -1905,14 +1905,14 @@ LABEL_38:
     goto LABEL_53;
   }
 
-  v43 = [(DSArchiveExportedService *)self _isCancelled];
-  v44 = a6 == 5 ? v43 : 1;
+  _isCancelled = [(DSArchiveExportedService *)self _isCancelled];
+  v44 = format == 5 ? _isCancelled : 1;
   if (v44)
   {
     goto LABEL_53;
   }
 
-  if (!v53)
+  if (!keychainCopy)
   {
     goto LABEL_53;
   }
@@ -1954,10 +1954,10 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v45 = v56;
-  [v56 UTF8String];
-  v46 = v56;
-  strlen([v56 UTF8String]);
+  v45 = passphraseCopy;
+  [passphraseCopy UTF8String];
+  v46 = passphraseCopy;
+  strlen([passphraseCopy UTF8String]);
   if (AEAKeychainStoreItem())
   {
     v47 = LogObj(0);
@@ -1976,7 +1976,7 @@ LABEL_51:
 LABEL_53:
   AEAContextDestroy(context);
   v49 = AAThreadErrorContextLeave();
-  if (a10)
+  if (error)
   {
     v50 = v31;
   }
@@ -1988,25 +1988,25 @@ LABEL_53:
 
   if ((v50 & 1) == 0)
   {
-    *a10 = [(DSArchiveExportedService *)self _errorForAppleArchive:v49 itemURL:v57];
+    *error = [(DSArchiveExportedService *)self _errorForAppleArchive:v49 itemURL:lCopy];
   }
 
 LABEL_59:
   return v31;
 }
 
-- (BOOL)_createArchiveOfItemURLs:(id)a3 compressionFormat:(unint64_t)a4 archive:(archive *)a5 entry:(archive_entry *)a6 archiveURL:(id)a7 fd:(int)a8 progress:(id)a9 error:(id *)a10
+- (BOOL)_createArchiveOfItemURLs:(id)ls compressionFormat:(unint64_t)format archive:(archive *)archive entry:(archive_entry *)entry archiveURL:(id)l fd:(int)fd progress:(id)progress error:(id *)self0
 {
-  v33 = a3;
-  v36 = a7;
-  v35 = a9;
+  lsCopy = ls;
+  lCopy = l;
+  progressCopy = progress;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
   v54 = 0;
-  if (a4 > 1)
+  if (format > 1)
   {
-    if (a4 == 2)
+    if (format == 2)
     {
       v16 = archive_write_set_format_cpio();
       *(v52 + 6) = v16;
@@ -2020,7 +2020,7 @@ LABEL_59:
 
     else
     {
-      if (a4 != 3)
+      if (format != 3)
       {
         goto LABEL_8;
       }
@@ -2038,12 +2038,12 @@ LABEL_20:
       *(v52 + 6) = v21;
       if (v21)
       {
-        v22 = [(DSArchiveExportedService *)self _errorForArchive:a5 itemURL:v36];
+        v22 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:lCopy];
         v23 = v22;
-        if (a10)
+        if (error)
         {
           v24 = v22;
-          *a10 = v23;
+          *error = v23;
         }
 
         v25 = LogObj(0);
@@ -2059,7 +2059,7 @@ LABEL_20:
 
       if (v15)
       {
-        v32 = [NSString ds_commonParentPathForItemURLs:v33];
+        v32 = [NSString ds_commonParentPathForItemURLs:lsCopy];
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
@@ -2068,7 +2068,7 @@ LABEL_20:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        obj = v33;
+        obj = lsCopy;
         v26 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
         if (v26)
         {
@@ -2102,13 +2102,13 @@ LABEL_30:
             v38 = v32;
             v39 = v29;
             v42 = &v51;
-            v44 = a4;
-            v45 = a5;
-            v46 = a6;
-            v40 = v36;
+            formatCopy = format;
+            archiveCopy = archive;
+            entryCopy = entry;
+            v40 = lCopy;
             v43 = buf;
-            v41 = v35;
-            LOBYTE(v15) = [(DSArchiveExportedService *)self _enumerateItemURL:v29 itemActionBlock:v37 error:a10];
+            v41 = progressCopy;
+            LOBYTE(v15) = [(DSArchiveExportedService *)self _enumerateItemURL:v29 itemActionBlock:v37 error:error];
 
             if (v26 == ++v28)
             {
@@ -2135,19 +2135,19 @@ LABEL_30:
     }
 
 LABEL_14:
-    v17 = [(DSArchiveExportedService *)self _errorForArchive:a5 itemURL:v36];
+    v17 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:lCopy];
     v18 = v17;
-    if (a10)
+    if (error)
     {
       v19 = v17;
-      *a10 = v18;
+      *error = v18;
     }
 
     v20 = LogObj(0);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      *&buf[4] = a4;
+      *&buf[4] = format;
       *&buf[12] = 2112;
       *&buf[14] = v18;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Couldn't set %lu as ouput format: %@", buf, 0x16u);
@@ -2157,20 +2157,20 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!format)
   {
     v14 = archive_write_set_format_zip();
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (format == 1)
   {
     v14 = archive_write_set_format_cpio();
     goto LABEL_13;
   }
 
 LABEL_8:
-  if (!a10)
+  if (!error)
   {
 LABEL_26:
     LOBYTE(v15) = 0;
@@ -2178,31 +2178,31 @@ LABEL_26:
   }
 
   [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  *a10 = LOBYTE(v15) = 0;
+  *error = LOBYTE(v15) = 0;
 LABEL_40:
   _Block_object_dispose(&v51, 8);
 
   return v15 & 1;
 }
 
-- (BOOL)_archiveFromItemURLs:(id)a3 passphrase:(id)a4 addToKeychain:(BOOL)a5 compressionFormat:(unint64_t)a6 archiveURL:(id)a7 fd:(int)a8 progress:(id)a9 error:(id *)a10
+- (BOOL)_archiveFromItemURLs:(id)ls passphrase:(id)passphrase addToKeychain:(BOOL)keychain compressionFormat:(unint64_t)format archiveURL:(id)l fd:(int)fd progress:(id)progress error:(id *)self0
 {
-  v13 = a5;
-  v32 = a3;
-  v16 = a4;
-  v31 = a7;
-  v30 = a9;
+  keychainCopy = keychain;
+  lsCopy = ls;
+  passphraseCopy = passphrase;
+  lCopy = l;
+  progressCopy = progress;
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x2020000000;
   v42[3] = 0;
-  if (a6 == 5)
+  if (format == 5)
   {
-    if (![v16 length])
+    if (![passphraseCopy length])
     {
-      if (a10)
+      if (error)
       {
-        *a10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       }
 
       v17 = LogObj(0);
@@ -2221,11 +2221,11 @@ LABEL_13:
     }
   }
 
-  else if ([v16 length])
+  else if ([passphraseCopy length])
   {
-    if (a10)
+    if (error)
     {
-      *a10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     v17 = LogObj(0);
@@ -2239,13 +2239,13 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v28 = a8;
-  v29 = a6;
+  fdCopy = fd;
+  formatCopy = format;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v17 = v32;
+  v17 = lsCopy;
   v20 = [v17 countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v20)
   {
@@ -2265,7 +2265,7 @@ LABEL_16:
       v36[2] = sub_10001822C;
       v36[3] = &unk_10002D308;
       v36[4] = v42;
-      if (![(DSArchiveExportedService *)self _enumerateItemURL:v23 itemActionBlock:v36 error:a10])
+      if (![(DSArchiveExportedService *)self _enumerateItemURL:v23 itemActionBlock:v36 error:error])
       {
         goto LABEL_13;
       }
@@ -2293,27 +2293,27 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_1000183CC;
   block[3] = &unk_10002D330;
-  v25 = v30;
+  v25 = progressCopy;
   v34 = v25;
   v35 = v42;
   dispatch_async(v24, block);
 
-  if ((v29 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((formatCopy & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v19 = [(DSArchiveExportedService *)self _createAppleArchiveOfItemURLs:v17 passphrase:v16 addToKeychain:v13 compressionFormat:v29 archiveURL:v31 archiveFD:v28 progress:v25 error:a10];
+    v19 = [(DSArchiveExportedService *)self _createAppleArchiveOfItemURLs:v17 passphrase:passphraseCopy addToKeychain:keychainCopy compressionFormat:formatCopy archiveURL:lCopy archiveFD:fdCopy progress:v25 error:error];
   }
 
   else
   {
     v26 = archive_write_new();
-    v19 = [(DSArchiveExportedService *)self _createArchiveOfItemURLs:v17 compressionFormat:v29 archive:v26 entry:archive_entry_new() archiveURL:v31 fd:v28 progress:v25 error:a10];
+    v19 = [(DSArchiveExportedService *)self _createArchiveOfItemURLs:v17 compressionFormat:formatCopy archive:v26 entry:archive_entry_new() archiveURL:lCopy fd:fdCopy progress:v25 error:error];
     archive_entry_free();
     if (archive_write_close())
     {
-      if (a10)
+      if (error)
       {
-        [(DSArchiveExportedService *)self _errorForArchive:v26 itemURL:v31];
-        *a10 = v19 = 0;
+        [(DSArchiveExportedService *)self _errorForArchive:v26 itemURL:lCopy];
+        *error = v19 = 0;
       }
 
       else
@@ -2332,10 +2332,10 @@ LABEL_31:
   return v19;
 }
 
-- (BOOL)_isAppleArchive:(id)a3
+- (BOOL)_isAppleArchive:(id)archive
 {
-  v3 = [a3 pathExtension];
-  v4 = [UTType typeWithFilenameExtension:v3];
+  pathExtension = [archive pathExtension];
+  v4 = [UTType typeWithFilenameExtension:pathExtension];
 
   if ([v4 isEqual:UTTypeAppleArchive])
   {
@@ -2350,11 +2350,11 @@ LABEL_31:
   return v5;
 }
 
-- (AAByteStream_impl)_openAppleArchiveWriteStreamWithArchiveURL:(id)a3 itemURLs:(id)a4 progress:(id)a5 passphrase:(id)a6 aeaContext:(AEAContext_impl *)a7 compressionFormat:(unint64_t)a8 error:(id *)a9
+- (AAByteStream_impl)_openAppleArchiveWriteStreamWithArchiveURL:(id)l itemURLs:(id)ls progress:(id)progress passphrase:(id)passphrase aeaContext:(AEAContext_impl *)context compressionFormat:(unint64_t)format error:(id *)error
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = [v13 fileSystemRepresentation];
+  lCopy = l;
+  passphraseCopy = passphrase;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v16 = malloc_type_calloc(1uLL, 0x20uLL, 0x20040DC1BFBCFuLL);
   v17 = AACustomByteStreamOpen();
   AACustomByteStreamSetData(v17, v16);
@@ -2362,22 +2362,22 @@ LABEL_31:
   AACustomByteStreamSetCancelProc(v17, sub_100018930);
   AACustomByteStreamSetWriteProc(v17, sub_100018940);
   AAThreadErrorContextEnter();
-  v18 = AAFileStreamOpenWithPath(v15, 1537, 0x1A4u);
+  v18 = AAFileStreamOpenWithPath(fileSystemRepresentation, 1537, 0x1A4u);
   *v16 = v18;
   if (v18)
   {
-    if (a8 == 4)
+    if (format == 4)
     {
       v19 = AACompressionOutputStreamOpen(v18, 0x801u, 0x400000uLL, 1uLL, 0);
       v16[2] = v19;
       if (!v19)
       {
-        v20 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:v13];
+        v20 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:lCopy];
         v21 = v20;
-        if (a9)
+        if (error)
         {
           v22 = v20;
-          *a9 = v21;
+          *error = v21;
         }
 
         v23 = LogObj(0);
@@ -2399,9 +2399,9 @@ LABEL_21:
         if ((v33 & 1) == 0)
         {
           AAByteStreamClose(v17);
-          AEAContextDestroy(*a7);
+          AEAContextDestroy(*context);
           v17 = 0;
-          *a7 = 0;
+          *context = 0;
         }
 
         goto LABEL_23;
@@ -2411,25 +2411,25 @@ LABEL_21:
     else
     {
       v29 = AEAContextCreateWithProfile(5u);
-      *a7 = v29;
-      v30 = [v14 UTF8String];
-      v31 = strlen([v14 UTF8String]);
-      AEAContextSetFieldBlob(v29, 0x13u, 0, v30, v31);
-      AEAContextSetFieldUInt(*a7, 3u, 0x801uLL);
-      AEAContextSetFieldUInt(*a7, 4u, 0x400000uLL);
-      AEAContextSetFieldUInt(*a7, 2u, 2uLL);
-      AEAContextSetFieldUInt(*a7, 1u, 0x10000uLL);
-      v32 = AEAEncryptionOutputStreamOpen(*v16, *a7, 1uLL, 0);
+      *context = v29;
+      uTF8String = [passphraseCopy UTF8String];
+      v31 = strlen([passphraseCopy UTF8String]);
+      AEAContextSetFieldBlob(v29, 0x13u, 0, uTF8String, v31);
+      AEAContextSetFieldUInt(*context, 3u, 0x801uLL);
+      AEAContextSetFieldUInt(*context, 4u, 0x400000uLL);
+      AEAContextSetFieldUInt(*context, 2u, 2uLL);
+      AEAContextSetFieldUInt(*context, 1u, 0x10000uLL);
+      v32 = AEAEncryptionOutputStreamOpen(*v16, *context, 1uLL, 0);
       v16[1] = v32;
-      v16[3] = *a7;
+      v16[3] = *context;
       if (!v32)
       {
-        v34 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:v13];
+        v34 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:lCopy];
         v21 = v34;
-        if (a9)
+        if (error)
         {
           v35 = v34;
-          *a9 = v21;
+          *error = v21;
         }
 
         v23 = LogObj(0);
@@ -2449,12 +2449,12 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v25 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:v13];
+  v25 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:lCopy];
   v26 = v25;
-  if (a9)
+  if (error)
   {
     v27 = v25;
-    *a9 = v26;
+    *error = v26;
   }
 
   v28 = LogObj(0);
@@ -2471,7 +2471,7 @@ LABEL_23:
   return v17;
 }
 
-- (id)_passwordFromKeychainWithArchiveID:(char *)a3 archiveIDSize:(unint64_t)a4
+- (id)_passwordFromKeychainWithArchiveID:(char *)d archiveIDSize:(unint64_t)size
 {
   memset(v9, 0, sizeof(v9));
   v8 = 0;
@@ -2495,20 +2495,20 @@ LABEL_23:
   return v4;
 }
 
-- (AAByteStream_impl)_openAppleArchiveReadStreamWithFD:(int)a3 url:(id)a4 progress:(id)a5 passphrases:(id)a6 addToKeychain:(BOOL)a7 aeaContext:(AEAContext_impl *)a8 formats:(unint64_t)a9 error:(id *)a10
+- (AAByteStream_impl)_openAppleArchiveReadStreamWithFD:(int)d url:(id)url progress:(id)progress passphrases:(id)passphrases addToKeychain:(BOOL)keychain aeaContext:(AEAContext_impl *)context formats:(unint64_t)formats error:(id *)self0
 {
-  v65 = a7;
-  v69 = a4;
-  v67 = a5;
-  v68 = a6;
-  if ((a9 & 1) == 0)
+  keychainCopy = keychain;
+  urlCopy = url;
+  progressCopy = progress;
+  passphrasesCopy = passphrases;
+  if ((formats & 1) == 0)
   {
     v14 = [NSError errorWithDomain:NSPOSIXErrorDomain code:79 userInfo:0];
     v15 = v14;
-    if (a10)
+    if (error)
     {
       v16 = v14;
-      *a10 = v15;
+      *error = v15;
     }
 
     v17 = LogObj(0);
@@ -2538,12 +2538,12 @@ LABEL_19:
   {
 LABEL_15:
     *v18 = 0;
-    v26 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:v69];
+    v26 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:urlCopy];
     v15 = v26;
-    if (a10)
+    if (error)
     {
       v27 = v26;
-      *a10 = v15;
+      *error = v15;
     }
 
     v17 = LogObj(0);
@@ -2557,8 +2557,8 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  lseek(a3, 0, 0);
-  v21 = AAFileStreamOpenWithFD(a3, 0);
+  lseek(d, 0, 0);
+  v21 = AAFileStreamOpenWithFD(d, 0);
   *v20 = v21;
   if (!v21 || (v22 = AACustomByteStreamOpen(), (v23 = v22) == 0))
   {
@@ -2572,12 +2572,12 @@ LABEL_15:
   AACustomByteStreamSetPReadProc(v23, sub_10001BF08);
   AACustomByteStreamSetReadProc(v23, sub_10001BF1C);
   *v18 = v23;
-  objc_storeStrong(v20 + 2, a5);
+  objc_storeStrong(v20 + 2, progress);
   AAByteStreamPRead(*v18, &v75, 4uLL, 0);
   if (v75 == 826361153)
   {
     v24 = AEAContextCreateWithEncryptedStream(*v18);
-    *a8 = v24;
+    *context = v24;
     FieldUInt = AEAContextGetFieldUInt(v24, 0);
     if (FieldUInt == 5)
     {
@@ -2597,22 +2597,22 @@ LABEL_15:
       v81 = 0u;
       memset(buf, 0, sizeof(buf));
       buf_size = 0;
-      AEAContextGetFieldBlob(*a8, 0x12u, 0, 0x100uLL, buf, &buf_size);
-      if ([v68 count] || (-[DSArchiveExportedService _passwordFromKeychainWithArchiveID:archiveIDSize:](self, "_passwordFromKeychainWithArchiveID:archiveIDSize:", buf, buf_size), (v63 = objc_claimAutoreleasedReturnValue()) == 0))
+      AEAContextGetFieldBlob(*context, 0x12u, 0, 0x100uLL, buf, &buf_size);
+      if ([passphrasesCopy count] || (-[DSArchiveExportedService _passwordFromKeychainWithArchiveID:archiveIDSize:](self, "_passwordFromKeychainWithArchiveID:archiveIDSize:", buf, buf_size), (v63 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v63 = 0;
       }
 
       else
       {
-        [v68 addObject:?];
+        [passphrasesCopy addObject:?];
       }
 
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      obj = v68;
+      obj = passphrasesCopy;
       v41 = [obj countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (v41)
       {
@@ -2627,17 +2627,17 @@ LABEL_15:
             }
 
             v44 = *(*(&v70 + 1) + 8 * i);
-            v45 = *a8;
+            v45 = *context;
             v46 = v44;
-            v47 = [v44 UTF8String];
+            uTF8String = [v44 UTF8String];
             v48 = v44;
             v49 = strlen([v44 UTF8String]);
-            AEAContextSetFieldBlob(v45, 0x13u, 0, v47, v49);
-            v50 = AEADecryptionInputStreamOpen(*v18, *a8, 0, 0);
+            AEAContextSetFieldBlob(v45, 0x13u, 0, uTF8String, v49);
+            v50 = AEADecryptionInputStreamOpen(*v18, *context, 0, 0);
             v18[1] = v50;
             if (v50)
             {
-              if (v65)
+              if (keychainCopy)
               {
                 v54 = v44;
                 [v44 UTF8String];
@@ -2694,10 +2694,10 @@ LABEL_54:
         }
         v57 = ;
         v60 = v57;
-        if (a10)
+        if (error)
         {
           v61 = v57;
-          *a10 = v60;
+          *error = v60;
         }
 
         v62 = LogObj(0);
@@ -2714,10 +2714,10 @@ LABEL_54:
 
     v36 = [NSError errorWithDomain:NSPOSIXErrorDomain code:79 userInfo:0];
     v37 = v36;
-    if (a10)
+    if (error)
     {
       v38 = v36;
-      *a10 = v37;
+      *error = v37;
     }
 
     v39 = LogObj(0);
@@ -2747,12 +2747,12 @@ LABEL_63:
       goto LABEL_71;
     }
 
-    v58 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:v69];
+    v58 = [(DSArchiveExportedService *)self _errorForAppleArchive:AAThreadErrorContextLeave() itemURL:urlCopy];
     v37 = v58;
-    if (a10)
+    if (error)
     {
       v59 = v58;
-      *a10 = v37;
+      *error = v37;
     }
 
     v39 = LogObj(0);
@@ -2771,16 +2771,16 @@ LABEL_63:
   {
     v31 = [NSError errorWithDomain:NSPOSIXErrorDomain code:79 userInfo:0];
     v32 = v31;
-    if (a10)
+    if (error)
     {
       v33 = v31;
-      *a10 = v32;
+      *error = v32;
     }
 
     v34 = LogObj(0);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v35 = SanitizedURL(v69);
+      v35 = SanitizedURL(urlCopy);
       *buf = 138543618;
       *&buf[4] = v35;
       *&buf[12] = 2112;
@@ -2796,9 +2796,9 @@ LABEL_71:
   if (!v30)
   {
     AAByteStreamClose(v19);
-    AEAContextDestroy(*a8);
+    AEAContextDestroy(*context);
     v19 = 0;
-    *a8 = 0;
+    *context = 0;
   }
 
 LABEL_20:
@@ -2806,18 +2806,18 @@ LABEL_20:
   return v19;
 }
 
-- (int)openArchiveFile:(id)a3 error:(id *)a4
+- (int)openArchiveFile:(id)file error:(id *)error
 {
-  v5 = a3;
-  v6 = open([v5 fileSystemRepresentation], 2097156);
+  fileCopy = file;
+  v6 = open([fileCopy fileSystemRepresentation], 2097156);
   if (v6 == -1)
   {
-    v7 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:v5 debugDescription:@"Couldn't open the archive file"];
+    v7 = [NSError ds_errorWithPOSIXCode:*__error() itemURL:fileCopy debugDescription:@"Couldn't open the archive file"];
     v8 = v7;
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = LogObj(0);
@@ -2832,23 +2832,23 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)_openArchiveWithFD:(int)a3 url:(id)a4 progress:(id)a5 passphrases:(id)a6 formats:(unint64_t)a7 archive:(archive *)a8 entry:(archive_entry *)a9 readItemHandler:(id)a10 error:(id *)a11
+- (BOOL)_openArchiveWithFD:(int)d url:(id)url progress:(id)progress passphrases:(id)passphrases formats:(unint64_t)formats archive:(archive *)archive entry:(archive_entry *)entry readItemHandler:(id)self0 error:(id *)self1
 {
-  v12 = a7;
-  v17 = a4;
-  v52 = a5;
-  v54 = a6;
-  v53 = a10;
-  if (v12)
+  formatsCopy = formats;
+  urlCopy = url;
+  progressCopy = progress;
+  passphrasesCopy = passphrases;
+  handlerCopy = handler;
+  if (formatsCopy)
   {
     if (archive_read_support_format_all())
     {
-      v22 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+      v22 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
       v19 = v22;
-      if (a11)
+      if (error)
       {
         v23 = v22;
-        *a11 = v19;
+        *error = v19;
       }
 
       v21 = LogObj(0);
@@ -2865,14 +2865,14 @@ LABEL_20:
 
   else
   {
-    if ((v12 & 2) != 0 && archive_read_support_format_tar())
+    if ((formatsCopy & 2) != 0 && archive_read_support_format_tar())
     {
-      v18 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+      v18 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
       v19 = v18;
-      if (a11)
+      if (error)
       {
         v20 = v18;
-        *a11 = v19;
+        *error = v19;
       }
 
       v21 = LogObj(0);
@@ -2890,14 +2890,14 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if ((v12 & 4) != 0 && archive_read_support_format_zip())
+    if ((formatsCopy & 4) != 0 && archive_read_support_format_zip())
     {
-      v24 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+      v24 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
       v19 = v24;
-      if (a11)
+      if (error)
       {
         v25 = v24;
-        *a11 = v19;
+        *error = v19;
       }
 
       v21 = LogObj(0);
@@ -2914,12 +2914,12 @@ LABEL_28:
 
   if (archive_read_support_filter_all())
   {
-    v26 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+    v26 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
     v19 = v26;
-    if (a11)
+    if (error)
     {
       v27 = v26;
-      *a11 = v19;
+      *error = v19;
     }
 
     v21 = LogObj(0);
@@ -2933,13 +2933,13 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (v54)
+  if (passphrasesCopy)
   {
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v30 = v54;
+    v30 = passphrasesCopy;
     v31 = [v30 countByEnumeratingWithState:&v59 objects:v66 count:16];
     if (v31)
     {
@@ -2956,12 +2956,12 @@ LABEL_28:
           [*(*(&v59 + 1) + 8 * i) cStringUsingEncoding:4];
           if (archive_read_add_passphrase())
           {
-            v38 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+            v38 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
             v39 = v38;
-            if (a11)
+            if (error)
             {
               v40 = v38;
-              *a11 = v39;
+              *error = v39;
             }
 
             v41 = LogObj(0);
@@ -2987,15 +2987,15 @@ LABEL_28:
     }
   }
 
-  lseek(a3, 0, 0);
+  lseek(d, 0, 0);
   if (archive_read_open_fd())
   {
-    v34 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+    v34 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
     v35 = v34;
-    if (a11)
+    if (error)
     {
       v36 = v34;
-      *a11 = v35;
+      *error = v35;
     }
 
     v37 = LogObj(0);
@@ -3009,8 +3009,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  *&buf = a8;
-  v51 = v52;
+  *&buf = archive;
+  v51 = progressCopy;
   *(&buf + 1) = v51;
   archive_read_extract_set_progress_callback();
   v42 = 0;
@@ -3022,21 +3022,21 @@ LABEL_28:
     {
       v28 = 1;
 LABEL_70:
-      if (!a11)
+      if (!error)
       {
         goto LABEL_72;
       }
 
 LABEL_71:
       v49 = v42;
-      *a11 = v42;
+      *error = v42;
       goto LABEL_72;
     }
 
     v44 = objc_autoreleasePoolPush();
     if (next_header2 < 0)
     {
-      v47 = [(DSArchiveExportedService *)self _errorForArchive:a8 itemURL:v17];
+      v47 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:urlCopy];
 
       v48 = LogObj(0);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -3056,7 +3056,7 @@ LABEL_71:
       if (v45 && (*v45 != 46 || v45[1] && (v45[1] != 46 || v45[2])))
       {
         v57 = v42;
-        v28 = v53[2](v53, a8, a9, v45, &v57, &v58);
+        v28 = handlerCopy[2](handlerCopy, archive, entry, v45, &v57, &v58);
         v46 = v57;
 
         v42 = v46;
@@ -3077,7 +3077,7 @@ LABEL_71:
   }
 
   v28 = 0;
-  if (a11)
+  if (error)
   {
     goto LABEL_71;
   }
@@ -3096,10 +3096,10 @@ LABEL_29:
   return v28;
 }
 
-- (BOOL)_unarchiveEntryAtPath:(const char *)a3 entry:(archive_entry *)a4 fromArchive:(archive *)a5 archiveURL:(id)a6 destinationURL:(id)a7 progress:(id)a8 error:(id *)a9
+- (BOOL)_unarchiveEntryAtPath:(const char *)path entry:(archive_entry *)entry fromArchive:(archive *)archive archiveURL:(id)l destinationURL:(id)rL progress:(id)progress error:(id *)error
 {
-  v13 = a6;
-  v14 = a7;
+  lCopy = l;
+  rLCopy = rL;
   archive_entry_set_pathname();
   v15 = archive_entry_hardlink();
   v16 = v15;
@@ -3108,7 +3108,7 @@ LABEL_29:
     v17 = strlen(v15);
     v18 = +[NSFileManager defaultManager];
     v19 = [v18 stringWithFileSystemRepresentation:v16 length:v17];
-    v20 = [v14 URLByAppendingPathComponent:v19];
+    v20 = [rLCopy URLByAppendingPathComponent:v19];
 
     [v20 fileSystemRepresentation];
     archive_entry_set_hardlink();
@@ -3130,10 +3130,10 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v34[0] = v13;
+      v34[0] = lCopy;
       v33[0] = NSURLErrorKey;
       v33[1] = NSLocalizedDescriptionKey;
-      TCFURLInfo::LocalizedStringWithFileName(@"InvalidBomZip", v13, v32);
+      TCFURLInfo::LocalizedStringWithFileName(@"InvalidBomZip", lCopy, v32);
       v30 = *v32;
       v34[1] = v30;
       v31 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
@@ -3144,8 +3144,8 @@ LABEL_16:
 
     else
     {
-      v26 = [NSURL fileURLWithFileSystemRepresentation:a3 isDirectory:0 relativeToURL:0];
-      v24 = [(DSArchiveExportedService *)self _errorForArchive:a5 itemURL:v26];
+      v26 = [NSURL fileURLWithFileSystemRepresentation:path isDirectory:0 relativeToURL:0];
+      v24 = [(DSArchiveExportedService *)self _errorForArchive:archive itemURL:v26];
     }
 
     if (!v24)
@@ -3161,11 +3161,11 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Could't extract entry from archive: %@", v32, 0xCu);
     }
 
-    if (a9)
+    if (error)
     {
       v28 = v24;
       v25 = 0;
-      *a9 = v24;
+      *error = v24;
     }
 
     else

@@ -1,13 +1,13 @@
 @interface ADAudioSessionAssertionConnection
-- (ADAudioSessionAssertionConnection)initWithXPCConnection:(id)a3;
+- (ADAudioSessionAssertionConnection)initWithXPCConnection:(id)connection;
 - (NSString)description;
 - (void)_clearXPCConnection;
-- (void)_finalizeWithContext:(id)a3 error:(id)a4;
-- (void)_relinquishAssertionWithContext:(id)a3 error:(id)a4 options:(unint64_t)a5;
-- (void)acquireAudioSessionWithContext:(id)a3 relinquishmentHandler:(id)a4;
+- (void)_finalizeWithContext:(id)context error:(id)error;
+- (void)_relinquishAssertionWithContext:(id)context error:(id)error options:(unint64_t)options;
+- (void)acquireAudioSessionWithContext:(id)context relinquishmentHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)relinquishAudioSessionWithContext:(id)a3 error:(id)a4 options:(unint64_t)a5 completion:(id)a6;
+- (void)relinquishAudioSessionWithContext:(id)context error:(id)error options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation ADAudioSessionAssertionConnection
@@ -24,7 +24,7 @@
       v7 = 136315906;
       v8 = "[ADAudioSessionAssertionConnection _clearXPCConnection]";
       v9 = 2048;
-      v10 = self;
+      selfCopy = self;
       v11 = 1024;
       v12 = processIdentifier;
       v13 = 2112;
@@ -40,10 +40,10 @@
   }
 }
 
-- (void)_relinquishAssertionWithContext:(id)a3 error:(id)a4 options:(unint64_t)a5
+- (void)_relinquishAssertionWithContext:(id)context error:(id)error options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  errorCopy = error;
   assertion = self->_assertion;
   if (assertion)
   {
@@ -54,7 +54,7 @@
       v14 = 136315906;
       v15 = "[ADAudioSessionAssertionConnection _relinquishAssertionWithContext:error:options:]";
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = processIdentifier;
       v20 = 2112;
@@ -63,14 +63,14 @@
       assertion = self->_assertion;
     }
 
-    if (v9)
+    if (errorCopy)
     {
-      [(AFRelinquishableAssertion *)assertion relinquishWithError:v9 options:a5];
+      [(AFRelinquishableAssertion *)assertion relinquishWithError:errorCopy options:options];
     }
 
     else
     {
-      [(AFRelinquishableAssertion *)assertion relinquishWithContext:v8 options:a5];
+      [(AFRelinquishableAssertion *)assertion relinquishWithContext:contextCopy options:options];
     }
 
     v13 = self->_assertion;
@@ -78,14 +78,14 @@
   }
 }
 
-- (void)_finalizeWithContext:(id)a3 error:(id)a4
+- (void)_finalizeWithContext:(id)context error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(AFTwoArgumentSafetyBlock *)self->_relinquishmentHandler invokeWithValue:v6 andValue:v7])
+  contextCopy = context;
+  errorCopy = error;
+  if ([(AFTwoArgumentSafetyBlock *)self->_relinquishmentHandler invokeWithValue:contextCopy andValue:errorCopy])
   {
     v8 = AFSiriLogContextDaemon;
-    if (v7)
+    if (errorCopy)
     {
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
@@ -93,11 +93,11 @@
         v11 = 136315906;
         v12 = "[ADAudioSessionAssertionConnection _finalizeWithContext:error:]";
         v13 = 2048;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 1024;
         v16 = processIdentifier;
         v17 = 2112;
-        v18 = v7;
+        v18 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %p (pid = %d) error = %@", &v11, 0x26u);
       }
     }
@@ -108,11 +108,11 @@
       v11 = 136315906;
       v12 = "[ADAudioSessionAssertionConnection _finalizeWithContext:error:]";
       v13 = 2048;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 1024;
       v16 = v10;
       v17 = 2112;
-      v18 = v6;
+      v18 = contextCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %p (pid = %d) context = %@", &v11, 0x26u);
     }
   }
@@ -129,7 +129,7 @@
     *buf = 136315650;
     v8 = "[ADAudioSessionAssertionConnection invalidate]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
     v12 = processIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p (pid = %d)", buf, 0x1Cu);
@@ -144,11 +144,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)relinquishAudioSessionWithContext:(id)a3 error:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)relinquishAudioSessionWithContext:(id)context error:(id)error options:(unint64_t)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  contextCopy = context;
+  errorCopy = error;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -158,13 +158,13 @@
     *buf = 136316418;
     v27 = "[ADAudioSessionAssertionConnection relinquishAudioSessionWithContext:error:options:completion:]";
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 1024;
     v31 = processIdentifier;
     v32 = 2112;
-    v33 = v10;
+    v33 = contextCopy;
     v34 = 2112;
-    v35 = v11;
+    v35 = errorCopy;
     v36 = 2112;
     v37 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s %p (pid = %d) context = %@, error = %@, options = %@", buf, 0x3Au);
@@ -176,20 +176,20 @@
   block[2] = sub_100124D7C;
   block[3] = &unk_1005194E0;
   block[4] = self;
-  v22 = v10;
-  v24 = v12;
-  v25 = a5;
-  v23 = v11;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v22 = contextCopy;
+  v24 = completionCopy;
+  optionsCopy = options;
+  v23 = errorCopy;
+  v18 = completionCopy;
+  v19 = errorCopy;
+  v20 = contextCopy;
   dispatch_async(queue, block);
 }
 
-- (void)acquireAudioSessionWithContext:(id)a3 relinquishmentHandler:(id)a4
+- (void)acquireAudioSessionWithContext:(id)context relinquishmentHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -197,11 +197,11 @@
     *buf = 136315906;
     v17 = "[ADAudioSessionAssertionConnection acquireAudioSessionWithContext:relinquishmentHandler:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 1024;
     v21 = processIdentifier;
     v22 = 2112;
-    v23 = v6;
+    v23 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %p (pid = %d) context = %@", buf, 0x26u);
   }
 
@@ -210,11 +210,11 @@
   block[1] = 3221225472;
   block[2] = sub_100124FE0;
   block[3] = &unk_10051E088;
-  v14 = v6;
-  v15 = v7;
+  v14 = contextCopy;
+  v15 = handlerCopy;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = contextCopy;
+  v12 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -227,7 +227,7 @@
     *buf = 136315650;
     v9 = "[ADAudioSessionAssertionConnection dealloc]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
     v13 = processIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p (pid = %d)", buf, 0x1Cu);
@@ -255,9 +255,9 @@
   return v5;
 }
 
-- (ADAudioSessionAssertionConnection)initWithXPCConnection:(id)a3
+- (ADAudioSessionAssertionConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = ADAudioSessionAssertionConnection;
   v6 = [(ADAudioSessionAssertionConnection *)&v15 init];
@@ -270,8 +270,8 @@
     queue = v6->_queue;
     v6->_queue = v10;
 
-    v6->_processIdentifier = [v5 processIdentifier];
-    objc_storeStrong(&v6->_xpcConnection, a3);
+    v6->_processIdentifier = [connectionCopy processIdentifier];
+    objc_storeStrong(&v6->_xpcConnection, connection);
     [(NSXPCConnection *)v6->_xpcConnection _setQueue:v6->_queue];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))

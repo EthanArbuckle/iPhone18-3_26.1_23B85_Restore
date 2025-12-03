@@ -1,16 +1,16 @@
 @interface SBAnalyticsCoreAnalyticsEventHandler
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 @end
 
 @implementation SBAnalyticsCoreAnalyticsEventHandler
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
-  v4 = a4;
+  contextCopy = context;
   v5 = NSStringFromAnalyticsEventType();
-  v6 = [v4 eventPayload];
+  eventPayload = [contextCopy eventPayload];
 
-  v7 = [v6 coreAnalyticsRepresentation];
+  coreAnalyticsRepresentation = [eventPayload coreAnalyticsRepresentation];
   AnalyticsSendEvent();
 
   return 1;

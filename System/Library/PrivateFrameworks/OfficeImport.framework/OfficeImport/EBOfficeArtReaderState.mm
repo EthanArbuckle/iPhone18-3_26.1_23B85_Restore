@@ -1,19 +1,19 @@
 @interface EBOfficeArtReaderState
-- (EBOfficeArtReaderState)initWithReaderState:(id)a3;
+- (EBOfficeArtReaderState)initWithReaderState:(id)state;
 - (EBReaderState)readerState;
 - (id)xmlDrawingState;
 @end
 
 @implementation EBOfficeArtReaderState
 
-- (EBOfficeArtReaderState)initWithReaderState:(id)a3
+- (EBOfficeArtReaderState)initWithReaderState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(OABReaderState *)self initWithClient:objc_opt_class()];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mReaderState, v4);
+    objc_storeWeak(&v5->mReaderState, stateCopy);
   }
 
   return v6;
@@ -36,15 +36,15 @@
     self->mXmlDocumentState = v4;
 
     WeakRetained = objc_loadWeakRetained(&self->mReaderState);
-    v7 = [WeakRetained workbook];
+    workbook = [WeakRetained workbook];
 
-    [(EXReadState *)self->mXmlDocumentState setWorkbook:v7];
-    v8 = [(EXReadState *)self->mXmlDocumentState officeArtState];
-    [v8 clearTargetBlipCollection];
+    [(EXReadState *)self->mXmlDocumentState setWorkbook:workbook];
+    officeArtState = [(EXReadState *)self->mXmlDocumentState officeArtState];
+    [officeArtState clearTargetBlipCollection];
 
-    v9 = [(EXReadState *)self->mXmlDocumentState officeArtState];
+    officeArtState2 = [(EXReadState *)self->mXmlDocumentState officeArtState];
     v10 = +[EDWorkbook impliedColorMap];
-    [OABDrawable setUpXmlDrawingState:v9 withBinaryReaderState:self targetDocument:v7 colorMap:v10];
+    [OABDrawable setUpXmlDrawingState:officeArtState2 withBinaryReaderState:self targetDocument:workbook colorMap:v10];
 
     mXmlDocumentState = self->mXmlDocumentState;
   }

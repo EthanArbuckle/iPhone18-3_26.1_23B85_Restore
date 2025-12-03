@@ -1,17 +1,17 @@
 @interface _DPNamespaceParameters
 + (id)allNamespaceNames;
-+ (id)initParametersForNamespace:(id)a3;
-+ (id)namespaceParametersFromDictionary:(id)a3;
-+ (id)parametersFromFile:(id)a3;
-- (_DPNamespaceParameters)initWithDictionary:(id)a3;
++ (id)initParametersForNamespace:(id)namespace;
++ (id)namespaceParametersFromDictionary:(id)dictionary;
++ (id)parametersFromFile:(id)file;
+- (_DPNamespaceParameters)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation _DPNamespaceParameters
 
-- (_DPNamespaceParameters)initWithDictionary:(id)a3
+- (_DPNamespaceParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _DPNamespaceParameters;
   v5 = [(_DPNamespaceParameters *)&v13 init];
@@ -20,7 +20,7 @@
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"BudgetKeyName"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"BudgetKeyName"];
   if (v6)
   {
     v7 = [_DPPrivacyBudget budgetWithName:v6];
@@ -28,7 +28,7 @@
     {
       v8 = v7;
       objc_storeStrong(&v5->_budget, v7);
-      v9 = [v4 objectForKeyedSubscript:@"DataTypes"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"DataTypes"];
       v10 = v9;
       if (v9 && [(NSArray *)v9 count])
       {
@@ -49,21 +49,21 @@ LABEL_10:
   return v6;
 }
 
-+ (id)namespaceParametersFromDictionary:(id)a3
++ (id)namespaceParametersFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-+ (id)initParametersForNamespace:(id)a3
++ (id)initParametersForNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   v5 = +[_DPStrings namespaceParametersPath];
-  v6 = [a1 parametersFromFile:v5];
+  v6 = [self parametersFromFile:v5];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:namespaceCopy];
 
   return v7;
 }
@@ -80,17 +80,17 @@ LABEL_10:
   return v8;
 }
 
-+ (id)parametersFromFile:(id)a3
++ (id)parametersFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45___DPNamespaceParameters_parametersFromFile___block_invoke;
   v10[3] = &unk_27858ABB8;
-  v11 = v4;
-  v12 = a1;
+  v11 = fileCopy;
+  selfCopy = self;
   v5 = parametersFromFile__onceToken;
-  v6 = v4;
+  v6 = fileCopy;
   if (v5 != -1)
   {
     dispatch_once(&parametersFromFile__onceToken, v10);
@@ -105,11 +105,11 @@ LABEL_10:
 + (id)allNamespaceNames
 {
   v3 = +[_DPStrings namespaceParametersPath];
-  v4 = [a1 parametersFromFile:v3];
+  v4 = [self parametersFromFile:v3];
 
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
 @end

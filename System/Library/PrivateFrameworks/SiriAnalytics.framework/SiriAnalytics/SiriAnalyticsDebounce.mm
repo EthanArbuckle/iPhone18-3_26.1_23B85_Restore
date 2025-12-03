@@ -1,6 +1,6 @@
 @interface SiriAnalyticsDebounce
-- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)a3 maximumInterval:(double)a4 queue:(id)a5 delegate:(id)a6;
-- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)a3 queue:(id)a4 delegate:(id)a5;
+- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)interval maximumInterval:(double)maximumInterval queue:(id)queue delegate:(id)delegate;
+- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)interval queue:(id)queue delegate:(id)delegate;
 - (void)_debounceFired;
 - (void)_pulse;
 - (void)_reset;
@@ -162,39 +162,39 @@ void __31__SiriAnalyticsDebounce__pulse__block_invoke(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)a3 maximumInterval:(double)a4 queue:(id)a5 delegate:(id)a6
+- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)interval maximumInterval:(double)maximumInterval queue:(id)queue delegate:(id)delegate
 {
-  v11 = a5;
-  v12 = a6;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SiriAnalyticsDebounce;
   v13 = [(SiriAnalyticsDebounce *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a5);
-    v14->_debounceInterval = a3;
-    v14->_maximumInterval = a4;
+    objc_storeStrong(&v13->_queue, queue);
+    v14->_debounceInterval = interval;
+    v14->_maximumInterval = maximumInterval;
     v14->_hasMaximumInterval = 1;
-    objc_storeWeak(&v14->_delegate, v12);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
   }
 
   return v14;
 }
 
-- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)a3 queue:(id)a4 delegate:(id)a5
+- (SiriAnalyticsDebounce)initWithDebounceInterval:(double)interval queue:(id)queue delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SiriAnalyticsDebounce;
   v11 = [(SiriAnalyticsDebounce *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a4);
-    v12->_debounceInterval = a3;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_queue, queue);
+    v12->_debounceInterval = interval;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   return v12;

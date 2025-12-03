@@ -1,11 +1,11 @@
 @interface ICLiveLinkQueueEvent
-+ (ICLiveLinkQueueEvent)queueEventWithContentAdded:(id)a3;
-+ (ICLiveLinkQueueEvent)queueEventWithContentPlayedNow:(id)a3;
-+ (ICLiveLinkQueueEvent)queueEventWithContentRemoved:(id)a3;
-+ (ICLiveLinkQueueEvent)queueEventWithContentReordered:(id)a3;
-+ (ICLiveLinkQueueEvent)queueEventWithContentReplaced:(id)a3;
-+ (ICLiveLinkQueueEvent)queueEventWithContentUpdatedMessage:(id)a3;
-+ (ICLiveLinkQueueEvent)queueEventWithPlaybackModeChanged:(id)a3;
++ (ICLiveLinkQueueEvent)queueEventWithContentAdded:(id)added;
++ (ICLiveLinkQueueEvent)queueEventWithContentPlayedNow:(id)now;
++ (ICLiveLinkQueueEvent)queueEventWithContentRemoved:(id)removed;
++ (ICLiveLinkQueueEvent)queueEventWithContentReordered:(id)reordered;
++ (ICLiveLinkQueueEvent)queueEventWithContentReplaced:(id)replaced;
++ (ICLiveLinkQueueEvent)queueEventWithContentUpdatedMessage:(id)message;
++ (ICLiveLinkQueueEvent)queueEventWithPlaybackModeChanged:(id)changed;
 - (id)description;
 @end
 
@@ -81,79 +81,79 @@ LABEL_18:
   return v3;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithPlaybackModeChanged:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithPlaybackModeChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   v4->_kind = 4;
   playbackModeChanged = v4->_playbackModeChanged;
-  v4->_playbackModeChanged = v3;
+  v4->_playbackModeChanged = changedCopy;
 
   return v4;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithContentUpdatedMessage:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithContentUpdatedMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   v4->_kind = 7;
   contentUpdatedMessage = v4->_contentUpdatedMessage;
-  v4->_contentUpdatedMessage = v3;
+  v4->_contentUpdatedMessage = messageCopy;
 
   return v4;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithContentReplaced:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithContentReplaced:(id)replaced
 {
-  v3 = a3;
+  replacedCopy = replaced;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   v4->_kind = 5;
   contentReplaced = v4->_contentReplaced;
-  v4->_contentReplaced = v3;
+  v4->_contentReplaced = replacedCopy;
 
   return v4;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithContentReordered:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithContentReordered:(id)reordered
 {
-  v3 = a3;
+  reorderedCopy = reordered;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   v4->_kind = 3;
   contentReordered = v4->_contentReordered;
-  v4->_contentReordered = v3;
+  v4->_contentReordered = reorderedCopy;
 
   return v4;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithContentRemoved:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithContentRemoved:(id)removed
 {
-  v3 = a3;
+  removedCopy = removed;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   v4->_kind = 2;
   contentRemoved = v4->_contentRemoved;
-  v4->_contentRemoved = v3;
+  v4->_contentRemoved = removedCopy;
 
   return v4;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithContentPlayedNow:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithContentPlayedNow:(id)now
 {
-  v3 = a3;
+  nowCopy = now;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   v4->_kind = 6;
   contentPlayedNow = v4->_contentPlayedNow;
-  v4->_contentPlayedNow = v3;
+  v4->_contentPlayedNow = nowCopy;
 
   return v4;
 }
 
-+ (ICLiveLinkQueueEvent)queueEventWithContentAdded:(id)a3
++ (ICLiveLinkQueueEvent)queueEventWithContentAdded:(id)added
 {
-  v3 = a3;
+  addedCopy = added;
   v4 = objc_alloc_init(ICLiveLinkQueueEvent);
   contentAdded = v4->_contentAdded;
   v4->_kind = 1;
-  v4->_contentAdded = v3;
+  v4->_contentAdded = addedCopy;
 
   return v4;
 }

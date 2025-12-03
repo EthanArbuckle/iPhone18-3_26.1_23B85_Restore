@@ -1,67 +1,67 @@
 @interface IDSGameCenterData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTo:(id)a3;
-- (IDSGameCenterData)initWithAssociationID:(id)a3 sharingState:(id)a4 lastUpdatedDate:(id)a5;
-- (IDSGameCenterData)initWithCoder:(id)a3;
-- (id)compareAgainstData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTo:(id)to;
+- (IDSGameCenterData)initWithAssociationID:(id)d sharingState:(id)state lastUpdatedDate:(id)date;
+- (IDSGameCenterData)initWithCoder:(id)coder;
+- (id)compareAgainstData:(id)data;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSGameCenterData
 
-- (IDSGameCenterData)initWithAssociationID:(id)a3 sharingState:(id)a4 lastUpdatedDate:(id)a5
+- (IDSGameCenterData)initWithAssociationID:(id)d sharingState:(id)state lastUpdatedDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  stateCopy = state;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = IDSGameCenterData;
   v12 = [(IDSGameCenterData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contactsAssociationID, a3);
-    objc_storeStrong(&v13->_contactsSharingState, a4);
-    objc_storeStrong(&v13->_contactsLastUpdatedDate, a5);
+    objc_storeStrong(&v12->_contactsAssociationID, d);
+    objc_storeStrong(&v13->_contactsSharingState, state);
+    objc_storeStrong(&v13->_contactsLastUpdatedDate, date);
   }
 
   return v13;
 }
 
-- (id)compareAgainstData:(id)a3
+- (id)compareAgainstData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([(IDSGameCenterData *)v4 contactsLastUpdatedDate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && ([(IDSGameCenterData *)dataCopy contactsLastUpdatedDate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
+    contactsLastUpdatedDate = [(IDSGameCenterData *)self contactsLastUpdatedDate];
 
-    v8 = v5;
-    if (v7)
+    selfCopy2 = v5;
+    if (contactsLastUpdatedDate)
     {
-      v9 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
-      v10 = [(IDSGameCenterData *)v5 contactsLastUpdatedDate];
-      v11 = [v9 compare:v10];
+      contactsLastUpdatedDate2 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
+      contactsLastUpdatedDate3 = [(IDSGameCenterData *)v5 contactsLastUpdatedDate];
+      v11 = [contactsLastUpdatedDate2 compare:contactsLastUpdatedDate3];
 
       if (v11 == -1)
       {
-        v8 = v5;
+        selfCopy2 = v5;
       }
 
       else
       {
-        v8 = self;
+        selfCopy2 = self;
       }
     }
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  v12 = v8;
+  v12 = selfCopy2;
 
   return v12;
 }
@@ -69,45 +69,45 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSGameCenterData *)self contactsAssociationID];
-  v5 = [(IDSGameCenterData *)self contactsSharingState];
-  v6 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
-  v7 = [v3 stringWithFormat:@"<IDSGameCenterData: %p contactsAssociationID: %@ contactsSharingState: %@ contactsLastUpdatedDate: %@>", self, v4, v5, v6];;
+  contactsAssociationID = [(IDSGameCenterData *)self contactsAssociationID];
+  contactsSharingState = [(IDSGameCenterData *)self contactsSharingState];
+  contactsLastUpdatedDate = [(IDSGameCenterData *)self contactsLastUpdatedDate];
+  v7 = [v3 stringWithFormat:@"<IDSGameCenterData: %p contactsAssociationID: %@ contactsSharingState: %@ contactsLastUpdatedDate: %@>", self, contactsAssociationID, contactsSharingState, contactsLastUpdatedDate];;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IDSGameCenterData *)self isEqualTo:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IDSGameCenterData *)self isEqualTo:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v5 = a3;
-  if (!v5)
+  toCopy = to;
+  if (!toCopy)
   {
     goto LABEL_30;
   }
 
-  v6 = [(IDSGameCenterData *)self contactsAssociationID];
-  if (!v6)
+  contactsAssociationID = [(IDSGameCenterData *)self contactsAssociationID];
+  if (!contactsAssociationID)
   {
-    v3 = [v5 contactsAssociationID];
-    if (!v3)
+    contactsAssociationID2 = [toCopy contactsAssociationID];
+    if (!contactsAssociationID2)
     {
       goto LABEL_13;
     }
   }
 
-  v7 = [(IDSGameCenterData *)self contactsAssociationID];
-  if (!v7)
+  contactsAssociationID3 = [(IDSGameCenterData *)self contactsAssociationID];
+  if (!contactsAssociationID3)
   {
 LABEL_10:
-    if (!v6)
+    if (!contactsAssociationID)
     {
       goto LABEL_27;
     }
@@ -115,20 +115,20 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [v5 contactsAssociationID];
-  if (!v9)
+  v8 = contactsAssociationID3;
+  contactsAssociationID4 = [toCopy contactsAssociationID];
+  if (!contactsAssociationID4)
   {
 
     goto LABEL_10;
   }
 
-  v10 = v9;
-  v11 = [(IDSGameCenterData *)self contactsAssociationID];
-  v12 = [v5 contactsAssociationID];
-  v13 = [v11 isEqualToString:v12];
+  v10 = contactsAssociationID4;
+  contactsAssociationID5 = [(IDSGameCenterData *)self contactsAssociationID];
+  contactsAssociationID6 = [toCopy contactsAssociationID];
+  v13 = [contactsAssociationID5 isEqualToString:contactsAssociationID6];
 
-  if (v6)
+  if (contactsAssociationID)
   {
 
     if (!v13)
@@ -147,22 +147,22 @@ LABEL_10:
   }
 
 LABEL_13:
-  v3 = [(IDSGameCenterData *)self contactsSharingState];
-  if (v3 || ([v5 contactsSharingState], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  contactsAssociationID2 = [(IDSGameCenterData *)self contactsSharingState];
+  if (contactsAssociationID2 || ([toCopy contactsSharingState], (contactsAssociationID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v15 = [(IDSGameCenterData *)self contactsSharingState];
-    if (v15)
+    contactsSharingState = [(IDSGameCenterData *)self contactsSharingState];
+    if (contactsSharingState)
     {
-      v16 = v15;
-      v17 = [v5 contactsSharingState];
-      if (v17)
+      v16 = contactsSharingState;
+      contactsSharingState2 = [toCopy contactsSharingState];
+      if (contactsSharingState2)
       {
-        v18 = v17;
-        v19 = [(IDSGameCenterData *)self contactsSharingState];
-        v20 = [v5 contactsSharingState];
-        v21 = [v19 isEqualToNumber:v20];
+        v18 = contactsSharingState2;
+        contactsSharingState3 = [(IDSGameCenterData *)self contactsSharingState];
+        contactsSharingState4 = [toCopy contactsSharingState];
+        v21 = [contactsSharingState3 isEqualToNumber:contactsSharingState4];
 
-        if (v3)
+        if (contactsAssociationID2)
         {
 
           if (v21)
@@ -186,7 +186,7 @@ LABEL_30:
       }
     }
 
-    if (v3)
+    if (contactsAssociationID2)
     {
 LABEL_27:
       v14 = 0;
@@ -195,16 +195,16 @@ LABEL_27:
 
 LABEL_11:
     v14 = 0;
-    v3 = v6;
+    contactsAssociationID2 = contactsAssociationID;
     goto LABEL_28;
   }
 
 LABEL_19:
-  v3 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
-  if (!v3)
+  contactsAssociationID2 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
+  if (!contactsAssociationID2)
   {
-    v6 = [v5 contactsLastUpdatedDate];
-    if (!v6)
+    contactsAssociationID = [toCopy contactsLastUpdatedDate];
+    if (!contactsAssociationID)
     {
       v14 = 1;
 LABEL_36:
@@ -213,20 +213,20 @@ LABEL_36:
     }
   }
 
-  v22 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
-  if (!v22)
+  contactsLastUpdatedDate = [(IDSGameCenterData *)self contactsLastUpdatedDate];
+  if (!contactsLastUpdatedDate)
   {
     goto LABEL_33;
   }
 
-  v23 = v22;
-  v24 = [v5 contactsLastUpdatedDate];
-  if (!v24)
+  v23 = contactsLastUpdatedDate;
+  contactsLastUpdatedDate2 = [toCopy contactsLastUpdatedDate];
+  if (!contactsLastUpdatedDate2)
   {
 
 LABEL_33:
     v14 = 0;
-    if (!v3)
+    if (!contactsAssociationID2)
     {
       goto LABEL_36;
     }
@@ -234,12 +234,12 @@ LABEL_33:
     goto LABEL_28;
   }
 
-  v25 = v24;
-  v26 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
-  v27 = [v5 contactsLastUpdatedDate];
-  v14 = [v26 isEqualToDate:v27];
+  v25 = contactsLastUpdatedDate2;
+  contactsLastUpdatedDate3 = [(IDSGameCenterData *)self contactsLastUpdatedDate];
+  contactsLastUpdatedDate4 = [toCopy contactsLastUpdatedDate];
+  v14 = [contactsLastUpdatedDate3 isEqualToDate:contactsLastUpdatedDate4];
 
-  if (!v3)
+  if (!contactsAssociationID2)
   {
     goto LABEL_36;
   }
@@ -250,24 +250,24 @@ LABEL_31:
   return v14;
 }
 
-- (IDSGameCenterData)initWithCoder:(id)a3
+- (IDSGameCenterData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gs-contacts-association-id"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gs-contacts-sharing-state"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gs-contacts-last-updated"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gs-contacts-association-id"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gs-contacts-sharing-state"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gs-contacts-last-updated"];
 
   v8 = [(IDSGameCenterData *)self initWithAssociationID:v5 sharingState:v6 lastUpdatedDate:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactsAssociationID = self->_contactsAssociationID;
-  v5 = a3;
-  [v5 encodeObject:contactsAssociationID forKey:@"gs-contacts-association-id"];
-  [v5 encodeObject:self->_contactsSharingState forKey:@"gs-contacts-sharing-state"];
-  [v5 encodeObject:self->_contactsLastUpdatedDate forKey:@"gs-contacts-last-updated"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactsAssociationID forKey:@"gs-contacts-association-id"];
+  [coderCopy encodeObject:self->_contactsSharingState forKey:@"gs-contacts-sharing-state"];
+  [coderCopy encodeObject:self->_contactsLastUpdatedDate forKey:@"gs-contacts-last-updated"];
 }
 
 @end

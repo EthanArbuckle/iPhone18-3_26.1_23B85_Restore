@@ -1,40 +1,40 @@
 @interface AVTAvatarPoseAnimation
-+ (id)animationFromDataRepresentation:(id)a3 keyPath:(id)a4;
-+ (id)animationFromDictionaryRepresentation:(id)a3 keyPath:(id)a4;
-+ (id)optimizeSceneKitAnimation:(id)a3 target:(id)a4;
-+ (void)dataRepresentationForAnimation:(id)a3 completionHandler:(id)a4;
-+ (void)dictionaryRepresentationForAnimation:(id)a3 completionHandler:(id)a4;
-+ (void)removeAllAnimationsFromAvatar:(id)a3;
-- (AVTAvatarPoseAnimation)initWithAnimatedPoseRepresentationAtURL:(id)a3;
-- (AVTAvatarPoseAnimation)initWithSceneKitScene:(id)a3 usdaMetadata:(id *)a4;
-- (AVTAvatarPoseAnimation)initWithSceneKitSceneAtURL:(id)a3 usdaMetadata:(id *)a4;
-- (AVTAvatarPoseAnimation)initWithStaticPose:(id)a3 staticPhysicsStates:(id)a4;
++ (id)animationFromDataRepresentation:(id)representation keyPath:(id)path;
++ (id)animationFromDictionaryRepresentation:(id)representation keyPath:(id)path;
++ (id)optimizeSceneKitAnimation:(id)animation target:(id)target;
++ (void)dataRepresentationForAnimation:(id)animation completionHandler:(id)handler;
++ (void)dictionaryRepresentationForAnimation:(id)animation completionHandler:(id)handler;
++ (void)removeAllAnimationsFromAvatar:(id)avatar;
+- (AVTAvatarPoseAnimation)initWithAnimatedPoseRepresentationAtURL:(id)l;
+- (AVTAvatarPoseAnimation)initWithSceneKitScene:(id)scene usdaMetadata:(id *)metadata;
+- (AVTAvatarPoseAnimation)initWithSceneKitSceneAtURL:(id)l usdaMetadata:(id *)metadata;
+- (AVTAvatarPoseAnimation)initWithStaticPose:(id)pose staticPhysicsStates:(id)states;
 - (double)duration;
-- (id)_addAnimationToAvatar:(id)a3 options:(unint64_t)a4 transitionInDuration:(double)a5 transitionOutDuration:(double)a6 isTransient:(BOOL)a7 completionQueue:(id)a8 completionHandler:(id)a9;
-- (id)_initWithSceneKitScene:(id)a3 usdaMetadata:(id *)a4 identifier:(id)a5;
-- (id)_initWithStaticPoseRepresentation:(id)a3 animatedPoseRepresentation:(id)a4 staticPhysicsStatesRepresentation:(id)a5 identifier:(id)a6;
-- (id)animatedPoseRepresentationWithAnimationRepresentationBuilder:(id)a3;
-- (id)animationsForAvatar:(id)a3;
+- (id)_addAnimationToAvatar:(id)avatar options:(unint64_t)options transitionInDuration:(double)duration transitionOutDuration:(double)outDuration isTransient:(BOOL)transient completionQueue:(id)queue completionHandler:(id)handler;
+- (id)_initWithSceneKitScene:(id)scene usdaMetadata:(id *)metadata identifier:(id)identifier;
+- (id)_initWithStaticPoseRepresentation:(id)representation animatedPoseRepresentation:(id)poseRepresentation staticPhysicsStatesRepresentation:(id)statesRepresentation identifier:(id)identifier;
+- (id)animatedPoseRepresentationWithAnimationRepresentationBuilder:(id)builder;
+- (id)animationsForAvatar:(id)avatar;
 - (id)physicalizedPose;
-- (void)commonInitWithIdentifier:(id)a3;
+- (void)commonInitWithIdentifier:(id)identifier;
 @end
 
 @implementation AVTAvatarPoseAnimation
 
-- (void)commonInitWithIdentifier:(id)a3
+- (void)commonInitWithIdentifier:(id)identifier
 {
-  v9 = a3;
-  if ([v9 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = v9;
+    v4 = identifierCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v4 = v6;
+    v4 = uUIDString;
   }
 
   v10 = v4;
@@ -43,13 +43,13 @@
   self->_animationBaseKey = v7;
 }
 
-- (AVTAvatarPoseAnimation)initWithSceneKitSceneAtURL:(id)a3 usdaMetadata:(id *)a4
+- (AVTAvatarPoseAnimation)initWithSceneKitSceneAtURL:(id)l usdaMetadata:(id *)metadata
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:0];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (v9)
   {
@@ -57,7 +57,7 @@
     v23[0] = *MEMORY[0x1E697A9B8];
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v21 = 0;
-    v11 = [MEMORY[0x1E697A8C8] avt_newSceneWithURL:v6 options:v10 error:&v21];
+    v11 = [MEMORY[0x1E697A8C8] avt_newSceneWithURL:lCopy options:v10 error:&v21];
     v12 = v21;
     [v11 avt_fixQuirksOfNewUSDSchemaWithOptions:0 handler:0];
     if (v12)
@@ -65,50 +65,50 @@
       v13 = avt_default_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(AVTAvatarPoseAnimation *)v6 initWithSceneKitSceneAtURL:v12 usdaMetadata:v13];
+        [(AVTAvatarPoseAnimation *)lCopy initWithSceneKitSceneAtURL:v12 usdaMetadata:v13];
       }
     }
 
-    v14 = [v6 lastPathComponent];
-    v15 = [v14 stringByDeletingPathExtension];
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v16 = *&a4->var2;
-    v20[0] = *&a4->var0;
+    v16 = *&metadata->var2;
+    v20[0] = *&metadata->var0;
     v20[1] = v16;
-    self = [(AVTAvatarPoseAnimation *)self _initWithSceneKitScene:v11 usdaMetadata:v20 identifier:v15];
+    self = [(AVTAvatarPoseAnimation *)self _initWithSceneKitScene:v11 usdaMetadata:v20 identifier:stringByDeletingPathExtension];
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
-- (AVTAvatarPoseAnimation)initWithSceneKitScene:(id)a3 usdaMetadata:(id *)a4
+- (AVTAvatarPoseAnimation)initWithSceneKitScene:(id)scene usdaMetadata:(id *)metadata
 {
-  v4 = *&a4->var2;
-  v6[0] = *&a4->var0;
+  v4 = *&metadata->var2;
+  v6[0] = *&metadata->var0;
   v6[1] = v4;
-  return [(AVTAvatarPoseAnimation *)self _initWithSceneKitScene:a3 usdaMetadata:v6 identifier:0];
+  return [(AVTAvatarPoseAnimation *)self _initWithSceneKitScene:scene usdaMetadata:v6 identifier:0];
 }
 
-- (id)_initWithSceneKitScene:(id)a3 usdaMetadata:(id *)a4 identifier:(id)a5
+- (id)_initWithSceneKitScene:(id)scene usdaMetadata:(id *)metadata identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  sceneCopy = scene;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = AVTAvatarPoseAnimation;
   v10 = [(AVTAvatarPoseAnimation *)&v31 init];
   v11 = v10;
   if (v10)
   {
-    [(AVTAvatarPoseAnimation *)v10 commonInitWithIdentifier:v9];
-    v12 = [[AVTAvatarPose alloc] initWithScene:v8];
+    [(AVTAvatarPoseAnimation *)v10 commonInitWithIdentifier:identifierCopy];
+    v12 = [[AVTAvatarPose alloc] initWithScene:sceneCopy];
     staticPose = v11->_staticPose;
     v11->_staticPose = v12;
 
@@ -117,7 +117,7 @@
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v17 = [v8 rootNode];
+    rootNode = [sceneCopy rootNode];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __73__AVTAvatarPoseAnimation__initWithSceneKitScene_usdaMetadata_identifier___block_invoke;
@@ -126,12 +126,12 @@
     v26 = v18;
     v27 = v15;
     v28 = v16;
-    v19 = *&a4->var2;
-    v29 = *&a4->var0;
+    v19 = *&metadata->var2;
+    v29 = *&metadata->var0;
     v30 = v19;
     v20 = v16;
     v21 = v15;
-    [v17 enumerateHierarchyUsingBlock:v25];
+    [rootNode enumerateHierarchyUsingBlock:v25];
 
     if ([v21 count])
     {
@@ -208,22 +208,22 @@ void __73__AVTAvatarPoseAnimation__initWithSceneKitScene_usdaMetadata_identifier
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (AVTAvatarPoseAnimation)initWithAnimatedPoseRepresentationAtURL:(id)a3
+- (AVTAvatarPoseAnimation)initWithAnimatedPoseRepresentationAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v4 error:0];
-  v8 = [(AVTAvatarPoseAnimation *)self _initWithStaticPoseRepresentation:0 animatedPoseRepresentation:v7 staticPhysicsStatesRepresentation:0 identifier:v6];
+  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:lCopy error:0];
+  v8 = [(AVTAvatarPoseAnimation *)self _initWithStaticPoseRepresentation:0 animatedPoseRepresentation:v7 staticPhysicsStatesRepresentation:0 identifier:stringByDeletingPathExtension];
 
   return v8;
 }
 
-- (AVTAvatarPoseAnimation)initWithStaticPose:(id)a3 staticPhysicsStates:(id)a4
+- (AVTAvatarPoseAnimation)initWithStaticPose:(id)pose staticPhysicsStates:(id)states
 {
-  v7 = a3;
-  v8 = a4;
+  poseCopy = pose;
+  statesCopy = states;
   v12.receiver = self;
   v12.super_class = AVTAvatarPoseAnimation;
   v9 = [(AVTAvatarPoseAnimation *)&v12 init];
@@ -231,51 +231,51 @@ void __73__AVTAvatarPoseAnimation__initWithSceneKitScene_usdaMetadata_identifier
   if (v9)
   {
     [(AVTAvatarPoseAnimation *)v9 commonInitWithIdentifier:0];
-    objc_storeStrong(&v10->_staticPose, a3);
-    objc_storeStrong(&v10->_staticPhysicsStates, a4);
+    objc_storeStrong(&v10->_staticPose, pose);
+    objc_storeStrong(&v10->_staticPhysicsStates, states);
   }
 
   return v10;
 }
 
-- (id)_initWithStaticPoseRepresentation:(id)a3 animatedPoseRepresentation:(id)a4 staticPhysicsStatesRepresentation:(id)a5 identifier:(id)a6
+- (id)_initWithStaticPoseRepresentation:(id)representation animatedPoseRepresentation:(id)poseRepresentation staticPhysicsStatesRepresentation:(id)statesRepresentation identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  representationCopy = representation;
+  poseRepresentationCopy = poseRepresentation;
+  statesRepresentationCopy = statesRepresentation;
+  identifierCopy = identifier;
   v40.receiver = self;
   v40.super_class = AVTAvatarPoseAnimation;
   v14 = [(AVTAvatarPoseAnimation *)&v40 init];
   v15 = v14;
   if (v14)
   {
-    [(AVTAvatarPoseAnimation *)v14 commonInitWithIdentifier:v13];
-    if (v10)
+    [(AVTAvatarPoseAnimation *)v14 commonInitWithIdentifier:identifierCopy];
+    if (representationCopy)
     {
-      v16 = [[AVTAvatarPose alloc] initWithDictionaryRepresentation:v10];
+      v16 = [[AVTAvatarPose alloc] initWithDictionaryRepresentation:representationCopy];
       staticPose = v15->_staticPose;
       v15->_staticPose = v16;
     }
 
-    if (v12)
+    if (statesRepresentationCopy)
     {
-      v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+      v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesRepresentationCopy, "count")}];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __132__AVTAvatarPoseAnimation__initWithStaticPoseRepresentation_animatedPoseRepresentation_staticPhysicsStatesRepresentation_identifier___block_invoke;
       v38[3] = &unk_1E7F487E0;
       v19 = v18;
       v39 = v19;
-      [v12 enumerateKeysAndObjectsUsingBlock:v38];
+      [statesRepresentationCopy enumerateKeysAndObjectsUsingBlock:v38];
       staticPhysicsStates = v15->_staticPhysicsStates;
       v15->_staticPhysicsStates = v19;
       v21 = v19;
     }
 
-    if (v11)
+    if (poseRepresentationCopy)
     {
-      v22 = [v11 objectForKeyedSubscript:@"blendshapes"];
+      v22 = [poseRepresentationCopy objectForKeyedSubscript:@"blendshapes"];
       v23 = [v22 count];
       if (v23)
       {
@@ -292,7 +292,7 @@ void __73__AVTAvatarPoseAnimation__initWithSceneKitScene_usdaMetadata_identifier
         v27 = v25;
       }
 
-      v28 = [v11 objectForKeyedSubscript:@"perNode"];
+      v28 = [poseRepresentationCopy objectForKeyedSubscript:@"perNode"];
       if ([v28 count])
       {
         v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v23];
@@ -352,9 +352,9 @@ void __132__AVTAvatarPoseAnimation__initWithStaticPoseRepresentation_animatedPos
   [*(a1 + 32) addObject:v4];
 }
 
-- (id)animatedPoseRepresentationWithAnimationRepresentationBuilder:(id)a3
+- (id)animatedPoseRepresentationWithAnimationRepresentationBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   if ([(NSDictionary *)self->_blendshapeAnimations count]|| [(NSDictionary *)self->_perNodeAnimations count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -367,7 +367,7 @@ void __132__AVTAvatarPoseAnimation__initWithStaticPoseRepresentation_animatedPos
       v19[2] = __87__AVTAvatarPoseAnimation_animatedPoseRepresentationWithAnimationRepresentationBuilder___block_invoke;
       v19[3] = &unk_1E7F48858;
       v20 = v6;
-      v21 = v4;
+      v21 = builderCopy;
       v8 = v6;
       [(NSDictionary *)blendshapeAnimations enumerateKeysAndObjectsUsingBlock:v19];
       [v5 setObject:v8 forKeyedSubscript:@"blendshapes"];
@@ -382,7 +382,7 @@ void __132__AVTAvatarPoseAnimation__initWithStaticPoseRepresentation_animatedPos
       v15 = __87__AVTAvatarPoseAnimation_animatedPoseRepresentationWithAnimationRepresentationBuilder___block_invoke_3;
       v16 = &unk_1E7F488A8;
       v17 = v9;
-      v18 = v4;
+      v18 = builderCopy;
       v11 = v9;
       [(NSDictionary *)perNodeAnimations enumerateKeysAndObjectsUsingBlock:&v13];
       [v5 setObject:v11 forKeyedSubscript:{@"perNode", v13, v14, v15, v16}];
@@ -461,29 +461,29 @@ void __87__AVTAvatarPoseAnimation_animatedPoseRepresentationWithAnimationReprese
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)animationsForAvatar:(id)a3
+- (id)animationsForAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v22 = __46__AVTAvatarPoseAnimation_animationsForAvatar___block_invoke;
   v23 = &unk_1E7F48910;
-  v24 = self;
+  selfCopy = self;
   v6 = v5;
   v7 = 0;
   v25 = v6;
   do
   {
     v8 = AVTBlendShapeLocationFromARIndex(v7);
-    v9 = [v4 blendShapeIndexForARKitBlendShapeName:v8];
+    v9 = [avatarCopy blendShapeIndexForARKitBlendShapeName:v8];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = 0u;
       v20 = 0u;
-      if (v4)
+      if (avatarCopy)
       {
-        [v4 morphInfoForARKitBlendShapeIndex:v9];
+        [avatarCopy morphInfoForARKitBlendShapeIndex:v9];
       }
 
       v18[0] = v19;
@@ -500,7 +500,7 @@ void __87__AVTAvatarPoseAnimation_animatedPoseRepresentationWithAnimationReprese
   v17[2] = __46__AVTAvatarPoseAnimation_animationsForAvatar___block_invoke_111;
   v17[3] = &__block_descriptor_40_e15_v40__0_____qB_8lu32l8;
   v17[4] = v21;
-  [v4 enumerateMorphInfoForCustomBlendShapeName:@"Emoji" usingBlock:v17];
+  [avatarCopy enumerateMorphInfoForCustomBlendShapeName:@"Emoji" usingBlock:v17];
   perNodeAnimations = self->_perNodeAnimations;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -679,37 +679,37 @@ void __34__AVTAvatarPoseAnimation_duration__block_invoke_2(uint64_t a1, uint64_t
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_addAnimationToAvatar:(id)a3 options:(unint64_t)a4 transitionInDuration:(double)a5 transitionOutDuration:(double)a6 isTransient:(BOOL)a7 completionQueue:(id)a8 completionHandler:(id)a9
+- (id)_addAnimationToAvatar:(id)avatar options:(unint64_t)options transitionInDuration:(double)duration transitionOutDuration:(double)outDuration isTransient:(BOOL)transient completionQueue:(id)queue completionHandler:(id)handler
 {
-  v90 = a7;
+  transientCopy = transient;
   v127 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v85 = a8;
-  v88 = a9;
+  avatarCopy = avatar;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self->_staticPose)
   {
-    [v15 setPose:?];
+    [avatarCopy setPose:?];
   }
 
-  if (a4)
+  if (options)
   {
     staticPhysicsStates = self->_staticPhysicsStates;
-    v17 = [v15 stickerPhysicsStateIdentifier];
-    v18 = [(NSDictionary *)staticPhysicsStates objectForKeyedSubscript:v17];
+    stickerPhysicsStateIdentifier = [avatarCopy stickerPhysicsStateIdentifier];
+    v18 = [(NSDictionary *)staticPhysicsStates objectForKeyedSubscript:stickerPhysicsStateIdentifier];
 
-    [v15 resetToPhysicsState:v18 assumeRestStateIfNil:1];
+    [avatarCopy resetToPhysicsState:v18 assumeRestStateIfNil:1];
   }
 
-  v19 = [(AVTAvatarPoseAnimation *)self animationsForAvatar:v15];
+  v19 = [(AVTAvatarPoseAnimation *)self animationsForAvatar:avatarCopy];
   v20 = 0.0;
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v21 = CFAbsoluteTimeGetCurrent() + 0.05;
     v22 = CACurrentMediaTime();
     v20 = fmin(v22 - floor(v22), 1.0) + fmin(v21 - v22 - floor(v21 - v22), 1.0) + -1.0;
   }
 
-  if ((a4 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v23 = v20 + 2.5;
   }
@@ -719,7 +719,7 @@ void __34__AVTAvatarPoseAnimation_duration__block_invoke_2(uint64_t a1, uint64_t
     v23 = v20;
   }
 
-  if ((a4 & 8) != 0)
+  if ((options & 8) != 0)
   {
     v24 = arc4random() / 4294967300.0;
     [(AVTAvatarPoseAnimation *)self duration];
@@ -728,41 +728,41 @@ void __34__AVTAvatarPoseAnimation_duration__block_invoke_2(uint64_t a1, uint64_t
 
   [(AVTAvatarPoseAnimation *)self duration];
   v27 = v26;
-  v28 = a5 + a6 <= v26;
-  v29 = v26 / (a5 + a6);
-  v30 = v29 * a5;
-  v31 = v29 * a6;
-  if (a5 + a6 > v27)
+  v28 = duration + outDuration <= v26;
+  v29 = v26 / (duration + outDuration);
+  v30 = v29 * duration;
+  v31 = v29 * outDuration;
+  if (duration + outDuration > v27)
   {
-    v32 = v31;
+    outDurationCopy = v31;
   }
 
   else
   {
-    v32 = a6;
+    outDurationCopy = outDuration;
   }
 
   if (!v28)
   {
-    a5 = v30;
+    duration = v30;
   }
 
-  v92 = [v15 avatarNode];
-  v33 = [v92 animationKeys];
-  v34 = [v33 count];
-  v89 = self;
-  v81 = v33;
-  v82 = v15;
+  avatarNode = [avatarCopy avatarNode];
+  animationKeys = [avatarNode animationKeys];
+  v34 = [animationKeys count];
+  selfCopy = self;
+  v81 = animationKeys;
+  v82 = avatarCopy;
   if (v34)
   {
     v83 = v19;
-    v84 = a4;
+    optionsCopy = options;
     v91 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v34];
     v110 = 0u;
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v35 = v33;
+    v35 = animationKeys;
     v36 = [v35 countByEnumeratingWithState:&v110 objects:v126 count:16];
     if (v36)
     {
@@ -780,22 +780,22 @@ void __34__AVTAvatarPoseAnimation_duration__block_invoke_2(uint64_t a1, uint64_t
           v40 = *(*(&v110 + 1) + 8 * i);
           if ([v40 hasPrefix:@"kAVTPoseAnimation-"])
           {
-            v41 = [v92 animationPlayerForKey:v40];
+            v41 = [avatarNode animationPlayerForKey:v40];
             v42 = v41;
             if (v41)
             {
-              v43 = [v41 animation];
-              v44 = v43;
-              if (v43)
+              animation = [v41 animation];
+              v44 = animation;
+              if (animation)
               {
-                v45 = [v43 keyPath];
-                if ([v45 length])
+                keyPath = [animation keyPath];
+                if ([keyPath length])
                 {
-                  v46 = [v91 objectForKeyedSubscript:v45];
+                  v46 = [v91 objectForKeyedSubscript:keyPath];
                   if (!v46)
                   {
                     v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                    [v91 setObject:v46 forKeyedSubscript:v45];
+                    [v91 setObject:v46 forKeyedSubscript:keyPath];
                   }
 
                   [v46 addObject:v40];
@@ -862,7 +862,7 @@ LABEL_80:
                 }
               }
 
-              self = v89;
+              self = selfCopy;
             }
 
             else
@@ -890,7 +890,7 @@ LABEL_80:
     }
 
     v19 = v83;
-    a4 = v84;
+    options = optionsCopy;
   }
 
   else
@@ -899,7 +899,7 @@ LABEL_80:
   }
 
   v50 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v19, "count")}];
-  v86 = [[AVTAvatarPoseAnimationController alloc] initWithAvatar:v15 animationKeys:v50];
+  v86 = [[AVTAvatarPoseAnimationController alloc] initWithAvatar:avatarCopy animationKeys:v50];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
@@ -911,7 +911,7 @@ LABEL_80:
     v52 = v51;
     v53 = 0;
     v54 = *v106;
-    if ((a4 >> 4) & 1 | v90)
+    if ((options >> 4) & 1 | transientCopy)
     {
       v55 = 1.0;
     }
@@ -939,7 +939,7 @@ LABEL_80:
         [v58 setFillsBackward:1];
         [v58 setTimeOffset:v23];
         [v58 setRemovedOnCompletion:0];
-        if (![v50 count] && v90)
+        if (![v50 count] && transientCopy)
         {
           if (v23 != 0.0)
           {
@@ -951,15 +951,15 @@ LABEL_80:
           }
 
           v62 = MEMORY[0x1E69DF2B8];
-          if (v32 <= 0.0)
+          if (outDurationCopy <= 0.0)
           {
             v96[0] = MEMORY[0x1E69E9820];
             v96[1] = 3221225472;
             v96[2] = __145__AVTAvatarPoseAnimation__addAnimationToAvatar_options_transitionInDuration_transitionOutDuration_isTransient_completionQueue_completionHandler___block_invoke_2;
             v96[3] = &unk_1E7F48A20;
             v97 = v86;
-            v99 = v88;
-            v98 = v85;
+            v99 = handlerCopy;
+            v98 = queueCopy;
             LODWORD(v73) = 1.0;
             v74 = [v62 animationEventWithKeyTime:v96 block:v73];
             v114 = v74;
@@ -977,15 +977,15 @@ LABEL_80:
             v103[2] = __145__AVTAvatarPoseAnimation__addAnimationToAvatar_options_transitionInDuration_transitionOutDuration_isTransient_completionQueue_completionHandler___block_invoke;
             v103[3] = &unk_1E7F489D0;
             v104[0] = v86;
-            *&v104[1] = v32;
-            v56 = 1.0 - v32 / v27;
+            *&v104[1] = outDurationCopy;
+            v56 = 1.0 - outDurationCopy / v27;
             *&v63 = v56;
             v64 = [v62 animationEventWithKeyTime:v103 block:v63];
             v65 = v64;
-            if (v88)
+            if (handlerCopy)
             {
-              v66 = v85;
-              if (!v85)
+              v66 = queueCopy;
+              if (!queueCopy)
               {
                 v67 = avt_default_log();
                 if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -1002,7 +1002,7 @@ LABEL_80:
               v100[2] = __145__AVTAvatarPoseAnimation__addAnimationToAvatar_options_transitionInDuration_transitionOutDuration_isTransient_completionQueue_completionHandler___block_invoke_125;
               v100[3] = &unk_1E7F489F8;
               v101 = v66;
-              v102 = v88;
+              v102 = handlerCopy;
               LODWORD(v69) = 1.0;
               v70 = [v68 animationEventWithKeyTime:v100 block:v69];
               v116[0] = v65;
@@ -1023,25 +1023,25 @@ LABEL_80:
             v76 = v104;
           }
 
-          self = v89;
+          self = selfCopy;
         }
 
         [v50 addObject:v59];
-        if (a5 <= 0.0)
+        if (duration <= 0.0)
         {
-          [v92 addAnimation:v58 forKey:v59];
+          [avatarNode addAnimation:v58 forKey:v59];
         }
 
         else
         {
           [MEMORY[0x1E69DF378] begin];
-          [MEMORY[0x1E69DF378] setAnimationDuration:a5];
-          [v92 addAnimation:v58 forKey:v59];
+          [MEMORY[0x1E69DF378] setAnimationDuration:duration];
+          [avatarNode addAnimation:v58 forKey:v59];
           [MEMORY[0x1E69DF378] commit];
         }
 
-        v77 = [v58 keyPath];
-        [v91 removeObjectForKey:v77];
+        keyPath2 = [v58 keyPath];
+        [v91 removeObjectForKey:keyPath2];
 
         ++v53;
       }
@@ -1056,9 +1056,9 @@ LABEL_80:
   v93[1] = 3221225472;
   v93[2] = __145__AVTAvatarPoseAnimation__addAnimationToAvatar_options_transitionInDuration_transitionOutDuration_isTransient_completionQueue_completionHandler___block_invoke_128;
   v93[3] = &unk_1E7F48A48;
-  v94 = v92;
-  v95 = v32;
-  v78 = v92;
+  v94 = avatarNode;
+  v95 = outDurationCopy;
+  v78 = avatarNode;
   [v91 enumerateKeysAndObjectsUsingBlock:v93];
 
   v79 = *MEMORY[0x1E69E9840];
@@ -1127,44 +1127,44 @@ void __145__AVTAvatarPoseAnimation__addAnimationToAvatar_options_transitionInDur
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)animationFromDataRepresentation:(id)a3 keyPath:(id)a4
++ (id)animationFromDataRepresentation:(id)representation keyPath:(id)path
 {
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  representationCopy = representation;
   v8 = 0;
-  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v8];
+  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v8];
 
   return v6;
 }
 
-+ (void)dataRepresentationForAnimation:(id)a3 completionHandler:(id)a4
++ (void)dataRepresentationForAnimation:(id)animation completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ACC8];
   v10 = 0;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 archivedDataWithRootObject:v7 requiringSecureCoding:0 error:&v10];
-  v9 = [v7 keyPath];
+  handlerCopy = handler;
+  animationCopy = animation;
+  v8 = [v5 archivedDataWithRootObject:animationCopy requiringSecureCoding:0 error:&v10];
+  keyPath = [animationCopy keyPath];
 
-  v6[2](v6, v9, v8);
+  handlerCopy[2](handlerCopy, keyPath, v8);
 }
 
-+ (id)animationFromDictionaryRepresentation:(id)a3 keyPath:(id)a4
++ (id)animationFromDictionaryRepresentation:(id)representation keyPath:(id)path
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"valuesByKeyTime"];
+  pathCopy = path;
+  representationCopy = representation;
+  v7 = [representationCopy objectForKeyedSubscript:@"valuesByKeyTime"];
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v7 allKeys];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  allKeys = [v7 allKeys];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(allKeys, "count")}];
 
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v12 = [v7 allKeys];
+  allKeys2 = [v7 allKeys];
   v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self.floatValue" ascending:1];
   v28[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-  v15 = [v12 sortedArrayUsingDescriptors:v14];
+  v15 = [allKeys2 sortedArrayUsingDescriptors:v14];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -1177,9 +1177,9 @@ void __145__AVTAvatarPoseAnimation__addAnimationToAvatar_options_transitionInDur
   v17 = v7;
   v18 = v10;
   [v15 enumerateObjectsUsingBlock:v24];
-  v19 = [MEMORY[0x1E6979390] animationWithKeyPath:v5];
+  v19 = [MEMORY[0x1E6979390] animationWithKeyPath:pathCopy];
 
-  v20 = [v6 objectForKeyedSubscript:@"duration"];
+  v20 = [representationCopy objectForKeyedSubscript:@"duration"];
 
   [v20 floatValue];
   [v19 setDuration:v21];
@@ -1244,39 +1244,39 @@ LABEL_9:
 LABEL_10:
 }
 
-+ (void)dictionaryRepresentationForAnimation:(id)a3 completionHandler:(id)a4
++ (void)dictionaryRepresentationForAnimation:(id)animation completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 caAnimation];
+  animationCopy = animation;
+  handlerCopy = handler;
+  caAnimation = [animationCopy caAnimation];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     +[AVTAvatarPoseAnimation dictionaryRepresentationForAnimation:completionHandler:];
   }
 
-  v8 = v7;
+  v8 = caAnimation;
   v72[0] = MEMORY[0x1E69E9820];
   v72[1] = 3221225472;
   v73 = __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionHandler___block_invoke_2;
   v74 = &unk_1E7F48A98;
   v75 = v8;
-  v9 = [v8 keyPath];
-  v10 = [v9 isEqualToString:@"transform"];
+  keyPath = [v8 keyPath];
+  v10 = [keyPath isEqualToString:@"transform"];
 
   if (!v10)
   {
-    v43 = [v8 keyPath];
-    v62 = v6;
-    v64 = v5;
-    if ([v43 isEqualToString:@"position"])
+    keyPath2 = [v8 keyPath];
+    v62 = handlerCopy;
+    v64 = animationCopy;
+    if ([keyPath2 isEqualToString:@"position"])
     {
     }
 
     else
     {
-      v44 = [v8 keyPath];
-      v45 = [v44 isEqualToString:@"eulerAngles"];
+      keyPath3 = [v8 keyPath];
+      v45 = [keyPath3 isEqualToString:@"eulerAngles"];
 
       if (!v45)
       {
@@ -1288,68 +1288,68 @@ LABEL_10:
     v46 = &__block_literal_global_166;
 LABEL_22:
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v48 = [v8 keyTimes];
-    v49 = [v48 count];
+    keyTimes = [v8 keyTimes];
+    v49 = [keyTimes count];
 
     if (v49)
     {
       v51 = 0;
       do
       {
-        v52 = [v8 keyTimes];
-        v53 = [v52 objectAtIndexedSubscript:v51];
+        keyTimes2 = [v8 keyTimes];
+        v53 = [keyTimes2 objectAtIndexedSubscript:v51];
         v54 = v73(v72, v53);
-        v55 = [v54 stringValue];
+        stringValue = [v54 stringValue];
 
-        v56 = [v8 values];
-        v57 = [v56 objectAtIndexedSubscript:v51];
+        values = [v8 values];
+        v57 = [values objectAtIndexedSubscript:v51];
         v58 = v46[2](v46, v57);
 
-        [v11 setObject:v58 forKeyedSubscript:v55];
+        [v11 setObject:v58 forKeyedSubscript:stringValue];
         ++v51;
-        v59 = [v8 keyTimes];
-        v60 = [v59 count];
+        keyTimes3 = [v8 keyTimes];
+        v60 = [keyTimes3 count];
       }
 
       while (v51 < v60);
     }
 
     v12 = __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionHandler___block_invoke(v50, v8, v11);
-    v13 = [v8 keyPath];
-    v6 = v62;
-    v62[2](v62, v13, v12);
-    v5 = v64;
+    keyPath4 = [v8 keyPath];
+    handlerCopy = v62;
+    v62[2](v62, keyPath4, v12);
+    animationCopy = v64;
     goto LABEL_26;
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [MEMORY[0x1E69DF330] node];
-  [(__CFString *)v13 position];
+  keyPath4 = [MEMORY[0x1E69DF330] node];
+  [(__CFString *)keyPath4 position];
   v66 = v14;
-  [(__CFString *)v13 orientation];
+  [(__CFString *)keyPath4 orientation];
   v65 = v15;
-  v16 = [v8 keyTimes];
-  v17 = [v16 count];
+  keyTimes4 = [v8 keyTimes];
+  v17 = [keyTimes4 count];
 
   if (v17)
   {
-    v61 = v6;
-    v63 = v5;
-    LOBYTE(v6) = 0;
+    v61 = handlerCopy;
+    v63 = animationCopy;
+    LOBYTE(handlerCopy) = 0;
     LOBYTE(v71) = 0;
     v18 = 0;
     do
     {
       v19 = v11;
       v20 = v12;
-      v21 = [v8 keyTimes];
-      v22 = [v21 objectAtIndexedSubscript:v18];
+      keyTimes5 = [v8 keyTimes];
+      v22 = [keyTimes5 objectAtIndexedSubscript:v18];
       v23 = v73(v72, v22);
-      v24 = [v23 stringValue];
+      stringValue2 = [v23 stringValue];
 
-      v25 = [v8 values];
-      v26 = [v25 objectAtIndexedSubscript:v18];
+      values2 = [v8 values];
+      v26 = [values2 objectAtIndexedSubscript:v18];
 
       [v26 avt_float4x4Value];
       v69 = v28;
@@ -1357,19 +1357,19 @@ LABEL_22:
       v67 = v30;
       v68 = v29;
       [MEMORY[0x1E69DF378] begin];
-      [(__CFString *)v13 setTransform:v70, v69, v68, v67];
+      [(__CFString *)keyPath4 setTransform:v70, v69, v68, v67];
       [MEMORY[0x1E69DF378] commit];
-      if (v6)
+      if (handlerCopy)
       {
-        LOBYTE(v6) = 1;
+        LOBYTE(handlerCopy) = 1;
       }
 
       else
       {
-        [(__CFString *)v13 position];
+        [(__CFString *)keyPath4 position];
         v32 = vmvnq_s8(vceqq_f32(v66, v31));
         v32.i32[3] = v32.i32[2];
-        LODWORD(v6) = vmaxvq_u32(v32) >> 31;
+        LODWORD(handlerCopy) = vmaxvq_u32(v32) >> 31;
       }
 
       v12 = v20;
@@ -1380,35 +1380,35 @@ LABEL_22:
 
       else
       {
-        [(__CFString *)v13 orientation];
+        [(__CFString *)keyPath4 orientation];
         v33 = vmaxvq_u32(vmvnq_s8(vceqq_f32(v65, v34))) >> 31;
       }
 
       v71 = v33;
       v11 = v19;
       v35 = MEMORY[0x1E695DEC8];
-      [(__CFString *)v13 position];
+      [(__CFString *)keyPath4 position];
       v36 = [v35 avt_arrayWithFloat3:?];
-      [v19 setObject:v36 forKeyedSubscript:v24];
+      [v19 setObject:v36 forKeyedSubscript:stringValue2];
 
       v37 = MEMORY[0x1E695DEC8];
-      [(__CFString *)v13 orientation];
+      [(__CFString *)keyPath4 orientation];
       v38 = [v37 avt_arrayWithFloat4:?];
-      [v12 setObject:v38 forKeyedSubscript:v24];
+      [v12 setObject:v38 forKeyedSubscript:stringValue2];
 
       ++v18;
-      v39 = [v8 keyTimes];
-      v40 = [v39 count];
+      keyTimes6 = [v8 keyTimes];
+      v40 = [keyTimes6 count];
     }
 
     while (v18 < v40);
-    if (v6)
+    if (handlerCopy)
     {
       v42 = __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionHandler___block_invoke(v41, v8, v19);
-      v6 = v61;
+      handlerCopy = v61;
       v61[2](v61, @"position", v42);
 
-      v5 = v63;
+      animationCopy = v63;
       if ((v71 & 1) == 0)
       {
         goto LABEL_26;
@@ -1417,13 +1417,13 @@ LABEL_22:
       goto LABEL_20;
     }
 
-    v6 = v61;
-    v5 = v63;
+    handlerCopy = v61;
+    animationCopy = v63;
     if (v71)
     {
 LABEL_20:
       v47 = __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionHandler___block_invoke(v41, v8, v12);
-      v6[2](v6, @"orientation", v47);
+      handlerCopy[2](handlerCopy, @"orientation", v47);
     }
   }
 
@@ -1487,23 +1487,23 @@ id __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionH
   return v4;
 }
 
-+ (id)optimizeSceneKitAnimation:(id)a3 target:(id)a4
++ (id)optimizeSceneKitAnimation:(id)animation target:(id)target
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 setUsesSceneTimeBase:1];
-  [v5 _optimizeKeyframesWithTarget:v6];
+  animationCopy = animation;
+  targetCopy = target;
+  [animationCopy setUsesSceneTimeBase:1];
+  [animationCopy _optimizeKeyframesWithTarget:targetCopy];
 
-  [v5 setUsesSceneTimeBase:0];
+  [animationCopy setUsesSceneTimeBase:0];
 
-  return v5;
+  return animationCopy;
 }
 
-+ (void)removeAllAnimationsFromAvatar:(id)a3
++ (void)removeAllAnimationsFromAvatar:(id)avatar
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [a3 avatarNode];
-  [v3 animationKeys];
+  avatarNode = [avatar avatarNode];
+  [avatarNode animationKeys];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1547,7 +1547,7 @@ id __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionH
                 v14 = *(*(&v16 + 1) + 8 * j);
                 if ([v14 hasPrefix:{@"kAVTPoseAnimation-", v16}])
                 {
-                  [v3 removeAnimationForKey:v14];
+                  [avatarNode removeAnimationForKey:v14];
                 }
               }
 
@@ -1571,7 +1571,7 @@ id __81__AVTAvatarPoseAnimation_dictionaryRepresentationForAnimation_completionH
     }
   }
 
-  [v3 removeAllAnimations];
+  [avatarNode removeAllAnimations];
 LABEL_20:
 
   v15 = *MEMORY[0x1E69E9840];

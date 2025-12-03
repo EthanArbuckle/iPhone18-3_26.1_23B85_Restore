@@ -1,50 +1,50 @@
 @interface UINibKeyValuePair
-- (UINibKeyValuePair)initWithCoder:(id)a3;
-- (UINibKeyValuePair)initWithObject:(id)a3 keyPath:(id)a4 value:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (UINibKeyValuePair)initWithCoder:(id)coder;
+- (UINibKeyValuePair)initWithObject:(id)object keyPath:(id)path value:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UINibKeyValuePair
 
-- (UINibKeyValuePair)initWithObject:(id)a3 keyPath:(id)a4 value:(id)a5
+- (UINibKeyValuePair)initWithObject:(id)object keyPath:(id)path value:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  pathCopy = path;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = UINibKeyValuePair;
   v12 = [(UINibKeyValuePair *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->object, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->object, object);
+    v14 = [pathCopy copy];
     keyPath = v13->keyPath;
     v13->keyPath = v14;
 
-    objc_storeStrong(&v13->value, a5);
+    objc_storeStrong(&v13->value, value);
   }
 
   return v13;
 }
 
-- (UINibKeyValuePair)initWithCoder:(id)a3
+- (UINibKeyValuePair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UINibKeyValuePair;
   v5 = [(UINibKeyValuePair *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIObject"];
+    v6 = [coderCopy decodeObjectForKey:@"UIObject"];
     object = v5->object;
     v5->object = v6;
 
-    v8 = [v4 decodeObjectForKey:@"UIValue"];
+    v8 = [coderCopy decodeObjectForKey:@"UIValue"];
     value = v5->value;
     v5->value = v8;
 
-    v10 = [v4 decodeObjectForKey:@"UIKeyPath"];
+    v10 = [coderCopy decodeObjectForKey:@"UIKeyPath"];
     v11 = [v10 copy];
     keyPath = v5->keyPath;
     v5->keyPath = v11;
@@ -53,13 +53,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   object = self->object;
-  v5 = a3;
-  [v5 encodeObject:object forKey:@"UIObject"];
-  [v5 encodeObject:self->value forKey:@"UIValue"];
-  [v5 encodeObject:self->keyPath forKey:@"UIKeyPath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:object forKey:@"UIObject"];
+  [coderCopy encodeObject:self->value forKey:@"UIValue"];
+  [coderCopy encodeObject:self->keyPath forKey:@"UIKeyPath"];
 }
 
 @end

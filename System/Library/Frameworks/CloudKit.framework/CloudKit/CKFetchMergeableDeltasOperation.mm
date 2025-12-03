@@ -1,24 +1,24 @@
 @interface CKFetchMergeableDeltasOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKFetchMergeableDeltasOperation)initWithMergeableValueIDs:(id)a3;
+- (CKFetchMergeableDeltasOperation)initWithMergeableValueIDs:(id)ds;
 - (id)activityCreate;
 - (id)deltasFetchedBlock;
 - (id)fetchMergeableDeltasCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleFetchForMergeableValueID:(id)a3 fetchedDeltas:(id)a4 error:(id)a5;
-- (void)setDeltasFetchedBlock:(id)a3;
-- (void)setFetchMergeableDeltasCompletionBlock:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleFetchForMergeableValueID:(id)d fetchedDeltas:(id)deltas error:(id)error;
+- (void)setDeltasFetchedBlock:(id)block;
+- (void)setFetchMergeableDeltasCompletionBlock:(id)block;
 @end
 
 @implementation CKFetchMergeableDeltasOperation
 
-- (void)setDeltasFetchedBlock:(id)a3
+- (void)setDeltasFetchedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -32,16 +32,16 @@
     v12[2] = sub_1885B324C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     deltasFetchedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_deltasFetchedBlock != v6)
+  if (self->_deltasFetchedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     deltasFetchedBlock = self->_deltasFetchedBlock;
     self->_deltasFetchedBlock = v9;
 LABEL_9:
@@ -84,9 +84,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setFetchMergeableDeltasCompletionBlock:(id)a3
+- (void)setFetchMergeableDeltasCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -100,16 +100,16 @@ LABEL_9:
     v12[2] = sub_1885B35D8;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     fetchMergeableDeltasCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchMergeableDeltasCompletionBlock != v6)
+  if (self->_fetchMergeableDeltasCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     fetchMergeableDeltasCompletionBlock = self->_fetchMergeableDeltasCompletionBlock;
     self->_fetchMergeableDeltasCompletionBlock = v9;
 LABEL_9:
@@ -152,22 +152,22 @@ LABEL_9:
   return v6;
 }
 
-- (CKFetchMergeableDeltasOperation)initWithMergeableValueIDs:(id)a3
+- (CKFetchMergeableDeltasOperation)initWithMergeableValueIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = CKFetchMergeableDeltasOperation;
   v5 = [(CKOperation *)&v9 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setMergeableValueIDs_(v5, v6, v4);
+    objc_msgSend_setMergeableValueIDs_(v5, v6, dsCopy);
   }
 
   return v7;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v16.receiver = self;
   v16.super_class = CKFetchMergeableDeltasOperation;
@@ -180,11 +180,11 @@ LABEL_9:
   v10 = objc_msgSend_count(v7, v8, v9);
   v11 = v10 != 0;
 
-  if (a3 && !v10)
+  if (run && !v10)
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v14, @"CKErrorDomain", 12, @"%@ must have at least one mergeable ID to fetch", v13);
+    *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v14, @"CKErrorDomain", 12, @"%@ must have at least one mergeable ID to fetch", v13);
 
     return 0;
   }
@@ -192,24 +192,24 @@ LABEL_9:
   return v11;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_mergeableValueIDs(self, v5, v6);
-  objc_msgSend_setMergeableValueIDs_(v4, v8, v7);
+  objc_msgSend_setMergeableValueIDs_(infoCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKFetchMergeableDeltasOperation;
-  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKFetchMergeableDeltasOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_mergeableValueIDs(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_mergeableValueIDs(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setMergeableValueIDs_(self, v8, v7);
 }
@@ -229,10 +229,10 @@ LABEL_9:
   return v5;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_CKClientSuitableError(a3, a2, a3);
+  v4 = objc_msgSend_CKClientSuitableError(error, a2, error);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -289,25 +289,25 @@ LABEL_9:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___CKFetchMergeableDeltasOperation;
-  v3 = a3;
-  objc_msgSendSuper2(&v10, sel_applyDaemonCallbackInterfaceTweaks_, v3);
+  tweaksCopy = tweaks;
+  objc_msgSendSuper2(&v10, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v8 = objc_msgSend_setWithObjects_(v4, v7, v5, v6, 0, v10.receiver, v10.super_class);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v3, v9, v8, sel_handleFetchForMergeableValueID_fetchedDeltas_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v9, v8, sel_handleFetchForMergeableValueID_fetchedDeltas_error_, 1, 0);
 }
 
-- (void)handleFetchForMergeableValueID:(id)a3 fetchedDeltas:(id)a4 error:(id)a5
+- (void)handleFetchForMergeableValueID:(id)d fetchedDeltas:(id)deltas error:(id)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_CKClientSuitableError(a5, v10, v11);
+  dCopy = d;
+  deltasCopy = deltas;
+  v12 = objc_msgSend_CKClientSuitableError(error, v10, v11);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -321,9 +321,9 @@ LABEL_9:
     v32 = 138544130;
     v33 = v25;
     v34 = 2112;
-    v35 = v8;
+    v35 = dCopy;
     v36 = 2048;
-    v37 = objc_msgSend_count(v9, v26, v27);
+    v37 = objc_msgSend_count(deltasCopy, v26, v27);
     v38 = 2112;
     v39 = v12;
     _os_log_debug_impl(&dword_1883EA000, v22, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received deltas fetched callback for mergeable %@ with %ld deltas and error: %@", &v32, 0x2Au);
@@ -334,7 +334,7 @@ LABEL_9:
   if (v16)
   {
     v19 = objc_msgSend_deltasFetchedBlock(self, v17, v18);
-    (v19)[2](v19, v8, v9, v12);
+    (v19)[2](v19, dCopy, deltasCopy, v12);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -350,7 +350,7 @@ LABEL_9:
     v32 = 138543874;
     v33 = v31;
     v34 = 2112;
-    v35 = v8;
+    v35 = dCopy;
     v36 = 2112;
     v37 = v12;
     _os_log_debug_impl(&dword_1883EA000, v28, OS_LOG_TYPE_DEBUG, "Operation %{public}@ finished deltas fetched callback for mergeable %@ with error: %@", &v32, 0x20u);

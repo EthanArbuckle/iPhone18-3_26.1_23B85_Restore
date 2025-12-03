@@ -1,71 +1,71 @@
 @interface SKAccountPageViewController
-+ (void)isCommerceUIURL:(id)a3 completion:(id)a4;
++ (void)isCommerceUIURL:(id)l completion:(id)completion;
 - (BOOL)_isBridgedNavigationViewController;
-- (SKAccountPageViewController)initWithAccountURL:(id)a3 forceLegacy:(BOOL)a4;
+- (SKAccountPageViewController)initWithAccountURL:(id)l forceLegacy:(BOOL)legacy;
 - (SKAccountPageViewController)presentingAccountPageViewController;
 - (SKAccountPageViewControllerDelegate)delegate;
-- (id)_URLForBagKey:(id)a3;
-- (id)_overrideScheme:(id)a3;
-- (id)_redeemURLFromRedeemConfigURL:(id)a3;
+- (id)_URLForBagKey:(id)key;
+- (id)_overrideScheme:(id)scheme;
+- (id)_redeemURLFromRedeemConfigURL:(id)l;
 - (unint64_t)_indexForFirstBridgedNavigationViewController;
 - (void)_addRemoteView;
-- (void)_beginURLParsing:(id)a3 forceLegacy:(BOOL)a4;
+- (void)_beginURLParsing:(id)parsing forceLegacy:(BOOL)legacy;
 - (void)_didFinishLoading;
-- (void)_didPrepareWithResult:(BOOL)a3 error:(id)a4;
-- (void)_dismissViewControllerWithResult:(BOOL)a3 error:(id)a4;
-- (void)_financeInterruptionResolved:(BOOL)a3;
+- (void)_didPrepareWithResult:(BOOL)result error:(id)error;
+- (void)_dismissViewControllerWithResult:(BOOL)result error:(id)error;
+- (void)_financeInterruptionResolved:(BOOL)resolved;
 - (void)_handleLegacyViewWillAppear;
-- (void)_keyboardDidChangeNotification:(id)a3;
-- (void)_keyboardWillChangeNotification:(id)a3;
-- (void)_overrideCreditCardPresentationWithCompletion:(id)a3;
-- (void)_overrideRedeemCameraPerformAction:(int64_t)a3 withObject:(id)a4;
-- (void)_overrideRedeemCameraWithCompletion:(id)a3;
+- (void)_keyboardDidChangeNotification:(id)notification;
+- (void)_keyboardWillChangeNotification:(id)notification;
+- (void)_overrideCreditCardPresentationWithCompletion:(id)completion;
+- (void)_overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object;
+- (void)_overrideRedeemCameraWithCompletion:(id)completion;
 - (void)_popAllBridgedNavigationViewControllers;
-- (void)_popBridgedViewControllersToIndex:(unint64_t)a3;
+- (void)_popBridgedViewControllersToIndex:(unint64_t)index;
 - (void)_presentBridgedViewController;
-- (void)_pushBridgedViewControllerAnimated:(BOOL)a3 options:(id)a4;
+- (void)_pushBridgedViewControllerAnimated:(BOOL)animated options:(id)options;
 - (void)_requestRemoteViewController;
-- (void)_setBridgedNavigationItemWithOptions:(id)a3;
+- (void)_setBridgedNavigationItemWithOptions:(id)options;
 - (void)_setupLegacyContainer;
 - (void)_setupNavigationItem;
 - (void)_setupNotificationCenter;
 - (void)_setupPreWarmedViewController;
-- (void)_setupRemoteViewController:(BOOL)a3;
+- (void)_setupRemoteViewController:(BOOL)controller;
 - (void)_setupWebViewController;
-- (void)_sk_applicationWillEnterForeground:(id)a3;
+- (void)_sk_applicationWillEnterForeground:(id)foreground;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)loadWithCompletionBlock:(id)a3;
-- (void)overrideRedeemOperationWithCode:(id)a3 cameraRecognized:(BOOL)a4 completion:(id)a5;
-- (void)prepareWithCompletionBlock:(id)a3;
-- (void)redeemCameraViewController:(id)a3 didFinishWithRedeem:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)loadWithCompletionBlock:(id)block;
+- (void)overrideRedeemOperationWithCode:(id)code cameraRecognized:(BOOL)recognized completion:(id)completion;
+- (void)prepareWithCompletionBlock:(id)block;
+- (void)redeemCameraViewController:(id)controller didFinishWithRedeem:(id)redeem;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SKAccountPageViewController
 
-+ (void)isCommerceUIURL:(id)a3 completion:(id)a4
++ (void)isCommerceUIURL:(id)l completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E698CB70];
-  v7 = a3;
+  lCopy = l;
   v8 = [v6 alloc];
   v9 = +[SKAccountPageBagProvider sharedBag];
   v10 = [v8 initWithBag:v9];
 
-  v11 = [v10 isCommerceUIURL:v7];
+  v11 = [v10 isCommerceUIURL:lCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__SKAccountPageViewController_isCommerceUIURL_completion___block_invoke;
   v13[3] = &unk_1E7B27B08;
-  v14 = v5;
-  v12 = v5;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v11 addFinishBlock:v13];
 }
 
@@ -90,26 +90,26 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   return MEMORY[0x1EEE66BB8](v7, v6);
 }
 
-- (SKAccountPageViewController)initWithAccountURL:(id)a3 forceLegacy:(BOOL)a4
+- (SKAccountPageViewController)initWithAccountURL:(id)l forceLegacy:(BOOL)legacy
 {
-  v5 = a4;
-  v7 = a3;
+  legacyCopy = legacy;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = SKAccountPageViewController;
   v8 = [(SKAccountPageViewController *)&v16 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
-    v11 = v10;
-    if (!v10)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    processName = bundleIdentifier;
+    if (!bundleIdentifier)
     {
-      v4 = [MEMORY[0x1E696AE30] processInfo];
-      v11 = [v4 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
     }
 
-    objc_storeStrong(&v8->_referrer, v11);
-    if (!v10)
+    objc_storeStrong(&v8->_referrer, processName);
+    if (!bundleIdentifier)
     {
     }
 
@@ -117,8 +117,8 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
     connectionSetupPromise = v8->_connectionSetupPromise;
     v8->_connectionSetupPromise = v12;
 
-    v14 = [(SKAccountPageViewController *)v8 _overrideScheme:v7];
-    [(SKAccountPageViewController *)v8 _beginURLParsing:v14 forceLegacy:v5];
+    v14 = [(SKAccountPageViewController *)v8 _overrideScheme:lCopy];
+    [(SKAccountPageViewController *)v8 _beginURLParsing:v14 forceLegacy:legacyCopy];
   }
 
   return v8;
@@ -126,19 +126,19 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
   [(SKRemoteAccountPageViewController *)self->_remoteViewController setAccountPageViewController:0];
-  v5 = [(SKRemoteAccountPageViewController *)self->_remoteViewController disconnect];
+  disconnect = [(SKRemoteAccountPageViewController *)self->_remoteViewController disconnect];
   [(SKUIServiceAccountPageViewController *)self->_serviceProxy setInvocationTarget:0];
   v6.receiver = self;
   v6.super_class = SKAccountPageViewController;
   [(SKAccountPageViewController *)&v6 dealloc];
 }
 
-- (void)loadWithCompletionBlock:(id)a3
+- (void)loadWithCompletionBlock:(id)block
 {
   if (self->_loadBlock)
   {
@@ -147,7 +147,7 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 
   else
   {
-    v4 = [a3 copy];
+    v4 = [block copy];
     loadBlock = self->_loadBlock;
     self->_loadBlock = v4;
   }
@@ -163,7 +163,7 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)prepareWithCompletionBlock:(id)a3
+- (void)prepareWithCompletionBlock:(id)block
 {
   if (self->_prepareBlock)
   {
@@ -175,7 +175,7 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 
   else
   {
-    v6 = [a3 copy];
+    v6 = [block copy];
     prepareBlock = self->_prepareBlock;
     self->_prepareBlock = v6;
 
@@ -186,8 +186,8 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   [(SKAccountPageViewController *)self setView:v4];
   [(SKAccountPageViewController *)self _addRemoteView];
@@ -207,16 +207,16 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   v5.super_class = SKAccountPageViewController;
   [(SKAccountPageViewController *)&v5 viewDidLayoutSubviews];
   serviceProxy = self->_serviceProxy;
-  v4 = [(SKAccountPageViewController *)self view];
-  [v4 bounds];
+  view = [(SKAccountPageViewController *)self view];
+  [view bounds];
   [(SKUIServiceAccountPageViewController *)serviceProxy setPresentationBounds:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SKAccountPageViewController;
-  [(SKAccountPageViewController *)&v4 viewWillAppear:a3];
+  [(SKAccountPageViewController *)&v4 viewWillAppear:appear];
   if (!self->_viewHasAppeared)
   {
     if (self->_remoteViewController)
@@ -228,12 +228,12 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6.receiver = self;
   v6.super_class = SKAccountPageViewController;
-  [(SKAccountPageViewController *)&v6 willMoveToParentViewController:v4];
+  [(SKAccountPageViewController *)&v6 willMoveToParentViewController:controllerCopy];
   if (!self->_isRemoteViewControllerReady)
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -241,19 +241,19 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
     v5[2] = __62__SKAccountPageViewController_willMoveToParentViewController___block_invoke;
     v5[3] = &unk_1E7B27A78;
     v5[4] = self;
-    [v4 _beginDelayingPresentation:v5 cancellationHandler:10.0];
+    [controllerCopy _beginDelayingPresentation:v5 cancellationHandler:10.0];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = SKAccountPageViewController;
   [(SKAccountPageViewController *)&v6 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(SKAccountPageViewController *)self presentingAccountPageViewController];
-    if (v5)
+    presentingAccountPageViewController = [(SKAccountPageViewController *)self presentingAccountPageViewController];
+    if (presentingAccountPageViewController)
     {
     }
 
@@ -264,14 +264,14 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SKAccountPageViewController;
-  [(SKAccountPageViewController *)&v5 viewDidAppear:a3];
-  v4 = [(SKAccountPageViewController *)self navigationController];
+  [(SKAccountPageViewController *)&v5 viewDidAppear:appear];
+  navigationController = [(SKAccountPageViewController *)self navigationController];
 
-  if (v4)
+  if (navigationController)
   {
     [(SKAccountPageViewController *)self _setupPreWarmedViewController];
   }
@@ -293,21 +293,21 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 
 - (void)_setupNotificationCenter
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__sk_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 addObserver:self selector:sel__sk_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
-  [v3 addObserver:self selector:sel__keyboardDidChangeNotification_ name:*MEMORY[0x1E69DDF68] object:0];
-  [v3 addObserver:self selector:sel__keyboardWillChangeNotification_ name:*MEMORY[0x1E69DE068] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sk_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter addObserver:self selector:sel__sk_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardDidChangeNotification_ name:*MEMORY[0x1E69DDF68] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardWillChangeNotification_ name:*MEMORY[0x1E69DE068] object:0];
 }
 
-- (void)_sk_applicationWillEnterForeground:(id)a3
+- (void)_sk_applicationWillEnterForeground:(id)foreground
 {
   if ([(SKAccountPageViewController *)self isViewLoaded])
   {
-    v4 = [(SKAccountPageViewController *)self view];
-    v5 = [v4 window];
+    view = [(SKAccountPageViewController *)self view];
+    window = [view window];
 
-    if (v5)
+    if (window)
     {
       serviceProxy = self->_serviceProxy;
 
@@ -316,31 +316,31 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   }
 }
 
-- (void)_keyboardDidChangeNotification:(id)a3
+- (void)_keyboardDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 userInfo];
-  v16 = [v15 valueForKey:*MEMORY[0x1E69DDF38]];
-  v17 = [v16 intValue];
+  userInfo2 = [notificationCopy userInfo];
+  v16 = [userInfo2 valueForKey:*MEMORY[0x1E69DDF38]];
+  intValue = [v16 intValue];
 
-  v18 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v19 = [v18 valueForKey:*MEMORY[0x1E69DDF40]];
+  v19 = [userInfo3 valueForKey:*MEMORY[0x1E69DDF40]];
   [v19 floatValue];
   v21 = v20;
 
-  v22 = [(SKAccountPageViewController *)self view];
-  v23 = [MEMORY[0x1E69DC668] sharedApplication];
-  v24 = [v23 keyWindow];
-  [v22 convertRect:v24 fromView:{v8, v10, v12, v14}];
+  view = [(SKAccountPageViewController *)self view];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+  [view convertRect:keyWindow fromView:{v8, v10, v12, v14}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -348,34 +348,34 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 
   serviceProxy = self->_serviceProxy;
 
-  [(SKUIServiceAccountPageViewController *)serviceProxy keyboardDidChangeFrame:v17 animationCurve:v26 duration:v28, v30, v32, v21];
+  [(SKUIServiceAccountPageViewController *)serviceProxy keyboardDidChangeFrame:intValue animationCurve:v26 duration:v28, v30, v32, v21];
 }
 
-- (void)_keyboardWillChangeNotification:(id)a3
+- (void)_keyboardWillChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 userInfo];
-  v16 = [v15 valueForKey:*MEMORY[0x1E69DDF38]];
-  v17 = [v16 intValue];
+  userInfo2 = [notificationCopy userInfo];
+  v16 = [userInfo2 valueForKey:*MEMORY[0x1E69DDF38]];
+  intValue = [v16 intValue];
 
-  v18 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v19 = [v18 valueForKey:*MEMORY[0x1E69DDF40]];
+  v19 = [userInfo3 valueForKey:*MEMORY[0x1E69DDF40]];
   [v19 floatValue];
   v21 = v20;
 
-  v22 = [(SKAccountPageViewController *)self view];
-  v23 = [MEMORY[0x1E69DC668] sharedApplication];
-  v24 = [v23 keyWindow];
-  [v22 convertRect:v24 fromView:{v8, v10, v12, v14}];
+  view = [(SKAccountPageViewController *)self view];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+  [view convertRect:keyWindow fromView:{v8, v10, v12, v14}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -383,15 +383,15 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
 
   serviceProxy = self->_serviceProxy;
 
-  [(SKUIServiceAccountPageViewController *)serviceProxy keyboardWillChangeFrame:v17 animationCurve:v26 duration:v28, v30, v32, v21];
+  [(SKUIServiceAccountPageViewController *)serviceProxy keyboardWillChangeFrame:intValue animationCurve:v26 duration:v28, v30, v32, v21];
 }
 
-- (void)_didPrepareWithResult:(BOOL)a3 error:(id)a4
+- (void)_didPrepareWithResult:(BOOL)result error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v9 = v6;
-  if (v4)
+  resultCopy = result;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (resultCopy)
   {
     [(SKAccountPageViewController *)self _addRemoteView];
     if (self->_viewHasAppeared)
@@ -403,7 +403,7 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   prepareBlock = self->_prepareBlock;
   if (prepareBlock)
   {
-    (prepareBlock)[2](prepareBlock, v4, v9);
+    (prepareBlock)[2](prepareBlock, resultCopy, v9);
     v8 = self->_prepareBlock;
     self->_prepareBlock = 0;
   }
@@ -427,7 +427,7 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   }
 }
 
-- (void)_dismissViewControllerWithResult:(BOOL)a3 error:(id)a4
+- (void)_dismissViewControllerWithResult:(BOOL)result error:(id)error
 {
   if (self->_prepareBlock)
   {
@@ -460,41 +460,41 @@ uint64_t __58__SKAccountPageViewController_isCommerceUIURL_completion___block_in
   }
 }
 
-- (void)_financeInterruptionResolved:(BOOL)a3
+- (void)_financeInterruptionResolved:(BOOL)resolved
 {
-  v3 = a3;
+  resolvedCopy = resolved;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SKAccountPageViewController *)self presentingAccountPageViewController];
+    presentingAccountPageViewController = [(SKAccountPageViewController *)self presentingAccountPageViewController];
 
-    if (v7)
+    if (presentingAccountPageViewController)
     {
-      v8 = [(SKAccountPageViewController *)self presentingAccountPageViewController];
-      [v8 _financeInterruptionResolved:v3];
+      presentingAccountPageViewController2 = [(SKAccountPageViewController *)self presentingAccountPageViewController];
+      [presentingAccountPageViewController2 _financeInterruptionResolved:resolvedCopy];
     }
 
     else
     {
       self->_financeInterruptionCalled = 1;
-      v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 accountPageViewController:self financeInterruptionResolved:v3];
+      presentingAccountPageViewController2 = objc_loadWeakRetained(&self->_delegate);
+      [presentingAccountPageViewController2 accountPageViewController:self financeInterruptionResolved:resolvedCopy];
     }
   }
 }
 
-- (void)_overrideCreditCardPresentationWithCompletion:(id)a3
+- (void)_overrideCreditCardPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77__SKAccountPageViewController__overrideCreditCardPresentationWithCompletion___block_invoke;
   v6[3] = &unk_1E7B27B30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -526,17 +526,17 @@ void __77__SKAccountPageViewController__overrideCreditCardPresentationWithComple
   *(*(a1 + 32) + 1050) = 1;
 }
 
-- (void)_overrideRedeemCameraPerformAction:(int64_t)a3 withObject:(id)a4
+- (void)_overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__SKAccountPageViewController__overrideRedeemCameraPerformAction_withObject___block_invoke;
   block[3] = &unk_1E7B27B80;
-  v9 = v6;
-  v10 = a3;
+  v9 = objectCopy;
+  actionCopy = action;
   block[4] = self;
-  v7 = v6;
+  v7 = objectCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -603,9 +603,9 @@ void __77__SKAccountPageViewController__overrideRedeemCameraPerformAction_withOb
   }
 }
 
-- (void)_overrideRedeemCameraWithCompletion:(id)a3
+- (void)_overrideRedeemCameraWithCompletion:(id)completion
 {
-  v4 = [a3 copy];
+  v4 = [completion copy];
   redeemCompletionHandler = self->redeemCompletionHandler;
   self->redeemCompletionHandler = v4;
 
@@ -688,43 +688,43 @@ void __67__SKAccountPageViewController__overrideRedeemCameraWithCompletion___blo
   *(*(a1 + 32) + 1050) = 1;
 }
 
-- (void)_setBridgedNavigationItemWithOptions:(id)a3
+- (void)_setBridgedNavigationItemWithOptions:(id)options
 {
-  v23 = a3;
-  v4 = [v23 objectForKeyedSubscript:@"ServiceNavigationItemOptionBackButtonTitle"];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:@"ServiceNavigationItemOptionBackButtonTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SKAccountPageViewController *)self navigationItem];
-    v6 = [v5 backBarButtonItem];
+    navigationItem = [(SKAccountPageViewController *)self navigationItem];
+    backBarButtonItem = [navigationItem backBarButtonItem];
 
-    if (v6)
+    if (backBarButtonItem)
     {
-      [v6 setTitle:v4];
+      [backBarButtonItem setTitle:v4];
     }
 
     else
     {
       v7 = objc_alloc_init(MEMORY[0x1E69DC708]);
       [v7 setTitle:v4];
-      v8 = [(SKAccountPageViewController *)self navigationItem];
-      [v8 setBackBarButtonItem:v7];
+      navigationItem2 = [(SKAccountPageViewController *)self navigationItem];
+      [navigationItem2 setBackBarButtonItem:v7];
     }
   }
 
-  v9 = [v23 objectForKeyedSubscript:@"ServiceNavigationItemOptionBackButtonHidden"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"ServiceNavigationItemOptionBackButtonHidden"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 BOOLValue];
-    v11 = [(SKAccountPageViewController *)self navigationItem];
-    [v11 setHidesBackButton:v10 animated:1];
+    bOOLValue = [v9 BOOLValue];
+    navigationItem3 = [(SKAccountPageViewController *)self navigationItem];
+    [navigationItem3 setHidesBackButton:bOOLValue animated:1];
   }
 
-  v12 = [v23 objectForKeyedSubscript:@"ServiceNavigationItemOptionRightButtonTitle"];
-  v13 = [v23 objectForKeyedSubscript:@"ServiceNavigationItemOptionRightButtonStyle"];
-  v14 = [v23 objectForKeyedSubscript:@"ServiceNavigationItemOptionRightButtonEnabled"];
-  v15 = [v14 BOOLValue];
+  v12 = [optionsCopy objectForKeyedSubscript:@"ServiceNavigationItemOptionRightButtonTitle"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"ServiceNavigationItemOptionRightButtonStyle"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"ServiceNavigationItemOptionRightButtonEnabled"];
+  bOOLValue2 = [v14 BOOLValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -732,44 +732,44 @@ void __67__SKAccountPageViewController__overrideRedeemCameraWithCompletion___blo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v13 integerValue];
-      v17 = [(SKAccountPageViewController *)self navigationItem];
-      v18 = [v17 rightBarButtonItem];
+      integerValue = [v13 integerValue];
+      navigationItem4 = [(SKAccountPageViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem4 rightBarButtonItem];
 
-      if (v18)
+      if (rightBarButtonItem)
       {
-        [v18 setTitle:v12];
-        [v18 setStyle:v16];
-        [v18 setEnabled:v15];
+        [rightBarButtonItem setTitle:v12];
+        [rightBarButtonItem setStyle:integerValue];
+        [rightBarButtonItem setEnabled:bOOLValue2];
       }
 
       else
       {
-        v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v12 style:v16 target:self action:sel__bridgedRightButtonPressed_];
-        [v19 setEnabled:v15];
-        v20 = [(SKAccountPageViewController *)self navigationItem];
-        [v20 setRightBarButtonItem:v19];
+        v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v12 style:integerValue target:self action:sel__bridgedRightButtonPressed_];
+        [v19 setEnabled:bOOLValue2];
+        navigationItem5 = [(SKAccountPageViewController *)self navigationItem];
+        [navigationItem5 setRightBarButtonItem:v19];
       }
     }
   }
 
-  v21 = [v23 objectForKeyedSubscript:@"ServiceNavigationItemOptionTitle"];
+  v21 = [optionsCopy objectForKeyedSubscript:@"ServiceNavigationItemOptionTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = [(SKAccountPageViewController *)self navigationItem];
-    [v22 setTitle:v21];
+    navigationItem6 = [(SKAccountPageViewController *)self navigationItem];
+    [navigationItem6 setTitle:v21];
   }
 }
 
-- (void)_pushBridgedViewControllerAnimated:(BOOL)a3 options:(id)a4
+- (void)_pushBridgedViewControllerAnimated:(BOOL)animated options:(id)options
 {
-  v6 = a4;
-  v7 = [(SKAccountPageViewController *)self preWarmedViewController];
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  preWarmedViewController = [(SKAccountPageViewController *)self preWarmedViewController];
+  v8 = preWarmedViewController;
+  if (preWarmedViewController)
   {
-    v9 = v7;
+    v9 = preWarmedViewController;
   }
 
   else
@@ -780,17 +780,17 @@ void __67__SKAccountPageViewController__overrideRedeemCameraWithCompletion___blo
   v10 = v9;
 
   objc_initWeak(&location, v10);
-  v11 = [(SKAccountPageViewController *)v10 connectionSetupPromise];
+  connectionSetupPromise = [(SKAccountPageViewController *)v10 connectionSetupPromise];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__SKAccountPageViewController__pushBridgedViewControllerAnimated_options___block_invoke;
   v13[3] = &unk_1E7B27BA8;
   objc_copyWeak(&v15, &location);
   v13[4] = self;
-  v12 = v6;
+  v12 = optionsCopy;
   v14 = v12;
-  v16 = a3;
-  [v11 addFinishBlock:v13];
+  animatedCopy = animated;
+  [connectionSetupPromise addFinishBlock:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -815,9 +815,9 @@ void __74__SKAccountPageViewController__pushBridgedViewControllerAnimated_option
   [*(a1 + 32) setPreWarmedViewController:0];
 }
 
-- (void)_popBridgedViewControllersToIndex:(unint64_t)a3
+- (void)_popBridgedViewControllersToIndex:(unint64_t)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
 
     [(SKAccountPageViewController *)self _popAllBridgedNavigationViewControllers];
@@ -825,30 +825,30 @@ void __74__SKAccountPageViewController__pushBridgedViewControllerAnimated_option
 
   else
   {
-    v4 = [(SKAccountPageViewController *)self _indexForFirstBridgedNavigationViewController]+ a3;
-    v5 = [(SKAccountPageViewController *)self navigationController];
-    v6 = [v5 viewControllers];
-    v7 = [v6 count];
+    v4 = [(SKAccountPageViewController *)self _indexForFirstBridgedNavigationViewController]+ index;
+    navigationController = [(SKAccountPageViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v7 = [viewControllers count];
 
     if (v7 > v4)
     {
-      v8 = [(SKAccountPageViewController *)self navigationController];
-      v9 = [v8 viewControllers];
-      v12 = [v9 objectAtIndex:v4];
+      navigationController2 = [(SKAccountPageViewController *)self navigationController];
+      viewControllers2 = [navigationController2 viewControllers];
+      v12 = [viewControllers2 objectAtIndex:v4];
 
-      v10 = [(SKAccountPageViewController *)self navigationController];
-      v11 = [v10 popToViewController:v12 animated:1];
+      navigationController3 = [(SKAccountPageViewController *)self navigationController];
+      v11 = [navigationController3 popToViewController:v12 animated:1];
     }
   }
 }
 
 - (void)_presentBridgedViewController
 {
-  v3 = [(SKAccountPageViewController *)self preWarmedViewController];
-  v4 = v3;
-  if (v3)
+  preWarmedViewController = [(SKAccountPageViewController *)self preWarmedViewController];
+  v4 = preWarmedViewController;
+  if (preWarmedViewController)
   {
-    v5 = v3;
+    v5 = preWarmedViewController;
   }
 
   else
@@ -859,14 +859,14 @@ void __74__SKAccountPageViewController__pushBridgedViewControllerAnimated_option
   v6 = v5;
 
   objc_initWeak(&location, v6);
-  v7 = [(SKAccountPageViewController *)v6 connectionSetupPromise];
+  connectionSetupPromise = [(SKAccountPageViewController *)v6 connectionSetupPromise];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__SKAccountPageViewController__presentBridgedViewController__block_invoke;
   v8[3] = &unk_1E7B27BD0;
   objc_copyWeak(&v9, &location);
   v8[4] = self;
-  [v7 addFinishBlock:v8];
+  [connectionSetupPromise addFinishBlock:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -896,41 +896,41 @@ void __60__SKAccountPageViewController__presentBridgedViewController__block_invo
   [*(a1 + 32) setPreWarmedViewController:0];
 }
 
-- (void)redeemCameraViewController:(id)a3 didFinishWithRedeem:(id)a4
+- (void)redeemCameraViewController:(id)controller didFinishWithRedeem:(id)redeem
 {
-  v8 = a3;
+  controllerCopy = controller;
   redeemCompletionHandler = self->redeemCompletionHandler;
   if (redeemCompletionHandler)
   {
-    redeemCompletionHandler[2](redeemCompletionHandler, a4, 0);
+    redeemCompletionHandler[2](redeemCompletionHandler, redeem, 0);
     v7 = self->redeemCompletionHandler;
     self->redeemCompletionHandler = 0;
   }
 
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)overrideRedeemOperationWithCode:(id)a3 cameraRecognized:(BOOL)a4 completion:(id)a5
+- (void)overrideRedeemOperationWithCode:(id)code cameraRecognized:(BOOL)recognized completion:(id)completion
 {
-  v5 = a4;
+  recognizedCopy = recognized;
   v19 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E69D4938];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 sharedConfig];
-  v12 = [v11 shouldLog];
-  if ([v11 shouldLogToDisk])
+  completionCopy = completion;
+  codeCopy = code;
+  sharedConfig = [v8 sharedConfig];
+  shouldLog = [sharedConfig shouldLog];
+  if ([sharedConfig shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog;
   }
 
-  v14 = [v11 OSLogObject];
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedConfig OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 &= 2u;
   }
@@ -948,27 +948,27 @@ void __60__SKAccountPageViewController__presentBridgedViewController__block_invo
 
   if (v16)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v18, v17, v18}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v18, v17, v18}];
     free(v16);
     SSFileLog();
 LABEL_9:
   }
 
-  [(SKUIServiceAccountPageViewController *)self->_serviceProxy performRedeemOperationWithCode:v10 cameraRecognized:v5 completion:v9];
+  [(SKUIServiceAccountPageViewController *)self->_serviceProxy performRedeemOperationWithCode:codeCopy cameraRecognized:recognizedCopy completion:completionCopy];
 }
 
-- (void)_beginURLParsing:(id)a3 forceLegacy:(BOOL)a4
+- (void)_beginURLParsing:(id)parsing forceLegacy:(BOOL)legacy
 {
-  v6 = a3;
+  parsingCopy = parsing;
   v7 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__SKAccountPageViewController__beginURLParsing_forceLegacy___block_invoke;
   block[3] = &unk_1E7B27C48;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = parsingCopy;
+  selfCopy = self;
+  legacyCopy = legacy;
+  v8 = parsingCopy;
   dispatch_async(v7, block);
 }
 
@@ -1112,13 +1112,13 @@ void __60__SKAccountPageViewController__beginURLParsing_forceLegacy___block_invo
   }
 }
 
-- (id)_URLForBagKey:(id)a3
+- (id)_URLForBagKey:(id)key
 {
   v3 = MEMORY[0x1E69D49F8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 contextWithBagType:0];
   v6 = [objc_alloc(MEMORY[0x1E69D49F0]) initWithURLBagContext:v5];
-  v7 = [v6 valueForKey:v4 error:0];
+  v7 = [v6 valueForKey:keyCopy error:0];
 
   objc_opt_class();
   v8 = 0;
@@ -1130,26 +1130,26 @@ void __60__SKAccountPageViewController__beginURLParsing_forceLegacy___block_invo
   return v8;
 }
 
-- (id)_redeemURLFromRedeemConfigURL:(id)a3
+- (id)_redeemURLFromRedeemConfigURL:(id)l
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 pathComponents];
-  v6 = [v5 count];
+  lCopy = l;
+  pathComponents = [lCopy pathComponents];
+  v6 = [pathComponents count];
 
   if (v6 < 2)
   {
-    v7 = [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:1];
+    pathComponents2 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = [v7 queryItems];
-    v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    queryItems = [pathComponents2 queryItems];
+    v10 = [queryItems countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
-      v24 = self;
+      selfCopy = self;
       v12 = *v26;
       while (2)
       {
@@ -1157,21 +1157,21 @@ void __60__SKAccountPageViewController__beginURLParsing_forceLegacy___block_invo
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(queryItems);
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v14 name];
-          v16 = [v15 isEqualToString:@"code"];
+          name = [v14 name];
+          v16 = [name isEqualToString:@"code"];
 
           if (v16)
           {
-            v8 = [v14 value];
+            value = [v14 value];
             goto LABEL_13;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v11 = [queryItems countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v11)
         {
           continue;
@@ -1180,30 +1180,30 @@ void __60__SKAccountPageViewController__beginURLParsing_forceLegacy___block_invo
         break;
       }
 
-      v8 = 0;
+      value = 0;
 LABEL_13:
-      self = v24;
+      self = selfCopy;
     }
 
     else
     {
-      v8 = 0;
+      value = 0;
     }
   }
 
   else
   {
-    v7 = [v4 pathComponents];
-    v8 = [v7 objectAtIndexedSubscript:1];
+    pathComponents2 = [lCopy pathComponents];
+    value = [pathComponents2 objectAtIndexedSubscript:1];
   }
 
   v17 = [(SKAccountPageViewController *)self _URLForBagKey:@"redeemCodeLanding"];
-  if (v17 && v8)
+  if (v17 && value)
   {
     v18 = [MEMORY[0x1E696AF20] componentsWithURL:v17 resolvingAgainstBaseURL:1];
-    v19 = [MEMORY[0x1E696AF60] queryItemWithName:@"code" value:v8];
-    v20 = [v18 queryItems];
-    v21 = [v20 arrayByAddingObject:v19];
+    v19 = [MEMORY[0x1E696AF60] queryItemWithName:@"code" value:value];
+    queryItems2 = [v18 queryItems];
+    v21 = [queryItems2 arrayByAddingObject:v19];
     [v18 setQueryItems:v21];
 
     v22 = [v18 URL];
@@ -1216,21 +1216,21 @@ LABEL_13:
 
 - (void)_setupWebViewController
 {
-  v11 = [getAMSUIWebViewControllerClass() createBagForSubProfile];
-  v3 = [(SKAccountPageViewController *)self account];
-  v4 = v3;
-  if (v3)
+  createBagForSubProfile = [getAMSUIWebViewControllerClass() createBagForSubProfile];
+  account = [(SKAccountPageViewController *)self account];
+  v4 = account;
+  if (account)
   {
-    v5 = v3;
+    ams_activeiTunesAccount = account;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v5 = [v6 ams_activeiTunesAccount];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
   }
 
-  v7 = [objc_alloc(getAMSUIWebViewControllerClass()) initWithBag:v11 account:v5 clientInfo:0];
+  v7 = [objc_alloc(getAMSUIWebViewControllerClass()) initWithBag:createBagForSubProfile account:ams_activeiTunesAccount clientInfo:0];
   webViewController = self->_webViewController;
   self->_webViewController = v7;
 
@@ -1238,8 +1238,8 @@ LABEL_13:
   [v9 addFinishBlock:&__block_literal_global_1];
   self->_isRemoteViewControllerReady = 1;
   [(SKAccountPageViewController *)self _endDelayingPresentation];
-  v10 = [(SKAccountPageViewController *)self parentViewController];
-  [v10 _endDelayingPresentation];
+  parentViewController = [(SKAccountPageViewController *)self parentViewController];
+  [parentViewController _endDelayingPresentation];
 
   [(SKAccountPageViewController *)self setModalPresentationStyle:2];
   [(SKAccountPageViewController *)self setModalInPresentation:1];
@@ -1310,38 +1310,38 @@ LABEL_10:
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v4 configureWithDefaultBackground];
-  v3 = [(SKAccountPageViewController *)self navigationItem];
-  [v3 setScrollEdgeAppearance:v4];
+  navigationItem = [(SKAccountPageViewController *)self navigationItem];
+  [navigationItem setScrollEdgeAppearance:v4];
 }
 
-- (id)_overrideScheme:(id)a3
+- (id)_overrideScheme:(id)scheme
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if (!v4)
+  schemeCopy = scheme;
+  scheme = [schemeCopy scheme];
+  if (!scheme)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [v3 scheme];
-  if ([v6 isEqualToString:@"http"])
+  v5 = scheme;
+  scheme2 = [schemeCopy scheme];
+  if ([scheme2 isEqualToString:@"http"])
   {
 
 LABEL_5:
-    v9 = v3;
+    v9 = schemeCopy;
     goto LABEL_6;
   }
 
-  v7 = [v3 scheme];
-  v8 = [v7 isEqualToString:@"https"];
+  scheme3 = [schemeCopy scheme];
+  v8 = [scheme3 isEqualToString:@"https"];
 
   if (v8)
   {
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E696AF20] componentsWithURL:v3 resolvingAgainstBaseURL:1];
+  v11 = [MEMORY[0x1E696AF20] componentsWithURL:schemeCopy resolvingAgainstBaseURL:1];
   [v11 setScheme:@"https"];
   v9 = [v11 URL];
 
@@ -1353,18 +1353,18 @@ LABEL_6:
 - (void)_popAllBridgedNavigationViewControllers
 {
   v3 = [(SKAccountPageViewController *)self _indexForFirstBridgedNavigationViewController]- 1;
-  v4 = [(SKAccountPageViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 count];
+  navigationController = [(SKAccountPageViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers count];
 
   if (v6 > v3)
   {
-    v7 = [(SKAccountPageViewController *)self navigationController];
-    v8 = [v7 viewControllers];
-    v11 = [v8 objectAtIndex:v3];
+    navigationController2 = [(SKAccountPageViewController *)self navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    v11 = [viewControllers2 objectAtIndex:v3];
 
-    v9 = [(SKAccountPageViewController *)self navigationController];
-    v10 = [v9 popToViewController:v11 animated:1];
+    navigationController3 = [(SKAccountPageViewController *)self navigationController];
+    v10 = [navigationController3 popToViewController:v11 animated:1];
   }
 }
 
@@ -1375,10 +1375,10 @@ LABEL_6:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SKAccountPageViewController *)self navigationController];
-  v4 = [v3 viewControllers];
+  navigationController = [(SKAccountPageViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1390,16 +1390,16 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKAccountPageViewController *)self navigationController];
-          v12 = [v11 viewControllers];
-          v10 = [v12 indexOfObject:v9];
+          navigationController2 = [(SKAccountPageViewController *)self navigationController];
+          viewControllers2 = [navigationController2 viewControllers];
+          v10 = [viewControllers2 indexOfObject:v9];
 
           goto LABEL_11;
         }
@@ -1408,7 +1408,7 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1426,9 +1426,9 @@ LABEL_11:
 
 - (BOOL)_isBridgedNavigationViewController
 {
-  v3 = [(SKAccountPageViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count] > 1 || -[SKAccountPageViewController type](self, "type") == 1;
+  navigationController = [(SKAccountPageViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v5 = [viewControllers count] > 1 || -[SKAccountPageViewController type](self, "type") == 1;
 
   return v5;
 }
@@ -1437,14 +1437,14 @@ LABEL_11:
 {
   if (!self->_isLoading)
   {
-    v4 = self->_remoteViewController;
-    v5 = v4;
+    isViewLoaded = self->_remoteViewController;
+    v5 = isViewLoaded;
     if (self->_webViewController)
     {
-      v13 = v4;
-      v6 = [(SKAccountPageViewController *)self navigationController];
+      v13 = isViewLoaded;
+      navigationController = [(SKAccountPageViewController *)self navigationController];
 
-      if (v6)
+      if (navigationController)
       {
         v7 = self->_webViewController;
       }
@@ -1457,53 +1457,53 @@ LABEL_11:
       v8 = v7;
 
       [(SKAccountPageViewController *)self addChildViewController:v8];
-      v9 = [(SKAccountPageViewController *)self view];
-      v10 = [(AMSUIWebViewController *)v8 view];
-      [v9 addSubview:v10];
+      view = [(SKAccountPageViewController *)self view];
+      view2 = [(AMSUIWebViewController *)v8 view];
+      [view addSubview:view2];
 
-      v4 = [(AMSUIWebViewController *)v8 didMoveToParentViewController:self];
+      isViewLoaded = [(AMSUIWebViewController *)v8 didMoveToParentViewController:self];
       v5 = v8;
     }
 
     if (v5)
     {
       v14 = v5;
-      v4 = [(SKAccountPageViewController *)self isViewLoaded];
+      isViewLoaded = [(SKAccountPageViewController *)self isViewLoaded];
       v5 = v14;
-      if (v4)
+      if (isViewLoaded)
       {
-        v11 = [(SKAccountPageViewController *)self view];
-        v12 = [(SKRemoteAccountPageViewController *)v14 view];
-        [v11 bounds];
-        [v12 setFrame:?];
-        [v12 setAutoresizingMask:18];
-        [v11 addSubview:v12];
+        view3 = [(SKAccountPageViewController *)self view];
+        view4 = [(SKRemoteAccountPageViewController *)v14 view];
+        [view3 bounds];
+        [view4 setFrame:?];
+        [view4 setAutoresizingMask:18];
+        [view3 addSubview:view4];
 
         v5 = v14;
       }
     }
 
-    MEMORY[0x1EEE66BB8](v4, v5);
+    MEMORY[0x1EEE66BB8](isViewLoaded, v5);
   }
 }
 
 - (void)_setupPreWarmedViewController
 {
-  v3 = [(SKAccountPageViewController *)self preWarmedViewController];
+  preWarmedViewController = [(SKAccountPageViewController *)self preWarmedViewController];
 
-  if (!v3)
+  if (!preWarmedViewController)
   {
     v5 = [[SKAccountPageViewController alloc] initWithAccountURL:0 forceLegacy:1];
-    v4 = [(SKAccountPageViewController *)self account];
-    [(SKAccountPageViewController *)v5 setAccount:v4];
+    account = [(SKAccountPageViewController *)self account];
+    [(SKAccountPageViewController *)v5 setAccount:account];
 
     [(SKAccountPageViewController *)self setPreWarmedViewController:v5];
   }
 }
 
-- (void)_setupRemoteViewController:(BOOL)a3
+- (void)_setupRemoteViewController:(BOOL)controller
 {
-  if (!self->_isRemoteViewControllerSetup || a3)
+  if (!self->_isRemoteViewControllerSetup || controller)
   {
     if (self->_account)
     {
@@ -1532,8 +1532,8 @@ LABEL_11:
         [(SKUIServiceAccountPageViewController *)self->_serviceProxy setLoadFromBridgedNavigation:0];
       }
 
-      v5 = [(SKAccountPageViewController *)self navigationController];
-      [v5 setNavigationBarHidden:1];
+      navigationController = [(SKAccountPageViewController *)self navigationController];
+      [navigationController setNavigationBarHidden:1];
     }
 
     self->_isRemoteViewControllerSetup = 1;
@@ -1542,20 +1542,20 @@ LABEL_11:
 
 - (void)_requestRemoteViewController
 {
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v5;
   }
@@ -1576,7 +1576,7 @@ LABEL_11:
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v14, v11}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v14, v11}];
     free(v8);
     SSFileLog();
 LABEL_10:

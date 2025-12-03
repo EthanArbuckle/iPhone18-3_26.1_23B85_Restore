@@ -1,33 +1,33 @@
 @interface RTLearnedRouteTravelMode
-+ (double)deriveConfidenceFromRouteMetric:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTLearnedRouteTravelMode)initWithCoder:(id)a3;
-- (RTLearnedRouteTravelMode)initWithRouteTravelMode:(int64_t)a3 maxTravelTimeEstimateInSeconds:(float)a4 minTravelTimeEstimateInSeconds:(float)a5 meanTravelTimeEstimateInSeconds:(float)a6 maxTravelledDistanceEstimateInMeters:(float)a7 minTravelledDistanceEstimateInMeters:(float)a8 meanTravelledDistanceEstimateInMeters:(float)a9 routeLocations:(id)a10 learnedRouteLocations:(id)a11 learnedRouteMetrics:(id)a12;
++ (double)deriveConfidenceFromRouteMetric:(id)metric;
+- (BOOL)isEqual:(id)equal;
+- (RTLearnedRouteTravelMode)initWithCoder:(id)coder;
+- (RTLearnedRouteTravelMode)initWithRouteTravelMode:(int64_t)mode maxTravelTimeEstimateInSeconds:(float)seconds minTravelTimeEstimateInSeconds:(float)inSeconds meanTravelTimeEstimateInSeconds:(float)estimateInSeconds maxTravelledDistanceEstimateInMeters:(float)meters minTravelledDistanceEstimateInMeters:(float)inMeters meanTravelledDistanceEstimateInMeters:(float)estimateInMeters routeLocations:(id)self0 learnedRouteLocations:(id)self1 learnedRouteMetrics:(id)self2;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLearnedRouteTravelMode
 
-+ (double)deriveConfidenceFromRouteMetric:(id)a3
++ (double)deriveConfidenceFromRouteMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = MEMORY[0x1E695DF00];
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = [v4 dateWithTimeInterval:v5 sinceDate:-1814400.0];
 
   v7 = -1.0;
-  if (v3 && [v3 allTraversalCountBetweenThisODPair] >= 3 && objc_msgSend(v3, "routeTraversalCount") >= 3)
+  if (metricCopy && [metricCopy allTraversalCountBetweenThisODPair] >= 3 && objc_msgSend(metricCopy, "routeTraversalCount") >= 3)
   {
-    v8 = [v3 lastTravelledDate];
-    if ([v8 compare:v6] == 1)
+    lastTravelledDate = [metricCopy lastTravelledDate];
+    if ([lastTravelledDate compare:v6] == 1)
     {
-      v9 = [v3 routeTraversalCount];
-      v10 = [v3 allTraversalCountBetweenThisODPair];
+      routeTraversalCount = [metricCopy routeTraversalCount];
+      allTraversalCountBetweenThisODPair = [metricCopy allTraversalCountBetweenThisODPair];
 
-      if (v9 <= v10)
+      if (routeTraversalCount <= allTraversalCountBetweenThisODPair)
       {
-        v7 = round([v3 routeTraversalCount] / objc_msgSend(v3, "allTraversalCountBetweenThisODPair") * 10.0) / 10.0;
+        v7 = round([metricCopy routeTraversalCount] / objc_msgSend(metricCopy, "allTraversalCountBetweenThisODPair") * 10.0) / 10.0;
       }
     }
 
@@ -39,85 +39,85 @@
   return v7;
 }
 
-- (RTLearnedRouteTravelMode)initWithRouteTravelMode:(int64_t)a3 maxTravelTimeEstimateInSeconds:(float)a4 minTravelTimeEstimateInSeconds:(float)a5 meanTravelTimeEstimateInSeconds:(float)a6 maxTravelledDistanceEstimateInMeters:(float)a7 minTravelledDistanceEstimateInMeters:(float)a8 meanTravelledDistanceEstimateInMeters:(float)a9 routeLocations:(id)a10 learnedRouteLocations:(id)a11 learnedRouteMetrics:(id)a12
+- (RTLearnedRouteTravelMode)initWithRouteTravelMode:(int64_t)mode maxTravelTimeEstimateInSeconds:(float)seconds minTravelTimeEstimateInSeconds:(float)inSeconds meanTravelTimeEstimateInSeconds:(float)estimateInSeconds maxTravelledDistanceEstimateInMeters:(float)meters minTravelledDistanceEstimateInMeters:(float)inMeters meanTravelledDistanceEstimateInMeters:(float)estimateInMeters routeLocations:(id)self0 learnedRouteLocations:(id)self1 learnedRouteMetrics:(id)self2
 {
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  locationsCopy = locations;
+  routeLocationsCopy = routeLocations;
+  metricsCopy = metrics;
   v29.receiver = self;
   v29.super_class = RTLearnedRouteTravelMode;
   v26 = [(RTLearnedRouteTravelMode *)&v29 init];
   v27 = v26;
   if (v26)
   {
-    v26->_routeTravelMode = a3;
-    v26->_maxTravelTimeEstimateInSeconds = a4;
-    v26->_minTravelTimeEstimateInSeconds = a5;
-    v26->_meanTravelTimeEstimateInSeconds = a6;
-    v26->_maxTravelledDistanceEstimateInMeters = a7;
-    v26->_minTravelledDistanceEstimateInMeters = a8;
-    v26->_meanTravelledDistanceEstimateInMeters = a9;
-    objc_storeStrong(&v26->_routeLocations, a10);
-    objc_storeStrong(&v27->_learnedRouteLocations, a11);
-    objc_storeStrong(&v27->_learnedRouteMetrics, a12);
+    v26->_routeTravelMode = mode;
+    v26->_maxTravelTimeEstimateInSeconds = seconds;
+    v26->_minTravelTimeEstimateInSeconds = inSeconds;
+    v26->_meanTravelTimeEstimateInSeconds = estimateInSeconds;
+    v26->_maxTravelledDistanceEstimateInMeters = meters;
+    v26->_minTravelledDistanceEstimateInMeters = inMeters;
+    v26->_meanTravelledDistanceEstimateInMeters = estimateInMeters;
+    objc_storeStrong(&v26->_routeLocations, locations);
+    objc_storeStrong(&v27->_learnedRouteLocations, routeLocations);
+    objc_storeStrong(&v27->_learnedRouteMetrics, metrics);
   }
 
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[RTLearnedRouteTravelMode routeTravelMode](self forKey:{"routeTravelMode"), @"travelMode"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[RTLearnedRouteTravelMode routeTravelMode](self forKey:{"routeTravelMode"), @"travelMode"}];
   [(RTLearnedRouteTravelMode *)self maxTravelTimeEstimateInSeconds];
-  [v4 encodeFloat:@"maxTravelTime" forKey:?];
+  [coderCopy encodeFloat:@"maxTravelTime" forKey:?];
   [(RTLearnedRouteTravelMode *)self minTravelTimeEstimateInSeconds];
-  [v4 encodeFloat:@"minTravelTime" forKey:?];
+  [coderCopy encodeFloat:@"minTravelTime" forKey:?];
   [(RTLearnedRouteTravelMode *)self meanTravelTimeEstimateInSeconds];
-  [v4 encodeFloat:@"meanTravelTime" forKey:?];
+  [coderCopy encodeFloat:@"meanTravelTime" forKey:?];
   [(RTLearnedRouteTravelMode *)self maxTravelledDistanceEstimateInMeters];
-  [v4 encodeFloat:@"maxTravelDistance" forKey:?];
+  [coderCopy encodeFloat:@"maxTravelDistance" forKey:?];
   [(RTLearnedRouteTravelMode *)self minTravelledDistanceEstimateInMeters];
-  [v4 encodeFloat:@"minTravelDistance" forKey:?];
+  [coderCopy encodeFloat:@"minTravelDistance" forKey:?];
   [(RTLearnedRouteTravelMode *)self meanTravelledDistanceEstimateInMeters];
-  [v4 encodeFloat:@"meanTravelDistance" forKey:?];
-  v5 = [(RTLearnedRouteTravelMode *)self routeLocations];
-  [v4 encodeObject:v5 forKey:@"routeLocations"];
+  [coderCopy encodeFloat:@"meanTravelDistance" forKey:?];
+  routeLocations = [(RTLearnedRouteTravelMode *)self routeLocations];
+  [coderCopy encodeObject:routeLocations forKey:@"routeLocations"];
 
-  v6 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
-  [v4 encodeObject:v6 forKey:@"learnedRouteLocations"];
+  learnedRouteLocations = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
+  [coderCopy encodeObject:learnedRouteLocations forKey:@"learnedRouteLocations"];
 
-  v7 = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
-  [v4 encodeObject:v7 forKey:@"learnedRouteMetrics"];
+  learnedRouteMetrics = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
+  [coderCopy encodeObject:learnedRouteMetrics forKey:@"learnedRouteMetrics"];
 }
 
-- (RTLearnedRouteTravelMode)initWithCoder:(id)a3
+- (RTLearnedRouteTravelMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"travelMode"];
-  [v4 decodeFloatForKey:@"maxTravelTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"travelMode"];
+  [coderCopy decodeFloatForKey:@"maxTravelTime"];
   v7 = v6;
-  [v4 decodeFloatForKey:@"minTravelTime"];
+  [coderCopy decodeFloatForKey:@"minTravelTime"];
   v9 = v8;
-  [v4 decodeFloatForKey:@"meanTravelTime"];
+  [coderCopy decodeFloatForKey:@"meanTravelTime"];
   v11 = v10;
-  [v4 decodeFloatForKey:@"maxTravelDistance"];
+  [coderCopy decodeFloatForKey:@"maxTravelDistance"];
   v13 = v12;
-  [v4 decodeFloatForKey:@"minTravelDistance"];
+  [coderCopy decodeFloatForKey:@"minTravelDistance"];
   v15 = v14;
-  [v4 decodeFloatForKey:@"meanTravelDistance"];
+  [coderCopy decodeFloatForKey:@"meanTravelDistance"];
   v17 = v16;
   v18 = MEMORY[0x1E695DFD8];
   v19 = objc_opt_class();
   v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-  v21 = [v4 decodeObjectOfClasses:v20 forKey:@"routeLocations"];
+  v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"routeLocations"];
 
   v22 = MEMORY[0x1E695DFD8];
   v23 = objc_opt_class();
   v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-  v25 = [v4 decodeObjectOfClasses:v24 forKey:@"learnedRouteLocations"];
+  v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"learnedRouteLocations"];
 
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"learnedRouteMetrics"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"learnedRouteMetrics"];
 
   LODWORD(v27) = v7;
   LODWORD(v28) = v9;
@@ -130,22 +130,22 @@
   return v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (!(self | v6))
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (!(self | equalCopy))
   {
     v8 = 1;
     goto LABEL_49;
   }
 
   v8 = 0;
-  if (self && v6)
+  if (self && equalCopy)
   {
-    v9 = [v6 isMemberOfClass:objc_opt_class()];
-    v10 = [(RTLearnedRouteTravelMode *)self routeTravelMode];
-    v60 = [v7 routeTravelMode];
+    v9 = [equalCopy isMemberOfClass:objc_opt_class()];
+    routeTravelMode = [(RTLearnedRouteTravelMode *)self routeTravelMode];
+    routeTravelMode2 = [v7 routeTravelMode];
     [(RTLearnedRouteTravelMode *)self maxTravelTimeEstimateInSeconds];
     v59 = v11;
     [v7 maxTravelTimeEstimateInSeconds];
@@ -170,11 +170,11 @@
     v28 = v27;
     [v7 meanTravelledDistanceEstimateInMeters];
     v30 = v29;
-    v31 = [(RTLearnedRouteTravelMode *)self routeLocations];
-    if (!v31)
+    routeLocations = [(RTLearnedRouteTravelMode *)self routeLocations];
+    if (!routeLocations)
     {
-      v4 = [v7 routeLocations];
-      if (!v4)
+      routeLocations2 = [v7 routeLocations];
+      if (!routeLocations2)
       {
         v55 = 1;
 LABEL_15:
@@ -183,30 +183,30 @@ LABEL_15:
       }
     }
 
-    v32 = [(RTLearnedRouteTravelMode *)self routeLocations];
-    if (v32)
+    routeLocations3 = [(RTLearnedRouteTravelMode *)self routeLocations];
+    if (routeLocations3)
     {
-      v33 = v32;
-      v34 = [v7 routeLocations];
-      if (v34)
+      v33 = routeLocations3;
+      routeLocations4 = [v7 routeLocations];
+      if (routeLocations4)
       {
-        v35 = v34;
-        v36 = [(RTLearnedRouteTravelMode *)self routeLocations];
-        v3 = [v7 routeLocations];
-        v55 = [v36 isEqualToArray:v3];
+        v35 = routeLocations4;
+        routeLocations5 = [(RTLearnedRouteTravelMode *)self routeLocations];
+        routeLocations6 = [v7 routeLocations];
+        v55 = [routeLocations5 isEqualToArray:routeLocations6];
 
-        if (!v31)
+        if (!routeLocations)
         {
           goto LABEL_15;
         }
 
 LABEL_16:
 
-        v37 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
-        if (!v37)
+        learnedRouteLocations = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
+        if (!learnedRouteLocations)
         {
-          v3 = [v7 learnedRouteLocations];
-          if (!v3)
+          routeLocations6 = [v7 learnedRouteLocations];
+          if (!routeLocations6)
           {
             v46 = 1;
 LABEL_26:
@@ -215,41 +215,41 @@ LABEL_26:
           }
         }
 
-        v38 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
-        if (v38)
+        learnedRouteLocations2 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
+        if (learnedRouteLocations2)
         {
-          v39 = v38;
-          v40 = [v7 learnedRouteLocations];
-          if (v40)
+          v39 = learnedRouteLocations2;
+          learnedRouteLocations3 = [v7 learnedRouteLocations];
+          if (learnedRouteLocations3)
           {
-            v41 = v40;
+            v41 = learnedRouteLocations3;
             [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
-            v42 = v54 = v3;
+            v42 = v54 = routeLocations6;
             [v7 learnedRouteLocations];
-            v43 = v10;
+            v43 = routeTravelMode;
             v45 = v44 = v9;
             v46 = [v42 isEqualToArray:v45];
 
             v9 = v44;
-            v10 = v43;
+            routeTravelMode = v43;
 
-            v3 = v54;
-            if (!v37)
+            routeLocations6 = v54;
+            if (!learnedRouteLocations)
             {
               goto LABEL_26;
             }
 
 LABEL_27:
 
-            v47 = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
-            if (v47)
+            learnedRouteMetrics = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
+            if (learnedRouteMetrics)
             {
-              v48 = [v7 learnedRouteMetrics];
-              if (v48)
+              learnedRouteMetrics2 = [v7 learnedRouteMetrics];
+              if (learnedRouteMetrics2)
               {
-                v49 = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
-                v50 = [v7 learnedRouteMetrics];
-                v51 = v49 == v50;
+                learnedRouteMetrics3 = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
+                learnedRouteMetrics4 = [v7 learnedRouteMetrics];
+                v51 = learnedRouteMetrics3 == learnedRouteMetrics4;
               }
 
               else
@@ -263,7 +263,7 @@ LABEL_27:
               v51 = 0;
             }
 
-            if (v10 == v60)
+            if (routeTravelMode == routeTravelMode2)
             {
               v52 = v9;
             }
@@ -309,7 +309,7 @@ LABEL_27:
         }
 
         v46 = 0;
-        if (!v37)
+        if (!learnedRouteLocations)
         {
           goto LABEL_26;
         }
@@ -319,7 +319,7 @@ LABEL_27:
     }
 
     v55 = 0;
-    if (!v31)
+    if (!routeLocations)
     {
       goto LABEL_15;
     }
@@ -335,7 +335,7 @@ LABEL_49:
 - (id)description
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(RTLearnedRouteTravelMode *)self routeTravelMode];
+  routeTravelMode = [(RTLearnedRouteTravelMode *)self routeTravelMode];
   [(RTLearnedRouteTravelMode *)self maxTravelTimeEstimateInSeconds];
   v8 = v7;
   [(RTLearnedRouteTravelMode *)self minTravelTimeEstimateInSeconds];
@@ -348,11 +348,11 @@ LABEL_49:
   v16 = v15;
   [(RTLearnedRouteTravelMode *)self meanTravelledDistanceEstimateInMeters];
   v18 = v17;
-  v19 = [(RTLearnedRouteTravelMode *)self routeLocations];
-  if (v19)
+  routeLocations = [(RTLearnedRouteTravelMode *)self routeLocations];
+  if (routeLocations)
   {
-    v2 = [(RTLearnedRouteTravelMode *)self routeLocations];
-    v20 = [v2 count];
+    routeLocations2 = [(RTLearnedRouteTravelMode *)self routeLocations];
+    v20 = [routeLocations2 count];
   }
 
   else
@@ -366,11 +366,11 @@ LABEL_49:
   v24 = v14;
   v25 = v16;
   v26 = v18;
-  v27 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
-  if (v27)
+  learnedRouteLocations = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
+  if (learnedRouteLocations)
   {
-    v3 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
-    v28 = [v3 count];
+    learnedRouteLocations2 = [(RTLearnedRouteTravelMode *)self learnedRouteLocations];
+    v28 = [learnedRouteLocations2 count];
   }
 
   else
@@ -378,15 +378,15 @@ LABEL_49:
     v28 = 0;
   }
 
-  v29 = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
-  v30 = [v29 description];
-  v31 = [v5 stringWithFormat:@"travelMode, %ld, maxTravelTime, %0.3f, minTravelTime, %0.3f, meanTravelTime, %0.3f, maxTravelDistance, %0.3f, minTravelDistance, %0.3f, meanTravelDistance, %0.3f, routeLocationCount, %lu, learnedRouteLocationCount, %lu, learnedRouteMetrics, %@", v6, *&v21, *&v22, *&v23, *&v24, *&v25, *&v26, v20, v28, v30];
+  learnedRouteMetrics = [(RTLearnedRouteTravelMode *)self learnedRouteMetrics];
+  v30 = [learnedRouteMetrics description];
+  v31 = [v5 stringWithFormat:@"travelMode, %ld, maxTravelTime, %0.3f, minTravelTime, %0.3f, meanTravelTime, %0.3f, maxTravelDistance, %0.3f, minTravelDistance, %0.3f, meanTravelDistance, %0.3f, routeLocationCount, %lu, learnedRouteLocationCount, %lu, learnedRouteMetrics, %@", routeTravelMode, *&v21, *&v22, *&v23, *&v24, *&v25, *&v26, v20, v28, v30];
 
-  if (v27)
+  if (learnedRouteLocations)
   {
   }
 
-  if (v19)
+  if (routeLocations)
   {
   }
 

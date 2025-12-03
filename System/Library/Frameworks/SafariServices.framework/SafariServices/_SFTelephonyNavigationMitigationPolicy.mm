@@ -1,37 +1,37 @@
 @interface _SFTelephonyNavigationMitigationPolicy
-- (BOOL)policyAppliesToURL:(id)a3;
+- (BOOL)policyAppliesToURL:(id)l;
 - (SFDialogPresenting)dialogPresenter;
 - (void)_checkIfSuspiciousClassificationHasExpiredAndTransitionIfNeeded;
-- (void)_handleInput:(int64_t)a3;
-- (void)handleNavigationToURL:(id)a3 completionHandler:(id)a4;
+- (void)_handleInput:(int64_t)input;
+- (void)handleNavigationToURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation _SFTelephonyNavigationMitigationPolicy
 
-- (BOOL)policyAppliesToURL:(id)a3
+- (BOOL)policyAppliesToURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFaceTimeURL] & 1) != 0 || (objc_msgSend(v3, "isFaceTimeAudioURL"))
+  lCopy = l;
+  if ([lCopy isFaceTimeURL] & 1) != 0 || (objc_msgSend(lCopy, "isFaceTimeAudioURL"))
   {
-    v4 = 1;
+    isFaceTimeMultiwayURL = 1;
   }
 
   else
   {
-    v4 = [v3 isFaceTimeMultiwayURL];
+    isFaceTimeMultiwayURL = [lCopy isFaceTimeMultiwayURL];
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v6 = [v3 isTelephonyURL];
+    isTelephonyURL = [lCopy isTelephonyURL];
 LABEL_10:
-    v5 = v6 | v4;
+    v5 = isTelephonyURL | isFaceTimeMultiwayURL;
     goto LABEL_11;
   }
 
-  if (([v3 isDefaultCallingAppURL] & 1) == 0)
+  if (([lCopy isDefaultCallingAppURL] & 1) == 0)
   {
-    v6 = [v3 isForceTelephonyURL];
+    isTelephonyURL = [lCopy isForceTelephonyURL];
     goto LABEL_10;
   }
 
@@ -41,9 +41,9 @@ LABEL_11:
   return v5 & 1;
 }
 
-- (void)handleNavigationToURL:(id)a3 completionHandler:(id)a4
+- (void)handleNavigationToURL:(id)l completionHandler:(id)handler
 {
-  v8 = a4;
+  handlerCopy = handler;
   [(_SFTelephonyNavigationMitigationPolicy *)self _checkIfSuspiciousClassificationHasExpiredAndTransitionIfNeeded];
   classification = self->_classification;
   if (classification >= 2)
@@ -51,14 +51,14 @@ LABEL_11:
     if (classification == 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_dialogPresenter);
-      v7 = [MEMORY[0x1E69B1B00] telephonyNavigationDialogWithCompletionHandler:v8];
+      v7 = [MEMORY[0x1E69B1B00] telephonyNavigationDialogWithCompletionHandler:handlerCopy];
       [WeakRetained presentDialog:v7 sender:self];
     }
   }
 
   else
   {
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
@@ -66,9 +66,9 @@ LABEL_11:
 {
   if (self->_dateUserLastDeclined)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = [(NSDate *)self->_dateUserLastDeclined dateByAddingTimeInterval:60.0];
-    v5 = [v3 compare:v4];
+    v5 = [date compare:v4];
 
     if (v5 != -1)
     {
@@ -80,12 +80,12 @@ LABEL_11:
   }
 }
 
-- (void)_handleInput:(int64_t)a3
+- (void)_handleInput:(int64_t)input
 {
   [(_SFTelephonyNavigationMitigationPolicy *)self _checkIfSuspiciousClassificationHasExpiredAndTransitionIfNeeded];
   classification = self->_classification;
-  v6 = 2 * ((a3 - 1) > 1);
-  v7 = (a3 - 3) < 0xFFFFFFFFFFFFFFFELL;
+  v6 = 2 * ((input - 1) > 1);
+  v7 = (input - 3) < 0xFFFFFFFFFFFFFFFELL;
   if (classification)
   {
     v7 = self->_classification;
@@ -98,7 +98,7 @@ LABEL_11:
 
   if (classification == 2)
   {
-    v8 = 2 * (a3 != 1);
+    v8 = 2 * (input != 1);
   }
 
   else
@@ -107,11 +107,11 @@ LABEL_11:
   }
 
   self->_classification = v8;
-  if (!a3)
+  if (!input)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     dateUserLastDeclined = self->_dateUserLastDeclined;
-    self->_dateUserLastDeclined = v9;
+    self->_dateUserLastDeclined = date;
   }
 }
 

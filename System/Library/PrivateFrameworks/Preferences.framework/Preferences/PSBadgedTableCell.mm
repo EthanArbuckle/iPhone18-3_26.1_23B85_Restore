@@ -1,22 +1,22 @@
 @interface PSBadgedTableCell
 + (Class)alternativeCellClass;
 + (id)unreadBubbleImage;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PSBadgedTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)badgeWithInteger:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PSBadgedTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)badgeWithInteger:(int64_t)integer;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)resetLocale;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation PSBadgedTableCell
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }
@@ -41,8 +41,8 @@
   }
 
   [(UILabel *)self->_badgeNumberLabel sizeToFit];
-  v3 = [(PSBadgedTableCell *)self layoutManager];
-  [v3 contentRectForCell:self forState:0];
+  layoutManager = [(PSBadgedTableCell *)self layoutManager];
+  [layoutManager contentRectForCell:self forState:0];
   v5 = v4;
   rect = v6;
   v8 = v7;
@@ -51,9 +51,9 @@
   [(UIImageView *)self->_badgeImageView frame];
   v12 = v11;
   v14 = v13;
-  v15 = [(PSBadgedTableCell *)self traitCollection];
-  v16 = [v15 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v16);
+  traitCollection = [(PSBadgedTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v128 = v5;
   if ([(PSBadgedTableCell *)self _shouldUseRoundStyle])
@@ -87,8 +87,8 @@
     }
   }
 
-  v25 = [(PSBadgedTableCell *)self _shouldReverseLayoutDirection];
-  v26 = [(PSBadgedTableCell *)self accessoryView];
+  _shouldReverseLayoutDirection = [(PSBadgedTableCell *)self _shouldReverseLayoutDirection];
+  accessoryView = [(PSBadgedTableCell *)self accessoryView];
   objc_opt_class();
   v27 = 0.0;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -99,7 +99,7 @@
 
   v124 = v10;
   v125 = v8;
-  if (!v25)
+  if (!_shouldReverseLayoutDirection)
   {
     v27 = v8 - v27 - v12;
   }
@@ -113,8 +113,8 @@
     [(PSBadgedTableCell *)self isSelected];
   }
 
-  v32 = [objc_opt_class() badgeNumberLabelTextColor];
-  [(UILabel *)badgeNumberLabel setTextColor:v32];
+  badgeNumberLabelTextColor = [objc_opt_class() badgeNumberLabelTextColor];
+  [(UILabel *)badgeNumberLabel setTextColor:badgeNumberLabelTextColor];
 
   if ([(PSBadgedTableCell *)self _shouldUseRoundStyle])
   {
@@ -127,8 +127,8 @@
   }
 
   [(UILabel *)self->_badgeNumberLabel setFrame:v27, v33, v12, v14];
-  v34 = [(PSBadgedTableCell *)self textLabel];
-  [v34 frame];
+  textLabel = [(PSBadgedTableCell *)self textLabel];
+  [textLabel frame];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -141,7 +141,7 @@
   v44 = v38;
   v45 = v40;
   v46 = v42;
-  if (v25)
+  if (_shouldReverseLayoutDirection)
   {
     v120 = v42;
     v47 = v38;
@@ -183,8 +183,8 @@
     v40 = v52;
     v54 = v122;
 LABEL_23:
-    v59 = [(PSBadgedTableCell *)self textLabel];
-    [v59 setFrame:{v53, v54, v40, v42}];
+    textLabel2 = [(PSBadgedTableCell *)self textLabel];
+    [textLabel2 setFrame:{v53, v54, v40, v42}];
 
     v60 = v121;
     if (!IsAccessibilityCategory)
@@ -198,8 +198,8 @@ LABEL_28:
     v146.size.width = v40;
     v146.size.height = v42;
     Width = CGRectGetWidth(v146);
-    v62 = [(PSBadgedTableCell *)self textLabel];
-    [v62 sizeThatFits:{Width, 1.79769313e308}];
+    textLabel3 = [(PSBadgedTableCell *)self textLabel];
+    [textLabel3 sizeThatFits:{Width, 1.79769313e308}];
     v64 = v63;
     v66 = v65;
 
@@ -214,19 +214,19 @@ LABEL_28:
     v148.size.height = v66;
     v68 = CGRectGetHeight(v148);
     v69 = PSRoundToPixel((Height - v68) * 0.5);
-    v70 = [(PSBadgedTableCell *)self textLabel];
-    [v70 setFrame:{v53, v69, v64, v66}];
+    textLabel4 = [(PSBadgedTableCell *)self textLabel];
+    [textLabel4 setFrame:{v53, v69, v64, v66}];
 
     v135 = 0u;
     v136 = 0u;
     v133 = 0u;
     v134 = 0u;
-    v71 = [(PSBadgedTableCell *)self subviews];
-    v72 = [v71 countByEnumeratingWithState:&v133 objects:v138 count:16];
+    subviews = [(PSBadgedTableCell *)self subviews];
+    v72 = [subviews countByEnumeratingWithState:&v133 objects:v138 count:16];
     if (v72)
     {
       v73 = v72;
-      v129 = v25;
+      v129 = _shouldReverseLayoutDirection;
       v74 = 0;
       v75 = *v134;
       do
@@ -235,7 +235,7 @@ LABEL_28:
         {
           if (*v134 != v75)
           {
-            objc_enumerationMutation(v71);
+            objc_enumerationMutation(subviews);
           }
 
           v77 = *(*(&v133 + 1) + 8 * i);
@@ -248,7 +248,7 @@ LABEL_28:
           }
         }
 
-        v73 = [v71 countByEnumeratingWithState:&v133 objects:v138 count:16];
+        v73 = [subviews countByEnumeratingWithState:&v133 objects:v138 count:16];
       }
 
       while (v73);
@@ -265,9 +265,9 @@ LABEL_28:
         v149.size.width = v64;
         v149.size.height = v66;
         MinY = CGRectGetMinY(v149);
-        v87 = [(PSBadgedTableCell *)self textLabel];
-        v88 = [v87 font];
-        [v88 lineHeight];
+        textLabel5 = [(PSBadgedTableCell *)self textLabel];
+        font = [textLabel5 font];
+        [font lineHeight];
         v90 = v89;
         v150.origin.x = v80;
         v150.origin.y = recta;
@@ -279,7 +279,7 @@ LABEL_28:
         [v74 setFrame:{v80, v92, v83, v85}];
       }
 
-      v25 = v129;
+      _shouldReverseLayoutDirection = v129;
     }
 
     else
@@ -288,12 +288,12 @@ LABEL_28:
       v74 = 0;
     }
 
-    v93 = [(PSBadgedTableCell *)self textLabel];
-    [v93 frame];
+    textLabel6 = [(PSBadgedTableCell *)self textLabel];
+    [textLabel6 frame];
     v94 = CGRectGetMinY(v151);
-    v95 = [(PSBadgedTableCell *)self textLabel];
-    v96 = [v95 font];
-    [v96 lineHeight];
+    textLabel7 = [(PSBadgedTableCell *)self textLabel];
+    font2 = [textLabel7 font];
+    [font2 lineHeight];
     v98 = v97;
     v152.origin.x = v132;
     v152.origin.y = v60;
@@ -349,14 +349,14 @@ LABEL_42:
     return;
   }
 
-  v101 = [(PSBadgedTableCell *)self detailTextLabel];
-  [v101 frame];
+  detailTextLabel = [(PSBadgedTableCell *)self detailTextLabel];
+  [detailTextLabel frame];
   v103 = v102;
   v105 = v104;
   v107 = v106;
   v109 = v108;
 
-  if (v25)
+  if (_shouldReverseLayoutDirection)
   {
     v153.size.width = v131;
     v153.origin.x = v132;
@@ -416,7 +416,7 @@ LABEL_42:
     v114 = v117 - CGRectGetMinX(v160);
   }
 
-  if (v25)
+  if (_shouldReverseLayoutDirection)
   {
     v118 = v103 + v113;
   }
@@ -426,19 +426,19 @@ LABEL_42:
     v118 = v103;
   }
 
-  v119 = [(PSBadgedTableCell *)self detailTextLabel];
-  [v119 setFrame:{v118, v105, v114, v109}];
+  detailTextLabel2 = [(PSBadgedTableCell *)self detailTextLabel];
+  [detailTextLabel2 setFrame:{v118, v105, v114, v109}];
 }
 
-- (PSBadgedTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSBadgedTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PSBadgedTableCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_resetLocale name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_resetLocale name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v4;
@@ -446,21 +446,21 @@ LABEL_42:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
   v4.receiver = self;
   v4.super_class = PSBadgedTableCell;
   [(PSTableCell *)&v4 dealloc];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PSBadgedTableCell;
-  v4 = a3;
-  [(PSTableCell *)&v6 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"badgeNumber", v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"badgeNumber", v6.receiver, v6.super_class}];
 
   -[PSBadgedTableCell badgeWithInteger:](self, "badgeWithInteger:", [v5 integerValue]);
 }
@@ -476,29 +476,29 @@ LABEL_42:
   [(PSBadgedTableCell *)self setNeedsLayout];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = PSBadgedTableCell;
-  [(PSBadgedTableCell *)&v5 setHighlighted:a3 animated:a4];
+  [(PSBadgedTableCell *)&v5 setHighlighted:highlighted animated:animated];
   [(PSBadgedTableCell *)self setNeedsLayout];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = PSBadgedTableCell;
-  [(PSBadgedTableCell *)&v5 setSelected:a3 animated:a4];
+  [(PSBadgedTableCell *)&v5 setSelected:selected animated:animated];
   [(PSBadgedTableCell *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PSBadgedTableCell *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(PSBadgedTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory && self->_badgeImageView)
   {
@@ -541,11 +541,11 @@ LABEL_42:
   return result;
 }
 
-- (void)badgeWithInteger:(int64_t)a3
+- (void)badgeWithInteger:(int64_t)integer
 {
-  if (self->_badgeInt != a3)
+  if (self->_badgeInt != integer)
   {
-    self->_badgeInt = a3;
+    self->_badgeInt = integer;
     [(UIImageView *)self->_badgeImageView removeFromSuperview];
     badgeImageView = self->_badgeImageView;
     self->_badgeImageView = 0;
@@ -554,16 +554,16 @@ LABEL_42:
     badgeNumberLabel = self->_badgeNumberLabel;
     self->_badgeNumberLabel = 0;
 
-    if (a3)
+    if (integer)
     {
-      v8 = [objc_opt_class() unreadBubbleImage];
-      v9 = [objc_opt_class() unreadBubbleImage];
-      v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8 highlightedImage:v9];
+      unreadBubbleImage = [objc_opt_class() unreadBubbleImage];
+      unreadBubbleImage2 = [objc_opt_class() unreadBubbleImage];
+      v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:unreadBubbleImage highlightedImage:unreadBubbleImage2];
       v11 = self->_badgeImageView;
       self->_badgeImageView = v10;
 
-      v12 = [(PSBadgedTableCell *)self contentView];
-      [v12 addSubview:self->_badgeImageView];
+      contentView = [(PSBadgedTableCell *)self contentView];
+      [contentView addSubview:self->_badgeImageView];
 
       v13 = objc_alloc(MEMORY[0x1E69DCC10]);
       v14 = [v13 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -571,12 +571,12 @@ LABEL_42:
       self->_badgeNumberLabel = v14;
 
       v16 = self->_badgeNumberLabel;
-      v17 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v16 setBackgroundColor:v17];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v16 setBackgroundColor:clearColor];
 
-      v18 = [MEMORY[0x1E69DC668] sharedApplication];
-      v19 = [v18 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v19);
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       v21 = 17.0;
       if (IsAccessibilityCategory)
@@ -588,9 +588,9 @@ LABEL_42:
         v21 = fmin(v24, 50.0);
       }
 
-      v25 = [(PSBadgedTableCell *)self _shouldUseRoundStyle];
+      _shouldUseRoundStyle = [(PSBadgedTableCell *)self _shouldUseRoundStyle];
       v26 = self->_badgeNumberLabel;
-      if (v25)
+      if (_shouldUseRoundStyle)
       {
         [MEMORY[0x1E69DB878] systemFontOfSize:v21];
       }
@@ -604,13 +604,13 @@ LABEL_42:
 
       v28 = self->_badgeNumberLabel;
       v29 = MEMORY[0x1E696ADA0];
-      v30 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v30 = [MEMORY[0x1E696AD98] numberWithInteger:integer];
       v31 = [v29 localizedStringFromNumber:v30 numberStyle:0];
       [(UILabel *)v28 setText:v31];
 
       [(UILabel *)self->_badgeNumberLabel setTextAlignment:1];
-      v32 = [(PSBadgedTableCell *)self contentView];
-      [v32 addSubview:self->_badgeNumberLabel];
+      contentView2 = [(PSBadgedTableCell *)self contentView];
+      [contentView2 addSubview:self->_badgeNumberLabel];
     }
 
     [(PSBadgedTableCell *)self setNeedsLayout];
@@ -623,7 +623,7 @@ LABEL_42:
   block[1] = 3221225472;
   block[2] = __38__PSBadgedTableCell_unreadBubbleImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (unreadBubbleImage_onceToken != -1)
   {
     dispatch_once(&unreadBubbleImage_onceToken, block);

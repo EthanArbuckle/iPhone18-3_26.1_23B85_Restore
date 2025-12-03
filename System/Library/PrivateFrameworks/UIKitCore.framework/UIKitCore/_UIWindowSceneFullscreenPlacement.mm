@@ -1,6 +1,6 @@
 @interface _UIWindowSceneFullscreenPlacement
 - (_UIWindowSceneFullscreenPlacement)init;
-- (id)_createConfigurationWithError:(id *)a3;
+- (id)_createConfigurationWithError:(id *)error;
 @end
 
 @implementation _UIWindowSceneFullscreenPlacement
@@ -12,7 +12,7 @@
   return [(UIWindowScenePlacement *)&v3 _init];
 }
 
-- (id)_createConfigurationWithError:(id *)a3
+- (id)_createConfigurationWithError:(id *)error
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DEC18]);
 

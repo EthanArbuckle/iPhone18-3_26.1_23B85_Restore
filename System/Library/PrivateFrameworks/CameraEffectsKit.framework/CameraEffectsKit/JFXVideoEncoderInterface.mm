@@ -1,8 +1,8 @@
 @interface JFXVideoEncoderInterface
 - (JFXVideoEncoderInterface)init;
-- (JFXVideoEncoderInterface)initWithExpectedFrameRate:(double)a3;
+- (JFXVideoEncoderInterface)initWithExpectedFrameRate:(double)rate;
 - (void)dealloc;
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation JFXVideoEncoderInterface
@@ -19,22 +19,22 @@
   return 0;
 }
 
-- (JFXVideoEncoderInterface)initWithExpectedFrameRate:(double)a3
+- (JFXVideoEncoderInterface)initWithExpectedFrameRate:(double)rate
 {
   result = [(JFXVideoEncoderInterface *)self init];
   if (result)
   {
-    result->m_expectedFrameRate = a3;
+    result->m_expectedFrameRate = rate;
   }
 
   return result;
 }
 
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = a3;
-  CFRetain(a3);
-  std::promise<opaqueCMSampleBuffer *>::set_value(&self->m_sampleBufferPromise, &v4);
+  bufferCopy = buffer;
+  CFRetain(buffer);
+  std::promise<opaqueCMSampleBuffer *>::set_value(&self->m_sampleBufferPromise, &bufferCopy);
 }
 
 - (void)dealloc

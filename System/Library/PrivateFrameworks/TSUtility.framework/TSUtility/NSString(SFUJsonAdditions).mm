@@ -12,11 +12,11 @@
   }
 
   [a3 appendString:@""];
-  if ([a1 rangeOfCharacterFromSet:appendJsonStringToString__escapeCharacters] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfCharacterFromSet:appendJsonStringToString__escapeCharacters] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [a1 length];
+    v5 = [self length];
     v6 = malloc_type_malloc(2 * v5, 0x1000040BDFB0063uLL);
-    [a1 getCharacters:v6];
+    [self getCharacters:v6];
     if (!v5)
     {
 LABEL_33:
@@ -133,7 +133,7 @@ LABEL_32:
     }
   }
 
-  [a3 appendString:a1];
+  [a3 appendString:self];
   return [a3 appendString:@""];
 }
 

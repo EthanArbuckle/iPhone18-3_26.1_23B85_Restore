@@ -1,20 +1,20 @@
 @interface HDOntologyShardImporter
 + (id)_builtinImporterClasses;
-- (BOOL)_importEntry:(NSObject *)a3 error:;
-- (BOOL)importStagedShardFilesWithError:(id *)a3;
+- (BOOL)_importEntry:(NSObject *)entry error:;
+- (BOOL)importStagedShardFilesWithError:(id *)error;
 - (HDOntologyShardImporter)init;
-- (HDOntologyShardImporter)initWithOntologyUpdateCoordinator:(id)a3;
+- (HDOntologyShardImporter)initWithOntologyUpdateCoordinator:(id)coordinator;
 - (HDOntologyUpdateCoordinator)updateCoordinator;
-- (id)_entriesToImportWithError:(uint64_t)a1;
-- (id)_markImportedEntry:(uint64_t)a3 error:;
-- (id)_markImportedEntry:(void *)a3 transaction:(uint64_t)a4 error:;
+- (id)_entriesToImportWithError:(uint64_t)error;
+- (id)_markImportedEntry:(uint64_t)entry error:;
+- (id)_markImportedEntry:(void *)entry transaction:(uint64_t)transaction error:;
 - (id)_registeredImporterClasses;
-- (uint64_t)_importEntries:(uint64_t)a3 error:;
-- (uint64_t)_schemaImportForEntry:(NSObject *)a3 error:;
-- (uint64_t)_wasSuccessGivenErrors:(uint64_t)a3 error:;
+- (uint64_t)_importEntries:(uint64_t)entries error:;
+- (uint64_t)_schemaImportForEntry:(NSObject *)entry error:;
+- (uint64_t)_wasSuccessGivenErrors:(uint64_t)errors error:;
 - (void)_lock_loadImporterClasses;
-- (void)_markAsNotStagedEntry:(uint64_t)a1;
-- (void)_notifyImportObserversAboutEntry:(uint64_t)a1;
+- (void)_markAsNotStagedEntry:(uint64_t)entry;
+- (void)_notifyImportObserversAboutEntry:(uint64_t)entry;
 @end
 
 @implementation HDOntologyShardImporter
@@ -29,16 +29,16 @@
   return 0;
 }
 
-- (HDOntologyShardImporter)initWithOntologyUpdateCoordinator:(id)a3
+- (HDOntologyShardImporter)initWithOntologyUpdateCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = HDOntologyShardImporter;
   v5 = [(HDOntologyShardImporter *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_updateCoordinator, v4);
+    objc_storeWeak(&v5->_updateCoordinator, coordinatorCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = NSStringFromProtocol(&unk_286375D50);
@@ -51,12 +51,12 @@
   return v6;
 }
 
-- (BOOL)importStagedShardFilesWithError:(id *)a3
+- (BOOL)importStagedShardFilesWithError:(id *)error
 {
-  v5 = [(HDOntologyShardImporter *)self _entriesToImportWithError:a3];
+  v5 = [(HDOntologyShardImporter *)self _entriesToImportWithError:error];
   if (v5)
   {
-    v6 = [(HDOntologyShardImporter *)self _importEntries:v5 error:a3];
+    v6 = [(HDOntologyShardImporter *)self _importEntries:v5 error:error];
   }
 
   else
@@ -67,10 +67,10 @@
   return v6;
 }
 
-- (id)_markImportedEntry:(uint64_t)a3 error:
+- (id)_markImportedEntry:(uint64_t)entry error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v14 = 0;
     v15 = &v14;
@@ -78,15 +78,15 @@
     v17 = __Block_byref_object_copy__2;
     v18 = __Block_byref_object_dispose__2;
     v19 = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke;
     v11[3] = &unk_2796B8D00;
     v13 = &v14;
-    v11[4] = a1;
+    v11[4] = self;
     v12 = v5;
-    v7 = [WeakRetained performOntologyTransactionForWrite:1 databaseTransaction:0 error:a3 transactionHandler:v11];
+    v7 = [WeakRetained performOntologyTransactionForWrite:1 databaseTransaction:0 error:entry transactionHandler:v11];
 
     if (v7)
     {
@@ -144,18 +144,18 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
 
 - (id)_registeredImporterClasses
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 16);
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 16);
     if (!v2)
     {
-      [(HDOntologyShardImporter *)a1 _lock_loadImporterClasses];
-      v2 = *(a1 + 16);
+      [(HDOntologyShardImporter *)self _lock_loadImporterClasses];
+      v2 = *(self + 16);
     }
 
     v3 = v2;
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -166,10 +166,10 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
   return v3;
 }
 
-- (id)_entriesToImportWithError:(uint64_t)a1
+- (id)_entriesToImportWithError:(uint64_t)error
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
     v4 = MEMORY[0x277D10B20];
     v5 = [MEMORY[0x277D10B18] predicateWithProperty:@"desired_state" equalToValue:&unk_2863745E0];
@@ -185,9 +185,9 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
     v17[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v13 = [WeakRetained shardRegistry];
-    v14 = [v13 entriesWithPredicate:v8 orderingTerms:v11 error:a2];
+    WeakRetained = objc_loadWeakRetained((error + 32));
+    shardRegistry = [WeakRetained shardRegistry];
+    v14 = [shardRegistry entriesWithPredicate:v8 orderingTerms:v11 error:a2];
   }
 
   else
@@ -200,13 +200,13 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
   return v14;
 }
 
-- (uint64_t)_importEntries:(uint64_t)a3 error:
+- (uint64_t)_importEntries:(uint64_t)entries error:
 {
-  v21 = a3;
+  entriesCopy = entries;
   v29 = *MEMORY[0x277D85DE8];
   v4 = a2;
   v22 = v4;
-  if (a1)
+  if (self)
   {
     v5 = v4;
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -232,17 +232,17 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
 
           v12 = *(*(&v24 + 1) + 8 * v11);
           v23 = 0;
-          v13 = [(HDOntologyShardImporter *)a1 _importEntry:v12 error:&v23];
+          v13 = [(HDOntologyShardImporter *)self _importEntry:v12 error:&v23];
           v14 = v23;
           v15 = v14;
           if (!v13)
           {
             if ([v14 hk_isCocoaNoSuchFileError])
             {
-              [(HDOntologyShardImporter *)a1 _markAsNotStagedEntry:v12];
+              [(HDOntologyShardImporter *)self _markAsNotStagedEntry:v12];
             }
 
-            v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Error importing %@", v12, v21, v22];
+            v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Error importing %@", v12, entriesCopy, v22];
             v17 = [MEMORY[0x277CCA9B8] hk_error:100 description:v16 underlyingError:v15];
             [v6 addObject:v17];
           }
@@ -257,7 +257,7 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
       while (v9);
     }
 
-    v18 = [(HDOntologyShardImporter *)a1 _wasSuccessGivenErrors:v6 error:v21];
+    v18 = [(HDOntologyShardImporter *)self _wasSuccessGivenErrors:v6 error:entriesCopy];
   }
 
   else
@@ -269,11 +269,11 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
   return v18;
 }
 
-- (BOOL)_importEntry:(NSObject *)a3 error:
+- (BOOL)_importEntry:(NSObject *)entry error:
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1 && (v6 = [(HDOntologyShardImporter *)a1 _schemaImportForEntry:v5 error:a3]) != 0)
+  if (self && (v6 = [(HDOntologyShardImporter *)self _schemaImportForEntry:v5 error:entry]) != 0)
   {
     if (v6 == 2)
     {
@@ -282,15 +282,15 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
 
     else
     {
-      v8 = [(HDOntologyShardImporter *)a1 _markImportedEntry:v5 error:a3];
+      v8 = [(HDOntologyShardImporter *)self _markImportedEntry:v5 error:entry];
       v7 = v8 != 0;
       if (v8)
       {
-        [(HDOntologyShardImporter *)a1 _notifyImportObserversAboutEntry:v8];
-        WeakRetained = objc_loadWeakRetained((a1 + 32));
-        v12 = [WeakRetained shardRegistry];
+        [(HDOntologyShardImporter *)self _notifyImportObserversAboutEntry:v8];
+        WeakRetained = objc_loadWeakRetained((self + 32));
+        shardRegistry = [WeakRetained shardRegistry];
         v22 = 0;
-        v13 = [v12 deleteStagedShardFileForEntry:v8 error:&v22];
+        v13 = [shardRegistry deleteStagedShardFileForEntry:v8 error:&v22];
         v14 = v22;
 
         if ((v13 & 1) == 0)
@@ -300,7 +300,7 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             v23 = 138543874;
-            v24 = a1;
+            selfCopy = self;
             v25 = 2114;
             v26 = v8;
             v27 = 2114;
@@ -322,10 +322,10 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
   return v7;
 }
 
-- (void)_markAsNotStagedEntry:(uint64_t)a1
+- (void)_markAsNotStagedEntry:(uint64_t)entry
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (entry)
   {
     v3 = [a2 copyWithAvailableState:1];
     _HKInitializeLogging();
@@ -336,10 +336,10 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
       _os_log_impl(&dword_2514A1000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Entry previously marked 'staged' wasn't found on device and has been re-marked as 'on remote', %{public}@", buf, 0x16u);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v6 = [WeakRetained shardRegistry];
+    WeakRetained = objc_loadWeakRetained((entry + 32));
+    shardRegistry = [WeakRetained shardRegistry];
     v18 = 0;
-    v7 = [v6 insertEntry:v3 error:&v18];
+    v7 = [shardRegistry insertEntry:v3 error:&v18];
     v8 = v18;
 
     if ((v7 & 1) == 0)
@@ -360,12 +360,12 @@ BOOL __52__HDOntologyShardImporter__markImportedEntry_error___block_invoke(uint6
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_wasSuccessGivenErrors:(uint64_t)a3 error:
+- (uint64_t)_wasSuccessGivenErrors:(uint64_t)errors error:
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
 LABEL_10:
     v12 = 0;
@@ -385,21 +385,21 @@ LABEL_10:
     v10 = *v9;
     if (v8 == 1)
     {
-      v11 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     else
     {
-      v11 = v6;
+      firstObject = v6;
     }
 
-    v13 = v11;
+    v13 = firstObject;
     v17[0] = *MEMORY[0x277CCA450];
     v17[1] = v10;
     v18[0] = @"Error importing ontology files";
-    v18[1] = v11;
+    v18[1] = firstObject;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 userInfo:v14];
+    [MEMORY[0x277CCA9B8] hk_assignError:errors code:100 userInfo:v14];
 
     goto LABEL_10;
   }
@@ -411,19 +411,19 @@ LABEL_11:
   return v12;
 }
 
-- (uint64_t)_schemaImportForEntry:(NSObject *)a3 error:
+- (uint64_t)_schemaImportForEntry:(NSObject *)entry error:
 {
   v49 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     v31 = 0;
     goto LABEL_27;
   }
 
-  v6 = [(HDOntologyShardImporter *)a1 _registeredImporterClasses];
-  v7 = [(__CFString *)v5 schemaType];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  _registeredImporterClasses = [(HDOntologyShardImporter *)self _registeredImporterClasses];
+  schemaType = [(__CFString *)v5 schemaType];
+  v8 = [_registeredImporterClasses objectForKeyedSubscript:schemaType];
 
   if (v8)
   {
@@ -440,10 +440,10 @@ LABEL_11:
         _os_log_impl(v10, v11, v12, v13, v14, v15);
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 32));
-      v17 = [WeakRetained shardRegistry];
+      WeakRetained = objc_loadWeakRetained((self + 32));
+      shardRegistry = [WeakRetained shardRegistry];
       v37 = 0;
-      v18 = [v8 importOntologyShardEntry:v5 shardRegistry:v17 error:&v37];
+      v18 = [v8 importOntologyShardEntry:v5 shardRegistry:shardRegistry error:&v37];
       v19 = v37;
 
       _HKInitializeLogging();
@@ -486,10 +486,10 @@ LABEL_11:
       v24 = v19;
       if (v24)
       {
-        if (a3)
+        if (entry)
         {
           v33 = v24;
-          *a3 = v24;
+          *entry = v24;
         }
 
         else
@@ -520,7 +520,7 @@ LABEL_11:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v39 = a1;
+      selfCopy = self;
       v40 = 2114;
       v41 = v5;
       v25 = &dword_2514A1000;
@@ -542,46 +542,46 @@ LABEL_27:
   return v31;
 }
 
-- (void)_notifyImportObserversAboutEntry:(uint64_t)a1
+- (void)_notifyImportObserversAboutEntry:(uint64_t)entry
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entry)
   {
-    v5 = *(a1 + 24);
+    v5 = *(entry + 24);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__HDOntologyShardImporter__notifyImportObserversAboutEntry___block_invoke;
     v6[3] = &unk_2796B8D28;
-    v6[4] = a1;
+    v6[4] = entry;
     v7 = v3;
     [v5 notifyObservers:v6];
   }
 }
 
-- (id)_markImportedEntry:(void *)a3 transaction:(uint64_t)a4 error:
+- (id)_markImportedEntry:(void *)entry transaction:(uint64_t)transaction error:
 {
-  v7 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
     v8 = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v10 = [WeakRetained shardRegistry];
-    v11 = [v8 identifier];
-    v12 = [v8 schemaType];
-    v13 = [v8 schemaVersion];
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    shardRegistry = [WeakRetained shardRegistry];
+    identifier = [v8 identifier];
+    schemaType = [v8 schemaType];
+    schemaVersion = [v8 schemaVersion];
 
     v18 = 0;
-    LODWORD(v13) = [v10 entryWithIdentifier:v11 schemaType:v12 schemaVersion:v13 entryOut:&v18 transaction:v7 error:a4];
+    LODWORD(schemaVersion) = [shardRegistry entryWithIdentifier:identifier schemaType:schemaType schemaVersion:schemaVersion entryOut:&v18 transaction:entryCopy error:transaction];
     v14 = v18;
 
     v15 = 0;
-    if (v13)
+    if (schemaVersion)
     {
-      v16 = [v14 copyWithAvailableStateImported];
-      if ([HDOntologyShardRegistry insertEntry:v16 transaction:v7 error:a4])
+      copyWithAvailableStateImported = [v14 copyWithAvailableStateImported];
+      if ([HDOntologyShardRegistry insertEntry:copyWithAvailableStateImported transaction:entryCopy error:transaction])
       {
-        v15 = v16;
+        v15 = copyWithAvailableStateImported;
       }
 
       else
@@ -602,25 +602,25 @@ LABEL_27:
 - (void)_lock_loadImporterClasses
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 8));
+    os_unfair_lock_assert_owner((self + 8));
     v2 = objc_alloc(MEMORY[0x277CBEB38]);
     v3 = +[HDOntologyShardImporter _builtinImporterClasses];
     v4 = [v2 initWithDictionary:v3];
 
-    v25 = a1;
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v6 = [WeakRetained daemon];
-    v7 = [v6 pluginManager];
-    v8 = [v7 pluginsConformingToProtocol:&unk_2863877C8];
-    v9 = [v8 allValues];
+    selfCopy = self;
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    daemon = [WeakRetained daemon];
+    pluginManager = [daemon pluginManager];
+    v8 = [pluginManager pluginsConformingToProtocol:&unk_2863877C8];
+    allValues = [v8 allValues];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v9;
+    obj = allValues;
     v27 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v27)
     {
@@ -636,13 +636,13 @@ LABEL_27:
           }
 
           v28 = *(*(&v33 + 1) + 8 * i);
-          v12 = [v28 ontologySchemaImporterClasses];
+          ontologySchemaImporterClasses = [v28 ontologySchemaImporterClasses];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v13 = [v12 allKeys];
-          v14 = [v13 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          allKeys = [ontologySchemaImporterClasses allKeys];
+          v14 = [allKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v14)
           {
             v15 = v14;
@@ -653,15 +653,15 @@ LABEL_27:
               {
                 if (*v30 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v18 = *(*(&v29 + 1) + 8 * j);
-                v19 = [v12 objectForKeyedSubscript:v18];
+                v19 = [ontologySchemaImporterClasses objectForKeyedSubscript:v18];
                 if ([v4 objectForKeyedSubscript:v18])
                 {
-                  v20 = [MEMORY[0x277CCA890] currentHandler];
-                  [v20 handleFailureInMethod:sel__lock_loadImporterClasses object:v25 file:@"HDOntologyShardImporter.m" lineNumber:287 description:{@"%@ is attemping to register as importer for %@, but %@ already is registered.", v28, v18, objc_msgSend(v4, "objectForKeyedSubscript:", v18)}];
+                  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                  [currentHandler handleFailureInMethod:sel__lock_loadImporterClasses object:selfCopy file:@"HDOntologyShardImporter.m" lineNumber:287 description:{@"%@ is attemping to register as importer for %@, but %@ already is registered.", v28, v18, objc_msgSend(v4, "objectForKeyedSubscript:", v18)}];
 
                   v10 = v24;
                 }
@@ -669,7 +669,7 @@ LABEL_27:
                 [v4 setObject:v19 forKeyedSubscript:v18];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v15 = [allKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
             }
 
             while (v15);
@@ -683,8 +683,8 @@ LABEL_27:
     }
 
     v21 = [v4 copy];
-    v22 = *(v25 + 16);
-    *(v25 + 16) = v21;
+    v22 = *(selfCopy + 16);
+    *(selfCopy + 16) = v21;
   }
 
   v23 = *MEMORY[0x277D85DE8];

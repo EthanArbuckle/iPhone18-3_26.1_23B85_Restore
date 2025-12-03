@@ -176,26 +176,26 @@ LABEL_10:
 
 - (id)safari_allPersonalSidecarsInPersonalKeychain
 {
-  v2 = [a1 _safari_allPersonalSidecarEntriesInPersonalKeychain];
+  _safari_allPersonalSidecarEntriesInPersonalKeychain = [self _safari_allPersonalSidecarEntriesInPersonalKeychain];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __88__NSURLCredentialStorage_SafariCoreExtras__safari_allPersonalSidecarsInPersonalKeychain__block_invoke;
   v5[3] = &unk_1E7CF2B70;
-  v5[4] = a1;
-  v3 = [v2 safari_mapAndFilterObjectsUsingBlock:v5];
+  v5[4] = self;
+  v3 = [_safari_allPersonalSidecarEntriesInPersonalKeychain safari_mapAndFilterObjectsUsingBlock:v5];
 
   return v3;
 }
 
 - (id)safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain
 {
-  v2 = [a1 _safari_allRecentlyDeletedPersonalSidecarEntriesInPersonalKeychain];
+  _safari_allRecentlyDeletedPersonalSidecarEntriesInPersonalKeychain = [self _safari_allRecentlyDeletedPersonalSidecarEntriesInPersonalKeychain];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __103__NSURLCredentialStorage_SafariCoreExtras__safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain__block_invoke;
   v5[3] = &unk_1E7CF2B70;
-  v5[4] = a1;
-  v3 = [v2 safari_mapAndFilterObjectsUsingBlock:v5];
+  v5[4] = self;
+  v3 = [_safari_allRecentlyDeletedPersonalSidecarEntriesInPersonalKeychain safari_mapAndFilterObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -259,7 +259,7 @@ LABEL_10:
             v22 = v18;
             v23 = [v15 objectForKeyedSubscript:v21];
             v24 = [v15 objectForKeyedSubscript:*MEMORY[0x1E697AE80]];
-            v25 = [0 safari_privacyPreservingDescription];
+            safari_privacyPreservingDescription = [0 safari_privacyPreservingDescription];
             *buf = 138740739;
             v32 = v23;
             v33 = 2117;
@@ -267,7 +267,7 @@ LABEL_10:
             v35 = 2112;
             v36 = v26;
             v37 = 2112;
-            v38 = v25;
+            v38 = safari_privacyPreservingDescription;
             _os_log_error_impl(&dword_1B8447000, v22, OS_LOG_TYPE_ERROR, "Unable to move credential %{sensitive}@ (%{sensitive}@) to access group %@: %@", buf, 0x2Au);
           }
 
@@ -300,7 +300,7 @@ LABEL_13:
 - (BOOL)safari_moveCredentialTypesToRecentlyDeleted:()SafariCoreExtras onSavedAccount:
 {
   v6 = a4;
-  v7 = ((a3 & [v6 credentialTypes] & 1) == 0 || objc_msgSend(a1, "_safari_movePasswordCredentialsFromSavedAccountToRecentlyDeleted:", v6) && objc_msgSend(a1, "_safari_movePasswordSidecarsFromSavedAccountToRecentlyDeleted:", v6)) && ((a3 & objc_msgSend(v6, "credentialTypes") & 2) == 0 || objc_msgSend(a1, "_safari_movePasskeyCredentialFromSavedAccountToRecentlyDeleted:", v6) && objc_msgSend(a1, "_safari_movePasskeySidecarsFromSavedAccountToRecentlyDeleted:", v6));
+  v7 = ((a3 & [v6 credentialTypes] & 1) == 0 || objc_msgSend(self, "_safari_movePasswordCredentialsFromSavedAccountToRecentlyDeleted:", v6) && objc_msgSend(self, "_safari_movePasswordSidecarsFromSavedAccountToRecentlyDeleted:", v6)) && ((a3 & objc_msgSend(v6, "credentialTypes") & 2) == 0 || objc_msgSend(self, "_safari_movePasskeyCredentialFromSavedAccountToRecentlyDeleted:", v6) && objc_msgSend(self, "_safari_movePasskeySidecarsFromSavedAccountToRecentlyDeleted:", v6));
 
   return v7;
 }
@@ -308,15 +308,15 @@ LABEL_13:
 - (uint64_t)_safari_movePasswordCredentialsFromSavedAccountToRecentlyDeleted:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_getCredentialItemsFromKeychainForPasswordInSavedAccount:v4];
+  v5 = [self _safari_getCredentialItemsFromKeychainForPasswordInSavedAccount:v4];
   v6 = [v5 count];
-  v7 = [v4 protectionSpaces];
+  protectionSpaces = [v4 protectionSpaces];
 
-  v8 = [v7 count];
+  v8 = [protectionSpaces count];
   if (v6 >= v8)
   {
     v10 = recentlyDeletedPasswordCredentialAccessGroup();
-    v9 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v5 toAccessGroup:v10];
+    v9 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v5 toAccessGroup:v10];
   }
 
   else
@@ -330,8 +330,8 @@ LABEL_13:
 - (uint64_t)_safari_movePasswordSidecarsFromSavedAccountToRecentlyDeleted:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_getSidecarKeychainItemsByTypeForPasswordOnSavedAccount:v4];
-  v6 = [a1 _safari_moveSidecarItemsByTypeToRecentlyDeleted:v5 savedAccount:v4];
+  v5 = [self _safari_getSidecarKeychainItemsByTypeForPasswordOnSavedAccount:v4];
+  v6 = [self _safari_moveSidecarItemsByTypeToRecentlyDeleted:v5 savedAccount:v4];
 
   return v6;
 }
@@ -339,14 +339,14 @@ LABEL_13:
 - (uint64_t)_safari_movePasskeyCredentialFromSavedAccountToRecentlyDeleted:()SafariCoreExtras
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 _safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:?];
+  v2 = [self _safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:?];
   v3 = v2;
   if (v2)
   {
     v9[0] = v2;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     v5 = recentlyDeletedPasskeyCredentialAccessGroup();
-    v6 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v4 toAccessGroup:v5];
+    v6 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v4 toAccessGroup:v5];
   }
 
   else
@@ -361,8 +361,8 @@ LABEL_13:
 - (uint64_t)_safari_movePasskeySidecarsFromSavedAccountToRecentlyDeleted:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_getSidecarKeychainItemsByTypeForPasskeyOnSavedAccount:v4];
-  v6 = [a1 _safari_moveSidecarItemsByTypeToRecentlyDeleted:v5 savedAccount:v4];
+  v5 = [self _safari_getSidecarKeychainItemsByTypeForPasskeyOnSavedAccount:v4];
+  v6 = [self _safari_moveSidecarItemsByTypeToRecentlyDeleted:v5 savedAccount:v4];
 
   return v6;
 }
@@ -381,13 +381,13 @@ LABEL_13:
   }
   v7 = ;
   v8 = [v6 objectForKeyedSubscript:&unk_1F308E288];
-  v9 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v8 toAccessGroup:v7];
+  v9 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v8 toAccessGroup:v7];
 
   if (v9)
   {
     v10 = [v6 objectForKeyedSubscript:&unk_1F308E2A0];
     v11 = recentlyDeletedSidecarAccessGroup();
-    v12 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v10 toAccessGroup:v11];
+    v12 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v10 toAccessGroup:v11];
   }
 
   else
@@ -401,8 +401,8 @@ LABEL_13:
 - (BOOL)safari_recoverSavedAccountFromRecentlyDeleted:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [v4 credentialTypes];
-  v6 = ((v5 & 1) == 0 || [a1 _safari_recoverPasswordCredentialsFromRecentlyDeletedSavedAccount:v4] && objc_msgSend(a1, "_safari_recoverPasswordSidecarsFromRecentlyDeletedSavedAccount:", v4)) && ((v5 & objc_msgSend(v4, "credentialTypes") & 2) == 0 || objc_msgSend(a1, "_safari_recoverPasskeyCredentialFromRecentlyDeletedSavedAccount:", v4) && objc_msgSend(a1, "_safari_recoverPasskeySidecarsFromRecentlyDeletedSavedAccount:", v4));
+  credentialTypes = [v4 credentialTypes];
+  v6 = ((credentialTypes & 1) == 0 || [self _safari_recoverPasswordCredentialsFromRecentlyDeletedSavedAccount:v4] && objc_msgSend(self, "_safari_recoverPasswordSidecarsFromRecentlyDeletedSavedAccount:", v4)) && ((credentialTypes & objc_msgSend(v4, "credentialTypes") & 2) == 0 || objc_msgSend(self, "_safari_recoverPasskeyCredentialFromRecentlyDeletedSavedAccount:", v4) && objc_msgSend(self, "_safari_recoverPasskeySidecarsFromRecentlyDeletedSavedAccount:", v4));
 
   return v6;
 }
@@ -410,15 +410,15 @@ LABEL_13:
 - (uint64_t)_safari_recoverPasswordCredentialsFromRecentlyDeletedSavedAccount:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_getCredentialItemsFromKeychainForPasswordInSavedAccount:v4];
+  v5 = [self _safari_getCredentialItemsFromKeychainForPasswordInSavedAccount:v4];
   v6 = [v5 count];
-  v7 = [v4 protectionSpaces];
+  protectionSpaces = [v4 protectionSpaces];
 
-  v8 = [v7 count];
+  v8 = [protectionSpaces count];
   if (v6 >= v8)
   {
     v10 = passwordCredentialAccessGroup();
-    v9 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v5 toAccessGroup:v10];
+    v9 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v5 toAccessGroup:v10];
   }
 
   else
@@ -432,8 +432,8 @@ LABEL_13:
 - (uint64_t)_safari_recoverPasswordSidecarsFromRecentlyDeletedSavedAccount:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_getSidecarKeychainItemsByTypeForPasswordOnSavedAccount:v4];
-  v6 = [a1 _safari_recoverSidecarItemsByType:v5 forRecentlyDeletedSavedAccount:v4];
+  v5 = [self _safari_getSidecarKeychainItemsByTypeForPasswordOnSavedAccount:v4];
+  v6 = [self _safari_recoverSidecarItemsByType:v5 forRecentlyDeletedSavedAccount:v4];
 
   return v6;
 }
@@ -441,14 +441,14 @@ LABEL_13:
 - (uint64_t)_safari_recoverPasskeyCredentialFromRecentlyDeletedSavedAccount:()SafariCoreExtras
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 _safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:?];
+  v2 = [self _safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:?];
   v3 = v2;
   if (v2)
   {
     v9[0] = v2;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     v5 = passkeyCredentialAccessGroup();
-    v6 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v4 toAccessGroup:v5];
+    v6 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v4 toAccessGroup:v5];
   }
 
   else
@@ -463,8 +463,8 @@ LABEL_13:
 - (uint64_t)_safari_recoverPasskeySidecarsFromRecentlyDeletedSavedAccount:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_getSidecarKeychainItemsByTypeForPasskeyOnSavedAccount:v4];
-  v6 = [a1 _safari_recoverSidecarItemsByType:v5 forRecentlyDeletedSavedAccount:v4];
+  v5 = [self _safari_getSidecarKeychainItemsByTypeForPasskeyOnSavedAccount:v4];
+  v6 = [self _safari_recoverSidecarItemsByType:v5 forRecentlyDeletedSavedAccount:v4];
 
   return v6;
 }
@@ -483,13 +483,13 @@ LABEL_13:
   }
   v7 = ;
   v8 = [v6 objectForKeyedSubscript:&unk_1F308E288];
-  v9 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v8 toAccessGroup:v7];
+  v9 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v8 toAccessGroup:v7];
 
   if (v9)
   {
     v10 = [v6 objectForKeyedSubscript:&unk_1F308E2A0];
     v11 = sidecarAccessGroup();
-    v12 = [a1 _safari_moveKeychainItemsWithPersistentIdentifiers:v10 toAccessGroup:v11];
+    v12 = [self _safari_moveKeychainItemsWithPersistentIdentifiers:v10 toAccessGroup:v11];
   }
 
   else
@@ -504,13 +504,13 @@ LABEL_13:
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v24 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [v3 protectionSpaces];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v36 count:16];
+  protectionSpaces = [v3 protectionSpaces];
+  v5 = [protectionSpaces countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v5)
   {
     v7 = v5;
@@ -525,13 +525,13 @@ LABEL_13:
         v11 = v8;
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(protectionSpaces);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v3 user];
-        v14 = [v3 sharedGroupID];
-        v8 = queryForUserInProtectionSpace(v13, v12, 1, v14, [v3 isRecentlyDeleted]);
+        user = [v3 user];
+        sharedGroupID = [v3 sharedGroupID];
+        v8 = queryForUserInProtectionSpace(user, v12, 1, sharedGroupID, [v3 isRecentlyDeleted]);
 
         result = 0;
         v15 = SecItemCopyMatching(v8, &result);
@@ -545,12 +545,12 @@ LABEL_13:
           }
 
           v18 = v17;
-          v19 = [v3 user];
-          v20 = [v12 host];
+          user2 = [v3 user];
+          host = [v12 host];
           *buf = v23;
-          v31 = v19;
+          v31 = user2;
           v32 = 2117;
-          v33 = v20;
+          v33 = host;
           v34 = 2048;
           v35 = v16;
           _os_log_error_impl(&dword_1B8447000, v18, OS_LOG_TYPE_ERROR, "Unable to query for password credential item for %{sensitive}@ (%{sensitive}@): %ld", buf, 0x20u);
@@ -558,12 +558,12 @@ LABEL_13:
 
         else
         {
-          v19 = result;
-          [v24 addObject:result];
+          user2 = result;
+          [array addObject:result];
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v26 objects:v36 count:16];
+      v7 = [protectionSpaces countByEnumeratingWithState:&v26 objects:v36 count:16];
       if (!v7)
       {
 
@@ -574,7 +574,7 @@ LABEL_13:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return array;
 }
 
 - (id)_safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:()SafariCoreExtras
@@ -624,8 +624,8 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v10 = [v8 authenticationMethod];
-  if (([v10 isEqualToString:*MEMORY[0x1E695AB50]] & 1) == 0)
+  authenticationMethod = [v8 authenticationMethod];
+  if (([authenticationMethod isEqualToString:*MEMORY[0x1E695AB50]] & 1) == 0)
   {
 
     goto LABEL_17;
@@ -640,8 +640,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v7 user];
-  v13 = queryForUserInProtectionSpace(v12, v8, 0, v9, 0);
+  user = [v7 user];
+  v13 = queryForUserInProtectionSpace(user, v8, 0, v9, 0);
   v14 = [v13 mutableCopy];
 
   v15 = WBS_LOG_CHANNEL_PREFIXKeychain();
@@ -654,15 +654,15 @@ LABEL_17:
 
   query = v14;
   v48[0] = *MEMORY[0x1E697B3C0];
-  v42 = [v7 password];
-  v41 = [v42 dataUsingEncoding:4];
+  password = [v7 password];
+  v41 = [password dataUsingEncoding:4];
   v49[0] = v41;
   v39 = *MEMORY[0x1E697ADC8];
   v48[1] = *MEMORY[0x1E697ADC8];
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v8 host];
-  v20 = [v7 user];
-  v21 = [v18 stringWithFormat:@"%@ (%@)", v19, v20];
+  host = [v8 host];
+  user2 = [v7 user];
+  v21 = [v18 stringWithFormat:@"%@ (%@)", host, user2];
   v49[1] = v21;
   v48[2] = *MEMORY[0x1E697ACE0];
   v22 = _WBSLocalizedString(@"Web form password", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
@@ -687,12 +687,12 @@ LABEL_17:
     _os_log_debug_impl(&dword_1B8447000, v36, OS_LOG_TYPE_DEBUG, "Attributes for credential SecItemUpdate: { accessGroup: %{public}@, label: %{private}@ }", buf, 0x16u);
   }
 
-  v27 = [v7 user];
+  user3 = [v7 user];
 
-  if (v27)
+  if (user3)
   {
-    v28 = [v7 user];
-    [v25 setObject:v28 forKeyedSubscript:*MEMORY[0x1E697AC30]];
+    user4 = [v7 user];
+    [v25 setObject:user4 forKeyedSubscript:*MEMORY[0x1E697AC30]];
   }
 
   if (SecItemUpdate(query, v25))
@@ -877,13 +877,13 @@ LABEL_18:
   v50 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 user];
-  v9 = queryForUserInProtectionSpace(v8, v7, 0, 0, 0);
+  user = [v6 user];
+  v9 = queryForUserInProtectionSpace(user, v7, 0, 0, 0);
   v10 = [v9 mutableCopy];
 
-  v11 = [v6 password];
+  password = [v6 password];
 
-  if (v11)
+  if (password)
   {
     v12 = SecItemCopyMatching(v10, 0);
     if (v12)
@@ -894,16 +894,16 @@ LABEL_18:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v14 = v13;
-          v15 = [v6 user];
-          v16 = [v7 host];
+          user2 = [v6 user];
+          host = [v7 host];
           *buf = 138478083;
-          v47 = v15;
+          v47 = user2;
           v48 = 2113;
-          v49 = v16;
+          v49 = host;
           _os_log_impl(&dword_1B8447000, v14, OS_LOG_TYPE_INFO, "Credential for '%{private}@' in protection space %{private}@ doesn't exist.", buf, 0x16u);
         }
 
-        [a1 safari_setCredential:v6 forHTMLFormProtectionSpace:v7 forGroupID:&stru_1F3064D08];
+        [self safari_setCredential:v6 forHTMLFormProtectionSpace:v7 forGroupID:&stru_1F3064D08];
       }
 
       else
@@ -955,13 +955,13 @@ LABEL_18:
           }
 
           v42[0] = *MEMORY[0x1E697B3C0];
-          v40 = [v6 password];
-          v25 = [v40 dataUsingEncoding:4];
+          password2 = [v6 password];
+          v25 = [password2 dataUsingEncoding:4];
           v43[0] = v25;
           v42[1] = *MEMORY[0x1E697ADC8];
-          v26 = [v7 host];
-          v27 = [v6 user];
-          v28 = [a1 _formattedLabelWithHost:v26 user:v27];
+          host2 = [v7 host];
+          user3 = [v6 user];
+          v28 = [self _formattedLabelWithHost:host2 user:user3];
           v43[1] = v28;
           v42[2] = *MEMORY[0x1E697ACE0];
           v29 = _WBSLocalizedString(@"Web form password", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
@@ -971,15 +971,15 @@ LABEL_18:
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:4];
           v31 = [v30 mutableCopy];
 
-          v32 = [v6 user];
+          user4 = [v6 user];
 
-          if (v32)
+          if (user4)
           {
-            v33 = [v6 user];
-            [v31 setObject:v33 forKeyedSubscript:v39];
+            user5 = [v6 user];
+            [v31 setObject:user5 forKeyedSubscript:v39];
 
-            v34 = [v6 user];
-            [(__CFDictionary *)v10 setObject:v34 forKeyedSubscript:v39];
+            user6 = [v6 user];
+            [(__CFDictionary *)v10 setObject:user6 forKeyedSubscript:v39];
           }
 
           [(__CFDictionary *)v10 removeObjectForKey:v41];
@@ -1016,23 +1016,23 @@ LABEL_18:
 - (void)safari_allSafariCredentials
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if (+[WBSFeatureAvailability supportsURLCredentialStorageAccessControlGroups])
   {
     v3 = passwordCredentialAccessGroup();
-    v4 = [a1 _allCredentialsWithAccessControlGroup:v3 includeLegacyKeychain:0];
+    allCredentials = [self _allCredentialsWithAccessControlGroup:v3 includeLegacyKeychain:0];
   }
 
   else
   {
-    v4 = [a1 allCredentials];
+    allCredentials = [self allCredentials];
   }
 
   v5 = WBS_LOG_CHANNEL_PREFIXKeychain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    [v2 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     v14 = 136446466;
     v15 = "all_credentials_fetch";
     v16 = 2048;
@@ -1040,7 +1040,7 @@ LABEL_18:
     _os_log_impl(&dword_1B8447000, v6, OS_LOG_TYPE_INFO, "#perf - %{public}s: %f", &v14, 0x16u);
   }
 
-  v8 = [v4 safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_30];
+  v8 = [allCredentials safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_30];
   v9 = v8;
   if (v8)
   {
@@ -1220,7 +1220,7 @@ LABEL_14:
   v7[1] = 3221225472;
   v7[2] = __123__NSURLCredentialStorage_SafariCoreExtras__safari_migrateKeychainItemsWithInvalidAuthenticationTypesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
-  v7[4] = a1;
+  v7[4] = self;
   v8 = v4;
   v6 = v4;
   dispatch_async(v5, v7);
@@ -1230,23 +1230,23 @@ LABEL_14:
 {
   v6 = a2;
   v7 = objc_opt_class();
-  *a1 = 138412290;
+  *self = 138412290;
   *a4 = v7;
   v8 = v7;
-  _os_log_error_impl(&dword_1B8447000, v6, OS_LOG_TYPE_ERROR, "kSecAttrAccount value for keychain item was not of type string, got type: %@", a1, 0xCu);
+  _os_log_error_impl(&dword_1B8447000, v6, OS_LOG_TYPE_ERROR, "kSecAttrAccount value for keychain item was not of type string, got type: %@", self, 0xCu);
 }
 
 - (id)_safari_getSidecarKeychainItemsByTypeForPasswordOnSavedAccount:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __107__NSURLCredentialStorage_SafariCoreExtras___safari_getSidecarKeychainItemsByTypeForPasswordOnSavedAccount___block_invoke;
   v11[3] = &unk_1E7CF2B48;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = v4;
-  v6 = v5;
+  v6 = dictionary;
   v13 = v6;
   v7 = v4;
   [v7 enumeratePasswordSidecarsWithBlock:v11];
@@ -1259,14 +1259,14 @@ LABEL_14:
 - (id)_safari_getSidecarKeychainItemsByTypeForPasskeyOnSavedAccount:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __106__NSURLCredentialStorage_SafariCoreExtras___safari_getSidecarKeychainItemsByTypeForPasskeyOnSavedAccount___block_invoke;
   v11[3] = &unk_1E7CF2B48;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = v4;
-  v6 = v5;
+  v6 = dictionary;
   v13 = v6;
   v7 = v4;
   [v7 enumeratePasskeySidecarsWithBlock:v11];
@@ -1290,9 +1290,9 @@ LABEL_14:
   }
 
   v11 = a5;
-  v12 = [v9 user];
-  v13 = [v9 protectionSpace];
-  v14 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(v10, v12, v13, v11, a6, 1);
+  user = [v9 user];
+  protectionSpace = [v9 protectionSpace];
+  v14 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(v10, user, protectionSpace, v11, a6, 1);
 
   result = 0;
   v15 = SecItemCopyMatching(v14, &result);
@@ -1322,16 +1322,16 @@ LABEL_14:
   if (v11)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    array = [v7 objectForKeyedSubscript:v8];
 
-    if (!v9)
+    if (!array)
     {
-      v9 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-      [v7 setObject:v9 forKeyedSubscript:v10];
+      [v7 setObject:array forKeyedSubscript:v10];
     }
 
-    [v9 addObject:v11];
+    [array addObject:v11];
   }
 }
 
@@ -1492,12 +1492,12 @@ LABEL_18:
 
 - (id)safari_allSharedSidecarsForGroupID:()SafariCoreExtras fromRecentlyDeleted:
 {
-  v5 = [a1 _safari_allSidecarItemsOfType:1 groupID:a3 fromRecentlyDeleted:a4];
+  v5 = [self _safari_allSidecarItemsOfType:1 groupID:a3 fromRecentlyDeleted:a4];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __99__NSURLCredentialStorage_SafariCoreExtras__safari_allSharedSidecarsForGroupID_fromRecentlyDeleted___block_invoke;
   v8[3] = &unk_1E7CF2B98;
-  v8[4] = a1;
+  v8[4] = self;
   v6 = [v5 safari_mapAndFilterObjectsUsingBlock:v8];
 
   return v6;
@@ -1505,12 +1505,12 @@ LABEL_18:
 
 - (id)safari_allPersonalSidecarsForGroupID:()SafariCoreExtras fromRecentlyDeleted:
 {
-  v5 = [a1 _safari_allSidecarItemsOfType:0 groupID:a3 fromRecentlyDeleted:a4];
+  v5 = [self _safari_allSidecarItemsOfType:0 groupID:a3 fromRecentlyDeleted:a4];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __101__NSURLCredentialStorage_SafariCoreExtras__safari_allPersonalSidecarsForGroupID_fromRecentlyDeleted___block_invoke;
   v8[3] = &unk_1E7CF2B70;
-  v8[4] = a1;
+  v8[4] = self;
   v6 = [v5 safari_mapAndFilterObjectsUsingBlock:v8];
 
   return v6;
@@ -1523,11 +1523,11 @@ LABEL_18:
   v5 = [v3 alloc];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE80]];
   v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697ADF8]];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE00]];
 
   v10 = WBSHTTPProtocolFromSecAttrProtocolValue(v9);
-  v11 = [v5 initWithHost:v6 port:v8 protocol:v10 realm:0 authenticationMethod:*MEMORY[0x1E695AB50]];
+  v11 = [v5 initWithHost:v6 port:integerValue protocol:v10 realm:0 authenticationMethod:*MEMORY[0x1E695AB50]];
 
   return v11;
 }
@@ -1551,13 +1551,13 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       v15 = v12;
-      v16 = [v10 safari_privacyPreservingDescription];
+      safari_privacyPreservingDescription = [v10 safari_privacyPreservingDescription];
       *buf = 138478339;
       v19 = v7;
       v20 = 2113;
       v21 = v8;
       v22 = 2114;
-      v23 = v16;
+      v23 = safari_privacyPreservingDescription;
       _os_log_fault_impl(&dword_1B8447000, v15, OS_LOG_TYPE_FAULT, "Unable to archive sidecar for %{private}@ (%{private}@): %{public}@", buf, 0x20u);
     }
   }
@@ -1612,23 +1612,23 @@ LABEL_9:
   v13 = a4;
   v14 = a5;
   v15 = a6;
-  v16 = [v12 dictionaryRepresentation];
+  dictionaryRepresentation = [v12 dictionaryRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = a1;
-    v18 = v16;
+    selfCopy2 = self;
+    v18 = dictionaryRepresentation;
     v19 = 1835626085;
 LABEL_5:
-    [v17 _safari_setSidecarDictionary:v18 type:v19 credential:v13 htmlFormProtectionSpace:v14 groupID:v15 fromRecentlyDeleted:a7];
+    [selfCopy2 _safari_setSidecarDictionary:v18 type:v19 credential:v13 htmlFormProtectionSpace:v14 groupID:v15 fromRecentlyDeleted:a7];
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = a1;
-    v18 = v16;
+    selfCopy2 = self;
+    v18 = dictionaryRepresentation;
     v19 = 1936220530;
     goto LABEL_5;
   }
@@ -1639,14 +1639,14 @@ LABEL_5:
     v22 = v20;
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [v13 user];
-    v26 = [v14 host];
+    user = [v13 user];
+    host = [v14 host];
     v27 = 138543875;
     v28 = v24;
     v29 = 2117;
-    v30 = v25;
+    v30 = user;
     v31 = 2117;
-    v32 = v26;
+    v32 = host;
     _os_log_error_impl(&dword_1B8447000, v22, OS_LOG_TYPE_ERROR, "Attempted to set non-sidecar object of type %{public}@ for %{sensitive}@ (%{sensitive}@)", &v27, 0x20u);
   }
 
@@ -1664,16 +1664,16 @@ LABEL_8:
   v17 = a7;
   if ([v15 persistence] == 3)
   {
-    v18 = [v16 authenticationMethod];
-    if ([v18 isEqualToString:*MEMORY[0x1E695AB50]])
+    authenticationMethod = [v16 authenticationMethod];
+    if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB50]])
     {
       v19 = [v16 isProxy];
 
       if ((v19 & 1) == 0)
       {
-        v20 = [v15 user];
-        v21 = [v16 host];
-        v22 = [a1 _safari_dataFromSidecarDictionary:v14 user:v20 domain:v21];
+        user = [v15 user];
+        host = [v16 host];
+        v22 = [self _safari_dataFromSidecarDictionary:v14 user:user domain:host];
 
         if (!v22)
         {
@@ -1682,17 +1682,17 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v23 = [v15 user];
-        v24 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(a4, v23, v16, v17, a8, 0);
+        user2 = [v15 user];
+        v24 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(a4, user2, v16, v17, a8, 0);
 
         query = v24;
         if (a4 == 1936220530)
         {
           v30 = MEMORY[0x1E696AEC0];
           v31 = _WBSLocalizedString(@"Password Manager Shared Metadata: %@ (%@)", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-          v32 = [v16 host];
-          v33 = [v15 user];
-          v28 = [v30 localizedStringWithFormat:v31, v32, v33];
+          host2 = [v16 host];
+          user3 = [v15 user];
+          v28 = [v30 localizedStringWithFormat:v31, host2, user3];
 
           v24 = query;
           v29 = @"Password Manager Shared Metadata";
@@ -1706,14 +1706,14 @@ LABEL_27:
             if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
             {
               v51 = v50;
-              v52 = [v16 host];
-              v53 = [v15 user];
+              host3 = [v16 host];
+              user4 = [v15 user];
               *buf = 134218499;
               v67 = a4;
               v68 = 2117;
-              v69 = v52;
+              v69 = host3;
               v70 = 2117;
-              v71 = v53;
+              v71 = user4;
               _os_log_error_impl(&dword_1B8447000, v51, OS_LOG_TYPE_ERROR, "Invalid sidecar type (%lu) while setting sidecar for %{sensitive}@ (%{sensitive}@)", buf, 0x20u);
             }
 
@@ -1721,9 +1721,9 @@ LABEL_27:
           }
 
           v25 = MEMORY[0x1E696AEC0];
-          v26 = [v16 host];
-          v27 = [v15 user];
-          v28 = [v25 localizedStringWithFormat:@"Password Manager Metadata: %@ (%@)", v26, v27];
+          host4 = [v16 host];
+          user5 = [v15 user];
+          v28 = [v25 localizedStringWithFormat:@"Password Manager Metadata: %@ (%@)", host4, user5];
 
           v29 = @"Password Manager Metadata";
         }
@@ -2002,7 +2002,7 @@ LABEL_22:
   v27[2] = __114__NSURLCredentialStorage_SafariCoreExtras__safari_copySavedAccountWithPasswordToPersonalKeychain_withNewUsername___block_invoke;
   v27[3] = &unk_1E7CF2BC0;
   v30 = result;
-  v27[4] = a1;
+  v27[4] = self;
   v28 = v26;
   v29 = v25;
   [v29 enumeratePasswordSidecarsWithBlock:v27];
@@ -2026,8 +2026,8 @@ LABEL_23:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [v6 protectionSpaces];
-    v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    protectionSpaces = [v6 protectionSpaces];
+    v9 = [protectionSpaces countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v9)
     {
       v10 = *v31;
@@ -2037,11 +2037,11 @@ LABEL_23:
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(protectionSpaces);
           }
 
           v12 = queryForPasswordFromSavedAccountAndProtectionSpace(v6, *(*(&v30 + 1) + 8 * i), 0);
-          [a1 _safari_removeDefaultCommentFromKeychainItemsMatchingQuery:v12];
+          [self _safari_removeDefaultCommentFromKeychainItemsMatchingQuery:v12];
           cf = 0;
           v13 = SecItemShareWithGroup();
           if (v13)
@@ -2050,7 +2050,7 @@ LABEL_23:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v9 = [protectionSpaces countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v9);
@@ -2061,7 +2061,7 @@ LABEL_23:
       [v6 _clearFormerlySharedSavedAccountMarkerForCredentialTypesIfNecessary:1];
       [v6 _copySharablePasswordSidecarDataFromPersonalSidecarsToSharedSidecars];
       [v6 _copyHistoryItemsFromSharedSidecarToPersonalSidecarAndSetupNewSharedSidecarForGroupID:v7];
-      v14 = [v6 sharedGroupID];
+      sharedGroupID = [v6 sharedGroupID];
       cf = 0;
       p_cf = &cf;
       v28 = 0x2020000000;
@@ -2070,10 +2070,10 @@ LABEL_23:
       v20[1] = 3221225472;
       v20[2] = __94__NSURLCredentialStorage_SafariCoreExtras__safari_copySavedAccountWithPassword_toGroupWithID___block_invoke;
       v20[3] = &unk_1E7CF2BE8;
-      v15 = v14;
+      v15 = sharedGroupID;
       v25 = &cf;
       v21 = v15;
-      v22 = a1;
+      selfCopy = self;
       v23 = v7;
       v24 = v6;
       [v24 enumeratePasswordSidecarsWithBlock:v20];
@@ -2169,7 +2169,7 @@ LABEL_23:
           v19[2] = __97__NSURLCredentialStorage_SafariCoreExtras__safari_copySavedAccountWithPasskeyToPersonalKeychain___block_invoke;
           v19[3] = &unk_1E7CF2C10;
           v21 = v22;
-          v19[4] = a1;
+          v19[4] = self;
           v20 = v4;
           [v20 enumeratePasskeySidecarsWithBlock:v19];
 
@@ -2200,7 +2200,7 @@ LABEL_23:
   if (v7)
   {
     v8 = queryForPasskeyFromSavedAccount(v6);
-    [a1 _safari_removeDefaultCommentFromKeychainItemsMatchingQuery:v8];
+    [self _safari_removeDefaultCommentFromKeychainItemsMatchingQuery:v8];
     v32 = 0;
     v9 = +[WBSFeatureAvailability isCredentialExchangeEnabled];
     v10 = SecItemShareWithGroup();
@@ -2213,12 +2213,12 @@ LABEL_23:
     v12 = v11;
     if (v9)
     {
-      v13 = [v11 domain];
-      if ([v13 isEqual:*MEMORY[0x1E696A768]])
+      domain = [v11 domain];
+      if ([domain isEqual:*MEMORY[0x1E696A768]])
       {
-        v14 = [v12 code];
+        code = [v12 code];
 
-        if (v14 == -25300)
+        if (code == -25300)
         {
           [v8 setObject:0 forKeyedSubscript:*MEMORY[0x1E697AC38]];
           v15 = credentialIDData(v6);
@@ -2242,7 +2242,7 @@ LABEL_23:
     {
       [v6 _clearFormerlySharedSavedAccountMarkerForCredentialTypesIfNecessary:2];
       [v6 _copySharablePasskeySidecarDataFromPersonalSidecarsToSharedSidecars];
-      v19 = [v6 sharedGroupID];
+      sharedGroupID = [v6 sharedGroupID];
       v28 = 0;
       v29 = &v28;
       v30 = 0x2020000000;
@@ -2251,10 +2251,10 @@ LABEL_23:
       v22[1] = 3221225472;
       v22[2] = __93__NSURLCredentialStorage_SafariCoreExtras__safari_copySavedAccountWithPasskey_toGroupWithID___block_invoke;
       v22[3] = &unk_1E7CF2BE8;
-      v20 = v19;
+      v20 = sharedGroupID;
       v27 = &v28;
       v23 = v20;
-      v24 = a1;
+      selfCopy = self;
       v25 = v7;
       v26 = v6;
       [v26 enumeratePasskeySidecarsWithBlock:v22];
@@ -2283,22 +2283,22 @@ LABEL_23:
   v26[3] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [v8 dictionaryRepresentation];
-  v11 = [v8 user];
-  v12 = [v8 protectionSpace];
-  v13 = [v12 host];
-  v14 = [a1 _safari_dataFromSidecarDictionary:v10 user:v11 domain:v13];
+  dictionaryRepresentation = [v8 dictionaryRepresentation];
+  user = [v8 user];
+  protectionSpace = [v8 protectionSpace];
+  host = [protectionSpace host];
+  v14 = [self _safari_dataFromSidecarDictionary:dictionaryRepresentation user:user domain:host];
 
   if (v14)
   {
-    v15 = v9;
+    user2 = v9;
     if (!v9)
     {
-      v15 = [v8 user];
+      user2 = [v8 user];
     }
 
-    v16 = [v8 protectionSpace];
-    v17 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1835626085, v15, v16, 0, a5, 0);
+    protectionSpace2 = [v8 protectionSpace];
+    v17 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1835626085, user2, protectionSpace2, 0, a5, 0);
 
     if (!v9)
     {
@@ -2341,17 +2341,17 @@ LABEL_23:
   v26[2] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [v8 dictionaryRepresentation];
-  v11 = [v8 user];
-  v12 = [v8 protectionSpace];
-  v13 = [v12 host];
-  v14 = [a1 _safari_dataFromSidecarDictionary:v10 user:v11 domain:v13];
+  dictionaryRepresentation = [v8 dictionaryRepresentation];
+  user = [v8 user];
+  protectionSpace = [v8 protectionSpace];
+  host = [protectionSpace host];
+  v14 = [self _safari_dataFromSidecarDictionary:dictionaryRepresentation user:user domain:host];
 
   if (v14)
   {
-    v15 = [v8 user];
-    v16 = [v8 protectionSpace];
-    v17 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1835626085, v15, v16, v9, a5, 0);
+    user2 = [v8 user];
+    protectionSpace2 = [v8 protectionSpace];
+    v17 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1835626085, user2, protectionSpace2, v9, a5, 0);
 
     v18 = *MEMORY[0x1E697AEF8];
     v25[0] = *MEMORY[0x1E697B3C0];
@@ -2388,17 +2388,17 @@ LABEL_23:
   v27[2] = *MEMORY[0x1E69E9840];
   v9 = a3;
   v10 = a5;
-  v11 = [v9 dictionaryRepresentation];
-  v12 = [v9 user];
-  v13 = [v9 protectionSpace];
-  v14 = [v13 host];
-  v15 = [a1 _safari_dataFromSidecarDictionary:v11 user:v12 domain:v14];
+  dictionaryRepresentation = [v9 dictionaryRepresentation];
+  user = [v9 user];
+  protectionSpace = [v9 protectionSpace];
+  host = [protectionSpace host];
+  v15 = [self _safari_dataFromSidecarDictionary:dictionaryRepresentation user:user domain:host];
 
   if (v15)
   {
-    v16 = [v9 user];
-    v17 = [v9 protectionSpace];
-    v18 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1835626085, v16, v17, v10, a6, 0);
+    user2 = [v9 user];
+    protectionSpace2 = [v9 protectionSpace];
+    v18 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1835626085, user2, protectionSpace2, v10, a6, 0);
 
     v19 = *MEMORY[0x1E697AEF8];
     v26[0] = *MEMORY[0x1E697B3C0];
@@ -2438,11 +2438,11 @@ LABEL_23:
   v12 = a5;
   if (![v11 length])
   {
-    v18 = [v10 dictionaryRepresentation];
-    v19 = [v10 user];
-    v20 = [v10 protectionSpace];
-    v21 = [v20 host];
-    v15 = [a1 _safari_dataFromSidecarDictionary:v18 user:v19 domain:v21];
+    dictionaryRepresentation = [v10 dictionaryRepresentation];
+    user = [v10 user];
+    protectionSpace = [v10 protectionSpace];
+    host = [protectionSpace host];
+    v15 = [self _safari_dataFromSidecarDictionary:dictionaryRepresentation user:user domain:host];
 
     if (!v15)
     {
@@ -2450,9 +2450,9 @@ LABEL_23:
       goto LABEL_15;
     }
 
-    v22 = [v10 user];
-    v23 = [v10 protectionSpace];
-    v24 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1936220530, v22, v23, v12, a6, 0);
+    user2 = [v10 user];
+    protectionSpace2 = [v10 protectionSpace];
+    v24 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1936220530, user2, protectionSpace2, v12, a6, 0);
 
     v25 = *MEMORY[0x1E697AEF8];
     v32[0] = *MEMORY[0x1E697B3C0];
@@ -2480,9 +2480,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = [v10 user];
-  v14 = [v10 protectionSpace];
-  v15 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1936220530, v13, v14, v11, a6, 1);
+  user3 = [v10 user];
+  protectionSpace3 = [v10 protectionSpace];
+  v15 = queryForSidecarOfTypeWithUserAndProtectionSpaceInGroupWithID(1936220530, user3, protectionSpace3, v11, a6, 1);
 
   cf = 0;
   v16 = SecItemShareWithGroup();
@@ -2513,14 +2513,14 @@ LABEL_15:
   v4 = a3;
   if ([v4 length])
   {
-    v5 = [a1 _safari_deleteAllPasswordCredentialsForGroupID:v4];
-    v6 = [a1 _safari_deleteAllRecentlyDeletedPasswordCredentialsForGroupID:v4];
-    v7 = [a1 _safari_deleteAllPasskeyCredentialsForGroupID:v4];
-    v8 = [a1 _safari_deleteAllRecentlyDeletedPasskeyCredentialsForGroupID:v4];
-    v9 = [a1 _safari_deleteAllSharedSidecarsForGroupID:v4];
-    v10 = [a1 _safari_deleteAllRecentlyDeletedSharedSidecarsForGroupID:v4];
-    v11 = [a1 _safari_deleteAllPersonalSidecarsForGroupID:v4];
-    v12 = [a1 _safari_deleteAllRecentlyDeletedPersonalSidecarsForGroupID:v4] & v11 & v10 & v9 & v8 & v7 & v6 & v5;
+    v5 = [self _safari_deleteAllPasswordCredentialsForGroupID:v4];
+    v6 = [self _safari_deleteAllRecentlyDeletedPasswordCredentialsForGroupID:v4];
+    v7 = [self _safari_deleteAllPasskeyCredentialsForGroupID:v4];
+    v8 = [self _safari_deleteAllRecentlyDeletedPasskeyCredentialsForGroupID:v4];
+    v9 = [self _safari_deleteAllSharedSidecarsForGroupID:v4];
+    v10 = [self _safari_deleteAllRecentlyDeletedSharedSidecarsForGroupID:v4];
+    v11 = [self _safari_deleteAllPersonalSidecarsForGroupID:v4];
+    v12 = [self _safari_deleteAllRecentlyDeletedPersonalSidecarsForGroupID:v4] & v11 & v10 & v9 & v8 & v7 & v6 & v5;
   }
 
   else
@@ -2931,7 +2931,7 @@ LABEL_15:
 
 + (id)safari_customTitleForPasskeyWithUserHandle:()SafariCoreExtras relyingPartyID:groupID:
 {
-  v1 = [a1 _safari_personalSidecarDictionaryForPasskeyWithUserHandle:? relyingPartyID:? groupID:?];
+  v1 = [self _safari_personalSidecarDictionaryForPasskeyWithUserHandle:? relyingPartyID:? groupID:?];
   v2 = [v1 objectForKeyedSubscript:@"title"];
   if (v2)
   {
@@ -2953,19 +2953,19 @@ LABEL_15:
   v14 = a5;
   v15 = a4;
   v16 = a3;
-  v17 = [a1 _safari_personalSidecarDictionaryForPasskeyWithUserHandle:v15 relyingPartyID:v14 groupID:v13];
+  v17 = [self _safari_personalSidecarDictionaryForPasskeyWithUserHandle:v15 relyingPartyID:v14 groupID:v13];
   v18 = v17;
   if (v17)
   {
-    v19 = v17;
+    dictionary = v17;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v24 = v19;
+  v24 = dictionary;
 
   v20 = [MEMORY[0x1E695AC58] safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:v14];
   v21 = [[WBSSavedAccountSidecar alloc] initWithUser:v15 protectionSpace:v20 dictionaryRepresentation:v24];
@@ -2973,8 +2973,8 @@ LABEL_15:
 
   v22 = [MEMORY[0x1E695AC48] safari_credentialWithUser:v15 password:&stru_1F3064D08 persistence:3];
 
-  v23 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  [v23 safari_setSidecar:v21 credential:v22 htmlFormProtectionSpace:v20 forGroupID:v13 fromRecentlyDeleted:0];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  [mEMORY[0x1E695AC50] safari_setSidecar:v21 credential:v22 htmlFormProtectionSpace:v20 forGroupID:v13 fromRecentlyDeleted:0];
 }
 
 - (id)_safari_dataFromGeneratedPasswordDictionary:()SafariCoreExtras domain:
@@ -3019,20 +3019,20 @@ LABEL_15:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v8 host];
+    host = [v8 host];
     *buf = 138739971;
-    *&buf[4] = v12;
+    *&buf[4] = host;
     _os_log_impl(&dword_1B8447000, v11, OS_LOG_TYPE_DEFAULT, "Adding generated password for %{sensitive}@", buf, 0xCu);
   }
 
   v13 = [WBSGeneratedPassword keychainDictionaryRepresentationWithPassword:v9];
 
-  v14 = [v8 host];
-  v15 = [a1 _safari_dataFromGeneratedPasswordDictionary:v13 domain:v14];
+  host2 = [v8 host];
+  v15 = [self _safari_dataFromGeneratedPasswordDictionary:v13 domain:host2];
 
   if (v15)
   {
-    [a1 _safari_accountStringForGeneratedPassword];
+    [self _safari_accountStringForGeneratedPassword];
     v16 = v49 = a5;
     v50 = v15;
     v17 = v15;
@@ -3048,8 +3048,8 @@ LABEL_15:
     result[2] = *MEMORY[0x1E697ADC8];
     v22 = MEMORY[0x1E696AEC0];
     v23 = _WBSLocalizedString(@"Generated Password for %@", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-    v24 = [v18 host];
-    v25 = [v22 localizedStringWithFormat:v23, v24];
+    host3 = [v18 host];
+    v25 = [v22 localizedStringWithFormat:v23, host3];
     *&buf[16] = v25;
     result[3] = *MEMORY[0x1E697ACE0];
     v26 = _WBSLocalizedString(@"Generated Password", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
@@ -3075,25 +3075,25 @@ LABEL_15:
     if (v49)
     {
       v55 = *MEMORY[0x1E697AE80];
-      v33 = +[WBSGeneratedPassword privateBrowsingSentinel];
+      host4 = +[WBSGeneratedPassword privateBrowsingSentinel];
       v56 = *MEMORY[0x1E697ADF8];
-      v58 = v33;
+      safari_protocolAsSecAttrProtocolValue = host4;
       v59 = &unk_1F308E2E8;
-      v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v55 count:2];
+      v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&safari_protocolAsSecAttrProtocolValue forKeys:&v55 count:2];
       [v32 addEntriesFromDictionary:v34];
     }
 
     else
     {
       v55 = *MEMORY[0x1E697AE00];
-      v58 = [v18 safari_protocolAsSecAttrProtocolValue];
+      safari_protocolAsSecAttrProtocolValue = [v18 safari_protocolAsSecAttrProtocolValue];
       v56 = *MEMORY[0x1E697AE80];
-      v33 = [v18 host];
-      v59 = v33;
+      host4 = [v18 host];
+      v59 = host4;
       v57 = *MEMORY[0x1E697ADF8];
       v34 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v18, "port")}];
       v60 = v34;
-      v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v55 count:3];
+      v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&safari_protocolAsSecAttrProtocolValue forKeys:&v55 count:3];
       [v32 addEntriesFromDictionary:v36];
     }
 
@@ -3161,20 +3161,20 @@ LABEL_15:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 protectionSpace];
-    v11 = [v10 host];
+    protectionSpace = [v6 protectionSpace];
+    host = [protectionSpace host];
     *buf = 138739971;
-    *&buf[4] = v11;
+    *&buf[4] = host;
     _os_log_impl(&dword_1B8447000, v9, OS_LOG_TYPE_DEFAULT, "Updating generated password for %{sensitive}@", buf, 0xCu);
   }
 
-  v12 = [v6 keychainPersistentReference];
-  if (v12)
+  keychainPersistentReference = [v6 keychainPersistentReference];
+  if (keychainPersistentReference)
   {
     v13 = [v6 keychainDictionaryRepresentationWithPassword:v7];
-    v14 = [v6 protectionSpace];
-    v15 = [v14 host];
-    v16 = [a1 _safari_dataFromGeneratedPasswordDictionary:v13 domain:v15];
+    protectionSpace2 = [v6 protectionSpace];
+    host2 = [protectionSpace2 host];
+    v16 = [self _safari_dataFromGeneratedPasswordDictionary:v13 domain:host2];
 
     if (!v16)
     {
@@ -3184,15 +3184,15 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v17 = [a1 _safari_accountStringForGeneratedPassword];
+    _safari_accountStringForGeneratedPassword = [self _safari_accountStringForGeneratedPassword];
     v18 = *MEMORY[0x1E697B3C8];
     v34 = *MEMORY[0x1E697B3C8];
-    v35 = v12;
+    v35 = keychainPersistentReference;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v20 = *MEMORY[0x1E697B3C0];
     v32[0] = *MEMORY[0x1E697AC30];
     v32[1] = v20;
-    v33[0] = v17;
+    v33[0] = _safari_accountStringForGeneratedPassword;
     v33[1] = v16;
     if (SecItemUpdate(v19, [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2]))
     {
@@ -3209,7 +3209,7 @@ LABEL_17:
       v24 = *MEMORY[0x1E697B310];
       v30[0] = v18;
       v30[1] = v24;
-      v31[0] = v12;
+      v31[0] = keychainPersistentReference;
       v31[1] = MEMORY[0x1E695E118];
       v25 = *MEMORY[0x1E697B320];
       v30[2] = *MEMORY[0x1E697B318];
@@ -3257,22 +3257,22 @@ LABEL_18:
 {
   v63 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 protectionSpace];
-  v5 = [v3 generationDate];
+  protectionSpace = [v3 protectionSpace];
+  generationDate = [v3 generationDate];
   v6 = WBS_LOG_CHANNEL_PREFIXKeychain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 host];
+    host = [protectionSpace host];
     *buf = 138739971;
-    *&buf[4] = v8;
+    *&buf[4] = host;
     _os_log_impl(&dword_1B8447000, v7, OS_LOG_TYPE_DEFAULT, "Removing generated password item for %{sensitive}@", buf, 0xCu);
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  [v5 timeIntervalSinceReferenceDate];
+  [generationDate timeIntervalSinceReferenceDate];
   v11 = [v9 stringWithFormat:@"%f", v10];
-  v12 = v4;
+  v12 = protectionSpace;
   v13 = *MEMORY[0x1E697B018];
   v14 = *MEMORY[0x1E697AC50];
   v54[0] = *MEMORY[0x1E697AFF8];
@@ -3312,30 +3312,30 @@ LABEL_18:
   if (v12)
   {
     v48 = *MEMORY[0x1E697AE00];
-    v51 = [v12 safari_protocolAsSecAttrProtocolValue];
+    safari_protocolAsSecAttrProtocolValue = [v12 safari_protocolAsSecAttrProtocolValue];
     v49 = *MEMORY[0x1E697AE80];
-    v28 = [v12 host];
-    v52 = v28;
+    host2 = [v12 host];
+    v52 = host2;
     v50 = *MEMORY[0x1E697ADF8];
     v29 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "port")}];
     v53 = v29;
-    v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v48 count:3];
+    v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&safari_protocolAsSecAttrProtocolValue forKeys:&v48 count:3];
     [v27 addEntriesFromDictionary:v30];
   }
 
   else
   {
     v48 = *MEMORY[0x1E697AE80];
-    v28 = +[WBSGeneratedPassword privateBrowsingSentinel];
+    host2 = +[WBSGeneratedPassword privateBrowsingSentinel];
     v49 = *MEMORY[0x1E697ADF8];
-    v51 = v28;
+    safari_protocolAsSecAttrProtocolValue = host2;
     v52 = &unk_1F308E2E8;
-    v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v48 count:2];
+    v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&safari_protocolAsSecAttrProtocolValue forKeys:&v48 count:2];
     [v27 addEntriesFromDictionary:v29];
   }
 
-  v31 = [v3 keychainPersistentReference];
-  if (v31)
+  keychainPersistentReference = [v3 keychainPersistentReference];
+  if (keychainPersistentReference)
   {
     goto LABEL_7;
   }
@@ -3344,9 +3344,9 @@ LABEL_18:
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
     v39 = v38;
-    v40 = [v12 host];
+    host3 = [v12 host];
     *buf = 138739971;
-    *&buf[4] = v40;
+    *&buf[4] = host3;
     _os_log_impl(&dword_1B8447000, v39, OS_LOG_TYPE_DEFAULT, "Removing generated password item for %{sensitive}@", buf, 0xCu);
   }
 
@@ -3355,14 +3355,14 @@ LABEL_18:
   if (!v41)
   {
     v43 = *buf;
-    v31 = [*buf objectForKeyedSubscript:*MEMORY[0x1E697B3C8]];
+    keychainPersistentReference = [*buf objectForKeyedSubscript:*MEMORY[0x1E697B3C8]];
 
 LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v46 = *MEMORY[0x1E697B3C8];
-      v47 = v31;
+      v47 = keychainPersistentReference;
       v32 = SecItemDelete([MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1]);
       if (v32)
       {
@@ -3371,11 +3371,11 @@ LABEL_7:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           v35 = v34;
-          v36 = [v12 host];
+          host4 = [v12 host];
           *buf = 138412803;
-          *&buf[4] = v5;
+          *&buf[4] = generationDate;
           *&buf[12] = 2117;
-          *&buf[14] = v36;
+          *&buf[14] = host4;
           *&buf[22] = 2048;
           v56 = v33;
           _os_log_error_impl(&dword_1B8447000, v35, OS_LOG_TYPE_ERROR, "Failed to delete recently generated password item for date %@ and host %{sensitive}@: status=%ld", buf, 0x20u);
@@ -3400,7 +3400,7 @@ LABEL_7:
     v42 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      [(NSURLCredentialStorage(SafariCoreExtras) *)v5 safari_deleteGeneratedPassword:v42, v12];
+      [(NSURLCredentialStorage(SafariCoreExtras) *)generationDate safari_deleteGeneratedPassword:v42, v12];
     }
   }
 
@@ -3409,11 +3409,11 @@ LABEL_7:
     v44 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      [(NSURLCredentialStorage(SafariCoreExtras) *)v5 safari_deleteGeneratedPassword:v44, v12];
+      [(NSURLCredentialStorage(SafariCoreExtras) *)generationDate safari_deleteGeneratedPassword:v44, v12];
     }
   }
 
-  v31 = 0;
+  keychainPersistentReference = 0;
 LABEL_23:
 
   v45 = *MEMORY[0x1E69E9840];
@@ -3708,7 +3708,7 @@ LABEL_23:
   v4 = a3;
   if ([v4 credentialTypes])
   {
-    v5 = [a1 _safari_lastModifiedDateForPasswordCredentialsOnSavedAccount:v4];
+    v5 = [self _safari_lastModifiedDateForPasswordCredentialsOnSavedAccount:v4];
   }
 
   else
@@ -3718,7 +3718,7 @@ LABEL_23:
 
   if (([v4 credentialTypes] & 2) != 0)
   {
-    v6 = [a1 _safari_lastModifiedDateForPasskeyCredentialOnSavedAccount:v4];
+    v6 = [self _safari_lastModifiedDateForPasskeyCredentialOnSavedAccount:v4];
     v7 = v6;
     if (v5)
     {
@@ -3739,7 +3739,7 @@ LABEL_23:
 - (id)_safari_lastModifiedDateForPasswordCredentialsOnSavedAccount:()SafariCoreExtras
 {
   v22 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _safari_getCredentialItemsFromKeychainForPasswordInSavedAccount:?];
+  v1 = [self _safari_getCredentialItemsFromKeychainForPasswordInSavedAccount:?];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -3807,7 +3807,7 @@ LABEL_23:
 
 - (id)_safari_lastModifiedDateForPasskeyCredentialOnSavedAccount:()SafariCoreExtras
 {
-  v1 = [a1 _safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:?];
+  v1 = [self _safari_getCredentialItemFromKeychainForPasskeyInSavedAccount:?];
   v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E697ADD0]];
 
   return v2;
@@ -3818,12 +3818,12 @@ LABEL_23:
   v26[4] = *MEMORY[0x1E69E9840];
   v5 = a4;
   v6 = a3;
-  v7 = [v6 user];
-  v24 = queryForUserInProtectionSpace(v7, v5, 0, &stru_1F3064D08, 0);
+  user = [v6 user];
+  v24 = queryForUserInProtectionSpace(user, v5, 0, &stru_1F3064D08, 0);
 
   v25[0] = *MEMORY[0x1E697AC50];
-  v8 = [v5 authenticationMethod];
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB50]])
+  authenticationMethod = [v5 authenticationMethod];
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB50]])
   {
     v9 = MEMORY[0x1E697AC60];
 LABEL_11:
@@ -3831,25 +3831,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB48]])
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB48]])
   {
     v9 = MEMORY[0x1E697AC58];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB58]])
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB58]])
   {
     v9 = MEMORY[0x1E697AC68];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB60]])
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB60]])
   {
     v9 = MEMORY[0x1E697AC70];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB68]])
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB68]])
   {
     v9 = MEMORY[0x1E697AC78];
     goto LABEL_11;
@@ -3866,15 +3866,15 @@ LABEL_12:
 
   v26[0] = v10;
   v25[1] = *MEMORY[0x1E697B3C0];
-  v11 = [v6 password];
-  v12 = [v11 dataUsingEncoding:4];
+  password = [v6 password];
+  v12 = [password dataUsingEncoding:4];
   v26[1] = v12;
   v25[2] = *MEMORY[0x1E697ADC8];
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [v5 host];
-  v15 = [v6 user];
+  host = [v5 host];
+  user2 = [v6 user];
 
-  v16 = [v13 stringWithFormat:@"%@ (%@)", v14, v15];
+  v16 = [v13 stringWithFormat:@"%@ (%@)", host, user2];
   v26[2] = v16;
   v25[3] = *MEMORY[0x1E697ACE0];
   v17 = _WBSLocalizedString(@"Web form password", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
@@ -3932,11 +3932,11 @@ LABEL_12:
   else
   {
     v18 = result;
-    v19 = [a1 sharedCredentialStorage];
+    sharedCredentialStorage = [self sharedCredentialStorage];
     v20 = [v18 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
     v21 = [v18 objectForKeyedSubscript:*MEMORY[0x1E697AC30]];
     v22 = [v18 objectForKeyedSubscript:*MEMORY[0x1E697AE80]];
-    v23 = [v19 _safari_sidecarDictionaryFromData:v20 user:v21 domain:v22];
+    v23 = [sharedCredentialStorage _safari_sidecarDictionaryFromData:v20 user:v21 domain:v22];
   }
 
   v25 = *MEMORY[0x1E69E9840];

@@ -1,17 +1,17 @@
 @interface REUITrainingContext
-- (BOOL)isDisplayingElementWithIdentifier:(id)a3;
-- (BOOL)performSimulationCommand:(id)a3 withOptions:(id)a4;
+- (BOOL)isDisplayingElementWithIdentifier:(id)identifier;
+- (BOOL)performSimulationCommand:(id)command withOptions:(id)options;
 - (REUITrainingContext)init;
-- (id)_higherElementsThanElement:(id)a3;
-- (id)_interactionForElement:(id)a3;
-- (id)_lowerElementsThanElement:(id)a3;
+- (id)_higherElementsThanElement:(id)element;
+- (id)_interactionForElement:(id)element;
+- (id)_lowerElementsThanElement:(id)element;
 - (id)_visibleElements;
-- (void)_trainDwellForElement:(id)a3 withInterval:(double)a4;
+- (void)_trainDwellForElement:(id)element withInterval:(double)interval;
 - (void)_willResignCurrent;
-- (void)elementWithIdentifierDidDisplay:(id)a3;
-- (void)elementWithIdentifierDidEndDisplay:(id)a3;
+- (void)elementWithIdentifierDidDisplay:(id)display;
+- (void)elementWithIdentifierDidEndDisplay:(id)display;
 - (void)resetContext;
-- (void)selectElementWithIdentifier:(id)a3;
+- (void)selectElementWithIdentifier:(id)identifier;
 @end
 
 @implementation REUITrainingContext
@@ -23,13 +23,13 @@
   v2 = [(RETrainingContext *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     becameVisibleDates = v2->_becameVisibleDates;
-    v2->_becameVisibleDates = v3;
+    v2->_becameVisibleDates = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     visibilityDurations = v2->_visibilityDurations;
-    v2->_visibilityDurations = v5;
+    v2->_visibilityDurations = dictionary2;
 
     v2->_resetsWhenResignsCurrent = 1;
   }
@@ -37,34 +37,34 @@
   return v2;
 }
 
-- (void)selectElementWithIdentifier:(id)a3
+- (void)selectElementWithIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = [MEMORY[0x277CBEB58] set];
-    v6 = [(REUITrainingContext *)self _visibleElements];
-    [v5 addObjectsFromArray:v6];
+    _visibleElements = [(REUITrainingContext *)self _visibleElements];
+    [v5 addObjectsFromArray:_visibleElements];
 
-    [v5 removeObject:v4];
-    v7 = [(REUITrainingContext *)self _higherElementsThanElement:v4];
+    [v5 removeObject:identifierCopy];
+    v7 = [(REUITrainingContext *)self _higherElementsThanElement:identifierCopy];
     [v5 addObjectsFromArray:v7];
 
     if (soft_RETrainingSimulationIsCurrentlyActive())
     {
-      v8 = [(REUITrainingContext *)self _lowerElementsThanElement:v4];
+      v8 = [(REUITrainingContext *)self _lowerElementsThanElement:identifierCopy];
       if ([v8 count])
       {
-        v9 = [v8 firstObject];
-        [v5 addObject:v9];
+        firstObject = [v8 firstObject];
+        [v5 addObject:firstObject];
       }
     }
 
-    v10 = [(REUITrainingContext *)self _interactionForElement:v4];
+    v10 = [(REUITrainingContext *)self _interactionForElement:identifierCopy];
     if (([v10 isEqualToString:*MEMORY[0x277D44508]] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277D44510]))
     {
-      [(RETrainingContext *)self trainWithElement:v4 isPositiveEvent:1 interaction:@"tap"];
+      [(RETrainingContext *)self trainWithElement:identifierCopy isPositiveEvent:1 interaction:@"tap"];
     }
 
     v19 = 0u;
@@ -101,53 +101,53 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)elementWithIdentifierDidDisplay:(id)a3
+- (void)elementWithIdentifierDidDisplay:(id)display
 {
-  v6 = a3;
+  displayCopy = display;
   v4 = [(NSMutableDictionary *)self->_becameVisibleDates objectForKeyedSubscript:?];
 
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [(NSMutableDictionary *)self->_becameVisibleDates setObject:v5 forKeyedSubscript:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(NSMutableDictionary *)self->_becameVisibleDates setObject:date forKeyedSubscript:displayCopy];
   }
 }
 
-- (void)_trainDwellForElement:(id)a3 withInterval:(double)a4
+- (void)_trainDwellForElement:(id)element withInterval:(double)interval
 {
-  v9 = a3;
+  elementCopy = element;
   [(REUITrainingContext *)self maximumNegativeDwellTime];
-  if (v6 > a4)
+  if (v6 > interval)
   {
-    [(RETrainingContext *)self trainWithElement:v9 isPositiveEvent:0 interaction:@"tap"];
+    [(RETrainingContext *)self trainWithElement:elementCopy isPositiveEvent:0 interaction:@"tap"];
   }
 
   [(REUITrainingContext *)self minimumPositiveDwellTime];
-  if (v7 < a4)
+  if (v7 < interval)
   {
-    v8 = [(REUITrainingContext *)self _interactionForElement:v9];
+    v8 = [(REUITrainingContext *)self _interactionForElement:elementCopy];
     if (([v8 isEqualToString:*MEMORY[0x277D44508]] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277D44518]))
     {
-      [(RETrainingContext *)self trainWithElement:v9 isPositiveEvent:1 interaction:@"tap"];
+      [(RETrainingContext *)self trainWithElement:elementCopy isPositiveEvent:1 interaction:@"tap"];
     }
   }
 }
 
-- (void)elementWithIdentifierDidEndDisplay:(id)a3
+- (void)elementWithIdentifierDidEndDisplay:(id)display
 {
-  v14 = a3;
+  displayCopy = display;
   v4 = [(NSMutableDictionary *)self->_becameVisibleDates objectForKeyedSubscript:?];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(NSMutableDictionary *)self->_becameVisibleDates objectForKeyedSubscript:v14];
-    [(NSMutableDictionary *)self->_becameVisibleDates removeObjectForKey:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [(NSMutableDictionary *)self->_becameVisibleDates objectForKeyedSubscript:displayCopy];
+    [(NSMutableDictionary *)self->_becameVisibleDates removeObjectForKey:displayCopy];
     if ((soft_RETrainingSimulationIsCurrentlyActive() & 1) == 0)
     {
-      [v5 timeIntervalSinceDate:v6];
+      [date timeIntervalSinceDate:v6];
       v8 = v7;
-      v9 = [(NSMutableDictionary *)self->_visibilityDurations objectForKeyedSubscript:v14];
+      v9 = [(NSMutableDictionary *)self->_visibilityDurations objectForKeyedSubscript:displayCopy];
       v10 = MEMORY[0x277CCABB0];
       if (v9)
       {
@@ -166,14 +166,14 @@
         v13 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
       }
 
-      [(NSMutableDictionary *)self->_visibilityDurations setObject:v13 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)self->_visibilityDurations setObject:v13 forKeyedSubscript:displayCopy];
     }
   }
 }
 
-- (BOOL)isDisplayingElementWithIdentifier:(id)a3
+- (BOOL)isDisplayingElementWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_becameVisibleDates objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_becameVisibleDates objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
@@ -186,8 +186,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_becameVisibleDates allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_becameVisibleDates allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -199,14 +199,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(REUITrainingContext *)self elementWithIdentifierDidEndDisplay:*(*(&v11 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -231,9 +231,9 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
   [v4 _trainDwellForElement:v5 withInterval:?];
 }
 
-- (id)_interactionForElement:(id)a3
+- (id)_interactionForElement:(id)element
 {
-  v3 = [(REUITrainingContext *)self interactionTypeForElement:a3];
+  v3 = [(REUITrainingContext *)self interactionTypeForElement:element];
   v4 = v3;
   if (v3)
   {
@@ -255,11 +255,11 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
   v3 = MEMORY[0x277CBEBF8];
   if ((soft_RETrainingSimulationIsCurrentlyActive() & 1) == 0)
   {
-    v4 = [(REUITrainingContext *)self visibleElementIdentifiers];
-    v5 = v4;
-    if (v4)
+    visibleElementIdentifiers = [(REUITrainingContext *)self visibleElementIdentifiers];
+    v5 = visibleElementIdentifiers;
+    if (visibleElementIdentifiers)
     {
-      v6 = v4;
+      v6 = visibleElementIdentifiers;
     }
 
     else
@@ -273,9 +273,9 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
   return v3;
 }
 
-- (id)_higherElementsThanElement:(id)a3
+- (id)_higherElementsThanElement:(id)element
 {
-  v3 = [(REUITrainingContext *)self elementsOrdered:1 relativeToElement:a3];
+  v3 = [(REUITrainingContext *)self elementsOrdered:1 relativeToElement:element];
   v4 = v3;
   if (v3)
   {
@@ -292,9 +292,9 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
   return v5;
 }
 
-- (id)_lowerElementsThanElement:(id)a3
+- (id)_lowerElementsThanElement:(id)element
 {
-  v3 = [(REUITrainingContext *)self elementsOrdered:0 relativeToElement:a3];
+  v3 = [(REUITrainingContext *)self elementsOrdered:0 relativeToElement:element];
   v4 = v3;
   if (v3)
   {
@@ -319,14 +319,14 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (BOOL)performSimulationCommand:(id)a3 withOptions:(id)a4
+- (BOOL)performSimulationCommand:(id)command withOptions:(id)options
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"tap"])
+  commandCopy = command;
+  optionsCopy = options;
+  if ([commandCopy isEqualToString:@"tap"])
   {
-    v8 = [v7 objectForKeyedSubscript:@"id"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"id"];
     v9 = v8 != 0;
     if (v8)
     {
@@ -334,9 +334,9 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
     }
   }
 
-  else if ([v6 isEqualToString:@"dwell"])
+  else if ([commandCopy isEqualToString:@"dwell"])
   {
-    v8 = [v7 objectForKeyedSubscript:@"id"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"id"];
     [(REUITrainingContext *)self selectElementWithIdentifier:v8];
     v9 = v8 != 0;
     if (v8)
@@ -427,17 +427,17 @@ void __35__REUITrainingContext_resetContext__block_invoke(uint64_t a1, void *a2,
 
   else
   {
-    if (![v6 isEqualToString:@"action"])
+    if (![commandCopy isEqualToString:@"action"])
     {
       v9 = 0;
       goto LABEL_28;
     }
 
-    v8 = [v7 objectForKeyedSubscript:@"id"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"id"];
     v9 = v8 != 0;
     if (v8)
     {
-      v32 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v36 = v8;
       REEnumerateTrainingStateForDate();
 

@@ -1,29 +1,29 @@
 @interface ADJasperColorInFieldCalibrationPipeline
-+ (BOOL)isColorFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4 andPipelineParameters:(id)a5;
-+ (BOOL)isJasperFrameValid:(id)a3 andPipelineParameters:(id)a4;
-- (ADJasperColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryJasperToColorTransform:(double)a3 currentJasperToColorTransform:(double)a4;
++ (BOOL)isColorFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata andPipelineParameters:(id)parameters;
++ (BOOL)isJasperFrameValid:(id)valid andPipelineParameters:(id)parameters;
+- (ADJasperColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryJasperToColorTransform:(double)transform currentJasperToColorTransform:(double)colorTransform;
 - (ADJasperColorInFieldCalibrationPipeline)init;
-- (ADJasperColorInFieldCalibrationPipeline)initWithParameters:(id)a3 espressoEngine:(unint64_t)a4;
-- (BOOL)isAngularVelocityValid:(id)a3;
-- (BOOL)isSDF:(id)a3;
-- (CGRect)calculateJasperFOVInImageWithJasperCalibration:(id)a3 withCameraCalibration:(id)a4 withOriginalImageWidth:(unint64_t)a5 withOriginalImageHeight:(unint64_t)a6 forOutputImageWidth:(unint64_t)a7 forOutputImageHeight:(unint64_t)a8;
+- (ADJasperColorInFieldCalibrationPipeline)initWithParameters:(id)parameters espressoEngine:(unint64_t)engine;
+- (BOOL)isAngularVelocityValid:(id)valid;
+- (BOOL)isSDF:(id)f;
+- (CGRect)calculateJasperFOVInImageWithJasperCalibration:(id)calibration withCameraCalibration:(id)cameraCalibration withOriginalImageWidth:(unint64_t)width withOriginalImageHeight:(unint64_t)height forOutputImageWidth:(unint64_t)imageWidth forOutputImageHeight:(unint64_t)imageHeight;
 - (double)getDeviceFrequency;
 - (float)claculateWeightedStd:(ADJasperColorInFieldCalibrationPipeline *)self;
 - (id).cxx_construct;
-- (id)createInterSessionDataWithDictionaryRepresentation:(id)a3;
-- (id)createReferenceCameraForColor:(__n128)a3 withExtrinsics:(__n128)a4;
-- (int64_t)postProcessFrontendOutputX:(void *)a3 frontendOutputY:(void *)a4 frontendOutputZ:(void *)a5 frontendOutputErrorX:(void *)a6 frontendOutputErrotY:(void *)a7 frontendOutputErrorZ:(void *)a8 interSessionData:(id)a9 jasperColorInFieldCalibrationResult:(id)a10;
-- (int64_t)preProcessColor:(__CVBuffer *)a3 processedColor:(__CVBuffer *)a4 referenceCameraCalibration:(id)a5 colorCameraCalibration:(id)a6 colorMetadata:(id)a7;
-- (int64_t)preProcessJasper:(id)a3 referenceCameraCalibration:(id)a4 jasperCameraCalibration:(id)a5 reprojectedPointsBuffer:(__CVBuffer *)a6;
-- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)a3 frontendEspressoFeaturesInput:(void *)a4 dimensions:(id)a5;
-- (int64_t)resizeImage:(id)a3 colorImage:(__CVBuffer *)a4 processedColor:(__CVBuffer *)a5 colorMetadata:(id)a6;
-- (int64_t)undistortColorImage:(__CVBuffer *)a3 undistortedImage:(__CVBuffer *)a4 calibration:(id)a5;
+- (id)createInterSessionDataWithDictionaryRepresentation:(id)representation;
+- (id)createReferenceCameraForColor:(__n128)color withExtrinsics:(__n128)extrinsics;
+- (int64_t)postProcessFrontendOutputX:(void *)x frontendOutputY:(void *)y frontendOutputZ:(void *)z frontendOutputErrorX:(void *)errorX frontendOutputErrotY:(void *)errotY frontendOutputErrorZ:(void *)errorZ interSessionData:(id)data jasperColorInFieldCalibrationResult:(id)self0;
+- (int64_t)preProcessColor:(__CVBuffer *)color processedColor:(__CVBuffer *)processedColor referenceCameraCalibration:(id)calibration colorCameraCalibration:(id)cameraCalibration colorMetadata:(id)metadata;
+- (int64_t)preProcessJasper:(id)jasper referenceCameraCalibration:(id)calibration jasperCameraCalibration:(id)cameraCalibration reprojectedPointsBuffer:(__CVBuffer *)buffer;
+- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)vector frontendEspressoFeaturesInput:(void *)input dimensions:(id)dimensions;
+- (int64_t)resizeImage:(id)image colorImage:(__CVBuffer *)colorImage processedColor:(__CVBuffer *)color colorMetadata:(id)metadata;
+- (int64_t)undistortColorImage:(__CVBuffer *)image undistortedImage:(__CVBuffer *)undistortedImage calibration:(id)calibration;
 - (void)dealloc;
 - (void)deallocMemory;
-- (void)reportTelemetry:(id)a3 withInterSessionData:(id)a4;
+- (void)reportTelemetry:(id)telemetry withInterSessionData:(id)data;
 - (void)resetSdfHistory;
-- (void)updateJasperCamera:(id)a3;
-- (void)updateLastKnownDepthMap:(id)a3;
+- (void)updateJasperCamera:(id)camera;
+- (void)updateLastKnownDepthMap:(id)map;
 @end
 
 @implementation ADJasperColorInFieldCalibrationPipeline
@@ -35,61 +35,61 @@
   return self;
 }
 
-- (void)reportTelemetry:(id)a3 withInterSessionData:(id)a4
+- (void)reportTelemetry:(id)telemetry withInterSessionData:(id)data
 {
   v66[24] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v61 = a4;
-  v62 = [v61 inFieldCalibrationTelemetryData];
-  v60 = [v62 firedEventTimestampsArray];
-  if ([v5 executed])
+  telemetryCopy = telemetry;
+  dataCopy = data;
+  inFieldCalibrationTelemetryData = [dataCopy inFieldCalibrationTelemetryData];
+  firedEventTimestampsArray = [inFieldCalibrationTelemetryData firedEventTimestampsArray];
+  if ([telemetryCopy executed])
   {
-    [v5 postRelative2FactoryX];
+    [telemetryCopy postRelative2FactoryX];
     v7 = v6;
-    [v5 postRelative2FactoryY];
+    [telemetryCopy postRelative2FactoryY];
     v9 = v8;
-    [v5 postRelative2FactoryZ];
-    analyzeOneShotExtremeRotation(v7, v9, v10, &cfstr_ComAppleApplec_4.isa, v60);
+    [telemetryCopy postRelative2FactoryZ];
+    analyzeOneShotExtremeRotation(v7, v9, v10, &cfstr_ComAppleApplec_4.isa, firedEventTimestampsArray);
   }
 
-  [v5 confidence];
-  [v5 confidence];
+  [telemetryCopy confidence];
+  [telemetryCopy confidence];
   v12 = v11;
   v66[0] = @"N/A";
   v65[0] = @"JasperPreset";
   v65[1] = @"MaxBackBoneRunTime";
-  v59 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v62, "maxBackEndRunTime") / 1000.0}];
+  v59 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(inFieldCalibrationTelemetryData, "maxBackEndRunTime") / 1000.0}];
   v66[1] = v59;
   v65[2] = @"MinBackBoneRunTime";
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v62 minBackEndRunTime] / 1000.0;
+  v14 = [inFieldCalibrationTelemetryData minBackEndRunTime] / 1000.0;
   *&v14 = v14;
   v58 = [v13 numberWithFloat:v14];
   v66[2] = v58;
   v65[3] = @"TimeSincePrevRun";
   v15 = MEMORY[0x277CCABB0];
-  v16 = [v62 timeSincePrevRun] / 1000.0;
+  v16 = [inFieldCalibrationTelemetryData timeSincePrevRun] / 1000.0;
   *&v16 = v16;
   v57 = [v15 numberWithFloat:v16];
   v66[3] = v57;
   v65[4] = @"TotalBackBoneTime";
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v62 totalBackEndTime] / 1000.0;
+  v18 = [inFieldCalibrationTelemetryData totalBackEndTime] / 1000.0;
   *&v18 = v18;
   v56 = [v17 numberWithFloat:v18];
   v66[4] = v56;
   v65[5] = @"TotalFrontEndTime";
   v19 = MEMORY[0x277CCABB0];
-  v20 = [v62 frontEndTime] / 1000.0;
+  v20 = [inFieldCalibrationTelemetryData frontEndTime] / 1000.0;
   *&v20 = v20;
   v55 = [v19 numberWithFloat:v20];
   v66[5] = v55;
   v65[6] = @"TotalNumRuns";
-  v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v62, "totalNumRuns")}];
+  v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(inFieldCalibrationTelemetryData, "totalNumRuns")}];
   v66[6] = v54;
   v65[7] = @"WideAverageNumValidPoints";
   v21 = MEMORY[0x277CCABB0];
-  [v62 getAverageNumValidPoints];
+  [inFieldCalibrationTelemetryData getAverageNumValidPoints];
   v52 = [v21 numberWithFloat:?];
   v66[7] = v52;
   v65[8] = @"WideConfidence";
@@ -98,72 +98,72 @@
   v66[8] = v53;
   v65[9] = @"WideFilteredRotXComparedToFactory";
   v23 = MEMORY[0x277CCABB0];
-  [v5 postRelative2FactoryX];
+  [telemetryCopy postRelative2FactoryX];
   v51 = [v23 numberWithFloat:?];
   v66[9] = v51;
   v65[10] = @"WideFilteredRotXComparedToPrev";
   v24 = MEMORY[0x277CCABB0];
-  [v5 postRelative2PrevX];
+  [telemetryCopy postRelative2PrevX];
   v50 = [v24 numberWithFloat:?];
   v66[10] = v50;
   v65[11] = @"WideFilteredRotYComparedToFactory";
   v25 = MEMORY[0x277CCABB0];
-  [v5 postRelative2FactoryY];
+  [telemetryCopy postRelative2FactoryY];
   v49 = [v25 numberWithFloat:?];
   v66[11] = v49;
   v65[12] = @"WideFilteredRotYComparedToPrev";
   v26 = MEMORY[0x277CCABB0];
-  [v5 postRelative2PrevY];
+  [telemetryCopy postRelative2PrevY];
   v48 = [v26 numberWithFloat:?];
   v66[12] = v48;
   v65[13] = @"WideFilteredRotZComparedToFactory";
   v27 = MEMORY[0x277CCABB0];
-  [v5 postRelative2FactoryZ];
+  [telemetryCopy postRelative2FactoryZ];
   v47 = [v27 numberWithFloat:?];
   v66[13] = v47;
   v65[14] = @"WideFilteredRotZComparedToPrev";
   v28 = MEMORY[0x277CCABB0];
-  [v5 postRelative2PrevZ];
+  [telemetryCopy postRelative2PrevZ];
   v46 = [v28 numberWithFloat:?];
   v66[14] = v46;
   v65[15] = @"WideNumberOfFrames";
-  v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v62, "validPointsSumEventsCount")}];
+  v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(inFieldCalibrationTelemetryData, "validPointsSumEventsCount")}];
   v66[15] = v45;
   v65[16] = @"WideRotXComparedToFactory";
   v29 = MEMORY[0x277CCABB0];
-  [v5 preRelative2FactoryX];
+  [telemetryCopy preRelative2FactoryX];
   v30 = [v29 numberWithFloat:?];
   v66[16] = v30;
   v65[17] = @"WideRotXComparedToPrev";
   v31 = MEMORY[0x277CCABB0];
-  [v5 deltaRotationX];
+  [telemetryCopy deltaRotationX];
   v32 = [v31 numberWithFloat:?];
   v66[17] = v32;
   v65[18] = @"WideRotYComparedToFactory";
   v33 = MEMORY[0x277CCABB0];
-  [v5 preRelative2FactoryY];
+  [telemetryCopy preRelative2FactoryY];
   v34 = [v33 numberWithFloat:?];
   v66[18] = v34;
   v65[19] = @"WideRotYComparedToPrev";
   v35 = MEMORY[0x277CCABB0];
-  [v5 deltaRotationY];
+  [telemetryCopy deltaRotationY];
   v36 = [v35 numberWithFloat:?];
   v66[19] = v36;
   v65[20] = @"WideRotZComparedToFactory";
   v37 = MEMORY[0x277CCABB0];
-  [v5 preRelative2FactoryZ];
+  [telemetryCopy preRelative2FactoryZ];
   v38 = [v37 numberWithFloat:?];
   v66[20] = v38;
   v65[21] = @"WideRotZComparedToPrev";
   v39 = MEMORY[0x277CCABB0];
-  [v5 deltaRotationZ];
+  [telemetryCopy deltaRotationZ];
   v40 = [v39 numberWithFloat:?];
   v66[21] = v40;
   v65[22] = @"WideSucceeded";
-  v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "executed")}];
+  v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(telemetryCopy, "executed")}];
   v66[22] = v41;
   v65[23] = @"IsFirstTimeForDevice";
-  v42 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v61, "isfCapacity") == objc_msgSend(v61, "successfulResultCount")}];
+  v42 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dataCopy, "isfCapacity") == objc_msgSend(dataCopy, "successfulResultCount")}];
   v66[23] = v42;
   v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:v65 count:24];
 
@@ -213,17 +213,17 @@
   return _S9 / (v14 + v15);
 }
 
-- (int64_t)undistortColorImage:(__CVBuffer *)a3 undistortedImage:(__CVBuffer *)a4 calibration:(id)a5
+- (int64_t)undistortColorImage:(__CVBuffer *)image undistortedImage:(__CVBuffer *)undistortedImage calibration:(id)calibration
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   v9 = PixelBufferUtils::pixelSizeForPixelFormat(PixelFormatType, 0);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  CVPixelBufferLockBaseAddress(a3, 0);
+  CVPixelBufferLockBaseAddress(undistortedImage, 0);
+  CVPixelBufferLockBaseAddress(image, 0);
   memset(&v63, 0, sizeof(v63));
   v10 = MEMORY[0x277CBF3A0];
-  PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &v63);
+  PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &v63);
   memset(&v62, 0, sizeof(v62));
-  PixelBufferUtils::asVImageBuffer(a4, *v10, &v62);
+  PixelBufferUtils::asVImageBuffer(undistortedImage, *v10, &v62);
   height = v62.height;
   if (v62.height)
   {
@@ -377,45 +377,45 @@ LABEL_5:
     }
   }
 
-  CVPixelBufferUnlockBaseAddress(a4, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(undistortedImage, 0);
+  CVPixelBufferUnlockBaseAddress(image, 0);
   return 0;
 }
 
-- (int64_t)postProcessFrontendOutputX:(void *)a3 frontendOutputY:(void *)a4 frontendOutputZ:(void *)a5 frontendOutputErrorX:(void *)a6 frontendOutputErrotY:(void *)a7 frontendOutputErrorZ:(void *)a8 interSessionData:(id)a9 jasperColorInFieldCalibrationResult:(id)a10
+- (int64_t)postProcessFrontendOutputX:(void *)x frontendOutputY:(void *)y frontendOutputZ:(void *)z frontendOutputErrorX:(void *)errorX frontendOutputErrotY:(void *)errotY frontendOutputErrorZ:(void *)errorZ interSessionData:(id)data jasperColorInFieldCalibrationResult:(id)self0
 {
   v189 = *MEMORY[0x277D85DE8];
-  v158 = a9;
-  v11 = a10;
-  v12 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationXOutput];
-  v13 = [v12 imageDescriptor];
-  v14 = PixelBufferUtils::pixelSizeForPixelFormat([v13 pixelFormat], 0);
+  dataCopy = data;
+  resultCopy = result;
+  rotationXOutput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationXOutput];
+  imageDescriptor = [rotationXOutput imageDescriptor];
+  v14 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor pixelFormat], 0);
 
-  v15 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationYOutput];
-  v16 = [v15 imageDescriptor];
-  v17 = PixelBufferUtils::pixelSizeForPixelFormat([v16 pixelFormat], 0);
+  rotationYOutput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationYOutput];
+  imageDescriptor2 = [rotationYOutput imageDescriptor];
+  v17 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor2 pixelFormat], 0);
 
-  v18 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationZOutput];
-  v19 = [v18 imageDescriptor];
-  v20 = PixelBufferUtils::pixelSizeForPixelFormat([v19 pixelFormat], 0);
+  rotationZOutput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc rotationZOutput];
+  imageDescriptor3 = [rotationZOutput imageDescriptor];
+  v20 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor3 pixelFormat], 0);
 
-  v21 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorXOutput];
-  v22 = [v21 imageDescriptor];
-  v23 = PixelBufferUtils::pixelSizeForPixelFormat([v22 pixelFormat], 0);
+  errorXOutput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorXOutput];
+  imageDescriptor4 = [errorXOutput imageDescriptor];
+  v23 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor4 pixelFormat], 0);
 
-  v24 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorYOutput];
-  v25 = [v24 imageDescriptor];
-  v26 = PixelBufferUtils::pixelSizeForPixelFormat([v25 pixelFormat], 0);
+  errorYOutput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorYOutput];
+  imageDescriptor5 = [errorYOutput imageDescriptor];
+  v26 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor5 pixelFormat], 0);
 
-  v27 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorZOutput];
-  v28 = [v27 imageDescriptor];
-  v29 = PixelBufferUtils::pixelSizeForPixelFormat([v28 pixelFormat], 0);
+  errorZOutput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc errorZOutput];
+  imageDescriptor6 = [errorZOutput imageDescriptor];
+  v29 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor6 pixelFormat], 0);
 
-  [v11 setExecuted:0];
+  [resultCopy setExecuted:0];
   v177 = 0u;
   v175 = 0u;
   v176 = 0u;
-  [v158 jasperToColorRotationAngles];
+  [dataCopy jasperToColorRotationAngles];
   v152 = v30;
   [ADUtils calcRotationMatrix:?];
   v132 = v31;
@@ -486,17 +486,17 @@ LABEL_5:
   _os_log_impl(&dword_2402F6000, v41, v42, "postProcessFront: alpha = %f colorCameraNominalEfl = %f colorCameraEfl = %f scale = %f", buf, 0x2Au);
 LABEL_7:
   *&v37 = v36;
-  [v11 setAlpha:v37];
+  [resultCopy setAlpha:v37];
   v47 = vzip1q_s32(v136, v138);
   if (v14 == 2)
   {
-    _H0 = *a3;
+    _H0 = *x;
     __asm { FCVT            S0, H0 }
   }
 
   else
   {
-    LODWORD(_D0) = *a3;
+    LODWORD(_D0) = *x;
   }
 
   v53 = v155;
@@ -506,13 +506,13 @@ LABEL_7:
   v156 = vtrn2q_s32(v136, v134);
   if (v17 == 2)
   {
-    _H1 = *a4;
+    _H1 = *y;
     __asm { FCVT            S3, H1 }
   }
 
   else
   {
-    _S3 = *a4;
+    _S3 = *y;
   }
 
   v58 = vzip2q_s32(v136, v138);
@@ -529,13 +529,13 @@ LABEL_7:
   v143 = _D0;
   if (v20 == 2)
   {
-    _H0 = *a5;
+    _H0 = *z;
     __asm { FCVT            S0, H0 }
   }
 
   else
   {
-    LODWORD(_D0) = *a5;
+    LODWORD(_D0) = *z;
   }
 
   v130 = vzip1q_s32(v58, v59);
@@ -546,13 +546,13 @@ LABEL_7:
   v141 = _D0;
   if (v23 == 2)
   {
-    _H0 = *a6;
+    _H0 = *errorX;
     __asm { FCVT            S0, H0 }
   }
 
   else
   {
-    LODWORD(_D0) = *a6;
+    LODWORD(_D0) = *errorX;
   }
 
   v139 = _D0;
@@ -562,26 +562,26 @@ LABEL_7:
   v129 = vmlaq_laneq_f32(v63, v130, v53, 2);
   if (v26 == 2)
   {
-    _H0 = *a7;
+    _H0 = *errotY;
     __asm { FCVT            S0, H0 }
   }
 
   else
   {
-    LODWORD(_D0) = *a7;
+    LODWORD(_D0) = *errotY;
   }
 
   v137 = _D0;
   HIDWORD(_D4) = HIDWORD(v141);
   if (v29 == 2)
   {
-    _H4 = *a8;
+    _H4 = *errorZ;
     __asm { FCVT            S4, H4 }
   }
 
   else
   {
-    LODWORD(_D4) = *a8;
+    LODWORD(_D4) = *errorZ;
   }
 
   v135 = _D4;
@@ -622,58 +622,58 @@ LABEL_7:
   *&v174 = v87.i64[0];
   [ADUtils calcRotationAngle:&v172];
   v151 = v88;
-  v89 = [v158 convertExtrinsicsAnglesToDict:?];
+  v89 = [dataCopy convertExtrinsicsAnglesToDict:?];
   [(ADJasperColorInFieldCalibrationPipeline *)self claculateWeightedStd:COERCE_DOUBLE(__PAIR64__(LODWORD(v137), LODWORD(v139)))];
   v91 = v90;
-  [v11 setConfidence:?];
+  [resultCopy setConfidence:?];
   [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters maxStdForValidResult];
   if (v91 > *&v92)
   {
     v147 = 0u;
-    [v11 setExecutionStatus:-22976];
+    [resultCopy setExecutionStatus:-22976];
     v149 = 0u;
     v167 = 0u;
 LABEL_32:
 
-    [v11 setDeltaRotationX:v145];
-    [v11 setDeltaRotationY:v143];
-    [v11 setDeltaRotationZ:v141];
-    [v11 setStdX:v139];
-    [v11 setStdY:v137];
-    [v11 setStdZ:v135];
-    [v11 setAbsoluteRotationX:*&v154];
+    [resultCopy setDeltaRotationX:v145];
+    [resultCopy setDeltaRotationY:v143];
+    [resultCopy setDeltaRotationZ:v141];
+    [resultCopy setStdX:v139];
+    [resultCopy setStdY:v137];
+    [resultCopy setStdZ:v135];
+    [resultCopy setAbsoluteRotationX:*&v154];
     HIDWORD(v117) = DWORD1(v154);
     LODWORD(v117) = DWORD1(v154);
-    [v11 setAbsoluteRotationY:v117];
-    [v11 setAbsoluteRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v154), DWORD2(v154)))}];
-    [v11 setFactoryRotationX:*&v152];
+    [resultCopy setAbsoluteRotationY:v117];
+    [resultCopy setAbsoluteRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v154), DWORD2(v154)))}];
+    [resultCopy setFactoryRotationX:*&v152];
     HIDWORD(v118) = DWORD1(v152);
     LODWORD(v118) = DWORD1(v152);
-    [v11 setFactoryRotationY:v118];
-    [v11 setFactoryRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v152), DWORD2(v152)))}];
-    [v11 setAbsoluteRotationPostISFX:*&v147];
+    [resultCopy setFactoryRotationY:v118];
+    [resultCopy setFactoryRotationZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v152), DWORD2(v152)))}];
+    [resultCopy setAbsoluteRotationPostISFX:*&v147];
     HIDWORD(v119) = DWORD1(v147);
     LODWORD(v119) = DWORD1(v147);
-    [v11 setAbsoluteRotationPostISFY:v119];
-    [v11 setAbsoluteRotationPostISFZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v147), DWORD2(v147)))}];
-    [v11 setPreRelative2FactoryX:*&v151];
+    [resultCopy setAbsoluteRotationPostISFY:v119];
+    [resultCopy setAbsoluteRotationPostISFZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v147), DWORD2(v147)))}];
+    [resultCopy setPreRelative2FactoryX:*&v151];
     HIDWORD(v120) = DWORD1(v151);
     LODWORD(v120) = DWORD1(v151);
-    [v11 setPreRelative2FactoryY:v120];
-    [v11 setPreRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v151), DWORD2(v151)))}];
-    [v11 setPostRelative2FactoryX:*&v149];
+    [resultCopy setPreRelative2FactoryY:v120];
+    [resultCopy setPreRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v151), DWORD2(v151)))}];
+    [resultCopy setPostRelative2FactoryX:*&v149];
     HIDWORD(v121) = DWORD1(v149);
     LODWORD(v121) = DWORD1(v149);
-    [v11 setPostRelative2FactoryY:v121];
-    [v11 setPostRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v149), DWORD2(v149)))}];
-    [v11 setPostRelative2PrevX:*v167.i64];
+    [resultCopy setPostRelative2FactoryY:v121];
+    [resultCopy setPostRelative2FactoryZ:{COERCE_DOUBLE(__PAIR64__(DWORD1(v149), DWORD2(v149)))}];
+    [resultCopy setPostRelative2PrevX:*v167.i64];
     HIDWORD(v122) = v167.i32[1];
     LODWORD(v122) = v167.i32[1];
-    [v11 setPostRelative2PrevY:v122];
-    [v11 setPostRelative2PrevZ:{COERCE_DOUBLE(__PAIR64__(v167.u32[1], v167.u32[2]))}];
-    [v11 setMotionRotation:*&v34[25].y];
-    [v11 setMotionTranslation:*&v34[26].x];
-    [v11 setValidDepthPercentage:*&v34[26].y];
+    [resultCopy setPostRelative2PrevY:v122];
+    [resultCopy setPostRelative2PrevZ:{COERCE_DOUBLE(__PAIR64__(v167.u32[1], v167.u32[2]))}];
+    [resultCopy setMotionRotation:*&v34[25].y];
+    [resultCopy setMotionTranslation:*&v34[26].x];
+    [resultCopy setValidDepthPercentage:*&v34[26].y];
     v96 = 0;
     goto LABEL_33;
   }
@@ -681,13 +681,13 @@ LABEL_32:
   *&v92 = v91;
   [(ADJasperColorInFieldCalibrationPipeline *)self convertStdToWeight:v92];
   v168 = 0;
-  v94 = [v158 insertEntryAndCalculate:v89 withWeight:&v168 toResult:v93];
+  v94 = [dataCopy insertEntryAndCalculate:v89 withWeight:&v168 toResult:v93];
   v95 = v168;
   if (!v94)
   {
-    [v158 setSuccessfulResultCount:{objc_msgSend(v158, "successfulResultCount") + 1}];
-    [v11 setExecutionStatus:0];
-    [v158 convertDictToExtrinsicsAngles:v95];
+    [dataCopy setSuccessfulResultCount:{objc_msgSend(dataCopy, "successfulResultCount") + 1}];
+    [resultCopy setExecutionStatus:0];
+    [dataCopy convertDictToExtrinsicsAngles:v95];
     v149 = v97;
     [ADUtils calcRotationMatrix:*&v97];
     v101 = vmlaq_f32(vmlaq_f32(vmulq_n_f32(v98, v132.f32[0]), vdupq_lane_s32(*v132.f32, 1), v99), vdupq_laneq_s32(v132, 2), v100);
@@ -703,8 +703,8 @@ LABEL_32:
     v147 = v104;
     v105 = vsubq_f32(v124, v125);
     v106 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v131, v105.f32[0]), v157, *v105.f32, 1), v130, v105, 2);
-    [v11 setJasperToColorExtrinsics:{*v175.i64, *v176.i64, *v177.i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v128, v106.f32[0]), v127, *v106.f32, 1), v126, v106, 2).i64}];
-    [v11 setExecuted:1];
+    [resultCopy setJasperToColorExtrinsics:{*v175.i64, *v176.i64, *v177.i64, *vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v128, v106.f32[0]), v127, *v106.f32, 1), v126, v106, 2).i64}];
+    [resultCopy setExecuted:1];
     v107 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v128, v162.f32[0]), v127, *v162.f32, 1), v126, v162, 2);
     v108 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v128, v166.f32[0]), v127, *v166.f32, 1), v126, v166, 2);
     v109 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v128, v129.f32[0]), v127, *v129.f32, 1), v126, v129, 2);
@@ -739,40 +739,40 @@ LABEL_33:
   return v96;
 }
 
-- (ADJasperColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryJasperToColorTransform:(double)a3 currentJasperToColorTransform:(double)a4
+- (ADJasperColorInFieldCalibrationInterSessionData)createInterSessionDataWithFactoryJasperToColorTransform:(double)transform currentJasperToColorTransform:(double)colorTransform
 {
   v10 = [ADJasperColorInFieldCalibrationInterSessionData alloc];
-  v11 = [*(a1 + 3920336) deviceName];
-  v12 = [(ADJasperColorInFieldCalibrationInterSessionData *)v10 initWithFactoryJasperToColorTransform:v11 currentJasperToColorTransform:a2 andDeviceName:a3, a4, a5, a6, a7, a8, a9];
+  deviceName = [*(self + 3920336) deviceName];
+  v12 = [(ADJasperColorInFieldCalibrationInterSessionData *)v10 initWithFactoryJasperToColorTransform:deviceName currentJasperToColorTransform:a2 andDeviceName:transform, colorTransform, a5, a6, a7, a8, a9];
 
   return v12;
 }
 
-- (id)createInterSessionDataWithDictionaryRepresentation:(id)a3
+- (id)createInterSessionDataWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [ADJasperColorInFieldCalibrationInterSessionData alloc];
-  v6 = [(ADPipelineParameters *)self->_pipelineParameters deviceName];
-  v7 = [(ADJasperColorInFieldCalibrationInterSessionData *)v5 initWithDictionaryRepresentation:v4 andDeviceName:v6];
+  deviceName = [(ADPipelineParameters *)self->_pipelineParameters deviceName];
+  v7 = [(ADJasperColorInFieldCalibrationInterSessionData *)v5 initWithDictionaryRepresentation:representationCopy andDeviceName:deviceName];
 
   return v7;
 }
 
-- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)a3 frontendEspressoFeaturesInput:(void *)a4 dimensions:(id)a5
+- (int64_t)processIntermediateResultsWithBackendFeaturesOutputVector:(const void *)vector frontendEspressoFeaturesInput:(void *)input dimensions:(id)dimensions
 {
-  v8 = a5;
-  v9 = [(ADEspressoJasperColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc featuresOutput];
-  v10 = [v9 imageDescriptor];
-  v11 = PixelBufferUtils::pixelSizeForPixelFormat([v10 pixelFormat], 0);
+  dimensionsCopy = dimensions;
+  featuresOutput = [(ADEspressoJasperColorInFieldCalibrationBackendInferenceDescriptor *)self->_backendInferenceDesc featuresOutput];
+  imageDescriptor = [featuresOutput imageDescriptor];
+  v11 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor pixelFormat], 0);
 
-  v12 = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc featuresInput];
-  v13 = [v12 imageDescriptor];
-  v14 = PixelBufferUtils::pixelSizeForPixelFormat([v13 pixelFormat], 0);
+  featuresInput = [(ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor *)self->_frontendInferenceDesc featuresInput];
+  imageDescriptor2 = [featuresInput imageDescriptor];
+  v14 = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor2 pixelFormat], 0);
 
   if (v11 == 2 && v14 == 2)
   {
-    v15 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v16 = v8;
+    featuresVectorAggregationSize = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v16 = dimensionsCopy;
     v17 = 0;
     v18 = 1;
     while ([v16 count] > v17)
@@ -788,18 +788,18 @@ LABEL_33:
       goto LABEL_108;
     }
 
-    v27 = v15;
-    if (v15)
+    v27 = featuresVectorAggregationSize;
+    if (featuresVectorAggregationSize)
     {
       v28 = 0;
-      v29 = v15 & 0xFFFFFFFC;
+      v29 = featuresVectorAggregationSize & 0xFFFFFFFC;
       while (1)
       {
         v35 = 0;
         v36 = 0.0;
-        if (v15 >= 4 && v18 == 1 && -v15 >= v28)
+        if (featuresVectorAggregationSize >= 4 && v18 == 1 && -featuresVectorAggregationSize >= v28)
         {
-          if (v15 < 0x10)
+          if (featuresVectorAggregationSize < 0x10)
           {
             v37 = 0;
 LABEL_24:
@@ -807,15 +807,15 @@ LABEL_24:
             v47 = v37 - v29;
             do
             {
-              v48 = vcvtq_f32_f16(*(a3 + 2 * v46));
+              v48 = vcvtq_f32_f16(*(vector + 2 * v46));
               v36 = (((v36 + v48.f32[0]) + v48.f32[1]) + v48.f32[2]) + v48.f32[3];
               v46 += 4;
               v47 += 4;
             }
 
             while (v47);
-            v35 = v15 & 0xFFFFFFFC;
-            if (v29 == v15)
+            v35 = featuresVectorAggregationSize & 0xFFFFFFFC;
+            if (v29 == featuresVectorAggregationSize)
             {
               goto LABEL_14;
             }
@@ -823,11 +823,11 @@ LABEL_24:
             goto LABEL_27;
           }
 
-          v38 = v15 & 0xFFFFFFF0;
+          v38 = featuresVectorAggregationSize & 0xFFFFFFF0;
           v39 = v28;
           do
           {
-            v40 = (a3 + 2 * v39);
+            v40 = (vector + 2 * v39);
             v41 = v40[1];
             v42 = vcvt_hight_f32_f16(*v40);
             v43 = vcvtq_f32_f16(*v40->i8);
@@ -839,25 +839,25 @@ LABEL_24:
           }
 
           while (v38);
-          if ((v15 & 0xFFFFFFF0) == v15)
+          if ((featuresVectorAggregationSize & 0xFFFFFFF0) == featuresVectorAggregationSize)
           {
             goto LABEL_14;
           }
 
-          v37 = v15 & 0xFFFFFFF0;
+          v37 = featuresVectorAggregationSize & 0xFFFFFFF0;
           v35 = v37;
-          if ((v15 & 0xC) != 0)
+          if ((featuresVectorAggregationSize & 0xC) != 0)
           {
             goto LABEL_24;
           }
         }
 
 LABEL_27:
-        v49 = v15 - v35;
+        v49 = featuresVectorAggregationSize - v35;
         v50 = v28 + v18 * v35;
         do
         {
-          _H2 = *(a3 + v50);
+          _H2 = *(vector + v50);
           __asm { FCVT            S2, H2 }
 
           v36 = v36 + _S2;
@@ -870,7 +870,7 @@ LABEL_14:
         _S1 = v36 / v27;
         __asm { FCVT            H1, S1 }
 
-        *(a4 + v28++) = LOWORD(_S1);
+        *(input + v28++) = LOWORD(_S1);
         if (v28 == v18)
         {
           goto LABEL_108;
@@ -886,7 +886,7 @@ LABEL_14:
       v97 = 0;
 LABEL_106:
       v121 = v18 - v97;
-      v122 = a4 + 2 * v97;
+      v122 = input + 2 * v97;
       do
       {
         *v122++ = _D0.i16[0];
@@ -901,7 +901,7 @@ LABEL_106:
     {
       v97 = v18 & 0xFFFFFFF0;
       v114 = vdupq_lane_s16(_D0, 0);
-      v115 = (a4 + 16);
+      v115 = (input + 16);
       v116 = v97;
       do
       {
@@ -932,7 +932,7 @@ LABEL_106:
     v97 = v18 & 0xFFFFFFFC;
     v118 = vdup_lane_s16(_D0, 0);
     v119 = v117 - v97;
-    v120 = (a4 + 2 * v117);
+    v120 = (input + 2 * v117);
     do
     {
       *v120++ = v118;
@@ -950,8 +950,8 @@ LABEL_106:
 
   if (v11 == 2 && v14 == 4)
   {
-    v21 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v22 = v8;
+    featuresVectorAggregationSize2 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v22 = dimensionsCopy;
     v23 = 0;
     v24 = 1;
     while ([v22 count] > v23)
@@ -967,18 +967,18 @@ LABEL_106:
       goto LABEL_108;
     }
 
-    v59 = v21;
-    if (v21)
+    v59 = featuresVectorAggregationSize2;
+    if (featuresVectorAggregationSize2)
     {
       v60 = 0;
-      v61 = v21 & 0xFFFFFFFC;
+      v61 = featuresVectorAggregationSize2 & 0xFFFFFFFC;
       while (1)
       {
         v62 = 0;
         v63 = 0.0;
-        if (v21 >= 4 && v24 == 1 && -v21 >= v60)
+        if (featuresVectorAggregationSize2 >= 4 && v24 == 1 && -featuresVectorAggregationSize2 >= v60)
         {
-          if (v21 < 0x10)
+          if (featuresVectorAggregationSize2 < 0x10)
           {
             v64 = 0;
 LABEL_48:
@@ -986,15 +986,15 @@ LABEL_48:
             v74 = v64 - v61;
             do
             {
-              v75 = vcvtq_f32_f16(*(a3 + 2 * v73));
+              v75 = vcvtq_f32_f16(*(vector + 2 * v73));
               v63 = (((v63 + v75.f32[0]) + v75.f32[1]) + v75.f32[2]) + v75.f32[3];
               v73 += 4;
               v74 += 4;
             }
 
             while (v74);
-            v62 = v21 & 0xFFFFFFFC;
-            if (v61 == v21)
+            v62 = featuresVectorAggregationSize2 & 0xFFFFFFFC;
+            if (v61 == featuresVectorAggregationSize2)
             {
               goto LABEL_38;
             }
@@ -1002,11 +1002,11 @@ LABEL_48:
             goto LABEL_51;
           }
 
-          v65 = v21 & 0xFFFFFFF0;
+          v65 = featuresVectorAggregationSize2 & 0xFFFFFFF0;
           v66 = v60;
           do
           {
-            v67 = (a3 + 2 * v66);
+            v67 = (vector + 2 * v66);
             v68 = v67[1];
             v69 = vcvt_hight_f32_f16(*v67);
             v70 = vcvtq_f32_f16(*v67->i8);
@@ -1018,25 +1018,25 @@ LABEL_48:
           }
 
           while (v65);
-          if ((v21 & 0xFFFFFFF0) == v21)
+          if ((featuresVectorAggregationSize2 & 0xFFFFFFF0) == featuresVectorAggregationSize2)
           {
             goto LABEL_38;
           }
 
-          v64 = v21 & 0xFFFFFFF0;
+          v64 = featuresVectorAggregationSize2 & 0xFFFFFFF0;
           v62 = v64;
-          if ((v21 & 0xC) != 0)
+          if ((featuresVectorAggregationSize2 & 0xC) != 0)
           {
             goto LABEL_48;
           }
         }
 
 LABEL_51:
-        v76 = v21 - v62;
+        v76 = featuresVectorAggregationSize2 - v62;
         v77 = v60 + v24 * v62;
         do
         {
-          _H2 = *(a3 + v77);
+          _H2 = *(vector + v77);
           __asm { FCVT            S2, H2 }
 
           v63 = v63 + _S2;
@@ -1046,7 +1046,7 @@ LABEL_51:
 
         while (v76);
 LABEL_38:
-        *(a4 + v60++) = v63 / v59;
+        *(input + v60++) = v63 / v59;
         if (v60 == v24)
         {
           goto LABEL_108;
@@ -1059,7 +1059,7 @@ LABEL_38:
     {
       v107 = v24 & 0xFFFFFFF8;
       v109 = vdupq_lane_s32(v25, 0);
-      v110 = (a4 + 16);
+      v110 = (input + 16);
       v111 = v107;
       do
       {
@@ -1082,7 +1082,7 @@ LABEL_38:
     }
 
     v112 = v24 - v107;
-    v113 = a4 + 4 * v107;
+    v113 = input + 4 * v107;
     do
     {
       *v113++ = v25.i32[0];
@@ -1098,8 +1098,8 @@ LABEL_108:
 
   if (v11 == 4 && v14 == 2)
   {
-    v53 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v54 = v8;
+    featuresVectorAggregationSize3 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v54 = dimensionsCopy;
     v55 = 0;
     v56 = 1;
     while ([v54 count] > v55)
@@ -1115,14 +1115,14 @@ LABEL_108:
       goto LABEL_108;
     }
 
-    v87 = v53;
-    if (v53)
+    v87 = featuresVectorAggregationSize3;
+    if (featuresVectorAggregationSize3)
     {
-      for (i = 0; i != v56; *(a4 + i++) = LOWORD(_S1))
+      for (i = 0; i != v56; *(input + i++) = LOWORD(_S1))
       {
         v90 = 0;
         v91 = 0.0;
-        if (v53 < 0xC)
+        if (featuresVectorAggregationSize3 < 0xC)
         {
           goto LABEL_69;
         }
@@ -1132,31 +1132,31 @@ LABEL_108:
           goto LABEL_69;
         }
 
-        if (-v53 < i)
+        if (-featuresVectorAggregationSize3 < i)
         {
           goto LABEL_69;
         }
 
-        v92 = v53 & 0xFFFFFFF8;
+        v92 = featuresVectorAggregationSize3 & 0xFFFFFFF8;
         v93 = i;
         do
         {
-          v94 = a3 + 4 * v93;
+          v94 = vector + 4 * v93;
           v91 = (((((((v91 + COERCE_FLOAT(*v94)) + COERCE_FLOAT(HIDWORD(*v94))) + COERCE_FLOAT(*(v94 + 1))) + COERCE_FLOAT(HIDWORD(*v94))) + COERCE_FLOAT(*(v94 + 1))) + COERCE_FLOAT(HIDWORD(*(v94 + 2)))) + COERCE_FLOAT(*(v94 + 3))) + COERCE_FLOAT(HIDWORD(*(v94 + 1)));
           v93 += 8;
           v92 -= 8;
         }
 
         while (v92);
-        v90 = v53 & 0xFFFFFFF8;
-        if (v90 != v53)
+        v90 = featuresVectorAggregationSize3 & 0xFFFFFFF8;
+        if (v90 != featuresVectorAggregationSize3)
         {
 LABEL_69:
-          v95 = v53 - v90;
+          v95 = featuresVectorAggregationSize3 - v90;
           v96 = i + v56 * v90;
           do
           {
-            v91 = v91 + *(a3 + v96);
+            v91 = v91 + *(vector + v96);
             v96 += v56;
             --v95;
           }
@@ -1179,7 +1179,7 @@ LABEL_69:
       v108 = 0;
 LABEL_127:
       v137 = v56 - v108;
-      v138 = a4 + 2 * v108;
+      v138 = input + 2 * v108;
       do
       {
         *v138++ = _D0.i16[0];
@@ -1194,7 +1194,7 @@ LABEL_127:
     {
       v108 = v56 & 0xFFFFFFF0;
       v130 = vdupq_lane_s16(_D0, 0);
-      v131 = (a4 + 16);
+      v131 = (input + 16);
       v132 = v108;
       do
       {
@@ -1225,7 +1225,7 @@ LABEL_127:
     v108 = v56 & 0xFFFFFFFC;
     v134 = vdup_lane_s16(_D0, 0);
     v135 = v133 - v108;
-    v136 = (a4 + 2 * v133);
+    v136 = (input + 2 * v133);
     do
     {
       *v136++ = v134;
@@ -1244,8 +1244,8 @@ LABEL_127:
   v80 = -22950;
   if (v11 == 4 && v14 == 4)
   {
-    v81 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
-    v82 = v8;
+    featuresVectorAggregationSize4 = [(ADJasperColorInFieldCalibrationPipelineParameters *)self->_pipelineParameters featuresVectorAggregationSize];
+    v82 = dimensionsCopy;
     v83 = 0;
     v84 = 1;
     while ([v82 count] > v83)
@@ -1261,14 +1261,14 @@ LABEL_127:
       goto LABEL_108;
     }
 
-    v98 = v81;
-    if (v81)
+    v98 = featuresVectorAggregationSize4;
+    if (featuresVectorAggregationSize4)
     {
-      for (j = 0; j != v84; *(a4 + j++) = v101 / v98)
+      for (j = 0; j != v84; *(input + j++) = v101 / v98)
       {
         v100 = 0;
         v101 = 0.0;
-        if (v81 < 0xC)
+        if (featuresVectorAggregationSize4 < 0xC)
         {
           goto LABEL_84;
         }
@@ -1278,31 +1278,31 @@ LABEL_127:
           goto LABEL_84;
         }
 
-        if (-v81 < j)
+        if (-featuresVectorAggregationSize4 < j)
         {
           goto LABEL_84;
         }
 
-        v102 = v81 & 0xFFFFFFF8;
+        v102 = featuresVectorAggregationSize4 & 0xFFFFFFF8;
         v103 = j;
         do
         {
-          v104 = a3 + 4 * v103;
+          v104 = vector + 4 * v103;
           v101 = (((((((v101 + COERCE_FLOAT(*v104)) + COERCE_FLOAT(HIDWORD(*v104))) + COERCE_FLOAT(*(v104 + 1))) + COERCE_FLOAT(HIDWORD(*v104))) + COERCE_FLOAT(*(v104 + 1))) + COERCE_FLOAT(HIDWORD(*(v104 + 2)))) + COERCE_FLOAT(*(v104 + 3))) + COERCE_FLOAT(HIDWORD(*(v104 + 1)));
           v103 += 8;
           v102 -= 8;
         }
 
         while (v102);
-        v100 = v81 & 0xFFFFFFF8;
-        if (v100 != v81)
+        v100 = featuresVectorAggregationSize4 & 0xFFFFFFF8;
+        if (v100 != featuresVectorAggregationSize4)
         {
 LABEL_84:
-          v105 = v81 - v100;
+          v105 = featuresVectorAggregationSize4 - v100;
           v106 = j + v84 * v100;
           do
           {
-            v101 = v101 + *(a3 + v106);
+            v101 = v101 + *(vector + v106);
             v106 += v84;
             --v105;
           }
@@ -1319,7 +1319,7 @@ LABEL_84:
     {
       v124 = v84 & 0xFFFFFFF8;
       v125 = vdupq_lane_s32(v85, 0);
-      v126 = (a4 + 16);
+      v126 = (input + 16);
       v127 = v124;
       do
       {
@@ -1342,7 +1342,7 @@ LABEL_84:
     }
 
     v128 = v84 - v124;
-    v129 = a4 + 4 * v124;
+    v129 = input + 4 * v124;
     do
     {
       *v129++ = v85.i32[0];
@@ -1358,12 +1358,12 @@ LABEL_109:
   return v80;
 }
 
-- (int64_t)preProcessJasper:(id)a3 referenceCameraCalibration:(id)a4 jasperCameraCalibration:(id)a5 reprojectedPointsBuffer:(__CVBuffer *)a6
+- (int64_t)preProcessJasper:(id)jasper referenceCameraCalibration:(id)calibration jasperCameraCalibration:(id)cameraCalibration reprojectedPointsBuffer:(__CVBuffer *)buffer
 {
   v26 = *MEMORY[0x277D85DE8];
   v8 = &self->_distortedImagePixels[244981];
-  v9 = a3;
-  if (([*&v8[29].x forceRun] & 1) == 0 && !-[ADJasperColorInFieldCalibrationPipeline isJasperFrameValid:](self, "isJasperFrameValid:", v9))
+  jasperCopy = jasper;
+  if (([*&v8[29].x forceRun] & 1) == 0 && !-[ADJasperColorInFieldCalibrationPipeline isJasperFrameValid:](self, "isJasperFrameValid:", jasperCopy))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1397,9 +1397,9 @@ LABEL_16:
 
   if (*&v8[28].y)
   {
-    if (-[ADJasperColorInFieldCalibrationPipeline isSDF:](self, "isSDF:", v9) || ([*&v8[29].x forceRun] & 1) != 0)
+    if (-[ADJasperColorInFieldCalibrationPipeline isSDF:](self, "isSDF:", jasperCopy) || ([*&v8[29].x forceRun] & 1) != 0)
     {
-      [(ADJasperColorInFieldCalibrationPipeline *)self updateLastKnownDepthMap:v9];
+      [(ADJasperColorInFieldCalibrationPipeline *)self updateLastKnownDepthMap:jasperCopy];
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_18;
@@ -1436,9 +1436,9 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  [(ADJasperColorInFieldCalibrationPipeline *)self updateLastKnownDepthMap:v9];
+  [(ADJasperColorInFieldCalibrationPipeline *)self updateLastKnownDepthMap:jasperCopy];
 LABEL_18:
-  v19 = [v9 projectJasperPointsCroppedBy:0 rotatedBy:a6 andScaledInto:{v8[21].y, v8[22].x, v8[22].y, v8[23].x, v24, v25}];
+  v19 = [jasperCopy projectJasperPointsCroppedBy:0 rotatedBy:buffer andScaledInto:{v8[21].y, v8[22].x, v8[22].y, v8[23].x, v24, v25}];
   if (!v19)
   {
     x_low = LOBYTE(v8[27].x);
@@ -1451,11 +1451,11 @@ LABEL_20:
   return v19;
 }
 
-- (BOOL)isSDF:(id)a3
+- (BOOL)isSDF:(id)f
 {
   v37 = *MEMORY[0x277D85DE8];
   v3 = &self->_distortedImagePixels[244981];
-  v4 = a3;
+  fCopy = f;
   if ([*&v3[29].x disableSDF])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1468,10 +1468,10 @@ LABEL_20:
   }
 
   LODWORD(v3[27].y) = 0;
-  v5 = [v4 length];
-  v29 = [v4 euclideanDistances];
-  v28 = [v4 bankIds];
-  v27 = [v4 spotIds];
+  v5 = [fCopy length];
+  euclideanDistances = [fCopy euclideanDistances];
+  bankIds = [fCopy bankIds];
+  spotIds = [fCopy spotIds];
   if (!HIDWORD(v3[27].x))
   {
 LABEL_24:
@@ -1481,18 +1481,18 @@ LABEL_24:
 
   if (v5)
   {
-    v25 = v4;
+    v25 = fCopy;
     v6 = 0;
     v26 = v5;
     do
     {
-      v30 = [*&v3[11].x sceneDiversityMinChangedSpots];
+      sceneDiversityMinChangedSpots = [*&v3[11].x sceneDiversityMinChangedSpots];
       v7 = 0;
       v8 = (*&v3[28].x + 24 * v6);
-      v9 = v28;
-      v10 = v29;
+      v9 = bankIds;
+      v10 = euclideanDistances;
       v12 = v26;
-      v11 = v27;
+      v11 = spotIds;
       do
       {
         v14 = *v9++;
@@ -1523,10 +1523,10 @@ LABEL_24:
       }
 
       while (v12);
-      v21 = v30;
-      if (v7 < v30)
+      sceneDiversityMinChangedSpots2 = sceneDiversityMinChangedSpots;
+      if (v7 < sceneDiversityMinChangedSpots)
       {
-        v4 = v25;
+        fCopy = v25;
         goto LABEL_29;
       }
 
@@ -1537,7 +1537,7 @@ LABEL_24:
         v33 = 1024;
         v34 = v7;
         v35 = 1024;
-        v36 = v30;
+        v36 = sceneDiversityMinChangedSpots;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADJasperColorInFieldCalibration jasper SDF current frame pass against history frame %d with %d/%d good spots", buf, 0x14u);
       }
 
@@ -1547,7 +1547,7 @@ LABEL_24:
 
     while (v6 < HIDWORD(v3[27].x));
     v23 = 1;
-    v4 = v25;
+    fCopy = v25;
   }
 
   else
@@ -1556,8 +1556,8 @@ LABEL_24:
     v22 = MEMORY[0x277D86220];
     while (1)
     {
-      v21 = [*&v3[11].x sceneDiversityMinChangedSpots];
-      if (v21)
+      sceneDiversityMinChangedSpots2 = [*&v3[11].x sceneDiversityMinChangedSpots];
+      if (sceneDiversityMinChangedSpots2)
       {
         break;
       }
@@ -1591,7 +1591,7 @@ LABEL_29:
       v33 = 1024;
       v34 = v7;
       v35 = 1024;
-      v36 = v21;
+      v36 = sceneDiversityMinChangedSpots2;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADJasperColorInFieldCalibration jasper SDF current frame failed against history frame %d with %d/%d good spots", buf, 0x14u);
       v23 = 0;
     }
@@ -1602,24 +1602,24 @@ LABEL_25:
   return v23;
 }
 
-- (int64_t)preProcessColor:(__CVBuffer *)a3 processedColor:(__CVBuffer *)a4 referenceCameraCalibration:(id)a5 colorCameraCalibration:(id)a6 colorMetadata:(id)a7
+- (int64_t)preProcessColor:(__CVBuffer *)color processedColor:(__CVBuffer *)processedColor referenceCameraCalibration:(id)calibration colorCameraCalibration:(id)cameraCalibration colorMetadata:(id)metadata
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  calibrationCopy = calibration;
+  cameraCalibrationCopy = cameraCalibration;
+  metadataCopy = metadata;
   kdebug_trace();
-  v15 = [(ADJasperColorInFieldCalibrationPipeline *)self resizeImage:v13 colorImage:a3 processedColor:a4 colorMetadata:v14];
+  v15 = [(ADJasperColorInFieldCalibrationPipeline *)self resizeImage:cameraCalibrationCopy colorImage:color processedColor:processedColor colorMetadata:metadataCopy];
   kdebug_trace();
 
   return v15;
 }
 
-- (int64_t)resizeImage:(id)a3 colorImage:(__CVBuffer *)a4 processedColor:(__CVBuffer *)a5 colorMetadata:(id)a6
+- (int64_t)resizeImage:(id)image colorImage:(__CVBuffer *)colorImage processedColor:(__CVBuffer *)color colorMetadata:(id)metadata
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (!v11)
+  imageCopy = image;
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1636,20 +1636,20 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  Width = CVPixelBufferGetWidth(a5);
-  Height = CVPixelBufferGetHeight(a5);
+  Width = CVPixelBufferGetWidth(color);
+  Height = CVPixelBufferGetHeight(color);
   v14 = -22950;
   if (Width && Height)
   {
-    v15 = CVPixelBufferGetWidth(a4);
-    v16 = CVPixelBufferGetHeight(a4);
-    if (![(ADJasperColorInFieldCalibrationPipeline *)self isColorFrameValid:a4 withMetadata:v11])
+    v15 = CVPixelBufferGetWidth(colorImage);
+    v16 = CVPixelBufferGetHeight(colorImage);
+    if (![(ADJasperColorInFieldCalibrationPipeline *)self isColorFrameValid:colorImage withMetadata:metadataCopy])
     {
       goto LABEL_15;
     }
 
     v17 = &self->_distortedImagePixels[244981];
-    [MEMORY[0x277CED070] calcSensorCrop:v11 onImageWithDimensions:2 metadataDictionary:v17[23].y negativeCropHandling:{v17[24].x, v17[24].y, v17[25].x, v15, v16}];
+    [MEMORY[0x277CED070] calcSensorCrop:metadataCopy onImageWithDimensions:2 metadataDictionary:v17[23].y negativeCropHandling:{v17[24].x, v17[24].y, v17[25].x, v15, v16}];
     v17[21].y = y;
     v17[22].x = x;
     v17[22].y = v20;
@@ -1688,7 +1688,7 @@ LABEL_14:
 
     v28 = Width / v20;
     *&v17[21].x = v28;
-    if (!PixelBufferUtils::cropAndScalePixelBuffer(a4, a5, 1, *&y, *MEMORY[0x277CBF3A0]))
+    if (!PixelBufferUtils::cropAndScalePixelBuffer(colorImage, color, 1, *&y, *MEMORY[0x277CBF3A0]))
     {
       v14 = 0;
       goto LABEL_16;
@@ -1710,17 +1710,17 @@ LABEL_16:
   return v14;
 }
 
-- (CGRect)calculateJasperFOVInImageWithJasperCalibration:(id)a3 withCameraCalibration:(id)a4 withOriginalImageWidth:(unint64_t)a5 withOriginalImageHeight:(unint64_t)a6 forOutputImageWidth:(unint64_t)a7 forOutputImageHeight:(unint64_t)a8
+- (CGRect)calculateJasperFOVInImageWithJasperCalibration:(id)calibration withCameraCalibration:(id)cameraCalibration withOriginalImageWidth:(unint64_t)width withOriginalImageHeight:(unint64_t)height forOutputImageWidth:(unint64_t)imageWidth forOutputImageHeight:(unint64_t)imageHeight
 {
-  v8 = floor(a6 / a8) * a8;
-  v9 = floor(a5 / a7) * a7;
-  v10 = floor((a5 - v9) * 0.5) + 0.0;
-  v11 = floor((a6 - v8) * 0.5) + 0.0;
-  v12 = a7 / a8;
+  v8 = floor(height / imageHeight) * imageHeight;
+  v9 = floor(width / imageWidth) * imageWidth;
+  v10 = floor((width - v9) * 0.5) + 0.0;
+  v11 = floor((height - v8) * 0.5) + 0.0;
+  v12 = imageWidth / imageHeight;
   v13 = v9 / v8 == v12;
   v14 = v9 / v8 < v12;
-  v15 = v11 + floor((v8 - (v9 / a7 * a8)) * 0.5);
-  v16 = (v8 / a8 * a7);
+  v15 = v11 + floor((v8 - (v9 / imageWidth * imageHeight)) * 0.5);
+  v16 = (v8 / imageHeight * imageWidth);
   v17 = v10 + floor((v9 - v16) * 0.5);
   if (v14 || v13)
   {
@@ -1735,7 +1735,7 @@ LABEL_16:
 
   if (v14 || v13)
   {
-    v8 = (v9 / a7 * a8);
+    v8 = (v9 / imageWidth * imageHeight);
   }
 
   result.size.height = v8;
@@ -1745,28 +1745,28 @@ LABEL_16:
   return result;
 }
 
-- (id)createReferenceCameraForColor:(__n128)a3 withExtrinsics:(__n128)a4
+- (id)createReferenceCameraForColor:(__n128)color withExtrinsics:(__n128)extrinsics
 {
   v8 = a7;
   v9 = v8;
   if (v8)
   {
     v10 = [v8 mutableCopy];
-    a1[245009] = a2;
-    a1[245010] = a3;
-    a1[245011] = a4;
-    a1[245012] = a5;
+    self[245009] = a2;
+    self[245010] = color;
+    self[245011] = extrinsics;
+    self[245012] = a5;
     [v10 intrinsicMatrix];
-    a1[2].n128_u32[2] = v11;
+    self[2].n128_u32[2] = v11;
     [v9 cameraToPlatformTransform];
-    a1[3].n128_u32[2] = v12;
-    a1[3].n128_u64[0] = v13;
-    a1[4].n128_u32[2] = v14;
-    a1[5].n128_u32[2] = v15;
-    a1[4].n128_u64[0] = v16;
-    a1[5].n128_u64[0] = v17;
-    a1[6].n128_u32[2] = v18;
-    a1[6].n128_u64[0] = v19;
+    self[3].n128_u32[2] = v12;
+    self[3].n128_u64[0] = v13;
+    self[4].n128_u32[2] = v14;
+    self[5].n128_u32[2] = v15;
+    self[4].n128_u64[0] = v16;
+    self[5].n128_u64[0] = v17;
+    self[6].n128_u32[2] = v18;
+    self[6].n128_u64[0] = v19;
   }
 
   else
@@ -1777,11 +1777,11 @@ LABEL_16:
   return v10;
 }
 
-- (void)updateJasperCamera:(id)a3
+- (void)updateJasperCamera:(id)camera
 {
-  objc_storeStrong(&self->_jasperCalib, a3);
-  v5 = a3;
-  [v5 cameraToPlatformTransform];
+  objc_storeStrong(&self->_jasperCalib, camera);
+  cameraCopy = camera;
+  [cameraCopy cameraToPlatformTransform];
   v10 = v6;
   v11 = v7;
   v12 = v8;
@@ -1797,13 +1797,13 @@ LABEL_16:
   *&self->_anon_70[52] = v13;
 }
 
-- (BOOL)isAngularVelocityValid:(id)a3
+- (BOOL)isAngularVelocityValid:(id)valid
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  validCopy = valid;
   [(ADJasperColorInFieldCalibrationPipeline *)self getDeviceFrequency];
   *&v5 = v5;
-  [MEMORY[0x277CED070] getAngularVelocityFromMetadataDictionary:v4 deviceClock:*&v5];
+  [MEMORY[0x277CED070] getAngularVelocityFromMetadataDictionary:validCopy deviceClock:*&v5];
   v7 = v6;
   [(ADJasperColorInFieldCalibrationControllerParameters *)self->_controllerParameters thresholdAngularVelocity];
   if (v7 >= v8)
@@ -1890,9 +1890,9 @@ LABEL_16:
   }
 }
 
-- (ADJasperColorInFieldCalibrationPipeline)initWithParameters:(id)a3 espressoEngine:(unint64_t)a4
+- (ADJasperColorInFieldCalibrationPipeline)initWithParameters:(id)parameters espressoEngine:(unint64_t)engine
 {
-  v7 = a3;
+  parametersCopy = parameters;
   v31 = 335681116;
   v32 = 0u;
   v33 = 0u;
@@ -1938,10 +1938,10 @@ LABEL_7:
   *(v10 + 3920088) = 0u;
   *(v10 + 980052) = 1065353216;
   *(v10 + 3920104) = 0u;
-  objc_storeStrong(v10 + 490042, a3);
+  objc_storeStrong(v10 + 490042, parameters);
   *(v11 + 980077) = [*(v11 + 490042) sdfHistorySize];
-  v13 = [*(v11 + 490042) deviceName];
-  if ([v13 hasPrefix:@"J7"])
+  deviceName = [*(v11 + 490042) deviceName];
+  if ([deviceName hasPrefix:@"J7"])
   {
 
 LABEL_11:
@@ -1949,7 +1949,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v14 = [v13 hasPrefix:@"J8"];
+  v14 = [deviceName hasPrefix:@"J8"];
 
   if (v14)
   {
@@ -1962,21 +1962,21 @@ LABEL_13:
   *(v11 + 3920248) = *v15;
   *(v11 + 3920264) = v16;
 
-  v17 = [ADNetworkProvider providerForNetwork:@"PeCoNetBackend" espressoEngine:a4];
+  v17 = [ADNetworkProvider providerForNetwork:@"PeCoNetBackend" espressoEngine:engine];
   v18 = v12[1];
   v12[1] = v17;
 
-  v19 = [ADNetworkProvider providerForNetwork:@"PeCoNetFrontend" espressoEngine:a4];
+  v19 = [ADNetworkProvider providerForNetwork:@"PeCoNetFrontend" espressoEngine:engine];
   v20 = v12[2];
   v12[2] = v19;
 
   if (v12[1] && v12[2])
   {
-    v21 = [[ADEspressoJasperColorInFieldCalibrationBackendInferenceDescriptor alloc] initWithNetworkProvider:v12[1] espressoEngine:a4];
+    v21 = [[ADEspressoJasperColorInFieldCalibrationBackendInferenceDescriptor alloc] initWithNetworkProvider:v12[1] espressoEngine:engine];
     v22 = v12[3];
     v12[3] = v21;
 
-    v23 = [[ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor alloc] initWithNetworkProvider:v12[2] espressoEngine:a4];
+    v23 = [[ADEspressoJasperColorInFieldCalibrationFrontendInferenceDescriptor alloc] initWithNetworkProvider:v12[2] espressoEngine:engine];
     v24 = v12[4];
     v12[4] = v23;
 
@@ -1998,12 +1998,12 @@ LABEL_18:
 
 - (double)getDeviceFrequency
 {
-  v2 = [(ADPipelineParameters *)self->_pipelineParameters deviceName];
-  v3 = [v2 uppercaseString];
+  deviceName = [(ADPipelineParameters *)self->_pipelineParameters deviceName];
+  uppercaseString = [deviceName uppercaseString];
 
-  if (([v3 containsString:@"J717"] & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J718") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J720") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J721") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"D93") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"D94") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J817") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J818") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J820") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"J821") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"V53") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"V54") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"D83") & 1) == 0 && (objc_msgSend(v3, "containsString:", @"D84") & 1) == 0)
+  if (([uppercaseString containsString:@"J717"] & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J718") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J720") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J721") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"D93") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"D94") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J817") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J818") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J820") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"J821") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"V53") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"V54") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"D83") & 1) == 0 && (objc_msgSend(uppercaseString, "containsString:", @"D84") & 1) == 0)
   {
-    NSLog(&cfstr_UnknownDeviceF.isa, v3);
+    NSLog(&cfstr_UnknownDeviceF.isa, uppercaseString);
   }
 
   return 24000000.0;
@@ -2097,18 +2097,18 @@ LABEL_18:
   return v4;
 }
 
-- (void)updateLastKnownDepthMap:(id)a3
+- (void)updateLastKnownDepthMap:(id)map
 {
   v3 = &self->_distortedImagePixels[244981];
-  v4 = a3;
+  mapCopy = map;
   y = v3[28].y;
   x_high = HIDWORD(v3[27].x);
-  v63 = v4;
-  v7 = [v4 length];
-  v8 = [v63 euclideanDistances];
-  v9 = [v63 bankIds];
-  v10 = [v63 spotIds];
-  v11 = v10;
+  v63 = mapCopy;
+  v7 = [mapCopy length];
+  euclideanDistances = [v63 euclideanDistances];
+  bankIds = [v63 bankIds];
+  spotIds = [v63 spotIds];
+  v11 = spotIds;
   v65 = *&y % x_high;
   v12 = *(*&v3[28].x + 24 * (*&y % x_high));
   v13 = *(*&v3[28].x + 24 * (*&y % x_high) + 8);
@@ -2173,15 +2173,15 @@ LABEL_3:
     goto LABEL_51;
   }
 
-  v62 = v8;
+  v62 = euclideanDistances;
   v26 = 0;
-  v66 = v9;
+  v66 = bankIds;
   v27 = 0uLL;
   v28 = v7;
-  v64 = v10;
+  v64 = spotIds;
   do
   {
-    v29 = v9[v26];
+    v29 = bankIds[v26];
     v30 = *&v3[28].x + 24 * v65;
     v31 = *v30;
     v32 = *(v30 + 8);
@@ -2219,7 +2219,7 @@ LABEL_3:
 
       bzero(*(v30 + 8), 24 * ((24 * v35 - 24) / 0x18) + 24);
       *(v30 + 8) = v32 + 24 * ((24 * v35 - 24) / 0x18) + 24;
-      v9 = v66;
+      bankIds = v66;
       v31 = *(*&v3[28].x + 24 * v65);
       v11 = v64;
       v27 = 0uLL;
@@ -2269,7 +2269,7 @@ LABEL_3:
         v52 = v51 + 1;
         v53 = v40[1];
         v54 = v52 & 0x7FFFFFFFFFFFFFF8;
-        v9 = v66;
+        bankIds = v66;
         do
         {
           *v53 = v27;
@@ -2289,7 +2289,7 @@ LABEL_3:
 
       else
       {
-        v9 = v66;
+        bankIds = v66;
       }
 
       do
@@ -2312,7 +2312,7 @@ LABEL_20:
   {
     v57 = *v56++;
     v58 = v57;
-    v60 = *v9++;
+    v60 = *bankIds++;
     v59 = v60;
     v61 = *v11++;
     *(*(v55 + 24 * v59) + 4 * v61) = v58;
@@ -2324,24 +2324,24 @@ LABEL_51:
   ++*&v3[28].y;
 }
 
-+ (BOOL)isJasperFrameValid:(id)a3 andPipelineParameters:(id)a4
++ (BOOL)isJasperFrameValid:(id)valid andPipelineParameters:(id)parameters
 {
-  v5 = a3;
-  v6 = a4;
+  validCopy = valid;
+  parametersCopy = parameters;
   v7 = objc_alloc_init(ADJasperColorInFieldCalibrationControllerParameters);
-  valid = isJasperFrameValidImpl(v5, v7, 0);
+  valid = isJasperFrameValidImpl(validCopy, v7, 0);
 
   return valid;
 }
 
-+ (BOOL)isColorFrameValid:(__CVBuffer *)a3 withMetadata:(id)a4 andPipelineParameters:(id)a5
++ (BOOL)isColorFrameValid:(__CVBuffer *)valid withMetadata:(id)metadata andPipelineParameters:(id)parameters
 {
-  v7 = a4;
-  v8 = a5;
+  metadataCopy = metadata;
+  parametersCopy = parameters;
   v9 = objc_alloc_init(ADJasperColorInFieldCalibrationControllerParameters);
-  LOBYTE(a3) = isColorFrameValidImpl(a3, v7, v8, v9);
+  LOBYTE(valid) = isColorFrameValidImpl(valid, metadataCopy, parametersCopy, v9);
 
-  return a3;
+  return valid;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface StateOfMindCoordinate
 - (HKGraphSeriesBlockCoordinateInfo)userInfo;
 - (_TtC8HealthUI21StateOfMindCoordinate)init;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation StateOfMindCoordinate
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = *&a3->c;
-  v9[0] = *&a3->a;
+  v4 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v4;
-  v9[2] = *&a3->tx;
-  v5 = self;
+  v9[2] = *&transform->tx;
+  selfCopy = self;
   sub_1C3C5BA94(v9);
   v7 = v6;
 

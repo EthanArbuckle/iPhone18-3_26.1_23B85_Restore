@@ -1,19 +1,19 @@
 @interface GCIONotificationPort
-- (GCIONotificationPort)initWithMainPort:(unsigned int)a3;
+- (GCIONotificationPort)initWithMainPort:(unsigned int)port;
 - (id)debugDescription;
-- (void)addCancellationHandler:(id)a3 onQueue:(id)a4;
+- (void)addCancellationHandler:(id)handler onQueue:(id)queue;
 - (void)dealloc;
-- (void)setQueue:(id)a3;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation GCIONotificationPort
 
-- (GCIONotificationPort)initWithMainPort:(unsigned int)a3
+- (GCIONotificationPort)initWithMainPort:(unsigned int)port
 {
   v7.receiver = self;
   v7.super_class = GCIONotificationPort;
   v4 = [(GCIONotificationPort *)&v7 init];
-  v5 = IONotificationPortCreate(a3);
+  v5 = IONotificationPortCreate(port);
   v4->_port = v5;
   if (!v5)
   {
@@ -42,23 +42,23 @@
   return [v3 stringWithFormat:@"<%@ %p port='%#08x' queue='%s'>", v5, self, -[GCIONotificationPort wakePort](self, "wakePort"), dispatch_queue_get_label(-[GCIONotificationPort queue](self, "queue"))];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  if (!a3)
+  if (!queue)
   {
     [(GCIONotificationPort *)a2 setQueue:?];
   }
 
-  IONotificationPortSetDispatchQueue(self->_port, a3);
-  self->_queue = a3;
+  IONotificationPortSetDispatchQueue(self->_port, queue);
+  self->_queue = queue;
 }
 
-- (void)addCancellationHandler:(id)a3 onQueue:(id)a4
+- (void)addCancellationHandler:(id)handler onQueue:(id)queue
 {
-  if (!a3)
+  if (!handler)
   {
     [GCIONotificationPort addCancellationHandler:a2 onQueue:self];
-    if (a4)
+    if (queue)
     {
       goto LABEL_3;
     }
@@ -68,27 +68,27 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!queue)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v8 = [(GCIONotificationPort *)self wakePort];
-  mach_port_insert_right(*MEMORY[0x1E69E9A60], v8, v8, 0x14u);
-  v9 = dispatch_source_create(MEMORY[0x1E69E96E0], v8, 1uLL, a4);
+  wakePort = [(GCIONotificationPort *)self wakePort];
+  mach_port_insert_right(*MEMORY[0x1E69E9A60], wakePort, wakePort, 0x14u);
+  v9 = dispatch_source_create(MEMORY[0x1E69E96E0], wakePort, 1uLL, queue);
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __55__GCIONotificationPort_addCancellationHandler_onQueue___block_invoke;
   handler[3] = &unk_1E84153E0;
   handler[4] = v9;
-  handler[5] = a3;
+  handler[5] = handler;
   dispatch_source_set_event_handler(v9, handler);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__GCIONotificationPort_addCancellationHandler_onQueue___block_invoke_2;
   v10[3] = &unk_1E8415408;
-  v11 = v8;
+  v11 = wakePort;
   v10[4] = v9;
   dispatch_source_set_cancel_handler(v9, v10);
   dispatch_activate(v9);

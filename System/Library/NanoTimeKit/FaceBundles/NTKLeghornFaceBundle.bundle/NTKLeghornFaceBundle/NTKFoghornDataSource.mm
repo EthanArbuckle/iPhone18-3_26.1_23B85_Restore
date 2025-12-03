@@ -1,12 +1,12 @@
 @interface NTKFoghornDataSource
-- (void)startUpdatesWithHandler:(id)a3;
+- (void)startUpdatesWithHandler:(id)handler;
 @end
 
 @implementation NTKFoghornDataSource
 
-- (void)startUpdatesWithHandler:(id)a3
+- (void)startUpdatesWithHandler:(id)handler
 {
-  v4 = MEMORY[0x23EEC15B0](a3, a2);
+  v4 = MEMORY[0x23EEC15B0](handler, a2);
   updateHandler = self->_updateHandler;
   self->_updateHandler = v4;
 

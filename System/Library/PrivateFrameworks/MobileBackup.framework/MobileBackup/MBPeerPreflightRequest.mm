@@ -1,28 +1,28 @@
 @interface MBPeerPreflightRequest
-- (MBPeerPreflightRequest)initWithDictionary:(id)a3 error:(id *)a4;
-- (MBPeerPreflightRequest)initWithFreeDiskSpace:(unint64_t)a3 purgeSize:(unint64_t)a4;
+- (MBPeerPreflightRequest)initWithDictionary:(id)dictionary error:(id *)error;
+- (MBPeerPreflightRequest)initWithFreeDiskSpace:(unint64_t)space purgeSize:(unint64_t)size;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation MBPeerPreflightRequest
 
-- (MBPeerPreflightRequest)initWithFreeDiskSpace:(unint64_t)a3 purgeSize:(unint64_t)a4
+- (MBPeerPreflightRequest)initWithFreeDiskSpace:(unint64_t)space purgeSize:(unint64_t)size
 {
   v7.receiver = self;
   v7.super_class = MBPeerPreflightRequest;
   result = [(MBPeerPreflightRequest *)&v7 init];
   if (result)
   {
-    result->_freeDiskSpace = a3;
-    result->_purgeSize = a4;
+    result->_freeDiskSpace = space;
+    result->_purgeSize = size;
   }
 
   return result;
 }
 
-- (MBPeerPreflightRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (MBPeerPreflightRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MBPeerPreflightRequest;
   v7 = [(MBPeerPreflightRequest *)&v13 init];
@@ -31,8 +31,8 @@
     goto LABEL_5;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"MBFreeDiskSpace"];
-  v9 = [v6 objectForKeyedSubscript:@"MBPurgeSize"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"MBFreeDiskSpace"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"MBPurgeSize"];
   v10 = v9;
   if (v8 && v9)
   {
@@ -44,9 +44,9 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MBError errorWithCode:11 format:@"Failed to decode request. Missing property in dictionary %@", v6];
+    *error = [MBError errorWithCode:11 format:@"Failed to decode request. Missing property in dictionary %@", dictionaryCopy];
   }
 
   v11 = 0;

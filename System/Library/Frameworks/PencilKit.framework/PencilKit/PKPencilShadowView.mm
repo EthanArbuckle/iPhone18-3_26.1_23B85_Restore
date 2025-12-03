@@ -1,29 +1,29 @@
 @interface PKPencilShadowView
-+ (id)shadowViewForScene:(id)a3;
-+ (void)createShadowViewForSceneIfNecessary:(id)a3;
-+ (void)hideShadowViewForSceneIfNecessary:(id)a3;
++ (id)shadowViewForScene:(id)scene;
++ (void)createShadowViewForSceneIfNecessary:(id)necessary;
++ (void)hideShadowViewForSceneIfNecessary:(id)necessary;
 - (CGPoint)location;
-- (PKPencilShadowView)initWithFrame:(CGRect)a3;
+- (PKPencilShadowView)initWithFrame:(CGRect)frame;
 - (uint64_t)_shadowShouldBeVisibleForCurrentTiledView;
 - (uint64_t)_updateFrame;
 - (uint64_t)_updateFrameIfNecessary;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)keepVisibleInTiledView:(id)a3;
+- (void)keepVisibleInTiledView:(id)view;
 - (void)layoutSubviews;
 - (void)pauseUpdateCycle;
-- (void)setLocation:(CGPoint)a3;
-- (void)updateInk:(id)a3 animated:(BOOL)a4;
-- (void)updateOpacity:(double)a3 animated:(BOOL)a4;
+- (void)setLocation:(CGPoint)location;
+- (void)updateInk:(id)ink animated:(BOOL)animated;
+- (void)updateOpacity:(double)opacity animated:(BOOL)animated;
 @end
 
 @implementation PKPencilShadowView
 
-- (PKPencilShadowView)initWithFrame:(CGRect)a3
+- (PKPencilShadowView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = PKPencilShadowView;
-  v3 = [(PKPencilShadowView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPencilShadowView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,8 +42,8 @@
     v11 = objc_alloc_init(MEMORY[0x1E69793F0]);
     objc_storeStrong(&v4->_metalLayer, v11);
     [(CAMetalLayer *)v4->_metalLayer setPixelFormat:80];
-    v12 = [(PKPencilShadowView *)v4 layer];
-    [v12 addSublayer:v11];
+    layer = [(PKPencilShadowView *)v4 layer];
+    [layer addSublayer:v11];
 
     v13 = +[PKMetalUtility defaultDevice];
     [(CAMetalLayer *)v11 setDevice:v13];
@@ -73,20 +73,20 @@
     renderQueue = v4->_renderQueue;
     v4->_renderQueue = v18;
 
-    v20 = [(CAMetalLayer *)v4->_metalLayer device];
-    v21 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:v20];
+    device = [(CAMetalLayer *)v4->_metalLayer device];
+    v21 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:device];
 
     v22 = [PKMetalPencilShadowRenderer alloc];
-    v23 = [(CAMetalLayer *)v4->_metalLayer device];
-    v24 = [(PKMetalResourceHandler *)v21 shaderLibrary];
-    v25 = [(PKMetalPencilShadowRenderer *)v22 initWithDevice:v23 library:v24];
+    device2 = [(CAMetalLayer *)v4->_metalLayer device];
+    shaderLibrary = [(PKMetalResourceHandler *)v21 shaderLibrary];
+    v25 = [(PKMetalPencilShadowRenderer *)v22 initWithDevice:device2 library:shaderLibrary];
     shadowRenderer = v4->_shadowRenderer;
     v4->_shadowRenderer = v25;
 
     v4->_updateCyclePaused = 1;
     [(PKPencilShadowView *)v4 setUserInteractionEnabled:0];
-    v27 = [(PKPencilShadowView *)v4 layer];
-    [v27 setAllowsHitTesting:0];
+    layer2 = [(PKPencilShadowView *)v4 layer];
+    [layer2 setAllowsHitTesting:0];
 
     [(PKPencilShadowView *)v4 setAnchorPoint:0.5, 0.0];
     v28 = v4->_renderQueue;
@@ -121,19 +121,19 @@
   [(PKPencilShadowView *)&v5 dealloc];
 }
 
-+ (void)createShadowViewForSceneIfNecessary:(id)a3
++ (void)createShadowViewForSceneIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (_UIUpdateCycleEnabled())
   {
-    v3 = [PKPencilObserverInteraction interactionForScene:v4];
+    v3 = [PKPencilObserverInteraction interactionForScene:necessaryCopy];
     [(PKPencilObserverInteraction *)v3 createShadowViewIfNecessary];
   }
 }
 
-+ (void)hideShadowViewForSceneIfNecessary:(id)a3
++ (void)hideShadowViewForSceneIfNecessary:(id)necessary
 {
-  v3 = [PKPencilObserverInteraction interactionForScene:a3];
+  v3 = [PKPencilObserverInteraction interactionForScene:necessary];
   if (v3)
   {
     *(v3 + 32) = 0;
@@ -146,9 +146,9 @@
   }
 }
 
-+ (id)shadowViewForScene:(id)a3
++ (id)shadowViewForScene:(id)scene
 {
-  v3 = [PKPencilObserverInteraction interactionForScene:a3];
+  v3 = [PKPencilObserverInteraction interactionForScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -415,17 +415,17 @@ LABEL_21:
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PKPencilShadowView *)self superview];
+  superview = [(PKPencilShadowView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(PKPencilShadowView *)self window];
-    v5 = [v4 screen];
-    v6 = [v5 maximumFramesPerSecond];
+    window = [(PKPencilShadowView *)self window];
+    screen = [window screen];
+    maximumFramesPerSecond = [screen maximumFramesPerSecond];
 
-    if (v6 >= 1)
+    if (maximumFramesPerSecond >= 1)
     {
-      self->_minimumFrameDuration = 1.0 / v6;
+      self->_minimumFrameDuration = 1.0 / maximumFramesPerSecond;
     }
   }
 
@@ -438,37 +438,37 @@ LABEL_21:
 
 - (void)pauseUpdateCycle
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 545) = 1;
-    if (*(a1 + 568))
+    *(self + 545) = 1;
+    if (*(self + 568))
     {
       _UIUpdateRequestDeactivate();
       _UIUpdateSequenceRemoveItem();
       _UIUpdateSequenceRemoveItem();
-      *(a1 + 568) = 0;
-      *(a1 + 560) = 0;
+      *(self + 568) = 0;
+      *(self + 560) = 0;
     }
 
-    *(a1 + 424) = 0;
-    [*(a1 + 488) invalidate];
-    v2 = *(a1 + 488);
-    *(a1 + 488) = 0;
+    *(self + 424) = 0;
+    [*(self + 488) invalidate];
+    v2 = *(self + 488);
+    *(self + 488) = 0;
   }
 }
 
-- (void)updateOpacity:(double)a3 animated:(BOOL)a4
+- (void)updateOpacity:(double)opacity animated:(BOOL)animated
 {
-  self->_targetOpacity = a3;
-  if (a3 > 0.0 && self->_updateCyclePaused)
+  self->_targetOpacity = opacity;
+  if (opacity > 0.0 && self->_updateCyclePaused)
   {
     self->_updateCyclePaused = 0;
     self->_presentationCount = 0;
     if (!self->_vsyncItem)
     {
-      v5 = [(PKPencilShadowView *)self window];
-      v6 = [v5 screen];
-      v7 = [v6 maximumFramesPerSecond];
+      window = [(PKPencilShadowView *)self window];
+      screen = [window screen];
+      maximumFramesPerSecond = [screen maximumFramesPerSecond];
 
       objc_initWeak(&location, self);
       _UIUpdateRequestActivate();
@@ -482,7 +482,7 @@ LABEL_21:
       from[1] = 3221225472;
       from[2] = __38__PKPencilShadowView_startUpdateCycle__block_invoke_2;
       from[3] = &unk_1E82DAA10;
-      v14[1] = v7;
+      v14[1] = maximumFramesPerSecond;
       objc_copyWeak(v14, &location);
       self->_vsyncItem = _UIUpdateSequenceInsertItem();
       objc_destroyWeak(v14);
@@ -528,28 +528,28 @@ void __45__PKPencilShadowView_updateOpacity_animated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateInk:(id)a3 animated:(BOOL)a4
+- (void)updateInk:(id)ink animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  inkCopy = ink;
   ink = self->_ink;
-  v9 = ink;
-  v10 = v9;
-  if (v9 != v7)
+  inkCopy2 = ink;
+  v10 = inkCopy2;
+  if (inkCopy2 != inkCopy)
   {
-    v11 = [(PKInk *)v9 identifier];
-    v12 = [(PKInk *)v7 identifier];
-    v13 = [v11 isEqual:v12];
+    identifier = [(PKInk *)inkCopy2 identifier];
+    identifier2 = [(PKInk *)inkCopy identifier];
+    v13 = [identifier isEqual:identifier2];
 
     if ((v13 & 1) == 0)
     {
-      objc_storeStrong(&self->_ink, a3);
-      if (v4 && !self->_updateCyclePaused)
+      objc_storeStrong(&self->_ink, ink);
+      if (animatedCopy && !self->_updateCyclePaused)
       {
         self->_animatingInk = 1;
         self->_animatingInkBeginTimestamp = CACurrentMediaTime();
         objc_storeStrong(&self->_animatingInkOld, ink);
-        objc_storeStrong(&self->_animatingInkNew, a3);
+        objc_storeStrong(&self->_animatingInkNew, ink);
       }
 
       else
@@ -561,16 +561,16 @@ void __45__PKPencilShadowView_updateOpacity_animated___block_invoke(uint64_t a1)
         v15[2] = __41__PKPencilShadowView_updateInk_animated___block_invoke;
         v15[3] = &unk_1E82D6E70;
         v15[4] = self;
-        v16 = v7;
+        v16 = inkCopy;
         dispatch_async(renderQueue, v15);
       }
     }
   }
 }
 
-- (void)setLocation:(CGPoint)a3
+- (void)setLocation:(CGPoint)location
 {
-  self->_location = a3;
+  self->_location = location;
   if (CACurrentMediaTime() - self->_latestKeepVisibleTimestamp < 10.0)
   {
     [(PKPencilShadowView *)self updateOpacity:1 animated:1.0];
@@ -627,9 +627,9 @@ void __45__PKPencilShadowView_updateOpacity_animated___block_invoke(uint64_t a1)
       v18 = v5;
       v19 = v6;
       v7 = objc_loadWeakRetained((result + 536));
-      v8 = [MEMORY[0x1E696AAE8] mainBundle];
-      v9 = [v8 bundleIdentifier];
-      v10 = [v9 isEqualToString:@"com.apple.freeform"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v10 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
       if (v10)
       {
@@ -645,18 +645,18 @@ void __45__PKPencilShadowView_updateOpacity_animated___block_invoke(uint64_t a1)
         v11 = v7;
         if (v7)
         {
-          v12 = [v7 window];
+          window = [v7 window];
 
           v11 = v7;
-          if (v12)
+          if (window)
           {
             v11 = v7;
             while (([v11 isHidden] & 1) == 0)
             {
-              v13 = [v11 superview];
+              superview = [v11 superview];
 
-              v11 = v13;
-              if (!v13)
+              v11 = superview;
+              if (!superview)
               {
 
                 return 1;
@@ -674,9 +674,9 @@ void __45__PKPencilShadowView_updateOpacity_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)keepVisibleInTiledView:(id)a3
+- (void)keepVisibleInTiledView:(id)view
 {
-  objc_storeWeak(&self->_keepVisibleInTiledView, a3);
+  objc_storeWeak(&self->_keepVisibleInTiledView, view);
   self->_latestKeepVisibleTimestamp = CACurrentMediaTime();
   ShouldBeVisibleForCurrentTiled = [(PKPencilShadowView *)self _shadowShouldBeVisibleForCurrentTiledView];
   v5 = 0.0;
@@ -690,31 +690,31 @@ void __45__PKPencilShadowView_updateOpacity_animated___block_invoke(uint64_t a1)
 
 - (uint64_t)_updateFrame
 {
-  v2 = *(a1 + 464) * 0.5;
+  v2 = *(self + 464) * 0.5;
   +[PKMetalPencilShadowRenderer maxBlurSize];
   v4 = v2 * v3;
   +[PKMetalPencilShadowRenderer pixelSize];
   memset(&v19, 0, sizeof(v19));
   v6 = v4 / v5;
-  [a1 azimuth];
+  [self azimuth];
   CGAffineTransformMakeRotation(&v19, v7);
   v8 = v19.tx + v6 * v19.c + v19.a * 0.0;
   v9 = v19.ty + v6 * v19.d + v19.b * 0.0;
-  [a1 location];
-  v11 = v10 - *(a1 + 456) * 0.5 - v8;
-  [a1 location];
+  [self location];
+  v11 = v10 - *(self + 456) * 0.5 - v8;
+  [self location];
   v13 = v12 - v9;
-  v14 = *(a1 + 456);
-  v15 = *(a1 + 464);
+  v14 = *(self + 456);
+  v15 = *(self + 464);
   v16 = *(MEMORY[0x1E695EFD0] + 16);
   *&v18.a = *MEMORY[0x1E695EFD0];
   *&v18.c = v16;
   *&v18.tx = *(MEMORY[0x1E695EFD0] + 32);
-  [a1 setTransform:&v18];
-  [a1 setFrame:{v11, v13, v14, v15}];
+  [self setTransform:&v18];
+  [self setFrame:{v11, v13, v14, v15}];
   v18 = v19;
-  [a1 setTransform:&v18];
-  return [*(a1 + 408) setFrame:{0.0, 0.0, *(a1 + 456), *(a1 + 464)}];
+  [self setTransform:&v18];
+  return [*(self + 408) setFrame:{0.0, 0.0, *(self + 456), *(self + 464)}];
 }
 
 uint64_t __53__PKPencilShadowView__renderAtHeight_altitude_alpha___block_invoke(uint64_t a1)

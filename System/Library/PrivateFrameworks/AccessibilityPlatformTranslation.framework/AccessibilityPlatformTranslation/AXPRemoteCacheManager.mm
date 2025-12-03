@@ -1,27 +1,27 @@
 @interface AXPRemoteCacheManager
-- (AXPRemoteCacheManager)initWithCachedTreeClientType:(unint64_t)a3;
+- (AXPRemoteCacheManager)initWithCachedTreeClientType:(unint64_t)type;
 - (AXPTranslationTransportDelegate)transportDelegate;
-- (BOOL)_notificationData:(id)a3 containsToken:(id)a4;
+- (BOOL)_notificationData:(id)data containsToken:(id)token;
 - (OS_dispatch_queue)_axHierarchyGenerationQueue;
-- (void)_attemptToSendResponse:(id)a3;
+- (void)_attemptToSendResponse:(id)response;
 - (void)_axHierarchyGenerationQueue;
-- (void)_elementVisualsUpdatedForNotification:(unint64_t)a3 data:(id)a4;
-- (void)_processPlatformTranslationRequest:(id)a3;
-- (void)_responseSent:(id)a3 withError:(id)a4;
+- (void)_elementVisualsUpdatedForNotification:(unint64_t)notification data:(id)data;
+- (void)_processPlatformTranslationRequest:(id)request;
+- (void)_responseSent:(id)sent withError:(id)error;
 - (void)_sendAXHierachyOnBackgroundQueue;
-- (void)_sendTextRelatedAttributesForTranslation:(id)a3;
-- (void)_timerDidFire:(id)a3;
-- (void)axAdditionalTreeDumpGeneratedOnBackgroundThreadCallback:(id)a3 success:(BOOL)a4;
-- (void)axInitialTreeDumpGeneratedOnBackgroundThreadCallback:(id)a3 success:(BOOL)a4;
+- (void)_sendTextRelatedAttributesForTranslation:(id)translation;
+- (void)_timerDidFire:(id)fire;
+- (void)axAdditionalTreeDumpGeneratedOnBackgroundThreadCallback:(id)callback success:(BOOL)success;
+- (void)axInitialTreeDumpGeneratedOnBackgroundThreadCallback:(id)callback success:(BOOL)success;
 - (void)axTreeGenerationEnded;
-- (void)handleNotification:(unint64_t)a3 data:(id)a4 associatedObject:(id)a5;
+- (void)handleNotification:(unint64_t)notification data:(id)data associatedObject:(id)object;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation AXPRemoteCacheManager
 
-- (AXPRemoteCacheManager)initWithCachedTreeClientType:(unint64_t)a3
+- (AXPRemoteCacheManager)initWithCachedTreeClientType:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = AXPlatformTranslationLogCommon();
@@ -30,7 +30,7 @@
     *buf = 136315394;
     v13 = "[AXPRemoteCacheManager initWithCachedTreeClientType:]";
     v14 = 2048;
-    v15 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23D766000, v5, OS_LOG_TYPE_INFO, "%s: cachedTreeClientType: %lu", buf, 0x16u);
   }
 
@@ -43,7 +43,7 @@
     axTreeGenerationLock = v6->_axTreeGenerationLock;
     v6->_axTreeGenerationLock = v7;
 
-    v6->_cachedTreeClientType = a3;
+    v6->_cachedTreeClientType = type;
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -71,27 +71,27 @@
   v6 = +[AXPTranslator sharedInstance];
   [v6 setRequestResolvingBehavior:2];
 
-  v7 = [(AXPRemoteCacheManager *)self cachedTreeClientType];
+  cachedTreeClientType = [(AXPRemoteCacheManager *)self cachedTreeClientType];
   v8 = +[AXPTranslator sharedInstance];
-  [v8 setCachedTreeClientType:v7];
+  [v8 setCachedTreeClientType:cachedTreeClientType];
 
   objc_initWeak(buf, self);
-  v9 = [(AXPRemoteCacheManager *)self transportDelegate];
+  transportDelegate = [(AXPRemoteCacheManager *)self transportDelegate];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __30__AXPRemoteCacheManager_start__block_invoke_2;
   v15[3] = &unk_278BE8600;
   objc_copyWeak(&v16, buf);
-  v10 = [v9 accessibilityTranslationTransportAddReceiveDataHandler:v15];
+  v10 = [transportDelegate accessibilityTranslationTransportAddReceiveDataHandler:v15];
   [(AXPRemoteCacheManager *)self set_transportChannel:v10];
 
-  v11 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+  _axHierarchyGenerationQueue = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __30__AXPRemoteCacheManager_start__block_invoke_286;
   v13[3] = &unk_278BE8628;
   objc_copyWeak(&v14, buf);
-  dispatch_async(v11, v13);
+  dispatch_async(_axHierarchyGenerationQueue, v13);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v16);
@@ -180,12 +180,12 @@ void __29__AXPRemoteCacheManager_stop__block_invoke()
 - (OS_dispatch_queue)_axHierarchyGenerationQueue
 {
   v2 = +[AXPTranslator sharediOSInstance];
-  v3 = [v2 axTreeDumpSharedBackgroundQueue];
+  axTreeDumpSharedBackgroundQueue = [v2 axTreeDumpSharedBackgroundQueue];
 
-  if (v3)
+  if (axTreeDumpSharedBackgroundQueue)
   {
     v4 = +[AXPTranslator sharediOSInstance];
-    v5 = [v4 axTreeDumpSharedBackgroundQueue];
+    axTreeDumpSharedBackgroundQueue2 = [v4 axTreeDumpSharedBackgroundQueue];
   }
 
   else
@@ -196,33 +196,33 @@ void __29__AXPRemoteCacheManager_stop__block_invoke()
       [(AXPRemoteCacheManager *)v6 _axHierarchyGenerationQueue:v7];
     }
 
-    v5 = 0;
+    axTreeDumpSharedBackgroundQueue2 = 0;
   }
 
-  return v5;
+  return axTreeDumpSharedBackgroundQueue2;
 }
 
-- (void)_elementVisualsUpdatedForNotification:(unint64_t)a3 data:(id)a4
+- (void)_elementVisualsUpdatedForNotification:(unint64_t)notification data:(id)data
 {
-  v16 = a4;
+  dataCopy = data;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer];
-  if (v6)
+  _layoutChangeCoalesceTimer = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer];
+  if (_layoutChangeCoalesceTimer)
   {
-    v7 = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer];
-    v8 = [v7 isValid];
+    _layoutChangeCoalesceTimer2 = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer];
+    isValid = [_layoutChangeCoalesceTimer2 isValid];
 
-    if (!v16)
+    if (!dataCopy)
     {
       v10 = 0.75;
-      if (v8)
+      if (isValid)
       {
         goto LABEL_19;
       }
 
 LABEL_18:
-      v14 = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer];
-      [v14 invalidate];
+      _layoutChangeCoalesceTimer3 = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer];
+      [_layoutChangeCoalesceTimer3 invalidate];
 
       [(AXPRemoteCacheManager *)self set_layoutChangeCoalesceTimer:0];
       v15 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__timerDidFire_ selector:0 userInfo:0 repeats:v10];
@@ -231,13 +231,13 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v9 = v8 ^ 1;
+    v9 = isValid ^ 1;
   }
 
   else
   {
 
-    if (!v16)
+    if (!dataCopy)
     {
       v10 = 0.75;
       goto LABEL_18;
@@ -247,14 +247,14 @@ LABEL_18:
   }
 
   v10 = 0.75;
-  if (a3 == 4)
+  if (notification == 4)
   {
     v11 = MEMORY[0x277CE6D40];
   }
 
   else
   {
-    if (a3 != 5)
+    if (notification != 5)
     {
       v13 = 0;
       goto LABEL_15;
@@ -279,14 +279,14 @@ LABEL_15:
 LABEL_19:
 }
 
-- (BOOL)_notificationData:(id)a3 containsToken:(id)a4
+- (BOOL)_notificationData:(id)data containsToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 containsObject:v6];
+    v7 = [dataCopy containsObject:tokenCopy];
 LABEL_6:
     v9 = v7;
     goto LABEL_7;
@@ -295,46 +295,46 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [dataCopy isEqual:tokenCopy];
     goto LABEL_6;
   }
 
-  v8 = [v5 allObjects];
-  v9 = [v8 containsObject:v6];
+  allObjects = [dataCopy allObjects];
+  v9 = [allObjects containsObject:tokenCopy];
 
 LABEL_7:
   return v9;
 }
 
-- (void)_timerDidFire:(id)a3
+- (void)_timerDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v5 lock];
+  axTreeGenerationLock = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock lock];
 
   if ([(AXPRemoteCacheManager *)self treeDumpStatus]== 1)
   {
-    v6 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-    [v6 unlock];
+    axTreeGenerationLock2 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+    [axTreeGenerationLock2 unlock];
   }
 
   else
   {
-    v7 = [(AXPRemoteCacheManager *)self treeDumpStatus];
-    v8 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-    [v8 unlock];
+    treeDumpStatus = [(AXPRemoteCacheManager *)self treeDumpStatus];
+    axTreeGenerationLock3 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+    [axTreeGenerationLock3 unlock];
 
-    if (v7 != 2)
+    if (treeDumpStatus != 2)
     {
       objc_initWeak(&location, self);
-      v12 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+      _axHierarchyGenerationQueue = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
       v16 = __39__AXPRemoteCacheManager__timerDidFire___block_invoke;
       v17 = &unk_278BE8628;
       objc_copyWeak(&v18, &location);
-      dispatch_async(v12, &v14);
+      dispatch_async(_axHierarchyGenerationQueue, &v14);
 
       v13 = [(AXPRemoteCacheManager *)self _layoutChangeCoalesceTimer:v14];
       [v13 invalidate];
@@ -346,12 +346,12 @@ LABEL_7:
     }
   }
 
-  v9 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v9 lock];
+  axTreeGenerationLock4 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock4 lock];
 
   [(AXPRemoteCacheManager *)self setTreeDumpStatus:2];
-  v10 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v10 unlock];
+  axTreeGenerationLock5 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock5 unlock];
 
   v11 = +[AXPTranslator sharediOSInstance];
   [v11 stopGeneratingAXTreeDump];
@@ -368,11 +368,11 @@ void __39__AXPRemoteCacheManager__timerDidFire___block_invoke(uint64_t a1)
 - (void)_sendAXHierachyOnBackgroundQueue
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
-  dispatch_assert_queue_V2(v3);
+  _axHierarchyGenerationQueue = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+  dispatch_assert_queue_V2(_axHierarchyGenerationQueue);
 
-  v4 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v4 lock];
+  axTreeGenerationLock = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock lock];
 
   if ([(AXPRemoteCacheManager *)self treeDumpStatus]== 2)
   {
@@ -385,8 +385,8 @@ void __39__AXPRemoteCacheManager__timerDidFire___block_invoke(uint64_t a1)
   }
 
   [(AXPRemoteCacheManager *)self setTreeDumpStatus:v5];
-  v6 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v6 unlock];
+  axTreeGenerationLock2 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock2 unlock];
 
   v7 = AXPlatformTranslationLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -420,16 +420,16 @@ void __57__AXPRemoteCacheManager__sendAXHierachyOnBackgroundQueue__block_invoke(
 - (void)axTreeGenerationEnded
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
-  dispatch_assert_queue_V2(v3);
+  _axHierarchyGenerationQueue = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+  dispatch_assert_queue_V2(_axHierarchyGenerationQueue);
 
-  v4 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v4 lock];
+  axTreeGenerationLock = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock lock];
 
   v5 = [(AXPRemoteCacheManager *)self treeDumpStatus]== 2;
   [(AXPRemoteCacheManager *)self setTreeDumpStatus:0];
-  v6 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
-  [v6 unlock];
+  axTreeGenerationLock2 = [(AXPRemoteCacheManager *)self axTreeGenerationLock];
+  [axTreeGenerationLock2 unlock];
 
   if (v5)
   {
@@ -442,13 +442,13 @@ void __57__AXPRemoteCacheManager__sendAXHierachyOnBackgroundQueue__block_invoke(
       _os_log_impl(&dword_23D766000, v7, OS_LOG_TYPE_INFO, "%s: pendingAXTreeGeneration, generating another AX hierarchy", buf, 0xCu);
     }
 
-    v8 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+    _axHierarchyGenerationQueue2 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__AXPRemoteCacheManager_axTreeGenerationEnded__block_invoke;
     v10[3] = &unk_278BE8628;
     objc_copyWeak(&v11, &location);
-    dispatch_async(v8, v10);
+    dispatch_async(_axHierarchyGenerationQueue2, v10);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -463,12 +463,12 @@ void __46__AXPRemoteCacheManager_axTreeGenerationEnded__block_invoke(uint64_t a1
   [WeakRetained _sendAXHierachyOnBackgroundQueue];
 }
 
-- (void)axInitialTreeDumpGeneratedOnBackgroundThreadCallback:(id)a3 success:(BOOL)a4
+- (void)axInitialTreeDumpGeneratedOnBackgroundThreadCallback:(id)callback success:(BOOL)success
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
-  dispatch_assert_queue_V2(v7);
+  callbackCopy = callback;
+  _axHierarchyGenerationQueue = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+  dispatch_assert_queue_V2(_axHierarchyGenerationQueue);
 
   v8 = AXPlatformTranslationLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -478,15 +478,15 @@ void __46__AXPRemoteCacheManager_axTreeGenerationEnded__block_invoke(uint64_t a1
     _os_log_impl(&dword_23D766000, v8, OS_LOG_TYPE_INFO, "%s: finished generating initial hierarchy", buf, 0xCu);
   }
 
-  if (a4)
+  if (success)
   {
     v9 = [MEMORY[0x277CBEB58] set];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v6 treeDumpResponse];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    treeDumpResponse = [callbackCopy treeDumpResponse];
+    v11 = [treeDumpResponse countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
       v12 = *v26;
@@ -497,20 +497,20 @@ void __46__AXPRemoteCacheManager_axTreeGenerationEnded__block_invoke(uint64_t a1
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(treeDumpResponse);
           }
 
-          v14 = [*(*(&v25 + 1) + 8 * v13) associatedTranslationObject];
-          if (v14)
+          associatedTranslationObject = [*(*(&v25 + 1) + 8 * v13) associatedTranslationObject];
+          if (associatedTranslationObject)
           {
-            [v9 addObject:v14];
+            [v9 addObject:associatedTranslationObject];
           }
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v11 = [treeDumpResponse countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v11);
@@ -540,7 +540,7 @@ void __46__AXPRemoteCacheManager_axTreeGenerationEnded__block_invoke(uint64_t a1
         _os_log_impl(&dword_23D766000, v19, OS_LOG_TYPE_INFO, "%s: sending initial tree dump", buf, 0xCu);
       }
 
-      [(AXPRemoteCacheManager *)self handleUpdatedAXTree:v6];
+      [(AXPRemoteCacheManager *)self handleUpdatedAXTree:callbackCopy];
       v20 = AXPlatformTranslationLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -586,10 +586,10 @@ void __86__AXPRemoteCacheManager_axInitialTreeDumpGeneratedOnBackgroundThreadCal
   [WeakRetained axAdditionalTreeDumpGeneratedOnBackgroundThreadCallback:v5 success:a2];
 }
 
-- (void)axAdditionalTreeDumpGeneratedOnBackgroundThreadCallback:(id)a3 success:(BOOL)a4
+- (void)axAdditionalTreeDumpGeneratedOnBackgroundThreadCallback:(id)callback success:(BOOL)success
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  callbackCopy = callback;
   v7 = AXPlatformTranslationLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -598,10 +598,10 @@ void __86__AXPRemoteCacheManager_axInitialTreeDumpGeneratedOnBackgroundThreadCal
     _os_log_impl(&dword_23D766000, v7, OS_LOG_TYPE_INFO, "%s: finished generating additional hierarchy", &v12, 0xCu);
   }
 
-  v8 = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
-  dispatch_assert_queue_V2(v8);
+  _axHierarchyGenerationQueue = [(AXPRemoteCacheManager *)self _axHierarchyGenerationQueue];
+  dispatch_assert_queue_V2(_axHierarchyGenerationQueue);
 
-  if (a4)
+  if (success)
   {
     [(AXPRemoteCacheManager *)self setLastAXTreeFullyGenerated:1];
     v9 = AXPlatformTranslationLogCommon();
@@ -612,7 +612,7 @@ void __86__AXPRemoteCacheManager_axInitialTreeDumpGeneratedOnBackgroundThreadCal
       _os_log_impl(&dword_23D766000, v9, OS_LOG_TYPE_INFO, "%s: sending additional tree dump", &v12, 0xCu);
     }
 
-    [(AXPRemoteCacheManager *)self handleUpdatedAXTree:v6];
+    [(AXPRemoteCacheManager *)self handleUpdatedAXTree:callbackCopy];
   }
 
   else
@@ -632,20 +632,20 @@ void __86__AXPRemoteCacheManager_axInitialTreeDumpGeneratedOnBackgroundThreadCal
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processPlatformTranslationRequest:(id)a3
+- (void)_processPlatformTranslationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[AXPTranslator sharedInstance];
-  v6 = [v5 processTranslatorRequest:v4];
+  v6 = [v5 processTranslatorRequest:requestCopy];
 
   [(AXPRemoteCacheManager *)self _attemptToSendResponse:v6];
 }
 
-- (void)_attemptToSendResponse:(id)a3
+- (void)_attemptToSendResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v15 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:responseCopy requiringSecureCoding:1 error:&v15];
   v6 = v15;
   if (v6)
   {
@@ -666,14 +666,14 @@ void __86__AXPRemoteCacheManager_axInitialTreeDumpGeneratedOnBackgroundThreadCal
     }
 
     objc_initWeak(&location, self);
-    v10 = [(AXPRemoteCacheManager *)self transportDelegate];
+    transportDelegate = [(AXPRemoteCacheManager *)self transportDelegate];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __48__AXPRemoteCacheManager__attemptToSendResponse___block_invoke;
     v11[3] = &unk_278BE8678;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
-    [v10 accessibilityTranslationTransportSendData:v5 completionHandler:v11];
+    v12 = responseCopy;
+    [transportDelegate accessibilityTranslationTransportSendData:v5 completionHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -687,25 +687,25 @@ void __48__AXPRemoteCacheManager__attemptToSendResponse___block_invoke(uint64_t 
   [WeakRetained _responseSent:*(a1 + 32) withError:v3];
 }
 
-- (void)_responseSent:(id)a3 withError:(id)a4
+- (void)_responseSent:(id)sent withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  sentCopy = sent;
+  errorCopy = error;
+  if (!errorCopy)
   {
 LABEL_9:
     [(AXPRemoteCacheManager *)self setFailedSendAttempts:0];
     goto LABEL_10;
   }
 
-  v8 = [(AXPRemoteCacheManager *)self failedSendAttempts];
+  failedSendAttempts = [(AXPRemoteCacheManager *)self failedSendAttempts];
   v9 = AXPlatformTranslationLogCommon();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
-  if (v8 > 4)
+  if (failedSendAttempts > 4)
   {
     if (v10)
     {
-      [(AXPRemoteCacheManager *)self _responseSent:v7 withError:v9];
+      [(AXPRemoteCacheManager *)self _responseSent:errorCopy withError:v9];
     }
 
     goto LABEL_9;
@@ -717,28 +717,28 @@ LABEL_9:
   }
 
   [(AXPRemoteCacheManager *)self setFailedSendAttempts:[(AXPRemoteCacheManager *)self failedSendAttempts]+ 1];
-  [(AXPRemoteCacheManager *)self _attemptToSendResponse:v6];
+  [(AXPRemoteCacheManager *)self _attemptToSendResponse:sentCopy];
 LABEL_10:
 }
 
-- (void)handleNotification:(unint64_t)a3 data:(id)a4 associatedObject:(id)a5
+- (void)handleNotification:(unint64_t)notification data:(id)data associatedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (a3 <= 0xF && ((1 << a3) & 0x9430) != 0)
+  dataCopy = data;
+  objectCopy = object;
+  if (notification <= 0xF && ((1 << notification) & 0x9430) != 0)
   {
     v10 = AXPlatformTranslationLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v14 = 136315394;
-      v15 = "[AXPRemoteCacheManager handleNotification:data:associatedObject:]";
+      notificationCopy2 = "[AXPRemoteCacheManager handleNotification:data:associatedObject:]";
       v16 = 2048;
-      v17 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_23D766000, v10, OS_LOG_TYPE_INFO, "%s: notification: %lu", &v14, 0x16u);
     }
 
-    [(AXPRemoteCacheManager *)self _elementVisualsUpdatedForNotification:a3 data:v8];
+    [(AXPRemoteCacheManager *)self _elementVisualsUpdatedForNotification:notification data:dataCopy];
   }
 
   else
@@ -747,31 +747,31 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 134218242;
-      v15 = a3;
+      notificationCopy2 = notification;
       v16 = 2112;
-      v17 = v8;
+      notificationCopy = dataCopy;
       _os_log_impl(&dword_23D766000, v12, OS_LOG_TYPE_INFO, "handleNotification: sending notification: %lu, Data: %@", &v14, 0x16u);
     }
 
-    if (a3 == 6 && v9)
+    if (notification == 6 && objectCopy)
     {
-      [(AXPRemoteCacheManager *)self _sendTextRelatedAttributesForTranslation:v9];
+      [(AXPRemoteCacheManager *)self _sendTextRelatedAttributesForTranslation:objectCopy];
     }
 
     v13 = objc_opt_new();
-    [v13 setNotification:a3];
-    [v13 setAssociatedNotificationObject:v9];
-    [v13 setResultData:v8];
+    [v13 setNotification:notification];
+    [v13 setAssociatedNotificationObject:objectCopy];
+    [v13 setResultData:dataCopy];
     [(AXPRemoteCacheManager *)self _attemptToSendResponse:v13];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendTextRelatedAttributesForTranslation:(id)a3
+- (void)_sendTextRelatedAttributesForTranslation:(id)translation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  translationCopy = translation;
   if (_sendTextRelatedAttributesForTranslation__onceToken != -1)
   {
     [AXPRemoteCacheManager _sendTextRelatedAttributesForTranslation:];
@@ -806,15 +806,15 @@ LABEL_10:
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
         [(AXPTranslatorRequest *)v8 setParameters:v10];
 
-        [(AXPTranslatorRequest *)v8 setTranslation:v3];
+        [(AXPTranslatorRequest *)v8 setTranslation:translationCopy];
         v11 = +[AXPTranslator sharedInstance];
         v12 = [v11 processTranslatorRequest:v8];
 
-        v13 = [v12 resultData];
+        resultData = [v12 resultData];
 
-        if (v13)
+        if (resultData)
         {
-          [v12 setAssociatedTranslationObject:v3];
+          [v12 setAssociatedTranslationObject:translationCopy];
           [v12 setAssociatedRequestType:5];
           v14 = objc_opt_new();
           [v14 setAssociatedRequestType:11];
@@ -860,7 +860,7 @@ void __30__AXPRemoteCacheManager_start__block_invoke_2_cold_1()
 - (void)_axHierarchyGenerationQueue
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_23D766000, a1, a3, "%s: axTreeDumpSharedBackgroundQueue is NULL!", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_23D766000, self, a3, "%s: axTreeDumpSharedBackgroundQueue is NULL!", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

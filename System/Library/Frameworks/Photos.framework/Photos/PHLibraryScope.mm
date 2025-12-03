@@ -1,60 +1,60 @@
 @interface PHLibraryScope
-+ (BOOL)removePersonRulesOnActiveLibraryScopeWithPhotoLibrary:(id)a3 error:(id *)a4;
-+ (id)_estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)a3 options:(id)a4 error:(id *)a5;
++ (BOOL)removePersonRulesOnActiveLibraryScopeWithPhotoLibrary:(id)library error:(id *)error;
++ (id)_estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)only options:(id)options error:(id *)error;
 + (id)entityKeyMap;
-+ (id)fetchActiveLibraryScopeWithOptions:(id)a3;
-+ (id)fetchLibraryScopesWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchLibraryScopesWithOptions:(id)a3;
-+ (id)fetchPendingLibraryScopeInvitationWithOptions:(id)a3;
-+ (id)fetchPreviewLibraryScopeWithOptions:(id)a3;
-+ (id)localIdentifierWithUUID:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (unint64_t)estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)a3 imageCount:(unint64_t *)a4 videoCount:(unint64_t *)a5 audioCount:(unint64_t *)a6 itemCount:(unint64_t *)a7 options:(id)a8 error:(id *)a9;
-+ (void)fetchLibraryScopeFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (void)fetchLibraryScopeFromShareURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
-+ (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithPhotoLibrary:(id)a3 completion:(id)a4;
-- (PHLibraryScope)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
-- (id)activateLibraryScopeWithCompletion:(id)a3;
-- (id)markOnboardingPreviewAssetsByProcessingRulesWithCompletion:(id)a3;
-- (void)acceptLibraryScopeWithCompletion:(id)a3;
-- (void)deactivateLibraryScopeWithCompletion:(id)a3;
-- (void)getCloudStatusCountsWithCompletionHandler:(id)a3;
-- (void)publishLibraryScopeWithCompletionHandler:(id)a3;
-- (void)refreshLibraryScopeWithCompletion:(id)a3;
-- (void)removeParticipants:(id)a3 exitSource:(int64_t)a4 completion:(id)a5;
-- (void)startExitFromLibraryScopeWithRetentionPolicy:(int64_t)a3 exitSource:(int64_t)a4 completion:(id)a5;
++ (id)fetchActiveLibraryScopeWithOptions:(id)options;
++ (id)fetchLibraryScopesWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchLibraryScopesWithOptions:(id)options;
++ (id)fetchPendingLibraryScopeInvitationWithOptions:(id)options;
++ (id)fetchPreviewLibraryScopeWithOptions:(id)options;
++ (id)localIdentifierWithUUID:(id)d;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (unint64_t)estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)only imageCount:(unint64_t *)count videoCount:(unint64_t *)videoCount audioCount:(unint64_t *)audioCount itemCount:(unint64_t *)itemCount options:(id)options error:(id *)error;
++ (void)fetchLibraryScopeFromShareURL:(id)l ignoreExistingShare:(BOOL)share photoLibrary:(id)library completionHandler:(id)handler;
++ (void)fetchLibraryScopeFromShareURL:(id)l options:(id)options completionHandler:(id)handler;
++ (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithPhotoLibrary:(id)library completion:(id)completion;
+- (PHLibraryScope)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
+- (id)activateLibraryScopeWithCompletion:(id)completion;
+- (id)markOnboardingPreviewAssetsByProcessingRulesWithCompletion:(id)completion;
+- (void)acceptLibraryScopeWithCompletion:(id)completion;
+- (void)deactivateLibraryScopeWithCompletion:(id)completion;
+- (void)getCloudStatusCountsWithCompletionHandler:(id)handler;
+- (void)publishLibraryScopeWithCompletionHandler:(id)handler;
+- (void)refreshLibraryScopeWithCompletion:(id)completion;
+- (void)removeParticipants:(id)participants exitSource:(int64_t)source completion:(id)completion;
+- (void)startExitFromLibraryScopeWithRetentionPolicy:(int64_t)policy exitSource:(int64_t)source completion:(id)completion;
 - (void)unsharePendingAssetsSharedToScope;
 @end
 
 @implementation PHLibraryScope
 
-- (id)markOnboardingPreviewAssetsByProcessingRulesWithCompletion:(id)a3
+- (id)markOnboardingPreviewAssetsByProcessingRulesWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
   v8 = [PHUserFeedbackCalculator alloc];
-  v9 = [(PHObject *)self photoLibrary];
-  v10 = [(PHUserFeedbackCalculator *)v8 initWithPhotoLibrary:v9];
+  photoLibrary2 = [(PHObject *)self photoLibrary];
+  v10 = [(PHUserFeedbackCalculator *)v8 initWithPhotoLibrary:photoLibrary2];
 
-  v11 = [(PHUserFeedbackCalculator *)v10 personUUIDsWithNegativeFeedback];
-  v12 = [v7 cloudInternalClient];
-  v13 = [(PHObject *)self uuid];
+  personUUIDsWithNegativeFeedback = [(PHUserFeedbackCalculator *)v10 personUUIDsWithNegativeFeedback];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  uuid = [(PHObject *)self uuid];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __77__PHLibraryScope_markOnboardingPreviewAssetsByProcessingRulesWithCompletion___block_invoke;
   v18[3] = &unk_1E75AAA50;
-  v19 = v5;
-  v14 = v5;
-  v15 = [v12 markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope:v13 excludePersonUUIDs:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v14 = completionCopy;
+  v15 = [cloudInternalClient markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope:uuid excludePersonUUIDs:personUUIDsWithNegativeFeedback completionHandler:v18];
 
   return v15;
 }
@@ -69,81 +69,81 @@ void __77__PHLibraryScope_markOnboardingPreviewAssetsByProcessingRulesWithComple
 
 - (void)unsharePendingAssetsSharedToScope
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v6 = [v3 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v4 = [v6 cloudInternalClient];
-  v5 = [(PHLibraryScope *)self scopeIdentifier];
-  [v4 unsharePendingAssetsSharedToScopeWithIdentifier:v5];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  scopeIdentifier = [(PHLibraryScope *)self scopeIdentifier];
+  [cloudInternalClient unsharePendingAssetsSharedToScopeWithIdentifier:scopeIdentifier];
 }
 
-- (void)getCloudStatusCountsWithCompletionHandler:(id)a3
+- (void)getCloudStatusCountsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:352 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:352 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
-  v9 = [(PHObject *)self photoLibrary];
-  v10 = [v9 mainScopeIdentifier];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  photoLibrary2 = [(PHObject *)self photoLibrary];
+  mainScopeIdentifier = [photoLibrary2 mainScopeIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__PHLibraryScope_getCloudStatusCountsWithCompletionHandler___block_invoke;
   v13[3] = &unk_1E75A85A8;
-  v14 = v5;
-  v11 = v5;
-  [v8 getLibraryScopeStatusCountsForScopeWithIdentifier:v10 completionHandler:v13];
+  v14 = handlerCopy;
+  v11 = handlerCopy;
+  [cloudInternalClient getLibraryScopeStatusCountsForScopeWithIdentifier:mainScopeIdentifier completionHandler:v13];
 }
 
-- (void)refreshLibraryScopeWithCompletion:(id)a3
+- (void)refreshLibraryScopeWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
-  v9 = [(PHLibraryScope *)self scopeIdentifier];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  scopeIdentifier = [(PHLibraryScope *)self scopeIdentifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__PHLibraryScope_refreshLibraryScopeWithCompletion___block_invoke;
   v12[3] = &unk_1E75A8580;
-  v13 = v5;
-  v10 = v5;
-  [v8 refreshLibraryScopeWithIdentifier:v9 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [cloudInternalClient refreshLibraryScopeWithIdentifier:scopeIdentifier completionHandler:v12];
 }
 
-- (void)removeParticipants:(id)a3 exitSource:(int64_t)a4 completion:(id)a5
+- (void)removeParticipants:(id)participants exitSource:(int64_t)source completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  participantsCopy = participants;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v10 = [(PHObject *)self photoLibrary];
-  v11 = [v10 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v8;
+  v13 = participantsCopy;
   v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v14)
   {
@@ -159,12 +159,12 @@ void __77__PHLibraryScope_markOnboardingPreviewAssetsByProcessingRulesWithComple
         }
 
         v18 = *(*(&v28 + 1) + 8 * i);
-        v19 = [v18 uuid];
+        uuid = [v18 uuid];
 
-        if (v19)
+        if (uuid)
         {
-          v20 = [v18 uuid];
-          [v12 addObject:v20];
+          uuid2 = [v18 uuid];
+          [v12 addObject:uuid2];
         }
       }
 
@@ -174,15 +174,15 @@ void __77__PHLibraryScope_markOnboardingPreviewAssetsByProcessingRulesWithComple
     while (v15);
   }
 
-  v21 = [v11 cloudInternalClient];
-  v22 = [(PHLibraryScope *)self scopeIdentifier];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  scopeIdentifier = [(PHLibraryScope *)self scopeIdentifier];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __59__PHLibraryScope_removeParticipants_exitSource_completion___block_invoke;
   v26[3] = &unk_1E75AAA50;
-  v27 = v9;
-  v23 = v9;
-  [v21 removeParticipantsWithParticipantUUIDs:v12 fromLibraryScopeWithIdentifier:v22 retentionPolicy:0 exitSource:a4 completionHandler:v26];
+  v27 = completionCopy;
+  v23 = completionCopy;
+  [cloudInternalClient removeParticipantsWithParticipantUUIDs:v12 fromLibraryScopeWithIdentifier:scopeIdentifier retentionPolicy:0 exitSource:source completionHandler:v26];
 }
 
 void __59__PHLibraryScope_removeParticipants_exitSource_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -193,27 +193,27 @@ void __59__PHLibraryScope_removeParticipants_exitSource_completion___block_invok
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)startExitFromLibraryScopeWithRetentionPolicy:(int64_t)a3 exitSource:(int64_t)a4 completion:(id)a5
+- (void)startExitFromLibraryScopeWithRetentionPolicy:(int64_t)policy exitSource:(int64_t)source completion:(id)completion
 {
-  v9 = a5;
-  if (!v9)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v10 = [(PHObject *)self photoLibrary];
-  v11 = [v10 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v12 = [v11 cloudInternalClient];
-  v13 = [(PHLibraryScope *)self scopeIdentifier];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  scopeIdentifier = [(PHLibraryScope *)self scopeIdentifier];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__PHLibraryScope_startExitFromLibraryScopeWithRetentionPolicy_exitSource_completion___block_invoke;
   v16[3] = &unk_1E75AAA50;
-  v17 = v9;
-  v14 = v9;
-  [v12 startExitFromLibraryScopeWithIdentifier:v13 retentionPolicy:a3 exitSource:a4 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [cloudInternalClient startExitFromLibraryScopeWithIdentifier:scopeIdentifier retentionPolicy:policy exitSource:source completionHandler:v16];
 }
 
 void __85__PHLibraryScope_startExitFromLibraryScopeWithRetentionPolicy_exitSource_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -224,27 +224,27 @@ void __85__PHLibraryScope_startExitFromLibraryScopeWithRetentionPolicy_exitSourc
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)deactivateLibraryScopeWithCompletion:(id)a3
+- (void)deactivateLibraryScopeWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
-  v9 = [(PHObject *)self uuid];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  uuid = [(PHObject *)self uuid];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__PHLibraryScope_deactivateLibraryScopeWithCompletion___block_invoke;
   v12[3] = &unk_1E75AAA50;
-  v13 = v5;
-  v10 = v5;
-  [v8 deactivateLibraryScope:v9 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [cloudInternalClient deactivateLibraryScope:uuid completionHandler:v12];
 }
 
 void __55__PHLibraryScope_deactivateLibraryScopeWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -255,27 +255,27 @@ void __55__PHLibraryScope_deactivateLibraryScopeWithCompletion___block_invoke(ui
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (id)activateLibraryScopeWithCompletion:(id)a3
+- (id)activateLibraryScopeWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
-  v9 = [(PHObject *)self uuid];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
+  uuid = [(PHObject *)self uuid];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__PHLibraryScope_activateLibraryScopeWithCompletion___block_invoke;
   v14[3] = &unk_1E75AAA50;
-  v15 = v5;
-  v10 = v5;
-  v11 = [v8 activateLibraryScope:v9 completionHandler:v14];
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = [cloudInternalClient activateLibraryScope:uuid completionHandler:v14];
 
   return v11;
 }
@@ -288,114 +288,114 @@ void __53__PHLibraryScope_activateLibraryScopeWithCompletion___block_invoke(uint
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)acceptLibraryScopeWithCompletion:(id)a3
+- (void)acceptLibraryScopeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(PHObject *)self uuid];
-  v5 = [(PHObject *)self photoLibrary];
-  [PHShare acceptShareWithUUID:v6 photoLibrary:v5 completion:v4];
+  completionCopy = completion;
+  uuid = [(PHObject *)self uuid];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  [PHShare acceptShareWithUUID:uuid photoLibrary:photoLibrary completion:completionCopy];
 }
 
-- (void)publishLibraryScopeWithCompletionHandler:(id)a3
+- (void)publishLibraryScopeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(PHObject *)self uuid];
-  v5 = [(PHObject *)self photoLibrary];
-  [PHShare publishShareWithUUID:v6 photoLibrary:v5 completion:v4];
+  handlerCopy = handler;
+  uuid = [(PHObject *)self uuid];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  [PHShare publishShareWithUUID:uuid photoLibrary:photoLibrary completion:handlerCopy];
 }
 
-- (PHLibraryScope)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHLibraryScope)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PHLibraryScope;
-  v9 = [(PHObject *)&v37 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v37 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"creationDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"creationDate"];
     creationDate = v9->_creationDate;
     v9->_creationDate = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"ckShareData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"ckShareData"];
     ckShareData = v9->_ckShareData;
     v9->_ckShareData = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"status"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v9->_status = [v16 integerValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"shareURL"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"shareURL"];
     shareURL = v9->_shareURL;
     v9->_shareURL = v17;
 
-    v19 = [v8 objectForKeyedSubscript:@"scopeIdentifier"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"scopeIdentifier"];
     scopeIdentifier = v9->_scopeIdentifier;
     v9->_scopeIdentifier = v19;
 
-    v21 = [v8 objectForKeyedSubscript:@"expiryDate"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"expiryDate"];
     expiryDate = v9->_expiryDate;
     v9->_expiryDate = v21;
 
-    v23 = [v8 objectForKeyedSubscript:@"trashedState"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"trashedState"];
     v9->_trashedState = [v23 unsignedIntegerValue];
 
-    v24 = [v8 objectForKeyedSubscript:@"localPublishState"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"localPublishState"];
     v9->_publishState = [v24 unsignedIntegerValue];
 
-    v25 = [v8 objectForKeyedSubscript:@"participantCloudUpdateState"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"participantCloudUpdateState"];
     v9->_participantCloudUpdateState = [v25 unsignedIntegerValue];
 
-    v26 = [v8 objectForKeyedSubscript:@"autoSharePolicy"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"autoSharePolicy"];
     v9->_autoSharePolicy = [v26 unsignedIntegerValue];
 
-    v27 = [v8 objectForKeyedSubscript:@"publicPermission"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"publicPermission"];
     v9->_publicPermission = [v27 unsignedIntegerValue];
 
-    v28 = [v8 objectForKeyedSubscript:@"rulesData"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"rulesData"];
     rulesData = v9->_rulesData;
     v9->_rulesData = v28;
 
     v9->_libraryScopeInLocalMode = [MEMORY[0x1E69BE4E8] libraryScopeScopeIdentifierWasCreatedInLocalOnlyMode:v9->_scopeIdentifier];
-    v30 = [v8 objectForKeyedSubscript:@"scopeSyncingState"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"scopeSyncingState"];
     v9->_scopeSyncingState = [v30 unsignedIntegerValue];
 
-    v31 = [v8 objectForKeyedSubscript:@"previewState"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"previewState"];
     v9->_previewState = [v31 unsignedIntegerValue];
 
-    v32 = [v8 objectForKeyedSubscript:@"cloudPhotoCount"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"cloudPhotoCount"];
     v9->_cloudPhotoCount = [v32 unsignedIntegerValue];
 
-    v33 = [v8 objectForKeyedSubscript:@"cloudVideoCount"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"cloudVideoCount"];
     v9->_cloudVideoCount = [v33 unsignedIntegerValue];
 
-    v34 = [v8 objectForKeyedSubscript:@"cloudItemCount"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"cloudItemCount"];
     v9->_cloudItemCount = [v34 unsignedIntegerValue];
 
-    v35 = [v8 objectForKeyedSubscript:@"exitState"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"exitState"];
     v9->_exitState = [v35 unsignedIntegerValue];
   }
 
   return v9;
 }
 
-+ (BOOL)removePersonRulesOnActiveLibraryScopeWithPhotoLibrary:(id)a3 error:(id *)a4
++ (BOOL)removePersonRulesOnActiveLibraryScopeWithPhotoLibrary:(id)library error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 librarySpecificFetchOptions];
-  v7 = [PHLibraryScope fetchActiveLibraryScopeWithOptions:v6];
+  libraryCopy = library;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v7 = [PHLibraryScope fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
 
   if ([v7 count])
   {
-    v8 = [v7 firstObject];
-    if ([v8 autoSharePolicy] == 2)
+    firstObject = [v7 firstObject];
+    if ([firstObject autoSharePolicy] == 2)
     {
-      v9 = [v5 librarySpecificFetchOptions];
-      v26 = v8;
-      v10 = [PHLibraryScopeRule fetchLibraryScopeRulesForLibraryScope:v8 options:v9];
+      librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
+      v26 = firstObject;
+      v10 = [PHLibraryScopeRule fetchLibraryScopeRulesForLibraryScope:firstObject options:librarySpecificFetchOptions2];
 
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v31 = 0u;
@@ -418,16 +418,16 @@ void __53__PHLibraryScope_activateLibraryScopeWithCompletion___block_invoke(uint
             }
 
             v17 = *(*(&v31 + 1) + 8 * i);
-            v18 = [v17 personCondition];
+            personCondition = [v17 personCondition];
 
-            if (v18)
+            if (personCondition)
             {
               [v17 removeConditionOfType:objc_opt_class()];
             }
 
-            v19 = [v17 dateRangeCondition];
+            dateRangeCondition = [v17 dateRangeCondition];
 
-            if (v19)
+            if (dateRangeCondition)
             {
               [v11 addObject:v17];
             }
@@ -443,18 +443,18 @@ void __53__PHLibraryScope_activateLibraryScopeWithCompletion___block_invoke(uint
       v28[1] = 3221225472;
       v28[2] = __78__PHLibraryScope_removePersonRulesOnActiveLibraryScopeWithPhotoLibrary_error___block_invoke;
       v28[3] = &unk_1E75AAEB0;
-      v8 = v26;
+      firstObject = v26;
       v29 = v26;
       v20 = v11;
       v30 = v20;
       v27 = 0;
-      v21 = [v5 performChangesAndWait:v28 error:&v27];
+      v21 = [libraryCopy performChangesAndWait:v28 error:&v27];
       v22 = v27;
       v23 = v22;
-      if (a4)
+      if (error)
       {
         v24 = v22;
-        *a4 = v23;
+        *error = v23;
       }
     }
 
@@ -486,16 +486,16 @@ void __78__PHLibraryScope_removePersonRulesOnActiveLibraryScopeWithPhotoLibrary_
   }
 }
 
-+ (id)_estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)a3 options:(id)a4 error:(id *)a5
++ (id)_estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)only options:(id)options error:(id *)error
 {
-  v6 = a3;
+  onlyCopy = only;
   v22[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  optionsCopy = options;
   v8 = MEMORY[0x1E696AB28];
-  if (v6)
+  if (onlyCopy)
   {
-    v9 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
-    v22[0] = v9;
+    predicateToIncludeOnlyContentContributedByCurrentUser = [MEMORY[0x1E69BE540] predicateToIncludeOnlyContentContributedByCurrentUser];
+    v22[0] = predicateToIncludeOnlyContentContributedByCurrentUser;
     v10 = [MEMORY[0x1E69BE540] predicateForAssetSharingFilter:1];
     v22[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
@@ -504,17 +504,17 @@ void __78__PHLibraryScope_removePersonRulesOnActiveLibraryScopeWithPhotoLibrary_
 
   else
   {
-    v9 = [MEMORY[0x1E69BE540] predicateForAssetSharingFilter:1];
-    v21 = v9;
+    predicateToIncludeOnlyContentContributedByCurrentUser = [MEMORY[0x1E69BE540] predicateForAssetSharingFilter:1];
+    v21 = predicateToIncludeOnlyContentContributedByCurrentUser;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v12 = [v8 andPredicateWithSubpredicates:v10];
   }
 
   if (v12)
   {
-    [v7 setShouldPrefetchCount:1];
-    [v7 setInternalPredicate:v12];
-    v13 = [PHAsset fetchAssetsWithOptions:v7];
+    [optionsCopy setShouldPrefetchCount:1];
+    [optionsCopy setInternalPredicate:v12];
+    v13 = [PHAsset fetchAssetsWithOptions:optionsCopy];
   }
 
   else
@@ -524,10 +524,10 @@ void __78__PHLibraryScope_removePersonRulesOnActiveLibraryScopeWithPhotoLibrary_
     v20 = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v17 = [v14 errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v16];
-    if (a5)
+    if (error)
     {
       v17 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     v13 = 0;
@@ -536,28 +536,28 @@ void __78__PHLibraryScope_removePersonRulesOnActiveLibraryScopeWithPhotoLibrary_
   return v13;
 }
 
-+ (unint64_t)estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)a3 imageCount:(unint64_t *)a4 videoCount:(unint64_t *)a5 audioCount:(unint64_t *)a6 itemCount:(unint64_t *)a7 options:(id)a8 error:(id *)a9
++ (unint64_t)estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:(BOOL)only imageCount:(unint64_t *)count videoCount:(unint64_t *)videoCount audioCount:(unint64_t *)audioCount itemCount:(unint64_t *)itemCount options:(id)options error:(id *)error
 {
-  v13 = [a1 _estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:a3 options:a8 error:a9];
+  v13 = [self _estimatedAssetCountToMoveForExitRetentionPolicyContributedOnly:only options:options error:error];
   v14 = v13;
-  if (a4)
+  if (count)
   {
-    *a4 = [v13 countOfAssetsWithMediaType:1];
+    *count = [v13 countOfAssetsWithMediaType:1];
   }
 
-  if (a5)
+  if (videoCount)
   {
-    *a5 = [v14 countOfAssetsWithMediaType:2];
+    *videoCount = [v14 countOfAssetsWithMediaType:2];
   }
 
-  if (a6)
+  if (audioCount)
   {
-    *a6 = [v14 countOfAssetsWithMediaType:3];
+    *audioCount = [v14 countOfAssetsWithMediaType:3];
   }
 
-  if (a7)
+  if (itemCount)
   {
-    *a7 = [v14 countOfAssetsWithMediaType:0];
+    *itemCount = [v14 countOfAssetsWithMediaType:0];
   }
 
   v15 = [v14 count];
@@ -565,25 +565,25 @@ void __78__PHLibraryScope_removePersonRulesOnActiveLibraryScopeWithPhotoLibrary_
   return v15;
 }
 
-+ (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithPhotoLibrary:(id)a3 completion:(id)a4
++ (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithPhotoLibrary:(id)library completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  libraryCopy = library;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v9 = [v7 assetsdClient];
-  v10 = [v9 cloudInternalClient];
+  assetsdClient = [libraryCopy assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __102__PHLibraryScope_resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithPhotoLibrary_completion___block_invoke;
   v13[3] = &unk_1E75AAA50;
-  v14 = v8;
-  v11 = v8;
-  [v10 resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [cloudInternalClient resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler:v13];
 }
 
 void __102__PHLibraryScope_resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithPhotoLibrary_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -594,27 +594,27 @@ void __102__PHLibraryScope_resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetSta
   (*(v2 + 16))(v2, v3, v4);
 }
 
-+ (void)fetchLibraryScopeFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)fetchLibraryScopeFromShareURL:(id)l ignoreExistingShare:(BOOL)share photoLibrary:(id)library completionHandler:(id)handler
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  shareCopy = share;
+  lCopy = l;
+  libraryCopy = library;
+  handlerCopy = handler;
+  if (!libraryCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:274 description:@"Valid PHPhotoLibrary must be specified"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:274 description:@"Valid PHPhotoLibrary must be specified"];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __99__PHLibraryScope_fetchLibraryScopeFromShareURL_ignoreExistingShare_photoLibrary_completionHandler___block_invoke;
   v17[3] = &unk_1E75A8558;
-  v18 = v12;
-  v19 = v13;
-  v14 = v12;
-  v15 = v13;
-  [PHShare fetchShareFromShareURL:v11 ignoreExistingShare:v8 photoLibrary:v14 completionHandler:v17];
+  v18 = libraryCopy;
+  v19 = handlerCopy;
+  v14 = libraryCopy;
+  v15 = handlerCopy;
+  [PHShare fetchShareFromShareURL:lCopy ignoreExistingShare:shareCopy photoLibrary:v14 completionHandler:v17];
 }
 
 void __99__PHLibraryScope_fetchLibraryScopeFromShareURL_ignoreExistingShare_photoLibrary_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -660,26 +660,26 @@ void __99__PHLibraryScope_fetchLibraryScopeFromShareURL_ignoreExistingShare_phot
   }
 }
 
-+ (void)fetchLibraryScopeFromShareURL:(id)a3 options:(id)a4 completionHandler:(id)a5
++ (void)fetchLibraryScopeFromShareURL:(id)l options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 photoLibrary];
-  [a1 fetchLibraryScopeFromShareURL:v9 ignoreExistingShare:0 photoLibrary:v10 completionHandler:v8];
+  handlerCopy = handler;
+  lCopy = l;
+  photoLibrary = [options photoLibrary];
+  [self fetchLibraryScopeFromShareURL:lCopy ignoreExistingShare:0 photoLibrary:photoLibrary completionHandler:handlerCopy];
 }
 
-+ (id)fetchPendingLibraryScopeInvitationWithOptions:(id)a3
++ (id)fetchPendingLibraryScopeInvitationWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [v5 photoLibrary];
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v6)
+  if (!photoLibrary)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:262 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:262 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
   }
 
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_140];
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_140];
 
   return v7;
 }
@@ -692,18 +692,18 @@ id __64__PHLibraryScope_fetchPendingLibraryScopeInvitationWithOptions___block_in
   return v3;
 }
 
-+ (id)fetchPreviewLibraryScopeWithOptions:(id)a3
++ (id)fetchPreviewLibraryScopeWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [v5 photoLibrary];
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v6)
+  if (!photoLibrary)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:254 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:254 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
   }
 
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_138];
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_138];
 
   return v7;
 }
@@ -716,18 +716,18 @@ id __54__PHLibraryScope_fetchPreviewLibraryScopeWithOptions___block_invoke(uint6
   return v3;
 }
 
-+ (id)fetchActiveLibraryScopeWithOptions:(id)a3
++ (id)fetchActiveLibraryScopeWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [v5 photoLibrary];
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v6)
+  if (!photoLibrary)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:246 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:246 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
   }
 
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_136];
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_136];
 
   return v7;
 }
@@ -740,18 +740,18 @@ id __53__PHLibraryScope_fetchActiveLibraryScopeWithOptions___block_invoke(uint64
   return v3;
 }
 
-+ (id)fetchLibraryScopesWithOptions:(id)a3
++ (id)fetchLibraryScopesWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [v5 photoLibrary];
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v6)
+  if (!photoLibrary)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:238 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:238 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
   }
 
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_134];
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_134];
 
   return v7;
 }
@@ -764,25 +764,25 @@ id __48__PHLibraryScope_fetchLibraryScopesWithOptions___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)fetchLibraryScopesWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchLibraryScopesWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 photoLibrary];
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v9)
+  if (!photoLibrary)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PHLibraryScope.m" lineNumber:230 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHLibraryScope.m" lineNumber:230 description:@"Valid PHPhotoLibrary must be specified via fetch options"];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__PHLibraryScope_fetchLibraryScopesWithLocalIdentifiers_options___block_invoke;
   v14[3] = &unk_1E75AB0E0;
-  v15 = v7;
-  v10 = v7;
-  v11 = [PHObject authorizationAwareFetchResultWithOptions:v8 fetchBlock:v14];
+  v15 = identifiersCopy;
+  v10 = identifiersCopy;
+  v11 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v14];
 
   return v11;
 }
@@ -795,33 +795,33 @@ id __65__PHLibraryScope_fetchLibraryScopesWithLocalIdentifiers_options___block_i
   return v3;
 }
 
-+ (id)localIdentifierWithUUID:(id)a3
++ (id)localIdentifierWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 identifierCode];
-  v7 = [v4 stringWithFormat:@"%@/L0/%@", v5, v6];
+  dCopy = d;
+  identifierCode = [self identifierCode];
+  v7 = [v4 stringWithFormat:@"%@/L0/%@", dCopy, identifierCode];
 
   return v7;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__PHLibraryScope_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_32787 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_32787, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_32788 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_32788 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -959,7 +959,7 @@ void __30__PHLibraryScope_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_32797 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_32805 != -1)
   {

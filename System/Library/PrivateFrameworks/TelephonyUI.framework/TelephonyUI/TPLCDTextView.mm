@@ -1,36 +1,36 @@
 @interface TPLCDTextView
 - (CGRect)textRect;
 - (CGSize)sizeToFit;
-- (TPLCDTextView)initWithFrame:(CGRect)a3;
-- (void)_drawTextInRect:(CGRect)a3 verticallyOffset:(BOOL)a4;
+- (TPLCDTextView)initWithFrame:(CGRect)frame;
+- (void)_drawTextInRect:(CGRect)rect verticallyOffset:(BOOL)offset;
 - (void)_finishedScrolling;
 - (void)_scheduleStartScrolling;
 - (void)_setupForAnimationIfNecessary;
 - (void)_startScrolling;
 - (void)_tearDownAnimation;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)resetAnimation;
-- (void)setAnimatesIfTruncated:(BOOL)a3;
-- (void)setCenterText:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLCDTextFont:(id)a3;
-- (void)setLeftTruncatesText:(BOOL)a3;
-- (void)setMinimumFontSize:(double)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAnimatesIfTruncated:(BOOL)truncated;
+- (void)setCenterText:(BOOL)text;
+- (void)setFrame:(CGRect)frame;
+- (void)setLCDTextFont:(id)font;
+- (void)setLeftTruncatesText:(BOOL)text;
+- (void)setMinimumFontSize:(double)size;
+- (void)setShadowColor:(id)color;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
 
 @implementation TPLCDTextView
 
-- (TPLCDTextView)initWithFrame:(CGRect)a3
+- (TPLCDTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TPLCDTextView;
-  v3 = [(TPLCDTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPLCDTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -127,8 +127,8 @@
       v3 = v71;
     }
 
-    v43 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v14 = [v43 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v14 = [defaultParagraphStyle mutableCopy];
 
     v44 = minFontSize < self->_minFontSize || !v30;
     if (!v44 && (*(self + 504) & 0x10) != 0)
@@ -266,12 +266,12 @@ LABEL_45:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(TPLCDTextView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -293,12 +293,12 @@ LABEL_45:
   }
 }
 
-- (void)setCenterText:(BOOL)a3
+- (void)setCenterText:(BOOL)text
 {
   v3 = *(self + 504);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ text) & 1) == 0)
   {
-    if (a3)
+    if (text)
     {
       v4 = 2;
     }
@@ -314,12 +314,12 @@ LABEL_45:
   }
 }
 
-- (void)setLeftTruncatesText:(BOOL)a3
+- (void)setLeftTruncatesText:(BOOL)text
 {
   v3 = *(self + 504);
-  if (((((v3 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x10) == 0) ^ text) & 1) == 0)
   {
-    v5 = a3 ? 16 : 0;
+    v5 = text ? 16 : 0;
     *(self + 504) = v3 & 0xEF | v5;
     width = self->_textRect.size.width;
     [(TPLCDTextView *)self bounds];
@@ -332,40 +332,40 @@ LABEL_45:
   }
 }
 
-- (void)setLCDTextFont:(id)a3
+- (void)setLCDTextFont:(id)font
 {
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_font, a3);
+    v7 = fontCopy;
+    objc_storeStrong(&self->_font, font);
     *(self + 504) &= ~1u;
     v6 = self->_scrollingView ? self->_scrollingView : self;
     [(TPLCDTextViewScrollingView *)v6 setNeedsDisplay];
-    v5 = v7;
+    fontCopy = v7;
     if ((*(self + 504) & 4) != 0)
     {
       [(TPLCDTextView *)self _setupForAnimationIfNecessary];
-      v5 = v7;
+      fontCopy = v7;
     }
   }
 }
 
-- (void)setMinimumFontSize:(double)a3
+- (void)setMinimumFontSize:(double)size
 {
-  if (self->_minFontSize != a3)
+  if (self->_minFontSize != size)
   {
-    self->_minFontSize = a3;
+    self->_minFontSize = size;
     *(self + 504) &= ~1u;
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
-  if (self->_text != v5 && ![(NSString *)v5 isEqualToString:?])
+  textCopy = text;
+  if (self->_text != textCopy && ![(NSString *)textCopy isEqualToString:?])
   {
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     *(self + 504) &= ~1u;
     [(TPLCDTextView *)self setNeedsDisplay];
     if ((*(self + 504) & 4) != 0)
@@ -397,19 +397,19 @@ LABEL_45:
   return result;
 }
 
-- (void)_drawTextInRect:(CGRect)a3 verticallyOffset:(BOOL)a4
+- (void)_drawTextInRect:(CGRect)rect verticallyOffset:(BOOL)offset
 {
-  v4 = a4;
-  width = a3.size.width;
-  x = a3.origin.x;
+  offsetCopy = offset;
+  width = rect.size.width;
+  x = rect.origin.x;
   v31[4] = *MEMORY[0x1E69E9840];
-  [(TPLCDTextView *)self textRect:a3.origin.x];
+  [(TPLCDTextView *)self textRect:rect.origin.x];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v14 = [MEMORY[0x1E69DB878] _thinSystemFontOfSize:self->_fontSize];
-  v15 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v16 = [v15 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v16 = [defaultParagraphStyle mutableCopy];
 
   if ((*(self + 504) & 0x10) != 0)
   {
@@ -426,21 +426,21 @@ LABEL_45:
   textColor = self->_textColor;
   if (textColor)
   {
-    v19 = textColor;
+    whiteColor = textColor;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v20 = v19;
-  if (!v4)
+  v20 = whiteColor;
+  if (!offsetCopy)
   {
     v11 = 0.0;
   }
 
-  v21 = [(NSString *)self->_text isNaturallyRTL];
+  isNaturallyRTL = [(NSString *)self->_text isNaturallyRTL];
   v22 = *MEMORY[0x1E69DB688];
   v30[0] = *MEMORY[0x1E69DB648];
   v30[1] = v22;
@@ -451,7 +451,7 @@ LABEL_45:
   v24 = *MEMORY[0x1E69DB778];
   v30[2] = v23;
   v30[3] = v24;
-  v25 = [MEMORY[0x1E696AD98] numberWithInteger:v21];
+  v25 = [MEMORY[0x1E696AD98] numberWithInteger:isNaturallyRTL];
   v29 = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
   v31[3] = v26;
@@ -461,35 +461,35 @@ LABEL_45:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(TPLCDTextView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  if (self->_shadowColor != v5)
+  colorCopy = color;
+  if (self->_shadowColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_shadowColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_shadowColor, color);
     [(TPLCDTextView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_font && self->_text && !self->_scrollingView)
   {
-    [(TPLCDTextView *)self bounds:a3.origin.x];
+    [(TPLCDTextView *)self bounds:rect.origin.x];
 
     [(TPLCDTextView *)self _drawTextInRect:1 verticallyOffset:?];
   }
@@ -578,10 +578,10 @@ LABEL_45:
 
     if (self->_animation)
     {
-      v30 = [(UIFrameAnimation *)self->_animation target];
+      target = [(UIFrameAnimation *)self->_animation target];
       v31 = self->_scrollingView;
 
-      if (v30 == v31)
+      if (target == v31)
       {
 LABEL_21:
         [(TPLCDTextView *)self setClipsSubviews:1];
@@ -613,11 +613,11 @@ LABEL_22:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAnimatesIfTruncated:(BOOL)a3
+- (void)setAnimatesIfTruncated:(BOOL)truncated
 {
-  if (((((*(self + 504) & 4) == 0) ^ a3) & 1) == 0)
+  if (((((*(self + 504) & 4) == 0) ^ truncated) & 1) == 0)
   {
-    if (a3)
+    if (truncated)
     {
       [(TPLCDTextView *)self _setupForAnimationIfNecessary];
       v4 = 4;
@@ -637,9 +637,9 @@ LABEL_22:
 
 - (void)_startScrolling
 {
-  v3 = [(TPLCDTextView *)self superview];
+  superview = [(TPLCDTextView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     scrollingView = self->_scrollingView;
     if (scrollingView)
@@ -662,8 +662,8 @@ LABEL_22:
       [(UIFrameAnimation *)self->_animation setAnimationCurve:3];
       [(UIFrameAnimation *)self->_animation setDelegate:self];
       [(UIFrameAnimation *)self->_animation setAction:sel__finishedScrolling];
-      v16 = [MEMORY[0x1E69DC660] sharedAnimator];
-      [v16 addAnimation:self->_animation withDuration:1 start:(v12 + 0.0) * 0.025];
+      mEMORY[0x1E69DC660] = [MEMORY[0x1E69DC660] sharedAnimator];
+      [mEMORY[0x1E69DC660] addAnimation:self->_animation withDuration:1 start:(v12 + 0.0) * 0.025];
 
       *(self + 504) |= 8u;
     }
@@ -700,9 +700,9 @@ LABEL_22:
   {
     if (self->_scrollingView)
     {
-      v5 = [(TPLCDTextView *)self superview];
+      superview = [(TPLCDTextView *)self superview];
 
-      if (v5)
+      if (superview)
       {
 
         [(TPLCDTextView *)self _scheduleStartScrolling];
@@ -719,8 +719,8 @@ LABEL_22:
     {
       [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__startScrolling object:0];
       [(UIFrameAnimation *)self->_animation setDelegate:0];
-      v3 = [MEMORY[0x1E69DC660] sharedAnimator];
-      [v3 removeAnimationsForTarget:self->_scrollingView];
+      mEMORY[0x1E69DC660] = [MEMORY[0x1E69DC660] sharedAnimator];
+      [mEMORY[0x1E69DC660] removeAnimationsForTarget:self->_scrollingView];
 
       animation = self->_animation;
       self->_animation = 0;

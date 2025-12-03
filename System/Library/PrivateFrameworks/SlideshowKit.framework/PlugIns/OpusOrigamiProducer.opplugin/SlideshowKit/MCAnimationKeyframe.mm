@@ -1,37 +1,37 @@
 @interface MCAnimationKeyframe
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-- (MCAnimationKeyframe)initWithImprint:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
+- (MCAnimationKeyframe)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
-- (void)setPostControl:(float)a3;
-- (void)setPreControl:(float)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)setTimeOffsetKind:(int)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
+- (void)setPostControl:(float)control;
+- (void)setPreControl:(float)control;
+- (void)setTimeOffset:(double)offset;
+- (void)setTimeOffsetKind:(int)kind;
 @end
 
 @implementation MCAnimationKeyframe
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"timing"])
+  if ([key isEqualToString:@"timing"])
   {
     return [NSSet setWithObjects:@"timeOffset", @"timeOffsetKind", @"timeOffsetArgument", @"preControl", @"postControl", 0];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MCAnimationKeyframe;
-  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
-- (MCAnimationKeyframe)initWithImprint:(id)a3
+- (MCAnimationKeyframe)initWithImprint:(id)imprint
 {
   v13.receiver = self;
   v13.super_class = MCAnimationKeyframe;
   v4 = [(MCObjectLight *)&v13 initWithImprint:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"timeOffset"];
+    v5 = [imprint objectForKey:@"timeOffset"];
     if (v5)
     {
       [v5 doubleValue];
@@ -43,8 +43,8 @@
     }
 
     v4->mTimeOffset = v6;
-    v4->mTimeOffsetKind = [objc_msgSend(a3 objectForKey:{@"timeOffsetKind", "intValue"}];
-    v7 = [a3 objectForKey:@"preControl"];
+    v4->mTimeOffsetKind = [objc_msgSend(imprint objectForKey:{@"timeOffsetKind", "intValue"}];
+    v7 = [imprint objectForKey:@"preControl"];
     v8 = 0.0;
     v9 = 0.0;
     if (v7)
@@ -53,7 +53,7 @@
     }
 
     v4->mPreControl = v9;
-    v10 = [a3 objectForKey:@"postControl"];
+    v10 = [imprint objectForKey:@"postControl"];
     if (v10)
     {
       [v10 floatValue];
@@ -70,68 +70,68 @@
 {
   v5.receiver = self;
   v5.super_class = MCAnimationKeyframe;
-  v3 = [(MCObjectLight *)&v5 imprint];
+  imprint = [(MCObjectLight *)&v5 imprint];
   if (self->mTimeOffset != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeOffset"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeOffset"}];
   }
 
-  [v3 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", self->mTimeOffsetKind), @"timeOffsetKind"}];
+  [imprint setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", self->mTimeOffsetKind), @"timeOffsetKind"}];
   if (self->mPreControl != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"preControl"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"preControl"}];
   }
 
   if (self->mPostControl != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"postControl"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"postControl"}];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  if (self->mTimeOffset != a3)
+  if (self->mTimeOffset != offset)
   {
     [(MCAnimationPathKeyframed *)self->mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mTimeOffset = a3;
+    self->mTimeOffset = offset;
     mAnimationPath = self->mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
   }
 }
 
-- (void)setTimeOffsetKind:(int)a3
+- (void)setTimeOffsetKind:(int)kind
 {
-  if (self->mTimeOffsetKind != a3)
+  if (self->mTimeOffsetKind != kind)
   {
     [(MCAnimationPathKeyframed *)self->mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mTimeOffsetKind = a3;
+    self->mTimeOffsetKind = kind;
     mAnimationPath = self->mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
   }
 }
 
-- (void)setPreControl:(float)a3
+- (void)setPreControl:(float)control
 {
-  if (self->mPreControl != a3)
+  if (self->mPreControl != control)
   {
     [(MCAnimationPathKeyframed *)self->mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mPreControl = a3;
+    self->mPreControl = control;
     mAnimationPath = self->mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
   }
 }
 
-- (void)setPostControl:(float)a3
+- (void)setPostControl:(float)control
 {
-  if (self->mPostControl != a3)
+  if (self->mPostControl != control)
   {
     [(MCAnimationPathKeyframed *)self->mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mPostControl = a3;
+    self->mPostControl = control;
     mAnimationPath = self->mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
@@ -140,23 +140,23 @@
 
 - (id)description
 {
-  v3 = [(MCAnimationKeyframe *)self timeOffsetKind];
+  timeOffsetKind = [(MCAnimationKeyframe *)self timeOffsetKind];
   [(MCAnimationKeyframe *)self timeOffset];
   v5 = v4;
   [(MCAnimationKeyframe *)self preControl];
   v7 = v6;
   [(MCAnimationKeyframe *)self postControl];
-  return [NSString stringWithFormat:@"MCAnimationKeyframe: self=%p, timeOffsetKind=%d, timeOffset=%.3f, pretangent=%.3f, posttangent=%.3f", self, v3, v5, *&v7, v8];
+  return [NSString stringWithFormat:@"MCAnimationKeyframe: self=%p, timeOffsetKind=%d, timeOffset=%.3f, pretangent=%.3f, posttangent=%.3f", self, timeOffsetKind, v5, *&v7, v8];
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   objc_sync_enter(self);
-  *(a3 + 4) = *&self->mTimeOffset;
-  *(a3 + 5) = self->mTimeOffsetKind;
-  *(a3 + 6) = LODWORD(self->mPreControl);
-  *(a3 + 7) = LODWORD(self->mPostControl);
-  *(a3 + 16) = 1;
+  *(snapshot + 4) = *&self->mTimeOffset;
+  *(snapshot + 5) = self->mTimeOffsetKind;
+  *(snapshot + 6) = LODWORD(self->mPreControl);
+  *(snapshot + 7) = LODWORD(self->mPostControl);
+  *(snapshot + 16) = 1;
 
   objc_sync_exit(self);
 }

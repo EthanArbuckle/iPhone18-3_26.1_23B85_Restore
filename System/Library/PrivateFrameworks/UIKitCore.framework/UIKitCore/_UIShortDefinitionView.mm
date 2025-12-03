@@ -1,15 +1,15 @@
 @interface _UIShortDefinitionView
-- (_UIShortDefinitionView)initWithFrame:(CGRect)a3;
-- (void)setDefinitionValue:(id)a3;
+- (_UIShortDefinitionView)initWithFrame:(CGRect)frame;
+- (void)setDefinitionValue:(id)value;
 @end
 
 @implementation _UIShortDefinitionView
 
-- (_UIShortDefinitionView)initWithFrame:(CGRect)a3
+- (_UIShortDefinitionView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = _UIShortDefinitionView;
-  v3 = [(UIView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,8 +23,8 @@
     v4->_definitionTextView = v6;
 
     [(UIView *)v4->_definitionTextView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(UITextView *)v4->_definitionTextView textContainer];
-    [v8 setLineBreakMode:4];
+    textContainer = [(UITextView *)v4->_definitionTextView textContainer];
+    [textContainer setLineBreakMode:4];
 
     [(UIView *)v4 addSubview:v4->_definitionTextView];
     [(UITextView *)v4->_definitionTextView setScrollEnabled:0];
@@ -35,8 +35,8 @@
     v10 = +[UIColor clearColor];
     [(UIScrollView *)v9 setBackgroundColor:v10];
 
-    v11 = [(UITextView *)v4->_definitionTextView textContainer];
-    [v11 setLineFragmentPadding:0.0];
+    textContainer2 = [(UITextView *)v4->_definitionTextView textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
     v12 = _NSDictionaryOfVariableBindings(&cfstr_Definitiontext.isa, v4->_definitionTextView, 0);
     v13 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|-(15)-[_definitionTextView]-(15)-|" options:0 metrics:0 views:v12];
@@ -48,15 +48,15 @@
   return v4;
 }
 
-- (void)setDefinitionValue:(id)a3
+- (void)setDefinitionValue:(id)value
 {
-  v5 = a3;
-  if (self->_definitionValue != v5)
+  valueCopy = value;
+  if (self->_definitionValue != valueCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_definitionValue, a3);
-    v6 = [(_UIDefinitionValue *)self->_definitionValue definition];
-    v7 = [v6 mutableCopy];
+    v10 = valueCopy;
+    objc_storeStrong(&self->_definitionValue, value);
+    definition = [(_UIDefinitionValue *)self->_definitionValue definition];
+    v7 = [definition mutableCopy];
 
     v8 = [v7 length];
     v9 = +[UIReferenceLibraryViewController _colorAttributes];
@@ -65,7 +65,7 @@
     [v7 removeAttribute:*off_1E70EC960 range:{0, v8}];
     [(UITextView *)self->_definitionTextView setAttributedText:v7];
 
-    v5 = v10;
+    valueCopy = v10;
   }
 }
 

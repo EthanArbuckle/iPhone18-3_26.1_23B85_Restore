@@ -7,22 +7,22 @@
 
 - (uint64_t)hf_enabledSignificantEventTypes
 {
-  if (![a1 isEnabled])
+  if (![self isEnabled])
   {
     return 0;
   }
 
-  return [a1 significantEventTypes];
+  return [self significantEventTypes];
 }
 
 - (uint64_t)hf_enabledPersonFamiliarityOptions
 {
-  if (![a1 isEnabled])
+  if (![self isEnabled])
   {
     return 0;
   }
 
-  return [a1 personFamiliarityOptions];
+  return [self personFamiliarityOptions];
 }
 
 @end

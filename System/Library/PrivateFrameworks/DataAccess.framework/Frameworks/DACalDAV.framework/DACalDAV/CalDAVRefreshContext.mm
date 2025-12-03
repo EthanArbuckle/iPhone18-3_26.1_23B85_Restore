@@ -1,6 +1,6 @@
 @interface CalDAVRefreshContext
 + (id)defaultContext;
-- (void)addCalendarSyncFailure:(id)a3;
+- (void)addCalendarSyncFailure:(id)failure;
 @end
 
 @implementation CalDAVRefreshContext
@@ -12,22 +12,22 @@
   return v2;
 }
 
-- (void)addCalendarSyncFailure:(id)a3
+- (void)addCalendarSyncFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   calendarSyncFailures = self->_calendarSyncFailures;
-  v8 = v4;
+  v8 = failureCopy;
   if (!calendarSyncFailures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_calendarSyncFailures;
     self->_calendarSyncFailures = v6;
 
-    v4 = v8;
+    failureCopy = v8;
     calendarSyncFailures = self->_calendarSyncFailures;
   }
 
-  [(NSMutableArray *)calendarSyncFailures addObject:v4];
+  [(NSMutableArray *)calendarSyncFailures addObject:failureCopy];
 }
 
 @end

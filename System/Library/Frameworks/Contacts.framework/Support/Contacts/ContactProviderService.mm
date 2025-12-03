@@ -1,8 +1,8 @@
 @interface ContactProviderService
 + (id)sharedInstance;
 - (ContactProviderService)init;
-- (ContactProviderService)initWithSchedulerProvider:(id)a3;
-- (void)handleBundleIdentifiers:(id)a3;
+- (ContactProviderService)initWithSchedulerProvider:(id)provider;
+- (void)handleBundleIdentifiers:(id)identifiers;
 @end
 
 @implementation ContactProviderService
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100010AC0;
   block[3] = &unk_100045580;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10004E1A0 != -1)
   {
     dispatch_once(&qword_10004E1A0, block);
@@ -32,15 +32,15 @@
   return v4;
 }
 
-- (ContactProviderService)initWithSchedulerProvider:(id)a3
+- (ContactProviderService)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = ContactProviderService;
   v5 = [(ContactProviderService *)&v13 init];
   if (v5)
   {
-    v6 = [v4 newSerialSchedulerWithName:@"com.apple.contactsd.ContactProviderService"];
+    v6 = [providerCopy newSerialSchedulerWithName:@"com.apple.contactsd.ContactProviderService"];
     v7 = [[CNQualityOfServiceSchedulerDecorator alloc] initWithScheduler:v6 qualityOfService:2];
     workQueue = v5->_workQueue;
     v5->_workQueue = v7;
@@ -55,18 +55,18 @@
   return v5;
 }
 
-- (void)handleBundleIdentifiers:(id)a3
+- (void)handleBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(ContactProviderService *)self workQueue];
+  identifiersCopy = identifiers;
+  workQueue = [(ContactProviderService *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010CC0;
   v7[3] = &unk_100045690;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
+  [workQueue performBlock:v7];
 }
 
 @end

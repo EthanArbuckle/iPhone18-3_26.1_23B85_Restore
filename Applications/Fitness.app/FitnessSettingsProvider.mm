@@ -1,10 +1,10 @@
 @interface FitnessSettingsProvider
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation FitnessSettingsProvider
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
   v4 = type metadata accessor for AccountFitnessSettingsChanged();
   v5 = *(v4 - 8);

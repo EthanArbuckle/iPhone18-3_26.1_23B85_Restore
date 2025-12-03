@@ -1,43 +1,43 @@
 @interface ENAdvertisement
-+ (id)decryptedMetadataForTemporaryExposureKey:(id)a3 encryptedAEM:(id *)a4 RPI:(id *)a5;
++ (id)decryptedMetadataForTemporaryExposureKey:(id)key encryptedAEM:(id *)m RPI:(id *)i;
 - ($8B507D830E6EE36862B76123793C2CB9)structRepresentation;
-- (ENAdvertisement)initWithRPI:(id)a3 encryptedAEM:(id)a4 timestamp:(double)a5 scanInterval:(unsigned __int16)a6 typicalRSSI:(char)a7 maxRSSI:(char)a8 saturated:(BOOL)a9 counter:(unsigned __int8)a10;
-- (ENAdvertisement)initWithStructRepresentation:(id *)a3;
-- (id)decryptedMetadataForTemporaryExposureKey:(id)a3;
+- (ENAdvertisement)initWithRPI:(id)i encryptedAEM:(id)m timestamp:(double)timestamp scanInterval:(unsigned __int16)interval typicalRSSI:(char)sI maxRSSI:(char)sSI saturated:(BOOL)saturated counter:(unsigned __int8)self0;
+- (ENAdvertisement)initWithStructRepresentation:(id *)representation;
+- (id)decryptedMetadataForTemporaryExposureKey:(id)key;
 - (id)description;
-- (void)combineWithAdvertisement:(id)a3;
+- (void)combineWithAdvertisement:(id)advertisement;
 @end
 
 @implementation ENAdvertisement
 
-- (ENAdvertisement)initWithStructRepresentation:(id *)a3
+- (ENAdvertisement)initWithStructRepresentation:(id *)representation
 {
-  v5 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBytes:a3 length:16];
-  v6 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBytes:&a3->var1 length:4];
-  LOBYTE(v9) = HIBYTE(a3->var5);
-  v7 = [(ENAdvertisement *)self initWithRPI:v5 encryptedAEM:v6 timestamp:HIWORD(a3->var3) scanInterval:SLOBYTE(a3->var4) typicalRSSI:SHIBYTE(a3->var4) maxRSSI:LOBYTE(a3->var5) saturated:*(&a3->var1 + 1) counter:v9];
+  v5 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBytes:representation length:16];
+  v6 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBytes:&representation->var1 length:4];
+  LOBYTE(v9) = HIBYTE(representation->var5);
+  v7 = [(ENAdvertisement *)self initWithRPI:v5 encryptedAEM:v6 timestamp:HIWORD(representation->var3) scanInterval:SLOBYTE(representation->var4) typicalRSSI:SHIBYTE(representation->var4) maxRSSI:LOBYTE(representation->var5) saturated:*(&representation->var1 + 1) counter:v9];
 
   return v7;
 }
 
-- (ENAdvertisement)initWithRPI:(id)a3 encryptedAEM:(id)a4 timestamp:(double)a5 scanInterval:(unsigned __int16)a6 typicalRSSI:(char)a7 maxRSSI:(char)a8 saturated:(BOOL)a9 counter:(unsigned __int8)a10
+- (ENAdvertisement)initWithRPI:(id)i encryptedAEM:(id)m timestamp:(double)timestamp scanInterval:(unsigned __int16)interval typicalRSSI:(char)sI maxRSSI:(char)sSI saturated:(BOOL)saturated counter:(unsigned __int8)self0
 {
-  v18 = a3;
-  v19 = a4;
+  iCopy = i;
+  mCopy = m;
   v23.receiver = self;
   v23.super_class = ENAdvertisement;
   v20 = [(ENAdvertisement *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_rpi, a3);
-    objc_storeStrong(&v21->_encryptedAEM, a4);
-    v21->_timestamp = a5;
-    v21->_scanInterval = a6;
-    v21->_typicalRSSI = a7;
-    v21->_maxRSSI = a8;
-    v21->_saturated = a9;
-    v21->_counter = a10;
+    objc_storeStrong(&v20->_rpi, i);
+    objc_storeStrong(&v21->_encryptedAEM, m);
+    v21->_timestamp = timestamp;
+    v21->_scanInterval = interval;
+    v21->_typicalRSSI = sI;
+    v21->_maxRSSI = sSI;
+    v21->_saturated = saturated;
+    v21->_counter = counter;
   }
 
   return v21;
@@ -60,33 +60,33 @@
   return [(NSData *)encryptedAEM getBytes:p_var1 length:4];
 }
 
-- (void)combineWithAdvertisement:(id)a3
+- (void)combineWithAdvertisement:(id)advertisement
 {
-  v14 = a3;
+  advertisementCopy = advertisement;
   counter = self->_counter;
-  v5 = [v14 counter] + counter;
-  v6 = v14;
+  v5 = [advertisementCopy counter] + counter;
+  v6 = advertisementCopy;
   if (!v5)
   {
     if (gLogCategory__ENAdvertisement <= 115 && (gLogCategory__ENAdvertisement != -1 || _LogCategory_Initialize()))
     {
-      [(ENAdvertisement *)&self->_counter combineWithAdvertisement:v14];
-      v6 = v14;
+      [(ENAdvertisement *)&self->_counter combineWithAdvertisement:advertisementCopy];
+      v6 = advertisementCopy;
       v5 = 1;
     }
 
     else
     {
       v5 = 1;
-      v6 = v14;
+      v6 = advertisementCopy;
     }
   }
 
-  v7 = [v6 typicalRSSI];
+  typicalRSSI = [v6 typicalRSSI];
   typicalRSSI = self->_typicalRSSI;
-  if (v7 == 127)
+  if (typicalRSSI == 127)
   {
-    if (typicalRSSI < [v14 typicalRSSI])
+    if (typicalRSSI < [advertisementCopy typicalRSSI])
     {
       LOBYTE(v9) = self->_typicalRSSI;
       goto LABEL_13;
@@ -97,37 +97,37 @@
 
   if (typicalRSSI == 127)
   {
-    [v14 typicalRSSI];
+    [advertisementCopy typicalRSSI];
 LABEL_11:
-    LOBYTE(v9) = [v14 typicalRSSI];
+    LOBYTE(v9) = [advertisementCopy typicalRSSI];
     goto LABEL_13;
   }
 
   v10 = self->_counter * typicalRSSI;
-  v11 = [v14 typicalRSSI];
-  v9 = (v10 + [v14 counter] * v11) / v5;
+  typicalRSSI2 = [advertisementCopy typicalRSSI];
+  v9 = (v10 + [advertisementCopy counter] * typicalRSSI2) / v5;
 LABEL_13:
   self->_typicalRSSI = v9;
   maxRSSI = self->_maxRSSI;
-  if (maxRSSI <= [v14 maxRSSI])
+  if (maxRSSI <= [advertisementCopy maxRSSI])
   {
-    v13 = [v14 maxRSSI];
+    maxRSSI = [advertisementCopy maxRSSI];
   }
 
   else
   {
-    v13 = self->_maxRSSI;
+    maxRSSI = self->_maxRSSI;
   }
 
-  self->_maxRSSI = v13;
+  self->_maxRSSI = maxRSSI;
   self->_saturated = self->_typicalRSSI == 127;
   self->_counter = v5;
 }
 
-- (id)decryptedMetadataForTemporaryExposureKey:(id)a3
+- (id)decryptedMetadataForTemporaryExposureKey:(id)key
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   if ([(NSData *)self->_encryptedAEM length]== 4 && [(NSData *)self->_rpi length]== 16)
   {
     v9[0] = 0;
@@ -135,7 +135,7 @@ LABEL_13:
     [(NSData *)self->_rpi getBytes:v9 length:16];
     v8 = 0;
     [(NSData *)self->_encryptedAEM getBytes:&v8 length:4];
-    v5 = [objc_opt_class() decryptedMetadataForTemporaryExposureKey:v4 encryptedAEM:&v8 RPI:v9];
+    v5 = [objc_opt_class() decryptedMetadataForTemporaryExposureKey:keyCopy encryptedAEM:&v8 RPI:v9];
   }
 
   else
@@ -148,10 +148,10 @@ LABEL_13:
   return v5;
 }
 
-+ (id)decryptedMetadataForTemporaryExposureKey:(id)a3 encryptedAEM:(id *)a4 RPI:(id *)a5
++ (id)decryptedMetadataForTemporaryExposureKey:(id)key encryptedAEM:(id *)m RPI:(id *)i
 {
   v9 = 0;
-  [a3 getAEMBytes:&v9 input:a4 length:4 RPI:a5];
+  [key getAEMBytes:&v9 input:m length:4 RPI:i];
   ENRPIMetadataDeserialize();
   if (BYTE4(v9) == 1)
   {
@@ -184,10 +184,10 @@ LABEL_13:
   NSAppendPrintF_safe();
   v4 = 0;
 
-  v5 = [(NSData *)self->_rpi bytes];
+  bytes = [(NSData *)self->_rpi bytes];
   v6 = [(NSData *)self->_rpi length];
   v24 = [(NSData *)self->_rpi length];
-  v19 = v5;
+  v19 = bytes;
   NSAppendPrintF();
   v7 = v4;
 

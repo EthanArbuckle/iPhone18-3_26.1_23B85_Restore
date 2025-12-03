@@ -13,9 +13,9 @@
 
 - (uint64_t)_gkSetDrawsAsBackdropOverlay:()GKUIBackdropView
 {
-  [a1 _setDrawsAsBackdropOverlay:?];
+  [self _setDrawsAsBackdropOverlay:?];
 
-  return [a1 setAlpha:0.35];
+  return [self setAlpha:0.35];
 }
 
 - (void)_gkSetDrawsAsKnockout:()GKUIBackdropView inBackdrop:
@@ -38,13 +38,13 @@
       v6 = 0;
     }
 
-    [a1 _setBackdropMaskViewFlags:v6];
-    [v7 updateMaskViewsForView:a1];
+    [self _setBackdropMaskViewFlags:v6];
+    [v7 updateMaskViewsForView:self];
   }
 
-  else if ([a1 _drawsAsBackdropOverlay] != a3)
+  else if ([self _drawsAsBackdropOverlay] != a3)
   {
-    [a1 _setDrawsAsBackdropOverlay:a3];
+    [self _setDrawsAsBackdropOverlay:a3];
   }
 }
 
@@ -57,36 +57,36 @@
 
 - (id)_gkApplyFakeStatusBarView
 {
-  [a1 frame];
+  [self frame];
   v3 = v2;
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  [v8 statusBarHeight];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] statusBarHeight];
   v10 = v9;
 
   v11 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v3, v5, v7, v10}];
-  v12 = [objc_opt_class() _gkStandardBackdropView];
+  _gkStandardBackdropView = [objc_opt_class() _gkStandardBackdropView];
   [v11 setAutoresizingMask:34];
-  [v11 addSubview:v12];
-  [a1 addSubview:v11];
+  [v11 addSubview:_gkStandardBackdropView];
+  [self addSubview:v11];
 
   return v11;
 }
 
 - (id)_gkBackdropView
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      v2 = v1;
-      v3 = objc_getAssociatedObject(v1, @"GKBackdropView");
-      v1 = [v1 superview];
+      v2 = selfCopy;
+      v3 = objc_getAssociatedObject(selfCopy, @"GKBackdropView");
+      selfCopy = [selfCopy superview];
     }
 
-    while (v1 && !v3);
+    while (selfCopy && !v3);
   }
 
   else
@@ -100,39 +100,39 @@
 - (void)_gkApplyBackdropViewWithGroupName:()GKUIBackdropView
 {
   v5 = a3;
-  v4 = objc_getAssociatedObject(a1, @"GKBackdropView");
+  v4 = objc_getAssociatedObject(self, @"GKBackdropView");
   if (v5)
   {
     [v4 setGroupName:v5];
   }
 
-  [a1 insertSubview:v4 atIndex:0];
+  [self insertSubview:v4 atIndex:0];
 }
 
 - (void)_gkApplyBackdropViewIfNeededWithGroupName:()GKUIBackdropView
 {
   v7 = a3;
-  v4 = objc_getAssociatedObject(a1, @"GKBackdropView");
-  if (!v4)
+  _gkStandardBackdropView = objc_getAssociatedObject(self, @"GKBackdropView");
+  if (!_gkStandardBackdropView)
   {
-    v4 = [objc_opt_class() _gkStandardBackdropView];
-    objc_setAssociatedObject(a1, @"GKBackdropView", v4, 1);
+    _gkStandardBackdropView = [objc_opt_class() _gkStandardBackdropView];
+    objc_setAssociatedObject(self, @"GKBackdropView", _gkStandardBackdropView, 1);
     if (v7)
     {
-      [v4 setGroupName:v7];
+      [_gkStandardBackdropView setGroupName:v7];
     }
 
-    [a1 insertSubview:v4 atIndex:0];
+    [self insertSubview:_gkStandardBackdropView atIndex:0];
     if (*MEMORY[0x277D0C258] == 1)
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6 != 1)
+      if (userInterfaceIdiom != 1)
       {
-        [v4 frame];
-        [v4 setFrame:?];
-        [v4 setAutoresizingMask:0];
+        [_gkStandardBackdropView frame];
+        [_gkStandardBackdropView setFrame:?];
+        [_gkStandardBackdropView setAutoresizingMask:0];
       }
     }
   }
@@ -140,19 +140,19 @@
 
 - (void)_gkUseAsModalSheetBackgroundWithGroupName:()GKUIBackdropView
 {
-  [a1 _gkApplyBackdropViewIfNeededWithGroupName:?];
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  [self _gkApplyBackdropViewIfNeededWithGroupName:?];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v4 = [MEMORY[0x277D0C8C8] sharedTheme];
-    [v4 formSheetCornerRadius];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    [mEMORY[0x277D0C8C8] formSheetCornerRadius];
     v6 = v5;
-    v7 = [a1 layer];
-    [v7 setCornerRadius:v6];
+    layer = [self layer];
+    [layer setCornerRadius:v6];
 
-    [a1 setClipsToBounds:1];
+    [self setClipsToBounds:1];
   }
 }
 

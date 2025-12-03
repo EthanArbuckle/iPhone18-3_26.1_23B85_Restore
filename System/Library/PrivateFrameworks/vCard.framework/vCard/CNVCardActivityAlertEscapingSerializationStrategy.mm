@@ -1,17 +1,17 @@
 @interface CNVCardActivityAlertEscapingSerializationStrategy
-+ (BOOL)strategyWouldAlterString:(id)a3;
++ (BOOL)strategyWouldAlterString:(id)string;
 + (id)charactersToTriggerStrategy;
 + (id)regex;
-+ (id)serializeString:(id)a3;
++ (id)serializeString:(id)string;
 @end
 
 @implementation CNVCardActivityAlertEscapingSerializationStrategy
 
-+ (BOOL)strategyWouldAlterString:(id)a3
++ (BOOL)strategyWouldAlterString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 charactersToTriggerStrategy];
-  v6 = [v4 _cn_containsCharacterInSet:v5];
+  stringCopy = string;
+  charactersToTriggerStrategy = [self charactersToTriggerStrategy];
+  v6 = [stringCopy _cn_containsCharacterInSet:charactersToTriggerStrategy];
 
   return v6;
 }
@@ -35,11 +35,11 @@ uint64_t __80__CNVCardActivityAlertEscapingSerializationStrategy_charactersToTri
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)serializeString:(id)a3
++ (id)serializeString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 regex];
-  v6 = [v5 stringByReplacingMatchesInString:v4 options:0 range:0 withTemplate:{objc_msgSend(v4, "length"), @"\\\\$1"}];
+  stringCopy = string;
+  regex = [self regex];
+  v6 = [regex stringByReplacingMatchesInString:stringCopy options:0 range:0 withTemplate:{objc_msgSend(stringCopy, "length"), @"\\\\$1"}];
 
   return v6;
 }

@@ -1,13 +1,13 @@
 @interface ICTTCRVectorTimestamp
 - (ICTTCRVectorTimestamp)init;
 - (id)allUUIDs;
-- (id)clockElementForUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)clockElementForUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sortedUUIDs;
-- (unint64_t)clockForUUID:(id)a3;
-- (unint64_t)subclockForUUID:(id)a3;
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4;
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5;
+- (unint64_t)clockForUUID:(id)d;
+- (unint64_t)subclockForUUID:(id)d;
+- (void)setClock:(unint64_t)clock forUUID:(id)d;
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d;
 @end
 
 @implementation ICTTCRVectorTimestamp
@@ -26,18 +26,18 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICTTCRVectorTimestamp allocWithZone:?]];
   [(ICTTVectorTimestamp *)v4 mergeWithTimestamp:self];
   return v4;
 }
 
-- (id)clockElementForUUID:(id)a3
+- (id)clockElementForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTTCRVectorTimestamp *)self crTimestamp];
-  v6 = [v5 clockElementForUUID:v4];
+  dCopy = d;
+  crTimestamp = [(ICTTCRVectorTimestamp *)self crTimestamp];
+  v6 = [crTimestamp clockElementForUUID:dCopy];
 
   if (v6)
   {
@@ -54,50 +54,50 @@
   return v7;
 }
 
-- (unint64_t)clockForUUID:(id)a3
+- (unint64_t)clockForUUID:(id)d
 {
-  v3 = [(ICTTCRVectorTimestamp *)self clockElementForUUID:a3];
-  v4 = [v3 clock];
+  v3 = [(ICTTCRVectorTimestamp *)self clockElementForUUID:d];
+  clock = [v3 clock];
 
-  return v4;
+  return clock;
 }
 
-- (unint64_t)subclockForUUID:(id)a3
+- (unint64_t)subclockForUUID:(id)d
 {
-  v3 = [(ICTTCRVectorTimestamp *)self clockElementForUUID:a3];
-  v4 = [v3 subclock];
+  v3 = [(ICTTCRVectorTimestamp *)self clockElementForUUID:d];
+  subclock = [v3 subclock];
 
-  return v4;
+  return subclock;
 }
 
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4
+- (void)setClock:(unint64_t)clock forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(ICTTCRVectorTimestamp *)self crTimestamp];
-  [v7 setClock:a3 forUUID:v6];
+  dCopy = d;
+  crTimestamp = [(ICTTCRVectorTimestamp *)self crTimestamp];
+  [crTimestamp setClock:clock forUUID:dCopy];
 }
 
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d
 {
-  v8 = a5;
-  v9 = [(ICTTCRVectorTimestamp *)self crTimestamp];
-  [v9 setClock:a3 subclock:a4 forUUID:v8];
+  dCopy = d;
+  crTimestamp = [(ICTTCRVectorTimestamp *)self crTimestamp];
+  [crTimestamp setClock:clock subclock:subclock forUUID:dCopy];
 }
 
 - (id)allUUIDs
 {
-  v2 = [(ICTTCRVectorTimestamp *)self crTimestamp];
-  v3 = [v2 allUUIDs];
+  crTimestamp = [(ICTTCRVectorTimestamp *)self crTimestamp];
+  allUUIDs = [crTimestamp allUUIDs];
 
-  return v3;
+  return allUUIDs;
 }
 
 - (id)sortedUUIDs
 {
-  v2 = [(ICTTCRVectorTimestamp *)self crTimestamp];
-  v3 = [v2 sortedUUIDs];
+  crTimestamp = [(ICTTCRVectorTimestamp *)self crTimestamp];
+  sortedUUIDs = [crTimestamp sortedUUIDs];
 
-  return v3;
+  return sortedUUIDs;
 }
 
 @end

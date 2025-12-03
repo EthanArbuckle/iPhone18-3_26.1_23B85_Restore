@@ -1,5 +1,5 @@
 @interface SXHeadingComponentClassification
-- (BOOL)hasAffiliationWithClassification:(id)a3 forDirection:(int64_t)a4;
+- (BOOL)hasAffiliationWithClassification:(id)classification forDirection:(int64_t)direction;
 - (id)accessibilityContextualLabel;
 - (id)accessibilityCustomRotorMembership;
 - (id)defaultComponentStyleIdentifiers;
@@ -29,11 +29,11 @@
 - (id)defaultTextStyleIdentifiers
 {
   v2 = [MEMORY[0x1E695DF70] arrayWithObject:@"default"];
-  v3 = [objc_opt_class() roleString];
+  roleString = [objc_opt_class() roleString];
   [v2 addObject:@"default-heading"];
-  if (v3 && v3 != SXComponentClassificationUnknownRoleString)
+  if (roleString && roleString != SXComponentClassificationUnknownRoleString)
   {
-    v4 = SXDefaultTextStyleIdentifierForRole(v3);
+    v4 = SXDefaultTextStyleIdentifierForRole(roleString);
     if (([v2 containsObject:v4] & 1) == 0)
     {
       [v2 addObject:v4];
@@ -46,11 +46,11 @@
 - (id)defaultComponentStyleIdentifiers
 {
   v2 = [MEMORY[0x1E695DF70] arrayWithObject:@"default"];
-  v3 = [objc_opt_class() roleString];
+  roleString = [objc_opt_class() roleString];
   [v2 addObject:@"default-heading"];
-  if (v3 && v3 != SXComponentClassificationUnknownRoleString)
+  if (roleString && roleString != SXComponentClassificationUnknownRoleString)
   {
-    v4 = SXDefaultComponentStyleIdentifierForRole(v3);
+    v4 = SXDefaultComponentStyleIdentifierForRole(roleString);
     if (([v2 containsObject:v4] & 1) == 0)
     {
       [v2 addObject:v4];
@@ -60,10 +60,10 @@
   return v2;
 }
 
-- (BOOL)hasAffiliationWithClassification:(id)a3 forDirection:(int64_t)a4
+- (BOOL)hasAffiliationWithClassification:(id)classification forDirection:(int64_t)direction
 {
-  v6 = a3;
-  if (a4 == 1 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  classificationCopy = classification;
+  if (direction == 1 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     v7 = 1;
   }
@@ -72,7 +72,7 @@
   {
     v9.receiver = self;
     v9.super_class = SXHeadingComponentClassification;
-    v7 = [(SXComponentClassification *)&v9 hasAffiliationWithClassification:v6 forDirection:a4];
+    v7 = [(SXComponentClassification *)&v9 hasAffiliationWithClassification:classificationCopy forDirection:direction];
   }
 
   return v7;

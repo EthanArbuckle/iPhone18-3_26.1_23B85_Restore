@@ -1,35 +1,35 @@
 @interface MCDAlbumTracksCell
-- (MCDAlbumTracksCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MCDAlbumTracksCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)title;
 - (void)_updateNowPlayingView;
-- (void)configureWithAlbumTrack:(id)a3 currentlyPlaying:(BOOL)a4 album:(id)a5 contentAvailable:(BOOL)a6;
+- (void)configureWithAlbumTrack:(id)track currentlyPlaying:(BOOL)playing album:(id)album contentAvailable:(BOOL)available;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTitle:(id)a3;
-- (void)setTrackNumberText:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setTitle:(id)title;
+- (void)setTrackNumberText:(id)text;
 @end
 
 @implementation MCDAlbumTracksCell
 
-- (MCDAlbumTracksCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MCDAlbumTracksCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = MCDAlbumTracksCell;
-  v4 = [(_MCDReusableCell *)&v27 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_MCDReusableCell *)&v27 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v6 = [(MCDAlbumTracksCell *)v4 textLabel];
-    [v6 setFont:v5];
+    textLabel = [(MCDAlbumTracksCell *)v4 textLabel];
+    [textLabel setFont:v5];
 
     v7 = +[UIColor labelColor];
-    v8 = [(MCDAlbumTracksCell *)v4 textLabel];
-    [v8 setTextColor:v7];
+    textLabel2 = [(MCDAlbumTracksCell *)v4 textLabel];
+    [textLabel2 setTextColor:v7];
 
     v9 = +[UIColor _carSystemFocusLabelColor];
-    v10 = [(MCDAlbumTracksCell *)v4 textLabel];
-    [v10 setHighlightedTextColor:v9];
+    textLabel3 = [(MCDAlbumTracksCell *)v4 textLabel];
+    [textLabel3 setHighlightedTextColor:v9];
 
     v11 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     trackNumberLabel = v4->_trackNumberLabel;
@@ -45,22 +45,22 @@
     [(UILabel *)v4->_trackNumberLabel setHighlightedTextColor:v15];
 
     [(UILabel *)v4->_trackNumberLabel setTextAlignment:1];
-    v16 = [(MCDAlbumTracksCell *)v4 contentView];
-    [v16 addSubview:v4->_trackNumberLabel];
+    contentView = [(MCDAlbumTracksCell *)v4 contentView];
+    [contentView addSubview:v4->_trackNumberLabel];
 
     v17 = sub_1000FE9A8();
     explicitLabel = v4->_explicitLabel;
     v4->_explicitLabel = v17;
 
-    v19 = [(MCDAlbumTracksCell *)v4 contentView];
-    [v19 addSubview:v4->_explicitLabel];
+    contentView2 = [(MCDAlbumTracksCell *)v4 contentView];
+    [contentView2 addSubview:v4->_explicitLabel];
 
     v20 = MCDFavoriteIcon();
     favoriteIcon = v4->_favoriteIcon;
     v4->_favoriteIcon = v20;
 
-    v22 = [(MCDAlbumTracksCell *)v4 contentView];
-    [v22 addSubview:v4->_favoriteIcon];
+    contentView3 = [(MCDAlbumTracksCell *)v4 contentView];
+    [contentView3 addSubview:v4->_favoriteIcon];
 
     v23 = objc_alloc_init(_TtC5Music30CarPlayNowPlayingIndicatorView);
     currentlyPlayingView = v4->_currentlyPlayingView;
@@ -89,15 +89,15 @@
 {
   v7 = [(MCDAlbumTracksCell *)self viewWithTag:1002];
   v3 = +[_TtC5Music15CarPlayObserver shared];
-  v4 = [v3 playerState];
+  playerState = [v3 playerState];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MCDAlbumTracksCell *)self isCurrentlyPlaying];
-    if (v4 == 2)
+    isCurrentlyPlaying = [(MCDAlbumTracksCell *)self isCurrentlyPlaying];
+    if (playerState == 2)
     {
-      v6 = v5;
+      v6 = isCurrentlyPlaying;
     }
 
     else
@@ -109,45 +109,45 @@
   }
 }
 
-- (void)configureWithAlbumTrack:(id)a3 currentlyPlaying:(BOOL)a4 album:(id)a5 contentAvailable:(BOOL)a6
+- (void)configureWithAlbumTrack:(id)track currentlyPlaying:(BOOL)playing album:(id)album contentAvailable:(BOOL)available
 {
-  v7 = a6;
-  v8 = a4;
-  v15 = a3;
-  v10 = [v15 title];
-  v11 = v10;
-  if (!v10)
+  availableCopy = available;
+  playingCopy = playing;
+  trackCopy = track;
+  title = [trackCopy title];
+  v11 = title;
+  if (!title)
   {
     v6 = MCDCarDisplayBundle();
     v11 = [v6 localizedStringForKey:@"Unknown Title" value:&stru_101107168 table:@"MusicCarDisplayUI"];
   }
 
-  v12 = [(MCDAlbumTracksCell *)self textLabel];
-  [v12 setText:v11];
+  textLabel = [(MCDAlbumTracksCell *)self textLabel];
+  [textLabel setText:v11];
 
-  if (!v10)
+  if (!title)
   {
   }
 
-  if ([v15 trackNumber])
+  if ([trackCopy trackNumber])
   {
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 trackNumber]);
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [trackCopy trackNumber]);
     v14 = MCDFormattedNumberString();
     [(UILabel *)self->_trackNumberLabel setText:v14];
   }
 
-  [(MCDAlbumTracksCell *)self setContentUnavailable:!v7];
-  [(MCDAlbumTracksCell *)self setCurrentlyPlaying:v8];
-  -[MCDAlbumTracksCell setExplicitContent:](self, "setExplicitContent:", [v15 isExplicitSong]);
-  -[MCDAlbumTracksCell setFavorite:](self, "setFavorite:", [v15 isFavorite]);
+  [(MCDAlbumTracksCell *)self setContentUnavailable:!availableCopy];
+  [(MCDAlbumTracksCell *)self setCurrentlyPlaying:playingCopy];
+  -[MCDAlbumTracksCell setExplicitContent:](self, "setExplicitContent:", [trackCopy isExplicitSong]);
+  -[MCDAlbumTracksCell setFavorite:](self, "setFavorite:", [trackCopy isFavorite]);
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = MCDAlbumTracksCell;
-  [(_MCDReusableCell *)&v9 setHighlighted:a3 animated:a4];
+  [(_MCDReusableCell *)&v9 setHighlighted:highlighted animated:animated];
   currentlyPlayingView = self->_currentlyPlayingView;
   if (currentlyPlayingView)
   {
@@ -163,7 +163,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIView *)v8 setIsHighlighted:v4];
+    [(UIView *)v8 setIsHighlighted:highlightedCopy];
   }
 }
 
@@ -179,28 +179,28 @@
     v3 = v4;
   }
 
-  v5 = [(MCDAlbumTracksCell *)self contentView];
-  [v5 setAlpha:v3];
+  contentView = [(MCDAlbumTracksCell *)self contentView];
+  [contentView setAlpha:v3];
 
-  v6 = [(MCDAlbumTracksCell *)self contentView];
-  [v6 bounds];
+  contentView2 = [(MCDAlbumTracksCell *)self contentView];
+  [contentView2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(MCDAlbumTracksCell *)self isCurrentlyPlaying];
-  [(UIView *)self->_currentlyPlayingView setHidden:v15 ^ 1];
-  [(UILabel *)self->_trackNumberLabel setHidden:v15];
+  isCurrentlyPlaying = [(MCDAlbumTracksCell *)self isCurrentlyPlaying];
+  [(UIView *)self->_currentlyPlayingView setHidden:isCurrentlyPlaying ^ 1];
+  [(UILabel *)self->_trackNumberLabel setHidden:isCurrentlyPlaying];
   y = CGRectZero.origin.y;
-  v17 = [(UILabel *)self->_trackNumberLabel font];
-  [v17 lineHeight];
+  font = [(UILabel *)self->_trackNumberLabel font];
+  [font lineHeight];
   v19 = v18;
 
-  v20 = [(MCDAlbumTracksCell *)self effectiveUserInterfaceLayoutDirection];
-  v21 = [(MCDAlbumTracksCell *)self textLabel];
-  [v21 frame];
-  sub_1000FCF00(v20, v22, v23, v24, v25, v8, v10, v12, v14);
+  effectiveUserInterfaceLayoutDirection = [(MCDAlbumTracksCell *)self effectiveUserInterfaceLayoutDirection];
+  textLabel = [(MCDAlbumTracksCell *)self textLabel];
+  [textLabel frame];
+  sub_1000FCF00(effectiveUserInterfaceLayoutDirection, v22, v23, v24, v25, v8, v10, v12, v14);
 
   v66.origin.x = 12.0;
   v66.size.width = 21.0;
@@ -210,33 +210,33 @@
   v27 = floorf(v26);
   v28 = v12 - (v27 + 12.0);
   v29 = floorf(v28);
-  v30 = [(MCDAlbumTracksCell *)self textLabel];
-  v31 = [v30 font];
-  [v31 lineHeight];
+  textLabel2 = [(MCDAlbumTracksCell *)self textLabel];
+  font2 = [textLabel2 font];
+  [font2 lineHeight];
   v33 = v32;
 
   v34 = (v14 - v33) * 0.5;
   v35 = floorf(v34);
-  v36 = [(MCDAlbumTracksCell *)self contentView];
-  v37 = sub_1000FCFE0(v36, v27, v35, v29, v33);
+  contentView3 = [(MCDAlbumTracksCell *)self contentView];
+  v37 = sub_1000FCFE0(contentView3, v27, v35, v29, v33);
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [(MCDAlbumTracksCell *)self textLabel];
-  [v44 setFrame:{v37, v39, v41, v43}];
+  textLabel3 = [(MCDAlbumTracksCell *)self textLabel];
+  [textLabel3 setFrame:{v37, v39, v41, v43}];
 
-  v45 = [(MCDAlbumTracksCell *)self textLabel];
-  v46 = [v45 font];
-  [v46 ascender];
+  textLabel4 = [(MCDAlbumTracksCell *)self textLabel];
+  font3 = [textLabel4 font];
+  [font3 ascender];
   v48 = v47 + v35;
 
-  v49 = [(UILabel *)self->_trackNumberLabel font];
-  [v49 ascender];
+  font4 = [(UILabel *)self->_trackNumberLabel font];
+  [font4 ascender];
   *&v50 = v48 - v50;
   v51 = floorf(*&v50);
 
-  v52 = [(MCDAlbumTracksCell *)self contentView];
-  [(UILabel *)self->_trackNumberLabel setFrame:sub_1000FCFE0(v52, 12.0, v51, 21.0, v19)];
+  contentView4 = [(MCDAlbumTracksCell *)self contentView];
+  [(UILabel *)self->_trackNumberLabel setFrame:sub_1000FCFE0(contentView4, 12.0, v51, 21.0, v19)];
 
   v53 = objc_alloc_init(NSMutableArray);
   if ([(MCDAlbumTracksCell *)self isExplicitContent])
@@ -284,36 +284,36 @@
 
 - (NSString)title
 {
-  v2 = [(MCDAlbumTracksCell *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(MCDAlbumTracksCell *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(MCDAlbumTracksCell *)self title];
-  v5 = [v4 isEqualToString:v7];
+  titleCopy = title;
+  title = [(MCDAlbumTracksCell *)self title];
+  v5 = [title isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(MCDAlbumTracksCell *)self textLabel];
-    [v6 setText:v7];
+    textLabel = [(MCDAlbumTracksCell *)self textLabel];
+    [textLabel setText:titleCopy];
 
     [(MCDAlbumTracksCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTrackNumberText:(id)a3
+- (void)setTrackNumberText:(id)text
 {
-  v6 = a3;
-  v4 = [(MCDAlbumTracksCell *)self trackNumberText];
-  v5 = [v4 isEqualToString:v6];
+  textCopy = text;
+  trackNumberText = [(MCDAlbumTracksCell *)self trackNumberText];
+  v5 = [trackNumberText isEqualToString:textCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_trackNumberLabel setText:v6];
+    [(UILabel *)self->_trackNumberLabel setText:textCopy];
     [(MCDAlbumTracksCell *)self setNeedsLayout];
   }
 }

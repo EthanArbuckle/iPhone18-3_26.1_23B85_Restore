@@ -1,17 +1,17 @@
 @interface CKSendMenuPopoverPresentationControllerAnchorItem
 - (CGRect)anchorRect;
-- (CKSendMenuPopoverPresentationControllerAnchorItem)initWithView:(id)a3 rect:(CGRect)a4;
+- (CKSendMenuPopoverPresentationControllerAnchorItem)initWithView:(id)view rect:(CGRect)rect;
 @end
 
 @implementation CKSendMenuPopoverPresentationControllerAnchorItem
 
-- (CKSendMenuPopoverPresentationControllerAnchorItem)initWithView:(id)a3 rect:(CGRect)a4
+- (CKSendMenuPopoverPresentationControllerAnchorItem)initWithView:(id)view rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = CKSendMenuPopoverPresentationControllerAnchorItem;
   v11 = [(CKSendMenuPopoverPresentationControllerAnchorItem *)&v14 init];
@@ -22,7 +22,7 @@
     v11->_anchorRect.origin.y = y;
     v11->_anchorRect.size.width = width;
     v11->_anchorRect.size.height = height;
-    objc_storeStrong(&v11->_anchorView, a3);
+    objc_storeStrong(&v11->_anchorView, view);
   }
 
   return v12;

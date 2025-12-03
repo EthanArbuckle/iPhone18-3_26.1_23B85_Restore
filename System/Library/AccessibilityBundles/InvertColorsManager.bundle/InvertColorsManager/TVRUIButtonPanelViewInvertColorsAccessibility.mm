@@ -1,15 +1,15 @@
 @interface TVRUIButtonPanelViewInvertColorsAccessibility
-- (TVRUIButtonPanelViewInvertColorsAccessibility)initWithPrimaryButtonType:(int64_t)a3 secondaryLeftButtons:(id)a4 secondaryRightButtons:(id)a5 styleProvider:(id)a6;
+- (TVRUIButtonPanelViewInvertColorsAccessibility)initWithPrimaryButtonType:(int64_t)type secondaryLeftButtons:(id)buttons secondaryRightButtons:(id)rightButtons styleProvider:(id)provider;
 - (void)_accessibilityLoadInvertColors;
 @end
 
 @implementation TVRUIButtonPanelViewInvertColorsAccessibility
 
-- (TVRUIButtonPanelViewInvertColorsAccessibility)initWithPrimaryButtonType:(int64_t)a3 secondaryLeftButtons:(id)a4 secondaryRightButtons:(id)a5 styleProvider:(id)a6
+- (TVRUIButtonPanelViewInvertColorsAccessibility)initWithPrimaryButtonType:(int64_t)type secondaryLeftButtons:(id)buttons secondaryRightButtons:(id)rightButtons styleProvider:(id)provider
 {
   v8.receiver = self;
   v8.super_class = TVRUIButtonPanelViewInvertColorsAccessibility;
-  v6 = [(TVRUIButtonPanelViewInvertColorsAccessibility *)&v8 initWithPrimaryButtonType:a3 secondaryLeftButtons:a4 secondaryRightButtons:a5 styleProvider:a6];
+  v6 = [(TVRUIButtonPanelViewInvertColorsAccessibility *)&v8 initWithPrimaryButtonType:type secondaryLeftButtons:buttons secondaryRightButtons:rightButtons styleProvider:provider];
   [(TVRUIButtonPanelViewInvertColorsAccessibility *)v6 _accessibilityLoadInvertColors];
   return v6;
 }
@@ -55,8 +55,8 @@ LABEL_22:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [v8 subviews];
-        v10 = [v9 countByEnumeratingWithState:&v22 objects:v31 count:16];
+        subviews = [v8 subviews];
+        v10 = [subviews countByEnumeratingWithState:&v22 objects:v31 count:16];
         if (v10)
         {
           v11 = v10;
@@ -67,7 +67,7 @@ LABEL_22:
             {
               if (*v23 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(subviews);
               }
 
               v14 = *(*(&v22 + 1) + 8 * i);
@@ -91,7 +91,7 @@ LABEL_22:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v22 objects:v31 count:16];
+            v11 = [subviews countByEnumeratingWithState:&v22 objects:v31 count:16];
           }
 
           while (v11);

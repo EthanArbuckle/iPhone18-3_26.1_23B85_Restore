@@ -1,39 +1,39 @@
 @interface HFPinCode
 + (id)na_identity;
 - (BOOL)hasRestrictions;
-- (BOOL)isEqual:(id)a3;
-- (HFPinCode)initWithAccessoryAccessCode:(id)a3;
-- (HFPinCode)initWithHomeAccessCode:(id)a3;
-- (HFPinCode)initWithLabel:(id)a3 accessCodeValue:(id)a4 accessoryAccessCodes:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HFPinCode)initWithAccessoryAccessCode:(id)code;
+- (HFPinCode)initWithHomeAccessCode:(id)code;
+- (HFPinCode)initWithLabel:(id)label accessCodeValue:(id)value accessoryAccessCodes:(id)codes;
 - (NSSet)accessories;
 - (NSSet)accessoryAccessCodes;
-- (id)copyWithNewPinCodeValue:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithNewPinCodeValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)addAccessories:(id)a3;
-- (void)addAccessoryAccessCode:(id)a3;
-- (void)removeAccessories:(id)a3;
+- (void)addAccessories:(id)accessories;
+- (void)addAccessoryAccessCode:(id)code;
+- (void)removeAccessories:(id)accessories;
 @end
 
 @implementation HFPinCode
 
-- (HFPinCode)initWithHomeAccessCode:(id)a3
+- (HFPinCode)initWithHomeAccessCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v14.receiver = self;
   v14.super_class = HFPinCode;
   v5 = [(HFPinCode *)&v14 init];
   if (v5)
   {
-    v6 = [v4 userInformation];
+    userInformation = [codeCopy userInformation];
     userLabel = v5->_userLabel;
-    v5->_userLabel = v6;
+    v5->_userLabel = userInformation;
 
-    v8 = [v4 accessCodeValue];
-    v9 = [v8 stringValue];
+    accessCodeValue = [codeCopy accessCodeValue];
+    stringValue = [accessCodeValue stringValue];
     pinCodeValue = v5->_pinCodeValue;
-    v5->_pinCodeValue = v9;
+    v5->_pinCodeValue = stringValue;
 
     v11 = [MEMORY[0x277CBEB58] set];
     accessoryAccessCodes = v5->_accessoryAccessCodes;
@@ -43,30 +43,30 @@
   return v5;
 }
 
-- (HFPinCode)initWithAccessoryAccessCode:(id)a3
+- (HFPinCode)initWithAccessoryAccessCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v18.receiver = self;
   v18.super_class = HFPinCode;
   v5 = [(HFPinCode *)&v18 init];
   if (v5)
   {
-    v6 = [v4 accessCodeValue];
-    v7 = [v6 stringValue];
+    accessCodeValue = [codeCopy accessCodeValue];
+    stringValue = [accessCodeValue stringValue];
     pinCodeValue = v5->_pinCodeValue;
-    v5->_pinCodeValue = v7;
+    v5->_pinCodeValue = stringValue;
 
-    v9 = [MEMORY[0x277CBEB58] setWithObject:v4];
+    v9 = [MEMORY[0x277CBEB58] setWithObject:codeCopy];
     accessoryAccessCodes = v5->_accessoryAccessCodes;
     v5->_accessoryAccessCodes = v9;
 
     if (![(NSString *)v5->_pinCodeValue length])
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = [v4 accessory];
-      v13 = [v12 uniqueIdentifier];
-      v14 = [v4 uniqueIdentifier];
-      v15 = [v11 stringWithFormat:@"%@-%@", v13, v14];
+      accessory = [codeCopy accessory];
+      uniqueIdentifier = [accessory uniqueIdentifier];
+      uniqueIdentifier2 = [codeCopy uniqueIdentifier];
+      v15 = [v11 stringWithFormat:@"%@-%@", uniqueIdentifier, uniqueIdentifier2];
       unknownMatterGuestUniqueID = v5->_unknownMatterGuestUniqueID;
       v5->_unknownMatterGuestUniqueID = v15;
     }
@@ -75,22 +75,22 @@
   return v5;
 }
 
-- (HFPinCode)initWithLabel:(id)a3 accessCodeValue:(id)a4 accessoryAccessCodes:(id)a5
+- (HFPinCode)initWithLabel:(id)label accessCodeValue:(id)value accessoryAccessCodes:(id)codes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelCopy = label;
+  valueCopy = value;
+  codesCopy = codes;
   v17.receiver = self;
   v17.super_class = HFPinCode;
   v12 = [(HFPinCode *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userLabel, a3);
-    objc_storeStrong(&v13->_pinCodeValue, a4);
-    if (v11)
+    objc_storeStrong(&v12->_userLabel, label);
+    objc_storeStrong(&v13->_pinCodeValue, value);
+    if (codesCopy)
     {
-      v14 = [v11 mutableCopy];
+      v14 = [codesCopy mutableCopy];
     }
 
     else
@@ -105,45 +105,45 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HFPinCode *)self userLabel];
+  userLabel = [(HFPinCode *)self userLabel];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = userLabel;
 
-  v7 = [(HFPinCode *)self pinCodeValue];
-  v8 = [v7 copy];
+  pinCodeValue = [(HFPinCode *)self pinCodeValue];
+  v8 = [pinCodeValue copy];
   v9 = v4[4];
   v4[4] = v8;
 
-  v10 = [(HFPinCode *)self accessoryAccessCodes];
-  v11 = [v10 mutableCopy];
+  accessoryAccessCodes = [(HFPinCode *)self accessoryAccessCodes];
+  v11 = [accessoryAccessCodes mutableCopy];
   v12 = v4[1];
   v4[1] = v11;
 
-  v13 = [(HFPinCode *)self unknownMatterGuestUniqueID];
-  v14 = [v13 copy];
+  unknownMatterGuestUniqueID = [(HFPinCode *)self unknownMatterGuestUniqueID];
+  v14 = [unknownMatterGuestUniqueID copy];
   v15 = v4[5];
   v4[5] = v14;
 
   return v4;
 }
 
-- (id)copyWithNewPinCodeValue:(id)a3
+- (id)copyWithNewPinCodeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(HFPinCode *)self userLabel];
+  userLabel = [(HFPinCode *)self userLabel];
   v7 = v5[3];
-  v5[3] = v6;
+  v5[3] = userLabel;
 
-  v8 = [v4 copy];
+  v8 = [valueCopy copy];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(HFPinCode *)self accessoryAccessCodes];
-  v11 = [v10 mutableCopy];
+  accessoryAccessCodes = [(HFPinCode *)self accessoryAccessCodes];
+  v11 = [accessoryAccessCodes mutableCopy];
   v12 = v5[1];
   v5[1] = v11;
 
@@ -233,19 +233,19 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -253,29 +253,29 @@ LABEL_7:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFPinCode *)self accessories];
-  v5 = [v3 appendObject:v4 withName:@"accessories"];
+  accessories = [(HFPinCode *)self accessories];
+  v5 = [v3 appendObject:accessories withName:@"accessories"];
 
-  v6 = [(HFPinCode *)self userLabel];
-  v7 = [v6 user];
-  v8 = [v3 appendObject:v7 withName:@"user"];
+  userLabel = [(HFPinCode *)self userLabel];
+  user = [userLabel user];
+  v8 = [v3 appendObject:user withName:@"user"];
 
-  v9 = [(HFPinCode *)self userLabel];
-  v10 = [v9 simpleLabel];
-  v11 = [v3 appendBool:v10 != 0 withName:@"hasSimpleLabel"];
+  userLabel2 = [(HFPinCode *)self userLabel];
+  simpleLabel = [userLabel2 simpleLabel];
+  v11 = [v3 appendBool:simpleLabel != 0 withName:@"hasSimpleLabel"];
 
-  v12 = [(HFPinCode *)self userLabel];
-  v13 = [v12 removedUserInfo];
-  v14 = [v13 userUUID];
-  v15 = [v3 appendObject:v14 withName:@"removedUserUUID"];
+  userLabel3 = [(HFPinCode *)self userLabel];
+  removedUserInfo = [userLabel3 removedUserInfo];
+  userUUID = [removedUserInfo userUUID];
+  v15 = [v3 appendObject:userUUID withName:@"removedUserUUID"];
 
   v16 = [v3 appendBool:-[HFPinCode hasRestrictions](self withName:{"hasRestrictions"), @"hasRestrictions"}];
-  v17 = [(HFPinCode *)self unknownMatterGuestUniqueID];
-  v18 = [v3 appendObject:v17 withName:@"unknownMatterGuestUniqueID"];
+  unknownMatterGuestUniqueID = [(HFPinCode *)self unknownMatterGuestUniqueID];
+  v18 = [v3 appendObject:unknownMatterGuestUniqueID withName:@"unknownMatterGuestUniqueID"];
 
-  v19 = [v3 build];
+  build = [v3 build];
 
-  return v19;
+  return build;
 }
 
 - (NSSet)accessoryAccessCodes
@@ -285,15 +285,15 @@ LABEL_7:
   return v2;
 }
 
-- (void)addAccessoryAccessCode:(id)a3
+- (void)addAccessoryAccessCode:(id)code
 {
   accessoryAccessCodes = self->_accessoryAccessCodes;
-  v5 = a3;
-  [(NSMutableSet *)accessoryAccessCodes addObject:v5];
+  codeCopy = code;
+  [(NSMutableSet *)accessoryAccessCodes addObject:codeCopy];
   accessories = self->_accessories;
-  v7 = [v5 accessory];
+  accessory = [codeCopy accessory];
 
-  [(NSMutableSet *)accessories removeObject:v7];
+  [(NSMutableSet *)accessories removeObject:accessory];
 }
 
 - (BOOL)hasRestrictions
@@ -340,10 +340,10 @@ LABEL_11:
   return v3;
 }
 
-- (void)addAccessories:(id)a3
+- (void)addAccessories:(id)accessories
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   if (!self->_accessories)
   {
     v5 = [MEMORY[0x277CBEB58] set];
@@ -355,7 +355,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = accessoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -404,16 +404,16 @@ uint64_t __28__HFPinCode_addAccessories___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)removeAccessories:(id)a3
+- (void)removeAccessories:(id)accessories
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accessoriesCopy = accessories;
   v4 = [MEMORY[0x277CBEB58] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = accessoriesCopy;
   v19 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
@@ -449,8 +449,8 @@ uint64_t __28__HFPinCode_addAccessories___block_invoke(uint64_t a1, void *a2)
               }
 
               v12 = *(*(&v20 + 1) + 8 * j);
-              v13 = [v12 accessory];
-              v14 = [v13 isEqual:v6];
+              accessory = [v12 accessory];
+              v14 = [accessory isEqual:v6];
 
               if (v14)
               {
@@ -483,8 +483,8 @@ uint64_t __28__HFPinCode_addAccessories___block_invoke(uint64_t a1, void *a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(HFPinCode *)self accessoryAccessCodes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accessoryAccessCodes = [(HFPinCode *)self accessoryAccessCodes];
+  v5 = [accessoryAccessCodes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -495,14 +495,14 @@ uint64_t __28__HFPinCode_addAccessories___block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessoryAccessCodes);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) accessory];
-        [v3 addObject:v9];
+        accessory = [*(*(&v12 + 1) + 8 * i) accessory];
+        [v3 addObject:accessory];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [accessoryAccessCodes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

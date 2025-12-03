@@ -6,9 +6,9 @@
 
 - (double)SBUISA_standardInteritemPadding
 {
-  v1 = [a1 SBUISA_layoutMode];
+  sBUISA_layoutMode = [self SBUISA_layoutMode];
   result = 11.0;
-  if ((v1 + 1) < 5)
+  if ((sBUISA_layoutMode + 1) < 5)
   {
     return 5.5;
   }

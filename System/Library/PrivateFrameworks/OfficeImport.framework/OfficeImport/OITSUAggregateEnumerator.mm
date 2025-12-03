@@ -1,31 +1,31 @@
 @interface OITSUAggregateEnumerator
-- (OITSUAggregateEnumerator)initWithFirstObject:(id)a3 argumentList:(char *)a4;
+- (OITSUAggregateEnumerator)initWithFirstObject:(id)object argumentList:(char *)list;
 - (id)nextObject;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation OITSUAggregateEnumerator
 
-- (OITSUAggregateEnumerator)initWithFirstObject:(id)a3 argumentList:(char *)a4
+- (OITSUAggregateEnumerator)initWithFirstObject:(id)object argumentList:(char *)list
 {
   v10.receiver = self;
   v10.super_class = OITSUAggregateEnumerator;
-  v11 = a4;
+  listCopy = list;
   v5 = [(OITSUAggregateEnumerator *)&v10 init];
   if (v5)
   {
     objects = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5->_objects = objects;
-    if (a3)
+    if (object)
     {
-      v7 = a3;
+      objectCopy = object;
       while (1)
       {
-        [(NSMutableArray *)objects addObject:v7];
-        v8 = v11;
-        v11 += 8;
-        v7 = *v8;
+        [(NSMutableArray *)objects addObject:objectCopy];
+        v8 = listCopy;
+        listCopy += 8;
+        objectCopy = *v8;
         if (!*v8)
         {
           break;
@@ -46,9 +46,9 @@
   [(OITSUAggregateEnumerator *)&v3 dealloc];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     [(NSMutableArray *)self->_objects addObject:?];
   }

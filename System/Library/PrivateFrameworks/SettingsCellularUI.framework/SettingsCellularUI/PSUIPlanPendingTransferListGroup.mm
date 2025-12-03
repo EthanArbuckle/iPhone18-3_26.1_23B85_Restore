@@ -2,27 +2,27 @@
 - (BOOL)_isChinaRegionCellularDevice;
 - (BOOL)_isInChina;
 - (PSListController)listController;
-- (PSUIPlanPendingTransferListGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUIPlanPendingTransferListGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_showSpinner:(BOOL)a3 specifier:(id)a4;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
-- (void)transferablePlanPressed:(id)a3;
+- (void)_showSpinner:(BOOL)spinner specifier:(id)specifier;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
+- (void)transferablePlanPressed:(id)pressed;
 @end
 
 @implementation PSUIPlanPendingTransferListGroup
 
-- (PSUIPlanPendingTransferListGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUIPlanPendingTransferListGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = PSUIPlanPendingTransferListGroup;
   v8 = [(PSUIPlanPendingTransferListGroup *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
-    objc_storeStrong(&v9->_groupSpecifier, a4);
+    objc_storeWeak(&v8->_listController, controllerCopy);
+    objc_storeStrong(&v9->_groupSpecifier, specifier);
   }
 
   return v9;
@@ -35,13 +35,13 @@
   if (!_os_feature_enabled_impl())
   {
     v12 = +[PSUICellularPlanManagerCache sharedInstance];
-    v13 = [v12 plansPendingTransfer];
+    plansPendingTransfer = [v12 plansPendingTransfer];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v13;
+    obj = plansPendingTransfer;
     v14 = [obj countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v14)
     {
@@ -59,11 +59,11 @@
 
           v18 = *(*(&v33 + 1) + 8 * i);
           v19 = MEMORY[0x277D3FAD8];
-          v20 = [v18 carrierName];
-          v21 = [MEMORY[0x277D75418] currentDevice];
-          v22 = [v21 userInterfaceIdiom];
+          carrierName = [v18 carrierName];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             v23 = 0;
           }
@@ -73,12 +73,12 @@
             v23 = objc_opt_class();
           }
 
-          v24 = [v19 preferenceSpecifierNamed:v20 target:self set:0 get:0 detail:v23 cell:2 edit:0];
+          v24 = [v19 preferenceSpecifierNamed:carrierName target:self set:0 get:0 detail:v23 cell:2 edit:0];
 
-          v25 = [v18 status];
-          if (v25 <= 3)
+          status = [v18 status];
+          if (status <= 3)
           {
-            v26 = *off_279BAA7A8[v25];
+            v26 = *off_279BAA7A8[status];
             [v24 setProperty:objc_opt_class() forKey:v30];
           }
 
@@ -148,7 +148,7 @@ LABEL_21:
   return v32;
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -177,15 +177,15 @@ void __58__PSUIPlanPendingTransferListGroup_simSetupFlowCompleted___block_invoke
   }
 }
 
-- (void)transferablePlanPressed:(id)a3
+- (void)transferablePlanPressed:(id)pressed
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-  [(PSUIPlanPendingTransferListGroup *)self _showSpinner:1 specifier:v4];
+  pressedCopy = pressed;
+  [pressedCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+  [(PSUIPlanPendingTransferListGroup *)self _showSpinner:1 specifier:pressedCopy];
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v6 = [WeakRetained view];
-  [v6 setUserInteractionEnabled:0];
+  view = [WeakRetained view];
+  [view setUserInteractionEnabled:0];
 
   v18 = *MEMORY[0x277D49548];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:3];
@@ -205,7 +205,7 @@ void __58__PSUIPlanPendingTransferListGroup_simSetupFlowCompleted___block_invoke
   v14[3] = &unk_279BAA770;
   objc_copyWeak(&v16, &location);
   v14[4] = self;
-  v12 = v4;
+  v12 = pressedCopy;
   v15 = v12;
   [(TSSIMSetupFlow *)v11 firstViewController:v14];
 
@@ -258,41 +258,41 @@ void __60__PSUIPlanPendingTransferListGroup_transferablePlanPressed___block_invo
   }
 }
 
-- (void)_showSpinner:(BOOL)a3 specifier:(id)a4
+- (void)_showSpinner:(BOOL)spinner specifier:(id)specifier
 {
-  v4 = a3;
-  v6 = a4;
+  spinnerCopy = spinner;
+  specifierCopy = specifier;
   if (!self->_spinner)
   {
     v8 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinner = self->_spinner;
     self->_spinner = v8;
 
-    v10 = [v6 propertyForKey:*MEMORY[0x277D40148]];
-    v11 = [v10 accessoryView];
+    v10 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
+    accessoryView = [v10 accessoryView];
     originAccessoryView = self->_originAccessoryView;
-    self->_originAccessoryView = v11;
+    self->_originAccessoryView = accessoryView;
 
-    if (v4)
+    if (spinnerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
     [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-    v13 = [v6 propertyForKey:*MEMORY[0x277D40148]];
+    v13 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
     [v13 setAccessoryView:self->_originAccessoryView];
 
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!spinnerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v7 = [v6 propertyForKey:*MEMORY[0x277D40148]];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
   [v7 setAccessoryView:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
@@ -302,8 +302,8 @@ LABEL_6:
   v15[2] = __59__PSUIPlanPendingTransferListGroup__showSpinner_specifier___block_invoke;
   v15[3] = &unk_279BA9D30;
   v15[4] = self;
-  v16 = v6;
-  v14 = v6;
+  v16 = specifierCopy;
+  v14 = specifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v15);
 }
 
@@ -315,27 +315,27 @@ void __59__PSUIPlanPendingTransferListGroup__showSpinner_specifier___block_invok
 
 - (BOOL)_isChinaRegionCellularDevice
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isChinaRegionCellularDevice])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isChinaRegionCellularDevice])
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 sf_isiPad];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice2 sf_isiPad];
   }
 
   else
   {
-    v4 = 0;
+    sf_isiPad = 0;
   }
 
-  return v4;
+  return sf_isiPad;
 }
 
 - (BOOL)_isInChina
 {
   v2 = +[PSUICellularPlanManagerCache sharedInstance];
-  v3 = [v2 isCarrierItemFlowSupported];
+  isCarrierItemFlowSupported = [v2 isCarrierItemFlowSupported];
 
-  return v3 ^ 1;
+  return isCarrierItemFlowSupported ^ 1;
 }
 
 - (PSListController)listController

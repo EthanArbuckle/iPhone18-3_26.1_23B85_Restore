@@ -1,55 +1,55 @@
 @interface MessageListCellHelper
 - (BOOL)senderSpecificCell;
 - (EMCategory)category;
-- (MessageListCellHelper)initWithParentView:(id)a3 contentView:(id)a4 cellView:(id)a5 applicationProxy:(id)a6;
+- (MessageListCellHelper)initWithParentView:(id)view contentView:(id)contentView cellView:(id)cellView applicationProxy:(id)proxy;
 - (UIView)contentView;
 - (UIView)parentView;
-- (id)_cellViewModelForMessageListItem:(id)a3 style:(int64_t)a4 hintsBySnippetZone:(id)a5;
-- (id)_generatedSummaryForUpdatingCellView:(id)a3;
+- (id)_cellViewModelForMessageListItem:(id)item style:(int64_t)style hintsBySnippetZone:(id)zone;
+- (id)_generatedSummaryForUpdatingCellView:(id)view;
 - (id)_generatedSummaryString;
-- (id)backgroundConfigurationForState:(id)a3;
-- (id)configurationStateForCellConfigurationState:(id)a3;
-- (id)contentConfigurationForState:(id)a3;
-- (int64_t)_cellViewRelationshipTypeForFlags:(id)a3;
+- (id)backgroundConfigurationForState:(id)state;
+- (id)configurationStateForCellConfigurationState:(id)state;
+- (id)contentConfigurationForState:(id)state;
+- (int64_t)_cellViewRelationshipTypeForFlags:(id)flags;
 - (void)_registerUpdateGeneratedSummaryObservation;
 - (void)_significantTimeChange;
 - (void)_updateGeneratedSummary;
-- (void)_updateViewsToMatchMessageListItem:(id)a3 style:(int64_t)a4 hintsBySnippetZone:(id)a5;
+- (void)_updateViewsToMatchMessageListItem:(id)item style:(int64_t)style hintsBySnippetZone:(id)zone;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setCategory:(id)a3;
-- (void)setCompact:(BOOL)a3;
-- (void)setDisclosureEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setMessageListItem:(id)a3 style:(int64_t)a4 hintsBySnippetZone:(id)a5;
-- (void)setNumberOfPreviewLines:(int64_t)a3;
-- (void)setSenderSpecificCell:(BOOL)a3;
-- (void)setShouldAnnotateReplyOrForward:(BOOL)a3;
-- (void)setShouldDisplayUnreadAndVIP:(BOOL)a3;
-- (void)setShowsAccessory:(BOOL)a3 showingDetail:(BOOL)a4;
-- (void)updateViewBackgroundConfiguration:(id)a3;
-- (void)updateViewConfigurationForState:(id)a3;
-- (void)updateViewContentConfiguration:(id)a3;
+- (void)setCategory:(id)category;
+- (void)setCompact:(BOOL)compact;
+- (void)setDisclosureEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setMessageListItem:(id)item style:(int64_t)style hintsBySnippetZone:(id)zone;
+- (void)setNumberOfPreviewLines:(int64_t)lines;
+- (void)setSenderSpecificCell:(BOOL)cell;
+- (void)setShouldAnnotateReplyOrForward:(BOOL)forward;
+- (void)setShouldDisplayUnreadAndVIP:(BOOL)p;
+- (void)setShowsAccessory:(BOOL)accessory showingDetail:(BOOL)detail;
+- (void)updateViewBackgroundConfiguration:(id)configuration;
+- (void)updateViewConfigurationForState:(id)state;
+- (void)updateViewContentConfiguration:(id)configuration;
 @end
 
 @implementation MessageListCellHelper
 
 - (id)_generatedSummaryString
 {
-  v3 = [(MessageListCellHelper *)self automaticallySummarizeMessages];
-  if ([v3 isEnabled])
+  automaticallySummarizeMessages = [(MessageListCellHelper *)self automaticallySummarizeMessages];
+  if ([automaticallySummarizeMessages isEnabled])
   {
-    v4 = [(MessageListCellHelper *)self messageListItem];
-    v5 = [v4 generatedSummary];
-    v6 = [v5 topLine];
-    v7 = [v6 string];
+    messageListItem = [(MessageListCellHelper *)self messageListItem];
+    generatedSummary = [messageListItem generatedSummary];
+    topLine = [generatedSummary topLine];
+    string = [topLine string];
   }
 
   else
   {
-    v7 = 0;
+    string = 0;
   }
 
-  return v7;
+  return string;
 }
 
 - (UIView)parentView
@@ -66,32 +66,32 @@ uint64_t ___ef_log_MessageListCellHelper_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (MessageListCellHelper)initWithParentView:(id)a3 contentView:(id)a4 cellView:(id)a5 applicationProxy:(id)a6
+- (MessageListCellHelper)initWithParentView:(id)view contentView:(id)contentView cellView:(id)cellView applicationProxy:(id)proxy
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  contentViewCopy = contentView;
+  cellViewCopy = cellView;
+  proxyCopy = proxy;
   v25.receiver = self;
   v25.super_class = MessageListCellHelper;
   v14 = [(MessageListCellHelper *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_parentView, v10);
-    objc_storeWeak(&v15->_contentView, v11);
-    [v10 setMui_clipsToBounds:1];
-    [v10 setAutoresizesSubviews:1];
-    objc_storeStrong(&v15->_cellView, a5);
-    if (v15->_cellView != v11)
+    objc_storeWeak(&v14->_parentView, viewCopy);
+    objc_storeWeak(&v15->_contentView, contentViewCopy);
+    [viewCopy setMui_clipsToBounds:1];
+    [viewCopy setAutoresizesSubviews:1];
+    objc_storeStrong(&v15->_cellView, cellView);
+    if (v15->_cellView != contentViewCopy)
     {
-      [(MessageListCellViewable *)v11 addSubview:?];
+      [(MessageListCellViewable *)contentViewCopy addSubview:?];
     }
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v15 selector:sel__significantTimeChange name:*MEMORY[0x277D766F0] object:0];
-    [v10 setAccessibilityIdentifier:*MEMORY[0x277D258B8]];
-    objc_storeStrong(&v15->_applicationProxy, a6);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__significantTimeChange name:*MEMORY[0x277D766F0] object:0];
+    [viewCopy setAccessibilityIdentifier:*MEMORY[0x277D258B8]];
+    objc_storeStrong(&v15->_applicationProxy, proxy);
     v15->_disclosureEnabled = 0;
     if (_os_feature_enabled_impl() && EMIsGreymatterSupported())
     {
@@ -134,11 +134,11 @@ void __82__MessageListCellHelper_initWithParentView_contentView_cellView_applica
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(MessageListCellHelper *)self predictedMailbox];
-  [v4 cancel];
+  predictedMailbox = [(MessageListCellHelper *)self predictedMailbox];
+  [predictedMailbox cancel];
 
   v5.receiver = self;
   v5.super_class = MessageListCellHelper;
@@ -152,8 +152,8 @@ void __82__MessageListCellHelper_initWithParentView_contentView_cellView_applica
   v3[2] = __47__MessageListCellHelper__significantTimeChange__block_invoke;
   v3[3] = &unk_278188BB0;
   v3[4] = self;
-  v2 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v2 performBlock:v3];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performBlock:v3];
 }
 
 void __47__MessageListCellHelper__significantTimeChange__block_invoke(uint64_t a1)
@@ -165,31 +165,31 @@ void __47__MessageListCellHelper__significantTimeChange__block_invoke(uint64_t a
   [v3 mui_setNeedsLayout];
 }
 
-- (void)setMessageListItem:(id)a3 style:(int64_t)a4 hintsBySnippetZone:(id)a5
+- (void)setMessageListItem:(id)item style:(int64_t)style hintsBySnippetZone:(id)zone
 {
-  objc_storeStrong(&self->_messageListItem, a3);
-  v9 = a3;
-  v10 = a5;
-  self->_style = a4;
-  [(MessageListCellHelper *)self _updateViewsToMatchMessageListItem:v9 style:a4 hintsBySnippetZone:v10];
+  objc_storeStrong(&self->_messageListItem, item);
+  itemCopy = item;
+  zoneCopy = zone;
+  self->_style = style;
+  [(MessageListCellHelper *)self _updateViewsToMatchMessageListItem:itemCopy style:style hintsBySnippetZone:zoneCopy];
 }
 
-- (id)_cellViewModelForMessageListItem:(id)a3 style:(int64_t)a4 hintsBySnippetZone:(id)a5
+- (id)_cellViewModelForMessageListItem:(id)item style:(int64_t)style hintsBySnippetZone:(id)zone
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  itemCopy = item;
+  zoneCopy = zone;
+  if (itemCopy)
   {
     v10 = [MessageListCellViewModel alloc];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __83__MessageListCellHelper__cellViewModelForMessageListItem_style_hintsBySnippetZone___block_invoke;
     v13[3] = &unk_278188C00;
-    v14 = v8;
-    v15 = self;
-    v16 = v9;
-    v17 = a4 == 1;
-    v18 = a4;
+    v14 = itemCopy;
+    selfCopy = self;
+    v16 = zoneCopy;
+    v17 = style == 1;
+    styleCopy = style;
     v11 = [(MessageListCellViewModel *)v10 initWithBuilder:v13];
   }
 
@@ -420,57 +420,57 @@ LABEL_46:
   [v48 setUnsubscribeType:{objc_msgSend(*(a1 + 32), "unsubscribeType")}];
 }
 
-- (void)_updateViewsToMatchMessageListItem:(id)a3 style:(int64_t)a4 hintsBySnippetZone:(id)a5
+- (void)_updateViewsToMatchMessageListItem:(id)item style:(int64_t)style hintsBySnippetZone:(id)zone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v29 = a5;
-  v9 = [(MessageListCellHelper *)self cellView];
+  itemCopy = item;
+  zoneCopy = zone;
+  cellView = [(MessageListCellHelper *)self cellView];
   if (_os_feature_enabled_impl())
   {
-    [v9 setShouldShowHighImpact:{-[MessageListCellHelper shouldShowHighImpact](self, "shouldShowHighImpact")}];
+    [cellView setShouldShowHighImpact:{-[MessageListCellHelper shouldShowHighImpact](self, "shouldShowHighImpact")}];
   }
 
-  v10 = [(MessageListCellHelper *)self _cellViewModelForMessageListItem:v8 style:a4 hintsBySnippetZone:v29];
-  [v9 setViewModel:v10];
+  v10 = [(MessageListCellHelper *)self _cellViewModelForMessageListItem:itemCopy style:style hintsBySnippetZone:zoneCopy];
+  [cellView setViewModel:v10];
 
   if (_os_feature_enabled_impl())
   {
     if (EMIsGreymatterAvailable())
     {
-      v11 = [(MessageListCellHelper *)self _generatedSummaryForUpdatingCellView:v9];
+      v11 = [(MessageListCellHelper *)self _generatedSummaryForUpdatingCellView:cellView];
       if (v11)
       {
         v12 = v11;
         v13 = _ef_log_MessageListCellHelper();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v8 itemID];
+          itemID = [itemCopy itemID];
           *buf = 134218242;
-          v31 = self;
+          selfCopy = self;
           v32 = 2114;
-          v33 = v14;
+          v33 = itemID;
           _os_log_impl(&dword_214A5E000, v13, OS_LOG_TYPE_DEFAULT, "<%p>: Found generated summary for %{public}@, displaying generated one over classic summary", buf, 0x16u);
         }
 
-        v15 = v12;
+        summary = v12;
         v16 = 1;
-        v28 = v15;
+        v28 = summary;
         goto LABEL_10;
       }
     }
   }
 
-  v15 = [v8 summary];
+  summary = [itemCopy summary];
   v16 = 0;
   v28 = 0;
   v17 = 0;
-  if (v15)
+  if (summary)
   {
 LABEL_10:
-    if ([v15 length])
+    if ([summary length])
     {
-      v17 = v15;
+      v17 = summary;
     }
 
     else
@@ -482,55 +482,55 @@ LABEL_10:
   if ([MEMORY[0x277D06DA0] preferenceEnabled:4])
   {
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v8 itemID];
-    v20 = v8;
-    v21 = [v8 displayMessageItemID];
-    v22 = [v18 stringWithFormat:@"%@/%@:%@", v19, v21, v17];
+    itemID2 = [itemCopy itemID];
+    v20 = itemCopy;
+    displayMessageItemID = [itemCopy displayMessageItemID];
+    v22 = [v18 stringWithFormat:@"%@/%@:%@", itemID2, displayMessageItemID, v17];
 
     v17 = v22;
   }
 
   else
   {
-    v20 = v8;
+    v20 = itemCopy;
   }
 
   if ([MEMORY[0x277D06DA0] preferenceEnabled:5] && objc_msgSend(v20, "searchResultType") == 3)
   {
     v23 = MEMORY[0x277CCACA8];
-    v24 = [v20 searchRelevanceScore];
-    v25 = [v23 stringWithFormat:@"RelevanceScore:%@/%@", v24, v17];
+    searchRelevanceScore = [v20 searchRelevanceScore];
+    v25 = [v23 stringWithFormat:@"RelevanceScore:%@/%@", searchRelevanceScore, v17];
 
     v17 = v25;
   }
 
-  [v9 setSummary:v17];
-  [v9 setHasGeneratedSummary:v16];
-  v26 = [v20 flags];
-  [v9 setAnnotatedRelationshipType:{-[MessageListCellHelper _cellViewRelationshipTypeForFlags:](self, "_cellViewRelationshipTypeForFlags:", v26)}];
+  [cellView setSummary:v17];
+  [cellView setHasGeneratedSummary:v16];
+  flags = [v20 flags];
+  [cellView setAnnotatedRelationshipType:{-[MessageListCellHelper _cellViewRelationshipTypeForFlags:](self, "_cellViewRelationshipTypeForFlags:", flags)}];
 
-  v27 = [(MessageListCellHelper *)self parentView];
-  [v27 mui_setNeedsLayout];
+  parentView = [(MessageListCellHelper *)self parentView];
+  [parentView mui_setNeedsLayout];
 }
 
-- (id)_generatedSummaryForUpdatingCellView:(id)a3
+- (id)_generatedSummaryForUpdatingCellView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MessageListCellHelper *)self setUpdateSummaryCancelationToken:0];
-  v5 = [(MessageListCellHelper *)self _generatedSummaryString];
-  if (v5)
+  _generatedSummaryString = [(MessageListCellHelper *)self _generatedSummaryString];
+  if (_generatedSummaryString)
   {
-    v6 = v5;
-    v7 = [v4 summary];
-    if ([v7 length])
+    v6 = _generatedSummaryString;
+    summary = [viewCopy summary];
+    if ([summary length])
     {
-      v8 = [(MessageListCellHelper *)self messageListItem];
-      v9 = [v8 summary];
-      v10 = [v9 isEqualToString:v7];
+      messageListItem = [(MessageListCellHelper *)self messageListItem];
+      summary2 = [messageListItem summary];
+      v10 = [summary2 isEqualToString:summary];
 
       if (v10)
       {
-        if (([v4 hasGeneratedSummary] & 1) == 0 && (objc_msgSend(MEMORY[0x277D06DA0], "preferenceEnabled:", 47) & 1) == 0 && -[MessageListCellHelper isVisible](self, "isVisible"))
+        if (([viewCopy hasGeneratedSummary] & 1) == 0 && (objc_msgSend(MEMORY[0x277D06DA0], "preferenceEnabled:", 47) & 1) == 0 && -[MessageListCellHelper isVisible](self, "isVisible"))
         {
 
           [(MessageListCellHelper *)self _registerUpdateGeneratedSummaryObservation];
@@ -553,46 +553,46 @@ LABEL_10:
 - (void)_registerUpdateGeneratedSummaryObservation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(MessageListCellHelper *)self messageListItem];
-  v4 = [v3 itemID];
+  messageListItem = [(MessageListCellHelper *)self messageListItem];
+  itemID = [messageListItem itemID];
 
   v5 = _ef_log_MessageListCellHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
-    v29 = v4;
+    v29 = itemID;
     _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "<%p>: Have generated summary for %{public}@, deferring update until cell is not visible", buf, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D07138]);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   objc_initWeak(buf, self);
-  v8 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation__block_invoke;
   v23[3] = &unk_278188C28;
   objc_copyWeak(&v25, buf);
   v9 = *MEMORY[0x277D76E58];
-  v10 = v4;
+  v10 = itemID;
   v24 = v10;
-  v11 = [v7 addObserverForName:v9 object:0 queue:v8 usingBlock:v23];
+  v11 = [defaultCenter addObserverForName:v9 object:0 queue:mainQueue usingBlock:v23];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation__block_invoke_71;
   v18 = &unk_278188C50;
-  v19 = self;
+  selfCopy2 = self;
   v12 = v10;
   v20 = v12;
-  v13 = v7;
+  v13 = defaultCenter;
   v21 = v13;
   v14 = v11;
   v22 = v14;
   [v6 addCancelationBlock:&v15];
-  [(MessageListCellHelper *)self setUpdateSummaryCancelationToken:v6, v15, v16, v17, v18, v19];
+  [(MessageListCellHelper *)self setUpdateSummaryCancelationToken:v6, v15, v16, v17, v18, selfCopy2];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
@@ -640,21 +640,21 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
 
 - (void)_updateGeneratedSummary
 {
-  v5 = [(MessageListCellHelper *)self cellView];
-  v3 = [(MessageListCellHelper *)self _generatedSummaryString];
-  if (([v5 hasGeneratedSummary] & 1) == 0 && v3)
+  cellView = [(MessageListCellHelper *)self cellView];
+  _generatedSummaryString = [(MessageListCellHelper *)self _generatedSummaryString];
+  if (([cellView hasGeneratedSummary] & 1) == 0 && _generatedSummaryString)
   {
-    [v5 setSummary:v3];
-    [v5 setHasGeneratedSummary:1];
-    v4 = [(MessageListCellHelper *)self parentView];
-    [v4 mui_setNeedsLayout];
+    [cellView setSummary:_generatedSummaryString];
+    [cellView setHasGeneratedSummary:1];
+    parentView = [(MessageListCellHelper *)self parentView];
+    [parentView mui_setNeedsLayout];
   }
 }
 
-- (int64_t)_cellViewRelationshipTypeForFlags:(id)a3
+- (int64_t)_cellViewRelationshipTypeForFlags:(id)flags
 {
-  v3 = a3;
-  if ([v3 draft])
+  flagsCopy = flags;
+  if ([flagsCopy draft])
   {
     v4 = 2;
   }
@@ -664,7 +664,7 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
     v4 = 0;
   }
 
-  if ([v3 forwarded])
+  if ([flagsCopy forwarded])
   {
     v5 = 3;
   }
@@ -674,9 +674,9 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
     v5 = v4;
   }
 
-  v6 = [v3 replied];
+  replied = [flagsCopy replied];
 
-  if (v6)
+  if (replied)
   {
     return 1;
   }
@@ -687,35 +687,35 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
   }
 }
 
-- (id)backgroundConfigurationForState:(id)a3
+- (id)backgroundConfigurationForState:(id)state
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self cellView];
-  v6 = [v5 layoutValues];
+  stateCopy = state;
+  cellView = [(MessageListCellHelper *)self cellView];
+  layoutValues = [cellView layoutValues];
 
-  v7 = [v6 defaultBackgroundConfiguration];
-  v8 = [v6 backgroundColorForConfigurationState:v4 backgroundConfiguration:v7];
+  defaultBackgroundConfiguration = [layoutValues defaultBackgroundConfiguration];
+  v8 = [layoutValues backgroundColorForConfigurationState:stateCopy backgroundConfiguration:defaultBackgroundConfiguration];
 
   if (v8)
   {
-    [v7 setBackgroundColor:v8];
+    [defaultBackgroundConfiguration setBackgroundColor:v8];
   }
 
-  if ([v6 useSidebarAppearance])
+  if ([layoutValues useSidebarAppearance])
   {
-    [v6 backgroundCornerRadius];
-    [v7 setCornerRadius:?];
+    [layoutValues backgroundCornerRadius];
+    [defaultBackgroundConfiguration setCornerRadius:?];
   }
 
-  return v7;
+  return defaultBackgroundConfiguration;
 }
 
-- (id)configurationStateForCellConfigurationState:(id)a3
+- (id)configurationStateForCellConfigurationState:(id)state
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self style];
-  v6 = v5 == 1 && [(MessageListCellHelper *)self disclosureEnabled];
-  if (v5 == 2)
+  stateCopy = state;
+  style = [(MessageListCellHelper *)self style];
+  v6 = style == 1 && [(MessageListCellHelper *)self disclosureEnabled];
+  if (style == 2)
   {
     v7 = v6 ^ 1;
   }
@@ -726,28 +726,28 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
   }
 
   v8 = MEMORY[0x277D75518];
-  v9 = [(MessageListCellHelper *)self cellView];
-  v10 = [v8 focusSystemForEnvironment:v9];
+  cellView = [(MessageListCellHelper *)self cellView];
+  v10 = [v8 focusSystemForEnvironment:cellView];
 
-  v11 = [(MessageListCellHelper *)self applicationProxy];
-  v12 = [v10 focusedItem];
-  v13 = [v11 isMessageListCellObject:v12];
+  applicationProxy = [(MessageListCellHelper *)self applicationProxy];
+  focusedItem = [v10 focusedItem];
+  v13 = [applicationProxy isMessageListCellObject:focusedItem];
 
-  [v4 setIsParent:v6];
-  [v4 setIsChild:v7];
-  [v4 setIsPriority:{-[MessageListCellHelper isPriority](self, "isPriority")}];
-  [v4 setIsFocusSystemActive:v10 != 0];
-  [v4 setIsFocusingOnMessageListCell:v13];
+  [stateCopy setIsParent:v6];
+  [stateCopy setIsChild:v7];
+  [stateCopy setIsPriority:{-[MessageListCellHelper isPriority](self, "isPriority")}];
+  [stateCopy setIsFocusSystemActive:v10 != 0];
+  [stateCopy setIsFocusingOnMessageListCell:v13];
 
-  return v4;
+  return stateCopy;
 }
 
-- (id)contentConfigurationForState:(id)a3
+- (id)contentConfigurationForState:(id)state
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self cellView];
-  v6 = [v5 layoutValues];
-  if ([v6 useSidebarAppearance])
+  stateCopy = state;
+  cellView = [(MessageListCellHelper *)self cellView];
+  layoutValues = [cellView layoutValues];
+  if ([layoutValues useSidebarAppearance])
   {
     [MEMORY[0x277D756E0] cellConfiguration];
   }
@@ -758,70 +758,70 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
   }
   v7 = ;
 
-  v8 = [v7 updatedConfigurationForState:v4];
+  v8 = [v7 updatedConfigurationForState:stateCopy];
 
   return v8;
 }
 
-- (void)updateViewConfigurationForState:(id)a3
+- (void)updateViewConfigurationForState:(id)state
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self cellView];
-  [v5 setConfigurationState:v4];
+  stateCopy = state;
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView setConfigurationState:stateCopy];
 }
 
-- (void)updateViewContentConfiguration:(id)a3
+- (void)updateViewContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self cellView];
-  [v5 setContentConfiguration:v4];
+  configurationCopy = configuration;
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView setContentConfiguration:configurationCopy];
 }
 
-- (void)updateViewBackgroundConfiguration:(id)a3
+- (void)updateViewBackgroundConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self cellView];
-  [v5 setBackgroundConfiguration:v4];
+  configurationCopy = configuration;
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView setBackgroundConfiguration:configurationCopy];
 }
 
-- (void)setDisclosureEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisclosureEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_disclosureEnabled != a3)
+  if (self->_disclosureEnabled != enabled)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_disclosureEnabled = a3;
-    v8 = [(MessageListCellHelper *)self cellView];
-    [v8 setDisclosureEnabled:v6 animated:v5];
+    animatedCopy = animated;
+    enabledCopy = enabled;
+    self->_disclosureEnabled = enabled;
+    cellView = [(MessageListCellHelper *)self cellView];
+    [cellView setDisclosureEnabled:enabledCopy animated:animatedCopy];
 
-    v9 = [(MessageListCellHelper *)self parentView];
-    [v9 mui_setNeedsLayout];
+    parentView = [(MessageListCellHelper *)self parentView];
+    [parentView mui_setNeedsLayout];
   }
 }
 
-- (void)setShowsAccessory:(BOOL)a3 showingDetail:(BOOL)a4
+- (void)setShowsAccessory:(BOOL)accessory showingDetail:(BOOL)detail
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MessageListCellHelper *)self cellView];
-  v8 = [v7 chevronType];
+  detailCopy = detail;
+  accessoryCopy = accessory;
+  cellView = [(MessageListCellHelper *)self cellView];
+  chevronType = [cellView chevronType];
 
-  v9 = [(MessageListCellHelper *)self cellView];
-  v10 = [v9 viewModel];
-  v11 = [v10 style];
+  cellView2 = [(MessageListCellHelper *)self cellView];
+  viewModel = [cellView2 viewModel];
+  style = [viewModel style];
 
   v12 = 2;
-  if (v11 != 1)
+  if (style != 1)
   {
-    v12 = !v4;
+    v12 = !detailCopy;
   }
 
-  if (!v5)
+  if (!accessoryCopy)
   {
     v12 = 0;
   }
 
-  if (v11 == 2)
+  if (style == 2)
   {
     v13 = 0;
   }
@@ -831,90 +831,90 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
     v13 = v12;
   }
 
-  if (v8 != v13)
+  if (chevronType != v13)
   {
-    v14 = [(MessageListCellHelper *)self cellView];
-    [v14 setChevronType:v13];
+    cellView3 = [(MessageListCellHelper *)self cellView];
+    [cellView3 setChevronType:v13];
   }
 }
 
-- (void)setShouldAnnotateReplyOrForward:(BOOL)a3
+- (void)setShouldAnnotateReplyOrForward:(BOOL)forward
 {
-  if (self->_shouldAnnotateReplyOrForward != a3)
+  if (self->_shouldAnnotateReplyOrForward != forward)
   {
-    v4 = a3;
-    self->_shouldAnnotateReplyOrForward = a3;
-    v5 = [(MessageListCellHelper *)self cellView];
-    [v5 setShouldAnnotateReplyOrForward:v4];
+    forwardCopy = forward;
+    self->_shouldAnnotateReplyOrForward = forward;
+    cellView = [(MessageListCellHelper *)self cellView];
+    [cellView setShouldAnnotateReplyOrForward:forwardCopy];
   }
 }
 
-- (void)setShouldDisplayUnreadAndVIP:(BOOL)a3
+- (void)setShouldDisplayUnreadAndVIP:(BOOL)p
 {
-  v3 = a3;
-  if (self->_shouldDisplayUnreadAndVIP != a3)
+  pCopy = p;
+  if (self->_shouldDisplayUnreadAndVIP != p)
   {
-    self->_shouldDisplayUnreadAndVIP = a3;
+    self->_shouldDisplayUnreadAndVIP = p;
   }
 
-  v5 = [(MessageListCellHelper *)self cellView];
-  [v5 setDisplayUnreadDot:v3];
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView setDisplayUnreadDot:pCopy];
 
-  v6 = [(MessageListCellHelper *)self cellView];
-  [v6 setDisplayVIP:v3];
+  cellView2 = [(MessageListCellHelper *)self cellView];
+  [cellView2 setDisplayVIP:pCopy];
 }
 
-- (void)setSenderSpecificCell:(BOOL)a3
+- (void)setSenderSpecificCell:(BOOL)cell
 {
-  v3 = a3;
-  v4 = [(MessageListCellHelper *)self cellView];
-  [v4 setSenderSpecificCell:v3];
+  cellCopy = cell;
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView setSenderSpecificCell:cellCopy];
 }
 
 - (BOOL)senderSpecificCell
 {
-  v2 = [(MessageListCellHelper *)self cellView];
-  v3 = [v2 isSenderSpecificCell];
+  cellView = [(MessageListCellHelper *)self cellView];
+  isSenderSpecificCell = [cellView isSenderSpecificCell];
 
-  return v3;
+  return isSenderSpecificCell;
 }
 
 - (EMCategory)category
 {
-  v2 = [(MessageListCellHelper *)self cellView];
-  v3 = [v2 category];
+  cellView = [(MessageListCellHelper *)self cellView];
+  category = [cellView category];
 
-  return v3;
+  return category;
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(MessageListCellHelper *)self cellView];
-  [v5 setCategory:v4];
+  categoryCopy = category;
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView setCategory:categoryCopy];
 }
 
-- (void)setCompact:(BOOL)a3
+- (void)setCompact:(BOOL)compact
 {
-  if (self->_compact != a3)
+  if (self->_compact != compact)
   {
-    v4 = a3;
-    self->_compact = a3;
-    v6 = [(MessageListCellHelper *)self cellView];
-    [v6 setCompact:v4];
+    compactCopy = compact;
+    self->_compact = compact;
+    cellView = [(MessageListCellHelper *)self cellView];
+    [cellView setCompact:compactCopy];
 
-    v7 = [(MessageListCellHelper *)self parentView];
-    [v7 mui_setNeedsLayout];
+    parentView = [(MessageListCellHelper *)self parentView];
+    [parentView mui_setNeedsLayout];
   }
 }
 
-- (void)setNumberOfPreviewLines:(int64_t)a3
+- (void)setNumberOfPreviewLines:(int64_t)lines
 {
-  if (self->_numberOfPreviewLines != a3)
+  if (self->_numberOfPreviewLines != lines)
   {
-    self->_numberOfPreviewLines = a3;
-    v5 = [(MessageListCellHelper *)self cellView];
-    [v5 setNumberOfPreviewLines:a3];
+    self->_numberOfPreviewLines = lines;
+    cellView = [(MessageListCellHelper *)self cellView];
+    [cellView setNumberOfPreviewLines:lines];
   }
 }
 
@@ -924,11 +924,11 @@ uint64_t __67__MessageListCellHelper__registerUpdateGeneratedSummaryObservation_
   self->_messageListItem = 0;
 
   self->_style = 0;
-  v4 = [(MessageListCellHelper *)self cellView];
-  [v4 prepareForReuse];
+  cellView = [(MessageListCellHelper *)self cellView];
+  [cellView prepareForReuse];
 
-  v5 = [(MessageListCellHelper *)self predictedMailbox];
-  [v5 cancel];
+  predictedMailbox = [(MessageListCellHelper *)self predictedMailbox];
+  [predictedMailbox cancel];
 
   [(MessageListCellHelper *)self setPredictedMailbox:0];
   [(MessageListCellHelper *)self setDisclosureEnabled:0];

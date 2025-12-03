@@ -1,7 +1,7 @@
 @interface PHAssetCurationProperties
 + (id)propertiesToFetch;
 - (NSArray)objectSaliencyRects;
-- (PHAssetCurationProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetCurationProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetCurationProperties
@@ -48,30 +48,30 @@
   return cachedObjectSaliencyRects;
 }
 
-- (PHAssetCurationProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetCurationProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v31.receiver = self;
   v31.super_class = PHAssetCurationProperties;
   v9 = [(PHAssetCurationProperties *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"additionalAttributes.importedByBundleIdentifier"];
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.importedByBundleIdentifier"];
     importedByBundleIdentifier = v10->_importedByBundleIdentifier;
     v10->_importedByBundleIdentifier = v11;
 
-    v13 = [v7 objectForKeyedSubscript:@"additionalAttributes.importedByDisplayName"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.importedByDisplayName"];
     importedByDisplayName = v10->_importedByDisplayName;
     v10->_importedByDisplayName = v13;
 
-    v15 = [v7 objectForKeyedSubscript:@"addedDate"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"addedDate"];
     addedDate = v10->_addedDate;
     v10->_addedDate = v15;
 
-    v17 = [v7 objectForKey:@"computedAttributes.interestingSubjectScore"];
+    v17 = [dictionaryCopy objectForKey:@"computedAttributes.interestingSubjectScore"];
     v18 = v17;
     if (v17)
     {
@@ -84,25 +84,25 @@
     }
 
     v10->_interestingSubjectScore = v19;
-    v20 = [v7 objectForKeyedSubscript:@"lastSharedDate"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"lastSharedDate"];
     lastSharedDate = v10->_lastSharedDate;
     v10->_lastSharedDate = v20;
 
-    v22 = [v7 objectForKeyedSubscript:@"additionalAttributes.allowedForAnalysis"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.allowedForAnalysis"];
     v10->_allowedForAnalysis = [v22 BOOLValue];
 
-    v23 = [v7 objectForKeyedSubscript:@"additionalAttributes.objectSaliencyRectsData"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.objectSaliencyRectsData"];
     objectSaliencyRectsData = v10->_objectSaliencyRectsData;
     v10->_objectSaliencyRectsData = v23;
 
-    v25 = [v7 objectForKeyedSubscript:@"additionalAttributes.syndicationIdentifier"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.syndicationIdentifier"];
     syndicationIdentifier = v10->_syndicationIdentifier;
     v10->_syndicationIdentifier = v25;
 
-    v27 = [v7 objectForKeyedSubscript:@"isDetectedScreenshot"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"isDetectedScreenshot"];
     v10->_isDetectedScreenshot = [v27 BOOLValue];
 
-    v28 = [v7 objectForKeyedSubscript:@"conversation.importSessionID"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"conversation.importSessionID"];
     conversationID = v10->_conversationID;
     v10->_conversationID = v28;
   }

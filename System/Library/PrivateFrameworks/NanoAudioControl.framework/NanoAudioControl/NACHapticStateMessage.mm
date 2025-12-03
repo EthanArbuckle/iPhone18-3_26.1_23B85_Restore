@@ -1,12 +1,12 @@
 @interface NACHapticStateMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NACHapticStateMessage
@@ -17,25 +17,25 @@
   v8.receiver = self;
   v8.super_class = NACHapticStateMessage;
   v4 = [(NACHapticStateMessage *)&v8 description];
-  v5 = [(NACHapticStateMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NACHapticStateMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_state];
-    [v3 setObject:v4 forKey:@"state"];
+    [dictionary setObject:v4 forKey:@"state"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -44,18 +44,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_state;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_state;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_state;
@@ -65,18 +65,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_state == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_state == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -104,11 +104,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_state = *(a3 + 2);
+    self->_state = *(from + 2);
     *&self->_has |= 1u;
   }
 }

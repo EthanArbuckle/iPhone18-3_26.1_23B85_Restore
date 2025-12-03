@@ -1,19 +1,19 @@
 @interface ATXScoreDict
-+ (id)scoreDictFromDictionary:(id)a3;
++ (id)scoreDictFromDictionary:(id)dictionary;
 - (ATXScoreDict)init;
-- (ATXScoreDict)initWithDefaultValueForKeys:(id)a3;
+- (ATXScoreDict)initWithDefaultValueForKeys:(id)keys;
 - (ATXScoreDict)initWithDefaultValueForScoreTypeKeys;
 - (NSString)description;
-- (double)scoreForKey:(id)a3 found:(BOOL *)a4;
+- (double)scoreForKey:(id)key found:(BOOL *)found;
 - (id)toDictionary;
-- (void)atx_writeToFile:(__sFILE *)a3;
+- (void)atx_writeToFile:(__sFILE *)file;
 - (void)dealloc;
-- (void)setScore:(double)a3 forKey:(id)a4;
+- (void)setScore:(double)score forKey:(id)key;
 @end
 
 @implementation ATXScoreDict
 
-- (void)atx_writeToFile:(__sFILE *)a3
+- (void)atx_writeToFile:(__sFILE *)file
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v5 = [(ATXScoreDict *)self count];
@@ -21,26 +21,26 @@
   bzero(v6, 8 * v5);
   [(ATXScoreDict *)self getKeys:v6 count:v5];
   CFQSortArray();
-  fwrite("{\n", 2uLL, 1uLL, a3);
+  fwrite("{\n", 2uLL, 1uLL, file);
   for (; v5; --v5)
   {
-    printQuotedString(a3, *v6);
-    fwrite(": ", 2uLL, 1uLL, a3);
+    printQuotedString(file, *v6);
+    fwrite(": ", 2uLL, 1uLL, file);
     v7 = MEMORY[0x277CCABB0];
     [(ATXScoreDict *)self scoreForKey:*v6 found:0];
     v8 = [v7 numberWithDouble:?];
-    [v8 atx_writeToFile:a3];
+    [v8 atx_writeToFile:file];
     if (v5 != 1)
     {
-      fputc(44, a3);
+      fputc(44, file);
     }
 
-    fputc(10, a3);
+    fputc(10, file);
 
     ++v6;
   }
 
-  fputc(125, a3);
+  fputc(125, file);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -57,14 +57,14 @@
   return v2;
 }
 
-- (ATXScoreDict)initWithDefaultValueForKeys:(id)a3
+- (ATXScoreDict)initWithDefaultValueForKeys:(id)keys
 {
-  v5 = a3;
+  keysCopy = keys;
   v6 = [(ATXScoreDict *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultKeys, a3);
+    objc_storeStrong(&v6->_defaultKeys, keys);
   }
 
   return v7;
@@ -117,32 +117,32 @@ void __52__ATXScoreDict_initWithDefaultValueForScoreTypeKeys__block_invoke_2(uin
   [(ATXScoreDict *)&v4 dealloc];
 }
 
-- (void)setScore:(double)a3 forKey:(id)a4
+- (void)setScore:(double)score forKey:(id)key
 {
-  v6 = a4;
-  key = v6;
-  if (a3 != -31337.0 || (v7 = [(NSSet *)self->_defaultKeys containsObject:v6, -31337.0], v8 = key, !v7))
+  keyCopy = key;
+  key = keyCopy;
+  if (score != -31337.0 || (v7 = [(NSSet *)self->_defaultKeys containsObject:keyCopy, -31337.0], keyCopy2 = key, !v7))
   {
-    v9 = -0.0;
-    if (a3 != 0.0)
+    scoreCopy = -0.0;
+    if (score != 0.0)
     {
-      v9 = a3;
+      scoreCopy = score;
     }
 
-    CFDictionarySetValue(self->_dict, key, *&v9);
-    v8 = key;
+    CFDictionarySetValue(self->_dict, key, *&scoreCopy);
+    keyCopy2 = key;
   }
 }
 
-- (double)scoreForKey:(id)a3 found:(BOOL *)a4
+- (double)scoreForKey:(id)key found:(BOOL *)found
 {
-  v6 = a3;
-  v7 = COERCE_DOUBLE(CFDictionaryGetValue(self->_dict, v6));
+  keyCopy = key;
+  v7 = COERCE_DOUBLE(CFDictionaryGetValue(self->_dict, keyCopy));
   if (v7 == 0.0)
   {
-    if (a4)
+    if (found)
     {
-      *a4 = [(NSSet *)self->_defaultKeys containsObject:v6];
+      *found = [(NSSet *)self->_defaultKeys containsObject:keyCopy];
     }
 
     v9 = -31337.0;
@@ -150,9 +150,9 @@ void __52__ATXScoreDict_initWithDefaultValueForScoreTypeKeys__block_invoke_2(uin
 
   else
   {
-    if (a4)
+    if (found)
     {
-      *a4 = 1;
+      *found = 1;
     }
 
     if (v7 == 0.0 && v7 < 0.0)
@@ -179,22 +179,22 @@ void __52__ATXScoreDict_initWithDefaultValueForScoreTypeKeys__block_invoke_2(uin
 
 - (NSString)description
 {
-  v2 = [(ATXScoreDict *)self toDictionary];
-  v3 = [v2 description];
+  toDictionary = [(ATXScoreDict *)self toDictionary];
+  v3 = [toDictionary description];
 
   return v3;
 }
 
-+ (id)scoreDictFromDictionary:(id)a3
++ (id)scoreDictFromDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

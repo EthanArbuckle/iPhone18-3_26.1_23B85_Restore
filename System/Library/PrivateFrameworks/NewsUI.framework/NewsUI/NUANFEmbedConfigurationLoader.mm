@@ -1,26 +1,26 @@
 @interface NUANFEmbedConfigurationLoader
-- (NUANFEmbedConfigurationLoader)initWithAppConfigManager:(id)a3 flintResourceManager:(id)a4;
-- (id)asyncLoadEmbedConfigurationOnceWithCompletion:(id)a3;
-- (id)loadEmbededConfigurationWithCompletion:(id)a3;
+- (NUANFEmbedConfigurationLoader)initWithAppConfigManager:(id)manager flintResourceManager:(id)resourceManager;
+- (id)asyncLoadEmbedConfigurationOnceWithCompletion:(id)completion;
+- (id)loadEmbededConfigurationWithCompletion:(id)completion;
 @end
 
 @implementation NUANFEmbedConfigurationLoader
 
-- (NUANFEmbedConfigurationLoader)initWithAppConfigManager:(id)a3 flintResourceManager:(id)a4
+- (NUANFEmbedConfigurationLoader)initWithAppConfigManager:(id)manager flintResourceManager:(id)resourceManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  resourceManagerCopy = resourceManager;
   v18.receiver = self;
   v18.super_class = NUANFEmbedConfigurationLoader;
   v9 = [(NUANFEmbedConfigurationLoader *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appConfigurationManager, a3);
-    objc_storeStrong(&v10->_flintResourceManager, a4);
-    v11 = [v7 possiblyUnfetchedAppConfiguration];
-    v12 = v11;
-    if (!__embedConfiguration || (v13 = __loadedEmbedConfigurationID, [v11 embedConfigurationAssetID], v14 = objc_claimAutoreleasedReturnValue(), v14, v13 != v14))
+    objc_storeStrong(&v9->_appConfigurationManager, manager);
+    objc_storeStrong(&v10->_flintResourceManager, resourceManager);
+    possiblyUnfetchedAppConfiguration = [managerCopy possiblyUnfetchedAppConfiguration];
+    v12 = possiblyUnfetchedAppConfiguration;
+    if (!__embedConfiguration || (v13 = __loadedEmbedConfigurationID, [possiblyUnfetchedAppConfiguration embedConfigurationAssetID], v14 = objc_claimAutoreleasedReturnValue(), v14, v13 != v14))
     {
       v15 = [objc_alloc(MEMORY[0x277D30E30]) initWithTarget:v10 selector:sel_asyncLoadEmbedConfigurationOnceWithCompletion_];
       asyncOnceOperation = v10->_asyncOnceOperation;
@@ -33,22 +33,22 @@
   return v10;
 }
 
-- (id)loadEmbededConfigurationWithCompletion:(id)a3
+- (id)loadEmbededConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NUANFEmbedConfigurationLoader *)self asyncOnceOperation];
+  completionCopy = completion;
+  asyncOnceOperation = [(NUANFEmbedConfigurationLoader *)self asyncOnceOperation];
 
-  if (v5)
+  if (asyncOnceOperation)
   {
-    v6 = [(NUANFEmbedConfigurationLoader *)self asyncOnceOperation];
-    v7 = [v6 executeWithCompletionHandler:v4];
+    asyncOnceOperation2 = [(NUANFEmbedConfigurationLoader *)self asyncOnceOperation];
+    v7 = [asyncOnceOperation2 executeWithCompletionHandler:completionCopy];
   }
 
   else
   {
     if (__embedConfiguration)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
 
     v7 = 0;
@@ -57,13 +57,13 @@
   return v7;
 }
 
-- (id)asyncLoadEmbedConfigurationOnceWithCompletion:(id)a3
+- (id)asyncLoadEmbedConfigurationOnceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [NUEmbedConfigurationOperation alloc];
-  v6 = [(NUANFEmbedConfigurationLoader *)self appConfigurationManager];
-  v7 = [(NUANFEmbedConfigurationLoader *)self flintResourceManager];
-  v8 = [(NUEmbedConfigurationOperation *)v5 initWithAppConfigManager:v6 flintResourceManager:v7];
+  appConfigurationManager = [(NUANFEmbedConfigurationLoader *)self appConfigurationManager];
+  flintResourceManager = [(NUANFEmbedConfigurationLoader *)self flintResourceManager];
+  v8 = [(NUEmbedConfigurationOperation *)v5 initWithAppConfigManager:appConfigurationManager flintResourceManager:flintResourceManager];
 
   [(FCOperation *)v8 setQualityOfService:25];
   [(FCOperation *)v8 setRelativePriority:1];
@@ -71,11 +71,11 @@
   v12[1] = 3221225472;
   v12[2] = __79__NUANFEmbedConfigurationLoader_asyncLoadEmbedConfigurationOnceWithCompletion___block_invoke;
   v12[3] = &unk_2799A3FF0;
-  v13 = v4;
-  v9 = v4;
+  v13 = completionCopy;
+  v9 = completionCopy;
   [(NUEmbedConfigurationOperation *)v8 setCompletion:v12];
-  v10 = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
-  [v10 addOperation:v8];
+  fc_sharedConcurrentQueue = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
+  [fc_sharedConcurrentQueue addOperation:v8];
 
   return v8;
 }

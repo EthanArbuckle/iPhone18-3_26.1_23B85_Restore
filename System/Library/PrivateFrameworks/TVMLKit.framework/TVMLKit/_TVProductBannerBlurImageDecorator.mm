@@ -1,42 +1,42 @@
 @interface _TVProductBannerBlurImageDecorator
-- (id)blurImageWithImage:(id)a3 targetSize:(CGSize)a4 scaleSize:(CGSize)a5;
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5;
-- (id)resizeImage:(CGImage *)a3 targetSize:(CGSize)a4 shouldDither:(BOOL)a5;
+- (id)blurImageWithImage:(id)image targetSize:(CGSize)size scaleSize:(CGSize)scaleSize;
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit;
+- (id)resizeImage:(CGImage *)image targetSize:(CGSize)size shouldDither:(BOOL)dither;
 @end
 
 @implementation _TVProductBannerBlurImageDecorator
 
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit
 {
   v6 = MEMORY[0x277D759A0];
-  v7 = a3;
-  v8 = [v6 mainScreen];
-  [v8 bounds];
+  decorateCopy = decorate;
+  mainScreen = [v6 mainScreen];
+  [mainScreen bounds];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 CGImage];
-  Width = CGImageGetWidth(v13);
-  v15 = [(_TVProductBannerBlurImageDecorator *)self blurImageWithImage:v7 targetSize:v10 scaleSize:v12, 2800.0, dbl_26CE87C00[Width / CGImageGetHeight(v13) > 0.99]];
+  cGImage = [decorateCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  v15 = [(_TVProductBannerBlurImageDecorator *)self blurImageWithImage:decorateCopy targetSize:v10 scaleSize:v12, 2800.0, dbl_26CE87C00[Width / CGImageGetHeight(cGImage) > 0.99]];
 
   return v15;
 }
 
-- (id)blurImageWithImage:(id)a3 targetSize:(CGSize)a4 scaleSize:(CGSize)a5
+- (id)blurImageWithImage:(id)image targetSize:(CGSize)size scaleSize:(CGSize)scaleSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v11 = a3;
-  v12 = [a3 CGImage];
-  v13 = CGImageGetWidth(v12);
-  v14 = CGImageGetHeight(v12);
+  height = scaleSize.height;
+  width = scaleSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  imageCopy = image;
+  cGImage = [image CGImage];
+  v13 = CGImageGetWidth(cGImage);
+  v14 = CGImageGetHeight(cGImage);
   v27.size.width = v8 / width * v13;
   v27.size.height = v7 / height * v14;
   v27.origin.x = (v13 - v27.size.width) * 0.5;
   v27.origin.y = (v14 - v27.size.height) * 0.5;
-  v15 = CGImageCreateWithImageInRect(v12, v27);
+  v15 = CGImageCreateWithImageInRect(cGImage, v27);
   v16 = [(_TVProductBannerBlurImageDecorator *)self resizeImage:v15 targetSize:0 shouldDither:v8, v7];
   if (v15)
   {
@@ -89,9 +89,9 @@
   return v20;
 }
 
-- (id)resizeImage:(CGImage *)a3 targetSize:(CGSize)a4 shouldDither:(BOOL)a5
+- (id)resizeImage:(CGImage *)image targetSize:(CGSize)size shouldDither:(BOOL)dither
 {
-  if (a3 && (v5 = a5, v7 = a4.width, v8 = a4.height, DeviceRGB = CGColorSpaceCreateDeviceRGB(), v10 = CGBitmapContextCreate(0, v7, v8, 8uLL, 0, DeviceRGB, 0x2006u), CFRelease(DeviceRGB), v10))
+  if (image && (v5 = dither, v7 = size.width, v8 = size.height, DeviceRGB = CGColorSpaceCreateDeviceRGB(), v10 = CGBitmapContextCreate(0, v7, v8, 8uLL, 0, DeviceRGB, 0x2006u), CFRelease(DeviceRGB), v10))
   {
     CGContextSetBlendMode(v10, kCGBlendModeCopy);
     ClipBoundingBox = CGContextGetClipBoundingBox(v10);
@@ -99,14 +99,14 @@
     y = ClipBoundingBox.origin.y;
     width = ClipBoundingBox.size.width;
     height = ClipBoundingBox.size.height;
-    CGContextDrawImage(v10, ClipBoundingBox, a3);
+    CGContextDrawImage(v10, ClipBoundingBox, image);
     if (v5)
     {
       v15 = _TVNoiseImageOfSize(1, width, height);
-      v16 = [v15 CGImage];
-      if (v16)
+      cGImage = [v15 CGImage];
+      if (cGImage)
       {
-        v17 = v16;
+        v17 = cGImage;
         CGContextSetBlendMode(v10, kCGBlendModeNormal);
         CGContextSetAlpha(v10, 0.03);
         v24.origin.x = x;

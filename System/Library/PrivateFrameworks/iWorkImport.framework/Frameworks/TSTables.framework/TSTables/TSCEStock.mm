@@ -1,27 +1,27 @@
 @interface TSCEStock
-+ (id)stockFromArchive:(const void *)a3;
-+ (id)stockWithAttributes:(id)a3;
++ (id)stockFromArchive:(const void *)archive;
++ (id)stockWithAttributes:(id)attributes;
 - (BOOL)up;
 - (NSString)dateString;
 - (TSCEStock)init;
-- (TSCEStock)initWithAttributes:(id)a3;
-- (TSCEStock)initWithSymbol:(id)a3;
-- (id)abbreviatedNumberForAttribute:(int64_t)a3 atLocale:(id)a4;
-- (id)initFromArchive:(const void *)a3;
-- (id)valueForAttribute:(int64_t)a3;
-- (id)valueForAttribute:(int64_t)a3 forLocale:(id)a4;
-- (void)encodeToArchive:(void *)a3;
-- (void)p_populateAttributesFromArray:(id)a3;
-- (void)p_setFormattedAttr:(int64_t)a3 fromArray:(id)a4;
+- (TSCEStock)initWithAttributes:(id)attributes;
+- (TSCEStock)initWithSymbol:(id)symbol;
+- (id)abbreviatedNumberForAttribute:(int64_t)attribute atLocale:(id)locale;
+- (id)initFromArchive:(const void *)archive;
+- (id)valueForAttribute:(int64_t)attribute;
+- (id)valueForAttribute:(int64_t)attribute forLocale:(id)locale;
+- (void)encodeToArchive:(void *)archive;
+- (void)p_populateAttributesFromArray:(id)array;
+- (void)p_setFormattedAttr:(int64_t)attr fromArray:(id)array;
 @end
 
 @implementation TSCEStock
 
-+ (id)stockWithAttributes:(id)a3
++ (id)stockWithAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initWithAttributes_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithAttributes_(v4, v5, attributesCopy, v6, v7);
 
   return v8;
 }
@@ -42,15 +42,15 @@
   objc_exception_throw(v21);
 }
 
-- (TSCEStock)initWithSymbol:(id)a3
+- (TSCEStock)initWithSymbol:(id)symbol
 {
-  v4 = a3;
+  symbolCopy = symbol;
   v16.receiver = self;
   v16.super_class = TSCEStock;
   v9 = [(TSCEStock *)&v16 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(symbolCopy, v5, v6, v7, v8);
     symbol = v9->_symbol;
     v9->_symbol = v10;
 
@@ -65,22 +65,22 @@
   return v9;
 }
 
-- (TSCEStock)initWithAttributes:(id)a3
+- (TSCEStock)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v8 = objc_msgSend_initWithSymbol_(self, v5, 0, v6, v7);
   v12 = v8;
   if (v8)
   {
-    objc_msgSend_p_populateAttributesFromArray_(v8, v9, v4, v10, v11);
+    objc_msgSend_p_populateAttributesFromArray_(v8, v9, attributesCopy, v10, v11);
   }
 
   return v12;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL, v3, v4);
+  v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL, v3, v4);
   if (!v10)
   {
     v11 = MEMORY[0x277D81150];
@@ -94,15 +94,15 @@
   v26 = objc_msgSend_initWithSymbol_(self, v7, v10, v8, v9);
   if (v26)
   {
-    if ((*(a3 + 16) & 2) != 0)
+    if ((*(archive + 16) & 2) != 0)
     {
-      v27 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v22, v23, v24, v25, *(a3 + 7));
+      v27 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v22, v23, v24, v25, *(archive + 7));
       v32 = objc_msgSend_copy(v27, v28, v29, v30, v31);
       v33 = *(v26 + 16);
       *(v26 + 16) = v32;
     }
 
-    v34 = *(a3 + 5);
+    v34 = *(archive + 5);
     if (v34)
     {
       v35 = v34 + 8;
@@ -113,7 +113,7 @@
       v35 = 0;
     }
 
-    v36 = *(a3 + 8);
+    v36 = *(archive + 8);
     if (v36)
     {
       v37 = 8 * v36;
@@ -134,29 +134,29 @@
   return v26;
 }
 
-+ (id)stockFromArchive:(const void *)a3
++ (id)stockFromArchive:(const void *)archive
 {
   v4 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initFromArchive_(v4, v5, a3, v6, v7);
+  v8 = objc_msgSend_initFromArchive_(v4, v5, archive, v6, v7);
 
   return v8;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   symbol = self->_symbol;
   if (symbol || (v8 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStock encodeToArchive:]", v3, v4), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStock.mm", v11, v12), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 110, 0, "invalid nil value for '%{public}s'", "_symbol"), v13, v9, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18), (symbol = self->_symbol) != 0))
   {
-    v19 = objc_msgSend_tsp_protobufString(symbol, a2, a3, v3, v4);
-    *(a3 + 4) |= 1u;
+    v19 = objc_msgSend_tsp_protobufString(symbol, a2, archive, v3, v4);
+    *(archive + 4) |= 1u;
     sub_22108CCD0(__p, v19);
     google::protobuf::internal::ArenaStringPtr::Set();
   }
 
   else
   {
-    v39 = objc_msgSend_tsp_protobufString(@"NULL", a2, a3, v3, v4);
-    *(a3 + 4) |= 1u;
+    v39 = objc_msgSend_tsp_protobufString(@"NULL", a2, archive, v3, v4);
+    *(archive + 4) |= 1u;
     sub_22108CCD0(__p, v39);
     google::protobuf::internal::ArenaStringPtr::Set();
   }
@@ -170,8 +170,8 @@
   if (date)
   {
     objc_msgSend_timeIntervalSinceReferenceDate(date, v20, v21, v22, v23);
-    *(a3 + 4) |= 2u;
-    *(a3 + 7) = v25;
+    *(archive + 4) |= 2u;
+    *(archive + 7) = v25;
   }
 
   for (i = 1; i != 28; ++i)
@@ -182,34 +182,34 @@
       goto LABEL_19;
     }
 
-    v32 = *(a3 + 5);
+    v32 = *(archive + 5);
     if (!v32)
     {
       goto LABEL_15;
     }
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
     v34 = *v32;
     if (v33 < *v32)
     {
-      *(a3 + 8) = v33 + 1;
+      *(archive + 8) = v33 + 1;
       v35 = *&v32[2 * v33 + 2];
       goto LABEL_17;
     }
 
-    if (v34 == *(a3 + 9))
+    if (v34 == *(archive + 9))
     {
 LABEL_15:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-      v32 = *(a3 + 5);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+      v32 = *(archive + 5);
       v34 = *v32;
     }
 
     *v32 = v34 + 1;
-    v35 = google::protobuf::Arena::CreateMaybeMessage<TSCE::StockArchive_AttributeEntry>(*(a3 + 3));
-    v36 = *(a3 + 8);
-    v37 = *(a3 + 5) + 8 * v36;
-    *(a3 + 8) = v36 + 1;
+    v35 = google::protobuf::Arena::CreateMaybeMessage<TSCE::StockArchive_AttributeEntry>(*(archive + 3));
+    v36 = *(archive + 8);
+    v37 = *(archive + 5) + 8 * v36;
+    *(archive + 8) = v36 + 1;
     *(v37 + 8) = v35;
 LABEL_17:
     *(v35 + 16) |= 2u;
@@ -227,9 +227,9 @@ LABEL_19:
   }
 }
 
-- (id)valueForAttribute:(int64_t)a3
+- (id)valueForAttribute:(int64_t)attribute
 {
-  if (!a3)
+  if (!attribute)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStock valueForAttribute:]", v3, v4);
@@ -241,7 +241,7 @@ LABEL_19:
 
   objc_opt_class();
   v22 = objc_msgSend_attributes(self, v18, v19, v20, v21);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(v22, v23, a3, v24, v25);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(v22, v23, attribute, v24, v25);
   v27 = TSUDynamicCast();
 
   if (!v27)
@@ -252,10 +252,10 @@ LABEL_19:
   return v27;
 }
 
-- (id)valueForAttribute:(int64_t)a3 forLocale:(id)a4
+- (id)valueForAttribute:(int64_t)attribute forLocale:(id)locale
 {
-  v9 = a4;
-  if (!a3)
+  localeCopy = locale;
+  if (!attribute)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCEStock valueForAttribute:forLocale:]", v7, v8);
@@ -265,10 +265,10 @@ LABEL_19:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  v25 = objc_msgSend_valueForAttribute_(self, v6, a3, v7, v8);
+  v25 = objc_msgSend_valueForAttribute_(self, v6, attribute, v7, v8);
   if (v25)
   {
-    v26 = objc_msgSend_localeIdentifier(v9, v21, v22, v23, v24);
+    v26 = objc_msgSend_localeIdentifier(localeCopy, v21, v22, v23, v24);
     v31 = objc_msgSend_nativeLocaleIdentifier(TSCEStock, v27, v28, v29, v30);
     if ((objc_msgSend_isEqualToString_(v26, v32, v31, v33, v34) & 1) == 0)
     {
@@ -296,7 +296,7 @@ LABEL_19:
         v74 = objc_alloc(MEMORY[0x277D806A0]);
         v76 = objc_msgSend_initWithFormatType_decimalPlaces_negativeStyle_showSeparator_(v74, v75, 256, 2, 0, 1);
         objc_msgSend_doubleValue(v73, v77, v78, v79, v80);
-        v84 = objc_msgSend_stringFromDouble_locale_(v76, v81, v9, v82, v83);
+        v84 = objc_msgSend_stringFromDouble_locale_(v76, v81, localeCopy, v82, v83);
 
         v25 = v84;
       }
@@ -340,15 +340,15 @@ LABEL_10:
   return v13;
 }
 
-- (void)p_setFormattedAttr:(int64_t)a3 fromArray:(id)a4
+- (void)p_setFormattedAttr:(int64_t)attr fromArray:(id)array
 {
-  v32 = a4;
+  arrayCopy = array;
   objc_opt_class();
-  v9 = objc_msgSend_objectAtIndexedSubscript_(v32, v6, a3, v7, v8);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v6, attr, v7, v8);
   v10 = TSUDynamicCast();
 
   v11 = @"—";
-  v16 = sub_221219970(a3);
+  v16 = sub_221219970(attr);
   if ((v16 - 2) >= 4)
   {
     if (!v10)
@@ -371,7 +371,7 @@ LABEL_10:
     v22 = v21;
     if (v16 == 2)
     {
-      v23 = objc_msgSend_objectAtIndexedSubscript_(v32, v18, 8, v19, v20);
+      v23 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v18, 8, v19, v20);
       isEqualToString = objc_msgSend_isEqualToString_(v23, v24, @"GBp", v25, v26);
 
       if (isEqualToString)
@@ -386,14 +386,14 @@ LABEL_10:
   v11 = v28;
 LABEL_10:
   v29 = objc_msgSend_attributes(self, v12, v13, v14, v15);
-  objc_msgSend_setObject_atIndexedSubscript_(v29, v30, v11, a3, v31);
+  objc_msgSend_setObject_atIndexedSubscript_(v29, v30, v11, attr, v31);
 }
 
-- (id)abbreviatedNumberForAttribute:(int64_t)a3 atLocale:(id)a4
+- (id)abbreviatedNumberForAttribute:(int64_t)attribute atLocale:(id)locale
 {
-  v6 = a4;
+  localeCopy = locale;
   v11 = objc_msgSend_usEnglishLocale(MEMORY[0x277D81228], v7, v8, v9, v10);
-  v15 = objc_msgSend_valueForAttribute_(self, v12, a3, v13, v14);
+  v15 = objc_msgSend_valueForAttribute_(self, v12, attribute, v13, v14);
   v16 = MEMORY[0x277CCA900];
   v21 = objc_msgSend_groupingSeparator(v11, v17, v18, v19, v20);
   v25 = objc_msgSend_characterSetWithCharactersInString_(v16, v22, v21, v23, v24);
@@ -452,7 +452,7 @@ LABEL_10:
 LABEL_11:
     v57 = objc_alloc(MEMORY[0x277D806A0]);
     v59 = objc_msgSend_initWithFormatType_decimalPlaces_negativeStyle_showSeparator_(v57, v58, 256, 2, 4, 1);
-    v63 = objc_msgSend_stringFromDouble_locale_(v59, v60, v6, v61, v62, v49);
+    v63 = objc_msgSend_stringFromDouble_locale_(v59, v60, localeCopy, v61, v62, v49);
     v67 = objc_msgSend_localizedStringWithFormat_(MEMORY[0x277CCACA8], v64, @"%@%@", v65, v66, v63, v56);
 
     v34 = v67;
@@ -461,10 +461,10 @@ LABEL_11:
   return v34;
 }
 
-- (void)p_populateAttributesFromArray:(id)a3
+- (void)p_populateAttributesFromArray:(id)array
 {
-  v166 = a3;
-  v7 = objc_msgSend_objectAtIndexedSubscript_(v166, v4, 26, v5, v6);
+  arrayCopy = array;
+  v7 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v4, 26, v5, v6);
   objc_msgSend_setSymbol_(self, v8, v7, v9, v10);
 
   v15 = objc_msgSend_symbol(self, v11, v12, v13, v14);
@@ -488,54 +488,54 @@ LABEL_11:
   v45 = objc_msgSend_timeZoneForSecondsFromGMT_(MEMORY[0x277CBEBB0], v42, 0, v43, v44);
   objc_msgSend_setTimeZone_(v30, v46, v45, v47, v48);
 
-  v52 = objc_msgSend_objectAtIndexedSubscript_(v166, v49, 27, v50, v51);
+  v52 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v49, 27, v50, v51);
   v56 = objc_msgSend_dateFromString_(v30, v53, v52, v54, v55);
   objc_msgSend_setDate_(self, v57, v56, v58, v59);
 
   v64 = objc_msgSend_attributes(self, v60, v61, v62, v63);
   objc_msgSend_clear(v64, v65, v66, v67, v68);
 
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v69, 1, v166, v70);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v71, 2, v166, v72);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v73, 3, v166, v74);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v75, 4, v166, v76);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v77, 5, v166, v78);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v79, 6, v166, v80);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v81, 7, v166, v82);
-  v86 = objc_msgSend_objectAtIndexedSubscript_(v166, v83, 8, v84, v85);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v69, 1, arrayCopy, v70);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v71, 2, arrayCopy, v72);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v73, 3, arrayCopy, v74);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v75, 4, arrayCopy, v76);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v77, 5, arrayCopy, v78);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v79, 6, arrayCopy, v80);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v81, 7, arrayCopy, v82);
+  v86 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v83, 8, v84, v85);
   v87 = objc_alloc(MEMORY[0x277CBEAF8]);
   v91 = objc_msgSend_initWithLocaleIdentifier_(v87, v88, @"en_US_POSIX", v89, v90);
   v95 = objc_msgSend_uppercaseStringWithLocale_(v86, v92, v91, v93, v94);
   v100 = objc_msgSend_attributes(self, v96, v97, v98, v99);
   objc_msgSend_setObject_atIndexedSubscript_(v100, v101, v95, 8, v102);
 
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v103, 9, v166, v104);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v105, 10, v166, v106);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v107, 11, v166, v108);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v109, 12, v166, v110);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v111, 13, v166, v112);
-  v116 = objc_msgSend_objectAtIndexedSubscript_(v166, v113, 14, v114, v115);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v103, 9, arrayCopy, v104);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v105, 10, arrayCopy, v106);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v107, 11, arrayCopy, v108);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v109, 12, arrayCopy, v110);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v111, 13, arrayCopy, v112);
+  v116 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v113, 14, v114, v115);
   v121 = objc_msgSend_attributes(self, v117, v118, v119, v120);
   objc_msgSend_setObject_atIndexedSubscript_(v121, v122, v116, 14, v123);
 
-  v127 = objc_msgSend_objectAtIndexedSubscript_(v166, v124, 26, v125, v126);
+  v127 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v124, 26, v125, v126);
   v132 = objc_msgSend_attributes(self, v128, v129, v130, v131);
   objc_msgSend_setObject_atIndexedSubscript_(v132, v133, v127, 26, v134);
 
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v135, 15, v166, v136);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v137, 16, v166, v138);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v139, 17, v166, v140);
-  v144 = objc_msgSend_objectAtIndexedSubscript_(v166, v141, 18, v142, v143);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v135, 15, arrayCopy, v136);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v137, 16, arrayCopy, v138);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v139, 17, arrayCopy, v140);
+  v144 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v141, 18, v142, v143);
   v149 = objc_msgSend_attributes(self, v145, v146, v147, v148);
   objc_msgSend_setObject_atIndexedSubscript_(v149, v150, v144, 18, v151);
 
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v152, 19, v166, v153);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v154, 20, v166, v155);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v156, 21, v166, v157);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v158, 22, v166, v159);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v160, 23, v166, v161);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v162, 24, v166, v163);
-  objc_msgSend_p_setFormattedAttr_fromArray_(self, v164, 25, v166, v165);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v152, 19, arrayCopy, v153);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v154, 20, arrayCopy, v155);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v156, 21, arrayCopy, v157);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v158, 22, arrayCopy, v159);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v160, 23, arrayCopy, v161);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v162, 24, arrayCopy, v163);
+  objc_msgSend_p_setFormattedAttr_fromArray_(self, v164, 25, arrayCopy, v165);
 }
 
 @end

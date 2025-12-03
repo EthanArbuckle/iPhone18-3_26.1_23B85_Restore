@@ -1,20 +1,20 @@
 @interface AMSUICGRectHelper
-+ (CGRect)flattenRect:(CGRect)result toParentFrame:(CGRect)a4;
-+ (CGRect)rect:(CGRect)a3 withFlippedOriginXRelativeTo:(CGRect)a4;
++ (CGRect)flattenRect:(CGRect)result toParentFrame:(CGRect)frame;
++ (CGRect)rect:(CGRect)rect withFlippedOriginXRelativeTo:(CGRect)to;
 @end
 
 @implementation AMSUICGRectHelper
 
-+ (CGRect)rect:(CGRect)a3 withFlippedOriginXRelativeTo:(CGRect)a4
++ (CGRect)rect:(CGRect)rect withFlippedOriginXRelativeTo:(CGRect)to
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  rect = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  rect = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
   memset(&v16, 0, sizeof(v16));
   CGAffineTransformMakeScale(&v16, -1.0, 1.0);
   memset(&v15, 0, sizeof(v15));
@@ -38,10 +38,10 @@
   return CGRectApplyAffineTransform(v19, &v14);
 }
 
-+ (CGRect)flattenRect:(CGRect)result toParentFrame:(CGRect)a4
++ (CGRect)flattenRect:(CGRect)result toParentFrame:(CGRect)frame
 {
-  v4 = result.origin.x + a4.origin.x;
-  v5 = result.origin.y + a4.origin.y;
+  v4 = result.origin.x + frame.origin.x;
+  v5 = result.origin.y + frame.origin.y;
   result.origin.y = v5;
   result.origin.x = v4;
   return result;

@@ -1,18 +1,18 @@
 @interface SBKLoadDomainVersionRequestHandler
-- (void)runWithCompletionHandler:(id)a3;
+- (void)runWithCompletionHandler:(id)handler;
 @end
 
 @implementation SBKLoadDomainVersionRequestHandler
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
-  v5 = [(SBKLoadDomainVersionRequestHandler *)self loadsRemoteItemCount];
+  v4 = [handler copy];
+  loadsRemoteItemCount = [(SBKLoadDomainVersionRequestHandler *)self loadsRemoteItemCount];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SBKLoadDomainVersionRequestHandler_runWithCompletionHandler___block_invoke;
   v8[3] = &unk_279D23128;
-  if (v5)
+  if (loadsRemoteItemCount)
   {
     v6 = @"0";
   }

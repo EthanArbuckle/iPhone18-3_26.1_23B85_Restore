@@ -1,27 +1,27 @@
 @interface PLSocialGroupPayloadAdapter
 - (BOOL)isValidForJournalPersistence;
-- (PLSocialGroupPayloadAdapter)initWithManagedObject:(id)a3;
-- (id)payloadForChangedKeys:(id)a3;
+- (PLSocialGroupPayloadAdapter)initWithManagedObject:(id)object;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 @end
 
 @implementation PLSocialGroupPayloadAdapter
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLSocialGroupPayloadAdapter *)self isValidForJournalPersistence])
   {
-    if (v4)
+    if (keysCopy)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v6 = +[(PLGraphNodeContainer *)PLSocialGroup];
@@ -33,7 +33,7 @@
       v18 = v5;
       v7 = v5;
       v8 = v6;
-      [v4 enumerateObjectsUsingBlock:&v13];
+      [keysCopy enumerateObjectsUsingBlock:&v13];
       v9 = [PLSocialGroupJournalEntryPayload alloc];
       if ([v7 count])
       {
@@ -82,34 +82,34 @@ uint64_t __53__PLSocialGroupPayloadAdapter_payloadForChangedKeys___block_invoke(
 
 - (id)payloadID
 {
-  v2 = [(PLSocialGroupPayloadAdapter *)self nodeContainer];
-  v3 = [v2 uuid];
-  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
+  nodeContainer = [(PLSocialGroupPayloadAdapter *)self nodeContainer];
+  uuid = [nodeContainer uuid];
+  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v4;
 }
 
 - (BOOL)isValidForJournalPersistence
 {
-  v3 = [(PLJournalEntryPayloadUpdateAdapter *)self managedObject];
-  v4 = [v3 primaryLabelCode];
+  managedObject = [(PLJournalEntryPayloadUpdateAdapter *)self managedObject];
+  primaryLabelCode = [managedObject primaryLabelCode];
 
-  return v4 == 1000 && (([(PLGraphNodeContainer *)self->_nodeContainer socialGroupVerifiedType]+ 1) & 0xFFFD) == 0;
+  return primaryLabelCode == 1000 && (([(PLGraphNodeContainer *)self->_nodeContainer socialGroupVerifiedType]+ 1) & 0xFFFD) == 0;
 }
 
-- (PLSocialGroupPayloadAdapter)initWithManagedObject:(id)a3
+- (PLSocialGroupPayloadAdapter)initWithManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = PLSocialGroupPayloadAdapter;
-  v5 = [(PLJournalEntryPayloadUpdateAdapter *)&v11 initWithManagedObject:v4];
+  v5 = [(PLJournalEntryPayloadUpdateAdapter *)&v11 initWithManagedObject:objectCopy];
   if (v5)
   {
-    v6 = v4;
-    v7 = [v6 nodeContainerClass];
-    if (v7)
+    v6 = objectCopy;
+    nodeContainerClass = [v6 nodeContainerClass];
+    if (nodeContainerClass)
     {
-      v8 = [PLGraphNodeContainer newNodeContainerWithNode:v6 containerClass:v7];
+      v8 = [PLGraphNodeContainer newNodeContainerWithNode:v6 containerClass:nodeContainerClass];
       nodeContainer = v5->_nodeContainer;
       v5->_nodeContainer = v8;
     }

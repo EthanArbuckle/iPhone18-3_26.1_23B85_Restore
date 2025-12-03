@@ -1,27 +1,27 @@
 @interface _UISharedTextureContainerView
-- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithCoder:(id)a3;
-- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithCoder:(id)coder;
+- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UISharedTextureContainerView
 
-- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithFrame:(CGRect)a3
+- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for _UISharedTextureContainerView();
   return [(UIView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithCoder:(id)a3
+- (_TtC5UIKitP33_FDF62CE22547DB2BF49759240B89F9C129_UISharedTextureContainerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for _UISharedTextureContainerView();
-  v4 = a3;
-  v5 = [(UIView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UIView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

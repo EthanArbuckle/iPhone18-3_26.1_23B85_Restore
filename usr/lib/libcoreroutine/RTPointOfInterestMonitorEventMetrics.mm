@@ -1,22 +1,22 @@
 @interface RTPointOfInterestMonitorEventMetrics
-- (RTPointOfInterestMonitorEventMetrics)initWithDistanceCalculator:(id)a3;
-- (double)calculateMaximumDistanceFromLocation:(id)a3 toLocations:(id)a4;
-- (double)calculateMinimumDistanceFromLocation:(id)a3 toLocations:(id)a4;
+- (RTPointOfInterestMonitorEventMetrics)initWithDistanceCalculator:(id)calculator;
+- (double)calculateMaximumDistanceFromLocation:(id)location toLocations:(id)locations;
+- (double)calculateMinimumDistanceFromLocation:(id)location toLocations:(id)locations;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)reset;
-- (void)saveBuildingPolygons:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)saveBuildingPolygons:(id)polygons;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)submit;
-- (void)updateBuildingPolygonMetricsForRegionIdentifer:(id)a3;
+- (void)updateBuildingPolygonMetricsForRegionIdentifer:(id)identifer;
 @end
 
 @implementation RTPointOfInterestMonitorEventMetrics
 
-- (RTPointOfInterestMonitorEventMetrics)initWithDistanceCalculator:(id)a3
+- (RTPointOfInterestMonitorEventMetrics)initWithDistanceCalculator:(id)calculator
 {
-  v5 = a3;
-  if (v5)
+  calculatorCopy = calculator;
+  if (calculatorCopy)
   {
     v19.receiver = self;
     v19.super_class = RTPointOfInterestMonitorEventMetrics;
@@ -24,7 +24,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_distanceCalculator, a3);
+      objc_storeStrong(&v6->_distanceCalculator, calculator);
       v8 = objc_opt_new();
       metrics = v7->_metrics;
       v7->_metrics = v8;
@@ -49,7 +49,7 @@
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -61,10 +61,10 @@
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: distanceCalculator", buf, 2u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)reset
@@ -73,11 +73,11 @@
   [(RTPointOfInterestMonitorEventMetrics *)self setArrivalEventDate:0];
   [(RTPointOfInterestMonitorEventMetrics *)self setLocationRequestTimerStartDate:0];
   [(RTPointOfInterestMonitorEventMetrics *)self setHighAccuracyLocationRequestStartDate:0];
-  v3 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
-  [v3 removeAllObjects];
+  buildingPolygons = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
+  [buildingPolygons removeAllObjects];
 
-  v4 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
-  [v4 removeAllObjects];
+  metrics = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  [metrics removeAllObjects];
 
   [(RTPointOfInterestMonitorEventMetrics *)self setObject:&unk_28459C528 forKey:@"arrivalEvent"];
   [(RTPointOfInterestMonitorEventMetrics *)self setObject:&unk_28459C540 forKey:@"nearbyAppClipCount"];
@@ -103,19 +103,19 @@
   [(RTPointOfInterestMonitorEventMetrics *)self setObject:&unk_28459C558 forKey:@"signalEnvironment"];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  objectCopy = object;
+  metrics = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  [metrics setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  metrics = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  v6 = [metrics objectForKey:keyCopy];
 
   return v6;
 }
@@ -124,26 +124,26 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [v3 initWithCString:RTAnalyticsEventPointOfInterestMonitorEvent encoding:1];
-  v5 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
-  log_analytics_submission(v4, v5);
+  metrics = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  log_analytics_submission(v4, metrics);
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v4];
-  v7 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  metrics2 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
   AnalyticsSendEvent();
 
   [(RTPointOfInterestMonitorEventMetrics *)self reset];
 }
 
-- (double)calculateMinimumDistanceFromLocation:(id)a3 toLocations:(id)a4
+- (double)calculateMinimumDistanceFromLocation:(id)location toLocations:(id)locations
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  locationsCopy = locations;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [locationsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -158,13 +158,13 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v13);
-        v16 = [(RTPointOfInterestMonitorEventMetrics *)self distanceCalculator];
+        distanceCalculator = [(RTPointOfInterestMonitorEventMetrics *)self distanceCalculator];
         v21 = v14;
-        [v16 distanceFromLocation:v6 toLocation:v15 error:&v21];
+        [distanceCalculator distanceFromLocation:locationCopy toLocation:v15 error:&v21];
         v18 = v17;
         v10 = v21;
 
@@ -178,7 +178,7 @@
       }
 
       while (v9 != v13);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [locationsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -192,16 +192,16 @@
   return v12;
 }
 
-- (double)calculateMaximumDistanceFromLocation:(id)a3 toLocations:(id)a4
+- (double)calculateMaximumDistanceFromLocation:(id)location toLocations:(id)locations
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  locationsCopy = locations;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [locationsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -216,13 +216,13 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v13);
-        v16 = [(RTPointOfInterestMonitorEventMetrics *)self distanceCalculator];
+        distanceCalculator = [(RTPointOfInterestMonitorEventMetrics *)self distanceCalculator];
         v21 = v14;
-        [v16 distanceFromLocation:v6 toLocation:v15 error:&v21];
+        [distanceCalculator distanceFromLocation:locationCopy toLocation:v15 error:&v21];
         v18 = v17;
         v10 = v21;
 
@@ -236,7 +236,7 @@
       }
 
       while (v9 != v13);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [locationsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -250,14 +250,14 @@
   return v12;
 }
 
-- (void)saveBuildingPolygons:(id)a3
+- (void)saveBuildingPolygons:(id)polygons
 {
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a3;
+  obj = polygons;
   v4 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
@@ -275,16 +275,16 @@
 
         v8 = *(*(&v27 + 1) + 8 * v7);
         v9 = objc_alloc(MEMORY[0x277D01160]);
-        v10 = [v8 centroid];
-        [v10 latitude];
+        centroid = [v8 centroid];
+        [centroid latitude];
         v12 = v11;
-        v13 = [v8 centroid];
-        [v13 longitude];
+        centroid2 = [v8 centroid];
+        [centroid2 longitude];
         v15 = [v9 initWithLatitude:0 longitude:v12 horizontalUncertainty:v14 date:-1.0];
 
         v16 = [_RTMap alloc];
-        v17 = [v8 vertices];
-        v18 = [(_RTMap *)v16 initWithInput:v17];
+        vertices = [v8 vertices];
+        v18 = [(_RTMap *)v16 initWithInput:vertices];
         v19 = [(_RTMap *)v18 withBlock:&__block_literal_global_2];
 
         [(RTPointOfInterestMonitorEventMetrics *)self calculateMaximumDistanceFromLocation:v15 toLocations:v19];
@@ -295,8 +295,8 @@
 
         if (v24)
         {
-          v25 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
-          [v25 addObject:v24];
+          buildingPolygons = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
+          [buildingPolygons addObject:v24];
         }
 
         ++v7;
@@ -325,33 +325,33 @@ id __61__RTPointOfInterestMonitorEventMetrics_saveBuildingPolygons___block_invok
   return v9;
 }
 
-- (void)updateBuildingPolygonMetricsForRegionIdentifer:(id)a3
+- (void)updateBuildingPolygonMetricsForRegionIdentifer:(id)identifer
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 componentsSeparatedByString:@"-"];
+  v4 = [identifer componentsSeparatedByString:@"-"];
   v5 = [v4 objectAtIndex:1];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
-  v8 = [v7 count];
+  buildingPolygons = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
+  v8 = [buildingPolygons count];
 
-  if (v8 > v6)
+  if (v8 > unsignedIntValue)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
-    v11 = [v10 objectAtIndexedSubscript:v6];
-    v12 = [v11 secondObject];
-    [v12 doubleValue];
+    buildingPolygons2 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
+    v11 = [buildingPolygons2 objectAtIndexedSubscript:unsignedIntValue];
+    secondObject = [v11 secondObject];
+    [secondObject doubleValue];
     v14 = [v9 numberWithUnsignedInteger:vcvtad_u64_f64(v13)];
     [(RTPointOfInterestMonitorEventMetrics *)self setObject:v14 forKey:@"buildingPolygonRadius"];
 
-    v15 = [(RTPointOfInterestMonitorEventMetrics *)self arrivalEventLocation];
-    v16 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
-    v17 = [v16 objectAtIndexedSubscript:v6];
-    v18 = [v17 firstObject];
-    v23[0] = v18;
+    arrivalEventLocation = [(RTPointOfInterestMonitorEventMetrics *)self arrivalEventLocation];
+    buildingPolygons3 = [(RTPointOfInterestMonitorEventMetrics *)self buildingPolygons];
+    v17 = [buildingPolygons3 objectAtIndexedSubscript:unsignedIntValue];
+    firstObject = [v17 firstObject];
+    v23[0] = firstObject;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-    [(RTPointOfInterestMonitorEventMetrics *)self calculateMinimumDistanceFromLocation:v15 toLocations:v19];
+    [(RTPointOfInterestMonitorEventMetrics *)self calculateMinimumDistanceFromLocation:arrivalEventLocation toLocations:v19];
     v21 = v20;
 
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:vcvtad_u64_f64(v21)];
@@ -362,11 +362,11 @@ id __61__RTPointOfInterestMonitorEventMetrics_saveBuildingPolygons___block_invok
 - (id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
-  v5 = [v3 stringWithFormat:@"RTPointOfInterestMonitorEventMetrics, %lu, ", objc_msgSend(v4, "count")];
+  metrics = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  v5 = [v3 stringWithFormat:@"RTPointOfInterestMonitorEventMetrics, %lu, ", objc_msgSend(metrics, "count")];
 
-  v6 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
-  v7 = [v6 allKeys];
+  metrics2 = [(RTPointOfInterestMonitorEventMetrics *)self metrics];
+  allKeys = [metrics2 allKeys];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__RTPointOfInterestMonitorEventMetrics_description__block_invoke;
@@ -374,7 +374,7 @@ id __61__RTPointOfInterestMonitorEventMetrics_saveBuildingPolygons___block_invok
   v12[4] = self;
   v8 = v5;
   v13 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [allKeys enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;

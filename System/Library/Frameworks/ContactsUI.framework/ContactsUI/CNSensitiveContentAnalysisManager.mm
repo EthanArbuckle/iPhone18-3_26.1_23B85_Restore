@@ -5,59 +5,59 @@
 - (BOOL)isSensitiveContentAnalysisEnabled;
 - (BOOL)requiresDescriptiveInterventions;
 - (BOOL)shouldShowSensitiveContentUI;
-- (BOOL)shouldShowUIForPosterWithSensitiveContent:(BOOL)a3 forContact:(id)a4;
-- (CNSensitiveContentAnalysisManager)initWithEntitlementVerifier:(id)a3;
+- (BOOL)shouldShowUIForPosterWithSensitiveContent:(BOOL)content forContact:(id)contact;
+- (CNSensitiveContentAnalysisManager)initWithEntitlementVerifier:(id)verifier;
 @end
 
 @implementation CNSensitiveContentAnalysisManager
 
 - (BOOL)requiresDescriptiveInterventions
 {
-  v2 = [(CNSensitiveContentAnalysisManager *)self sensitivityAnalyzer];
-  v3 = [v2 analysisPolicy] == 2;
+  sensitivityAnalyzer = [(CNSensitiveContentAnalysisManager *)self sensitivityAnalyzer];
+  v3 = [sensitivityAnalyzer analysisPolicy] == 2;
 
   return v3;
 }
 
 - (BOOL)isSensitiveContentAnalysisEnabled
 {
-  v2 = [(CNSensitiveContentAnalysisManager *)self sensitivityAnalyzer];
-  v3 = [v2 analysisPolicy] != 0;
+  sensitivityAnalyzer = [(CNSensitiveContentAnalysisManager *)self sensitivityAnalyzer];
+  v3 = [sensitivityAnalyzer analysisPolicy] != 0;
 
   return v3;
 }
 
 - (BOOL)canShowBlockContactUI
 {
-  v2 = [(CNSensitiveContentAnalysisManager *)self entitlementVerifier];
-  v3 = [v2 processHasCommunicationFilterEntitlements];
+  entitlementVerifier = [(CNSensitiveContentAnalysisManager *)self entitlementVerifier];
+  processHasCommunicationFilterEntitlements = [entitlementVerifier processHasCommunicationFilterEntitlements];
 
-  return v3;
+  return processHasCommunicationFilterEntitlements;
 }
 
 - (BOOL)isEntitledForSensitiveContentUI
 {
-  v2 = [(CNSensitiveContentAnalysisManager *)self entitlementVerifier];
-  v3 = [v2 canShowSensitiveContentUI];
+  entitlementVerifier = [(CNSensitiveContentAnalysisManager *)self entitlementVerifier];
+  canShowSensitiveContentUI = [entitlementVerifier canShowSensitiveContentUI];
 
-  return v3;
+  return canShowSensitiveContentUI;
 }
 
 - (BOOL)shouldShowSensitiveContentUI
 {
-  v3 = [(CNSensitiveContentAnalysisManager *)self isEntitledForSensitiveContentUI];
-  if (v3)
+  isEntitledForSensitiveContentUI = [(CNSensitiveContentAnalysisManager *)self isEntitledForSensitiveContentUI];
+  if (isEntitledForSensitiveContentUI)
   {
 
-    LOBYTE(v3) = [(CNSensitiveContentAnalysisManager *)self isSensitiveContentAnalysisEnabled];
+    LOBYTE(isEntitledForSensitiveContentUI) = [(CNSensitiveContentAnalysisManager *)self isSensitiveContentAnalysisEnabled];
   }
 
-  return v3;
+  return isEntitledForSensitiveContentUI;
 }
 
-- (BOOL)shouldShowUIForPosterWithSensitiveContent:(BOOL)a3 forContact:(id)a4
+- (BOOL)shouldShowUIForPosterWithSensitiveContent:(BOOL)content forContact:(id)contact
 {
-  if (!a3 || ([a4 overrideSensitiveContent] & 1) != 0)
+  if (!content || ([contact overrideSensitiveContent] & 1) != 0)
   {
     return 0;
   }
@@ -70,7 +70,7 @@
   return [(CNSensitiveContentAnalysisManager *)self isSensitiveContentAnalysisEnabled];
 }
 
-- (CNSensitiveContentAnalysisManager)initWithEntitlementVerifier:(id)a3
+- (CNSensitiveContentAnalysisManager)initWithEntitlementVerifier:(id)verifier
 {
   v10.receiver = self;
   v10.super_class = CNSensitiveContentAnalysisManager;
@@ -93,7 +93,7 @@
 
 + (id)defaultManager
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = objc_alloc_init(CNSensitiveContentUIEntitlementVerifier);
   v4 = [v2 initWithEntitlementVerifier:v3];
 

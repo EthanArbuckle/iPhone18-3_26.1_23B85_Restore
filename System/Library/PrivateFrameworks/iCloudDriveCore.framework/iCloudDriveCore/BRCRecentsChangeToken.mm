@@ -1,5 +1,5 @@
 @interface BRCRecentsChangeToken
-+ (id)changeTokenFromData:(id)a3;
++ (id)changeTokenFromData:(id)data;
 - (id)toData;
 @end
 
@@ -13,16 +13,16 @@
   return v2;
 }
 
-+ (id)changeTokenFromData:(id)a3
++ (id)changeTokenFromData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
     v10 = 0;
     v11 = 0;
-    if ([v3 length] == 16)
+    if ([dataCopy length] == 16)
     {
       [v4 getBytes:&v10 length:16];
       v5 = objc_opt_new();

@@ -1,15 +1,15 @@
 @interface MUITextEncapsulation
-+ (id)messageListDateTextEncapsulationWithColor:(id)a3;
++ (id)messageListDateTextEncapsulationWithColor:(id)color;
 @end
 
 @implementation MUITextEncapsulation
 
-+ (id)messageListDateTextEncapsulationWithColor:(id)a3
++ (id)messageListDateTextEncapsulationWithColor:(id)color
 {
   v3 = MEMORY[0x277D75078];
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_alloc_init(v3);
-  [v5 setColor:v4];
+  [v5 setColor:colorCopy];
 
   [v5 setScale:0];
   [v5 setStyle:1];

@@ -1,15 +1,15 @@
 @interface RTTransientObject
-- (RTTransientObject)initWithCreationBlock:(id)a3 timeout:(double)a4;
-- (RTTransientObject)initWithCreationBlock:(id)a3 timeout:(double)a4 timerManager:(id)a5;
+- (RTTransientObject)initWithCreationBlock:(id)block timeout:(double)timeout;
+- (RTTransientObject)initWithCreationBlock:(id)block timeout:(double)timeout timerManager:(id)manager;
 - (RTTransientObjectProtocol)transientObjectDelegate;
 - (id)__createBackingObject;
 - (id)backingObject;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)__createTimerAssociatedWithBackingObject;
 - (void)__handleBackingObjectTimerExpired;
 - (void)__invalidateBackingObject;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)touch;
 @end
 
@@ -17,7 +17,7 @@
 
 - (void)touch
 {
-  v2 = [(RTTransientObject *)self backingObject];
+  backingObject = [(RTTransientObject *)self backingObject];
 }
 
 - (id)backingObject
@@ -25,9 +25,9 @@
   backingObject = self->_backingObject;
   if (!backingObject)
   {
-    v4 = [(RTTransientObject *)self __createBackingObject];
+    __createBackingObject = [(RTTransientObject *)self __createBackingObject];
     v5 = self->_backingObject;
-    self->_backingObject = v4;
+    self->_backingObject = __createBackingObject;
 
     backingObject = self->_backingObject;
     if (backingObject)
@@ -100,24 +100,24 @@
   objc_destroyWeak(&location);
 }
 
-- (RTTransientObject)initWithCreationBlock:(id)a3 timeout:(double)a4
+- (RTTransientObject)initWithCreationBlock:(id)block timeout:(double)timeout
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_opt_new();
-  v8 = [(RTTransientObject *)self initWithCreationBlock:v6 timeout:v7 timerManager:a4];
+  v8 = [(RTTransientObject *)self initWithCreationBlock:blockCopy timeout:v7 timerManager:timeout];
 
   return v8;
 }
 
-- (RTTransientObject)initWithCreationBlock:(id)a3 timeout:(double)a4 timerManager:(id)a5
+- (RTTransientObject)initWithCreationBlock:(id)block timeout:(double)timeout timerManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  blockCopy = block;
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (blockCopy)
   {
-    if (v9)
+    if (managerCopy)
     {
       goto LABEL_10;
     }
@@ -150,7 +150,7 @@ LABEL_7:
   }
 
 LABEL_10:
-  if (a4 <= 0.0)
+  if (timeout <= 0.0)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -163,11 +163,11 @@ LABEL_10:
     }
   }
 
-  v14 = 0;
-  if (v8 && a4 > 0.0 && v10)
+  selfCopy = 0;
+  if (blockCopy && timeout > 0.0 && v10)
   {
-    self->_backingObjectExpirationTimeInterval = a4;
-    v15 = _Block_copy(v8);
+    self->_backingObjectExpirationTimeInterval = timeout;
+    v15 = _Block_copy(blockCopy);
     backingObjectCreationBlock = self->_backingObjectCreationBlock;
     self->_backingObjectCreationBlock = v15;
 
@@ -175,12 +175,12 @@ LABEL_10:
     lock = self->_lock;
     self->_lock = v17;
 
-    objc_storeStrong(&self->_timerManager, a5);
+    objc_storeStrong(&self->_timerManager, manager);
     self->_lastForwardedMessageTimeInterval = 0.0;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -191,21 +191,21 @@ LABEL_10:
   [(RTTransientObject *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v15 = *MEMORY[0x277D85DE8];
   lock = self->_lock;
-  v5 = a3;
+  invocationCopy = invocation;
   [(NSRecursiveLock *)lock lock];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(RTTransientObject *)self backingObject];
+      backingObject = [(RTTransientObject *)self backingObject];
       lastForwardedMessageTimeInterval = self->_lastForwardedMessageTimeInterval;
       v11 = 138412546;
-      v12 = v9;
+      v12 = backingObject;
       v13 = 2048;
       v14 = lastForwardedMessageTimeInterval;
       _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "updating last forwarded message time interval for transient object, %@ to %lf", &v11, 0x16u);
@@ -214,17 +214,17 @@ LABEL_10:
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_lastForwardedMessageTimeInterval = v7;
-  v8 = [(RTTransientObject *)self backingObject];
-  [v5 invokeWithTarget:v8];
+  backingObject2 = [(RTTransientObject *)self backingObject];
+  [invocationCopy invokeWithTarget:backingObject2];
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [(RTTransientObject *)self backingObject];
-  v6 = [v5 methodSignatureForSelector:a3];
+  backingObject = [(RTTransientObject *)self backingObject];
+  v6 = [backingObject methodSignatureForSelector:selector];
 
   [(NSRecursiveLock *)self->_lock unlock];
 

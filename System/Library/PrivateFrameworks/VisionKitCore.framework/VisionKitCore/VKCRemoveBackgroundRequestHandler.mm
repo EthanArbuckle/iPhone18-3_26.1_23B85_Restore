@@ -1,10 +1,10 @@
 @interface VKCRemoveBackgroundRequestHandler
-- (BOOL)isValidRequest:(id)a3 error:(id *)a4;
+- (BOOL)isValidRequest:(id)request error:(id *)error;
 - (VKCRemoveBackgroundRequestHandler)init;
-- (void)_didEndForRequest:(uint64_t)a1;
-- (void)_willBeginForRequest:(uint64_t)a1;
-- (void)cancelRequest:(id)a3;
-- (void)performRequest:(id)a3 completion:(id)a4;
+- (void)_didEndForRequest:(uint64_t)request;
+- (void)_willBeginForRequest:(uint64_t)request;
+- (void)cancelRequest:(id)request;
+- (void)performRequest:(id)request completion:(id)completion;
 @end
 
 @implementation VKCRemoveBackgroundRequestHandler
@@ -16,9 +16,9 @@
   v2 = [(VKCRemoveBackgroundRequestHandler *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69AE3E0] service];
+    service = [MEMORY[0x1E69AE3E0] service];
     service = v2->_service;
-    v2->_service = v3;
+    v2->_service = service;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -31,47 +31,47 @@
   return v2;
 }
 
-- (BOOL)isValidRequest:(id)a3 error:(id *)a4
+- (BOOL)isValidRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 photosRequest];
+  requestCopy = request;
+  photosRequest = [requestCopy photosRequest];
 
-  if (v6)
+  if (photosRequest)
   {
     v7 = 1;
   }
 
   else
   {
-    [v5 size];
-    v7 = vk_cgImageRemoveBackgroundIsValidSize(a4, v8, v9);
+    [requestCopy size];
+    v7 = vk_cgImageRemoveBackgroundIsValidSize(error, v8, v9);
   }
 
   return v7;
 }
 
-- (void)performRequest:(id)a3 completion:(id)a4
+- (void)performRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (vk_deviceSupportsRemoveBackground())
   {
     v31 = 0;
-    v8 = [(VKCRemoveBackgroundRequestHandler *)self isValidRequest:v6 error:&v31];
+    v8 = [(VKCRemoveBackgroundRequestHandler *)self isValidRequest:requestCopy error:&v31];
     v9 = v31;
     if (v8)
     {
-      [(VKCRemoveBackgroundRequestHandler *)self _willBeginForRequest:v6];
+      [(VKCRemoveBackgroundRequestHandler *)self _willBeginForRequest:requestCopy];
       v23 = self->_service;
       queue = self->_queue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __63__VKCRemoveBackgroundRequestHandler_performRequest_completion___block_invoke;
       block[3] = &unk_1E7BE6B00;
-      v27 = v6;
-      v28 = self;
+      v27 = requestCopy;
+      selfCopy = self;
       v29 = v23;
-      v30 = v7;
+      v30 = completionCopy;
       v25 = v23;
       dispatch_async(queue, block);
 
@@ -95,7 +95,7 @@
     }
   }
 
-  (*(v7 + 2))(v7, 0, v9);
+  (*(completionCopy + 2))(completionCopy, 0, v9);
 LABEL_8:
 }
 
@@ -228,24 +228,24 @@ void __63__VKCRemoveBackgroundRequestHandler_performRequest_completion___block_i
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   service = self->_service;
-  v4 = [a3 MADRequestID];
+  mADRequestID = [request MADRequestID];
 
-  [(MADService *)service cancelRequestID:v4];
+  [(MADService *)service cancelRequestID:mADRequestID];
 }
 
-- (void)_willBeginForRequest:(uint64_t)a1
+- (void)_willBeginForRequest:(uint64_t)request
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (request)
   {
-    v5 = [v3 maskOnly];
+    maskOnly = [v3 maskOnly];
     v6 = _VKSignpostLog();
     v7 = os_signpost_enabled(v6);
-    if (v5)
+    if (maskOnly)
     {
       if (v7)
       {
@@ -283,16 +283,16 @@ LABEL_11:
   }
 }
 
-- (void)_didEndForRequest:(uint64_t)a1
+- (void)_didEndForRequest:(uint64_t)request
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (request)
   {
-    v5 = [v3 maskOnly];
+    maskOnly = [v3 maskOnly];
     v6 = _VKSignpostLog();
     v7 = os_signpost_enabled(v6);
-    if (v5)
+    if (maskOnly)
     {
       if (v7)
       {

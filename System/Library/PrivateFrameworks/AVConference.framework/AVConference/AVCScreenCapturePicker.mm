@@ -1,16 +1,16 @@
 @interface AVCScreenCapturePicker
-- (AVCScreenCapturePicker)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (AVCScreenCapturePicker)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
 - (void)invalidate;
 - (void)registerBlocksForNotifications;
 - (void)show;
-- (void)showUsingContentStyle:(int64_t)a3;
+- (void)showUsingContentStyle:(int64_t)style;
 @end
 
 @implementation AVCScreenCapturePicker
 
-- (AVCScreenCapturePicker)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (AVCScreenCapturePicker)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
   v46 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -63,7 +63,7 @@ LABEL_11:
         v42 = 2112;
         v43 = v9;
         v44 = 2048;
-        v45 = self;
+        selfCopy = self;
         v12 = " [%s] %s:%d %@(%p) Begin";
         v13 = v16;
         v14 = 48;
@@ -72,7 +72,7 @@ LABEL_11:
     }
   }
 
-  if (!a4)
+  if (!delegate)
   {
     [AVCScreenCapturePicker initWithConfiguration:delegate:delegateQueue:];
     goto LABEL_44;
@@ -88,10 +88,10 @@ LABEL_11:
   }
 
   v18 = v17;
-  if (a5)
+  if (queue)
   {
-    v17->_screenCapturePickerQueue = a5;
-    dispatch_retain(a5);
+    v17->_screenCapturePickerQueue = queue;
+    dispatch_retain(queue);
     if (v18->_screenCapturePickerQueue)
     {
       goto LABEL_16;
@@ -119,12 +119,12 @@ LABEL_16:
     goto LABEL_44;
   }
 
-  if (a3 && [a3 pickerClientAuditToken])
+  if (configuration && [configuration pickerClientAuditToken])
   {
-    v36 = [a3 pickerClientAuditToken];
-    v20 = +[AVCAuditToken serializeAuditTokens:](AVCAuditToken, "serializeAuditTokens:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1]);
+    pickerClientAuditToken = [configuration pickerClientAuditToken];
+    null = +[AVCAuditToken serializeAuditTokens:](AVCAuditToken, "serializeAuditTokens:", [MEMORY[0x1E695DEC8] arrayWithObjects:&pickerClientAuditToken count:1]);
     v34 = @"vcScreenCapturePickerAuditToken";
-    if (v20)
+    if (null)
     {
       goto LABEL_23;
     }
@@ -135,14 +135,14 @@ LABEL_16:
     v34 = @"vcScreenCapturePickerAuditToken";
   }
 
-  v20 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 LABEL_23:
-  v35 = v20;
+  v35 = null;
   v21 = -[AVConferenceXPCClient sendMessageSync:arguments:](v18->_connection, "sendMessageSync:arguments:", "vcScreenCapturePickerInitialize", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1]);
   if (v21 && ![v21 objectForKeyedSubscript:@"ERROR"])
   {
     [(AVCScreenCapturePicker *)v18 registerBlocksForNotifications];
-    objc_storeWeak(&v18->_delegate, a4);
+    objc_storeWeak(&v18->_delegate, delegate);
     v18->_isValid = 1;
     goto LABEL_26;
   }
@@ -202,7 +202,7 @@ LABEL_38:
         v42 = 2112;
         v43 = v22;
         v44 = 2048;
-        v45 = v18;
+        selfCopy = v18;
         v25 = " [%s] %s:%d %@(%p) End";
         v26 = v31;
         v27 = 48;
@@ -250,7 +250,7 @@ LABEL_38:
     v19 = 2112;
     v20 = v3;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v6 = " [%s] %s:%d %@(%p) ";
     v7 = v10;
     v8 = 48;
@@ -480,7 +480,7 @@ uint64_t __30__AVCScreenCapturePicker_show__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)showUsingContentStyle:(int64_t)a3
+- (void)showUsingContentStyle:(int64_t)style
 {
   block[6] = *MEMORY[0x1E69E9840];
   screenCapturePickerQueue = self->_screenCapturePickerQueue;
@@ -489,7 +489,7 @@ uint64_t __30__AVCScreenCapturePicker_show__block_invoke(uint64_t a1)
   block[2] = __48__AVCScreenCapturePicker_showUsingContentStyle___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = style;
   dispatch_async(screenCapturePickerQueue, block);
 }
 

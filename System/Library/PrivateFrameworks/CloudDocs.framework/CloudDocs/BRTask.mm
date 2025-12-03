@@ -1,12 +1,12 @@
 @interface BRTask
-+ (id)sanitizeStringForFilename:(id)a3;
-+ (id)taskWithCommand:(id)a3;
-+ (id)taskWithCommandWithArguments:(id)a3;
++ (id)sanitizeStringForFilename:(id)filename;
++ (id)taskWithCommand:(id)command;
++ (id)taskWithCommandWithArguments:(id)arguments;
 - (BRTask)init;
 - (int)exec;
 - (void)resetRedirect;
-- (void)setCommand:(id)a3;
-- (void)setCommandWithArguments:(id)a3;
+- (void)setCommand:(id)command;
+- (void)setCommandWithArguments:(id)arguments;
 @end
 
 @implementation BRTask
@@ -25,33 +25,33 @@
   return result;
 }
 
-+ (id)taskWithCommand:(id)a3
++ (id)taskWithCommand:(id)command
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v10];
+  commandCopy = command;
+  v6 = [[v4 alloc] initWithFormat:commandCopy arguments:&v10];
 
-  v7 = [a1 taskWithCommandWithArguments:v6];
+  v7 = [self taskWithCommandWithArguments:v6];
 
   return v7;
 }
 
-+ (id)taskWithCommandWithArguments:(id)a3
++ (id)taskWithCommandWithArguments:(id)arguments
 {
-  v3 = a3;
+  argumentsCopy = arguments;
   v4 = objc_alloc_init(BRTask);
-  [(BRTask *)v4 setCommandWithArguments:v3];
+  [(BRTask *)v4 setCommandWithArguments:argumentsCopy];
 
   return v4;
 }
 
-+ (id)sanitizeStringForFilename:(id)a3
++ (id)sanitizeStringForFilename:(id)filename
 {
-  v3 = a3;
-  if (v3)
+  filenameCopy = filename;
+  if (filenameCopy)
   {
-    v4 = v3;
-    v5 = [v3 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+    v4 = filenameCopy;
+    v5 = [filenameCopy stringByReplacingOccurrencesOfString:@"/" withString:@":"];
 
     v6 = [v5 stringByReplacingOccurrencesOfString:@" withString:@"'""];
     v7 = ;
@@ -73,20 +73,20 @@
   return v8;
 }
 
-- (void)setCommand:(id)a3
+- (void)setCommand:(id)command
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  commandCopy = command;
+  v6 = [[v4 alloc] initWithFormat:commandCopy arguments:&v7];
 
   [(BRTask *)self setCommandWithArguments:v6];
 }
 
-- (void)setCommandWithArguments:(id)a3
+- (void)setCommandWithArguments:(id)arguments
 {
-  v19 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (![v19 length])
+  argumentsCopy = arguments;
+  array = [MEMORY[0x1E695DF70] array];
+  if (![argumentsCopy length])
   {
     goto LABEL_22;
   }
@@ -99,13 +99,13 @@
   v10 = 1;
   do
   {
-    v11 = [v19 characterAtIndex:v6];
+    v11 = [argumentsCopy characterAtIndex:v6];
     if (v11 != 39 || (v8 & 1) != 0)
     {
       if ((v11 != 34) | v5 & 1)
       {
         v13 = v11 != 32;
-        v12 = v19;
+        v12 = argumentsCopy;
         if ((v13 | v5 | v8))
         {
           goto LABEL_18;
@@ -114,7 +114,7 @@
 
       else
       {
-        v12 = v19;
+        v12 = argumentsCopy;
         if ((v8 & 1) == 0)
         {
           v5 = 0;
@@ -126,7 +126,7 @@
 
     else
     {
-      v12 = v19;
+      v12 = argumentsCopy;
       if ((v5 & 1) == 0)
       {
         v8 = 0;
@@ -150,9 +150,9 @@ LABEL_18:
         v15 = v16;
       }
 
-      [v4 addObject:v15];
+      [array addObject:v15];
 
-      v12 = v19;
+      v12 = argumentsCopy;
     }
 
     v5 = 0;
@@ -168,27 +168,27 @@ LABEL_19:
   while (v6 < [v12 length]);
   if (v17)
   {
-    v18 = [v19 substringWithRange:{v7, v17}];
-    [v4 addObject:v18];
+    v18 = [argumentsCopy substringWithRange:{v7, v17}];
+    [array addObject:v18];
   }
 
 LABEL_22:
-  [(BRTask *)self setArgv:v4];
+  [(BRTask *)self setArgv:array];
 }
 
 - (int)exec
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = [(BRTask *)self argv];
-  if (![v3 count])
+  argv = [(BRTask *)self argv];
+  if (![argv count])
   {
     [BRTask exec];
   }
 
   if ((os_variant_has_internal_content() & 1) == 0)
   {
-    v4 = [(BRTask *)self argv];
-    v5 = [v4 objectAtIndex:0];
+    argv2 = [(BRTask *)self argv];
+    v5 = [argv2 objectAtIndex:0];
     v6 = [v5 containsString:@"/usr/local/"];
 
     if (v6)
@@ -198,43 +198,43 @@ LABEL_22:
     }
   }
 
-  v8 = [(BRTask *)self argv];
-  v9 = malloc_type_malloc(8 * [v8 count] + 8, 0x10040436913F5uLL);
+  argv3 = [(BRTask *)self argv];
+  v9 = malloc_type_malloc(8 * [argv3 count] + 8, 0x10040436913F5uLL);
 
-  v10 = [(BRTask *)self argv];
-  v11 = [v10 count];
+  argv4 = [(BRTask *)self argv];
+  v11 = [argv4 count];
 
   if (v11)
   {
     v12 = 0;
     do
     {
-      v13 = [(BRTask *)self argv];
-      v14 = [v13 objectAtIndex:v12];
+      argv5 = [(BRTask *)self argv];
+      v14 = [argv5 objectAtIndex:v12];
       v9[v12] = strdup([v14 fileSystemRepresentation]);
 
       ++v12;
-      v15 = [(BRTask *)self argv];
-      v16 = [v15 count];
+      argv6 = [(BRTask *)self argv];
+      v16 = [argv6 count];
     }
 
     while (v12 < v16);
   }
 
-  v17 = [(BRTask *)self argv];
-  v9[[v17 count]] = 0;
+  argv7 = [(BRTask *)self argv];
+  v9[[argv7 count]] = 0;
 
   v18 = malloc_type_malloc(8uLL, 0x80040B8603338uLL);
   v19 = posix_spawn_file_actions_init(v18);
   if (!v19)
   {
-    v34 = [(BRTask *)self redirectStdoutToFileAtPath];
-    v35 = [v34 length];
+    redirectStdoutToFileAtPath = [(BRTask *)self redirectStdoutToFileAtPath];
+    v35 = [redirectStdoutToFileAtPath length];
 
     if (v35)
     {
-      v36 = [(BRTask *)self redirectStdoutToFileAtPath];
-      v7 = posix_spawn_file_actions_addopen(v18, 1, [v36 fileSystemRepresentation], 521, 0x1B6u);
+      redirectStdoutToFileAtPath2 = [(BRTask *)self redirectStdoutToFileAtPath];
+      v7 = posix_spawn_file_actions_addopen(v18, 1, [redirectStdoutToFileAtPath2 fileSystemRepresentation], 521, 0x1B6u);
 
       if (v7)
       {
@@ -256,13 +256,13 @@ LABEL_22:
       }
     }
 
-    v39 = [(BRTask *)self redirectStderrToFileAtPath];
-    v40 = [v39 length];
+    redirectStderrToFileAtPath = [(BRTask *)self redirectStderrToFileAtPath];
+    v40 = [redirectStderrToFileAtPath length];
 
     if (v40)
     {
-      v41 = [(BRTask *)self redirectStderrToFileAtPath];
-      v7 = posix_spawn_file_actions_addopen(v18, 2, [v41 fileSystemRepresentation], 521, 0x1B6u);
+      redirectStderrToFileAtPath2 = [(BRTask *)self redirectStderrToFileAtPath];
+      v7 = posix_spawn_file_actions_addopen(v18, 2, [redirectStderrToFileAtPath2 fileSystemRepresentation], 521, 0x1B6u);
 
       if (v7)
       {
@@ -289,10 +289,10 @@ LABEL_22:
       if ([(BRTask *)self redirectStderrToFileDescriptor]== -1 || (v47 = posix_spawn_file_actions_adddup2(v18, [(BRTask *)self redirectStderrToFileDescriptor], 2)) == 0)
       {
         v69 = 0;
-        v48 = [(BRTask *)self argv];
-        v49 = [v48 objectAtIndex:0];
-        v50 = [v49 fileSystemRepresentation];
-        v7 = posix_spawnp(&v69, v50, v18, 0, v9, *MEMORY[0x1E69E97E8]);
+        argv8 = [(BRTask *)self argv];
+        v49 = [argv8 objectAtIndex:0];
+        fileSystemRepresentation = [v49 fileSystemRepresentation];
+        v7 = posix_spawnp(&v69, fileSystemRepresentation, v18, 0, v9, *MEMORY[0x1E69E97E8]);
 
         if (v7)
         {
@@ -300,8 +300,8 @@ LABEL_22:
           v52 = brc_default_log(1, 0);
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = [(BRTask *)self argv];
-            v54 = [v53 componentsJoinedByString:{@", "}];
+            argv9 = [(BRTask *)self argv];
+            v54 = [argv9 componentsJoinedByString:{@", "}];
             v55 = strerror(v7);
             *buf = 138412802;
             v71 = v54;

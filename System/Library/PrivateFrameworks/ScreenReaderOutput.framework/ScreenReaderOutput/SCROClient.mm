@@ -1,14 +1,14 @@
 @interface SCROClient
-+ (BOOL)isClientTrustedWithPortToken:(id *)a3;
-+ (id)addClientGetIdentifier:(unsigned int *)a3 token:(id *)a4 getPort:(unsigned int *)a5;
++ (BOOL)isClientTrustedWithPortToken:(id *)token;
++ (id)addClientGetIdentifier:(unsigned int *)identifier token:(id *)token getPort:(unsigned int *)port;
 + (void)initialize;
-+ (void)sendCallback:(id)a3;
-- (BOOL)_wantsCallback:(id)a3;
++ (void)sendCallback:(id)callback;
+- (BOOL)_wantsCallback:(id)callback;
 - (SCROClient)init;
 - (id)_dequeueCallbacks;
 - (void)_invalidate;
-- (void)_registerCallbackWithKey:(int)a3;
-- (void)_sendCallback:(id)a3;
+- (void)_registerCallbackWithKey:(int)key;
+- (void)_sendCallback:(id)callback;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _LastIdentifier = 0;
     v2 = objc_alloc_init(MEMORY[0x277CCAAF8]);
@@ -38,19 +38,19 @@
   }
 }
 
-+ (id)addClientGetIdentifier:(unsigned int *)a3 token:(id *)a4 getPort:(unsigned int *)a5
++ (id)addClientGetIdentifier:(unsigned int *)identifier token:(id *)token getPort:(unsigned int *)port
 {
-  v8 = objc_alloc_init(a1);
-  v9 = *&a4->var0[4];
-  *atoken.val = *a4->var0;
+  v8 = objc_alloc_init(self);
+  v9 = *&token->var0[4];
+  *atoken.val = *token->var0;
   *&atoken.val[4] = v9;
   pidp = 0;
   audit_token_to_au32(&atoken, 0, 0, 0, 0, 0, &pidp, 0, 0);
   v8[6] = pidp;
   [_Lock lock];
   v8[4] = ++_LastIdentifier;
-  *a5 = v8[5];
-  *a3 = v8[4];
+  *port = v8[5];
+  *identifier = v8[4];
   v10 = _ClientPortDictionary;
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8[5]];
   [v10 setObject:v8 forKey:v11];
@@ -64,9 +64,9 @@
   return v8;
 }
 
-+ (BOOL)isClientTrustedWithPortToken:(id *)a3
++ (BOOL)isClientTrustedWithPortToken:(id *)token
 {
-  MEMORY[0x28223BE20](a1, a2, a3);
+  MEMORY[0x28223BE20](self, a2, token);
   v4 = v3;
   v22 = *MEMORY[0x277D85DE8];
   v5 = v3[1];
@@ -119,10 +119,10 @@
   return v10;
 }
 
-+ (void)sendCallback:(id)a3
++ (void)sendCallback:(id)callback
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  callbackCopy = callback;
   [_Lock lock];
   if ([_ClientIdentifierDictionary count] <= 0)
   {
@@ -158,11 +158,11 @@
 
         v10 = [v6 objectForKey:*(*(&v16 + 1) + 8 * i)];
         [v10 _lock];
-        if ([v10 _wantsCallback:v3])
+        if ([v10 _wantsCallback:callbackCopy])
         {
-          if ([v3 isAtomic])
+          if ([callbackCopy isAtomic])
           {
-            v11 = [v3 key];
+            v11 = [callbackCopy key];
             if (CFSetContainsValue(Mutable, v11))
             {
               v12 = 0;
@@ -172,7 +172,7 @@
             CFSetSetValue(Mutable, v11);
           }
 
-          [v10 _sendCallback:v3];
+          [v10 _sendCallback:callbackCopy];
         }
 
         else
@@ -282,7 +282,7 @@ LABEL_23:
   }
 }
 
-- (void)_registerCallbackWithKey:(int)a3
+- (void)_registerCallbackWithKey:(int)key
 {
   callbackSet = self->_callbackSet;
   if (!callbackSet)
@@ -291,7 +291,7 @@ LABEL_23:
     self->_callbackSet = callbackSet;
   }
 
-  CFSetSetValue(callbackSet, a3);
+  CFSetSetValue(callbackSet, key);
 }
 
 - (id)_dequeueCallbacks
@@ -308,13 +308,13 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)_wantsCallback:(id)a3
+- (BOOL)_wantsCallback:(id)callback
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  callbackCopy = callback;
+  v5 = callbackCopy;
   callbackSet = self->_callbackSet;
-  if (callbackSet && CFSetContainsValue(callbackSet, [v4 key]))
+  if (callbackSet && CFSetContainsValue(callbackSet, [callbackCopy key]))
   {
     queue = self->_queue;
     if (!queue || CFArrayGetCount(queue) < 51)
@@ -342,19 +342,19 @@ LABEL_10:
   return v10;
 }
 
-- (void)_sendCallback:(id)a3
+- (void)_sendCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   queue = self->_queue;
-  value = v4;
+  value = callbackCopy;
   if (!queue)
   {
     queue = CFArrayCreateMutable(0, 0, MEMORY[0x277CBF128]);
-    v4 = value;
+    callbackCopy = value;
     self->_queue = queue;
   }
 
-  CFArrayAppendValue(queue, v4);
+  CFArrayAppendValue(queue, callbackCopy);
   _SCROPing(self->_port, 0);
 }
 

@@ -7,7 +7,7 @@
 
 - (id)stateVector
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24388D854();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (unint64_t)deltaDeliveryRequirements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24388D958();
 
   return v3;

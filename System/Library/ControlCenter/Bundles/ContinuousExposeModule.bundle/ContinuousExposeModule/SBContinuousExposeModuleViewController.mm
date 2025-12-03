@@ -1,29 +1,29 @@
 @interface SBContinuousExposeModuleViewController
 - (CCUIContentModuleContext)contentModuleContext;
-- (SBContinuousExposeModuleViewController)initWithContentModuleContext:(id)a3;
-- (id)_glyphImageForMultitaskingMode:(int64_t)a3;
-- (id)_statusMessageForMultitaskingMode:(int64_t)a3;
-- (id)_titleForMultitaskingMode:(int64_t)a3;
+- (SBContinuousExposeModuleViewController)initWithContentModuleContext:(id)context;
+- (id)_glyphImageForMultitaskingMode:(int64_t)mode;
+- (id)_statusMessageForMultitaskingMode:(int64_t)mode;
+- (id)_titleForMultitaskingMode:(int64_t)mode;
 - (void)_toggleSelected;
 - (void)_updateContinuousExposeMenuItems;
-- (void)_updateGlyphImageForMultitaskingMode:(int64_t)a3;
+- (void)_updateGlyphImageForMultitaskingMode:(int64_t)mode;
 - (void)_updateState;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)viewDidLoad;
 @end
 
 @implementation SBContinuousExposeModuleViewController
 
-- (SBContinuousExposeModuleViewController)initWithContentModuleContext:(id)a3
+- (SBContinuousExposeModuleViewController)initWithContentModuleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SBContinuousExposeModuleViewController;
   v5 = [(SBContinuousExposeModuleViewController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_contentModuleContext, v4);
+    objc_storeWeak(&v5->_contentModuleContext, contextCopy);
     v7 = objc_alloc_init(NSMutableArray);
     contentMenuActions = v6->_contentMenuActions;
     v6->_contentMenuActions = v7;
@@ -43,9 +43,9 @@
   [(SBContinuousExposeModuleViewController *)&v9 viewDidLoad];
   v3 = +[UIColor systemBlueColor];
   [(SBContinuousExposeModuleViewController *)self setSelectedGlyphColor:v3];
-  v4 = [(SBContinuousExposeModuleViewController *)self buttonView];
+  buttonView = [(SBContinuousExposeModuleViewController *)self buttonView];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = buttonView;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -70,18 +70,18 @@
   [(SBContinuousExposeModuleViewController *)self _updateContinuousExposeMenuItems];
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  [(SBContinuousExposeModuleViewController *)self _toggleSelected:a3];
+  [(SBContinuousExposeModuleViewController *)self _toggleSelected:tapped];
 
   [(SBContinuousExposeModuleViewController *)self _updateState];
 }
 
 - (void)_toggleSelected
 {
-  v3 = [(SBContinuousExposeModuleViewController *)self isSelected];
-  v4 = v3;
-  [(SBContinuousExposeModuleViewController *)self setSelected:v3 ^ 1];
+  isSelected = [(SBContinuousExposeModuleViewController *)self isSelected];
+  v4 = isSelected;
+  [(SBContinuousExposeModuleViewController *)self setSelected:isSelected ^ 1];
   continuousExposeController = self->_continuousExposeController;
   if (v4)
   {
@@ -117,15 +117,15 @@
     v8 = 2;
   }
 
-  v9 = [(SBContinuousExposeModuleViewController *)self contentModuleContext];
+  contentModuleContext = [(SBContinuousExposeModuleViewController *)self contentModuleContext];
   v10 = [CCUIStatusUpdate statusUpdateWithMessage:v11 type:v8];
-  [v9 enqueueStatusUpdate:v10];
+  [contentModuleContext enqueueStatusUpdate:v10];
 }
 
 - (void)_updateContinuousExposeMenuItems
 {
-  v3 = [(SBContinuousExposeModuleViewController *)self contentMenuActions];
-  [v3 removeAllObjects];
+  contentMenuActions = [(SBContinuousExposeModuleViewController *)self contentMenuActions];
+  [contentMenuActions removeAllObjects];
   v4 = self->_continuousExposeController;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CONTROL_CENTER_CONTINUOUS_EXPOSE_WINDOWED_APPS_TITLE" value:&stru_41E8 table:0];
@@ -136,7 +136,7 @@
   v21[3] = &unk_4148;
   v8 = v4;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v9 = [UIAction actionWithTitle:v6 image:v7 identifier:@"windowedApps" handler:v21];
 
   if ([(SBContinuousExposeModuleController *)v8 currentMultitaskingMode]== &dword_0 + 1)
@@ -144,7 +144,7 @@
     [v9 setState:1];
   }
 
-  [v3 addObject:v9];
+  [contentMenuActions addObject:v9];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CONTROL_CENTER_CONTINUOUS_EXPOSE_STAGE_MANAGER_TITLE" value:&stru_41E8 table:0];
   v12 = [(SBContinuousExposeModuleViewController *)self _glyphImageForMultitaskingMode:2];
@@ -154,7 +154,7 @@
   v18 = &unk_4148;
   v13 = v8;
   v19 = v13;
-  v20 = self;
+  selfCopy2 = self;
   v14 = [UIAction actionWithTitle:v11 image:v12 identifier:@"stageManager" handler:&v15];
 
   if ([(SBContinuousExposeModuleController *)v13 currentMultitaskingMode:v15]== &dword_0 + 2)
@@ -162,22 +162,22 @@
     [v14 setState:1];
   }
 
-  [v3 addObject:v14];
+  [contentMenuActions addObject:v14];
 }
 
-- (id)_glyphImageForMultitaskingMode:(int64_t)a3
+- (id)_glyphImageForMultitaskingMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     v4 = @"squares.leading.rectangle";
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     v4 = @"rectangle.3.group";
   }
 
-  else if (a3)
+  else if (mode)
   {
     v4 = 0;
   }
@@ -192,35 +192,35 @@
     v4 = @"rectangle.3.group";
   }
 
-  v5 = [(SBContinuousExposeModuleViewController *)self contentMetrics];
-  v6 = [v5 symbolConfiguration];
-  v7 = [v5 symbolFont];
-  [v7 pointSize];
+  contentMetrics = [(SBContinuousExposeModuleViewController *)self contentMetrics];
+  symbolConfiguration = [contentMetrics symbolConfiguration];
+  symbolFont = [contentMetrics symbolFont];
+  [symbolFont pointSize];
   v8 = [UIImageSymbolConfiguration configurationWithPointSize:3 weight:1 scale:?];
-  v9 = [v6 configurationByApplyingConfiguration:v8];
+  v9 = [symbolConfiguration configurationByApplyingConfiguration:v8];
 
   v10 = [UIImage _systemImageNamed:v4 withConfiguration:v9];
-  v11 = [v10 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v10 imageFlippedForRightToLeftLayoutDirection];
 
-  return v11;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
-- (void)_updateGlyphImageForMultitaskingMode:(int64_t)a3
+- (void)_updateGlyphImageForMultitaskingMode:(int64_t)mode
 {
-  v4 = [(SBContinuousExposeModuleViewController *)self _glyphImageForMultitaskingMode:a3];
+  v4 = [(SBContinuousExposeModuleViewController *)self _glyphImageForMultitaskingMode:mode];
   [(SBContinuousExposeModuleViewController *)self setGlyphImage:v4];
 }
 
-- (id)_titleForMultitaskingMode:(int64_t)a3
+- (id)_titleForMultitaskingMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
     v7 = @"CONTROL_CENTER_CONTINUOUS_EXPOSE_STAGE_MANAGER_TITLE";
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -229,15 +229,15 @@
 
   else
   {
-    if (a3)
+    if (mode)
     {
       goto LABEL_10;
     }
 
-    v4 = [(SBContinuousExposeModuleController *)self->_continuousExposeController previouslyEnabledStageManager];
+    previouslyEnabledStageManager = [(SBContinuousExposeModuleController *)self->_continuousExposeController previouslyEnabledStageManager];
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
-    if (v4)
+    if (previouslyEnabledStageManager)
     {
       v7 = @"CONTROL_CENTER_CONTINUOUS_EXPOSE_STAGE_MANAGER_TITLE";
     }
@@ -255,16 +255,16 @@ LABEL_10:
   return v3;
 }
 
-- (id)_statusMessageForMultitaskingMode:(int64_t)a3
+- (id)_statusMessageForMultitaskingMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
     v7 = @"CONTROL_CENTER_CONTINUOUS_EXPOSE_STAGE_MANAGER_ON";
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -273,15 +273,15 @@ LABEL_10:
 
   else
   {
-    if (a3)
+    if (mode)
     {
       goto LABEL_10;
     }
 
-    v4 = [(SBContinuousExposeModuleController *)self->_continuousExposeController previouslyEnabledStageManager];
+    previouslyEnabledStageManager = [(SBContinuousExposeModuleController *)self->_continuousExposeController previouslyEnabledStageManager];
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
-    if (v4)
+    if (previouslyEnabledStageManager)
     {
       v7 = @"CONTROL_CENTER_CONTINUOUS_EXPOSE_STAGE_MANAGER_OFF";
     }
@@ -301,18 +301,18 @@ LABEL_10:
 
 - (void)_updateState
 {
-  v3 = [(SBContinuousExposeModuleController *)self->_continuousExposeController currentMultitaskingMode];
-  v4 = [(SBContinuousExposeModuleViewController *)self _titleForMultitaskingMode:v3];
+  currentMultitaskingMode = [(SBContinuousExposeModuleController *)self->_continuousExposeController currentMultitaskingMode];
+  v4 = [(SBContinuousExposeModuleViewController *)self _titleForMultitaskingMode:currentMultitaskingMode];
   [(SBContinuousExposeModuleViewController *)self setTitle:v4];
 
-  v5 = [(SBContinuousExposeModuleViewController *)self _statusMessageForMultitaskingMode:v3];
+  v5 = [(SBContinuousExposeModuleViewController *)self _statusMessageForMultitaskingMode:currentMultitaskingMode];
   [(SBContinuousExposeModuleViewController *)self setValueText:v5];
 
-  v6 = [(SBContinuousExposeModuleViewController *)self _statusMessageForMultitaskingMode:v3];
+  v6 = [(SBContinuousExposeModuleViewController *)self _statusMessageForMultitaskingMode:currentMultitaskingMode];
   [(SBContinuousExposeModuleViewController *)self setSelectedValueText:v6];
 
-  [(SBContinuousExposeModuleViewController *)self _updateGlyphImageForMultitaskingMode:v3];
-  [(SBContinuousExposeModuleViewController *)self setSelected:(v3 - 1) < 2];
+  [(SBContinuousExposeModuleViewController *)self _updateGlyphImageForMultitaskingMode:currentMultitaskingMode];
+  [(SBContinuousExposeModuleViewController *)self setSelected:(currentMultitaskingMode - 1) < 2];
 
   [(SBContinuousExposeModuleViewController *)self _updateContinuousExposeMenuItems];
 }

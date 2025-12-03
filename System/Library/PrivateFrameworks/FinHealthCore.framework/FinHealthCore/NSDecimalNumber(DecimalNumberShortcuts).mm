@@ -15,13 +15,13 @@
 
 - (BOOL)isNegative
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 isValid])
+    if ([self isValid])
     {
-      v2 = [MEMORY[0x277CCA980] zero];
-      v1 = [v1 compare:v2] == -1;
+      zero = [MEMORY[0x277CCA980] zero];
+      selfCopy = [selfCopy compare:zero] == -1;
     }
 
     else
@@ -30,18 +30,18 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isPositive
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 isValid])
+    if ([self isValid])
     {
-      v2 = [MEMORY[0x277CCA980] zero];
-      v1 = [v1 compare:v2] == 1;
+      zero = [MEMORY[0x277CCA980] zero];
+      selfCopy = [selfCopy compare:zero] == 1;
     }
 
     else
@@ -50,18 +50,18 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isZero
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 isValid])
+    if ([self isValid])
     {
-      v2 = [MEMORY[0x277CCA980] zero];
-      v1 = [v1 compare:v2] == 0;
+      zero = [MEMORY[0x277CCA980] zero];
+      selfCopy = [selfCopy compare:zero] == 0;
     }
 
     else
@@ -70,18 +70,18 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isOne
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 isValid])
+    if ([self isValid])
     {
       v2 = [MEMORY[0x277CCA980] one];
-      v1 = [v1 compare:v2] == 0;
+      selfCopy = [selfCopy compare:v2] == 0;
     }
 
     else
@@ -90,13 +90,13 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isValid
 {
-  v2 = [MEMORY[0x277CCA980] notANumber];
-  v3 = [a1 compare:v2] != 0;
+  notANumber = [MEMORY[0x277CCA980] notANumber];
+  v3 = [self compare:notANumber] != 0;
 
   return v3;
 }
@@ -104,7 +104,7 @@
 - (BOOL)lessThan:()DecimalNumberShortcuts
 {
   v4 = a3;
-  v5 = [a1 isValid] && objc_msgSend(v4, "isValid") && objc_msgSend(a1, "compare:", v4) == -1;
+  v5 = [self isValid] && objc_msgSend(v4, "isValid") && objc_msgSend(self, "compare:", v4) == -1;
 
   return v5;
 }
@@ -112,7 +112,7 @@
 - (BOOL)lessThanOrEqual:()DecimalNumberShortcuts
 {
   v4 = a3;
-  v5 = ([a1 lessThan:v4] & 1) != 0 || objc_msgSend(a1, "compare:", v4) == 0;
+  v5 = ([self lessThan:v4] & 1) != 0 || objc_msgSend(self, "compare:", v4) == 0;
 
   return v5;
 }
@@ -120,7 +120,7 @@
 - (BOOL)greaterThan:()DecimalNumberShortcuts
 {
   v4 = a3;
-  v5 = [a1 isValid] && objc_msgSend(v4, "isValid") && objc_msgSend(a1, "compare:", v4) == 1;
+  v5 = [self isValid] && objc_msgSend(v4, "isValid") && objc_msgSend(self, "compare:", v4) == 1;
 
   return v5;
 }
@@ -128,7 +128,7 @@
 - (BOOL)greaterThanOrEqual:()DecimalNumberShortcuts
 {
   v4 = a3;
-  v5 = ([a1 greaterThan:v4] & 1) != 0 || objc_msgSend(a1, "compare:", v4) == 0;
+  v5 = ([self greaterThan:v4] & 1) != 0 || objc_msgSend(self, "compare:", v4) == 0;
 
   return v5;
 }
@@ -136,8 +136,8 @@
 + (id)abs:()DecimalNumberShortcuts
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CCA980] zero];
-  v5 = [v3 compare:v4];
+  zero = [MEMORY[0x277CCA980] zero];
+  v5 = [v3 compare:zero];
 
   if (v5 == -1)
   {

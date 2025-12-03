@@ -1,21 +1,21 @@
 @interface MapsSuggestionsUser
-- (MapsSuggestionsUser)initWithMeCardReader:(id)a3 routine:(id)a4;
+- (MapsSuggestionsUser)initWithMeCardReader:(id)reader routine:(id)routine;
 - (NSString)uniqueName;
-- (char)hasVisitedMapItem:(id)a3 handler:(id)a4;
-- (char)meCardForProminentPlacesAroundCoordinate:(CLLocationCoordinate2D)a3 maxDistance:(double)a4 maxAge:(double)a5 minVisits:(int64_t)a6 handler:(id)a7;
-- (char)mostRecentVisitWithinDistance:(double)a3 ofMapItem:(id)a4 handler:(id)a5;
+- (char)hasVisitedMapItem:(id)item handler:(id)handler;
+- (char)meCardForProminentPlacesAroundCoordinate:(CLLocationCoordinate2D)coordinate maxDistance:(double)distance maxAge:(double)age minVisits:(int64_t)visits handler:(id)handler;
+- (char)mostRecentVisitWithinDistance:(double)distance ofMapItem:(id)item handler:(id)handler;
 - (id).cxx_construct;
 @end
 
 @implementation MapsSuggestionsUser
 
-- (MapsSuggestionsUser)initWithMeCardReader:(id)a3 routine:(id)a4
+- (MapsSuggestionsUser)initWithMeCardReader:(id)reader routine:(id)routine
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  readerCopy = reader;
+  routineCopy = routine;
+  v9 = routineCopy;
+  if (!readerCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!routineCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@
 
 LABEL_11:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -62,8 +62,8 @@ LABEL_11:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_meCardReader, a3);
-    objc_storeStrong(&v11->_routine, a4);
+    objc_storeStrong(&v10->_meCardReader, reader);
+    objc_storeStrong(&v11->_routine, routine);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     MSg::Queue::Queue(buf, @"MapsSuggestionsUserQueue", v12);
     v13 = *buf;
@@ -78,19 +78,19 @@ LABEL_11:
   }
 
   self = v11;
-  v17 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v17;
+  return selfCopy;
 }
 
-- (char)meCardForProminentPlacesAroundCoordinate:(CLLocationCoordinate2D)a3 maxDistance:(double)a4 maxAge:(double)a5 minVisits:(int64_t)a6 handler:(id)a7
+- (char)meCardForProminentPlacesAroundCoordinate:(CLLocationCoordinate2D)coordinate maxDistance:(double)distance maxAge:(double)age minVisits:(int64_t)visits handler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v51 = *MEMORY[0x1E69E9840];
-  v13 = a7;
-  if (v13)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v14 = dispatch_group_create();
     *v49 = 0;
@@ -126,7 +126,7 @@ LABEL_12:
     v41 = longitude;
     v38 = v17;
     v39 = v49;
-    v42 = a4;
+    distanceCopy = distance;
     v18 = [(MapsSuggestionsMeCardReader *)meCardReader readMeCardWithHandler:v37];
     dispatch_group_enter(v17);
     v19 = GEOFindOrCreateLog();
@@ -149,8 +149,8 @@ LABEL_12:
     v35 = longitude;
     v32 = v21;
     v33 = v43;
-    v36 = a4;
-    v22 = [(MapsSuggestionsRoutine *)routine readMeCardWithMinVisits:a6 maxAge:v31 handler:a5];
+    distanceCopy2 = distance;
+    v22 = [(MapsSuggestionsRoutine *)routine readMeCardWithMinVisits:visits maxAge:v31 handler:age];
     v23 = v22;
     if (v18)
     {
@@ -164,7 +164,7 @@ LABEL_8:
         block[3] = &unk_1E81F7FA8;
         v29 = v49;
         v30 = v43;
-        v28 = v13;
+        v28 = handlerCopy;
         dispatch_group_notify(v21, innerQueue, block);
 
         _Block_object_dispose(v43, 8);
@@ -294,12 +294,12 @@ void __101__MapsSuggestionsUser_meCardForProminentPlacesAroundCoordinate_maxDist
   (*(a1[4] + 16))();
 }
 
-- (char)hasVisitedMapItem:(id)a3 handler:(id)a4
+- (char)hasVisitedMapItem:(id)item handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -318,7 +318,7 @@ void __101__MapsSuggestionsUser_meCardForProminentPlacesAroundCoordinate_maxDist
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!itemCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -340,20 +340,20 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [v6 coordinate];
+  [itemCopy coordinate];
   v10 = CLLocationFromGEOLocationCoordinate2D(v8, v9);
-  v11 = [(MapsSuggestionsRoutine *)self->_routine fetchLastVisitAtLocation:v10 handler:v7];
+  v11 = [(MapsSuggestionsRoutine *)self->_routine fetchLastVisitAtLocation:v10 handler:handlerCopy];
 
 LABEL_10:
   return v11;
 }
 
-- (char)mostRecentVisitWithinDistance:(double)a3 ofMapItem:(id)a4 handler:(id)a5
+- (char)mostRecentVisitWithinDistance:(double)distance ofMapItem:(id)item handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -377,7 +377,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!itemCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -397,7 +397,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(MapsSuggestionsRoutine *)self->_routine fetchMostRecentVisitWithinDistance:v8 ofMapItem:v9 handler:a3];
+  v10 = [(MapsSuggestionsRoutine *)self->_routine fetchMostRecentVisitWithinDistance:itemCopy ofMapItem:handlerCopy handler:distance];
 LABEL_10:
 
   return v10;

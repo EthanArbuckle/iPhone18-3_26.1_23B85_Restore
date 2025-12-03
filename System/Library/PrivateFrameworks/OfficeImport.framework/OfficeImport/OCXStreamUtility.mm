@@ -1,24 +1,24 @@
 @interface OCXStreamUtility
-+ (BOOL)pScanStreamForwardToApplicableContentInAlternateContent:(_xmlTextReader *)a3;
-+ (BOOL)readStream:(_xmlTextReader *)a3 streamState:(id)a4;
++ (BOOL)pScanStreamForwardToApplicableContentInAlternateContent:(_xmlTextReader *)content;
++ (BOOL)readStream:(_xmlTextReader *)stream streamState:(id)state;
 @end
 
 @implementation OCXStreamUtility
 
-+ (BOOL)pScanStreamForwardToApplicableContentInAlternateContent:(_xmlTextReader *)a3
++ (BOOL)pScanStreamForwardToApplicableContentInAlternateContent:(_xmlTextReader *)content
 {
-  v4 = xmlTextReaderDepth(a3);
-  while (xmlTextReaderRead(a3) == 1)
+  v4 = xmlTextReaderDepth(content);
+  while (xmlTextReaderRead(content) == 1)
   {
-    v5 = xmlTextReaderConstLocalName(a3);
-    v6 = xmlTextReaderNodeType(a3);
-    v7 = xmlTextReaderDepth(a3);
+    v5 = xmlTextReaderConstLocalName(content);
+    v6 = xmlTextReaderNodeType(content);
+    v7 = xmlTextReaderDepth(content);
     if (v7 == v4 && v6 == 15)
     {
       break;
     }
 
-    if (v7 == v4 + 1 && v6 == 1 && (!xmlStrEqual(v5, "Choice") || xmlTextReaderHasAttributes(a3)) && (xmlStrEqual(v5, "Choice") && [CXNamespace isPrefixSupportedFromStream:a3 prefix:xmlTextReaderGetAttribute(a3, "Requires")]|| xmlStrEqual(v5, "Fallback")))
+    if (v7 == v4 + 1 && v6 == 1 && (!xmlStrEqual(v5, "Choice") || xmlTextReaderHasAttributes(content)) && (xmlStrEqual(v5, "Choice") && [CXNamespace isPrefixSupportedFromStream:content prefix:xmlTextReaderGetAttribute(content, "Requires")]|| xmlStrEqual(v5, "Fallback")))
     {
       return 1;
     }
@@ -27,43 +27,43 @@
   return 0;
 }
 
-+ (BOOL)readStream:(_xmlTextReader *)a3 streamState:(id)a4
++ (BOOL)readStream:(_xmlTextReader *)stream streamState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   while (1)
   {
     do
     {
       while (1)
       {
-        if (![v5 hasLevels] || xmlTextReaderRead(a3) != 1)
+        if (![stateCopy hasLevels] || xmlTextReaderRead(stream) != 1)
         {
           v10 = 0;
           goto LABEL_13;
         }
 
-        v6 = xmlTextReaderNodeType(a3);
-        v7 = xmlTextReaderDepth(a3);
-        if (v7 != [v5 currentContextDepth] || v6 != 15)
+        v6 = xmlTextReaderNodeType(stream);
+        v7 = xmlTextReaderDepth(stream);
+        if (v7 != [stateCopy currentContextDepth] || v6 != 15)
         {
           break;
         }
 
-        [v5 popLevel];
+        [stateCopy popLevel];
       }
     }
 
-    while (v7 != [v5 currentContextChildDepth] || v6 != 1);
-    v8 = xmlTextReaderConstLocalName(a3);
+    while (v7 != [stateCopy currentContextChildDepth] || v6 != 1);
+    v8 = xmlTextReaderConstLocalName(stream);
     if (!xmlStrEqual(v8, "AlternateContent"))
     {
       break;
     }
 
-    if ([OCXStreamUtility pScanStreamForwardToApplicableContentInAlternateContent:a3])
+    if ([OCXStreamUtility pScanStreamForwardToApplicableContentInAlternateContent:stream])
     {
-      v9 = xmlTextReaderDepth(a3);
-      [v5 pushLevel:v9 name:xmlTextReaderConstLocalName(a3)];
+      v9 = xmlTextReaderDepth(stream);
+      [stateCopy pushLevel:v9 name:xmlTextReaderConstLocalName(stream)];
     }
   }
 

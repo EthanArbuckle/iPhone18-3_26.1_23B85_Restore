@@ -13,14 +13,14 @@
 
 - (id)awdlOpModeString
 {
-  v1 = a1;
-  v2 = [a1 awdlOpMode];
+  selfCopy = self;
+  awdlOpMode = [self awdlOpMode];
 
-  if (v2)
+  if (awdlOpMode)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [v1 awdlOpMode];
-    v5 = *([v4 bytes] + 4);
+    awdlOpMode2 = [selfCopy awdlOpMode];
+    v5 = *([awdlOpMode2 bytes] + 4);
     if (v5 > 2)
     {
       v6 = "Unknown";
@@ -28,8 +28,8 @@
 
     else
     {
-      v1 = [v1 awdlOpMode];
-      v6 = awdlOpModeString_modestr_0[*([v1 bytes] + 4)];
+      selfCopy = [selfCopy awdlOpMode];
+      v6 = awdlOpModeString_modestr_0[*([selfCopy bytes] + 4)];
     }
 
     v7 = [v3 stringWithFormat:@"%s", v6];
@@ -48,12 +48,12 @@
 
 - (id)awdlScheduleString
 {
-  v2 = [a1 awdlStrategy];
+  awdlStrategy = [self awdlStrategy];
 
-  if (v2)
+  if (awdlStrategy)
   {
-    v3 = [a1 awdlStrategy];
-    v4 = *([v3 bytes] + 8);
+    awdlStrategy2 = [self awdlStrategy];
+    v4 = *([awdlStrategy2 bytes] + 8);
     v5 = W5DescriptionForAWDLScheduleState();
   }
 
@@ -67,12 +67,12 @@
 
 - (id)awdlSyncChannelSequenceString
 {
-  v2 = [a1 awdlSyncChannelSequence];
+  awdlSyncChannelSequence = [self awdlSyncChannelSequence];
 
-  if (v2)
+  if (awdlSyncChannelSequence)
   {
-    v3 = [a1 awdlSyncChannelSequence];
-    [v3 bytes];
+    awdlSyncChannelSequence2 = [self awdlSyncChannelSequence];
+    [awdlSyncChannelSequence2 bytes];
     v4 = W5DescriptionForAWDLSyncChannelSequence();
   }
 
@@ -86,13 +86,13 @@
 
 - (id)awdlMasterChannelString
 {
-  v2 = [a1 awdlMasterChannel];
+  awdlMasterChannel = [self awdlMasterChannel];
 
-  if (v2)
+  if (awdlMasterChannel)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [a1 awdlMasterChannel];
-    v5 = [v3 stringWithFormat:@"%i", *(objc_msgSend(v4, "bytes") + 4)];
+    awdlMasterChannel2 = [self awdlMasterChannel];
+    v5 = [v3 stringWithFormat:@"%i", *(objc_msgSend(awdlMasterChannel2, "bytes") + 4)];
   }
 
   else
@@ -105,13 +105,13 @@
 
 - (id)awdlSecondaryMasterChannelString
 {
-  v2 = [a1 awdlSecondaryMasterChannel];
+  awdlSecondaryMasterChannel = [self awdlSecondaryMasterChannel];
 
-  if (v2)
+  if (awdlSecondaryMasterChannel)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [a1 awdlSecondaryMasterChannel];
-    v5 = [v3 stringWithFormat:@"%i", *(objc_msgSend(v4, "bytes") + 4)];
+    awdlSecondaryMasterChannel2 = [self awdlSecondaryMasterChannel];
+    v5 = [v3 stringWithFormat:@"%i", *(objc_msgSend(awdlSecondaryMasterChannel2, "bytes") + 4)];
   }
 
   else
@@ -124,12 +124,12 @@
 
 - (id)awdlSyncStateString
 {
-  v2 = [a1 awdlSyncState];
+  awdlSyncState = [self awdlSyncState];
 
-  if (v2)
+  if (awdlSyncState)
   {
-    v3 = [a1 awdlSyncState];
-    [v3 bytes];
+    awdlSyncState2 = [self awdlSyncState];
+    [awdlSyncState2 bytes];
     v4 = W5DescriptionForAWDLSyncState();
   }
 
@@ -143,13 +143,13 @@
 
 - (id)awdlElectionParametersString
 {
-  v2 = [a1 awdlElectionParameters];
+  awdlElectionParameters = [self awdlElectionParameters];
 
-  if (v2)
+  if (awdlElectionParameters)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [a1 awdlElectionParameters];
-    v5 = [v3 stringWithFormat:@"%i", *(objc_msgSend(v4, "bytes") + 32)];
+    awdlElectionParameters2 = [self awdlElectionParameters];
+    v5 = [v3 stringWithFormat:@"%i", *(objc_msgSend(awdlElectionParameters2, "bytes") + 32)];
   }
 
   else
@@ -163,29 +163,29 @@
 - (id)dictionary
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "power")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "power")}];
   [v2 setObject:v3 forKeyedSubscript:@"awdl_power_state"];
 
-  v4 = [a1 awdlOpModeString];
-  [v2 setObject:v4 forKeyedSubscript:@"awdl_op_mode"];
+  awdlOpModeString = [self awdlOpModeString];
+  [v2 setObject:awdlOpModeString forKeyedSubscript:@"awdl_op_mode"];
 
-  v5 = [a1 awdlScheduleString];
-  [v2 setObject:v5 forKeyedSubscript:@"awdl_schedule"];
+  awdlScheduleString = [self awdlScheduleString];
+  [v2 setObject:awdlScheduleString forKeyedSubscript:@"awdl_schedule"];
 
-  v6 = [a1 awdlSyncChannelSequenceString];
-  [v2 setObject:v6 forKeyedSubscript:@"awdl_sync_channel_sequence"];
+  awdlSyncChannelSequenceString = [self awdlSyncChannelSequenceString];
+  [v2 setObject:awdlSyncChannelSequenceString forKeyedSubscript:@"awdl_sync_channel_sequence"];
 
-  v7 = [a1 awdlMasterChannelString];
-  [v2 setObject:v7 forKeyedSubscript:@"awdl_master_channel"];
+  awdlMasterChannelString = [self awdlMasterChannelString];
+  [v2 setObject:awdlMasterChannelString forKeyedSubscript:@"awdl_master_channel"];
 
-  v8 = [a1 awdlSecondaryMasterChannelString];
-  [v2 setObject:v8 forKeyedSubscript:@"awdl_secondary_master_channel"];
+  awdlSecondaryMasterChannelString = [self awdlSecondaryMasterChannelString];
+  [v2 setObject:awdlSecondaryMasterChannelString forKeyedSubscript:@"awdl_secondary_master_channel"];
 
-  v9 = [a1 awdlSyncStateString];
-  [v2 setObject:v9 forKeyedSubscript:@"awdl_sync_state"];
+  awdlSyncStateString = [self awdlSyncStateString];
+  [v2 setObject:awdlSyncStateString forKeyedSubscript:@"awdl_sync_state"];
 
-  v10 = [a1 awdlElectionParametersString];
-  [v2 setObject:v10 forKeyedSubscript:@"awdl_election_parameters"];
+  awdlElectionParametersString = [self awdlElectionParametersString];
+  [v2 setObject:awdlElectionParametersString forKeyedSubscript:@"awdl_election_parameters"];
 
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v2];
 

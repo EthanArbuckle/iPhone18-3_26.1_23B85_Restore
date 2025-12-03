@@ -1,23 +1,23 @@
 @interface TSAHyperlinkGestureRecognizer
-- (TSAHyperlinkGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (id)p_smartFieldForTouch:(id)a3 outRep:(id *)a4;
+- (TSAHyperlinkGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (id)p_smartFieldForTouch:(id)touch outRep:(id *)rep;
 - (void)dealloc;
 - (void)reset;
-- (void)setEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TSAHyperlinkGestureRecognizer
 
-- (TSAHyperlinkGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (TSAHyperlinkGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = TSAHyperlinkGestureRecognizer;
-  result = [(TSAHyperlinkGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(TSAHyperlinkGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_tapEnabled = 1;
@@ -49,16 +49,16 @@
   [(TSAHyperlinkGestureRecognizer *)&v3 reset];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v3.receiver = self;
   v3.super_class = TSAHyperlinkGestureRecognizer;
-  [(TSAHyperlinkGestureRecognizer *)&v3 setEnabled:a3];
+  [(TSAHyperlinkGestureRecognizer *)&v3 setEnabled:enabled];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 5)
+  if (state == 5)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
     if ([(TSAHyperlinkGestureRecognizer *)self hitRep])
@@ -69,14 +69,14 @@
 
   v5.receiver = self;
   v5.super_class = TSAHyperlinkGestureRecognizer;
-  [(TSAHyperlinkGestureRecognizer *)&v5 setState:a3];
+  [(TSAHyperlinkGestureRecognizer *)&v5 setState:state];
 }
 
-- (id)p_smartFieldForTouch:(id)a3 outRep:(id *)a4
+- (id)p_smartFieldForTouch:(id)touch outRep:(id *)rep
 {
   [(TSDInteractiveCanvasController *)self->_icc layoutIfNeeded];
   icc = self->_icc;
-  [a3 locationInView:{-[TSAHyperlinkGestureRecognizer view](self, "view")}];
+  [touch locationInView:{-[TSAHyperlinkGestureRecognizer view](self, "view")}];
   [(TSDInteractiveCanvasController *)icc convertBoundsToUnscaledPoint:?];
   v9 = v8;
   v11 = v10;
@@ -93,11 +93,11 @@
     {
       v17 = result;
       result = [result smartFieldAtPoint:{v14, v16}];
-      if (a4)
+      if (rep)
       {
         if (result)
         {
-          *a4 = v17;
+          *rep = v17;
         }
       }
     }
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = TSAHyperlinkGestureRecognizer;
-  [(TSAHyperlinkGestureRecognizer *)&v12 touchesBegan:a3 withEvent:a4];
+  [(TSAHyperlinkGestureRecognizer *)&v12 touchesBegan:began withEvent:event];
   self->_wasTapHold = 0;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   if (!self->_tapEnabled && !self->_tapHoldEnabled || [(TSDInteractiveCanvasController *)self->_icc currentlyScrolling])
@@ -120,7 +120,7 @@
 
   if (![(TSAHyperlinkGestureRecognizer *)self state])
   {
-    if (-[TSAHyperlinkGestureRecognizer numberOfTouches](self, "numberOfTouches") != 1 || (v6 = [a3 anyObject], objc_msgSend(v6, "locationInView:", -[TSAHyperlinkGestureRecognizer view](self, "view")), self->_touchBeginPoint.x = v7, self->_touchBeginPoint.y = v8, v11 = 0, objc_opt_class(), -[TSAHyperlinkGestureRecognizer p_smartFieldForTouch:outRep:](self, "p_smartFieldForTouch:outRep:", v6, &v11), (v9 = TSUDynamicCast()) == 0))
+    if (-[TSAHyperlinkGestureRecognizer numberOfTouches](self, "numberOfTouches") != 1 || (v6 = [began anyObject], objc_msgSend(v6, "locationInView:", -[TSAHyperlinkGestureRecognizer view](self, "view")), self->_touchBeginPoint.x = v7, self->_touchBeginPoint.y = v8, v11 = 0, objc_opt_class(), -[TSAHyperlinkGestureRecognizer p_smartFieldForTouch:outRep:](self, "p_smartFieldForTouch:outRep:", v6, &v11), (v9 = TSUDynamicCast()) == 0))
     {
 LABEL_4:
       [(TSAHyperlinkGestureRecognizer *)self setState:5];
@@ -139,12 +139,12 @@ LABEL_4:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = TSAHyperlinkGestureRecognizer;
-  [(TSAHyperlinkGestureRecognizer *)&v10 touchesMoved:a3 withEvent:a4];
-  v6 = [a3 anyObject];
+  [(TSAHyperlinkGestureRecognizer *)&v10 touchesMoved:moved withEvent:event];
+  anyObject = [moved anyObject];
   v7 = 14.0;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(TSWPHyperlinkHostRepProtocol *)self->_hitRep isEditing])
@@ -152,18 +152,18 @@ LABEL_4:
     v7 = 0.0;
   }
 
-  [v6 locationInView:{-[TSAHyperlinkGestureRecognizer view](self, "view")}];
-  if (TSDDistance(self->_touchBeginPoint.x, self->_touchBeginPoint.y, v8, v9) > v7 || [(TSAHyperlinkGestureRecognizer *)self p_smartFieldForTouch:v6 outRep:0]!= self->_hitField)
+  [anyObject locationInView:{-[TSAHyperlinkGestureRecognizer view](self, "view")}];
+  if (TSDDistance(self->_touchBeginPoint.x, self->_touchBeginPoint.y, v8, v9) > v7 || [(TSAHyperlinkGestureRecognizer *)self p_smartFieldForTouch:anyObject outRep:0]!= self->_hitField)
   {
     [(TSAHyperlinkGestureRecognizer *)self setState:5];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = TSAHyperlinkGestureRecognizer;
-  [(TSAHyperlinkGestureRecognizer *)&v6 touchesEnded:a3 withEvent:a4];
+  [(TSAHyperlinkGestureRecognizer *)&v6 touchesEnded:ended withEvent:event];
   if (!self->_wasTapHold)
   {
     if (self->_tapEnabled)
@@ -187,13 +187,13 @@ LABEL_4:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if ([(TSAHyperlinkGestureRecognizer *)self state]!= 3)
   {
     v7.receiver = self;
     v7.super_class = TSAHyperlinkGestureRecognizer;
-    [(TSAHyperlinkGestureRecognizer *)&v7 touchesCancelled:a3 withEvent:a4];
+    [(TSAHyperlinkGestureRecognizer *)&v7 touchesCancelled:cancelled withEvent:event];
     [(TSAHyperlinkGestureRecognizer *)self setState:5];
     [+[TSWPHyperlinkUIController sharedHyperlinkUIController](TSWPHyperlinkUIController "sharedHyperlinkUIController")];
   }

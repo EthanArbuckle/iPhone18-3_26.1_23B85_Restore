@@ -1,11 +1,11 @@
 @interface RMModelStatusAccountListLDAP
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 visibleName:(id)a6 hostname:(id)a7 port:(id)a8 username:(id)a9 isEnabled:(id)a10;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier visibleName:(id)name hostname:(id)hostname port:(id)port username:(id)username isEnabled:(id)self0;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusAccountListLDAP
@@ -30,22 +30,22 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 visibleName:(id)a6 hostname:(id)a7 port:(id)a8 username:(id)a9 isEnabled:(id)a10
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier visibleName:(id)name hostname:(id)hostname port:(id)port username:(id)username isEnabled:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  enabledCopy = enabled;
+  usernameCopy = username;
+  portCopy = port;
+  hostnameCopy = hostname;
+  nameCopy = name;
+  declarationIdentifierCopy = declarationIdentifier;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v24 = objc_opt_new();
-  [v24 setStatusIdentifier:v23];
+  [v24 setStatusIdentifier:identifierCopy];
 
-  if (v22)
+  if (removedCopy)
   {
-    v25 = v22;
+    v25 = removedCopy;
   }
 
   else
@@ -55,23 +55,23 @@
 
   [v24 setStatusRemoved:v25];
 
-  [v24 setStatusDeclarationIdentifier:v21];
-  [v24 setStatusVisibleName:v20];
+  [v24 setStatusDeclarationIdentifier:declarationIdentifierCopy];
+  [v24 setStatusVisibleName:nameCopy];
 
-  [v24 setStatusHostname:v19];
-  [v24 setStatusPort:v18];
+  [v24 setStatusHostname:hostnameCopy];
+  [v24 setStatusPort:portCopy];
 
-  [v24 setStatusUsername:v17];
-  [v24 setStatusIsEnabled:v16];
+  [v24 setStatusUsername:usernameCopy];
+  [v24 setStatusIsEnabled:enabledCopy];
 
   return v24;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  [v4 setStatusIdentifier:v3];
+  [v4 setStatusIdentifier:identifierCopy];
 
   return v4;
 }
@@ -114,12 +114,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusAccountListLDAP allowedStatusKeys];
   [v10 minusSet:v11];
@@ -127,47 +127,47 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"visible-name" forKeyPath:@"statusVisibleName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"hostname" forKeyPath:@"statusHostname" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"port" forKeyPath:@"statusPort" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"username" forKeyPath:@"statusUsername" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"is-enabled" forKeyPath:@"statusIsEnabled" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"visible-name" forKeyPath:@"statusVisibleName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"hostname" forKeyPath:@"statusHostname" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"port" forKeyPath:@"statusPort" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"username" forKeyPath:@"statusUsername" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"is-enabled" forKeyPath:@"statusIsEnabled" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusAccountListLDAP *)self statusIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"identifier" value:v5 isRequired:1 defaultValue:0];
+  statusIdentifier = [(RMModelStatusAccountListLDAP *)self statusIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"identifier" value:statusIdentifier isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusAccountListLDAP *)self statusRemoved];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"_removed" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  statusRemoved = [(RMModelStatusAccountListLDAP *)self statusRemoved];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"_removed" value:statusRemoved isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v7 = [(RMModelStatusAccountListLDAP *)self statusDeclarationIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"declaration-identifier" value:v7 isRequired:0 defaultValue:0];
+  statusDeclarationIdentifier = [(RMModelStatusAccountListLDAP *)self statusDeclarationIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"declaration-identifier" value:statusDeclarationIdentifier isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelStatusAccountListLDAP *)self statusVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"visible-name" value:v8 isRequired:0 defaultValue:0];
+  statusVisibleName = [(RMModelStatusAccountListLDAP *)self statusVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"visible-name" value:statusVisibleName isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelStatusAccountListLDAP *)self statusHostname];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"hostname" value:v9 isRequired:0 defaultValue:0];
+  statusHostname = [(RMModelStatusAccountListLDAP *)self statusHostname];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"hostname" value:statusHostname isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelStatusAccountListLDAP *)self statusPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"port" value:v10 isRequired:0 defaultValue:0];
+  statusPort = [(RMModelStatusAccountListLDAP *)self statusPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"port" value:statusPort isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelStatusAccountListLDAP *)self statusUsername];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"username" value:v11 isRequired:0 defaultValue:0];
+  statusUsername = [(RMModelStatusAccountListLDAP *)self statusUsername];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"username" value:statusUsername isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelStatusAccountListLDAP *)self statusIsEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"is-enabled" value:v12 isRequired:0 defaultValue:0];
+  statusIsEnabled = [(RMModelStatusAccountListLDAP *)self statusIsEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"is-enabled" value:statusIsEnabled isRequired:0 defaultValue:0];
 
   v13 = [v4 copy];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22.receiver = self;
   v22.super_class = RMModelStatusAccountListLDAP;
-  v4 = [(RMModelPayloadBase *)&v22 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v22 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -1,10 +1,10 @@
 @interface SPSearchCSResult
-- (BOOL)doesQueryMatchContentForLowEngagementBundle:(id)a3 queryContext:(id)a4;
-- (SPSearchCSResult)resultWithTime:(double)a3 searchString:(id)a4 isCorrectedQuery:(BOOL)a5 withQueryContext:(id)a6;
-- (id)makeApplicationResult:(id)a3 dataclass:(id)a4 score:;
+- (BOOL)doesQueryMatchContentForLowEngagementBundle:(id)bundle queryContext:(id)context;
+- (SPSearchCSResult)resultWithTime:(double)time searchString:(id)string isCorrectedQuery:(BOOL)query withQueryContext:(id)context;
+- (id)makeApplicationResult:(id)result dataclass:(id)dataclass score:;
 - (void)clearClientData;
 - (void)dealloc;
-- (void)populateAttributesForResult:(id)a3 withValues:(id)a4;
+- (void)populateAttributesForResult:(id)result withValues:(id)values;
 @end
 
 @implementation SPSearchCSResult
@@ -32,19 +32,19 @@
   [(SPSearchCSResult *)&v4 dealloc];
 }
 
-- (id)makeApplicationResult:(id)a3 dataclass:(id)a4 score:
+- (id)makeApplicationResult:(id)result dataclass:(id)dataclass score:
 {
   v68 = v5;
   v6 = v4;
   v72[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  dataclassCopy = dataclass;
+  resultCopy = result;
   v10 = SPFastApplicationsGetNoBuild();
-  v11 = [v9 attributeSet];
+  attributeSet = [resultCopy attributeSet];
 
-  v12 = [v11 attributeDictionary];
+  attributeDictionary = [attributeSet attributeDictionary];
   v67 = *MEMORY[0x277CC3208];
-  v13 = [v12 objectForKey:?];
+  v13 = [attributeDictionary objectForKey:?];
   v14 = [v10 objectForKeyedSubscript:v13];
   if (!v14)
   {
@@ -59,10 +59,10 @@
 
     v65 = v6;
     v61 = *MEMORY[0x277CC2500];
-    v15 = [v12 objectForKey:?];
+    v15 = [attributeDictionary objectForKey:?];
     v29 = objc_alloc_init(MEMORY[0x277D4BEA0]);
     [v29 setIdentifier:v13];
-    v30 = [v12 objectForKey:*MEMORY[0x277CC2760]];
+    v30 = [attributeDictionary objectForKey:*MEMORY[0x277CC2760]];
     v31 = objc_alloc_init(MEMORY[0x277D4C690]);
     v32 = v31;
     if (v30)
@@ -72,7 +72,7 @@
 
     v63 = v32;
     [v29 setTitle:v32];
-    v33 = [v12 objectForKey:*MEMORY[0x277CC3148]];
+    v33 = [attributeDictionary objectForKey:*MEMORY[0x277CC3148]];
     v62 = v33;
     if (v33)
     {
@@ -80,40 +80,40 @@
       v69 = v34;
       [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
       v35 = v30;
-      v36 = v12;
+      v36 = attributeDictionary;
       v37 = v13;
       v38 = v10;
-      v39 = v11;
-      v41 = v40 = v8;
+      v39 = attributeSet;
+      v41 = v40 = dataclassCopy;
       [v29 setDescriptions:v41];
 
-      v8 = v40;
-      v11 = v39;
+      dataclassCopy = v40;
+      attributeSet = v39;
       v10 = v38;
       v13 = v37;
-      v12 = v36;
+      attributeDictionary = v36;
       v30 = v35;
       v14 = 0;
     }
 
     [v29 setSectionBundleIdentifier:v15];
-    v66 = v8;
+    v66 = dataclassCopy;
     if ([v15 isEqualToString:*MEMORY[0x277D659F0]])
     {
       [v29 setBundleID:*MEMORY[0x277D4BEF0]];
       [v29 setType:22];
-      v42 = objc_alloc(MEMORY[0x277D4C1D0]);
-      v43 = [v29 identifier];
-      [v42 setBundleIdentifier:v43];
+      externalIdentifier = objc_alloc(MEMORY[0x277D4C1D0]);
+      identifier = [v29 identifier];
+      [externalIdentifier setBundleIdentifier:identifier];
 
-      [v29 setThumbnail:v42];
-      v44 = [v12 objectForKey:*MEMORY[0x277CC3038]];
+      [v29 setThumbnail:externalIdentifier];
+      v44 = [attributeDictionary objectForKey:*MEMORY[0x277CC3038]];
       [v29 setApplicationBundleIdentifier:v44];
     }
 
     else
     {
-      v53 = [v12 objectForKey:*MEMORY[0x277CC2CC0]];
+      v53 = [attributeDictionary objectForKey:*MEMORY[0x277CC2CC0]];
 
       v54 = v67;
       if (v53)
@@ -122,26 +122,26 @@
         v54 = v61;
       }
 
-      v55 = [v12 objectForKey:v54];
+      v55 = [attributeDictionary objectForKey:v54];
       [v29 setApplicationBundleIdentifier:v55];
 
-      v56 = [v12 objectForKey:v67];
+      v56 = [attributeDictionary objectForKey:v67];
       [v29 setExternalIdentifier:v56];
 
-      v57 = [v29 applicationBundleIdentifier];
-      [v29 setBundleID:v57];
+      applicationBundleIdentifier = [v29 applicationBundleIdentifier];
+      [v29 setBundleID:applicationBundleIdentifier];
 
-      v42 = [v29 externalIdentifier];
-      [v29 setResultBundleId:v42];
+      externalIdentifier = [v29 externalIdentifier];
+      [v29 setResultBundleId:externalIdentifier];
     }
 
     [v29 setScore:{v65, v68}];
-    v8 = v66;
+    dataclassCopy = v66;
     [v29 setProtectionClass:v66];
     [v29 setIsLocalApplicationResult:1];
-    v58 = [v29 applicationBundleIdentifier];
+    applicationBundleIdentifier2 = [v29 applicationBundleIdentifier];
 
-    if (!v58)
+    if (!applicationBundleIdentifier2)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -158,36 +158,36 @@
 
   v15 = objc_alloc_init(MEMORY[0x277D4BEA0]);
   [v14 copyToSearchFoundationResult:v15];
-  v16 = [v15 compatibilityTitle];
+  compatibilityTitle = [v15 compatibilityTitle];
 
-  if (!v16)
+  if (!compatibilityTitle)
   {
-    v17 = [v12 objectForKey:*MEMORY[0x277CC2760]];
+    v17 = [attributeDictionary objectForKey:*MEMORY[0x277CC2760]];
     [v15 title];
-    v19 = v18 = v8;
+    v19 = v18 = dataclassCopy;
     [v19 setText:v17];
 
-    v8 = v18;
+    dataclassCopy = v18;
   }
 
-  v20 = [v14 subtitle];
+  subtitle = [v14 subtitle];
 
-  if (!v20)
+  if (!subtitle)
   {
-    v21 = [v12 objectForKey:*MEMORY[0x277CC3148]];
+    v21 = [attributeDictionary objectForKey:*MEMORY[0x277CC3148]];
     if (v21)
     {
       [MEMORY[0x277D4C598] textWithString:v21];
       v64 = v13;
       v22 = v10;
-      v23 = v11;
-      v25 = v24 = v8;
+      v23 = attributeSet;
+      v25 = v24 = dataclassCopy;
       v72[0] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:1];
       [v15 setDescriptions:v26];
 
-      v8 = v24;
-      v11 = v23;
+      dataclassCopy = v24;
+      attributeSet = v23;
       v10 = v22;
       v13 = v64;
     }
@@ -203,19 +203,19 @@
     [v15 setSectionBundleIdentifier:*MEMORY[0x277D659F0]];
     [v15 setBundleID:*MEMORY[0x277D4BEF0]];
     [v15 setType:22];
-    v27 = objc_alloc(MEMORY[0x277D4C1D0]);
-    v28 = [v15 identifier];
-    [v27 setBundleIdentifier:v28];
+    applicationBundleIdentifier3 = objc_alloc(MEMORY[0x277D4C1D0]);
+    identifier2 = [v15 identifier];
+    [applicationBundleIdentifier3 setBundleIdentifier:identifier2];
 
-    [v15 setThumbnail:v27];
+    [v15 setThumbnail:applicationBundleIdentifier3];
   }
 
   else
   {
     [v15 setSectionBundleIdentifier:*MEMORY[0x277D65A00]];
-    v45 = [v14 isWebClip];
+    isWebClip = [v14 isWebClip];
     v46 = *MEMORY[0x277CC2500];
-    if (v45)
+    if (isWebClip)
     {
       v47 = *MEMORY[0x277CC2500];
     }
@@ -225,22 +225,22 @@
       v47 = v67;
     }
 
-    v48 = [v12 objectForKey:v47];
+    v48 = [attributeDictionary objectForKey:v47];
     [v15 setApplicationBundleIdentifier:v48];
 
-    v49 = [v12 objectForKey:v67];
+    v49 = [attributeDictionary objectForKey:v67];
     [v15 setExternalIdentifier:v49];
 
-    v27 = [v15 applicationBundleIdentifier];
-    [v15 setBundleID:v27];
+    applicationBundleIdentifier3 = [v15 applicationBundleIdentifier];
+    [v15 setBundleID:applicationBundleIdentifier3];
   }
 
   [v15 setScore:{v6, v68}];
-  [v15 setProtectionClass:v8];
+  [v15 setProtectionClass:dataclassCopy];
   [v15 setIsLocalApplicationResult:1];
-  v50 = [v15 applicationBundleIdentifier];
+  applicationBundleIdentifier4 = [v15 applicationBundleIdentifier];
 
-  if (!v50)
+  if (!applicationBundleIdentifier4)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -262,22 +262,22 @@ LABEL_39:
   return v15;
 }
 
-- (BOOL)doesQueryMatchContentForLowEngagementBundle:(id)a3 queryContext:(id)a4
+- (BOOL)doesQueryMatchContentForLowEngagementBundle:(id)bundle queryContext:(id)context
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 attributeSet];
-  v7 = [v6 attributeDictionary];
-  v8 = [v7 objectForKey:*MEMORY[0x277CC2760]];
+  contextCopy = context;
+  attributeSet = [bundle attributeSet];
+  attributeDictionary = [attributeSet attributeDictionary];
+  v8 = [attributeDictionary objectForKey:*MEMORY[0x277CC2760]];
   if (!v8)
   {
-    v8 = [v7 objectForKey:*MEMORY[0x277CC31F0]];
+    v8 = [attributeDictionary objectForKey:*MEMORY[0x277CC31F0]];
   }
 
-  v9 = [v5 normalizedSearchString];
+  normalizedSearchString = [contextCopy normalizedSearchString];
   if (v8)
   {
-    v10 = v9 == 0;
+    v10 = normalizedSearchString == 0;
   }
 
   else
@@ -293,10 +293,10 @@ LABEL_39:
 
   else
   {
-    v12 = v9;
-    if ([v9 length] >= 4)
+    v12 = normalizedSearchString;
+    if ([normalizedSearchString length] >= 4)
     {
-      v13 = [v8 lowercaseString];
+      lowercaseString = [v8 lowercaseString];
       v14 = SSNormalizedQueryString();
 
       v37 = v12;
@@ -316,9 +316,9 @@ LABEL_39:
         v42 = 0;
         v43 = v16;
         v44 = *v56;
-        v39 = v6;
-        v40 = v5;
-        v38 = v7;
+        v39 = attributeSet;
+        v40 = contextCopy;
+        v38 = attributeDictionary;
         while (2)
         {
           v19 = 0;
@@ -399,9 +399,9 @@ LABEL_39:
               v16 = v43;
 
               v11 = 0;
-              v6 = v39;
-              v5 = v40;
-              v7 = v38;
+              attributeSet = v39;
+              contextCopy = v40;
+              attributeDictionary = v38;
               goto LABEL_43;
             }
 
@@ -414,9 +414,9 @@ LABEL_36:
           }
 
           while (v48 + 1 != v45);
-          v6 = v39;
-          v5 = v40;
-          v7 = v38;
+          attributeSet = v39;
+          contextCopy = v40;
+          attributeDictionary = v38;
           v45 = [v43 countByEnumeratingWithState:&v55 objects:v60 count:16];
           if (v45)
           {
@@ -443,13 +443,13 @@ LABEL_36:
       v11 = 3 * v17 <= 4 * v18;
 LABEL_43:
 
-      v9 = v37;
+      normalizedSearchString = v37;
     }
 
     else
     {
       v11 = 0;
-      v9 = v12;
+      normalizedSearchString = v12;
     }
   }
 
@@ -457,17 +457,17 @@ LABEL_43:
   return v11;
 }
 
-- (SPSearchCSResult)resultWithTime:(double)a3 searchString:(id)a4 isCorrectedQuery:(BOOL)a5 withQueryContext:(id)a6
+- (SPSearchCSResult)resultWithTime:(double)time searchString:(id)string isCorrectedQuery:(BOOL)query withQueryContext:(id)context
 {
-  v7 = a5;
+  queryCopy = query;
   v97 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = [v11 disabledApps];
-  v13 = [v12 count];
+  stringCopy = string;
+  contextCopy = context;
+  disabledApps = [contextCopy disabledApps];
+  v13 = [disabledApps count];
   if (v13)
   {
-    v13 = [MEMORY[0x277CBEB98] setWithArray:v12];
+    v13 = [MEMORY[0x277CBEB98] setWithArray:disabledApps];
   }
 
   clientData = self->_clientData;
@@ -477,27 +477,27 @@ LABEL_43:
     goto LABEL_82;
   }
 
-  v84 = v7;
+  v84 = queryCopy;
   v87 = v13;
   v90 = *&clientData[16].var0;
-  v86 = [v90 attributeSet];
-  v15 = [v86 attributeDictionary];
-  v91 = [v15 objectForKey:*MEMORY[0x277CC2500]];
-  v88 = [v15 objectForKey:*MEMORY[0x277CC3038]];
+  attributeSet = [v90 attributeSet];
+  attributeDictionary = [attributeSet attributeDictionary];
+  v91 = [attributeDictionary objectForKey:*MEMORY[0x277CC2500]];
+  v88 = [attributeDictionary objectForKey:*MEMORY[0x277CC3038]];
   v83 = *MEMORY[0x277CC2678];
-  v92 = [v15 objectForKey:?];
-  v85 = [v15 objectForKey:*MEMORY[0x277CC2ED8]];
+  v92 = [attributeDictionary objectForKey:?];
+  v85 = [attributeDictionary objectForKey:*MEMORY[0x277CC2ED8]];
   v82 = *MEMORY[0x277CC2640];
-  v16 = [v15 objectForKey:?];
+  v16 = [attributeDictionary objectForKey:?];
   [v16 timeIntervalSinceReferenceDate];
   v18 = v17;
-  v19 = [v15 objectForKey:*MEMORY[0x277CC2660]];
+  v19 = [attributeDictionary objectForKey:*MEMORY[0x277CC2660]];
   [v19 timeIntervalSinceReferenceDate];
   v21 = v20;
-  v22 = [v15 objectForKey:*MEMORY[0x277CC2440]];
+  v22 = [attributeDictionary objectForKey:*MEMORY[0x277CC2440]];
   [v22 timeIntervalSinceReferenceDate];
-  v89 = v10;
-  if ((v18 >= a3 || a3 - v18 >= 18000.0) && (v21 >= a3 || a3 - v21 >= 18000.0) && (v23 >= a3 || a3 - v23 >= 18000.0))
+  v89 = stringCopy;
+  if ((v18 >= time || time - v18 >= 18000.0) && (v21 >= time || time - v21 >= 18000.0) && (v23 >= time || time - v23 >= 18000.0))
   {
 
     if ([v91 isEqualToString:*MEMORY[0x277D4BEF0]] & 1) != 0 || (objc_msgSend(v91, "isEqualToString:", *MEMORY[0x277D4BEE8]) & 1) != 0 || (objc_msgSend(v91, "isEqualToString:", @"com.apple.MobileAddressBook"))
@@ -507,11 +507,11 @@ LABEL_43:
 
     else
     {
-      v80 = [v15 objectForKey:*MEMORY[0x277CC2D20]];
+      v80 = [attributeDictionary objectForKey:*MEMORY[0x277CC2D20]];
       v81 = v80;
-      if (v10 && [v80 hasPrefix:v10])
+      if (stringCopy && [v80 hasPrefix:stringCopy])
       {
-        if ([v81 isEqualToString:v10])
+        if ([v81 isEqualToString:stringCopy])
         {
           v27 = 2;
         }
@@ -572,12 +572,12 @@ LABEL_31:
       [v29 setTopHit:SSSetTopHitWithReasonString()];
     }
 
-    v10 = v89;
+    stringCopy = v89;
     if ([v92 isEqualToString:@"public.calendar-event"])
     {
-      v41 = [v29 title];
-      v42 = [v41 text];
-      [v29 setCompletedQuery:v42];
+      title = [v29 title];
+      text = [title text];
+      [v29 setCompletedQuery:text];
     }
 
     if (v39)
@@ -586,7 +586,7 @@ LABEL_31:
       v43 = *MEMORY[0x277D4BF50];
       if (os_log_type_enabled(v29, ((*MEMORY[0x277D4BF50] & 1) == 0)))
       {
-        v44 = [v15 objectForKey:*MEMORY[0x277CC3208]];
+        v44 = [attributeDictionary objectForKey:*MEMORY[0x277CC3208]];
         *buf = 138412546;
         v94 = v44;
         v95 = 2112;
@@ -599,29 +599,29 @@ LABEL_31:
       goto LABEL_81;
     }
 
-    v45 = [v29 compatibilityTitle];
-    if (!v45)
+    compatibilityTitle = [v29 compatibilityTitle];
+    if (!compatibilityTitle)
     {
-      v45 = [v29 bundleID];
-      if (([v45 isEqualToString:*MEMORY[0x277D65C18]] & 1) == 0)
+      compatibilityTitle = [v29 bundleID];
+      if (([compatibilityTitle isEqualToString:*MEMORY[0x277D65C18]] & 1) == 0)
       {
-        v46 = [v29 sectionBundleIdentifier];
+        sectionBundleIdentifier = [v29 sectionBundleIdentifier];
         if (!SSSectionIsSyndicatedPhotos())
         {
-          v75 = [v11 isSearchToolClient];
+          isSearchToolClient = [contextCopy isSearchToolClient];
 
-          if ((v75 & 1) == 0)
+          if ((isSearchToolClient & 1) == 0)
           {
             v76 = SPLogForSPLogCategoryDefault();
             v77 = *MEMORY[0x277D4BF50];
             if (os_log_type_enabled(v76, ((*MEMORY[0x277D4BF50] & 1) == 0)))
             {
-              v78 = [v29 identifier];
-              v79 = [v29 bundleID];
+              identifier = [v29 identifier];
+              bundleID = [v29 bundleID];
               *buf = 138412546;
-              v94 = v78;
+              v94 = identifier;
               v95 = 2112;
-              v96 = v79;
+              v96 = bundleID;
               _os_log_impl(&dword_26B71B000, v76, ((v77 & 1) == 0), "No title for CoreSpotlight result, identifier:%@, bundleID:%@", buf, 0x16u);
             }
 
@@ -633,7 +633,7 @@ LABEL_45:
           [v29 setUserInput:v89];
           if (![v29 type])
           {
-            v47 = [v15 objectForKey:*MEMORY[0x277CC3230]];
+            v47 = [attributeDictionary objectForKey:*MEMORY[0x277CC3230]];
             if (v47)
             {
               v48 = 4;
@@ -647,80 +647,80 @@ LABEL_45:
             [v29 setType:v48];
           }
 
-          v49 = [v15 objectForKey:*MEMORY[0x277CC2D20]];
+          v49 = [attributeDictionary objectForKey:*MEMORY[0x277CC2D20]];
           [v29 setLaunchString:v49];
 
           [v29 setRelatedBundleID:v88];
           [v29 setRelatedAppIdentifier:v88];
-          v50 = [v15 objectForKey:*MEMORY[0x277CC2FF8]];
+          v50 = [attributeDictionary objectForKey:*MEMORY[0x277CC2FF8]];
           [v29 setLaunchDates:v50];
 
-          v51 = [v15 objectForKey:*MEMORY[0x277CC2FD8]];
+          v51 = [attributeDictionary objectForKey:*MEMORY[0x277CC2FD8]];
           [v29 setItemProviderDataTypes:v51];
 
-          v52 = [v15 objectForKey:*MEMORY[0x277CC2FE0]];
+          v52 = [attributeDictionary objectForKey:*MEMORY[0x277CC2FE0]];
           [v29 setItemProviderFileTypes:v52];
 
           if ([v91 isEqualToString:*MEMORY[0x277D65D08]] || (objc_msgSend(v91, "hasPrefix:", @"com.apple") & 1) == 0 && objc_msgSend(MEMORY[0x277D65938], "isLowEngagementBundle:", v91))
           {
-            [v29 setHasTextContentMatch:[(SPSearchCSResult *)self doesQueryMatchContentForLowEngagementBundle:v90 queryContext:v11]];
+            [v29 setHasTextContentMatch:[(SPSearchCSResult *)self doesQueryMatchContentForLowEngagementBundle:v90 queryContext:contextCopy]];
           }
 
           else if (([v91 isEqualToString:*MEMORY[0x277D65C10]] & 1) == 0 && (objc_msgSend(v91, "isEqualToString:", *MEMORY[0x277D65BE0]) & 1) == 0)
           {
-            v53 = [v15 objectForKeyedSubscript:*MEMORY[0x277CC3370]];
+            v53 = [attributeDictionary objectForKeyedSubscript:*MEMORY[0x277CC3370]];
             [v29 setHasTextContentMatch:BOOLValueForAttr(v53)];
           }
 
-          v54 = [v29 contentType];
-          if (!v54 || (v55 = v54, [v29 contentTypeTree], v56 = objc_claimAutoreleasedReturnValue(), v56, v55, !v56))
+          contentType = [v29 contentType];
+          if (!contentType || (v55 = contentType, [v29 contentTypeTree], v56 = objc_claimAutoreleasedReturnValue(), v56, v55, !v56))
           {
-            v57 = [v15 objectForKey:v83];
+            v57 = [attributeDictionary objectForKey:v83];
             [v29 setContentType:v57];
 
-            v58 = [v15 objectForKey:*MEMORY[0x277CC2680]];
+            v58 = [attributeDictionary objectForKey:*MEMORY[0x277CC2680]];
             [v29 setContentTypeTree:v58];
           }
 
-          v59 = [v15 objectForKey:*MEMORY[0x277CC26E0]];
+          v59 = [attributeDictionary objectForKey:*MEMORY[0x277CC26E0]];
           -[NSObject setDataOwnerType:](v29, "setDataOwnerType:", [v59 integerValue]);
-          v60 = [v29 contentCreationDate];
+          contentCreationDate = [v29 contentCreationDate];
 
-          if (!v60)
+          if (!contentCreationDate)
           {
-            v61 = [v15 objectForKey:v82];
+            v61 = [attributeDictionary objectForKey:v82];
             [v29 setContentCreationDate:v61];
           }
 
           if (v84)
           {
-            v62 = [v11 searchString];
-            [v29 setCorrectedQuery:v62];
+            searchString = [contextCopy searchString];
+            [v29 setCorrectedQuery:searchString];
           }
 
-          v63 = [(SPSearchResult *)self rankingItem];
-          -[NSObject setQueryId:](v29, "setQueryId:", [v11 queryIdent]);
-          v64 = [v29 sectionBundleIdentifier];
-          if ([v64 isEqualToString:*MEMORY[0x277D65A00]])
+          rankingItem = [(SPSearchResult *)self rankingItem];
+          -[NSObject setQueryId:](v29, "setQueryId:", [contextCopy queryIdent]);
+          sectionBundleIdentifier2 = [v29 sectionBundleIdentifier];
+          if ([sectionBundleIdentifier2 isEqualToString:*MEMORY[0x277D65A00]])
           {
           }
 
           else
           {
-            v65 = [v29 sectionBundleIdentifier];
-            v66 = [v65 isEqualToString:*MEMORY[0x277D659F0]];
+            sectionBundleIdentifier3 = [v29 sectionBundleIdentifier];
+            v66 = [sectionBundleIdentifier3 isEqualToString:*MEMORY[0x277D659F0]];
 
             if (!v66)
             {
 LABEL_79:
-              [v29 setRankingItem:v63];
-              [v63 score];
+              [v29 setRankingItem:rankingItem];
+              [rankingItem score];
               [v29 setL2score:?];
-              v70 = [v11 answerAttributes];
-              v71 = [v70 copy];
+              answerAttributes = [contextCopy answerAttributes];
+              v71 = [answerAttributes copy];
               [v29 setAnswerAttributes:v71];
 
-              v72 = [v15 objectForKey:*MEMORY[0x277CC2BA0]];
+              v72 = [attributeDictionary objectForKey:*MEMORY[0x277CC2BA0]];
               [v29 setHasAppTopHitShortcut:BOOLValueForAttr(v72)];
 
               v38 = v90;
@@ -728,19 +728,19 @@ LABEL_79:
               v29 = v29;
 
               v37 = v29;
-              v10 = v89;
+              stringCopy = v89;
               goto LABEL_80;
             }
           }
 
-          if ([v63 didMatchRankingDescriptor:*MEMORY[0x277D65A88]] & 1) != 0 || (objc_msgSend(v63, "didMatchRankingDescriptor:", *MEMORY[0x277D65BB0]))
+          if ([rankingItem didMatchRankingDescriptor:*MEMORY[0x277D65A88]] & 1) != 0 || (objc_msgSend(rankingItem, "didMatchRankingDescriptor:", *MEMORY[0x277D65BB0]))
           {
             v67 = 0;
           }
 
           else
           {
-            v67 = [v63 didMatchRankingDescriptor:*MEMORY[0x277D65A68]];
+            v67 = [rankingItem didMatchRankingDescriptor:*MEMORY[0x277D65A68]];
           }
 
           [v29 setIsStaticCorrection:v67];
@@ -753,8 +753,8 @@ LABEL_79:
   }
 
   v29 = v28;
-  v30 = [v28 applicationBundleIdentifier];
-  v31 = [v87 containsObject:v30];
+  applicationBundleIdentifier = [v28 applicationBundleIdentifier];
+  v31 = [v87 containsObject:applicationBundleIdentifier];
 
   v32 = SPLogForSPLogCategoryDefault();
   v33 = v32;
@@ -773,10 +773,10 @@ LABEL_79:
   {
     if (v35)
     {
-      v68 = [v29 score];
+      score = [v29 score];
       [v29 score];
       *buf = 134218240;
-      v94 = v68;
+      v94 = score;
       v95 = 2048;
       v96 = v69;
       _os_log_impl(&dword_26B71B000, v33, v34, "Result score: 0x%08llx 0x%08llx", buf, 0x16u);
@@ -788,14 +788,14 @@ LABEL_79:
 
   if (v35)
   {
-    v36 = [v29 applicationBundleIdentifier];
+    applicationBundleIdentifier2 = [v29 applicationBundleIdentifier];
     *buf = 138412290;
-    v94 = v36;
+    v94 = applicationBundleIdentifier2;
     _os_log_impl(&dword_26B71B000, v33, v34, "disabledAppSet contains  %@", buf, 0xCu);
   }
 
   v37 = 0;
-  v10 = v89;
+  stringCopy = v89;
 LABEL_27:
   v38 = v90;
 LABEL_80:
@@ -810,23 +810,23 @@ LABEL_82:
   return v37;
 }
 
-- (void)populateAttributesForResult:(id)a3 withValues:(id)a4
+- (void)populateAttributesForResult:(id)result withValues:(id)values
 {
   v289[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v184 = [v6 attributeSet];
-  v7 = [v184 attributeDictionary];
+  resultCopy = result;
+  valuesCopy = values;
+  attributeSet = [valuesCopy attributeSet];
+  attributeDictionary = [attributeSet attributeDictionary];
   v182 = *MEMORY[0x277CC2C60];
-  v8 = [v7 objectForKeyedSubscript:?];
+  v8 = [attributeDictionary objectForKeyedSubscript:?];
   v161 = BOOLValueForAttr(v8);
 
   v163 = *MEMORY[0x277CC24F0];
-  v9 = [v7 objectForKeyedSubscript:?];
+  v9 = [attributeDictionary objectForKeyedSubscript:?];
   v160 = BOOLValueForAttr(v9);
 
   v162 = *MEMORY[0x277CC2B48];
-  v10 = [v7 objectForKey:?];
+  v10 = [attributeDictionary objectForKey:?];
   if (v10)
   {
     v11 = v10;
@@ -841,69 +841,69 @@ LABEL_82:
   }
 
   v150 = *MEMORY[0x277CC23B8];
-  v14 = [v7 objectForKey:?];
+  v14 = [attributeDictionary objectForKey:?];
   v147 = *MEMORY[0x277CC23D0];
-  v286 = [v7 objectForKey:?];
+  v286 = [attributeDictionary objectForKey:?];
   v152 = *MEMORY[0x277CC2408];
-  v15 = [v7 objectForKey:?];
+  v15 = [attributeDictionary objectForKey:?];
   v157 = *MEMORY[0x277CC2460];
-  v284 = [v7 objectForKey:?];
+  v284 = [attributeDictionary objectForKey:?];
   v155 = *MEMORY[0x277CC2478];
-  v283 = [v7 objectForKey:?];
+  v283 = [attributeDictionary objectForKey:?];
   v159 = *MEMORY[0x277CC2490];
-  v16 = [v7 objectForKey:?];
+  v16 = [attributeDictionary objectForKey:?];
   v156 = *MEMORY[0x277CC2498];
-  v281 = [v7 objectForKey:?];
+  v281 = [attributeDictionary objectForKey:?];
   v154 = *MEMORY[0x277CC24A0];
-  v280 = [v7 objectForKey:?];
+  v280 = [attributeDictionary objectForKey:?];
   v158 = *MEMORY[0x277CC24C0];
-  v279 = [v7 objectForKey:?];
+  v279 = [attributeDictionary objectForKey:?];
   v149 = *MEMORY[0x277CC24B0];
-  v278 = [v7 objectForKey:?];
+  v278 = [attributeDictionary objectForKey:?];
   v153 = *MEMORY[0x277CC24B8];
-  v277 = [v7 objectForKey:?];
+  v277 = [attributeDictionary objectForKey:?];
   v151 = *MEMORY[0x277CC24C8];
-  v276 = [v7 objectForKey:?];
+  v276 = [attributeDictionary objectForKey:?];
   v148 = *MEMORY[0x277CC24E0];
-  v275 = [v7 objectForKey:?];
+  v275 = [attributeDictionary objectForKey:?];
   v179 = *MEMORY[0x277CC2EB8];
-  v274 = [v7 objectForKey:?];
+  v274 = [attributeDictionary objectForKey:?];
   v180 = *MEMORY[0x277CC3180];
-  v17 = [v7 objectForKeyedSubscript:?];
+  v17 = [attributeDictionary objectForKeyedSubscript:?];
   v171 = BOOLValueForAttr(v17);
 
   v178 = *MEMORY[0x277CC2F28];
-  v273 = [v7 objectForKey:?];
+  v273 = [attributeDictionary objectForKey:?];
   v177 = *MEMORY[0x277CC2F38];
-  v272 = [v7 objectForKey:?];
+  v272 = [attributeDictionary objectForKey:?];
   v176 = *MEMORY[0x277CC2F40];
-  v271 = [v7 objectForKey:?];
+  v271 = [attributeDictionary objectForKey:?];
   v185 = *MEMORY[0x277CC2F50];
-  v270 = [v7 objectForKey:?];
+  v270 = [attributeDictionary objectForKey:?];
   v181 = *MEMORY[0x277CC2F80];
-  v269 = [v7 objectForKey:?];
+  v269 = [attributeDictionary objectForKey:?];
   v172 = *MEMORY[0x277CC2F78];
-  v268 = [v7 objectForKey:?];
+  v268 = [attributeDictionary objectForKey:?];
   v170 = *MEMORY[0x277CC2F68];
-  v267 = [v7 objectForKey:?];
+  v267 = [attributeDictionary objectForKey:?];
   v167 = *MEMORY[0x277CC2F70];
-  v266 = [v7 objectForKey:?];
+  v266 = [attributeDictionary objectForKey:?];
   v166 = *MEMORY[0x277CC2F60];
-  v265 = [v7 objectForKey:?];
+  v265 = [attributeDictionary objectForKey:?];
   v168 = *MEMORY[0x277CC2788];
-  v264 = [v7 objectForKey:?];
+  v264 = [attributeDictionary objectForKey:?];
   v169 = *MEMORY[0x277CC2FA8];
-  v263 = [v7 objectForKey:?];
+  v263 = [attributeDictionary objectForKey:?];
   v175 = *MEMORY[0x277CC3028];
-  v262 = [v7 objectForKey:?];
+  v262 = [attributeDictionary objectForKey:?];
   v174 = *MEMORY[0x277CC3018];
-  v261 = [v7 objectForKey:?];
+  v261 = [attributeDictionary objectForKey:?];
   v173 = *MEMORY[0x277CC3040];
-  v260 = [v7 objectForKey:?];
-  v18 = [v6 attributeSet];
+  v260 = [attributeDictionary objectForKey:?];
+  attributeSet2 = [valuesCopy attributeSet];
 
-  v19 = [v18 attributeDictionary];
-  v20 = [v19 objectForKey:*MEMORY[0x277CC3378]];
+  attributeDictionary2 = [attributeSet2 attributeDictionary];
+  v20 = [attributeDictionary2 objectForKey:*MEMORY[0x277CC3378]];
   v21 = v20;
   v287 = v14;
   v285 = v15;
@@ -975,194 +975,194 @@ LABEL_18:
 
 LABEL_19:
   v145 = *MEMORY[0x277CC3078];
-  v258 = [v7 objectForKey:?];
+  v258 = [attributeDictionary objectForKey:?];
   v144 = *MEMORY[0x277CC30A0];
-  v256 = [v7 objectForKey:?];
+  v256 = [attributeDictionary objectForKey:?];
   v143 = *MEMORY[0x277CC3098];
-  v257 = [v7 objectForKey:?];
+  v257 = [attributeDictionary objectForKey:?];
   v146 = *MEMORY[0x277CC3220];
-  v219 = [v7 objectForKey:?];
+  v219 = [attributeDictionary objectForKey:?];
   v142 = *MEMORY[0x277CC30B0];
-  v255 = [v7 objectForKey:?];
+  v255 = [attributeDictionary objectForKey:?];
   v141 = *MEMORY[0x277CC3088];
-  v254 = [v7 objectForKey:?];
+  v254 = [attributeDictionary objectForKey:?];
   v140 = *MEMORY[0x277CC30A8];
-  v253 = [v7 objectForKey:?];
+  v253 = [attributeDictionary objectForKey:?];
   v139 = *MEMORY[0x277CC3080];
-  v252 = [v7 objectForKey:?];
+  v252 = [attributeDictionary objectForKey:?];
   v138 = *MEMORY[0x277CC30B8];
-  v251 = [v7 objectForKey:?];
+  v251 = [attributeDictionary objectForKey:?];
   v137 = *MEMORY[0x277CC30D0];
-  v250 = [v7 objectForKey:?];
+  v250 = [attributeDictionary objectForKey:?];
   v136 = *MEMORY[0x277CC30C0];
-  v249 = [v7 objectForKey:?];
+  v249 = [attributeDictionary objectForKey:?];
   v135 = *MEMORY[0x277CC3090];
-  v248 = [v7 objectForKey:?];
+  v248 = [attributeDictionary objectForKey:?];
   v134 = *MEMORY[0x277CC30F8];
-  v241 = [v7 objectForKey:?];
+  v241 = [attributeDictionary objectForKey:?];
   v128 = *MEMORY[0x277CC25E0];
-  v247 = [v7 objectForKey:?];
+  v247 = [attributeDictionary objectForKey:?];
   v129 = *MEMORY[0x277CC2640];
-  v246 = [v7 objectForKey:?];
+  v246 = [attributeDictionary objectForKey:?];
   v130 = *MEMORY[0x277CC2778];
-  v245 = [v7 objectForKey:?];
+  v245 = [attributeDictionary objectForKey:?];
   v121 = *MEMORY[0x277CC27A0];
-  v244 = [v7 objectForKey:?];
+  v244 = [attributeDictionary objectForKey:?];
   v119 = *MEMORY[0x277CC2A70];
-  v243 = [v7 objectForKey:?];
-  v165 = [v7 objectForKey:*MEMORY[0x277CC2D10]];
+  v243 = [attributeDictionary objectForKey:?];
+  v165 = [attributeDictionary objectForKey:*MEMORY[0x277CC2D10]];
   v131 = *MEMORY[0x277CC2660];
-  v242 = [v7 objectForKey:?];
-  v164 = [v7 objectForKey:*MEMORY[0x277CC30F0]];
+  v242 = [attributeDictionary objectForKey:?];
+  v164 = [attributeDictionary objectForKey:*MEMORY[0x277CC30F0]];
   v133 = *MEMORY[0x277CC3128];
-  v217 = [v7 objectForKey:?];
+  v217 = [attributeDictionary objectForKey:?];
   v69 = *MEMORY[0x277CC2458];
-  v240 = [v7 objectForKey:?];
+  v240 = [attributeDictionary objectForKey:?];
   v65 = *MEMORY[0x277CC2450];
-  v239 = [v7 objectForKey:?];
+  v239 = [attributeDictionary objectForKey:?];
   v86 = *MEMORY[0x277CC24E8];
-  v238 = [v7 objectForKey:?];
+  v238 = [attributeDictionary objectForKey:?];
   v105 = *MEMORY[0x277CC2780];
-  v237 = [v7 objectForKey:?];
+  v237 = [attributeDictionary objectForKey:?];
   v110 = *MEMORY[0x277CC2D18];
-  v236 = [v7 objectForKey:?];
+  v236 = [attributeDictionary objectForKey:?];
   v107 = *MEMORY[0x277CC2D50];
-  v235 = [v7 objectForKey:?];
+  v235 = [attributeDictionary objectForKey:?];
   v109 = *MEMORY[0x277CC3178];
-  v26 = [v7 objectForKeyedSubscript:?];
+  v26 = [attributeDictionary objectForKeyedSubscript:?];
   v103 = BOOLValueForAttr(v26);
 
   v132 = *MEMORY[0x277CC3120];
-  v234 = [v7 objectForKey:?];
+  v234 = [attributeDictionary objectForKey:?];
   v27 = *MEMORY[0x277CC23F8];
-  v28 = [v7 objectForKey:*MEMORY[0x277CC23F8]];
+  v28 = [attributeDictionary objectForKey:*MEMORY[0x277CC23F8]];
   v58 = *MEMORY[0x277CC2480];
-  v233 = [v7 objectForKey:?];
+  v233 = [attributeDictionary objectForKey:?];
   v60 = *MEMORY[0x277CC2520];
-  v232 = [v7 objectForKey:?];
+  v232 = [attributeDictionary objectForKey:?];
   v67 = *MEMORY[0x277CC25F0];
-  v231 = [v7 objectForKey:?];
+  v231 = [attributeDictionary objectForKey:?];
   v66 = *MEMORY[0x277CC2630];
-  v230 = [v7 objectForKey:?];
+  v230 = [attributeDictionary objectForKey:?];
   v59 = *MEMORY[0x277CC2688];
-  v229 = [v7 objectForKey:?];
+  v229 = [attributeDictionary objectForKey:?];
   v63 = *MEMORY[0x277CC2750];
-  v228 = [v7 objectForKey:?];
+  v228 = [attributeDictionary objectForKey:?];
   v61 = *MEMORY[0x277CC2760];
-  v227 = [v7 objectForKey:?];
+  v227 = [attributeDictionary objectForKey:?];
   v64 = *MEMORY[0x277CC2BD8];
-  v226 = [v7 objectForKey:?];
+  v226 = [attributeDictionary objectForKey:?];
   v62 = *MEMORY[0x277CC2CF0];
-  v225 = [v7 objectForKey:?];
+  v225 = [attributeDictionary objectForKey:?];
   v71 = *MEMORY[0x277CC2DB8];
-  v224 = [v7 objectForKey:?];
+  v224 = [attributeDictionary objectForKey:?];
   v70 = *MEMORY[0x277CC2DD0];
-  v223 = [v7 objectForKey:?];
+  v223 = [attributeDictionary objectForKey:?];
   v68 = *MEMORY[0x277CC2E88];
-  v222 = [v7 objectForKey:?];
+  v222 = [attributeDictionary objectForKey:?];
   v95 = *MEMORY[0x277CC2FE8];
-  v221 = [v7 objectForKey:?];
+  v221 = [attributeDictionary objectForKey:?];
   v96 = *MEMORY[0x277CC3008];
-  v220 = [v7 objectForKey:?];
+  v220 = [attributeDictionary objectForKey:?];
   v102 = *MEMORY[0x277CC3038];
-  v218 = [v7 objectForKey:?];
-  v215 = [v7 objectForKey:*MEMORY[0x277CC2670]];
+  v218 = [attributeDictionary objectForKey:?];
+  v215 = [attributeDictionary objectForKey:*MEMORY[0x277CC2670]];
   v124 = *MEMORY[0x277CC30E8];
-  v216 = [v7 objectForKey:?];
+  v216 = [attributeDictionary objectForKey:?];
   v127 = *MEMORY[0x277CC3140];
-  v214 = [v7 objectForKey:?];
+  v214 = [attributeDictionary objectForKey:?];
   v126 = *MEMORY[0x277CC31B8];
-  v213 = [v7 objectForKey:?];
+  v213 = [attributeDictionary objectForKey:?];
   v125 = *MEMORY[0x277CC31C0];
-  v212 = [v7 objectForKey:?];
+  v212 = [attributeDictionary objectForKey:?];
   v123 = *MEMORY[0x277CC31D0];
-  v211 = [v7 objectForKey:?];
+  v211 = [attributeDictionary objectForKey:?];
   v122 = *MEMORY[0x277CC31C8];
-  v210 = [v7 objectForKey:?];
+  v210 = [attributeDictionary objectForKey:?];
   v120 = *MEMORY[0x277CC31D8];
-  v209 = [v7 objectForKey:?];
+  v209 = [attributeDictionary objectForKey:?];
   v116 = *MEMORY[0x277CC31E0];
-  v208 = [v7 objectForKey:?];
+  v208 = [attributeDictionary objectForKey:?];
   v118 = *MEMORY[0x277CC26D8];
-  v207 = [v7 objectForKey:?];
+  v207 = [attributeDictionary objectForKey:?];
   v115 = *MEMORY[0x277CC31F0];
-  v206 = [v7 objectForKey:?];
+  v206 = [attributeDictionary objectForKey:?];
   v117 = *MEMORY[0x277CC3208];
-  v205 = [v7 objectForKey:?];
+  v205 = [attributeDictionary objectForKey:?];
   v114 = *MEMORY[0x277CC31F8];
-  v204 = [v7 objectForKey:?];
+  v204 = [attributeDictionary objectForKey:?];
   v113 = *MEMORY[0x277CC3230];
-  v203 = [v7 objectForKey:?];
+  v203 = [attributeDictionary objectForKey:?];
   v112 = *MEMORY[0x277CC3238];
-  v202 = [v7 objectForKey:?];
+  v202 = [attributeDictionary objectForKey:?];
   v111 = *MEMORY[0x277CC2678];
-  v29 = [v7 objectForKey:?];
+  v29 = [attributeDictionary objectForKey:?];
   v30 = *MEMORY[0x277CC2E08];
-  v31 = [v7 objectForKey:*MEMORY[0x277CC2E08]];
+  v31 = [attributeDictionary objectForKey:*MEMORY[0x277CC2E08]];
   v108 = *MEMORY[0x277CC2B98];
-  v201 = [v7 objectForKey:?];
+  v201 = [attributeDictionary objectForKey:?];
   v106 = *MEMORY[0x277CC2CF8];
-  v200 = [v7 objectForKey:?];
+  v200 = [attributeDictionary objectForKey:?];
   v104 = *MEMORY[0x277CC2B78];
-  v32 = [v7 objectForKey:?];
+  v32 = [attributeDictionary objectForKey:?];
   if (!v32)
   {
-    v32 = [v7 objectForKey:*MEMORY[0x277CC3308]];
+    v32 = [attributeDictionary objectForKey:*MEMORY[0x277CC3308]];
   }
 
   v199 = v32;
   v100 = *MEMORY[0x277CC3190];
-  v198 = [v7 objectForKey:?];
+  v198 = [attributeDictionary objectForKey:?];
   v99 = *MEMORY[0x277CC3188];
-  v197 = [v7 objectForKey:?];
+  v197 = [attributeDictionary objectForKey:?];
   v97 = *MEMORY[0x277CC2518];
-  v196 = [v7 objectForKey:?];
+  v196 = [attributeDictionary objectForKey:?];
   v94 = *MEMORY[0x277CC2EF0];
-  v195 = [v7 objectForKey:?];
+  v195 = [attributeDictionary objectForKey:?];
   v93 = *MEMORY[0x277CC2F08];
-  v194 = [v7 objectForKey:?];
+  v194 = [attributeDictionary objectForKey:?];
   v90 = *MEMORY[0x277CC2F00];
-  v193 = [v7 objectForKey:?];
+  v193 = [attributeDictionary objectForKey:?];
   v89 = *MEMORY[0x277CC2770];
-  v192 = [v7 objectForKey:?];
+  v192 = [attributeDictionary objectForKey:?];
   v101 = *MEMORY[0x277CC2668];
-  v33 = [v7 objectForKeyedSubscript:?];
+  v33 = [attributeDictionary objectForKeyedSubscript:?];
   v98 = BOOLValueForAttr(v33);
 
   v85 = *MEMORY[0x277CC25D8];
-  v191 = [v7 objectForKey:?];
+  v191 = [attributeDictionary objectForKey:?];
   v83 = *MEMORY[0x277CC2BA8];
-  v190 = [v7 objectForKey:?];
+  v190 = [attributeDictionary objectForKey:?];
   v80 = *MEMORY[0x277CC3058];
-  v189 = [v7 objectForKey:?];
+  v189 = [attributeDictionary objectForKey:?];
   v77 = *MEMORY[0x277CC3060];
-  v188 = [v7 objectForKey:?];
+  v188 = [attributeDictionary objectForKey:?];
   v92 = *MEMORY[0x277CC2DF0];
-  v34 = [v7 objectForKeyedSubscript:?];
+  v34 = [attributeDictionary objectForKeyedSubscript:?];
   v88 = BOOLValueForAttr(v34);
 
   v91 = *MEMORY[0x277CC2DE8];
-  v35 = [v7 objectForKeyedSubscript:?];
+  v35 = [attributeDictionary objectForKeyedSubscript:?];
   v87 = BOOLValueForAttr(v35);
 
   v73 = *MEMORY[0x277CC2DE0];
-  v187 = [v7 objectForKey:?];
+  v187 = [attributeDictionary objectForKey:?];
   v72 = *MEMORY[0x277CC2DD8];
-  v186 = [v7 objectForKey:?];
+  v186 = [attributeDictionary objectForKey:?];
   v84 = *MEMORY[0x277CC2EA8];
-  v81 = [v7 objectForKey:?];
+  v81 = [attributeDictionary objectForKey:?];
   v82 = *MEMORY[0x277CC2EA0];
-  v78 = [v7 objectForKey:?];
+  v78 = [attributeDictionary objectForKey:?];
   v79 = *MEMORY[0x277CC2EB0];
-  v75 = [v7 objectForKey:?];
+  v75 = [attributeDictionary objectForKey:?];
   v76 = *MEMORY[0x277CC30D8];
-  v74 = [v7 objectForKey:?];
-  v36 = [v5 contentType];
-  v37 = v5;
-  v38 = v36;
-  if (v36)
+  v74 = [attributeDictionary objectForKey:?];
+  contentType = [resultCopy contentType];
+  v37 = resultCopy;
+  v38 = contentType;
+  if (contentType)
   {
-    v39 = v36;
+    v39 = contentType;
   }
 
   else
@@ -1309,12 +1309,12 @@ LABEL_19:
   [v41 encodeObject:? withKey:?];
   [v41 encodeObject:? withKey:?];
   [v41 endDictionary];
-  v50 = [v41 data];
-  v51 = [v50 copy];
+  data = [v41 data];
+  v51 = [data copy];
   [v44 setAttributeData:v51];
 
-  v52 = [v44 lastUsedDate];
-  v53 = v52;
+  lastUsedDate = [v44 lastUsedDate];
+  v53 = lastUsedDate;
   if (v164)
   {
     v54 = v164;
@@ -1325,9 +1325,9 @@ LABEL_19:
     v54 = v165;
   }
 
-  if (v52)
+  if (lastUsedDate)
   {
-    v55 = v52;
+    v55 = lastUsedDate;
   }
 
   else

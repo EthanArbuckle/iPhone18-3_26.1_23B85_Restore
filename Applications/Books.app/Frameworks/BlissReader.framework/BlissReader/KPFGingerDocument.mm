@@ -1,6 +1,6 @@
 @interface KPFGingerDocument
 - (CGSize)showSize;
-- (KPFGingerDocument)initWithKPFBundle:(id)a3 kpfDictionary:(id)a4 drmContext:(id)a5;
+- (KPFGingerDocument)initWithKPFBundle:(id)bundle kpfDictionary:(id)dictionary drmContext:(id)context;
 - (NSMutableDictionary)slidesDictionary;
 - (NSString)documentPath;
 - (NSString)soundtrackPath;
@@ -11,18 +11,18 @@
 
 @implementation KPFGingerDocument
 
-- (KPFGingerDocument)initWithKPFBundle:(id)a3 kpfDictionary:(id)a4 drmContext:(id)a5
+- (KPFGingerDocument)initWithKPFBundle:(id)bundle kpfDictionary:(id)dictionary drmContext:(id)context
 {
   v11.receiver = self;
   v11.super_class = KPFGingerDocument;
   v8 = [(KPFGingerDocument *)&v11 init];
   if (v8)
   {
-    v8->mKPFBundle = a3;
-    v8->mDrmContext = a5;
-    v9 = a4;
-    v8->mKPFDictionary = v9;
-    v8->mSlideList = [(NSDictionary *)v9 objectForKey:@"slideList"];
+    v8->mKPFBundle = bundle;
+    v8->mDrmContext = context;
+    dictionaryCopy = dictionary;
+    v8->mKPFDictionary = dictionaryCopy;
+    v8->mSlideList = [(NSDictionary *)dictionaryCopy objectForKey:@"slideList"];
     v8->mSoundtrackDict = [(NSDictionary *)v8->mKPFDictionary objectForKey:@"soundtrack"];
     v8->mIsLooping = [-[NSDictionary objectForKey:](v8->mKPFDictionary objectForKey:{@"loopSlideshow", "BOOLValue"}];
     v8->mSlideHeight = [(NSDictionary *)v8->mKPFDictionary objectForKey:@"slideHeight"];
@@ -59,10 +59,10 @@
   }
 
   v5 = v4;
-  v6 = [(KPFGingerDocument *)self documentPath];
+  documentPath = [(KPFGingerDocument *)self documentPath];
   v7 = [v5 objectAtIndex:0];
 
-  return [(NSString *)v6 stringByAppendingPathComponent:v7];
+  return [(NSString *)documentPath stringByAppendingPathComponent:v7];
 }
 
 - (double)soundtrackVolume

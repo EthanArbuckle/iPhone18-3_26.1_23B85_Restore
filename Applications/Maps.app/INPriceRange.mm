@@ -1,5 +1,5 @@
 @interface INPriceRange
-+ (id)formattedStringForPriceValueWithAmount:(id)a3 currencyCode:(id)a4 showsCurrencySymbol:(BOOL)a5;
++ (id)formattedStringForPriceValueWithAmount:(id)amount currencyCode:(id)code showsCurrencySymbol:(BOOL)symbol;
 - (BOOL)_shouldCurrencySymbolGoAfterPrice;
 - (NSString)_maps_formattedStringWithDefaultShortFormatStrings;
 @end
@@ -20,47 +20,47 @@
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"From %@ [Ridesharing price range]" value:@"localized string not found" table:0];
 
-  v11 = [(INPriceRange *)self minimumPrice];
-  if (v11)
+  minimumPrice = [(INPriceRange *)self minimumPrice];
+  if (minimumPrice)
   {
-    v12 = v11;
-    v13 = [(INPriceRange *)self maximumPrice];
+    v12 = minimumPrice;
+    maximumPrice = [(INPriceRange *)self maximumPrice];
 
-    if (v13)
+    if (maximumPrice)
     {
       v42 = v6;
-      v14 = [(INPriceRange *)self minimumPrice];
-      v15 = [(INPriceRange *)self maximumPrice];
-      v16 = [v14 isEqual:v15];
+      minimumPrice2 = [(INPriceRange *)self minimumPrice];
+      maximumPrice2 = [(INPriceRange *)self maximumPrice];
+      v16 = [minimumPrice2 isEqual:maximumPrice2];
 
       if (v16)
       {
         v17 = [NSString alloc];
         v18 = objc_opt_class();
-        v19 = [(INPriceRange *)self minimumPrice];
-        v20 = [(INPriceRange *)self currencyCode];
-        v21 = [v18 formattedStringForPriceValueWithAmount:v19 currencyCode:v20 showsCurrencySymbol:1];
+        minimumPrice3 = [(INPriceRange *)self minimumPrice];
+        currencyCode = [(INPriceRange *)self currencyCode];
+        v21 = [v18 formattedStringForPriceValueWithAmount:minimumPrice3 currencyCode:currencyCode showsCurrencySymbol:1];
         v22 = [v17 initWithFormat:v4, v21];
         v6 = v42;
       }
 
       else
       {
-        v30 = [(INPriceRange *)self _shouldCurrencySymbolGoAfterPrice];
+        _shouldCurrencySymbolGoAfterPrice = [(INPriceRange *)self _shouldCurrencySymbolGoAfterPrice];
         v40 = [NSString alloc];
         v31 = objc_opt_class();
-        v19 = [(INPriceRange *)self minimumPrice];
-        v20 = [(INPriceRange *)self currencyCode];
-        v21 = [v31 formattedStringForPriceValueWithAmount:v19 currencyCode:v20 showsCurrencySymbol:v30 ^ 1];
+        minimumPrice3 = [(INPriceRange *)self minimumPrice];
+        currencyCode = [(INPriceRange *)self currencyCode];
+        v21 = [v31 formattedStringForPriceValueWithAmount:minimumPrice3 currencyCode:currencyCode showsCurrencySymbol:_shouldCurrencySymbolGoAfterPrice ^ 1];
         v41 = v10;
         v32 = v8;
         v33 = v4;
         v34 = objc_opt_class();
-        v35 = [(INPriceRange *)self maximumPrice];
-        v36 = [(INPriceRange *)self currencyCode];
+        maximumPrice3 = [(INPriceRange *)self maximumPrice];
+        currencyCode2 = [(INPriceRange *)self currencyCode];
         v37 = v34;
         v4 = v33;
-        v38 = [v37 formattedStringForPriceValueWithAmount:v35 currencyCode:v36 showsCurrencySymbol:v30];
+        v38 = [v37 formattedStringForPriceValueWithAmount:maximumPrice3 currencyCode:currencyCode2 showsCurrencySymbol:_shouldCurrencySymbolGoAfterPrice];
         v22 = [v40 initWithFormat:v42, v21, v38];
 
         v6 = v42;
@@ -72,15 +72,15 @@
     }
   }
 
-  v23 = [(INPriceRange *)self minimumPrice];
+  minimumPrice4 = [(INPriceRange *)self minimumPrice];
 
-  if (v23)
+  if (minimumPrice4)
   {
     v24 = [NSString alloc];
     v25 = objc_opt_class();
-    v19 = [(INPriceRange *)self minimumPrice];
-    v20 = [(INPriceRange *)self currencyCode];
-    v21 = [v25 formattedStringForPriceValueWithAmount:v19 currencyCode:v20 showsCurrencySymbol:1];
+    minimumPrice3 = [(INPriceRange *)self minimumPrice];
+    currencyCode = [(INPriceRange *)self currencyCode];
+    v21 = [v25 formattedStringForPriceValueWithAmount:minimumPrice3 currencyCode:currencyCode showsCurrencySymbol:1];
     v26 = [v24 initWithFormat:v10, v21];
 LABEL_9:
     v22 = v26;
@@ -89,15 +89,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v27 = [(INPriceRange *)self maximumPrice];
+  maximumPrice4 = [(INPriceRange *)self maximumPrice];
 
-  if (v27)
+  if (maximumPrice4)
   {
     v28 = [NSString alloc];
     v29 = objc_opt_class();
-    v19 = [(INPriceRange *)self maximumPrice];
-    v20 = [(INPriceRange *)self currencyCode];
-    v21 = [v29 formattedStringForPriceValueWithAmount:v19 currencyCode:v20 showsCurrencySymbol:1];
+    minimumPrice3 = [(INPriceRange *)self maximumPrice];
+    currencyCode = [(INPriceRange *)self currencyCode];
+    v21 = [v29 formattedStringForPriceValueWithAmount:minimumPrice3 currencyCode:currencyCode showsCurrencySymbol:1];
     v26 = [v28 initWithFormat:v8, v21];
     goto LABEL_9;
   }
@@ -110,13 +110,13 @@ LABEL_12:
 
 - (BOOL)_shouldCurrencySymbolGoAfterPrice
 {
-  v3 = [(INPriceRange *)self minimumPrice];
+  minimumPrice = [(INPriceRange *)self minimumPrice];
 
-  if (v3)
+  if (minimumPrice)
   {
     v4 = +[NSLocale autoupdatingCurrentLocale];
-    v5 = [(INPriceRange *)self currencyCode];
-    v6 = [v4 displayNameForKey:NSLocaleCurrencySymbol value:v5];
+    currencyCode = [(INPriceRange *)self currencyCode];
+    v6 = [v4 displayNameForKey:NSLocaleCurrencySymbol value:currencyCode];
 
     if (qword_10195CF60 != -1)
     {
@@ -124,11 +124,11 @@ LABEL_12:
     }
 
     v7 = qword_10195CF58;
-    v8 = [(INPriceRange *)self minimumPrice];
-    v9 = [v7 stringFromNumber:v8];
+    minimumPrice2 = [(INPriceRange *)self minimumPrice];
+    v9 = [v7 stringFromNumber:minimumPrice2];
 
-    LOBYTE(v8) = [v9 hasSuffix:v6];
-    return v8;
+    LOBYTE(minimumPrice2) = [v9 hasSuffix:v6];
+    return minimumPrice2;
   }
 
   else
@@ -149,12 +149,12 @@ LABEL_12:
   }
 }
 
-+ (id)formattedStringForPriceValueWithAmount:(id)a3 currencyCode:(id)a4 showsCurrencySymbol:(BOOL)a5
++ (id)formattedStringForPriceValueWithAmount:(id)amount currencyCode:(id)code showsCurrencySymbol:(BOOL)symbol
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  if (![v7 isEqualToString:@"CNY"])
+  symbolCopy = symbol;
+  codeCopy = code;
+  amountCopy = amount;
+  if (![codeCopy isEqualToString:@"CNY"])
   {
     if (qword_10195CF60 != -1)
     {
@@ -162,8 +162,8 @@ LABEL_12:
     }
 
     v12 = qword_10195CF58;
-    [v12 setCurrencyCode:v7];
-    if (v5)
+    [v12 setCurrencyCode:codeCopy];
+    if (symbolCopy)
     {
       v13 = 0;
     }
@@ -174,7 +174,7 @@ LABEL_12:
     }
 
     [v12 setCurrencySymbol:v13];
-    v10 = [v12 stringFromNumber:v8];
+    v10 = [v12 stringFromNumber:amountCopy];
 
     goto LABEL_16;
   }
@@ -184,7 +184,7 @@ LABEL_12:
     dispatch_once(&qword_10195CF50, &stru_1016268E8);
   }
 
-  if (v5)
+  if (symbolCopy)
   {
     v9 = 0;
   }
@@ -195,15 +195,15 @@ LABEL_12:
   }
 
   [qword_10195CF48 setCurrencySymbol:v9];
-  v10 = [qword_10195CF48 stringFromNumber:v8];
+  v10 = [qword_10195CF48 stringFromNumber:amountCopy];
 
-  if (v5)
+  if (symbolCopy)
   {
     v15 = 0;
-    v8 = [NSRegularExpression regularExpressionWithPattern:@"([￥¥])(\\s*)" options:0 error:&v15];
+    amountCopy = [NSRegularExpression regularExpressionWithPattern:@"([￥¥])(\\s*)" options:0 error:&v15];
     if (!v15)
     {
-      v11 = [v8 stringByReplacingMatchesInString:v10 options:0 range:0 withTemplate:{objc_msgSend(v10, "length"), @"⁠¥"}];
+      v11 = [amountCopy stringByReplacingMatchesInString:v10 options:0 range:0 withTemplate:{objc_msgSend(v10, "length"), @"⁠¥"}];
 
       v10 = v11;
     }

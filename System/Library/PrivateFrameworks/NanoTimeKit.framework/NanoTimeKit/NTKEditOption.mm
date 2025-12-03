@@ -1,26 +1,26 @@
 @interface NTKEditOption
-+ (CGSize)sizeForSwatchStyle:(int64_t)a3;
++ (CGSize)sizeForSwatchStyle:(int64_t)style;
 - (BOOL)isValidOption;
 - (NSString)dailySnapshotKey;
 - (NSString)localizedName;
-- (NTKEditOption)initWithCoder:(id)a3;
-- (NTKEditOption)initWithDevice:(id)a3;
-- (NTKEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
+- (NTKEditOption)initWithCoder:(id)coder;
+- (NTKEditOption)initWithDevice:(id)device;
+- (NTKEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
 - (id)JSONObjectRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKEditOption
 
-+ (CGSize)sizeForSwatchStyle:(int64_t)a3
++ (CGSize)sizeForSwatchStyle:(int64_t)style
 {
   v3 = 0.0;
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (a3)
+    if (style)
     {
       v4 = 0.0;
-      if (a3 == 1)
+      if (style == 1)
       {
         if (_largeCircleSwatchSize_onceToken != -1)
         {
@@ -44,12 +44,12 @@
     }
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     v4 = _smallRectSwatchSize();
   }
 
-  else if (a3 == 3)
+  else if (style == 3)
   {
     v4 = _largeRectSwatchSize();
   }
@@ -57,7 +57,7 @@
   else
   {
     v4 = 0.0;
-    if (a3 == 4)
+    if (style == 4)
     {
       if (_shortLargeRectSwatchSize_onceToken != -1)
       {
@@ -74,33 +74,33 @@
   return result;
 }
 
-- (NTKEditOption)initWithDevice:(id)a3
+- (NTKEditOption)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKEditOption;
   v6 = [(NTKEditOption *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   device = self->_device;
-  v4 = a3;
-  v5 = [(CLKDevice *)device pairingID];
-  [v4 encodeObject:v5 forKey:@"DeviceUUIDKey"];
+  coderCopy = coder;
+  pairingID = [(CLKDevice *)device pairingID];
+  [coderCopy encodeObject:pairingID forKey:@"DeviceUUIDKey"];
 }
 
-- (NTKEditOption)initWithCoder:(id)a3
+- (NTKEditOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceUUIDKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceUUIDKey"];
 
   v6 = [MEMORY[0x277CBBAE8] deviceForPairingID:v5];
   v7 = [(NTKEditOption *)self initWithDevice:v6];
@@ -129,7 +129,7 @@
   return 0;
 }
 
-- (NTKEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_5();

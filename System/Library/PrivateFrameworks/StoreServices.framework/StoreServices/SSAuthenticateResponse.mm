@@ -1,7 +1,7 @@
 @interface SSAuthenticateResponse
 - (NSError)error;
 - (NSString)description;
-- (SSAuthenticateResponse)initWithXPCEncoding:(id)a3;
+- (SSAuthenticateResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
@@ -9,26 +9,26 @@
 
 - (NSError)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_error;
-  v4 = [(NSError *)v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E698C780]];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_error;
+  domain = [(NSError *)v3 domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E698C780]];
 
   if (v5)
   {
     if ([(NSError *)v3 code]== 5001)
     {
       v6 = MEMORY[0x1E696ABC0];
-      v7 = [(NSError *)v3 userInfo];
-      v8 = [v6 errorWithDomain:@"SSServerErrorDomain" code:5001 userInfo:v7];
+      userInfo = [(NSError *)v3 userInfo];
+      v8 = [v6 errorWithDomain:@"SSServerErrorDomain" code:5001 userInfo:userInfo];
     }
 
     else if ([(NSError *)v3 code]== 5304)
     {
       v9 = MEMORY[0x1E696ABC0];
-      v7 = [(NSError *)v3 userInfo];
-      v8 = [v9 errorWithDomain:@"SSServerErrorDomain" code:5304 userInfo:v7];
+      userInfo = [(NSError *)v3 userInfo];
+      v8 = [v9 errorWithDomain:@"SSServerErrorDomain" code:5304 userInfo:userInfo];
     }
 
     else
@@ -39,8 +39,8 @@
       }
 
       v10 = MEMORY[0x1E696ABC0];
-      v7 = [(NSError *)v3 userInfo];
-      v8 = [v10 errorWithDomain:@"SSServerErrorDomain" code:-5000 userInfo:v7];
+      userInfo = [(NSError *)v3 userInfo];
+      v8 = [v10 errorWithDomain:@"SSServerErrorDomain" code:-5000 userInfo:userInfo];
     }
 
     v11 = v8;
@@ -49,31 +49,31 @@
   }
 
 LABEL_9:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v9.receiver = self;
   v9.super_class = SSAuthenticateResponse;
   v4 = [(SSAuthenticateResponse *)&v9 description];
-  [v3 appendFormat:@"%@:\n", v4];
+  [string appendFormat:@"%@:\n", v4];
 
-  v5 = [(SSAuthenticateResponse *)self authenticatedAccount];
-  [v3 appendFormat:@"  authenticatedAccount = %@\n", v5];
+  authenticatedAccount = [(SSAuthenticateResponse *)self authenticatedAccount];
+  [string appendFormat:@"  authenticatedAccount = %@\n", authenticatedAccount];
 
-  [v3 appendFormat:@"  authenticateResponseType = %ld\n", -[SSAuthenticateResponse authenticateResponseType](self, "authenticateResponseType")];
-  [v3 appendFormat:@"  credentialSource = %ld\n", -[SSAuthenticateResponse credentialSource](self, "credentialSource")];
-  v6 = [(SSAuthenticateResponse *)self error];
-  [v3 appendFormat:@"  error = %@\n", v6];
+  [string appendFormat:@"  authenticateResponseType = %ld\n", -[SSAuthenticateResponse authenticateResponseType](self, "authenticateResponseType")];
+  [string appendFormat:@"  credentialSource = %ld\n", -[SSAuthenticateResponse credentialSource](self, "credentialSource")];
+  error = [(SSAuthenticateResponse *)self error];
+  [string appendFormat:@"  error = %@\n", error];
 
-  v7 = [(SSAuthenticateResponse *)self responseDictionary];
-  [v3 appendFormat:@"  responseDictionary = %@", v7];
+  responseDictionary = [(SSAuthenticateResponse *)self responseDictionary];
+  [string appendFormat:@"  responseDictionary = %@", responseDictionary];
 
-  return v3;
+  return string;
 }
 
 - (id)copyXPCEncoding
@@ -87,11 +87,11 @@ LABEL_9:
   return v3;
 }
 
-- (SSAuthenticateResponse)initWithXPCEncoding:(id)a3
+- (SSAuthenticateResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v19.receiver = self;
     v19.super_class = SSAuthenticateResponse;
@@ -120,15 +120,15 @@ LABEL_9:
     }
 
     self = v7;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

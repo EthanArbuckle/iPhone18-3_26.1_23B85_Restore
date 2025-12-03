@@ -1,21 +1,21 @@
 @interface MSASPlatformImplementation
 - (BOOL)MSASIsAllowedToTransferMetadata;
 - (BOOL)MSASIsAllowedToUploadAssets;
-- (BOOL)MSASPersonIDIsAllowedToDownloadAssets:(id)a3;
+- (BOOL)MSASPersonIDIsAllowedToDownloadAssets:(id)assets;
 - (BOOL)deviceHasEnoughDiskSpaceRemainingToOperate;
-- (BOOL)personIDEnabledForAlbumSharing:(id)a3;
-- (BOOL)personIDUsesProductionPushEnvironment:(id)a3;
+- (BOOL)personIDEnabledForAlbumSharing:(id)sharing;
+- (BOOL)personIDUsesProductionPushEnvironment:(id)environment;
 - (Class)pluginClass;
 - (MSASPlatformImplementation)init;
-- (id)MMCSDownloadSocketOptionsForPersonID:(id)a3;
-- (id)MMCSUploadSocketOptionsForPersonID:(id)a3;
-- (id)_accountForPersonID:(id)a3;
-- (id)baseSharingURLForPersonID:(id)a3;
+- (id)MMCSDownloadSocketOptionsForPersonID:(id)d;
+- (id)MMCSUploadSocketOptionsForPersonID:(id)d;
+- (id)_accountForPersonID:(id)d;
+- (id)baseSharingURLForPersonID:(id)d;
 - (id)pathAlbumSharingDir;
 - (id)personIDsEnabledForAlbumSharing;
-- (id)pushTokenForPersonID:(id)a3;
+- (id)pushTokenForPersonID:(id)d;
 - (int)MMCSConcurrentConnectionsCount;
-- (void)logLevel:(int)a3 personID:(id)a4 albumGUID:(id)a5 format:(id)a6;
+- (void)logLevel:(int)level personID:(id)d albumGUID:(id)iD format:(id)format;
 @end
 
 @implementation MSASPlatformImplementation
@@ -26,29 +26,29 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
-    NSLog(&cfstr_UsingUserDefin.isa, v4);
+    intValue = [v2 intValue];
+    NSLog(&cfstr_UsingUserDefin.isa, intValue);
   }
 
   else
   {
-    LODWORD(v4) = 6;
+    LODWORD(intValue) = 6;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)personIDsEnabledForAlbumSharing
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(MSASPlatformImplementation *)self accountStore];
-  v5 = [v4 accounts];
+  array = [MEMORY[0x277CBEB18] array];
+  accountStore = [(MSASPlatformImplementation *)self accountStore];
+  accounts = [accountStore accounts];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [accounts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -60,23 +60,23 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accounts);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 isEnabledForDataclass:v9])
         {
-          v12 = [v11 aa_personID];
+          aa_personID = [v11 aa_personID];
 
-          if (v12)
+          if (aa_personID)
           {
-            v13 = [v11 aa_personID];
-            [v3 addObject:v13];
+            aa_personID2 = [v11 aa_personID];
+            [array addObject:aa_personID2];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [accounts countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -84,12 +84,12 @@
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (BOOL)personIDEnabledForAlbumSharing:(id)a3
+- (BOOL)personIDEnabledForAlbumSharing:(id)sharing
 {
-  v3 = [(MSASPlatformImplementation *)self _accountForPersonID:a3];
+  v3 = [(MSASPlatformImplementation *)self _accountForPersonID:sharing];
   v4 = v3;
   if (v3)
   {
@@ -104,17 +104,17 @@
   return v5;
 }
 
-- (id)pushTokenForPersonID:(id)a3
+- (id)pushTokenForPersonID:(id)d
 {
   v3 = MSPlatform();
-  v4 = [v3 pushToken];
+  pushToken = [v3 pushToken];
 
-  return v4;
+  return pushToken;
 }
 
-- (BOOL)personIDUsesProductionPushEnvironment:(id)a3
+- (BOOL)personIDUsesProductionPushEnvironment:(id)environment
 {
-  v3 = [(MSASPlatformImplementation *)self _accountForPersonID:a3];
+  v3 = [(MSASPlatformImplementation *)self _accountForPersonID:environment];
   v4 = [v3 propertiesForDataclass:*MEMORY[0x277CB91B0]];
   v5 = [v4 objectForKey:@"apsEnv"];
   v6 = [v5 isEqualToString:@"production"];
@@ -122,30 +122,30 @@
   return v6;
 }
 
-- (id)_accountForPersonID:(id)a3
+- (id)_accountForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASPlatformImplementation *)self accountStore];
-  v6 = [v5 aa_appleAccountWithPersonID:v4];
+  dCopy = d;
+  accountStore = [(MSASPlatformImplementation *)self accountStore];
+  v6 = [accountStore aa_appleAccountWithPersonID:dCopy];
 
   return v6;
 }
 
-- (BOOL)MSASPersonIDIsAllowedToDownloadAssets:(id)a3
+- (BOOL)MSASPersonIDIsAllowedToDownloadAssets:(id)assets
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   if ([(MSASPlatformImplementation *)self deviceHasEnoughDiskSpaceRemainingToOperate])
   {
-    v5 = [(MSASPlatformImplementation *)self albumSharingDaemon];
-    v6 = [v5 isPersonIDAllowedToDownloadAssets:v4];
+    albumSharingDaemon = [(MSASPlatformImplementation *)self albumSharingDaemon];
+    v6 = [albumSharingDaemon isPersonIDAllowedToDownloadAssets:assetsCopy];
 
     if (v6)
     {
       v7 = +[MSPauseManager sharedManager];
-      v8 = [v7 isPaused];
+      isPaused = [v7 isPaused];
 
-      if (!v8)
+      if (!isPaused)
       {
         v12 = 1;
         goto LABEL_13;
@@ -166,7 +166,7 @@ LABEL_11:
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = assetsCopy;
       v9 = MEMORY[0x277D86220];
       v10 = "%@ is not allowed to download assets at this time.";
       v11 = 12;
@@ -194,9 +194,9 @@ LABEL_13:
   if ([(MSASPlatformImplementation *)self deviceHasEnoughDiskSpaceRemainingToOperate])
   {
     v2 = +[MSPauseManager sharedManager];
-    v3 = [v2 isPaused];
+    isPaused = [v2 isPaused];
 
-    if (!v3)
+    if (!isPaused)
     {
       LOBYTE(v4) = 1;
       return v4;
@@ -236,9 +236,9 @@ LABEL_7:
   if ([(MSASPlatformImplementation *)self deviceHasEnoughDiskSpaceRemainingToOperate])
   {
     v2 = +[MSPauseManager sharedManager];
-    v3 = [v2 isPaused];
+    isPaused = [v2 isPaused];
 
-    if (!v3)
+    if (!isPaused)
     {
       LOBYTE(v4) = 1;
       return v4;
@@ -273,23 +273,23 @@ LABEL_7:
   return v4;
 }
 
-- (id)MMCSUploadSocketOptionsForPersonID:(id)a3
+- (id)MMCSUploadSocketOptionsForPersonID:(id)d
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dCopy = d;
+  dictionary = [v3 dictionary];
   v6 = MSASPlatform();
-  v7 = [v6 albumSharingDaemon];
-  v8 = [v7 powerBudgetForPersonID:v4];
+  albumSharingDaemon = [v6 albumSharingDaemon];
+  v8 = [albumSharingDaemon powerBudgetForPersonID:dCopy];
 
   if (([v8 hasForegroundFocus] & 1) == 0)
   {
-    [v5 setObject:*MEMORY[0x277CBAD68] forKey:*MEMORY[0x277CBAD50]];
+    [dictionary setObject:*MEMORY[0x277CBAD68] forKey:*MEMORY[0x277CBAD50]];
   }
 
-  if ([v5 count])
+  if ([dictionary count])
   {
-    v9 = v5;
+    v9 = dictionary;
   }
 
   else
@@ -300,29 +300,29 @@ LABEL_7:
   return v9;
 }
 
-- (id)MMCSDownloadSocketOptionsForPersonID:(id)a3
+- (id)MMCSDownloadSocketOptionsForPersonID:(id)d
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dCopy = d;
+  dictionary = [v3 dictionary];
   v6 = MSASPlatform();
-  v7 = [v6 albumSharingDaemon];
-  v8 = [v7 powerBudgetForPersonID:v4];
+  albumSharingDaemon = [v6 albumSharingDaemon];
+  v8 = [albumSharingDaemon powerBudgetForPersonID:dCopy];
 
   if (([v8 hasForegroundFocus] & 1) == 0)
   {
-    [v5 setObject:*MEMORY[0x277CBAD68] forKey:*MEMORY[0x277CBAD50]];
+    [dictionary setObject:*MEMORY[0x277CBAD68] forKey:*MEMORY[0x277CBAD50]];
   }
 
   if (([v8 hasForegroundFocus] & 1) == 0 && (objc_msgSend(v8, "hasActiveTimers") & 1) == 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v5 setObject:v9 forKey:*MEMORY[0x277CBAE40]];
+    [dictionary setObject:v9 forKey:*MEMORY[0x277CBAE40]];
   }
 
-  if ([v5 count])
+  if ([dictionary count])
   {
-    v10 = v5;
+    v10 = dictionary;
   }
 
   else
@@ -489,12 +489,12 @@ uint64_t __72__MSASPlatformImplementation_deviceHasEnoughDiskSpaceRemainingToOpe
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)baseSharingURLForPersonID:(id)a3
+- (id)baseSharingURLForPersonID:(id)d
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
-  v6 = [v4 standardUserDefaults];
-  v7 = [v6 objectForKey:@"MSASForcedBaseURL"];
+  dCopy = d;
+  standardUserDefaults = [v4 standardUserDefaults];
+  v7 = [standardUserDefaults objectForKey:@"MSASForcedBaseURL"];
 
   if (v7)
   {
@@ -503,8 +503,8 @@ uint64_t __72__MSASPlatformImplementation_deviceHasEnoughDiskSpaceRemainingToOpe
 
   else
   {
-    v9 = [(MSASPlatformImplementation *)self accountStore];
-    v10 = [v9 aa_appleAccountWithPersonID:v5];
+    accountStore = [(MSASPlatformImplementation *)self accountStore];
+    v10 = [accountStore aa_appleAccountWithPersonID:dCopy];
 
     v11 = [v10 propertiesForDataclass:*MEMORY[0x277CB91B0]];
     v12 = [v11 objectForKey:@"url"];
@@ -512,20 +512,20 @@ uint64_t __72__MSASPlatformImplementation_deviceHasEnoughDiskSpaceRemainingToOpe
     v8 = [MEMORY[0x277CBEBC0] URLWithString:v12];
   }
 
-  v13 = [v8 URLByAppendingPathComponent:v5];
+  v13 = [v8 URLByAppendingPathComponent:dCopy];
 
   v14 = [v13 URLByAppendingPathComponent:@"sharedstreams"];
 
   return v14;
 }
 
-- (void)logLevel:(int)a3 personID:(id)a4 albumGUID:(id)a5 format:(id)a6
+- (void)logLevel:(int)level personID:(id)d albumGUID:(id)iD format:(id)format
 {
   v10 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = a6;
+    formatCopy = format;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unexpected call to legacy logging method, please switch to os_log(): %@", &v8, 0xCu);
   }
 

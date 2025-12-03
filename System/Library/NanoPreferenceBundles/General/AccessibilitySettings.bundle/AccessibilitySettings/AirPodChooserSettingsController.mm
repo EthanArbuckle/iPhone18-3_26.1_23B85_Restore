@@ -1,5 +1,5 @@
 @interface AirPodChooserSettingsController
-- (id)_deviceConnected:(id)a3;
+- (id)_deviceConnected:(id)connected;
 - (id)specifiers;
 @end
 
@@ -14,14 +14,14 @@
     v24 = *MEMORY[0x277D3FC48];
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = MEMORY[0x277D3FAD8];
-    v6 = [MEMORY[0x277CE7CF8] sharedInstance];
-    v7 = [v6 disambiguationString];
-    v8 = [v5 groupSpecifierWithName:v7];
+    mEMORY[0x277CE7CF8] = [MEMORY[0x277CE7CF8] sharedInstance];
+    disambiguationString = [mEMORY[0x277CE7CF8] disambiguationString];
+    v8 = [v5 groupSpecifierWithName:disambiguationString];
 
     v23 = v8;
     [v4 addObject:v8];
-    v9 = [(AirPodChooserSettingsController *)self specifier];
-    v10 = [v9 propertyForKey:@"AirPods"];
+    specifier = [(AirPodChooserSettingsController *)self specifier];
+    v10 = [specifier propertyForKey:@"AirPods"];
 
     v28 = 0u;
     v29 = 0u;
@@ -44,8 +44,8 @@
 
           v15 = *(*(&v26 + 1) + 8 * i);
           v16 = MEMORY[0x277D3FAD8];
-          v17 = [v15 name];
-          v18 = [v16 preferenceSpecifierNamed:v17 target:self set:0 get:sel__deviceConnected_ detail:objc_opt_class() cell:2 edit:0];
+          name = [v15 name];
+          v18 = [v16 preferenceSpecifierNamed:name target:self set:0 get:sel__deviceConnected_ detail:objc_opt_class() cell:2 edit:0];
 
           v30 = v15;
           v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
@@ -71,12 +71,12 @@
   return v3;
 }
 
-- (id)_deviceConnected:(id)a3
+- (id)_deviceConnected:(id)connected
 {
-  v3 = [a3 propertyForKey:@"AirPods"];
-  v4 = [v3 firstObject];
+  v3 = [connected propertyForKey:@"AirPods"];
+  firstObject = [v3 firstObject];
 
-  if ([v4 connected])
+  if ([firstObject connected])
   {
     v5 = AXAirPodsLocalizedStringForKey();
   }

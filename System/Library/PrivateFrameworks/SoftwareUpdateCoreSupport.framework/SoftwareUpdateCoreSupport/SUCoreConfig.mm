@@ -1,24 +1,24 @@
 @interface SUCoreConfig
-- (BOOL)getBoolConfigForKey:(id)a3 defaultValue:(BOOL)a4;
-- (SUCoreConfig)initWithProjectName:(id)a3;
-- (SUCoreConfig)initWithProjectName:(id)a3 defaultsPath:(id)a4;
+- (BOOL)getBoolConfigForKey:(id)key defaultValue:(BOOL)value;
+- (SUCoreConfig)initWithProjectName:(id)name;
+- (SUCoreConfig)initWithProjectName:(id)name defaultsPath:(id)path;
 - (id)description;
 - (id)getConfig;
-- (id)getNumberConfigForKey:(id)a3;
-- (id)getStringConfigForKey:(id)a3;
+- (id)getNumberConfigForKey:(id)key;
+- (id)getStringConfigForKey:(id)key;
 - (id)stateSafeGetConfig;
 - (void)clearConfig;
-- (void)setConfig:(id)a3 forKey:(id)a4;
-- (void)stateSafeSetConfig:(id)a3 forKey:(id)a4;
+- (void)setConfig:(id)config forKey:(id)key;
+- (void)stateSafeSetConfig:(id)config forKey:(id)key;
 @end
 
 @implementation SUCoreConfig
 
-- (SUCoreConfig)initWithProjectName:(id)a3
+- (SUCoreConfig)initWithProjectName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:@"SoftwareUpdateCore"] & 1) == 0)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && ([nameCopy isEqualToString:@"SoftwareUpdateCore"] & 1) == 0)
   {
     v6 = [@"/var/mobile/Library/Preferences/com.apple.SoftwareUpdateCore" stringByAppendingFormat:@".%@", v5];
   }
@@ -34,17 +34,17 @@
   return v8;
 }
 
-- (SUCoreConfig)initWithProjectName:(id)a3 defaultsPath:(id)a4
+- (SUCoreConfig)initWithProjectName:(id)name defaultsPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  pathCopy = path;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = +[SUCoreLog sharedLogger];
-    v16 = [v15 oslog];
+    oslog = [v15 oslog];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConfig initWithProjectName:defaultsPath:];
     }
@@ -56,16 +56,16 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = +[SUCoreLog sharedLogger];
-    v16 = [v17 oslog];
+    oslog = [v17 oslog];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConfig initWithProjectName:defaultsPath:];
     }
 
 LABEL_10:
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -75,8 +75,8 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_projectName, a3);
-    objc_storeStrong(&v10->_defaultsPath, a4);
+    objc_storeStrong(&v9->_projectName, name);
+    objc_storeStrong(&v10->_defaultsPath, path);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.SoftwareUpdateCore.SUCoreConfigAccessQueue", v11);
     accessQueue = v10->_accessQueue;
@@ -84,27 +84,27 @@ LABEL_10:
   }
 
   self = v10;
-  v14 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)stateSafeSetConfig:(id)a3 forKey:(id)a4
+- (void)stateSafeSetConfig:(id)config forKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_V2(v8);
+  configCopy = config;
+  keyCopy = key;
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!configCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v9 = [(SUCoreConfig *)self stateSafeGetConfig];
-      v10 = [v9 mutableCopy];
+      stateSafeGetConfig = [(SUCoreConfig *)self stateSafeGetConfig];
+      v10 = [stateSafeGetConfig mutableCopy];
       v11 = v10;
       if (v10)
       {
@@ -116,46 +116,46 @@ LABEL_11:
         v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
-      v14 = v12;
+      oslog3 = v12;
 
-      if (v6)
+      if (configCopy)
       {
-        [v14 setSafeObject:v6 forKey:v7];
+        [oslog3 setSafeObject:configCopy forKey:keyCopy];
       }
 
       else
       {
-        [v14 removeObjectForKey:v7];
+        [oslog3 removeObjectForKey:keyCopy];
       }
 
-      v15 = [(SUCoreConfig *)self defaultsPath];
+      defaultsPath = [(SUCoreConfig *)self defaultsPath];
 
-      if (v15)
+      if (defaultsPath)
       {
         v16 = MEMORY[0x1E695DFF8];
-        v17 = [(SUCoreConfig *)self defaultsPath];
-        v18 = [v16 fileURLWithPath:v17];
+        defaultsPath2 = [(SUCoreConfig *)self defaultsPath];
+        v18 = [v16 fileURLWithPath:defaultsPath2];
         v27 = 0;
-        v19 = [v14 writeToURL:v18 error:&v27];
-        v20 = v27;
+        v19 = [oslog3 writeToURL:v18 error:&v27];
+        oslog2 = v27;
 
         v21 = +[SUCoreLog sharedLogger];
-        v22 = [v21 oslog];
+        oslog = [v21 oslog];
 
         if (v19)
         {
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [(SUCoreConfig *)self defaultsPath];
+            defaultsPath3 = [(SUCoreConfig *)self defaultsPath];
             *buf = 138543618;
-            v29 = v23;
+            v29 = defaultsPath3;
             v30 = 2114;
-            v31 = v14;
-            _os_log_impl(&dword_1E0F71000, v22, OS_LOG_TYPE_DEFAULT, "[SUCoreConfig] Successfully updated config at path '%{public}@': %{public}@", buf, 0x16u);
+            v31 = oslog3;
+            _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[SUCoreConfig] Successfully updated config at path '%{public}@': %{public}@", buf, 0x16u);
           }
         }
 
-        else if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        else if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
           [SUCoreConfig stateSafeSetConfig:forKey:];
         }
@@ -164,11 +164,11 @@ LABEL_11:
       else
       {
         v24 = +[SUCoreLog sharedLogger];
-        v20 = [v24 oslog];
+        oslog2 = [v24 oslog];
 
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
         {
-          [SUCoreConfig stateSafeSetConfig:v20 forKey:?];
+          [SUCoreConfig stateSafeSetConfig:oslog2 forKey:?];
         }
       }
     }
@@ -176,9 +176,9 @@ LABEL_11:
     else
     {
       v26 = +[SUCoreLog sharedLogger];
-      v14 = [v26 oslog];
+      oslog3 = [v26 oslog];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
         [SUCoreConfig stateSafeSetConfig:forKey:];
       }
@@ -188,9 +188,9 @@ LABEL_11:
   else
   {
     v13 = +[SUCoreLog sharedLogger];
-    v14 = [v13 oslog];
+    oslog3 = [v13 oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConfig stateSafeSetConfig:forKey:];
     }
@@ -201,40 +201,40 @@ LABEL_11:
 
 - (id)stateSafeGetConfig
 {
-  v3 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v4 = MEMORY[0x1E695DF20];
-  v5 = [(SUCoreConfig *)self defaultsPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  defaultsPath = [(SUCoreConfig *)self defaultsPath];
+  v6 = [v4 dictionaryWithContentsOfFile:defaultsPath];
 
   return v6;
 }
 
-- (void)setConfig:(id)a3 forKey:(id)a4
+- (void)setConfig:(id)config forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  configCopy = config;
+  keyCopy = key;
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v9 = [(SUCoreConfig *)self accessQueue];
+  accessQueue2 = [(SUCoreConfig *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__SUCoreConfig_setConfig_forKey___block_invoke;
   block[3] = &unk_1E86FC460;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v13 = configCopy;
+  v14 = keyCopy;
+  v10 = keyCopy;
+  v11 = configCopy;
+  dispatch_sync(accessQueue2, block);
 }
 
 - (id)getConfig
 {
-  v3 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_not_V2(v3);
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -242,14 +242,14 @@ LABEL_11:
   v11 = __Block_byref_object_copy__2;
   v12 = __Block_byref_object_dispose__2;
   v13 = 0;
-  v4 = [(SUCoreConfig *)self accessQueue];
+  accessQueue2 = [(SUCoreConfig *)self accessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__SUCoreConfig_getConfig__block_invoke;
   v7[3] = &unk_1E86FC1A0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(accessQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -269,16 +269,16 @@ uint64_t __25__SUCoreConfig_getConfig__block_invoke(uint64_t a1)
 
 - (void)clearConfig
 {
-  v3 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_not_V2(v3);
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v4 = [(SUCoreConfig *)self accessQueue];
+  accessQueue2 = [(SUCoreConfig *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__SUCoreConfig_clearConfig__block_invoke;
   block[3] = &unk_1E86FC178;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(accessQueue2, block);
 }
 
 void __27__SUCoreConfig_clearConfig__block_invoke(uint64_t a1)
@@ -340,27 +340,27 @@ void __27__SUCoreConfig_clearConfig__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getBoolConfigForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)getBoolConfigForKey:(id)key defaultValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_not_V2(v7);
+  keyCopy = key;
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = a4;
-  v8 = [(SUCoreConfig *)self accessQueue];
+  valueCopy = value;
+  accessQueue2 = [(SUCoreConfig *)self accessQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__SUCoreConfig_getBoolConfigForKey_defaultValue___block_invoke;
   v11[3] = &unk_1E86FC630;
-  v12 = v6;
+  v12 = keyCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v9 = v6;
-  dispatch_sync(v8, v11);
+  valueCopy2 = value;
+  v9 = keyCopy;
+  dispatch_sync(accessQueue2, v11);
 
   LOBYTE(self) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -373,11 +373,11 @@ void __49__SUCoreConfig_getBoolConfigForKey_defaultValue___block_invoke(uint64_t
   *(*(*(a1 + 48) + 8) + 24) = [v2 safeBooleanForKey:*(a1 + 40) defaultValue:*(a1 + 56)];
 }
 
-- (id)getStringConfigForKey:(id)a3
+- (id)getStringConfigForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  keyCopy = key;
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -385,16 +385,16 @@ void __49__SUCoreConfig_getBoolConfigForKey_defaultValue___block_invoke(uint64_t
   v16 = __Block_byref_object_copy__2;
   v17 = __Block_byref_object_dispose__2;
   v18 = 0;
-  v6 = [(SUCoreConfig *)self accessQueue];
+  accessQueue2 = [(SUCoreConfig *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__SUCoreConfig_getStringConfigForKey___block_invoke;
   block[3] = &unk_1E86FC658;
-  v11 = v4;
+  v11 = keyCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = keyCopy;
+  dispatch_sync(accessQueue2, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -411,11 +411,11 @@ void __38__SUCoreConfig_getStringConfigForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)getNumberConfigForKey:(id)a3
+- (id)getNumberConfigForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUCoreConfig *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  keyCopy = key;
+  accessQueue = [(SUCoreConfig *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -423,16 +423,16 @@ void __38__SUCoreConfig_getStringConfigForKey___block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__2;
   v17 = __Block_byref_object_dispose__2;
   v18 = 0;
-  v6 = [(SUCoreConfig *)self accessQueue];
+  accessQueue2 = [(SUCoreConfig *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__SUCoreConfig_getNumberConfigForKey___block_invoke;
   block[3] = &unk_1E86FC658;
-  v11 = v4;
+  v11 = keyCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = keyCopy;
+  dispatch_sync(accessQueue2, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -452,9 +452,9 @@ void __38__SUCoreConfig_getNumberConfigForKey___block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SUCoreConfig *)self projectName];
-  v5 = [(SUCoreConfig *)self defaultsPath];
-  v6 = [v3 stringWithFormat:@"SUCoreConfig(%@%@)", v4, v5];;
+  projectName = [(SUCoreConfig *)self projectName];
+  defaultsPath = [(SUCoreConfig *)self defaultsPath];
+  v6 = [v3 stringWithFormat:@"SUCoreConfig(%@%@)", projectName, defaultsPath];;
 
   return v6;
 }

@@ -1,57 +1,57 @@
 @interface TIDescriptorParser
-- (TIDescriptorParser)initWithErrorCode:(int64_t)a3;
-- (id)boxNilForValue:(id)a3;
-- (id)errorWithDetails:(id)a3;
-- (id)errorWithMessage:(id)a3;
-- (id)errorWithMessage:(id)a3 andValue:(id)a4;
-- (id)invalidDataTypeErrorForKey:(id)a3 withValue:(id)a4 dataType:(id)a5;
-- (id)invalidValueErrorForKey:(id)a3 withValue:(id)a4;
-- (id)missingValueErrorForKey:(id)a3;
-- (id)parseObjectForKey:(id)a3 fromConfig:(id)a4 required:(BOOL)a5 errors:(id)a6 validate:(id)a7;
+- (TIDescriptorParser)initWithErrorCode:(int64_t)code;
+- (id)boxNilForValue:(id)value;
+- (id)errorWithDetails:(id)details;
+- (id)errorWithMessage:(id)message;
+- (id)errorWithMessage:(id)message andValue:(id)value;
+- (id)invalidDataTypeErrorForKey:(id)key withValue:(id)value dataType:(id)type;
+- (id)invalidValueErrorForKey:(id)key withValue:(id)value;
+- (id)missingValueErrorForKey:(id)key;
+- (id)parseObjectForKey:(id)key fromConfig:(id)config required:(BOOL)required errors:(id)errors validate:(id)validate;
 @end
 
 @implementation TIDescriptorParser
 
-- (id)boxNilForValue:(id)a3
+- (id)boxNilForValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = v3;
+    null = valueCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v6 = v5;
+  v6 = null;
 
   return v6;
 }
 
-- (id)errorWithDetails:(id)a3
+- (id)errorWithDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v5 = objc_opt_new();
-  v6 = [(TIDescriptorParser *)self context];
-  [v5 addEntriesFromDictionary:v6];
+  context = [(TIDescriptorParser *)self context];
+  [v5 addEntriesFromDictionary:context];
 
-  [v5 addEntriesFromDictionary:v4];
+  [v5 addEntriesFromDictionary:detailsCopy];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TIDescriptorErrorDomain" code:-[TIDescriptorParser errorCode](self userInfo:{"errorCode"), v5}];
 
   return v7;
 }
 
-- (id)errorWithMessage:(id)a3 andValue:(id)a4
+- (id)errorWithMessage:(id)message andValue:(id)value
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TIDescriptorParser *)self boxNilForValue:a4];
+  messageCopy = message;
+  v7 = [(TIDescriptorParser *)self boxNilForValue:value];
   v12[0] = @"message";
   v12[1] = @"value";
-  v13[0] = v6;
+  v13[0] = messageCopy;
   v13[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
@@ -62,13 +62,13 @@
   return v9;
 }
 
-- (id)errorWithMessage:(id)a3
+- (id)errorWithMessage:(id)message
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"message";
-  v11[0] = a3;
+  v11[0] = message;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  messageCopy = message;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [(TIDescriptorParser *)self errorWithDetails:v6];
@@ -78,49 +78,49 @@
   return v7;
 }
 
-- (id)invalidDataTypeErrorForKey:(id)a3 withValue:(id)a4 dataType:(id)a5
+- (id)invalidDataTypeErrorForKey:(id)key withValue:(id)value dataType:(id)type
 {
   v8 = MEMORY[0x277CCACA8];
-  v9 = a4;
-  v10 = [v8 stringWithFormat:@"Key '%@' data type must be '%@'.", a3, a5];
-  v11 = [(TIDescriptorParser *)self errorWithMessage:v10 andValue:v9];
+  valueCopy = value;
+  type = [v8 stringWithFormat:@"Key '%@' data type must be '%@'.", key, type];
+  v11 = [(TIDescriptorParser *)self errorWithMessage:type andValue:valueCopy];
 
   return v11;
 }
 
-- (id)invalidValueErrorForKey:(id)a3 withValue:(id)a4
+- (id)invalidValueErrorForKey:(id)key withValue:(id)value
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [v6 stringWithFormat:@"Key '%@' value is invalid.", a3];
-  v9 = [(TIDescriptorParser *)self errorWithMessage:v8 andValue:v7];
+  valueCopy = value;
+  v8 = [v6 stringWithFormat:@"Key '%@' value is invalid.", key];
+  v9 = [(TIDescriptorParser *)self errorWithMessage:v8 andValue:valueCopy];
 
   return v9;
 }
 
-- (id)missingValueErrorForKey:(id)a3
+- (id)missingValueErrorForKey:(id)key
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Key '%@' is missing.", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Key '%@' is missing.", key];
   v5 = [(TIDescriptorParser *)self errorWithMessage:v4];
 
   return v5;
 }
 
-- (id)parseObjectForKey:(id)a3 fromConfig:(id)a4 required:(BOOL)a5 errors:(id)a6 validate:(id)a7
+- (id)parseObjectForKey:(id)key fromConfig:(id)config required:(BOOL)required errors:(id)errors validate:(id)validate
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [a4 objectForKey:v12];
+  requiredCopy = required;
+  keyCopy = key;
+  errorsCopy = errors;
+  validateCopy = validate;
+  v15 = [config objectForKey:keyCopy];
   if (v15)
   {
-    v16 = v14[2](v14, v15);
+    v16 = validateCopy[2](validateCopy, v15);
   }
 
   else
   {
-    if (!v9)
+    if (!requiredCopy)
     {
 LABEL_9:
       v18 = v15;
@@ -128,7 +128,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v16 = [(TIDescriptorParser *)self missingValueErrorForKey:v12];
+    v16 = [(TIDescriptorParser *)self missingValueErrorForKey:keyCopy];
   }
 
   v17 = v16;
@@ -137,9 +137,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v13)
+  if (errorsCopy)
   {
-    [v13 addObject:v16];
+    [errorsCopy addObject:v16];
   }
 
   v18 = 0;
@@ -260,7 +260,7 @@ id __67__TIDescriptorParser_parseStringForKey_fromConfig_required_errors___block
   return v4;
 }
 
-- (TIDescriptorParser)initWithErrorCode:(int64_t)a3
+- (TIDescriptorParser)initWithErrorCode:(int64_t)code
 {
   v9.receiver = self;
   v9.super_class = TIDescriptorParser;
@@ -268,7 +268,7 @@ id __67__TIDescriptorParser_parseStringForKey_fromConfig_required_errors___block
   v5 = v4;
   if (v4)
   {
-    v4->_errorCode = a3;
+    v4->_errorCode = code;
     v6 = objc_opt_new();
     context = v5->_context;
     v5->_context = v6;

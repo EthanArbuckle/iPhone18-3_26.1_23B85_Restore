@@ -1,22 +1,22 @@
 @interface ADAggregatedPointCloudRefiner
 - (ADAggregatedPointCloudRefiner)init;
-- (BOOL)isSpotPixelOccluded:(CGPoint)a3 prevSpotPixel:(CGPoint)a4;
-- (BOOL)prepareUsingPointCloud:(id)a3;
+- (BOOL)isSpotPixelOccluded:(CGPoint)occluded prevSpotPixel:(CGPoint)pixel;
+- (BOOL)prepareUsingPointCloud:(id)cloud;
 - (CGPoint)invalidSpotPixel;
-- (id)pointCloudByRemovingPeridotShortRangeOccludedPoints:(id)a3;
+- (id)pointCloudByRemovingPeridotShortRangeOccludedPoints:(id)points;
 - (void)clear;
 @end
 
 @implementation ADAggregatedPointCloudRefiner
 
-- (id)pointCloudByRemovingPeridotShortRangeOccludedPoints:(id)a3
+- (id)pointCloudByRemovingPeridotShortRangeOccludedPoints:(id)points
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  pointsCopy = points;
+  if (pointsCopy)
   {
-    v5 = v4;
-    v6 = [v4 pointCloudByApplyingFilter:self->_filter];
+    v5 = pointsCopy;
+    v6 = [pointsCopy pointCloudByApplyingFilter:self->_filter];
 
     if (self->_prepared || [(ADAggregatedPointCloudRefiner *)self prepareUsingPointCloud:v6])
     {
@@ -169,22 +169,22 @@
   return result;
 }
 
-- (BOOL)isSpotPixelOccluded:(CGPoint)a3 prevSpotPixel:(CGPoint)a4
+- (BOOL)isSpotPixelOccluded:(CGPoint)occluded prevSpotPixel:(CGPoint)pixel
 {
   if (self->_mainIterationCameraAxisIsY)
   {
-    a3.x = a3.y;
+    occluded.x = occluded.y;
   }
 
-  x = a3.x;
+  x = occluded.x;
   if (self->_mainIterationCameraAxisIsY)
   {
-    y = a4.y;
+    y = pixel.y;
   }
 
   else
   {
-    y = a4.x;
+    y = pixel.x;
   }
 
   v6 = y;
@@ -219,23 +219,23 @@
   self->_prepared = 0;
 }
 
-- (BOOL)prepareUsingPointCloud:(id)a3
+- (BOOL)prepareUsingPointCloud:(id)cloud
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  cloudCopy = cloud;
+  v5 = cloudCopy;
+  if (cloudCopy)
   {
-    v6 = [v4 pointCloudByApplyingFilter:self->_filter];
+    v6 = [cloudCopy pointCloudByApplyingFilter:self->_filter];
     v7 = [v6 length];
     v8 = v7 > 19;
     if (v7 > 19)
     {
-      v9 = [v6 bankIds];
-      v10 = [v6 spotIds];
+      bankIds = [v6 bankIds];
+      spotIds = [v6 spotIds];
       v11 = [v6 length];
       v35 = v8;
-      v36 = self;
+      selfCopy = self;
       if (v11)
       {
         v12 = 0;
@@ -247,20 +247,20 @@
         v18 = 0xFFFFFFFFLL;
         do
         {
-          v19 = *(v10 + v12);
-          v20 = *(v9 + v12);
+          v19 = *(spotIds + v12);
+          v20 = *(bankIds + v12);
           if (v14 > v19 || (v14 == v19 ? (v21 = v15 <= v20) : (v21 = 1), !v21))
           {
             v13 = v12;
-            v15 = *(v9 + v12);
-            v14 = *(v10 + v12);
+            v15 = *(bankIds + v12);
+            v14 = *(spotIds + v12);
           }
 
           if (v16 < v19 || (v16 == v19 ? (v22 = v15 < v20) : (v22 = 0), v22))
           {
             v18 = v12;
-            v17 = *(v9 + v12);
-            v16 = *(v10 + v12);
+            v17 = *(bankIds + v12);
+            v16 = *(spotIds + v12);
           }
 
           ++v12;
@@ -279,11 +279,11 @@
         v14 = 255;
       }
 
-      v23 = [v6 cameraPixels];
-      v24 = (v23 + 16 * v13);
+      cameraPixels = [v6 cameraPixels];
+      v24 = (cameraPixels + 16 * v13);
       v26 = *v24;
       v25 = v24[1];
-      v27 = (v23 + 16 * v18);
+      v27 = (cameraPixels + 16 * v18);
       v29 = *v27;
       v28 = v27[1];
       v30 = *v27 - v26;
@@ -291,8 +291,8 @@
       LODWORD(v27) = v30 > 0.0;
       v32 = v31 <= 0.0;
       v33 = v27 ^ v32;
-      v36->_mainIterationCameraAxisIsY = v27 ^ v32;
-      v36->_mainIterationCameraAxisIncreasing = v27;
+      selfCopy->_mainIterationCameraAxisIsY = v27 ^ v32;
+      selfCopy->_mainIterationCameraAxisIncreasing = v27;
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -362,7 +362,7 @@
         _os_log_debug_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "ADAggregatedPointCloudRefiner picked spots for assumptions adjustment. topLeft (%u,%u,%lu):(%.2f,%.2f) bottomRight (%u,%u,%lu):(%.2f,%.2f) dist(%.2f,%.2f). cameraAxisY=%d, axisIncreasing=%d", buf, 0x76u);
       }
 
-      v36->_prepared = 1;
+      selfCopy->_prepared = 1;
       v8 = v35;
     }
   }

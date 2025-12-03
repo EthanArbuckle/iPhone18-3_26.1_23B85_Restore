@@ -1,34 +1,34 @@
 @interface ATSIORegCapture
-- (ATSIORegCapture)initWithLogger:(id)a3;
-- (__CFArray)_copyPropertiesOfIOService:(const char *)a3;
+- (ATSIORegCapture)initWithLogger:(id)logger;
+- (__CFArray)_copyPropertiesOfIOService:(const char *)service;
 - (__CFData)_serializeIOMFBAGXServices;
-- (id)_fullySerializeService:(unsigned int)a3 planeName:(const char *)a4;
-- (id)_removeSetsFromArray:(id)a3;
-- (id)_removeSetsFromDict:(id)a3;
-- (id)_serializeFullIOKitPlane:(const char *)a3;
-- (id)describeChunkWithTag:(unsigned int)a3;
-- (void)_mergeIOServicePropertiesIntoDictionary:(__CFDictionary *)a3 name:(const char *)a4;
-- (void)addChunksToFile:(ktrace_file *)a3;
+- (id)_fullySerializeService:(unsigned int)service planeName:(const char *)name;
+- (id)_removeSetsFromArray:(id)array;
+- (id)_removeSetsFromDict:(id)dict;
+- (id)_serializeFullIOKitPlane:(const char *)plane;
+- (id)describeChunkWithTag:(unsigned int)tag;
+- (void)_mergeIOServicePropertiesIntoDictionary:(__CFDictionary *)dictionary name:(const char *)name;
+- (void)addChunksToFile:(ktrace_file *)file;
 @end
 
 @implementation ATSIORegCapture
 
-- (ATSIORegCapture)initWithLogger:(id)a3
+- (ATSIORegCapture)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v9.receiver = self;
   v9.super_class = ATSIORegCapture;
   v6 = [(ATSIORegCapture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
   }
 
   return v7;
 }
 
-- (void)addChunksToFile:(ktrace_file *)a3
+- (void)addChunksToFile:(ktrace_file *)file
 {
   v4 = [(ATSIORegCapture *)self _serializeFullIOKitPlane:"IODeviceTree"];
   v12 = v4;
@@ -50,11 +50,11 @@
     [(KTProviderLogger *)self->_logger failWithReason:@"Failed to serialize device plane data"];
   }
 
-  v8 = [(ATSIORegCapture *)self _serializeIOMFBAGXServices];
-  v9 = v8;
-  if (v8)
+  _serializeIOMFBAGXServices = [(ATSIORegCapture *)self _serializeIOMFBAGXServices];
+  v9 = _serializeIOMFBAGXServices;
+  if (_serializeIOMFBAGXServices)
   {
-    [(__CFData *)v8 bytes];
+    [(__CFData *)_serializeIOMFBAGXServices bytes];
     [(__CFData *)v9 length];
     if (!ktrace_file_append_chunk())
     {
@@ -70,15 +70,15 @@
   }
 }
 
-- (id)describeChunkWithTag:(unsigned int)a3
+- (id)describeChunkWithTag:(unsigned int)tag
 {
   v3 = @"device tree plane";
-  if (a3 != 20991)
+  if (tag != 20991)
   {
     v3 = 0;
   }
 
-  if (a3 == 32776)
+  if (tag == 32776)
   {
     return @"libktrace ioreg";
   }
@@ -89,13 +89,13 @@
   }
 }
 
-- (id)_removeSetsFromDict:(id)a3
+- (id)_removeSetsFromDict:(id)dict
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictCopy = dict;
+  v4 = dictCopy;
+  if (dictCopy)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [dictCopy mutableCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -124,8 +124,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 allObjects];
-          v14 = [(ATSIORegCapture *)self _removeSetsFromArray:v13];
+          allObjects = [v12 allObjects];
+          v14 = [(ATSIORegCapture *)self _removeSetsFromArray:allObjects];
           [v5 setObject:v14 forKeyedSubscript:v11];
         }
 
@@ -148,7 +148,7 @@
             v15 = [(ATSIORegCapture *)self _removeSetsFromDict:v12];
           }
 
-          v13 = v15;
+          allObjects = v15;
           [v5 setObject:v15 forKeyedSubscript:v11];
         }
 
@@ -173,13 +173,13 @@ LABEL_19:
   return v16;
 }
 
-- (id)_removeSetsFromArray:(id)a3
+- (id)_removeSetsFromArray:(id)array
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  arrayCopy = array;
+  v5 = arrayCopy;
+  if (arrayCopy)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [arrayCopy mutableCopy];
     if ([v5 count])
     {
       v7 = 0;
@@ -204,7 +204,7 @@ LABEL_19:
         {
           v11 = [(ATSIORegCapture *)self _removeSetsFromDict:v8];
 LABEL_10:
-          v9 = v11;
+          allObjects = v11;
           [v6 setObject:v11 atIndexedSubscript:v7];
 LABEL_11:
         }
@@ -215,8 +215,8 @@ LABEL_11:
         }
       }
 
-      v9 = [v8 allObjects];
-      v10 = [(ATSIORegCapture *)self _removeSetsFromArray:v9];
+      allObjects = [v8 allObjects];
+      v10 = [(ATSIORegCapture *)self _removeSetsFromArray:allObjects];
       [v6 setObject:v10 atIndexedSubscript:v7];
 
       goto LABEL_11;
@@ -233,39 +233,39 @@ LABEL_15:
   return v6;
 }
 
-- (id)_fullySerializeService:(unsigned int)a3 planeName:(const char *)a4
+- (id)_fullySerializeService:(unsigned int)service planeName:(const char *)name
 {
   memset(v16, 0, sizeof(v16));
   memset(v15, 0, sizeof(v15));
   memset(v14, 0, sizeof(v14));
   entryID = 0;
   v6 = +[NSMutableDictionary dictionary];
-  if (!IORegistryEntryGetNameInPlane(a3, a4, v16))
+  if (!IORegistryEntryGetNameInPlane(service, name, v16))
   {
     v7 = [NSString stringWithUTF8String:v16];
     [v6 setObject:v7 forKeyedSubscript:@"IORegistryEntryName"];
   }
 
-  if (!IORegistryEntryGetLocationInPlane(a3, a4, v15))
+  if (!IORegistryEntryGetLocationInPlane(service, name, v15))
   {
     v8 = [NSString stringWithUTF8String:v15];
     [v6 setObject:v8 forKeyedSubscript:@"IORegistryEntryLocation"];
   }
 
-  if (!IORegistryEntryGetRegistryEntryID(a3, &entryID))
+  if (!IORegistryEntryGetRegistryEntryID(service, &entryID))
   {
     v9 = [NSNumber numberWithUnsignedLongLong:entryID];
     [v6 setObject:v9 forKeyedSubscript:@"IORegistryEntryID"];
   }
 
-  if (!_IOObjectGetClass(a3, &dword_0 + 1))
+  if (!_IOObjectGetClass(service, &dword_0 + 1))
   {
     v10 = [NSString stringWithUTF8String:v14];
     [v6 setObject:v10 forKeyedSubscript:@"IOObjectClass"];
   }
 
   cf = 0;
-  IORegistryEntryCreateCFProperties(a3, &cf, kCFAllocatorDefault, 0);
+  IORegistryEntryCreateCFProperties(service, &cf, kCFAllocatorDefault, 0);
   if (cf)
   {
     [v6 setObject:cf forKeyedSubscript:@"IORegistryEntryProperties"];
@@ -275,11 +275,11 @@ LABEL_15:
   return v6;
 }
 
-- (id)_serializeFullIOKitPlane:(const char *)a3
+- (id)_serializeFullIOKitPlane:(const char *)plane
 {
   RootEntry = IORegistryGetRootEntry(kIOMainPortDefault);
   v6 = objc_autoreleasePoolPush();
-  v7 = [(ATSIORegCapture *)self _serializeServicePlaneRecursively:RootEntry planeName:a3];
+  v7 = [(ATSIORegCapture *)self _serializeServicePlaneRecursively:RootEntry planeName:plane];
   if (v7)
   {
     IOObjectRelease(RootEntry);
@@ -296,14 +296,14 @@ LABEL_15:
   return v8;
 }
 
-- (__CFArray)_copyPropertiesOfIOService:(const char *)a3
+- (__CFArray)_copyPropertiesOfIOService:(const char *)service
 {
   existing = 0;
-  v5 = IOServiceMatching(a3);
+  v5 = IOServiceMatching(service);
   MatchingServices = IOServiceGetMatchingServices(kIOMainPortDefault, v5, &existing);
   if (MatchingServices)
   {
-    v7 = [NSString stringWithFormat:@"Failed to get service matching %s: %s", a3, mach_error_string(MatchingServices)];
+    v7 = [NSString stringWithFormat:@"Failed to get service matching %s: %s", service, mach_error_string(MatchingServices)];
     [(KTProviderLogger *)self->_logger failWithReason:v7];
 
     v8 = 0;
@@ -333,7 +333,7 @@ LABEL_15:
       CFRelease(properties);
     }
 
-    v14 = [NSString stringWithFormat:@"Failed to create properties for service %s: %s", a3, mach_error_string(v11)];
+    v14 = [NSString stringWithFormat:@"Failed to create properties for service %s: %s", service, mach_error_string(v11)];
     [(KTProviderLogger *)self->_logger failWithReason:v14];
 
     v8 = Mutable;
@@ -354,15 +354,15 @@ LABEL_9:
   return Mutable;
 }
 
-- (void)_mergeIOServicePropertiesIntoDictionary:(__CFDictionary *)a3 name:(const char *)a4
+- (void)_mergeIOServicePropertiesIntoDictionary:(__CFDictionary *)dictionary name:(const char *)name
 {
-  v6 = [(ATSIORegCapture *)self _copyPropertiesOfIOService:a4];
+  v6 = [(ATSIORegCapture *)self _copyPropertiesOfIOService:name];
   if (v6)
   {
     v7 = v6;
-    v8 = CFStringCreateWithCString(0, a4, 0x8000100u);
+    v8 = CFStringCreateWithCString(0, name, 0x8000100u);
     CFAutorelease(v8);
-    CFDictionarySetValue(a3, v8, v7);
+    CFDictionarySetValue(dictionary, v8, v7);
 
     CFRelease(v7);
   }
@@ -382,8 +382,8 @@ LABEL_9:
   v4 = CFPropertyListCreateData(0, Mutable, kCFPropertyListBinaryFormat_v1_0, 0, &error);
   if (error)
   {
-    v5 = [NSString stringWithFormat:@"Failed to serialize AGX and IOMFB metadata dictionary: %@", error];
-    [(KTProviderLogger *)self->_logger failWithReason:v5];
+    error = [NSString stringWithFormat:@"Failed to serialize AGX and IOMFB metadata dictionary: %@", error];
+    [(KTProviderLogger *)self->_logger failWithReason:error];
   }
 
   CFRelease(Mutable);

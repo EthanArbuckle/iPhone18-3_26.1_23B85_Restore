@@ -1,40 +1,40 @@
 @interface LPFullScreenVideoController
-- (LPFullScreenVideoController)initWithPlayer:(id)a3 sourceView:(id)a4;
+- (LPFullScreenVideoController)initWithPlayer:(id)player sourceView:(id)view;
 - (void)didCompleteDismissal;
 - (void)dismiss;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)prepareForDisplayWithCompletionHandler:(id)a3;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)prepareForDisplayWithCompletionHandler:(id)handler;
 - (void)present;
 - (void)setUpFullScreenVideoViewControllerIfNeeded;
 @end
 
 @implementation LPFullScreenVideoController
 
-- (LPFullScreenVideoController)initWithPlayer:(id)a3 sourceView:(id)a4
+- (LPFullScreenVideoController)initWithPlayer:(id)player sourceView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  playerCopy = player;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = LPFullScreenVideoController;
   v9 = [(LPFullScreenVideoController *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceView, a4);
-    objc_storeStrong(&v10->_player, a3);
+    objc_storeStrong(&v9->_sourceView, view);
+    objc_storeStrong(&v10->_player, player);
     v11 = objc_alloc(MEMORY[0x1E6958630]);
-    [v8 bounds];
+    [viewCopy bounds];
     v13 = v12;
-    [v8 bounds];
+    [viewCopy bounds];
     v14 = [v11 initWithFrame:{0.0, 0.0, v13}];
     playerLayerView = v10->_playerLayerView;
     v10->_playerLayerView = v14;
 
-    v16 = [(__AVPlayerLayerView *)v10->_playerLayerView layer];
-    [v16 setMasksToBounds:1];
+    layer = [(__AVPlayerLayerView *)v10->_playerLayerView layer];
+    [layer setMasksToBounds:1];
 
-    v17 = [(__AVPlayerLayerView *)v10->_playerLayerView playerLayer];
-    [v17 setPlayer:v7];
+    playerLayer = [(__AVPlayerLayerView *)v10->_playerLayerView playerLayer];
+    [playerLayer setPlayer:playerCopy];
 
     v18 = v10;
   }
@@ -42,11 +42,11 @@
   return v10;
 }
 
-- (void)prepareForDisplayWithCompletionHandler:(id)a3
+- (void)prepareForDisplayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(LPFullScreenVideoController *)self setUpFullScreenVideoViewControllerIfNeeded];
-  [(LPAVPlayerViewController *)self->_playerViewController prepareForDisplayWithCompletionHandler:v4];
+  [(LPAVPlayerViewController *)self->_playerViewController prepareForDisplayWithCompletionHandler:handlerCopy];
 }
 
 - (void)setUpFullScreenVideoViewControllerIfNeeded
@@ -96,7 +96,7 @@
   [(LPAVPlayerViewController *)playerViewController dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v4[4] = self;
   v5[0] = MEMORY[0x1E69E9820];
@@ -108,7 +108,7 @@
   v4[1] = 3221225472;
   v4[2] = __106__LPFullScreenVideoController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke_2;
   v4[3] = &unk_1E7A36720;
-  [a4 animateAlongsideTransition:v5 completion:v4];
+  [coordinator animateAlongsideTransition:v5 completion:v4];
 }
 
 void __106__LPFullScreenVideoController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke(uint64_t a1)

@@ -1,6 +1,6 @@
 @interface FCResourceRecordSource
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCResourceRecordSource
@@ -26,21 +26,21 @@ uint64_t __44__FCResourceRecordSource_nonLocalizableKeys__block_invoke_2()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
-  v5 = a4;
+  baseCopy = base;
   v6 = MEMORY[0x1E69B6FA8];
-  v7 = a3;
+  recordCopy = record;
   v8 = objc_alloc_init(v6);
-  [v8 setBase:v5];
-  v9 = [v7 objectForKeyedSubscript:@"type"];
+  [v8 setBase:baseCopy];
+  v9 = [recordCopy objectForKeyedSubscript:@"type"];
   [v8 setMimeType:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"encoding"];
+  v10 = [recordCopy objectForKeyedSubscript:@"encoding"];
   [v8 setEncoding:v10];
 
   objc_opt_class();
-  v11 = [v7 objectForKeyedSubscript:@"asset"];
+  v11 = [recordCopy objectForKeyedSubscript:@"asset"];
 
   if (v11)
   {
@@ -63,12 +63,12 @@ uint64_t __44__FCResourceRecordSource_nonLocalizableKeys__block_invoke_2()
   v13 = v12;
   [v8 setUrl:v13];
 
-  v14 = [v8 mimeType];
-  IsFont = FCMIMETypeIsFont(v14);
+  mimeType = [v8 mimeType];
+  IsFont = FCMIMETypeIsFont(mimeType);
 
   if (IsFont)
   {
-    [v5 setCacheLifetimeHint:1];
+    [baseCopy setCacheLifetimeHint:1];
   }
 
   return v8;

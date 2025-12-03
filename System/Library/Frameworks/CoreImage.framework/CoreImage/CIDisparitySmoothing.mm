@@ -38,11 +38,11 @@
 - (id)outputImageMetal
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(NSNumber *)self->inputNumIterations integerValue];
+  integerValue = [(NSNumber *)self->inputNumIterations integerValue];
   inputImage = self->inputImage;
-  if (v3)
+  if (integerValue)
   {
-    v5 = v3;
+    v5 = integerValue;
     [(CIImage *)inputImage extent];
     v7 = v6;
     v9 = v8;
@@ -79,44 +79,44 @@
 - (id)outputImage
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(NSNumber *)self->inputNumIterations integerValue];
+  integerValue = [(NSNumber *)self->inputNumIterations integerValue];
   inputImage = self->inputImage;
-  if (v3)
+  if (integerValue)
   {
-    v5 = v3;
+    v5 = integerValue;
     saveImage(self->inputImage, @"/tmp/inputToBoxBlur.tiff", 1);
     [(CIImage *)inputImage extent];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CIImage *)inputImage imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)inputImage imageByClampingToExtent];
     if (v5 >= 1)
     {
       v15 = MEMORY[0x1E695E118];
       do
       {
-        v16 = [(CIDisparitySmoothing *)self _customBoxBlur5Kernel];
-        [(CIImage *)v14 extent];
+        _customBoxBlur5Kernel = [(CIDisparitySmoothing *)self _customBoxBlur5Kernel];
+        [(CIImage *)imageByClampingToExtent extent];
         v28 = CGRectInset(v27, -2.0, -2.0);
         x = v28.origin.x;
         y = v28.origin.y;
         width = v28.size.width;
         height = v28.size.height;
-        v26[0] = v14;
+        v26[0] = imageByClampingToExtent;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
         v22 = [MEMORY[0x1E696AD98] numberWithInt:{2053, @"kCIKernelOutputFormat"}];
         v24[1] = @"kCIImageAlphaOne";
         v25[0] = v22;
         v25[1] = v15;
-        v14 = [v16 applyWithExtent:&__block_literal_global_19 roiCallback:v21 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v25, v24, 2), x, y, width, height}];
+        imageByClampingToExtent = [_customBoxBlur5Kernel applyWithExtent:&__block_literal_global_19 roiCallback:v21 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v25, v24, 2), x, y, width, height}];
         --v5;
       }
 
       while (v5);
     }
 
-    inputImage = [(CIImage *)v14 imageByCroppingToRect:v7, v9, v11, v13];
+    inputImage = [(CIImage *)imageByClampingToExtent imageByCroppingToRect:v7, v9, v11, v13];
     saveImage(inputImage, @"/tmp/outputFromBoxBlur.tiff", 1);
   }
 

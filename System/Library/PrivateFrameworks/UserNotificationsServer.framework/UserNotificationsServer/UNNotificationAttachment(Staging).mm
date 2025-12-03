@@ -24,51 +24,51 @@
   v12 = a4;
   v13 = a5;
   v14 = a6;
-  v15 = [v11 unc_secureFileURL];
+  unc_secureFileURL = [v11 unc_secureFileURL];
   if (v12 | v13)
   {
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     if (v12)
     {
-      v19 = [v12 uns_clientBundleProxy];
+      uns_clientBundleProxy = [v12 uns_clientBundleProxy];
     }
 
     else
     {
-      v19 = v13;
+      uns_clientBundleProxy = v13;
     }
 
-    v20 = v19;
-    v21 = [v19 bundleURL];
-    if (v15)
+    v20 = uns_clientBundleProxy;
+    bundleURL = [uns_clientBundleProxy bundleURL];
+    if (unc_secureFileURL)
     {
       v63 = 2;
-      [v18 getRelationship:&v63 ofDirectoryAtURL:v21 toItemAtURL:v15 error:0];
+      [defaultManager getRelationship:&v63 ofDirectoryAtURL:bundleURL toItemAtURL:unc_secureFileURL error:0];
       if (!v63)
       {
         goto LABEL_35;
       }
 
-      v22 = [v20 dataContainerURL];
-      if (v22)
+      dataContainerURL = [v20 dataContainerURL];
+      if (dataContainerURL)
       {
-        v23 = v22;
+        v23 = dataContainerURL;
         *buf = 2;
-        [v18 getRelationship:buf ofDirectoryAtURL:v22 toItemAtURL:v15 error:0];
+        [defaultManager getRelationship:buf ofDirectoryAtURL:dataContainerURL toItemAtURL:unc_secureFileURL error:0];
         if (*buf)
         {
           v49 = a7;
           v50 = v23;
           log = v14;
-          v54 = v21;
-          v24 = [v20 groupContainerURLs];
-          v25 = [v24 allValues];
+          v54 = bundleURL;
+          groupContainerURLs = [v20 groupContainerURLs];
+          allValues = [groupContainerURLs allValues];
 
           v59 = 0u;
           v60 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v26 = v25;
+          v26 = allValues;
           v27 = [v26 countByEnumeratingWithState:&v57 objects:v64 count:16];
           if (v27)
           {
@@ -85,13 +85,13 @@
 
                 v31 = *(*(&v57 + 1) + 8 * i);
                 *&v61 = 2;
-                [v18 getRelationship:&v61 ofDirectoryAtURL:v31 toItemAtURL:v15 error:0];
+                [defaultManager getRelationship:&v61 ofDirectoryAtURL:v31 toItemAtURL:unc_secureFileURL error:0];
                 if (!v61)
                 {
 
                   v17 = 1;
                   v14 = log;
-                  v21 = v54;
+                  bundleURL = v54;
                   goto LABEL_43;
                 }
               }
@@ -106,7 +106,7 @@
             }
           }
 
-          v21 = v54;
+          bundleURL = v54;
           if (v49)
           {
             *v49 = [MEMORY[0x277CCA9B8] un_errorWithUNErrorCode:100 userInfo:0];
@@ -122,11 +122,11 @@
 
       v61 = 0u;
       v62 = 0u;
-      v32 = [v12 uns_clientAuditToken];
-      v33 = v32;
-      if (v32)
+      uns_clientAuditToken = [v12 uns_clientAuditToken];
+      v33 = uns_clientAuditToken;
+      if (uns_clientAuditToken)
       {
-        [v32 realToken];
+        [uns_clientAuditToken realToken];
       }
 
       else
@@ -167,8 +167,8 @@ LABEL_43:
         if (os_log_type_enabled(*MEMORY[0x277CE2068], OS_LOG_TYPE_FAULT))
         {
           v39 = v38;
-          [v15 absoluteString];
-          v40 = v55 = v21;
+          [unc_secureFileURL absoluteString];
+          v40 = v55 = bundleURL;
           *buf = 138543874;
           *&buf[4] = v37;
           *&buf[12] = 2114;
@@ -177,15 +177,15 @@ LABEL_43:
           *&buf[24] = v40;
           _os_log_fault_impl(&dword_270AA8000, v39, OS_LOG_TYPE_FAULT, "[System Notification Source] Copying not moving attachment to prevent notification service extension from effectively deleting this file it doesn't have access to. Connection process '%{public}@', Posting of behalf of notification source: '%{public}@', Attachment: '%{public}@'", buf, 0x20u);
 
-          v21 = v55;
+          bundleURL = v55;
         }
       }
 
       else
       {
-        v56 = v21;
-        v41 = [MEMORY[0x277CCAE80] currentConnection];
-        [v41 processIdentifier];
+        v56 = bundleURL;
+        currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+        [currentConnection processIdentifier];
         v42 = BSBundlePathForPID();
         v43 = v42;
         v44 = @"<unknown executable>";
@@ -200,20 +200,20 @@ LABEL_43:
         if (os_log_type_enabled(*MEMORY[0x277CE2068], OS_LOG_TYPE_FAULT))
         {
           loga = v45;
-          v51 = [v20 bundleIdentifier];
-          v48 = [v15 absoluteString];
+          bundleIdentifier = [v20 bundleIdentifier];
+          absoluteString = [unc_secureFileURL absoluteString];
           *buf = 138544130;
           *&buf[4] = v37;
           *&buf[12] = 2114;
-          *&buf[14] = v51;
+          *&buf[14] = bundleIdentifier;
           *&buf[22] = 2114;
-          *&buf[24] = v48;
+          *&buf[24] = absoluteString;
           v66 = 2114;
           v67 = v14;
           _os_log_fault_impl(&dword_270AA8000, loga, OS_LOG_TYPE_FAULT, "[Notification Service Extension] Copying not moving attachment to prevent system process from effectively deleting this file it doesn't have access to. Push notification service connection '%{public}@'. Notification service extension for bundle: '%{public}@', Attachment: '%{public}@', Effective Notifications Bundle ID: '%{public}@'", buf, 0x2Au);
         }
 
-        v21 = v56;
+        bundleURL = v56;
       }
     }
 
@@ -224,7 +224,7 @@ LABEL_43:
   v16 = *MEMORY[0x277CE2068];
   if (os_log_type_enabled(*MEMORY[0x277CE2068], OS_LOG_TYPE_FAULT))
   {
-    [UNNotificationAttachment(Staging) stagingActionForFileHandle:v16 fromLocalClientConnection:v15 orFromServiceExtensionOfBundleProxy:? servicingBundleIdentifier:? error:?];
+    [UNNotificationAttachment(Staging) stagingActionForFileHandle:v16 fromLocalClientConnection:unc_secureFileURL orFromServiceExtensionOfBundleProxy:? servicingBundleIdentifier:? error:?];
   }
 
   v17 = 0;

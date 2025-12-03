@@ -2,12 +2,12 @@
 + (id)os_log;
 + (id)storeIdentifier;
 + (id)storeInfoClasses;
-- (BOOL)_processSuggestions:(id)a3 error:(id *)a4 withBlock:(id)a5;
-- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6;
-- (CNSuggestedContactStore)initWithSuggestionsService:(id)a3 siriIntelligenceSettings:(id)a4;
-- (id)originForSuggestion:(id)a3 error:(id *)a4;
-- (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
+- (BOOL)_processSuggestions:(id)suggestions error:(id *)error withBlock:(id)block;
+- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block;
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error;
+- (CNSuggestedContactStore)initWithSuggestionsService:(id)service siriIntelligenceSettings:(id)settings;
+- (id)originForSuggestion:(id)suggestion error:(id *)error;
+- (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch error:(id *)error;
 @end
 
 @implementation CNSuggestedContactStore
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __42__CNSuggestedContactStore_storeIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (storeIdentifier_cn_once_token_1_0 != -1)
   {
     dispatch_once(&storeIdentifier_cn_once_token_1_0, block);
@@ -78,23 +78,23 @@ uint64_t __33__CNSuggestedContactStore_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNSuggestedContactStore)initWithSuggestionsService:(id)a3 siriIntelligenceSettings:(id)a4
+- (CNSuggestedContactStore)initWithSuggestionsService:(id)service siriIntelligenceSettings:(id)settings
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  settingsCopy = settings;
   v18.receiver = self;
   v18.super_class = CNSuggestedContactStore;
   v9 = [(CNContactStore *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    if (v7)
+    if (serviceCopy)
     {
-      objc_storeStrong(&v9->_suggestionService, a3);
-      if (v8)
+      objc_storeStrong(&v9->_suggestionService, service);
+      if (settingsCopy)
       {
 LABEL_4:
-        v11 = v8;
+        v11 = settingsCopy;
         siriIntelligenceSettings = v10->_siriIntelligenceSettings;
         v10->_siriIntelligenceSettings = v11;
 LABEL_7:
@@ -106,12 +106,12 @@ LABEL_7:
 
     else
     {
-      v13 = [MEMORY[0x1E69992A0] serviceForContacts];
+      serviceForContacts = [MEMORY[0x1E69992A0] serviceForContacts];
       suggestionService = v10->_suggestionService;
-      v10->_suggestionService = v13;
+      v10->_suggestionService = serviceForContacts;
 
       [(SGSuggestionsServiceContactsProtocol *)v10->_suggestionService setSyncTimeout:0.2];
-      if (v8)
+      if (settingsCopy)
       {
         goto LABEL_4;
       }
@@ -128,24 +128,24 @@ LABEL_8:
   return v10;
 }
 
-- (id)originForSuggestion:(id)a3 error:(id *)a4
+- (id)originForSuggestion:(id)suggestion error:(id *)error
 {
-  v6 = a3;
+  suggestionCopy = suggestion;
   if ([(CNSiriIntelligenceSettingsProtocol *)self->_siriIntelligenceSettings shouldShowSiriSuggestions])
   {
-    v7 = [v6 suggestionRecordId];
-    if (v7)
+    suggestionRecordId = [suggestionCopy suggestionRecordId];
+    if (suggestionRecordId)
     {
-      v8 = [(SGSuggestionsServiceContactsProtocol *)self->_suggestionService originFromRecordId:v7 error:a4];
+      v8 = [(SGSuggestionsServiceContactsProtocol *)self->_suggestionService originFromRecordId:suggestionRecordId error:error];
     }
 
     else
     {
       v9 = [CNErrorFactory errorWithCode:205 userInfo:0];
-      if (a4)
+      if (error)
       {
         v9 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
       v8 = 0;
@@ -160,16 +160,16 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  blockCopy = block;
   if ([(CNSiriIntelligenceSettingsProtocol *)self->_siriIntelligenceSettings shouldShowSiriSuggestions])
   {
-    v10 = [v8 predicate];
-    if ([v10 conformsToProtocol:&unk_1F098FE90])
+    predicate = [requestCopy predicate];
+    if ([predicate conformsToProtocol:&unk_1F098FE90])
     {
-      v11 = v10;
+      v11 = predicate;
     }
 
     else
@@ -181,20 +181,20 @@ LABEL_8:
 
     if (v12)
     {
-      v13 = [v8 sortOrder];
-      v14 = [v8 keysToFetch];
-      v15 = [v8 mutableObjects];
+      sortOrder = [requestCopy sortOrder];
+      keysToFetch = [requestCopy keysToFetch];
+      mutableObjects = [requestCopy mutableObjects];
       suggestionService = self->_suggestionService;
       v38 = 0;
-      v17 = [(CNPredicate *)v12 suggestedContactsWithSortOrder:v13 keysToFetch:v14 mutableObjects:v15 service:suggestionService error:&v38];
+      v17 = [(CNPredicate *)v12 suggestedContactsWithSortOrder:sortOrder keysToFetch:keysToFetch mutableObjects:mutableObjects service:suggestionService error:&v38];
       v18 = v38;
 
       if (!v17)
       {
-        v19 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
         {
-          [CNSuggestedContactStore enumerateContactsAndMatchInfoWithFetchRequest:v18 error:v19 usingBlock:?];
+          [CNSuggestedContactStore enumerateContactsAndMatchInfoWithFetchRequest:v18 error:os_log usingBlock:?];
         }
 
         v18 = 0;
@@ -210,7 +210,7 @@ LABEL_8:
       v30 = __90__CNSuggestedContactStore_enumerateContactsAndMatchInfoWithFetchRequest_error_usingBlock___block_invoke;
       v31 = &unk_1E7416F30;
       v33 = &v34;
-      v32 = v9;
+      v32 = blockCopy;
       [v17 enumerateObjectsUsingBlock:&v28];
       if (v35[3])
       {
@@ -230,10 +230,10 @@ LABEL_8:
       }
 
       v25 = v18 == 0;
-      if (a4 && v18)
+      if (error && v18)
       {
         v26 = v18;
-        *a4 = v18;
+        *error = v18;
       }
 
       _Block_object_dispose(&v34, 8);
@@ -267,13 +267,13 @@ void __90__CNSuggestedContactStore_enumerateContactsAndMatchInfoWithFetchRequest
   }
 }
 
-- (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  fetchCopy = fetch;
   if ([(CNSiriIntelligenceSettingsProtocol *)self->_siriIntelligenceSettings shouldShowSiriSuggestions])
   {
-    v10 = v8;
+    v10 = predicateCopy;
     if ([v10 conformsToProtocol:&unk_1F098FE90])
     {
       v11 = v10;
@@ -288,16 +288,16 @@ void __90__CNSuggestedContactStore_enumerateContactsAndMatchInfoWithFetchRequest
 
     if (v12)
     {
-      v13 = [(CNPredicate *)v12 suggestedContactsWithSortOrder:v9 keysToFetch:0 mutableObjects:self->_suggestionService service:a5 error:?];
+      v13 = [(CNPredicate *)v12 suggestedContactsWithSortOrder:fetchCopy keysToFetch:0 mutableObjects:self->_suggestionService service:error error:?];
     }
 
     else
     {
       v14 = [CNErrorFactory errorWithCode:400 userInfo:0];
-      if (a5)
+      if (error)
       {
         v14 = v14;
-        *a5 = v14;
+        *error = v14;
       }
 
       v13 = 0;
@@ -312,16 +312,16 @@ void __90__CNSuggestedContactStore_enumerateContactsAndMatchInfoWithFetchRequest
   return v13;
 }
 
-- (BOOL)_processSuggestions:(id)a3 error:(id *)a4 withBlock:(id)a5
+- (BOOL)_processSuggestions:(id)suggestions error:(id *)error withBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  suggestionsCopy = suggestions;
+  blockCopy = block;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v7;
+  v9 = suggestionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -339,13 +339,13 @@ void __90__CNSuggestedContactStore_enumerateContactsAndMatchInfoWithFetchRequest
         v14 = *(*(&v21 + 1) + 8 * i);
         if ([v14 isSuggested])
         {
-          v15 = [v14 suggestionRecordId];
+          suggestionRecordId = [v14 suggestionRecordId];
 
-          if (v15)
+          if (suggestionRecordId)
           {
-            v16 = [v14 suggestionRecordId];
+            suggestionRecordId2 = [v14 suggestionRecordId];
             v17 = objc_opt_class();
-            v18 = v8[2](v8, v16, v17, a4);
+            v18 = blockCopy[2](blockCopy, suggestionRecordId2, v17, error);
 
             if (!v18)
             {
@@ -372,41 +372,41 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error
 {
-  v8 = a3;
+  requestCopy = request;
   if (([(CNSiriIntelligenceSettingsProtocol *)self->_siriIntelligenceSettings shouldShowSiriSuggestions]& 1) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 suppressChangeNotifications];
-      if ((v9 & 1) == 0)
+      suppressChangeNotifications = [requestCopy suppressChangeNotifications];
+      if ((suppressChangeNotifications & 1) == 0)
       {
         v10 = +[CNChangesNotifier sharedNotifier];
         [v10 willSaveChanges];
       }
 
-      v11 = v8;
-      v12 = [v11 confirmedSuggestions];
+      v11 = requestCopy;
+      confirmedSuggestions = [v11 confirmedSuggestions];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __82__CNSuggestedContactStore_executeSaveRequest_response_authorizationContext_error___block_invoke;
       v24[3] = &unk_1E7416F58;
       v24[4] = self;
-      v13 = [(CNSuggestedContactStore *)self _processSuggestions:v12 error:a6 withBlock:v24];
+      v13 = [(CNSuggestedContactStore *)self _processSuggestions:confirmedSuggestions error:error withBlock:v24];
 
       if (v13)
       {
-        v14 = [v11 rejectedSuggestions];
+        rejectedSuggestions = [v11 rejectedSuggestions];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __82__CNSuggestedContactStore_executeSaveRequest_response_authorizationContext_error___block_invoke_2;
         v23[3] = &unk_1E7416F58;
         v23[4] = self;
-        v15 = [(CNSuggestedContactStore *)self _processSuggestions:v14 error:a6 withBlock:v23];
+        v15 = [(CNSuggestedContactStore *)self _processSuggestions:rejectedSuggestions error:error withBlock:v23];
 
-        if (v9)
+        if (suppressChangeNotifications)
         {
           goto LABEL_15;
         }
@@ -415,7 +415,7 @@ LABEL_13:
       else
       {
         v15 = 0;
-        if (v9)
+        if (suppressChangeNotifications)
         {
 LABEL_15:
 
@@ -424,8 +424,8 @@ LABEL_15:
       }
 
       v20 = +[CNChangesNotifier sharedNotifier];
-      v21 = [v11 saveRequestIdentifier];
-      [v20 didSaveChangesSuccessfully:v15 fromContactStore:self requestIdentifier:v21];
+      saveRequestIdentifier = [v11 saveRequestIdentifier];
+      [v20 didSaveChangesSuccessfully:v15 fromContactStore:self requestIdentifier:saveRequestIdentifier];
 
       goto LABEL_15;
     }
@@ -439,10 +439,10 @@ LABEL_15:
   else
   {
     v16 = [CNErrorFactory errorWithCode:103 userInfo:0];
-    if (a6)
+    if (error)
     {
       v16 = v16;
-      *a6 = v16;
+      *error = v16;
     }
   }
 

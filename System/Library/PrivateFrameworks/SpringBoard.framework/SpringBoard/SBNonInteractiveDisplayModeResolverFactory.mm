@@ -1,25 +1,25 @@
 @interface SBNonInteractiveDisplayModeResolverFactory
-- (SBNonInteractiveDisplayModeResolverFactory)initWithApplicationController:(id)a3 userAuthenticationProvider:(id)a4 monitoredWindowScene:(id)a5;
-- (id)resolverForPhysicalDisplay:(id)a3;
+- (SBNonInteractiveDisplayModeResolverFactory)initWithApplicationController:(id)controller userAuthenticationProvider:(id)provider monitoredWindowScene:(id)scene;
+- (id)resolverForPhysicalDisplay:(id)display;
 @end
 
 @implementation SBNonInteractiveDisplayModeResolverFactory
 
-- (SBNonInteractiveDisplayModeResolverFactory)initWithApplicationController:(id)a3 userAuthenticationProvider:(id)a4 monitoredWindowScene:(id)a5
+- (SBNonInteractiveDisplayModeResolverFactory)initWithApplicationController:(id)controller userAuthenticationProvider:(id)provider monitoredWindowScene:(id)scene
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  controllerCopy = controller;
+  providerCopy = provider;
+  sceneCopy = scene;
+  if (controllerCopy)
   {
-    if (v10)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [SBNonInteractiveDisplayModeResolverFactory initWithApplicationController:userAuthenticationProvider:monitoredWindowScene:];
-    if (v11)
+    if (sceneCopy)
     {
       goto LABEL_4;
     }
@@ -28,13 +28,13 @@ LABEL_8:
   }
 
   [SBNonInteractiveDisplayModeResolverFactory initWithApplicationController:userAuthenticationProvider:monitoredWindowScene:];
-  if (!v10)
+  if (!providerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (sceneCopy)
   {
     goto LABEL_4;
   }
@@ -48,25 +48,25 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_applicationController, a3);
-    objc_storeStrong(&v13->_userAuthenticationProvider, a4);
-    objc_storeStrong(&v13->_monitoredWindowScene, a5);
+    objc_storeStrong(&v12->_applicationController, controller);
+    objc_storeStrong(&v13->_userAuthenticationProvider, provider);
+    objc_storeStrong(&v13->_monitoredWindowScene, scene);
   }
 
   return v13;
 }
 
-- (id)resolverForPhysicalDisplay:(id)a3
+- (id)resolverForPhysicalDisplay:(id)display
 {
-  v4 = [a3 identity];
-  if (([v4 isRootIdentity] & 1) == 0)
+  identity = [display identity];
+  if (([identity isRootIdentity] & 1) == 0)
   {
     [SBNonInteractiveDisplayModeResolverFactory resolverForPhysicalDisplay:];
   }
 
-  if ([v4 sb_physicalDisplaySupportingNonInteractiveDisplayMode])
+  if ([identity sb_physicalDisplaySupportingNonInteractiveDisplayMode])
   {
-    v5 = [[SBNonInteractiveDisplayModeResolver alloc] initWithRootDisplay:v4 applicationController:self->_applicationController userAuthenticationProvider:self->_userAuthenticationProvider monitoredWindowScene:self->_monitoredWindowScene];
+    v5 = [[SBNonInteractiveDisplayModeResolver alloc] initWithRootDisplay:identity applicationController:self->_applicationController userAuthenticationProvider:self->_userAuthenticationProvider monitoredWindowScene:self->_monitoredWindowScene];
   }
 
   else

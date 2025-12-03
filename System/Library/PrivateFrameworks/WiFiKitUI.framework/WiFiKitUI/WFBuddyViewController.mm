@@ -3,33 +3,33 @@
 - (WFBuddyViewController)init;
 - (WFBuddyViewControllerDelegate)buddyDelegate;
 - (WFNetworkListDelegate)listDelegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_cellForNetworkRecord:(id)a3 tableView:(id)a4 indexPath:(id)a5;
-- (id)_debugSectionStringFromSections:(id)a3;
-- (id)_nameOfSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_chooseOtherNetworkTapped:(id)a3;
-- (void)_enableWAPISwitchChanged:(id)a3;
-- (void)_notifyBuddyWiFiPickerIsVisble:(BOOL)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_cellForNetworkRecord:(id)record tableView:(id)view indexPath:(id)path;
+- (id)_debugSectionStringFromSections:(id)sections;
+- (id)_nameOfSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_chooseOtherNetworkTapped:(id)tapped;
+- (void)_enableWAPISwitchChanged:(id)changed;
+- (void)_notifyBuddyWiFiPickerIsVisble:(BOOL)visble;
 - (void)_refreshSections;
-- (void)_updateCellsWithNewData:(id)a3 oldData:(id)a4 inSection:(int64_t)a5;
-- (void)networkListDelegateWillPresentAccessoryViewController:(id)a3;
-- (void)powerStateDidChange:(BOOL)a3;
+- (void)_updateCellsWithNewData:(id)data oldData:(id)oldData inSection:(int64_t)section;
+- (void)networkListDelegateWillPresentAccessoryViewController:(id)controller;
+- (void)powerStateDidChange:(BOOL)change;
 - (void)refresh;
-- (void)setCurrentNetwork:(id)a3;
-- (void)setCurrentNetworkScaledRSSI:(float)a3;
-- (void)setCurrentNetworkState:(int64_t)a3;
-- (void)setDeviceCapability:(int64_t)a3;
-- (void)setNetworks:(id)a3;
-- (void)setShowAdditionalSetupInfo:(BOOL)a3;
-- (void)setShowNetworkSettings:(BOOL)a3;
-- (void)setSupportsCellularActivation:(BOOL)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
+- (void)setCurrentNetwork:(id)network;
+- (void)setCurrentNetworkScaledRSSI:(float)i;
+- (void)setCurrentNetworkState:(int64_t)state;
+- (void)setDeviceCapability:(int64_t)capability;
+- (void)setNetworks:(id)networks;
+- (void)setShowAdditionalSetupInfo:(BOOL)info;
+- (void)setShowNetworkSettings:(BOOL)settings;
+- (void)setSupportsCellularActivation:(BOOL)activation;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -115,30 +115,30 @@
   [v6 setDataSource:self];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 _setDrawsSeparatorAtTopOfSections:1];
-  v17 = [(WFBuddyViewController *)self view];
-  [v17 addSubview:v6];
+  view = [(WFBuddyViewController *)self view];
+  [view addSubview:v6];
 
   [(OBTableWelcomeController *)self setTableView:v6];
-  v18 = [(WFBuddyViewController *)self buttonTray];
-  [v18 setHidden:1];
+  buttonTray = [(WFBuddyViewController *)self buttonTray];
+  [buttonTray setHidden:1];
 
   [(WFBuddyViewController *)self setSupportsCellularActivation:0];
-  v19 = [(WFBuddyViewController *)self listDelegate];
+  listDelegate = [(WFBuddyViewController *)self listDelegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [(WFBuddyViewController *)self listDelegate];
-    [v21 setShouldShowDetailTapOnCurrentNetwork:0];
+    listDelegate2 = [(WFBuddyViewController *)self listDelegate];
+    [listDelegate2 setShouldShowDetailTapOnCurrentNetwork:0];
   }
 
-  v22 = [(WFBuddyViewController *)self listDelegate];
+  listDelegate3 = [(WFBuddyViewController *)self listDelegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(WFBuddyViewController *)self listDelegate];
-    self->_deviceCapability = [v24 networkListViewControllerOverrideDeviceCapability:self];
+    listDelegate4 = [(WFBuddyViewController *)self listDelegate];
+    self->_deviceCapability = [listDelegate4 networkListViewControllerOverrideDeviceCapability:self];
   }
 
   v25 = [objc_alloc(MEMORY[0x277D37608]) initWithStateName:@"State 1" transitionDuration:0.01 transitionSpeed:1.0];
@@ -151,21 +151,21 @@
   v29 = [v28 URLForResource:@"WIFI" withExtension:@"ca"];
 
   v30 = objc_alloc(MEMORY[0x277D37600]);
-  v31 = [(WFBuddyViewController *)self headerView];
-  v32 = [v31 animationView];
-  v33 = [v27 firstObject];
-  v34 = [v30 initWithUrlToPackage:v29 animationView:v32 animatedStates:v27 startAtFirstState:v33];
+  headerView = [(WFBuddyViewController *)self headerView];
+  animationView = [headerView animationView];
+  firstObject = [v27 firstObject];
+  v34 = [v30 initWithUrlToPackage:v29 animationView:animationView animatedStates:v27 startAtFirstState:firstObject];
   [(WFBuddyViewController *)self setAnimationController:v34];
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShowNetworkSettings:(BOOL)a3
+- (void)setShowNetworkSettings:(BOOL)settings
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_showNetworkSettings != a3)
+  if (self->_showNetworkSettings != settings)
   {
-    v3 = a3;
+    settingsCopy = settings;
     v5 = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
@@ -173,11 +173,11 @@
       v10 = 136315394;
       v11 = "[WFBuddyViewController setShowNetworkSettings:]";
       v12 = 1024;
-      v13 = v3;
+      v13 = settingsCopy;
       _os_log_impl(&dword_273FB9000, v5, v6, "%s: showNetworkSettings %d", &v10, 0x12u);
     }
 
-    self->_showNetworkSettings = v3;
+    self->_showNetworkSettings = settingsCopy;
     v7 = WFLogForCategory(0);
     v8 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v7 && os_log_type_enabled(v7, v8))
@@ -193,11 +193,11 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSupportsCellularActivation:(BOOL)a3
+- (void)setSupportsCellularActivation:(BOOL)activation
 {
-  v3 = a3;
+  activationCopy = activation;
   v21 = *MEMORY[0x277D85DE8];
-  if (self->_supportsCellularActivation != a3 || !self->_alternateSetupTitle || !self->_alternateSetupFooter)
+  if (self->_supportsCellularActivation != activation || !self->_alternateSetupTitle || !self->_alternateSetupFooter)
   {
     v5 = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(3uLL);
@@ -206,11 +206,11 @@
       v17 = 136315394;
       v18 = "[WFBuddyViewController setSupportsCellularActivation:]";
       v19 = 1024;
-      v20 = v3;
+      v20 = activationCopy;
       _os_log_impl(&dword_273FB9000, v5, v6, "%s: supports %d", &v17, 0x12u);
     }
 
-    self->_supportsCellularActivation = v3;
+    self->_supportsCellularActivation = activationCopy;
     IsChinaDevice = WFCapabilityIsChinaDevice([(WFBuddyViewController *)self deviceCapability]);
     supportsCellularActivation = self->_supportsCellularActivation;
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -249,16 +249,16 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNetworks:(id)a3
+- (void)setNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__WFBuddyViewController_setNetworks___block_invoke;
   v6[3] = &unk_279EC5588;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = networksCopy;
+  selfCopy = self;
+  v5 = networksCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -454,29 +454,29 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
   *(v9 + 40) = v8;
 }
 
-- (void)_updateCellsWithNewData:(id)a3 oldData:(id)a4 inSection:(int64_t)a5
+- (void)_updateCellsWithNewData:(id)data oldData:(id)oldData inSection:(int64_t)section
 {
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  oldDataCopy = oldData;
   v47 = objc_opt_new();
   v43 = objc_opt_new();
   v41 = objc_opt_new();
   v44 = objc_opt_new();
-  v48 = [v7 mutableCopy];
-  v49 = [v6 mutableCopy];
-  if ([v7 count] >= 2 && objc_msgSend(v7, "count", v41, v43) >= 2)
+  v48 = [oldDataCopy mutableCopy];
+  v49 = [dataCopy mutableCopy];
+  if ([oldDataCopy count] >= 2 && objc_msgSend(oldDataCopy, "count", v41, v43) >= 2)
   {
     v8 = 0;
     v9 = 1;
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:v9];
-      v11 = [v10 ssid];
+      v10 = [oldDataCopy objectAtIndexedSubscript:v9];
+      ssid = [v10 ssid];
       v12 = v9 - 1;
-      v13 = [v7 objectAtIndexedSubscript:v9 - 1];
-      v14 = [v13 ssid];
-      v15 = [v11 isEqualToString:v14];
+      v13 = [oldDataCopy objectAtIndexedSubscript:v9 - 1];
+      ssid2 = [v13 ssid];
+      v15 = [ssid isEqualToString:ssid2];
 
       if (v15)
       {
@@ -486,21 +486,21 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
       ++v9;
     }
 
-    while ([v7 count] > (v12 + 2));
+    while ([oldDataCopy count] > (v12 + 2));
   }
 
-  if ([v6 count] >= 2 && objc_msgSend(v6, "count") >= 2)
+  if ([dataCopy count] >= 2 && objc_msgSend(dataCopy, "count") >= 2)
   {
     v16 = 0;
     v17 = 1;
     do
     {
-      v18 = [v6 objectAtIndexedSubscript:v17];
-      v19 = [v18 ssid];
+      v18 = [dataCopy objectAtIndexedSubscript:v17];
+      ssid3 = [v18 ssid];
       v20 = v17 - 1;
-      v21 = [v6 objectAtIndexedSubscript:v17 - 1];
-      v22 = [v21 ssid];
-      v23 = [v19 isEqualToString:v22];
+      v21 = [dataCopy objectAtIndexedSubscript:v17 - 1];
+      ssid4 = [v21 ssid];
+      v23 = [ssid3 isEqualToString:ssid4];
 
       if (v23)
       {
@@ -510,7 +510,7 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
       ++v17;
     }
 
-    while ([v6 count] > (v20 + 2));
+    while ([dataCopy count] > (v20 + 2));
   }
 
   v76 = 0;
@@ -557,9 +557,9 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
     v30 = v28;
     if (os_log_type_enabled(v30, v29))
     {
-      v31 = [v7 count];
+      v31 = [oldDataCopy count];
       v32 = [v48 count];
-      v33 = [v6 count];
+      v33 = [dataCopy count];
       v34 = [v49 count];
       *buf = 134218752;
       v83 = v31;
@@ -586,7 +586,7 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
   v61[3] = &unk_279EC5600;
   v36 = v35;
   v62 = v36;
-  v65 = a5;
+  sectionCopy = section;
   v37 = v42;
   v63 = v37;
   v38 = v43;
@@ -600,13 +600,13 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
     v57[3] = &unk_279EC5628;
     v58 = v36;
     v59 = v47;
-    v60 = a5;
+    sectionCopy2 = section;
     [v58 enumerateKeysAndObjectsUsingBlock:v57];
   }
 
   if ([v47 count] || objc_msgSend(v38, "count") || objc_msgSend(v37, "count"))
   {
-    v39 = [(OBTableWelcomeController *)self tableView];
+    tableView = [(OBTableWelcomeController *)self tableView];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___block_invoke_88;
@@ -614,14 +614,14 @@ void __37__WFBuddyViewController_setNetworks___block_invoke_2(uint64_t a1, void 
     v52 = v38;
     v53 = v37;
     v54 = v47;
-    v55 = self;
+    selfCopy = self;
     v56 = v49;
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___block_invoke_89;
     v50[3] = &unk_279EC62C0;
     v50[4] = self;
-    [v39 performBatchUpdates:v51 completion:v50];
+    [tableView performBatchUpdates:v51 completion:v50];
   }
 
   _Block_object_dispose(&v69, 8);
@@ -883,24 +883,24 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentNetworkScaledRSSI:(float)a3
+- (void)setCurrentNetworkScaledRSSI:(float)i
 {
   v23 = *MEMORY[0x277D85DE8];
-  self->_currentNetworkScaledRSSI = a3;
-  v4 = [(WFBuddyViewController *)self sortedNetworks];
-  v5 = [v4 count];
+  self->_currentNetworkScaledRSSI = i;
+  sortedNetworks = [(WFBuddyViewController *)self sortedNetworks];
+  v5 = [sortedNetworks count];
 
   if (v5)
   {
     v6 = 0;
     while (1)
     {
-      v7 = [(WFBuddyViewController *)self sortedNetworks];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      sortedNetworks2 = [(WFBuddyViewController *)self sortedNetworks];
+      v8 = [sortedNetworks2 objectAtIndexedSubscript:v6];
 
-      v9 = [v8 ssid];
-      v10 = [(WFNetworkListRecord *)self->_currentNetwork ssid];
-      v11 = [v9 isEqualToString:v10];
+      ssid = [v8 ssid];
+      ssid2 = [(WFNetworkListRecord *)self->_currentNetwork ssid];
+      v11 = [ssid isEqualToString:ssid2];
 
       if (v11)
       {
@@ -917,8 +917,8 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
     v5 = v6;
   }
 
-  v12 = [(WFBuddyViewController *)self sections];
-  v13 = [v12 indexOfObject:&unk_288322A20];
+  sections = [(WFBuddyViewController *)self sections];
+  v13 = [sections indexOfObject:&unk_288322A20];
 
   v14 = [MEMORY[0x277CCAA70] indexPathForRow:v5 inSection:v13];
   if (v14)
@@ -932,21 +932,21 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
       _os_log_impl(&dword_273FB9000, v15, v16, "%s: reloading current network index path", buf, 0xCu);
     }
 
-    v17 = [(OBTableWelcomeController *)self tableView];
+    tableView = [(OBTableWelcomeController *)self tableView];
     v20 = v14;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-    [v17 reloadRowsAtIndexPaths:v18 withRowAnimation:5];
+    [tableView reloadRowsAtIndexPaths:v18 withRowAnimation:5];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentNetwork:(id)a3
+- (void)setCurrentNetwork:(id)network
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_currentNetwork, a3);
-  [v5 scaledRSSI];
+  networkCopy = network;
+  objc_storeStrong(&self->_currentNetwork, network);
+  [networkCopy scaledRSSI];
   self->_currentNetworkScaledRSSI = v6;
   self->_currentNetworkState = 0;
   v7 = WFLogForCategory(0);
@@ -962,10 +962,10 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentNetworkState:(int64_t)a3
+- (void)setCurrentNetworkState:(int64_t)state
 {
   v9 = *MEMORY[0x277D85DE8];
-  self->_currentNetworkState = a3;
+  self->_currentNetworkState = state;
   v4 = WFLogForCategory(0);
   v5 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v4 && os_log_type_enabled(v4, v5))
@@ -979,11 +979,11 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceCapability:(int64_t)a3
+- (void)setDeviceCapability:(int64_t)capability
 {
-  if (self->_deviceCapability != a3)
+  if (self->_deviceCapability != capability)
   {
-    self->_deviceCapability = a3;
+    self->_deviceCapability = capability;
     [(WFBuddyViewController *)self _refreshSections];
     alternateSetupTitle = self->_alternateSetupTitle;
     self->_alternateSetupTitle = 0;
@@ -997,12 +997,12 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
   }
 }
 
-- (void)setShowAdditionalSetupInfo:(BOOL)a3
+- (void)setShowAdditionalSetupInfo:(BOOL)info
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_showAdditionalSetupInfo != a3)
+  if (self->_showAdditionalSetupInfo != info)
   {
-    v3 = a3;
+    infoCopy = info;
     v5 = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
@@ -1010,11 +1010,11 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
       v8 = 136315394;
       v9 = "[WFBuddyViewController setShowAdditionalSetupInfo:]";
       v10 = 1024;
-      v11 = v3;
+      v11 = infoCopy;
       _os_log_impl(&dword_273FB9000, v5, v6, "%s: showAdditionalSetupInfo %d", &v8, 0x12u);
     }
 
-    self->_showAdditionalSetupInfo = v3;
+    self->_showAdditionalSetupInfo = infoCopy;
     [(WFBuddyViewController *)self _refreshSections];
   }
 
@@ -1078,14 +1078,14 @@ void __67__WFBuddyViewController__updateCellsWithNewData_oldData_inSection___blo
 
   else
   {
-    v9 = [(OBTableWelcomeController *)self tableView];
-    [v9 reloadData];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView reloadData];
 
-    v10 = [(OBTableWelcomeController *)self tableView];
-    [v10 setNeedsLayout];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 setNeedsLayout];
 
-    v11 = [(OBTableWelcomeController *)self tableView];
-    [v11 layoutIfNeeded];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 layoutIfNeeded];
   }
 
   if (os_signpost_enabled(MEMORY[0x277D86220]))
@@ -1147,8 +1147,8 @@ uint64_t __32__WFBuddyViewController_refresh__block_invoke(uint64_t a1)
       v8 = v6;
       if (os_log_type_enabled(v8, v7))
       {
-        v9 = [(WFBuddyViewController *)self sections];
-        v10 = [(WFBuddyViewController *)self _debugSectionStringFromSections:v9];
+        sections = [(WFBuddyViewController *)self sections];
+        v10 = [(WFBuddyViewController *)self _debugSectionStringFromSections:sections];
         v11 = [(WFBuddyViewController *)self _debugSectionStringFromSections:v5];
         *buf = 136315650;
         v16 = "[WFBuddyViewController _refreshSections]";
@@ -1169,9 +1169,9 @@ uint64_t __32__WFBuddyViewController_refresh__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)powerStateDidChange:(BOOL)a3
+- (void)powerStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v12 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
@@ -1180,7 +1180,7 @@ uint64_t __32__WFBuddyViewController_refresh__block_invoke(uint64_t a1)
     v8 = 136315394;
     v9 = "[WFBuddyViewController powerStateDidChange:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = changeCopy;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: state %d", &v8, 0x12u);
   }
 
@@ -1188,39 +1188,39 @@ uint64_t __32__WFBuddyViewController_refresh__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkListDelegateWillPresentAccessoryViewController:(id)a3
+- (void)networkListDelegateWillPresentAccessoryViewController:(id)controller
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 defaultBgColor];
-  [v4 setBackgroundColor:v5];
+  controllerCopy = controller;
+  defaultBgColor = [v3 defaultBgColor];
+  [controllerCopy setBackgroundColor:defaultBgColor];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFBuddyViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFBuddyViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(WFBuddyViewController *)self sections];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  sections = [(WFBuddyViewController *)self sections];
+  v7 = [sections objectAtIndexedSubscript:section];
 
-  v8 = [v7 integerValue];
-  if ((v8 - 1) >= 2)
+  integerValue = [v7 integerValue];
+  if ((integerValue - 1) >= 2)
   {
-    if (v8)
+    if (integerValue)
     {
       v9 = 0;
     }
 
     else
     {
-      v10 = [(WFBuddyViewController *)self sortedNetworks];
-      v11 = [v10 count];
+      sortedNetworks = [(WFBuddyViewController *)self sortedNetworks];
+      v11 = [sortedNetworks count];
 
       v9 = v11 + [(WFBuddyViewController *)self showOtherNetwork];
     }
@@ -1234,39 +1234,39 @@ uint64_t __32__WFBuddyViewController_refresh__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  v9 = [(WFBuddyViewController *)self sections];
-  v10 = [v9 count];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  sections = [(WFBuddyViewController *)self sections];
+  v10 = [sections count];
 
-  if (v8 < v10)
+  if (section < v10)
   {
-    v11 = [(WFBuddyViewController *)self sections];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    sections2 = [(WFBuddyViewController *)self sections];
+    v12 = [sections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v13 = [v12 integerValue];
-    if (v13 == 2)
+    integerValue = [v12 integerValue];
+    if (integerValue == 2)
     {
-      v17 = [v6 dequeueReusableCellWithIdentifier:@"WFBuddyAdditionalSetupCell"];
+      v17 = [viewCopy dequeueReusableCellWithIdentifier:@"WFBuddyAdditionalSetupCell"];
       if (!v17)
       {
         v17 = [[WFAdditionalSetupTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"WFBuddyAdditionalSetupCell"];
       }
 
-      v38 = [(WFBuddyViewController *)self alternateSetupTitle];
-      v51 = [(WFAdditionalSetupTableViewCell *)v17 label];
-      [v51 setText:v38];
+      alternateSetupTitle = [(WFBuddyViewController *)self alternateSetupTitle];
+      label = [(WFAdditionalSetupTableViewCell *)v17 label];
+      [label setText:alternateSetupTitle];
     }
 
     else
     {
-      if (v13 != 1)
+      if (integerValue != 1)
       {
-        if (v13)
+        if (integerValue)
         {
           v17 = 0;
 LABEL_28:
@@ -1275,15 +1275,15 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v14 = [v7 row];
-        v15 = [(WFBuddyViewController *)self sortedNetworks];
-        if (v14 == [v15 count])
+        v14 = [pathCopy row];
+        sortedNetworks = [(WFBuddyViewController *)self sortedNetworks];
+        if (v14 == [sortedNetworks count])
         {
-          v16 = [(WFBuddyViewController *)self showOtherNetwork];
+          showOtherNetwork = [(WFBuddyViewController *)self showOtherNetwork];
 
-          if (v16)
+          if (showOtherNetwork)
           {
-            v17 = [v6 dequeueReusableCellWithIdentifier:@"WFBuddyOtherNetworkCell"];
+            v17 = [viewCopy dequeueReusableCellWithIdentifier:@"WFBuddyOtherNetworkCell"];
             if (!v17)
             {
               v17 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WFBuddyOtherNetworkCell"];
@@ -1291,22 +1291,22 @@ LABEL_28:
 
             v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v19 = [v18 localizedStringForKey:@"kWFLocBuddyFooterViewTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-            v20 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-            [v20 setText:v19];
+            textLabel = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+            [textLabel setText:v19];
 
             v21 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
             v22 = MEMORY[0x277D74300];
             [v21 pointSize];
             v23 = [v22 boldSystemFontOfSize:?];
-            v24 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-            [v24 setFont:v23];
+            textLabel2 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+            [textLabel2 setFont:v23];
 
-            v25 = [MEMORY[0x277D75348] defaultButtonColor];
-            v26 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-            [v26 setTextColor:v25];
+            defaultButtonColor = [MEMORY[0x277D75348] defaultButtonColor];
+            textLabel3 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+            [textLabel3 setTextColor:defaultButtonColor];
 
-            v27 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-            [v27 setNumberOfLines:0];
+            textLabel4 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+            [textLabel4 setNumberOfLines:0];
 
             goto LABEL_26;
           }
@@ -1316,57 +1316,57 @@ LABEL_28:
         {
         }
 
-        v52 = [(WFBuddyViewController *)self sortedNetworks];
-        v21 = [v52 objectAtIndex:{objc_msgSend(v7, "row")}];
+        sortedNetworks2 = [(WFBuddyViewController *)self sortedNetworks];
+        v21 = [sortedNetworks2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v17 = [(WFBuddyViewController *)self _cellForNetworkRecord:v21 tableView:v6 indexPath:v7];
+        v17 = [(WFBuddyViewController *)self _cellForNetworkRecord:v21 tableView:viewCopy indexPath:pathCopy];
 LABEL_26:
 
         [(WFAdditionalSetupTableViewCell *)v17 setSeparatorInset:0.0, 40.0, 0.0, 0.0];
-        v38 = [MEMORY[0x277D75348] listPlatterBgColor];
-        [(WFAdditionalSetupTableViewCell *)v17 setBackgroundColor:v38];
+        alternateSetupTitle = [MEMORY[0x277D75348] listPlatterBgColor];
+        [(WFAdditionalSetupTableViewCell *)v17 setBackgroundColor:alternateSetupTitle];
         goto LABEL_27;
       }
 
-      v17 = [v6 dequeueReusableCellWithIdentifier:@"WFBuddyWAPICell"];
+      v17 = [viewCopy dequeueReusableCellWithIdentifier:@"WFBuddyWAPICell"];
       if (!v17)
       {
         v17 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WFBuddyWAPICell"];
       }
 
-      v35 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-      [v35 setNumberOfLines:0];
+      textLabel5 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+      [textLabel5 setNumberOfLines:0];
 
-      v36 = [(WFBuddyViewController *)self alternateSetupTitle];
-      v37 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-      [v37 setText:v36];
+      alternateSetupTitle2 = [(WFBuddyViewController *)self alternateSetupTitle];
+      textLabel6 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+      [textLabel6 setText:alternateSetupTitle2];
 
-      v38 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
+      alternateSetupTitle = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
       v39 = MEMORY[0x277D74300];
-      [v38 pointSize];
+      [alternateSetupTitle pointSize];
       v40 = [v39 boldSystemFontOfSize:?];
-      v41 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-      [v41 setFont:v40];
+      textLabel7 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+      [textLabel7 setFont:v40];
 
-      v42 = [MEMORY[0x277D75348] defaultButtonColor];
-      v43 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-      [v43 setTextColor:v42];
+      defaultButtonColor2 = [MEMORY[0x277D75348] defaultButtonColor];
+      textLabel8 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+      [textLabel8 setTextColor:defaultButtonColor2];
 
       v44 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v45 = [v44 localizedStringForKey:@"kWFLocEnableWAPITitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v46 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
-      [v46 setText:v45];
+      textLabel9 = [(WFAdditionalSetupTableViewCell *)v17 textLabel];
+      [textLabel9 setText:v45];
 
-      v47 = [(WFBuddyViewController *)self enableWAPISwitch];
-      [(WFAdditionalSetupTableViewCell *)v17 setAccessoryView:v47];
+      enableWAPISwitch = [(WFBuddyViewController *)self enableWAPISwitch];
+      [(WFAdditionalSetupTableViewCell *)v17 setAccessoryView:enableWAPISwitch];
 
-      v48 = [(WFBuddyViewController *)self listDelegate];
-      v49 = [v48 networkListViewControllerWAPIEnabled:self];
-      v50 = [(WFBuddyViewController *)self enableWAPISwitch];
-      [v50 setOn:v49];
+      listDelegate = [(WFBuddyViewController *)self listDelegate];
+      v49 = [listDelegate networkListViewControllerWAPIEnabled:self];
+      enableWAPISwitch2 = [(WFBuddyViewController *)self enableWAPISwitch];
+      [enableWAPISwitch2 setOn:v49];
 
-      v51 = [MEMORY[0x277D75348] listPlatterBgColor];
-      [(WFAdditionalSetupTableViewCell *)v17 setBackgroundColor:v51];
+      label = [MEMORY[0x277D75348] listPlatterBgColor];
+      [(WFAdditionalSetupTableViewCell *)v17 setBackgroundColor:label];
     }
 
 LABEL_27:
@@ -1380,13 +1380,13 @@ LABEL_27:
     v30 = v28;
     if (os_log_type_enabled(v30, v29))
     {
-      v31 = [v7 section];
-      v32 = [(WFBuddyViewController *)self sections];
-      v33 = [(WFBuddyViewController *)self _debugSectionStringFromSections:v32];
+      section2 = [pathCopy section];
+      sections3 = [(WFBuddyViewController *)self sections];
+      v33 = [(WFBuddyViewController *)self _debugSectionStringFromSections:sections3];
       v55 = 136315650;
       v56 = "[WFBuddyViewController tableView:cellForRowAtIndexPath:]";
       v57 = 2048;
-      v58 = v31;
+      v58 = section2;
       v59 = 2112;
       v60 = v33;
       _os_log_impl(&dword_273FB9000, v30, v29, "%s: requested section (%lu) is not in expected sections [%@], returning default cell", &v55, 0x20u);
@@ -1401,42 +1401,42 @@ LABEL_29:
   return v34;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(WFBuddyViewController *)self sections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  sections = [(WFBuddyViewController *)self sections];
+  v7 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [v7 integerValue];
-  if (v8)
+  integerValue = [v7 integerValue];
+  if (integerValue)
   {
-    if (v8 == 2)
+    if (integerValue == 2)
     {
-      v10 = [(WFBuddyViewController *)self alternateSetupTitle];
+      alternateSetupTitle = [(WFBuddyViewController *)self alternateSetupTitle];
     }
 
-    else if (v8 == 1)
+    else if (integerValue == 1)
     {
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v10 = [v9 localizedStringForKey:@"kWFLocEnableWAPITitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
+      alternateSetupTitle = [v9 localizedStringForKey:@"kWFLocEnableWAPITitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
     }
 
     else
     {
-      v10 = 0;
+      alternateSetupTitle = 0;
     }
 
 LABEL_12:
     v27[0] = *MEMORY[0x277D740C0];
-    v19 = [MEMORY[0x277D75348] systemBlueColor];
-    v28[0] = v19;
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v28[0] = systemBlueColor;
     v27[1] = *MEMORY[0x277D740A8];
     v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     v28[1] = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
-    [v10 sizeWithAttributes:v21];
+    [alternateSetupTitle sizeWithAttributes:v21];
     v23 = v22;
     [@"A" sizeWithAttributes:v21];
     v18 = ceil(v23 + v24 * 2.0);
@@ -1444,24 +1444,24 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = [v5 row];
-  v12 = [(WFBuddyViewController *)self sortedNetworks];
-  v13 = [v12 count];
+  v11 = [pathCopy row];
+  sortedNetworks = [(WFBuddyViewController *)self sortedNetworks];
+  v13 = [sortedNetworks count];
 
   if (v11 == v13)
   {
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v10 = [v14 localizedStringForKey:@"kWFLocBuddyFooterViewTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
+    alternateSetupTitle = [v14 localizedStringForKey:@"kWFLocBuddyFooterViewTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   }
 
   else
   {
-    v10 = 0;
+    alternateSetupTitle = 0;
   }
 
-  v15 = [v5 row];
-  v16 = [(WFBuddyViewController *)self sortedNetworks];
-  v17 = [v16 count];
+  v15 = [pathCopy row];
+  sortedNetworks2 = [(WFBuddyViewController *)self sortedNetworks];
+  v17 = [sortedNetworks2 count];
 
   if (v15 >= v17)
   {
@@ -1475,23 +1475,23 @@ LABEL_13:
   return v18;
 }
 
-- (id)_cellForNetworkRecord:(id)a3 tableView:(id)a4 indexPath:(id)a5
+- (id)_cellForNetworkRecord:(id)record tableView:(id)view indexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithIdentifier:@"WFBuddyNetworkListCell" forIndexPath:a5];
-  v10 = [v8 title];
-  [v9 setTitle:v10];
+  recordCopy = record;
+  v9 = [view dequeueReusableCellWithIdentifier:@"WFBuddyNetworkListCell" forIndexPath:path];
+  title = [recordCopy title];
+  [v9 setTitle:title];
 
   [v9 setSubtitle:0];
-  [v9 setPersonalHotspot:{objc_msgSend(v8, "iOSHotspot")}];
-  [v9 setSecure:{objc_msgSend(v8, "isSecure")}];
-  [v8 scaledRSSI];
+  [v9 setPersonalHotspot:{objc_msgSend(recordCopy, "iOSHotspot")}];
+  [v9 setSecure:{objc_msgSend(recordCopy, "isSecure")}];
+  [recordCopy scaledRSSI];
   [v9 setBars:WFSignalBarsFromScaledRSSI(v11)];
-  v12 = [v8 ssid];
+  ssid = [recordCopy ssid];
 
-  v13 = [(WFBuddyViewController *)self currentNetwork];
-  v14 = [v13 ssid];
-  v15 = [v12 isEqualToString:v14];
+  currentNetwork = [(WFBuddyViewController *)self currentNetwork];
+  ssid2 = [currentNetwork ssid];
+  v15 = [ssid isEqualToString:ssid2];
 
   if (v15)
   {
@@ -1515,65 +1515,65 @@ LABEL_13:
   v19 = MEMORY[0x277D74300];
   [v18 pointSize];
   v20 = [v19 boldSystemFontOfSize:?];
-  v21 = [v9 nameLabel];
-  [v21 setFont:v20];
+  nameLabel = [v9 nameLabel];
+  [nameLabel setFont:v20];
 
-  v22 = [MEMORY[0x277D75348] defaultTextColor];
-  v23 = [v9 textLabel];
-  [v23 setTextColor:v22];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+  textLabel = [v9 textLabel];
+  [textLabel setTextColor:defaultTextColor];
 
   v24 = v9;
   return v9;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v8 = a4;
-  if (![v8 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v5 = [(WFBuddyViewController *)self sortedNetworks];
-    v6 = [v5 objectAtIndex:{objc_msgSend(v8, "row")}];
+    sortedNetworks = [(WFBuddyViewController *)self sortedNetworks];
+    v6 = [sortedNetworks objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v7 = [(WFBuddyViewController *)self listDelegate];
-    [v7 networkListViewController:self showSettingsForNetwork:v6 context:1];
+    listDelegate = [(WFBuddyViewController *)self listDelegate];
+    [listDelegate networkListViewController:self showSettingsForNetwork:v6 context:1];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
-    v6 = [(WFBuddyViewController *)self alternateSetupFooter];
-    if (v6)
+    alternateSetupFooter = [(WFBuddyViewController *)self alternateSetupFooter];
+    if (alternateSetupFooter)
     {
-      v7 = v6;
-      v8 = [(WFBuddyViewController *)self showAdditionalSetupInfo];
+      v7 = alternateSetupFooter;
+      showAdditionalSetupInfo = [(WFBuddyViewController *)self showAdditionalSetupInfo];
 
-      if (v8)
+      if (showAdditionalSetupInfo)
       {
-        v6 = [(WFBuddyViewController *)self alternateSetupFooter];
+        alternateSetupFooter = [(WFBuddyViewController *)self alternateSetupFooter];
       }
 
       else
       {
-        v6 = 0;
+        alternateSetupFooter = 0;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    alternateSetupFooter = 0;
   }
 
-  return v6;
+  return alternateSetupFooter;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = WFLogForCategory(0);
   v9 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v8 && os_log_type_enabled(v8, v9))
@@ -1581,25 +1581,25 @@ LABEL_13:
     v21 = 136315394;
     v22 = "[WFBuddyViewController tableView:didSelectRowAtIndexPath:]";
     v23 = 2112;
-    v24 = v7;
+    v24 = pathCopy;
     _os_log_impl(&dword_273FB9000, v8, v9, "%s: indexPath %@", &v21, 0x16u);
   }
 
-  v10 = [(WFBuddyViewController *)self sections];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+  sections = [(WFBuddyViewController *)self sections];
+  v11 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v12 = [v11 integerValue];
-  if (v12 == 2)
+  integerValue = [v11 integerValue];
+  if (integerValue == 2)
   {
-    v16 = [(WFBuddyViewController *)self buddyDelegate];
-    [v16 buddyViewControllerDidPressAlternateSetupButton:self];
+    buddyDelegate = [(WFBuddyViewController *)self buddyDelegate];
+    [buddyDelegate buddyViewControllerDidPressAlternateSetupButton:self];
   }
 
-  else if (!v12)
+  else if (!integerValue)
   {
-    v13 = [v7 row];
-    v14 = [(WFBuddyViewController *)self sortedNetworks];
-    v15 = [v14 count];
+    v13 = [pathCopy row];
+    sortedNetworks = [(WFBuddyViewController *)self sortedNetworks];
+    v15 = [sortedNetworks count];
 
     if (v13 == v15)
     {
@@ -1608,50 +1608,50 @@ LABEL_13:
 
     else
     {
-      v17 = [(WFBuddyViewController *)self sortedNetworks];
-      v18 = [v17 objectAtIndex:{objc_msgSend(v7, "row")}];
+      sortedNetworks2 = [(WFBuddyViewController *)self sortedNetworks];
+      v18 = [sortedNetworks2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v19 = [(WFBuddyViewController *)self listDelegate];
-      [v19 networkListViewController:self didTapRecord:v18];
+      listDelegate = [(WFBuddyViewController *)self listDelegate];
+      [listDelegate networkListViewController:self didTapRecord:v18];
     }
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v7 = a4;
-  if (a5 == 1)
+  footerViewCopy = footerView;
+  if (section == 1)
   {
-    v14 = v7;
-    v8 = [(WFBuddyViewController *)self alternateSetupFooter];
-    v7 = v14;
-    if (v8)
+    v14 = footerViewCopy;
+    alternateSetupFooter = [(WFBuddyViewController *)self alternateSetupFooter];
+    footerViewCopy = v14;
+    if (alternateSetupFooter)
     {
-      v9 = [(WFBuddyViewController *)self showAdditionalSetupInfo];
+      showAdditionalSetupInfo = [(WFBuddyViewController *)self showAdditionalSetupInfo];
 
-      v7 = v14;
-      if (v9)
+      footerViewCopy = v14;
+      if (showAdditionalSetupInfo)
       {
         v10 = MEMORY[0x277D75348];
         v11 = v14;
-        v12 = [v10 altTextColor];
-        v13 = [v11 textLabel];
+        altTextColor = [v10 altTextColor];
+        textLabel = [v11 textLabel];
 
-        [v13 setTextColor:v12];
-        v7 = v14;
+        [textLabel setTextColor:altTextColor];
+        footerViewCopy = v14;
       }
     }
   }
 }
 
-- (void)_chooseOtherNetworkTapped:(id)a3
+- (void)_chooseOtherNetworkTapped:(id)tapped
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
@@ -1659,26 +1659,26 @@ LABEL_13:
     v9 = 136315394;
     v10 = "[WFBuddyViewController _chooseOtherNetworkTapped:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = tappedCopy;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: sender %@", &v9, 0x16u);
   }
 
-  v7 = [(WFBuddyViewController *)self listDelegate];
+  listDelegate = [(WFBuddyViewController *)self listDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 networkListViewControllerDidTapOtherNetwork:self];
+    [listDelegate networkListViewControllerDidTapOtherNetwork:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableWAPISwitchChanged:(id)a3
+- (void)_enableWAPISwitchChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [(WFBuddyViewController *)self listDelegate];
-  v5 = [v4 isOn];
+  changedCopy = changed;
+  listDelegate = [(WFBuddyViewController *)self listDelegate];
+  isOn = [changedCopy isOn];
 
-  [v6 networkListViewController:self setWAPIEnabled:v5];
+  [listDelegate networkListViewController:self setWAPIEnabled:isOn];
 }
 
 - (UISwitch)enableWAPISwitch
@@ -1699,9 +1699,9 @@ LABEL_13:
   return enableWAPISwitch;
 }
 
-- (void)_notifyBuddyWiFiPickerIsVisble:(BOOL)a3
+- (void)_notifyBuddyWiFiPickerIsVisble:(BOOL)visble
 {
-  v3 = a3;
+  visbleCopy = visble;
   v12 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
   v5 = OSLogForWFLogLevel(3uLL);
@@ -1710,44 +1710,44 @@ LABEL_13:
     v8 = 136315394;
     v9 = "[WFBuddyViewController _notifyBuddyWiFiPickerIsVisble:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = visbleCopy;
     _os_log_impl(&dword_273FB9000, v4, v5, "%s: visible %d", &v8, 0x12u);
   }
 
   v6 = _notifyBuddyWiFiPickerIsVisble__token;
   if (_notifyBuddyWiFiPickerIsVisble__token != -1 || (notify_register_check("com.apple.airportsettingsvisible", &_notifyBuddyWiFiPickerIsVisble__token), v6 = _notifyBuddyWiFiPickerIsVisble__token, _notifyBuddyWiFiPickerIsVisble__token != -1))
   {
-    notify_set_state(v6, v3);
+    notify_set_state(v6, visbleCopy);
     notify_post("com.apple.airportsettingsvisible");
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nameOfSection:(int64_t)a3
+- (id)_nameOfSection:(int64_t)section
 {
-  if (a3 > 2)
+  if (section > 2)
   {
     return @"invalid section";
   }
 
   else
   {
-    return off_279EC62E0[a3];
+    return off_279EC62E0[section];
   }
 }
 
-- (id)_debugSectionStringFromSections:(id)a3
+- (id)_debugSectionStringFromSections:(id)sections
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = [v4 count];
+  sectionsCopy = sections;
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = [sectionsCopy count];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = sectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1764,11 +1764,11 @@ LABEL_13:
         }
 
         v13 = -[WFBuddyViewController _nameOfSection:](self, "_nameOfSection:", [*(*(&v16 + 1) + 8 * i) integerValue]);
-        [v5 appendFormat:@"%lu: %@", v10, v13, v16];
+        [string appendFormat:@"%lu: %@", v10, v13, v16];
 
         if (v6 - 1 != v10)
         {
-          [v5 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         ++v10;
@@ -1782,7 +1782,7 @@ LABEL_13:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return string;
 }
 
 - (WFBuddyViewControllerDelegate)buddyDelegate

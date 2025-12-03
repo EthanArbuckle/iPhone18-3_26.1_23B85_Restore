@@ -1,15 +1,15 @@
 @interface _CertInfoActionButton
-- (void)setTitle:(id)a3 destructive:(BOOL)a4;
+- (void)setTitle:(id)title destructive:(BOOL)destructive;
 @end
 
 @implementation _CertInfoActionButton
 
-- (void)setTitle:(id)a3 destructive:(BOOL)a4
+- (void)setTitle:(id)title destructive:(BOOL)destructive
 {
-  v4 = a4;
-  [(_CertInfoActionButton *)self setTitle:a3 forState:0];
+  destructiveCopy = destructive;
+  [(_CertInfoActionButton *)self setTitle:title forState:0];
   v6 = &_removeButtonImage;
-  if (v4)
+  if (destructiveCopy)
   {
     v7 = &_removeButtonPressedImage;
   }

@@ -1,21 +1,21 @@
 @interface SXAudioComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXAudioComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = [(SXComponentSizer *)self DOMObjectProvider];
-  v7 = [(SXComponentSizer *)self component];
-  v8 = [v7 stillImageIdentifier];
-  v9 = [v6 imageResourceForIdentifier:v8];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component = [(SXComponentSizer *)self component];
+  stillImageIdentifier = [component stillImageIdentifier];
+  v9 = [dOMObjectProvider imageResourceForIdentifier:stillImageIdentifier];
 
   [v9 dimensions];
   v12 = 0.0;
   if (v10 != *MEMORY[0x1E695F060] || v11 != *(MEMORY[0x1E695F060] + 8))
   {
-    v12 = v11 * (a3 / v10);
+    v12 = v11 * (width / v10);
   }
 
   if (v12 >= 48.0)

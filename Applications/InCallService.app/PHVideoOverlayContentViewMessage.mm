@@ -1,16 +1,16 @@
 @interface PHVideoOverlayContentViewMessage
-- (PHVideoOverlayContentViewMessage)initWithTitle:(id)a3 message:(id)a4;
+- (PHVideoOverlayContentViewMessage)initWithTitle:(id)title message:(id)message;
 - (void)resetView;
-- (void)setupViewWithTitle:(id)a3 message:(id)a4;
+- (void)setupViewWithTitle:(id)title message:(id)message;
 - (void)updateConstraints;
 @end
 
 @implementation PHVideoOverlayContentViewMessage
 
-- (PHVideoOverlayContentViewMessage)initWithTitle:(id)a3 message:(id)a4
+- (PHVideoOverlayContentViewMessage)initWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = PHVideoOverlayContentViewMessage;
   v8 = [(PHVideoOverlayContentViewMessage *)&v11 init];
@@ -18,72 +18,72 @@
   if (v8)
   {
     [(PHVideoOverlayContentViewMessage *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PHVideoOverlayContentViewMessage *)v9 setupViewWithTitle:v6 message:v7];
+    [(PHVideoOverlayContentViewMessage *)v9 setupViewWithTitle:titleCopy message:messageCopy];
   }
 
   return v9;
 }
 
-- (void)setupViewWithTitle:(id)a3 message:(id)a4
+- (void)setupViewWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v8 = objc_alloc_init(UILabel);
   [(PHVideoOverlayContentViewMessage *)self setTitleLabel:v8];
 
-  v9 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  [v9 setText:v7];
+  titleLabel = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v10 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  titleLabel2 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
   v11 = +[UIColor whiteColor];
-  [v10 setTextColor:v11];
+  [titleLabel2 setTextColor:v11];
 
-  v12 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  titleLabel3 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
   [(PHVideoOverlayContentView *)self titleFontSize];
   v13 = [UIFont systemFontOfSize:?];
-  [v12 setFont:v13];
+  [titleLabel3 setFont:v13];
 
-  v14 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  [v14 setTextAlignment:1];
+  titleLabel4 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  [titleLabel4 setTextAlignment:1];
 
-  v15 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  [v16 setAdjustsFontSizeToFitWidth:1];
+  titleLabel6 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  [titleLabel6 setAdjustsFontSizeToFitWidth:1];
 
   v17 = objc_alloc_init(UILabel);
   [(PHVideoOverlayContentViewMessage *)self setMessageLabel:v17];
 
-  v18 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  [v18 setText:v6];
+  messageLabel = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  [messageLabel setText:messageCopy];
 
-  v19 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  messageLabel2 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
   v20 = +[UIColor whiteColor];
-  [v19 setTextColor:v20];
+  [messageLabel2 setTextColor:v20];
 
-  v21 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  messageLabel3 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
   [(PHVideoOverlayContentView *)self textFontSize];
   v22 = [UIFont systemFontOfSize:?];
-  [v21 setFont:v22];
+  [messageLabel3 setFont:v22];
 
-  v23 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  [v23 setTextAlignment:1];
+  messageLabel4 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  [messageLabel4 setTextAlignment:1];
 
-  v24 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  [v24 setNumberOfLines:4];
+  messageLabel5 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  [messageLabel5 setNumberOfLines:4];
 
-  v25 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  messageLabel6 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  [messageLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v26 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  [v26 setAdjustsFontSizeToFitWidth:1];
+  messageLabel7 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  [messageLabel7 setAdjustsFontSizeToFitWidth:1];
 
-  v27 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  [(PHVideoOverlayContentViewMessage *)self addSubview:v27];
+  titleLabel7 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  [(PHVideoOverlayContentViewMessage *)self addSubview:titleLabel7];
 
-  v28 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  [(PHVideoOverlayContentViewMessage *)self addSubview:v28];
+  messageLabel8 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  [(PHVideoOverlayContentViewMessage *)self addSubview:messageLabel8];
 }
 
 - (void)updateConstraints
@@ -91,48 +91,48 @@
   v18.receiver = self;
   v18.super_class = PHVideoOverlayContentViewMessage;
   [(PHVideoOverlayContentViewMessage *)&v18 updateConstraints];
-  v3 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  v4 = [NSLayoutConstraint constraintWithItem:v3 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  titleLabel = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  v4 = [NSLayoutConstraint constraintWithItem:titleLabel attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v4];
 
-  v5 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  v6 = [NSLayoutConstraint constraintWithItem:v5 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
+  titleLabel2 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  v6 = [NSLayoutConstraint constraintWithItem:titleLabel2 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v6];
 
-  v7 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  v8 = [NSLayoutConstraint constraintWithItem:v7 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
+  titleLabel3 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  v8 = [NSLayoutConstraint constraintWithItem:titleLabel3 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v8];
 
-  v9 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  v10 = [NSLayoutConstraint constraintWithItem:v9 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  messageLabel = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  v10 = [NSLayoutConstraint constraintWithItem:messageLabel attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v10];
 
-  v11 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  v12 = [NSLayoutConstraint constraintWithItem:v11 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:0.0];
+  messageLabel2 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  v12 = [NSLayoutConstraint constraintWithItem:messageLabel2 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v12];
 
-  v13 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  v14 = [NSLayoutConstraint constraintWithItem:v13 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
+  messageLabel3 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  v14 = [NSLayoutConstraint constraintWithItem:messageLabel3 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v14];
 
-  v15 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  v16 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  v17 = [NSLayoutConstraint constraintWithItem:v15 attribute:4 relatedBy:0 toItem:v16 attribute:3 multiplier:1.0 constant:-6.0];
+  titleLabel4 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  messageLabel4 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  v17 = [NSLayoutConstraint constraintWithItem:titleLabel4 attribute:4 relatedBy:0 toItem:messageLabel4 attribute:3 multiplier:1.0 constant:-6.0];
   [(PHVideoOverlayContentViewMessage *)self addConstraint:v17];
 }
 
 - (void)resetView
 {
-  v3 = [(PHVideoOverlayContentViewMessage *)self titleLabel];
-  v4 = [v3 text];
+  titleLabel = [(PHVideoOverlayContentViewMessage *)self titleLabel];
+  text = [titleLabel text];
 
-  v5 = [(PHVideoOverlayContentViewMessage *)self messageLabel];
-  v6 = [v5 text];
+  messageLabel = [(PHVideoOverlayContentViewMessage *)self messageLabel];
+  text2 = [messageLabel text];
 
   v7.receiver = self;
   v7.super_class = PHVideoOverlayContentViewMessage;
   [(PHVideoOverlayContentView *)&v7 resetView];
-  [(PHVideoOverlayContentViewMessage *)self setupViewWithTitle:v4 message:v6];
+  [(PHVideoOverlayContentViewMessage *)self setupViewWithTitle:text message:text2];
 }
 
 @end

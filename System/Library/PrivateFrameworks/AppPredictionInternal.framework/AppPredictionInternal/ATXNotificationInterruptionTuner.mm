@@ -1,17 +1,17 @@
 @interface ATXNotificationInterruptionTuner
 - (ATXNotificationInterruptionTuner)init;
-- (ATXNotificationInterruptionTuner)initWithModesModels:(id)a3 notificationSettingsReader:(id)a4 dataStore:(id)a5;
-- (ATXNotificationInterruptionTuner)initWithModesModels:(id)a3 notificationSettingsReader:(id)a4 dataStore:(id)a5 modeConfigClient:(id)a6;
-- (ATXNotificationInterruptionTuner)initWithModesModels:(id)a3 notificationSettingsReader:(id)a4 dataStore:(id)a5 modeConfigClient:(id)a6 interruptionManager:(id)a7;
-- (ATXNotificationInterruptionTuner)initWithNotificationSettingsReader:(id)a3 dataStore:(id)a4 modeConfigClient:(id)a5 interruptionManager:(id)a6;
-- (BOOL)appWithBundleId:(id)a3 isRecommendedByAllowListModel:(id)a4;
-- (BOOL)appWithBundleId:(id)a3 isRecommendedByDenyListModel:(id)a4;
-- (BOOL)contactWithIdentifier:(id)a3 isRecommendedByAllowListModel:(id)a4;
-- (BOOL)contactWithIdentifier:(id)a3 isRecommendedByDenyListModel:(id)a4;
-- (BOOL)validateNotificationUrgency:(id)a3;
-- (id)activeNotificationSuggestionsForMode:(unint64_t)a3;
-- (id)activeNotificationSuggestionsForMode:(unint64_t)a3 candidateNotifications:(id)a4;
-- (id)dndModeUUID:(unint64_t)a3;
+- (ATXNotificationInterruptionTuner)initWithModesModels:(id)models notificationSettingsReader:(id)reader dataStore:(id)store;
+- (ATXNotificationInterruptionTuner)initWithModesModels:(id)models notificationSettingsReader:(id)reader dataStore:(id)store modeConfigClient:(id)client;
+- (ATXNotificationInterruptionTuner)initWithModesModels:(id)models notificationSettingsReader:(id)reader dataStore:(id)store modeConfigClient:(id)client interruptionManager:(id)manager;
+- (ATXNotificationInterruptionTuner)initWithNotificationSettingsReader:(id)reader dataStore:(id)store modeConfigClient:(id)client interruptionManager:(id)manager;
+- (BOOL)appWithBundleId:(id)id isRecommendedByAllowListModel:(id)model;
+- (BOOL)appWithBundleId:(id)id isRecommendedByDenyListModel:(id)model;
+- (BOOL)contactWithIdentifier:(id)identifier isRecommendedByAllowListModel:(id)model;
+- (BOOL)contactWithIdentifier:(id)identifier isRecommendedByDenyListModel:(id)model;
+- (BOOL)validateNotificationUrgency:(id)urgency;
+- (id)activeNotificationSuggestionsForMode:(unint64_t)mode;
+- (id)activeNotificationSuggestionsForMode:(unint64_t)mode candidateNotifications:(id)notifications;
+- (id)dndModeUUID:(unint64_t)d;
 @end
 
 @implementation ATXNotificationInterruptionTuner
@@ -28,124 +28,124 @@
   return v8;
 }
 
-- (ATXNotificationInterruptionTuner)initWithModesModels:(id)a3 notificationSettingsReader:(id)a4 dataStore:(id)a5
+- (ATXNotificationInterruptionTuner)initWithModesModels:(id)models notificationSettingsReader:(id)reader dataStore:(id)store
 {
   v8 = MEMORY[0x277CEB440];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 sharedInstance];
-  v13 = [(ATXNotificationInterruptionTuner *)self initWithModesModels:v11 notificationSettingsReader:v10 dataStore:v9 modeConfigClient:v12];
+  storeCopy = store;
+  readerCopy = reader;
+  modelsCopy = models;
+  sharedInstance = [v8 sharedInstance];
+  v13 = [(ATXNotificationInterruptionTuner *)self initWithModesModels:modelsCopy notificationSettingsReader:readerCopy dataStore:storeCopy modeConfigClient:sharedInstance];
 
   return v13;
 }
 
-- (ATXNotificationInterruptionTuner)initWithModesModels:(id)a3 notificationSettingsReader:(id)a4 dataStore:(id)a5 modeConfigClient:(id)a6
+- (ATXNotificationInterruptionTuner)initWithModesModels:(id)models notificationSettingsReader:(id)reader dataStore:(id)store modeConfigClient:(id)client
 {
   v10 = MEMORY[0x277CEB5F0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v10 alloc] initWithModesModels:v14 notificationSettingsReader:v13 modeConfigurationClient:v11];
-  v16 = [(ATXNotificationInterruptionTuner *)self initWithModesModels:v14 notificationSettingsReader:v13 dataStore:v12 modeConfigClient:v11 interruptionManager:v15];
+  clientCopy = client;
+  storeCopy = store;
+  readerCopy = reader;
+  modelsCopy = models;
+  v15 = [[v10 alloc] initWithModesModels:modelsCopy notificationSettingsReader:readerCopy modeConfigurationClient:clientCopy];
+  v16 = [(ATXNotificationInterruptionTuner *)self initWithModesModels:modelsCopy notificationSettingsReader:readerCopy dataStore:storeCopy modeConfigClient:clientCopy interruptionManager:v15];
 
   return v16;
 }
 
-- (ATXNotificationInterruptionTuner)initWithModesModels:(id)a3 notificationSettingsReader:(id)a4 dataStore:(id)a5 modeConfigClient:(id)a6 interruptionManager:(id)a7
+- (ATXNotificationInterruptionTuner)initWithModesModels:(id)models notificationSettingsReader:(id)reader dataStore:(id)store modeConfigClient:(id)client interruptionManager:(id)manager
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  modelsCopy = models;
+  readerCopy = reader;
+  storeCopy = store;
+  clientCopy = client;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = ATXNotificationInterruptionTuner;
   v17 = [(ATXNotificationInterruptionTuner *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_modesModels, a3);
-    objc_storeStrong(&v18->_notificationSettingsReader, a4);
-    objc_storeStrong(&v18->_dataStore, a5);
-    objc_storeStrong(&v18->_modeConfigClient, a6);
-    v19 = [MEMORY[0x277CEB710] sharedInstance];
+    objc_storeStrong(&v17->_modesModels, models);
+    objc_storeStrong(&v18->_notificationSettingsReader, reader);
+    objc_storeStrong(&v18->_dataStore, store);
+    objc_storeStrong(&v18->_modeConfigClient, client);
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     constants = v18->_constants;
-    v18->_constants = v19;
+    v18->_constants = mEMORY[0x277CEB710];
 
-    objc_storeStrong(&v18->_interruptionManager, a7);
+    objc_storeStrong(&v18->_interruptionManager, manager);
   }
 
   return v18;
 }
 
-- (ATXNotificationInterruptionTuner)initWithNotificationSettingsReader:(id)a3 dataStore:(id)a4 modeConfigClient:(id)a5 interruptionManager:(id)a6
+- (ATXNotificationInterruptionTuner)initWithNotificationSettingsReader:(id)reader dataStore:(id)store modeConfigClient:(id)client interruptionManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  readerCopy = reader;
+  storeCopy = store;
+  clientCopy = client;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = ATXNotificationInterruptionTuner;
   v15 = [(ATXNotificationInterruptionTuner *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_notificationSettingsReader, a3);
-    objc_storeStrong(&v16->_dataStore, a4);
-    objc_storeStrong(&v16->_modeConfigClient, a5);
-    v17 = [MEMORY[0x277CEB710] sharedInstance];
+    objc_storeStrong(&v15->_notificationSettingsReader, reader);
+    objc_storeStrong(&v16->_dataStore, store);
+    objc_storeStrong(&v16->_modeConfigClient, client);
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     constants = v16->_constants;
-    v16->_constants = v17;
+    v16->_constants = mEMORY[0x277CEB710];
 
-    objc_storeStrong(&v16->_interruptionManager, a6);
+    objc_storeStrong(&v16->_interruptionManager, manager);
   }
 
   return v16;
 }
 
-- (id)activeNotificationSuggestionsForMode:(unint64_t)a3
+- (id)activeNotificationSuggestionsForMode:(unint64_t)mode
 {
   v5 = [(ATXNotificationAndSuggestionDatastore *)self->_dataStore getTopOfProminentStackNotificationsWithLimit:10];
   v6 = [(ATXNotificationAndSuggestionDatastore *)self->_dataStore getTopOfNonProminentStackNotificationsWithLimit:10];
   v7 = [v5 arrayByAddingObjectsFromArray:v6];
-  v8 = [(ATXNotificationInterruptionTuner *)self activeNotificationSuggestionsForMode:a3 candidateNotifications:v7];
+  v8 = [(ATXNotificationInterruptionTuner *)self activeNotificationSuggestionsForMode:mode candidateNotifications:v7];
 
   return v8;
 }
 
-- (id)activeNotificationSuggestionsForMode:(unint64_t)a3 candidateNotifications:(id)a4
+- (id)activeNotificationSuggestionsForMode:(unint64_t)mode candidateNotifications:(id)notifications
 {
   v229 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 <= 0xF && ((1 << a3) & 0xB021) != 0)
+  notificationsCopy = notifications;
+  if (mode <= 0xF && ((1 << mode) & 0xB021) != 0)
   {
     v7 = MEMORY[0x277CBEBF8];
     goto LABEL_4;
   }
 
-  v142 = v6;
-  v143 = a3;
-  v10 = [(ATXNotificationInterruptionTuner *)self dndModeUUID:a3];
+  v142 = notificationsCopy;
+  modeCopy = mode;
+  v10 = [(ATXNotificationInterruptionTuner *)self dndModeUUID:mode];
   if (v10)
   {
     v137 = objc_opt_new();
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v210[0] = MEMORY[0x277D85DD0];
     v210[1] = 3221225472;
     v210[2] = __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode_candidateNotifications___block_invoke;
     v210[3] = &unk_278598640;
-    v158 = v11;
+    v158 = dictionary;
     v211 = v158;
-    v157 = v12;
+    v157 = dictionary2;
     v212 = v157;
     [v142 enumerateObjectsUsingBlock:v210];
     v209 = 0;
     v165 = v10;
     v13 = [(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader applicationConfigurationTypeForDNDModeUUID:v10 success:&v209];
-    v168 = self;
+    selfCopy = self;
     if (v209 != 1)
     {
       v38 = __atxlog_handle_notification_management();
@@ -187,10 +187,10 @@ LABEL_88:
 
       interruptionManager = self->_interruptionManager;
       v73 = +[ATXModeEntityScorerServer sharedInstance];
-      v74 = [v73 rankedContactsForMode:v143 options:1];
+      v74 = [v73 rankedContactsForMode:modeCopy options:1];
       v75 = [(ATXInterruptionManager *)interruptionManager recommendedAllowedContactsForContactScores:v74];
 
-      v156 = [(ATXInterruptionManager *)self->_interruptionManager recommendedDeniedContactsForMode:v143 options:1];
+      v156 = [(ATXInterruptionManager *)self->_interruptionManager recommendedDeniedContactsForMode:modeCopy options:1];
       v167 = objc_opt_new();
       v141 = v75;
       if (v136 == 2)
@@ -307,29 +307,29 @@ LABEL_177:
               v82 = *(*(&v185 + 1) + 8 * v81);
               if (v82)
               {
-                v83 = [v82 cnContactId];
-                if (v83)
+                cnContactId = [v82 cnContactId];
+                if (cnContactId)
                 {
-                  if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader contactIsOnAllowList:v83 dndModeUUID:v165])
+                  if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader contactIsOnAllowList:cnContactId dndModeUUID:v165])
                   {
                     logb = __atxlog_handle_notification_management();
                     if (os_log_type_enabled(logb, OS_LOG_TYPE_DEBUG))
                     {
                       *buf = v134;
-                      v220 = v83;
+                      v220 = cnContactId;
                       _os_log_debug_impl(&dword_2263AA000, logb, OS_LOG_TYPE_DEBUG, "Not suggesting contact: %@ for allow list because it's already there", buf, 0xCu);
                     }
 
                     goto LABEL_120;
                   }
 
-                  if (![(ATXNotificationInterruptionTuner *)self contactWithIdentifier:v83 isRecommendedByDenyListModel:v156])
+                  if (![(ATXNotificationInterruptionTuner *)self contactWithIdentifier:cnContactId isRecommendedByDenyListModel:v156])
                   {
                     v183 = 0u;
                     v184 = 0u;
                     v181 = 0u;
                     v182 = 0u;
-                    logb = [v157 objectForKeyedSubscript:v83];
+                    logb = [v157 objectForKeyedSubscript:cnContactId];
                     v85 = [logb countByEnumeratingWithState:&v181 objects:v216 count:16];
                     if (!v85)
                     {
@@ -351,16 +351,16 @@ LABEL_177:
                         }
 
                         v91 = *(*(&v181 + 1) + 8 * j);
-                        v92 = [v91 bundleID];
-                        if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnAllowList:v92 dndModeUUID:v88])
+                        bundleID = [v91 bundleID];
+                        if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnAllowList:bundleID dndModeUUID:v88])
                         {
                           v93 = __atxlog_handle_notification_management();
                           if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
                           {
                             *buf = 138412546;
-                            v220 = v83;
+                            v220 = cnContactId;
                             v221 = 2112;
-                            v222 = v92;
+                            v222 = bundleID;
                             _os_log_impl(&dword_2263AA000, v93, OS_LOG_TYPE_INFO, "Not suggesting contact: %@ because app: %@ is already allowed so no reason to suggest allowing the contact as well.", buf, 0x16u);
                           }
                         }
@@ -376,10 +376,10 @@ LABEL_177:
                           v94 = objc_alloc(MEMORY[0x277CEB6F0]);
                           v95 = objc_opt_new();
                           v96 = objc_opt_new();
-                          v97 = [v91 uuid];
-                          v98 = [v94 initWithInterruptionManagerTuningSuggestion:v93 scope:3 entityIdentifier:v83 uuid:v95 timestamp:v96 triggerNotificationUUID:v97];
+                          uuid = [v91 uuid];
+                          v98 = [v94 initWithInterruptionManagerTuningSuggestion:v93 scope:3 entityIdentifier:cnContactId uuid:v95 timestamp:v96 triggerNotificationUUID:uuid];
 
-                          self = v168;
+                          self = selfCopy;
                           v88 = v165;
                           [v167 addObject:v98];
 
@@ -471,8 +471,8 @@ LABEL_131:
           goto LABEL_158;
         }
 
-        v106 = [v105 cnContactId];
-        if (!v106)
+        cnContactId2 = [v105 cnContactId];
+        if (!cnContactId2)
         {
           v107 = __atxlog_handle_notification_management();
           logc = v107;
@@ -486,13 +486,13 @@ LABEL_131:
           goto LABEL_156;
         }
 
-        if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader contactIsOnDenyList:v106 dndModeUUID:v165])
+        if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader contactIsOnDenyList:cnContactId2 dndModeUUID:v165])
         {
           logc = __atxlog_handle_notification_management();
           if (os_log_type_enabled(logc, OS_LOG_TYPE_DEBUG))
           {
             *buf = v135;
-            v220 = v106;
+            v220 = cnContactId2;
             _os_log_debug_impl(&dword_2263AA000, logc, OS_LOG_TYPE_DEBUG, "Not suggesting contact: %@ for deny list because it's already there", buf, 0xCu);
           }
 
@@ -501,7 +501,7 @@ LABEL_156:
           goto LABEL_157;
         }
 
-        if (![(ATXNotificationInterruptionTuner *)self contactWithIdentifier:v106 isRecommendedByAllowListModel:v75])
+        if (![(ATXNotificationInterruptionTuner *)self contactWithIdentifier:cnContactId2 isRecommendedByAllowListModel:v75])
         {
           break;
         }
@@ -525,7 +525,7 @@ LABEL_158:
       v176 = 0u;
       v173 = 0u;
       v174 = 0u;
-      logc = [v157 objectForKeyedSubscript:v106];
+      logc = [v157 objectForKeyedSubscript:cnContactId2];
       v108 = [logc countByEnumeratingWithState:&v173 objects:v214 count:16];
       if (!v108)
       {
@@ -547,8 +547,8 @@ LABEL_144:
         }
 
         v114 = *(*(&v173 + 1) + 8 * v113);
-        v115 = [v114 bundleID];
-        if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnDenyList:v115 dndModeUUID:v111])
+        bundleID2 = [v114 bundleID];
+        if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnDenyList:bundleID2 dndModeUUID:v111])
         {
           break;
         }
@@ -559,11 +559,11 @@ LABEL_144:
           v117 = objc_alloc(MEMORY[0x277CEB6F0]);
           v118 = objc_opt_new();
           v119 = objc_opt_new();
-          v120 = [v114 uuid];
-          v121 = [v117 initWithInterruptionManagerTuningSuggestion:v116 scope:3 entityIdentifier:v106 uuid:v118 timestamp:v119 triggerNotificationUUID:v120];
+          uuid2 = [v114 uuid];
+          v121 = [v117 initWithInterruptionManagerTuningSuggestion:v116 scope:3 entityIdentifier:cnContactId2 uuid:v118 timestamp:v119 triggerNotificationUUID:uuid2];
 
           v111 = v165;
-          self = v168;
+          self = selfCopy;
           [v167 addObject:v121];
 
           v112 = logc;
@@ -591,9 +591,9 @@ LABEL_152:
       if (os_log_type_enabled(v116, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v220 = v106;
+        v220 = cnContactId2;
         v221 = 2112;
-        v222 = v115;
+        v222 = bundleID2;
         _os_log_impl(&dword_2263AA000, v116, OS_LOG_TYPE_INFO, "Not suggesting contact: %@ because app: %@ is already denied so no reason to suggest denying the contact as well.", buf, 0x16u);
       }
 
@@ -601,8 +601,8 @@ LABEL_152:
     }
 
     v138 = v13;
-    v14 = [(ATXInterruptionManager *)self->_interruptionManager recommendedAllowedAppsForMode:v143];
-    v15 = [(ATXInterruptionManager *)self->_interruptionManager recommendedDeniedAppsForMode:v143];
+    v14 = [(ATXInterruptionManager *)self->_interruptionManager recommendedAllowedAppsForMode:modeCopy];
+    v15 = [(ATXInterruptionManager *)self->_interruptionManager recommendedDeniedAppsForMode:modeCopy];
     v166 = objc_opt_new();
     v151 = v14;
     v146 = v15;
@@ -679,7 +679,7 @@ LABEL_76:
       [v137 addObjectsFromArray:v64];
 
       v39 = v165;
-      self = v168;
+      self = selfCopy;
       v38 = v151;
       goto LABEL_88;
     }
@@ -717,14 +717,14 @@ LABEL_76:
             v21 = *(*(&v205 + 1) + 8 * v20);
             if (v21)
             {
-              v22 = [v21 bundleId];
-              if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnAllowList:v22 dndModeUUID:v165])
+              bundleId = [v21 bundleId];
+              if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnAllowList:bundleId dndModeUUID:v165])
               {
                 v23 = __atxlog_handle_notification_management();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v220 = v22;
+                  v220 = bundleId;
                   v24 = v23;
                   v25 = "Not suggesting app: %@ for allow list because it's already there";
                   goto LABEL_21;
@@ -733,15 +733,15 @@ LABEL_76:
                 goto LABEL_37;
               }
 
-              if (![(ATXNotificationInterruptionTuner *)self appWithBundleId:v22 isRecommendedByDenyListModel:v15])
+              if (![(ATXNotificationInterruptionTuner *)self appWithBundleId:bundleId isRecommendedByDenyListModel:v15])
               {
-                if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader doesAppSendNotificationsToDigest:v22])
+                if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader doesAppSendNotificationsToDigest:bundleId])
                 {
                   v23 = __atxlog_handle_notification_management();
                   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = 138412290;
-                    v220 = v22;
+                    v220 = bundleId;
                     v24 = v23;
                     v25 = "Not suggesting app: %@ for allow list because app is configured to go to digest";
 LABEL_21:
@@ -755,8 +755,8 @@ LABEL_21:
                   v204 = 0u;
                   v201 = 0u;
                   v202 = 0u;
-                  v26 = v22;
-                  v23 = [v158 objectForKeyedSubscript:v22];
+                  v26 = bundleId;
+                  v23 = [v158 objectForKeyedSubscript:bundleId];
                   v27 = [v23 countByEnumeratingWithState:&v201 objects:v227 count:16];
                   if (v27)
                   {
@@ -779,11 +779,11 @@ LABEL_21:
                           v33 = objc_alloc(MEMORY[0x277CEB6F0]);
                           v34 = objc_opt_new();
                           v35 = objc_opt_new();
-                          v36 = [v31 uuid];
-                          v37 = [v33 initWithInterruptionManagerTuningSuggestion:v32 scope:1 entityIdentifier:v26 uuid:v34 timestamp:v35 triggerNotificationUUID:v36];
+                          uuid3 = [v31 uuid];
+                          v37 = [v33 initWithInterruptionManagerTuningSuggestion:v32 scope:1 entityIdentifier:v26 uuid:v34 timestamp:v35 triggerNotificationUUID:uuid3];
 
                           [v166 addObject:v37];
-                          self = v168;
+                          self = selfCopy;
                         }
                       }
 
@@ -798,7 +798,7 @@ LABEL_21:
                     v20 = log;
                   }
 
-                  v22 = v26;
+                  bundleId = v26;
                 }
 
 LABEL_37:
@@ -858,20 +858,20 @@ LABEL_48:
         goto LABEL_69;
       }
 
-      v46 = [v45 bundleId];
-      if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnDenyList:v46 dndModeUUID:v43])
+      bundleId2 = [v45 bundleId];
+      if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader appIsOnDenyList:bundleId2 dndModeUUID:v43])
       {
         break;
       }
 
-      if (![(ATXNotificationInterruptionTuner *)self appWithBundleId:v46 isRecommendedByAllowListModel:v14])
+      if (![(ATXNotificationInterruptionTuner *)self appWithBundleId:bundleId2 isRecommendedByAllowListModel:v14])
       {
         loga = v44;
         v195 = 0u;
         v196 = 0u;
         v193 = 0u;
         v194 = 0u;
-        v47 = [v158 objectForKeyedSubscript:v46];
+        v47 = [v158 objectForKeyedSubscript:bundleId2];
         v48 = [v47 countByEnumeratingWithState:&v193 objects:v225 count:16];
         if (v48)
         {
@@ -893,10 +893,10 @@ LABEL_48:
                 v54 = objc_alloc(MEMORY[0x277CEB6F0]);
                 v55 = objc_opt_new();
                 v56 = objc_opt_new();
-                v57 = [v52 uuid];
-                v58 = [v54 initWithInterruptionManagerTuningSuggestion:v53 scope:1 entityIdentifier:v46 uuid:v55 timestamp:v56 triggerNotificationUUID:v57];
+                uuid4 = [v52 uuid];
+                v58 = [v54 initWithInterruptionManagerTuningSuggestion:v53 scope:1 entityIdentifier:bundleId2 uuid:v55 timestamp:v56 triggerNotificationUUID:uuid4];
 
-                self = v168;
+                self = selfCopy;
                 [v166 addObject:v58];
               }
             }
@@ -936,7 +936,7 @@ LABEL_69:
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v220 = v46;
+      v220 = bundleId2;
       _os_log_debug_impl(&dword_2263AA000, v47, OS_LOG_TYPE_DEBUG, "Not suggesting app: %@ for deny list because it's already there", buf, 0xCu);
     }
 
@@ -948,7 +948,7 @@ LABEL_67:
   v7 = MEMORY[0x277CBEBF8];
 LABEL_178:
 
-  v6 = v142;
+  notificationsCopy = v142;
 LABEL_4:
 
   v8 = *MEMORY[0x277D85DE8];
@@ -993,10 +993,10 @@ void __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode
   }
 }
 
-- (BOOL)validateNotificationUrgency:(id)a3
+- (BOOL)validateNotificationUrgency:(id)urgency
 {
-  v3 = a3;
-  if ([v3 urgency] && objc_msgSend(v3, "urgency") != 1)
+  urgencyCopy = urgency;
+  if ([urgencyCopy urgency] && objc_msgSend(urgencyCopy, "urgency") != 1)
   {
     v5 = 1;
   }
@@ -1006,7 +1006,7 @@ void __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode
     v4 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(ATXNotificationInterruptionTuner *)v3 validateNotificationUrgency:v4];
+      [(ATXNotificationInterruptionTuner *)urgencyCopy validateNotificationUrgency:v4];
     }
 
     v5 = 0;
@@ -1015,7 +1015,7 @@ void __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode
   return v5;
 }
 
-- (id)dndModeUUID:(unint64_t)a3
+- (id)dndModeUUID:(unint64_t)d
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = [(ATXDNDModeConfigurationClient *)self->_modeConfigClient dndModeForATXMode:?];
@@ -1036,16 +1036,16 @@ void __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode
   return v3;
 }
 
-- (BOOL)appWithBundleId:(id)a3 isRecommendedByAllowListModel:(id)a4
+- (BOOL)appWithBundleId:(id)id isRecommendedByAllowListModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  modelCopy = model;
+  v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -1055,16 +1055,16 @@ void __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modelCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 bundleId];
-        if (v11)
+        bundleId = [v10 bundleId];
+        if (bundleId)
         {
-          v12 = v11;
-          v13 = [v10 bundleId];
-          v14 = [v13 isEqualToString:v5];
+          v12 = bundleId;
+          bundleId2 = [v10 bundleId];
+          v14 = [bundleId2 isEqualToString:idCopy];
 
           if (v14)
           {
@@ -1074,7 +1074,7 @@ void __96__ATXNotificationInterruptionTuner_activeNotificationSuggestionsForMode
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -1090,16 +1090,16 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)appWithBundleId:(id)a3 isRecommendedByDenyListModel:(id)a4
+- (BOOL)appWithBundleId:(id)id isRecommendedByDenyListModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  modelCopy = model;
+  v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -1109,16 +1109,16 @@ LABEL_12:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modelCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 bundleId];
-        if (v11)
+        bundleId = [v10 bundleId];
+        if (bundleId)
         {
-          v12 = v11;
-          v13 = [v10 bundleId];
-          v14 = [v13 isEqualToString:v5];
+          v12 = bundleId;
+          bundleId2 = [v10 bundleId];
+          v14 = [bundleId2 isEqualToString:idCopy];
 
           if (v14)
           {
@@ -1128,7 +1128,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -1144,16 +1144,16 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)contactWithIdentifier:(id)a3 isRecommendedByAllowListModel:(id)a4
+- (BOOL)contactWithIdentifier:(id)identifier isRecommendedByAllowListModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  modelCopy = model;
+  v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -1163,16 +1163,16 @@ LABEL_12:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modelCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 cnContactId];
-        if (v11)
+        cnContactId = [v10 cnContactId];
+        if (cnContactId)
         {
-          v12 = v11;
-          v13 = [v10 cnContactId];
-          v14 = [v13 isEqualToString:v5];
+          v12 = cnContactId;
+          cnContactId2 = [v10 cnContactId];
+          v14 = [cnContactId2 isEqualToString:identifierCopy];
 
           if (v14)
           {
@@ -1182,7 +1182,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -1198,16 +1198,16 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)contactWithIdentifier:(id)a3 isRecommendedByDenyListModel:(id)a4
+- (BOOL)contactWithIdentifier:(id)identifier isRecommendedByDenyListModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  modelCopy = model;
+  v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -1217,16 +1217,16 @@ LABEL_12:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modelCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 cnContactId];
-        if (v11)
+        cnContactId = [v10 cnContactId];
+        if (cnContactId)
         {
-          v12 = v11;
-          v13 = [v10 cnContactId];
-          v14 = [v13 isEqualToString:v5];
+          v12 = cnContactId;
+          cnContactId2 = [v10 cnContactId];
+          v14 = [cnContactId2 isEqualToString:identifierCopy];
 
           if (v14)
           {
@@ -1236,7 +1236,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [modelCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;

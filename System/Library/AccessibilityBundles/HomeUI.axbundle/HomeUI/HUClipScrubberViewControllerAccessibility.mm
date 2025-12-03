@@ -1,27 +1,27 @@
 @interface HUClipScrubberViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsEditingClips;
 - (BOOL)_axIsStreamingLive;
 - (id)_axPlaybackEngine;
 - (id)selectionButton;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axToggleClipTimescale:(id)a3;
+- (void)_axToggleClipTimescale:(id)timescale;
 - (void)viewDidLoad;
 @end
 
 @implementation HUClipScrubberViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUClipScrubberViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HUClipScrubberViewController" hasInstanceVariable:@"_scrubberUpdateDisplayLink" withType:"CADisplayLink"];
-  [v3 validateClass:@"HUClipScrubberViewController" hasInstanceMethod:@"didDoubleTap:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUClipScrubberViewController" hasInstanceVariable:@"_playbackEngine" withType:"HFCameraPlaybackEngine"];
-  [v3 validateClass:@"HUClipScrubberViewController" hasInstanceVariable:@"_scrubberView" withType:"HUClipScrubberView"];
-  [v3 validateClass:@"HUClipScrubberView" hasInstanceMethod:@"rightActionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUClipScrubberViewController" hasInstanceMethod:@"nearbyAccessoriesButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUClipScrubberView" hasInstanceVariable:@"_displayMode" withType:"NSUInteger"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUClipScrubberViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HUClipScrubberViewController" hasInstanceVariable:@"_scrubberUpdateDisplayLink" withType:"CADisplayLink"];
+  [validationsCopy validateClass:@"HUClipScrubberViewController" hasInstanceMethod:@"didDoubleTap:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUClipScrubberViewController" hasInstanceVariable:@"_playbackEngine" withType:"HFCameraPlaybackEngine"];
+  [validationsCopy validateClass:@"HUClipScrubberViewController" hasInstanceVariable:@"_scrubberView" withType:"HUClipScrubberView"];
+  [validationsCopy validateClass:@"HUClipScrubberView" hasInstanceMethod:@"rightActionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUClipScrubberViewController" hasInstanceMethod:@"nearbyAccessoriesButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUClipScrubberView" hasInstanceVariable:@"_displayMode" withType:"NSUInteger"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -52,14 +52,14 @@
   v11 = 3221225472;
   v12 = __87__HUClipScrubberViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_3;
   v13 = &unk_29F2C6C50;
-  v14 = self;
+  selfCopy = self;
   objc_copyWeak(&v15, &location);
   [v3 _setAccessibilityHintBlock:&v10];
-  v6 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v6 removeObserver:self name:AXToggleClipTimescaleNotification object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:AXToggleClipTimescaleNotification object:0];
 
-  v7 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v7 addObserver:self selector:sel__axToggleClipTimescale_ name:AXToggleClipTimescaleNotification object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__axToggleClipTimescale_ name:AXToggleClipTimescaleNotification object:0];
 
   if (AXIsInternalInstall())
   {
@@ -142,7 +142,7 @@ id __87__HUClipScrubberViewControllerAccessibility__accessibilityLoadAccessibili
   return v2;
 }
 
-- (void)_axToggleClipTimescale:(id)a3
+- (void)_axToggleClipTimescale:(id)timescale
 {
   AXPerformSafeBlock();
   v4 = [(HUClipScrubberViewControllerAccessibility *)self safeValueForKeyPath:@"dataSource.timeController"];
@@ -172,8 +172,8 @@ id __87__HUClipScrubberViewControllerAccessibility__accessibilityLoadAccessibili
 
 - (BOOL)_axIsStreamingLive
 {
-  v3 = [(HUClipScrubberViewControllerAccessibility *)self _axPlaybackEngine];
-  if ([v3 engineMode])
+  _axPlaybackEngine = [(HUClipScrubberViewControllerAccessibility *)self _axPlaybackEngine];
+  if ([_axPlaybackEngine engineMode])
   {
     LOBYTE(v4) = 0;
   }
@@ -211,11 +211,11 @@ id __87__HUClipScrubberViewControllerAccessibility__accessibilityLoadAccessibili
 {
   v5.receiver = self;
   v5.super_class = HUClipScrubberViewControllerAccessibility;
-  v2 = [(HUClipScrubberViewControllerAccessibility *)&v5 selectionButton];
+  selectionButton = [(HUClipScrubberViewControllerAccessibility *)&v5 selectionButton];
   v3 = accessibilityHomeUILocalizedString(@"camera.clip.share.and.edit.button");
-  [v2 setAccessibilityLabel:v3];
+  [selectionButton setAccessibilityLabel:v3];
 
-  return v2;
+  return selectionButton;
 }
 
 @end

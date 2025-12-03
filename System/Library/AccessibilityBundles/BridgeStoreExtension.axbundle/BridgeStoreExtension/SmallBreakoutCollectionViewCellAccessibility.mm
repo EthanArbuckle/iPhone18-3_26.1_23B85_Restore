@@ -18,12 +18,12 @@
   v3 = MEMORY[0x29EDB8DE8];
   v9.receiver = self;
   v9.super_class = SmallBreakoutCollectionViewCellAccessibility;
-  v4 = [(SmallBreakoutCollectionViewCellAccessibility *)&v9 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(SmallBreakoutCollectionViewCellAccessibility *)&v9 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
-  v6 = [(SmallBreakoutCollectionViewCellAccessibility *)self _axDetailsView];
-  v7 = [v6 accessibilityCustomActions];
-  [v5 axSafelyAddObjectsFromArray:v7];
+  _axDetailsView = [(SmallBreakoutCollectionViewCellAccessibility *)self _axDetailsView];
+  accessibilityCustomActions2 = [_axDetailsView accessibilityCustomActions];
+  [v5 axSafelyAddObjectsFromArray:accessibilityCustomActions2];
 
   return v5;
 }
@@ -32,24 +32,24 @@
 {
   v11.receiver = self;
   v11.super_class = SmallBreakoutCollectionViewCellAccessibility;
-  v3 = [(SmallBreakoutCollectionViewCellAccessibility *)&v11 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(SmallBreakoutCollectionViewCellAccessibility *)&v11 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(SmallBreakoutCollectionViewCellAccessibility *)self _axDetailsView];
-  v9 = [v8 automationElements];
-  [v7 axSafelyAddObjectsFromArray:v9];
+  _axDetailsView = [(SmallBreakoutCollectionViewCellAccessibility *)self _axDetailsView];
+  automationElements2 = [_axDetailsView automationElements];
+  [v7 axSafelyAddObjectsFromArray:automationElements2];
 
   return v7;
 }

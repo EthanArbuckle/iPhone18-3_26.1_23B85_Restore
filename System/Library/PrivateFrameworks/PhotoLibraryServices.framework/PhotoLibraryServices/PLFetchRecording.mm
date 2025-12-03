@@ -1,45 +1,45 @@
 @interface PLFetchRecording
-+ (BOOL)_statsForStatementAreInteresting:(PLFetchRecordingFileNormalizedStatementHeader *)a3 totalPages:(unsigned int)a4;
-+ (BOOL)deleteRecording:(id)a3 error:(id *)a4;
-+ (PLFetchRecordingFileNormalizedStatementHeader)_currentVersionHeaderFrom_053Header:(PLFetchRecordingFileNormalizedStatementHeader_053 *)a3;
-+ (_NSRange)_indexLocked_allocateSizeToFit:(unint64_t)a3 fileHeaderSize:(unint64_t)a4 currentEOF:(int64_t)a5 buffer:(void *)a6 bufferLength:(unint64_t)a7 index:(id)a8;
-+ (double)meanPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3;
-+ (double)varPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3;
++ (BOOL)_statsForStatementAreInteresting:(PLFetchRecordingFileNormalizedStatementHeader *)interesting totalPages:(unsigned int)pages;
++ (BOOL)deleteRecording:(id)recording error:(id *)error;
++ (PLFetchRecordingFileNormalizedStatementHeader)_currentVersionHeaderFrom_053Header:(PLFetchRecordingFileNormalizedStatementHeader_053 *)header;
++ (_NSRange)_indexLocked_allocateSizeToFit:(unint64_t)fit fileHeaderSize:(unint64_t)size currentEOF:(int64_t)f buffer:(void *)buffer bufferLength:(unint64_t)length index:(id)index;
++ (double)meanPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header;
++ (double)varPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header;
 + (id)_backtrace;
-+ (id)backtraceForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3;
-+ (id)multiInCountsForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3;
++ (id)backtraceForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header;
++ (id)multiInCountsForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header;
 + (id)suggestedFilenameForCurrentProcess;
-+ (void)_indexLocked_enumerateEntryHeadersFromBuffer:(const void *)a3 bufferLength:(unint64_t)a4 fileVersion:(id)a5 fileHeaderSize:(unint64_t)a6 block:(id)a7;
-+ (void)_indexLocked_enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3 block:(id)a4;
-+ (void)_indexLocked_populateStatementIndex:(id)a3 fromBuffer:(void *)a4 bufferLength:(unint64_t)a5 fileHeaderSize:(unint64_t)a6 fileVersion:(id)a7;
-+ (void)_updateRunningStatisticsForEntry:(PLFetchRecordingFileNormalizedStatementHeader *)a3 givenPageCount:(unsigned int)a4;
-+ (void)_writeInitialHeaderToBuffer:(void *)a3 bufferLen:(unint64_t)a4;
++ (void)_indexLocked_enumerateEntryHeadersFromBuffer:(const void *)buffer bufferLength:(unint64_t)length fileVersion:(id)version fileHeaderSize:(unint64_t)size block:(id)block;
++ (void)_indexLocked_enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header block:(id)block;
++ (void)_indexLocked_populateStatementIndex:(id)index fromBuffer:(void *)buffer bufferLength:(unint64_t)length fileHeaderSize:(unint64_t)size fileVersion:(id)version;
++ (void)_updateRunningStatisticsForEntry:(PLFetchRecordingFileNormalizedStatementHeader *)entry givenPageCount:(unsigned int)count;
++ (void)_writeInitialHeaderToBuffer:(void *)buffer bufferLen:(unint64_t)len;
 - (BOOL)_indexLocked_remapFile;
-- (BOOL)recordStatementWithNormalizedSQL:(id)a3 bindVariablesAsString:(id)a4 multiInCounts:(id)a5 contextName:(id)a6 pagesHit:(unsigned int)a7 pagesMissed:(unsigned int)a8 rowCount:(unsigned int)a9 duration:(double)a10 QOS:(unsigned int)a11;
+- (BOOL)recordStatementWithNormalizedSQL:(id)l bindVariablesAsString:(id)string multiInCounts:(id)counts contextName:(id)name pagesHit:(unsigned int)hit pagesMissed:(unsigned int)missed rowCount:(unsigned int)count duration:(double)self0 QOS:(unsigned int)self1;
 - (BOOL)remap;
-- (PLFetchRecording)initWithMode:(unint64_t)a3 atFileURL:(id)a4 size:(unint64_t)a5;
-- (PLFetchRecordingFileNormalizedStatementHeader)entryForNormalizedSQL:(id)a3;
+- (PLFetchRecording)initWithMode:(unint64_t)mode atFileURL:(id)l size:(unint64_t)size;
+- (PLFetchRecordingFileNormalizedStatementHeader)entryForNormalizedSQL:(id)l;
 - (void)_considerIfRemapIsNeeded;
 - (void)_indexLocked_close;
 - (void)_indexLocked_unmapFile;
-- (void)_recordVariationWithEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3 timestamp:(double)a4 pagesHit:(unsigned int)a5 pagesMissed:(unsigned int)a6 rowsAffected:(unsigned int)a7 duration:(double)a8 QOS:(unsigned int)a9;
+- (void)_recordVariationWithEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header timestamp:(double)timestamp pagesHit:(unsigned int)hit pagesMissed:(unsigned int)missed rowsAffected:(unsigned int)affected duration:(double)duration QOS:(unsigned int)s;
 - (void)_scheduleRemapAfterDelay;
 - (void)close;
 - (void)dealloc;
-- (void)enumerateEntryHeaders:(id)a3;
-- (void)enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3 block:(id)a4;
+- (void)enumerateEntryHeaders:(id)headers;
+- (void)enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header block:(id)block;
 @end
 
 @implementation PLFetchRecording
 
-- (BOOL)recordStatementWithNormalizedSQL:(id)a3 bindVariablesAsString:(id)a4 multiInCounts:(id)a5 contextName:(id)a6 pagesHit:(unsigned int)a7 pagesMissed:(unsigned int)a8 rowCount:(unsigned int)a9 duration:(double)a10 QOS:(unsigned int)a11
+- (BOOL)recordStatementWithNormalizedSQL:(id)l bindVariablesAsString:(id)string multiInCounts:(id)counts contextName:(id)name pagesHit:(unsigned int)hit pagesMissed:(unsigned int)missed rowCount:(unsigned int)count duration:(double)self0 QOS:(unsigned int)self1
 {
-  v12 = *&a8;
-  v13 = *&a7;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
+  v12 = *&missed;
+  v13 = *&hit;
+  lCopy = l;
+  stringCopy = string;
+  countsCopy = counts;
+  nameCopy = name;
   v22 = objc_autoreleasePoolPush();
   Current = CFAbsoluteTimeGetCurrent();
   os_unfair_lock_lock(&self->_indexLock);
@@ -50,8 +50,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v24 = [(PLFetchRecording *)self fileHeader];
-  if (![v18 length])
+  fileHeader = [(PLFetchRecording *)self fileHeader];
+  if (![lCopy length])
   {
     v32 = PLBackendGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -60,15 +60,15 @@ LABEL_9:
       _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEBUG, "LOFR no normalized sql", buf, 2u);
     }
 
-    ++*(&v24->var7 + 2);
+    ++*(&fileHeader->var7 + 2);
     goto LABEL_9;
   }
 
-  v25 = _hashForSQL(v18);
+  v25 = _hashForSQL(lCopy);
   if ([v25 length])
   {
-    v63 = v21;
-    v64 = v19;
+    v63 = nameCopy;
+    v64 = stringCopy;
     v26 = v13;
     v27 = v12;
     v28 = [(NSMutableDictionary *)self->_indexLocked_indexEntriesByNormSQLHash objectForKeyedSubscript:v25];
@@ -87,27 +87,27 @@ LABEL_9:
 
     v59 = v25;
     v56 = v22;
-    v57 = v20;
-    v35 = [v20 componentsJoinedByString:{@", "}];
-    v36 = [objc_opt_class() _backtrace];
-    v37 = [v36 dataUsingEncoding:4];
+    v57 = countsCopy;
+    v35 = [countsCopy componentsJoinedByString:{@", "}];
+    _backtrace = [objc_opt_class() _backtrace];
+    v37 = [_backtrace dataUsingEncoding:4];
     v38 = [v37 compressedDataUsingAlgorithm:0 error:0];
 
-    LODWORD(v36) = [v18 length];
+    LODWORD(_backtrace) = [lCopy length];
     LODWORD(v37) = [v64 length];
     v62 = v35;
     v39 = [v35 length];
     LODWORD(v35) = [v63 length];
     v61 = v38;
-    v40 = v36 + v37 + v39 + v35 + [v38 length] + 269;
+    v40 = _backtrace + v37 + v39 + v35 + [v38 length] + 269;
     if (v40 <= 0xA000)
     {
-      v42 = [objc_opt_class() _indexLocked_allocateSizeToFit:v40 fileHeaderSize:self->_fileHeaderSize currentEOF:*(&v24->var5 + 2) buffer:self->_indexLocked_buffer bufferLength:self->_indexLocked_bufferLen index:self->_indexLocked_indexEntriesByNormSQLHash];
+      v42 = [objc_opt_class() _indexLocked_allocateSizeToFit:v40 fileHeaderSize:self->_fileHeaderSize currentEOF:*(&fileHeader->var5 + 2) buffer:self->_indexLocked_buffer bufferLength:self->_indexLocked_bufferLen index:self->_indexLocked_indexEntriesByNormSQLHash];
       if (v42 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v44 = PLBackendGetLog();
         v22 = v56;
-        v20 = v57;
+        countsCopy = v57;
         v25 = v59;
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
         {
@@ -142,8 +142,8 @@ LABEL_40:
           {
             if (!v29)
             {
-              v58 = v20;
-              strncpy(v30 + 105, [v18 UTF8String], *(v30 + 93) + 1);
+              v58 = countsCopy;
+              strncpy(v30 + 105, [lCopy UTF8String], *(v30 + 93) + 1);
               v52 = &v30[*(v30 + 93) + 106];
               strncpy(v52, [v64 UTF8String], *(v30 + 95) + 1);
               v53 = &v52[*(v30 + 95) + 1];
@@ -156,7 +156,7 @@ LABEL_40:
               strncpy(v54, [v63 UTF8String], *(v30 + 99) + 1);
               memcpy(&v54[*(v30 + 99) + 1], [v61 bytes], objc_msgSend(v61, "length"));
               v29 = 0;
-              v20 = v58;
+              countsCopy = v58;
             }
 
             *(v30 + 49) += v26;
@@ -164,7 +164,7 @@ LABEL_40:
             *(v30 + 41) = Current;
             if (v30[103] < 5u || [objc_opt_class() _statsForStatementAreInteresting:v30 totalPages:(v27 + v26)])
             {
-              [(PLFetchRecording *)self _recordVariationWithEntryHeader:v30 timestamp:v26 pagesHit:v27 pagesMissed:a9 rowsAffected:a11 duration:Current QOS:a10];
+              [(PLFetchRecording *)self _recordVariationWithEntryHeader:v30 timestamp:v26 pagesHit:v27 pagesMissed:count rowsAffected:s duration:Current QOS:duration];
             }
 
             [objc_opt_class() _updateRunningStatisticsForEntry:v30 givenPageCount:(v27 + v26)];
@@ -197,8 +197,8 @@ LABEL_40:
 
         v31 = 0;
 LABEL_44:
-        v21 = v63;
-        v19 = v64;
+        nameCopy = v63;
+        stringCopy = v64;
         goto LABEL_11;
       }
 
@@ -209,14 +209,14 @@ LABEL_44:
       v25 = v59;
       memcpy(v30 + 1, [v59 bytes], objc_msgSend(v59, "length"));
       *(v30 + 33) = Current;
-      *(v30 + 93) = [v18 length];
+      *(v30 + 93) = [lCopy length];
       *(v30 + 95) = [v64 length];
       *(v30 + 99) = [v63 length];
       *(v30 + 97) = [v62 length];
       *(v30 + 101) = [v61 length];
       *(v30 + 57) = 0;
       v60 = v45;
-      *(&v24->var5 + 2) = v45 + v46;
+      *(&fileHeader->var5 + 2) = v45 + v46;
       v31 = 1;
       atomic_fetch_add(&self->_numberOfAllocationsSinceLastRemap, 1u);
       [(PLFetchRecording *)self _considerIfRemapIsNeeded];
@@ -232,7 +232,7 @@ LABEL_44:
         _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_DEBUG, "LOFR entry is too large to fit.", v68, 2u);
       }
 
-      ++*(&v24->var7 + 2);
+      ++*(&fileHeader->var7 + 2);
       os_unfair_lock_unlock(&self->_indexLock);
       v30 = 0;
       v31 = 0;
@@ -241,7 +241,7 @@ LABEL_44:
       v25 = v59;
     }
 
-    v20 = v57;
+    countsCopy = v57;
     v29 = 0;
     goto LABEL_25;
   }
@@ -253,7 +253,7 @@ LABEL_44:
     _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_DEBUG, "LOFR can't hash sql", v69, 2u);
   }
 
-  ++*(&v24->var7 + 2);
+  ++*(&fileHeader->var7 + 2);
   os_unfair_lock_unlock(&self->_indexLock);
 
 LABEL_10:
@@ -264,40 +264,40 @@ LABEL_11:
   return v31;
 }
 
-- (void)enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3 block:(id)a4
+- (void)enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header block:(id)block
 {
-  v8 = a4;
-  if (!v8)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   os_unfair_lock_assert_owner(&self->_indexLock);
-  [objc_opt_class() _indexLocked_enumerateVariationsFromEntryHeader:a3 block:v8];
+  [objc_opt_class() _indexLocked_enumerateVariationsFromEntryHeader:header block:blockCopy];
 }
 
-- (void)enumerateEntryHeaders:(id)a3
+- (void)enumerateEntryHeaders:(id)headers
 {
-  v6 = a3;
-  if (!v6)
+  headersCopy = headers;
+  if (!headersCopy)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:939 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:939 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   os_unfair_lock_lock(&self->_indexLock);
   if ([(PLFetchRecording *)self _indexLocked_canRead])
   {
-    [objc_opt_class() _indexLocked_enumerateEntryHeadersFromBuffer:self->_indexLocked_buffer bufferLength:self->_indexLocked_bufferLen fileVersion:self->_fileVersion fileHeaderSize:self->_fileHeaderSize block:v6];
+    [objc_opt_class() _indexLocked_enumerateEntryHeadersFromBuffer:self->_indexLocked_buffer bufferLength:self->_indexLocked_bufferLen fileVersion:self->_fileVersion fileHeaderSize:self->_fileHeaderSize block:headersCopy];
   }
 
   os_unfair_lock_unlock(&self->_indexLock);
 }
 
-- (PLFetchRecordingFileNormalizedStatementHeader)entryForNormalizedSQL:(id)a3
+- (PLFetchRecordingFileNormalizedStatementHeader)entryForNormalizedSQL:(id)l
 {
-  v4 = _hashForSQL(a3);
+  v4 = _hashForSQL(l);
   v5 = [(NSMutableDictionary *)self->_indexLocked_indexEntriesByNormSQLHash objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
@@ -318,9 +318,9 @@ LABEL_11:
 - (BOOL)remap
 {
   os_unfair_lock_lock(&self->_indexLock);
-  v3 = [(PLFetchRecording *)self _indexLocked_remapFile];
+  _indexLocked_remapFile = [(PLFetchRecording *)self _indexLocked_remapFile];
   os_unfair_lock_unlock(&self->_indexLock);
-  return v3;
+  return _indexLocked_remapFile;
 }
 
 - (void)close
@@ -341,13 +341,13 @@ LABEL_11:
   [(PLFetchRecording *)&v3 dealloc];
 }
 
-- (PLFetchRecording)initWithMode:(unint64_t)a3 atFileURL:(id)a4 size:(unint64_t)a5
+- (PLFetchRecording)initWithMode:(unint64_t)mode atFileURL:(id)l size:(unint64_t)size
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (v9)
+  lCopy = l;
+  if (lCopy)
   {
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_5;
     }
@@ -355,19 +355,19 @@ LABEL_11:
 
   else
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:694 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:694 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_5;
     }
   }
 
-  if (a5 <= 0xEA)
+  if (size <= 0xEA)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:695 description:{@"Invalid parameter not satisfying: %@", @"mode == PLFetchRecordingFileModeReadOnly || fileSize > sizeof(PLFetchRecordingFileHeader)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:695 description:{@"Invalid parameter not satisfying: %@", @"mode == PLFetchRecordingFileModeReadOnly || fileSize > sizeof(PLFetchRecordingFileHeader)"}];
   }
 
 LABEL_5:
@@ -384,17 +384,17 @@ LABEL_5:
     remapQueue = v11->_remapQueue;
     v11->_remapQueue = v12;
 
-    v14 = [v9 path];
-    v15 = [v14 fileSystemRepresentation];
+    path = [lCopy path];
+    fileSystemRepresentation = [path fileSystemRepresentation];
 
-    if (a3)
+    if (mode)
     {
-      v16 = open(v15, 514, 436);
+      v16 = open(fileSystemRepresentation, 514, 436);
     }
 
     else
     {
-      v16 = open(v15, 0, 436);
+      v16 = open(fileSystemRepresentation, 0, 436);
     }
 
     if (v16 == -1)
@@ -405,7 +405,7 @@ LABEL_5:
       {
         v28 = strerror(v26);
         v45.st_dev = 136315650;
-        *&v45.st_mode = v15;
+        *&v45.st_mode = fileSystemRepresentation;
         WORD2(v45.st_ino) = 2080;
         *(&v45.st_ino + 6) = v28;
         HIWORD(v45.st_gid) = 1024;
@@ -417,23 +417,23 @@ LABEL_5:
     }
 
     v17 = v16;
-    if (a3 != 1 || (memset(&v45, 0, sizeof(v45)), fstat(v16, &v45) != -1) && v45.st_size)
+    if (mode != 1 || (memset(&v45, 0, sizeof(v45)), fstat(v16, &v45) != -1) && v45.st_size)
     {
       v18 = 1;
 LABEL_14:
-      v11->_maxFileSize = a5;
+      v11->_maxFileSize = size;
       v11->_indexLock._os_unfair_lock_opaque = 0;
-      v19 = [v9 copy];
+      v19 = [lCopy copy];
       url = v11->_url;
       v11->_url = v19;
 
-      v11->_mode = a3;
+      v11->_mode = mode;
       v11->_fd = v17;
       atomic_store(0, &v11->_numberOfAllocationsSinceLastRemap);
       os_unfair_lock_lock(&v11->_indexLock);
-      v21 = [(PLFetchRecording *)v11 _indexLocked_remapFile];
-      v22 = v21;
-      if (v18 && v21)
+      _indexLocked_remapFile = [(PLFetchRecording *)v11 _indexLocked_remapFile];
+      v22 = _indexLocked_remapFile;
+      if (v18 && _indexLocked_remapFile)
       {
         v23 = [MEMORY[0x1E696AEC0] stringWithCString:v11->_indexLocked_buffer + 2 encoding:4];
         fileVersion = v11->_fileVersion;
@@ -452,13 +452,13 @@ LABEL_24:
             v11->_fileHeaderSize = 234;
           }
 
-          if (a3 == 1)
+          if (mode == 1)
           {
             os_unfair_lock_lock(&v11->_indexLock);
-            v29 = [MEMORY[0x1E695DF90] dictionary];
-            [objc_opt_class() _indexLocked_populateStatementIndex:v29 fromBuffer:v11->_indexLocked_buffer bufferLength:v11->_indexLocked_bufferLen fileHeaderSize:v11->_fileHeaderSize fileVersion:v11->_fileVersion];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [objc_opt_class() _indexLocked_populateStatementIndex:dictionary fromBuffer:v11->_indexLocked_buffer bufferLength:v11->_indexLocked_bufferLen fileHeaderSize:v11->_fileHeaderSize fileVersion:v11->_fileVersion];
             indexLocked_indexEntriesByNormSQLHash = v11->_indexLocked_indexEntriesByNormSQLHash;
-            v11->_indexLocked_indexEntriesByNormSQLHash = v29;
+            v11->_indexLocked_indexEntriesByNormSQLHash = dictionary;
 
             os_unfair_lock_unlock(&v11->_indexLock);
           }
@@ -479,7 +479,7 @@ LABEL_24:
           v45.st_dev = 138412546;
           *&v45.st_mode = v36;
           WORD2(v45.st_ino) = 2112;
-          *(&v45.st_ino + 6) = v9;
+          *(&v45.st_ino + 6) = lCopy;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "PLFetchRecording: reader does not recognize file version: %@ for file at url: %@", &v45, 0x16u);
         }
 
@@ -499,11 +499,11 @@ LABEL_24:
       goto LABEL_48;
     }
 
-    if (a5 && v17 >= 1)
+    if (size && v17 >= 1)
     {
       *&v45.st_dev = 0x300000006;
       v45.st_ino = 0;
-      *&v45.st_uid = a5;
+      *&v45.st_uid = size;
       *&v45.st_rdev = 0;
       if (fcntl(v17, 42, &v45) == -1)
       {
@@ -520,7 +520,7 @@ LABEL_24:
         }
       }
 
-      if (ftruncate(v17, a5) != -1)
+      if (ftruncate(v17, size) != -1)
       {
         v18 = 0;
         goto LABEL_14;
@@ -543,7 +543,7 @@ LABEL_24:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       v45.st_dev = 134217984;
-      *&v45.st_mode = a5;
+      *&v45.st_mode = size;
       _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_ERROR, "LOFR Could not expand empty file to specified size: %ld", &v45, 0xCu);
     }
 
@@ -606,23 +606,23 @@ void __44__PLFetchRecording__scheduleRemapAfterDelay__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_recordVariationWithEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3 timestamp:(double)a4 pagesHit:(unsigned int)a5 pagesMissed:(unsigned int)a6 rowsAffected:(unsigned int)a7 duration:(double)a8 QOS:(unsigned int)a9
+- (void)_recordVariationWithEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header timestamp:(double)timestamp pagesHit:(unsigned int)hit pagesMissed:(unsigned int)missed rowsAffected:(unsigned int)affected duration:(double)duration QOS:(unsigned int)s
 {
-  v16 = a3 + 32 * LOBYTE(a3->var11) + *(&a3->var9 + 5) + *(&a3->var9 + 7) + *(&a3->var10 + 1) + *(&a3->var10 + 3) + *(&a3->var10 + 5);
+  v16 = header + 32 * LOBYTE(header->var11) + *(&header->var9 + 5) + *(&header->var9 + 7) + *(&header->var10 + 1) + *(&header->var10 + 3) + *(&header->var10 + 5);
   [objc_opt_class() _assertAddress:v16 + 109 isValidWithLength:32 buffer:self->_indexLocked_buffer bufferLength:self->_indexLocked_bufferLen];
-  *(v16 + 109) = a4;
-  *(v16 + 117) = a9;
-  *(v16 + 121) = a8;
-  *(v16 + 133) = a6;
-  *(v16 + 129) = a5;
-  *(v16 + 137) = a7;
-  var10_high = HIBYTE(a3->var10);
+  *(v16 + 109) = timestamp;
+  *(v16 + 117) = s;
+  *(v16 + 121) = duration;
+  *(v16 + 133) = missed;
+  *(v16 + 129) = hit;
+  *(v16 + 137) = affected;
+  var10_high = HIBYTE(header->var10);
   if (var10_high <= 4)
   {
-    HIBYTE(a3->var10) = var10_high + 1;
+    HIBYTE(header->var10) = var10_high + 1;
   }
 
-  var11 = a3->var11;
+  var11 = header->var11;
   if ((var11 + 1) <= 4u)
   {
     v19 = var11 + 1;
@@ -633,7 +633,7 @@ void __44__PLFetchRecording__scheduleRemapAfterDelay__block_invoke(uint64_t a1)
     v19 = 0;
   }
 
-  LOBYTE(a3->var11) = v19;
+  LOBYTE(header->var11) = v19;
 }
 
 - (void)_indexLocked_close
@@ -738,46 +738,46 @@ LABEL_14:
 + (id)suggestedFilenameForCurrentProcess
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 processName];
-  v5 = [v2 initWithFormat:@"%@-recording-v%@.%@", v4, @"0.54", @"lofr"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v5 = [v2 initWithFormat:@"%@-recording-v%@.%@", processName, @"0.54", @"lofr"];
 
   return v5;
 }
 
-+ (BOOL)deleteRecording:(id)a3 error:(id *)a4
++ (BOOL)deleteRecording:(id)recording error:(id *)error
 {
-  if (!a3)
+  if (!recording)
   {
     return 1;
   }
 
-  v5 = a3;
-  [v5 close];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 url];
+  recordingCopy = recording;
+  [recordingCopy close];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [recordingCopy url];
 
-  LOBYTE(a4) = [v6 removeItemAtURL:v7 error:a4];
-  return a4;
+  LOBYTE(error) = [defaultManager removeItemAtURL:v7 error:error];
+  return error;
 }
 
-+ (double)varPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3
++ (double)varPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header
 {
-  v3 = *(&a3->var4 + 1);
+  v3 = *(&header->var4 + 1);
   result = 0.0;
   if (v3 >= 2)
   {
-    return *(&a3->var8 + 5) / ((v3 - 1) % 0x1F4);
+    return *(&header->var8 + 5) / ((v3 - 1) % 0x1F4);
   }
 
   return result;
 }
 
-+ (double)meanPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3
++ (double)meanPageCountForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header
 {
-  if (*(&a3->var4 + 1))
+  if (*(&header->var4 + 1))
   {
-    return *(&a3->var6 + 5);
+    return *(&header->var6 + 5);
   }
 
   else
@@ -786,16 +786,16 @@ LABEL_14:
   }
 }
 
-+ (id)backtraceForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3
++ (id)backtraceForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!header)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLFetchRecording.m" lineNumber:845 description:{@"Invalid parameter not satisfying: %@", @"entry"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:845 description:{@"Invalid parameter not satisfying: %@", @"entry"}];
   }
 
-  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&a3->var13 + *(&a3->var9 + 5) + *(&a3->var9 + 7) + *(&a3->var10 + 1) + *(&a3->var10 + 3) + 1 length:*(&a3->var10 + 5)];
+  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&header->var13 + *(&header->var9 + 5) + *(&header->var9 + 7) + *(&header->var10 + 1) + *(&header->var10 + 3) + 1 length:*(&header->var10 + 5)];
   v13 = 0;
   v5 = [v4 decompressedDataUsingAlgorithm:0 error:&v13];
   v6 = v13;
@@ -820,12 +820,12 @@ LABEL_14:
   return v7;
 }
 
-+ (id)multiInCountsForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3
++ (id)multiInCountsForEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!*(&a3->var10 + 1) || (v3 = &a3->var0 + *(&a3->var9 + 5) + *(&a3->var9 + 7), v3 == -107))
+  if (!*(&header->var10 + 1) || (v3 = &header->var0 + *(&header->var9 + 5) + *(&header->var9 + 7), v3 == -107))
   {
-    v6 = 0;
+    array = 0;
   }
 
   else
@@ -834,7 +834,7 @@ LABEL_14:
     v5 = [v4 componentsSeparatedByString:{@", "}];
     if ([v5 count])
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
@@ -855,7 +855,7 @@ LABEL_14:
             }
 
             v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "integerValue", v14)}];
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -867,44 +867,44 @@ LABEL_14:
 
     else
     {
-      v6 = 0;
+      array = 0;
     }
   }
 
-  return v6;
+  return array;
 }
 
-+ (void)_updateRunningStatisticsForEntry:(PLFetchRecordingFileNormalizedStatementHeader *)a3 givenPageCount:(unsigned int)a4
++ (void)_updateRunningStatisticsForEntry:(PLFetchRecordingFileNormalizedStatementHeader *)entry givenPageCount:(unsigned int)count
 {
-  v4 = *(&a3->var4 + 1);
-  *(&a3->var4 + 1) = v4 + 1;
+  v4 = *(&entry->var4 + 1);
+  *(&entry->var4 + 1) = v4 + 1;
   if (v4 && (v5 = (v4 + 1) % 0x1F4u) != 0)
   {
-    v6 = *(&a3->var5 + 1);
-    v7 = a4 - v6;
+    v6 = *(&entry->var5 + 1);
+    v7 = count - v6;
     v8 = v6 + v7 / v5;
-    *(&a3->var6 + 5) = v8;
-    v9 = *(&a3->var7 + 5) + v7 * (a4 - v8);
-    *(&a3->var8 + 5) = v9;
-    *(&a3->var5 + 1) = v8;
-    *(&a3->var7 + 5) = v9;
+    *(&entry->var6 + 5) = v8;
+    v9 = *(&entry->var7 + 5) + v7 * (count - v8);
+    *(&entry->var8 + 5) = v9;
+    *(&entry->var5 + 1) = v8;
+    *(&entry->var7 + 5) = v9;
   }
 
   else
   {
-    *(&a3->var6 + 5) = a4;
-    *(&a3->var5 + 1) = a4;
-    *(&a3->var8 + 5) = 0.0;
-    *(&a3->var7 + 5) = 0.0;
+    *(&entry->var6 + 5) = count;
+    *(&entry->var5 + 1) = count;
+    *(&entry->var8 + 5) = 0.0;
+    *(&entry->var7 + 5) = 0.0;
   }
 }
 
-+ (BOOL)_statsForStatementAreInteresting:(PLFetchRecordingFileNormalizedStatementHeader *)a3 totalPages:(unsigned int)a4
++ (BOOL)_statsForStatementAreInteresting:(PLFetchRecordingFileNormalizedStatementHeader *)interesting totalPages:(unsigned int)pages
 {
-  [a1 stdDevPageCountForEntryHeader:?];
+  [self stdDevPageCountForEntryHeader:?];
   v8 = v7;
-  [a1 meanPageCountForEntryHeader:a3];
-  v10 = a4 - v9;
+  [self meanPageCountForEntryHeader:interesting];
+  v10 = pages - v9;
   if (v10 < 0.0)
   {
     v10 = -v10;
@@ -913,12 +913,12 @@ LABEL_14:
   return v10 > v8;
 }
 
-+ (void)_indexLocked_enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)a3 block:(id)a4
++ (void)_indexLocked_enumerateVariationsFromEntryHeader:(PLFetchRecordingFileNormalizedStatementHeader *)header block:(id)block
 {
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (!a3)
+    if (!header)
     {
       goto LABEL_7;
     }
@@ -926,23 +926,23 @@ LABEL_14:
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLFetchRecording.m" lineNumber:564 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:564 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
-    if (!a3)
+    if (!header)
     {
       goto LABEL_7;
     }
   }
 
   v11 = 0;
-  if (HIBYTE(a3->var10))
+  if (HIBYTE(header->var10))
   {
     v8 = 0;
-    v9 = &a3->var13 + *(&a3->var9 + 5) + *(&a3->var9 + 7) + *(&a3->var10 + 1) + *(&a3->var10 + 3) + *(&a3->var10 + 5) + 1;
+    v9 = &header->var13 + *(&header->var9 + 5) + *(&header->var9 + 7) + *(&header->var10 + 1) + *(&header->var10 + 3) + *(&header->var10 + 5) + 1;
     do
     {
-      v7[2](v7, v9, v8, &v11);
+      blockCopy[2](blockCopy, v9, v8, &v11);
       if (v11)
       {
         break;
@@ -952,53 +952,53 @@ LABEL_14:
       v9 += 32;
     }
 
-    while (v8 < HIBYTE(a3->var10));
+    while (v8 < HIBYTE(header->var10));
   }
 
 LABEL_7:
 }
 
-+ (void)_writeInitialHeaderToBuffer:(void *)a3 bufferLen:(unint64_t)a4
++ (void)_writeInitialHeaderToBuffer:(void *)buffer bufferLen:(unint64_t)len
 {
-  if (!a3)
+  if (!buffer)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PLFetchRecording.m" lineNumber:529 description:{@"Invalid parameter not satisfying: %@", @"buffer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecording.m" lineNumber:529 description:{@"Invalid parameter not satisfying: %@", @"buffer"}];
   }
 
-  *a3 = -257;
-  strncpy(a3 + 2, [@"0.54" UTF8String], 0xDuLL);
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v14 = [v5 processName];
+  *buffer = -257;
+  strncpy(buffer + 2, [@"0.54" UTF8String], 0xDuLL);
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  v6 = v14;
-  strncpy(a3 + 15, [v14 UTF8String], 0x81uLL);
+  v6 = processName;
+  strncpy(buffer + 15, [processName UTF8String], 0x81uLL);
   v7 = PLPhotoLibraryServicesBinaryImageUUID();
-  v8 = [v7 UUIDString];
-  strncpy(a3 + 144, [v8 UTF8String], 0x25uLL);
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  strncpy(a3 + 181, [v10 UTF8String], 0x25uLL);
-  *(a3 + 218) = dyld_get_active_platform();
-  *(a3 + 222) = 234;
-  *(a3 + 230) = 0;
+  uUIDString = [v7 UUIDString];
+  strncpy(buffer + 144, [uUIDString UTF8String], 0x25uLL);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID UUIDString];
+  strncpy(buffer + 181, [uUIDString2 UTF8String], 0x25uLL);
+  *(buffer + 218) = dyld_get_active_platform();
+  *(buffer + 222) = 234;
+  *(buffer + 230) = 0;
 }
 
 + (id)_backtrace
 {
-  v2 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v3 = [v2 debugDescription];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v3 = [callStackSymbols debugDescription];
 
   return v3;
 }
 
-+ (_NSRange)_indexLocked_allocateSizeToFit:(unint64_t)a3 fileHeaderSize:(unint64_t)a4 currentEOF:(int64_t)a5 buffer:(void *)a6 bufferLength:(unint64_t)a7 index:(id)a8
++ (_NSRange)_indexLocked_allocateSizeToFit:(unint64_t)fit fileHeaderSize:(unint64_t)size currentEOF:(int64_t)f buffer:(void *)buffer bufferLength:(unint64_t)length index:(id)index
 {
-  v10 = a3;
+  fitCopy = fit;
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a8;
-  v12 = v10 >> 11;
-  if ((v10 & 0x7FF) != 0)
+  indexCopy = index;
+  v12 = fitCopy >> 11;
+  if ((fitCopy & 0x7FF) != 0)
   {
     ++v12;
   }
@@ -1013,15 +1013,15 @@ LABEL_7:
     v13 = v12;
   }
 
-  v14 = *(a6 + 222);
-  v30 = v14;
+  sizeCopy = *(buffer + 222);
+  sizeCopy2 = sizeCopy;
   v15 = 0;
   if (v12)
   {
-    v28 = a7;
+    lengthCopy = length;
     do
     {
-      v16 = _allocationSizeForEntry(a6 + v14);
+      v16 = _allocationSizeForEntry(buffer + sizeCopy);
       if (v16)
       {
         v17 = v16;
@@ -1034,8 +1034,8 @@ LABEL_7:
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "LOFR cannot read allocation block size marker, assuming single allocation...", buf, 2u);
           }
 
-          bzero(a6 + v14, 0x800uLL);
-          v14 += 2048;
+          bzero(buffer + sizeCopy, 0x800uLL);
+          sizeCopy += 2048;
           ++v15;
         }
 
@@ -1049,8 +1049,8 @@ LABEL_7:
             _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEBUG, "LOFR Erasing existing entry with size: %lu...", buf, 0xCu);
           }
 
-          v20 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a6 + v14 + 1 length:32];
-          v21 = [v11 objectForKeyedSubscript:v20];
+          v20 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:buffer + sizeCopy + 1 length:32];
+          v21 = [indexCopy objectForKeyedSubscript:v20];
           if (!v21)
           {
             v23 = PLBackendGetLog();
@@ -1065,29 +1065,29 @@ LABEL_7:
 
           v22 = v21;
           [v21 lock];
-          bzero(a6 + v14, v17);
-          [v11 removeObjectForKey:v20];
+          bzero(buffer + sizeCopy, v17);
+          [indexCopy removeObjectForKey:v20];
           [v22 entryLocked_markUnavailable];
           [v22 unlock];
           v15 += v17 >> 11;
-          v14 += v17;
+          sizeCopy += v17;
 
-          a7 = v28;
+          length = lengthCopy;
         }
       }
 
       else
       {
         ++v15;
-        v14 += 2048;
+        sizeCopy += 2048;
       }
 
-      if (v14 >= a7)
+      if (sizeCopy >= length)
       {
         v15 = 0;
-        ++*(a6 + 226);
-        v14 = a4;
-        v30 = a4;
+        ++*(buffer + 226);
+        sizeCopy = size;
+        sizeCopy2 = size;
       }
     }
 
@@ -1106,7 +1106,7 @@ LABEL_7:
 
   if (v15 >= v13)
   {
-    v25 = v30;
+    v25 = sizeCopy2;
   }
 
   else
@@ -1121,17 +1121,17 @@ LABEL_7:
   return result;
 }
 
-+ (void)_indexLocked_enumerateEntryHeadersFromBuffer:(const void *)a3 bufferLength:(unint64_t)a4 fileVersion:(id)a5 fileHeaderSize:(unint64_t)a6 block:(id)a7
++ (void)_indexLocked_enumerateEntryHeadersFromBuffer:(const void *)buffer bufferLength:(unint64_t)length fileVersion:(id)version fileHeaderSize:(unint64_t)size block:(id)block
 {
-  v12 = a5;
-  v13 = a7;
-  if (a4 < a6)
+  versionCopy = version;
+  blockCopy = block;
+  if (length < size)
   {
     goto LABEL_19;
   }
 
   v21 = 0;
-  if (a6 >= a4)
+  if (size >= length)
   {
     goto LABEL_19;
   }
@@ -1140,10 +1140,10 @@ LABEL_7:
   v15 = 0;
   do
   {
-    v16 = a3 + a6;
-    if ([v12 isEqualToString:@"0.53"])
+    v16 = buffer + size;
+    if ([versionCopy isEqualToString:@"0.53"])
     {
-      v16 = [a1 _currentVersionHeaderFrom_053Header:a3 + a6];
+      v16 = [self _currentVersionHeaderFrom_053Header:buffer + size];
       v15 = 1;
     }
 
@@ -1159,18 +1159,18 @@ LABEL_7:
           _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEBUG, "LOFR can't read allocation block size.", buf, 2u);
         }
 
-        (*(v13 + 2))(v13, 0, a6, v14, 0, &v21);
+        (*(blockCopy + 2))(blockCopy, 0, size, v14, 0, &v21);
         v18 = 2048;
       }
 
       else
       {
         v18 = v17;
-        (*(v13 + 2))(v13, v16, a6, v14, v16 + 105, &v21);
+        (*(blockCopy + 2))(blockCopy, v16, size, v14, v16 + 105, &v21);
       }
 
       ++v14;
-      a6 += v18;
+      size += v18;
       if (v15)
       {
 LABEL_15:
@@ -1181,7 +1181,7 @@ LABEL_15:
 
     else
     {
-      a6 += 2048;
+      size += 2048;
       if (v15)
       {
         goto LABEL_15;
@@ -1189,7 +1189,7 @@ LABEL_15:
     }
   }
 
-  while (a6 < a4);
+  while (size < length);
   if (((v16 != 0) & v15) == 1)
   {
     free(v16);
@@ -1198,43 +1198,43 @@ LABEL_15:
 LABEL_19:
 }
 
-+ (PLFetchRecordingFileNormalizedStatementHeader)_currentVersionHeaderFrom_053Header:(PLFetchRecordingFileNormalizedStatementHeader_053 *)a3
++ (PLFetchRecordingFileNormalizedStatementHeader)_currentVersionHeaderFrom_053Header:(PLFetchRecordingFileNormalizedStatementHeader_053 *)header
 {
-  v4 = malloc_type_calloc(1uLL, vaddvq_s32(vmovl_u16(*(&a3->var8 + 5))) + *(&a3->var9 + 5) + 269, 0x5FADE592uLL);
-  v5 = *&a3->var1[32];
-  *v4 = a3->var0;
+  v4 = malloc_type_calloc(1uLL, vaddvq_s32(vmovl_u16(*(&header->var8 + 5))) + *(&header->var9 + 5) + 269, 0x5FADE592uLL);
+  v5 = *&header->var1[32];
+  *v4 = header->var0;
   *(v4 + 33) = v5;
   *(v4 + 41) = 0;
-  *(v4 + 49) = *(&a3->var2 + 1);
-  *(v4 + 57) = *(&a3->var3 + 1);
-  *(v4 + 61) = *(&a3->var4 + 1);
-  *(v4 + 77) = *(&a3->var6 + 5);
-  v6 = *(&a3->var8 + 5);
+  *(v4 + 49) = *(&header->var2 + 1);
+  *(v4 + 57) = *(&header->var3 + 1);
+  *(v4 + 61) = *(&header->var4 + 1);
+  *(v4 + 77) = *(&header->var6 + 5);
+  v6 = *(&header->var8 + 5);
   *(v4 + 93) = v6;
-  v7 = *(&a3->var8 + 7);
+  v7 = *(&header->var8 + 7);
   *(v4 + 95) = v7;
-  v8 = *(&a3->var9 + 1);
+  v8 = *(&header->var9 + 1);
   *(v4 + 97) = v8;
-  v9 = *(&a3->var9 + 3);
+  v9 = *(&header->var9 + 3);
   *(v4 + 99) = v9;
-  v10 = *(&a3->var9 + 5);
+  v10 = *(&header->var9 + 5);
   *(v4 + 101) = v10;
-  v4[103] = HIBYTE(a3->var9);
-  v4[104] = a3->var10;
-  memcpy(v4 + 105, &a3->var10 + 1, v6 + v7 + v8 + v9 + v10 + 160);
+  v4[103] = HIBYTE(header->var9);
+  v4[104] = header->var10;
+  memcpy(v4 + 105, &header->var10 + 1, v6 + v7 + v8 + v9 + v10 + 160);
   return v4;
 }
 
-+ (void)_indexLocked_populateStatementIndex:(id)a3 fromBuffer:(void *)a4 bufferLength:(unint64_t)a5 fileHeaderSize:(unint64_t)a6 fileVersion:(id)a7
++ (void)_indexLocked_populateStatementIndex:(id)index fromBuffer:(void *)buffer bufferLength:(unint64_t)length fileHeaderSize:(unint64_t)size fileVersion:(id)version
 {
-  v12 = a3;
+  indexCopy = index;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __107__PLFetchRecording__indexLocked_populateStatementIndex_fromBuffer_bufferLength_fileHeaderSize_fileVersion___block_invoke;
   v14[3] = &unk_1E756FD88;
-  v15 = v12;
-  v13 = v12;
-  [a1 _indexLocked_enumerateEntryHeadersFromBuffer:a4 bufferLength:a5 fileVersion:a7 fileHeaderSize:a6 block:v14];
+  v15 = indexCopy;
+  v13 = indexCopy;
+  [self _indexLocked_enumerateEntryHeadersFromBuffer:buffer bufferLength:length fileVersion:version fileHeaderSize:size block:v14];
 }
 
 void __107__PLFetchRecording__indexLocked_populateStatementIndex_fromBuffer_bufferLength_fileHeaderSize_fileVersion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

@@ -1,58 +1,58 @@
 @interface OADTableStyleResolver
-- (OADTMatrixPos)dominantCellInRowRange:(_NSRange)a3 columnRange:(_NSRange)a4;
-- (OADTableStyleResolver)initWithTable:(id)a3;
-- (id)sourceCellAtI1:(int)a3 i2:(int)a4 dir1:(int)a5;
-- (id)strokeOfSegmentNormalToDir1:(int)a3 i1:(int)a4 fromI2:(int)a5;
-- (int)cellCountAlongDir:(int)a3;
-- (int)cellParityRelativeToDir1:(int)a3 i1:(int)a4 i2:(int)a5;
+- (OADTMatrixPos)dominantCellInRowRange:(_NSRange)range columnRange:(_NSRange)columnRange;
+- (OADTableStyleResolver)initWithTable:(id)table;
+- (id)sourceCellAtI1:(int)i1 i2:(int)i2 dir1:(int)dir1;
+- (id)strokeOfSegmentNormalToDir1:(int)dir1 i1:(int)i1 fromI2:(int)i2;
+- (int)cellCountAlongDir:(int)dir;
+- (int)cellParityRelativeToDir1:(int)dir1 i1:(int)i1 i2:(int)i2;
 - (void)applyBandCellStyles;
 - (void)applyBandStrokes;
-- (void)applyCellStyleFromPart:(int)a3 dir1:(int)a4 fromI1:(int)a5 fromI2:(int)a6 dir1Span:(int)a7 dir2Span:(int)a8;
-- (void)applyCellStyleOfBandsNormalToDir:(int)a3 parity:(int)a4 part:(int)a5;
-- (void)applyCellStyleOfExtremeVectorNormalToDir:(int)a3 atExtremePos:(int)a4 part:(int)a5;
-- (void)applyCornerCellStyleWithRowPos:(int)a3 columnPos:(int)a4 part:(int)a5;
+- (void)applyCellStyleFromPart:(int)part dir1:(int)dir1 fromI1:(int)i1 fromI2:(int)i2 dir1Span:(int)span dir2Span:(int)dir2Span;
+- (void)applyCellStyleOfBandsNormalToDir:(int)dir parity:(int)parity part:(int)part;
+- (void)applyCellStyleOfExtremeVectorNormalToDir:(int)dir atExtremePos:(int)pos part:(int)part;
+- (void)applyCornerCellStyleWithRowPos:(int)pos columnPos:(int)columnPos part:(int)part;
 - (void)applyCornerCellStyles;
 - (void)applyCornerStrokes;
-- (void)applyCornerStrokesWithRowPos:(int)a3 columnPos:(int)a4 part:(int)a5;
+- (void)applyCornerStrokesWithRowPos:(int)pos columnPos:(int)columnPos part:(int)part;
 - (void)applyExtremeVectorCellStyles;
 - (void)applyExtremeVectorStrokes;
-- (void)applyResolvedPartStyle:(id)a3 leftStroke:(id)a4 rightStroke:(id)a5 topStroke:(id)a6 bottomStroke:(id)a7 toCell:(id)a8;
+- (void)applyResolvedPartStyle:(id)style leftStroke:(id)stroke rightStroke:(id)rightStroke topStroke:(id)topStroke bottomStroke:(id)bottomStroke toCell:(id)cell;
 - (void)applyResolvedStyling;
-- (void)applyStroke:(int)a3 fromPart:(int)a4 normalToDir1:(int)a5 i1:(int)a6 fromI2:(int)a7 dir2Span:(int)a8;
-- (void)applyStrokeOfExtremeVectorNormalToDir:(int)a3 atExtremePos:(int)a4;
-- (void)applyStrokesFromPart:(int)a3 fromPos:(OADTMatrixPos)a4 toPos:(OADTMatrixPos)a5;
-- (void)applyStrokesOfBandsNormalToDir:(int)a3 parity:(int)a4 part:(int)a5;
+- (void)applyStroke:(int)stroke fromPart:(int)part normalToDir1:(int)dir1 i1:(int)i1 fromI2:(int)i2 dir2Span:(int)span;
+- (void)applyStrokeOfExtremeVectorNormalToDir:(int)dir atExtremePos:(int)pos;
+- (void)applyStrokesFromPart:(int)part fromPos:(OADTMatrixPos)pos toPos:(OADTMatrixPos)toPos;
+- (void)applyStrokesOfBandsNormalToDir:(int)dir parity:(int)parity part:(int)part;
 - (void)applyStyleStrokes;
-- (void)applyTextStyle:(id)a3 toCell:(id)a4;
-- (void)applyTextStyle:(id)a3 toParagraph:(id)a4;
+- (void)applyTextStyle:(id)style toCell:(id)cell;
+- (void)applyTextStyle:(id)style toParagraph:(id)paragraph;
 - (void)dealloc;
 - (void)fixVectorAtExtremePositionFlags;
 - (void)flatten;
-- (void)setStroke:(id)a3 ofSegmentNormalToDir1:(int)a4 i1:(int)a5 fromI2:(int)a6;
+- (void)setStroke:(id)stroke ofSegmentNormalToDir1:(int)dir1 i1:(int)i1 fromI2:(int)i2;
 @end
 
 @implementation OADTableStyleResolver
 
-- (OADTableStyleResolver)initWithTable:(id)a3
+- (OADTableStyleResolver)initWithTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v14.receiver = self;
   v14.super_class = OADTableStyleResolver;
   v6 = [(OADTableStyleResolver *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mTable, a3);
-    v8 = [(OADTable *)v7->mTable tableProperties];
+    objc_storeStrong(&v6->mTable, table);
+    tableProperties = [(OADTable *)v7->mTable tableProperties];
     mTableProperties = v7->mTableProperties;
-    v7->mTableProperties = v8;
+    v7->mTableProperties = tableProperties;
 
-    v10 = [(OADTableProperties *)v7->mTableProperties style];
+    style = [(OADTableProperties *)v7->mTableProperties style];
     mTableStyle = v7->mTableStyle;
-    v7->mTableStyle = v10;
+    v7->mTableStyle = style;
 
-    v12 = [(OADTable *)v7->mTable grid];
-    v7->mColumnCount = [v12 columnCount];
+    grid = [(OADTable *)v7->mTable grid];
+    v7->mColumnCount = [grid columnCount];
     v7->mRowCount = [(OADTable *)v7->mTable rowCount];
   }
 
@@ -100,30 +100,30 @@
 
 - (void)fixVectorAtExtremePositionFlags
 {
-  v3 = [(OADTableStyle *)self->mTableStyle firstRowStyle];
+  firstRowStyle = [(OADTableStyle *)self->mTableStyle firstRowStyle];
 
-  if (!v3)
+  if (!firstRowStyle)
   {
     [(OADTableProperties *)self->mTableProperties setFirstRow:0];
   }
 
-  v4 = [(OADTableStyle *)self->mTableStyle lastRowStyle];
+  lastRowStyle = [(OADTableStyle *)self->mTableStyle lastRowStyle];
 
-  if (!v4)
+  if (!lastRowStyle)
   {
     [(OADTableProperties *)self->mTableProperties setLastRow:0];
   }
 
-  v5 = [(OADTableStyle *)self->mTableStyle firstColumnStyle];
+  firstColumnStyle = [(OADTableStyle *)self->mTableStyle firstColumnStyle];
 
-  if (!v5)
+  if (!firstColumnStyle)
   {
     [(OADTableProperties *)self->mTableProperties setFirstColumn:0];
   }
 
-  v6 = [(OADTableStyle *)self->mTableStyle lastColumnStyle];
+  lastColumnStyle = [(OADTableStyle *)self->mTableStyle lastColumnStyle];
 
-  if (!v6)
+  if (!lastColumnStyle)
   {
     mTableProperties = self->mTableProperties;
 
@@ -131,9 +131,9 @@
   }
 }
 
-- (id)sourceCellAtI1:(int)a3 i2:(int)a4 dir1:(int)a5
+- (id)sourceCellAtI1:(int)i1 i2:(int)i2 dir1:(int)dir1
 {
-  OADTMatrixPos::OADTMatrixPos(&v8, a3, a4, a5);
+  OADTMatrixPos::OADTMatrixPos(&v8, i1, i2, dir1);
   if ((v8 & 0x80000000) != 0 || v8 >= self->mRowCount || v8 < 0 || SHIDWORD(v8) >= self->mColumnCount)
   {
     v6 = 0;
@@ -147,10 +147,10 @@
   return v6;
 }
 
-- (int)cellCountAlongDir:(int)a3
+- (int)cellCountAlongDir:(int)dir
 {
   v3 = 32;
-  if (!a3)
+  if (!dir)
   {
     v3 = 36;
   }
@@ -158,13 +158,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)applyCellStyleFromPart:(int)a3 dir1:(int)a4 fromI1:(int)a5 fromI2:(int)a6 dir1Span:(int)a7 dir2Span:(int)a8
+- (void)applyCellStyleFromPart:(int)part dir1:(int)dir1 fromI1:(int)i1 fromI2:(int)i2 dir1Span:(int)span dir2Span:(int)dir2Span
 {
-  v14 = [(OADTableStyle *)self->mTableStyle partStyle:*&a3];
+  v14 = [(OADTableStyle *)self->mTableStyle partStyle:*&part];
   if (v14)
   {
-    OADTMatrixPos::OADTMatrixPos(v21, a5, a6, a4);
-    OADTMatrixPos::OADTMatrixPos(&v19, a7, a8, a4);
+    OADTMatrixPos::OADTMatrixPos(v21, i1, i2, dir1);
+    OADTMatrixPos::OADTMatrixPos(&v19, span, dir2Span, dir1);
     v15 = v19;
     if (v19 >= 1)
     {
@@ -194,10 +194,10 @@
   }
 }
 
-- (void)applyCellStyleOfBandsNormalToDir:(int)a3 parity:(int)a4 part:(int)a5
+- (void)applyCellStyleOfBandsNormalToDir:(int)dir parity:(int)parity part:(int)part
 {
-  v5 = *&a5;
-  v7 = *&a3;
+  v5 = *&part;
+  v7 = *&dir;
   if ([(OADTableProperties *)self->mTableProperties hasBandsNormalToDir:?])
   {
     v9 = [(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:v7 atExtremePos:0];
@@ -211,7 +211,7 @@
       v10 = 1;
     }
 
-    if (a4 == 2)
+    if (parity == 2)
     {
       v11 = v10;
     }
@@ -257,13 +257,13 @@
   [(OADTableStyleResolver *)self applyCellStyleOfBandsNormalToDir:1 parity:2 part:5];
 }
 
-- (void)applyCellStyleOfExtremeVectorNormalToDir:(int)a3 atExtremePos:(int)a4 part:(int)a5
+- (void)applyCellStyleOfExtremeVectorNormalToDir:(int)dir atExtremePos:(int)pos part:(int)part
 {
-  v5 = *&a5;
-  v7 = *&a3;
+  v5 = *&part;
+  v7 = *&dir;
   if ([OADTableProperties hasVectorNormalToDir:"hasVectorNormalToDir:atExtremePos:" atExtremePos:?])
   {
-    if (a4 == 1)
+    if (pos == 1)
     {
       v9 = [(OADTableStyleResolver *)self cellCountAlongDir:v7]- 1;
     }
@@ -288,16 +288,16 @@
   [(OADTableStyleResolver *)self applyCellStyleOfExtremeVectorNormalToDir:0 atExtremePos:0 part:6];
 }
 
-- (void)applyCornerCellStyleWithRowPos:(int)a3 columnPos:(int)a4 part:(int)a5
+- (void)applyCornerCellStyleWithRowPos:(int)pos columnPos:(int)columnPos part:(int)part
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  if (![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:0 atExtremePos:*&a3]|| ![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:1 atExtremePos:v6])
+  v5 = *&part;
+  v6 = *&columnPos;
+  if (![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:0 atExtremePos:*&pos]|| ![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:1 atExtremePos:v6])
   {
     return;
   }
 
-  if (!a3)
+  if (!pos)
   {
     v9 = 0;
     if (v6)
@@ -332,17 +332,17 @@ LABEL_9:
   [(OADTableStyleResolver *)self applyCornerCellStyleWithRowPos:0 columnPos:0 part:10];
 }
 
-- (OADTMatrixPos)dominantCellInRowRange:(_NSRange)a3 columnRange:(_NSRange)a4
+- (OADTMatrixPos)dominantCellInRowRange:(_NSRange)range columnRange:(_NSRange)columnRange
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
-  if (a3.length != 1 || a4.length != 1)
+  length = columnRange.length;
+  location = columnRange.location;
+  v6 = range.length;
+  v7 = range.location;
+  if (range.length != 1 || columnRange.length != 1)
   {
-    v9 = [(OADTableProperties *)self->mTableProperties firstRow];
+    firstRow = [(OADTableProperties *)self->mTableProperties firstRow];
     v10 = [(OADTableProperties *)self->mTableProperties lastRow]? self->mRowCount - 1 : -1;
-    v11 = v9 - 1;
+    v11 = firstRow - 1;
     v12 = [(OADTableProperties *)self->mTableProperties firstColumn]- 1;
     v13 = [(OADTableProperties *)self->mTableProperties lastColumn]? self->mColumnCount - 1 : -1;
     v14 = v7 == v11 && location == v12;
@@ -437,37 +437,37 @@ LABEL_9:
   return (v7 | (location << 32));
 }
 
-- (id)strokeOfSegmentNormalToDir1:(int)a3 i1:(int)a4 fromI2:(int)a5
+- (id)strokeOfSegmentNormalToDir1:(int)dir1 i1:(int)i1 fromI2:(int)i2
 {
-  v5 = *OADTFTemplateMatrix<OADStroke * {__strong}>::operator[](self->mStrokes[a3], a4 | (*&a5 << 32));
+  v5 = *OADTFTemplateMatrix<OADStroke * {__strong}>::operator[](self->mStrokes[dir1], i1 | (*&i2 << 32));
 
   return v5;
 }
 
-- (void)setStroke:(id)a3 ofSegmentNormalToDir1:(int)a4 i1:(int)a5 fromI2:(int)a6
+- (void)setStroke:(id)stroke ofSegmentNormalToDir1:(int)dir1 i1:(int)i1 fromI2:(int)i2
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = OADTFTemplateMatrix<OADStroke * {__strong}>::operator[](self->mStrokes[a4], a5 | (v6 << 32));
+  v6 = *&i2;
+  strokeCopy = stroke;
+  v11 = OADTFTemplateMatrix<OADStroke * {__strong}>::operator[](self->mStrokes[dir1], i1 | (v6 << 32));
   v12 = *v11;
-  *v11 = v10;
+  *v11 = strokeCopy;
 }
 
-- (void)applyStroke:(int)a3 fromPart:(int)a4 normalToDir1:(int)a5 i1:(int)a6 fromI2:(int)a7 dir2Span:(int)a8
+- (void)applyStroke:(int)stroke fromPart:(int)part normalToDir1:(int)dir1 i1:(int)i1 fromI2:(int)i2 dir2Span:(int)span
 {
-  v9 = *&a7;
-  v10 = *&a6;
-  v11 = *&a5;
-  v13 = *&a3;
-  v20 = [(OADTableStyle *)self->mTableStyle partStyle:*&a4];
-  v15 = [v20 cellStyle];
-  v16 = [v15 borderStyle];
-  v17 = [v16 stroke:v13];
+  v9 = *&i2;
+  v10 = *&i1;
+  v11 = *&dir1;
+  v13 = *&stroke;
+  v20 = [(OADTableStyle *)self->mTableStyle partStyle:*&part];
+  cellStyle = [v20 cellStyle];
+  borderStyle = [cellStyle borderStyle];
+  v17 = [borderStyle stroke:v13];
 
   v21 = v17;
   if (!v17)
   {
-    if (a4 != 1)
+    if (part != 1)
     {
       v21 = 0;
       goto LABEL_11;
@@ -476,8 +476,8 @@ LABEL_9:
     v21 = +[OADTableCellBorderStyle defaultAxisParallelStroke];
   }
 
-  v18 = (a8 + v9);
-  if (a8 >= 1)
+  v18 = (span + v9);
+  if (span >= 1)
   {
     v19 = v9;
     do
@@ -489,7 +489,7 @@ LABEL_9:
     while (v19 < v18);
   }
 
-  if (a8 < 0)
+  if (span < 0)
   {
     do
     {
@@ -503,17 +503,17 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)applyStrokesFromPart:(int)a3 fromPos:(OADTMatrixPos)a4 toPos:(OADTMatrixPos)a5
+- (void)applyStrokesFromPart:(int)part fromPos:(OADTMatrixPos)pos toPos:(OADTMatrixPos)toPos
 {
-  v7 = *&a3;
-  var1 = a4.var1;
-  v10 = a5.var1;
-  [(OADTableStyleResolver *)self applyStroke:3 fromPart:*&a3 normalToDir1:0 i1:a4 fromI2:a4.var1 toI2:a5.var1];
-  [(OADTableStyleResolver *)self applyStroke:4 fromPart:v7 normalToDir1:0 i1:a5 fromI2:var1 toI2:v10];
-  [(OADTableStyleResolver *)self applyStroke:1 fromPart:v7 normalToDir1:1 i1:var1 fromI2:a4 toI2:a5];
-  [(OADTableStyleResolver *)self applyStroke:2 fromPart:v7 normalToDir1:1 i1:v10 fromI2:a4 toI2:a5];
-  v11 = (a4.var0 + 1);
-  if (v11 < a5.var0)
+  v7 = *&part;
+  var1 = pos.var1;
+  v10 = toPos.var1;
+  [(OADTableStyleResolver *)self applyStroke:3 fromPart:*&part normalToDir1:0 i1:pos fromI2:pos.var1 toI2:toPos.var1];
+  [(OADTableStyleResolver *)self applyStroke:4 fromPart:v7 normalToDir1:0 i1:toPos fromI2:var1 toI2:v10];
+  [(OADTableStyleResolver *)self applyStroke:1 fromPart:v7 normalToDir1:1 i1:var1 fromI2:pos toI2:toPos];
+  [(OADTableStyleResolver *)self applyStroke:2 fromPart:v7 normalToDir1:1 i1:v10 fromI2:pos toI2:toPos];
+  v11 = (pos.var0 + 1);
+  if (v11 < toPos.var0)
   {
     do
     {
@@ -521,7 +521,7 @@ LABEL_11:
       v11 = (v11 + 1);
     }
 
-    while (a5.var0 != v11);
+    while (toPos.var0 != v11);
   }
 
   v12 = (var1 + 1);
@@ -529,7 +529,7 @@ LABEL_11:
   {
     do
     {
-      [(OADTableStyleResolver *)self applyStroke:6 fromPart:v7 normalToDir1:1 i1:v12 fromI2:a4 toI2:a5];
+      [(OADTableStyleResolver *)self applyStroke:6 fromPart:v7 normalToDir1:1 i1:v12 fromI2:pos toI2:toPos];
       v12 = (v12 + 1);
     }
 
@@ -537,10 +537,10 @@ LABEL_11:
   }
 }
 
-- (int)cellParityRelativeToDir1:(int)a3 i1:(int)a4 i2:(int)a5
+- (int)cellParityRelativeToDir1:(int)dir1 i1:(int)i1 i2:(int)i2
 {
-  v5 = *&a3;
-  v7 = [(OADTableStyleResolver *)self sourceCellAtI1:*&a4 i2:*&a5 dir1:*&a3];
+  v5 = *&dir1;
+  v7 = [(OADTableStyleResolver *)self sourceCellAtI1:*&i1 i2:*&i2 dir1:*&dir1];
   v8 = v7;
   if (!v7 || (!v5 ? (v9 = [v7 topRow], v10 = objc_msgSend(v8, "rowSpan")) : (v9 = objc_msgSend(v7, "leftColumn"), v10 = objc_msgSend(v8, "gridSpan")), (v11 = v10, v12 = -[OADTableProperties hasVectorNormalToDir:atExtremePos:](self->mTableProperties, "hasVectorNormalToDir:atExtremePos:", v5, 0), v13 = -[OADTableProperties hasVectorNormalToDir:atExtremePos:](self->mTableProperties, "hasVectorNormalToDir:atExtremePos:", v5, 1), !v9) ? (v14 = v12) : (v14 = 0), v14 || v13 && v11 + v9 == -[OADTableStyleResolver cellCountAlongDir:](self, "cellCountAlongDir:", v5)))
   {
@@ -560,10 +560,10 @@ LABEL_11:
   return v15;
 }
 
-- (void)applyStrokesOfBandsNormalToDir:(int)a3 parity:(int)a4 part:(int)a5
+- (void)applyStrokesOfBandsNormalToDir:(int)dir parity:(int)parity part:(int)part
 {
-  v6 = *&a3;
-  v8 = [(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:*&a3 atExtremePos:0];
+  v6 = *&dir;
+  v8 = [(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:*&dir atExtremePos:0];
   v9 = [(OADTableStyleResolver *)self cellCountAlongDir:v6];
   if ([(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:v6 atExtremePos:1])
   {
@@ -623,8 +623,8 @@ LABEL_11:
           v18 = (v17 + 1);
           v19 = [(OADTableStyleResolver *)self cellParityRelativeToDir1:v6 i1:v16 i2:v36];
           v20 = [(OADTableStyleResolver *)self cellParityRelativeToDir1:v6 i1:v16 i2:v18];
-          v21 = v20 == a4 || v19 != a4;
-          if (v19 != a4 && v20 == a4)
+          v21 = v20 == parity || v19 != parity;
+          if (v19 != parity && v20 == parity)
           {
             v22 = v13;
           }
@@ -634,7 +634,7 @@ LABEL_11:
             v22 = 0;
           }
 
-          if (v19 == a4 && v20 == a4)
+          if (v19 == parity && v20 == parity)
           {
             v22 = v14;
           }
@@ -651,7 +651,7 @@ LABEL_11:
 
           if (v23)
           {
-            [(OADTableStyleResolver *)self applyStroke:v23 fromPart:a5 normalToDir1:HIDWORD(v36) i1:v18 fromI2:v16 dir2Span:1];
+            [(OADTableStyleResolver *)self applyStroke:v23 fromPart:part normalToDir1:HIDWORD(v36) i1:v18 fromI2:v16 dir2Span:1];
           }
 
           v17 = v18;
@@ -710,8 +710,8 @@ LABEL_11:
         {
           v30 = [(OADTableStyleResolver *)self cellParityRelativeToDir1:v6 i1:(v29 - 1) i2:v25, v36];
           v31 = [(OADTableStyleResolver *)self cellParityRelativeToDir1:v6 i1:v29 i2:v25];
-          v32 = v31 == a4 || v30 != a4;
-          if (v30 != a4 && v31 == a4)
+          v32 = v31 == parity || v30 != parity;
+          if (v30 != parity && v31 == parity)
           {
             v33 = v26;
           }
@@ -721,7 +721,7 @@ LABEL_11:
             v33 = 0;
           }
 
-          if (v30 == a4 && v31 == a4)
+          if (v30 == parity && v31 == parity)
           {
             v33 = v27;
           }
@@ -738,7 +738,7 @@ LABEL_11:
 
           if (v34)
           {
-            [(OADTableStyleResolver *)self applyStroke:v34 fromPart:a5 normalToDir1:v6 i1:v29 fromI2:v25 dir2Span:1];
+            [(OADTableStyleResolver *)self applyStroke:v34 fromPart:part normalToDir1:v6 i1:v29 fromI2:v25 dir2Span:1];
           }
 
           v35 = v29 <= v37;
@@ -771,12 +771,12 @@ LABEL_11:
   }
 }
 
-- (void)applyStrokeOfExtremeVectorNormalToDir:(int)a3 atExtremePos:(int)a4
+- (void)applyStrokeOfExtremeVectorNormalToDir:(int)dir atExtremePos:(int)pos
 {
-  v5 = *&a3;
+  v5 = *&dir;
   if ([OADTableProperties hasVectorNormalToDir:"hasVectorNormalToDir:atExtremePos:" atExtremePos:?])
   {
-    if (a4 == 1)
+    if (pos == 1)
     {
       v7 = [(OADTableStyleResolver *)self cellCountAlongDir:v5];
       v8 = [(OADTableStyleResolver *)self cellCountAlongDir:v5]- 1;
@@ -998,16 +998,16 @@ LABEL_11:
   [(OADTableStyleResolver *)self applyStrokeOfExtremeVectorNormalToDir:0 atExtremePos:0];
 }
 
-- (void)applyCornerStrokesWithRowPos:(int)a3 columnPos:(int)a4 part:(int)a5
+- (void)applyCornerStrokesWithRowPos:(int)pos columnPos:(int)columnPos part:(int)part
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  if (![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:0 atExtremePos:*&a3]|| ![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:1 atExtremePos:v6])
+  v5 = *&part;
+  v6 = *&columnPos;
+  if (![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:0 atExtremePos:*&pos]|| ![(OADTableProperties *)self->mTableProperties hasVectorNormalToDir:1 atExtremePos:v6])
   {
     return;
   }
 
-  if (!a3)
+  if (!pos)
   {
     v9 = 0;
     if (v6)
@@ -1030,9 +1030,9 @@ LABEL_5:
   v10 = (self->mColumnCount - 1);
 LABEL_9:
   v13 = [(OADTableStyleResolver *)self sourceCellAtI1:v9 i2:v10 dir1:0];
-  v11 = [v13 topRow];
-  v12 = [v13 leftColumn];
-  -[OADTableStyleResolver applyStrokesFromPart:fromPos:toPos:](self, "applyStrokesFromPart:fromPos:toPos:", v5, v11 | (v12 << 32), ([v13 rowSpan] + v11) | ((objc_msgSend(v13, "gridSpan") + v12) << 32));
+  topRow = [v13 topRow];
+  leftColumn = [v13 leftColumn];
+  -[OADTableStyleResolver applyStrokesFromPart:fromPos:toPos:](self, "applyStrokesFromPart:fromPos:toPos:", v5, topRow | (leftColumn << 32), ([v13 rowSpan] + topRow) | ((objc_msgSend(v13, "gridSpan") + leftColumn) << 32));
 }
 
 - (void)applyCornerStrokes
@@ -1054,10 +1054,10 @@ LABEL_9:
   [(OADTableStyleResolver *)self applyCornerStrokes];
 }
 
-- (void)applyTextStyle:(id)a3 toParagraph:(id)a4
+- (void)applyTextStyle:(id)style toParagraph:(id)paragraph
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  paragraphCopy = paragraph;
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADTableStyleResolver applyTextStyle:toParagraph:]"];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADTableStyleFlattener.mm"];
   v9 = objc_opt_class();
@@ -1076,26 +1076,26 @@ LABEL_9:
   objc_exception_throw(v16);
 }
 
-- (void)applyTextStyle:(id)a3 toCell:(id)a4
+- (void)applyTextStyle:(id)style toCell:(id)cell
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v6 textBody];
-  for (i = 0; [v7 paragraphCount] > i; ++i)
+  styleCopy = style;
+  cellCopy = cell;
+  textBody = [cellCopy textBody];
+  for (i = 0; [textBody paragraphCount] > i; ++i)
   {
-    v9 = [v7 paragraphAtIndex:i];
-    [(OADTableStyleResolver *)self applyTextStyle:v10 toParagraph:v9];
+    v9 = [textBody paragraphAtIndex:i];
+    [(OADTableStyleResolver *)self applyTextStyle:styleCopy toParagraph:v9];
   }
 }
 
-- (void)applyResolvedPartStyle:(id)a3 leftStroke:(id)a4 rightStroke:(id)a5 topStroke:(id)a6 bottomStroke:(id)a7 toCell:(id)a8
+- (void)applyResolvedPartStyle:(id)style leftStroke:(id)stroke rightStroke:(id)rightStroke topStroke:(id)topStroke bottomStroke:(id)bottomStroke toCell:(id)cell
 {
-  a3;
-  a4;
-  a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  style;
+  stroke;
+  rightStroke;
+  topStrokeCopy = topStroke;
+  bottomStrokeCopy = bottomStroke;
+  cellCopy = cell;
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADTableStyleResolver applyResolvedPartStyle:leftStroke:rightStroke:topStroke:bottomStroke:toCell:]"];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADTableStyleFlattener.mm"];
   v18 = objc_opt_class();

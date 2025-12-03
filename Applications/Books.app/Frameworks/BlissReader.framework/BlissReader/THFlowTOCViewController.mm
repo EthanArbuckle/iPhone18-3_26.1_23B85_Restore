@@ -1,81 +1,81 @@
 @interface THFlowTOCViewController
 - (BOOL)introMediaControllerIsActive;
-- (BOOL)isSectionOpen:(id)a3;
+- (BOOL)isSectionOpen:(id)open;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (BOOL)tableViewCellShouldStayHighlighted:(id)a3;
-- (CGRect)frameForOrdinalAtIndentLevel:(int64_t)a3;
-- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 inLayer:(id)a5;
+- (BOOL)tableViewCellShouldStayHighlighted:(id)highlighted;
+- (CGRect)frameForOrdinalAtIndentLevel:(int64_t)level;
+- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex inLayer:(id)layer;
 - (CGSize)headerMaxSize;
 - (THFlowTOCConfiguration)configuration;
-- (THFlowTOCViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (THFlowTOCViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (THReflowablePaginationController)reflowablePaginationController;
-- (double)bottomSeparatorYPositionForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)bottomSeparatorYPositionForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)chapterTitleColor;
-- (id)findVisibleCellInTable:(id)a3 forIndexPath:(id)a4;
-- (id)labelFontForRow:(unint64_t)a3;
+- (id)findVisibleCellInTable:(id)table forIndexPath:(id)path;
+- (id)labelFontForRow:(unint64_t)row;
 - (id)ordinalTextColor;
-- (id)p_cellForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4;
-- (id)p_circledButtonImageFromImage:(id)a3 radius:(double)a4;
-- (id)p_displayPageNumberForTileEntry:(id)a3;
-- (id)p_indexPathForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4;
-- (id)p_maxAbsolutePageNumberForNodeAtTileEntry:(id)a3;
+- (id)p_cellForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex;
+- (id)p_circledButtonImageFromImage:(id)image radius:(double)radius;
+- (id)p_displayPageNumberForTileEntry:(id)entry;
+- (id)p_indexPathForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex;
+- (id)p_maxAbsolutePageNumberForNodeAtTileEntry:(id)entry;
 - (id)pageNumberColor;
 - (id)pageNumberFont;
 - (id)rasterizedImage;
-- (id)subItemsForSection:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableViewCellBackgroundColor:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)numberOfSubentriesForIndex:(int64_t)a3 inModel:(id)a4;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)accessoryTapped:(id)a3;
+- (id)subItemsForSection:(id)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableViewCellBackgroundColor:(id)color;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)numberOfSubentriesForIndex:(int64_t)index inModel:(id)model;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)accessoryTapped:(id)tapped;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)didTransitionFromCanvas;
 - (void)initTOCSectionUIState;
-- (void)introMediaControllerShouldAdvancePast:(id)a3;
-- (void)makeSectionClosed:(id)a3 withSender:(id)a4;
-- (void)makeSectionOpen:(id)a3 withSender:(id)a4;
+- (void)introMediaControllerShouldAdvancePast:(id)past;
+- (void)makeSectionClosed:(id)closed withSender:(id)sender;
+- (void)makeSectionOpen:(id)open withSender:(id)sender;
 - (void)p_applyTheme;
 - (void)p_loadHeaderImageAndUpdateLayout;
 - (void)p_releaseOutlets;
 - (void)p_setupTransitionView;
-- (void)p_showPageForModelLink:(id)a3;
+- (void)p_showPageForModelLink:(id)link;
 - (void)p_tapOnBackground;
 - (void)p_updateMaxPageNumberWidth;
-- (void)paginationController:(id)a3 paginationCompleteStateChangedTo:(BOOL)a4;
-- (void)scrollToRowForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)setIntroMediaViewController:(id)a3;
-- (void)setIntroMediaViewController:(id)a3 showIt:(BOOL)a4;
-- (void)setReflowablePaginationController:(id)a3;
-- (void)setSectionOpenInUIState:(BOOL)a3 forSection:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableViewCell:(id)a3 hideSeparators:(BOOL)a4;
-- (void)tableViewCellHighlightDidChange:(id)a3;
-- (void)transitionDidFinish:(id)a3;
-- (void)transitionWillFinish:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)paginationController:(id)controller paginationCompleteStateChangedTo:(BOOL)to;
+- (void)scrollToRowForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)setIntroMediaViewController:(id)controller;
+- (void)setIntroMediaViewController:(id)controller showIt:(BOOL)it;
+- (void)setReflowablePaginationController:(id)controller;
+- (void)setSectionOpenInUIState:(BOOL)state forSection:(id)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableViewCell:(id)cell hideSeparators:(BOOL)separators;
+- (void)tableViewCellHighlightDidChange:(id)change;
+- (void)transitionDidFinish:(id)finish;
+- (void)transitionWillFinish:(id)finish;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionFromChapterIndex:(unint64_t)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionFromChapterIndex:(unint64_t)index;
 @end
 
 @implementation THFlowTOCViewController
 
-- (THFlowTOCViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THFlowTOCViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = THBundle();
   v15.receiver = self;
   v15.super_class = THFlowTOCViewController;
-  v7 = [(THFlowTOCViewController *)&v15 initWithNibName:v5 bundle:v6];
+  v7 = [(THFlowTOCViewController *)&v15 initWithNibName:nameCopy bundle:v6];
 
   if (v7)
   {
@@ -146,8 +146,8 @@
   configuration = self->_configuration;
   if (!configuration)
   {
-    v4 = self;
-    v5 = [[THFlowTOCConfiguration alloc] initWithContext:v4];
+    selfCopy = self;
+    v5 = [[THFlowTOCConfiguration alloc] initWithContext:selfCopy];
     v6 = self->_configuration;
     self->_configuration = v5;
 
@@ -161,26 +161,26 @@
 {
   if (self->mHeaderImageData)
   {
-    v3 = [(THFlowTOCViewController *)self headerImageViews];
+    headerImageViews = [(THFlowTOCViewController *)self headerImageViews];
 
-    if (!v3)
+    if (!headerImageViews)
     {
       v4 = [[UIButton alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [(THFlowTOCViewController *)self setHeaderImageViews:v4];
 
-      v5 = [(THFlowTOCViewController *)self headerImageViews];
-      [v5 setAutoresizesSubviews:0];
+      headerImageViews2 = [(THFlowTOCViewController *)self headerImageViews];
+      [headerImageViews2 setAutoresizesSubviews:0];
 
-      v6 = [(THFlowTOCViewController *)self headerImageViews];
-      [v6 addTarget:self action:"p_tapOnBackground" forControlEvents:64];
+      headerImageViews3 = [(THFlowTOCViewController *)self headerImageViews];
+      [headerImageViews3 addTarget:self action:"p_tapOnBackground" forControlEvents:64];
 
       v7 = objc_alloc_init(THImageView);
       mHeaderView = self->mHeaderView;
       self->mHeaderView = v7;
 
       [(THImageView *)self->mHeaderView setUserInteractionEnabled:0];
-      v9 = [(THFlowTOCViewController *)self headerImageViews];
-      [v9 addSubview:self->mHeaderView];
+      headerImageViews4 = [(THFlowTOCViewController *)self headerImageViews];
+      [headerImageViews4 addSubview:self->mHeaderView];
     }
 
     [(TSWTableView *)self->mTOCTableView frame];
@@ -197,9 +197,9 @@
     [(THImageView *)self->mHeaderView frame];
     if (v16 <= 0.0)
     {
-      v20 = [(THFlowTOCViewController *)self navigationController];
-      v21 = [v20 navigationBar];
-      [v21 bounds];
+      navigationController = [(THFlowTOCViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar bounds];
       Height = CGRectGetHeight(v30);
     }
 
@@ -210,67 +210,67 @@
     }
 
     [(THImageView *)self->mHeaderView setFrame:0.0, 0.0, v11, Height];
-    v22 = [(THFlowTOCViewController *)self headerImageViews];
-    [v22 setFrame:{0.0, 0.0, v11, Height}];
+    headerImageViews5 = [(THFlowTOCViewController *)self headerImageViews];
+    [headerImageViews5 setFrame:{0.0, 0.0, v11, Height}];
 
     v28 = [[UITableViewHeaderFooterView alloc] initWithFrame:{0.0, 0.0, v11, Height}];
-    v23 = [v28 contentView];
-    v24 = [(THFlowTOCViewController *)self headerImageViews];
-    [v23 addSubview:v24];
+    contentView = [v28 contentView];
+    headerImageViews6 = [(THFlowTOCViewController *)self headerImageViews];
+    [contentView addSubview:headerImageViews6];
 
     [(TSWTableView *)self->mTOCTableView setTableHeaderView:v28];
     mTOCTableView = self->mTOCTableView;
-    v26 = [(THFlowTOCViewController *)self view];
-    [v26 frame];
+    view = [(THFlowTOCViewController *)self view];
+    [view frame];
     [(TSWTableView *)mTOCTableView _setPinsTableHeaderView:Height / v27 < 0.3, Height / v27];
   }
 }
 
-- (void)setIntroMediaViewController:(id)a3
+- (void)setIntroMediaViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   mIntroMediaViewController = self->mIntroMediaViewController;
-  if (mIntroMediaViewController != v5)
+  if (mIntroMediaViewController != controllerCopy)
   {
-    v8 = v5;
-    v7 = [(THiOSIntroMediaViewController *)mIntroMediaViewController delegate];
+    v8 = controllerCopy;
+    delegate = [(THiOSIntroMediaViewController *)mIntroMediaViewController delegate];
 
-    if (v7 == self)
+    if (delegate == self)
     {
       [(THiOSIntroMediaViewController *)self->mIntroMediaViewController setDelegate:0];
     }
 
-    objc_storeStrong(&self->mIntroMediaViewController, a3);
+    objc_storeStrong(&self->mIntroMediaViewController, controller);
     mIntroMediaViewController = [(THiOSIntroMediaViewController *)self->mIntroMediaViewController setDelegate:self];
-    v5 = v8;
+    controllerCopy = v8;
   }
 
-  _objc_release_x1(mIntroMediaViewController, v5);
+  _objc_release_x1(mIntroMediaViewController, controllerCopy);
 }
 
-- (void)setIntroMediaViewController:(id)a3 showIt:(BOOL)a4
+- (void)setIntroMediaViewController:(id)controller showIt:(BOOL)it
 {
-  if (a4)
+  if (it)
   {
-    v5 = a3;
+    controllerCopy = controller;
     [(THFlowTOCViewController *)self view];
 
-    [(THFlowTOCViewController *)self setIntroMediaViewController:v5];
+    [(THFlowTOCViewController *)self setIntroMediaViewController:controllerCopy];
     [(THTOCViewController *)self setForceStatusBarVisible:0];
-    v6 = [(THFlowTOCViewController *)self view];
-    [v6 bounds];
+    view = [(THFlowTOCViewController *)self view];
+    [view bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(THFlowTOCViewController *)self introMediaViewController];
-    v16 = [v15 view];
-    [v16 setFrame:{v8, v10, v12, v14}];
+    introMediaViewController = [(THFlowTOCViewController *)self introMediaViewController];
+    view2 = [introMediaViewController view];
+    [view2 setFrame:{v8, v10, v12, v14}];
 
-    v17 = [(THFlowTOCViewController *)self view];
-    v18 = [(THFlowTOCViewController *)self introMediaViewController];
-    v19 = [v18 view];
-    [v17 addSubview:v19];
+    view3 = [(THFlowTOCViewController *)self view];
+    introMediaViewController2 = [(THFlowTOCViewController *)self introMediaViewController];
+    view4 = [introMediaViewController2 view];
+    [view3 addSubview:view4];
 
     self->mForceTransitionCompletion = 0;
   }
@@ -280,8 +280,8 @@
 
 - (BOOL)introMediaControllerIsActive
 {
-  v2 = [(THFlowTOCViewController *)self introMediaViewController];
-  v3 = v2 != 0;
+  introMediaViewController = [(THFlowTOCViewController *)self introMediaViewController];
+  v3 = introMediaViewController != 0;
 
   return v3;
 }
@@ -291,8 +291,8 @@
   v31.receiver = self;
   v31.super_class = THFlowTOCViewController;
   [(THFlowTOCViewController *)&v31 viewDidLoad];
-  v3 = [(THFlowTOCViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(THFlowTOCViewController *)self view];
+  [view setAutoresizingMask:18];
 
   mTOCTableView = self->mTOCTableView;
   if (!mTOCTableView)
@@ -308,16 +308,16 @@
   [(TSWTableView *)mTOCTableView setDelegate:self];
   [(TSWTableView *)self->mTOCTableView setDataSource:self];
   [(TSWTableView *)self->mTOCTableView setIgnoresEventsOutsideCells:1];
-  v8 = [(THFlowTOCViewController *)self configuration];
-  [v8 separatorColorWhite];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration separatorColorWhite];
   v10 = [UIColor colorWithWhite:v9 / 255.0 alpha:1.0];
   [(TSWTableView *)self->mTOCTableView setSeparatorColor:v10];
 
-  v11 = [(THFlowTOCViewController *)self configuration];
-  LODWORD(v8) = [v11 constrainTableWidthToLegacyiPadWidth];
+  configuration2 = [(THFlowTOCViewController *)self configuration];
+  LODWORD(configuration) = [configuration2 constrainTableWidthToLegacyiPadWidth];
 
   v12 = 0.0;
-  if (v8)
+  if (configuration)
   {
     [(TSWTableView *)self->mTOCTableView bounds];
     v14 = (v13 + -768.0) * 0.5;
@@ -338,16 +338,16 @@
   [(TSWTableView *)self->mTOCTableView frame];
   v18 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, v17, height}];
   [v18 setAutoresizingMask:2];
-  v19 = [(TSWTableView *)self->mTOCTableView backgroundColor];
-  [v18 setBackgroundColor:v19];
+  backgroundColor = [(TSWTableView *)self->mTOCTableView backgroundColor];
+  [v18 setBackgroundColor:backgroundColor];
 
   [(TSWTableView *)self->mTOCTableView setTableFooterView:v18];
   self->mMaxPageNumberWidth = 0.0;
   self->mMaxOrdinalWidth = 0.0;
   [(THFlowTOCViewController *)self initTOCSectionUIState];
   v20 = [UIImage th_imageNamed:kTocArrowCloseImageN];
-  v21 = [(THFlowTOCViewController *)self configuration];
-  [v21 discloseButtonRadius];
+  configuration3 = [(THFlowTOCViewController *)self configuration];
+  [configuration3 discloseButtonRadius];
   v23 = v22;
 
   v24 = [(THFlowTOCViewController *)self p_circledButtonImageFromImage:v20 radius:v23];
@@ -357,23 +357,23 @@
   v26 = [(THFlowTOCViewController *)self p_circledButtonImageFromImage:v25 radius:v23];
   [(THFlowTOCViewController *)self setOpenSectionImage:v26];
 
-  v27 = [(THTOCViewController *)self dataSource];
-  v28 = [v27 bookTOCHeaderImageDataForTOC:self];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v28 = [dataSource bookTOCHeaderImageDataForTOC:self];
   [(THFlowTOCViewController *)self setHeaderImageData:v28];
 
   [(THFlowTOCViewController *)self p_loadHeaderImageAndUpdateLayout];
   v29 = +[UIColor blackColor];
-  v30 = [(THFlowTOCViewController *)self view];
-  [v30 setBackgroundColor:v29];
+  view2 = [(THFlowTOCViewController *)self view];
+  [view2 setBackgroundColor:v29];
 
   [(THFlowTOCViewController *)self p_applyTheme];
 }
 
-- (id)p_circledButtonImageFromImage:(id)a3 radius:(double)a4
+- (id)p_circledButtonImageFromImage:(id)image radius:(double)radius
 {
-  v5 = a3;
-  v6 = a4 + a4;
-  [v5 size];
+  imageCopy = image;
+  v6 = radius + radius;
+  [imageCopy size];
   TSDCenterRectOverRect();
   v8 = v7;
   v10 = v9;
@@ -391,12 +391,12 @@
   v24 = 0;
   v25 = v6;
   v26 = v6;
-  v22 = v5;
+  v22 = imageCopy;
   v27 = v8;
   v28 = v10;
   v29 = v12;
   v30 = v14;
-  v18 = v5;
+  v18 = imageCopy;
   v19 = [v17 imageWithActions:v21];
 
   return v19;
@@ -406,19 +406,19 @@
 {
   if (!UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning())
   {
-    v3 = [(THTOCViewController *)self delegate];
-    v4 = [v3 isToolbarHidden];
+    delegate = [(THTOCViewController *)self delegate];
+    isToolbarHidden = [delegate isToolbarHidden];
 
-    v5 = [(THTOCViewController *)self delegate];
-    v6 = v5;
-    if (v4)
+    delegate2 = [(THTOCViewController *)self delegate];
+    v6 = delegate2;
+    if (isToolbarHidden)
     {
-      [v5 showToolbarAnimated:1];
+      [delegate2 showToolbarAnimated:1];
     }
 
     else
     {
-      [v5 hideToolbarAnimated:1];
+      [delegate2 hideToolbarAnimated:1];
     }
   }
 }
@@ -427,16 +427,16 @@
 {
   if ([(THFlowTOCViewController *)self isViewLoaded])
   {
-    v3 = [(THFlowTOCViewController *)self theme];
+    theme = [(THFlowTOCViewController *)self theme];
 
-    if (v3)
+    if (theme)
     {
-      v4 = [(THFlowTOCViewController *)self theme];
-      v10 = [v4 backgroundColorForTraitEnvironment:self];
+      theme2 = [(THFlowTOCViewController *)self theme];
+      v10 = [theme2 backgroundColorForTraitEnvironment:self];
 
-      v5 = [(THFlowTOCViewController *)self theme];
-      v6 = [v5 tableViewSeparatorColor];
-      [(TSWTableView *)self->mTOCTableView setSeparatorColor:v6];
+      theme3 = [(THFlowTOCViewController *)self theme];
+      tableViewSeparatorColor = [theme3 tableViewSeparatorColor];
+      [(TSWTableView *)self->mTOCTableView setSeparatorColor:tableViewSeparatorColor];
     }
 
     else
@@ -444,15 +444,15 @@
       v10 = +[UIColor systemBackgroundColor];
     }
 
-    v7 = [(THFlowTOCViewController *)self view];
-    [v7 setBackgroundColor:v10];
+    view = [(THFlowTOCViewController *)self view];
+    [view setBackgroundColor:v10];
 
     [(TSWTableView *)self->mTOCTableView setBackgroundColor:v10];
-    v8 = [(TSWTableView *)self->mTOCTableView tableFooterView];
-    [v8 setBackgroundColor:v10];
+    tableFooterView = [(TSWTableView *)self->mTOCTableView tableFooterView];
+    [tableFooterView setBackgroundColor:v10];
 
-    v9 = [(TSWTableView *)self->mTOCTableView tableHeaderView];
-    [v9 setBackgroundColor:v10];
+    tableHeaderView = [(TSWTableView *)self->mTOCTableView tableHeaderView];
+    [tableHeaderView setBackgroundColor:v10];
 
     [(TSWTableView *)self->mTOCTableView reloadData];
     [(THFlowTOCViewController *)self setNeedsStatusBarAppearanceUpdate];
@@ -460,59 +460,59 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = THFlowTOCViewController;
-  [(THFlowTOCViewController *)&v11 viewWillAppear:a3];
-  v4 = [(THFlowTOCViewController *)self configuration];
-  [v4 invalidate];
+  [(THFlowTOCViewController *)&v11 viewWillAppear:appear];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration invalidate];
 
-  v5 = [(THFlowTOCViewController *)self backgroundButton];
+  backgroundButton = [(THFlowTOCViewController *)self backgroundButton];
 
-  if (!v5)
+  if (!backgroundButton)
   {
     v6 = [UIButton alloc];
-    v7 = [(THFlowTOCViewController *)self view];
-    [v7 frame];
+    view = [(THFlowTOCViewController *)self view];
+    [view frame];
     v8 = [v6 initWithFrame:?];
 
     [v8 setAutoresizingMask:18];
-    v9 = [(THFlowTOCViewController *)self view];
-    [v9 insertSubview:v8 belowSubview:self->mTOCTableView];
+    view2 = [(THFlowTOCViewController *)self view];
+    [view2 insertSubview:v8 belowSubview:self->mTOCTableView];
 
     [(THFlowTOCViewController *)self setBackgroundButton:v8];
-    v10 = [(THFlowTOCViewController *)self backgroundButton];
-    [v10 addTarget:self action:"p_tapOnBackground" forControlEvents:64];
+    backgroundButton2 = [(THFlowTOCViewController *)self backgroundButton];
+    [backgroundButton2 addTarget:self action:"p_tapOnBackground" forControlEvents:64];
   }
 }
 
-- (void)setReflowablePaginationController:(id)a3
+- (void)setReflowablePaginationController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_reflowablePaginationController);
 
   if (WeakRetained != obj)
   {
-    v5 = [(THFlowTOCViewController *)self reflowablePaginationController];
-    [v5 unregisterObserver:self];
+    reflowablePaginationController = [(THFlowTOCViewController *)self reflowablePaginationController];
+    [reflowablePaginationController unregisterObserver:self];
 
     objc_storeWeak(&self->_reflowablePaginationController, obj);
-    v6 = [(THFlowTOCViewController *)self reflowablePaginationController];
-    [v6 registerObserver:self];
+    reflowablePaginationController2 = [(THFlowTOCViewController *)self reflowablePaginationController];
+    [reflowablePaginationController2 registerObserver:self];
   }
 }
 
 - (void)p_updateMaxPageNumberWidth
 {
-  v3 = [(THTOCViewController *)self dataSource];
-  v31 = [v3 showPageNumbers];
+  dataSource = [(THTOCViewController *)self dataSource];
+  showPageNumbers = [dataSource showPageNumbers];
 
-  v30 = [(THFlowTOCViewController *)self pageNumberFont];
+  pageNumberFont = [(THFlowTOCViewController *)self pageNumberFont];
   v4 = [(THFlowTOCViewController *)self labelFontForRow:0];
   v5 = [(THFlowTOCViewController *)self labelFontForRow:1];
-  v6 = [(THTOCViewController *)self dataSource];
-  v7 = [v6 toc:self numberOfTilesInDivision:0];
+  dataSource2 = [(THTOCViewController *)self dataSource];
+  v7 = [dataSource2 toc:self numberOfTilesInDivision:0];
 
   v27 = v7;
   if (v7)
@@ -521,23 +521,23 @@
     v29 = v4;
     do
     {
-      v9 = [(THTOCViewController *)self dataSource];
+      dataSource3 = [(THTOCViewController *)self dataSource];
       v28 = v8;
-      v10 = [v9 toc:self tileModelForChapterIndex:v8];
+      v10 = [dataSource3 toc:self tileModelForChapterIndex:v8];
 
-      v11 = [v10 portraitEntries];
-      v12 = [v11 count];
+      portraitEntries = [v10 portraitEntries];
+      v12 = [portraitEntries count];
 
       if (v12)
       {
         for (i = 0; i != v12; ++i)
         {
-          v14 = [v10 portraitEntries];
-          v15 = [v14 objectAtIndex:i];
+          portraitEntries2 = [v10 portraitEntries];
+          v15 = [portraitEntries2 objectAtIndex:i];
 
           if ([v15 includeInTOC])
           {
-            v16 = [v15 sectionIdentifier];
+            sectionIdentifier = [v15 sectionIdentifier];
             if (i)
             {
               v17 = v5;
@@ -551,7 +551,7 @@
             v34 = NSFontAttributeName;
             v35 = v17;
             v18 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-            [v16 sizeWithAttributes:v18];
+            [sectionIdentifier sizeWithAttributes:v18];
             v20 = v19;
 
             if (v20 > self->mMaxOrdinalWidth)
@@ -559,7 +559,7 @@
               self->mMaxOrdinalWidth = v20;
             }
 
-            if (v31)
+            if (showPageNumbers)
             {
               if ([(THFlowTOCViewController *)self hasPaginatedData])
               {
@@ -572,7 +572,7 @@
               }
               v21 = ;
               v32 = NSFontAttributeName;
-              v33 = v30;
+              v33 = pageNumberFont;
               v22 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
               [v21 sizeWithAttributes:v22];
               v24 = v23;
@@ -605,25 +605,25 @@
   v15.receiver = self;
   v15.super_class = THFlowTOCViewController;
   [(THFlowTOCViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(THFlowTOCViewController *)self configuration];
-  [v3 cellHeight];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration cellHeight];
   [(TSWTableView *)self->mTOCTableView setRowHeight:?];
 
   [(THFlowTOCViewController *)self p_updateMaxPageNumberWidth];
-  v4 = [(THFlowTOCViewController *)self configuration];
-  [v4 ordinalNumberLeftMargin];
+  configuration2 = [(THFlowTOCViewController *)self configuration];
+  [configuration2 ordinalNumberLeftMargin];
   v6 = v5;
 
-  v7 = [(THFlowTOCViewController *)self configuration];
-  [v7 discloseButtonRightMargin];
+  configuration3 = [(THFlowTOCViewController *)self configuration];
+  [configuration3 discloseButtonRightMargin];
   v9 = v8;
 
   v10 = 0.0;
   [(TSWTableView *)self->mTOCTableView setSeparatorInset:0.0, v6, 0.0, v9];
-  v11 = [(THFlowTOCViewController *)self configuration];
-  v12 = [v11 constrainTableWidthToLegacyiPadWidth];
+  configuration4 = [(THFlowTOCViewController *)self configuration];
+  constrainTableWidthToLegacyiPadWidth = [configuration4 constrainTableWidthToLegacyiPadWidth];
 
-  if (v12)
+  if (constrainTableWidthToLegacyiPadWidth)
   {
     [(TSWTableView *)self->mTOCTableView bounds];
     v14 = (v13 + -768.0) * 0.5;
@@ -640,69 +640,69 @@
   [(TSWTableView *)self->mTOCTableView reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = THFlowTOCViewController;
-  [(THFlowTOCViewController *)&v6 viewDidAppear:a3];
-  v4 = [(THTOCViewController *)self delegate];
-  [v4 tocIsReadyToPresent:self];
+  [(THFlowTOCViewController *)&v6 viewDidAppear:appear];
+  delegate = [(THTOCViewController *)self delegate];
+  [delegate tocIsReadyToPresent:self];
 
-  v5 = [(THTOCViewController *)self delegate];
-  [v5 setupDVCForTOCController:self];
+  delegate2 = [(THTOCViewController *)self delegate];
+  [delegate2 setupDVCForTOCController:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = THFlowTOCViewController;
-  [(THFlowTOCViewController *)&v5 viewWillDisappear:a3];
+  [(THFlowTOCViewController *)&v5 viewWillDisappear:disappear];
   v4 = [(THFlowTOCViewController *)self findVisibleCellInTable:self->mTOCTableView forIndexPath:self->mLastSelectedRow];
   [v4 stopProgressIndicator];
 }
 
-- (id)findVisibleCellInTable:(id)a3 forIndexPath:(id)a4
+- (id)findVisibleCellInTable:(id)table forIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 indexPathsForVisibleRows];
-  if ([v7 indexOfObject:v6] == 0x7FFFFFFFFFFFFFFFLL)
+  tableCopy = table;
+  pathCopy = path;
+  indexPathsForVisibleRows = [tableCopy indexPathsForVisibleRows];
+  if ([indexPathsForVisibleRows indexOfObject:pathCopy] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v5 cellForRowAtIndexPath:v6];
+    v8 = [tableCopy cellForRowAtIndexPath:pathCopy];
   }
 
   return v8;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = THFlowTOCViewController;
-  [(THFlowTOCViewController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(THFlowTOCViewController *)self configuration];
-  [v5 invalidate];
+  [(THFlowTOCViewController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration invalidate];
 
-  v6 = [(THFlowTOCViewController *)self view];
-  v7 = [v6 superview];
+  view = [(THFlowTOCViewController *)self view];
+  superview = [view superview];
 
-  if (v7)
+  if (superview)
   {
     [(THFlowTOCViewController *)self setNeedsStatusBarAppearanceUpdate];
     [(THFlowTOCViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
   }
 
-  v8 = [(THFlowTOCViewController *)self view];
-  [v8 setNeedsUpdateConstraints];
+  view2 = [(THFlowTOCViewController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(THFlowTOCViewController *)self configuration:a3];
+  v5 = [(THFlowTOCViewController *)self configuration:change];
   [v5 invalidate];
 
   [(THFlowTOCViewController *)self p_applyTheme];
@@ -710,10 +710,10 @@
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = [(THTOCViewController *)self delegate];
-  v3 = [v2 isToolbarHidden];
+  delegate = [(THTOCViewController *)self delegate];
+  isToolbarHidden = [delegate isToolbarHidden];
 
-  return v3;
+  return isToolbarHidden;
 }
 
 - (void)didReceiveMemoryWarning
@@ -728,7 +728,7 @@
   }
 }
 
-- (void)willTransitionFromChapterIndex:(unint64_t)a3
+- (void)willTransitionFromChapterIndex:(unint64_t)index
 {
   v5 = +[TSUAssertionHandler currentHandler];
   v3 = [NSString stringWithUTF8String:"[THFlowTOCViewController willTransitionFromChapterIndex:]"];
@@ -744,9 +744,9 @@
   [v4 handleFailureInFunction:v2 file:v3 lineNumber:854 description:@"Not supported in flow TOC"];
 }
 
-- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 inLayer:(id)a5
+- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex inLayer:(id)layer
 {
-  v5 = [TSUAssertionHandler currentHandler:a3];
+  v5 = [TSUAssertionHandler currentHandler:index];
   v6 = [NSString stringWithUTF8String:"[THFlowTOCViewController rectForPageThumbnailAtIndex:chapterIndex:inLayer:]"];
   v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THFlowTOCViewController.m"];
   [v5 handleFailureInFunction:v6 file:v7 lineNumber:858 description:@"Not supported in flow TOC"];
@@ -764,9 +764,9 @@
 
 - (void)initTOCSectionUIState
 {
-  v3 = [(THTOCViewController *)self dataSource];
-  v19 = self;
-  v4 = [v3 toc:self numberOfTilesInDivision:0];
+  dataSource = [(THTOCViewController *)self dataSource];
+  selfCopy = self;
+  v4 = [dataSource toc:self numberOfTilesInDivision:0];
 
   v20 = [[NSMutableDictionary alloc] initWithCapacity:v4];
   v18 = v4;
@@ -777,22 +777,22 @@
     {
       v6 = [NSIndexPath indexPathForRow:0 inSection:v5];
       v7 = [NSIndexPath indexPathForRow:0 inSection:v5];
-      v8 = [(THTOCViewController *)v19 dataSource];
-      v9 = [v8 toc:v19 tileModelForChapterIndex:v5];
+      dataSource2 = [(THTOCViewController *)selfCopy dataSource];
+      v9 = [dataSource2 toc:selfCopy tileModelForChapterIndex:v5];
 
-      v10 = [v9 portraitEntries];
-      v11 = [v10 count];
+      portraitEntries = [v9 portraitEntries];
+      v11 = [portraitEntries count];
 
       v12 = [[THFlowTOCChapterUIState alloc] initWithSection:v6];
-      [(NSMutableDictionary *)v19->mModelToUIMap setObject:v7 forKey:v6];
-      [(NSMutableDictionary *)v19->mUIToModelMap setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)selfCopy->mModelToUIMap setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)selfCopy->mUIToModelMap setObject:v6 forKey:v7];
       v13 = +[NSMutableArray array];
       if (v11 >= 2)
       {
         for (i = 1; i != v11; ++i)
         {
-          v15 = [v9 portraitEntries];
-          v16 = [v15 objectAtIndex:i];
+          portraitEntries2 = [v9 portraitEntries];
+          v16 = [portraitEntries2 objectAtIndex:i];
 
           if ([v16 indentLevel] == &dword_0 + 1 && objc_msgSend(v16, "includeInTOC"))
           {
@@ -811,57 +811,57 @@
     while (v5 != v18);
   }
 
-  [(THFlowTOCViewController *)v19 setChapterUIState:v20];
+  [(THFlowTOCViewController *)selfCopy setChapterUIState:v20];
 }
 
-- (BOOL)isSectionOpen:(id)a3
+- (BOOL)isSectionOpen:(id)open
 {
-  v4 = a3;
-  v5 = [(THFlowTOCViewController *)self chapterUIState];
-  v6 = [v5 objectForKey:v4];
+  openCopy = open;
+  chapterUIState = [(THFlowTOCViewController *)self chapterUIState];
+  v6 = [chapterUIState objectForKey:openCopy];
 
   if (v6)
   {
-    v7 = [v6 opened];
+    opened = [v6 opened];
   }
 
   else
   {
-    v7 = 0;
+    opened = 0;
   }
 
-  return v7;
+  return opened;
 }
 
-- (void)setSectionOpenInUIState:(BOOL)a3 forSection:(id)a4
+- (void)setSectionOpenInUIState:(BOOL)state forSection:(id)section
 {
-  v4 = a3;
-  v21 = a4;
-  v6 = [(THFlowTOCViewController *)self chapterUIState];
-  v7 = [v6 objectForKey:v21];
+  stateCopy = state;
+  sectionCopy = section;
+  chapterUIState = [(THFlowTOCViewController *)self chapterUIState];
+  v7 = [chapterUIState objectForKey:sectionCopy];
 
   if (!v7)
   {
-    v7 = [[THFlowTOCChapterUIState alloc] initWithSection:v21];
-    v8 = [(THFlowTOCViewController *)self chapterUIState];
-    [v8 setObject:v7 forKey:v21];
+    v7 = [[THFlowTOCChapterUIState alloc] initWithSection:sectionCopy];
+    chapterUIState2 = [(THFlowTOCViewController *)self chapterUIState];
+    [chapterUIState2 setObject:v7 forKey:sectionCopy];
   }
 
-  [(THFlowTOCChapterUIState *)v7 setOpened:v4];
-  v9 = [(THFlowTOCChapterUIState *)v7 subItems];
+  [(THFlowTOCChapterUIState *)v7 setOpened:stateCopy];
+  subItems = [(THFlowTOCChapterUIState *)v7 subItems];
 
-  if (v9)
+  if (subItems)
   {
     goto LABEL_12;
   }
 
-  v10 = [(THTOCViewController *)self dataSource];
-  v11 = [v10 toc:self tileModelForChapterIndex:{objc_msgSend(v21, "section")}];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v11 = [dataSource toc:self tileModelForChapterIndex:{objc_msgSend(sectionCopy, "section")}];
 
   v12 = +[NSMutableArray array];
-  v13 = [v21 row] + 1;
-  v14 = [v11 portraitEntries];
-  v15 = [v14 count];
+  v13 = [sectionCopy row] + 1;
+  portraitEntries = [v11 portraitEntries];
+  v15 = [portraitEntries count];
 
   if (v13 >= v15)
   {
@@ -870,21 +870,21 @@
 
   while (1)
   {
-    v16 = [v11 portraitEntries];
-    v17 = [v16 objectAtIndex:v13];
+    portraitEntries2 = [v11 portraitEntries];
+    v17 = [portraitEntries2 objectAtIndex:v13];
 
     if ([v17 indentLevel] < 2)
     {
       break;
     }
 
-    v18 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v13, [v21 section]);
+    v18 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v13, [sectionCopy section]);
     [v12 addObject:v18];
 
 LABEL_8:
     ++v13;
-    v19 = [v11 portraitEntries];
-    v20 = [v19 count];
+    portraitEntries3 = [v11 portraitEntries];
+    v20 = [portraitEntries3 count];
 
     if (v13 >= v20)
     {
@@ -903,28 +903,28 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)subItemsForSection:(id)a3
+- (id)subItemsForSection:(id)section
 {
-  v4 = a3;
-  v5 = [(THFlowTOCViewController *)self chapterUIState];
-  v6 = [v5 objectForKey:v4];
+  sectionCopy = section;
+  chapterUIState = [(THFlowTOCViewController *)self chapterUIState];
+  v6 = [chapterUIState objectForKey:sectionCopy];
 
-  v7 = [v6 subItems];
+  subItems = [v6 subItems];
 
-  return v7;
+  return subItems;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(THTOCViewController *)self dataSource];
-  v5 = [v4 toc:self numberOfTilesInDivision:0];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v5 = [dataSource toc:self numberOfTilesInDivision:0];
 
   return v5;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v20[0] = a3;
+  v20[0] = section;
   v20[1] = 0;
   v4 = [NSIndexPath indexPathWithIndexes:v20 length:2];
   if ([(THFlowTOCViewController *)self isSectionOpen:v4])
@@ -973,51 +973,51 @@ LABEL_12:
   return v6;
 }
 
-- (CGRect)frameForOrdinalAtIndentLevel:(int64_t)a3
+- (CGRect)frameForOrdinalAtIndentLevel:(int64_t)level
 {
-  v5 = [(THFlowTOCViewController *)self configuration];
-  [v5 ordinalNumberLeftMargin];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration ordinalNumberLeftMargin];
   v7 = v6;
 
-  v8 = [(THFlowTOCViewController *)self configuration];
-  v9 = [v8 multiLevelIndent];
+  configuration2 = [(THFlowTOCViewController *)self configuration];
+  multiLevelIndent = [configuration2 multiLevelIndent];
 
-  if (v9)
+  if (multiLevelIndent)
   {
-    v10 = [(THFlowTOCViewController *)self configuration];
-    [v10 ordinalWidthLevel1];
+    configuration3 = [(THFlowTOCViewController *)self configuration];
+    [configuration3 ordinalWidthLevel1];
     v12 = v11;
 
-    if (a3 < 1)
+    if (level < 1)
     {
       v17 = 0.0;
     }
 
     else
     {
-      v13 = [(THFlowTOCViewController *)self configuration];
-      [v13 ordinalWidthLevel2];
+      configuration4 = [(THFlowTOCViewController *)self configuration];
+      [configuration4 ordinalWidthLevel2];
       v12 = v14;
 
-      v15 = [(THFlowTOCViewController *)self configuration];
-      [v15 ordinalWidthLevel1];
+      configuration5 = [(THFlowTOCViewController *)self configuration];
+      [configuration5 ordinalWidthLevel1];
       v17 = v16 + 0.0;
 
-      if (a3 != 1)
+      if (level != 1)
       {
-        v18 = [(THFlowTOCViewController *)self configuration];
-        [v18 ordinalWidthLevel3];
+        configuration6 = [(THFlowTOCViewController *)self configuration];
+        [configuration6 ordinalWidthLevel3];
         v12 = v19;
 
-        v20 = [(THFlowTOCViewController *)self configuration];
-        [v20 ordinalWidthLevel2];
+        configuration7 = [(THFlowTOCViewController *)self configuration];
+        [configuration7 ordinalWidthLevel2];
         v17 = v17 + v21;
 
-        if (a3 >= 3)
+        if (level >= 3)
         {
-          v22 = [(THFlowTOCViewController *)self configuration];
-          [v22 ordinalWidthLevel3];
-          v17 = v17 + v23 * (a3 - 2);
+          configuration8 = [(THFlowTOCViewController *)self configuration];
+          [configuration8 ordinalWidthLevel3];
+          v17 = v17 + v23 * (level - 2);
         }
       }
     }
@@ -1027,16 +1027,16 @@ LABEL_12:
 
   else
   {
-    v24 = [(THFlowTOCViewController *)self configuration];
-    v25 = v24;
-    if (a3)
+    configuration9 = [(THFlowTOCViewController *)self configuration];
+    v25 = configuration9;
+    if (level)
     {
-      [v24 ordinalNumberRightMarginSection];
+      [configuration9 ordinalNumberRightMarginSection];
     }
 
     else
     {
-      [v24 ordinalNumberRightMarginChapter];
+      [configuration9 ordinalNumberRightMarginChapter];
     }
 
     v27 = v26;
@@ -1044,8 +1044,8 @@ LABEL_12:
     v12 = v27 + self->mMaxOrdinalWidth;
   }
 
-  v28 = [(THFlowTOCViewController *)self configuration];
-  [v28 cellHeight];
+  configuration10 = [(THFlowTOCViewController *)self configuration];
+  [configuration10 cellHeight];
   v30 = v29;
 
   v31 = 0.0;
@@ -1059,26 +1059,26 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)numberOfSubentriesForIndex:(int64_t)a3 inModel:(id)a4
+- (int64_t)numberOfSubentriesForIndex:(int64_t)index inModel:(id)model
 {
-  v5 = [a4 portraitEntries];
-  v6 = [v5 count];
-  v7 = [v5 objectAtIndex:a3];
-  v8 = [v7 indentLevel];
+  portraitEntries = [model portraitEntries];
+  v6 = [portraitEntries count];
+  v7 = [portraitEntries objectAtIndex:index];
+  indentLevel = [v7 indentLevel];
   v9 = 0;
-  v10 = a3 + 1;
+  v10 = index + 1;
   while (v10 < v6)
   {
-    v11 = [v5 objectAtIndex:v10];
+    v11 = [portraitEntries objectAtIndex:v10];
 
-    if ([v11 includeInTOC] && objc_msgSend(v11, "indentLevel") > v8)
+    if ([v11 includeInTOC] && objc_msgSend(v11, "indentLevel") > indentLevel)
     {
       ++v9;
     }
 
     ++v10;
     v7 = v11;
-    if ([v11 indentLevel] <= v8)
+    if ([v11 indentLevel] <= indentLevel)
     {
       goto LABEL_9;
     }
@@ -1090,17 +1090,17 @@ LABEL_9:
   return v9;
 }
 
-- (id)labelFontForRow:(unint64_t)a3
+- (id)labelFontForRow:(unint64_t)row
 {
-  v5 = [(THFlowTOCViewController *)self configuration];
-  [v5 chapterLabelFontSize];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration chapterLabelFontSize];
   v7 = v6;
 
-  v8 = [(THFlowTOCViewController *)self configuration];
-  [v8 sectionLabelFontSize];
+  configuration2 = [(THFlowTOCViewController *)self configuration];
+  [configuration2 sectionLabelFontSize];
   v10 = v9;
 
-  if (a3)
+  if (row)
   {
     v11 = v10;
   }
@@ -1117,8 +1117,8 @@ LABEL_9:
 
 - (id)pageNumberFont
 {
-  v2 = [(THFlowTOCViewController *)self configuration];
-  [v2 pageNumberFontSize];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration pageNumberFontSize];
   v4 = v3;
 
   return [UIFont systemFontOfSize:v4];
@@ -1126,82 +1126,82 @@ LABEL_9:
 
 - (id)ordinalTextColor
 {
-  v3 = [(THFlowTOCViewController *)self theme];
-  if (v3)
+  theme = [(THFlowTOCViewController *)self theme];
+  if (theme)
   {
-    v4 = [(THFlowTOCViewController *)self theme];
-    v5 = [v4 tocPageNumberTextColor];
+    theme2 = [(THFlowTOCViewController *)self theme];
+    tocPageNumberTextColor = [theme2 tocPageNumberTextColor];
   }
 
   else
   {
-    v5 = +[UIColor bc_booksSecondaryLabelColor];
+    tocPageNumberTextColor = +[UIColor bc_booksSecondaryLabelColor];
   }
 
-  return v5;
+  return tocPageNumberTextColor;
 }
 
 - (id)chapterTitleColor
 {
-  v3 = [(THFlowTOCViewController *)self theme];
-  if (v3)
+  theme = [(THFlowTOCViewController *)self theme];
+  if (theme)
   {
-    v4 = [(THFlowTOCViewController *)self theme];
-    v5 = [v4 contentTextColor];
+    theme2 = [(THFlowTOCViewController *)self theme];
+    contentTextColor = [theme2 contentTextColor];
   }
 
   else
   {
-    v5 = +[UIColor bc_booksLabelColor];
+    contentTextColor = +[UIColor bc_booksLabelColor];
   }
 
-  return v5;
+  return contentTextColor;
 }
 
 - (id)pageNumberColor
 {
-  v3 = [(THFlowTOCViewController *)self theme];
-  if (v3)
+  theme = [(THFlowTOCViewController *)self theme];
+  if (theme)
   {
-    v4 = [(THFlowTOCViewController *)self theme];
-    v5 = [v4 tocPageNumberTextColor];
+    theme2 = [(THFlowTOCViewController *)self theme];
+    tocPageNumberTextColor = [theme2 tocPageNumberTextColor];
   }
 
   else
   {
-    v5 = +[UIColor bc_booksSecondaryLabelColor];
+    tocPageNumberTextColor = +[UIColor bc_booksSecondaryLabelColor];
   }
 
-  return v5;
+  return tocPageNumberTextColor;
 }
 
-- (id)p_displayPageNumberForTileEntry:(id)a3
+- (id)p_displayPageNumberForTileEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = THBundle();
   v6 = [v5 localizedStringForKey:@"-" value:&stru_471858 table:0];
 
   if ([(THFlowTOCViewController *)self hasPaginatedData])
   {
-    v7 = [v4 displayPageNumberValue];
+    displayPageNumberValue = [entryCopy displayPageNumberValue];
   }
 
   else
   {
-    v8 = [(THTOCViewController *)self delegate];
-    v9 = [v8 absolutePageIndexForTileEntry:v4];
+    delegate = [(THTOCViewController *)self delegate];
+    v9 = [delegate absolutePageIndexForTileEntry:entryCopy];
 
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_7;
     }
 
-    v7 = v9 + 1;
+    displayPageNumberValue = v9 + 1;
   }
 
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  if (displayPageNumberValue != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = +[NSString stringForValue:withListNumberFormat:includeFormatting:](NSString, "stringForValue:withListNumberFormat:includeFormatting:", v7, [v4 displayPageNumberFormat], 0);
+    v10 = +[NSString stringForValue:withListNumberFormat:includeFormatting:](NSString, "stringForValue:withListNumberFormat:includeFormatting:", displayPageNumberValue, [entryCopy displayPageNumberFormat], 0);
 
     v6 = v10;
   }
@@ -1211,20 +1211,20 @@ LABEL_7:
   return v6;
 }
 
-- (id)p_maxAbsolutePageNumberForNodeAtTileEntry:(id)a3
+- (id)p_maxAbsolutePageNumberForNodeAtTileEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = THBundle();
   v6 = [v5 localizedStringForKey:@"-" value:&stru_471858 table:0];
 
   if (![(THFlowTOCViewController *)self hasPaginatedData])
   {
-    v7 = [(THTOCViewController *)self delegate];
-    v8 = [v7 maxAbsolutePageIndexForNodeAtTileEntry:v4];
+    delegate = [(THTOCViewController *)self delegate];
+    v8 = [delegate maxAbsolutePageIndexForNodeAtTileEntry:entryCopy];
 
     if (v8 <= 0x7FFFFFFFFFFFFFFDLL)
     {
-      v9 = +[NSString stringForValue:withListNumberFormat:includeFormatting:](NSString, "stringForValue:withListNumberFormat:includeFormatting:", (v8 + 1), [v4 displayPageNumberFormat], 0);
+      v9 = +[NSString stringForValue:withListNumberFormat:includeFormatting:](NSString, "stringForValue:withListNumberFormat:includeFormatting:", (v8 + 1), [entryCopy displayPageNumberFormat], 0);
 
       v6 = v9;
     }
@@ -1233,56 +1233,56 @@ LABEL_7:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(THTOCViewController *)self dataSource];
-  v53 = [v8 showPageNumbers];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(THTOCViewController *)self dataSource];
+  showPageNumbers = [dataSource showPageNumbers];
 
-  v9 = [(THFlowTOCViewController *)self configuration];
-  [v9 cellHeight];
+  configuration = [(THFlowTOCViewController *)self configuration];
+  [configuration cellHeight];
   v11 = v10;
 
-  v12 = [(THFlowTOCViewController *)self configuration];
-  if ([v12 pageNumberDynamicWidth])
+  configuration2 = [(THFlowTOCViewController *)self configuration];
+  if ([configuration2 pageNumberDynamicWidth])
   {
     mMaxPageNumberWidth = self->mMaxPageNumberWidth;
-    v14 = [(THFlowTOCViewController *)self configuration];
-    [v14 pageNumberLeftMargin];
+    configuration3 = [(THFlowTOCViewController *)self configuration];
+    [configuration3 pageNumberLeftMargin];
     v16 = mMaxPageNumberWidth + v15;
   }
 
   else
   {
-    v14 = [(THFlowTOCViewController *)self configuration];
-    [v14 pageNumberWidth];
+    configuration3 = [(THFlowTOCViewController *)self configuration];
+    [configuration3 pageNumberWidth];
     v16 = v17;
   }
 
-  [v7 bounds];
+  [viewCopy bounds];
   v19 = v18;
-  v20 = [(THFlowTOCViewController *)self configuration];
-  v21 = [v20 constrainTableWidthToLegacyiPadWidth];
+  configuration4 = [(THFlowTOCViewController *)self configuration];
+  constrainTableWidthToLegacyiPadWidth = [configuration4 constrainTableWidthToLegacyiPadWidth];
 
   v22 = fmin(v19, 768.0);
-  if (v21)
+  if (constrainTableWidthToLegacyiPadWidth)
   {
     v19 = v22;
   }
 
-  v23 = [v7 dequeueReusableCellWithIdentifier:@"TOCCellReuseIdentifier" forIndexPath:v6];
+  v23 = [viewCopy dequeueReusableCellWithIdentifier:@"TOCCellReuseIdentifier" forIndexPath:pathCopy];
 
   [v23 setFrame:{0.0, 0.0, v19, v11}];
-  v24 = [(THFlowTOCViewController *)self configuration];
-  [v23 updateConstraintsWithConfiguration:v24];
+  configuration5 = [(THFlowTOCViewController *)self configuration];
+  [v23 updateConstraintsWithConfiguration:configuration5];
 
-  v25 = [(THFlowTOCViewController *)self theme];
+  theme = [(THFlowTOCViewController *)self theme];
 
-  if (v25)
+  if (theme)
   {
-    v26 = [(THFlowTOCViewController *)self theme];
-    v27 = [v26 backgroundColorForTraitEnvironment:self];
+    theme2 = [(THFlowTOCViewController *)self theme];
+    v27 = [theme2 backgroundColorForTraitEnvironment:self];
     [v23 setBackgroundColor:v27];
   }
 
@@ -1294,56 +1294,56 @@ LABEL_7:
     [v28 handleFailureInFunction:v29 file:v30 lineNumber:1167 description:{@"invalid nil value for '%s'", "cell"}];
   }
 
-  v55 = v6;
-  v31 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v6];
-  v32 = [(THTOCViewController *)self dataSource];
-  v33 = [v32 toc:self tileModelForChapterIndex:{objc_msgSend(v31, "section")}];
+  v55 = pathCopy;
+  v31 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:pathCopy];
+  dataSource2 = [(THTOCViewController *)self dataSource];
+  v33 = [dataSource2 toc:self tileModelForChapterIndex:{objc_msgSend(v31, "section")}];
 
   v54 = v33;
-  v34 = [v33 portraitEntries];
-  v35 = [v34 objectAtIndex:{objc_msgSend(v31, "row")}];
+  portraitEntries = [v33 portraitEntries];
+  v35 = [portraitEntries objectAtIndex:{objc_msgSend(v31, "row")}];
 
   v36 = +[UIColor clearColor];
   v37 = -[THFlowTOCViewController labelFontForRow:](self, "labelFontForRow:", [v31 row]);
-  v38 = [v23 ordinalLabel];
-  [v38 setFont:v37];
-  v39 = [(THFlowTOCViewController *)self ordinalTextColor];
-  [v38 setTextColor:v39];
+  ordinalLabel = [v23 ordinalLabel];
+  [ordinalLabel setFont:v37];
+  ordinalTextColor = [(THFlowTOCViewController *)self ordinalTextColor];
+  [ordinalLabel setTextColor:ordinalTextColor];
 
-  [v38 setBackgroundColor:v36];
-  v40 = [v35 sectionIdentifier];
-  [v38 setText:v40];
+  [ordinalLabel setBackgroundColor:v36];
+  sectionIdentifier = [v35 sectionIdentifier];
+  [ordinalLabel setText:sectionIdentifier];
 
   -[THFlowTOCViewController frameForOrdinalAtIndentLevel:](self, "frameForOrdinalAtIndentLevel:", [v35 indentLevel]);
   [v23 updateOrdinalLabelFrame:?];
-  v41 = [v23 rowLabel];
-  [v41 setFont:v37];
-  v42 = [(THFlowTOCViewController *)self chapterTitleColor];
-  [v41 setTextColor:v42];
+  rowLabel = [v23 rowLabel];
+  [rowLabel setFont:v37];
+  chapterTitleColor = [(THFlowTOCViewController *)self chapterTitleColor];
+  [rowLabel setTextColor:chapterTitleColor];
 
-  [v41 setBackgroundColor:v36];
-  v43 = [v35 title];
-  [v41 setText:v43];
+  [rowLabel setBackgroundColor:v36];
+  title = [v35 title];
+  [rowLabel setText:title];
 
-  if (v53)
+  if (showPageNumbers)
   {
-    v44 = [v23 pageNumberLabel];
-    v45 = [(THFlowTOCViewController *)self pageNumberFont];
-    [v44 setFont:v45];
+    pageNumberLabel = [v23 pageNumberLabel];
+    pageNumberFont = [(THFlowTOCViewController *)self pageNumberFont];
+    [pageNumberLabel setFont:pageNumberFont];
 
-    v46 = [(THFlowTOCViewController *)self pageNumberColor];
-    [v44 setTextColor:v46];
+    pageNumberColor = [(THFlowTOCViewController *)self pageNumberColor];
+    [pageNumberLabel setTextColor:pageNumberColor];
 
-    [v44 setBackgroundColor:v36];
-    [v44 setTextAlignment:2];
+    [pageNumberLabel setBackgroundColor:v36];
+    [pageNumberLabel setTextAlignment:2];
     v47 = [(THFlowTOCViewController *)self p_displayPageNumberForTileEntry:v35];
-    [v44 setText:v47];
+    [pageNumberLabel setText:v47];
 
-    [v44 setHidden:0];
+    [pageNumberLabel setHidden:0];
     [v23 updatePageNumberLabelWidth:v16];
   }
 
-  v48 = [v23 openCloseButton];
+  openCloseButton = [v23 openCloseButton];
   if ([v35 indentLevel] > 1 || -[THFlowTOCViewController numberOfSubentriesForIndex:inModel:](self, "numberOfSubentriesForIndex:inModel:", objc_msgSend(v31, "row"), v54) < 1)
   {
     v49 = 1;
@@ -1351,7 +1351,7 @@ LABEL_7:
 
   else
   {
-    [v48 setBackgroundColor:v36];
+    [openCloseButton setBackgroundColor:v36];
     if ([(THFlowTOCViewController *)self isSectionOpen:v55])
     {
       [(THFlowTOCViewController *)self closeSectionImage];
@@ -1362,16 +1362,16 @@ LABEL_7:
       [(THFlowTOCViewController *)self openSectionImage];
     }
     v50 = ;
-    [v48 setImage:v50 forState:0];
+    [openCloseButton setImage:v50 forState:0];
 
-    [v48 setTag:{objc_msgSend(v55, "section")}];
-    [v48 addTarget:self action:"accessoryTapped:" forControlEvents:64];
+    [openCloseButton setTag:{objc_msgSend(v55, "section")}];
+    [openCloseButton addTarget:self action:"accessoryTapped:" forControlEvents:64];
     v49 = 0;
   }
 
-  [v48 setHidden:v49];
-  v51 = [v23 activityIndicatorView];
-  [v51 setHidden:1];
+  [openCloseButton setHidden:v49];
+  activityIndicatorView = [v23 activityIndicatorView];
+  [activityIndicatorView setHidden:1];
 
   [v23 setDelegate:self];
   [v23 setIndexPath:v55];
@@ -1380,26 +1380,26 @@ LABEL_7:
   return v23;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(THFlowTOCViewController *)self configuration:a3];
+  v4 = [(THFlowTOCViewController *)self configuration:view];
   [v4 cellHeight];
   v6 = v5;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   if ((TSUPadUI() & 1) == 0)
   {
-    v8 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:pathCopy];
     v9 = [v8 row];
-    v10 = [(THFlowTOCViewController *)self theme];
+    theme = [(THFlowTOCViewController *)self theme];
 
-    if (!v10)
+    if (!theme)
     {
       if (v9)
       {
@@ -1411,21 +1411,21 @@ LABEL_7:
         +[UIColor bc_booksBackground];
       }
       v11 = ;
-      [v12 setBackgroundColor:v11];
+      [cellCopy setBackgroundColor:v11];
     }
   }
 }
 
-- (void)makeSectionOpen:(id)a3 withSender:(id)a4
+- (void)makeSectionOpen:(id)open withSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v6];
-  v9 = -[THFlowTOCViewController numberOfRowsInSection:](self, "numberOfRowsInSection:", [v6 section]);
+  openCopy = open;
+  senderCopy = sender;
+  v8 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:openCopy];
+  v9 = -[THFlowTOCViewController numberOfRowsInSection:](self, "numberOfRowsInSection:", [openCopy section]);
   [(THFlowTOCViewController *)self setSectionOpenInUIState:1 forSection:v8];
-  v10 = [(THFlowTOCViewController *)self closeSectionImage];
-  v42 = v7;
-  [v7 setImage:v10 forState:0];
+  closeSectionImage = [(THFlowTOCViewController *)self closeSectionImage];
+  v42 = senderCopy;
+  [senderCopy setImage:closeSectionImage forState:0];
 
   v41 = v8;
   v40 = [(THFlowTOCViewController *)self subItemsForSection:v8];
@@ -1440,12 +1440,12 @@ LABEL_7:
   }
 
   v15 = v9 - 1;
-  if (v9 - 1 >= [v6 row] + 1)
+  if (v9 - 1 >= [openCopy row] + 1)
   {
     while (1)
     {
-      v16 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v15, [v6 section]);
-      v17 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", &obj[v15], [v6 section]);
+      v16 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v15, [openCopy section]);
+      v17 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", &obj[v15], [openCopy section]);
       v18 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v16];
       if (!v18)
       {
@@ -1465,7 +1465,7 @@ LABEL_7:
         [v21 handleFailureInFunction:v22 file:v23 lineNumber:1319 description:@"MAPS CORRUPT"];
       }
 
-      if (--v15 < [v6 row] + 1)
+      if (--v15 < [openCopy row] + 1)
       {
         goto LABEL_10;
       }
@@ -1482,8 +1482,8 @@ LABEL_10:
     [v25 handleFailureInFunction:v26 file:v27 lineNumber:1321 description:@"MAPS CORRUPT"];
   }
 
-  v43 = v6;
-  v28 = [v6 row];
+  v43 = openCopy;
+  v28 = [openCopy row];
   v29 = +[NSMutableArray array];
   v46 = 0u;
   v47 = 0u;
@@ -1531,20 +1531,20 @@ LABEL_10:
   [(TSWTableView *)self->mTOCTableView endUpdates];
 }
 
-- (void)makeSectionClosed:(id)a3 withSender:(id)a4
+- (void)makeSectionClosed:(id)closed withSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v6];
+  closedCopy = closed;
+  senderCopy = sender;
+  v8 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:closedCopy];
   v9 = [(THFlowTOCViewController *)self subItemsForSection:v8];
-  v44 = -[THFlowTOCViewController numberOfRowsInSection:](self, "numberOfRowsInSection:", [v6 section]);
+  v44 = -[THFlowTOCViewController numberOfRowsInSection:](self, "numberOfRowsInSection:", [closedCopy section]);
   v42 = v8;
   [(THFlowTOCViewController *)self setSectionOpenInUIState:0 forSection:v8];
-  v10 = [(THFlowTOCViewController *)self openSectionImage];
-  v43 = v7;
-  [v7 setImage:v10 forState:0];
+  openSectionImage = [(THFlowTOCViewController *)self openSectionImage];
+  v43 = senderCopy;
+  [senderCopy setImage:openSectionImage forState:0];
 
-  [v6 row];
+  [closedCopy row];
   v11 = +[NSMutableArray array];
   v61 = 0u;
   v62 = 0u;
@@ -1675,7 +1675,7 @@ LABEL_10:
     while (v31);
   }
 
-  v36 = v6;
+  v36 = closedCopy;
   if (v44 >= 2)
   {
     v37 = 1;
@@ -1697,7 +1697,7 @@ LABEL_10:
 
         ++v47;
 
-        v36 = v6;
+        v36 = closedCopy;
         v38 = NSArray_ptr;
       }
 
@@ -1712,67 +1712,67 @@ LABEL_10:
   [(TSWTableView *)self->mTOCTableView endUpdates];
 }
 
-- (void)accessoryTapped:(id)a3
+- (void)accessoryTapped:(id)tapped
 {
   mTOCTableView = self->mTOCTableView;
-  v5 = a3;
-  [v5 center];
+  tappedCopy = tapped;
+  [tappedCopy center];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 superview];
-  [(TSWTableView *)mTOCTableView convertPoint:v10 fromView:v7, v9];
+  superview = [tappedCopy superview];
+  [(TSWTableView *)mTOCTableView convertPoint:superview fromView:v7, v9];
   v12 = [(TSWTableView *)mTOCTableView indexPathForRowAtPoint:?];
 
   v11 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v12];
   if ([(THFlowTOCViewController *)self isSectionOpen:v11])
   {
-    [(THFlowTOCViewController *)self makeSectionClosed:v12 withSender:v5];
+    [(THFlowTOCViewController *)self makeSectionClosed:v12 withSender:tappedCopy];
   }
 
   else
   {
-    [(THFlowTOCViewController *)self makeSectionOpen:v12 withSender:v5];
+    [(THFlowTOCViewController *)self makeSectionOpen:v12 withSender:tappedCopy];
   }
 }
 
-- (void)p_showPageForModelLink:(id)a3
+- (void)p_showPageForModelLink:(id)link
 {
-  v4 = a3;
-  v5 = [(THTOCViewController *)self delegate];
-  [v5 showPageForModelLink:v4 animated:1];
+  linkCopy = link;
+  delegate = [(THTOCViewController *)self delegate];
+  [delegate showPageForModelLink:linkCopy animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 indexPathForSelectedRow];
-  [v7 deselectRowAtIndexPath:v8 animated:0];
+  pathCopy = path;
+  viewCopy = view;
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
-  [v7 deselectRowAtIndexPath:self->mLastSelectedRow animated:0];
-  v18 = [(THFlowTOCViewController *)self findVisibleCellInTable:v7 forIndexPath:self->mLastSelectedRow];
+  [viewCopy deselectRowAtIndexPath:self->mLastSelectedRow animated:0];
+  v18 = [(THFlowTOCViewController *)self findVisibleCellInTable:viewCopy forIndexPath:self->mLastSelectedRow];
   self->mSuppressLastSelectedRow = 1;
   mLastSelectedRow = self->mLastSelectedRow;
-  self->mLastSelectedRow = v6;
-  v10 = v6;
+  self->mLastSelectedRow = pathCopy;
+  v10 = pathCopy;
 
-  v11 = [(THFlowTOCViewController *)self findVisibleCellInTable:v7 forIndexPath:self->mLastSelectedRow];
+  v11 = [(THFlowTOCViewController *)self findVisibleCellInTable:viewCopy forIndexPath:self->mLastSelectedRow];
 
   [v18 updateBackgroundImage];
   [v11 updateBackgroundImage];
   [v11 startProgressIndicator];
   v12 = [(NSMutableDictionary *)self->mUIToModelMap objectForKey:v10];
-  v13 = [(THTOCViewController *)self dataSource];
-  v14 = [v13 toc:self tileModelForChapterIndex:{objc_msgSend(v12, "section")}];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v14 = [dataSource toc:self tileModelForChapterIndex:{objc_msgSend(v12, "section")}];
 
-  v15 = [v14 portraitEntries];
-  v16 = [v15 objectAtIndex:{objc_msgSend(v12, "row")}];
+  portraitEntries = [v14 portraitEntries];
+  v16 = [portraitEntries objectAtIndex:{objc_msgSend(v12, "row")}];
 
-  v17 = [v16 modelLink];
-  [(THFlowTOCViewController *)self performSelector:"p_showPageForModelLink:" withObject:v17 afterDelay:0.0];
+  modelLink = [v16 modelLink];
+  [(THFlowTOCViewController *)self performSelector:"p_showPageForModelLink:" withObject:modelLink afterDelay:0.0];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   if (self->mSuppressLastSelectedRow)
   {
@@ -1782,12 +1782,12 @@ LABEL_10:
   }
 }
 
-- (void)paginationController:(id)a3 paginationCompleteStateChangedTo:(BOOL)a4
+- (void)paginationController:(id)controller paginationCompleteStateChangedTo:(BOOL)to
 {
-  v4 = a4;
+  toCopy = to;
   if ([(THFlowTOCViewController *)self isViewLoaded])
   {
-    if (v4)
+    if (toCopy)
     {
       [(THFlowTOCViewController *)self p_updateMaxPageNumberWidth];
     }
@@ -1798,9 +1798,9 @@ LABEL_10:
   }
 }
 
-- (void)tableViewCellHighlightDidChange:(id)a3
+- (void)tableViewCellHighlightDidChange:(id)change
 {
-  if ([a3 isHighlighted])
+  if ([change isHighlighted])
   {
     self->mSuppressLastSelectedRow = 1;
     v4 = [(THFlowTOCViewController *)self findVisibleCellInTable:self->mTOCTableView forIndexPath:self->mLastSelectedRow];
@@ -1808,18 +1808,18 @@ LABEL_10:
   }
 }
 
-- (void)tableViewCell:(id)a3 hideSeparators:(BOOL)a4
+- (void)tableViewCell:(id)cell hideSeparators:(BOOL)separators
 {
-  v4 = a4;
+  separatorsCopy = separators;
   mTOCTableView = self->mTOCTableView;
-  v6 = [(TSWTableView *)mTOCTableView indexPathForCell:a3];
-  [(TSWTableView *)mTOCTableView setSeparatorsHidden:v4 forCellAtIndexPath:v6];
+  v6 = [(TSWTableView *)mTOCTableView indexPathForCell:cell];
+  [(TSWTableView *)mTOCTableView setSeparatorsHidden:separatorsCopy forCellAtIndexPath:v6];
 }
 
-- (BOOL)tableViewCellShouldStayHighlighted:(id)a3
+- (BOOL)tableViewCellShouldStayHighlighted:(id)highlighted
 {
-  v4 = [a3 indexPath];
-  if ([v4 isEqual:self->mLastSelectedRow])
+  indexPath = [highlighted indexPath];
+  if ([indexPath isEqual:self->mLastSelectedRow])
   {
     v5 = !self->mSuppressLastSelectedRow;
   }
@@ -1832,28 +1832,28 @@ LABEL_10:
   return v5;
 }
 
-- (id)tableViewCellBackgroundColor:(id)a3
+- (id)tableViewCellBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(THFlowTOCViewController *)self tableViewCellShouldStayHighlighted:v4];
-  v6 = [v4 isHighlighted];
+  colorCopy = color;
+  v5 = [(THFlowTOCViewController *)self tableViewCellShouldStayHighlighted:colorCopy];
+  isHighlighted = [colorCopy isHighlighted];
 
   v7 = +[UIColor clearColor];
-  v8 = [(THFlowTOCViewController *)self theme];
+  theme = [(THFlowTOCViewController *)self theme];
 
-  v9 = v6 | v5;
-  if (v8)
+  v9 = isHighlighted | v5;
+  if (theme)
   {
-    v10 = [(THFlowTOCViewController *)self theme];
-    v11 = v10;
+    theme2 = [(THFlowTOCViewController *)self theme];
+    v11 = theme2;
     if (v9)
     {
-      [v10 tableViewCellSelectedColor];
+      [theme2 tableViewCellSelectedColor];
     }
 
     else
     {
-      [v10 backgroundColorForTraitEnvironment:self];
+      [theme2 backgroundColorForTraitEnvironment:self];
     }
     v14 = ;
 
@@ -1861,12 +1861,12 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if (((v6 | v5) & 1) == 0)
+  if (((isHighlighted | v5) & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  if (v6)
+  if (isHighlighted)
   {
     v12 = 0.882352941;
     v13 = 0.929411765;
@@ -1890,12 +1890,12 @@ LABEL_10:
   return v7;
 }
 
-- (void)transitionWillFinish:(id)a3
+- (void)transitionWillFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   mTransitionView = self->mTransitionView;
-  v9 = v4;
-  if (mTransitionView != v4)
+  v9 = finishCopy;
+  if (mTransitionView != finishCopy)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [NSString stringWithUTF8String:"[THFlowTOCViewController transitionWillFinish:]"];
@@ -1912,12 +1912,12 @@ LABEL_10:
   }
 }
 
-- (void)transitionDidFinish:(id)a3
+- (void)transitionDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   mTransitionView = self->mTransitionView;
-  v21 = v4;
-  if (mTransitionView != v4)
+  v21 = finishCopy;
+  if (mTransitionView != finishCopy)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [NSString stringWithUTF8String:"[THFlowTOCViewController transitionDidFinish:]"];
@@ -1929,36 +1929,36 @@ LABEL_10:
 
   if (![(THTOCSplitTransitionView *)mTransitionView wasReversed])
   {
-    v9 = [(THTOCViewController *)self delegate];
-    [v9 TOCViewControllerDidShowChapter:self];
+    delegate = [(THTOCViewController *)self delegate];
+    [delegate TOCViewControllerDidShowChapter:self];
 
-    v10 = [(THTOCViewController *)self delegate];
-    v11 = [(THFlowTOCViewController *)self introMediaViewController];
-    [v10 didTransitionFromViewController:v11 toTOCViewController:self];
+    delegate2 = [(THTOCViewController *)self delegate];
+    introMediaViewController = [(THFlowTOCViewController *)self introMediaViewController];
+    [delegate2 didTransitionFromViewController:introMediaViewController toTOCViewController:self];
 
-    v12 = [(THFlowTOCViewController *)self introMediaViewController];
-    LODWORD(v11) = [v12 isPlaying];
+    introMediaViewController2 = [(THFlowTOCViewController *)self introMediaViewController];
+    LODWORD(introMediaViewController) = [introMediaViewController2 isPlaying];
 
-    if (v11)
+    if (introMediaViewController)
     {
-      v13 = [(THFlowTOCViewController *)self introMediaViewController];
-      [v13 pause];
+      introMediaViewController3 = [(THFlowTOCViewController *)self introMediaViewController];
+      [introMediaViewController3 pause];
     }
 
-    v14 = [(THFlowTOCViewController *)self introMediaViewController];
-    [v14 prepareControlsForTOC];
+    introMediaViewController4 = [(THFlowTOCViewController *)self introMediaViewController];
+    [introMediaViewController4 prepareControlsForTOC];
 
-    v15 = [(THFlowTOCViewController *)self introMediaViewController];
-    [v15 prepareMovieForTOC];
+    introMediaViewController5 = [(THFlowTOCViewController *)self introMediaViewController];
+    [introMediaViewController5 prepareMovieForTOC];
 
-    v16 = [(THFlowTOCViewController *)self introMediaViewController];
-    v17 = [v16 isViewLoaded];
+    introMediaViewController6 = [(THFlowTOCViewController *)self introMediaViewController];
+    isViewLoaded = [introMediaViewController6 isViewLoaded];
 
-    if (v17)
+    if (isViewLoaded)
     {
-      v18 = [(THFlowTOCViewController *)self introMediaViewController];
-      v19 = [v18 view];
-      [v19 removeFromSuperview];
+      introMediaViewController7 = [(THFlowTOCViewController *)self introMediaViewController];
+      view = [introMediaViewController7 view];
+      [view removeFromSuperview];
     }
 
     [(THFlowTOCViewController *)self setIntroMediaViewController:0];
@@ -1968,11 +1968,11 @@ LABEL_10:
   self->mTransitionView = 0;
 }
 
-- (void)introMediaControllerShouldAdvancePast:(id)a3
+- (void)introMediaControllerShouldAdvancePast:(id)past
 {
   self->mForceTransitionCompletion = 1;
-  v4 = [(THFlowTOCViewController *)self introMediaViewController];
-  [v4 prepareControlsForTOC];
+  introMediaViewController = [(THFlowTOCViewController *)self introMediaViewController];
+  [introMediaViewController prepareControlsForTOC];
 
   if (!self->mTransitionView)
   {
@@ -1992,9 +1992,9 @@ LABEL_10:
   }
 }
 
-- (id)p_indexPathForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4
+- (id)p_indexPathForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex
 {
-  if ([(TSWTableView *)self->mTOCTableView numberOfSections]<= a3)
+  if ([(TSWTableView *)self->mTOCTableView numberOfSections]<= index)
   {
     v7 = +[TSUAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[THFlowTOCViewController p_indexPathForChapterIndex:lessonIndex:]"];
@@ -2002,14 +2002,14 @@ LABEL_10:
     [v7 handleFailureInFunction:v8 file:v9 lineNumber:1645 description:@"invalid chapter index"];
   }
 
-  v10 = [NSIndexPath indexPathForRow:0 inSection:a3];
+  v10 = [NSIndexPath indexPathForRow:0 inSection:index];
   if ([(THFlowTOCViewController *)self isSectionOpen:v10])
   {
-    v11 = [(THTOCViewController *)self dataSource];
-    v12 = [v11 toc:self tileModelForChapterIndex:a3];
+    dataSource = [(THTOCViewController *)self dataSource];
+    v12 = [dataSource toc:self tileModelForChapterIndex:index];
 
-    v13 = [v12 portraitEntries];
-    if ([v13 count] <= a4)
+    portraitEntries = [v12 portraitEntries];
+    if ([portraitEntries count] <= lessonIndex)
     {
       v14 = +[TSUAssertionHandler currentHandler];
       v15 = [NSString stringWithUTF8String:"[THFlowTOCViewController p_indexPathForChapterIndex:lessonIndex:]"];
@@ -2021,7 +2021,7 @@ LABEL_10:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = v13;
+    v17 = portraitEntries;
     v18 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v18)
     {
@@ -2040,7 +2040,7 @@ LABEL_8:
 
         ++v21;
         v20 += [*(*(&v26 + 1) + 8 * v23) includeInTOC];
-        if (v21 >= a4)
+        if (v21 >= lessonIndex)
         {
           break;
         }
@@ -2063,7 +2063,7 @@ LABEL_8:
       v20 = 0;
     }
 
-    v24 = [NSIndexPath indexPathForRow:v20 inSection:a3];
+    v24 = [NSIndexPath indexPathForRow:v20 inSection:index];
 
     v10 = v24;
   }
@@ -2071,9 +2071,9 @@ LABEL_8:
   return v10;
 }
 
-- (id)p_cellForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4
+- (id)p_cellForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex
 {
-  v5 = [(THFlowTOCViewController *)self p_indexPathForChapterIndex:a3 lessonIndex:a4];
+  v5 = [(THFlowTOCViewController *)self p_indexPathForChapterIndex:index lessonIndex:lessonIndex];
   objc_opt_class();
   v6 = [(TSWTableView *)self->mTOCTableView cellForRowAtIndexPath:v5];
   v7 = TSUDynamicCast();
@@ -2081,42 +2081,42 @@ LABEL_8:
   return v7;
 }
 
-- (double)bottomSeparatorYPositionForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4
+- (double)bottomSeparatorYPositionForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex
 {
-  v5 = [(THFlowTOCViewController *)self p_cellForChapterIndex:a3 lessonIndex:a4];
+  v5 = [(THFlowTOCViewController *)self p_cellForChapterIndex:index lessonIndex:lessonIndex];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(THFlowTOCViewController *)self view];
-  [v5 convertRect:v14 toView:{v7, v9, v11, v13}];
+  view = [(THFlowTOCViewController *)self view];
+  [v5 convertRect:view toView:{v7, v9, v11, v13}];
   MaxY = CGRectGetMaxY(v17);
 
   return MaxY;
 }
 
-- (void)scrollToRowForChapterIndex:(unint64_t)a3 lessonIndex:(unint64_t)a4
+- (void)scrollToRowForChapterIndex:(unint64_t)index lessonIndex:(unint64_t)lessonIndex
 {
-  v5 = [(THFlowTOCViewController *)self p_indexPathForChapterIndex:a3 lessonIndex:a4];
+  v5 = [(THFlowTOCViewController *)self p_indexPathForChapterIndex:index lessonIndex:lessonIndex];
   [(TSWTableView *)self->mTOCTableView scrollToRowAtIndexPath:v5 atScrollPosition:2 animated:0];
 }
 
 - (id)rasterizedImage
 {
   CATransform3DMakeTranslation(&v17, 10000.0, 10000.0, 0.0);
-  v3 = [(THFlowTOCViewController *)self introMediaViewController];
-  v4 = [v3 view];
-  v5 = [v4 layer];
+  introMediaViewController = [(THFlowTOCViewController *)self introMediaViewController];
+  view = [introMediaViewController view];
+  layer = [view layer];
   v16 = v17;
-  [v5 setTransform:&v16];
+  [layer setTransform:&v16];
 
   v15.receiver = self;
   v15.super_class = THFlowTOCViewController;
-  v6 = [(THFlowTOCViewController *)&v15 rasterizedImage];
-  v7 = [(THFlowTOCViewController *)self introMediaViewController];
-  v8 = [v7 view];
-  v9 = [v8 layer];
+  rasterizedImage = [(THFlowTOCViewController *)&v15 rasterizedImage];
+  introMediaViewController2 = [(THFlowTOCViewController *)self introMediaViewController];
+  view2 = [introMediaViewController2 view];
+  layer2 = [view2 layer];
   v10 = *&CATransform3DIdentity.m33;
   *&v16.m31 = *&CATransform3DIdentity.m31;
   *&v16.m33 = v10;
@@ -2129,9 +2129,9 @@ LABEL_8:
   v13 = *&CATransform3DIdentity.m23;
   *&v16.m21 = *&CATransform3DIdentity.m21;
   *&v16.m23 = v13;
-  [v9 setTransform:&v16];
+  [layer2 setTransform:&v16];
 
-  return v6;
+  return rasterizedImage;
 }
 
 - (void)p_setupTransitionView
@@ -2153,20 +2153,20 @@ LABEL_8:
   }
 
   v9 = [THTOCSplitTransitionView alloc];
-  v10 = [(THFlowTOCViewController *)self view];
-  [v10 bounds];
+  view = [(THFlowTOCViewController *)self view];
+  [view bounds];
   v11 = [(THTOCSplitTransitionView *)v9 initWithFrame:?];
   mTransitionView = self->mTransitionView;
   self->mTransitionView = v11;
 
   [(THTransitionView *)self->mTransitionView setDelegate:self];
-  v13 = [(THFlowTOCViewController *)self introMediaViewController];
-  [(THTransitionView *)self->mTransitionView setFromViewController:v13];
+  introMediaViewController = [(THFlowTOCViewController *)self introMediaViewController];
+  [(THTransitionView *)self->mTransitionView setFromViewController:introMediaViewController];
 
   [(THTOCSplitTransitionView *)self->mTransitionView setKeepScaleAnimationView:1];
-  v14 = [(THFlowTOCViewController *)self introMediaViewController];
-  v15 = [v14 view];
-  v16 = [v15 snapshotViewAfterScreenUpdates:0];
+  introMediaViewController2 = [(THFlowTOCViewController *)self introMediaViewController];
+  view2 = [introMediaViewController2 view];
+  v16 = [view2 snapshotViewAfterScreenUpdates:0];
   [(THTOCSplitTransitionView *)self->mTransitionView setScaleAnimationView:v16];
 
   [(THTOCSplitTransitionView *)self->mTransitionView setKeepSplitAnimationView:1];
@@ -2177,11 +2177,11 @@ LABEL_8:
   [(THTOCSplitTransitionView *)self->mTransitionView setReverse:1];
   [(THTOCSplitTransitionView *)self->mTransitionView slideAnimationScalar];
   [(THTOCSplitTransitionView *)self->mTransitionView setAnimationDuration:0.349999994 / v18];
-  v22 = [(THFlowTOCViewController *)self view];
-  v19 = [v22 superview];
+  view3 = [(THFlowTOCViewController *)self view];
+  superview = [view3 superview];
   v20 = self->mTransitionView;
-  v21 = [(THFlowTOCViewController *)self view];
-  [v19 insertSubview:v20 aboveSubview:v21];
+  view4 = [(THFlowTOCViewController *)self view];
+  [superview insertSubview:v20 aboveSubview:view4];
 }
 
 - (THReflowablePaginationController)reflowablePaginationController

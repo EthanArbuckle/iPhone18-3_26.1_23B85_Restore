@@ -1,105 +1,105 @@
 @interface SBHIconStateArchiver
-+ (BOOL)_iconContainsMultipleRepresentations:(id)a3;
-+ (BOOL)_isCustomIconElementBuiltIn:(id)a3;
-+ (BOOL)_widgetDataSourceIsSuggestion:(id)a3;
-+ (id)_builtInCustomIconElementTypeForCustomIconElement:(id)a3;
-+ (id)_folderTypeForFolder:(id)a3;
-+ (id)_nodeAtPath:(id)a3 inNode:(id)a4;
-+ (id)_pathForNode:(id)a3 toIdentifier:(id)a4;
-+ (id)archiveRootFolderInModel:(id)a3 metadata:(id)a4;
-+ (id)folderPathForLeafIdentifier:(id)a3 inArchive:(id)a4 iconSource:(id)a5;
-+ (id)iconStateRepresentationForFolder:(id)a3 inModel:(id)a4;
-+ (id)indexPathForLeafIdentifier:(id)a3 inArchive:(id)a4;
-+ (id)leafIdentifiersFromArchive:(id)a3;
-+ (id)leafIdentifiersInListAtIndexPath:(id)a3 inArchive:(id)a4;
-+ (id)unarchiveRootFolderFromArchive:(id)a3 withIconSource:(id)a4;
-+ (void)_addLeafNodesForNode:(id)a3 toSet:(id)a4;
-- (SBHIconStateArchiver)initWithRootNode:(id)a3;
++ (BOOL)_iconContainsMultipleRepresentations:(id)representations;
++ (BOOL)_isCustomIconElementBuiltIn:(id)in;
++ (BOOL)_widgetDataSourceIsSuggestion:(id)suggestion;
++ (id)_builtInCustomIconElementTypeForCustomIconElement:(id)element;
++ (id)_folderTypeForFolder:(id)folder;
++ (id)_nodeAtPath:(id)path inNode:(id)node;
++ (id)_pathForNode:(id)node toIdentifier:(id)identifier;
++ (id)archiveRootFolderInModel:(id)model metadata:(id)metadata;
++ (id)folderPathForLeafIdentifier:(id)identifier inArchive:(id)archive iconSource:(id)source;
++ (id)iconStateRepresentationForFolder:(id)folder inModel:(id)model;
++ (id)indexPathForLeafIdentifier:(id)identifier inArchive:(id)archive;
++ (id)leafIdentifiersFromArchive:(id)archive;
++ (id)leafIdentifiersInListAtIndexPath:(id)path inArchive:(id)archive;
++ (id)unarchiveRootFolderFromArchive:(id)archive withIconSource:(id)source;
++ (void)_addLeafNodesForNode:(id)node toSet:(id)set;
+- (SBHIconStateArchiver)initWithRootNode:(id)node;
 - (SBHIconStateArchiverDelegate)delegate;
-- (id)_metadataForList:(id)a3;
-- (id)_representationForApplicationIcon:(id)a3;
-- (id)_representationForCustomIcon:(id)a3;
-- (id)_representationForCustomIconElement:(id)a3;
-- (id)_representationForFileStackIcon:(id)a3;
-- (id)_representationForFolder:(id)a3;
-- (id)_representationForIcon:(id)a3;
-- (id)_representationForList:(id)a3;
-- (id)_representationForNode:(id)a3;
-- (id)_representationsForIcon:(id)a3;
-- (id)archiveStringForGridSizeClass:(id)a3;
-- (id)archiveWithError:(id *)a3;
+- (id)_metadataForList:(id)list;
+- (id)_representationForApplicationIcon:(id)icon;
+- (id)_representationForCustomIcon:(id)icon;
+- (id)_representationForCustomIconElement:(id)element;
+- (id)_representationForFileStackIcon:(id)icon;
+- (id)_representationForFolder:(id)folder;
+- (id)_representationForIcon:(id)icon;
+- (id)_representationForList:(id)list;
+- (id)_representationForNode:(id)node;
+- (id)_representationsForIcon:(id)icon;
+- (id)archiveStringForGridSizeClass:(id)class;
+- (id)archiveWithError:(id *)error;
 - (id)customGridSizeClassDomain;
 - (id)effectiveDelegate;
 - (id)effectiveGridSizeClassDomain;
-- (void)_addValuesForCustomIconElement:(id)a3 toRepresentation:(id)a4;
+- (void)_addValuesForCustomIconElement:(id)element toRepresentation:(id)representation;
 @end
 
 @implementation SBHIconStateArchiver
 
-+ (id)archiveRootFolderInModel:(id)a3 metadata:(id)a4
++ (id)archiveRootFolderInModel:(id)model metadata:(id)metadata
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 rootFolder];
-  v9 = [[a1 alloc] initWithRootNode:v8];
-  [v9 setIconModel:v7];
+  metadataCopy = metadata;
+  modelCopy = model;
+  rootFolder = [modelCopy rootFolder];
+  v9 = [[self alloc] initWithRootNode:rootFolder];
+  [v9 setIconModel:modelCopy];
 
-  [v9 setMetadata:v6];
+  [v9 setMetadata:metadataCopy];
   v10 = [v9 archiveWithError:0];
 
   return v10;
 }
 
-+ (id)unarchiveRootFolderFromArchive:(id)a3 withIconSource:(id)a4
++ (id)unarchiveRootFolderFromArchive:(id)archive withIconSource:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SBHIconStateUnarchiver alloc] initWithArchive:v6 iconModel:v5];
+  sourceCopy = source;
+  archiveCopy = archive;
+  v7 = [[SBHIconStateUnarchiver alloc] initWithArchive:archiveCopy iconModel:sourceCopy];
 
-  v8 = [(SBHIconStateUnarchiver *)v7 unarchive];
+  unarchive = [(SBHIconStateUnarchiver *)v7 unarchive];
 
-  return v8;
+  return unarchive;
 }
 
-+ (id)leafIdentifiersFromArchive:(id)a3
++ (id)leafIdentifiersFromArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v6 = objc_autoreleasePoolPush();
-  [a1 _addLeafNodesForNode:v4 toSet:v5];
+  [self _addLeafNodesForNode:archiveCopy toSet:v5];
   objc_autoreleasePoolPop(v6);
 
   return v5;
 }
 
-+ (id)indexPathForLeafIdentifier:(id)a3 inArchive:(id)a4
++ (id)indexPathForLeafIdentifier:(id)identifier inArchive:(id)archive
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  archiveCopy = archive;
   v8 = objc_autoreleasePoolPush();
-  v9 = [a1 _pathForNode:v7 toIdentifier:v6];
+  v9 = [self _pathForNode:archiveCopy toIdentifier:identifierCopy];
   objc_autoreleasePoolPop(v8);
 
   return v9;
 }
 
-+ (id)folderPathForLeafIdentifier:(id)a3 inArchive:(id)a4 iconSource:(id)a5
++ (id)folderPathForLeafIdentifier:(id)identifier inArchive:(id)archive iconSource:(id)source
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v30 = a5;
-  v27 = [a1 indexPathForLeafIdentifier:a3 inArchive:v8];
-  v9 = [v27 sb_indexPathByRemovingLastIconPathComponent];
+  archiveCopy = archive;
+  sourceCopy = source;
+  v27 = [self indexPathForLeafIdentifier:identifier inArchive:archiveCopy];
+  sb_indexPathByRemovingLastIconPathComponent = [v27 sb_indexPathByRemovingLastIconPathComponent];
   v29 = objc_alloc_init(SBIconStateFolderPath);
-  v26 = v9;
-  v10 = [v9 sb_iconRelativePathComponents];
+  v26 = sb_indexPathByRemovingLastIconPathComponent;
+  sb_iconRelativePathComponents = [sb_indexPathByRemovingLastIconPathComponent sb_iconRelativePathComponents];
   v11 = objc_alloc_init(MEMORY[0x1E696AC88]);
-  v12 = v8;
+  v12 = archiveCopy;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v10;
+  obj = sb_iconRelativePathComponents;
   v13 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   v25 = v12;
   if (v13)
@@ -122,11 +122,11 @@
         v20 = *(*(&v34 + 1) + 8 * v17);
         v11 = [v20 bs_indexPathByAddingPrefix:v19];
 
-        v16 = [a1 _nodeAtPath:v20 inNode:v18];
+        v16 = [self _nodeAtPath:v20 inNode:v18];
         v32 = 0;
         v33 = 0;
         v31 = 0;
-        [SBHIconStateUnarchiver _getFolderDisplayName:&v33 defaultDisplayName:&v32 uniqueIdentifier:&v31 forRepresentation:v16 iconSource:v30];
+        [SBHIconStateUnarchiver _getFolderDisplayName:&v33 defaultDisplayName:&v32 uniqueIdentifier:&v31 forRepresentation:v16 iconSource:sourceCopy];
         v21 = v33;
         v22 = v32;
         v23 = v31;
@@ -152,12 +152,12 @@
   return v29;
 }
 
-+ (id)leafIdentifiersInListAtIndexPath:(id)a3 inArchive:(id)a4
++ (id)leafIdentifiersInListAtIndexPath:(id)path inArchive:(id)archive
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  v8 = v6;
+  pathCopy = path;
+  archiveCopy = archive;
+  v7 = [pathCopy length];
+  v8 = archiveCopy;
   if (!v7)
   {
 LABEL_20:
@@ -180,10 +180,10 @@ LABEL_20:
 
   v9 = v7;
   v10 = 0;
-  v11 = v6;
+  v11 = archiveCopy;
   while (1)
   {
-    v12 = [v5 indexAtPosition:v10];
+    v12 = [pathCopy indexAtPosition:v10];
     v13 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -236,7 +236,7 @@ LABEL_14:
       goto LABEL_14;
   }
 
-  v27 = v6;
+  v27 = archiveCopy;
   v20 = [v11 objectForKey:@"iconLists"];
   v21 = objc_opt_self();
   v22 = objc_opt_isKindOfClass();
@@ -246,11 +246,11 @@ LABEL_14:
     v8 = [v20 objectAtIndex:v12];
 
     v11 = v20;
-    v6 = v27;
+    archiveCopy = v27;
     goto LABEL_16;
   }
 
-  v6 = v27;
+  archiveCopy = v27;
   v25 = MEMORY[0x1E695E0F0];
 LABEL_24:
 
@@ -259,40 +259,40 @@ LABEL_26:
   return v25;
 }
 
-- (SBHIconStateArchiver)initWithRootNode:(id)a3
+- (SBHIconStateArchiver)initWithRootNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   v9.receiver = self;
   v9.super_class = SBHIconStateArchiver;
   v6 = [(SBHIconStateArchiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootNode, a3);
+    objc_storeStrong(&v6->_rootNode, node);
   }
 
   return v7;
 }
 
-- (id)archiveWithError:(id *)a3
+- (id)archiveWithError:(id *)error
 {
-  v4 = [(SBHIconStateArchiver *)self rootNode];
+  rootNode = [(SBHIconStateArchiver *)self rootNode];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(SBHIconStateArchiver *)self _representationForNode:v4];
+  v6 = [(SBHIconStateArchiver *)self _representationForNode:rootNode];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
-    v8 = [(SBHIconStateArchiver *)self metadata];
-    if ([v8 count])
+    metadata = [(SBHIconStateArchiver *)self metadata];
+    if ([metadata count])
     {
-      [v7 setObject:v8 forKeyedSubscript:@"metadata"];
+      [v7 setObject:metadata forKeyedSubscript:@"metadata"];
     }
 
-    v9 = [(SBHIconStateArchiver *)self effectiveDelegate];
+    effectiveDelegate = [(SBHIconStateArchiver *)self effectiveDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 versionForIconStateArchiver:self];
+      v10 = [effectiveDelegate versionForIconStateArchiver:self];
       if (v10)
       {
         [v7 setObject:v10 forKeyedSubscript:@"widgetVersion"];
@@ -314,11 +314,11 @@ LABEL_26:
   return v6;
 }
 
-+ (void)_addLeafNodesForNode:(id)a3 toSet:(id)a4
++ (void)_addLeafNodesForNode:(id)node toSet:(id)set
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  setCopy = set;
   v8 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -333,7 +333,7 @@ LABEL_26:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v12 = v6;
+      v12 = nodeCopy;
       v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v13)
       {
@@ -348,7 +348,7 @@ LABEL_26:
               objc_enumerationMutation(v12);
             }
 
-            [a1 _addLeafNodesForNode:*(*(&v23 + 1) + 8 * i) toSet:{v7, v23}];
+            [self _addLeafNodesForNode:*(*(&v23 + 1) + 8 * i) toSet:{setCopy, v23}];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -368,57 +368,57 @@ LABEL_26:
         goto LABEL_25;
       }
 
-      v12 = [v6 objectForKey:@"buttonBar"];
+      v12 = [nodeCopy objectForKey:@"buttonBar"];
       if (v12)
       {
-        [a1 _addLeafNodesForNode:v12 toSet:v7];
+        [self _addLeafNodesForNode:v12 toSet:setCopy];
       }
 
-      v19 = [v6 objectForKey:@"dockUtilities"];
+      v19 = [nodeCopy objectForKey:@"dockUtilities"];
       if (v19)
       {
-        [a1 _addLeafNodesForNode:v19 toSet:v7];
+        [self _addLeafNodesForNode:v19 toSet:setCopy];
       }
 
-      v20 = [v6 objectForKey:@"today"];
+      v20 = [nodeCopy objectForKey:@"today"];
       if (v20)
       {
-        [a1 _addLeafNodesForNode:v20 toSet:v7];
+        [self _addLeafNodesForNode:v20 toSet:setCopy];
       }
 
-      v21 = [v6 objectForKey:@"iconLists"];
+      v21 = [nodeCopy objectForKey:@"iconLists"];
       if (v21)
       {
-        [a1 _addLeafNodesForNode:v21 toSet:v7];
+        [self _addLeafNodesForNode:v21 toSet:setCopy];
       }
 
-      v22 = [v6 objectForKey:@"ignored"];
+      v22 = [nodeCopy objectForKey:@"ignored"];
       if (v22)
       {
-        [a1 _addLeafNodesForNode:v22 toSet:v7];
+        [self _addLeafNodesForNode:v22 toSet:setCopy];
       }
     }
 
     goto LABEL_25;
   }
 
-  [v7 addObject:v6];
+  [setCopy addObject:nodeCopy];
 LABEL_25:
 }
 
-+ (id)_pathForNode:(id)a3 toIdentifier:(id)a4
++ (id)_pathForNode:(id)node toIdentifier:(id)identifier
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  nodeCopy = node;
+  identifierCopy = identifier;
   v9 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    if ([v7 isEqualToString:v8])
+    if ([nodeCopy isEqualToString:identifierCopy])
     {
-      v4 = [MEMORY[0x1E696AC88] bs_emptyPath];
+      bs_emptyPath = [MEMORY[0x1E696AC88] bs_emptyPath];
       goto LABEL_38;
     }
 
@@ -434,7 +434,7 @@ LABEL_25:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v13 = v7;
+    v13 = nodeCopy;
     v14 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v14)
     {
@@ -453,12 +453,12 @@ LABEL_25:
             objc_enumerationMutation(v13);
           }
 
-          v20 = [a1 _pathForNode:*(*(&v39 + 1) + 8 * v18) toIdentifier:{v8, v39}];
+          v20 = [self _pathForNode:*(*(&v39 + 1) + 8 * v18) toIdentifier:{identifierCopy, v39}];
           if (v20)
           {
             v24 = v20;
             v25 = [MEMORY[0x1E696AC88] indexPathWithIndex:v19];
-            v4 = [v24 bs_indexPathByAddingPrefix:v25];
+            bs_emptyPath = [v24 bs_indexPathByAddingPrefix:v25];
 
             goto LABEL_19;
           }
@@ -486,56 +486,56 @@ LABEL_25:
 
   if (v22)
   {
-    v13 = [v7 objectForKey:@"iconLists"];
+    v13 = [nodeCopy objectForKey:@"iconLists"];
     if (v13)
     {
-      v23 = [a1 _pathForNode:v13 toIdentifier:v8];
+      v23 = [self _pathForNode:v13 toIdentifier:identifierCopy];
       if (v23)
       {
-        v4 = v23;
+        bs_emptyPath = v23;
 LABEL_19:
 
         goto LABEL_38;
       }
     }
 
-    v26 = [v7 objectForKey:@"buttonBar"];
+    v26 = [nodeCopy objectForKey:@"buttonBar"];
     if (v26)
     {
-      v27 = [a1 _pathForNode:v26 toIdentifier:v8];
+      v27 = [self _pathForNode:v26 toIdentifier:identifierCopy];
       if (v27)
       {
         v28 = v27;
         v29 = [MEMORY[0x1E696AC88] indexPathWithIndex:10000];
-        v4 = [v28 bs_indexPathByAddingPrefix:v29];
+        bs_emptyPath = [v28 bs_indexPathByAddingPrefix:v29];
 
         goto LABEL_19;
       }
     }
 
-    v30 = [v7 objectForKey:@"dockUtilities"];
+    v30 = [nodeCopy objectForKey:@"dockUtilities"];
     if (v30)
     {
-      v31 = [a1 _pathForNode:v30 toIdentifier:v8];
+      v31 = [self _pathForNode:v30 toIdentifier:identifierCopy];
       if (v31)
       {
         v32 = v31;
         v33 = [MEMORY[0x1E696AC88] indexPathWithIndex:40000];
-        v4 = [v32 bs_indexPathByAddingPrefix:v33];
+        bs_emptyPath = [v32 bs_indexPathByAddingPrefix:v33];
         v34 = 0;
         goto LABEL_36;
       }
     }
 
-    v33 = [v7 objectForKey:@"today"];
+    v33 = [nodeCopy objectForKey:@"today"];
     if (v33)
     {
-      v35 = [a1 _pathForNode:v33 toIdentifier:v8];
+      v35 = [self _pathForNode:v33 toIdentifier:identifierCopy];
       if (v35)
       {
         v32 = v35;
         v36 = [MEMORY[0x1E696AC88] indexPathWithIndex:20000];
-        v4 = [v32 bs_indexPathByAddingPrefix:v36];
+        bs_emptyPath = [v32 bs_indexPathByAddingPrefix:v36];
 LABEL_32:
         v34 = 0;
 LABEL_35:
@@ -550,14 +550,14 @@ LABEL_36:
       }
     }
 
-    v36 = [v7 objectForKey:@"ignored"];
+    v36 = [nodeCopy objectForKey:@"ignored"];
     if (v36)
     {
-      v32 = [a1 _pathForNode:v36 toIdentifier:v8];
+      v32 = [self _pathForNode:v36 toIdentifier:identifierCopy];
       if (v32)
       {
         v37 = [MEMORY[0x1E696AC88] indexPathWithIndex:30000];
-        v4 = [v32 bs_indexPathByAddingPrefix:v37];
+        bs_emptyPath = [v32 bs_indexPathByAddingPrefix:v37];
 
         goto LABEL_32;
       }
@@ -573,26 +573,26 @@ LABEL_36:
   }
 
 LABEL_37:
-  v4 = 0;
+  bs_emptyPath = 0;
 LABEL_38:
 
-  return v4;
+  return bs_emptyPath;
 }
 
-+ (id)_nodeAtPath:(id)a3 inNode:(id)a4
++ (id)_nodeAtPath:(id)path inNode:(id)node
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  nodeCopy = node;
   v8 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
 
 LABEL_6:
-    v13 = v7;
+    v13 = nodeCopy;
     goto LABEL_20;
   }
 
-  v9 = [v6 length];
+  v9 = [pathCopy length];
 
   if (!v9)
   {
@@ -604,7 +604,7 @@ LABEL_6:
 
   if (isKindOfClass)
   {
-    v12 = [v7 objectAtIndex:{objc_msgSend(v6, "indexAtPosition:", 0)}];
+    v12 = [nodeCopy objectAtIndex:{objc_msgSend(pathCopy, "indexAtPosition:", 0)}];
   }
 
   else
@@ -618,7 +618,7 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    v16 = [v6 indexAtPosition:0];
+    v16 = [pathCopy indexAtPosition:0];
     switch(v16)
     {
       case 10000:
@@ -634,17 +634,17 @@ LABEL_6:
         v17 = @"dockUtilities";
         break;
       default:
-        v18 = [v7 objectForKey:@"iconLists"];
-        v13 = [a1 _nodeAtPath:v6 inNode:v18];
+        v18 = [nodeCopy objectForKey:@"iconLists"];
+        v13 = [self _nodeAtPath:pathCopy inNode:v18];
         goto LABEL_19;
     }
 
-    v12 = [v7 objectForKey:v17];
+    v12 = [nodeCopy objectForKey:v17];
   }
 
   v18 = v12;
-  v19 = [v6 bs_indexPathByRemovingFirstIndex];
-  v13 = [a1 _nodeAtPath:v19 inNode:v18];
+  bs_indexPathByRemovingFirstIndex = [pathCopy bs_indexPathByRemovingFirstIndex];
+  v13 = [self _nodeAtPath:bs_indexPathByRemovingFirstIndex inNode:v18];
 
 LABEL_19:
 LABEL_20:
@@ -654,29 +654,29 @@ LABEL_20:
 
 - (id)effectiveDelegate
 {
-  v3 = [(SBHIconStateArchiver *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(SBHIconStateArchiver *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    v5 = v3;
+    iconModel = delegate;
   }
 
   else
   {
-    v5 = [(SBHIconStateArchiver *)self iconModel];
+    iconModel = [(SBHIconStateArchiver *)self iconModel];
   }
 
-  v6 = v5;
+  v6 = iconModel;
 
   return v6;
 }
 
 - (id)customGridSizeClassDomain
 {
-  v3 = [(SBHIconStateArchiver *)self effectiveDelegate];
+  effectiveDelegate = [(SBHIconStateArchiver *)self effectiveDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 iconGridSizeClassDomainForIconStateArchiver:self];
+    v4 = [effectiveDelegate iconGridSizeClassDomainForIconStateArchiver:self];
   }
 
   else
@@ -689,15 +689,15 @@ LABEL_20:
 
 - (id)effectiveGridSizeClassDomain
 {
-  v3 = [(SBHIconStateArchiver *)self customGridSizeClassDomain];
-  if (!v3)
+  customGridSizeClassDomain = [(SBHIconStateArchiver *)self customGridSizeClassDomain];
+  if (!customGridSizeClassDomain)
   {
-    v4 = [(SBHIconStateArchiver *)self rootNode];
+    rootNode = [(SBHIconStateArchiver *)self rootNode];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 gridSizeClassDomain];
+      gridSizeClassDomain = [rootNode gridSizeClassDomain];
 
-      if (v5)
+      if (gridSizeClassDomain)
       {
         goto LABEL_8;
       }
@@ -707,29 +707,29 @@ LABEL_20:
     {
     }
 
-    v3 = +[SBHIconGridSizeClassDomain globalDomain];
+    customGridSizeClassDomain = +[SBHIconGridSizeClassDomain globalDomain];
   }
 
-  v5 = v3;
+  gridSizeClassDomain = customGridSizeClassDomain;
 LABEL_8:
 
-  return v5;
+  return gridSizeClassDomain;
 }
 
-- (id)_representationForIcon:(id)a3
+- (id)_representationForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  iconCopy = icon;
+  v5 = iconCopy;
+  if (!iconCopy)
   {
     v8 = 0;
     goto LABEL_16;
   }
 
-  if ([v4 isFolderIcon])
+  if ([iconCopy isFolderIcon])
   {
-    v6 = [v5 folder];
-    v7 = [(SBHIconStateArchiver *)self _representationForFolder:v6];
+    folder = [v5 folder];
+    v7 = [(SBHIconStateArchiver *)self _representationForFolder:folder];
 LABEL_4:
     v8 = v7;
 LABEL_8:
@@ -742,9 +742,9 @@ LABEL_8:
 
   if (isKindOfClass)
   {
-    v6 = [v5 referencedIcon];
-    v11 = [v5 referencedIcon];
-    v8 = [(SBHIconStateArchiver *)self _representationForIcon:v11];
+    folder = [v5 referencedIcon];
+    referencedIcon = [v5 referencedIcon];
+    v8 = [(SBHIconStateArchiver *)self _representationForIcon:referencedIcon];
 
     goto LABEL_8;
   }
@@ -763,8 +763,8 @@ LABEL_8:
   {
     if (![v5 isFileStackIcon])
     {
-      v6 = [(SBHIconStateArchiver *)self effectiveDelegate];
-      if ((objc_opt_respondsToSelector() & 1) == 0 || ([v6 archiver:self representationForIcon:v5], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+      folder = [(SBHIconStateArchiver *)self effectiveDelegate];
+      if ((objc_opt_respondsToSelector() & 1) == 0 || ([folder archiver:self representationForIcon:v5], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         if (![v5 isLeafIcon] || (objc_msgSend(v5, "leafIdentifier"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
         {
@@ -785,20 +785,20 @@ LABEL_16:
   return v8;
 }
 
-+ (BOOL)_iconContainsMultipleRepresentations:(id)a3
++ (BOOL)_iconContainsMultipleRepresentations:(id)representations
 {
-  v3 = a3;
+  representationsCopy = representations;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)_representationsForIcon:(id)a3
+- (id)_representationsForIcon:(id)icon
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  iconCopy = icon;
+  if (iconCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = objc_opt_self();
@@ -809,8 +809,8 @@ LABEL_16:
       v18 = 0u;
       v19 = 0u;
       v17 = 0u;
-      v8 = [v4 referencedIcons];
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      referencedIcons = [iconCopy referencedIcons];
+      v9 = [referencedIcons countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -819,11 +819,11 @@ LABEL_16:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(referencedIcons);
           }
 
-          v12 = [v4 referencedIcon];
-          v13 = [(SBHIconStateArchiver *)self _representationForIcon:v12];
+          referencedIcon = [iconCopy referencedIcon];
+          v13 = [(SBHIconStateArchiver *)self _representationForIcon:referencedIcon];
 
           if (v13)
           {
@@ -832,7 +832,7 @@ LABEL_16:
 
           if (!--v10)
           {
-            v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v10 = [referencedIcons countByEnumeratingWithState:&v16 objects:v20 count:16];
             if (!v10)
             {
               break;
@@ -844,7 +844,7 @@ LABEL_16:
 
     else
     {
-      v14 = [(SBHIconStateArchiver *)self _representationForIcon:v4];
+      v14 = [(SBHIconStateArchiver *)self _representationForIcon:iconCopy];
       if (v14)
       {
         [v5 addObject:v14];
@@ -860,19 +860,19 @@ LABEL_16:
   return v5;
 }
 
-- (id)_representationForList:(id)a3
+- (id)_representationForList:(id)list
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  listCopy = list;
+  if (listCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 icons];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    icons = [listCopy icons];
+    v7 = [icons countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -883,7 +883,7 @@ LABEL_16:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(icons);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -906,7 +906,7 @@ LABEL_16:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [icons countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -921,34 +921,34 @@ LABEL_16:
   return v5;
 }
 
-- (id)_metadataForList:(id)a3
+- (id)_metadataForList:(id)list
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  listCopy = list;
+  v4 = listCopy;
+  if (listCopy)
   {
-    v5 = [v3 hiddenDate];
-    v6 = [v4 _rotatedIconsIfApplicable];
-    v7 = [v4 focusModeIdentifiers];
-    v8 = [v7 allObjects];
+    hiddenDate = [listCopy hiddenDate];
+    _rotatedIconsIfApplicable = [v4 _rotatedIconsIfApplicable];
+    focusModeIdentifiers = [v4 focusModeIdentifiers];
+    allObjects = [focusModeIdentifiers allObjects];
 
-    v9 = [v4 fixedIconLocations];
-    v10 = [v4 rotatedFixedIconLocations];
-    v11 = [v4 overflowSlotCount];
-    v12 = v11;
-    if (v5 || v6 || v8 || v9 || v10 || v11)
+    fixedIconLocations = [v4 fixedIconLocations];
+    rotatedFixedIconLocations = [v4 rotatedFixedIconLocations];
+    overflowSlotCount = [v4 overflowSlotCount];
+    v12 = overflowSlotCount;
+    if (hiddenDate || _rotatedIconsIfApplicable || allObjects || fixedIconLocations || rotatedFixedIconLocations || overflowSlotCount)
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v13 = v14;
-      if (v5)
+      if (hiddenDate)
       {
-        [v14 setObject:v5 forKey:@"hiddenDate"];
+        [v14 setObject:hiddenDate forKey:@"hiddenDate"];
       }
 
-      if (v8)
+      if (allObjects)
       {
-        [v13 setObject:v8 forKey:@"focusModeIdentifiers"];
+        [v13 setObject:allObjects forKey:@"focusModeIdentifiers"];
       }
 
       if (v12)
@@ -957,17 +957,17 @@ LABEL_16:
         [v13 setObject:v15 forKey:@"overflowSlotCount"];
       }
 
-      if (v6)
+      if (_rotatedIconsIfApplicable)
       {
-        v29 = v8;
-        v31 = v5;
-        v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+        v29 = allObjects;
+        v31 = hiddenDate;
+        v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(_rotatedIconsIfApplicable, "count")}];
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v30 = v6;
-        v17 = v6;
+        v30 = _rotatedIconsIfApplicable;
+        v17 = _rotatedIconsIfApplicable;
         v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v18)
         {
@@ -982,8 +982,8 @@ LABEL_16:
                 objc_enumerationMutation(v17);
               }
 
-              v22 = [*(*(&v32 + 1) + 8 * i) uniqueIdentifier];
-              [v16 addObject:v22];
+              uniqueIdentifier = [*(*(&v32 + 1) + 8 * i) uniqueIdentifier];
+              [v16 addObject:uniqueIdentifier];
             }
 
             v19 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -993,26 +993,26 @@ LABEL_16:
         }
 
         [v13 setObject:v16 forKey:@"rotatedOrder"];
-        v6 = v30;
-        v5 = v31;
-        v8 = v29;
+        _rotatedIconsIfApplicable = v30;
+        hiddenDate = v31;
+        allObjects = v29;
       }
 
-      if (v9 | v10)
+      if (fixedIconLocations | rotatedFixedIconLocations)
       {
-        v23 = v9 ? v9 : MEMORY[0x1E695E0F8];
+        v23 = fixedIconLocations ? fixedIconLocations : MEMORY[0x1E695E0F8];
         [v13 setObject:v23 forKey:@"fixedLocations"];
-        v24 = [v4 gridSize];
-        v25 = v24;
-        v26 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:HIWORD(v24)];
+        gridSize = [v4 gridSize];
+        v25 = gridSize;
+        v26 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:HIWORD(gridSize)];
         [v13 setObject:v26 forKey:@"fixedLocationsGridRows"];
 
         v27 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v25];
         [v13 setObject:v27 forKey:@"fixedLocationsGridColumns"];
 
-        if (v10)
+        if (rotatedFixedIconLocations)
         {
-          [v13 setObject:v10 forKey:@"rotatedFixedLocations"];
+          [v13 setObject:rotatedFixedIconLocations forKey:@"rotatedFixedLocations"];
         }
       }
     }
@@ -1031,13 +1031,13 @@ LABEL_16:
   return v13;
 }
 
-+ (id)_folderTypeForFolder:(id)a3
++ (id)_folderTypeForFolder:(id)folder
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  folderCopy = folder;
+  v4 = folderCopy;
+  if (folderCopy)
   {
-    if ([v3 isRootFolder])
+    if ([folderCopy isRootFolder])
     {
       v5 = 0;
     }
@@ -1056,41 +1056,41 @@ LABEL_16:
   return v5;
 }
 
-- (id)_representationForFolder:(id)a3
+- (id)_representationForFolder:(id)folder
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  folderCopy = folder;
+  if (folderCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = [objc_opt_class() _folderTypeForFolder:v4];
+    v6 = [objc_opt_class() _folderTypeForFolder:folderCopy];
     if (v6)
     {
       [v5 setObject:v6 forKey:@"listType"];
     }
 
-    v7 = [v4 defaultDisplayName];
-    if (v7)
+    defaultDisplayName = [folderCopy defaultDisplayName];
+    if (defaultDisplayName)
     {
-      [v5 setObject:v7 forKey:@"defaultDisplayName"];
+      [v5 setObject:defaultDisplayName forKey:@"defaultDisplayName"];
     }
 
-    v8 = [v4 displayName];
-    if (v8)
+    displayName = [folderCopy displayName];
+    if (displayName)
     {
-      [v5 setObject:v8 forKey:@"displayName"];
+      [v5 setObject:displayName forKey:@"displayName"];
     }
 
-    v39 = v7;
+    v39 = defaultDisplayName;
     v40 = v6;
-    v9 = [v4 uniqueIdentifier];
-    if (v9)
+    uniqueIdentifier = [folderCopy uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      [v5 setObject:v9 forKey:@"uniqueIdentifier"];
+      [v5 setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
     }
 
-    v37 = v9;
-    v38 = v8;
+    v37 = uniqueIdentifier;
+    v38 = displayName;
     v41 = v5;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1098,9 +1098,9 @@ LABEL_16:
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v42 = v4;
-    v12 = [v4 lists];
-    v13 = [v12 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    v42 = folderCopy;
+    lists = [folderCopy lists];
+    v13 = [lists countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1112,15 +1112,15 @@ LABEL_16:
         {
           if (*v44 != v16)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(lists);
           }
 
           v18 = *(*(&v43 + 1) + 8 * i);
           v19 = [(SBHIconStateArchiver *)self _representationForList:v18];
           [v10 addObject:v19];
 
-          v20 = [v18 uniqueIdentifier];
-          [v11 addObject:v20];
+          uniqueIdentifier2 = [v18 uniqueIdentifier];
+          [v11 addObject:uniqueIdentifier2];
           v21 = [(SBHIconStateArchiver *)self _metadataForList:v18];
           if (v21)
           {
@@ -1129,11 +1129,11 @@ LABEL_16:
               v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
             }
 
-            [v15 setObject:v21 forKey:v20];
+            [v15 setObject:v21 forKey:uniqueIdentifier2];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        v14 = [lists countByEnumeratingWithState:&v43 objects:v47 count:16];
       }
 
       while (v14);
@@ -1153,14 +1153,14 @@ LABEL_16:
     }
 
     v23 = objc_opt_self();
-    v4 = v42;
+    folderCopy = v42;
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v25 = v42;
-      v26 = [v25 dock];
-      v27 = [(SBHIconStateArchiver *)self _representationForList:v26];
+      dock = [v25 dock];
+      v27 = [(SBHIconStateArchiver *)self _representationForList:dock];
 
       if (v27)
       {
@@ -1168,11 +1168,11 @@ LABEL_16:
       }
 
       v36 = v27;
-      v28 = [(SBHIconStateArchiver *)self effectiveDelegate];
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v28 isDockUtilitiesSupportedForIconStateArchiver:self])
+      effectiveDelegate = [(SBHIconStateArchiver *)self effectiveDelegate];
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [effectiveDelegate isDockUtilitiesSupportedForIconStateArchiver:self])
       {
-        v29 = [v25 dockUtilities];
-        v30 = [(SBHIconStateArchiver *)self _representationForList:v29];
+        dockUtilities = [v25 dockUtilities];
+        v30 = [(SBHIconStateArchiver *)self _representationForList:dockUtilities];
 
         if (v30)
         {
@@ -1180,16 +1180,16 @@ LABEL_16:
         }
       }
 
-      v31 = [v25 todayList];
-      v32 = [(SBHIconStateArchiver *)self _representationForList:v31];
+      todayList = [v25 todayList];
+      v32 = [(SBHIconStateArchiver *)self _representationForList:todayList];
 
       if ([v32 count])
       {
         [v41 setObject:v32 forKey:@"today"];
       }
 
-      v33 = [v25 ignoredList];
-      v34 = [(SBHIconStateArchiver *)self _representationForList:v33];
+      ignoredList = [v25 ignoredList];
+      v34 = [(SBHIconStateArchiver *)self _representationForList:ignoredList];
 
       if ([v34 count])
       {
@@ -1206,83 +1206,83 @@ LABEL_16:
   return v22;
 }
 
-+ (id)iconStateRepresentationForFolder:(id)a3 inModel:(id)a4
++ (id)iconStateRepresentationForFolder:(id)folder inModel:(id)model
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRootNode:v7];
+  modelCopy = model;
+  folderCopy = folder;
+  v8 = [[self alloc] initWithRootNode:folderCopy];
 
-  [v8 setIconModel:v6];
+  [v8 setIconModel:modelCopy];
   v9 = [v8 archiveWithError:0];
 
   return v9;
 }
 
-- (id)_representationForApplicationIcon:(id)a3
+- (id)_representationForApplicationIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [v3 leafIdentifier];
-  v5 = [v3 applicationBundleID];
+  iconCopy = icon;
+  leafIdentifier = [iconCopy leafIdentifier];
+  applicationBundleID = [iconCopy applicationBundleID];
 
-  if (v4 && v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (leafIdentifier && applicationBundleID && ([leafIdentifier isEqualToString:applicationBundleID] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    [v6 setObject:@"app" forKey:@"iconType"];
-    [v6 setObject:v4 forKey:@"displayIdentifier"];
-    [v6 setObject:v5 forKey:@"bundleIdentifier"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"app" forKey:@"iconType"];
+    [dictionary setObject:leafIdentifier forKey:@"displayIdentifier"];
+    [dictionary setObject:applicationBundleID forKey:@"bundleIdentifier"];
   }
 
   else
   {
-    v6 = v4;
+    dictionary = leafIdentifier;
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (id)_representationForCustomIcon:(id)a3
+- (id)_representationForCustomIcon:(id)icon
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:@"custom" forKey:@"iconType"];
-  v6 = [v4 leafIdentifier];
-  if (v6)
+  iconCopy = icon;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"custom" forKey:@"iconType"];
+  leafIdentifier = [iconCopy leafIdentifier];
+  if (leafIdentifier)
   {
-    [v5 setObject:v6 forKey:@"displayIdentifier"];
+    [dictionary setObject:leafIdentifier forKey:@"displayIdentifier"];
   }
 
-  v7 = [v4 iconDataSources];
-  v8 = [v7 firstObject];
-  v9 = [v7 count];
+  iconDataSources = [iconCopy iconDataSources];
+  firstObject = [iconDataSources firstObject];
+  v9 = [iconDataSources count];
   if (!v9)
   {
     goto LABEL_7;
   }
 
   v10 = v9;
-  if (v9 == 1 && [objc_opt_class() _isCustomIconElementBuiltIn:v8])
+  if (v9 == 1 && [objc_opt_class() _isCustomIconElementBuiltIn:firstObject])
   {
-    if ([objc_opt_class() _widgetDataSourceIsSuggestion:v8])
+    if ([objc_opt_class() _widgetDataSourceIsSuggestion:firstObject])
     {
 LABEL_7:
       v11 = 0;
       goto LABEL_27;
     }
 
-    [(SBHIconStateArchiver *)self _addValuesForCustomIconElement:v8 toRepresentation:v5];
+    [(SBHIconStateArchiver *)self _addValuesForCustomIconElement:firstObject toRepresentation:dictionary];
   }
 
   else
   {
-    v27 = v8;
-    v28 = v6;
+    v27 = firstObject;
+    v28 = leafIdentifier;
     v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = v7;
+    v13 = iconDataSources;
     v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v14)
     {
@@ -1314,74 +1314,74 @@ LABEL_7:
       while (v15);
     }
 
-    [v5 setObject:v12 forKey:@"elements"];
-    v8 = v27;
-    v6 = v28;
+    [dictionary setObject:v12 forKey:@"elements"];
+    firstObject = v27;
+    leafIdentifier = v28;
   }
 
-  v20 = [v4 lastUserSelectedDataSource];
+  lastUserSelectedDataSource = [iconCopy lastUserSelectedDataSource];
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v20 uniqueIdentifier];
-    if (v21)
+    uniqueIdentifier = [lastUserSelectedDataSource uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      [v5 setObject:v21 forKey:@"userSelectedElementIdentifier"];
+      [dictionary setObject:uniqueIdentifier forKey:@"userSelectedElementIdentifier"];
     }
   }
 
-  v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "allowsSuggestions")}];
-  [v5 setObject:v22 forKey:@"allowsSuggestions"];
+  v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(iconCopy, "allowsSuggestions")}];
+  [dictionary setObject:v22 forKey:@"allowsSuggestions"];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "allowsExternalSuggestions")}];
-  [v5 setObject:v23 forKey:@"allowsExternalSuggestions"];
+  v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(iconCopy, "allowsExternalSuggestions")}];
+  [dictionary setObject:v23 forKey:@"allowsExternalSuggestions"];
 
-  v24 = [v4 gridSizeClass];
-  v25 = [(SBHIconStateArchiver *)self archiveStringForGridSizeClass:v24];
+  gridSizeClass = [iconCopy gridSizeClass];
+  v25 = [(SBHIconStateArchiver *)self archiveStringForGridSizeClass:gridSizeClass];
   if (v25)
   {
-    [v5 setObject:v25 forKey:@"gridSize"];
+    [dictionary setObject:v25 forKey:@"gridSize"];
   }
 
-  v11 = v5;
+  v11 = dictionary;
 
 LABEL_27:
 
   return v11;
 }
 
-- (id)archiveStringForGridSizeClass:(id)a3
+- (id)archiveStringForGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(SBHIconStateArchiver *)self effectiveGridSizeClassDomain];
-  v6 = [v5 archiveValueForGridSizeClass:v4];
+  classCopy = class;
+  effectiveGridSizeClassDomain = [(SBHIconStateArchiver *)self effectiveGridSizeClassDomain];
+  v6 = [effectiveGridSizeClassDomain archiveValueForGridSizeClass:classCopy];
 
   return v6;
 }
 
-+ (BOOL)_widgetDataSourceIsSuggestion:(id)a3
++ (BOOL)_widgetDataSourceIsSuggestion:(id)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   objc_opt_class();
-  v4 = ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [v3 suggestionSource] == 1;
+  v4 = ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && [suggestionCopy suggestionSource] == 1;
 
   return v4;
 }
 
-- (id)_representationForCustomIconElement:(id)a3
+- (id)_representationForCustomIconElement:(id)element
 {
-  v4 = a3;
-  if ([objc_opt_class() _isCustomIconElementBuiltIn:v4])
+  elementCopy = element;
+  if ([objc_opt_class() _isCustomIconElementBuiltIn:elementCopy])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(SBHIconStateArchiver *)self _addValuesForCustomIconElement:v4 toRepresentation:v5];
+    [(SBHIconStateArchiver *)self _addValuesForCustomIconElement:elementCopy toRepresentation:v5];
   }
 
   else
   {
-    v6 = [(SBHIconStateArchiver *)self effectiveDelegate];
+    effectiveDelegate = [(SBHIconStateArchiver *)self effectiveDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 archiver:self representationForIconDataSource:v4];
+      v5 = [effectiveDelegate archiver:self representationForIconDataSource:elementCopy];
     }
 
     else
@@ -1393,24 +1393,24 @@ LABEL_27:
   return v5;
 }
 
-- (void)_addValuesForCustomIconElement:(id)a3 toRepresentation:(id)a4
+- (void)_addValuesForCustomIconElement:(id)element toRepresentation:(id)representation
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  representationCopy = representation;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 uniqueIdentifier];
-    if (v7)
+    uniqueIdentifier = [elementCopy uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      v8 = v7;
-      [v6 setObject:v7 forKey:@"uniqueIdentifier"];
+      v8 = uniqueIdentifier;
+      [representationCopy setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
     }
   }
 
-  v9 = [objc_opt_class() _builtInCustomIconElementTypeForCustomIconElement:v5];
+  v9 = [objc_opt_class() _builtInCustomIconElementTypeForCustomIconElement:elementCopy];
   if (v9)
   {
-    [v6 setObject:v9 forKey:@"elementType"];
+    [representationCopy setObject:v9 forKey:@"elementType"];
   }
 
   v10 = objc_opt_self();
@@ -1418,23 +1418,23 @@ LABEL_27:
 
   if (isKindOfClass)
   {
-    v12 = v5;
-    v13 = [v12 kind];
-    if (v13)
+    v12 = elementCopy;
+    kind = [v12 kind];
+    if (kind)
     {
-      [v6 setObject:v13 forKey:@"widgetIdentifier"];
+      [representationCopy setObject:kind forKey:@"widgetIdentifier"];
     }
 
-    v14 = [v12 extensionBundleIdentifier];
-    if (v14)
+    extensionBundleIdentifier = [v12 extensionBundleIdentifier];
+    if (extensionBundleIdentifier)
     {
-      [v6 setObject:v14 forKey:@"bundleIdentifier"];
+      [representationCopy setObject:extensionBundleIdentifier forKey:@"bundleIdentifier"];
     }
 
-    v15 = [v12 containerBundleIdentifier];
-    if (v15)
+    containerBundleIdentifier = [v12 containerBundleIdentifier];
+    if (containerBundleIdentifier)
     {
-      [v6 setObject:v15 forKey:@"containerBundleIdentifier"];
+      [representationCopy setObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
     }
   }
 
@@ -1448,9 +1448,9 @@ LABEL_27:
   }
 }
 
-+ (id)_builtInCustomIconElementTypeForCustomIconElement:(id)a3
++ (id)_builtInCustomIconElementTypeForCustomIconElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1522,52 +1522,52 @@ LABEL_27:
   return v6;
 }
 
-+ (BOOL)_isCustomIconElementBuiltIn:(id)a3
++ (BOOL)_isCustomIconElementBuiltIn:(id)in
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _builtInCustomIconElementTypeForCustomIconElement:v3];
+  inCopy = in;
+  v4 = [objc_opt_class() _builtInCustomIconElementTypeForCustomIconElement:inCopy];
 
   return v4 != 0;
 }
 
-- (id)_representationForFileStackIcon:(id)a3
+- (id)_representationForFileStackIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 setObject:@"fileStack" forKey:@"iconType"];
-  v5 = [v3 dataSourceUniqueIdentifier];
-  v6 = [v5 UUIDString];
-  [v4 setObject:v6 forKey:@"fileStackIconDataSourceUniqueIdentifier"];
+  iconCopy = icon;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"fileStack" forKey:@"iconType"];
+  dataSourceUniqueIdentifier = [iconCopy dataSourceUniqueIdentifier];
+  uUIDString = [dataSourceUniqueIdentifier UUIDString];
+  [dictionary setObject:uUIDString forKey:@"fileStackIconDataSourceUniqueIdentifier"];
 
-  v7 = [v3 sortOrder];
-  v8 = [v7 identifier];
+  sortOrder = [iconCopy sortOrder];
+  identifier = [sortOrder identifier];
 
-  if (v8)
+  if (identifier)
   {
-    [v4 setObject:v8 forKey:@"fileStackIconSortOrderIdentifier"];
+    [dictionary setObject:identifier forKey:@"fileStackIconSortOrderIdentifier"];
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isCurrentSortOrderAscending")}];
-  [v4 setObject:v9 forKey:@"fileStackIconSortOrderAscending"];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(iconCopy, "isCurrentSortOrderAscending")}];
+  [dictionary setObject:v9 forKey:@"fileStackIconSortOrderAscending"];
 
-  v10 = [v3 displayMode];
-  v11 = [v10 identifier];
+  displayMode = [iconCopy displayMode];
+  identifier2 = [displayMode identifier];
 
-  if (v11)
+  if (identifier2)
   {
-    [v4 setObject:v11 forKey:@"fileStackIconDisplayModeIdentifier"];
+    [dictionary setObject:identifier2 forKey:@"fileStackIconDisplayModeIdentifier"];
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_representationForNode:(id)a3
+- (id)_representationForNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SBHIconStateArchiver *)self _representationForFolder:v4];
+    v5 = [(SBHIconStateArchiver *)self _representationForFolder:nodeCopy];
 LABEL_7:
     v6 = v5;
     goto LABEL_8;
@@ -1576,14 +1576,14 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SBHIconStateArchiver *)self _representationForList:v4];
+    v5 = [(SBHIconStateArchiver *)self _representationForList:nodeCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SBHIconStateArchiver *)self _representationForIcon:v4];
+    v5 = [(SBHIconStateArchiver *)self _representationForIcon:nodeCopy];
     goto LABEL_7;
   }
 

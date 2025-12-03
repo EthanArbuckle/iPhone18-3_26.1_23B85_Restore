@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixupTombstonedPeopleOnSharedLibraryRules
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixupTombstonedPeopleOnSharedLibraryRules
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLLibraryScope entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -17,7 +17,7 @@
 
   [v9 setFetchBatchSize:100];
   v37 = 0;
-  v11 = [v6 executeFetchRequest:v9 error:&v37];
+  v11 = [contextCopy executeFetchRequest:v9 error:&v37];
   v12 = v37;
   if (v11)
   {
@@ -59,9 +59,9 @@
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v21)
+      if (logger)
       {
         v71 = 0u;
         v72 = 0u;
@@ -134,10 +134,10 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v30 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v18;

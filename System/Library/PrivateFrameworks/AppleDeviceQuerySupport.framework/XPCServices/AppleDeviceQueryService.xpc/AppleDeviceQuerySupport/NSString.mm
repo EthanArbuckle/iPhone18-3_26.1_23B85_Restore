@@ -1,30 +1,30 @@
 @interface NSString
-+ (BOOL)isDataConvertibleToVisibleString:(id)a3;
-+ (id)hexStringFromData:(id)a3;
-+ (id)macAddressStringFromData:(id)a3;
-+ (id)macAddressStringFromSysconfigDataSixByte:(id)a3;
-+ (id)stringFromData:(id)a3;
-+ (id)visibleStringFromData:(id)a3;
++ (BOOL)isDataConvertibleToVisibleString:(id)string;
++ (id)hexStringFromData:(id)data;
++ (id)macAddressStringFromData:(id)data;
++ (id)macAddressStringFromSysconfigDataSixByte:(id)byte;
++ (id)stringFromData:(id)data;
++ (id)visibleStringFromData:(id)data;
 - (id)ccccValue;
-- (id)stringByLeftTrimmingCharacter:(char)a3;
-- (id)stringByRemovingCharactersInString:(id)a3;
-- (id)stringByRightTrimmingCharacter:(char)a3;
-- (id)stringByTrimmingCharactersInString:(id)a3;
+- (id)stringByLeftTrimmingCharacter:(char)character;
+- (id)stringByRemovingCharactersInString:(id)string;
+- (id)stringByRightTrimmingCharacter:(char)character;
+- (id)stringByTrimmingCharactersInString:(id)string;
 @end
 
 @implementation NSString
 
-+ (BOOL)isDataConvertibleToVisibleString:(id)a3
++ (BOOL)isDataConvertibleToVisibleString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = [v3 bytes];
+    bytes = [stringCopy bytes];
     v6 = [v4 length];
     if (v6)
     {
-      while (!v6[(v5 - 1)])
+      while (!v6[(bytes - 1)])
       {
         if (!--v6)
         {
@@ -33,9 +33,9 @@
       }
 
       v9 = 0;
-      while (v5[v9] >= 8)
+      while (bytes[v9] >= 8)
       {
-        v10 = v5[v9];
+        v10 = bytes[v9];
         if (v10 == 127 || (v10 - 14) <= 0x11)
         {
           break;
@@ -57,22 +57,22 @@ LABEL_6:
   return v7;
 }
 
-+ (id)stringFromData:(id)a3
++ (id)stringFromData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    if ([v4 length])
+    if ([dataCopy length])
     {
-      if ([a1 isDataConvertibleToVisibleString:v5])
+      if ([self isDataConvertibleToVisibleString:v5])
       {
-        [a1 visibleStringFromData:v5];
+        [self visibleStringFromData:v5];
       }
 
       else
       {
-        [a1 hexStringFromData:v5];
+        [self hexStringFromData:v5];
       }
       v6 = ;
     }
@@ -91,14 +91,14 @@ LABEL_6:
   return v6;
 }
 
-+ (id)visibleStringFromData:(id)a3
++ (id)visibleStringFromData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
+  dataCopy = data;
+  v4 = dataCopy;
   v8 = 0;
-  if (v3)
+  if (dataCopy)
   {
-    if ([v3 length])
+    if ([dataCopy length])
     {
       [v4 getBytes:&v8 range:{objc_msgSend(v4, "length") - 1, 1}];
       if (v8)
@@ -128,17 +128,17 @@ LABEL_6:
   return v6;
 }
 
-+ (id)hexStringFromData:(id)a3
++ (id)hexStringFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc_init(NSMutableString);
-    v5 = [v3 length];
-    v6 = [v3 bytes];
+    v5 = [dataCopy length];
+    bytes = [dataCopy bytes];
     if (v5)
     {
-      v7 = v6;
+      v7 = bytes;
       do
       {
         v8 = *v7++;
@@ -158,17 +158,17 @@ LABEL_6:
   return v4;
 }
 
-+ (id)macAddressStringFromData:(id)a3
++ (id)macAddressStringFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc_init(NSMutableString);
-    v5 = [v3 length];
-    v6 = [v3 bytes];
+    v5 = [dataCopy length];
+    bytes = [dataCopy bytes];
     if (v5)
     {
-      v7 = v6;
+      v7 = bytes;
       do
       {
         v8 = *v7++;
@@ -193,15 +193,15 @@ LABEL_6:
   return v4;
 }
 
-+ (id)macAddressStringFromSysconfigDataSixByte:(id)a3
++ (id)macAddressStringFromSysconfigDataSixByte:(id)byte
 {
-  v3 = a3;
-  if (v3)
+  byteCopy = byte;
+  if (byteCopy)
   {
     v4 = objc_alloc_init(NSMutableString);
-    if ([v3 length] <= 6)
+    if ([byteCopy length] <= 6)
     {
-      v5 = [v3 length];
+      v5 = [byteCopy length];
     }
 
     else
@@ -209,10 +209,10 @@ LABEL_6:
       v5 = 6;
     }
 
-    v6 = [v3 bytes];
+    bytes = [byteCopy bytes];
     if (v5)
     {
-      v7 = v6;
+      v7 = bytes;
       do
       {
         v8 = *v7++;
@@ -237,55 +237,55 @@ LABEL_6:
   return v4;
 }
 
-- (id)stringByRemovingCharactersInString:(id)a3
+- (id)stringByRemovingCharactersInString:(id)string
 {
-  v4 = a3;
-  v5 = self;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  selfCopy = self;
+  if (stringCopy && [stringCopy length])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 substringWithRange:{v6, 1}];
-      v8 = [(NSString *)v5 stringByReplacingOccurrencesOfString:v7 withString:&stru_100014878];
+      v7 = [stringCopy substringWithRange:{v6, 1}];
+      v8 = [(NSString *)selfCopy stringByReplacingOccurrencesOfString:v7 withString:&stru_100014878];
 
       ++v6;
-      v5 = v8;
+      selfCopy = v8;
     }
 
-    while ([v4 length] > v6);
+    while ([stringCopy length] > v6);
   }
 
   else
   {
-    v8 = v5;
+    v8 = selfCopy;
   }
 
   return v8;
 }
 
-- (id)stringByTrimmingCharactersInString:(id)a3
+- (id)stringByTrimmingCharactersInString:(id)string
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (string)
   {
-    v5 = [NSCharacterSet characterSetWithCharactersInString:a3];
-    v6 = [(NSString *)v4 stringByTrimmingCharactersInSet:v5];
+    v5 = [NSCharacterSet characterSetWithCharactersInString:string];
+    v6 = [(NSString *)selfCopy stringByTrimmingCharactersInSet:v5];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)stringByLeftTrimmingCharacter:(char)a3
+- (id)stringByLeftTrimmingCharacter:(char)character
 {
-  v4 = [(NSString *)self UTF8String];
-  v5 = strlen(v4);
+  uTF8String = [(NSString *)self UTF8String];
+  v5 = strlen(uTF8String);
   v6 = 0;
   if (v5)
   {
-    while (v4[v6] == a3)
+    while (uTF8String[v6] == character)
     {
       if (v5 == ++v6)
       {
@@ -295,23 +295,23 @@ LABEL_6:
     }
   }
 
-  v7 = [[NSString alloc] initWithBytes:&v4[v6] length:v5 - v6 encoding:4];
+  v7 = [[NSString alloc] initWithBytes:&uTF8String[v6] length:v5 - v6 encoding:4];
 
   return v7;
 }
 
-- (id)stringByRightTrimmingCharacter:(char)a3
+- (id)stringByRightTrimmingCharacter:(char)character
 {
-  v4 = [(NSString *)self UTF8String];
-  for (i = strlen(v4); i; --i)
+  uTF8String = [(NSString *)self UTF8String];
+  for (i = strlen(uTF8String); i; --i)
   {
-    if (v4[i - 1] != a3)
+    if (uTF8String[i - 1] != character)
     {
       break;
     }
   }
 
-  v6 = [[NSString alloc] initWithBytes:v4 length:i encoding:4];
+  v6 = [[NSString alloc] initWithBytes:uTF8String length:i encoding:4];
 
   return v6;
 }

@@ -7,7 +7,7 @@
 - (NSArray)iCloudMediaUsage
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(AAQuotaInfoResponse *)self usage];
   v23 = 0u;
   v24 = 0u;
@@ -42,7 +42,7 @@
         LODWORD(v18) = v12;
         v19 = [(AAUIiCloudMediaUsageInfo *)v17 initWithMediaType:v9 representativeColor:v15 bytesUsed:v18];
         [(AAUIiCloudMediaUsageInfo *)v19 setDisplayLabel:v16];
-        [v3 addObject:v19];
+        [array addObject:v19];
       }
 
       v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -51,7 +51,7 @@
     while (v5);
   }
 
-  v20 = [v3 copy];
+  v20 = [array copy];
 
   return v20;
 }

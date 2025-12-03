@@ -1,8 +1,8 @@
 @interface HSMessageProcessor
 - (HSMessageProcessor)init;
-- (int)processMessage:(id)a3 response:(id *)a4;
-- (int)processMessagev1:(id)a3 response:(id *)a4;
-- (int)rebootDevice:(id *)a3;
+- (int)processMessage:(id)message response:(id *)response;
+- (int)processMessagev1:(id)messagev1 response:(id *)response;
+- (int)rebootDevice:(id *)device;
 @end
 
 @implementation HSMessageProcessor
@@ -22,33 +22,33 @@
   return v2;
 }
 
-- (int)processMessagev1:(id)a3 response:(id *)a4
+- (int)processMessagev1:(id)messagev1 response:(id *)response
 {
-  v5 = a3;
-  if (v5)
+  messagev1Copy = messagev1;
+  if (messagev1Copy)
   {
     NSLog(@"Processing Message in v1 format");
     v6 = +[FNPluginManager sharedManager];
-    v7 = [v5 messageStr];
-    v8 = [v6 getClient:v7];
+    messageStr = [messagev1Copy messageStr];
+    v8 = [v6 getClient:messageStr];
 
-    v9 = [v5 description];
+    v9 = [messagev1Copy description];
     NSLog(@"Message : %@", v9);
 
-    [v8 sendMessage:v5 response:a4];
+    [v8 sendMessage:messagev1Copy response:response];
     v10 = 0;
   }
 
   else
   {
-    *a4 = [[HSMessageResponse alloc] initWithName:@"Error" statusCode:&off_100011F68];
+    *response = [[HSMessageResponse alloc] initWithName:@"Error" statusCode:&off_100011F68];
     v10 = 2;
   }
 
   return v10;
 }
 
-- (int)rebootDevice:(id *)a3
+- (int)rebootDevice:(id *)device
 {
   v4 = sub_100000FD8();
   v5 = dispatch_time(0, 2000000000);
@@ -57,24 +57,24 @@
   [v4 setObject:v6 forKeyedSubscript:@"Status"];
 
   [v4 setObject:&stru_1000108B0 forKeyedSubscript:@"Error"];
-  if (a3)
+  if (device)
   {
     v7 = v4;
-    *a3 = v4;
+    *device = v4;
   }
 
   return 0;
 }
 
-- (int)processMessage:(id)a3 response:(id *)a4
+- (int)processMessage:(id)message response:(id *)response
 {
-  v6 = a3;
-  v7 = v6;
+  messageCopy = message;
+  v7 = messageCopy;
   v8 = &lockdown_copy_checkin_info_ptr;
-  v94 = a4;
-  if (!a4)
+  responseCopy = response;
+  if (!response)
   {
-    v58 = v6;
+    v58 = messageCopy;
     sub_100009794();
     v95 = 0;
     v65 = 0;
@@ -85,7 +85,7 @@
     goto LABEL_26;
   }
 
-  v92 = self;
+  selfCopy = self;
   v9 = [NSNumber numberWithInt:4];
   v10 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v9, @"Status", &stru_1000108B0, @"Error", &stru_1000108B0, @"Output", 0, @"Data", 0];
 
@@ -102,14 +102,14 @@
     {
       v13 = v12;
       v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v84 = [NSString stringWithFormat:@"command = %@", v13];
-      sub_100006E34(2, @"[%@:%d] %@\n", v16, v17, v18, v19, v20, v21, v15);
+      sub_100006E34(2, @"[%@:%d] %@\n", v16, v17, v18, v19, v20, v21, lastPathComponent);
 
       if ([v13 isEqualToString:@"SepUtil"])
       {
-        v22 = v94;
-        v23 = [(HSSepUtil *)v92->_sepUtil processSepUtilCommand:v7 response:v94];
+        v22 = responseCopy;
+        v23 = [(HSSepUtil *)selfCopy->_sepUtil processSepUtilCommand:v7 response:responseCopy];
 LABEL_13:
         v26 = v23;
         v12 = v13;
@@ -119,24 +119,24 @@ LABEL_13:
       if ([v13 isEqualToString:@"GetLogs"])
       {
         v41 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-        v42 = [v41 lastPathComponent];
+        lastPathComponent2 = [v41 lastPathComponent];
         v87 = [NSString stringWithFormat:@"Start processing the %@ command", v13, 99, v84];
-        sub_100006E34(2, @"[%@:%d] %@\n", v43, v44, v45, v46, v47, v48, v42);
+        sub_100006E34(2, @"[%@:%d] %@\n", v43, v44, v45, v46, v47, v48, lastPathComponent2);
 
-        v22 = v94;
-        v23 = sub_100007360(v94);
+        v22 = responseCopy;
+        v23 = sub_100007360(responseCopy);
         goto LABEL_13;
       }
 
       if ([v13 isEqualToString:@"PerformComponentCheckReboot"])
       {
         v49 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-        v50 = [v49 lastPathComponent];
+        lastPathComponent3 = [v49 lastPathComponent];
         v88 = [NSString stringWithFormat:@"Start processing the %@ command", v13, 99, v84];
-        sub_100006E34(2, @"[%@:%d] %@\n", v51, v52, v53, v54, v55, v56, v50);
+        sub_100006E34(2, @"[%@:%d] %@\n", v51, v52, v53, v54, v55, v56, lastPathComponent3);
 
-        v22 = v94;
-        v23 = [(HSMessageProcessor *)v92 rebootDevice:v94];
+        v22 = responseCopy;
+        v23 = [(HSMessageProcessor *)selfCopy rebootDevice:responseCopy];
         goto LABEL_13;
       }
 
@@ -147,10 +147,10 @@ LABEL_13:
     else
     {
       v33 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-      v34 = [v33 lastPathComponent];
+      lastPathComponent4 = [v33 lastPathComponent];
       v86 = [NSString stringWithFormat:@"Command is not a string. This is not supported\n"];
       v26 = 4;
-      sub_100006E34(4, @"[%@:%d] %@\n", v35, v36, v37, v38, v39, v40, v34);
+      sub_100006E34(4, @"[%@:%d] %@\n", v35, v36, v37, v38, v39, v40, lastPathComponent4);
 
       [v10 setObject:@"Command is not a string. This is not supported" forKey:@"Error"];
       v13 = 0;
@@ -161,17 +161,17 @@ LABEL_13:
   {
     v8 = &lockdown_copy_checkin_info_ptr;
     v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-    v25 = [v24 lastPathComponent];
+    lastPathComponent5 = [v24 lastPathComponent];
     v85 = [NSString stringWithFormat:@"Message is not a dictionary. This is not supported\n"];
     v26 = 4;
-    sub_100006E34(4, @"[%@:%d] %@\n", v27, v28, v29, v30, v31, v32, v25);
+    sub_100006E34(4, @"[%@:%d] %@\n", v27, v28, v29, v30, v31, v32, lastPathComponent5);
 
     [v10 setObject:@"Message is not a dictionary. This is not supported" forKey:@"Error"];
     v13 = 0;
     v12 = 0;
   }
 
-  v22 = v94;
+  v22 = responseCopy;
 LABEL_14:
   v57 = *v22;
   v91 = v12;
@@ -198,9 +198,9 @@ LABEL_22:
       }
 
       v62 = [*v22 valueForKey:@"Status"];
-      v63 = [v62 integerValue];
+      integerValue = [v62 integerValue];
 
-      if (!v63)
+      if (!integerValue)
       {
         v58 = v7;
         v60 = [*v22 valueForKey:@"Data"];
@@ -225,15 +225,15 @@ LABEL_25:
   v65 = v10;
 LABEL_26:
   v66 = [v8[149] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-  v67 = [v66 lastPathComponent];
+  lastPathComponent6 = [v66 lastPathComponent];
   [v8[149] stringWithFormat:@"%s:%d %@", "-[HSMessageProcessor processMessage:response:]", 128, *v64];
   v89 = v68 = v8;
-  sub_100006E34(2, @"[%@:%d] %@\n", v69, v70, v71, v72, v73, v74, v67);
+  sub_100006E34(2, @"[%@:%d] %@\n", v69, v70, v71, v72, v73, v74, lastPathComponent6);
 
   v75 = [v8[149] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/HSMessageProcessor.m"];
-  v76 = [v75 lastPathComponent];
+  lastPathComponent7 = [v75 lastPathComponent];
   v90 = [v68[149] stringWithFormat:@"rval = %d", v26, 128, v89];
-  sub_100006E34(2, @"[%@:%d] %@\n", v77, v78, v79, v80, v81, v82, v76);
+  sub_100006E34(2, @"[%@:%d] %@\n", v77, v78, v79, v80, v81, v82, lastPathComponent7);
 
   return v26;
 }

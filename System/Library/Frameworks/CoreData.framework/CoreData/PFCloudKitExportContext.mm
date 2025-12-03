@@ -1,24 +1,24 @@
 @interface PFCloudKitExportContext
-- (BOOL)checkForObjectsNeedingExportInStore:(id)a3 andReturnCount:(unint64_t *)a4 withManagedObjectContext:(id)a5 error:(id *)a6;
-- (BOOL)processAnalyzedHistoryInStore:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (PFCloudKitExportContext)initWithOptions:(id)a3;
+- (BOOL)checkForObjectsNeedingExportInStore:(id)store andReturnCount:(unint64_t *)count withManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)processAnalyzedHistoryInStore:(id)store inManagedObjectContext:(id)context error:(id *)error;
+- (PFCloudKitExportContext)initWithOptions:(id)options;
 - (uint64_t)currentBatchExceedsThresholds:(uint64_t)result;
-- (uint64_t)insertRecordMetadataForObjectIDsInBatch:(void *)a3 inManagedObjectContext:(uint64_t)a4 withPendingTransactionNumber:(void *)a5 error:;
-- (uint64_t)modifyRecordsOperationFinishedForStore:(uint64_t)a3 withSavedRecords:(uint64_t)a4 deletedRecordIDs:(uint64_t)a5 operationError:(void *)a6 managedObjectContext:(void *)a7 error:;
+- (uint64_t)insertRecordMetadataForObjectIDsInBatch:(void *)batch inManagedObjectContext:(uint64_t)context withPendingTransactionNumber:(void *)number error:;
+- (uint64_t)modifyRecordsOperationFinishedForStore:(uint64_t)store withSavedRecords:(uint64_t)records deletedRecordIDs:(uint64_t)ds operationError:(void *)error managedObjectContext:(void *)context error:;
 - (void)dealloc;
-- (void)newOperationBySerializingDirtyObjectsInStore:(void *)a3 inManagedObjectContext:(void *)a4 error:;
+- (void)newOperationBySerializingDirtyObjectsInStore:(void *)store inManagedObjectContext:(void *)context error:;
 @end
 
 @implementation PFCloudKitExportContext
 
-- (PFCloudKitExportContext)initWithOptions:(id)a3
+- (PFCloudKitExportContext)initWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = PFCloudKitExportContext;
   v4 = [(PFCloudKitExportContext *)&v6 init];
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v4->_totalBytes = 0;
     v4->_totalRecords = 0;
     v4->_totalRecordIDs = 0;
@@ -38,7 +38,7 @@
   [(PFCloudKitExportContext *)&v3 dealloc];
 }
 
-- (BOOL)processAnalyzedHistoryInStore:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)processAnalyzedHistoryInStore:(id)store inManagedObjectContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -55,20 +55,20 @@
   v12[1] = 3221225472;
   v12[2] = __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectContext_error___block_invoke;
   v12[3] = &unk_1E6EC2808;
-  v12[4] = a3;
-  v12[5] = a4;
+  v12[4] = store;
+  v12[5] = context;
   v12[7] = &v13;
   v12[8] = &v19;
   v12[6] = self;
-  [a4 performBlockAndWait:v12];
+  [context performBlockAndWait:v12];
   if ((v20[3] & 1) == 0)
   {
     v9 = v14[5];
     if (v9)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v9;
+        *error = v9;
       }
     }
 
@@ -1426,33 +1426,33 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
   return result;
 }
 
-- (uint64_t)insertRecordMetadataForObjectIDsInBatch:(void *)a3 inManagedObjectContext:(uint64_t)a4 withPendingTransactionNumber:(void *)a5 error:
+- (uint64_t)insertRecordMetadataForObjectIDsInBatch:(void *)batch inManagedObjectContext:(uint64_t)context withPendingTransactionNumber:(void *)number error:
 {
   v50 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v30 = 0;
     goto LABEL_36;
   }
 
   v44 = 0;
-  v9 = [objc_msgSend(a2 "lastObject")];
-  if (v9)
+  superentity = [objc_msgSend(a2 "lastObject")];
+  if (superentity)
   {
-    if (atomic_load((v9 + 124)))
+    if (atomic_load((superentity + 124)))
     {
-      v11 = *(v9 + 72);
+      v11 = *(superentity + 72);
     }
 
     else
     {
       do
       {
-        v11 = v9;
-        v9 = [v9 superentity];
+        v11 = superentity;
+        superentity = [superentity superentity];
       }
 
-      while (v9);
+      while (superentity);
     }
   }
 
@@ -1463,7 +1463,7 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
 
   v12 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", [v11 name]);
   -[NSFetchRequest setPredicate:](v12, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF in %@", a2]);
-  v13 = [a3 executeFetchRequest:v12 error:&v44];
+  v13 = [batch executeFetchRequest:v12 error:&v44];
   if (!v13)
   {
     v31 = v44;
@@ -1479,7 +1479,7 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
   if (v15)
   {
     v16 = v15;
-    v37 = a5;
+    numberCopy = number;
     v17 = *v41;
     v38 = 1;
     do
@@ -1494,7 +1494,7 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
 
         v19 = *(*(&v40 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = *(a1 + 8);
+        v21 = *(self + 8);
         if (v21)
         {
           v22 = *(v21 + 8);
@@ -1506,7 +1506,7 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
         }
 
         v23 = +[PFCloudKitSerializer defaultRecordZoneIDForDatabaseScope:](PFCloudKitSerializer, "defaultRecordZoneIDForDatabaseScope:", [v22 databaseScope]);
-        v24 = *(a1 + 8);
+        v24 = *(self + 8);
         if (v24)
         {
           v25 = *(v24 + 16);
@@ -1522,7 +1522,7 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
         {
           v27 = v26;
           [v26 setNeedsUpload:1];
-          [v27 setPendingExportTransactionNumber:a4];
+          [v27 setPendingExportTransactionNumber:context];
           [v27 setPendingExportChangeTypeNumber:&unk_1EF435ED8];
         }
 
@@ -1542,17 +1542,17 @@ id __86__PFCloudKitExportContext_processAnalyzedHistoryInStore_inManagedObjectCo
     }
 
     while (v29);
-    a5 = v37;
+    number = numberCopy;
     if ((v38 & 1) == 0)
     {
 LABEL_27:
       v32 = v44;
       if (v32)
       {
-        if (a5)
+        if (number)
         {
           v30 = 0;
-          *a5 = v32;
+          *number = v32;
           goto LABEL_35;
         }
       }
@@ -1682,10 +1682,10 @@ LABEL_18:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)newOperationBySerializingDirtyObjectsInStore:(void *)a3 inManagedObjectContext:(void *)a4 error:
+- (void)newOperationBySerializingDirtyObjectsInStore:(void *)store inManagedObjectContext:(void *)context error:
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v33 = 0;
     v34 = &v33;
@@ -1710,15 +1710,15 @@ LABEL_18:
     v20[2] = __101__PFCloudKitExportContext_newOperationBySerializingDirtyObjectsInStore_inManagedObjectContext_error___block_invoke;
     v20[3] = &unk_1E6EC5390;
     v20[4] = a2;
-    v20[5] = a1;
+    v20[5] = self;
     v20[10] = &v33;
     v20[11] = &v21;
-    v20[6] = a3;
+    v20[6] = store;
     v20[7] = v8;
     v20[8] = v9;
     v20[9] = &v27;
-    [a3 performBlockAndWait:v20];
-    v10 = a1[5];
+    [store performBlockAndWait:v20];
+    v10 = self[5];
     v11 = v22[5];
     if (v11)
     {
@@ -1738,9 +1738,9 @@ LABEL_18:
       if ([(NSMutableSet *)v8->_deletedRecordIDs count]+ v14)
       {
         v13 = [objc_alloc(getCloudKitCKModifyRecordsOperationClass()) initWithRecordsToSave:v8->_records recordIDsToDelete:{-[NSMutableSet allObjects](v8->_deletedRecordIDs, "allObjects")}];
-        a1[2] += v8->_sizeInBytes;
-        a1[3] += [(NSMutableArray *)v8->_records count];
-        a1[4] += [(NSMutableSet *)v8->_deletedRecordIDs count];
+        self[2] += v8->_sizeInBytes;
+        self[3] += [(NSMutableArray *)v8->_records count];
+        self[4] += [(NSMutableSet *)v8->_deletedRecordIDs count];
       }
 
       else
@@ -1755,9 +1755,9 @@ LABEL_18:
       v15 = v28[5];
       if (v15)
       {
-        if (a4)
+        if (context)
         {
-          *a4 = v15;
+          *context = v15;
         }
       }
 
@@ -2679,26 +2679,26 @@ LABEL_170:
   return result;
 }
 
-- (BOOL)checkForObjectsNeedingExportInStore:(id)a3 andReturnCount:(unint64_t *)a4 withManagedObjectContext:(id)a5 error:(id *)a6
+- (BOOL)checkForObjectsNeedingExportInStore:(id)store andReturnCount:(unint64_t *)count withManagedObjectContext:(id)context error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v22 = 0;
-  v10 = +[NSCKRecordMetadata countRecordMetadataInStore:matchingPredicate:withManagedObjectContext:error:](NSCKRecordMetadata, a3, [MEMORY[0x1E696AE18] predicateWithFormat:@"needsUpload = YES"], a5, &v22);
+  v10 = +[NSCKRecordMetadata countRecordMetadataInStore:matchingPredicate:withManagedObjectContext:error:](NSCKRecordMetadata, store, [MEMORY[0x1E696AE18] predicateWithFormat:@"needsUpload = YES"], context, &v22);
   if (v10)
   {
-    v11 = [v10 unsignedIntegerValue];
-    v12 = +[NSCKMirroredRelationship countMirroredRelationshipsInStore:matchingPredicate:withManagedObjectContext:error:](NSCKMirroredRelationship, a3, [MEMORY[0x1E696AE18] predicateWithFormat:@"isUploaded = NO"], a5, &v22);
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    v12 = +[NSCKMirroredRelationship countMirroredRelationshipsInStore:matchingPredicate:withManagedObjectContext:error:](NSCKMirroredRelationship, store, [MEMORY[0x1E696AE18] predicateWithFormat:@"isUploaded = NO"], context, &v22);
     if (v12)
     {
-      v13 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v12 unsignedIntegerValue];
       v14 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMetadata entityPath]);
       -[NSFetchRequest setPredicate:](v14, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"needsShareUpdate = YES OR needsShareDelete = YES"]);
       [(NSFetchRequest *)v14 setResultType:4];
-      v28[0] = a3;
+      v28[0] = store;
       -[NSFetchRequest setAffectedStores:](v14, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1]);
-      if (a5)
+      if (context)
       {
-        v15 = [(NSManagedObjectContext *)a5 _countForFetchRequest_:v14 error:&v22];
+        v15 = [(NSManagedObjectContext *)context _countForFetchRequest_:v14 error:&v22];
         if (v15 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_7;
@@ -2713,11 +2713,11 @@ LABEL_170:
       v16 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMoveReceipt entityPath]);
       -[NSFetchRequest setPredicate:](v16, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"needsCloudDelete = YES"]);
       [(NSFetchRequest *)v16 setResultType:4];
-      v27 = a3;
-      -[NSFetchRequest setAffectedStores:](v16, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1]);
-      if (a5)
+      storeCopy = store;
+      -[NSFetchRequest setAffectedStores:](v16, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&storeCopy count:1]);
+      if (context)
       {
-        v17 = [(NSManagedObjectContext *)a5 _countForFetchRequest_:v16 error:&v22];
+        v17 = [(NSManagedObjectContext *)context _countForFetchRequest_:v16 error:&v22];
         if (v17 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_7;
@@ -2729,7 +2729,7 @@ LABEL_170:
         v17 = 0;
       }
 
-      *a4 = v13 + v11 + v15 + v17;
+      *count = unsignedIntegerValue2 + unsignedIntegerValue + v15 + v17;
       LOBYTE(v17) = 1;
       goto LABEL_18;
     }
@@ -2738,10 +2738,10 @@ LABEL_170:
 LABEL_7:
   if (v22)
   {
-    if (a6)
+    if (error)
     {
       LOBYTE(v17) = 0;
-      *a6 = v22;
+      *error = v22;
       goto LABEL_18;
     }
 
@@ -2777,10 +2777,10 @@ LABEL_18:
   return v17;
 }
 
-- (uint64_t)modifyRecordsOperationFinishedForStore:(uint64_t)a3 withSavedRecords:(uint64_t)a4 deletedRecordIDs:(uint64_t)a5 operationError:(void *)a6 managedObjectContext:(void *)a7 error:
+- (uint64_t)modifyRecordsOperationFinishedForStore:(uint64_t)store withSavedRecords:(uint64_t)records deletedRecordIDs:(uint64_t)ds operationError:(void *)error managedObjectContext:(void *)context error:
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v22 = 0;
     v23 = &v22;
@@ -2796,23 +2796,23 @@ LABEL_18:
     v15[1] = 3221225472;
     v15[2] = __142__PFCloudKitExportContext_modifyRecordsOperationFinishedForStore_withSavedRecords_deletedRecordIDs_operationError_managedObjectContext_error___block_invoke;
     v15[3] = &unk_1E6EC53E0;
-    v15[4] = a3;
+    v15[4] = store;
     v15[5] = a2;
     v15[9] = &v22;
     v15[10] = &v16;
-    v15[6] = a6;
-    v15[7] = a1;
-    v15[8] = a4;
-    [a6 performBlockAndWait:v15];
+    v15[6] = error;
+    v15[7] = self;
+    v15[8] = records;
+    [error performBlockAndWait:v15];
     if ((v23[3] & 1) == 0)
     {
       v11 = v17[5];
       v12 = v17[5];
       if (v12)
       {
-        if (a7)
+        if (context)
         {
-          *a7 = v12;
+          *context = v12;
         }
       }
 

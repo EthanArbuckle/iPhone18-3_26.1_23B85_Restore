@@ -11,7 +11,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 hasConfiguredFilesStackWithURL:v4];
+    v5 = [self hasConfiguredFilesStackWithURL:v4];
   }
 
   else
@@ -27,7 +27,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 addFileStackWithURL:v4];
+    [self addFileStackWithURL:v4];
   }
 }
 
@@ -36,7 +36,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 removeFileStackWithURL:v4];
+    [self removeFileStackWithURL:v4];
   }
 }
 

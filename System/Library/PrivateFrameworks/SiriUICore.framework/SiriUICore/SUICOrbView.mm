@@ -1,17 +1,17 @@
 @interface SUICOrbView
-- (SUICOrbView)initWithCoder:(id)a3;
-- (SUICOrbView)initWithFrame:(CGRect)a3;
-- (id)_from:(id)a3 getComputePipeline:(id)a4 err:(id *)a5;
-- (id)_from:(id)a3 getRenderPipeline:(id)a4 err:(id *)a5;
-- (void)_choosePhysicsRate:(int)a3;
-- (void)_commonInitWithFrame:(CGRect)a3;
+- (SUICOrbView)initWithCoder:(id)coder;
+- (SUICOrbView)initWithFrame:(CGRect)frame;
+- (id)_from:(id)_from getComputePipeline:(id)pipeline err:(id *)err;
+- (id)_from:(id)_from getRenderPipeline:(id)pipeline err:(id *)err;
+- (void)_choosePhysicsRate:(int)rate;
+- (void)_commonInitWithFrame:(CGRect)frame;
 - (void)_createNoiseTexture;
 - (void)_createSiriChipBuffer;
 - (void)_createSmoothStepTexture;
 - (void)_createSphereBuffer;
-- (void)_didSetRenderModeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)_drawSiriFrame:(id)a3;
-- (void)_drawingVeryLastFrameLogic:(id)a3;
+- (void)_didSetRenderModeFrom:(int64_t)from to:(int64_t)to;
+- (void)_drawSiriFrame:(id)frame;
+- (void)_drawingVeryLastFrameLogic:(id)logic;
 - (void)_drawingVeryLastFrameOffCompletion;
 - (void)_initCommandQueue;
 - (void)_initNoiseOffsets;
@@ -21,39 +21,39 @@
 - (void)_loadMetalPipelines;
 - (void)_loadMetalState;
 - (void)_resetDisplayLinkFramerate;
-- (void)_setMode:(int64_t)a3;
-- (void)_setupSpring:(id *)a3 withType:(unint64_t)a4 initialValue:(float)a5;
+- (void)_setMode:(int64_t)mode;
+- (void)_setupSpring:(id *)spring withType:(unint64_t)type initialValue:(float)value;
 - (void)_updateChipsSizesForOnOff;
-- (void)_updateMetalTextureRasterSize:(CGSize)a3;
-- (void)_updateRenderModeWithDelta:(float)a3;
-- (void)_updateSiriGraphicsState:(double)a3;
-- (void)_updateSiriPhysics:(float)a3;
-- (void)animateToOffWithCompletion:(id)a3;
+- (void)_updateMetalTextureRasterSize:(CGSize)size;
+- (void)_updateRenderModeWithDelta:(float)delta;
+- (void)_updateSiriGraphicsState:(double)state;
+- (void)_updateSiriPhysics:(float)physics;
+- (void)animateToOffWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)pauseAnimationAndReset;
 - (void)prewarmOrb;
-- (void)setBias:(float)a3;
-- (void)setCurrentlyShownChannel:(int)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setNumberOfChips:(int)a3;
-- (void)setPower:(float)a3;
-- (void)setPowerLevel:(float)a3;
-- (void)setScale:(float)a3;
+- (void)setBias:(float)bias;
+- (void)setCurrentlyShownChannel:(int)channel;
+- (void)setFrame:(CGRect)frame;
+- (void)setNumberOfChips:(int)chips;
+- (void)setPower:(float)power;
+- (void)setPowerLevel:(float)level;
+- (void)setScale:(float)scale;
 @end
 
 @implementation SUICOrbView
 
-- (void)_setupSpring:(id *)a3 withType:(unint64_t)a4 initialValue:(float)a5
+- (void)_setupSpring:(id *)spring withType:(unint64_t)type initialValue:(float)value
 {
   v7 = 0.0;
   v8 = 0.0;
-  if (a4 <= 3)
+  if (type <= 3)
   {
-    v7 = flt_1C435C230[a4];
-    v8 = flt_1C435C240[a4];
+    v7 = flt_1C435C230[type];
+    v8 = flt_1C435C240[type];
   }
 
-  if (a4 != 0 && self->_reduceMotion)
+  if (type != 0 && self->_reduceMotion)
   {
     v7 = v7 * 0.5;
     v9 = v8 * 0.25;
@@ -92,10 +92,10 @@
       break;
   }
 
-  a3->var0 = a5;
-  a3->var1 = 0.0;
-  a3->var2 = v9;
-  a3->var3 = v7;
+  spring->var0 = value;
+  spring->var1 = 0.0;
+  spring->var2 = v9;
+  spring->var3 = v7;
 }
 
 - (void)_initSprings
@@ -141,9 +141,9 @@
 {
   if (!self->_commandQueue)
   {
-    v3 = [(MTLDevice *)self->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
     commandQueue = self->_commandQueue;
-    self->_commandQueue = v3;
+    self->_commandQueue = newCommandQueue;
 
     v5 = self->_commandQueue;
 
@@ -151,11 +151,11 @@
   }
 }
 
-- (SUICOrbView)initWithCoder:(id)a3
+- (SUICOrbView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SUICOrbView;
-  v3 = [(SUICOrbView *)&v6 initWithCoder:a3];
+  v3 = [(SUICOrbView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -166,12 +166,12 @@
   return v4;
 }
 
-- (SUICOrbView)initWithFrame:(CGRect)a3
+- (SUICOrbView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = SUICOrbView;
   v7 = [(SUICOrbView *)&v10 initWithFrame:?];
@@ -184,16 +184,16 @@
   return v8;
 }
 
-- (void)_commonInitWithFrame:(CGRect)a3
+- (void)_commonInitWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   self->_framesPerSecond = 60;
   self->_oneOverFPS = 0.016667;
   self->_physicsRate = 0.016667;
   self->_maxPhysicsIterationsPerFrame = 1;
   self->_dynamicFramerate = 0;
-  v6 = [(SUICOrbView *)self layer:a3.origin.x];
+  v6 = [(SUICOrbView *)self layer:frame.origin.x];
   metalLayer = self->_metalLayer;
   self->_metalLayer = v6;
 
@@ -203,29 +203,29 @@
 
   if (self->_device)
   {
-    v10 = [MEMORY[0x1E69DCEB0] _carScreen];
-    v11 = v10;
-    if (v10)
+    _carScreen = [MEMORY[0x1E69DCEB0] _carScreen];
+    v11 = _carScreen;
+    if (_carScreen)
     {
-      v32 = v10;
+      v32 = _carScreen;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
-      v21 = [v20 screen];
-      v22 = v21;
-      if (v21)
+      _applicationKeyWindow = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
+      screen = [_applicationKeyWindow screen];
+      v22 = screen;
+      if (screen)
       {
-        v23 = v21;
+        mainScreen = screen;
       }
 
       else
       {
-        v23 = [MEMORY[0x1E69DCEB0] mainScreen];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
       }
 
-      v32 = v23;
+      v32 = mainScreen;
     }
 
     [v32 scale];
@@ -257,8 +257,8 @@
 
     [(SUICOrbView *)self _resetDisplayLinkFramerate];
     v30 = self->_displayLink;
-    v31 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(CADisplayLink *)v30 addToRunLoop:v31 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(CADisplayLink *)v30 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(SUICOrbView *)self _setPaused:1];
     self->_currentlyShownChannel = 0;
@@ -281,13 +281,13 @@
   }
 }
 
-- (void)_setMode:(int64_t)a3
+- (void)_setMode:(int64_t)mode
 {
   mode = self->_mode;
-  if (mode != a3)
+  if (mode != mode)
   {
-    self->_mode = a3;
-    if (a3 == 2 && mode == 1)
+    self->_mode = mode;
+    if (mode == 2 && mode == 1)
     {
       if (self->_delayUntilThinking > 0.0)
       {
@@ -297,24 +297,24 @@
       self->_delayUntilThinking = 0.1;
       self->_renderMode = 3;
       mode = 1;
-      a3 = 3;
+      mode = 3;
     }
 
     else
     {
-      self->_renderMode = a3;
+      self->_renderMode = mode;
       self->_delayUntilThinking = 0.0;
     }
 
-    [(SUICOrbView *)self _didSetRenderModeFrom:mode to:a3];
+    [(SUICOrbView *)self _didSetRenderModeFrom:mode to:mode];
   }
 }
 
-- (void)_updateRenderModeWithDelta:(float)a3
+- (void)_updateRenderModeWithDelta:(float)delta
 {
   if (self->_renderMode == 3 && self->_mode == 2)
   {
-    v3 = self->_delayUntilThinking - a3;
+    v3 = self->_delayUntilThinking - delta;
     self->_delayUntilThinking = v3;
     if (v3 <= 0.0)
     {
@@ -330,10 +330,10 @@
   }
 }
 
-- (void)_didSetRenderModeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)_didSetRenderModeFrom:(int64_t)from to:(int64_t)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a4 == 2)
+  if (to == 2)
   {
     self->_startingThinkingModeNow = 1;
     self->_powerLevel = 0.0;
@@ -346,7 +346,7 @@ LABEL_10:
       {
         v8 = MEMORY[0x1E696AD98];
         v9 = v7;
-        v10 = [v8 numberWithInteger:a4];
+        v10 = [v8 numberWithInteger:to];
         v12 = 136315394;
         v13 = "[SUICOrbView _didSetRenderModeFrom:to:]";
         v14 = 2112;
@@ -361,28 +361,28 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!to)
   {
     self->_powerLevel = 0.0;
   }
 
-  if (a3 == 2 && self->_reduceThinkingModeFramerate)
+  if (from == 2 && self->_reduceThinkingModeFramerate)
   {
     [(SUICOrbView *)self _endReducedFramerateForPerf];
   }
 
-  if (a4)
+  if (to)
   {
     goto LABEL_10;
   }
 
 LABEL_14:
-  if (!a3 && self->_device)
+  if (!from && self->_device)
   {
     [(SUICOrbView *)self _setPaused:0];
     [(CAMetalLayer *)self->_metalLayer discardContents];
     [(SUICOrbView *)self _initCommandQueue];
-    if (a4 == 1)
+    if (to == 1)
     {
       [*MEMORY[0x1E69DDA98] finishedIPTest:@"SiriBringupToFlamesListening"];
     }
@@ -412,12 +412,12 @@ LABEL_14:
   blurMaskTexture = self->_blurMaskTexture;
   self->_blurMaskTexture = 0;
 
-  v7 = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
+  v8 = [colorAttachments objectAtIndexedSubscript:0];
   [v8 setResolveTexture:0];
 
-  v9 = [(MTLRenderPassDescriptor *)self->_sphereMaskRenderPassDesc colorAttachments];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  colorAttachments2 = [(MTLRenderPassDescriptor *)self->_sphereMaskRenderPassDesc colorAttachments];
+  v10 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v10 setTexture:0];
 
   self->_reallocTextures = 1;
@@ -440,10 +440,10 @@ LABEL_14:
   }
 }
 
-- (void)animateToOffWithCompletion:(id)a3
+- (void)animateToOffWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
@@ -452,23 +452,23 @@ LABEL_14:
     _os_log_impl(&dword_1C432B000, v5, OS_LOG_TYPE_DEFAULT, "%s #orbCompletion setting completion", &v8, 0xCu);
   }
 
-  v6 = MEMORY[0x1C6937B00](v4);
+  v6 = MEMORY[0x1C6937B00](completionCopy);
   offCompletion = self->_offCompletion;
   self->_offCompletion = v6;
 
   [(SUICOrbView *)self _setMode:0];
 }
 
-- (void)setPowerLevel:(float)a3
+- (void)setPowerLevel:(float)level
 {
   renderMode = self->_renderMode;
   if (renderMode == 3)
   {
-    v7 = [(SUICOrbView *)self suppressTTSAnimations];
+    suppressTTSAnimations = [(SUICOrbView *)self suppressTTSAnimations];
     v6 = 0.0;
-    if (!v7)
+    if (!suppressTTSAnimations)
     {
-      *&v6 = a3;
+      *&v6 = level;
       [SUICAudioPowerLevelLinearConverter linearValueForOutputPowerLevel:v6];
     }
   }
@@ -480,7 +480,7 @@ LABEL_14:
       return;
     }
 
-    [SUICAudioPowerLevelLinearConverter linearValueForInputPowerLevel:*&a3];
+    [SUICAudioPowerLevelLinearConverter linearValueForInputPowerLevel:*&level];
   }
 
   self->_powerLevel = *&v6;
@@ -488,19 +488,19 @@ LABEL_14:
 
 - (void)prewarmOrb
 {
-  v5 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v3 = [v5 renderCommandEncoderWithDescriptor:self->_siriChipRenderPassDesc];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v3 = [commandBuffer renderCommandEncoderWithDescriptor:self->_siriChipRenderPassDesc];
   [v3 endEncoding];
-  v4 = [v5 renderCommandEncoderWithDescriptor:self->_sphereMaskRenderPassDesc];
+  v4 = [commandBuffer renderCommandEncoderWithDescriptor:self->_sphereMaskRenderPassDesc];
 
   [v4 endEncoding];
-  [v5 commit];
+  [commandBuffer commit];
 }
 
-- (id)_from:(id)a3 getRenderPipeline:(id)a4 err:(id *)a5
+- (id)_from:(id)_from getRenderPipeline:(id)pipeline err:(id *)err
 {
   v10 = 0;
-  v6 = [a3 newRenderPipelineStateWithName:a4 options:0 reflection:0 error:&v10];
+  v6 = [_from newRenderPipelineStateWithName:pipeline options:0 reflection:0 error:&v10];
   v7 = v10;
   if (v7)
   {
@@ -515,16 +515,16 @@ LABEL_14:
   if (v8)
   {
     v7 = v7;
-    *a5 = v7;
+    *err = v7;
   }
 
   return v6;
 }
 
-- (id)_from:(id)a3 getComputePipeline:(id)a4 err:(id *)a5
+- (id)_from:(id)_from getComputePipeline:(id)pipeline err:(id *)err
 {
   v10 = 0;
-  v6 = [a3 newComputePipelineStateWithName:a4 options:0 reflection:0 error:&v10];
+  v6 = [_from newComputePipelineStateWithName:pipeline options:0 reflection:0 error:&v10];
   v7 = v10;
   if (v7)
   {
@@ -539,7 +539,7 @@ LABEL_14:
   if (v8)
   {
     v7 = v7;
-    *a5 = v7;
+    *err = v7;
   }
 
   return v6;
@@ -549,39 +549,39 @@ LABEL_14:
 {
   OUTLINED_FUNCTION_4();
   v2 = v1;
-  v3 = [OUTLINED_FUNCTION_2_0() label];
+  label = [OUTLINED_FUNCTION_2_0() label];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1(&dword_1C432B000, v4, v5, "%s Failed to create %@ pipeline state, error %@", v6, v7, v8, v9, 2u);
 }
 
 - (void)_loadMetalState
 {
-  v3 = [MEMORY[0x1E6974128] renderPassDescriptor];
+  renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
   siriChipRenderPassDesc = self->_siriChipRenderPassDesc;
-  self->_siriChipRenderPassDesc = v3;
+  self->_siriChipRenderPassDesc = renderPassDescriptor;
 
-  v5 = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
+  v6 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v6 setLoadAction:2];
   [v6 setStoreAction:2];
   [v6 setClearColor:{0.0, 0.0, 0.0, 0.0}];
-  v7 = [MEMORY[0x1E6974128] renderPassDescriptor];
+  renderPassDescriptor2 = [MEMORY[0x1E6974128] renderPassDescriptor];
   sphereMaskRenderPassDesc = self->_sphereMaskRenderPassDesc;
-  self->_sphereMaskRenderPassDesc = v7;
+  self->_sphereMaskRenderPassDesc = renderPassDescriptor2;
 
-  v9 = [(MTLRenderPassDescriptor *)self->_sphereMaskRenderPassDesc colorAttachments];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  colorAttachments2 = [(MTLRenderPassDescriptor *)self->_sphereMaskRenderPassDesc colorAttachments];
+  v10 = [colorAttachments2 objectAtIndexedSubscript:0];
 
   [v10 setLoadAction:2];
   [v10 setStoreAction:1];
   [v10 setClearColor:{0.0, 0.0, 0.0, 0.0}];
-  v11 = [MEMORY[0x1E6974128] renderPassDescriptor];
+  renderPassDescriptor3 = [MEMORY[0x1E6974128] renderPassDescriptor];
   finalRenderPassDesc = self->_finalRenderPassDesc;
-  self->_finalRenderPassDesc = v11;
+  self->_finalRenderPassDesc = renderPassDescriptor3;
 
-  v13 = [(MTLRenderPassDescriptor *)self->_finalRenderPassDesc colorAttachments];
-  v16 = [v13 objectAtIndexedSubscript:0];
+  colorAttachments3 = [(MTLRenderPassDescriptor *)self->_finalRenderPassDesc colorAttachments];
+  v16 = [colorAttachments3 objectAtIndexedSubscript:0];
 
   [v16 setLoadAction:2];
   [v16 setStoreAction:2];
@@ -617,13 +617,13 @@ LABEL_14:
   self->_sphereGeom = v8;
 
   [(MTLBuffer *)self->_sphereGeom setLabel:@"sphere"];
-  v10 = [(MTLBuffer *)self->_sphereGeom contents];
+  contents = [(MTLBuffer *)self->_sphereGeom contents];
   if (v5 < 0)
   {
     goto LABEL_17;
   }
 
-  v11 = v10;
+  v11 = contents;
   v12 = 0;
   v13 = 0;
   v14 = 3.14159265 / v5;
@@ -706,12 +706,12 @@ LABEL_17:
   siriChipGeom = self->_siriChipGeom;
   self->_siriChipGeom = v3;
 
-  v5 = [(MTLBuffer *)self->_siriChipGeom contents];
+  contents = [(MTLBuffer *)self->_siriChipGeom contents];
   v6 = 0;
-  *v5 = xmmword_1C435C1C0;
-  *(v5 + 32) = 0;
-  *(v5 + 40) = 0;
-  v7 = (v5 + 88);
+  *contents = xmmword_1C435C1C0;
+  *(contents + 32) = 0;
+  *(contents + 40) = 0;
+  v7 = (contents + 88);
   do
   {
     v8 = v6 / 100.0 * 3.14159265 + v6 / 100.0 * 3.14159265;
@@ -733,22 +733,22 @@ LABEL_17:
   while (v6 != 100);
   v18 = 0;
   v19 = xmmword_1C435BBB0;
-  *(v5 + 16) = xmmword_1C435BBB0;
+  *(contents + 16) = xmmword_1C435BBB0;
   v20 = 64;
   do
   {
-    *v19.i64 = _calculateChipNormal(v5, v18 + 2, v18, v19, *v17.i64, v14, v15, v9, v10, v11, v12);
-    *(v5 + v20) = v19;
+    *v19.i64 = _calculateChipNormal(contents, v18 + 2, v18, v19, *v17.i64, v14, v15, v9, v10, v11, v12);
+    *(contents + v20) = v19;
     ++v18;
     v20 += 48;
   }
 
   while (v18 != 99);
-  *v21.i64 = _calculateChipNormal(v5, 1, 99, v19, *v17.i64, v14, v15, v9, v10, v11, v12);
-  *(v5 + 4816) = v21;
-  *&v29 = _calculateChipNormal(v5, 2, 100, v21, v22, v23, v24, v25, v26, v27, v28);
-  *(v5 + 64) = v29;
-  v30 = v5 + self->_chipIndexBufferOffset;
+  *v21.i64 = _calculateChipNormal(contents, 1, 99, v19, *v17.i64, v14, v15, v9, v10, v11, v12);
+  *(contents + 4816) = v21;
+  *&v29 = _calculateChipNormal(contents, 2, 100, v21, v22, v23, v24, v25, v26, v27, v28);
+  *(contents + 64) = v29;
+  v30 = contents + self->_chipIndexBufferOffset;
   chipNumIndexes = self->_chipNumIndexes;
   v32 = (chipNumIndexes - 1);
   if (chipNumIndexes >= 2)
@@ -1038,12 +1038,12 @@ LABEL_44:
   self->_averageChipSize = 1.0;
 }
 
-- (void)_updateSiriPhysics:(float)a3
+- (void)_updateSiriPhysics:(float)physics
 {
-  self->_time = self->_time + a3;
+  self->_time = self->_time + physics;
   if (self->_renderMode != self->_mode)
   {
-    [(SUICOrbView *)self _updateRenderModeWithDelta:*&a3];
+    [(SUICOrbView *)self _updateRenderModeWithDelta:*&physics];
   }
 
   [(SUICOrbView *)self _updateChipsSizesForOnOff];
@@ -1556,14 +1556,14 @@ LABEL_127:
   v89 = self->_energySpring.value;
   if (v89 <= 1.33)
   {
-    v91 = a3;
+    physicsCopy2 = physics;
   }
 
   else
   {
     v90 = (v89 + -1.33) * 10.0;
-    v91 = a3;
-    v88 = v88 + v90 * a3;
+    physicsCopy2 = physics;
+    v88 = v88 + v90 * physics;
   }
 
   v92 = 1.0;
@@ -1572,14 +1572,14 @@ LABEL_127:
     v92 = 10.0;
   }
 
-  v93 = v88 + ((v92 * self->_volumeSpring.value) * a3);
+  v93 = v88 + ((v92 * self->_volumeSpring.value) * physics);
   v94 = fmaxf(self->_onSpring.curVelocity, 0.0);
   averageChipSize = self->_averageChipSize;
   v96 = v93 + v94 * 20.0 * averageChipSize;
   v97 = v96 + v85 * 4.0 * averageChipSize;
   v98 = v97 + v86 * 4.0;
   v99 = v98 + v87 * 4.0;
-  v100 = v91 * 25.0;
+  v100 = physicsCopy2 * 25.0;
   if (v100 < v99)
   {
     v101 = v100;
@@ -1645,7 +1645,7 @@ LABEL_150:
   self->_frameEnergy = v103;
 }
 
-- (void)_updateSiriGraphicsState:(double)a3
+- (void)_updateSiriGraphicsState:(double)state
 {
   uniformBufferAddress = self->_uniformBufferAddress;
   v5 = *&self->_anon_2a0[48];
@@ -1675,9 +1675,9 @@ LABEL_150:
     *&v8 = *&v8;
   }
 
-  v12 = a3;
+  stateCopy = state;
   v13.i32[3] = 0;
-  v14 = vaddq_f32(*&self->_anon_2e0[64], vmlaq_n_f32(vdupq_lane_s32(*&v8, 0), xmmword_1C435C200, v12));
+  v14 = vaddq_f32(*&self->_anon_2e0[64], vmlaq_n_f32(vdupq_lane_s32(*&v8, 0), xmmword_1C435C200, stateCopy));
   *&self->_anon_2e0[64] = v14;
   if (v14.f32[0] > 2.0)
   {
@@ -1709,7 +1709,7 @@ LABEL_150:
 
   anon_2e0 = self->_anon_2e0;
   v17 = 0;
-  v18 = a3 * 1.25663706;
+  v18 = state * 1.25663706;
   v19 = v18 + (self->_sinTime * ((v18 * 4.0) - v18));
   if (self->_reduceMotion)
   {
@@ -1728,7 +1728,7 @@ LABEL_150:
 
   *(uniformBufferAddress + 232) = LOWORD(_S3);
   self->_thinkRotation = v20;
-  v27 = a3 * 0.7;
+  v27 = state * 0.7;
   v28 = v27 + self->_rotationEnergy * 0.5;
   v29 = (((v27 * 8.0) * self->_thinkingSpring.value) + ((1.0 - self->_thinkingSpring.value) * v28)) * ((1.0 - self->_speakingSpring.value) + (self->_speakingSpring.value * 0.5));
   if (!_ZF)
@@ -1937,10 +1937,10 @@ LABEL_150:
   v71[28] = *(anon_2e0 + 4);
 }
 
-- (void)_drawingVeryLastFrameLogic:(id)a3
+- (void)_drawingVeryLastFrameLogic:(id)logic
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  logicCopy = logic;
   [(SUICOrbView *)self _setPaused:1];
   [(CAMetalLayer *)self->_metalLayer removeBackBuffers];
   objc_initWeak(&location, self);
@@ -1953,14 +1953,14 @@ LABEL_150:
     _os_log_impl(&dword_1C432B000, v6, OS_LOG_TYPE_DEFAULT, "%s #orbCompletion drawing  last frame", buf, 0xCu);
   }
 
-  if (v4)
+  if (logicCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__SUICOrbView__drawingVeryLastFrameLogic___block_invoke;
     v9[3] = &unk_1E81E8190;
     objc_copyWeak(&v10, &location);
-    [v4 addCompletedHandler:v9];
+    [logicCopy addCompletedHandler:v9];
     objc_destroyWeak(&v10);
   }
 
@@ -2027,9 +2027,9 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
   }
 }
 
-- (void)_drawSiriFrame:(id)a3
+- (void)_drawSiriFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if (self->_resetOnNextFrame)
   {
     self->_resetOnNextFrame = 0;
@@ -2050,9 +2050,9 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
     [(SUICOrbView *)self _updateDynamicBufferState];
     if (self->_dynamicFramerate)
     {
-      [v4 targetTimestamp];
+      [frameCopy targetTimestamp];
       v9 = v8;
-      [v4 timestamp];
+      [frameCopy timestamp];
       v11 = v9 - v10;
       maxPhysicsIterationsPerFrame = (v11 / self->_physicsRate + 0.5);
       if (self->_maxPhysicsIterationsPerFrame < maxPhysicsIterationsPerFrame)
@@ -2097,12 +2097,12 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
 
   if ([(CAMetalLayer *)self->_metalLayer isDrawableAvailable])
   {
-    v18 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    if (v18)
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    if (commandBuffer)
     {
-      v19 = v18;
-      v44 = v4;
-      [v18 setLabel:@"Siri Chips"];
+      v19 = commandBuffer;
+      v44 = frameCopy;
+      [commandBuffer setLabel:@"Siri Chips"];
       v20 = [v19 renderCommandEncoderWithDescriptor:self->_siriChipRenderPassDesc];
       [v20 setLabel:@"Chips"];
       [v20 setCullMode:1];
@@ -2120,20 +2120,20 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
       [v20 endEncoding];
       [v19 commit];
       [v19 waitUntilScheduled];
-      v21 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      commandBuffer2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
-      [v21 setLabel:@"Siri Blur"];
+      [commandBuffer2 setLabel:@"Siri Blur"];
       mpsBlur = self->_mpsBlur;
       v50 = *&self->_mpsChipBlurOffset.x;
       z = self->_mpsChipBlurOffset.z;
       [(MPSImageGaussianBlur *)mpsBlur setOffset:&v50];
-      [(MPSImageGaussianBlur *)self->_mpsBlur encodeToCommandBuffer:v21 sourceTexture:self->_siriChipsTexture destinationTexture:self->_blurChipsTexture];
-      [v21 commit];
-      [v21 waitUntilScheduled];
-      v23 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      [(MPSImageGaussianBlur *)self->_mpsBlur encodeToCommandBuffer:commandBuffer2 sourceTexture:self->_siriChipsTexture destinationTexture:self->_blurChipsTexture];
+      [commandBuffer2 commit];
+      [commandBuffer2 waitUntilScheduled];
+      commandBuffer3 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
-      [v23 setLabel:@"Siri Mask"];
-      v24 = [v23 renderCommandEncoderWithDescriptor:self->_sphereMaskRenderPassDesc];
+      [commandBuffer3 setLabel:@"Siri Mask"];
+      v24 = [commandBuffer3 renderCommandEncoderWithDescriptor:self->_sphereMaskRenderPassDesc];
       [v24 setLabel:@"Mask"];
       [v24 setRenderPipelineState:self->_sphereMaskPipeline];
       [v24 setVertexBuffer:self->_sphereGeom offset:0 atIndex:0];
@@ -2148,22 +2148,22 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
       v50 = 0uLL;
       z = 0;
       [(MPSImageGaussianBlur *)v25 setOffset:&v50];
-      [(MPSImageGaussianBlur *)self->_mpsBlur encodeToCommandBuffer:v23 sourceTexture:self->_sphereMaskTexture destinationTexture:self->_blurMaskTexture];
-      [v23 commit];
-      v26 = [(CAMetalLayer *)self->_metalLayer nextDrawable];
-      v27 = v26;
-      if (v26)
+      [(MPSImageGaussianBlur *)self->_mpsBlur encodeToCommandBuffer:commandBuffer3 sourceTexture:self->_sphereMaskTexture destinationTexture:self->_blurMaskTexture];
+      [commandBuffer3 commit];
+      nextDrawable = [(CAMetalLayer *)self->_metalLayer nextDrawable];
+      v27 = nextDrawable;
+      if (nextDrawable)
       {
-        v43 = v26;
-        v28 = [v26 texture];
-        v29 = [(MTLRenderPassDescriptor *)self->_finalRenderPassDesc colorAttachments];
-        v30 = [v29 objectAtIndexedSubscript:0];
-        [v30 setResolveTexture:v28];
+        v43 = nextDrawable;
+        texture = [nextDrawable texture];
+        colorAttachments = [(MTLRenderPassDescriptor *)self->_finalRenderPassDesc colorAttachments];
+        v30 = [colorAttachments objectAtIndexedSubscript:0];
+        [v30 setResolveTexture:texture];
 
-        v31 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+        commandBuffer4 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
-        [v31 setLabel:@"Siri Composite"];
-        v32 = [v31 renderCommandEncoderWithDescriptor:self->_finalRenderPassDesc];
+        [commandBuffer4 setLabel:@"Siri Composite"];
+        v32 = [commandBuffer4 renderCommandEncoderWithDescriptor:self->_finalRenderPassDesc];
         [v32 setLabel:@"Composite"];
         [v32 setVertexBytes:&self->_bubbleDrawnSize length:4 atIndex:0];
         *&v50 = (1.0 - self->_thinkingSpring.value) + (self->_thinkingSpring.value + self->_thinkingSpring.value);
@@ -2207,21 +2207,21 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
         [v32 drawPrimitives:3 vertexStart:0 vertexCount:3];
         [v32 endEncoding];
         v27 = v43;
-        [v31 presentDrawable:v43];
+        [commandBuffer4 presentDrawable:v43];
         if (self->_drawingVeryLastFrame)
         {
-          [(SUICOrbView *)self _drawingVeryLastFrameLogic:v31];
+          [(SUICOrbView *)self _drawingVeryLastFrameLogic:commandBuffer4];
         }
 
-        [v31 commit];
+        [commandBuffer4 commit];
       }
 
       else
       {
-        v31 = v23;
+        commandBuffer4 = commandBuffer3;
       }
 
-      v4 = v44;
+      frameCopy = v44;
     }
 
     else
@@ -2240,33 +2240,33 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v9.receiver = self;
   v9.super_class = SUICOrbView;
-  [(SUICOrbView *)&v9 setFrame:a3.origin.x, a3.origin.y];
+  [(SUICOrbView *)&v9 setFrame:frame.origin.x, frame.origin.y];
   if (self->_device)
   {
-    v6 = [(SUICOrbView *)self layer];
-    [v6 contentsScale];
+    layer = [(SUICOrbView *)self layer];
+    [layer contentsScale];
     v8 = v7;
 
     [(SUICOrbView *)self _updateMetalTextureRasterSize:width * v8, height * v8];
   }
 }
 
-- (void)_updateMetalTextureRasterSize:(CGSize)a3
+- (void)_updateMetalTextureRasterSize:(CGSize)size
 {
   v3.i32[0] = 0;
-  width = a3.width;
-  height = a3.height;
-  v8.i32[0] = a3.width;
-  v8.i32[1] = a3.height;
-  v4.i32[0] = a3.height;
+  width = size.width;
+  height = size.height;
+  v8.i32[0] = size.width;
+  v8.i32[1] = size.height;
+  v4.i32[0] = size.height;
   v9 = COERCE_DOUBLE(vshl_u32(v8, vdup_lane_s32(vand_s8(vcgt_s32(v3, v4), 0x100000001), 0)));
-  if (a3.height > 254)
+  if (size.height > 254)
   {
     v9 = *&v8;
   }
@@ -2275,22 +2275,22 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
   v56 = v9;
   if (height <= 254)
   {
-    v10 = a3.width + a3.width;
+    v10 = size.width + size.width;
   }
 
   else
   {
-    v10 = a3.width;
+    v10 = size.width;
   }
 
   if (height <= 254)
   {
-    v11 = a3.height + a3.height;
+    v11 = size.height + size.height;
   }
 
   else
   {
-    v11 = a3.height;
+    v11 = size.height;
   }
 
   [(CAMetalLayer *)self->_metalLayer setDrawableSize:v10, v11];
@@ -2406,34 +2406,34 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
 
     [(MTLTexture *)self->_blurChipsTexture setLabel:@"blurred chips"];
     v44 = self->_siriChipsTextureMSAA;
-    v45 = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
-    v46 = [v45 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
+    v46 = [colorAttachments objectAtIndexedSubscript:0];
     [v46 setTexture:v44];
 
     v47 = self->_siriChipsTexture;
-    v48 = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_siriChipRenderPassDesc colorAttachments];
+    v49 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v49 setResolveTexture:v47];
 
     v50 = self->_sphereMaskTexture;
-    v51 = [(MTLRenderPassDescriptor *)self->_sphereMaskRenderPassDesc colorAttachments];
-    v52 = [v51 objectAtIndexedSubscript:0];
+    colorAttachments3 = [(MTLRenderPassDescriptor *)self->_sphereMaskRenderPassDesc colorAttachments];
+    v52 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v52 setTexture:v50];
 
     v53 = self->_compositeTextureMSAA;
-    v57 = [(MTLRenderPassDescriptor *)self->_finalRenderPassDesc colorAttachments];
-    v54 = [v57 objectAtIndexedSubscript:0];
+    colorAttachments4 = [(MTLRenderPassDescriptor *)self->_finalRenderPassDesc colorAttachments];
+    v54 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v54 setTexture:v53];
   }
 }
 
-- (void)_choosePhysicsRate:(int)a3
+- (void)_choosePhysicsRate:(int)rate
 {
   v12 = *MEMORY[0x1E69E9840];
-  self->_framesPerSecond = a3;
+  self->_framesPerSecond = rate;
   v5 = *MEMORY[0x1E698D0A0];
   v6 = os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT);
-  if (a3 == 30)
+  if (rate == 30)
   {
     if (v6)
     {
@@ -2448,7 +2448,7 @@ void __49__SUICOrbView__drawingVeryLastFrameOffCompletion__block_invoke(uint64_t
     goto LABEL_9;
   }
 
-  if (a3 == 60)
+  if (rate == 60)
   {
     if (v6)
     {
@@ -2553,73 +2553,73 @@ LABEL_13:
   self->_offCompletion = 0;
 }
 
-- (void)setNumberOfChips:(int)a3
+- (void)setNumberOfChips:(int)chips
 {
-  if (a3 >= 6)
+  if (chips >= 6)
   {
-    v3 = 6;
+    chipsCopy = 6;
   }
 
   else
   {
-    v3 = a3;
+    chipsCopy = chips;
   }
 
-  if (v3 <= 1)
+  if (chipsCopy <= 1)
   {
-    v3 = 1;
+    chipsCopy = 1;
   }
 
-  if (v3 != self->_numberOfChips)
+  if (chipsCopy != self->_numberOfChips)
   {
-    self->_numberOfChips = v3;
+    self->_numberOfChips = chipsCopy;
   }
 }
 
-- (void)setCurrentlyShownChannel:(int)a3
+- (void)setCurrentlyShownChannel:(int)channel
 {
-  if ((a3 & 0x80000000) == 0 && self->_currentlyShownChannel != a3)
+  if ((channel & 0x80000000) == 0 && self->_currentlyShownChannel != channel)
   {
-    self->_currentlyShownChannel = a3;
+    self->_currentlyShownChannel = channel;
   }
 }
 
-- (void)setBias:(float)a3
+- (void)setBias:(float)bias
 {
-  if (a3 > 3.0)
+  if (bias > 3.0)
   {
-    a3 = 3.0;
+    bias = 3.0;
   }
 
-  v3 = fmaxf(a3, -1.0);
+  v3 = fmaxf(bias, -1.0);
   if (v3 != self->_bias)
   {
     self->_bias = v3;
   }
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
-  if (a3 > 3.0)
+  if (scale > 3.0)
   {
-    a3 = 3.0;
+    scale = 3.0;
   }
 
-  v3 = fmaxf(a3, -1.0);
+  v3 = fmaxf(scale, -1.0);
   if (v3 != self->_scale)
   {
     self->_scale = v3;
   }
 }
 
-- (void)setPower:(float)a3
+- (void)setPower:(float)power
 {
-  if (a3 > 3.0)
+  if (power > 3.0)
   {
-    a3 = 3.0;
+    power = 3.0;
   }
 
-  v3 = fmaxf(a3, -1.0);
+  v3 = fmaxf(power, -1.0);
   if (v3 != self->_power)
   {
     self->_power = v3;

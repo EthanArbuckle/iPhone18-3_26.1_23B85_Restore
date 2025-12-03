@@ -7,24 +7,24 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(BPSWatchViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(BPSWatchViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(BPSWatchViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(BPSWatchViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(BPSWatchViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(BPSWatchViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
     [(BPSWatchViewAccessibility *)self accessibilityUserDefinedLabel];
   }

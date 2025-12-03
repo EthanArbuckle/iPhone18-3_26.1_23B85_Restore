@@ -1,9 +1,9 @@
 @interface TTKSimpleKeyboardPlane
-+ (float)keyplaneHeightForKeys:(id)a3;
-+ (float)keyplaneWidthForKeys:(id)a3;
-- (TTKSimpleKeyboardPlane)initWithJsonDictionary:(id)a3;
-- (TTKSimpleKeyboardPlane)initWithName:(id)a3 keys:(id)a4;
-- (TTKSimpleKeyboardPlane)initWithTIKeyboardLayout:(id)a3;
++ (float)keyplaneHeightForKeys:(id)keys;
++ (float)keyplaneWidthForKeys:(id)keys;
+- (TTKSimpleKeyboardPlane)initWithJsonDictionary:(id)dictionary;
+- (TTKSimpleKeyboardPlane)initWithName:(id)name keys:(id)keys;
+- (TTKSimpleKeyboardPlane)initWithTIKeyboardLayout:(id)layout;
 - (float)keyboardWidth;
 - (id)keyboardOrientation;
 - (id)toJsonDictionary;
@@ -14,13 +14,13 @@
 - (id)keyboardOrientation
 {
   v3 = objc_opt_class();
-  v4 = [(TTKSimpleKeyboardPlane *)self keys];
-  [v3 keyplaneWidthForKeys:v4];
+  keys = [(TTKSimpleKeyboardPlane *)self keys];
+  [v3 keyplaneWidthForKeys:keys];
   v6 = v5;
 
   v7 = objc_opt_class();
-  v8 = [(TTKSimpleKeyboardPlane *)self keys];
-  [v7 keyplaneHeightForKeys:v8];
+  keys2 = [(TTKSimpleKeyboardPlane *)self keys];
+  [v7 keyplaneHeightForKeys:keys2];
   v10 = v9;
 
   v11 = 0;
@@ -54,8 +54,8 @@
 - (float)keyboardWidth
 {
   v3 = objc_opt_class();
-  v4 = [(TTKSimpleKeyboardPlane *)self keys];
-  [v3 keyplaneWidthForKeys:v4];
+  keys = [(TTKSimpleKeyboardPlane *)self keys];
+  [v3 keyplaneWidthForKeys:keys];
   v6 = v5;
 
   if (v6 > 317.0 && v6 < 323.0)
@@ -88,9 +88,9 @@
 - (id)toJsonDictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->_name forKeyedSubscript:@"name"];
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_name forKeyedSubscript:@"name"];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -110,8 +110,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) toJsonDictionary];
-        [v4 addObject:v10];
+        toJsonDictionary = [*(*(&v12 + 1) + 8 * i) toJsonDictionary];
+        [array addObject:toJsonDictionary];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -120,26 +120,26 @@
     while (v7);
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"keys"];
+  [dictionary setObject:array forKeyedSubscript:@"keys"];
 
-  return v3;
+  return dictionary;
 }
 
-- (TTKSimpleKeyboardPlane)initWithJsonDictionary:(id)a3
+- (TTKSimpleKeyboardPlane)initWithJsonDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = TTKSimpleKeyboardPlane;
   v5 = [(TTKSimpleKeyboardPlane *)&v20 init];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v5)
   {
-    v7 = [v4 objectForKey:@"name"];
+    v7 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v7;
 
-    v9 = [v4 objectForKey:@"keys"];
+    v9 = [dictionaryCopy objectForKey:@"keys"];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -160,7 +160,7 @@
           }
 
           v14 = [[TTKSimpleKey alloc] initWithJsonDictionary:*(*(&v16 + 1) + 8 * v13)];
-          [v6 addObject:v14];
+          [array addObject:v14];
 
           ++v13;
         }
@@ -172,44 +172,44 @@
       while (v11);
     }
 
-    objc_storeStrong(&v5->_keys, v6);
+    objc_storeStrong(&v5->_keys, array);
   }
 
   return v5;
 }
 
-- (TTKSimpleKeyboardPlane)initWithName:(id)a3 keys:(id)a4
+- (TTKSimpleKeyboardPlane)initWithName:(id)name keys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  keysCopy = keys;
   v12.receiver = self;
   v12.super_class = TTKSimpleKeyboardPlane;
   v9 = [(TTKSimpleKeyboardPlane *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_keys, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_keys, keys);
   }
 
   return v10;
 }
 
-- (TTKSimpleKeyboardPlane)initWithTIKeyboardLayout:(id)a3
+- (TTKSimpleKeyboardPlane)initWithTIKeyboardLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__718;
   v23 = __Block_byref_object_dispose__719;
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke;
   v18[3] = &unk_279DA06B8;
   v18[4] = &v19;
-  [v4 enumerateKeysUsingBlock:v18];
+  [layoutCopy enumerateKeysUsingBlock:v18];
   v17.receiver = self;
   v17.super_class = TTKSimpleKeyboardPlane;
   v5 = [(TTKSimpleKeyboardPlane *)&v17 init];
@@ -218,14 +218,14 @@
   {
     objc_storeStrong(&v5->_keys, v20[5]);
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(TTKSimpleKeyboardPlane *)v6 keyboardOrientation];
+    keyboardOrientation = [(TTKSimpleKeyboardPlane *)v6 keyboardOrientation];
     v9 = MEMORY[0x277CCABB0];
     [objc_opt_class() keyplaneWidthForKeys:v6->_keys];
     v10 = [v9 numberWithFloat:?];
     v11 = MEMORY[0x277CCABB0];
     [objc_opt_class() keyplaneHeightForKeys:v6->_keys];
     v12 = [v11 numberWithFloat:?];
-    v13 = [v7 stringWithFormat:@"%@_%@_%@", v8, v10, v12];
+    v13 = [v7 stringWithFormat:@"%@_%@_%@", keyboardOrientation, v10, v12];
     name = v6->_name;
     v6->_name = v13;
   }
@@ -249,10 +249,10 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
   }
 }
 
-+ (float)keyplaneHeightForKeys:(id)a3
++ (float)keyplaneHeightForKeys:(id)keys
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   x = *MEMORY[0x277CBF3A0];
   y = *(MEMORY[0x277CBF3A0] + 8);
   width = *(MEMORY[0x277CBF3A0] + 16);
@@ -261,7 +261,7 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [keysCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -273,7 +273,7 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keysCopy);
         }
 
         [*(*(&v18 + 1) + 8 * v11) frame];
@@ -294,7 +294,7 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -309,10 +309,10 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
   return v16;
 }
 
-+ (float)keyplaneWidthForKeys:(id)a3
++ (float)keyplaneWidthForKeys:(id)keys
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   x = *MEMORY[0x277CBF3A0];
   y = *(MEMORY[0x277CBF3A0] + 8);
   width = *(MEMORY[0x277CBF3A0] + 16);
@@ -321,7 +321,7 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [keysCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -333,7 +333,7 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keysCopy);
         }
 
         [*(*(&v18 + 1) + 8 * v11) frame];
@@ -354,7 +354,7 @@ void __51__TTKSimpleKeyboardPlane_initWithTIKeyboardLayout___block_invoke(uint64
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);

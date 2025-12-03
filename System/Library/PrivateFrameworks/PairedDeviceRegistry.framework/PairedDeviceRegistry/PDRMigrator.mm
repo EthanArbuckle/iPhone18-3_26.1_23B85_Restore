@@ -3,19 +3,19 @@
 - (NSArray)devicesExpectedToBeMigratableAfterRestore;
 - (NSArray)migratableDevices;
 - (NSArray)migratableDevicesRequiringConsent;
-- (id)beginMigrationWithDevice:(id)a3;
-- (id)beginMigrationWithDevice:(id)a3 passcode:(id)a4;
-- (id)devicesFromMigrationConsentRequestData:(id)a3;
+- (id)beginMigrationWithDevice:(id)device;
+- (id)beginMigrationWithDevice:(id)device passcode:(id)passcode;
+- (id)devicesFromMigrationConsentRequestData:(id)data;
 - (id)migrationConsentRequestData;
-- (id)migrationDataPreRestoreForConsentedDevices:(id)a3;
-- (id)setMigrationConsented:(BOOL)a3 forDevice:(id)a4;
-- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)a3;
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4;
+- (id)migrationDataPreRestoreForConsentedDevices:(id)devices;
+- (id)setMigrationConsented:(BOOL)consented forDevice:(id)device;
+- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)devices;
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion;
 @end
 
 @implementation PDRMigrator
 
-- (id)setMigrationConsented:(BOOL)a3 forDevice:(id)a4
+- (id)setMigrationConsented:(BOOL)consented forDevice:(id)device
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -24,7 +24,7 @@
   return 0;
 }
 
-- (id)beginMigrationWithDevice:(id)a3 passcode:(id)a4
+- (id)beginMigrationWithDevice:(id)device passcode:(id)passcode
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -42,7 +42,7 @@
   return 0;
 }
 
-- (id)devicesFromMigrationConsentRequestData:(id)a3
+- (id)devicesFromMigrationConsentRequestData:(id)data
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -87,7 +87,7 @@
   return 0;
 }
 
-- (id)migrationDataPreRestoreForConsentedDevices:(id)a3
+- (id)migrationDataPreRestoreForConsentedDevices:(id)devices
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -96,7 +96,7 @@
   return 0;
 }
 
-- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)a3
+- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)devices
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -105,7 +105,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -114,7 +114,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (id)beginMigrationWithDevice:(id)a3
+- (id)beginMigrationWithDevice:(id)device
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();

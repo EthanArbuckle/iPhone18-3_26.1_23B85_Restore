@@ -1,21 +1,21 @@
 @interface PDPendingIngestItem
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (PDDatabaseValue)identityValue;
-- (PDPendingIngestItem)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
+- (PDPendingIngestItem)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDPendingIngestItem
 
-- (PDPendingIngestItem)initWithDatabaseRow:(id)a3
+- (PDPendingIngestItem)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v13.receiver = self;
   v13.super_class = PDPendingIngestItem;
   v5 = [(PDPendingIngestItem *)&v13 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"entity");
+    v6 = sub_10016D778(rowCopy, @"entity");
     v7 = [PDDatabase entityNamed:v6];
     entity = v5->_entity;
     v5->_entity = v7;
@@ -25,10 +25,10 @@
       __assert_rtn("[PDPendingIngestItem initWithDatabaseRow:]", "PDPendingIngestItem.m", 27, "_entity != nil");
     }
 
-    v9 = sub_10016D778(v4, @"wasDeleted");
+    v9 = sub_10016D778(rowCopy, @"wasDeleted");
     v5->_wasDeleted = [v9 BOOLValue];
 
-    v10 = sub_10016D778(v4, @"entityIdentity");
+    v10 = sub_10016D778(rowCopy, @"entityIdentity");
     entityIdentity = v5->_entityIdentity;
     v5->_entityIdentity = v10;
   }
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_entity)
   {
     __assert_rtn("[PDPendingIngestItem bindTo:]", "PDPendingIngestItem.m", 38, "_entity != nil");
   }
 
-  v7 = v4;
+  v7 = toCopy;
   v5 = [PDDatabase nameOfEntity:?];
   sub_1000982FC(v7, v5, @"entity");
   v6 = [NSNumber numberWithBool:self->_wasDeleted];
@@ -53,19 +53,19 @@
   sub_1000982FC(v7, self->_entityIdentity, @"entityIdentity");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version)
   {
     v9 = 1;
   }
 
-  else if (sub_1000B9298(v7, @"create table PDPendingIngestItem(   entity text not null,    wasDeleted integer not null,    entityIdentity text not null)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDPendingIngestItem_entityIdentity on PDPendingIngestItem (entityIdentity)", 0, 0, 0))
+  else if (sub_1000B9298(databaseCopy, @"create table PDPendingIngestItem(   entity text not null,    wasDeleted integer not null,    entityIdentity text not null)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDPendingIngestItem_entityIdentity on PDPendingIngestItem (entityIdentity)", 0, 0, 0))
   {
     v9 = 1;
-    *a4 = 1;
+    *finalVersion = 1;
   }
 
   else

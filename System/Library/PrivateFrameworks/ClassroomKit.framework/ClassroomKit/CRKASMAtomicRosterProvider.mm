@@ -1,17 +1,17 @@
 @interface CRKASMAtomicRosterProvider
-- (CRKASMAtomicRosterProvider)initWithRosterProvider:(id)a3;
-- (id)courseWithIdentifier:(id)a3 inRoster:(id)a4;
-- (id)coursesMatchingCreateProperties:(id)a3 inRoster:(id)a4 createdAfter:(id)a5;
-- (id)pushCompletion:(id)a3 withRosterEvaluator:(id)a4;
+- (CRKASMAtomicRosterProvider)initWithRosterProvider:(id)provider;
+- (id)courseWithIdentifier:(id)identifier inRoster:(id)roster;
+- (id)coursesMatchingCreateProperties:(id)properties inRoster:(id)roster createdAfter:(id)after;
+- (id)pushCompletion:(id)completion withRosterEvaluator:(id)evaluator;
 - (void)beginObservingRoster;
-- (void)createCourseWithProperties:(id)a3 completion:(id)a4;
+- (void)createCourseWithProperties:(id)properties completion:(id)completion;
 - (void)dealloc;
 - (void)endObservingRoster;
-- (void)evaluateConstraintForUnderlyingCompletion:(id)a3 error:(id)a4;
+- (void)evaluateConstraintForUnderlyingCompletion:(id)completion error:(id)error;
 - (void)evalutateConstraintsForRosterUpdate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeCourseWithIdentifier:(id)a3 completion:(id)a4;
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 completion:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeCourseWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties completion:(id)completion;
 @end
 
 @implementation CRKASMAtomicRosterProvider
@@ -24,11 +24,11 @@
   [(CRKASMAtomicRosterProvider *)&v3 dealloc];
 }
 
-- (CRKASMAtomicRosterProvider)initWithRosterProvider:(id)a3
+- (CRKASMAtomicRosterProvider)initWithRosterProvider:(id)provider
 {
   v7.receiver = self;
   v7.super_class = CRKASMAtomicRosterProvider;
-  v3 = [(CRKASMRosterProviderDecoratorBase *)&v7 initWithRosterProvider:a3];
+  v3 = [(CRKASMRosterProviderDecoratorBase *)&v7 initWithRosterProvider:provider];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -41,29 +41,29 @@
   return v3;
 }
 
-- (void)createCourseWithProperties:(id)a3 completion:(id)a4
+- (void)createCourseWithProperties:(id)properties completion:(id)completion
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = MEMORY[0x277CCACC8];
-  v8 = a4;
+  completionCopy = completion;
   if (([v7 isMainThread] & 1) == 0)
   {
     [CRKASMAtomicRosterProvider createCourseWithProperties:completion:];
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__CRKASMAtomicRosterProvider_createCourseWithProperties_completion___block_invoke;
   v17[3] = &unk_278DC3048;
   v17[4] = self;
-  v18 = v6;
-  v19 = v9;
-  v10 = v9;
-  v11 = v6;
-  v12 = [(CRKASMAtomicRosterProvider *)self pushCompletion:v8 withRosterEvaluator:v17];
+  v18 = propertiesCopy;
+  v19 = date;
+  v10 = date;
+  v11 = propertiesCopy;
+  v12 = [(CRKASMAtomicRosterProvider *)self pushCompletion:completionCopy withRosterEvaluator:v17];
 
-  v13 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__CRKASMAtomicRosterProvider_createCourseWithProperties_completion___block_invoke_2;
@@ -71,7 +71,7 @@
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 createCourseWithProperties:v11 completion:v15];
+  [underlyingRosterProvider createCourseWithProperties:v11 completion:v15];
 }
 
 BOOL __68__CRKASMAtomicRosterProvider_createCourseWithProperties_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -82,40 +82,40 @@ BOOL __68__CRKASMAtomicRosterProvider_createCourseWithProperties_completion___bl
   return v3;
 }
 
-- (void)updateCourseWithIdentifier:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)updateCourseWithIdentifier:(id)identifier properties:(id)properties completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v10 = MEMORY[0x277CCACC8];
-  v11 = a5;
+  completionCopy = completion;
   if (([v10 isMainThread] & 1) == 0)
   {
     [CRKASMAtomicRosterProvider updateCourseWithIdentifier:properties:completion:];
   }
 
-  v12 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  v13 = [v12 roster];
-  v14 = [v13 user];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  roster = [underlyingRosterProvider roster];
+  user = [roster user];
 
-  v15 = [v9 usersToRemove];
-  v16 = [v15 crk_mapUsingBlock:&__block_literal_global_102];
+  usersToRemove = [propertiesCopy usersToRemove];
+  v16 = [usersToRemove crk_mapUsingBlock:&__block_literal_global_102];
 
-  v17 = [v14 identifier];
-  v18 = [v16 containsObject:v17];
+  identifier = [user identifier];
+  v18 = [v16 containsObject:identifier];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __79__CRKASMAtomicRosterProvider_updateCourseWithIdentifier_properties_completion___block_invoke_2;
   v26[3] = &unk_278DC3070;
   v26[4] = self;
-  v27 = v8;
+  v27 = identifierCopy;
   v29 = v18;
-  v28 = v9;
-  v19 = v9;
-  v20 = v8;
-  v21 = [(CRKASMAtomicRosterProvider *)self pushCompletion:v11 withRosterEvaluator:v26];
+  v28 = propertiesCopy;
+  v19 = propertiesCopy;
+  v20 = identifierCopy;
+  v21 = [(CRKASMAtomicRosterProvider *)self pushCompletion:completionCopy withRosterEvaluator:v26];
 
-  v22 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  underlyingRosterProvider2 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __79__CRKASMAtomicRosterProvider_updateCourseWithIdentifier_properties_completion___block_invoke_3;
@@ -123,7 +123,7 @@ BOOL __68__CRKASMAtomicRosterProvider_createCourseWithProperties_completion___bl
   v24[4] = self;
   v25 = v21;
   v23 = v21;
-  [v22 updateCourseWithIdentifier:v20 properties:v19 completion:v24];
+  [underlyingRosterProvider2 updateCourseWithIdentifier:v20 properties:v19 completion:v24];
 }
 
 uint64_t __79__CRKASMAtomicRosterProvider_updateCourseWithIdentifier_properties_completion___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -142,10 +142,10 @@ uint64_t __79__CRKASMAtomicRosterProvider_updateCourseWithIdentifier_properties_
   return v4 & 1;
 }
 
-- (void)removeCourseWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeCourseWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKASMAtomicRosterProvider removeCourseWithIdentifier:completion:];
@@ -156,10 +156,10 @@ uint64_t __79__CRKASMAtomicRosterProvider_updateCourseWithIdentifier_properties_
   v14[2] = __68__CRKASMAtomicRosterProvider_removeCourseWithIdentifier_completion___block_invoke;
   v14[3] = &unk_278DC3098;
   v14[4] = self;
-  v15 = v6;
-  v8 = v6;
-  v9 = [(CRKASMAtomicRosterProvider *)self pushCompletion:v7 withRosterEvaluator:v14];
-  v10 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  v15 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = [(CRKASMAtomicRosterProvider *)self pushCompletion:completionCopy withRosterEvaluator:v14];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__CRKASMAtomicRosterProvider_removeCourseWithIdentifier_completion___block_invoke_2;
@@ -167,7 +167,7 @@ uint64_t __79__CRKASMAtomicRosterProvider_updateCourseWithIdentifier_properties_
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 removeCourseWithIdentifier:v8 completion:v12];
+  [underlyingRosterProvider removeCourseWithIdentifier:v8 completion:v12];
 }
 
 BOOL __68__CRKASMAtomicRosterProvider_removeCourseWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -180,22 +180,22 @@ BOOL __68__CRKASMAtomicRosterProvider_removeCourseWithIdentifier_completion___bl
 
 - (void)beginObservingRoster
 {
-  v3 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  [v3 addObserver:self forKeyPath:@"roster" options:0 context:@"CRKASMAtomicRosterProviderObservationContext"];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  [underlyingRosterProvider addObserver:self forKeyPath:@"roster" options:0 context:@"CRKASMAtomicRosterProviderObservationContext"];
 }
 
 - (void)endObservingRoster
 {
-  v3 = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
-  [v3 removeObserver:self forKeyPath:@"roster" context:@"CRKASMAtomicRosterProviderObservationContext"];
+  underlyingRosterProvider = [(CRKASMRosterProviderDecoratorBase *)self underlyingRosterProvider];
+  [underlyingRosterProvider removeObserver:self forKeyPath:@"roster" context:@"CRKASMAtomicRosterProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"CRKASMAtomicRosterProviderObservationContext")
+  if (context == @"CRKASMAtomicRosterProviderObservationContext")
   {
 
-    [(CRKASMAtomicRosterProvider *)self evalutateConstraintsForRosterUpdate:a3];
+    [(CRKASMAtomicRosterProvider *)self evalutateConstraintsForRosterUpdate:path];
   }
 
   else
@@ -204,64 +204,64 @@ BOOL __68__CRKASMAtomicRosterProvider_removeCourseWithIdentifier_completion___bl
     v10 = v7;
     v8.receiver = self;
     v8.super_class = CRKASMAtomicRosterProvider;
-    [(CRKASMAtomicRosterProvider *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CRKASMAtomicRosterProvider *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)pushCompletion:(id)a3 withRosterEvaluator:(id)a4
+- (id)pushCompletion:(id)completion withRosterEvaluator:(id)evaluator
 {
-  v6 = a4;
+  evaluatorCopy = evaluator;
   v7 = MEMORY[0x277CCACC8];
-  v8 = a3;
+  completionCopy = completion;
   if (([v7 isMainThread] & 1) == 0)
   {
     [CRKASMAtomicRosterProvider pushCompletion:withRosterEvaluator:];
   }
 
-  v9 = [CRKASMAtomicRosterConstraint constraintWithRosterEvaluator:v6];
-  v10 = MEMORY[0x245D3AAD0](v8);
+  v9 = [CRKASMAtomicRosterConstraint constraintWithRosterEvaluator:evaluatorCopy];
+  v10 = MEMORY[0x245D3AAD0](completionCopy);
 
-  v11 = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
-  [v11 setObject:v10 forKeyedSubscript:v9];
+  completionsByConstraint = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
+  [completionsByConstraint setObject:v10 forKeyedSubscript:v9];
 
   return v9;
 }
 
-- (void)evaluateConstraintForUnderlyingCompletion:(id)a3 error:(id)a4
+- (void)evaluateConstraintForUnderlyingCompletion:(id)completion error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  errorCopy = error;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKASMAtomicRosterProvider evaluateConstraintForUnderlyingCompletion:error:];
   }
 
-  v7 = [(CRKASMRosterProviderDecoratorBase *)self roster];
+  roster = [(CRKASMRosterProviderDecoratorBase *)self roster];
 
-  if (v7)
+  if (roster)
   {
-    v8 = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
-    v9 = [v8 objectForKeyedSubscript:v14];
+    completionsByConstraint = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
+    v9 = [completionsByConstraint objectForKeyedSubscript:completionCopy];
 
     if (v9)
     {
-      if (v6)
+      if (errorCopy)
       {
-        v10 = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
-        [v10 setObject:0 forKeyedSubscript:v14];
+        completionsByConstraint2 = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
+        [completionsByConstraint2 setObject:0 forKeyedSubscript:completionCopy];
 
-        (v9)[2](v9, v6);
+        (v9)[2](v9, errorCopy);
       }
 
       else
       {
-        v11 = [(CRKASMRosterProviderDecoratorBase *)self roster];
-        v12 = [v14 isFulfilledByRoster:v11];
+        roster2 = [(CRKASMRosterProviderDecoratorBase *)self roster];
+        v12 = [completionCopy isFulfilledByRoster:roster2];
 
         if (v12)
         {
-          v13 = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
-          [v13 setObject:0 forKeyedSubscript:v14];
+          completionsByConstraint3 = [(CRKASMAtomicRosterProvider *)self completionsByConstraint];
+          [completionsByConstraint3 setObject:0 forKeyedSubscript:completionCopy];
 
           v9[2](v9, 0);
         }
@@ -282,17 +282,17 @@ BOOL __68__CRKASMAtomicRosterProvider_removeCourseWithIdentifier_completion___bl
   [OUTLINED_FUNCTION_0_0(v2 v3];
 }
 
-- (id)courseWithIdentifier:(id)a3 inRoster:(id)a4
+- (id)courseWithIdentifier:(id)identifier inRoster:(id)roster
 {
-  v5 = a3;
-  v6 = [a4 courses];
+  identifierCopy = identifier;
+  courses = [roster courses];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__CRKASMAtomicRosterProvider_courseWithIdentifier_inRoster___block_invoke;
   v10[3] = &unk_278DC1C30;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 crk_firstMatching:v10];
+  v11 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = [courses crk_firstMatching:v10];
 
   return v8;
 }
@@ -305,20 +305,20 @@ uint64_t __60__CRKASMAtomicRosterProvider_courseWithIdentifier_inRoster___block_
   return v4;
 }
 
-- (id)coursesMatchingCreateProperties:(id)a3 inRoster:(id)a4 createdAfter:(id)a5
+- (id)coursesMatchingCreateProperties:(id)properties inRoster:(id)roster createdAfter:(id)after
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 courses];
+  propertiesCopy = properties;
+  afterCopy = after;
+  courses = [roster courses];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__CRKASMAtomicRosterProvider_coursesMatchingCreateProperties_inRoster_createdAfter___block_invoke;
   v14[3] = &unk_278DC30C0;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = [v9 crk_filterUsingBlock:v14];
+  v15 = afterCopy;
+  v16 = propertiesCopy;
+  v10 = propertiesCopy;
+  v11 = afterCopy;
+  v12 = [courses crk_filterUsingBlock:v14];
 
   return v12;
 }

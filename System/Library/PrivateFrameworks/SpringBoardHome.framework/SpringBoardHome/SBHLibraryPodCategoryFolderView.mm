@@ -1,20 +1,20 @@
 @interface SBHLibraryPodCategoryFolderView
 - (CGSize)_iconSpacingForIconListView;
 - (CGSize)_scrollViewContentSize;
-- (void)_configureIconListView:(id)a3;
-- (void)_orientationDidChange:(int64_t)a3;
+- (void)_configureIconListView:(id)view;
+- (void)_orientationDidChange:(int64_t)change;
 @end
 
 @implementation SBHLibraryPodCategoryFolderView
 
 - (CGSize)_iconSpacingForIconListView
 {
-  v3 = [(SBFolderView *)self iconLocation];
-  v4 = [(SBFolderView *)self listLayoutProvider];
-  v5 = [v4 layoutForIconLocation:v3];
+  iconLocation = [(SBFolderView *)self iconLocation];
+  listLayoutProvider = [(SBFolderView *)self listLayoutProvider];
+  v5 = [listLayoutProvider layoutForIconLocation:iconLocation];
 
-  v6 = [v5 appLibraryVisualConfiguration];
-  [v6 expandedCategoryPodIconSpacing];
+  appLibraryVisualConfiguration = [v5 appLibraryVisualConfiguration];
+  [appLibraryVisualConfiguration expandedCategoryPodIconSpacing];
   v8 = v7;
   v10 = v9;
 
@@ -25,27 +25,27 @@
   return result;
 }
 
-- (void)_configureIconListView:(id)a3
+- (void)_configureIconListView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v6.receiver = self;
   v6.super_class = SBHLibraryPodCategoryFolderView;
-  [(SBHLibraryPodFolderView *)&v6 _configureIconListView:v4];
-  [v4 iconSpacing];
+  [(SBHLibraryPodFolderView *)&v6 _configureIconListView:viewCopy];
+  [viewCopy iconSpacing];
   if (v5 == -123.0)
   {
-    [v4 setAutoresizingMask:2];
+    [viewCopy setAutoresizingMask:2];
   }
 }
 
-- (void)_orientationDidChange:(int64_t)a3
+- (void)_orientationDidChange:(int64_t)change
 {
-  v5 = [(SBHLibraryPodFolderView *)self navigationBar];
-  [(SBHLibraryPodFolderView *)self _layoutMarginsforNavigationBar:v5];
-  [v5 setDirectionalLayoutMargins:?];
+  navigationBar = [(SBHLibraryPodFolderView *)self navigationBar];
+  [(SBHLibraryPodFolderView *)self _layoutMarginsforNavigationBar:navigationBar];
+  [navigationBar setDirectionalLayoutMargins:?];
   v6.receiver = self;
   v6.super_class = SBHLibraryPodCategoryFolderView;
-  [(SBHLibraryPodFolderView *)&v6 _orientationDidChange:a3];
+  [(SBHLibraryPodFolderView *)&v6 _orientationDidChange:change];
 }
 
 - (CGSize)_scrollViewContentSize

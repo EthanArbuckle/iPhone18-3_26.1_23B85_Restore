@@ -1,11 +1,11 @@
 @interface SKUITracklistColumnData
-- (SKUITracklistColumnData)initWithRepresentativeTrack:(id)a3;
+- (SKUITracklistColumnData)initWithRepresentativeTrack:(id)track;
 - (id)_initSKUITracklistColumnData;
-- (id)columnForIdentifier:(int64_t)a3;
-- (id)viewElementsForTrack:(id)a3 columnIndex:(int64_t)a4;
-- (void)adjustColumnsToFitWidth:(double)a3;
-- (void)enumerateColumnsForHeader:(id)a3 usingBlock:(id)a4;
-- (void)enumerateColumnsForTrack:(id)a3 usingBlock:(id)a4;
+- (id)columnForIdentifier:(int64_t)identifier;
+- (id)viewElementsForTrack:(id)track columnIndex:(int64_t)index;
+- (void)adjustColumnsToFitWidth:(double)width;
+- (void)enumerateColumnsForHeader:(id)header usingBlock:(id)block;
+- (void)enumerateColumnsForTrack:(id)track usingBlock:(id)block;
 @end
 
 @implementation SKUITracklistColumnData
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (SKUITracklistColumnData)initWithRepresentativeTrack:(id)a3
+- (SKUITracklistColumnData)initWithRepresentativeTrack:(id)track
 {
-  v4 = a3;
-  v5 = [(SKUITracklistColumnData *)self _initSKUITracklistColumnData];
-  if (v5)
+  trackCopy = track;
+  _initSKUITracklistColumnData = [(SKUITracklistColumnData *)self _initSKUITracklistColumnData];
+  if (_initSKUITracklistColumnData)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v18 = 0;
@@ -49,7 +49,7 @@
     v21 = __Block_byref_object_copy__19;
     v22 = __Block_byref_object_dispose__19;
     v23 = 0;
-    v7 = [v4 flattenedChildren];
+    flattenedChildren = [trackCopy flattenedChildren];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __55__SKUITracklistColumnData_initWithRepresentativeTrack___block_invoke;
@@ -57,20 +57,20 @@
     v17 = &v18;
     v8 = v6;
     v16 = v8;
-    [v7 enumerateObjectsUsingBlock:&v12];
+    [flattenedChildren enumerateObjectsUsingBlock:&v12];
     if (v19[5])
     {
       [v8 addObject:{v12, v13, v14, v15}];
     }
 
     v9 = [v8 copy];
-    columns = v5->_columns;
-    v5->_columns = v9;
+    columns = _initSKUITracklistColumnData->_columns;
+    _initSKUITracklistColumnData->_columns = v9;
 
     _Block_object_dispose(&v18, 8);
   }
 
-  return v5;
+  return _initSKUITracklistColumnData;
 }
 
 void __55__SKUITracklistColumnData_initWithRepresentativeTrack___block_invoke(uint64_t a1, void *a2)
@@ -162,7 +162,7 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)adjustColumnsToFitWidth:(double)a3
+- (void)adjustColumnsToFitWidth:(double)width
 {
   v39 = *MEMORY[0x277D85DE8];
   v33 = 0u;
@@ -204,7 +204,7 @@ LABEL_25:
         [v12 maximumWidthFraction];
         if (v15 > 0.00000011920929)
         {
-          v16 = v15 * a3;
+          v16 = v15 * width;
           if (v14 < v16)
           {
             v16 = v14;
@@ -239,7 +239,7 @@ LABEL_25:
     if (v22)
     {
       v23 = v22;
-      v24 = (a3 - leftEdgeInset - rightEdgeInset - (v20 - 1) * interColumnSpacing - v10) / v8;
+      v24 = (width - leftEdgeInset - rightEdgeInset - (v20 - 1) * interColumnSpacing - v10) / v8;
       v25 = floorf(v24);
       v26 = *v30;
       do
@@ -268,7 +268,7 @@ LABEL_25:
   }
 }
 
-- (id)columnForIdentifier:(int64_t)a3
+- (id)columnForIdentifier:(int64_t)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -291,7 +291,7 @@ LABEL_25:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 columnIdentifier] == a3)
+        if ([v9 columnIdentifier] == identifier)
         {
           v10 = v9;
           goto LABEL_11;
@@ -314,23 +314,23 @@ LABEL_11:
   return v10;
 }
 
-- (void)enumerateColumnsForHeader:(id)a3 usingBlock:(id)a4
+- (void)enumerateColumnsForHeader:(id)header usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   columns = self->_columns;
-  v8 = a3;
+  headerCopy = header;
   v9 = [(NSArray *)columns count];
-  v10 = [v8 titleLabels];
+  titleLabels = [headerCopy titleLabels];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__SKUITracklistColumnData_enumerateColumnsForHeader_usingBlock___block_invoke;
   v12[3] = &unk_2781FB248;
-  v13 = v6;
+  v13 = blockCopy;
   v14 = v9;
   v12[4] = self;
-  v11 = v6;
-  [v10 enumerateObjectsUsingBlock:v12];
+  v11 = blockCopy;
+  [titleLabels enumerateObjectsUsingBlock:v12];
 }
 
 void __64__SKUITracklistColumnData_enumerateColumnsForHeader_usingBlock___block_invoke(void *a1, void *a2, unint64_t a3)
@@ -354,16 +354,16 @@ void __64__SKUITracklistColumnData_enumerateColumnsForHeader_usingBlock___block_
   }
 }
 
-- (void)enumerateColumnsForTrack:(id)a3 usingBlock:(id)a4
+- (void)enumerateColumnsForTrack:(id)track usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 flattenedChildren];
+  trackCopy = track;
+  blockCopy = block;
+  flattenedChildren = [trackCopy flattenedChildren];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v18[3] = 0;
-  v9 = [v8 count];
+  v9 = [flattenedChildren count];
   columns = self->_columns;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -371,9 +371,9 @@ void __64__SKUITracklistColumnData_enumerateColumnsForHeader_usingBlock___block_
   v13[3] = &unk_2781FB270;
   v16 = v18;
   v17 = v9;
-  v11 = v8;
+  v11 = flattenedChildren;
   v14 = v11;
-  v12 = v7;
+  v12 = blockCopy;
   v15 = v12;
   [(NSArray *)columns enumerateObjectsUsingBlock:v13];
 
@@ -423,9 +423,9 @@ LABEL_9:
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)viewElementsForTrack:(id)a3 columnIndex:(int64_t)a4
+- (id)viewElementsForTrack:(id)track columnIndex:(int64_t)index
 {
-  v6 = a3;
+  trackCopy = track;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -437,8 +437,8 @@ LABEL_9:
   v9[2] = __60__SKUITracklistColumnData_viewElementsForTrack_columnIndex___block_invoke;
   v9[3] = &unk_2781FB298;
   v9[4] = &v10;
-  v9[5] = a4;
-  [(SKUITracklistColumnData *)self enumerateColumnsForTrack:v6 usingBlock:v9];
+  v9[5] = index;
+  [(SKUITracklistColumnData *)self enumerateColumnsForTrack:trackCopy usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 

@@ -12,8 +12,8 @@
   v3 = ENUILocalizedString();
   [(ENUILegalDocumentViewController *)self setTitle:v3];
 
-  v4 = [(ENUILegalDocumentViewController *)self specifier];
-  v47 = [v4 userInfo];
+  specifier = [(ENUILegalDocumentViewController *)self specifier];
+  userInfo = [specifier userInfo];
 
   v5 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
   v6 = [v5 fontDescriptorWithSymbolicTraits:0x10000];
@@ -24,64 +24,64 @@
   [(ENUILegalDocumentViewController *)self setLegalTextView:v7];
 
   v8 = [UIFont fontWithDescriptor:v48 size:0.0];
-  v9 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v9 setFont:v8];
+  legalTextView = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView setFont:v8];
 
   v10 = +[UIColor clearColor];
-  v11 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v11 setBackgroundColor:v10];
+  legalTextView2 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView2 setBackgroundColor:v10];
 
-  v12 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v12 setAlwaysBounceVertical:1];
+  legalTextView3 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView3 setAlwaysBounceVertical:1];
 
-  v13 = [v47 consentStatus];
-  v14 = [v13 textConsented];
-  v15 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v15 setText:v14];
+  consentStatus = [userInfo consentStatus];
+  textConsented = [consentStatus textConsented];
+  legalTextView4 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView4 setText:textConsented];
 
-  v16 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v16 setContentInset:{20.0, 20.0, 20.0, 20.0}];
+  legalTextView5 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView5 setContentInset:{20.0, 20.0, 20.0, 20.0}];
 
-  v17 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v17 setEditable:0];
+  legalTextView6 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView6 setEditable:0];
 
-  v18 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  legalTextView7 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v19 setDataDetectorTypes:3];
+  legalTextView8 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [legalTextView8 setDataDetectorTypes:3];
 
-  v20 = [(ENUILegalDocumentViewController *)self view];
-  v21 = [(ENUILegalDocumentViewController *)self legalTextView];
-  [v20 addSubview:v21];
+  view = [(ENUILegalDocumentViewController *)self view];
+  legalTextView9 = [(ENUILegalDocumentViewController *)self legalTextView];
+  [view addSubview:legalTextView9];
 
-  v46 = [(ENUILegalDocumentViewController *)self legalTextView];
-  v44 = [v46 leadingAnchor];
-  v45 = [(ENUILegalDocumentViewController *)self view];
-  v43 = [v45 safeAreaLayoutGuide];
-  v42 = [v43 leadingAnchor];
-  v41 = [v44 constraintEqualToAnchor:v42];
+  legalTextView10 = [(ENUILegalDocumentViewController *)self legalTextView];
+  leadingAnchor = [legalTextView10 leadingAnchor];
+  view2 = [(ENUILegalDocumentViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v50[0] = v41;
-  v40 = [(ENUILegalDocumentViewController *)self legalTextView];
-  v38 = [v40 trailingAnchor];
-  v39 = [(ENUILegalDocumentViewController *)self view];
-  v37 = [v39 safeAreaLayoutGuide];
-  v36 = [v37 trailingAnchor];
-  v35 = [v38 constraintEqualToAnchor:v36];
+  legalTextView11 = [(ENUILegalDocumentViewController *)self legalTextView];
+  trailingAnchor = [legalTextView11 trailingAnchor];
+  view3 = [(ENUILegalDocumentViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v50[1] = v35;
-  v34 = [(ENUILegalDocumentViewController *)self legalTextView];
-  v32 = [v34 topAnchor];
-  v33 = [(ENUILegalDocumentViewController *)self view];
-  v22 = [v33 safeAreaLayoutGuide];
-  v23 = [v22 topAnchor];
-  v24 = [v32 constraintEqualToAnchor:v23];
+  legalTextView12 = [(ENUILegalDocumentViewController *)self legalTextView];
+  topAnchor = [legalTextView12 topAnchor];
+  view4 = [(ENUILegalDocumentViewController *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v50[2] = v24;
-  v25 = [(ENUILegalDocumentViewController *)self legalTextView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(ENUILegalDocumentViewController *)self view];
-  v28 = [v27 safeAreaLayoutGuide];
-  v29 = [v28 bottomAnchor];
-  v30 = [v26 constraintEqualToAnchor:v29];
+  legalTextView13 = [(ENUILegalDocumentViewController *)self legalTextView];
+  bottomAnchor = [legalTextView13 bottomAnchor];
+  view5 = [(ENUILegalDocumentViewController *)self view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v50[3] = v30;
   v31 = [NSArray arrayWithObjects:v50 count:4];
   [NSLayoutConstraint activateConstraints:v31];

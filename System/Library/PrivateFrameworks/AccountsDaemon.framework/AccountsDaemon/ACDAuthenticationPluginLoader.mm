@@ -1,7 +1,7 @@
 @interface ACDAuthenticationPluginLoader
 - (ACDAuthenticationPluginLoader)init;
-- (id)pluginForAuthenticationType:(id)a3;
-- (void)_setPlugin:(id)a3 forType:(id)a4;
+- (id)pluginForAuthenticationType:(id)type;
+- (void)_setPlugin:(id)plugin forType:(id)type;
 @end
 
 @implementation ACDAuthenticationPluginLoader
@@ -16,9 +16,9 @@
     v3 = [objc_alloc(MEMORY[0x277CB8FA0]) initWithMaximum:60 inTimeInterval:3600.0];
     [(ACDAuthenticationPluginLoader *)v2 setRenewalRateLimiter:v3];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     authenticationPluginsByType = v2->_authenticationPluginsByType;
-    v2->_authenticationPluginsByType = v4;
+    v2->_authenticationPluginsByType = dictionary;
 
     v2->_pluginAccessLock._os_unfair_lock_opaque = 0;
   }
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (id)pluginForAuthenticationType:(id)a3
+- (id)pluginForAuthenticationType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v10 = __61__ACDAuthenticationPluginLoader_pluginForAuthenticationType___block_invoke;
   v11 = &unk_27848C040;
-  v12 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = typeCopy;
   v13 = v5;
   v6 = v9;
   os_unfair_lock_lock(&self->_pluginAccessLock);
@@ -131,18 +131,18 @@ LABEL_22:
   return v3;
 }
 
-- (void)_setPlugin:(id)a3 forType:(id)a4
+- (void)_setPlugin:(id)plugin forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  typeCopy = type;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v12 = __52__ACDAuthenticationPluginLoader__setPlugin_forType___block_invoke;
   v13 = &unk_27848C0B8;
-  v14 = self;
-  v8 = v7;
+  selfCopy = self;
+  v8 = typeCopy;
   v15 = v8;
-  v9 = v6;
+  v9 = pluginCopy;
   v16 = v9;
   v10 = v11;
   os_unfair_lock_lock(&self->_pluginAccessLock);

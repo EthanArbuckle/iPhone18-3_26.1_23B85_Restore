@@ -9,10 +9,10 @@
 
 - (id)_hide
 {
-  v2 = [a1 buttons];
-  v3 = [v2 copy];
+  buttons = [self buttons];
+  v3 = [buttons copy];
 
-  [a1 removeAllButtons];
+  [self removeAllButtons];
 
   return v3;
 }
@@ -40,7 +40,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 addButton:*(*(&v10 + 1) + 8 * v8++)];
+        [self addButton:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -60,8 +60,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 buttons];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  buttons = [self buttons];
+  v2 = [buttons countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = *v9;
@@ -71,7 +71,7 @@
       {
         if (*v9 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(buttons);
         }
 
         v5 = *(*(&v8 + 1) + 8 * i);
@@ -83,7 +83,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v2 = [buttons countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v2)
       {
         continue;
@@ -102,8 +102,8 @@ LABEL_11:
 - (uint64_t)_containsButton:()Spinner
 {
   v4 = a3;
-  v5 = [a1 buttons];
-  v6 = [v5 containsObject:v4];
+  buttons = [self buttons];
+  v6 = [buttons containsObject:v4];
 
   return v6;
 }

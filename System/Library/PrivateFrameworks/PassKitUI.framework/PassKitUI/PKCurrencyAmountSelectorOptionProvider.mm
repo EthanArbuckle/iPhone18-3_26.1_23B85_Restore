@@ -1,28 +1,28 @@
 @interface PKCurrencyAmountSelectorOptionProvider
-- (PKCurrencyAmountSelectorOptionProvider)initWithType:(int64_t)a3 accountUser:(id)a4 currencyCode:(id)a5;
-- (id)_optionWithAmount:(id)a3 isCustom:(BOOL)a4 selected:(BOOL)a5;
+- (PKCurrencyAmountSelectorOptionProvider)initWithType:(int64_t)type accountUser:(id)user currencyCode:(id)code;
+- (id)_optionWithAmount:(id)amount isCustom:(BOOL)custom selected:(BOOL)selected;
 - (void)_updateOptions;
-- (void)insertCustomAmount:(id)a3;
-- (void)removeCustomAmount:(id)a3;
-- (void)selectAmount:(id)a3;
+- (void)insertCustomAmount:(id)amount;
+- (void)removeCustomAmount:(id)amount;
+- (void)selectAmount:(id)amount;
 @end
 
 @implementation PKCurrencyAmountSelectorOptionProvider
 
-- (PKCurrencyAmountSelectorOptionProvider)initWithType:(int64_t)a3 accountUser:(id)a4 currencyCode:(id)a5
+- (PKCurrencyAmountSelectorOptionProvider)initWithType:(int64_t)type accountUser:(id)user currencyCode:(id)code
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  codeCopy = code;
   v28.receiver = self;
   v28.super_class = PKCurrencyAmountSelectorOptionProvider;
   v11 = [(PKCurrencyAmountSelectorOptionProvider *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_accountUser, a4);
-    v13 = [v10 copy];
+    v11->_type = type;
+    objc_storeStrong(&v11->_accountUser, user);
+    v13 = [codeCopy copy];
     currencyCode = v12->_currencyCode;
     v12->_currencyCode = v13;
 
@@ -46,14 +46,14 @@
     type = v12->_type;
     if (type == 2)
     {
-      v24 = [(PKAccountUser *)v12->_accountUser notificationSettings];
-      v25 = [v24 transactionNotificationThreshold];
+      notificationSettings = [(PKAccountUser *)v12->_accountUser notificationSettings];
+      transactionNotificationThreshold = [notificationSettings transactionNotificationThreshold];
     }
 
     else if (type == 1)
     {
-      v24 = [(PKAccountUser *)v12->_accountUser notificationSettings];
-      v25 = [v24 monthlySpendNotificationThreshold];
+      notificationSettings = [(PKAccountUser *)v12->_accountUser notificationSettings];
+      transactionNotificationThreshold = [notificationSettings monthlySpendNotificationThreshold];
     }
 
     else
@@ -65,19 +65,19 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v24 = [(PKAccountUser *)v12->_accountUser preferences];
-      if (![v24 transactionSpendLimitEnabled])
+      notificationSettings = [(PKAccountUser *)v12->_accountUser preferences];
+      if (![notificationSettings transactionSpendLimitEnabled])
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v25 = [v24 transactionSpendLimitAmount];
+      transactionNotificationThreshold = [notificationSettings transactionSpendLimitAmount];
     }
 
     amount = v12->_amount;
-    v12->_amount = v25;
+    v12->_amount = transactionNotificationThreshold;
 
     goto LABEL_10;
   }
@@ -87,13 +87,13 @@ LABEL_12:
   return v12;
 }
 
-- (void)insertCustomAmount:(id)a3
+- (void)insertCustomAmount:(id)amount
 {
-  v5 = a3;
-  if (v5)
+  amountCopy = amount;
+  if (amountCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_amount, a3);
+    v11 = amountCopy;
+    objc_storeStrong(&self->_amount, amount);
     v6 = v11;
     v7 = PKSharedCacheGetCustomOptions();
     if (!v7)
@@ -109,16 +109,16 @@ LABEL_12:
     self->_customAmounts = v9;
 
     [(PKCurrencyAmountSelectorOptionProvider *)self _updateOptions];
-    v5 = v11;
+    amountCopy = v11;
   }
 }
 
-- (void)removeCustomAmount:(id)a3
+- (void)removeCustomAmount:(id)amount
 {
-  v4 = a3;
-  if (v4)
+  amountCopy = amount;
+  if (amountCopy)
   {
-    v11 = v4;
+    v11 = amountCopy;
     if (PKEqualObjects())
     {
       amount = self->_amount;
@@ -135,47 +135,47 @@ LABEL_12:
     self->_customAmounts = v9;
 
     [(PKCurrencyAmountSelectorOptionProvider *)self _updateOptions];
-    v4 = v11;
+    amountCopy = v11;
   }
 }
 
-- (void)selectAmount:(id)a3
+- (void)selectAmount:(id)amount
 {
-  v5 = a3;
+  amountCopy = amount;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_amount, a3);
+    objc_storeStrong(&self->_amount, amount);
     [(PKCurrencyAmountSelectorOptionProvider *)self _updateOptions];
   }
 }
 
-- (id)_optionWithAmount:(id)a3 isCustom:(BOOL)a4 selected:(BOOL)a5
+- (id)_optionWithAmount:(id)amount isCustom:(BOOL)custom selected:(BOOL)selected
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  selectedCopy = selected;
+  customCopy = custom;
+  amountCopy = amount;
+  if (amountCopy)
   {
     v9 = PKCurrencyAmountMake();
     v10 = v9;
     type = self->_type;
     if (type == 2 || type == 1)
     {
-      v15 = [v9 formattedStringValue];
-      v12 = PKLocalizedFeatureString();
+      formattedStringValue = [v9 formattedStringValue];
+      formattedStringValue2 = PKLocalizedFeatureString();
     }
 
     else if (type)
     {
-      v12 = 0;
+      formattedStringValue2 = 0;
     }
 
     else
     {
-      v12 = [v9 formattedStringValue];
+      formattedStringValue2 = [v9 formattedStringValue];
     }
 
-    v13 = [[PKCurrencyAmountSelectorOption alloc] initWithCurrencyAmount:v10 displayValue:v12 customOption:v6 selected:v5];
+    v13 = [[PKCurrencyAmountSelectorOption alloc] initWithCurrencyAmount:v10 displayValue:formattedStringValue2 customOption:customCopy selected:selectedCopy];
   }
 
   else
@@ -190,7 +190,7 @@ LABEL_12:
       v10 = PKLocalizedFeatureString();
     }
 
-    v13 = [[PKCurrencyAmountSelectorOption alloc] initWithCurrencyAmount:0 displayValue:v10 customOption:v6 selected:v5];
+    v13 = [[PKCurrencyAmountSelectorOption alloc] initWithCurrencyAmount:0 displayValue:v10 customOption:customCopy selected:selectedCopy];
   }
 
   return v13;
@@ -228,8 +228,8 @@ LABEL_12:
     [v3 addObject:v10];
   }
 
-  v11 = [v3 allObjects];
-  v12 = [v11 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v3 allObjects];
+  v12 = [allObjects sortedArrayUsingSelector:sel_compare_];
   options = self->_options;
   self->_options = v12;
 

@@ -1,31 +1,31 @@
 @interface CRLFreehandDrawingToolkitUIState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)state;
 - (CRLFreehandDrawingToolkitUIState)init;
-- (double)azimuthForToolType:(unint64_t)a3;
-- (double)opacityForToolType:(unint64_t)a3;
-- (double)p_defaultStrokeWidthForToolType:(unint64_t)a3;
-- (double)strokeWidthForToolType:(unint64_t)a3;
-- (id)colorForToolType:(unint64_t)a3;
+- (double)azimuthForToolType:(unint64_t)type;
+- (double)opacityForToolType:(unint64_t)type;
+- (double)p_defaultStrokeWidthForToolType:(unint64_t)type;
+- (double)strokeWidthForToolType:(unint64_t)type;
+- (id)colorForToolType:(unint64_t)type;
 - (id)copy;
-- (id)currentToolForInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4;
-- (id)p_defaultColorForToolType:(unint64_t)a3;
-- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)a3;
-- (int64_t)strokeWidthIndexForToolType:(unint64_t)a3;
+- (id)currentToolForInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController;
+- (id)p_defaultColorForToolType:(unint64_t)type;
+- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)type;
+- (int64_t)strokeWidthIndexForToolType:(unint64_t)type;
 - (unint64_t)hash;
 - (unint64_t)p_defaultLassoType;
 - (unint64_t)p_defaultToolType;
-- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)a3;
-- (void)p_setDefaultLassoType:(unint64_t)a3;
-- (void)p_setDefaultToolType:(unint64_t)a3;
+- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)type;
+- (void)p_setDefaultLassoType:(unint64_t)type;
+- (void)p_setDefaultToolType:(unint64_t)type;
 - (void)p_setupDefaultValues;
-- (void)setAzimuth:(double)a3 forToolType:(unint64_t)a4;
-- (void)setColor:(id)a3 forToolType:(unint64_t)a4;
-- (void)setCurrentLassoType:(unint64_t)a3;
-- (void)setCurrentToolType:(unint64_t)a3;
-- (void)setEraserToolErasesWholeObjects:(BOOL)a3;
-- (void)setOpacity:(double)a3 forToolType:(unint64_t)a4;
-- (void)setStrokeWidth:(double)a3 forToolType:(unint64_t)a4;
+- (void)setAzimuth:(double)azimuth forToolType:(unint64_t)type;
+- (void)setColor:(id)color forToolType:(unint64_t)type;
+- (void)setCurrentLassoType:(unint64_t)type;
+- (void)setCurrentToolType:(unint64_t)type;
+- (void)setEraserToolErasesWholeObjects:(BOOL)objects;
+- (void)setOpacity:(double)opacity forToolType:(unint64_t)type;
+- (void)setStrokeWidth:(double)width forToolType:(unint64_t)type;
 @end
 
 @implementation CRLFreehandDrawingToolkitUIState
@@ -46,9 +46,9 @@
 
 - (void)p_setupDefaultValues
 {
-  v3 = [(CRLFreehandDrawingToolkitUIState *)self p_defaultToolType];
-  self->_currentToolType = v3;
-  self->_mostRecentRestorableToolType = v3;
+  p_defaultToolType = [(CRLFreehandDrawingToolkitUIState *)self p_defaultToolType];
+  self->_currentToolType = p_defaultToolType;
+  self->_mostRecentRestorableToolType = p_defaultToolType;
   self->_monolineToolOpacity = 1.0;
   [(CRLFreehandDrawingToolkitUIState *)self p_defaultStrokeWidthForToolType:0];
   self->_monolineToolUnscaledWidth = v4;
@@ -107,13 +107,13 @@
   [(CRLFreehandDrawingToolkitUIState *)self setColor:v21 forToolType:8];
 }
 
-- (id)p_defaultColorForToolType:(unint64_t)a3
+- (id)p_defaultColorForToolType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      if (a3 == 7 || a3 == 8)
+      if (type == 7 || type == 8)
       {
         v4 = +[CRLColor pencilTrayYellowColor];
         goto LABEL_13;
@@ -127,9 +127,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       +[CRLColor pencilTrayBlueColor];
     }
@@ -142,7 +142,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3 < 2)
+  if (type < 2)
   {
     goto LABEL_12;
   }
@@ -172,7 +172,7 @@ LABEL_17:
 
   v7 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolkitUIState p_defaultColorForToolType:]"];
   v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolkitUIState.m"];
-  [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:151 isFatal:0 description:"Tool type %lu does not support color", a3];
+  [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:151 isFatal:0 description:"Tool type %lu does not support color", type];
 
   v4 = 0;
 LABEL_13:
@@ -180,10 +180,10 @@ LABEL_13:
   return v4;
 }
 
-- (double)p_defaultStrokeWidthForToolType:(unint64_t)a3
+- (double)p_defaultStrokeWidthForToolType:(unint64_t)type
 {
   v5 = [(CRLFreehandDrawingToolkitUIState *)self p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:?];
-  v6 = [(CRLFreehandDrawingToolkitUIState *)self strokeWidthsForFreehandDrawingToolType:a3];
+  v6 = [(CRLFreehandDrawingToolkitUIState *)self strokeWidthsForFreehandDrawingToolType:type];
   if (v5 >= [v6 count])
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -206,7 +206,7 @@ LABEL_13:
       v24 = 2048;
       v25 = v5 + 1;
       v26 = 2048;
-      v27 = a3;
+      typeCopy = type;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d The app delegate must provide at least %lu widths for tool type: %lu", buf, 0x36u);
     }
 
@@ -223,7 +223,7 @@ LABEL_13:
 
     v10 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolkitUIState p_defaultStrokeWidthForToolType:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolkitUIState.m"];
-    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:161 isFatal:0 description:"The app delegate must provide at least %lu widths for tool type: %lu", v5 + 1, a3];
+    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:161 isFatal:0 description:"The app delegate must provide at least %lu widths for tool type: %lu", v5 + 1, type];
   }
 
   v12 = [v6 objectAtIndexedSubscript:v5];
@@ -233,42 +233,42 @@ LABEL_13:
   return v14;
 }
 
-- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)a3
+- (id)strokeWidthsForFreehandDrawingToolType:(unint64_t)type
 {
   result = &__NSArray0__struct;
-  if (a3 <= 4)
+  if (type <= 4)
   {
     v7 = &off_1018E1170;
     v8 = &off_1018E1188;
     v9 = &off_1018E11A0;
-    if (a3 != 4)
+    if (type != 4)
     {
       v9 = &__NSArray0__struct;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       v8 = v9;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       v7 = v8;
     }
 
     v10 = &off_1018E1158;
     v11 = &off_1018E11E8;
-    if (a3 != 1)
+    if (type != 1)
     {
       v11 = &__NSArray0__struct;
     }
 
-    if (a3)
+    if (type)
     {
       v10 = v11;
     }
 
-    if (a3 <= 1)
+    if (type <= 1)
     {
       return v10;
     }
@@ -279,16 +279,16 @@ LABEL_13:
     }
   }
 
-  else if (a3 > 7)
+  else if (type > 7)
   {
-    if (a3 != 8)
+    if (type != 8)
     {
-      if (a3 == 9)
+      if (type == 9)
       {
         return &off_1018E1218;
       }
 
-      if (a3 != 10)
+      if (type != 10)
       {
         return result;
       }
@@ -318,7 +318,7 @@ LABEL_13:
 
     v13 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolkitUIState strokeWidthsForFreehandDrawingToolType:]"];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolkitUIState.m"];
-    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:198 isFatal:0 description:"Unknown tool type %lu when generating stroke widths.", a3];
+    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:198 isFatal:0 description:"Unknown tool type %lu when generating stroke widths.", type];
 
     return &__NSArray0__struct;
   }
@@ -327,17 +327,17 @@ LABEL_13:
   {
     v5 = &off_1018E11D0;
     v6 = &off_1018E1200;
-    if (a3 != 7)
+    if (type != 7)
     {
       v6 = &__NSArray0__struct;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       v5 = v6;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       return &off_1018E11B8;
     }
@@ -349,67 +349,67 @@ LABEL_13:
   }
 }
 
-- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)a3
+- (BOOL)isEqualToFreehandDrawingToolkitUIState:(id)state
 {
-  v4 = a3;
-  v52 = *&self->_currentToolType == *(v4 + 15)
-     && ((monolineToolColor = self->_monolineToolColor, !(monolineToolColor | *(v4 + 1))) || [(CRLColor *)monolineToolColor isEqual:?])
-     && ((monolineToolOpacity = self->_monolineToolOpacity, v7 = *(v4 + 2), monolineToolOpacity == v7) || vabdd_f64(monolineToolOpacity, v7) < fabs(v7 * 0.000000999999997))
-     && ((monolineToolUnscaledWidth = self->_monolineToolUnscaledWidth, v9 = *(v4 + 3), monolineToolUnscaledWidth == v9) || vabdd_f64(monolineToolUnscaledWidth, v9) < fabs(v9 * 0.000000999999997))
-     && ((penToolColor = self->_penToolColor, !(penToolColor | *(v4 + 4))) || [(CRLColor *)penToolColor isEqual:?])
-     && ((penToolOpacity = self->_penToolOpacity, v12 = *(v4 + 5), penToolOpacity == v12) || vabdd_f64(penToolOpacity, v12) < fabs(v12 * 0.000000999999997))
-     && ((penToolUnscaledWidth = self->_penToolUnscaledWidth, v14 = *(v4 + 6), penToolUnscaledWidth == v14) || vabdd_f64(penToolUnscaledWidth, v14) < fabs(v14 * 0.000000999999997))
-     && ((pencilToolColor = self->_pencilToolColor, !(pencilToolColor | *(v4 + 7))) || [(CRLColor *)pencilToolColor isEqual:?])
-     && ((pencilToolOpacity = self->_pencilToolOpacity, v17 = *(v4 + 8), pencilToolOpacity == v17) || vabdd_f64(pencilToolOpacity, v17) < fabs(v17 * 0.000000999999997))
-     && ((pencilToolUnscaledWidth = self->_pencilToolUnscaledWidth, v19 = *(v4 + 9), pencilToolUnscaledWidth == v19) || vabdd_f64(pencilToolUnscaledWidth, v19) < fabs(v19 * 0.000000999999997))
-     && ((crayonToolColor = self->_crayonToolColor, !(crayonToolColor | *(v4 + 10))) || [(CRLColor *)crayonToolColor isEqual:?])
-     && ((crayonToolOpacity = self->_crayonToolOpacity, v22 = *(v4 + 11), crayonToolOpacity == v22) || vabdd_f64(crayonToolOpacity, v22) < fabs(v22 * 0.000000999999997))
-     && ((crayonToolUnscaledWidth = self->_crayonToolUnscaledWidth, v24 = *(v4 + 12), crayonToolUnscaledWidth == v24) || vabdd_f64(crayonToolUnscaledWidth, v24) < fabs(v24 * 0.000000999999997))
-     && ((watercolorToolColor = self->_watercolorToolColor, !(watercolorToolColor | *(v4 + 13))) || [(CRLColor *)watercolorToolColor isEqual:?])
-     && ((watercolorToolOpacity = self->_watercolorToolOpacity, v27 = *(v4 + 14), watercolorToolOpacity == v27) || vabdd_f64(watercolorToolOpacity, v27) < fabs(v27 * 0.000000999999997))
-     && ((watercolorToolUnscaledWidth = self->_watercolorToolUnscaledWidth, v29 = *(v4 + 15), watercolorToolUnscaledWidth == v29) || vabdd_f64(watercolorToolUnscaledWidth, v29) < fabs(v29 * 0.000000999999997))
-     && ((fountainPenToolColor = self->_fountainPenToolColor, !(fountainPenToolColor | *(v4 + 16))) || [(CRLColor *)fountainPenToolColor isEqual:?])
-     && ((fountainPenToolOpacity = self->_fountainPenToolOpacity, v32 = *(v4 + 17), fountainPenToolOpacity == v32) || vabdd_f64(fountainPenToolOpacity, v32) < fabs(v32 * 0.000000999999997))
-     && ((fountainPenToolUnscaledWidth = self->_fountainPenToolUnscaledWidth, v34 = *(v4 + 18), fountainPenToolUnscaledWidth == v34) || vabdd_f64(fountainPenToolUnscaledWidth, v34) < fabs(v34 * 0.000000999999997))
-     && ((reedToolColor = self->_reedToolColor, !(reedToolColor | *(v4 + 19))) || [(CRLColor *)reedToolColor isEqual:?])
-     && ((reedToolOpacity = self->_reedToolOpacity, v37 = *(v4 + 20), reedToolOpacity == v37) || vabdd_f64(reedToolOpacity, v37) < fabs(v37 * 0.000000999999997))
-     && ((reedToolUnscaledWidth = self->_reedToolUnscaledWidth, v39 = *(v4 + 21), reedToolUnscaledWidth == v39) || vabdd_f64(reedToolUnscaledWidth, v39) < fabs(v39 * 0.000000999999997))
-     && ((reedToolAzimuth = self->_reedToolAzimuth, v41 = *(v4 + 22), reedToolAzimuth == v41) || vabdd_f64(reedToolAzimuth, v41) < fabs(v41 * 0.000000999999997))
-     && ((markerToolColor = self->_markerToolColor, !(markerToolColor | *(v4 + 23))) || [(CRLColor *)markerToolColor isEqual:?])
-     && ((markerToolOpacity = self->_markerToolOpacity, v44 = *(v4 + 24), markerToolOpacity == v44) || vabdd_f64(markerToolOpacity, v44) < fabs(v44 * 0.000000999999997))
-     && ((markerToolUnscaledWidth = self->_markerToolUnscaledWidth, v46 = *(v4 + 25), markerToolUnscaledWidth == v46) || vabdd_f64(markerToolUnscaledWidth, v46) < fabs(v46 * 0.000000999999997))
-     && ((fillToolColor = self->_fillToolColor, !(fillToolColor | *(v4 + 26))) || [(CRLColor *)fillToolColor isEqual:?])
-     && ((fillToolOpacity = self->_fillToolOpacity, v49 = *(v4 + 27), fillToolOpacity == v49) || vabdd_f64(fillToolOpacity, v49) < fabs(v49 * 0.000000999999997))
-     && ((eraserToolScaledWidth = self->_eraserToolScaledWidth, v51 = *(v4 + 28), eraserToolScaledWidth == v51) || vabdd_f64(eraserToolScaledWidth, v51) < fabs(v51 * 0.000000999999997))
-     && self->_eraserToolErasesWholeObjects == v4[232]
-     && self->_currentLassoType == *(v4 + 32);
+  stateCopy = state;
+  v52 = *&self->_currentToolType == *(stateCopy + 15)
+     && ((monolineToolColor = self->_monolineToolColor, !(monolineToolColor | *(stateCopy + 1))) || [(CRLColor *)monolineToolColor isEqual:?])
+     && ((monolineToolOpacity = self->_monolineToolOpacity, v7 = *(stateCopy + 2), monolineToolOpacity == v7) || vabdd_f64(monolineToolOpacity, v7) < fabs(v7 * 0.000000999999997))
+     && ((monolineToolUnscaledWidth = self->_monolineToolUnscaledWidth, v9 = *(stateCopy + 3), monolineToolUnscaledWidth == v9) || vabdd_f64(monolineToolUnscaledWidth, v9) < fabs(v9 * 0.000000999999997))
+     && ((penToolColor = self->_penToolColor, !(penToolColor | *(stateCopy + 4))) || [(CRLColor *)penToolColor isEqual:?])
+     && ((penToolOpacity = self->_penToolOpacity, v12 = *(stateCopy + 5), penToolOpacity == v12) || vabdd_f64(penToolOpacity, v12) < fabs(v12 * 0.000000999999997))
+     && ((penToolUnscaledWidth = self->_penToolUnscaledWidth, v14 = *(stateCopy + 6), penToolUnscaledWidth == v14) || vabdd_f64(penToolUnscaledWidth, v14) < fabs(v14 * 0.000000999999997))
+     && ((pencilToolColor = self->_pencilToolColor, !(pencilToolColor | *(stateCopy + 7))) || [(CRLColor *)pencilToolColor isEqual:?])
+     && ((pencilToolOpacity = self->_pencilToolOpacity, v17 = *(stateCopy + 8), pencilToolOpacity == v17) || vabdd_f64(pencilToolOpacity, v17) < fabs(v17 * 0.000000999999997))
+     && ((pencilToolUnscaledWidth = self->_pencilToolUnscaledWidth, v19 = *(stateCopy + 9), pencilToolUnscaledWidth == v19) || vabdd_f64(pencilToolUnscaledWidth, v19) < fabs(v19 * 0.000000999999997))
+     && ((crayonToolColor = self->_crayonToolColor, !(crayonToolColor | *(stateCopy + 10))) || [(CRLColor *)crayonToolColor isEqual:?])
+     && ((crayonToolOpacity = self->_crayonToolOpacity, v22 = *(stateCopy + 11), crayonToolOpacity == v22) || vabdd_f64(crayonToolOpacity, v22) < fabs(v22 * 0.000000999999997))
+     && ((crayonToolUnscaledWidth = self->_crayonToolUnscaledWidth, v24 = *(stateCopy + 12), crayonToolUnscaledWidth == v24) || vabdd_f64(crayonToolUnscaledWidth, v24) < fabs(v24 * 0.000000999999997))
+     && ((watercolorToolColor = self->_watercolorToolColor, !(watercolorToolColor | *(stateCopy + 13))) || [(CRLColor *)watercolorToolColor isEqual:?])
+     && ((watercolorToolOpacity = self->_watercolorToolOpacity, v27 = *(stateCopy + 14), watercolorToolOpacity == v27) || vabdd_f64(watercolorToolOpacity, v27) < fabs(v27 * 0.000000999999997))
+     && ((watercolorToolUnscaledWidth = self->_watercolorToolUnscaledWidth, v29 = *(stateCopy + 15), watercolorToolUnscaledWidth == v29) || vabdd_f64(watercolorToolUnscaledWidth, v29) < fabs(v29 * 0.000000999999997))
+     && ((fountainPenToolColor = self->_fountainPenToolColor, !(fountainPenToolColor | *(stateCopy + 16))) || [(CRLColor *)fountainPenToolColor isEqual:?])
+     && ((fountainPenToolOpacity = self->_fountainPenToolOpacity, v32 = *(stateCopy + 17), fountainPenToolOpacity == v32) || vabdd_f64(fountainPenToolOpacity, v32) < fabs(v32 * 0.000000999999997))
+     && ((fountainPenToolUnscaledWidth = self->_fountainPenToolUnscaledWidth, v34 = *(stateCopy + 18), fountainPenToolUnscaledWidth == v34) || vabdd_f64(fountainPenToolUnscaledWidth, v34) < fabs(v34 * 0.000000999999997))
+     && ((reedToolColor = self->_reedToolColor, !(reedToolColor | *(stateCopy + 19))) || [(CRLColor *)reedToolColor isEqual:?])
+     && ((reedToolOpacity = self->_reedToolOpacity, v37 = *(stateCopy + 20), reedToolOpacity == v37) || vabdd_f64(reedToolOpacity, v37) < fabs(v37 * 0.000000999999997))
+     && ((reedToolUnscaledWidth = self->_reedToolUnscaledWidth, v39 = *(stateCopy + 21), reedToolUnscaledWidth == v39) || vabdd_f64(reedToolUnscaledWidth, v39) < fabs(v39 * 0.000000999999997))
+     && ((reedToolAzimuth = self->_reedToolAzimuth, v41 = *(stateCopy + 22), reedToolAzimuth == v41) || vabdd_f64(reedToolAzimuth, v41) < fabs(v41 * 0.000000999999997))
+     && ((markerToolColor = self->_markerToolColor, !(markerToolColor | *(stateCopy + 23))) || [(CRLColor *)markerToolColor isEqual:?])
+     && ((markerToolOpacity = self->_markerToolOpacity, v44 = *(stateCopy + 24), markerToolOpacity == v44) || vabdd_f64(markerToolOpacity, v44) < fabs(v44 * 0.000000999999997))
+     && ((markerToolUnscaledWidth = self->_markerToolUnscaledWidth, v46 = *(stateCopy + 25), markerToolUnscaledWidth == v46) || vabdd_f64(markerToolUnscaledWidth, v46) < fabs(v46 * 0.000000999999997))
+     && ((fillToolColor = self->_fillToolColor, !(fillToolColor | *(stateCopy + 26))) || [(CRLColor *)fillToolColor isEqual:?])
+     && ((fillToolOpacity = self->_fillToolOpacity, v49 = *(stateCopy + 27), fillToolOpacity == v49) || vabdd_f64(fillToolOpacity, v49) < fabs(v49 * 0.000000999999997))
+     && ((eraserToolScaledWidth = self->_eraserToolScaledWidth, v51 = *(stateCopy + 28), eraserToolScaledWidth == v51) || vabdd_f64(eraserToolScaledWidth, v51) < fabs(v51 * 0.000000999999997))
+     && self->_eraserToolErasesWholeObjects == stateCopy[232]
+     && self->_currentLassoType == *(stateCopy + 32);
 
   return v52;
 }
 
-- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)a3
+- (unint64_t)p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:(unint64_t)type
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 <= 4)
+  if (type <= 4)
   {
     v7 = 2;
     v8 = 2;
-    if (a3 != 4)
+    if (type != 4)
     {
       v8 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       v7 = v8;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v7 = 0;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = 1;
     }
@@ -419,12 +419,12 @@ LABEL_13:
       v9 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (!a3)
+    if (!type)
     {
       v9 = 0;
     }
 
-    if (a3 <= 1)
+    if (type <= 1)
     {
       return v9;
     }
@@ -435,16 +435,16 @@ LABEL_13:
     }
   }
 
-  else if (a3 > 7)
+  else if (type > 7)
   {
-    if (a3 != 8)
+    if (type != 8)
     {
-      if (a3 == 9)
+      if (type == 9)
       {
         return 0;
       }
 
-      if (a3 != 10)
+      if (type != 10)
       {
         return result;
       }
@@ -474,7 +474,7 @@ LABEL_13:
 
     v11 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolkitUIState p_indexOfDefaultStrokeWidthForFreehandDrawingToolType:]"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolkitUIState.m"];
-    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:277 isFatal:0 description:"Unknown tool type %lu when generating stroke widths.", a3];
+    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:277 isFatal:0 description:"Unknown tool type %lu when generating stroke widths.", type];
 
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -483,17 +483,17 @@ LABEL_13:
   {
     v5 = 3;
     v6 = 1;
-    if (a3 != 7)
+    if (type != 7)
     {
       v6 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       v5 = v6;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       return 2;
     }
@@ -516,79 +516,79 @@ LABEL_13:
     v5 = [v2 objectForKey:@"CRLFreehandDrawingToolkitUIStateDefaultToolKey"];
     v6 = sub_100013F00(v4, v5);
 
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)p_defaultLassoType
 {
   v2 = +[NSUserDefaults standardUserDefaults];
-  v3 = [v2 objectForKey:@"CRLFreehandDrawingToolkitUIStateDefaultLassoTypeKey"];
+  unsignedIntegerValue = [v2 objectForKey:@"CRLFreehandDrawingToolkitUIStateDefaultLassoTypeKey"];
 
-  if (v3)
+  if (unsignedIntegerValue)
   {
     v4 = objc_opt_class();
     v5 = [v2 objectForKey:@"CRLFreehandDrawingToolkitUIStateDefaultLassoTypeKey"];
     v6 = sub_100013F00(v4, v5);
 
-    v3 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)p_setDefaultToolType:(unint64_t)a3
+- (void)p_setDefaultToolType:(unint64_t)type
 {
   v5 = +[NSUserDefaults standardUserDefaults];
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   [v5 setObject:v4 forKey:@"CRLFreehandDrawingToolkitUIStateDefaultToolKey"];
 }
 
-- (void)p_setDefaultLassoType:(unint64_t)a3
+- (void)p_setDefaultLassoType:(unint64_t)type
 {
   v5 = +[NSUserDefaults standardUserDefaults];
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   [v5 setObject:v4 forKey:@"CRLFreehandDrawingToolkitUIStateDefaultLassoTypeKey"];
 }
 
-- (void)setCurrentToolType:(unint64_t)a3
+- (void)setCurrentToolType:(unint64_t)type
 {
-  if (self->_currentToolType != a3)
+  if (self->_currentToolType != type)
   {
     if ([(CRLFreehandDrawingToolkitUIState *)self shouldRestoreToolType:?])
     {
-      self->_mostRecentRestorableToolType = a3;
+      self->_mostRecentRestorableToolType = type;
     }
 
-    if ([(CRLFreehandDrawingToolkitUIState *)self shouldDefaultToToolType:a3])
+    if ([(CRLFreehandDrawingToolkitUIState *)self shouldDefaultToToolType:type])
     {
-      [(CRLFreehandDrawingToolkitUIState *)self p_setDefaultToolType:a3];
+      [(CRLFreehandDrawingToolkitUIState *)self p_setDefaultToolType:type];
     }
 
-    self->_currentToolType = a3;
+    self->_currentToolType = type;
   }
 }
 
-- (void)setCurrentLassoType:(unint64_t)a3
+- (void)setCurrentLassoType:(unint64_t)type
 {
-  if (self->_currentLassoType != a3)
+  if (self->_currentLassoType != type)
   {
-    self->_currentLassoType = a3;
+    self->_currentLassoType = type;
     [(CRLFreehandDrawingToolkitUIState *)self p_setDefaultLassoType:?];
   }
 }
 
-- (id)currentToolForInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4
+- (id)currentToolForInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v8 = 0;
   currentToolType = self->_currentToolType;
   if (currentToolType <= 4)
@@ -649,22 +649,22 @@ LABEL_13:
     switch(currentToolType)
     {
       case 8:
-        v14 = [[CRLFreehandDrawingToolFillAndLegacyStroke alloc] initWithInteractiveCanvasController:v6 pencilKitCanvasViewController:v7 insertionToolType:self->_currentToolType opacity:self->_fillToolOpacity unscaledWidth:0.0];
+        v14 = [[CRLFreehandDrawingToolFillAndLegacyStroke alloc] initWithInteractiveCanvasController:controllerCopy pencilKitCanvasViewController:viewControllerCopy insertionToolType:self->_currentToolType opacity:self->_fillToolOpacity unscaledWidth:0.0];
         break;
       case 9:
         if (self->_eraserToolErasesWholeObjects)
         {
-          v14 = [[CRLFreehandDrawingToolEraser alloc] initWithInteractiveCanvasController:v6 scaledWidthForSlicingEraser:self->_eraserToolErasesWholeObjects wholeObject:self->_eraserToolScaledWidth];
+          v14 = [[CRLFreehandDrawingToolEraser alloc] initWithInteractiveCanvasController:controllerCopy scaledWidthForSlicingEraser:self->_eraserToolErasesWholeObjects wholeObject:self->_eraserToolScaledWidth];
         }
 
         else
         {
-          v14 = [[CRLFreehandDrawingToolPixelEraser alloc] initWithInteractiveCanvasController:v6 pencilKitCanvasViewController:v7 scaledWidthForSlicingEraser:self->_eraserToolScaledWidth];
+          v14 = [[CRLFreehandDrawingToolPixelEraser alloc] initWithInteractiveCanvasController:controllerCopy pencilKitCanvasViewController:viewControllerCopy scaledWidthForSlicingEraser:self->_eraserToolScaledWidth];
         }
 
         break;
       case 10:
-        v14 = [[CRLFreehandDrawingToolMarquee alloc] initWithInteractiveCanvasController:v6];
+        v14 = [[CRLFreehandDrawingToolMarquee alloc] initWithInteractiveCanvasController:controllerCopy];
         break;
       default:
         goto LABEL_26;
@@ -689,11 +689,11 @@ LABEL_13:
     penToolOpacity = self->_markerToolOpacity;
     penToolUnscaledWidth = self->_markerToolUnscaledWidth;
 LABEL_24:
-    v14 = [(CRLFreehandDrawingToolStroke *)v10 initWithInteractiveCanvasController:v6 pencilKitCanvasViewController:v7 strokeToolType:v11 opacity:penToolOpacity unscaledWidth:penToolUnscaledWidth];
+    v14 = [(CRLFreehandDrawingToolStroke *)v10 initWithInteractiveCanvasController:controllerCopy pencilKitCanvasViewController:viewControllerCopy strokeToolType:v11 opacity:penToolOpacity unscaledWidth:penToolUnscaledWidth];
     goto LABEL_25;
   }
 
-  v14 = [[CRLFreehandDrawingToolStroke alloc] initWithInteractiveCanvasController:v6 pencilKitCanvasViewController:v7 strokeToolType:self->_currentToolType opacity:self->_reedToolOpacity unscaledWidth:self->_reedToolUnscaledWidth azimuth:self->_reedToolAzimuth];
+  v14 = [[CRLFreehandDrawingToolStroke alloc] initWithInteractiveCanvasController:controllerCopy pencilKitCanvasViewController:viewControllerCopy strokeToolType:self->_currentToolType opacity:self->_reedToolOpacity unscaledWidth:self->_reedToolUnscaledWidth azimuth:self->_reedToolAzimuth];
 LABEL_25:
   v8 = v14;
 LABEL_26:
@@ -701,19 +701,19 @@ LABEL_26:
   return v8;
 }
 
-- (id)colorForToolType:(unint64_t)a3
+- (id)colorForToolType:(unint64_t)type
 {
   v4 = 0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         crayonToolColor = self->_crayonToolColor;
       }
 
-      else if (a3 == 4)
+      else if (type == 4)
       {
         crayonToolColor = self->_watercolorToolColor;
       }
@@ -724,16 +724,16 @@ LABEL_26:
       }
     }
 
-    else if (a3)
+    else if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         crayonToolColor = self->_penToolColor;
       }
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           goto LABEL_31;
         }
@@ -750,14 +750,14 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  if (a3 <= 8)
+  if (type <= 8)
   {
-    if (a3 == 6)
+    if (type == 6)
     {
       crayonToolColor = self->_reedToolColor;
     }
 
-    else if (a3 == 7)
+    else if (type == 7)
     {
       crayonToolColor = self->_markerToolColor;
     }
@@ -772,7 +772,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (a3 - 9 < 2)
+  if (type - 9 < 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -808,14 +808,14 @@ LABEL_31:
   return v4;
 }
 
-- (double)opacityForToolType:(unint64_t)a3
+- (double)opacityForToolType:(unint64_t)type
 {
   result = 1.0;
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      if (a3 - 9 < 2)
+      if (type - 9 < 2)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -847,12 +847,12 @@ LABEL_31:
       }
     }
 
-    else if (a3 == 6)
+    else if (type == 6)
     {
       return self->_reedToolOpacity;
     }
 
-    else if (a3 == 7)
+    else if (type == 7)
     {
       return self->_markerToolOpacity;
     }
@@ -863,14 +863,14 @@ LABEL_31:
     }
   }
 
-  else if (a3 > 2)
+  else if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       return self->_crayonToolOpacity;
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
       return self->_watercolorToolOpacity;
     }
@@ -881,14 +881,14 @@ LABEL_31:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return self->_penToolOpacity;
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       return self->_pencilToolOpacity;
     }
@@ -902,16 +902,16 @@ LABEL_31:
   return result;
 }
 
-- (double)strokeWidthForToolType:(unint64_t)a3
+- (double)strokeWidthForToolType:(unint64_t)type
 {
   v4 = 0.0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           return self->_penToolUnscaledWidth;
         }
@@ -923,12 +923,12 @@ LABEL_31:
       }
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       return self->_pencilToolUnscaledWidth;
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       return self->_crayonToolUnscaledWidth;
     }
@@ -939,9 +939,9 @@ LABEL_31:
     }
   }
 
-  else if (a3 > 7)
+  else if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8uLL:
         goto LABEL_13;
@@ -979,12 +979,12 @@ LABEL_13:
     }
   }
 
-  else if (a3 == 5)
+  else if (type == 5)
   {
     return self->_fountainPenToolUnscaledWidth;
   }
 
-  else if (a3 == 6)
+  else if (type == 6)
   {
     return self->_reedToolUnscaledWidth;
   }
@@ -997,9 +997,9 @@ LABEL_13:
   return v4;
 }
 
-- (double)azimuthForToolType:(unint64_t)a3
+- (double)azimuthForToolType:(unint64_t)type
 {
-  if (a3 == 6)
+  if (type == 6)
   {
     return self->_reedToolAzimuth;
   }
@@ -1033,21 +1033,21 @@ LABEL_13:
   return 0.0;
 }
 
-- (void)setColor:(id)a3 forToolType:(unint64_t)a4
+- (void)setColor:(id)color forToolType:(unint64_t)type
 {
-  v6 = [a3 colorWithAlphaComponent:1.0];
-  if (a4 <= 5)
+  v6 = [color colorWithAlphaComponent:1.0];
+  if (type <= 5)
   {
-    if (a4 > 2)
+    if (type > 2)
     {
-      if (a4 == 3)
+      if (type == 3)
       {
         crayonToolColor = self->_crayonToolColor;
         p_crayonToolColor = &self->_crayonToolColor;
         v7 = crayonToolColor;
       }
 
-      else if (a4 == 4)
+      else if (type == 4)
       {
         watercolorToolColor = self->_watercolorToolColor;
         p_crayonToolColor = &self->_watercolorToolColor;
@@ -1062,9 +1062,9 @@ LABEL_13:
       }
     }
 
-    else if (a4)
+    else if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         penToolColor = self->_penToolColor;
         p_crayonToolColor = &self->_penToolColor;
@@ -1073,7 +1073,7 @@ LABEL_13:
 
       else
       {
-        if (a4 != 2)
+        if (type != 2)
         {
           goto LABEL_32;
         }
@@ -1094,16 +1094,16 @@ LABEL_13:
     goto LABEL_30;
   }
 
-  if (a4 <= 8)
+  if (type <= 8)
   {
-    if (a4 == 6)
+    if (type == 6)
     {
       reedToolColor = self->_reedToolColor;
       p_crayonToolColor = &self->_reedToolColor;
       v7 = reedToolColor;
     }
 
-    else if (a4 == 7)
+    else if (type == 7)
     {
       markerToolColor = self->_markerToolColor;
       p_crayonToolColor = &self->_markerToolColor;
@@ -1126,7 +1126,7 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (a4 - 9 < 2)
+  if (type - 9 < 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1152,19 +1152,19 @@ LABEL_30:
 
     v13 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolkitUIState setColor:forToolType:]"];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolkitUIState.m"];
-    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:611 isFatal:0 description:"Cannot set color for given tool (%zd)", a4];
+    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:611 isFatal:0 description:"Cannot set color for given tool (%zd)", type];
   }
 
 LABEL_32:
 }
 
-- (void)setOpacity:(double)a3 forToolType:(unint64_t)a4
+- (void)setOpacity:(double)opacity forToolType:(unint64_t)type
 {
-  if (a4 > 5)
+  if (type > 5)
   {
-    if (a4 > 8)
+    if (type > 8)
     {
-      if (a4 - 9 < 2)
+      if (type - 9 < 2)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -1194,106 +1194,106 @@ LABEL_32:
       }
     }
 
-    else if (a4 == 6)
+    else if (type == 6)
     {
-      self->_reedToolOpacity = a3;
+      self->_reedToolOpacity = opacity;
     }
 
-    else if (a4 == 7)
+    else if (type == 7)
     {
-      self->_markerToolOpacity = a3;
-    }
-
-    else
-    {
-      self->_fillToolOpacity = a3;
-    }
-  }
-
-  else if (a4 > 2)
-  {
-    if (a4 == 3)
-    {
-      self->_crayonToolOpacity = a3;
-    }
-
-    else if (a4 == 4)
-    {
-      self->_watercolorToolOpacity = a3;
+      self->_markerToolOpacity = opacity;
     }
 
     else
     {
-      self->_fountainPenToolOpacity = a3;
+      self->_fillToolOpacity = opacity;
     }
   }
 
-  else if (a4)
+  else if (type > 2)
   {
-    if (a4 == 1)
+    if (type == 3)
     {
-      self->_penToolOpacity = a3;
+      self->_crayonToolOpacity = opacity;
     }
 
-    else if (a4 == 2)
+    else if (type == 4)
     {
-      self->_pencilToolOpacity = a3;
+      self->_watercolorToolOpacity = opacity;
+    }
+
+    else
+    {
+      self->_fountainPenToolOpacity = opacity;
+    }
+  }
+
+  else if (type)
+  {
+    if (type == 1)
+    {
+      self->_penToolOpacity = opacity;
+    }
+
+    else if (type == 2)
+    {
+      self->_pencilToolOpacity = opacity;
     }
   }
 
   else
   {
-    self->_monolineToolOpacity = a3;
+    self->_monolineToolOpacity = opacity;
   }
 }
 
-- (void)setStrokeWidth:(double)a3 forToolType:(unint64_t)a4
+- (void)setStrokeWidth:(double)width forToolType:(unint64_t)type
 {
-  if (a4 <= 4)
+  if (type <= 4)
   {
-    if (a4 <= 1)
+    if (type <= 1)
     {
-      if (a4)
+      if (type)
       {
-        if (a4 == 1)
+        if (type == 1)
         {
-          self->_penToolUnscaledWidth = a3;
+          self->_penToolUnscaledWidth = width;
         }
       }
 
       else
       {
-        self->_monolineToolUnscaledWidth = a3;
+        self->_monolineToolUnscaledWidth = width;
       }
     }
 
-    else if (a4 == 2)
+    else if (type == 2)
     {
-      self->_pencilToolUnscaledWidth = a3;
+      self->_pencilToolUnscaledWidth = width;
     }
 
-    else if (a4 == 3)
+    else if (type == 3)
     {
-      self->_crayonToolUnscaledWidth = a3;
+      self->_crayonToolUnscaledWidth = width;
     }
 
     else
     {
-      self->_watercolorToolUnscaledWidth = a3;
+      self->_watercolorToolUnscaledWidth = width;
     }
   }
 
-  else if (a4 > 7)
+  else if (type > 7)
   {
-    if (a4 != 8)
+    if (type != 8)
     {
-      if (a4 == 9)
+      if (type == 9)
       {
-        self->_eraserToolScaledWidth = a3;
+        self->_eraserToolScaledWidth = width;
         return;
       }
 
-      if (a4 != 10)
+      if (type != 10)
       {
         return;
       }
@@ -1326,27 +1326,27 @@ LABEL_32:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:683 isFatal:0 description:"Cannot set width for tool (%zd)", self->_currentToolType];
   }
 
-  else if (a4 == 5)
+  else if (type == 5)
   {
-    self->_fountainPenToolUnscaledWidth = a3;
+    self->_fountainPenToolUnscaledWidth = width;
   }
 
-  else if (a4 == 6)
+  else if (type == 6)
   {
-    self->_reedToolUnscaledWidth = a3;
+    self->_reedToolUnscaledWidth = width;
   }
 
   else
   {
-    self->_markerToolUnscaledWidth = a3;
+    self->_markerToolUnscaledWidth = width;
   }
 }
 
-- (void)setAzimuth:(double)a3 forToolType:(unint64_t)a4
+- (void)setAzimuth:(double)azimuth forToolType:(unint64_t)type
 {
-  if (a4 == 6)
+  if (type == 6)
   {
-    self->_reedToolAzimuth = a3;
+    self->_reedToolAzimuth = azimuth;
   }
 
   else
@@ -1379,7 +1379,7 @@ LABEL_32:
   }
 }
 
-- (int64_t)strokeWidthIndexForToolType:(unint64_t)a3
+- (int64_t)strokeWidthIndexForToolType:(unint64_t)type
 {
   v5 = [(CRLFreehandDrawingToolkitUIState *)self strokeWidthsForFreehandDrawingToolType:?];
   if (![v5 count])
@@ -1415,7 +1415,7 @@ LABEL_32:
     abort();
   }
 
-  [(CRLFreehandDrawingToolkitUIState *)self strokeWidthForToolType:a3];
+  [(CRLFreehandDrawingToolkitUIState *)self strokeWidthForToolType:type];
   v7 = v6;
   v8 = 0;
   if ([v5 count])
@@ -1471,11 +1471,11 @@ LABEL_32:
   return v8;
 }
 
-- (void)setEraserToolErasesWholeObjects:(BOOL)a3
+- (void)setEraserToolErasesWholeObjects:(BOOL)objects
 {
-  if (self->_eraserToolErasesWholeObjects != a3)
+  if (self->_eraserToolErasesWholeObjects != objects)
   {
-    self->_eraserToolErasesWholeObjects = a3;
+    self->_eraserToolErasesWholeObjects = objects;
   }
 }
 
@@ -1544,10 +1544,10 @@ LABEL_32:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -1557,7 +1557,7 @@ LABEL_32:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CRLFreehandDrawingToolkitUIState *)self isEqualToFreehandDrawingToolkitUIState:v4];
+      v5 = [(CRLFreehandDrawingToolkitUIState *)self isEqualToFreehandDrawingToolkitUIState:equalCopy];
     }
 
     else

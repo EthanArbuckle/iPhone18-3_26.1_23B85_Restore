@@ -4,48 +4,48 @@
 - (_TtC10TVRemoteUI31TipPopoverPresentationConductor)popoverPresentationConductor;
 - (void)activate;
 - (void)dealloc;
-- (void)invalidate:(BOOL)a3 didPerformAction:(BOOL)a4 completion:(id)a5;
-- (void)setPopoverPresentationConductor:(id)a3;
-- (void)setPopoverPresentationController:(id)a3;
-- (void)setTipsViewController:(id)a3;
+- (void)invalidate:(BOOL)invalidate didPerformAction:(BOOL)action completion:(id)completion;
+- (void)setPopoverPresentationConductor:(id)conductor;
+- (void)setPopoverPresentationController:(id)controller;
+- (void)setTipsViewController:(id)controller;
 @end
 
 @implementation TVRUITipManager
 
-- (void)setTipsViewController:(id)a3
+- (void)setTipsViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR___TVRUITipManager_tipsViewController);
-  *(&self->super.isa + OBJC_IVAR___TVRUITipManager_tipsViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___TVRUITipManager_tipsViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setPopoverPresentationController:(id)a3
+- (void)setPopoverPresentationController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR___TVRUITipManager_popoverPresentationController);
-  *(&self->super.isa + OBJC_IVAR___TVRUITipManager_popoverPresentationController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___TVRUITipManager_popoverPresentationController) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtC10TVRemoteUI31TipPopoverPresentationConductor)popoverPresentationConductor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TVRUITipManager.popoverPresentationConductor.getter();
 
   return v3;
 }
 
-- (void)setPopoverPresentationConductor:(id)a3
+- (void)setPopoverPresentationConductor:(id)conductor
 {
   v4 = *(&self->super.isa + OBJC_IVAR___TVRUITipManager____lazy_storage___popoverPresentationConductor);
-  *(&self->super.isa + OBJC_IVAR___TVRUITipManager____lazy_storage___popoverPresentationConductor) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___TVRUITipManager____lazy_storage___popoverPresentationConductor) = conductor;
+  conductorCopy = conductor;
 }
 
 - (BOOL)isPresentingTip
 {
-  v2 = [(TVRUITipManager *)self tipsViewController];
-  v3 = v2;
-  if (v2)
+  tipsViewController = [(TVRUITipManager *)self tipsViewController];
+  v3 = tipsViewController;
+  if (tipsViewController)
   {
   }
 
@@ -54,13 +54,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   TVRUITipManager.activate()();
 }
 
-- (void)invalidate:(BOOL)a3 didPerformAction:(BOOL)a4 completion:(id)a5
+- (void)invalidate:(BOOL)invalidate didPerformAction:(BOOL)action completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -73,8 +73,8 @@
     v8 = 0;
   }
 
-  v9 = self;
-  specialized TVRUITipManager.invalidate(_:didPerformAction:completion:)(a4, v7, v8);
+  selfCopy = self;
+  specialized TVRUITipManager.invalidate(_:didPerformAction:completion:)(action, v7, v8);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed FMR1HapticPattern?, @in_guaranteed Any?) -> ())?(v7);
 }
 
@@ -83,14 +83,14 @@
   v3 = OBJC_IVAR___TVRUITipManager_tipObservation;
   if (*(&self->super.isa + OBJC_IVAR___TVRUITipManager_tipObservation))
   {
-    v4 = self;
+    selfCopy = self;
 
     MEMORY[0x26D6B13F0](v5, MEMORY[0x277D84F78] + 8, MEMORY[0x277D84A98], MEMORY[0x277D84AC0]);
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;

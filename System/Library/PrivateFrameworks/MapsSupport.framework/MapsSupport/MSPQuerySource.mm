@@ -1,34 +1,34 @@
 @interface MSPQuerySource
 - (id)_container;
-- (id)_initWithOwningContainer:(id)a3;
-- (id)_initWithParentSource:(id)a3 preprocessingBlock:(id)a4 mappingBlock:(id)a5;
+- (id)_initWithOwningContainer:(id)container;
+- (id)_initWithParentSource:(id)source preprocessingBlock:(id)block mappingBlock:(id)mappingBlock;
 - (id)newEditableQuery;
 - (id)newQuery;
-- (id)sourceByMappingContentsUsingBlock:(id)a3;
-- (id)sourceByMappingContentsUsingPreprocessingBlock:(id)a3 mappingBlock:(id)a4;
-- (void)_addObserver:(id)a3;
-- (void)_didChangeSourceWithNewState:(id)a3 context:(id)a4 inContainer:(id)a5;
-- (void)_didReceiveContainerContents:(id)a3 context:(id)a4;
-- (void)_removeObserver:(id)a3;
+- (id)sourceByMappingContentsUsingBlock:(id)block;
+- (id)sourceByMappingContentsUsingPreprocessingBlock:(id)block mappingBlock:(id)mappingBlock;
+- (void)_addObserver:(id)observer;
+- (void)_didChangeSourceWithNewState:(id)state context:(id)context inContainer:(id)container;
+- (void)_didReceiveContainerContents:(id)contents context:(id)context;
+- (void)_removeObserver:(id)observer;
 @end
 
 @implementation MSPQuerySource
 
-- (id)_initWithOwningContainer:(id)a3
+- (id)_initWithOwningContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = MSPQuerySource;
   v5 = [(MSPQuerySource *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owningContainer, v4);
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v5->_owningContainer, containerCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    v9 = v4;
+    v9 = containerCopy;
     [v9 addObserver:v6];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -41,29 +41,29 @@
   return v6;
 }
 
-- (id)_initWithParentSource:(id)a3 preprocessingBlock:(id)a4 mappingBlock:(id)a5
+- (id)_initWithParentSource:(id)source preprocessingBlock:(id)block mappingBlock:(id)mappingBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  blockCopy = block;
+  mappingBlockCopy = mappingBlock;
   v21.receiver = self;
   v21.super_class = MSPQuerySource;
   v12 = [(MSPQuerySource *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_parentSource, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_parentSource, source);
+    v14 = [blockCopy copy];
     preprocessingBlock = v13->_preprocessingBlock;
     v13->_preprocessingBlock = v14;
 
-    v16 = [v11 copy];
+    v16 = [mappingBlockCopy copy];
     mappingBlock = v13->_mappingBlock;
     v13->_mappingBlock = v16;
 
-    v18 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v13->_observers;
-    v13->_observers = v18;
+    v13->_observers = weakObjectsHashTable;
 
     [(MSPQuerySource *)v13->_parentSource _addObserver:v13];
   }
@@ -71,19 +71,19 @@
   return v13;
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v7];
-  v5 = v4->_state;
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  v5 = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   if (v5)
   {
-    v6 = [(MSPQuerySource *)v4 _container];
-    [v7 _didChangeSourceWithNewState:v5 context:0 inContainer:v6];
+    _container = [(MSPQuerySource *)selfCopy _container];
+    [observerCopy _didChangeSourceWithNewState:v5 context:0 inContainer:_container];
   }
 }
 
@@ -103,28 +103,28 @@
   return WeakRetained;
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_didReceiveContainerContents:(id)a3 context:(id)a4
+- (void)_didReceiveContainerContents:(id)contents context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [[_MSPQueryState alloc] initWithContainerContents:v6];
-  objc_storeStrong(&v8->_state, v9);
-  v10 = [(NSHashTable *)v8->_observers allObjects];
-  v11 = [v10 copy];
+  contentsCopy = contents;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [[_MSPQueryState alloc] initWithContainerContents:contentsCopy];
+  objc_storeStrong(&selfCopy->_state, v9);
+  allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+  v11 = [allObjects copy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -145,8 +145,8 @@
         }
 
         v16 = *(*(&v19 + 1) + 8 * v15);
-        v17 = [(MSPQuerySource *)v8 _container];
-        [v16 _didChangeSourceWithNewState:v9 context:v7 inContainer:v17];
+        _container = [(MSPQuerySource *)selfCopy _container];
+        [v16 _didChangeSourceWithNewState:v9 context:contextCopy inContainer:_container];
 
         ++v15;
       }
@@ -161,20 +161,20 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didChangeSourceWithNewState:(id)a3 context:(id)a4 inContainer:(id)a5
+- (void)_didChangeSourceWithNewState:(id)state context:(id)context inContainer:(id)container
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [v8 stateByInvokingPreprocessingBlock:v11->_preprocessingBlock mappingBlock:v11->_mappingBlock];
-  objc_storeStrong(&v11->_state, v12);
-  v13 = [(NSHashTable *)v11->_observers allObjects];
-  v14 = [v13 copy];
+  stateCopy = state;
+  contextCopy = context;
+  containerCopy = container;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [stateCopy stateByInvokingPreprocessingBlock:selfCopy->_preprocessingBlock mappingBlock:selfCopy->_mappingBlock];
+  objc_storeStrong(&selfCopy->_state, v12);
+  allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+  v14 = [allObjects copy];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -194,7 +194,7 @@
           objc_enumerationMutation(v15);
         }
 
-        [*(*(&v20 + 1) + 8 * v18++) _didChangeSourceWithNewState:v12 context:v9 inContainer:{v10, v20}];
+        [*(*(&v20 + 1) + 8 * v18++) _didChangeSourceWithNewState:v12 context:contextCopy inContainer:{containerCopy, v20}];
       }
 
       while (v16 != v18);
@@ -207,26 +207,26 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sourceByMappingContentsUsingBlock:(id)a3
+- (id)sourceByMappingContentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [MSPQuerySource alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__MSPQuerySource_sourceByMappingContentsUsingBlock___block_invoke;
   v9[3] = &unk_279867B80;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = [(MSPQuerySource *)v5 _initWithParentSource:self preprocessingBlock:0 mappingBlock:v9];
 
   return v7;
 }
 
-- (id)sourceByMappingContentsUsingPreprocessingBlock:(id)a3 mappingBlock:(id)a4
+- (id)sourceByMappingContentsUsingPreprocessingBlock:(id)block mappingBlock:(id)mappingBlock
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MSPQuerySource alloc] _initWithParentSource:self preprocessingBlock:v7 mappingBlock:v6];
+  mappingBlockCopy = mappingBlock;
+  blockCopy = block;
+  v8 = [[MSPQuerySource alloc] _initWithParentSource:self preprocessingBlock:blockCopy mappingBlock:mappingBlockCopy];
 
   return v8;
 }

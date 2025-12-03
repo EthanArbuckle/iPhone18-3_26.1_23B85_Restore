@@ -1,24 +1,24 @@
 @interface ShiptoLocationInput
-- (BOOL)inArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)inArray:(id)array;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (ShiptoLocationInput)initWithCoder:(id)a3;
-- (ShiptoLocationInput)initWithShiptoLocation:(id)a3 status:(unint64_t)a4 process:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ShiptoLocationInput)initWithCoder:(id)coder;
+- (ShiptoLocationInput)initWithShiptoLocation:(id)location status:(unint64_t)status process:(id)process;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ShiptoLocationInput
 
-- (BOOL)inArray:(id)a3
+- (BOOL)inArray:(id)array
 {
-  v4 = a3;
-  v5 = [(ShiptoLocationInput *)self countryCode];
-  if (v5)
+  arrayCopy = array;
+  countryCode = [(ShiptoLocationInput *)self countryCode];
+  if (countryCode)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = arrayCopy;
     if (objc_opt_isKindOfClass())
     {
       if (v6)
@@ -26,7 +26,7 @@
         objc_opt_class();
         if (sub_100027870(v6))
         {
-          v7 = [v6 containsObject:v5];
+          v7 = [v6 containsObject:countryCode];
         }
 
         else
@@ -75,25 +75,25 @@ LABEL_12:
 
 - (NSString)description
 {
-  v3 = [(ShiptoLocationInput *)self countryCode];
-  v4 = [(ShiptoLocationInput *)self legacyRegionInfo];
-  v5 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
+  countryCode = [(ShiptoLocationInput *)self countryCode];
+  legacyRegionInfo = [(ShiptoLocationInput *)self legacyRegionInfo];
+  legacySoftwareBehaviors = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
   v9.receiver = self;
   v9.super_class = ShiptoLocationInput;
   v6 = [(EligibilityInput *)&v9 description];
-  v7 = [NSString stringWithFormat:@"[ShiptoLocationInput countryCode:%@ legacyRegionInfo:%@ legacySoftwareBehaviors:%@ %@]", v3, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"[ShiptoLocationInput countryCode:%@ legacyRegionInfo:%@ legacySoftwareBehaviors:%@ %@]", countryCode, legacyRegionInfo, legacySoftwareBehaviors, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = ShiptoLocationInput;
-  if ([(EligibilityInput *)&v18 isEqual:v4])
+  if ([(EligibilityInput *)&v18 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v15 = 1;
       goto LABEL_19;
@@ -102,22 +102,22 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ShiptoLocationInput *)self countryCode];
-      v7 = [(ShiptoLocationInput *)v5 countryCode];
-      v8 = sub_1000277EC(v6, v7);
+      v5 = equalCopy;
+      countryCode = [(ShiptoLocationInput *)self countryCode];
+      countryCode2 = [(ShiptoLocationInput *)v5 countryCode];
+      v8 = sub_1000277EC(countryCode, countryCode2);
 
       if (v8)
       {
-        v9 = [(ShiptoLocationInput *)self legacyRegionInfo];
-        v10 = [(ShiptoLocationInput *)v5 legacyRegionInfo];
-        v11 = sub_1000277EC(v9, v10);
+        legacyRegionInfo = [(ShiptoLocationInput *)self legacyRegionInfo];
+        legacyRegionInfo2 = [(ShiptoLocationInput *)v5 legacyRegionInfo];
+        v11 = sub_1000277EC(legacyRegionInfo, legacyRegionInfo2);
 
         if (v11)
         {
-          v12 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
-          v13 = [(ShiptoLocationInput *)v5 legacySoftwareBehaviors];
-          v14 = sub_1000277EC(v12, v13);
+          legacySoftwareBehaviors = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
+          legacySoftwareBehaviors2 = [(ShiptoLocationInput *)v5 legacySoftwareBehaviors];
+          v14 = sub_1000277EC(legacySoftwareBehaviors, legacySoftwareBehaviors2);
 
           if (v14)
           {
@@ -186,53 +186,53 @@ LABEL_19:
   v11.receiver = self;
   v11.super_class = ShiptoLocationInput;
   v3 = [(EligibilityInput *)&v11 hash];
-  v4 = [(ShiptoLocationInput *)self countryCode];
-  v5 = [v4 hash];
-  v6 = [(ShiptoLocationInput *)self legacyRegionInfo];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
-  v9 = v7 ^ [v8 hash];
+  countryCode = [(ShiptoLocationInput *)self countryCode];
+  v5 = [countryCode hash];
+  legacyRegionInfo = [(ShiptoLocationInput *)self legacyRegionInfo];
+  v7 = v5 ^ [legacyRegionInfo hash];
+  legacySoftwareBehaviors = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
+  v9 = v7 ^ [legacySoftwareBehaviors hash];
 
   return v9 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = ShiptoLocationInput;
   v5 = [(EligibilityInput *)&v13 copyWithZone:?];
-  v6 = [(ShiptoLocationInput *)self countryCode];
-  v7 = [v6 copyWithZone:a3];
+  countryCode = [(ShiptoLocationInput *)self countryCode];
+  v7 = [countryCode copyWithZone:zone];
   [v5 setCountryCode:v7];
 
-  v8 = [(ShiptoLocationInput *)self legacyRegionInfo];
-  v9 = [v8 copyWithZone:a3];
+  legacyRegionInfo = [(ShiptoLocationInput *)self legacyRegionInfo];
+  v9 = [legacyRegionInfo copyWithZone:zone];
   [v5 setLegacyRegionInfo:v9];
 
-  v10 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
-  v11 = [v10 copyWithZone:a3];
+  legacySoftwareBehaviors = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
+  v11 = [legacySoftwareBehaviors copyWithZone:zone];
   [v5 setLegacySoftwareBehaviors:v11];
 
   return v5;
 }
 
-- (ShiptoLocationInput)initWithCoder:(id)a3
+- (ShiptoLocationInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ShiptoLocationInput;
-  v5 = [(EligibilityInput *)&v13 initWithCoder:v4];
+  v5 = [(EligibilityInput *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legacyRegionInfo"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legacyRegionInfo"];
     legacyRegionInfo = v5->_legacyRegionInfo;
     v5->_legacyRegionInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legacySoftwareBehaviors"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legacySoftwareBehaviors"];
     legacySoftwareBehaviors = v5->_legacySoftwareBehaviors;
     v5->_legacySoftwareBehaviors = v10;
   }
@@ -240,43 +240,43 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ShiptoLocationInput;
-  [(EligibilityInput *)&v11 encodeWithCoder:v4];
-  v5 = [(ShiptoLocationInput *)self countryCode];
+  [(EligibilityInput *)&v11 encodeWithCoder:coderCopy];
+  countryCode = [(ShiptoLocationInput *)self countryCode];
 
-  if (v5)
+  if (countryCode)
   {
-    v6 = [(ShiptoLocationInput *)self countryCode];
-    [v4 encodeObject:v6 forKey:@"countryCode"];
+    countryCode2 = [(ShiptoLocationInput *)self countryCode];
+    [coderCopy encodeObject:countryCode2 forKey:@"countryCode"];
   }
 
-  v7 = [(ShiptoLocationInput *)self legacyRegionInfo];
+  legacyRegionInfo = [(ShiptoLocationInput *)self legacyRegionInfo];
 
-  if (v7)
+  if (legacyRegionInfo)
   {
-    v8 = [(ShiptoLocationInput *)self legacyRegionInfo];
-    [v4 encodeObject:v8 forKey:@"legacyRegionInfo"];
+    legacyRegionInfo2 = [(ShiptoLocationInput *)self legacyRegionInfo];
+    [coderCopy encodeObject:legacyRegionInfo2 forKey:@"legacyRegionInfo"];
   }
 
-  v9 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
+  legacySoftwareBehaviors = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
 
-  if (v9)
+  if (legacySoftwareBehaviors)
   {
-    v10 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
-    [v4 encodeObject:v10 forKey:@"legacySoftwareBehaviors"];
+    legacySoftwareBehaviors2 = [(ShiptoLocationInput *)self legacySoftwareBehaviors];
+    [coderCopy encodeObject:legacySoftwareBehaviors2 forKey:@"legacySoftwareBehaviors"];
   }
 }
 
-- (ShiptoLocationInput)initWithShiptoLocation:(id)a3 status:(unint64_t)a4 process:(id)a5
+- (ShiptoLocationInput)initWithShiptoLocation:(id)location status:(unint64_t)status process:(id)process
 {
-  v8 = a3;
+  locationCopy = location;
   v27.receiver = self;
   v27.super_class = ShiptoLocationInput;
-  v9 = [(EligibilityInput *)&v27 initWithInputType:17 status:a4 process:a5];
+  v9 = [(EligibilityInput *)&v27 initWithInputType:17 status:status process:process];
   v10 = v9;
   if (!v9)
   {
@@ -285,13 +285,13 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!locationCopy)
   {
     v14 = v9;
     goto LABEL_16;
   }
 
-  type = xpc_get_type(v8);
+  type = xpc_get_type(locationCopy);
   if (type != &_xpc_type_dictionary)
   {
     v12 = type;
@@ -309,7 +309,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v15 = v8;
+  v15 = locationCopy;
   string = xpc_dictionary_get_string(v15, "OS_ELIGIBILITY_INPUT_SHIPTO_LOCATION_KEY_COUNTRY_CODE");
   v17 = xpc_dictionary_get_string(v15, "OS_ELIGIBILITY_INPUT_SHIPTO_LOCATION_KEY_LEGACY_REGION_INFO");
   v18 = xpc_dictionary_get_string(v15, "OS_ELIGIBILITY_INPUT_SHIPTO_LOCATION_KEY_LEGACY_SOFTWARE_BEHAVIORS");

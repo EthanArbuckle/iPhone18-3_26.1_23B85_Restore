@@ -9,38 +9,38 @@
 
 - (id)hk_window
 {
-  v2 = [a1 view];
-  v3 = [v2 window];
+  view = [self view];
+  window = [view window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [a1 view];
-    v5 = [v4 window];
+    view2 = [self view];
+    window2 = [view2 window];
   }
 
   else
   {
-    v4 = [a1 parentViewController];
-    if (v4)
+    view2 = [self parentViewController];
+    if (view2)
     {
-      [a1 parentViewController];
+      [self parentViewController];
     }
 
     else
     {
-      [a1 presentingViewController];
+      [self presentingViewController];
     }
     v6 = ;
-    v5 = [v6 hk_window];
+    window2 = [v6 hk_window];
   }
 
-  return v5;
+  return window2;
 }
 
 - (uint64_t)hk_viewIsHidden
 {
-  v2 = [a1 view];
-  v3 = [a1 _viewIsHidden:v2];
+  view = [self view];
+  v3 = [self _viewIsHidden:view];
 
   return v3;
 }
@@ -55,12 +55,12 @@
 
   else
   {
-    v6 = [v4 superview];
+    superview = [v4 superview];
 
-    if (v6)
+    if (superview)
     {
-      v7 = [v4 superview];
-      v5 = [a1 _viewIsHidden:v7];
+      superview2 = [v4 superview];
+      v5 = [self _viewIsHidden:superview2];
     }
 
     else
@@ -88,7 +88,7 @@
     [v10 setModalPresentationStyle:1];
   }
 
-  [a1 presentViewController:v10 animated:1 completion:v9];
+  [self presentViewController:v10 animated:1 completion:v9];
 }
 
 @end

@@ -2,54 +2,54 @@
 - (BOOL)allTypesEnabled;
 - (BOOL)anyTypeEnabled;
 - (BOOL)anyTypeRequested;
-- (BOOL)isTypeEnabled:(id)a3;
-- (HKClinicalSourceAuthorizationController)initWithHealthStore:(id)a3 healthRecordsStore:(id)a4 source:(id)a5 typesRequestedForReading:(id)a6;
+- (BOOL)isTypeEnabled:(id)enabled;
+- (HKClinicalSourceAuthorizationController)initWithHealthStore:(id)store healthRecordsStore:(id)recordsStore source:(id)source typesRequestedForReading:(id)reading;
 - (NSString)titleText;
 - (UIImage)iconImage;
-- (id)_authorizationModesWithMode:(int64_t)a3 types:(id)a4;
-- (id)_authorizationStatusesWithTypes:(id)a3;
-- (id)_orderTypes:(id)a3;
-- (int64_t)_authorizationStatusWithType:(id)a3;
-- (void)_commitModeConfirmationAlertRegistrationShouldDisplay:(BOOL)a3;
-- (void)_didReloadWithAuthorizationRecords:(id)a3 orError:(id)a4 completion:(id)a5;
-- (void)_reloadWithCompletion:(id)a3;
-- (void)_setAuthorizationStatuses:(id)a3 modes:(id)a4 shouldUpdateAnchor:(BOOL)a5 completion:(id)a6;
-- (void)_updateDisplayReadAuthorizationAnchorDateIfNeededForCommittingModes:(id)a3;
-- (void)_updateReminderRegistrationIfNeededForCommittingModes:(id)a3 anyTypeEnabled:(BOOL)a4;
+- (id)_authorizationModesWithMode:(int64_t)mode types:(id)types;
+- (id)_authorizationStatusesWithTypes:(id)types;
+- (id)_orderTypes:(id)types;
+- (int64_t)_authorizationStatusWithType:(id)type;
+- (void)_commitModeConfirmationAlertRegistrationShouldDisplay:(BOOL)display;
+- (void)_didReloadWithAuthorizationRecords:(id)records orError:(id)error completion:(id)completion;
+- (void)_reloadWithCompletion:(id)completion;
+- (void)_setAuthorizationStatuses:(id)statuses modes:(id)modes shouldUpdateAnchor:(BOOL)anchor completion:(id)completion;
+- (void)_updateDisplayReadAuthorizationAnchorDateIfNeededForCommittingModes:(id)modes;
+- (void)_updateReminderRegistrationIfNeededForCommittingModes:(id)modes anyTypeEnabled:(BOOL)enabled;
 - (void)allTypesEnabled;
 - (void)anyTypeEnabled;
 - (void)anyTypeRequested;
-- (void)commitAllTypesAndUpdateAuthorizationAnchorWithMode:(int64_t)a3 completion:(id)a4;
+- (void)commitAllTypesAndUpdateAuthorizationAnchorWithMode:(int64_t)mode completion:(id)completion;
 - (void)disableAllTypes;
-- (void)reloadWithCompletion:(id)a3;
-- (void)setEnabled:(BOOL)a3 forType:(id)a4 commit:(BOOL)a5 completion:(id)a6;
+- (void)reloadWithCompletion:(id)completion;
+- (void)setEnabled:(BOOL)enabled forType:(id)type commit:(BOOL)commit completion:(id)completion;
 @end
 
 @implementation HKClinicalSourceAuthorizationController
 
-- (HKClinicalSourceAuthorizationController)initWithHealthStore:(id)a3 healthRecordsStore:(id)a4 source:(id)a5 typesRequestedForReading:(id)a6
+- (HKClinicalSourceAuthorizationController)initWithHealthStore:(id)store healthRecordsStore:(id)recordsStore source:(id)source typesRequestedForReading:(id)reading
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  recordsStoreCopy = recordsStore;
+  sourceCopy = source;
+  readingCopy = reading;
   v27.receiver = self;
   v27.super_class = HKClinicalSourceAuthorizationController;
   v15 = [(HKClinicalSourceAuthorizationController *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_healthStore, a3);
-    objc_storeStrong(&v16->_healthRecordsStore, a4);
-    v17 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:v11];
+    objc_storeStrong(&v15->_healthStore, store);
+    objc_storeStrong(&v16->_healthRecordsStore, recordsStore);
+    v17 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:storeCopy];
     authorizationStore = v16->_authorizationStore;
     v16->_authorizationStore = v17;
 
-    v19 = [v13 copy];
+    v19 = [sourceCopy copy];
     source = v16->_source;
     v16->_source = v19;
 
-    v21 = [v14 copy];
+    v21 = [readingCopy copy];
     typesRequestedForReading = v16->_typesRequestedForReading;
     v16->_typesRequestedForReading = v21;
 
@@ -67,12 +67,12 @@
   return v16;
 }
 
-- (void)reloadWithCompletion:(id)a3
+- (void)reloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    [(HKClinicalSourceAuthorizationController *)self _reloadWithCompletion:v4];
+    [(HKClinicalSourceAuthorizationController *)self _reloadWithCompletion:completionCopy];
   }
 
   else
@@ -82,14 +82,14 @@
     v5[2] = __64__HKClinicalSourceAuthorizationController_reloadWithCompletion___block_invoke;
     v5[3] = &unk_1E81B5E48;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)_reloadWithCompletion:(id)a3
+- (void)_reloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   os_unfair_lock_lock(&self->_typeRegistryLock);
   [(HKClinicalSourceAuthorizationController *)self setAnyDeterminedTypeAllowsReading:0];
@@ -97,17 +97,17 @@
   [(HKClinicalSourceAuthorizationController *)self setDisplayReadAuthorizationAnchorDate:0];
   [(HKClinicalSourceAuthorizationController *)self setFetchError:0];
   os_unfair_lock_unlock(&self->_typeRegistryLock);
-  v5 = [(HKClinicalSourceAuthorizationController *)self authorizationStore];
-  v6 = [(HKClinicalSourceAuthorizationController *)self source];
-  v7 = [v6 bundleIdentifier];
+  authorizationStore = [(HKClinicalSourceAuthorizationController *)self authorizationStore];
+  source = [(HKClinicalSourceAuthorizationController *)self source];
+  bundleIdentifier = [source bundleIdentifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__HKClinicalSourceAuthorizationController__reloadWithCompletion___block_invoke;
   v9[3] = &unk_1E81B7B20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v5 fetchAuthorizationRecordsForBundleIdentifier:v7 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [authorizationStore fetchAuthorizationRecordsForBundleIdentifier:bundleIdentifier completion:v9];
 }
 
 void __65__HKClinicalSourceAuthorizationController__reloadWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -159,38 +159,38 @@ LABEL_7:
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 }
 
-- (void)_didReloadWithAuthorizationRecords:(id)a3 orError:(id)a4 completion:(id)a5
+- (void)_didReloadWithAuthorizationRecords:(id)records orError:(id)error completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  errorCopy = error;
+  completionCopy = completion;
+  recordsCopy = records;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v14 = [(HKClinicalSourceAuthorizationController *)self typesRequestedForReading];
+  typesRequestedForReading = [(HKClinicalSourceAuthorizationController *)self typesRequestedForReading];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __97__HKClinicalSourceAuthorizationController__didReloadWithAuthorizationRecords_orError_completion___block_invoke;
   v22[3] = &unk_1E81B7B48;
-  v27 = v14 == 0;
-  v15 = v14;
+  v27 = typesRequestedForReading == 0;
+  v15 = typesRequestedForReading;
   v23 = v15;
-  v24 = self;
+  selfCopy = self;
   v16 = v13;
   v25 = v16;
   v17 = v12;
   v26 = v17;
-  [v11 enumerateKeysAndObjectsUsingBlock:v22];
+  [recordsCopy enumerateKeysAndObjectsUsingBlock:v22];
 
   os_unfair_lock_lock(&self->_typeRegistryLock);
   self->_initialLoadComplete = 1;
-  objc_storeStrong(&self->_fetchError, a4);
+  objc_storeStrong(&self->_fetchError, error);
   v18 = [v16 copy];
   typesForReading = self->_typesForReading;
   self->_typesForReading = v18;
 
   objc_storeStrong(&self->_typesEnabledForReading, v12);
-  if (v11)
+  if (recordsCopy)
   {
     v20 = [(HKClinicalSourceAuthorizationController *)self _orderTypes:v16];
   }
@@ -204,7 +204,7 @@ LABEL_7:
   self->_orderedTypesForReading = v20;
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
-  v10[2](v10);
+  completionCopy[2](completionCopy);
 }
 
 void __97__HKClinicalSourceAuthorizationController__didReloadWithAuthorizationRecords_orError_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -238,10 +238,10 @@ void __97__HKClinicalSourceAuthorizationController__didReloadWithAuthorizationRe
   }
 }
 
-- (id)_orderTypes:(id)a3
+- (id)_orderTypes:(id)types
 {
   healthStore = self->_healthStore;
-  v4 = a3;
+  typesCopy = types;
   v5 = [HKDisplayTypeController sharedInstanceForHealthStore:healthStore];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -250,9 +250,9 @@ void __97__HKClinicalSourceAuthorizationController__didReloadWithAuthorizationRe
   v12 = v5;
   v6 = v5;
   v7 = _Block_copy(aBlock);
-  v8 = [v4 allObjects];
+  allObjects = [typesCopy allObjects];
 
-  v9 = [v8 sortedArrayUsingComparator:v7];
+  v9 = [allObjects sortedArrayUsingComparator:v7];
 
   return v9;
 }
@@ -273,79 +273,79 @@ uint64_t __55__HKClinicalSourceAuthorizationController__orderTypes___block_invok
   return v13;
 }
 
-- (BOOL)isTypeEnabled:(id)a3
+- (BOOL)isTypeEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_typeRegistryLock);
-  v5 = [(HKClinicalSourceAuthorizationController *)self typesForReading];
-  v6 = [v5 containsObject:v4];
+  typesForReading = [(HKClinicalSourceAuthorizationController *)self typesForReading];
+  v6 = [typesForReading containsObject:enabledCopy];
 
   if ((v6 & 1) == 0)
   {
     [HKClinicalSourceAuthorizationController isTypeEnabled:];
   }
 
-  v7 = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
-  v8 = [v7 containsObject:v4];
+  typesEnabledForReading = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
+  v8 = [typesEnabledForReading containsObject:enabledCopy];
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
   return v8;
 }
 
-- (void)setEnabled:(BOOL)a3 forType:(id)a4 commit:(BOOL)a5 completion:(id)a6
+- (void)setEnabled:(BOOL)enabled forType:(id)type commit:(BOOL)commit completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
-  v15 = a4;
-  v10 = a6;
+  commitCopy = commit;
+  enabledCopy = enabled;
+  typeCopy = type;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_typeRegistryLock);
   typesEnabledForReading = self->_typesEnabledForReading;
-  if (v8)
+  if (enabledCopy)
   {
-    [(NSMutableSet *)typesEnabledForReading addObject:v15];
+    [(NSMutableSet *)typesEnabledForReading addObject:typeCopy];
   }
 
   else
   {
-    [(NSMutableSet *)typesEnabledForReading removeObject:v15];
+    [(NSMutableSet *)typesEnabledForReading removeObject:typeCopy];
   }
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
-  if (v7)
+  if (commitCopy)
   {
-    v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v15, 0}];
+    v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{typeCopy, 0}];
     v13 = [(HKClinicalSourceAuthorizationController *)self _authorizationStatusesWithTypes:v12];
     v14 = [(HKClinicalSourceAuthorizationController *)self _authorizationModesWithMode:[(HKClinicalSourceAuthorizationController *)self authorizationModeForSource] types:v12];
-    [(HKClinicalSourceAuthorizationController *)self _setAuthorizationStatuses:v13 modes:v14 shouldUpdateAnchor:0 completion:v10];
+    [(HKClinicalSourceAuthorizationController *)self _setAuthorizationStatuses:v13 modes:v14 shouldUpdateAnchor:0 completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
 - (void)disableAllTypes
 {
   os_unfair_lock_lock(&self->_typeRegistryLock);
-  v3 = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
-  [v3 removeAllObjects];
+  typesEnabledForReading = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
+  [typesEnabledForReading removeAllObjects];
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
 }
 
-- (void)commitAllTypesAndUpdateAuthorizationAnchorWithMode:(int64_t)a3 completion:(id)a4
+- (void)commitAllTypesAndUpdateAuthorizationAnchorWithMode:(int64_t)mode completion:(id)completion
 {
-  v6 = a4;
-  [(HKClinicalSourceAuthorizationController *)self setAuthorizationModeForSource:a3];
+  completionCopy = completion;
+  [(HKClinicalSourceAuthorizationController *)self setAuthorizationModeForSource:mode];
   os_unfair_lock_lock(&self->_typeRegistryLock);
-  v7 = [(HKClinicalSourceAuthorizationController *)self typesForReading];
+  typesForReading = [(HKClinicalSourceAuthorizationController *)self typesForReading];
   os_unfair_lock_unlock(&self->_typeRegistryLock);
-  if (v7)
+  if (typesForReading)
   {
-    v8 = [(HKClinicalSourceAuthorizationController *)self _authorizationModesWithMode:a3 types:v7];
-    v9 = [(HKClinicalSourceAuthorizationController *)self _authorizationStatusesWithTypes:v7];
-    [(HKClinicalSourceAuthorizationController *)self _setAuthorizationStatuses:v9 modes:v8 shouldUpdateAnchor:1 completion:v6];
+    v8 = [(HKClinicalSourceAuthorizationController *)self _authorizationModesWithMode:mode types:typesForReading];
+    v9 = [(HKClinicalSourceAuthorizationController *)self _authorizationStatusesWithTypes:typesForReading];
+    [(HKClinicalSourceAuthorizationController *)self _setAuthorizationStatuses:v9 modes:v8 shouldUpdateAnchor:1 completion:completionCopy];
   }
 
   else
@@ -358,7 +358,7 @@ uint64_t __55__HKClinicalSourceAuthorizationController__orderTypes___block_invok
       [HKClinicalSourceAuthorizationController commitAllTypesAndUpdateAuthorizationAnchorWithMode:v8 completion:?];
     }
 
-    (*(v6 + 2))(v6, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -379,15 +379,15 @@ uint64_t __55__HKClinicalSourceAuthorizationController__orderTypes___block_invok
   return v4;
 }
 
-- (void)_updateDisplayReadAuthorizationAnchorDateIfNeededForCommittingModes:(id)a3
+- (void)_updateDisplayReadAuthorizationAnchorDateIfNeededForCommittingModes:(id)modes
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  modesCopy = modes;
+  v6 = [modesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -398,16 +398,16 @@ uint64_t __55__HKClinicalSourceAuthorizationController__orderTypes___block_invok
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(modesCopy);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) integerValue];
-        if (v10 >= 2)
+        integerValue = [*(*(&v12 + 1) + 8 * i) integerValue];
+        if (integerValue >= 2)
         {
-          [(HKClinicalSourceAuthorizationController *)a2 _updateDisplayReadAuthorizationAnchorDateIfNeededForCommittingModes:v10];
+          [(HKClinicalSourceAuthorizationController *)a2 _updateDisplayReadAuthorizationAnchorDateIfNeededForCommittingModes:integerValue];
         }
 
-        if ([(HKClinicalSourceAuthorizationController *)self _shouldUpdateDisplayReadAuthorizationAnchorDateWhenCommittingWithMode:v10])
+        if ([(HKClinicalSourceAuthorizationController *)self _shouldUpdateDisplayReadAuthorizationAnchorDateWhenCommittingWithMode:integerValue])
         {
           v11 = objc_alloc_init(MEMORY[0x1E695DF00]);
           [(HKClinicalSourceAuthorizationController *)self setDisplayReadAuthorizationAnchorDate:v11];
@@ -416,7 +416,7 @@ uint64_t __55__HKClinicalSourceAuthorizationController__orderTypes___block_invok
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [modesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -429,63 +429,63 @@ uint64_t __55__HKClinicalSourceAuthorizationController__orderTypes___block_invok
 LABEL_13:
 }
 
-- (void)_updateReminderRegistrationIfNeededForCommittingModes:(id)a3 anyTypeEnabled:(BOOL)a4
+- (void)_updateReminderRegistrationIfNeededForCommittingModes:(id)modes anyTypeEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![v7 count])
+  modesCopy = modes;
+  if (![modesCopy count])
   {
     [HKClinicalSourceAuthorizationController _updateReminderRegistrationIfNeededForCommittingModes:anyTypeEnabled:];
   }
 
   memset(v10, 0, sizeof(v10));
-  if ([v7 countByEnumeratingWithState:v10 objects:v11 count:16])
+  if ([modesCopy countByEnumeratingWithState:v10 objects:v11 count:16])
   {
-    v8 = [**(&v10[0] + 1) integerValue];
-    if (v8 < 2)
+    integerValue = [**(&v10[0] + 1) integerValue];
+    if (integerValue < 2)
     {
       goto LABEL_7;
     }
 
-    [(HKClinicalSourceAuthorizationController *)a2 _updateReminderRegistrationIfNeededForCommittingModes:v8 anyTypeEnabled:?];
+    [(HKClinicalSourceAuthorizationController *)a2 _updateReminderRegistrationIfNeededForCommittingModes:integerValue anyTypeEnabled:?];
   }
 
-  v8 = 1;
+  integerValue = 1;
 LABEL_7:
-  if (v8)
+  if (integerValue)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v4;
+    v9 = enabledCopy;
   }
 
   [(HKClinicalSourceAuthorizationController *)self _commitModeConfirmationAlertRegistrationShouldDisplay:v9];
 }
 
-- (void)_commitModeConfirmationAlertRegistrationShouldDisplay:(BOOL)a3
+- (void)_commitModeConfirmationAlertRegistrationShouldDisplay:(BOOL)display
 {
-  v3 = a3;
-  v5 = [(HKClinicalSourceAuthorizationController *)self healthRecordsStore];
-  v6 = [(HKClinicalSourceAuthorizationController *)self source];
+  displayCopy = display;
+  healthRecordsStore = [(HKClinicalSourceAuthorizationController *)self healthRecordsStore];
+  source = [(HKClinicalSourceAuthorizationController *)self source];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertRegistrationShouldDisplay___block_invoke;
   v8[3] = &unk_1E81B7B98;
-  v9 = v3;
+  v9 = displayCopy;
   v8[4] = self;
   v7 = _Block_copy(v8);
-  if (v3)
+  if (displayCopy)
   {
-    [v5 registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:v6 completion:v7];
+    [healthRecordsStore registerAppSourceForClinicalUnlimitedAuthorizationModeConfirmation:source completion:v7];
   }
 
   else
   {
-    [v5 deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:v6 completion:v7];
+    [healthRecordsStore deregisterAppSourceFromClinicalUnlimitedAuthorizationModeConfirmation:source completion:v7];
   }
 }
 
@@ -518,9 +518,9 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
     [HKClinicalSourceAuthorizationController allTypesEnabled];
   }
 
-  v3 = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
-  v4 = [(HKClinicalSourceAuthorizationController *)self typesForReading];
-  v5 = [v3 isEqualToSet:v4];
+  typesEnabledForReading = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
+  typesForReading = [(HKClinicalSourceAuthorizationController *)self typesForReading];
+  v5 = [typesEnabledForReading isEqualToSet:typesForReading];
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
   return v5;
@@ -534,8 +534,8 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
     [HKClinicalSourceAuthorizationController anyTypeEnabled];
   }
 
-  v3 = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
-  v4 = [v3 count] != 0;
+  typesEnabledForReading = [(HKClinicalSourceAuthorizationController *)self typesEnabledForReading];
+  v4 = [typesEnabledForReading count] != 0;
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
   return v4;
@@ -549,34 +549,34 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
     [HKClinicalSourceAuthorizationController anyTypeRequested];
   }
 
-  v3 = [(HKClinicalSourceAuthorizationController *)self typesForReading];
-  v4 = [v3 count] != 0;
+  typesForReading = [(HKClinicalSourceAuthorizationController *)self typesForReading];
+  v4 = [typesForReading count] != 0;
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
   return v4;
 }
 
-- (int64_t)_authorizationStatusWithType:(id)a3
+- (int64_t)_authorizationStatusWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_typeRegistryLock);
-  [(NSMutableSet *)self->_typesEnabledForReading containsObject:v4];
+  [(NSMutableSet *)self->_typesEnabledForReading containsObject:typeCopy];
 
   os_unfair_lock_unlock(&self->_typeRegistryLock);
 
   return HKInternalAuthorizationStatusMake();
 }
 
-- (id)_authorizationModesWithMode:(int64_t)a3 types:(id)a4
+- (id)_authorizationModesWithMode:(int64_t)mode types:(id)types
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  typesCopy = types;
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(typesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = typesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -592,7 +592,7 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [MEMORY[0x1E696AD98] numberWithInteger:{a3, v15}];
+        v13 = [MEMORY[0x1E696AD98] numberWithInteger:{mode, v15}];
         [v6 setObject:v13 forKeyedSubscript:v12];
       }
 
@@ -605,16 +605,16 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
   return v6;
 }
 
-- (id)_authorizationStatusesWithTypes:(id)a3
+- (id)_authorizationStatusesWithTypes:(id)types
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  typesCopy = types;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(typesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -643,18 +643,18 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
   return v5;
 }
 
-- (void)_setAuthorizationStatuses:(id)a3 modes:(id)a4 shouldUpdateAnchor:(BOOL)a5 completion:(id)a6
+- (void)_setAuthorizationStatuses:(id)statuses modes:(id)modes shouldUpdateAnchor:(BOOL)anchor completion:(id)completion
 {
-  v7 = a5;
+  anchorCopy = anchor;
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  statusesCopy = statuses;
+  modesCopy = modes;
+  completionCopy = completion;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v13 = v10;
+  v13 = statusesCopy;
   v14 = [v13 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v14)
   {
@@ -688,7 +688,7 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = v11;
+  v17 = modesCopy;
   v18 = [v17 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v18)
   {
@@ -719,21 +719,21 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
   }
 
   objc_initWeak(&location, self);
-  v21 = [(HKClinicalSourceAuthorizationController *)self authorizationStore];
-  v22 = [(HKClinicalSourceAuthorizationController *)self source];
-  v23 = [v22 bundleIdentifier];
+  authorizationStore = [(HKClinicalSourceAuthorizationController *)self authorizationStore];
+  source = [(HKClinicalSourceAuthorizationController *)self source];
+  bundleIdentifier = [source bundleIdentifier];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __105__HKClinicalSourceAuthorizationController__setAuthorizationStatuses_modes_shouldUpdateAnchor_completion___block_invoke;
   v27[3] = &unk_1E81B7BE8;
   objc_copyWeak(&v30, &location);
-  v24 = v7;
+  v24 = anchorCopy;
   v25 = v17;
   v28 = v25;
-  v31 = v7;
-  v26 = v12;
+  v31 = anchorCopy;
+  v26 = completionCopy;
   v29 = v26;
-  [v21 setAuthorizationStatuses:v13 authorizationModes:v25 forBundleIdentifier:v23 options:v24 completion:v27];
+  [authorizationStore setAuthorizationStatuses:v13 authorizationModes:v25 forBundleIdentifier:bundleIdentifier options:v24 completion:v27];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -862,7 +862,7 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
 - (void)allTypesEnabled
 {
   OUTLINED_FUNCTION_1_1();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:"-[HKClinicalSourceAuthorizationController allTypesEnabled]" object:? file:? lineNumber:? description:?];
 }
@@ -870,7 +870,7 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
 - (void)anyTypeEnabled
 {
   OUTLINED_FUNCTION_1_1();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:"-[HKClinicalSourceAuthorizationController anyTypeEnabled]" object:? file:? lineNumber:? description:?];
 }
@@ -878,7 +878,7 @@ void __97__HKClinicalSourceAuthorizationController__commitModeConfirmationAlertR
 - (void)anyTypeRequested
 {
   OUTLINED_FUNCTION_1_1();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:"-[HKClinicalSourceAuthorizationController anyTypeRequested]" object:? file:? lineNumber:? description:?];
 }

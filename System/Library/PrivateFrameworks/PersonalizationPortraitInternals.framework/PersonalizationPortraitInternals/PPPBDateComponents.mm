@@ -1,27 +1,27 @@
 @interface PPPBDateComponents
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMonth:(BOOL)a3;
-- (void)setHasYear:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMonth:(BOOL)month;
+- (void)setHasYear:(BOOL)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBDateComponents
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_day = *(v4 + 4);
+    self->_day = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -34,32 +34,32 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_month = *(v4 + 5);
+  self->_month = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if ((*(v4 + 36) & 4) != 0)
+  if ((*(fromCopy + 36) & 4) != 0)
   {
 LABEL_4:
-    self->_year = *(v4 + 8);
+    self->_year = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(PPPBDateComponents *)self setCalendarIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PPPBDateComponents *)self setTimeZoneName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -105,24 +105,24 @@ LABEL_8:
   return v6 ^ [(NSString *)self->_timeZoneName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_day != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_day != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_21:
     v8 = 0;
@@ -131,38 +131,38 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_month != *(v4 + 5))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_month != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_year != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_year != *(equalCopy + 8))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   calendarIdentifier = self->_calendarIdentifier;
-  if (calendarIdentifier | *(v4 + 1) && ![(NSString *)calendarIdentifier isEqual:?])
+  if (calendarIdentifier | *(equalCopy + 1) && ![(NSString *)calendarIdentifier isEqual:?])
   {
     goto LABEL_21;
   }
 
   timeZoneName = self->_timeZoneName;
-  if (timeZoneName | *(v4 + 3))
+  if (timeZoneName | *(equalCopy + 3))
   {
     v8 = [(NSString *)timeZoneName isEqual:?];
   }
@@ -177,9 +177,9 @@ LABEL_22:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -217,25 +217,25 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_calendarIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_calendarIdentifier copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
-  v10 = [(NSString *)self->_timeZoneName copyWithZone:a3];
+  v10 = [(NSString *)self->_timeZoneName copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_day;
-    *(v4 + 36) |= 1u;
+    toCopy[4] = self->_day;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -254,40 +254,40 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_month;
-  *(v4 + 36) |= 2u;
+  toCopy[5] = self->_month;
+  *(toCopy + 36) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[8] = self->_year;
-    *(v4 + 36) |= 4u;
+    toCopy[8] = self->_year;
+    *(toCopy + 36) |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_calendarIdentifier)
   {
-    [v4 setCalendarIdentifier:?];
-    v4 = v6;
+    [toCopy setCalendarIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_timeZoneName)
   {
     [v6 setTimeZoneName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     day = self->_day;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -308,37 +308,37 @@ LABEL_3:
 
   month = self->_month;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     year = self->_year;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_calendarIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_timeZoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_day];
-    [v3 setObject:v9 forKey:@"day"];
+    [dictionary setObject:v9 forKey:@"day"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -359,29 +359,29 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithInt:self->_month];
-  [v3 setObject:v10 forKey:@"month"];
+  [dictionary setObject:v10 forKey:@"month"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_year];
-    [v3 setObject:v5 forKey:@"year"];
+    [dictionary setObject:v5 forKey:@"year"];
   }
 
 LABEL_5:
   calendarIdentifier = self->_calendarIdentifier;
   if (calendarIdentifier)
   {
-    [v3 setObject:calendarIdentifier forKey:@"calendarIdentifier"];
+    [dictionary setObject:calendarIdentifier forKey:@"calendarIdentifier"];
   }
 
   timeZoneName = self->_timeZoneName;
   if (timeZoneName)
   {
-    [v3 setObject:timeZoneName forKey:@"timeZoneName"];
+    [dictionary setObject:timeZoneName forKey:@"timeZoneName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -390,15 +390,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = PPPBDateComponents;
   v4 = [(PPPBDateComponents *)&v8 description];
-  v5 = [(PPPBDateComponents *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBDateComponents *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasYear:(BOOL)a3
+- (void)setHasYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 4;
   }
@@ -411,9 +411,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMonth:(BOOL)a3
+- (void)setHasMonth:(BOOL)month
 {
-  if (a3)
+  if (month)
   {
     v3 = 2;
   }

@@ -1,22 +1,22 @@
 @interface BCCardStackTransitionContext
-- (BCCardStackTransitionContext)initWithFromViewController:(id)a3 toViewController:(id)a4 push:(BOOL)a5;
+- (BCCardStackTransitionContext)initWithFromViewController:(id)controller toViewController:(id)viewController push:(BOOL)push;
 - (CGAffineTransform)targetTransform;
 - (CGRect)appearingFromRect;
 - (CGRect)appearingToRect;
-- (CGRect)finalFrameForViewController:(id)a3;
-- (CGRect)initialFrameForViewController:(id)a3;
-- (id)viewControllerForKey:(id)a3;
-- (id)viewForKey:(id)a3;
-- (void)completeTransition:(BOOL)a3;
+- (CGRect)finalFrameForViewController:(id)controller;
+- (CGRect)initialFrameForViewController:(id)controller;
+- (id)viewControllerForKey:(id)key;
+- (id)viewForKey:(id)key;
+- (void)completeTransition:(BOOL)transition;
 @end
 
 @implementation BCCardStackTransitionContext
 
-- (BCCardStackTransitionContext)initWithFromViewController:(id)a3 toViewController:(id)a4 push:(BOOL)a5
+- (BCCardStackTransitionContext)initWithFromViewController:(id)controller toViewController:(id)viewController push:(BOOL)push
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  pushCopy = push;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v51.receiver = self;
   v51.super_class = BCCardStackTransitionContext;
   v10 = [(BCCardStackTransitionContext *)&v51 init];
@@ -27,14 +27,14 @@
   }
 
   [(BCCardStackTransitionContext *)v10 setPresentationStyle:4];
-  if (!v8)
+  if (!controllerCopy)
   {
-    v49 = [v9 parentViewController];
-    v50 = [v49 view];
-    [(BCCardStackTransitionContext *)v11 setContainerView:v50];
+    parentViewController = [viewControllerCopy parentViewController];
+    view = [parentViewController view];
+    [(BCCardStackTransitionContext *)v11 setContainerView:view];
 
     v14 = objc_opt_new();
-    if (!v9)
+    if (!viewControllerCopy)
     {
       goto LABEL_5;
     }
@@ -42,30 +42,30 @@
     goto LABEL_4;
   }
 
-  v12 = [v8 parentViewController];
-  v13 = [v12 view];
-  [(BCCardStackTransitionContext *)v11 setContainerView:v13];
+  parentViewController2 = [controllerCopy parentViewController];
+  view2 = [parentViewController2 view];
+  [(BCCardStackTransitionContext *)v11 setContainerView:view2];
 
   v14 = objc_opt_new();
-  [v14 setObject:v8 forKeyedSubscript:UITransitionContextFromViewControllerKey];
-  if (v9)
+  [v14 setObject:controllerCopy forKeyedSubscript:UITransitionContextFromViewControllerKey];
+  if (viewControllerCopy)
   {
 LABEL_4:
-    [v14 setObject:v9 forKeyedSubscript:UITransitionContextToViewControllerKey];
+    [v14 setObject:viewControllerCopy forKeyedSubscript:UITransitionContextToViewControllerKey];
   }
 
 LABEL_5:
   v15 = [v14 copy];
   [(BCCardStackTransitionContext *)v11 setViewControllers:v15];
 
-  v16 = [(BCCardStackTransitionContext *)v11 containerView];
-  [v16 bounds];
+  containerView = [(BCCardStackTransitionContext *)v11 containerView];
+  [containerView bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(BCCardStackTransitionContext *)v11 containerView];
-  [v25 bounds];
+  containerView2 = [(BCCardStackTransitionContext *)v11 containerView];
+  [containerView2 bounds];
   Height = CGRectGetHeight(v52);
   v53.origin.x = v18;
   v53.origin.y = v20;
@@ -77,14 +77,14 @@ LABEL_5:
   width = v54.size.width;
   v30 = v54.size.height;
 
-  v31 = [(BCCardStackTransitionContext *)v11 containerView];
-  [v31 bounds];
+  containerView3 = [(BCCardStackTransitionContext *)v11 containerView];
+  [containerView3 bounds];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
 
-  if (v5)
+  if (pushCopy)
   {
     v40 = v30;
   }
@@ -94,7 +94,7 @@ LABEL_5:
     v40 = v39;
   }
 
-  if (v5)
+  if (pushCopy)
   {
     v41 = width;
   }
@@ -104,7 +104,7 @@ LABEL_5:
     v41 = v37;
   }
 
-  if (v5)
+  if (pushCopy)
   {
     v42 = y;
   }
@@ -114,7 +114,7 @@ LABEL_5:
     v42 = v35;
   }
 
-  if (v5)
+  if (pushCopy)
   {
     v43 = x;
   }
@@ -125,7 +125,7 @@ LABEL_5:
   }
 
   [(BCCardStackTransitionContext *)v11 setAppearingFromRect:v43, v42, v41, v40];
-  if (v5)
+  if (pushCopy)
   {
     v44 = v39;
   }
@@ -135,7 +135,7 @@ LABEL_5:
     v44 = v30;
   }
 
-  if (v5)
+  if (pushCopy)
   {
     v45 = v37;
   }
@@ -145,7 +145,7 @@ LABEL_5:
     v45 = width;
   }
 
-  if (v5)
+  if (pushCopy)
   {
     v46 = v35;
   }
@@ -155,7 +155,7 @@ LABEL_5:
     v46 = y;
   }
 
-  if (v5)
+  if (pushCopy)
   {
     v47 = v33;
   }
@@ -171,73 +171,73 @@ LABEL_30:
   return v11;
 }
 
-- (id)viewForKey:(id)a3
+- (id)viewForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:UITransitionContextFromViewKey])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:UITransitionContextFromViewKey])
   {
     v5 = &UITransitionContextFromViewControllerKey;
 LABEL_5:
     v6 = [(BCCardStackTransitionContext *)self viewControllerForKey:*v5];
-    v7 = [v6 view];
+    view = [v6 view];
 
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:UITransitionContextToViewKey])
+  if ([keyCopy isEqualToString:UITransitionContextToViewKey])
   {
     v5 = &UITransitionContextToViewControllerKey;
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"BCUITransitionContextBackgroundViewKey"])
+  if ([keyCopy isEqualToString:@"BCUITransitionContextBackgroundViewKey"])
   {
     backgroundView = self->_backgroundView;
 LABEL_12:
-    v7 = backgroundView;
+    view = backgroundView;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"BCUITransitionContextTitleLabelKey"])
+  if ([keyCopy isEqualToString:@"BCUITransitionContextTitleLabelKey"])
   {
     backgroundView = self->_titleLabel;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"BCUITransitionContextClippedCoverContainerViewKey"])
+  if ([keyCopy isEqualToString:@"BCUITransitionContextClippedCoverContainerViewKey"])
   {
     backgroundView = self->_innerContainerView;
     goto LABEL_12;
   }
 
-  v7 = 0;
+  view = 0;
 LABEL_13:
 
-  return v7;
+  return view;
 }
 
-- (id)viewControllerForKey:(id)a3
+- (id)viewControllerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BCCardStackTransitionContext *)self viewControllers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  viewControllers = [(BCCardStackTransitionContext *)self viewControllers];
+  v6 = [viewControllers objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
-  v3 = a3;
-  v5 = [(BCCardStackTransitionContext *)self outerContext];
-  [v5 completeTransition:v3];
+  transitionCopy = transition;
+  outerContext = [(BCCardStackTransitionContext *)self outerContext];
+  [outerContext completeTransition:transitionCopy];
 
   [(BCCardStackTransitionContext *)self setOuterContext:0];
-  v6 = [(BCCardStackTransitionContext *)self completionBlock];
-  if (v6)
+  completionBlock = [(BCCardStackTransitionContext *)self completionBlock];
+  if (completionBlock)
   {
-    v7 = v6;
-    v6[2](v6, v3);
-    v6 = v7;
+    v7 = completionBlock;
+    completionBlock[2](completionBlock, transitionCopy);
+    completionBlock = v7;
   }
 }
 
@@ -250,7 +250,7 @@ LABEL_13:
   return self;
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
   [(BCCardStackTransitionContext *)self appearingFromRect];
   result.size.height = v6;
@@ -260,7 +260,7 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
   [(BCCardStackTransitionContext *)self appearingToRect];
   result.size.height = v6;

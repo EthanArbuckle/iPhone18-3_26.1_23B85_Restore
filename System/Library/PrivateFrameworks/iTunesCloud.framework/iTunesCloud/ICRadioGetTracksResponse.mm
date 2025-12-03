@@ -1,5 +1,5 @@
 @interface ICRadioGetTracksResponse
-- (ICRadioGetTracksResponse)initWithResponseDictionary:(id)a3 expirationDate:(id)a4;
+- (ICRadioGetTracksResponse)initWithResponseDictionary:(id)dictionary expirationDate:(id)date;
 - (ICRadioStationMetadata)stationMetadata;
 - (NSArray)tracks;
 - (int64_t)tracklistActionType;
@@ -10,18 +10,18 @@
 - (NSArray)tracks
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(ICRadioResponse *)self contentDictionary];
-  v4 = [v3 objectForKey:@"station-track-dict"];
+  contentDictionary = [(ICRadioResponse *)self contentDictionary];
+  v4 = [contentDictionary objectForKey:@"station-track-dict"];
 
   if (!_NSIsNSDictionary())
   {
     goto LABEL_19;
   }
 
-  v5 = [v4 allValues];
-  v6 = [v5 firstObject];
+  allValues = [v4 allValues];
+  firstObject = [allValues firstObject];
 
-  if (!_NSIsNSArray() || ![v6 count])
+  if (!_NSIsNSArray() || ![firstObject count])
   {
 
 LABEL_19:
@@ -34,7 +34,7 @@ LABEL_19:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v6;
+  v7 = firstObject;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -85,26 +85,26 @@ LABEL_20:
 
 - (int64_t)tracklistActionType
 {
-  v2 = [(ICRadioResponse *)self contentDictionary];
-  v3 = [v2 objectForKey:@"tracklist-action-type"];
+  contentDictionary = [(ICRadioResponse *)self contentDictionary];
+  v3 = [contentDictionary objectForKey:@"tracklist-action-type"];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (ICRadioStationMetadata)stationMetadata
 {
-  v2 = [(ICRadioResponse *)self contentDictionary];
-  v3 = [v2 objectForKey:@"station-dict"];
+  contentDictionary = [(ICRadioResponse *)self contentDictionary];
+  v3 = [contentDictionary objectForKey:@"station-dict"];
 
   if (_NSIsNSDictionary())
   {
@@ -119,22 +119,22 @@ LABEL_20:
   return v4;
 }
 
-- (ICRadioGetTracksResponse)initWithResponseDictionary:(id)a3 expirationDate:(id)a4
+- (ICRadioGetTracksResponse)initWithResponseDictionary:(id)dictionary expirationDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = ICRadioGetTracksResponse;
-  v7 = [(ICRadioResponse *)&v10 initWithResponseDictionary:a3 expirationDate:v6];
+  v7 = [(ICRadioResponse *)&v10 initWithResponseDictionary:dictionary expirationDate:dateCopy];
   if (v7)
   {
-    v8 = v6;
-    if (!v6)
+    v8 = dateCopy;
+    if (!dateCopy)
     {
       v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:10800.0];
     }
 
     objc_storeStrong(&v7->_assetExpirationDate, v8);
-    if (!v6)
+    if (!dateCopy)
     {
     }
   }

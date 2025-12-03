@@ -1,17 +1,17 @@
 @interface RTPersistenceStoreConfiguration
 - (RTPersistenceStore)store;
-- (RTPersistenceStoreConfiguration)initWithName:(id)a3 readOnly:(BOOL)a4 store:(id)a5;
+- (RTPersistenceStoreConfiguration)initWithName:(id)name readOnly:(BOOL)only store:(id)store;
 @end
 
 @implementation RTPersistenceStoreConfiguration
 
-- (RTPersistenceStoreConfiguration)initWithName:(id)a3 readOnly:(BOOL)a4 store:(id)a5
+- (RTPersistenceStoreConfiguration)initWithName:(id)name readOnly:(BOOL)only store:(id)store
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  nameCopy = name;
+  storeCopy = store;
+  v10 = storeCopy;
+  if (!nameCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@
     goto LABEL_9;
   }
 
-  if (!v9)
+  if (!storeCopy)
   {
 LABEL_9:
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -45,7 +45,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -54,19 +54,19 @@ LABEL_12:
   v11 = [(RTPersistenceStoreConfiguration *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v11->_readOnly = a4;
+    v11->_readOnly = only;
     objc_storeWeak(&v11->_store, v10);
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v14;
+  return selfCopy;
 }
 
 - (RTPersistenceStore)store

@@ -1,6 +1,6 @@
 @interface BPSIllustratedWatchView
 - (BOOL)_shouldUseCompactWatchAsset;
-- (BPSIllustratedWatchView)initWithFrame:(CGRect)a3;
+- (BPSIllustratedWatchView)initWithFrame:(CGRect)frame;
 - (CGRect)_unscaledWatchScreenInsetGuide;
 - (CGRect)watchScreenInsetGuide;
 - (double)idealAssetHeight;
@@ -8,22 +8,22 @@
 - (id)_blankScreenImageName;
 - (void)_configureWatchImage;
 - (void)_updateSyncTrapProgressViewTransform;
-- (void)addScreenView:(id)a3;
-- (void)addSyncTrapProgressView:(id)a3;
+- (void)addScreenView:(id)view;
+- (void)addSyncTrapProgressView:(id)view;
 - (void)layoutSubviews;
-- (void)setScreenImageName:(id)a3;
-- (void)setShowCrownOnLeft:(BOOL)a3;
-- (void)textSizeDidChange:(id)a3;
+- (void)setScreenImageName:(id)name;
+- (void)setShowCrownOnLeft:(BOOL)left;
+- (void)textSizeDidChange:(id)change;
 @end
 
 @implementation BPSIllustratedWatchView
 
-- (BPSIllustratedWatchView)initWithFrame:(CGRect)a3
+- (BPSIllustratedWatchView)initWithFrame:(CGRect)frame
 {
   v42[4] = *MEMORY[0x277D85DE8];
   v41.receiver = self;
   v41.super_class = BPSIllustratedWatchView;
-  v3 = [(BPSIllustratedWatchView *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BPSIllustratedWatchView *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,12 +31,12 @@
     v3->_usingCompactWatchAsset = [(BPSIllustratedWatchView *)v3 _shouldUseCompactWatchAsset];
     v5 = BPSGetActiveSetupCompletedDevice();
     v6 = +[BPSBridgeAppContext shared];
-    v7 = [v6 inWatchSetupFlow];
+    inWatchSetupFlow = [v6 inWatchSetupFlow];
 
-    if ((v7 & 1) != 0 || !v5)
+    if ((inWatchSetupFlow & 1) != 0 || !v5)
     {
-      v9 = [MEMORY[0x277D37A78] sharedDeviceController];
-      v8 = [v9 size];
+      mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+      v8 = [mEMORY[0x277D37A78] size];
     }
 
     else
@@ -139,28 +139,28 @@
 
     [(BPSFadingImageView *)v4->_watchView addSubview:v4->_watchScreenImageView];
     v34 = MEMORY[0x277CCAAD0];
-    v38 = [(BPSIllustratedWatchView *)v4 topAnchor];
-    v37 = [(BPSFadingImageView *)v4->_watchView topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    topAnchor = [(BPSIllustratedWatchView *)v4 topAnchor];
+    topAnchor2 = [(BPSFadingImageView *)v4->_watchView topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v42[0] = v36;
-    v35 = [(BPSIllustratedWatchView *)v4 leadingAnchor];
-    v23 = [(BPSFadingImageView *)v4->_watchView leadingAnchor];
-    v24 = [v35 constraintEqualToAnchor:v23];
+    leadingAnchor = [(BPSIllustratedWatchView *)v4 leadingAnchor];
+    leadingAnchor2 = [(BPSFadingImageView *)v4->_watchView leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v42[1] = v24;
-    v25 = [(BPSIllustratedWatchView *)v4 trailingAnchor];
-    v26 = [(BPSFadingImageView *)v4->_watchView trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    trailingAnchor = [(BPSIllustratedWatchView *)v4 trailingAnchor];
+    trailingAnchor2 = [(BPSFadingImageView *)v4->_watchView trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v42[2] = v27;
-    v28 = [(BPSIllustratedWatchView *)v4 bottomAnchor];
-    v29 = [(BPSFadingImageView *)v4->_watchView bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    bottomAnchor = [(BPSIllustratedWatchView *)v4 bottomAnchor];
+    bottomAnchor2 = [(BPSFadingImageView *)v4->_watchView bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v42[3] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
     [v34 activateConstraints:v31];
 
     v4->_allowScaling = 0;
-    v32 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v32 addObserver:v4 selector:sel_textSizeDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_textSizeDidChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v4;
@@ -168,8 +168,8 @@
 
 - (void)_configureWatchImage
 {
-  v3 = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
-  if (v3)
+  usingCompactWatchAsset = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
+  if (usingCompactWatchAsset)
   {
     v4 = 0.0;
   }
@@ -179,7 +179,7 @@
     v4 = 0.27;
   }
 
-  if (v3)
+  if (usingCompactWatchAsset)
   {
     v5 = @"watch-ideal-compact-aloe";
   }
@@ -189,7 +189,7 @@
     v5 = @"watch-ideal-aloe";
   }
 
-  if (v3)
+  if (usingCompactWatchAsset)
   {
     v6 = 0.0;
   }
@@ -201,8 +201,8 @@
 
   if (self->_usingAgaveWatchAsset || self->_usingBegoniaWatchAsset)
   {
-    v7 = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
-    if (v7)
+    usingCompactWatchAsset2 = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
+    if (usingCompactWatchAsset2)
     {
       v5 = @"watch-ideal-compact-agave";
     }
@@ -213,7 +213,7 @@
       v5 = @"watch-ideal-agave";
     }
 
-    if (!v7)
+    if (!usingCompactWatchAsset2)
     {
       v6 = 0.5;
     }
@@ -221,8 +221,8 @@
 
   else if (self->_usingAvoniaWatchAsset)
   {
-    v12 = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
-    if (v12)
+    usingCompactWatchAsset3 = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
+    if (usingCompactWatchAsset3)
     {
       v5 = @"watch-ideal-compact-avonia";
     }
@@ -233,7 +233,7 @@
       v5 = @"watch-ideal-avonia";
     }
 
-    if (!v12)
+    if (!usingCompactWatchAsset3)
     {
       v6 = 0.5;
     }
@@ -244,8 +244,8 @@
   v13 = [v8 imageNamed:v5 inBundle:v9 withConfiguration:0];
 
   [(BPSFadingImageView *)self->_watchView setImage:v13];
-  v10 = [(BPSIllustratedWatchView *)self usingSemiCompactWatchAsset];
-  if (v10)
+  usingSemiCompactWatchAsset = [(BPSIllustratedWatchView *)self usingSemiCompactWatchAsset];
+  if (usingSemiCompactWatchAsset)
   {
     v11 = v6;
   }
@@ -255,7 +255,7 @@
     v11 = 0.0;
   }
 
-  if (!v10)
+  if (!usingSemiCompactWatchAsset)
   {
     v4 = 0.0;
   }
@@ -267,24 +267,24 @@
 
 - (BOOL)_shouldUseCompactWatchAsset
 {
-  v2 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
-- (void)textSizeDidChange:(id)a3
+- (void)textSizeDidChange:(id)change
 {
-  v4 = [(BPSIllustratedWatchView *)self _shouldUseCompactWatchAsset];
+  _shouldUseCompactWatchAsset = [(BPSIllustratedWatchView *)self _shouldUseCompactWatchAsset];
 
-  [(BPSIllustratedWatchView *)self setUsingCompactWatchAsset:v4];
+  [(BPSIllustratedWatchView *)self setUsingCompactWatchAsset:_shouldUseCompactWatchAsset];
 }
 
-- (void)setShowCrownOnLeft:(BOOL)a3
+- (void)setShowCrownOnLeft:(BOOL)left
 {
-  if (self->_showCrownOnLeft != a3)
+  if (self->_showCrownOnLeft != left)
   {
-    self->_showCrownOnLeft = a3;
+    self->_showCrownOnLeft = left;
     [(BPSIllustratedWatchView *)self setNeedsLayout];
   }
 }
@@ -293,9 +293,9 @@
 {
   [(BPSIllustratedWatchView *)self _idealHeight];
   v4 = v3;
-  v5 = [(BPSIllustratedWatchView *)self usingAvoniaWatchAsset];
+  usingAvoniaWatchAsset = [(BPSIllustratedWatchView *)self usingAvoniaWatchAsset];
   v6 = 0.9;
-  if (!v5)
+  if (!usingAvoniaWatchAsset)
   {
     v6 = 1.0;
   }
@@ -307,9 +307,9 @@
 {
   [(BPSIllustratedWatchView *)self _idealHeight];
   v4 = v3;
-  v5 = [(BPSIllustratedWatchView *)self usingSemiCompactWatchAsset];
+  usingSemiCompactWatchAsset = [(BPSIllustratedWatchView *)self usingSemiCompactWatchAsset];
   v6 = 0.85;
-  if (!v5)
+  if (!usingSemiCompactWatchAsset)
   {
     v6 = 1.0;
   }
@@ -317,11 +317,11 @@
   return v4 * v6;
 }
 
-- (void)setScreenImageName:(id)a3
+- (void)setScreenImageName:(id)name
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  nameCopy = name;
+  v5 = [nameCopy copy];
   screenImageName = self->_screenImageName;
   self->_screenImageName = v5;
 
@@ -332,7 +332,7 @@
   }
 
   self->_screenImageSize = 13;
-  v28 = v4;
+  v28 = nameCopy;
   if (self->_usingAgaveWatchAsset)
   {
     v7 = 19;
@@ -356,19 +356,19 @@
   self->_screenImageSize = v7;
 LABEL_10:
   v8 = [MEMORY[0x277D37A78] resourceString:self->_screenImageName material:0 size:? forAttributes:?];
-  if (!self->_screenImageSearchBundleIdentifier || ([MEMORY[0x277CCA8D8] bundleWithIdentifier:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!self->_screenImageSearchBundleIdentifier || ([MEMORY[0x277CCA8D8] bundleWithIdentifier:?], (watchAssetBundle = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [(BPSIllustratedWatchView *)self watchAssetBundle];
+    watchAssetBundle = [(BPSIllustratedWatchView *)self watchAssetBundle];
   }
 
-  v10 = [MEMORY[0x277D755B8] imageNamed:v8 inBundle:v9 compatibleWithTraitCollection:0];
+  v10 = [MEMORY[0x277D755B8] imageNamed:v8 inBundle:watchAssetBundle compatibleWithTraitCollection:0];
   if (self->_usingBegoniaWatchAsset && v10 == 0)
   {
     self->_screenImageSize = 19;
     v14 = [MEMORY[0x277D37A78] resourceString:self->_screenImageName material:0 size:19 forAttributes:4];
 
-    v13 = v9;
-    v12 = [MEMORY[0x277D755B8] imageNamed:v14 inBundle:v9 compatibleWithTraitCollection:0];
+    v13 = watchAssetBundle;
+    v12 = [MEMORY[0x277D755B8] imageNamed:v14 inBundle:watchAssetBundle compatibleWithTraitCollection:0];
     v15 = bps_setup_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -381,13 +381,13 @@ LABEL_10:
   else
   {
     v12 = v10;
-    v13 = v9;
+    v13 = watchAssetBundle;
     v14 = v8;
   }
 
   if (!self->_usingAgaveWatchAsset)
   {
-    v4 = v28;
+    nameCopy = v28;
     if (self->_usingBegoniaWatchAsset)
     {
       v16 = v13;
@@ -429,7 +429,7 @@ LABEL_34:
     goto LABEL_37;
   }
 
-  v4 = v28;
+  nameCopy = v28;
   v16 = v13;
   if (!v12)
   {
@@ -469,7 +469,7 @@ LABEL_37:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v4;
+    v30 = nameCopy;
     _os_log_impl(&dword_241E74000, v22, OS_LOG_TYPE_DEFAULT, "Resolved ImageName: %@", buf, 0xCu);
   }
 
@@ -488,9 +488,9 @@ LABEL_37:
   self->_imageName = v14;
   v25 = v14;
 
-  v26 = [v16 bundlePath];
+  bundlePath = [v16 bundlePath];
   imageSearchBundlePath = self->_imageSearchBundlePath;
-  self->_imageSearchBundlePath = v26;
+  self->_imageSearchBundlePath = bundlePath;
 
   [(BPSIllustratedWatchView *)self setNeedsLayout];
 LABEL_47:
@@ -512,8 +512,8 @@ LABEL_47:
     v3 = 0.92;
   }
 
-  v4 = [(BPSFadingImageView *)self->_watchView image];
-  [v4 size];
+  image = [(BPSFadingImageView *)self->_watchView image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -682,8 +682,8 @@ LABEL_20:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v50 = [(UIImageView *)self->_watchScreenImageView subviews];
-  v51 = [v50 countByEnumeratingWithState:&v72 objects:v80 count:16];
+  subviews = [(UIImageView *)self->_watchScreenImageView subviews];
+  v51 = [subviews countByEnumeratingWithState:&v72 objects:v80 count:16];
   if (v51)
   {
     v52 = v51;
@@ -694,18 +694,18 @@ LABEL_20:
       {
         if (*v73 != v53)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(subviews);
         }
 
         v55 = *(*(&v72 + 1) + 8 * i);
-        v56 = [v55 maskView];
+        maskView = [v55 maskView];
 
-        if (!v56)
+        if (!maskView)
         {
           v57 = MEMORY[0x277D755B8];
-          v58 = [(BPSIllustratedWatchView *)self _blankScreenImageName];
+          _blankScreenImageName = [(BPSIllustratedWatchView *)self _blankScreenImageName];
           v59 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v60 = [v57 imageNamed:v58 inBundle:v59];
+          v60 = [v57 imageNamed:_blankScreenImageName inBundle:v59];
 
           v61 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v60];
           [v61 setContentMode:1];
@@ -717,11 +717,11 @@ LABEL_20:
         v65 = v64;
         v67 = v66;
         v69 = v68;
-        v70 = [v55 maskView];
-        [v70 setFrame:{v63, v65, v67, v69}];
+        maskView2 = [v55 maskView];
+        [maskView2 setFrame:{v63, v65, v67, v69}];
       }
 
-      v52 = [v50 countByEnumeratingWithState:&v72 objects:v80 count:16];
+      v52 = [subviews countByEnumeratingWithState:&v72 objects:v80 count:16];
     }
 
     while (v52);
@@ -732,14 +732,14 @@ LABEL_20:
 
 - (CGRect)_unscaledWatchScreenInsetGuide
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = 1.0 / v4;
 
-  v6 = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
+  usingCompactWatchAsset = [(BPSIllustratedWatchView *)self usingCompactWatchAsset];
   v7 = 126.0;
   v8 = 103.0;
-  if (v6)
+  if (usingCompactWatchAsset)
   {
     v9 = 29.0;
     v10 = 41.0;
@@ -837,10 +837,10 @@ LABEL_20:
   return result;
 }
 
-- (void)addSyncTrapProgressView:(id)a3
+- (void)addSyncTrapProgressView:(id)view
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (self->_centeredSubviewCenterXConstraint)
   {
     v5 = bps_setup_log();
@@ -853,21 +853,21 @@ LABEL_20:
 
   else
   {
-    [(BPSIllustratedWatchView *)self setSyncTrapProgressView:v4];
-    v6 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-    [v6 addSubview:v4];
+    [(BPSIllustratedWatchView *)self setSyncTrapProgressView:viewCopy];
+    watchScreenImageView = [(BPSIllustratedWatchView *)self watchScreenImageView];
+    [watchScreenImageView addSubview:viewCopy];
 
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [v4 centerXAnchor];
-    v7 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-    v8 = [v7 centerXAnchor];
-    v9 = [v16 constraintEqualToAnchor:v8];
+    centerXAnchor = [viewCopy centerXAnchor];
+    watchScreenImageView2 = [(BPSIllustratedWatchView *)self watchScreenImageView];
+    centerXAnchor2 = [watchScreenImageView2 centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v18[0] = v9;
-    v10 = [v4 centerYAnchor];
-    v11 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-    v12 = [v11 centerYAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    centerYAnchor = [viewCopy centerYAnchor];
+    watchScreenImageView3 = [(BPSIllustratedWatchView *)self watchScreenImageView];
+    centerYAnchor2 = [watchScreenImageView3 centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v18[1] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     [v15 activateConstraints:v14];
@@ -889,41 +889,41 @@ LABEL_20:
     }
 
     CGAffineTransformMakeScale(&v8, v5, v5);
-    v6 = [(BPSIllustratedWatchView *)self syncTrapProgressView];
+    syncTrapProgressView = [(BPSIllustratedWatchView *)self syncTrapProgressView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [syncTrapProgressView setTransform:&v7];
   }
 }
 
-- (void)addScreenView:(id)a3
+- (void)addScreenView:(id)view
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  watchScreenImageView = [(BPSIllustratedWatchView *)self watchScreenImageView];
+  [watchScreenImageView addSubview:viewCopy];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   v16 = MEMORY[0x277CCAAD0];
-  v22 = [v4 leadingAnchor];
-  v23 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [viewCopy leadingAnchor];
+  watchScreenImageView2 = [(BPSIllustratedWatchView *)self watchScreenImageView];
+  leadingAnchor2 = [watchScreenImageView2 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[0] = v20;
-  v18 = [v4 trailingAnchor];
-  v19 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-  v17 = [v19 trailingAnchor];
-  v15 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor = [viewCopy trailingAnchor];
+  watchScreenImageView3 = [(BPSIllustratedWatchView *)self watchScreenImageView];
+  trailingAnchor2 = [watchScreenImageView3 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[1] = v15;
-  v6 = [v4 topAnchor];
-  v7 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [viewCopy topAnchor];
+  watchScreenImageView4 = [(BPSIllustratedWatchView *)self watchScreenImageView];
+  topAnchor2 = [watchScreenImageView4 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[2] = v9;
-  v10 = [v4 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v11 = [(BPSIllustratedWatchView *)self watchScreenImageView];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  watchScreenImageView5 = [(BPSIllustratedWatchView *)self watchScreenImageView];
+  bottomAnchor2 = [watchScreenImageView5 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
   [v16 activateConstraints:v14];

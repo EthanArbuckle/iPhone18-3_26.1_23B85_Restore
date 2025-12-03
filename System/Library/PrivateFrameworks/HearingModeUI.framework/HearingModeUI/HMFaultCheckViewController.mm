@@ -1,9 +1,9 @@
 @interface HMFaultCheckViewController
 - (FaultCheckDelegate)faultCheckDelegate;
-- (HMFaultCheckViewController)initWithDeviceAddress:(id)a3;
-- (HMFaultCheckViewController)initWithDeviceAddress:(id)a3 withResult:(unint64_t)a4;
+- (HMFaultCheckViewController)initWithDeviceAddress:(id)address;
+- (HMFaultCheckViewController)initWithDeviceAddress:(id)address withResult:(unint64_t)result;
 - (void)retrieveFaultCheckResult;
-- (void)setStatus:(unint64_t)a3;
+- (void)setStatus:(unint64_t)status;
 - (void)triggerManualFaultCheck;
 - (void)updateButtonTray;
 - (void)updateContentView;
@@ -13,22 +13,22 @@
 
 @implementation HMFaultCheckViewController
 
-- (HMFaultCheckViewController)initWithDeviceAddress:(id)a3
+- (HMFaultCheckViewController)initWithDeviceAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v18.receiver = self;
   v18.super_class = HMFaultCheckViewController;
   v6 = [(HMFaultCheckViewController *)&v18 initWithTitle:@"AirPods Check" detailText:0 icon:0 contentLayout:1];
   if (v6)
   {
-    NSLog(&cfstr_FaultCheckInit.isa, v5);
-    objc_storeStrong(&v6->_addressOrUUID, a3);
-    v7 = [(BluetoothDevice *)v6->_device address];
-    v8 = [v7 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+    NSLog(&cfstr_FaultCheckInit.isa, addressCopy);
+    objc_storeStrong(&v6->_addressOrUUID, address);
+    address = [(BluetoothDevice *)v6->_device address];
+    v8 = [address stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 
-    v9 = [MEMORY[0x277D0FC08] shared];
-    v10 = [v9 connectedHeadphones];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    mEMORY[0x277D0FC08] = [MEMORY[0x277D0FC08] shared];
+    connectedHeadphones = [mEMORY[0x277D0FC08] connectedHeadphones];
+    v11 = [connectedHeadphones objectForKeyedSubscript:v8];
     headphoneDevice = v6->_headphoneDevice;
     v6->_headphoneDevice = v11;
 
@@ -46,9 +46,9 @@
   return v6;
 }
 
-- (HMFaultCheckViewController)initWithDeviceAddress:(id)a3 withResult:(unint64_t)a4
+- (HMFaultCheckViewController)initWithDeviceAddress:(id)address withResult:(unint64_t)result
 {
-  if (a4)
+  if (result)
   {
     v5 = "Unknown";
   }
@@ -58,9 +58,9 @@
     v5 = "Failed";
   }
 
-  v6 = a3;
-  NSLog(&cfstr_FaultCheckInit_0.isa, v6, v5);
-  v7 = [(HMFaultCheckViewController *)self initWithDeviceAddress:v6];
+  addressCopy = address;
+  NSLog(&cfstr_FaultCheckInit_0.isa, addressCopy, v5);
+  v7 = [(HMFaultCheckViewController *)self initWithDeviceAddress:addressCopy];
 
   return v7;
 }
@@ -79,15 +79,15 @@
 - (void)retrieveFaultCheckResult
 {
   sleep(2u);
-  v3 = [(HMFaultCheckService *)self->_faultCheckService faultCheckResult];
-  self->_result = v3;
+  faultCheckResult = [(HMFaultCheckService *)self->_faultCheckService faultCheckResult];
+  self->_result = faultCheckResult;
   v4 = "Unknown";
-  if (v3 == 1)
+  if (faultCheckResult == 1)
   {
     v4 = "Failed";
   }
 
-  if (!v3)
+  if (!faultCheckResult)
   {
     v4 = "Passed";
   }
@@ -164,12 +164,12 @@ uint64_t __53__HMFaultCheckViewController_triggerManualFaultCheck__block_invoke_
   v18 = [[_TtC13HearingModeUI32AnyHearingFeatureContentProvider alloc] initWithDevice:self->_headphoneDevice];
   if ([(AnyHearingFeatureContentProvider *)v18 featureFlag])
   {
-    v3 = [(AnyHearingFeatureContentProvider *)v18 deviceMarketingName];
+    deviceMarketingName = [(AnyHearingFeatureContentProvider *)v18 deviceMarketingName];
   }
 
   else
   {
-    v3 = @"AirPods Pro";
+    deviceMarketingName = @"AirPods Pro";
   }
 
   result = self->_result;
@@ -182,7 +182,7 @@ uint64_t __53__HMFaultCheckViewController_triggerManualFaultCheck__block_invoke_
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v8 = [v13 localizedStringForKey:@"Before taking a hearing test value:your %@ need to make sure everything is working properly. Please put them back in your case and try again later.\n\nLearn more…" table:{&stru_286444CA0, 0}];
 
-      v11 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, v3];
+      v11 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, deviceMarketingName];
       goto LABEL_11;
     case 1:
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -210,20 +210,20 @@ LABEL_11:
   v6 = 0;
   v14 = 0;
 LABEL_13:
-  v15 = [(HMFaultCheckViewController *)self headerView];
-  v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, v3];
-  [v15 setTitle:v16];
+  headerView = [(HMFaultCheckViewController *)self headerView];
+  v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, deviceMarketingName];
+  [headerView setTitle:v16];
 
-  v17 = [(HMFaultCheckViewController *)self headerView];
-  [v17 setDetailText:v14];
+  headerView2 = [(HMFaultCheckViewController *)self headerView];
+  [headerView2 setDetailText:v14];
 }
 
 - (void)updateContentView
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HMFaultCheckViewController *)self contentView];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  contentView = [(HMFaultCheckViewController *)self contentView];
+  [contentView setBackgroundColor:systemBackgroundColor];
 
   result = self->_result;
   v6 = @"FaultCheckFailed";
@@ -276,23 +276,23 @@ LABEL_13:
   v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v34];
   [v17 setContentMode:1];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(HMFaultCheckViewController *)self contentView];
-  [v18 addSubview:v17];
+  contentView2 = [(HMFaultCheckViewController *)self contentView];
+  [contentView2 addSubview:v17];
 
   v29 = MEMORY[0x277CCAAD0];
-  v32 = [v17 centerXAnchor];
-  v33 = [(HMFaultCheckViewController *)self contentView];
-  v19 = [v33 centerXAnchor];
-  v20 = [v32 constraintEqualToAnchor:v19];
+  centerXAnchor = [v17 centerXAnchor];
+  contentView3 = [(HMFaultCheckViewController *)self contentView];
+  centerXAnchor2 = [contentView3 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v35[0] = v20;
-  v21 = [v17 topAnchor];
-  v22 = [(HMFaultCheckViewController *)self contentView];
-  v23 = [v22 topAnchor];
-  [v21 constraintEqualToAnchor:v23];
+  topAnchor = [v17 topAnchor];
+  contentView4 = [(HMFaultCheckViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  [topAnchor constraintEqualToAnchor:topAnchor2];
   v24 = v31 = v14;
   v35[1] = v24;
-  v25 = [v17 heightAnchor];
-  v26 = [v25 constraintEqualToConstant:300.0];
+  heightAnchor = [v17 heightAnchor];
+  v26 = [heightAnchor constraintEqualToConstant:300.0];
   v35[2] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:3];
   [v29 activateConstraints:v27];
@@ -302,37 +302,37 @@ LABEL_13:
 
 - (void)updateButtonTray
 {
-  v6 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Done" value:&stru_286444CA0 table:0];
 
-  [v6 setTitle:v4 forState:0];
-  [v6 addTarget:self action:sel_buttonTapped forControlEvents:64];
-  v5 = [(HMFaultCheckViewController *)self buttonTray];
-  [v5 addButton:v6];
+  [boldButton setTitle:v4 forState:0];
+  [boldButton addTarget:self action:sel_buttonTapped forControlEvents:64];
+  buttonTray = [(HMFaultCheckViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     v5 = "Passed";
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!status)
   {
     v5 = "Failed";
 LABEL_10:
     NSLog(&cfstr_FaultCheckSetS.isa, a2, v5);
-    v10 = [(HMFaultCheckViewController *)self faultCheckDelegate];
+    faultCheckDelegate = [(HMFaultCheckViewController *)self faultCheckDelegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = a3 == 1;
-      v9 = [(HMFaultCheckViewController *)self faultCheckDelegate];
-      [v9 faultCheckCompleted:self status:v12];
+      v12 = status == 1;
+      faultCheckDelegate2 = [(HMFaultCheckViewController *)self faultCheckDelegate];
+      [faultCheckDelegate2 faultCheckCompleted:self status:v12];
       goto LABEL_12;
     }
 
@@ -340,21 +340,21 @@ LABEL_10:
   }
 
   v6 = "Interrupted";
-  if (a3 == 2)
+  if (status == 2)
   {
     v6 = "Cancelled";
   }
 
   NSLog(&cfstr_FaultCheckSetS.isa, a2, v6);
-  if (a3 == 2)
+  if (status == 2)
   {
-    v7 = [(HMFaultCheckViewController *)self faultCheckDelegate];
+    faultCheckDelegate3 = [(HMFaultCheckViewController *)self faultCheckDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(HMFaultCheckViewController *)self faultCheckDelegate];
-      [v9 faultCheckCancelled:self];
+      faultCheckDelegate2 = [(HMFaultCheckViewController *)self faultCheckDelegate];
+      [faultCheckDelegate2 faultCheckCancelled:self];
 LABEL_12:
       v13 = @"Fault Check: Delegate Tiggered";
 LABEL_14:
@@ -364,8 +364,8 @@ LABEL_14:
     }
 
 LABEL_13:
-    v9 = [(HMFaultCheckViewController *)self navigationController];
-    v14 = [v9 popViewControllerAnimated:1];
+    faultCheckDelegate2 = [(HMFaultCheckViewController *)self navigationController];
+    v14 = [faultCheckDelegate2 popViewControllerAnimated:1];
     v13 = @"Fault Check: Delegate Missing, Self Dismissed";
     goto LABEL_14;
   }

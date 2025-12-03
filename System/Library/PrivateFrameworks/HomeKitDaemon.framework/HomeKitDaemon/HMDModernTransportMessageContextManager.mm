@@ -1,10 +1,10 @@
 @interface HMDModernTransportMessageContextManager
 + (id)logCategory;
 - (HMDModernTransportMessageContextFactory)factory;
-- (HMDModernTransportMessageContextManager)initWithFactory:(id)a3;
-- (id)contextForIdentifier:(id)a3;
-- (id)contextWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7;
-- (id)createContextWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7;
+- (HMDModernTransportMessageContextManager)initWithFactory:(id)factory;
+- (id)contextForIdentifier:(id)identifier;
+- (id)contextWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider;
+- (id)createContextWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider;
 @end
 
 @implementation HMDModernTransportMessageContextManager
@@ -28,14 +28,14 @@
   return WeakRetained;
 }
 
-- (id)contextWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7
+- (id)contextWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[HMDModernTransportMessageContext alloc] initWithMessage:v15 options:v14 completionHandler:v13 dateProvider:v12 timerProvider:v11];
+  timerProviderCopy = timerProvider;
+  providerCopy = provider;
+  handlerCopy = handler;
+  optionsCopy = options;
+  messageCopy = message;
+  v16 = [[HMDModernTransportMessageContext alloc] initWithMessage:messageCopy options:optionsCopy completionHandler:handlerCopy dateProvider:providerCopy timerProvider:timerProviderCopy];
 
   return v16;
 }
@@ -46,52 +46,52 @@ void __85__HMDModernTransportMessageContextManager_completeContext_withPayload_e
   (*(v2 + 2))(v2, *(a1 + 40), *(a1 + 48));
 }
 
-- (id)contextForIdentifier:(id)a3
+- (id)contextForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDModernTransportMessageContextManager *)self contexts];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  contexts = [(HMDModernTransportMessageContextManager *)self contexts];
+  v6 = [contexts objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (id)createContextWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7
+- (id)createContextWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDModernTransportMessageContextManager *)self factory];
-  v18 = [v17 contextWithMessage:v12 options:v13 completionHandler:v14 dateProvider:v15 timerProvider:v16];
+  messageCopy = message;
+  optionsCopy = options;
+  handlerCopy = handler;
+  providerCopy = provider;
+  timerProviderCopy = timerProvider;
+  factory = [(HMDModernTransportMessageContextManager *)self factory];
+  v18 = [factory contextWithMessage:messageCopy options:optionsCopy completionHandler:handlerCopy dateProvider:providerCopy timerProvider:timerProviderCopy];
 
   if (v18)
   {
-    v19 = [(HMDModernTransportMessageContextManager *)self contexts];
-    v20 = [v18 identifier];
-    [v19 setObject:v18 forKeyedSubscript:v20];
+    contexts = [(HMDModernTransportMessageContextManager *)self contexts];
+    identifier = [v18 identifier];
+    [contexts setObject:v18 forKeyedSubscript:identifier];
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v24 = v30 = v13;
+      v24 = v30 = optionsCopy;
       [v18 identifier];
       v25 = v31 = v21;
-      v26 = [v12 identifier];
+      identifier2 = [messageCopy identifier];
       *buf = 138543874;
       v33 = v24;
       v34 = 2112;
       v35 = v25;
       v36 = 2112;
-      v37 = v26;
+      v37 = identifier2;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_DEBUG, "%{public}@Created context %@ for message %@", buf, 0x20u);
 
       v21 = v31;
-      v13 = v30;
+      optionsCopy = v30;
     }
 
     objc_autoreleasePoolPop(v21);
@@ -103,16 +103,16 @@ void __85__HMDModernTransportMessageContextManager_completeContext_withPayload_e
   return v18;
 }
 
-- (HMDModernTransportMessageContextManager)initWithFactory:(id)a3
+- (HMDModernTransportMessageContextManager)initWithFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v10.receiver = self;
   v10.super_class = HMDModernTransportMessageContextManager;
   v5 = [(HMDModernTransportMessageContextManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_factory, v4);
+    objc_storeWeak(&v5->_factory, factoryCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     contexts = v6->_contexts;
     v6->_contexts = v7;

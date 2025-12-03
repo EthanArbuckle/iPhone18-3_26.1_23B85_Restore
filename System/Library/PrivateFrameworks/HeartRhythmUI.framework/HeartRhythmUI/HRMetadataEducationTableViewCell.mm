@@ -1,6 +1,6 @@
 @interface HRMetadataEducationTableViewCell
 + (id)defaultReuseIdentifier;
-- (HRMetadataEducationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HRMetadataEducationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_bodyBottomAnchorToBottom;
 - (double)_titleBaselineToBodyBaseline;
 - (double)_topToTitleBaseline;
@@ -9,9 +9,9 @@
 - (void)_setUpConstraints;
 - (void)_setUpUI;
 - (void)_updateForCurrentSizeCategory;
-- (void)setBodyText:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBodyText:(id)text;
+- (void)setTitleText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HRMetadataEducationTableViewCell
@@ -23,11 +23,11 @@
   return NSStringFromClass(v2);
 }
 
-- (HRMetadataEducationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HRMetadataEducationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HRMetadataEducationTableViewCell;
-  v4 = [(HRMetadataEducationTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HRMetadataEducationTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -39,60 +39,60 @@
   return v5;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   titleText = self->_titleText;
-  if (titleText != v5)
+  if (titleText != textCopy)
   {
-    v9 = v5;
-    if (!titleText || ![(NSString *)v5 isEqualToString:?])
+    v9 = textCopy;
+    if (!titleText || ![(NSString *)textCopy isEqualToString:?])
     {
-      objc_storeStrong(&self->_titleText, a3);
-      v7 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-      [v7 setText:v9];
+      objc_storeStrong(&self->_titleText, text);
+      titleLabel = [(HRMetadataEducationTableViewCell *)self titleLabel];
+      [titleLabel setText:v9];
 
-      v8 = [(HRMetadataEducationTableViewCell *)self contentView];
-      [v8 setNeedsLayout];
+      contentView = [(HRMetadataEducationTableViewCell *)self contentView];
+      [contentView setNeedsLayout];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setBodyText:(id)a3
+- (void)setBodyText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   bodyText = self->_bodyText;
-  if (bodyText != v5)
+  if (bodyText != textCopy)
   {
-    v9 = v5;
-    if (!bodyText || ![(NSString *)v5 isEqualToString:?])
+    v9 = textCopy;
+    if (!bodyText || ![(NSString *)textCopy isEqualToString:?])
     {
-      objc_storeStrong(&self->_bodyText, a3);
-      v7 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-      [v7 setText:v9];
+      objc_storeStrong(&self->_bodyText, text);
+      bodyLabel = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+      [bodyLabel setText:v9];
 
-      v8 = [(HRMetadataEducationTableViewCell *)self contentView];
-      [v8 setNeedsLayout];
+      contentView = [(HRMetadataEducationTableViewCell *)self contentView];
+      [contentView setNeedsLayout];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HRMetadataEducationTableViewCell;
-  [(HRMetadataEducationTableViewCell *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HRMetadataEducationTableViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HRMetadataEducationTableViewCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HRMetadataEducationTableViewCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -107,120 +107,120 @@
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRMetadataEducationTableViewCell *)self setTitleLabel:v3];
 
-  v4 = [(HRMetadataEducationTableViewCell *)self _titleLabelFont];
-  v5 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v5 setFont:v4];
+  _titleLabelFont = [(HRMetadataEducationTableViewCell *)self _titleLabelFont];
+  titleLabel = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [titleLabel setFont:_titleLabelFont];
 
-  v6 = [MEMORY[0x277D75348] blackColor];
-  v7 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v7 setTextColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  titleLabel2 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [titleLabel2 setTextColor:blackColor];
 
-  v8 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v8 setNumberOfLines:0];
+  titleLabel3 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [titleLabel3 setNumberOfLines:0];
 
-  v9 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v10 setAdjustsFontForContentSizeCategory:1];
+  titleLabel5 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [titleLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v11 = [(HRMetadataEducationTableViewCell *)self contentView];
-  v12 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v11 addSubview:v12];
+  contentView = [(HRMetadataEducationTableViewCell *)self contentView];
+  titleLabel6 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [contentView addSubview:titleLabel6];
 
   v13 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRMetadataEducationTableViewCell *)self setBodyLabel:v13];
 
-  v14 = [(HRMetadataEducationTableViewCell *)self _bodyLabelFont];
-  v15 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  [v15 setFont:v14];
+  _bodyLabelFont = [(HRMetadataEducationTableViewCell *)self _bodyLabelFont];
+  bodyLabel = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  [bodyLabel setFont:_bodyLabelFont];
 
-  v16 = [MEMORY[0x277D75348] blackColor];
-  v17 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  [v17 setTextColor:v16];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  bodyLabel2 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  [bodyLabel2 setTextColor:blackColor2];
 
-  v18 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  [v18 setNumberOfLines:0];
+  bodyLabel3 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  [bodyLabel3 setNumberOfLines:0];
 
-  v19 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel4 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  [bodyLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v20 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  [v20 setAdjustsFontForContentSizeCategory:1];
+  bodyLabel5 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  [bodyLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v22 = [(HRMetadataEducationTableViewCell *)self contentView];
-  v21 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  [v22 addSubview:v21];
+  contentView2 = [(HRMetadataEducationTableViewCell *)self contentView];
+  bodyLabel6 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  [contentView2 addSubview:bodyLabel6];
 }
 
 - (void)_setUpConstraints
 {
-  v3 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  v4 = [(HRMetadataEducationTableViewCell *)self contentView];
-  v5 = [v4 layoutMarginsGuide];
-  [v3 hrui_alignHorizontalConstraintsWithGuide:v5 insets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+  titleLabel = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  contentView = [(HRMetadataEducationTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  [titleLabel hrui_alignHorizontalConstraintsWithGuide:layoutMarginsGuide insets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
 
-  v6 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  v7 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  [v6 hk_alignHorizontalConstraintsWithView:v7 margin:0.0];
+  bodyLabel = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  titleLabel2 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel2 margin:0.0];
 
-  v8 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  v9 = [v8 firstBaselineAnchor];
-  v10 = [(HRMetadataEducationTableViewCell *)self contentView];
-  v11 = [v10 topAnchor];
+  titleLabel3 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel3 firstBaselineAnchor];
+  contentView2 = [(HRMetadataEducationTableViewCell *)self contentView];
+  topAnchor = [contentView2 topAnchor];
   [(HRMetadataEducationTableViewCell *)self _topToTitleBaseline];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:?];
+  v12 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [(HRMetadataEducationTableViewCell *)self setTopToTitleBaselineConstraint:v12];
 
-  v13 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  v14 = [v13 firstBaselineAnchor];
-  v15 = [(HRMetadataEducationTableViewCell *)self titleLabel];
-  v16 = [v15 lastBaselineAnchor];
+  bodyLabel2 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  firstBaselineAnchor2 = [bodyLabel2 firstBaselineAnchor];
+  titleLabel4 = [(HRMetadataEducationTableViewCell *)self titleLabel];
+  lastBaselineAnchor = [titleLabel4 lastBaselineAnchor];
   [(HRMetadataEducationTableViewCell *)self _titleBaselineToBodyBaseline];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:?];
+  v17 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [(HRMetadataEducationTableViewCell *)self setTitleBaselineToBodyBaselineConstraint:v17];
 
-  v18 = [(HRMetadataEducationTableViewCell *)self contentView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
-  v21 = [v20 bottomAnchor];
+  contentView3 = [(HRMetadataEducationTableViewCell *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  bodyLabel3 = [(HRMetadataEducationTableViewCell *)self bodyLabel];
+  bottomAnchor2 = [bodyLabel3 bottomAnchor];
   [(HRMetadataEducationTableViewCell *)self _bodyBottomAnchorToBottom];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:?];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
   [(HRMetadataEducationTableViewCell *)self setBodyBottomAnchorToBottomConstraint:v22];
 
-  v23 = [(HRMetadataEducationTableViewCell *)self topToTitleBaselineConstraint];
-  [v23 setActive:1];
+  topToTitleBaselineConstraint = [(HRMetadataEducationTableViewCell *)self topToTitleBaselineConstraint];
+  [topToTitleBaselineConstraint setActive:1];
 
-  v24 = [(HRMetadataEducationTableViewCell *)self titleBaselineToBodyBaselineConstraint];
-  [v24 setActive:1];
+  titleBaselineToBodyBaselineConstraint = [(HRMetadataEducationTableViewCell *)self titleBaselineToBodyBaselineConstraint];
+  [titleBaselineToBodyBaselineConstraint setActive:1];
 
-  v25 = [(HRMetadataEducationTableViewCell *)self bodyBottomAnchorToBottomConstraint];
-  [v25 setActive:1];
+  bodyBottomAnchorToBottomConstraint = [(HRMetadataEducationTableViewCell *)self bodyBottomAnchorToBottomConstraint];
+  [bodyBottomAnchorToBottomConstraint setActive:1];
 }
 
 - (void)_updateForCurrentSizeCategory
 {
   [(HRMetadataEducationTableViewCell *)self _topToTitleBaseline];
   v4 = v3;
-  v5 = [(HRMetadataEducationTableViewCell *)self topToTitleBaselineConstraint];
-  [v5 setConstant:v4];
+  topToTitleBaselineConstraint = [(HRMetadataEducationTableViewCell *)self topToTitleBaselineConstraint];
+  [topToTitleBaselineConstraint setConstant:v4];
 
   [(HRMetadataEducationTableViewCell *)self _titleBaselineToBodyBaseline];
   v7 = v6;
-  v8 = [(HRMetadataEducationTableViewCell *)self titleBaselineToBodyBaselineConstraint];
-  [v8 setConstant:v7];
+  titleBaselineToBodyBaselineConstraint = [(HRMetadataEducationTableViewCell *)self titleBaselineToBodyBaselineConstraint];
+  [titleBaselineToBodyBaselineConstraint setConstant:v7];
 
   [(HRMetadataEducationTableViewCell *)self _bodyBottomAnchorToBottom];
   v10 = v9;
-  v11 = [(HRMetadataEducationTableViewCell *)self bodyBottomAnchorToBottomConstraint];
-  [v11 setConstant:v10];
+  bodyBottomAnchorToBottomConstraint = [(HRMetadataEducationTableViewCell *)self bodyBottomAnchorToBottomConstraint];
+  [bodyBottomAnchorToBottomConstraint setConstant:v10];
 }
 
 - (id)_titleLabelFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HRMetadataEducationTableViewCell *)self _titleLabelFontTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:32770];
+  _titleLabelFontTextStyle = [(HRMetadataEducationTableViewCell *)self _titleLabelFontTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_titleLabelFontTextStyle symbolicTraits:32770];
 
   return v4;
 }
@@ -228,8 +228,8 @@
 - (id)_bodyLabelFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HRMetadataEducationTableViewCell *)self _bodyLabelFontTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:0x8000];
+  _bodyLabelFontTextStyle = [(HRMetadataEducationTableViewCell *)self _bodyLabelFontTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_bodyLabelFontTextStyle symbolicTraits:0x8000];
 
   return v4;
 }
@@ -237,8 +237,8 @@
 - (double)_topToTitleBaseline
 {
   v2 = MEMORY[0x277D75520];
-  v3 = [(HRMetadataEducationTableViewCell *)self _titleLabelFontTextStyle];
-  v4 = [v2 metricsForTextStyle:v3];
+  _titleLabelFontTextStyle = [(HRMetadataEducationTableViewCell *)self _titleLabelFontTextStyle];
+  v4 = [v2 metricsForTextStyle:_titleLabelFontTextStyle];
 
   [v4 scaledValueForValue:44.0];
   v6 = v5;
@@ -249,8 +249,8 @@
 - (double)_titleBaselineToBodyBaseline
 {
   v2 = MEMORY[0x277D75520];
-  v3 = [(HRMetadataEducationTableViewCell *)self _titleLabelFontTextStyle];
-  v4 = [v2 metricsForTextStyle:v3];
+  _titleLabelFontTextStyle = [(HRMetadataEducationTableViewCell *)self _titleLabelFontTextStyle];
+  v4 = [v2 metricsForTextStyle:_titleLabelFontTextStyle];
 
   [v4 scaledValueForValue:28.0];
   v6 = v5;
@@ -261,8 +261,8 @@
 - (double)_bodyBottomAnchorToBottom
 {
   v2 = MEMORY[0x277D75520];
-  v3 = [(HRMetadataEducationTableViewCell *)self _bodyLabelFontTextStyle];
-  v4 = [v2 metricsForTextStyle:v3];
+  _bodyLabelFontTextStyle = [(HRMetadataEducationTableViewCell *)self _bodyLabelFontTextStyle];
+  v4 = [v2 metricsForTextStyle:_bodyLabelFontTextStyle];
 
   [v4 scaledValueForValue:28.0];
   v6 = v5;

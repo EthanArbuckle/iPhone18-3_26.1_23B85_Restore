@@ -1,20 +1,20 @@
 @interface MKPlaceInfoPhoneNumberView
-- (MKPlaceInfoPhoneNumberView)initWithFrame:(CGRect)a3;
+- (MKPlaceInfoPhoneNumberView)initWithFrame:(CGRect)frame;
 - (id)_valueString;
-- (id)formatPhoneNumber:(id)a3;
-- (void)setOptsOutOfAds:(BOOL)a3;
+- (id)formatPhoneNumber:(id)number;
+- (void)setOptsOutOfAds:(BOOL)ads;
 @end
 
 @implementation MKPlaceInfoPhoneNumberView
 
-- (void)setOptsOutOfAds:(BOOL)a3
+- (void)setOptsOutOfAds:(BOOL)ads
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  if (LOBYTE(self->_optsOutOfAdsView) != a3)
+  if (LOBYTE(self->_optsOutOfAdsView) != ads)
   {
-    LOBYTE(self->_optsOutOfAdsView) = a3;
+    LOBYTE(self->_optsOutOfAdsView) = ads;
     labelColor = self->super._labelColor;
-    if (a3)
+    if (ads)
     {
       if (!labelColor)
       {
@@ -24,28 +24,28 @@
         self->super._labelColor = v6;
 
         [(UIColor *)self->super._labelColor setTranslatesAutoresizingMaskIntoConstraints:0];
-        v8 = [(MKPlaceInfoContactRowView *)self valueLabel];
-        v9 = [v8 font];
-        [(UIColor *)self->super._labelColor setFont:v9];
+        valueLabel = [(MKPlaceInfoContactRowView *)self valueLabel];
+        font = [valueLabel font];
+        [(UIColor *)self->super._labelColor setFont:font];
 
-        v10 = [(MKPlaceInfoContactRowView *)self valueLabel];
-        v11 = [v10 textColor];
-        [(UIColor *)self->super._labelColor setTextColor:v11];
+        valueLabel2 = [(MKPlaceInfoContactRowView *)self valueLabel];
+        textColor = [valueLabel2 textColor];
+        [(UIColor *)self->super._labelColor setTextColor:textColor];
 
         v12 = _MKLocalizedStringFromThisBundle(@"PlaceOptsOutOfTelephoneAds");
         [(UIColor *)self->super._labelColor setText:v12];
 
         [(MKPlaceInfoPhoneNumberView *)self addSubview:self->super._labelColor];
         v13 = MEMORY[0x1E696ACD8];
-        v14 = [(UIColor *)self->super._labelColor leadingAnchor];
-        v15 = [(MKPlaceInfoContactRowView *)self valueLabel];
-        v16 = [v15 trailingAnchor];
-        v17 = [v14 constraintEqualToAnchor:v16 constant:5.0];
+        leadingAnchor = [(UIColor *)self->super._labelColor leadingAnchor];
+        valueLabel3 = [(MKPlaceInfoContactRowView *)self valueLabel];
+        trailingAnchor = [valueLabel3 trailingAnchor];
+        v17 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:5.0];
         v24[0] = v17;
-        v18 = [(UIColor *)self->super._labelColor firstBaselineAnchor];
-        v19 = [(MKPlaceInfoContactRowView *)self valueLabel];
-        v20 = [v19 firstBaselineAnchor];
-        v21 = [v18 constraintEqualToAnchor:v20];
+        firstBaselineAnchor = [(UIColor *)self->super._labelColor firstBaselineAnchor];
+        valueLabel4 = [(MKPlaceInfoContactRowView *)self valueLabel];
+        firstBaselineAnchor2 = [valueLabel4 firstBaselineAnchor];
+        v21 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
         v24[1] = v21;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
         [v13 activateConstraints:v22];
@@ -61,14 +61,14 @@
   }
 }
 
-- (id)formatPhoneNumber:(id)a3
+- (id)formatPhoneNumber:(id)number
 {
   v3 = *MEMORY[0x1E695E480];
   v4 = MEMORY[0x1E69A1CD8];
-  v5 = a3;
-  v6 = [v4 sharedConfiguration];
-  v7 = [v6 countryCode];
-  v8 = mk_CFPhoneNumberCreate(v3, v5, v7);
+  numberCopy = number;
+  sharedConfiguration = [v4 sharedConfiguration];
+  countryCode = [sharedConfiguration countryCode];
+  v8 = mk_CFPhoneNumberCreate(v3, numberCopy, countryCode);
 
   if (v8)
   {
@@ -86,24 +86,24 @@
 
 - (id)_valueString
 {
-  v3 = [(MKPlaceInfoContactRowView *)self labeledValue];
-  v4 = [v3 value];
-  v5 = [v4 stringValue];
-  v6 = [(MKPlaceInfoPhoneNumberView *)self formatPhoneNumber:v5];
+  labeledValue = [(MKPlaceInfoContactRowView *)self labeledValue];
+  value = [labeledValue value];
+  stringValue = [value stringValue];
+  v6 = [(MKPlaceInfoPhoneNumberView *)self formatPhoneNumber:stringValue];
 
   return v6;
 }
 
-- (MKPlaceInfoPhoneNumberView)initWithFrame:(CGRect)a3
+- (MKPlaceInfoPhoneNumberView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MKPlaceInfoPhoneNumberView;
-  v3 = [(MKPlaceInfoContactRowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKPlaceInfoContactRowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MKPlaceInfoContactRowView *)v3 valueLabel];
-    [v5 setLineBreakMode:1];
+    valueLabel = [(MKPlaceInfoContactRowView *)v3 valueLabel];
+    [valueLabel setLineBreakMode:1];
   }
 
   return v4;

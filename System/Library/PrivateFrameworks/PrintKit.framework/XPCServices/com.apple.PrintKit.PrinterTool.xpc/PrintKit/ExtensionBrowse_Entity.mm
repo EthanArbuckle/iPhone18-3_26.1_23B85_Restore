@@ -1,26 +1,26 @@
 @interface ExtensionBrowse_Entity
-- (ExtensionBrowse_Entity)initWithURL:(id)a3 displayName:(id)a4 txtRecord:(id)a5 extensionIdentifier:(id)a6;
+- (ExtensionBrowse_Entity)initWithURL:(id)l displayName:(id)name txtRecord:(id)record extensionIdentifier:(id)identifier;
 - (id)bonjourName;
 @end
 
 @implementation ExtensionBrowse_Entity
 
-- (ExtensionBrowse_Entity)initWithURL:(id)a3 displayName:(id)a4 txtRecord:(id)a5 extensionIdentifier:(id)a6
+- (ExtensionBrowse_Entity)initWithURL:(id)l displayName:(id)name txtRecord:(id)record extensionIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  nameCopy = name;
+  recordCopy = record;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = ExtensionBrowse_Entity;
   v15 = [(ExtensionBrowse_Entity *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_printerURL, a3);
-    objc_storeStrong(&v16->_displayName, a4);
-    objc_storeStrong(&v16->_txtRecord, a5);
-    objc_storeStrong(&v16->_extensionIdentifier, a6);
+    objc_storeStrong(&v15->_printerURL, l);
+    objc_storeStrong(&v16->_displayName, name);
+    objc_storeStrong(&v16->_txtRecord, record);
+    objc_storeStrong(&v16->_extensionIdentifier, identifier);
   }
 
   return v16;

@@ -1,39 +1,39 @@
 @interface PRSWallpaperObserverPathUpdate
 - (NSString)description;
-- (PRSWallpaperObserverPathUpdate)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (PRSWallpaperObserverPathUpdate)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation PRSWallpaperObserverPathUpdate
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   path = self->_path;
-  v5 = a3;
-  [v5 encodeObject:path forKey:@"p"];
-  [v5 encodeObject:self->_identity forKey:@"i"];
-  [v5 encodeUInt64:self->_locations forKey:@"l"];
-  [v5 encodeUInt64:self->_changed forKey:@"c"];
+  coderCopy = coder;
+  [coderCopy encodeObject:path forKey:@"p"];
+  [coderCopy encodeObject:self->_identity forKey:@"i"];
+  [coderCopy encodeUInt64:self->_locations forKey:@"l"];
+  [coderCopy encodeUInt64:self->_changed forKey:@"c"];
 }
 
-- (PRSWallpaperObserverPathUpdate)initWithBSXPCCoder:(id)a3
+- (PRSWallpaperObserverPathUpdate)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PRSWallpaperObserverPathUpdate;
   v5 = [(PRSWallpaperObserverPathUpdate *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
     path = v5->_path;
     v5->_path = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     identity = v5->_identity;
     v5->_identity = v8;
 
-    v5->_locations = [v4 decodeUInt64ForKey:@"l"];
-    v5->_changed = [v4 decodeUInt64ForKey:@"c"];
+    v5->_locations = [coderCopy decodeUInt64ForKey:@"l"];
+    v5->_changed = [coderCopy decodeUInt64ForKey:@"c"];
   }
 
   return v5;
@@ -50,8 +50,8 @@
   v9 = v8;
   if (path)
   {
-    v10 = [(PFServerPosterPath *)self->_path identity];
-    v11 = [v4 stringWithFormat:@"<%@: locs=(%@) changed=(%@) path=%@>", v6, v7, v9, v10];
+    identity = [(PFServerPosterPath *)self->_path identity];
+    v11 = [v4 stringWithFormat:@"<%@: locs=(%@) changed=(%@) path=%@>", v6, v7, v9, identity];
   }
 
   else

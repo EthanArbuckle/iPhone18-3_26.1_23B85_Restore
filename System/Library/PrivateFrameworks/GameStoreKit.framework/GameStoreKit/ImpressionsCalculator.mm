@@ -1,11 +1,11 @@
 @interface ImpressionsCalculator
-- (void)applicationDidEnterBackgroundWithNote:(id)a3;
-- (void)applicationWillEnterForegroundWithNote:(id)a3;
+- (void)applicationDidEnterBackgroundWithNote:(id)note;
+- (void)applicationWillEnterForegroundWithNote:(id)note;
 @end
 
 @implementation ImpressionsCalculator
 
-- (void)applicationDidEnterBackgroundWithNote:(id)a3
+- (void)applicationDidEnterBackgroundWithNote:(id)note
 {
   if (*(*self->base + 16))
   {
@@ -23,7 +23,7 @@
   ImpressionsCalculator.isVisible.setter();
 }
 
-- (void)applicationWillEnterForegroundWithNote:(id)a3
+- (void)applicationWillEnterForegroundWithNote:(id)note
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC12GameStoreKit21ImpressionsCalculator_wasVisibleBeforeGoingIntoBackground) != 2)
   {

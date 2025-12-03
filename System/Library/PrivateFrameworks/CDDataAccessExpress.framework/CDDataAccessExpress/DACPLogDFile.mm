@@ -1,34 +1,34 @@
 @interface DACPLogDFile
-- (BOOL)logData:(id)a3 outDidCreateNewFile:(BOOL *)a4 outNewFilePath:(id *)a5;
-- (DACPLogDFile)initWithFolder:(id)a3 baseName:(id)a4;
-- (id)_filePathsMatchingPattern:(id)a3;
+- (BOOL)logData:(id)data outDidCreateNewFile:(BOOL *)file outNewFilePath:(id *)path;
+- (DACPLogDFile)initWithFolder:(id)folder baseName:(id)name;
+- (id)_filePathsMatchingPattern:(id)pattern;
 - (id)_getLatestMatchingFilePath;
 - (id)_startNewFile;
 - (id)startNewFile;
 - (void)_beginWatchingFile;
-- (void)_closeFileWithFileEventDispatchSource:(id)a3;
-- (void)_openFileOutDidCreateNewFile:(BOOL *)a3 outNewFilePath:(id *)a4;
-- (void)checkForMaximumFileSize:(int64_t)a3 wantsCompressed:(BOOL)a4 outDidCreateNewFile:(BOOL *)a5 outNewFilePath:(id *)a6;
-- (void)cullFilesMaxFileCount:(int64_t)a3;
+- (void)_closeFileWithFileEventDispatchSource:(id)source;
+- (void)_openFileOutDidCreateNewFile:(BOOL *)file outNewFilePath:(id *)path;
+- (void)checkForMaximumFileSize:(int64_t)size wantsCompressed:(BOOL)compressed outDidCreateNewFile:(BOOL *)file outNewFilePath:(id *)path;
+- (void)cullFilesMaxFileCount:(int64_t)count;
 @end
 
 @implementation DACPLogDFile
 
-- (DACPLogDFile)initWithFolder:(id)a3 baseName:(id)a4
+- (DACPLogDFile)initWithFolder:(id)folder baseName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = DACPLogDFile;
   v9 = [(DACPLogDFile *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_folder, a3);
-    objc_storeStrong(&v10->_baseName, a4);
-    v11 = [MEMORY[0x277CCACA8] DACPLogMakeUUID];
+    objc_storeStrong(&v9->_folder, folder);
+    objc_storeStrong(&v10->_baseName, name);
+    dACPLogMakeUUID = [MEMORY[0x277CCACA8] DACPLogMakeUUID];
     UUID = v10->_UUID;
-    v10->_UUID = v11;
+    v10->_UUID = dACPLogMakeUUID;
 
     v10->_fd = -1;
   }
@@ -36,16 +36,16 @@
   return v10;
 }
 
-- (id)_filePathsMatchingPattern:(id)a3
+- (id)_filePathsMatchingPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  patternCopy = pattern;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = opendir([(NSString *)self->_folder fileSystemRepresentation]);
   if (v6)
   {
     v7 = v6;
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", self->_baseName, v4];
-    v9 = [v8 length];
+    patternCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", self->_baseName, patternCopy];
+    v9 = [patternCopy length];
     v10 = readdir(v7);
     if (v10)
     {
@@ -54,21 +54,21 @@
       {
         if (v9 == v11->d_namlen)
         {
-          v12 = v8;
-          v13 = [v12 UTF8String];
+          v12 = patternCopy;
+          uTF8String = [v12 UTF8String];
           v14 = v11->d_name[0];
           if (v11->d_name[0])
           {
             v15 = &v11->d_name[1];
             while (1)
             {
-              v16 = *v13;
-              if (v16 != 63 && (!*v13 || v14 != v16))
+              v16 = *uTF8String;
+              if (v16 != 63 && (!*uTF8String || v14 != v16))
               {
                 break;
               }
 
-              ++v13;
+              ++uTF8String;
               v18 = *v15++;
               v14 = v18;
               if (!v18)
@@ -81,11 +81,11 @@
           else
           {
 LABEL_14:
-            if (!*v13)
+            if (!*uTF8String)
             {
 
               v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%s", self->_folder, v11->d_name];
-              [v5 addObject:v12];
+              [array addObject:v12];
             }
           }
         }
@@ -99,9 +99,9 @@ LABEL_14:
     closedir(v7);
   }
 
-  [v5 sortUsingComparator:&__block_literal_global_2];
+  [array sortUsingComparator:&__block_literal_global_2];
 
-  return v5;
+  return array;
 }
 
 - (id)_getLatestMatchingFilePath
@@ -109,24 +109,24 @@ LABEL_14:
   v2 = [(DACPLogDFile *)self _filePathsMatchingPattern:@"_????_??_??_??_??_???????.log"];
   if ([v2 count])
   {
-    v3 = [v2 lastObject];
+    lastObject = [v2 lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)_openFileOutDidCreateNewFile:(BOOL *)a3 outNewFilePath:(id *)a4
+- (void)_openFileOutDidCreateNewFile:(BOOL *)file outNewFilePath:(id *)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [(DACPLogDFile *)self _getLatestMatchingFilePath];
-  if (v7)
+  _getLatestMatchingFilePath = [(DACPLogDFile *)self _getLatestMatchingFilePath];
+  if (_getLatestMatchingFilePath)
   {
-    v8 = v7;
+    v8 = _getLatestMatchingFilePath;
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/.%@", self->_folder, self->_baseName];
     if (link([v8 fileSystemRepresentation], objc_msgSend(v9, "fileSystemRepresentation")))
     {
@@ -173,9 +173,9 @@ LABEL_14:
 
   if (self->_fd < 0 || ![(NSString *)self->_path length])
   {
-    v14 = [(DACPLogDFile *)self _startNewFile];
-    v15 = v14 != 0;
-    if (!a3)
+    _startNewFile = [(DACPLogDFile *)self _startNewFile];
+    v15 = _startNewFile != 0;
+    if (!file)
     {
       goto LABEL_20;
     }
@@ -183,19 +183,19 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v14 = 0;
+  _startNewFile = 0;
   v15 = 0;
-  if (a3)
+  if (file)
   {
 LABEL_19:
-    *a3 = v15;
+    *file = v15;
   }
 
 LABEL_20:
-  if (a4)
+  if (path)
   {
-    v14 = v14;
-    *a4 = v14;
+    _startNewFile = _startNewFile;
+    *path = _startNewFile;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -236,7 +236,7 @@ LABEL_20:
   handler[2] = __34__DACPLogDFile__beginWatchingFile__block_invoke;
   handler[3] = &unk_278D543F0;
   v18 = v9;
-  v19 = self;
+  selfCopy = self;
   v20 = v8;
   v12 = v8;
   v13 = v9;
@@ -310,12 +310,12 @@ uint64_t __34__DACPLogDFile__beginWatchingFile__block_invoke_22(uint64_t a1)
   return result;
 }
 
-- (void)_closeFileWithFileEventDispatchSource:(id)a3
+- (void)_closeFileWithFileEventDispatchSource:(id)source
 {
   v14 = *MEMORY[0x277D85DE8];
   if ((self->_fd & 0x80000000) == 0)
   {
-    v4 = a3;
+    sourceCopy = source;
     v5 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -328,7 +328,7 @@ uint64_t __34__DACPLogDFile__beginWatchingFile__block_invoke_22(uint64_t a1)
       _os_log_impl(&dword_242505000, v5, OS_LOG_TYPE_INFO, "Closing file at %@, FD %d", &v10, 0x12u);
     }
 
-    dispatch_source_cancel(v4);
+    dispatch_source_cancel(sourceCopy);
     self->_fd = -1;
     v8 = self->_path;
     self->_path = 0;
@@ -340,9 +340,9 @@ uint64_t __34__DACPLogDFile__beginWatchingFile__block_invoke_22(uint64_t a1)
 - (id)_startNewFile
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v50 = 1;
-  if ([v3 fileExistsAtPath:self->_folder isDirectory:&v50])
+  if ([defaultManager fileExistsAtPath:self->_folder isDirectory:&v50])
   {
     if ((v50 & 1) == 0)
     {
@@ -364,10 +364,10 @@ uint64_t __34__DACPLogDFile__beginWatchingFile__block_invoke_22(uint64_t a1)
     v56 = *MEMORY[0x277CCA180];
     v57[0] = &unk_2854C8E20;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v7 = self->_folder;
     v49 = 0;
-    v8 = [v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:v4 error:&v49];
+    v8 = [defaultManager2 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:v4 error:&v49];
     v9 = v49;
 
     v10 = DALoggingwithCategory(0);
@@ -397,7 +397,7 @@ uint64_t __34__DACPLogDFile__beginWatchingFile__block_invoke_22(uint64_t a1)
   }
 
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/.%@", self->_folder, self->_baseName];
-  if ([v3 fileExistsAtPath:v4])
+  if ([defaultManager fileExistsAtPath:v4])
   {
     goto LABEL_12;
   }
@@ -405,7 +405,7 @@ uint64_t __34__DACPLogDFile__beginWatchingFile__block_invoke_22(uint64_t a1)
   v54 = *MEMORY[0x277CCA180];
   v55 = &unk_2854C8E38;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-  if (([v3 createFileAtPath:v4 contents:0 attributes:v9] & 1) == 0)
+  if (([defaultManager createFileAtPath:v4 contents:0 attributes:v9] & 1) == 0)
   {
     v30 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -447,16 +447,16 @@ LABEL_12:
 
   v17 = MEMORY[0x277CBEAA8];
   v18 = _fileDateFormatter_formatter;
-  v19 = [v17 date];
-  v20 = [v18 stringFromDate:v19];
+  date = [v17 date];
+  v20 = [v18 stringFromDate:date];
   v21 = [v14 stringWithFormat:@"%@/%@_%@.log", v15, baseName, v20];
   path = self->_path;
   self->_path = v21;
 
-  LODWORD(v19) = link([v4 fileSystemRepresentation], [(NSString *)self->_path fileSystemRepresentation]);
+  LODWORD(date) = link([v4 fileSystemRepresentation], [(NSString *)self->_path fileSystemRepresentation]);
   v23 = DALoggingwithCategory(0);
   v24 = v23;
-  if (v19)
+  if (date)
   {
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -499,8 +499,8 @@ LABEL_12:
   if (lstat([v36 fileSystemRepresentation], &buf))
   {
 LABEL_40:
-    v37 = [(NSString *)self->_path lastPathComponent];
-    v38 = symlink([v37 fileSystemRepresentation], objc_msgSend(v36, "fileSystemRepresentation"));
+    lastPathComponent = [(NSString *)self->_path lastPathComponent];
+    v38 = symlink([lastPathComponent fileSystemRepresentation], objc_msgSend(v36, "fileSystemRepresentation"));
 
     v39 = DALoggingwithCategory(0);
     v40 = v39;
@@ -591,9 +591,9 @@ LABEL_30:
   return v27;
 }
 
-- (BOOL)logData:(id)a3 outDidCreateNewFile:(BOOL *)a4 outNewFilePath:(id *)a5
+- (BOOL)logData:(id)data outDidCreateNewFile:(BOOL *)file outNewFilePath:(id *)path
 {
-  v8 = a3;
+  dataCopy = data;
   v15 = 0;
   fd = self->_fd;
   if (fd < 0)
@@ -614,16 +614,16 @@ LABEL_30:
     v10 = 0;
   }
 
-  write(fd, [v8 bytes], objc_msgSend(v8, "length"));
-  if (a4)
+  write(fd, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
+  if (file)
   {
-    *a4 = v15;
+    *file = v15;
   }
 
-  if (a5)
+  if (path)
   {
     v11 = v10;
-    *a5 = v10;
+    *path = v10;
   }
 
   v12 = 1;
@@ -641,9 +641,9 @@ LABEL_9:
   return [(DACPLogDFile *)self _startNewFile];
 }
 
-- (void)checkForMaximumFileSize:(int64_t)a3 wantsCompressed:(BOOL)a4 outDidCreateNewFile:(BOOL *)a5 outNewFilePath:(id *)a6
+- (void)checkForMaximumFileSize:(int64_t)size wantsCompressed:(BOOL)compressed outDidCreateNewFile:(BOOL *)file outNewFilePath:(id *)path
 {
-  v8 = a4;
+  compressedCopy = compressed;
   v57 = *MEMORY[0x277D85DE8];
   v50 = 0;
   if ((self->_fd & 0x80000000) == 0)
@@ -655,14 +655,14 @@ LABEL_3:
     {
       path = self->_path;
       *buf = 138412290;
-      v52 = path;
+      pathCopy = path;
       _os_log_impl(&dword_242505000, v12, OS_LOG_TYPE_INFO, "Checking size of log file at path %@", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v15 = self->_path;
     v48 = 0;
-    v16 = [v14 attributesOfItemAtPath:v15 error:&v48];
+    v16 = [defaultManager attributesOfItemAtPath:v15 error:&v48];
     v17 = v48;
     if (v17)
     {
@@ -671,7 +671,7 @@ LABEL_3:
       {
         v19 = self->_path;
         *buf = 138412546;
-        v52 = v19;
+        pathCopy = v19;
         v53 = 2112;
         v54 = v17;
         _os_log_impl(&dword_242505000, v18, OS_LOG_TYPE_ERROR, "Cannot get attributes of file at path %@. Error: %@", buf, 0x16u);
@@ -680,25 +680,25 @@ LABEL_3:
 
     else
     {
-      if ((a3 & 0x8000000000000000) == 0 && [v16 fileSize] > a3)
+      if ((size & 0x8000000000000000) == 0 && [v16 fileSize] > size)
       {
-        v45 = a5;
-        v22 = a6;
+        fileCopy = file;
+        pathCopy2 = path;
         v23 = self->_path;
         [(DACPLogDFile *)self _closeFileWithFileEventDispatchSource:self->_fileEventDispatchSource];
         fileEventDispatchSource = self->_fileEventDispatchSource;
         self->_fileEventDispatchSource = 0;
 
-        v25 = [(DACPLogDFile *)self _startNewFile];
+        _startNewFile = [(DACPLogDFile *)self _startNewFile];
 
-        v46 = v25;
-        v26 = v25 == 0;
+        v46 = _startNewFile;
+        v26 = _startNewFile == 0;
         v27 = v23;
-        a6 = v22;
-        a5 = v45;
+        path = pathCopy2;
+        file = fileCopy;
         v28 = !v26;
         v50 = v28;
-        if (v8)
+        if (compressedCopy)
         {
           getpid();
           proc_disable_cpumon();
@@ -706,7 +706,7 @@ LABEL_3:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v52 = v27;
+            pathCopy = v27;
             _os_log_impl(&dword_242505000, v29, OS_LOG_TYPE_INFO, "Compressing file at %@", buf, 0xCu);
           }
 
@@ -731,7 +731,7 @@ LABEL_3:
                 if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 67109120;
-                  LODWORD(v52) = v38;
+                  LODWORD(pathCopy) = v38;
                   v39 = log;
                   _os_log_impl(&dword_242505000, log, OS_LOG_TYPE_ERROR, "Could not compress file. Status: %d", buf, 8u);
                 }
@@ -745,7 +745,7 @@ LABEL_3:
               else
               {
                 v47 = 0;
-                [v14 moveItemAtPath:v32 toPath:v44 error:&v47];
+                [defaultManager moveItemAtPath:v32 toPath:v44 error:&v47];
                 v39 = v47;
                 if (v39)
                 {
@@ -753,7 +753,7 @@ LABEL_3:
                   if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412802;
-                    v52 = v32;
+                    pathCopy = v32;
                     v53 = 2112;
                     v54 = v44;
                     v55 = 2112;
@@ -764,7 +764,7 @@ LABEL_3:
 
                 else
                 {
-                  [v14 removeItemAtPath:v27 error:0];
+                  [defaultManager removeItemAtPath:v27 error:0];
                 }
               }
 
@@ -781,15 +781,15 @@ LABEL_3:
         v11 = v46;
       }
 
-      if (a5)
+      if (file)
       {
-        *a5 = v50;
+        *file = v50;
       }
 
-      if (a6)
+      if (path)
       {
         v40 = v11;
-        *a6 = v11;
+        *path = v11;
       }
     }
 
@@ -810,15 +810,15 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if (a5)
+  if (file)
   {
-    *a5 = 1;
+    *file = 1;
   }
 
-  if (a6)
+  if (path)
   {
     v21 = v20;
-    *a6 = v11;
+    *path = v11;
   }
 
 LABEL_44:
@@ -826,7 +826,7 @@ LABEL_44:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cullFilesMaxFileCount:(int64_t)a3
+- (void)cullFilesMaxFileCount:(int64_t)count
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -837,10 +837,10 @@ LABEL_44:
   [v5 addObjectsFromArray:v7];
 
   [v5 sortUsingComparator:&__block_literal_global_44];
-  if ((a3 & 0x8000000000000000) == 0 && [v5 count] > a3)
+  if ((count & 0x8000000000000000) == 0 && [v5 count] > count)
   {
-    v8 = [v5 subarrayWithRange:{0, objc_msgSend(v5, "count") + ~a3}];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [v5 subarrayWithRange:{0, objc_msgSend(v5, "count") + ~count}];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -863,7 +863,7 @@ LABEL_44:
           v15 = *(*(&v17 + 1) + 8 * i);
           if (([v15 isEqualToString:{self->_path, v17}] & 1) == 0)
           {
-            [v9 removeItemAtPath:v15 error:0];
+            [defaultManager removeItemAtPath:v15 error:0];
           }
         }
 

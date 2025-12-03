@@ -1,15 +1,15 @@
 @interface CTIPSQLDBClient
 - (CTIPSQLDBClient)init;
-- (id)fetchResultsForUseCase:(id)a3 withQuery:(id)a4;
+- (id)fetchResultsForUseCase:(id)case withQuery:(id)query;
 @end
 
 @implementation CTIPSQLDBClient
 
-- (id)fetchResultsForUseCase:(id)a3 withQuery:(id)a4
+- (id)fetchResultsForUseCase:(id)case withQuery:(id)query
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100056B44();
 
   type metadata accessor for CTFlightInfo(v6);

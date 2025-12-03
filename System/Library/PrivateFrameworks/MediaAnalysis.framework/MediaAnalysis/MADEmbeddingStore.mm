@@ -1,22 +1,22 @@
 @interface MADEmbeddingStore
-+ (id)_thumbnailIdentifiersFromMediaAnalysisResults:(id)a3 assetLocalIdentifier:(id)a4;
-+ (id)embeddingStoreDirectoryForPhotoLibrary:(id)a3;
-+ (id)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)preferredImageEmbeddingsForAssetUUID:(id)a3 version:(unint64_t *)a4 fromImageEmbeddingResults:(id)a5 error:(id *)a6;
-+ (id)preferredVideoEmbeddingsForAssetUUID:(id)a3 version:(unint64_t *)a4 fromVideoEmbeddingResults:(id)a5 audioFusedVideoEmbeddingResults:(id)a6 summarizedVideoEmbeddingResults:(id)a7 error:(id *)a8;
-+ (id)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6;
-+ (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 error:(id *)a5;
++ (id)_thumbnailIdentifiersFromMediaAnalysisResults:(id)results assetLocalIdentifier:(id)identifier;
++ (id)embeddingStoreDirectoryForPhotoLibrary:(id)library;
++ (id)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l options:(id)options error:(id *)error;
++ (id)preferredImageEmbeddingsForAssetUUID:(id)d version:(unint64_t *)version fromImageEmbeddingResults:(id)results error:(id *)error;
++ (id)preferredVideoEmbeddingsForAssetUUID:(id)d version:(unint64_t *)version fromVideoEmbeddingResults:(id)results audioFusedVideoEmbeddingResults:(id)embeddingResults summarizedVideoEmbeddingResults:(id)videoEmbeddingResults error:(id *)error;
++ (id)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l options:(id)options error:(id *)error;
++ (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l error:(id *)error;
 @end
 
 @implementation MADEmbeddingStore
 
-+ (id)embeddingStoreDirectoryForPhotoLibrary:(id)a3
++ (id)embeddingStoreDirectoryForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  if (v3)
+  libraryCopy = library;
+  if (libraryCopy)
   {
-    v4 = [MADVectorDatabase databaseDirectoryURLForPhotoLibrary:v3];
-    v5 = [v4 path];
+    v4 = [MADVectorDatabase databaseDirectoryURLForPhotoLibrary:libraryCopy];
+    path = [v4 path];
   }
 
   else
@@ -27,21 +27,21 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADEmbeddingStore] nil photo library provided", v7, 2u);
     }
 
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
-+ (id)preferredImageEmbeddingsForAssetUUID:(id)a3 version:(unint64_t *)a4 fromImageEmbeddingResults:(id)a5 error:(id *)a6
++ (id)preferredImageEmbeddingsForAssetUUID:(id)d version:(unint64_t *)version fromImageEmbeddingResults:(id)results error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v37 = a5;
-  v28 = v8;
-  v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore][%@]", v8];
-  *a4 = 0;
-  v31 = [MEMORY[0x1E695DF70] array];
+  dCopy = d;
+  resultsCopy = results;
+  v28 = dCopy;
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore][%@]", dCopy];
+  *version = 0;
+  array = [MEMORY[0x1E695DF70] array];
   v9 = +[VCPVideoTransformerBackbone embeddingVersion];
   v10 = 0;
   v36 = 0;
@@ -49,10 +49,10 @@
   v34 = *MEMORY[0x1E696A578];
   v30 = v9;
   v32 = v9;
-  while (v10 < [v37 count])
+  while (v10 < [resultsCopy count])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = [v37 objectAtIndexedSubscript:v10];
+    v12 = [resultsCopy objectAtIndexedSubscript:v10];
     v13 = [v12 objectForKeyedSubscript:@"attributes"];
     v14 = [v13 objectForKeyedSubscript:@"embeddingVersion"];
 
@@ -69,7 +69,7 @@
 LABEL_9:
       v18 = MEMORY[0x1E696ABC0];
       v44 = v34;
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Image embedding version incompatible (latest: %u, existing: %@) skip", v35, v32, v14];;
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Image embedding version incompatible (latest: %u, existing: %@) skip", dCopy, v32, v14];;
       v45[0] = v16;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
       v20 = [v18 errorWithDomain:v33 code:-18 userInfo:v19];
@@ -84,11 +84,11 @@ LABEL_9:
 
     if (v16)
     {
-      [v31 addObject:v16];
+      [array addObject:v16];
       v17 = 0;
-      if (!*a4)
+      if (!*version)
       {
-        *a4 = [v14 unsignedIntegerValue];
+        *version = [v14 unsignedIntegerValue];
       }
     }
 
@@ -100,7 +100,7 @@ LABEL_9:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v41 = v35;
+          v41 = dCopy;
           v42 = 1024;
           v43 = v10;
           _os_log_impl(&dword_1C9B70000, v21, OS_LOG_TYPE_DEFAULT, "%@ No embedding data from image embedding results (idx %d)", buf, 0x12u);
@@ -123,10 +123,10 @@ LABEL_15:
 
   if (v36)
   {
-    if (a6)
+    if (error)
     {
       v22 = 0;
-      *a6 = [v36 copy];
+      *error = [v36 copy];
       goto LABEL_28;
     }
 
@@ -136,16 +136,16 @@ LABEL_27:
 
   else
   {
-    if (![v31 count])
+    if (![array count])
     {
-      if (a6)
+      if (error)
       {
         v24 = MEMORY[0x1E696ABC0];
         v38 = v34;
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ No valid image embedding", v35];
+        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ No valid image embedding", dCopy];
         v39 = v25;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-        *a6 = [v24 errorWithDomain:v33 code:-18 userInfo:v26];
+        *error = [v24 errorWithDomain:v33 code:-18 userInfo:v26];
       }
 
       goto LABEL_27;
@@ -153,15 +153,15 @@ LABEL_27:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v31 count];
+      v23 = [array count];
       *buf = 138412546;
-      v41 = v35;
+      v41 = dCopy;
       v42 = 1024;
       v43 = v23;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %u preferred image embeddings", buf, 0x12u);
     }
 
-    v22 = v31;
+    v22 = array;
   }
 
 LABEL_28:
@@ -169,22 +169,22 @@ LABEL_28:
   return v22;
 }
 
-+ (id)preferredVideoEmbeddingsForAssetUUID:(id)a3 version:(unint64_t *)a4 fromVideoEmbeddingResults:(id)a5 audioFusedVideoEmbeddingResults:(id)a6 summarizedVideoEmbeddingResults:(id)a7 error:(id *)a8
++ (id)preferredVideoEmbeddingsForAssetUUID:(id)d version:(unint64_t *)version fromVideoEmbeddingResults:(id)results audioFusedVideoEmbeddingResults:(id)embeddingResults summarizedVideoEmbeddingResults:(id)videoEmbeddingResults error:(id *)error
 {
   v87[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v63 = a6;
-  v62 = a7;
-  v60 = v12;
-  v70 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore][%@]", v12];
-  *a4 = 0;
-  v68 = v13;
+  dCopy = d;
+  resultsCopy = results;
+  embeddingResultsCopy = embeddingResults;
+  videoEmbeddingResultsCopy = videoEmbeddingResults;
+  v60 = dCopy;
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore][%@]", dCopy];
+  *version = 0;
+  v68 = resultsCopy;
   v14 = v68;
   if ([objc_opt_class() includeAudioFusedVideoEmbeddings])
   {
     v15 = !+[VCPMovieAnalyzer enableAudioVideoFusion];
-    if (!v63)
+    if (!embeddingResultsCopy)
     {
       LOBYTE(v15) = 1;
     }
@@ -192,15 +192,15 @@ LABEL_28:
     v14 = v68;
     if ((v15 & 1) == 0)
     {
-      v16 = [v63 count];
+      v16 = [embeddingResultsCopy count];
       if (v16 == [v68 count])
       {
-        v14 = v63;
+        v14 = embeddingResultsCopy;
 
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
           LODWORD(buf.start.value) = 138412546;
-          *(&buf.start.value + 4) = v70;
+          *(&buf.start.value + 4) = dCopy;
           LOWORD(buf.start.flags) = 1024;
           *(&buf.start.flags + 2) = [v14 count];
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ Using audio-fused video embeddings (count %d)", &buf, 0x12u);
@@ -216,9 +216,9 @@ LABEL_28:
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(buf.start.value) = 138412802;
-            *(&buf.start.value + 4) = v70;
+            *(&buf.start.value + 4) = dCopy;
             LOWORD(buf.start.flags) = 1024;
-            *(&buf.start.flags + 2) = [v63 count];
+            *(&buf.start.flags + 2) = [embeddingResultsCopy count];
             WORD1(buf.start.epoch) = 1024;
             HIDWORD(buf.start.epoch) = [v68 count];
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ Unexpected audio-fused video embeddings count %d (expected %d), falling back to vision-only embeddings", &buf, 0x18u);
@@ -229,14 +229,14 @@ LABEL_28:
     }
   }
 
-  if (![v14 count] || !objc_msgSend(v62, "count"))
+  if (![v14 count] || !objc_msgSend(videoEmbeddingResultsCopy, "count"))
   {
-    if (a8)
+    if (error)
     {
       v34 = MEMORY[0x1E696ABC0];
       v86 = *MEMORY[0x1E696A578];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Missing video embedding results (vision-only %d, audio-fused %d, summarized %d)", v70, objc_msgSend(v68, "count"), objc_msgSend(v63, "count"), objc_msgSend(v62, "count")];
-      v87[0] = v17;
+      array = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Missing video embedding results (vision-only %d, audio-fused %d, summarized %d)", dCopy, objc_msgSend(v68, "count"), objc_msgSend(embeddingResultsCopy, "count"), objc_msgSend(videoEmbeddingResultsCopy, "count")];
+      v87[0] = array;
       v71 = v14;
       v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:&v86 count:1];
       v35 = [v34 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
@@ -247,8 +247,8 @@ LABEL_28:
     goto LABEL_69;
   }
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  v59 = a4;
+  array = [MEMORY[0x1E695DF70] array];
+  versionCopy = version;
   v71 = v14;
   v18 = +[VCPVideoTransformerBackbone embeddingVersion];
   v19 = 0;
@@ -277,7 +277,7 @@ LABEL_28:
 LABEL_24:
       v27 = MEMORY[0x1E696ABC0];
       v84 = v67;
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Video embedding version incompatible (latest: %u, existing: %@) skip", v70, v65, v23];;
+      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Video embedding version incompatible (latest: %u, existing: %@) skip", dCopy, v65, v23];;
       v85 = v28;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
       v30 = [v27 errorWithDomain:v66 code:-18 userInfo:v29];
@@ -302,7 +302,7 @@ LABEL_24:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(range1.start.value) = 138412290;
-          *(&range1.start.value + 4) = v70;
+          *(&range1.start.value + 4) = dCopy;
           _os_log_impl(&dword_1C9B70000, v25, OS_LOG_TYPE_DEFAULT, "%@ Found image embedding within video embeddings", &range1, 0xCu);
         }
       }
@@ -317,11 +317,11 @@ LABEL_24:
 
       if (v32)
       {
-        [v17 addObject:v32];
+        [array addObject:v32];
         v26 = 0;
-        if (!*v59)
+        if (!*versionCopy)
         {
-          *v59 = [v23 unsignedIntegerValue];
+          *versionCopy = [v23 unsignedIntegerValue];
         }
       }
 
@@ -333,7 +333,7 @@ LABEL_24:
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(range1.start.value) = 138412290;
-            *(&range1.start.value + 4) = v70;
+            *(&range1.start.value + 4) = dCopy;
             _os_log_impl(&dword_1C9B70000, v33, OS_LOG_TYPE_DEFAULT, "%@ No embedding data from video embedding results", &range1, 0xCu);
           }
         }
@@ -355,10 +355,10 @@ LABEL_34:
 
   if (!v69)
   {
-    if ([v17 count])
+    if ([array count])
     {
-      v37 = [MEMORY[0x1E695DF70] array];
-      v38 = [v62 objectAtIndexedSubscript:0];
+      array2 = [MEMORY[0x1E695DF70] array];
+      v38 = [videoEmbeddingResultsCopy objectAtIndexedSubscript:0];
       v39 = [v38 objectForKeyedSubscript:@"attributes"];
       v40 = [v39 objectForKeyedSubscript:@"embeddingIds"];
 
@@ -383,16 +383,16 @@ LABEL_34:
 
             v46 = *(*(&v72 + 1) + 8 * i);
             v47 = objc_autoreleasePoolPush();
-            v48 = [v46 unsignedIntValue];
-            if ([v17 count] <= v48)
+            unsignedIntValue = [v46 unsignedIntValue];
+            if ([array count] <= unsignedIntValue)
             {
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
-                v50 = [v17 count];
+                v50 = [array count];
                 LODWORD(buf.start.value) = 138412802;
-                *(&buf.start.value + 4) = v70;
+                *(&buf.start.value + 4) = dCopy;
                 LOWORD(buf.start.flags) = 1024;
-                *(&buf.start.flags + 2) = v48;
+                *(&buf.start.flags + 2) = unsignedIntValue;
                 WORD1(buf.start.epoch) = 1024;
                 HIDWORD(buf.start.epoch) = v50;
                 _os_log_impl(&dword_1C9B70000, v44, OS_LOG_TYPE_DEFAULT, "%@ Invalid summarized embedding index %d (total %d embeddings)", &buf, 0x18u);
@@ -401,8 +401,8 @@ LABEL_34:
 
             else
             {
-              v49 = [v17 objectAtIndexedSubscript:?];
-              [v37 addObject:v49];
+              v49 = [array objectAtIndexedSubscript:?];
+              [array2 addObject:v49];
             }
 
             objc_autoreleasePoolPop(v47);
@@ -414,31 +414,31 @@ LABEL_34:
         while (v42);
       }
 
-      if ([v37 count])
+      if ([array2 count])
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v51 = [v37 count];
+          v51 = [array2 count];
           LODWORD(buf.start.value) = 138412546;
-          *(&buf.start.value + 4) = v70;
+          *(&buf.start.value + 4) = dCopy;
           LOWORD(buf.start.flags) = 1024;
           *(&buf.start.flags + 2) = v51;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ %u preferred video embeddings", &buf, 0x12u);
         }
 
-        v36 = v37;
+        v36 = array2;
       }
 
       else
       {
-        if (a8)
+        if (error)
         {
           v55 = MEMORY[0x1E696ABC0];
           v77 = v67;
-          v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ No valid summarized video embeddings (total %d, indices %@)", v70, objc_msgSend(v17, "count"), v41];
+          v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ No valid summarized video embeddings (total %d, indices %@)", dCopy, objc_msgSend(array, "count"), v41];
           v78 = v56;
           v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-          *a8 = [v55 errorWithDomain:v66 code:-18 userInfo:v57];
+          *error = [v55 errorWithDomain:v66 code:-18 userInfo:v57];
         }
 
         v36 = 0;
@@ -447,14 +447,14 @@ LABEL_34:
       goto LABEL_68;
     }
 
-    if (a8)
+    if (error)
     {
       v52 = MEMORY[0x1E696ABC0];
       v80 = v67;
-      v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ No valid video embedding from full analysis results (vision-only %d, audio-fused %d)", v70, objc_msgSend(v68, "count"), objc_msgSend(v63, "count")];
+      v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ No valid video embedding from full analysis results (vision-only %d, audio-fused %d)", dCopy, objc_msgSend(v68, "count"), objc_msgSend(embeddingResultsCopy, "count")];
       v81 = v53;
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-      *a8 = [v52 errorWithDomain:v66 code:-18 userInfo:v54];
+      *error = [v52 errorWithDomain:v66 code:-18 userInfo:v54];
     }
 
 LABEL_63:
@@ -462,7 +462,7 @@ LABEL_63:
     goto LABEL_68;
   }
 
-  if (!a8)
+  if (!error)
   {
     goto LABEL_63;
   }
@@ -470,7 +470,7 @@ LABEL_63:
   v35 = [v69 copy];
 LABEL_41:
   v36 = 0;
-  *a8 = v35;
+  *error = v35;
 LABEL_68:
 
   v14 = v71;
@@ -479,15 +479,15 @@ LABEL_69:
   return v36;
 }
 
-+ (id)_thumbnailIdentifiersFromMediaAnalysisResults:(id)a3 assetLocalIdentifier:(id)a4
++ (id)_thumbnailIdentifiersFromMediaAnalysisResults:(id)results assetLocalIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore][%@]", a4];
-  if (v5)
+  resultsCopy = results;
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore][%@]", identifier];
+  if (resultsCopy)
   {
-    v7 = [v5 vcp_results];
-    v8 = [v7 objectForKeyedSubscript:@"SummarizedEmbeddingResults"];
+    vcp_results = [resultsCopy vcp_results];
+    v8 = [vcp_results objectForKeyedSubscript:@"SummarizedEmbeddingResults"];
 
     if ([v8 count])
     {
@@ -498,7 +498,7 @@ LABEL_69:
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v14 = v6;
+        v14 = identifier;
         v15 = 1024;
         v16 = [v11 count];
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ Fetched %u thumbnail identifiers for summarized embeddings from MediaAnalysis database", buf, 0x12u);
@@ -510,7 +510,7 @@ LABEL_69:
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v14 = v6;
+        v14 = identifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ No summarized embeddings fetched from MediaAnalysis database", buf, 0xCu);
       }
 
@@ -523,7 +523,7 @@ LABEL_69:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = identifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ No media analysis results containing thumbnail identifiers", buf, 0xCu);
     }
 
@@ -533,47 +533,47 @@ LABEL_69:
   return v11;
 }
 
-+ (id)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6
++ (id)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l options:(id)options error:(id *)error
 {
   v140[1] = *MEMORY[0x1E69E9840];
-  v100 = a3;
-  v9 = a4;
-  v93 = v9;
-  v94 = a5;
-  if (v9)
+  dsCopy = ds;
+  lCopy = l;
+  v93 = lCopy;
+  optionsCopy = options;
+  if (lCopy)
   {
-    v98 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v9];
+    vcp_defaultPhotoLibrary = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:lCopy];
   }
 
   else
   {
-    v98 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+    vcp_defaultPhotoLibrary = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
   }
 
-  v10 = [MEMORY[0x1E6978628] localIdentifiersWithUUIDs:v100];
+  v10 = [MEMORY[0x1E6978628] localIdentifiersWithUUIDs:dsCopy];
   v95 = v10;
   v11 = [v10 count];
-  if (v11 != [v100 count] && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (v11 != [dsCopy count] && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
     v131 = @"[MADEmbeddingStore|Fetch]";
     v132 = 1024;
-    *v133 = [v100 count];
+    *v133 = [dsCopy count];
     *&v133[4] = 1024;
     *&v133[6] = [v10 count];
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ Failed to convert all UUIDs to local identifiers, converted %u but expected %u", buf, 0x18u);
   }
 
-  v97 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v98];
-  v12 = [v10 allObjects];
+  v97 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:vcp_defaultPhotoLibrary];
+  allObjects = [v10 allObjects];
   v129 = 0;
-  v99 = [v97 fetchAssetsWithLocalIdentifiers:v12 error:&v129];
+  v99 = [v97 fetchAssetsWithLocalIdentifiers:allObjects error:&v129];
   v96 = v129;
 
   if ([v99 count])
   {
     v104 = +[VCPVideoTransformerBackbone embeddingVersion];
-    v111 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v127 = 0u;
     v128 = 0u;
     v125 = 0u;
@@ -595,20 +595,20 @@ LABEL_69:
           v17 = *(*(&v125 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
           v19 = MEMORY[0x1E6978628];
-          v20 = [v17 mad_photosLocalIdentifier];
-          v21 = [v19 uuidFromLocalIdentifier:v20];
+          mad_photosLocalIdentifier = [v17 mad_photosLocalIdentifier];
+          v21 = [v19 uuidFromLocalIdentifier:mad_photosLocalIdentifier];
 
-          v22 = [v111 objectForKeyedSubscript:v21];
+          v22 = [dictionary objectForKeyedSubscript:v21];
           v23 = v22 == 0;
 
           if (v23)
           {
-            v24 = [MEMORY[0x1E695DF70] array];
-            [v111 setObject:v24 forKeyedSubscript:v21];
+            array = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array forKeyedSubscript:v21];
           }
 
-          v25 = [v17 vectors];
-          v26 = [v25 count] == 0;
+          vectors = [v17 vectors];
+          v26 = [vectors count] == 0;
 
           if (v26)
           {
@@ -629,7 +629,7 @@ LABEL_27:
           {
             if ([v17 mad_hasImageEmbedding])
             {
-              v27 = [v111 objectForKeyedSubscript:v21];
+              v27 = [dictionary objectForKeyedSubscript:v21];
               [v27 insertObject:v17 atIndex:0];
 
               goto LABEL_28;
@@ -637,7 +637,7 @@ LABEL_27:
 
             if ([v17 mad_hasVideoEmbedding])
             {
-              v30 = [v111 objectForKeyedSubscript:v21];
+              v30 = [dictionary objectForKeyedSubscript:v21];
               [v30 addObject:v17];
 
               goto LABEL_28;
@@ -666,12 +666,12 @@ LABEL_28:
       while (v14);
     }
 
-    v31 = [v111 count];
-    if (v31 != [v100 count] && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    v31 = [dictionary count];
+    if (v31 != [dsCopy count] && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v32 = [v111 count];
+      v32 = [dictionary count];
       v33 = [v13 count];
-      v34 = [v100 count];
+      v34 = [dsCopy count];
       *buf = 138413058;
       v131 = @"[MADEmbeddingStore|Fetch]";
       v132 = 1024;
@@ -689,36 +689,36 @@ LABEL_28:
       v36 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F49BE878];
       if (+[MADManagedPhotosAsset isMACDReadEnabled])
       {
-        v37 = [v98 mad_fetchRequest];
-        v38 = [v95 allObjects];
-        [v37 fetchAnalysesWithLocalIdentifiers:v38 predicate:0 resultTypes:v36];
+        mad_fetchRequest = [vcp_defaultPhotoLibrary mad_fetchRequest];
+        allObjects2 = [v95 allObjects];
+        [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:allObjects2 predicate:0 resultTypes:v36];
       }
 
       else
       {
-        v42 = [v98 photoLibraryURL];
-        v37 = [VCPClientDatabaseManager sharedDatabaseForPhotoLibraryURL:v42];
+        photoLibraryURL = [vcp_defaultPhotoLibrary photoLibraryURL];
+        mad_fetchRequest = [VCPClientDatabaseManager sharedDatabaseForPhotoLibraryURL:photoLibraryURL];
 
-        v38 = [v95 allObjects];
-        [v37 queryAnalysesForAssets:v38 withTypes:v36];
+        allObjects2 = [v95 allObjects];
+        [mad_fetchRequest queryAnalysesForAssets:allObjects2 withTypes:v36];
       }
       v39 = ;
       v43 = [v39 mutableCopy];
 
-      v44 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v123[0] = MEMORY[0x1E69E9820];
       v123[1] = 3221225472;
       v123[2] = __81__MADEmbeddingStore_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_error___block_invoke;
       v123[3] = &unk_1E834CDC0;
-      v45 = v44;
+      v45 = array2;
       v124 = v45;
       [v43 enumerateKeysAndObjectsUsingBlock:v123];
       [v43 removeObjectsForKeys:v45];
       v46 = v43;
       v47 = MEMORY[0x1E695DFD8];
       v101 = v46;
-      v48 = [v46 allKeys];
-      v41 = [v47 setWithArray:v48];
+      allKeys = [v46 allKeys];
+      v41 = [v47 setWithArray:allKeys];
 
       objc_autoreleasePoolPop(v35);
     }
@@ -730,12 +730,12 @@ LABEL_28:
     }
 
     v102 = v41;
-    v103 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    obj = v111;
+    obj = dictionary;
     v49 = [obj countByEnumeratingWithState:&v119 objects:v137 count:16];
     if (v49)
     {
@@ -815,36 +815,36 @@ LABEL_28:
             v50 = v54;
             if (v56 | v55)
             {
-              v60 = [MEMORY[0x1E695DF70] array];
+              array3 = [MEMORY[0x1E695DF70] array];
               v106 = [MEMORY[0x1E6978628] localIdentifierWithUUID:v114];
               v107 = [v102 containsObject:?];
-              v61 = [v56 vectors];
-              v62 = [v61 count] == 0;
+              vectors2 = [v56 vectors];
+              v62 = [vectors2 count] == 0;
 
-              if (v62 || ([v56 vectors], v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v60, "addObjectsFromArray:", v63), v63, (+[VCPVideoThumbnailAnalyzer isContextualThumbnailEnabled](VCPVideoThumbnailAnalyzer, "isContextualThumbnailEnabled") & v107) != 1))
+              if (v62 || ([v56 vectors], v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(array3, "addObjectsFromArray:", v63), v63, (+[VCPVideoThumbnailAnalyzer isContextualThumbnailEnabled](VCPVideoThumbnailAnalyzer, "isContextualThumbnailEnabled") & v107) != 1))
               {
-                v64 = 0;
+                array4 = 0;
               }
 
               else
               {
-                v64 = [MEMORY[0x1E695DF70] array];
-                [v64 addObject:@"NULL"];
+                array4 = [MEMORY[0x1E695DF70] array];
+                [array4 addObject:@"NULL"];
               }
 
-              v65 = [v55 vectors];
-              v66 = [v65 count] == 0;
+              vectors3 = [v55 vectors];
+              v66 = [vectors3 count] == 0;
 
               if (!v66)
               {
-                v67 = [v55 vectors];
-                [v60 addObjectsFromArray:v67];
+                vectors4 = [v55 vectors];
+                [array3 addObjectsFromArray:vectors4];
 
                 if ((+[VCPVideoThumbnailAnalyzer isContextualThumbnailEnabled]& v107) == 1)
                 {
-                  if (!v64)
+                  if (!array4)
                   {
-                    v64 = [MEMORY[0x1E695DF70] array];
+                    array4 = [MEMORY[0x1E695DF70] array];
                   }
 
                   v68 = objc_opt_class();
@@ -854,12 +854,12 @@ LABEL_28:
                   if ([v70 count])
                   {
                     v71 = [v70 count];
-                    v72 = [v55 vectors];
-                    v73 = v71 == [v72 count];
+                    vectors5 = [v55 vectors];
+                    v73 = v71 == [vectors5 count];
 
                     if (v73)
                     {
-                      [v64 addObjectsFromArray:v70];
+                      [array4 addObjectsFromArray:v70];
                       goto LABEL_93;
                     }
 
@@ -869,8 +869,8 @@ LABEL_28:
                       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
                       {
                         v78 = [v70 count];
-                        v79 = [v55 vectors];
-                        v80 = [v79 count];
+                        vectors6 = [v55 vectors];
+                        v80 = [vectors6 count];
                         *buf = 138413058;
                         v131 = @"[MADEmbeddingStore|Fetch]";
                         v132 = 2112;
@@ -891,8 +891,8 @@ LABEL_28:
                     v74 = v50;
                     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
                     {
-                      v75 = [v55 vectors];
-                      v76 = [v75 count];
+                      vectors7 = [v55 vectors];
+                      v76 = [vectors7 count];
                       *buf = 138412802;
                       v131 = @"[MADEmbeddingStore|Fetch]";
                       v132 = 2112;
@@ -909,20 +909,20 @@ LABEL_93:
                 }
               }
 
-              v81 = [[MADEmbedding alloc] initWithFormat:1 dimension:1 version:v104 vectors:v60];
+              v81 = [[MADEmbedding alloc] initWithFormat:1 dimension:1 version:v104 vectors:array3];
               if ((+[VCPVideoThumbnailAnalyzer isContextualThumbnailEnabled]& v107) == 1)
               {
-                if ([v64 count])
+                if ([array4 count])
                 {
-                  v82 = [v64 count];
-                  v83 = [(MADEmbedding *)v81 vectors];
+                  v82 = [array4 count];
+                  vectors8 = [(MADEmbedding *)v81 vectors];
                   v84 = v81;
-                  v85 = v82 == [v83 count];
+                  v85 = v82 == [vectors8 count];
 
                   if (v85)
                   {
                     v81 = v84;
-                    [(MADEmbedding *)v84 setThumbnailIdentifiers:v64];
+                    [(MADEmbedding *)v84 setThumbnailIdentifiers:array4];
                   }
 
                   else
@@ -930,9 +930,9 @@ LABEL_93:
                     v81 = v84;
                     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
                     {
-                      v88 = [v64 count];
-                      v89 = [(MADEmbedding *)v84 vectors];
-                      v90 = [v89 count];
+                      v88 = [array4 count];
+                      vectors9 = [(MADEmbedding *)v84 vectors];
+                      v90 = [vectors9 count];
                       *buf = 138413058;
                       v131 = @"[MADEmbeddingStore|Fetch]";
                       v132 = 2112;
@@ -950,8 +950,8 @@ LABEL_93:
 
                 else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
                 {
-                  v86 = [(MADEmbedding *)v81 vectors];
-                  v87 = [v86 count];
+                  vectors10 = [(MADEmbedding *)v81 vectors];
+                  v87 = [vectors10 count];
                   *buf = 138412802;
                   v131 = @"[MADEmbeddingStore|Fetch]";
                   v132 = 2112;
@@ -962,10 +962,10 @@ LABEL_93:
                 }
               }
 
-              [v103 setObject:v81 forKeyedSubscript:v114];
+              [dictionary2 setObject:v81 forKeyedSubscript:v114];
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
               {
-                v91 = [v60 count];
+                v91 = [array3 count];
                 *buf = 138413058;
                 v131 = @"[MADEmbeddingStore|Fetch]";
                 v132 = 2112;
@@ -1027,24 +1027,24 @@ LABEL_109:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ Failed to fetch embeddings from vector database: %@", buf, 0x16u);
   }
 
-  if (a6)
+  if (error)
   {
     v40 = MEMORY[0x1E696ABC0];
     v139 = *MEMORY[0x1E696A578];
-    v140[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Failed to fetch embeddings from vector database: %@", @"[MADEmbeddingStore|Fetch]", v96, v9, v94];
+    v140[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Failed to fetch embeddings from vector database: %@", @"[MADEmbeddingStore|Fetch]", v96, lCopy, optionsCopy];
     obj = v140[0];
     v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v140 forKeys:&v139 count:1];
     [v40 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
-    *a6 = v103 = 0;
+    *error = dictionary2 = 0;
 LABEL_112:
 
     goto LABEL_113;
   }
 
-  v103 = 0;
+  dictionary2 = 0;
 LABEL_113:
 
-  return v103;
+  return dictionary2;
 }
 
 void __81__MADEmbeddingStore_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_options_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1057,31 +1057,31 @@ void __81__MADEmbeddingStore_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_optio
   }
 }
 
-+ (id)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 error:(id *)a6
++ (id)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l options:(id)options error:(id *)error
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v9 = a4;
-  v53 = a5;
-  v49 = v9;
-  if (v9)
+  embeddingsCopy = embeddings;
+  lCopy = l;
+  optionsCopy = options;
+  v49 = lCopy;
+  if (lCopy)
   {
-    v57 = v9;
+    systemPhotoLibraryURL = lCopy;
   }
 
   else
   {
-    v57 = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
+    systemPhotoLibraryURL = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v57];
+  v10 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:systemPhotoLibraryURL];
   v50 = v10;
   if (v10)
   {
     v52 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v10];
-    if (v53)
+    if (optionsCopy)
     {
-      v11 = v53;
+      v11 = optionsCopy;
     }
 
     else
@@ -1090,14 +1090,14 @@ void __81__MADEmbeddingStore_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_optio
     }
 
     v54 = v11;
-    v13 = [v11 assetUUIDs];
-    v14 = [v13 count];
+    assetUUIDs = [v11 assetUUIDs];
+    v14 = [assetUUIDs count];
 
     if (v14)
     {
       v15 = MEMORY[0x1E695DFD8];
-      v16 = [v54 assetUUIDs];
-      v17 = [v15 setWithArray:v16];
+      assetUUIDs2 = [v54 assetUUIDs];
+      v17 = [v15 setWithArray:assetUUIDs2];
 
       v18 = [MEMORY[0x1E6978628] localIdentifiersWithUUIDs:v17];
       v19 = [v18 count];
@@ -1119,15 +1119,15 @@ void __81__MADEmbeddingStore_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_optio
     }
 
     v48 = v20;
-    v21 = [v20 allObjects];
-    v22 = [v54 resultLimit];
-    v23 = [v54 fullScan];
-    v24 = [v54 includePayload];
-    v25 = [v54 numberOfProbes];
-    v26 = [v54 batchSize];
-    v27 = [v54 numConcurrentReaders];
+    allObjects = [v20 allObjects];
+    resultLimit = [v54 resultLimit];
+    fullScan = [v54 fullScan];
+    includePayload = [v54 includePayload];
+    numberOfProbes = [v54 numberOfProbes];
+    batchSize = [v54 batchSize];
+    numConcurrentReaders = [v54 numConcurrentReaders];
     v68 = 0;
-    v60 = [v52 searchWithEmbeddings:v56 localIdentifiers:v21 attributeFilters:0 limit:v22 fullScan:v23 includePayload:v24 numberOfProbes:v25 batchSize:v26 numConcurrentReaders:v27 error:&v68];
+    v60 = [v52 searchWithEmbeddings:embeddingsCopy localIdentifiers:allObjects attributeFilters:0 limit:resultLimit fullScan:fullScan includePayload:includePayload numberOfProbes:numberOfProbes batchSize:batchSize numConcurrentReaders:numConcurrentReaders error:&v68];
     v51 = v68;
 
     if (v51)
@@ -1139,10 +1139,10 @@ void __81__MADEmbeddingStore_fetchEmbeddingsWithAssetUUIDs_photoLibraryURL_optio
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADEmbeddingStore] Failed to search with embeddings %@", buf, 0xCu);
       }
 
-      if (a6)
+      if (error)
       {
-        v58 = 0;
-        *a6 = [v51 copy];
+        array = 0;
+        *error = [v51 copy];
 LABEL_46:
 
         goto LABEL_47;
@@ -1152,14 +1152,14 @@ LABEL_46:
     else
     {
       v28 = [v60 count];
-      if (v28 == [v56 count])
+      if (v28 == [embeddingsCopy count])
       {
-        v58 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         for (i = 0; i < [v60 count]; ++i)
         {
           context = objc_autoreleasePoolPush();
           v55 = [v60 objectAtIndexedSubscript:i];
-          v62 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v29 = [MEMORY[0x1E695DFA8] set];
           v66 = 0u;
           v67 = 0u;
@@ -1182,17 +1182,17 @@ LABEL_46:
                 v33 = *(*(&v64 + 1) + 8 * j);
                 v34 = objc_autoreleasePoolPush();
                 v35 = MEMORY[0x1E69DF5F8];
-                v36 = [v33 stringIdentifier];
-                v37 = [v35 mad_localIdentifierFromStringIdentifier:v36];
+                stringIdentifier = [v33 stringIdentifier];
+                v37 = [v35 mad_localIdentifierFromStringIdentifier:stringIdentifier];
 
                 v38 = [MEMORY[0x1E6978628] uuidFromLocalIdentifier:v37];
                 if (([v29 containsObject:v38] & 1) == 0)
                 {
                   v39 = [MADEmbeddingSearchResult alloc];
-                  v40 = [v33 value];
-                  v41 = -[MADEmbeddingSearchResult initWithAssetUUID:distance:metric:](v39, "initWithAssetUUID:distance:metric:", v38, v40, [v33 metric]);
+                  value = [v33 value];
+                  v41 = -[MADEmbeddingSearchResult initWithAssetUUID:distance:metric:](v39, "initWithAssetUUID:distance:metric:", v38, value, [v33 metric]);
 
-                  [v62 addObject:v41];
+                  [array2 addObject:v41];
                   [v29 addObject:v38];
                 }
 
@@ -1205,7 +1205,7 @@ LABEL_46:
             while (v30);
           }
 
-          [v58 addObject:v62];
+          [array addObject:array2];
           objc_autoreleasePoolPop(context);
         }
 
@@ -1214,7 +1214,7 @@ LABEL_46:
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v42 = [v56 count];
+        v42 = [embeddingsCopy count];
         v43 = [v60 count];
         *buf = 67109376;
         *v73 = v42;
@@ -1223,18 +1223,18 @@ LABEL_46:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADEmbeddingStore] Invalid search results count: expected %u but received %u", buf, 0xEu);
       }
 
-      if (a6)
+      if (error)
       {
         v44 = MEMORY[0x1E696ABC0];
         v70 = *MEMORY[0x1E696A578];
-        v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore] Invalid search results count: expected %u but received %u", objc_msgSend(v56, "count"), objc_msgSend(v60, "count")];
+        v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore] Invalid search results count: expected %u but received %u", objc_msgSend(embeddingsCopy, "count"), objc_msgSend(v60, "count")];
         v71 = v45;
         v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-        *a6 = [v44 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v46];
+        *error = [v44 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v46];
       }
     }
 
-    v58 = 0;
+    array = 0;
     goto LABEL_46;
   }
 
@@ -1245,9 +1245,9 @@ LABEL_46:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADEmbeddingStore] Failed to initialize Photo Library %@", buf, 0xCu);
   }
 
-  if (!a6)
+  if (!error)
   {
-    v58 = 0;
+    array = 0;
     goto LABEL_48;
   }
 
@@ -1257,36 +1257,36 @@ LABEL_46:
   v75[0] = v52;
   v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:&v74 count:1];
   [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:?];
-  *a6 = v58 = 0;
+  *error = array = 0;
 LABEL_47:
 
 LABEL_48:
 
-  return v58;
+  return array;
 }
 
-+ (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 error:(id *)a5
++ (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  v8 = lCopy;
+  if (lCopy)
   {
-    v9 = v7;
+    systemPhotoLibraryURL = lCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
+    systemPhotoLibraryURL = [MEMORY[0x1E69789B0] systemPhotoLibraryURL];
   }
 
-  v10 = v9;
-  v11 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v9];
+  v10 = systemPhotoLibraryURL;
+  v11 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:systemPhotoLibraryURL];
   if (v11)
   {
     +[MADVectorDatabaseManager releaseAllSharedDatabase];
     v12 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v11];
-    [v12 prewarmSearchWithConcurrencyLimit:a3];
+    [v12 prewarmSearchWithConcurrencyLimit:limit];
   }
 
   else
@@ -1298,14 +1298,14 @@ LABEL_48:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADEmbeddingStore] Failed to initialize Photo Library %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E696A578];
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADEmbeddingStore] Failed to initialize Photo Library %@", 0];
       v17 = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-      *a5 = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v15];
+      *error = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v15];
     }
   }
 }

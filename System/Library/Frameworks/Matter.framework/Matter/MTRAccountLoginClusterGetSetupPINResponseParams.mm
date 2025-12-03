@@ -1,9 +1,9 @@
 @interface MTRAccountLoginClusterGetSetupPINResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRAccountLoginClusterGetSetupPINResponseParams)init;
-- (MTRAccountLoginClusterGetSetupPINResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRAccountLoginClusterGetSetupPINResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRAccountLoginClusterGetSetupPINResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccountLoginClusterGetSetupPINResponseParams);
-  v5 = [(MTRAccountLoginClusterGetSetupPINResponseParams *)self setupPIN];
-  [(MTRAccountLoginClusterGetSetupPINResponseParams *)v4 setSetupPIN:v5];
+  setupPIN = [(MTRAccountLoginClusterGetSetupPINResponseParams *)self setupPIN];
+  [(MTRAccountLoginClusterGetSetupPINResponseParams *)v4 setSetupPIN:setupPIN];
 
-  v6 = [(MTRAccountLoginClusterGetSetupPINResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRAccountLoginClusterGetSetupPINResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRAccountLoginClusterGetSetupPINResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRAccountLoginClusterGetSetupPINResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -93,7 +93,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRAccountLoginClusterGetSetupPINResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRAccountLoginClusterGetSetupPINResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRAccountLoginClusterGetSetupPINResponseParams;
@@ -101,7 +101,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRAccountLoginClusterGetSetupPINResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRAccountLoginClusterGetSetupPINResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -117,14 +117,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*a3 length:*(a3 + 1) encoding:4];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*struct length:*(struct + 1) encoding:4];
   [(MTRAccountLoginClusterGetSetupPINResponseParams *)self setSetupPIN:v4];
 
-  v5 = [(MTRAccountLoginClusterGetSetupPINResponseParams *)self setupPIN];
+  setupPIN = [(MTRAccountLoginClusterGetSetupPINResponseParams *)self setupPIN];
 
-  if (v5)
+  if (setupPIN)
   {
     v6 = 0;
   }
@@ -134,7 +134,7 @@ LABEL_6:
     v6 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
   }
 
-  if (v5)
+  if (setupPIN)
   {
     v7 = 0;
   }

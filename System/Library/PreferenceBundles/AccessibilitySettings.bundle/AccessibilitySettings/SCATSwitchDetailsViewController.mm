@@ -1,89 +1,89 @@
 @interface SCATSwitchDetailsViewController
-+ (id)switchDetailsViewControllerWithSwitch:(id)a3 SCATOnboarding:(BOOL)a4;
-+ (id)switchDetailsViewControllerWithSwitch:(id)a3 parentController:(id)a4;
-- (SCATSwitchDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (id)switchDetailsViewControllerWithSwitch:(id)switch SCATOnboarding:(BOOL)onboarding;
++ (id)switchDetailsViewControllerWithSwitch:(id)switch parentController:(id)controller;
+- (SCATSwitchDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SCATSwitchDetailsViewControllerDelegate)delegate;
 - (id)_actionGroupSpecifiers;
 - (id)_generalGroupSpecifiers;
-- (id)_getResumeAutoScanning:(id)a3;
-- (id)_getSwitchDefaultActionDescription:(id)a3;
-- (id)_getSwitchIsEnabledDescription:(id)a3;
-- (id)_getSwitchLongPressActionDescription:(id)a3;
-- (id)_getSwitchMIDIChannelDescription:(id)a3;
-- (id)_getSwitchMIDIKeyDescription:(id)a3;
-- (id)_getSwitchNameDescription:(id)a3;
-- (id)_getSwitchSourceDescription:(id)a3;
+- (id)_getResumeAutoScanning:(id)scanning;
+- (id)_getSwitchDefaultActionDescription:(id)description;
+- (id)_getSwitchIsEnabledDescription:(id)description;
+- (id)_getSwitchLongPressActionDescription:(id)description;
+- (id)_getSwitchMIDIChannelDescription:(id)description;
+- (id)_getSwitchMIDIKeyDescription:(id)description;
+- (id)_getSwitchNameDescription:(id)description;
+- (id)_getSwitchSourceDescription:(id)description;
 - (id)_midiGroupSpecifiers;
-- (id)initSCATOnboarding:(BOOL)a3;
+- (id)initSCATOnboarding:(BOOL)onboarding;
 - (id)specifiers;
-- (void)_setResumeAutoScanning:(id)a3 specifier:(id)a4;
-- (void)_setSwitchIsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setSwitchNameDescription:(id)a3 specifier:(id)a4;
+- (void)_setResumeAutoScanning:(id)scanning specifier:(id)specifier;
+- (void)_setSwitchIsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setSwitchNameDescription:(id)description specifier:(id)specifier;
 - (void)didUpdateOnboardingSwitchDetails;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATSwitchDetailsViewController
 
-+ (id)switchDetailsViewControllerWithSwitch:(id)a3 parentController:(id)a4
++ (id)switchDetailsViewControllerWithSwitch:(id)switch parentController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  switchCopy = switch;
+  controllerCopy = controller;
+  if (!switchCopy)
   {
     _AXAssert();
   }
 
   v8 = objc_alloc_init(SCATSwitchDetailsViewController);
-  [(SCATSwitchDetailsViewController *)v8 setModelSwitch:v6];
-  [(SCATSwitchDetailsViewController *)v8 setParentController:v7];
-  v9 = [v7 rootController];
-  [(SCATSwitchDetailsViewController *)v8 setRootController:v9];
+  [(SCATSwitchDetailsViewController *)v8 setModelSwitch:switchCopy];
+  [(SCATSwitchDetailsViewController *)v8 setParentController:controllerCopy];
+  rootController = [controllerCopy rootController];
+  [(SCATSwitchDetailsViewController *)v8 setRootController:rootController];
 
   v10 = AXParameterizedLocalizedString();
-  v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:a1 set:0 get:0 detail:0 cell:-1 edit:0];
+  v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [(SCATSwitchDetailsViewController *)v8 setSpecifier:v11];
 
   return v8;
 }
 
-+ (id)switchDetailsViewControllerWithSwitch:(id)a3 SCATOnboarding:(BOOL)a4
++ (id)switchDetailsViewControllerWithSwitch:(id)switch SCATOnboarding:(BOOL)onboarding
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  onboardingCopy = onboarding;
+  switchCopy = switch;
+  if (!switchCopy)
   {
     _AXAssert();
   }
 
-  v7 = [[SCATSwitchDetailsViewController alloc] initSCATOnboarding:v4];
-  [v7 setModelSwitch:v6];
+  v7 = [[SCATSwitchDetailsViewController alloc] initSCATOnboarding:onboardingCopy];
+  [v7 setModelSwitch:switchCopy];
   v8 = AXParameterizedLocalizedString();
-  v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:a1 set:0 get:0 detail:0 cell:-1 edit:0];
+  v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v7 setSpecifier:v9];
 
   return v7;
 }
 
-- (id)initSCATOnboarding:(BOOL)a3
+- (id)initSCATOnboarding:(BOOL)onboarding
 {
   v5.receiver = self;
   v5.super_class = SCATSwitchDetailsViewController;
   result = [(SCATSwitchDetailsViewController *)&v5 init];
   if (result)
   {
-    *(result + 138) = a3;
+    *(result + 138) = onboarding;
   }
 
   return result;
 }
 
-- (SCATSwitchDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SCATSwitchDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SCATSwitchDetailsViewController;
-  v4 = [(SCATSwitchDetailsViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SCATSwitchDetailsViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[SCATAlertCoordinator alloc] initWithViewController:v4];
@@ -93,11 +93,11 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATSwitchDetailsViewController;
-  [(SCATSwitchDetailsViewController *)&v4 viewWillAppear:a3];
+  [(SCATSwitchDetailsViewController *)&v4 viewWillAppear:appear];
   [(SCATSwitchDetailsViewController *)self reloadSpecifiers];
 }
 
@@ -113,20 +113,20 @@
   else
   {
     v6 = +[NSMutableArray array];
-    v7 = [(SCATSwitchDetailsViewController *)self _generalGroupSpecifiers];
-    [v6 addObjectsFromArray:v7];
+    _generalGroupSpecifiers = [(SCATSwitchDetailsViewController *)self _generalGroupSpecifiers];
+    [v6 addObjectsFromArray:_generalGroupSpecifiers];
 
-    v8 = [(SCATSwitchDetailsViewController *)self _actionGroupSpecifiers];
-    [v6 addObjectsFromArray:v8];
+    _actionGroupSpecifiers = [(SCATSwitchDetailsViewController *)self _actionGroupSpecifiers];
+    [v6 addObjectsFromArray:_actionGroupSpecifiers];
 
-    v9 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-    v10 = [v9 source];
-    v11 = [v10 isEqualToString:SCATSwitchSourceMIDI];
+    modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    source = [modelSwitch source];
+    v11 = [source isEqualToString:SCATSwitchSourceMIDI];
 
     if (v11)
     {
-      v12 = [(SCATSwitchDetailsViewController *)self _midiGroupSpecifiers];
-      [v6 addObjectsFromArray:v12];
+      _midiGroupSpecifiers = [(SCATSwitchDetailsViewController *)self _midiGroupSpecifiers];
+      [v6 addObjectsFromArray:_midiGroupSpecifiers];
     }
 
     v13 = *&self->AXUISettingsSetupCapableListController_opaque[v2];
@@ -173,16 +173,16 @@
   [v6 setIdentifier:@"defaultActionID"];
   v7 = PSEnabledKey;
   [v6 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
-  v8 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v9 assistiveTouchLongPressEnabled];
 
-  v11 = [v8 supportsLongPress];
+  supportsLongPress = [modelSwitch supportsLongPress];
   v12 = AXParameterizedLocalizedString();
   v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:"_getSwitchLongPressActionDescription:" detail:0 cell:2 edit:0];
 
   [v13 setIdentifier:@"longPressActionID"];
-  v14 = v10 & v11;
+  v14 = assistiveTouchLongPressEnabled & supportsLongPress;
   v15 = [NSNumber numberWithInt:v14];
   [v13 setProperty:v15 forKey:v7];
 
@@ -198,7 +198,7 @@
   v17 = [NSArray arrayWithObjects:v22 count:3];
   v18 = [v17 mutableCopy];
 
-  if ([v8 action] == &stru_20.flags + 3 || objc_msgSend(v8, "action") == &stru_68.sectname[5] || objc_msgSend(v8, "longPressAction") == &stru_20.flags + 3 || objc_msgSend(v8, "longPressAction") == &stru_68.sectname[5])
+  if ([modelSwitch action] == &stru_20.flags + 3 || objc_msgSend(modelSwitch, "action") == &stru_68.sectname[5] || objc_msgSend(modelSwitch, "longPressAction") == &stru_20.flags + 3 || objc_msgSend(modelSwitch, "longPressAction") == &stru_68.sectname[5])
   {
     v19 = AXParameterizedLocalizedString();
     v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:self set:"_setResumeAutoScanning:specifier:" get:"_getResumeAutoScanning:" detail:0 cell:6 edit:0];
@@ -236,60 +236,60 @@
 - (void)didUpdateOnboardingSwitchDetails
 {
   [(SCATSwitchDetailsViewController *)self reloadSpecifiers];
-  v3 = [(SCATSwitchDetailsViewController *)self delegate];
+  delegate = [(SCATSwitchDetailsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SCATSwitchDetailsViewController *)self delegate];
-    [v5 reloadSwitchesForDetailsView];
+    delegate2 = [(SCATSwitchDetailsViewController *)self delegate];
+    [delegate2 reloadSwitchesForDetailsView];
   }
 }
 
-- (id)_getSwitchNameDescription:(id)a3
+- (id)_getSwitchNameDescription:(id)description
 {
-  v3 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v4 = [v3 name];
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  name = [modelSwitch name];
 
-  return v4;
+  return name;
 }
 
-- (void)_setSwitchNameDescription:(id)a3 specifier:(id)a4
+- (void)_setSwitchNameDescription:(id)description specifier:(id)specifier
 {
-  v7 = a3;
-  if ([v7 length])
+  descriptionCopy = description;
+  if ([descriptionCopy length])
   {
-    v5 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-    [v5 setName:v7];
+    modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    [modelSwitch setName:descriptionCopy];
 
-    v6 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    modelSwitch2 = [(SCATSwitchDetailsViewController *)self modelSwitch];
     SCATAddOrUpdateSwitchToSettings();
   }
 }
 
-- (id)_getSwitchSourceDescription:(id)a3
+- (id)_getSwitchSourceDescription:(id)description
 {
-  v3 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v4 = [v3 localizedSourceDescription];
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  localizedSourceDescription = [modelSwitch localizedSourceDescription];
+
+  return localizedSourceDescription;
+}
+
+- (id)_getSwitchIsEnabledDescription:(id)description
+{
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [modelSwitch isEnabled]);
 
   return v4;
 }
 
-- (id)_getSwitchIsEnabledDescription:(id)a3
+- (void)_setSwitchIsEnabled:(id)enabled specifier:(id)specifier
 {
-  v3 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabled]);
+  enabledCopy = enabled;
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  return v4;
-}
-
-- (void)_setSwitchIsEnabled:(id)a3 specifier:(id)a4
-{
-  v5 = a3;
-  v7 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v6 = [v5 BOOLValue];
-
-  [v7 setIsEnabled:v6];
+  [modelSwitch setIsEnabled:bOOLValue];
   SCATAddOrUpdateSwitchToSettings();
   if (self->_isSCATOnboarding)
   {
@@ -297,25 +297,25 @@
   }
 }
 
-- (id)_getSwitchDefaultActionDescription:(id)a3
+- (id)_getSwitchDefaultActionDescription:(id)description
 {
-  v4 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v5 = [v4 shortcutIdentifier];
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  shortcutIdentifier = [modelSwitch shortcutIdentifier];
 
-  if (v5)
+  if (shortcutIdentifier)
   {
     v6 = +[AXSiriShortcutsManager sharedManager];
-    v7 = [v6 shortcutForIdentifier:v5];
+    v7 = [v6 shortcutForIdentifier:shortcutIdentifier];
 
-    v8 = [v7 shortcutName];
+    shortcutName = [v7 shortcutName];
   }
 
   else
   {
-    v9 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-    v10 = [v9 action];
+    modelSwitch2 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    action = [modelSwitch2 action];
 
-    if (v10)
+    if (action)
     {
       SCATLocStringForAction();
     }
@@ -324,31 +324,31 @@
     {
       AXParameterizedLocalizedString();
     }
-    v8 = ;
+    shortcutName = ;
   }
 
-  return v8;
+  return shortcutName;
 }
 
-- (id)_getSwitchLongPressActionDescription:(id)a3
+- (id)_getSwitchLongPressActionDescription:(id)description
 {
-  v4 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v5 = [v4 longPressShortcutIdentifier];
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  longPressShortcutIdentifier = [modelSwitch longPressShortcutIdentifier];
 
-  if (v5)
+  if (longPressShortcutIdentifier)
   {
     v6 = +[AXSiriShortcutsManager sharedManager];
-    v7 = [v6 shortcutForIdentifier:v5];
+    v7 = [v6 shortcutForIdentifier:longPressShortcutIdentifier];
 
-    v8 = [v7 shortcutName];
+    shortcutName = [v7 shortcutName];
   }
 
   else
   {
-    v9 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-    v10 = [v9 longPressAction];
+    modelSwitch2 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    longPressAction = [modelSwitch2 longPressAction];
 
-    if (v10)
+    if (longPressAction)
     {
       SCATLocStringForAction();
     }
@@ -357,79 +357,79 @@
     {
       AXParameterizedLocalizedString();
     }
-    v8 = ;
+    shortcutName = ;
   }
 
-  return v8;
+  return shortcutName;
 }
 
-- (id)_getSwitchMIDIChannelDescription:(id)a3
+- (id)_getSwitchMIDIChannelDescription:(id)description
 {
-  v3 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v4 = [v3 midiEvent];
-  v5 = AXLocalizedNameForMIDIChannel([v4 channel]);
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  midiEvent = [modelSwitch midiEvent];
+  v5 = AXLocalizedNameForMIDIChannel([midiEvent channel]);
 
   return v5;
 }
 
-- (id)_getSwitchMIDIKeyDescription:(id)a3
+- (id)_getSwitchMIDIKeyDescription:(id)description
 {
-  v3 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v4 = [v3 midiEvent];
-  [v4 note];
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  midiEvent = [modelSwitch midiEvent];
+  [midiEvent note];
   v5 = AXLocalizedNameForMIDINote();
 
   return v5;
 }
 
-- (id)_getResumeAutoScanning:(id)a3
+- (id)_getResumeAutoScanning:(id)scanning
 {
-  v4 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  if ([v4 action] == &stru_68.sectname[5])
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  if ([modelSwitch action] == &stru_68.sectname[5])
   {
     v5 = [NSNumber numberWithInt:1];
   }
 
   else
   {
-    v6 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 longPressAction] == &stru_68.sectname[5]);
+    modelSwitch2 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [modelSwitch2 longPressAction] == &stru_68.sectname[5]);
   }
 
   return v5;
 }
 
-- (void)_setResumeAutoScanning:(id)a3 specifier:(id)a4
+- (void)_setResumeAutoScanning:(id)scanning specifier:(id)specifier
 {
-  v5 = a3;
-  v10 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-  v6 = [v10 action];
-  v7 = [v10 longPressAction];
-  v8 = [v5 BOOLValue];
+  scanningCopy = scanning;
+  modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
+  action = [modelSwitch action];
+  longPressAction = [modelSwitch longPressAction];
+  bOOLValue = [scanningCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    if (v6 == &stru_20.flags + 3)
+    if (action == &stru_20.flags + 3)
     {
-      [v10 setAction:109];
+      [modelSwitch setAction:109];
     }
 
-    if (v7 == &stru_20.flags + 3)
+    if (longPressAction == &stru_20.flags + 3)
     {
       v9 = 109;
 LABEL_10:
-      [v10 setLongPressAction:v9];
+      [modelSwitch setLongPressAction:v9];
     }
   }
 
   else
   {
-    if (v6 == &stru_68.sectname[5])
+    if (action == &stru_68.sectname[5])
     {
-      [v10 setAction:103];
+      [modelSwitch setAction:103];
     }
 
-    if (v7 == &stru_68.sectname[5])
+    if (longPressAction == &stru_68.sectname[5])
     {
       v9 = 103;
       goto LABEL_10;
@@ -439,48 +439,48 @@ LABEL_10:
   SCATAddOrUpdateSwitchToSettings();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = SCATSwitchDetailsViewController;
-  v8 = [(SCATSwitchDetailsViewController *)&v31 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 identifier];
+  v8 = [(SCATSwitchDetailsViewController *)&v31 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  identifier = [specifier identifier];
 
   objc_initWeak(&location, self);
-  if ([v10 isEqualToString:@"switchNameID"])
+  if ([identifier isEqualToString:@"switchNameID"])
   {
-    v11 = [(SCATSwitchDetailsViewController *)self switchAlertCoordinator];
-    v12 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+    switchAlertCoordinator = [(SCATSwitchDetailsViewController *)self switchAlertCoordinator];
+    modelSwitch = [(SCATSwitchDetailsViewController *)self modelSwitch];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = __69__SCATSwitchDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v28[3] = &unk_255388;
     objc_copyWeak(&v29, &location);
-    [v11 showSwitchNamingAlertWithSwitch:v12 message:0 successHandler:v28 cancelHandler:0];
+    [switchAlertCoordinator showSwitchNamingAlertWithSwitch:modelSwitch message:0 successHandler:v28 cancelHandler:0];
 
     objc_destroyWeak(&v29);
   }
 
   else
   {
-    if (([v10 isEqualToString:@"defaultActionID"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"longPressActionID"))
+    if (([identifier isEqualToString:@"defaultActionID"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"longPressActionID"))
     {
       v13 = [SCATSwitchActionsController alloc];
-      v14 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-      v15 = [(SCATSwitchActionsController *)v13 initWithSwitch:v14];
+      modelSwitch2 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+      v15 = [(SCATSwitchActionsController *)v13 initWithSwitch:modelSwitch2];
 
       [(SCATSwitchActionsController *)v15 setParentController:self];
-      v16 = [(SCATSwitchDetailsViewController *)self rootController];
-      [(SCATSwitchActionsController *)v15 setRootController:v16];
+      rootController = [(SCATSwitchDetailsViewController *)self rootController];
+      [(SCATSwitchActionsController *)v15 setRootController:rootController];
 
       v17 = AXParameterizedLocalizedString();
       v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:self set:0 get:0 detail:0 cell:-1 edit:0];
       [(SCATSwitchActionsController *)v15 setSpecifier:v18];
 
-      -[SCATSwitchActionsController setSelectLongPress:](v15, "setSelectLongPress:", [v10 isEqualToString:@"longPressActionID"]);
+      -[SCATSwitchActionsController setSelectLongPress:](v15, "setSelectLongPress:", [identifier isEqualToString:@"longPressActionID"]);
       [(SCATSwitchActionsController *)v15 setPopToRootSwitchViewControlAfterSelection:1];
       v19 = [[UINavigationController alloc] initWithRootViewController:v15];
       objc_initWeak(&from, self);
@@ -503,23 +503,23 @@ LABEL_10:
       objc_destroyWeak(&from);
     }
 
-    else if ([v10 isEqualToString:@"midiChannelID"])
+    else if ([identifier isEqualToString:@"midiChannelID"])
     {
-      v21 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-      v15 = [SCATMIDISwitchChannelViewController channelViewControllerWithSwitch:v21 parentController:self];
+      modelSwitch3 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+      v15 = [SCATMIDISwitchChannelViewController channelViewControllerWithSwitch:modelSwitch3 parentController:self];
 
       [(SCATSwitchDetailsViewController *)self showController:v15 animate:1];
     }
 
     else
     {
-      if (![v10 isEqualToString:@"midiKeyID"])
+      if (![identifier isEqualToString:@"midiKeyID"])
       {
         goto LABEL_7;
       }
 
-      v22 = [(SCATSwitchDetailsViewController *)self modelSwitch];
-      v15 = [SCATMIDISwitchKeyViewController keyViewControllerWithSwitch:v22 parentController:self];
+      modelSwitch4 = [(SCATSwitchDetailsViewController *)self modelSwitch];
+      v15 = [SCATMIDISwitchKeyViewController keyViewControllerWithSwitch:modelSwitch4 parentController:self];
 
       [(SCATSwitchDetailsViewController *)self showController:v15 animate:1];
     }

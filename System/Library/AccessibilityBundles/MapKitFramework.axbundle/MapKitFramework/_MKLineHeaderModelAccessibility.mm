@@ -1,17 +1,17 @@
 @interface _MKLineHeaderModelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)contentAttributedString;
 @end
 
 @implementation _MKLineHeaderModelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_MKLineHeaderModel" hasInstanceMethod:@"contentAttributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MKLineHeaderModel" hasInstanceVariable:@"_tokens" withType:"NSMutableArray"];
-  [v3 validateClass:@"_MKTokenAttributedString" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MKTokenAttributedString" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_MKLineHeaderModel" hasInstanceMethod:@"contentAttributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MKLineHeaderModel" hasInstanceVariable:@"_tokens" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"_MKTokenAttributedString" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MKTokenAttributedString" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
 }
 
 - (id)contentAttributedString
@@ -19,7 +19,7 @@
   v32 = *MEMORY[0x29EDCA608];
   v30.receiver = self;
   v30.super_class = _MKLineHeaderModelAccessibility;
-  v4 = [(_MKLineHeaderModelAccessibility *)&v30 contentAttributedString];
+  contentAttributedString = [(_MKLineHeaderModelAccessibility *)&v30 contentAttributedString];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -28,7 +28,7 @@
   v5 = [(_MKLineHeaderModelAccessibility *)self safeValueForKey:@"_tokens"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v25 = v4;
+  v25 = contentAttributedString;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v7)
   {
@@ -57,18 +57,18 @@
       {
         objc_opt_class();
         v19 = [v12 safeValueForKey:@"string"];
-        v15 = __UIAccessibilityCastAsClass();
+        accessibilityLabel2 = __UIAccessibilityCastAsClass();
 
-        v20 = [v15 accessibilityLabel];
-        v18 = v20;
-        if (v20)
+        accessibilityLabel = [accessibilityLabel2 accessibilityLabel];
+        v18 = accessibilityLabel;
+        if (accessibilityLabel)
         {
-          v21 = v20;
+          v21 = accessibilityLabel;
         }
 
         else
         {
-          v21 = v15;
+          v21 = accessibilityLabel2;
         }
 
         v24 = v21;
@@ -79,20 +79,20 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v15 = [v14 accessibilityLabel];
-      v16 = v15;
-      if (!v15)
+      accessibilityLabel2 = [v14 accessibilityLabel];
+      v16 = accessibilityLabel2;
+      if (!accessibilityLabel2)
       {
-        v2 = [v14 string];
-        v16 = v2;
+        string = [v14 string];
+        v16 = string;
       }
 
       v24 = v16;
       v17 = __UIAXStringForVariables();
 
-      v18 = v2;
+      v18 = string;
       v9 = v17;
-      if (!v15)
+      if (!accessibilityLabel2)
       {
         goto LABEL_15;
       }

@@ -1,59 +1,59 @@
 @interface PXTitleSubtitleUILabel
 - (CGRect)contentBounds;
 - (NSArray)diagnosticsRenderedLines;
-- (PXTitleSubtitleUILabel)initWithCoder:(id)a3;
-- (PXTitleSubtitleUILabel)initWithFrame:(CGRect)a3;
+- (PXTitleSubtitleUILabel)initWithCoder:(id)coder;
+- (PXTitleSubtitleUILabel)initWithFrame:(CGRect)frame;
 - (double)lastBaseline;
 - (void)_PXTitleSubtitleUILabelCommonInitialization;
-- (void)_handleChangeFromBounds:(CGRect)a3;
-- (void)_setContentLayer:(id)a3;
-- (void)_setLayerPromise:(id)a3;
+- (void)_handleChangeFromBounds:(CGRect)bounds;
+- (void)_setContentLayer:(id)layer;
+- (void)_setLayerPromise:(id)promise;
 - (void)_updateContentLayer;
 - (void)_updateLayerPromiseIfNeeded;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setRendersTextAsynchronously:(BOOL)a3;
-- (void)setShouldRasterizeTextLayer:(BOOL)a3;
-- (void)setSpec:(id)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTypesettingMode:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setRendersTextAsynchronously:(BOOL)asynchronously;
+- (void)setShouldRasterizeTextLayer:(BOOL)layer;
+- (void)setSpec:(id)spec;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
+- (void)setTypesettingMode:(int64_t)mode;
 @end
 
 @implementation PXTitleSubtitleUILabel
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXLayerPromiseObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXLayerPromiseObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXTitleSubtitleUILabel.m" lineNumber:231 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTitleSubtitleUILabel.m" lineNumber:231 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXTitleSubtitleUILabel *)self _updateContentLayer];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
 - (void)_updateContentLayer
 {
-  v4 = [(PXTitleSubtitleUILabel *)self _layerPromise];
-  v3 = [v4 layer];
-  [v3 setShouldRasterize:{-[PXTitleSubtitleUILabel shouldRasterizeTextLayer](self, "shouldRasterizeTextLayer")}];
-  [v4 contentsScale];
-  [v3 setRasterizationScale:?];
-  if (v3)
+  _layerPromise = [(PXTitleSubtitleUILabel *)self _layerPromise];
+  layer = [_layerPromise layer];
+  [layer setShouldRasterize:{-[PXTitleSubtitleUILabel shouldRasterizeTextLayer](self, "shouldRasterizeTextLayer")}];
+  [_layerPromise contentsScale];
+  [layer setRasterizationScale:?];
+  if (layer)
   {
-    [(PXTitleSubtitleUILabel *)self _setContentLayer:v3];
+    [(PXTitleSubtitleUILabel *)self _setContentLayer:layer];
   }
 }
 
@@ -62,10 +62,10 @@
   if (self->_needsUpdateLayerPromise)
   {
     self->_needsUpdateLayerPromise = 0;
-    v3 = [(PXTitleSubtitleUILabel *)self spec];
-    if (v3)
+    spec = [(PXTitleSubtitleUILabel *)self spec];
+    if (spec)
     {
-      [v3 padding];
+      [spec padding];
     }
 
     [(PXTitleSubtitleUILabel *)self bounds];
@@ -100,8 +100,8 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
 - (CGRect)contentBounds
 {
   [(PXTitleSubtitleUILabel *)self _updateLayerPromiseIfNeeded];
-  v3 = [(PXTitleSubtitleUILabel *)self _layerPromise];
-  [v3 layerContentBounds];
+  _layerPromise = [(PXTitleSubtitleUILabel *)self _layerPromise];
+  [_layerPromise layerContentBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -118,30 +118,30 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   return result;
 }
 
-- (void)_setContentLayer:(id)a3
+- (void)_setContentLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   contentLayer = self->__contentLayer;
-  if (contentLayer != v5)
+  if (contentLayer != layerCopy)
   {
-    v26 = v5;
+    v26 = layerCopy;
     [(CALayer *)contentLayer removeFromSuperlayer];
-    objc_storeStrong(&self->__contentLayer, a3);
-    v5 = v26;
+    objc_storeStrong(&self->__contentLayer, layer);
+    layerCopy = v26;
     if (v26)
     {
       v7 = +[PXMemoriesRelatedSettings sharedInstance];
-      v8 = [v7 showMemoryTitleLayer];
+      showMemoryTitleLayer = [v7 showMemoryTitleLayer];
 
-      if (v8)
+      if (showMemoryTitleLayer)
       {
-        v9 = [MEMORY[0x1E69DC888] redColor];
-        v10 = [v9 colorWithAlphaComponent:0.5];
+        redColor = [MEMORY[0x1E69DC888] redColor];
+        v10 = [redColor colorWithAlphaComponent:0.5];
         -[CALayer setBackgroundColor:](v26, "setBackgroundColor:", [v10 CGColor]);
       }
 
-      v11 = [(PXTitleSubtitleUILabel *)self layer];
-      [v11 bounds];
+      layer = [(PXTitleSubtitleUILabel *)self layer];
+      [layer bounds];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -160,105 +160,105 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
         v21 = Width - CGRectGetMaxX(v29);
       }
 
-      v23 = [(PXTitleSubtitleUILabel *)self _layerPromise];
-      [v23 layerContentBounds];
+      _layerPromise = [(PXTitleSubtitleUILabel *)self _layerPromise];
+      [_layerPromise layerContentBounds];
       Height = CGRectGetHeight(v30);
-      [v23 layerLastBaseline];
+      [_layerPromise layerLastBaseline];
       [(CALayer *)v26 setPosition:v21, Height - v25];
-      [v11 addSublayer:self->__contentLayer];
+      [layer addSublayer:self->__contentLayer];
 
-      v5 = v26;
+      layerCopy = v26;
     }
   }
 }
 
-- (void)_setLayerPromise:(id)a3
+- (void)_setLayerPromise:(id)promise
 {
-  v5 = a3;
+  promiseCopy = promise;
   layerPromise = self->__layerPromise;
-  if (layerPromise != v5)
+  if (layerPromise != promiseCopy)
   {
-    v7 = v5;
+    v7 = promiseCopy;
     [(PXTitleSubtitleCALayerPromise *)layerPromise unregisterChangeObserver:self context:PXLayerPromiseObservationContext];
-    objc_storeStrong(&self->__layerPromise, a3);
+    objc_storeStrong(&self->__layerPromise, promise);
     [(PXTitleSubtitleCALayerPromise *)self->__layerPromise registerChangeObserver:self context:PXLayerPromiseObservationContext];
     [(PXTitleSubtitleCALayerPromise *)self->__layerPromise startLayerRealization];
     [(PXTitleSubtitleUILabel *)self _updateContentLayer];
-    v5 = v7;
+    promiseCopy = v7;
   }
 }
 
 - (NSArray)diagnosticsRenderedLines
 {
-  v2 = [(PXTitleSubtitleUILabel *)self _layerPromise];
-  v3 = [v2 diagnosticsRenderedLines];
+  _layerPromise = [(PXTitleSubtitleUILabel *)self _layerPromise];
+  diagnosticsRenderedLines = [_layerPromise diagnosticsRenderedLines];
 
-  return v3;
+  return diagnosticsRenderedLines;
 }
 
 - (double)lastBaseline
 {
   [(PXTitleSubtitleUILabel *)self _updateLayerPromiseIfNeeded];
-  v3 = [(PXTitleSubtitleUILabel *)self _layerPromise];
-  [v3 layerLastBaseline];
+  _layerPromise = [(PXTitleSubtitleUILabel *)self _layerPromise];
+  [_layerPromise layerLastBaseline];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setShouldRasterizeTextLayer:(BOOL)a3
+- (void)setShouldRasterizeTextLayer:(BOOL)layer
 {
-  if (self->_shouldRasterizeTextLayer != a3)
+  if (self->_shouldRasterizeTextLayer != layer)
   {
-    self->_shouldRasterizeTextLayer = a3;
+    self->_shouldRasterizeTextLayer = layer;
     [(PXTitleSubtitleUILabel *)self _updateContentLayer];
   }
 }
 
-- (void)setRendersTextAsynchronously:(BOOL)a3
+- (void)setRendersTextAsynchronously:(BOOL)asynchronously
 {
-  if (self->_rendersTextAsynchronously != a3)
+  if (self->_rendersTextAsynchronously != asynchronously)
   {
-    self->_rendersTextAsynchronously = a3;
+    self->_rendersTextAsynchronously = asynchronously;
     [(PXTitleSubtitleUILabel *)self _invalidateLayerPromise];
   }
 }
 
-- (void)setTypesettingMode:(int64_t)a3
+- (void)setTypesettingMode:(int64_t)mode
 {
-  if (self->_typesettingMode != a3)
+  if (self->_typesettingMode != mode)
   {
-    self->_typesettingMode = a3;
+    self->_typesettingMode = mode;
     [(PXTitleSubtitleUILabel *)self _invalidateLayerPromise];
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_spec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_spec != specCopy)
   {
-    v8 = v5;
-    v7 = [(PXTitleSubtitleLabelSpec *)v5 isEqual:?];
+    v8 = specCopy;
+    v7 = [(PXTitleSubtitleLabelSpec *)specCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_spec, a3);
+      objc_storeStrong(&self->_spec, spec);
       [(PXTitleSubtitleUILabel *)self _invalidateLayerPromise];
       v6 = v8;
     }
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_subtitleText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_subtitleText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = textCopy;
+    v6 = [(NSString *)textCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -272,14 +272,14 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_titleText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_titleText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = textCopy;
+    v6 = [(NSString *)textCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -293,12 +293,12 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   }
 }
 
-- (void)_handleChangeFromBounds:(CGRect)a3
+- (void)_handleChangeFromBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PXTitleSubtitleUILabel *)self bounds];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -311,12 +311,12 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PXTitleSubtitleUILabel *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -328,12 +328,12 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   [(PXTitleSubtitleUILabel *)self _handleChangeFromBounds:v9, v11, v13, v15];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PXTitleSubtitleUILabel *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -354,11 +354,11 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   self->_typesettingMode = [v4 defaultLabelTypesettingMode];
 }
 
-- (PXTitleSubtitleUILabel)initWithFrame:(CGRect)a3
+- (PXTitleSubtitleUILabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXTitleSubtitleUILabel;
-  v3 = [(PXTitleSubtitleUILabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXTitleSubtitleUILabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -368,11 +368,11 @@ void __53__PXTitleSubtitleUILabel__updateLayerPromiseIfNeeded__block_invoke(uint
   return v4;
 }
 
-- (PXTitleSubtitleUILabel)initWithCoder:(id)a3
+- (PXTitleSubtitleUILabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXTitleSubtitleUILabel;
-  v3 = [(PXTitleSubtitleUILabel *)&v6 initWithCoder:a3];
+  v3 = [(PXTitleSubtitleUILabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

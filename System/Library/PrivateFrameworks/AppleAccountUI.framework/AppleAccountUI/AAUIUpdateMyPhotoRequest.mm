@@ -1,27 +1,27 @@
 @interface AAUIUpdateMyPhotoRequest
-+ (id)_downsampleImage:(id)a3 fromStartingQuality:(double)a4 toEndingQuality:(double)a5 increment:(double)a6 maxLength:(unint64_t)a7;
-+ (id)_fullScreen2ImageFromImage:(id)a3 cropRect:(id)a4 fullScreenCropRect:(id *)a5;
-- (AAUIUpdateMyPhotoRequest)initWithAccount:(id)a3 photo:(id)a4 cropRect:(id)a5;
++ (id)_downsampleImage:(id)image fromStartingQuality:(double)quality toEndingQuality:(double)endingQuality increment:(double)increment maxLength:(unint64_t)length;
++ (id)_fullScreen2ImageFromImage:(id)image cropRect:(id)rect fullScreenCropRect:(id *)cropRect;
+- (AAUIUpdateMyPhotoRequest)initWithAccount:(id)account photo:(id)photo cropRect:(id)rect;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AAUIUpdateMyPhotoRequest
 
-- (AAUIUpdateMyPhotoRequest)initWithAccount:(id)a3 photo:(id)a4 cropRect:(id)a5
+- (AAUIUpdateMyPhotoRequest)initWithAccount:(id)account photo:(id)photo cropRect:(id)rect
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  photoCopy = photo;
+  rectCopy = rect;
   v15.receiver = self;
   v15.super_class = AAUIUpdateMyPhotoRequest;
   v12 = [(AAUIUpdateMyPhotoRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    objc_storeStrong(&v13->_photo, a4);
-    objc_storeStrong(&v13->_cropRect, a5);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_photo, photo);
+    objc_storeStrong(&v13->_cropRect, rect);
   }
 
   return v13;
@@ -29,10 +29,10 @@
 
 - (id)urlString
 {
-  v2 = [MEMORY[0x1E698B9C0] urlConfiguration];
-  v3 = [v2 updateMyPhotoURL];
+  urlConfiguration = [MEMORY[0x1E698B9C0] urlConfiguration];
+  updateMyPhotoURL = [urlConfiguration updateMyPhotoURL];
 
-  return v3;
+  return updateMyPhotoURL;
 }
 
 - (id)urlRequest
@@ -40,8 +40,8 @@
   v32 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = AAUIUpdateMyPhotoRequest;
-  v3 = [(AARequest *)&v27 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v27 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   [v4 aa_addBasicAuthorizationHeaderWithAccount:self->_account preferUsingPassword:0];
@@ -59,7 +59,7 @@
     {
       photo = self->_photo;
       v26 = 0;
-      v9 = [AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage:photo cropRect:v5 fullScreenCropRect:&v26];
+      monogramForCurrentAccount = [AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage:photo cropRect:v5 fullScreenCropRect:&v26];
       v10 = v26;
       v11 = v10;
       if (v10)
@@ -80,11 +80,11 @@
       }
 
       v11 = objc_alloc_init(AAUIProfilePictureStore);
-      v9 = [(AAUIProfilePictureStore *)v11 monogramForCurrentAccount];
+      monogramForCurrentAccount = [(AAUIProfilePictureStore *)v11 monogramForCurrentAccount];
       v5 = 0;
     }
 
-    v7 = [AAUIUpdateMyPhotoRequest _downsampleImage:v9 fromStartingQuality:86016 toEndingQuality:1.0 increment:0.19 maxLength:0.2];
+    v7 = [AAUIUpdateMyPhotoRequest _downsampleImage:monogramForCurrentAccount fromStartingQuality:86016 toEndingQuality:1.0 increment:0.19 maxLength:0.2];
   }
 
   v13 = [v7 base64EncodedDataWithOptions:0];
@@ -102,8 +102,8 @@
 
   [v4 setHTTPBody:v13];
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [v4 HTTPBody];
-  v19 = [v17 stringWithFormat:@"%lu", objc_msgSend(v18, "length")];
+  hTTPBody = [v4 HTTPBody];
+  v19 = [v17 stringWithFormat:@"%lu", objc_msgSend(hTTPBody, "length")];
 
   [v4 setValue:v19 forHTTPHeaderField:@"Content-Length"];
   if (v7 && v5)
@@ -116,11 +116,11 @@
   return v4;
 }
 
-+ (id)_downsampleImage:(id)a3 fromStartingQuality:(double)a4 toEndingQuality:(double)a5 increment:(double)a6 maxLength:(unint64_t)a7
++ (id)_downsampleImage:(id)image fromStartingQuality:(double)quality toEndingQuality:(double)endingQuality increment:(double)increment maxLength:(unint64_t)length
 {
   v25 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (a4 > a5)
+  imageCopy = image;
+  if (quality > endingQuality)
   {
     v13 = 0;
     *&v12 = 138412546;
@@ -128,12 +128,12 @@
     do
     {
       v14 = v13;
-      v13 = UIImageJPEGRepresentation(v11, a4);
+      v13 = UIImageJPEGRepresentation(imageCopy, quality);
 
       v15 = _AAUILogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+        v16 = [MEMORY[0x1E696AD98] numberWithDouble:quality];
         v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "length")}];
         *buf = v20;
         v22 = v16;
@@ -142,16 +142,16 @@
         _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "AAUIUpdateMyPhotoRequest compressed image to quality %@ down to length %@", buf, 0x16u);
       }
 
-      if ([v13 length] <= a7)
+      if ([v13 length] <= length)
       {
         break;
       }
 
-      a4 = a4 - a6;
+      quality = quality - increment;
     }
 
-    while (a4 > a5);
-    if ([v13 length] <= a7)
+    while (quality > endingQuality);
+    if ([v13 length] <= length)
     {
       if (v13)
       {
@@ -165,7 +165,7 @@
   }
 
   v13 = 0;
-  if ([0 length] > a7)
+  if ([0 length] > length)
   {
 LABEL_11:
   }
@@ -183,27 +183,27 @@ LABEL_15:
   return v13;
 }
 
-+ (id)_fullScreen2ImageFromImage:(id)a3 cropRect:(id)a4 fullScreenCropRect:(id *)a5
++ (id)_fullScreen2ImageFromImage:(id)image cropRect:(id)rect fullScreenCropRect:(id *)cropRect
 {
   v82 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  rectCopy = rect;
   v9 = _AAUILogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x1E696B098];
-    [v7 size];
+    [imageCopy size];
     v11 = [v10 valueWithCGSize:?];
     *buf = 138412546;
     v79 = v11;
     v80 = 2112;
-    v81 = v8;
+    v81 = rectCopy;
     _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage: of size %@ cropRect: %@", buf, 0x16u);
   }
 
-  if (v8)
+  if (rectCopy)
   {
-    [v8 CGRectValue];
+    [rectCopy CGRectValue];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -212,9 +212,9 @@ LABEL_15:
 
   else
   {
-    [v7 size];
+    [imageCopy size];
     v17 = v20;
-    [v7 size];
+    [imageCopy size];
     v19 = v21;
     v13 = 0.0;
     v15 = 0.0;
@@ -255,7 +255,7 @@ LABEL_15:
       _os_log_impl(&dword_1C5355000, v45, OS_LOG_TYPE_DEFAULT, "AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage using scale %@", buf, 0xCu);
     }
 
-    [v7 size];
+    [imageCopy size];
     if (v19 * 0.666666667 >= v47)
     {
       v48 = v47;
@@ -290,10 +290,10 @@ LABEL_15:
       v43 = 0.0;
     }
 
-    [v7 size];
+    [imageCopy size];
     if (v48 + v43 > v53)
     {
-      [v7 size];
+      [imageCopy size];
       v43 = v54 - v48;
       v55 = _AAUILogSystem();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -338,7 +338,7 @@ LABEL_15:
       _os_log_impl(&dword_1C5355000, v27, OS_LOG_TYPE_DEFAULT, "AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage using scale %@", buf, 0xCu);
     }
 
-    [v7 size];
+    [imageCopy size];
     if (v17 / 0.666666667 >= v29)
     {
       v30 = v29;
@@ -373,10 +373,10 @@ LABEL_15:
       v15 = 0.0;
     }
 
-    [v7 size];
+    [imageCopy size];
     if (v30 + v15 > v35)
     {
-      [v7 size];
+      [imageCopy size];
       v15 = v36 - v30;
       v37 = _AAUILogSystem();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -404,10 +404,10 @@ LABEL_15:
   }
 
   v58 = -(v43 * v77);
-  [v7 size];
+  [imageCopy size];
   v60 = v77 * v59;
   v61 = -(v15 * v77);
-  [v7 size];
+  [imageCopy size];
   v63 = v77 * v62;
   v64 = _AAUILogSystem();
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -421,7 +421,7 @@ LABEL_15:
   v84.width = v39;
   v84.height = v40;
   UIGraphicsBeginImageContext(v84);
-  [v7 drawInRect:{v58, v61, v60, v63}];
+  [imageCopy drawInRect:{v58, v61, v60, v63}];
   v66 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v67 = _AAUILogSystem();
@@ -435,13 +435,13 @@ LABEL_15:
     _os_log_impl(&dword_1C5355000, v67, OS_LOG_TYPE_DEFAULT, "AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage created fullScreen2Image with size %@", buf, 0xCu);
   }
 
-  if (v8 && a5)
+  if (rectCopy && cropRect)
   {
-    *a5 = [MEMORY[0x1E696B098] valueWithCGRect:{ceil((v75 - v43) * v77), ceil((v73 - v15) * v77), floor(v76 * v77), floor(v74 * v77)}];
+    *cropRect = [MEMORY[0x1E696B098] valueWithCGRect:{ceil((v75 - v43) * v77), ceil((v73 - v15) * v77), floor(v76 * v77), floor(v74 * v77)}];
     v70 = _AAUILogSystem();
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
-      v71 = *a5;
+      v71 = *cropRect;
       *buf = 138412290;
       v79 = v71;
       _os_log_impl(&dword_1C5355000, v70, OS_LOG_TYPE_DEFAULT, "AAUIUpdateMyPhotoRequest _fullScreen2ImageFromImage created fullScreenCropRect %@", buf, 0xCu);

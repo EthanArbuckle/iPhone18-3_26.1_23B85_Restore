@@ -1,7 +1,7 @@
 @interface SCNPlane
 + (SCNPlane)planeWithWidth:(CGFloat)width height:(CGFloat)height;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (CGFloat)cornerRadius;
 - (CGFloat)height;
 - (CGFloat)width;
@@ -9,21 +9,21 @@
 - (NSInteger)heightSegmentCount;
 - (NSInteger)widthSegmentCount;
 - (SCNPlane)init;
-- (SCNPlane)initWithCoder:(id)a3;
-- (SCNPlane)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNPlane)initWithCoder:(id)coder;
+- (SCNPlane)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (id)presentationPlane;
 - (int64_t)primitiveType;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCornerRadius:(CGFloat)cornerRadius;
 - (void)setCornerSegmentCount:(NSInteger)cornerSegmentCount;
 - (void)setHeight:(CGFloat)height;
 - (void)setHeightSegmentCount:(NSInteger)heightSegmentCount;
-- (void)setPrimitiveType:(int64_t)a3;
+- (void)setPrimitiveType:(int64_t)type;
 - (void)setWidth:(CGFloat)width;
 - (void)setWidthSegmentCount:(NSInteger)widthSegmentCount;
 @end
@@ -49,11 +49,11 @@
   return v5;
 }
 
-- (SCNPlane)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (SCNPlane)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNPlane;
-  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -66,11 +66,11 @@
   return v4;
 }
 
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNPlane;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationPlane
@@ -80,15 +80,15 @@
   return v2;
 }
 
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model
 {
-  self->_width = C3DParametricGeometryGetFloatValue(a3, 0);
-  self->_height = C3DParametricGeometryGetFloatValue(a3, 1);
-  self->_cornerRadius = C3DParametricGeometryGetFloatValue(a3, 3);
-  self->_widthSegmentCount = C3DParametricGeometryGetIntValue(a3, 11);
-  self->_heightSegmentCount = C3DParametricGeometryGetIntValue(a3, 12);
-  self->_cornerSegmentCount = C3DParametricGeometryGetIntValue(a3, 14);
-  self->_primitiveType = C3DParametricGeometryGetIntValue(a3, 20);
+  self->_width = C3DParametricGeometryGetFloatValue(model, 0);
+  self->_height = C3DParametricGeometryGetFloatValue(model, 1);
+  self->_cornerRadius = C3DParametricGeometryGetFloatValue(model, 3);
+  self->_widthSegmentCount = C3DParametricGeometryGetIntValue(model, 11);
+  self->_heightSegmentCount = C3DParametricGeometryGetIntValue(model, 12);
+  self->_cornerSegmentCount = C3DParametricGeometryGetIntValue(model, 14);
+  self->_primitiveType = C3DParametricGeometryGetIntValue(model, 20);
 }
 
 - (CGFloat)cornerRadius
@@ -98,11 +98,11 @@
     return self->_cornerRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   ChamferRadius = C3DParametricGeometryGetChamferRadius([(SCNGeometry *)self geometryRef]);
@@ -128,14 +128,14 @@
   else if (self->_cornerRadius != cornerRadius)
   {
     self->_cornerRadius = cornerRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__SCNPlane_setCornerRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = cornerRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"cornerRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"cornerRadius" applyBlock:v7];
   }
 }
 
@@ -154,11 +154,11 @@ void __28__SCNPlane_setCornerRadius___block_invoke(uint64_t a1)
     return self->_cornerSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   ChamferSegmentCount = C3DParametricGeometryGetChamferSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -184,14 +184,14 @@ void __28__SCNPlane_setCornerRadius___block_invoke(uint64_t a1)
   else if (self->_cornerSegmentCount != cornerSegmentCount)
   {
     self->_cornerSegmentCount = cornerSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__SCNPlane_setCornerSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = cornerSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"cornerSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"cornerSegmentCount" applyBlock:v7];
   }
 }
 
@@ -210,11 +210,11 @@ void __34__SCNPlane_setCornerSegmentCount___block_invoke(uint64_t a1)
     return self->_height;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Height = C3DParametricGeometryGetHeight([(SCNGeometry *)self geometryRef]);
@@ -240,14 +240,14 @@ void __34__SCNPlane_setCornerSegmentCount___block_invoke(uint64_t a1)
   else if (self->_height != height)
   {
     self->_height = height;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __22__SCNPlane_setHeight___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = height;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"height" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"height" applyBlock:v7];
   }
 }
 
@@ -266,11 +266,11 @@ void __22__SCNPlane_setHeight___block_invoke(uint64_t a1)
     return self->_heightSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   HeightSegmentCount = C3DParametricGeometryGetHeightSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -296,14 +296,14 @@ void __22__SCNPlane_setHeight___block_invoke(uint64_t a1)
   else if (self->_heightSegmentCount != heightSegmentCount)
   {
     self->_heightSegmentCount = heightSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__SCNPlane_setHeightSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = heightSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"heightSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"heightSegmentCount" applyBlock:v7];
   }
 }
 
@@ -322,11 +322,11 @@ void __34__SCNPlane_setHeightSegmentCount___block_invoke(uint64_t a1)
     return self->_primitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DParametricGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -338,7 +338,7 @@ void __34__SCNPlane_setHeightSegmentCount___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -349,17 +349,17 @@ void __34__SCNPlane_setHeightSegmentCount___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_primitiveType != a3)
+  else if (self->_primitiveType != type)
   {
-    self->_primitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_primitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNPlane_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -378,11 +378,11 @@ void __29__SCNPlane_setPrimitiveType___block_invoke(uint64_t a1)
     return self->_width;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Width = C3DParametricGeometryGetWidth([(SCNGeometry *)self geometryRef]);
@@ -408,14 +408,14 @@ void __29__SCNPlane_setPrimitiveType___block_invoke(uint64_t a1)
   else if (self->_width != width)
   {
     self->_width = width;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __21__SCNPlane_setWidth___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = width;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"width" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"width" applyBlock:v7];
   }
 }
 
@@ -434,11 +434,11 @@ void __21__SCNPlane_setWidth___block_invoke(uint64_t a1)
     return self->_widthSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   WidthSegmentCount = C3DParametricGeometryGetWidthSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -464,14 +464,14 @@ void __21__SCNPlane_setWidth___block_invoke(uint64_t a1)
   else if (self->_widthSegmentCount != widthSegmentCount)
   {
     self->_widthSegmentCount = widthSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNPlane_setWidthSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = widthSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"widthSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"widthSegmentCount" applyBlock:v7];
   }
 }
 
@@ -483,7 +483,7 @@ void __33__SCNPlane_setWidthSegmentCount___block_invoke(uint64_t a1)
   C3DParametricGeometrySetWidthSegmentCount(v2, v3);
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v24 = 0.0;
   v23 = 0;
@@ -491,11 +491,11 @@ void __33__SCNPlane_setWidthSegmentCount___block_invoke(uint64_t a1)
   v21 = 0;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef])
@@ -524,7 +524,7 @@ LABEL_11:
     {
       v20.receiver = self;
       v20.super_class = SCNPlane;
-      return [(SCNGeometry *)&v20 getBoundingBoxMin:a3 max:a4];
+      return [(SCNGeometry *)&v20 getBoundingBoxMin:min max:max];
     }
 
     [(SCNPlane *)self width];
@@ -537,47 +537,47 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a3)
+  if (min)
   {
     v17 = v24;
-    *&a3->x = v23;
-    a3->z = v17;
+    *&min->x = v23;
+    min->z = v17;
   }
 
-  if (a4)
+  if (max)
   {
     v18 = v22;
-    *&a4->x = v21;
-    a4->z = v18;
+    *&max->x = v21;
+    max->z = v18;
   }
 
   return v10;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v16 = 0uLL;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef]&& C3DPlaneGetBoundingSphere([(SCNGeometry *)self geometryRef], &v16))
     {
-      if (a3)
+      if (center)
       {
         v9 = *(&v16 + 2);
-        *&a3->x = v16;
-        a3->z = v9;
+        *&center->x = v16;
+        center->z = v9;
       }
 
-      if (a4)
+      if (radius)
       {
-        *a4 = *(&v16 + 3);
+        *radius = *(&v16 + 3);
       }
 
       v10 = 1;
@@ -608,16 +608,16 @@ LABEL_12:
     return 0;
   }
 
-  if (a3)
+  if (center)
   {
     v14 = *(&v16 + 2);
-    *&a3->x = v16;
-    a3->z = v14;
+    *&center->x = v16;
+    center->z = v14;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = *(&v16 + 3);
+    *radius = *(&v16 + 3);
   }
 
   return 1;
@@ -625,7 +625,7 @@ LABEL_12:
 
 + (SCNPlane)planeWithWidth:(CGFloat)width height:(CGFloat)height
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setWidth:width];
   [v6 setHeight:height];
 
@@ -635,34 +635,34 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
   [(SCNPlane *)self width];
   v6 = v5;
   [(SCNPlane *)self height];
-  return [v3 stringWithFormat:@"<%@ | width=%.3f height=%.3f>", v4, v6, v7];
+  return [v3 stringWithFormat:@"<%@ | width=%.3f height=%.3f>", geometryDescription, v6, v7];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v5.receiver = self;
   v5.super_class = SCNPlane;
   [(SCNGeometry *)&v5 _setupObjCModelFrom:?];
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  [a3 width];
+  [from width];
   [(SCNPlane *)self setWidth:?];
-  [a3 height];
+  [from height];
   [(SCNPlane *)self setHeight:?];
-  [a3 cornerRadius];
+  [from cornerRadius];
   [(SCNPlane *)self setCornerRadius:?];
-  -[SCNPlane setWidthSegmentCount:](self, "setWidthSegmentCount:", [a3 widthSegmentCount]);
-  -[SCNPlane setHeightSegmentCount:](self, "setHeightSegmentCount:", [a3 heightSegmentCount]);
-  -[SCNPlane setCornerSegmentCount:](self, "setCornerSegmentCount:", [a3 cornerSegmentCount]);
-  -[SCNPlane setPrimitiveType:](self, "setPrimitiveType:", [a3 primitiveType]);
+  -[SCNPlane setWidthSegmentCount:](self, "setWidthSegmentCount:", [from widthSegmentCount]);
+  -[SCNPlane setHeightSegmentCount:](self, "setHeightSegmentCount:", [from heightSegmentCount]);
+  -[SCNPlane setCornerSegmentCount:](self, "setCornerSegmentCount:", [from cornerSegmentCount]);
+  -[SCNPlane setPrimitiveType:](self, "setPrimitiveType:", [from primitiveType]);
   +[SCNTransaction commitImmediate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setupObjCModelFrom:self];
@@ -670,7 +670,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNPlane;
@@ -680,16 +680,16 @@ LABEL_12:
     [(SCNPlane *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [a3 encodeDouble:@"width" forKey:self->_width];
-  [a3 encodeDouble:@"height" forKey:self->_height];
-  [a3 encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
-  [a3 encodeInteger:self->_widthSegmentCount forKey:@"widthSegmentCount"];
-  [a3 encodeInteger:self->_heightSegmentCount forKey:@"heightSegmentCount"];
-  [a3 encodeInteger:self->_cornerSegmentCount forKey:@"cornerSegmentCount"];
-  [a3 encodeInteger:self->_primitiveType forKey:@"primitiveType"];
+  [coder encodeDouble:@"width" forKey:self->_width];
+  [coder encodeDouble:@"height" forKey:self->_height];
+  [coder encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
+  [coder encodeInteger:self->_widthSegmentCount forKey:@"widthSegmentCount"];
+  [coder encodeInteger:self->_heightSegmentCount forKey:@"heightSegmentCount"];
+  [coder encodeInteger:self->_cornerSegmentCount forKey:@"cornerSegmentCount"];
+  [coder encodeInteger:self->_primitiveType forKey:@"primitiveType"];
 }
 
-- (SCNPlane)initWithCoder:(id)a3
+- (SCNPlane)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPlane;
@@ -698,16 +698,16 @@ LABEL_12:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"width"];
+    [coder decodeDoubleForKey:@"width"];
     [(SCNPlane *)v4 setWidth:?];
-    [a3 decodeDoubleForKey:@"height"];
+    [coder decodeDoubleForKey:@"height"];
     [(SCNPlane *)v4 setHeight:?];
-    [a3 decodeDoubleForKey:@"cornerRadius"];
+    [coder decodeDoubleForKey:@"cornerRadius"];
     [(SCNPlane *)v4 setCornerRadius:?];
-    -[SCNPlane setWidthSegmentCount:](v4, "setWidthSegmentCount:", [a3 decodeIntegerForKey:@"widthSegmentCount"]);
-    -[SCNPlane setHeightSegmentCount:](v4, "setHeightSegmentCount:", [a3 decodeIntegerForKey:@"heightSegmentCount"]);
-    -[SCNPlane setCornerSegmentCount:](v4, "setCornerSegmentCount:", [a3 decodeIntegerForKey:@"cornerSegmentCount"]);
-    -[SCNPlane setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"primitiveType"]);
+    -[SCNPlane setWidthSegmentCount:](v4, "setWidthSegmentCount:", [coder decodeIntegerForKey:@"widthSegmentCount"]);
+    -[SCNPlane setHeightSegmentCount:](v4, "setHeightSegmentCount:", [coder decodeIntegerForKey:@"heightSegmentCount"]);
+    -[SCNPlane setCornerSegmentCount:](v4, "setCornerSegmentCount:", [coder decodeIntegerForKey:@"cornerSegmentCount"]);
+    -[SCNPlane setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"primitiveType"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

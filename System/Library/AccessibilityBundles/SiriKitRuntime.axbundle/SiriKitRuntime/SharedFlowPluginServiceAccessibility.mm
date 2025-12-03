@@ -1,27 +1,27 @@
 @interface SharedFlowPluginServiceAccessibility
-- (void)loadFlowPluginWithBundleId:(id)a3 bundlePath:(id)a4 rcId:(id)a5 hypothesisId:(id)a6 reply:(id)a7;
+- (void)loadFlowPluginWithBundleId:(id)id bundlePath:(id)path rcId:(id)rcId hypothesisId:(id)hypothesisId reply:(id)reply;
 @end
 
 @implementation SharedFlowPluginServiceAccessibility
 
-- (void)loadFlowPluginWithBundleId:(id)a3 bundlePath:(id)a4 rcId:(id)a5 hypothesisId:(id)a6 reply:(id)a7
+- (void)loadFlowPluginWithBundleId:(id)id bundlePath:(id)path rcId:(id)rcId hypothesisId:(id)hypothesisId reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  pathCopy = path;
+  rcIdCopy = rcId;
+  hypothesisIdCopy = hypothesisId;
+  replyCopy = reply;
   v17 = objc_opt_new();
-  v18 = [v17 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v17 isClarityBoardEnabled];
 
-  if (v18)
+  if (isClarityBoardEnabled)
   {
-    v19 = [MEMORY[0x29EDC0B48] sharedInstance];
-    v20 = [v19 applicationBundleIdentifiers];
+    mEMORY[0x29EDC0B48] = [MEMORY[0x29EDC0B48] sharedInstance];
+    applicationBundleIdentifiers = [mEMORY[0x29EDC0B48] applicationBundleIdentifiers];
 
     if (!AXIsPluginAllowedInClarity())
     {
-      v16[2](v16, 0);
+      replyCopy[2](replyCopy, 0);
 
       goto LABEL_5;
     }
@@ -29,7 +29,7 @@
 
   v21.receiver = self;
   v21.super_class = SharedFlowPluginServiceAccessibility;
-  [(SharedFlowPluginServiceAccessibility *)&v21 loadFlowPluginWithBundleId:v12 bundlePath:v13 rcId:v14 hypothesisId:v15 reply:v16];
+  [(SharedFlowPluginServiceAccessibility *)&v21 loadFlowPluginWithBundleId:idCopy bundlePath:pathCopy rcId:rcIdCopy hypothesisId:hypothesisIdCopy reply:replyCopy];
 LABEL_5:
 }
 

@@ -1,84 +1,84 @@
 @interface MFAttachmentPasteboardRepresentation
 - (BOOL)isValid;
-- (MFAttachmentPasteboardRepresentation)initWithAttachment:(id)a3;
-- (MFAttachmentPasteboardRepresentation)initWithCoder:(id)a3;
-- (MFAttachmentPasteboardRepresentation)initWithMFAttachment:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MFAttachmentPasteboardRepresentation)initWithAttachment:(id)attachment;
+- (MFAttachmentPasteboardRepresentation)initWithCoder:(id)coder;
+- (MFAttachmentPasteboardRepresentation)initWithMFAttachment:(id)attachment;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFAttachmentPasteboardRepresentation
 
-- (MFAttachmentPasteboardRepresentation)initWithAttachment:(id)a3
+- (MFAttachmentPasteboardRepresentation)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v11.receiver = self;
   v11.super_class = MFAttachmentPasteboardRepresentation;
   v5 = [(MFAttachmentPasteboardRepresentation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 fileWrapperForcingDownload:{objc_msgSend(v4, "hasBeenDownloaded")}];
-    v7 = [v6 regularFileContents];
-    [(MFAttachmentPasteboardRepresentation *)v5 setData:v7];
+    v6 = [attachmentCopy fileWrapperForcingDownload:{objc_msgSend(attachmentCopy, "hasBeenDownloaded")}];
+    regularFileContents = [v6 regularFileContents];
+    [(MFAttachmentPasteboardRepresentation *)v5 setData:regularFileContents];
 
-    v8 = [v6 preferredFilename];
-    [(MFAttachmentPasteboardRepresentation *)v5 setName:v8];
+    preferredFilename = [v6 preferredFilename];
+    [(MFAttachmentPasteboardRepresentation *)v5 setName:preferredFilename];
 
-    v9 = [v6 mimeType];
-    [(MFAttachmentPasteboardRepresentation *)v5 setMimeType:v9];
+    mimeType = [v6 mimeType];
+    [(MFAttachmentPasteboardRepresentation *)v5 setMimeType:mimeType];
   }
 
   return v5;
 }
 
-- (MFAttachmentPasteboardRepresentation)initWithMFAttachment:(id)a3
+- (MFAttachmentPasteboardRepresentation)initWithMFAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v10.receiver = self;
   v10.super_class = MFAttachmentPasteboardRepresentation;
   v5 = [(MFAttachmentPasteboardRepresentation *)&v10 init];
-  if (v5 && [v4 isDataAvailableLocally])
+  if (v5 && [attachmentCopy isDataAvailableLocally])
   {
-    v6 = [v4 fileName];
-    [(MFAttachmentPasteboardRepresentation *)v5 setName:v6];
+    fileName = [attachmentCopy fileName];
+    [(MFAttachmentPasteboardRepresentation *)v5 setName:fileName];
 
-    v7 = [v4 mimeType];
-    [(MFAttachmentPasteboardRepresentation *)v5 setMimeType:v7];
+    mimeType = [attachmentCopy mimeType];
+    [(MFAttachmentPasteboardRepresentation *)v5 setMimeType:mimeType];
 
-    v8 = [v4 fetchLocalData];
-    [(MFAttachmentPasteboardRepresentation *)v5 setData:v8];
+    fetchLocalData = [attachmentCopy fetchLocalData];
+    [(MFAttachmentPasteboardRepresentation *)v5 setData:fetchLocalData];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MFAttachmentPasteboardRepresentation *)self data];
-  [v7 encodeObject:v4 forKey:@"data"];
+  coderCopy = coder;
+  data = [(MFAttachmentPasteboardRepresentation *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v5 = [(MFAttachmentPasteboardRepresentation *)self name];
-  [v7 encodeObject:v5 forKey:@"name"];
+  name = [(MFAttachmentPasteboardRepresentation *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(MFAttachmentPasteboardRepresentation *)self mimeType];
-  [v7 encodeObject:v6 forKey:@"mimeType"];
+  mimeType = [(MFAttachmentPasteboardRepresentation *)self mimeType];
+  [coderCopy encodeObject:mimeType forKey:@"mimeType"];
 }
 
-- (MFAttachmentPasteboardRepresentation)initWithCoder:(id)a3
+- (MFAttachmentPasteboardRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MFAttachmentPasteboardRepresentation;
   v5 = [(MFAttachmentPasteboardRepresentation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     [(MFAttachmentPasteboardRepresentation *)v5 setData:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(MFAttachmentPasteboardRepresentation *)v5 setName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mimeType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mimeType"];
     [(MFAttachmentPasteboardRepresentation *)v5 setMimeType:v8];
   }
 
@@ -87,8 +87,8 @@
 
 - (BOOL)isValid
 {
-  v2 = [(MFAttachmentPasteboardRepresentation *)self data];
-  v3 = [v2 length] != 0;
+  data = [(MFAttachmentPasteboardRepresentation *)self data];
+  v3 = [data length] != 0;
 
   return v3;
 }

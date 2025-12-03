@@ -1,20 +1,20 @@
 @interface DragGestureRecognizer
-- (_TtC19_RealityKit_SwiftUI21DragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)onPanInternal:(id)a3;
+- (_TtC19_RealityKit_SwiftUI21DragGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)onPanInternal:(id)internal;
 @end
 
 @implementation DragGestureRecognizer
 
-- (void)onPanInternal:(id)a3
+- (void)onPanInternal:(id)internal
 {
-  v4 = a3;
-  v13 = self;
-  v5 = [(DragGestureRecognizer *)v13 view];
-  [v4 locationInView_];
+  internalCopy = internal;
+  selfCopy = self;
+  view = [(DragGestureRecognizer *)selfCopy view];
+  [internalCopy locationInView_];
   v7 = v6;
   v9 = v8;
 
-  v10 = v13 + OBJC_IVAR____TtC19_RealityKit_SwiftUI21DragGestureRecognizer_draggable;
+  v10 = selfCopy + OBJC_IVAR____TtC19_RealityKit_SwiftUI21DragGestureRecognizer_draggable;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v11 = *(v10 + 1);
@@ -29,9 +29,9 @@
   }
 }
 
-- (_TtC19_RealityKit_SwiftUI21DragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC19_RealityKit_SwiftUI21DragGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

@@ -6,8 +6,8 @@
 - (SBLockScreenManager)_lockScreenManager;
 - (SBSOSEventHandler)init;
 - (SOSManager)_sosManager;
-- (id)addObserver:(id)a3;
-- (void)_forceBioAuthenticationLockoutIfAvailableWithSource:(int)a3 showingPasscode:(BOOL)a4;
+- (id)addObserver:(id)observer;
+- (void)_forceBioAuthenticationLockoutIfAvailableWithSource:(int)source showingPasscode:(BOOL)passcode;
 - (void)dealloc;
 - (void)invalidate;
 - (void)run;
@@ -29,17 +29,17 @@
 
 - (BOOL)isSOSActive
 {
-  v3 = [(SBSOSEventHandler *)self _sosManager];
+  _sosManager = [(SBSOSEventHandler *)self _sosManager];
 
-  if (!v3)
+  if (!_sosManager)
   {
     return 0;
   }
 
-  v4 = [(SBSOSEventHandler *)self _sosManager];
-  v5 = [v4 currentSOSInitiationState];
+  _sosManager2 = [(SBSOSEventHandler *)self _sosManager];
+  currentSOSInitiationState = [_sosManager2 currentSOSInitiationState];
 
-  return v5 == 1;
+  return currentSOSInitiationState == 1;
 }
 
 - (SOSManager)_sosManager
@@ -47,15 +47,15 @@
   override_sosManager = self->_override_sosManager;
   if (override_sosManager)
   {
-    v3 = override_sosManager;
+    mEMORY[0x277D495A0] = override_sosManager;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D495A0] sharedInstance];
+    mEMORY[0x277D495A0] = [MEMORY[0x277D495A0] sharedInstance];
   }
 
-  return v3;
+  return mEMORY[0x277D495A0];
 }
 
 void __35__SBSOSEventHandler_sharedInstance__block_invoke()
@@ -84,8 +84,8 @@ void __35__SBSOSEventHandler_sharedInstance__block_invoke()
   {
     self->_isValid = 0;
     [(BSCompoundAssertion *)self->_observers invalidate];
-    v4 = [(SBSOSEventHandler *)self _sosManager];
-    [v4 removeObserver:self];
+    _sosManager = [(SBSOSEventHandler *)self _sosManager];
+    [_sosManager removeObserver:self];
   }
 }
 
@@ -94,7 +94,7 @@ void __35__SBSOSEventHandler_sharedInstance__block_invoke()
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"must -invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -121,16 +121,16 @@ void __35__SBSOSEventHandler_sharedInstance__block_invoke()
 {
   if (![(SBSOSEventHandler *)self _isRunning])
   {
-    v3 = [(SBSOSEventHandler *)self _sosManager];
-    [v3 addObserver:self queue:MEMORY[0x277D85CD0]];
+    _sosManager = [(SBSOSEventHandler *)self _sosManager];
+    [_sosManager addObserver:self queue:MEMORY[0x277D85CD0]];
 
     [(SBSOSEventHandler *)self _setRunning:1];
   }
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   if (!observers)
   {
@@ -142,7 +142,7 @@ void __35__SBSOSEventHandler_sharedInstance__block_invoke()
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)observers acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)observers acquireForReason:v8 withContext:observerCopy];
 
   return v9;
 }
@@ -252,15 +252,15 @@ void __48__SBSOSEventHandler_didDismissSOSBeforeSOSCall___block_invoke(uint64_t 
   [v7 _forceBioAuthenticationLockoutIfAvailableWithSource:v8 showingPasscode:v9];
 }
 
-- (void)_forceBioAuthenticationLockoutIfAvailableWithSource:(int)a3 showingPasscode:(BOOL)a4
+- (void)_forceBioAuthenticationLockoutIfAvailableWithSource:(int)source showingPasscode:(BOOL)passcode
 {
-  v4 = a4;
-  v5 = *&a3;
+  passcodeCopy = passcode;
+  v5 = *&source;
   v13[3] = *MEMORY[0x277D85DE8];
-  v6 = [SBApp authenticationController];
-  v7 = [v6 hasPasscodeSet];
+  authenticationController = [SBApp authenticationController];
+  hasPasscodeSet = [authenticationController hasPasscodeSet];
 
-  if ((v7 & v4) != 0)
+  if ((hasPasscodeSet & passcodeCopy) != 0)
   {
     v8 = &__block_literal_global_14_3;
   }
@@ -275,7 +275,7 @@ void __48__SBSOSEventHandler_didDismissSOSBeforeSOSCall___block_invoke(uint64_t 
   v13[0] = MEMORY[0x277CBEC38];
   v13[1] = MEMORY[0x277CBEC38];
   v12[2] = @"SBUILockOptionsUseScreenOffModeKey";
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:!v4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:!passcodeCopy];
   v13[2] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
@@ -302,15 +302,15 @@ void __89__SBSOSEventHandler__forceBioAuthenticationLockoutIfAvailableWithSource
   override_authenticationController = self->_override_authenticationController;
   if (override_authenticationController)
   {
-    v3 = override_authenticationController;
+    authenticationController = override_authenticationController;
   }
 
   else
   {
-    v3 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
   }
 
-  return v3;
+  return authenticationController;
 }
 
 - (SBBacklightController)_backlightController

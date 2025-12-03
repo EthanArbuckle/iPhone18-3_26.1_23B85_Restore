@@ -9,7 +9,7 @@
 - (id)mtStringByRemovingNotificationPrefixes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -23,7 +23,7 @@
     do
     {
       v6 = 0;
-      v7 = v1;
+      v7 = selfCopy;
       do
       {
         if (*v12 != v5)
@@ -31,10 +31,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v1 = [v7 stringByReplacingOccurrencesOfString:*(*(&v11 + 1) + 8 * v6) withString:&stru_1F29360E0];
+        selfCopy = [v7 stringByReplacingOccurrencesOfString:*(*(&v11 + 1) + 8 * v6) withString:&stru_1F29360E0];
 
         ++v6;
-        v7 = v1;
+        v7 = selfCopy;
       }
 
       while (v4 != v6);
@@ -44,19 +44,19 @@
     while (v4);
   }
 
-  v8 = [v1 mtStringByRemovingNotificationDate];
+  mtStringByRemovingNotificationDate = [selfCopy mtStringByRemovingNotificationDate];
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return mtStringByRemovingNotificationDate;
 }
 
 - (id)mtStringByRemovingNotificationDate
 {
-  v1 = [a1 componentsSeparatedByString:@"_"];
-  v2 = [v1 firstObject];
+  v1 = [self componentsSeparatedByString:@"_"];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)mtStringByAppendingNotificationDate:()Notification
@@ -70,7 +70,7 @@
 
   v6 = [mtStringByAppendingNotificationDate____dateFormatter stringFromDate:v5];
 
-  v7 = [a1 stringByAppendingFormat:@"%@%@", @"_", v6];
+  v7 = [self stringByAppendingFormat:@"%@%@", @"_", v6];
 
   return v7;
 }

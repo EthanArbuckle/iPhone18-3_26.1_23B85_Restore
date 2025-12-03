@@ -1,44 +1,44 @@
 @interface MapItemWaypointRequest
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (MapItemWaypointRequest)init;
-- (MapItemWaypointRequest)initWithMapItem:(id)a3;
+- (MapItemWaypointRequest)initWithMapItem:(id)item;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)waypointName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)recordRAPInformation:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation MapItemWaypointRequest
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
-  v5 = a3;
+  informationCopy = information;
   if ([(MKMapItem *)self->_mapItem isCurrentLocation])
   {
-    [v5 setOrigin:2];
+    [informationCopy setOrigin:2];
   }
 
-  v4 = [(MKMapItem *)self->_mapItem _geoMapItemStorageForPersistence];
-  [v5 setPlaceMapItemStorage:v4];
+  _geoMapItemStorageForPersistence = [(MKMapItem *)self->_mapItem _geoMapItemStorageForPersistence];
+  [informationCopy setPlaceMapItemStorage:_geoMapItemStorageForPersistence];
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  v9 = a5;
+  completionHandlerCopy = completionHandler;
   mapItem = self->_mapItem;
-  v11 = a6;
-  v12 = a3;
-  v13 = [(MKMapItem *)mapItem _geoMapItem];
-  v14 = [v13 _clientAttributes];
+  activityHandlerCopy = activityHandler;
+  traitsCopy = traits;
+  _geoMapItem = [(MKMapItem *)mapItem _geoMapItem];
+  _clientAttributes = [_geoMapItem _clientAttributes];
 
-  v15 = [(MKMapItem *)self->_mapItem needsAdditionalNavData];
+  needsAdditionalNavData = [(MKMapItem *)self->_mapItem needsAdditionalNavData];
   v16 = sub_100798F84();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
-  if (v15)
+  if (needsAdditionalNavData)
   {
     if (v17)
     {
@@ -46,15 +46,15 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Map item needs additional information.", buf, 2u);
     }
 
-    v18 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100D4C1CC;
     v27[3] = &unk_1016529D0;
     v19 = &v28;
-    v28 = v9;
-    v20 = v9;
-    v21 = [GEOComposedWaypoint composedWaypointForIncompleteMapItem:v18 traits:v12 clientAttributes:v14 completionHandler:v27 networkActivityHandler:v11];
+    v28 = completionHandlerCopy;
+    v20 = completionHandlerCopy;
+    v21 = [GEOComposedWaypoint composedWaypointForIncompleteMapItem:_geoMapItem2 traits:traitsCopy clientAttributes:_clientAttributes completionHandler:v27 networkActivityHandler:activityHandlerCopy];
   }
 
   else
@@ -65,15 +65,15 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Map item has all the necessary information.", buf, 2u);
     }
 
-    v18 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100D4C2A0;
     v25[3] = &unk_1016529D0;
     v19 = &v26;
-    v26 = v9;
-    v22 = v9;
-    v21 = [GEOComposedWaypoint composedWaypointForMapItem:v18 traits:v12 clientAttributes:v14 completionHandler:v25 networkActivityHandler:v11];
+    v26 = completionHandlerCopy;
+    v22 = completionHandlerCopy;
+    v21 = [GEOComposedWaypoint composedWaypointForMapItem:_geoMapItem2 traits:traitsCopy clientAttributes:_clientAttributes completionHandler:v25 networkActivityHandler:activityHandlerCopy];
   }
 
   v23 = v21;
@@ -81,18 +81,18 @@
   return v23;
 }
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v7 = [v5[1] _geoMapItem];
-    v8 = v7;
+    v5 = requestCopy;
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _geoMapItem2 = [v5[1] _geoMapItem];
+    v8 = _geoMapItem2;
     IsEqualToMapItemForPurpose = 0;
-    if (v6 && v7)
+    if (_geoMapItem && _geoMapItem2)
     {
       IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
     }
@@ -108,11 +108,11 @@
 
 - (NSString)waypointName
 {
-  v2 = [(MKMapItem *)self->_mapItem name];
-  v3 = v2;
-  if (v2)
+  name = [(MKMapItem *)self->_mapItem name];
+  v3 = name;
+  if (name)
   {
-    v4 = v2;
+    v4 = name;
   }
 
   else
@@ -133,19 +133,19 @@
   return result;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
   v7 = [NSNumber numberWithBool:[(MKMapItem *)self->_mapItem needsAdditionalNavData]];
-  (*v4)(v6, @"needsAdditionalNavData", v7);
+  (*v4)(blockCopy, @"needsAdditionalNavData", v7);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100D4C750;
@@ -153,8 +153,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapItemWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapItemWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -188,7 +188,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100D4C9A0;
@@ -196,8 +196,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapItemWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapItemWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -229,9 +229,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mapItem = self->_mapItem;
 
   return [v4 initWithMapItem:mapItem];
@@ -247,10 +247,10 @@ LABEL_9:
   return 0;
 }
 
-- (MapItemWaypointRequest)initWithMapItem:(id)a3
+- (MapItemWaypointRequest)initWithMapItem:(id)item
 {
-  v5 = a3;
-  if (-[MapItemWaypointRequest isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()) && [v5 _hasCorrectedHomeWorkCoordinate])
+  itemCopy = item;
+  if (-[MapItemWaypointRequest isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()) && [itemCopy _hasCorrectedHomeWorkCoordinate])
   {
     v6 = sub_100798F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -269,7 +269,7 @@ LABEL_9:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapItem, a3);
+    objc_storeStrong(&v9->_mapItem, item);
   }
 
   return v10;

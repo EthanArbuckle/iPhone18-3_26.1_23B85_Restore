@@ -1,14 +1,14 @@
 @interface CKSpotlightQuery
-- (CKSpotlightQuery)initWithSearchText:(id)a3 chatRegistryOverride:(id)a4 startQuery:(BOOL)a5 completionBlock:(id)a6;
-- (CKSpotlightQuery)initWithSearchText:(id)a3 completionBlock:(id)a4 startQuery:(BOOL)a5;
+- (CKSpotlightQuery)initWithSearchText:(id)text chatRegistryOverride:(id)override startQuery:(BOOL)query completionBlock:(id)block;
+- (CKSpotlightQuery)initWithSearchText:(id)text completionBlock:(id)block startQuery:(BOOL)query;
 - (id)chatRegistry;
 - (void)_callCompletion;
 - (void)_cleanup;
 - (void)_processSearchResults;
 - (void)dealloc;
-- (void)searchQuery:(id)a3 didFailWithError:(id)a4;
-- (void)searchQuery:(id)a3 didReturnItems:(id)a4;
-- (void)searchQuery:(id)a3 statusChanged:(unint64_t)a4;
+- (void)searchQuery:(id)query didFailWithError:(id)error;
+- (void)searchQuery:(id)query didReturnItems:(id)items;
+- (void)searchQuery:(id)query statusChanged:(unint64_t)changed;
 @end
 
 @implementation CKSpotlightQuery
@@ -317,27 +317,27 @@ void __41__CKSpotlightQuery__processSearchResults__block_invoke_90(uint64_t a1, 
   if (self->_completion)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableDictionary count](self->_chatGUIDToLatestSearchResult, "count")}];
-    v3 = [(NSMutableDictionary *)self->_chatGUIDToLatestSearchResult allValues];
-    [v4 addObjectsFromArray:v3];
+    allValues = [(NSMutableDictionary *)self->_chatGUIDToLatestSearchResult allValues];
+    [v4 addObjectsFromArray:allValues];
 
     [v4 sortUsingComparator:&__block_literal_global_95];
     (*(self->_completion + 2))();
   }
 }
 
-- (CKSpotlightQuery)initWithSearchText:(id)a3 completionBlock:(id)a4 startQuery:(BOOL)a5
+- (CKSpotlightQuery)initWithSearchText:(id)text completionBlock:(id)block startQuery:(BOOL)query
 {
-  v21 = a5;
+  queryCopy = query;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v27 = v7;
+      v27 = textCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "initWithSearchText:completionBlock: [searchText: %@]", buf, 0xCu);
     }
   }
@@ -348,8 +348,8 @@ void __41__CKSpotlightQuery__processSearchResults__block_invoke_90(uint64_t a1, 
   v11 = v10;
   if (v10)
   {
-    [(CKSpotlightQuery *)v10 setCompletion:v8];
-    if ([v7 length])
+    [(CKSpotlightQuery *)v10 setCompletion:blockCopy];
+    if ([textCopy length])
     {
       if (setupCoreSpotlight_onceToken != -1)
       {
@@ -360,12 +360,12 @@ void __41__CKSpotlightQuery__processSearchResults__block_invoke_90(uint64_t a1, 
       {
         if (CKEnhancedLegacySearchDisabled())
         {
-          [MEMORY[0x1E696AE18] predicateWithFormat:@"(kMDItemAuthors contains[cd] %@) || (kMDItemAuthorAddresses contains[cd] %@) || (kMDItemRecipients contains[cd] %@) || (kMDItemRecipientAddresses contains[cd] %@) || (kMDItemInstantMessageAddresses contains[cd] %@) || (kMDItemSubject contains[cd] %@) || (kMDItemTextContent contains[cd] %@)", v7, v7, v7, v7, v7, v7, v7];
+          [MEMORY[0x1E696AE18] predicateWithFormat:@"(kMDItemAuthors contains[cd] %@) || (kMDItemAuthorAddresses contains[cd] %@) || (kMDItemRecipients contains[cd] %@) || (kMDItemRecipientAddresses contains[cd] %@) || (kMDItemInstantMessageAddresses contains[cd] %@) || (kMDItemSubject contains[cd] %@) || (kMDItemTextContent contains[cd] %@)", textCopy, textCopy, textCopy, textCopy, textCopy, textCopy, textCopy];
         }
 
         else
         {
-          [MEMORY[0x1E696AE18] predicateWithFormat:@"(kMDItemSubject contains[cd] %@) || (kMDItemTextContent contains[cd] %@)", v7, v7];
+          [MEMORY[0x1E696AE18] predicateWithFormat:@"(kMDItemSubject contains[cd] %@) || (kMDItemTextContent contains[cd] %@)", textCopy, textCopy];
         }
         v20 = ;
         v13 = [_CKMDSearchQueryClass alloc];
@@ -394,7 +394,7 @@ void __41__CKSpotlightQuery__processSearchResults__block_invoke_90(uint64_t a1, 
 
         [(MDSearchQuery *)v11->_currentQuery setClientBundleID:@"com.apple.MobileSMS"];
         [(MDSearchQuery *)v11->_currentQuery setDelegate:v11];
-        if (v21)
+        if (queryCopy)
         {
           [(MDSearchQuery *)v11->_currentQuery start];
         }
@@ -423,11 +423,11 @@ void __41__CKSpotlightQuery__processSearchResults__block_invoke_90(uint64_t a1, 
   [(CKSpotlightQuery *)&v3 dealloc];
 }
 
-- (void)searchQuery:(id)a3 didReturnItems:(id)a4
+- (void)searchQuery:(id)query didReturnItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_currentQuery == v6)
+  queryCopy = query;
+  itemsCopy = items;
+  if (self->_currentQuery == queryCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -444,7 +444,7 @@ void __41__CKSpotlightQuery__processSearchResults__block_invoke_90(uint64_t a1, 
     v9[2] = __47__CKSpotlightQuery_searchQuery_didReturnItems___block_invoke;
     v9[3] = &unk_1E72EB8D0;
     v9[4] = self;
-    v10 = v7;
+    v10 = itemsCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 }
@@ -481,22 +481,22 @@ void __47__CKSpotlightQuery_searchQuery_didReturnItems___block_invoke(uint64_t a
   }
 }
 
-- (void)searchQuery:(id)a3 statusChanged:(unint64_t)a4
+- (void)searchQuery:(id)query statusChanged:(unint64_t)changed
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  queryCopy = query;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v10 = a4;
+      changedCopy = changed;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "statusChanged: %lu", buf, 0xCu);
     }
   }
 
-  if (a4 == 3 && self->_currentQuery == v6)
+  if (changed == 3 && self->_currentQuery == queryCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -569,32 +569,32 @@ uint64_t __46__CKSpotlightQuery_searchQuery_statusChanged___block_invoke_115(uin
   return [v3 _cleanup];
 }
 
-- (void)searchQuery:(id)a3 didFailWithError:(id)a4
+- (void)searchQuery:(id)query didFailWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (self->_currentQuery == v6 && IMOSLoggingEnabled())
+  queryCopy = query;
+  errorCopy = error;
+  if (self->_currentQuery == queryCopy && IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v7;
+      v10 = errorCopy;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Spotlight query failed with error: %@", &v9, 0xCu);
     }
   }
 }
 
-- (CKSpotlightQuery)initWithSearchText:(id)a3 chatRegistryOverride:(id)a4 startQuery:(BOOL)a5 completionBlock:(id)a6
+- (CKSpotlightQuery)initWithSearchText:(id)text chatRegistryOverride:(id)override startQuery:(BOOL)query completionBlock:(id)block
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = [(CKSpotlightQuery *)self initWithSearchText:a3 completionBlock:a6 startQuery:v7];
+  queryCopy = query;
+  overrideCopy = override;
+  v11 = [(CKSpotlightQuery *)self initWithSearchText:text completionBlock:block startQuery:queryCopy];
   v12 = v11;
   if (v11)
   {
-    [(CKSpotlightQuery *)v11 setChatRegisteryOverride:v10];
+    [(CKSpotlightQuery *)v11 setChatRegisteryOverride:overrideCopy];
   }
 
   return v12;
@@ -605,15 +605,15 @@ uint64_t __46__CKSpotlightQuery_searchQuery_statusChanged___block_invoke_115(uin
   chatRegisteryOverride = self->_chatRegisteryOverride;
   if (chatRegisteryOverride)
   {
-    v3 = chatRegisteryOverride;
+    mEMORY[0x1E69A5AF8] = chatRegisteryOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
   }
 
-  return v3;
+  return mEMORY[0x1E69A5AF8];
 }
 
 @end

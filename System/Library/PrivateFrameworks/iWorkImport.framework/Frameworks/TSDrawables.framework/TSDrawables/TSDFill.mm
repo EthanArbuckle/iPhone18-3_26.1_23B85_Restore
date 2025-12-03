@@ -1,13 +1,13 @@
 @interface TSDFill
-+ (id)drawablesSpecificInstanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)drawablesSpecificInstanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)p_subclassRegistry;
-+ (void)registerSubclass:(Class)a3;
++ (void)registerSubclass:(Class)subclass;
 - (NSString)presetKind;
-- (TSDFill)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)initFromPropertyCommandMessage:(const Message *)a3 unarchiver:(id)a4;
+- (TSDFill)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)initFromPropertyCommandMessage:(const Message *)message unarchiver:(id)unarchiver;
 - (int64_t)fillType;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation TSDFill
@@ -24,31 +24,31 @@
   return v3;
 }
 
-+ (void)registerSubclass:(Class)a3
++ (void)registerSubclass:(Class)subclass
 {
-  v13 = objc_msgSend_p_subclassRegistry(a1, a2, a3);
-  if (objc_msgSend_indexOfObject_(v13, v4, a3) != 0x7FFFFFFFFFFFFFFFLL)
+  v13 = objc_msgSend_p_subclassRegistry(self, a2, subclass);
+  if (objc_msgSend_indexOfObject_(v13, v4, subclass) != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "+[TSDFill(TSDFillPersistenceAdditions) registerSubclass:]");
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFillPersistenceAdditions.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 44, 0, "subclass is already registered %@", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 44, 0, "subclass is already registered %@", subclass);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  objc_msgSend_addObject_(v13, v5, a3);
+  objc_msgSend_addObject_(v13, v5, subclass);
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = objc_msgSend_p_subclassRegistry(a1, v7, v8, 0);
+  v9 = objc_msgSend_p_subclassRegistry(self, v7, v8, 0);
   v12 = objc_msgSend_reverseObjectEnumerator(v9, v10, v11);
 
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v21, v25, 16);
@@ -64,7 +64,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v18 = objc_msgSend_instanceWithArchive_unarchiver_(*(*(&v21 + 1) + 8 * i), v14, a3, v6);
+        v18 = objc_msgSend_instanceWithArchive_unarchiver_(*(*(&v21 + 1) + 8 * i), v14, archive, unarchiverCopy);
         if (v18)
         {
 
@@ -82,22 +82,22 @@
     }
   }
 
-  v18 = objc_msgSend_drawablesSpecificInstanceWithArchive_unarchiver_(a1, v19, a3, v6);
+  v18 = objc_msgSend_drawablesSpecificInstanceWithArchive_unarchiver_(self, v19, archive, unarchiverCopy);
 LABEL_11:
 
   return v18;
 }
 
-+ (id)drawablesSpecificInstanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)drawablesSpecificInstanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  v8 = v5;
-  v9 = *(a3 + 10);
+  unarchiverCopy = unarchiver;
+  v8 = unarchiverCopy;
+  v9 = *(archive + 10);
   if (v9)
   {
     v11 = off_27A6CB850;
 LABEL_7:
-    v10 = objc_msgSend_instanceWithArchive_unarchiver_(*v11, v6, a3, v5);
+    v10 = objc_msgSend_instanceWithArchive_unarchiver_(*v11, v6, archive, unarchiverCopy);
     goto LABEL_8;
   }
 
@@ -115,15 +115,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = *(a3 + 8);
+  v14 = *(archive + 8);
   if (*(v14 + 56))
   {
-    objc_msgSend_readDataReferenceMessage_(v5, v6, *(v14 + 56));
+    objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v6, *(v14 + 56));
   }
 
   else
   {
-    objc_msgSend_readDataReferenceMessage_(v5, v6, MEMORY[0x277D80A30]);
+    objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v6, MEMORY[0x277D80A30]);
   }
   v15 = ;
   if (objc_msgSend_isApplicationData(v15, v16, v17))
@@ -179,7 +179,7 @@ LABEL_8:
 
   else
   {
-    v12 = objc_msgSend_instanceWithArchive_unarchiver_(TSDImageFill, v29, a3, v8);
+    v12 = objc_msgSend_instanceWithArchive_unarchiver_(TSDImageFill, v29, archive, v8);
   }
 
 LABEL_9:
@@ -187,27 +187,27 @@ LABEL_9:
   return v12;
 }
 
-- (TSDFill)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDFill)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v5.receiver = self;
   v5.super_class = TSDFill;
-  return [(TSDFill *)&v5 init:a3];
+  return [(TSDFill *)&v5 init:archive];
 }
 
-- (id)initFromPropertyCommandMessage:(const Message *)a3 unarchiver:(id)a4
+- (id)initFromPropertyCommandMessage:(const Message *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v7 = objc_opt_class();
-  v9 = objc_msgSend_instanceWithArchive_unarchiver_(v7, v8, a3, v6);
+  v9 = objc_msgSend_instanceWithArchive_unarchiver_(v7, v8, message, unarchiverCopy);
 
   return v9;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
   Mutable = CGPathCreateMutable();
   CGPathAddRectSafe();
-  objc_msgSend_paintPath_inContext_(self, v7, Mutable, a4);
+  objc_msgSend_paintPath_inContext_(self, v7, Mutable, context);
 
   CGPathRelease(Mutable);
 }

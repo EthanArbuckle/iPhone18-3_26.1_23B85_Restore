@@ -1,24 +1,24 @@
 @interface CKTranscriptDNDCell
-- (CKTranscriptDNDCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKTranscriptDNDCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setMuteSwitch:(id)a3;
+- (void)setMuteSwitch:(id)switch;
 @end
 
 @implementation CKTranscriptDNDCell
 
-- (CKTranscriptDNDCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKTranscriptDNDCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = CKTranscriptDNDCell;
-  v4 = [(CKTranscriptDNDCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKTranscriptDNDCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCFD0]);
     v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v7 = [(CKTranscriptDNDCell *)v4 textLabel];
+    textLabel = [(CKTranscriptDNDCell *)v4 textLabel];
     v8 = CKFrameworkBundle();
     v9 = [v8 localizedStringForKey:@"DETAILS_VIEW_HIDE_ALERTS_TOGGLE_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v7 setText:v9];
+    [textLabel setText:v9];
 
     [(CKTranscriptDNDCell *)v4 setMuteSwitch:v6];
   }
@@ -34,19 +34,19 @@
   [(CKTranscriptDNDCell *)self layoutMargins];
   v4 = v3;
   v6 = v5;
-  v7 = [(CKTranscriptDNDCell *)self muteSwitch];
+  muteSwitch = [(CKTranscriptDNDCell *)self muteSwitch];
 
-  if (v7)
+  if (muteSwitch)
   {
-    v8 = [(CKTranscriptDNDCell *)self muteSwitch];
-    [v8 frame];
+    muteSwitch2 = [(CKTranscriptDNDCell *)self muteSwitch];
+    [muteSwitch2 frame];
     v10 = v9;
     v12 = v11;
 
     if (([(CKTranscriptDNDCell *)self _shouldReverseLayoutDirection]& 1) == 0)
     {
-      v13 = [(CKTranscriptDNDCell *)self contentView];
-      [v13 bounds];
+      contentView = [(CKTranscriptDNDCell *)self contentView];
+      [contentView bounds];
       v15 = 20.0;
       if (v6 >= 20.0)
       {
@@ -56,8 +56,8 @@
       v4 = v14 - v15 - v10;
     }
 
-    v16 = [(CKTranscriptDNDCell *)self contentView];
-    [v16 bounds];
+    contentView2 = [(CKTranscriptDNDCell *)self contentView];
+    [contentView2 bounds];
     v18 = (v17 - v12) * 0.5;
     if (CKMainScreenScale_once_75 != -1)
     {
@@ -72,25 +72,25 @@
 
     v20 = ceil(v18 * v19) / v19;
 
-    v21 = [(CKTranscriptDNDCell *)self muteSwitch];
-    [v21 setFrame:{v4, v20, v10, v12}];
+    muteSwitch3 = [(CKTranscriptDNDCell *)self muteSwitch];
+    [muteSwitch3 setFrame:{v4, v20, v10, v12}];
   }
 }
 
-- (void)setMuteSwitch:(id)a3
+- (void)setMuteSwitch:(id)switch
 {
-  v5 = a3;
+  switchCopy = switch;
   muteSwitch = self->_muteSwitch;
-  if (muteSwitch != v5)
+  if (muteSwitch != switchCopy)
   {
-    v8 = v5;
+    v8 = switchCopy;
     [(UISwitch *)muteSwitch removeFromSuperview];
-    objc_storeStrong(&self->_muteSwitch, a3);
-    v7 = [(CKTranscriptDNDCell *)self contentView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_muteSwitch, switch);
+    contentView = [(CKTranscriptDNDCell *)self contentView];
+    [contentView addSubview:v8];
 
     [(CKTranscriptDNDCell *)self setNeedsLayout];
-    v5 = v8;
+    switchCopy = v8;
   }
 }
 

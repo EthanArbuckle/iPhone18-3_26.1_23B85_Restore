@@ -1,42 +1,42 @@
 @interface NLParameter
-+ (id)parameterWithName:(id)a3 type:(int64_t)a4 minimumValue:(double)a5 maximumValue:(double)a6;
-- (BOOL)isEqual:(id)a3;
-- (NLParameter)initWithCoder:(id)a3;
-- (NLParameter)initWithName:(id)a3 type:(int64_t)a4 minimumValue:(double)a5 maximumValue:(double)a6;
++ (id)parameterWithName:(id)name type:(int64_t)type minimumValue:(double)value maximumValue:(double)maximumValue;
+- (BOOL)isEqual:(id)equal;
+- (NLParameter)initWithCoder:(id)coder;
+- (NLParameter)initWithName:(id)name type:(int64_t)type minimumValue:(double)value maximumValue:(double)maximumValue;
 - (id)_dictionaryRepresentation;
 - (id)_hyperTuneDictionary;
-- (id)_initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
+- (id)_initWithDictionaryRepresentation:(id)representation error:(id *)error;
 - (id)_shortDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NLParameter
 
-+ (id)parameterWithName:(id)a3 type:(int64_t)a4 minimumValue:(double)a5 maximumValue:(double)a6
++ (id)parameterWithName:(id)name type:(int64_t)type minimumValue:(double)value maximumValue:(double)maximumValue
 {
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 type:a4 minimumValue:a5 maximumValue:a6];
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy type:type minimumValue:value maximumValue:maximumValue];
 
   return v11;
 }
 
-- (NLParameter)initWithName:(id)a3 type:(int64_t)a4 minimumValue:(double)a5 maximumValue:(double)a6
+- (NLParameter)initWithName:(id)name type:(int64_t)type minimumValue:(double)value maximumValue:(double)maximumValue
 {
-  v10 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = NLParameter;
   v11 = [(NLParameter *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v11->_parameterType = a4;
-    v11->_minimumValue = a5;
-    v11->_maximumValue = a6;
+    v11->_parameterType = type;
+    v11->_minimumValue = value;
+    v11->_maximumValue = maximumValue;
   }
 
   return v11;
@@ -44,20 +44,20 @@
 
 - (id)_shortDescription
 {
-  v3 = [(NLParameter *)self parameterType];
+  parameterType = [(NLParameter *)self parameterType];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NLParameter *)self name];
+  name = [(NLParameter *)self name];
   [(NLParameter *)self minimumValue];
   v7 = v6;
   [(NLParameter *)self maximumValue];
-  if (v3)
+  if (parameterType)
   {
-    [v4 stringWithFormat:@"%@/integral(%lld - %lld)", v5, v7, v8];
+    [v4 stringWithFormat:@"%@/integral(%lld - %lld)", name, v7, v8];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%@/continuous(%.3g - %.3g)", v5, *&v7, *&v8];
+    [v4 stringWithFormat:@"%@/continuous(%.3g - %.3g)", name, *&v7, *&v8];
   }
   v9 = ;
 
@@ -70,16 +70,16 @@
   v8.receiver = self;
   v8.super_class = NLParameter;
   v4 = [(NLParameter *)&v8 description];
-  v5 = [(NLParameter *)self _shortDescription];
-  v6 = [v3 stringWithFormat:@"%@(%@)", v4, v5];
+  _shortDescription = [(NLParameter *)self _shortDescription];
+  v6 = [v3 stringWithFormat:@"%@(%@)", v4, _shortDescription];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NLParameter *)self name];
-  v4 = [v3 hash];
+  name = [(NLParameter *)self name];
+  v4 = [name hash];
   v5 = v4 ^ ([(NLParameter *)self parameterType]<< 16);
   [(NLParameter *)self minimumValue];
   v7 = v5 ^ (v6 * 1000.0);
@@ -89,16 +89,16 @@
   return v7 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
@@ -109,12 +109,12 @@
     goto LABEL_8;
   }
 
-  v6 = [(NLParameter *)self name];
-  v7 = [(NLParameter *)v5 name];
-  if ([v6 isEqual:v7])
+  name = [(NLParameter *)self name];
+  name2 = [(NLParameter *)v5 name];
+  if ([name isEqual:name2])
   {
-    v8 = [(NLParameter *)self parameterType];
-    if (v8 == [(NLParameter *)v5 parameterType])
+    parameterType = [(NLParameter *)self parameterType];
+    if (parameterType == [(NLParameter *)v5 parameterType])
     {
       [(NLParameter *)self minimumValue];
       v10 = v9;
@@ -145,39 +145,39 @@ LABEL_11:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  if (([v6 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NLParameter requires keyed coding" userInfo:0];
     objc_exception_throw(v5);
   }
 
-  v4 = [(NLParameter *)self name];
-  [v6 encodeObject:v4 forKey:@"NLName"];
+  name = [(NLParameter *)self name];
+  [coderCopy encodeObject:name forKey:@"NLName"];
 
-  [v6 encodeInteger:-[NLParameter parameterType](self forKey:{"parameterType"), @"NLParameterType"}];
+  [coderCopy encodeInteger:-[NLParameter parameterType](self forKey:{"parameterType"), @"NLParameterType"}];
   [(NLParameter *)self minimumValue];
-  [v6 encodeDouble:@"NLMinimumValue" forKey:?];
+  [coderCopy encodeDouble:@"NLMinimumValue" forKey:?];
   [(NLParameter *)self maximumValue];
-  [v6 encodeDouble:@"NLMaximumValue" forKey:?];
+  [coderCopy encodeDouble:@"NLMaximumValue" forKey:?];
 }
 
-- (NLParameter)initWithCoder:(id)a3
+- (NLParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NLParameter requires keyed coding" userInfo:0];
     objc_exception_throw(v12);
   }
 
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NLName"];
-  v6 = [v4 decodeIntegerForKey:@"NLParameterType"];
-  [v4 decodeDoubleForKey:@"NLMinimumValue"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NLName"];
+  v6 = [coderCopy decodeIntegerForKey:@"NLParameterType"];
+  [coderCopy decodeDoubleForKey:@"NLMinimumValue"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"NLMaximumValue"];
+  [coderCopy decodeDoubleForKey:@"NLMaximumValue"];
   v10 = [(NLParameter *)self initWithName:v5 type:v6 minimumValue:v8 maximumValue:v9];
 
   return v10;
@@ -186,17 +186,17 @@ LABEL_11:
 - (id)_dictionaryRepresentation
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(NLParameter *)self parameterType];
+  parameterType = [(NLParameter *)self parameterType];
   v4 = @"Integral";
-  if (!v3)
+  if (!parameterType)
   {
     v4 = @"Continuous";
   }
 
   v14[0] = @"Name";
   v5 = v4;
-  v6 = [(NLParameter *)self name];
-  v15[0] = v6;
+  name = [(NLParameter *)self name];
+  v15[0] = name;
   v15[1] = v5;
   v14[1] = @"ParameterType";
   v14[2] = @"MinimumValue";
@@ -216,23 +216,23 @@ LABEL_11:
   return v11;
 }
 
-- (id)_initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (id)_initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v8 = [v7 objectForKey:@"Name"];
-  v9 = [v7 objectForKey:@"ParameterType"];
-  v10 = [v7 objectForKey:@"MinimumValue"];
-  v11 = [v7 objectForKey:@"MaximumValue"];
+  v8 = [representationCopy objectForKey:@"Name"];
+  v9 = [representationCopy objectForKey:@"ParameterType"];
+  v10 = [representationCopy objectForKey:@"MinimumValue"];
+  v11 = [representationCopy objectForKey:@"MaximumValue"];
   if (v8)
   {
-    v4 = 0x1E696A000;
+    selfCopy = 0x1E696A000;
     objc_opt_class();
     v12 = 1;
     if (objc_opt_isKindOfClass())
@@ -244,7 +244,7 @@ LABEL_11:
         {
           if (v10)
           {
-            v4 = 0x1E696A000;
+            selfCopy = 0x1E696A000;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -259,7 +259,7 @@ LABEL_11:
                   [v11 doubleValue];
                   self = [(NLParameter *)self initWithName:v8 type:v13 minimumValue:v15 maximumValue:v16];
                   v12 = 0;
-                  v4 = self;
+                  selfCopy = self;
                 }
               }
             }
@@ -277,28 +277,28 @@ LABEL_11:
   if (v12)
   {
 LABEL_15:
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v21 = *MEMORY[0x1E696A578];
       v22[0] = @"Invalid parameter bundle";
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      *a4 = [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v18];
+      *error = [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v18];
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v4;
+  return selfCopy;
 }
 
 - (id)_hyperTuneDictionary
 {
   v18[5] = *MEMORY[0x1E69E9840];
-  v3 = [(NLParameter *)self parameterType];
+  parameterType = [(NLParameter *)self parameterType];
   v4 = MEMORY[0x1E69B27B8];
-  if (v3)
+  if (parameterType)
   {
     v4 = MEMORY[0x1E69B27C0];
   }
@@ -306,9 +306,9 @@ LABEL_15:
   v5 = *v4;
   v17[0] = *MEMORY[0x1E69B27B0];
   v6 = v5;
-  v7 = [(NLParameter *)self name];
+  name = [(NLParameter *)self name];
   v8 = *MEMORY[0x1E69B27C8];
-  v18[0] = v7;
+  v18[0] = name;
   v18[1] = v6;
   v9 = *MEMORY[0x1E69B27A8];
   v17[1] = v8;

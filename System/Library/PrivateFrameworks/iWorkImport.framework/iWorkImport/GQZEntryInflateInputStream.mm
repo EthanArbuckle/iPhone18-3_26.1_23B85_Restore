@@ -1,32 +1,32 @@
 @interface GQZEntryInflateInputStream
-- (GQZEntryInflateInputStream)initWithOffset:(int64_t)a3 end:(int64_t)a4 uncompressedSize:(unint64_t)a5 crc:(unint64_t)a6 input:(id)a7;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (GQZEntryInflateInputStream)initWithOffset:(int64_t)offset end:(int64_t)end uncompressedSize:(unint64_t)size crc:(unint64_t)crc input:(id)input;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)dealloc;
-- (void)readToOwnBuffer:(const char *)a3 size:(unint64_t *)a4;
+- (void)readToOwnBuffer:(const char *)buffer size:(unint64_t *)size;
 @end
 
 @implementation GQZEntryInflateInputStream
 
-- (GQZEntryInflateInputStream)initWithOffset:(int64_t)a3 end:(int64_t)a4 uncompressedSize:(unint64_t)a5 crc:(unint64_t)a6 input:(id)a7
+- (GQZEntryInflateInputStream)initWithOffset:(int64_t)offset end:(int64_t)end uncompressedSize:(unint64_t)size crc:(unint64_t)crc input:(id)input
 {
   v12 = [(GQZEntryInflateInputStream *)self init];
   v13 = v12;
   if (v12)
   {
-    v12->mOffset = a3;
-    v12->mEnd = a4;
-    v12->mCheckCrc = a6;
+    v12->mOffset = offset;
+    v12->mEnd = end;
+    v12->mCheckCrc = crc;
     v12->mCalculatedCrc = crc32(0, 0, 0);
-    v14 = a7;
+    inputCopy = input;
     v13->mStream.next_in = 0;
-    v13->mInput = v14;
-    v15 = 0x40000;
-    if (a5 < 0x40000)
+    v13->mInput = inputCopy;
+    sizeCopy = 0x40000;
+    if (size < 0x40000)
     {
-      v15 = a5;
+      sizeCopy = size;
     }
 
-    v13->mOutBufferSize = v15;
+    v13->mOutBufferSize = sizeCopy;
     v13->mStream.avail_in = 0;
     v13->mStream.zfree = 0;
     v13->mStream.opaque = 0;
@@ -51,7 +51,7 @@
   [(GQZEntryInflateInputStream *)&v3 dealloc];
 }
 
-- (void)readToOwnBuffer:(const char *)a3 size:(unint64_t *)a4
+- (void)readToOwnBuffer:(const char *)buffer size:(unint64_t *)size
 {
   mOutBuffer = self->mOutBuffer;
   if (!mOutBuffer)
@@ -65,16 +65,16 @@
     }
   }
 
-  *a4 = [(GQZEntryInflateInputStream *)self readToBuffer:mOutBuffer size:self->mOutBufferSize];
-  *a3 = self->mOutBuffer;
+  *size = [(GQZEntryInflateInputStream *)self readToBuffer:mOutBuffer size:self->mOutBufferSize];
+  *buffer = self->mOutBuffer;
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
-  self->mStream.avail_out = a4;
-  self->mStream.next_out = a3;
-  next_out = a3;
-  if (a4)
+  self->mStream.avail_out = size;
+  self->mStream.next_out = buffer;
+  next_out = buffer;
+  if (size)
   {
     LODWORD(v7) = 0;
     while (1)
@@ -132,8 +132,8 @@ LABEL_9:
   }
 
 LABEL_14:
-  v11 = next_out - a3;
-  v12 = crc32(self->mCalculatedCrc, a3, next_out - a3);
+  v11 = next_out - buffer;
+  v12 = crc32(self->mCalculatedCrc, buffer, next_out - buffer);
   self->mCalculatedCrc = v12;
   if (self->mOffset == self->mEnd && !self->mStream.avail_in && v12 != self->mCheckCrc)
   {

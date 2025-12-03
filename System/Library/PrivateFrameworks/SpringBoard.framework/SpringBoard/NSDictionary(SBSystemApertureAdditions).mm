@@ -8,15 +8,15 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277CF0C78]);
-  v3 = [MEMORY[0x277CF0C98] sortByInsertionOrder];
-  v4 = [v2 initWithKeyOrderingStrategy:v3];
+  sortByInsertionOrder = [MEMORY[0x277CF0C98] sortByInsertionOrder];
+  v4 = [v2 initWithKeyOrderingStrategy:sortByInsertionOrder];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27,11 +27,11 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v5 objectForKey:{v10, v14}];
+        v11 = [selfCopy objectForKey:{v10, v14}];
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
           v12 = [v11 description];
@@ -42,7 +42,7 @@
         [v4 setObject:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

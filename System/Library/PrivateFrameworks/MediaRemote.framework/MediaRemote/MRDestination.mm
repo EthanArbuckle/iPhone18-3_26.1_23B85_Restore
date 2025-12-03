@@ -4,26 +4,26 @@
 + (id)userSelectedDestination;
 - (BOOL)isLocal;
 - (MRClient)client;
-- (MRDestination)initWithCoder:(id)a3;
-- (MRDestination)initWithData:(id)a3;
-- (MRDestination)initWithEndpoint:(id)a3;
-- (MRDestination)initWithOrigin:(id)a3;
-- (MRDestination)initWithOutputContextUID:(id)a3;
-- (MRDestination)initWithOutputDeviceUID:(id)a3;
-- (MRDestination)initWithPlayerPath:(id)a3;
-- (MRDestination)initWithProtobuf:(id)a3;
+- (MRDestination)initWithCoder:(id)coder;
+- (MRDestination)initWithData:(id)data;
+- (MRDestination)initWithEndpoint:(id)endpoint;
+- (MRDestination)initWithOrigin:(id)origin;
+- (MRDestination)initWithOutputContextUID:(id)d;
+- (MRDestination)initWithOutputDeviceUID:(id)d;
+- (MRDestination)initWithPlayerPath:(id)path;
+- (MRDestination)initWithProtobuf:(id)protobuf;
 - (MROrigin)origin;
 - (MRPlayer)player;
 - (NSData)data;
 - (_MRDestinationProtobuf)protobuf;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)populatePlayerPathIfNeeded;
-- (void)setClient:(id)a3;
-- (void)setOrigin:(id)a3;
-- (void)setPlayer:(id)a3;
+- (void)setClient:(id)client;
+- (void)setOrigin:(id)origin;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation MRDestination
@@ -62,8 +62,8 @@
   endpoint = self->_endpoint;
   if (endpoint)
   {
-    v7 = [(MRAVEndpoint *)endpoint uniqueIdentifier];
-    [v4 addObject:v7];
+    uniqueIdentifier = [(MRAVEndpoint *)endpoint uniqueIdentifier];
+    [v4 addObject:uniqueIdentifier];
   }
 
   if (self->_playerPath)
@@ -81,9 +81,9 @@
 
 - (void)populatePlayerPathIfNeeded
 {
-  v3 = [(MRDestination *)self playerPath];
+  playerPath = [(MRDestination *)self playerPath];
 
-  if (!v3)
+  if (!playerPath)
   {
     v4 = objc_alloc_init(MRPlayerPath);
     [(MRDestination *)self setPlayerPath:v4];
@@ -92,18 +92,18 @@
 
 - (MRPlayer)player
 {
-  v2 = [(MRDestination *)self playerPath];
-  v3 = [v2 player];
+  playerPath = [(MRDestination *)self playerPath];
+  player = [playerPath player];
 
-  return v3;
+  return player;
 }
 
 - (MRClient)client
 {
-  v2 = [(MRDestination *)self playerPath];
-  v3 = [v2 client];
+  playerPath = [(MRDestination *)self playerPath];
+  client = [playerPath client];
 
-  return v3;
+  return client;
 }
 
 + (id)proactiveDestination
@@ -120,15 +120,15 @@
   return v2;
 }
 
-- (MRDestination)initWithPlayerPath:(id)a3
+- (MRDestination)initWithPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MRDestination *)self _init];
-  if (v5)
+  pathCopy = path;
+  _init = [(MRDestination *)self _init];
+  if (_init)
   {
-    if (v4)
+    if (pathCopy)
     {
-      v6 = [v4 copy];
+      v6 = [pathCopy copy];
     }
 
     else
@@ -136,50 +136,50 @@
       v6 = objc_alloc_init(MRPlayerPath);
     }
 
-    playerPath = v5->_playerPath;
-    v5->_playerPath = v6;
+    playerPath = _init->_playerPath;
+    _init->_playerPath = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (MRDestination)initWithOrigin:(id)a3
+- (MRDestination)initWithOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = [(MRDestination *)self _init];
-  if (v5)
+  originCopy = origin;
+  _init = [(MRDestination *)self _init];
+  if (_init)
   {
     v6 = [MRPlayerPath alloc];
-    v7 = [v4 copy];
+    v7 = [originCopy copy];
     v8 = [(MRPlayerPath *)v6 initWithOrigin:v7 client:0 player:0];
-    playerPath = v5->_playerPath;
-    v5->_playerPath = v8;
+    playerPath = _init->_playerPath;
+    _init->_playerPath = v8;
   }
 
-  return v5;
+  return _init;
 }
 
-- (MRDestination)initWithEndpoint:(id)a3
+- (MRDestination)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = [(MRDestination *)self _init];
-  v7 = v6;
-  if (v6)
+  endpointCopy = endpoint;
+  _init = [(MRDestination *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    if (!v5)
+    if (!endpointCopy)
     {
       v14 = +[MRDestination localDestination];
       goto LABEL_7;
     }
 
-    objc_storeStrong(v6 + 3, a3);
-    v8 = [v5 origin];
+    objc_storeStrong(_init + 3, endpoint);
+    origin = [endpointCopy origin];
 
-    if (v8)
+    if (origin)
     {
       v9 = [MRPlayerPath alloc];
-      v10 = [v5 origin];
-      v11 = [v10 copy];
+      origin2 = [endpointCopy origin];
+      v11 = [origin2 copy];
       v12 = [(MRPlayerPath *)v9 initWithOrigin:v11 client:0 player:0];
       v13 = v7[4];
       v7[4] = v12;
@@ -193,92 +193,92 @@ LABEL_7:
   return v15;
 }
 
-- (MRDestination)initWithOutputDeviceUID:(id)a3
+- (MRDestination)initWithOutputDeviceUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MRDestination *)self _init];
-  if (v5)
+  dCopy = d;
+  _init = [(MRDestination *)self _init];
+  if (_init)
   {
-    if (!v4)
+    if (!dCopy)
     {
       v8 = +[MRDestination localDestination];
       goto LABEL_6;
     }
 
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [dCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
   }
 
-  v8 = v5;
+  v8 = _init;
 LABEL_6:
   v9 = v8;
 
   return v9;
 }
 
-- (MRDestination)initWithOutputContextUID:(id)a3
+- (MRDestination)initWithOutputContextUID:(id)d
 {
-  v5 = a3;
-  v6 = [(MRDestination *)self _init];
-  if (v6)
+  dCopy = d;
+  _init = [(MRDestination *)self _init];
+  if (_init)
   {
-    if (!v5)
+    if (!dCopy)
     {
-      [(MRDestination *)a2 initWithOutputContextUID:v6];
+      [(MRDestination *)a2 initWithOutputContextUID:_init];
     }
 
-    v7 = [v5 copy];
-    outputContextUID = v6->_outputContextUID;
-    v6->_outputContextUID = v7;
+    v7 = [dCopy copy];
+    outputContextUID = _init->_outputContextUID;
+    _init->_outputContextUID = v7;
   }
 
-  return v6;
+  return _init;
 }
 
-- (MRDestination)initWithData:(id)a3
+- (MRDestination)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRDestinationProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRDestinationProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRDestination *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRDestination)initWithProtobuf:(id)a3
+- (MRDestination)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
-    v5 = [(MRDestination *)self _init];
-    if (v5)
+    _init = [(MRDestination *)self _init];
+    if (_init)
     {
-      v6 = [v4 outputDeviceUID];
-      v7 = v5[1];
-      v5[1] = v6;
+      outputDeviceUID = [protobufCopy outputDeviceUID];
+      v7 = _init[1];
+      _init[1] = outputDeviceUID;
 
       v8 = [MRPlayerPath alloc];
-      v9 = [v4 playerPath];
-      v10 = [(MRPlayerPath *)v8 initWithProtobuf:v9];
-      v11 = v5[4];
-      v5[4] = v10;
+      playerPath = [protobufCopy playerPath];
+      v10 = [(MRPlayerPath *)v8 initWithProtobuf:playerPath];
+      v11 = _init[4];
+      _init[4] = v10;
 
-      v12 = [v4 endpoint];
-      if (v12)
+      endpoint = [protobufCopy endpoint];
+      if (endpoint)
       {
         v13 = [MRAVDistantEndpoint alloc];
-        v14 = [v4 endpoint];
-        v15 = [(MRAVDistantEndpoint *)v13 initWithDescriptor:v14];
+        endpoint2 = [protobufCopy endpoint];
+        v15 = [(MRAVDistantEndpoint *)v13 initWithDescriptor:endpoint2];
       }
 
       else
@@ -296,64 +296,64 @@ LABEL_6:
         v17 = v15;
       }
 
-      v18 = v5[3];
-      v5[3] = v17;
+      v18 = _init[3];
+      _init[3] = v17;
 
-      v19 = [v4 outputContextUID];
-      v20 = v5[2];
-      v5[2] = v19;
+      outputContextUID = [protobufCopy outputContextUID];
+      v20 = _init[2];
+      _init[2] = outputContextUID;
     }
 
-    self = v5;
-    v16 = self;
+    self = _init;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (MROrigin)origin
 {
-  v2 = [(MRDestination *)self playerPath];
-  v3 = [v2 origin];
+  playerPath = [(MRDestination *)self playerPath];
+  origin = [playerPath origin];
 
-  return v3;
+  return origin;
 }
 
-- (void)setOrigin:(id)a3
+- (void)setOrigin:(id)origin
 {
-  v6 = a3;
-  if (v6 || ([(MRDestination *)self playerPath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  originCopy = origin;
+  if (originCopy || ([(MRDestination *)self playerPath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     [(MRDestination *)self populatePlayerPathIfNeeded];
-    v5 = [(MRDestination *)self playerPath];
-    [v5 setOrigin:v6];
+    playerPath = [(MRDestination *)self playerPath];
+    [playerPath setOrigin:originCopy];
   }
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v6 = a3;
-  if (v6 || ([(MRDestination *)self playerPath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  clientCopy = client;
+  if (clientCopy || ([(MRDestination *)self playerPath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     [(MRDestination *)self populatePlayerPathIfNeeded];
-    v5 = [(MRDestination *)self playerPath];
-    [v5 setClient:v6];
+    playerPath = [(MRDestination *)self playerPath];
+    [playerPath setClient:clientCopy];
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v6 = a3;
-  if (v6 || ([(MRDestination *)self playerPath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  playerCopy = player;
+  if (playerCopy || ([(MRDestination *)self playerPath], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     [(MRDestination *)self populatePlayerPathIfNeeded];
-    v5 = [(MRDestination *)self playerPath];
-    [v5 setPlayer:v6];
+    playerPath = [(MRDestination *)self playerPath];
+    [playerPath setPlayer:playerCopy];
   }
 }
 
@@ -368,72 +368,72 @@ LABEL_6:
   v5 = +[MRAVOutputDevice localDeviceUID];
   if (([(NSString *)outputDeviceUID isEqual:v5]& 1) != 0)
   {
-    v3 = 1;
+    isLocal = 1;
   }
 
   else
   {
-    v6 = [(MRPlayerPath *)self->_playerPath origin];
-    v3 = [v6 isLocal];
+    origin = [(MRPlayerPath *)self->_playerPath origin];
+    isLocal = [origin isLocal];
   }
 
-  return v3;
+  return isLocal;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_alloc(objc_opt_class()) _init];
-  objc_storeStrong((v5 + 24), self->_endpoint);
-  v6 = [(NSString *)self->_outputContextUID copyWithZone:a3];
-  v7 = *(v5 + 16);
-  *(v5 + 16) = v6;
+  _init = [objc_alloc(objc_opt_class()) _init];
+  objc_storeStrong((_init + 24), self->_endpoint);
+  v6 = [(NSString *)self->_outputContextUID copyWithZone:zone];
+  v7 = *(_init + 16);
+  *(_init + 16) = v6;
 
-  v8 = [(NSString *)self->_outputDeviceUID copyWithZone:a3];
-  v9 = *(v5 + 8);
-  *(v5 + 8) = v8;
+  v8 = [(NSString *)self->_outputDeviceUID copyWithZone:zone];
+  v9 = *(_init + 8);
+  *(_init + 8) = v8;
 
-  v10 = [(MRPlayerPath *)self->_playerPath copyWithZone:a3];
-  v11 = *(v5 + 32);
-  *(v5 + 32) = v10;
+  v10 = [(MRPlayerPath *)self->_playerPath copyWithZone:zone];
+  v11 = *(_init + 32);
+  *(_init + 32) = v10;
 
-  return v5;
+  return _init;
 }
 
 - (NSData)data
 {
-  v2 = [(MRDestination *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRDestination *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRDestinationProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRDestinationProtobuf);
   [(_MRDestinationProtobuf *)v3 setOutputDeviceUID:self->_outputDeviceUID];
-  v4 = [(MRAVEndpoint *)self->_endpoint descriptor];
-  [(_MRDestinationProtobuf *)v3 setEndpoint:v4];
+  descriptor = [(MRAVEndpoint *)self->_endpoint descriptor];
+  [(_MRDestinationProtobuf *)v3 setEndpoint:descriptor];
 
-  v5 = [(MRPlayerPath *)self->_playerPath protobuf];
-  [(_MRDestinationProtobuf *)v3 setPlayerPath:v5];
+  protobuf = [(MRPlayerPath *)self->_playerPath protobuf];
+  [(_MRDestinationProtobuf *)v3 setPlayerPath:protobuf];
 
   [(_MRDestinationProtobuf *)v3 setOutputContextUID:self->_outputContextUID];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRDestination *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRDestination *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
-- (MRDestination)initWithCoder:(id)a3
+- (MRDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MRDestination alloc];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   v7 = [(MRDestination *)v5 initWithProtobuf:v6];
   return v7;

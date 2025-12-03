@@ -1,37 +1,37 @@
 @interface _INPBDeleteEventIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBDeleteEventIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDeleteEventIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTargetEventIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTargetEventIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDeleteEventIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDeleteEventIntent *)self hasDeleteAllOccurrences])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBDeleteEventIntent deleteAllOccurrences](self, "deleteAllOccurrences")}];
-    [v3 setObject:v4 forKeyedSubscript:@"deleteAllOccurrences"];
+    [dictionary setObject:v4 forKeyedSubscript:@"deleteAllOccurrences"];
   }
 
-  v5 = [(_INPBDeleteEventIntent *)self intentMetadata];
-  v6 = [v5 dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBDeleteEventIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if (self->_targetEventIdentifier)
   {
-    v7 = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"targetEventIdentifier"];
+    targetEventIdentifier = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
+    v8 = [targetEventIdentifier copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"targetEventIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -50,46 +50,46 @@
   return v4 ^ [(NSString *)self->_targetEventIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBDeleteEventIntent *)self hasDeleteAllOccurrences];
-  if (v5 != [v4 hasDeleteAllOccurrences])
+  hasDeleteAllOccurrences = [(_INPBDeleteEventIntent *)self hasDeleteAllOccurrences];
+  if (hasDeleteAllOccurrences != [equalCopy hasDeleteAllOccurrences])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBDeleteEventIntent *)self hasDeleteAllOccurrences])
   {
-    if ([v4 hasDeleteAllOccurrences])
+    if ([equalCopy hasDeleteAllOccurrences])
     {
       deleteAllOccurrences = self->_deleteAllOccurrences;
-      if (deleteAllOccurrences != [v4 deleteAllOccurrences])
+      if (deleteAllOccurrences != [equalCopy deleteAllOccurrences])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBDeleteEventIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) == (v8 == 0))
+  intentMetadata = [(_INPBDeleteEventIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBDeleteEventIntent *)self intentMetadata];
-  if (v9)
+  intentMetadata3 = [(_INPBDeleteEventIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v10 = v9;
-    v11 = [(_INPBDeleteEventIntent *)self intentMetadata];
-    v12 = [v4 intentMetadata];
-    v13 = [v11 isEqual:v12];
+    v10 = intentMetadata3;
+    intentMetadata4 = [(_INPBDeleteEventIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v13 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v13)
     {
@@ -101,12 +101,12 @@
   {
   }
 
-  v7 = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
-  v8 = [v4 targetEventIdentifier];
-  if ((v7 != 0) != (v8 == 0))
+  intentMetadata = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
+  intentMetadata2 = [equalCopy targetEventIdentifier];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v14 = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
-    if (!v14)
+    targetEventIdentifier = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
+    if (!targetEventIdentifier)
     {
 
 LABEL_19:
@@ -114,10 +114,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
-    v17 = [v4 targetEventIdentifier];
-    v18 = [v16 isEqual:v17];
+    v15 = targetEventIdentifier;
+    targetEventIdentifier2 = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
+    targetEventIdentifier3 = [equalCopy targetEventIdentifier];
+    v18 = [targetEventIdentifier2 isEqual:targetEventIdentifier3];
 
     if (v18)
     {
@@ -137,7 +137,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDeleteEventIntent allocWithZone:](_INPBDeleteEventIntent init];
   if ([(_INPBDeleteEventIntent *)self hasDeleteAllOccurrences])
@@ -145,70 +145,70 @@ LABEL_17:
     [(_INPBDeleteEventIntent *)v5 setDeleteAllOccurrences:[(_INPBDeleteEventIntent *)self deleteAllOccurrences]];
   }
 
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBDeleteEventIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(NSString *)self->_targetEventIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_targetEventIdentifier copyWithZone:zone];
   [(_INPBDeleteEventIntent *)v5 setTargetEventIdentifier:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDeleteEventIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBDeleteEventIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDeleteEventIntent)initWithCoder:(id)a3
+- (_INPBDeleteEventIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDeleteEventIntent *)self initWithData:v6];
+    self = [(_INPBDeleteEventIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBDeleteEventIntent *)self hasDeleteAllOccurrences])
   {
     deleteAllOccurrences = self->_deleteAllOccurrences;
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(_INPBDeleteEventIntent *)self intentMetadata];
+  intentMetadata = [(_INPBDeleteEventIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBDeleteEventIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBDeleteEventIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
+  targetEventIdentifier = [(_INPBDeleteEventIntent *)self targetEventIdentifier];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (targetEventIdentifier)
   {
     targetEventIdentifier = self->_targetEventIdentifier;
     PBDataWriterWriteStringField();
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setTargetEventIdentifier:(id)a3
+- (void)setTargetEventIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   targetEventIdentifier = self->_targetEventIdentifier;
   self->_targetEventIdentifier = v4;
 

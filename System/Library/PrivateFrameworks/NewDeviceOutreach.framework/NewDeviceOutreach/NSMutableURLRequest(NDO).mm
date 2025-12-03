@@ -41,7 +41,7 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [a1 valueForHTTPHeaderField:{v12, v17, v18}];
+        v13 = [self valueForHTTPHeaderField:{v12, v17, v18}];
 
         if (v13)
         {
@@ -57,7 +57,7 @@
         }
 
         v15 = [v6 objectForKeyedSubscript:v12];
-        [a1 setValue:v15 forHTTPHeaderField:v12];
+        [self setValue:v15 forHTTPHeaderField:v12];
       }
 
       v9 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -72,8 +72,8 @@
 - (id)headerDescription
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 allHTTPHeaderFields];
-  v3 = [v1 stringWithFormat:@"%@", v2];
+  allHTTPHeaderFields = [self allHTTPHeaderFields];
+  v3 = [v1 stringWithFormat:@"%@", allHTTPHeaderFields];
 
   return v3;
 }
@@ -81,8 +81,8 @@
 - (id)bodyDescription
 {
   v2 = objc_alloc(MEMORY[0x277CCACA8]);
-  v3 = [a1 HTTPBody];
-  v4 = [v2 initWithData:v3 encoding:4];
+  hTTPBody = [self HTTPBody];
+  v4 = [v2 initWithData:hTTPBody encoding:4];
 
   return v4;
 }

@@ -1,14 +1,14 @@
 @interface _DASEnergyBudgetPolicy
-+ (BOOL)budgetIsPositive:(id)a3;
-+ (BOOL)isBudgetAvailable:(id)a3;
++ (BOOL)budgetIsPositive:(id)positive;
++ (BOOL)isBudgetAvailable:(id)available;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreBudgetForActivity:(id)a3 withState:(id)a4;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreBudgetForActivity:(id)activity withState:(id)state;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASEnergyBudgetPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (void)updateSystemConstraintsWithContext:(id)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (void)updateSystemConstraintsWithContext:(id)context;
 @end
 
 @implementation _DASEnergyBudgetPolicy
@@ -48,9 +48,9 @@
     policyName = v2->_policyName;
     v2->_policyName = @"Energy Budget Policy";
 
-    v5 = [(_DASEnergyBudgetPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASEnergyBudgetPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v5;
+    v3->_triggers = initializeTriggers;
 
     v7 = +[_DASComplicationManager sharedInstance];
     complicationManager = v3->_complicationManager;
@@ -72,49 +72,49 @@
   return v3;
 }
 
-+ (BOOL)isBudgetAvailable:(id)a3
++ (BOOL)isBudgetAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = +[_CDContextQueries keyPathForPluginStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  v5 = [availableCopy objectForKeyedSubscript:v4];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [_DASEnergyBudgetPolicy budgetIsPositive:v3];
+    v7 = [_DASEnergyBudgetPolicy budgetIsPositive:availableCopy];
   }
 
   return v7;
 }
 
-+ (BOOL)budgetIsPositive:(id)a3
++ (BOOL)budgetIsPositive:(id)positive
 {
-  v3 = a3;
+  positiveCopy = positive;
   v4 = +[_CDContextQueries keyPathForEnergyBudgetRemainingStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [positiveCopy objectForKeyedSubscript:v4];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)updateSystemConstraintsWithContext:(id)a3
+- (void)updateSystemConstraintsWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isBudgetAvailable:v3];
+  contextCopy = context;
+  v4 = [objc_opt_class() isBudgetAvailable:contextCopy];
 
   v5 = +[_DASDaemon sharedInstance];
   v6 = v5;
@@ -129,27 +129,27 @@
   }
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"com.apple.duetactivityscheduler.energybudgetpolicy.status"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"))
+  triggerCopy = trigger;
+  stateCopy = state;
+  if (([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.energybudgetpolicy.status"] & 1) == 0 && !objc_msgSend(triggerCopy, "isEqualToString:", @"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"))
   {
     goto LABEL_6;
   }
 
-  [(_DASEnergyBudgetPolicy *)self updateSystemConstraintsWithContext:v7];
-  v8 = [_DASEnergyBudgetPolicy budgetIsPositive:v7];
+  [(_DASEnergyBudgetPolicy *)self updateSystemConstraintsWithContext:stateCopy];
+  v8 = [_DASEnergyBudgetPolicy budgetIsPositive:stateCopy];
   v9 = +[_DASPLLogger sharedInstance];
   [v9 reportNewStatus:v8 forTrigger:off_10020ACC0];
 
   v10 = +[_CDContextQueries keyPathForPluginStatus];
-  v11 = [v7 objectForKeyedSubscript:v10];
-  v12 = [v11 BOOLValue];
+  v11 = [stateCopy objectForKeyedSubscript:v10];
+  bOOLValue = [v11 BOOLValue];
 
-  if (![v6 isEqualToString:@"com.apple.duetactivityscheduler.energybudgetpolicy.status"] || !v8 || v12)
+  if (![triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.energybudgetpolicy.status"] || !v8 || bOOLValue)
   {
-    v13 = [v6 isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"] ^ 1 | v8 | v12 ^ 1;
+    v13 = [triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"] ^ 1 | v8 | bOOLValue ^ 1;
   }
 
   else
@@ -161,21 +161,21 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if (![v3 budgeted] || (objc_msgSend(v3, "requiresPlugin") & 1) != 0)
+  activityCopy = activity;
+  if (![activityCopy budgeted] || (objc_msgSend(activityCopy, "requiresPlugin") & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (![v3 requestsImmediateRuntime])
+  if (![activityCopy requestsImmediateRuntime])
   {
     LOBYTE(v4) = 1;
     goto LABEL_4;
   }
 
-  if ([_DASPhotosPolicy isPhotosSyncActivity:v3])
+  if ([_DASPhotosPolicy isPhotosSyncActivity:activityCopy])
   {
 LABEL_3:
     LOBYTE(v4) = 0;
@@ -183,7 +183,7 @@ LABEL_3:
 
   else
   {
-    v4 = ![_DASPhotosPolicy isAppLibraryActivity:v3];
+    v4 = ![_DASPhotosPolicy isAppLibraryActivity:activityCopy];
   }
 
 LABEL_4:
@@ -191,17 +191,17 @@ LABEL_4:
   return v4;
 }
 
-- (BOOL)shouldIgnoreBudgetForActivity:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreBudgetForActivity:(id)activity withState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v9 = 0;
-  if ([_DASPhotosPolicy isiCPLActivity:a3])
+  if ([_DASPhotosPolicy isiCPLActivity:activity])
   {
     v6 = +[_DASPhotosPolicy keyPathForPhotosBudgetOverride];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [stateCopy objectForKeyedSubscript:v6];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if ((v8 & 2) != 0)
+    if ((unsignedIntegerValue & 2) != 0)
     {
       v9 = 1;
     }
@@ -210,33 +210,33 @@ LABEL_4:
   return v9;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
+  activityCopy = activity;
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
   v26 = sub_100054BF4;
   v27 = &unk_1001B56E0;
-  v28 = self;
-  v7 = a4;
-  v29 = v7;
+  selfCopy = self;
+  stateCopy = state;
+  v29 = stateCopy;
   if (qword_10020B1F0 != -1)
   {
     dispatch_once(&qword_10020B1F0, &v24);
   }
 
   v8 = [_DASPolicyResponseRationale alloc];
-  v9 = [(_DASPolicyResponseRationale *)v8 initWithPolicyName:self->_policyName, v24, v25, v26, v27, v28];
-  if ([_DASEnergyBudgetPolicy budgetIsPositive:v7])
+  selfCopy = [(_DASPolicyResponseRationale *)v8 initWithPolicyName:self->_policyName, v24, v25, v26, v27, selfCopy];
+  if ([_DASEnergyBudgetPolicy budgetIsPositive:stateCopy])
   {
     goto LABEL_6;
   }
 
-  [(_DASPolicyResponseRationale *)v9 addRationaleForCondition:@"energyBudget" withRequiredValue:1.0 withCurrentValue:0.0];
-  if ([(_DASEnergyBudgetPolicy *)self shouldIgnoreBudgetForActivity:v6 withState:v7])
+  [(_DASPolicyResponseRationale *)selfCopy addRationaleForCondition:@"energyBudget" withRequiredValue:1.0 withCurrentValue:0.0];
+  if ([(_DASEnergyBudgetPolicy *)self shouldIgnoreBudgetForActivity:activityCopy withState:stateCopy])
   {
     v10 = [NSPredicate predicateWithFormat:@"shouldOverrideBudget == YES"];
-    [(_DASPolicyResponseRationale *)v9 addRationaleWithCondition:v10];
+    [(_DASPolicyResponseRationale *)selfCopy addRationaleWithCondition:v10];
 
 LABEL_6:
     v11 = 0;
@@ -248,12 +248,12 @@ LABEL_6:
   v11 = 33;
 LABEL_8:
   v13 = +[_CDContextQueries keyPathForPluginStatus];
-  v14 = [v7 objectForKeyedSubscript:v13];
-  v15 = [v14 BOOLValue];
+  v14 = [stateCopy objectForKeyedSubscript:v13];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
-    [(_DASPolicyResponseRationale *)v9 addRationaleForCondition:@"pluggedInStatus" withRequiredValue:1.0 withCurrentValue:1.0];
+    [(_DASPolicyResponseRationale *)selfCopy addRationaleForCondition:@"pluggedInStatus" withRequiredValue:1.0 withCurrentValue:1.0];
 LABEL_11:
     v11 = 0;
     goto LABEL_18;
@@ -266,11 +266,11 @@ LABEL_11:
 
   v16 = +[NSDate date];
   complicationManager = self->_complicationManager;
-  v18 = [v6 relatedApplications];
-  if ([(_DASComplicationManager *)complicationManager isAnyActiveComplication:v18])
+  relatedApplications = [activityCopy relatedApplications];
+  if ([(_DASComplicationManager *)complicationManager isAnyActiveComplication:relatedApplications])
   {
-    v19 = [v6 startAfter];
-    [v16 timeIntervalSinceDate:v19];
+    startAfter = [activityCopy startAfter];
+    [v16 timeIntervalSinceDate:startAfter];
     v21 = v20;
 
     if (v21 > 1800.0)
@@ -284,7 +284,7 @@ LABEL_11:
   }
 
 LABEL_18:
-  v22 = [_DASPolicyResponse policyResponseWithDecision:v11 validityDuration:v9 rationale:0x384uLL];
+  v22 = [_DASPolicyResponse policyResponseWithDecision:v11 validityDuration:selfCopy rationale:0x384uLL];
 
   return v22;
 }

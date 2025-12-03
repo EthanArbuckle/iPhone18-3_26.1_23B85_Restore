@@ -1,6 +1,6 @@
 @interface AVMediaPlaybackControls
-- (AVMediaPlaybackControls)initWithPlayer:(id)a3;
-- (AVMediaPlaybackControls)initWithSource:(id)a3;
+- (AVMediaPlaybackControls)initWithPlayer:(id)player;
+- (AVMediaPlaybackControls)initWithSource:(id)source;
 - (AVMediaPlaybackControlsDelegate)delegate;
 - (AVMediaSecondaryPlaybackControlConfiguration)backwardSecondaryControlConfiguration;
 - (AVMediaSecondaryPlaybackControlConfiguration)forwardSecondaryControlConfiguration;
@@ -13,13 +13,13 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)a3;
-- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)a3;
-- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)a3;
-- (void)setBackwardSecondaryControlConfiguration:(id)a3;
-- (void)setForwardSecondaryControlConfiguration:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)setSource:(id)a3;
+- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)pressed;
+- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)pressed;
+- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)pressed;
+- (void)setBackwardSecondaryControlConfiguration:(id)configuration;
+- (void)setForwardSecondaryControlConfiguration:(id)configuration;
+- (void)setPlayer:(id)player;
+- (void)setSource:(id)source;
 @end
 
 @implementation AVMediaPlaybackControls
@@ -31,27 +31,27 @@
   return WeakRetained;
 }
 
-- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)a3
+- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = v4;
+  pressedCopy = pressed;
+  v5 = pressedCopy;
   if (self->_player)
   {
-    if ([v4 forwardSecondaryControlIcon])
+    if ([pressedCopy forwardSecondaryControlIcon])
     {
       if ([v5 forwardSecondaryControlIcon] != 2)
       {
         goto LABEL_10;
       }
 
-      v6 = [(AVMediaPlaybackControls *)self playerController];
-      [v6 seekToEnd:self];
+      playerController = [(AVMediaPlaybackControls *)self playerController];
+      [playerController seekToEnd:self];
     }
 
     else
     {
-      v6 = [(AVMediaPlaybackControls *)self playerController];
-      [v6 currentTime];
+      playerController = [(AVMediaPlaybackControls *)self playerController];
+      [playerController currentTime];
       v8 = v7;
       forwardSecondaryControlConfiguration = self->_forwardSecondaryControlConfiguration;
       if (forwardSecondaryControlConfiguration)
@@ -64,29 +64,29 @@
         memset(&time, 0, sizeof(time));
       }
 
-      [v6 seekToTime:v8 + CMTimeGetSeconds(&time)];
+      [playerController seekToTime:v8 + CMTimeGetSeconds(&time)];
     }
   }
 
 LABEL_10:
-  v10 = [(AVMediaPlaybackControls *)self delegate];
+  delegate = [(AVMediaPlaybackControls *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(AVMediaPlaybackControls *)self delegate];
-    [v12 mediaPlaybackControlsForwardSecondaryControlPressed:self];
+    delegate2 = [(AVMediaPlaybackControls *)self delegate];
+    [delegate2 mediaPlaybackControlsForwardSecondaryControlPressed:self];
   }
 }
 
-- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)a3
+- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_player && ![v4 backwardSecondaryControlIcon])
+  pressedCopy = pressed;
+  v5 = pressedCopy;
+  if (self->_player && ![pressedCopy backwardSecondaryControlIcon])
   {
-    v6 = [(AVMediaPlaybackControls *)self playerController];
-    [v6 currentTime];
+    playerController = [(AVMediaPlaybackControls *)self playerController];
+    [playerController currentTime];
     v8 = v7;
     backwardSecondaryControlConfiguration = self->_backwardSecondaryControlConfiguration;
     if (backwardSecondaryControlConfiguration)
@@ -99,35 +99,35 @@ LABEL_10:
       memset(&time, 0, sizeof(time));
     }
 
-    [v6 seekToTime:v8 - CMTimeGetSeconds(&time)];
+    [playerController seekToTime:v8 - CMTimeGetSeconds(&time)];
   }
 
-  v10 = [(AVMediaPlaybackControls *)self delegate];
+  delegate = [(AVMediaPlaybackControls *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(AVMediaPlaybackControls *)self delegate];
-    [v12 mediaPlaybackControlsBackwardSecondaryControlPressed:self];
+    delegate2 = [(AVMediaPlaybackControls *)self delegate];
+    [delegate2 mediaPlaybackControlsBackwardSecondaryControlPressed:self];
   }
 }
 
-- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)a3
+- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)pressed
 {
-  v8 = a3;
+  pressedCopy = pressed;
   if (self->_player)
   {
-    v4 = [(AVMediaPlaybackControls *)self playerController];
-    [v4 togglePlayback:self];
+    playerController = [(AVMediaPlaybackControls *)self playerController];
+    [playerController togglePlayback:self];
   }
 
-  v5 = [(AVMediaPlaybackControls *)self delegate];
+  delegate = [(AVMediaPlaybackControls *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVMediaPlaybackControls *)self delegate];
-    [v7 mediaPlaybackControlsPlayPauseButtonPressed:self];
+    delegate2 = [(AVMediaPlaybackControls *)self delegate];
+    [delegate2 mediaPlaybackControlsPlayPauseButtonPressed:self];
   }
 }
 
@@ -138,11 +138,11 @@ LABEL_10:
   return v2;
 }
 
-- (void)setForwardSecondaryControlConfiguration:(id)a3
+- (void)setForwardSecondaryControlConfiguration:(id)configuration
 {
-  if (self->_forwardSecondaryControlConfiguration != a3)
+  if (self->_forwardSecondaryControlConfiguration != configuration)
   {
-    v4 = [a3 copy];
+    v4 = [configuration copy];
     forwardSecondaryControlConfiguration = self->_forwardSecondaryControlConfiguration;
     self->_forwardSecondaryControlConfiguration = v4;
 
@@ -159,15 +159,15 @@ LABEL_10:
     v3 = *(v1 + 456);
     if (v2)
     {
-      v4 = [v2 type];
-      if (v4 == 2)
+      type = [v2 type];
+      if (type == 2)
       {
         v5 = 1;
       }
 
       else
       {
-        v5 = 2 * (v4 == 3);
+        v5 = 2 * (type == 3);
       }
 
       [v3 setForwardSecondaryControlIcon:v5];
@@ -206,11 +206,11 @@ LABEL_10:
   return v2;
 }
 
-- (void)setBackwardSecondaryControlConfiguration:(id)a3
+- (void)setBackwardSecondaryControlConfiguration:(id)configuration
 {
-  if (self->_backwardSecondaryControlConfiguration != a3)
+  if (self->_backwardSecondaryControlConfiguration != configuration)
   {
-    v4 = [a3 copy];
+    v4 = [configuration copy];
     backwardSecondaryControlConfiguration = self->_backwardSecondaryControlConfiguration;
     self->_backwardSecondaryControlConfiguration = v4;
 
@@ -227,15 +227,15 @@ LABEL_10:
     v3 = *(v1 + 456);
     if (v2)
     {
-      v4 = [v2 type];
-      if (v4 == 2)
+      type = [v2 type];
+      if (type == 2)
       {
         v5 = 1;
       }
 
       else
       {
-        v5 = 2 * (v4 == 3);
+        v5 = 2 * (type == 3);
       }
 
       [v3 setBackwardSecondaryControlIcon:v5];
@@ -267,68 +267,68 @@ LABEL_10:
   return result;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v5 = a3;
-  if (self->_source != v5)
+  sourceCopy = source;
+  if (self->_source != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(AVObservationController *)self->_observationController stopAllObservation];
     player = self->_player;
     self->_player = 0;
 
-    objc_storeStrong(&self->_source, a3);
+    objc_storeStrong(&self->_source, source);
     [(AVMediaPlaybackControls *)self _startObservations];
     [(AVMediaPlaybackControls *)self _updatePlayPauseButtonIcon];
-    v5 = v7;
+    sourceCopy = v7;
   }
 }
 
 - (void)_startObservations
 {
   v6[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 432))
+    if (*(self + 432))
     {
-      v2 = *(a1 + 408);
+      v2 = *(self + 408);
       v6[0] = @"playerController.rate";
       v6[1] = @"playerController.timeControlStatus";
       v6[2] = @"playerController.playbackSuspended";
       v6[3] = @"playerController.suspendedRate";
       v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:4];
-      v4 = [v2 startObserving:a1 keyPaths:v3 observationHandler:&__block_literal_global_4942];
+      v4 = [v2 startObserving:self keyPaths:v3 observationHandler:&__block_literal_global_4942];
     }
 
-    else if (*(a1 + 440))
+    else if (*(self + 440))
     {
-      v5 = [*(a1 + 408) startObserving:a1 keyPath:@"source.playing" observationHandler:&__block_literal_global_60];
+      v5 = [*(self + 408) startObserving:self keyPath:@"source.playing" observationHandler:&__block_literal_global_60];
     }
   }
 }
 
 - (void)_updatePlayPauseButtonIcon
 {
-  if (a1)
+  if (self)
   {
-    if (a1[54])
+    if (self[54])
     {
-      v2 = [a1 playerController];
-      if ([v2 timeControlStatus])
+      playerController = [self playerController];
+      if ([playerController timeControlStatus])
       {
         v3 = 0;
       }
 
       else
       {
-        [v2 rate];
+        [playerController rate];
         v3 = v6 == 0.0;
       }
 
-      if ([v2 avkit_isAVPlayerControllerOrSubclass])
+      if ([playerController avkit_isAVPlayerControllerOrSubclass])
       {
-        [v2 suspendedRate];
-        v8 = [v2 isPlaybackSuspended] ^ 1 | (v7 == 0.0);
+        [playerController suspendedRate];
+        v8 = [playerController isPlaybackSuspended] ^ 1 | (v7 == 0.0);
       }
 
       else
@@ -341,7 +341,7 @@ LABEL_10:
 
     else
     {
-      v4 = a1[55];
+      v4 = self[55];
       if (v4)
       {
         v5 = [v4 isPlaying] ^ 1;
@@ -353,29 +353,29 @@ LABEL_10:
       }
     }
 
-    v9 = [a1 playbackControlsView];
-    [v9 setPlayPauseButtonShowsPlayIcon:v5];
+    playbackControlsView = [self playbackControlsView];
+    [playbackControlsView setPlayPauseButtonShowsPlayIcon:v5];
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_player != v5)
+  playerCopy = player;
+  if (self->_player != playerCopy)
   {
-    v9 = v5;
+    v9 = playerCopy;
     [(AVObservationController *)self->_observationController stopAllObservation];
     source = self->_source;
     self->_source = 0;
 
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     v7 = [[AVPlayerController alloc] initWithPlayer:v9];
     playerController = self->_playerController;
     self->_playerController = v7;
 
     [(AVMediaPlaybackControls *)self _startObservations];
     [(AVMediaPlaybackControls *)self _updatePlayPauseButtonIcon];
-    v5 = v9;
+    playerCopy = v9;
   }
 }
 
@@ -392,9 +392,9 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = AVMediaPlaybackControls;
   [(AVMediaPlaybackControls *)&v4 layoutSubviews];
-  v3 = [(AVMediaPlaybackControls *)self playbackControlsView];
+  playbackControlsView = [(AVMediaPlaybackControls *)self playbackControlsView];
   [(AVMediaPlaybackControls *)self bounds];
-  [v3 setFrame:?];
+  [playbackControlsView setFrame:?];
 }
 
 - (void)didMoveToWindow
@@ -402,9 +402,9 @@ LABEL_10:
   v12.receiver = self;
   v12.super_class = AVMediaPlaybackControls;
   [(AVMediaPlaybackControls *)&v12 didMoveToWindow];
-  v3 = [(AVMediaPlaybackControls *)self window];
+  window = [(AVMediaPlaybackControls *)self window];
 
-  if (v3)
+  if (window)
   {
     if (self)
     {
@@ -418,10 +418,10 @@ LABEL_10:
       [(AVMediaPlaybackControls *)self _startObservations];
       if (!self->_playbackControlsView)
       {
-        v6 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-        v7 = [v6 traitCollection];
+        avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+        traitCollection = [avkit_mainScreen traitCollection];
 
-        v8 = [[AVMobileChromelessControlsStyleSheet alloc] initWithTraitCollection:v7];
+        v8 = [[AVMobileChromelessControlsStyleSheet alloc] initWithTraitCollection:traitCollection];
         v9 = [[AVMobileChromelessPlaybackControlsView alloc] initWithStyleSheet:v8];
         [(AVMobileChromelessPlaybackControlsView *)v9 setAutoresizingMask:0];
         [(AVMobileChromelessPlaybackControlsView *)v9 setDelegate:self];
@@ -493,16 +493,16 @@ LABEL_10:
   [(AVMediaPlaybackControls *)&v5 dealloc];
 }
 
-- (AVMediaPlaybackControls)initWithSource:(id)a3
+- (AVMediaPlaybackControls)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = AVMediaPlaybackControls;
   v6 = [(AVMediaPlaybackControls *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
+    objc_storeStrong(&v6->_source, source);
     [(AVMediaPlaybackControls *)v7 _commonInit];
   }
 
@@ -512,27 +512,27 @@ LABEL_10:
 - (uint64_t)_commonInit
 {
   v2 = objc_alloc_init(AVMediaSecondaryPlaybackControlConfiguration);
-  v3 = *(a1 + 416);
-  *(a1 + 416) = v2;
+  v3 = *(self + 416);
+  *(self + 416) = v2;
 
   v4 = objc_alloc_init(AVMediaSecondaryPlaybackControlConfiguration);
-  v5 = *(a1 + 424);
-  *(a1 + 424) = v4;
+  v5 = *(self + 424);
+  *(self + 424) = v4;
 
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (AVMediaPlaybackControls)initWithPlayer:(id)a3
+- (AVMediaPlaybackControls)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v11.receiver = self;
   v11.super_class = AVMediaPlaybackControls;
   v6 = [(AVMediaPlaybackControls *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
-    v8 = [[AVPlayerController alloc] initWithPlayer:v5];
+    objc_storeStrong(&v6->_player, player);
+    v8 = [[AVPlayerController alloc] initWithPlayer:playerCopy];
     playerController = v7->_playerController;
     v7->_playerController = v8;
 

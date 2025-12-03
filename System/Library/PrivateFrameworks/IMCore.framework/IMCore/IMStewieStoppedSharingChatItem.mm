@@ -1,12 +1,12 @@
 @interface IMStewieStoppedSharingChatItem
 - (IMChat)chat;
-- (id)_initWithItem:(id)a3 emergencyUserHandle:(id)a4 chat:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item emergencyUserHandle:(id)handle chat:(id)chat;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMStewieStoppedSharingChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -17,23 +17,23 @@
   return v13;
 }
 
-- (id)_initWithItem:(id)a3 emergencyUserHandle:(id)a4 chat:(id)a5
+- (id)_initWithItem:(id)item emergencyUserHandle:(id)handle chat:(id)chat
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  handleCopy = handle;
+  chatCopy = chat;
   v21.receiver = self;
   v21.super_class = IMStewieStoppedSharingChatItem;
-  v13 = [(IMChatItem *)&v21 _initWithItem:v8];
+  v13 = [(IMChatItem *)&v21 _initWithItem:itemCopy];
   if (v13)
   {
-    v14 = objc_msgSend_guid(v8, v11, v12);
-    v17 = objc_msgSend_ID(v9, v15, v16);
+    v14 = objc_msgSend_guid(itemCopy, v11, v12);
+    v17 = objc_msgSend_ID(handleCopy, v15, v16);
     v18 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v13, v19, v18);
-    objc_storeStrong(v13 + 7, a4);
-    objc_storeWeak(v13 + 8, v10);
+    objc_storeStrong(v13 + 7, handle);
+    objc_storeWeak(v13 + 8, chatCopy);
   }
 
   return v13;

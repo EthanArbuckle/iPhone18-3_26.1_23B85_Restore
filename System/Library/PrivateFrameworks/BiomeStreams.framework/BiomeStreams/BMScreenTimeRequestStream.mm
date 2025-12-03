@@ -13,10 +13,10 @@
   if (v2)
   {
     v3 = BMRootLibraryBridge();
-    v4 = [v3 Family];
-    v5 = [v4 ScreenTime];
-    v6 = [v5 Request];
-    v7 = [v6 storeStreamWithLegacyClass:objc_opt_class()];
+    family = [v3 Family];
+    screenTime = [family ScreenTime];
+    request = [screenTime Request];
+    v7 = [request storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v7;
 
@@ -36,8 +36,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMScreenTimeRequestStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMScreenTimeRequestStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

@@ -1,10 +1,10 @@
 @interface FTAcceptMessage
 - (FTAcceptMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation FTAcceptMessage
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = FTAcceptMessage;
-  return [(FTFaceTimeMessage *)&v4 copyWithZone:a3];
+  return [(FTFaceTimeMessage *)&v4 copyWithZone:zone];
 }
 
 - (void)dealloc
@@ -41,8 +41,8 @@
 {
   v36.receiver = self;
   v36.super_class = FTAcceptMessage;
-  v2 = [(FTFaceTimeMessage *)&v36 requiredKeys];
-  v10 = objc_msgSend_mutableCopy(v2, v3, v4, v5, v6);
+  requiredKeys = [(FTFaceTimeMessage *)&v36 requiredKeys];
+  v10 = objc_msgSend_mutableCopy(requiredKeys, v3, v4, v5, v6);
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -64,8 +64,8 @@
 {
   v75.receiver = self;
   v75.super_class = FTAcceptMessage;
-  v3 = [(FTFaceTimeMessage *)&v75 messageBody];
-  v8 = objc_msgSend_mutableCopy(v3, v4, v5, v6, v7);
+  messageBody = [(FTFaceTimeMessage *)&v75 messageBody];
+  v8 = objc_msgSend_mutableCopy(messageBody, v4, v5, v6, v7);
   v13 = objc_msgSend_selfPushToken(self, v9, v10, v11, v12);
   if (v13)
   {
@@ -174,32 +174,32 @@
   return v8;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  if (objc_msgSend_objectForKey_(a3, a2, @"relay-type", v3, v4))
+  if (objc_msgSend_objectForKey_(dictionary, a2, @"relay-type", v3, v4))
   {
     v10 = MEMORY[0x277CCABB0];
-    v11 = objc_msgSend_objectForKey_(a3, v7, @"relay-type", v8, v9);
+    v11 = objc_msgSend_objectForKey_(dictionary, v7, @"relay-type", v8, v9);
     v16 = objc_msgSend_intValue(v11, v12, v13, v14, v15);
     v20 = objc_msgSend_numberWithInt_(v10, v17, v16, v18, v19);
     objc_msgSend_setRelayType_(self, v21, v20, v22, v23);
-    v27 = objc_msgSend_objectForKey_(a3, v24, @"relay-connection-id", v25, v26);
+    v27 = objc_msgSend_objectForKey_(dictionary, v24, @"relay-connection-id", v25, v26);
     objc_msgSend_setRelayConnectionId_(self, v28, v27, v29, v30);
-    v34 = objc_msgSend_objectForKey_(a3, v31, @"relay-transaction-id-alloc", v32, v33);
+    v34 = objc_msgSend_objectForKey_(dictionary, v31, @"relay-transaction-id-alloc", v32, v33);
     objc_msgSend_setRelayTransactionIdAlloc_(self, v35, v34, v36, v37);
-    v41 = objc_msgSend_objectForKey_(a3, v38, @"relay-token-alloc-req", v39, v40);
+    v41 = objc_msgSend_objectForKey_(dictionary, v38, @"relay-token-alloc-req", v39, v40);
     objc_msgSend_setRelayTokenAllocReq_(self, v42, v41, v43, v44);
-    v48 = objc_msgSend_objectForKey_(a3, v45, @"self-relay-ip", v46, v47);
+    v48 = objc_msgSend_objectForKey_(dictionary, v45, @"self-relay-ip", v46, v47);
     objc_msgSend_setSelfRelayIP_(self, v49, v48, v50, v51);
     v52 = MEMORY[0x277CCABB0];
-    v56 = objc_msgSend_objectForKey_(a3, v53, @"self-relay-port", v54, v55);
+    v56 = objc_msgSend_objectForKey_(dictionary, v53, @"self-relay-port", v54, v55);
     v61 = objc_msgSend_intValue(v56, v57, v58, v59, v60);
     v65 = objc_msgSend_numberWithInt_(v52, v62, v61, v63, v64);
     objc_msgSend_setSelfRelayPort_(self, v66, v65, v67, v68);
-    v72 = objc_msgSend_objectForKey_(a3, v69, @"peer-relay-ip", v70, v71);
+    v72 = objc_msgSend_objectForKey_(dictionary, v69, @"peer-relay-ip", v70, v71);
     objc_msgSend_setPeerRelayIP_(self, v73, v72, v74, v75);
     v76 = MEMORY[0x277CCABB0];
-    v80 = objc_msgSend_objectForKey_(a3, v77, @"peer-relay-port", v78, v79);
+    v80 = objc_msgSend_objectForKey_(dictionary, v77, @"peer-relay-port", v78, v79);
     v85 = objc_msgSend_intValue(v80, v81, v82, v83, v84);
     v90 = objc_msgSend_numberWithInt_(v76, v86, v85, v87, v88);
 

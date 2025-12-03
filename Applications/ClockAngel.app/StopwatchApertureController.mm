@@ -1,29 +1,29 @@
 @interface StopwatchApertureController
 - (NSString)associatedAppBundleIdentifier;
 - (NSURL)launchURL;
-- (_TtC10ClockAngel27StopwatchApertureController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10ClockAngel27StopwatchApertureController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)preferredHeightForBottomSafeArea;
 - (void)didPauseLapTimer;
 - (void)didResumeLapTimer;
-- (void)didUpdateCurrentInterval:(double)a3 adjustedCurrentInterval:(double)a4 totalInterval:(double)a5 adjustedTotalInterval:(double)a6 isStopwatchRunning:(BOOL)a7 isStopwatchStopped:(BOOL)a8;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setElementIdentifier:(id)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)didUpdateCurrentInterval:(double)interval adjustedCurrentInterval:(double)currentInterval totalInterval:(double)totalInterval adjustedTotalInterval:(double)adjustedTotalInterval isStopwatchRunning:(BOOL)running isStopwatchStopped:(BOOL)stopped;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setLaunchURL:(id)l;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation StopwatchApertureController
 
 - (double)preferredHeightForBottomSafeArea
 {
-  v2 = self;
-  v3 = [(StopwatchApertureController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(StopwatchApertureController *)selfCopy view];
+  if (view)
   {
-    v5 = v3;
-    v6 = [v3 SBUISA_systemApertureObstructedAreaLayoutGuide];
+    v5 = view;
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [view SBUISA_systemApertureObstructedAreaLayoutGuide];
 
-    [v6 layoutFrame];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -70,13 +70,13 @@
   return v11;
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
   v5 = sub_1000032D4(&unk_100119A20, &qword_1000D1DC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -91,7 +91,7 @@
 
   v11 = OBJC_IVAR____TtC10ClockAngel27StopwatchApertureController_launchURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_100057440(v8, self + v11);
   swift_endAccess();
 }
@@ -114,9 +114,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -133,44 +133,44 @@
   v6[1] = v5;
 }
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC10ClockAngel27StopwatchApertureController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC10ClockAngel27StopwatchApertureController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10ClockAngel27StopwatchApertureController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1000C3700(a4, width, height);
+  selfCopy = self;
+  sub_1000C3700(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)didUpdateCurrentInterval:(double)a3 adjustedCurrentInterval:(double)a4 totalInterval:(double)a5 adjustedTotalInterval:(double)a6 isStopwatchRunning:(BOOL)a7 isStopwatchStopped:(BOOL)a8
+- (void)didUpdateCurrentInterval:(double)interval adjustedCurrentInterval:(double)currentInterval totalInterval:(double)totalInterval adjustedTotalInterval:(double)adjustedTotalInterval isStopwatchRunning:(BOOL)running isStopwatchStopped:(BOOL)stopped
 {
-  v14 = self;
-  sub_1000C4A50(a7, a8, a3, a4, a5, a6);
+  selfCopy = self;
+  sub_1000C4A50(running, stopped, interval, currentInterval, totalInterval, adjustedTotalInterval);
 }
 
 - (void)didPauseLapTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C4EA0(&selRef_didPauseLapTimer);
 }
 
 - (void)didResumeLapTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C4EA0(&selRef_didResumeLapTimer);
 }
 
-- (_TtC10ClockAngel27StopwatchApertureController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10ClockAngel27StopwatchApertureController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -182,8 +182,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000C57D0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000C57D0(v5, v7, bundle);
 }
 
 @end

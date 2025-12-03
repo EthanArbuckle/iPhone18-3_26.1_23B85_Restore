@@ -1,7 +1,7 @@
 @interface VCNRDeviceSyncService
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VCCompanionSyncService)service;
-- (VCNRDeviceSyncService)initWithCompanionSyncService:(id)a3 device:(id)a4;
+- (VCNRDeviceSyncService)initWithCompanionSyncService:(id)service device:(id)device;
 - (unint64_t)hash;
 - (void)requestFullResync;
 - (void)requestSync;
@@ -18,32 +18,32 @@
 
 - (void)requestFullResync
 {
-  v2 = [(VCNRDeviceSyncService *)self service];
-  [v2 requestFullResync];
+  service = [(VCNRDeviceSyncService *)self service];
+  [service requestFullResync];
 }
 
 - (void)requestSync
 {
-  v2 = [(VCNRDeviceSyncService *)self service];
-  [v2 requestSync];
+  service = [(VCNRDeviceSyncService *)self service];
+  [service requestSync];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(VCNRDeviceSyncService *)self service];
-  v4 = [v3 hash];
-  v5 = [(VCNRDeviceSyncService *)self syncServiceIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(VCNRDeviceSyncService *)self directoryURL];
-  v8 = [v7 hash];
+  service = [(VCNRDeviceSyncService *)self service];
+  v4 = [service hash];
+  syncServiceIdentifier = [(VCNRDeviceSyncService *)self syncServiceIdentifier];
+  v6 = [syncServiceIdentifier hash] ^ v4;
+  directoryURL = [(VCNRDeviceSyncService *)self directoryURL];
+  v8 = [directoryURL hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -53,26 +53,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VCNRDeviceSyncService *)self service];
-      v6 = [(VCNRDeviceSyncService *)v4 service];
-      if ([v5 isEqual:v6])
+      service = [(VCNRDeviceSyncService *)self service];
+      service2 = [(VCNRDeviceSyncService *)equalCopy service];
+      if ([service isEqual:service2])
       {
-        v7 = [(VCNRDeviceSyncService *)self syncServiceIdentifier];
-        v8 = [(VCNRDeviceSyncService *)v4 syncServiceIdentifier];
-        if ([v7 isEqual:v8])
+        syncServiceIdentifier = [(VCNRDeviceSyncService *)self syncServiceIdentifier];
+        syncServiceIdentifier2 = [(VCNRDeviceSyncService *)equalCopy syncServiceIdentifier];
+        if ([syncServiceIdentifier isEqual:syncServiceIdentifier2])
         {
-          v9 = [(VCNRDeviceSyncService *)self directoryURL];
-          v10 = [(VCNRDeviceSyncService *)v4 directoryURL];
-          if (v9 == v10)
+          directoryURL = [(VCNRDeviceSyncService *)self directoryURL];
+          directoryURL2 = [(VCNRDeviceSyncService *)equalCopy directoryURL];
+          if (directoryURL == directoryURL2)
           {
             v13 = 1;
           }
 
           else
           {
-            v11 = [(VCNRDeviceSyncService *)self directoryURL];
-            v12 = [(VCNRDeviceSyncService *)v4 directoryURL];
-            v13 = [v11 isEqual:v12];
+            directoryURL3 = [(VCNRDeviceSyncService *)self directoryURL];
+            directoryURL4 = [(VCNRDeviceSyncService *)equalCopy directoryURL];
+            v13 = [directoryURL3 isEqual:directoryURL4];
           }
         }
 
@@ -97,15 +97,15 @@
   return v13;
 }
 
-- (VCNRDeviceSyncService)initWithCompanionSyncService:(id)a3 device:(id)a4
+- (VCNRDeviceSyncService)initWithCompanionSyncService:(id)service device:(id)device
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  serviceCopy = service;
+  deviceCopy = device;
+  v9 = deviceCopy;
+  if (serviceCopy)
   {
-    if (v8)
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
@@ -113,8 +113,8 @@
 
   else
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"VCNRDeviceSyncService.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCNRDeviceSyncService.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"service"}];
 
     if (v9)
     {
@@ -122,8 +122,8 @@
     }
   }
 
-  v33 = [MEMORY[0x277CCA890] currentHandler];
-  [v33 handleFailureInMethod:a2 object:self file:@"VCNRDeviceSyncService.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"device"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCNRDeviceSyncService.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"device"}];
 
 LABEL_3:
   v34.receiver = self;
@@ -135,19 +135,19 @@ LABEL_3:
     {
       v11 = [v9 valueForProperty:*MEMORY[0x277D2BC18]];
       v12 = [v11 componentsSeparatedByString:@"."];
-      v13 = [v12 firstObject];
-      v14 = [v13 integerValue];
+      firstObject = [v12 firstObject];
+      integerValue = [firstObject integerValue];
 
-      if (v14 > 6)
+      if (integerValue > 6)
       {
         v15 = 3;
 LABEL_12:
         v10->_protocolVersion = v15;
-        objc_storeWeak(&v10->_service, v7);
+        objc_storeWeak(&v10->_service, serviceCopy);
         v22 = MEMORY[0x277CCACA8];
-        v23 = [v9 pairingID];
-        v24 = [v23 UUIDString];
-        v25 = [v22 stringWithFormat:@"CompanionSync-%@", v24];
+        pairingID = [v9 pairingID];
+        uUIDString = [pairingID UUIDString];
+        v25 = [v22 stringWithFormat:@"CompanionSync-%@", uUIDString];
         syncServiceIdentifier = v10->_syncServiceIdentifier;
         v10->_syncServiceIdentifier = v25;
 

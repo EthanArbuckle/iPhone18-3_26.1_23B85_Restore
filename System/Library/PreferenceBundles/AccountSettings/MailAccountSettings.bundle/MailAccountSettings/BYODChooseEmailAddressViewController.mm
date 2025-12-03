@@ -1,24 +1,24 @@
 @interface BYODChooseEmailAddressViewController
-- (BYODChooseEmailAddressViewController)initWithACAccount:(id)a3 familyFlow:(BOOL)a4;
+- (BYODChooseEmailAddressViewController)initWithACAccount:(id)account familyFlow:(BOOL)flow;
 - (id)_createDoNotHaveAddress;
 - (id)_createHaveExistingAddress;
-- (void)_addDataCardsView:(id)a3;
-- (void)_doNotHaveExistingAddressWasTapped:(id)a3;
-- (void)_haveExistingAddressWasTapped:(id)a3;
-- (void)backWasTapped:(id)a3;
+- (void)_addDataCardsView:(id)view;
+- (void)_doNotHaveExistingAddressWasTapped:(id)tapped;
+- (void)_haveExistingAddressWasTapped:(id)tapped;
+- (void)backWasTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation BYODChooseEmailAddressViewController
 
-- (BYODChooseEmailAddressViewController)initWithACAccount:(id)a3 familyFlow:(BOOL)a4
+- (BYODChooseEmailAddressViewController)initWithACAccount:(id)account familyFlow:(BOOL)flow
 {
   v6.receiver = self;
   v6.super_class = BYODChooseEmailAddressViewController;
-  result = [(BYODBaseViewController *)&v6 initWithACAccount:a3];
+  result = [(BYODBaseViewController *)&v6 initWithACAccount:account];
   if (result)
   {
-    _familyFlow = a4;
+    _familyFlow = flow;
   }
 
   return result;
@@ -37,49 +37,49 @@
 
   v7 = +[BYODIcon customEmailDomainIcon];
   [(BYODBaseViewController *)self createViewControllerWithTitle:v4 detail:v6 icon:v7];
-  v8 = [(BYODChooseEmailAddressViewController *)self navigationItem];
-  [v8 setHidesBackButton:0];
+  navigationItem = [(BYODChooseEmailAddressViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:0];
 }
 
-- (void)_addDataCardsView:(id)a3
+- (void)_addDataCardsView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setAxis:1];
   [v5 setSpacing:10.0];
-  v6 = [(BYODChooseEmailAddressViewController *)self _createHaveExistingAddress];
-  [v5 addArrangedSubview:v6];
+  _createHaveExistingAddress = [(BYODChooseEmailAddressViewController *)self _createHaveExistingAddress];
+  [v5 addArrangedSubview:_createHaveExistingAddress];
 
-  v7 = [(BYODChooseEmailAddressViewController *)self _createDoNotHaveAddress];
-  [v5 addArrangedSubview:v7];
+  _createDoNotHaveAddress = [(BYODChooseEmailAddressViewController *)self _createDoNotHaveAddress];
+  [v5 addArrangedSubview:_createDoNotHaveAddress];
 
-  v8 = [v4 contentView];
-  [v8 addSubview:v5];
+  contentView = [viewCopy contentView];
+  [contentView addSubview:v5];
 
-  v24 = [v4 contentView];
-  v23 = [v4 contentView];
-  v26 = [v23 topAnchor];
-  v22 = [v5 topAnchor];
-  v21 = [v26 constraintEqualToAnchor:?];
+  contentView2 = [viewCopy contentView];
+  contentView3 = [viewCopy contentView];
+  topAnchor = [contentView3 topAnchor];
+  topAnchor2 = [v5 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:?];
   v27[0] = v21;
-  v20 = [v4 contentView];
-  v25 = [v20 leadingAnchor];
-  v19 = [v5 leadingAnchor];
-  v18 = [v25 constraintEqualToAnchor:?];
+  contentView4 = [viewCopy contentView];
+  leadingAnchor = [contentView4 leadingAnchor];
+  leadingAnchor2 = [v5 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:?];
   v27[1] = v18;
-  v17 = [v4 contentView];
-  v9 = [v17 trailingAnchor];
-  v10 = [v5 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  contentView5 = [viewCopy contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  trailingAnchor2 = [v5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[2] = v11;
-  v12 = [v4 contentView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v5 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  contentView6 = [viewCopy contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v15;
   v16 = [NSArray arrayWithObjects:v27 count:4];
-  [v24 addConstraints:v16];
+  [contentView2 addConstraints:v16];
 }
 
 - (id)_createHaveExistingAddress
@@ -147,31 +147,31 @@
   return v11;
 }
 
-- (void)backWasTapped:(id)a3
+- (void)backWasTapped:(id)tapped
 {
-  v4 = [(BYODChooseEmailAddressViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(BYODChooseEmailAddressViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_haveExistingAddressWasTapped:(id)a3
+- (void)_haveExistingAddressWasTapped:(id)tapped
 {
-  v7 = a3;
+  tappedCopy = tapped;
   v4 = [BYODExistingAddressViewController alloc];
-  v5 = [(BYODBaseViewController *)self userAccount];
-  v6 = [(BYODExistingAddressViewController *)v4 initWithACAccount:v5 familyFlow:_familyFlow existingAddress:1];
+  userAccount = [(BYODBaseViewController *)self userAccount];
+  v6 = [(BYODExistingAddressViewController *)v4 initWithACAccount:userAccount familyFlow:_familyFlow existingAddress:1];
 
   [(BYODExistingAddressViewController *)v6 setModalInPresentation:0];
-  [(BYODChooseEmailAddressViewController *)self showViewController:v6 sender:v7];
+  [(BYODChooseEmailAddressViewController *)self showViewController:v6 sender:tappedCopy];
 }
 
-- (void)_doNotHaveExistingAddressWasTapped:(id)a3
+- (void)_doNotHaveExistingAddressWasTapped:(id)tapped
 {
   v4 = [BYODExistingAddressViewController alloc];
-  v5 = [(BYODBaseViewController *)self userAccount];
-  v7 = [(BYODExistingAddressViewController *)v4 initWithACAccount:v5 familyFlow:_familyFlow existingAddress:0];
+  userAccount = [(BYODBaseViewController *)self userAccount];
+  v7 = [(BYODExistingAddressViewController *)v4 initWithACAccount:userAccount familyFlow:_familyFlow existingAddress:0];
 
-  v6 = [(BYODChooseEmailAddressViewController *)self navigationController];
-  [v6 pushViewController:v7 animated:1];
+  navigationController = [(BYODChooseEmailAddressViewController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
 @end

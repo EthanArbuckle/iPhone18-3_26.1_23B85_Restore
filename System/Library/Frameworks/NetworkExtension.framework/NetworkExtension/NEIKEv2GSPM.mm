@@ -1,19 +1,19 @@
 @interface NEIKEv2GSPM
-- (id)initWithIKESA:(id *)a1;
+- (id)initWithIKESA:(id *)a;
 - (uint64_t)createLocalSignedOctetVector;
 - (uint64_t)createRemoteSignedOctetVector;
 @end
 
 @implementation NEIKEv2GSPM
 
-- (id)initWithIKESA:(id *)a1
+- (id)initWithIKESA:(id *)a
 {
   v61 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!a)
   {
-    v15 = 0;
+    aCopy = 0;
     goto LABEL_47;
   }
 
@@ -45,9 +45,9 @@ LABEL_49:
     goto LABEL_16;
   }
 
-  v8 = [(NEIKEv2IKESA *)v4 sharedSecret];
+  sharedSecret = [(NEIKEv2IKESA *)v4 sharedSecret];
 
-  if (!v8)
+  if (!sharedSecret)
   {
     v13 = ne_log_obj();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -72,9 +72,9 @@ LABEL_49:
   }
 
   v10 = v9;
-  v11 = [v10 securePasswordMethod];
+  securePasswordMethod = [v10 securePasswordMethod];
 
-  if (v11 == 11001)
+  if (securePasswordMethod == 11001)
   {
     location = 0;
     v52 = [(NEIKEv2IKESA *)v4 createConcatedNoncesAndReturnError:?];
@@ -92,7 +92,7 @@ LABEL_49:
         _os_log_error_impl(&dword_1BA83C000, log, OS_LOG_TYPE_ERROR, "Failed to retrieve concatenated nonces %@ for %@", buf, 0x16u);
       }
 
-      v15 = 0;
+      aCopy = 0;
       goto LABEL_45;
     }
 
@@ -109,7 +109,7 @@ LABEL_49:
         _os_log_error_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_ERROR, "Failed to retrieve concatenated SPIs %@ for %@", buf, 0x16u);
       }
 
-      v15 = 0;
+      aCopy = 0;
       goto LABEL_44;
     }
 
@@ -140,8 +140,8 @@ LABEL_49:
     if (objc_opt_isKindOfClass())
     {
       v17 = [NEIKEv2KeyIDIdentifier alloc];
-      v18 = [v16 identifierData];
-      v19 = [(NEIKEv2KeyIDIdentifier *)v17 initWithKeyID:v18];
+      identifierData = [v16 identifierData];
+      v19 = [(NEIKEv2KeyIDIdentifier *)v17 initWithKeyID:identifierData];
 
       v16 = v19;
     }
@@ -153,8 +153,8 @@ LABEL_49:
       objc_setProperty_atomic(v20, v21, v16, 32);
     }
 
-    v51 = [(NEIKEv2IdentifierPayload *)p_isa copyPayloadData];
-    if (!v51)
+    copyPayloadData = [(NEIKEv2IdentifierPayload *)p_isa copyPayloadData];
+    if (!copyPayloadData)
     {
       v24 = ne_log_obj();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -164,7 +164,7 @@ LABEL_49:
         _os_log_error_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_ERROR, "Failed to get Initiator ID data for %@", buf, 0xCu);
       }
 
-      v15 = 0;
+      aCopy = 0;
       goto LABEL_43;
     }
 
@@ -182,8 +182,8 @@ LABEL_49:
     if (objc_opt_isKindOfClass())
     {
       v25 = [NEIKEv2KeyIDIdentifier alloc];
-      v26 = [v24 identifierData];
-      v27 = [(NEIKEv2KeyIDIdentifier *)v25 initWithKeyID:v26];
+      identifierData2 = [v24 identifierData];
+      v27 = [(NEIKEv2KeyIDIdentifier *)v25 initWithKeyID:identifierData2];
 
       v24 = v27;
     }
@@ -195,36 +195,36 @@ LABEL_49:
       objc_setProperty_atomic(v28, v29, v24, 32);
     }
 
-    v31 = [(NEIKEv2IdentifierPayload *)v30 copyPayloadData];
-    if (v31)
+    copyPayloadData2 = [(NEIKEv2IdentifierPayload *)v30 copyPayloadData];
+    if (copyPayloadData2)
     {
-      v55.receiver = a1;
+      v55.receiver = a;
       v55.super_class = NEIKEv2GSPM;
       v32 = objc_msgSendSuper2(&v55, sel_init);
       if (v32)
       {
-        a1 = v32;
+        a = v32;
         v34 = *(v4 + 9);
-        v35 = [(NEIKEv2IKESA *)v4 sharedSecret];
+        sharedSecret2 = [(NEIKEv2IKESA *)v4 sharedSecret];
         obj = location;
-        v36 = [NEIKEv2CryptoKitSPAKE2Plus createForInitiator:v34 & 1 seed:v35 initiatorID:v51 responderID:v31 salt:v52 context:log error:&obj];
+        v36 = [NEIKEv2CryptoKitSPAKE2Plus createForInitiator:v34 & 1 seed:sharedSecret2 initiatorID:copyPayloadData responderID:copyPayloadData2 salt:v52 context:log error:&obj];
         v37 = obj;
         objc_storeStrong(&location, obj);
-        v38 = a1[3];
-        a1[3] = v36;
+        v38 = a[3];
+        a[3] = v36;
 
-        v39 = a1[3];
+        v39 = a[3];
         if (v39)
         {
           v40 = v39;
-          v41 = [v40 keyShare];
+          keyShare = [v40 keyShare];
 
-          objc_storeStrong(a1 + 4, v41);
-          v42 = a1[2];
-          a1[2] = v41;
+          objc_storeStrong(a + 4, keyShare);
+          v42 = a[2];
+          a[2] = keyShare;
 
-          a1 = a1;
-          v15 = a1;
+          a = a;
+          aCopy = a;
 LABEL_42:
 
 LABEL_43:
@@ -254,7 +254,7 @@ LABEL_45:
           _os_log_fault_impl(&dword_1BA83C000, v50, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
         }
 
-        a1 = 0;
+        a = 0;
       }
     }
 
@@ -269,14 +269,14 @@ LABEL_45:
       }
     }
 
-    v15 = 0;
+    aCopy = 0;
     goto LABEL_42;
   }
 
   v13 = ne_log_obj();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
-    String = NEIKEv2SecurePasswordMethodCreateString(v11);
+    String = NEIKEv2SecurePasswordMethodCreateString(securePasswordMethod);
     *buf = 138412290;
     v58 = String;
     _os_log_fault_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_FAULT, "Support for secure password method %@ is not implemented", buf, 0xCu);
@@ -284,24 +284,24 @@ LABEL_45:
 
 LABEL_16:
 
-  v15 = 0;
+  aCopy = 0;
 LABEL_46:
 
 LABEL_47:
   v45 = *MEMORY[0x1E69E9840];
-  return v15;
+  return aCopy;
 }
 
 - (uint64_t)createLocalSignedOctetVector
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v6 = 0;
     goto LABEL_10;
   }
 
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   if (!v1)
   {
     v5 = ne_log_obj();
@@ -320,7 +320,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v2 = *(a1 + 40);
+  v2 = *(self + 40);
   if (!v2)
   {
     v5 = ne_log_obj();
@@ -335,7 +335,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10[0] = *(a1 + 32);
+  v10[0] = *(self + 32);
   v10[1] = v2;
   v3 = MEMORY[0x1E695DEC8];
   v4 = v2;
@@ -351,13 +351,13 @@ LABEL_10:
 - (uint64_t)createRemoteSignedOctetVector
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v6 = 0;
     goto LABEL_10;
   }
 
-  v1 = *(a1 + 40);
+  v1 = *(self + 40);
   if (!v1)
   {
     v5 = ne_log_obj();
@@ -376,7 +376,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   if (!v2)
   {
     v5 = ne_log_obj();
@@ -391,7 +391,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10[0] = *(a1 + 40);
+  v10[0] = *(self + 40);
   v10[1] = v2;
   v3 = MEMORY[0x1E695DEC8];
   v4 = v2;

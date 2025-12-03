@@ -1,17 +1,17 @@
 @interface USKToken
-+ (USKToken)tokenWithDataType:(id)a3;
-+ (USKToken)tokenWithNodeType:(id)a3;
-+ (USKToken)tokenWithRoleType:(id)a3;
-+ (USKToken)tokenWithSchemaType:(id)a3;
-+ (id)dataTypeWithTfToken:(TfToken)a3;
-+ (id)nodeTypeWithTfToken:(TfToken)a3;
-+ (id)roleTypeWithTfToken:(TfToken)a3;
-+ (id)schemaTypeWithTfToken:(TfToken)a3;
-- (BOOL)isEqual:(id)a3;
++ (USKToken)tokenWithDataType:(id)type;
++ (USKToken)tokenWithNodeType:(id)type;
++ (USKToken)tokenWithRoleType:(id)type;
++ (USKToken)tokenWithSchemaType:(id)type;
++ (id)dataTypeWithTfToken:(TfToken)token;
++ (id)nodeTypeWithTfToken:(TfToken)token;
++ (id)roleTypeWithTfToken:(TfToken)token;
++ (id)schemaTypeWithTfToken:(TfToken)token;
+- (BOOL)isEqual:(id)equal;
 - (TfToken)token;
 - (USKToken)init;
-- (USKToken)initWithString:(id)a3;
-- (USKToken)initWithTfToken:(TfToken)a3;
+- (USKToken)initWithString:(id)string;
+- (USKToken)initWithTfToken:(TfToken)token;
 - (id)stringValue;
 @end
 
@@ -55,7 +55,7 @@
   return v4;
 }
 
-- (USKToken)initWithTfToken:(TfToken)a3
+- (USKToken)initWithTfToken:(TfToken)token
 {
   sub_27035CAC4();
   v9.receiver = self;
@@ -64,23 +64,23 @@
   v6 = v5;
   if (v5)
   {
-    sub_270325CAC(&v5->_token._rep._ptrAndBits, a3._rep._ptrAndBits);
+    sub_270325CAC(&v5->_token._rep._ptrAndBits, token._rep._ptrAndBits);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (USKToken)initWithString:(id)a3
+- (USKToken)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   sub_27035CAC4();
   v18.receiver = self;
   v18.super_class = USKToken;
   v5 = [(USKToken *)&v18 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = stringCopy;
     v10 = objc_msgSend_UTF8String(v6, v7, v8, v9);
     v11 = strlen(v10);
     if (v11 >= 0x7FFFFFFFFFFFFFF8)
@@ -131,7 +131,7 @@
   return v5;
 }
 
-+ (id)nodeTypeWithTfToken:(TfToken)a3
++ (id)nodeTypeWithTfToken:(TfToken)token
 {
   v8 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -140,14 +140,14 @@
     operator new();
   }
 
-  if (qword_2807CE4D8 + 8 == sub_270339134(qword_2807CE4D8, a3._rep._ptrAndBits))
+  if (qword_2807CE4D8 + 8 == sub_270339134(qword_2807CE4D8, token._rep._ptrAndBits))
   {
     v4 = USKNodeTypeUnknown;
   }
 
   else
   {
-    v4 = (sub_2703391C4(qword_2807CE4D8, a3._rep._ptrAndBits) + 40);
+    v4 = (sub_2703391C4(qword_2807CE4D8, token._rep._ptrAndBits) + 40);
   }
 
   v5 = *v4;
@@ -156,7 +156,7 @@
   return v5;
 }
 
-+ (id)schemaTypeWithTfToken:(TfToken)a3
++ (id)schemaTypeWithTfToken:(TfToken)token
 {
   v8 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -165,14 +165,14 @@
     operator new();
   }
 
-  if (qword_2807CE4E8 + 8 == sub_270339134(qword_2807CE4E8, a3._rep._ptrAndBits))
+  if (qword_2807CE4E8 + 8 == sub_270339134(qword_2807CE4E8, token._rep._ptrAndBits))
   {
     v4 = USKSchemaTypeUnknown;
   }
 
   else
   {
-    v4 = (sub_2703391C4(qword_2807CE4E8, a3._rep._ptrAndBits) + 40);
+    v4 = (sub_2703391C4(qword_2807CE4E8, token._rep._ptrAndBits) + 40);
   }
 
   v5 = *v4;
@@ -181,7 +181,7 @@
   return v5;
 }
 
-+ (id)roleTypeWithTfToken:(TfToken)a3
++ (id)roleTypeWithTfToken:(TfToken)token
 {
   v8 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -190,14 +190,14 @@
     operator new();
   }
 
-  if (qword_2807CE4F8 + 8 == sub_270339134(qword_2807CE4F8, a3._rep._ptrAndBits))
+  if (qword_2807CE4F8 + 8 == sub_270339134(qword_2807CE4F8, token._rep._ptrAndBits))
   {
     v4 = USKRoleTypeNone;
   }
 
   else
   {
-    v4 = (sub_2703391C4(qword_2807CE4F8, a3._rep._ptrAndBits) + 40);
+    v4 = (sub_2703391C4(qword_2807CE4F8, token._rep._ptrAndBits) + 40);
   }
 
   v5 = *v4;
@@ -206,7 +206,7 @@
   return v5;
 }
 
-+ (id)dataTypeWithTfToken:(TfToken)a3
++ (id)dataTypeWithTfToken:(TfToken)token
 {
   v8 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -215,14 +215,14 @@
     operator new();
   }
 
-  if (qword_2807CE508 + 8 == sub_270339134(qword_2807CE508, a3._rep._ptrAndBits))
+  if (qword_2807CE508 + 8 == sub_270339134(qword_2807CE508, token._rep._ptrAndBits))
   {
     v4 = USKDataTypeUnknown;
   }
 
   else
   {
-    v4 = (sub_2703391C4(qword_2807CE508, a3._rep._ptrAndBits) + 40);
+    v4 = (sub_2703391C4(qword_2807CE508, token._rep._ptrAndBits) + 40);
   }
 
   v5 = *v4;
@@ -231,9 +231,9 @@
   return v5;
 }
 
-+ (USKToken)tokenWithNodeType:(id)a3
++ (USKToken)tokenWithNodeType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   sub_27035CAC4();
   if ((atomic_load_explicit(&qword_2807CE528, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_2807CE528))
   {
@@ -246,9 +246,9 @@
     sub_27036CA6C();
   }
 
-  if (v3)
+  if (typeCopy)
   {
-    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE520, v4, v3, v5);
+    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE520, v4, typeCopy, v5);
     v7 = v6;
     if (v6)
     {
@@ -258,7 +258,7 @@
     else
     {
       v9 = [USKToken alloc];
-      v10 = v3;
+      v10 = typeCopy;
       v14 = objc_msgSend_UTF8String(v10, v11, v12, v13);
       MEMORY[0x27439E610](&v19, v14);
       v8 = objc_msgSend_initWithTfToken_(v9, v15, &v19, v16);
@@ -267,7 +267,7 @@
         atomic_fetch_add_explicit((v19 & 0xFFFFFFFFFFFFFFF8), 0xFFFFFFFE, memory_order_release);
       }
 
-      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE520, v17, v8, v3);
+      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE520, v17, v8, typeCopy);
     }
   }
 
@@ -279,9 +279,9 @@
   return v8;
 }
 
-+ (USKToken)tokenWithRoleType:(id)a3
++ (USKToken)tokenWithRoleType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   sub_27035CAC4();
   if ((atomic_load_explicit(&qword_2807CE540, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_2807CE540))
   {
@@ -294,9 +294,9 @@
     sub_27036CA80();
   }
 
-  if (v3)
+  if (typeCopy)
   {
-    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE538, v4, v3, v5);
+    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE538, v4, typeCopy, v5);
     v7 = v6;
     if (v6)
     {
@@ -306,7 +306,7 @@
     else
     {
       v9 = [USKToken alloc];
-      v10 = v3;
+      v10 = typeCopy;
       v14 = objc_msgSend_UTF8String(v10, v11, v12, v13);
       MEMORY[0x27439E610](&v19, v14);
       v8 = objc_msgSend_initWithTfToken_(v9, v15, &v19, v16);
@@ -315,7 +315,7 @@
         atomic_fetch_add_explicit((v19 & 0xFFFFFFFFFFFFFFF8), 0xFFFFFFFE, memory_order_release);
       }
 
-      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE538, v17, v8, v3);
+      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE538, v17, v8, typeCopy);
     }
   }
 
@@ -327,9 +327,9 @@
   return v8;
 }
 
-+ (USKToken)tokenWithDataType:(id)a3
++ (USKToken)tokenWithDataType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   sub_27035CAC4();
   if ((atomic_load_explicit(&qword_2807CE558, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_2807CE558))
   {
@@ -342,9 +342,9 @@
     sub_27036CA94();
   }
 
-  if (v3)
+  if (typeCopy)
   {
-    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE550, v4, v3, v5);
+    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE550, v4, typeCopy, v5);
     v7 = v6;
     if (v6)
     {
@@ -354,7 +354,7 @@
     else
     {
       v9 = [USKToken alloc];
-      v10 = v3;
+      v10 = typeCopy;
       v14 = objc_msgSend_UTF8String(v10, v11, v12, v13);
       MEMORY[0x27439E610](&v19, v14);
       v8 = objc_msgSend_initWithTfToken_(v9, v15, &v19, v16);
@@ -363,7 +363,7 @@
         atomic_fetch_add_explicit((v19 & 0xFFFFFFFFFFFFFFF8), 0xFFFFFFFE, memory_order_release);
       }
 
-      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE550, v17, v8, v3);
+      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE550, v17, v8, typeCopy);
     }
   }
 
@@ -375,9 +375,9 @@
   return v8;
 }
 
-+ (USKToken)tokenWithSchemaType:(id)a3
++ (USKToken)tokenWithSchemaType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   sub_27035CAC4();
   if ((atomic_load_explicit(&qword_2807CE570, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_2807CE570))
   {
@@ -390,9 +390,9 @@
     sub_27036CAA8();
   }
 
-  if (v3)
+  if (typeCopy)
   {
-    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE568, v4, v3, v5);
+    v6 = objc_msgSend_objectForKeyedSubscript_(qword_2807CE568, v4, typeCopy, v5);
     v7 = v6;
     if (v6)
     {
@@ -402,7 +402,7 @@
     else
     {
       v9 = [USKToken alloc];
-      v10 = v3;
+      v10 = typeCopy;
       v14 = objc_msgSend_UTF8String(v10, v11, v12, v13);
       MEMORY[0x27439E610](&v19, v14);
       v8 = objc_msgSend_initWithTfToken_(v9, v15, &v19, v16);
@@ -411,7 +411,7 @@
         atomic_fetch_add_explicit((v19 & 0xFFFFFFFFFFFFFFF8), 0xFFFFFFFE, memory_order_release);
       }
 
-      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE568, v17, v8, v3);
+      objc_msgSend_setObject_forKeyedSubscript_(qword_2807CE568, v17, v8, typeCopy);
     }
   }
 
@@ -456,16 +456,16 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_token(v5, v6, v7, v8);
     v9 = (v11 ^ self->_token._rep._ptrAndBits) < 8;

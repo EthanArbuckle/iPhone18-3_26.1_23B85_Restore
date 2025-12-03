@@ -1,43 +1,43 @@
 @interface DKReportPlanner
-+ (DKReportPlanner)plannerWithReportGeneratorRegistry:(id)a3;
-- (DKReportPlanner)initWithReportGeneratorRegistry:(id)a3;
-- (id)_resolveComponentIdentityManifest:(id)a3;
-- (id)requestGroupsForPredicateManifest:(id)a3;
++ (DKReportPlanner)plannerWithReportGeneratorRegistry:(id)registry;
+- (DKReportPlanner)initWithReportGeneratorRegistry:(id)registry;
+- (id)_resolveComponentIdentityManifest:(id)manifest;
+- (id)requestGroupsForPredicateManifest:(id)manifest;
 @end
 
 @implementation DKReportPlanner
 
-+ (DKReportPlanner)plannerWithReportGeneratorRegistry:(id)a3
++ (DKReportPlanner)plannerWithReportGeneratorRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [[DKReportPlanner alloc] initWithReportGeneratorRegistry:v3];
+  registryCopy = registry;
+  v4 = [[DKReportPlanner alloc] initWithReportGeneratorRegistry:registryCopy];
 
   return v4;
 }
 
-- (DKReportPlanner)initWithReportGeneratorRegistry:(id)a3
+- (DKReportPlanner)initWithReportGeneratorRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = DKReportPlanner;
   v6 = [(DKReportPlanner *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_registry, a3);
+    objc_storeStrong(&v6->_registry, registry);
   }
 
   return v7;
 }
 
-- (id)requestGroupsForPredicateManifest:(id)a3
+- (id)requestGroupsForPredicateManifest:(id)manifest
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v24 = [MEMORY[0x277CBEB18] array];
-  v26 = self;
-  v22 = v4;
-  [(DKReportPlanner *)self _resolveComponentIdentityManifest:v4];
+  manifestCopy = manifest;
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  v22 = manifestCopy;
+  [(DKReportPlanner *)self _resolveComponentIdentityManifest:manifestCopy];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -56,8 +56,8 @@
         }
 
         v6 = *(*(&v33 + 1) + 8 * i);
-        v7 = [(DKReportPlanner *)v26 registry];
-        v8 = [v7 generatorForComponentIdentity:v6];
+        registry = [(DKReportPlanner *)selfCopy registry];
+        v8 = [registry generatorForComponentIdentity:v6];
 
         if (v8)
         {
@@ -66,7 +66,7 @@
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v9 = v24;
+          v9 = array;
           v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v10)
           {
@@ -82,9 +82,9 @@ LABEL_9:
               }
 
               v14 = *(*(&v29 + 1) + 8 * v13);
-              v15 = [v14 requestLookupByGenerator];
-              v16 = [v15 allKeys];
-              v17 = [v16 count];
+              requestLookupByGenerator = [v14 requestLookupByGenerator];
+              allKeys = [requestLookupByGenerator allKeys];
+              v17 = [allKeys count];
 
               if (v17 <= 3 && ([v14 addComponentIdentity:v6 usingGenerator:v8] & 1) != 0)
               {
@@ -108,8 +108,8 @@ LABEL_9:
           {
 LABEL_16:
 
-            v18 = [v6 resources];
-            v19 = [DKReportingConcurrentRequestGroup initWithResources:v18];
+            resources = [v6 resources];
+            v19 = [DKReportingConcurrentRequestGroup initWithResources:resources];
 
             [v19 addComponentIdentity:v6 usingGenerator:v8];
             [v9 addObject:v19];
@@ -128,26 +128,26 @@ LABEL_16:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return array;
 }
 
-- (id)_resolveComponentIdentityManifest:(id)a3
+- (id)_resolveComponentIdentityManifest:(id)manifest
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  manifestCopy = manifest;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(DKReportPlanner *)self registry];
-  v7 = [v6 components];
-  v8 = [v7 mutableCopy];
+  registry = [(DKReportPlanner *)self registry];
+  components = [registry components];
+  v8 = [components mutableCopy];
 
-  if (v4)
+  if (manifestCopy)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v21 = v4;
-    obj = v4;
+    v21 = manifestCopy;
+    obj = manifestCopy;
     v24 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v24)
     {
@@ -207,7 +207,7 @@ LABEL_16:
       while (v24);
     }
 
-    v4 = v21;
+    manifestCopy = v21;
   }
 
   else

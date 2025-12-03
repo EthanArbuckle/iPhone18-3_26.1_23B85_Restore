@@ -1,61 +1,61 @@
 @interface _INPBFile
-- (BOOL)isEqual:(id)a3;
-- (_INPBFile)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBFile)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBookmarkData:(id)a3;
-- (void)setData:(id)a3;
-- (void)setFilename:(id)a3;
-- (void)setTypeIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBookmarkData:(id)data;
+- (void)setData:(id)data;
+- (void)setFilename:(id)filename;
+- (void)setTypeIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBFile
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bookmarkData)
   {
-    v4 = [(_INPBFile *)self bookmarkData];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bookmarkData"];
+    bookmarkData = [(_INPBFile *)self bookmarkData];
+    v5 = [bookmarkData copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bookmarkData"];
   }
 
   if (self->_data)
   {
-    v6 = [(_INPBFile *)self data];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"data"];
+    data = [(_INPBFile *)self data];
+    v7 = [data copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"data"];
   }
 
-  v8 = [(_INPBFile *)self fileURL];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"fileURL"];
+  fileURL = [(_INPBFile *)self fileURL];
+  dictionaryRepresentation = [fileURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fileURL"];
 
   if (self->_filename)
   {
-    v10 = [(_INPBFile *)self filename];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"filename"];
+    filename = [(_INPBFile *)self filename];
+    v11 = [filename copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"filename"];
   }
 
   if ([(_INPBFile *)self hasRemovedOnCompletion])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBFile removedOnCompletion](self, "removedOnCompletion")}];
-    [v3 setObject:v12 forKeyedSubscript:@"removedOnCompletion"];
+    [dictionary setObject:v12 forKeyedSubscript:@"removedOnCompletion"];
   }
 
   if (self->_typeIdentifier)
   {
-    v13 = [(_INPBFile *)self typeIdentifier];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"typeIdentifier"];
+    typeIdentifier = [(_INPBFile *)self typeIdentifier];
+    v14 = [typeIdentifier copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"typeIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -77,28 +77,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_typeIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_INPBFile *)self bookmarkData];
-  v6 = [v4 bookmarkData];
-  if ((v5 != 0) == (v6 == 0))
+  bookmarkData = [(_INPBFile *)self bookmarkData];
+  bookmarkData2 = [equalCopy bookmarkData];
+  if ((bookmarkData != 0) == (bookmarkData2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_INPBFile *)self bookmarkData];
-  if (v7)
+  bookmarkData3 = [(_INPBFile *)self bookmarkData];
+  if (bookmarkData3)
   {
-    v8 = v7;
-    v9 = [(_INPBFile *)self bookmarkData];
-    v10 = [v4 bookmarkData];
-    v11 = [v9 isEqual:v10];
+    v8 = bookmarkData3;
+    bookmarkData4 = [(_INPBFile *)self bookmarkData];
+    bookmarkData5 = [equalCopy bookmarkData];
+    v11 = [bookmarkData4 isEqual:bookmarkData5];
 
     if (!v11)
     {
@@ -110,20 +110,20 @@
   {
   }
 
-  v5 = [(_INPBFile *)self data];
-  v6 = [v4 data];
-  if ((v5 != 0) == (v6 == 0))
+  bookmarkData = [(_INPBFile *)self data];
+  bookmarkData2 = [equalCopy data];
+  if ((bookmarkData != 0) == (bookmarkData2 == 0))
   {
     goto LABEL_30;
   }
 
-  v12 = [(_INPBFile *)self data];
-  if (v12)
+  data = [(_INPBFile *)self data];
+  if (data)
   {
-    v13 = v12;
-    v14 = [(_INPBFile *)self data];
-    v15 = [v4 data];
-    v16 = [v14 isEqual:v15];
+    v13 = data;
+    data2 = [(_INPBFile *)self data];
+    data3 = [equalCopy data];
+    v16 = [data2 isEqual:data3];
 
     if (!v16)
     {
@@ -135,20 +135,20 @@
   {
   }
 
-  v5 = [(_INPBFile *)self fileURL];
-  v6 = [v4 fileURL];
-  if ((v5 != 0) == (v6 == 0))
+  bookmarkData = [(_INPBFile *)self fileURL];
+  bookmarkData2 = [equalCopy fileURL];
+  if ((bookmarkData != 0) == (bookmarkData2 == 0))
   {
     goto LABEL_30;
   }
 
-  v17 = [(_INPBFile *)self fileURL];
-  if (v17)
+  fileURL = [(_INPBFile *)self fileURL];
+  if (fileURL)
   {
-    v18 = v17;
-    v19 = [(_INPBFile *)self fileURL];
-    v20 = [v4 fileURL];
-    v21 = [v19 isEqual:v20];
+    v18 = fileURL;
+    fileURL2 = [(_INPBFile *)self fileURL];
+    fileURL3 = [equalCopy fileURL];
+    v21 = [fileURL2 isEqual:fileURL3];
 
     if (!v21)
     {
@@ -160,20 +160,20 @@
   {
   }
 
-  v5 = [(_INPBFile *)self filename];
-  v6 = [v4 filename];
-  if ((v5 != 0) == (v6 == 0))
+  bookmarkData = [(_INPBFile *)self filename];
+  bookmarkData2 = [equalCopy filename];
+  if ((bookmarkData != 0) == (bookmarkData2 == 0))
   {
     goto LABEL_30;
   }
 
-  v22 = [(_INPBFile *)self filename];
-  if (v22)
+  filename = [(_INPBFile *)self filename];
+  if (filename)
   {
-    v23 = v22;
-    v24 = [(_INPBFile *)self filename];
-    v25 = [v4 filename];
-    v26 = [v24 isEqual:v25];
+    v23 = filename;
+    filename2 = [(_INPBFile *)self filename];
+    filename3 = [equalCopy filename];
+    v26 = [filename2 isEqual:filename3];
 
     if (!v26)
     {
@@ -185,30 +185,30 @@
   {
   }
 
-  v27 = [(_INPBFile *)self hasRemovedOnCompletion];
-  if (v27 != [v4 hasRemovedOnCompletion])
+  hasRemovedOnCompletion = [(_INPBFile *)self hasRemovedOnCompletion];
+  if (hasRemovedOnCompletion != [equalCopy hasRemovedOnCompletion])
   {
     goto LABEL_31;
   }
 
   if ([(_INPBFile *)self hasRemovedOnCompletion])
   {
-    if ([v4 hasRemovedOnCompletion])
+    if ([equalCopy hasRemovedOnCompletion])
     {
       removedOnCompletion = self->_removedOnCompletion;
-      if (removedOnCompletion != [v4 removedOnCompletion])
+      if (removedOnCompletion != [equalCopy removedOnCompletion])
       {
         goto LABEL_31;
       }
     }
   }
 
-  v5 = [(_INPBFile *)self typeIdentifier];
-  v6 = [v4 typeIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  bookmarkData = [(_INPBFile *)self typeIdentifier];
+  bookmarkData2 = [equalCopy typeIdentifier];
+  if ((bookmarkData != 0) != (bookmarkData2 == 0))
   {
-    v29 = [(_INPBFile *)self typeIdentifier];
-    if (!v29)
+    typeIdentifier = [(_INPBFile *)self typeIdentifier];
+    if (!typeIdentifier)
     {
 
 LABEL_34:
@@ -216,10 +216,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(_INPBFile *)self typeIdentifier];
-    v32 = [v4 typeIdentifier];
-    v33 = [v31 isEqual:v32];
+    v30 = typeIdentifier;
+    typeIdentifier2 = [(_INPBFile *)self typeIdentifier];
+    typeIdentifier3 = [equalCopy typeIdentifier];
+    v33 = [typeIdentifier2 isEqual:typeIdentifier3];
 
     if (v33)
     {
@@ -239,19 +239,19 @@ LABEL_32:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBFile allocWithZone:](_INPBFile init];
-  v6 = [(NSData *)self->_bookmarkData copyWithZone:a3];
+  v6 = [(NSData *)self->_bookmarkData copyWithZone:zone];
   [(_INPBFile *)v5 setBookmarkData:v6];
 
-  v7 = [(NSData *)self->_data copyWithZone:a3];
+  v7 = [(NSData *)self->_data copyWithZone:zone];
   [(_INPBFile *)v5 setData:v7];
 
-  v8 = [(_INPBURLValue *)self->_fileURL copyWithZone:a3];
+  v8 = [(_INPBURLValue *)self->_fileURL copyWithZone:zone];
   [(_INPBFile *)v5 setFileURL:v8];
 
-  v9 = [(NSString *)self->_filename copyWithZone:a3];
+  v9 = [(NSString *)self->_filename copyWithZone:zone];
   [(_INPBFile *)v5 setFilename:v9];
 
   if ([(_INPBFile *)self hasRemovedOnCompletion])
@@ -259,66 +259,66 @@ LABEL_32:
     [(_INPBFile *)v5 setRemovedOnCompletion:[(_INPBFile *)self removedOnCompletion]];
   }
 
-  v10 = [(NSString *)self->_typeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_typeIdentifier copyWithZone:zone];
   [(_INPBFile *)v5 setTypeIdentifier:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBFile *)self data];
+  coderCopy = coder;
+  data = [(_INPBFile *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBFile)initWithCoder:(id)a3
+- (_INPBFile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBFile *)self initWithData:v6];
+    self = [(_INPBFile *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
-  v4 = [(_INPBFile *)self bookmarkData];
+  toCopy = to;
+  bookmarkData = [(_INPBFile *)self bookmarkData];
 
-  if (v4)
+  if (bookmarkData)
   {
     bookmarkData = self->_bookmarkData;
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_INPBFile *)self data];
+  data = [(_INPBFile *)self data];
 
-  if (v6)
+  if (data)
   {
     data = self->_data;
     PBDataWriterWriteDataField();
   }
 
-  v8 = [(_INPBFile *)self fileURL];
+  fileURL = [(_INPBFile *)self fileURL];
 
-  if (v8)
+  if (fileURL)
   {
-    v9 = [(_INPBFile *)self fileURL];
+    fileURL2 = [(_INPBFile *)self fileURL];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBFile *)self filename];
+  filename = [(_INPBFile *)self filename];
 
-  if (v10)
+  if (filename)
   {
     filename = self->_filename;
     PBDataWriterWriteStringField();
@@ -330,47 +330,47 @@ LABEL_32:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_INPBFile *)self typeIdentifier];
+  typeIdentifier = [(_INPBFile *)self typeIdentifier];
 
-  v14 = v16;
-  if (v13)
+  v14 = toCopy;
+  if (typeIdentifier)
   {
     typeIdentifier = self->_typeIdentifier;
     PBDataWriterWriteStringField();
-    v14 = v16;
+    v14 = toCopy;
   }
 }
 
-- (void)setTypeIdentifier:(id)a3
+- (void)setTypeIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   typeIdentifier = self->_typeIdentifier;
   self->_typeIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, typeIdentifier);
 }
 
-- (void)setFilename:(id)a3
+- (void)setFilename:(id)filename
 {
-  v4 = [a3 copy];
+  v4 = [filename copy];
   filename = self->_filename;
   self->_filename = v4;
 
   MEMORY[0x1EEE66BB8](v4, filename);
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   data = self->_data;
   self->_data = v4;
 
   MEMORY[0x1EEE66BB8](v4, data);
 }
 
-- (void)setBookmarkData:(id)a3
+- (void)setBookmarkData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   bookmarkData = self->_bookmarkData;
   self->_bookmarkData = v4;
 

@@ -1,35 +1,35 @@
 @interface ARCoachingButton
-- (ARCoachingButton)initWithButton:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 largeImageInsets:(UIEdgeInsets)a7;
+- (ARCoachingButton)initWithButton:(id)button buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle largeImageInsets:(UIEdgeInsets)insets;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIEdgeInsets)contentEdgeInsets;
 - (UIEdgeInsets)largeImageInsets;
 - (UIFont)boldFont;
 - (UIFont)regularFont;
-- (id)_colorDarkenedIfNeededForColor:(id)a3;
-- (void)_didUpdateContentSizeCategory:(id)a3;
-- (void)_didUpdateDarkenColorsSetting:(id)a3;
-- (void)_updateTitleStyleForButton:(id)a3 withControlStyle:(int64_t)a4;
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
+- (id)_colorDarkenedIfNeededForColor:(id)color;
+- (void)_didUpdateContentSizeCategory:(id)category;
+- (void)_didUpdateDarkenColorsSetting:(id)setting;
+- (void)_updateTitleStyleForButton:(id)button withControlStyle:(int64_t)style;
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
 - (void)layoutSubviews;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setControlStyle:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setControlStyle:(int64_t)style;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCurrentAppearanceIfNeeded;
 @end
 
 @implementation ARCoachingButton
 
-- (ARCoachingButton)initWithButton:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 largeImageInsets:(UIEdgeInsets)a7
+- (ARCoachingButton)initWithButton:(id)button buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle largeImageInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v89[4] = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  buttonCopy = button;
   v87.receiver = self;
   v87.super_class = ARCoachingButton;
   v17 = *MEMORY[0x277CBF3A0];
@@ -43,7 +43,7 @@
     [(ARCoachingButton *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v23 = [[ARCoachingControlBlurredBackgroundView alloc] initWithFrame:a4 == 1 backgroundStyle:a6 controlStyle:v17, v18, v19, v20];
+      v23 = [[ARCoachingControlBlurredBackgroundView alloc] initWithFrame:style == 1 backgroundStyle:controlStyle controlStyle:v17, v18, v19, v20];
       blurredBackgroundView = v22->_blurredBackgroundView;
       v22->_blurredBackgroundView = v23;
 
@@ -51,12 +51,12 @@
       [(ARCoachingButton *)v22 addSubview:v22->_blurredBackgroundView];
     }
 
-    objc_storeStrong(&v22->_button, a3);
+    objc_storeStrong(&v22->_button, button);
     [(ARCoachingWrappedButton *)v22->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ARCoachingButton *)v22 addSubview:v22->_button];
-    v22->_buttonStyle = a4;
-    v22->_textStyle = a5;
-    v22->_controlStyle = a6;
+    v22->_buttonStyle = style;
+    v22->_textStyle = textStyle;
+    v22->_controlStyle = controlStyle;
     v22->_largeImageInsets.top = top;
     v22->_largeImageInsets.left = left;
     v22->_largeImageInsets.bottom = bottom;
@@ -104,94 +104,94 @@
     if (_UISolariumEnabled())
     {
       v45 = MEMORY[0x277CCAAD0];
-      v46 = [(ARCoachingWrappedButton *)v22->_button leadingAnchor];
-      v47 = [(ARCoachingButton *)v22 leadingAnchor];
-      v48 = [v46 constraintEqualToAnchor:v47];
+      leadingAnchor = [(ARCoachingWrappedButton *)v22->_button leadingAnchor];
+      leadingAnchor2 = [(ARCoachingButton *)v22 leadingAnchor];
+      v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v89[0] = v48;
-      v49 = [(ARCoachingWrappedButton *)v22->_button trailingAnchor];
-      v50 = [(ARCoachingButton *)v22 trailingAnchor];
-      v86 = [v49 constraintEqualToAnchor:v50];
+      trailingAnchor = [(ARCoachingWrappedButton *)v22->_button trailingAnchor];
+      trailingAnchor2 = [(ARCoachingButton *)v22 trailingAnchor];
+      v86 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v89[1] = v86;
-      v51 = [(ARCoachingWrappedButton *)v22->_button topAnchor];
-      v84 = [(ARCoachingButton *)v22 topAnchor];
-      v85 = v51;
-      v83 = [v51 constraintEqualToAnchor:?];
+      topAnchor = [(ARCoachingWrappedButton *)v22->_button topAnchor];
+      topAnchor2 = [(ARCoachingButton *)v22 topAnchor];
+      v85 = topAnchor;
+      v83 = [topAnchor constraintEqualToAnchor:?];
       v89[2] = v83;
-      v52 = [(ARCoachingWrappedButton *)v22->_button bottomAnchor];
-      v82 = [(ARCoachingButton *)v22 bottomAnchor];
-      v81 = [v52 constraintEqualToAnchor:?];
+      bottomAnchor = [(ARCoachingWrappedButton *)v22->_button bottomAnchor];
+      bottomAnchor2 = [(ARCoachingButton *)v22 bottomAnchor];
+      v81 = [bottomAnchor constraintEqualToAnchor:?];
       v89[3] = v81;
-      v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:4];
-      [v45 activateConstraints:v53];
+      leadingAnchor5 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:4];
+      [v45 activateConstraints:leadingAnchor5];
 LABEL_12:
 
-      v65 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v65 addObserver:v22 selector:sel__didUpdateDarkenColorsSetting_ name:*MEMORY[0x277D76460] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v22 selector:sel__didUpdateDarkenColorsSetting_ name:*MEMORY[0x277D76460] object:0];
 
-      v66 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v66 addObserver:v22 selector:sel__didUpdateContentSizeCategory_ name:*MEMORY[0x277D76810] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v22 selector:sel__didUpdateContentSizeCategory_ name:*MEMORY[0x277D76810] object:0];
 
       goto LABEL_13;
     }
 
-    v80 = v16;
-    if (a6 == 2)
+    v80 = buttonCopy;
+    if (controlStyle == 2)
     {
       v54 = 0.4;
     }
 
     else
     {
-      if (a6 != 3)
+      if (controlStyle != 3)
       {
 LABEL_11:
         v77 = MEMORY[0x277CCAAD0];
-        v79 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView leadingAnchor];
-        v78 = [(ARCoachingButton *)v22 leadingAnchor];
-        v76 = [v79 constraintEqualToAnchor:v78];
+        leadingAnchor3 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView leadingAnchor];
+        leadingAnchor4 = [(ARCoachingButton *)v22 leadingAnchor];
+        v76 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v88[0] = v76;
-        v74 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView trailingAnchor];
-        v75 = [(ARCoachingButton *)v22 trailingAnchor];
-        v86 = [v74 constraintEqualToAnchor:v75];
+        trailingAnchor3 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView trailingAnchor];
+        trailingAnchor4 = [(ARCoachingButton *)v22 trailingAnchor];
+        v86 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v88[1] = v86;
-        v56 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView topAnchor];
-        v84 = [(ARCoachingButton *)v22 topAnchor];
-        v85 = v56;
-        v83 = [v56 constraintEqualToAnchor:?];
+        topAnchor3 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView topAnchor];
+        topAnchor2 = [(ARCoachingButton *)v22 topAnchor];
+        v85 = topAnchor3;
+        v83 = [topAnchor3 constraintEqualToAnchor:?];
         v88[2] = v83;
-        v71 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView bottomAnchor];
-        v82 = [(ARCoachingButton *)v22 bottomAnchor];
-        v81 = [v71 constraintEqualToAnchor:?];
+        bottomAnchor3 = [(ARCoachingControlBlurredBackgroundView *)v22->_blurredBackgroundView bottomAnchor];
+        bottomAnchor2 = [(ARCoachingButton *)v22 bottomAnchor];
+        v81 = [bottomAnchor3 constraintEqualToAnchor:?];
         v88[3] = v81;
-        v53 = [(ARCoachingWrappedButton *)v22->_button leadingAnchor];
-        v73 = [(ARCoachingButton *)v22 leadingAnchor];
-        v72 = [v53 constraintEqualToAnchor:v73];
+        leadingAnchor5 = [(ARCoachingWrappedButton *)v22->_button leadingAnchor];
+        leadingAnchor6 = [(ARCoachingButton *)v22 leadingAnchor];
+        v72 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
         v88[4] = v72;
-        v70 = [(ARCoachingWrappedButton *)v22->_button trailingAnchor];
-        v69 = [(ARCoachingButton *)v22 trailingAnchor];
-        v57 = [v70 constraintEqualToAnchor:v69];
+        trailingAnchor5 = [(ARCoachingWrappedButton *)v22->_button trailingAnchor];
+        trailingAnchor6 = [(ARCoachingButton *)v22 trailingAnchor];
+        v57 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
         v88[5] = v57;
-        v58 = [(ARCoachingWrappedButton *)v22->_button topAnchor];
-        v59 = [(ARCoachingButton *)v22 topAnchor];
-        v60 = [v58 constraintEqualToAnchor:v59];
+        topAnchor4 = [(ARCoachingWrappedButton *)v22->_button topAnchor];
+        topAnchor5 = [(ARCoachingButton *)v22 topAnchor];
+        v60 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
         v88[6] = v60;
-        v61 = [(ARCoachingWrappedButton *)v22->_button bottomAnchor];
-        v62 = [(ARCoachingButton *)v22 bottomAnchor];
-        v63 = [v61 constraintEqualToAnchor:v62];
+        bottomAnchor4 = [(ARCoachingWrappedButton *)v22->_button bottomAnchor];
+        bottomAnchor5 = [(ARCoachingButton *)v22 bottomAnchor];
+        v63 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
         v88[7] = v63;
         v64 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:8];
         [v77 activateConstraints:v64];
 
-        v49 = v74;
-        v50 = v75;
+        trailingAnchor = trailingAnchor3;
+        trailingAnchor2 = trailingAnchor4;
 
         v48 = v76;
-        v52 = v71;
+        bottomAnchor = bottomAnchor3;
 
-        v47 = v78;
-        v46 = v79;
+        leadingAnchor2 = leadingAnchor4;
+        leadingAnchor = leadingAnchor3;
 
-        v16 = v80;
+        buttonCopy = v80;
         goto LABEL_12;
       }
 
@@ -210,22 +210,22 @@ LABEL_13:
   return v22;
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  v8 = a3;
-  v9 = [(ARCoachingButton *)self button];
-  [v9 addTarget:v8 action:a4 forControlEvents:a5];
+  targetCopy = target;
+  button = [(ARCoachingButton *)self button];
+  [button addTarget:targetCopy action:action forControlEvents:events];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ARCoachingButton *)self button];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  button = [(ARCoachingButton *)self button];
+  if (button)
   {
-    v7 = [(ARCoachingButton *)self button];
-    [v7 systemLayoutSizeFittingSize:{width, height}];
+    button2 = [(ARCoachingButton *)self button];
+    [button2 systemLayoutSizeFittingSize:{width, height}];
     v9 = v8;
     v11 = v10;
   }
@@ -244,25 +244,25 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(ARCoachingButton *)self button];
-  if (v10)
+  height = size.height;
+  width = size.width;
+  button = [(ARCoachingButton *)self button];
+  if (button)
   {
-    v13 = [(ARCoachingButton *)self button];
-    *&v14 = a4;
-    *&v15 = a5;
-    [v13 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
+    button2 = [(ARCoachingButton *)self button];
+    *&v14 = priority;
+    *&v15 = fittingPriority;
+    [button2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
     v17 = v16;
     v19 = v18;
   }
 
   else
   {
-    *&v11 = a4;
-    *&v12 = a5;
+    *&v11 = priority;
+    *&v12 = fittingPriority;
     [(ARCoachingButton *)self systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
     v17 = v20;
     v19 = v21;
@@ -277,11 +277,11 @@ LABEL_13:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(ARCoachingButton *)self button];
-  if (v3)
+  button = [(ARCoachingButton *)self button];
+  if (button)
   {
-    v4 = [(ARCoachingButton *)self button];
-    [v4 intrinsicContentSize];
+    button2 = [(ARCoachingButton *)self button];
+    [button2 intrinsicContentSize];
     v6 = v5;
     v8 = v7;
   }
@@ -302,29 +302,29 @@ LABEL_13:
   return result;
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = _UISolariumEnabled();
-  v9 = [(ARCoachingButton *)self button];
-  v13 = v9;
+  button = [(ARCoachingButton *)self button];
+  v13 = button;
   if (v8)
   {
-    v10 = [v9 configuration];
+    configuration = [button configuration];
 
-    [v10 setContentInsets:{top, left, bottom, right}];
-    v11 = [(ARCoachingButton *)self button];
-    [v11 setConfiguration:v10];
+    [configuration setContentInsets:{top, left, bottom, right}];
+    button2 = [(ARCoachingButton *)self button];
+    [button2 setConfiguration:configuration];
 
-    v12 = v10;
+    v12 = configuration;
   }
 
   else
   {
-    [v9 setContentEdgeInsets:{top, left, bottom, right}];
+    [button setContentEdgeInsets:{top, left, bottom, right}];
     v12 = v13;
   }
 }
@@ -332,12 +332,12 @@ LABEL_13:
 - (UIEdgeInsets)contentEdgeInsets
 {
   v3 = _UISolariumEnabled();
-  v4 = [(ARCoachingButton *)self button];
-  v5 = v4;
+  button = [(ARCoachingButton *)self button];
+  v5 = button;
   if (v3)
   {
-    v6 = [v4 configuration];
-    [v6 contentInsets];
+    configuration = [button configuration];
+    [configuration contentInsets];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -346,7 +346,7 @@ LABEL_13:
 
   else
   {
-    [v4 contentEdgeInsets];
+    [button contentEdgeInsets];
     v8 = v15;
     v10 = v16;
     v12 = v17;
@@ -368,11 +368,11 @@ LABEL_13:
 {
   if (!self->_regularFont)
   {
-    v3 = [(ARCoachingButton *)self button];
-    v4 = [v3 titleLabel];
-    v5 = [v4 adjustsFontForContentSizeCategory];
+    button = [(ARCoachingButton *)self button];
+    titleLabel = [button titleLabel];
+    adjustsFontForContentSizeCategory = [titleLabel adjustsFontForContentSizeCategory];
 
-    if (v5)
+    if (adjustsFontForContentSizeCategory)
     {
       [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
     }
@@ -398,8 +398,8 @@ LABEL_13:
   {
     v4 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769D0] addingSymbolicTraits:2 options:0];
     v5 = MEMORY[0x277D74300];
-    v6 = [(ARCoachingButton *)self regularFont];
-    [v6 pointSize];
+    regularFont = [(ARCoachingButton *)self regularFont];
+    [regularFont pointSize];
     v7 = [v5 fontWithDescriptor:v4 size:?];
     v8 = self->_boldFont;
     self->_boldFont = v7;
@@ -410,32 +410,32 @@ LABEL_13:
   return boldFont;
 }
 
-- (void)setControlStyle:(int64_t)a3
+- (void)setControlStyle:(int64_t)style
 {
-  if (self->_controlStyle != a3 && [(ARCoachingButton *)self currentStyle]!= 2)
+  if (self->_controlStyle != style && [(ARCoachingButton *)self currentStyle]!= 2)
   {
-    self->_controlStyle = a3;
-    v5 = [(ARCoachingButton *)self blurredBackgroundView];
+    self->_controlStyle = style;
+    blurredBackgroundView = [(ARCoachingButton *)self blurredBackgroundView];
 
-    if (v5)
+    if (blurredBackgroundView)
     {
-      v6 = [(ARCoachingButton *)self blurredBackgroundView];
-      [v6 setControlStyle:a3];
+      blurredBackgroundView2 = [(ARCoachingButton *)self blurredBackgroundView];
+      [blurredBackgroundView2 setControlStyle:style];
     }
 
-    v7 = [(ARCoachingButton *)self button];
-    [(ARCoachingButton *)self _updateTitleStyleForButton:v7 withControlStyle:a3];
+    button = [(ARCoachingButton *)self button];
+    [(ARCoachingButton *)self _updateTitleStyleForButton:button withControlStyle:style];
   }
 }
 
-- (id)_colorDarkenedIfNeededForColor:(id)a3
+- (id)_colorDarkenedIfNeededForColor:(id)color
 {
-  v3 = a3;
-  if (UIAccessibilityDarkerSystemColorsEnabled() && (v10 = 0.0, v11 = 0.0, v8 = 0.0, v9 = 0.0, [v3 getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8]))
+  colorCopy = color;
+  if (UIAccessibilityDarkerSystemColorsEnabled() && (v10 = 0.0, v11 = 0.0, v8 = 0.0, v9 = 0.0, [colorCopy getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8]))
   {
     if (v9 == 0.0)
     {
-      v4 = [v3 colorWithAlphaComponent:v8 / 0.75];
+      v4 = [colorCopy colorWithAlphaComponent:v8 / 0.75];
     }
 
     else
@@ -447,7 +447,7 @@ LABEL_13:
 
   else
   {
-    v4 = v3;
+    v4 = colorCopy;
   }
 
   v5 = v4;
@@ -455,100 +455,100 @@ LABEL_13:
   return v5;
 }
 
-- (void)_updateTitleStyleForButton:(id)a3 withControlStyle:(int64_t)a4
+- (void)_updateTitleStyleForButton:(id)button withControlStyle:(int64_t)style
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 titleForState:0];
+  buttonCopy = button;
+  v7 = [buttonCopy titleForState:0];
   if (v7)
   {
     if ([(ARCoachingButton *)self buttonStyle]== 1 || [(ARCoachingButton *)self textStyle]== 1)
     {
-      v8 = [(ARCoachingButton *)self boldFont];
-      v43 = [(ARCoachingButton *)self boldFont];
-      v9 = [(ARCoachingButton *)self boldFont];
+      boldFont = [(ARCoachingButton *)self boldFont];
+      boldFont2 = [(ARCoachingButton *)self boldFont];
+      boldFont3 = [(ARCoachingButton *)self boldFont];
     }
 
     else
     {
-      v8 = [(ARCoachingButton *)self regularFont];
-      v43 = [(ARCoachingButton *)self regularFont];
-      v9 = [(ARCoachingButton *)self regularFont];
+      boldFont = [(ARCoachingButton *)self regularFont];
+      boldFont2 = [(ARCoachingButton *)self regularFont];
+      boldFont3 = [(ARCoachingButton *)self regularFont];
     }
 
-    v44 = v9;
-    v10 = [(ARCoachingButton *)self boldFont];
-    if (a4 == 3)
+    v44 = boldFont3;
+    boldFont4 = [(ARCoachingButton *)self boldFont];
+    if (style == 3)
     {
-      v11 = [(ARCoachingButton *)self white75PercentColor];
-      v39 = [(ARCoachingButton *)self white52PercentColor];
-      v42 = [(ARCoachingButton *)self white26PercentColor];
-      v41 = [(ARCoachingButton *)self blue100PercentColor];
-      v13 = [(ARCoachingButton *)self white26PercentColor];
+      white75PercentColor = [(ARCoachingButton *)self white75PercentColor];
+      white52PercentColor = [(ARCoachingButton *)self white52PercentColor];
+      white26PercentColor = [(ARCoachingButton *)self white26PercentColor];
+      blue100PercentColor = [(ARCoachingButton *)self blue100PercentColor];
+      white26PercentColor2 = [(ARCoachingButton *)self white26PercentColor];
     }
 
     else
     {
-      if (a4 == 2)
+      if (style == 2)
       {
-        v11 = [(ARCoachingButton *)self white100PercentColor];
-        v39 = [(ARCoachingButton *)self white70PercentColor];
-        v42 = [(ARCoachingButton *)self white35PercentColor];
-        v41 = [(ARCoachingButton *)self white70PercentColor];
-        v40 = [(ARCoachingButton *)self white35PercentColor];
-        v12 = [(ARCoachingButton *)self white35PercentColor];
+        white75PercentColor = [(ARCoachingButton *)self white100PercentColor];
+        white52PercentColor = [(ARCoachingButton *)self white70PercentColor];
+        white26PercentColor = [(ARCoachingButton *)self white35PercentColor];
+        blue100PercentColor = [(ARCoachingButton *)self white70PercentColor];
+        white35PercentColor = [(ARCoachingButton *)self white35PercentColor];
+        white35PercentColor2 = [(ARCoachingButton *)self white35PercentColor];
 LABEL_15:
-        v37 = v11;
-        v38 = v12;
+        v37 = white75PercentColor;
+        v38 = white35PercentColor2;
         v14 = *MEMORY[0x277D740A8];
-        v34 = v8;
-        v56[0] = v8;
+        v34 = boldFont;
+        v56[0] = boldFont;
         v15 = *MEMORY[0x277D740C0];
         v55[0] = v14;
         v55[1] = v15;
-        v16 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:v11];
+        v16 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:white75PercentColor];
         v56[1] = v16;
         v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:2];
 
         v35 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v36];
-        [v6 setAttributedTitle:v35 forState:0];
+        [buttonCopy setAttributedTitle:v35 forState:0];
         v53[1] = v15;
-        v54[0] = v43;
+        v54[0] = boldFont2;
         v53[0] = v14;
-        v17 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:v39];
+        v17 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:white52PercentColor];
         v54[1] = v17;
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
 
         v32 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v33];
-        [v6 setAttributedTitle:v32 forState:1];
+        [buttonCopy setAttributedTitle:v32 forState:1];
         v51[1] = v15;
         v52[0] = v44;
         v51[0] = v14;
-        v18 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:v42];
+        v18 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:white26PercentColor];
         v52[1] = v18;
         v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
 
         v30 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v31];
-        [v6 setAttributedTitle:v30 forState:2];
-        v50[0] = v10;
+        [buttonCopy setAttributedTitle:v30 forState:2];
+        v50[0] = boldFont4;
         v49[0] = v14;
         v49[1] = v15;
-        v19 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:v41];
+        v19 = [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:blue100PercentColor];
         v50[1] = v19;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
 
         v28 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v29];
-        [v6 setAttributedTitle:v28 forState:4];
+        [buttonCopy setAttributedTitle:v28 forState:4];
         v47[1] = v15;
-        v48[0] = v10;
+        v48[0] = boldFont4;
         v47[0] = v14;
-        [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:v40];
-        v21 = v20 = v10;
+        [(ARCoachingButton *)self _colorDarkenedIfNeededForColor:white35PercentColor];
+        v21 = v20 = boldFont4;
         v48[1] = v21;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
         v23 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v22];
-        [v6 setAttributedTitle:v23 forState:5];
+        [buttonCopy setAttributedTitle:v23 forState:5];
         v45[1] = v15;
         v46[0] = v20;
         v45[0] = v14;
@@ -557,31 +557,31 @@ LABEL_15:
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
 
         v26 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v25];
-        [v6 setAttributedTitle:v26 forState:6];
+        [buttonCopy setAttributedTitle:v26 forState:6];
 
         goto LABEL_16;
       }
 
       if ([(ARCoachingButton *)self buttonStyle]== 1)
       {
-        v11 = [(ARCoachingButton *)self blue100PercentColor];
-        v39 = [(ARCoachingButton *)self black70PercentColor];
+        white75PercentColor = [(ARCoachingButton *)self blue100PercentColor];
+        white52PercentColor = [(ARCoachingButton *)self black70PercentColor];
         [(ARCoachingButton *)self blue50PercentColor];
       }
 
       else
       {
-        v11 = [(ARCoachingButton *)self black70PercentColor];
-        v39 = [(ARCoachingButton *)self black70PercentColor];
+        white75PercentColor = [(ARCoachingButton *)self black70PercentColor];
+        white52PercentColor = [(ARCoachingButton *)self black70PercentColor];
         [(ARCoachingButton *)self black35PercentColor];
       }
-      v42 = ;
-      v41 = [(ARCoachingButton *)self blue100PercentColor];
-      v13 = [(ARCoachingButton *)self black70PercentColor];
+      white26PercentColor = ;
+      blue100PercentColor = [(ARCoachingButton *)self blue100PercentColor];
+      white26PercentColor2 = [(ARCoachingButton *)self black70PercentColor];
     }
 
-    v40 = v13;
-    v12 = [(ARCoachingButton *)self blue50PercentColor];
+    white35PercentColor = white26PercentColor2;
+    white35PercentColor2 = [(ARCoachingButton *)self blue50PercentColor];
     goto LABEL_15;
   }
 
@@ -590,13 +590,13 @@ LABEL_16:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didUpdateDarkenColorsSetting:(id)a3
+- (void)_didUpdateDarkenColorsSetting:(id)setting
 {
-  v4 = [(ARCoachingButton *)self button];
-  [(ARCoachingButton *)self _updateTitleStyleForButton:v4 withControlStyle:[(ARCoachingButton *)self controlStyle]];
+  button = [(ARCoachingButton *)self button];
+  [(ARCoachingButton *)self _updateTitleStyleForButton:button withControlStyle:[(ARCoachingButton *)self controlStyle]];
 }
 
-- (void)_didUpdateContentSizeCategory:(id)a3
+- (void)_didUpdateContentSizeCategory:(id)category
 {
   regularFont = self->_regularFont;
   self->_regularFont = 0;
@@ -604,17 +604,17 @@ LABEL_16:
   boldFont = self->_boldFont;
   self->_boldFont = 0;
 
-  v6 = [(ARCoachingButton *)self button];
-  [(ARCoachingButton *)self _updateTitleStyleForButton:v6 withControlStyle:[(ARCoachingButton *)self controlStyle]];
+  button = [(ARCoachingButton *)self button];
+  [(ARCoachingButton *)self _updateTitleStyleForButton:button withControlStyle:[(ARCoachingButton *)self controlStyle]];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(ARCoachingWrappedButton *)self->_button setTitle:a3 forState:0];
+  [(ARCoachingWrappedButton *)self->_button setTitle:title forState:0];
   button = self->_button;
-  v5 = [(ARCoachingButton *)self controlStyle];
+  controlStyle = [(ARCoachingButton *)self controlStyle];
 
-  [(ARCoachingButton *)self _updateTitleStyleForButton:button withControlStyle:v5];
+  [(ARCoachingButton *)self _updateTitleStyleForButton:button withControlStyle:controlStyle];
 }
 
 - (void)layoutSubviews
@@ -627,53 +627,53 @@ LABEL_16:
 
 - (void)updateCurrentAppearanceIfNeeded
 {
-  v3 = [MEMORY[0x277D75C80] _currentTraitCollection];
-  v4 = [v3 userInterfaceStyle];
+  _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+  userInterfaceStyle = [_currentTraitCollection userInterfaceStyle];
 
-  if ([(ARCoachingButton *)self currentStyle]!= v4)
+  if ([(ARCoachingButton *)self currentStyle]!= userInterfaceStyle)
   {
-    v5 = [(ARCoachingButton *)self blurredBackgroundView];
+    blurredBackgroundView = [(ARCoachingButton *)self blurredBackgroundView];
 
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
-      if (v5)
+      if (blurredBackgroundView)
       {
-        v6 = [(ARCoachingButton *)self blurredBackgroundView];
-        [v6 setControlStyle:3];
+        blurredBackgroundView2 = [(ARCoachingButton *)self blurredBackgroundView];
+        [blurredBackgroundView2 setControlStyle:3];
       }
 
-      v7 = [(ARCoachingButton *)self button];
-      v8 = self;
-      v9 = v7;
-      v10 = 3;
+      button = [(ARCoachingButton *)self button];
+      selfCopy2 = self;
+      v9 = button;
+      controlStyle2 = 3;
     }
 
     else
     {
-      if (v5)
+      if (blurredBackgroundView)
       {
-        v11 = [(ARCoachingButton *)self controlStyle];
-        v12 = [(ARCoachingButton *)self blurredBackgroundView];
-        [v12 setControlStyle:v11];
+        controlStyle = [(ARCoachingButton *)self controlStyle];
+        blurredBackgroundView3 = [(ARCoachingButton *)self blurredBackgroundView];
+        [blurredBackgroundView3 setControlStyle:controlStyle];
       }
 
-      v7 = [(ARCoachingButton *)self button];
-      v10 = [(ARCoachingButton *)self controlStyle];
-      v8 = self;
-      v9 = v7;
+      button = [(ARCoachingButton *)self button];
+      controlStyle2 = [(ARCoachingButton *)self controlStyle];
+      selfCopy2 = self;
+      v9 = button;
     }
 
-    [(ARCoachingButton *)v8 _updateTitleStyleForButton:v9 withControlStyle:v10];
+    [(ARCoachingButton *)selfCopy2 _updateTitleStyleForButton:v9 withControlStyle:controlStyle2];
 
-    [(ARCoachingButton *)self setCurrentStyle:v4];
+    [(ARCoachingButton *)self setCurrentStyle:userInterfaceStyle];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = ARCoachingButton;
-  [(ARCoachingButton *)&v4 traitCollectionDidChange:a3];
+  [(ARCoachingButton *)&v4 traitCollectionDidChange:change];
   [(ARCoachingButton *)self updateCurrentAppearanceIfNeeded];
 }
 

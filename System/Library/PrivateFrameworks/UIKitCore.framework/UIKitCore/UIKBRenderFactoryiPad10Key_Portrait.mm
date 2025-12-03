@@ -8,12 +8,12 @@
 - (UIEdgeInsets)topEdgeAdjustmentInsets;
 - (UIEdgeInsets)wideShadowPaddleInsets;
 - (double)keyCornerRadius;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
-- (id)backgroundTraitsForKeyplane:(id)a3;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
+- (id)backgroundTraitsForKeyplane:(id)keyplane;
 - (id)multitapCompleteKeyImageName;
 - (id)muttitapReverseKeyImageName;
-- (unint64_t)edgesAdjustedForTranslucentGapsForGeometry:(id)a3 key:(id)a4 onKeyplane:(id)a5;
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7;
+- (unint64_t)edgesAdjustedForTranslucentGapsForGeometry:(id)geometry key:(id)key onKeyplane:(id)keyplane;
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName;
 - (void)setupLayoutSegments;
 @end
 
@@ -94,8 +94,8 @@
 
 - (double)keyCornerRadius
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
     v3 = 10.0;
   }
@@ -161,31 +161,31 @@
   return result;
 }
 
-- (unint64_t)edgesAdjustedForTranslucentGapsForGeometry:(id)a3 key:(id)a4 onKeyplane:(id)a5
+- (unint64_t)edgesAdjustedForTranslucentGapsForGeometry:(id)geometry key:(id)key onKeyplane:(id)keyplane
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  geometryCopy = geometry;
+  keyCopy = key;
+  keyplaneCopy = keyplane;
   v48.receiver = self;
   v48.super_class = UIKBRenderFactoryiPad10Key_Portrait;
-  v11 = [(UIKBRenderFactory10Key *)&v48 edgesAdjustedForTranslucentGapsForGeometry:v8 key:v9 onKeyplane:v10];
+  v11 = [(UIKBRenderFactory10Key *)&v48 edgesAdjustedForTranslucentGapsForGeometry:geometryCopy key:keyCopy onKeyplane:keyplaneCopy];
   [(UIKBRenderFactory *)self RivenFactor:1.0];
   if (v12 > 1.0)
   {
-    [v9 frame];
+    [keyCopy frame];
     v14 = v13;
     [(UIKBRenderFactory *)self RivenFactor:1.0];
     if (v14 <= v15)
     {
-      [v9 frame];
+      [keyCopy frame];
       v16 = 1.0 - v18;
-      if ([v10 isSplit])
+      if ([keyplaneCopy isSplit])
       {
         [(UIKBRenderFactory *)self translucentGapWidth];
         v16 = v16 + v19;
       }
 
-      if ([v10 isSplit])
+      if ([keyplaneCopy isSplit])
       {
         [(UIKBRenderFactory *)self stretchFactor];
         if (v20 != 1.0)
@@ -198,215 +198,215 @@
     else
     {
       v16 = -1.0;
-      if ([v10 isSplit])
+      if ([keyplaneCopy isSplit])
       {
         [(UIKBRenderFactory *)self translucentGapWidth];
         v16 = -v17;
       }
     }
 
-    [v8 paddedFrame];
-    [v8 setPaddedFrame:{v21 + 0.0, v16 + v22}];
-    [v8 displayFrame];
-    [v8 setDisplayFrame:{v23 + 0.0, v16 + v24}];
+    [geometryCopy paddedFrame];
+    [geometryCopy setPaddedFrame:{v21 + 0.0, v16 + v22}];
+    [geometryCopy displayFrame];
+    [geometryCopy setDisplayFrame:{v23 + 0.0, v16 + v24}];
   }
 
   [(UIKBRenderFactory *)self RivenFactor:1.0];
   if (v25 > 1.0)
   {
-    [v9 frame];
+    [keyCopy frame];
     v27 = v26;
-    [v10 frameForKeylayoutName:@"split-right"];
+    [keyplaneCopy frameForKeylayoutName:@"split-right"];
     if (v27 == v28)
     {
-      [v8 paddedFrame];
+      [geometryCopy paddedFrame];
       v30 = v29;
       v32 = v31;
       v34 = v33;
       v36 = v35;
       [(UIKBRenderFactory *)self translucentGapWidth];
-      [v8 setPaddedFrame:{v37 + v30, v32 + 0.0, v34 - (v37 + 0.0), v36}];
-      [v8 displayFrame];
+      [geometryCopy setPaddedFrame:{v37 + v30, v32 + 0.0, v34 - (v37 + 0.0), v36}];
+      [geometryCopy displayFrame];
       v39 = v38;
       v41 = v40;
       v43 = v42;
       v45 = v44;
       [(UIKBRenderFactory *)self translucentGapWidth];
-      [v8 setDisplayFrame:{v46 + v39, v41 + 0.0, v43 - (v46 + 0.0), v45}];
+      [geometryCopy setDisplayFrame:{v46 + v39, v41 + 0.0, v43 - (v46 + 0.0), v45}];
     }
   }
 
   return v11;
 }
 
-- (id)backgroundTraitsForKeyplane:(id)a3
+- (id)backgroundTraitsForKeyplane:(id)keyplane
 {
-  v4 = a3;
+  keyplaneCopy = keyplane;
   v13.receiver = self;
   v13.super_class = UIKBRenderFactoryiPad10Key_Portrait;
-  v5 = [(UIKBRenderFactory *)&v13 backgroundTraitsForKeyplane:v4];
-  if (([v4 visualStyling] & 0x80) != 0)
+  v5 = [(UIKBRenderFactory *)&v13 backgroundTraitsForKeyplane:keyplaneCopy];
+  if (([keyplaneCopy visualStyling] & 0x80) != 0)
   {
     v6 = MEMORY[0x1E696B098];
-    [v4 frameForKeylayoutName:@"split-left"];
+    [keyplaneCopy frameForKeylayoutName:@"split-left"];
     v7 = [v6 valueWithCGRect:?];
-    v8 = [v5 geometry];
-    [v8 setSplitLeftRect:v7];
+    geometry = [v5 geometry];
+    [geometry setSplitLeftRect:v7];
 
     v9 = MEMORY[0x1E696B098];
-    [v4 frameForKeylayoutName:@"split-right"];
+    [keyplaneCopy frameForKeylayoutName:@"split-right"];
     v10 = [v9 valueWithCGRect:?];
-    v11 = [v5 geometry];
-    [v11 setSplitRightRect:v10];
+    geometry2 = [v5 geometry];
+    [geometry2 setSplitRightRect:v10];
   }
 
   return v5;
 }
 
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName
 {
-  v32 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  [v32 removeAllRenderEffects];
-  v16 = [UIKBTextStyle styleWithFontName:v14 withFallbackFontName:v13 withFontSize:22.0];
+  traitsCopy = traits;
+  keyCopy = key;
+  fontNameCopy = fontName;
+  nameCopy = name;
+  contextCopy = context;
+  [traitsCopy removeAllRenderEffects];
+  v16 = [UIKBTextStyle styleWithFontName:nameCopy withFallbackFontName:fontNameCopy withFontSize:22.0];
 
-  [v32 setSymbolStyle:v16];
-  v17 = [v15 renderConfig];
+  [traitsCopy setSymbolStyle:v16];
+  renderConfig = [contextCopy renderConfig];
 
-  v18 = [v17 lightKeyboard];
-  if (v18)
+  lightKeyboard = [renderConfig lightKeyboard];
+  if (lightKeyboard)
   {
-    v19 = [(UIKBRenderFactory *)self blackKeycapColor];
+    blackKeycapColor = [(UIKBRenderFactory *)self blackKeycapColor];
   }
 
   else
   {
-    v19 = @"UIKBColorWhite";
+    blackKeycapColor = @"UIKBColorWhite";
   }
 
-  v20 = [v32 symbolStyle];
-  [v20 setTextColor:v19];
+  symbolStyle = [traitsCopy symbolStyle];
+  [symbolStyle setTextColor:blackKeycapColor];
 
-  if (v18)
+  if (lightKeyboard)
   {
   }
 
-  if ([v12 displayType] == 13)
+  if ([keyCopy displayType] == 13)
   {
-    v21 = [v32 symbolStyle];
-    [v21 setTextOffset:{0.0, -1.0}];
+    symbolStyle2 = [traitsCopy symbolStyle];
+    [symbolStyle2 setTextOffset:{0.0, -1.0}];
 
-    v22 = [v32 symbolStyle];
-    [v22 setUsesSymbolImage:1];
+    symbolStyle3 = [traitsCopy symbolStyle];
+    [symbolStyle3 setUsesSymbolImage:1];
 
     [(UIKBRenderFactory10Key *)self symbolImageControlKeyFontSize];
     v24 = v23;
-    v25 = [v32 symbolStyle];
-    [v25 setFontSizeForSymbolImage:v24];
+    symbolStyle4 = [traitsCopy symbolStyle];
+    [symbolStyle4 setFontSizeForSymbolImage:v24];
   }
 
-  if ([v12 displayType] == 4 || objc_msgSend(v12, "displayType") == 5)
+  if ([keyCopy displayType] == 4 || objc_msgSend(keyCopy, "displayType") == 5)
   {
-    v26 = [v32 symbolStyle];
-    [v26 setUsesSymbolImage:1];
+    symbolStyle5 = [traitsCopy symbolStyle];
+    [symbolStyle5 setUsesSymbolImage:1];
 
     [(UIKBRenderFactory10Key *)self symbolImageControlKeyFontSize];
     v28 = v27;
-    v29 = [v32 symbolStyle];
-    [v29 setFontSizeForSymbolImage:v28];
+    symbolStyle6 = [traitsCopy symbolStyle];
+    [symbolStyle6 setFontSizeForSymbolImage:v28];
   }
 
-  v30 = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
-  v31 = [UIKBGradient gradientWithFlatColor:v30];
-  [v32 setBackgroundGradient:v31];
+  defaultKeyBackgroundColorName = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
+  v31 = [UIKBGradient gradientWithFlatColor:defaultKeyBackgroundColorName];
+  [traitsCopy setBackgroundGradient:v31];
 
-  [(UIKBRenderFactory10Key *)self modifyTraitsForDetachedInputSwitcher:v32 withKey:v12];
+  [(UIKBRenderFactory10Key *)self modifyTraitsForDetachedInputSwitcher:traitsCopy withKey:keyCopy];
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  keyplaneCopy = keyplane;
   v46.receiver = self;
   v46.super_class = UIKBRenderFactoryiPad10Key_Portrait;
-  v8 = [(UIKBRenderFactory10Key *)&v46 _traitsForKey:v6 onKeyplane:v7];
-  if ([v6 displayType] == 35)
+  v8 = [(UIKBRenderFactory10Key *)&v46 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
+  if ([keyCopy displayType] == 35)
   {
     [(UIKBRenderFactory *)self translucentGapWidth];
     v10 = v9;
-    v11 = [v8 geometry];
-    [v11 symbolFrame];
+    geometry = [v8 geometry];
+    [geometry symbolFrame];
     v13 = v12;
     v14 = -2.0 - v10;
     v15 = v10 + -2.0;
     v17 = v10 + -2.0 + v16;
     v19 = v18 - (v14 + v15);
     v21 = v20 + 0.0;
-    v22 = [v8 geometry];
-    [v22 setSymbolFrame:{v17, v21, v19, v13}];
+    geometry2 = [v8 geometry];
+    [geometry2 setSymbolFrame:{v17, v21, v19, v13}];
 LABEL_3:
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v6 displayType] == 1)
+  if ([keyCopy displayType] == 1)
   {
-    v11 = [v8 geometry];
-    [v11 frame];
-    [v11 setFrame:{v23 + 0.0, v24 + 0.0, v25 + -0.5}];
-    [v11 paddedFrame];
-    [v11 setPaddedFrame:{v26 + 0.0, v27 + 0.0, v28 + -0.5}];
-    [v11 displayFrame];
-    [v11 setDisplayFrame:{v29 + 0.0, v30 + 0.0, v31 + -0.5}];
+    geometry = [v8 geometry];
+    [geometry frame];
+    [geometry setFrame:{v23 + 0.0, v24 + 0.0, v25 + -0.5}];
+    [geometry paddedFrame];
+    [geometry setPaddedFrame:{v26 + 0.0, v27 + 0.0, v28 + -0.5}];
+    [geometry displayFrame];
+    [geometry setDisplayFrame:{v29 + 0.0, v30 + 0.0, v31 + -0.5}];
     goto LABEL_15;
   }
 
-  if (([v7 visualStyling] & 0x80) != 0 && objc_msgSend(v6, "state") == 20)
+  if (([keyplaneCopy visualStyling] & 0x80) != 0 && objc_msgSend(keyCopy, "state") == 20)
   {
-    v32 = [v8 variantTraits];
-    v33 = [v32 symbolStyle];
-    [v33 setFontSize:27.0];
+    variantTraits = [v8 variantTraits];
+    symbolStyle = [variantTraits symbolStyle];
+    [symbolStyle setFontSize:27.0];
 
-    v34 = [(UIKBRenderFactory *)self renderConfig];
-    LOBYTE(v33) = [v34 lightKeyboard];
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    LOBYTE(symbolStyle) = [renderConfig lightKeyboard];
 
-    if (v33)
+    if (symbolStyle)
     {
       goto LABEL_16;
     }
 
-    v11 = [(UIKBRenderFactory *)self renderConfig];
-    v35 = [v11 colorAdaptiveBackground];
+    geometry = [(UIKBRenderFactory *)self renderConfig];
+    colorAdaptiveBackground = [geometry colorAdaptiveBackground];
     v36 = UIKBColorWhite_Alpha30;
-    if (!v35)
+    if (!colorAdaptiveBackground)
     {
       v36 = UIKBColorClear;
     }
 
-    v22 = [UIKBGradient gradientWithFlatColor:*v36];
-    [v8 setBackgroundGradient:v22];
+    geometry2 = [UIKBGradient gradientWithFlatColor:*v36];
+    [v8 setBackgroundGradient:geometry2];
     goto LABEL_3;
   }
 
-  v37 = [v6 name];
-  v38 = [v37 containsString:@"Facemark"];
+  name = [keyCopy name];
+  v38 = [name containsString:@"Facemark"];
 
-  if (v38 || ([v6 name], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "containsString:", @"Fullwidth"), v39, v40))
+  if (v38 || ([keyCopy name], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "containsString:", @"Fullwidth"), v39, v40))
   {
-    v41 = [(UIKBRenderFactoryiPad10Key_Portrait *)self lightKeycapsFontName];
-    v42 = [v8 symbolStyle];
-    [v42 setFontName:v41];
+    lightKeycapsFontName = [(UIKBRenderFactoryiPad10Key_Portrait *)self lightKeycapsFontName];
+    symbolStyle2 = [v8 symbolStyle];
+    [symbolStyle2 setFontName:lightKeycapsFontName];
 
-    v43 = [(UIKBRenderFactory10Key *)self lightKeycapsFontFallbackName];
-    v44 = [v8 symbolStyle];
-    [v44 setKeycapsFallback:v43];
+    lightKeycapsFontFallbackName = [(UIKBRenderFactory10Key *)self lightKeycapsFontFallbackName];
+    symbolStyle3 = [v8 symbolStyle];
+    [symbolStyle3 setKeycapsFallback:lightKeycapsFontFallbackName];
 
-    v11 = [v8 symbolStyle];
-    [v11 setFontSize:20.0];
+    geometry = [v8 symbolStyle];
+    [geometry setFontSize:20.0];
     goto LABEL_15;
   }
 

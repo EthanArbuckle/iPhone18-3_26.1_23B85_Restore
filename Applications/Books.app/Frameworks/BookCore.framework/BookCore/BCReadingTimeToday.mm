@@ -6,9 +6,9 @@
 - (NSObject)parameters;
 - (NSString)formattedProgress;
 - (NSString)kind;
-- (void)setFormattedProgress:(id)a3;
-- (void)setKind:(id)a3;
-- (void)setProgress:(id)a3;
+- (void)setFormattedProgress:(id)progress;
+- (void)setKind:(id)kind;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation BCReadingTimeToday
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (void)setKind:(id)a3
+- (void)setKind:(id)kind
 {
   v4 = sub_1EEF04();
   v6 = v5;
@@ -60,13 +60,13 @@
   return *(self + v3);
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
   v5 = OBJC_IVAR___BCReadingTimeToday_progress;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = progress;
+  progressCopy = progress;
 }
 
 - (NSString)formattedProgress
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (void)setFormattedProgress:(id)a3
+- (void)setFormattedProgress:(id)progress
 {
-  if (a3)
+  if (progress)
   {
     v4 = sub_1EEF04();
     v6 = v5;

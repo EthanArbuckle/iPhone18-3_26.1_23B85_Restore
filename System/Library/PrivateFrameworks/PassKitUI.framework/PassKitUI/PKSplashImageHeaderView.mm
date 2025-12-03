@@ -1,27 +1,27 @@
 @interface PKSplashImageHeaderView
-- (CGRect)topLabelWithRespectTo:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSplashImageHeaderView)initWithFrame:(CGRect)a3;
+- (CGRect)topLabelWithRespectTo:(id)to;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSplashImageHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)refreshFonts;
-- (void)setAttributionProviderName:(id)a3;
-- (void)setBackgroundImage:(id)a3 animated:(BOOL)a4;
-- (void)setFallbackColor:(id)a3;
-- (void)setHidesIconImage:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setShowsGradientOverlay:(BOOL)a3;
+- (void)setAttributionProviderName:(id)name;
+- (void)setBackgroundImage:(id)image animated:(BOOL)animated;
+- (void)setFallbackColor:(id)color;
+- (void)setHidesIconImage:(BOOL)image;
+- (void)setIconImage:(id)image;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
+- (void)setShowsGradientOverlay:(BOOL)overlay;
 @end
 
 @implementation PKSplashImageHeaderView
 
-- (PKSplashImageHeaderView)initWithFrame:(CGRect)a3
+- (PKSplashImageHeaderView)initWithFrame:(CGRect)frame
 {
   v46[4] = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = PKSplashImageHeaderView;
-  v3 = [(PKSplashImageHeaderView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKSplashImageHeaderView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -29,24 +29,24 @@
     v3->_fallbackColorView = v4;
 
     [(PKSplashImageHeaderView *)v3 addSubview:v3->_fallbackColorView];
-    v43 = [(PKSplashImageHeaderView *)v3 _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKSplashImageHeaderView *)v3 _shouldReverseLayoutDirection];
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     backgroundImageView = v3->_backgroundImageView;
     v3->_backgroundImageView = v6;
 
     v8 = v3->_backgroundImageView;
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v8 setBackgroundColor:clearColor];
 
     [(UIImageView *)v3->_backgroundImageView setContentMode:2];
     [(UIImageView *)v3->_backgroundImageView setClipsToBounds:1];
-    v10 = [(UIImageView *)v3->_backgroundImageView layer];
-    [v10 setOpacity:0.0];
+    layer = [(UIImageView *)v3->_backgroundImageView layer];
+    [layer setOpacity:0.0];
 
     [(PKSplashImageHeaderView *)v3 addSubview:v3->_backgroundImageView];
-    v11 = [MEMORY[0x1E6979380] layer];
+    layer2 = [MEMORY[0x1E6979380] layer];
     gradientLayer = v3->_gradientLayer;
-    v3->_gradientLayer = v11;
+    v3->_gradientLayer = layer2;
 
     v13 = v3->_gradientLayer;
     v14 = PKLayerNullActions();
@@ -68,8 +68,8 @@
 
     [(CAGradientLayer *)v3->_gradientLayer setLocations:&unk_1F3CC87C8];
     v21 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v22 = [v21 layer];
-    [v22 addSublayer:v3->_gradientLayer];
+    layer3 = [v21 layer];
+    [layer3 addSublayer:v3->_gradientLayer];
 
     [(PKSplashImageHeaderView *)v3 addSubview:v21];
     v23 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -77,8 +77,8 @@
     v3->_iconImageView = v23;
 
     v25 = v3->_iconImageView;
-    v26 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v25 setBackgroundColor:v26];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v25 setBackgroundColor:whiteColor];
 
     [(UIImageView *)v3->_iconImageView _setContinuousCornerRadius:8.0];
     [(UIImageView *)v3->_iconImageView setClipsToBounds:1];
@@ -89,10 +89,10 @@
     v3->_primaryLabel = v27;
 
     v29 = v3->_primaryLabel;
-    v30 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v29 setTextColor:v30];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v29 setTextColor:whiteColor2];
 
-    if (v43)
+    if (_shouldReverseLayoutDirection)
     {
       v31 = 0;
     }
@@ -113,8 +113,8 @@
     [(UILabel *)v3->_secondaryLabel setTextAlignment:v31];
     [(UILabel *)v3->_secondaryLabel setNumberOfLines:1];
     v34 = v3->_secondaryLabel;
-    v35 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v34 setTextColor:v35];
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v34 setTextColor:whiteColor3];
 
     [(UILabel *)v3->_secondaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     [(PKSplashImageHeaderView *)v3 addSubview:v3->_secondaryLabel];
@@ -125,8 +125,8 @@
     [(UILabel *)v3->_attributionLabel setNumberOfLines:1];
     [(UILabel *)v3->_attributionLabel setTextAlignment:1];
     v38 = v3->_attributionLabel;
-    v39 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UILabel *)v38 setTextColor:v39];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UILabel *)v38 setTextColor:systemGrayColor];
 
     [(UILabel *)v3->_attributionLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
     [(PKSplashImageHeaderView *)v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
@@ -140,9 +140,9 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   PKFloatRoundToPixel();
   v5 = v4;
   v6 = width;
@@ -194,15 +194,15 @@
   }
 
   *slice = v18;
-  v22 = [(UILabel *)self->_attributionLabel superview];
+  superview = [(UILabel *)self->_attributionLabel superview];
 
   [(UILabel *)self->_primaryLabel sizeThatFits:remainder.size.width, remainder.size.height];
   v24 = v23;
-  v25 = [(UILabel *)self->_primaryLabel font];
-  [v25 lineHeight];
+  font = [(UILabel *)self->_primaryLabel font];
+  [font lineHeight];
   v27 = v26;
 
-  if (v22)
+  if (superview)
   {
     v55 = v19;
     v56 = v20;
@@ -220,8 +220,8 @@
     v37 = v36;
     v39 = v38;
     v41 = v40;
-    v42 = [(UILabel *)self->_secondaryLabel font];
-    [v42 descender];
+    font2 = [(UILabel *)self->_secondaryLabel font];
+    [font2 descender];
     v44 = v43;
 
     [(UILabel *)self->_attributionLabel setFrame:v35, v37 - v44, v39, v41];
@@ -287,11 +287,11 @@
   [(UILabel *)primaryLabel setFrame:?];
 }
 
-- (CGRect)topLabelWithRespectTo:(id)a3
+- (CGRect)topLabelWithRespectTo:(id)to
 {
   v5 = self->_primaryLabel;
   primaryLabel = self->_primaryLabel;
-  v7 = a3;
+  toCopy = to;
   [(UILabel *)primaryLabel frame];
   v9 = v8;
   [(UILabel *)self->_secondaryLabel frame];
@@ -304,10 +304,10 @@
     v5 = v11;
   }
 
-  v13 = [(UILabel *)self->_attributionLabel superview];
-  if (v13)
+  superview = [(UILabel *)self->_attributionLabel superview];
+  if (superview)
   {
-    v14 = v13;
+    v14 = superview;
     [(UILabel *)self->_attributionLabel frame];
     v16 = v15;
 
@@ -334,7 +334,7 @@
   }
 
   [(UILabel *)v5 frame];
-  [(PKSplashImageHeaderView *)self convertRect:v7 toView:?];
+  [(PKSplashImageHeaderView *)self convertRect:toCopy toView:?];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -351,11 +351,11 @@
   return result;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_primaryText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -385,11 +385,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_secondaryText;
-  v6 = v4;
+  v6 = textCopy;
   v12 = v6;
   if (v5 == v6)
   {
@@ -413,8 +413,8 @@ LABEL_8:
     self->_secondaryText = v8;
 
     secondaryLabel = self->_secondaryLabel;
-    v11 = [(NSString *)self->_secondaryText pk_uppercaseStringForPreferredLocale];
-    [(UILabel *)secondaryLabel setText:v11];
+    pk_uppercaseStringForPreferredLocale = [(NSString *)self->_secondaryText pk_uppercaseStringForPreferredLocale];
+    [(UILabel *)secondaryLabel setText:pk_uppercaseStringForPreferredLocale];
 
     [(PKSplashImageHeaderView *)self setNeedsLayout];
   }
@@ -422,81 +422,81 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
-  if (self->_iconImage != v5)
+  imageCopy = image;
+  if (self->_iconImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_iconImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_iconImage, image);
     [(UIImageView *)self->_iconImageView setImage:self->_iconImage];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setBackgroundImage:(id)a3 animated:(BOOL)a4
+- (void)setBackgroundImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_backgroundImage != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_backgroundImage != imageCopy)
   {
-    v13 = v7;
-    objc_storeStrong(&self->_backgroundImage, a3);
+    v13 = imageCopy;
+    objc_storeStrong(&self->_backgroundImage, image);
     [(UIImageView *)self->_backgroundImageView setImage:v13];
-    v8 = [(UIImageView *)self->_backgroundImageView layer];
-    [v8 opacity];
-    if (v4 && *&v9 != 1.0)
+    layer = [(UIImageView *)self->_backgroundImageView layer];
+    [layer opacity];
+    if (animatedCopy && *&v9 != 1.0)
     {
       v10 = *&v9;
       v11 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
       [v11 pkui_updateForAdditiveAnimationFromScalar:v10 toScalar:1.0];
-      v12 = [v8 pkui_addAdditiveAnimation:v11];
+      v12 = [layer pkui_addAdditiveAnimation:v11];
     }
 
     LODWORD(v9) = 1.0;
-    [v8 setOpacity:v9];
+    [layer setOpacity:v9];
 
-    v7 = v13;
+    imageCopy = v13;
   }
 }
 
-- (void)setFallbackColor:(id)a3
+- (void)setFallbackColor:(id)color
 {
-  v5 = a3;
-  if (self->_fallbackColor != v5)
+  colorCopy = color;
+  if (self->_fallbackColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fallbackColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_fallbackColor, color);
     [(UIView *)self->_fallbackColorView setBackgroundColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setShowsGradientOverlay:(BOOL)a3
+- (void)setShowsGradientOverlay:(BOOL)overlay
 {
-  if (self->_showsGradientOverlay == !a3)
+  if (self->_showsGradientOverlay == !overlay)
   {
-    self->_showsGradientOverlay = a3;
+    self->_showsGradientOverlay = overlay;
     [(CAGradientLayer *)self->_gradientLayer setHidden:?];
   }
 }
 
-- (void)setHidesIconImage:(BOOL)a3
+- (void)setHidesIconImage:(BOOL)image
 {
-  if (self->_hidesIconImage == !a3)
+  if (self->_hidesIconImage == !image)
   {
-    self->_hidesIconImage = a3;
+    self->_hidesIconImage = image;
     [(UIImageView *)self->_iconImageView setHidden:?];
 
     [(PKSplashImageHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setAttributionProviderName:(id)a3
+- (void)setAttributionProviderName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   attributionProviderName = self->_attributionProviderName;
-  v11 = v4;
+  v11 = nameCopy;
   v6 = attributionProviderName;
   if (v6 == v11)
   {
@@ -518,9 +518,9 @@ LABEL_12:
     }
 
 LABEL_8:
-    v9 = [(UILabel *)self->_attributionLabel superview];
+    superview = [(UILabel *)self->_attributionLabel superview];
 
-    if (!v9)
+    if (!superview)
     {
       [(PKSplashImageHeaderView *)self addSubview:self->_attributionLabel];
     }

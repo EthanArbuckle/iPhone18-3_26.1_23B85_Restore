@@ -1,10 +1,10 @@
 @interface VNRPNTrackerEspressoResourcesCache
-+ (id)cacheKeyFromOptions:(id)a3 error:(id *)a4;
++ (id)cacheKeyFromOptions:(id)options error:(id *)error;
 + (id)cacheOptionsKeys;
-- (BOOL)addRPNTrackerResourcesConfiguredForOptions:(id)a3 resources:(id)a4 error:(id *)a5;
+- (BOOL)addRPNTrackerResourcesConfiguredForOptions:(id)options resources:(id)resources error:(id *)error;
 - (VNRPNTrackerEspressoResourcesCache)init;
-- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)a3 error:(id *)a4;
-- (id)locateRPNTrackerResourcesConfiguredForOptions:(id)a3 error:(id *)a4;
+- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)options error:(id *)error;
+- (id)locateRPNTrackerResourcesConfiguredForOptions:(id)options error:(id *)error;
 - (void)releaseCachedResources;
 @end
 
@@ -21,11 +21,11 @@
   [(NSLock *)self->_rpnEspressoResourcesKeyToEspressoResourcesCacheLock unlock];
 }
 
-- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)a3 error:(id *)a4
+- (id)createRPNTrackerResourcesConfiguredWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   [(NSLock *)self->_rpnEspressoResourcesKeyToEspressoResourcesCacheLock lock];
-  v7 = [objc_opt_class() cacheKeyFromOptions:v6 error:a4];
+  v7 = [objc_opt_class() cacheKeyFromOptions:optionsCopy error:error];
   if (v7)
   {
     v8 = [(NSMutableDictionary *)self->_rpnEspressoResourcesKeyToEspressoResourcesCache objectForKeyedSubscript:v7];
@@ -37,25 +37,25 @@
     else
     {
       v10 = objc_opt_class();
-      v11 = [VNValidationUtilities requiredObjectOfClass:v10 forKey:@"VNObjectTrackerRevision2Type_RPNTrackerInitModelName" inOptions:v6 error:a4];
+      v11 = [VNValidationUtilities requiredObjectOfClass:v10 forKey:@"VNObjectTrackerRevision2Type_RPNTrackerInitModelName" inOptions:optionsCopy error:error];
       if (v11)
       {
-        v12 = [VNValidationUtilities requiredObjectOfClass:v10 forKey:@"VNObjectTrackerRevision2Type_RPNTrackerTrackModelName" inOptions:v6 error:a4];
+        v12 = [VNValidationUtilities requiredObjectOfClass:v10 forKey:@"VNObjectTrackerRevision2Type_RPNTrackerTrackModelName" inOptions:optionsCopy error:error];
         if (!v12)
         {
           goto LABEL_22;
         }
 
-        v13 = v6;
+        v13 = optionsCopy;
         v27 = v11;
         v14 = v12;
         v15 = objc_opt_self();
-        v16 = [VNValidationUtilities requiredObjectConformingToProtocol:&unk_1F19ECC98 forKey:@"VNTrackingOption_ComputeDevice" inOptions:v13 error:a4];
+        v16 = [VNValidationUtilities requiredObjectConformingToProtocol:&unk_1F19ECC98 forKey:@"VNTrackingOption_ComputeDevice" inOptions:v13 error:error];
         if (v16)
         {
           v23 = v15;
           v26 = v16;
-          v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNDetectorOption_PreferBackgroundProcessing" inOptions:v13 error:a4];
+          v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNDetectorOption_PreferBackgroundProcessing" inOptions:v13 error:error];
           if (v17)
           {
             v25 = v14;
@@ -68,10 +68,10 @@
             v30 = v26;
             v31 = v17;
             v18 = _Block_copy(aBlock);
-            v19 = v18[2](v18, v27, a4);
+            v19 = v18[2](v18, v27, error);
             if (v19)
             {
-              v20 = v18[2](v18, v25, a4);
+              v20 = v18[2](v18, v25, error);
               v21 = v20 ? [[v23 alloc] _initWithRPNInitEspressoResources:v19 RPNTrackEspressoResources:v20] : 0;
             }
 
@@ -127,11 +127,11 @@ LABEL_22:
   return v9;
 }
 
-- (id)locateRPNTrackerResourcesConfiguredForOptions:(id)a3 error:(id *)a4
+- (id)locateRPNTrackerResourcesConfiguredForOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   [(NSLock *)self->_rpnEspressoResourcesKeyToEspressoResourcesCacheLock lock];
-  v7 = [objc_opt_class() cacheKeyFromOptions:v6 error:a4];
+  v7 = [objc_opt_class() cacheKeyFromOptions:optionsCopy error:error];
   if (v7)
   {
     v8 = [(NSMutableDictionary *)self->_rpnEspressoResourcesKeyToEspressoResourcesCache objectForKeyedSubscript:v7];
@@ -141,10 +141,10 @@ LABEL_22:
       v10 = v8;
     }
 
-    else if (a4)
+    else if (error)
     {
       v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate RPN Tracker resources for '%@'", v7];
-      *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v11];
+      *error = [VNError errorForDataUnavailableWithLocalizedDescription:v11];
     }
   }
 
@@ -158,25 +158,25 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)addRPNTrackerResourcesConfiguredForOptions:(id)a3 resources:(id)a4 error:(id *)a5
+- (BOOL)addRPNTrackerResourcesConfiguredForOptions:(id)options resources:(id)resources error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  resourcesCopy = resources;
   [(NSLock *)self->_rpnEspressoResourcesKeyToEspressoResourcesCacheLock lock];
-  if (v9)
+  if (resourcesCopy)
   {
-    v10 = [objc_opt_class() cacheKeyFromOptions:v8 error:a5];
+    v10 = [objc_opt_class() cacheKeyFromOptions:optionsCopy error:error];
     v11 = v10 != 0;
     if (v10)
     {
-      [(NSMutableDictionary *)self->_rpnEspressoResourcesKeyToEspressoResourcesCache setObject:v9 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_rpnEspressoResourcesKeyToEspressoResourcesCache setObject:resourcesCopy forKeyedSubscript:v10];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [VNError errorForInvalidArgument:0 named:@"Tracker resources"];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -210,17 +210,17 @@ LABEL_22:
   return v2;
 }
 
-+ (id)cacheKeyFromOptions:(id)a3 error:(id *)a4
++ (id)cacheKeyFromOptions:(id)options error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v17 = [objc_opt_class() cacheOptionsKeys];
+  optionsCopy = options;
+  cacheOptionsKeys = [objc_opt_class() cacheOptionsKeys];
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v17;
+  v7 = cacheOptionsKeys;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -235,11 +235,11 @@ LABEL_22:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
+        v12 = [optionsCopy objectForKeyedSubscript:v11];
         v13 = v12;
         if (!v12)
         {
-          if (a4)
+          if (error)
           {
             v15 = [VNError errorForInternalErrorWithLocalizedDescription:@"Option value for option key %@ is a mandatory parameter"];
           }

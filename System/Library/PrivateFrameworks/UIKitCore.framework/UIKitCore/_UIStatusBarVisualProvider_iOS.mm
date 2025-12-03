@@ -1,41 +1,41 @@
 @interface _UIStatusBarVisualProvider_iOS
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4;
-- (BOOL)hasCustomAnimationForDisplayItemWithIdentifier:(id)a3 removal:(BOOL)a4;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info;
+- (BOOL)hasCustomAnimationForDisplayItemWithIdentifier:(id)identifier removal:(BOOL)removal;
 - (_UIStatusBar)statusBar;
 - (_UIStatusBarAnimation)animationForAirplaneMode;
 - (_UIStatusBarAnimation)animationForProminentLocation;
 - (_UIStatusBarVisualProvider_iOS)init;
-- (double)airplaneShouldFadeForAnimationType:(int64_t)a3;
-- (double)airplaneSpeedForAnimationType:(int64_t)a3;
-- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)a3 animationType:(int64_t)a4;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)displayItemIdentifiersForPartWithIdentifier:(id)a3;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)styleAttributesForStyle:(int64_t)a3;
-- (id)willUpdateWithData:(id)a3;
-- (void)_applyToAppearingRegions:(BOOL)a3 block:(id)a4;
+- (double)airplaneShouldFadeForAnimationType:(int64_t)type;
+- (double)airplaneSpeedForAnimationType:(int64_t)type;
+- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)identifier animationType:(int64_t)type;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)displayItemIdentifiersForPartWithIdentifier:(id)identifier;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)styleAttributesForStyle:(int64_t)style;
+- (id)willUpdateWithData:(id)data;
+- (void)_applyToAppearingRegions:(BOOL)regions block:(id)block;
 - (void)_createExpandedPlacements;
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5;
-- (void)modeUpdatedFromMode:(int64_t)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)updateDataForService:(id)a3;
-- (void)updateDataForSystemNavigation:(id)a3;
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press;
+- (void)modeUpdatedFromMode:(int64_t)mode;
+- (void)setExpanded:(BOOL)expanded;
+- (void)updateDataForService:(id)service;
+- (void)updateDataForSystemNavigation:(id)navigation;
 @end
 
 @implementation _UIStatusBarVisualProvider_iOS
 
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  screenCopy = screen;
+  infoCopy = info;
+  traitCollection = [screenCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v8 || v8 == 3 || v8 == 1)
+  if (!userInterfaceIdiom || userInterfaceIdiom == 3 || userInterfaceIdiom == 1)
   {
     v9 = objc_opt_class();
-    v10 = _UIStatusBarGetVisualProviderSubclassForScreenWithVisualProviderInfo(v9, v5, v6);
+    v10 = _UIStatusBarGetVisualProviderSubclassForScreenWithVisualProviderInfo(v9, screenCopy, infoCopy);
   }
 
   else
@@ -55,24 +55,24 @@
   return v2;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
-  v4 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-  v5 = [_UIStatusBarStyleAttributes styleAttributesForStatusBar:v4 style:a3];
+  statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+  v5 = [_UIStatusBarStyleAttributes styleAttributesForStatusBar:statusBar style:style];
 
-  v6 = [v5 textColor];
+  textColor = [v5 textColor];
 
-  if (a3 == 1)
+  if (style == 1)
   {
-    if (!v6)
+    if (!textColor)
     {
       v7 = +[UIColor whiteColor];
       [v5 setTextColor:v7];
     }
 
-    v8 = [v5 imageTintColor];
+    imageTintColor = [v5 imageTintColor];
 
-    if (!v8)
+    if (!imageTintColor)
     {
       v9 = +[UIColor whiteColor];
 LABEL_10:
@@ -83,15 +83,15 @@ LABEL_10:
 
   else
   {
-    if (!v6)
+    if (!textColor)
     {
       v10 = +[UIColor blackColor];
       [v5 setTextColor:v10];
     }
 
-    v11 = [v5 imageTintColor];
+    imageTintColor2 = [v5 imageTintColor];
 
-    if (!v11)
+    if (!imageTintColor2)
     {
       v9 = +[UIColor blackColor];
       goto LABEL_10;
@@ -131,8 +131,8 @@ LABEL_10:
   }
 
 LABEL_14:
-  v14 = [v5 imageTintColor];
-  v15 = [v14 colorWithAlphaComponent:0.2];
+  imageTintColor3 = [v5 imageTintColor];
+  v15 = [imageTintColor3 colorWithAlphaComponent:0.2];
   [v5 setImageDimmedTintColor:v15];
 
   [v5 setSymbolScale:1];
@@ -140,9 +140,9 @@ LABEL_14:
   return v5;
 }
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
-  [a1 height];
+  [self height];
   v4 = v3;
   v5 = -1.0;
   result.height = v4;
@@ -150,12 +150,12 @@ LABEL_14:
   return result;
 }
 
-- (void)modeUpdatedFromMode:(int64_t)a3
+- (void)modeUpdatedFromMode:(int64_t)mode
 {
-  v4 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-  v5 = [v4 mode];
+  statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+  mode = [statusBar mode];
 
-  if (v5 == 2)
+  if (mode == 2)
   {
     [(_UIStatusBarVisualProvider_iOS *)self setExpanded:0];
 
@@ -164,49 +164,49 @@ LABEL_14:
 
   else
   {
-    if (v5 == 1)
+    if (mode == 1)
     {
       [(_UIStatusBarVisualProvider_iOS *)self setOnLockScreen:0];
-      v6 = self;
+      selfCopy2 = self;
       v7 = 1;
     }
 
     else
     {
-      if (v5)
+      if (mode)
       {
         return;
       }
 
       [(_UIStatusBarVisualProvider_iOS *)self setOnLockScreen:0];
-      v6 = self;
+      selfCopy2 = self;
       v7 = 0;
     }
 
-    [(_UIStatusBarVisualProvider_iOS *)v6 setExpanded:v7];
+    [(_UIStatusBarVisualProvider_iOS *)selfCopy2 setExpanded:v7];
   }
 }
 
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
+  pressCopy = press;
+  highlightedCopy = highlighted;
   v10[1] = *MEMORY[0x1E69E9840];
-  v7 = [a3 layoutItem];
-  v8 = [v7 _ui_view];
+  layoutItem = [actionable layoutItem];
+  _ui_view = [layoutItem _ui_view];
 
-  if (v8)
+  if (_ui_view)
   {
-    v10[0] = v8;
+    v10[0] = _ui_view;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [UIButton _setVisuallyHighlighted:v6 forViews:v9 initialPress:v5];
+    [UIButton _setVisuallyHighlighted:highlightedCopy forViews:v9 initialPress:pressCopy];
   }
 }
 
 - (void)_createExpandedPlacements
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if ([(_UIStatusBarVisualProvider_iOS *)self wantsPillInExpandedTrailingPlacements])
   {
     v5 = +[(_UIStatusBarPillBackgroundActivityItem *)_UIStatusBarExpandedPillBackgroundActivityItem];
@@ -214,57 +214,57 @@ LABEL_14:
     expandedPillPlacement = self->_expandedPillPlacement;
     self->_expandedPillPlacement = v6;
 
-    [(NSArray *)v4 addObject:self->_expandedPillPlacement];
+    [(NSArray *)array2 addObject:self->_expandedPillPlacement];
   }
 
   v8 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorLocationItem];
   v9 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v8 priority:450];
-  [(NSArray *)v4 addObject:v9];
+  [(NSArray *)array2 addObject:v9];
 
   if ([(_UIStatusBarVisualProvider_iOS *)self wantsExpandedLeadingPlacements])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v11 = objc_opt_class();
     v12 = [_UIStatusBarDisplayItemPlacementNetworkGroup groupWithHighPriority:1500 lowPriority:1200 cellularItemClass:v11 wifiItemClass:objc_opt_class() includeCellularName:1];
     expandedNetworkGroup = self->_expandedNetworkGroup;
     self->_expandedNetworkGroup = v12;
 
-    v14 = [(_UIStatusBarDisplayItemPlacementNetworkGroup *)self->_expandedNetworkGroup cellularGroup];
-    v15 = [v14 placementsAffectedByAirplaneMode];
-    [(NSArray *)v10 addObjectsFromArray:v15];
+    cellularGroup = [(_UIStatusBarDisplayItemPlacementNetworkGroup *)self->_expandedNetworkGroup cellularGroup];
+    placementsAffectedByAirplaneMode = [cellularGroup placementsAffectedByAirplaneMode];
+    [(NSArray *)array3 addObjectsFromArray:placementsAffectedByAirplaneMode];
 
     v16 = objc_opt_class();
     v17 = [_UIStatusBarDisplayItemPlacementNetworkGroup secondaryGroupWithHighPriority:500 lowPriority:200 cellularItemClass:v16 wifiItemClass:objc_opt_class()];
-    v18 = [v17 cellularGroup];
-    v19 = [v18 placementsAffectedByAirplaneMode];
-    [(NSArray *)v10 addObjectsFromArray:v19];
+    cellularGroup2 = [v17 cellularGroup];
+    placementsAffectedByAirplaneMode2 = [cellularGroup2 placementsAffectedByAirplaneMode];
+    [(NSArray *)array3 addObjectsFromArray:placementsAffectedByAirplaneMode2];
 
     v20 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
     v21 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v20 priority:4000];
-    v22 = [v21 excludingPlacements:v10];
-    [(NSArray *)v3 addObject:v22];
+    v22 = [v21 excludingPlacements:array3];
+    [(NSArray *)array addObject:v22];
 
-    v23 = [(_UIStatusBarDisplayItemPlacementGroup *)self->_expandedNetworkGroup placements];
-    [(NSArray *)v3 addObjectsFromArray:v23];
+    placements = [(_UIStatusBarDisplayItemPlacementGroup *)self->_expandedNetworkGroup placements];
+    [(NSArray *)array addObjectsFromArray:placements];
 
     [(_UIStatusBarVisualProvider_iOS *)self regionSpacing];
     v25 = v24;
     [(_UIStatusBarVisualProvider_iOS *)self expandedItemSpacing];
     v27 = [_UIStatusBarDisplayItemPlacement spacerPlacementWithSize:[(_UIStatusBarDisplayItemPlacementGroup *)self->_expandedNetworkGroup minimumPriority]- 5 priority:v25 - (v26 + v26), 0.0];
-    v28 = [(_UIStatusBarDisplayItemPlacementNetworkGroup *)self->_expandedNetworkGroup cellularGroup];
-    v29 = [v28 placements];
-    v30 = [v27 requiringAnyPlacements:v29];
-    [(NSArray *)v3 addObject:v30];
+    cellularGroup3 = [(_UIStatusBarDisplayItemPlacementNetworkGroup *)self->_expandedNetworkGroup cellularGroup];
+    placements2 = [cellularGroup3 placements];
+    v30 = [v27 requiringAnyPlacements:placements2];
+    [(NSArray *)array addObject:v30];
 
-    v31 = [v17 placements];
-    [(NSArray *)v3 addObjectsFromArray:v31];
+    placements3 = [v17 placements];
+    [(NSArray *)array addObjectsFromArray:placements3];
 
-    v32 = [v17 wifiGroup];
+    wifiGroup = [v17 wifiGroup];
     secondaryWifiGroup = self->_secondaryWifiGroup;
-    self->_secondaryWifiGroup = v32;
+    self->_secondaryWifiGroup = wifiGroup;
 
     expandedCellularPlacementsAffectedByAirplaneMode = self->_expandedCellularPlacementsAffectedByAirplaneMode;
-    self->_expandedCellularPlacementsAffectedByAirplaneMode = v10;
+    self->_expandedCellularPlacementsAffectedByAirplaneMode = array3;
   }
 
   else
@@ -272,61 +272,61 @@ LABEL_14:
     v17 = [_UIStatusBarWifiItem groupWithPriority:500];
     v35 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
     v36 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v35 priority:4000];
-    [(NSArray *)v4 addObject:v36];
+    [(NSArray *)array2 addObject:v36];
 
-    v37 = [v17 placements];
-    [(NSArray *)v4 addObjectsFromArray:v37];
+    placements4 = [v17 placements];
+    [(NSArray *)array2 addObjectsFromArray:placements4];
 
     expandedCellularPlacementsAffectedByAirplaneMode = +[(_UIStatusBarItem *)_UIStatusBarIndicatorVPNItem];
     v38 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:expandedCellularPlacementsAffectedByAirplaneMode priority:54];
-    [(NSArray *)v4 addObject:v38];
+    [(NSArray *)array2 addObject:v38];
   }
 
   [(_UIStatusBarVisualProvider_iOS *)self bluetoothPaddingInset];
   v47 = [(_UIStatusBarDisplayItemPlacementIndicatorsGroup *)_UIStatusBarDisplayItemPlacementExpandedIndicatorsGroup groupWithHighPriority:400 lowPriority:100 bluetoothPaddingInset:?];
   v39 = +[_UIStatusBarDisplayItemPlacementBatteryGroup groupWithHighPriority:lowPriority:](_UIStatusBarDisplayItemPlacementBatteryGroup, "groupWithHighPriority:lowPriority:", [v47 maximumPriority] + 1, objc_msgSend(v47, "minimumPriority") - 5);
-  v40 = [v47 placements];
-  [(NSArray *)v4 addObjectsFromArray:v40];
+  placements5 = [v47 placements];
+  [(NSArray *)array2 addObjectsFromArray:placements5];
 
   v41 = +[(_UIStatusBarItem *)_UIStatusBarBuildVersionItem];
   v42 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v41 priority:1];
-  [(NSArray *)v4 addObject:v42];
+  [(NSArray *)array2 addObject:v42];
 
-  v43 = [v39 placements];
-  [(NSArray *)v4 addObjectsFromArray:v43];
+  placements6 = [v39 placements];
+  [(NSArray *)array2 addObjectsFromArray:placements6];
 
   expandedLeadingPlacements = self->_expandedLeadingPlacements;
-  self->_expandedLeadingPlacements = v3;
-  v45 = v3;
+  self->_expandedLeadingPlacements = array;
+  v45 = array;
 
   expandedTrailingPlacements = self->_expandedTrailingPlacements;
-  self->_expandedTrailingPlacements = v4;
+  self->_expandedTrailingPlacements = array2;
 }
 
-- (id)willUpdateWithData:(id)a3
+- (id)willUpdateWithData:(id)data
 {
-  v4 = a3;
-  [(_UIStatusBarVisualProvider_iOS *)self updateDataForService:v4];
-  [(_UIStatusBarVisualProvider_iOS *)self updateDataForSystemNavigation:v4];
+  dataCopy = data;
+  [(_UIStatusBarVisualProvider_iOS *)self updateDataForService:dataCopy];
+  [(_UIStatusBarVisualProvider_iOS *)self updateDataForSystemNavigation:dataCopy];
 
   return MEMORY[0x1E695E0F0];
 }
 
-- (void)updateDataForService:(id)a3
+- (void)updateDataForService:(id)service
 {
-  v4 = [a3 secondaryCellularEntry];
-  if (v4)
+  secondaryCellularEntry = [service secondaryCellularEntry];
+  if (secondaryCellularEntry)
   {
-    v5 = v4;
-    -[_UIStatusBarDisplayItemPlacementGroup setEnabled:](self->_secondaryWifiGroup, "setEnabled:", [v4 type] != 0);
-    v4 = v5;
+    v5 = secondaryCellularEntry;
+    -[_UIStatusBarDisplayItemPlacementGroup setEnabled:](self->_secondaryWifiGroup, "setEnabled:", [secondaryCellularEntry type] != 0);
+    secondaryCellularEntry = v5;
   }
 }
 
-- (id)displayItemIdentifiersForPartWithIdentifier:(id)a3
+- (id)displayItemIdentifiersForPartWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqual:@"batteryPartIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"batteryPartIdentifier"])
   {
     v4 = MEMORY[0x1E695DFD8];
     v5 = +[_UIStatusBarBatteryItem staticIconDisplayIdentifier];
@@ -338,21 +338,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqual:@"backNavigationPartIdentifier"])
+  if ([identifierCopy isEqual:@"backNavigationPartIdentifier"])
   {
     v4 = MEMORY[0x1E695DFD8];
     v5 = +[(_UIStatusBarItem *)_UIStatusBarNavigationItem];
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:@"clockPartIdentifier"])
+  if ([identifierCopy isEqual:@"clockPartIdentifier"])
   {
     v4 = MEMORY[0x1E695DFD8];
     v5 = +[_UIStatusBarTimeItem shortTimeDisplayIdentifier];
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:@"dateAndTimePartIdentifier"])
+  if ([identifierCopy isEqual:@"dateAndTimePartIdentifier"])
   {
     v9 = MEMORY[0x1E695DFD8];
     v6 = +[_UIStatusBarTimeItem shortTimeDisplayIdentifier];
@@ -364,7 +364,7 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v12 = [v3 isEqual:@"lockPartIdentifier"];
+  v12 = [identifierCopy isEqual:@"lockPartIdentifier"];
   v13 = MEMORY[0x1E695DFD8];
   if (v12)
   {
@@ -380,26 +380,26 @@ LABEL_9:
   return v7;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(_UIStatusBarVisualProvider_iOS *)self _applyToAppearingRegions:0 block:&__block_literal_global_527];
     [(_UIStatusBarVisualProvider_iOS *)self _applyToAppearingRegions:1 block:&__block_literal_global_33_7];
-    v5 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-    [v5 updateWithAnimations:MEMORY[0x1E695E0F0]];
+    statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+    [statusBar updateWithAnimations:MEMORY[0x1E695E0F0]];
   }
 }
 
-- (void)_applyToAppearingRegions:(BOOL)a3 block:(id)a4
+- (void)_applyToAppearingRegions:(BOOL)regions block:(id)block
 {
-  v4 = a3;
+  regionsCopy = regions;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(_UIStatusBarVisualProvider_iOS *)self expanded];
+  blockCopy = block;
+  expanded = [(_UIStatusBarVisualProvider_iOS *)self expanded];
   v8 = &_UIStatusBarPartIdentifierNormal;
-  if (v7 == v4)
+  if (expanded == regionsCopy)
   {
     v8 = &_UIStatusBarPartIdentifierExpanded;
   }
@@ -425,10 +425,10 @@ LABEL_9:
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-        v16 = [v15 regions];
-        v17 = [v16 objectForKeyedSubscript:v14];
-        v6[2](v6, v17);
+        statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+        regions = [statusBar regions];
+        v17 = [regions objectForKeyedSubscript:v14];
+        blockCopy[2](blockCopy, v17);
 
         ++v13;
       }
@@ -441,83 +441,83 @@ LABEL_9:
   }
 }
 
-- (BOOL)hasCustomAnimationForDisplayItemWithIdentifier:(id)a3 removal:(BOOL)a4
+- (BOOL)hasCustomAnimationForDisplayItemWithIdentifier:(id)identifier removal:(BOOL)removal
 {
-  v4 = a4;
-  v6 = a3;
+  removalCopy = removal;
+  identifierCopy = identifier;
   v7 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
   v8 = v7;
-  v9 = v7 == v6 || v4;
-  if (v4 && v7 != v6)
+  isEnabled = v7 == identifierCopy || removalCopy;
+  if (removalCopy && v7 != identifierCopy)
   {
     v10 = +[_UIStatusBarIndicatorLocationItem prominentDisplayIdentifier];
-    if (v10 == v6)
+    if (v10 == identifierCopy)
     {
-      v11 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-      v12 = [v11 currentAggregatedData];
-      v13 = [v12 locationEntry];
-      v9 = [v13 isEnabled];
+      statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+      currentAggregatedData = [statusBar currentAggregatedData];
+      locationEntry = [currentAggregatedData locationEntry];
+      isEnabled = [locationEntry isEnabled];
     }
 
     else
     {
-      v9 = 0;
+      isEnabled = 0;
     }
   }
 
-  return v9;
+  return isEnabled;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v9 = [(_UIStatusBarVisualProvider_iOS *)self animationForAirplaneMode];
+    animationForAirplaneMode = [(_UIStatusBarVisualProvider_iOS *)self animationForAirplaneMode];
   }
 
-  else if (v7)
+  else if (animationCopy)
   {
-    v9 = v7;
+    animationForAirplaneMode = animationCopy;
   }
 
   else
   {
-    v9 = [(_UIStatusBarVisualProvider_iOS *)self defaultAnimationForDisplayItemWithIdentifier:v6];
+    animationForAirplaneMode = [(_UIStatusBarVisualProvider_iOS *)self defaultAnimationForDisplayItemWithIdentifier:identifierCopy];
   }
 
-  v10 = v9;
+  v10 = animationForAirplaneMode;
 
   return v10;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v11 = [(_UIStatusBarVisualProvider_iOS *)self animationForAirplaneMode];
+    animationForAirplaneMode = [(_UIStatusBarVisualProvider_iOS *)self animationForAirplaneMode];
     goto LABEL_10;
   }
 
   v9 = +[_UIStatusBarIndicatorLocationItem prominentDisplayIdentifier];
   v10 = v9;
-  if (v9 == v6)
+  if (v9 == identifierCopy)
   {
-    v12 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-    v13 = [v12 currentAggregatedData];
-    v14 = [v13 locationEntry];
-    v15 = [v14 isEnabled];
+    statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
+    locationEntry = [currentAggregatedData locationEntry];
+    isEnabled = [locationEntry isEnabled];
 
-    if (v15)
+    if (isEnabled)
     {
-      v11 = [(_UIStatusBarVisualProvider_iOS *)self animationForProminentLocation];
+      animationForAirplaneMode = [(_UIStatusBarVisualProvider_iOS *)self animationForProminentLocation];
       goto LABEL_10;
     }
   }
@@ -526,34 +526,34 @@ LABEL_9:
   {
   }
 
-  if (v7)
+  if (animationCopy)
   {
-    v11 = v7;
+    animationForAirplaneMode = animationCopy;
   }
 
   else
   {
-    v11 = [(_UIStatusBarVisualProvider_iOS *)self defaultAnimationForDisplayItemWithIdentifier:v6];
+    animationForAirplaneMode = [(_UIStatusBarVisualProvider_iOS *)self defaultAnimationForDisplayItemWithIdentifier:identifierCopy];
   }
 
 LABEL_10:
-  v16 = v11;
+  v16 = animationForAirplaneMode;
 
   return v16;
 }
 
-- (void)updateDataForSystemNavigation:(id)a3
+- (void)updateDataForSystemNavigation:(id)navigation
 {
-  v3 = a3;
+  navigationCopy = navigation;
 }
 
-- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)a3 animationType:(int64_t)a4
+- (double)airplaneTravelOffsetInProposedPartWithIdentifier:(id *)identifier animationType:(int64_t)type
 {
   result = 0.0;
-  if (a4 == 2)
+  if (type == 2)
   {
     v6 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
-    *a3 = [v6 stringRepresentation];
+    *identifier = [v6 stringRepresentation];
 
     return 100.0;
   }
@@ -561,10 +561,10 @@ LABEL_10:
   return result;
 }
 
-- (double)airplaneSpeedForAnimationType:(int64_t)a3
+- (double)airplaneSpeedForAnimationType:(int64_t)type
 {
   result = 40.0;
-  if (a3 == 2)
+  if (type == 2)
   {
     return 160.0;
   }
@@ -572,10 +572,10 @@ LABEL_10:
   return result;
 }
 
-- (double)airplaneShouldFadeForAnimationType:(int64_t)a3
+- (double)airplaneShouldFadeForAnimationType:(int64_t)type
 {
   result = 0.0;
-  if (a3 == 2)
+  if (type == 2)
   {
     return 1.0;
   }
@@ -600,9 +600,9 @@ LABEL_10:
   v44[3] = __Block_byref_object_copy__182;
   v44[4] = __Block_byref_object_dispose__182;
   v45 = 0;
-  v3 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 effectiveLayoutDirection] == 1;
+  statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+  styleAttributes = [statusBar styleAttributes];
+  v5 = [styleAttributes effectiveLayoutDirection] == 1;
 
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
@@ -625,13 +625,13 @@ LABEL_10:
   WeakRetained = objc_loadWeakRetained(&self->_statusBar);
   v8 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
   v9 = [WeakRetained stateForDisplayItemWithIdentifier:v8];
-  v10 = [v9 potentialPlacementRegionIdentifiers];
+  potentialPlacementRegionIdentifiers = [v9 potentialPlacementRegionIdentifiers];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v10;
+  obj = potentialPlacementRegionIdentifiers;
   v11 = [obj countByEnumeratingWithState:&v37 objects:v49 count:16];
   if (v11)
   {
@@ -647,8 +647,8 @@ LABEL_10:
 
         v13 = *(*(&v37 + 1) + 8 * i);
         v14 = objc_loadWeakRetained(&self->_statusBar);
-        v15 = [v14 regions];
-        v16 = [v15 objectForKeyedSubscript:v13];
+        regions = [v14 regions];
+        v16 = [regions objectForKeyedSubscript:v13];
 
         v35[0] = 0;
         v35[1] = v35;
@@ -675,10 +675,10 @@ LABEL_10:
         v18 = v16;
         v32 = v18;
         [v17 setPrepareBlock:v31];
-        v19 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+        statusBar2 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
         v48 = v13;
         v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-        v21 = [v19 displayItemIdentifiersInRegionsWithIdentifiers:v20];
+        v21 = [statusBar2 displayItemIdentifiersInRegionsWithIdentifiers:v20];
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __58___UIStatusBarVisualProvider_iOS_animationForAirplaneMode__block_invoke_16;

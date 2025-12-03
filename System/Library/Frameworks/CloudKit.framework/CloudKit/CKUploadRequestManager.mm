@@ -1,8 +1,8 @@
 @interface CKUploadRequestManager
-+ (id)activityIdentifierForSchedulingRepairsInContainer:(id)a3;
++ (id)activityIdentifierForSchedulingRepairsInContainer:(id)container;
 - (CKContainer)repairContainer;
 - (CKSyncEngine)repairZoneSyncEngine;
-- (CKUploadRequestManager)initWithContainer:(id)a3 repairContainerOverrides:(id)a4;
+- (CKUploadRequestManager)initWithContainer:(id)container repairContainerOverrides:(id)overrides;
 - (CKUploadRequestManagerResponseActionThrottler)responseActionThrottler;
 - (CKUploadRequestPersistentStore)database;
 - (NSString)activityIdentifierForSchedulingRepairs;
@@ -20,22 +20,22 @@
 - (int64_t)assetRepairSchedulerRepairRetryCount;
 - (void)cancelAllOperations;
 - (void)dealloc;
-- (void)fetchServerChanges:(id)a3;
+- (void)fetchServerChanges:(id)changes;
 - (void)manuallyTriggerUploadRequests;
 - (void)registerForItemRequests;
 - (void)scheduleOrInvokeRepairsNow;
-- (void)setAssetRepairSchedulerDefaultSuspensionTime:(double)a3;
-- (void)setAssetRepairSchedulerRepairRetryCount:(int64_t)a3;
-- (void)setAssetRequestCallback:(id)a3;
-- (void)setCallback:(id)a3 forOverridePoint:(int64_t)a4;
-- (void)setCancelledErrorRetryTime:(double)a3;
-- (void)setMachServiceName:(id)a3;
-- (void)setNotificationDebouncePeriod:(double)a3;
-- (void)setPackageRequestCallback:(id)a3;
-- (void)setRecurringFetchPeriod:(double)a3;
-- (void)setRetryableErrorMaxRetryCount:(double)a3;
-- (void)setRetryableErrorRetryTime:(double)a3;
-- (void)setTryAgainLaterRetryTime:(double)a3;
+- (void)setAssetRepairSchedulerDefaultSuspensionTime:(double)time;
+- (void)setAssetRepairSchedulerRepairRetryCount:(int64_t)count;
+- (void)setAssetRequestCallback:(id)callback;
+- (void)setCallback:(id)callback forOverridePoint:(int64_t)point;
+- (void)setCancelledErrorRetryTime:(double)time;
+- (void)setMachServiceName:(id)name;
+- (void)setNotificationDebouncePeriod:(double)period;
+- (void)setPackageRequestCallback:(id)callback;
+- (void)setRecurringFetchPeriod:(double)period;
+- (void)setRetryableErrorMaxRetryCount:(double)count;
+- (void)setRetryableErrorRetryTime:(double)time;
+- (void)setTryAgainLaterRetryTime:(double)time;
 - (void)unregister;
 @end
 
@@ -198,57 +198,57 @@
   return v10;
 }
 
-- (void)setRecurringFetchPeriod:(double)a3
+- (void)setRecurringFetchPeriod:(double)period
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setRecurringFetchPeriod_(v7, v5, v6, a3);
+  objc_msgSend_setRecurringFetchPeriod_(v7, v5, v6, period);
 }
 
-- (void)setTryAgainLaterRetryTime:(double)a3
+- (void)setTryAgainLaterRetryTime:(double)time
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setTryAgainLaterRetryTime_(v7, v5, v6, a3);
+  objc_msgSend_setTryAgainLaterRetryTime_(v7, v5, v6, time);
 }
 
-- (void)setRetryableErrorRetryTime:(double)a3
+- (void)setRetryableErrorRetryTime:(double)time
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setRetryableErrorRetryTime_(v7, v5, v6, a3);
+  objc_msgSend_setRetryableErrorRetryTime_(v7, v5, v6, time);
 }
 
-- (void)setCancelledErrorRetryTime:(double)a3
+- (void)setCancelledErrorRetryTime:(double)time
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setCancelledErrorRetryTime_(v7, v5, v6, a3);
+  objc_msgSend_setCancelledErrorRetryTime_(v7, v5, v6, time);
 }
 
-- (void)setRetryableErrorMaxRetryCount:(double)a3
+- (void)setRetryableErrorMaxRetryCount:(double)count
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setRetryableErrorMaxRetryCount_(v7, v5, v6, a3);
+  objc_msgSend_setRetryableErrorMaxRetryCount_(v7, v5, v6, count);
 }
 
-- (void)setNotificationDebouncePeriod:(double)a3
+- (void)setNotificationDebouncePeriod:(double)period
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setNotificationDebouncePeriod_(v7, v5, v6, a3);
+  objc_msgSend_setNotificationDebouncePeriod_(v7, v5, v6, period);
 }
 
-- (void)setAssetRepairSchedulerDefaultSuspensionTime:(double)a3
+- (void)setAssetRepairSchedulerDefaultSuspensionTime:(double)time
 {
   v7 = objc_msgSend_internals(self, a2, v3);
-  objc_msgSend_setAssetRepairSchedulerDefaultSuspensionTime_(v7, v5, v6, a3);
+  objc_msgSend_setAssetRepairSchedulerDefaultSuspensionTime_(v7, v5, v6, time);
 }
 
-- (void)setAssetRepairSchedulerRepairRetryCount:(int64_t)a3
+- (void)setAssetRepairSchedulerRepairRetryCount:(int64_t)count
 {
-  v5 = objc_msgSend_internals(self, a2, a3);
-  objc_msgSend_setAssetRepairSchedulerRepairRetryCount_(v5, v4, a3);
+  v5 = objc_msgSend_internals(self, a2, count);
+  objc_msgSend_setAssetRepairSchedulerRepairRetryCount_(v5, v4, count);
 }
 
-+ (id)activityIdentifierForSchedulingRepairsInContainer:(id)a3
++ (id)activityIdentifierForSchedulingRepairsInContainer:(id)container
 {
-  v3 = objc_msgSend_containerID(a3, a2, a3);
+  v3 = objc_msgSend_containerID(container, a2, container);
   v4 = MEMORY[0x1E696AEC0];
   v7 = objc_msgSend_containerIdentifier(v3, v5, v6);
   v10 = objc_msgSend_environment(v3, v8, v9);
@@ -268,17 +268,17 @@
   [(CKUploadRequestManager *)&v5 dealloc];
 }
 
-- (CKUploadRequestManager)initWithContainer:(id)a3 repairContainerOverrides:(id)a4
+- (CKUploadRequestManager)initWithContainer:(id)container repairContainerOverrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  overridesCopy = overrides;
   v14.receiver = self;
   v14.super_class = CKUploadRequestManager;
   v8 = [(CKUploadRequestManager *)&v14 init];
   if (v8)
   {
     v9 = [CKUploadRequestManagerInternals alloc];
-    v11 = objc_msgSend_initWithContainer_repairContainerOverrides_(v9, v10, v6, v7);
+    v11 = objc_msgSend_initWithContainer_repairContainerOverrides_(v9, v10, containerCopy, overridesCopy);
     internals = v8->_internals;
     v8->_internals = v11;
   }
@@ -294,11 +294,11 @@
   return v6;
 }
 
-- (void)setAssetRequestCallback:(id)a3
+- (void)setAssetRequestCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v8 = objc_msgSend_internals(self, v5, v6);
-  objc_msgSend_setAssetRequestCallback_(v8, v7, v4);
+  objc_msgSend_setAssetRequestCallback_(v8, v7, callbackCopy);
 }
 
 - (id)packageRequestCallback
@@ -309,11 +309,11 @@
   return v6;
 }
 
-- (void)setPackageRequestCallback:(id)a3
+- (void)setPackageRequestCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v8 = objc_msgSend_internals(self, v5, v6);
-  objc_msgSend_setPackageRequestCallback_(v8, v7, v4);
+  objc_msgSend_setPackageRequestCallback_(v8, v7, callbackCopy);
 }
 
 - (NSString)machServiceName
@@ -324,11 +324,11 @@
   return v6;
 }
 
-- (void)setMachServiceName:(id)a3
+- (void)setMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_internals(self, v5, v6);
-  objc_msgSend_setMachServiceName_(v8, v7, v4);
+  objc_msgSend_setMachServiceName_(v8, v7, nameCopy);
 }
 
 - (NSString)activityIdentifierForSchedulingRepairs
@@ -399,15 +399,15 @@
   os_activity_scope_leave(&v9);
 }
 
-- (void)fetchServerChanges:(id)a3
+- (void)fetchServerChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = _os_activity_create(&dword_1883EA000, "client/data-repair-fetch-changes", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v5, &v10);
   v8 = objc_msgSend_internals(self, v6, v7);
-  objc_msgSend_fetchServerChanges_(v8, v9, v4);
+  objc_msgSend_fetchServerChanges_(v8, v9, changesCopy);
 
   os_activity_scope_leave(&v10);
 }
@@ -430,11 +430,11 @@
   os_activity_scope_leave(&v8);
 }
 
-- (void)setCallback:(id)a3 forOverridePoint:(int64_t)a4
+- (void)setCallback:(id)callback forOverridePoint:(int64_t)point
 {
-  v6 = a3;
+  callbackCopy = callback;
   v10 = objc_msgSend_internals(self, v7, v8);
-  objc_msgSend_setCallback_forOverridePoint_(v10, v9, v6, a4);
+  objc_msgSend_setCallback_forOverridePoint_(v10, v9, callbackCopy, point);
 }
 
 - (CKUploadRequestManagerResponseActionThrottler)responseActionThrottler

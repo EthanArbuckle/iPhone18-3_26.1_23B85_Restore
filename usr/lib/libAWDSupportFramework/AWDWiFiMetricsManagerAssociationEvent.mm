@@ -1,16 +1,16 @@
 @interface AWDWiFiMetricsManagerAssociationEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerAssociationEvent
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -51,34 +51,34 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  if ([a3 isEqualToString:@"APPLE80211_JOINASSOC_AUTH_EVENT"])
+  if ([type isEqualToString:@"APPLE80211_JOINASSOC_AUTH_EVENT"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"APPLE80211_JOINASSOC_ASSOC_START_EVENT"])
+  if ([type isEqualToString:@"APPLE80211_JOINASSOC_ASSOC_START_EVENT"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"APPLE80211_JOINASSOC_ASSOC_DONE_EVENT"])
+  if ([type isEqualToString:@"APPLE80211_JOINASSOC_ASSOC_DONE_EVENT"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"APPLE80211_JOINASSOC_LINK_STATUS_EVENT"])
+  if ([type isEqualToString:@"APPLE80211_JOINASSOC_LINK_STATUS_EVENT"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"APPLE80211_JOINASSOC_LINK_CHANGE_EVENT"])
+  if ([type isEqualToString:@"APPLE80211_JOINASSOC_LINK_CHANGE_EVENT"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"APPLE80211_JOINASSOC_SSID_CHANGE_EVENT"])
+  if ([type isEqualToString:@"APPLE80211_JOINASSOC_SSID_CHANGE_EVENT"])
   {
     return 5;
   }
@@ -95,16 +95,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   eventInfo = self->_eventInfo;
   if (eventInfo)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerEvent dictionaryRepresentation](eventInfo forKey:{"dictionaryRepresentation"), @"eventInfo"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerEvent dictionaryRepresentation](eventInfo forKey:{"dictionaryRepresentation"), @"eventInfo"}];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -120,13 +120,13 @@
       v6 = off_29EE33280[eventType];
     }
 
-    [v3 setObject:v6 forKey:@"eventType"];
+    [dictionary setObject:v6 forKey:@"eventType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -147,29 +147,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
   }
 
   if (self->_eventInfo)
   {
-    [a3 setEventInfo:?];
+    [to setEventInfo:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 6) = self->_eventType;
-    *(a3 + 28) |= 2u;
+    *(to + 6) = self->_eventType;
+    *(to + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -177,7 +177,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  *(v6 + 16) = [(AWDWiFiMetricsManagerEvent *)self->_eventInfo copyWithZone:a3];
+  *(v6 + 16) = [(AWDWiFiMetricsManagerEvent *)self->_eventInfo copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 24) = self->_eventType;
@@ -187,22 +187,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -210,7 +210,7 @@ LABEL_14:
     }
 
     eventInfo = self->_eventInfo;
-    if (eventInfo | *(a3 + 2))
+    if (eventInfo | *(equal + 2))
     {
       v5 = [(AWDWiFiMetricsManagerEvent *)eventInfo isEqual:?];
       if (!v5)
@@ -221,10 +221,10 @@ LABEL_14:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_eventType != *(a3 + 6))
+      if ((*(equal + 28) & 2) == 0 || self->_eventType != *(equal + 6))
       {
         goto LABEL_14;
       }
@@ -262,16 +262,16 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
   eventInfo = self->_eventInfo;
-  v6 = *(a3 + 2);
+  v6 = *(from + 2);
   if (eventInfo)
   {
     if (v6)
@@ -285,9 +285,9 @@ LABEL_14:
     [(AWDWiFiMetricsManagerAssociationEvent *)self setEventInfo:?];
   }
 
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(from + 28) & 2) != 0)
   {
-    self->_eventType = *(a3 + 6);
+    self->_eventType = *(from + 6);
     *&self->_has |= 2u;
   }
 }

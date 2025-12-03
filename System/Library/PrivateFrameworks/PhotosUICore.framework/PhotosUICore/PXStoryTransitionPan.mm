@@ -1,21 +1,21 @@
 @interface PXStoryTransitionPan
-+ (id)panWithConfiguration:(id)a3;
-+ (id)panWithEffect:(id)a3 transitionInfo:(id *)a4;
-- (void)_configureClipLayoutsContentBoundsForTime:(id *)a3;
-- (void)configureEffectForTime:(id *)a3;
++ (id)panWithConfiguration:(id)configuration;
++ (id)panWithEffect:(id)effect transitionInfo:(id *)info;
+- (void)_configureClipLayoutsContentBoundsForTime:(id *)time;
+- (void)configureEffectForTime:(id *)time;
 - (void)timeDidChange;
 - (void)wasStopped;
 @end
 
 @implementation PXStoryTransitionPan
 
-+ (id)panWithEffect:(id)a3 transitionInfo:(id *)a4
++ (id)panWithEffect:(id)effect transitionInfo:(id *)info
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v19 = *(&a4->var1 + 3);
-  v20 = *&a4->var2.var2;
-  v8 = [v7 initWithKind:5 duration:&v19 effect:v6];
+  effectCopy = effect;
+  v7 = [self alloc];
+  v19 = *(&info->var1 + 3);
+  v20 = *&info->var2.var2;
+  v8 = [v7 initWithKind:5 duration:&v19 effect:effectCopy];
 
   LODWORD(v9) = 1042536202;
   LODWORD(v10) = 1.0;
@@ -33,20 +33,20 @@
   return v8;
 }
 
-+ (id)panWithConfiguration:(id)a3
++ (id)panWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 identifier];
-  v9 = [v7 stringByAppendingFormat:@".%@", v8];
+  identifier = [configurationCopy identifier];
+  v9 = [v7 stringByAppendingFormat:@".%@", identifier];
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = &OBJC_METACLASS___PXStoryTransitionPan;
   v10 = objc_msgSendSuper2(&v21, sel_alloc);
-  if (v5)
+  if (configurationCopy)
   {
-    [v5 duration];
+    [configurationCopy duration];
   }
 
   else
@@ -58,7 +58,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 312), a3);
+    objc_storeStrong((v11 + 312), configuration);
     LODWORD(v13) = 1045220557;
     LODWORD(v14) = 1051931443;
     LODWORD(v15) = 1042536202;
@@ -71,11 +71,11 @@
   return v12;
 }
 
-- (void)configureEffectForTime:(id *)a3
+- (void)configureEffectForTime:(id *)time
 {
   [(PXStoryConcreteTransition *)self effect];
   objc_claimAutoreleasedReturnValue();
-  time = *a3;
+  time = *time;
   CMTimeGetSeconds(&time);
   [(PXStoryConcreteTransition *)self duration];
   time = v5;
@@ -115,9 +115,9 @@ void __34__PXStoryTransitionPan_wasStopped__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_configureClipLayoutsContentBoundsForTime:(id *)a3
+- (void)_configureClipLayoutsContentBoundsForTime:(id *)time
 {
-  time = *a3;
+  time = *time;
   CMTimeGetSeconds(&time);
   [(PXStoryConcreteTransition *)self duration];
   time = v4;

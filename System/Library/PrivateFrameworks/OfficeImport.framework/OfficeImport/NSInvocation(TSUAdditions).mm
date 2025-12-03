@@ -7,8 +7,8 @@
 + (void)tsu_invocationWithBlock:()TSUAdditions
 {
   v6 = [a3 copy];
-  v4 = [a1 invocationWithMethodSignature:{objc_msgSend(a1, "methodSignatureForSelector:", sel_tsu_executeBlock_)}];
-  [v4 setTarget:a1];
+  v4 = [self invocationWithMethodSignature:{objc_msgSend(self, "methodSignatureForSelector:", sel_tsu_executeBlock_)}];
+  [v4 setTarget:self];
   [v4 setSelector:sel_tsu_executeBlock_];
   [v4 setArgument:&v6 atIndex:2];
   [v4 retainArguments];

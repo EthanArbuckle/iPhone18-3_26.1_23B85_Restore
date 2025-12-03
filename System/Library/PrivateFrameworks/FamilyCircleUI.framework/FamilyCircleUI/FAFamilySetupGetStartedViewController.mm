@@ -1,31 +1,31 @@
 @interface FAFamilySetupGetStartedViewController
-- (FAFamilySetupGetStartedViewController)initWithAccount:(id)a3 store:(id)a4 familyEligibilityResponse:(id)a5;
+- (FAFamilySetupGetStartedViewController)initWithAccount:(id)account store:(id)store familyEligibilityResponse:(id)response;
 - (FAFamilySetupPageDelegate)delegate;
-- (double)_heightForText:(id)a3 constrainedToWidth:(double)a4;
-- (id)_createDescriptionLabelForText:(id)a3;
-- (void)_getStartedButtonWasTapped:(id)a3;
+- (double)_heightForText:(id)text constrainedToWidth:(double)width;
+- (id)_createDescriptionLabelForText:(id)text;
+- (void)_getStartedButtonWasTapped:(id)tapped;
 - (void)_updateFonts;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FAFamilySetupGetStartedViewController
 
-- (FAFamilySetupGetStartedViewController)initWithAccount:(id)a3 store:(id)a4 familyEligibilityResponse:(id)a5
+- (FAFamilySetupGetStartedViewController)initWithAccount:(id)account store:(id)store familyEligibilityResponse:(id)response
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  storeCopy = store;
+  responseCopy = response;
   v15.receiver = self;
   v15.super_class = FAFamilySetupGetStartedViewController;
   v12 = [(FAFamilySetupGetStartedViewController *)&v15 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    objc_storeStrong(&v13->_accountStore, a4);
-    objc_storeStrong(&v13->_familyEligibilityResponse, a5);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_accountStore, store);
+    objc_storeStrong(&v13->_familyEligibilityResponse, response);
   }
 
   return v13;
@@ -37,15 +37,15 @@
   v46.super_class = FAFamilySetupGetStartedViewController;
   [(FAFamilySetupGetStartedViewController *)&v46 loadView];
   v3 = objc_alloc(MEMORY[0x277D759D8]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [v3 initWithFrame:?];
   scrollView = self->_scrollView;
   self->_scrollView = v5;
 
   v7 = self->_scrollView;
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [(UIScrollView *)v7 setBackgroundColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UIScrollView *)v7 setBackgroundColor:whiteColor];
 
   v9 = objc_alloc(MEMORY[0x277D75D18]);
   v10 = *MEMORY[0x277CBF3A0];
@@ -69,12 +69,12 @@
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   v21 = self->_titleLabel;
-  v22 = [MEMORY[0x277D74300] aa_fontForPageTitle];
-  [(UILabel *)v21 setFont:v22];
+  aa_fontForPageTitle = [MEMORY[0x277D74300] aa_fontForPageTitle];
+  [(UILabel *)v21 setFont:aa_fontForPageTitle];
 
   v23 = self->_titleLabel;
-  v24 = [MEMORY[0x277D75348] blackColor];
-  [(UILabel *)v23 setTextColor:v24];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UILabel *)v23 setTextColor:blackColor];
 
   [(UIView *)self->_contentView addSubview:self->_titleLabel];
   v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -104,14 +104,14 @@
 
   [(UIButton *)self->_getStartedButton addTarget:self action:sel__getStartedButtonWasTapped_ forControlEvents:64];
   v40 = self->_getStartedButton;
-  v41 = [MEMORY[0x277D75348] systemBlueColor];
-  [(UIButton *)v40 setTintColor:v41];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(UIButton *)v40 setTintColor:systemBlueColor];
 
   [(UIButton *)self->_getStartedButton setEnabled:1];
   [(UIButton *)self->_getStartedButton setUserInteractionEnabled:1];
-  v42 = [(UIButton *)self->_getStartedButton titleLabel];
-  v43 = [MEMORY[0x277D74300] aa_fontForLargeButton];
-  [v42 setFont:v43];
+  titleLabel = [(UIButton *)self->_getStartedButton titleLabel];
+  aa_fontForLargeButton = [MEMORY[0x277D74300] aa_fontForLargeButton];
+  [titleLabel setFont:aa_fontForLargeButton];
 
   [(UIView *)self->_contentView addSubview:self->_getStartedButton];
   v44 = [[FAFamilySharingFeaturesView alloc] initWithContext:0 hideLocationSharing:MGGetBoolAnswer() ^ 1];
@@ -127,26 +127,26 @@
   v34.receiver = self;
   v34.super_class = FAFamilySetupGetStartedViewController;
   [(FAFamilySetupGetStartedViewController *)&v34 viewWillLayoutSubviews];
-  v3 = [(FAFamilySetupGetStartedViewController *)self view];
-  [v3 frame];
+  view = [(FAFamilySetupGetStartedViewController *)self view];
+  [view frame];
   v5 = v4;
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v8 = 88.0;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v8 = 28.0;
   }
 
   v9 = v5 - v8;
   [(UILabel *)self->_titleLabel frame];
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v12 = 44.0;
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v13 = 44.0;
   }
@@ -170,18 +170,18 @@
   [(UILabel *)self->_descriptionLabel frame];
   UIRoundToViewScale();
   v21 = v15 + v17 + 24.0 + v19 + v20;
-  v22 = [(UILabel *)self->_descriptionLabel text];
-  [(FAFamilySetupGetStartedViewController *)self _heightForText:v22 constrainedToWidth:v5 + -60.0];
+  text = [(UILabel *)self->_descriptionLabel text];
+  [(FAFamilySetupGetStartedViewController *)self _heightForText:text constrainedToWidth:v5 + -60.0];
   v24 = v23;
 
   [(UILabel *)self->_descriptionLabel setFrame:30.0, v21, v5 + -60.0, v24];
   [(UIButton *)self->_getStartedButton sizeToFit];
   [(UIButton *)self->_getStartedButton frame];
   v26 = v25;
-  v27 = [MEMORY[0x277D75418] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v28 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v12 = 14.0;
   }
@@ -202,70 +202,70 @@
 - (void)_updateFonts
 {
   titleLabel = self->_titleLabel;
-  v4 = [MEMORY[0x277D74300] aa_fontForPageTitle];
-  [(UILabel *)titleLabel setFont:v4];
+  aa_fontForPageTitle = [MEMORY[0x277D74300] aa_fontForPageTitle];
+  [(UILabel *)titleLabel setFont:aa_fontForPageTitle];
 
   descriptionLabel = self->_descriptionLabel;
-  v6 = [MEMORY[0x277D74300] aa_fontForLargerInformationLabel];
-  [(UILabel *)descriptionLabel setFont:v6];
+  aa_fontForLargerInformationLabel = [MEMORY[0x277D74300] aa_fontForLargerInformationLabel];
+  [(UILabel *)descriptionLabel setFont:aa_fontForLargerInformationLabel];
 
-  v7 = [(UIButton *)self->_getStartedButton titleLabel];
-  v8 = [MEMORY[0x277D74300] aa_fontForLargeButton];
-  [v7 setFont:v8];
+  titleLabel = [(UIButton *)self->_getStartedButton titleLabel];
+  aa_fontForLargeButton = [MEMORY[0x277D74300] aa_fontForLargeButton];
+  [titleLabel setFont:aa_fontForLargeButton];
 
-  v9 = [(FAFamilySetupGetStartedViewController *)self view];
-  [v9 setNeedsLayout];
+  view = [(FAFamilySetupGetStartedViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (id)_createDescriptionLabelForText:(id)a3
+- (id)_createDescriptionLabelForText:(id)text
 {
   v3 = MEMORY[0x277D756B8];
-  v4 = a3;
+  textCopy = text;
   v5 = [v3 alloc];
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v6 setText:v4];
+  [v6 setText:textCopy];
 
   [v6 setTextAlignment:1];
   [v6 setNumberOfLines:0];
-  v7 = [MEMORY[0x277D74300] aa_fontForLargerInformationLabel];
-  [v6 setFont:v7];
+  aa_fontForLargerInformationLabel = [MEMORY[0x277D74300] aa_fontForLargerInformationLabel];
+  [v6 setFont:aa_fontForLargerInformationLabel];
 
   return v6;
 }
 
-- (double)_heightForText:(id)a3 constrainedToWidth:(double)a4
+- (double)_heightForText:(id)text constrainedToWidth:(double)width
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v13 = *MEMORY[0x277D740A8];
   v5 = MEMORY[0x277D74300];
-  v6 = a3;
-  v7 = [v5 aa_fontForLargerInformationLabel];
-  v14[0] = v7;
+  textCopy = text;
+  aa_fontForLargerInformationLabel = [v5 aa_fontForLargerInformationLabel];
+  v14[0] = aa_fontForLargerInformationLabel;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v6 boundingRectWithSize:1 options:v8 attributes:0 context:{a4, 1.79769313e308}];
+  [textCopy boundingRectWithSize:1 options:v8 attributes:0 context:{width, 1.79769313e308}];
   v10 = v9;
 
   v11 = *MEMORY[0x277D85DE8];
   return ceil(v10);
 }
 
-- (void)_getStartedButtonWasTapped:(id)a3
+- (void)_getStartedButtonWasTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained familySetupPage:self didCompleteWithSuccess:1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = FAFamilySetupGetStartedViewController;
-  v4 = a3;
-  [(FAFamilySetupGetStartedViewController *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(FAFamilySetupGetStartedViewController *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(FAFamilySetupGetStartedViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqualToString:v7];
+  traitCollection = [(FAFamilySetupGetStartedViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {

@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003EBC;
   block[3] = &unk_10004CC00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100057A40 != -1)
   {
     dispatch_once(&qword_100057A40, block);
@@ -51,8 +51,8 @@
   if (!coreTelephonyClient)
   {
     v4 = [CoreTelephonyClient alloc];
-    v5 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClientQueue];
-    v6 = [v4 initWithQueue:v5];
+    coreTelephonyClientQueue = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClientQueue];
+    v6 = [v4 initWithQueue:coreTelephonyClientQueue];
     v7 = self->_coreTelephonyClient;
     self->_coreTelephonyClient = v6;
 
@@ -65,18 +65,18 @@
 
 - (NSArray)allRelevantISOCountryCodes
 {
-  v3 = [(DefaultCoreTelephonyDataSource *)self isoCountryCodeOverride];
-  if (v3)
+  isoCountryCodeOverride = [(DefaultCoreTelephonyDataSource *)self isoCountryCodeOverride];
+  if (isoCountryCodeOverride)
   {
     v4 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v3;
+      v38 = isoCountryCodeOverride;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Using ISO Country Code Override: %@", buf, 0xCu);
     }
 
-    v5 = [[NSArray alloc] initWithObjects:{v3, 0}];
+    v5 = [[NSArray alloc] initWithObjects:{isoCountryCodeOverride, 0}];
   }
 
   else
@@ -84,9 +84,9 @@
     if (!self->_allRelevantISOCountryCodes || [(DefaultCoreTelephonyDataSource *)self subscriberCountryCodeDidChange])
     {
       v6 = objc_alloc_init(NSMutableOrderedSet);
-      v7 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
+      coreTelephonyClient = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
       v35 = 0;
-      v8 = [v7 getSubscriptionInfoWithError:&v35];
+      v8 = [coreTelephonyClient getSubscriptionInfoWithError:&v35];
       v9 = v35;
 
       if (v8)
@@ -96,8 +96,8 @@
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v10 = [v8 subscriptionsInUse];
-        v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        subscriptionsInUse = [v8 subscriptionsInUse];
+        v11 = [subscriptionsInUse countByEnumeratingWithState:&v31 objects:v36 count:16];
         if (v11)
         {
           v12 = v11;
@@ -109,13 +109,13 @@
             {
               if (*v32 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(subscriptionsInUse);
               }
 
               v15 = *(*(&v31 + 1) + 8 * i);
-              v16 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
+              coreTelephonyClient2 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
               v30 = 0;
-              v17 = [v16 copyMobileCountryCode:v15 error:&v30];
+              v17 = [coreTelephonyClient2 copyMobileCountryCode:v15 error:&v30];
               v18 = v30;
 
               if ([(NSArray *)v17 length])
@@ -150,12 +150,12 @@
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+            v12 = [subscriptionsInUse countByEnumeratingWithState:&v31 objects:v36 count:16];
           }
 
           while (v12);
           v8 = v28;
-          v3 = 0;
+          isoCountryCodeOverride = 0;
         }
 
         v9 = v29;
@@ -163,10 +163,10 @@
 
       else
       {
-        v10 = IntentHandlerDefaultLog();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        subscriptionsInUse = IntentHandlerDefaultLog();
+        if (os_log_type_enabled(subscriptionsInUse, OS_LOG_TYPE_ERROR))
         {
-          sub_10002F20C(v9, v10);
+          sub_10002F20C(v9, subscriptionsInUse);
         }
       }
 
@@ -177,9 +177,9 @@
       }
 
       [(DefaultCoreTelephonyDataSource *)self setSubscriberCountryCodeDidChange:0];
-      v22 = [v6 array];
+      array = [v6 array];
       allRelevantISOCountryCodes = self->_allRelevantISOCountryCodes;
-      self->_allRelevantISOCountryCodes = v22;
+      self->_allRelevantISOCountryCodes = array;
 
       v24 = IntentHandlerDefaultLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -215,9 +215,9 @@
 
   else
   {
-    v5 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
+    coreTelephonyClient = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
     v29 = 0;
-    v6 = [v5 getSubscriptionInfoWithError:&v29];
+    v6 = [coreTelephonyClient getSubscriptionInfoWithError:&v29];
     v3 = v29;
 
     if (v6)
@@ -226,8 +226,8 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v7 = [v6 subscriptionsInUse];
-      v8 = [v7 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      subscriptionsInUse = [v6 subscriptionsInUse];
+      v8 = [subscriptionsInUse countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v8)
       {
         v10 = v8;
@@ -244,13 +244,13 @@
           {
             if (*v26 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(subscriptionsInUse);
             }
 
             v14 = *(*(&v25 + 1) + 8 * i);
-            v15 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
+            coreTelephonyClient2 = [(DefaultCoreTelephonyDataSource *)self coreTelephonyClient];
             v24 = 0;
-            v16 = [v15 copyRegistrationStatus:v14 error:&v24];
+            v16 = [coreTelephonyClient2 copyRegistrationStatus:v14 error:&v24];
             v17 = v24;
 
             if ([v16 length])
@@ -287,7 +287,7 @@
             }
           }
 
-          v10 = [v7 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          v10 = [subscriptionsInUse countByEnumeratingWithState:&v25 objects:v34 count:16];
           if (v10)
           {
             continue;
@@ -303,18 +303,18 @@
 
     else
     {
-      v7 = IntentHandlerDefaultLog();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      subscriptionsInUse = IntentHandlerDefaultLog();
+      if (os_log_type_enabled(subscriptionsInUse, OS_LOG_TYPE_ERROR))
       {
-        sub_10002F20C(v3, v7);
+        sub_10002F20C(v3, subscriptionsInUse);
       }
     }
 
-    v7 = IntentHandlerDefaultLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    subscriptionsInUse = IntentHandlerDefaultLog();
+    if (os_log_type_enabled(subscriptionsInUse, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WARN] Determined cellular service is unavailable.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, subscriptionsInUse, OS_LOG_TYPE_DEFAULT, "[WARN] Determined cellular service is unavailable.", buf, 2u);
     }
 
     v4 = 0;

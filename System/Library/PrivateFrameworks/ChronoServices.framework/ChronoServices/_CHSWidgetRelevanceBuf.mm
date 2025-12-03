@@ -1,14 +1,14 @@
 @interface _CHSWidgetRelevanceBuf
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)verifyUTF8Fields;
 - (NSData)attributeKeyAsData;
 - (NSString)attributeKey;
 - (_CHSIntentReferenceBuf)intentReference;
-- (_CHSWidgetRelevanceBuf)initWithBufRef:(id)a3 cppPointer:(const WidgetRelevanceBuf *)a4;
+- (_CHSWidgetRelevanceBuf)initWithBufRef:(id)ref cppPointer:(const WidgetRelevanceBuf *)pointer;
 - (const)attributeKeyAsCString;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)hash;
 @end
 
@@ -57,12 +57,12 @@
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -92,36 +92,36 @@
   return v6;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(_CHSWidgetRelevanceBuf *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(_CHSWidgetRelevanceBuf *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1734 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1734 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_6;
   }
 
-  if (v8[8] == 1)
+  if (changesCopy[8] == 1)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 3)];
+    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 3)];
     goto LABEL_13;
   }
 
-  if (v8[8])
+  if (changesCopy[8])
   {
     v12 = 0;
   }
@@ -130,10 +130,10 @@
   {
 LABEL_6:
     v10 = objc_autoreleasePoolPush();
-    v11 = [(_CHSWidgetRelevanceBuf *)self attributeKeyAsCString];
-    if (v11)
+    attributeKeyAsCString = [(_CHSWidgetRelevanceBuf *)self attributeKeyAsCString];
+    if (attributeKeyAsCString)
     {
-      v12 = [v7 createStringWithCString:v11];
+      v12 = [builderCopy createStringWithCString:attributeKeyAsCString];
     }
 
     else
@@ -142,28 +142,28 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (!v8)
+    if (!changesCopy)
     {
       goto LABEL_15;
     }
   }
 
 LABEL_13:
-  if (v8[16] == 1)
+  if (changesCopy[16] == 1)
   {
-    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 5)];
+    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 5)];
   }
 
   else
   {
-    if (!v8[16])
+    if (!changesCopy[16])
     {
 LABEL_15:
-      v13 = [(_CHSWidgetRelevanceBuf *)self intentReference];
-      v14 = v13;
-      if (v13)
+      intentReference = [(_CHSWidgetRelevanceBuf *)self intentReference];
+      v14 = intentReference;
+      if (intentReference)
       {
-        v15 = [v13 deepCopyUsingBufferBuilder:v7];
+        v15 = [intentReference deepCopyUsingBufferBuilder:builderCopy];
       }
 
       else
@@ -186,37 +186,37 @@ LABEL_21:
   v22 = v16;
   v23 = v15;
   v17 = v15;
-  v18 = [v7 _chsCreateWidgetRelevanceBufUsingBlock:v21];
+  v18 = [builderCopy _chsCreateWidgetRelevanceBufUsingBlock:v21];
 
   objc_autoreleasePoolPop(v9);
 
   return v18;
 }
 
-- (_CHSWidgetRelevanceBuf)initWithBufRef:(id)a3 cppPointer:(const WidgetRelevanceBuf *)a4
+- (_CHSWidgetRelevanceBuf)initWithBufRef:(id)ref cppPointer:(const WidgetRelevanceBuf *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = _CHSWidgetRelevanceBuf;
   v8 = [(_CHSWidgetRelevanceBuf *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -225,11 +225,11 @@ LABEL_21:
   }
 
   v20 = v13;
-  v21 = [v10 length];
+  v21 = [dataCopy length];
   LODWORD(v22) = 0;
-  HIDWORD(v22) = a5;
+  HIDWORD(v22) = depth;
   LODWORD(v23) = 0;
-  HIDWORD(v23) = a6;
+  HIDWORD(v23) = tables;
   v24 = 0;
   LOBYTE(v25) = 1;
   if (v21 >= 0x7FFFFFFF)
@@ -241,24 +241,24 @@ LABEL_21:
   {
     v14 = *v13;
     v15 = objc_alloc(MEMORY[0x1E698C1D8]);
-    v16 = [v15 initWithData:{v10, v20, v21, v22, v23, v24, v25}];
+    v16 = [v15 initWithData:{dataCopy, v20, v21, v22, v23, v24, v25}];
     self = [(_CHSWidgetRelevanceBuf *)self initWithBufRef:v16 cppPointer:v13 + v14];
 
-    v17 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(_CHSWidgetRelevanceBuf *)self verifyUTF8Fields])
       {
-        v17 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v17 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v18 = v17;
+    v18 = selfCopy2;
   }
 
   else
@@ -288,59 +288,59 @@ LABEL_21:
     }
   }
 
-  v7 = [(_CHSWidgetRelevanceBuf *)self intentReference];
-  v8 = v7;
-  if (v7)
+  intentReference = [(_CHSWidgetRelevanceBuf *)self intentReference];
+  v8 = intentReference;
+  if (intentReference)
   {
-    v9 = [v7 verifyUTF8Fields];
+    verifyUTF8Fields = [intentReference verifyUTF8Fields];
   }
 
   else
   {
-    v9 = 1;
+    verifyUTF8Fields = 1;
   }
 
-  return v9;
+  return verifyUTF8Fields;
 }
 
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_CHSWidgetRelevanceBuf *)self attributeKey];
-  v5 = [v4 hash];
+  attributeKey = [(_CHSWidgetRelevanceBuf *)self attributeKey];
+  v5 = [attributeKey hash];
 
-  v6 = [(_CHSWidgetRelevanceBuf *)self intentReference];
-  v7 = [v6 hash] + 37 * v5;
+  intentReference = [(_CHSWidgetRelevanceBuf *)self intentReference];
+  v7 = [intentReference hash] + 37 * v5;
 
   objc_autoreleasePoolPop(v3);
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [(_CHSWidgetRelevanceBuf *)self attributeKey];
-      v9 = [v6 attributeKey];
-      if (v8 | v9 && (v10 = [v8 isEqual:v9], v9, v8, !v10))
+      attributeKey = [(_CHSWidgetRelevanceBuf *)self attributeKey];
+      attributeKey2 = [v6 attributeKey];
+      if (attributeKey | attributeKey2 && (v10 = [attributeKey isEqual:attributeKey2], attributeKey2, attributeKey, !v10))
       {
         v13 = 0;
       }
 
       else
       {
-        v11 = [(_CHSWidgetRelevanceBuf *)self intentReference];
-        v12 = [v6 intentReference];
-        if (v11 | v12)
+        intentReference = [(_CHSWidgetRelevanceBuf *)self intentReference];
+        intentReference2 = [v6 intentReference];
+        if (intentReference | intentReference2)
         {
-          v13 = [v11 isEqual:v12];
+          v13 = [intentReference isEqual:intentReference2];
         }
 
         else

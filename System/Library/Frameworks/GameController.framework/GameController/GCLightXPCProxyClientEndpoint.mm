@@ -1,21 +1,21 @@
 @interface GCLightXPCProxyClientEndpoint
 - (GCLightXPCProxyClientEndpoint)init;
-- (GCLightXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialLight:(id)a4;
-- (void)_remoteEndpointHasSetLight:(id)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCLightXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialLight:(id)light;
+- (void)_remoteEndpointHasSetLight:(id)light;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)newLight:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)newLight:(id)light;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)refreshLight;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
 @end
 
 @implementation GCLightXPCProxyClientEndpoint
 
-- (GCLightXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialLight:(id)a4
+- (GCLightXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialLight:(id)light
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  lightCopy = light;
   v12.receiver = self;
   v12.super_class = GCLightXPCProxyClientEndpoint;
   v8 = [(GCLightXPCProxyClientEndpoint *)&v12 init];
@@ -26,11 +26,11 @@
       [GCLightXPCProxyClientEndpoint initWithIdentifier:initialLight:];
     }
 
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_light, a4);
+    objc_storeStrong(&v8->_light, light);
     [(GCLightXPCProxyClientEndpoint *)v8 observeChangesForLight:v8->_light];
   }
 
@@ -44,10 +44,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -55,15 +55,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   if (gc_isInternalBuild())
   {
     v14 = getGCLogger();
@@ -97,10 +97,10 @@ void __62__GCLightXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_in
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   light = self->_light;
-  if (light == a4)
+  if (light == object)
   {
     serverEndpoint = self->_serverEndpoint;
 
@@ -113,13 +113,13 @@ void __62__GCLightXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_in
     v12 = v7;
     v10.receiver = self;
     v10.super_class = GCLightXPCProxyClientEndpoint;
-    [GCLightXPCProxyClientEndpoint observeValueForKeyPath:sel_observeValueForKeyPath_ofObject_change_context_ ofObject:a3 change:? context:?];
+    [GCLightXPCProxyClientEndpoint observeValueForKeyPath:sel_observeValueForKeyPath_ofObject_change_context_ ofObject:path change:? context:?];
   }
 }
 
-- (void)_remoteEndpointHasSetLight:(id)a3
+- (void)_remoteEndpointHasSetLight:(id)light
 {
-  v4 = a3;
+  lightCopy = light;
   if (gc_isInternalBuild())
   {
     [GCLightXPCProxyClientEndpoint _remoteEndpointHasSetLight:];
@@ -128,23 +128,23 @@ void __62__GCLightXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_in
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   [(GCLightXPCProxyClientEndpoint *)self stopObservingChangesForLight:self->_light];
   [WeakRetained willChangeValueForKey:@"light"];
-  v6 = [v4 color];
-  [(GCDeviceLight *)self->_light setColor:v6];
+  color = [lightCopy color];
+  [(GCDeviceLight *)self->_light setColor:color];
 
   [WeakRetained didChangeValueForKey:@"light"];
   [(GCLightXPCProxyClientEndpoint *)self observeChangesForLight:self->_light];
 }
 
-- (void)newLight:(id)a3
+- (void)newLight:(id)light
 {
-  v4 = a3;
+  lightCopy = light;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__GCLightXPCProxyClientEndpoint_newLight___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = lightCopy;
+  v5 = lightCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Light XPC Proxy Client Endpoint) New Light", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -210,11 +210,11 @@ void __53__GCLightXPCProxyClientEndpoint_invalidateConnection__block_invoke(uint
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCLightXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCLightXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (void)initWithIdentifier:initialLight:.cold.1()

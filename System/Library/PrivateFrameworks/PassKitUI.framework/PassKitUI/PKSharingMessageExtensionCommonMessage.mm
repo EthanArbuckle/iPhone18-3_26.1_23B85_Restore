@@ -1,23 +1,23 @@
 @interface PKSharingMessageExtensionCommonMessage
-+ (id)_messageDataWithDataURL:(id)a3 prefix:(id)a4;
-+ (id)messageTypeFromURL:(id)a3;
++ (id)_messageDataWithDataURL:(id)l prefix:(id)prefix;
++ (id)messageTypeFromURL:(id)l;
 - (NSString)description;
 - (NSURL)actionURL;
-- (PKSharingMessageExtensionCommonMessage)initWithURL:(id)a3;
+- (PKSharingMessageExtensionCommonMessage)initWithURL:(id)l;
 - (UIImage)thumbnail;
-- (id)_initWithCommonMessage:(id)a3 url:(id)a4;
-- (id)_messageDataURLWithData:(id)a3 prefix:(id)a4;
+- (id)_initWithCommonMessage:(id)message url:(id)url;
+- (id)_messageDataURLWithData:(id)data prefix:(id)prefix;
 - (id)urlRepresentation;
-- (void)setActionURL:(id)a3;
-- (void)setThumbnail:(id)a3;
+- (void)setActionURL:(id)l;
+- (void)setThumbnail:(id)thumbnail;
 @end
 
 @implementation PKSharingMessageExtensionCommonMessage
 
-- (PKSharingMessageExtensionCommonMessage)initWithURL:(id)a3
+- (PKSharingMessageExtensionCommonMessage)initWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [PKSharingMessageExtensionCommonMessage _messageDataWithDataURL:v4 prefix:@"data:application/vnd.apple.pksimbase64, "];;
+  lCopy = l;
+  v5 = [PKSharingMessageExtensionCommonMessage _messageDataWithDataURL:lCopy prefix:@"data:application/vnd.apple.pksimbase64, "];;
   if (!v5)
   {
     v6 = 0;
@@ -25,17 +25,17 @@
   }
 
   v6 = [objc_alloc(MEMORY[0x1E69B9098]) initWithData:v5];
-  v7 = [v6 messageType];
-  v8 = v7;
-  if (!v7)
+  messageType = [v6 messageType];
+  v8 = messageType;
+  if (!messageType)
   {
-    v14 = 0;
+    selfCopy = 0;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v9 = v7;
+  v9 = messageType;
   v10 = @"pkrelayservermessage";
   v11 = v10;
   if (v9 == v10)
@@ -54,7 +54,7 @@ LABEL_17:
     {
       v13 = off_1E8006410;
 LABEL_18:
-      v14 = [objc_alloc(*v13) _initWithCommonMessage:v6 url:v4];
+      selfCopy = [objc_alloc(*v13) _initWithCommonMessage:v6 url:lCopy];
       goto LABEL_19;
     }
   }
@@ -88,23 +88,23 @@ LABEL_18:
   }
 
 LABEL_8:
-  self = [(PKSharingMessageExtensionCommonMessage *)self _initWithCommonMessage:v6 url:v4];
-  v14 = self;
+  self = [(PKSharingMessageExtensionCommonMessage *)self _initWithCommonMessage:v6 url:lCopy];
+  selfCopy = self;
 LABEL_20:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)_initWithCommonMessage:(id)a3 url:(id)a4
+- (id)_initWithCommonMessage:(id)message url:(id)url
 {
-  v6 = a3;
+  messageCopy = message;
   v16.receiver = self;
   v16.super_class = PKSharingMessageExtensionCommonMessage;
   v7 = [(PKSharingMessageExtensionCommonMessage *)&v16 init];
   p_isa = &v7->super.isa;
   if (v7)
   {
-    objc_storeStrong(&v7->_message, a3);
+    objc_storeStrong(&v7->_message, message);
     if (!p_isa[1])
     {
       v9 = objc_alloc_init(MEMORY[0x1E69B9098]);
@@ -115,8 +115,8 @@ LABEL_20:
       [p_isa[1] setStatus:6];
       v11 = objc_alloc_init(MEMORY[0x1E69B85A8]);
       [v11 setIdentifier:@"identifier"];
-      v12 = [MEMORY[0x1E696AFB0] UUID];
-      [v11 setSharingSessionIdentifier:v12];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      [v11 setSharingSessionIdentifier:uUID];
 
       [v11 setPairedReaderIdentifier:@"pairedReaderIdentifier"];
       [v11 setSupportedRadioTechnologies:0];
@@ -124,8 +124,8 @@ LABEL_20:
       [v11 setBrandIdentifier:@"brandIdentifier"];
       [v11 setForWatch:1];
       v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
-      v14 = [v13 hexEncoding];
-      [p_isa[1] setWatchInvitation:v14];
+      hexEncoding = [v13 hexEncoding];
+      [p_isa[1] setWatchInvitation:hexEncoding];
     }
   }
 
@@ -134,34 +134,34 @@ LABEL_20:
 
 - (id)urlRepresentation
 {
-  v3 = [(PKProtobufCommonSharingMessage *)self->_message data];
-  v4 = [(PKSharingMessageExtensionCommonMessage *)self _messageDataURLWithData:v3 prefix:@"data:application/vnd.apple.pksimbase64, "];;
+  data = [(PKProtobufCommonSharingMessage *)self->_message data];
+  v4 = [(PKSharingMessageExtensionCommonMessage *)self _messageDataURLWithData:data prefix:@"data:application/vnd.apple.pksimbase64, "];;
 
   return v4;
 }
 
-+ (id)messageTypeFromURL:(id)a3
++ (id)messageTypeFromURL:(id)l
 {
-  v3 = [PKSharingMessageExtensionCommonMessage _messageDataWithDataURL:a3 prefix:@"data:application/vnd.apple.pksimbase64, "];;
+  v3 = [PKSharingMessageExtensionCommonMessage _messageDataWithDataURL:l prefix:@"data:application/vnd.apple.pksimbase64, "];;
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69B90A0]) initWithData:v3];
-    v5 = [v4 messageType];
+    messageType = [v4 messageType];
   }
 
   else
   {
-    v5 = 0;
+    messageType = 0;
   }
 
-  return v5;
+  return messageType;
 }
 
 - (UIImage)thumbnail
 {
-  v2 = [(PKProtobufCommonSharingMessage *)self->_message thumbnailImage];
-  v3 = v2;
-  if (v2 && (v4 = PKCreateCGImage(v2)) != 0)
+  thumbnailImage = [(PKProtobufCommonSharingMessage *)self->_message thumbnailImage];
+  v3 = thumbnailImage;
+  if (thumbnailImage && (v4 = PKCreateCGImage(thumbnailImage)) != 0)
   {
     v5 = v4;
     v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v4];
@@ -176,19 +176,19 @@ LABEL_20:
   return v6;
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
   message = self->_message;
-  v4 = UIImagePNGRepresentation(a3);
+  v4 = UIImagePNGRepresentation(thumbnail);
   [(PKProtobufCommonSharingMessage *)message setThumbnailImage:v4];
 }
 
 - (NSURL)actionURL
 {
-  v2 = [(PKProtobufCommonSharingMessage *)self->_message actionURL];
-  if (v2)
+  actionURL = [(PKProtobufCommonSharingMessage *)self->_message actionURL];
+  if (actionURL)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v2];
+    v3 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:actionURL];
   }
 
   else
@@ -199,22 +199,22 @@ LABEL_20:
   return v3;
 }
 
-- (void)setActionURL:(id)a3
+- (void)setActionURL:(id)l
 {
   message = self->_message;
-  v4 = [a3 absoluteString];
-  [(PKProtobufCommonSharingMessage *)message setActionURL:v4];
+  absoluteString = [l absoluteString];
+  [(PKProtobufCommonSharingMessage *)message setActionURL:absoluteString];
 }
 
-- (id)_messageDataURLWithData:(id)a3 prefix:(id)a4
+- (id)_messageDataURLWithData:(id)data prefix:(id)prefix
 {
-  v5 = a4;
-  if (a3)
+  prefixCopy = prefix;
+  if (data)
   {
-    v6 = [a3 base64EncodedStringWithOptions:0];
+    v6 = [data base64EncodedStringWithOptions:0];
     if (v6)
     {
-      v7 = [v5 stringByAppendingString:v6];
+      v7 = [prefixCopy stringByAppendingString:v6];
       v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v7];
     }
 
@@ -232,22 +232,22 @@ LABEL_20:
   return v8;
 }
 
-+ (id)_messageDataWithDataURL:(id)a3 prefix:(id)a4
++ (id)_messageDataWithDataURL:(id)l prefix:(id)prefix
 {
-  v5 = a4;
-  if (!a3)
+  prefixCopy = prefix;
+  if (!l)
   {
     v10 = 0;
     goto LABEL_10;
   }
 
-  v6 = a3;
-  v7 = [v6 absoluteString];
-  v8 = [v6 scheme];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  scheme = [lCopy scheme];
 
-  if ([v8 isEqualToString:@"data"])
+  if ([scheme isEqualToString:@"data"])
   {
-    v9 = [v7 hasPrefix:v5];
+    v9 = [absoluteString hasPrefix:prefixCopy];
 
     if (!v9)
     {
@@ -255,8 +255,8 @@ LABEL_20:
       goto LABEL_9;
     }
 
-    v8 = [v7 substringFromIndex:{objc_msgSend(v5, "length")}];
-    v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v8 options:1];
+    scheme = [absoluteString substringFromIndex:{objc_msgSend(prefixCopy, "length")}];
+    v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:scheme options:1];
   }
 
   else
@@ -277,11 +277,11 @@ LABEL_10:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKSharingMessageExtensionCommonMessage *)self title];
-  [v6 appendFormat:@"title: '%@'; ", v7];
+  title = [(PKSharingMessageExtensionCommonMessage *)self title];
+  [v6 appendFormat:@"title: '%@'; ", title];
 
-  v8 = [(PKSharingMessageExtensionCommonMessage *)self subtitle];
-  [v6 appendFormat:@"subtitle: '%@'; ", v8];
+  subtitle = [(PKSharingMessageExtensionCommonMessage *)self subtitle];
+  [v6 appendFormat:@"subtitle: '%@'; ", subtitle];
 
   [v6 appendFormat:@">"];
   v9 = [MEMORY[0x1E696AEC0] stringWithString:v6];

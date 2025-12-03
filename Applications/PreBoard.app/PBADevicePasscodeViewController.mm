@@ -1,43 +1,43 @@
 @interface PBADevicePasscodeViewController
-- (PBADevicePasscodeViewController)initWithContainingStackViewController:(id)a3 authenticationPolicy:(id)a4;
-- (id)lockScreenActionTitleWithHomeButton:(BOOL)a3;
-- (id)makeAuthenticationRequestWithPasscode:(id)a3;
+- (PBADevicePasscodeViewController)initWithContainingStackViewController:(id)controller authenticationPolicy:(id)policy;
+- (id)lockScreenActionTitleWithHomeButton:(BOOL)button;
+- (id)makeAuthenticationRequestWithPasscode:(id)passcode;
 - (void)_authenticateWithEmptyPasscode;
-- (void)_configurePasscodeEntryViewController:(id)a3;
+- (void)_configurePasscodeEntryViewController:(id)controller;
 - (void)_evaluateDeviceBlockState;
 - (void)_handleBlockedDevice;
-- (void)_handleEdgeSwipe:(id)a3;
+- (void)_handleEdgeSwipe:(id)swipe;
 - (void)_handleUnblockedDevice;
 - (void)_pushPasscodeEntryViewIfNeeded;
 - (void)_resetStateAfterHandlingAuthenticationResult;
-- (void)failedAuthHandler:(id)a3 error:(id)a4;
-- (void)handlePasscodeEntryCancelledForViewController:(id)a3;
-- (void)handlePasscodeEntrySuccessful:(id)a3;
-- (void)handlePasscodeLockStatusChangeNotification:(id)a3;
-- (void)invalidAuthHandler:(id)a3;
-- (void)passcodeEntryViewControllerEntryCompleted:(id)a3 passcode:(id)a4;
+- (void)failedAuthHandler:(id)handler error:(id)error;
+- (void)handlePasscodeEntryCancelledForViewController:(id)controller;
+- (void)handlePasscodeEntrySuccessful:(id)successful;
+- (void)handlePasscodeLockStatusChangeNotification:(id)notification;
+- (void)invalidAuthHandler:(id)handler;
+- (void)passcodeEntryViewControllerEntryCompleted:(id)completed passcode:(id)passcode;
 - (void)registerForUnlockNotification;
 - (void)viewDidLoad;
 @end
 
 @implementation PBADevicePasscodeViewController
 
-- (PBADevicePasscodeViewController)initWithContainingStackViewController:(id)a3 authenticationPolicy:(id)a4
+- (PBADevicePasscodeViewController)initWithContainingStackViewController:(id)controller authenticationPolicy:(id)policy
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = PBADevicePasscodeViewController;
   v9 = [(PBADevicePasscodeViewController *)&v18 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stackViewController, a3);
+    objc_storeStrong(&v9->_stackViewController, controller);
     v11 = objc_alloc_init(SBFAuthenticationAssertionManager);
     assertionManager = v10->_assertionManager;
     v10->_assertionManager = v11;
 
-    objc_storeStrong(&v10->_authenticationPolicy, a4);
+    objc_storeStrong(&v10->_authenticationPolicy, policy);
     v13 = [[SBFUserAuthenticationController alloc] initWithAssertionManager:v10->_assertionManager policy:v10->_authenticationPolicy];
     authenticationController = v10->_authenticationController;
     v10->_authenticationController = v13;
@@ -60,50 +60,50 @@
   [(PBADevicePasscodeViewController *)&v24 viewDidLoad];
   v3 = SBFEffectiveHomeButtonType();
   v4 = [PBASimpleLockScreenView alloc];
-  v5 = [(PBADevicePasscodeViewController *)self view];
-  [v5 bounds];
+  view = [(PBADevicePasscodeViewController *)self view];
+  [view bounds];
   v6 = [(PBASimpleLockScreenView *)v4 initWithFrame:?];
   newLockScreenView = self->_newLockScreenView;
   self->_newLockScreenView = v6;
 
   [(PBASimpleLockScreenView *)self->_newLockScreenView setAutoresizingMask:18];
   v8 = self->_newLockScreenView;
-  v9 = [(PBADevicePasscodeViewController *)self lockScreenIconSystemName];
-  [(PBASimpleLockScreenView *)v8 setIconSystemName:v9];
+  lockScreenIconSystemName = [(PBADevicePasscodeViewController *)self lockScreenIconSystemName];
+  [(PBASimpleLockScreenView *)v8 setIconSystemName:lockScreenIconSystemName];
 
   v10 = self->_newLockScreenView;
-  v11 = [(PBADevicePasscodeViewController *)self lockScreenTitle];
-  [(PBASimpleLockScreenView *)v10 setTitle:v11];
+  lockScreenTitle = [(PBADevicePasscodeViewController *)self lockScreenTitle];
+  [(PBASimpleLockScreenView *)v10 setTitle:lockScreenTitle];
 
   v12 = self->_newLockScreenView;
-  v13 = [(PBADevicePasscodeViewController *)self lockScreenMessage];
-  [(PBASimpleLockScreenView *)v12 setMessage:v13];
+  lockScreenMessage = [(PBADevicePasscodeViewController *)self lockScreenMessage];
+  [(PBASimpleLockScreenView *)v12 setMessage:lockScreenMessage];
 
   v14 = self->_newLockScreenView;
-  v15 = [(PBADevicePasscodeViewController *)self lockScreenStackItems];
-  [(PBASimpleLockScreenView *)v14 setStackItems:v15];
+  lockScreenStackItems = [(PBADevicePasscodeViewController *)self lockScreenStackItems];
+  [(PBASimpleLockScreenView *)v14 setStackItems:lockScreenStackItems];
 
   v16 = self->_newLockScreenView;
   v17 = [(PBADevicePasscodeViewController *)self lockScreenActionTitleWithHomeButton:v3 != 2];
   [(PBASimpleLockScreenView *)v16 setPressToOpenText:v17];
 
-  v18 = [(PBADevicePasscodeViewController *)self view];
-  [v18 addSubview:self->_newLockScreenView];
+  view2 = [(PBADevicePasscodeViewController *)self view];
+  [view2 addSubview:self->_newLockScreenView];
 
   v19 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_homeButtonPressed:"];
   [v19 setAllowedTouchTypes:&__NSArray0__struct];
   [v19 setAllowedPressTypes:&off_10001D5A8];
   [v19 setNumberOfTapsRequired:1];
   [v19 setCancelsTouchesInView:0];
-  v20 = [(PBADevicePasscodeViewController *)self view];
-  [v20 addGestureRecognizer:v19];
+  view3 = [(PBADevicePasscodeViewController *)self view];
+  [view3 addGestureRecognizer:v19];
 
   if (v3 == 2)
   {
     v21 = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:"_handleEdgeSwipe:" type:5 options:0];
     [v21 setEdges:4];
-    v22 = [(PBADevicePasscodeViewController *)self view];
-    [v22 addGestureRecognizer:v21];
+    view4 = [(PBADevicePasscodeViewController *)self view];
+    [view4 addGestureRecognizer:v21];
   }
 
   [(PBADevicePasscodeViewController *)self registerForUnlockNotification];
@@ -118,11 +118,11 @@
   }
 }
 
-- (void)handlePasscodeEntrySuccessful:(id)a3
+- (void)handlePasscodeEntrySuccessful:(id)successful
 {
-  v4 = a3;
+  successfulCopy = successful;
   v5 = [[PBAAppleLogoViewController alloc] initWithNibName:0 bundle:0];
-  [(PBAStackViewController *)self->_stackViewController pushViewController:v5 animated:1 completion:v4];
+  [(PBAStackViewController *)self->_stackViewController pushViewController:v5 animated:1 completion:successfulCopy];
 }
 
 - (void)registerForUnlockNotification
@@ -131,23 +131,23 @@
   [v3 addObserver:self selector:"handlePasscodeLockStatusChangeNotification:" name:SBFUserAuthenticationStateDidChangeNotification object:0];
 }
 
-- (void)handlePasscodeLockStatusChangeNotification:(id)a3
+- (void)handlePasscodeLockStatusChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
+  notificationCopy = notification;
+  v5 = notificationCopy;
   if (!self->_attemptingUnlock)
   {
-    v6 = v4;
-    v4 = [(SBFUserAuthenticationController *)self->_authenticationController isAuthenticated];
+    v6 = notificationCopy;
+    notificationCopy = [(SBFUserAuthenticationController *)self->_authenticationController isAuthenticated];
     v5 = v6;
-    if (v4)
+    if (notificationCopy)
     {
-      v4 = [(PBADevicePasscodeViewController *)self handlePasscodeEntrySuccessful:&stru_10001C998];
+      notificationCopy = [(PBADevicePasscodeViewController *)self handlePasscodeEntrySuccessful:&stru_10001C998];
       v5 = v6;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(notificationCopy, v5);
 }
 
 - (void)_handleBlockedDevice
@@ -193,9 +193,9 @@
   }
 }
 
-- (void)_handleEdgeSwipe:(id)a3
+- (void)_handleEdgeSwipe:(id)swipe
 {
-  if ([a3 state] == 3)
+  if ([swipe state] == 3)
   {
 
     [(PBADevicePasscodeViewController *)self _pushPasscodeEntryViewIfNeeded];
@@ -215,17 +215,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)passcodeEntryViewControllerEntryCompleted:(id)a3 passcode:(id)a4
+- (void)passcodeEntryViewControllerEntryCompleted:(id)completed passcode:(id)passcode
 {
-  v6 = a3;
+  completedCopy = completed;
   authenticationController = self->_authenticationController;
-  v8 = a4;
+  passcodeCopy = passcode;
   v9 = [(SBFUserAuthenticationController *)authenticationController createGracePeriodAssertionWithReason:@"com.apple.PreBoard.UnlockAttempt"];
   transientAssertion = self->_transientAssertion;
   self->_transientAssertion = v9;
 
   [(SBFAuthenticationAssertion *)self->_transientAssertion activate];
-  v11 = [[NSString alloc] initWithData:v8 encoding:4];
+  v11 = [[NSString alloc] initWithData:passcodeCopy encoding:4];
 
   v12 = [(PBADevicePasscodeViewController *)self makeAuthenticationRequestWithPasscode:v11];
   self->_attemptingUnlock = 1;
@@ -236,7 +236,7 @@
   v23[3] = &unk_10001C9E8;
   v23[4] = self;
   v24 = v12;
-  v25 = v6;
+  v25 = completedCopy;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000095FC;
@@ -263,14 +263,14 @@
   [(PBADevicePasscodeViewController *)self successfulAuthHandler:v3];
 }
 
-- (void)_configurePasscodeEntryViewController:(id)a3
+- (void)_configurePasscodeEntryViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [(PBADevicePasscodeViewController *)self passcodeEntryScreenTitle];
-  v5 = [(PBADevicePasscodeViewController *)self passcodeEntryScreenSubtitle];
-  if (v4 | v5)
+  controllerCopy = controller;
+  passcodeEntryScreenTitle = [(PBADevicePasscodeViewController *)self passcodeEntryScreenTitle];
+  passcodeEntryScreenSubtitle = [(PBADevicePasscodeViewController *)self passcodeEntryScreenSubtitle];
+  if (passcodeEntryScreenTitle | passcodeEntryScreenSubtitle)
   {
-    [v6 setTitleText:v4 subtitleText:v5 animated:0];
+    [controllerCopy setTitleText:passcodeEntryScreenTitle subtitleText:passcodeEntryScreenSubtitle animated:0];
   }
 }
 
@@ -282,24 +282,24 @@
   self->_transientAssertion = 0;
 }
 
-- (void)handlePasscodeEntryCancelledForViewController:(id)a3
+- (void)handlePasscodeEntryCancelledForViewController:(id)controller
 {
   passcodeEntryViewController = self->_passcodeEntryViewController;
   self->_passcodeEntryViewController = 0;
-  v5 = a3;
+  controllerCopy = controller;
 
-  [(PBAStackViewController *)self->_stackViewController removeViewController:v5 animated:1];
+  [(PBAStackViewController *)self->_stackViewController removeViewController:controllerCopy animated:1];
 }
 
-- (id)makeAuthenticationRequestWithPasscode:(id)a3
+- (id)makeAuthenticationRequestWithPasscode:(id)passcode
 {
-  v3 = a3;
-  v4 = [[SBFAuthenticationRequest alloc] initForPasscode:v3 source:0 skipSEKeepUserDataOperation:1 handler:0];
+  passcodeCopy = passcode;
+  v4 = [[SBFAuthenticationRequest alloc] initForPasscode:passcodeCopy source:0 skipSEKeepUserDataOperation:1 handler:0];
 
   return v4;
 }
 
-- (void)failedAuthHandler:(id)a3 error:(id)a4
+- (void)failedAuthHandler:(id)handler error:(id)error
 {
   v5 = sub_10000A054();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -314,7 +314,7 @@
   }
 }
 
-- (void)invalidAuthHandler:(id)a3
+- (void)invalidAuthHandler:(id)handler
 {
   v4 = sub_10000A054();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -329,12 +329,12 @@
   }
 }
 
-- (id)lockScreenActionTitleWithHomeButton:(BOOL)a3
+- (id)lockScreenActionTitleWithHomeButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (buttonCopy)
   {
     v6 = @"PREBOARD_PRESS_FOR_UPGRADE";
   }

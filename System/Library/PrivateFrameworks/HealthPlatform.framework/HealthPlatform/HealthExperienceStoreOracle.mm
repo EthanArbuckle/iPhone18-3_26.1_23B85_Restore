@@ -14,7 +14,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HealthExperienceStoreOracle.description.getter();
 
   v3 = sub_22855D17C();

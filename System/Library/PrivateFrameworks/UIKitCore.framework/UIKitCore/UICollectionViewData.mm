@@ -1,51 +1,51 @@
 @interface UICollectionViewData
 - (BOOL)dataSourceMatchesCurrentCounts;
 - (CGRect)_TEST_validLayoutRect;
-- (_BYTE)indexPathForItemAtGlobalIndex:(_BYTE *)a1;
-- (_BYTE)validatedIndexPathForItemAtGlobalIndex:(_BYTE *)a1;
+- (_BYTE)indexPathForItemAtGlobalIndex:(_BYTE *)index;
+- (_BYTE)validatedIndexPathForItemAtGlobalIndex:(_BYTE *)index;
 - (double)collectionViewContentRect;
-- (double)rectForItemAtIndexPath:(uint64_t)a1;
+- (double)rectForItemAtIndexPath:(uint64_t)path;
 - (id).cxx_construct;
-- (id)_layoutAttributesForElementsInRect:(int)a3 cellsOnly:(int)a4 validateIfNeeded:(double)a5 includeIndelibleElements:(double)a6;
-- (id)_layoutAttributesForElementsInRectForMapping:(double)a3;
+- (id)_layoutAttributesForElementsInRect:(int)rect cellsOnly:(int)only validateIfNeeded:(double)needed includeIndelibleElements:(double)elements;
+- (id)_layoutAttributesForElementsInRectForMapping:(double)mapping;
 - (id)dataSourceCountsDescription;
-- (id)descriptionIncludingPointer:(uint64_t)a1;
+- (id)descriptionIncludingPointer:(uint64_t)pointer;
 - (id)existingSupplementaryLayoutAttributes;
-- (id)existingSupplementaryLayoutAttributesInSection:(uint64_t)a1;
+- (id)existingSupplementaryLayoutAttributesInSection:(uint64_t)section;
 - (id)knownDecorationElementKinds;
 - (id)knownSupplementaryElementKinds;
-- (id)layoutAttributesForCellsInRect:(double)a3 validateLayout:(double)a4;
-- (id)layoutAttributesForDecorationViewOfKind:(void *)a3 atIndexPath:;
-- (id)layoutAttributesForElementsInRect:(double)a3;
-- (id)layoutAttributesForGlobalItemIndex:(_BYTE *)a1;
-- (id)layoutAttributesForItemAtIndexPath:(uint64_t)a1;
-- (id)layoutAttributesForSupplementaryElementOfKind:(void *)a3 atIndexPath:;
+- (id)layoutAttributesForCellsInRect:(double)rect validateLayout:(double)layout;
+- (id)layoutAttributesForDecorationViewOfKind:(void *)kind atIndexPath:;
+- (id)layoutAttributesForElementsInRect:(double)rect;
+- (id)layoutAttributesForGlobalItemIndex:(_BYTE *)index;
+- (id)layoutAttributesForItemAtIndexPath:(uint64_t)path;
+- (id)layoutAttributesForSupplementaryElementOfKind:(void *)kind atIndexPath:;
 - (uint64_t)_existingNumberOfItemsInSection:(uint64_t)result;
-- (uint64_t)_isIndexPathValid:(int)a3 validateItemCounts:;
+- (uint64_t)_isIndexPathValid:(int)valid validateItemCounts:;
 - (uint64_t)_prepareToLoadData;
-- (uint64_t)_shouldUseReorderingLayoutAttributesForItemAtIndexPath:(uint64_t)a1;
+- (uint64_t)_shouldUseReorderingLayoutAttributesForItemAtIndexPath:(uint64_t)path;
 - (uint64_t)_validateContentSize;
 - (uint64_t)finalizeCollectionViewUpdates;
 - (uint64_t)globalIndexForItemAtIndexPath:(uint64_t)result;
-- (uint64_t)initWithCollectionView:(void *)a3 layout:;
+- (uint64_t)initWithCollectionView:(void *)view layout:;
 - (uint64_t)invalidateDecorationIndexPaths:(uint64_t)result;
 - (uint64_t)invalidateSupplementaryIndexPaths:(uint64_t)result;
 - (uint64_t)numberOfItems;
 - (uint64_t)numberOfItemsBeforeSection:(uint64_t)result;
 - (uint64_t)numberOfItemsInSection:(uint64_t)result;
 - (uint64_t)numberOfSections;
-- (uint64_t)validateLayoutInRectImmediatelyValidatingContentSizeIgnoringSpecificInvalidations:(CGFloat)a3;
+- (uint64_t)validateLayoutInRectImmediatelyValidatingContentSizeIgnoringSpecificInvalidations:(CGFloat)invalidations;
 - (uint64_t)validatedGlobalIndexForItemAtIndexPath:(uint64_t)result;
-- (void)_attributesMapDidPageInAttributes:(unint64_t)a3 globalItemIndex:(__n128)a4;
-- (void)_cachedLayoutAttributesForGlobalItemIndex:(void *)a1;
-- (void)_setCachedLayoutAttributes:(unint64_t)a3 forGlobalItemIndex:;
-- (void)_setLayoutAttributes:(int64_t)a3 atGlobalItemIndex:;
+- (void)_attributesMapDidPageInAttributes:(unint64_t)attributes globalItemIndex:(__n128)index;
+- (void)_cachedLayoutAttributesForGlobalItemIndex:(void *)index;
+- (void)_setCachedLayoutAttributes:(unint64_t)attributes forGlobalItemIndex:;
+- (void)_setLayoutAttributes:(int64_t)attributes atGlobalItemIndex:;
 - (void)_updateItemCounts;
-- (void)invalidate:(uint64_t)a1;
-- (void)invalidateItemsAtIndexPaths:(uint64_t)a1;
+- (void)invalidate:(uint64_t)invalidate;
+- (void)invalidateItemsAtIndexPaths:(uint64_t)paths;
 - (void)validateDecorationViews;
 - (void)validateItems;
-- (void)validateLayoutInRect:(CGFloat)a3;
+- (void)validateLayoutInRect:(CGFloat)rect;
 - (void)validateSupplementaryViews;
 @end
 
@@ -63,17 +63,17 @@
 
 - (void)_updateItemCounts
 {
-  if (a1)
+  if (self)
   {
-    std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::clear(a1 + 128);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v23 = [WeakRetained _dataSourceProxy];
+    std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::clear(self + 128);
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    _dataSourceProxy = [WeakRetained _dataSourceProxy];
 
-    v3 = objc_loadWeakRetained((a1 + 8));
+    v3 = objc_loadWeakRetained((self + 8));
     if ([v3 _dataSourceImplementsNumberOfSections])
     {
-      v4 = objc_loadWeakRetained((a1 + 8));
-      v5 = [v23 numberOfSectionsInCollectionView:v4];
+      v4 = objc_loadWeakRetained((self + 8));
+      v5 = [_dataSourceProxy numberOfSectionsInCollectionView:v4];
 
       v6 = v5 & ~(v5 >> 63);
     }
@@ -83,21 +83,21 @@
       v6 = 1;
     }
 
-    v7 = (a1 + 104);
-    *(a1 + 112) = *(a1 + 104);
-    std::vector<long>::reserve((a1 + 104), v6);
+    v7 = (self + 104);
+    *(self + 112) = *(self + 104);
+    std::vector<long>::reserve((self + 104), v6);
     if (v6)
     {
       v8 = 0;
       v9 = 0;
       do
       {
-        v10 = objc_loadWeakRetained((a1 + 8));
-        v11 = [v23 collectionView:v10 numberOfItemsInSection:v8];
+        v10 = objc_loadWeakRetained((self + 8));
+        v11 = [_dataSourceProxy collectionView:v10 numberOfItemsInSection:v8];
 
         v12 = v11 & ~(v11 >> 63);
-        v14 = *(a1 + 112);
-        v13 = *(a1 + 120);
+        v14 = *(self + 112);
+        v13 = *(self + 120);
         if (v14 >= v13)
         {
           v16 = *v7;
@@ -127,16 +127,16 @@
 
           if (v21)
           {
-            std::__allocate_at_least[abi:nn200100]<std::allocator<unsigned long>>(a1 + 104, v21);
+            std::__allocate_at_least[abi:nn200100]<std::allocator<unsigned long>>(self + 104, v21);
           }
 
           *(8 * v18) = v12;
           v15 = 8 * v18 + 8;
           memcpy(0, v16, v17);
-          v22 = *(a1 + 104);
-          *(a1 + 104) = 0;
-          *(a1 + 112) = v15;
-          *(a1 + 120) = 0;
+          v22 = *(self + 104);
+          *(self + 104) = 0;
+          *(self + 112) = v15;
+          *(self + 120) = 0;
           if (v22)
           {
             operator delete(v22);
@@ -149,7 +149,7 @@
           v15 = (v14 + 1);
         }
 
-        *(a1 + 112) = v15;
+        *(self + 112) = v15;
         v9 += v12;
         ++v8;
       }
@@ -162,9 +162,9 @@
       v9 = 0;
     }
 
-    *(a1 + 168) = v9;
-    *(a1 + 96) |= 2u;
-    *(a1 + 64) = 0x7FFFFFFFFFFFFFFFLL;
+    *(self + 168) = v9;
+    *(self + 96) |= 2u;
+    *(self + 64) = 0x7FFFFFFFFFFFFFFFLL;
   }
 }
 
@@ -278,12 +278,12 @@
 
 - (double)collectionViewContentRect
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [(UICollectionViewData *)a1 _prepareToLoadData];
+  [(UICollectionViewData *)self _prepareToLoadData];
   return *MEMORY[0x1E695EFF8];
 }
 
@@ -337,43 +337,43 @@
 
 - (id)knownSupplementaryElementKinds
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = MEMORY[0x1E695DFD8];
-    v3 = [a1[4] allKeys];
-    v4 = [v2 setWithArray:v3];
+    allKeys = [self[4] allKeys];
+    v4 = [v2 setWithArray:allKeys];
 
     if (v4)
     {
-      v5 = [v1[5] allKeys];
-      [v4 setByAddingObjectsFromArray:v5];
+      allKeys2 = [selfCopy[5] allKeys];
+      [v4 setByAddingObjectsFromArray:allKeys2];
     }
 
     else
     {
       v6 = MEMORY[0x1E695DFD8];
-      v5 = [v1[5] allKeys];
-      [v6 setWithArray:v5];
+      allKeys2 = [selfCopy[5] allKeys];
+      [v6 setWithArray:allKeys2];
     }
-    v1 = ;
+    selfCopy = ;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)existingSupplementaryLayoutAttributes
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v3 = [*(a1 + 32) objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    objectEnumerator = [*(self + 32) objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v4)
     {
       v5 = *v19;
@@ -383,14 +383,14 @@
         {
           if (*v19 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v7 = [*(*(&v18 + 1) + 8 * i) allValues];
-          [v2 addObjectsFromArray:v7];
+          allValues = [*(*(&v18 + 1) + 8 * i) allValues];
+          [v2 addObjectsFromArray:allValues];
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v4 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v4);
@@ -400,8 +400,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [*(a1 + 40) objectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    objectEnumerator2 = [*(self + 40) objectEnumerator];
+    v9 = [objectEnumerator2 countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -411,14 +411,14 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * j) allValues];
-          [v2 addObjectsFromArray:v12];
+          allValues2 = [*(*(&v14 + 1) + 8 * j) allValues];
+          [v2 addObjectsFromArray:allValues2];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v9 = [objectEnumerator2 countByEnumeratingWithState:&v14 objects:v22 count:16];
       }
 
       while (v9);
@@ -435,19 +435,19 @@
 
 - (void)validateSupplementaryViews
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 96) & 0x10) == 0)
+    if ((*(self + 96) & 0x10) == 0)
     {
-      v2 = *(a1 + 48);
-      v3 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v2 = *(self + 48);
+      v3 = *(self + 48);
+      *(self + 48) = 0;
 
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __50__UICollectionViewData_validateSupplementaryViews__block_invoke;
       v4[3] = &unk_1E70FFE00;
-      v4[4] = a1;
+      v4[4] = self;
       [v2 enumerateKeysAndObjectsUsingBlock:v4];
     }
   }
@@ -535,19 +535,19 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
 
 - (void)validateDecorationViews
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 96) & 0x10) == 0)
+    if ((*(self + 96) & 0x10) == 0)
     {
-      v2 = *(a1 + 56);
-      v3 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v2 = *(self + 56);
+      v3 = *(self + 56);
+      *(self + 56) = 0;
 
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __47__UICollectionViewData_validateDecorationViews__block_invoke;
       v4[3] = &unk_1E70FFE00;
-      v4[4] = a1;
+      v4[4] = self;
       [v2 enumerateKeysAndObjectsUsingBlock:v4];
     }
   }
@@ -556,20 +556,20 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
 - (void)validateItems
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 96) & 0x10) == 0)
+  if (self && (*(self + 96) & 0x10) == 0)
   {
-    v2 = *(a1 + 24);
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v2 = *(self + 24);
+    v3 = *(self + 24);
+    *(self + 24) = 0;
 
-    if ((*(a1 + 96) & 8) == 0)
+    if ((*(self + 96) & 8) == 0)
     {
       if (os_variant_has_internal_diagnostics())
       {
         log = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
         {
-          WeakRetained = objc_loadWeakRetained((a1 + 8));
+          WeakRetained = objc_loadWeakRetained((self + 8));
           *buf = 138412546;
           v11 = WeakRetained;
           v12 = 2112;
@@ -584,7 +584,7 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
         if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
         {
           v5 = v4;
-          v6 = objc_loadWeakRetained((a1 + 8));
+          v6 = objc_loadWeakRetained((self + 8));
           *buf = 138412546;
           v11 = v6;
           v12 = 2112;
@@ -593,33 +593,33 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
         }
       }
 
-      [(UICollectionViewData *)a1 _prepareToLoadData];
+      [(UICollectionViewData *)self _prepareToLoadData];
     }
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__UICollectionViewData_validateItems__block_invoke;
     v9[3] = &unk_1E70F4548;
-    v9[4] = a1;
+    v9[4] = self;
     [(_UIFastIndexSet *)v2 enumerateIndexesUsingBlock:v9];
   }
 }
 
-- (uint64_t)initWithCollectionView:(void *)a3 layout:
+- (uint64_t)initWithCollectionView:(void *)view layout:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = UICollectionViewData;
   v5 = objc_msgSendSuper2(&v14, sel_init);
   v6 = v5;
   if (v5)
   {
     objc_storeWeak(v5 + 1, a2);
-    objc_storeStrong((v6 + 16), a3);
+    objc_storeStrong((v6 + 16), view);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8 = *(v6 + 32);
     *(v6 + 32) = v7;
@@ -637,14 +637,14 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
   return v6;
 }
 
-- (id)_layoutAttributesForElementsInRectForMapping:(double)a3
+- (id)_layoutAttributesForElementsInRectForMapping:(double)mapping
 {
-  if (a1)
+  if (self)
   {
-    v10 = a1;
+    selfCopy = self;
     if (os_variant_has_internal_diagnostics())
     {
-      if ((*(v10 + 96) & 0x10) != 0)
+      if ((*(selfCopy + 96) & 0x10) != 0)
       {
         v12 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -655,7 +655,7 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
       }
     }
 
-    else if ((*(v10 + 96) & 0x10) != 0)
+    else if ((*(selfCopy + 96) & 0x10) != 0)
     {
       v13 = *(__UILogGetCategoryCachedImpl("Assert", &[UICollectionViewData _layoutAttributesForElementsInRectForMapping:]::__s_category) + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -665,49 +665,49 @@ void __47__UICollectionViewData_validateDecorationViews__block_invoke(uint64_t a
       }
     }
 
-    a1 = [*(v10 + 2) layoutAttributesForElementsInRect:{a2, a3, a4, a5}];
+    self = [*(selfCopy + 2) layoutAttributesForElementsInRect:{a2, mapping, a4, a5}];
     v5 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_attributesMapDidPageInAttributes:(unint64_t)a3 globalItemIndex:(__n128)a4
+- (void)_attributesMapDidPageInAttributes:(unint64_t)attributes globalItemIndex:(__n128)index
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   if (!a2)
   {
-    v7 = [0 indexPath];
+    indexPath = [0 indexPath];
     v8 = 32;
 LABEL_6:
-    v15 = *(a1 + v8);
-    v9 = [(_UILabelConfiguration *)a2 _content];
+    v15 = *(self + v8);
+    _content = [(_UILabelConfiguration *)a2 _content];
     v10 = v15;
-    if (!v9)
+    if (!_content)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:sel__attributesMapDidPageInAttributes_globalItemIndex_ object:a1 file:@"UICollectionViewData.mm" lineNumber:115 description:{@"%@ elementKind is nil. This probably means you created the UICollectionViewLayoutAttributes using +alloc/-init instead of one of the class constructors", a2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__attributesMapDidPageInAttributes_globalItemIndex_ object:self file:@"UICollectionViewData.mm" lineNumber:115 description:{@"%@ elementKind is nil. This probably means you created the UICollectionViewLayoutAttributes using +alloc/-init instead of one of the class constructors", a2}];
 
       v10 = v15;
     }
 
-    v11 = [v10 objectForKey:v9];
-    v12 = [v11 objectForKey:v7];
+    v11 = [v10 objectForKey:_content];
+    v12 = [v11 objectForKey:indexPath];
     if (!v12)
     {
       if (v11)
       {
-        [v11 setObject:a2 forKey:v7];
+        [v11 setObject:a2 forKey:indexPath];
       }
 
       else
       {
-        v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{a2, v7, 0}];
-        [v15 setObject:v11 forKey:v9];
+        v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{a2, indexPath, 0}];
+        [v15 setObject:v11 forKey:_content];
       }
     }
 
@@ -717,7 +717,7 @@ LABEL_6:
   v6 = *(a2 + 288);
   if ((v6 & 1) == 0)
   {
-    v7 = [a2 indexPath];
+    indexPath = [a2 indexPath];
     v8 = 40;
     if ((v6 & 2) == 0)
     {
@@ -727,16 +727,16 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [(_UIMutableFastIndexSet *)*(a1 + 24) removeIndex:a3, a4];
+  [(_UIMutableFastIndexSet *)*(self + 24) removeIndex:attributes, index];
 
-  [(UICollectionViewData *)a1 _setCachedLayoutAttributes:a2 forGlobalItemIndex:a3];
+  [(UICollectionViewData *)self _setCachedLayoutAttributes:a2 forGlobalItemIndex:attributes];
 }
 
-- (void)_setCachedLayoutAttributes:(unint64_t)a3 forGlobalItemIndex:
+- (void)_setCachedLayoutAttributes:(unint64_t)attributes forGlobalItemIndex:
 {
   if (obj)
   {
-    v3 = a1[17];
+    v3 = self[17];
     if (!*&v3)
     {
       goto LABEL_22;
@@ -746,19 +746,19 @@ LABEL_6:
     v4.i16[0] = vaddlv_u8(v4);
     if (v4.u32[0] > 1uLL)
     {
-      v5 = a3;
-      if (*&v3 <= a3)
+      attributesCopy = attributes;
+      if (*&v3 <= attributes)
       {
-        v5 = a3 % *&v3;
+        attributesCopy = attributes % *&v3;
       }
     }
 
     else
     {
-      v5 = (*&v3 - 1) & a3;
+      attributesCopy = (*&v3 - 1) & attributes;
     }
 
-    v7 = *(*&a1[16] + 8 * v5);
+    v7 = *(*&self[16] + 8 * attributesCopy);
     if (!v7 || (v8 = *v7) == 0)
     {
 LABEL_22:
@@ -768,9 +768,9 @@ LABEL_22:
     while (1)
     {
       v9 = v8[1];
-      if (v9 == a3)
+      if (v9 == attributes)
       {
-        if (v8[2] == a3)
+        if (v8[2] == attributes)
         {
           objc_storeStrong(v8 + 3, obj);
           return;
@@ -792,7 +792,7 @@ LABEL_22:
           v9 &= *&v3 - 1;
         }
 
-        if (v9 != v5)
+        if (v9 != attributesCopy)
         {
           goto LABEL_22;
         }
@@ -806,15 +806,15 @@ LABEL_22:
     }
   }
 
-  v6 = a1 + 16;
+  v6 = self + 16;
 
-  std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>(v6, a3);
+  std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>(v6, attributes);
 }
 
-- (void)invalidateItemsAtIndexPaths:(uint64_t)a1
+- (void)invalidateItemsAtIndexPaths:(uint64_t)paths
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 96) & 0x10) == 0)
+  if (paths && (*(paths + 96) & 0x10) == 0)
   {
     v34 = 0u;
     v35 = 0u;
@@ -839,18 +839,18 @@ LABEL_22:
           v36 = 0;
           v37 = 0;
           [v7 ui_getSectionIndex:&v37 itemIndex:&v36];
-          v8 = [(UICollectionViewData *)a1 numberOfItemsBeforeSection:v37];
+          v8 = [(UICollectionViewData *)paths numberOfItemsBeforeSection:v37];
           v9 = v36 + v8;
-          v10 = *(a1 + 168);
+          v10 = *(paths + 168);
           if (v36 + v8 >= v10)
           {
-            v30 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v30 handleFailureInMethod:sel_invalidateItemsAtIndexPaths_ object:a1 file:@"UICollectionViewData.mm" lineNumber:151 description:{@"attempting to invalidate an item at an invalid indexPath: %@ globalIndex: %ld numItems: %ld", v7, v9, v10}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:sel_invalidateItemsAtIndexPaths_ object:paths file:@"UICollectionViewData.mm" lineNumber:151 description:{@"attempting to invalidate an item at an invalid indexPath: %@ globalIndex: %ld numItems: %ld", v7, v9, v10}];
           }
 
           if (dyld_program_sdk_at_least())
           {
-            v12 = *(a1 + 24);
+            v12 = *(paths + 24);
             if (v12)
             {
               [(_UIMutableFastIndexSet *)v12 addIndex:v9, v11];
@@ -859,21 +859,21 @@ LABEL_22:
             else
             {
               v26 = [(_UIFastIndexSet *)[_UIMutableFastIndexSet alloc] initWithIndex:v9];
-              v27 = *(a1 + 24);
-              *(a1 + 24) = v26;
+              v27 = *(paths + 24);
+              *(paths + 24) = v26;
             }
 
-            std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>((a1 + 128), v9);
+            std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>((paths + 128), v9);
           }
 
           else
           {
-            v13 = [(UICollectionViewData *)a1 _cachedLayoutAttributesForGlobalItemIndex:v9];
+            v13 = [(UICollectionViewData *)paths _cachedLayoutAttributesForGlobalItemIndex:v9];
             v14 = v13;
             if (v13)
             {
               [v13 frame];
-              v19 = *(a1 + 176);
+              v19 = *(paths + 176);
               if (v19)
               {
                 v20 = v19[6];
@@ -892,7 +892,7 @@ LABEL_22:
 
               if (CGRectIntersectsRect(*&v15, *&v20))
               {
-                v25 = *(a1 + 24);
+                v25 = *(paths + 24);
                 if (v25)
                 {
                   [(_UIMutableFastIndexSet *)v25 addIndex:v9, v24];
@@ -901,12 +901,12 @@ LABEL_22:
                 else
                 {
                   v28 = [(_UIFastIndexSet *)[_UIMutableFastIndexSet alloc] initWithIndex:v9];
-                  v29 = *(a1 + 24);
-                  *(a1 + 24) = v28;
+                  v29 = *(paths + 24);
+                  *(paths + 24) = v28;
                 }
               }
 
-              std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>((a1 + 128), v9);
+              std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>((paths + 128), v9);
             }
           }
 
@@ -938,20 +938,20 @@ LABEL_22:
   return result;
 }
 
-- (void)_cachedLayoutAttributesForGlobalItemIndex:(void *)a1
+- (void)_cachedLayoutAttributesForGlobalItemIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::find<long>(a1 + 16, a2);
-    if (a1)
+    index = std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::find<long>(index + 16, a2);
+    if (index)
     {
-      a1 = a1[3];
+      index = index[3];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)invalidateSupplementaryIndexPaths:(uint64_t)result
@@ -1046,30 +1046,30 @@ void __55__UICollectionViewData_invalidateDecorationIndexPaths___block_invoke(ui
   }
 }
 
-- (_BYTE)indexPathForItemAtGlobalIndex:(_BYTE *)a1
+- (_BYTE)indexPathForItemAtGlobalIndex:(_BYTE *)index
 {
-  if (a1)
+  if (index)
   {
-    v3 = a1;
-    if ((a1[96] & 2) == 0)
+    indexCopy = index;
+    if ((index[96] & 2) == 0)
     {
-      [(UICollectionViewData *)a1 _updateItemCounts];
+      [(UICollectionViewData *)index _updateItemCounts];
     }
 
-    v4 = *(v3 + 104);
-    v5 = (*(v3 + 112) - v4) >> 3;
+    v4 = *(indexCopy + 104);
+    v5 = (*(indexCopy + 112) - v4) >> 3;
     if (v5 < 1)
     {
 LABEL_8:
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      if ((*(v3 + 96) & 2) == 0)
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      if ((*(indexCopy + 96) & 2) == 0)
       {
-        [(UICollectionViewData *)v3 _updateItemCounts];
+        [(UICollectionViewData *)indexCopy _updateItemCounts];
       }
 
-      [v11 handleFailureInMethod:sel_indexPathForItemAtGlobalIndex_ object:v3 file:@"UICollectionViewData.mm" lineNumber:609 description:{@"request for index path for global index %ld when there are only %ld items in the collection view", a2, *(v3 + 168)}];
+      [currentHandler handleFailureInMethod:sel_indexPathForItemAtGlobalIndex_ object:indexCopy file:@"UICollectionViewData.mm" lineNumber:609 description:{@"request for index path for global index %ld when there are only %ld items in the collection view", a2, *(indexCopy + 168)}];
 
-      a1 = 0;
+      index = 0;
     }
 
     else
@@ -1094,59 +1094,59 @@ LABEL_8:
         }
       }
 
-      a1 = [MEMORY[0x1E696AC88] indexPathForRow:? inSection:?];
+      index = [MEMORY[0x1E696AC88] indexPathForRow:? inSection:?];
     }
   }
 
-  return a1;
+  return index;
 }
 
-- (void)_setLayoutAttributes:(int64_t)a3 atGlobalItemIndex:
+- (void)_setLayoutAttributes:(int64_t)attributes atGlobalItemIndex:
 {
-  if (a1 && *(a1 + 168) > a3)
+  if (self && *(self + 168) > attributes)
   {
     if (a2)
     {
-      [(_UICollectionViewDataAttributesMap *)*(a1 + 176) pageInLayoutAttributes:a2 forGlobalItemIndex:a3];
+      [(_UICollectionViewDataAttributesMap *)*(self + 176) pageInLayoutAttributes:a2 forGlobalItemIndex:attributes];
       v6 = [a2 copy];
-      [(UICollectionViewData *)a1 _setCachedLayoutAttributes:v6 forGlobalItemIndex:a3];
+      [(UICollectionViewData *)self _setCachedLayoutAttributes:v6 forGlobalItemIndex:attributes];
 
-      v8 = *(a1 + 24);
+      v8 = *(self + 24);
 
-      [(_UIMutableFastIndexSet *)v8 removeIndex:a3, v7];
+      [(_UIMutableFastIndexSet *)v8 removeIndex:attributes, v7];
     }
 
     else
     {
-      v9 = (a1 + 128);
+      v9 = (self + 128);
 
-      std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>(v9, a3);
+      std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::__erase_unique<long>(v9, attributes);
     }
   }
 }
 
-- (id)layoutAttributesForSupplementaryElementOfKind:(void *)a3 atIndexPath:
+- (id)layoutAttributesForSupplementaryElementOfKind:(void *)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a3 section];
-    v7 = *(a1 + 112) - *(a1 + 104);
-    if (v6 >= v7 >> 3)
+    section = [kind section];
+    v7 = *(self + 112) - *(self + 104);
+    if (section >= v7 >> 3)
     {
-      v8 = v6;
-      if ([a3 item] != 0x7FFFFFFFFFFFFFFFLL)
+      v8 = section;
+      if ([kind item] != 0x7FFFFFFFFFFFFFFFLL)
       {
         v16 = v7 >> 3;
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:sel_layoutAttributesForSupplementaryElementOfKind_atIndexPath_ object:a1 file:@"UICollectionViewData.mm" lineNumber:981 description:{@"request for layout attributes for supplementary view %@ in section %ld when there are only %ld sections in the collection view", a2, v8, v16}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_layoutAttributesForSupplementaryElementOfKind_atIndexPath_ object:self file:@"UICollectionViewData.mm" lineNumber:981 description:{@"request for layout attributes for supplementary view %@ in section %ld when there are only %ld sections in the collection view", a2, v8, v16}];
       }
     }
 
-    v9 = [*(a1 + 32) objectForKey:a2];
-    v10 = [v9 objectForKey:a3];
+    v9 = [*(self + 32) objectForKey:a2];
+    v10 = [v9 objectForKey:kind];
     if (!v10)
     {
-      if ((*(a1 + 96) & 0x10) != 0 || ([*(a1 + 16) layoutAttributesForSupplementaryViewOfKind:a2 atIndexPath:a3], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+      if ((*(self + 96) & 0x10) != 0 || ([*(self + 16) layoutAttributesForSupplementaryViewOfKind:a2 atIndexPath:kind], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v10 = 0;
       }
@@ -1157,10 +1157,10 @@ LABEL_8:
         if (!v9)
         {
           v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          [*(a1 + 32) setObject:? forKey:?];
+          [*(self + 32) setObject:? forKey:?];
         }
 
-        [v9 setObject:v12 forKey:a3];
+        [v9 setObject:v12 forKey:kind];
         v10 = v12;
       }
     }
@@ -1176,10 +1176,10 @@ LABEL_8:
       v14 = v13;
     }
 
-    if ((v14 & 1) == 0 && (*(a1 + 96) & 0x10) == 0)
+    if ((v14 & 1) == 0 && (*(self + 96) & 0x10) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:sel_layoutAttributesForSupplementaryElementOfKind_atIndexPath_ object:a1 file:@"UICollectionViewData.mm" lineNumber:997 description:{@"no UICollectionViewLayoutAttributes instance for -layoutAttributesForSupplementaryElementOfKind: %@ at path %@", a2, a3}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_layoutAttributesForSupplementaryElementOfKind_atIndexPath_ object:self file:@"UICollectionViewData.mm" lineNumber:997 description:{@"no UICollectionViewLayoutAttributes instance for -layoutAttributesForSupplementaryElementOfKind: %@ at path %@", a2, kind}];
     }
   }
 
@@ -1191,44 +1191,44 @@ LABEL_8:
   return v10;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(void *)a3 atIndexPath:
+- (id)layoutAttributesForDecorationViewOfKind:(void *)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 112) - *(a1 + 104);
-    v7 = [a3 section];
-    if (v7 >= v6 >> 3)
+    v6 = *(self + 112) - *(self + 104);
+    section = [kind section];
+    if (section >= v6 >> 3)
     {
-      v8 = v7;
-      if ([a3 item] != 0x7FFFFFFFFFFFFFFFLL)
+      v8 = section;
+      if ([kind item] != 0x7FFFFFFFFFFFFFFFLL)
       {
         v12 = v6 >> 3;
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:sel_layoutAttributesForDecorationViewOfKind_atIndexPath_ object:a1 file:@"UICollectionViewData.mm" lineNumber:1006 description:{@"request for layout attributes for decoration view of kind %@ in section %ld when there are only %ld sections in the collection view", a2, v8, v12}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_layoutAttributesForDecorationViewOfKind_atIndexPath_ object:self file:@"UICollectionViewData.mm" lineNumber:1006 description:{@"request for layout attributes for decoration view of kind %@ in section %ld when there are only %ld sections in the collection view", a2, v8, v12}];
       }
     }
 
-    v9 = [*(a1 + 40) objectForKey:a2];
-    v10 = [v9 objectForKey:a3];
+    v9 = [*(self + 40) objectForKey:a2];
+    v10 = [v9 objectForKey:kind];
     if (!v10)
     {
-      if ((*(a1 + 96) & 0x10) != 0)
+      if ((*(self + 96) & 0x10) != 0)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = [*(a1 + 16) layoutAttributesForDecorationViewOfKind:a2 atIndexPath:a3];
+        v10 = [*(self + 16) layoutAttributesForDecorationViewOfKind:a2 atIndexPath:kind];
         if (v10)
         {
           if (!v9)
           {
             v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            [*(a1 + 40) setObject:? forKey:?];
+            [*(self + 40) setObject:? forKey:?];
           }
 
-          [v9 setObject:v10 forKey:a3];
+          [v9 setObject:v10 forKey:kind];
         }
       }
     }
@@ -1242,78 +1242,78 @@ LABEL_8:
   return v10;
 }
 
-- (void)invalidate:(uint64_t)a1
+- (void)invalidate:(uint64_t)invalidate
 {
-  if (a1 && (*(a1 + 96) & 0x10) == 0)
+  if (invalidate && (*(invalidate + 96) & 0x10) == 0)
   {
     if ((a2 & 1) == 0)
     {
-      *(a1 + 96) &= 0xEDu;
+      *(invalidate + 96) &= 0xEDu;
     }
 
-    [(_UICollectionViewDataAttributesMap *)*(a1 + 176) invalidate];
-    *(a1 + 96) &= 0xF6u;
-    [*(a1 + 32) removeAllObjects];
-    [*(a1 + 40) removeAllObjects];
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [(_UICollectionViewDataAttributesMap *)*(invalidate + 176) invalidate];
+    *(invalidate + 96) &= 0xF6u;
+    [*(invalidate + 32) removeAllObjects];
+    [*(invalidate + 40) removeAllObjects];
+    v3 = *(invalidate + 24);
+    *(invalidate + 24) = 0;
 
-    v4 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v4 = *(invalidate + 48);
+    *(invalidate + 48) = 0;
 
-    v5 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    v5 = *(invalidate + 56);
+    *(invalidate + 56) = 0;
 
-    std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::clear(a1 + 128);
+    std::__hash_table<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::__unordered_map_hasher<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,UICollectionViewLayoutAttributes * {__strong}>>>::clear(invalidate + 128);
   }
 }
 
-- (void)validateLayoutInRect:(CGFloat)a3
+- (void)validateLayoutInRect:(CGFloat)rect
 {
-  if (a1)
+  if (self)
   {
-    v10 = *(a1 + 96);
+    v10 = *(self + 96);
     if ((v10 & 8) != 0)
     {
-      if ([(_UIFastIndexSet *)*(a1 + 24) count]|| *(a1 + 48))
+      if ([(_UIFastIndexSet *)*(self + 24) count]|| *(self + 48))
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = 8 * (*(a1 + 56) == 0);
+        v11 = 8 * (*(self + 56) == 0);
       }
 
-      *(a1 + 96) = v11 | v10 & 0xF7;
+      *(self + 96) = v11 | v10 & 0xF7;
     }
 
-    [(UICollectionViewData *)a1 _prepareToLoadData];
-    if (*(a1 + 48))
+    [(UICollectionViewData *)self _prepareToLoadData];
+    if (*(self + 48))
     {
-      [(UICollectionViewData *)a1 validateSupplementaryViews];
+      [(UICollectionViewData *)self validateSupplementaryViews];
     }
 
-    if (*(a1 + 56))
+    if (*(self + 56))
     {
-      [(UICollectionViewData *)a1 validateDecorationViews];
+      [(UICollectionViewData *)self validateDecorationViews];
     }
 
-    v12 = *(a1 + 176);
+    v12 = *(self + 176);
     if (v12)
     {
-      [(_UICollectionViewDataAttributesMap *)v12 _validateLayoutInRect:a2, a3, a4, a5];
+      [(_UICollectionViewDataAttributesMap *)v12 _validateLayoutInRect:a2, rect, a4, a5];
     }
 
-    if ([(_UIFastIndexSet *)*(a1 + 24) count])
+    if ([(_UIFastIndexSet *)*(self + 24) count])
     {
 
-      [(UICollectionViewData *)a1 validateItems];
+      [(UICollectionViewData *)self validateItems];
     }
   }
 }
 
-- (uint64_t)validateLayoutInRectImmediatelyValidatingContentSizeIgnoringSpecificInvalidations:(CGFloat)a3
+- (uint64_t)validateLayoutInRectImmediatelyValidatingContentSizeIgnoringSpecificInvalidations:(CGFloat)invalidations
 {
   if (result)
   {
@@ -1327,7 +1327,7 @@ LABEL_8:
     v12 = *(v9 + 56);
     *(v9 + 56) = 0;
 
-    [(UICollectionViewData *)v9 validateLayoutInRect:a2, a3, a4, a5];
+    [(UICollectionViewData *)v9 validateLayoutInRect:a2, invalidations, a4, a5];
 
     return [(UICollectionViewData *)v9 _validateContentSize];
   }
@@ -1360,8 +1360,8 @@ LABEL_8:
     v5 = (*(result + 112) - v4) >> 3;
     if (v5 <= a2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel__existingNumberOfItemsInSection_ object:v3 file:@"UICollectionViewData.mm" lineNumber:497 description:{@"request for number of items in section %ld when there are only %ld sections in the collection view", a2, v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__existingNumberOfItemsInSection_ object:v3 file:@"UICollectionViewData.mm" lineNumber:497 description:{@"request for number of items in section %ld when there are only %ld sections in the collection view", a2, v5}];
 
       v4 = *(v3 + 104);
     }
@@ -1401,8 +1401,8 @@ LABEL_8:
     v4 = (v3[14] - v3[13]) >> 3;
     if (v4 < a2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel_numberOfItemsBeforeSection_ object:v3 file:@"UICollectionViewData.mm" lineNumber:511 description:{@"request for number of items before section %ld when there are only %ld sections in the collection view", a2, v4}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_numberOfItemsBeforeSection_ object:v3 file:@"UICollectionViewData.mm" lineNumber:511 description:{@"request for number of items before section %ld when there are only %ld sections in the collection view", a2, v4}];
     }
 
     v5 = v3[8];
@@ -1439,12 +1439,12 @@ LABEL_8:
   return result;
 }
 
-- (uint64_t)_isIndexPathValid:(int)a3 validateItemCounts:
+- (uint64_t)_isIndexPathValid:(int)valid validateItemCounts:
 {
   if (result)
   {
     v4 = result;
-    if (a3 && (*(result + 96) & 2) == 0)
+    if (valid && (*(result + 96) & 2) == 0)
     {
       [(UICollectionViewData *)result _updateItemCounts];
     }
@@ -1494,55 +1494,55 @@ LABEL_8:
   return result;
 }
 
-- (_BYTE)validatedIndexPathForItemAtGlobalIndex:(_BYTE *)a1
+- (_BYTE)validatedIndexPathForItemAtGlobalIndex:(_BYTE *)index
 {
-  if (a1)
+  if (index)
   {
-    v4 = a1;
-    if ((a1[96] & 2) == 0)
+    indexCopy = index;
+    if ((index[96] & 2) == 0)
     {
-      [(UICollectionViewData *)a1 _updateItemCounts];
+      [(UICollectionViewData *)index _updateItemCounts];
     }
 
-    a1 = 0;
-    if ((a2 & 0x8000000000000000) == 0 && *(v4 + 21) > a2)
+    index = 0;
+    if ((a2 & 0x8000000000000000) == 0 && *(indexCopy + 21) > a2)
     {
-      a1 = [(UICollectionViewData *)v4 indexPathForItemAtGlobalIndex:a2];
+      index = [(UICollectionViewData *)indexCopy indexPathForItemAtGlobalIndex:a2];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (BOOL)dataSourceMatchesCurrentCounts
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = 0;
-  if ((*(a1 + 96) & 2) != 0)
+  if ((*(self + 96) & 2) != 0)
   {
-    v4 = *(a1 + 104);
-    v3 = *(a1 + 112);
-    if (v3 != v4 && *(a1 + 168) != 0)
+    v4 = *(self + 104);
+    v3 = *(self + 112);
+    if (v3 != v4 && *(self + 168) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v7 = [WeakRetained _dataSourceProxy];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      _dataSourceProxy = [WeakRetained _dataSourceProxy];
 
-      if (v7 && ((v8 = objc_loadWeakRetained((a1 + 8)), ![v8 _dataSourceImplementsNumberOfSections]) ? (v11 = 1) : (v9 = objc_loadWeakRetained((a1 + 8)), v10 = objc_msgSend(v7, "numberOfSectionsInCollectionView:", v9), v9, v11 = v10 & ~(v10 >> 63)), v12 = (v3 - v4) >> 3, v8, v11 == v12))
+      if (_dataSourceProxy && ((v8 = objc_loadWeakRetained((self + 8)), ![v8 _dataSourceImplementsNumberOfSections]) ? (v11 = 1) : (v9 = objc_loadWeakRetained((self + 8)), v10 = objc_msgSend(_dataSourceProxy, "numberOfSectionsInCollectionView:", v9), v9, v11 = v10 & ~(v10 >> 63)), v12 = (v3 - v4) >> 3, v8, v11 == v12))
       {
         v13 = 0;
         v14 = v12 - 1;
         do
         {
-          v15 = objc_loadWeakRetained((a1 + 8));
-          v16 = [v7 collectionView:v15 numberOfItemsInSection:v13];
+          v15 = objc_loadWeakRetained((self + 8));
+          v16 = [_dataSourceProxy collectionView:v15 numberOfItemsInSection:v13];
 
-          v17 = *(*(a1 + 104) + 8 * v13);
+          v17 = *(*(self + 104) + 8 * v13);
           v2 = v16 == v17;
         }
 
@@ -1561,27 +1561,27 @@ LABEL_8:
 
 - (id)dataSourceCountsDescription
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(UICollectionViewData *)a1 descriptionIncludingPointer:?];
+    self = [(UICollectionViewData *)self descriptionIncludingPointer:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)descriptionIncludingPointer:(uint64_t)a1
+- (id)descriptionIncludingPointer:(uint64_t)pointer
 {
-  if (a1)
+  if (pointer)
   {
     v3 = MEMORY[0x1E696AD60];
     if (a2)
     {
       v4 = objc_opt_class();
       v5 = NSStringFromClass(v4);
-      v6 = [v3 stringWithFormat:@"<%@ - %p:", v5, a1];
+      pointer = [v3 stringWithFormat:@"<%@ - %p:", v5, pointer];
 
-      v7 = v6;
+      v7 = pointer;
     }
 
     else
@@ -1589,8 +1589,8 @@ LABEL_8:
       v7 = [MEMORY[0x1E696AD60] stringWithString:@"["];
     }
 
-    v8 = *(a1 + 104);
-    v9 = *(a1 + 112);
+    v8 = *(pointer + 104);
+    v9 = *(pointer + 112);
     if (v8 != v9)
     {
       v10 = 0;
@@ -1636,55 +1636,55 @@ LABEL_8:
   return v7;
 }
 
-- (double)rectForItemAtIndexPath:(uint64_t)a1
+- (double)rectForItemAtIndexPath:(uint64_t)path
 {
-  if (!a1)
+  if (!path)
   {
     return 0.0;
   }
 
-  v2 = [(UICollectionViewData *)a1 layoutAttributesForItemAtIndexPath:a2];
+  v2 = [(UICollectionViewData *)path layoutAttributesForItemAtIndexPath:a2];
   [v2 frame];
   v4 = v3;
 
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(uint64_t)a1
+- (id)layoutAttributesForItemAtIndexPath:(uint64_t)path
 {
-  if (!a1 || ([(UICollectionViewData *)a1 _prepareToLoadData], ![(UICollectionViewData *)a1 _isIndexPathValid:a2 validateItemCounts:0]))
+  if (!path || ([(UICollectionViewData *)path _prepareToLoadData], ![(UICollectionViewData *)path _isIndexPathValid:a2 validateItemCounts:0]))
   {
 LABEL_17:
     v6 = 0;
     goto LABEL_18;
   }
 
-  if (!-[UICollectionViewData _shouldUseReorderingLayoutAttributesForItemAtIndexPath:](a1, a2) || (v4 = *(a1 + 16), WeakRetained = objc_loadWeakRetained((a1 + 8)), [WeakRetained _reorderingTargetPosition], objc_msgSend(v4, "_layoutAttributesForReorderedItemAtIndexPath:withTargetPosition:", a2), v6 = objc_claimAutoreleasedReturnValue(), WeakRetained, !v6))
+  if (!-[UICollectionViewData _shouldUseReorderingLayoutAttributesForItemAtIndexPath:](path, a2) || (v4 = *(path + 16), WeakRetained = objc_loadWeakRetained((path + 8)), [WeakRetained _reorderingTargetPosition], objc_msgSend(v4, "_layoutAttributesForReorderedItemAtIndexPath:withTargetPosition:", a2), v6 = objc_claimAutoreleasedReturnValue(), WeakRetained, !v6))
   {
-    v7 = *(a1 + 168);
+    v7 = *(path + 168);
     v15 = 0;
     v16 = 0;
     [a2 ui_getSectionIndex:&v16 itemIndex:&v15];
-    v8 = [(UICollectionViewData *)a1 numberOfItemsBeforeSection:v16];
+    v8 = [(UICollectionViewData *)path numberOfItemsBeforeSection:v16];
     v9 = v15 + v8;
     if (v15 + v8 >= v7)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel_layoutAttributesForItemAtIndexPath_ object:a1 file:@"UICollectionViewData.mm" lineNumber:704 description:{@"attempting to access layout attributes at invalid index path: %@ globalIndex: %ld numItems: %ld", a2, v9, v7}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_layoutAttributesForItemAtIndexPath_ object:path file:@"UICollectionViewData.mm" lineNumber:704 description:{@"attempting to access layout attributes at invalid index path: %@ globalIndex: %ld numItems: %ld", a2, v9, v7}];
     }
 
-    v6 = [(UICollectionViewData *)a1 _cachedLayoutAttributesForGlobalItemIndex:v9];
+    v6 = [(UICollectionViewData *)path _cachedLayoutAttributesForGlobalItemIndex:v9];
     if (!v6)
     {
-      if ((*(a1 + 96) & 0x10) != 0)
+      if ((*(path + 96) & 0x10) != 0)
       {
         v6 = 0;
       }
 
       else
       {
-        v6 = [*(a1 + 16) layoutAttributesForItemAtIndexPath:a2];
-        [(UICollectionViewData *)a1 _setLayoutAttributes:v6 atGlobalItemIndex:v9];
+        v6 = [*(path + 16) layoutAttributesForItemAtIndexPath:a2];
+        [(UICollectionViewData *)path _setLayoutAttributes:v6 atGlobalItemIndex:v9];
       }
     }
 
@@ -1692,10 +1692,10 @@ LABEL_17:
     v11 = v6 ? 1 : v10;
     if ((v11 & 1) == 0)
     {
-      if ((*(a1 + 96) & 0x10) == 0)
+      if ((*(path + 96) & 0x10) == 0)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:sel_layoutAttributesForItemAtIndexPath_ object:a1 file:@"UICollectionViewData.mm" lineNumber:715 description:{@"no UICollectionViewLayoutAttributes instance for -layoutAttributesForItemAtIndexPath: %@", a2}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel_layoutAttributesForItemAtIndexPath_ object:path file:@"UICollectionViewData.mm" lineNumber:715 description:{@"no UICollectionViewLayoutAttributes instance for -layoutAttributesForItemAtIndexPath: %@", a2}];
       }
 
       goto LABEL_17;
@@ -1707,62 +1707,62 @@ LABEL_18:
   return v6;
 }
 
-- (uint64_t)_shouldUseReorderingLayoutAttributesForItemAtIndexPath:(uint64_t)a1
+- (uint64_t)_shouldUseReorderingLayoutAttributesForItemAtIndexPath:(uint64_t)path
 {
-  if (!a1 || (*(a1 + 96) & 0x10) != 0)
+  if (!path || (*(path + 96) & 0x10) != 0)
   {
     return 0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((path + 8));
   v4 = [WeakRetained _isReorderingItemAtIndexPath:a2 includingDragAndDrop:0];
 
   return v4;
 }
 
-- (id)layoutAttributesForGlobalItemIndex:(_BYTE *)a1
+- (id)layoutAttributesForGlobalItemIndex:(_BYTE *)index
 {
-  v2 = a1;
-  if (a1)
+  indexCopy = index;
+  if (index)
   {
-    v3 = [(UICollectionViewData *)a1 indexPathForItemAtGlobalIndex:a2];
-    v2 = [(UICollectionViewData *)v2 layoutAttributesForItemAtIndexPath:v3];
+    v3 = [(UICollectionViewData *)index indexPathForItemAtGlobalIndex:a2];
+    indexCopy = [(UICollectionViewData *)indexCopy layoutAttributesForItemAtIndexPath:v3];
   }
 
-  return v2;
+  return indexCopy;
 }
 
-- (id)layoutAttributesForElementsInRect:(double)a3
+- (id)layoutAttributesForElementsInRect:(double)rect
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(UICollectionViewData *)a1 _layoutAttributesForElementsInRect:1 cellsOnly:1 validateIfNeeded:a2 includeIndelibleElements:a3, a4, a5];
+    self = [(UICollectionViewData *)self _layoutAttributesForElementsInRect:1 cellsOnly:1 validateIfNeeded:a2 includeIndelibleElements:rect, a4, a5];
     v5 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_layoutAttributesForElementsInRect:(int)a3 cellsOnly:(int)a4 validateIfNeeded:(double)a5 includeIndelibleElements:(double)a6
+- (id)_layoutAttributesForElementsInRect:(int)rect cellsOnly:(int)only validateIfNeeded:(double)needed includeIndelibleElements:(double)elements
 {
   v85 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     height = a8;
     v9 = a7;
-    y = a6;
-    x = a5;
+    y = elements;
+    x = needed;
     v12 = 0;
-    if ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a6 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a7 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a8 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+    if ((*&needed & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&elements & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a7 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a8 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
     {
-      if ([*(a1 + 16) _hasOrthogonalScrollingSections])
+      if ([*(self + 16) _hasOrthogonalScrollingSections])
       {
-        v17 = [*(a1 + 16) _extendedAttributesQueryIncludingOrthogonalScrollingRegions:{x, y, v9, height}];
+        v17 = [*(self + 16) _extendedAttributesQueryIncludingOrthogonalScrollingRegions:{x, y, v9, height}];
       }
 
       else
       {
-        if (_UICollectionViewShouldEnlargeLayoutAttributesQueryForEstimatedSizes() && [*(a1 + 16) _estimatesSizes])
+        if (_UICollectionViewShouldEnlargeLayoutAttributesQueryForEstimatedSizes() && [*(self + 16) _estimatesSizes])
         {
           v87.origin.x = x;
           v87.origin.y = y;
@@ -1785,42 +1785,42 @@ LABEL_18:
           height = v90.size.height;
         }
 
-        if (a3)
+        if (rect)
         {
-          [(UICollectionViewData *)a1 validateLayoutInRect:y, v9, height];
+          [(UICollectionViewData *)self validateLayoutInRect:y, v9, height];
         }
 
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        [(UICollectionViewData *)a1 _prepareToLoadData];
+        [(UICollectionViewData *)self _prepareToLoadData];
         v92.origin.x = *MEMORY[0x1E695EFF8];
         v92.origin.y = *(MEMORY[0x1E695EFF8] + 8);
-        v92.size.width = *(a1 + 80);
-        v92.size.height = *(a1 + 88);
+        v92.size.width = *(self + 80);
+        v92.size.height = *(self + 88);
         v91.origin.x = x;
         v91.origin.y = y;
         v91.size.width = v9;
         v91.size.height = height;
         if (CGRectContainsRect(v91, v92))
         {
-          [_UIFastIndexSet indexSetWithIndexesInRange:*(a1 + 168)];
+          [_UIFastIndexSet indexSetWithIndexesInRange:*(self + 168)];
         }
 
         else
         {
-          [(_UICollectionViewDataAttributesMap *)*(a1 + 176) indexesOfItemsInRect:y, v9, height];
+          [(_UICollectionViewDataAttributesMap *)*(self + 176) indexesOfItemsInRect:y, v9, height];
         }
         v21 = ;
         v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:-[_UIFastIndexSet count](v21)];
         v23 = isKindOfClass & 1;
-        v24 = *(a1 + 168);
+        v24 = *(self + 168);
         v71 = MEMORY[0x1E69E9820];
         v72 = 3221225472;
         v73 = __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_cellsOnly_validateIfNeeded___block_invoke;
         v74 = &unk_1E70FFE50;
         v77 = v24;
         v78 = sel__layoutAttributesFromMapForElementsInRect_cellsOnly_validateIfNeeded_;
-        v75 = a1;
+        selfCopy = self;
         v79 = x;
         v80 = y;
         v81 = v9;
@@ -1836,7 +1836,7 @@ LABEL_18:
 
         else
         {
-          v26 = *(a1 + 32);
+          v26 = *(self + 32);
           v61 = MEMORY[0x1E69E9820];
           v62 = 3221225472;
           v63 = __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_cellsOnly_validateIfNeeded___block_invoke_2;
@@ -1849,7 +1849,7 @@ LABEL_18:
           v27 = v17;
           v65 = v27;
           [v26 enumerateKeysAndObjectsUsingBlock:&v61];
-          v28 = *(a1 + 40);
+          v28 = *(self + 40);
           v54[0] = MEMORY[0x1E69E9820];
           v54[1] = 3221225472;
           v54[2] = __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_cellsOnly_validateIfNeeded___block_invoke_4;
@@ -1883,13 +1883,13 @@ LABEL_51:
       v72 = &v71;
       v73 = 0x3032000000;
       v74 = __Block_byref_object_copy__40;
-      v75 = __Block_byref_object_dispose__40;
+      selfCopy = __Block_byref_object_dispose__40;
       v76 = 0;
-      if (a4)
+      if (only)
       {
-        v31 = [*(a1 + 16) _layoutAttributesForIndelibleElements];
-        v32 = v31;
-        if (v31 && [v31 count])
+        _layoutAttributesForIndelibleElements = [*(self + 16) _layoutAttributesForIndelibleElements];
+        v32 = _layoutAttributesForIndelibleElements;
+        if (_layoutAttributesForIndelibleElements && [_layoutAttributesForIndelibleElements count])
         {
           if (!*(v72 + 40))
           {
@@ -1934,9 +1934,9 @@ LABEL_51:
         }
       }
 
-      if ((*(a1 + 96) & 0x10) != 0)
+      if ((*(self + 96) & 0x10) != 0)
       {
-        v42 = 0;
+        _isReordering = 0;
         if (a2)
         {
           goto LABEL_45;
@@ -1945,8 +1945,8 @@ LABEL_51:
 
       else
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 8));
-        v42 = [WeakRetained _isReordering];
+        WeakRetained = objc_loadWeakRetained((self + 8));
+        _isReordering = [WeakRetained _isReordering];
 
         if (a2)
         {
@@ -1954,7 +1954,7 @@ LABEL_51:
         }
       }
 
-      if (!v42)
+      if (!_isReordering)
       {
 LABEL_50:
         v12 = v17;
@@ -1984,8 +1984,8 @@ LABEL_45:
       v47[1] = 3221225472;
       v47[2] = __111__UICollectionViewData__layoutAttributesForElementsInRect_cellsOnly_validateIfNeeded_includeIndelibleElements___block_invoke;
       v47[3] = &unk_1E70FFE28;
-      v48 = v42;
-      v47[4] = a1;
+      v48 = _isReordering;
+      v47[4] = self;
       v47[5] = &v71;
       v49 = a2;
       v47[6] = &v61;
@@ -2183,29 +2183,29 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
   return v7;
 }
 
-- (id)layoutAttributesForCellsInRect:(double)a3 validateLayout:(double)a4
+- (id)layoutAttributesForCellsInRect:(double)rect validateLayout:(double)layout
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(UICollectionViewData *)a1 _layoutAttributesForElementsInRect:a2 cellsOnly:0 validateIfNeeded:a3 includeIndelibleElements:a4, a5, a6];
+    self = [(UICollectionViewData *)self _layoutAttributesForElementsInRect:a2 cellsOnly:0 validateIfNeeded:rect includeIndelibleElements:layout, a5, a6];
     v6 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)existingSupplementaryLayoutAttributesInSection:(uint64_t)a1
+- (id)existingSupplementaryLayoutAttributesInSection:(uint64_t)section
 {
   v50 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (section)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v25 = a1;
-    obj = [*(a1 + 32) objectEnumerator];
+    sectionCopy = section;
+    obj = [*(section + 32) objectEnumerator];
     v5 = [obj countByEnumeratingWithState:&v42 objects:v49 count:16];
     if (v5)
     {
@@ -2224,8 +2224,8 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v8 = [v7 objectEnumerator];
-          v9 = [v8 countByEnumeratingWithState:&v38 objects:v48 count:16];
+          objectEnumerator = [v7 objectEnumerator];
+          v9 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v48 count:16];
           if (v9)
           {
             v10 = *v39;
@@ -2235,18 +2235,18 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
               {
                 if (*v39 != v10)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
                 v12 = *(*(&v38 + 1) + 8 * j);
-                v13 = [v12 indexPath];
-                if ([v13 section] == a2 && objc_msgSend(v13, "length") >= 2)
+                indexPath = [v12 indexPath];
+                if ([indexPath section] == a2 && objc_msgSend(indexPath, "length") >= 2)
                 {
                   [v4 addObject:v12];
                 }
               }
 
-              v9 = [v8 countByEnumeratingWithState:&v38 objects:v48 count:16];
+              v9 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v48 count:16];
             }
 
             while (v9);
@@ -2263,9 +2263,9 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v14 = [*(v25 + 40) objectEnumerator];
-    obja = v14;
-    v15 = [v14 countByEnumeratingWithState:&v34 objects:v47 count:16];
+    objectEnumerator2 = [*(sectionCopy + 40) objectEnumerator];
+    obja = objectEnumerator2;
+    v15 = [objectEnumerator2 countByEnumeratingWithState:&v34 objects:v47 count:16];
     if (v15)
     {
       v29 = *v35;
@@ -2283,8 +2283,8 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v18 = [v17 objectEnumerator];
-          v19 = [v18 countByEnumeratingWithState:&v30 objects:v46 count:16];
+          objectEnumerator3 = [v17 objectEnumerator];
+          v19 = [objectEnumerator3 countByEnumeratingWithState:&v30 objects:v46 count:16];
           if (v19)
           {
             v20 = *v31;
@@ -2294,25 +2294,25 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
               {
                 if (*v31 != v20)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(objectEnumerator3);
                 }
 
                 v22 = *(*(&v30 + 1) + 8 * m);
-                v23 = [v22 indexPath];
-                if ([v23 section] == a2 && objc_msgSend(v23, "length") >= 2)
+                indexPath2 = [v22 indexPath];
+                if ([indexPath2 section] == a2 && objc_msgSend(indexPath2, "length") >= 2)
                 {
                   [v4 addObject:v22];
                 }
               }
 
-              v19 = [v18 countByEnumeratingWithState:&v30 objects:v46 count:16];
+              v19 = [objectEnumerator3 countByEnumeratingWithState:&v30 objects:v46 count:16];
             }
 
             while (v19);
           }
         }
 
-        v14 = obja;
+        objectEnumerator2 = obja;
         v15 = [obja countByEnumeratingWithState:&v34 objects:v47 count:16];
       }
 
@@ -2330,11 +2330,11 @@ uint64_t __93__UICollectionViewData__layoutAttributesFromMapForElementsInRect_ce
 
 - (id)knownDecorationElementKinds
 {
-  if (a1)
+  if (self)
   {
     v1 = MEMORY[0x1E695DFD8];
-    v2 = [*(a1 + 40) allKeys];
-    v3 = [v1 setWithArray:v2];
+    allKeys = [*(self + 40) allKeys];
+    v3 = [v1 setWithArray:allKeys];
   }
 
   else

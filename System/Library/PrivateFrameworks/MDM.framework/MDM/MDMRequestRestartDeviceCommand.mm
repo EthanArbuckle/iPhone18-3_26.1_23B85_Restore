@@ -1,24 +1,24 @@
 @interface MDMRequestRestartDeviceCommand
-+ (id)requestWithRebuildKernelCache:(id)a3 kextPaths:(id)a4 notifyUser:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)processRequest:(id)a3 completionHandler:(id)a4;
++ (id)requestWithRebuildKernelCache:(id)cache kextPaths:(id)paths notifyUser:(id)user;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)processRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MDMRequestRestartDeviceCommand
 
-+ (id)requestWithRebuildKernelCache:(id)a3 kextPaths:(id)a4 notifyUser:(id)a5
++ (id)requestWithRebuildKernelCache:(id)cache kextPaths:(id)paths notifyUser:(id)user
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  userCopy = user;
+  pathsCopy = paths;
+  cacheCopy = cache;
   v10 = objc_opt_new();
   v11 = v10;
   v12 = MEMORY[0x277CBEC28];
-  if (v9)
+  if (cacheCopy)
   {
-    v13 = v9;
+    v13 = cacheCopy;
   }
 
   else
@@ -28,10 +28,10 @@
 
   [v10 setCommandRebuildKernelCache:v13];
 
-  [v11 setCommandKextPaths:v8];
-  if (v7)
+  [v11 setCommandKextPaths:pathsCopy];
+  if (userCopy)
   {
-    v14 = v7;
+    v14 = userCopy;
   }
 
   else
@@ -44,10 +44,10 @@
   return v11;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
-  v8 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"RebuildKernelCache" forKeyPath:@"commandRebuildKernelCache" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"KextPaths" forKeyPath:@"commandKextPaths" validator:&__block_literal_global_5 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"NotifyUser" forKeyPath:@"commandNotifyUser" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  dictionaryCopy = dictionary;
+  v8 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"RebuildKernelCache" forKeyPath:@"commandRebuildKernelCache" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"KextPaths" forKeyPath:@"commandKextPaths" validator:&__block_literal_global_5 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"NotifyUser" forKeyPath:@"commandNotifyUser" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
 
   return v8;
 }
@@ -61,29 +61,29 @@ uint64_t __77__MDMRequestRestartDeviceCommand_loadFromDictionary_serializationTy
   return isKindOfClass & 1;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(MDMRequestRestartDeviceCommand *)self commandRebuildKernelCache];
+  commandRebuildKernelCache = [(MDMRequestRestartDeviceCommand *)self commandRebuildKernelCache];
   v6 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"RebuildKernelCache" value:v5 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"RebuildKernelCache" value:commandRebuildKernelCache isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v7 = [(MDMRequestRestartDeviceCommand *)self commandKextPaths];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"KextPaths" value:v7 itemSerializer:&__block_literal_global_24 isRequired:0 defaultValue:0];
+  commandKextPaths = [(MDMRequestRestartDeviceCommand *)self commandKextPaths];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"KextPaths" value:commandKextPaths itemSerializer:&__block_literal_global_24 isRequired:0 defaultValue:0];
 
-  v8 = [(MDMRequestRestartDeviceCommand *)self commandNotifyUser];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"NotifyUser" value:v8 isRequired:0 defaultValue:v6];
+  commandNotifyUser = [(MDMRequestRestartDeviceCommand *)self commandNotifyUser];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"NotifyUser" value:commandNotifyUser isRequired:0 defaultValue:v6];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = MDMRequestRestartDeviceCommand;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSNumber *)self->_commandRebuildKernelCache copy];
   v6 = v4[6];
   v4[6] = v5;
@@ -99,17 +99,17 @@ uint64_t __77__MDMRequestRestartDeviceCommand_loadFromDictionary_serializationTy
   return v4;
 }
 
-- (void)processRequest:(id)a3 completionHandler:(id)a4
+- (void)processRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MDMRequestBase *)self delegate];
+  requestCopy = request;
+  handlerCopy = handler;
+  delegate = [(MDMRequestBase *)self delegate];
   v9 = [(MDMAbstractTunnelParser *)MDMParser responseWithStatus:@"Acknowledged"];
-  [v8 willTerminateProcess:v9];
+  [delegate willTerminateProcess:v9];
 
   v10 = objc_alloc_init(MEMORY[0x277CCAA68]);
-  v11 = [MEMORY[0x277CBEAA8] date];
-  v12 = [v10 stringFromDate:v11];
+  date = [MEMORY[0x277CBEAA8] date];
+  v12 = [v10 stringFromDate:date];
 
   v13 = MDMSystemRestartLogPath();
   [v12 writeToFile:v13 atomically:1 encoding:4 error:0];
@@ -119,8 +119,8 @@ uint64_t __77__MDMRequestRestartDeviceCommand_loadFromDictionary_serializationTy
 
   v15 = [objc_alloc(MEMORY[0x277D0AE10]) initWithReason:@"mdmd restart device"];
   [v15 setRebootType:1];
-  v16 = [MEMORY[0x277D0AE18] sharedService];
-  [v16 shutdownWithOptions:v15];
+  mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
+  [mEMORY[0x277D0AE18] shutdownWithOptions:v15];
 
   while (1)
   {

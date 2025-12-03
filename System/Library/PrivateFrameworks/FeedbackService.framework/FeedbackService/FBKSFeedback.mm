@@ -1,5 +1,5 @@
 @interface FBKSFeedback
-- (FBKSFeedback)initWithSwiftObject:(id)a3;
+- (FBKSFeedback)initWithSwiftObject:(id)object;
 - (NSDate)submissionDate;
 - (NSString)build;
 - (NSString)formIdentifier;
@@ -9,10 +9,10 @@
 
 @implementation FBKSFeedback
 
-- (FBKSFeedback)initWithSwiftObject:(id)a3
+- (FBKSFeedback)initWithSwiftObject:(id)object
 {
-  v5 = a3;
-  if (v5)
+  objectCopy = object;
+  if (objectCopy)
   {
     v10.receiver = self;
     v10.super_class = FBKSFeedback;
@@ -20,57 +20,57 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_swiftObject, a3);
+      objc_storeStrong(&v6->_swiftObject, object);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)formIdentifier
 {
-  v2 = [(FBKSFeedback *)self swiftObject];
-  v3 = [v2 formIdentifier];
+  swiftObject = [(FBKSFeedback *)self swiftObject];
+  formIdentifier = [swiftObject formIdentifier];
 
-  return v3;
+  return formIdentifier;
 }
 
 - (NSDate)submissionDate
 {
-  v2 = [(FBKSFeedback *)self swiftObject];
-  v3 = [v2 submissionDate];
+  swiftObject = [(FBKSFeedback *)self swiftObject];
+  submissionDate = [swiftObject submissionDate];
 
-  return v3;
+  return submissionDate;
 }
 
 - (NSString)build
 {
-  v2 = [(FBKSFeedback *)self swiftObject];
-  v3 = [v2 build];
+  swiftObject = [(FBKSFeedback *)self swiftObject];
+  build = [swiftObject build];
 
-  return v3;
+  return build;
 }
 
 - (int64_t)ID
 {
-  v2 = [(FBKSFeedback *)self swiftObject];
-  v3 = [v2 id];
+  swiftObject = [(FBKSFeedback *)self swiftObject];
+  v3 = [swiftObject id];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(FBKSFeedback *)self swiftObject];
-  v3 = [v2 description];
+  swiftObject = [(FBKSFeedback *)self swiftObject];
+  v3 = [swiftObject description];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface _ProtocolDelegate
 - (_ProtocolDelegate)init;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
 @end
 
 @implementation _ProtocolDelegate
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 logKey];
-  v13 = sub_1003138F8(self, v9);
+  taskCopy = task;
+  requestCopy = request;
+  completionCopy = completion;
+  logKey = [requestCopy logKey];
+  v13 = sub_1003138F8(self, taskCopy);
   v15 = v13;
   if (v13)
   {
@@ -45,9 +45,9 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v25 = v12;
+      v25 = logKey;
       v26 = 2114;
-      v27 = v9;
+      v27 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%{public}@] Environment not found for task: %{public}@", buf, 0x16u);
     }
   }
@@ -56,7 +56,7 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v25 = v12;
+    v25 = logKey;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[%{public}@] Using silent presenter for authentication as no other presenter was specified", buf, 0xCu);
   }
 
@@ -66,20 +66,20 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = sub_100313BA8;
   v21[3] = &unk_10051E040;
-  v22 = v12;
-  v23 = v11;
-  v19 = v11;
-  v20 = v12;
-  [(SilentRequestPresenter *)v16 presentAuthenticateRequest:v10 resultHandler:v21];
+  v22 = logKey;
+  v23 = completionCopy;
+  v19 = completionCopy;
+  v20 = logKey;
+  [(SilentRequestPresenter *)v16 presentAuthenticateRequest:requestCopy resultHandler:v21];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 logKey];
-  v13 = sub_1003138F8(self, v9);
+  taskCopy = task;
+  requestCopy = request;
+  completionCopy = completion;
+  logKey = [requestCopy logKey];
+  v13 = sub_1003138F8(self, taskCopy);
   v15 = v13;
   if (v13)
   {
@@ -96,9 +96,9 @@ LABEL_10:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v25 = v12;
+      v25 = logKey;
       v26 = 2114;
-      v27 = v9;
+      v27 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%{public}@] Environment not found for task: %{public}@", buf, 0x16u);
     }
   }
@@ -107,7 +107,7 @@ LABEL_10:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v25 = v12;
+    v25 = logKey;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[%{public}@] Using silent presenter for dialog as no other presenter was specified", buf, 0xCu);
   }
 
@@ -117,20 +117,20 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = sub_100313F20;
   v21[3] = &unk_10051E068;
-  v22 = v12;
-  v23 = v11;
-  v19 = v11;
-  v20 = v12;
-  [(SilentRequestPresenter *)v16 presentDialogRequest:v10 resultHandler:v21];
+  v22 = logKey;
+  v23 = completionCopy;
+  v19 = completionCopy;
+  v20 = logKey;
+  [(SilentRequestPresenter *)v16 presentDialogRequest:requestCopy resultHandler:v21];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = [v11 logKey];
-  v13 = sub_1003138F8(self, v9);
+  taskCopy = task;
+  completionCopy = completion;
+  requestCopy = request;
+  logKey = [requestCopy logKey];
+  v13 = sub_1003138F8(self, taskCopy);
   v15 = v13;
   if (v13)
   {
@@ -147,9 +147,9 @@ LABEL_10:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = v12;
+      v28 = logKey;
       v29 = 2114;
-      v30 = v9;
+      v30 = taskCopy;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[%{public}@] Environment not found for task: %{public}@", buf, 0x16u);
     }
   }
@@ -158,7 +158,7 @@ LABEL_10:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v28 = v12;
+    v28 = logKey;
     _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "[%{public}@] Using silent presenter for engagement as no other presenter was specified", buf, 0xCu);
   }
 
@@ -177,11 +177,11 @@ LABEL_11:
   v24[1] = 3221225472;
   v24[2] = sub_1003142C8;
   v24[3] = &unk_10051F1C8;
-  v25 = v12;
-  v26 = v10;
-  v22 = v10;
-  v23 = v12;
-  [(SilentRequestPresenter *)v17 presentEngagementRequest:v11 withClientInfo:v21 resultHandler:v24];
+  v25 = logKey;
+  v26 = completionCopy;
+  v22 = completionCopy;
+  v23 = logKey;
+  [(SilentRequestPresenter *)v17 presentEngagementRequest:requestCopy withClientInfo:v21 resultHandler:v24];
 }
 
 @end

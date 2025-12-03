@@ -1,18 +1,18 @@
 @interface FAHeartbeatRequest
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAHeartbeatRequest
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__FAHeartbeatRequest_startRequestWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CA46D8;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v7];
   [v6 runHeartbeatWithOptions:0 replyBlock:v5];
 }

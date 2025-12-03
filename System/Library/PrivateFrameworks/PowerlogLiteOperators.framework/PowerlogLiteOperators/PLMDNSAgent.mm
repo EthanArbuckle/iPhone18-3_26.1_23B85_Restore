@@ -6,15 +6,15 @@
 + (void)load;
 - (PLMDNSAgent)init;
 - (void)initOperatorDependancies;
-- (void)logEventBackwardClientSummary:(id)a3;
-- (void)logEventPointMDNS:(id)a3 forEvent:(id)a4;
+- (void)logEventBackwardClientSummary:(id)summary;
+- (void)logEventPointMDNS:(id)s forEvent:(id)event;
 @end
 
 @implementation PLMDNSAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLMDNSAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -23,8 +23,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"MDNSEvent";
-  v2 = [a1 entryEventPointDefinitionsReceivedMDNSEvent];
-  v7[0] = v2;
+  entryEventPointDefinitionsReceivedMDNSEvent = [self entryEventPointDefinitionsReceivedMDNSEvent];
+  v7[0] = entryEventPointDefinitionsReceivedMDNSEvent;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -45,25 +45,25 @@
   v23[0] = v17;
   v22[1] = *MEMORY[0x277D3F540];
   v18[0] = @"eventName";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v19[0] = v15;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v19[0] = commonTypeDict_IntegerFormat;
   v18[1] = @"clientName";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v19[1] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v19[1] = commonTypeDict_StringFormat;
   v18[2] = @"clientPID";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v19[2] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v19[2] = commonTypeDict_IntegerFormat2;
   v18[3] = @"recordType";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v19[3] = v8;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v19[3] = commonTypeDict_StringFormat2;
   v18[4] = @"service";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v19[4] = v10;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v19[4] = commonTypeDict_StringFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
   v23[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -77,8 +77,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"ClientSummary";
-  v2 = [a1 entryEventBackwardDefinitionClientSummary];
-  v7[0] = v2;
+  entryEventBackwardDefinitionClientSummary = [self entryEventBackwardDefinitionClientSummary];
+  v7[0] = entryEventBackwardDefinitionClientSummary;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -99,41 +99,41 @@
   v31[0] = v25;
   v30[1] = *MEMORY[0x277D3F540];
   v26[0] = @"clientName";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat_withProcessName];
-  v27[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withProcessName];
+  v27[0] = commonTypeDict_StringFormat_withProcessName;
   v26[1] = @"carryoverCountAWDL";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v27[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v27[1] = commonTypeDict_IntegerFormat;
   v26[2] = @"carryoverCountInfra";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v27[2] = v19;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v27[2] = commonTypeDict_IntegerFormat2;
   v26[3] = @"durationAWDL";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v27[3] = v17;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v27[3] = commonTypeDict_IntegerFormat3;
   v26[4] = @"durationInfra";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v27[4] = v15;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v27[4] = commonTypeDict_IntegerFormat4;
   v26[5] = @"startCountAWDL";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v27[5] = v4;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v27[5] = commonTypeDict_IntegerFormat5;
   v26[6] = @"startCountInfra";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v27[6] = v6;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v27[6] = commonTypeDict_IntegerFormat6;
   v26[7] = @"stopCountAWDL";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v27[7] = v8;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v27[7] = commonTypeDict_IntegerFormat7;
   v26[8] = @"stopCountInfra";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v27[8] = v10;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v27[8] = commonTypeDict_IntegerFormat8;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:9];
   v31[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
@@ -353,40 +353,40 @@ void __39__PLMDNSAgent_initOperatorDependancies__block_invoke_121(uint64_t a1, u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointMDNS:(id)a3 forEvent:(id)a4
+- (void)logEventPointMDNS:(id)s forEvent:(id)event
 {
-  v12 = a4;
+  eventCopy = event;
   v6 = *MEMORY[0x277D3F5E8];
-  v7 = a3;
+  sCopy = s;
   v8 = [(PLOperator *)PLMDNSAgent entryKeyForType:v6 andName:@"MDNSEvent"];
-  v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8 withRawData:v7];
+  v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8 withRawData:sCopy];
 
-  if ([v12 isEqualToString:@"startAWDLAdvertise"])
+  if ([eventCopy isEqualToString:@"startAWDLAdvertise"])
   {
     v10 = 3;
   }
 
-  else if ([v12 isEqualToString:@"stopAWDLAdvertise"])
+  else if ([eventCopy isEqualToString:@"stopAWDLAdvertise"])
   {
     v10 = 4;
   }
 
-  else if ([v12 isEqualToString:@"startAWDLBrowse"])
+  else if ([eventCopy isEqualToString:@"startAWDLBrowse"])
   {
     v10 = 1;
   }
 
-  else if ([v12 isEqualToString:@"stopAWDLBrowse"])
+  else if ([eventCopy isEqualToString:@"stopAWDLBrowse"])
   {
     v10 = 2;
   }
 
-  else if ([v12 isEqualToString:@"startAWDLResolve"])
+  else if ([eventCopy isEqualToString:@"startAWDLResolve"])
   {
     v10 = 5;
   }
 
-  else if ([v12 isEqualToString:@"stopAWDLResolve"])
+  else if ([eventCopy isEqualToString:@"stopAWDLResolve"])
   {
     v10 = 6;
   }
@@ -402,25 +402,25 @@ void __39__PLMDNSAgent_initOperatorDependancies__block_invoke_121(uint64_t a1, u
   [(PLOperator *)self logEntry:v9];
 }
 
-- (void)logEventBackwardClientSummary:(id)a3
+- (void)logEventBackwardClientSummary:(id)summary
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D3F5C8];
-  v5 = a3;
+  summaryCopy = summary;
   v6 = [(PLOperator *)PLMDNSAgent entryKeyForType:v4 andName:@"ClientSummary"];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEAA8] monotonicDate];
+  array = [MEMORY[0x277CBEB18] array];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __45__PLMDNSAgent_logEventBackwardClientSummary___block_invoke;
   v17 = &unk_27825B638;
   v9 = v6;
   v18 = v9;
-  v10 = v8;
+  v10 = monotonicDate;
   v19 = v10;
-  v11 = v7;
+  v11 = array;
   v20 = v11;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v14];
+  [summaryCopy enumerateKeysAndObjectsUsingBlock:&v14];
 
   if ([v11 count])
   {

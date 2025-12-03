@@ -1,25 +1,25 @@
 @interface PTCinematographyNetworkInputSchema
-- (PTCinematographyNetworkInputSchema)initWithModelDictionary:(id)a3;
+- (PTCinematographyNetworkInputSchema)initWithModelDictionary:(id)dictionary;
 @end
 
 @implementation PTCinematographyNetworkInputSchema
 
-- (PTCinematographyNetworkInputSchema)initWithModelDictionary:(id)a3
+- (PTCinematographyNetworkInputSchema)initWithModelDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PTCinematographyNetworkInputSchema;
   v5 = [(PTCinematographyNetworkInputSchema *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"count"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"count"];
     v5->_count = [v8 unsignedIntegerValue];
 
-    v9 = [v4 copy];
+    v9 = [dictionaryCopy copy];
     params = v5->_params;
     v5->_params = v9;
   }

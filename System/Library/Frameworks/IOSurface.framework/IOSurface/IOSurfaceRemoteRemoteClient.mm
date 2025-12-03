@@ -1,38 +1,38 @@
 @interface IOSurfaceRemoteRemoteClient
-- (BOOL)_removeSurface:(unsigned int)a3;
-- (IOSurfaceRemoteRemoteClient)initWithRemoteConnection:(id)a3 disconnectedQueue:(id)a4 disconnectedHandler:(id)a5;
-- (void)_addSurface:(__IOSurfaceClient *)a3 mappedAddress:(void *)a4 mappedSize:(unint64_t)a5 extraData:(id)a6;
-- (void)_handleError:(id)a3;
-- (void)_handleMessage:(id)a3;
+- (BOOL)_removeSurface:(unsigned int)surface;
+- (IOSurfaceRemoteRemoteClient)initWithRemoteConnection:(id)connection disconnectedQueue:(id)queue disconnectedHandler:(id)handler;
+- (void)_addSurface:(__IOSurfaceClient *)surface mappedAddress:(void *)address mappedSize:(unint64_t)size extraData:(id)data;
+- (void)_handleError:(id)error;
+- (void)_handleMessage:(id)message;
 - (void)dealloc;
 @end
 
 @implementation IOSurfaceRemoteRemoteClient
 
-- (IOSurfaceRemoteRemoteClient)initWithRemoteConnection:(id)a3 disconnectedQueue:(id)a4 disconnectedHandler:(id)a5
+- (IOSurfaceRemoteRemoteClient)initWithRemoteConnection:(id)connection disconnectedQueue:(id)queue disconnectedHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  queueCopy = queue;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = IOSurfaceRemoteRemoteClient;
   v11 = [(IOSurfaceRemoteRemoteClient *)&v18 init];
   v12 = objc_opt_new();
   [(IOSurfaceRemoteRemoteClient *)v11 setSurfaceStates:v12];
 
-  [(IOSurfaceRemoteRemoteClient *)v11 setDisconnectedQueue:v9];
-  [(IOSurfaceRemoteRemoteClient *)v11 setDisconnectedHandler:v10];
-  [(IOSurfaceRemoteRemoteClient *)v11 setRemoteConnection:v8];
-  [(IOSurfaceRemoteRemoteClient *)v11 setPid:xpc_connection_get_pid(v8)];
+  [(IOSurfaceRemoteRemoteClient *)v11 setDisconnectedQueue:queueCopy];
+  [(IOSurfaceRemoteRemoteClient *)v11 setDisconnectedHandler:handlerCopy];
+  [(IOSurfaceRemoteRemoteClient *)v11 setRemoteConnection:connectionCopy];
+  [(IOSurfaceRemoteRemoteClient *)v11 setPid:xpc_connection_get_pid(connectionCopy)];
   objc_initWeak(&location, v11);
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __94__IOSurfaceRemoteRemoteClient_initWithRemoteConnection_disconnectedQueue_disconnectedHandler___block_invoke;
   handler[3] = &unk_1E7A91A10;
   objc_copyWeak(&v16, &location);
-  xpc_connection_set_event_handler(v8, handler);
-  xpc_connection_activate(v8);
+  xpc_connection_set_event_handler(connectionCopy, handler);
+  xpc_connection_activate(connectionCopy);
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 
@@ -61,8 +61,8 @@ void __94__IOSurfaceRemoteRemoteClient_initWithRemoteConnection_disconnectedQueu
 - (void)dealloc
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(IOSurfaceRemoteRemoteClient *)self remoteConnection];
-  xpc_connection_cancel(v3);
+  remoteConnection = [(IOSurfaceRemoteRemoteClient *)self remoteConnection];
+  xpc_connection_cancel(remoteConnection);
 
   v5.receiver = self;
   v5.super_class = IOSurfaceRemoteRemoteClient;
@@ -70,16 +70,16 @@ void __94__IOSurfaceRemoteRemoteClient_initWithRemoteConnection_disconnectedQueu
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
   v6[5] = *MEMORY[0x1E69E9840];
-  v4 = [(IOSurfaceRemoteRemoteClient *)self disconnectedQueue];
+  disconnectedQueue = [(IOSurfaceRemoteRemoteClient *)self disconnectedQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke;
   v6[3] = &unk_1E7A91A88;
   v6[4] = self;
-  dispatch_async(v4, v6);
+  dispatch_async(disconnectedQueue, v6);
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -90,23 +90,23 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
   v2[2](v2, *(a1 + 32));
 }
 
-- (void)_addSurface:(__IOSurfaceClient *)a3 mappedAddress:(void *)a4 mappedSize:(unint64_t)a5 extraData:(id)a6
+- (void)_addSurface:(__IOSurfaceClient *)surface mappedAddress:(void *)address mappedSize:(unint64_t)size extraData:(id)data
 {
-  v10 = a6;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:IOSurfaceClientGetID(a3)];
-  v12 = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  dataCopy = data;
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:IOSurfaceClientGetID(surface)];
+  surfaceStates = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
+  v13 = [surfaceStates objectForKeyedSubscript:v11];
 
   if (v13)
   {
-    [(IOSurfaceRemotePerSurfacePerClientState *)v13 addClientReferenceToSurfaceWithExtraData:v10];
+    [(IOSurfaceRemotePerSurfacePerClientState *)v13 addClientReferenceToSurfaceWithExtraData:dataCopy];
   }
 
   else
   {
-    v13 = [[IOSurfaceRemotePerSurfacePerClientState alloc] initWithSurface:a3 mappedAddress:a4 mappedSize:a5 extraData:v10];
-    v14 = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
-    [v14 setObject:v13 forKeyedSubscript:v11];
+    v13 = [[IOSurfaceRemotePerSurfacePerClientState alloc] initWithSurface:surface mappedAddress:address mappedSize:size extraData:dataCopy];
+    surfaceStates2 = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
+    [surfaceStates2 setObject:v13 forKeyedSubscript:v11];
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -115,18 +115,18 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_removeSurface:(unsigned int)a3
+- (BOOL)_removeSurface:(unsigned int)surface
 {
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-  v5 = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  surfaceStates = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
+  v6 = [surfaceStates objectForKeyedSubscript:v4];
 
   if (v6)
   {
     if ([v6 removeClientReferenceToSurface])
     {
-      v7 = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
-      [v7 setObject:0 forKeyedSubscript:v4];
+      surfaceStates2 = [(IOSurfaceRemoteRemoteClient *)self surfaceStates];
+      [surfaceStates2 setObject:0 forKeyedSubscript:v4];
     }
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -138,16 +138,16 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
   return v6 != 0;
 }
 
-- (void)_handleMessage:(id)a3
+- (void)_handleMessage:(id)message
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  reply = xpc_dictionary_create_reply(v4);
-  v6 = xpc_dictionary_get_remote_connection(v4);
+  messageCopy = message;
+  reply = xpc_dictionary_create_reply(messageCopy);
+  v6 = xpc_dictionary_get_remote_connection(messageCopy);
   v7 = v6;
   if (reply && v6)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "Method");
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "Method");
     v9 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
     if (uint64 < 0x1B)
     {
@@ -160,7 +160,7 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
       if (uint64 > 2)
       {
         v13 = -536870160;
-        v14 = xpc_dictionary_get_uint64(v4, "SurfaceID");
+        v14 = xpc_dictionary_get_uint64(messageCopy, "SurfaceID");
         v15 = v14;
         if (uint64 == 3)
         {
@@ -178,7 +178,7 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
         else
         {
           xpc_dictionary_set_uint64(reply, "SurfaceID", v14);
-          v16 = xpc_dictionary_get_value(v4, "ExtraData");
+          v16 = xpc_dictionary_get_value(messageCopy, "ExtraData");
           v20 = v15;
           v21[0] = 0;
           v17 = [(IOSurfaceRemoteRemoteClient *)self _getClient:v15 inboundExtradata:v16 outboundExtraData:v21];
@@ -186,7 +186,7 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
 
           if (v17)
           {
-            v13 = (v12)(self, v17, v4, reply);
+            v13 = (v12)(self, v17, messageCopy, reply);
             _ioSurfaceAddClientState(v17, v20, reply);
             if (v18)
             {
@@ -198,7 +198,7 @@ void __44__IOSurfaceRemoteRemoteClient__handleError___block_invoke(uint64_t a1)
 
       else
       {
-        v13 = (v12)(self, v4, reply);
+        v13 = (v12)(self, messageCopy, reply);
       }
 
       v11 = v13;

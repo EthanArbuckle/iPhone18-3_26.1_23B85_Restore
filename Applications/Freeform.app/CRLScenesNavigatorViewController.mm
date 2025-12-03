@@ -1,19 +1,19 @@
 @interface CRLScenesNavigatorViewController
 - (BOOL)accessibilityPerformEscape;
 - (NSArray)decoratorOverlayRenderables;
-- (_TtC8Freeform32CRLScenesNavigatorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)transitionDuration:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (void)animateTransition:(id)a3;
+- (_TtC8Freeform32CRLScenesNavigatorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)transitionDuration:(id)duration;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (void)animateTransition:(id)transition;
 - (void)dealloc;
 - (void)loadView;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBeginScrollingOperation;
 @end
 
@@ -21,38 +21,38 @@
 
 - (void)willBeginScrollingOperation
 {
-  v1 = a1;
+  selfCopy = self;
   sub_100F34C60();
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F2336C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F2347C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100F237F0(a3, &selRef_viewWillAppear_);
+  selfCopy = self;
+  sub_100F237F0(appear, &selRef_viewWillAppear_);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100F23684(a3);
+  selfCopy = self;
+  sub_100F23684(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100F237F0(a3, &selRef_viewDidDisappear_);
+  selfCopy = self;
+  sub_100F237F0(disappear, &selRef_viewDidDisappear_);
 }
 
 - (void)viewDidLayoutSubviews
@@ -66,29 +66,29 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F24318();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for CRLScenesNavigatorViewController();
   [(CRLScenesNavigatorViewController *)&v3 dealloc];
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F287EC();
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
-  v3 = [(CRLScenesNavigatorViewController *)v2 crl_canBeDismissed];
-  if (v3)
+  selfCopy = self;
+  crl_canBeDismissed = [(CRLScenesNavigatorViewController *)selfCopy crl_canBeDismissed];
+  if (crl_canBeDismissed)
   {
-    [(CRLScenesNavigatorViewController *)v2 dismissViewControllerAnimated:1 completion:0];
+    [(CRLScenesNavigatorViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   }
 
-  return v3;
+  return crl_canBeDismissed;
 }
 
 - (NSArray)decoratorOverlayRenderables
@@ -99,33 +99,33 @@
   return v2.super.isa;
 }
 
-- (_TtC8Freeform32CRLScenesNavigatorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform32CRLScenesNavigatorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100F34EFC(a3);
+  selfCopy = self;
+  sub_100F34EFC(transition);
   swift_unknownObjectRelease();
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100F35B64(a3);
+  selfCopy = self;
+  sub_100F35B64(duration);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform32CRLScenesNavigatorViewController_useCompactFloatingStyle) == 1)
   {
@@ -142,7 +142,7 @@
   return result;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform32CRLScenesNavigatorViewController_useCompactFloatingStyle) == 1)
   {

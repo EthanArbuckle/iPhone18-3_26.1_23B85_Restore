@@ -1,6 +1,6 @@
 @interface DMDSetVoiceRoamingEnabledOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,9 +20,9 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = [a3 enabled];
+  enabled = [request enabled];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = MCStringForBool();
@@ -31,12 +31,12 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Setting voice roaming enabled: %{public}@", &v6, 0xCu);
   }
 
-  if ((v4 & 1) == 0)
+  if ((enabled & 1) == 0)
   {
     [DMDCoreTelephonyUtilities setDataRoamingEnabled:0];
   }
 
-  [DMDCoreTelephonyUtilities setVoiceRoamingEnabled:v4];
+  [DMDCoreTelephonyUtilities setVoiceRoamingEnabled:enabled];
   [(DMDSetVoiceRoamingEnabledOperation *)self endOperationWithResultObject:0];
 }
 

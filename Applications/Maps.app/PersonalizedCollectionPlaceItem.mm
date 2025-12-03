@@ -2,7 +2,7 @@
 - (CLLocationCoordinate2D)coordinate;
 - (NSArray)autocompletionStrings;
 - (NSString)description;
-- (PersonalizedCollectionPlaceItem)initWithMapItem:(id)a3 title:(id)a4 libraryBadgeType:(unint64_t)a5;
+- (PersonalizedCollectionPlaceItem)initWithMapItem:(id)item title:(id)title libraryBadgeType:(unint64_t)type;
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID;
 - (PersonalizedItemSource)source;
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
@@ -22,9 +22,9 @@
 
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes
 {
-  v3 = [(MKMapItem *)self->_mapItem _styleAttributes];
-  v4 = v3;
-  if (!v3 || ([v3 hasAttributes] & 1) == 0)
+  _styleAttributes = [(MKMapItem *)self->_mapItem _styleAttributes];
+  v4 = _styleAttributes;
+  if (!_styleAttributes || ([_styleAttributes hasAttributes] & 1) == 0)
   {
     v5 = +[GEOFeatureStyleAttributes markerStyleAttributes];
 
@@ -62,9 +62,9 @@
 
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID
 {
-  v3 = [(PersonalizedCollectionPlaceItem *)self styleAttributes];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 poiType];
+  styleAttributes = [(PersonalizedCollectionPlaceItem *)self styleAttributes];
+  v3StyleAttributes = [styleAttributes styleAttributes];
+  poiType = [v3StyleAttributes poiType];
   [(MKMapItem *)self->_mapItem _coordinate];
   v7 = fabs(v6);
   v8 = floor(v7 + 0.5);
@@ -83,7 +83,7 @@
     v13 = v11;
   }
 
-  v14 = v13 ^ v5;
+  v14 = v13 ^ poiType;
   [(MKMapItem *)self->_mapItem _coordinate];
   v16 = fabs(v15);
   v17 = floor(v16 + 0.5);
@@ -104,14 +104,14 @@
 
   v23 = v14 ^ v22;
 
-  v24 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v25 = [v24 name];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  name = [_geoMapItem name];
 
-  if (v25)
+  if (name)
   {
-    v26 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v27 = [v26 name];
-    v23 ^= [v27 hash];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    name2 = [_geoMapItem2 name];
+    v23 ^= [name2 hash];
   }
 
   return [PersonalizedItemClientFeatureIDAdornment adornmentWithClientFeatureID:v23];
@@ -126,48 +126,48 @@
 
 - (NSString)description
 {
-  v3 = [(MKMapItem *)self->_mapItem name];
-  v4 = [NSString stringWithFormat:@"<PersonalizedCollectionPlaceItem %p: %@>", self, v3];
+  name = [(MKMapItem *)self->_mapItem name];
+  v4 = [NSString stringWithFormat:@"<PersonalizedCollectionPlaceItem %p: %@>", self, name];
 
   return v4;
 }
 
-- (PersonalizedCollectionPlaceItem)initWithMapItem:(id)a3 title:(id)a4 libraryBadgeType:(unint64_t)a5
+- (PersonalizedCollectionPlaceItem)initWithMapItem:(id)item title:(id)title libraryBadgeType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  titleCopy = title;
   v22.receiver = self;
   v22.super_class = PersonalizedCollectionPlaceItem;
   v11 = [(PersonalizedCollectionPlaceItem *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mapItem, a3);
-    if (v10)
+    objc_storeStrong(&v11->_mapItem, item);
+    if (titleCopy)
     {
-      v13 = v10;
+      name = titleCopy;
     }
 
     else
     {
-      v13 = [(MKMapItem *)v12->_mapItem name];
+      name = [(MKMapItem *)v12->_mapItem name];
     }
 
     title = v12->_title;
-    v12->_title = v13;
+    v12->_title = name;
 
-    v12->_libraryBadgeType = a5;
+    v12->_libraryBadgeType = type;
     v15 = +[NSMutableSet set];
-    v16 = [[PersonalizedMapItemKey alloc] initWithMapItem:v9];
+    v16 = [[PersonalizedMapItemKey alloc] initWithMapItem:itemCopy];
     if (v16)
     {
       [v15 addObject:v16];
     }
 
-    v17 = [v9 _muid];
-    if (v17)
+    _muid = [itemCopy _muid];
+    if (_muid)
     {
-      v18 = [[PersonalizedMapItemMUIDKey alloc] initWithMUID:v17];
+      v18 = [[PersonalizedMapItemMUIDKey alloc] initWithMUID:_muid];
       if (v18)
       {
         [v15 addObject:v18];
@@ -184,8 +184,8 @@
 
 - (id)leafPersonalizedAutocompleteItems
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
@@ -195,19 +195,19 @@
   autocompletionStrings = self->_autocompletionStrings;
   if (!autocompletionStrings)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_autocompletionStrings)
     {
       v5 = [AutocompleteMatchInfo matchInfoWithType:1];
-      v6 = [[AutocompleteStringMatcher alloc] initWithPlaceName:v4->_title matchInfo:v5];
+      v6 = [[AutocompleteStringMatcher alloc] initWithPlaceName:selfCopy->_title matchInfo:v5];
       v10 = v6;
       v7 = [NSArray arrayWithObjects:&v10 count:1];
       v8 = self->_autocompletionStrings;
       self->_autocompletionStrings = v7;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     autocompletionStrings = self->_autocompletionStrings;
   }

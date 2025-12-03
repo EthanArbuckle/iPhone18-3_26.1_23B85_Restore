@@ -1,7 +1,7 @@
 @interface SFSSCacheTask
-- (SFSSCacheTask)initWithRequest:(id)a3;
+- (SFSSCacheTask)initWithRequest:(id)request;
 - (void)cancelTask;
-- (void)startTask:(id)a3;
+- (void)startTask:(id)task;
 @end
 
 @implementation SFSSCacheTask
@@ -16,24 +16,24 @@
   }
 }
 
-- (void)startTask:(id)a3
+- (void)startTask:(id)task
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SFSpeechSynthesisTask *)self request];
-  v6 = [v5 voiceName];
-  v7 = [(SFSpeechSynthesisTask *)self request];
-  v8 = [v7 text];
-  v9 = [SFSSCacheItem generateCacheKey:v6 text:v8];
+  taskCopy = task;
+  request = [(SFSpeechSynthesisTask *)self request];
+  voiceName = [request voiceName];
+  request2 = [(SFSpeechSynthesisTask *)self request];
+  text = [request2 text];
+  v9 = [SFSSCacheItem generateCacheKey:voiceName text:text];
 
   v10 = +[SFSSCachingService sharedInstance];
   v11 = [v10 objectForKey:v9];
 
-  v12 = [v11 voiceKey];
-  v13 = [SFSSVoiceAsset generateVoiceAssetFromVoiceKeyString:v12];
+  voiceKey = [v11 voiceKey];
+  v13 = [SFSSVoiceAsset generateVoiceAssetFromVoiceKeyString:voiceKey];
 
-  v14 = [v11 resourceKey];
-  v15 = [SFSSResourceAsset generateResourceAssetFromResourceKeyString:v14];
+  resourceKey = [v11 resourceKey];
+  v15 = [SFSSResourceAsset generateResourceAssetFromResourceKeyString:resourceKey];
 
   if (v11)
   {
@@ -51,8 +51,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = [v11 rawAudio];
-  v17 = [v16 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  rawAudio = [v11 rawAudio];
+  v17 = [rawAudio countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v17)
   {
     v18 = v17;
@@ -63,28 +63,28 @@
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(rawAudio);
         }
 
         [(SFSpeechSynthesisTask *)self handleSynthesisChunks:*(*(&v23 + 1) + 8 * i)];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v18 = [rawAudio countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v18);
   }
 
   [(SFSpeechSynthesisTask *)self handleSynthesisEnd:0];
-  v21 = [(SFSpeechSynthesisTask *)self error];
-  v4[2](v4, v21);
+  error = [(SFSpeechSynthesisTask *)self error];
+  taskCopy[2](taskCopy, error);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (SFSSCacheTask)initWithRequest:(id)a3
+- (SFSSCacheTask)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = SFSSGetLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -94,12 +94,12 @@
 
   v9.receiver = self;
   v9.super_class = SFSSCacheTask;
-  v6 = [(SFSpeechSynthesisTask *)&v9 initWithRequest:v4];
+  v6 = [(SFSpeechSynthesisTask *)&v9 initWithRequest:requestCopy];
 
   if (v6)
   {
-    v7 = [(SFSpeechSynthesisTask *)v6 instrumentMetrics];
-    [v7 setSourceOfTTS:1];
+    instrumentMetrics = [(SFSpeechSynthesisTask *)v6 instrumentMetrics];
+    [instrumentMetrics setSourceOfTTS:1];
   }
 
   return v6;

@@ -2,9 +2,9 @@
 - (BOOL)_isInFavoriteMailbox;
 - (BOOL)isNotifiedThread;
 - (BOOL)isPrimary;
-- (MFNotificationMessage)initWithFavoritesReader:(id)a3 vipReader:(id)a4 libraryMessage:(id)a5 contactStore:(id)a6 remindMeDate:(id)a7;
-- (MFNotificationMessage)initWithFavoritesReader:(id)a3 vipReader:(id)a4 libraryMessage:(id)a5 contactStore:(id)a6 suppressionContexts:(id)a7 summary:(id)a8;
-- (MFNotificationMessage)initWithNotificationMessage:(id)a3 summary:(id)a4;
+- (MFNotificationMessage)initWithFavoritesReader:(id)reader vipReader:(id)vipReader libraryMessage:(id)message contactStore:(id)store remindMeDate:(id)date;
+- (MFNotificationMessage)initWithFavoritesReader:(id)reader vipReader:(id)vipReader libraryMessage:(id)message contactStore:(id)store suppressionContexts:(id)contexts summary:(id)summary;
+- (MFNotificationMessage)initWithNotificationMessage:(id)message summary:(id)summary;
 - (NSSet)topicIdentifiers;
 - (NSString)coalesceThreadID;
 - (NSString)ef_publicDescription;
@@ -18,14 +18,14 @@
 
 @implementation MFNotificationMessage
 
-- (MFNotificationMessage)initWithFavoritesReader:(id)a3 vipReader:(id)a4 libraryMessage:(id)a5 contactStore:(id)a6 suppressionContexts:(id)a7 summary:(id)a8
+- (MFNotificationMessage)initWithFavoritesReader:(id)reader vipReader:(id)vipReader libraryMessage:(id)message contactStore:(id)store suppressionContexts:(id)contexts summary:(id)summary
 {
-  v61 = a3;
-  v60 = a4;
-  v15 = a5;
-  v59 = a6;
-  v58 = a7;
-  v16 = a8;
+  readerCopy = reader;
+  vipReaderCopy = vipReader;
+  messageCopy = message;
+  storeCopy = store;
+  contextsCopy = contexts;
+  summaryCopy = summary;
   v62.receiver = self;
   v62.super_class = MFNotificationMessage;
   v17 = [(MFNotificationMessage *)&v62 init];
@@ -38,89 +38,89 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v17->_libraryMessage, a5);
-  v20 = [v15 account];
+  objc_storeStrong(&v17->_libraryMessage, message);
+  account = [messageCopy account];
   account = v19->_account;
-  v19->_account = v20;
+  v19->_account = account;
 
-  objc_storeStrong(p_isa + 19, a6);
+  objc_storeStrong(p_isa + 19, store);
   if (v19->_account)
   {
-    objc_storeStrong(p_isa + 14, a3);
-    objc_storeStrong(p_isa + 15, a4);
-    objc_storeStrong(p_isa + 7, a8);
-    objc_storeStrong(p_isa + 9, a7);
-    v22 = [(MFLibraryMessage *)v19->_libraryMessage mailbox];
+    objc_storeStrong(p_isa + 14, reader);
+    objc_storeStrong(p_isa + 15, vipReader);
+    objc_storeStrong(p_isa + 7, summary);
+    objc_storeStrong(p_isa + 9, contexts);
+    mailbox = [(MFLibraryMessage *)v19->_libraryMessage mailbox];
     mailbox = v19->_mailbox;
-    v19->_mailbox = v22;
+    v19->_mailbox = mailbox;
 
-    v24 = [(MFLibraryMessage *)v19->_libraryMessage subject];
-    v25 = [v24 subjectString];
+    subject = [(MFLibraryMessage *)v19->_libraryMessage subject];
+    subjectString = [subject subjectString];
     subject = v19->_subject;
-    v19->_subject = v25;
+    v19->_subject = subjectString;
 
-    v27 = [(MFLibraryMessage *)v19->_libraryMessage senders];
-    v28 = [v27 firstObject];
+    senders = [(MFLibraryMessage *)v19->_libraryMessage senders];
+    firstObject = [senders firstObject];
     senderFullAddress = v19->_senderFullAddress;
-    v19->_senderFullAddress = v28;
+    v19->_senderFullAddress = firstObject;
 
     v30 = v19->_senderFullAddress;
-    v31 = [(NSString *)v30 emailAddressValue];
-    v32 = [v31 simpleAddress];
-    v33 = v32;
-    if (v32)
+    emailAddressValue = [(NSString *)v30 emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v33 = simpleAddress;
+    if (simpleAddress)
     {
-      v34 = v32;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v34 = [(NSString *)v30 stringValue];
+      stringValue = [(NSString *)v30 stringValue];
     }
 
-    v36 = v34;
+    v36 = stringValue;
 
     senderAddress = v19->_senderAddress;
     v19->_senderAddress = v36;
 
-    v38 = [(MailAccount *)v19->_account uniqueID];
+    uniqueID = [(MailAccount *)v19->_account uniqueID];
     accountID = v19->_accountID;
-    v19->_accountID = v38;
+    v19->_accountID = uniqueID;
 
-    v40 = [(MFNotificationMessage *)v19 _displaySubject];
+    _displaySubject = [(MFNotificationMessage *)v19 _displaySubject];
     subtitle = v19->_subtitle;
-    v19->_subtitle = v40;
+    v19->_subtitle = _displaySubject;
 
-    v42 = [(MFLibraryMessage *)v19->_libraryMessage dateReceived];
+    dateReceived = [(MFLibraryMessage *)v19->_libraryMessage dateReceived];
     dateReceived = v19->_dateReceived;
-    v19->_dateReceived = v42;
+    v19->_dateReceived = dateReceived;
 
-    v44 = [(MFLibraryMessage *)v19->_libraryMessage senderAddressComment];
-    v45 = [v44 emailAddressValue];
-    v46 = [v45 displayName];
-    v47 = v46;
-    if (v46)
+    senderAddressComment = [(MFLibraryMessage *)v19->_libraryMessage senderAddressComment];
+    emailAddressValue2 = [senderAddressComment emailAddressValue];
+    displayName = [emailAddressValue2 displayName];
+    v47 = displayName;
+    if (displayName)
     {
-      v48 = v46;
+      stringValue2 = displayName;
     }
 
     else
     {
-      v48 = [v44 stringValue];
+      stringValue2 = [senderAddressComment stringValue];
     }
 
-    v49 = v48;
+    v49 = stringValue2;
 
     senderCommentedAddress = v19->_senderCommentedAddress;
     v19->_senderCommentedAddress = v49;
 
     v19->_isVIP = [(EMVIPReader *)v19->_vipReader isVIPAddress:v19->_senderFullAddress];
     v19->_isFavoriteMailbox = [(MFNotificationMessage *)v19 _isInFavoriteMailbox];
-    v51 = [(MFLibraryMessage *)v19->_libraryMessage nanoLocalMessageId];
-    v52 = v51;
-    if (v51)
+    nanoLocalMessageId = [(MFLibraryMessage *)v19->_libraryMessage nanoLocalMessageId];
+    v52 = nanoLocalMessageId;
+    if (nanoLocalMessageId)
     {
-      v53 = v51;
+      v53 = nanoLocalMessageId;
       nanoMessageId = v19->_nanoMessageId;
       v19->_nanoMessageId = v53;
     }
@@ -128,9 +128,9 @@ LABEL_14:
     else
     {
       nanoMessageId = [p_isa[2] mf_externalReference];
-      v55 = [nanoMessageId absoluteString];
+      absoluteString = [nanoMessageId absoluteString];
       v56 = v19->_nanoMessageId;
-      v19->_nanoMessageId = v55;
+      v19->_nanoMessageId = absoluteString;
     }
 
     goto LABEL_14;
@@ -142,12 +142,12 @@ LABEL_15:
   return v35;
 }
 
-- (MFNotificationMessage)initWithFavoritesReader:(id)a3 vipReader:(id)a4 libraryMessage:(id)a5 contactStore:(id)a6 remindMeDate:(id)a7
+- (MFNotificationMessage)initWithFavoritesReader:(id)reader vipReader:(id)vipReader libraryMessage:(id)message contactStore:(id)store remindMeDate:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  readerCopy = reader;
+  vipReaderCopy = vipReader;
+  messageCopy = message;
+  dateCopy = date;
   v60.receiver = self;
   v60.super_class = MFNotificationMessage;
   v16 = [(MFNotificationMessage *)&v60 init];
@@ -160,87 +160,87 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v16->_libraryMessage, a5);
-  v19 = [v14 account];
+  objc_storeStrong(&v16->_libraryMessage, message);
+  account = [messageCopy account];
   account = v18->_account;
-  v18->_account = v19;
+  v18->_account = account;
 
   if (v18->_account)
   {
-    objc_storeStrong(p_isa + 14, a3);
-    objc_storeStrong(p_isa + 15, a4);
+    objc_storeStrong(p_isa + 14, reader);
+    objc_storeStrong(p_isa + 15, vipReader);
     v18->_isRemindMe = 1;
-    objc_storeStrong(p_isa + 13, a7);
-    v21 = [(MFLibraryMessage *)v18->_libraryMessage mailbox];
+    objc_storeStrong(p_isa + 13, date);
+    mailbox = [(MFLibraryMessage *)v18->_libraryMessage mailbox];
     mailbox = v18->_mailbox;
-    v18->_mailbox = v21;
+    v18->_mailbox = mailbox;
 
-    v23 = [(MFLibraryMessage *)v18->_libraryMessage subject];
-    v24 = [v23 subjectString];
+    subject = [(MFLibraryMessage *)v18->_libraryMessage subject];
+    subjectString = [subject subjectString];
     subject = v18->_subject;
-    v18->_subject = v24;
+    v18->_subject = subjectString;
 
-    v26 = [(MFLibraryMessage *)v18->_libraryMessage senders];
-    v27 = [v26 firstObject];
+    senders = [(MFLibraryMessage *)v18->_libraryMessage senders];
+    firstObject = [senders firstObject];
     senderFullAddress = v18->_senderFullAddress;
-    v18->_senderFullAddress = v27;
+    v18->_senderFullAddress = firstObject;
 
     v29 = v18->_senderFullAddress;
-    v30 = [(NSString *)v29 emailAddressValue];
-    v31 = [v30 simpleAddress];
-    v32 = v31;
-    if (v31)
+    emailAddressValue = [(NSString *)v29 emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v32 = simpleAddress;
+    if (simpleAddress)
     {
-      v33 = v31;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v33 = [(NSString *)v29 stringValue];
+      stringValue = [(NSString *)v29 stringValue];
     }
 
-    v35 = v33;
+    v35 = stringValue;
 
     senderAddress = v18->_senderAddress;
     v18->_senderAddress = v35;
 
-    v37 = [(MailAccount *)v18->_account uniqueID];
+    uniqueID = [(MailAccount *)v18->_account uniqueID];
     accountID = v18->_accountID;
-    v18->_accountID = v37;
+    v18->_accountID = uniqueID;
 
     subtitle = v18->_subtitle;
     v18->_subtitle = 0;
 
-    v40 = [(MFLibraryMessage *)v18->_libraryMessage dateReceived];
+    dateReceived = [(MFLibraryMessage *)v18->_libraryMessage dateReceived];
     dateReceived = v18->_dateReceived;
-    v18->_dateReceived = v40;
+    v18->_dateReceived = dateReceived;
 
-    v42 = [(MFLibraryMessage *)v18->_libraryMessage senderAddressComment];
-    v43 = [v42 emailAddressValue];
-    v44 = [v43 displayName];
-    v45 = v44;
-    if (v44)
+    senderAddressComment = [(MFLibraryMessage *)v18->_libraryMessage senderAddressComment];
+    emailAddressValue2 = [senderAddressComment emailAddressValue];
+    displayName = [emailAddressValue2 displayName];
+    v45 = displayName;
+    if (displayName)
     {
-      v46 = v44;
+      stringValue2 = displayName;
     }
 
     else
     {
-      v46 = [v42 stringValue];
+      stringValue2 = [senderAddressComment stringValue];
     }
 
-    v47 = v46;
+    v47 = stringValue2;
 
     senderCommentedAddress = v18->_senderCommentedAddress;
     v18->_senderCommentedAddress = v47;
 
     v18->_isVIP = [(EMVIPReader *)v18->_vipReader isVIPAddress:v18->_senderFullAddress];
     v18->_isFavoriteMailbox = [(MFNotificationMessage *)v18 _isInFavoriteMailbox];
-    v49 = [(MFLibraryMessage *)v18->_libraryMessage nanoLocalMessageId];
-    v50 = v49;
-    if (v49)
+    nanoLocalMessageId = [(MFLibraryMessage *)v18->_libraryMessage nanoLocalMessageId];
+    v50 = nanoLocalMessageId;
+    if (nanoLocalMessageId)
     {
-      v51 = v49;
+      v51 = nanoLocalMessageId;
       nanoMessageId = v18->_nanoMessageId;
       v18->_nanoMessageId = v51;
     }
@@ -248,14 +248,14 @@ LABEL_17:
     else
     {
       nanoMessageId = [p_isa[2] mf_externalReference];
-      v53 = [nanoMessageId absoluteString];
+      absoluteString = [nanoMessageId absoluteString];
       v54 = v18->_nanoMessageId;
-      v18->_nanoMessageId = v53;
+      v18->_nanoMessageId = absoluteString;
     }
 
-    v55 = [(MFNotificationMessage *)v18 _summaryForRemindMe];
+    _summaryForRemindMe = [(MFNotificationMessage *)v18 _summaryForRemindMe];
     summary = v18->_summary;
-    v18->_summary = v55;
+    v18->_summary = _summaryForRemindMe;
 
     if (v18->_summary)
     {
@@ -279,11 +279,11 @@ LABEL_18:
   return v34;
 }
 
-- (MFNotificationMessage)initWithNotificationMessage:(id)a3 summary:(id)a4
+- (MFNotificationMessage)initWithNotificationMessage:(id)message summary:(id)summary
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  messageCopy = message;
+  summaryCopy = summary;
+  if (messageCopy)
   {
     v13.receiver = self;
     v13.super_class = MFNotificationMessage;
@@ -291,51 +291,51 @@ LABEL_18:
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_libraryMessage, v6[2]);
-      objc_storeStrong(&v9->_account, v6[3]);
-      objc_storeStrong(&v9->_contactStore, v6[19]);
-      objc_storeStrong(&v9->_favoritesReader, v6[14]);
-      objc_storeStrong(&v9->_vipReader, v6[15]);
-      v10 = v7;
-      if (!v7)
+      objc_storeStrong(&v8->_libraryMessage, messageCopy[2]);
+      objc_storeStrong(&v9->_account, messageCopy[3]);
+      objc_storeStrong(&v9->_contactStore, messageCopy[19]);
+      objc_storeStrong(&v9->_favoritesReader, messageCopy[14]);
+      objc_storeStrong(&v9->_vipReader, messageCopy[15]);
+      v10 = summaryCopy;
+      if (!summaryCopy)
       {
-        v10 = v6[7];
+        v10 = messageCopy[7];
       }
 
       objc_storeStrong(&v9->_summary, v10);
-      objc_storeStrong(&v9->_suppressionContexts, v6[9]);
-      objc_storeStrong(&v9->_mailbox, v6[16]);
-      objc_storeStrong(&v9->_subject, v6[17]);
-      objc_storeStrong(&v9->_senderFullAddress, v6[20]);
-      objc_storeStrong(&v9->_senderAddress, v6[8]);
-      objc_storeStrong(&v9->_accountID, v6[10]);
-      objc_storeStrong(&v9->_subtitle, v6[6]);
-      objc_storeStrong(&v9->_dateReceived, v6[4]);
-      objc_storeStrong(&v9->_senderCommentedAddress, v6[18]);
-      v9->_isVIP = *(v6 + 8);
-      v9->_isFavoriteMailbox = *(v6 + 9);
-      objc_storeStrong(&v9->_nanoMessageId, v6[11]);
+      objc_storeStrong(&v9->_suppressionContexts, messageCopy[9]);
+      objc_storeStrong(&v9->_mailbox, messageCopy[16]);
+      objc_storeStrong(&v9->_subject, messageCopy[17]);
+      objc_storeStrong(&v9->_senderFullAddress, messageCopy[20]);
+      objc_storeStrong(&v9->_senderAddress, messageCopy[8]);
+      objc_storeStrong(&v9->_accountID, messageCopy[10]);
+      objc_storeStrong(&v9->_subtitle, messageCopy[6]);
+      objc_storeStrong(&v9->_dateReceived, messageCopy[4]);
+      objc_storeStrong(&v9->_senderCommentedAddress, messageCopy[18]);
+      v9->_isVIP = *(messageCopy + 8);
+      v9->_isFavoriteMailbox = *(messageCopy + 9);
+      objc_storeStrong(&v9->_nanoMessageId, messageCopy[11]);
     }
 
     self = v9;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)_summaryForRemindMe
 {
-  v3 = [(MFNotificationMessage *)self _displaySender];
-  if ([v3 length])
+  _displaySender = [(MFNotificationMessage *)self _displaySender];
+  if ([_displaySender length])
   {
-    v4 = [(MFNotificationMessage *)self _displaySubject];
-    v5 = [NSString stringWithFormat:@"%@\n%@", v3, v4];
+    _displaySubject = [(MFNotificationMessage *)self _displaySubject];
+    v5 = [NSString stringWithFormat:@"%@\n%@", _displaySender, _displaySubject];
   }
 
   else
@@ -351,9 +351,9 @@ LABEL_18:
   title = self->_title;
   if (!title)
   {
-    v4 = [(MFNotificationMessage *)self _displaySender];
+    _displaySender = [(MFNotificationMessage *)self _displaySender];
     v5 = self->_title;
-    self->_title = v4;
+    self->_title = _displaySender;
 
     title = self->_title;
   }
@@ -363,64 +363,64 @@ LABEL_18:
 
 - (id)_displaySender
 {
-  v3 = [(MFNotificationMessage *)self senderFullAddress];
-  v4 = [(MFNotificationMessage *)self senderFullAddress];
-  v5 = [v4 emailAddressValue];
-  v6 = [v5 simpleAddress];
-  v7 = v6;
-  if (v6)
+  senderFullAddress = [(MFNotificationMessage *)self senderFullAddress];
+  senderFullAddress2 = [(MFNotificationMessage *)self senderFullAddress];
+  emailAddressValue = [senderFullAddress2 emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v7 = simpleAddress;
+  if (simpleAddress)
   {
-    v8 = v6;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v8 = [v4 stringValue];
+    stringValue = [senderFullAddress2 stringValue];
   }
 
-  v9 = v8;
+  v9 = stringValue;
 
   if (!v9 || ([(MFNotificationMessage *)self contactStore], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
 LABEL_10:
-    v18 = v3;
-    v19 = [v18 emailAddressValue];
-    v20 = [v19 displayName];
-    v21 = v20;
-    if (v20)
+    v18 = senderFullAddress;
+    emailAddressValue2 = [v18 emailAddressValue];
+    displayName = [emailAddressValue2 displayName];
+    v21 = displayName;
+    if (displayName)
     {
-      v22 = v20;
+      stringValue2 = displayName;
     }
 
     else
     {
-      v22 = [v18 stringValue];
+      stringValue2 = [v18 stringValue];
     }
 
-    v23 = v22;
+    v23 = stringValue2;
 
     if ([v23 isEqualToString:v18])
     {
-      v24 = [(MFNotificationMessage *)self senderCommentedAddress];
+      senderCommentedAddress = [(MFNotificationMessage *)self senderCommentedAddress];
     }
 
     else
     {
-      v24 = v23;
+      senderCommentedAddress = v23;
     }
 
-    v17 = v24;
+    v17 = senderCommentedAddress;
 
     goto LABEL_17;
   }
 
   v11 = [CNContact predicateForContactsMatchingEmailAddress:v9];
-  v12 = [(MFNotificationMessage *)self contactStore];
+  contactStore = [(MFNotificationMessage *)self contactStore];
   v13 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
   v26[0] = v13;
   v26[1] = CNContactEmailAddressesKey;
   v14 = [NSArray arrayWithObjects:v26 count:2];
-  v15 = [v12 unifiedContactsMatchingPredicate:v11 keysToFetch:v14 error:0];
+  v15 = [contactStore unifiedContactsMatchingPredicate:v11 keysToFetch:v14 error:0];
 
   if (![v15 count])
   {
@@ -428,8 +428,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v16 = [v15 firstObject];
-  v17 = [CNContactFormatter stringFromContact:v16 style:0];
+  firstObject = [v15 firstObject];
+  v17 = [CNContactFormatter stringFromContact:firstObject style:0];
 
   if (!v17)
   {
@@ -443,13 +443,13 @@ LABEL_17:
 
 - (id)_displaySubject
 {
-  v2 = [(MFLibraryMessage *)self->_libraryMessage subject];
-  v3 = [v2 subjectString];
+  subject = [(MFLibraryMessage *)self->_libraryMessage subject];
+  subjectString = [subject subjectString];
 
-  if (v3)
+  if (subjectString)
   {
     v4 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    [v3 ef_stringByTrimmingLeadingCharactersInSet:v4];
+    [subjectString ef_stringByTrimmingLeadingCharactersInSet:v4];
   }
 
   else
@@ -464,32 +464,32 @@ LABEL_17:
 
 - (BOOL)_isInFavoriteMailbox
 {
-  v2 = self;
+  selfCopy = self;
   favoritesReader = self->_favoritesReader;
-  v4 = [(MFNotificationMessage *)self account];
-  v5 = [(MFFavoritesReader *)favoritesReader favoriteMailboxesForAccount:v4];
+  account = [(MFNotificationMessage *)self account];
+  v5 = [(MFFavoritesReader *)favoritesReader favoriteMailboxesForAccount:account];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100098B34;
   v7[3] = &unk_100157208;
-  v7[4] = v2;
-  LOBYTE(v2) = [v5 ef_any:v7];
+  v7[4] = selfCopy;
+  LOBYTE(selfCopy) = [v5 ef_any:v7];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)messageReference
 {
-  v3 = [(MFLibraryMessage *)self->_libraryMessage globalMessageURL];
-  if (!v3)
+  globalMessageURL = [(MFLibraryMessage *)self->_libraryMessage globalMessageURL];
+  if (!globalMessageURL)
   {
-    v3 = [(MFLibraryMessage *)self->_libraryMessage mf_externalReference];
+    globalMessageURL = [(MFLibraryMessage *)self->_libraryMessage mf_externalReference];
   }
 
-  v4 = [v3 absoluteString];
+  absoluteString = [globalMessageURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSSet)topicIdentifiers
@@ -522,8 +522,8 @@ LABEL_17:
 
   if (![(MFNotificationMessage *)self isFavoriteMailbox])
   {
-    v4 = [(MFNotificationMessage *)self accountID];
-    [v3 addObject:v4];
+    accountID = [(MFNotificationMessage *)self accountID];
+    [v3 addObject:accountID];
   }
 
   return v3;
@@ -531,12 +531,12 @@ LABEL_17:
 
 - (NSString)coalesceThreadID
 {
-  v2 = [(MFNotificationMessage *)self account];
-  v3 = [v2 displayName];
-  v4 = v3;
-  if (v3)
+  account = [(MFNotificationMessage *)self account];
+  displayName = [account displayName];
+  v4 = displayName;
+  if (displayName)
   {
-    v5 = v3;
+    v5 = displayName;
   }
 
   else
@@ -551,22 +551,22 @@ LABEL_17:
 
 - (BOOL)isNotifiedThread
 {
-  v2 = [(MFNotificationMessage *)self libraryMessage];
-  v3 = [v2 conversationFlags];
+  libraryMessage = [(MFNotificationMessage *)self libraryMessage];
+  conversationFlags = [libraryMessage conversationFlags];
 
-  return v3 & 1;
+  return conversationFlags & 1;
 }
 
 - (NSString)ef_publicDescription
 {
-  v3 = [(MFNotificationMessage *)self notificationID];
-  v4 = [(MFNotificationMessage *)self libraryMessage];
-  v5 = [v4 libraryID];
-  v6 = [(MFNotificationMessage *)self libraryMessage];
-  v7 = [v6 globalMessageID];
-  v8 = [(MFNotificationMessage *)self accountID];
-  v9 = [(MFNotificationMessage *)self topicIdentifiers];
-  v10 = [NSString stringWithFormat:@"notificationID %@, libraryID:%ld, globalMessageID:%ld, Account:%@, Topics:%@", v3, v5, v7, v8, v9];
+  notificationID = [(MFNotificationMessage *)self notificationID];
+  libraryMessage = [(MFNotificationMessage *)self libraryMessage];
+  libraryID = [libraryMessage libraryID];
+  libraryMessage2 = [(MFNotificationMessage *)self libraryMessage];
+  globalMessageID = [libraryMessage2 globalMessageID];
+  accountID = [(MFNotificationMessage *)self accountID];
+  topicIdentifiers = [(MFNotificationMessage *)self topicIdentifiers];
+  v10 = [NSString stringWithFormat:@"notificationID %@, libraryID:%ld, globalMessageID:%ld, Account:%@, Topics:%@", notificationID, libraryID, globalMessageID, accountID, topicIdentifiers];
 
   return v10;
 }
@@ -582,20 +582,20 @@ LABEL_17:
 
 - (BOOL)isPrimary
 {
-  v2 = [(MFNotificationMessage *)self libraryMessage];
-  v3 = [v2 category];
+  libraryMessage = [(MFNotificationMessage *)self libraryMessage];
+  category = [libraryMessage category];
 
-  if ([v3 state])
+  if ([category state])
   {
-    v4 = [v3 isPrimary];
+    isPrimary = [category isPrimary];
   }
 
   else
   {
-    v4 = 0;
+    isPrimary = 0;
   }
 
-  return v4;
+  return isPrimary;
 }
 
 @end

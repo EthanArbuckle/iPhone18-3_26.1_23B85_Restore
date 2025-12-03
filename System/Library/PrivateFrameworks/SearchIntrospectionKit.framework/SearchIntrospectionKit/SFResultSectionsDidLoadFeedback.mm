@@ -2,11 +2,11 @@
 - (NSData)resultSections;
 - (NSString)queryIdentifier;
 - (SFResultSectionsDidLoadFeedback)init;
-- (SFResultSectionsDidLoadFeedback)initWithResultSectionsData:(id)a3 queryIdentifier:(id)a4;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setQueryIdentifier:(id)a3;
-- (void)setResultSections:(id)a3;
+- (SFResultSectionsDidLoadFeedback)initWithResultSectionsData:(id)data queryIdentifier:(id)identifier;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setQueryIdentifier:(id)identifier;
+- (void)setResultSections:(id)sections;
 @end
 
 @implementation SFResultSectionsDidLoadFeedback
@@ -32,27 +32,27 @@
   return v4;
 }
 
-- (void)setResultSections:(id)a3
+- (void)setResultSections:(id)sections
 {
-  v3 = a3;
-  if (a3)
+  sectionsCopy = sections;
+  if (sections)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_264E89854();
+    selfCopy = self;
+    v5 = sectionsCopy;
+    sectionsCopy = sub_264E89854();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
   v9 = (self + OBJC_IVAR___SFResultSectionsDidLoadFeedback_resultSections);
   v10 = *(self + OBJC_IVAR___SFResultSectionsDidLoadFeedback_resultSections);
   v11 = *(self + OBJC_IVAR___SFResultSectionsDidLoadFeedback_resultSections + 8);
-  *v9 = v3;
+  *v9 = sectionsCopy;
   v9[1] = v7;
   sub_264E6855C(v10, v11);
 }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setQueryIdentifier:(id)a3
+- (void)setQueryIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_264E899D4();
   }
@@ -94,10 +94,10 @@
   v6[1] = v5;
 }
 
-- (SFResultSectionsDidLoadFeedback)initWithResultSectionsData:(id)a3 queryIdentifier:(id)a4
+- (SFResultSectionsDidLoadFeedback)initWithResultSectionsData:(id)data queryIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v7 = sub_264E89854();
   v9 = v8;
 
@@ -107,10 +107,10 @@
   return SFResultSectionsDidLoadFeedback.init(resultSectionsData:queryIdentifier:)(v7, v9, v10, v12);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  SFResultSectionsDidLoadFeedback.copy(with:)(a3, v7);
+  selfCopy = self;
+  SFResultSectionsDidLoadFeedback.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_264E89DE4();
@@ -118,11 +118,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SFResultSectionsDidLoadFeedback.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SFResultSectionsDidLoadFeedback.encode(with:)(coderCopy);
 }
 
 - (SFResultSectionsDidLoadFeedback)init

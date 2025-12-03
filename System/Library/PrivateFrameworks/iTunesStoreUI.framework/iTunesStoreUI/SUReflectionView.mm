@@ -1,7 +1,7 @@
 @interface SUReflectionView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setImage:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setImage:(id)image;
 @end
 
 @implementation SUReflectionView
@@ -13,20 +13,20 @@
   [(SUReflectionView *)&v3 dealloc];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   image = self->_image;
-  if (image != a3)
+  if (image != image)
   {
 
-    self->_image = a3;
+    self->_image = image;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v23 = *MEMORY[0x1E69E9840];
-  [(UIImage *)self->_image size:a3.origin.x];
+  [(UIImage *)self->_image size:rect.origin.x];
   [(SUReflectionView *)self bounds];
   v5 = v4;
   v7 = v6;

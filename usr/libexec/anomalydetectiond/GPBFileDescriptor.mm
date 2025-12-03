@@ -1,35 +1,35 @@
 @interface GPBFileDescriptor
-- (GPBFileDescriptor)initWithPackage:(id)a3 objcPrefix:(id)a4 syntax:(unsigned __int8)a5;
-- (GPBFileDescriptor)initWithPackage:(id)a3 syntax:(unsigned __int8)a4;
+- (GPBFileDescriptor)initWithPackage:(id)package objcPrefix:(id)prefix syntax:(unsigned __int8)syntax;
+- (GPBFileDescriptor)initWithPackage:(id)package syntax:(unsigned __int8)syntax;
 - (void)dealloc;
 @end
 
 @implementation GPBFileDescriptor
 
-- (GPBFileDescriptor)initWithPackage:(id)a3 objcPrefix:(id)a4 syntax:(unsigned __int8)a5
+- (GPBFileDescriptor)initWithPackage:(id)package objcPrefix:(id)prefix syntax:(unsigned __int8)syntax
 {
   v10.receiver = self;
   v10.super_class = GPBFileDescriptor;
   v8 = [(GPBFileDescriptor *)&v10 init];
   if (v8)
   {
-    v8->package_ = [a3 copy];
-    v8->objcPrefix_ = [a4 copy];
-    v8->syntax_ = a5;
+    v8->package_ = [package copy];
+    v8->objcPrefix_ = [prefix copy];
+    v8->syntax_ = syntax;
   }
 
   return v8;
 }
 
-- (GPBFileDescriptor)initWithPackage:(id)a3 syntax:(unsigned __int8)a4
+- (GPBFileDescriptor)initWithPackage:(id)package syntax:(unsigned __int8)syntax
 {
   v8.receiver = self;
   v8.super_class = GPBFileDescriptor;
   v6 = [(GPBFileDescriptor *)&v8 init];
   if (v6)
   {
-    v6->package_ = [a3 copy];
-    v6->syntax_ = a4;
+    v6->package_ = [package copy];
+    v6->syntax_ = syntax;
   }
 
   return v6;

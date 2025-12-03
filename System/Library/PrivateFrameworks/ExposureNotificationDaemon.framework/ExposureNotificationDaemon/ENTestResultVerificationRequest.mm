@@ -1,41 +1,41 @@
 @interface ENTestResultVerificationRequest
-+ (id)_metadataFromVerificationResponseDictionary:(id)a3 error:(id *)a4;
-+ (id)verificationRequestWithCode:(id)a3 acceptedReportTypes:(id)a4 APIKey:(id)a5 nonce:(id)a6 requestURL:(id)a7 URLSession:(id)a8 queue:(id)a9 error:(id *)a10;
-- (id)_testVerificationErrorForErrorCodeString:(id)a3;
++ (id)_metadataFromVerificationResponseDictionary:(id)dictionary error:(id *)error;
++ (id)verificationRequestWithCode:(id)code acceptedReportTypes:(id)types APIKey:(id)key nonce:(id)nonce requestURL:(id)l URLSession:(id)session queue:(id)queue error:(id *)self0;
+- (id)_testVerificationErrorForErrorCodeString:(id)string;
 - (id)bodyJSON;
-- (id)errorForUnsuccessfulResponse:(id)a3 body:(id)a4;
-- (id)handleResponse:(id)a3 body:(id)a4;
+- (id)errorForUnsuccessfulResponse:(id)response body:(id)body;
+- (id)handleResponse:(id)response body:(id)body;
 @end
 
 @implementation ENTestResultVerificationRequest
 
-+ (id)verificationRequestWithCode:(id)a3 acceptedReportTypes:(id)a4 APIKey:(id)a5 nonce:(id)a6 requestURL:(id)a7 URLSession:(id)a8 queue:(id)a9 error:(id *)a10
++ (id)verificationRequestWithCode:(id)code acceptedReportTypes:(id)types APIKey:(id)key nonce:(id)nonce requestURL:(id)l URLSession:(id)session queue:(id)queue error:(id *)self0
 {
   v54 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v48 = v17;
-  if ([v17 count])
+  codeCopy = code;
+  typesCopy = types;
+  keyCopy = key;
+  nonceCopy = nonce;
+  lCopy = l;
+  sessionCopy = session;
+  queueCopy = queue;
+  v48 = typesCopy;
+  if ([typesCopy count])
   {
-    v43 = v19;
-    v23 = a1;
-    v44 = v22;
-    v45 = v21;
-    v24 = v20;
-    v46 = v18;
-    v47 = v16;
+    v43 = nonceCopy;
+    selfCopy = self;
+    v44 = queueCopy;
+    v45 = sessionCopy;
+    v24 = lCopy;
+    v46 = keyCopy;
+    v47 = codeCopy;
     v25 = DiagnosisReportTypeToServerStringMap();
     v26 = objc_alloc_init(MEMORY[0x277CBEB50]);
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v27 = v17;
+    v27 = typesCopy;
     v28 = [v27 countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v28)
     {
@@ -54,13 +54,13 @@
           v33 = [v25 objectForKeyedSubscript:v32];
           if (!v33)
           {
-            [ENTestResultVerificationRequest verificationRequestWithCode:a10 acceptedReportTypes:v27 APIKey:v32 nonce:? requestURL:? URLSession:? queue:? error:?];
-            v18 = v46;
-            v16 = v47;
-            v20 = v24;
-            v22 = v44;
-            v21 = v45;
-            v19 = v43;
+            [ENTestResultVerificationRequest verificationRequestWithCode:error acceptedReportTypes:v27 APIKey:v32 nonce:? requestURL:? URLSession:? queue:? error:?];
+            keyCopy = v46;
+            codeCopy = v47;
+            lCopy = v24;
+            queueCopy = v44;
+            sessionCopy = v45;
+            nonceCopy = v43;
             goto LABEL_17;
           }
 
@@ -77,15 +77,15 @@
       }
     }
 
-    v34 = [v23 alloc];
-    v20 = v24;
+    v34 = [selfCopy alloc];
+    lCopy = v24;
     v35 = v24;
-    v22 = v44;
-    v21 = v45;
+    queueCopy = v44;
+    sessionCopy = v45;
     v33 = [v34 initWithRequestURL:v35 URLSession:v45 queue:v44];
-    v18 = v46;
+    keyCopy = v46;
     [v33 setAPIKey:v46];
-    v16 = v47;
+    codeCopy = v47;
     v36 = [v47 copy];
     v37 = *(v33 + 80);
     *(v33 + 80) = v36;
@@ -94,7 +94,7 @@
     v39 = *(v33 + 88);
     *(v33 + 88) = v38;
 
-    v19 = v43;
+    nonceCopy = v43;
     if (v43)
     {
       v40 = [v43 copy];
@@ -114,10 +114,10 @@
 LABEL_17:
   }
 
-  else if (a10)
+  else if (error)
   {
     ENErrorF();
-    *a10 = v33 = 0;
+    *error = v33 = 0;
   }
 
   else
@@ -133,8 +133,8 @@ LABEL_17:
 - (id)bodyJSON
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB30]);
-  v4 = [(NSSet *)self->_acceptedTestTypes allObjects];
-  [v3 setObject:v4 forKeyedSubscript:@"accept"];
+  allObjects = [(NSSet *)self->_acceptedTestTypes allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"accept"];
 
   [v3 setObject:self->_verificationCode forKeyedSubscript:@"code"];
   [v3 setObject:self->_nonce forKeyedSubscript:@"nonce"];
@@ -143,10 +143,10 @@ LABEL_17:
   return v5;
 }
 
-- (id)errorForUnsuccessfulResponse:(id)a3 body:(id)a4
+- (id)errorForUnsuccessfulResponse:(id)response body:(id)body
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  bodyCopy = body;
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
   if (v8)
@@ -165,16 +165,16 @@ LABEL_17:
 
   v11.receiver = self;
   v11.super_class = ENTestResultVerificationRequest;
-  v9 = [(ENTestResultNetworkRequest *)&v11 errorForUnsuccessfulResponse:v6 body:v7];
+  v9 = [(ENTestResultNetworkRequest *)&v11 errorForUnsuccessfulResponse:responseCopy body:bodyCopy];
 LABEL_6:
 
   return v9;
 }
 
-- (id)_testVerificationErrorForErrorCodeString:(id)a3
+- (id)_testVerificationErrorForErrorCodeString:(id)string
 {
-  v3 = a3;
-  v4 = [&unk_285D6E4F8 objectForKeyedSubscript:v3];
+  stringCopy = string;
+  v4 = [&unk_285D6E4F8 objectForKeyedSubscript:stringCopy];
   v5 = v4;
   if (v4 && ((v6 = [v4 integerValue], v6 == 12) || v6 == 3 || v6 == 2))
   {
@@ -189,11 +189,11 @@ LABEL_6:
   return v7;
 }
 
-- (id)handleResponse:(id)a3 body:(id)a4
+- (id)handleResponse:(id)response body:(id)body
 {
-  v5 = a4;
+  bodyCopy = body;
   v16 = 0;
-  v6 = [objc_opt_class() _metadataFromVerificationResponseDictionary:v5 error:&v16];
+  v6 = [objc_opt_class() _metadataFromVerificationResponseDictionary:bodyCopy error:&v16];
   v7 = v16;
   v8 = v7;
   if (v6)
@@ -227,15 +227,15 @@ LABEL_6:
   return v14;
 }
 
-+ (id)_metadataFromVerificationResponseDictionary:(id)a3 error:(id *)a4
++ (id)_metadataFromVerificationResponseDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __85__ENTestResultVerificationRequest__metadataFromVerificationResponseDictionary_error___block_invoke;
   v27[3] = &unk_278FD1148;
-  v7 = v5;
+  v7 = dictionaryCopy;
   v28 = v7;
   v8 = MEMORY[0x24C214430](v27);
   v26 = 0;
@@ -249,13 +249,13 @@ LABEL_6:
     v23 = __Block_byref_object_copy__1;
     v24 = __Block_byref_object_dispose__1;
     v25 = &unk_285D6E228;
-    v10 = [v9 lowercaseString];
+    lowercaseString = [v9 lowercaseString];
     v11 = DiagnosisReportTypeToServerStringMap();
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __85__ENTestResultVerificationRequest__metadataFromVerificationResponseDictionary_error___block_invoke_49;
     v19[3] = &unk_278FD1170;
-    v19[4] = v10;
+    v19[4] = lowercaseString;
     v19[5] = &v20;
     [v11 enumerateKeysAndObjectsUsingBlock:v19];
 
@@ -268,10 +268,10 @@ LABEL_6:
   v13 = v12;
   if (v26 != -6727 && v26)
   {
-    if (a4)
+    if (error)
     {
       (v8)[2](v8, @"symptomDate");
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_13;
     }
   }
@@ -297,7 +297,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    [(ENTestResultVerificationRequest *)a4 _metadataFromVerificationResponseDictionary:v14 error:v8];
+    [(ENTestResultVerificationRequest *)error _metadataFromVerificationResponseDictionary:v14 error:v8];
   }
 
   v17 = 0;

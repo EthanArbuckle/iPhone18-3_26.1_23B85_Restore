@@ -1,53 +1,53 @@
 @interface PKSharingMessageExtensionPushProvisioningPresenter
-+ (id)propertiesForMessage:(id)a3;
-- (PKSharingMessageExtensionPushProvisioningPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4;
++ (id)propertiesForMessage:(id)message;
+- (PKSharingMessageExtensionPushProvisioningPresenter)initWithTargetDevice:(id)device passLibrary:(id)library;
 - (PKSharingMessageExtensionRenderer)renderer;
 - (id)_passInLibraryForMessage;
 - (void)_presentIDSAlert;
 - (void)didTapMessage;
 - (void)extensionWillAppear;
-- (void)setMessage:(id)a3;
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5;
+- (void)setMessage:(id)message;
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion;
 @end
 
 @implementation PKSharingMessageExtensionPushProvisioningPresenter
 
-- (PKSharingMessageExtensionPushProvisioningPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4
+- (PKSharingMessageExtensionPushProvisioningPresenter)initWithTargetDevice:(id)device passLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PKSharingMessageExtensionPushProvisioningPresenter;
   v9 = [(PKSharingMessageExtensionPushProvisioningPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetDevice, a3);
-    objc_storeStrong(&v10->_passLibrary, a4);
+    objc_storeStrong(&v9->_targetDevice, device);
+    objc_storeStrong(&v10->_passLibrary, library);
   }
 
   return v10;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_message, a3);
+    objc_storeStrong(&self->_message, message);
   }
 }
 
 - (void)extensionWillAppear
 {
-  v3 = [(PKSharingMessageExtensionPushProvisioningPresenter *)self _passInLibraryForMessage];
-  v4 = [(PKShareableCredentialMessage *)self->_message shareableCredentials];
-  v5 = v4;
-  if (v3)
+  _passInLibraryForMessage = [(PKSharingMessageExtensionPushProvisioningPresenter *)self _passInLibraryForMessage];
+  shareableCredentials = [(PKShareableCredentialMessage *)self->_message shareableCredentials];
+  v5 = shareableCredentials;
+  if (_passInLibraryForMessage)
   {
-    v6 = [v4 firstObject];
-    [v6 setStatus:2];
+    firstObject = [shareableCredentials firstObject];
+    [firstObject setStatus:2];
 
     [(PKShareableCredentialMessage *)self->_message setShareableCredentials:v5];
     [(PKShareableCredentialMessage *)self->_message setIsPassInLibrary:1];
@@ -78,14 +78,14 @@ LABEL_5:
 - (id)_passInLibraryForMessage
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1 && ([*(a1 + 24) isFromMe] & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (self && ([*(self + 24) isFromMe] & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v2 = [*(a1 + 24) shareableCredentials];
-    v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    shareableCredentials = [*(self + 24) shareableCredentials];
+    v3 = [shareableCredentials countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
       v4 = v3;
@@ -96,12 +96,12 @@ LABEL_6:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(shareableCredentials);
         }
 
-        v7 = *(a1 + 16);
-        v8 = [*(*(&v11 + 1) + 8 * v6) credentialIdentifierHash];
-        v9 = [v7 passForProvisioningCredentialHash:v8];
+        v7 = *(self + 16);
+        credentialIdentifierHash = [*(*(&v11 + 1) + 8 * v6) credentialIdentifierHash];
+        v9 = [v7 passForProvisioningCredentialHash:credentialIdentifierHash];
 
         if (v9)
         {
@@ -110,7 +110,7 @@ LABEL_6:
 
         if (v4 == ++v6)
         {
-          v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v4 = [shareableCredentials countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v4)
           {
             goto LABEL_6;
@@ -156,12 +156,12 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
   [WeakRetained messageDidUpdate];
 }
 
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion
 {
   v75 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = a4;
-  v39 = a5;
+  recipientsCopy = recipients;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -173,14 +173,14 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
 
   if (PKiMessageIsActive())
   {
-    if ([v38 count] < 2)
+    if ([recipientsCopy count] < 2)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
       v71 = 0x3032000000;
       v72 = __Block_byref_object_copy__56;
       v73 = __Block_byref_object_dispose__56;
-      v74 = [v38 firstObject];
+      firstObject = [recipientsCopy firstObject];
       if (PKIDSServiceContainsHandle())
       {
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -195,7 +195,7 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
         v21 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa.isa);
         [WeakRetained showAlertWithTitle:v19 message:v20 button:v21];
 
-        (*(v39 + 2))(v39, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
 
       else
@@ -237,8 +237,8 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
         v52 = 0u;
         v50 = 0u;
         v49 = 0u;
-        v28 = [(PKShareableCredentialMessage *)self->_message shareableCredentials];
-        v29 = [v28 countByEnumeratingWithState:&v49 objects:v69 count:16];
+        shareableCredentials = [(PKShareableCredentialMessage *)self->_message shareableCredentials];
+        v29 = [shareableCredentials countByEnumeratingWithState:&v49 objects:v69 count:16];
         if (v29)
         {
           v30 = *v50;
@@ -249,7 +249,7 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
             {
               if (*v50 != v30)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(shareableCredentials);
               }
 
               v32 = *(*(&v49 + 1) + 8 * v31);
@@ -268,13 +268,13 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
             }
 
             while (v29 != v31);
-            v29 = [v28 countByEnumeratingWithState:&v49 objects:v69 count:16];
+            v29 = [shareableCredentials countByEnumeratingWithState:&v49 objects:v69 count:16];
           }
 
           while (v29);
         }
 
-        v33 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __101__PKSharingMessageExtensionPushProvisioningPresenter_validateForRecipients_senderAddress_completion___block_invoke_2_62;
@@ -282,8 +282,8 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
         objc_copyWeak(&v44, &location);
         v34 = v27;
         v42 = v34;
-        v43 = v39;
-        v35 = [v40 evaluateWithInput:v33 completion:v41];
+        v43 = completionCopy;
+        v35 = [v40 evaluateWithInput:null completion:v41];
 
         objc_destroyWeak(&v44);
         objc_destroyWeak(&v56);
@@ -305,7 +305,7 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
       v13 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa.isa);
       [v10 showAlertWithTitle:v11 message:v12 button:v13];
 
-      (*(v39 + 2))(v39, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -323,7 +323,7 @@ void __73__PKSharingMessageExtensionPushProvisioningPresenter_extensionWillAppea
     v17 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa.isa);
     [v14 showAlertWithTitle:v15 message:v16 button:v17];
 
-    (*(v39 + 2))(v39, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -382,9 +382,9 @@ void __101__PKSharingMessageExtensionPushProvisioningPresenter_validateForRecipi
 
 - (void)_presentIDSAlert
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     v1 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa_1.isa);
     v2 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa_28.isa);
     v3 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa.isa);
@@ -596,16 +596,16 @@ void __101__PKSharingMessageExtensionPushProvisioningPresenter_validateForRecipi
 - (void)didTapMessage
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PKSharingMessageExtensionPushProvisioningPresenter *)self _passInLibraryForMessage];
-  if (!v3)
+  _passInLibraryForMessage = [(PKSharingMessageExtensionPushProvisioningPresenter *)self _passInLibraryForMessage];
+  if (!_passInLibraryForMessage)
   {
     if (![(PKShareableCredentialMessage *)self->_message isShareAcceptable])
     {
       goto LABEL_15;
     }
 
-    v6 = [(PKShareableCredentialMessage *)self->_message shareableCredentials];
-    v7 = [v6 pk_arrayByApplyingBlock:&__block_literal_global_222];
+    shareableCredentials = [(PKShareableCredentialMessage *)self->_message shareableCredentials];
+    v7 = [shareableCredentials pk_arrayByApplyingBlock:&__block_literal_global_222];
 
     v31 = 0;
     v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v31];
@@ -629,17 +629,17 @@ void __101__PKSharingMessageExtensionPushProvisioningPresenter_validateForRecipi
         v28 = *MEMORY[0x1E69BC438];
         v13 = v7;
         v14 = *MEMORY[0x1E69BC430];
-        v15 = [v8 hexEncoding];
+        hexEncoding = [v8 hexEncoding];
         v16 = v8;
         v17 = *MEMORY[0x1E69BC440];
-        v18 = [(PKShareableCredentialMessage *)self->_message passThumbnailImage];
-        v19 = UIImagePNGRepresentation(v18);
-        v20 = [v19 hexEncoding];
+        passThumbnailImage = [(PKShareableCredentialMessage *)self->_message passThumbnailImage];
+        v19 = UIImagePNGRepresentation(passThumbnailImage);
+        hexEncoding2 = [v19 hexEncoding];
         v27 = v17;
         v8 = v16;
         v26 = v14;
         v7 = v13;
-        v11 = [v29 stringWithFormat:@"shoebox://%@/?%@=%@&%@=%@", v28, v26, v15, v27, v20];
+        v11 = [v29 stringWithFormat:@"shoebox://%@/?%@=%@&%@=%@", v28, v26, hexEncoding, v27, hexEncoding2];
 
         WeakRetained = objc_loadWeakRetained(&self->_renderer);
         v22 = [MEMORY[0x1E695DFF8] URLWithString:v11];
@@ -683,23 +683,23 @@ LABEL_14:
   }
 
   v4 = objc_loadWeakRetained(&self->_renderer);
-  v5 = [v3 passURL];
-  [v4 openAppURL:v5];
+  passURL = [_passInLibraryForMessage passURL];
+  [v4 openAppURL:passURL];
 
 LABEL_15:
 }
 
-+ (id)propertiesForMessage:(id)a3
++ (id)propertiesForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(PKCredentialSharingMessageExtensionViewProperties);
-  v5 = [v3 caption];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:v5];
+  caption = [messageCopy caption];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:caption];
 
-  v6 = [v3 passThumbnailImage];
-  if (v6)
+  passThumbnailImage = [messageCopy passThumbnailImage];
+  if (passThumbnailImage)
   {
-    [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:v6];
+    [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:passThumbnailImage];
   }
 
   else
@@ -708,24 +708,24 @@ LABEL_15:
     [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:v7];
   }
 
-  v8 = [v3 isFromMe];
-  v9 = [v3 shareableCredentials];
-  v10 = [v9 firstObject];
-  v11 = [v10 status];
+  isFromMe = [messageCopy isFromMe];
+  shareableCredentials = [messageCopy shareableCredentials];
+  firstObject = [shareableCredentials firstObject];
+  status = [firstObject status];
 
-  if (v11 <= 1)
+  if (status <= 1)
   {
-    if (!v11)
+    if (!status)
     {
       goto LABEL_13;
     }
 
-    if (v11 != 1)
+    if (status != 1)
     {
       goto LABEL_19;
     }
 
-    if (v8)
+    if (isFromMe)
     {
       v12 = @"SHAREABLE_MESSAGES_EXTENSION_SUBTITLE_TEXT_AVAILABLE_SENDER";
     }
@@ -739,16 +739,16 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if (v11 != 2)
+  if (status != 2)
   {
-    if (v11 == 3)
+    if (status == 3)
     {
       v12 = @"SHAREABLE_MESSAGES_EXTENSION_SUBTITLE_TEXT_REVOKED";
     }
 
     else
     {
-      if (v11 != 4)
+      if (status != 4)
       {
         goto LABEL_19;
       }
@@ -765,7 +765,7 @@ LABEL_17:
   v13 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa_27.isa);
   [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:v13];
 
-  if (![v3 isPassInLibrary])
+  if (![messageCopy isPassInLibrary])
   {
     goto LABEL_19;
   }
@@ -775,7 +775,7 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  if ([v3 isShareAcceptable])
+  if ([messageCopy isShareAcceptable])
   {
     v15 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa_5.isa);
     [(PKCredentialSharingMessageExtensionViewProperties *)v4 setButtonText:v15];

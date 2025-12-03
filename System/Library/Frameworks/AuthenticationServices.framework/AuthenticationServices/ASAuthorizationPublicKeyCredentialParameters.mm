@@ -1,8 +1,8 @@
 @interface ASAuthorizationPublicKeyCredentialParameters
 - (ASAuthorizationPublicKeyCredentialParameters)initWithAlgorithm:(ASCOSEAlgorithmIdentifier)algorithm;
-- (ASAuthorizationPublicKeyCredentialParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASAuthorizationPublicKeyCredentialParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASAuthorizationPublicKeyCredentialParameters
@@ -22,29 +22,29 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ASAuthorizationPublicKeyCredentialParameters *)self algorithm];
+  algorithm = [(ASAuthorizationPublicKeyCredentialParameters *)self algorithm];
 
-  return [v4 initWithAlgorithm:v5];
+  return [v4 initWithAlgorithm:algorithm];
 }
 
-- (ASAuthorizationPublicKeyCredentialParameters)initWithCoder:(id)a3
+- (ASAuthorizationPublicKeyCredentialParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
 
   v6 = -[ASAuthorizationPublicKeyCredentialParameters initWithAlgorithm:](self, "initWithAlgorithm:", [v5 integerValue]);
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[ASAuthorizationPublicKeyCredentialParameters algorithm](self, "algorithm")}];
-  [v5 encodeObject:v6 forKey:@"algorithm"];
+  [coderCopy encodeObject:v6 forKey:@"algorithm"];
 }
 
 @end

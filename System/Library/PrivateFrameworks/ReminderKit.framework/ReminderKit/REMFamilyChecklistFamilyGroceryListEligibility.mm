@@ -1,23 +1,23 @@
 @interface REMFamilyChecklistFamilyGroceryListEligibility
-- (BOOL)isEqual:(id)a3;
-- (REMFamilyChecklistFamilyGroceryListEligibility)initWithCoder:(id)a3;
-- (REMFamilyChecklistFamilyGroceryListEligibility)initWithIsEligible:(BOOL)a3 ineligibilityReasons:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMFamilyChecklistFamilyGroceryListEligibility)initWithCoder:(id)coder;
+- (REMFamilyChecklistFamilyGroceryListEligibility)initWithIsEligible:(BOOL)eligible ineligibilityReasons:(int64_t)reasons;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMFamilyChecklistFamilyGroceryListEligibility
 
-- (REMFamilyChecklistFamilyGroceryListEligibility)initWithIsEligible:(BOOL)a3 ineligibilityReasons:(int64_t)a4
+- (REMFamilyChecklistFamilyGroceryListEligibility)initWithIsEligible:(BOOL)eligible ineligibilityReasons:(int64_t)reasons
 {
   v7.receiver = self;
   v7.super_class = REMFamilyChecklistFamilyGroceryListEligibility;
   result = [(REMFamilyChecklistFamilyGroceryListEligibility *)&v7 init];
   if (result)
   {
-    result->_isEligible = a3;
-    result->_ineligibilityReasons = a4;
+    result->_isEligible = eligible;
+    result->_ineligibilityReasons = reasons;
   }
 
   return result;
@@ -49,14 +49,14 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[REMFamilyChecklistFamilyGroceryListEligibility isEligible](self, "isEligible"), v5 == [v4 isEligible]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[REMFamilyChecklistFamilyGroceryListEligibility isEligible](self, "isEligible"), v5 == [equalCopy isEligible]))
   {
-    v7 = [(REMFamilyChecklistFamilyGroceryListEligibility *)self ineligibilityReasons];
-    v6 = v7 == [v4 ineligibilityReasons];
+    ineligibilityReasons = [(REMFamilyChecklistFamilyGroceryListEligibility *)self ineligibilityReasons];
+    v6 = ineligibilityReasons == [equalCopy ineligibilityReasons];
   }
 
   else
@@ -77,20 +77,20 @@
   return v6 ^ v4;
 }
 
-- (REMFamilyChecklistFamilyGroceryListEligibility)initWithCoder:(id)a3
+- (REMFamilyChecklistFamilyGroceryListEligibility)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isEligible"];
-  v6 = [v4 decodeIntegerForKey:@"ineligibilityReasons"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isEligible"];
+  v6 = [coderCopy decodeIntegerForKey:@"ineligibilityReasons"];
 
   return [(REMFamilyChecklistFamilyGroceryListEligibility *)self initWithIsEligible:v5 ineligibilityReasons:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[REMFamilyChecklistFamilyGroceryListEligibility isEligible](self forKey:{"isEligible"), @"isEligible"}];
-  [v4 encodeInteger:-[REMFamilyChecklistFamilyGroceryListEligibility ineligibilityReasons](self forKey:{"ineligibilityReasons"), @"ineligibilityReasons"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[REMFamilyChecklistFamilyGroceryListEligibility isEligible](self forKey:{"isEligible"), @"isEligible"}];
+  [coderCopy encodeInteger:-[REMFamilyChecklistFamilyGroceryListEligibility ineligibilityReasons](self forKey:{"ineligibilityReasons"), @"ineligibilityReasons"}];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface MTLResourceListPool
-- (MTLResourceListPool)initWithResourceListCapacity:(int)a3;
+- (MTLResourceListPool)initWithResourceListCapacity:(int)capacity;
 - (void)dealloc;
 - (void)purge;
 @end
 
 @implementation MTLResourceListPool
 
-- (MTLResourceListPool)initWithResourceListCapacity:(int)a3
+- (MTLResourceListPool)initWithResourceListCapacity:(int)capacity
 {
   v5.receiver = self;
   v5.super_class = MTLResourceListPool;
@@ -14,7 +14,7 @@
   if (result)
   {
     result->_priv.queue.tqh_first = 0;
-    result->_resourceListCapacity = a3;
+    result->_resourceListCapacity = capacity;
     result->_priv.queue.tqh_last = &result->_priv.queue.tqh_first;
     *&result->_priv.lock._os_unfair_lock_opaque = 0;
   }

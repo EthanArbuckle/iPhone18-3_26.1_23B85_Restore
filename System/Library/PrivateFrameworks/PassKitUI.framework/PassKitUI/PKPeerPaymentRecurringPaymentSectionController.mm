@@ -1,12 +1,12 @@
 @interface PKPeerPaymentRecurringPaymentSectionController
 - (PKPeerPaymentRecurringPaymentSectionController)init;
 - (PKPeerPaymentRecurringPaymentSectionControllerDelegate)delegate;
-- (id)cellRegistrationForItem:(id)a3;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)paymentTransactionItemForPayment:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_applyMaskToCell:(id)a3 firstInSection:(BOOL)a4 lastInSection:(BOOL)a5;
-- (void)didSelectItem:(id)a3;
+- (id)paymentTransactionItemForPayment:(id)payment;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_applyMaskToCell:(id)cell firstInSection:(BOOL)section lastInSection:(BOOL)inSection;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentSectionController
@@ -35,42 +35,42 @@
   return v2;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   v4 = MEMORY[0x1E69B8F28];
-  v5 = a3;
+  itemCopy = item;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x1E69B9020] sharedService];
-  v17 = [v6 initWithPeerPaymentWebService:v7];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+  v17 = [v6 initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
 
-  v8 = [v17 account];
-  v9 = [v8 recurringPaymentsFeatureDescriptor];
+  account = [v17 account];
+  recurringPaymentsFeatureDescriptor = [account recurringPaymentsFeatureDescriptor];
 
   v10 = [PKPeerPaymentRecurringPaymentDetailViewController alloc];
-  v11 = [v5 recipientAddress];
-  v12 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 initWithRecurringPayment:v5 recipientAddress:v11 mode:2 context:0 peerPaymentController:v17 remoteMessagesComposer:0];
+  recipientAddress = [itemCopy recipientAddress];
+  v12 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 initWithRecurringPayment:itemCopy recipientAddress:recipientAddress mode:2 context:0 peerPaymentController:v17 remoteMessagesComposer:0];
 
-  v13 = [v9 minimumAmount];
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMinimumAmount:v13];
+  minimumAmount = [recurringPaymentsFeatureDescriptor minimumAmount];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMinimumAmount:minimumAmount];
 
-  v14 = [v9 maximumAmount];
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMaximumAmount:v14];
+  maximumAmount = [recurringPaymentsFeatureDescriptor maximumAmount];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMaximumAmount:maximumAmount];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if ([v16 pk_settings_useStateDrivenNavigation])
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v16 pk_settings_pushViewController:v12];
+    [navigationController pk_settings_pushViewController:v12];
   }
 
   else
   {
-    [v16 pushViewController:v12 animated:1];
+    [navigationController pushViewController:v12 animated:1];
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_payments];
@@ -78,9 +78,9 @@
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -122,25 +122,25 @@ void __74__PKPeerPaymentRecurringPaymentSectionController_cellRegistrationForIte
   [v11 _applyMaskToCell:v7 firstInSection:v12 lastInSection:{v13 == objc_msgSend(*(*(a1 + 32) + 72), "count") - 1}];
 }
 
-- (void)_applyMaskToCell:(id)a3 firstInSection:(BOOL)a4 lastInSection:(BOOL)a5
+- (void)_applyMaskToCell:(id)cell firstInSection:(BOOL)section lastInSection:(BOOL)inSection
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v11 = v7;
+  inSectionCopy = inSection;
+  sectionCopy = section;
+  cellCopy = cell;
+  v11 = cellCopy;
   v8 = 3;
-  if (!v6 || !v5)
+  if (!sectionCopy || !inSectionCopy)
   {
     v8 = 1;
   }
 
   v9 = 2;
-  if (!v5)
+  if (!inSectionCopy)
   {
     v9 = 0;
   }
 
-  if (v6)
+  if (sectionCopy)
   {
     v10 = v8;
   }
@@ -150,13 +150,13 @@ void __74__PKPeerPaymentRecurringPaymentSectionController_cellRegistrationForIte
     v10 = v9;
   }
 
-  [v7 setMaskType:v10];
-  [v11 setShowsBottomSeparator:!v5];
+  [cellCopy setMaskType:v10];
+  [v11 setShowsBottomSeparator:!inSectionCopy];
 }
 
-- (id)paymentTransactionItemForPayment:(id)a3
+- (id)paymentTransactionItemForPayment:(id)payment
 {
-  v4 = a3;
+  paymentCopy = payment;
   v5 = [PKDashboardPaymentTransactionItem alloc];
   sourceCollection = self->_sourceCollection;
   familyCollection = self->_familyCollection;

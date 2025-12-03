@@ -1,9 +1,9 @@
 @interface EXFont
-+ (id)edFontFromXmlFontElement:(_xmlNode *)a3 inConditionalFormat:(BOOL)a4 returnDefaultIfEmpty:(BOOL)a5 state:(id)a6;
++ (id)edFontFromXmlFontElement:(_xmlNode *)element inConditionalFormat:(BOOL)format returnDefaultIfEmpty:(BOOL)empty state:(id)state;
 + (id)underlineEnumMap;
 + (id)vertAlignEnumMap;
-+ (int)edScriptFromXmlVertAlignElement:(_xmlNode *)a3;
-+ (int)edUnderlineFromXmlUnderlineElement:(_xmlNode *)a3;
++ (int)edScriptFromXmlVertAlignElement:(_xmlNode *)element;
++ (int)edUnderlineFromXmlUnderlineElement:(_xmlNode *)element;
 + (void)underlineEnumMap;
 + (void)vertAlignEnumMap;
 @end
@@ -56,34 +56,34 @@ void __26__EXFont_vertAlignEnumMap__block_invoke()
   +[EXFont vertAlignEnumMap]::sVertAlignEnumMap = v0;
 }
 
-+ (id)edFontFromXmlFontElement:(_xmlNode *)a3 inConditionalFormat:(BOOL)a4 returnDefaultIfEmpty:(BOOL)a5 state:(id)a6
++ (id)edFontFromXmlFontElement:(_xmlNode *)element inConditionalFormat:(BOOL)format returnDefaultIfEmpty:(BOOL)empty state:(id)state
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  if (!a3)
+  emptyCopy = empty;
+  formatCopy = format;
+  stateCopy = state;
+  if (!element)
   {
     v21 = 0;
     goto LABEL_53;
   }
 
   v11 = [EDFont alloc];
-  v12 = [v10 resources];
-  v13 = [(EDFont *)v11 initWithResources:v12];
+  resources = [stateCopy resources];
+  v13 = [(EDFont *)v11 initWithResources:resources];
 
-  v14 = [v10 EXSpreadsheetMLNamespace];
-  v15 = OCXFindChild(a3, v14, "name");
+  eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+  v15 = OCXFindChild(element, eXSpreadsheetMLNamespace, "name");
 
-  v56 = v6;
+  v56 = emptyCopy;
   if (!v15)
   {
-    v16 = [v10 EXSpreadsheetMLNamespace];
-    v15 = OCXFindChild(a3, v16, "font");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    v15 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "font");
 
     if (!v15)
     {
-      v17 = [v10 EXSpreadsheetMLNamespace];
-      v15 = OCXFindChild(a3, v17, "rFont");
+      eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+      v15 = OCXFindChild(element, eXSpreadsheetMLNamespace3, "rFont");
 
       if (!v15)
       {
@@ -107,8 +107,8 @@ LABEL_9:
   v20 = 1;
 LABEL_10:
   v64 = 0;
-  v22 = [v10 EXSpreadsheetMLNamespace];
-  v23 = OCXFindChild(a3, v22, "charset");
+  eXSpreadsheetMLNamespace4 = [stateCopy EXSpreadsheetMLNamespace];
+  v23 = OCXFindChild(element, eXSpreadsheetMLNamespace4, "charset");
 
   if (v23 && CXOptionalLongAttribute(v23, CXNoNamespace, "val", &v64))
   {
@@ -117,8 +117,8 @@ LABEL_10:
   }
 
   v63 = 0;
-  v24 = [v10 EXSpreadsheetMLNamespace];
-  v25 = OCXFindChild(a3, v24, "family");
+  eXSpreadsheetMLNamespace5 = [stateCopy EXSpreadsheetMLNamespace];
+  v25 = OCXFindChild(element, eXSpreadsheetMLNamespace5, "family");
 
   if (v25 && CXOptionalLongAttribute(v25, CXNoNamespace, "val", &v63))
   {
@@ -127,8 +127,8 @@ LABEL_10:
   }
 
   v62 = 0;
-  v26 = [v10 EXSpreadsheetMLNamespace];
-  v27 = OCXFindChild(a3, v26, "b");
+  eXSpreadsheetMLNamespace6 = [stateCopy EXSpreadsheetMLNamespace];
+  v27 = OCXFindChild(element, eXSpreadsheetMLNamespace6, "b");
 
   if (v27)
   {
@@ -144,8 +144,8 @@ LABEL_10:
   }
 
   v61 = 0;
-  v29 = [v10 EXSpreadsheetMLNamespace];
-  v30 = OCXFindChild(a3, v29, "i");
+  eXSpreadsheetMLNamespace7 = [stateCopy EXSpreadsheetMLNamespace];
+  v30 = OCXFindChild(element, eXSpreadsheetMLNamespace7, "i");
 
   if (v30)
   {
@@ -165,8 +165,8 @@ LABEL_10:
   }
 
   v60 = 0;
-  v33 = [v10 EXSpreadsheetMLNamespace];
-  v34 = OCXFindChild(a3, v33, "strike");
+  eXSpreadsheetMLNamespace8 = [stateCopy EXSpreadsheetMLNamespace];
+  v34 = OCXFindChild(element, eXSpreadsheetMLNamespace8, "strike");
 
   if (v34)
   {
@@ -186,8 +186,8 @@ LABEL_10:
   }
 
   v59 = 0;
-  v37 = [v10 EXSpreadsheetMLNamespace];
-  v38 = OCXFindChild(a3, v37, "shadow");
+  eXSpreadsheetMLNamespace9 = [stateCopy EXSpreadsheetMLNamespace];
+  v38 = OCXFindChild(element, eXSpreadsheetMLNamespace9, "shadow");
 
   if (v38)
   {
@@ -207,8 +207,8 @@ LABEL_10:
   }
 
   v58 = 0;
-  v41 = [v10 EXSpreadsheetMLNamespace];
-  v42 = OCXFindChild(a3, v41, "outline");
+  eXSpreadsheetMLNamespace10 = [stateCopy EXSpreadsheetMLNamespace];
+  v42 = OCXFindChild(element, eXSpreadsheetMLNamespace10, "outline");
 
   if (v42)
   {
@@ -227,20 +227,20 @@ LABEL_10:
     v20 = 1;
   }
 
-  v45 = [v10 EXSpreadsheetMLNamespace];
-  v46 = OCXFindChild(a3, v45, "color");
+  eXSpreadsheetMLNamespace11 = [stateCopy EXSpreadsheetMLNamespace];
+  v46 = OCXFindChild(element, eXSpreadsheetMLNamespace11, "color");
 
-  if (!v7 || v46)
+  if (!formatCopy || v46)
   {
-    v47 = [EXColorReference edColorReferenceFromXmlColorElement:v46 callerClass:objc_opt_class() state:v10];
+    v47 = [EXColorReference edColorReferenceFromXmlColorElement:v46 callerClass:objc_opt_class() state:stateCopy];
     [(EDFont *)v13 setColorReference:v47];
 
     v20 |= v46 != 0;
   }
 
   v57 = 0.0;
-  v48 = [v10 EXSpreadsheetMLNamespace];
-  v49 = OCXFindChild(a3, v48, "sz");
+  eXSpreadsheetMLNamespace12 = [stateCopy EXSpreadsheetMLNamespace];
+  v49 = OCXFindChild(element, eXSpreadsheetMLNamespace12, "sz");
 
   if (v49 && CXOptionalDoubleAttribute(v49, CXNoNamespace, "val", &v57))
   {
@@ -248,22 +248,22 @@ LABEL_10:
     v20 = 1;
   }
 
-  v50 = [v10 EXSpreadsheetMLNamespace];
-  v51 = OCXFindChild(a3, v50, "u");
+  eXSpreadsheetMLNamespace13 = [stateCopy EXSpreadsheetMLNamespace];
+  v51 = OCXFindChild(element, eXSpreadsheetMLNamespace13, "u");
 
-  v52 = [a1 edUnderlineFromXmlUnderlineElement:v51];
+  v52 = [self edUnderlineFromXmlUnderlineElement:v51];
   if (v52)
   {
     [(EDFont *)v13 setUnderline:v52];
     v20 = 1;
   }
 
-  v53 = [v10 EXSpreadsheetMLNamespace];
-  v54 = OCXFindChild(a3, v53, "vertAlign");
+  eXSpreadsheetMLNamespace14 = [stateCopy EXSpreadsheetMLNamespace];
+  v54 = OCXFindChild(element, eXSpreadsheetMLNamespace14, "vertAlign");
 
   if (v54)
   {
-    -[EDFont setScript:](v13, "setScript:", [a1 edScriptFromXmlVertAlignElement:v54]);
+    -[EDFont setScript:](v13, "setScript:", [self edScriptFromXmlVertAlignElement:v54]);
   }
 
   else if (((v20 | v56) & 1) == 0)
@@ -280,15 +280,15 @@ LABEL_53:
   return v21;
 }
 
-+ (int)edScriptFromXmlVertAlignElement:(_xmlNode *)a3
++ (int)edScriptFromXmlVertAlignElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v11 = 0;
-  v4 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v11);
+  v4 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v11);
   v5 = v11;
   if (v5)
   {
@@ -302,8 +302,8 @@ LABEL_53:
 
   if (v6)
   {
-    v7 = [a1 vertAlignEnumMap];
-    v8 = [v7 valueForString:v5];
+    vertAlignEnumMap = [self vertAlignEnumMap];
+    v8 = [vertAlignEnumMap valueForString:v5];
 
     if (v8 == -130883970)
     {
@@ -324,15 +324,15 @@ LABEL_53:
   return v9;
 }
 
-+ (int)edUnderlineFromXmlUnderlineElement:(_xmlNode *)a3
++ (int)edUnderlineFromXmlUnderlineElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v11 = 0;
-  v4 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v11);
+  v4 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v11);
   v5 = v11;
   if (v5)
   {
@@ -346,8 +346,8 @@ LABEL_53:
 
   if (v6)
   {
-    v7 = [a1 underlineEnumMap];
-    v8 = [v7 valueForString:v5];
+    underlineEnumMap = [self underlineEnumMap];
+    v8 = [underlineEnumMap valueForString:v5];
 
     if (v8 == -130883970)
     {

@@ -1,11 +1,11 @@
 @interface CKTranscriptLegibilityButton
-+ (CKTranscriptLegibilityButton)buttonWithConfiguration:(id)a3 primaryAction:(id)a4;
-+ (CKTranscriptLegibilityButton)buttonWithType:(int64_t)a3;
++ (CKTranscriptLegibilityButton)buttonWithConfiguration:(id)configuration primaryAction:(id)action;
++ (CKTranscriptLegibilityButton)buttonWithType:(int64_t)type;
 - (BOOL)isLegibilityViewRequired;
 - (CGRect)legibilityViewFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)a3;
-- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)a3 internalButton:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)frame;
+- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)frame internalButton:(id)button;
 - (UIEdgeInsets)contentEdgeInsets;
 - (id)_createLegibilityView;
 - (id)_lazyLoadedLegibilityView;
@@ -13,47 +13,47 @@
 - (int64_t)titleLabelNumberOfLines;
 - (void)_registerForTraitCollectionChanges;
 - (void)_removeLegibilityViewIfNecessary;
-- (void)_setTouchInsets:(UIEdgeInsets)a3;
+- (void)_setTouchInsets:(UIEdgeInsets)insets;
 - (void)_updateLegibilityView;
 - (void)deferredUpdateLegibilityView;
 - (void)layoutSubviews;
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setConfiguration:(id)a3;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setContentHorizontalAlignment:(int64_t)a3;
-- (void)setTitleLabelLineBreakMode:(int64_t)a3;
-- (void)setTitleLabelNumberOfLines:(int64_t)a3;
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state;
+- (void)setConfiguration:(id)configuration;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setContentHorizontalAlignment:(int64_t)alignment;
+- (void)setTitleLabelLineBreakMode:(int64_t)mode;
+- (void)setTitleLabelNumberOfLines:(int64_t)lines;
 - (void)updateWantsExtendedDynamicRangeContent;
 @end
 
 @implementation CKTranscriptLegibilityButton
 
-- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)a3
+- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [[CKTranscriptLegibilityInternalButton alloc] initWithFrame:0.0, 0.0, a3.size.width, a3.size.height];
-  v9 = [(CKTranscriptLegibilityButton *)self initWithFrame:v8 internalButton:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = [[CKTranscriptLegibilityInternalButton alloc] initWithFrame:0.0, 0.0, frame.size.width, frame.size.height];
+  height = [(CKTranscriptLegibilityButton *)self initWithFrame:v8 internalButton:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)a3 internalButton:(id)a4
+- (CKTranscriptLegibilityButton)initWithFrame:(CGRect)frame internalButton:(id)button
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  buttonCopy = button;
   v14.receiver = self;
   v14.super_class = CKTranscriptLegibilityButton;
-  v11 = [(CKTranscriptLegibilityButton *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(CKTranscriptLegibilityButton *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_button, a4);
+    objc_storeStrong(&height->_button, button);
     [(CKTranscriptLegibilityButton *)v12 addSubview:v12->_button];
     [(CKTranscriptLegibilityButton *)v12 updateWantsExtendedDynamicRangeContent];
     [(CKTranscriptLegibilityButton *)v12 _registerForTraitCollectionChanges];
@@ -62,21 +62,21 @@
   return v12;
 }
 
-- (void)_setTouchInsets:(UIEdgeInsets)a3
+- (void)_setTouchInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8.receiver = self;
   v8.super_class = CKTranscriptLegibilityButton;
   [(CKTranscriptLegibilityButton *)&v8 _setTouchInsets:?];
   [(CKTranscriptLegibilityInternalButton *)self->_button _setTouchInsets:top, left, bottom, right];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKTranscriptLegibilityInternalButton *)self->_button sizeThatFits:a3.width, a3.height];
+  [(CKTranscriptLegibilityInternalButton *)self->_button sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -84,15 +84,15 @@
 
 - (void)updateWantsExtendedDynamicRangeContent
 {
-  v3 = [(CKTranscriptLegibilityButton *)self traitCollection];
-  v4 = [v3 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptLegibilityButton *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  v5 = [(CKTranscriptLegibilityInternalButton *)self->_button layer];
-  [v5 setWantsExtendedDynamicRangeContent:v4];
+  layer = [(CKTranscriptLegibilityInternalButton *)self->_button layer];
+  [layer setWantsExtendedDynamicRangeContent:isTranscriptBackgroundActive];
 
-  v7 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-  v6 = [v7 layer];
-  [v6 setWantsExtendedDynamicRangeContent:v4];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+  layer2 = [titleLabel layer];
+  [layer2 setWantsExtendedDynamicRangeContent:isTranscriptBackgroundActive];
 }
 
 - (void)layoutSubviews
@@ -138,9 +138,9 @@ void __66__CKTranscriptLegibilityButton__registerForTraitCollectionChanges__bloc
 - (CGRect)legibilityViewFrame
 {
   [(CKTranscriptLegibilityInternalButton *)self->_button layoutIfNeeded];
-  v3 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-  [v3 bounds];
-  [(CKTranscriptLegibilityButton *)self convertRect:v3 fromView:?];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+  [titleLabel bounds];
+  [(CKTranscriptLegibilityButton *)self convertRect:titleLabel fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -159,10 +159,10 @@ void __66__CKTranscriptLegibilityButton__registerForTraitCollectionChanges__bloc
 
 - (BOOL)isLegibilityViewRequired
 {
-  v2 = [(CKTranscriptLegibilityButton *)self traitCollection];
-  v3 = [v2 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptLegibilityButton *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  return v3;
+  return isTranscriptBackgroundActive;
 }
 
 - (void)deferredUpdateLegibilityView
@@ -178,15 +178,15 @@ void __66__CKTranscriptLegibilityButton__registerForTraitCollectionChanges__bloc
 {
   if ([(CKTranscriptLegibilityButton *)self isLegibilityViewRequired]&& ([(CKTranscriptLegibilityButton *)self legibilityViewFrame], !CGRectIsEmpty(v8)))
   {
-    v6 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-    if (v6)
+    titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+    if (titleLabel)
     {
-      v3 = [(CKTranscriptLegibilityButton *)self legibilityDescriptor];
-      v4 = [MEMORY[0x1E69C5420] legibilityContentForLabel:v6 legibilityDescriptor:v3];
+      legibilityDescriptor = [(CKTranscriptLegibilityButton *)self legibilityDescriptor];
+      v4 = [MEMORY[0x1E69C5420] legibilityContentForLabel:titleLabel legibilityDescriptor:legibilityDescriptor];
       if (v4)
       {
-        v5 = [(CKTranscriptLegibilityButton *)self _lazyLoadedLegibilityView];
-        [v5 setContent:v4];
+        _lazyLoadedLegibilityView = [(CKTranscriptLegibilityButton *)self _lazyLoadedLegibilityView];
+        [_lazyLoadedLegibilityView setContent:v4];
       }
 
       else
@@ -221,9 +221,9 @@ void __66__CKTranscriptLegibilityButton__registerForTraitCollectionChanges__bloc
   legibilityView = self->_legibilityView;
   if (!legibilityView)
   {
-    v4 = [(CKTranscriptLegibilityButton *)self _createLegibilityView];
+    _createLegibilityView = [(CKTranscriptLegibilityButton *)self _createLegibilityView];
     v5 = self->_legibilityView;
-    self->_legibilityView = v4;
+    self->_legibilityView = _createLegibilityView;
 
     [(CKTranscriptLegibilityButton *)self insertSubview:self->_legibilityView belowSubview:self->_button];
     [(CKTranscriptLegibilityButton *)self legibilityViewFrame];
@@ -245,18 +245,18 @@ void __66__CKTranscriptLegibilityButton__registerForTraitCollectionChanges__bloc
   }
 }
 
-+ (CKTranscriptLegibilityButton)buttonWithType:(int64_t)a3
++ (CKTranscriptLegibilityButton)buttonWithType:(int64_t)type
 {
-  v3 = [CKTranscriptLegibilityInternalButton buttonWithType:a3];
+  v3 = [CKTranscriptLegibilityInternalButton buttonWithType:type];
   v4 = [CKTranscriptLegibilityButton alloc];
   v5 = [(CKTranscriptLegibilityButton *)v4 initWithFrame:v3 internalButton:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v5;
 }
 
-+ (CKTranscriptLegibilityButton)buttonWithConfiguration:(id)a3 primaryAction:(id)a4
++ (CKTranscriptLegibilityButton)buttonWithConfiguration:(id)configuration primaryAction:(id)action
 {
-  v4 = [CKTranscriptLegibilityInternalButton buttonWithConfiguration:a3 primaryAction:a4];
+  v4 = [CKTranscriptLegibilityInternalButton buttonWithConfiguration:configuration primaryAction:action];
   v5 = [CKTranscriptLegibilityButton alloc];
   v6 = [(CKTranscriptLegibilityButton *)v5 initWithFrame:v4 internalButton:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
@@ -273,62 +273,62 @@ void __66__CKTranscriptLegibilityButton__registerForTraitCollectionChanges__bloc
   return result;
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  [(CKTranscriptLegibilityInternalButton *)self->_button setContentEdgeInsets:a3.top, a3.left, a3.bottom, a3.right];
+  [(CKTranscriptLegibilityInternalButton *)self->_button setContentEdgeInsets:insets.top, insets.left, insets.bottom, insets.right];
 
   [(CKTranscriptLegibilityButton *)self deferredUpdateLegibilityView];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  [(CKTranscriptLegibilityInternalButton *)self->_button setConfiguration:a3];
+  [(CKTranscriptLegibilityInternalButton *)self->_button setConfiguration:configuration];
 
   [(CKTranscriptLegibilityButton *)self deferredUpdateLegibilityView];
 }
 
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state
 {
-  [(CKTranscriptLegibilityInternalButton *)self->_button setAttributedTitle:a3 forState:a4];
+  [(CKTranscriptLegibilityInternalButton *)self->_button setAttributedTitle:title forState:state];
 
   [(CKTranscriptLegibilityButton *)self deferredUpdateLegibilityView];
 }
 
-- (void)setContentHorizontalAlignment:(int64_t)a3
+- (void)setContentHorizontalAlignment:(int64_t)alignment
 {
-  [(CKTranscriptLegibilityInternalButton *)self->_button setContentHorizontalAlignment:a3];
+  [(CKTranscriptLegibilityInternalButton *)self->_button setContentHorizontalAlignment:alignment];
 
   [(CKTranscriptLegibilityButton *)self deferredUpdateLegibilityView];
 }
 
 - (int64_t)titleLabelLineBreakMode
 {
-  v2 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-  v3 = [v2 lineBreakMode];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+  lineBreakMode = [titleLabel lineBreakMode];
 
-  return v3;
+  return lineBreakMode;
 }
 
-- (void)setTitleLabelLineBreakMode:(int64_t)a3
+- (void)setTitleLabelLineBreakMode:(int64_t)mode
 {
-  v5 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-  [v5 setLineBreakMode:a3];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+  [titleLabel setLineBreakMode:mode];
 
   [(CKTranscriptLegibilityButton *)self deferredUpdateLegibilityView];
 }
 
 - (int64_t)titleLabelNumberOfLines
 {
-  v2 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-  v3 = [v2 numberOfLines];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+  numberOfLines = [titleLabel numberOfLines];
 
-  return v3;
+  return numberOfLines;
 }
 
-- (void)setTitleLabelNumberOfLines:(int64_t)a3
+- (void)setTitleLabelNumberOfLines:(int64_t)lines
 {
-  v5 = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
-  [v5 setNumberOfLines:a3];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self->_button titleLabel];
+  [titleLabel setNumberOfLines:lines];
 
   [(CKTranscriptLegibilityButton *)self deferredUpdateLegibilityView];
 }

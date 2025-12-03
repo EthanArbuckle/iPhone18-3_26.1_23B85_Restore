@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInYearlyIncome
-- (PKPaymentSetupFieldBuiltInYearlyIncome)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInYearlyIncome)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInYearlyIncome
 
-- (PKPaymentSetupFieldBuiltInYearlyIncome)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInYearlyIncome)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = PKPaymentSetupFieldBuiltInYearlyIncome;
-  v9 = [(PKPaymentSetupFieldText *)&v12 initWithIdentifier:@"yearlyIncome" type:a4];
+  v9 = [(PKPaymentSetupFieldText *)&v12 initWithIdentifier:@"yearlyIncome" type:type];
   if (v9)
   {
     v10 = PKLocalizedFeatureString(@"INCOME", 2, 0, v4, v5, v6, v7, v8, v12.receiver);

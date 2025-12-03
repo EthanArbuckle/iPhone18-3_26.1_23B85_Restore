@@ -16,54 +16,54 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:AXWallpaperScrollViewIdentifier];
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier];
 
   if (v4)
   {
-    v5 = accessibilityHomeUILocalizedString(@"wallpaper.viewfinder.label");
+    accessibilityLabel = accessibilityHomeUILocalizedString(@"wallpaper.viewfinder.label");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = HomeWallpaperScrollViewAccessibility;
-    v5 = [(HomeWallpaperScrollViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(HomeWallpaperScrollViewAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:AXWallpaperScrollViewIdentifier];
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier];
 
   if (v4)
   {
-    v5 = [(HomeWallpaperScrollViewAccessibility *)self _accessibilityZoomedString];
+    _accessibilityZoomedString = [(HomeWallpaperScrollViewAccessibility *)self _accessibilityZoomedString];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = HomeWallpaperScrollViewAccessibility;
-    v5 = [(HomeWallpaperScrollViewAccessibility *)&v7 accessibilityValue];
+    _accessibilityZoomedString = [(HomeWallpaperScrollViewAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return _accessibilityZoomedString;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:AXWallpaperScrollViewIdentifier])
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier])
   {
-    v4 = [(HomeWallpaperScrollViewAccessibility *)self _accessibilityIsWallpaperEditable];
+    _accessibilityIsWallpaperEditable = [(HomeWallpaperScrollViewAccessibility *)self _accessibilityIsWallpaperEditable];
 
-    if (v4)
+    if (_accessibilityIsWallpaperEditable)
     {
-      v5 = accessibilityHomeUILocalizedString(@"wallpaper.viewfinder.hint");
+      accessibilityHint = accessibilityHomeUILocalizedString(@"wallpaper.viewfinder.hint");
       goto LABEL_6;
     }
   }
@@ -74,16 +74,16 @@
 
   v7.receiver = self;
   v7.super_class = HomeWallpaperScrollViewAccessibility;
-  v5 = [(HomeWallpaperScrollViewAccessibility *)&v7 accessibilityHint];
+  accessibilityHint = [(HomeWallpaperScrollViewAccessibility *)&v7 accessibilityHint];
 LABEL_6:
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:AXWallpaperScrollViewIdentifier];
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier];
 
   if (v4)
   {
@@ -97,8 +97,8 @@ LABEL_6:
 
 - (void)accessibilityIncrement
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:AXWallpaperScrollViewIdentifier];
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier];
 
   if (v4)
   {
@@ -118,8 +118,8 @@ LABEL_6:
 
 - (void)accessibilityDecrement
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:AXWallpaperScrollViewIdentifier];
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier];
 
   if (v4)
   {
@@ -139,32 +139,32 @@ LABEL_6:
 
 - (id)_accessibilityScrollStatusFormatString
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:AXWallpaperScrollViewIdentifier];
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier];
 
   if (v4)
   {
-    v5 = accessibilityHomeUILocalizedString(@"wallpaper.viewfinder.position");
+    _accessibilityScrollStatusFormatString = accessibilityHomeUILocalizedString(@"wallpaper.viewfinder.position");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = HomeWallpaperScrollViewAccessibility;
-    v5 = [(HomeWallpaperScrollViewAccessibility *)&v7 _accessibilityScrollStatusFormatString];
+    _accessibilityScrollStatusFormatString = [(HomeWallpaperScrollViewAccessibility *)&v7 _accessibilityScrollStatusFormatString];
   }
 
-  return v5;
+  return _accessibilityScrollStatusFormatString;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:AXWallpaperScrollViewIdentifier])
+  accessibilityIdentifier = [(HomeWallpaperScrollViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:AXWallpaperScrollViewIdentifier])
   {
-    v4 = [(HomeWallpaperScrollViewAccessibility *)self _accessibilityIsWallpaperEditable];
+    _accessibilityIsWallpaperEditable = [(HomeWallpaperScrollViewAccessibility *)self _accessibilityIsWallpaperEditable];
 
-    if (v4)
+    if (_accessibilityIsWallpaperEditable)
     {
       v7.receiver = self;
       v7.super_class = HomeWallpaperScrollViewAccessibility;

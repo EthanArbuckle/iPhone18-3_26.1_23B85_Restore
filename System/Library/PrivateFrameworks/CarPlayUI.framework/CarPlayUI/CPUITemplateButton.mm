@@ -1,16 +1,16 @@
 @interface CPUITemplateButton
-- (CPUITemplateButton)initWithFrame:(CGRect)a3;
+- (CPUITemplateButton)initWithFrame:(CGRect)frame;
 - (CPUITemplateButtonDelegate)delegate;
-- (void)didSelectButton:(id)a3 withInteractionModel:(unint64_t)a4;
+- (void)didSelectButton:(id)button withInteractionModel:(unint64_t)model;
 @end
 
 @implementation CPUITemplateButton
 
-- (CPUITemplateButton)initWithFrame:(CGRect)a3
+- (CPUITemplateButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CPUITemplateButton;
-  v3 = [(CPUITemplateButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPUITemplateButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,18 +20,18 @@
   return v4;
 }
 
-- (void)didSelectButton:(id)a3 withInteractionModel:(unint64_t)a4
+- (void)didSelectButton:(id)button withInteractionModel:(unint64_t)model
 {
   v6 = +[CPUIUtilities sharedInstance];
-  [v6 setLastButtonPressInteractionModel:a4];
+  [v6 setLastButtonPressInteractionModel:model];
 
-  v7 = [(CPUITemplateButton *)self delegate];
+  delegate = [(CPUITemplateButton *)self delegate];
   LOBYTE(v6) = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(CPUITemplateButton *)self delegate];
-    [v8 didSelectButton:self];
+    delegate2 = [(CPUITemplateButton *)self delegate];
+    [delegate2 didSelectButton:self];
   }
 }
 

@@ -28,7 +28,7 @@
   v17[2] = __72__CNContactStore_CASAdditions__contactWithIdentifier_keysToFetch_error___block_invoke;
   v17[3] = &unk_278E05218;
   v17[4] = &v18;
-  [a1 enumerateContactsWithFetchRequest:v10 error:a5 usingBlock:v17];
+  [self enumerateContactsWithFetchRequest:v10 error:a5 usingBlock:v17];
   v14 = v19[5];
 
   _Block_object_dispose(&v18, 8);

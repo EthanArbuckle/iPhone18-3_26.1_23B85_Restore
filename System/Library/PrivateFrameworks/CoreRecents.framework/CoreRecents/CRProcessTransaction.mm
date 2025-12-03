@@ -1,6 +1,6 @@
 @interface CRProcessTransaction
-+ (id)transactionWithDescription:(id)a3;
-- (CRProcessTransaction)initWithDescription:(id)a3;
++ (id)transactionWithDescription:(id)description;
+- (CRProcessTransaction)initWithDescription:(id)description;
 - (id)description;
 - (void)dealloc;
 @end
@@ -14,21 +14,21 @@
   [(CRProcessTransaction *)&v3 dealloc];
 }
 
-+ (id)transactionWithDescription:(id)a3
++ (id)transactionWithDescription:(id)description
 {
-  v3 = [[a1 alloc] initWithDescription:a3];
+  v3 = [[self alloc] initWithDescription:description];
 
   return v3;
 }
 
-- (CRProcessTransaction)initWithDescription:(id)a3
+- (CRProcessTransaction)initWithDescription:(id)description
 {
   v6.receiver = self;
   v6.super_class = CRProcessTransaction;
   v4 = [(CRProcessTransaction *)&v6 init];
   if (v4)
   {
-    [a3 UTF8String];
+    [description UTF8String];
     v4->_transaction = os_transaction_create();
   }
 

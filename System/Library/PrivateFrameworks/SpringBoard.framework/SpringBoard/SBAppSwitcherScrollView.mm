@@ -1,31 +1,31 @@
 @interface SBAppSwitcherScrollView
 - (CGPoint)contentOffsetVelocity;
-- (CGPoint)contentOffsetVelocityConsideringNextContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3;
+- (CGPoint)contentOffsetVelocityConsideringNextContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation SBAppSwitcherScrollView
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  if ((*&a3.x & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&offset.x & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     x = 0.0;
   }
 
   else
   {
-    x = a3.x;
+    x = offset.x;
   }
 
-  if ((*&a3.y & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&offset.y & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     y = 0.0;
   }
 
   else
   {
-    y = a3.y;
+    y = offset.y;
   }
 
   [(SBAppSwitcherScrollView *)self contentOffset];
@@ -71,10 +71,10 @@
   return result;
 }
 
-- (CGPoint)contentOffsetVelocityConsideringNextContentOffset:(CGPoint)a3
+- (CGPoint)contentOffsetVelocityConsideringNextContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(SBAppSwitcherScrollView *)self contentOffsetVelocity];
   v7 = v6;
   v9 = v8;

@@ -1,60 +1,60 @@
 @interface HDSwimmingDataCollector
-- (Class)sensorDatumClassForAggregator:(id)a3;
+- (Class)sensorDatumClassForAggregator:(id)aggregator;
 - (_TtC12HealthDaemon23HDSwimmingDataCollector)init;
-- (id)identifierForDataAggregator:(id)a3;
-- (id)sourceForDataAggregator:(id)a3;
-- (void)dataAggregator:(id)a3 requestsCollectionThroughDate:(id)a4 completion:(id)a5;
-- (void)historicalSwimmingDataDidUpdate:(id)a3 reference:(id)a4;
+- (id)identifierForDataAggregator:(id)aggregator;
+- (id)sourceForDataAggregator:(id)aggregator;
+- (void)dataAggregator:(id)aggregator requestsCollectionThroughDate:(id)date completion:(id)completion;
+- (void)historicalSwimmingDataDidUpdate:(id)update reference:(id)reference;
 @end
 
 @implementation HDSwimmingDataCollector
 
-- (void)historicalSwimmingDataDidUpdate:(id)a3 reference:(id)a4
+- (void)historicalSwimmingDataDidUpdate:(id)update reference:(id)reference
 {
   type metadata accessor for HDCMSwimData();
   v6 = sub_22911C45C();
-  v7 = a4;
-  v8 = self;
-  sub_2289D5B10(v6, v7);
+  referenceCopy = reference;
+  selfCopy = self;
+  sub_2289D5B10(v6, referenceCopy);
 }
 
-- (void)dataAggregator:(id)a3 requestsCollectionThroughDate:(id)a4 completion:(id)a5
+- (void)dataAggregator:(id)aggregator requestsCollectionThroughDate:(id)date completion:(id)completion
 {
   v8 = sub_22911B88C();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x28223BE20](v8);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   sub_22911B86C();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = a3;
-  v16 = self;
+  aggregatorCopy = aggregator;
+  selfCopy = self;
   sub_2289D8718(v12, sub_2289CADB0, v14);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (Class)sensorDatumClassForAggregator:(id)a3
+- (Class)sensorDatumClassForAggregator:(id)aggregator
 {
   sub_2289B3D00(0, &qword_27D863198, off_27860F198);
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)sourceForDataAggregator:(id)a3
+- (id)sourceForDataAggregator:(id)aggregator
 {
-  v3 = [objc_opt_self() _localDeviceSource];
+  _localDeviceSource = [objc_opt_self() _localDeviceSource];
 
-  return v3;
+  return _localDeviceSource;
 }
 
-- (id)identifierForDataAggregator:(id)a3
+- (id)identifierForDataAggregator:(id)aggregator
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HDSwimmingDataCollector *)v5 description];
+  aggregatorCopy = aggregator;
+  selfCopy = self;
+  v6 = [(HDSwimmingDataCollector *)selfCopy description];
   v7 = sub_22911C35C();
   v9 = v8;
 

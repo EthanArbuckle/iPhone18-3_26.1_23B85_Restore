@@ -2,10 +2,10 @@
 - (CGSize)_backgroundImageProxySize;
 - (_TVDivTemplateController)init;
 - (id)preferredFocusEnvironments;
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4;
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage;
 - (void)_updateContentView;
 - (void)loadView;
-- (void)updateWithViewElement:(id)a3;
+- (void)updateWithViewElement:(id)element;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v25 = self;
+  elementCopy = element;
+  selfCopy = self;
   v36.receiver = self;
   v36.super_class = _TVDivTemplateController;
-  [(_TVBgImageLoadingViewController *)&v36 updateWithViewElement:v4];
+  [(_TVBgImageLoadingViewController *)&v36 updateWithViewElement:elementCopy];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v26 = v4;
-  obj = [v4 children];
+  v26 = elementCopy;
+  obj = [elementCopy children];
   v5 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v5)
   {
@@ -66,8 +66,8 @@
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v11 = [v10 children];
-          v12 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+          children = [v10 children];
+          v12 = [children countByEnumeratingWithState:&v28 objects:v37 count:16];
           if (v12)
           {
             v13 = v12;
@@ -78,15 +78,15 @@
               {
                 if (*v29 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(children);
                 }
 
                 v16 = *(*(&v28 + 1) + 8 * j);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v17 = [v26 appDocument];
-                  [v17 tv_adjustedWindowSize];
+                  appDocument = [v26 appDocument];
+                  [appDocument tv_adjustedWindowSize];
                   v19 = v18;
                   v21 = v20;
 
@@ -100,7 +100,7 @@
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+              v13 = [children countByEnumeratingWithState:&v28 objects:v37 count:16];
               if (v13)
               {
                 continue;
@@ -125,16 +125,16 @@ LABEL_17:
     v7 = 0;
   }
 
-  [(_TVDivTemplateController *)v25 setBackgroundImageProxy:v7];
-  [(_TVDivTemplateController *)v25 setViewElement:v26];
-  [(_TVDivTemplateController *)v25 _updateContentView];
+  [(_TVDivTemplateController *)selfCopy setBackgroundImageProxy:v7];
+  [(_TVDivTemplateController *)selfCopy setViewElement:v26];
+  [(_TVDivTemplateController *)selfCopy _updateContentView];
 }
 
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(_TVDivTemplateController *)self contentView];
-  [v4 addSubview:v3];
+  contentView = [(_TVDivTemplateController *)self contentView];
+  [v4 addSubview:contentView];
 
   [(_TVDivTemplateController *)self setView:v4];
 }
@@ -144,37 +144,37 @@ LABEL_17:
   v10.receiver = self;
   v10.super_class = _TVDivTemplateController;
   [(_TVBgImageLoadingViewController *)&v10 viewDidLayoutSubviews];
-  v3 = [(_TVDivTemplateController *)self backgroundImageProxy];
+  backgroundImageProxy = [(_TVDivTemplateController *)self backgroundImageProxy];
 
-  v4 = [(_TVDivTemplateController *)self backgroundImageView];
-  v5 = v4;
-  if (v3)
+  backgroundImageView = [(_TVDivTemplateController *)self backgroundImageView];
+  view2 = backgroundImageView;
+  if (backgroundImageProxy)
   {
-    v6 = [(_TVDivTemplateController *)self view];
-    [v6 bounds];
-    [v5 setFrame:?];
+    view = [(_TVDivTemplateController *)self view];
+    [view bounds];
+    [view2 setFrame:?];
 
-    v5 = [(_TVDivTemplateController *)self view];
-    v7 = [(_TVDivTemplateController *)self backgroundImageView];
-    [v5 insertSubview:v7 atIndex:0];
+    view2 = [(_TVDivTemplateController *)self view];
+    backgroundImageView2 = [(_TVDivTemplateController *)self backgroundImageView];
+    [view2 insertSubview:backgroundImageView2 atIndex:0];
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [backgroundImageView removeFromSuperview];
   }
 
-  v8 = [(_TVDivTemplateController *)self contentView];
-  v9 = [(_TVDivTemplateController *)self view];
-  [v9 bounds];
-  [v8 setFrame:?];
+  contentView = [(_TVDivTemplateController *)self contentView];
+  view3 = [(_TVDivTemplateController *)self view];
+  [view3 bounds];
+  [contentView setFrame:?];
 }
 
 - (id)preferredFocusEnvironments
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(_TVDivTemplateController *)self contentView];
-  v5[0] = v2;
+  contentView = [(_TVDivTemplateController *)self contentView];
+  v5[0] = contentView;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -182,9 +182,9 @@ LABEL_17:
 
 - (CGSize)_backgroundImageProxySize
 {
-  v2 = [(_TVDivTemplateController *)self viewElement];
-  v3 = [v2 appDocument];
-  [v3 tv_adjustedWindowSize];
+  viewElement = [(_TVDivTemplateController *)self viewElement];
+  appDocument = [viewElement appDocument];
+  [appDocument tv_adjustedWindowSize];
   v5 = v4;
   v7 = v6;
 
@@ -195,23 +195,23 @@ LABEL_17:
   return result;
 }
 
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage
 {
-  v5 = a3;
-  v6 = [(_TVDivTemplateController *)self backgroundImageView];
-  [v6 setImage:v5];
+  imageCopy = image;
+  backgroundImageView = [(_TVDivTemplateController *)self backgroundImageView];
+  [backgroundImageView setImage:imageCopy];
 }
 
 - (void)_updateContentView
 {
-  v2 = self;
+  selfCopy = self;
   v92 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVDivTemplateController *)self viewElement];
-  v4 = [(_TVDivTemplateController *)v2 contentView];
-  v57 = [v3 tv_semanticContentAttribute];
-  [v4 setSemanticContentAttribute:?];
-  v5 = [(_TVDivTemplateController *)v2 viewControllers];
-  v6 = [v5 mutableCopy];
+  viewElement = [(_TVDivTemplateController *)self viewElement];
+  contentView = [(_TVDivTemplateController *)selfCopy contentView];
+  tv_semanticContentAttribute = [viewElement tv_semanticContentAttribute];
+  [contentView setSemanticContentAttribute:?];
+  viewControllers = [(_TVDivTemplateController *)selfCopy viewControllers];
+  v6 = [viewControllers mutableCopy];
 
   v85[0] = MEMORY[0x277D85DD0];
   v85[1] = 3221225472;
@@ -220,9 +220,9 @@ LABEL_17:
   v54 = v6;
   v86 = v54;
   v7 = MEMORY[0x26D6AFBB0](v85);
-  v52 = v4;
-  v8 = [v4 components];
-  v9 = [v8 mutableCopy];
+  v52 = contentView;
+  components = [contentView components];
+  v9 = [components mutableCopy];
 
   v83[0] = MEMORY[0x277D85DD0];
   v83[1] = 3221225472;
@@ -231,10 +231,10 @@ LABEL_17:
   v51 = v9;
   v84 = v51;
   v10 = MEMORY[0x26D6AFBB0](v83);
-  v58 = [MEMORY[0x277CBEB18] array];
-  v59 = [MEMORY[0x277CBEB18] array];
-  v53 = v3;
-  [v3 children];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v53 = viewElement;
+  [viewElement children];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
@@ -264,10 +264,10 @@ LABEL_17:
         if ([v17 tv_elementType] != 4)
         {
           v18 = v13;
-          v19 = v2;
-          v20 = [v17 autoHighlightIdentifier];
+          v19 = selfCopy;
+          autoHighlightIdentifier = [v17 autoHighlightIdentifier];
 
-          if (v20)
+          if (autoHighlightIdentifier)
           {
             [v17 resetProperty:1];
           }
@@ -284,30 +284,30 @@ LABEL_17:
               [v54 removeObject:v21];
             }
 
-            [v58 addObject:v24];
-            v25 = [v24 view];
+            [array addObject:v24];
+            view = [v24 view];
           }
 
           else
           {
             v26 = v55[2](v55, [v17 tv_elementType]);
-            v27 = [*(v22 + 1176) sharedInterfaceFactory];
-            v25 = [v27 _viewFromElement:v17 existingView:v26];
+            sharedInterfaceFactory = [*(v22 + 1176) sharedInterfaceFactory];
+            view = [sharedInterfaceFactory _viewFromElement:v17 existingView:v26];
 
             v15 = v56;
           }
 
-          v2 = v19;
+          selfCopy = v19;
           v13 = v18;
-          if (v25)
+          if (view)
           {
-            [v25 setSemanticContentAttribute:v57];
-            [v59 addObject:v25];
+            [view setSemanticContentAttribute:tv_semanticContentAttribute];
+            [array2 addObject:view];
             v14 = 0x279D6D000;
             v12 = v61;
-            if (!v60 && v20)
+            if (!v60 && autoHighlightIdentifier)
             {
-              v60 = v25;
+              v60 = view;
             }
           }
 
@@ -333,12 +333,12 @@ LABEL_17:
     v60 = 0;
   }
 
-  v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v58, "count")}];
+  v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array, "count")}];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v29 = v58;
+  v29 = array;
   v30 = [v29 countByEnumeratingWithState:&v75 objects:v90 count:16];
   if (v30)
   {
@@ -354,9 +354,9 @@ LABEL_17:
         }
 
         v34 = *(*(&v75 + 1) + 8 * i);
-        v35 = [v34 parentViewController];
+        parentViewController = [v34 parentViewController];
 
-        if (v35 != v2)
+        if (parentViewController != selfCopy)
         {
           [v28 addObject:v34];
         }
@@ -368,7 +368,7 @@ LABEL_17:
     while (v31);
   }
 
-  [(_TVDivTemplateController *)v2 setViewControllers:v29];
+  [(_TVDivTemplateController *)selfCopy setViewControllers:v29];
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
@@ -416,7 +416,7 @@ LABEL_17:
           objc_enumerationMutation(v41);
         }
 
-        [(_TVDivTemplateController *)v2 addChildViewController:*(*(&v67 + 1) + 8 * k)];
+        [(_TVDivTemplateController *)selfCopy addChildViewController:*(*(&v67 + 1) + 8 * k)];
       }
 
       v43 = [v41 countByEnumeratingWithState:&v67 objects:v88 count:16];
@@ -425,7 +425,7 @@ LABEL_17:
     while (v43);
   }
 
-  [v52 setComponents:v59];
+  [v52 setComponents:array2];
   if (v60)
   {
     [v52 setPreferredFocusedComponent:?];
@@ -451,7 +451,7 @@ LABEL_17:
           objc_enumerationMutation(v46);
         }
 
-        [*(*(&v63 + 1) + 8 * m) didMoveToParentViewController:v2];
+        [*(*(&v63 + 1) + 8 * m) didMoveToParentViewController:selfCopy];
       }
 
       v48 = [v46 countByEnumeratingWithState:&v63 objects:v87 count:16];

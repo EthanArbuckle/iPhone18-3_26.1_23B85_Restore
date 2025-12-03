@@ -1,49 +1,49 @@
 @interface HFChildServiceControlItem
-- (BOOL)supportsItemRepresentingServices:(id)a3;
-- (HFChildServiceControlItem)initWithBaseValueSource:(id)a3 parentService:(id)a4 childServiceFilter:(id)a5 displayResults:(id)a6;
-- (HFChildServiceControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (BOOL)supportsItemRepresentingServices:(id)services;
+- (HFChildServiceControlItem)initWithBaseValueSource:(id)source parentService:(id)service childServiceFilter:(id)filter displayResults:(id)results;
+- (HFChildServiceControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 @end
 
 @implementation HFChildServiceControlItem
 
-- (HFChildServiceControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFChildServiceControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithBaseValueSource_parentService_childServiceFilter_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFChildServiceControlItem.m" lineNumber:48 description:{@"%s is unavailable; use %@ instead", "-[HFChildServiceControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFChildServiceControlItem.m" lineNumber:48 description:{@"%s is unavailable; use %@ instead", "-[HFChildServiceControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (HFChildServiceControlItem)initWithBaseValueSource:(id)a3 parentService:(id)a4 childServiceFilter:(id)a5 displayResults:(id)a6
+- (HFChildServiceControlItem)initWithBaseValueSource:(id)source parentService:(id)service childServiceFilter:(id)filter displayResults:(id)results
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
+  serviceCopy = service;
+  filterCopy = filter;
+  resultsCopy = results;
+  sourceCopy = source;
   v15 = objc_alloc_init(HFControlItemCharacteristicOptions);
   v16 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v17 = [v11 hf_childServices];
-  v18 = [v11 hf_serviceDescriptor];
-  v19 = [(HFSimpleAggregatedCharacteristicValueSource *)v16 initWithValueSource:v14 services:v17 primaryServiceDescriptor:v18];
+  hf_childServices = [serviceCopy hf_childServices];
+  hf_serviceDescriptor = [serviceCopy hf_serviceDescriptor];
+  v19 = [(HFSimpleAggregatedCharacteristicValueSource *)v16 initWithValueSource:sourceCopy services:hf_childServices primaryServiceDescriptor:hf_serviceDescriptor];
 
   v23.receiver = self;
   v23.super_class = HFChildServiceControlItem;
-  v20 = [(HFControlItem *)&v23 initWithValueSource:v19 characteristicOptions:v15 displayResults:v13];
+  v20 = [(HFControlItem *)&v23 initWithValueSource:v19 characteristicOptions:v15 displayResults:resultsCopy];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_parentService, a4);
-    v21 = v12;
-    if (!v12)
+    objc_storeStrong(&v20->_parentService, service);
+    v21 = filterCopy;
+    if (!filterCopy)
     {
       v21 = [[HFChildServiceFilter alloc] initWithChildServiceTypes:0];
     }
 
     objc_storeStrong(&v20->_childServiceFilter, v21);
-    if (!v12)
+    if (!filterCopy)
     {
     }
   }
@@ -51,22 +51,22 @@
   return v20;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [v5 valueSource];
+  valueSource = [sourceCopy valueSource];
 
-  v8 = [(HFChildServiceControlItem *)self parentService];
-  v9 = [(HFChildServiceControlItem *)self childServiceFilter];
-  v10 = [(HFControlItem *)self displayResults];
-  v11 = [v6 initWithBaseValueSource:v7 parentService:v8 childServiceFilter:v9 displayResults:v10];
+  parentService = [(HFChildServiceControlItem *)self parentService];
+  childServiceFilter = [(HFChildServiceControlItem *)self childServiceFilter];
+  displayResults = [(HFControlItem *)self displayResults];
+  v11 = [v6 initWithBaseValueSource:valueSource parentService:parentService childServiceFilter:childServiceFilter displayResults:displayResults];
 
   [v11 copyLatestResultsFromItem:self];
   return v11;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -140,11 +140,11 @@ id __57__HFChildServiceControlItem__subclass_updateWithOptions___block_invoke_2(
   return v4;
 }
 
-- (BOOL)supportsItemRepresentingServices:(id)a3
+- (BOOL)supportsItemRepresentingServices:(id)services
 {
-  v4 = a3;
-  v5 = [(HFChildServiceControlItem *)self parentService];
-  v6 = [v4 containsObject:v5];
+  servicesCopy = services;
+  parentService = [(HFChildServiceControlItem *)self parentService];
+  v6 = [servicesCopy containsObject:parentService];
 
   return v6;
 }

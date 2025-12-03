@@ -1,6 +1,6 @@
 @interface ChannelCoinStyler
 - (UIFont)tagTitleFont;
-- (id)tagColorFor:(id)a3;
+- (id)tagColorFor:(id)for;
 @end
 
 @implementation ChannelCoinStyler
@@ -22,11 +22,11 @@
   return v7;
 }
 
-- (id)tagColorFor:(id)a3
+- (id)tagColorFor:(id)for
 {
-  v3 = [*self->feedNavImageStyler tagColorFor_];
+  tagColorFor_ = [*self->feedNavImageStyler tagColorFor_];
 
-  return v3;
+  return tagColorFor_;
 }
 
 @end

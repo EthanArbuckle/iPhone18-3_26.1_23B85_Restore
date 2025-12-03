@@ -1,11 +1,11 @@
 @interface CRLUSDZLayout
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3;
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space;
 - (CGRect)alignmentFrame;
 - (CGRect)boundsForStandardKnobs;
 - (CGRect)boundsInRoot;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
+- (CGRect)rectInRootForSelectionPath:(id)path;
 - (CRLBezierPath)pathForClippingConnectionLines;
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3;
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry;
 - (id)computeLayoutGeometry;
 - (id)computeWrapPath;
 @end
@@ -32,14 +32,14 @@
   return result;
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  v3 = self;
-  v4 = [(CRLCanvasLayout *)v3 pureGeometryInRoot];
-  if (v4)
+  selfCopy = self;
+  pureGeometryInRoot = [(CRLCanvasLayout *)selfCopy pureGeometryInRoot];
+  if (pureGeometryInRoot)
   {
-    v9 = v4;
-    [(CRLCanvasLayoutGeometry *)v4 frame];
+    v9 = pureGeometryInRoot;
+    [(CRLCanvasLayoutGeometry *)pureGeometryInRoot frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -101,16 +101,16 @@
   return result;
 }
 
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1008B855C(a3);
+  geometryCopy = geometry;
+  selfCopy = self;
+  v7 = sub_1008B855C(geometry);
 
   return v7;
 }
 
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space
 {
   v4 = *&a4->c;
   *&retstr->a = *&a4->a;
@@ -121,7 +121,7 @@
 
 - (id)computeWrapPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1008B88B4();
 
   return v3;
@@ -129,8 +129,8 @@
 
 - (CRLBezierPath)pathForClippingConnectionLines
 {
-  v2 = self;
-  result = [(CRLUSDZLayout *)v2 computeWrapPath];
+  selfCopy = self;
+  result = [(CRLUSDZLayout *)selfCopy computeWrapPath];
   if (result)
   {
     v4 = result;

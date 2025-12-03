@@ -1,6 +1,6 @@
 @interface LabeledSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (double)_accessibilityIncreaseAmount:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (double)_accessibilityIncreaseAmount:(BOOL)amount;
 - (float)_accessibilityLabeledSliderValue;
 - (id)accessibilityValue;
 - (void)_accessibilityReportModeChanged;
@@ -10,11 +10,11 @@
 
 @implementation LabeledSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Setup.LabeledSlider" hasSwiftField:@"labels" withSwiftType:"Array<UILabel>"];
-  [v3 validateClass:@"Setup.BuddyAppearanceController" hasInstanceMethod:@"modeChanged" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Setup.LabeledSlider" hasSwiftField:@"labels" withSwiftType:"Array<UILabel>"];
+  [validationsCopy validateClass:@"Setup.BuddyAppearanceController" hasInstanceMethod:@"modeChanged" withFullSignature:{"v", 0}];
 }
 
 - (float)_accessibilityLabeledSliderValue
@@ -27,12 +27,12 @@
   return v4;
 }
 
-- (double)_accessibilityIncreaseAmount:(BOOL)a3
+- (double)_accessibilityIncreaseAmount:(BOOL)amount
 {
-  v3 = a3;
+  amountCopy = amount;
   [(LabeledSliderAccessibility *)self _accessibilityLabeledSliderValue];
   v5 = -1.01;
-  if (v3)
+  if (amountCopy)
   {
     v5 = 1.01;
   }
@@ -113,7 +113,7 @@ LABEL_11:
   v6 = v5 & ~(v5 >> 31);
   if ([v3 count] <= v6)
   {
-    v9 = 0;
+    accessibilityLabel = 0;
   }
 
   else
@@ -122,10 +122,10 @@ LABEL_11:
     v7 = [v3 objectAtIndexedSubscript:v6];
     v8 = __UIAccessibilityCastAsClass();
 
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel = [v8 accessibilityLabel];
   }
 
-  return v9;
+  return accessibilityLabel;
 }
 
 @end

@@ -4,10 +4,10 @@
 - (AccountUtilities)init;
 - (id)accountIDsEnabledForNotes;
 - (id)accountsEnabledForNotes;
-- (id)defaultStoreSyncIdWithDesiredSyncId:(id)a3;
+- (id)defaultStoreSyncIdWithDesiredSyncId:(id)id;
 - (id)freshContext;
 - (id)localAccountDisplayName;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)dealloc;
 - (void)startKeepingAccountInfosUpToDate;
 - (void)updateAccountInfos;
@@ -38,9 +38,9 @@
     backgroundDispatchGroup = v2->_backgroundDispatchGroup;
     v2->_backgroundDispatchGroup = v3;
 
-    v5 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     accountStore = v2->_accountStore;
-    v2->_accountStore = v5;
+    v2->_accountStore = defaultStore;
 
     v7 = [(ACAccountStore *)v2->_accountStore accountIdentifiersEnabledForDataclass:*MEMORY[0x277CB89F8]];
     accountIDsEnabledForNotes = v2->_accountIDsEnabledForNotes;
@@ -66,8 +66,8 @@ uint64_t __42__AccountUtilities_sharedAccountUtilities__block_invoke()
 
 - (void)startKeepingAccountInfosUpToDate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:self->_accountStore];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:self->_accountStore];
 
   [(AccountUtilities *)self updateAccountInfos];
 }
@@ -75,13 +75,13 @@ uint64_t __42__AccountUtilities_sharedAccountUtilities__block_invoke()
 - (void)updateAccountInfos
 {
   v3 = dispatch_get_global_queue(0, 0);
-  v4 = [(AccountUtilities *)self backgroundDispatchGroup];
+  backgroundDispatchGroup = [(AccountUtilities *)self backgroundDispatchGroup];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__AccountUtilities_updateAccountInfos__block_invoke;
   block[3] = &unk_2799AC828;
   block[4] = self;
-  dispatch_group_async(v4, v3, block);
+  dispatch_group_async(backgroundDispatchGroup, v3, block);
 }
 
 void __38__AccountUtilities_updateAccountInfos__block_invoke(uint64_t a1)
@@ -223,31 +223,31 @@ LABEL_30:
 
 - (ACAccountStore)accountStore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_accountStore;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_accountStore;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ACAccountStore *)v4->_accountStore accountIdentifiersEnabledForDataclass:*MEMORY[0x277CB89F8]];
-  accountIDsEnabledForNotes = v4->_accountIDsEnabledForNotes;
-  v4->_accountIDsEnabledForNotes = v5;
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(ACAccountStore *)selfCopy->_accountStore accountIdentifiersEnabledForDataclass:*MEMORY[0x277CB89F8]];
+  accountIDsEnabledForNotes = selfCopy->_accountIDsEnabledForNotes;
+  selfCopy->_accountIDsEnabledForNotes = v5;
 
-  objc_sync_exit(v4);
-  [(AccountUtilities *)v4 updateAccountInfos];
+  objc_sync_exit(selfCopy);
+  [(AccountUtilities *)selfCopy updateAccountInfos];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AccountUtilities;
@@ -258,13 +258,13 @@ LABEL_30:
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4->_accountIDsEnabledForNotes;
+  v5 = selfCopy->_accountIDsEnabledForNotes;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -278,7 +278,7 @@ LABEL_30:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [(ACAccountStore *)v4->_accountStore accountWithIdentifier:*(*(&v12 + 1) + 8 * i), v12];
+        v9 = [(ACAccountStore *)selfCopy->_accountStore accountWithIdentifier:*(*(&v12 + 1) + 8 * i), v12];
         if (v9)
         {
           [v3 addObject:v9];
@@ -291,7 +291,7 @@ LABEL_30:
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x277D85DE8];
 
   return v3;
@@ -299,35 +299,35 @@ LABEL_30:
 
 - (id)accountIDsEnabledForNotes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_accountIDsEnabledForNotes;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_accountIDsEnabledForNotes;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)defaultStoreSyncIdWithDesiredSyncId:(id)a3
+- (id)defaultStoreSyncIdWithDesiredSyncId:(id)id
 {
-  v4 = a3;
-  v5 = [(AccountUtilities *)self localNotesExist];
-  v6 = self;
-  objc_sync_enter(v6);
-  if (![v4 length])
+  idCopy = id;
+  localNotesExist = [(AccountUtilities *)self localNotesExist];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![idCopy length])
   {
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"DeviceLocalAccount"])
+  if ([idCopy isEqualToString:@"DeviceLocalAccount"])
   {
-    if (!v5)
+    if (!localNotesExist)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    v7 = v4;
-    if (v7)
+    lastObject = idCopy;
+    if (lastObject)
     {
       goto LABEL_8;
     }
@@ -335,16 +335,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([(NSArray *)v6->_accountIDsEnabledForNotes containsObject:v4])
+  if ([(NSArray *)selfCopy->_accountIDsEnabledForNotes containsObject:idCopy])
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v7 = [(NSArray *)v6->_accountIDsEnabledForNotes lastObject];
+  lastObject = [(NSArray *)selfCopy->_accountIDsEnabledForNotes lastObject];
 LABEL_8:
-  v8 = v7;
-  objc_sync_exit(v6);
+  v8 = lastObject;
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

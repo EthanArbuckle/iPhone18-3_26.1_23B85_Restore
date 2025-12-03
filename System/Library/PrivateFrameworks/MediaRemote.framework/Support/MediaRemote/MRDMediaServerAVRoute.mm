@@ -1,8 +1,8 @@
 @interface MRDMediaServerAVRoute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPicked;
 - (BOOL)isSpeakerRoute;
-- (MRDMediaServerAVRoute)initWithDictionary:(id)a3;
+- (MRDMediaServerAVRoute)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)extendedInfo;
 - (id)modelName;
@@ -11,15 +11,15 @@
 
 @implementation MRDMediaServerAVRoute
 
-- (MRDMediaServerAVRoute)initWithDictionary:(id)a3
+- (MRDMediaServerAVRoute)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MRDMediaServerAVRoute;
   v5 = [(MRDMediaServerAVRoute *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     routeDescription = v5->_routeDescription;
     v5->_routeDescription = v6;
   }
@@ -58,13 +58,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[9] isEqualToDictionary:self->_routeDescription];
+    v5 = [equalCopy[9] isEqualToDictionary:self->_routeDescription];
   }
 
   else
@@ -86,10 +86,10 @@
 
 - (id)modelName
 {
-  v2 = [(MRDMediaServerAVRoute *)self extendedInfo];
-  v3 = [v2 modelName];
+  extendedInfo = [(MRDMediaServerAVRoute *)self extendedInfo];
+  modelName = [extendedInfo modelName];
 
-  return v3;
+  return modelName;
 }
 
 - (BOOL)isPicked
@@ -111,13 +111,13 @@
     else
     {
       v6 = +[MRAVOutputContext sharedSystemAudioContext];
-      v7 = [v6 outputDevices];
+      outputDevices = [v6 outputDevices];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_1000EFB38;
       v9[3] = &unk_1004BC4A0;
       v9[4] = self;
-      v4 = [v7 indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
+      v4 = [outputDevices indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 

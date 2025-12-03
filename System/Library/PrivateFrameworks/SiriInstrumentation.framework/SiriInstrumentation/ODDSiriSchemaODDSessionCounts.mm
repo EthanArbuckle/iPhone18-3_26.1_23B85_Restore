@@ -1,25 +1,25 @@
 @interface ODDSiriSchemaODDSessionCounts
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDSessionCounts)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDSessionCounts)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDSessionCounts)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDSessionCounts)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDSessionCounts
 
-- (ODDSiriSchemaODDSessionCounts)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDSessionCounts)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDSessionCounts;
   v5 = [(ODDSiriSchemaODDSessionCounts *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usdxSessionCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usdxSessionCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDSessionCounts)initWithJSON:(id)a3
+- (ODDSiriSchemaODDSessionCounts)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDSessionCounts *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDSessionCounts *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDSessionCounts *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,16 +68,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDSessionCounts usdxSessionCount](self, "usdxSessionCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"usdxSessionCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"usdxSessionCount"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -93,15 +93,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (usdxSessionCount = self->_usdxSessionCount, usdxSessionCount == [v4 usdxSessionCount]))
+      if ((*&self->_has & 1) == 0 || (usdxSessionCount = self->_usdxSessionCount, usdxSessionCount == [equalCopy usdxSessionCount]))
       {
         v6 = 1;
       }
@@ -111,7 +111,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

@@ -1,41 +1,41 @@
 @interface BRBaseFileEnumerator
-- (BRBaseFileEnumerator)initWithFileObjectID:(id)a3 itemIdentifier:(id)a4 recursive:(BOOL)a5 fileProviderManager:(id)a6;
+- (BRBaseFileEnumerator)initWithFileObjectID:(id)d itemIdentifier:(id)identifier recursive:(BOOL)recursive fileProviderManager:(id)manager;
 - (NSString)description;
 - (void)_accountTokenDidChange;
-- (void)_handleNotificationError:(id)a3;
+- (void)_handleNotificationError:(id)error;
 - (void)_invalidate;
-- (void)_setupNotificationReceivingIfNeededWithCompletion:(id)a3;
+- (void)_setupNotificationReceivingIfNeededWithCompletion:(id)completion;
 - (void)_signalChange;
 - (void)_startObservingAccountChangesIfNeeded;
 - (void)_stopObservingAccountChanges;
 - (void)containerListDidChange;
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3;
-- (void)enumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4;
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
-- (void)enumerateNextGatherBatchWithObserver:(id)a3 fromPage:(id)a4;
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler;
+- (void)enumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
+- (void)enumerateNextGatherBatchWithObserver:(id)observer fromPage:(id)page;
 - (void)invalidate;
 - (void)invalidateChangeToken;
-- (void)receiveProgressUpdates:(id)a3 reply:(id)a4;
-- (void)receiveUpdates:(id)a3 reply:(id)a4;
-- (void)setupNotificationReceivingIfNeededWithCompletion:(id)a3;
-- (void)watchItemWithUpdateSender:(id)a3 options:(unsigned __int16)a4 errorHandler:(id)a5 gatherReply:(id)a6;
+- (void)receiveProgressUpdates:(id)updates reply:(id)reply;
+- (void)receiveUpdates:(id)updates reply:(id)reply;
+- (void)setupNotificationReceivingIfNeededWithCompletion:(id)completion;
+- (void)watchItemWithUpdateSender:(id)sender options:(unsigned __int16)options errorHandler:(id)handler gatherReply:(id)reply;
 @end
 
 @implementation BRBaseFileEnumerator
 
-- (BRBaseFileEnumerator)initWithFileObjectID:(id)a3 itemIdentifier:(id)a4 recursive:(BOOL)a5 fileProviderManager:(id)a6
+- (BRBaseFileEnumerator)initWithFileObjectID:(id)d itemIdentifier:(id)identifier recursive:(BOOL)recursive fileProviderManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v28.receiver = self;
   v28.super_class = BRBaseFileEnumerator;
   v14 = [(BRBaseFileEnumerator *)&v28 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_itemIdentifier, a4);
-    objc_storeStrong(&v15->_fileObjectID, a3);
+    objc_storeStrong(&v14->_itemIdentifier, identifier);
+    objc_storeStrong(&v15->_fileObjectID, d);
     v16 = objc_opt_new();
     updatedItemsByIDs = v15->_updatedItemsByIDs;
     v15->_updatedItemsByIDs = v16;
@@ -44,14 +44,14 @@
     deletedItemsIdentifiers = v15->_deletedItemsIdentifiers;
     v15->_deletedItemsIdentifiers = v18;
 
-    v15->_isRecursive = a5;
-    objc_storeStrong(&v15->_fileProviderManager, a6);
+    v15->_isRecursive = recursive;
+    objc_storeStrong(&v15->_fileProviderManager, manager);
     if (brc_block_remember_persona)
     {
       v20 = +[UMUserManager sharedManager];
-      v21 = [v20 br_currentPersonaID];
+      br_currentPersonaID = [v20 br_currentPersonaID];
       personaID = v15->_personaID;
-      v15->_personaID = v21;
+      v15->_personaID = br_currentPersonaID;
     }
 
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -104,30 +104,30 @@
   [(NSFileProviderManager *)fileProviderManager signalEnumeratorForContainerItemIdentifier:itemIdentifier completionHandler:v7];
 }
 
-- (void)_handleNotificationError:(id)a3
+- (void)_handleNotificationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_10001FB2C;
   v20 = &unk_100045180;
-  v21 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = errorCopy;
   v22 = v6;
   dispatch_async(queue, &v17);
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v7->_gatherEnumerationObserver)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2->_gatherEnumerationObserver)
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      gatherEnumerationObserver = v7->_gatherEnumerationObserver;
-      fileObjectID = v7->_fileObjectID;
+      gatherEnumerationObserver = selfCopy2->_gatherEnumerationObserver;
+      fileObjectID = selfCopy2->_fileObjectID;
       *buf = 138413314;
-      v24 = v7;
+      v24 = selfCopy2;
       v25 = 2112;
       v26 = v6;
       v27 = 2112;
@@ -141,14 +141,14 @@
 
     if ([v6 brc_isXPCConnectionError])
     {
-      v10 = v7->_gatherEnumerationObserver;
-      v11 = [v6 br_fileProviderError];
-      [(NSFileProviderEnumerationObserver *)v10 finishEnumeratingWithError:v11];
+      v10 = selfCopy2->_gatherEnumerationObserver;
+      br_fileProviderError = [v6 br_fileProviderError];
+      [(NSFileProviderEnumerationObserver *)v10 finishEnumeratingWithError:br_fileProviderError];
     }
 
     else
     {
-      v7->_completedGather = 1;
+      selfCopy2->_completedGather = 1;
       v12 = brc_bread_crumbs();
       v13 = brc_default_log();
       if (os_log_type_enabled(v13, 0x90u))
@@ -156,17 +156,17 @@
         sub_100028D04();
       }
 
-      [(NSFileProviderEnumerationObserver *)v7->_gatherEnumerationObserver finishEnumeratingUpToPage:0];
+      [(NSFileProviderEnumerationObserver *)selfCopy2->_gatherEnumerationObserver finishEnumeratingUpToPage:0];
     }
 
-    v14 = v7->_gatherEnumerationObserver;
-    v7->_gatherEnumerationObserver = 0;
+    v14 = selfCopy2->_gatherEnumerationObserver;
+    selfCopy2->_gatherEnumerationObserver = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy2);
 }
 
-- (void)watchItemWithUpdateSender:(id)a3 options:(unsigned __int16)a4 errorHandler:(id)a5 gatherReply:(id)a6
+- (void)watchItemWithUpdateSender:(id)sender options:(unsigned __int16)options errorHandler:(id)handler gatherReply:(id)reply
 {
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
@@ -178,16 +178,16 @@
   }
 }
 
-- (void)_setupNotificationReceivingIfNeededWithCompletion:(id)a3
+- (void)_setupNotificationReceivingIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10001FEF4;
   v16[3] = &unk_1000447C8;
   v16[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v17 = v5;
   v6 = objc_retainBlock(v16);
   [(BRBaseFileEnumerator *)self _startObservingAccountChangesIfNeeded];
@@ -229,88 +229,88 @@
   }
 }
 
-- (void)setupNotificationReceivingIfNeededWithCompletion:(id)a3
+- (void)setupNotificationReceivingIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002054C;
   v7[3] = &unk_100044F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)enumerateNextGatherBatchWithObserver:(id)a3 fromPage:(id)a4
+- (void)enumerateNextGatherBatchWithObserver:(id)observer fromPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_nextPage)
+  observerCopy = observer;
+  pageCopy = page;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_nextPage)
   {
-    v9 = [v7 br_pageTokenOffset];
-    if (v9 != [(NSData *)v8->_nextPage br_pageTokenOffset])
+    br_pageTokenOffset = [pageCopy br_pageTokenOffset];
+    if (br_pageTokenOffset != [(NSData *)selfCopy->_nextPage br_pageTokenOffset])
     {
       v20 = brc_bread_crumbs();
       v21 = brc_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v7 br_pageTokenOffset];
-        v23 = [(NSData *)v8->_nextPage br_pageTokenOffset];
+        br_pageTokenOffset2 = [pageCopy br_pageTokenOffset];
+        br_pageTokenOffset3 = [(NSData *)selfCopy->_nextPage br_pageTokenOffset];
         v31 = 138413058;
-        v32 = v8;
+        v32 = selfCopy;
         v33 = 2048;
-        v34 = v22;
+        v34 = br_pageTokenOffset2;
         v35 = 2048;
-        v36 = v23;
+        v36 = br_pageTokenOffset3;
         v37 = 2112;
         v38 = v20;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Incoming page %lld does not equal current page %lld%@", &v31, 0x2Au);
       }
 
       gatherEnumerationObserver = [NSError br_errorWithPOSIXCode:4];
-      [v6 finishEnumeratingWithError:gatherEnumerationObserver];
+      [observerCopy finishEnumeratingWithError:gatherEnumerationObserver];
       goto LABEL_19;
     }
   }
 
-  if (!v8->_completedGather)
+  if (!selfCopy->_completedGather)
   {
-    v13 = +[NSData br_pageTokenFromSortOrder:gatherBatch:](NSData, "br_pageTokenFromSortOrder:gatherBatch:", [v7 br_pageTokenSortOrder], objc_msgSend(v7, "br_pageTokenOffset") + 1);
-    nextPage = v8->_nextPage;
-    v8->_nextPage = v13;
+    v13 = +[NSData br_pageTokenFromSortOrder:gatherBatch:](NSData, "br_pageTokenFromSortOrder:gatherBatch:", [pageCopy br_pageTokenSortOrder], objc_msgSend(pageCopy, "br_pageTokenOffset") + 1);
+    nextPage = selfCopy->_nextPage;
+    selfCopy->_nextPage = v13;
 
     v15 = brc_bread_crumbs();
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(NSData *)v8->_nextPage br_pageTokenOffset];
-      fileObjectID = v8->_fileObjectID;
+      br_pageTokenOffset4 = [(NSData *)selfCopy->_nextPage br_pageTokenOffset];
+      fileObjectID = selfCopy->_fileObjectID;
       v31 = 138413314;
-      v32 = v8;
+      v32 = selfCopy;
       v33 = 2048;
-      v34 = v26;
+      v34 = br_pageTokenOffset4;
       v35 = 2112;
       v36 = fileObjectID;
       v37 = 2112;
-      v38 = v6;
+      v38 = observerCopy;
       v39 = 2112;
       v40 = v15;
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Enumerating gather batch up with next offset %lld for %@ observer %@%@", &v31, 0x34u);
     }
 
-    if ([(NSMutableDictionary *)v8->_updatedItemsByIDs count])
+    if ([(NSMutableDictionary *)selfCopy->_updatedItemsByIDs count])
     {
       v17 = brc_bread_crumbs();
       v18 = brc_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        updatedItemsByIDs = v8->_updatedItemsByIDs;
+        updatedItemsByIDs = selfCopy->_updatedItemsByIDs;
         v31 = 138412802;
-        v32 = v8;
+        v32 = selfCopy;
         v33 = 2112;
         v34 = updatedItemsByIDs;
         v35 = 2112;
@@ -318,15 +318,15 @@
         _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Returning updated items immediately %@%@", &v31, 0x20u);
       }
 
-      v19 = [(NSMutableDictionary *)v8->_updatedItemsByIDs allValues];
-      [v6 didEnumerateItems:v19];
+      allValues = [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs allValues];
+      [observerCopy didEnumerateItems:allValues];
 
-      [(NSMutableDictionary *)v8->_updatedItemsByIDs removeAllObjects];
-      v12 = v8->_nextPage;
+      [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs removeAllObjects];
+      v12 = selfCopy->_nextPage;
       goto LABEL_13;
     }
 
-    if (v8->_gatherEnumerationObserver)
+    if (selfCopy->_gatherEnumerationObserver)
     {
       v29 = brc_bread_crumbs();
       v30 = brc_default_log();
@@ -336,9 +336,9 @@
       }
     }
 
-    v25 = v6;
-    gatherEnumerationObserver = v8->_gatherEnumerationObserver;
-    v8->_gatherEnumerationObserver = v25;
+    v25 = observerCopy;
+    gatherEnumerationObserver = selfCopy->_gatherEnumerationObserver;
+    selfCopy->_gatherEnumerationObserver = v25;
 LABEL_19:
 
     goto LABEL_20;
@@ -353,22 +353,22 @@ LABEL_19:
 
   v12 = 0;
 LABEL_13:
-  [v6 finishEnumeratingUpToPage:v12];
+  [observerCopy finishEnumeratingUpToPage:v12];
 LABEL_20:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [NSData br_changeTokenFromRank:0 uuid:self->_uuid];
-  (*(a3 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pageCopy = page;
   v8 = self->_fileObjectID;
   memset(v34, 0, sizeof(v34));
   sub_10001A20C(0, "[BRBaseFileEnumerator enumerateItemsForObserver:startingAtPage:]", 295, 0, v34);
@@ -377,9 +377,9 @@ LABEL_20:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218754;
-    v36 = v34[0];
+    selfCopy2 = v34[0];
     v37 = 2112;
-    v38 = self;
+    selfCopy3 = self;
     v39 = 2112;
     v40 = v8;
     v41 = 2112;
@@ -387,24 +387,24 @@ LABEL_20:
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@ - listing items for %@%@", buf, 0x2Au);
   }
 
-  if (v7)
+  if (pageCopy)
   {
     v11 = brc_bread_crumbs();
     v12 = brc_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [v7 br_pageTokenOffset];
-      v20 = [v7 br_pageTokenCompletedInitialEnumeration];
+      br_pageTokenOffset = [pageCopy br_pageTokenOffset];
+      br_pageTokenCompletedInitialEnumeration = [pageCopy br_pageTokenCompletedInitialEnumeration];
       v21 = "";
       *buf = 138413058;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2048;
-      if (v20)
+      if (br_pageTokenCompletedInitialEnumeration)
       {
         v21 = " (gather batch)";
       }
 
-      v38 = v19;
+      selfCopy3 = br_pageTokenOffset;
       v39 = 2080;
       v40 = v21;
       v41 = 2112;
@@ -421,9 +421,9 @@ LABEL_20:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v36 = v30;
+    selfCopy2 = v30;
     v37 = 2112;
-    v38 = self;
+    selfCopy3 = self;
     v39 = 2112;
     v40 = v13;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx %@ - calling bird%@", buf, 0x20u);
@@ -431,30 +431,30 @@ LABEL_20:
 
   v32 = v30;
   v33 = v31;
-  v15 = [v7 br_pageTokenSortOrder];
+  br_pageTokenSortOrder = [pageCopy br_pageTokenSortOrder];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100020E24;
   v22[3] = &unk_100045400;
-  v16 = v6;
+  v16 = observerCopy;
   v23 = v16;
-  v17 = v7;
+  v17 = pageCopy;
   v24 = v17;
-  v25 = self;
+  selfCopy4 = self;
   v27 = v32;
   v28 = v33;
   v18 = v8;
   v26 = v18;
-  v29 = v15;
+  v29 = br_pageTokenSortOrder;
   [(BRBaseFileEnumerator *)self setupNotificationReceivingIfNeededWithCompletion:v22];
 
   sub_10001A3DC(v34);
 }
 
-- (void)enumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4
+- (void)enumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  anchorCopy = anchor;
   memset(v27, 0, sizeof(v27));
   sub_10001A20C(0, "[BRBaseFileEnumerator enumerateChangesForObserver:fromSyncAnchor:]", 353, 0, v27);
   v8 = brc_bread_crumbs();
@@ -462,51 +462,51 @@ LABEL_20:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v22 = v27[0];
-    v23 = [(BRFileObjectID *)self->_fileObjectID asString];
+    asString = [(BRFileObjectID *)self->_fileObjectID asString];
     *buf = 134218754;
     v29 = v22;
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
-    v33 = v23;
+    v33 = asString;
     v34 = 2112;
     v35 = v8;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@ - listing changes for %@%@", buf, 0x2Au);
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [v7 br_changeTokenRankWithUUID:v10->_uuid];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v11 = [anchorCopy br_changeTokenRankWithUUID:selfCopy2->_uuid];
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v29 = v10;
+    v29 = selfCopy2;
     v30 = 2048;
-    v31 = v11;
+    selfCopy = v11;
     v32 = 2112;
     v33 = v12;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - requested rank: %lld%@", buf, 0x20u);
   }
 
-  if ((v11 & 0x8000000000000000) != 0 || v10->_rank != v11)
+  if ((v11 & 0x8000000000000000) != 0 || selfCopy2->_rank != v11)
   {
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      sub_100029250(v10);
+      sub_100029250(selfCopy2);
     }
 
     v21 = [NSError errorWithDomain:NSFileProviderErrorDomain code:-1002 userInfo:0];
-    [v6 finishEnumeratingWithError:v21];
-    [(BRBaseFileEnumerator *)v10 invalidateChangeToken];
+    [observerCopy finishEnumeratingWithError:v21];
+    [(BRBaseFileEnumerator *)selfCopy2 invalidateChangeToken];
 
     goto LABEL_15;
   }
 
-  if (![(NSMutableDictionary *)v10->_updatedItemsByIDs count]&& ![(NSMutableArray *)v10->_deletedItemsIdentifiers count])
+  if (![(NSMutableDictionary *)selfCopy2->_updatedItemsByIDs count]&& ![(NSMutableArray *)selfCopy2->_deletedItemsIdentifiers count])
   {
     v24 = brc_bread_crumbs();
     v25 = brc_default_log();
@@ -515,33 +515,33 @@ LABEL_20:
       sub_1000291E0();
     }
 
-    [v6 finishEnumeratingChangesUpToSyncAnchor:v7 moreComing:0];
+    [observerCopy finishEnumeratingChangesUpToSyncAnchor:anchorCopy moreComing:0];
 LABEL_15:
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy2);
 
     v16 = 0;
-    v14 = 0;
+    allValues = 0;
     v15 = 0;
     goto LABEL_16;
   }
 
-  v14 = [(NSMutableDictionary *)v10->_updatedItemsByIDs allValues];
-  v15 = [(NSMutableArray *)v10->_deletedItemsIdentifiers copy];
-  [(NSMutableDictionary *)v10->_updatedItemsByIDs removeAllObjects];
-  [(NSMutableArray *)v10->_deletedItemsIdentifiers removeAllObjects];
-  ++v10->_rank;
+  allValues = [(NSMutableDictionary *)selfCopy2->_updatedItemsByIDs allValues];
+  v15 = [(NSMutableArray *)selfCopy2->_deletedItemsIdentifiers copy];
+  [(NSMutableDictionary *)selfCopy2->_updatedItemsByIDs removeAllObjects];
+  [(NSMutableArray *)selfCopy2->_deletedItemsIdentifiers removeAllObjects];
+  ++selfCopy2->_rank;
   v16 = [NSData br_changeTokenFromRank:"br_changeTokenFromRank:uuid:" uuid:?];
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy2);
 
   v17 = brc_bread_crumbs();
   v18 = brc_default_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    rank = v10->_rank;
+    rank = selfCopy2->_rank;
     *buf = 138413314;
-    v29 = v10;
+    v29 = selfCopy2;
     v30 = 2112;
-    v31 = v14;
+    selfCopy = allValues;
     v32 = 2112;
     v33 = v15;
     v34 = 2048;
@@ -551,25 +551,25 @@ LABEL_15:
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Sending back items %@, deleted %@, new rank %lld%@", buf, 0x34u);
   }
 
-  [v6 didUpdateItems:v14];
-  [v6 didDeleteItemsWithIdentifiers:v15];
-  [v6 finishEnumeratingChangesUpToSyncAnchor:v16 moreComing:0];
+  [observerCopy didUpdateItems:allValues];
+  [observerCopy didDeleteItemsWithIdentifiers:v15];
+  [observerCopy finishEnumeratingChangesUpToSyncAnchor:v16 moreComing:0];
 LABEL_16:
 
   sub_10001A3DC(v27);
 }
 
-- (void)receiveUpdates:(id)a3 reply:(id)a4
+- (void)receiveUpdates:(id)updates reply:(id)reply
 {
-  v6 = a3;
-  v33 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  updatesCopy = updates;
+  replyCopy = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = v6;
+  v8 = updatesCopy;
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v48 count:16];
   if (v9)
   {
@@ -586,45 +586,45 @@ LABEL_16:
         v12 = *(*(&v34 + 1) + 8 * i);
         if ([(NSMutableDictionary *)v12 isDead])
         {
-          updatedItemsByIDs = v7->_updatedItemsByIDs;
-          v14 = [(NSMutableDictionary *)v12 fileObjectID];
-          [(NSMutableDictionary *)updatedItemsByIDs setObject:0 forKeyedSubscript:v14];
+          updatedItemsByIDs = selfCopy->_updatedItemsByIDs;
+          fileObjectID = [(NSMutableDictionary *)v12 fileObjectID];
+          [(NSMutableDictionary *)updatedItemsByIDs setObject:0 forKeyedSubscript:fileObjectID];
 
-          deletedItemsIdentifiers = v7->_deletedItemsIdentifiers;
-          v16 = [(NSMutableDictionary *)v12 fileObjectID];
-          v17 = [v16 asString];
-          [(NSMutableArray *)deletedItemsIdentifiers addObject:v17];
+          deletedItemsIdentifiers = selfCopy->_deletedItemsIdentifiers;
+          fileObjectID2 = [(NSMutableDictionary *)v12 fileObjectID];
+          asString = [fileObjectID2 asString];
+          [(NSMutableArray *)deletedItemsIdentifiers addObject:asString];
         }
 
         else
         {
-          v18 = [(NSMutableDictionary *)v12 asFileProviderItem];
-          v19 = v18 == 0;
+          asFileProviderItem = [(NSMutableDictionary *)v12 asFileProviderItem];
+          v19 = asFileProviderItem == 0;
 
           if (!v19)
           {
-            v20 = v7->_deletedItemsIdentifiers;
-            v21 = [(NSMutableDictionary *)v12 fileObjectID];
-            v22 = [v21 asString];
-            [(NSMutableArray *)v20 removeObject:v22];
+            v20 = selfCopy->_deletedItemsIdentifiers;
+            fileObjectID3 = [(NSMutableDictionary *)v12 fileObjectID];
+            asString2 = [fileObjectID3 asString];
+            [(NSMutableArray *)v20 removeObject:asString2];
 
-            v23 = v7->_updatedItemsByIDs;
-            v16 = [(NSMutableDictionary *)v12 fileObjectID];
-            [(NSMutableDictionary *)v23 setObject:v12 forKeyedSubscript:v16];
+            v23 = selfCopy->_updatedItemsByIDs;
+            fileObjectID2 = [(NSMutableDictionary *)v12 fileObjectID];
+            [(NSMutableDictionary *)v23 setObject:v12 forKeyedSubscript:fileObjectID2];
             goto LABEL_13;
           }
 
-          v16 = brc_bread_crumbs();
-          v17 = brc_default_log();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+          fileObjectID2 = brc_bread_crumbs();
+          asString = brc_default_log();
+          if (os_log_type_enabled(asString, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v39 = v7;
+            v39 = selfCopy;
             v40 = 2112;
             v41 = v12;
             v42 = 2112;
-            v43 = v16;
-            _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Ignoring un-representable item %@%@", buf, 0x20u);
+            v43 = fileObjectID2;
+            _os_log_debug_impl(&_mh_execute_header, asString, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Ignoring un-representable item %@%@", buf, 0x20u);
           }
         }
 
@@ -637,17 +637,17 @@ LABEL_13:
     while (v9);
   }
 
-  if (v7->_gatherEnumerationObserver && [(NSMutableDictionary *)v7->_updatedItemsByIDs count])
+  if (selfCopy->_gatherEnumerationObserver && [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs count])
   {
     v24 = brc_bread_crumbs();
     v25 = brc_default_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v30 = v7->_updatedItemsByIDs;
-      gatherEnumerationObserver = v7->_gatherEnumerationObserver;
-      fileObjectID = v7->_fileObjectID;
+      v30 = selfCopy->_updatedItemsByIDs;
+      gatherEnumerationObserver = selfCopy->_gatherEnumerationObserver;
+      fileObjectID = selfCopy->_fileObjectID;
       *buf = 138413314;
-      v39 = v7;
+      v39 = selfCopy;
       v40 = 2112;
       v41 = v30;
       v42 = 2112;
@@ -659,31 +659,31 @@ LABEL_13:
       _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Enumerating updated items %@ directly to observer %@ because we are still gathering for %@%@", buf, 0x34u);
     }
 
-    v26 = v7->_gatherEnumerationObserver;
-    v27 = [(NSMutableDictionary *)v7->_updatedItemsByIDs allValues];
-    [(NSFileProviderEnumerationObserver *)v26 didEnumerateItems:v27];
+    v26 = selfCopy->_gatherEnumerationObserver;
+    allValues = [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs allValues];
+    [(NSFileProviderEnumerationObserver *)v26 didEnumerateItems:allValues];
 
-    [(NSMutableDictionary *)v7->_updatedItemsByIDs removeAllObjects];
-    [(NSFileProviderEnumerationObserver *)v7->_gatherEnumerationObserver finishEnumeratingUpToPage:v7->_nextPage];
-    v28 = v7->_gatherEnumerationObserver;
-    v7->_gatherEnumerationObserver = 0;
+    [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs removeAllObjects];
+    [(NSFileProviderEnumerationObserver *)selfCopy->_gatherEnumerationObserver finishEnumeratingUpToPage:selfCopy->_nextPage];
+    v28 = selfCopy->_gatherEnumerationObserver;
+    selfCopy->_gatherEnumerationObserver = 0;
   }
 
-  v29 = [(NSMutableDictionary *)v7->_updatedItemsByIDs count];
-  if (&v29[[(NSMutableArray *)v7->_deletedItemsIdentifiers count]] >= 0x1389)
+  v29 = [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs count];
+  if (&v29[[(NSMutableArray *)selfCopy->_deletedItemsIdentifiers count]] >= 0x1389)
   {
-    [(BRBaseFileEnumerator *)v7 invalidateChangeToken];
+    [(BRBaseFileEnumerator *)selfCopy invalidateChangeToken];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  [(BRBaseFileEnumerator *)v7 _signalChange];
-  v33[2]();
+  [(BRBaseFileEnumerator *)selfCopy _signalChange];
+  replyCopy[2]();
 }
 
-- (void)receiveProgressUpdates:(id)a3 reply:(id)a4
+- (void)receiveProgressUpdates:(id)updates reply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -691,7 +691,7 @@ LABEL_13:
     sub_1000292DC();
   }
 
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
 - (void)containerListDidChange
@@ -714,12 +714,12 @@ LABEL_13:
   }
 
   v6 = +[UMUserManager sharedManager];
-  v7 = [v6 currentPersona];
+  currentPersona = [v6 currentPersona];
 
   v25 = 0;
-  v8 = [v7 userPersonaUniqueString];
-  v9 = v8;
-  if (v8 == v4 || [(NSString *)v8 isEqualToString:v4])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v9 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v4 || [(NSString *)userPersonaUniqueString isEqualToString:v4])
   {
     v10 = 0;
     goto LABEL_10;
@@ -728,7 +728,7 @@ LABEL_13:
   if (voucher_process_can_use_arbitrary_personas())
   {
     v24 = 0;
-    v13 = [v7 copyCurrentPersonaContextWithError:&v24];
+    v13 = [currentPersona copyCurrentPersonaContextWithError:&v24];
     v14 = v24;
     v15 = v25;
     v25 = v13;
@@ -743,7 +743,7 @@ LABEL_13:
       }
     }
 
-    v10 = [v7 br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
+    v10 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
 
     if (v10)
     {
@@ -755,7 +755,7 @@ LABEL_13:
         *buf = 138412802;
         v27 = personaID;
         v28 = 2112;
-        v29 = v10;
+        selfCopy = v10;
         v30 = 2112;
         v31 = v18;
         _os_log_error_impl(&_mh_execute_header, v19, 0x90u, "[ERROR] Can't adopt persona %@: %@%@", buf, 0x20u);
@@ -767,7 +767,7 @@ LABEL_29:
 
   else
   {
-    if (v5 && ([v7 isDataSeparatedPersona] & 1) == 0)
+    if (v5 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v18 = brc_bread_crumbs();
       v19 = brc_default_log();
@@ -800,7 +800,7 @@ LABEL_10:
     *buf = 134218498;
     v27 = v23[0];
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v11;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@ - container list did change, invalidating our change token%@", buf, 0x20u);
@@ -833,12 +833,12 @@ LABEL_10:
   }
 
   v6 = +[UMUserManager sharedManager];
-  v7 = [v6 currentPersona];
+  currentPersona = [v6 currentPersona];
 
   v26 = 0;
-  v8 = [v7 userPersonaUniqueString];
-  v9 = v8;
-  if (v8 == v4 || [(NSString *)v8 isEqualToString:v4])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v9 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v4 || [(NSString *)userPersonaUniqueString isEqualToString:v4])
   {
     v10 = 0;
     goto LABEL_10;
@@ -847,7 +847,7 @@ LABEL_10:
   if (voucher_process_can_use_arbitrary_personas())
   {
     v25 = 0;
-    v14 = [v7 copyCurrentPersonaContextWithError:&v25];
+    v14 = [currentPersona copyCurrentPersonaContextWithError:&v25];
     v15 = v25;
     v16 = v26;
     v26 = v14;
@@ -862,7 +862,7 @@ LABEL_10:
       }
     }
 
-    v10 = [v7 br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
+    v10 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
 
     if (v10)
     {
@@ -872,7 +872,7 @@ LABEL_10:
       {
         personaID = self->_personaID;
         *buf = 138412802;
-        v28 = personaID;
+        selfCopy = personaID;
         v29 = 2112;
         v30 = v10;
         v31 = 2112;
@@ -886,7 +886,7 @@ LABEL_29:
 
   else
   {
-    if (v5 && ([v7 isDataSeparatedPersona] & 1) == 0)
+    if (v5 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v19 = brc_bread_crumbs();
       v20 = brc_default_log();
@@ -915,7 +915,7 @@ LABEL_10:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
     v30 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@ - received account did update notification, invalidating change token%@", buf, 0x16u);
@@ -941,13 +941,13 @@ LABEL_10:
     sub_1000293DC();
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableArray *)v5->_deletedItemsIdentifiers removeAllObjects];
-  [(NSMutableDictionary *)v5->_updatedItemsByIDs removeAllObjects];
-  v5->_rank = 0;
-  uuid_generate(v5->_uuid);
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_deletedItemsIdentifiers removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_updatedItemsByIDs removeAllObjects];
+  selfCopy->_rank = 0;
+  uuid_generate(selfCopy->_uuid);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_stopObservingAccountChanges
@@ -961,16 +961,16 @@ LABEL_10:
 - (void)_invalidate
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = self;
-  objc_sync_enter(v3);
-  v3->_invalidated = 1;
-  [(BRItemNotificationSending *)v3->_remoteNotificationSender invalidate];
-  remoteNotificationSender = v3->_remoteNotificationSender;
-  v3->_remoteNotificationSender = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_invalidated = 1;
+  [(BRItemNotificationSending *)selfCopy->_remoteNotificationSender invalidate];
+  remoteNotificationSender = selfCopy->_remoteNotificationSender;
+  selfCopy->_remoteNotificationSender = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
-  [(BRBaseFileEnumerator *)v3 _stopObservingAccountChanges];
+  [(BRBaseFileEnumerator *)selfCopy _stopObservingAccountChanges];
 }
 
 - (void)invalidate

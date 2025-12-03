@@ -1,31 +1,31 @@
 @interface HKCodedValueCollection
-+ (id)codedValueCollectionWithCodedValues:(id)a3;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)codedValueCollectionWithCodedValues:(id)values;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKCodedValueCollection)init;
-- (HKCodedValueCollection)initWithCodedValues:(id)a3;
-- (HKCodedValueCollection)initWithCoder:(id)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (HKCodedValueCollection)initWithCodedValues:(id)values;
+- (HKCodedValueCollection)initWithCoder:(id)coder;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCodedValueCollection
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
-  v3 = a3;
+  prefixCopy = prefix;
   v4 = [HKCodedValue indexableKeyPathsWithPrefix:@"codedValues"];
-  v5 = [HKConceptIndexUtilities keyPaths:v4 prefix:v3];
+  v5 = [HKConceptIndexUtilities keyPaths:v4 prefix:prefixCopy];
 
   return v5;
 }
 
-+ (id)codedValueCollectionWithCodedValues:(id)a3
++ (id)codedValueCollectionWithCodedValues:(id)values
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCodedValues:v4];
+  valuesCopy = values;
+  v5 = [[self alloc] initWithCodedValues:valuesCopy];
 
   return v5;
 }
@@ -40,15 +40,15 @@
   return 0;
 }
 
-- (HKCodedValueCollection)initWithCodedValues:(id)a3
+- (HKCodedValueCollection)initWithCodedValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = HKCodedValueCollection;
   v5 = [(HKCodedValueCollection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valuesCopy copy];
     codedValues = v5->_codedValues;
     v5->_codedValues = v6;
   }
@@ -56,10 +56,10 @@
   return v5;
 }
 
-- (HKCodedValueCollection)initWithCoder:(id)a3
+- (HKCodedValueCollection)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKCodedValueCollection;
   v5 = [(HKCodedValueCollection *)&v13 init];
@@ -70,7 +70,7 @@
     v14[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"CodedValues"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CodedValues"];
     codedValues = v5->_codedValues;
     v5->_codedValues = v9;
   }
@@ -79,25 +79,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKCodedValueCollection *)self codedValues];
-  [v4 encodeObject:v5 forKey:@"CodedValues"];
+  coderCopy = coder;
+  codedValues = [(HKCodedValueCollection *)self codedValues];
+  [coderCopy encodeObject:codedValues forKey:@"CodedValues"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HKCodedValueCollection *)self codedValues];
-  v3 = [v2 hash];
+  codedValues = [(HKCodedValueCollection *)self codedValues];
+  v3 = [codedValues hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -107,22 +107,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKCodedValueCollection *)self codedValues];
-      v7 = [(HKCodedValueCollection *)v5 codedValues];
-      if (v6 == v7)
+      v5 = equalCopy;
+      codedValues = [(HKCodedValueCollection *)self codedValues];
+      codedValues2 = [(HKCodedValueCollection *)v5 codedValues];
+      if (codedValues == codedValues2)
       {
         v11 = 1;
       }
 
       else
       {
-        v8 = [(HKCodedValueCollection *)v5 codedValues];
-        if (v8)
+        codedValues3 = [(HKCodedValueCollection *)v5 codedValues];
+        if (codedValues3)
         {
-          v9 = [(HKCodedValueCollection *)self codedValues];
-          v10 = [(HKCodedValueCollection *)v5 codedValues];
-          v11 = [v9 isEqual:v10];
+          codedValues4 = [(HKCodedValueCollection *)self codedValues];
+          codedValues5 = [(HKCodedValueCollection *)v5 codedValues];
+          v11 = [codedValues4 isEqual:codedValues5];
         }
 
         else
@@ -141,10 +141,10 @@
   return v11;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (v7)
   {
@@ -152,10 +152,10 @@
     {
       if (self->_codedValues)
       {
-        v9 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v6 error:a4];
+        v9 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
         if (v9)
         {
-          v10 = [(NSArray *)self->_codedValues codingsForKeyPath:v9 error:a4];
+          v10 = [(NSArray *)self->_codedValues codingsForKeyPath:v9 error:error];
         }
 
         else
@@ -172,7 +172,7 @@
       goto LABEL_11;
     }
 
-    [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
   }
 
   v10 = 0;
@@ -181,11 +181,11 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -194,24 +194,24 @@ LABEL_11:
 
   if (![v10 isEqualToString:@"codedValues"])
   {
-    [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v9 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
 LABEL_7:
     v15 = 0;
     goto LABEL_12;
   }
 
-  v12 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v9 error:a5];
+  v12 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
   if (v12)
   {
     codedValues = self->_codedValues;
     if (codedValues)
     {
-      v14 = [(NSArray *)codedValues applyConcepts:v8 forKeyPath:v12 error:a5];
+      v14 = [(NSArray *)codedValues applyConcepts:conceptsCopy forKeyPath:v12 error:error];
     }
 
     else
     {
-      v14 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+      v14 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
     }
 
     v15 = v14;

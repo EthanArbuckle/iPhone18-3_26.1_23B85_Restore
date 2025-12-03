@@ -1,18 +1,18 @@
 @interface TSULinkedPointerSetEnumerator
-- (TSULinkedPointerSetEnumerator)initWithFirstEntry:(id)a3;
+- (TSULinkedPointerSetEnumerator)initWithFirstEntry:(id)entry;
 - (id)nextObject;
 @end
 
 @implementation TSULinkedPointerSetEnumerator
 
-- (TSULinkedPointerSetEnumerator)initWithFirstEntry:(id)a3
+- (TSULinkedPointerSetEnumerator)initWithFirstEntry:(id)entry
 {
   v5.receiver = self;
   v5.super_class = TSULinkedPointerSetEnumerator;
   result = [(TSULinkedPointerSetEnumerator *)&v5 init];
   if (result)
   {
-    result->mHead = a3;
+    result->mHead = entry;
     result->mLastUsed = 0;
   }
 

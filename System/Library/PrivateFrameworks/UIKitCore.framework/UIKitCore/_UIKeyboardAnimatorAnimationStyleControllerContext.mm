@@ -1,36 +1,36 @@
 @interface _UIKeyboardAnimatorAnimationStyleControllerContext
 - (CGRect)endFrame;
 - (CGRect)startFrame;
-- (_UIKeyboardAnimatorAnimationStyleControllerContext)initWithHost:(id)a3 startPlacement:(id)a4 endPlacement:(id)a5;
+- (_UIKeyboardAnimatorAnimationStyleControllerContext)initWithHost:(id)host startPlacement:(id)placement endPlacement:(id)endPlacement;
 @end
 
 @implementation _UIKeyboardAnimatorAnimationStyleControllerContext
 
-- (_UIKeyboardAnimatorAnimationStyleControllerContext)initWithHost:(id)a3 startPlacement:(id)a4 endPlacement:(id)a5
+- (_UIKeyboardAnimatorAnimationStyleControllerContext)initWithHost:(id)host startPlacement:(id)placement endPlacement:(id)endPlacement
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  hostCopy = host;
+  placementCopy = placement;
+  endPlacementCopy = endPlacement;
   v25.receiver = self;
   v25.super_class = _UIKeyboardAnimatorAnimationStyleControllerContext;
   v12 = [(_UIKeyboardAnimatorAnimationStyleControllerContext *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_host, a3);
-    objc_storeStrong(&v13->_start, a4);
-    objc_storeStrong(&v13->_end, a5);
-    [v9 updateToPlacement:v13->_end withNormalAnimationsAndNotifications:0];
-    v14 = [(_UIKeyboardAnimatorAnimationStyleControllerContext *)v13 animatingView];
-    [v14 frame];
+    objc_storeStrong(&v12->_host, host);
+    objc_storeStrong(&v13->_start, placement);
+    objc_storeStrong(&v13->_end, endPlacement);
+    [hostCopy updateToPlacement:v13->_end withNormalAnimationsAndNotifications:0];
+    animatingView = [(_UIKeyboardAnimatorAnimationStyleControllerContext *)v13 animatingView];
+    [animatingView frame];
     v13->_endFrame.origin.x = v15;
     v13->_endFrame.origin.y = v16;
     v13->_endFrame.size.width = v17;
     v13->_endFrame.size.height = v18;
 
-    [v9 updateToPlacement:v13->_start withNormalAnimationsAndNotifications:0];
-    v19 = [(_UIKeyboardAnimatorAnimationStyleControllerContext *)v13 animatingView];
-    [v19 frame];
+    [hostCopy updateToPlacement:v13->_start withNormalAnimationsAndNotifications:0];
+    animatingView2 = [(_UIKeyboardAnimatorAnimationStyleControllerContext *)v13 animatingView];
+    [animatingView2 frame];
     v13->_startFrame.origin.x = v20;
     v13->_startFrame.origin.y = v21;
     v13->_startFrame.size.width = v22;

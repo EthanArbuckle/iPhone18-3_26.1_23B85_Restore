@@ -1,16 +1,16 @@
 @interface UIBarButtonItemBadge
-+ (id)badgeWithCount:(int64_t)a3;
++ (id)badgeWithCount:(int64_t)count;
 + (id)indicatorBadge;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)stringValue;
 - (UIBarButtonItemBadge)init;
-- (UIBarButtonItemBadge)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setForegroundColor:(id)a3;
+- (UIBarButtonItemBadge)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBackgroundColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setForegroundColor:(id)color;
 @end
 
 @implementation UIBarButtonItemBadge
@@ -29,10 +29,10 @@
   return [(UIBarButtonItemBadge *)&v4 init];
 }
 
-+ (id)badgeWithCount:(int64_t)a3
++ (id)badgeWithCount:(int64_t)count
 {
   swift_getObjCClassMetadata();
-  v4 = sub_189008694(a3);
+  v4 = sub_189008694(count);
 
   return v4;
 }
@@ -69,32 +69,32 @@ LABEL_7:
   return v2;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v4 = *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 16];
-  *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 16] = a3;
-  v3 = a3;
+  *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 16] = color;
+  colorCopy = color;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4 = *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 24];
-  *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 24] = a3;
-  v3 = a3;
+  *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 24] = color;
+  colorCopy = color;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v4 = *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 32];
-  *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 32] = a3;
-  v3 = a3;
+  *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge + 32] = font;
+  fontCopy = font;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -103,7 +103,7 @@ LABEL_7:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UIBarButtonItemBadge.isEqual(_:)(v8);
@@ -114,7 +114,7 @@ LABEL_7:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UIBarButtonItemBadge.description.getter();
 
   v3 = sub_18A4A7258();
@@ -122,7 +122,7 @@ LABEL_7:
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR___UIBarButtonItemBadge_backingBadge);
   v4 = *&self->backingBadge[OBJC_IVAR___UIBarButtonItemBadge_backingBadge];
@@ -155,19 +155,19 @@ LABEL_7:
   return v19;
 }
 
-- (UIBarButtonItemBadge)initWithCoder:(id)a3
+- (UIBarButtonItemBadge)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_18900A0F4(v3);
+  coderCopy = coder;
+  v4 = sub_18900A0F4(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_18900903C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_18900903C(coderCopy);
 }
 
 @end

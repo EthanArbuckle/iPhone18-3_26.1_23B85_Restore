@@ -8,42 +8,42 @@
 - (NSString)bundleIdentifier;
 - (NSString)containerPath;
 - (NSString)defaultGroupIdentifier;
-- (XBApplicationSnapshotManifest)initWithApplicationInfo:(id)a3;
-- (XBApplicationSnapshotManifest)initWithContainerIdentity:(id)a3 store:(id)a4;
+- (XBApplicationSnapshotManifest)initWithApplicationInfo:(id)info;
+- (XBApplicationSnapshotManifest)initWithContainerIdentity:(id)identity store:(id)store;
 - (XBApplicationSnapshotManifestDelegate)delegate;
 - (XBApplicationSnapshotManifestImpl)manifestImpl;
 - (id)_allSnapshotGroups;
-- (id)createSnapshotWithGroupID:(id)a3;
-- (id)createVariantForSnapshot:(id)a3 withIdentifier:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)snapshotsForGroupID:(id)a3;
-- (id)snapshotsForGroupID:(id)a3 fetchRequest:(id)a4;
-- (id)snapshotsForGroupID:(id)a3 matchingPredicate:(id)a4;
-- (id)snapshotsForGroupIDs:(id)a3;
-- (id)snapshotsForGroupIDs:(id)a3 fetchRequest:(id)a4;
-- (id)snapshotsForGroupIDs:(id)a3 matchingPredicate:(id)a4;
+- (id)createSnapshotWithGroupID:(id)d;
+- (id)createVariantForSnapshot:(id)snapshot withIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)snapshotsForGroupID:(id)d;
+- (id)snapshotsForGroupID:(id)d fetchRequest:(id)request;
+- (id)snapshotsForGroupID:(id)d matchingPredicate:(id)predicate;
+- (id)snapshotsForGroupIDs:(id)ds;
+- (id)snapshotsForGroupIDs:(id)ds fetchRequest:(id)request;
+- (id)snapshotsForGroupIDs:(id)ds matchingPredicate:(id)predicate;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)archive;
-- (void)beginSnapshotAccessTransaction:(id)a3 completion:(id)a4;
+- (void)beginSnapshotAccessTransaction:(id)transaction completion:(id)completion;
 - (void)beginTrackingImageDeletions;
 - (void)dealloc;
 - (void)deleteAllSnapshots;
-- (void)deleteSnapshot:(id)a3;
-- (void)deleteSnapshots:(id)a3;
-- (void)deleteSnapshotsForGroupID:(id)a3;
-- (void)deleteSnapshotsForGroupID:(id)a3 matchingPredicate:(id)a4;
-- (void)deleteSnapshotsForGroupID:(id)a3 predicateBuilder:(id)a4;
-- (void)deleteSnapshotsMatchingPredicate:(id)a3;
-- (void)deleteSnapshotsUsingPredicateBuilder:(id)a3;
+- (void)deleteSnapshot:(id)snapshot;
+- (void)deleteSnapshots:(id)snapshots;
+- (void)deleteSnapshotsForGroupID:(id)d;
+- (void)deleteSnapshotsForGroupID:(id)d matchingPredicate:(id)predicate;
+- (void)deleteSnapshotsForGroupID:(id)d predicateBuilder:(id)builder;
+- (void)deleteSnapshotsMatchingPredicate:(id)predicate;
+- (void)deleteSnapshotsUsingPredicateBuilder:(id)builder;
 - (void)endTrackingImageDeletions;
-- (void)generateImageForSnapshot:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5 imageGeneratedHandler:(id)a6 imageDataSavedHandler:(id)a7;
-- (void)generateImageForSnapshot:(id)a3 dataProvider:(id)a4 writeToFile:(BOOL)a5 didGenerateImage:(id)a6 didSaveImage:(id)a7;
-- (void)manifest:(id)a3 didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)a4;
+- (void)generateImageForSnapshot:(id)snapshot dataProvider:(id)provider options:(unint64_t)options imageGeneratedHandler:(id)handler imageDataSavedHandler:(id)savedHandler;
+- (void)generateImageForSnapshot:(id)snapshot dataProvider:(id)provider writeToFile:(BOOL)file didGenerateImage:(id)image didSaveImage:(id)saveImage;
+- (void)manifest:(id)manifest didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)identifiers;
 - (void)purgeSnapshotsWithProtectedContent;
-- (void)saveSnapshot:(id)a3 atPath:(id)a4 withContext:(id)a5;
-- (void)updateSnapshotsAPFSPurgability:(BOOL)a3;
+- (void)saveSnapshot:(id)snapshot atPath:(id)path withContext:(id)context;
+- (void)updateSnapshotsAPFSPurgability:(BOOL)purgability;
 @end
 
 @implementation XBApplicationSnapshotManifest
@@ -51,9 +51,9 @@
 - (NSString)defaultGroupIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v3 = [WeakRetained defaultGroupIdentifier];
+  defaultGroupIdentifier = [WeakRetained defaultGroupIdentifier];
 
-  return v3;
+  return defaultGroupIdentifier;
 }
 
 - (void)purgeSnapshotsWithProtectedContent
@@ -64,7 +64,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = dispatch_workloop_create("XBApplicationManifestWorkloop");
     v4 = __ManifestWorkloop;
@@ -107,14 +107,14 @@
     +[XBApplicationSnapshotManifest handleTrackingStateChange];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _XBTrackDeletionPreferencesChangedHandler, @"com.apple.springboard.trackSplashBoardDeletionsPrefsChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _XBTrackDeletionPreferencesChangedHandler, @"com.apple.springboard.trackSplashBoardDeletionsPrefsChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 }
 
 + (void)handleTrackingStateChange
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  __isTrackingDeletions = [v2 BOOLForKey:@"SBTrackSplashBoardDeletions"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  __isTrackingDeletions = [standardUserDefaults BOOLForKey:@"SBTrackSplashBoardDeletions"];
 
   v3 = __ManifestSerialWorkQueue;
 
@@ -149,7 +149,7 @@ void __58__XBApplicationSnapshotManifest_handleTrackingStateChange__block_invoke
 
 + (id)debugDescription
 {
-  v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
+  v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v2 setUseDebugDescription:1];
   v3 = __ManifestSerialWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -159,9 +159,9 @@ void __58__XBApplicationSnapshotManifest_handleTrackingStateChange__block_invoke
   v8 = v2;
   v4 = v2;
   dispatch_sync(v3, block);
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 + (void)deleteAllSystemSnapshots
@@ -171,12 +171,12 @@ void __58__XBApplicationSnapshotManifest_handleTrackingStateChange__block_invoke
   OUTLINED_FUNCTION_6_0(&dword_26B5EF000, v0, v1, "Error deleting all system snapshots at path %{public}@: %{public}@");
 }
 
-- (XBApplicationSnapshotManifest)initWithContainerIdentity:(id)a3 store:(id)a4
+- (XBApplicationSnapshotManifest)initWithContainerIdentity:(id)identity store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  identityCopy = identity;
+  storeCopy = store;
+  v8 = storeCopy;
+  if (!identityCopy)
   {
     [XBApplicationSnapshotManifest initWithContainerIdentity:store:];
     if (v8)
@@ -189,7 +189,7 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!storeCopy)
   {
     goto LABEL_8;
   }
@@ -200,7 +200,7 @@ LABEL_3:
   v9 = [(XBApplicationSnapshotManifest *)&v14 init];
   if (v9)
   {
-    v10 = [XBApplicationSnapshotManifestImpl acquireManifestForContainerIdentity:v6 store:v8 creatingIfNecessary:1];
+    v10 = [XBApplicationSnapshotManifestImpl acquireManifestForContainerIdentity:identityCopy store:v8 creatingIfNecessary:1];
     objc_storeWeak(&v9->_manifestImpl, v10);
 
     WeakRetained = objc_loadWeakRetained(&v9->_manifestImpl);
@@ -216,15 +216,15 @@ LABEL_3:
   return v9;
 }
 
-- (XBApplicationSnapshotManifest)initWithApplicationInfo:(id)a3
+- (XBApplicationSnapshotManifest)initWithApplicationInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     [XBApplicationSnapshotManifest initWithApplicationInfo:];
   }
 
-  v5 = [XBSnapshotContainerIdentity identityForApplicationInfo:v4];
+  v5 = [XBSnapshotContainerIdentity identityForApplicationInfo:infoCopy];
   v6 = +[XBApplicationDataStore sharedInstance];
   v7 = [(XBApplicationSnapshotManifest *)self initWithContainerIdentity:v5 store:v6];
 
@@ -244,73 +244,73 @@ LABEL_3:
 - (NSString)bundleIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v3 = [WeakRetained bundleIdentifier];
+  bundleIdentifier = [WeakRetained bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)containerPath
 {
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v3 = [WeakRetained containerPath];
+  containerPath = [WeakRetained containerPath];
 
-  return v3;
+  return containerPath;
 }
 
-- (id)snapshotsForGroupID:(id)a3
+- (id)snapshotsForGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v6 = [WeakRetained snapshotsForGroupID:v4];
+  v6 = [WeakRetained snapshotsForGroupID:dCopy];
 
   return v6;
 }
 
-- (id)snapshotsForGroupID:(id)a3 matchingPredicate:(id)a4
+- (id)snapshotsForGroupID:(id)d matchingPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v9 = [WeakRetained snapshotsForGroupID:v7 matchingPredicate:v6];
+  v9 = [WeakRetained snapshotsForGroupID:dCopy matchingPredicate:predicateCopy];
 
   return v9;
 }
 
-- (id)snapshotsForGroupID:(id)a3 fetchRequest:(id)a4
+- (id)snapshotsForGroupID:(id)d fetchRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v9 = [WeakRetained snapshotsForGroupID:v7 fetchRequest:v6];
+  v9 = [WeakRetained snapshotsForGroupID:dCopy fetchRequest:requestCopy];
 
   return v9;
 }
 
-- (id)snapshotsForGroupIDs:(id)a3
+- (id)snapshotsForGroupIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v6 = [WeakRetained snapshotsForGroupIDs:v4];
+  v6 = [WeakRetained snapshotsForGroupIDs:dsCopy];
 
   return v6;
 }
 
-- (id)snapshotsForGroupIDs:(id)a3 matchingPredicate:(id)a4
+- (id)snapshotsForGroupIDs:(id)ds matchingPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v9 = [WeakRetained snapshotsForGroupIDs:v7 matchingPredicate:v6];
+  v9 = [WeakRetained snapshotsForGroupIDs:dsCopy matchingPredicate:predicateCopy];
 
   return v9;
 }
 
-- (id)snapshotsForGroupIDs:(id)a3 fetchRequest:(id)a4
+- (id)snapshotsForGroupIDs:(id)ds fetchRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v9 = [WeakRetained snapshotsForGroupIDs:v7 fetchRequest:v6];
+  v9 = [WeakRetained snapshotsForGroupIDs:dsCopy fetchRequest:requestCopy];
 
   return v9;
 }
@@ -327,37 +327,37 @@ LABEL_3:
   [WeakRetained endTrackingImageDeletions];
 }
 
-- (id)createSnapshotWithGroupID:(id)a3
+- (id)createSnapshotWithGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v6 = [WeakRetained createSnapshotWithGroupID:v4];
+  v6 = [WeakRetained createSnapshotWithGroupID:dCopy];
 
   return v6;
 }
 
-- (id)createVariantForSnapshot:(id)a3 withIdentifier:(id)a4
+- (id)createVariantForSnapshot:(id)snapshot withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  snapshotCopy = snapshot;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v9 = [WeakRetained createVariantForSnapshot:v7 withIdentifier:v6];
+  v9 = [WeakRetained createVariantForSnapshot:snapshotCopy withIdentifier:identifierCopy];
 
   return v9;
 }
 
-- (void)generateImageForSnapshot:(id)a3 dataProvider:(id)a4 writeToFile:(BOOL)a5 didGenerateImage:(id)a6 didSaveImage:(id)a7
+- (void)generateImageForSnapshot:(id)snapshot dataProvider:(id)provider writeToFile:(BOOL)file didGenerateImage:(id)image didSaveImage:(id)saveImage
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (!v14)
+  fileCopy = file;
+  snapshotCopy = snapshot;
+  providerCopy = provider;
+  imageCopy = image;
+  saveImageCopy = saveImage;
+  v16 = saveImageCopy;
+  if (!imageCopy)
   {
     v17 = 0;
-    if (v15)
+    if (saveImageCopy)
     {
       goto LABEL_3;
     }
@@ -371,7 +371,7 @@ LABEL_5:
   v24[1] = 3221225472;
   v24[2] = __113__XBApplicationSnapshotManifest_generateImageForSnapshot_dataProvider_writeToFile_didGenerateImage_didSaveImage___block_invoke;
   v24[3] = &unk_279CF9820;
-  v25 = v14;
+  v25 = imageCopy;
   v17 = MEMORY[0x26D67C6A0](v24);
 
   if (!v16)
@@ -388,34 +388,34 @@ LABEL_3:
   v18 = MEMORY[0x26D67C6A0](&v19);
 
 LABEL_6:
-  [(XBApplicationSnapshotManifest *)self generateImageForSnapshot:v12 dataProvider:v13 writeToFile:v9 imageGeneratedHandler:v17 imageDataSavedHandler:v18, v19, v20, v21, v22];
+  [(XBApplicationSnapshotManifest *)self generateImageForSnapshot:snapshotCopy dataProvider:providerCopy writeToFile:fileCopy imageGeneratedHandler:v17 imageDataSavedHandler:v18, v19, v20, v21, v22];
 }
 
-- (void)generateImageForSnapshot:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5 imageGeneratedHandler:(id)a6 imageDataSavedHandler:(id)a7
+- (void)generateImageForSnapshot:(id)snapshot dataProvider:(id)provider options:(unint64_t)options imageGeneratedHandler:(id)handler imageDataSavedHandler:(id)savedHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  savedHandlerCopy = savedHandler;
+  handlerCopy = handler;
+  providerCopy = provider;
+  snapshotCopy = snapshot;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained generateImageForSnapshot:v15 dataProvider:v14 options:a5 imageGeneratedHandler:v13 imageDataSavedHandler:v12];
+  [WeakRetained generateImageForSnapshot:snapshotCopy dataProvider:providerCopy options:options imageGeneratedHandler:handlerCopy imageDataSavedHandler:savedHandlerCopy];
 }
 
-- (void)saveSnapshot:(id)a3 atPath:(id)a4 withContext:(id)a5
+- (void)saveSnapshot:(id)snapshot atPath:(id)path withContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  pathCopy = path;
+  snapshotCopy = snapshot;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained saveSnapshot:v10 atPath:v9 withContext:v8];
+  [WeakRetained saveSnapshot:snapshotCopy atPath:pathCopy withContext:contextCopy];
 }
 
 - (id)_allSnapshotGroups
 {
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v3 = [WeakRetained _allSnapshotGroups];
+  _allSnapshotGroups = [WeakRetained _allSnapshotGroups];
 
-  return v3;
+  return _allSnapshotGroups;
 }
 
 - (void)deleteAllSnapshots
@@ -424,78 +424,78 @@ LABEL_6:
   [WeakRetained deleteAllSnapshots];
 }
 
-- (void)deleteSnapshot:(id)a3
+- (void)deleteSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshot:v4];
+  [WeakRetained deleteSnapshot:snapshotCopy];
 }
 
-- (void)deleteSnapshots:(id)a3
+- (void)deleteSnapshots:(id)snapshots
 {
-  v4 = a3;
+  snapshotsCopy = snapshots;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshots:v4];
+  [WeakRetained deleteSnapshots:snapshotsCopy];
 }
 
-- (void)deleteSnapshotsMatchingPredicate:(id)a3
+- (void)deleteSnapshotsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshotsMatchingPredicate:v4];
+  [WeakRetained deleteSnapshotsMatchingPredicate:predicateCopy];
 }
 
-- (void)deleteSnapshotsUsingPredicateBuilder:(id)a3
+- (void)deleteSnapshotsUsingPredicateBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshotsUsingPredicateBuilder:v4];
+  [WeakRetained deleteSnapshotsUsingPredicateBuilder:builderCopy];
 }
 
-- (void)deleteSnapshotsForGroupID:(id)a3
+- (void)deleteSnapshotsForGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshotsForGroupID:v4];
+  [WeakRetained deleteSnapshotsForGroupID:dCopy];
 }
 
-- (void)deleteSnapshotsForGroupID:(id)a3 matchingPredicate:(id)a4
+- (void)deleteSnapshotsForGroupID:(id)d matchingPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshotsForGroupID:v7 matchingPredicate:v6];
+  [WeakRetained deleteSnapshotsForGroupID:dCopy matchingPredicate:predicateCopy];
 }
 
-- (void)deleteSnapshotsForGroupID:(id)a3 predicateBuilder:(id)a4
+- (void)deleteSnapshotsForGroupID:(id)d predicateBuilder:(id)builder
 {
-  v6 = a4;
-  v7 = a3;
+  builderCopy = builder;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained deleteSnapshotsForGroupID:v7 predicateBuilder:v6];
+  [WeakRetained deleteSnapshotsForGroupID:dCopy predicateBuilder:builderCopy];
 }
 
-- (void)updateSnapshotsAPFSPurgability:(BOOL)a3
+- (void)updateSnapshotsAPFSPurgability:(BOOL)purgability
 {
-  v3 = a3;
+  purgabilityCopy = purgability;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained updateSnapshotsAPFSPurgability:v3];
+  [WeakRetained updateSnapshotsAPFSPurgability:purgabilityCopy];
 }
 
 - (BOOL)snapshotsConsideredUnpurgableByAPFS
 {
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v3 = [WeakRetained snapshotsConsideredUnpurgableByAPFS];
+  snapshotsConsideredUnpurgableByAPFS = [WeakRetained snapshotsConsideredUnpurgableByAPFS];
 
-  return v3;
+  return snapshotsConsideredUnpurgableByAPFS;
 }
 
-- (void)beginSnapshotAccessTransaction:(id)a3 completion:(id)a4
+- (void)beginSnapshotAccessTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  transactionCopy = transaction;
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  [WeakRetained beginSnapshotAccessTransaction:v7 completion:v6];
+  [WeakRetained beginSnapshotAccessTransaction:transactionCopy completion:completionCopy];
 }
 
 - (void)archive
@@ -507,56 +507,56 @@ LABEL_6:
 - (BOOL)_invalidate
 {
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v3 = [WeakRetained _invalidate];
+  _invalidate = [WeakRetained _invalidate];
 
-  return v3;
+  return _invalidate;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(XBApplicationSnapshotManifest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(XBApplicationSnapshotManifest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
-  v5 = [WeakRetained bundleIdentifier];
-  v6 = [v3 appendObject:v5 withName:@"bundleID"];
+  bundleIdentifier = [WeakRetained bundleIdentifier];
+  v6 = [v3 appendObject:bundleIdentifier withName:@"bundleID"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(XBApplicationSnapshotManifest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(XBApplicationSnapshotManifest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(XBApplicationSnapshotManifest *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(XBApplicationSnapshotManifest *)self succinctDescriptionBuilder];
   WeakRetained = objc_loadWeakRetained(&self->_manifestImpl);
   v9[0] = WeakRetained;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v5 appendArraySection:v7 withName:0 multilinePrefix:v4 skipIfEmpty:1];
+  [succinctDescriptionBuilder appendArraySection:v7 withName:0 multilinePrefix:prefixCopy skipIfEmpty:1];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (void)manifest:(id)a3 didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)a4
+- (void)manifest:(id)manifest didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
+  identifiersCopy = identifiers;
+  manifestCopy = manifest;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained manifest:v7 didPurgeProtectedContentSnapshotsWithGroupIdentifiers:v6];
+  [WeakRetained manifest:manifestCopy didPurgeProtectedContentSnapshotsWithGroupIdentifiers:identifiersCopy];
 }
 
 - (XBApplicationSnapshotManifestDelegate)delegate

@@ -4,38 +4,38 @@
 - (BOOL)showLineNames;
 - (BOOL)showLineNumbers;
 - (BOOL)showTrackSizes;
-- (RWIProtocolDOMGridOverlayConfig)initWithGridColor:(id)a3;
+- (RWIProtocolDOMGridOverlayConfig)initWithGridColor:(id)color;
 - (RWIProtocolDOMRGBAColor)gridColor;
-- (void)setGridColor:(id)a3;
+- (void)setGridColor:(id)color;
 @end
 
 @implementation RWIProtocolDOMGridOverlayConfig
 
-- (RWIProtocolDOMGridOverlayConfig)initWithGridColor:(id)a3
+- (RWIProtocolDOMGridOverlayConfig)initWithGridColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v8.receiver = self;
   v8.super_class = RWIProtocolDOMGridOverlayConfig;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!colorCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"gridColor"}];
     }
 
-    [(RWIProtocolDOMGridOverlayConfig *)v5 setGridColor:v4];
+    [(RWIProtocolDOMGridOverlayConfig *)v5 setGridColor:colorCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setGridColor:(id)a3
+- (void)setGridColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMGridOverlayConfig;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"gridColor"];
+  [(RWIProtocolJSONObject *)&v3 setObject:color forKey:@"gridColor"];
 }
 
 - (RWIProtocolDOMRGBAColor)gridColor

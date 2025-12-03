@@ -1,23 +1,23 @@
 @interface VOSCommandProfileValidation
-+ (id)gestureAssignedToOtherCommandValidation:(id)a3;
++ (id)gestureAssignedToOtherCommandValidation:(id)validation;
 + (id)gestureIsRequiredValidation;
-+ (id)keyboardShortcutAssignedToOtherCommandValidation:(id)a3;
++ (id)keyboardShortcutAssignedToOtherCommandValidation:(id)validation;
 + (id)successfulValidation;
 - (NSString)localizedErrorMessage;
 - (NSString)localizedErrorTitle;
-- (VOSCommandProfileValidation)initWithType:(int64_t)a3;
+- (VOSCommandProfileValidation)initWithType:(int64_t)type;
 @end
 
 @implementation VOSCommandProfileValidation
 
-- (VOSCommandProfileValidation)initWithType:(int64_t)a3
+- (VOSCommandProfileValidation)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = VOSCommandProfileValidation;
   result = [(VOSCommandProfileValidation *)&v5 init];
   if (result)
   {
-    result->_validationType = a3;
+    result->_validationType = type;
   }
 
   return result;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-+ (id)gestureAssignedToOtherCommandValidation:(id)a3
++ (id)gestureAssignedToOtherCommandValidation:(id)validation
 {
-  v3 = a3;
+  validationCopy = validation;
   v4 = [[VOSCommandProfileValidation alloc] initWithType:2];
-  [(VOSCommandProfileValidation *)v4 setPreviouslyBoundCommand:v3];
+  [(VOSCommandProfileValidation *)v4 setPreviouslyBoundCommand:validationCopy];
 
   return v4;
 }
 
-+ (id)keyboardShortcutAssignedToOtherCommandValidation:(id)a3
++ (id)keyboardShortcutAssignedToOtherCommandValidation:(id)validation
 {
-  v3 = a3;
+  validationCopy = validation;
   v4 = [[VOSCommandProfileValidation alloc] initWithType:4];
-  [(VOSCommandProfileValidation *)v4 setPreviouslyBoundCommand:v3];
+  [(VOSCommandProfileValidation *)v4 setPreviouslyBoundCommand:validationCopy];
 
   return v4;
 }
@@ -111,9 +111,9 @@
       v7 = @"keyboard.shortcut.in.use.message";
 LABEL_11:
       v8 = VOSLocString(v7);
-      v9 = [(VOSCommandProfileValidation *)self previouslyBoundCommand];
-      v10 = [v9 localizedName];
-      v3 = [v6 localizedStringWithFormat:v8, v10];
+      previouslyBoundCommand = [(VOSCommandProfileValidation *)self previouslyBoundCommand];
+      localizedName = [previouslyBoundCommand localizedName];
+      v3 = [v6 localizedStringWithFormat:v8, localizedName];
 
       goto LABEL_14;
     }

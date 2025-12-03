@@ -7,7 +7,7 @@
 
 - (void)mergeWith:()CRDT_Additions
 {
-  if (([a1 isEqual:?] & 1) == 0)
+  if (([self isEqual:?] & 1) == 0)
   {
     [NSString(CRDT_Additions) mergeWith:];
   }
@@ -16,7 +16,7 @@
 - (uint64_t)initWithCRCoder:()CRDT_Additions
 {
   v4 = [a3 decodeStringForKey:@"self"];
-  v5 = [a1 initWithString:v4];
+  v5 = [self initWithString:v4];
 
   return v5;
 }

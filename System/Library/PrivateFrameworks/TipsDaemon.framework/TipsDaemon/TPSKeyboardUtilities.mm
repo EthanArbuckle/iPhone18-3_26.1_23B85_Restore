@@ -2,11 +2,11 @@
 + (BOOL)hasCustomizedKeyboard;
 + (BOOL)isAutoCorrectionEnabled;
 + (BOOL)isDictationEnabled;
-+ (BOOL)isDictationSelectedForLanguage:(id)a3;
-+ (BOOL)isExtendedSuggestionSupportedForInputMode:(id)a3;
-+ (BOOL)isHandwritingEnabledForInputMode:(id)a3;
-+ (BOOL)isInputModeInstalledForLanguage:(id)a3;
-+ (id)_variantForInputMode:(id)a3;
++ (BOOL)isDictationSelectedForLanguage:(id)language;
++ (BOOL)isExtendedSuggestionSupportedForInputMode:(id)mode;
++ (BOOL)isHandwritingEnabledForInputMode:(id)mode;
++ (BOOL)isInputModeInstalledForLanguage:(id)language;
++ (id)_variantForInputMode:(id)mode;
 + (id)enabledDictationLanguages;
 + (id)installedInputModes;
 @end
@@ -40,46 +40,46 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)isDictationSelectedForLanguage:(id)a3
++ (BOOL)isDictationSelectedForLanguage:(id)language
 {
-  v3 = a3;
-  v4 = [objc_opt_class() enabledDictationLanguages];
-  v5 = [v4 TPSSafeBoolForKey:v3];
+  languageCopy = language;
+  enabledDictationLanguages = [objc_opt_class() enabledDictationLanguages];
+  v5 = [enabledDictationLanguages TPSSafeBoolForKey:languageCopy];
 
   return v5;
 }
 
 + (id)installedInputModes
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"AppleKeyboards"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"AppleKeyboards"];
 
   return v3;
 }
 
-+ (BOOL)isHandwritingEnabledForInputMode:(id)a3
++ (BOOL)isHandwritingEnabledForInputMode:(id)mode
 {
-  v3 = [a1 _variantForInputMode:a3];
+  v3 = [self _variantForInputMode:mode];
   v4 = [v3 isEqualToString:@"HWR"];
 
   return v4;
 }
 
-+ (BOOL)isInputModeInstalledForLanguage:(id)a3
++ (BOOL)isInputModeInstalledForLanguage:(id)language
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  languageCopy = language;
   v4 = +[TPSKeyboardUtilities installedInputModes];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -102,7 +102,7 @@
             objc_enumerationMutation(v5);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) hasPrefix:{v3, v11}])
+          if ([*(*(&v11 + 1) + 8 * i) hasPrefix:{languageCopy, v11}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_13;
@@ -131,9 +131,9 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)isExtendedSuggestionSupportedForInputMode:(id)a3
++ (BOOL)isExtendedSuggestionSupportedForInputMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (isExtendedSuggestionSupportedForInputMode__onceToken != -1)
   {
     +[TPSKeyboardUtilities isExtendedSuggestionSupportedForInputMode:];
@@ -142,7 +142,7 @@ LABEL_13:
   v18 = 0;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"([a-zA-Z0-9]+)(_\\w+)?(-\\w+)?(@.*)?" options:1 error:&v18];
   v5 = v18;
-  v6 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v6 = [v4 firstMatchInString:modeCopy options:0 range:{0, objc_msgSend(modeCopy, "length")}];
   v7 = v6;
   if (v6 && [v6 numberOfRanges] == 5)
   {
@@ -157,13 +157,13 @@ LABEL_13:
 
     else
     {
-      v14 = [v3 substringWithRange:{v8, v10}];
+      v14 = [modeCopy substringWithRange:{v8, v10}];
     }
 
     v15 = 0;
     if (v11 != 0x7FFFFFFFFFFFFFFFLL && v13 >= 2)
     {
-      v15 = [v3 substringWithRange:{v11 + 1, v13 - 1}];
+      v15 = [modeCopy substringWithRange:{v11 + 1, v13 - 1}];
     }
 
     if (v14 && [isExtendedSuggestionSupportedForInputMode__supportedLanguages containsObject:v14] && !objc_msgSend(v15, "isEqualToString:", @"HWR") || objc_msgSend(v14, "isEqualToString:", @"hi") && !objc_msgSend(v15, "caseInsensitiveCompare:", @"translit"))
@@ -191,20 +191,20 @@ void __66__TPSKeyboardUtilities_isExtendedSuggestionSupportedForInputMode___bloc
   isExtendedSuggestionSupportedForInputMode__supportedLanguages = &unk_284830B28;
 }
 
-+ (id)_variantForInputMode:(id)a3
++ (id)_variantForInputMode:(id)mode
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"-" options:2];
-  v5 = [v3 rangeOfString:@"@" options:2];
+  modeCopy = mode;
+  v4 = [modeCopy rangeOfString:@"-" options:2];
+  v5 = [modeCopy rangeOfString:@"@" options:2];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v3 length];
+    v5 = [modeCopy length];
   }
 
   v6 = 0;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL && v4 < v5)
   {
-    v6 = [v3 substringWithRange:{v4 + 1, v5 - (v4 + 1)}];
+    v6 = [modeCopy substringWithRange:{v4 + 1, v5 - (v4 + 1)}];
   }
 
   return v6;
@@ -219,27 +219,27 @@ void __66__TPSKeyboardUtilities_isExtendedSuggestionSupportedForInputMode___bloc
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)hasCustomizedKeyboard
 {
-  v2 = [a1 installedInputModes];
-  v3 = v2 != 0;
+  installedInputModes = [self installedInputModes];
+  v3 = installedInputModes != 0;
 
   return v3;
 }

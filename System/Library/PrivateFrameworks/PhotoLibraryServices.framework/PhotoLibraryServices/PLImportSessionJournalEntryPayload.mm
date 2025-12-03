@@ -2,13 +2,13 @@
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSSet)assetUUIDs;
-- (id)insertAlbumFromDataInManagedObjectContext:(id)a3;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)updateAlbum:(id)a3 includePendingChanges:(BOOL)a4;
+- (id)insertAlbumFromDataInManagedObjectContext:(id)context;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)updateAlbum:(id)album includePendingChanges:(BOOL)changes;
 @end
 
 @implementation PLImportSessionJournalEntryPayload
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __74__PLImportSessionJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_11290 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_11290, block);
@@ -43,7 +43,7 @@ void __74__PLImportSessionJournalEntryPayload_persistedPropertyNamesForEntityNam
   block[1] = 3221225472;
   block[2] = __53__PLImportSessionJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_11292 != -1)
   {
     dispatch_once(&modelProperties_onceToken_11292, block);
@@ -70,7 +70,7 @@ uint64_t __53__PLImportSessionJournalEntryPayload_modelProperties__block_invoke(
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___PLImportSessionJournalEntryPayload;
   v4 = objc_msgSendSuper2(&v10, sel_modelPropertiesDescription);
   v5 = [v3 initWithDictionary:v4];
@@ -86,65 +86,65 @@ uint64_t __53__PLImportSessionJournalEntryPayload_modelProperties__block_invoke(
   return v5;
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v9 isEqualToKey:@"assets"])
+  valueCopy = value;
+  propertyCopy = property;
+  dictionaryValueCopy = dictionaryValue;
+  if ([propertyCopy isEqualToKey:@"assets"])
   {
-    v11 = [MEMORY[0x1E695DFD8] setWithArray:v10];
+    v11 = [MEMORY[0x1E695DFD8] setWithArray:dictionaryValueCopy];
 
-    v12 = [v11 isEqualToSet:v8];
+    v12 = [v11 isEqualToSet:valueCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = PLImportSessionJournalEntryPayload;
-    v12 = [(PLGenericAlbumJournalEntryPayload *)&v14 comparePayloadValue:v8 toObjectDictionaryValue:v10 forPayloadProperty:v9];
+    v12 = [(PLGenericAlbumJournalEntryPayload *)&v14 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
   }
 
   return v12;
 }
 
-- (void)updateAlbum:(id)a3 includePendingChanges:(BOOL)a4
+- (void)updateAlbum:(id)album includePendingChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  albumCopy = album;
   v15.receiver = self;
   v15.super_class = PLImportSessionJournalEntryPayload;
-  [(PLGenericAlbumJournalEntryPayload *)&v15 updateAlbum:v6 includePendingChanges:v4];
-  v7 = [(PLImportSessionJournalEntryPayload *)self assetUUIDs];
-  v8 = [v7 allObjects];
-  v9 = [v6 managedObjectContext];
-  v10 = [PLManagedAsset assetsWithUUIDs:v8 options:v4 | 2 inManagedObjectContext:v9];
+  [(PLGenericAlbumJournalEntryPayload *)&v15 updateAlbum:albumCopy includePendingChanges:changesCopy];
+  assetUUIDs = [(PLImportSessionJournalEntryPayload *)self assetUUIDs];
+  allObjects = [assetUUIDs allObjects];
+  managedObjectContext = [albumCopy managedObjectContext];
+  v10 = [PLManagedAsset assetsWithUUIDs:allObjects options:changesCopy | 2 inManagedObjectContext:managedObjectContext];
 
   if (v10)
   {
-    v11 = v6;
+    v11 = albumCopy;
     v12 = PLMigrationGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 uuid];
+      uuid = [v11 uuid];
       *buf = 138412546;
-      v17 = v13;
+      v17 = uuid;
       v18 = 2112;
-      v19 = v7;
+      v19 = assetUUIDs;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Updating assets in import session %@ to match persisted UUID from %@", buf, 0x16u);
     }
 
-    v14 = [v11 mutableAssets];
-    [v14 addObjectsFromArray:v10];
+    mutableAssets = [v11 mutableAssets];
+    [mutableAssets addObjectsFromArray:v10];
   }
 }
 
-- (id)insertAlbumFromDataInManagedObjectContext:(id)a3
+- (id)insertAlbumFromDataInManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PLGenericAlbumJournalEntryPayload *)self importSessionID];
-  v6 = [PLImportSession insertNewImportSessionAlbumWithImportSessionID:v5 inManagedObjectContext:v4];
+  contextCopy = context;
+  importSessionID = [(PLGenericAlbumJournalEntryPayload *)self importSessionID];
+  v6 = [PLImportSession insertNewImportSessionAlbumWithImportSessionID:importSessionID inManagedObjectContext:contextCopy];
 
   return v6;
 }
@@ -157,15 +157,15 @@ uint64_t __53__PLImportSessionJournalEntryPayload_modelProperties__block_invoke(
   return v4;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"assets"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"assets"])
   {
-    v8 = [v7 key];
+    v8 = [propertyCopy key];
 
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
   }
 
@@ -173,46 +173,46 @@ uint64_t __53__PLImportSessionJournalEntryPayload_modelProperties__block_invoke(
   {
     v12.receiver = self;
     v12.super_class = PLImportSessionJournalEntryPayload;
-    v10 = [(PLGenericAlbumJournalEntryPayload *)&v12 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+    v10 = [(PLGenericAlbumJournalEntryPayload *)&v12 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
   }
 
   return v10;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isEqualToString:@"assets"])
+  keyCopy = key;
+  builderCopy = builder;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"assets"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:valueCopy];
 
     v13.receiver = self;
     v13.super_class = PLImportSessionJournalEntryPayload;
-    [(PLGenericAlbumJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v9];
-    v10 = v11;
+    [(PLGenericAlbumJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
+    valueCopy = v11;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PLImportSessionJournalEntryPayload;
-    [(PLGenericAlbumJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v10 toDescriptionBuilder:v9];
+    [(PLGenericAlbumJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 isEqualToKey:@"assets"])
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"assets"])
   {
-    v14 = [objc_opt_class() fetchRelationshipPropertyValuesForRelationshipName:@"assets" fromManagedObject:v12 usingPayloadProperty:v13];
+    v14 = [objc_opt_class() fetchRelationshipPropertyValuesForRelationshipName:@"assets" fromManagedObject:objectCopy usingPayloadProperty:propertyCopy];
     v15 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringArray:v14];
-    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:v10 andNilAttributes:v11 forPayloadProperty:v13 withUUIDStringData:v15];
+    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy forPayloadProperty:propertyCopy withUUIDStringData:v15];
 
     v16 = 1;
   }
@@ -221,7 +221,7 @@ uint64_t __53__PLImportSessionJournalEntryPayload_modelProperties__block_invoke(
   {
     v18.receiver = self;
     v18.super_class = PLImportSessionJournalEntryPayload;
-    v16 = [(PLGenericAlbumJournalEntryPayload *)&v18 updatePayloadAttributes:v10 andNilAttributes:v11 withManagedObject:v12 forPayloadProperty:v13];
+    v16 = [(PLGenericAlbumJournalEntryPayload *)&v18 updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy withManagedObject:objectCopy forPayloadProperty:propertyCopy];
   }
 
   return v16;

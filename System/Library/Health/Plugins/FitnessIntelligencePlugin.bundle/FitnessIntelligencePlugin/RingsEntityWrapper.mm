@@ -1,31 +1,31 @@
 @interface RingsEntityWrapper
 - (RingsEntityWrapper)init;
-- (RingsEntityWrapper)initWithCoder:(id)a3;
-- (RingsEntityWrapper)initWithData:(id)a3;
+- (RingsEntityWrapper)initWithCoder:(id)coder;
+- (RingsEntityWrapper)initWithData:(id)data;
 - (id)data;
 - (int64_t)encodedByteCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RingsEntityWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___RingsEntityWrapper_serializedEntity);
   v5 = *&self->serializedEntity[OBJC_IVAR___RingsEntityWrapper_serializedEntity];
-  v6 = a3;
-  v8 = self;
+  coderCopy = coder;
+  selfCopy = self;
   isa = sub_748A8().super.isa;
-  [v6 encodeDataObject:isa];
+  [coderCopy encodeDataObject:isa];
 }
 
-- (RingsEntityWrapper)initWithCoder:(id)a3
+- (RingsEntityWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeDataObject];
-  if (v5)
+  coderCopy = coder;
+  decodeDataObject = [coderCopy decodeDataObject];
+  if (decodeDataObject)
   {
-    v6 = v5;
+    v6 = decodeDataObject;
     v7 = sub_748C8();
     v9 = v8;
 
@@ -45,9 +45,9 @@
   }
 }
 
-- (RingsEntityWrapper)initWithData:(id)a3
+- (RingsEntityWrapper)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_748C8();
   v7 = v6;
 

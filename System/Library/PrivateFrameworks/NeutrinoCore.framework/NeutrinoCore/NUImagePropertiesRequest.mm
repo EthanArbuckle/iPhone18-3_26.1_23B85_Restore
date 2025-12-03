@@ -7,10 +7,10 @@
 
 - (int64_t)mediaComponentType
 {
-  v2 = [(NURenderRequest *)self internalComposition];
-  v3 = [v2 mediaType];
+  internalComposition = [(NURenderRequest *)self internalComposition];
+  mediaType = [internalComposition mediaType];
 
-  if (v3 == 2)
+  if (mediaType == 2)
   {
     return 2;
   }

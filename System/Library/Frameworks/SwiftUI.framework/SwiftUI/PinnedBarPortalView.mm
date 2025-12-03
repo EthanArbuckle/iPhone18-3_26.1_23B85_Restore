@@ -1,6 +1,6 @@
 @interface PinnedBarPortalView
-- (_TtC7SwiftUI19PinnedBarPortalView)initWithCoder:(id)a3;
-- (_TtC7SwiftUI19PinnedBarPortalView)initWithFrame:(CGRect)a3;
+- (_TtC7SwiftUI19PinnedBarPortalView)initWithCoder:(id)coder;
+- (_TtC7SwiftUI19PinnedBarPortalView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -17,7 +17,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC7SwiftUI19PinnedBarPortalView)initWithCoder:(id)a3
+- (_TtC7SwiftUI19PinnedBarPortalView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7SwiftUI19PinnedBarPortalView_containerInteraction) = 0;
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC7SwiftUI19PinnedBarPortalView)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUI19PinnedBarPortalView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

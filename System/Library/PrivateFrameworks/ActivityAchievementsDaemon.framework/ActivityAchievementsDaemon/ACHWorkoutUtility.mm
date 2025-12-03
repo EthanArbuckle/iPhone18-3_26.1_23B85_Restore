@@ -1,21 +1,21 @@
 @interface ACHWorkoutUtility
-- (ACHWorkoutUtility)initWithProfile:(id)a3;
+- (ACHWorkoutUtility)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (HDSQLitePredicate)firstPartyPredicate;
-- (double)_sumMindfulMinutesForSessions:(id)a3 dateInterval:(id)a4;
-- (id)_predicateForBundleIdentifier:(id)a3;
-- (id)_predicateWithDuration:(double)a3 withType:(id)a4 startingAtOrAfterDate:(id)a5 endingOnOrBeforeDate:(id)a6 firstPartyOnly:(BOOL)a7;
-- (id)_readingContextWithIdentifier:(id)a3;
-- (id)bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4;
-- (id)bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4;
-- (id)mindfulMinutesForForDateInterval:(id)a3;
-- (id)workoutsInDateInterval:(id)a3;
-- (unint64_t)_countOfSamplesWithPredicate:(id)a3 andLocationType:(unint64_t)a4;
-- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4;
-- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)a3 withType:(unint64_t)a4 andLocation:(unint64_t)a5 containedInInterval:(id)a6;
-- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)a3 withType:(unint64_t)a4 endingOnOrBeforeDate:(id)a5;
-- (unint64_t)numberOfWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4;
-- (void)_performReadTransaction:(id)a3 error:(id *)a4 block:(id)a5;
+- (double)_sumMindfulMinutesForSessions:(id)sessions dateInterval:(id)interval;
+- (id)_predicateForBundleIdentifier:(id)identifier;
+- (id)_predicateWithDuration:(double)duration withType:(id)type startingAtOrAfterDate:(id)date endingOnOrBeforeDate:(id)beforeDate firstPartyOnly:(BOOL)only;
+- (id)_readingContextWithIdentifier:(id)identifier;
+- (id)bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date;
+- (id)bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date;
+- (id)mindfulMinutesForForDateInterval:(id)interval;
+- (id)workoutsInDateInterval:(id)interval;
+- (unint64_t)_countOfSamplesWithPredicate:(id)predicate andLocationType:(unint64_t)type;
+- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)duration containedInInterval:(id)interval;
+- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)duration withType:(unint64_t)type andLocation:(unint64_t)location containedInInterval:(id)interval;
+- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)duration withType:(unint64_t)type endingOnOrBeforeDate:(id)date;
+- (unint64_t)numberOfWorkoutsWithDuration:(double)duration containedInInterval:(id)interval;
+- (void)_performReadTransaction:(id)transaction error:(id *)error block:(id)block;
 @end
 
 @implementation ACHWorkoutUtility
@@ -92,28 +92,28 @@
   return WeakRetained;
 }
 
-- (ACHWorkoutUtility)initWithProfile:(id)a3
+- (ACHWorkoutUtility)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = ACHWorkoutUtility;
   v5 = [(ACHWorkoutUtility *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)_readingContextWithIdentifier:(id)a3
+- (id)_readingContextWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ACHWorkoutUtility *)self profile];
-  v6 = [v5 database];
+  identifierCopy = identifier;
+  profile = [(ACHWorkoutUtility *)self profile];
+  database = [profile database];
   v12 = 0;
-  v7 = [ACHDatabaseAssertion assertionWithDatabase:v6 identifier:v4 error:&v12];
+  v7 = [ACHDatabaseAssertion assertionWithDatabase:database identifier:identifierCopy error:&v12];
 
   v8 = v12;
   if (v8)
@@ -131,14 +131,14 @@
   return v10;
 }
 
-- (id)_predicateForBundleIdentifier:(id)a3
+- (id)_predicateForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ACHWorkoutUtility *)self profile];
-  v6 = [v5 sourceManager];
+  identifierCopy = identifier;
+  profile = [(ACHWorkoutUtility *)self profile];
+  sourceManager = [profile sourceManager];
   v7 = *MEMORY[0x277CCE340];
   v13 = 0;
-  v8 = [v6 allSourcesForBundleIdentifier:v7 error:&v13];
+  v8 = [sourceManager allSourcesForBundleIdentifier:v7 error:&v13];
   v9 = v13;
 
   if (v9)
@@ -163,63 +163,63 @@
   return v11;
 }
 
-- (id)workoutsInDateInterval:(id)a3
+- (id)workoutsInDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [v4 endDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v7 = [(ACHWorkoutUtility *)self workoutsWithDuration:0 withType:v5 startingAtOrAfterDate:v6 endingOnOrBeforeDate:0 firstPartyOnly:0.0];
+  v7 = [(ACHWorkoutUtility *)self workoutsWithDuration:0 withType:startDate startingAtOrAfterDate:endDate endingOnOrBeforeDate:0 firstPartyOnly:0.0];
 
   return v7;
 }
 
-- (unint64_t)numberOfWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4
+- (unint64_t)numberOfWorkoutsWithDuration:(double)duration containedInInterval:(id)interval
 {
-  v6 = a4;
-  v7 = [v6 startDate];
-  v8 = [v6 endDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v9 = [(ACHWorkoutUtility *)self _predicateWithDuration:0 withType:v7 startingAtOrAfterDate:v8 endingOnOrBeforeDate:0 firstPartyOnly:a3];
+  v9 = [(ACHWorkoutUtility *)self _predicateWithDuration:0 withType:startDate startingAtOrAfterDate:endDate endingOnOrBeforeDate:0 firstPartyOnly:duration];
 
   v10 = [(ACHWorkoutUtility *)self _countOfSamplesWithPredicate:v9];
   return v10;
 }
 
-- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)a3 withType:(unint64_t)a4 endingOnOrBeforeDate:(id)a5
+- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)duration withType:(unint64_t)type endingOnOrBeforeDate:(id)date
 {
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v10 = [v8 numberWithUnsignedInteger:a4];
-  v11 = [(ACHWorkoutUtility *)self _predicateWithDuration:v10 withType:0 startingAtOrAfterDate:v9 endingOnOrBeforeDate:1 firstPartyOnly:a3];
+  dateCopy = date;
+  v10 = [v8 numberWithUnsignedInteger:type];
+  v11 = [(ACHWorkoutUtility *)self _predicateWithDuration:v10 withType:0 startingAtOrAfterDate:dateCopy endingOnOrBeforeDate:1 firstPartyOnly:duration];
 
   v12 = [(ACHWorkoutUtility *)self _countOfSamplesWithPredicate:v11];
   return v12;
 }
 
-- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4
+- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)duration containedInInterval:(id)interval
 {
-  v6 = a4;
-  v7 = [v6 startDate];
-  v8 = [v6 endDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v9 = [(ACHWorkoutUtility *)self _predicateWithDuration:0 withType:v7 startingAtOrAfterDate:v8 endingOnOrBeforeDate:1 firstPartyOnly:a3];
+  v9 = [(ACHWorkoutUtility *)self _predicateWithDuration:0 withType:startDate startingAtOrAfterDate:endDate endingOnOrBeforeDate:1 firstPartyOnly:duration];
 
   v10 = [(ACHWorkoutUtility *)self _countOfSamplesWithPredicate:v9];
   return v10;
 }
 
-- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)a3 withType:(unint64_t)a4 andLocation:(unint64_t)a5 containedInInterval:(id)a6
+- (unint64_t)numberOfFirstPartyWorkoutsWithDuration:(double)duration withType:(unint64_t)type andLocation:(unint64_t)location containedInInterval:(id)interval
 {
   v10 = MEMORY[0x277CCABB0];
-  v11 = a6;
-  v12 = [v10 numberWithUnsignedInteger:a4];
-  v13 = [v11 startDate];
-  v14 = [v11 endDate];
+  intervalCopy = interval;
+  v12 = [v10 numberWithUnsignedInteger:type];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v15 = [(ACHWorkoutUtility *)self _predicateWithDuration:v12 withType:v13 startingAtOrAfterDate:v14 endingOnOrBeforeDate:1 firstPartyOnly:a3];
+  v15 = [(ACHWorkoutUtility *)self _predicateWithDuration:v12 withType:startDate startingAtOrAfterDate:endDate endingOnOrBeforeDate:1 firstPartyOnly:duration];
 
-  v16 = [(ACHWorkoutUtility *)self _countOfSamplesWithPredicate:v15 andLocationType:a5];
+  v16 = [(ACHWorkoutUtility *)self _countOfSamplesWithPredicate:v15 andLocationType:location];
   return v16;
 }
 
@@ -235,21 +235,21 @@ uint64_t __109__ACHWorkoutUtility_workoutsWithDuration_withType_startingAtOrAfte
   return 1;
 }
 
-- (id)bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4
+- (id)bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dateCopy = date;
   v6 = HDSampleEntityPredicateForEndDate();
   v7 = HDWorkoutEntityPredicateForWorkoutActivityType();
-  v8 = [MEMORY[0x277CCDCD0] workoutType];
+  workoutType = [MEMORY[0x277CCDCD0] workoutType];
   v9 = HDSampleEntityPredicateForDataType();
 
   v10 = MEMORY[0x277D10B20];
   v34[0] = v6;
   v34[1] = v7;
   v34[2] = v9;
-  v11 = [(ACHWorkoutUtility *)self firstPartyPredicate];
-  v34[3] = v11;
+  firstPartyPredicate = [(ACHWorkoutUtility *)self firstPartyPredicate];
+  v34[3] = firstPartyPredicate;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   v13 = [v10 predicateMatchingAllPredicates:v12];
 
@@ -271,8 +271,8 @@ uint64_t __109__ACHWorkoutUtility_workoutsWithDuration_withType_startingAtOrAfte
   v15 = v27;
   if (v15)
   {
-    v16 = ACHLogWorkouts();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    kilocalorieUnit = ACHLogWorkouts();
+    if (os_log_type_enabled(kilocalorieUnit, OS_LOG_TYPE_ERROR))
     {
       [ACHWorkoutUtility bestEnergyBurnedForFirstPartyWorkoutsWithType:endingBeforeDate:];
     }
@@ -283,9 +283,9 @@ uint64_t __109__ACHWorkoutUtility_workoutsWithDuration_withType_startingAtOrAfte
   else
   {
     v18 = MEMORY[0x277CCD7E8];
-    v16 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+    kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
     [v29[5] doubleValue];
-    v17 = [v18 quantityWithUnit:v16 doubleValue:?];
+    v17 = [v18 quantityWithUnit:kilocalorieUnit doubleValue:?];
   }
 
   _Block_object_dispose(&v28, 8);
@@ -307,21 +307,21 @@ uint64_t __84__ACHWorkoutUtility_bestEnergyBurnedForFirstPartyWorkoutsWithType_e
   return 1;
 }
 
-- (id)bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4
+- (id)bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dateCopy = date;
   v6 = HDSampleEntityPredicateForEndDate();
   v7 = HDWorkoutEntityPredicateForWorkoutActivityType();
-  v8 = [MEMORY[0x277CCDCD0] workoutType];
+  workoutType = [MEMORY[0x277CCDCD0] workoutType];
   v9 = HDSampleEntityPredicateForDataType();
 
   v10 = MEMORY[0x277D10B20];
   v34[0] = v6;
   v34[1] = v7;
   v34[2] = v9;
-  v11 = [(ACHWorkoutUtility *)self firstPartyPredicate];
-  v34[3] = v11;
+  firstPartyPredicate = [(ACHWorkoutUtility *)self firstPartyPredicate];
+  v34[3] = firstPartyPredicate;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   v13 = [v10 predicateMatchingAllPredicates:v12];
 
@@ -379,15 +379,15 @@ uint64_t __80__ACHWorkoutUtility_bestDistanceForFirstPartyWorkoutsWithType_endin
   return 1;
 }
 
-- (id)mindfulMinutesForForDateInterval:(id)a3
+- (id)mindfulMinutesForForDateInterval:(id)interval
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 startDate];
-  v24 = [v5 dateByAddingTimeInterval:-86400.0];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  v24 = [startDate dateByAddingTimeInterval:-86400.0];
 
-  v6 = [v4 endDate];
-  v7 = [v6 dateByAddingTimeInterval:86400.0];
+  endDate = [intervalCopy endDate];
+  v7 = [endDate dateByAddingTimeInterval:86400.0];
 
   v8 = HDSampleEntityPredicateForStartDate();
   v9 = [MEMORY[0x277CBEBF8] arrayByAddingObject:v8];
@@ -395,7 +395,7 @@ uint64_t __80__ACHWorkoutUtility_bestDistanceForFirstPartyWorkoutsWithType_endin
   v11 = [v9 arrayByAddingObject:v10];
 
   v12 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v11];
-  v13 = [(ACHWorkoutUtility *)self profile];
+  profile = [(ACHWorkoutUtility *)self profile];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -408,7 +408,7 @@ uint64_t __80__ACHWorkoutUtility_bestDistanceForFirstPartyWorkoutsWithType_endin
   v25[1] = 3221225472;
   v25[2] = __54__ACHWorkoutUtility_mindfulMinutesForForDateInterval___block_invoke;
   v25[3] = &unk_278491618;
-  v14 = v13;
+  v14 = profile;
   v26 = v14;
   v15 = v12;
   v27 = v15;
@@ -416,8 +416,8 @@ uint64_t __80__ACHWorkoutUtility_bestDistanceForFirstPartyWorkoutsWithType_endin
   v16 = v29;
   if (v16)
   {
-    v17 = ACHLogWorkouts();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    secondUnit = ACHLogWorkouts();
+    if (os_log_type_enabled(secondUnit, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
       v37 = v24;
@@ -425,7 +425,7 @@ uint64_t __80__ACHWorkoutUtility_bestDistanceForFirstPartyWorkoutsWithType_endin
       v39 = v7;
       v40 = 2114;
       v41 = v16;
-      _os_log_error_impl(&dword_221DDC000, v17, OS_LOG_TYPE_ERROR, "Failed to fetch mindful sessions for date interval: (%{public}@, %{public}@): %{public}@", buf, 0x20u);
+      _os_log_error_impl(&dword_221DDC000, secondUnit, OS_LOG_TYPE_ERROR, "Failed to fetch mindful sessions for date interval: (%{public}@, %{public}@): %{public}@", buf, 0x20u);
     }
 
     v18 = 0;
@@ -433,11 +433,11 @@ uint64_t __80__ACHWorkoutUtility_bestDistanceForFirstPartyWorkoutsWithType_endin
 
   else
   {
-    [(ACHWorkoutUtility *)self _sumMindfulMinutesForSessions:v31[5] dateInterval:v4];
+    [(ACHWorkoutUtility *)self _sumMindfulMinutesForSessions:v31[5] dateInterval:intervalCopy];
     v20 = v19;
     v21 = MEMORY[0x277CCD7E8];
-    v17 = [MEMORY[0x277CCDAB0] secondUnit];
-    v18 = [v21 quantityWithUnit:v17 doubleValue:v20];
+    secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+    v18 = [v21 quantityWithUnit:secondUnit doubleValue:v20];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -458,16 +458,16 @@ uint64_t __54__ACHWorkoutUtility_mindfulMinutesForForDateInterval___block_invoke
   return 1;
 }
 
-- (double)_sumMindfulMinutesForSessions:(id)a3 dateInterval:(id)a4
+- (double)_sumMindfulMinutesForSessions:(id)sessions dateInterval:(id)interval
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sessionsCopy = sessions;
+  intervalCopy = interval;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  v7 = [sessionsCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
@@ -479,28 +479,28 @@ uint64_t __54__ACHWorkoutUtility_mindfulMinutesForForDateInterval___block_invoke
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sessionsCopy);
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
-        v13 = [v12 endDate];
-        if ([v6 containsDate:v13])
+        endDate = [v12 endDate];
+        if ([intervalCopy containsDate:endDate])
         {
-          v14 = [v12 startDate];
-          v15 = [v6 containsDate:v14];
+          startDate = [v12 startDate];
+          v15 = [intervalCopy containsDate:startDate];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v6 startDate];
-            v17 = [v12 startDate];
+            startDate2 = [intervalCopy startDate];
+            startDate3 = [v12 startDate];
 LABEL_14:
-            v21 = v17;
-            [v16 timeIntervalSinceDate:v17];
+            v21 = startDate3;
+            [startDate2 timeIntervalSinceDate:startDate3];
             v23 = v22;
 
-            v24 = [v12 endDate];
-            v25 = [v12 startDate];
-            [v24 timeIntervalSinceDate:v25];
+            endDate2 = [v12 endDate];
+            startDate4 = [v12 startDate];
+            [endDate2 timeIntervalSinceDate:startDate4];
             v27 = v26;
 
             v10 = v10 + v27 - v23;
@@ -512,35 +512,35 @@ LABEL_14:
         {
         }
 
-        v18 = [v12 endDate];
-        if ([v6 containsDate:v18])
+        endDate3 = [v12 endDate];
+        if ([intervalCopy containsDate:endDate3])
         {
         }
 
         else
         {
-          v19 = [v12 startDate];
-          v20 = [v6 containsDate:v19];
+          startDate5 = [v12 startDate];
+          v20 = [intervalCopy containsDate:startDate5];
 
           if (v20)
           {
-            v16 = [v12 endDate];
-            v17 = [v6 endDate];
+            startDate2 = [v12 endDate];
+            startDate3 = [intervalCopy endDate];
             goto LABEL_14;
           }
         }
 
-        v28 = [v12 endDate];
-        if ([v6 containsDate:v28])
+        endDate4 = [v12 endDate];
+        if ([intervalCopy containsDate:endDate4])
         {
-          v29 = [v12 startDate];
-          v30 = [v6 containsDate:v29];
+          startDate6 = [v12 startDate];
+          v30 = [intervalCopy containsDate:startDate6];
 
           if (v30)
           {
-            v31 = [v12 endDate];
-            v32 = [v12 startDate];
-            [v31 timeIntervalSinceDate:v32];
+            endDate5 = [v12 endDate];
+            startDate7 = [v12 startDate];
+            [endDate5 timeIntervalSinceDate:startDate7];
             v34 = v33;
 
             v10 = v10 + v34;
@@ -552,7 +552,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v8 = [sessionsCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (!v8)
       {
         goto LABEL_23;
@@ -567,64 +567,64 @@ LABEL_23:
   return v10;
 }
 
-- (void)_performReadTransaction:(id)a3 error:(id *)a4 block:(id)a5
+- (void)_performReadTransaction:(id)transaction error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ACHWorkoutUtility *)self profile];
-  v11 = [(ACHWorkoutUtility *)self databaseContext];
-  v12 = v11;
-  if (v11)
+  transactionCopy = transaction;
+  blockCopy = block;
+  profile = [(ACHWorkoutUtility *)self profile];
+  databaseContext = [(ACHWorkoutUtility *)self databaseContext];
+  v12 = databaseContext;
+  if (databaseContext)
   {
-    v13 = v11;
+    v13 = databaseContext;
   }
 
   else
   {
-    v13 = [(ACHWorkoutUtility *)self _readingContextWithIdentifier:v8];
+    v13 = [(ACHWorkoutUtility *)self _readingContextWithIdentifier:transactionCopy];
   }
 
   v14 = v13;
 
   v15 = MEMORY[0x277D10848];
-  v16 = [v10 database];
+  database = [profile database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__ACHWorkoutUtility__performReadTransaction_error_block___block_invoke;
   v18[3] = &unk_278492E38;
-  v19 = v9;
-  v17 = v9;
-  [v15 performReadTransactionWithHealthDatabase:v16 context:v14 error:a4 block:v18];
+  v19 = blockCopy;
+  v17 = blockCopy;
+  [v15 performReadTransactionWithHealthDatabase:database context:v14 error:error block:v18];
 }
 
-- (id)_predicateWithDuration:(double)a3 withType:(id)a4 startingAtOrAfterDate:(id)a5 endingOnOrBeforeDate:(id)a6 firstPartyOnly:(BOOL)a7
+- (id)_predicateWithDuration:(double)duration withType:(id)type startingAtOrAfterDate:(id)date endingOnOrBeforeDate:(id)beforeDate firstPartyOnly:(BOOL)only
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  onlyCopy = only;
+  typeCopy = type;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v7)
+  if (onlyCopy)
   {
-    v15 = [(ACHWorkoutUtility *)self firstPartyPredicate];
-    [v14 addObject:v15];
+    firstPartyPredicate = [(ACHWorkoutUtility *)self firstPartyPredicate];
+    [v14 addObject:firstPartyPredicate];
   }
 
-  if (v12)
+  if (dateCopy)
   {
     v16 = HDSampleEntityPredicateForStartDate();
     [v14 addObject:v16];
   }
 
-  if (v13)
+  if (beforeDateCopy)
   {
     v17 = HDSampleEntityPredicateForEndDate();
     [v14 addObject:v17];
   }
 
-  if (v11)
+  if (typeCopy)
   {
-    [v11 unsignedIntegerValue];
+    [typeCopy unsignedIntegerValue];
     v18 = HDWorkoutEntityPredicateForWorkoutActivityType();
     [v14 addObject:v18];
   }
@@ -643,37 +643,37 @@ LABEL_23:
   return v21;
 }
 
-- (unint64_t)_countOfSamplesWithPredicate:(id)a3 andLocationType:(unint64_t)a4
+- (unint64_t)_countOfSamplesWithPredicate:(id)predicate andLocationType:(unint64_t)type
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v7 = [(ACHWorkoutUtility *)self profile];
+  profile = [(ACHWorkoutUtility *)self profile];
   v8 = MEMORY[0x277D10848];
-  if (a4)
+  if (type)
   {
-    v9 = [MEMORY[0x277CCD8D8] workoutType];
-    v10 = [v8 entityEnumeratorWithType:v9 profile:v7];
+    workoutType = [MEMORY[0x277CCD8D8] workoutType];
+    workoutType2 = [v8 entityEnumeratorWithType:workoutType profile:profile];
 
-    [v10 setPredicate:v6];
-    v16[5] = a4;
+    [workoutType2 setPredicate:predicateCopy];
+    v16[5] = type;
     v17 = 0;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __66__ACHWorkoutUtility__countOfSamplesWithPredicate_andLocationType___block_invoke;
     v16[3] = &unk_278492E60;
     v16[4] = &v19;
-    [v10 enumerateWithError:&v17 handler:v16];
+    [workoutType2 enumerateWithError:&v17 handler:v16];
     v11 = v17;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCD720] workoutType];
+    workoutType2 = [MEMORY[0x277CCD720] workoutType];
     v18 = 0;
-    v12 = [v8 countOfSamplesWithType:v10 profile:v7 matchingPredicate:v6 withError:&v18];
+    v12 = [v8 countOfSamplesWithType:workoutType2 profile:profile matchingPredicate:predicateCopy withError:&v18];
     v11 = v18;
     v20[3] = v12;
   }

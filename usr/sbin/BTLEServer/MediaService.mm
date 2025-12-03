@@ -1,31 +1,31 @@
 @interface MediaService
 - (MediaService)init;
-- (id)attributeIDToString:(unsigned __int8)a3 entityID:(unsigned __int8)a4;
-- (id)currentAttributeValueForAttributeID:(unsigned __int8)a3 entityID:(unsigned __int8)a4;
-- (id)entityUpdateFlagsToString:(unsigned __int8)a3;
-- (id)invocationForNotifyAttributeIDs:(id)a3 entityID:(unsigned __int8)a4 central:(id)a5;
-- (id)remoteCommandIDToString:(unsigned __int8)a3;
-- (id)sessionForCentral:(id)a3;
-- (int64_t)handleEntityAttributeRead:(id)a3;
-- (int64_t)handleEntityAttributeWrite:(id)a3;
-- (int64_t)handleEntityUpdateWrite:(id)a3 action:(id *)a4;
-- (int64_t)handleRemoteCommandWrite:(id)a3;
+- (id)attributeIDToString:(unsigned __int8)string entityID:(unsigned __int8)d;
+- (id)currentAttributeValueForAttributeID:(unsigned __int8)d entityID:(unsigned __int8)iD;
+- (id)entityUpdateFlagsToString:(unsigned __int8)string;
+- (id)invocationForNotifyAttributeIDs:(id)ds entityID:(unsigned __int8)d central:(id)central;
+- (id)remoteCommandIDToString:(unsigned __int8)string;
+- (id)sessionForCentral:(id)central;
+- (int64_t)handleEntityAttributeRead:(id)read;
+- (int64_t)handleEntityAttributeWrite:(id)write;
+- (int64_t)handleEntityUpdateWrite:(id)write action:(id *)action;
+- (int64_t)handleRemoteCommandWrite:(id)write;
 - (unint64_t)subscriptionCount;
 - (void)dealloc;
 - (void)mediaInfoDidChange;
 - (void)mediaPlayerDidChange;
 - (void)mediaStateDidChange;
 - (void)mediaVolumeDidChange;
-- (void)notifySupportedCommands:(id)a3 central:(id)a4;
-- (void)notifySupportedCommandsValue:(id)a3 central:(id)a4;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
+- (void)notifySupportedCommands:(id)commands central:(id)central;
+- (void)notifySupportedCommandsValue:(id)value central:(id)central;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
 - (void)startNotifications;
 - (void)stopNotifications;
 - (void)supportedCommandsDidChange;
-- (void)supportedCommandsDidChange:(id)a3;
+- (void)supportedCommandsDidChange:(id)change;
 @end
 
 @implementation MediaService
@@ -64,8 +64,8 @@
     v22[1] = v2->_entityUpdateCharacteristic;
     v22[2] = v2->_entityAttributeCharacteristic;
     v18 = [NSArray arrayWithObjects:v22 count:3];
-    v19 = [(ServerService *)v2 service];
-    [v19 setCharacteristics:v18];
+    service = [(ServerService *)v2 service];
+    [service setCharacteristics:v18];
   }
 
   return v2;
@@ -79,10 +79,10 @@
   [(MediaService *)&v3 dealloc];
 }
 
-- (int64_t)handleRemoteCommandWrite:(id)a3
+- (int64_t)handleRemoteCommandWrite:(id)write
 {
-  v4 = [a3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  value = [write value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v13 = 0;
   if ([v5 readUint8:&v13])
@@ -98,8 +98,8 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received %@ remote command", buf, 0xCu);
     }
 
-    v10 = [(MediaService *)self info];
-    [v10 sendCommand:v13];
+    info = [(MediaService *)self info];
+    [info sendCommand:v13];
 
     v11 = 0;
   }
@@ -112,16 +112,16 @@
   return v11;
 }
 
-- (int64_t)handleEntityUpdateWrite:(id)a3 action:(id *)a4
+- (int64_t)handleEntityUpdateWrite:(id)write action:(id *)action
 {
-  v6 = a3;
-  v7 = [v6 central];
-  v8 = [(MediaService *)self sessionForCentral:v7];
+  writeCopy = write;
+  central = [writeCopy central];
+  v8 = [(MediaService *)self sessionForCentral:central];
 
   if (v8)
   {
-    v9 = [v6 value];
-    v10 = [DataInputStream inputStreamWithData:v9];
+    value = [writeCopy value];
+    v10 = [DataInputStream inputStreamWithData:value];
 
     v18 = 0;
     if ([v10 readUint8:&v18])
@@ -141,8 +141,8 @@
 
       [v8 setRegisteredAttributeIDs:v11 entityID:v18];
       v13 = v18;
-      v14 = [v6 central];
-      *a4 = [(MediaService *)self invocationForNotifyAttributeIDs:v11 entityID:v13 central:v14];
+      central2 = [writeCopy central];
+      *action = [(MediaService *)self invocationForNotifyAttributeIDs:v11 entityID:v13 central:central2];
 
       v15 = 0;
     }
@@ -161,28 +161,28 @@
   return v15;
 }
 
-- (int64_t)handleEntityAttributeRead:(id)a3
+- (int64_t)handleEntityAttributeRead:(id)read
 {
-  v4 = a3;
-  v5 = [v4 central];
-  v6 = [(MediaService *)self sessionForCentral:v5];
+  readCopy = read;
+  central = [readCopy central];
+  v6 = [(MediaService *)self sessionForCentral:central];
 
   if (v6)
   {
-    v7 = [v6 loadedEntityID];
-    v8 = [v6 loadedAttributeID];
-    v9 = [(MediaService *)self currentAttributeValueForAttributeID:v8 entityID:v7];
-    [v6 setLastKnownAttributeValue:v9 attributeID:v8 entityID:v7];
+    loadedEntityID = [v6 loadedEntityID];
+    loadedAttributeID = [v6 loadedAttributeID];
+    v9 = [(MediaService *)self currentAttributeValueForAttributeID:loadedAttributeID entityID:loadedEntityID];
+    [v6 setLastKnownAttributeValue:v9 attributeID:loadedAttributeID entityID:loadedEntityID];
     if (v9)
     {
       v10 = [v9 dataUsingEncoding:4];
-      [v4 setValue:v10];
+      [readCopy setValue:v10];
 
       v11 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [(MediaService *)self attributeIDToString:v8 entityID:v7];
+        v13 = [(MediaService *)self attributeIDToString:loadedAttributeID entityID:loadedEntityID];
         v16 = 138412546;
         v17 = v13;
         v18 = 2112;
@@ -207,16 +207,16 @@
   return v14;
 }
 
-- (int64_t)handleEntityAttributeWrite:(id)a3
+- (int64_t)handleEntityAttributeWrite:(id)write
 {
-  v4 = a3;
-  v5 = [v4 central];
-  v6 = [(MediaService *)self sessionForCentral:v5];
+  writeCopy = write;
+  central = [writeCopy central];
+  v6 = [(MediaService *)self sessionForCentral:central];
 
   if (v6)
   {
-    v7 = [v4 value];
-    v8 = [DataInputStream inputStreamWithData:v7];
+    value = [writeCopy value];
+    v8 = [DataInputStream inputStreamWithData:value];
 
     v16 = 0;
     if ([v8 readUint8:&v16 + 1] && objc_msgSend(v8, "readUint8:", &v16))
@@ -260,16 +260,16 @@
   return v14;
 }
 
-- (void)notifySupportedCommandsValue:(id)a3 central:(id)a4
+- (void)notifySupportedCommandsValue:(id)value central:(id)central
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  centralCopy = central;
   v8 = +[DataOutputStream outputStream];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = valueCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v10)
   {
@@ -300,47 +300,47 @@
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v8 data];
+    data = [v8 data];
     *buf = 138412290;
-    v26 = v16;
+    v26 = data;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notifying value for supported commands: %@", buf, 0xCu);
   }
 
-  v17 = [v8 data];
-  v18 = [(MediaService *)self remoteCommandCharacteristic];
-  v24 = v7;
+  data2 = [v8 data];
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
+  v24 = centralCopy;
   v19 = [NSArray arrayWithObjects:&v24 count:1];
-  [(ServerService *)self updateValue:v17 forCharacteristic:v18 onSubscribedCentrals:v19];
+  [(ServerService *)self updateValue:data2 forCharacteristic:remoteCommandCharacteristic onSubscribedCentrals:v19];
 }
 
-- (void)notifySupportedCommands:(id)a3 central:(id)a4
+- (void)notifySupportedCommands:(id)commands central:(id)central
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MediaService *)self sessions];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  commandsCopy = commands;
+  centralCopy = central;
+  sessions = [(MediaService *)self sessions];
+  v8 = [sessions objectForKeyedSubscript:centralCopy];
 
-  v9 = [v8 lastKnownSupportedCommands];
-  v10 = [v9 isEqualToSet:v11];
+  lastKnownSupportedCommands = [v8 lastKnownSupportedCommands];
+  v10 = [lastKnownSupportedCommands isEqualToSet:commandsCopy];
 
   if ((v10 & 1) == 0)
   {
-    [v8 setLastKnownSupportedCommands:v11];
-    [(MediaService *)self notifySupportedCommandsValue:v11 central:v6];
+    [v8 setLastKnownSupportedCommands:commandsCopy];
+    [(MediaService *)self notifySupportedCommandsValue:commandsCopy central:centralCopy];
   }
 }
 
-- (void)supportedCommandsDidChange:(id)a3
+- (void)supportedCommandsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MediaService *)self remoteCommandCharacteristic];
-  v6 = [v5 subscribedCentrals];
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
+  subscribedCentrals = [remoteCommandCharacteristic subscribedCentrals];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [subscribedCentrals countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -352,15 +352,15 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscribedCentrals);
         }
 
-        [(MediaService *)self notifySupportedCommands:v4 central:*(*(&v11 + 1) + 8 * v10)];
+        [(MediaService *)self notifySupportedCommands:changeCopy central:*(*(&v11 + 1) + 8 * v10)];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [subscribedCentrals countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -375,8 +375,8 @@
   v4 = objc_alloc_init(MediaInfo);
   [(MediaService *)self setInfo:v4];
 
-  v5 = [(MediaService *)self info];
-  [v5 setDelegate:self];
+  info = [(MediaService *)self info];
+  [info setDelegate:self];
 }
 
 - (void)stopNotifications
@@ -390,23 +390,23 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "restrictedMode : %d", v6, 8u);
   }
 
-  v5 = [(MediaService *)self info];
-  [v5 setDelegate:0];
+  info = [(MediaService *)self info];
+  [info setDelegate:0];
 
   [(MediaService *)self setInfo:0];
   [(MediaService *)self setSessions:0];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v6 characteristic];
-  v8 = [(MediaService *)self entityAttributeCharacteristic];
+  managerCopy = manager;
+  requestCopy = request;
+  characteristic = [requestCopy characteristic];
+  entityAttributeCharacteristic = [(MediaService *)self entityAttributeCharacteristic];
 
-  if (v7 == v8)
+  if (characteristic == entityAttributeCharacteristic)
   {
-    v9 = [(MediaService *)self handleEntityAttributeRead:v6];
+    v9 = [(MediaService *)self handleEntityAttributeRead:requestCopy];
   }
 
   else
@@ -414,66 +414,66 @@
     v9 = 10;
   }
 
-  [v10 respondToRequest:v6 withResult:v9];
+  [managerCopy respondToRequest:requestCopy withResult:v9];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v5 = [a4 firstObject];
-  v6 = [v5 characteristic];
-  v7 = [(MediaService *)self remoteCommandCharacteristic];
+  firstObject = [requests firstObject];
+  characteristic = [firstObject characteristic];
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
 
-  if (v6 == v7)
+  if (characteristic == remoteCommandCharacteristic)
   {
-    v14 = [(MediaService *)self handleRemoteCommandWrite:v5];
+    v14 = [(MediaService *)self handleRemoteCommandWrite:firstObject];
 LABEL_8:
     v13 = v14;
     v12 = 0;
     goto LABEL_9;
   }
 
-  v8 = [v5 characteristic];
-  v9 = [(MediaService *)self entityUpdateCharacteristic];
+  characteristic2 = [firstObject characteristic];
+  entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
 
-  if (v8 == v9)
+  if (characteristic2 == entityUpdateCharacteristic)
   {
     v15 = 0;
-    v13 = [(MediaService *)self handleEntityUpdateWrite:v5 action:&v15];
+    v13 = [(MediaService *)self handleEntityUpdateWrite:firstObject action:&v15];
     v12 = v15;
     goto LABEL_9;
   }
 
-  v10 = [v5 characteristic];
-  v11 = [(MediaService *)self entityAttributeCharacteristic];
+  characteristic3 = [firstObject characteristic];
+  entityAttributeCharacteristic = [(MediaService *)self entityAttributeCharacteristic];
 
-  if (v10 == v11)
+  if (characteristic3 == entityAttributeCharacteristic)
   {
-    v14 = [(MediaService *)self handleEntityAttributeWrite:v5];
+    v14 = [(MediaService *)self handleEntityAttributeWrite:firstObject];
     goto LABEL_8;
   }
 
   v12 = 0;
   v13 = 10;
 LABEL_9:
-  [(ServerService *)self respondToRequest:v5 withResult:v13];
+  [(ServerService *)self respondToRequest:firstObject withResult:v13];
   [v12 invokeWithTarget:self];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v19 = a4;
-  v7 = a5;
-  v8 = [(MediaService *)self remoteCommandCharacteristic];
-  v9 = v8;
-  if (v8 == v7)
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
+  v9 = remoteCommandCharacteristic;
+  if (remoteCommandCharacteristic == characteristicCopy)
   {
   }
 
   else
   {
-    v10 = [(MediaService *)self entityUpdateCharacteristic];
+    entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
 
-    if (v10 != v7)
+    if (entityUpdateCharacteristic != characteristicCopy)
     {
       goto LABEL_13;
     }
@@ -484,74 +484,74 @@ LABEL_9:
     [(MediaService *)self startNotifications];
   }
 
-  v11 = [(MediaService *)self sessions];
-  v12 = [v11 objectForKeyedSubscript:v19];
+  sessions = [(MediaService *)self sessions];
+  v12 = [sessions objectForKeyedSubscript:centralCopy];
 
   if (!v12)
   {
     v13 = objc_alloc_init(MediaSession);
-    v14 = [(MediaService *)self sessions];
-    [v14 setObject:v13 forKeyedSubscript:v19];
+    sessions2 = [(MediaService *)self sessions];
+    [sessions2 setObject:v13 forKeyedSubscript:centralCopy];
 
     v15 = +[NSNotificationCenter defaultCenter];
-    [v15 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:v19];
+    [v15 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:centralCopy];
   }
 
-  v16 = [(MediaService *)self remoteCommandCharacteristic];
+  remoteCommandCharacteristic2 = [(MediaService *)self remoteCommandCharacteristic];
 
-  if (v16 == v7)
+  if (remoteCommandCharacteristic2 == characteristicCopy)
   {
-    v17 = [(MediaService *)self info];
-    v18 = [v17 supportedCommands];
+    info = [(MediaService *)self info];
+    supportedCommands = [info supportedCommands];
 
-    if (v18)
+    if (supportedCommands)
     {
-      [(MediaService *)self notifySupportedCommands:v18 central:v19];
+      [(MediaService *)self notifySupportedCommands:supportedCommands central:centralCopy];
     }
   }
 
 LABEL_13:
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v16 = a4;
-  v7 = a5;
-  v8 = [(MediaService *)self remoteCommandCharacteristic];
-  v9 = v8;
-  if (v8 == v7)
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
+  v9 = remoteCommandCharacteristic;
+  if (remoteCommandCharacteristic == characteristicCopy)
   {
   }
 
   else
   {
-    v10 = [(MediaService *)self entityUpdateCharacteristic];
+    entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
 
-    if (v10 != v7)
+    if (entityUpdateCharacteristic != characteristicCopy)
     {
       goto LABEL_12;
     }
   }
 
-  v11 = [(MediaService *)self remoteCommandCharacteristic];
-  v12 = [v11 subscribedCentrals];
-  if ([v12 containsObject:v16])
+  remoteCommandCharacteristic2 = [(MediaService *)self remoteCommandCharacteristic];
+  subscribedCentrals = [remoteCommandCharacteristic2 subscribedCentrals];
+  if ([subscribedCentrals containsObject:centralCopy])
   {
   }
 
   else
   {
-    v13 = [(MediaService *)self entityUpdateCharacteristic];
-    v14 = [v13 subscribedCentrals];
-    v15 = [v14 containsObject:v16];
+    entityUpdateCharacteristic2 = [(MediaService *)self entityUpdateCharacteristic];
+    subscribedCentrals2 = [entityUpdateCharacteristic2 subscribedCentrals];
+    v15 = [subscribedCentrals2 containsObject:centralCopy];
 
     if (v15)
     {
       goto LABEL_10;
     }
 
-    v11 = [(MediaService *)self sessions];
-    [v11 removeObjectForKey:v16];
+    remoteCommandCharacteristic2 = [(MediaService *)self sessions];
+    [remoteCommandCharacteristic2 removeObjectForKey:centralCopy];
   }
 
 LABEL_10:
@@ -565,23 +565,23 @@ LABEL_12:
 
 - (void)supportedCommandsDidChange
 {
-  v3 = [(MediaService *)self remoteCommandCharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
+  subscribedCentrals = [remoteCommandCharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
 
   if (v5)
   {
-    v7 = [(MediaService *)self info];
-    v6 = [v7 supportedCommands];
-    [(MediaService *)self supportedCommandsDidChange:v6];
+    info = [(MediaService *)self info];
+    supportedCommands = [info supportedCommands];
+    [(MediaService *)self supportedCommandsDidChange:supportedCommands];
   }
 }
 
 - (void)mediaPlayerDidChange
 {
-  v3 = [(MediaService *)self entityUpdateCharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
+  entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
+  subscribedCentrals = [entityUpdateCharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
 
   if (v5)
   {
@@ -592,9 +592,9 @@ LABEL_12:
 
 - (void)mediaStateDidChange
 {
-  v3 = [(MediaService *)self entityUpdateCharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
+  entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
+  subscribedCentrals = [entityUpdateCharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
 
   if (v5)
   {
@@ -605,9 +605,9 @@ LABEL_12:
 
 - (void)mediaInfoDidChange
 {
-  v3 = [(MediaService *)self entityUpdateCharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
+  entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
+  subscribedCentrals = [entityUpdateCharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
 
   if (v5)
   {
@@ -622,9 +622,9 @@ LABEL_12:
 
 - (void)mediaVolumeDidChange
 {
-  v3 = [(MediaService *)self entityUpdateCharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
+  entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
+  subscribedCentrals = [entityUpdateCharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
 
   if (v5)
   {
@@ -635,145 +635,145 @@ LABEL_12:
 
 - (unint64_t)subscriptionCount
 {
-  v3 = [(MediaService *)self remoteCommandCharacteristic];
-  v4 = [v3 subscribedCentrals];
-  v5 = [v4 count];
-  v6 = [(MediaService *)self entityUpdateCharacteristic];
-  v7 = [v6 subscribedCentrals];
-  v8 = [v7 count];
+  remoteCommandCharacteristic = [(MediaService *)self remoteCommandCharacteristic];
+  subscribedCentrals = [remoteCommandCharacteristic subscribedCentrals];
+  v5 = [subscribedCentrals count];
+  entityUpdateCharacteristic = [(MediaService *)self entityUpdateCharacteristic];
+  subscribedCentrals2 = [entityUpdateCharacteristic subscribedCentrals];
+  v8 = [subscribedCentrals2 count];
 
   return v5 + v8;
 }
 
-- (id)sessionForCentral:(id)a3
+- (id)sessionForCentral:(id)central
 {
-  v4 = a3;
-  v5 = [(MediaService *)self sessions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  centralCopy = central;
+  sessions = [(MediaService *)self sessions];
+  v6 = [sessions objectForKeyedSubscript:centralCopy];
 
   return v6;
 }
 
-- (id)currentAttributeValueForAttributeID:(unsigned __int8)a3 entityID:(unsigned __int8)a4
+- (id)currentAttributeValueForAttributeID:(unsigned __int8)d entityID:(unsigned __int8)iD
 {
-  if (a4 == 2)
+  if (iD == 2)
   {
-    v5 = 0;
-    if (a3 > 1)
+    stringValue = 0;
+    if (d > 1)
     {
-      if (a3 == 2)
+      if (d == 2)
       {
-        v7 = [(MediaService *)self info];
-        v13 = [v7 trackTitle];
+        info = [(MediaService *)self info];
+        trackTitle = [info trackTitle];
       }
 
       else
       {
-        if (a3 != 3)
+        if (d != 3)
         {
           goto LABEL_39;
         }
 
-        v14 = [(MediaService *)self info];
-        v7 = [v14 trackDuration];
+        info2 = [(MediaService *)self info];
+        info = [info2 trackDuration];
 
-        if (!v7 || (+[NSDecimalNumber notANumber](NSDecimalNumber, "notANumber"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v7 isEqualToNumber:v15], v15, (v16 & 1) != 0))
+        if (!info || (+[NSDecimalNumber notANumber](NSDecimalNumber, "notANumber"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [info isEqualToNumber:v15], v15, (v16 & 1) != 0))
         {
-          v5 = 0;
+          stringValue = 0;
           goto LABEL_38;
         }
 
-        [v7 doubleValue];
-        v13 = [NSString stringWithFormat:@"%0.3f", v18];
+        [info doubleValue];
+        trackTitle = [NSString stringWithFormat:@"%0.3f", v18];
       }
     }
 
-    else if (a3)
+    else if (d)
     {
-      if (a3 != 1)
+      if (d != 1)
       {
         goto LABEL_39;
       }
 
-      v7 = [(MediaService *)self info];
-      v13 = [v7 trackAlbum];
+      info = [(MediaService *)self info];
+      trackTitle = [info trackAlbum];
     }
 
     else
     {
-      v7 = [(MediaService *)self info];
-      v13 = [v7 trackArtist];
+      info = [(MediaService *)self info];
+      trackTitle = [info trackArtist];
     }
 
 LABEL_37:
-    v5 = v13;
+    stringValue = trackTitle;
     goto LABEL_38;
   }
 
-  if (a4 == 1)
+  if (iD == 1)
   {
-    v5 = 0;
-    if (a3 > 1)
+    stringValue = 0;
+    if (d > 1)
     {
-      if (a3 == 2)
+      if (d == 2)
       {
-        v7 = [(MediaService *)self info];
-        v12 = [v7 queueShuffleMode];
+        info = [(MediaService *)self info];
+        queueShuffleMode = [info queueShuffleMode];
       }
 
       else
       {
-        if (a3 != 3)
+        if (d != 3)
         {
           goto LABEL_39;
         }
 
-        v7 = [(MediaService *)self info];
-        v12 = [v7 queueRepeatMode];
+        info = [(MediaService *)self info];
+        queueShuffleMode = [info queueRepeatMode];
       }
     }
 
-    else if (a3)
+    else if (d)
     {
-      if (a3 != 1)
+      if (d != 1)
       {
         goto LABEL_39;
       }
 
-      v7 = [(MediaService *)self info];
-      v12 = [v7 queueCount];
+      info = [(MediaService *)self info];
+      queueShuffleMode = [info queueCount];
     }
 
     else
     {
-      v7 = [(MediaService *)self info];
-      v12 = [v7 queueIndex];
+      info = [(MediaService *)self info];
+      queueShuffleMode = [info queueIndex];
     }
   }
 
   else
   {
-    v5 = 0;
-    if (a4)
+    stringValue = 0;
+    if (iD)
     {
       goto LABEL_39;
     }
 
-    if (a3 <= 1)
+    if (d <= 1)
     {
-      if (a3)
+      if (d)
       {
-        if (a3 != 1)
+        if (d != 1)
         {
           goto LABEL_39;
         }
 
-        v6 = [(MediaService *)self info];
-        v7 = [v6 playerElapsedTime];
+        info3 = [(MediaService *)self info];
+        info = [info3 playerElapsedTime];
 
-        if (v7 && (+[NSDecimalNumber notANumber](NSDecimalNumber, "notANumber"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqualToNumber:v8], v8, (v9 & 1) == 0))
+        if (info && (+[NSDecimalNumber notANumber](NSDecimalNumber, "notANumber"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [info isEqualToNumber:v8], v8, (v9 & 1) == 0))
         {
-          [v7 doubleValue];
+          [info doubleValue];
           if (v20 >= 0.0)
           {
             v21 = v20;
@@ -784,88 +784,88 @@ LABEL_37:
             v21 = 0.0;
           }
 
-          v10 = [(MediaService *)self info];
-          v11 = [v10 playerPlaybackState];
-          v22 = [(MediaService *)self info];
-          [v22 playerPlaybackRate];
-          v5 = [NSString stringWithFormat:@"%@, %.1f, %.3f", v11, v23, *&v21];
+          info4 = [(MediaService *)self info];
+          playerPlaybackState = [info4 playerPlaybackState];
+          info5 = [(MediaService *)self info];
+          [info5 playerPlaybackRate];
+          stringValue = [NSString stringWithFormat:@"%@, %.1f, %.3f", playerPlaybackState, v23, *&v21];
         }
 
         else
         {
-          v10 = [(MediaService *)self info];
-          v11 = [v10 playerPlaybackState];
-          v5 = [NSString stringWithFormat:@"%@, , ", v11];
+          info4 = [(MediaService *)self info];
+          playerPlaybackState = [info4 playerPlaybackState];
+          stringValue = [NSString stringWithFormat:@"%@, , ", playerPlaybackState];
         }
 
         goto LABEL_38;
       }
 
-      v7 = [(MediaService *)self info];
-      v13 = [v7 playerName];
+      info = [(MediaService *)self info];
+      trackTitle = [info playerName];
       goto LABEL_37;
     }
 
-    if (a3 != 2)
+    if (d != 2)
     {
-      if (a3 != 3)
+      if (d != 3)
       {
         goto LABEL_39;
       }
 
-      v7 = [(MediaService *)self info];
-      v13 = [v7 playerBundleID];
+      info = [(MediaService *)self info];
+      trackTitle = [info playerBundleID];
       goto LABEL_37;
     }
 
-    v7 = [(MediaService *)self info];
-    v12 = [v7 playerVolume];
+    info = [(MediaService *)self info];
+    queueShuffleMode = [info playerVolume];
   }
 
-  v17 = v12;
-  v5 = [v12 stringValue];
+  v17 = queueShuffleMode;
+  stringValue = [queueShuffleMode stringValue];
 
 LABEL_38:
 LABEL_39:
 
-  return v5;
+  return stringValue;
 }
 
-- (id)invocationForNotifyAttributeIDs:(id)a3 entityID:(unsigned __int8)a4 central:(id)a5
+- (id)invocationForNotifyAttributeIDs:(id)ds entityID:(unsigned __int8)d central:(id)central
 {
-  v13 = a3;
-  v12 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  centralCopy = central;
   v8 = [(MediaService *)self methodSignatureForSelector:"notifyAttributeIDs:entityID:central:"];
   v9 = [NSInvocation invocationWithMethodSignature:v8];
   [v9 retainArguments];
   [v9 setSelector:"notifyAttributeIDs:entityID:central:"];
-  [v9 setArgument:&v13 atIndex:2];
-  [v9 setArgument:&v12 atIndex:3];
-  [v9 setArgument:&v11 atIndex:4];
+  [v9 setArgument:&dsCopy atIndex:2];
+  [v9 setArgument:&dCopy atIndex:3];
+  [v9 setArgument:&centralCopy atIndex:4];
 
   return v9;
 }
 
-- (id)remoteCommandIDToString:(unsigned __int8)a3
+- (id)remoteCommandIDToString:(unsigned __int8)string
 {
-  if (a3 > 0xDu)
+  if (string > 0xDu)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1000BDDC8[a3];
+    return off_1000BDDC8[string];
   }
 }
 
-- (id)attributeIDToString:(unsigned __int8)a3 entityID:(unsigned __int8)a4
+- (id)attributeIDToString:(unsigned __int8)string entityID:(unsigned __int8)d
 {
-  if (a4 == 2)
+  if (d == 2)
   {
     v6 = @"Track";
-    if (a3 <= 3u)
+    if (string <= 3u)
     {
       v7 = off_1000BDE78;
       goto LABEL_10;
@@ -874,10 +874,10 @@ LABEL_39:
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (d == 1)
   {
     v6 = @"Queue";
-    if (a3 < 4u)
+    if (string < 4u)
     {
       v7 = off_1000BDE58;
       goto LABEL_10;
@@ -888,7 +888,7 @@ LABEL_11:
     return [NSString stringWithFormat:@"%@/%@", v6, v8, v4, v5];
   }
 
-  if (a4)
+  if (d)
   {
     v6 = @"Unknown";
     v8 = @"Unknown";
@@ -896,24 +896,24 @@ LABEL_11:
   }
 
   v6 = @"Player";
-  if (a3 >= 4u)
+  if (string >= 4u)
   {
     goto LABEL_11;
   }
 
   v7 = off_1000BDE38;
 LABEL_10:
-  v8 = v7[a3];
+  v8 = v7[string];
   return [NSString stringWithFormat:@"%@/%@", v6, v8, v4, v5];
 }
 
-- (id)entityUpdateFlagsToString:(unsigned __int8)a3
+- (id)entityUpdateFlagsToString:(unsigned __int8)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[NSMutableString string];
   for (i = 0; i != 8; ++i)
   {
-    if ((v3 >> i))
+    if ((stringCopy >> i))
     {
       if (i)
       {

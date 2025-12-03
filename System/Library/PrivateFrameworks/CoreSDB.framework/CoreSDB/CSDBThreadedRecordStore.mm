@@ -1,9 +1,9 @@
 @interface CSDBThreadedRecordStore
 - (void)_teardownDatabaseOnQueue;
 - (void)dealloc;
-- (void)performBlock:(id)a3 afterDelay:(double)a4;
-- (void)registerClass:(id *)a3;
-- (void)setupDatabaseWithAllowLocalMigration:(BOOL)a3 pathBlock:(id)a4 setupStoreHandler:(void *)a5 connectionInitializer:(void *)a6 versionChecker:(void *)a7 migrationHandler:(void *)a8 schemaVersion:(int)a9 dataProtectionClass:(unsigned int)a10 registerBlock:(id)a11 exclusiveOwnership:(BOOL)a12;
+- (void)performBlock:(id)block afterDelay:(double)delay;
+- (void)registerClass:(id *)class;
+- (void)setupDatabaseWithAllowLocalMigration:(BOOL)migration pathBlock:(id)block setupStoreHandler:(void *)handler connectionInitializer:(void *)initializer versionChecker:(void *)checker migrationHandler:(void *)migrationHandler schemaVersion:(int)version dataProtectionClass:(unsigned int)self0 registerBlock:(id)self1 exclusiveOwnership:(BOOL)self2;
 - (void)teardownDatabase;
 @end
 
@@ -45,7 +45,7 @@
   [(CSDBThreadedRecordStore *)&v5 dealloc];
 }
 
-- (void)setupDatabaseWithAllowLocalMigration:(BOOL)a3 pathBlock:(id)a4 setupStoreHandler:(void *)a5 connectionInitializer:(void *)a6 versionChecker:(void *)a7 migrationHandler:(void *)a8 schemaVersion:(int)a9 dataProtectionClass:(unsigned int)a10 registerBlock:(id)a11 exclusiveOwnership:(BOOL)a12
+- (void)setupDatabaseWithAllowLocalMigration:(BOOL)migration pathBlock:(id)block setupStoreHandler:(void *)handler connectionInitializer:(void *)initializer versionChecker:(void *)checker migrationHandler:(void *)migrationHandler schemaVersion:(int)version dataProtectionClass:(unsigned int)self0 registerBlock:(id)self1 exclusiveOwnership:(BOOL)self2
 {
   recordStoreQueue = self->_recordStoreQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -53,32 +53,32 @@
   block[2] = sub_2478AC9E4;
   block[3] = &unk_278EB33B8;
   block[4] = self;
-  block[5] = a4;
-  v14 = a9;
-  v15 = a10;
-  block[8] = a6;
-  block[9] = a7;
-  block[10] = a8;
-  v16 = a3;
-  block[6] = a11;
-  block[7] = a5;
-  v17 = a12;
+  block[5] = block;
+  versionCopy = version;
+  classCopy = class;
+  block[8] = initializer;
+  block[9] = checker;
+  block[10] = migrationHandler;
+  migrationCopy = migration;
+  block[6] = registerBlock;
+  block[7] = handler;
+  ownershipCopy = ownership;
   dispatch_sync(recordStoreQueue, block);
 }
 
-- (void)registerClass:(id *)a3
+- (void)registerClass:(id *)class
 {
   if (self->_wantsRegister)
   {
-    CSDBRecordStoreRegisterClass(self->_recordStore, a3);
+    CSDBRecordStoreRegisterClass(self->_recordStore, class);
   }
 }
 
-- (void)performBlock:(id)a3 afterDelay:(double)a4
+- (void)performBlock:(id)block afterDelay:(double)delay
 {
-  if (a3)
+  if (block)
   {
-    v6 = objc_msgSend_copy(a3, a2, a3);
+    v6 = objc_msgSend_copy(block, a2, block);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = sub_2478ACFF0;
@@ -86,7 +86,7 @@
     v9[4] = self;
     v9[5] = v6;
     v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v9);
-    objc_msgSend_performBlock_afterDelay_(self->_thread, v8, v7, a4);
+    objc_msgSend_performBlock_afterDelay_(self->_thread, v8, v7, delay);
   }
 }
 

@@ -1,13 +1,13 @@
 @interface CKInteractionNotificationView
-- (_TtC7ChatKit29CKInteractionNotificationView)initWithCoder:(id)a3;
-- (_TtC7ChatKit29CKInteractionNotificationView)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit29CKInteractionNotificationView)initWithCoder:(id)coder;
+- (_TtC7ChatKit29CKInteractionNotificationView)initWithFrame:(CGRect)frame;
 - (_TtP7ChatKit37CKInteractionNotificationViewDelegate_)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)addPassthroughView:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)addPassthroughView:(id)view;
 - (void)cleanUpTextSelectionInteractionListeners;
 - (void)clearPassthroughViews;
-- (void)isolatePassthroughView:(id)a3;
-- (void)removePassthroughView:(id)a3;
+- (void)isolatePassthroughView:(id)view;
+- (void)removePassthroughView:(id)view;
 @end
 
 @implementation CKInteractionNotificationView
@@ -20,12 +20,12 @@
   return Strong;
 }
 
-- (void)addPassthroughView:(id)a3
+- (void)addPassthroughView:(id)view
 {
   swift_beginAccess();
-  v5 = a3;
-  v6 = self;
-  sub_1908AA72C(&v8, v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1908AA72C(&v8, viewCopy);
   v7 = v8;
   swift_endAccess();
 }
@@ -37,52 +37,52 @@
   *(self + v3) = MEMORY[0x1E69E7CD0];
 }
 
-- (void)isolatePassthroughView:(id)a3
+- (void)isolatePassthroughView:(id)view
 {
   v5 = OBJC_IVAR____TtC7ChatKit29CKInteractionNotificationView_passthroughViews;
   swift_beginAccess();
   *(self + v5) = MEMORY[0x1E69E7CD0];
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
 
-  v8 = v6;
+  v8 = viewCopy;
   sub_1908AA72C(&v10, v8);
   v9 = v10;
   swift_endAccess();
 }
 
-- (void)removePassthroughView:(id)a3
+- (void)removePassthroughView:(id)view
 {
   swift_beginAccess();
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1908AE37C(v5);
+  viewCopy = view;
+  selfCopy = self;
+  v7 = sub_1908AE37C(viewCopy);
   swift_endAccess();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  sub_190C87414(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  sub_190C87414(event, x, y);
 
   return 0;
 }
 
 - (void)cleanUpTextSelectionInteractionListeners
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C877F4();
 }
 
-- (_TtC7ChatKit29CKInteractionNotificationView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit29CKInteractionNotificationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC7ChatKit29CKInteractionNotificationView_passthroughViews) = MEMORY[0x1E69E7CD0];
   v9.receiver = self;
@@ -90,14 +90,14 @@
   return [(CKInteractionNotificationView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7ChatKit29CKInteractionNotificationView)initWithCoder:(id)a3
+- (_TtC7ChatKit29CKInteractionNotificationView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC7ChatKit29CKInteractionNotificationView_passthroughViews) = MEMORY[0x1E69E7CD0];
   v8.receiver = self;
   v8.super_class = type metadata accessor for CKInteractionNotificationView();
-  v5 = a3;
-  v6 = [(CKInteractionNotificationView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CKInteractionNotificationView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

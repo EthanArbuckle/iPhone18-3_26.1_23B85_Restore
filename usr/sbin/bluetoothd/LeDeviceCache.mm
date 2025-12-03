@@ -1,42 +1,42 @@
 @interface LeDeviceCache
 + (id)sharedInstance;
-- (BOOL)createDatabase:(sqlite3 *)a3 type:(unint64_t)a4 path:(const char *)a5 flags:(int)a6;
-- (BOOL)initializeDatabases:(LeDeviceCacheEventListener *)a3 queue:(dispatch_queue_s *)a4;
-- (BOOL)json:(id)a3 hasAllProperties:(id)a4;
-- (BOOL)json:(id)a3 hasAnyProperty:(id)a4;
-- (BOOL)loadDatabase:(unint64_t)a3;
-- (BOOL)readIntFromDatabase:(sqlite3 *)a3 statement:(id)a4 value:(int *)a5;
+- (BOOL)createDatabase:(sqlite3 *)database type:(unint64_t)type path:(const char *)path flags:(int)flags;
+- (BOOL)initializeDatabases:(LeDeviceCacheEventListener *)databases queue:(dispatch_queue_s *)queue;
+- (BOOL)json:(id)json hasAllProperties:(id)properties;
+- (BOOL)json:(id)json hasAnyProperty:(id)property;
+- (BOOL)loadDatabase:(unint64_t)database;
+- (BOOL)readIntFromDatabase:(sqlite3 *)database statement:(id)statement value:(int *)value;
 - (LeDeviceCache)init;
-- (const)friendlyNameForType:(unint64_t)a3;
-- (const)tableNameForType:(unint64_t)a3;
-- (id)customPropertiesJSONFromDevice:(const void *)a3;
+- (const)friendlyNameForType:(unint64_t)type;
+- (const)tableNameForType:(unint64_t)type;
+- (id)customPropertiesJSONFromDevice:(const void *)device;
 - (id)databaseContainerURL;
-- (id)nameFromSanitizedName:(id)a3;
-- (id)readCustomPropertiesJSONForDeviceUUID:(id)a3 inDatabase:(sqlite3 *)a4;
-- (int)_genericExecute:(id)a3 inDatabase:(sqlite3 *)a4;
-- (int)duplicatePairedDevicesForAddress:(unint64_t)a3 originalUuid:(id)a4;
+- (id)nameFromSanitizedName:(id)name;
+- (id)readCustomPropertiesJSONForDeviceUUID:(id)d inDatabase:(sqlite3 *)database;
+- (int)_genericExecute:(id)execute inDatabase:(sqlite3 *)database;
+- (int)duplicatePairedDevicesForAddress:(unint64_t)address originalUuid:(id)uuid;
 - (vector<std::string,)findUUIDsWithAllCustomProperties:(LeDeviceCache *)self;
 - (vector<std::string,)findUUIDsWithCustomProperties:(LeDeviceCache *)self;
 - (void)clearAllDatabases;
-- (void)createTablesForDatabase:(sqlite3 *)a3 type:(unint64_t)a4;
-- (void)customPropertiesToDevice:(void *)a3 fromJSON:(id)a4;
-- (void)evictIfNeeded:(BOOL)a3;
-- (void)loadPairedDevice:(id)a3 address:(unint64_t)a4 ifMissing:(BOOL)a5;
-- (void)migratePlistData:(id)a3 database:(sqlite3 *)a4 type:(unint64_t)a5;
-- (void)printDatabase:(unint64_t)a3;
+- (void)createTablesForDatabase:(sqlite3 *)database type:(unint64_t)type;
+- (void)customPropertiesToDevice:(void *)device fromJSON:(id)n;
+- (void)evictIfNeeded:(BOOL)needed;
+- (void)loadPairedDevice:(id)device address:(unint64_t)address ifMissing:(BOOL)missing;
+- (void)migratePlistData:(id)data database:(sqlite3 *)database type:(unint64_t)type;
+- (void)printDatabase:(unint64_t)database;
 - (void)printDebug;
-- (void)readCustomPropertiesJSONForDevice:(void *)a3 inDatabase:(sqlite3 *)a4;
-- (void)readDevice:(id)a3;
-- (void)readDeviceByAddress:(unint64_t)a3;
-- (void)readDeviceFromDatabase:(sqlite3 *)a3 statement:(id)a4 readResolvedAddress:(BOOL)a5;
-- (void)removeCustomPropertiesJSONForDeviceUUID:(id)a3 inDatabase:(sqlite3 *)a4;
-- (void)removeDevice:(const void *)a3 internal:(BOOL)a4;
-- (void)removeDevicesDuplicatesOf:(unint64_t)a3 originalUuid:(id)a4;
+- (void)readCustomPropertiesJSONForDevice:(void *)device inDatabase:(sqlite3 *)database;
+- (void)readDevice:(id)device;
+- (void)readDeviceByAddress:(unint64_t)address;
+- (void)readDeviceFromDatabase:(sqlite3 *)database statement:(id)statement readResolvedAddress:(BOOL)address;
+- (void)removeCustomPropertiesJSONForDeviceUUID:(id)d inDatabase:(sqlite3 *)database;
+- (void)removeDevice:(const void *)device internal:(BOOL)internal;
+- (void)removeDevicesDuplicatesOf:(unint64_t)of originalUuid:(id)uuid;
 - (void)tryLoadProtectedCache;
 - (void)updateProtectedCacheMetrics;
-- (void)wipeDatabaseNameOrigin:(unint64_t)a3;
-- (void)writeCustomPropertiesJSONForDevice:(const void *)a3 inDatabase:(sqlite3 *)a4;
-- (void)writeDevice:(const void *)a3;
+- (void)wipeDatabaseNameOrigin:(unint64_t)origin;
+- (void)writeCustomPropertiesJSONForDevice:(const void *)device inDatabase:(sqlite3 *)database;
+- (void)writeDevice:(const void *)device;
 @end
 
 @implementation LeDeviceCache
@@ -176,22 +176,22 @@ LABEL_14:
   return v3;
 }
 
-- (int)_genericExecute:(id)a3 inDatabase:(sqlite3 *)a4
+- (int)_genericExecute:(id)execute inDatabase:(sqlite3 *)database
 {
-  v5 = a3;
+  executeCopy = execute;
   ppStmt = 0;
-  v6 = sqlite3_prepare_v2(a4, [v5 UTF8String], -1, &ppStmt, 0);
+  v6 = sqlite3_prepare_v2(database, [executeCopy UTF8String], -1, &ppStmt, 0);
   if (v6)
   {
     v7 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v8 = v5;
-      v9 = [v5 UTF8String];
-      v10 = sqlite3_errmsg(a4);
-      v11 = sqlite3_extended_errcode(a4);
+      v8 = executeCopy;
+      uTF8String = [executeCopy UTF8String];
+      v10 = sqlite3_errmsg(database);
+      v11 = sqlite3_extended_errcode(database);
       *buf = 136315906;
-      v20 = v9;
+      v20 = uTF8String;
       v21 = 1024;
       v22 = v6;
       v23 = 2082;
@@ -210,12 +210,12 @@ LABEL_14:
       v12 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v14 = v5;
-        v15 = [v5 UTF8String];
-        v16 = sqlite3_errmsg(a4);
-        v17 = sqlite3_extended_errcode(a4);
+        v14 = executeCopy;
+        uTF8String2 = [executeCopy UTF8String];
+        v16 = sqlite3_errmsg(database);
+        v17 = sqlite3_extended_errcode(database);
         *buf = 136315906;
-        v20 = v15;
+        v20 = uTF8String2;
         v21 = 1024;
         v22 = v6;
         v23 = 2082;
@@ -285,21 +285,21 @@ LABEL_14:
   }
 }
 
-- (BOOL)initializeDatabases:(LeDeviceCacheEventListener *)a3 queue:(dispatch_queue_s *)a4
+- (BOOL)initializeDatabases:(LeDeviceCacheEventListener *)databases queue:(dispatch_queue_s *)queue
 {
   v7 = objc_autoreleasePoolPush();
-  self->_listener = a3;
+  self->_listener = databases;
   v8 = +[NSFileManager defaultManager];
-  v9 = [(LeDeviceCache *)self databaseContainerURL];
-  v10 = [v9 path];
-  v11 = [v8 fileExistsAtPath:v10];
+  databaseContainerURL = [(LeDeviceCache *)self databaseContainerURL];
+  path = [databaseContainerURL path];
+  v11 = [v8 fileExistsAtPath:path];
 
   if ((v11 & 1) == 0)
   {
     v12 = +[NSFileManager defaultManager];
-    v13 = [(LeDeviceCache *)self databaseContainerURL];
+    databaseContainerURL2 = [(LeDeviceCache *)self databaseContainerURL];
     v39 = 0;
-    v14 = [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v39];
+    v14 = [v12 createDirectoryAtURL:databaseContainerURL2 withIntermediateDirectories:1 attributes:0 error:&v39];
     v15 = v39;
 
     if ((v14 & 1) == 0)
@@ -307,17 +307,17 @@ LABEL_14:
       v16 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v27 = [(LeDeviceCache *)self databaseContainerURL];
-        v28 = [v27 path];
-        v29 = v28;
-        v30 = [v28 UTF8String];
-        v31 = [v15 localizedDescription];
-        v32 = v31;
-        v33 = [v31 UTF8String];
+        databaseContainerURL3 = [(LeDeviceCache *)self databaseContainerURL];
+        path2 = [databaseContainerURL3 path];
+        v29 = path2;
+        uTF8String = [path2 UTF8String];
+        localizedDescription = [v15 localizedDescription];
+        v32 = localizedDescription;
+        uTF8String2 = [localizedDescription UTF8String];
         *buf = 136315394;
-        *&buf[4] = v30;
+        *&buf[4] = uTF8String;
         v41 = 2082;
-        v42 = v33;
+        v42 = uTF8String2;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Could not create directory at path %s with error %{public}s", buf, 0x16u);
       }
     }
@@ -329,7 +329,7 @@ LABEL_14:
   handler[2] = sub_1004211BC;
   handler[3] = &unk_100ADF848;
   handler[4] = self;
-  v17 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &out_token, a4, handler);
+  v17 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &out_token, queue, handler);
   v18 = qword_100BCE900;
   if (v17)
   {
@@ -449,21 +449,21 @@ LABEL_28:
   return v6;
 }
 
-- (void)removeDevicesDuplicatesOf:(unint64_t)a3 originalUuid:(id)a4
+- (void)removeDevicesDuplicatesOf:(unint64_t)of originalUuid:(id)uuid
 {
-  v6 = a4;
+  uuidCopy = uuid;
   v7 = qword_100BCE900;
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
   {
     v8 = sub_100063D0C();
     *buf = 138543618;
-    v33 = v6;
+    v33 = uuidCopy;
     v34 = 2114;
     v35 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Removing duplicates of %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  v9 = [(LeDeviceCache *)self duplicatePairedDevicesForAddress:a3 originalUuid:v6];
+  v9 = [(LeDeviceCache *)self duplicatePairedDevicesForAddress:of originalUuid:uuidCopy];
   if (v9)
   {
     v10 = qword_100BCE900;
@@ -474,10 +474,10 @@ LABEL_28:
     }
 
     v12 = [(LeDeviceCache *)self tableNameForType:0];
-    v13 = [v6 UUIDString];
+    uUIDString = [uuidCopy UUIDString];
     v14 = sub_100063D0C();
     v15 = sub_100063D0C();
-    v16 = [NSString stringWithFormat:@"SELECT Uuid FROM %s WHERE Uuid != '%@' AND (Address = '%@' OR ResolvedAddress = '%@')", v12, v13, v14, v15];
+    v16 = [NSString stringWithFormat:@"SELECT Uuid FROM %s WHERE Uuid != '%@' AND (Address = '%@' OR ResolvedAddress = '%@')", v12, uUIDString, v14, v15];
 
     ppStmt = 0;
     pairedDatabase = self->_pairedDatabase;
@@ -509,10 +509,10 @@ LABEL_28:
     }
 
     v23 = [(LeDeviceCache *)self tableNameForType:0];
-    v24 = [v6 UUIDString];
+    uUIDString2 = [uuidCopy UUIDString];
     v25 = sub_100063D0C();
     v26 = sub_100063D0C();
-    v27 = [NSString stringWithFormat:@"DELETE FROM %s WHERE Uuid != '%@' AND (Address = '%@' OR ResolvedAddress = '%@')", v23, v24, v25, v26];
+    v27 = [NSString stringWithFormat:@"DELETE FROM %s WHERE Uuid != '%@' AND (Address = '%@' OR ResolvedAddress = '%@')", v23, uUIDString2, v25, v26];
 
     v28 = self->_pairedDatabase;
     v29 = v27;
@@ -520,23 +520,23 @@ LABEL_28:
   }
 }
 
-- (void)loadPairedDevice:(id)a3 address:(unint64_t)a4 ifMissing:(BOOL)a5
+- (void)loadPairedDevice:(id)device address:(unint64_t)address ifMissing:(BOOL)missing
 {
-  v5 = a5;
-  v8 = a3;
-  if (v8)
+  missingCopy = missing;
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v9 = [(LeDeviceCache *)self tableNameForType:0];
-    v10 = [v8 UUIDString];
-    v11 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", v9, v10];
+    uUIDString = [deviceCopy UUIDString];
+    v11 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", v9, uUIDString];
   }
 
   else
   {
     v12 = [(LeDeviceCache *)self tableNameForType:0];
-    v10 = sub_100063D0C();
+    uUIDString = sub_100063D0C();
     v13 = sub_100063D0C();
-    v11 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Address = '%@' OR ResolvedAddress = '%@'", v12, v10, v13];
+    v11 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Address = '%@' OR ResolvedAddress = '%@'", v12, uUIDString, v13];
   }
 
   v14 = [(LeDeviceCache *)self readDeviceFromDatabase:self->_pairedDatabase statement:v11 readResolvedAddress:1];
@@ -552,18 +552,18 @@ LABEL_28:
   else if (otherDatabase)
   {
     v16 = [(LeDeviceCache *)self tableNameForType:1];
-    if (v8)
+    if (deviceCopy)
     {
-      v17 = [v8 UUIDString];
-      [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", v16, v17];
+      uUIDString2 = [deviceCopy UUIDString];
+      [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", v16, uUIDString2];
       v11 = v18 = v11;
     }
 
     else
     {
-      v17 = sub_100063D0C();
+      uUIDString2 = sub_100063D0C();
       v18 = sub_100063D0C();
-      v20 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Address = '%@' OR ResolvedAddress = '%@'", v16, v17, v18];
+      v20 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Address = '%@' OR ResolvedAddress = '%@'", v16, uUIDString2, v18];
 
       v11 = v20;
     }
@@ -576,14 +576,14 @@ LABEL_28:
 
 LABEL_16:
     v21 = qword_100BCE900;
-    if (v5)
+    if (missingCopy)
     {
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
       {
         v22 = sub_100063D0C();
         v23 = [(LeDeviceCache *)self friendlyNameForType:0];
         *buf = 138543874;
-        *&buf[4] = v8;
+        *&buf[4] = deviceCopy;
         *&buf[12] = 2114;
         *&buf[14] = v22;
         v35 = 2082;
@@ -600,7 +600,7 @@ LABEL_16:
       v25 = sub_100063D0C();
       v26 = [(LeDeviceCache *)self friendlyNameForType:0];
       *buf = 138543874;
-      *&buf[4] = v8;
+      *&buf[4] = deviceCopy;
       *&buf[12] = 2114;
       *&buf[14] = v25;
       v35 = 2082;
@@ -608,13 +608,13 @@ LABEL_16:
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to load paired device %{public}@ (%{public}@) from '%{public}s' cache", buf, 0x20u);
 
       v21 = qword_100BCE900;
-      if (v8)
+      if (deviceCopy)
       {
         goto LABEL_31;
       }
     }
 
-    else if (v8)
+    else if (deviceCopy)
     {
       goto LABEL_31;
     }
@@ -628,7 +628,7 @@ LABEL_16:
     *buf = 0;
     *&buf[8] = 0;
     uuid_clear(buf);
-    v28 = sub_10009A66C(a4);
+    v28 = sub_10009A66C(address);
     v30 = v28;
     v32 = BYTE6(v28);
     v31 = WORD2(v28);
@@ -671,17 +671,17 @@ LABEL_31:
   }
 
 LABEL_20:
-  [(LeDeviceCache *)self removeDevicesDuplicatesOf:a4 originalUuid:v8];
+  [(LeDeviceCache *)self removeDevicesDuplicatesOf:address originalUuid:deviceCopy];
 
   return v14;
 }
 
-- (void)readDevice:(id)a3
+- (void)readDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(LeDeviceCache *)self tableNameForType:0];
-  v6 = [v4 UUIDString];
-  v7 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", v5, v6];
+  uUIDString = [deviceCopy UUIDString];
+  v7 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", v5, uUIDString];
 
   v8 = [(LeDeviceCache *)self readDeviceFromDatabase:self->_pairedDatabase statement:v7];
   if (!v8)
@@ -690,7 +690,7 @@ LABEL_20:
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v17 = v4;
+      v17 = deviceCopy;
       v18 = 2082;
       v19 = [(LeDeviceCache *)self friendlyNameForType:0];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Unable to locate device %{public}@ in '%{public}s' cache", buf, 0x16u);
@@ -698,9 +698,9 @@ LABEL_20:
 
     if (self->_otherDatabase)
     {
-      v10 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", [(LeDeviceCache *)self tableNameForType:1], v4];
+      deviceCopy = [NSString stringWithFormat:@"SELECT * FROM %s WHERE Uuid = '%@'", [(LeDeviceCache *)self tableNameForType:1], deviceCopy];
 
-      v8 = [(LeDeviceCache *)self readDeviceFromDatabase:self->_otherDatabase statement:v10];
+      v8 = [(LeDeviceCache *)self readDeviceFromDatabase:self->_otherDatabase statement:deviceCopy];
       if (!v8)
       {
         v11 = qword_100BCE900;
@@ -708,7 +708,7 @@ LABEL_20:
         {
           v12 = [(LeDeviceCache *)self friendlyNameForType:1];
           *buf = 138543618;
-          v17 = v4;
+          v17 = deviceCopy;
           v18 = 2082;
           v19 = v12;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Unable to locate device %{public}@ in '%{public}s' cache", buf, 0x16u);
@@ -717,7 +717,7 @@ LABEL_20:
         v8 = 0;
       }
 
-      v7 = v10;
+      v7 = deviceCopy;
     }
 
     else
@@ -738,7 +738,7 @@ LABEL_20:
   return v8;
 }
 
-- (void)readDeviceByAddress:(unint64_t)a3
+- (void)readDeviceByAddress:(unint64_t)address
 {
   v4 = [(LeDeviceCache *)self tableNameForType:0];
   v5 = sub_100063D0C();
@@ -804,15 +804,15 @@ LABEL_20:
   return v8;
 }
 
-- (int)duplicatePairedDevicesForAddress:(unint64_t)a3 originalUuid:(id)a4
+- (int)duplicatePairedDevicesForAddress:(unint64_t)address originalUuid:(id)uuid
 {
-  v5 = a4;
+  uuidCopy = uuid;
   v12 = 0;
   v6 = [(LeDeviceCache *)self tableNameForType:0];
-  v7 = [v5 UUIDString];
+  uUIDString = [uuidCopy UUIDString];
   v8 = sub_100063D0C();
   v9 = sub_100063D0C();
-  v10 = [NSString stringWithFormat:@"SELECT COUNT() FROM %s WHERE Uuid != '%@' AND (Address = '%@' OR ResolvedAddress = '%@')", v6, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"SELECT COUNT() FROM %s WHERE Uuid != '%@' AND (Address = '%@' OR ResolvedAddress = '%@')", v6, uUIDString, v8, v9];
 
   [(LeDeviceCache *)self readIntFromDatabase:self->_pairedDatabase statement:v10 value:&v12];
   LODWORD(self) = v12;
@@ -820,13 +820,13 @@ LABEL_20:
   return self;
 }
 
-- (void)writeDevice:(const void *)a3
+- (void)writeDevice:(const void *)device
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = *(a3 + 160);
+  v6 = *(device + 160);
   v7 = v6 ^ 1u;
   v8 = 24;
-  if (*(a3 + 160))
+  if (*(device + 160))
   {
     v8 = 16;
   }
@@ -836,7 +836,7 @@ LABEL_20:
   v9 = qword_100BCE900;
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
   {
-    v10 = *a3;
+    v10 = *device;
     *buf = 138543618;
     *&buf[4] = v10;
     *&buf[12] = 2082;
@@ -846,17 +846,17 @@ LABEL_20:
 
   if (self->_otherDatabase || (v6 & 1) != 0)
   {
-    [(LeDeviceCache *)self removeDevice:a3 internal:1, v48, context];
+    [(LeDeviceCache *)self removeDevice:device internal:1, v48, context];
     if ((v6 & 1) == 0)
     {
-      [(LeDeviceCache *)self evictIfNeeded:*(a3 + 34) != 0];
+      [(LeDeviceCache *)self evictIfNeeded:*(device + 34) != 0];
     }
 
-    if (*(a3 + 24))
+    if (*(device + 24))
     {
       v13 = [NSMutableArray arrayWithCapacity:?];
-      v14 = *(a3 + 22);
-      if (v14 != (a3 + 184))
+      v14 = *(device + 22);
+      if (v14 != (device + 184))
       {
         do
         {
@@ -896,7 +896,7 @@ LABEL_20:
           v14 = v18;
         }
 
-        while (v18 != (a3 + 184));
+        while (v18 != (device + 184));
       }
 
       v20 = [v13 componentsJoinedByString:{@", "}];
@@ -918,21 +918,21 @@ LABEL_20:
     }
 
     v22 = *(&self->super.isa + v21);
-    v23 = *a3;
-    v24 = [v23 UUIDString];
-    v25 = v24;
-    sqlite3_bind_text(v22, 1, [v24 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    v23 = *device;
+    uUIDString = [v23 UUIDString];
+    v25 = uUIDString;
+    sqlite3_bind_text(v22, 1, [uUIDString UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
     v26 = *(&self->super.isa + v21);
-    if (*(a3 + 127) < 0)
+    if (*(device + 127) < 0)
     {
-      sub_100008904(buf, *(a3 + 13), *(a3 + 14));
+      sub_100008904(buf, *(device + 13), *(device + 14));
     }
 
     else
     {
-      *buf = *(a3 + 104);
-      *&buf[16] = *(a3 + 15);
+      *buf = *(device + 104);
+      *&buf[16] = *(device + 15);
     }
 
     if (buf[23] >= 0)
@@ -951,47 +951,47 @@ LABEL_20:
       operator delete(*buf);
     }
 
-    sqlite3_bind_int(*(&self->super.isa + v21), 3, *(a3 + 32));
+    sqlite3_bind_int(*(&self->super.isa + v21), 3, *(device + 32));
     v28 = *(&self->super.isa + v21);
     v29 = sub_100063D0C();
     v30 = v29;
     sqlite3_bind_text(v28, 4, [v29 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
     v31 = *(&self->super.isa + v21);
-    v32 = *(a3 + 3);
+    v32 = *(device + 3);
     if (v32)
     {
       v29 = sub_100063D0C();
       v33 = v29;
-      v34 = [v29 UTF8String];
+      uTF8String = [v29 UTF8String];
     }
 
     else
     {
-      v34 = 0;
+      uTF8String = 0;
     }
 
-    sqlite3_bind_text(v31, 5, v34, -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(v31, 5, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
     if (v32)
     {
     }
 
-    sqlite3_bind_int(*(&self->super.isa + v21), 6, *(a3 + 33));
-    sqlite3_bind_int(*(&self->super.isa + v21), 7, *(a3 + 34));
-    sqlite3_bind_int(*(&self->super.isa + v21), 8, *(a3 + 162));
+    sqlite3_bind_int(*(&self->super.isa + v21), 6, *(device + 33));
+    sqlite3_bind_int(*(&self->super.isa + v21), 7, *(device + 34));
+    sqlite3_bind_int(*(&self->super.isa + v21), 8, *(device + 162));
     v35 = *(&self->super.isa + v21);
     v36 = v20;
     sqlite3_bind_text(v35, 9, [v20 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
     v37 = *(&self->super.isa + v21);
-    if (*(a3 + 231) < 0)
+    if (*(device + 231) < 0)
     {
-      sub_100008904(buf, *(a3 + 26), *(a3 + 27));
+      sub_100008904(buf, *(device + 26), *(device + 27));
     }
 
     else
     {
-      *buf = *(a3 + 13);
-      *&buf[16] = *(a3 + 28);
+      *buf = *(device + 13);
+      *&buf[16] = *(device + 28);
     }
 
     if (buf[23] >= 0)
@@ -1013,10 +1013,10 @@ LABEL_20:
     v39 = sqlite3_step(*(&self->super.isa + v21));
     if (v39 == 101)
     {
-      [(LeDeviceCache *)self writeCustomPropertiesJSONForDevice:a3 inDatabase:v49];
+      [(LeDeviceCache *)self writeCustomPropertiesJSONForDevice:device inDatabase:v49];
       if ((v6 & 1) == 0)
       {
-        if (*(a3 + 34))
+        if (*(device + 34))
         {
           [(LeDeviceCache *)self setConnectedDeviceCount:[(LeDeviceCache *)self connectedDeviceCount]+ 1];
         }
@@ -1030,7 +1030,7 @@ LABEL_20:
       v45 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
       {
-        v46 = *a3;
+        v46 = *device;
         v47 = [(LeDeviceCache *)self friendlyNameForType:v7];
         *buf = 138543618;
         *&buf[4] = v46;
@@ -1045,7 +1045,7 @@ LABEL_20:
       v40 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v41 = *a3;
+        v41 = *device;
         v42 = [(LeDeviceCache *)self friendlyNameForType:v6 ^ 1u];
         v43 = sqlite3_errmsg(v49);
         v44 = sqlite3_extended_errcode(v49);
@@ -1072,9 +1072,9 @@ LABEL_20:
     v11 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
     {
-      v12 = [(LeDeviceCache *)self friendlyNameForType:1, v48, context];
+      context = [(LeDeviceCache *)self friendlyNameForType:1, v48, context];
       *buf = 136446210;
-      *&buf[4] = v12;
+      *&buf[4] = context;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Ignoring write as '%{public}s' cache has not been loaded yet", buf, 0xCu);
     }
   }
@@ -1082,42 +1082,42 @@ LABEL_20:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)removeDevice:(const void *)a3 internal:(BOOL)a4
+- (void)removeDevice:(const void *)device internal:(BOOL)internal
 {
   v37 = 0;
   v7 = [(LeDeviceCache *)self tableNameForType:0];
-  v8 = [*a3 UUIDString];
-  v9 = [NSString stringWithFormat:@"SELECT COUNT() FROM %s WHERE Uuid = '%@'", v7, v8];
+  uUIDString = [*device UUIDString];
+  v9 = [NSString stringWithFormat:@"SELECT COUNT() FROM %s WHERE Uuid = '%@'", v7, uUIDString];
 
   [(LeDeviceCache *)self readIntFromDatabase:self->_pairedDatabase statement:v9 value:&v37];
   if (v37)
   {
     v10 = [(LeDeviceCache *)self tableNameForType:0];
-    v11 = [*a3 UUIDString];
-    v12 = [NSString stringWithFormat:@"DELETE FROM %s WHERE Uuid = '%@'", v10, v11];
+    uUIDString2 = [*device UUIDString];
+    v12 = [NSString stringWithFormat:@"DELETE FROM %s WHERE Uuid = '%@'", v10, uUIDString2];
 
     pairedDatabase = self->_pairedDatabase;
     v14 = v12;
     v15 = sqlite3_exec(pairedDatabase, [v12 UTF8String], 0, 0, 0);
-    if (!a4 && !v15)
+    if (!internal && !v15)
     {
       v16 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = *a3;
-        v18 = [v17 UUIDString];
+        v17 = *device;
+        uUIDString3 = [v17 UUIDString];
         v19 = [(LeDeviceCache *)self friendlyNameForType:0];
         *buf = 138543618;
-        v39 = v18;
+        v39 = uUIDString3;
         v40 = 2082;
         v41 = v19;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Removed device %{public}@ from '%{public}s' cache", buf, 0x16u);
       }
     }
 
-    v20 = *a3;
-    v21 = [v20 UUIDString];
-    [(LeDeviceCache *)self removeCustomPropertiesJSONForDeviceUUID:v21 inDatabase:self->_pairedDatabase];
+    v20 = *device;
+    uUIDString4 = [v20 UUIDString];
+    [(LeDeviceCache *)self removeCustomPropertiesJSONForDeviceUUID:uUIDString4 inDatabase:self->_pairedDatabase];
 
     goto LABEL_23;
   }
@@ -1138,18 +1138,18 @@ LABEL_20:
 
   v36 = 0;
   v22 = [(LeDeviceCache *)self tableNameForType:1];
-  v23 = [*a3 UUIDString];
-  v12 = [NSString stringWithFormat:@"SELECT LastConnectionTime FROM %s WHERE Uuid = '%@'", v22, v23];
+  uUIDString5 = [*device UUIDString];
+  v12 = [NSString stringWithFormat:@"SELECT LastConnectionTime FROM %s WHERE Uuid = '%@'", v22, uUIDString5];
 
   if ([(LeDeviceCache *)self readIntFromDatabase:self->_otherDatabase statement:v12 value:&v36])
   {
-    v24 = *a3;
-    v25 = [v24 UUIDString];
-    [(LeDeviceCache *)self removeCustomPropertiesJSONForDeviceUUID:v25 inDatabase:self->_otherDatabase];
+    v24 = *device;
+    uUIDString6 = [v24 UUIDString];
+    [(LeDeviceCache *)self removeCustomPropertiesJSONForDeviceUUID:uUIDString6 inDatabase:self->_otherDatabase];
 
     v26 = [(LeDeviceCache *)self tableNameForType:1];
-    v27 = [*a3 UUIDString];
-    v9 = [NSString stringWithFormat:@"DELETE FROM %s WHERE Uuid = '%@'", v26, v27];
+    uUIDString7 = [*device UUIDString];
+    v9 = [NSString stringWithFormat:@"DELETE FROM %s WHERE Uuid = '%@'", v26, uUIDString7];
 
     otherDatabase = self->_otherDatabase;
     v29 = v9;
@@ -1159,12 +1159,12 @@ LABEL_20:
       goto LABEL_11;
     }
 
-    if (!a4)
+    if (!internal)
     {
       v33 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = *a3;
+        v34 = *device;
         v35 = [(LeDeviceCache *)self friendlyNameForType:1];
         *buf = 138543618;
         v39 = v34;
@@ -1190,33 +1190,33 @@ LABEL_22:
   }
 
 LABEL_11:
-  if (!a4)
+  if (!internal)
   {
     v30 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      sub_10082A900(a3, v30);
+      sub_10082A900(device, v30);
     }
   }
 
 LABEL_23:
 }
 
-- (BOOL)createDatabase:(sqlite3 *)a3 type:(unint64_t)a4 path:(const char *)a5 flags:(int)a6
+- (BOOL)createDatabase:(sqlite3 *)database type:(unint64_t)type path:(const char *)path flags:(int)flags
 {
-  v10 = sqlite3_open_v2(a5, a3, a6 | 4, 0);
+  v10 = sqlite3_open_v2(path, database, flags | 4, 0);
   if (v10)
   {
     v11 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(LeDeviceCache *)self friendlyNameForType:a4];
-      v14 = sqlite3_errmsg(*a3);
-      v15 = sqlite3_extended_errcode(*a3);
+      v13 = [(LeDeviceCache *)self friendlyNameForType:type];
+      v14 = sqlite3_errmsg(*database);
+      v15 = sqlite3_extended_errcode(*database);
       v16 = 136447234;
       v17 = v13;
       v18 = 2080;
-      v19 = a5;
+      pathCopy = path;
       v20 = 1024;
       v21 = v10;
       v22 = 2082;
@@ -1226,36 +1226,36 @@ LABEL_23:
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to create '%{public}s' cache at %s with error %d (%{public}s, %d)", &v16, 0x2Cu);
     }
 
-    if (*a3)
+    if (*database)
     {
-      sqlite3_close_v2(*a3);
-      *a3 = 0;
+      sqlite3_close_v2(*database);
+      *database = 0;
     }
   }
 
   else
   {
-    [(LeDeviceCache *)self createTablesForDatabase:*a3 type:a4];
+    [(LeDeviceCache *)self createTablesForDatabase:*database type:type];
   }
 
   return v10 == 0;
 }
 
-- (BOOL)loadDatabase:(unint64_t)a3
+- (BOOL)loadDatabase:(unint64_t)database
 {
   v93 = +[NSFileManager defaultManager];
-  if (a3)
+  if (database)
   {
-    v5 = [(LeDeviceCache *)self databaseContainerURL];
-    v6 = [v5 URLByAppendingPathComponent:@"com.apple.MobileBluetooth.ledevices.other.db"];
+    databaseContainerURL = [(LeDeviceCache *)self databaseContainerURL];
+    v6 = [databaseContainerURL URLByAppendingPathComponent:@"com.apple.MobileBluetooth.ledevices.other.db"];
 
-    v7 = [v6 path];
-    v8 = [v7 UTF8String];
+    path = [v6 path];
+    uTF8String = [path UTF8String];
 
-    v9 = [v6 path];
+    path2 = [v6 path];
     p_otherDatabase = &self->_otherDatabase;
     ppStmt = &self->_writeOtherDeviceStmt;
-    if ([v93 fileExistsAtPath:v9])
+    if ([v93 fileExistsAtPath:path2])
     {
       flags = 3145730;
     }
@@ -1270,18 +1270,18 @@ LABEL_23:
         v15 = qword_100BCE900;
         if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v6 path];
+          path3 = [v6 path];
           buf.st_dev = 136315394;
           *&buf.st_mode = "/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.other.db";
           WORD2(buf.st_ino) = 2080;
-          *(&buf.st_ino + 6) = [v16 UTF8String];
+          *(&buf.st_ino + 6) = [path3 UTF8String];
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Moving LE database from %s to %s", &buf, 0x16u);
         }
 
         chmod("/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.other.db", 0x1B6u);
-        v17 = [v6 path];
+        path4 = [v6 path];
         v98 = 0;
-        v18 = [v93 copyItemAtPath:@"/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.other.db" toPath:v17 error:&v98];
+        v18 = [v93 copyItemAtPath:@"/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.other.db" toPath:path4 error:&v98];
         v19 = v98;
 
         if (v18)
@@ -1294,11 +1294,11 @@ LABEL_23:
           v26 = qword_100BCE900;
           if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
           {
-            v82 = [v19 localizedDescription];
-            v83 = v82;
-            v84 = [v82 UTF8String];
+            localizedDescription = [v19 localizedDescription];
+            v83 = localizedDescription;
+            uTF8String2 = [localizedDescription UTF8String];
             buf.st_dev = 136446210;
-            *&buf.st_mode = v84;
+            *&buf.st_mode = uTF8String2;
             _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Failed to move old database to new path: %{public}s", &buf, 0xCu);
           }
         }
@@ -1308,16 +1308,16 @@ LABEL_23:
 
   else
   {
-    v11 = [(LeDeviceCache *)self databaseContainerURL];
-    v6 = [v11 URLByAppendingPathComponent:@"com.apple.MobileBluetooth.ledevices.paired.db"];
+    databaseContainerURL2 = [(LeDeviceCache *)self databaseContainerURL];
+    v6 = [databaseContainerURL2 URLByAppendingPathComponent:@"com.apple.MobileBluetooth.ledevices.paired.db"];
 
-    v12 = [v6 path];
-    v8 = [v12 UTF8String];
+    path5 = [v6 path];
+    uTF8String = [path5 UTF8String];
 
-    v13 = [v6 path];
+    path6 = [v6 path];
     p_otherDatabase = &self->_pairedDatabase;
     ppStmt = &self->_writePairedDeviceStmt;
-    if ([v93 fileExistsAtPath:v13])
+    if ([v93 fileExistsAtPath:path6])
     {
     }
 
@@ -1330,18 +1330,18 @@ LABEL_23:
         v21 = qword_100BCE900;
         if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v6 path];
+          path7 = [v6 path];
           buf.st_dev = 136315394;
           *&buf.st_mode = "/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.paired.db";
           WORD2(buf.st_ino) = 2080;
-          *(&buf.st_ino + 6) = [v22 UTF8String];
+          *(&buf.st_ino + 6) = [path7 UTF8String];
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Moving LE database from %s to %s", &buf, 0x16u);
         }
 
         chmod("/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.paired.db", 0x1B6u);
-        v23 = [v6 path];
+        path8 = [v6 path];
         v99 = 0;
-        v24 = [v93 copyItemAtPath:@"/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.paired.db" toPath:v23 error:&v99];
+        v24 = [v93 copyItemAtPath:@"/var/mobile/Library/MobileBluetooth/com.apple.MobileBluetooth.ledevices.paired.db" toPath:path8 error:&v99];
         v25 = v99;
 
         if (v24)
@@ -1354,11 +1354,11 @@ LABEL_23:
           v27 = qword_100BCE900;
           if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
           {
-            v85 = [v25 localizedDescription];
-            v86 = v85;
-            v87 = [v85 UTF8String];
+            localizedDescription2 = [v25 localizedDescription];
+            v86 = localizedDescription2;
+            uTF8String3 = [localizedDescription2 UTF8String];
             buf.st_dev = 136446210;
-            *&buf.st_mode = v87;
+            *&buf.st_mode = uTF8String3;
             _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Failed to move old database to new path: %{public}s", &buf, 0xCu);
           }
         }
@@ -1371,24 +1371,24 @@ LABEL_23:
   v28 = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.apple.MobileBluetooth.ledevices.plist"];
   v97 = v28 != 0;
   memset(&buf, 0, sizeof(buf));
-  if (!stat(v8, &buf))
+  if (!stat(uTF8String, &buf))
   {
     if (v97 == 1 && os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_FAULT))
     {
       sub_10082A994();
     }
 
-    v29 = sqlite3_open_v2(v8, p_otherDatabase, flags, 0);
+    v29 = sqlite3_open_v2(uTF8String, p_otherDatabase, flags, 0);
     if (v29)
     {
       v30 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v31 = [(LeDeviceCache *)self friendlyNameForType:a3];
+        v31 = [(LeDeviceCache *)self friendlyNameForType:database];
         *v100 = 136446722;
         *&v100[4] = v31;
         *&v100[12] = 2080;
-        *&v100[14] = v8;
+        *&v100[14] = uTF8String;
         *&v100[22] = 1024;
         *&v100[24] = v29;
         _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Failed to open '%{public}s' cache at %s, result is %d", v100, 0x1Cu);
@@ -1401,7 +1401,7 @@ LABEL_23:
       [v90 setDateFormat:@"HH:mm:ss_MM-dd-yyyy"];
       if ([(LeDeviceCache *)self readIntFromDatabase:*p_otherDatabase statement:@"SELECT value FROM _SqliteDatabaseProperties WHERE key = '_ClientVersion'" value:&v97])
       {
-        v32 = [NSString stringWithFormat:@"SELECT COUNT() FROM sqlite_master WHERE type='table' AND name='%s'", [(LeDeviceCache *)self tableNameForType:a3]];;
+        v32 = [NSString stringWithFormat:@"SELECT COUNT() FROM sqlite_master WHERE type='table' AND name='%s'", [(LeDeviceCache *)self tableNameForType:database]];;
         v103[0] = 0;
         v89 = v32;
         v33 = [(LeDeviceCache *)self readIntFromDatabase:*p_otherDatabase statement:v32 value:v103];
@@ -1417,7 +1417,7 @@ LABEL_23:
 
         if (v34)
         {
-          v35 = [NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS UuidIndex ON %s(Uuid)", [(LeDeviceCache *)self tableNameForType:a3]];;
+          v35 = [NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS UuidIndex ON %s(Uuid)", [(LeDeviceCache *)self tableNameForType:database]];;
           v36 = *p_otherDatabase;
           v37 = v35;
           v38 = sqlite3_exec(v36, [v35 UTF8String], 0, 0, 0);
@@ -1442,7 +1442,7 @@ LABEL_23:
           {
             if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
             {
-              v54 = [(LeDeviceCache *)self friendlyNameForType:a3];
+              v54 = [(LeDeviceCache *)self friendlyNameForType:database];
               *v100 = 136446210;
               *&v100[4] = v54;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Created index for '%{public}s'", v100, 0xCu);
@@ -1474,7 +1474,7 @@ LABEL_23:
 
             else if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
             {
-              v63 = [(LeDeviceCache *)self friendlyNameForType:a3];
+              v63 = [(LeDeviceCache *)self friendlyNameForType:database];
               *v100 = 136446210;
               *&v100[4] = v63;
               _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_INFO, "Verified CustomProperties table is ready and indexed for '%{public}s'", v100, 0xCu);
@@ -1486,14 +1486,14 @@ LABEL_23:
         {
           v48 = +[NSDate date];
           v49 = [v90 stringFromDate:v48];
-          v50 = [NSString stringWithFormat:@"%s.%@.corrupt", v8, v49];
+          v50 = [NSString stringWithFormat:@"%s.%@.corrupt", uTF8String, v49];
           v51 = v50;
-          v52 = [v50 UTF8String];
-          rename(v8, v52, v53);
+          uTF8String4 = [v50 UTF8String];
+          rename(uTF8String, uTF8String4, v53);
 
           if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_FAULT))
           {
-            [(LeDeviceCache *)self friendlyNameForType:a3];
+            [(LeDeviceCache *)self friendlyNameForType:database];
             sub_10082AA08();
           }
 
@@ -1507,14 +1507,14 @@ LABEL_23:
       {
         v42 = +[NSDate date];
         v43 = [v90 stringFromDate:v42];
-        v44 = [NSString stringWithFormat:@"%s.%@.corrupt", v8, v43];
+        v44 = [NSString stringWithFormat:@"%s.%@.corrupt", uTF8String, v43];
         v45 = v44;
-        v46 = [v44 UTF8String];
-        rename(v8, v46, v47);
+        uTF8String5 = [v44 UTF8String];
+        rename(uTF8String, uTF8String5, v47);
 
         if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_FAULT))
         {
-          [(LeDeviceCache *)self friendlyNameForType:a3];
+          [(LeDeviceCache *)self friendlyNameForType:database];
           sub_10082A9C8();
         }
 
@@ -1529,13 +1529,13 @@ LABEL_23:
   {
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
     {
-      v67 = [(LeDeviceCache *)self friendlyNameForType:a3];
+      v67 = [(LeDeviceCache *)self friendlyNameForType:database];
       *v100 = 136446210;
       *&v100[4] = v67;
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Current '%{public}s' cache version is: none", v100, 0xCu);
     }
 
-    if ([(LeDeviceCache *)self createDatabase:p_otherDatabase type:a3 path:v8 flags:flags])
+    if ([(LeDeviceCache *)self createDatabase:p_otherDatabase type:database path:uTF8String flags:flags])
     {
       goto LABEL_70;
     }
@@ -1549,7 +1549,7 @@ LABEL_23:
     {
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
       {
-        v65 = [(LeDeviceCache *)self friendlyNameForType:a3];
+        v65 = [(LeDeviceCache *)self friendlyNameForType:database];
         *v100 = 136446466;
         *&v100[4] = v65;
         *&v100[12] = 1024;
@@ -1560,7 +1560,7 @@ LABEL_23:
 
     else if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_FAULT))
     {
-      [(LeDeviceCache *)self friendlyNameForType:a3];
+      [(LeDeviceCache *)self friendlyNameForType:database];
       sub_10082AA48();
     }
 
@@ -1569,20 +1569,20 @@ LABEL_23:
 
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
   {
-    v66 = [(LeDeviceCache *)self friendlyNameForType:a3];
+    v66 = [(LeDeviceCache *)self friendlyNameForType:database];
     *v100 = 136446210;
     *&v100[4] = v66;
     _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Current '%{public}s' cache version is: legacy plist", v100, 0xCu);
   }
 
-  if (![(LeDeviceCache *)self createDatabase:p_otherDatabase type:a3 path:v8 flags:flags])
+  if (![(LeDeviceCache *)self createDatabase:p_otherDatabase type:database path:uTF8String flags:flags])
   {
 LABEL_67:
     v68 = 0;
     goto LABEL_89;
   }
 
-  [(LeDeviceCache *)self migratePlistData:v28 database:*p_otherDatabase type:a3];
+  [(LeDeviceCache *)self migratePlistData:v28 database:*p_otherDatabase type:database];
 LABEL_70:
   if (*p_otherDatabase)
   {
@@ -1593,13 +1593,13 @@ LABEL_70:
   v69 = qword_100BCE900;
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
   {
-    v70 = [(LeDeviceCache *)self friendlyNameForType:a3];
+    v70 = [(LeDeviceCache *)self friendlyNameForType:database];
     *v100 = 136446210;
     *&v100[4] = v70;
     _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "Successfully loaded '%{public}s' cache from disk", v100, 0xCu);
   }
 
-  v71 = [NSString stringWithFormat:@"INSERT INTO %s (Uuid, Name, NameOrigin, Address, ResolvedAddress, LastSeenTime, LastConnectionTime, GATTServiceChangeConfig, Tags, iCloudIdentifier) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", [(LeDeviceCache *)self tableNameForType:a3]];
+  v71 = [NSString stringWithFormat:@"INSERT INTO %s (Uuid, Name, NameOrigin, Address, ResolvedAddress, LastSeenTime, LastConnectionTime, GATTServiceChangeConfig, Tags, iCloudIdentifier) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", [(LeDeviceCache *)self tableNameForType:database]];
   v72 = *p_otherDatabase;
   v73 = v71;
   v74 = sqlite3_prepare_v2(v72, [v71 UTF8String], -1, ppStmt, 0);
@@ -1608,7 +1608,7 @@ LABEL_70:
     v75 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v79 = [(LeDeviceCache *)self friendlyNameForType:a3];
+      v79 = [(LeDeviceCache *)self friendlyNameForType:database];
       v80 = sqlite3_errmsg(*p_otherDatabase);
       v81 = sqlite3_extended_errcode(*p_otherDatabase);
       *v100 = 136446978;
@@ -1652,7 +1652,7 @@ LABEL_70:
       _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "LeDeviceCache Wipe Name Origin for all LE devices", v100, 2u);
     }
 
-    [(LeDeviceCache *)self wipeDatabaseNameOrigin:a3];
+    [(LeDeviceCache *)self wipeDatabaseNameOrigin:database];
   }
 
   v68 = 1;
@@ -1661,26 +1661,26 @@ LABEL_89:
   return v68;
 }
 
-- (void)createTablesForDatabase:(sqlite3 *)a3 type:(unint64_t)a4
+- (void)createTablesForDatabase:(sqlite3 *)database type:(unint64_t)type
 {
-  v7 = [NSString stringWithFormat:@"DROP TABLE IF EXISTS _SqliteDatabasePropertiesCREATE TABLE _SqliteDatabaseProperties(key TEXT, value TEXT, UNIQUE(key));INSERT INTO _SqliteDatabaseProperties (key, value) VALUES ('_ClientVersion', %d);DROP TABLE IF EXISTS %s;CREATE TABLE %s(Uuid TEXT, Name TEXT, NameOrigin INT, Address TEXT, ResolvedAddress TEXT, LastSeenTime INT, LastConnectionTime INT, GATTServiceChangeConfig INT, Tags TEXT, iCloudIdentifier TEXT);DROP INDEX IF EXISTS %s;DROP TABLE IF EXISTS %s;CREATE TABLE %s (%s TEXT, %s TEXT, UNIQUE(%s));CREATE INDEX IF NOT EXISTS %s ON %s (%s);", 2, [(LeDeviceCache *)self tableNameForType:a4], [(LeDeviceCache *)self tableNameForType:a4], "CustomPropertiesIndex", "CustomProperties", "CustomProperties", "Uuid", "JSON", "Uuid", "CustomPropertiesIndex", "CustomProperties", "Uuid"];;
+  v7 = [NSString stringWithFormat:@"DROP TABLE IF EXISTS _SqliteDatabasePropertiesCREATE TABLE _SqliteDatabaseProperties(key TEXT, value TEXT, UNIQUE(key));INSERT INTO _SqliteDatabaseProperties (key, value) VALUES ('_ClientVersion', %d);DROP TABLE IF EXISTS %s;CREATE TABLE %s(Uuid TEXT, Name TEXT, NameOrigin INT, Address TEXT, ResolvedAddress TEXT, LastSeenTime INT, LastConnectionTime INT, GATTServiceChangeConfig INT, Tags TEXT, iCloudIdentifier TEXT);DROP INDEX IF EXISTS %s;DROP TABLE IF EXISTS %s;CREATE TABLE %s (%s TEXT, %s TEXT, UNIQUE(%s));CREATE INDEX IF NOT EXISTS %s ON %s (%s);", 2, [(LeDeviceCache *)self tableNameForType:type], [(LeDeviceCache *)self tableNameForType:type], "CustomPropertiesIndex", "CustomProperties", "CustomProperties", "Uuid", "JSON", "Uuid", "CustomPropertiesIndex", "CustomProperties", "Uuid"];;
   v8 = qword_100BCE900;
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    *v15 = [(LeDeviceCache *)self friendlyNameForType:a4];
+    *v15 = [(LeDeviceCache *)self friendlyNameForType:type];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating new '%{public}s' cache", buf, 0xCu);
   }
 
   v9 = v7;
-  v10 = sqlite3_exec(a3, [v7 UTF8String], 0, 0, 0);
+  v10 = sqlite3_exec(database, [v7 UTF8String], 0, 0, 0);
   if (v10)
   {
     v11 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v12 = sqlite3_errmsg(a3);
-      v13 = sqlite3_extended_errcode(a3);
+      v12 = sqlite3_errmsg(database);
+      v13 = sqlite3_extended_errcode(database);
       *buf = 67109634;
       *v15 = v10;
       *&v15[4] = 2082;
@@ -1692,25 +1692,25 @@ LABEL_89:
   }
 }
 
-- (void)migratePlistData:(id)a3 database:(sqlite3 *)a4 type:(unint64_t)a5
+- (void)migratePlistData:(id)data database:(sqlite3 *)database type:(unint64_t)type
 {
-  v76 = a3;
+  dataCopy = data;
   v6 = qword_100BCE900;
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    *v86 = [(LeDeviceCache *)self friendlyNameForType:a5];
+    *v86 = [(LeDeviceCache *)self friendlyNameForType:type];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Migrating '%{public}s' cache from legacy plist", buf, 0xCu);
   }
 
-  v7 = sqlite3_exec(a4, "CREATE TABLE Temp(Uuid TEXT, Name TEXT, NameOrigin INT, Address TEXT, ResolvedAddress TEXT, LastSeenTime INT, LastConnectionTime INT, GATTServiceChangeConfig INT, Tags TEXT, iCloudIdentifier TEXT)", 0, 0, 0);
+  v7 = sqlite3_exec(database, "CREATE TABLE Temp(Uuid TEXT, Name TEXT, NameOrigin INT, Address TEXT, ResolvedAddress TEXT, LastSeenTime INT, LastConnectionTime INT, GATTServiceChangeConfig INT, Tags TEXT, iCloudIdentifier TEXT)", 0, 0, 0);
   if (v7)
   {
     v8 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v64 = sqlite3_errmsg(a4);
-      v65 = sqlite3_extended_errcode(a4);
+      v64 = sqlite3_errmsg(database);
+      v65 = sqlite3_extended_errcode(database);
       *buf = 67109634;
       *v86 = v7;
       *&v86[4] = 2082;
@@ -1721,20 +1721,20 @@ LABEL_89:
     }
   }
 
-  v9 = [NSString stringWithUTF8String:[(LeDeviceCache *)self tableNameForType:a5]];
-  v81 = [v76 objectForKeyedSubscript:v9];
+  v9 = [NSString stringWithUTF8String:[(LeDeviceCache *)self tableNameForType:type]];
+  v81 = [dataCopy objectForKeyedSubscript:v9];
 
-  v80 = [v81 keyEnumerator];
+  keyEnumerator = [v81 keyEnumerator];
   ppStmt = 0;
-  v10 = sqlite3_prepare_v2(a4, "INSERT INTO Temp (Uuid, Name, NameOrigin, Address, ResolvedAddress, LastSeenTime, LastConnectionTime, GATTServiceChangeConfig, Tags, iCloudIdentifier) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", -1, &ppStmt, 0);
-  db = a4;
+  v10 = sqlite3_prepare_v2(database, "INSERT INTO Temp (Uuid, Name, NameOrigin, Address, ResolvedAddress, LastSeenTime, LastConnectionTime, GATTServiceChangeConfig, Tags, iCloudIdentifier) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", -1, &ppStmt, 0);
+  db = database;
   if (v10)
   {
     v11 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v12 = sqlite3_errmsg(a4);
-      v13 = sqlite3_extended_errcode(a4);
+      v12 = sqlite3_errmsg(database);
+      v13 = sqlite3_extended_errcode(database);
       *buf = 67109634;
       *v86 = v10;
       *&v86[4] = 2082;
@@ -1749,13 +1749,13 @@ LABEL_89:
   {
     while (1)
     {
-      v14 = [v80 nextObject];
-      if (!v14)
+      nextObject = [keyEnumerator nextObject];
+      if (!nextObject)
       {
         break;
       }
 
-      v15 = v14;
+      v15 = nextObject;
       v16 = [v81 objectForKeyedSubscript:v15];
       v17 = ppStmt;
       v18 = v15;
@@ -1809,11 +1809,11 @@ LABEL_89:
         if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
         {
           v45 = v15;
-          v46 = [v15 UTF8String];
+          uTF8String = [v15 UTF8String];
           v47 = sqlite3_errmsg(db);
           v48 = sqlite3_extended_errcode(db);
           *buf = 136446978;
-          *v86 = v46;
+          *v86 = uTF8String;
           *&v86[8] = 1024;
           *&v86[10] = v43;
           *&v86[14] = 2082;
@@ -1831,7 +1831,7 @@ LABEL_89:
     sqlite3_finalize(ppStmt);
   }
 
-  v49 = [NSString stringWithFormat:@"INSERT INTO %s SELECT * FROM Temp ORDER BY LastConnectionTime, LastSeenTime ASC DROP TABLE Temp", [(LeDeviceCache *)self tableNameForType:a5]];;
+  v49 = [NSString stringWithFormat:@"INSERT INTO %s SELECT * FROM Temp ORDER BY LastConnectionTime, LastSeenTime ASC DROP TABLE Temp", [(LeDeviceCache *)self tableNameForType:type]];;
   v50 = v49;
   v51 = sqlite3_exec(db, [v49 UTF8String], 0, 0, 0);
   if (v51)
@@ -1851,7 +1851,7 @@ LABEL_89:
     }
   }
 
-  v53 = [NSString stringWithFormat:@"UPDATE %s SET LastSeenTime = ROWID WHERE LastSeenTime > 0 UPDATE %s SET LastConnectionTime = ROWID WHERE LastConnectionTime > 0", [(LeDeviceCache *)self tableNameForType:a5], [(LeDeviceCache *)self tableNameForType:a5]];;
+  v53 = [NSString stringWithFormat:@"UPDATE %s SET LastSeenTime = ROWID WHERE LastSeenTime > 0 UPDATE %s SET LastConnectionTime = ROWID WHERE LastConnectionTime > 0", [(LeDeviceCache *)self tableNameForType:type], [(LeDeviceCache *)self tableNameForType:type]];;
 
   v54 = v53;
   v55 = sqlite3_exec(db, [v53 UTF8String], 0, 0, 0);
@@ -1872,7 +1872,7 @@ LABEL_89:
     }
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v57 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_INFO))
@@ -1894,11 +1894,11 @@ LABEL_89:
       v60 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v70 = [v59 localizedDescription];
-        v71 = v70;
-        v72 = [v70 UTF8String];
+        localizedDescription = [v59 localizedDescription];
+        v71 = localizedDescription;
+        uTF8String2 = [localizedDescription UTF8String];
         *buf = 136446210;
-        *v86 = v72;
+        *v86 = uTF8String2;
         _os_log_error_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "Failed to backup legacy plist with error %{public}s", buf, 0xCu);
       }
     }
@@ -1913,24 +1913,24 @@ LABEL_89:
       v63 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v73 = [v62 localizedDescription];
-        v74 = v73;
-        v75 = [v73 UTF8String];
+        localizedDescription2 = [v62 localizedDescription];
+        v74 = localizedDescription2;
+        uTF8String3 = [localizedDescription2 UTF8String];
         *buf = 136446210;
-        *v86 = v75;
+        *v86 = uTF8String3;
         _os_log_error_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "Failed to clean up legacy plist with error %{public}s", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)wipeDatabaseNameOrigin:(unint64_t)a3
+- (void)wipeDatabaseNameOrigin:(unint64_t)origin
 {
   v5 = qword_100BCE900;
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "Other";
-    if (!a3)
+    if (!origin)
     {
       v6 = "Paired";
     }
@@ -1941,7 +1941,7 @@ LABEL_89:
   }
 
   v7 = 24;
-  if (!a3)
+  if (!origin)
   {
     v7 = 16;
   }
@@ -1949,7 +1949,7 @@ LABEL_89:
   v8 = *(&self->super.isa + v7);
   if (v8)
   {
-    v9 = [NSString stringWithFormat:@"UPDATE %s SET NameOrigin = %d WHERE iCloudIdentifier = ''", [(LeDeviceCache *)self tableNameForType:a3], 1];
+    v9 = [NSString stringWithFormat:@"UPDATE %s SET NameOrigin = %d WHERE iCloudIdentifier = ''", [(LeDeviceCache *)self tableNameForType:origin], 1];
     v10 = v9;
     v11 = sqlite3_exec(v8, [v9 UTF8String], 0, 0, 0);
     if (v11)
@@ -2005,12 +2005,12 @@ LABEL_89:
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(LeDeviceCache *)self connectedDeviceCount];
-    v6 = [(LeDeviceCache *)self seenDeviceCount];
+    connectedDeviceCount = [(LeDeviceCache *)self connectedDeviceCount];
+    seenDeviceCount = [(LeDeviceCache *)self seenDeviceCount];
     *buf = 67109376;
-    v13 = v5;
+    v13 = connectedDeviceCount;
     v14 = 1024;
-    v15 = v6;
+    v15 = seenDeviceCount;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Unpaired device cache contains %d connected device(s) and %d seen device(s)", buf, 0xEu);
   }
 
@@ -2025,9 +2025,9 @@ LABEL_89:
   dispatch_async(global_queue, block);
 }
 
-- (const)tableNameForType:(unint64_t)a3
+- (const)tableNameForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return "OtherDevices";
   }
@@ -2038,9 +2038,9 @@ LABEL_89:
   }
 }
 
-- (const)friendlyNameForType:(unint64_t)a3
+- (const)friendlyNameForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return "other devices";
   }
@@ -2051,11 +2051,11 @@ LABEL_89:
   }
 }
 
-- (BOOL)readIntFromDatabase:(sqlite3 *)a3 statement:(id)a4 value:(int *)a5
+- (BOOL)readIntFromDatabase:(sqlite3 *)database statement:(id)statement value:(int *)value
 {
-  v7 = a4;
+  statementCopy = statement;
   ppStmt = 0;
-  if (sqlite3_prepare_v2(a3, [v7 UTF8String], -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(database, [statementCopy UTF8String], -1, &ppStmt, 0))
   {
     v8 = 0;
   }
@@ -2066,7 +2066,7 @@ LABEL_89:
     v8 = v9 == 100;
     if (v9 == 100)
     {
-      *a5 = sqlite3_column_int(ppStmt, 0);
+      *value = sqlite3_column_int(ppStmt, 0);
     }
 
     sqlite3_finalize(ppStmt);
@@ -2189,16 +2189,16 @@ LABEL_89:
   return result;
 }
 
-- (id)customPropertiesJSONFromDevice:(const void *)a3
+- (id)customPropertiesJSONFromDevice:(const void *)device
 {
-  v3 = a3;
-  if (a3)
+  deviceCopy = device;
+  if (device)
   {
-    v4 = sub_1000C7A04(a3);
+    v4 = sub_1000C7A04(device);
     v5 = v4;
     if (!v4 || ![v4 count])
     {
-      v3 = 0;
+      deviceCopy = 0;
 LABEL_23:
 
       goto LABEL_24;
@@ -2225,7 +2225,7 @@ LABEL_23:
 
           v11 = *(*(&v19 + 1) + 8 * i);
           v12 = objc_autoreleasePoolPush();
-          v13 = sub_10077C3B8(v3, v11);
+          v13 = sub_10077C3B8(deviceCopy, v11);
           if (v13)
           {
             [v6 setValue:v13 forKey:v11];
@@ -2246,7 +2246,7 @@ LABEL_23:
       v18 = 0;
       v15 = [NSJSONSerialization dataWithJSONObject:v6 options:3 error:&v18];
       v16 = v18;
-      v3 = [v14 initWithData:v15 encoding:4];
+      deviceCopy = [v14 initWithData:v15 encoding:4];
 
       if (!v16)
       {
@@ -2265,7 +2265,7 @@ LABEL_23:
       sub_10082ABC0();
     }
 
-    v3 = 0;
+    deviceCopy = 0;
 LABEL_22:
 
     goto LABEL_23;
@@ -2273,16 +2273,16 @@ LABEL_22:
 
 LABEL_24:
 
-  return v3;
+  return deviceCopy;
 }
 
-- (BOOL)json:(id)a3 hasAnyProperty:(id)a4
+- (BOOL)json:(id)json hasAnyProperty:(id)property
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  jsonCopy = json;
+  propertyCopy = property;
+  if (jsonCopy)
   {
-    v7 = [v5 dataUsingEncoding:4];
+    v7 = [jsonCopy dataUsingEncoding:4];
     v22 = 0;
     v8 = [NSJSONSerialization JSONObjectWithData:v7 options:17 error:&v22];
     v9 = v22;
@@ -2305,7 +2305,7 @@ LABEL_24:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = v6;
+        v11 = propertyCopy;
         v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
         if (v12)
         {
@@ -2320,8 +2320,8 @@ LABEL_24:
               }
 
               v15 = *(*(&v18 + 1) + 8 * i);
-              v16 = [v9 allKeys];
-              LOBYTE(v15) = [v16 containsObject:v15];
+              allKeys = [v9 allKeys];
+              LOBYTE(v15) = [allKeys containsObject:v15];
 
               if (v15)
               {
@@ -2360,13 +2360,13 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)json:(id)a3 hasAllProperties:(id)a4
+- (BOOL)json:(id)json hasAllProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  jsonCopy = json;
+  propertiesCopy = properties;
+  if (jsonCopy)
   {
-    v7 = [v5 dataUsingEncoding:4];
+    v7 = [jsonCopy dataUsingEncoding:4];
     v16 = 0;
     v8 = [NSJSONSerialization JSONObjectWithData:v7 options:17 error:&v16];
     v9 = v16;
@@ -2385,10 +2385,10 @@ LABEL_19:
       if (objc_opt_isKindOfClass())
       {
         v11 = v8;
-        v12 = [v11 allKeys];
-        v13 = [NSSet setWithArray:v12];
+        allKeys = [v11 allKeys];
+        v13 = [NSSet setWithArray:allKeys];
 
-        v14 = [NSSet setWithArray:v6];
+        v14 = [NSSet setWithArray:propertiesCopy];
         v10 = [v14 isSubsetOfSet:v13];
 
 LABEL_11:
@@ -2411,13 +2411,13 @@ LABEL_12:
   return v10;
 }
 
-- (void)customPropertiesToDevice:(void *)a3 fromJSON:(id)a4
+- (void)customPropertiesToDevice:(void *)device fromJSON:(id)n
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 && v5)
+  nCopy = n;
+  v6 = nCopy;
+  if (device && nCopy)
   {
-    v7 = [v5 dataUsingEncoding:4];
+    v7 = [nCopy dataUsingEncoding:4];
     v21 = 0;
     v8 = [NSJSONSerialization JSONObjectWithData:v7 options:17 error:&v21];
     v16 = v21;
@@ -2435,8 +2435,8 @@ LABEL_12:
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = [v9 allKeys];
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      allKeys = [v9 allKeys];
+      v11 = [allKeys countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v11)
       {
         v12 = *v18;
@@ -2446,15 +2446,15 @@ LABEL_12:
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v17 + 1) + 8 * i);
             v15 = [v9 objectForKey:v14];
-            sub_10077C454(a3, v14, v15);
+            sub_10077C454(device, v14, v15);
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v17 objects:v22 count:16];
         }
 
         while (v11);
@@ -2468,19 +2468,19 @@ LABEL_12:
   }
 }
 
-- (void)writeCustomPropertiesJSONForDevice:(const void *)a3 inDatabase:(sqlite3 *)a4
+- (void)writeCustomPropertiesJSONForDevice:(const void *)device inDatabase:(sqlite3 *)database
 {
-  if (a3 && a4)
+  if (device && database)
   {
-    v7 = *a3;
+    v7 = *device;
     if (v7)
     {
-      v8 = [(LeDeviceCache *)self customPropertiesJSONFromDevice:a3];
+      v8 = [(LeDeviceCache *)self customPropertiesJSONFromDevice:device];
       if (v8)
       {
         ppStmt = 0;
         v9 = [NSString stringWithFormat:@"INSERT OR REPLACE INTO %s (%s, %s) VALUES (?1, ?2)", "CustomProperties", "Uuid", "JSON"];
-        if (sqlite3_prepare_v2(a4, [v9 UTF8String], -1, &ppStmt, 0))
+        if (sqlite3_prepare_v2(database, [v9 UTF8String], -1, &ppStmt, 0))
         {
           if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
           {
@@ -2491,9 +2491,9 @@ LABEL_12:
         else
         {
           v11 = ppStmt;
-          v12 = [v7 UUIDString];
-          v13 = v12;
-          sqlite3_bind_text(v11, 1, [v12 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+          uUIDString = [v7 UUIDString];
+          v13 = uUIDString;
+          sqlite3_bind_text(v11, 1, [uUIDString UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
           v14 = ppStmt;
           v15 = v8;
@@ -2504,8 +2504,8 @@ LABEL_12:
             v17 = qword_100BCE900;
             if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
             {
-              v18 = sqlite3_errmsg(a4);
-              v19 = sqlite3_extended_errcode(a4);
+              v18 = sqlite3_errmsg(database);
+              v19 = sqlite3_extended_errcode(database);
               *buf = 67109634;
               v22 = v16;
               v23 = 2082;
@@ -2524,8 +2524,8 @@ LABEL_12:
 
       else
       {
-        v10 = [v7 UUIDString];
-        [(LeDeviceCache *)self removeCustomPropertiesJSONForDeviceUUID:v10 inDatabase:a4];
+        uUIDString2 = [v7 UUIDString];
+        [(LeDeviceCache *)self removeCustomPropertiesJSONForDeviceUUID:uUIDString2 inDatabase:database];
       }
     }
 
@@ -2541,27 +2541,27 @@ LABEL_12:
   }
 }
 
-- (void)removeCustomPropertiesJSONForDeviceUUID:(id)a3 inDatabase:(sqlite3 *)a4
+- (void)removeCustomPropertiesJSONForDeviceUUID:(id)d inDatabase:(sqlite3 *)database
 {
-  v6 = a3;
-  v7 = [(LeDeviceCache *)self readCustomPropertiesJSONForDeviceUUID:v6 inDatabase:a4];
+  dCopy = d;
+  v7 = [(LeDeviceCache *)self readCustomPropertiesJSONForDeviceUUID:dCopy inDatabase:database];
 
   if (v7)
   {
-    v8 = [NSString stringWithFormat:@"DELETE FROM %s WHERE %s = '%@'", "CustomProperties", "Uuid", v6];
+    dCopy = [NSString stringWithFormat:@"DELETE FROM %s WHERE %s = '%@'", "CustomProperties", "Uuid", dCopy];
     ppStmt = 0;
-    v9 = sqlite3_prepare_v2(a4, [v8 UTF8String], -1, &ppStmt, 0);
+    v9 = sqlite3_prepare_v2(database, [dCopy UTF8String], -1, &ppStmt, 0);
     if (v9)
     {
       v10 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v11 = v8;
-        v12 = [v8 UTF8String];
-        v13 = sqlite3_errmsg(a4);
-        v14 = sqlite3_extended_errcode(a4);
+        v11 = dCopy;
+        uTF8String = [dCopy UTF8String];
+        v13 = sqlite3_errmsg(database);
+        v14 = sqlite3_extended_errcode(database);
         *buf = 136315906;
-        v23 = v12;
+        v23 = uTF8String;
         v24 = 1024;
         v25 = v9;
         v26 = 2082;
@@ -2580,12 +2580,12 @@ LABEL_12:
         v16 = qword_100BCE900;
         if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
         {
-          v17 = v8;
-          v18 = [v8 UTF8String];
-          v19 = sqlite3_errmsg(a4);
-          v20 = sqlite3_extended_errcode(a4);
+          v17 = dCopy;
+          uTF8String2 = [dCopy UTF8String];
+          v19 = sqlite3_errmsg(database);
+          v20 = sqlite3_extended_errcode(database);
           *buf = 136315906;
-          v23 = v18;
+          v23 = uTF8String2;
           v24 = 1024;
           v25 = v15;
           v26 = 2082;
@@ -2601,26 +2601,26 @@ LABEL_12:
   }
 }
 
-- (id)readCustomPropertiesJSONForDeviceUUID:(id)a3 inDatabase:(sqlite3 *)a4
+- (id)readCustomPropertiesJSONForDeviceUUID:(id)d inDatabase:(sqlite3 *)database
 {
-  v5 = a3;
+  dCopy = d;
   v6 = 0;
-  if (v5 && a4)
+  if (dCopy && database)
   {
-    v7 = [NSString stringWithFormat:@"SELECT * FROM %s WHERE %s = '%@'", "CustomProperties", "Uuid", v5];
+    dCopy = [NSString stringWithFormat:@"SELECT * FROM %s WHERE %s = '%@'", "CustomProperties", "Uuid", dCopy];
     ppStmt = 0;
-    v8 = sqlite3_prepare_v2(a4, [v7 UTF8String], -1, &ppStmt, 0);
+    v8 = sqlite3_prepare_v2(database, [dCopy UTF8String], -1, &ppStmt, 0);
     if (v8)
     {
       v9 = qword_100BCE900;
       if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
       {
-        v13 = v7;
-        v14 = [v7 UTF8String];
-        v15 = sqlite3_errmsg(a4);
-        v16 = sqlite3_extended_errcode(a4);
+        v13 = dCopy;
+        uTF8String = [dCopy UTF8String];
+        v15 = sqlite3_errmsg(database);
+        v16 = sqlite3_extended_errcode(database);
         *buf = 136315906;
-        v19 = v14;
+        v19 = uTF8String;
         v20 = 1024;
         v21 = v8;
         v22 = 2082;
@@ -2666,20 +2666,20 @@ LABEL_16:
   return v6;
 }
 
-- (void)readCustomPropertiesJSONForDevice:(void *)a3 inDatabase:(sqlite3 *)a4
+- (void)readCustomPropertiesJSONForDevice:(void *)device inDatabase:(sqlite3 *)database
 {
-  if (a3 && a4)
+  if (device && database)
   {
-    v7 = *a3;
+    v7 = *device;
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 UUIDString];
-      v10 = [(LeDeviceCache *)self readCustomPropertiesJSONForDeviceUUID:v9 inDatabase:a4];
+      uUIDString = [v7 UUIDString];
+      v10 = [(LeDeviceCache *)self readCustomPropertiesJSONForDeviceUUID:uUIDString inDatabase:database];
 
       if (v10)
       {
-        [(LeDeviceCache *)self customPropertiesToDevice:a3 fromJSON:v10];
+        [(LeDeviceCache *)self customPropertiesToDevice:device fromJSON:v10];
       }
     }
 
@@ -2690,22 +2690,22 @@ LABEL_16:
   }
 }
 
-- (void)readDeviceFromDatabase:(sqlite3 *)a3 statement:(id)a4 readResolvedAddress:(BOOL)a5
+- (void)readDeviceFromDatabase:(sqlite3 *)database statement:(id)statement readResolvedAddress:(BOOL)address
 {
-  v6 = a4;
+  statementCopy = statement;
   ppStmt = 0;
-  v7 = sqlite3_prepare_v2(a3, [v6 UTF8String], -1, &ppStmt, 0);
+  v7 = sqlite3_prepare_v2(database, [statementCopy UTF8String], -1, &ppStmt, 0);
   if (v7)
   {
     v8 = qword_100BCE900;
     if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_ERROR))
     {
-      v19 = v6;
-      v20 = [v6 UTF8String];
-      v21 = sqlite3_errmsg(a3);
-      v22 = sqlite3_extended_errcode(a3);
+      v19 = statementCopy;
+      uTF8String = [statementCopy UTF8String];
+      v21 = sqlite3_errmsg(database);
+      v22 = sqlite3_extended_errcode(database);
       *buf = 136315906;
-      *&buf[4] = v20;
+      *&buf[4] = uTF8String;
       *&buf[12] = 1024;
       *&buf[14] = v7;
       *&buf[18] = 2082;
@@ -2829,9 +2829,9 @@ LABEL_30:
   return 0;
 }
 
-- (id)nameFromSanitizedName:(id)a3
+- (id)nameFromSanitizedName:(id)name
 {
-  v3 = [a3 componentsSeparatedByString:@"///900"];
+  v3 = [name componentsSeparatedByString:@"///900"];
   v4 = [v3 componentsJoinedByString:@"’"];
 
   v5 = [v4 componentsSeparatedByString:@"///901"];
@@ -2843,13 +2843,13 @@ LABEL_30:
   return v8;
 }
 
-- (void)evictIfNeeded:(BOOL)a3
+- (void)evictIfNeeded:(BOOL)needed
 {
   ppStmt = 0;
-  if (a3)
+  if (needed)
   {
-    v4 = [(LeDeviceCache *)self connectedDeviceCount];
-    if (v4 >= [(LeDeviceCache *)self maxConnectedDevices]&& !sqlite3_prepare_v2(self->_otherDatabase, "SELECT Uuid FROM OtherDevices WHERE ROWID = (SELECT ROWID FROM OtherDevices WHERE LastConnectionTime != 0 ORDER BY LastConnectionTime ASC LIMIT 1)", -1, &ppStmt, 0))
+    connectedDeviceCount = [(LeDeviceCache *)self connectedDeviceCount];
+    if (connectedDeviceCount >= [(LeDeviceCache *)self maxConnectedDevices]&& !sqlite3_prepare_v2(self->_otherDatabase, "SELECT Uuid FROM OtherDevices WHERE ROWID = (SELECT ROWID FROM OtherDevices WHERE LastConnectionTime != 0 ORDER BY LastConnectionTime ASC LIMIT 1)", -1, &ppStmt, 0))
     {
       if (sqlite3_step(ppStmt) == 100)
       {
@@ -2931,8 +2931,8 @@ LABEL_33:
 
   else
   {
-    v7 = [(LeDeviceCache *)self seenDeviceCount];
-    if (v7 >= [(LeDeviceCache *)self maxSeenDevices]&& !sqlite3_prepare_v2(self->_otherDatabase, "SELECT Uuid FROM OtherDevices WHERE ROWID = (SELECT ROWID FROM OtherDevices WHERE LastConnectionTime = 0 ORDER BY LastSeenTime ASC LIMIT 1)", -1, &ppStmt, 0))
+    seenDeviceCount = [(LeDeviceCache *)self seenDeviceCount];
+    if (seenDeviceCount >= [(LeDeviceCache *)self maxSeenDevices]&& !sqlite3_prepare_v2(self->_otherDatabase, "SELECT Uuid FROM OtherDevices WHERE ROWID = (SELECT ROWID FROM OtherDevices WHERE LastConnectionTime = 0 ORDER BY LastSeenTime ASC LIMIT 1)", -1, &ppStmt, 0))
     {
       if (sqlite3_step(ppStmt) == 100)
       {
@@ -3021,7 +3021,7 @@ LABEL_35:
   [(LeDeviceCache *)self printDatabase:1];
 }
 
-- (void)printDatabase:(unint64_t)a3
+- (void)printDatabase:(unint64_t)database
 {
   v47 = 0;
   v48 = 0;
@@ -3047,7 +3047,7 @@ LABEL_35:
   if (os_log_type_enabled(qword_100BCE900, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "Other devices";
-    if (!a3)
+    if (!database)
     {
       v6 = "Paired devices";
     }
@@ -3058,7 +3058,7 @@ LABEL_35:
   }
 
   v7 = 24;
-  if (!a3)
+  if (!database)
   {
     v7 = 16;
   }
@@ -3067,7 +3067,7 @@ LABEL_35:
   if (v8)
   {
     ppStmt = 0;
-    v9 = [NSString stringWithFormat:@"SELECT * FROM %s", [(LeDeviceCache *)self tableNameForType:a3]];
+    v9 = [NSString stringWithFormat:@"SELECT * FROM %s", [(LeDeviceCache *)self tableNameForType:database]];
     v10 = v9;
     v11 = sqlite3_prepare_v2(v8, [v9 UTF8String], -1, &ppStmt, 0);
 
@@ -3165,13 +3165,13 @@ LABEL_35:
           v22 = sub_100007774(buf);
           v23 = sub_100007774(v22);
           v24 = sub_10000E92C();
-          v25 = "";
+          uTF8String = "";
           if ((*(*v24 + 8))(v24))
           {
-            v25 = [v47 UTF8String];
+            uTF8String = [v47 UTF8String];
           }
 
-          strlen(v25);
+          strlen(uTF8String);
           v26 = sub_100007774(v23);
           sub_100007774(v26);
         }

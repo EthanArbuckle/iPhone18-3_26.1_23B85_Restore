@@ -1,41 +1,41 @@
 @interface IEIntelligence
 - (BOOL)hasActiveFallback;
 - (BOOL)isActive;
-- (BOOL)load:(id)a3;
-- (BOOL)load:(id)a3 withFlowId:(id)a4;
-- (BOOL)load:(id)a3 withId:(id)a4;
-- (BOOL)loadFromString:(id)a3;
-- (BOOL)setVariable:(id)a3 withValue:(id)a4;
-- (BOOL)willHandleDirectInvocation:(id)a3;
-- (BOOL)willHandleEvent:(id)a3;
+- (BOOL)load:(id)load;
+- (BOOL)load:(id)load withFlowId:(id)id;
+- (BOOL)load:(id)load withId:(id)id;
+- (BOOL)loadFromString:(id)string;
+- (BOOL)setVariable:(id)variable withValue:(id)value;
+- (BOOL)willHandleDirectInvocation:(id)invocation;
+- (BOOL)willHandleEvent:(id)event;
 - (IEIntelligence)init;
 - (_BYTE)setExtensions:;
 - (id)activeEvents;
 - (id)activeLocalEvents;
-- (id)find:(id)a3 withId:(id)a4;
-- (id)findInTemplateDir:(id)a3 withId:(id)a4;
-- (id)getActiveEventsWithScope:(int)a3;
+- (id)find:(id)find withId:(id)id;
+- (id)findInTemplateDir:(id)dir withId:(id)id;
+- (id)getActiveEventsWithScope:(int)scope;
 - (id)getChangedPersistentVariables;
 - (id)getConditions;
 - (id)getEvents;
 - (id)getExitValue;
-- (id)getInputGroup:(id)a3;
-- (id)getMetadata:(id)a3;
+- (id)getInputGroup:(id)group;
+- (id)getMetadata:(id)metadata;
 - (id)getRemainingResponses;
 - (id)getUndo;
 - (id)getVariables;
-- (id)goTo:(id)a3;
-- (id)processActivity:(id)a3;
-- (id)processDirectInvocation:(id)a3;
-- (id)processEvent:(id)a3;
-- (id)processText:(id)a3;
-- (id)processText:(id)a3 withMode:(unint64_t)a4 withFallback:(unint64_t)a5;
+- (id)goTo:(id)to;
+- (id)processActivity:(id)activity;
+- (id)processDirectInvocation:(id)invocation;
+- (id)processEvent:(id)event;
+- (id)processText:(id)text;
+- (id)processText:(id)text withMode:(unint64_t)mode withFallback:(unint64_t)fallback;
 - (id)setExtensions:;
 - (id)startConversation;
 - (uint64_t)setExtensions:;
 - (void)dealloc;
 - (void)setExtensions:;
-- (void)setExtensions:(id)a3;
+- (void)setExtensions:(id)extensions;
 @end
 
 @implementation IEIntelligence
@@ -77,9 +77,9 @@
   [(IEIntelligence *)&v5 dealloc];
 }
 
-- (BOOL)load:(id)a3
+- (BOOL)load:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   if ((atomic_load_explicit(&qword_280AF3E80, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3E80))
   {
     _MergedGlobals_1 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -113,10 +113,10 @@ void __23__IEIntelligence_load___block_invoke(siri::intelligence::Utils *a1)
   }
 }
 
-- (BOOL)load:(id)a3 withFlowId:(id)a4
+- (BOOL)load:(id)load withFlowId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  loadCopy = load;
+  idCopy = id;
   if ((atomic_load_explicit(&qword_280AF3E90, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3E90))
   {
     qword_280AF3E88 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -150,10 +150,10 @@ void __34__IEIntelligence_load_withFlowId___block_invoke(siri::intelligence::Uti
   }
 }
 
-- (BOOL)load:(id)a3 withId:(id)a4
+- (BOOL)load:(id)load withId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  loadCopy = load;
+  idCopy = id;
   if ((atomic_load_explicit(&qword_280AF3EA0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3EA0))
   {
     qword_280AF3E98 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -187,9 +187,9 @@ void __30__IEIntelligence_load_withId___block_invoke(siri::intelligence::Utils *
   }
 }
 
-- (BOOL)loadFromString:(id)a3
+- (BOOL)loadFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if ((atomic_load_explicit(&qword_280AF3EB0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3EB0))
   {
     qword_280AF3EA8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -223,10 +223,10 @@ void __33__IEIntelligence_loadFromString___block_invoke(siri::intelligence::Util
   }
 }
 
-- (id)find:(id)a3 withId:(id)a4
+- (id)find:(id)find withId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  findCopy = find;
+  idCopy = id;
   if ((atomic_load_explicit(&qword_280AF3EC0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3EC0))
   {
     qword_280AF3EB8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -260,10 +260,10 @@ void __30__IEIntelligence_find_withId___block_invoke(siri::intelligence::Utils *
   }
 }
 
-- (id)findInTemplateDir:(id)a3 withId:(id)a4
+- (id)findInTemplateDir:(id)dir withId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  dirCopy = dir;
+  idCopy = id;
   if ((atomic_load_explicit(&qword_280AF3ED0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3ED0))
   {
     qword_280AF3EC8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -332,9 +332,9 @@ void __35__IEIntelligence_startConversation__block_invoke(siri::intelligence::Ut
   }
 }
 
-- (id)processEvent:(id)a3
+- (id)processEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if ((atomic_load_explicit(&qword_280AF3EF0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3EF0))
   {
     qword_280AF3EE8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -368,9 +368,9 @@ void __31__IEIntelligence_processEvent___block_invoke(siri::intelligence::Utils 
   }
 }
 
-- (id)processText:(id)a3 withMode:(unint64_t)a4 withFallback:(unint64_t)a5
+- (id)processText:(id)text withMode:(unint64_t)mode withFallback:(unint64_t)fallback
 {
-  v5 = a3;
+  textCopy = text;
   if ((atomic_load_explicit(&qword_280AF3F00, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3F00))
   {
     qword_280AF3EF8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -404,16 +404,16 @@ void __52__IEIntelligence_processText_withMode_withFallback___block_invoke(siri:
   }
 }
 
-- (id)processText:(id)a3
+- (id)processText:(id)text
 {
-  v3 = [(IEIntelligence *)self processText:a3 withMode:1 withFallback:0];
+  v3 = [(IEIntelligence *)self processText:text withMode:1 withFallback:0];
 
   return v3;
 }
 
-- (id)processActivity:(id)a3
+- (id)processActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   if ((atomic_load_explicit(&qword_280AF3F10, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3F10))
   {
     qword_280AF3F08 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -482,9 +482,9 @@ void __39__IEIntelligence_getRemainingResponses__block_invoke(siri::intelligence
   }
 }
 
-- (id)goTo:(id)a3
+- (id)goTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   if ((atomic_load_explicit(&qword_280AF3F30, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3F30))
   {
     qword_280AF3F28 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -518,9 +518,9 @@ void __23__IEIntelligence_goTo___block_invoke(siri::intelligence::Utils *a1)
   }
 }
 
-- (BOOL)willHandleEvent:(id)a3
+- (BOOL)willHandleEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if ((atomic_load_explicit(&qword_280AF3F40, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3F40))
   {
     qword_280AF3F38 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -589,12 +589,12 @@ void __27__IEIntelligence_getEvents__block_invoke(siri::intelligence::Utils *a1)
   }
 }
 
-- (id)getActiveEventsWithScope:(int)a3
+- (id)getActiveEventsWithScope:(int)scope
 {
   v5 = objc_opt_new();
   if ([(IEIntelligence *)self isActive])
   {
-    siri::intelligence::Intelligence::GetActiveIntents(self->mIntelligence, a3, &v13);
+    siri::intelligence::Intelligence::GetActiveIntents(self->mIntelligence, scope, &v13);
     v6 = v13;
     for (i = v14; v6 != i; v6 += 16)
     {
@@ -727,9 +727,9 @@ void __35__IEIntelligence_hasActiveFallback__block_invoke(siri::intelligence::Ut
   }
 }
 
-- (BOOL)willHandleDirectInvocation:(id)a3
+- (BOOL)willHandleDirectInvocation:(id)invocation
 {
-  v3 = a3;
+  invocationCopy = invocation;
   if ((atomic_load_explicit(&qword_280AF3F90, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3F90))
   {
     qword_280AF3F88 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -763,9 +763,9 @@ void __45__IEIntelligence_willHandleDirectInvocation___block_invoke(siri::intell
   }
 }
 
-- (id)processDirectInvocation:(id)a3
+- (id)processDirectInvocation:(id)invocation
 {
-  v3 = a3;
+  invocationCopy = invocation;
   if ((atomic_load_explicit(&qword_280AF3FA0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3FA0))
   {
     qword_280AF3F98 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -799,9 +799,9 @@ void __42__IEIntelligence_processDirectInvocation___block_invoke(siri::intellige
   }
 }
 
-- (id)getInputGroup:(id)a3
+- (id)getInputGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   if ((atomic_load_explicit(&qword_280AF3FB0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3FB0))
   {
     qword_280AF3FA8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -905,10 +905,10 @@ void __30__IEIntelligence_getVariables__block_invoke(siri::intelligence::Utils *
   }
 }
 
-- (BOOL)setVariable:(id)a3 withValue:(id)a4
+- (BOOL)setVariable:(id)variable withValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  variableCopy = variable;
+  valueCopy = value;
   if ((atomic_load_explicit(&qword_280AF3FE0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF3FE0))
   {
     qword_280AF3FD8 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -1132,10 +1132,10 @@ void __30__IEIntelligence_getExitValue__block_invoke(siri::intelligence::Utils *
   return v6;
 }
 
-- (void)setExtensions:(id)a3
+- (void)setExtensions:(id)extensions
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionsCopy = extensions;
   if (self->mIntelligence)
   {
     operator new();
@@ -1144,11 +1144,11 @@ void __30__IEIntelligence_getExitValue__block_invoke(siri::intelligence::Utils *
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getMetadata:(id)a3
+- (id)getMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = *self->mIntelligence;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [metadataCopy UTF8String]);
   siri::intelligence::FlowGraph::GetMetaData((v5 + 8), __p, &v11);
   if (v10 < 0)
   {
@@ -1177,13 +1177,13 @@ void __30__IEIntelligence_getExitValue__block_invoke(siri::intelligence::Utils *
 - (void)setExtensions:
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 - (id)setExtensions:
 {
   *a2 = &unk_286718F50;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -1218,17 +1218,17 @@ void __30__IEIntelligence_getExitValue__block_invoke(siri::intelligence::Utils *
     std::__shared_weak_count::__release_shared[abi:ne200100](v16);
   }
 
-  v11 = [*(a1 + 8) directInvocationBuilder];
-  v12 = [v11 handle:v9 withUserData:v10];
+  directInvocationBuilder = [*(self + 8) directInvocationBuilder];
+  v12 = [directInvocationBuilder handle:v9 withUserData:v10];
 
   if (v12)
   {
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
   }
 
   else
   {
-    v13 = "";
+    uTF8String = "";
   }
 
   if (v6)
@@ -1236,13 +1236,13 @@ void __30__IEIntelligence_getExitValue__block_invoke(siri::intelligence::Utils *
     std::__shared_weak_count::__release_shared[abi:ne200100](v6);
   }
 
-  return std::string::basic_string[abi:ne200100]<0>(a4, v13);
+  return std::string::basic_string[abi:ne200100]<0>(a4, uTF8String);
 }
 
 - (uint64_t)setExtensions:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

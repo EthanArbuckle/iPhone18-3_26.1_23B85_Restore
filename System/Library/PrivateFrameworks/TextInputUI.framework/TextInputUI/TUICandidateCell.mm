@@ -1,9 +1,9 @@
 @interface TUICandidateCell
-+ (UIEdgeInsets)outsetsForText:(id)a3 font:(id)a4;
-+ (double)widthForCandidate:(id)a3 showCandidateNumber:(BOOL)a4 style:(id)a5;
-+ (double)widthForText:(id)a3 font:(id)a4 layoutOrientation:(int64_t)a5;
-- (TUICandidateCell)initWithCoder:(id)a3;
-- (TUICandidateCell)initWithFrame:(CGRect)a3;
++ (UIEdgeInsets)outsetsForText:(id)text font:(id)font;
++ (double)widthForCandidate:(id)candidate showCandidateNumber:(BOOL)number style:(id)style;
++ (double)widthForText:(id)text font:(id)font layoutOrientation:(int64_t)orientation;
+- (TUICandidateCell)initWithCoder:(id)coder;
+- (TUICandidateCell)initWithFrame:(CGRect)frame;
 - (TUICandidateLabel)alternativeTextLabel;
 - (TUICandidateLabel)annotationTextLabel;
 - (TUICandidateLabel)textLabel;
@@ -11,19 +11,19 @@
 - (id)cellBackgroundColor;
 - (id)cellBackgroundImage;
 - (void)_computeImageViewFrame;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)commonInit;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)rotateBy90DegreesForFrame:(CGRect *)a3;
-- (void)setAlignment:(int64_t)a3;
-- (void)setCandidate:(id)a3;
-- (void)setCandidateNumber:(unint64_t)a3;
-- (void)setCustomView:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setRowSelected:(BOOL)a3;
-- (void)setShouldShowCandidateNumber:(BOOL)a3;
-- (void)setStyle:(id)a3;
+- (void)rotateBy90DegreesForFrame:(CGRect *)frame;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setCandidate:(id)candidate;
+- (void)setCandidateNumber:(unint64_t)number;
+- (void)setCustomView:(id)view;
+- (void)setImage:(id)image;
+- (void)setRowSelected:(BOOL)selected;
+- (void)setShouldShowCandidateNumber:(BOOL)number;
+- (void)setStyle:(id)style;
 - (void)updateColors;
 - (void)updateLabels;
 - (void)updateStyle;
@@ -35,62 +35,62 @@
 {
   if (([(TUICandidateCell *)self isSelected]& 1) != 0)
   {
-    v3 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v3 = [(TUICandidateCell *)self isHighlighted];
+    isHighlighted = [(TUICandidateCell *)self isHighlighted];
   }
 
-  v4 = [(TUICandidateCell *)self candidate];
+  candidate = [(TUICandidateCell *)self candidate];
   v5 = objc_opt_respondsToSelector();
 
-  if ((v5 & 1) != 0 && (-[TUICandidateCell candidate](self, "candidate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isTransliterationCandidate], v6, !(v3 & 1 | ((v7 & 1) == 0))))
+  if ((v5 & 1) != 0 && (-[TUICandidateCell candidate](self, "candidate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isTransliterationCandidate], v6, !(isHighlighted & 1 | ((v7 & 1) == 0))))
   {
-    v9 = [(TUICandidateBaseCell *)self style];
-    v8 = [v9 transliterationCandidateBackgroundColor];
+    style = [(TUICandidateBaseCell *)self style];
+    transliterationCandidateBackgroundColor = [style transliterationCandidateBackgroundColor];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = TUICandidateCell;
-    v8 = [(TUICandidateBaseCell *)&v11 cellBackgroundColor];
+    transliterationCandidateBackgroundColor = [(TUICandidateBaseCell *)&v11 cellBackgroundColor];
   }
 
-  return v8;
+  return transliterationCandidateBackgroundColor;
 }
 
 - (id)cellBackgroundImage
 {
   if (([(TUICandidateCell *)self isSelected]& 1) != 0)
   {
-    v3 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v3 = [(TUICandidateCell *)self isHighlighted];
+    isHighlighted = [(TUICandidateCell *)self isHighlighted];
   }
 
-  v4 = [(TUICandidateCell *)self candidate];
+  candidate = [(TUICandidateCell *)self candidate];
   v5 = objc_opt_respondsToSelector();
 
-  if ((v5 & 1) != 0 && (-[TUICandidateCell candidate](self, "candidate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isTransliterationCandidate], v6, !(v3 & 1 | ((v7 & 1) == 0))))
+  if ((v5 & 1) != 0 && (-[TUICandidateCell candidate](self, "candidate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isTransliterationCandidate], v6, !(isHighlighted & 1 | ((v7 & 1) == 0))))
   {
-    v9 = [(TUICandidateBaseCell *)self style];
-    v8 = [v9 transliterationCandidateBackgroundImage];
+    style = [(TUICandidateBaseCell *)self style];
+    transliterationCandidateBackgroundImage = [style transliterationCandidateBackgroundImage];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = TUICandidateCell;
-    v8 = [(TUICandidateBaseCell *)&v11 cellBackgroundImage];
+    transliterationCandidateBackgroundImage = [(TUICandidateBaseCell *)&v11 cellBackgroundImage];
   }
 
-  return v8;
+  return transliterationCandidateBackgroundImage;
 }
 
 - (void)updateColors
@@ -100,80 +100,80 @@
   [(TUICandidateBaseCell *)&v22 updateColors];
   if (([(TUICandidateCell *)self isSelected]& 1) != 0 || ([(TUICandidateCell *)self isHighlighted]& 1) != 0)
   {
-    v3 = [(TUICandidateBaseCell *)self style];
-    v4 = [v3 highlightedTextColor];
-    [(TUICandidateLabel *)self->_textLabel setTextColor:v4];
+    style = [(TUICandidateBaseCell *)self style];
+    highlightedTextColor = [style highlightedTextColor];
+    [(TUICandidateLabel *)self->_textLabel setTextColor:highlightedTextColor];
 
-    v5 = [(TUICandidateBaseCell *)self style];
-    v6 = [v5 highlightedCandidateNumberColor];
-    [(UILabel *)self->_candidateNumberLabel setTextColor:v6];
+    style2 = [(TUICandidateBaseCell *)self style];
+    highlightedCandidateNumberColor = [style2 highlightedCandidateNumberColor];
+    [(UILabel *)self->_candidateNumberLabel setTextColor:highlightedCandidateNumberColor];
 
-    v7 = [(TUICandidateBaseCell *)self style];
-    v8 = [v7 highlightedAlternativeTextColor];
-    [(TUICandidateLabel *)self->_alternativeTextLabel setTextColor:v8];
+    style3 = [(TUICandidateBaseCell *)self style];
+    highlightedAlternativeTextColor = [style3 highlightedAlternativeTextColor];
+    [(TUICandidateLabel *)self->_alternativeTextLabel setTextColor:highlightedAlternativeTextColor];
 
-    v9 = [(TUICandidateBaseCell *)self style];
-    v10 = [v9 highlightedTextColor];
+    style4 = [(TUICandidateBaseCell *)self style];
+    highlightedTextColor2 = [style4 highlightedTextColor];
   }
 
   else
   {
-    v11 = [(TUICandidateBaseCell *)self style];
-    v12 = [v11 textColor];
-    [(TUICandidateLabel *)self->_textLabel setTextColor:v12];
+    style5 = [(TUICandidateBaseCell *)self style];
+    textColor = [style5 textColor];
+    [(TUICandidateLabel *)self->_textLabel setTextColor:textColor];
 
-    v13 = [(TUICandidateBaseCell *)self style];
-    v14 = [v13 candidateNumberColor];
-    [(UILabel *)self->_candidateNumberLabel setTextColor:v14];
+    style6 = [(TUICandidateBaseCell *)self style];
+    candidateNumberColor = [style6 candidateNumberColor];
+    [(UILabel *)self->_candidateNumberLabel setTextColor:candidateNumberColor];
 
-    v15 = [(TUICandidateBaseCell *)self style];
-    v16 = [v15 alternativeTextColor];
-    [(TUICandidateLabel *)self->_alternativeTextLabel setTextColor:v16];
+    style7 = [(TUICandidateBaseCell *)self style];
+    alternativeTextColor = [style7 alternativeTextColor];
+    [(TUICandidateLabel *)self->_alternativeTextLabel setTextColor:alternativeTextColor];
 
-    v9 = [(TUICandidateBaseCell *)self style];
-    v10 = [v9 textColor];
+    style4 = [(TUICandidateBaseCell *)self style];
+    highlightedTextColor2 = [style4 textColor];
   }
 
-  v17 = v10;
-  [(TUICandidateLabel *)self->_annotationTextLabel setTextColor:v10];
+  v17 = highlightedTextColor2;
+  [(TUICandidateLabel *)self->_annotationTextLabel setTextColor:highlightedTextColor2];
 
-  v18 = [(TUICandidateBaseCell *)self style];
+  style8 = [(TUICandidateBaseCell *)self style];
   if (objc_opt_respondsToSelector())
   {
-    v19 = [(TUICandidateBaseCell *)self style];
-    v20 = [v19 showCellBorderForSpaceConfirmationCandidate];
+    style9 = [(TUICandidateBaseCell *)self style];
+    showCellBorderForSpaceConfirmationCandidate = [style9 showCellBorderForSpaceConfirmationCandidate];
 
-    if (!v20)
+    if (!showCellBorderForSpaceConfirmationCandidate)
     {
       return;
     }
 
-    v18 = [(TUICandidateCell *)self layer];
-    [v18 setBorderWidth:0.0];
+    style8 = [(TUICandidateCell *)self layer];
+    [style8 setBorderWidth:0.0];
     if (([(TUICandidateCell *)self isHighlighted]& 1) == 0)
     {
       if ([(TUICandidateCell *)self isSelected])
       {
-        [v18 setBorderWidth:1.0];
-        v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v18 setBorderColor:{objc_msgSend(v21, "CGColor")}];
+        [style8 setBorderWidth:1.0];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [style8 setBorderColor:{objc_msgSend(secondaryLabelColor, "CGColor")}];
       }
     }
   }
 }
 
-- (void)rotateBy90DegreesForFrame:(CGRect *)a3
+- (void)rotateBy90DegreesForFrame:(CGRect *)frame
 {
-  v3 = vextq_s8(a3->size, a3->size, 8uLL);
-  a3->origin = vextq_s8(a3->origin, a3->origin, 8uLL);
-  a3->size = v3;
+  v3 = vextq_s8(frame->size, frame->size, 8uLL);
+  frame->origin = vextq_s8(frame->origin, frame->origin, 8uLL);
+  frame->size = v3;
 }
 
 - (void)updateLabels
 {
-  v3 = [(TUICandidateCell *)self candidate];
+  candidate = [(TUICandidateCell *)self candidate];
 
-  if (!v3)
+  if (!candidate)
   {
     return;
   }
@@ -183,8 +183,8 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(TUICandidateBaseCell *)self style];
-  [v12 extraCellPadding];
+  style = [(TUICandidateBaseCell *)self style];
+  [style extraCellPadding];
   x = v5 + v13;
   y = v7 + v15;
   width = v9 - (v13 + v17);
@@ -194,10 +194,10 @@
   v162.size.width = width;
   v162.size.height = height;
 
-  v21 = [(TUICandidateBaseCell *)self style];
-  v22 = [v21 layoutOrientation];
+  style2 = [(TUICandidateBaseCell *)self style];
+  layoutOrientation = [style2 layoutOrientation];
 
-  if (v22 == 1)
+  if (layoutOrientation == 1)
   {
     [(TUICandidateCell *)self rotateBy90DegreesForFrame:&v162];
     x = v162.origin.x;
@@ -212,16 +212,16 @@
   v163.size.height = height;
   v23 = CGRectGetHeight(v163);
   v140 = CGRectGetWidth(v162);
-  v24 = [(TUICandidateBaseCell *)self style];
-  [v24 minimumCellPadding];
+  style3 = [(TUICandidateBaseCell *)self style];
+  [style3 minimumCellPadding];
   v26 = v25;
 
   MinY = CGRectGetMinY(v162);
   v28 = objc_opt_class();
-  v29 = [(TUICandidateLabel *)self->_textLabel text];
-  v30 = [(TUICandidateLabel *)self->_textLabel font];
-  v31 = [(TUICandidateBaseCell *)self style];
-  [v28 widthForText:v29 font:v30 layoutOrientation:{objc_msgSend(v31, "layoutOrientation")}];
+  text = [(TUICandidateLabel *)self->_textLabel text];
+  font = [(TUICandidateLabel *)self->_textLabel font];
+  style4 = [(TUICandidateBaseCell *)self style];
+  [v28 widthForText:text font:font layoutOrientation:{objc_msgSend(style4, "layoutOrientation")}];
   v33 = v32;
   v161.origin.x = 0.0;
   v161.size.width = v32;
@@ -245,9 +245,9 @@
   v164.size.height = v35;
   v161.origin.y = v36 + ceil((v23 - CGRectGetHeight(v164)) * 0.5);
   v37 = CGRectGetMinY(v162);
-  v38 = [(UILabel *)self->_candidateNumberLabel text];
-  v39 = [(UILabel *)self->_candidateNumberLabel font];
-  [v38 tui_optimizedSizeWithFont:v39];
+  text2 = [(UILabel *)self->_candidateNumberLabel text];
+  font2 = [(UILabel *)self->_candidateNumberLabel font];
+  [text2 tui_optimizedSizeWithFont:font2];
   v157 = 0.0;
   v158 = v37;
   v159 = v40;
@@ -255,10 +255,10 @@
 
   v141 = CGRectGetMinY(v162);
   v41 = objc_opt_class();
-  v42 = [(TUICandidateLabel *)self->_alternativeTextLabel text];
-  v43 = [(TUICandidateLabel *)self->_alternativeTextLabel font];
-  v44 = [(TUICandidateBaseCell *)self style];
-  [v41 widthForText:v42 font:v43 layoutOrientation:{objc_msgSend(v44, "layoutOrientation")}];
+  text3 = [(TUICandidateLabel *)self->_alternativeTextLabel text];
+  font3 = [(TUICandidateLabel *)self->_alternativeTextLabel font];
+  style5 = [(TUICandidateBaseCell *)self style];
+  [v41 widthForText:text3 font:font3 layoutOrientation:{objc_msgSend(style5, "layoutOrientation")}];
   v139 = v45;
   v153 = 0.0;
   v154 = v141;
@@ -267,20 +267,20 @@
   v156 = v23;
 
   v46 = CGRectGetMinY(v162);
-  v47 = [(TUICandidateLabel *)self->_annotationTextLabel text];
-  v48 = [(TUICandidateLabel *)self->_annotationTextLabel font];
-  [v47 tui_optimizedSizeWithFont:v48];
+  text4 = [(TUICandidateLabel *)self->_annotationTextLabel text];
+  font4 = [(TUICandidateLabel *)self->_annotationTextLabel font];
+  [text4 tui_optimizedSizeWithFont:font4];
   v50 = v49;
-  v51 = [(TUICandidateLabel *)self->_annotationTextLabel font];
-  [v51 lineHeight];
+  font5 = [(TUICandidateLabel *)self->_annotationTextLabel font];
+  [font5 lineHeight];
   v149 = 0.0;
   v150 = v46;
   v151 = v50;
   v144 = v52;
   v152 = v52;
 
-  v53 = [(TUICandidateCell *)self imageView];
-  [v53 frame];
+  imageView = [(TUICandidateCell *)self imageView];
+  [imageView frame];
   v55 = v54;
   v57 = v56;
   v142 = v58;
@@ -290,8 +290,8 @@
   v147 = v54;
   v148 = v56;
 
-  v60 = [(TUICandidateCell *)self image];
-  v61 = v161.size.width <= 0.00000011920929 || v60 == 0;
+  image = [(TUICandidateCell *)self image];
+  v61 = v161.size.width <= 0.00000011920929 || image == 0;
   v62 = 6.0;
   if (v61)
   {
@@ -300,18 +300,18 @@
 
   v136 = v62;
 
-  v63 = [(UILabel *)self->_candidateNumberLabel text];
-  v64 = [v63 length];
+  text5 = [(UILabel *)self->_candidateNumberLabel text];
+  v64 = [text5 length];
 
   if (v64)
   {
-    v65 = [(TUICandidateBaseCell *)self style];
-    v66 = [v65 layoutOrientation];
+    style6 = [(TUICandidateBaseCell *)self style];
+    layoutOrientation2 = [style6 layoutOrientation];
 
-    v67 = [(TUICandidateBaseCell *)self style];
-    v68 = [v67 candidateNumberFont];
-    [@"0" _legacy_sizeWithFont:v68];
-    if (v66)
+    style7 = [(TUICandidateBaseCell *)self style];
+    candidateNumberFont = [style7 candidateNumberFont];
+    [@"0" _legacy_sizeWithFont:candidateNumberFont];
+    if (layoutOrientation2)
     {
       v71 = v70;
       v159 = v70;
@@ -376,13 +376,13 @@
   v168.size.height = v135;
   if (CGRectGetWidth(v168) != 0.0)
   {
-    v75 = [(TUICandidateBaseCell *)self style];
+    style8 = [(TUICandidateBaseCell *)self style];
     v76 = objc_opt_respondsToSelector();
 
     if (v76)
     {
-      v77 = [(TUICandidateBaseCell *)self style];
-      [v77 alternativeTextLeftSpacing];
+      style9 = [(TUICandidateBaseCell *)self style];
+      [style9 alternativeTextLeftSpacing];
       v74 = v74 + v78;
     }
 
@@ -394,10 +394,10 @@
 
   rect = v135;
   v156 = v135;
-  v79 = [(TUICandidateBaseCell *)self style];
-  v80 = [v79 layoutOrientation];
+  style10 = [(TUICandidateBaseCell *)self style];
+  layoutOrientation3 = [style10 layoutOrientation];
 
-  if (v80 == 1)
+  if (layoutOrientation3 == 1)
   {
     v81 = v162.origin.y + (v162.size.height - v144) * 0.5;
   }
@@ -455,13 +455,13 @@
     v91 = v26;
     if (CGRectGetWidth(v174) != 0.0 && v88 - v140 > 1.0)
     {
-      v92 = [(TUICandidateBaseCell *)self style];
+      style11 = [(TUICandidateBaseCell *)self style];
       v93 = objc_opt_respondsToSelector();
 
       if (v93)
       {
-        v94 = [(TUICandidateBaseCell *)self style];
-        [v94 alternativeTextLeftSpacing];
+        style12 = [(TUICandidateBaseCell *)self style];
+        [style12 alternativeTextLeftSpacing];
         v96 = v95;
         v175.origin.x = 0.0;
         v175.origin.y = v141;
@@ -494,8 +494,8 @@
   v98 = [(TUICandidateBaseCell *)self style:*&v161.origin.y];
   if (objc_opt_respondsToSelector())
   {
-    v99 = [(TUICandidateBaseCell *)self style];
-    v100 = [v99 alternativeTextAlignment] == 2;
+    style13 = [(TUICandidateBaseCell *)self style];
+    v100 = [style13 alternativeTextAlignment] == 2;
   }
 
   else
@@ -552,9 +552,9 @@
     }
 
     v113 = objc_opt_class();
-    v114 = [(TUICandidateLabel *)self->_textLabel text];
-    v115 = [(TUICandidateLabel *)self->_textLabel font];
-    [v113 outsetsForText:v114 font:v115];
+    text6 = [(TUICandidateLabel *)self->_textLabel text];
+    font6 = [(TUICandidateLabel *)self->_textLabel font];
+    [v113 outsetsForText:text6 font:font6];
     v161.origin.x = v91 + ceil(v116);
 
     v186.origin.x = v161.origin.x;
@@ -578,13 +578,13 @@
 
     if (v83)
     {
-      v118 = [(TUICandidateBaseCell *)self style];
+      style14 = [(TUICandidateBaseCell *)self style];
       v119 = objc_opt_respondsToSelector();
 
       if (v119)
       {
-        v120 = [(TUICandidateBaseCell *)self style];
-        [v120 alternativeTextLeftSpacing];
+        style15 = [(TUICandidateBaseCell *)self style];
+        [style15 alternativeTextLeftSpacing];
         v153 = v117 + v121;
       }
 
@@ -633,14 +633,14 @@
   v105 = v140 - v91;
   if (v83)
   {
-    v106 = [(TUICandidateBaseCell *)self style];
+    style16 = [(TUICandidateBaseCell *)self style];
     if (objc_opt_respondsToSelector())
     {
-      v107 = [(TUICandidateBaseCell *)self style];
-      v108 = [v107 alternativeTextAlignment];
+      style17 = [(TUICandidateBaseCell *)self style];
+      alternativeTextAlignment = [style17 alternativeTextAlignment];
 
       v109 = v141;
-      if (v108 == 2)
+      if (alternativeTextAlignment == 2)
       {
         v181.origin.x = 0.0;
         v181.origin.y = v141;
@@ -666,7 +666,7 @@ LABEL_75:
     v189.size.width = v82;
     v189.size.height = v135;
     v153 = v105 - CGRectGetWidth(v189);
-    v122 = [(TUICandidateBaseCell *)self style];
+    style18 = [(TUICandidateBaseCell *)self style];
     v123 = objc_opt_respondsToSelector();
 
     v190.origin.x = v153;
@@ -676,8 +676,8 @@ LABEL_75:
     v124 = CGRectGetWidth(v190);
     if (v123)
     {
-      v125 = [(TUICandidateBaseCell *)self style];
-      [v125 alternativeTextLeftSpacing];
+      style19 = [(TUICandidateBaseCell *)self style];
+      [style19 alternativeTextLeftSpacing];
       v105 = v105 - (v124 + v126);
     }
 
@@ -720,10 +720,10 @@ LABEL_76:
   v161.origin.x = v101;
   v161.size.width = v127;
 LABEL_81:
-  v128 = [(TUICandidateBaseCell *)self style];
-  v129 = [v128 layoutOrientation];
+  style20 = [(TUICandidateBaseCell *)self style];
+  layoutOrientation4 = [style20 layoutOrientation];
 
-  if (v129 == 1)
+  if (layoutOrientation4 == 1)
   {
     [(TUICandidateCell *)self rotateBy90DegreesForFrame:&v161];
     [(TUICandidateCell *)self rotateBy90DegreesForFrame:&v157];
@@ -754,60 +754,60 @@ LABEL_81:
 {
   if (self->_candidateNumberLabel)
   {
-    v5 = [(TUICandidateBaseCell *)self style];
-    v6 = [v5 candidateNumberFont];
-    [(UILabel *)self->_candidateNumberLabel setFont:v6];
+    style = [(TUICandidateBaseCell *)self style];
+    candidateNumberFont = [style candidateNumberFont];
+    [(UILabel *)self->_candidateNumberLabel setFont:candidateNumberFont];
   }
 
   if (self->_annotationTextLabel)
   {
-    v7 = [(TUICandidateBaseCell *)self style];
-    v8 = [v7 annotationTextFont];
-    [(TUICandidateLabel *)self->_annotationTextLabel setFont:v8];
+    style2 = [(TUICandidateBaseCell *)self style];
+    annotationTextFont = [style2 annotationTextFont];
+    [(TUICandidateLabel *)self->_annotationTextLabel setFont:annotationTextFont];
   }
 
   if (self->_alternativeTextLabel)
   {
-    v9 = [(TUICandidateBaseCell *)self style];
-    v10 = [v9 alternativeTextFont];
-    [(TUICandidateLabel *)self->_alternativeTextLabel setFont:v10];
+    style3 = [(TUICandidateBaseCell *)self style];
+    alternativeTextFont = [style3 alternativeTextFont];
+    [(TUICandidateLabel *)self->_alternativeTextLabel setFont:alternativeTextFont];
 
-    v11 = [(TUICandidateBaseCell *)self style];
-    -[TUICandidateLabel setLayoutOrientation:](self->_alternativeTextLabel, "setLayoutOrientation:", [v11 layoutOrientation]);
+    style4 = [(TUICandidateBaseCell *)self style];
+    -[TUICandidateLabel setLayoutOrientation:](self->_alternativeTextLabel, "setLayoutOrientation:", [style4 layoutOrientation]);
   }
 
-  v12 = [(TUICandidateBaseCell *)self style];
-  v13 = [v12 layoutOrientation];
-  v14 = [(TUICandidateCell *)self textLabel];
-  [v14 setLayoutOrientation:v13];
+  style5 = [(TUICandidateBaseCell *)self style];
+  layoutOrientation = [style5 layoutOrientation];
+  textLabel = [(TUICandidateCell *)self textLabel];
+  [textLabel setLayoutOrientation:layoutOrientation];
 
-  v15 = [(TUICandidateBaseCell *)self style];
-  v16 = [v15 lineBreakMode];
-  v17 = [(TUICandidateCell *)self textLabel];
-  [v17 setLineBreakMode:v16];
+  style6 = [(TUICandidateBaseCell *)self style];
+  lineBreakMode = [style6 lineBreakMode];
+  textLabel2 = [(TUICandidateCell *)self textLabel];
+  [textLabel2 setLineBreakMode:lineBreakMode];
 
-  v18 = [(TUICandidateCell *)self candidate];
-  v19 = [v18 isSupplementalItemCandidate];
-  if (v19 && (-[TUICandidateBaseCell style](self, "style"), v34 = objc_claimAutoreleasedReturnValue(), [v34 supplementalLexiconCandidateFont], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+  candidate = [(TUICandidateCell *)self candidate];
+  isSupplementalItemCandidate = [candidate isSupplementalItemCandidate];
+  if (isSupplementalItemCandidate && (-[TUICandidateBaseCell style](self, "style"), v34 = objc_claimAutoreleasedReturnValue(), [v34 supplementalLexiconCandidateFont], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v21 = v20;
-    v2 = [(TUICandidateBaseCell *)self style];
-    v22 = [v2 supplementalLexiconCandidateFont];
+    style7 = [(TUICandidateBaseCell *)self style];
+    supplementalLexiconCandidateFont = [style7 supplementalLexiconCandidateFont];
     v23 = 0;
     v24 = 1;
   }
 
   else
   {
-    v3 = [(TUICandidateBaseCell *)self style];
-    v22 = [v3 candidateFont];
+    style8 = [(TUICandidateBaseCell *)self style];
+    supplementalLexiconCandidateFont = [style8 candidateFont];
     v24 = 0;
     v21 = 0;
     v23 = 1;
   }
 
-  v25 = [(TUICandidateCell *)self textLabel];
-  [v25 setFont:v22];
+  textLabel3 = [(TUICandidateCell *)self textLabel];
+  [textLabel3 setFont:supplementalLexiconCandidateFont];
 
   if (v23)
   {
@@ -817,13 +817,13 @@ LABEL_81:
   {
   }
 
-  if (v19)
+  if (isSupplementalItemCandidate)
   {
   }
 
-  v26 = [(TUICandidateCell *)self textLabel];
-  v27 = [v26 font];
-  [v27 pointSize];
+  textLabel4 = [(TUICandidateCell *)self textLabel];
+  font = [textLabel4 font];
+  [font pointSize];
   v29 = 16.0 / v28;
 
   if (v29 > 0.9)
@@ -831,14 +831,14 @@ LABEL_81:
     v29 = 0.9;
   }
 
-  v30 = [(TUICandidateCell *)self textLabel];
-  [v30 setMinimumScaleFactor:v29];
+  textLabel5 = [(TUICandidateCell *)self textLabel];
+  [textLabel5 setMinimumScaleFactor:v29];
 
-  v35 = [(TUICandidateBaseCell *)self style];
-  [v35 cellCornerRadius];
+  style9 = [(TUICandidateBaseCell *)self style];
+  [style9 cellCornerRadius];
   v32 = v31;
-  v33 = [(TUICandidateCell *)self layer];
-  [v33 setCornerRadius:v32];
+  layer = [(TUICandidateCell *)self layer];
+  [layer setCornerRadius:v32];
 }
 
 - (void)layoutSubviews
@@ -858,96 +858,96 @@ LABEL_81:
   if (imageView)
   {
     [(UIImageView *)imageView frame];
-    v4 = [(TUICandidateCell *)self image];
-    [v4 size];
+    image = [(TUICandidateCell *)self image];
+    [image size];
 
-    v5 = [(TUICandidateBaseCell *)self style];
+    style = [(TUICandidateBaseCell *)self style];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(TUICandidateBaseCell *)self style];
-      [v6 maximumIconWidth];
+      style2 = [(TUICandidateBaseCell *)self style];
+      [style2 maximumIconWidth];
     }
 
     [(TUICandidateCell *)self bounds];
-    v7 = [(TUICandidateBaseCell *)self style];
-    [v7 extraCellPadding];
+    style3 = [(TUICandidateBaseCell *)self style];
+    [style3 extraCellPadding];
     UIRectCenteredYInRect();
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(TUICandidateCell *)self imageView];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    imageView = [(TUICandidateCell *)self imageView];
+    [imageView setFrame:{v9, v11, v13, v15}];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = TUICandidateCell;
-  v4 = a3;
-  [(TUICandidateCell *)&v8 applyLayoutAttributes:v4];
-  [v4 contentAlpha];
+  attributesCopy = attributes;
+  [(TUICandidateCell *)&v8 applyLayoutAttributes:attributesCopy];
+  [attributesCopy contentAlpha];
   v6 = v5;
 
-  v7 = [(TUICandidateCell *)self contentView];
-  [v7 setAlpha:v6];
+  contentView = [(TUICandidateCell *)self contentView];
+  [contentView setAlpha:v6];
 
   [(TUICandidateCell *)self layoutIfNeeded];
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(TUICandidateBaseCell *)self style];
-  v6 = [v5 isEqual:v4];
+  styleCopy = style;
+  style = [(TUICandidateBaseCell *)self style];
+  v6 = [style isEqual:styleCopy];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = TUICandidateCell;
-    [(TUICandidateBaseCell *)&v7 setStyle:v4];
+    [(TUICandidateBaseCell *)&v7 setStyle:styleCopy];
     [(TUICandidateCell *)self setNeedsLayout];
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  if (self->_alignment != a3)
+  if (self->_alignment != alignment)
   {
-    self->_alignment = a3;
+    self->_alignment = alignment;
     [(TUICandidateCell *)self setNeedsLayout];
   }
 }
 
-- (void)setRowSelected:(BOOL)a3
+- (void)setRowSelected:(BOOL)selected
 {
-  if (self->_rowSelected != a3)
+  if (self->_rowSelected != selected)
   {
-    self->_rowSelected = a3;
+    self->_rowSelected = selected;
     [(TUICandidateCell *)self updateColors];
   }
 }
 
-- (void)setShouldShowCandidateNumber:(BOOL)a3
+- (void)setShouldShowCandidateNumber:(BOOL)number
 {
-  if (self->_shouldShowCandidateNumber != a3)
+  if (self->_shouldShowCandidateNumber != number)
   {
-    v3 = a3;
-    self->_shouldShowCandidateNumber = a3;
-    v5 = [(TUICandidateCell *)self candidateNumberLabel];
-    [v5 setHidden:!v3];
+    numberCopy = number;
+    self->_shouldShowCandidateNumber = number;
+    candidateNumberLabel = [(TUICandidateCell *)self candidateNumberLabel];
+    [candidateNumberLabel setHidden:!numberCopy];
 
     if (!self->_shouldShowCandidateNumber)
     {
-      v6 = [(TUICandidateBaseCell *)self style];
-      v7 = [v6 layoutOrientation];
+      style = [(TUICandidateBaseCell *)self style];
+      layoutOrientation = [style layoutOrientation];
 
-      if (v7 == 1)
+      if (layoutOrientation == 1)
       {
-        v8 = [(TUICandidateCell *)self candidateNumberLabel];
-        [v8 setText:0];
+        candidateNumberLabel2 = [(TUICandidateCell *)self candidateNumberLabel];
+        [candidateNumberLabel2 setText:0];
 
         [(TUICandidateCell *)self setNeedsLayout];
       }
@@ -955,19 +955,19 @@ LABEL_81:
   }
 }
 
-- (void)setCandidateNumber:(unint64_t)a3
+- (void)setCandidateNumber:(unint64_t)number
 {
-  if (self->_candidateNumber != a3)
+  if (self->_candidateNumber != number)
   {
-    self->_candidateNumber = a3;
-    if (a3 - 1 > 8)
+    self->_candidateNumber = number;
+    if (number - 1 > 8)
     {
       if ([(TUICandidateCell *)self shouldShowCandidateNumber])
       {
-        v6 = [(TUICandidateBaseCell *)self style];
-        v7 = [v6 layoutOrientation];
+        style = [(TUICandidateBaseCell *)self style];
+        layoutOrientation = [style layoutOrientation];
 
-        if (v7 == 1)
+        if (layoutOrientation == 1)
         {
           v8 = @" ";
         }
@@ -977,52 +977,52 @@ LABEL_81:
           v8 = 0;
         }
 
-        v10 = v8;
+        stringValue = v8;
       }
 
       else
       {
-        v10 = 0;
+        stringValue = 0;
       }
     }
 
     else
     {
       v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-      v10 = [v5 stringValue];
+      stringValue = [v5 stringValue];
     }
 
-    v9 = [(TUICandidateCell *)self candidateNumberLabel];
-    [v9 setText:v10];
+    candidateNumberLabel = [(TUICandidateCell *)self candidateNumberLabel];
+    [candidateNumberLabel setText:stringValue];
 
     [(TUICandidateCell *)self setNeedsLayout];
   }
 }
 
-- (void)setCandidate:(id)a3
+- (void)setCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   candidate = self->_candidate;
-  if (candidate == v5)
+  if (candidate == candidateCopy)
   {
     goto LABEL_22;
   }
 
-  v24 = v5;
+  v24 = candidateCopy;
   if (([(TIKeyboardCandidate *)candidate isEqual:?]& 1) != 0)
   {
     goto LABEL_22;
   }
 
-  objc_storeStrong(&self->_candidate, a3);
+  objc_storeStrong(&self->_candidate, candidate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(TIKeyboardCandidate *)v24 icon];
-    [(TUICandidateCell *)self setImage:v7];
+    icon = [(TIKeyboardCandidate *)v24 icon];
+    [(TUICandidateCell *)self setImage:icon];
   }
 
-  v8 = [(TIKeyboardCandidate *)v24 label];
-  if ([v8 length])
+  label = [(TIKeyboardCandidate *)v24 label];
+  if ([label length])
   {
   }
 
@@ -1037,20 +1037,20 @@ LABEL_81:
     }
   }
 
-  v11 = [(TIKeyboardCandidate *)v24 label];
-  v12 = [(TUICandidateCell *)self textLabel];
-  [v12 setText:v11];
+  label2 = [(TIKeyboardCandidate *)v24 label];
+  textLabel = [(TUICandidateCell *)self textLabel];
+  [textLabel setText:label2];
 
   v10 = v24;
 LABEL_9:
-  v13 = [(TIKeyboardCandidate *)v10 alternativeText];
-  if ([v13 length])
+  alternativeText = [(TIKeyboardCandidate *)v10 alternativeText];
+  if ([alternativeText length])
   {
 
 LABEL_12:
-    v16 = [(TIKeyboardCandidate *)v24 alternativeText];
-    v17 = [(TUICandidateCell *)self alternativeTextLabel];
-    [v17 setText:v16];
+    alternativeText2 = [(TIKeyboardCandidate *)v24 alternativeText];
+    alternativeTextLabel = [(TUICandidateCell *)self alternativeTextLabel];
+    [alternativeTextLabel setText:alternativeText2];
 
     v15 = v24;
     goto LABEL_13;
@@ -1065,12 +1065,12 @@ LABEL_12:
   }
 
 LABEL_13:
-  v18 = [(TIKeyboardCandidate *)v15 annotationText];
-  v19 = [v18 length];
+  annotationText = [(TIKeyboardCandidate *)v15 annotationText];
+  v19 = [annotationText length];
 
   if (v19)
   {
-    v20 = [(TIKeyboardCandidate *)v24 annotationText];
+    annotationText2 = [(TIKeyboardCandidate *)v24 annotationText];
     v21 = UIKeyboardLocalizedString();
   }
 
@@ -1081,14 +1081,14 @@ LABEL_13:
 
   if ([v21 length] || self->_annotationTextLabel)
   {
-    v22 = [(TUICandidateCell *)self annotationTextLabel];
-    [v22 setText:v21];
+    annotationTextLabel = [(TUICandidateCell *)self annotationTextLabel];
+    [annotationTextLabel setText:v21];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [(TIKeyboardCandidate *)v24 customView];
-    [(TUICandidateCell *)self setCustomView:v23];
+    customView = [(TIKeyboardCandidate *)v24 customView];
+    [(TUICandidateCell *)self setCustomView:customView];
   }
 
   [(TUICandidateCell *)self setNeedsLayout];
@@ -1123,8 +1123,8 @@ LABEL_22:
     self->_annotationTextLabel = v5;
 
     [(TUICandidateLabel *)self->_annotationTextLabel setAlpha:0.4];
-    v7 = [(TUICandidateCell *)self contentView];
-    [v7 addSubview:self->_annotationTextLabel];
+    contentView = [(TUICandidateCell *)self contentView];
+    [contentView addSubview:self->_annotationTextLabel];
 
     annotationTextLabel = self->_annotationTextLabel;
   }
@@ -1144,8 +1144,8 @@ LABEL_22:
 
     [(UILabel *)self->_candidateNumberLabel setHidden:[(TUICandidateCell *)self shouldShowCandidateNumber]^ 1];
     [(UILabel *)self->_candidateNumberLabel setTextAlignment:1];
-    v7 = [(TUICandidateCell *)self contentView];
-    [v7 addSubview:self->_candidateNumberLabel];
+    contentView = [(TUICandidateCell *)self contentView];
+    [contentView addSubview:self->_candidateNumberLabel];
 
     candidateNumberLabel = self->_candidateNumberLabel;
   }
@@ -1165,11 +1165,11 @@ LABEL_22:
 
     [(TUICandidateLabel *)self->_alternativeTextLabel setAdjustsFontSizeToFitWidth:1];
     [(TUICandidateLabel *)self->_alternativeTextLabel setMinimumScaleFactor:0.9];
-    v7 = [(TUICandidateBaseCell *)self style];
-    -[TUICandidateLabel setLayoutOrientation:](self->_alternativeTextLabel, "setLayoutOrientation:", [v7 layoutOrientation]);
+    style = [(TUICandidateBaseCell *)self style];
+    -[TUICandidateLabel setLayoutOrientation:](self->_alternativeTextLabel, "setLayoutOrientation:", [style layoutOrientation]);
 
-    v8 = [(TUICandidateCell *)self contentView];
-    [v8 addSubview:self->_alternativeTextLabel];
+    contentView = [(TUICandidateCell *)self contentView];
+    [contentView addSubview:self->_alternativeTextLabel];
 
     alternativeTextLabel = self->_alternativeTextLabel;
   }
@@ -1189,14 +1189,14 @@ LABEL_22:
     self->_textLabel = v5;
 
     [(TUICandidateLabel *)self->_textLabel setAdjustsFontSizeToFitWidth:1];
-    v7 = [(TUICandidateBaseCell *)self style];
-    -[TUICandidateLabel setLineBreakMode:](self->_textLabel, "setLineBreakMode:", [v7 lineBreakMode]);
+    style = [(TUICandidateBaseCell *)self style];
+    -[TUICandidateLabel setLineBreakMode:](self->_textLabel, "setLineBreakMode:", [style lineBreakMode]);
 
-    v8 = [(TUICandidateBaseCell *)self style];
-    -[TUICandidateLabel setLayoutOrientation:](self->_textLabel, "setLayoutOrientation:", [v8 layoutOrientation]);
+    style2 = [(TUICandidateBaseCell *)self style];
+    -[TUICandidateLabel setLayoutOrientation:](self->_textLabel, "setLayoutOrientation:", [style2 layoutOrientation]);
 
-    v9 = [(TUICandidateCell *)self contentView];
-    [v9 addSubview:self->_textLabel];
+    contentView = [(TUICandidateCell *)self contentView];
+    [contentView addSubview:self->_textLabel];
 
     textLabel = self->_textLabel;
   }
@@ -1204,39 +1204,39 @@ LABEL_22:
   return textLabel;
 }
 
-- (void)setCustomView:(id)a3
+- (void)setCustomView:(id)view
 {
-  v9 = a3;
-  v5 = [(TUICandidateCell *)self customView];
+  viewCopy = view;
+  customView = [(TUICandidateCell *)self customView];
 
-  v6 = v9;
-  if (v5 != v9)
+  v6 = viewCopy;
+  if (customView != viewCopy)
   {
     v7 = self->_customView;
-    objc_storeStrong(&self->_customView, a3);
+    objc_storeStrong(&self->_customView, view);
     [(UIView *)v7 removeFromSuperview];
-    if (v9)
+    if (viewCopy)
     {
-      v8 = [(TUICandidateCell *)self contentView];
-      [v8 addSubview:v9];
+      contentView = [(TUICandidateCell *)self contentView];
+      [contentView addSubview:viewCopy];
 
       [(TUICandidateCell *)self setNeedsLayout];
     }
 
-    v6 = v9;
+    v6 = viewCopy;
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v13 = a3;
-  v4 = [(TUICandidateCell *)self image];
+  imageCopy = image;
+  image = [(TUICandidateCell *)self image];
 
-  v6 = v13;
-  if (v4 != v13)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
     imageView = self->_imageView;
-    if (v13)
+    if (imageCopy)
     {
       if (!imageView)
       {
@@ -1245,14 +1245,14 @@ LABEL_22:
         v10 = self->_imageView;
         self->_imageView = v9;
 
-        v11 = [(TUICandidateCell *)self contentView];
-        [v11 addSubview:self->_imageView];
+        contentView = [(TUICandidateCell *)self contentView];
+        [contentView addSubview:self->_imageView];
 
         imageView = self->_imageView;
       }
 
-      [(UIImageView *)imageView setImage:v13];
-      v5 = [(TUICandidateCell *)self setNeedsLayout];
+      [(UIImageView *)imageView setImage:imageCopy];
+      setNeedsLayout = [(TUICandidateCell *)self setNeedsLayout];
     }
 
     else
@@ -1262,17 +1262,17 @@ LABEL_22:
       self->_imageView = 0;
     }
 
-    v6 = v13;
+    v6 = imageCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](setNeedsLayout, v6);
 }
 
-- (TUICandidateCell)initWithCoder:(id)a3
+- (TUICandidateCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateCell;
-  v3 = [(TUICandidateCell *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -1282,11 +1282,11 @@ LABEL_22:
   return v4;
 }
 
-- (TUICandidateCell)initWithFrame:(CGRect)a3
+- (TUICandidateCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateCell;
-  v3 = [(TUICandidateBaseCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateBaseCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1304,9 +1304,9 @@ LABEL_22:
   [(TUICandidateCell *)self setMinimumTextLabelHeight:42.0];
 }
 
-+ (UIEdgeInsets)outsetsForText:(id)a3 font:(id)a4
++ (UIEdgeInsets)outsetsForText:(id)text font:(id)font
 {
-  [a3 tui_languageAwareOutsetsForFont:a4];
+  [text tui_languageAwareOutsetsForFont:font];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -1314,68 +1314,68 @@ LABEL_22:
   return result;
 }
 
-+ (double)widthForText:(id)a3 font:(id)a4 layoutOrientation:(int64_t)a5
++ (double)widthForText:(id)text font:(id)font layoutOrientation:(int64_t)orientation
 {
-  if (a5)
+  if (orientation)
   {
-    [TUICandidateLabel lineWidthForText:a3 font:a4 layoutOrientation:a5];
+    [TUICandidateLabel lineWidthForText:text font:font layoutOrientation:orientation];
   }
 
   else
   {
-    [a3 tui_optimizedSizeWithFont:a4];
+    [text tui_optimizedSizeWithFont:font];
   }
 
   v8 = v7;
-  [objc_opt_class() outsetsForText:a3 font:a4];
+  [objc_opt_class() outsetsForText:text font:font];
   v10 = v9;
   v12 = v11;
 
   return v8 + ceil(v10 + v12);
 }
 
-+ (double)widthForCandidate:(id)a3 showCandidateNumber:(BOOL)a4 style:(id)a5
++ (double)widthForCandidate:(id)candidate showCandidateNumber:(BOOL)number style:(id)style
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if ([v7 isSupplementalItemCandidate] && (objc_msgSend(v8, "supplementalLexiconCandidateFont"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  numberCopy = number;
+  candidateCopy = candidate;
+  styleCopy = style;
+  if ([candidateCopy isSupplementalItemCandidate] && (objc_msgSend(styleCopy, "supplementalLexiconCandidateFont"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
-    v11 = [v8 supplementalLexiconCandidateFont];
+    supplementalLexiconCandidateFont = [styleCopy supplementalLexiconCandidateFont];
   }
 
   else
   {
-    v11 = [v8 candidateFont];
+    supplementalLexiconCandidateFont = [styleCopy candidateFont];
   }
 
   v12 = objc_opt_class();
-  v13 = [v7 label];
-  [v12 widthForText:v13 font:v11 layoutOrientation:{objc_msgSend(v8, "layoutOrientation")}];
+  label = [candidateCopy label];
+  [v12 widthForText:label font:supplementalLexiconCandidateFont layoutOrientation:{objc_msgSend(styleCopy, "layoutOrientation")}];
   v15 = v14;
 
   v16 = objc_opt_class();
-  v17 = [v7 alternativeText];
-  v18 = [v8 alternativeTextFont];
-  [v16 widthForText:v17 font:v18 layoutOrientation:{objc_msgSend(v8, "layoutOrientation")}];
+  alternativeText = [candidateCopy alternativeText];
+  alternativeTextFont = [styleCopy alternativeTextFont];
+  [v16 widthForText:alternativeText font:alternativeTextFont layoutOrientation:{objc_msgSend(styleCopy, "layoutOrientation")}];
   v20 = v19;
 
   v21 = objc_opt_class();
   v22 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v23 = [v22 localizedStringInDeviceLanguageForKey:@"CREATE_POLL"];
-  [v21 widthForText:v23 font:v11 layoutOrientation:{objc_msgSend(v8, "layoutOrientation")}];
+  [v21 widthForText:v23 font:supplementalLexiconCandidateFont layoutOrientation:{objc_msgSend(styleCopy, "layoutOrientation")}];
   v25 = v24;
 
-  v26 = [v7 annotationText];
-  v27 = [v26 length];
+  annotationText = [candidateCopy annotationText];
+  v27 = [annotationText length];
 
   if (v27)
   {
-    v28 = [v7 annotationText];
+    annotationText2 = [candidateCopy annotationText];
     v29 = UIKeyboardLocalizedString();
-    v30 = [v8 annotationTextFont];
-    [v29 tui_optimizedSizeWithFont:v30];
+    annotationTextFont = [styleCopy annotationTextFont];
+    [v29 tui_optimizedSizeWithFont:annotationTextFont];
     v32 = v31;
   }
 
@@ -1384,7 +1384,7 @@ LABEL_22:
     v32 = *MEMORY[0x1E695F060];
   }
 
-  if (([v7 candidateProperty] & 0x80) == 0)
+  if (([candidateCopy candidateProperty] & 0x80) == 0)
   {
     if (v20 <= 0.0)
     {
@@ -1397,14 +1397,14 @@ LABEL_22:
       v34 = 5.0;
       if (v33)
       {
-        [v8 alternativeTextLeftSpacing];
+        [styleCopy alternativeTextLeftSpacing];
       }
 
       v25 = v15 + v20 + v34;
     }
   }
 
-  [v8 minimumCellPadding];
+  [styleCopy minimumCellPadding];
   v36 = v25 + v35 * 2.0;
   if (v32 <= 0.0)
   {
@@ -1416,15 +1416,15 @@ LABEL_22:
     v37 = v32 + 5.0 + v36;
   }
 
-  if (v6)
+  if (numberCopy)
   {
-    v38 = [v8 layoutOrientation];
-    v39 = [v8 candidateNumberFont];
-    [@"0" _legacy_sizeWithFont:v39];
+    layoutOrientation = [styleCopy layoutOrientation];
+    candidateNumberFont = [styleCopy candidateNumberFont];
+    [@"0" _legacy_sizeWithFont:candidateNumberFont];
     v41 = v40;
     v43 = v42;
 
-    if (v38)
+    if (layoutOrientation)
     {
       v37 = v37 + v43 + 5.0;
     }
@@ -1437,19 +1437,19 @@ LABEL_22:
 
   if (objc_opt_respondsToSelector())
   {
-    v44 = [v7 icon];
+    icon = [candidateCopy icon];
 
-    if (v44)
+    if (icon)
     {
-      v45 = [v7 icon];
-      [v45 size];
+      icon2 = [candidateCopy icon];
+      [icon2 size];
       v47 = v46;
 
       v48 = objc_opt_respondsToSelector();
       v49 = 20.0;
       if (v48)
       {
-        [v8 maximumIconWidth];
+        [styleCopy maximumIconWidth];
       }
 
       if (v47 < v49)
@@ -1463,17 +1463,17 @@ LABEL_22:
 
   if (objc_opt_respondsToSelector())
   {
-    v50 = [v7 customView];
+    customView = [candidateCopy customView];
 
-    if (v50)
+    if (customView)
     {
-      v51 = [v7 customView];
-      [v51 intrinsicContentSize];
+      customView2 = [candidateCopy customView];
+      [customView2 intrinsicContentSize];
       v37 = v52;
     }
   }
 
-  [v8 minimumCellWidth];
+  [styleCopy minimumCellWidth];
   if (v37 < v53)
   {
     v37 = v53;

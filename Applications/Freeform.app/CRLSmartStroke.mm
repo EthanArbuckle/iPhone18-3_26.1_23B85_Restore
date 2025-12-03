@@ -1,20 +1,20 @@
 @interface CRLSmartStroke
-+ (CRLSmartStroke)strokeWithName:(id)a3 color:(id)a4 width:(double)a5;
-+ (Class)classForName:(id)a3;
-- (BOOL)canDrawWithOtherStroke:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRLSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5;
-- (CRLSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(unint64_t)a6 join:(unint64_t)a7 pattern:(id)a8 miterLimit:(double)a9;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
++ (CRLSmartStroke)strokeWithName:(id)name color:(id)color width:(double)width;
++ (Class)classForName:(id)name;
+- (BOOL)canDrawWithOtherStroke:(id)stroke;
+- (BOOL)isEqual:(id)equal;
+- (CRLSmartStroke)initWithName:(id)name color:(id)color width:(double)width;
+- (CRLSmartStroke)initWithName:(id)name color:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern miterLimit:(double)limit;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CRLSmartStroke
 
-+ (Class)classForName:(id)a3
++ (Class)classForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v16[0] = @"Chalk2";
   v16[1] = @"Dry Brush";
   v16[2] = @"Feathered Brush";
@@ -22,13 +22,13 @@
   v16[4] = @"Pencil";
   v16[5] = @"Crayon";
   v4 = [NSArray arrayWithObjects:v16 count:6];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:nameCopy];
 
   if ((v5 & 1) == 0)
   {
     v15 = @"Calligraphy";
     v6 = [NSArray arrayWithObjects:&v15 count:1];
-    v7 = [v6 containsObject:v3];
+    v7 = [v6 containsObject:nameCopy];
 
     if ((v7 & 1) == 0)
     {
@@ -41,7 +41,7 @@
       v9 = off_1019EDA68;
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
-        sub_10134A2C8(v3, v8, v9);
+        sub_10134A2C8(nameCopy, v8, v9);
       }
 
       if (qword_101AD5A10 != -1)
@@ -59,7 +59,7 @@
 
       v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLSmartStroke classForName:]");
       v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLSmartStroke.mm"];
-      [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:64 isFatal:0 description:"Unable to find Smart Stroke class for name: %@", v3];
+      [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:64 isFatal:0 description:"Unable to find Smart Stroke class for name: %@", nameCopy];
     }
   }
 
@@ -68,36 +68,36 @@
   return v13;
 }
 
-+ (CRLSmartStroke)strokeWithName:(id)a3 color:(id)a4 width:(double)a5
++ (CRLSmartStroke)strokeWithName:(id)name color:(id)color width:(double)width
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(objc_opt_class()) initWithName:v7 color:v8 width:a5];
+  nameCopy = name;
+  colorCopy = color;
+  v9 = [objc_alloc(objc_opt_class()) initWithName:nameCopy color:colorCopy width:width];
 
   return v9;
 }
 
-- (CRLSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5
+- (CRLSmartStroke)initWithName:(id)name color:(id)color width:(double)width
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v10 = +[CRLStrokePattern solidPattern];
-  v11 = [(CRLSmartStroke *)self initWithName:v8 color:v9 width:0 cap:0 join:v10 pattern:a5 miterLimit:4.0];
+  v11 = [(CRLSmartStroke *)self initWithName:nameCopy color:colorCopy width:0 cap:0 join:v10 pattern:width miterLimit:4.0];
 
   return v11;
 }
 
-- (CRLSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(unint64_t)a6 join:(unint64_t)a7 pattern:(id)a8 miterLimit:(double)a9
+- (CRLSmartStroke)initWithName:(id)name color:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern miterLimit:(double)limit
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
+  nameCopy = name;
+  colorCopy = color;
+  patternCopy = pattern;
   v23.receiver = self;
   v23.super_class = CRLSmartStroke;
-  v19 = [(CRLStroke *)&v23 initWithColor:v17 width:a6 cap:a7 join:v18 pattern:a5 miterLimit:a9];
+  v19 = [(CRLStroke *)&v23 initWithColor:colorCopy width:cap cap:join join:patternCopy pattern:width miterLimit:limit];
   if (v19)
   {
-    v20 = [v16 copy];
+    v20 = [nameCopy copy];
     mStrokeName = v19->mStrokeName;
     v19->mStrokeName = v20;
   }
@@ -105,7 +105,7 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -157,7 +157,7 @@
   return 0;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -209,11 +209,11 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
   v7 = v6;
   if (v6 && ([v6 strokeName], v8 = objc_claimAutoreleasedReturnValue(), -[CRLSmartStroke strokeName](self, "strokeName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, (v10 & 1) != 0))
   {
@@ -230,11 +230,11 @@
   return v11;
 }
 
-- (BOOL)canDrawWithOtherStroke:(id)a3
+- (BOOL)canDrawWithOtherStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, strokeCopy);
   if (v6)
   {
     v7 = [(CRLSmartStroke *)self isEqual:v6];

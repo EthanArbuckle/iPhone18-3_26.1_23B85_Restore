@@ -39,34 +39,34 @@
 
 - (id)ql_applicationName
 {
-  v2 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
-  v3 = [v2 localizedName];
-  if (v3)
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  localizedName = [bundleRecordForCurrentProcess localizedName];
+  if (localizedName)
   {
-    v4 = v3;
+    v4 = localizedName;
   }
 
   else
   {
-    v5 = [a1 localizedInfoDictionary];
+    localizedInfoDictionary = [self localizedInfoDictionary];
     v6 = *MEMORY[0x277CBEC40];
-    v4 = [v5 objectForKey:*MEMORY[0x277CBEC40]];
+    v4 = [localizedInfoDictionary objectForKey:*MEMORY[0x277CBEC40]];
 
     if (!v4)
     {
-      v7 = [a1 infoDictionary];
-      v4 = [v7 objectForKey:v6];
+      infoDictionary = [self infoDictionary];
+      v4 = [infoDictionary objectForKey:v6];
 
       if (!v4)
       {
-        v8 = [a1 localizedInfoDictionary];
+        localizedInfoDictionary2 = [self localizedInfoDictionary];
         v9 = *MEMORY[0x277CBED50];
-        v4 = [v8 objectForKey:*MEMORY[0x277CBED50]];
+        v4 = [localizedInfoDictionary2 objectForKey:*MEMORY[0x277CBED50]];
 
         if (!v4)
         {
-          v10 = [a1 infoDictionary];
-          v4 = [v10 objectForKey:v9];
+          infoDictionary2 = [self infoDictionary];
+          v4 = [infoDictionary2 objectForKey:v9];
         }
       }
     }

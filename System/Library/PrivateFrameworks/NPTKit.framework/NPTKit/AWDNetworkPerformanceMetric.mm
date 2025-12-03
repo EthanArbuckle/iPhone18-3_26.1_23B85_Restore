@@ -1,44 +1,44 @@
 @interface AWDNetworkPerformanceMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAcceptablePerformanceResult:(BOOL)a3;
-- (void)setHasAwdlPowerState:(BOOL)a3;
-- (void)setHasBtIsConnectable:(BOOL)a3;
-- (void)setHasBtIsDiscoverable:(BOOL)a3;
-- (void)setHasBtIsPowerOn:(BOOL)a3;
-- (void)setHasBtIsScanning:(BOOL)a3;
-- (void)setHasCellularAllowsVoip:(BOOL)a3;
-- (void)setHasCellularDataIsEnabled:(BOOL)a3;
-- (void)setHasDownloadIsCellular:(BOOL)a3;
-- (void)setHasDownloadIsConstrained:(BOOL)a3;
-- (void)setHasDownloadIsExpensive:(BOOL)a3;
-- (void)setHasDownloadIsMultipath:(BOOL)a3;
-- (void)setHasDownloadIsProxyConnection:(BOOL)a3;
-- (void)setHasDownloadIsReusedConnection:(BOOL)a3;
-- (void)setHasNetworkIsAppleReachable:(BOOL)a3;
-- (void)setHasSystemLowPowerModeEnabled:(BOOL)a3;
-- (void)setHasSystemPowersourceConnected:(BOOL)a3;
-- (void)setHasUploadIsCellular:(BOOL)a3;
-- (void)setHasUploadIsConstrained:(BOOL)a3;
-- (void)setHasUploadIsExpensive:(BOOL)a3;
-- (void)setHasUploadIsMultipath:(BOOL)a3;
-- (void)setHasUploadIsProxyConnection:(BOOL)a3;
-- (void)setHasUploadIsReusedConnection:(BOOL)a3;
-- (void)setHasUseWifiWasSpecified:(BOOL)a3;
-- (void)setHasWifiIsCaptive:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAcceptablePerformanceResult:(BOOL)result;
+- (void)setHasAwdlPowerState:(BOOL)state;
+- (void)setHasBtIsConnectable:(BOOL)connectable;
+- (void)setHasBtIsDiscoverable:(BOOL)discoverable;
+- (void)setHasBtIsPowerOn:(BOOL)on;
+- (void)setHasBtIsScanning:(BOOL)scanning;
+- (void)setHasCellularAllowsVoip:(BOOL)voip;
+- (void)setHasCellularDataIsEnabled:(BOOL)enabled;
+- (void)setHasDownloadIsCellular:(BOOL)cellular;
+- (void)setHasDownloadIsConstrained:(BOOL)constrained;
+- (void)setHasDownloadIsExpensive:(BOOL)expensive;
+- (void)setHasDownloadIsMultipath:(BOOL)multipath;
+- (void)setHasDownloadIsProxyConnection:(BOOL)connection;
+- (void)setHasDownloadIsReusedConnection:(BOOL)connection;
+- (void)setHasNetworkIsAppleReachable:(BOOL)reachable;
+- (void)setHasSystemLowPowerModeEnabled:(BOOL)enabled;
+- (void)setHasSystemPowersourceConnected:(BOOL)connected;
+- (void)setHasUploadIsCellular:(BOOL)cellular;
+- (void)setHasUploadIsConstrained:(BOOL)constrained;
+- (void)setHasUploadIsExpensive:(BOOL)expensive;
+- (void)setHasUploadIsMultipath:(BOOL)multipath;
+- (void)setHasUploadIsProxyConnection:(BOOL)connection;
+- (void)setHasUploadIsReusedConnection:(BOOL)connection;
+- (void)setHasUseWifiWasSpecified:(BOOL)specified;
+- (void)setHasWifiIsCaptive:(BOOL)captive;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNetworkPerformanceMetric
 
-- (void)setHasAcceptablePerformanceResult:(BOOL)a3
+- (void)setHasAcceptablePerformanceResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -51,9 +51,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasAwdlPowerState:(BOOL)a3
+- (void)setHasAwdlPowerState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -66,9 +66,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasBtIsConnectable:(BOOL)a3
+- (void)setHasBtIsConnectable:(BOOL)connectable
 {
-  if (a3)
+  if (connectable)
   {
     v3 = 8;
   }
@@ -81,9 +81,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasBtIsDiscoverable:(BOOL)a3
+- (void)setHasBtIsDiscoverable:(BOOL)discoverable
 {
-  if (a3)
+  if (discoverable)
   {
     v3 = 16;
   }
@@ -96,9 +96,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasBtIsPowerOn:(BOOL)a3
+- (void)setHasBtIsPowerOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 32;
   }
@@ -111,9 +111,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasBtIsScanning:(BOOL)a3
+- (void)setHasBtIsScanning:(BOOL)scanning
 {
-  if (a3)
+  if (scanning)
   {
     v3 = 64;
   }
@@ -126,9 +126,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasCellularAllowsVoip:(BOOL)a3
+- (void)setHasCellularAllowsVoip:(BOOL)voip
 {
-  if (a3)
+  if (voip)
   {
     v3 = 128;
   }
@@ -141,9 +141,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasDownloadIsCellular:(BOOL)a3
+- (void)setHasDownloadIsCellular:(BOOL)cellular
 {
-  if (a3)
+  if (cellular)
   {
     v3 = 512;
   }
@@ -156,9 +156,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasDownloadIsConstrained:(BOOL)a3
+- (void)setHasDownloadIsConstrained:(BOOL)constrained
 {
-  if (a3)
+  if (constrained)
   {
     v3 = 1024;
   }
@@ -171,9 +171,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasDownloadIsExpensive:(BOOL)a3
+- (void)setHasDownloadIsExpensive:(BOOL)expensive
 {
-  if (a3)
+  if (expensive)
   {
     v3 = 2048;
   }
@@ -186,9 +186,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasDownloadIsMultipath:(BOOL)a3
+- (void)setHasDownloadIsMultipath:(BOOL)multipath
 {
-  if (a3)
+  if (multipath)
   {
     v3 = 4096;
   }
@@ -201,9 +201,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasDownloadIsProxyConnection:(BOOL)a3
+- (void)setHasDownloadIsProxyConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 0x2000;
   }
@@ -216,9 +216,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasDownloadIsReusedConnection:(BOOL)a3
+- (void)setHasDownloadIsReusedConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 0x4000;
   }
@@ -231,9 +231,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasNetworkIsAppleReachable:(BOOL)a3
+- (void)setHasNetworkIsAppleReachable:(BOOL)reachable
 {
-  if (a3)
+  if (reachable)
   {
     v3 = 0x8000;
   }
@@ -246,9 +246,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasSystemLowPowerModeEnabled:(BOOL)a3
+- (void)setHasSystemLowPowerModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x10000;
   }
@@ -261,9 +261,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasSystemPowersourceConnected:(BOOL)a3
+- (void)setHasSystemPowersourceConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v3 = 0x20000;
   }
@@ -276,9 +276,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasUploadIsCellular:(BOOL)a3
+- (void)setHasUploadIsCellular:(BOOL)cellular
 {
-  if (a3)
+  if (cellular)
   {
     v3 = 0x40000;
   }
@@ -291,9 +291,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasUploadIsConstrained:(BOOL)a3
+- (void)setHasUploadIsConstrained:(BOOL)constrained
 {
-  if (a3)
+  if (constrained)
   {
     v3 = 0x80000;
   }
@@ -306,9 +306,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasUploadIsExpensive:(BOOL)a3
+- (void)setHasUploadIsExpensive:(BOOL)expensive
 {
-  if (a3)
+  if (expensive)
   {
     v3 = 0x100000;
   }
@@ -321,9 +321,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasUploadIsMultipath:(BOOL)a3
+- (void)setHasUploadIsMultipath:(BOOL)multipath
 {
-  if (a3)
+  if (multipath)
   {
     v3 = 0x200000;
   }
@@ -336,9 +336,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasUploadIsProxyConnection:(BOOL)a3
+- (void)setHasUploadIsProxyConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 0x400000;
   }
@@ -351,9 +351,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasUploadIsReusedConnection:(BOOL)a3
+- (void)setHasUploadIsReusedConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 0x800000;
   }
@@ -366,9 +366,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasUseWifiWasSpecified:(BOOL)a3
+- (void)setHasUseWifiWasSpecified:(BOOL)specified
 {
-  if (a3)
+  if (specified)
   {
     v3 = 0x1000000;
   }
@@ -381,9 +381,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasWifiIsCaptive:(BOOL)a3
+- (void)setHasWifiIsCaptive:(BOOL)captive
 {
-  if (a3)
+  if (captive)
   {
     v3 = 0x2000000;
   }
@@ -396,9 +396,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasCellularDataIsEnabled:(BOOL)a3
+- (void)setHasCellularDataIsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 256;
   }
@@ -417,20 +417,20 @@
   v8.receiver = self;
   v8.super_class = AWDNetworkPerformanceMetric;
   v4 = [(AWDNetworkPerformanceMetric *)&v8 description];
-  v5 = [(AWDNetworkPerformanceMetric *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDNetworkPerformanceMetric *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (*&has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -438,68 +438,68 @@
   if ((*&has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_acceptablePerformanceResult];
-    [v3 setObject:v6 forKey:@"acceptable_performance_result"];
+    [dictionary setObject:v6 forKey:@"acceptable_performance_result"];
   }
 
   awdlElectionParameters = self->_awdlElectionParameters;
   if (awdlElectionParameters)
   {
-    [v3 setObject:awdlElectionParameters forKey:@"awdl_election_parameters"];
+    [dictionary setObject:awdlElectionParameters forKey:@"awdl_election_parameters"];
   }
 
   awdlMasterChannel = self->_awdlMasterChannel;
   if (awdlMasterChannel)
   {
-    [v3 setObject:awdlMasterChannel forKey:@"awdl_master_channel"];
+    [dictionary setObject:awdlMasterChannel forKey:@"awdl_master_channel"];
   }
 
   awdlOpMode = self->_awdlOpMode;
   if (awdlOpMode)
   {
-    [v3 setObject:awdlOpMode forKey:@"awdl_op_mode"];
+    [dictionary setObject:awdlOpMode forKey:@"awdl_op_mode"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_awdlPowerState];
-    [v3 setObject:v10 forKey:@"awdl_power_state"];
+    [dictionary setObject:v10 forKey:@"awdl_power_state"];
   }
 
   awdlSchedule = self->_awdlSchedule;
   if (awdlSchedule)
   {
-    [v3 setObject:awdlSchedule forKey:@"awdl_schedule"];
+    [dictionary setObject:awdlSchedule forKey:@"awdl_schedule"];
   }
 
   awdlSecondaryMasterChannel = self->_awdlSecondaryMasterChannel;
   if (awdlSecondaryMasterChannel)
   {
-    [v3 setObject:awdlSecondaryMasterChannel forKey:@"awdl_secondary_master_channel"];
+    [dictionary setObject:awdlSecondaryMasterChannel forKey:@"awdl_secondary_master_channel"];
   }
 
   awdlSyncChannelSequence = self->_awdlSyncChannelSequence;
   if (awdlSyncChannelSequence)
   {
-    [v3 setObject:awdlSyncChannelSequence forKey:@"awdl_sync_channel_sequence"];
+    [dictionary setObject:awdlSyncChannelSequence forKey:@"awdl_sync_channel_sequence"];
   }
 
   awdlSyncState = self->_awdlSyncState;
   if (awdlSyncState)
   {
-    [v3 setObject:awdlSyncState forKey:@"awdl_sync_state"];
+    [dictionary setObject:awdlSyncState forKey:@"awdl_sync_state"];
   }
 
   btConnectedDevicesCount = self->_btConnectedDevicesCount;
   if (btConnectedDevicesCount)
   {
-    [v3 setObject:btConnectedDevicesCount forKey:@"bt_connected_devices_count"];
+    [dictionary setObject:btConnectedDevicesCount forKey:@"bt_connected_devices_count"];
   }
 
   v16 = self->_has;
   if ((*&v16 & 8) != 0)
   {
     v228 = [MEMORY[0x277CCABB0] numberWithBool:self->_btIsConnectable];
-    [v3 setObject:v228 forKey:@"bt_is_connectable"];
+    [dictionary setObject:v228 forKey:@"bt_is_connectable"];
 
     v16 = self->_has;
     if ((*&v16 & 0x10) == 0)
@@ -520,7 +520,7 @@ LABEL_25:
   }
 
   v229 = [MEMORY[0x277CCABB0] numberWithBool:self->_btIsDiscoverable];
-  [v3 setObject:v229 forKey:@"bt_is_discoverable"];
+  [dictionary setObject:v229 forKey:@"bt_is_discoverable"];
 
   v16 = self->_has;
   if ((*&v16 & 0x20) == 0)
@@ -536,351 +536,351 @@ LABEL_26:
 
 LABEL_453:
   v230 = [MEMORY[0x277CCABB0] numberWithBool:self->_btIsPowerOn];
-  [v3 setObject:v230 forKey:@"bt_is_power_on"];
+  [dictionary setObject:v230 forKey:@"bt_is_power_on"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_27:
     v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_btIsScanning];
-    [v3 setObject:v17 forKey:@"bt_is_scanning"];
+    [dictionary setObject:v17 forKey:@"bt_is_scanning"];
   }
 
 LABEL_28:
   callingClient = self->_callingClient;
   if (callingClient)
   {
-    [v3 setObject:callingClient forKey:@"calling_client"];
+    [dictionary setObject:callingClient forKey:@"calling_client"];
   }
 
   cellularActiveContexts = self->_cellularActiveContexts;
   if (cellularActiveContexts)
   {
-    [v3 setObject:cellularActiveContexts forKey:@"cellular_active_contexts"];
+    [dictionary setObject:cellularActiveContexts forKey:@"cellular_active_contexts"];
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_cellularAllowsVoip];
-    [v3 setObject:v20 forKey:@"cellular_allows_voip"];
+    [dictionary setObject:v20 forKey:@"cellular_allows_voip"];
   }
 
   cellularAttached = self->_cellularAttached;
   if (cellularAttached)
   {
-    [v3 setObject:cellularAttached forKey:@"cellular_attached"];
+    [dictionary setObject:cellularAttached forKey:@"cellular_attached"];
   }
 
   cellularBandinfo = self->_cellularBandinfo;
   if (cellularBandinfo)
   {
-    [v3 setObject:cellularBandinfo forKey:@"cellular_bandinfo"];
+    [dictionary setObject:cellularBandinfo forKey:@"cellular_bandinfo"];
   }
 
   cellularBandwidth = self->_cellularBandwidth;
   if (cellularBandwidth)
   {
-    [v3 setObject:cellularBandwidth forKey:@"cellular_bandwidth"];
+    [dictionary setObject:cellularBandwidth forKey:@"cellular_bandwidth"];
   }
 
   cellularCarrierName = self->_cellularCarrierName;
   if (cellularCarrierName)
   {
-    [v3 setObject:cellularCarrierName forKey:@"cellular_carrier_name"];
+    [dictionary setObject:cellularCarrierName forKey:@"cellular_carrier_name"];
   }
 
   cellularDataBearerSoMask = self->_cellularDataBearerSoMask;
   if (cellularDataBearerSoMask)
   {
-    [v3 setObject:cellularDataBearerSoMask forKey:@"cellular_data_bearer_so_mask"];
+    [dictionary setObject:cellularDataBearerSoMask forKey:@"cellular_data_bearer_so_mask"];
   }
 
   cellularDataBearerTechnology = self->_cellularDataBearerTechnology;
   if (cellularDataBearerTechnology)
   {
-    [v3 setObject:cellularDataBearerTechnology forKey:@"cellular_data_bearer_technology"];
+    [dictionary setObject:cellularDataBearerTechnology forKey:@"cellular_data_bearer_technology"];
   }
 
   cellularDataPlanSignalingReductionOverride = self->_cellularDataPlanSignalingReductionOverride;
   if (cellularDataPlanSignalingReductionOverride)
   {
-    [v3 setObject:cellularDataPlanSignalingReductionOverride forKey:@"cellular_data_plan_signaling_reduction_override"];
+    [dictionary setObject:cellularDataPlanSignalingReductionOverride forKey:@"cellular_data_plan_signaling_reduction_override"];
   }
 
   cellularDataPossible = self->_cellularDataPossible;
   if (cellularDataPossible)
   {
-    [v3 setObject:cellularDataPossible forKey:@"cellular_data_possible"];
+    [dictionary setObject:cellularDataPossible forKey:@"cellular_data_possible"];
   }
 
   cellularInHomeCountry = self->_cellularInHomeCountry;
   if (cellularInHomeCountry)
   {
-    [v3 setObject:cellularInHomeCountry forKey:@"cellular_in_home_country"];
+    [dictionary setObject:cellularInHomeCountry forKey:@"cellular_in_home_country"];
   }
 
   cellularIndicator = self->_cellularIndicator;
   if (cellularIndicator)
   {
-    [v3 setObject:cellularIndicator forKey:@"cellular_indicator"];
+    [dictionary setObject:cellularIndicator forKey:@"cellular_indicator"];
   }
 
   cellularIndicatorOverride = self->_cellularIndicatorOverride;
   if (cellularIndicatorOverride)
   {
-    [v3 setObject:cellularIndicatorOverride forKey:@"cellular_indicator_override"];
+    [dictionary setObject:cellularIndicatorOverride forKey:@"cellular_indicator_override"];
   }
 
   cellularIsoCountryCode = self->_cellularIsoCountryCode;
   if (cellularIsoCountryCode)
   {
-    [v3 setObject:cellularIsoCountryCode forKey:@"cellular_iso_country_code"];
+    [dictionary setObject:cellularIsoCountryCode forKey:@"cellular_iso_country_code"];
   }
 
   cellularLqm = self->_cellularLqm;
   if (cellularLqm)
   {
-    [v3 setObject:cellularLqm forKey:@"cellular_lqm"];
+    [dictionary setObject:cellularLqm forKey:@"cellular_lqm"];
   }
 
   cellularLteMaxScheduledLayers = self->_cellularLteMaxScheduledLayers;
   if (cellularLteMaxScheduledLayers)
   {
-    [v3 setObject:cellularLteMaxScheduledLayers forKey:@"cellular_lte_max_scheduled_layers"];
+    [dictionary setObject:cellularLteMaxScheduledLayers forKey:@"cellular_lte_max_scheduled_layers"];
   }
 
   cellularMobileCountryCode = self->_cellularMobileCountryCode;
   if (cellularMobileCountryCode)
   {
-    [v3 setObject:cellularMobileCountryCode forKey:@"cellular_mobile_country_code"];
+    [dictionary setObject:cellularMobileCountryCode forKey:@"cellular_mobile_country_code"];
   }
 
   cellularMobileNetworkCode = self->_cellularMobileNetworkCode;
   if (cellularMobileNetworkCode)
   {
-    [v3 setObject:cellularMobileNetworkCode forKey:@"cellular_mobile_network_code"];
+    [dictionary setObject:cellularMobileNetworkCode forKey:@"cellular_mobile_network_code"];
   }
 
   cellularNewRadioCoverage = self->_cellularNewRadioCoverage;
   if (cellularNewRadioCoverage)
   {
-    [v3 setObject:cellularNewRadioCoverage forKey:@"cellular_new_radio_coverage"];
+    [dictionary setObject:cellularNewRadioCoverage forKey:@"cellular_new_radio_coverage"];
   }
 
   cellularNewRadioDataBearer = self->_cellularNewRadioDataBearer;
   if (cellularNewRadioDataBearer)
   {
-    [v3 setObject:cellularNewRadioDataBearer forKey:@"cellular_new_radio_data_bearer"];
+    [dictionary setObject:cellularNewRadioDataBearer forKey:@"cellular_new_radio_data_bearer"];
   }
 
   cellularNewRadioMmwaveDataBearer = self->_cellularNewRadioMmwaveDataBearer;
   if (cellularNewRadioMmwaveDataBearer)
   {
-    [v3 setObject:cellularNewRadioMmwaveDataBearer forKey:@"cellular_new_radio_mmwave_data_bearer"];
+    [dictionary setObject:cellularNewRadioMmwaveDataBearer forKey:@"cellular_new_radio_mmwave_data_bearer"];
   }
 
   cellularNewRadioNsaCoverage = self->_cellularNewRadioNsaCoverage;
   if (cellularNewRadioNsaCoverage)
   {
-    [v3 setObject:cellularNewRadioNsaCoverage forKey:@"cellular_new_radio_nsa_coverage"];
+    [dictionary setObject:cellularNewRadioNsaCoverage forKey:@"cellular_new_radio_nsa_coverage"];
   }
 
   cellularNewRadioNsaDataBearer = self->_cellularNewRadioNsaDataBearer;
   if (cellularNewRadioNsaDataBearer)
   {
-    [v3 setObject:cellularNewRadioNsaDataBearer forKey:@"cellular_new_radio_nsa_data_bearer"];
+    [dictionary setObject:cellularNewRadioNsaDataBearer forKey:@"cellular_new_radio_nsa_data_bearer"];
   }
 
   cellularNewRadioSaCoverage = self->_cellularNewRadioSaCoverage;
   if (cellularNewRadioSaCoverage)
   {
-    [v3 setObject:cellularNewRadioSaCoverage forKey:@"cellular_new_radio_sa_coverage"];
+    [dictionary setObject:cellularNewRadioSaCoverage forKey:@"cellular_new_radio_sa_coverage"];
   }
 
   cellularNewRadioSaDataBearer = self->_cellularNewRadioSaDataBearer;
   if (cellularNewRadioSaDataBearer)
   {
-    [v3 setObject:cellularNewRadioSaDataBearer forKey:@"cellular_new_radio_sa_data_bearer"];
+    [dictionary setObject:cellularNewRadioSaDataBearer forKey:@"cellular_new_radio_sa_data_bearer"];
   }
 
   cellularNewRadioSub6DataBearer = self->_cellularNewRadioSub6DataBearer;
   if (cellularNewRadioSub6DataBearer)
   {
-    [v3 setObject:cellularNewRadioSub6DataBearer forKey:@"cellular_new_radio_sub6_data_bearer"];
+    [dictionary setObject:cellularNewRadioSub6DataBearer forKey:@"cellular_new_radio_sub6_data_bearer"];
   }
 
   cellularNrConfiguredBw = self->_cellularNrConfiguredBw;
   if (cellularNrConfiguredBw)
   {
-    [v3 setObject:cellularNrConfiguredBw forKey:@"cellular_nr_configured_bw"];
+    [dictionary setObject:cellularNrConfiguredBw forKey:@"cellular_nr_configured_bw"];
   }
 
   cellularNrLayers = self->_cellularNrLayers;
   if (cellularNrLayers)
   {
-    [v3 setObject:cellularNrLayers forKey:@"cellular_nr_layers"];
+    [dictionary setObject:cellularNrLayers forKey:@"cellular_nr_layers"];
   }
 
   cellularNrModulation = self->_cellularNrModulation;
   if (cellularNrModulation)
   {
-    [v3 setObject:cellularNrModulation forKey:@"cellular_nr_modulation"];
+    [dictionary setObject:cellularNrModulation forKey:@"cellular_nr_modulation"];
   }
 
   cellularNrRsrp = self->_cellularNrRsrp;
   if (cellularNrRsrp)
   {
-    [v3 setObject:cellularNrRsrp forKey:@"cellular_nr_rsrp"];
+    [dictionary setObject:cellularNrRsrp forKey:@"cellular_nr_rsrp"];
   }
 
   cellularNrRsrq = self->_cellularNrRsrq;
   if (cellularNrRsrq)
   {
-    [v3 setObject:cellularNrRsrq forKey:@"cellular_nr_rsrq"];
+    [dictionary setObject:cellularNrRsrq forKey:@"cellular_nr_rsrq"];
   }
 
   cellularNrSnr = self->_cellularNrSnr;
   if (cellularNrSnr)
   {
-    [v3 setObject:cellularNrSnr forKey:@"cellular_nr_snr"];
+    [dictionary setObject:cellularNrSnr forKey:@"cellular_nr_snr"];
   }
 
   cellularPid = self->_cellularPid;
   if (cellularPid)
   {
-    [v3 setObject:cellularPid forKey:@"cellular_pid"];
+    [dictionary setObject:cellularPid forKey:@"cellular_pid"];
   }
 
   cellularRadioAccessTechnology = self->_cellularRadioAccessTechnology;
   if (cellularRadioAccessTechnology)
   {
-    [v3 setObject:cellularRadioAccessTechnology forKey:@"cellular_radio_access_technology"];
+    [dictionary setObject:cellularRadioAccessTechnology forKey:@"cellular_radio_access_technology"];
   }
 
   cellularRadioAccessTechnologyCtDataStatus = self->_cellularRadioAccessTechnologyCtDataStatus;
   if (cellularRadioAccessTechnologyCtDataStatus)
   {
-    [v3 setObject:cellularRadioAccessTechnologyCtDataStatus forKey:@"cellular_radio_access_technology_ct_data_status"];
+    [dictionary setObject:cellularRadioAccessTechnologyCtDataStatus forKey:@"cellular_radio_access_technology_ct_data_status"];
   }
 
   cellularRoamAllowed = self->_cellularRoamAllowed;
   if (cellularRoamAllowed)
   {
-    [v3 setObject:cellularRoamAllowed forKey:@"cellular_roam_allowed"];
+    [dictionary setObject:cellularRoamAllowed forKey:@"cellular_roam_allowed"];
   }
 
   cellularRsrp = self->_cellularRsrp;
   if (cellularRsrp)
   {
-    [v3 setObject:cellularRsrp forKey:@"cellular_rsrp"];
+    [dictionary setObject:cellularRsrp forKey:@"cellular_rsrp"];
   }
 
   cellularSnr = self->_cellularSnr;
   if (cellularSnr)
   {
-    [v3 setObject:cellularSnr forKey:@"cellular_snr"];
+    [dictionary setObject:cellularSnr forKey:@"cellular_snr"];
   }
 
   cellularTac = self->_cellularTac;
   if (cellularTac)
   {
-    [v3 setObject:cellularTac forKey:@"cellular_tac"];
+    [dictionary setObject:cellularTac forKey:@"cellular_tac"];
   }
 
   cellularTotalActiveContexts = self->_cellularTotalActiveContexts;
   if (cellularTotalActiveContexts)
   {
-    [v3 setObject:cellularTotalActiveContexts forKey:@"cellular_total_active_contexts"];
+    [dictionary setObject:cellularTotalActiveContexts forKey:@"cellular_total_active_contexts"];
   }
 
   cellularTotalBw = self->_cellularTotalBw;
   if (cellularTotalBw)
   {
-    [v3 setObject:cellularTotalBw forKey:@"cellular_total_bw"];
+    [dictionary setObject:cellularTotalBw forKey:@"cellular_total_bw"];
   }
 
   cellularTotalCcs = self->_cellularTotalCcs;
   if (cellularTotalCcs)
   {
-    [v3 setObject:cellularTotalCcs forKey:@"cellular_total_ccs"];
+    [dictionary setObject:cellularTotalCcs forKey:@"cellular_total_ccs"];
   }
 
   cellularTotalLayers = self->_cellularTotalLayers;
   if (cellularTotalLayers)
   {
-    [v3 setObject:cellularTotalLayers forKey:@"cellular_total_layers"];
+    [dictionary setObject:cellularTotalLayers forKey:@"cellular_total_layers"];
   }
 
   cellularUarfcn = self->_cellularUarfcn;
   if (cellularUarfcn)
   {
-    [v3 setObject:cellularUarfcn forKey:@"cellular_uarfcn"];
+    [dictionary setObject:cellularUarfcn forKey:@"cellular_uarfcn"];
   }
 
   downloadCdnPop = self->_downloadCdnPop;
   if (downloadCdnPop)
   {
-    [v3 setObject:downloadCdnPop forKey:@"download_cdn_pop"];
+    [dictionary setObject:downloadCdnPop forKey:@"download_cdn_pop"];
   }
 
   downloadCdnUuid = self->_downloadCdnUuid;
   if (downloadCdnUuid)
   {
-    [v3 setObject:downloadCdnUuid forKey:@"download_cdn_uuid"];
+    [dictionary setObject:downloadCdnUuid forKey:@"download_cdn_uuid"];
   }
 
   downloadConnectionTime = self->_downloadConnectionTime;
   if (downloadConnectionTime)
   {
-    [v3 setObject:downloadConnectionTime forKey:@"download_connection_time"];
+    [dictionary setObject:downloadConnectionTime forKey:@"download_connection_time"];
   }
 
   downloadDomainLookupTime = self->_downloadDomainLookupTime;
   if (downloadDomainLookupTime)
   {
-    [v3 setObject:downloadDomainLookupTime forKey:@"download_domain_lookup_time"];
+    [dictionary setObject:downloadDomainLookupTime forKey:@"download_domain_lookup_time"];
   }
 
   downloadEndDataBearerTechnology = self->_downloadEndDataBearerTechnology;
   if (downloadEndDataBearerTechnology)
   {
-    [v3 setObject:downloadEndDataBearerTechnology forKey:@"download_end_data_bearer_technology"];
+    [dictionary setObject:downloadEndDataBearerTechnology forKey:@"download_end_data_bearer_technology"];
   }
 
   downloadEndPrimaryIpv4Interface = self->_downloadEndPrimaryIpv4Interface;
   if (downloadEndPrimaryIpv4Interface)
   {
-    [v3 setObject:downloadEndPrimaryIpv4Interface forKey:@"download_end_primary_ipv4_interface"];
+    [dictionary setObject:downloadEndPrimaryIpv4Interface forKey:@"download_end_primary_ipv4_interface"];
   }
 
   downloadEndRat = self->_downloadEndRat;
   if (downloadEndRat)
   {
-    [v3 setObject:downloadEndRat forKey:@"download_end_rat"];
+    [dictionary setObject:downloadEndRat forKey:@"download_end_rat"];
   }
 
   downloadFileSize = self->_downloadFileSize;
   if (downloadFileSize)
   {
-    [v3 setObject:downloadFileSize forKey:@"download_file_size"];
+    [dictionary setObject:downloadFileSize forKey:@"download_file_size"];
   }
 
   downloadInterfaceName = self->_downloadInterfaceName;
   if (downloadInterfaceName)
   {
-    [v3 setObject:downloadInterfaceName forKey:@"download_interface_name"];
+    [dictionary setObject:downloadInterfaceName forKey:@"download_interface_name"];
   }
 
   downloadInterfaceServiceName = self->_downloadInterfaceServiceName;
   if (downloadInterfaceServiceName)
   {
-    [v3 setObject:downloadInterfaceServiceName forKey:@"download_interface_service_name"];
+    [dictionary setObject:downloadInterfaceServiceName forKey:@"download_interface_service_name"];
   }
 
   v73 = self->_has;
   if ((*&v73 & 0x200) != 0)
   {
     v231 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadIsCellular];
-    [v3 setObject:v231 forKey:@"download_is_cellular"];
+    [dictionary setObject:v231 forKey:@"download_is_cellular"];
 
     v73 = self->_has;
     if ((*&v73 & 0x400) == 0)
@@ -901,7 +901,7 @@ LABEL_140:
   }
 
   v232 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadIsConstrained];
-  [v3 setObject:v232 forKey:@"download_is_constrained"];
+  [dictionary setObject:v232 forKey:@"download_is_constrained"];
 
   v73 = self->_has;
   if ((*&v73 & 0x800) == 0)
@@ -917,7 +917,7 @@ LABEL_141:
 
 LABEL_457:
   v233 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadIsExpensive];
-  [v3 setObject:v233 forKey:@"download_is_expensive"];
+  [dictionary setObject:v233 forKey:@"download_is_expensive"];
 
   v73 = self->_has;
   if ((*&v73 & 0x1000) == 0)
@@ -933,7 +933,7 @@ LABEL_142:
 
 LABEL_458:
   v234 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadIsMultipath];
-  [v3 setObject:v234 forKey:@"download_is_multipath"];
+  [dictionary setObject:v234 forKey:@"download_is_multipath"];
 
   v73 = self->_has;
   if ((*&v73 & 0x2000) == 0)
@@ -949,327 +949,327 @@ LABEL_143:
 
 LABEL_459:
   v235 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadIsProxyConnection];
-  [v3 setObject:v235 forKey:@"download_is_proxy_connection"];
+  [dictionary setObject:v235 forKey:@"download_is_proxy_connection"];
 
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_144:
     v74 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadIsReusedConnection];
-    [v3 setObject:v74 forKey:@"download_is_reused_connection"];
+    [dictionary setObject:v74 forKey:@"download_is_reused_connection"];
   }
 
 LABEL_145:
   downloadMaxSpeedObserved = self->_downloadMaxSpeedObserved;
   if (downloadMaxSpeedObserved)
   {
-    [v3 setObject:downloadMaxSpeedObserved forKey:@"download_max_speed_observed"];
+    [dictionary setObject:downloadMaxSpeedObserved forKey:@"download_max_speed_observed"];
   }
 
   downloadNumberOfStreams = self->_downloadNumberOfStreams;
   if (downloadNumberOfStreams)
   {
-    [v3 setObject:downloadNumberOfStreams forKey:@"download_number_of_streams"];
+    [dictionary setObject:downloadNumberOfStreams forKey:@"download_number_of_streams"];
   }
 
   downloadProtocolName = self->_downloadProtocolName;
   if (downloadProtocolName)
   {
-    [v3 setObject:downloadProtocolName forKey:@"download_protocol_name"];
+    [dictionary setObject:downloadProtocolName forKey:@"download_protocol_name"];
   }
 
   downloadRemoteAddress = self->_downloadRemoteAddress;
   if (downloadRemoteAddress)
   {
-    [v3 setObject:downloadRemoteAddress forKey:@"download_remote_address"];
+    [dictionary setObject:downloadRemoteAddress forKey:@"download_remote_address"];
   }
 
   downloadRemotePort = self->_downloadRemotePort;
   if (downloadRemotePort)
   {
-    [v3 setObject:downloadRemotePort forKey:@"download_remote_port"];
+    [dictionary setObject:downloadRemotePort forKey:@"download_remote_port"];
   }
 
   downloadRequestTime = self->_downloadRequestTime;
   if (downloadRequestTime)
   {
-    [v3 setObject:downloadRequestTime forKey:@"download_request_time"];
+    [dictionary setObject:downloadRequestTime forKey:@"download_request_time"];
   }
 
   downloadRequestToResponseTime = self->_downloadRequestToResponseTime;
   if (downloadRequestToResponseTime)
   {
-    [v3 setObject:downloadRequestToResponseTime forKey:@"download_request_to_response_time"];
+    [dictionary setObject:downloadRequestToResponseTime forKey:@"download_request_to_response_time"];
   }
 
   downloadResponseTime = self->_downloadResponseTime;
   if (downloadResponseTime)
   {
-    [v3 setObject:downloadResponseTime forKey:@"download_response_time"];
+    [dictionary setObject:downloadResponseTime forKey:@"download_response_time"];
   }
 
   downloadSecureConnectionTime = self->_downloadSecureConnectionTime;
   if (downloadSecureConnectionTime)
   {
-    [v3 setObject:downloadSecureConnectionTime forKey:@"download_secure_connection_time"];
+    [dictionary setObject:downloadSecureConnectionTime forKey:@"download_secure_connection_time"];
   }
 
   downloadServer = self->_downloadServer;
   if (downloadServer)
   {
-    [v3 setObject:downloadServer forKey:@"download_server"];
+    [dictionary setObject:downloadServer forKey:@"download_server"];
   }
 
   downloadSpeed = self->_downloadSpeed;
   if (downloadSpeed)
   {
-    [v3 setObject:downloadSpeed forKey:@"download_speed"];
+    [dictionary setObject:downloadSpeed forKey:@"download_speed"];
   }
 
   downloadStableSpeed = self->_downloadStableSpeed;
   if (downloadStableSpeed)
   {
-    [v3 setObject:downloadStableSpeed forKey:@"download_stable_speed"];
+    [dictionary setObject:downloadStableSpeed forKey:@"download_stable_speed"];
   }
 
   downloadStartDataBearerTechnology = self->_downloadStartDataBearerTechnology;
   if (downloadStartDataBearerTechnology)
   {
-    [v3 setObject:downloadStartDataBearerTechnology forKey:@"download_start_data_bearer_technology"];
+    [dictionary setObject:downloadStartDataBearerTechnology forKey:@"download_start_data_bearer_technology"];
   }
 
   downloadStartPrimaryIpv4Interface = self->_downloadStartPrimaryIpv4Interface;
   if (downloadStartPrimaryIpv4Interface)
   {
-    [v3 setObject:downloadStartPrimaryIpv4Interface forKey:@"download_start_primary_ipv4_interface"];
+    [dictionary setObject:downloadStartPrimaryIpv4Interface forKey:@"download_start_primary_ipv4_interface"];
   }
 
   downloadStartRat = self->_downloadStartRat;
   if (downloadStartRat)
   {
-    [v3 setObject:downloadStartRat forKey:@"download_start_rat"];
+    [dictionary setObject:downloadStartRat forKey:@"download_start_rat"];
   }
 
   if ((*(&self->_has + 1) & 0x80) != 0)
   {
     v90 = [MEMORY[0x277CCABB0] numberWithBool:self->_networkIsAppleReachable];
-    [v3 setObject:v90 forKey:@"network_is_apple_reachable"];
+    [dictionary setObject:v90 forKey:@"network_is_apple_reachable"];
   }
 
   networkPrimaryIpv4InterfaceName = self->_networkPrimaryIpv4InterfaceName;
   if (networkPrimaryIpv4InterfaceName)
   {
-    [v3 setObject:networkPrimaryIpv4InterfaceName forKey:@"network_primary_ipv4_interface_name"];
+    [dictionary setObject:networkPrimaryIpv4InterfaceName forKey:@"network_primary_ipv4_interface_name"];
   }
 
   networkPrimaryIpv4ServiceName = self->_networkPrimaryIpv4ServiceName;
   if (networkPrimaryIpv4ServiceName)
   {
-    [v3 setObject:networkPrimaryIpv4ServiceName forKey:@"network_primary_ipv4_service_name"];
+    [dictionary setObject:networkPrimaryIpv4ServiceName forKey:@"network_primary_ipv4_service_name"];
   }
 
   nptkitFrameworkVersion = self->_nptkitFrameworkVersion;
   if (nptkitFrameworkVersion)
   {
-    [v3 setObject:nptkitFrameworkVersion forKey:@"nptkit_framework_version"];
+    [dictionary setObject:nptkitFrameworkVersion forKey:@"nptkit_framework_version"];
   }
 
   performanceTestStartTime = self->_performanceTestStartTime;
   if (performanceTestStartTime)
   {
-    [v3 setObject:performanceTestStartTime forKey:@"performance_test_start_time"];
+    [dictionary setObject:performanceTestStartTime forKey:@"performance_test_start_time"];
   }
 
   pingAddress = self->_pingAddress;
   if (pingAddress)
   {
-    [v3 setObject:pingAddress forKey:@"ping_address"];
+    [dictionary setObject:pingAddress forKey:@"ping_address"];
   }
 
   pingLossPercent = self->_pingLossPercent;
   if (pingLossPercent)
   {
-    [v3 setObject:pingLossPercent forKey:@"ping_loss_percent"];
+    [dictionary setObject:pingLossPercent forKey:@"ping_loss_percent"];
   }
 
   pingMaxLatency = self->_pingMaxLatency;
   if (pingMaxLatency)
   {
-    [v3 setObject:pingMaxLatency forKey:@"ping_max_latency"];
+    [dictionary setObject:pingMaxLatency forKey:@"ping_max_latency"];
   }
 
   pingMeanLatency = self->_pingMeanLatency;
   if (pingMeanLatency)
   {
-    [v3 setObject:pingMeanLatency forKey:@"ping_mean_latency"];
+    [dictionary setObject:pingMeanLatency forKey:@"ping_mean_latency"];
   }
 
   pingMinLatency = self->_pingMinLatency;
   if (pingMinLatency)
   {
-    [v3 setObject:pingMinLatency forKey:@"ping_min_latency"];
+    [dictionary setObject:pingMinLatency forKey:@"ping_min_latency"];
   }
 
   pingStandardDeviation = self->_pingStandardDeviation;
   if (pingStandardDeviation)
   {
-    [v3 setObject:pingStandardDeviation forKey:@"ping_standard_deviation"];
+    [dictionary setObject:pingStandardDeviation forKey:@"ping_standard_deviation"];
   }
 
   powerBatteryWarningLevel = self->_powerBatteryWarningLevel;
   if (powerBatteryWarningLevel)
   {
-    [v3 setObject:powerBatteryWarningLevel forKey:@"power_battery_warning_level"];
+    [dictionary setObject:powerBatteryWarningLevel forKey:@"power_battery_warning_level"];
   }
 
   powerSourceType = self->_powerSourceType;
   if (powerSourceType)
   {
-    [v3 setObject:powerSourceType forKey:@"power_source_type"];
+    [dictionary setObject:powerSourceType forKey:@"power_source_type"];
   }
 
   powerStateCaps = self->_powerStateCaps;
   if (powerStateCaps)
   {
-    [v3 setObject:powerStateCaps forKey:@"power_state_caps"];
+    [dictionary setObject:powerStateCaps forKey:@"power_state_caps"];
   }
 
   systemActiveProcessorCount = self->_systemActiveProcessorCount;
   if (systemActiveProcessorCount)
   {
-    [v3 setObject:systemActiveProcessorCount forKey:@"system_active_processor_count"];
+    [dictionary setObject:systemActiveProcessorCount forKey:@"system_active_processor_count"];
   }
 
   systemBatteryLevel = self->_systemBatteryLevel;
   if (systemBatteryLevel)
   {
-    [v3 setObject:systemBatteryLevel forKey:@"system_battery_level"];
+    [dictionary setObject:systemBatteryLevel forKey:@"system_battery_level"];
   }
 
   systemBatteryState = self->_systemBatteryState;
   if (systemBatteryState)
   {
-    [v3 setObject:systemBatteryState forKey:@"system_battery_state"];
+    [dictionary setObject:systemBatteryState forKey:@"system_battery_state"];
   }
 
   systemDeviceClass = self->_systemDeviceClass;
   if (systemDeviceClass)
   {
-    [v3 setObject:systemDeviceClass forKey:@"system_device_class"];
+    [dictionary setObject:systemDeviceClass forKey:@"system_device_class"];
   }
 
   systemDeviceModel = self->_systemDeviceModel;
   if (systemDeviceModel)
   {
-    [v3 setObject:systemDeviceModel forKey:@"system_device_model"];
+    [dictionary setObject:systemDeviceModel forKey:@"system_device_model"];
   }
 
   if (*(&self->_has + 2))
   {
     v109 = [MEMORY[0x277CCABB0] numberWithBool:self->_systemLowPowerModeEnabled];
-    [v3 setObject:v109 forKey:@"system_low_power_mode_enabled"];
+    [dictionary setObject:v109 forKey:@"system_low_power_mode_enabled"];
   }
 
   systemName = self->_systemName;
   if (systemName)
   {
-    [v3 setObject:systemName forKey:@"system_name"];
+    [dictionary setObject:systemName forKey:@"system_name"];
   }
 
   systemOsVariant = self->_systemOsVariant;
   if (systemOsVariant)
   {
-    [v3 setObject:systemOsVariant forKey:@"system_os_variant"];
+    [dictionary setObject:systemOsVariant forKey:@"system_os_variant"];
   }
 
   systemPhysicalMemory = self->_systemPhysicalMemory;
   if (systemPhysicalMemory)
   {
-    [v3 setObject:systemPhysicalMemory forKey:@"system_physical_memory"];
+    [dictionary setObject:systemPhysicalMemory forKey:@"system_physical_memory"];
   }
 
   if ((*(&self->_has + 2) & 2) != 0)
   {
     v113 = [MEMORY[0x277CCABB0] numberWithBool:self->_systemPowersourceConnected];
-    [v3 setObject:v113 forKey:@"system_powersource_connected"];
+    [dictionary setObject:v113 forKey:@"system_powersource_connected"];
   }
 
   systemProcessorCount = self->_systemProcessorCount;
   if (systemProcessorCount)
   {
-    [v3 setObject:systemProcessorCount forKey:@"system_processor_count"];
+    [dictionary setObject:systemProcessorCount forKey:@"system_processor_count"];
   }
 
   systemVersion = self->_systemVersion;
   if (systemVersion)
   {
-    [v3 setObject:systemVersion forKey:@"system_version"];
+    [dictionary setObject:systemVersion forKey:@"system_version"];
   }
 
   uploadCdnPop = self->_uploadCdnPop;
   if (uploadCdnPop)
   {
-    [v3 setObject:uploadCdnPop forKey:@"upload_cdn_pop"];
+    [dictionary setObject:uploadCdnPop forKey:@"upload_cdn_pop"];
   }
 
   uploadCdnUuid = self->_uploadCdnUuid;
   if (uploadCdnUuid)
   {
-    [v3 setObject:uploadCdnUuid forKey:@"upload_cdn_uuid"];
+    [dictionary setObject:uploadCdnUuid forKey:@"upload_cdn_uuid"];
   }
 
   uploadConnectionTime = self->_uploadConnectionTime;
   if (uploadConnectionTime)
   {
-    [v3 setObject:uploadConnectionTime forKey:@"upload_connection_time"];
+    [dictionary setObject:uploadConnectionTime forKey:@"upload_connection_time"];
   }
 
   uploadDomainLookupTime = self->_uploadDomainLookupTime;
   if (uploadDomainLookupTime)
   {
-    [v3 setObject:uploadDomainLookupTime forKey:@"upload_domain_lookup_time"];
+    [dictionary setObject:uploadDomainLookupTime forKey:@"upload_domain_lookup_time"];
   }
 
   uploadEndDataBearerTechnology = self->_uploadEndDataBearerTechnology;
   if (uploadEndDataBearerTechnology)
   {
-    [v3 setObject:uploadEndDataBearerTechnology forKey:@"upload_end_data_bearer_technology"];
+    [dictionary setObject:uploadEndDataBearerTechnology forKey:@"upload_end_data_bearer_technology"];
   }
 
   uploadEndPrimaryIpv4Interface = self->_uploadEndPrimaryIpv4Interface;
   if (uploadEndPrimaryIpv4Interface)
   {
-    [v3 setObject:uploadEndPrimaryIpv4Interface forKey:@"upload_end_primary_ipv4_interface"];
+    [dictionary setObject:uploadEndPrimaryIpv4Interface forKey:@"upload_end_primary_ipv4_interface"];
   }
 
   uploadEndRat = self->_uploadEndRat;
   if (uploadEndRat)
   {
-    [v3 setObject:uploadEndRat forKey:@"upload_end_rat"];
+    [dictionary setObject:uploadEndRat forKey:@"upload_end_rat"];
   }
 
   uploadFileSize = self->_uploadFileSize;
   if (uploadFileSize)
   {
-    [v3 setObject:uploadFileSize forKey:@"upload_file_size"];
+    [dictionary setObject:uploadFileSize forKey:@"upload_file_size"];
   }
 
   uploadInterfaceName = self->_uploadInterfaceName;
   if (uploadInterfaceName)
   {
-    [v3 setObject:uploadInterfaceName forKey:@"upload_interface_name"];
+    [dictionary setObject:uploadInterfaceName forKey:@"upload_interface_name"];
   }
 
   uploadInterfaceServiceName = self->_uploadInterfaceServiceName;
   if (uploadInterfaceServiceName)
   {
-    [v3 setObject:uploadInterfaceServiceName forKey:@"upload_interface_service_name"];
+    [dictionary setObject:uploadInterfaceServiceName forKey:@"upload_interface_service_name"];
   }
 
   v126 = self->_has;
   if ((*&v126 & 0x40000) != 0)
   {
     v236 = [MEMORY[0x277CCABB0] numberWithBool:self->_uploadIsCellular];
-    [v3 setObject:v236 forKey:@"upload_is_cellular"];
+    [dictionary setObject:v236 forKey:@"upload_is_cellular"];
 
     v126 = self->_has;
     if ((*&v126 & 0x80000) == 0)
@@ -1290,7 +1290,7 @@ LABEL_249:
   }
 
   v237 = [MEMORY[0x277CCABB0] numberWithBool:self->_uploadIsConstrained];
-  [v3 setObject:v237 forKey:@"upload_is_constrained"];
+  [dictionary setObject:v237 forKey:@"upload_is_constrained"];
 
   v126 = self->_has;
   if ((*&v126 & 0x100000) == 0)
@@ -1306,7 +1306,7 @@ LABEL_250:
 
 LABEL_463:
   v238 = [MEMORY[0x277CCABB0] numberWithBool:self->_uploadIsExpensive];
-  [v3 setObject:v238 forKey:@"upload_is_expensive"];
+  [dictionary setObject:v238 forKey:@"upload_is_expensive"];
 
   v126 = self->_has;
   if ((*&v126 & 0x200000) == 0)
@@ -1322,7 +1322,7 @@ LABEL_251:
 
 LABEL_464:
   v239 = [MEMORY[0x277CCABB0] numberWithBool:self->_uploadIsMultipath];
-  [v3 setObject:v239 forKey:@"upload_is_multipath"];
+  [dictionary setObject:v239 forKey:@"upload_is_multipath"];
 
   v126 = self->_has;
   if ((*&v126 & 0x400000) == 0)
@@ -1338,673 +1338,673 @@ LABEL_252:
 
 LABEL_465:
   v240 = [MEMORY[0x277CCABB0] numberWithBool:self->_uploadIsProxyConnection];
-  [v3 setObject:v240 forKey:@"upload_is_proxy_connection"];
+  [dictionary setObject:v240 forKey:@"upload_is_proxy_connection"];
 
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_253:
     v127 = [MEMORY[0x277CCABB0] numberWithBool:self->_uploadIsReusedConnection];
-    [v3 setObject:v127 forKey:@"upload_is_reused_connection"];
+    [dictionary setObject:v127 forKey:@"upload_is_reused_connection"];
   }
 
 LABEL_254:
   uploadMaxSpeedObserved = self->_uploadMaxSpeedObserved;
   if (uploadMaxSpeedObserved)
   {
-    [v3 setObject:uploadMaxSpeedObserved forKey:@"upload_max_speed_observed"];
+    [dictionary setObject:uploadMaxSpeedObserved forKey:@"upload_max_speed_observed"];
   }
 
   uploadNumberOfStreams = self->_uploadNumberOfStreams;
   if (uploadNumberOfStreams)
   {
-    [v3 setObject:uploadNumberOfStreams forKey:@"upload_number_of_streams"];
+    [dictionary setObject:uploadNumberOfStreams forKey:@"upload_number_of_streams"];
   }
 
   uploadProtocolName = self->_uploadProtocolName;
   if (uploadProtocolName)
   {
-    [v3 setObject:uploadProtocolName forKey:@"upload_protocol_name"];
+    [dictionary setObject:uploadProtocolName forKey:@"upload_protocol_name"];
   }
 
   uploadRemoteAddress = self->_uploadRemoteAddress;
   if (uploadRemoteAddress)
   {
-    [v3 setObject:uploadRemoteAddress forKey:@"upload_remote_address"];
+    [dictionary setObject:uploadRemoteAddress forKey:@"upload_remote_address"];
   }
 
   uploadRemotePort = self->_uploadRemotePort;
   if (uploadRemotePort)
   {
-    [v3 setObject:uploadRemotePort forKey:@"upload_remote_port"];
+    [dictionary setObject:uploadRemotePort forKey:@"upload_remote_port"];
   }
 
   uploadRequestTime = self->_uploadRequestTime;
   if (uploadRequestTime)
   {
-    [v3 setObject:uploadRequestTime forKey:@"upload_request_time"];
+    [dictionary setObject:uploadRequestTime forKey:@"upload_request_time"];
   }
 
   uploadRequestToResponseTime = self->_uploadRequestToResponseTime;
   if (uploadRequestToResponseTime)
   {
-    [v3 setObject:uploadRequestToResponseTime forKey:@"upload_request_to_response_time"];
+    [dictionary setObject:uploadRequestToResponseTime forKey:@"upload_request_to_response_time"];
   }
 
   uploadResponseTime = self->_uploadResponseTime;
   if (uploadResponseTime)
   {
-    [v3 setObject:uploadResponseTime forKey:@"upload_response_time"];
+    [dictionary setObject:uploadResponseTime forKey:@"upload_response_time"];
   }
 
   uploadSecureConnectionTime = self->_uploadSecureConnectionTime;
   if (uploadSecureConnectionTime)
   {
-    [v3 setObject:uploadSecureConnectionTime forKey:@"upload_secure_connection_time"];
+    [dictionary setObject:uploadSecureConnectionTime forKey:@"upload_secure_connection_time"];
   }
 
   uploadServer = self->_uploadServer;
   if (uploadServer)
   {
-    [v3 setObject:uploadServer forKey:@"upload_server"];
+    [dictionary setObject:uploadServer forKey:@"upload_server"];
   }
 
   uploadSpeed = self->_uploadSpeed;
   if (uploadSpeed)
   {
-    [v3 setObject:uploadSpeed forKey:@"upload_speed"];
+    [dictionary setObject:uploadSpeed forKey:@"upload_speed"];
   }
 
   uploadStableSpeed = self->_uploadStableSpeed;
   if (uploadStableSpeed)
   {
-    [v3 setObject:uploadStableSpeed forKey:@"upload_stable_speed"];
+    [dictionary setObject:uploadStableSpeed forKey:@"upload_stable_speed"];
   }
 
   uploadStartDataBearerTechnology = self->_uploadStartDataBearerTechnology;
   if (uploadStartDataBearerTechnology)
   {
-    [v3 setObject:uploadStartDataBearerTechnology forKey:@"upload_start_data_bearer_technology"];
+    [dictionary setObject:uploadStartDataBearerTechnology forKey:@"upload_start_data_bearer_technology"];
   }
 
   uploadStartPrimaryIpv4Interface = self->_uploadStartPrimaryIpv4Interface;
   if (uploadStartPrimaryIpv4Interface)
   {
-    [v3 setObject:uploadStartPrimaryIpv4Interface forKey:@"upload_start_primary_ipv4_interface"];
+    [dictionary setObject:uploadStartPrimaryIpv4Interface forKey:@"upload_start_primary_ipv4_interface"];
   }
 
   uploadStartRat = self->_uploadStartRat;
   if (uploadStartRat)
   {
-    [v3 setObject:uploadStartRat forKey:@"upload_start_rat"];
+    [dictionary setObject:uploadStartRat forKey:@"upload_start_rat"];
   }
 
   if (*(&self->_has + 3))
   {
     v143 = [MEMORY[0x277CCABB0] numberWithBool:self->_useWifiWasSpecified];
-    [v3 setObject:v143 forKey:@"use_wifi_was_specified"];
+    [dictionary setObject:v143 forKey:@"use_wifi_was_specified"];
   }
 
   wifiAveragePhyRateRx = self->_wifiAveragePhyRateRx;
   if (wifiAveragePhyRateRx)
   {
-    [v3 setObject:wifiAveragePhyRateRx forKey:@"wifi_average_phy_rate_rx"];
+    [dictionary setObject:wifiAveragePhyRateRx forKey:@"wifi_average_phy_rate_rx"];
   }
 
   wifiAverageRssi = self->_wifiAverageRssi;
   if (wifiAverageRssi)
   {
-    [v3 setObject:wifiAverageRssi forKey:@"wifi_average_rssi"];
+    [dictionary setObject:wifiAverageRssi forKey:@"wifi_average_rssi"];
   }
 
   wifiAverageSnr = self->_wifiAverageSnr;
   if (wifiAverageSnr)
   {
-    [v3 setObject:wifiAverageSnr forKey:@"wifi_average_snr"];
+    [dictionary setObject:wifiAverageSnr forKey:@"wifi_average_snr"];
   }
 
   wifiAverageTcpRtt = self->_wifiAverageTcpRtt;
   if (wifiAverageTcpRtt)
   {
-    [v3 setObject:wifiAverageTcpRtt forKey:@"wifi_average_tcp_rtt"];
+    [dictionary setObject:wifiAverageTcpRtt forKey:@"wifi_average_tcp_rtt"];
   }
 
   wifiBtcMode = self->_wifiBtcMode;
   if (wifiBtcMode)
   {
-    [v3 setObject:wifiBtcMode forKey:@"wifi_btc_mode"];
+    [dictionary setObject:wifiBtcMode forKey:@"wifi_btc_mode"];
   }
 
   wifiCca = self->_wifiCca;
   if (wifiCca)
   {
-    [v3 setObject:wifiCca forKey:@"wifi_cca"];
+    [dictionary setObject:wifiCca forKey:@"wifi_cca"];
   }
 
   wifiChannel = self->_wifiChannel;
   if (wifiChannel)
   {
-    [v3 setObject:wifiChannel forKey:@"wifi_channel"];
+    [dictionary setObject:wifiChannel forKey:@"wifi_channel"];
   }
 
   wifiCwfCca = self->_wifiCwfCca;
   if (wifiCwfCca)
   {
-    [v3 setObject:wifiCwfCca forKey:@"wifi_cwf_cca"];
+    [dictionary setObject:wifiCwfCca forKey:@"wifi_cwf_cca"];
   }
 
   wifiEapolControlMode = self->_wifiEapolControlMode;
   if (wifiEapolControlMode)
   {
-    [v3 setObject:wifiEapolControlMode forKey:@"wifi_eapol_control_mode"];
+    [dictionary setObject:wifiEapolControlMode forKey:@"wifi_eapol_control_mode"];
   }
 
   wifiEapolSupplicantState = self->_wifiEapolSupplicantState;
   if (wifiEapolSupplicantState)
   {
-    [v3 setObject:wifiEapolSupplicantState forKey:@"wifi_eapol_supplicant_state"];
+    [dictionary setObject:wifiEapolSupplicantState forKey:@"wifi_eapol_supplicant_state"];
   }
 
   wifiGuardInterval = self->_wifiGuardInterval;
   if (wifiGuardInterval)
   {
-    [v3 setObject:wifiGuardInterval forKey:@"wifi_guard_interval"];
+    [dictionary setObject:wifiGuardInterval forKey:@"wifi_guard_interval"];
   }
 
   wifiHiddenState = self->_wifiHiddenState;
   if (wifiHiddenState)
   {
-    [v3 setObject:wifiHiddenState forKey:@"wifi_hidden_state"];
+    [dictionary setObject:wifiHiddenState forKey:@"wifi_hidden_state"];
   }
 
   if ((*(&self->_has + 3) & 2) != 0)
   {
     v156 = [MEMORY[0x277CCABB0] numberWithBool:self->_wifiIsCaptive];
-    [v3 setObject:v156 forKey:@"wifi_is_captive"];
+    [dictionary setObject:v156 forKey:@"wifi_is_captive"];
   }
 
   wifiMcsIndex = self->_wifiMcsIndex;
   if (wifiMcsIndex)
   {
-    [v3 setObject:wifiMcsIndex forKey:@"wifi_mcs_index"];
+    [dictionary setObject:wifiMcsIndex forKey:@"wifi_mcs_index"];
   }
 
   wifiNoise = self->_wifiNoise;
   if (wifiNoise)
   {
-    [v3 setObject:wifiNoise forKey:@"wifi_noise"];
+    [dictionary setObject:wifiNoise forKey:@"wifi_noise"];
   }
 
   wifiNumberOfSpatialStreams = self->_wifiNumberOfSpatialStreams;
   if (wifiNumberOfSpatialStreams)
   {
-    [v3 setObject:wifiNumberOfSpatialStreams forKey:@"wifi_number_of_spatial_streams"];
+    [dictionary setObject:wifiNumberOfSpatialStreams forKey:@"wifi_number_of_spatial_streams"];
   }
 
   wifiOpMode = self->_wifiOpMode;
   if (wifiOpMode)
   {
-    [v3 setObject:wifiOpMode forKey:@"wifi_op_mode"];
+    [dictionary setObject:wifiOpMode forKey:@"wifi_op_mode"];
   }
 
   wifiPhyMode = self->_wifiPhyMode;
   if (wifiPhyMode)
   {
-    [v3 setObject:wifiPhyMode forKey:@"wifi_phy_mode"];
+    [dictionary setObject:wifiPhyMode forKey:@"wifi_phy_mode"];
   }
 
   wifiRssi = self->_wifiRssi;
   if (wifiRssi)
   {
-    [v3 setObject:wifiRssi forKey:@"wifi_rssi"];
+    [dictionary setObject:wifiRssi forKey:@"wifi_rssi"];
   }
 
   wifiSecurity = self->_wifiSecurity;
   if (wifiSecurity)
   {
-    [v3 setObject:wifiSecurity forKey:@"wifi_security"];
+    [dictionary setObject:wifiSecurity forKey:@"wifi_security"];
   }
 
   wifiTxRate = self->_wifiTxRate;
   if (wifiTxRate)
   {
-    [v3 setObject:wifiTxRate forKey:@"wifi_tx_rate"];
+    [dictionary setObject:wifiTxRate forKey:@"wifi_tx_rate"];
   }
 
   wrmChannelType = self->_wrmChannelType;
   if (wrmChannelType)
   {
-    [v3 setObject:wrmChannelType forKey:@"wrm_channel_type"];
+    [dictionary setObject:wrmChannelType forKey:@"wrm_channel_type"];
   }
 
   cellularCellid = self->_cellularCellid;
   if (cellularCellid)
   {
-    [v3 setObject:cellularCellid forKey:@"cellular_cellid"];
+    [dictionary setObject:cellularCellid forKey:@"cellular_cellid"];
   }
 
   networkQualityResponsiveness = self->_networkQualityResponsiveness;
   if (networkQualityResponsiveness)
   {
-    [v3 setObject:networkQualityResponsiveness forKey:@"network_quality_responsiveness"];
+    [dictionary setObject:networkQualityResponsiveness forKey:@"network_quality_responsiveness"];
   }
 
   cellularAggregatedDLBW = self->_cellularAggregatedDLBW;
   if (cellularAggregatedDLBW)
   {
-    [v3 setObject:cellularAggregatedDLBW forKey:@"cellular_aggregated_DL_BW"];
+    [dictionary setObject:cellularAggregatedDLBW forKey:@"cellular_aggregated_DL_BW"];
   }
 
   cellularAggregatedULBW = self->_cellularAggregatedULBW;
   if (cellularAggregatedULBW)
   {
-    [v3 setObject:cellularAggregatedULBW forKey:@"cellular_aggregated_UL_BW"];
+    [dictionary setObject:cellularAggregatedULBW forKey:@"cellular_aggregated_UL_BW"];
   }
 
   cellularIssa = self->_cellularIssa;
   if (cellularIssa)
   {
-    [v3 setObject:cellularIssa forKey:@"cellular_issa"];
+    [dictionary setObject:cellularIssa forKey:@"cellular_issa"];
   }
 
   cellularLac = self->_cellularLac;
   if (cellularLac)
   {
-    [v3 setObject:cellularLac forKey:@"cellular_lac"];
+    [dictionary setObject:cellularLac forKey:@"cellular_lac"];
   }
 
   cellularLteNrConfiguredBw = self->_cellularLteNrConfiguredBw;
   if (cellularLteNrConfiguredBw)
   {
-    [v3 setObject:cellularLteNrConfiguredBw forKey:@"cellular_lte_nr_configured_bw"];
+    [dictionary setObject:cellularLteNrConfiguredBw forKey:@"cellular_lte_nr_configured_bw"];
   }
 
   cellularMaxDlMod = self->_cellularMaxDlMod;
   if (cellularMaxDlMod)
   {
-    [v3 setObject:cellularMaxDlMod forKey:@"cellular_max_dl_mod"];
+    [dictionary setObject:cellularMaxDlMod forKey:@"cellular_max_dl_mod"];
   }
 
   cellularMaxNwMimoLyr = self->_cellularMaxNwMimoLyr;
   if (cellularMaxNwMimoLyr)
   {
-    [v3 setObject:cellularMaxNwMimoLyr forKey:@"cellular_max_nw_mimo_lyr"];
+    [dictionary setObject:cellularMaxNwMimoLyr forKey:@"cellular_max_nw_mimo_lyr"];
   }
 
   cellularMaxSchdMimoLyr = self->_cellularMaxSchdMimoLyr;
   if (cellularMaxSchdMimoLyr)
   {
-    [v3 setObject:cellularMaxSchdMimoLyr forKey:@"cellular_max_schd_mimo_lyr"];
+    [dictionary setObject:cellularMaxSchdMimoLyr forKey:@"cellular_max_schd_mimo_lyr"];
   }
 
   cellularMaxUeRank = self->_cellularMaxUeRank;
   if (cellularMaxUeRank)
   {
-    [v3 setObject:cellularMaxUeRank forKey:@"cellular_max_ue_rank"];
+    [dictionary setObject:cellularMaxUeRank forKey:@"cellular_max_ue_rank"];
   }
 
   cellularMaxUlMod = self->_cellularMaxUlMod;
   if (cellularMaxUlMod)
   {
-    [v3 setObject:cellularMaxUlMod forKey:@"cellular_max_ul_mod"];
+    [dictionary setObject:cellularMaxUlMod forKey:@"cellular_max_ul_mod"];
   }
 
   cellularNrSinr = self->_cellularNrSinr;
   if (cellularNrSinr)
   {
-    [v3 setObject:cellularNrSinr forKey:@"cellular_nr_sinr"];
+    [dictionary setObject:cellularNrSinr forKey:@"cellular_nr_sinr"];
   }
 
   cellularNrarfcn = self->_cellularNrarfcn;
   if (cellularNrarfcn)
   {
-    [v3 setObject:cellularNrarfcn forKey:@"cellular_nrarfcn"];
+    [dictionary setObject:cellularNrarfcn forKey:@"cellular_nrarfcn"];
   }
 
   cellularRadioFrequency = self->_cellularRadioFrequency;
   if (cellularRadioFrequency)
   {
-    [v3 setObject:cellularRadioFrequency forKey:@"cellular_radio_frequency"];
+    [dictionary setObject:cellularRadioFrequency forKey:@"cellular_radio_frequency"];
   }
 
   cellularTotalDlMimoLayers = self->_cellularTotalDlMimoLayers;
   if (cellularTotalDlMimoLayers)
   {
-    [v3 setObject:cellularTotalDlMimoLayers forKey:@"cellular_total_dl_mimo_layers"];
+    [dictionary setObject:cellularTotalDlMimoLayers forKey:@"cellular_total_dl_mimo_layers"];
   }
 
   cellularTotalNumCcs = self->_cellularTotalNumCcs;
   if (cellularTotalNumCcs)
   {
-    [v3 setObject:cellularTotalNumCcs forKey:@"cellular_total_num_ccs"];
+    [dictionary setObject:cellularTotalNumCcs forKey:@"cellular_total_num_ccs"];
   }
 
   downloadStartRadioFrequency = self->_downloadStartRadioFrequency;
   if (downloadStartRadioFrequency)
   {
-    [v3 setObject:downloadStartRadioFrequency forKey:@"download_start_radio_frequency"];
+    [dictionary setObject:downloadStartRadioFrequency forKey:@"download_start_radio_frequency"];
   }
 
   downloadEndRadioFrequency = self->_downloadEndRadioFrequency;
   if (downloadEndRadioFrequency)
   {
-    [v3 setObject:downloadEndRadioFrequency forKey:@"download_end_radio_frequency"];
+    [dictionary setObject:downloadEndRadioFrequency forKey:@"download_end_radio_frequency"];
   }
 
   networkPrimaryIpv6InterfaceName = self->_networkPrimaryIpv6InterfaceName;
   if (networkPrimaryIpv6InterfaceName)
   {
-    [v3 setObject:networkPrimaryIpv6InterfaceName forKey:@"network_primary_ipv6_interface_name"];
+    [dictionary setObject:networkPrimaryIpv6InterfaceName forKey:@"network_primary_ipv6_interface_name"];
   }
 
   networkPrimaryIpv6ServiceName = self->_networkPrimaryIpv6ServiceName;
   if (networkPrimaryIpv6ServiceName)
   {
-    [v3 setObject:networkPrimaryIpv6ServiceName forKey:@"network_primary_ipv6_service_name"];
+    [dictionary setObject:networkPrimaryIpv6ServiceName forKey:@"network_primary_ipv6_service_name"];
   }
 
   uploadStartRadioFrequency = self->_uploadStartRadioFrequency;
   if (uploadStartRadioFrequency)
   {
-    [v3 setObject:uploadStartRadioFrequency forKey:@"upload_start_radio_frequency"];
+    [dictionary setObject:uploadStartRadioFrequency forKey:@"upload_start_radio_frequency"];
   }
 
   uploadEndRadioFrequency = self->_uploadEndRadioFrequency;
   if (uploadEndRadioFrequency)
   {
-    [v3 setObject:uploadEndRadioFrequency forKey:@"upload_end_radio_frequency"];
+    [dictionary setObject:uploadEndRadioFrequency forKey:@"upload_end_radio_frequency"];
   }
 
   downloadError = self->_downloadError;
   if (downloadError)
   {
-    [v3 setObject:downloadError forKey:@"download_error"];
+    [dictionary setObject:downloadError forKey:@"download_error"];
   }
 
   networkQualityError = self->_networkQualityError;
   if (networkQualityError)
   {
-    [v3 setObject:networkQualityError forKey:@"network_quality_error"];
+    [dictionary setObject:networkQualityError forKey:@"network_quality_error"];
   }
 
   networkQualityDownloadSpeed = self->_networkQualityDownloadSpeed;
   if (networkQualityDownloadSpeed)
   {
-    [v3 setObject:networkQualityDownloadSpeed forKey:@"network_quality_download_speed"];
+    [dictionary setObject:networkQualityDownloadSpeed forKey:@"network_quality_download_speed"];
   }
 
   networkQualityUploadSpeed = self->_networkQualityUploadSpeed;
   if (networkQualityUploadSpeed)
   {
-    [v3 setObject:networkQualityUploadSpeed forKey:@"network_quality_upload_speed"];
+    [dictionary setObject:networkQualityUploadSpeed forKey:@"network_quality_upload_speed"];
   }
 
   networkQualityRating = self->_networkQualityRating;
   if (networkQualityRating)
   {
-    [v3 setObject:networkQualityRating forKey:@"network_quality_rating"];
+    [dictionary setObject:networkQualityRating forKey:@"network_quality_rating"];
   }
 
   vpnConnectionState = self->_vpnConnectionState;
   if (vpnConnectionState)
   {
-    [v3 setObject:vpnConnectionState forKey:@"vpn_connection_state"];
+    [dictionary setObject:vpnConnectionState forKey:@"vpn_connection_state"];
   }
 
   uploadError = self->_uploadError;
   if (uploadError)
   {
-    [v3 setObject:uploadError forKey:@"upload_error"];
+    [dictionary setObject:uploadError forKey:@"upload_error"];
   }
 
   uploadErrorDomain = self->_uploadErrorDomain;
   if (uploadErrorDomain)
   {
-    [v3 setObject:uploadErrorDomain forKey:@"upload_error_domain"];
+    [dictionary setObject:uploadErrorDomain forKey:@"upload_error_domain"];
   }
 
   uploadErrorCode = self->_uploadErrorCode;
   if (uploadErrorCode)
   {
-    [v3 setObject:uploadErrorCode forKey:@"upload_error_code"];
+    [dictionary setObject:uploadErrorCode forKey:@"upload_error_code"];
   }
 
   downloadErrorDomain = self->_downloadErrorDomain;
   if (downloadErrorDomain)
   {
-    [v3 setObject:downloadErrorDomain forKey:@"download_error_domain"];
+    [dictionary setObject:downloadErrorDomain forKey:@"download_error_domain"];
   }
 
   downloadErrorCode = self->_downloadErrorCode;
   if (downloadErrorCode)
   {
-    [v3 setObject:downloadErrorCode forKey:@"download_error_code"];
+    [dictionary setObject:downloadErrorCode forKey:@"download_error_code"];
   }
 
   pingError = self->_pingError;
   if (pingError)
   {
-    [v3 setObject:pingError forKey:@"ping_error"];
+    [dictionary setObject:pingError forKey:@"ping_error"];
   }
 
   pingErrorDomain = self->_pingErrorDomain;
   if (pingErrorDomain)
   {
-    [v3 setObject:pingErrorDomain forKey:@"ping_error_domain"];
+    [dictionary setObject:pingErrorDomain forKey:@"ping_error_domain"];
   }
 
   pingErrorCode = self->_pingErrorCode;
   if (pingErrorCode)
   {
-    [v3 setObject:pingErrorCode forKey:@"ping_error_code"];
+    [dictionary setObject:pingErrorCode forKey:@"ping_error_code"];
   }
 
   networkQualityErrorDomain = self->_networkQualityErrorDomain;
   if (networkQualityErrorDomain)
   {
-    [v3 setObject:networkQualityErrorDomain forKey:@"network_quality_error_domain"];
+    [dictionary setObject:networkQualityErrorDomain forKey:@"network_quality_error_domain"];
   }
 
   networkQualityErrorCode = self->_networkQualityErrorCode;
   if (networkQualityErrorCode)
   {
-    [v3 setObject:networkQualityErrorCode forKey:@"network_quality_error_code"];
+    [dictionary setObject:networkQualityErrorCode forKey:@"network_quality_error_code"];
   }
 
   cellularRnMobileCountryCode = self->_cellularRnMobileCountryCode;
   if (cellularRnMobileCountryCode)
   {
-    [v3 setObject:cellularRnMobileCountryCode forKey:@"cellular_rn_mobile_country_code"];
+    [dictionary setObject:cellularRnMobileCountryCode forKey:@"cellular_rn_mobile_country_code"];
   }
 
   cellularRnMobileNetworkCode = self->_cellularRnMobileNetworkCode;
   if (cellularRnMobileNetworkCode)
   {
-    [v3 setObject:cellularRnMobileNetworkCode forKey:@"cellular_rn_mobile_network_code"];
+    [dictionary setObject:cellularRnMobileNetworkCode forKey:@"cellular_rn_mobile_network_code"];
   }
 
   if (*(&self->_has + 1))
   {
     v207 = [MEMORY[0x277CCABB0] numberWithBool:self->_cellularDataIsEnabled];
-    [v3 setObject:v207 forKey:@"cellular_data_is_enabled"];
+    [dictionary setObject:v207 forKey:@"cellular_data_is_enabled"];
   }
 
   downloadStartCellularEstimate = self->_downloadStartCellularEstimate;
   if (downloadStartCellularEstimate)
   {
-    [v3 setObject:downloadStartCellularEstimate forKey:@"download_start_cellular_estimate"];
+    [dictionary setObject:downloadStartCellularEstimate forKey:@"download_start_cellular_estimate"];
   }
 
   downloadEndCellularEstimate = self->_downloadEndCellularEstimate;
   if (downloadEndCellularEstimate)
   {
-    [v3 setObject:downloadEndCellularEstimate forKey:@"download_end_cellular_estimate"];
+    [dictionary setObject:downloadEndCellularEstimate forKey:@"download_end_cellular_estimate"];
   }
 
   downloadMaxCellularEstimate = self->_downloadMaxCellularEstimate;
   if (downloadMaxCellularEstimate)
   {
-    [v3 setObject:downloadMaxCellularEstimate forKey:@"download_max_cellular_estimate"];
+    [dictionary setObject:downloadMaxCellularEstimate forKey:@"download_max_cellular_estimate"];
   }
 
   uploadStartCellularEstimate = self->_uploadStartCellularEstimate;
   if (uploadStartCellularEstimate)
   {
-    [v3 setObject:uploadStartCellularEstimate forKey:@"upload_start_cellular_estimate"];
+    [dictionary setObject:uploadStartCellularEstimate forKey:@"upload_start_cellular_estimate"];
   }
 
   uploadEndCellularEstimate = self->_uploadEndCellularEstimate;
   if (uploadEndCellularEstimate)
   {
-    [v3 setObject:uploadEndCellularEstimate forKey:@"upload_end_cellular_estimate"];
+    [dictionary setObject:uploadEndCellularEstimate forKey:@"upload_end_cellular_estimate"];
   }
 
   uploadMaxCellularEstimate = self->_uploadMaxCellularEstimate;
   if (uploadMaxCellularEstimate)
   {
-    [v3 setObject:uploadMaxCellularEstimate forKey:@"upload_max_cellular_estimate"];
+    [dictionary setObject:uploadMaxCellularEstimate forKey:@"upload_max_cellular_estimate"];
   }
 
   downloadResponsiveness = self->_downloadResponsiveness;
   if (downloadResponsiveness)
   {
-    [v3 setObject:downloadResponsiveness forKey:@"download_responsiveness"];
+    [dictionary setObject:downloadResponsiveness forKey:@"download_responsiveness"];
   }
 
   downloadResponsivenessConfidence = self->_downloadResponsivenessConfidence;
   if (downloadResponsivenessConfidence)
   {
-    [v3 setObject:downloadResponsivenessConfidence forKey:@"download_responsiveness_confidence"];
+    [dictionary setObject:downloadResponsivenessConfidence forKey:@"download_responsiveness_confidence"];
   }
 
   downloadResponsivenessRating = self->_downloadResponsivenessRating;
   if (downloadResponsivenessRating)
   {
-    [v3 setObject:downloadResponsivenessRating forKey:@"download_responsiveness_rating"];
+    [dictionary setObject:downloadResponsivenessRating forKey:@"download_responsiveness_rating"];
   }
 
   downloadSpeedConfidence = self->_downloadSpeedConfidence;
   if (downloadSpeedConfidence)
   {
-    [v3 setObject:downloadSpeedConfidence forKey:@"download_speed_confidence"];
+    [dictionary setObject:downloadSpeedConfidence forKey:@"download_speed_confidence"];
   }
 
   downloadSpeedRating = self->_downloadSpeedRating;
   if (downloadSpeedRating)
   {
-    [v3 setObject:downloadSpeedRating forKey:@"download_speed_rating"];
+    [dictionary setObject:downloadSpeedRating forKey:@"download_speed_rating"];
   }
 
   uploadResponsiveness = self->_uploadResponsiveness;
   if (uploadResponsiveness)
   {
-    [v3 setObject:uploadResponsiveness forKey:@"upload_responsiveness"];
+    [dictionary setObject:uploadResponsiveness forKey:@"upload_responsiveness"];
   }
 
   uploadResponsivenessConfidence = self->_uploadResponsivenessConfidence;
   if (uploadResponsivenessConfidence)
   {
-    [v3 setObject:uploadResponsivenessConfidence forKey:@"upload_responsiveness_confidence"];
+    [dictionary setObject:uploadResponsivenessConfidence forKey:@"upload_responsiveness_confidence"];
   }
 
   uploadResponsivenessRating = self->_uploadResponsivenessRating;
   if (uploadResponsivenessRating)
   {
-    [v3 setObject:uploadResponsivenessRating forKey:@"upload_responsiveness_rating"];
+    [dictionary setObject:uploadResponsivenessRating forKey:@"upload_responsiveness_rating"];
   }
 
   uploadSpeedConfidence = self->_uploadSpeedConfidence;
   if (uploadSpeedConfidence)
   {
-    [v3 setObject:uploadSpeedConfidence forKey:@"upload_speed_confidence"];
+    [dictionary setObject:uploadSpeedConfidence forKey:@"upload_speed_confidence"];
   }
 
   uploadSpeedRating = self->_uploadSpeedRating;
   if (uploadSpeedRating)
   {
-    [v3 setObject:uploadSpeedRating forKey:@"upload_speed_rating"];
+    [dictionary setObject:uploadSpeedRating forKey:@"upload_speed_rating"];
   }
 
   wifiChannelBand = self->_wifiChannelBand;
   if (wifiChannelBand)
   {
-    [v3 setObject:wifiChannelBand forKey:@"wifi_channel_band"];
+    [dictionary setObject:wifiChannelBand forKey:@"wifi_channel_band"];
   }
 
   wifiChannelWidth = self->_wifiChannelWidth;
   if (wifiChannelWidth)
   {
-    [v3 setObject:wifiChannelWidth forKey:@"wifi_channel_width"];
+    [dictionary setObject:wifiChannelWidth forKey:@"wifi_channel_width"];
   }
 
-  v226 = v3;
+  v226 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v34 = v4;
+  toCopy = to;
+  v34 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlElectionParameters)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlMasterChannel)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlOpMode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     awdlPowerState = self->_awdlPowerState;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlSchedule)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlSecondaryMasterChannel)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlSyncChannelSequence)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_awdlSyncState)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_btConnectedDevicesCount)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   has = self->_has;
@@ -2012,7 +2012,7 @@ LABEL_254:
   {
     btIsConnectable = self->_btIsConnectable;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
     has = self->_has;
     if ((*&has & 0x10) == 0)
     {
@@ -2033,7 +2033,7 @@ LABEL_23:
 
   btIsDiscoverable = self->_btIsDiscoverable;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2049,345 +2049,345 @@ LABEL_24:
 LABEL_455:
   btIsPowerOn = self->_btIsPowerOn;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_25:
     btIsScanning = self->_btIsScanning;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
 LABEL_26:
   if (self->_callingClient)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularActiveContexts)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
     cellularAllowsVoip = self->_cellularAllowsVoip;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularAttached)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularBandinfo)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularBandwidth)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularCarrierName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularDataBearerSoMask)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularDataBearerTechnology)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularDataPlanSignalingReductionOverride)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularDataPossible)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularInHomeCountry)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularIndicator)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularIndicatorOverride)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularIsoCountryCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularLqm)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularLteMaxScheduledLayers)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMobileCountryCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMobileNetworkCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioCoverage)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioDataBearer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioMmwaveDataBearer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioNsaCoverage)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioNsaDataBearer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioSaCoverage)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioSaDataBearer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNewRadioSub6DataBearer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrConfiguredBw)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrLayers)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrModulation)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrRsrp)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrRsrq)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrSnr)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularPid)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRadioAccessTechnology)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRadioAccessTechnologyCtDataStatus)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRoamAllowed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRsrp)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularSnr)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTac)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTotalActiveContexts)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTotalBw)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTotalCcs)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTotalLayers)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularUarfcn)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadCdnPop)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadCdnUuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadConnectionTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadDomainLookupTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadEndDataBearerTechnology)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadEndPrimaryIpv4Interface)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadEndRat)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadFileSize)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadInterfaceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadInterfaceServiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   v10 = self->_has;
@@ -2395,7 +2395,7 @@ LABEL_26:
   {
     downloadIsCellular = self->_downloadIsCellular;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
     v10 = self->_has;
     if ((*&v10 & 0x400) == 0)
     {
@@ -2416,7 +2416,7 @@ LABEL_138:
 
   downloadIsConstrained = self->_downloadIsConstrained;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v10 = self->_has;
   if ((*&v10 & 0x800) == 0)
   {
@@ -2432,7 +2432,7 @@ LABEL_139:
 LABEL_459:
   downloadIsExpensive = self->_downloadIsExpensive;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v10 = self->_has;
   if ((*&v10 & 0x1000) == 0)
   {
@@ -2448,7 +2448,7 @@ LABEL_140:
 LABEL_460:
   downloadIsMultipath = self->_downloadIsMultipath;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v10 = self->_has;
   if ((*&v10 & 0x2000) == 0)
   {
@@ -2464,323 +2464,323 @@ LABEL_141:
 LABEL_461:
   downloadIsProxyConnection = self->_downloadIsProxyConnection;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_142:
     downloadIsReusedConnection = self->_downloadIsReusedConnection;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
 LABEL_143:
   if (self->_downloadMaxSpeedObserved)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadNumberOfStreams)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadProtocolName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadRemoteAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadRemotePort)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadRequestTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadRequestToResponseTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadResponseTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadSecureConnectionTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadServer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadSpeed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadStableSpeed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadStartDataBearerTechnology)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadStartPrimaryIpv4Interface)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadStartRat)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if ((*(&self->_has + 1) & 0x80) != 0)
   {
     networkIsAppleReachable = self->_networkIsAppleReachable;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkPrimaryIpv4InterfaceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkPrimaryIpv4ServiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_nptkitFrameworkVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_performanceTestStartTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingLossPercent)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingMaxLatency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingMeanLatency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingMinLatency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingStandardDeviation)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_powerBatteryWarningLevel)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_powerSourceType)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_powerStateCaps)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemActiveProcessorCount)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemBatteryLevel)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemBatteryState)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemDeviceClass)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemDeviceModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (*(&self->_has + 2))
   {
     systemLowPowerModeEnabled = self->_systemLowPowerModeEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemOsVariant)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemPhysicalMemory)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if ((*(&self->_has + 2) & 2) != 0)
   {
     systemPowersourceConnected = self->_systemPowersourceConnected;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemProcessorCount)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_systemVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadCdnPop)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadCdnUuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadConnectionTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadDomainLookupTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadEndDataBearerTechnology)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadEndPrimaryIpv4Interface)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadEndRat)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadFileSize)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadInterfaceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadInterfaceServiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   v15 = self->_has;
@@ -2788,7 +2788,7 @@ LABEL_143:
   {
     uploadIsCellular = self->_uploadIsCellular;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
     v15 = self->_has;
     if ((*&v15 & 0x80000) == 0)
     {
@@ -2809,7 +2809,7 @@ LABEL_247:
 
   uploadIsConstrained = self->_uploadIsConstrained;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v15 = self->_has;
   if ((*&v15 & 0x100000) == 0)
   {
@@ -2825,7 +2825,7 @@ LABEL_248:
 LABEL_465:
   uploadIsExpensive = self->_uploadIsExpensive;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v15 = self->_has;
   if ((*&v15 & 0x200000) == 0)
   {
@@ -2841,7 +2841,7 @@ LABEL_249:
 LABEL_466:
   uploadIsMultipath = self->_uploadIsMultipath;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v15 = self->_has;
   if ((*&v15 & 0x400000) == 0)
   {
@@ -2857,684 +2857,684 @@ LABEL_250:
 LABEL_467:
   uploadIsProxyConnection = self->_uploadIsProxyConnection;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_251:
     uploadIsReusedConnection = self->_uploadIsReusedConnection;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
 LABEL_252:
   if (self->_uploadMaxSpeedObserved)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadNumberOfStreams)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadProtocolName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadRemoteAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadRemotePort)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadRequestTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadRequestToResponseTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadResponseTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadSecureConnectionTime)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadServer)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadSpeed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadStableSpeed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadStartDataBearerTechnology)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadStartPrimaryIpv4Interface)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadStartRat)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (*(&self->_has + 3))
   {
     useWifiWasSpecified = self->_useWifiWasSpecified;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiAveragePhyRateRx)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiAverageRssi)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiAverageSnr)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiAverageTcpRtt)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiBtcMode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiCca)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiChannel)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiCwfCca)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiEapolControlMode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiEapolSupplicantState)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiGuardInterval)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiHiddenState)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if ((*(&self->_has + 3) & 2) != 0)
   {
     wifiIsCaptive = self->_wifiIsCaptive;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiMcsIndex)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiNoise)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiNumberOfSpatialStreams)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiOpMode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiPhyMode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiRssi)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiSecurity)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiTxRate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wrmChannelType)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularCellid)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     acceptablePerformanceResult = self->_acceptablePerformanceResult;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityResponsiveness)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularAggregatedDLBW)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularAggregatedULBW)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularIssa)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularLac)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularLteNrConfiguredBw)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMaxDlMod)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMaxNwMimoLyr)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMaxSchdMimoLyr)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMaxUeRank)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularMaxUlMod)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrSinr)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularNrarfcn)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRadioFrequency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTotalDlMimoLayers)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularTotalNumCcs)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadStartRadioFrequency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadEndRadioFrequency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkPrimaryIpv6InterfaceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkPrimaryIpv6ServiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadStartRadioFrequency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadEndRadioFrequency)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadError)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityError)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityDownloadSpeed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityUploadSpeed)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityRating)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_vpnConnectionState)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadError)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadErrorCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadErrorCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingError)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_pingErrorCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_networkQualityErrorCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRnMobileCountryCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_cellularRnMobileNetworkCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (*(&self->_has + 1))
   {
     cellularDataIsEnabled = self->_cellularDataIsEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadStartCellularEstimate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadEndCellularEstimate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadMaxCellularEstimate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadStartCellularEstimate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadEndCellularEstimate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadMaxCellularEstimate)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadResponsiveness)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadResponsivenessConfidence)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadResponsivenessRating)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadSpeedConfidence)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_downloadSpeedRating)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadResponsiveness)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadResponsivenessConfidence)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadResponsivenessRating)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadSpeedConfidence)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_uploadSpeedRating)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiChannelBand)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_wifiChannelWidth)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 421) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 421) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if (self->_awdlElectionParameters)
   {
-    [v4 setAwdlElectionParameters:?];
-    v4 = v8;
+    [toCopy setAwdlElectionParameters:?];
+    toCopy = v8;
   }
 
   if (self->_awdlMasterChannel)
   {
     [v8 setAwdlMasterChannel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_awdlOpMode)
   {
     [v8 setAwdlOpMode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 1657) = self->_awdlPowerState;
-    *(v4 + 421) |= 4u;
+    *(toCopy + 1657) = self->_awdlPowerState;
+    *(toCopy + 421) |= 4u;
   }
 
   if (self->_awdlSchedule)
   {
     [v8 setAwdlSchedule:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_awdlSecondaryMasterChannel)
   {
     [v8 setAwdlSecondaryMasterChannel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_awdlSyncChannelSequence)
   {
     [v8 setAwdlSyncChannelSequence:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_awdlSyncState)
   {
     [v8 setAwdlSyncState:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_btConnectedDevicesCount)
   {
     [v8 setBtConnectedDevicesCount:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((*&has & 8) != 0)
   {
-    *(v4 + 1658) = self->_btIsConnectable;
-    *(v4 + 421) |= 8u;
+    *(toCopy + 1658) = self->_btIsConnectable;
+    *(toCopy + 421) |= 8u;
     has = self->_has;
     if ((*&has & 0x10) == 0)
     {
@@ -3553,8 +3553,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *(v4 + 1659) = self->_btIsDiscoverable;
-  *(v4 + 421) |= 0x10u;
+  *(toCopy + 1659) = self->_btIsDiscoverable;
+  *(toCopy + 421) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -3568,351 +3568,351 @@ LABEL_24:
   }
 
 LABEL_455:
-  *(v4 + 1660) = self->_btIsPowerOn;
-  *(v4 + 421) |= 0x20u;
+  *(toCopy + 1660) = self->_btIsPowerOn;
+  *(toCopy + 421) |= 0x20u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_25:
-    *(v4 + 1661) = self->_btIsScanning;
-    *(v4 + 421) |= 0x40u;
+    *(toCopy + 1661) = self->_btIsScanning;
+    *(toCopy + 421) |= 0x40u;
   }
 
 LABEL_26:
   if (self->_callingClient)
   {
     [v8 setCallingClient:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularActiveContexts)
   {
     [v8 setCellularActiveContexts:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    *(v4 + 1662) = self->_cellularAllowsVoip;
-    *(v4 + 421) |= 0x80u;
+    *(toCopy + 1662) = self->_cellularAllowsVoip;
+    *(toCopy + 421) |= 0x80u;
   }
 
   if (self->_cellularAttached)
   {
     [v8 setCellularAttached:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularBandinfo)
   {
     [v8 setCellularBandinfo:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularBandwidth)
   {
     [v8 setCellularBandwidth:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularCarrierName)
   {
     [v8 setCellularCarrierName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularDataBearerSoMask)
   {
     [v8 setCellularDataBearerSoMask:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularDataBearerTechnology)
   {
     [v8 setCellularDataBearerTechnology:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularDataPlanSignalingReductionOverride)
   {
     [v8 setCellularDataPlanSignalingReductionOverride:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularDataPossible)
   {
     [v8 setCellularDataPossible:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularInHomeCountry)
   {
     [v8 setCellularInHomeCountry:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularIndicator)
   {
     [v8 setCellularIndicator:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularIndicatorOverride)
   {
     [v8 setCellularIndicatorOverride:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularIsoCountryCode)
   {
     [v8 setCellularIsoCountryCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularLqm)
   {
     [v8 setCellularLqm:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularLteMaxScheduledLayers)
   {
     [v8 setCellularLteMaxScheduledLayers:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMobileCountryCode)
   {
     [v8 setCellularMobileCountryCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMobileNetworkCode)
   {
     [v8 setCellularMobileNetworkCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioCoverage)
   {
     [v8 setCellularNewRadioCoverage:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioDataBearer)
   {
     [v8 setCellularNewRadioDataBearer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioMmwaveDataBearer)
   {
     [v8 setCellularNewRadioMmwaveDataBearer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioNsaCoverage)
   {
     [v8 setCellularNewRadioNsaCoverage:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioNsaDataBearer)
   {
     [v8 setCellularNewRadioNsaDataBearer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioSaCoverage)
   {
     [v8 setCellularNewRadioSaCoverage:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioSaDataBearer)
   {
     [v8 setCellularNewRadioSaDataBearer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNewRadioSub6DataBearer)
   {
     [v8 setCellularNewRadioSub6DataBearer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrConfiguredBw)
   {
     [v8 setCellularNrConfiguredBw:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrLayers)
   {
     [v8 setCellularNrLayers:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrModulation)
   {
     [v8 setCellularNrModulation:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrRsrp)
   {
     [v8 setCellularNrRsrp:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrRsrq)
   {
     [v8 setCellularNrRsrq:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrSnr)
   {
     [v8 setCellularNrSnr:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularPid)
   {
     [v8 setCellularPid:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRadioAccessTechnology)
   {
     [v8 setCellularRadioAccessTechnology:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRadioAccessTechnologyCtDataStatus)
   {
     [v8 setCellularRadioAccessTechnologyCtDataStatus:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRoamAllowed)
   {
     [v8 setCellularRoamAllowed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRsrp)
   {
     [v8 setCellularRsrp:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularSnr)
   {
     [v8 setCellularSnr:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTac)
   {
     [v8 setCellularTac:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTotalActiveContexts)
   {
     [v8 setCellularTotalActiveContexts:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTotalBw)
   {
     [v8 setCellularTotalBw:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTotalCcs)
   {
     [v8 setCellularTotalCcs:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTotalLayers)
   {
     [v8 setCellularTotalLayers:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularUarfcn)
   {
     [v8 setCellularUarfcn:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadCdnPop)
   {
     [v8 setDownloadCdnPop:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadCdnUuid)
   {
     [v8 setDownloadCdnUuid:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadConnectionTime)
   {
     [v8 setDownloadConnectionTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadDomainLookupTime)
   {
     [v8 setDownloadDomainLookupTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadEndDataBearerTechnology)
   {
     [v8 setDownloadEndDataBearerTechnology:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadEndPrimaryIpv4Interface)
   {
     [v8 setDownloadEndPrimaryIpv4Interface:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadEndRat)
   {
     [v8 setDownloadEndRat:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadFileSize)
   {
     [v8 setDownloadFileSize:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadInterfaceName)
   {
     [v8 setDownloadInterfaceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadInterfaceServiceName)
   {
     [v8 setDownloadInterfaceServiceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x200) != 0)
   {
-    *(v4 + 1664) = self->_downloadIsCellular;
-    *(v4 + 421) |= 0x200u;
+    *(toCopy + 1664) = self->_downloadIsCellular;
+    *(toCopy + 421) |= 0x200u;
     v6 = self->_has;
     if ((*&v6 & 0x400) == 0)
     {
@@ -3931,8 +3931,8 @@ LABEL_138:
     goto LABEL_138;
   }
 
-  *(v4 + 1665) = self->_downloadIsConstrained;
-  *(v4 + 421) |= 0x400u;
+  *(toCopy + 1665) = self->_downloadIsConstrained;
+  *(toCopy + 421) |= 0x400u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -3946,8 +3946,8 @@ LABEL_139:
   }
 
 LABEL_459:
-  *(v4 + 1666) = self->_downloadIsExpensive;
-  *(v4 + 421) |= 0x800u;
+  *(toCopy + 1666) = self->_downloadIsExpensive;
+  *(toCopy + 421) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -3961,8 +3961,8 @@ LABEL_140:
   }
 
 LABEL_460:
-  *(v4 + 1667) = self->_downloadIsMultipath;
-  *(v4 + 421) |= 0x1000u;
+  *(toCopy + 1667) = self->_downloadIsMultipath;
+  *(toCopy + 421) |= 0x1000u;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -3976,327 +3976,327 @@ LABEL_141:
   }
 
 LABEL_461:
-  *(v4 + 1668) = self->_downloadIsProxyConnection;
-  *(v4 + 421) |= 0x2000u;
+  *(toCopy + 1668) = self->_downloadIsProxyConnection;
+  *(toCopy + 421) |= 0x2000u;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_142:
-    *(v4 + 1669) = self->_downloadIsReusedConnection;
-    *(v4 + 421) |= 0x4000u;
+    *(toCopy + 1669) = self->_downloadIsReusedConnection;
+    *(toCopy + 421) |= 0x4000u;
   }
 
 LABEL_143:
   if (self->_downloadMaxSpeedObserved)
   {
     [v8 setDownloadMaxSpeedObserved:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadNumberOfStreams)
   {
     [v8 setDownloadNumberOfStreams:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadProtocolName)
   {
     [v8 setDownloadProtocolName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadRemoteAddress)
   {
     [v8 setDownloadRemoteAddress:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadRemotePort)
   {
     [v8 setDownloadRemotePort:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadRequestTime)
   {
     [v8 setDownloadRequestTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadRequestToResponseTime)
   {
     [v8 setDownloadRequestToResponseTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadResponseTime)
   {
     [v8 setDownloadResponseTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadSecureConnectionTime)
   {
     [v8 setDownloadSecureConnectionTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadServer)
   {
     [v8 setDownloadServer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadSpeed)
   {
     [v8 setDownloadSpeed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadStableSpeed)
   {
     [v8 setDownloadStableSpeed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadStartDataBearerTechnology)
   {
     [v8 setDownloadStartDataBearerTechnology:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadStartPrimaryIpv4Interface)
   {
     [v8 setDownloadStartPrimaryIpv4Interface:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadStartRat)
   {
     [v8 setDownloadStartRat:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*(&self->_has + 1) & 0x80) != 0)
   {
-    *(v4 + 1670) = self->_networkIsAppleReachable;
-    *(v4 + 421) |= 0x8000u;
+    *(toCopy + 1670) = self->_networkIsAppleReachable;
+    *(toCopy + 421) |= 0x8000u;
   }
 
   if (self->_networkPrimaryIpv4InterfaceName)
   {
     [v8 setNetworkPrimaryIpv4InterfaceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkPrimaryIpv4ServiceName)
   {
     [v8 setNetworkPrimaryIpv4ServiceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_nptkitFrameworkVersion)
   {
     [v8 setNptkitFrameworkVersion:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_performanceTestStartTime)
   {
     [v8 setPerformanceTestStartTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingAddress)
   {
     [v8 setPingAddress:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingLossPercent)
   {
     [v8 setPingLossPercent:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingMaxLatency)
   {
     [v8 setPingMaxLatency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingMeanLatency)
   {
     [v8 setPingMeanLatency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingMinLatency)
   {
     [v8 setPingMinLatency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingStandardDeviation)
   {
     [v8 setPingStandardDeviation:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_powerBatteryWarningLevel)
   {
     [v8 setPowerBatteryWarningLevel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_powerSourceType)
   {
     [v8 setPowerSourceType:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_powerStateCaps)
   {
     [v8 setPowerStateCaps:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemActiveProcessorCount)
   {
     [v8 setSystemActiveProcessorCount:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemBatteryLevel)
   {
     [v8 setSystemBatteryLevel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemBatteryState)
   {
     [v8 setSystemBatteryState:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemDeviceClass)
   {
     [v8 setSystemDeviceClass:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemDeviceModel)
   {
     [v8 setSystemDeviceModel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*(&self->_has + 2))
   {
-    *(v4 + 1671) = self->_systemLowPowerModeEnabled;
-    *(v4 + 421) |= 0x10000u;
+    *(toCopy + 1671) = self->_systemLowPowerModeEnabled;
+    *(toCopy + 421) |= 0x10000u;
   }
 
   if (self->_systemName)
   {
     [v8 setSystemName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemOsVariant)
   {
     [v8 setSystemOsVariant:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemPhysicalMemory)
   {
     [v8 setSystemPhysicalMemory:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*(&self->_has + 2) & 2) != 0)
   {
-    *(v4 + 1672) = self->_systemPowersourceConnected;
-    *(v4 + 421) |= 0x20000u;
+    *(toCopy + 1672) = self->_systemPowersourceConnected;
+    *(toCopy + 421) |= 0x20000u;
   }
 
   if (self->_systemProcessorCount)
   {
     [v8 setSystemProcessorCount:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_systemVersion)
   {
     [v8 setSystemVersion:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadCdnPop)
   {
     [v8 setUploadCdnPop:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadCdnUuid)
   {
     [v8 setUploadCdnUuid:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadConnectionTime)
   {
     [v8 setUploadConnectionTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadDomainLookupTime)
   {
     [v8 setUploadDomainLookupTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadEndDataBearerTechnology)
   {
     [v8 setUploadEndDataBearerTechnology:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadEndPrimaryIpv4Interface)
   {
     [v8 setUploadEndPrimaryIpv4Interface:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadEndRat)
   {
     [v8 setUploadEndRat:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadFileSize)
   {
     [v8 setUploadFileSize:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadInterfaceName)
   {
     [v8 setUploadInterfaceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadInterfaceServiceName)
   {
     [v8 setUploadInterfaceServiceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x40000) != 0)
   {
-    *(v4 + 1673) = self->_uploadIsCellular;
-    *(v4 + 421) |= 0x40000u;
+    *(toCopy + 1673) = self->_uploadIsCellular;
+    *(toCopy + 421) |= 0x40000u;
     v7 = self->_has;
     if ((*&v7 & 0x80000) == 0)
     {
@@ -4315,8 +4315,8 @@ LABEL_247:
     goto LABEL_247;
   }
 
-  *(v4 + 1674) = self->_uploadIsConstrained;
-  *(v4 + 421) |= 0x80000u;
+  *(toCopy + 1674) = self->_uploadIsConstrained;
+  *(toCopy + 421) |= 0x80000u;
   v7 = self->_has;
   if ((*&v7 & 0x100000) == 0)
   {
@@ -4330,8 +4330,8 @@ LABEL_248:
   }
 
 LABEL_465:
-  *(v4 + 1675) = self->_uploadIsExpensive;
-  *(v4 + 421) |= 0x100000u;
+  *(toCopy + 1675) = self->_uploadIsExpensive;
+  *(toCopy + 421) |= 0x100000u;
   v7 = self->_has;
   if ((*&v7 & 0x200000) == 0)
   {
@@ -4345,8 +4345,8 @@ LABEL_249:
   }
 
 LABEL_466:
-  *(v4 + 1676) = self->_uploadIsMultipath;
-  *(v4 + 421) |= 0x200000u;
+  *(toCopy + 1676) = self->_uploadIsMultipath;
+  *(toCopy + 421) |= 0x200000u;
   v7 = self->_has;
   if ((*&v7 & 0x400000) == 0)
   {
@@ -4360,614 +4360,614 @@ LABEL_250:
   }
 
 LABEL_467:
-  *(v4 + 1677) = self->_uploadIsProxyConnection;
-  *(v4 + 421) |= 0x400000u;
+  *(toCopy + 1677) = self->_uploadIsProxyConnection;
+  *(toCopy + 421) |= 0x400000u;
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_251:
-    *(v4 + 1678) = self->_uploadIsReusedConnection;
-    *(v4 + 421) |= 0x800000u;
+    *(toCopy + 1678) = self->_uploadIsReusedConnection;
+    *(toCopy + 421) |= 0x800000u;
   }
 
 LABEL_252:
   if (self->_uploadMaxSpeedObserved)
   {
     [v8 setUploadMaxSpeedObserved:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadNumberOfStreams)
   {
     [v8 setUploadNumberOfStreams:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadProtocolName)
   {
     [v8 setUploadProtocolName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadRemoteAddress)
   {
     [v8 setUploadRemoteAddress:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadRemotePort)
   {
     [v8 setUploadRemotePort:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadRequestTime)
   {
     [v8 setUploadRequestTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadRequestToResponseTime)
   {
     [v8 setUploadRequestToResponseTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadResponseTime)
   {
     [v8 setUploadResponseTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadSecureConnectionTime)
   {
     [v8 setUploadSecureConnectionTime:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadServer)
   {
     [v8 setUploadServer:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadSpeed)
   {
     [v8 setUploadSpeed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadStableSpeed)
   {
     [v8 setUploadStableSpeed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadStartDataBearerTechnology)
   {
     [v8 setUploadStartDataBearerTechnology:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadStartPrimaryIpv4Interface)
   {
     [v8 setUploadStartPrimaryIpv4Interface:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadStartRat)
   {
     [v8 setUploadStartRat:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*(&self->_has + 3))
   {
-    *(v4 + 1679) = self->_useWifiWasSpecified;
-    *(v4 + 421) |= 0x1000000u;
+    *(toCopy + 1679) = self->_useWifiWasSpecified;
+    *(toCopy + 421) |= 0x1000000u;
   }
 
   if (self->_wifiAveragePhyRateRx)
   {
     [v8 setWifiAveragePhyRateRx:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiAverageRssi)
   {
     [v8 setWifiAverageRssi:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiAverageSnr)
   {
     [v8 setWifiAverageSnr:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiAverageTcpRtt)
   {
     [v8 setWifiAverageTcpRtt:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiBtcMode)
   {
     [v8 setWifiBtcMode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiCca)
   {
     [v8 setWifiCca:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiChannel)
   {
     [v8 setWifiChannel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiCwfCca)
   {
     [v8 setWifiCwfCca:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiEapolControlMode)
   {
     [v8 setWifiEapolControlMode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiEapolSupplicantState)
   {
     [v8 setWifiEapolSupplicantState:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiGuardInterval)
   {
     [v8 setWifiGuardInterval:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiHiddenState)
   {
     [v8 setWifiHiddenState:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*(&self->_has + 3) & 2) != 0)
   {
-    *(v4 + 1680) = self->_wifiIsCaptive;
-    *(v4 + 421) |= 0x2000000u;
+    *(toCopy + 1680) = self->_wifiIsCaptive;
+    *(toCopy + 421) |= 0x2000000u;
   }
 
   if (self->_wifiMcsIndex)
   {
     [v8 setWifiMcsIndex:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiNoise)
   {
     [v8 setWifiNoise:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiNumberOfSpatialStreams)
   {
     [v8 setWifiNumberOfSpatialStreams:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiOpMode)
   {
     [v8 setWifiOpMode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiPhyMode)
   {
     [v8 setWifiPhyMode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiRssi)
   {
     [v8 setWifiRssi:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiSecurity)
   {
     [v8 setWifiSecurity:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiTxRate)
   {
     [v8 setWifiTxRate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wrmChannelType)
   {
     [v8 setWrmChannelType:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularCellid)
   {
     [v8 setCellularCellid:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 1656) = self->_acceptablePerformanceResult;
-    *(v4 + 421) |= 2u;
+    *(toCopy + 1656) = self->_acceptablePerformanceResult;
+    *(toCopy + 421) |= 2u;
   }
 
   if (self->_networkQualityResponsiveness)
   {
     [v8 setNetworkQualityResponsiveness:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularAggregatedDLBW)
   {
     [v8 setCellularAggregatedDLBW:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularAggregatedULBW)
   {
     [v8 setCellularAggregatedULBW:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularIssa)
   {
     [v8 setCellularIssa:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularLac)
   {
     [v8 setCellularLac:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularLteNrConfiguredBw)
   {
     [v8 setCellularLteNrConfiguredBw:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMaxDlMod)
   {
     [v8 setCellularMaxDlMod:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMaxNwMimoLyr)
   {
     [v8 setCellularMaxNwMimoLyr:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMaxSchdMimoLyr)
   {
     [v8 setCellularMaxSchdMimoLyr:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMaxUeRank)
   {
     [v8 setCellularMaxUeRank:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularMaxUlMod)
   {
     [v8 setCellularMaxUlMod:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrSinr)
   {
     [v8 setCellularNrSinr:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularNrarfcn)
   {
     [v8 setCellularNrarfcn:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRadioFrequency)
   {
     [v8 setCellularRadioFrequency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTotalDlMimoLayers)
   {
     [v8 setCellularTotalDlMimoLayers:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularTotalNumCcs)
   {
     [v8 setCellularTotalNumCcs:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadStartRadioFrequency)
   {
     [v8 setDownloadStartRadioFrequency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadEndRadioFrequency)
   {
     [v8 setDownloadEndRadioFrequency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkPrimaryIpv6InterfaceName)
   {
     [v8 setNetworkPrimaryIpv6InterfaceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkPrimaryIpv6ServiceName)
   {
     [v8 setNetworkPrimaryIpv6ServiceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadStartRadioFrequency)
   {
     [v8 setUploadStartRadioFrequency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadEndRadioFrequency)
   {
     [v8 setUploadEndRadioFrequency:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadError)
   {
     [v8 setDownloadError:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkQualityError)
   {
     [v8 setNetworkQualityError:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkQualityDownloadSpeed)
   {
     [v8 setNetworkQualityDownloadSpeed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkQualityUploadSpeed)
   {
     [v8 setNetworkQualityUploadSpeed:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkQualityRating)
   {
     [v8 setNetworkQualityRating:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_vpnConnectionState)
   {
     [v8 setVpnConnectionState:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadError)
   {
     [v8 setUploadError:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadErrorDomain)
   {
     [v8 setUploadErrorDomain:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadErrorCode)
   {
     [v8 setUploadErrorCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadErrorDomain)
   {
     [v8 setDownloadErrorDomain:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadErrorCode)
   {
     [v8 setDownloadErrorCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingError)
   {
     [v8 setPingError:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingErrorDomain)
   {
     [v8 setPingErrorDomain:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_pingErrorCode)
   {
     [v8 setPingErrorCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkQualityErrorDomain)
   {
     [v8 setNetworkQualityErrorDomain:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkQualityErrorCode)
   {
     [v8 setNetworkQualityErrorCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRnMobileCountryCode)
   {
     [v8 setCellularRnMobileCountryCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_cellularRnMobileNetworkCode)
   {
     [v8 setCellularRnMobileNetworkCode:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*(&self->_has + 1))
   {
-    *(v4 + 1663) = self->_cellularDataIsEnabled;
-    *(v4 + 421) |= 0x100u;
+    *(toCopy + 1663) = self->_cellularDataIsEnabled;
+    *(toCopy + 421) |= 0x100u;
   }
 
   if (self->_downloadStartCellularEstimate)
   {
     [v8 setDownloadStartCellularEstimate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadEndCellularEstimate)
   {
     [v8 setDownloadEndCellularEstimate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadMaxCellularEstimate)
   {
     [v8 setDownloadMaxCellularEstimate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadStartCellularEstimate)
   {
     [v8 setUploadStartCellularEstimate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadEndCellularEstimate)
   {
     [v8 setUploadEndCellularEstimate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadMaxCellularEstimate)
   {
     [v8 setUploadMaxCellularEstimate:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadResponsiveness)
   {
     [v8 setDownloadResponsiveness:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadResponsivenessConfidence)
   {
     [v8 setDownloadResponsivenessConfidence:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadResponsivenessRating)
   {
     [v8 setDownloadResponsivenessRating:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadSpeedConfidence)
   {
     [v8 setDownloadSpeedConfidence:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_downloadSpeedRating)
   {
     [v8 setDownloadSpeedRating:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadResponsiveness)
   {
     [v8 setUploadResponsiveness:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadResponsivenessConfidence)
   {
     [v8 setUploadResponsivenessConfidence:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadResponsivenessRating)
   {
     [v8 setUploadResponsivenessRating:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadSpeedConfidence)
   {
     [v8 setUploadSpeedConfidence:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadSpeedRating)
   {
     [v8 setUploadSpeedRating:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiChannelBand)
   {
     [v8 setWifiChannelBand:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_wifiChannelWidth)
   {
     [v8 setWifiChannelWidth:?];
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -4975,15 +4975,15 @@ LABEL_252:
     *(v5 + 1684) |= 1u;
   }
 
-  v7 = [(NSString *)self->_awdlElectionParameters copyWithZone:a3];
+  v7 = [(NSString *)self->_awdlElectionParameters copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_awdlMasterChannel copyWithZone:a3];
+  v9 = [(NSString *)self->_awdlMasterChannel copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
-  v11 = [(NSString *)self->_awdlOpMode copyWithZone:a3];
+  v11 = [(NSString *)self->_awdlOpMode copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
@@ -4993,23 +4993,23 @@ LABEL_252:
     *(v6 + 1684) |= 4u;
   }
 
-  v13 = [(NSString *)self->_awdlSchedule copyWithZone:a3];
+  v13 = [(NSString *)self->_awdlSchedule copyWithZone:zone];
   v14 = *(v6 + 40);
   *(v6 + 40) = v13;
 
-  v15 = [(NSString *)self->_awdlSecondaryMasterChannel copyWithZone:a3];
+  v15 = [(NSString *)self->_awdlSecondaryMasterChannel copyWithZone:zone];
   v16 = *(v6 + 48);
   *(v6 + 48) = v15;
 
-  v17 = [(NSString *)self->_awdlSyncChannelSequence copyWithZone:a3];
+  v17 = [(NSString *)self->_awdlSyncChannelSequence copyWithZone:zone];
   v18 = *(v6 + 56);
   *(v6 + 56) = v17;
 
-  v19 = [(NSString *)self->_awdlSyncState copyWithZone:a3];
+  v19 = [(NSString *)self->_awdlSyncState copyWithZone:zone];
   v20 = *(v6 + 64);
   *(v6 + 64) = v19;
 
-  v21 = [(NSString *)self->_btConnectedDevicesCount copyWithZone:a3];
+  v21 = [(NSString *)self->_btConnectedDevicesCount copyWithZone:zone];
   v22 = *(v6 + 72);
   *(v6 + 72) = v21;
 
@@ -5061,11 +5061,11 @@ LABEL_9:
   }
 
 LABEL_10:
-  v24 = [(NSString *)self->_callingClient copyWithZone:a3];
+  v24 = [(NSString *)self->_callingClient copyWithZone:zone];
   v25 = *(v6 + 80);
   *(v6 + 80) = v24;
 
-  v26 = [(NSString *)self->_cellularActiveContexts copyWithZone:a3];
+  v26 = [(NSString *)self->_cellularActiveContexts copyWithZone:zone];
   v27 = *(v6 + 88);
   *(v6 + 88) = v26;
 
@@ -5075,211 +5075,211 @@ LABEL_10:
     *(v6 + 1684) |= 0x80u;
   }
 
-  v28 = [(NSString *)self->_cellularAttached copyWithZone:a3];
+  v28 = [(NSString *)self->_cellularAttached copyWithZone:zone];
   v29 = *(v6 + 112);
   *(v6 + 112) = v28;
 
-  v30 = [(NSString *)self->_cellularBandinfo copyWithZone:a3];
+  v30 = [(NSString *)self->_cellularBandinfo copyWithZone:zone];
   v31 = *(v6 + 120);
   *(v6 + 120) = v30;
 
-  v32 = [(NSString *)self->_cellularBandwidth copyWithZone:a3];
+  v32 = [(NSString *)self->_cellularBandwidth copyWithZone:zone];
   v33 = *(v6 + 128);
   *(v6 + 128) = v32;
 
-  v34 = [(NSString *)self->_cellularCarrierName copyWithZone:a3];
+  v34 = [(NSString *)self->_cellularCarrierName copyWithZone:zone];
   v35 = *(v6 + 136);
   *(v6 + 136) = v34;
 
-  v36 = [(NSString *)self->_cellularDataBearerSoMask copyWithZone:a3];
+  v36 = [(NSString *)self->_cellularDataBearerSoMask copyWithZone:zone];
   v37 = *(v6 + 152);
   *(v6 + 152) = v36;
 
-  v38 = [(NSString *)self->_cellularDataBearerTechnology copyWithZone:a3];
+  v38 = [(NSString *)self->_cellularDataBearerTechnology copyWithZone:zone];
   v39 = *(v6 + 160);
   *(v6 + 160) = v38;
 
-  v40 = [(NSString *)self->_cellularDataPlanSignalingReductionOverride copyWithZone:a3];
+  v40 = [(NSString *)self->_cellularDataPlanSignalingReductionOverride copyWithZone:zone];
   v41 = *(v6 + 168);
   *(v6 + 168) = v40;
 
-  v42 = [(NSString *)self->_cellularDataPossible copyWithZone:a3];
+  v42 = [(NSString *)self->_cellularDataPossible copyWithZone:zone];
   v43 = *(v6 + 176);
   *(v6 + 176) = v42;
 
-  v44 = [(NSString *)self->_cellularInHomeCountry copyWithZone:a3];
+  v44 = [(NSString *)self->_cellularInHomeCountry copyWithZone:zone];
   v45 = *(v6 + 184);
   *(v6 + 184) = v44;
 
-  v46 = [(NSString *)self->_cellularIndicator copyWithZone:a3];
+  v46 = [(NSString *)self->_cellularIndicator copyWithZone:zone];
   v47 = *(v6 + 192);
   *(v6 + 192) = v46;
 
-  v48 = [(NSString *)self->_cellularIndicatorOverride copyWithZone:a3];
+  v48 = [(NSString *)self->_cellularIndicatorOverride copyWithZone:zone];
   v49 = *(v6 + 200);
   *(v6 + 200) = v48;
 
-  v50 = [(NSString *)self->_cellularIsoCountryCode copyWithZone:a3];
+  v50 = [(NSString *)self->_cellularIsoCountryCode copyWithZone:zone];
   v51 = *(v6 + 208);
   *(v6 + 208) = v50;
 
-  v52 = [(NSString *)self->_cellularLqm copyWithZone:a3];
+  v52 = [(NSString *)self->_cellularLqm copyWithZone:zone];
   v53 = *(v6 + 232);
   *(v6 + 232) = v52;
 
-  v54 = [(NSString *)self->_cellularLteMaxScheduledLayers copyWithZone:a3];
+  v54 = [(NSString *)self->_cellularLteMaxScheduledLayers copyWithZone:zone];
   v55 = *(v6 + 240);
   *(v6 + 240) = v54;
 
-  v56 = [(NSString *)self->_cellularMobileCountryCode copyWithZone:a3];
+  v56 = [(NSString *)self->_cellularMobileCountryCode copyWithZone:zone];
   v57 = *(v6 + 296);
   *(v6 + 296) = v56;
 
-  v58 = [(NSString *)self->_cellularMobileNetworkCode copyWithZone:a3];
+  v58 = [(NSString *)self->_cellularMobileNetworkCode copyWithZone:zone];
   v59 = *(v6 + 304);
   *(v6 + 304) = v58;
 
-  v60 = [(NSString *)self->_cellularNewRadioCoverage copyWithZone:a3];
+  v60 = [(NSString *)self->_cellularNewRadioCoverage copyWithZone:zone];
   v61 = *(v6 + 312);
   *(v6 + 312) = v60;
 
-  v62 = [(NSString *)self->_cellularNewRadioDataBearer copyWithZone:a3];
+  v62 = [(NSString *)self->_cellularNewRadioDataBearer copyWithZone:zone];
   v63 = *(v6 + 320);
   *(v6 + 320) = v62;
 
-  v64 = [(NSString *)self->_cellularNewRadioMmwaveDataBearer copyWithZone:a3];
+  v64 = [(NSString *)self->_cellularNewRadioMmwaveDataBearer copyWithZone:zone];
   v65 = *(v6 + 328);
   *(v6 + 328) = v64;
 
-  v66 = [(NSString *)self->_cellularNewRadioNsaCoverage copyWithZone:a3];
+  v66 = [(NSString *)self->_cellularNewRadioNsaCoverage copyWithZone:zone];
   v67 = *(v6 + 336);
   *(v6 + 336) = v66;
 
-  v68 = [(NSString *)self->_cellularNewRadioNsaDataBearer copyWithZone:a3];
+  v68 = [(NSString *)self->_cellularNewRadioNsaDataBearer copyWithZone:zone];
   v69 = *(v6 + 344);
   *(v6 + 344) = v68;
 
-  v70 = [(NSString *)self->_cellularNewRadioSaCoverage copyWithZone:a3];
+  v70 = [(NSString *)self->_cellularNewRadioSaCoverage copyWithZone:zone];
   v71 = *(v6 + 352);
   *(v6 + 352) = v70;
 
-  v72 = [(NSString *)self->_cellularNewRadioSaDataBearer copyWithZone:a3];
+  v72 = [(NSString *)self->_cellularNewRadioSaDataBearer copyWithZone:zone];
   v73 = *(v6 + 360);
   *(v6 + 360) = v72;
 
-  v74 = [(NSString *)self->_cellularNewRadioSub6DataBearer copyWithZone:a3];
+  v74 = [(NSString *)self->_cellularNewRadioSub6DataBearer copyWithZone:zone];
   v75 = *(v6 + 368);
   *(v6 + 368) = v74;
 
-  v76 = [(NSString *)self->_cellularNrConfiguredBw copyWithZone:a3];
+  v76 = [(NSString *)self->_cellularNrConfiguredBw copyWithZone:zone];
   v77 = *(v6 + 376);
   *(v6 + 376) = v76;
 
-  v78 = [(NSString *)self->_cellularNrLayers copyWithZone:a3];
+  v78 = [(NSString *)self->_cellularNrLayers copyWithZone:zone];
   v79 = *(v6 + 384);
   *(v6 + 384) = v78;
 
-  v80 = [(NSString *)self->_cellularNrModulation copyWithZone:a3];
+  v80 = [(NSString *)self->_cellularNrModulation copyWithZone:zone];
   v81 = *(v6 + 392);
   *(v6 + 392) = v80;
 
-  v82 = [(NSString *)self->_cellularNrRsrp copyWithZone:a3];
+  v82 = [(NSString *)self->_cellularNrRsrp copyWithZone:zone];
   v83 = *(v6 + 400);
   *(v6 + 400) = v82;
 
-  v84 = [(NSString *)self->_cellularNrRsrq copyWithZone:a3];
+  v84 = [(NSString *)self->_cellularNrRsrq copyWithZone:zone];
   v85 = *(v6 + 408);
   *(v6 + 408) = v84;
 
-  v86 = [(NSString *)self->_cellularNrSnr copyWithZone:a3];
+  v86 = [(NSString *)self->_cellularNrSnr copyWithZone:zone];
   v87 = *(v6 + 424);
   *(v6 + 424) = v86;
 
-  v88 = [(NSString *)self->_cellularPid copyWithZone:a3];
+  v88 = [(NSString *)self->_cellularPid copyWithZone:zone];
   v89 = *(v6 + 440);
   *(v6 + 440) = v88;
 
-  v90 = [(NSString *)self->_cellularRadioAccessTechnology copyWithZone:a3];
+  v90 = [(NSString *)self->_cellularRadioAccessTechnology copyWithZone:zone];
   v91 = *(v6 + 448);
   *(v6 + 448) = v90;
 
-  v92 = [(NSString *)self->_cellularRadioAccessTechnologyCtDataStatus copyWithZone:a3];
+  v92 = [(NSString *)self->_cellularRadioAccessTechnologyCtDataStatus copyWithZone:zone];
   v93 = *(v6 + 456);
   *(v6 + 456) = v92;
 
-  v94 = [(NSString *)self->_cellularRoamAllowed copyWithZone:a3];
+  v94 = [(NSString *)self->_cellularRoamAllowed copyWithZone:zone];
   v95 = *(v6 + 488);
   *(v6 + 488) = v94;
 
-  v96 = [(NSString *)self->_cellularRsrp copyWithZone:a3];
+  v96 = [(NSString *)self->_cellularRsrp copyWithZone:zone];
   v97 = *(v6 + 496);
   *(v6 + 496) = v96;
 
-  v98 = [(NSString *)self->_cellularSnr copyWithZone:a3];
+  v98 = [(NSString *)self->_cellularSnr copyWithZone:zone];
   v99 = *(v6 + 504);
   *(v6 + 504) = v98;
 
-  v100 = [(NSString *)self->_cellularTac copyWithZone:a3];
+  v100 = [(NSString *)self->_cellularTac copyWithZone:zone];
   v101 = *(v6 + 512);
   *(v6 + 512) = v100;
 
-  v102 = [(NSString *)self->_cellularTotalActiveContexts copyWithZone:a3];
+  v102 = [(NSString *)self->_cellularTotalActiveContexts copyWithZone:zone];
   v103 = *(v6 + 520);
   *(v6 + 520) = v102;
 
-  v104 = [(NSString *)self->_cellularTotalBw copyWithZone:a3];
+  v104 = [(NSString *)self->_cellularTotalBw copyWithZone:zone];
   v105 = *(v6 + 528);
   *(v6 + 528) = v104;
 
-  v106 = [(NSString *)self->_cellularTotalCcs copyWithZone:a3];
+  v106 = [(NSString *)self->_cellularTotalCcs copyWithZone:zone];
   v107 = *(v6 + 536);
   *(v6 + 536) = v106;
 
-  v108 = [(NSString *)self->_cellularTotalLayers copyWithZone:a3];
+  v108 = [(NSString *)self->_cellularTotalLayers copyWithZone:zone];
   v109 = *(v6 + 552);
   *(v6 + 552) = v108;
 
-  v110 = [(NSString *)self->_cellularUarfcn copyWithZone:a3];
+  v110 = [(NSString *)self->_cellularUarfcn copyWithZone:zone];
   v111 = *(v6 + 568);
   *(v6 + 568) = v110;
 
-  v112 = [(NSString *)self->_downloadCdnPop copyWithZone:a3];
+  v112 = [(NSString *)self->_downloadCdnPop copyWithZone:zone];
   v113 = *(v6 + 576);
   *(v6 + 576) = v112;
 
-  v114 = [(NSString *)self->_downloadCdnUuid copyWithZone:a3];
+  v114 = [(NSString *)self->_downloadCdnUuid copyWithZone:zone];
   v115 = *(v6 + 584);
   *(v6 + 584) = v114;
 
-  v116 = [(NSString *)self->_downloadConnectionTime copyWithZone:a3];
+  v116 = [(NSString *)self->_downloadConnectionTime copyWithZone:zone];
   v117 = *(v6 + 592);
   *(v6 + 592) = v116;
 
-  v118 = [(NSString *)self->_downloadDomainLookupTime copyWithZone:a3];
+  v118 = [(NSString *)self->_downloadDomainLookupTime copyWithZone:zone];
   v119 = *(v6 + 600);
   *(v6 + 600) = v118;
 
-  v120 = [(NSString *)self->_downloadEndDataBearerTechnology copyWithZone:a3];
+  v120 = [(NSString *)self->_downloadEndDataBearerTechnology copyWithZone:zone];
   v121 = *(v6 + 616);
   *(v6 + 616) = v120;
 
-  v122 = [(NSString *)self->_downloadEndPrimaryIpv4Interface copyWithZone:a3];
+  v122 = [(NSString *)self->_downloadEndPrimaryIpv4Interface copyWithZone:zone];
   v123 = *(v6 + 624);
   *(v6 + 624) = v122;
 
-  v124 = [(NSString *)self->_downloadEndRat copyWithZone:a3];
+  v124 = [(NSString *)self->_downloadEndRat copyWithZone:zone];
   v125 = *(v6 + 640);
   *(v6 + 640) = v124;
 
-  v126 = [(NSString *)self->_downloadFileSize copyWithZone:a3];
+  v126 = [(NSString *)self->_downloadFileSize copyWithZone:zone];
   v127 = *(v6 + 672);
   *(v6 + 672) = v126;
 
-  v128 = [(NSString *)self->_downloadInterfaceName copyWithZone:a3];
+  v128 = [(NSString *)self->_downloadInterfaceName copyWithZone:zone];
   v129 = *(v6 + 680);
   *(v6 + 680) = v128;
 
-  v130 = [(NSString *)self->_downloadInterfaceServiceName copyWithZone:a3];
+  v130 = [(NSString *)self->_downloadInterfaceServiceName copyWithZone:zone];
   v131 = *(v6 + 688);
   *(v6 + 688) = v130;
 
@@ -5361,63 +5361,63 @@ LABEL_18:
   }
 
 LABEL_19:
-  v133 = [(NSString *)self->_downloadMaxSpeedObserved copyWithZone:a3];
+  v133 = [(NSString *)self->_downloadMaxSpeedObserved copyWithZone:zone];
   v134 = *(v6 + 704);
   *(v6 + 704) = v133;
 
-  v135 = [(NSString *)self->_downloadNumberOfStreams copyWithZone:a3];
+  v135 = [(NSString *)self->_downloadNumberOfStreams copyWithZone:zone];
   v136 = *(v6 + 712);
   *(v6 + 712) = v135;
 
-  v137 = [(NSString *)self->_downloadProtocolName copyWithZone:a3];
+  v137 = [(NSString *)self->_downloadProtocolName copyWithZone:zone];
   v138 = *(v6 + 720);
   *(v6 + 720) = v137;
 
-  v139 = [(NSString *)self->_downloadRemoteAddress copyWithZone:a3];
+  v139 = [(NSString *)self->_downloadRemoteAddress copyWithZone:zone];
   v140 = *(v6 + 728);
   *(v6 + 728) = v139;
 
-  v141 = [(NSString *)self->_downloadRemotePort copyWithZone:a3];
+  v141 = [(NSString *)self->_downloadRemotePort copyWithZone:zone];
   v142 = *(v6 + 736);
   *(v6 + 736) = v141;
 
-  v143 = [(NSString *)self->_downloadRequestTime copyWithZone:a3];
+  v143 = [(NSString *)self->_downloadRequestTime copyWithZone:zone];
   v144 = *(v6 + 744);
   *(v6 + 744) = v143;
 
-  v145 = [(NSString *)self->_downloadRequestToResponseTime copyWithZone:a3];
+  v145 = [(NSString *)self->_downloadRequestToResponseTime copyWithZone:zone];
   v146 = *(v6 + 752);
   *(v6 + 752) = v145;
 
-  v147 = [(NSString *)self->_downloadResponseTime copyWithZone:a3];
+  v147 = [(NSString *)self->_downloadResponseTime copyWithZone:zone];
   v148 = *(v6 + 760);
   *(v6 + 760) = v147;
 
-  v149 = [(NSString *)self->_downloadSecureConnectionTime copyWithZone:a3];
+  v149 = [(NSString *)self->_downloadSecureConnectionTime copyWithZone:zone];
   v150 = *(v6 + 792);
   *(v6 + 792) = v149;
 
-  v151 = [(NSString *)self->_downloadServer copyWithZone:a3];
+  v151 = [(NSString *)self->_downloadServer copyWithZone:zone];
   v152 = *(v6 + 800);
   *(v6 + 800) = v151;
 
-  v153 = [(NSString *)self->_downloadSpeed copyWithZone:a3];
+  v153 = [(NSString *)self->_downloadSpeed copyWithZone:zone];
   v154 = *(v6 + 808);
   *(v6 + 808) = v153;
 
-  v155 = [(NSString *)self->_downloadStableSpeed copyWithZone:a3];
+  v155 = [(NSString *)self->_downloadStableSpeed copyWithZone:zone];
   v156 = *(v6 + 832);
   *(v6 + 832) = v155;
 
-  v157 = [(NSString *)self->_downloadStartDataBearerTechnology copyWithZone:a3];
+  v157 = [(NSString *)self->_downloadStartDataBearerTechnology copyWithZone:zone];
   v158 = *(v6 + 848);
   *(v6 + 848) = v157;
 
-  v159 = [(NSString *)self->_downloadStartPrimaryIpv4Interface copyWithZone:a3];
+  v159 = [(NSString *)self->_downloadStartPrimaryIpv4Interface copyWithZone:zone];
   v160 = *(v6 + 856);
   *(v6 + 856) = v159;
 
-  v161 = [(NSString *)self->_downloadStartRat copyWithZone:a3];
+  v161 = [(NSString *)self->_downloadStartRat copyWithZone:zone];
   v162 = *(v6 + 872);
   *(v6 + 872) = v161;
 
@@ -5427,75 +5427,75 @@ LABEL_19:
     *(v6 + 1684) |= 0x8000u;
   }
 
-  v163 = [(NSString *)self->_networkPrimaryIpv4InterfaceName copyWithZone:a3];
+  v163 = [(NSString *)self->_networkPrimaryIpv4InterfaceName copyWithZone:zone];
   v164 = *(v6 + 880);
   *(v6 + 880) = v163;
 
-  v165 = [(NSString *)self->_networkPrimaryIpv4ServiceName copyWithZone:a3];
+  v165 = [(NSString *)self->_networkPrimaryIpv4ServiceName copyWithZone:zone];
   v166 = *(v6 + 888);
   *(v6 + 888) = v165;
 
-  v167 = [(NSString *)self->_nptkitFrameworkVersion copyWithZone:a3];
+  v167 = [(NSString *)self->_nptkitFrameworkVersion copyWithZone:zone];
   v168 = *(v6 + 968);
   *(v6 + 968) = v167;
 
-  v169 = [(NSString *)self->_performanceTestStartTime copyWithZone:a3];
+  v169 = [(NSString *)self->_performanceTestStartTime copyWithZone:zone];
   v170 = *(v6 + 976);
   *(v6 + 976) = v169;
 
-  v171 = [(NSString *)self->_pingAddress copyWithZone:a3];
+  v171 = [(NSString *)self->_pingAddress copyWithZone:zone];
   v172 = *(v6 + 984);
   *(v6 + 984) = v171;
 
-  v173 = [(NSString *)self->_pingLossPercent copyWithZone:a3];
+  v173 = [(NSString *)self->_pingLossPercent copyWithZone:zone];
   v174 = *(v6 + 1016);
   *(v6 + 1016) = v173;
 
-  v175 = [(NSString *)self->_pingMaxLatency copyWithZone:a3];
+  v175 = [(NSString *)self->_pingMaxLatency copyWithZone:zone];
   v176 = *(v6 + 1024);
   *(v6 + 1024) = v175;
 
-  v177 = [(NSString *)self->_pingMeanLatency copyWithZone:a3];
+  v177 = [(NSString *)self->_pingMeanLatency copyWithZone:zone];
   v178 = *(v6 + 1032);
   *(v6 + 1032) = v177;
 
-  v179 = [(NSString *)self->_pingMinLatency copyWithZone:a3];
+  v179 = [(NSString *)self->_pingMinLatency copyWithZone:zone];
   v180 = *(v6 + 1040);
   *(v6 + 1040) = v179;
 
-  v181 = [(NSString *)self->_pingStandardDeviation copyWithZone:a3];
+  v181 = [(NSString *)self->_pingStandardDeviation copyWithZone:zone];
   v182 = *(v6 + 1048);
   *(v6 + 1048) = v181;
 
-  v183 = [(NSString *)self->_powerBatteryWarningLevel copyWithZone:a3];
+  v183 = [(NSString *)self->_powerBatteryWarningLevel copyWithZone:zone];
   v184 = *(v6 + 1056);
   *(v6 + 1056) = v183;
 
-  v185 = [(NSString *)self->_powerSourceType copyWithZone:a3];
+  v185 = [(NSString *)self->_powerSourceType copyWithZone:zone];
   v186 = *(v6 + 1064);
   *(v6 + 1064) = v185;
 
-  v187 = [(NSString *)self->_powerStateCaps copyWithZone:a3];
+  v187 = [(NSString *)self->_powerStateCaps copyWithZone:zone];
   v188 = *(v6 + 1072);
   *(v6 + 1072) = v187;
 
-  v189 = [(NSString *)self->_systemActiveProcessorCount copyWithZone:a3];
+  v189 = [(NSString *)self->_systemActiveProcessorCount copyWithZone:zone];
   v190 = *(v6 + 1080);
   *(v6 + 1080) = v189;
 
-  v191 = [(NSString *)self->_systemBatteryLevel copyWithZone:a3];
+  v191 = [(NSString *)self->_systemBatteryLevel copyWithZone:zone];
   v192 = *(v6 + 1088);
   *(v6 + 1088) = v191;
 
-  v193 = [(NSString *)self->_systemBatteryState copyWithZone:a3];
+  v193 = [(NSString *)self->_systemBatteryState copyWithZone:zone];
   v194 = *(v6 + 1096);
   *(v6 + 1096) = v193;
 
-  v195 = [(NSString *)self->_systemDeviceClass copyWithZone:a3];
+  v195 = [(NSString *)self->_systemDeviceClass copyWithZone:zone];
   v196 = *(v6 + 1104);
   *(v6 + 1104) = v195;
 
-  v197 = [(NSString *)self->_systemDeviceModel copyWithZone:a3];
+  v197 = [(NSString *)self->_systemDeviceModel copyWithZone:zone];
   v198 = *(v6 + 1112);
   *(v6 + 1112) = v197;
 
@@ -5505,15 +5505,15 @@ LABEL_19:
     *(v6 + 1684) |= 0x10000u;
   }
 
-  v199 = [(NSString *)self->_systemName copyWithZone:a3];
+  v199 = [(NSString *)self->_systemName copyWithZone:zone];
   v200 = *(v6 + 1120);
   *(v6 + 1120) = v199;
 
-  v201 = [(NSString *)self->_systemOsVariant copyWithZone:a3];
+  v201 = [(NSString *)self->_systemOsVariant copyWithZone:zone];
   v202 = *(v6 + 1128);
   *(v6 + 1128) = v201;
 
-  v203 = [(NSString *)self->_systemPhysicalMemory copyWithZone:a3];
+  v203 = [(NSString *)self->_systemPhysicalMemory copyWithZone:zone];
   v204 = *(v6 + 1136);
   *(v6 + 1136) = v203;
 
@@ -5523,51 +5523,51 @@ LABEL_19:
     *(v6 + 1684) |= 0x20000u;
   }
 
-  v205 = [(NSString *)self->_systemProcessorCount copyWithZone:a3];
+  v205 = [(NSString *)self->_systemProcessorCount copyWithZone:zone];
   v206 = *(v6 + 1144);
   *(v6 + 1144) = v205;
 
-  v207 = [(NSString *)self->_systemVersion copyWithZone:a3];
+  v207 = [(NSString *)self->_systemVersion copyWithZone:zone];
   v208 = *(v6 + 1152);
   *(v6 + 1152) = v207;
 
-  v209 = [(NSString *)self->_uploadCdnPop copyWithZone:a3];
+  v209 = [(NSString *)self->_uploadCdnPop copyWithZone:zone];
   v210 = *(v6 + 1160);
   *(v6 + 1160) = v209;
 
-  v211 = [(NSString *)self->_uploadCdnUuid copyWithZone:a3];
+  v211 = [(NSString *)self->_uploadCdnUuid copyWithZone:zone];
   v212 = *(v6 + 1168);
   *(v6 + 1168) = v211;
 
-  v213 = [(NSString *)self->_uploadConnectionTime copyWithZone:a3];
+  v213 = [(NSString *)self->_uploadConnectionTime copyWithZone:zone];
   v214 = *(v6 + 1176);
   *(v6 + 1176) = v213;
 
-  v215 = [(NSString *)self->_uploadDomainLookupTime copyWithZone:a3];
+  v215 = [(NSString *)self->_uploadDomainLookupTime copyWithZone:zone];
   v216 = *(v6 + 1184);
   *(v6 + 1184) = v215;
 
-  v217 = [(NSString *)self->_uploadEndDataBearerTechnology copyWithZone:a3];
+  v217 = [(NSString *)self->_uploadEndDataBearerTechnology copyWithZone:zone];
   v218 = *(v6 + 1200);
   *(v6 + 1200) = v217;
 
-  v219 = [(NSString *)self->_uploadEndPrimaryIpv4Interface copyWithZone:a3];
+  v219 = [(NSString *)self->_uploadEndPrimaryIpv4Interface copyWithZone:zone];
   v220 = *(v6 + 1208);
   *(v6 + 1208) = v219;
 
-  v221 = [(NSString *)self->_uploadEndRat copyWithZone:a3];
+  v221 = [(NSString *)self->_uploadEndRat copyWithZone:zone];
   v222 = *(v6 + 1224);
   *(v6 + 1224) = v221;
 
-  v223 = [(NSString *)self->_uploadFileSize copyWithZone:a3];
+  v223 = [(NSString *)self->_uploadFileSize copyWithZone:zone];
   v224 = *(v6 + 1256);
   *(v6 + 1256) = v223;
 
-  v225 = [(NSString *)self->_uploadInterfaceName copyWithZone:a3];
+  v225 = [(NSString *)self->_uploadInterfaceName copyWithZone:zone];
   v226 = *(v6 + 1264);
   *(v6 + 1264) = v225;
 
-  v227 = [(NSString *)self->_uploadInterfaceServiceName copyWithZone:a3];
+  v227 = [(NSString *)self->_uploadInterfaceServiceName copyWithZone:zone];
   v228 = *(v6 + 1272);
   *(v6 + 1272) = v227;
 
@@ -5649,63 +5649,63 @@ LABEL_31:
   }
 
 LABEL_32:
-  v230 = [(NSString *)self->_uploadMaxSpeedObserved copyWithZone:a3];
+  v230 = [(NSString *)self->_uploadMaxSpeedObserved copyWithZone:zone];
   v231 = *(v6 + 1288);
   *(v6 + 1288) = v230;
 
-  v232 = [(NSString *)self->_uploadNumberOfStreams copyWithZone:a3];
+  v232 = [(NSString *)self->_uploadNumberOfStreams copyWithZone:zone];
   v233 = *(v6 + 1296);
   *(v6 + 1296) = v232;
 
-  v234 = [(NSString *)self->_uploadProtocolName copyWithZone:a3];
+  v234 = [(NSString *)self->_uploadProtocolName copyWithZone:zone];
   v235 = *(v6 + 1304);
   *(v6 + 1304) = v234;
 
-  v236 = [(NSString *)self->_uploadRemoteAddress copyWithZone:a3];
+  v236 = [(NSString *)self->_uploadRemoteAddress copyWithZone:zone];
   v237 = *(v6 + 1312);
   *(v6 + 1312) = v236;
 
-  v238 = [(NSString *)self->_uploadRemotePort copyWithZone:a3];
+  v238 = [(NSString *)self->_uploadRemotePort copyWithZone:zone];
   v239 = *(v6 + 1320);
   *(v6 + 1320) = v238;
 
-  v240 = [(NSString *)self->_uploadRequestTime copyWithZone:a3];
+  v240 = [(NSString *)self->_uploadRequestTime copyWithZone:zone];
   v241 = *(v6 + 1328);
   *(v6 + 1328) = v240;
 
-  v242 = [(NSString *)self->_uploadRequestToResponseTime copyWithZone:a3];
+  v242 = [(NSString *)self->_uploadRequestToResponseTime copyWithZone:zone];
   v243 = *(v6 + 1336);
   *(v6 + 1336) = v242;
 
-  v244 = [(NSString *)self->_uploadResponseTime copyWithZone:a3];
+  v244 = [(NSString *)self->_uploadResponseTime copyWithZone:zone];
   v245 = *(v6 + 1344);
   *(v6 + 1344) = v244;
 
-  v246 = [(NSString *)self->_uploadSecureConnectionTime copyWithZone:a3];
+  v246 = [(NSString *)self->_uploadSecureConnectionTime copyWithZone:zone];
   v247 = *(v6 + 1376);
   *(v6 + 1376) = v246;
 
-  v248 = [(NSString *)self->_uploadServer copyWithZone:a3];
+  v248 = [(NSString *)self->_uploadServer copyWithZone:zone];
   v249 = *(v6 + 1384);
   *(v6 + 1384) = v248;
 
-  v250 = [(NSString *)self->_uploadSpeed copyWithZone:a3];
+  v250 = [(NSString *)self->_uploadSpeed copyWithZone:zone];
   v251 = *(v6 + 1392);
   *(v6 + 1392) = v250;
 
-  v252 = [(NSString *)self->_uploadStableSpeed copyWithZone:a3];
+  v252 = [(NSString *)self->_uploadStableSpeed copyWithZone:zone];
   v253 = *(v6 + 1416);
   *(v6 + 1416) = v252;
 
-  v254 = [(NSString *)self->_uploadStartDataBearerTechnology copyWithZone:a3];
+  v254 = [(NSString *)self->_uploadStartDataBearerTechnology copyWithZone:zone];
   v255 = *(v6 + 1432);
   *(v6 + 1432) = v254;
 
-  v256 = [(NSString *)self->_uploadStartPrimaryIpv4Interface copyWithZone:a3];
+  v256 = [(NSString *)self->_uploadStartPrimaryIpv4Interface copyWithZone:zone];
   v257 = *(v6 + 1440);
   *(v6 + 1440) = v256;
 
-  v258 = [(NSString *)self->_uploadStartRat copyWithZone:a3];
+  v258 = [(NSString *)self->_uploadStartRat copyWithZone:zone];
   v259 = *(v6 + 1456);
   *(v6 + 1456) = v258;
 
@@ -5715,51 +5715,51 @@ LABEL_32:
     *(v6 + 1684) |= 0x1000000u;
   }
 
-  v260 = [(NSString *)self->_wifiAveragePhyRateRx copyWithZone:a3];
+  v260 = [(NSString *)self->_wifiAveragePhyRateRx copyWithZone:zone];
   v261 = *(v6 + 1472);
   *(v6 + 1472) = v260;
 
-  v262 = [(NSString *)self->_wifiAverageRssi copyWithZone:a3];
+  v262 = [(NSString *)self->_wifiAverageRssi copyWithZone:zone];
   v263 = *(v6 + 1480);
   *(v6 + 1480) = v262;
 
-  v264 = [(NSString *)self->_wifiAverageSnr copyWithZone:a3];
+  v264 = [(NSString *)self->_wifiAverageSnr copyWithZone:zone];
   v265 = *(v6 + 1488);
   *(v6 + 1488) = v264;
 
-  v266 = [(NSString *)self->_wifiAverageTcpRtt copyWithZone:a3];
+  v266 = [(NSString *)self->_wifiAverageTcpRtt copyWithZone:zone];
   v267 = *(v6 + 1496);
   *(v6 + 1496) = v266;
 
-  v268 = [(NSString *)self->_wifiBtcMode copyWithZone:a3];
+  v268 = [(NSString *)self->_wifiBtcMode copyWithZone:zone];
   v269 = *(v6 + 1504);
   *(v6 + 1504) = v268;
 
-  v270 = [(NSString *)self->_wifiCca copyWithZone:a3];
+  v270 = [(NSString *)self->_wifiCca copyWithZone:zone];
   v271 = *(v6 + 1512);
   *(v6 + 1512) = v270;
 
-  v272 = [(NSString *)self->_wifiChannel copyWithZone:a3];
+  v272 = [(NSString *)self->_wifiChannel copyWithZone:zone];
   v273 = *(v6 + 1520);
   *(v6 + 1520) = v272;
 
-  v274 = [(NSString *)self->_wifiCwfCca copyWithZone:a3];
+  v274 = [(NSString *)self->_wifiCwfCca copyWithZone:zone];
   v275 = *(v6 + 1544);
   *(v6 + 1544) = v274;
 
-  v276 = [(NSString *)self->_wifiEapolControlMode copyWithZone:a3];
+  v276 = [(NSString *)self->_wifiEapolControlMode copyWithZone:zone];
   v277 = *(v6 + 1552);
   *(v6 + 1552) = v276;
 
-  v278 = [(NSString *)self->_wifiEapolSupplicantState copyWithZone:a3];
+  v278 = [(NSString *)self->_wifiEapolSupplicantState copyWithZone:zone];
   v279 = *(v6 + 1560);
   *(v6 + 1560) = v278;
 
-  v280 = [(NSString *)self->_wifiGuardInterval copyWithZone:a3];
+  v280 = [(NSString *)self->_wifiGuardInterval copyWithZone:zone];
   v281 = *(v6 + 1568);
   *(v6 + 1568) = v280;
 
-  v282 = [(NSString *)self->_wifiHiddenState copyWithZone:a3];
+  v282 = [(NSString *)self->_wifiHiddenState copyWithZone:zone];
   v283 = *(v6 + 1576);
   *(v6 + 1576) = v282;
 
@@ -5769,43 +5769,43 @@ LABEL_32:
     *(v6 + 1684) |= 0x2000000u;
   }
 
-  v284 = [(NSString *)self->_wifiMcsIndex copyWithZone:a3];
+  v284 = [(NSString *)self->_wifiMcsIndex copyWithZone:zone];
   v285 = *(v6 + 1584);
   *(v6 + 1584) = v284;
 
-  v286 = [(NSString *)self->_wifiNoise copyWithZone:a3];
+  v286 = [(NSString *)self->_wifiNoise copyWithZone:zone];
   v287 = *(v6 + 1592);
   *(v6 + 1592) = v286;
 
-  v288 = [(NSString *)self->_wifiNumberOfSpatialStreams copyWithZone:a3];
+  v288 = [(NSString *)self->_wifiNumberOfSpatialStreams copyWithZone:zone];
   v289 = *(v6 + 1600);
   *(v6 + 1600) = v288;
 
-  v290 = [(NSString *)self->_wifiOpMode copyWithZone:a3];
+  v290 = [(NSString *)self->_wifiOpMode copyWithZone:zone];
   v291 = *(v6 + 1608);
   *(v6 + 1608) = v290;
 
-  v292 = [(NSString *)self->_wifiPhyMode copyWithZone:a3];
+  v292 = [(NSString *)self->_wifiPhyMode copyWithZone:zone];
   v293 = *(v6 + 1616);
   *(v6 + 1616) = v292;
 
-  v294 = [(NSString *)self->_wifiRssi copyWithZone:a3];
+  v294 = [(NSString *)self->_wifiRssi copyWithZone:zone];
   v295 = *(v6 + 1624);
   *(v6 + 1624) = v294;
 
-  v296 = [(NSString *)self->_wifiSecurity copyWithZone:a3];
+  v296 = [(NSString *)self->_wifiSecurity copyWithZone:zone];
   v297 = *(v6 + 1632);
   *(v6 + 1632) = v296;
 
-  v298 = [(NSString *)self->_wifiTxRate copyWithZone:a3];
+  v298 = [(NSString *)self->_wifiTxRate copyWithZone:zone];
   v299 = *(v6 + 1640);
   *(v6 + 1640) = v298;
 
-  v300 = [(NSString *)self->_wrmChannelType copyWithZone:a3];
+  v300 = [(NSString *)self->_wrmChannelType copyWithZone:zone];
   v301 = *(v6 + 1648);
   *(v6 + 1648) = v300;
 
-  v302 = [(NSString *)self->_cellularCellid copyWithZone:a3];
+  v302 = [(NSString *)self->_cellularCellid copyWithZone:zone];
   v303 = *(v6 + 144);
   *(v6 + 144) = v302;
 
@@ -5815,163 +5815,163 @@ LABEL_32:
     *(v6 + 1684) |= 2u;
   }
 
-  v304 = [(NSString *)self->_networkQualityResponsiveness copyWithZone:a3];
+  v304 = [(NSString *)self->_networkQualityResponsiveness copyWithZone:zone];
   v305 = *(v6 + 952);
   *(v6 + 952) = v304;
 
-  v306 = [(NSString *)self->_cellularAggregatedDLBW copyWithZone:a3];
+  v306 = [(NSString *)self->_cellularAggregatedDLBW copyWithZone:zone];
   v307 = *(v6 + 96);
   *(v6 + 96) = v306;
 
-  v308 = [(NSString *)self->_cellularAggregatedULBW copyWithZone:a3];
+  v308 = [(NSString *)self->_cellularAggregatedULBW copyWithZone:zone];
   v309 = *(v6 + 104);
   *(v6 + 104) = v308;
 
-  v310 = [(NSString *)self->_cellularIssa copyWithZone:a3];
+  v310 = [(NSString *)self->_cellularIssa copyWithZone:zone];
   v311 = *(v6 + 216);
   *(v6 + 216) = v310;
 
-  v312 = [(NSString *)self->_cellularLac copyWithZone:a3];
+  v312 = [(NSString *)self->_cellularLac copyWithZone:zone];
   v313 = *(v6 + 224);
   *(v6 + 224) = v312;
 
-  v314 = [(NSString *)self->_cellularLteNrConfiguredBw copyWithZone:a3];
+  v314 = [(NSString *)self->_cellularLteNrConfiguredBw copyWithZone:zone];
   v315 = *(v6 + 248);
   *(v6 + 248) = v314;
 
-  v316 = [(NSString *)self->_cellularMaxDlMod copyWithZone:a3];
+  v316 = [(NSString *)self->_cellularMaxDlMod copyWithZone:zone];
   v317 = *(v6 + 256);
   *(v6 + 256) = v316;
 
-  v318 = [(NSString *)self->_cellularMaxNwMimoLyr copyWithZone:a3];
+  v318 = [(NSString *)self->_cellularMaxNwMimoLyr copyWithZone:zone];
   v319 = *(v6 + 264);
   *(v6 + 264) = v318;
 
-  v320 = [(NSString *)self->_cellularMaxSchdMimoLyr copyWithZone:a3];
+  v320 = [(NSString *)self->_cellularMaxSchdMimoLyr copyWithZone:zone];
   v321 = *(v6 + 272);
   *(v6 + 272) = v320;
 
-  v322 = [(NSString *)self->_cellularMaxUeRank copyWithZone:a3];
+  v322 = [(NSString *)self->_cellularMaxUeRank copyWithZone:zone];
   v323 = *(v6 + 280);
   *(v6 + 280) = v322;
 
-  v324 = [(NSString *)self->_cellularMaxUlMod copyWithZone:a3];
+  v324 = [(NSString *)self->_cellularMaxUlMod copyWithZone:zone];
   v325 = *(v6 + 288);
   *(v6 + 288) = v324;
 
-  v326 = [(NSString *)self->_cellularNrSinr copyWithZone:a3];
+  v326 = [(NSString *)self->_cellularNrSinr copyWithZone:zone];
   v327 = *(v6 + 416);
   *(v6 + 416) = v326;
 
-  v328 = [(NSString *)self->_cellularNrarfcn copyWithZone:a3];
+  v328 = [(NSString *)self->_cellularNrarfcn copyWithZone:zone];
   v329 = *(v6 + 432);
   *(v6 + 432) = v328;
 
-  v330 = [(NSString *)self->_cellularRadioFrequency copyWithZone:a3];
+  v330 = [(NSString *)self->_cellularRadioFrequency copyWithZone:zone];
   v331 = *(v6 + 464);
   *(v6 + 464) = v330;
 
-  v332 = [(NSString *)self->_cellularTotalDlMimoLayers copyWithZone:a3];
+  v332 = [(NSString *)self->_cellularTotalDlMimoLayers copyWithZone:zone];
   v333 = *(v6 + 544);
   *(v6 + 544) = v332;
 
-  v334 = [(NSString *)self->_cellularTotalNumCcs copyWithZone:a3];
+  v334 = [(NSString *)self->_cellularTotalNumCcs copyWithZone:zone];
   v335 = *(v6 + 560);
   *(v6 + 560) = v334;
 
-  v336 = [(NSString *)self->_downloadStartRadioFrequency copyWithZone:a3];
+  v336 = [(NSString *)self->_downloadStartRadioFrequency copyWithZone:zone];
   v337 = *(v6 + 864);
   *(v6 + 864) = v336;
 
-  v338 = [(NSString *)self->_downloadEndRadioFrequency copyWithZone:a3];
+  v338 = [(NSString *)self->_downloadEndRadioFrequency copyWithZone:zone];
   v339 = *(v6 + 632);
   *(v6 + 632) = v338;
 
-  v340 = [(NSString *)self->_networkPrimaryIpv6InterfaceName copyWithZone:a3];
+  v340 = [(NSString *)self->_networkPrimaryIpv6InterfaceName copyWithZone:zone];
   v341 = *(v6 + 896);
   *(v6 + 896) = v340;
 
-  v342 = [(NSString *)self->_networkPrimaryIpv6ServiceName copyWithZone:a3];
+  v342 = [(NSString *)self->_networkPrimaryIpv6ServiceName copyWithZone:zone];
   v343 = *(v6 + 904);
   *(v6 + 904) = v342;
 
-  v344 = [(NSString *)self->_uploadStartRadioFrequency copyWithZone:a3];
+  v344 = [(NSString *)self->_uploadStartRadioFrequency copyWithZone:zone];
   v345 = *(v6 + 1448);
   *(v6 + 1448) = v344;
 
-  v346 = [(NSString *)self->_uploadEndRadioFrequency copyWithZone:a3];
+  v346 = [(NSString *)self->_uploadEndRadioFrequency copyWithZone:zone];
   v347 = *(v6 + 1216);
   *(v6 + 1216) = v346;
 
-  v348 = [(NSString *)self->_downloadError copyWithZone:a3];
+  v348 = [(NSString *)self->_downloadError copyWithZone:zone];
   v349 = *(v6 + 648);
   *(v6 + 648) = v348;
 
-  v350 = [(NSString *)self->_networkQualityError copyWithZone:a3];
+  v350 = [(NSString *)self->_networkQualityError copyWithZone:zone];
   v351 = *(v6 + 920);
   *(v6 + 920) = v350;
 
-  v352 = [(NSString *)self->_networkQualityDownloadSpeed copyWithZone:a3];
+  v352 = [(NSString *)self->_networkQualityDownloadSpeed copyWithZone:zone];
   v353 = *(v6 + 912);
   *(v6 + 912) = v352;
 
-  v354 = [(NSString *)self->_networkQualityUploadSpeed copyWithZone:a3];
+  v354 = [(NSString *)self->_networkQualityUploadSpeed copyWithZone:zone];
   v355 = *(v6 + 960);
   *(v6 + 960) = v354;
 
-  v356 = [(NSString *)self->_networkQualityRating copyWithZone:a3];
+  v356 = [(NSString *)self->_networkQualityRating copyWithZone:zone];
   v357 = *(v6 + 944);
   *(v6 + 944) = v356;
 
-  v358 = [(NSString *)self->_vpnConnectionState copyWithZone:a3];
+  v358 = [(NSString *)self->_vpnConnectionState copyWithZone:zone];
   v359 = *(v6 + 1464);
   *(v6 + 1464) = v358;
 
-  v360 = [(NSString *)self->_uploadError copyWithZone:a3];
+  v360 = [(NSString *)self->_uploadError copyWithZone:zone];
   v361 = *(v6 + 1232);
   *(v6 + 1232) = v360;
 
-  v362 = [(NSString *)self->_uploadErrorDomain copyWithZone:a3];
+  v362 = [(NSString *)self->_uploadErrorDomain copyWithZone:zone];
   v363 = *(v6 + 1248);
   *(v6 + 1248) = v362;
 
-  v364 = [(NSString *)self->_uploadErrorCode copyWithZone:a3];
+  v364 = [(NSString *)self->_uploadErrorCode copyWithZone:zone];
   v365 = *(v6 + 1240);
   *(v6 + 1240) = v364;
 
-  v366 = [(NSString *)self->_downloadErrorDomain copyWithZone:a3];
+  v366 = [(NSString *)self->_downloadErrorDomain copyWithZone:zone];
   v367 = *(v6 + 664);
   *(v6 + 664) = v366;
 
-  v368 = [(NSString *)self->_downloadErrorCode copyWithZone:a3];
+  v368 = [(NSString *)self->_downloadErrorCode copyWithZone:zone];
   v369 = *(v6 + 656);
   *(v6 + 656) = v368;
 
-  v370 = [(NSString *)self->_pingError copyWithZone:a3];
+  v370 = [(NSString *)self->_pingError copyWithZone:zone];
   v371 = *(v6 + 992);
   *(v6 + 992) = v370;
 
-  v372 = [(NSString *)self->_pingErrorDomain copyWithZone:a3];
+  v372 = [(NSString *)self->_pingErrorDomain copyWithZone:zone];
   v373 = *(v6 + 1008);
   *(v6 + 1008) = v372;
 
-  v374 = [(NSString *)self->_pingErrorCode copyWithZone:a3];
+  v374 = [(NSString *)self->_pingErrorCode copyWithZone:zone];
   v375 = *(v6 + 1000);
   *(v6 + 1000) = v374;
 
-  v376 = [(NSString *)self->_networkQualityErrorDomain copyWithZone:a3];
+  v376 = [(NSString *)self->_networkQualityErrorDomain copyWithZone:zone];
   v377 = *(v6 + 936);
   *(v6 + 936) = v376;
 
-  v378 = [(NSString *)self->_networkQualityErrorCode copyWithZone:a3];
+  v378 = [(NSString *)self->_networkQualityErrorCode copyWithZone:zone];
   v379 = *(v6 + 928);
   *(v6 + 928) = v378;
 
-  v380 = [(NSString *)self->_cellularRnMobileCountryCode copyWithZone:a3];
+  v380 = [(NSString *)self->_cellularRnMobileCountryCode copyWithZone:zone];
   v381 = *(v6 + 472);
   *(v6 + 472) = v380;
 
-  v382 = [(NSString *)self->_cellularRnMobileNetworkCode copyWithZone:a3];
+  v382 = [(NSString *)self->_cellularRnMobileNetworkCode copyWithZone:zone];
   v383 = *(v6 + 480);
   *(v6 + 480) = v382;
 
@@ -5981,93 +5981,93 @@ LABEL_32:
     *(v6 + 1684) |= 0x100u;
   }
 
-  v384 = [(NSString *)self->_downloadStartCellularEstimate copyWithZone:a3];
+  v384 = [(NSString *)self->_downloadStartCellularEstimate copyWithZone:zone];
   v385 = *(v6 + 840);
   *(v6 + 840) = v384;
 
-  v386 = [(NSString *)self->_downloadEndCellularEstimate copyWithZone:a3];
+  v386 = [(NSString *)self->_downloadEndCellularEstimate copyWithZone:zone];
   v387 = *(v6 + 608);
   *(v6 + 608) = v386;
 
-  v388 = [(NSString *)self->_downloadMaxCellularEstimate copyWithZone:a3];
+  v388 = [(NSString *)self->_downloadMaxCellularEstimate copyWithZone:zone];
   v389 = *(v6 + 696);
   *(v6 + 696) = v388;
 
-  v390 = [(NSString *)self->_uploadStartCellularEstimate copyWithZone:a3];
+  v390 = [(NSString *)self->_uploadStartCellularEstimate copyWithZone:zone];
   v391 = *(v6 + 1424);
   *(v6 + 1424) = v390;
 
-  v392 = [(NSString *)self->_uploadEndCellularEstimate copyWithZone:a3];
+  v392 = [(NSString *)self->_uploadEndCellularEstimate copyWithZone:zone];
   v393 = *(v6 + 1192);
   *(v6 + 1192) = v392;
 
-  v394 = [(NSString *)self->_uploadMaxCellularEstimate copyWithZone:a3];
+  v394 = [(NSString *)self->_uploadMaxCellularEstimate copyWithZone:zone];
   v395 = *(v6 + 1280);
   *(v6 + 1280) = v394;
 
-  v396 = [(NSString *)self->_downloadResponsiveness copyWithZone:a3];
+  v396 = [(NSString *)self->_downloadResponsiveness copyWithZone:zone];
   v397 = *(v6 + 768);
   *(v6 + 768) = v396;
 
-  v398 = [(NSString *)self->_downloadResponsivenessConfidence copyWithZone:a3];
+  v398 = [(NSString *)self->_downloadResponsivenessConfidence copyWithZone:zone];
   v399 = *(v6 + 776);
   *(v6 + 776) = v398;
 
-  v400 = [(NSString *)self->_downloadResponsivenessRating copyWithZone:a3];
+  v400 = [(NSString *)self->_downloadResponsivenessRating copyWithZone:zone];
   v401 = *(v6 + 784);
   *(v6 + 784) = v400;
 
-  v402 = [(NSString *)self->_downloadSpeedConfidence copyWithZone:a3];
+  v402 = [(NSString *)self->_downloadSpeedConfidence copyWithZone:zone];
   v403 = *(v6 + 816);
   *(v6 + 816) = v402;
 
-  v404 = [(NSString *)self->_downloadSpeedRating copyWithZone:a3];
+  v404 = [(NSString *)self->_downloadSpeedRating copyWithZone:zone];
   v405 = *(v6 + 824);
   *(v6 + 824) = v404;
 
-  v406 = [(NSString *)self->_uploadResponsiveness copyWithZone:a3];
+  v406 = [(NSString *)self->_uploadResponsiveness copyWithZone:zone];
   v407 = *(v6 + 1352);
   *(v6 + 1352) = v406;
 
-  v408 = [(NSString *)self->_uploadResponsivenessConfidence copyWithZone:a3];
+  v408 = [(NSString *)self->_uploadResponsivenessConfidence copyWithZone:zone];
   v409 = *(v6 + 1360);
   *(v6 + 1360) = v408;
 
-  v410 = [(NSString *)self->_uploadResponsivenessRating copyWithZone:a3];
+  v410 = [(NSString *)self->_uploadResponsivenessRating copyWithZone:zone];
   v411 = *(v6 + 1368);
   *(v6 + 1368) = v410;
 
-  v412 = [(NSString *)self->_uploadSpeedConfidence copyWithZone:a3];
+  v412 = [(NSString *)self->_uploadSpeedConfidence copyWithZone:zone];
   v413 = *(v6 + 1400);
   *(v6 + 1400) = v412;
 
-  v414 = [(NSString *)self->_uploadSpeedRating copyWithZone:a3];
+  v414 = [(NSString *)self->_uploadSpeedRating copyWithZone:zone];
   v415 = *(v6 + 1408);
   *(v6 + 1408) = v414;
 
-  v416 = [(NSString *)self->_wifiChannelBand copyWithZone:a3];
+  v416 = [(NSString *)self->_wifiChannelBand copyWithZone:zone];
   v417 = *(v6 + 1528);
   *(v6 + 1528) = v416;
 
-  v418 = [(NSString *)self->_wifiChannelWidth copyWithZone:a3];
+  v418 = [(NSString *)self->_wifiChannelWidth copyWithZone:zone];
   v419 = *(v6 + 1536);
   *(v6 + 1536) = v418;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_149;
   }
 
-  v5 = *(v4 + 421);
+  v5 = *(equalCopy + 421);
   if (*&self->_has)
   {
-    if ((v5 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v5 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_149;
     }
@@ -6079,13 +6079,13 @@ LABEL_32:
   }
 
   awdlElectionParameters = self->_awdlElectionParameters;
-  if (awdlElectionParameters | *(v4 + 2) && ![(NSString *)awdlElectionParameters isEqual:?])
+  if (awdlElectionParameters | *(equalCopy + 2) && ![(NSString *)awdlElectionParameters isEqual:?])
   {
     goto LABEL_149;
   }
 
   awdlMasterChannel = self->_awdlMasterChannel;
-  if (awdlMasterChannel | *(v4 + 3))
+  if (awdlMasterChannel | *(equalCopy + 3))
   {
     if (![(NSString *)awdlMasterChannel isEqual:?])
     {
@@ -6094,7 +6094,7 @@ LABEL_32:
   }
 
   awdlOpMode = self->_awdlOpMode;
-  if (awdlOpMode | *(v4 + 4))
+  if (awdlOpMode | *(equalCopy + 4))
   {
     if (![(NSString *)awdlOpMode isEqual:?])
     {
@@ -6102,7 +6102,7 @@ LABEL_32:
     }
   }
 
-  v9 = *(v4 + 421);
+  v9 = *(equalCopy + 421);
   if ((*&self->_has & 4) != 0)
   {
     if ((v9 & 4) == 0)
@@ -6110,16 +6110,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v76 = *(v4 + 1657);
+    v76 = *(equalCopy + 1657);
     if (self->_awdlPowerState)
     {
-      if ((*(v4 + 1657) & 1) == 0)
+      if ((*(equalCopy + 1657) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1657))
+    else if (*(equalCopy + 1657))
     {
       goto LABEL_149;
     }
@@ -6131,13 +6131,13 @@ LABEL_32:
   }
 
   awdlSchedule = self->_awdlSchedule;
-  if (awdlSchedule | *(v4 + 5) && ![(NSString *)awdlSchedule isEqual:?])
+  if (awdlSchedule | *(equalCopy + 5) && ![(NSString *)awdlSchedule isEqual:?])
   {
     goto LABEL_149;
   }
 
   awdlSecondaryMasterChannel = self->_awdlSecondaryMasterChannel;
-  if (awdlSecondaryMasterChannel | *(v4 + 6))
+  if (awdlSecondaryMasterChannel | *(equalCopy + 6))
   {
     if (![(NSString *)awdlSecondaryMasterChannel isEqual:?])
     {
@@ -6146,7 +6146,7 @@ LABEL_32:
   }
 
   awdlSyncChannelSequence = self->_awdlSyncChannelSequence;
-  if (awdlSyncChannelSequence | *(v4 + 7))
+  if (awdlSyncChannelSequence | *(equalCopy + 7))
   {
     if (![(NSString *)awdlSyncChannelSequence isEqual:?])
     {
@@ -6155,7 +6155,7 @@ LABEL_32:
   }
 
   awdlSyncState = self->_awdlSyncState;
-  if (awdlSyncState | *(v4 + 8))
+  if (awdlSyncState | *(equalCopy + 8))
   {
     if (![(NSString *)awdlSyncState isEqual:?])
     {
@@ -6164,7 +6164,7 @@ LABEL_32:
   }
 
   btConnectedDevicesCount = self->_btConnectedDevicesCount;
-  if (btConnectedDevicesCount | *(v4 + 9))
+  if (btConnectedDevicesCount | *(equalCopy + 9))
   {
     if (![(NSString *)btConnectedDevicesCount isEqual:?])
     {
@@ -6173,7 +6173,7 @@ LABEL_32:
   }
 
   has = self->_has;
-  v16 = *(v4 + 421);
+  v16 = *(equalCopy + 421);
   if ((*&has & 8) != 0)
   {
     if ((v16 & 8) == 0)
@@ -6181,16 +6181,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v77 = *(v4 + 1658);
+    v77 = *(equalCopy + 1658);
     if (self->_btIsConnectable)
     {
-      if ((*(v4 + 1658) & 1) == 0)
+      if ((*(equalCopy + 1658) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1658))
+    else if (*(equalCopy + 1658))
     {
       goto LABEL_149;
     }
@@ -6208,16 +6208,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v78 = *(v4 + 1659);
+    v78 = *(equalCopy + 1659);
     if (self->_btIsDiscoverable)
     {
-      if ((*(v4 + 1659) & 1) == 0)
+      if ((*(equalCopy + 1659) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1659))
+    else if (*(equalCopy + 1659))
     {
       goto LABEL_149;
     }
@@ -6235,16 +6235,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v79 = *(v4 + 1660);
+    v79 = *(equalCopy + 1660);
     if (self->_btIsPowerOn)
     {
-      if ((*(v4 + 1660) & 1) == 0)
+      if ((*(equalCopy + 1660) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1660))
+    else if (*(equalCopy + 1660))
     {
       goto LABEL_149;
     }
@@ -6262,16 +6262,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v80 = *(v4 + 1661);
+    v80 = *(equalCopy + 1661);
     if (self->_btIsScanning)
     {
-      if ((*(v4 + 1661) & 1) == 0)
+      if ((*(equalCopy + 1661) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1661))
+    else if (*(equalCopy + 1661))
     {
       goto LABEL_149;
     }
@@ -6283,13 +6283,13 @@ LABEL_32:
   }
 
   callingClient = self->_callingClient;
-  if (callingClient | *(v4 + 10) && ![(NSString *)callingClient isEqual:?])
+  if (callingClient | *(equalCopy + 10) && ![(NSString *)callingClient isEqual:?])
   {
     goto LABEL_149;
   }
 
   cellularActiveContexts = self->_cellularActiveContexts;
-  if (cellularActiveContexts | *(v4 + 11))
+  if (cellularActiveContexts | *(equalCopy + 11))
   {
     if (![(NSString *)cellularActiveContexts isEqual:?])
     {
@@ -6297,7 +6297,7 @@ LABEL_32:
     }
   }
 
-  v19 = *(v4 + 421);
+  v19 = *(equalCopy + 421);
   if ((*&self->_has & 0x80) != 0)
   {
     if ((v19 & 0x80) == 0)
@@ -6305,16 +6305,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v81 = *(v4 + 1662);
+    v81 = *(equalCopy + 1662);
     if (self->_cellularAllowsVoip)
     {
-      if ((*(v4 + 1662) & 1) == 0)
+      if ((*(equalCopy + 1662) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1662))
+    else if (*(equalCopy + 1662))
     {
       goto LABEL_149;
     }
@@ -6326,13 +6326,13 @@ LABEL_32:
   }
 
   cellularAttached = self->_cellularAttached;
-  if (cellularAttached | *(v4 + 14) && ![(NSString *)cellularAttached isEqual:?])
+  if (cellularAttached | *(equalCopy + 14) && ![(NSString *)cellularAttached isEqual:?])
   {
     goto LABEL_149;
   }
 
   cellularBandinfo = self->_cellularBandinfo;
-  if (cellularBandinfo | *(v4 + 15))
+  if (cellularBandinfo | *(equalCopy + 15))
   {
     if (![(NSString *)cellularBandinfo isEqual:?])
     {
@@ -6341,7 +6341,7 @@ LABEL_32:
   }
 
   cellularBandwidth = self->_cellularBandwidth;
-  if (cellularBandwidth | *(v4 + 16))
+  if (cellularBandwidth | *(equalCopy + 16))
   {
     if (![(NSString *)cellularBandwidth isEqual:?])
     {
@@ -6350,7 +6350,7 @@ LABEL_32:
   }
 
   cellularCarrierName = self->_cellularCarrierName;
-  if (cellularCarrierName | *(v4 + 17))
+  if (cellularCarrierName | *(equalCopy + 17))
   {
     if (![(NSString *)cellularCarrierName isEqual:?])
     {
@@ -6359,7 +6359,7 @@ LABEL_32:
   }
 
   cellularDataBearerSoMask = self->_cellularDataBearerSoMask;
-  if (cellularDataBearerSoMask | *(v4 + 19))
+  if (cellularDataBearerSoMask | *(equalCopy + 19))
   {
     if (![(NSString *)cellularDataBearerSoMask isEqual:?])
     {
@@ -6368,7 +6368,7 @@ LABEL_32:
   }
 
   cellularDataBearerTechnology = self->_cellularDataBearerTechnology;
-  if (cellularDataBearerTechnology | *(v4 + 20))
+  if (cellularDataBearerTechnology | *(equalCopy + 20))
   {
     if (![(NSString *)cellularDataBearerTechnology isEqual:?])
     {
@@ -6377,7 +6377,7 @@ LABEL_32:
   }
 
   cellularDataPlanSignalingReductionOverride = self->_cellularDataPlanSignalingReductionOverride;
-  if (cellularDataPlanSignalingReductionOverride | *(v4 + 21))
+  if (cellularDataPlanSignalingReductionOverride | *(equalCopy + 21))
   {
     if (![(NSString *)cellularDataPlanSignalingReductionOverride isEqual:?])
     {
@@ -6386,7 +6386,7 @@ LABEL_32:
   }
 
   cellularDataPossible = self->_cellularDataPossible;
-  if (cellularDataPossible | *(v4 + 22))
+  if (cellularDataPossible | *(equalCopy + 22))
   {
     if (![(NSString *)cellularDataPossible isEqual:?])
     {
@@ -6395,7 +6395,7 @@ LABEL_32:
   }
 
   cellularInHomeCountry = self->_cellularInHomeCountry;
-  if (cellularInHomeCountry | *(v4 + 23))
+  if (cellularInHomeCountry | *(equalCopy + 23))
   {
     if (![(NSString *)cellularInHomeCountry isEqual:?])
     {
@@ -6404,7 +6404,7 @@ LABEL_32:
   }
 
   cellularIndicator = self->_cellularIndicator;
-  if (cellularIndicator | *(v4 + 24))
+  if (cellularIndicator | *(equalCopy + 24))
   {
     if (![(NSString *)cellularIndicator isEqual:?])
     {
@@ -6413,7 +6413,7 @@ LABEL_32:
   }
 
   cellularIndicatorOverride = self->_cellularIndicatorOverride;
-  if (cellularIndicatorOverride | *(v4 + 25))
+  if (cellularIndicatorOverride | *(equalCopy + 25))
   {
     if (![(NSString *)cellularIndicatorOverride isEqual:?])
     {
@@ -6422,7 +6422,7 @@ LABEL_32:
   }
 
   cellularIsoCountryCode = self->_cellularIsoCountryCode;
-  if (cellularIsoCountryCode | *(v4 + 26))
+  if (cellularIsoCountryCode | *(equalCopy + 26))
   {
     if (![(NSString *)cellularIsoCountryCode isEqual:?])
     {
@@ -6431,7 +6431,7 @@ LABEL_32:
   }
 
   cellularLqm = self->_cellularLqm;
-  if (cellularLqm | *(v4 + 29))
+  if (cellularLqm | *(equalCopy + 29))
   {
     if (![(NSString *)cellularLqm isEqual:?])
     {
@@ -6440,7 +6440,7 @@ LABEL_32:
   }
 
   cellularLteMaxScheduledLayers = self->_cellularLteMaxScheduledLayers;
-  if (cellularLteMaxScheduledLayers | *(v4 + 30))
+  if (cellularLteMaxScheduledLayers | *(equalCopy + 30))
   {
     if (![(NSString *)cellularLteMaxScheduledLayers isEqual:?])
     {
@@ -6449,7 +6449,7 @@ LABEL_32:
   }
 
   cellularMobileCountryCode = self->_cellularMobileCountryCode;
-  if (cellularMobileCountryCode | *(v4 + 37))
+  if (cellularMobileCountryCode | *(equalCopy + 37))
   {
     if (![(NSString *)cellularMobileCountryCode isEqual:?])
     {
@@ -6458,7 +6458,7 @@ LABEL_32:
   }
 
   cellularMobileNetworkCode = self->_cellularMobileNetworkCode;
-  if (cellularMobileNetworkCode | *(v4 + 38))
+  if (cellularMobileNetworkCode | *(equalCopy + 38))
   {
     if (![(NSString *)cellularMobileNetworkCode isEqual:?])
     {
@@ -6467,7 +6467,7 @@ LABEL_32:
   }
 
   cellularNewRadioCoverage = self->_cellularNewRadioCoverage;
-  if (cellularNewRadioCoverage | *(v4 + 39))
+  if (cellularNewRadioCoverage | *(equalCopy + 39))
   {
     if (![(NSString *)cellularNewRadioCoverage isEqual:?])
     {
@@ -6476,7 +6476,7 @@ LABEL_32:
   }
 
   cellularNewRadioDataBearer = self->_cellularNewRadioDataBearer;
-  if (cellularNewRadioDataBearer | *(v4 + 40))
+  if (cellularNewRadioDataBearer | *(equalCopy + 40))
   {
     if (![(NSString *)cellularNewRadioDataBearer isEqual:?])
     {
@@ -6485,7 +6485,7 @@ LABEL_32:
   }
 
   cellularNewRadioMmwaveDataBearer = self->_cellularNewRadioMmwaveDataBearer;
-  if (cellularNewRadioMmwaveDataBearer | *(v4 + 41))
+  if (cellularNewRadioMmwaveDataBearer | *(equalCopy + 41))
   {
     if (![(NSString *)cellularNewRadioMmwaveDataBearer isEqual:?])
     {
@@ -6494,7 +6494,7 @@ LABEL_32:
   }
 
   cellularNewRadioNsaCoverage = self->_cellularNewRadioNsaCoverage;
-  if (cellularNewRadioNsaCoverage | *(v4 + 42))
+  if (cellularNewRadioNsaCoverage | *(equalCopy + 42))
   {
     if (![(NSString *)cellularNewRadioNsaCoverage isEqual:?])
     {
@@ -6503,7 +6503,7 @@ LABEL_32:
   }
 
   cellularNewRadioNsaDataBearer = self->_cellularNewRadioNsaDataBearer;
-  if (cellularNewRadioNsaDataBearer | *(v4 + 43))
+  if (cellularNewRadioNsaDataBearer | *(equalCopy + 43))
   {
     if (![(NSString *)cellularNewRadioNsaDataBearer isEqual:?])
     {
@@ -6512,7 +6512,7 @@ LABEL_32:
   }
 
   cellularNewRadioSaCoverage = self->_cellularNewRadioSaCoverage;
-  if (cellularNewRadioSaCoverage | *(v4 + 44))
+  if (cellularNewRadioSaCoverage | *(equalCopy + 44))
   {
     if (![(NSString *)cellularNewRadioSaCoverage isEqual:?])
     {
@@ -6521,7 +6521,7 @@ LABEL_32:
   }
 
   cellularNewRadioSaDataBearer = self->_cellularNewRadioSaDataBearer;
-  if (cellularNewRadioSaDataBearer | *(v4 + 45))
+  if (cellularNewRadioSaDataBearer | *(equalCopy + 45))
   {
     if (![(NSString *)cellularNewRadioSaDataBearer isEqual:?])
     {
@@ -6530,7 +6530,7 @@ LABEL_32:
   }
 
   cellularNewRadioSub6DataBearer = self->_cellularNewRadioSub6DataBearer;
-  if (cellularNewRadioSub6DataBearer | *(v4 + 46))
+  if (cellularNewRadioSub6DataBearer | *(equalCopy + 46))
   {
     if (![(NSString *)cellularNewRadioSub6DataBearer isEqual:?])
     {
@@ -6539,7 +6539,7 @@ LABEL_32:
   }
 
   cellularNrConfiguredBw = self->_cellularNrConfiguredBw;
-  if (cellularNrConfiguredBw | *(v4 + 47))
+  if (cellularNrConfiguredBw | *(equalCopy + 47))
   {
     if (![(NSString *)cellularNrConfiguredBw isEqual:?])
     {
@@ -6548,7 +6548,7 @@ LABEL_32:
   }
 
   cellularNrLayers = self->_cellularNrLayers;
-  if (cellularNrLayers | *(v4 + 48))
+  if (cellularNrLayers | *(equalCopy + 48))
   {
     if (![(NSString *)cellularNrLayers isEqual:?])
     {
@@ -6557,7 +6557,7 @@ LABEL_32:
   }
 
   cellularNrModulation = self->_cellularNrModulation;
-  if (cellularNrModulation | *(v4 + 49))
+  if (cellularNrModulation | *(equalCopy + 49))
   {
     if (![(NSString *)cellularNrModulation isEqual:?])
     {
@@ -6566,7 +6566,7 @@ LABEL_32:
   }
 
   cellularNrRsrp = self->_cellularNrRsrp;
-  if (cellularNrRsrp | *(v4 + 50))
+  if (cellularNrRsrp | *(equalCopy + 50))
   {
     if (![(NSString *)cellularNrRsrp isEqual:?])
     {
@@ -6575,7 +6575,7 @@ LABEL_32:
   }
 
   cellularNrRsrq = self->_cellularNrRsrq;
-  if (cellularNrRsrq | *(v4 + 51))
+  if (cellularNrRsrq | *(equalCopy + 51))
   {
     if (![(NSString *)cellularNrRsrq isEqual:?])
     {
@@ -6584,7 +6584,7 @@ LABEL_32:
   }
 
   cellularNrSnr = self->_cellularNrSnr;
-  if (cellularNrSnr | *(v4 + 53))
+  if (cellularNrSnr | *(equalCopy + 53))
   {
     if (![(NSString *)cellularNrSnr isEqual:?])
     {
@@ -6593,7 +6593,7 @@ LABEL_32:
   }
 
   cellularPid = self->_cellularPid;
-  if (cellularPid | *(v4 + 55))
+  if (cellularPid | *(equalCopy + 55))
   {
     if (![(NSString *)cellularPid isEqual:?])
     {
@@ -6602,7 +6602,7 @@ LABEL_32:
   }
 
   cellularRadioAccessTechnology = self->_cellularRadioAccessTechnology;
-  if (cellularRadioAccessTechnology | *(v4 + 56))
+  if (cellularRadioAccessTechnology | *(equalCopy + 56))
   {
     if (![(NSString *)cellularRadioAccessTechnology isEqual:?])
     {
@@ -6611,7 +6611,7 @@ LABEL_32:
   }
 
   cellularRadioAccessTechnologyCtDataStatus = self->_cellularRadioAccessTechnologyCtDataStatus;
-  if (cellularRadioAccessTechnologyCtDataStatus | *(v4 + 57))
+  if (cellularRadioAccessTechnologyCtDataStatus | *(equalCopy + 57))
   {
     if (![(NSString *)cellularRadioAccessTechnologyCtDataStatus isEqual:?])
     {
@@ -6620,7 +6620,7 @@ LABEL_32:
   }
 
   cellularRoamAllowed = self->_cellularRoamAllowed;
-  if (cellularRoamAllowed | *(v4 + 61))
+  if (cellularRoamAllowed | *(equalCopy + 61))
   {
     if (![(NSString *)cellularRoamAllowed isEqual:?])
     {
@@ -6629,7 +6629,7 @@ LABEL_32:
   }
 
   cellularRsrp = self->_cellularRsrp;
-  if (cellularRsrp | *(v4 + 62))
+  if (cellularRsrp | *(equalCopy + 62))
   {
     if (![(NSString *)cellularRsrp isEqual:?])
     {
@@ -6638,7 +6638,7 @@ LABEL_32:
   }
 
   cellularSnr = self->_cellularSnr;
-  if (cellularSnr | *(v4 + 63))
+  if (cellularSnr | *(equalCopy + 63))
   {
     if (![(NSString *)cellularSnr isEqual:?])
     {
@@ -6647,7 +6647,7 @@ LABEL_32:
   }
 
   cellularTac = self->_cellularTac;
-  if (cellularTac | *(v4 + 64))
+  if (cellularTac | *(equalCopy + 64))
   {
     if (![(NSString *)cellularTac isEqual:?])
     {
@@ -6656,7 +6656,7 @@ LABEL_32:
   }
 
   cellularTotalActiveContexts = self->_cellularTotalActiveContexts;
-  if (cellularTotalActiveContexts | *(v4 + 65))
+  if (cellularTotalActiveContexts | *(equalCopy + 65))
   {
     if (![(NSString *)cellularTotalActiveContexts isEqual:?])
     {
@@ -6665,7 +6665,7 @@ LABEL_32:
   }
 
   cellularTotalBw = self->_cellularTotalBw;
-  if (cellularTotalBw | *(v4 + 66))
+  if (cellularTotalBw | *(equalCopy + 66))
   {
     if (![(NSString *)cellularTotalBw isEqual:?])
     {
@@ -6674,7 +6674,7 @@ LABEL_32:
   }
 
   cellularTotalCcs = self->_cellularTotalCcs;
-  if (cellularTotalCcs | *(v4 + 67))
+  if (cellularTotalCcs | *(equalCopy + 67))
   {
     if (![(NSString *)cellularTotalCcs isEqual:?])
     {
@@ -6683,7 +6683,7 @@ LABEL_32:
   }
 
   cellularTotalLayers = self->_cellularTotalLayers;
-  if (cellularTotalLayers | *(v4 + 69))
+  if (cellularTotalLayers | *(equalCopy + 69))
   {
     if (![(NSString *)cellularTotalLayers isEqual:?])
     {
@@ -6692,7 +6692,7 @@ LABEL_32:
   }
 
   cellularUarfcn = self->_cellularUarfcn;
-  if (cellularUarfcn | *(v4 + 71))
+  if (cellularUarfcn | *(equalCopy + 71))
   {
     if (![(NSString *)cellularUarfcn isEqual:?])
     {
@@ -6701,7 +6701,7 @@ LABEL_32:
   }
 
   downloadCdnPop = self->_downloadCdnPop;
-  if (downloadCdnPop | *(v4 + 72))
+  if (downloadCdnPop | *(equalCopy + 72))
   {
     if (![(NSString *)downloadCdnPop isEqual:?])
     {
@@ -6710,7 +6710,7 @@ LABEL_32:
   }
 
   downloadCdnUuid = self->_downloadCdnUuid;
-  if (downloadCdnUuid | *(v4 + 73))
+  if (downloadCdnUuid | *(equalCopy + 73))
   {
     if (![(NSString *)downloadCdnUuid isEqual:?])
     {
@@ -6719,7 +6719,7 @@ LABEL_32:
   }
 
   downloadConnectionTime = self->_downloadConnectionTime;
-  if (downloadConnectionTime | *(v4 + 74))
+  if (downloadConnectionTime | *(equalCopy + 74))
   {
     if (![(NSString *)downloadConnectionTime isEqual:?])
     {
@@ -6728,7 +6728,7 @@ LABEL_32:
   }
 
   downloadDomainLookupTime = self->_downloadDomainLookupTime;
-  if (downloadDomainLookupTime | *(v4 + 75))
+  if (downloadDomainLookupTime | *(equalCopy + 75))
   {
     if (![(NSString *)downloadDomainLookupTime isEqual:?])
     {
@@ -6737,7 +6737,7 @@ LABEL_32:
   }
 
   downloadEndDataBearerTechnology = self->_downloadEndDataBearerTechnology;
-  if (downloadEndDataBearerTechnology | *(v4 + 77))
+  if (downloadEndDataBearerTechnology | *(equalCopy + 77))
   {
     if (![(NSString *)downloadEndDataBearerTechnology isEqual:?])
     {
@@ -6746,7 +6746,7 @@ LABEL_32:
   }
 
   downloadEndPrimaryIpv4Interface = self->_downloadEndPrimaryIpv4Interface;
-  if (downloadEndPrimaryIpv4Interface | *(v4 + 78))
+  if (downloadEndPrimaryIpv4Interface | *(equalCopy + 78))
   {
     if (![(NSString *)downloadEndPrimaryIpv4Interface isEqual:?])
     {
@@ -6755,7 +6755,7 @@ LABEL_32:
   }
 
   downloadEndRat = self->_downloadEndRat;
-  if (downloadEndRat | *(v4 + 80))
+  if (downloadEndRat | *(equalCopy + 80))
   {
     if (![(NSString *)downloadEndRat isEqual:?])
     {
@@ -6764,7 +6764,7 @@ LABEL_32:
   }
 
   downloadFileSize = self->_downloadFileSize;
-  if (downloadFileSize | *(v4 + 84))
+  if (downloadFileSize | *(equalCopy + 84))
   {
     if (![(NSString *)downloadFileSize isEqual:?])
     {
@@ -6773,7 +6773,7 @@ LABEL_32:
   }
 
   downloadInterfaceName = self->_downloadInterfaceName;
-  if (downloadInterfaceName | *(v4 + 85))
+  if (downloadInterfaceName | *(equalCopy + 85))
   {
     if (![(NSString *)downloadInterfaceName isEqual:?])
     {
@@ -6782,7 +6782,7 @@ LABEL_32:
   }
 
   downloadInterfaceServiceName = self->_downloadInterfaceServiceName;
-  if (downloadInterfaceServiceName | *(v4 + 86))
+  if (downloadInterfaceServiceName | *(equalCopy + 86))
   {
     if (![(NSString *)downloadInterfaceServiceName isEqual:?])
     {
@@ -6791,7 +6791,7 @@ LABEL_32:
   }
 
   v72 = self->_has;
-  v73 = *(v4 + 421);
+  v73 = *(equalCopy + 421);
   if ((*&v72 & 0x200) != 0)
   {
     if ((v73 & 0x200) == 0)
@@ -6799,16 +6799,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v82 = *(v4 + 1664);
+    v82 = *(equalCopy + 1664);
     if (self->_downloadIsCellular)
     {
-      if ((*(v4 + 1664) & 1) == 0)
+      if ((*(equalCopy + 1664) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1664))
+    else if (*(equalCopy + 1664))
     {
       goto LABEL_149;
     }
@@ -6826,16 +6826,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v83 = *(v4 + 1665);
+    v83 = *(equalCopy + 1665);
     if (self->_downloadIsConstrained)
     {
-      if ((*(v4 + 1665) & 1) == 0)
+      if ((*(equalCopy + 1665) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1665))
+    else if (*(equalCopy + 1665))
     {
       goto LABEL_149;
     }
@@ -6853,16 +6853,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v84 = *(v4 + 1666);
+    v84 = *(equalCopy + 1666);
     if (self->_downloadIsExpensive)
     {
-      if ((*(v4 + 1666) & 1) == 0)
+      if ((*(equalCopy + 1666) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1666))
+    else if (*(equalCopy + 1666))
     {
       goto LABEL_149;
     }
@@ -6880,16 +6880,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v85 = *(v4 + 1667);
+    v85 = *(equalCopy + 1667);
     if (self->_downloadIsMultipath)
     {
-      if ((*(v4 + 1667) & 1) == 0)
+      if ((*(equalCopy + 1667) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1667))
+    else if (*(equalCopy + 1667))
     {
       goto LABEL_149;
     }
@@ -6907,16 +6907,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v86 = *(v4 + 1668);
+    v86 = *(equalCopy + 1668);
     if (self->_downloadIsProxyConnection)
     {
-      if ((*(v4 + 1668) & 1) == 0)
+      if ((*(equalCopy + 1668) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1668))
+    else if (*(equalCopy + 1668))
     {
       goto LABEL_149;
     }
@@ -6934,16 +6934,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v87 = *(v4 + 1669);
+    v87 = *(equalCopy + 1669);
     if (self->_downloadIsReusedConnection)
     {
-      if ((*(v4 + 1669) & 1) == 0)
+      if ((*(equalCopy + 1669) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1669))
+    else if (*(equalCopy + 1669))
     {
       goto LABEL_149;
     }
@@ -6955,13 +6955,13 @@ LABEL_32:
   }
 
   downloadMaxSpeedObserved = self->_downloadMaxSpeedObserved;
-  if (downloadMaxSpeedObserved | *(v4 + 88) && ![(NSString *)downloadMaxSpeedObserved isEqual:?])
+  if (downloadMaxSpeedObserved | *(equalCopy + 88) && ![(NSString *)downloadMaxSpeedObserved isEqual:?])
   {
     goto LABEL_149;
   }
 
   downloadNumberOfStreams = self->_downloadNumberOfStreams;
-  if (downloadNumberOfStreams | *(v4 + 89))
+  if (downloadNumberOfStreams | *(equalCopy + 89))
   {
     if (![(NSString *)downloadNumberOfStreams isEqual:?])
     {
@@ -6970,7 +6970,7 @@ LABEL_32:
   }
 
   downloadProtocolName = self->_downloadProtocolName;
-  if (downloadProtocolName | *(v4 + 90))
+  if (downloadProtocolName | *(equalCopy + 90))
   {
     if (![(NSString *)downloadProtocolName isEqual:?])
     {
@@ -6979,7 +6979,7 @@ LABEL_32:
   }
 
   downloadRemoteAddress = self->_downloadRemoteAddress;
-  if (downloadRemoteAddress | *(v4 + 91))
+  if (downloadRemoteAddress | *(equalCopy + 91))
   {
     if (![(NSString *)downloadRemoteAddress isEqual:?])
     {
@@ -6988,7 +6988,7 @@ LABEL_32:
   }
 
   downloadRemotePort = self->_downloadRemotePort;
-  if (downloadRemotePort | *(v4 + 92))
+  if (downloadRemotePort | *(equalCopy + 92))
   {
     if (![(NSString *)downloadRemotePort isEqual:?])
     {
@@ -6997,7 +6997,7 @@ LABEL_32:
   }
 
   downloadRequestTime = self->_downloadRequestTime;
-  if (downloadRequestTime | *(v4 + 93))
+  if (downloadRequestTime | *(equalCopy + 93))
   {
     if (![(NSString *)downloadRequestTime isEqual:?])
     {
@@ -7006,7 +7006,7 @@ LABEL_32:
   }
 
   downloadRequestToResponseTime = self->_downloadRequestToResponseTime;
-  if (downloadRequestToResponseTime | *(v4 + 94))
+  if (downloadRequestToResponseTime | *(equalCopy + 94))
   {
     if (![(NSString *)downloadRequestToResponseTime isEqual:?])
     {
@@ -7015,7 +7015,7 @@ LABEL_32:
   }
 
   downloadResponseTime = self->_downloadResponseTime;
-  if (downloadResponseTime | *(v4 + 95))
+  if (downloadResponseTime | *(equalCopy + 95))
   {
     if (![(NSString *)downloadResponseTime isEqual:?])
     {
@@ -7024,7 +7024,7 @@ LABEL_32:
   }
 
   downloadSecureConnectionTime = self->_downloadSecureConnectionTime;
-  if (downloadSecureConnectionTime | *(v4 + 99))
+  if (downloadSecureConnectionTime | *(equalCopy + 99))
   {
     if (![(NSString *)downloadSecureConnectionTime isEqual:?])
     {
@@ -7033,7 +7033,7 @@ LABEL_32:
   }
 
   downloadServer = self->_downloadServer;
-  if (downloadServer | *(v4 + 100))
+  if (downloadServer | *(equalCopy + 100))
   {
     if (![(NSString *)downloadServer isEqual:?])
     {
@@ -7042,7 +7042,7 @@ LABEL_32:
   }
 
   downloadSpeed = self->_downloadSpeed;
-  if (downloadSpeed | *(v4 + 101))
+  if (downloadSpeed | *(equalCopy + 101))
   {
     if (![(NSString *)downloadSpeed isEqual:?])
     {
@@ -7051,7 +7051,7 @@ LABEL_32:
   }
 
   downloadStableSpeed = self->_downloadStableSpeed;
-  if (downloadStableSpeed | *(v4 + 104))
+  if (downloadStableSpeed | *(equalCopy + 104))
   {
     if (![(NSString *)downloadStableSpeed isEqual:?])
     {
@@ -7060,7 +7060,7 @@ LABEL_32:
   }
 
   downloadStartDataBearerTechnology = self->_downloadStartDataBearerTechnology;
-  if (downloadStartDataBearerTechnology | *(v4 + 106))
+  if (downloadStartDataBearerTechnology | *(equalCopy + 106))
   {
     if (![(NSString *)downloadStartDataBearerTechnology isEqual:?])
     {
@@ -7069,7 +7069,7 @@ LABEL_32:
   }
 
   downloadStartPrimaryIpv4Interface = self->_downloadStartPrimaryIpv4Interface;
-  if (downloadStartPrimaryIpv4Interface | *(v4 + 107))
+  if (downloadStartPrimaryIpv4Interface | *(equalCopy + 107))
   {
     if (![(NSString *)downloadStartPrimaryIpv4Interface isEqual:?])
     {
@@ -7078,7 +7078,7 @@ LABEL_32:
   }
 
   downloadStartRat = self->_downloadStartRat;
-  if (downloadStartRat | *(v4 + 109))
+  if (downloadStartRat | *(equalCopy + 109))
   {
     if (![(NSString *)downloadStartRat isEqual:?])
     {
@@ -7086,7 +7086,7 @@ LABEL_32:
     }
   }
 
-  v103 = *(v4 + 421);
+  v103 = *(equalCopy + 421);
   if ((*(&self->_has + 1) & 0x80) != 0)
   {
     if ((v103 & 0x8000) == 0)
@@ -7094,16 +7094,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v104 = *(v4 + 1670);
+    v104 = *(equalCopy + 1670);
     if (self->_networkIsAppleReachable)
     {
-      if ((*(v4 + 1670) & 1) == 0)
+      if ((*(equalCopy + 1670) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1670))
+    else if (*(equalCopy + 1670))
     {
       goto LABEL_149;
     }
@@ -7115,13 +7115,13 @@ LABEL_32:
   }
 
   networkPrimaryIpv4InterfaceName = self->_networkPrimaryIpv4InterfaceName;
-  if (networkPrimaryIpv4InterfaceName | *(v4 + 110) && ![(NSString *)networkPrimaryIpv4InterfaceName isEqual:?])
+  if (networkPrimaryIpv4InterfaceName | *(equalCopy + 110) && ![(NSString *)networkPrimaryIpv4InterfaceName isEqual:?])
   {
     goto LABEL_149;
   }
 
   networkPrimaryIpv4ServiceName = self->_networkPrimaryIpv4ServiceName;
-  if (networkPrimaryIpv4ServiceName | *(v4 + 111))
+  if (networkPrimaryIpv4ServiceName | *(equalCopy + 111))
   {
     if (![(NSString *)networkPrimaryIpv4ServiceName isEqual:?])
     {
@@ -7130,7 +7130,7 @@ LABEL_32:
   }
 
   nptkitFrameworkVersion = self->_nptkitFrameworkVersion;
-  if (nptkitFrameworkVersion | *(v4 + 121))
+  if (nptkitFrameworkVersion | *(equalCopy + 121))
   {
     if (![(NSString *)nptkitFrameworkVersion isEqual:?])
     {
@@ -7139,7 +7139,7 @@ LABEL_32:
   }
 
   performanceTestStartTime = self->_performanceTestStartTime;
-  if (performanceTestStartTime | *(v4 + 122))
+  if (performanceTestStartTime | *(equalCopy + 122))
   {
     if (![(NSString *)performanceTestStartTime isEqual:?])
     {
@@ -7148,7 +7148,7 @@ LABEL_32:
   }
 
   pingAddress = self->_pingAddress;
-  if (pingAddress | *(v4 + 123))
+  if (pingAddress | *(equalCopy + 123))
   {
     if (![(NSString *)pingAddress isEqual:?])
     {
@@ -7157,7 +7157,7 @@ LABEL_32:
   }
 
   pingLossPercent = self->_pingLossPercent;
-  if (pingLossPercent | *(v4 + 127))
+  if (pingLossPercent | *(equalCopy + 127))
   {
     if (![(NSString *)pingLossPercent isEqual:?])
     {
@@ -7166,7 +7166,7 @@ LABEL_32:
   }
 
   pingMaxLatency = self->_pingMaxLatency;
-  if (pingMaxLatency | *(v4 + 128))
+  if (pingMaxLatency | *(equalCopy + 128))
   {
     if (![(NSString *)pingMaxLatency isEqual:?])
     {
@@ -7175,7 +7175,7 @@ LABEL_32:
   }
 
   pingMeanLatency = self->_pingMeanLatency;
-  if (pingMeanLatency | *(v4 + 129))
+  if (pingMeanLatency | *(equalCopy + 129))
   {
     if (![(NSString *)pingMeanLatency isEqual:?])
     {
@@ -7184,7 +7184,7 @@ LABEL_32:
   }
 
   pingMinLatency = self->_pingMinLatency;
-  if (pingMinLatency | *(v4 + 130))
+  if (pingMinLatency | *(equalCopy + 130))
   {
     if (![(NSString *)pingMinLatency isEqual:?])
     {
@@ -7193,7 +7193,7 @@ LABEL_32:
   }
 
   pingStandardDeviation = self->_pingStandardDeviation;
-  if (pingStandardDeviation | *(v4 + 131))
+  if (pingStandardDeviation | *(equalCopy + 131))
   {
     if (![(NSString *)pingStandardDeviation isEqual:?])
     {
@@ -7202,7 +7202,7 @@ LABEL_32:
   }
 
   powerBatteryWarningLevel = self->_powerBatteryWarningLevel;
-  if (powerBatteryWarningLevel | *(v4 + 132))
+  if (powerBatteryWarningLevel | *(equalCopy + 132))
   {
     if (![(NSString *)powerBatteryWarningLevel isEqual:?])
     {
@@ -7211,7 +7211,7 @@ LABEL_32:
   }
 
   powerSourceType = self->_powerSourceType;
-  if (powerSourceType | *(v4 + 133))
+  if (powerSourceType | *(equalCopy + 133))
   {
     if (![(NSString *)powerSourceType isEqual:?])
     {
@@ -7220,7 +7220,7 @@ LABEL_32:
   }
 
   powerStateCaps = self->_powerStateCaps;
-  if (powerStateCaps | *(v4 + 134))
+  if (powerStateCaps | *(equalCopy + 134))
   {
     if (![(NSString *)powerStateCaps isEqual:?])
     {
@@ -7229,7 +7229,7 @@ LABEL_32:
   }
 
   systemActiveProcessorCount = self->_systemActiveProcessorCount;
-  if (systemActiveProcessorCount | *(v4 + 135))
+  if (systemActiveProcessorCount | *(equalCopy + 135))
   {
     if (![(NSString *)systemActiveProcessorCount isEqual:?])
     {
@@ -7238,7 +7238,7 @@ LABEL_32:
   }
 
   systemBatteryLevel = self->_systemBatteryLevel;
-  if (systemBatteryLevel | *(v4 + 136))
+  if (systemBatteryLevel | *(equalCopy + 136))
   {
     if (![(NSString *)systemBatteryLevel isEqual:?])
     {
@@ -7247,7 +7247,7 @@ LABEL_32:
   }
 
   systemBatteryState = self->_systemBatteryState;
-  if (systemBatteryState | *(v4 + 137))
+  if (systemBatteryState | *(equalCopy + 137))
   {
     if (![(NSString *)systemBatteryState isEqual:?])
     {
@@ -7256,7 +7256,7 @@ LABEL_32:
   }
 
   systemDeviceClass = self->_systemDeviceClass;
-  if (systemDeviceClass | *(v4 + 138))
+  if (systemDeviceClass | *(equalCopy + 138))
   {
     if (![(NSString *)systemDeviceClass isEqual:?])
     {
@@ -7265,7 +7265,7 @@ LABEL_32:
   }
 
   systemDeviceModel = self->_systemDeviceModel;
-  if (systemDeviceModel | *(v4 + 139))
+  if (systemDeviceModel | *(equalCopy + 139))
   {
     if (![(NSString *)systemDeviceModel isEqual:?])
     {
@@ -7273,7 +7273,7 @@ LABEL_32:
     }
   }
 
-  v123 = *(v4 + 421);
+  v123 = *(equalCopy + 421);
   if (*(&self->_has + 2))
   {
     if ((v123 & 0x10000) == 0)
@@ -7281,16 +7281,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v124 = *(v4 + 1671);
+    v124 = *(equalCopy + 1671);
     if (self->_systemLowPowerModeEnabled)
     {
-      if ((*(v4 + 1671) & 1) == 0)
+      if ((*(equalCopy + 1671) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1671))
+    else if (*(equalCopy + 1671))
     {
       goto LABEL_149;
     }
@@ -7302,13 +7302,13 @@ LABEL_32:
   }
 
   systemName = self->_systemName;
-  if (systemName | *(v4 + 140) && ![(NSString *)systemName isEqual:?])
+  if (systemName | *(equalCopy + 140) && ![(NSString *)systemName isEqual:?])
   {
     goto LABEL_149;
   }
 
   systemOsVariant = self->_systemOsVariant;
-  if (systemOsVariant | *(v4 + 141))
+  if (systemOsVariant | *(equalCopy + 141))
   {
     if (![(NSString *)systemOsVariant isEqual:?])
     {
@@ -7317,7 +7317,7 @@ LABEL_32:
   }
 
   systemPhysicalMemory = self->_systemPhysicalMemory;
-  if (systemPhysicalMemory | *(v4 + 142))
+  if (systemPhysicalMemory | *(equalCopy + 142))
   {
     if (![(NSString *)systemPhysicalMemory isEqual:?])
     {
@@ -7325,7 +7325,7 @@ LABEL_32:
     }
   }
 
-  v128 = *(v4 + 421);
+  v128 = *(equalCopy + 421);
   if ((*(&self->_has + 2) & 2) != 0)
   {
     if ((v128 & 0x20000) == 0)
@@ -7333,16 +7333,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v129 = *(v4 + 1672);
+    v129 = *(equalCopy + 1672);
     if (self->_systemPowersourceConnected)
     {
-      if ((*(v4 + 1672) & 1) == 0)
+      if ((*(equalCopy + 1672) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1672))
+    else if (*(equalCopy + 1672))
     {
       goto LABEL_149;
     }
@@ -7354,13 +7354,13 @@ LABEL_32:
   }
 
   systemProcessorCount = self->_systemProcessorCount;
-  if (systemProcessorCount | *(v4 + 143) && ![(NSString *)systemProcessorCount isEqual:?])
+  if (systemProcessorCount | *(equalCopy + 143) && ![(NSString *)systemProcessorCount isEqual:?])
   {
     goto LABEL_149;
   }
 
   systemVersion = self->_systemVersion;
-  if (systemVersion | *(v4 + 144))
+  if (systemVersion | *(equalCopy + 144))
   {
     if (![(NSString *)systemVersion isEqual:?])
     {
@@ -7369,7 +7369,7 @@ LABEL_32:
   }
 
   uploadCdnPop = self->_uploadCdnPop;
-  if (uploadCdnPop | *(v4 + 145))
+  if (uploadCdnPop | *(equalCopy + 145))
   {
     if (![(NSString *)uploadCdnPop isEqual:?])
     {
@@ -7378,7 +7378,7 @@ LABEL_32:
   }
 
   uploadCdnUuid = self->_uploadCdnUuid;
-  if (uploadCdnUuid | *(v4 + 146))
+  if (uploadCdnUuid | *(equalCopy + 146))
   {
     if (![(NSString *)uploadCdnUuid isEqual:?])
     {
@@ -7387,7 +7387,7 @@ LABEL_32:
   }
 
   uploadConnectionTime = self->_uploadConnectionTime;
-  if (uploadConnectionTime | *(v4 + 147))
+  if (uploadConnectionTime | *(equalCopy + 147))
   {
     if (![(NSString *)uploadConnectionTime isEqual:?])
     {
@@ -7396,7 +7396,7 @@ LABEL_32:
   }
 
   uploadDomainLookupTime = self->_uploadDomainLookupTime;
-  if (uploadDomainLookupTime | *(v4 + 148))
+  if (uploadDomainLookupTime | *(equalCopy + 148))
   {
     if (![(NSString *)uploadDomainLookupTime isEqual:?])
     {
@@ -7405,7 +7405,7 @@ LABEL_32:
   }
 
   uploadEndDataBearerTechnology = self->_uploadEndDataBearerTechnology;
-  if (uploadEndDataBearerTechnology | *(v4 + 150))
+  if (uploadEndDataBearerTechnology | *(equalCopy + 150))
   {
     if (![(NSString *)uploadEndDataBearerTechnology isEqual:?])
     {
@@ -7414,7 +7414,7 @@ LABEL_32:
   }
 
   uploadEndPrimaryIpv4Interface = self->_uploadEndPrimaryIpv4Interface;
-  if (uploadEndPrimaryIpv4Interface | *(v4 + 151))
+  if (uploadEndPrimaryIpv4Interface | *(equalCopy + 151))
   {
     if (![(NSString *)uploadEndPrimaryIpv4Interface isEqual:?])
     {
@@ -7423,7 +7423,7 @@ LABEL_32:
   }
 
   uploadEndRat = self->_uploadEndRat;
-  if (uploadEndRat | *(v4 + 153))
+  if (uploadEndRat | *(equalCopy + 153))
   {
     if (![(NSString *)uploadEndRat isEqual:?])
     {
@@ -7432,7 +7432,7 @@ LABEL_32:
   }
 
   uploadFileSize = self->_uploadFileSize;
-  if (uploadFileSize | *(v4 + 157))
+  if (uploadFileSize | *(equalCopy + 157))
   {
     if (![(NSString *)uploadFileSize isEqual:?])
     {
@@ -7441,7 +7441,7 @@ LABEL_32:
   }
 
   uploadInterfaceName = self->_uploadInterfaceName;
-  if (uploadInterfaceName | *(v4 + 158))
+  if (uploadInterfaceName | *(equalCopy + 158))
   {
     if (![(NSString *)uploadInterfaceName isEqual:?])
     {
@@ -7450,7 +7450,7 @@ LABEL_32:
   }
 
   uploadInterfaceServiceName = self->_uploadInterfaceServiceName;
-  if (uploadInterfaceServiceName | *(v4 + 159))
+  if (uploadInterfaceServiceName | *(equalCopy + 159))
   {
     if (![(NSString *)uploadInterfaceServiceName isEqual:?])
     {
@@ -7459,7 +7459,7 @@ LABEL_32:
   }
 
   v142 = self->_has;
-  v143 = *(v4 + 421);
+  v143 = *(equalCopy + 421);
   if ((*&v142 & 0x40000) != 0)
   {
     if ((v143 & 0x40000) == 0)
@@ -7467,16 +7467,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v144 = *(v4 + 1673);
+    v144 = *(equalCopy + 1673);
     if (self->_uploadIsCellular)
     {
-      if ((*(v4 + 1673) & 1) == 0)
+      if ((*(equalCopy + 1673) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1673))
+    else if (*(equalCopy + 1673))
     {
       goto LABEL_149;
     }
@@ -7494,16 +7494,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v145 = *(v4 + 1674);
+    v145 = *(equalCopy + 1674);
     if (self->_uploadIsConstrained)
     {
-      if ((*(v4 + 1674) & 1) == 0)
+      if ((*(equalCopy + 1674) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1674))
+    else if (*(equalCopy + 1674))
     {
       goto LABEL_149;
     }
@@ -7521,16 +7521,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v146 = *(v4 + 1675);
+    v146 = *(equalCopy + 1675);
     if (self->_uploadIsExpensive)
     {
-      if ((*(v4 + 1675) & 1) == 0)
+      if ((*(equalCopy + 1675) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1675))
+    else if (*(equalCopy + 1675))
     {
       goto LABEL_149;
     }
@@ -7548,16 +7548,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v147 = *(v4 + 1676);
+    v147 = *(equalCopy + 1676);
     if (self->_uploadIsMultipath)
     {
-      if ((*(v4 + 1676) & 1) == 0)
+      if ((*(equalCopy + 1676) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1676))
+    else if (*(equalCopy + 1676))
     {
       goto LABEL_149;
     }
@@ -7575,16 +7575,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v148 = *(v4 + 1677);
+    v148 = *(equalCopy + 1677);
     if (self->_uploadIsProxyConnection)
     {
-      if ((*(v4 + 1677) & 1) == 0)
+      if ((*(equalCopy + 1677) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1677))
+    else if (*(equalCopy + 1677))
     {
       goto LABEL_149;
     }
@@ -7602,16 +7602,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v149 = *(v4 + 1678);
+    v149 = *(equalCopy + 1678);
     if (self->_uploadIsReusedConnection)
     {
-      if ((*(v4 + 1678) & 1) == 0)
+      if ((*(equalCopy + 1678) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1678))
+    else if (*(equalCopy + 1678))
     {
       goto LABEL_149;
     }
@@ -7623,13 +7623,13 @@ LABEL_32:
   }
 
   uploadMaxSpeedObserved = self->_uploadMaxSpeedObserved;
-  if (uploadMaxSpeedObserved | *(v4 + 161) && ![(NSString *)uploadMaxSpeedObserved isEqual:?])
+  if (uploadMaxSpeedObserved | *(equalCopy + 161) && ![(NSString *)uploadMaxSpeedObserved isEqual:?])
   {
     goto LABEL_149;
   }
 
   uploadNumberOfStreams = self->_uploadNumberOfStreams;
-  if (uploadNumberOfStreams | *(v4 + 162))
+  if (uploadNumberOfStreams | *(equalCopy + 162))
   {
     if (![(NSString *)uploadNumberOfStreams isEqual:?])
     {
@@ -7638,7 +7638,7 @@ LABEL_32:
   }
 
   uploadProtocolName = self->_uploadProtocolName;
-  if (uploadProtocolName | *(v4 + 163))
+  if (uploadProtocolName | *(equalCopy + 163))
   {
     if (![(NSString *)uploadProtocolName isEqual:?])
     {
@@ -7647,7 +7647,7 @@ LABEL_32:
   }
 
   uploadRemoteAddress = self->_uploadRemoteAddress;
-  if (uploadRemoteAddress | *(v4 + 164))
+  if (uploadRemoteAddress | *(equalCopy + 164))
   {
     if (![(NSString *)uploadRemoteAddress isEqual:?])
     {
@@ -7656,7 +7656,7 @@ LABEL_32:
   }
 
   uploadRemotePort = self->_uploadRemotePort;
-  if (uploadRemotePort | *(v4 + 165))
+  if (uploadRemotePort | *(equalCopy + 165))
   {
     if (![(NSString *)uploadRemotePort isEqual:?])
     {
@@ -7665,7 +7665,7 @@ LABEL_32:
   }
 
   uploadRequestTime = self->_uploadRequestTime;
-  if (uploadRequestTime | *(v4 + 166))
+  if (uploadRequestTime | *(equalCopy + 166))
   {
     if (![(NSString *)uploadRequestTime isEqual:?])
     {
@@ -7674,7 +7674,7 @@ LABEL_32:
   }
 
   uploadRequestToResponseTime = self->_uploadRequestToResponseTime;
-  if (uploadRequestToResponseTime | *(v4 + 167))
+  if (uploadRequestToResponseTime | *(equalCopy + 167))
   {
     if (![(NSString *)uploadRequestToResponseTime isEqual:?])
     {
@@ -7683,7 +7683,7 @@ LABEL_32:
   }
 
   uploadResponseTime = self->_uploadResponseTime;
-  if (uploadResponseTime | *(v4 + 168))
+  if (uploadResponseTime | *(equalCopy + 168))
   {
     if (![(NSString *)uploadResponseTime isEqual:?])
     {
@@ -7692,7 +7692,7 @@ LABEL_32:
   }
 
   uploadSecureConnectionTime = self->_uploadSecureConnectionTime;
-  if (uploadSecureConnectionTime | *(v4 + 172))
+  if (uploadSecureConnectionTime | *(equalCopy + 172))
   {
     if (![(NSString *)uploadSecureConnectionTime isEqual:?])
     {
@@ -7701,7 +7701,7 @@ LABEL_32:
   }
 
   uploadServer = self->_uploadServer;
-  if (uploadServer | *(v4 + 173))
+  if (uploadServer | *(equalCopy + 173))
   {
     if (![(NSString *)uploadServer isEqual:?])
     {
@@ -7710,7 +7710,7 @@ LABEL_32:
   }
 
   uploadSpeed = self->_uploadSpeed;
-  if (uploadSpeed | *(v4 + 174))
+  if (uploadSpeed | *(equalCopy + 174))
   {
     if (![(NSString *)uploadSpeed isEqual:?])
     {
@@ -7719,7 +7719,7 @@ LABEL_32:
   }
 
   uploadStableSpeed = self->_uploadStableSpeed;
-  if (uploadStableSpeed | *(v4 + 177))
+  if (uploadStableSpeed | *(equalCopy + 177))
   {
     if (![(NSString *)uploadStableSpeed isEqual:?])
     {
@@ -7728,7 +7728,7 @@ LABEL_32:
   }
 
   uploadStartDataBearerTechnology = self->_uploadStartDataBearerTechnology;
-  if (uploadStartDataBearerTechnology | *(v4 + 179))
+  if (uploadStartDataBearerTechnology | *(equalCopy + 179))
   {
     if (![(NSString *)uploadStartDataBearerTechnology isEqual:?])
     {
@@ -7737,7 +7737,7 @@ LABEL_32:
   }
 
   uploadStartPrimaryIpv4Interface = self->_uploadStartPrimaryIpv4Interface;
-  if (uploadStartPrimaryIpv4Interface | *(v4 + 180))
+  if (uploadStartPrimaryIpv4Interface | *(equalCopy + 180))
   {
     if (![(NSString *)uploadStartPrimaryIpv4Interface isEqual:?])
     {
@@ -7746,7 +7746,7 @@ LABEL_32:
   }
 
   uploadStartRat = self->_uploadStartRat;
-  if (uploadStartRat | *(v4 + 182))
+  if (uploadStartRat | *(equalCopy + 182))
   {
     if (![(NSString *)uploadStartRat isEqual:?])
     {
@@ -7754,7 +7754,7 @@ LABEL_32:
     }
   }
 
-  v165 = *(v4 + 421);
+  v165 = *(equalCopy + 421);
   if (*(&self->_has + 3))
   {
     if ((v165 & 0x1000000) == 0)
@@ -7762,16 +7762,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v166 = *(v4 + 1679);
+    v166 = *(equalCopy + 1679);
     if (self->_useWifiWasSpecified)
     {
-      if ((*(v4 + 1679) & 1) == 0)
+      if ((*(equalCopy + 1679) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1679))
+    else if (*(equalCopy + 1679))
     {
       goto LABEL_149;
     }
@@ -7783,13 +7783,13 @@ LABEL_32:
   }
 
   wifiAveragePhyRateRx = self->_wifiAveragePhyRateRx;
-  if (wifiAveragePhyRateRx | *(v4 + 184) && ![(NSString *)wifiAveragePhyRateRx isEqual:?])
+  if (wifiAveragePhyRateRx | *(equalCopy + 184) && ![(NSString *)wifiAveragePhyRateRx isEqual:?])
   {
     goto LABEL_149;
   }
 
   wifiAverageRssi = self->_wifiAverageRssi;
-  if (wifiAverageRssi | *(v4 + 185))
+  if (wifiAverageRssi | *(equalCopy + 185))
   {
     if (![(NSString *)wifiAverageRssi isEqual:?])
     {
@@ -7798,7 +7798,7 @@ LABEL_32:
   }
 
   wifiAverageSnr = self->_wifiAverageSnr;
-  if (wifiAverageSnr | *(v4 + 186))
+  if (wifiAverageSnr | *(equalCopy + 186))
   {
     if (![(NSString *)wifiAverageSnr isEqual:?])
     {
@@ -7807,7 +7807,7 @@ LABEL_32:
   }
 
   wifiAverageTcpRtt = self->_wifiAverageTcpRtt;
-  if (wifiAverageTcpRtt | *(v4 + 187))
+  if (wifiAverageTcpRtt | *(equalCopy + 187))
   {
     if (![(NSString *)wifiAverageTcpRtt isEqual:?])
     {
@@ -7816,7 +7816,7 @@ LABEL_32:
   }
 
   wifiBtcMode = self->_wifiBtcMode;
-  if (wifiBtcMode | *(v4 + 188))
+  if (wifiBtcMode | *(equalCopy + 188))
   {
     if (![(NSString *)wifiBtcMode isEqual:?])
     {
@@ -7825,7 +7825,7 @@ LABEL_32:
   }
 
   wifiCca = self->_wifiCca;
-  if (wifiCca | *(v4 + 189))
+  if (wifiCca | *(equalCopy + 189))
   {
     if (![(NSString *)wifiCca isEqual:?])
     {
@@ -7834,7 +7834,7 @@ LABEL_32:
   }
 
   wifiChannel = self->_wifiChannel;
-  if (wifiChannel | *(v4 + 190))
+  if (wifiChannel | *(equalCopy + 190))
   {
     if (![(NSString *)wifiChannel isEqual:?])
     {
@@ -7843,7 +7843,7 @@ LABEL_32:
   }
 
   wifiCwfCca = self->_wifiCwfCca;
-  if (wifiCwfCca | *(v4 + 193))
+  if (wifiCwfCca | *(equalCopy + 193))
   {
     if (![(NSString *)wifiCwfCca isEqual:?])
     {
@@ -7852,7 +7852,7 @@ LABEL_32:
   }
 
   wifiEapolControlMode = self->_wifiEapolControlMode;
-  if (wifiEapolControlMode | *(v4 + 194))
+  if (wifiEapolControlMode | *(equalCopy + 194))
   {
     if (![(NSString *)wifiEapolControlMode isEqual:?])
     {
@@ -7861,7 +7861,7 @@ LABEL_32:
   }
 
   wifiEapolSupplicantState = self->_wifiEapolSupplicantState;
-  if (wifiEapolSupplicantState | *(v4 + 195))
+  if (wifiEapolSupplicantState | *(equalCopy + 195))
   {
     if (![(NSString *)wifiEapolSupplicantState isEqual:?])
     {
@@ -7870,7 +7870,7 @@ LABEL_32:
   }
 
   wifiGuardInterval = self->_wifiGuardInterval;
-  if (wifiGuardInterval | *(v4 + 196))
+  if (wifiGuardInterval | *(equalCopy + 196))
   {
     if (![(NSString *)wifiGuardInterval isEqual:?])
     {
@@ -7879,7 +7879,7 @@ LABEL_32:
   }
 
   wifiHiddenState = self->_wifiHiddenState;
-  if (wifiHiddenState | *(v4 + 197))
+  if (wifiHiddenState | *(equalCopy + 197))
   {
     if (![(NSString *)wifiHiddenState isEqual:?])
     {
@@ -7887,7 +7887,7 @@ LABEL_32:
     }
   }
 
-  v179 = *(v4 + 421);
+  v179 = *(equalCopy + 421);
   if ((*(&self->_has + 3) & 2) != 0)
   {
     if ((v179 & 0x2000000) == 0)
@@ -7895,16 +7895,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v180 = *(v4 + 1680);
+    v180 = *(equalCopy + 1680);
     if (self->_wifiIsCaptive)
     {
-      if ((*(v4 + 1680) & 1) == 0)
+      if ((*(equalCopy + 1680) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1680))
+    else if (*(equalCopy + 1680))
     {
       goto LABEL_149;
     }
@@ -7916,13 +7916,13 @@ LABEL_32:
   }
 
   wifiMcsIndex = self->_wifiMcsIndex;
-  if (wifiMcsIndex | *(v4 + 198) && ![(NSString *)wifiMcsIndex isEqual:?])
+  if (wifiMcsIndex | *(equalCopy + 198) && ![(NSString *)wifiMcsIndex isEqual:?])
   {
     goto LABEL_149;
   }
 
   wifiNoise = self->_wifiNoise;
-  if (wifiNoise | *(v4 + 199))
+  if (wifiNoise | *(equalCopy + 199))
   {
     if (![(NSString *)wifiNoise isEqual:?])
     {
@@ -7931,7 +7931,7 @@ LABEL_32:
   }
 
   wifiNumberOfSpatialStreams = self->_wifiNumberOfSpatialStreams;
-  if (wifiNumberOfSpatialStreams | *(v4 + 200))
+  if (wifiNumberOfSpatialStreams | *(equalCopy + 200))
   {
     if (![(NSString *)wifiNumberOfSpatialStreams isEqual:?])
     {
@@ -7940,7 +7940,7 @@ LABEL_32:
   }
 
   wifiOpMode = self->_wifiOpMode;
-  if (wifiOpMode | *(v4 + 201))
+  if (wifiOpMode | *(equalCopy + 201))
   {
     if (![(NSString *)wifiOpMode isEqual:?])
     {
@@ -7949,7 +7949,7 @@ LABEL_32:
   }
 
   wifiPhyMode = self->_wifiPhyMode;
-  if (wifiPhyMode | *(v4 + 202))
+  if (wifiPhyMode | *(equalCopy + 202))
   {
     if (![(NSString *)wifiPhyMode isEqual:?])
     {
@@ -7958,7 +7958,7 @@ LABEL_32:
   }
 
   wifiRssi = self->_wifiRssi;
-  if (wifiRssi | *(v4 + 203))
+  if (wifiRssi | *(equalCopy + 203))
   {
     if (![(NSString *)wifiRssi isEqual:?])
     {
@@ -7967,7 +7967,7 @@ LABEL_32:
   }
 
   wifiSecurity = self->_wifiSecurity;
-  if (wifiSecurity | *(v4 + 204))
+  if (wifiSecurity | *(equalCopy + 204))
   {
     if (![(NSString *)wifiSecurity isEqual:?])
     {
@@ -7976,7 +7976,7 @@ LABEL_32:
   }
 
   wifiTxRate = self->_wifiTxRate;
-  if (wifiTxRate | *(v4 + 205))
+  if (wifiTxRate | *(equalCopy + 205))
   {
     if (![(NSString *)wifiTxRate isEqual:?])
     {
@@ -7985,7 +7985,7 @@ LABEL_32:
   }
 
   wrmChannelType = self->_wrmChannelType;
-  if (wrmChannelType | *(v4 + 206))
+  if (wrmChannelType | *(equalCopy + 206))
   {
     if (![(NSString *)wrmChannelType isEqual:?])
     {
@@ -7994,7 +7994,7 @@ LABEL_32:
   }
 
   cellularCellid = self->_cellularCellid;
-  if (cellularCellid | *(v4 + 18))
+  if (cellularCellid | *(equalCopy + 18))
   {
     if (![(NSString *)cellularCellid isEqual:?])
     {
@@ -8002,7 +8002,7 @@ LABEL_32:
     }
   }
 
-  v191 = *(v4 + 421);
+  v191 = *(equalCopy + 421);
   if ((*&self->_has & 2) != 0)
   {
     if ((v191 & 2) == 0)
@@ -8010,16 +8010,16 @@ LABEL_32:
       goto LABEL_149;
     }
 
-    v192 = *(v4 + 1656);
+    v192 = *(equalCopy + 1656);
     if (self->_acceptablePerformanceResult)
     {
-      if ((*(v4 + 1656) & 1) == 0)
+      if ((*(equalCopy + 1656) & 1) == 0)
       {
         goto LABEL_149;
       }
     }
 
-    else if (*(v4 + 1656))
+    else if (*(equalCopy + 1656))
     {
       goto LABEL_149;
     }
@@ -8031,13 +8031,13 @@ LABEL_32:
   }
 
   networkQualityResponsiveness = self->_networkQualityResponsiveness;
-  if (networkQualityResponsiveness | *(v4 + 119) && ![(NSString *)networkQualityResponsiveness isEqual:?])
+  if (networkQualityResponsiveness | *(equalCopy + 119) && ![(NSString *)networkQualityResponsiveness isEqual:?])
   {
     goto LABEL_149;
   }
 
   cellularAggregatedDLBW = self->_cellularAggregatedDLBW;
-  if (cellularAggregatedDLBW | *(v4 + 12))
+  if (cellularAggregatedDLBW | *(equalCopy + 12))
   {
     if (![(NSString *)cellularAggregatedDLBW isEqual:?])
     {
@@ -8046,7 +8046,7 @@ LABEL_32:
   }
 
   cellularAggregatedULBW = self->_cellularAggregatedULBW;
-  if (cellularAggregatedULBW | *(v4 + 13))
+  if (cellularAggregatedULBW | *(equalCopy + 13))
   {
     if (![(NSString *)cellularAggregatedULBW isEqual:?])
     {
@@ -8055,7 +8055,7 @@ LABEL_32:
   }
 
   cellularIssa = self->_cellularIssa;
-  if (cellularIssa | *(v4 + 27))
+  if (cellularIssa | *(equalCopy + 27))
   {
     if (![(NSString *)cellularIssa isEqual:?])
     {
@@ -8064,7 +8064,7 @@ LABEL_32:
   }
 
   cellularLac = self->_cellularLac;
-  if (cellularLac | *(v4 + 28))
+  if (cellularLac | *(equalCopy + 28))
   {
     if (![(NSString *)cellularLac isEqual:?])
     {
@@ -8073,7 +8073,7 @@ LABEL_32:
   }
 
   cellularLteNrConfiguredBw = self->_cellularLteNrConfiguredBw;
-  if (cellularLteNrConfiguredBw | *(v4 + 31))
+  if (cellularLteNrConfiguredBw | *(equalCopy + 31))
   {
     if (![(NSString *)cellularLteNrConfiguredBw isEqual:?])
     {
@@ -8082,7 +8082,7 @@ LABEL_32:
   }
 
   cellularMaxDlMod = self->_cellularMaxDlMod;
-  if (cellularMaxDlMod | *(v4 + 32))
+  if (cellularMaxDlMod | *(equalCopy + 32))
   {
     if (![(NSString *)cellularMaxDlMod isEqual:?])
     {
@@ -8091,7 +8091,7 @@ LABEL_32:
   }
 
   cellularMaxNwMimoLyr = self->_cellularMaxNwMimoLyr;
-  if (cellularMaxNwMimoLyr | *(v4 + 33))
+  if (cellularMaxNwMimoLyr | *(equalCopy + 33))
   {
     if (![(NSString *)cellularMaxNwMimoLyr isEqual:?])
     {
@@ -8100,7 +8100,7 @@ LABEL_32:
   }
 
   cellularMaxSchdMimoLyr = self->_cellularMaxSchdMimoLyr;
-  if (cellularMaxSchdMimoLyr | *(v4 + 34))
+  if (cellularMaxSchdMimoLyr | *(equalCopy + 34))
   {
     if (![(NSString *)cellularMaxSchdMimoLyr isEqual:?])
     {
@@ -8109,7 +8109,7 @@ LABEL_32:
   }
 
   cellularMaxUeRank = self->_cellularMaxUeRank;
-  if (cellularMaxUeRank | *(v4 + 35))
+  if (cellularMaxUeRank | *(equalCopy + 35))
   {
     if (![(NSString *)cellularMaxUeRank isEqual:?])
     {
@@ -8118,7 +8118,7 @@ LABEL_32:
   }
 
   cellularMaxUlMod = self->_cellularMaxUlMod;
-  if (cellularMaxUlMod | *(v4 + 36))
+  if (cellularMaxUlMod | *(equalCopy + 36))
   {
     if (![(NSString *)cellularMaxUlMod isEqual:?])
     {
@@ -8127,7 +8127,7 @@ LABEL_32:
   }
 
   cellularNrSinr = self->_cellularNrSinr;
-  if (cellularNrSinr | *(v4 + 52))
+  if (cellularNrSinr | *(equalCopy + 52))
   {
     if (![(NSString *)cellularNrSinr isEqual:?])
     {
@@ -8136,7 +8136,7 @@ LABEL_32:
   }
 
   cellularNrarfcn = self->_cellularNrarfcn;
-  if (cellularNrarfcn | *(v4 + 54))
+  if (cellularNrarfcn | *(equalCopy + 54))
   {
     if (![(NSString *)cellularNrarfcn isEqual:?])
     {
@@ -8145,7 +8145,7 @@ LABEL_32:
   }
 
   cellularRadioFrequency = self->_cellularRadioFrequency;
-  if (cellularRadioFrequency | *(v4 + 58))
+  if (cellularRadioFrequency | *(equalCopy + 58))
   {
     if (![(NSString *)cellularRadioFrequency isEqual:?])
     {
@@ -8154,7 +8154,7 @@ LABEL_32:
   }
 
   cellularTotalDlMimoLayers = self->_cellularTotalDlMimoLayers;
-  if (cellularTotalDlMimoLayers | *(v4 + 68))
+  if (cellularTotalDlMimoLayers | *(equalCopy + 68))
   {
     if (![(NSString *)cellularTotalDlMimoLayers isEqual:?])
     {
@@ -8163,7 +8163,7 @@ LABEL_32:
   }
 
   cellularTotalNumCcs = self->_cellularTotalNumCcs;
-  if (cellularTotalNumCcs | *(v4 + 70))
+  if (cellularTotalNumCcs | *(equalCopy + 70))
   {
     if (![(NSString *)cellularTotalNumCcs isEqual:?])
     {
@@ -8172,7 +8172,7 @@ LABEL_32:
   }
 
   downloadStartRadioFrequency = self->_downloadStartRadioFrequency;
-  if (downloadStartRadioFrequency | *(v4 + 108))
+  if (downloadStartRadioFrequency | *(equalCopy + 108))
   {
     if (![(NSString *)downloadStartRadioFrequency isEqual:?])
     {
@@ -8181,7 +8181,7 @@ LABEL_32:
   }
 
   downloadEndRadioFrequency = self->_downloadEndRadioFrequency;
-  if (downloadEndRadioFrequency | *(v4 + 79))
+  if (downloadEndRadioFrequency | *(equalCopy + 79))
   {
     if (![(NSString *)downloadEndRadioFrequency isEqual:?])
     {
@@ -8190,7 +8190,7 @@ LABEL_32:
   }
 
   networkPrimaryIpv6InterfaceName = self->_networkPrimaryIpv6InterfaceName;
-  if (networkPrimaryIpv6InterfaceName | *(v4 + 112))
+  if (networkPrimaryIpv6InterfaceName | *(equalCopy + 112))
   {
     if (![(NSString *)networkPrimaryIpv6InterfaceName isEqual:?])
     {
@@ -8199,7 +8199,7 @@ LABEL_32:
   }
 
   networkPrimaryIpv6ServiceName = self->_networkPrimaryIpv6ServiceName;
-  if (networkPrimaryIpv6ServiceName | *(v4 + 113))
+  if (networkPrimaryIpv6ServiceName | *(equalCopy + 113))
   {
     if (![(NSString *)networkPrimaryIpv6ServiceName isEqual:?])
     {
@@ -8208,7 +8208,7 @@ LABEL_32:
   }
 
   uploadStartRadioFrequency = self->_uploadStartRadioFrequency;
-  if (uploadStartRadioFrequency | *(v4 + 181))
+  if (uploadStartRadioFrequency | *(equalCopy + 181))
   {
     if (![(NSString *)uploadStartRadioFrequency isEqual:?])
     {
@@ -8217,7 +8217,7 @@ LABEL_32:
   }
 
   uploadEndRadioFrequency = self->_uploadEndRadioFrequency;
-  if (uploadEndRadioFrequency | *(v4 + 152))
+  if (uploadEndRadioFrequency | *(equalCopy + 152))
   {
     if (![(NSString *)uploadEndRadioFrequency isEqual:?])
     {
@@ -8226,7 +8226,7 @@ LABEL_32:
   }
 
   downloadError = self->_downloadError;
-  if (downloadError | *(v4 + 81))
+  if (downloadError | *(equalCopy + 81))
   {
     if (![(NSString *)downloadError isEqual:?])
     {
@@ -8235,7 +8235,7 @@ LABEL_32:
   }
 
   networkQualityError = self->_networkQualityError;
-  if (networkQualityError | *(v4 + 115))
+  if (networkQualityError | *(equalCopy + 115))
   {
     if (![(NSString *)networkQualityError isEqual:?])
     {
@@ -8244,7 +8244,7 @@ LABEL_32:
   }
 
   networkQualityDownloadSpeed = self->_networkQualityDownloadSpeed;
-  if (networkQualityDownloadSpeed | *(v4 + 114))
+  if (networkQualityDownloadSpeed | *(equalCopy + 114))
   {
     if (![(NSString *)networkQualityDownloadSpeed isEqual:?])
     {
@@ -8253,7 +8253,7 @@ LABEL_32:
   }
 
   networkQualityUploadSpeed = self->_networkQualityUploadSpeed;
-  if (networkQualityUploadSpeed | *(v4 + 120))
+  if (networkQualityUploadSpeed | *(equalCopy + 120))
   {
     if (![(NSString *)networkQualityUploadSpeed isEqual:?])
     {
@@ -8262,7 +8262,7 @@ LABEL_32:
   }
 
   networkQualityRating = self->_networkQualityRating;
-  if (networkQualityRating | *(v4 + 118))
+  if (networkQualityRating | *(equalCopy + 118))
   {
     if (![(NSString *)networkQualityRating isEqual:?])
     {
@@ -8271,7 +8271,7 @@ LABEL_32:
   }
 
   vpnConnectionState = self->_vpnConnectionState;
-  if (vpnConnectionState | *(v4 + 183))
+  if (vpnConnectionState | *(equalCopy + 183))
   {
     if (![(NSString *)vpnConnectionState isEqual:?])
     {
@@ -8280,7 +8280,7 @@ LABEL_32:
   }
 
   uploadError = self->_uploadError;
-  if (uploadError | *(v4 + 154))
+  if (uploadError | *(equalCopy + 154))
   {
     if (![(NSString *)uploadError isEqual:?])
     {
@@ -8289,7 +8289,7 @@ LABEL_32:
   }
 
   uploadErrorDomain = self->_uploadErrorDomain;
-  if (uploadErrorDomain | *(v4 + 156))
+  if (uploadErrorDomain | *(equalCopy + 156))
   {
     if (![(NSString *)uploadErrorDomain isEqual:?])
     {
@@ -8298,7 +8298,7 @@ LABEL_32:
   }
 
   uploadErrorCode = self->_uploadErrorCode;
-  if (uploadErrorCode | *(v4 + 155))
+  if (uploadErrorCode | *(equalCopy + 155))
   {
     if (![(NSString *)uploadErrorCode isEqual:?])
     {
@@ -8307,7 +8307,7 @@ LABEL_32:
   }
 
   downloadErrorDomain = self->_downloadErrorDomain;
-  if (downloadErrorDomain | *(v4 + 83))
+  if (downloadErrorDomain | *(equalCopy + 83))
   {
     if (![(NSString *)downloadErrorDomain isEqual:?])
     {
@@ -8316,7 +8316,7 @@ LABEL_32:
   }
 
   downloadErrorCode = self->_downloadErrorCode;
-  if (downloadErrorCode | *(v4 + 82))
+  if (downloadErrorCode | *(equalCopy + 82))
   {
     if (![(NSString *)downloadErrorCode isEqual:?])
     {
@@ -8325,7 +8325,7 @@ LABEL_32:
   }
 
   pingError = self->_pingError;
-  if (pingError | *(v4 + 124))
+  if (pingError | *(equalCopy + 124))
   {
     if (![(NSString *)pingError isEqual:?])
     {
@@ -8334,7 +8334,7 @@ LABEL_32:
   }
 
   pingErrorDomain = self->_pingErrorDomain;
-  if (pingErrorDomain | *(v4 + 126))
+  if (pingErrorDomain | *(equalCopy + 126))
   {
     if (![(NSString *)pingErrorDomain isEqual:?])
     {
@@ -8343,7 +8343,7 @@ LABEL_32:
   }
 
   pingErrorCode = self->_pingErrorCode;
-  if (pingErrorCode | *(v4 + 125))
+  if (pingErrorCode | *(equalCopy + 125))
   {
     if (![(NSString *)pingErrorCode isEqual:?])
     {
@@ -8352,7 +8352,7 @@ LABEL_32:
   }
 
   networkQualityErrorDomain = self->_networkQualityErrorDomain;
-  if (networkQualityErrorDomain | *(v4 + 117))
+  if (networkQualityErrorDomain | *(equalCopy + 117))
   {
     if (![(NSString *)networkQualityErrorDomain isEqual:?])
     {
@@ -8361,7 +8361,7 @@ LABEL_32:
   }
 
   networkQualityErrorCode = self->_networkQualityErrorCode;
-  if (networkQualityErrorCode | *(v4 + 116))
+  if (networkQualityErrorCode | *(equalCopy + 116))
   {
     if (![(NSString *)networkQualityErrorCode isEqual:?])
     {
@@ -8370,7 +8370,7 @@ LABEL_32:
   }
 
   cellularRnMobileCountryCode = self->_cellularRnMobileCountryCode;
-  if (cellularRnMobileCountryCode | *(v4 + 59))
+  if (cellularRnMobileCountryCode | *(equalCopy + 59))
   {
     if (![(NSString *)cellularRnMobileCountryCode isEqual:?])
     {
@@ -8379,7 +8379,7 @@ LABEL_32:
   }
 
   cellularRnMobileNetworkCode = self->_cellularRnMobileNetworkCode;
-  if (cellularRnMobileNetworkCode | *(v4 + 60))
+  if (cellularRnMobileNetworkCode | *(equalCopy + 60))
   {
     if (![(NSString *)cellularRnMobileNetworkCode isEqual:?])
     {
@@ -8387,15 +8387,15 @@ LABEL_32:
     }
   }
 
-  v233 = *(v4 + 421);
+  v233 = *(equalCopy + 421);
   if (*(&self->_has + 1))
   {
     if ((v233 & 0x100) != 0)
     {
-      v234 = *(v4 + 1663);
+      v234 = *(equalCopy + 1663);
       if (self->_cellularDataIsEnabled)
       {
-        if ((*(v4 + 1663) & 1) == 0)
+        if ((*(equalCopy + 1663) & 1) == 0)
         {
           goto LABEL_149;
         }
@@ -8403,7 +8403,7 @@ LABEL_32:
         goto LABEL_583;
       }
 
-      if ((*(v4 + 1663) & 1) == 0)
+      if ((*(equalCopy + 1663) & 1) == 0)
       {
         goto LABEL_583;
       }
@@ -8421,13 +8421,13 @@ LABEL_149:
 
 LABEL_583:
   downloadStartCellularEstimate = self->_downloadStartCellularEstimate;
-  if (downloadStartCellularEstimate | *(v4 + 105) && ![(NSString *)downloadStartCellularEstimate isEqual:?])
+  if (downloadStartCellularEstimate | *(equalCopy + 105) && ![(NSString *)downloadStartCellularEstimate isEqual:?])
   {
     goto LABEL_149;
   }
 
   downloadEndCellularEstimate = self->_downloadEndCellularEstimate;
-  if (downloadEndCellularEstimate | *(v4 + 76))
+  if (downloadEndCellularEstimate | *(equalCopy + 76))
   {
     if (![(NSString *)downloadEndCellularEstimate isEqual:?])
     {
@@ -8436,7 +8436,7 @@ LABEL_583:
   }
 
   downloadMaxCellularEstimate = self->_downloadMaxCellularEstimate;
-  if (downloadMaxCellularEstimate | *(v4 + 87))
+  if (downloadMaxCellularEstimate | *(equalCopy + 87))
   {
     if (![(NSString *)downloadMaxCellularEstimate isEqual:?])
     {
@@ -8445,7 +8445,7 @@ LABEL_583:
   }
 
   uploadStartCellularEstimate = self->_uploadStartCellularEstimate;
-  if (uploadStartCellularEstimate | *(v4 + 178))
+  if (uploadStartCellularEstimate | *(equalCopy + 178))
   {
     if (![(NSString *)uploadStartCellularEstimate isEqual:?])
     {
@@ -8454,7 +8454,7 @@ LABEL_583:
   }
 
   uploadEndCellularEstimate = self->_uploadEndCellularEstimate;
-  if (uploadEndCellularEstimate | *(v4 + 149))
+  if (uploadEndCellularEstimate | *(equalCopy + 149))
   {
     if (![(NSString *)uploadEndCellularEstimate isEqual:?])
     {
@@ -8463,7 +8463,7 @@ LABEL_583:
   }
 
   uploadMaxCellularEstimate = self->_uploadMaxCellularEstimate;
-  if (uploadMaxCellularEstimate | *(v4 + 160))
+  if (uploadMaxCellularEstimate | *(equalCopy + 160))
   {
     if (![(NSString *)uploadMaxCellularEstimate isEqual:?])
     {
@@ -8472,7 +8472,7 @@ LABEL_583:
   }
 
   downloadResponsiveness = self->_downloadResponsiveness;
-  if (downloadResponsiveness | *(v4 + 96))
+  if (downloadResponsiveness | *(equalCopy + 96))
   {
     if (![(NSString *)downloadResponsiveness isEqual:?])
     {
@@ -8481,7 +8481,7 @@ LABEL_583:
   }
 
   downloadResponsivenessConfidence = self->_downloadResponsivenessConfidence;
-  if (downloadResponsivenessConfidence | *(v4 + 97))
+  if (downloadResponsivenessConfidence | *(equalCopy + 97))
   {
     if (![(NSString *)downloadResponsivenessConfidence isEqual:?])
     {
@@ -8490,7 +8490,7 @@ LABEL_583:
   }
 
   downloadResponsivenessRating = self->_downloadResponsivenessRating;
-  if (downloadResponsivenessRating | *(v4 + 98))
+  if (downloadResponsivenessRating | *(equalCopy + 98))
   {
     if (![(NSString *)downloadResponsivenessRating isEqual:?])
     {
@@ -8499,7 +8499,7 @@ LABEL_583:
   }
 
   downloadSpeedConfidence = self->_downloadSpeedConfidence;
-  if (downloadSpeedConfidence | *(v4 + 102))
+  if (downloadSpeedConfidence | *(equalCopy + 102))
   {
     if (![(NSString *)downloadSpeedConfidence isEqual:?])
     {
@@ -8508,7 +8508,7 @@ LABEL_583:
   }
 
   downloadSpeedRating = self->_downloadSpeedRating;
-  if (downloadSpeedRating | *(v4 + 103))
+  if (downloadSpeedRating | *(equalCopy + 103))
   {
     if (![(NSString *)downloadSpeedRating isEqual:?])
     {
@@ -8517,7 +8517,7 @@ LABEL_583:
   }
 
   uploadResponsiveness = self->_uploadResponsiveness;
-  if (uploadResponsiveness | *(v4 + 169))
+  if (uploadResponsiveness | *(equalCopy + 169))
   {
     if (![(NSString *)uploadResponsiveness isEqual:?])
     {
@@ -8526,7 +8526,7 @@ LABEL_583:
   }
 
   uploadResponsivenessConfidence = self->_uploadResponsivenessConfidence;
-  if (uploadResponsivenessConfidence | *(v4 + 170))
+  if (uploadResponsivenessConfidence | *(equalCopy + 170))
   {
     if (![(NSString *)uploadResponsivenessConfidence isEqual:?])
     {
@@ -8535,7 +8535,7 @@ LABEL_583:
   }
 
   uploadResponsivenessRating = self->_uploadResponsivenessRating;
-  if (uploadResponsivenessRating | *(v4 + 171))
+  if (uploadResponsivenessRating | *(equalCopy + 171))
   {
     if (![(NSString *)uploadResponsivenessRating isEqual:?])
     {
@@ -8544,7 +8544,7 @@ LABEL_583:
   }
 
   uploadSpeedConfidence = self->_uploadSpeedConfidence;
-  if (uploadSpeedConfidence | *(v4 + 175))
+  if (uploadSpeedConfidence | *(equalCopy + 175))
   {
     if (![(NSString *)uploadSpeedConfidence isEqual:?])
     {
@@ -8553,7 +8553,7 @@ LABEL_583:
   }
 
   uploadSpeedRating = self->_uploadSpeedRating;
-  if (uploadSpeedRating | *(v4 + 176))
+  if (uploadSpeedRating | *(equalCopy + 176))
   {
     if (![(NSString *)uploadSpeedRating isEqual:?])
     {
@@ -8562,7 +8562,7 @@ LABEL_583:
   }
 
   wifiChannelBand = self->_wifiChannelBand;
-  if (wifiChannelBand | *(v4 + 191))
+  if (wifiChannelBand | *(equalCopy + 191))
   {
     if (![(NSString *)wifiChannelBand isEqual:?])
     {
@@ -8571,7 +8571,7 @@ LABEL_583:
   }
 
   wifiChannelWidth = self->_wifiChannelWidth;
-  if (wifiChannelWidth | *(v4 + 192))
+  if (wifiChannelWidth | *(equalCopy + 192))
   {
     v74 = [(NSString *)wifiChannelWidth isEqual:?];
   }
@@ -9106,76 +9106,76 @@ LABEL_54:
   return v25 ^ v34 ^ [(NSString *)self->_wifiChannelWidth hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1684))
+  fromCopy = from;
+  if (*(fromCopy + 1684))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  if (*(v4 + 2))
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlElectionParameters:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlMasterChannel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlOpMode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 1684) & 4) != 0)
+  if ((*(fromCopy + 1684) & 4) != 0)
   {
-    self->_awdlPowerState = *(v4 + 1657);
+    self->_awdlPowerState = *(fromCopy + 1657);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlSchedule:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlSecondaryMasterChannel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlSyncChannelSequence:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(AWDNetworkPerformanceMetric *)self setAwdlSyncState:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(AWDNetworkPerformanceMetric *)self setBtConnectedDevicesCount:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 421);
+  v5 = *(fromCopy + 421);
   if ((v5 & 8) != 0)
   {
-    self->_btIsConnectable = *(v4 + 1658);
+    self->_btIsConnectable = *(fromCopy + 1658);
     *&self->_has |= 8u;
-    v5 = *(v4 + 421);
+    v5 = *(fromCopy + 421);
     if ((v5 & 0x10) == 0)
     {
 LABEL_23:
@@ -9193,9 +9193,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  self->_btIsDiscoverable = *(v4 + 1659);
+  self->_btIsDiscoverable = *(fromCopy + 1659);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 421);
+  v5 = *(fromCopy + 421);
   if ((v5 & 0x20) == 0)
   {
 LABEL_24:
@@ -9208,352 +9208,352 @@ LABEL_24:
   }
 
 LABEL_455:
-  self->_btIsPowerOn = *(v4 + 1660);
+  self->_btIsPowerOn = *(fromCopy + 1660);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 421) & 0x40) != 0)
+  if ((*(fromCopy + 421) & 0x40) != 0)
   {
 LABEL_25:
-    self->_btIsScanning = *(v4 + 1661);
+    self->_btIsScanning = *(fromCopy + 1661);
     *&self->_has |= 0x40u;
   }
 
 LABEL_26:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(AWDNetworkPerformanceMetric *)self setCallingClient:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularActiveContexts:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 1684) & 0x80) != 0)
+  if ((*(fromCopy + 1684) & 0x80) != 0)
   {
-    self->_cellularAllowsVoip = *(v4 + 1662);
+    self->_cellularAllowsVoip = *(fromCopy + 1662);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularAttached:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularBandinfo:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularBandwidth:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularCarrierName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularDataBearerSoMask:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularDataBearerTechnology:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularDataPlanSignalingReductionOverride:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularDataPossible:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularInHomeCountry:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularIndicator:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularIndicatorOverride:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularIsoCountryCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 29))
+  if (*(fromCopy + 29))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularLqm:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 30))
+  if (*(fromCopy + 30))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularLteMaxScheduledLayers:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 37))
+  if (*(fromCopy + 37))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMobileCountryCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 38))
+  if (*(fromCopy + 38))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMobileNetworkCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 39))
+  if (*(fromCopy + 39))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioCoverage:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioDataBearer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 41))
+  if (*(fromCopy + 41))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioMmwaveDataBearer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 42))
+  if (*(fromCopy + 42))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioNsaCoverage:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 43))
+  if (*(fromCopy + 43))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioNsaDataBearer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioSaCoverage:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 45))
+  if (*(fromCopy + 45))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioSaDataBearer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 46))
+  if (*(fromCopy + 46))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNewRadioSub6DataBearer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 47))
+  if (*(fromCopy + 47))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrConfiguredBw:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrLayers:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 49))
+  if (*(fromCopy + 49))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrModulation:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 50))
+  if (*(fromCopy + 50))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrRsrp:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 51))
+  if (*(fromCopy + 51))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrRsrq:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 53))
+  if (*(fromCopy + 53))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrSnr:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 55))
+  if (*(fromCopy + 55))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularPid:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRadioAccessTechnology:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 57))
+  if (*(fromCopy + 57))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRadioAccessTechnologyCtDataStatus:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 61))
+  if (*(fromCopy + 61))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRoamAllowed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 62))
+  if (*(fromCopy + 62))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRsrp:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 63))
+  if (*(fromCopy + 63))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularSnr:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTac:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 65))
+  if (*(fromCopy + 65))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTotalActiveContexts:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 66))
+  if (*(fromCopy + 66))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTotalBw:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 67))
+  if (*(fromCopy + 67))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTotalCcs:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 69))
+  if (*(fromCopy + 69))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTotalLayers:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 71))
+  if (*(fromCopy + 71))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularUarfcn:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadCdnPop:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 73))
+  if (*(fromCopy + 73))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadCdnUuid:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 74))
+  if (*(fromCopy + 74))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadConnectionTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 75))
+  if (*(fromCopy + 75))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadDomainLookupTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 77))
+  if (*(fromCopy + 77))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadEndDataBearerTechnology:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 78))
+  if (*(fromCopy + 78))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadEndPrimaryIpv4Interface:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadEndRat:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadFileSize:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 85))
+  if (*(fromCopy + 85))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadInterfaceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 86))
+  if (*(fromCopy + 86))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadInterfaceServiceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 421);
+  v6 = *(fromCopy + 421);
   if ((v6 & 0x200) != 0)
   {
-    self->_downloadIsCellular = *(v4 + 1664);
+    self->_downloadIsCellular = *(fromCopy + 1664);
     *&self->_has |= 0x200u;
-    v6 = *(v4 + 421);
+    v6 = *(fromCopy + 421);
     if ((v6 & 0x400) == 0)
     {
 LABEL_138:
@@ -9571,9 +9571,9 @@ LABEL_138:
     goto LABEL_138;
   }
 
-  self->_downloadIsConstrained = *(v4 + 1665);
+  self->_downloadIsConstrained = *(fromCopy + 1665);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 421);
+  v6 = *(fromCopy + 421);
   if ((v6 & 0x800) == 0)
   {
 LABEL_139:
@@ -9586,9 +9586,9 @@ LABEL_139:
   }
 
 LABEL_459:
-  self->_downloadIsExpensive = *(v4 + 1666);
+  self->_downloadIsExpensive = *(fromCopy + 1666);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 421);
+  v6 = *(fromCopy + 421);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_140:
@@ -9601,9 +9601,9 @@ LABEL_140:
   }
 
 LABEL_460:
-  self->_downloadIsMultipath = *(v4 + 1667);
+  self->_downloadIsMultipath = *(fromCopy + 1667);
   *&self->_has |= 0x1000u;
-  v6 = *(v4 + 421);
+  v6 = *(fromCopy + 421);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_141:
@@ -9616,328 +9616,328 @@ LABEL_141:
   }
 
 LABEL_461:
-  self->_downloadIsProxyConnection = *(v4 + 1668);
+  self->_downloadIsProxyConnection = *(fromCopy + 1668);
   *&self->_has |= 0x2000u;
-  if ((*(v4 + 421) & 0x4000) != 0)
+  if ((*(fromCopy + 421) & 0x4000) != 0)
   {
 LABEL_142:
-    self->_downloadIsReusedConnection = *(v4 + 1669);
+    self->_downloadIsReusedConnection = *(fromCopy + 1669);
     *&self->_has |= 0x4000u;
   }
 
 LABEL_143:
-  if (*(v4 + 88))
+  if (*(fromCopy + 88))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadMaxSpeedObserved:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 89))
+  if (*(fromCopy + 89))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadNumberOfStreams:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 90))
+  if (*(fromCopy + 90))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadProtocolName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 91))
+  if (*(fromCopy + 91))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadRemoteAddress:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 92))
+  if (*(fromCopy + 92))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadRemotePort:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 93))
+  if (*(fromCopy + 93))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadRequestTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 94))
+  if (*(fromCopy + 94))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadRequestToResponseTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 95))
+  if (*(fromCopy + 95))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadResponseTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 99))
+  if (*(fromCopy + 99))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadSecureConnectionTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 100))
+  if (*(fromCopy + 100))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadServer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 101))
+  if (*(fromCopy + 101))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadSpeed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 104))
+  if (*(fromCopy + 104))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadStableSpeed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 106))
+  if (*(fromCopy + 106))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadStartDataBearerTechnology:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 107))
+  if (*(fromCopy + 107))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadStartPrimaryIpv4Interface:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 109))
+  if (*(fromCopy + 109))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadStartRat:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 1685) & 0x80) != 0)
+  if ((*(fromCopy + 1685) & 0x80) != 0)
   {
-    self->_networkIsAppleReachable = *(v4 + 1670);
+    self->_networkIsAppleReachable = *(fromCopy + 1670);
     *&self->_has |= 0x8000u;
   }
 
-  if (*(v4 + 110))
+  if (*(fromCopy + 110))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkPrimaryIpv4InterfaceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 111))
+  if (*(fromCopy + 111))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkPrimaryIpv4ServiceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 121))
+  if (*(fromCopy + 121))
   {
     [(AWDNetworkPerformanceMetric *)self setNptkitFrameworkVersion:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 122))
+  if (*(fromCopy + 122))
   {
     [(AWDNetworkPerformanceMetric *)self setPerformanceTestStartTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 123))
+  if (*(fromCopy + 123))
   {
     [(AWDNetworkPerformanceMetric *)self setPingAddress:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 127))
+  if (*(fromCopy + 127))
   {
     [(AWDNetworkPerformanceMetric *)self setPingLossPercent:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 128))
+  if (*(fromCopy + 128))
   {
     [(AWDNetworkPerformanceMetric *)self setPingMaxLatency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 129))
+  if (*(fromCopy + 129))
   {
     [(AWDNetworkPerformanceMetric *)self setPingMeanLatency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 130))
+  if (*(fromCopy + 130))
   {
     [(AWDNetworkPerformanceMetric *)self setPingMinLatency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 131))
+  if (*(fromCopy + 131))
   {
     [(AWDNetworkPerformanceMetric *)self setPingStandardDeviation:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 132))
+  if (*(fromCopy + 132))
   {
     [(AWDNetworkPerformanceMetric *)self setPowerBatteryWarningLevel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 133))
+  if (*(fromCopy + 133))
   {
     [(AWDNetworkPerformanceMetric *)self setPowerSourceType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 134))
+  if (*(fromCopy + 134))
   {
     [(AWDNetworkPerformanceMetric *)self setPowerStateCaps:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 135))
+  if (*(fromCopy + 135))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemActiveProcessorCount:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 136))
+  if (*(fromCopy + 136))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemBatteryLevel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 137))
+  if (*(fromCopy + 137))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemBatteryState:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 138))
+  if (*(fromCopy + 138))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemDeviceClass:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 139))
+  if (*(fromCopy + 139))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemDeviceModel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 1686))
+  if (*(fromCopy + 1686))
   {
-    self->_systemLowPowerModeEnabled = *(v4 + 1671);
+    self->_systemLowPowerModeEnabled = *(fromCopy + 1671);
     *&self->_has |= 0x10000u;
   }
 
-  if (*(v4 + 140))
+  if (*(fromCopy + 140))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 141))
+  if (*(fromCopy + 141))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemOsVariant:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 142))
+  if (*(fromCopy + 142))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemPhysicalMemory:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 1686) & 2) != 0)
+  if ((*(fromCopy + 1686) & 2) != 0)
   {
-    self->_systemPowersourceConnected = *(v4 + 1672);
+    self->_systemPowersourceConnected = *(fromCopy + 1672);
     *&self->_has |= 0x20000u;
   }
 
-  if (*(v4 + 143))
+  if (*(fromCopy + 143))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemProcessorCount:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 144))
+  if (*(fromCopy + 144))
   {
     [(AWDNetworkPerformanceMetric *)self setSystemVersion:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 145))
+  if (*(fromCopy + 145))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadCdnPop:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 146))
+  if (*(fromCopy + 146))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadCdnUuid:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 147))
+  if (*(fromCopy + 147))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadConnectionTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 148))
+  if (*(fromCopy + 148))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadDomainLookupTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 150))
+  if (*(fromCopy + 150))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadEndDataBearerTechnology:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 151))
+  if (*(fromCopy + 151))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadEndPrimaryIpv4Interface:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 153))
+  if (*(fromCopy + 153))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadEndRat:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 157))
+  if (*(fromCopy + 157))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadFileSize:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 158))
+  if (*(fromCopy + 158))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadInterfaceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 159))
+  if (*(fromCopy + 159))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadInterfaceServiceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 421);
+  v7 = *(fromCopy + 421);
   if ((v7 & 0x40000) != 0)
   {
-    self->_uploadIsCellular = *(v4 + 1673);
+    self->_uploadIsCellular = *(fromCopy + 1673);
     *&self->_has |= 0x40000u;
-    v7 = *(v4 + 421);
+    v7 = *(fromCopy + 421);
     if ((v7 & 0x80000) == 0)
     {
 LABEL_247:
@@ -9955,9 +9955,9 @@ LABEL_247:
     goto LABEL_247;
   }
 
-  self->_uploadIsConstrained = *(v4 + 1674);
+  self->_uploadIsConstrained = *(fromCopy + 1674);
   *&self->_has |= 0x80000u;
-  v7 = *(v4 + 421);
+  v7 = *(fromCopy + 421);
   if ((v7 & 0x100000) == 0)
   {
 LABEL_248:
@@ -9970,9 +9970,9 @@ LABEL_248:
   }
 
 LABEL_465:
-  self->_uploadIsExpensive = *(v4 + 1675);
+  self->_uploadIsExpensive = *(fromCopy + 1675);
   *&self->_has |= 0x100000u;
-  v7 = *(v4 + 421);
+  v7 = *(fromCopy + 421);
   if ((v7 & 0x200000) == 0)
   {
 LABEL_249:
@@ -9985,9 +9985,9 @@ LABEL_249:
   }
 
 LABEL_466:
-  self->_uploadIsMultipath = *(v4 + 1676);
+  self->_uploadIsMultipath = *(fromCopy + 1676);
   *&self->_has |= 0x200000u;
-  v7 = *(v4 + 421);
+  v7 = *(fromCopy + 421);
   if ((v7 & 0x400000) == 0)
   {
 LABEL_250:
@@ -10000,608 +10000,608 @@ LABEL_250:
   }
 
 LABEL_467:
-  self->_uploadIsProxyConnection = *(v4 + 1677);
+  self->_uploadIsProxyConnection = *(fromCopy + 1677);
   *&self->_has |= 0x400000u;
-  if ((*(v4 + 421) & 0x800000) != 0)
+  if ((*(fromCopy + 421) & 0x800000) != 0)
   {
 LABEL_251:
-    self->_uploadIsReusedConnection = *(v4 + 1678);
+    self->_uploadIsReusedConnection = *(fromCopy + 1678);
     *&self->_has |= 0x800000u;
   }
 
 LABEL_252:
-  if (*(v4 + 161))
+  if (*(fromCopy + 161))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadMaxSpeedObserved:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 162))
+  if (*(fromCopy + 162))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadNumberOfStreams:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 163))
+  if (*(fromCopy + 163))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadProtocolName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 164))
+  if (*(fromCopy + 164))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadRemoteAddress:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 165))
+  if (*(fromCopy + 165))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadRemotePort:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 166))
+  if (*(fromCopy + 166))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadRequestTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 167))
+  if (*(fromCopy + 167))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadRequestToResponseTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 168))
+  if (*(fromCopy + 168))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadResponseTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 172))
+  if (*(fromCopy + 172))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadSecureConnectionTime:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 173))
+  if (*(fromCopy + 173))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadServer:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 174))
+  if (*(fromCopy + 174))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadSpeed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 177))
+  if (*(fromCopy + 177))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadStableSpeed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 179))
+  if (*(fromCopy + 179))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadStartDataBearerTechnology:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 180))
+  if (*(fromCopy + 180))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadStartPrimaryIpv4Interface:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 182))
+  if (*(fromCopy + 182))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadStartRat:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 1687))
+  if (*(fromCopy + 1687))
   {
-    self->_useWifiWasSpecified = *(v4 + 1679);
+    self->_useWifiWasSpecified = *(fromCopy + 1679);
     *&self->_has |= 0x1000000u;
   }
 
-  if (*(v4 + 184))
+  if (*(fromCopy + 184))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiAveragePhyRateRx:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 185))
+  if (*(fromCopy + 185))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiAverageRssi:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 186))
+  if (*(fromCopy + 186))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiAverageSnr:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 187))
+  if (*(fromCopy + 187))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiAverageTcpRtt:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 188))
+  if (*(fromCopy + 188))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiBtcMode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 189))
+  if (*(fromCopy + 189))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiCca:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 190))
+  if (*(fromCopy + 190))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiChannel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 193))
+  if (*(fromCopy + 193))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiCwfCca:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 194))
+  if (*(fromCopy + 194))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiEapolControlMode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 195))
+  if (*(fromCopy + 195))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiEapolSupplicantState:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 196))
+  if (*(fromCopy + 196))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiGuardInterval:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 197))
+  if (*(fromCopy + 197))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiHiddenState:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 1687) & 2) != 0)
+  if ((*(fromCopy + 1687) & 2) != 0)
   {
-    self->_wifiIsCaptive = *(v4 + 1680);
+    self->_wifiIsCaptive = *(fromCopy + 1680);
     *&self->_has |= 0x2000000u;
   }
 
-  if (*(v4 + 198))
+  if (*(fromCopy + 198))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiMcsIndex:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 199))
+  if (*(fromCopy + 199))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiNoise:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 200))
+  if (*(fromCopy + 200))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiNumberOfSpatialStreams:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 201))
+  if (*(fromCopy + 201))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiOpMode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 202))
+  if (*(fromCopy + 202))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiPhyMode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 203))
+  if (*(fromCopy + 203))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiRssi:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 204))
+  if (*(fromCopy + 204))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiSecurity:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 205))
+  if (*(fromCopy + 205))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiTxRate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 206))
+  if (*(fromCopy + 206))
   {
     [(AWDNetworkPerformanceMetric *)self setWrmChannelType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularCellid:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 1684) & 2) != 0)
+  if ((*(fromCopy + 1684) & 2) != 0)
   {
-    self->_acceptablePerformanceResult = *(v4 + 1656);
+    self->_acceptablePerformanceResult = *(fromCopy + 1656);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 119))
+  if (*(fromCopy + 119))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityResponsiveness:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularAggregatedDLBW:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularAggregatedULBW:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 27))
+  if (*(fromCopy + 27))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularIssa:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularLac:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 31))
+  if (*(fromCopy + 31))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularLteNrConfiguredBw:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMaxDlMod:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 33))
+  if (*(fromCopy + 33))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMaxNwMimoLyr:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 34))
+  if (*(fromCopy + 34))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMaxSchdMimoLyr:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 35))
+  if (*(fromCopy + 35))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMaxUeRank:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularMaxUlMod:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrSinr:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 54))
+  if (*(fromCopy + 54))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularNrarfcn:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 58))
+  if (*(fromCopy + 58))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRadioFrequency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 68))
+  if (*(fromCopy + 68))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTotalDlMimoLayers:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 70))
+  if (*(fromCopy + 70))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularTotalNumCcs:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 108))
+  if (*(fromCopy + 108))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadStartRadioFrequency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 79))
+  if (*(fromCopy + 79))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadEndRadioFrequency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 112))
+  if (*(fromCopy + 112))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkPrimaryIpv6InterfaceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 113))
+  if (*(fromCopy + 113))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkPrimaryIpv6ServiceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 181))
+  if (*(fromCopy + 181))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadStartRadioFrequency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 152))
+  if (*(fromCopy + 152))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadEndRadioFrequency:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 81))
+  if (*(fromCopy + 81))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadError:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 115))
+  if (*(fromCopy + 115))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityError:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 114))
+  if (*(fromCopy + 114))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityDownloadSpeed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 120))
+  if (*(fromCopy + 120))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityUploadSpeed:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 118))
+  if (*(fromCopy + 118))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityRating:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 183))
+  if (*(fromCopy + 183))
   {
     [(AWDNetworkPerformanceMetric *)self setVpnConnectionState:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 154))
+  if (*(fromCopy + 154))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadError:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 156))
+  if (*(fromCopy + 156))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadErrorDomain:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 155))
+  if (*(fromCopy + 155))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadErrorCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 83))
+  if (*(fromCopy + 83))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadErrorDomain:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 82))
+  if (*(fromCopy + 82))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadErrorCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 124))
+  if (*(fromCopy + 124))
   {
     [(AWDNetworkPerformanceMetric *)self setPingError:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 126))
+  if (*(fromCopy + 126))
   {
     [(AWDNetworkPerformanceMetric *)self setPingErrorDomain:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 125))
+  if (*(fromCopy + 125))
   {
     [(AWDNetworkPerformanceMetric *)self setPingErrorCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 117))
+  if (*(fromCopy + 117))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityErrorDomain:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 116))
+  if (*(fromCopy + 116))
   {
     [(AWDNetworkPerformanceMetric *)self setNetworkQualityErrorCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 59))
+  if (*(fromCopy + 59))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRnMobileCountryCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
     [(AWDNetworkPerformanceMetric *)self setCellularRnMobileNetworkCode:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 1685))
+  if (*(fromCopy + 1685))
   {
-    self->_cellularDataIsEnabled = *(v4 + 1663);
+    self->_cellularDataIsEnabled = *(fromCopy + 1663);
     *&self->_has |= 0x100u;
   }
 
-  if (*(v4 + 105))
+  if (*(fromCopy + 105))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadStartCellularEstimate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadEndCellularEstimate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 87))
+  if (*(fromCopy + 87))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadMaxCellularEstimate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 178))
+  if (*(fromCopy + 178))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadStartCellularEstimate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 149))
+  if (*(fromCopy + 149))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadEndCellularEstimate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 160))
+  if (*(fromCopy + 160))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadMaxCellularEstimate:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 96))
+  if (*(fromCopy + 96))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadResponsiveness:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 97))
+  if (*(fromCopy + 97))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadResponsivenessConfidence:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 98))
+  if (*(fromCopy + 98))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadResponsivenessRating:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 102))
+  if (*(fromCopy + 102))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadSpeedConfidence:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 103))
+  if (*(fromCopy + 103))
   {
     [(AWDNetworkPerformanceMetric *)self setDownloadSpeedRating:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 169))
+  if (*(fromCopy + 169))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadResponsiveness:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 170))
+  if (*(fromCopy + 170))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadResponsivenessConfidence:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 171))
+  if (*(fromCopy + 171))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadResponsivenessRating:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 175))
+  if (*(fromCopy + 175))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadSpeedConfidence:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 176))
+  if (*(fromCopy + 176))
   {
     [(AWDNetworkPerformanceMetric *)self setUploadSpeedRating:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 191))
+  if (*(fromCopy + 191))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiChannelBand:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 192))
+  if (*(fromCopy + 192))
   {
     [(AWDNetworkPerformanceMetric *)self setWifiChannelWidth:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 

@@ -1,36 +1,36 @@
 @interface FTImageTensorDescriptor
-+ (id)bgraImageWithName:(id)a3 size:(CGSize)a4;
-+ (id)bgraSquareImageWithName:(id)a3 size:(double)a4;
-+ (id)descriptorWithName:(id)a3 size:(CGSize)a4 pixelFormat:(unsigned int)a5;
++ (id)bgraImageWithName:(id)name size:(CGSize)size;
++ (id)bgraSquareImageWithName:(id)name size:(double)size;
++ (id)descriptorWithName:(id)name size:(CGSize)size pixelFormat:(unsigned int)format;
 - (CGSize)size;
 @end
 
 @implementation FTImageTensorDescriptor
 
-+ (id)descriptorWithName:(id)a3 size:(CGSize)a4 pixelFormat:(unsigned int)a5
++ (id)descriptorWithName:(id)name size:(CGSize)size pixelFormat:(unsigned int)format
 {
-  v5 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  v5 = *&format;
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
   v9 = objc_alloc_init(FTImageTensorDescriptor);
-  [(FTImageTensorDescriptor *)v9 setName:v8];
+  [(FTImageTensorDescriptor *)v9 setName:nameCopy];
   [(FTImageTensorDescriptor *)v9 setSize:width, height];
   [(FTImageTensorDescriptor *)v9 setPixelFormat:v5];
 
   return v9;
 }
 
-+ (id)bgraImageWithName:(id)a3 size:(CGSize)a4
++ (id)bgraImageWithName:(id)name size:(CGSize)size
 {
-  v4 = [a1 descriptorWithName:a3 size:1111970369 pixelFormat:a4.width, a4.height];
+  v4 = [self descriptorWithName:name size:1111970369 pixelFormat:size.width, size.height];
 
   return v4;
 }
 
-+ (id)bgraSquareImageWithName:(id)a3 size:(double)a4
++ (id)bgraSquareImageWithName:(id)name size:(double)size
 {
-  v4 = [a1 bgraImageWithName:a3 size:{a4, a4}];
+  v4 = [self bgraImageWithName:name size:{size, size}];
 
   return v4;
 }

@@ -1,18 +1,18 @@
 @interface CHASAdvancedGoalViewFactory
-+ (id)makeViewWithGoalSchedule:(id)a3 goalDaysModel:(id)a4 wheelchairUser:(BOOL)a5 goalType:(int64_t)a6 formattingManager:(id)a7 showFooter:(BOOL)a8;
++ (id)makeViewWithGoalSchedule:(id)schedule goalDaysModel:(id)model wheelchairUser:(BOOL)user goalType:(int64_t)type formattingManager:(id)manager showFooter:(BOOL)footer;
 - (CHASAdvancedGoalViewFactory)init;
 @end
 
 @implementation CHASAdvancedGoalViewFactory
 
-+ (id)makeViewWithGoalSchedule:(id)a3 goalDaysModel:(id)a4 wheelchairUser:(BOOL)a5 goalType:(int64_t)a6 formattingManager:(id)a7 showFooter:(BOOL)a8
++ (id)makeViewWithGoalSchedule:(id)schedule goalDaysModel:(id)model wheelchairUser:(BOOL)user goalType:(int64_t)type formattingManager:(id)manager showFooter:(BOOL)footer
 {
-  v8 = a8;
-  v11 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = sub_15824(v14, v11, a6, v15, v8);
+  footerCopy = footer;
+  userCopy = user;
+  scheduleCopy = schedule;
+  modelCopy = model;
+  managerCopy = manager;
+  v16 = sub_15824(modelCopy, userCopy, type, managerCopy, footerCopy);
 
   return v16;
 }

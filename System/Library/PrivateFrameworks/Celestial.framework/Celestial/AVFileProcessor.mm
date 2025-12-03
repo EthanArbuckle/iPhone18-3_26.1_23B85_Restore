@@ -1,6 +1,6 @@
 @interface AVFileProcessor
 + (id)fileProcessor;
-- (id)processPurchasedItem:(id)a3 withAttributes:(id)a4 resultInfo:(id *)a5 progressBlock:(id)a6;
+- (id)processPurchasedItem:(id)item withAttributes:(id)attributes resultInfo:(id *)info progressBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -20,10 +20,10 @@
   [(AVFileProcessor *)&v3 dealloc];
 }
 
-- (id)processPurchasedItem:(id)a3 withAttributes:(id)a4 resultInfo:(id *)a5 progressBlock:(id)a6
+- (id)processPurchasedItem:(id)item withAttributes:(id)attributes resultInfo:(id *)info progressBlock:(id)block
 {
   self->_percentComplete = 0.0;
-  v7 = [a6 copy];
+  v7 = [block copy];
 
   self->_progressBlock = v7;
   v8 = PostProcessPurchasedItem();

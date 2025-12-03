@@ -6,9 +6,9 @@
 
 - (uint64_t)gp_CGImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 @end

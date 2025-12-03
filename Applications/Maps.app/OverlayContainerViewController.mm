@@ -5,22 +5,22 @@
 - (double)topEdgeInset;
 - (double)topLabelEdgeInset;
 - (id)_topBannerViewConstraints;
-- (void)applyTransitionWithProgress:(double)a3;
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3;
-- (void)presentController:(id)a3 animated:(BOOL)a4 useDefaultContaineeLayout:(BOOL)a5 completion:(id)a6;
-- (void)setTopContentSizeStyle:(unint64_t)a3;
+- (void)applyTransitionWithProgress:(double)progress;
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style;
+- (void)presentController:(id)controller animated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout completion:(id)completion;
+- (void)setTopContentSizeStyle:(unint64_t)style;
 - (void)setupConstraints;
 - (void)updateContainerStyleDependentConstraints;
-- (void)updateEdgeInsets:(UIEdgeInsets)a3 immediately:(BOOL)a4;
+- (void)updateEdgeInsets:(UIEdgeInsets)insets immediately:(BOOL)immediately;
 - (void)updateInnerLayoutGuideConstraints;
-- (void)updateTopBannerViewWithTopBannerItems:(id)a3;
+- (void)updateTopBannerViewWithTopBannerItems:(id)items;
 - (void)updateViewsForCustomDismissalTransition;
 - (void)updateViewsForCustomPresentationTransition;
-- (void)viewControllerWantsTopBannerItemsUpdate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewControllerWantsTopBannerItemsUpdate:(id)update;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation OverlayContainerViewController
@@ -34,15 +34,15 @@
   *&self->_modeTransitiontransform.a = *&CGAffineTransformIdentity.a;
   *&self->_modeTransitiontransform.c = v3;
   *&self->_modeTransitiontransform.tx = *&CGAffineTransformIdentity.tx;
-  v4 = [(OverlayContainerViewController *)self view];
-  [v4 bounds];
+  view = [(OverlayContainerViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(OverlayContainerViewController *)self view];
-  [v13 setAccessibilityIdentifier:@"OverlayContainerView"];
+  view2 = [(OverlayContainerViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"OverlayContainerView"];
 
   v14 = [[UIView alloc] initWithFrame:{v6, v8, v10, v12}];
   topContentView = self->_topContentView;
@@ -53,10 +53,10 @@
   [(UIView *)self->_topContentView setBackgroundColor:v16];
 
   [(UIView *)self->_topContentView setClipsToBounds:1];
-  v17 = [(OverlayContainerViewController *)self view];
+  view3 = [(OverlayContainerViewController *)self view];
   v18 = self->_topContentView;
-  v19 = [(ContainerViewController *)self containerView];
-  [v17 insertSubview:v18 belowSubview:v19];
+  containerView = [(ContainerViewController *)self containerView];
+  [view3 insertSubview:v18 belowSubview:containerView];
 
   v20 = [[PassThroughView alloc] initWithFrame:v6, v8, v10, v12];
   [(PassThroughView *)v20 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -73,8 +73,8 @@
   v25 = [NSString stringWithFormat:@"%@.OverlayView", v24];
   [(UIView *)self->_overlayView setAccessibilityIdentifier:v25];
 
-  v26 = [(OverlayContainerViewController *)self view];
-  [v26 insertSubview:self->_overlayView belowSubview:self->_topContentView];
+  view4 = [(OverlayContainerViewController *)self view];
+  [view4 insertSubview:self->_overlayView belowSubview:self->_topContentView];
 
   v27 = objc_alloc_init(UILayoutGuide);
   overlayLayoutGuide = self->_overlayLayoutGuide;
@@ -85,23 +85,23 @@
   v31 = [NSString stringWithFormat:@"%@.overlayLayoutGuide", v30];
   [(UILayoutGuide *)self->_overlayLayoutGuide setIdentifier:v31];
 
-  v32 = [(OverlayContainerViewController *)self view];
-  [v32 addLayoutGuide:self->_overlayLayoutGuide];
+  view5 = [(OverlayContainerViewController *)self view];
+  [view5 addLayoutGuide:self->_overlayLayoutGuide];
 
   v33 = self->_overlayLayoutGuide;
-  v34 = [(OverlayContainerViewController *)self view];
+  view6 = [(OverlayContainerViewController *)self view];
   LODWORD(v35) = 1148846080;
-  v36 = [(UILayoutGuide *)v33 _maps_constraintsEqualToEdgesOfView:v34 priority:v35];
+  v36 = [(UILayoutGuide *)v33 _maps_constraintsEqualToEdgesOfView:view6 priority:v35];
   overlayLayoutGuideConstraints = self->_overlayLayoutGuideConstraints;
   self->_overlayLayoutGuideConstraints = v36;
 
-  v38 = [(MapsEdgeConstraints *)self->_overlayLayoutGuideConstraints allConstraints];
-  [NSLayoutConstraint activateConstraints:v38];
+  allConstraints = [(MapsEdgeConstraints *)self->_overlayLayoutGuideConstraints allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 
   LODWORD(v39) = 1148846080;
   v40 = [(UIView *)self->_overlayView _maps_constraintsEqualToEdgesOfLayoutGuide:self->_overlayLayoutGuide priority:v39];
-  v41 = [v40 allConstraints];
-  [NSLayoutConstraint activateConstraints:v41];
+  allConstraints2 = [v40 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints2];
 
   v42 = objc_alloc_init(UILayoutGuide);
   innerLayoutGuide = self->_innerLayoutGuide;
@@ -112,8 +112,8 @@
   v46 = [NSString stringWithFormat:@"%@.innerLayoutGuide", v45];
   [(UILayoutGuide *)self->_innerLayoutGuide setIdentifier:v46];
 
-  v47 = [(OverlayContainerViewController *)self view];
-  [v47 addLayoutGuide:self->_innerLayoutGuide];
+  view7 = [(OverlayContainerViewController *)self view];
+  [view7 addLayoutGuide:self->_innerLayoutGuide];
 
   LODWORD(v48) = 1148846080;
   v49 = [(UILayoutGuide *)self->_innerLayoutGuide _maps_constraintsEqualToEdgesOfLayoutGuide:self->_overlayLayoutGuide priority:v48];
@@ -121,8 +121,8 @@
   self->_innerLayoutGuideConstraints = v49;
 
   [(OverlayContainerViewController *)self updateInnerLayoutGuideConstraints];
-  v51 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints allConstraints];
-  [NSLayoutConstraint activateConstraints:v51];
+  allConstraints3 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints3];
 
   self->_usesFadingLabels = GEOConfigGetBOOL();
   self->_usesVariableBlur = GEOConfigGetBOOL();
@@ -144,14 +144,14 @@
     }
 
     p_innerLayoutGuideConstraints = &self->_innerLayoutGuideConstraints;
-    v6 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints topConstraint];
-    [v6 setConstant:v4];
+    topConstraint = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints topConstraint];
+    [topConstraint setConstant:v4];
 
-    v7 = [(MapsEdgeConstraints *)*p_innerLayoutGuideConstraints leadingConstraint];
-    [v7 setConstant:v3];
+    leadingConstraint = [(MapsEdgeConstraints *)*p_innerLayoutGuideConstraints leadingConstraint];
+    [leadingConstraint setConstant:v3];
 
-    v8 = [(MapsEdgeConstraints *)*p_innerLayoutGuideConstraints bottomConstraint];
-    [v8 setConstant:v3];
+    bottomConstraint = [(MapsEdgeConstraints *)*p_innerLayoutGuideConstraints bottomConstraint];
+    [bottomConstraint setConstant:v3];
   }
 
   else
@@ -159,24 +159,24 @@
     [(OverlayContainerViewController *)self _topEdgePadding];
     v10 = v9;
     p_innerLayoutGuideConstraints = &self->_innerLayoutGuideConstraints;
-    v11 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints topConstraint];
-    [v11 setConstant:v10];
+    topConstraint2 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints topConstraint];
+    [topConstraint2 setConstant:v10];
 
     v12 = sub_100019A44();
-    v13 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints leadingConstraint];
-    [v13 setConstant:v12];
+    leadingConstraint2 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints leadingConstraint];
+    [leadingConstraint2 setConstant:v12];
 
     [(ContainerViewController *)self bottomEdgePadding];
     v15 = v14;
-    v16 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints bottomConstraint];
-    [v16 setConstant:v15];
+    bottomConstraint2 = [(MapsEdgeConstraints *)self->_innerLayoutGuideConstraints bottomConstraint];
+    [bottomConstraint2 setConstant:v15];
 
     [(ContainerViewController *)self edgePadding];
     v3 = v17;
   }
 
-  v18 = [(MapsEdgeConstraints *)*p_innerLayoutGuideConstraints trailingConstraint];
-  [v18 setConstant:v3];
+  trailingConstraint = [(MapsEdgeConstraints *)*p_innerLayoutGuideConstraints trailingConstraint];
+  [trailingConstraint setConstant:v3];
 }
 
 - (double)topEdgeInset
@@ -185,8 +185,8 @@
   v4 = v3;
   if ([(ContainerViewController *)self containerStyle]== 1)
   {
-    v5 = [(OverlayContainerViewController *)self topContentView];
-    [v5 frame];
+    topContentView = [(OverlayContainerViewController *)self topContentView];
+    [topContentView frame];
     MaxY = CGRectGetMaxY(v13);
     [(ContainerViewController *)self statusBarHeight];
     if (MaxY <= v7)
@@ -197,8 +197,8 @@
 
     else
     {
-      v8 = [(OverlayContainerViewController *)self topContentView];
-      [v8 frame];
+      topContentView2 = [(OverlayContainerViewController *)self topContentView];
+      [topContentView2 frame];
       v9 = CGRectGetMaxY(v14);
     }
   }
@@ -217,14 +217,14 @@
   v12.receiver = self;
   v12.super_class = OverlayContainerViewController;
   [(ContainerViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [(TopBannerView *)self->_topBannerView superview];
+  superview = [(TopBannerView *)self->_topBannerView superview];
 
-  if (v3)
+  if (superview)
   {
     [(OverlayContainerViewController *)self _topBannerMaxHeight];
     v5 = v4;
-    v6 = [(OverlayContainerViewController *)self topBannerView];
-    [v6 setMaximumHeight:v5];
+    topBannerView = [(OverlayContainerViewController *)self topBannerView];
+    [topBannerView setMaximumHeight:v5];
 
     [(TopBannerView *)self->_topBannerView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
     v8 = v7;
@@ -249,13 +249,13 @@
 
 - (void)updateContainerStyleDependentConstraints
 {
-  v3 = [(OverlayContainerViewController *)self topContentView];
-  v4 = [v3 isHidden];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  isHidden = [topContentView isHidden];
 
-  if ((v4 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v5 = [(ContainerViewController *)self containerStyle];
-    if (v5 >= 8 || (v6 = 0.0, ((0xE3u >> v5) & 1) == 0))
+    containerStyle = [(ContainerViewController *)self containerStyle];
+    if (containerStyle >= 8 || (v6 = 0.0, ((0xE3u >> containerStyle) & 1) == 0))
     {
       [(ContainerViewController *)self edgePadding];
     }
@@ -268,34 +268,34 @@
 
     if ([(ContainerViewController *)self containerStyle]== 6 || [(ContainerViewController *)self containerStyle]== 4)
     {
-      v7 = [(ContainerViewController *)self containerView];
-      v8 = [v7 trailingAnchor];
+      containerView = [(ContainerViewController *)self containerView];
+      trailingAnchor = [containerView trailingAnchor];
 
-      v9 = [(OverlayContainerViewController *)self view];
+      view = [(OverlayContainerViewController *)self view];
     }
 
     else
     {
-      v10 = [(ContainerViewController *)self containerView];
-      v8 = [v10 leadingAnchor];
+      containerView2 = [(ContainerViewController *)self containerView];
+      trailingAnchor = [containerView2 leadingAnchor];
 
-      v9 = [(ContainerViewController *)self containerView];
+      view = [(ContainerViewController *)self containerView];
     }
 
-    v11 = v9;
-    v12 = [v9 trailingAnchor];
+    v11 = view;
+    trailingAnchor2 = [view trailingAnchor];
 
-    v13 = [(OverlayContainerViewController *)self overlayView];
-    v14 = [v13 superview];
+    overlayView = [(OverlayContainerViewController *)self overlayView];
+    superview = [overlayView superview];
 
-    if (!v14)
+    if (!superview)
     {
       goto LABEL_22;
     }
 
-    v15 = [(ContainerViewController *)self containerStyle];
+    containerStyle2 = [(ContainerViewController *)self containerStyle];
     v16 = 0.0;
-    if (v15 <= 7 && ((1 << v15) & 0xE3) != 0)
+    if (containerStyle2 <= 7 && ((1 << containerStyle2) & 0xE3) != 0)
     {
       if (_UISolariumEnabled())
       {
@@ -303,9 +303,9 @@
       }
     }
 
-    v17 = [(OverlayContainerViewController *)self topContentView];
-    v18 = [v17 leadingAnchor];
-    v19 = [v18 constraintEqualToAnchor:v8 constant:v16];
+    topContentView2 = [(OverlayContainerViewController *)self topContentView];
+    leadingAnchor = [topContentView2 leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:v16];
     v29 = v19;
     v20 = [NSArray arrayWithObjects:&v29 count:1];
     v21 = [NSMutableArray arrayWithArray:v20];
@@ -313,9 +313,9 @@
     topContentSizeStyle = self->_topContentSizeStyle;
     if (topContentSizeStyle == 1)
     {
-      v23 = [(OverlayContainerViewController *)self topContentView];
-      v24 = [v23 trailingAnchor];
-      v25 = [v12 constraintGreaterThanOrEqualToAnchor:v24 constant:v16];
+      topContentView3 = [(OverlayContainerViewController *)self topContentView];
+      trailingAnchor3 = [topContentView3 trailingAnchor];
+      v25 = [trailingAnchor2 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:v16];
     }
 
     else
@@ -333,9 +333,9 @@ LABEL_22:
         return;
       }
 
-      v23 = [(OverlayContainerViewController *)self topContentView];
-      v24 = [v23 trailingAnchor];
-      v25 = [v12 constraintEqualToAnchor:v24 constant:v16];
+      topContentView3 = [(OverlayContainerViewController *)self topContentView];
+      trailingAnchor3 = [topContentView3 trailingAnchor];
+      v25 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v16];
     }
 
     v26 = v25;
@@ -366,16 +366,16 @@ LABEL_22:
     v15[1] = v4;
     v15[2] = *&CGAffineTransformIdentity.tx;
     [(UIView *)topContentView setTransform:v15];
-    v5 = [(UIView *)self->_topContentView topAnchor];
-    v6 = [(ContainerViewController *)self chromeViewController];
-    v7 = [v6 viewportLayoutGuide];
-    v8 = [v7 topAnchor];
-    v9 = [v5 constraintEqualToAnchor:v8];
+    topAnchor = [(UIView *)self->_topContentView topAnchor];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    viewportLayoutGuide = [chromeViewController viewportLayoutGuide];
+    topAnchor2 = [viewportLayoutGuide topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
     topContentConstraint = self->_topContentConstraint;
     self->_topContentConstraint = v9;
 
-    v11 = [(UIView *)self->_topContentView heightAnchor];
-    v12 = [v11 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)self->_topContentView heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:0.0];
 
     LODWORD(v13) = 1.0;
     [v12 setPriority:v13];
@@ -390,17 +390,17 @@ LABEL_22:
 
 - (NSArray)_topBannerViewHorizontalConstraints
 {
-  v14 = [(OverlayContainerViewController *)self topBannerView];
-  v3 = [v14 leadingAnchor];
-  v4 = [(OverlayContainerViewController *)self overlayView];
-  v5 = [v4 leadingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5 constant:sub_100019A44()];
+  topBannerView = [(OverlayContainerViewController *)self topBannerView];
+  leadingAnchor = [topBannerView leadingAnchor];
+  overlayView = [(OverlayContainerViewController *)self overlayView];
+  leadingAnchor2 = [overlayView leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:sub_100019A44()];
   v15[0] = v6;
-  v7 = [(OverlayContainerViewController *)self topBannerView];
-  v8 = [v7 trailingAnchor];
-  v9 = [(OverlayContainerViewController *)self overlayView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:-sub_100019A44()];
+  topBannerView2 = [(OverlayContainerViewController *)self topBannerView];
+  trailingAnchor = [topBannerView2 trailingAnchor];
+  overlayView2 = [(OverlayContainerViewController *)self overlayView];
+  trailingAnchor2 = [overlayView2 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-sub_100019A44()];
   v15[1] = v11;
   v12 = [NSArray arrayWithObjects:v15 count:2];
 
@@ -412,13 +412,13 @@ LABEL_22:
   if (self->_topBannerView)
   {
     v3 = +[NSMutableArray array];
-    v4 = [(OverlayContainerViewController *)self _topBannerViewHorizontalConstraints];
-    [v3 addObjectsFromArray:v4];
+    _topBannerViewHorizontalConstraints = [(OverlayContainerViewController *)self _topBannerViewHorizontalConstraints];
+    [v3 addObjectsFromArray:_topBannerViewHorizontalConstraints];
 
-    v5 = [(OverlayContainerViewController *)self topBannerView];
-    v6 = [v5 topAnchor];
-    v7 = [(UILayoutGuide *)self->_innerLayoutGuide topAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    topBannerView = [(OverlayContainerViewController *)self topBannerView];
+    topAnchor = [topBannerView topAnchor];
+    topAnchor2 = [(UILayoutGuide *)self->_innerLayoutGuide topAnchor];
+    v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v3 addObject:v8];
   }
 
@@ -430,22 +430,22 @@ LABEL_22:
   return v3;
 }
 
-- (void)updateTopBannerViewWithTopBannerItems:(id)a3
+- (void)updateTopBannerViewWithTopBannerItems:(id)items
 {
-  v18 = a3;
-  v4 = [(TopBannerView *)self->_topBannerView items];
-  if (v4 != v18)
+  itemsCopy = items;
+  items = [(TopBannerView *)self->_topBannerView items];
+  if (items != itemsCopy)
   {
-    v5 = [(TopBannerView *)self->_topBannerView items];
-    v6 = [v18 isEqualToArray:v5];
+    items2 = [(TopBannerView *)self->_topBannerView items];
+    v6 = [itemsCopy isEqualToArray:items2];
 
-    v7 = v18;
+    v7 = itemsCopy;
     if (v6)
     {
       goto LABEL_12;
     }
 
-    v8 = [v18 count];
+    v8 = [itemsCopy count];
     topBannerView = self->_topBannerView;
     if (v8)
     {
@@ -455,33 +455,33 @@ LABEL_22:
         v11 = self->_topBannerView;
         self->_topBannerView = v10;
 
-        v12 = [(ContainerViewController *)self blurGroupName];
-        [(CardView *)self->_topBannerView setBlurGroupName:v12];
+        blurGroupName = [(ContainerViewController *)self blurGroupName];
+        [(CardView *)self->_topBannerView setBlurGroupName:blurGroupName];
 
         [(TopBannerView *)self->_topBannerView setTranslatesAutoresizingMaskIntoConstraints:0];
         topBannerView = self->_topBannerView;
       }
 
-      [(TopBannerView *)topBannerView setItems:v18];
-      v13 = [(TopBannerView *)self->_topBannerView superview];
+      [(TopBannerView *)topBannerView setItems:itemsCopy];
+      superview = [(TopBannerView *)self->_topBannerView superview];
 
-      if (!v13)
+      if (!superview)
       {
-        v14 = [(OverlayContainerViewController *)self overlayView];
-        v15 = [(OverlayContainerViewController *)self topBannerView];
-        [v14 addSubview:v15];
+        overlayView = [(OverlayContainerViewController *)self overlayView];
+        topBannerView = [(OverlayContainerViewController *)self topBannerView];
+        [overlayView addSubview:topBannerView];
 
-        v16 = [(OverlayContainerViewController *)self _topBannerViewConstraints];
-        [NSLayoutConstraint activateConstraints:v16];
+        _topBannerViewConstraints = [(OverlayContainerViewController *)self _topBannerViewConstraints];
+        [NSLayoutConstraint activateConstraints:_topBannerViewConstraints];
       }
     }
 
     else
     {
-      v17 = [(TopBannerView *)topBannerView superview];
+      superview2 = [(TopBannerView *)topBannerView superview];
 
-      v7 = v18;
-      if (!v17)
+      v7 = itemsCopy;
+      if (!superview2)
       {
         goto LABEL_12;
       }
@@ -490,61 +490,61 @@ LABEL_22:
       [(TopBannerView *)self->_topBannerView removeFromSuperview];
     }
 
-    v4 = [(OverlayContainerViewController *)self view];
-    [v4 setNeedsLayout];
+    items = [(OverlayContainerViewController *)self view];
+    [items setNeedsLayout];
   }
 
-  v7 = v18;
+  v7 = itemsCopy;
 LABEL_12:
 }
 
-- (void)viewControllerWantsTopBannerItemsUpdate:(id)a3
+- (void)viewControllerWantsTopBannerItemsUpdate:(id)update
 {
-  v7 = a3;
-  v4 = [(ContainerViewController *)self currentViewController];
+  updateCopy = update;
+  currentViewController = [(ContainerViewController *)self currentViewController];
 
-  v5 = v7;
-  if (v4 == v7)
+  v5 = updateCopy;
+  if (currentViewController == updateCopy)
   {
-    v6 = [v7 topBannerItems];
-    [(OverlayContainerViewController *)self updateTopBannerViewWithTopBannerItems:v6];
+    topBannerItems = [updateCopy topBannerItems];
+    [(OverlayContainerViewController *)self updateTopBannerViewWithTopBannerItems:topBannerItems];
 
-    v5 = v7;
+    v5 = updateCopy;
   }
 }
 
-- (void)updateEdgeInsets:(UIEdgeInsets)a3 immediately:(BOOL)a4
+- (void)updateEdgeInsets:(UIEdgeInsets)insets immediately:(BOOL)immediately
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v9.receiver = self;
   v9.super_class = OverlayContainerViewController;
-  [(ContainerViewController *)&v9 updateEdgeInsets:a4 immediately:?];
+  [(ContainerViewController *)&v9 updateEdgeInsets:immediately immediately:?];
   [(MapsEdgeConstraints *)self->_overlayLayoutGuideConstraints setConstantsFromEdgeInsets:top, left, bottom, right];
 }
 
-- (void)setTopContentSizeStyle:(unint64_t)a3
+- (void)setTopContentSizeStyle:(unint64_t)style
 {
-  if (self->_topContentSizeStyle != a3)
+  if (self->_topContentSizeStyle != style)
   {
-    self->_topContentSizeStyle = a3;
+    self->_topContentSizeStyle = style;
     [(OverlayContainerViewController *)self updateContainerStyleDependentConstraints];
   }
 }
 
-- (void)presentController:(id)a3 animated:(BOOL)a4 useDefaultContaineeLayout:(BOOL)a5 completion:(id)a6
+- (void)presentController:(id)controller animated:(BOOL)animated useDefaultContaineeLayout:(BOOL)layout completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  layoutCopy = layout;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = OverlayContainerViewController;
-  [(ContainerViewController *)&v12 presentController:v10 animated:v8 useDefaultContaineeLayout:v7 completion:a6];
+  [(ContainerViewController *)&v12 presentController:controllerCopy animated:animatedCopy useDefaultContaineeLayout:layoutCopy completion:completion];
   if (objc_opt_respondsToSelector())
   {
-    v11 = v10;
+    v11 = controllerCopy;
     [v11 setBannerContainer:self];
     [(OverlayContainerViewController *)self viewControllerWantsTopBannerItemsUpdate:v11];
   }
@@ -555,44 +555,44 @@ LABEL_12:
   }
 }
 
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style
 {
   v11.receiver = self;
   v11.super_class = OverlayContainerViewController;
-  [(ContainerViewController *)&v11 containerStyleManagerConfigureLayoutForStyle:a3];
+  [(ContainerViewController *)&v11 containerStyleManagerConfigureLayoutForStyle:style];
   [(OverlayContainerViewController *)self updateContainerStyleDependentConstraints];
-  v4 = [(OverlayContainerViewController *)self topContentView];
-  v5 = [v4 isHidden];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  isHidden = [topContentView isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     if (_UISolariumEnabled())
     {
-      v6 = [(OverlayContainerViewController *)self topContentView];
+      topContentView2 = [(OverlayContainerViewController *)self topContentView];
       +[MapsTheme cardCornerRadius];
-      [v6 _setContinuousCornerRadius:?];
+      [topContentView2 _setContinuousCornerRadius:?];
     }
 
     else
     {
-      v7 = [(ContainerViewController *)self containerStyle];
-      if (v7 <= 7 && ((1 << v7) & 0xE3) != 0)
+      containerStyle = [(ContainerViewController *)self containerStyle];
+      if (containerStyle <= 7 && ((1 << containerStyle) & 0xE3) != 0)
       {
-        v6 = [(OverlayContainerViewController *)self topContentView];
-        v8 = [v6 layer];
-        v9 = v8;
+        topContentView2 = [(OverlayContainerViewController *)self topContentView];
+        layer = [topContentView2 layer];
+        v9 = layer;
         v10 = 0.0;
       }
 
       else
       {
-        v6 = [(OverlayContainerViewController *)self topContentView];
-        v8 = [v6 layer];
-        v9 = v8;
+        topContentView2 = [(OverlayContainerViewController *)self topContentView];
+        layer = [topContentView2 layer];
+        v9 = layer;
         v10 = 10.0;
       }
 
-      [v8 setCornerRadius:v10];
+      [layer setCornerRadius:v10];
     }
   }
 }
@@ -624,22 +624,22 @@ LABEL_12:
   return result;
 }
 
-- (void)applyTransitionWithProgress:(double)a3
+- (void)applyTransitionWithProgress:(double)progress
 {
   v39.receiver = self;
   v39.super_class = OverlayContainerViewController;
   [(ContainerViewController *)&v39 applyTransitionWithProgress:?];
-  v5 = [(OverlayContainerViewController *)self overlayView];
-  [v5 setAlpha:a3];
+  overlayView = [(OverlayContainerViewController *)self overlayView];
+  [overlayView setAlpha:progress];
 
-  v6 = [(OverlayContainerViewController *)self topContentView];
-  [v6 frame];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  [topContentView frame];
   MaxY = CGRectGetMaxY(v41);
-  v8 = 1.0 - a3;
+  v8 = 1.0 - progress;
   CGAffineTransformMakeTranslation(&v38, 0.0, -(v8 * MaxY));
-  v9 = [(OverlayContainerViewController *)self topContentView];
+  topContentView2 = [(OverlayContainerViewController *)self topContentView];
   v37 = v38;
-  [v9 setTransform:&v37];
+  [topContentView2 setTransform:&v37];
 
   v10 = *&CGAffineTransformIdentity.c;
   *&v37.a = *&CGAffineTransformIdentity.a;
@@ -657,13 +657,13 @@ LABEL_12:
   {
     if ([(ContainerViewController *)self containerStyle]== 6)
     {
-      v13 = [(OverlayContainerViewController *)self view];
-      v14 = [v13 effectiveUserInterfaceLayoutDirection] == 1;
+      view = [(OverlayContainerViewController *)self view];
+      v14 = [view effectiveUserInterfaceLayoutDirection] == 1;
 
-      v15 = [(ContainerViewController *)self stackOnOppositeSide];
-      v16 = [(ContainerViewController *)self containerView];
-      [v16 frame];
-      if (v14 == v15)
+      stackOnOppositeSide = [(ContainerViewController *)self stackOnOppositeSide];
+      containerView = [(ContainerViewController *)self containerView];
+      [containerView frame];
+      if (v14 == stackOnOppositeSide)
       {
         v8 = -v8;
         MaxX = CGRectGetMaxX(*&v17);
@@ -680,8 +680,8 @@ LABEL_12:
 
     else
     {
-      v16 = [(ContainerViewController *)self containerView];
-      [v16 frame];
+      containerView = [(ContainerViewController *)self containerView];
+      [containerView frame];
       v22 = CGRectGetHeight(v42) * v8;
       v23 = 0.0;
     }
@@ -693,8 +693,8 @@ LABEL_12:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v24 = [(ContainerViewController *)self visibleCardViews];
-  v25 = [v24 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  visibleCardViews = [(ContainerViewController *)self visibleCardViews];
+  v25 = [visibleCardViews countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v25)
   {
     v26 = v25;
@@ -705,7 +705,7 @@ LABEL_12:
       {
         if (*v32 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(visibleCardViews);
         }
 
         v29 = *(*(&v31 + 1) + 8 * i);
@@ -713,7 +713,7 @@ LABEL_12:
         [v29 setTransform:&t1];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      v26 = [visibleCardViews countByEnumeratingWithState:&v31 objects:v40 count:16];
     }
 
     while (v26);
@@ -725,29 +725,29 @@ LABEL_12:
   *&p_modeTransitiontransform->tx = *&v37.tx;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = OverlayContainerViewController;
-  [(ContainerViewController *)&v5 viewWillDisappear:a3];
+  [(ContainerViewController *)&v5 viewWillDisappear:disappear];
   topContentConstraint = self->_topContentConstraint;
   self->_topContentConstraint = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = OverlayContainerViewController;
-  [(ContainerViewController *)&v4 viewDidAppear:a3];
+  [(ContainerViewController *)&v4 viewDidAppear:appear];
   [(OverlayContainerViewController *)self setupConstraints];
 }
 
 - (UIView)passThroughView
 {
-  v2 = [(ContainerViewController *)self chromeViewController];
-  v3 = [v2 passThroughView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  passThroughView = [chromeViewController passThroughView];
 
-  return v3;
+  return passThroughView;
 }
 
 - (void)updateViewsForCustomDismissalTransition
@@ -756,10 +756,10 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(OverlayContainerViewController *)self view];
-  v4 = [v3 subviews];
+  view = [(OverlayContainerViewController *)self view];
+  subviews = [view subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -771,7 +771,7 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v12 + 1) + 8 * v8) setAlpha:1.0];
@@ -779,20 +779,20 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(ContainerViewController *)self chromeViewController];
-  [v9 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
-  v10 = [(ContainerViewController *)self chromeViewController];
-  [v10 setNeedsUpdateComponent:@"weatherOverlay" animated:1];
+  chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"weatherOverlay" animated:1];
 
-  v11 = [(ContainerViewController *)self chromeViewController];
-  [v11 setNeedsUpdateComponent:@"floatingControls" animated:1];
+  chromeViewController3 = [(ContainerViewController *)self chromeViewController];
+  [chromeViewController3 setNeedsUpdateComponent:@"floatingControls" animated:1];
 }
 
 - (void)updateViewsForCustomPresentationTransition
@@ -801,10 +801,10 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(OverlayContainerViewController *)self view];
-  v4 = [v3 subviews];
+  view = [(OverlayContainerViewController *)self view];
+  subviews = [view subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -816,7 +816,7 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v12 + 1) + 8 * v8) setAlpha:0.0];
@@ -824,20 +824,20 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(ContainerViewController *)self chromeViewController];
-  [v9 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
 
-  v10 = [(ContainerViewController *)self chromeViewController];
-  [v10 setNeedsUpdateComponent:@"weatherOverlay" animated:1];
+  chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"weatherOverlay" animated:1];
 
-  v11 = [(ContainerViewController *)self chromeViewController];
-  [v11 setNeedsUpdateComponent:@"floatingControls" animated:1];
+  chromeViewController3 = [(ContainerViewController *)self chromeViewController];
+  [chromeViewController3 setNeedsUpdateComponent:@"floatingControls" animated:1];
 }
 
 @end

@@ -3,40 +3,40 @@
 - (NSString)title;
 - (RUIPage)page;
 - (id)staticValues;
-- (void)setLoading:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setLoading:(BOOL)loading;
+- (void)setTitle:(id)title;
 @end
 
 @implementation RUIPageElement
 
 - (NSString)title
 {
-  v2 = [(RUIPageElement *)self page];
-  v3 = [v2 navTitle];
+  page = [(RUIPageElement *)self page];
+  navTitle = [page navTitle];
 
-  return v3;
+  return navTitle;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RUIPageElement *)self page];
-  [v5 setNavTitle:v4];
+  titleCopy = title;
+  page = [(RUIPageElement *)self page];
+  [page setNavTitle:titleCopy];
 }
 
 - (BOOL)isLoading
 {
-  v2 = [(RUIPageElement *)self page];
-  v3 = [v2 isLoading];
+  page = [(RUIPageElement *)self page];
+  isLoading = [page isLoading];
 
-  return v3;
+  return isLoading;
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  v3 = a3;
-  v4 = [(RUIPageElement *)self page];
-  [v4 setLoading:v3];
+  loadingCopy = loading;
+  page = [(RUIPageElement *)self page];
+  [page setLoading:loadingCopy];
 }
 
 - (RUIPage)page

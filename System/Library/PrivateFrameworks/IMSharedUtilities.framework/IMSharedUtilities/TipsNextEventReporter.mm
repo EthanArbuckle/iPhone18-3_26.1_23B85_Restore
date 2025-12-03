@@ -30,7 +30,7 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_1A885A178(0, 0, v5, &unk_1A88ECEB8, v7);
 }
 
@@ -46,7 +46,7 @@
   *(v7 + 24) = 0;
   *(v7 + 32) = 0;
   *(v7 + 40) = self;
-  v8 = self;
+  selfCopy = self;
   sub_1A885A178(0, 0, v5, &unk_1A88ECEB0, v7);
 }
 

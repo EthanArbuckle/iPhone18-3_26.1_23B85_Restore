@@ -1,6 +1,6 @@
 @interface TopPicksCardConditionObserver
 - (_TtC5Books29TopPicksCardConditionObserver)init;
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4;
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify;
 @end
 
 @implementation TopPicksCardConditionObserver
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
@@ -23,7 +23,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_1003457A0(0, 0, v7, &unk_10082A9C8, v9);
 }
 

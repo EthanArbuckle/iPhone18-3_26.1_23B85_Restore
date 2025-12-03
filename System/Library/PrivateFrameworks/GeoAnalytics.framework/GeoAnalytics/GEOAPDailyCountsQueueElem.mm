@@ -1,48 +1,48 @@
 @interface GEOAPDailyCountsQueueElem
-- (BOOL)isEqual:(id)a3;
-- (GEOAPDailyCountsQueueElem)initWithType:(int)a3 usageString:(id)a4 usageBool:(id)a5 appId:(id)a6 createTime:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (GEOAPDailyCountsQueueElem)initWithType:(int)type usageString:(id)string usageBool:(id)bool appId:(id)id createTime:(id)time;
 - (id)copy;
 - (unint64_t)hash;
 @end
 
 @implementation GEOAPDailyCountsQueueElem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GEOAPDailyCountsQueueElem *)self usageString];
-    v7 = [v5 usageString];
-    v8 = (v6 != 0) ^ (v7 != 0);
+    v5 = equalCopy;
+    usageString = [(GEOAPDailyCountsQueueElem *)self usageString];
+    usageString2 = [v5 usageString];
+    v8 = (usageString != 0) ^ (usageString2 != 0);
 
     if (v8)
     {
       goto LABEL_18;
     }
 
-    v9 = [(GEOAPDailyCountsQueueElem *)self usageBool];
-    v10 = [v5 usageBool];
-    v11 = (v9 != 0) ^ (v10 != 0);
+    usageBool = [(GEOAPDailyCountsQueueElem *)self usageBool];
+    usageBool2 = [v5 usageBool];
+    v11 = (usageBool != 0) ^ (usageBool2 != 0);
 
     if (v11)
     {
       goto LABEL_18;
     }
 
-    v12 = [(GEOAPDailyCountsQueueElem *)self usageString];
-    if (v12)
+    usageString3 = [(GEOAPDailyCountsQueueElem *)self usageString];
+    if (usageString3)
     {
-      v13 = v12;
-      v14 = [v5 usageString];
+      v13 = usageString3;
+      usageString4 = [v5 usageString];
 
-      if (v14)
+      if (usageString4)
       {
-        v15 = [(GEOAPDailyCountsQueueElem *)self usageString];
-        v16 = [v5 usageString];
-        v17 = [v15 isEqualToString:v16];
+        usageString5 = [(GEOAPDailyCountsQueueElem *)self usageString];
+        usageString6 = [v5 usageString];
+        v17 = [usageString5 isEqualToString:usageString6];
 
         if (!v17)
         {
@@ -51,33 +51,33 @@
       }
     }
 
-    v18 = [(GEOAPDailyCountsQueueElem *)self usageBool];
-    if (v18)
+    usageBool3 = [(GEOAPDailyCountsQueueElem *)self usageBool];
+    if (usageBool3)
     {
-      v19 = v18;
-      v20 = [v5 usageBool];
+      v19 = usageBool3;
+      usageBool4 = [v5 usageBool];
 
-      if (v20)
+      if (usageBool4)
       {
-        v21 = [(GEOAPDailyCountsQueueElem *)self usageBool];
-        v22 = [v21 BOOLValue];
-        v23 = [v5 usageBool];
-        v24 = [v23 BOOLValue];
+        usageBool5 = [(GEOAPDailyCountsQueueElem *)self usageBool];
+        bOOLValue = [usageBool5 BOOLValue];
+        usageBool6 = [v5 usageBool];
+        bOOLValue2 = [usageBool6 BOOLValue];
 
-        if (v22 != v24)
+        if (bOOLValue != bOOLValue2)
         {
           goto LABEL_18;
         }
       }
     }
 
-    v25 = [v5 createTime];
-    v26 = [(GEOAPQueueElem *)self createTime];
-    [v25 timeIntervalSinceDate:v26];
+    createTime = [v5 createTime];
+    createTime2 = [(GEOAPQueueElem *)self createTime];
+    [createTime timeIntervalSinceDate:createTime2];
     v28 = v27;
 
-    LODWORD(v25) = [(GEOAPDailyCountsQueueElem *)self countType];
-    if (v25 != [v5 countType])
+    LODWORD(createTime) = [(GEOAPDailyCountsQueueElem *)self countType];
+    if (createTime != [v5 countType])
     {
 LABEL_18:
       v32 = 0;
@@ -90,9 +90,9 @@ LABEL_18:
         v28 = -v28;
       }
 
-      v29 = [(GEOAPDailyCountsQueueElem *)self appId];
-      v30 = [v5 appId];
-      v31 = [v29 isEqualToString:v30];
+      appId = [(GEOAPDailyCountsQueueElem *)self appId];
+      appId2 = [v5 appId];
+      v31 = [appId isEqualToString:appId2];
       if (v28 < 1.0)
       {
         v32 = v31;
@@ -133,23 +133,23 @@ LABEL_18:
   return [(GEOAPDailyCountsQueueElem *)v3 initWithType:countType usageString:usageString usageBool:usageBool appId:appId createTime:createTime];
 }
 
-- (GEOAPDailyCountsQueueElem)initWithType:(int)a3 usageString:(id)a4 usageBool:(id)a5 appId:(id)a6 createTime:(id)a7
+- (GEOAPDailyCountsQueueElem)initWithType:(int)type usageString:(id)string usageBool:(id)bool appId:(id)id createTime:(id)time
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  boolCopy = bool;
+  idCopy = id;
+  timeCopy = time;
   v20.receiver = self;
   v20.super_class = GEOAPDailyCountsQueueElem;
   v17 = [(GEOAPQueueElem *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->super._createTime, a7);
-    v18->_countType = a3;
-    objc_storeStrong(&v18->_usageString, a4);
-    objc_storeStrong(&v18->_usageBool, a5);
-    objc_storeStrong(&v18->_appId, a6);
+    objc_storeStrong(&v17->super._createTime, time);
+    v18->_countType = type;
+    objc_storeStrong(&v18->_usageString, string);
+    objc_storeStrong(&v18->_usageBool, bool);
+    objc_storeStrong(&v18->_appId, id);
   }
 
   return v18;

@@ -1,26 +1,26 @@
 @interface TPSDeferredAction
-- (TPSDeferredAction)initWithQueue:(id)a3;
+- (TPSDeferredAction)initWithQueue:(id)queue;
 - (TPSDeferredActionDelegate)delegate;
 - (void)scheduleNextRunLoop;
 @end
 
 @implementation TPSDeferredAction
 
-- (TPSDeferredAction)initWithQueue:(id)a3
+- (TPSDeferredAction)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = TPSDeferredAction;
   v5 = [(TPSDeferredAction *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!queueCopy)
     {
-      v4 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
       v6 = MEMORY[0x1E69E96A0];
     }
 
-    objc_storeStrong(&v5->_queue, v4);
+    objc_storeStrong(&v5->_queue, queueCopy);
     v5->_lock._os_unfair_lock_opaque = 0;
   }
 

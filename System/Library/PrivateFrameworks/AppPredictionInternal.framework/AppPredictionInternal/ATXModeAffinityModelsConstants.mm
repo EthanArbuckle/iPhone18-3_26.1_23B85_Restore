@@ -14,12 +14,12 @@
   v2 = [(ATXModeAffinityModelsConstants *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB6A8] sharedInstance];
+    mEMORY[0x277CEB6A8] = [MEMORY[0x277CEB6A8] sharedInstance];
     modeEntityTrialClientWrapper = v2->_modeEntityTrialClientWrapper;
-    v2->_modeEntityTrialClientWrapper = v3;
+    v2->_modeEntityTrialClientWrapper = mEMORY[0x277CEB6A8];
 
-    v5 = [(ATXModeEntityTrialClientWrapper *)v2->_modeEntityTrialClientWrapper modeAffinityModelsConstants];
-    v6 = [v5 count];
+    modeAffinityModelsConstants = [(ATXModeEntityTrialClientWrapper *)v2->_modeEntityTrialClientWrapper modeAffinityModelsConstants];
+    v6 = [modeAffinityModelsConstants count];
 
     if (v6)
     {
@@ -44,15 +44,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 14;
+    intValue = 14;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)numOfDaysToComputeEntityOccurenceFeaturesForContacts
@@ -61,15 +61,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 28;
+    intValue = 28;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)scalingFactorForModeGlobalPriors

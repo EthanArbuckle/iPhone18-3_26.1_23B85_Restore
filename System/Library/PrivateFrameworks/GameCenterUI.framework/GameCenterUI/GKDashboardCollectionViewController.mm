@@ -1,71 +1,71 @@
 @interface GKDashboardCollectionViewController
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)isLoading;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (GKDashboardCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (GKDashboardCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSLayoutConstraint)keyboardConstraint;
 - (UIEdgeInsets)contentInsetsBeforeKeyboard;
 - (UIEdgeInsets)scrollInsetsBeforeKeyboard;
 - (UIView)collectionContainerView;
 - (UIView)keyboardAdjustedView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)horizontalCollectionViewLayout;
 - (id)preferredFocusEnvironments;
 - (id)verticalCollectionViewLayout;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)clearSelectionForCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)createCollectionViewInsideView:(id)a3;
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)clearSelectionForCollectionView:(id)view;
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)createCollectionViewInsideView:(id)view;
+- (void)dataUpdated:(BOOL)updated withError:(id)error;
 - (void)dealloc;
 - (void)didEnterLoadingState;
 - (void)hideNoContentPlaceholder;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadData;
 - (void)loadView;
-- (void)popoverDidClose:(id)a3;
+- (void)popoverDidClose:(id)close;
 - (void)prepareForAutomaticTwoColumnLayout;
-- (void)setAutoWidthColumns:(int64_t)a3;
-- (void)setDataSource:(id)a3;
+- (void)setAutoWidthColumns:(int64_t)columns;
+- (void)setDataSource:(id)source;
 - (void)setNeedsRefresh;
-- (void)setToHorizontalLayout:(BOOL)a3;
+- (void)setToHorizontalLayout:(BOOL)layout;
 - (void)setupDataSource;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
+- (void)setupNoContentView:(id)view withError:(id)error;
 - (void)setupVisualEffect;
-- (void)showNoContentPlaceholderForError:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showNoContentPlaceholderForError:(id)error;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)windowDidEndSheet:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)windowDidEndSheet:(id)sheet;
 @end
 
 @implementation GKDashboardCollectionViewController
 
-- (GKDashboardCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKDashboardCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = GKDashboardCollectionViewController;
-  v4 = [(GKLoadingViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(GKLoadingViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v4;
@@ -73,8 +73,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UICollectionView *)self->_collectionView setDelegate:0];
   v4.receiver = self;
@@ -82,11 +82,11 @@
   [(GKDashboardCollectionViewController *)&v4 dealloc];
 }
 
-- (void)setToHorizontalLayout:(BOOL)a3
+- (void)setToHorizontalLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self view];
-  if (v3)
+  layoutCopy = layout;
+  view = [(GKDashboardCollectionViewController *)self view];
+  if (layoutCopy)
   {
     [(GKDashboardCollectionViewController *)self horizontalCollectionViewLayout];
   }
@@ -98,8 +98,8 @@
   v6 = ;
   [(UICollectionView *)self->_collectionView setCollectionViewLayout:v6];
 
-  [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:v3 ^ 1];
-  [(UICollectionView *)self->_collectionView setAlwaysBounceHorizontal:v3];
+  [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:layoutCopy ^ 1];
+  [(UICollectionView *)self->_collectionView setAlwaysBounceHorizontal:layoutCopy];
   if (self->_dataSource)
   {
 
@@ -124,9 +124,9 @@
 
 - (void)loadView
 {
-  v3 = [(GKDashboardCollectionViewController *)self nibName];
+  nibName = [(GKDashboardCollectionViewController *)self nibName];
 
-  if (v3)
+  if (nibName)
   {
     v10.receiver = self;
     v10.super_class = GKDashboardCollectionViewController;
@@ -149,9 +149,9 @@
     if (collectionView)
     {
 LABEL_6:
-      v7 = [(UICollectionView *)collectionView collectionViewLayout];
+      collectionViewLayout = [(UICollectionView *)collectionView collectionViewLayout];
 
-      if (!v7)
+      if (!collectionViewLayout)
       {
         [(GKDashboardCollectionViewController *)self setToHorizontalLayout:0];
       }
@@ -172,23 +172,23 @@ LABEL_6:
   }
 }
 
-- (void)createCollectionViewInsideView:(id)a3
+- (void)createCollectionViewInsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9 = objc_alloc_init(GKCollectionGridLayout);
   v5 = objc_alloc(MEMORY[0x277D752A0]);
   v6 = [v5 initWithFrame:v9 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(GKDashboardCollectionViewController *)self setCollectionView:v6];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setOpaque:0];
   [(UICollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:1];
-  [v4 addSubview:self->_collectionView];
-  v8 = [MEMORY[0x277CCAAD0] _gkConstraintsForView:self->_collectionView withinView:v4 insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  [v4 addConstraints:v8];
+  [viewCopy addSubview:self->_collectionView];
+  v8 = [MEMORY[0x277CCAAD0] _gkConstraintsForView:self->_collectionView withinView:viewCopy insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  [viewCopy addConstraints:v8];
 }
 
 - (void)viewDidLoad
@@ -215,8 +215,8 @@ LABEL_6:
     [(GKDashboardCollectionViewController *)self setKeyboardAdjustedView:self->_collectionView];
   }
 
-  v6 = [(GKDashboardCollectionViewController *)self collectionView];
-  [(GKDashboardCollectionViewController *)self setContentScrollView:v6 forEdge:15];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [(GKDashboardCollectionViewController *)self setContentScrollView:collectionView forEdge:15];
 
   [(GKDashboardCollectionViewController *)self prepareForAutomaticTwoColumnLayout];
   [(GKDashboardCollectionViewController *)self setupVisualEffect];
@@ -225,35 +225,35 @@ LABEL_6:
 - (void)setupVisualEffect
 {
   v7 = objc_opt_new();
-  v3 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  [v7 setBackgroundEffects:v3];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  [v7 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
   [v7 _setGroupName:@"gameLayerGroup"];
-  v4 = [(GKDashboardCollectionViewController *)self view];
-  [v4 insertSubview:v7 atIndex:0];
+  view = [(GKDashboardCollectionViewController *)self view];
+  [view insertSubview:v7 atIndex:0];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(GKDashboardCollectionViewController *)self view];
-  [v5 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:v6];
+  view2 = [(GKDashboardCollectionViewController *)self view];
+  [v5 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:view2];
 }
 
 - (void)prepareForAutomaticTwoColumnLayout
 {
   if (self->_autoWidthUsesTwoColumnsWhenSpace)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [(GKDashboardCollectionViewController *)self traitCollection];
-      if ([v7 verticalSizeClass] == 1)
+      traitCollection = [(GKDashboardCollectionViewController *)self traitCollection];
+      if ([traitCollection verticalSizeClass] == 1)
       {
         v6 = 2;
       }
@@ -274,16 +274,16 @@ LABEL_6:
   collectionView = self->_collectionView;
   if (collectionView)
   {
-    v3 = collectionView;
+    view = collectionView;
 LABEL_4:
-    v6[0] = v3;
+    v6[0] = view;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
     goto LABEL_5;
   }
 
-  v3 = [(GKDashboardCollectionViewController *)self view];
-  if (v3)
+  view = [(GKDashboardCollectionViewController *)self view];
+  if (view)
   {
     goto LABEL_4;
   }
@@ -294,28 +294,28 @@ LABEL_5:
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = GKDashboardCollectionViewController;
-  [(GKDashboardCollectionViewController *)&v4 traitCollectionDidChange:a3];
+  [(GKDashboardCollectionViewController *)&v4 traitCollectionDidChange:change];
   [(GKDashboardCollectionViewController *)self prepareForAutomaticTwoColumnLayout];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   dataSource = self->_dataSource;
-  if (dataSource != v5)
+  if (dataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(GKCollectionDataSource *)dataSource setPresentationViewController:0];
-    objc_storeStrong(&self->_dataSource, a3);
+    objc_storeStrong(&self->_dataSource, source);
     dataSource = [(GKDashboardCollectionViewController *)self setupDataSource];
-    v5 = v7;
+    sourceCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](dataSource, v5);
+  MEMORY[0x2821F96F8](dataSource, sourceCopy);
 }
 
 - (void)setupDataSource
@@ -338,25 +338,25 @@ LABEL_5:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = GKDashboardCollectionViewController;
-  [(GKDashboardCollectionViewController *)&v5 viewWillAppear:a3];
-  v4 = [(GKLoadingViewController *)self loadingState];
-  if (v4 == @"Initial")
+  [(GKDashboardCollectionViewController *)&v5 viewWillAppear:appear];
+  loadingState = [(GKLoadingViewController *)self loadingState];
+  if (loadingState == @"Initial")
   {
     [(GKLoadingViewController *)self setLoadingState:@"LoadingState"];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = GKDashboardCollectionViewController;
-  [(GKDashboardCollectionViewController *)&v5 viewDidAppear:a3];
-  v4 = [(GKLoadingViewController *)self loadingState];
-  if (v4 == @"Initial")
+  [(GKDashboardCollectionViewController *)&v5 viewDidAppear:appear];
+  loadingState = [(GKLoadingViewController *)self loadingState];
+  if (loadingState == @"Initial")
   {
     [(GKLoadingViewController *)self setLoadingState:@"LoadingState"];
   }
@@ -365,7 +365,7 @@ LABEL_5:
   [(GKDashboardCollectionViewController *)self setNeedsFocusUpdate];
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   if (![(GKDashboardCollectionViewController *)self isLoading])
   {
@@ -374,26 +374,26 @@ LABEL_5:
   }
 }
 
-- (void)setAutoWidthColumns:(int64_t)a3
+- (void)setAutoWidthColumns:(int64_t)columns
 {
-  v5 = [(GKDashboardCollectionViewController *)self view];
-  v6 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  view = [(GKDashboardCollectionViewController *)self view];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setAutoWidthColumns:a3];
+    [collectionViewLayout setAutoWidthColumns:columns];
   }
 }
 
 - (BOOL)isLoading
 {
-  v2 = [(GKLoadingViewController *)self loadingState];
+  loadingState = [(GKLoadingViewController *)self loadingState];
   v3 = 1;
-  if (v2)
+  if (loadingState)
   {
-    if (v2 != @"Initial" && v2 != @"LoadingState")
+    if (loadingState != @"Initial" && loadingState != @"LoadingState")
     {
-      v3 = v2 == @"RefreshingState";
+      v3 = loadingState == @"RefreshingState";
     }
   }
 
@@ -461,15 +461,15 @@ uint64_t __54__GKDashboardCollectionViewController_setNeedsRefresh__block_invoke
   }
 }
 
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4
+- (void)dataUpdated:(BOOL)updated withError:(id)error
 {
-  v4 = a3;
-  v8 = a4;
+  updatedCopy = updated;
+  errorCopy = error;
   if ([(GKDashboardCollectionViewController *)self hasData])
   {
     [(GKLoadingViewController *)self setLoadingState:@"LoadedState"];
     [(GKDashboardCollectionViewController *)self hideNoContentPlaceholder];
-    if (!v4)
+    if (!updatedCopy)
     {
       goto LABEL_10;
     }
@@ -478,8 +478,8 @@ uint64_t __54__GKDashboardCollectionViewController_setNeedsRefresh__block_invoke
   else
   {
     [(GKLoadingViewController *)self setLoadingState:@"NoContentState"];
-    [(GKDashboardCollectionViewController *)self showNoContentPlaceholderForError:v8];
-    if (!v4)
+    [(GKDashboardCollectionViewController *)self showNoContentPlaceholderForError:errorCopy];
+    if (!updatedCopy)
     {
       goto LABEL_10;
     }
@@ -498,16 +498,16 @@ uint64_t __54__GKDashboardCollectionViewController_setNeedsRefresh__block_invoke
   }
 
   [(GKDashboardCollectionViewController *)self setNeedsFocusUpdate];
-  v7 = [(GKDashboardCollectionViewController *)self navigationController];
-  [v7 setNeedsFocusUpdate];
+  navigationController = [(GKDashboardCollectionViewController *)self navigationController];
+  [navigationController setNeedsFocusUpdate];
 
 LABEL_10:
 }
 
-- (void)showNoContentPlaceholderForError:(id)a3
+- (void)showNoContentPlaceholderForError:(id)error
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   collectionView = self->_collectionView;
   if (collectionView)
   {
@@ -521,10 +521,10 @@ LABEL_10:
       [(GKDashboardCollectionViewController *)self setNoContentView:v8];
 
       [(GKNoContentView *)self->_noContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v9 = [(UICollectionView *)self->_collectionView superview];
-      [v9 insertSubview:self->_noContentView aboveSubview:self->_collectionView];
+      superview = [(UICollectionView *)self->_collectionView superview];
+      [superview insertSubview:self->_noContentView aboveSubview:self->_collectionView];
       v10 = [MEMORY[0x277CCAAD0] _gkConstraintsForView:self->_noContentView withinView:self->_collectionView insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-      [v9 addConstraints:v10];
+      [superview addConstraints:v10];
 
       v11 = self->_noContentView;
       v13[0] = self->_collectionView;
@@ -535,7 +535,7 @@ LABEL_10:
       noContentView = self->_noContentView;
     }
 
-    [(GKDashboardCollectionViewController *)self setupNoContentView:noContentView withError:v4];
+    [(GKDashboardCollectionViewController *)self setupNoContentView:noContentView withError:errorCopy];
     [(GKNoContentView *)self->_noContentView setHidden:0];
   }
 }
@@ -548,36 +548,36 @@ LABEL_10:
   [(UICollectionView *)collectionView setHidden:0];
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v9 = a3;
+  viewCopy = view;
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
-  [v9 setTitle:v6];
+  [viewCopy setTitle:v6];
 
-  if (a4)
+  if (error)
   {
     v7 = GKGameCenterUIFrameworkBundle();
     v8 = GKGetLocalizedStringFromTableInBundle();
-    [v9 setMessage:v8];
+    [viewCopy setMessage:v8];
   }
 
   else
   {
-    [v9 setMessage:0];
+    [viewCopy setMessage:0];
   }
 }
 
-- (void)clearSelectionForCollectionView:(id)a3
+- (void)clearSelectionForCollectionView:(id)view
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 indexPathsForSelectedItems];
+  viewCopy = view;
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [indexPathsForSelectedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -589,28 +589,28 @@ LABEL_10:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [v3 deselectItemAtIndexPath:*(*(&v9 + 1) + 8 * v8++) animated:1];
+        [viewCopy deselectItemAtIndexPath:*(*(&v9 + 1) + 8 * v8++) animated:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)popoverDidClose:(id)a3
+- (void)popoverDidClose:(id)close
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  v7 = [v5 name];
+  closeCopy = close;
+  defaultCenter = [v4 defaultCenter];
+  name = [closeCopy name];
 
-  [v6 removeObserver:self name:v7 object:0];
+  [defaultCenter removeObserver:self name:name object:0];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__GKDashboardCollectionViewController_popoverDidClose___block_invoke;
@@ -619,100 +619,100 @@ LABEL_10:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)windowDidEndSheet:(id)a3
+- (void)windowDidEndSheet:(id)sheet
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  v7 = [v5 name];
+  sheetCopy = sheet;
+  defaultCenter = [v4 defaultCenter];
+  name = [sheetCopy name];
 
-  [v6 removeObserver:self name:v7 object:0];
+  [defaultCenter removeObserver:self name:name object:0];
 
   [(GKDashboardCollectionViewController *)self clearSelection];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self view];
-  v6 = [v5 window];
-  if (v6)
+  showCopy = show;
+  view = [(GKDashboardCollectionViewController *)self view];
+  window = [view window];
+  if (window)
   {
     WeakRetained = objc_loadWeakRetained(&self->_keyboardConstraint);
     if (WeakRetained)
     {
-      v8 = WeakRetained;
-      v9 = [(GKDashboardCollectionViewController *)self popoverPresentationController];
-      if (v9)
+      userInfo = WeakRetained;
+      popoverPresentationController = [(GKDashboardCollectionViewController *)self popoverPresentationController];
+      if (popoverPresentationController)
       {
       }
 
       else
       {
-        v10 = [(GKDashboardCollectionViewController *)self navigationController];
-        v11 = [v10 popoverPresentationController];
+        navigationController = [(GKDashboardCollectionViewController *)self navigationController];
+        popoverPresentationController2 = [navigationController popoverPresentationController];
 
-        if (v11)
+        if (popoverPresentationController2)
         {
           goto LABEL_7;
         }
 
-        v8 = [v4 userInfo];
-        v12 = [v8 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+        userInfo = [showCopy userInfo];
+        v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
         [v12 CGRectValue];
         v14 = v13;
         v16 = v15;
         v18 = v17;
         v20 = v19;
 
-        [v6 convertRect:0 fromWindow:{v14, v16, v18, v20}];
+        [window convertRect:0 fromWindow:{v14, v16, v18, v20}];
         v22 = v21;
         v24 = v23;
         v26 = v25;
         v28 = v27;
         if (*MEMORY[0x277D0C258] == 1)
         {
-          v29 = [MEMORY[0x277D75418] currentDevice];
-          v30 = [v29 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if (v30 == 1 && v24 == v16)
+          if (userInterfaceIdiom == 1 && v24 == v16)
           {
-            v31 = [v6 screen];
-            [v31 bounds];
+            screen = [window screen];
+            [screen bounds];
             v33 = v32;
-            [v31 bounds];
+            [screen bounds];
             if (v33 <= v34)
             {
-              [v31 bounds];
+              [screen bounds];
               v40 = v39;
-              [v6 bounds];
+              [window bounds];
               v38 = (v40 + v41) * 0.5;
             }
 
             else
             {
-              [v6 bounds];
+              [window bounds];
               v36 = v35;
-              v37 = [MEMORY[0x277D75128] sharedApplication];
-              if ([v37 isStatusBarHidden])
+              mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+              if ([mEMORY[0x277D75128] isStatusBarHidden])
               {
                 v38 = v36 + 0.0;
               }
 
               else
               {
-                v42 = [MEMORY[0x277D75128] sharedApplication];
-                [v42 statusBarHeight];
+                mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+                [mEMORY[0x277D75128]2 statusBarHeight];
                 v38 = v36 + v43;
               }
             }
 
-            [v6 bounds];
+            [window bounds];
             v24 = v44 - (v38 - v16);
           }
         }
 
-        [v5 convertRect:0 fromView:{v22, v24, v26, v28}];
+        [view convertRect:0 fromView:{v22, v24, v26, v28}];
         v46 = v45;
         v48 = v47;
         v50 = v49;
@@ -726,7 +726,7 @@ LABEL_10:
 
         else
         {
-          v55 = v5;
+          v55 = view;
         }
 
         v56 = v55;
@@ -748,7 +748,7 @@ LABEL_10:
           v59 = 0.0;
         }
 
-        v60 = [v8 objectForKeyedSubscript:*MEMORY[0x277D76B78]];
+        v60 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76B78]];
         [v60 doubleValue];
         v62 = v61;
 
@@ -759,7 +759,7 @@ LABEL_10:
         v64[3] = &unk_27966A7D0;
         v64[4] = self;
         v66 = v59;
-        v65 = v5;
+        v65 = view;
         [v63 animateWithDuration:0x10000 delay:v64 options:0 animations:v62 completion:0.0];
       }
     }
@@ -780,7 +780,7 @@ uint64_t __56__GKDashboardCollectionViewController_keyboardWillShow___block_invo
   return [v5 layoutIfNeeded];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   WeakRetained = objc_loadWeakRetained(&self->_keyboardConstraint);
   [WeakRetained constant];
@@ -806,12 +806,12 @@ void __56__GKDashboardCollectionViewController_keyboardWillHide___block_invoke(u
   [WeakRetained setConstant:v2];
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   dataSource = self->_dataSource;
   if (dataSource)
   {
-    return [(GKCollectionDataSource *)dataSource numberOfSectionsInCollectionView:a3];
+    return [(GKCollectionDataSource *)dataSource numberOfSectionsInCollectionView:view];
   }
 
   else
@@ -820,32 +820,32 @@ void __56__GKDashboardCollectionViewController_keyboardWillHide___block_invoke(u
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   result = self->_dataSource;
   if (result)
   {
-    return [result collectionView:a3 numberOfItemsInSection:a4];
+    return [result collectionView:view numberOfItemsInSection:section];
   }
 
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   dataSource = self->_dataSource;
   if (dataSource)
   {
-    v5 = [(GKCollectionDataSource *)dataSource collectionView:a3 cellForItemAtIndexPath:a4];
+    v5 = [(GKCollectionDataSource *)dataSource collectionView:view cellForItemAtIndexPath:path];
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"No datasource. Subclass needs to override collectionView:cellForItemAtIndexPath:", a4];
+    path = [MEMORY[0x277CCACA8] stringWithFormat:@"No datasource. Subclass needs to override collectionView:cellForItemAtIndexPath:", path];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardCollectionViewController.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = [v6 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v7, "-[GKDashboardCollectionViewController collectionView:cellForItemAtIndexPath:]", objc_msgSend(v9, "UTF8String"), 555];
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = [v6 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", path, "-[GKDashboardCollectionViewController collectionView:cellForItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 555];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v10}];
     v5 = 0;
@@ -854,21 +854,21 @@ void __56__GKDashboardCollectionViewController_keyboardWillHide___block_invoke(u
   return v5;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   dataSource = self->_dataSource;
   if (dataSource)
   {
-    v6 = [(GKCollectionDataSource *)dataSource collectionView:a3 viewForSupplementaryElementOfKind:a4 atIndexPath:a5];
+    v6 = [(GKCollectionDataSource *)dataSource collectionView:view viewForSupplementaryElementOfKind:kind atIndexPath:path];
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"No datasource. Subclass needs to override collectionView:viewForSupplementaryElementOfKind:atIndexPath:", a4, a5];
+    path = [MEMORY[0x277CCACA8] stringWithFormat:@"No datasource. Subclass needs to override collectionView:viewForSupplementaryElementOfKind:atIndexPath:", kind, path];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardCollectionViewController.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = [v7 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v8, "-[GKDashboardCollectionViewController collectionView:viewForSupplementaryElementOfKind:atIndexPath:]", objc_msgSend(v10, "UTF8String"), 567];
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = [v7 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", path, "-[GKDashboardCollectionViewController collectionView:viewForSupplementaryElementOfKind:atIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 567];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
     v6 = 0;
@@ -877,14 +877,14 @@ void __56__GKDashboardCollectionViewController_keyboardWillHide___block_invoke(u
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    [(GKCollectionDataSource *)self->_dataSource collectionView:v8 layout:v9 sizeForItemAtIndexPath:v10];
+    [(GKCollectionDataSource *)self->_dataSource collectionView:viewCopy layout:layoutCopy sizeForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -897,7 +897,7 @@ void __56__GKDashboardCollectionViewController_keyboardWillHide___block_invoke(u
       goto LABEL_7;
     }
 
-    [v9 itemSize];
+    [layoutCopy itemSize];
   }
 
   v13 = v11;
@@ -911,13 +911,13 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   if (objc_opt_respondsToSelector())
   {
-    [(GKCollectionDataSource *)self->_dataSource collectionView:v8 layout:v9 referenceSizeForHeaderInSection:a5];
+    [(GKCollectionDataSource *)self->_dataSource collectionView:viewCopy layout:layoutCopy referenceSizeForHeaderInSection:section];
   }
 
   else
@@ -930,7 +930,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    [v9 headerReferenceSize];
+    [layoutCopy headerReferenceSize];
   }
 
   v12 = v10;
@@ -944,13 +944,13 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   if (objc_opt_respondsToSelector())
   {
-    [(GKCollectionDataSource *)self->_dataSource collectionView:v8 layout:v9 referenceSizeForFooterInSection:a5];
+    [(GKCollectionDataSource *)self->_dataSource collectionView:viewCopy layout:layoutCopy referenceSizeForFooterInSection:section];
   }
 
   else
@@ -963,7 +963,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    [v9 footerReferenceSize];
+    [layoutCopy footerReferenceSize];
   }
 
   v12 = v10;
@@ -977,13 +977,13 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(GKCollectionDataSource *)self->_dataSource collectionView:v6 shouldSelectItemAtIndexPath:v7];
+    v8 = [(GKCollectionDataSource *)self->_dataSource collectionView:viewCopy shouldSelectItemAtIndexPath:pathCopy];
   }
 
   else
@@ -994,13 +994,13 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(GKCollectionDataSource *)self->_dataSource collectionView:v6 shouldDeselectItemAtIndexPath:v7];
+    v8 = [(GKCollectionDataSource *)self->_dataSource collectionView:viewCopy shouldDeselectItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1011,35 +1011,35 @@ LABEL_7:
   return v8;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    [(GKCollectionDataSource *)self->_dataSource collectionView:v10 willDisplayCell:v8 forItemAtIndexPath:v9];
+    [(GKCollectionDataSource *)self->_dataSource collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   dataSource = self->_dataSource;
-  v12 = v6;
+  v12 = pathCopy;
   if (dataSource)
   {
-    [(GKCollectionDataSource *)dataSource collectionView:a3 didUnfocusItemAtIndexPath:v6];
+    [(GKCollectionDataSource *)dataSource collectionView:view didUnfocusItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [a3 _gkFocusingLayout];
-    v9 = v8;
-    if (v8)
+    _gkFocusingLayout = [view _gkFocusingLayout];
+    v9 = _gkFocusingLayout;
+    if (_gkFocusingLayout)
     {
-      v10 = [v8 focusedIndexPath];
-      v11 = [v10 isEqual:v12];
+      focusedIndexPath = [_gkFocusingLayout focusedIndexPath];
+      v11 = [focusedIndexPath isEqual:v12];
 
       if (v11)
       {
@@ -1049,24 +1049,24 @@ LABEL_7:
   }
 }
 
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   dataSource = self->_dataSource;
-  v12 = v6;
+  v12 = pathCopy;
   if (dataSource)
   {
-    [(GKCollectionDataSource *)dataSource collectionView:a3 didFocusItemAtIndexPath:v6];
+    [(GKCollectionDataSource *)dataSource collectionView:view didFocusItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [a3 _gkFocusingLayout];
-    v9 = v8;
-    if (v8)
+    _gkFocusingLayout = [view _gkFocusingLayout];
+    v9 = _gkFocusingLayout;
+    if (_gkFocusingLayout)
     {
-      v10 = [v8 focusedIndexPath];
-      v11 = [v10 isEqual:v12];
+      focusedIndexPath = [_gkFocusingLayout focusedIndexPath];
+      v11 = [focusedIndexPath isEqual:v12];
 
       if ((v11 & 1) == 0)
       {

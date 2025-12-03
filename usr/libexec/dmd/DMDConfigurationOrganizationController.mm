@@ -1,36 +1,36 @@
 @interface DMDConfigurationOrganizationController
-- (DMDConfigurationOrganizationController)initWithOrganization:(id)a3 delegate:(id)a4;
+- (DMDConfigurationOrganizationController)initWithOrganization:(id)organization delegate:(id)delegate;
 - (DMDConfigurationOrganizationControllerDelegate)delegate;
 - (DMFConfigurationOrganization)organization;
 - (NSArray)configurationSourceControllers;
 - (NSArray)ephemeralConfigurationSources;
 - (NSArray)persistentConfigurationSources;
 - (NSString)description;
-- (id)configurationSourceWithIdentifier:(id)a3;
-- (id)registerConfigurationSource:(id)a3;
-- (void)configurationSourceController:(id)a3 fetchEventsWithCompletionHandler:(id)a4;
-- (void)configurationSourceController:(id)a3 fetchStatusUpdatesWithCompletionHandler:(id)a4;
-- (void)resolveAssetWithContext:(id)a3;
-- (void)unregisterConfigurationSource:(id)a3;
-- (void)updateWithOrganization:(id)a3;
+- (id)configurationSourceWithIdentifier:(id)identifier;
+- (id)registerConfigurationSource:(id)source;
+- (void)configurationSourceController:(id)controller fetchEventsWithCompletionHandler:(id)handler;
+- (void)configurationSourceController:(id)controller fetchStatusUpdatesWithCompletionHandler:(id)handler;
+- (void)resolveAssetWithContext:(id)context;
+- (void)unregisterConfigurationSource:(id)source;
+- (void)updateWithOrganization:(id)organization;
 @end
 
 @implementation DMDConfigurationOrganizationController
 
-- (DMDConfigurationOrganizationController)initWithOrganization:(id)a3 delegate:(id)a4
+- (DMDConfigurationOrganizationController)initWithOrganization:(id)organization delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  organizationCopy = organization;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = DMDConfigurationOrganizationController;
   v8 = [(DMDConfigurationOrganizationController *)&v16 init];
   if (v8)
   {
-    v9 = [v6 identifier];
+    identifier = [organizationCopy identifier];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = identifier;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v11 = objc_opt_new();
     persistentConfigurationSourceControllersByIdentifier = v8->_persistentConfigurationSourceControllersByIdentifier;
     v8->_persistentConfigurationSourceControllersByIdentifier = v11;
@@ -39,46 +39,46 @@
     ephemeralConfigurationSourceControllersByIdentifier = v8->_ephemeralConfigurationSourceControllersByIdentifier;
     v8->_ephemeralConfigurationSourceControllersByIdentifier = v13;
 
-    [(DMDConfigurationOrganizationController *)v8 updateWithOrganization:v6];
+    [(DMDConfigurationOrganizationController *)v8 updateWithOrganization:organizationCopy];
   }
 
   return v8;
 }
 
-- (void)updateWithOrganization:(id)a3
+- (void)updateWithOrganization:(id)organization
 {
-  v5 = a3;
+  organizationCopy = organization;
   if (!+[NSThread isMainThread])
   {
     sub_1000801D4(a2, self);
   }
 
-  v6 = [(DMDConfigurationOrganizationController *)self identifier];
-  v7 = [v5 identifier];
-  v8 = [v6 isEqualToString:v7];
+  identifier = [(DMDConfigurationOrganizationController *)self identifier];
+  identifier2 = [organizationCopy identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if ((v8 & 1) == 0)
   {
     sub_10008026C(a2, self);
   }
 
-  v9 = [v5 displayName];
-  [(DMDConfigurationOrganizationController *)self setDisplayName:v9];
+  displayName = [organizationCopy displayName];
+  [(DMDConfigurationOrganizationController *)self setDisplayName:displayName];
 
-  v10 = [v5 type];
-  [(DMDConfigurationOrganizationController *)self setType:v10];
+  type = [organizationCopy type];
+  [(DMDConfigurationOrganizationController *)self setType:type];
 
-  v32 = v5;
-  v11 = [v5 persistentConfigurationSources];
-  v12 = [v11 valueForKey:@"identifier"];
+  v32 = organizationCopy;
+  persistentConfigurationSources = [organizationCopy persistentConfigurationSources];
+  v12 = [persistentConfigurationSources valueForKey:@"identifier"];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v13 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-  v14 = [v13 allKeys];
+  persistentConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+  allKeys = [persistentConfigurationSourceControllersByIdentifier allKeys];
 
-  v15 = [v14 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v15 = [allKeys countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v15)
   {
     v16 = v15;
@@ -89,18 +89,18 @@
       {
         if (*v38 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v37 + 1) + 8 * i);
         if (([v12 containsObject:v19] & 1) == 0)
         {
-          v20 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-          [v20 removeObjectForKey:v19];
+          persistentConfigurationSourceControllersByIdentifier2 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+          [persistentConfigurationSourceControllersByIdentifier2 removeObjectForKey:v19];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v16);
@@ -110,7 +110,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = v11;
+  v21 = persistentConfigurationSources;
   v22 = [v21 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v22)
   {
@@ -126,9 +126,9 @@
         }
 
         v26 = *(*(&v33 + 1) + 8 * j);
-        v27 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-        v28 = [v26 identifier];
-        v29 = [v27 objectForKeyedSubscript:v28];
+        persistentConfigurationSourceControllersByIdentifier3 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+        identifier3 = [v26 identifier];
+        v29 = [persistentConfigurationSourceControllersByIdentifier3 objectForKeyedSubscript:identifier3];
 
         if (v29)
         {
@@ -140,9 +140,9 @@
           v29 = [[DMDConfigurationSourceController alloc] initWithConfigurationSource:v26 delegate:self];
         }
 
-        v30 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-        v31 = [v26 identifier];
-        [v30 setObject:v29 forKeyedSubscript:v31];
+        persistentConfigurationSourceControllersByIdentifier4 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+        identifier4 = [v26 identifier];
+        [persistentConfigurationSourceControllersByIdentifier4 setObject:v29 forKeyedSubscript:identifier4];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -164,22 +164,22 @@
 - (DMFConfigurationOrganization)organization
 {
   v3 = objc_opt_new();
-  v4 = [(DMDConfigurationOrganizationController *)self identifier];
-  [v3 setIdentifier:v4];
+  identifier = [(DMDConfigurationOrganizationController *)self identifier];
+  [v3 setIdentifier:identifier];
 
-  v5 = [(DMDConfigurationOrganizationController *)self displayName];
-  [v3 setDisplayName:v5];
+  displayName = [(DMDConfigurationOrganizationController *)self displayName];
+  [v3 setDisplayName:displayName];
 
-  v6 = [(DMDConfigurationOrganizationController *)self type];
-  [v3 setType:v6];
+  type = [(DMDConfigurationOrganizationController *)self type];
+  [v3 setType:type];
 
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(DMDConfigurationOrganizationController *)self configurationSourceControllers];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  configurationSourceControllers = [(DMDConfigurationOrganizationController *)self configurationSourceControllers];
+  v9 = [configurationSourceControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -190,14 +190,14 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(configurationSourceControllers);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) configurationSource];
-        [v7 addObject:v13];
+        configurationSource = [*(*(&v15 + 1) + 8 * i) configurationSource];
+        [v7 addObject:configurationSource];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [configurationSourceControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -211,11 +211,11 @@
 - (NSArray)configurationSourceControllers
 {
   v3 = objc_opt_new();
-  v4 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSources];
-  [v3 addObjectsFromArray:v4];
+  persistentConfigurationSources = [(DMDConfigurationOrganizationController *)self persistentConfigurationSources];
+  [v3 addObjectsFromArray:persistentConfigurationSources];
 
-  v5 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSources];
-  [v3 addObjectsFromArray:v5];
+  ephemeralConfigurationSources = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSources];
+  [v3 addObjectsFromArray:ephemeralConfigurationSources];
 
   v6 = [v3 copy];
 
@@ -224,25 +224,25 @@
 
 - (NSArray)persistentConfigurationSources
 {
-  v2 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-  v3 = [v2 allValues];
+  persistentConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+  allValues = [persistentConfigurationSourceControllersByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSArray)ephemeralConfigurationSources
 {
-  v2 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
-  v3 = [v2 allValues];
+  ephemeralConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
+  allValues = [ephemeralConfigurationSourceControllersByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)configurationSourceWithIdentifier:(id)a3
+- (id)configurationSourceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  persistentConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+  v6 = [persistentConfigurationSourceControllersByIdentifier objectForKeyedSubscript:identifierCopy];
   v7 = v6;
   if (v6)
   {
@@ -251,44 +251,44 @@
 
   else
   {
-    v9 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
-    v8 = [v9 objectForKeyedSubscript:v4];
+    ephemeralConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
+    v8 = [ephemeralConfigurationSourceControllersByIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
   return v8;
 }
 
-- (id)registerConfigurationSource:(id)a3
+- (id)registerConfigurationSource:(id)source
 {
-  v4 = a3;
-  v5 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  sourceCopy = source;
+  persistentConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self persistentConfigurationSourceControllersByIdentifier];
+  identifier = [sourceCopy identifier];
+  v7 = [persistentConfigurationSourceControllersByIdentifier objectForKeyedSubscript:identifier];
 
   if (v7)
   {
-    [(DMDConfigurationSourceController *)v7 updateWithConfigurationSource:v4];
+    [(DMDConfigurationSourceController *)v7 updateWithConfigurationSource:sourceCopy];
   }
 
   else
   {
-    v8 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
-    v9 = [v4 identifier];
-    v7 = [v8 objectForKeyedSubscript:v9];
+    ephemeralConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
+    identifier2 = [sourceCopy identifier];
+    v7 = [ephemeralConfigurationSourceControllersByIdentifier objectForKeyedSubscript:identifier2];
 
     if (v7)
     {
-      [(DMDConfigurationSourceController *)v7 updateWithConfigurationSource:v4];
+      [(DMDConfigurationSourceController *)v7 updateWithConfigurationSource:sourceCopy];
     }
 
     else
     {
-      v7 = [[DMDConfigurationSourceController alloc] initWithConfigurationSource:v4 delegate:self];
+      v7 = [[DMDConfigurationSourceController alloc] initWithConfigurationSource:sourceCopy delegate:self];
     }
 
-    v10 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
-    v11 = [v4 identifier];
-    [v10 setObject:v7 forKeyedSubscript:v11];
+    ephemeralConfigurationSourceControllersByIdentifier2 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
+    identifier3 = [sourceCopy identifier];
+    [ephemeralConfigurationSourceControllersByIdentifier2 setObject:v7 forKeyedSubscript:identifier3];
   }
 
   v12 = v7;
@@ -296,26 +296,26 @@
   return v12;
 }
 
-- (void)unregisterConfigurationSource:(id)a3
+- (void)unregisterConfigurationSource:(id)source
 {
-  v4 = a3;
-  v6 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
-  v5 = [v4 organizationIdentifier];
+  sourceCopy = source;
+  ephemeralConfigurationSourceControllersByIdentifier = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSourceControllersByIdentifier];
+  organizationIdentifier = [sourceCopy organizationIdentifier];
 
-  [v6 removeObjectForKey:v5];
+  [ephemeralConfigurationSourceControllersByIdentifier removeObjectForKey:organizationIdentifier];
 }
 
-- (void)configurationSourceController:(id)a3 fetchStatusUpdatesWithCompletionHandler:(id)a4
+- (void)configurationSourceController:(id)controller fetchStatusUpdatesWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMDConfigurationOrganizationController *)self delegate];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  delegate = [(DMDConfigurationOrganizationController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DMDConfigurationOrganizationController *)self delegate];
-    [v10 configurationSourceController:v6 fetchStatusUpdatesWithCompletionHandler:v7];
+    delegate2 = [(DMDConfigurationOrganizationController *)self delegate];
+    [delegate2 configurationSourceController:controllerCopy fetchStatusUpdatesWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -326,21 +326,21 @@
       sub_1000802E8(self, "configurationSourceController:fetchStatusUpdatesWithCompletionHandler:");
     }
 
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
-- (void)configurationSourceController:(id)a3 fetchEventsWithCompletionHandler:(id)a4
+- (void)configurationSourceController:(id)controller fetchEventsWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMDConfigurationOrganizationController *)self delegate];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  delegate = [(DMDConfigurationOrganizationController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DMDConfigurationOrganizationController *)self delegate];
-    [v10 configurationSourceController:v6 fetchEventsWithCompletionHandler:v7];
+    delegate2 = [(DMDConfigurationOrganizationController *)self delegate];
+    [delegate2 configurationSourceController:controllerCopy fetchEventsWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -351,34 +351,34 @@
       sub_1000802E8(self, "configurationSourceController:fetchEventsWithCompletionHandler:");
     }
 
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
-- (void)resolveAssetWithContext:(id)a3
+- (void)resolveAssetWithContext:(id)context
 {
-  v8 = a3;
-  v4 = [(DMDConfigurationOrganizationController *)self persistentConfigurationSources];
-  v5 = [v4 firstObject];
-  if (v5)
+  contextCopy = context;
+  persistentConfigurationSources = [(DMDConfigurationOrganizationController *)self persistentConfigurationSources];
+  firstObject = [persistentConfigurationSources firstObject];
+  if (firstObject)
   {
-    v6 = v5;
+    firstObject2 = firstObject;
 
 LABEL_4:
-    [v6 resolveAssetWithContext:v8];
+    [firstObject2 resolveAssetWithContext:contextCopy];
     goto LABEL_5;
   }
 
-  v7 = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSources];
-  v6 = [v7 firstObject];
+  ephemeralConfigurationSources = [(DMDConfigurationOrganizationController *)self ephemeralConfigurationSources];
+  firstObject2 = [ephemeralConfigurationSources firstObject];
 
-  if (v6)
+  if (firstObject2)
   {
     goto LABEL_4;
   }
 
-  v6 = DMFErrorWithCodeAndUserInfo();
-  [v8 assetResolutionFailedWithError:v6];
+  firstObject2 = DMFErrorWithCodeAndUserInfo();
+  [contextCopy assetResolutionFailedWithError:firstObject2];
 LABEL_5:
 }
 

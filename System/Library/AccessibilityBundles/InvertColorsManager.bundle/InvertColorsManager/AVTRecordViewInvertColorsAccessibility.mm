@@ -8,29 +8,29 @@
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 backgroundColor];
+  backgroundColor = [v3 backgroundColor];
   v5 = +[UIColor clearColor];
 
-  if (v4 != v5)
+  if (backgroundColor != v5)
   {
-    [(AVTRecordViewInvertColorsAccessibility *)self _axSetOriginalColor:v4];
+    [(AVTRecordViewInvertColorsAccessibility *)self _axSetOriginalColor:backgroundColor];
   }
 
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v6 = +[UIColor clearColor];
+    _axGetOriginalColor2 = +[UIColor clearColor];
 LABEL_7:
-    v8 = v6;
-    [v3 setBackgroundColor:v6];
+    v8 = _axGetOriginalColor2;
+    [v3 setBackgroundColor:_axGetOriginalColor2];
 
     goto LABEL_8;
   }
 
-  v7 = [(AVTRecordViewInvertColorsAccessibility *)self _axGetOriginalColor];
+  _axGetOriginalColor = [(AVTRecordViewInvertColorsAccessibility *)self _axGetOriginalColor];
 
-  if (v7)
+  if (_axGetOriginalColor)
   {
-    v6 = [(AVTRecordViewInvertColorsAccessibility *)self _axGetOriginalColor];
+    _axGetOriginalColor2 = [(AVTRecordViewInvertColorsAccessibility *)self _axGetOriginalColor];
     goto LABEL_7;
   }
 

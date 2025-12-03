@@ -1,29 +1,29 @@
 @interface DNDSMutableConfigurationsRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setConfiguration:(id)a3 forModeIdentifier:(id)a4;
-- (void)setModeConfigurations:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setConfiguration:(id)configuration forModeIdentifier:(id)identifier;
+- (void)setModeConfigurations:(id)configurations;
 @end
 
 @implementation DNDSMutableConfigurationsRecord
 
-- (void)setModeConfigurations:(id)a3
+- (void)setModeConfigurations:(id)configurations
 {
-  v4 = [a3 copy];
+  v4 = [configurations copy];
   modeConfigurations = self->super._modeConfigurations;
   self->super._modeConfigurations = v4;
 
   MEMORY[0x2821F96F8](v4, modeConfigurations);
 }
 
-- (void)setConfiguration:(id)a3 forModeIdentifier:(id)a4
+- (void)setConfiguration:(id)configuration forModeIdentifier:(id)identifier
 {
   modeConfigurations = self->super._modeConfigurations;
-  v6 = a4;
-  v7 = [a3 makeRecord];
-  [(NSMutableDictionary *)modeConfigurations setObject:v7 forKey:v6];
+  identifierCopy = identifier;
+  makeRecord = [configuration makeRecord];
+  [(NSMutableDictionary *)modeConfigurations setObject:makeRecord forKey:identifierCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSConfigurationsRecord alloc];
 

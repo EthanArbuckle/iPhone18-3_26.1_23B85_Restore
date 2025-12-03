@@ -1,25 +1,25 @@
 @interface MSPSharedTripCapabilityFetchingServer
-- (BOOL)_connectionCanControlSharing:(id)a3;
-- (BOOL)_shouldPermitFetchingHandle:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_connectionCanControlSharing:(id)sharing;
+- (BOOL)_shouldPermitFetchingHandle:(id)handle;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MSPSharedTripCapabilityFetchingServer)init;
-- (id)_resolvedStatusForHandle:(id)a3;
+- (id)_resolvedStatusForHandle:(id)handle;
 - (void)_checkBlockList;
-- (void)_notifyPeersForIDSHandlesIfNeeded:(id)a3;
-- (void)_performBlockOnAllCachedStatus:(id)a3;
-- (void)_performBlockOnAllQueues:(id)a3;
-- (void)_removePeerForConnection:(id)a3;
+- (void)_notifyPeersForIDSHandlesIfNeeded:(id)needed;
+- (void)_performBlockOnAllCachedStatus:(id)status;
+- (void)_performBlockOnAllQueues:(id)queues;
+- (void)_removePeerForConnection:(id)connection;
 - (void)_scheduleCoalescedBlockListCheckIfNeeded;
 - (void)_startMonitoringSystemBlockListIfNeeded;
 - (void)_stopMonitoringSystemBlockList;
 - (void)_systemBlockListDidUpdate;
 - (void)_verifyCurrentlyBlockedStatuses;
-- (void)cancelFetchCapabilitiesForContacts:(id)a3;
-- (void)capabilityFetchingQueue:(id)a3 didFetchStatusForHandles:(id)a4;
+- (void)cancelFetchCapabilitiesForContacts:(id)contacts;
+- (void)capabilityFetchingQueue:(id)queue didFetchStatusForHandles:(id)handles;
 - (void)cleanConnections;
 - (void)createXPCListener;
 - (void)dealloc;
-- (void)fetchCapabilitiesForContacts:(id)a3;
+- (void)fetchCapabilitiesForContacts:(id)contacts;
 @end
 
 @implementation MSPSharedTripCapabilityFetchingServer
@@ -31,9 +31,9 @@
   v2 = [(MSPSharedTripCapabilityFetchingServer *)&v32 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     peersByConnection = v2->_peersByConnection;
-    v2->_peersByConnection = v3;
+    v2->_peersByConnection = strongToStrongObjectsMapTable;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.Maps.SharedTrip.Capabilities", v5);
@@ -94,8 +94,8 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
 - (void)dealloc
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_blockListMonitoringObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_blockListMonitoringObserver];
 
   [(GCDTimer *)self->_purgeTimer invalidate];
   [(MSPSharedTripCapabilityFetchingServer *)self cleanConnections];
@@ -128,10 +128,10 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMapTable *)self->_peersByConnection keyEnumerator];
-  v5 = [v4 allObjects];
+  keyEnumerator = [(NSMapTable *)self->_peersByConnection keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -142,7 +142,7 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -150,7 +150,7 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
         [v10 setExportedObject:0];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -173,9 +173,9 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_25813A000, v3, OS_LOG_TYPE_INFO, "[Server] %{private}s", &v9, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     peersByConnection = self->_peersByConnection;
-    self->_peersByConnection = v4;
+    self->_peersByConnection = weakToStrongObjectsMapTable;
 
     v6 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.Maps.xpc.SharedTrip.Capabilities"];
     listener = self->_listener;
@@ -189,20 +189,20 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSPSharedTripXPCPeer *)[MSPSharedTripCapabilityFetchingPeer alloc] initWithConnection:v7];
-  v9 = [(MSPSharedTripXPCPeer *)v8 canControlSharing];
-  if (v9)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [(MSPSharedTripXPCPeer *)[MSPSharedTripCapabilityFetchingPeer alloc] initWithConnection:connectionCopy];
+  canControlSharing = [(MSPSharedTripXPCPeer *)v8 canControlSharing];
+  if (canControlSharing)
   {
-    [(NSMapTable *)self->_peersByConnection setObject:v8 forKey:v7];
+    [(NSMapTable *)self->_peersByConnection setObject:v8 forKey:connectionCopy];
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28697C9D0];
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28696C798];
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
@@ -210,17 +210,17 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
     [v11 setClasses:v15 forSelector:sel_capabilityLevelsDidUpdate_ argumentIndex:0 ofReply:0];
 
-    [v7 setRemoteObjectInterface:v11];
-    [v7 _setQueue:self->_workQueue];
+    [connectionCopy setRemoteObjectInterface:v11];
+    [connectionCopy _setQueue:self->_workQueue];
     v16 = MSPGetSharedTripCapabilityFetchingLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v27 = v7;
+      v27 = connectionCopy;
       _os_log_impl(&dword_25813A000, v16, OS_LOG_TYPE_INFO, "[Server] Accepting new connection: %@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v7);
+    objc_initWeak(buf, connectionCopy);
     objc_initWeak(&location, self);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -228,15 +228,15 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
     v22[3] = &unk_279865EA8;
     objc_copyWeak(&v23, buf);
     objc_copyWeak(&v24, &location);
-    [v7 setInvalidationHandler:v22];
+    [connectionCopy setInvalidationHandler:v22];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnection___block_invoke_90;
     v19[3] = &unk_279865EA8;
     objc_copyWeak(&v20, buf);
     objc_copyWeak(&v21, &location);
-    [v7 setInterruptionHandler:v19];
-    [v7 resume];
+    [connectionCopy setInterruptionHandler:v19];
+    [connectionCopy resume];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v24);
@@ -251,13 +251,13 @@ void __45__MSPSharedTripCapabilityFetchingServer_init__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v27 = v7;
+      v27 = connectionCopy;
       _os_log_impl(&dword_25813A000, v11, OS_LOG_TYPE_ERROR, "[Server] will not accept connection due to missing sharing entitlement: %@", buf, 0xCu);
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v9;
+  return canControlSharing;
 }
 
 void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -296,21 +296,21 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_connectionCanControlSharing:(id)a3
+- (BOOL)_connectionCanControlSharing:(id)sharing
 {
-  v3 = [(NSMapTable *)self->_peersByConnection objectForKey:a3];
-  v4 = [v3 canControlSharing];
+  v3 = [(NSMapTable *)self->_peersByConnection objectForKey:sharing];
+  canControlSharing = [v3 canControlSharing];
 
-  return v4;
+  return canControlSharing;
 }
 
-- (void)_removePeerForConnection:(id)a3
+- (void)_removePeerForConnection:(id)connection
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v5 = [(NSMapTable *)self->_peersByConnection objectForKey:v4];
+    v5 = [(NSMapTable *)self->_peersByConnection objectForKey:connectionCopy];
     if (v5)
     {
       v6 = MSPGetSharedTripCapabilityFetchingLog();
@@ -321,11 +321,11 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
         _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[Server] Removing peer %{public}@", buf, 0xCu);
       }
 
-      v7 = [v5 requestedHandles];
-      v8 = [v7 array];
-      v9 = [v5 removeRequestedHandles:v8];
+      requestedHandles = [v5 requestedHandles];
+      array = [requestedHandles array];
+      v9 = [v5 removeRequestedHandles:array];
 
-      [(NSMapTable *)self->_peersByConnection removeObjectForKey:v4];
+      [(NSMapTable *)self->_peersByConnection removeObjectForKey:connectionCopy];
       if ([v9 count])
       {
         v10 = MSPGetSharedTripCapabilityFetchingLog();
@@ -349,31 +349,31 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCapabilitiesForContacts:(id)a3
+- (void)fetchCapabilitiesForContacts:(id)contacts
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
-  if (v5 && [(MSPSharedTripCapabilityFetchingServer *)self _connectionCanControlSharing:v5])
+  contactsCopy = contacts;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (currentConnection && [(MSPSharedTripCapabilityFetchingServer *)self _connectionCanControlSharing:currentConnection])
   {
 
-    v41 = v5;
-    [(NSMapTable *)self->_peersByConnection objectForKey:v5];
+    v41 = currentConnection;
+    [(NSMapTable *)self->_peersByConnection objectForKey:currentConnection];
     v57 = 0;
     v40 = v58 = 0;
-    [v40 updateRequestedHandles:v4 added:&v58 removed:&v57];
+    [v40 updateRequestedHandles:contactsCopy added:&v58 removed:&v57];
     v39 = v58;
     v43 = v57;
-    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(contactsCopy, "count")}];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v53 = __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___block_invoke;
     v54 = &unk_279867A00;
-    v55 = self;
+    selfCopy = self;
     v44 = v6;
     v56 = v44;
-    v42 = v4;
-    v7 = v4;
+    v42 = contactsCopy;
+    v7 = contactsCopy;
     v8 = v52;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v59 = 0u;
@@ -447,7 +447,7 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
     v51 = 0u;
     v23 = v39;
     v24 = [v23 countByEnumeratingWithState:&v48 objects:v63 count:16];
-    v4 = v42;
+    contactsCopy = v42;
     if (v24)
     {
       v25 = v24;
@@ -480,7 +480,7 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
     {
       v31 = MSPGetSharedTripCapabilityFetchingLog();
       v32 = v40;
-      v5 = v41;
+      currentConnection = v41;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         v33 = [v22 count];
@@ -500,7 +500,7 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
     else
     {
       v32 = v40;
-      v5 = v41;
+      currentConnection = v41;
     }
 
     v45[0] = MEMORY[0x277D85DD0];
@@ -522,11 +522,11 @@ void __76__MSPSharedTripCapabilityFetchingServer_listener_shouldAcceptNewConnect
       *buf = 136315394;
       v65 = "[MSPSharedTripCapabilityFetchingServer fetchCapabilitiesForContacts:]";
       v66 = 2112;
-      v67 = v5;
+      v67 = currentConnection;
       _os_log_impl(&dword_25813A000, v36, OS_LOG_TYPE_ERROR, "[Server] Will not %s, connection lacks entitlement: %@", buf, 0x16u);
     }
 
-    v32 = v5;
+    v32 = currentConnection;
   }
 
   v38 = *MEMORY[0x277D85DE8];
@@ -549,21 +549,21 @@ id __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___bl
   return v4;
 }
 
-- (void)cancelFetchCapabilitiesForContacts:(id)a3
+- (void)cancelFetchCapabilitiesForContacts:(id)contacts
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
-  if (v5 && [(MSPSharedTripCapabilityFetchingServer *)self _connectionCanControlSharing:v5])
+  contactsCopy = contacts;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (currentConnection && [(MSPSharedTripCapabilityFetchingServer *)self _connectionCanControlSharing:currentConnection])
   {
 
-    v6 = [(NSMapTable *)self->_peersByConnection objectForKey:v5];
-    v7 = [v6 removeRequestedHandles:v4];
+    v6 = [(NSMapTable *)self->_peersByConnection objectForKey:currentConnection];
+    v7 = [v6 removeRequestedHandles:contactsCopy];
     v8 = MSPGetSharedTripCapabilityFetchingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138478083;
-      v14 = v4;
+      v14 = contactsCopy;
       v15 = 2113;
       v16 = v7;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_INFO, "Cancel fetch contacts: %{private}@\n\tRemoved: %{private}@", buf, 0x16u);
@@ -586,36 +586,36 @@ id __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___bl
       *buf = 136315394;
       v14 = "[MSPSharedTripCapabilityFetchingServer cancelFetchCapabilitiesForContacts:]";
       v15 = 2112;
-      v16 = v5;
+      v16 = currentConnection;
       _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_ERROR, "[Server] Will not %s, connection lacks entitlement: %@", buf, 0x16u);
     }
 
-    v6 = v5;
+    v6 = currentConnection;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyPeersForIDSHandlesIfNeeded:(id)a3
+- (void)_notifyPeersForIDSHandlesIfNeeded:(id)needed
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  neededCopy = needed;
+  if ([neededCopy count])
   {
     v5 = MSPGetSharedTripCapabilityFetchingLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v47 = v4;
+      v47 = neededCopy;
       _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_INFO, "Will notify for update of %{private}@", buf, 0xCu);
     }
 
-    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(neededCopy, "count")}];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v7 = v4;
+    v7 = neededCopy;
     v8 = [v7 countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v8)
     {
@@ -646,10 +646,10 @@ id __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___bl
 
     if ([v6 count])
     {
-      v34 = v4;
+      v34 = neededCopy;
       v14 = objc_alloc(MEMORY[0x277CBEB98]);
-      v15 = [v6 allKeys];
-      v16 = [v14 initWithArray:v15];
+      allKeys = [v6 allKeys];
+      v16 = [v14 initWithArray:allKeys];
 
       v40 = 0u;
       v41 = 0u;
@@ -679,15 +679,15 @@ id __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___bl
               _os_log_impl(&dword_25813A000, v20, OS_LOG_TYPE_INFO, "\tChecking peer %{public}@", buf, 0xCu);
             }
 
-            v21 = [v19 requestedHandles];
-            v22 = [v21 mutableCopy];
+            requestedHandles = [v19 requestedHandles];
+            v22 = [requestedHandles mutableCopy];
 
             if ([v22 count])
             {
               v23 = v16;
               [v22 intersectSet:v16];
-              v24 = [v22 array];
-              v25 = [v6 dictionaryWithValuesForKeys:v24];
+              array = [v22 array];
+              v25 = [v6 dictionaryWithValuesForKeys:array];
 
               v26 = [v25 count];
               v27 = MSPGetSharedTripCapabilityFetchingLog();
@@ -706,8 +706,8 @@ id __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___bl
                   _os_log_impl(&dword_25813A000, v27, OS_LOG_TYPE_INFO, "\t- notifying peer %{public}@ of %lu resolved statuses: %{private}@", buf, 0x20u);
                 }
 
-                v30 = [v25 allKeys];
-                v31 = [v19 removeRequestedHandles:v30];
+                allKeys2 = [v25 allKeys];
+                v31 = [v19 removeRequestedHandles:allKeys2];
 
                 v27 = [v18 remoteObjectProxyWithErrorHandler:&__block_literal_global_10];
                 v32 = [v25 copy];
@@ -742,7 +742,7 @@ id __70__MSPSharedTripCapabilityFetchingServer_fetchCapabilitiesForContacts___bl
         while (v37);
       }
 
-      v4 = v34;
+      neededCopy = v34;
     }
 
     else
@@ -774,41 +774,41 @@ void __75__MSPSharedTripCapabilityFetchingServer__notifyPeersForIDSHandlesIfNeed
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_resolvedStatusForHandle:(id)a3
+- (id)_resolvedStatusForHandle:(id)handle
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSPSharedTripCapabilityFetchingQueue *)self->_mapsStatusFetchQueue inflightHandles];
-  if ([v5 containsObject:v4])
+  handleCopy = handle;
+  inflightHandles = [(MSPSharedTripCapabilityFetchingQueue *)self->_mapsStatusFetchQueue inflightHandles];
+  if ([inflightHandles containsObject:handleCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_identifierToMapsStatus objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_identifierToMapsStatus objectForKeyedSubscript:handleCopy];
   }
 
-  v7 = [(MSPSharedTripCapabilityFetchingQueue *)self->_messagesStatusFetchQueue inflightHandles];
-  if ([v7 containsObject:v4])
+  inflightHandles2 = [(MSPSharedTripCapabilityFetchingQueue *)self->_messagesStatusFetchQueue inflightHandles];
+  if ([inflightHandles2 containsObject:handleCopy])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->_identifierToMessagesStatus objectForKeyedSubscript:v4];
+    v8 = [(NSMutableDictionary *)self->_identifierToMessagesStatus objectForKeyedSubscript:handleCopy];
   }
 
-  v9 = [(MSPSharedTripCapabilityFetchingQueue *)self->_textMessageStatusFetchQueue inflightHandles];
-  if ([v9 containsObject:v4])
+  inflightHandles3 = [(MSPSharedTripCapabilityFetchingQueue *)self->_textMessageStatusFetchQueue inflightHandles];
+  if ([inflightHandles3 containsObject:handleCopy])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->_identifierToTextMessageStatus objectForKeyedSubscript:v4];
+    v10 = [(NSMutableDictionary *)self->_identifierToTextMessageStatus objectForKeyedSubscript:handleCopy];
   }
 
   if (v6 && v8 && v10)
@@ -842,7 +842,7 @@ void __75__MSPSharedTripCapabilityFetchingServer__notifyPeersForIDSHandlesIfNeed
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v16 = 138477827;
-      v17 = v4;
+      v17 = handleCopy;
       _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_INFO, "\tSkipping %{private}@, we haven't fetched both services yet", &v16, 0xCu);
     }
 
@@ -893,10 +893,10 @@ void __62__MSPSharedTripCapabilityFetchingServer__purgeExpiredStatuses__block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performBlockOnAllQueues:(id)a3
+- (void)_performBlockOnAllQueues:(id)queues
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queuesCopy = queues;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -919,7 +919,7 @@ void __62__MSPSharedTripCapabilityFetchingServer__purgeExpiredStatuses__block_in
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        queuesCopy[2](queuesCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -932,10 +932,10 @@ void __62__MSPSharedTripCapabilityFetchingServer__purgeExpiredStatuses__block_in
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performBlockOnAllCachedStatus:(id)a3
+- (void)_performBlockOnAllCachedStatus:(id)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   v5 = *&self->_identifierToMapsStatus;
   v11[0] = @"Maps";
   v11[1] = @"iMessage";
@@ -947,30 +947,30 @@ void __62__MSPSharedTripCapabilityFetchingServer__purgeExpiredStatuses__block_in
   v9[1] = 3221225472;
   v9[2] = __72__MSPSharedTripCapabilityFetchingServer__performBlockOnAllCachedStatus___block_invoke;
   v9[3] = &unk_279867AB8;
-  v10 = v4;
-  v7 = v4;
+  v10 = statusCopy;
+  v7 = statusCopy;
   [v6 enumerateKeysAndObjectsUsingBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)capabilityFetchingQueue:(id)a3 didFetchStatusForHandles:(id)a4
+- (void)capabilityFetchingQueue:(id)queue didFetchStatusForHandles:(id)handles
 {
-  v11 = a3;
-  v6 = a4;
-  if (self->_mapsStatusFetchQueue == v11)
+  queueCopy = queue;
+  handlesCopy = handles;
+  if (self->_mapsStatusFetchQueue == queueCopy)
   {
     v7 = 32;
   }
 
-  else if (self->_messagesStatusFetchQueue == v11)
+  else if (self->_messagesStatusFetchQueue == queueCopy)
   {
     v7 = 40;
   }
 
   else
   {
-    if (self->_textMessageStatusFetchQueue != v11)
+    if (self->_textMessageStatusFetchQueue != queueCopy)
     {
       goto LABEL_8;
     }
@@ -978,24 +978,24 @@ void __62__MSPSharedTripCapabilityFetchingServer__purgeExpiredStatuses__block_in
     v7 = 48;
   }
 
-  [*(&self->super.isa + v7) addEntriesFromDictionary:v6];
+  [*(&self->super.isa + v7) addEntriesFromDictionary:handlesCopy];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v6 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [handlesCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
   [(MSPSharedTripCapabilityFetchingServer *)self _notifyPeersForIDSHandlesIfNeeded:v10];
 
 LABEL_8:
 }
 
-- (BOOL)_shouldPermitFetchingHandle:(id)a3
+- (BOOL)_shouldPermitFetchingHandle:(id)handle
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_identifierToMapsStatus objectForKeyedSubscript:v4];
+  handleCopy = handle;
+  v5 = [(NSMutableDictionary *)self->_identifierToMapsStatus objectForKeyedSubscript:handleCopy];
   v6 = v5;
   if (!v5)
   {
-    if ([MSPSharedTripContact isHandleBlocked:v4])
+    if ([MSPSharedTripContact isHandleBlocked:handleCopy])
     {
       goto LABEL_9;
     }
@@ -1011,14 +1011,14 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v18 = v4;
+      v18 = handleCopy;
       _os_log_impl(&dword_25813A000, v11, OS_LOG_TYPE_INFO, "- %{private}@ already recorded as blocked, not expired", buf, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  if (![MSPSharedTripContact isHandleBlocked:v4])
+  if (![MSPSharedTripContact isHandleBlocked:handleCopy])
   {
     goto LABEL_14;
   }
@@ -1029,7 +1029,7 @@ LABEL_14:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v18 = v4;
+      v18 = handleCopy;
       v8 = "- %{private}@ was recorded blocked, record expired, but handle still blocked, will update record";
 LABEL_11:
       _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_INFO, v8, buf, 0xCu);
@@ -1044,7 +1044,7 @@ LABEL_9:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v18 = v4;
+    v18 = handleCopy;
     v8 = "- %{private}@ is blocked, will record";
     goto LABEL_11;
   }
@@ -1055,7 +1055,7 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = __69__MSPSharedTripCapabilityFetchingServer__shouldPermitFetchingHandle___block_invoke;
   v15[3] = &unk_279867AE0;
-  v9 = v4;
+  v9 = handleCopy;
   v16 = v9;
   [(MSPSharedTripCapabilityFetchingServer *)self _performBlockOnAllCachedStatus:v15];
   v10 = [MEMORY[0x277CBEB98] setWithObject:v9];
@@ -1091,15 +1091,15 @@ void __69__MSPSharedTripCapabilityFetchingServer__shouldPermitFetchingHandle___b
     }
 
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v5 = *MEMORY[0x277CFB9B8];
-    v6 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __80__MSPSharedTripCapabilityFetchingServer__startMonitoringSystemBlockListIfNeeded__block_invoke;
     v9[3] = &unk_279867B08;
     objc_copyWeak(&v10, buf);
-    v7 = [v4 addObserverForName:v5 object:0 queue:v6 usingBlock:v9];
+    v7 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:v9];
     blockListMonitoringObserver = self->_blockListMonitoringObserver;
     self->_blockListMonitoringObserver = v7;
 
@@ -1125,8 +1125,8 @@ void __80__MSPSharedTripCapabilityFetchingServer__startMonitoringSystemBlockList
       _os_log_impl(&dword_25813A000, v3, OS_LOG_TYPE_DEFAULT, "[Server] Will stop monitoring system block list updates", v7, 2u);
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_blockListMonitoringObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_blockListMonitoringObserver];
 
     blockListMonitoringObserver = self->_blockListMonitoringObserver;
     self->_blockListMonitoringObserver = 0;

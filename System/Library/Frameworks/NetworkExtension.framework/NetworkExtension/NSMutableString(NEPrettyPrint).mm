@@ -18,18 +18,18 @@
     do
     {
       v14 = *v12++;
-      [a1 appendFormat:@"%-*s", v14, ""];
+      [self appendFormat:@"%-*s", v14, ""];
       --v13;
     }
 
     while (v13);
   }
 
-  result = [a1 appendFormat:@"%-*s", a3[v11], a5];
+  result = [self appendFormat:@"%-*s", a3[v11], a5];
   if (a7)
   {
 
-    return [a1 appendString:@"\n"];
+    return [self appendString:@"\n"];
   }
 
   return result;
@@ -77,7 +77,7 @@
   {
     if ((a6 & 0xC) != 4)
     {
-      [(NSMutableString *)a1 appendPrettyObject:a3 withName:a4 andIndent:a5 options:a6 depth:1uLL];
+      [(NSMutableString *)self appendPrettyObject:a3 withName:a4 andIndent:a5 options:a6 depth:1uLL];
     }
   }
 }

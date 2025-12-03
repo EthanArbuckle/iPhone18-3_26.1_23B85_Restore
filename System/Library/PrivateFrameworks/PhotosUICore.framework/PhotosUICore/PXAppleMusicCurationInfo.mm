@@ -1,18 +1,18 @@
 @interface PXAppleMusicCurationInfo
-- (PXAppleMusicCurationInfo)initWithPerformerNames:(id)a3;
+- (PXAppleMusicCurationInfo)initWithPerformerNames:(id)names;
 @end
 
 @implementation PXAppleMusicCurationInfo
 
-- (PXAppleMusicCurationInfo)initWithPerformerNames:(id)a3
+- (PXAppleMusicCurationInfo)initWithPerformerNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v9.receiver = self;
   v9.super_class = PXAppleMusicCurationInfo;
   v5 = [(PXAppleMusicCurationInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [namesCopy copy];
     performerNames = v5->_performerNames;
     v5->_performerNames = v6;
   }

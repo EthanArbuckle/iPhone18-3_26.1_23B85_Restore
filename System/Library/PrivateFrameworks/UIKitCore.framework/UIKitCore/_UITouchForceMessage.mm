@@ -1,18 +1,18 @@
 @interface _UITouchForceMessage
-+ (id)observe:(id)a3;
++ (id)observe:(id)observe;
 + (id)reset;
 - (CGPoint)centroid;
-- (void)ifObservation:(id)a3 ifReset:(id)a4;
-- (void)ifObservationUnclamped:(id)a3 ifReset:(id)a4;
+- (void)ifObservation:(id)observation ifReset:(id)reset;
+- (void)ifObservationUnclamped:(id)unclamped ifReset:(id)reset;
 @end
 
 @implementation _UITouchForceMessage
 
-+ (id)observe:(id)a3
++ (id)observe:(id)observe
 {
-  v3 = a3;
+  observeCopy = observe;
   v4 = objc_alloc_init(_UITouchForceMessage);
-  v3[2](v3, v4);
+  observeCopy[2](observeCopy, v4);
 
   return v4;
 }
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (void)ifObservation:(id)a3 ifReset:(id)a4
+- (void)ifObservation:(id)observation ifReset:(id)reset
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_isReset)
+  observationCopy = observation;
+  resetCopy = reset;
+  v7 = resetCopy;
+  if (resetCopy && self->_isReset)
   {
-    (*(v6 + 2))(v6);
+    (*(resetCopy + 2))(resetCopy);
   }
 
-  else if (v11)
+  else if (observationCopy)
   {
     observeReader = self->_observeReader;
     if (!observeReader)
@@ -51,21 +51,21 @@
     [(_UITouchForceObservationMessageReader *)self->_observeReader setTimestamp:self->_timestamp];
     [(_UITouchForceObservationMessageReader *)self->_observeReader setCentroid:self->_centroid.x, self->_centroid.y];
     [(_UITouchForceObservationMessageReader *)self->_observeReader setShouldFilterDueToSystemGestures:self->_shouldFilterDueToSystemGestures];
-    v11[2](v11, self->_observeReader);
+    observationCopy[2](observationCopy, self->_observeReader);
   }
 }
 
-- (void)ifObservationUnclamped:(id)a3 ifReset:(id)a4
+- (void)ifObservationUnclamped:(id)unclamped ifReset:(id)reset
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_isReset)
+  unclampedCopy = unclamped;
+  resetCopy = reset;
+  v7 = resetCopy;
+  if (resetCopy && self->_isReset)
   {
-    (*(v6 + 2))(v6);
+    (*(resetCopy + 2))(resetCopy);
   }
 
-  else if (v11)
+  else if (unclampedCopy)
   {
     observeReader = self->_observeReader;
     if (!observeReader)
@@ -81,7 +81,7 @@
     [(_UITouchForceObservationMessageReader *)self->_observeReader setTimestamp:self->_timestamp];
     [(_UITouchForceObservationMessageReader *)self->_observeReader setCentroid:self->_centroid.x, self->_centroid.y];
     [(_UITouchForceObservationMessageReader *)self->_observeReader setShouldFilterDueToSystemGestures:self->_shouldFilterDueToSystemGestures];
-    v11[2](v11, self->_observeReader);
+    unclampedCopy[2](unclampedCopy, self->_observeReader);
   }
 }
 

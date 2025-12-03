@@ -1,19 +1,19 @@
 @interface MLRExtensionPrincipalClass
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation MLRExtensionPrincipalClass
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = [MEMORY[0x277D05600] coreChannel];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    coreChannel = [MEMORY[0x277D05600] coreChannel];
+    if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_ERROR))
     {
-      [(MLRExtensionPrincipalClass *)v3 beginRequestWithExtensionContext:v4];
+      [(MLRExtensionPrincipalClass *)contextCopy beginRequestWithExtensionContext:coreChannel];
     }
   }
 }

@@ -7,81 +7,81 @@
 - (GEOWalkingOptions)walkingOptions;
 - (NSArray)waypoints;
 - (int64_t)transportType;
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6;
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item;
 @end
 
 @implementation MSHistoryMultiPointRoute
 
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item
 {
-  if (a4)
+  if (route)
   {
-    (*(a4 + 2))(a4, self);
+    (*(route + 2))(route, self);
   }
 }
 
 - (GEOCyclingOptions)cyclingOptions
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 cyclingOptions];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  cyclingOptions = [routeRequestStorage cyclingOptions];
 
-  return v3;
+  return cyclingOptions;
 }
 
 - (GEOWalkingOptions)walkingOptions
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 walkingOptions];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  walkingOptions = [routeRequestStorage walkingOptions];
 
-  return v3;
+  return walkingOptions;
 }
 
 - (GEOTransitOptions)transitOptions
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 transitOptions];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  transitOptions = [routeRequestStorage transitOptions];
 
-  return v3;
+  return transitOptions;
 }
 
 - (GEOAutomobileOptions)automobileOptions
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 automobileOptions];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  automobileOptions = [routeRequestStorage automobileOptions];
 
-  return v3;
+  return automobileOptions;
 }
 
 - (NSArray)waypoints
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 waypoints];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
 
-  return v3;
+  return waypoints;
 }
 
 - (GEOComposedWaypoint)endWaypoint
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 waypoints];
-  v4 = [v3 lastObject];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
+  lastObject = [waypoints lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (GEOComposedWaypoint)startWaypoint
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 waypoints];
-  v4 = [v3 firstObject];
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
+  firstObject = [waypoints firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (int64_t)transportType
 {
-  v2 = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
-  v3 = [v2 transportType] - 1;
+  routeRequestStorage = [(MSHistoryMultiPointRoute *)self routeRequestStorage];
+  v3 = [routeRequestStorage transportType] - 1;
   if (v3 > 5)
   {
     v4 = 1;

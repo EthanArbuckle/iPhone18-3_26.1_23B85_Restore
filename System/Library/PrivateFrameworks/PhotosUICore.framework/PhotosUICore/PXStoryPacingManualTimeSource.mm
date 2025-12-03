@@ -1,7 +1,7 @@
 @interface PXStoryPacingManualTimeSource
 - (PXStoryPacingManualTimeSource)init;
 - (PXStoryPacingTimeSourceDelegate)delegate;
-- (void)incrementByTime:(id *)a3;
+- (void)incrementByTime:(id *)time;
 @end
 
 @implementation PXStoryPacingManualTimeSource
@@ -13,17 +13,17 @@
   return WeakRetained;
 }
 
-- (void)incrementByTime:(id *)a3
+- (void)incrementByTime:(id *)time
 {
   if ([(PXStoryPacingManualTimeSource *)self isActive])
   {
     lhs = self->_currentTime;
-    rhs = *a3;
+    rhs = *time;
     CMTimeAdd(&v6, &lhs, &rhs);
     self->_currentTime = v6;
-    v5 = [(PXStoryPacingManualTimeSource *)self delegate];
-    lhs = *a3;
-    [v5 timeSource:self didIncrementByTime:&lhs];
+    delegate = [(PXStoryPacingManualTimeSource *)self delegate];
+    lhs = *time;
+    [delegate timeSource:self didIncrementByTime:&lhs];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface IOSNearbyObject
 - (IOSNearbyObject)init;
-- (IOSNearbyObject)initWithType:(int)a3 reducedRate:(BOOL)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5;
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4;
-- (void)sessionSuspensionEnded:(id)a3;
-- (void)sessionWasSuspended:(id)a3;
+- (IOSNearbyObject)initWithType:(int)type reducedRate:(BOOL)rate;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason;
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects;
+- (void)sessionSuspensionEnded:(id)ended;
+- (void)sessionWasSuspended:(id)suspended;
 - (void)start;
 - (void)stop;
 @end
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (IOSNearbyObject)initWithType:(int)a3 reducedRate:(BOOL)a4
+- (IOSNearbyObject)initWithType:(int)type reducedRate:(BOOL)rate
 {
   v5.receiver = self;
   v5.super_class = IOSNearbyObject;
@@ -70,8 +70,8 @@
   [v11 setAnchor:self->_type == 1];
   [v11 setAllowedDevices:2];
   self->_running = 1;
-  v12 = [(NISession *)self->_session discoveryToken];
-  LOBYTE(v10) = v12 == 0;
+  discoveryToken = [(NISession *)self->_session discoveryToken];
+  LOBYTE(v10) = discoveryToken == 0;
 
   if ((v10 & 1) == 0)
   {
@@ -113,10 +113,10 @@ LABEL_4:
   [(NISession *)self->_session invalidate];
 }
 
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects
 {
-  a3;
-  v33 = a4;
+  session;
+  objectsCopy = objects;
   v5 = sub_1001CA2CC();
   v31 = sub_10010C758();
   v6 = sub_1001CA208();
@@ -128,7 +128,7 @@ LABEL_4:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v33;
+  obj = objectsCopy;
   v8 = [obj countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v8)
   {
@@ -157,29 +157,29 @@ LABEL_4:
 
           else
           {
-            v12 = [v10 relationship];
+            relationship = [v10 relationship];
             v42 |= 4u;
-            v13 = v12 & 1;
+            v13 = relationship & 1;
           }
 
           LODWORD(v41) = v13;
-          v14 = [v10 discoveryToken];
-          v15 = [v14 rawToken];
-          v16 = v15;
-          v17 = [v15 bytes];
-          v18 = [v10 discoveryToken];
-          v19 = [v18 rawToken];
-          v20 = [v19 length];
+          discoveryToken = [v10 discoveryToken];
+          rawToken = [discoveryToken rawToken];
+          v16 = rawToken;
+          bytes = [rawToken bytes];
+          discoveryToken2 = [v10 discoveryToken];
+          rawToken2 = [discoveryToken2 rawToken];
+          v20 = [rawToken2 length];
           v42 |= 1u;
           if (v37 == &wireless_diagnostics::google::protobuf::internal::kEmptyString)
           {
             operator new();
           }
 
-          std::string::assign(v37, v17, v20);
+          std::string::assign(v37, bytes, v20);
 
-          v21 = [v10 discoveryToken];
-          v22 = [v21 hash];
+          discoveryToken3 = [v10 discoveryToken];
+          v22 = [discoveryToken3 hash];
           v42 |= 2u;
           v38 = v22;
 
@@ -245,10 +245,10 @@ LABEL_20:
   operator new();
 }
 
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  objectsCopy = objects;
   if (qword_10045B050 != -1)
   {
     sub_100387484();
@@ -272,9 +272,9 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)sessionWasSuspended:(id)a3
+- (void)sessionWasSuspended:(id)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   if (qword_10045B050 != -1)
   {
     sub_100387484();
@@ -298,9 +298,9 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)sessionSuspensionEnded:(id)a3
+- (void)sessionSuspensionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   if (qword_10045B050 == -1)
   {
     v5 = qword_10045B058;
@@ -328,10 +328,10 @@ LABEL_4:
   }
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   if (qword_10045B050 == -1)
   {
     v8 = qword_10045B058;

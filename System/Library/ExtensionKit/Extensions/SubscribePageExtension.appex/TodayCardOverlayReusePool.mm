@@ -1,10 +1,10 @@
 @interface TodayCardOverlayReusePool
-- (void)clearStackFor:(id)a3;
+- (void)clearStackFor:(id)for;
 @end
 
 @implementation TodayCardOverlayReusePool
 
-- (void)clearStackFor:(id)a3
+- (void)clearStackFor:(id)for
 {
   v4 = sub_100740EA4();
   v5 = *(v4 - 8);

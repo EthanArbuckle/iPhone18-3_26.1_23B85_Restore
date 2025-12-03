@@ -1,8 +1,8 @@
 @interface GameCenterFriendRequestCoordinator
 - (_TtC11AppStoreKit34GameCenterFriendRequestCoordinator)init;
-- (void)accountsDidChangeWithNotification:(id)a3;
+- (void)accountsDidChangeWithNotification:(id)notification;
 - (void)dealloc;
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
 @end
 
 @implementation GameCenterFriendRequestCoordinator
@@ -10,26 +10,26 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for GameCenterFriendRequestCoordinator();
   [(GameCenterFriendRequestCoordinator *)&v6 dealloc];
 }
 
-- (void)accountsDidChangeWithNotification:(id)a3
+- (void)accountsDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E15B9AD8(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1E15B9AD8(notificationCopy);
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
-  v4 = *&a3;
-  v5 = self;
+  v4 = *&type;
+  selfCopy = self;
   sub_1E15BB10C(v4);
 }
 

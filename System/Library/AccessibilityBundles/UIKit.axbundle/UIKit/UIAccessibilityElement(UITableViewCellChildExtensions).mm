@@ -6,14 +6,14 @@
 
 - (void)setTableCellYOffset:()UITableViewCellChildExtensions
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
   v7 = a3;
-  v6 = [a1 _accessibilityValueForKey:@"TableViewStorage"];
+  v6 = [self _accessibilityValueForKey:@"TableViewStorage"];
   if (!v6)
   {
     v6 = [objc_allocWithZone(MEMORY[0x29EDB8E00]) init];
-    [v9 _accessibilitySetRetainedValue:v6 forKey:{@"TableViewStorage", MEMORY[0x29EDC9740](0).n128_f64[0]}];
+    [selfCopy _accessibilitySetRetainedValue:v6 forKey:{@"TableViewStorage", MEMORY[0x29EDC9740](0).n128_f64[0]}];
   }
 
   *&v3 = v7;

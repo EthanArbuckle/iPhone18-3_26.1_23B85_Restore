@@ -6,7 +6,7 @@
 
 - (GDEntityIdentifier)entityIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GDVUEntityUpdate.entityIdentifier.getter();
 
   return v3;

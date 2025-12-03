@@ -1,242 +1,242 @@
 @interface MTRBaseClusterLaundryDryerControls
-+ (void)readAttributeAcceptedCommandListWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)readAttributeAttributeListWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)readAttributeClusterRevisionWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)readAttributeFeatureMapWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)readAttributeGeneratedCommandListWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)readAttributeSelectedDrynessLevelWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)readAttributeSupportedDrynessLevelsWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)readAttributeAcceptedCommandListWithCompletion:(id)a3;
-- (void)readAttributeAttributeListWithCompletion:(id)a3;
-- (void)readAttributeClusterRevisionWithCompletion:(id)a3;
-- (void)readAttributeFeatureMapWithCompletion:(id)a3;
-- (void)readAttributeGeneratedCommandListWithCompletion:(id)a3;
-- (void)readAttributeSelectedDrynessLevelWithCompletion:(id)a3;
-- (void)readAttributeSupportedDrynessLevelsWithCompletion:(id)a3;
-- (void)subscribeAttributeAcceptedCommandListWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)subscribeAttributeAttributeListWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)subscribeAttributeClusterRevisionWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)subscribeAttributeFeatureMapWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)subscribeAttributeGeneratedCommandListWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)subscribeAttributeSelectedDrynessLevelWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)subscribeAttributeSupportedDrynessLevelsWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
-- (void)writeAttributeSelectedDrynessLevelWithValue:(id)a3 params:(id)a4 completion:(id)a5;
++ (void)readAttributeAcceptedCommandListWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
++ (void)readAttributeAttributeListWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
++ (void)readAttributeClusterRevisionWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
++ (void)readAttributeFeatureMapWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
++ (void)readAttributeGeneratedCommandListWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
++ (void)readAttributeSelectedDrynessLevelWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
++ (void)readAttributeSupportedDrynessLevelsWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
+- (void)readAttributeAcceptedCommandListWithCompletion:(id)completion;
+- (void)readAttributeAttributeListWithCompletion:(id)completion;
+- (void)readAttributeClusterRevisionWithCompletion:(id)completion;
+- (void)readAttributeFeatureMapWithCompletion:(id)completion;
+- (void)readAttributeGeneratedCommandListWithCompletion:(id)completion;
+- (void)readAttributeSelectedDrynessLevelWithCompletion:(id)completion;
+- (void)readAttributeSupportedDrynessLevelsWithCompletion:(id)completion;
+- (void)subscribeAttributeAcceptedCommandListWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)subscribeAttributeAttributeListWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)subscribeAttributeClusterRevisionWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)subscribeAttributeFeatureMapWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)subscribeAttributeGeneratedCommandListWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)subscribeAttributeSelectedDrynessLevelWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)subscribeAttributeSupportedDrynessLevelsWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
+- (void)writeAttributeSelectedDrynessLevelWithValue:(id)value params:(id)params completion:(id)completion;
 @end
 
 @implementation MTRBaseClusterLaundryDryerControls
 
-- (void)readAttributeSupportedDrynessLevelsWithCompletion:(id)a3
+- (void)readAttributeSupportedDrynessLevelsWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6A8 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6A8 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeSupportedDrynessLevelsWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeSupportedDrynessLevelsWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6A8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6A8 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeSupportedDrynessLevelsWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeSupportedDrynessLevelsWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:0 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:0 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeSelectedDrynessLevelWithCompletion:(id)a3
+- (void)readAttributeSelectedDrynessLevelWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6C0 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6C0 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)writeAttributeSelectedDrynessLevelWithValue:(id)a3 params:(id)a4 completion:(id)a5
+- (void)writeAttributeSelectedDrynessLevelWithValue:(id)value params:(id)params completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 copy];
+  valueCopy = value;
+  paramsCopy = params;
+  completionCopy = completion;
+  [paramsCopy copy];
 
-  [v7 copy];
+  [valueCopy copy];
   operator new();
 }
 
-- (void)subscribeAttributeSelectedDrynessLevelWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeSelectedDrynessLevelWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6C0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6C0 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeSelectedDrynessLevelWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeSelectedDrynessLevelWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:1 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:1 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeGeneratedCommandListWithCompletion:(id)a3
+- (void)readAttributeGeneratedCommandListWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6D8 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6D8 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeGeneratedCommandListWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeGeneratedCommandListWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6D8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6D8 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeGeneratedCommandListWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeGeneratedCommandListWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:65528 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:65528 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeAcceptedCommandListWithCompletion:(id)a3
+- (void)readAttributeAcceptedCommandListWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6F0 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6F0 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeAcceptedCommandListWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeAcceptedCommandListWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6F0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E6F0 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeAcceptedCommandListWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeAcceptedCommandListWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:65529 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:65529 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeAttributeListWithCompletion:(id)a3
+- (void)readAttributeAttributeListWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E708 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E708 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeAttributeListWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeAttributeListWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E708 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E708 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeAttributeListWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeAttributeListWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:65531 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:65531 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeFeatureMapWithCompletion:(id)a3
+- (void)readAttributeFeatureMapWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E720 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E720 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeFeatureMapWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeFeatureMapWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E720 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E720 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeFeatureMapWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeFeatureMapWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:65532 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:65532 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeClusterRevisionWithCompletion:(id)a3
+- (void)readAttributeClusterRevisionWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E738 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E738 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeClusterRevisionWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeClusterRevisionWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E738 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3F2A8 attributeID:&unk_284C3E738 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeClusterRevisionWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeClusterRevisionWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:74 queue:65533 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:74 queue:65533 completion:{queueCopy, completionCopy}];
 }
 
 @end

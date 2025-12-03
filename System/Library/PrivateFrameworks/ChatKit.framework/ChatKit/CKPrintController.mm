@@ -1,14 +1,14 @@
 @interface CKPrintController
-+ (id)printAttributes:(id)a3;
++ (id)printAttributes:(id)attributes;
 + (id)sharedInstance;
-+ (void)printBalloonDescriptor:(CKBalloonDescriptor_t *)a3;
-+ (void)printResolvedColors:(id *)a3 balloonDescriptor:(CKBalloonDescriptor_t *)a4 coloredBalloonView:(id)a5;
++ (void)printBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor;
++ (void)printResolvedColors:(id *)colors balloonDescriptor:(CKBalloonDescriptor_t *)descriptor coloredBalloonView:(id)view;
 - (CKPrintController)init;
 - (CNAvatarImageRenderer)avatarImageRenderer;
 - (NSCache)avatarCache;
-- (id)avatarImageForContact:(id)a3 diameter:(double)a4;
+- (id)avatarImageForContact:(id)contact diameter:(double)diameter;
 - (void)clearAvatarCache;
-- (void)setPrinting:(BOOL)a3;
+- (void)setPrinting:(BOOL)printing;
 @end
 
 @implementation CKPrintController
@@ -45,9 +45,9 @@ void __35__CKPrintController_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)setPrinting:(BOOL)a3
+- (void)setPrinting:(BOOL)printing
 {
-  v3 = a3;
+  printingCopy = printing;
   v12 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -65,7 +65,7 @@ void __35__CKPrintController_sharedInstance__block_invoke()
         v7 = @"NO";
       }
 
-      if (v3)
+      if (printingCopy)
       {
         v6 = @"YES";
       }
@@ -78,27 +78,27 @@ void __35__CKPrintController_sharedInstance__block_invoke()
     }
   }
 
-  self->_isPrinting = v3;
+  self->_isPrinting = printingCopy;
 }
 
-- (id)avatarImageForContact:(id)a3 diameter:(double)a4
+- (id)avatarImageForContact:(id)contact diameter:(double)diameter
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [(CKPrintController *)self avatarCache];
-  v9 = [v8 objectForKey:v7];
+  contactCopy = contact;
+  identifier = [contactCopy identifier];
+  avatarCache = [(CKPrintController *)self avatarCache];
+  v9 = [avatarCache objectForKey:identifier];
 
   if (!v9)
   {
     v12 = MEMORY[0x1E695D0B0];
-    v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v13 scale];
-    v15 = [v12 scopeWithPointSize:0 scale:0 rightToLeft:a4 style:{a4, v14}];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v15 = [v12 scopeWithPointSize:0 scale:0 rightToLeft:diameter style:{diameter, v14}];
 
-    if (v6)
+    if (contactCopy)
     {
-      v21 = v6;
+      v21 = contactCopy;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     }
 
@@ -107,13 +107,13 @@ void __35__CKPrintController_sharedInstance__block_invoke()
       v16 = 0;
     }
 
-    v17 = [(CKPrintController *)self avatarImageRenderer];
-    v11 = [v17 avatarImageForContacts:v16 scope:v15];
+    avatarImageRenderer = [(CKPrintController *)self avatarImageRenderer];
+    v11 = [avatarImageRenderer avatarImageForContacts:v16 scope:v15];
 
     if (v11)
     {
-      v18 = [(CKPrintController *)self avatarCache];
-      [v18 setObject:v11 forKey:v7 cost:1];
+      avatarCache2 = [(CKPrintController *)self avatarCache];
+      [avatarCache2 setObject:v11 forKey:identifier cost:1];
 
       if (IMOSLoggingEnabled())
       {
@@ -121,7 +121,7 @@ void __35__CKPrintController_sharedInstance__block_invoke()
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v23 = v7;
+          v23 = identifier;
           _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "avatar cache store for contact [%@]", buf, 0xCu);
         }
 
@@ -135,7 +135,7 @@ LABEL_18:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v23 = v7;
+        v23 = identifier;
         _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "avatar fetch fail for contact [%@]", buf, 0xCu);
       }
 
@@ -151,7 +151,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v7;
+      v23 = identifier;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "avatar cache hit for contact [%@]", buf, 0xCu);
     }
   }
@@ -168,8 +168,8 @@ LABEL_20:
   if (!avatarImageRenderer)
   {
     v4 = objc_alloc(MEMORY[0x1E695D098]);
-    v5 = [MEMORY[0x1E695D0A8] defaultSettings];
-    v6 = [v4 initWithSettings:v5];
+    defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+    v6 = [v4 initWithSettings:defaultSettings];
     v7 = self->_avatarImageRenderer;
     self->_avatarImageRenderer = v6;
 
@@ -201,9 +201,9 @@ LABEL_20:
   self->_avatarCache = 0;
 }
 
-+ (id)printAttributes:(id)a3
++ (id)printAttributes:(id)attributes
 {
-  v3 = [a3 mutableCopy];
+  v3 = [attributes mutableCopy];
   v4 = *MEMORY[0x1E69DB650];
   v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
 
@@ -216,41 +216,41 @@ LABEL_20:
   return v3;
 }
 
-+ (void)printBalloonDescriptor:(CKBalloonDescriptor_t *)a3
++ (void)printBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor
 {
-  a3->var2 = 2;
-  a3->var6 = 4;
+  descriptor->var2 = 2;
+  descriptor->var6 = 4;
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 unfilledBalloonColorForColorType:0xFFFFFFFFLL];
+  theme = [v4 theme];
+  v6 = [theme unfilledBalloonColorForColorType:0xFFFFFFFFLL];
   [v6 ck_imColorComponents];
-  a3->var8.red = v7;
-  a3->var8.green = v8;
-  a3->var8.blue = v9;
-  a3->var8.alpha = v10;
+  descriptor->var8.red = v7;
+  descriptor->var8.green = v8;
+  descriptor->var8.blue = v9;
+  descriptor->var8.alpha = v10;
 
-  a3->var10 = 1;
-  a3->var0 = 0;
+  descriptor->var10 = 1;
+  descriptor->var0 = 0;
 }
 
-+ (void)printResolvedColors:(id *)a3 balloonDescriptor:(CKBalloonDescriptor_t *)a4 coloredBalloonView:(id)a5
++ (void)printResolvedColors:(id *)colors balloonDescriptor:(CKBalloonDescriptor_t *)descriptor coloredBalloonView:(id)view
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  viewCopy = view;
   v9 = +[CKPrintController printBackgroundColor];
   v13[0] = v9;
-  *a3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
+  *colors = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
 
-  [a1 printBalloonDescriptor:a4];
-  [v8 setBalloonStyle:2];
+  [self printBalloonDescriptor:descriptor];
+  [viewCopy setBalloonStyle:2];
   v10 = +[CKUIBehavior sharedBehaviors];
-  v11 = [v10 theme];
-  v12 = [v11 unfilledBalloonColorForColorType:0xFFFFFFFFLL];
+  theme = [v10 theme];
+  v12 = [theme unfilledBalloonColorForColorType:0xFFFFFFFFLL];
   [v12 ck_imColorComponents];
-  [v8 setStrokeColor:?];
+  [viewCopy setStrokeColor:?];
 
-  [v8 setColor:4];
-  [v8 setUserInterfaceStyle:1];
+  [viewCopy setColor:4];
+  [viewCopy setUserInterfaceStyle:1];
 }
 
 @end

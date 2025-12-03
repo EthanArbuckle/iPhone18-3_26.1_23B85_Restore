@@ -7,18 +7,18 @@
 
 - (BOOL)isPasscodeSet
 {
-  v2 = [(LAPasscodeHelperPasscodeStateManagedSettings *)self _managedConfiguration];
-  v3 = [v2 isPasscodeSet];
+  _managedConfiguration = [(LAPasscodeHelperPasscodeStateManagedSettings *)self _managedConfiguration];
+  isPasscodeSet = [_managedConfiguration isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (int64_t)passcodeType
 {
-  v2 = [(LAPasscodeHelperPasscodeStateManagedSettings *)self _managedConfiguration];
-  v3 = [v2 passcodeType];
+  _managedConfiguration = [(LAPasscodeHelperPasscodeStateManagedSettings *)self _managedConfiguration];
+  passcodeType = [_managedConfiguration passcodeType];
 
-  return v3;
+  return passcodeType;
 }
 
 @end

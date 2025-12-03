@@ -1,35 +1,35 @@
 @interface VUIAction
-+ (id)actionWithDictionary:(id)a3 appContext:(id)a4;
++ (id)actionWithDictionary:(id)dictionary appContext:(id)context;
 - (id)_siriConfigInfo;
-- (void)_finalizeWithSuccess:(BOOL)a3 targetResponder:(id)a4 documentOptions:(id)a5 completion:(id)a6;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)_finalizeWithSuccess:(BOOL)success targetResponder:(id)responder documentOptions:(id)options completion:(id)completion;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIAction
 
-+ (id)actionWithDictionary:(id)a3 appContext:(id)a4
++ (id)actionWithDictionary:(id)dictionary appContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 vui_stringForKey:@"actionRef"];
-  v9 = [v6 vui_dictionaryForKey:@"contextData"];
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  v8 = [dictionaryCopy vui_stringForKey:@"actionRef"];
+  v9 = [dictionaryCopy vui_dictionaryForKey:@"contextData"];
   if (v8)
   {
     if (([v8 isEqualToString:@"actionRefBuy"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"actionRefGet") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"actionRefPreorder") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"actionRefRent") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"actionRefRentWatchNow") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"actionRefComplete") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"actionRefUpdate") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"actionRefSubscribe"))
     {
-      if (v7)
+      if (contextCopy)
       {
-        v10 = [[VUIActionCommerceTransaction alloc] initWithActionRef:v8 contextData:v9 appContext:v7];
+        v10 = [[VUIActionCommerceTransaction alloc] initWithActionRef:v8 contextData:v9 appContext:contextCopy];
 LABEL_12:
         v11 = v10;
 LABEL_20:
-        v12 = [v6 vui_dictionaryForKey:@"success"];
-        v14 = [v6 vui_dictionaryForKey:@"failure"];
-        v15 = [a1 actionWithDictionary:v12 appContext:v7];
+        v12 = [dictionaryCopy vui_dictionaryForKey:@"success"];
+        v14 = [dictionaryCopy vui_dictionaryForKey:@"failure"];
+        v15 = [self actionWithDictionary:v12 appContext:contextCopy];
         [(VUIAction *)v11 setSuccessAction:v15];
 
-        v16 = [a1 actionWithDictionary:v14 appContext:v7];
+        v16 = [self actionWithDictionary:v14 appContext:contextCopy];
         [(VUIAction *)v11 setFailureAction:v16];
 
         goto LABEL_21;
@@ -52,7 +52,7 @@ LABEL_19:
 
     if (([v8 isEqualToString:@"actionRefPlay"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"actionRefRedownload"))
     {
-      if (!v7)
+      if (!contextCopy)
       {
         v13 = VUIDefaultLogObject();
         if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -69,7 +69,7 @@ LABEL_19:
 
     if ([v8 isEqualToString:@"actionRefPlaylist"])
     {
-      if (!v7)
+      if (!contextCopy)
       {
         v13 = VUIDefaultLogObject();
         if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@ LABEL_19:
 
     if ([v8 isEqualToString:@"actionRefNavigate"])
     {
-      v10 = [[VUIActionNavigate alloc] initWithActionDataSource:v6 appContext:v7];
+      v10 = [[VUIActionNavigate alloc] initWithActionDataSource:dictionaryCopy appContext:contextCopy];
       goto LABEL_12;
     }
 
@@ -157,9 +157,9 @@ LABEL_19:
         {
           if ([v8 isEqualToString:@"actionRefAlert"])
           {
-            if (v7)
+            if (contextCopy)
             {
-              v10 = [[VUIActionAlert alloc] initWithContextData:v9 appContext:v7 controllerClass:objc_opt_class()];
+              v10 = [[VUIActionAlert alloc] initWithContextData:v9 appContext:contextCopy controllerClass:objc_opt_class()];
               goto LABEL_12;
             }
 
@@ -182,7 +182,7 @@ LABEL_19:
           {
             if ([v8 isEqualToString:@"actionRefGdprProceed"])
             {
-              if (!v7)
+              if (!contextCopy)
               {
                 v13 = VUIDefaultLogObject();
                 if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -238,7 +238,7 @@ LABEL_19:
               {
                 if (![v8 isEqualToString:@"actionRefAskToBuy"])
                 {
-                  v10 = [_TtC8VideosUI8VideosUI vuiSwiftAction:v6 appContext:v7];
+                  v10 = [_TtC8VideosUI8VideosUI vuiSwiftAction:dictionaryCopy appContext:contextCopy];
                   goto LABEL_12;
                 }
 
@@ -246,7 +246,7 @@ LABEL_19:
                 goto LABEL_53;
               }
 
-              if (!v7)
+              if (!contextCopy)
               {
                 v13 = VUIDefaultLogObject();
                 if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -261,7 +261,7 @@ LABEL_19:
             }
 
 LABEL_28:
-            v10 = [[v18 alloc] initWithContextData:v9 appContext:v7];
+            v10 = [[v18 alloc] initWithContextData:v9 appContext:contextCopy];
             goto LABEL_12;
           }
 
@@ -296,41 +296,41 @@ LABEL_21:
   return v11;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(handler + 2))(handler, 1);
   }
 }
 
-- (void)_finalizeWithSuccess:(BOOL)a3 targetResponder:(id)a4 documentOptions:(id)a5 completion:(id)a6
+- (void)_finalizeWithSuccess:(BOOL)success targetResponder:(id)responder documentOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  successCopy = success;
+  responderCopy = responder;
+  optionsCopy = options;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__VUIAction__finalizeWithSuccess_targetResponder_documentOptions_completion___block_invoke;
   aBlock[3] = &unk_1E8731A88;
-  v22 = v10;
-  v13 = v12;
-  v23 = v11;
+  v22 = responderCopy;
+  v13 = completionCopy;
+  v23 = optionsCopy;
   v24 = v13;
-  v14 = v11;
-  v15 = v10;
+  v14 = optionsCopy;
+  v15 = responderCopy;
   v16 = _Block_copy(aBlock);
-  if (v8)
+  if (successCopy)
   {
-    v17 = [(VUIAction *)self successAction];
+    successAction = [(VUIAction *)self successAction];
 
-    if (v17)
+    if (successAction)
     {
-      v18 = [(VUIAction *)self successAction];
+      successAction2 = [(VUIAction *)self successAction];
 LABEL_6:
-      v20 = v18;
-      v16[2](v16, v18);
+      v20 = successAction2;
+      v16[2](v16, successAction2);
 
       goto LABEL_9;
     }
@@ -338,18 +338,18 @@ LABEL_6:
 
   else
   {
-    v19 = [(VUIAction *)self failureAction];
+    failureAction = [(VUIAction *)self failureAction];
 
-    if (v19)
+    if (failureAction)
     {
-      v18 = [(VUIAction *)self failureAction];
+      successAction2 = [(VUIAction *)self failureAction];
       goto LABEL_6;
     }
   }
 
   if (v13)
   {
-    (*(v13 + 2))(v13, v8);
+    (*(v13 + 2))(v13, successCopy);
   }
 
 LABEL_9:

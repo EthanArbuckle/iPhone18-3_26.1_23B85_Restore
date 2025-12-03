@@ -1,8 +1,8 @@
 @interface NSSQLitePrefetchRequestCache
-- (NSSQLitePrefetchRequestCache)initWithSQLCore:(id)a3;
-- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4;
-- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)a3 onEntity:(id)a4;
-- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4;
+- (NSSQLitePrefetchRequestCache)initWithSQLCore:(id)core;
+- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity;
+- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)named onEntity:(id)entity;
+- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity;
 - (void)dealloc;
 @end
 
@@ -30,7 +30,7 @@
   [(NSSQLitePrefetchRequestCache *)&v6 dealloc];
 }
 
-- (NSSQLitePrefetchRequestCache)initWithSQLCore:(id)a3
+- (NSSQLitePrefetchRequestCache)initWithSQLCore:(id)core
 {
   v9.receiver = self;
   v9.super_class = NSSQLitePrefetchRequestCache;
@@ -38,14 +38,14 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_sqlCore, a3);
-    v6 = [a3 model];
-    if (v6)
+    objc_storeWeak(&v4->_sqlCore, core);
+    model = [core model];
+    if (model)
     {
-      v6 = v6[4];
+      model = model[4];
     }
 
-    v7 = [v6 count];
+    v7 = [model count];
     v5->_length = v7;
     v5->_prefetchRequestsByEntity = PF_CALLOC_OBJECT_ARRAY(v7 + 1);
   }
@@ -53,7 +53,7 @@
   return v5;
 }
 
-- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity
 {
   Weak = objc_loadWeak(&self->_sqlCore);
   if (!Weak)
@@ -62,17 +62,17 @@
   }
 
   v8 = Weak;
-  v9 = [(NSEntityDescription *)a4 _relationshipNamed:a3];
-  v10 = _sqlCoreLookupSQLEntityForEntityDescription(v8, a4);
-  v11 = [v10 model];
-  if (v11 != [v8 model])
+  v9 = [(NSEntityDescription *)entity _relationshipNamed:named];
+  v10 = _sqlCoreLookupSQLEntityForEntityDescription(v8, entity);
+  model = [v10 model];
+  if (model != [v8 model])
   {
     return 0;
   }
 
   if (v10)
   {
-    v14 = [*(v10 + 40) objectForKey:a3];
+    v14 = [*(v10 + 40) objectForKey:named];
   }
 
   else
@@ -80,8 +80,8 @@
     v14 = 0;
   }
 
-  v15 = [v14 isToMany];
-  v16 = [v9 isOrdered];
+  isToMany = [v14 isToMany];
+  isOrdered = [v9 isOrdered];
   if (!v14)
   {
     v17 = 0;
@@ -104,11 +104,11 @@ LABEL_10:
   v18 = self->_prefetchRequestsByEntity[v10];
   if (!v18)
   {
-    v18 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:[(NSEntityDescription *)a4 knownKeysMappingStrategy]];
+    v18 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:[(NSEntityDescription *)entity knownKeysMappingStrategy]];
     self->_prefetchRequestsByEntity[v10] = v18;
   }
 
-  v12 = [(NSKnownKeysDictionary *)v18 objectForKey:a3];
+  v12 = [(NSKnownKeysDictionary *)v18 objectForKey:named];
   if (!v12)
   {
     v12 = objc_alloc_init(NSCachingFetchRequest);
@@ -121,10 +121,10 @@ LABEL_10:
     v22 = [objc_alloc(MEMORY[0x1E696AB18]) initWithLeftExpression:v21 rightExpression:v19 modifier:0 type:10 options:0];
     [(NSFetchRequest *)v12 setPredicate:v22];
 
-    if (v15)
+    if (isToMany)
     {
       v23 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:objc_msgSend(objc_msgSend(v17 ascending:{"foreignKey"), "name"), 1}];
-      if (v16)
+      if (isOrdered)
       {
         v24 = objc_alloc(MEMORY[0x1E696AEB0]);
         if (v17)
@@ -156,7 +156,7 @@ LABEL_10:
   return v12;
 }
 
-- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity
 {
   Weak = objc_loadWeak(&self->_sqlCore);
   if (!Weak)
@@ -165,16 +165,16 @@ LABEL_10:
   }
 
   v8 = Weak;
-  v9 = _sqlCoreLookupSQLEntityForEntityDescription(Weak, a4);
-  v10 = [v9 model];
-  if (v10 != [v8 model])
+  v9 = _sqlCoreLookupSQLEntityForEntityDescription(Weak, entity);
+  model = [v9 model];
+  if (model != [v8 model])
   {
     return 0;
   }
 
   if (v9)
   {
-    v13 = [*(v9 + 40) objectForKey:a3];
+    v13 = [*(v9 + 40) objectForKey:named];
     v9 = *(v9 + 184);
   }
 
@@ -186,11 +186,11 @@ LABEL_10:
   v14 = self->_prefetchRequestsByEntity[v9];
   if (!v14)
   {
-    v14 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:[(NSEntityDescription *)a4 knownKeysMappingStrategy]];
+    v14 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:[(NSEntityDescription *)entity knownKeysMappingStrategy]];
     self->_prefetchRequestsByEntity[v9] = v14;
   }
 
-  v11 = [(NSKnownKeysDictionary *)v14 objectForKey:a3];
+  v11 = [(NSKnownKeysDictionary *)v14 objectForKey:named];
   if (!v11)
   {
     v11 = objc_alloc_init(NSCachingFetchRequest);
@@ -207,7 +207,7 @@ LABEL_10:
   return v11;
 }
 
-- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)named onEntity:(id)entity
 {
   Weak = objc_loadWeak(&self->_sqlCore);
   if (!Weak)
@@ -215,11 +215,11 @@ LABEL_10:
     return 0;
   }
 
-  v8 = _sqlCoreLookupSQLEntityForEntityDescription(Weak, a4);
+  v8 = _sqlCoreLookupSQLEntityForEntityDescription(Weak, entity);
   v9 = v8;
   if (v8)
   {
-    v10 = [*(v8 + 40) objectForKey:a3];
+    v10 = [*(v8 + 40) objectForKey:named];
     v9 = *(v9 + 184);
   }
 
@@ -231,11 +231,11 @@ LABEL_10:
   v11 = self->_prefetchRequestsByEntity[v9];
   if (!v11)
   {
-    v11 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:[(NSEntityDescription *)a4 knownKeysMappingStrategy]];
+    v11 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:[(NSEntityDescription *)entity knownKeysMappingStrategy]];
     self->_prefetchRequestsByEntity[v9] = v11;
   }
 
-  v12 = [(NSKnownKeysDictionary *)v11 objectForKey:a3];
+  v12 = [(NSKnownKeysDictionary *)v11 objectForKey:named];
   if (!v12)
   {
     v12 = objc_alloc_init(NSCachingFetchRequest);

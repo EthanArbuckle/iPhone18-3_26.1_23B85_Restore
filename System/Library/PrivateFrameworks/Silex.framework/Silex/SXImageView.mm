@@ -3,58 +3,58 @@
 - (BOOL)hasLoadedImage;
 - (BOOL)isAccessibilityElement;
 - (BOOL)isVisible;
-- (BOOL)objectHasQualityInterest:(id)a3 quality:(int *)a4;
+- (BOOL)objectHasQualityInterest:(id)interest quality:(int *)quality;
 - (BOOL)paused;
 - (CGPoint)previousPoint;
 - (CGSize)loadedImageSize;
 - (CGSize)preferredImageSize;
 - (CGSize)preferredQualityLoadingImageSize;
 - (NSString)dragIdentifier;
-- (SXImageView)initWithImageResource:(id)a3 resourceDataSource:(id)a4 reachabilityProvider:(id)a5;
+- (SXImageView)initWithImageResource:(id)resource resourceDataSource:(id)source reachabilityProvider:(id)provider;
 - (SXImageViewDelegate)delegate;
 - (SXResourceDataSource)resourceDataSource;
 - (UIImage)highQualityImage;
 - (UIImage)preferredQualityImage;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)itemsForCustomRotor:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)itemsForCustomRotor:(id)rotor;
 - (id)stringForAXDragAction;
 - (id)supportedCustomRotors;
 - (int64_t)loadingIndicatorStyle;
-- (void)addInterestInImageQuality:(int)a3 forObject:(id)a4;
-- (void)animatedImage:(id)a3 madeImageAvailableForFrameAtIndex:(unint64_t)a4;
+- (void)addInterestInImageQuality:(int)quality forObject:(id)object;
+- (void)animatedImage:(id)image madeImageAvailableForFrameAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)didLoadAnimatedImage:(id)a3;
+- (void)didLoadAnimatedImage:(id)image;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)didReceiveMemoryWarning;
-- (void)fadeInImageWhenVisible:(id)a3;
-- (void)giveUpInterestForObject:(id)a3;
-- (void)handleScrubGesture:(id)a3;
+- (void)fadeInImageWhenVisible:(id)visible;
+- (void)giveUpInterestForObject:(id)object;
+- (void)handleScrubGesture:(id)gesture;
 - (void)layoutActivityIndicator;
 - (void)layoutSubviews;
 - (void)loadHighQualityImage;
 - (void)loadPreferredQualityImage;
 - (void)pause;
-- (void)reachabilityChanged:(BOOL)a3;
+- (void)reachabilityChanged:(BOOL)changed;
 - (void)resume;
-- (void)setAnimatedImage:(id)a3;
-- (void)setFrameIndex:(unint64_t)a3 allowNearest:(BOOL)a4;
-- (void)setLoadingIndicatorStyle:(int64_t)a3;
-- (void)setPreferredImageSize:(CGSize)a3;
-- (void)setScrubbingEnabled:(BOOL)a3;
-- (void)setShouldShowLoadingIndicator:(BOOL)a3;
+- (void)setAnimatedImage:(id)image;
+- (void)setFrameIndex:(unint64_t)index allowNearest:(BOOL)nearest;
+- (void)setLoadingIndicatorStyle:(int64_t)style;
+- (void)setPreferredImageSize:(CGSize)size;
+- (void)setScrubbingEnabled:(BOOL)enabled;
+- (void)setShouldShowLoadingIndicator:(BOOL)indicator;
 - (void)showNextFrame;
 - (void)validateLoadedImage;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SXImageView
 
-- (SXImageView)initWithImageResource:(id)a3 resourceDataSource:(id)a4 reachabilityProvider:(id)a5
+- (SXImageView)initWithImageResource:(id)resource resourceDataSource:(id)source reachabilityProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resourceCopy = resource;
+  sourceCopy = source;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = SXImageView;
   v12 = [(SXImageView *)&v18 init];
@@ -63,17 +63,17 @@
   {
     v12->_autoPlayEnabled = 1;
     v12->_paused = 1;
-    objc_storeStrong(&v12->_imageResource, a3);
-    objc_storeWeak(&v13->_resourceDataSource, v10);
+    objc_storeStrong(&v12->_imageResource, resource);
+    objc_storeWeak(&v13->_resourceDataSource, sourceCopy);
     v14 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:5 valueOptions:0];
     interestTable = v13->_interestTable;
     v13->_interestTable = v14;
 
     v13->_intendedFrameIndex = -1;
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v13 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
 
-    [v11 addReachabilityObserver:v13];
+    [providerCopy addReachabilityObserver:v13];
   }
 
   return v13;
@@ -81,8 +81,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SXImageView *)self activeTimer];
-  [v3 invalidate];
+  activeTimer = [(SXImageView *)self activeTimer];
+  [activeTimer invalidate];
 
   [(SXImageView *)self setActiveTimer:0];
   v4.receiver = self;
@@ -90,11 +90,11 @@
   [(SXImageView *)&v4 dealloc];
 }
 
-- (void)setShouldShowLoadingIndicator:(BOOL)a3
+- (void)setShouldShowLoadingIndicator:(BOOL)indicator
 {
-  self->_shouldShowLoadingIndicator = a3;
-  v4 = [(SXImageView *)self activityIndicatorView];
-  if (v4)
+  self->_shouldShowLoadingIndicator = indicator;
+  activityIndicatorView = [(SXImageView *)self activityIndicatorView];
+  if (activityIndicatorView)
   {
 
     goto LABEL_8;
@@ -105,8 +105,8 @@
 LABEL_8:
     if (![(SXImageView *)self shouldShowLoadingIndicator])
     {
-      v8 = [(SXImageView *)self activityIndicatorView];
-      [v8 removeFromSuperview];
+      activityIndicatorView2 = [(SXImageView *)self activityIndicatorView];
+      [activityIndicatorView2 removeFromSuperview];
 
       [(SXImageView *)self setActivityIndicatorView:0];
     }
@@ -117,32 +117,32 @@ LABEL_8:
   v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   [(SXImageView *)self setActivityIndicatorView:v5];
 
-  v6 = [(SXImageView *)self activityIndicatorView];
-  [v6 setHidesWhenStopped:1];
+  activityIndicatorView3 = [(SXImageView *)self activityIndicatorView];
+  [activityIndicatorView3 setHidesWhenStopped:1];
 
   [(SXImageView *)self layoutActivityIndicator];
-  v7 = [(SXImageView *)self activityIndicatorView];
-  [(SXImageView *)self addSubview:v7];
+  activityIndicatorView4 = [(SXImageView *)self activityIndicatorView];
+  [(SXImageView *)self addSubview:activityIndicatorView4];
 
   if (![(SXImageView *)self hasLoadedImage])
   {
-    v9 = [(SXImageView *)self activityIndicatorView];
-    [v9 startAnimating];
+    activityIndicatorView5 = [(SXImageView *)self activityIndicatorView];
+    [activityIndicatorView5 startAnimating];
   }
 }
 
-- (void)setLoadingIndicatorStyle:(int64_t)a3
+- (void)setLoadingIndicatorStyle:(int64_t)style
 {
-  v4 = [(SXImageView *)self activityIndicatorView];
-  [v4 setActivityIndicatorViewStyle:a3];
+  activityIndicatorView = [(SXImageView *)self activityIndicatorView];
+  [activityIndicatorView setActivityIndicatorViewStyle:style];
 }
 
 - (int64_t)loadingIndicatorStyle
 {
-  v2 = [(SXImageView *)self activityIndicatorView];
-  v3 = [v2 activityIndicatorViewStyle];
+  activityIndicatorView = [(SXImageView *)self activityIndicatorView];
+  activityIndicatorViewStyle = [activityIndicatorView activityIndicatorViewStyle];
 
-  return v3;
+  return activityIndicatorViewStyle;
 }
 
 - (void)layoutActivityIndicator
@@ -151,23 +151,23 @@ LABEL_8:
   v4 = v3 * 0.5;
   [(SXImageView *)self bounds];
   v6 = v5 * 0.5;
-  v7 = [(SXImageView *)self activityIndicatorView];
-  [v7 setCenter:{v4, v6}];
+  activityIndicatorView = [(SXImageView *)self activityIndicatorView];
+  [activityIndicatorView setCenter:{v4, v6}];
 }
 
-- (void)addInterestInImageQuality:(int)a3 forObject:(id)a4
+- (void)addInterestInImageQuality:(int)quality forObject:(id)object
 {
-  v4 = *&a3;
-  v11 = a4;
-  v6 = [(SXImageView *)self interestTable];
-  v7 = [v6 objectForKey:v11];
+  v4 = *&quality;
+  objectCopy = object;
+  interestTable = [(SXImageView *)self interestTable];
+  v7 = [interestTable objectForKey:objectCopy];
 
   if (v7)
   {
     if ([v7 intValue] != v4)
     {
-      [(SXImageView *)self giveUpInterestForObject:v11];
-      [(SXImageView *)self addInterestInImageQuality:v4 forObject:v11];
+      [(SXImageView *)self giveUpInterestForObject:objectCopy];
+      [(SXImageView *)self addInterestInImageQuality:v4 forObject:objectCopy];
     }
   }
 
@@ -180,25 +180,25 @@ LABEL_8:
     }
 
     ++*(&self->super.super.super.super.isa + *v8);
-    v9 = [(SXImageView *)self interestTable];
+    interestTable2 = [(SXImageView *)self interestTable];
     v10 = [MEMORY[0x1E696AD98] numberWithInt:v4];
-    [v9 setObject:v10 forKey:v11];
+    [interestTable2 setObject:v10 forKey:objectCopy];
 
     [(SXImageView *)self validateLoadedImage];
   }
 }
 
-- (void)giveUpInterestForObject:(id)a3
+- (void)giveUpInterestForObject:(id)object
 {
-  v17 = a3;
-  v4 = [(SXImageView *)self interestTable];
-  v5 = [v4 objectForKey:v17];
+  objectCopy = object;
+  interestTable = [(SXImageView *)self interestTable];
+  v5 = [interestTable objectForKey:objectCopy];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
     v7 = &OBJC_IVAR___SXImageView__highQualityInterest;
-    if (!v6)
+    if (!intValue)
     {
       v7 = &OBJC_IVAR___SXImageView__preferredQualityInterest;
     }
@@ -206,27 +206,27 @@ LABEL_8:
     --*(&self->super.super.super.super.isa + *v7);
     if (![(SXImageView *)self prefersHighQuality])
     {
-      v8 = [(SXImageView *)self highQualityImage];
+      highQualityImage = [(SXImageView *)self highQualityImage];
 
-      if (v8)
+      if (highQualityImage)
       {
         [(SXImageView *)self setHighQualityImage:0];
       }
     }
 
-    v9 = [(SXImageView *)self interestTable];
-    [v9 removeObjectForKey:v17];
+    interestTable2 = [(SXImageView *)self interestTable];
+    [interestTable2 removeObjectForKey:objectCopy];
 
     if ([(SXImageView *)self hasInterest])
     {
       if (![(SXImageView *)self prefersHighQuality])
       {
-        v10 = [(SXImageView *)self highQualityImageRequestCancelHandler];
+        highQualityImageRequestCancelHandler = [(SXImageView *)self highQualityImageRequestCancelHandler];
 
-        if (v10)
+        if (highQualityImageRequestCancelHandler)
         {
-          v11 = [(SXImageView *)self highQualityImageRequestCancelHandler];
-          v11[2]();
+          highQualityImageRequestCancelHandler2 = [(SXImageView *)self highQualityImageRequestCancelHandler];
+          highQualityImageRequestCancelHandler2[2]();
 
           [(SXImageView *)self setHighQualityImageRequestCancelHandler:0];
         }
@@ -235,45 +235,45 @@ LABEL_8:
 
     else
     {
-      v12 = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
+      preferredQualityImageRequestCancelHandler = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
 
-      if (v12)
+      if (preferredQualityImageRequestCancelHandler)
       {
-        v13 = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
-        v13[2]();
+        preferredQualityImageRequestCancelHandler2 = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
+        preferredQualityImageRequestCancelHandler2[2]();
 
         [(SXImageView *)self setPreferredQualityImageRequestCancelHandler:0];
         [(SXImageView *)self setPreferredQualityLoadingImageSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
       }
 
-      v14 = [(SXImageView *)self highQualityImageRequestCancelHandler];
+      highQualityImageRequestCancelHandler3 = [(SXImageView *)self highQualityImageRequestCancelHandler];
 
-      if (v14)
+      if (highQualityImageRequestCancelHandler3)
       {
-        v15 = [(SXImageView *)self highQualityImageRequestCancelHandler];
-        v15[2]();
+        highQualityImageRequestCancelHandler4 = [(SXImageView *)self highQualityImageRequestCancelHandler];
+        highQualityImageRequestCancelHandler4[2]();
 
         [(SXImageView *)self setHighQualityImageRequestCancelHandler:0];
       }
 
       if ([(SXImageView *)self containsAnimatedImage])
       {
-        v16 = [(SXImageView *)self animatedImage];
-        [v16 setPreloadType:0 currentFrameIndex:0];
+        animatedImage = [(SXImageView *)self animatedImage];
+        [animatedImage setPreloadType:0 currentFrameIndex:0];
       }
     }
   }
 }
 
-- (BOOL)objectHasQualityInterest:(id)a3 quality:(int *)a4
+- (BOOL)objectHasQualityInterest:(id)interest quality:(int *)quality
 {
-  v6 = a3;
-  v7 = [(SXImageView *)self interestTable];
-  v8 = [v7 objectForKey:v6];
+  interestCopy = interest;
+  interestTable = [(SXImageView *)self interestTable];
+  v8 = [interestTable objectForKey:interestCopy];
 
-  if (a4 && v8)
+  if (quality && v8)
   {
-    *a4 = [v8 intValue];
+    *quality = [v8 intValue];
   }
 
   return v8 != 0;
@@ -289,22 +289,22 @@ LABEL_8:
 
   if (![(SXImageView *)self prefersHighQuality])
   {
-    v9 = [(SXImageView *)self preferredQualityImage];
-    [v9 size];
+    preferredQualityImage = [(SXImageView *)self preferredQualityImage];
+    [preferredQualityImage size];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(SXImageView *)self preferredQualityImage];
-    if (!v14)
+    preferredQualityImage2 = [(SXImageView *)self preferredQualityImage];
+    if (!preferredQualityImage2)
     {
       goto LABEL_14;
     }
 
-    v15 = v14;
-    v16 = [(SXImageView *)self preferredQualityImage];
-    if (v16)
+    v15 = preferredQualityImage2;
+    preferredQualityImage3 = [(SXImageView *)self preferredQualityImage];
+    if (preferredQualityImage3)
     {
-      v17 = v16;
+      v17 = preferredQualityImage3;
       v18 = ceil(v11);
       [(SXImageView *)self preferredImageSize];
       v20 = v19;
@@ -331,34 +331,34 @@ LABEL_14:
     {
     }
 
-    v29 = [(SXImageView *)self image];
-    v30 = [(SXImageView *)self preferredQualityImage];
+    image = [(SXImageView *)self image];
+    preferredQualityImage4 = [(SXImageView *)self preferredQualityImage];
 
-    if (v29 == v30)
+    if (image == preferredQualityImage4)
     {
       return;
     }
 
-    v8 = [(SXImageView *)self preferredQualityImage];
+    preferredQualityImage5 = [(SXImageView *)self preferredQualityImage];
     goto LABEL_25;
   }
 
-  v5 = [(SXImageView *)self highQualityImage];
+  highQualityImage = [(SXImageView *)self highQualityImage];
 
-  if (v5)
+  if (highQualityImage)
   {
-    v6 = [(SXImageView *)self highQualityImage];
-    v7 = [(SXImageView *)self image];
+    highQualityImage2 = [(SXImageView *)self highQualityImage];
+    image2 = [(SXImageView *)self image];
 
-    if (v6 == v7)
+    if (highQualityImage2 == image2)
     {
       return;
     }
 
-    v8 = [(SXImageView *)self highQualityImage];
+    preferredQualityImage5 = [(SXImageView *)self highQualityImage];
 LABEL_25:
-    v31 = v8;
-    [(SXImageView *)self crossfadeToImage:v8];
+    v31 = preferredQualityImage5;
+    [(SXImageView *)self crossfadeToImage:preferredQualityImage5];
 
     return;
   }
@@ -371,20 +371,20 @@ LABEL_25:
   [(SXImageView *)self preferredImageSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
+  preferredQualityImageRequestCancelHandler = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
 
-  if (v7)
+  if (preferredQualityImageRequestCancelHandler)
   {
-    v8 = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
-    v8[2]();
+    preferredQualityImageRequestCancelHandler2 = [(SXImageView *)self preferredQualityImageRequestCancelHandler];
+    preferredQualityImageRequestCancelHandler2[2]();
 
     [(SXImageView *)self setPreferredQualityImageRequestCancelHandler:0];
   }
 
   if (![(SXImageView *)self hasLoadedImage])
   {
-    v9 = [(SXImageView *)self activityIndicatorView];
-    [v9 startAnimating];
+    activityIndicatorView = [(SXImageView *)self activityIndicatorView];
+    [activityIndicatorView startAnimating];
   }
 
   self->_preferredQualityLoadingImageSize.width = v4;
@@ -397,17 +397,17 @@ LABEL_25:
   objc_copyWeak(&v25, &location);
   v10 = MEMORY[0x1DA716BE0](&v21);
   v11 = [(SXImageView *)self imageResource:v21];
-  v12 = [v11 wideColorSpace];
+  wideColorSpace = [v11 wideColorSpace];
 
   v13 = [SXImageRequest alloc];
-  v14 = [(SXImageView *)self imageResource];
-  v15 = [v14 imageIdentifier];
-  v16 = [(SXImageView *)self imageResource];
-  v17 = [v16 URL];
-  v18 = [(SXImageRequest *)v13 initWithImageIdentifier:v15 imageQualities:6 url:v17 size:v12 preserveColorspace:v10 loadingBlock:v4, v6];
+  imageResource = [(SXImageView *)self imageResource];
+  imageIdentifier = [imageResource imageIdentifier];
+  imageResource2 = [(SXImageView *)self imageResource];
+  v17 = [imageResource2 URL];
+  v18 = [(SXImageRequest *)v13 initWithImageIdentifier:imageIdentifier imageQualities:6 url:v17 size:wideColorSpace preserveColorspace:v10 loadingBlock:v4, v6];
 
-  v19 = [(SXImageView *)self resourceDataSource];
-  v20 = [v19 loadImagesForImageRequest:v18 completionBlock:0];
+  resourceDataSource = [(SXImageView *)self resourceDataSource];
+  v20 = [resourceDataSource loadImagesForImageRequest:v18 completionBlock:0];
   [(SXImageView *)self setPreferredQualityImageRequestCancelHandler:v20];
 
   objc_destroyWeak(&v25);
@@ -474,40 +474,40 @@ void __40__SXImageView_loadPreferredQualityImage__block_invoke(uint64_t a1, void
 {
   if (![(SXImageView *)self hasLoadedImage])
   {
-    v3 = [(SXImageView *)self activityIndicatorView];
-    [v3 startAnimating];
+    activityIndicatorView = [(SXImageView *)self activityIndicatorView];
+    [activityIndicatorView startAnimating];
   }
 
   objc_initWeak(&location, self);
-  v4 = [(SXImageView *)self highQualityImageRequestCancelHandler];
-  if (!v4)
+  highQualityImageRequestCancelHandler = [(SXImageView *)self highQualityImageRequestCancelHandler];
+  if (!highQualityImageRequestCancelHandler)
   {
-    v5 = [(SXImageView *)self highQualityImage];
+    highQualityImage = [(SXImageView *)self highQualityImage];
 
-    if (v5)
+    if (highQualityImage)
     {
       goto LABEL_6;
     }
 
-    v4 = objc_loadWeakRetained(&location);
+    highQualityImageRequestCancelHandler = objc_loadWeakRetained(&location);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __35__SXImageView_loadHighQualityImage__block_invoke;
     v17[3] = &unk_1E84FEFB0;
-    v17[4] = v4;
+    v17[4] = highQualityImageRequestCancelHandler;
     v6 = MEMORY[0x1DA716BE0](v17);
-    v7 = [(SXImageView *)self imageResource];
-    v8 = [v7 wideColorSpace];
+    imageResource = [(SXImageView *)self imageResource];
+    wideColorSpace = [imageResource wideColorSpace];
 
     v9 = [SXImageRequest alloc];
-    v10 = [(SXImageView *)self imageResource];
-    v11 = [v10 imageIdentifier];
-    v12 = [(SXImageView *)self imageResource];
-    v13 = [v12 URL];
-    v14 = [(SXImageRequest *)v9 initWithImageIdentifier:v11 imageQualities:6 url:v13 size:v8 preserveColorspace:v6 loadingBlock:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    imageResource2 = [(SXImageView *)self imageResource];
+    imageIdentifier = [imageResource2 imageIdentifier];
+    imageResource3 = [(SXImageView *)self imageResource];
+    v13 = [imageResource3 URL];
+    v14 = [(SXImageRequest *)v9 initWithImageIdentifier:imageIdentifier imageQualities:6 url:v13 size:wideColorSpace preserveColorspace:v6 loadingBlock:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
-    v15 = [(SXImageView *)self resourceDataSource];
-    v16 = [v15 loadImagesForImageRequest:v14 completionBlock:0];
+    resourceDataSource = [(SXImageView *)self resourceDataSource];
+    v16 = [resourceDataSource loadImagesForImageRequest:v14 completionBlock:0];
     [(SXImageView *)self setHighQualityImageRequestCancelHandler:v16];
   }
 
@@ -582,17 +582,17 @@ LABEL_14:
   [*(a1 + 32) setHighQualityImageRequestCancelHandler:0];
 }
 
-- (void)didLoadAnimatedImage:(id)a3
+- (void)didLoadAnimatedImage:(id)image
 {
-  [(SXImageView *)self setAnimatedImage:a3];
-  v4 = [(SXImageView *)self delegate];
+  [(SXImageView *)self setAnimatedImage:image];
+  delegate = [(SXImageView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(SXImageView *)self delegate];
-    v6 = [(SXImageView *)self animatedImage];
-    [v7 imageView:self didLoadAnimatedImage:v6];
+    delegate2 = [(SXImageView *)self delegate];
+    animatedImage = [(SXImageView *)self animatedImage];
+    [delegate2 imageView:self didLoadAnimatedImage:animatedImage];
   }
 }
 
@@ -608,16 +608,16 @@ LABEL_14:
 
 - (BOOL)hasLoadedImage
 {
-  v3 = [(SXImageView *)self image];
-  if (v3)
+  image = [(SXImageView *)self image];
+  if (image)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SXImageView *)self animatedImage];
-    v4 = v5 != 0;
+    animatedImage = [(SXImageView *)self animatedImage];
+    v4 = animatedImage != 0;
   }
 
   return v4;
@@ -627,14 +627,14 @@ LABEL_14:
 {
   if ([(SXImageView *)self containsAnimatedImage])
   {
-    v3 = [(SXImageView *)self animatedImage];
-    [v3 imageSize];
+    animatedImage = [(SXImageView *)self animatedImage];
+    [animatedImage imageSize];
   }
 
   else
   {
-    v3 = [(SXImageView *)self image];
-    [v3 size];
+    animatedImage = [(SXImageView *)self image];
+    [animatedImage size];
   }
 
   v6 = v4;
@@ -647,37 +647,37 @@ LABEL_14:
   return result;
 }
 
-- (void)fadeInImageWhenVisible:(id)a3
+- (void)fadeInImageWhenVisible:(id)visible
 {
-  [(SXImageView *)self setImage:a3];
+  [(SXImageView *)self setImage:visible];
   if ([(SXImageView *)self isVisible])
   {
     v5 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     [v5 setFromValue:&unk_1F538A190];
     [v5 setToValue:&unk_1F538A1A8];
     [v5 setDuration:0.2];
-    v4 = [(SXImageView *)self layer];
-    [v4 addAnimation:v5 forKey:@"fadeIn"];
+    layer = [(SXImageView *)self layer];
+    [layer addAnimation:v5 forKey:@"fadeIn"];
   }
 }
 
 - (BOOL)isVisible
 {
-  v3 = [(SXImageView *)self superview];
+  superview = [(SXImageView *)self superview];
   [(SXImageView *)self frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SXImageView *)self window];
-  [v3 convertRect:v12 toView:{v5, v7, v9, v11}];
+  window = [(SXImageView *)self window];
+  [superview convertRect:window toView:{v5, v7, v9, v11}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(SXImageView *)self window];
-  [v21 bounds];
+  window2 = [(SXImageView *)self window];
+  [window2 bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -693,8 +693,8 @@ LABEL_14:
   v34.size.height = v29;
   if (CGRectIntersectsRect(v34, v35))
   {
-    v30 = [(SXImageView *)self window];
-    v31 = v30 != 0;
+    window3 = [(SXImageView *)self window];
+    v31 = window3 != 0;
   }
 
   else
@@ -705,28 +705,28 @@ LABEL_14:
   return v31;
 }
 
-- (void)setPreferredImageSize:(CGSize)a3
+- (void)setPreferredImageSize:(CGSize)size
 {
-  self->_preferredImageSize.width = ceil(a3.width);
-  self->_preferredImageSize.height = ceil(a3.height);
+  self->_preferredImageSize.width = ceil(size.width);
+  self->_preferredImageSize.height = ceil(size.height);
   [(SXImageView *)self validateLoadedImage];
 }
 
-- (void)reachabilityChanged:(BOOL)a3
+- (void)reachabilityChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     [(SXImageView *)self validateLoadedImage];
   }
 }
 
-- (void)setScrubbingEnabled:(BOOL)a3
+- (void)setScrubbingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(SXImageView *)self containsAnimatedImage])
   {
-    self->_scrubbingEnabled = v3;
-    if (v3 && ([(SXImageView *)self scrubGesture], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+    self->_scrubbingEnabled = enabledCopy;
+    if (enabledCopy && ([(SXImageView *)self scrubGesture], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
     {
       [(SXImageView *)self setUserInteractionEnabled:1];
       v8 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel_handleScrubGesture_];
@@ -738,13 +738,13 @@ LABEL_14:
 
     else
     {
-      v6 = [(SXImageView *)self scrubGesture];
+      scrubGesture = [(SXImageView *)self scrubGesture];
 
-      if (v6)
+      if (scrubGesture)
       {
         [(SXImageView *)self setUserInteractionEnabled:0];
-        v7 = [(SXImageView *)self scrubGesture];
-        [(SXImageView *)self removeGestureRecognizer:v7];
+        scrubGesture2 = [(SXImageView *)self scrubGesture];
+        [(SXImageView *)self removeGestureRecognizer:scrubGesture2];
 
         [(SXImageView *)self setScrubGesture:0];
       }
@@ -757,63 +757,63 @@ LABEL_14:
   }
 }
 
-- (void)handleScrubGesture:(id)a3
+- (void)handleScrubGesture:(id)gesture
 {
-  v30 = a3;
-  if ([v30 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
     [(SXImageView *)self pause];
-    [v30 locationInView:self];
+    [gestureCopy locationInView:self];
     [(SXImageView *)self setPreviousPoint:?];
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
 LABEL_17:
-    [(SXImageView *)v4 setIsScrubbing:v5];
+    [(SXImageView *)selfCopy2 setIsScrubbing:v5];
 LABEL_18:
-    v26 = v30;
+    v26 = gestureCopy;
     goto LABEL_19;
   }
 
-  if ([v30 state] == 2)
+  if ([gestureCopy state] == 2)
   {
-    v6 = [(SXImageView *)self animatedImage];
-    v7 = [v6 numberOfFrames];
+    animatedImage = [(SXImageView *)self animatedImage];
+    numberOfFrames = [animatedImage numberOfFrames];
 
-    [v30 locationInView:self];
+    [gestureCopy locationInView:self];
     v9 = v8;
     v11 = v10;
     [(SXImageView *)self previousPoint];
     v13 = v12;
-    v14 = [(SXImageView *)self frameIndex];
-    v15 = [(SXImageView *)self animatedImage];
-    v16 = [v15 numberOfFrames];
-    v17 = [(SXImageView *)self frameIndex];
+    frameIndex = [(SXImageView *)self frameIndex];
+    animatedImage2 = [(SXImageView *)self animatedImage];
+    numberOfFrames2 = [animatedImage2 numberOfFrames];
+    frameIndex2 = [(SXImageView *)self frameIndex];
 
     [(SXImageView *)self frame];
     Width = CGRectGetWidth(v32);
-    v19 = [(SXImageView *)self frameIndex];
+    frameIndex3 = [(SXImageView *)self frameIndex];
     if (v9 <= v13)
     {
       [(SXImageView *)self previousPoint];
-      v28 = v27 / v14;
+      v28 = v27 / frameIndex;
       [(SXImageView *)self previousPoint];
-      v20 = ((__PAIR128__(v19, *&v9) - COERCE_UNSIGNED_INT64(v29 - v28 + 20.0)) >> 64) & ~(((__PAIR128__(v19, *&v9) - COERCE_UNSIGNED_INT64(v29 - v28 + 20.0)) >> 64) >> 63);
+      v20 = ((__PAIR128__(frameIndex3, *&v9) - COERCE_UNSIGNED_INT64(v29 - v28 + 20.0)) >> 64) & ~(((__PAIR128__(frameIndex3, *&v9) - COERCE_UNSIGNED_INT64(v29 - v28 + 20.0)) >> 64) >> 63);
     }
 
     else
     {
-      v20 = v7 - 1;
+      v20 = numberOfFrames - 1;
       [(SXImageView *)self previousPoint];
-      v22 = (Width - v21) / (v16 - v17);
+      v22 = (Width - v21) / (numberOfFrames2 - frameIndex2);
       [(SXImageView *)self previousPoint];
       if (v9 <= v23 + v22)
       {
-        v24 = v19;
+        v24 = frameIndex3;
       }
 
       else
       {
-        v24 = v19 + 1;
+        v24 = frameIndex3 + 1;
       }
 
       if (v20 >= v24)
@@ -823,7 +823,7 @@ LABEL_18:
     }
 
     v25 = [(SXImageView *)self frameIndex]== v20;
-    v26 = v30;
+    v26 = gestureCopy;
     if (!v25)
     {
       [(SXImageView *)self setFrameIndex:v20 allowNearest:1];
@@ -832,14 +832,14 @@ LABEL_18:
     }
   }
 
-  else if ([v30 state] == 3 || (v25 = objc_msgSend(v30, "state") == 4, v26 = v30, v25))
+  else if ([gestureCopy state] == 3 || (v25 = objc_msgSend(gestureCopy, "state") == 4, v26 = gestureCopy, v25))
   {
     if ([(SXImageView *)self autoPlayEnabled])
     {
       [(SXImageView *)self resume];
     }
 
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0;
     goto LABEL_17;
   }
@@ -856,12 +856,12 @@ LABEL_19:
   [(SXImageView *)self validateLoadedImage];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = SXImageView;
   [(SXImageView *)&v5 willMoveToSuperview:?];
-  if (a3)
+  if (superview)
   {
     [(SXImageView *)self setShouldResume:[(SXImageView *)self autoPlayEnabled]];
   }
@@ -872,13 +872,13 @@ LABEL_19:
   v6.receiver = self;
   v6.super_class = SXImageView;
   [(SXImageView *)&v6 didMoveToSuperview];
-  v3 = [(SXImageView *)self superview];
-  if (v3)
+  superview = [(SXImageView *)self superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [(SXImageView *)self shouldResume];
+    v4 = superview;
+    shouldResume = [(SXImageView *)self shouldResume];
 
-    if (v5)
+    if (shouldResume)
     {
       [(SXImageView *)self resume];
       [(SXImageView *)self setShouldResume:0];
@@ -892,90 +892,90 @@ LABEL_19:
   v7.receiver = self;
   v7.super_class = SXImageView;
   [(SXImageView *)&v7 didMoveToWindow];
-  v3 = [(SXImageView *)self window];
+  window = [(SXImageView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     [(SXImageView *)self pause];
     goto LABEL_6;
   }
 
-  v4 = [(SXImageView *)self superview];
-  if (v4)
+  superview = [(SXImageView *)self superview];
+  if (superview)
   {
-    v5 = v4;
-    v6 = [(SXImageView *)self shouldResume];
+    v5 = superview;
+    shouldResume = [(SXImageView *)self shouldResume];
 
-    if (v6)
+    if (shouldResume)
     {
       [(SXImageView *)self resume];
 LABEL_6:
-      [(SXImageView *)self setShouldResume:v3 == 0];
+      [(SXImageView *)self setShouldResume:window == 0];
     }
   }
 }
 
 - (BOOL)containsAnimatedImage
 {
-  v2 = [(SXImageView *)self animatedImage];
-  v3 = v2 != 0;
+  animatedImage = [(SXImageView *)self animatedImage];
+  v3 = animatedImage != 0;
 
   return v3;
 }
 
-- (void)setAnimatedImage:(id)a3
+- (void)setAnimatedImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_animatedImage != v5)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (self->_animatedImage != imageCopy)
   {
-    v11 = v5;
+    v11 = imageCopy;
     v7 = [(SXImageView *)self scrubbingEnabled]? 2 : 1;
     [v11 setPreloadType:v7 currentFrameIndex:{-[SXImageView frameIndex](self, "frameIndex")}];
     [(SXAnimatedImage *)self->_animatedImage setDelegate:0];
     [v11 setDelegate:self];
-    objc_storeStrong(&self->_animatedImage, a3);
-    v8 = [v11 loopCount];
-    v9 = [v11 loopCount];
-    v10 = v8 == -1 ? v9 : v9 + 1;
+    objc_storeStrong(&self->_animatedImage, image);
+    loopCount = [v11 loopCount];
+    loopCount2 = [v11 loopCount];
+    v10 = loopCount == -1 ? loopCount2 : loopCount2 + 1;
     self->_playCount = v10;
-    v5 = [(SXImageView *)self shouldResumeAfterLoad];
+    imageCopy = [(SXImageView *)self shouldResumeAfterLoad];
     v6 = v11;
-    if (v5)
+    if (imageCopy)
     {
       [(SXImageView *)self resume];
-      v5 = [(SXImageView *)self setShouldResumeAfterLoad:0];
+      imageCopy = [(SXImageView *)self setShouldResumeAfterLoad:0];
       v6 = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](imageCopy, v6);
 }
 
 - (void)showNextFrame
 {
-  v3 = [(SXImageView *)self window];
+  window = [(SXImageView *)self window];
 
-  if (!v3)
+  if (!window)
   {
-    v4 = [(SXImageView *)self activeTimer];
-    [v4 invalidate];
+    activeTimer = [(SXImageView *)self activeTimer];
+    [activeTimer invalidate];
 
     [(SXImageView *)self setActiveTimer:0];
-    v5 = [(SXImageView *)self animatedImage];
-    [v5 suspendPreloading];
+    animatedImage = [(SXImageView *)self animatedImage];
+    [animatedImage suspendPreloading];
 
     [(SXImageView *)self setPaused:1];
   }
 
-  v6 = [(SXImageView *)self animatedImage];
-  v26 = [v6 frameAtIndex:{-[SXImageView frameIndex](self, "frameIndex")}];
+  animatedImage2 = [(SXImageView *)self animatedImage];
+  v26 = [animatedImage2 frameAtIndex:{-[SXImageView frameIndex](self, "frameIndex")}];
 
   v7 = [(SXAnimatedImageFrame *)v26 index]+ 1;
-  v8 = [(SXImageView *)self animatedImage];
-  v9 = [v8 numberOfFrames];
+  animatedImage3 = [(SXImageView *)self animatedImage];
+  numberOfFrames = [animatedImage3 numberOfFrames];
 
-  if (v7 >= v9)
+  if (v7 >= numberOfFrames)
   {
     [(SXImageView *)self setPlayCount:[(SXImageView *)self playCount]- 1];
     if (![(SXImageView *)self playCount])
@@ -987,78 +987,78 @@ LABEL_6:
     v7 = 0;
   }
 
-  v10 = [(SXImageView *)self animatedImage];
-  v11 = [v10 frameAtIndex:v7];
+  animatedImage4 = [(SXImageView *)self animatedImage];
+  v11 = [animatedImage4 frameAtIndex:v7];
 
-  v12 = [(SXAnimatedImageFrame *)v11 image];
+  image = [(SXAnimatedImageFrame *)v11 image];
 
-  if (v12)
+  if (image)
   {
     self->_frameIndex = v7;
-    v13 = [(SXAnimatedImageFrame *)v11 image];
-    [(SXImageView *)self setImage:v13];
+    image2 = [(SXAnimatedImageFrame *)v11 image];
+    [(SXImageView *)self setImage:image2];
 
-    v14 = [(SXImageView *)self frameChangeBlock];
+    frameChangeBlock = [(SXImageView *)self frameChangeBlock];
 
-    if (v14)
+    if (frameChangeBlock)
     {
-      v15 = [(SXImageView *)self frameChangeBlock];
-      v16 = [(SXImageView *)self frameIndex];
-      v17 = [(SXImageView *)self animatedImage];
-      (v15)[2](v15, self, v16, [v17 numberOfFrames]);
+      frameChangeBlock2 = [(SXImageView *)self frameChangeBlock];
+      frameIndex = [(SXImageView *)self frameIndex];
+      animatedImage5 = [(SXImageView *)self animatedImage];
+      (frameChangeBlock2)[2](frameChangeBlock2, self, frameIndex, [animatedImage5 numberOfFrames]);
     }
 
-    v18 = [(SXImageView *)self activeTimer];
-    v19 = [v18 isValid];
+    activeTimer2 = [(SXImageView *)self activeTimer];
+    isValid = [activeTimer2 isValid];
 
-    if (v19)
+    if (isValid)
     {
-      v20 = [(SXImageView *)self activeTimer];
-      [v20 invalidate];
+      activeTimer3 = [(SXImageView *)self activeTimer];
+      [activeTimer3 invalidate];
     }
 
     v21 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel_showNextFrame selector:0 userInfo:0 repeats:-[SXAnimatedImageFrame duration](v11)];
     [(SXImageView *)self setActiveTimer:v21];
 
-    v22 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    v23 = [(SXImageView *)self activeTimer];
-    [v22 addTimer:v23 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    activeTimer4 = [(SXImageView *)self activeTimer];
+    [currentRunLoop addTimer:activeTimer4 forMode:*MEMORY[0x1E695DA28]];
 
-    v24 = self;
-    v25 = -1;
+    selfCopy2 = self;
+    index = -1;
   }
 
   else
   {
-    v25 = [(SXAnimatedImageFrame *)v11 index];
-    v24 = self;
+    index = [(SXAnimatedImageFrame *)v11 index];
+    selfCopy2 = self;
   }
 
-  [(SXImageView *)v24 setIntendedFrameIndex:v25];
+  [(SXImageView *)selfCopy2 setIntendedFrameIndex:index];
 
 LABEL_14:
 }
 
-- (void)setFrameIndex:(unint64_t)a3 allowNearest:(BOOL)a4
+- (void)setFrameIndex:(unint64_t)index allowNearest:(BOOL)nearest
 {
-  v4 = a4;
-  self->_frameIndex = a3;
-  v6 = [(SXImageView *)self animatedImage];
-  v7 = [v6 frameAtIndex:-[SXImageView frameIndex](self returnNearestPreloaded:{"frameIndex"), v4}];
-  v9 = [(SXAnimatedImageFrame *)v7 image];
+  nearestCopy = nearest;
+  self->_frameIndex = index;
+  animatedImage = [(SXImageView *)self animatedImage];
+  v7 = [animatedImage frameAtIndex:-[SXImageView frameIndex](self returnNearestPreloaded:{"frameIndex"), nearestCopy}];
+  image = [(SXAnimatedImageFrame *)v7 image];
 
-  v8 = v9;
-  if (v9)
+  v8 = image;
+  if (image)
   {
-    [(SXImageView *)self setImage:v9];
-    v8 = v9;
+    [(SXImageView *)self setImage:image];
+    v8 = image;
   }
 }
 
 - (BOOL)paused
 {
-  v2 = [(SXImageView *)self activeTimer];
-  v3 = v2 == 0;
+  activeTimer = [(SXImageView *)self activeTimer];
+  v3 = activeTimer == 0;
 
   return v3;
 }
@@ -1076,12 +1076,12 @@ LABEL_14:
 
   else
   {
-    v3 = [(SXImageView *)self activeTimer];
-    [v3 invalidate];
+    activeTimer = [(SXImageView *)self activeTimer];
+    [activeTimer invalidate];
 
     [(SXImageView *)self setActiveTimer:0];
-    v4 = [(SXImageView *)self animatedImage];
-    [v4 suspendPreloading];
+    animatedImage = [(SXImageView *)self animatedImage];
+    [animatedImage suspendPreloading];
   }
 }
 
@@ -1089,8 +1089,8 @@ LABEL_14:
 {
   if ([(SXImageView *)self paused]&& [(SXImageView *)self playCount]&& [(SXImageView *)self containsAnimatedImage])
   {
-    v3 = [(SXImageView *)self animatedImage];
-    [v3 resumePreloading];
+    animatedImage = [(SXImageView *)self animatedImage];
+    [animatedImage resumePreloading];
 
     [(SXImageView *)self showNextFrame];
   }
@@ -1102,34 +1102,34 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXImageView);
-  v5 = [(SXImageView *)self animatedImage];
+  animatedImage = [(SXImageView *)self animatedImage];
 
-  if (v5)
+  if (animatedImage)
   {
-    v6 = [(SXImageView *)self animatedImage];
-    [(SXImageView *)v4 setAnimatedImage:v6];
+    animatedImage2 = [(SXImageView *)self animatedImage];
+    [(SXImageView *)v4 setAnimatedImage:animatedImage2];
   }
 
   else
   {
-    v6 = [(SXImageView *)self image];
-    [(SXImageView *)v4 setImage:v6];
+    animatedImage2 = [(SXImageView *)self image];
+    [(SXImageView *)v4 setImage:animatedImage2];
   }
 
   return v4;
 }
 
-- (void)animatedImage:(id)a3 madeImageAvailableForFrameAtIndex:(unint64_t)a4
+- (void)animatedImage:(id)image madeImageAvailableForFrameAtIndex:(unint64_t)index
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__SXImageView_animatedImage_madeImageAvailableForFrameAtIndex___block_invoke;
   v4[3] = &unk_1E84FEFD8;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = index;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
@@ -1156,13 +1156,13 @@ uint64_t __63__SXImageView_animatedImage_madeImageAvailableForFrameAtIndex___blo
   return v5;
 }
 
-- (id)itemsForCustomRotor:(id)a3
+- (id)itemsForCustomRotor:(id)rotor
 {
-  v4 = a3;
+  rotorCopy = rotor;
   v5 = +[SXAXCustomRotorDefinition imagesRotor];
   v6 = [SXAXCustomRotor rotorWithName:v5];
 
-  if (v6 == v4)
+  if (v6 == rotorCopy)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DC5F8]) initWithTargetElement:self targetRange:0];
     v7 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v8];
@@ -1178,16 +1178,16 @@ uint64_t __63__SXImageView_animatedImage_madeImageAvailableForFrameAtIndex___blo
 
 - (NSString)dragIdentifier
 {
-  v2 = [(SXImageView *)self imageResource];
-  v3 = [v2 imageIdentifier];
+  imageResource = [(SXImageView *)self imageResource];
+  imageIdentifier = [imageResource imageIdentifier];
 
-  return v3;
+  return imageIdentifier;
 }
 
 - (id)stringForAXDragAction
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Drag Image" value:&stru_1F532F6C0 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Drag Image" value:&stru_1F532F6C0 table:0];
 
   return v3;
 }

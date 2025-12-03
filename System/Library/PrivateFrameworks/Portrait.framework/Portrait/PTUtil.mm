@@ -1,36 +1,36 @@
 @interface PTUtil
-+ (double)mirrorMatrix4x4OverX:(__n128)a3;
-+ (double)transformFromRotation:(__n128)a3 translation:(__n128)a4;
-+ (float)adjustIntrinsics:(double)a3 fromImageSize:(double)a4 toViewPortSize:(double)a5;
-+ (float)projectionMatrixForOrientation:(double)a3 intrinsics:(double)a4 fromImageSize:(double)a5 viewportSize:(__n128)a6 reverseZ:(float64_t)a7 depthNearFar:;
-+ (id)findMipmapLevel:(id)a3 largerThan:(id *)a4;
-+ (id)findMipmapLevel:(id)a3 largerThan:(id *)a4 fromLevel:(int)a5;
-+ (id)temporaryDirectory:(id)a3;
-+ (int)getRotationDegreesFromAffineTransform:(CGAffineTransform *)a3;
-+ (int)orientationForTransform:(CGAffineTransform *)a3 size:(id *)a4;
-+ (unsigned)orientationFromTransform:(CGAffineTransform *)a3;
-+ (unsigned)orientationFromTransform:(CGAffineTransform *)a3 inverse:(BOOL)a4;
-- (PTUtil)initWithMetalContext:(id)a3;
-- (int)_drawTurboLegendTick:(id)a3 outTexture:(id)a4 rect:(id *)a5 maxValue:(float)a6;
-- (int)drawTurboLegend:(id)a3 outLuma:(id)a4 outChroma:(id)a5 rect:(id *)a6 maxValue:(float)a7;
-- (int)drawTurboLegend:(id)a3 outRGBA:(id)a4 rect:(id *)a5 maxValue:(float)a6;
-- (int)gaussianFilter3x3:(id)a3 inRGB:(id)a4 outRGB:(id)a5;
-- (int)gaussianNoise:(id)a3 inNoise:(id)a4 outTex:(id)a5;
-- (int)reciprocalTex:(id)a3 inTex:(id)a4 outTex:(id)a5 epsilon:(float)a6;
-- (int)renderDisparity:(id)a3 inDisparity:(id)a4 outYUV:(id)a5 region:(PTRegion)a6 drawLegend:(BOOL)a7;
-- (int)renderLine:(PTUtil *)self line:(SEL)a2 color:(id)a3 outTexture:(id)a4;
-- (int)renderRect:(PTUtil *)self rect:(SEL)a2 color:(id)a3 fill:(BOOL)a4 outTexture:(id)a5;
-- (int)sobelFilterSingleChannelColor:(id)a3 input:(id)a4 output:(id)a5 scale:(float)a6;
-- (int)visualizeCircleUsingRect:(id)a3 center:(float)a4 radius:(id)a5 outTexture:;
-- (void)rotateTexture:(id)a3 inTex:(id)a4 outTex:(id)a5 rotationDegrees:(int)a6;
++ (double)mirrorMatrix4x4OverX:(__n128)x;
++ (double)transformFromRotation:(__n128)rotation translation:(__n128)translation;
++ (float)adjustIntrinsics:(double)intrinsics fromImageSize:(double)size toViewPortSize:(double)portSize;
++ (float)projectionMatrixForOrientation:(double)orientation intrinsics:(double)intrinsics fromImageSize:(double)size viewportSize:(__n128)viewportSize reverseZ:(float64_t)z depthNearFar:;
++ (id)findMipmapLevel:(id)level largerThan:(id *)than;
++ (id)findMipmapLevel:(id)level largerThan:(id *)than fromLevel:(int)fromLevel;
++ (id)temporaryDirectory:(id)directory;
++ (int)getRotationDegreesFromAffineTransform:(CGAffineTransform *)transform;
++ (int)orientationForTransform:(CGAffineTransform *)transform size:(id *)size;
++ (unsigned)orientationFromTransform:(CGAffineTransform *)transform;
++ (unsigned)orientationFromTransform:(CGAffineTransform *)transform inverse:(BOOL)inverse;
+- (PTUtil)initWithMetalContext:(id)context;
+- (int)_drawTurboLegendTick:(id)tick outTexture:(id)texture rect:(id *)rect maxValue:(float)value;
+- (int)drawTurboLegend:(id)legend outLuma:(id)luma outChroma:(id)chroma rect:(id *)rect maxValue:(float)value;
+- (int)drawTurboLegend:(id)legend outRGBA:(id)a rect:(id *)rect maxValue:(float)value;
+- (int)gaussianFilter3x3:(id)filter3x3 inRGB:(id)b outRGB:(id)gB;
+- (int)gaussianNoise:(id)noise inNoise:(id)inNoise outTex:(id)tex;
+- (int)reciprocalTex:(id)tex inTex:(id)inTex outTex:(id)outTex epsilon:(float)epsilon;
+- (int)renderDisparity:(id)disparity inDisparity:(id)inDisparity outYUV:(id)v region:(PTRegion)region drawLegend:(BOOL)legend;
+- (int)renderLine:(PTUtil *)self line:(SEL)line color:(id)color outTexture:(id)texture;
+- (int)renderRect:(PTUtil *)self rect:(SEL)rect color:(id)color fill:(BOOL)fill outTexture:(id)texture;
+- (int)sobelFilterSingleChannelColor:(id)color input:(id)input output:(id)output scale:(float)scale;
+- (int)visualizeCircleUsingRect:(id)rect center:(float)center radius:(id)radius outTexture:;
+- (void)rotateTexture:(id)texture inTex:(id)tex outTex:(id)outTex rotationDegrees:(int)degrees;
 @end
 
 @implementation PTUtil
 
-- (PTUtil)initWithMetalContext:(id)a3
+- (PTUtil)initWithMetalContext:(id)context
 {
   v126 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v124.receiver = self;
   v124.super_class = PTUtil;
   v6 = [(PTUtil *)&v124 init];
@@ -40,8 +40,8 @@
     goto LABEL_35;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
-  v8 = [v5 computePipelineStateFor:@"renderDisparity" withConstants:0];
+  objc_storeStrong(&v6->_metalContext, context);
+  v8 = [contextCopy computePipelineStateFor:@"renderDisparity" withConstants:0];
   renderDisparity = v7->_renderDisparity;
   v7->_renderDisparity = v8;
 
@@ -56,7 +56,7 @@
     goto LABEL_34;
   }
 
-  v10 = [v5 computePipelineStateFor:@"reciprocal" withConstants:0];
+  v10 = [contextCopy computePipelineStateFor:@"reciprocal" withConstants:0];
   reciprocal = v7->_reciprocal;
   v7->_reciprocal = v10;
 
@@ -71,7 +71,7 @@
     goto LABEL_34;
   }
 
-  v12 = [v5 computePipelineStateFor:@"sobelFilter" withConstants:0];
+  v12 = [contextCopy computePipelineStateFor:@"sobelFilter" withConstants:0];
   sobelFilter = v7->_sobelFilter;
   v7->_sobelFilter = v12;
 
@@ -86,7 +86,7 @@
     goto LABEL_34;
   }
 
-  v14 = [v5 computePipelineStateFor:@"gaussianNoise" withConstants:0];
+  v14 = [contextCopy computePipelineStateFor:@"gaussianNoise" withConstants:0];
   gaussianNoise = v7->_gaussianNoise;
   v7->_gaussianNoise = v14;
 
@@ -101,7 +101,7 @@
     goto LABEL_34;
   }
 
-  v16 = [v5 computePipelineStateFor:@"renderRect" withConstants:0];
+  v16 = [contextCopy computePipelineStateFor:@"renderRect" withConstants:0];
   renderRect = v7->_renderRect;
   v7->_renderRect = v16;
 
@@ -116,7 +116,7 @@
     goto LABEL_34;
   }
 
-  v18 = [v5 computePipelineStateFor:@"renderLine" withConstants:0];
+  v18 = [contextCopy computePipelineStateFor:@"renderLine" withConstants:0];
   renderLine = v7->_renderLine;
   v7->_renderLine = v18;
 
@@ -131,7 +131,7 @@
     goto LABEL_34;
   }
 
-  v20 = [v5 computePipelineStateFor:@"visualizeCircleUsingRect" withConstants:0];
+  v20 = [contextCopy computePipelineStateFor:@"visualizeCircleUsingRect" withConstants:0];
   visualizeCircleUsingRect = v7->_visualizeCircleUsingRect;
   v7->_visualizeCircleUsingRect = v20;
 
@@ -146,7 +146,7 @@
     goto LABEL_34;
   }
 
-  v22 = [v5 computePipelineStateFor:@"drawTurboLegend" withConstants:0];
+  v22 = [contextCopy computePipelineStateFor:@"drawTurboLegend" withConstants:0];
   drawTurboLegend = v7->_drawTurboLegend;
   v7->_drawTurboLegend = v22;
 
@@ -161,7 +161,7 @@
     goto LABEL_34;
   }
 
-  v24 = [v5 computePipelineStateFor:@"drawTurboLegendYUV" withConstants:0];
+  v24 = [contextCopy computePipelineStateFor:@"drawTurboLegendYUV" withConstants:0];
   drawTurboLegendYUV = v7->_drawTurboLegendYUV;
   v7->_drawTurboLegendYUV = v24;
 
@@ -176,7 +176,7 @@
     goto LABEL_34;
   }
 
-  v26 = [v5 computePipelineStateFor:@"rotateTexture" withConstants:0];
+  v26 = [contextCopy computePipelineStateFor:@"rotateTexture" withConstants:0];
   rotateTexture = v7->_rotateTexture;
   v7->_rotateTexture = v26;
 
@@ -223,7 +223,7 @@ LABEL_35:
   v38 = objc_opt_new();
   [v38 setConstantHalf3:v123 withName:@"kWeights2DRow0_half3"];
   [v38 setConstantHalf3:v122 withName:@"kWeights2DRow1_half3"];
-  v39 = [v5 computePipelineStateFor:@"gaussianFilter3x3" withConstants:v38];
+  v39 = [contextCopy computePipelineStateFor:@"gaussianFilter3x3" withConstants:v38];
   gaussianFilter3x3 = v7->_gaussianFilter3x3;
   v7->_gaussianFilter3x3 = v39;
 
@@ -247,20 +247,20 @@ LABEL_36:
   return v41;
 }
 
-+ (id)temporaryDirectory:(id)a3
++ (id)temporaryDirectory:(id)directory
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"/"])
+  directoryCopy = directory;
+  if ([directoryCopy hasPrefix:@"/"])
   {
-    if (([v3 hasSuffix:@"/"] & 1) == 0)
+    if (([directoryCopy hasSuffix:@"/"] & 1) == 0)
     {
-      v4 = [v3 stringByAppendingString:@"/"];
+      v4 = [directoryCopy stringByAppendingString:@"/"];
 
-      v3 = v4;
+      directoryCopy = v4;
     }
 
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v5 fileExistsAtPath:v3])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:directoryCopy])
     {
       v6 = 0;
     }
@@ -268,33 +268,33 @@ LABEL_36:
     else
     {
       v17 = 0;
-      [v5 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v17];
+      [defaultManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v17];
       v6 = v17;
     }
 
-    v3 = v3;
-    v9 = temporaryDirectory__res;
-    temporaryDirectory__res = v3;
+    directoryCopy = directoryCopy;
+    date = temporaryDirectory__res;
+    temporaryDirectory__res = directoryCopy;
     goto LABEL_10;
   }
 
   if (!temporaryDirectory__res)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = NSTemporaryDirectory();
     v8 = temporaryDirectory__res;
     temporaryDirectory__res = v7;
 
     v6 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v6 setDateFormat:@"dd-MM-yyyy_HHmmss"];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [v6 stringFromDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [v6 stringFromDate:date];
     v11 = [temporaryDirectory__res stringByAppendingFormat:@"%@/", v10];
     v12 = temporaryDirectory__res;
     temporaryDirectory__res = v11;
 
     v16 = 0;
-    [v5 createDirectoryAtPath:temporaryDirectory__res withIntermediateDirectories:1 attributes:0 error:&v16];
+    [defaultManager createDirectoryAtPath:temporaryDirectory__res withIntermediateDirectories:1 attributes:0 error:&v16];
 
 LABEL_10:
   }
@@ -305,13 +305,13 @@ LABEL_10:
   return v13;
 }
 
-- (int)reciprocalTex:(id)a3 inTex:(id)a4 outTex:(id)a5 epsilon:(float)a6
+- (int)reciprocalTex:(id)tex inTex:(id)inTex outTex:(id)outTex epsilon:(float)epsilon
 {
-  v26 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 computeCommandEncoder];
-  if (!v11)
+  epsilonCopy = epsilon;
+  outTexCopy = outTex;
+  inTexCopy = inTex;
+  computeCommandEncoder = [tex computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v12 = _PTLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -320,28 +320,28 @@ LABEL_10:
     }
   }
 
-  [v11 setComputePipelineState:self->_reciprocal];
-  [v11 setTexture:v10 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_reciprocal];
+  [computeCommandEncoder setTexture:inTexCopy atIndex:0];
 
-  [v11 setTexture:v9 atIndex:1];
-  [v11 setBytes:&v26 length:4 atIndex:0];
-  v20 = [v9 width];
-  v21 = [v9 height];
+  [computeCommandEncoder setTexture:outTexCopy atIndex:1];
+  [computeCommandEncoder setBytes:&epsilonCopy length:4 atIndex:0];
+  width = [outTexCopy width];
+  height = [outTexCopy height];
 
-  v25[0] = v20;
-  v25[1] = v21;
+  v25[0] = width;
+  v25[1] = height;
   v25[2] = 1;
   v23 = xmmword_2244A5230;
   v24 = 1;
-  [v11 dispatchThreads:v25 threadsPerThreadgroup:&v23];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreads:v25 threadsPerThreadgroup:&v23];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_drawTurboLegendTick:(id)a3 outTexture:(id)a4 rect:(id *)a5 maxValue:(float)a6
+- (int)_drawTurboLegendTick:(id)tick outTexture:(id)texture rect:(id *)rect maxValue:(float)value
 {
-  if (a6 >= 0.0)
+  if (value >= 0.0)
   {
     v11 = 0;
     __asm { FMOV            V0.4S, #1.0 }
@@ -349,25 +349,25 @@ LABEL_10:
     v19 = _Q0;
     do
     {
-      LODWORD(v17) = ((a5->var1.var0 * v11) / a6) + LODWORD(a5->var0.var0);
-      HIDWORD(v17) = a5->var0.var1;
-      [(PTUtil *)self renderRect:a3 rect:0 color:a4 fill:v17 outTexture:*&v19, v19];
+      LODWORD(v17) = ((rect->var1.var0 * v11) / value) + LODWORD(rect->var0.var0);
+      HIDWORD(v17) = rect->var0.var1;
+      [(PTUtil *)self renderRect:tick rect:0 color:texture fill:v17 outTexture:*&v19, v19];
       ++v11;
     }
 
-    while (v11 <= a6);
+    while (v11 <= value);
   }
 
   return 0;
 }
 
-- (int)drawTurboLegend:(id)a3 outLuma:(id)a4 outChroma:(id)a5 rect:(id *)a6 maxValue:(float)a7
+- (int)drawTurboLegend:(id)legend outLuma:(id)luma outChroma:(id)chroma rect:(id *)rect maxValue:(float)value
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v14 computeCommandEncoder];
-  if (!v15)
+  chromaCopy = chroma;
+  lumaCopy = luma;
+  legendCopy = legend;
+  computeCommandEncoder = [legendCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v16 = _PTLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -376,40 +376,40 @@ LABEL_10:
     }
   }
 
-  [v15 setComputePipelineState:self->_drawTurboLegendYUV];
-  [v15 setTexture:v13 atIndex:0];
-  [v15 setTexture:v12 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:self->_drawTurboLegendYUV];
+  [computeCommandEncoder setTexture:lumaCopy atIndex:0];
+  [computeCommandEncoder setTexture:chromaCopy atIndex:1];
 
-  v24 = vmovn_s64(*&a6->var0.var0);
+  v24 = vmovn_s64(*&rect->var0.var0);
   v24.i16[1] = v24.i16[2];
-  v24.i16[2] = a6->var1.var0;
-  v24.i16[3] = LOWORD(a6->var1.var1) - 20;
+  v24.i16[2] = rect->var1.var0;
+  v24.i16[3] = LOWORD(rect->var1.var1) - 20;
   v32 = v24;
-  [v15 setBytes:&v32 length:8 atIndex:0];
+  [computeCommandEncoder setBytes:&v32 length:8 atIndex:0];
   *&v27 = v32.u16[2];
   *(&v27 + 1) = v32.u16[3];
   *&v28 = 1;
   v30 = xmmword_2244A5230;
   v31 = 1;
-  [v15 dispatchThreads:&v27 threadsPerThreadgroup:&v30];
-  [v15 endEncoding];
-  a6->var0.var1 = a6->var1.var1 + a6->var0.var1 - 20;
-  a6->var1.var1 = 20;
-  v25 = *&a6->var0.var2;
-  v27 = *&a6->var0.var0;
+  [computeCommandEncoder dispatchThreads:&v27 threadsPerThreadgroup:&v30];
+  [computeCommandEncoder endEncoding];
+  rect->var0.var1 = rect->var1.var1 + rect->var0.var1 - 20;
+  rect->var1.var1 = 20;
+  v25 = *&rect->var0.var2;
+  v27 = *&rect->var0.var0;
   v28 = v25;
-  v29 = *&a6->var1.var1;
-  [(PTUtil *)self _drawTurboLegendTick:v14 outTexture:v13 rect:&v27 maxValue:COERCE_DOUBLE(__PAIR64__(DWORD1(v29), LODWORD(a7)))];
+  v29 = *&rect->var1.var1;
+  [(PTUtil *)self _drawTurboLegendTick:legendCopy outTexture:lumaCopy rect:&v27 maxValue:COERCE_DOUBLE(__PAIR64__(DWORD1(v29), LODWORD(value)))];
 
   return 0;
 }
 
-- (int)drawTurboLegend:(id)a3 outRGBA:(id)a4 rect:(id *)a5 maxValue:(float)a6
+- (int)drawTurboLegend:(id)legend outRGBA:(id)a rect:(id *)rect maxValue:(float)value
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 computeCommandEncoder];
-  if (!v12)
+  aCopy = a;
+  legendCopy = legend;
+  computeCommandEncoder = [legendCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v13 = _PTLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -418,39 +418,39 @@ LABEL_10:
     }
   }
 
-  [v12 setComputePipelineState:self->_drawTurboLegend];
-  [v12 setTexture:v10 atIndex:0];
-  v21 = vmovn_s64(*&a5->var0.var0);
+  [computeCommandEncoder setComputePipelineState:self->_drawTurboLegend];
+  [computeCommandEncoder setTexture:aCopy atIndex:0];
+  v21 = vmovn_s64(*&rect->var0.var0);
   v21.i16[1] = v21.i16[2];
-  v21.i16[2] = a5->var1.var0;
-  v21.i16[3] = LOWORD(a5->var1.var1) - 20;
+  v21.i16[2] = rect->var1.var0;
+  v21.i16[3] = LOWORD(rect->var1.var1) - 20;
   v30 = v21;
-  [v12 setBytes:&v30 length:8 atIndex:0];
-  v22 = a5->var1.var1 - 20;
-  *&v25 = a5->var1.var0;
+  [computeCommandEncoder setBytes:&v30 length:8 atIndex:0];
+  v22 = rect->var1.var1 - 20;
+  *&v25 = rect->var1.var0;
   *(&v25 + 1) = v22;
   *&v26 = 1;
   v28 = xmmword_2244A5230;
   v29 = 1;
-  [v12 dispatchThreads:&v25 threadsPerThreadgroup:&v28];
-  [v12 endEncoding];
-  a5->var0.var1 = a5->var1.var1 + a5->var0.var1 - 20;
-  a5->var1.var1 = 20;
-  v23 = *&a5->var0.var2;
-  v25 = *&a5->var0.var0;
+  [computeCommandEncoder dispatchThreads:&v25 threadsPerThreadgroup:&v28];
+  [computeCommandEncoder endEncoding];
+  rect->var0.var1 = rect->var1.var1 + rect->var0.var1 - 20;
+  rect->var1.var1 = 20;
+  v23 = *&rect->var0.var2;
+  v25 = *&rect->var0.var0;
   v26 = v23;
-  v27 = *&a5->var1.var1;
-  [(PTUtil *)self _drawTurboLegendTick:v11 outTexture:v10 rect:&v25 maxValue:COERCE_DOUBLE(__PAIR64__(DWORD1(v27), LODWORD(a6)))];
+  v27 = *&rect->var1.var1;
+  [(PTUtil *)self _drawTurboLegendTick:legendCopy outTexture:aCopy rect:&v25 maxValue:COERCE_DOUBLE(__PAIR64__(DWORD1(v27), LODWORD(value)))];
 
   return 0;
 }
 
-- (int)gaussianNoise:(id)a3 inNoise:(id)a4 outTex:(id)a5
+- (int)gaussianNoise:(id)noise inNoise:(id)inNoise outTex:(id)tex
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  if (!v10)
+  texCopy = tex;
+  inNoiseCopy = inNoise;
+  computeCommandEncoder = [noise computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -459,31 +459,31 @@ LABEL_10:
     }
   }
 
-  [v10 setComputePipelineState:self->_gaussianNoise];
-  [v10 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_gaussianNoise];
+  [computeCommandEncoder setTexture:inNoiseCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  v19 = [v8 width];
-  v20 = [v8 height];
+  [computeCommandEncoder setTexture:texCopy atIndex:1];
+  width = [texCopy width];
+  height = [texCopy height];
 
-  v24[0] = v19;
-  v24[1] = v20;
+  v24[0] = width;
+  v24[1] = height;
   v24[2] = 1;
   v22 = xmmword_2244A5230;
   v23 = 1;
-  [v10 dispatchThreads:v24 threadsPerThreadgroup:&v22];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v24 threadsPerThreadgroup:&v22];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)sobelFilterSingleChannelColor:(id)a3 input:(id)a4 output:(id)a5 scale:(float)a6
+- (int)sobelFilterSingleChannelColor:(id)color input:(id)input output:(id)output scale:(float)scale
 {
-  v26 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 computeCommandEncoder];
-  if (!v11)
+  scaleCopy = scale;
+  outputCopy = output;
+  inputCopy = input;
+  computeCommandEncoder = [color computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v12 = _PTLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -492,83 +492,83 @@ LABEL_10:
     }
   }
 
-  [v11 setComputePipelineState:self->_sobelFilter];
-  [v11 setTexture:v10 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_sobelFilter];
+  [computeCommandEncoder setTexture:inputCopy atIndex:0];
 
-  [v11 setTexture:v9 atIndex:1];
-  [v11 setBytes:&v26 length:4 atIndex:0];
-  v20 = [v9 width];
-  v21 = [v9 height];
+  [computeCommandEncoder setTexture:outputCopy atIndex:1];
+  [computeCommandEncoder setBytes:&scaleCopy length:4 atIndex:0];
+  width = [outputCopy width];
+  height = [outputCopy height];
 
-  v25[0] = v20;
-  v25[1] = v21;
+  v25[0] = width;
+  v25[1] = height;
   v25[2] = 1;
   v23 = xmmword_2244A5230;
   v24 = 1;
-  [v11 dispatchThreads:v25 threadsPerThreadgroup:&v23];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreads:v25 threadsPerThreadgroup:&v23];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)renderDisparity:(id)a3 inDisparity:(id)a4 outYUV:(id)a5 region:(PTRegion)a6 drawLegend:(BOOL)a7
+- (int)renderDisparity:(id)disparity inDisparity:(id)inDisparity outYUV:(id)v region:(PTRegion)region drawLegend:(BOOL)legend
 {
-  v7 = a7;
-  v8 = *&a6.var0.var0;
-  v33 = *&a6.var0.var0;
-  v12 = a3;
-  v13 = a5;
-  v14 = a4;
+  legendCopy = legend;
+  v8 = *&region.var0.var0;
+  v33 = *&region.var0.var0;
+  disparityCopy = disparity;
+  vCopy = v;
+  inDisparityCopy = inDisparity;
   v15 = objc_opt_new();
   [v15 setNormalizedCoordinates:1];
   [v15 setMinFilter:0];
   [v15 setMagFilter:0];
-  v16 = [(PTMetalContext *)self->_metalContext device];
-  v17 = [v16 newSamplerStateWithDescriptor:v15];
+  device = [(PTMetalContext *)self->_metalContext device];
+  v17 = [device newSamplerStateWithDescriptor:v15];
 
   v18 = WORD2(v8);
   v19 = HIWORD(v8);
-  v20 = [v12 computeCommandEncoder];
-  [v20 setComputePipelineState:self->_renderDisparity];
-  [v20 setTexture:v14 atIndex:0];
+  computeCommandEncoder = [disparityCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_renderDisparity];
+  [computeCommandEncoder setTexture:inDisparityCopy atIndex:0];
 
-  v21 = [v13 texLuma];
-  [v20 setTexture:v21 atIndex:1];
+  texLuma = [vCopy texLuma];
+  [computeCommandEncoder setTexture:texLuma atIndex:1];
 
-  v22 = [v13 texChroma];
-  [v20 setTexture:v22 atIndex:2];
+  texChroma = [vCopy texChroma];
+  [computeCommandEncoder setTexture:texChroma atIndex:2];
 
-  [v20 setBytes:&v33 length:8 atIndex:0];
-  [v20 setSamplerState:v17 atIndex:0];
+  [computeCommandEncoder setBytes:&v33 length:8 atIndex:0];
+  [computeCommandEncoder setSamplerState:v17 atIndex:0];
   v26 = v18;
   v27 = v19;
   v28 = 1;
   v31 = xmmword_2244A5230;
   v32 = 1;
-  [v20 dispatchThreads:&v26 threadsPerThreadgroup:&v31];
-  [v20 endEncoding];
-  if (v7)
+  [computeCommandEncoder dispatchThreads:&v26 threadsPerThreadgroup:&v31];
+  [computeCommandEncoder endEncoding];
+  if (legendCopy)
   {
-    v23 = [v13 texLuma];
-    v24 = [v13 texChroma];
+    texLuma2 = [vCopy texLuma];
+    texChroma2 = [vCopy texChroma];
     v26 = 0;
     v27 = 0;
     v28 = 0;
     v29 = xmmword_2244C6170;
     v30 = 1;
-    [(PTUtil *)self drawTurboLegend:v12 outLuma:v23 outChroma:v24 rect:&v26 maxValue:COERCE_DOUBLE(COERCE_UNSIGNED_INT(3.5))];
+    [(PTUtil *)self drawTurboLegend:disparityCopy outLuma:texLuma2 outChroma:texChroma2 rect:&v26 maxValue:COERCE_DOUBLE(COERCE_UNSIGNED_INT(3.5))];
   }
 
   return 0;
 }
 
-- (int)visualizeCircleUsingRect:(id)a3 center:(float)a4 radius:(id)a5 outTexture:
+- (int)visualizeCircleUsingRect:(id)rect center:(float)center radius:(id)radius outTexture:
 {
-  v24 = *&a4;
+  v24 = *&center;
   v23 = v5;
-  v8 = a5;
-  v9 = [a3 computeCommandEncoder];
-  if (!v9)
+  radiusCopy = radius;
+  computeCommandEncoder = [rect computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v10 = _PTLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -577,32 +577,32 @@ LABEL_10:
     }
   }
 
-  [v9 setComputePipelineState:self->_visualizeCircleUsingRect];
-  [v9 setTexture:v8 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_visualizeCircleUsingRect];
+  [computeCommandEncoder setTexture:radiusCopy atIndex:0];
 
-  [v9 setBytes:&v24 length:8 atIndex:0];
-  [v9 setBytes:&v23 length:4 atIndex:1];
+  [computeCommandEncoder setBytes:&v24 length:8 atIndex:0];
+  [computeCommandEncoder setBytes:&v23 length:4 atIndex:1];
   v18 = ceilf(v23);
   v22[0] = (v18 + v18);
   v22[1] = v22[0];
   v22[2] = 1;
   v20 = xmmword_2244A5230;
   v21 = 1;
-  [v9 dispatchThreads:v22 threadsPerThreadgroup:&v20];
-  [v9 endEncoding];
+  [computeCommandEncoder dispatchThreads:v22 threadsPerThreadgroup:&v20];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)renderRect:(PTUtil *)self rect:(SEL)a2 color:(id)a3 fill:(BOOL)a4 outTexture:(id)a5
+- (int)renderRect:(PTUtil *)self rect:(SEL)rect color:(id)color fill:(BOOL)fill outTexture:(id)texture
 {
   v26 = v6;
-  v25 = a4;
+  fillCopy = fill;
   v5.u64[1] = vmax_s32(*&vextq_s8(v5, v5, 8uLL), 0x100000001);
   v27 = v5;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  if (!v10)
+  textureCopy = texture;
+  computeCommandEncoder = [color computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -611,25 +611,25 @@ LABEL_10:
     }
   }
 
-  [v10 setComputePipelineState:self->_renderRect];
-  [v10 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_renderRect];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v10 setBytes:&v27 length:16 atIndex:0];
-  [v10 setBytes:&v26 length:16 atIndex:1];
-  [v10 setBytes:&v25 length:1 atIndex:2];
+  [computeCommandEncoder setBytes:&v27 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&v26 length:16 atIndex:1];
+  [computeCommandEncoder setBytes:&fillCopy length:1 atIndex:2];
   *&v19 = v27.i32[2];
   *(&v19 + 1) = v27.i32[3];
   v23 = v19;
   v24 = 1;
   v21 = xmmword_2244A5230;
   v22 = 1;
-  [v10 dispatchThreads:&v23 threadsPerThreadgroup:&v21];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:&v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)renderLine:(PTUtil *)self line:(SEL)a2 color:(id)a3 outTexture:(id)a4
+- (int)renderLine:(PTUtil *)self line:(SEL)line color:(id)color outTexture:(id)texture
 {
   v26 = v5;
   v27 = v4;
@@ -657,9 +657,9 @@ LABEL_10:
 
   if (v8)
   {
-    v11 = a4;
-    v12 = [a3 computeCommandEncoder];
-    if (!v12)
+    textureCopy = texture;
+    computeCommandEncoder = [color computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       v13 = _PTLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -668,83 +668,83 @@ LABEL_10:
       }
     }
 
-    [v12 setComputePipelineState:self->_renderLine];
-    [v12 setTexture:v11 atIndex:0];
+    [computeCommandEncoder setComputePipelineState:self->_renderLine];
+    [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-    [v12 setBytes:&v27 length:16 atIndex:0];
-    [v12 setBytes:&v26 length:16 atIndex:1];
+    [computeCommandEncoder setBytes:&v27 length:16 atIndex:0];
+    [computeCommandEncoder setBytes:&v26 length:16 atIndex:1];
     v23 = 1;
     v24 = v8 + 1;
     v25 = vdupq_n_s64(1uLL);
     v22 = xmmword_2244A5230;
-    [v12 dispatchThreads:&v24 threadsPerThreadgroup:&v22];
-    [v12 endEncoding];
+    [computeCommandEncoder dispatchThreads:&v24 threadsPerThreadgroup:&v22];
+    [computeCommandEncoder endEncoding];
   }
 
   return 0;
 }
 
-- (int)gaussianFilter3x3:(id)a3 inRGB:(id)a4 outRGB:(id)a5
+- (int)gaussianFilter3x3:(id)filter3x3 inRGB:(id)b outRGB:(id)gB
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_gaussianFilter3x3];
-  [v10 setTexture:v9 atIndex:0];
+  gBCopy = gB;
+  bCopy = b;
+  computeCommandEncoder = [filter3x3 computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_gaussianFilter3x3];
+  [computeCommandEncoder setTexture:bCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  v11 = [v8 width];
-  v12 = [v8 height];
+  [computeCommandEncoder setTexture:gBCopy atIndex:1];
+  width = [gBCopy width];
+  height = [gBCopy height];
 
-  v16[0] = v11;
-  v16[1] = v12;
+  v16[0] = width;
+  v16[1] = height;
   v16[2] = 1;
   v14 = xmmword_2244A5440;
   v15 = 1;
-  [v10 dispatchThreads:v16 threadsPerThreadgroup:&v14];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (void)rotateTexture:(id)a3 inTex:(id)a4 outTex:(id)a5 rotationDegrees:(int)a6
+- (void)rotateTexture:(id)texture inTex:(id)tex outTex:(id)outTex rotationDegrees:(int)degrees
 {
-  v17 = (a6 + 360) % 360;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 computeCommandEncoder];
-  [v11 setComputePipelineState:self->_rotateTexture];
-  [v11 setTexture:v10 atIndex:0];
+  v17 = (degrees + 360) % 360;
+  outTexCopy = outTex;
+  texCopy = tex;
+  computeCommandEncoder = [texture computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_rotateTexture];
+  [computeCommandEncoder setTexture:texCopy atIndex:0];
 
-  [v11 setTexture:v9 atIndex:1];
-  [v11 setBytes:&v17 length:4 atIndex:0];
-  v12 = [v9 width];
-  v13 = [v9 height];
+  [computeCommandEncoder setTexture:outTexCopy atIndex:1];
+  [computeCommandEncoder setBytes:&v17 length:4 atIndex:0];
+  width = [outTexCopy width];
+  height = [outTexCopy height];
 
-  v16[0] = v12;
-  v16[1] = v13;
+  v16[0] = width;
+  v16[1] = height;
   v16[2] = 1;
   v14 = xmmword_2244A5230;
   v15 = 1;
-  [v11 dispatchThreads:v16 threadsPerThreadgroup:&v14];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreads:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 }
 
-+ (unsigned)orientationFromTransform:(CGAffineTransform *)a3
++ (unsigned)orientationFromTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v5[0] = *&a3->a;
+  v3 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v3;
-  v5[2] = *&a3->tx;
-  return [a1 orientationFromTransform:v5 inverse:0];
+  v5[2] = *&transform->tx;
+  return [self orientationFromTransform:v5 inverse:0];
 }
 
-+ (unsigned)orientationFromTransform:(CGAffineTransform *)a3 inverse:(BOOL)a4
++ (unsigned)orientationFromTransform:(CGAffineTransform *)transform inverse:(BOOL)inverse
 {
-  v4 = *&a3->c;
-  v8[0] = *&a3->a;
+  v4 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v4;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   v5 = orientationForTransform(v8);
   if (v5 < 4)
   {
@@ -760,16 +760,16 @@ LABEL_10:
   return -1;
 }
 
-+ (int)orientationForTransform:(CGAffineTransform *)a3 size:(id *)a4
++ (int)orientationForTransform:(CGAffineTransform *)transform size:(id *)size
 {
-  v5 = *&a3->c;
-  v11[0] = *&a3->a;
+  v5 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v5;
-  v11[2] = *&a3->tx;
+  v11[2] = *&transform->tx;
   v6 = orientationForTransform(v11);
-  var1 = a4->var1;
+  var1 = size->var1;
   v8 = v6 - 1;
-  if (a4->var0 < var1)
+  if (size->var0 < var1)
   {
     result = 1;
   }
@@ -781,7 +781,7 @@ LABEL_10:
 
   if (v8 <= 6)
   {
-    if (a4->var0 >= var1)
+    if (size->var0 >= var1)
     {
       v10 = &unk_2244C6348;
     }
@@ -797,12 +797,12 @@ LABEL_10:
   return result;
 }
 
-+ (int)getRotationDegreesFromAffineTransform:(CGAffineTransform *)a3
++ (int)getRotationDegreesFromAffineTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v9[0] = *&a3->a;
+  v4 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v4;
-  v9[2] = *&a3->tx;
+  v9[2] = *&transform->tx;
   v5 = orientationForTransform(v9);
   v6 = v5;
   if (v5 < 8)
@@ -813,22 +813,22 @@ LABEL_10:
   v8 = _PTLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(PTUtil *)a3 getRotationDegreesFromAffineTransform:v6, v8];
+    [(PTUtil *)transform getRotationDegreesFromAffineTransform:v6, v8];
   }
 
   return 0;
 }
 
-+ (float)adjustIntrinsics:(double)a3 fromImageSize:(double)a4 toViewPortSize:(double)a5
++ (float)adjustIntrinsics:(double)intrinsics fromImageSize:(double)size toViewPortSize:(double)portSize
 {
-  if (a4 != a6 || a5 != a7)
+  if (size != a6 || portSize != a7)
   {
-    HIDWORD(a1) = HIDWORD(a2);
+    HIDWORD(self) = HIDWORD(a2);
     v8 = a6 / a7;
-    v9 = a6 / a7 < a4 / a5;
-    *&v8 = a7 / a5;
+    v9 = a6 / a7 < size / portSize;
+    *&v8 = a7 / portSize;
     v10 = COERCE_DOUBLE(vdup_lane_s32(*&v8, 0));
-    *&a6 = a6 / a4;
+    *&a6 = a6 / size;
     v11 = COERCE_DOUBLE(vdup_lane_s32(*&a6, 0));
     if (v9)
     {
@@ -840,69 +840,69 @@ LABEL_10:
       *&v12 = v11;
     }
 
-    LODWORD(a1) = vmul_f32(*&a1, v12).u32[0];
+    LODWORD(self) = vmul_f32(*&self, v12).u32[0];
   }
 
-  return *&a1;
+  return *&self;
 }
 
-+ (float)projectionMatrixForOrientation:(double)a3 intrinsics:(double)a4 fromImageSize:(double)a5 viewportSize:(__n128)a6 reverseZ:(float64_t)a7 depthNearFar:
++ (float)projectionMatrixForOrientation:(double)orientation intrinsics:(double)intrinsics fromImageSize:(double)size viewportSize:(__n128)viewportSize reverseZ:(float64_t)z depthNearFar:
 {
-  *&v7 = *&a3 + 0.5;
-  v8 = a5 - (*(&a3 + 1) + 0.5);
+  *&v7 = *&orientation + 0.5;
+  v8 = size - (*(&orientation + 1) + 0.5);
   *(&v7 + 1) = v8;
-  [PTUtil adjustIntrinsics:a1 fromImageSize:a2 toViewPortSize:v7, *&a6];
+  [PTUtil adjustIntrinsics:self fromImageSize:a2 toViewPortSize:v7, *&viewportSize];
   v9.f64[0] = v17;
-  v9.f64[1] = a7;
+  v9.f64[1] = z;
   __asm { FMOV            V3.2S, #1.0 }
 
   return (v15 + v15) / vcvt_f32_f64(v9).f32[0];
 }
 
-+ (id)findMipmapLevel:(id)a3 largerThan:(id *)a4
++ (id)findMipmapLevel:(id)level largerThan:(id *)than
 {
-  v6 = *a4;
-  v4 = [a1 findMipmapLevel:a3 largerThan:&v6 fromLevel:0];
+  v6 = *than;
+  v4 = [self findMipmapLevel:level largerThan:&v6 fromLevel:0];
 
   return v4;
 }
 
-+ (id)findMipmapLevel:(id)a3 largerThan:(id *)a4 fromLevel:(int)a5
++ (id)findMipmapLevel:(id)level largerThan:(id *)than fromLevel:(int)fromLevel
 {
-  v7 = a3;
-  if ([v7 count])
+  levelCopy = level;
+  if ([levelCopy count])
   {
-    v8 = a5;
+    fromLevelCopy = fromLevel;
     while (1)
     {
-      v9 = v8;
-      if ([v7 count] - 1 <= v8)
+      v9 = fromLevelCopy;
+      if ([levelCopy count] - 1 <= fromLevelCopy)
       {
-        v15 = [v7 lastObject];
+        lastObject = [levelCopy lastObject];
         goto LABEL_11;
       }
 
-      ++v8;
-      v10 = [v7 objectAtIndexedSubscript:v9 + 1];
-      if ([v10 width] < a4->var0)
+      ++fromLevelCopy;
+      v10 = [levelCopy objectAtIndexedSubscript:v9 + 1];
+      if ([v10 width] < than->var0)
       {
         break;
       }
 
-      v11 = [v7 objectAtIndexedSubscript:v9 + 1];
-      v12 = [v11 height];
-      var1 = a4->var1;
+      v11 = [levelCopy objectAtIndexedSubscript:v9 + 1];
+      height = [v11 height];
+      var1 = than->var1;
 
-      if (v12 < var1)
+      if (height < var1)
       {
         goto LABEL_10;
       }
     }
 
 LABEL_10:
-    v15 = [v7 objectAtIndexedSubscript:v9];
+    lastObject = [levelCopy objectAtIndexedSubscript:v9];
 LABEL_11:
-    v14 = v15;
+    v14 = lastObject;
   }
 
   else
@@ -913,26 +913,26 @@ LABEL_11:
   return v14;
 }
 
-+ (double)transformFromRotation:(__n128)a3 translation:(__n128)a4
++ (double)transformFromRotation:(__n128)rotation translation:(__n128)translation
 {
-  v4.i64[0] = vzip1q_s32(a1, a2).u64[0];
-  v4.i64[1] = __PAIR64__(a4.n128_u32[0], a3.n128_u32[0]);
-  v5.i64[0] = vtrn2q_s32(a1, a2).u64[0];
-  v5.i64[1] = __PAIR64__(a4.n128_u32[1], a3.n128_u32[1]);
-  v6.i64[0] = vzip2q_s32(a1, a2).u64[0];
-  v6.i64[1] = __PAIR64__(a4.n128_u32[2], a3.n128_u32[2]);
+  v4.i64[0] = vzip1q_s32(self, a2).u64[0];
+  v4.i64[1] = __PAIR64__(translation.n128_u32[0], rotation.n128_u32[0]);
+  v5.i64[0] = vtrn2q_s32(self, a2).u64[0];
+  v5.i64[1] = __PAIR64__(translation.n128_u32[1], rotation.n128_u32[1]);
+  v6.i64[0] = vzip2q_s32(self, a2).u64[0];
+  v6.i64[1] = __PAIR64__(translation.n128_u32[2], rotation.n128_u32[2]);
   *&result = vzip1q_s32(vzip1q_s32(v4, v6), vzip1q_s32(v5, 0)).u64[0];
   return result;
 }
 
-+ (double)mirrorMatrix4x4OverX:(__n128)a3
++ (double)mirrorMatrix4x4OverX:(__n128)x
 {
   v4 = 0;
   v5 = *(MEMORY[0x277D860B8] + 16);
   v6 = *(MEMORY[0x277D860B8] + 32);
   v7 = *(MEMORY[0x277D860B8] + 48);
   v15 = a2;
-  v16 = a3;
+  xCopy = x;
   v17 = a4;
   v18 = 0u;
   v19 = 0u;
@@ -952,7 +952,7 @@ LABEL_11:
   v12 = v21;
   v14 = xmmword_2244A5380;
   v15 = v5;
-  v16 = v6;
+  xCopy = v6;
   v17 = v7;
   v18 = 0u;
   v19 = 0u;

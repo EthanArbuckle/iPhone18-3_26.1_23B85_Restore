@@ -1,12 +1,12 @@
 @interface _UISmartReplyFeedbackInputDashboardReportConcernView
-- (BOOL)touchInView:(id)a3;
+- (BOOL)touchInView:(id)view;
 - (CGRect)interactionRect;
 - (_UISmartReplyFeedbackInputDashboardReportConcernView)init;
 - (void)layoutSubviews;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UISmartReplyFeedbackInputDashboardReportConcernView
@@ -29,70 +29,70 @@
     v6 = [(_UISmartReplyFeedbackInputDashboardView *)v2 makeFeedbackLabelWithText:v5];
     [(_UISmartReplyFeedbackInputDashboardView *)v2 setFeedbackLabel:v6];
 
-    v7 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v8 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
-    [v7 addSubview:v8];
+    feedbackIconAndLabelView = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    feedbackIconView = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
+    [feedbackIconAndLabelView addSubview:feedbackIconView];
 
-    v9 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v10 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    [v9 addSubview:v10];
+    feedbackIconAndLabelView2 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    feedbackLabel = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    [feedbackIconAndLabelView2 addSubview:feedbackLabel];
 
-    v11 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    feedbackIconView2 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
+    [feedbackIconView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    feedbackLabel2 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    [feedbackLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v40 = MEMORY[0x1E69977A0];
-    v51 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
-    v49 = [v51 leadingAnchor];
-    v50 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v48 = [v50 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    feedbackIconView3 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
+    leadingAnchor = [feedbackIconView3 leadingAnchor];
+    feedbackIconAndLabelView3 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    leadingAnchor2 = [feedbackIconAndLabelView3 leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v55[0] = v47;
-    v46 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
-    v44 = [v46 centerYAnchor];
-    v45 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v43 = [v45 centerYAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    feedbackIconView4 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
+    centerYAnchor = [feedbackIconView4 centerYAnchor];
+    feedbackIconAndLabelView4 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    centerYAnchor2 = [feedbackIconAndLabelView4 centerYAnchor];
+    v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v55[1] = v42;
-    v41 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v38 = [v41 leadingAnchor];
-    v39 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
-    v37 = [v39 trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:5.0];
+    feedbackLabel3 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    leadingAnchor3 = [feedbackLabel3 leadingAnchor];
+    feedbackIconView5 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconView];
+    trailingAnchor = [feedbackIconView5 trailingAnchor];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:5.0];
     v55[2] = v36;
-    v35 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v34 = [v35 trailingAnchor];
-    v13 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v14 = [v13 trailingAnchor];
-    v15 = [v34 constraintEqualToAnchor:v14];
+    feedbackLabel4 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    trailingAnchor2 = [feedbackLabel4 trailingAnchor];
+    feedbackIconAndLabelView5 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    trailingAnchor3 = [feedbackIconAndLabelView5 trailingAnchor];
+    v15 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v55[3] = v15;
-    v16 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
-    v17 = [v16 centerYAnchor];
-    v18 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    feedbackLabel5 = [(_UISmartReplyFeedbackInputDashboardView *)v2 feedbackLabel];
+    centerYAnchor3 = [feedbackLabel5 centerYAnchor];
+    feedbackIconAndLabelView6 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    centerYAnchor4 = [feedbackIconAndLabelView6 centerYAnchor];
+    v20 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v55[4] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:5];
     [v40 activateConstraints:v21];
 
-    v22 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    [(UIView *)v2 addSubview:v22];
+    feedbackIconAndLabelView7 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    [(UIView *)v2 addSubview:feedbackIconAndLabelView7];
 
-    v23 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    feedbackIconAndLabelView8 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    [feedbackIconAndLabelView8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v52 = MEMORY[0x1E69977A0];
-    v24 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v25 = [v24 centerXAnchor];
-    v26 = [(UIView *)v2 centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    feedbackIconAndLabelView9 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    centerXAnchor = [feedbackIconAndLabelView9 centerXAnchor];
+    centerXAnchor2 = [(UIView *)v2 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v54[0] = v27;
-    v28 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
-    v29 = [v28 centerYAnchor];
-    v30 = [(UIView *)v2 centerYAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    feedbackIconAndLabelView10 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)v2 feedbackIconAndLabelView];
+    centerYAnchor5 = [feedbackIconAndLabelView10 centerYAnchor];
+    centerYAnchor6 = [(UIView *)v2 centerYAnchor];
+    v31 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v54[1] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
     [v52 activateConstraints:v32];
@@ -103,15 +103,15 @@
 
 - (CGRect)interactionRect
 {
-  v3 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self feedbackIconView];
-  [v3 frame];
+  feedbackIconView = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self feedbackIconView];
+  [feedbackIconView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_UISmartReplyFeedbackInputDashboardView *)self feedbackLabel];
-  [v12 frame];
+  feedbackLabel = [(_UISmartReplyFeedbackInputDashboardView *)self feedbackLabel];
+  [feedbackLabel frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -143,18 +143,18 @@
   return result;
 }
 
-- (BOOL)touchInView:(id)a3
+- (BOOL)touchInView:(id)view
 {
-  v4 = [a3 touchesForView:self];
-  v5 = [v4 anyObject];
+  v4 = [view touchesForView:self];
+  anyObject = [v4 anyObject];
 
-  [v5 locationInView:self];
+  [anyObject locationInView:self];
   v7 = v6;
   v9 = v8;
   v10 = +[UIDevice currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  userInterfaceIdiom = [v10 userInterfaceIdiom];
 
-  if (v11 == 6)
+  if (userInterfaceIdiom == 6)
   {
     [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self interactionRect];
     v15.x = v7;
@@ -172,9 +172,9 @@
   return v13;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a4;
+  eventCopy = event;
   v5 = +[UIDevice currentDevice];
   if ([v5 userInterfaceIdiom] != 6)
   {
@@ -182,7 +182,7 @@
     goto LABEL_5;
   }
 
-  v6 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchInView:v7];
+  v6 = [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchInView:eventCopy];
 
   if (v6)
   {
@@ -192,10 +192,10 @@ LABEL_5:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a4;
-  if ([(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchState]== 1 && ![(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchInView:v5])
+  eventCopy = event;
+  if ([(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchState]== 1 && ![(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchInView:eventCopy])
   {
     [(UIView *)self setAlpha:1.0];
     [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self setTouchState:4];
@@ -208,11 +208,11 @@ LABEL_5:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   [(UIView *)self setAlpha:1.0];
-  if ([(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchState]== 1 && [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchInView:v5])
+  if ([(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchState]== 1 && [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self touchInView:eventCopy])
   {
     v6 = UIFeedbackServiceLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -222,9 +222,9 @@ LABEL_5:
     }
 
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 keyboardStateManager];
-    v9 = [v8 smartReplyFeedbackManager];
-    [v9 reportSmartRepliesConcern];
+    keyboardStateManager = [v7 keyboardStateManager];
+    smartReplyFeedbackManager = [keyboardStateManager smartReplyFeedbackManager];
+    [smartReplyFeedbackManager reportSmartRepliesConcern];
   }
 
   else
@@ -240,9 +240,9 @@ LABEL_5:
   [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self setTouchState:3];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(UIView *)self setAlpha:a3, a4, 1.0];
+  [(UIView *)self setAlpha:cancelled, event, 1.0];
 
   [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self setTouchState:4];
 }
@@ -253,9 +253,9 @@ LABEL_5:
   v8.super_class = _UISmartReplyFeedbackInputDashboardReportConcernView;
   [(UIView *)&v8 layoutSubviews];
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     [(_UISmartReplyFeedbackInputDashboardReportConcernView *)self interactionRect];
     v5 = [UIShape fixedRectShapeWithRect:"fixedRectShapeWithRect:cornerRadius:cornerCurve:maskedCorners:" cornerRadius:2 cornerCurve:-1 maskedCorners:?];

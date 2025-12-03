@@ -1,18 +1,18 @@
 @interface PKPagedTransactionListBankConnectFetcher
 - (_TtC9PassKitUI40PKPagedTransactionListBankConnectFetcher)init;
-- (void)accountExternalIDsWithCompletionHandler:(id)a3;
-- (void)countTransactionsWithCompletionHandler:(id)a3;
-- (void)fetchTransactionsWithLimit:(int64_t)a3 before:(_TtC9PassKitUI26PKTransactionsPageBoundary *)a4 completionHandler:(id)a5;
+- (void)accountExternalIDsWithCompletionHandler:(id)handler;
+- (void)countTransactionsWithCompletionHandler:(id)handler;
+- (void)fetchTransactionsWithLimit:(int64_t)limit before:(_TtC9PassKitUI26PKTransactionsPageBoundary *)before completionHandler:(id)handler;
 @end
 
 @implementation PKPagedTransactionListBankConnectFetcher
 
-- (void)accountExternalIDsWithCompletionHandler:(id)a3
+- (void)accountExternalIDsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -28,16 +28,16 @@
   v13[3] = 0;
   v13[4] = &unk_1BE0DF848;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v8, &unk_1BE0DF850, v13);
 }
 
-- (void)countTransactionsWithCompletionHandler:(id)a3
+- (void)countTransactionsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -53,19 +53,19 @@
   v13[3] = 0;
   v13[4] = &unk_1BE0DF828;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v8, &unk_1BE0DF830, v13);
 }
 
-- (void)fetchTransactionsWithLimit:(int64_t)a3 before:(_TtC9PassKitUI26PKTransactionsPageBoundary *)a4 completionHandler:(id)a5
+- (void)fetchTransactionsWithLimit:(int64_t)limit before:(_TtC9PassKitUI26PKTransactionsPageBoundary *)before completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = limit;
+  v14[3] = before;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1BE0528D4();
@@ -80,8 +80,8 @@
   v17[3] = 0;
   v17[4] = &unk_1BE107FA0;
   v17[5] = v16;
-  v18 = a4;
-  v19 = self;
+  beforeCopy = before;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v12, &unk_1BE0C7F30, v17);
 }
 

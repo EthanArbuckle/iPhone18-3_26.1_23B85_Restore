@@ -1,19 +1,19 @@
 @interface AppDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 configuration];
-  v8 = [v7 name];
-  v9 = v8;
-  if (v8)
+  configuration = [sessionCopy configuration];
+  name = [configuration name];
+  v9 = name;
+  if (name)
   {
-    v10 = v8;
+    v10 = name;
   }
 
   else
@@ -21,9 +21,9 @@
     v10 = @"Default Configuration";
   }
 
-  v11 = [v5 role];
+  role = [sessionCopy role];
 
-  v12 = [v6 initWithName:v10 sessionRole:v11];
+  v12 = [v6 initWithName:v10 sessionRole:role];
 
   return v12;
 }

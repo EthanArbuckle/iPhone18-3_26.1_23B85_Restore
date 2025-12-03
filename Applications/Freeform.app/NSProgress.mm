@@ -1,42 +1,42 @@
 @interface NSProgress
-+ (id)crl_progressWithCRLProgress:(id)a3 totalUnitCount:(int64_t)a4;
-+ (id)crl_progressWithChildren:(id)a3;
-- (int64_t)crl_pendingUnitCountForIncompleteProgress:(int64_t)a3;
++ (id)crl_progressWithCRLProgress:(id)progress totalUnitCount:(int64_t)count;
++ (id)crl_progressWithChildren:(id)children;
+- (int64_t)crl_pendingUnitCountForIncompleteProgress:(int64_t)progress;
 - (void)crl_stopObservingCRLProgress;
 @end
 
 @implementation NSProgress
 
-+ (id)crl_progressWithCRLProgress:(id)a3 totalUnitCount:(int64_t)a4
++ (id)crl_progressWithCRLProgress:(id)progress totalUnitCount:(int64_t)count
 {
-  v5 = a3;
+  progressCopy = progress;
   v6 = [[NSProgress alloc] initWithParent:0 userInfo:0];
-  [v6 setTotalUnitCount:a4];
-  [v5 maxValue];
+  [v6 setTotalUnitCount:count];
+  [progressCopy maxValue];
   v8 = v7;
-  if (([v5 isIndeterminate] & 1) == 0 && v8 > 0.0)
+  if (([progressCopy isIndeterminate] & 1) == 0 && v8 > 0.0)
   {
-    [v5 value];
+    [progressCopy value];
     [v6 setCompletedUnitCount:{(v9 / v8 * objc_msgSend(v6, "totalUnitCount"))}];
   }
 
-  v10 = 10;
-  if (a4 > 10)
+  countCopy = 10;
+  if (count > 10)
   {
-    v10 = a4;
+    countCopy = count;
   }
 
   if (v8 > 0.0)
   {
-    v11 = v8 / v10;
+    v11 = v8 / countCopy;
   }
 
   else
   {
-    v11 = v10;
+    v11 = countCopy;
   }
 
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, progressCopy);
   objc_initWeak(&from, v6);
   v12 = &_dispatch_main_q;
   v22 = _NSConcreteStackBlock;
@@ -45,8 +45,8 @@
   v25 = &unk_10185B9C8;
   objc_copyWeak(&v26, &location);
   objc_copyWeak(v27, &from);
-  v27[1] = a4;
-  v13 = [v5 addProgressObserverWithValueInterval:&_dispatch_main_q queue:&v22 handler:v11];
+  v27[1] = count;
+  v13 = [progressCopy addProgressObserverWithValueInterval:&_dispatch_main_q queue:&v22 handler:v11];
 
   if (!v13)
   {
@@ -80,7 +80,7 @@
   }
 
   v20 = objc_alloc_init(CRLProgressUserInfoObject);
-  [(CRLProgressUserInfoObject *)v20 setProgress:v5];
+  [(CRLProgressUserInfoObject *)v20 setProgress:progressCopy];
   [(CRLProgressUserInfoObject *)v20 setProgressObserver:v13];
   [v6 setUserInfoObject:v20 forKey:@"CRLProgressUserInfoKey"];
 
@@ -92,14 +92,14 @@
   return v6;
 }
 
-+ (id)crl_progressWithChildren:(id)a3
++ (id)crl_progressWithChildren:(id)children
 {
-  v3 = a3;
+  childrenCopy = children;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v4 = [childrenCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -112,18 +112,18 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childrenCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
         v6 += [v10 totalUnitCount];
-        v11 = [v10 kind];
-        LODWORD(v10) = v11 == NSProgressKindFile;
+        kind = [v10 kind];
+        LODWORD(v10) = kind == NSProgressKindFile;
 
         v8 &= v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v5 = [childrenCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v5);
@@ -140,7 +140,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v3;
+  v13 = childrenCopy;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {
@@ -175,39 +175,39 @@
 - (void)crl_stopObservingCRLProgress
 {
   v3 = objc_opt_class();
-  v4 = [(NSProgress *)self userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CRLProgressUserInfoKey"];
+  userInfo = [(NSProgress *)self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CRLProgressUserInfoKey"];
   v8 = sub_100014370(v3, v5);
 
-  v6 = [v8 progress];
-  v7 = [v8 progressObserver];
-  [v6 removeProgressObserver:v7];
+  progress = [v8 progress];
+  progressObserver = [v8 progressObserver];
+  [progress removeProgressObserver:progressObserver];
 }
 
-- (int64_t)crl_pendingUnitCountForIncompleteProgress:(int64_t)a3
+- (int64_t)crl_pendingUnitCountForIncompleteProgress:(int64_t)progress
 {
-  v5 = [(NSProgress *)self totalUnitCount];
-  v6 = [(NSProgress *)self completedUnitCount];
-  v7 = v5 - v6;
-  if (v5 - v6 < 0)
+  totalUnitCount = [(NSProgress *)self totalUnitCount];
+  completedUnitCount = [(NSProgress *)self completedUnitCount];
+  v7 = totalUnitCount - completedUnitCount;
+  if (totalUnitCount - completedUnitCount < 0)
   {
-    v7 = v6 - v5;
+    v7 = completedUnitCount - totalUnitCount;
   }
 
-  v8 = v7 >> 1;
-  if (v7 > a3)
+  progressCopy = v7 >> 1;
+  if (v7 > progress)
   {
-    v8 = a3;
+    progressCopy = progress;
   }
 
-  if (v7 < 2 && v7 < a3)
+  if (v7 < 2 && v7 < progress)
   {
     return 0;
   }
 
   else
   {
-    return v8;
+    return progressCopy;
   }
 }
 

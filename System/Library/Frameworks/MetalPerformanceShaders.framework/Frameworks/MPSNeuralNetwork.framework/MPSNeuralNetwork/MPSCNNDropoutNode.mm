@@ -9,7 +9,7 @@
 
 + (MPSCNNDropoutNode)nodeWithSource:(MPSNNImageNode *)source
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v11 = objc_msgSend_initWithSource_(v4, v5, source, v6, v7, v8, v9, v10);
 
   return v11;
@@ -17,7 +17,7 @@
 
 + (MPSCNNDropoutNode)nodeWithSource:(MPSNNImageNode *)source keepProbability:(float)keepProbability
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   *&v7 = keepProbability;
   v14 = objc_msgSend_initWithSource_keepProbability_(v6, v8, source, v9, v10, v11, v12, v13, v7);
 

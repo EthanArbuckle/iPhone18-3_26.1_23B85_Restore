@@ -1,108 +1,108 @@
 @interface _MTLDevice
-+ (BOOL)featureProfile:(unint64_t)a3 supportsFeatureSet:(unint64_t)a4;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)a3;
++ (BOOL)featureProfile:(unint64_t)profile supportsFeatureSet:(unint64_t)set;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)descriptor;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)size;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)descriptor;
 - ($85CD2974BE96D4886BB301820D1C36C2)libraryCacheStats;
 - ($85CD2974BE96D4886BB301820D1C36C2)pipelineCacheStats;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)descriptor;
 - (BOOL)_rateLimitQueueCreation;
-- (BOOL)copyShaderCacheToPath:(id)a3;
-- (BOOL)deviceOrFeatureProfileSupportsFeatureSet:(unint64_t)a3;
+- (BOOL)copyShaderCacheToPath:(id)path;
+- (BOOL)deviceOrFeatureProfileSupportsFeatureSet:(unint64_t)set;
 - (BOOL)isCollectingLibraries;
-- (BOOL)isCompatibleWithAccelerationStructure:(id)a3;
+- (BOOL)isCompatibleWithAccelerationStructure:(id)structure;
 - (BOOL)isPlacementHeapSupported;
-- (BOOL)loadLibrariesRecursive:(id)a3 dylibs:(id *)a4 insertLibraries:(id)a5 options:(unint64_t)a6 error:(id *)a7;
-- (BOOL)supportsFamily:(int64_t)a3;
+- (BOOL)loadLibrariesRecursive:(id)recursive dylibs:(id *)dylibs insertLibraries:(id)libraries options:(unint64_t)options error:(id *)error;
+- (BOOL)supportsFamily:(int64_t)family;
 - (BOOL)supportsRaytracing;
-- (BOOL)validateDynamicLibrary:(id)a3 state:(BOOL)a4 error:(id *)a5;
-- (BOOL)validateDynamicLibraryDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)validateDynamicLibraryURL:(id)a3 error:(id *)a4;
+- (BOOL)validateDynamicLibrary:(id)library state:(BOOL)state error:(id *)error;
+- (BOOL)validateDynamicLibraryDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)validateDynamicLibraryURL:(id)l error:(id *)error;
 - (MTLGPUBVHBuilder)GPUBVHBuilder;
 - (NSString)name;
 - (_MTLDevice)init;
-- (char)getComputeFunctionId:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 compilerOptionsSize:(unint64_t)a6;
-- (char)getVertexFunctionId:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 compilerOptionsSize:(unint64_t)a6 compiledFragmentVariant:(id)a7;
+- (char)getComputeFunctionId:(const void *)id function:(id)function compilerOptions:(char *)options compilerOptionsSize:(unint64_t)size;
+- (char)getVertexFunctionId:(const void *)id function:(id)function compilerOptions:(char *)options compilerOptionsSize:(unint64_t)size compiledFragmentVariant:(id)variant;
 - (id).cxx_construct;
-- (id)_newDescriptorForSharedTexture:(__IOSurface *)a3;
-- (id)_newDynamicLibraryWithDescriptor:(id)a3 computeDescriptor:(id)a4 error:(id *)a5;
+- (id)_newDescriptorForSharedTexture:(__IOSurface *)texture;
+- (id)_newDynamicLibraryWithDescriptor:(id)descriptor computeDescriptor:(id)computeDescriptor error:(id *)error;
 - (id)architecture;
-- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)a3 primitiveAccelerationStructures:(id)a4 withDescriptor:(id)a5;
-- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)a3 withDescriptor:(id)a4;
+- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor;
+- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)bytes withDescriptor:(id)descriptor;
 - (id)endCollectingPipelineDescriptors;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)getMostCompatibleArchitecture:(id)a3;
-- (id)loadDynamicLibrariesForComputeDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)loadDynamicLibrariesForFunctionDescriptor:(id)a3 insertLibraries:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)lookupRecompiledBinaryArchive:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newArchiveWithURL:(id)a3 error:(id *)a4;
-- (id)newArgumentEncoderWithArguments:(id)a3 structType:(id *)a4;
-- (id)newArgumentEncoderWithBufferBinding:(id)a3;
-- (id)newBinaryArchiveWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newBinaryLibraryWithOptions:(unint64_t)a3 url:(id)a4 error:(id *)a5;
+- (id)formattedDescription:(unint64_t)description;
+- (id)getMostCompatibleArchitecture:(id)architecture;
+- (id)loadDynamicLibrariesForComputeDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (id)loadDynamicLibrariesForFunctionDescriptor:(id)descriptor insertLibraries:(id)libraries options:(unint64_t)options error:(id *)error;
+- (id)lookupRecompiledBinaryArchive:(id)archive;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newArchiveWithURL:(id)l error:(id *)error;
+- (id)newArgumentEncoderWithArguments:(id)arguments structType:(id *)type;
+- (id)newArgumentEncoderWithBufferBinding:(id)binding;
+- (id)newBinaryArchiveWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newBinaryLibraryWithOptions:(unint64_t)options url:(id)url error:(id *)error;
 - (id)newCommandQueue;
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3;
-- (id)newComputePipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newComputePipelineStateWithFunction:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newComputePipelineWithDescriptor:(id)a3 variant:(id)a4 errorMessage:(id *)a5;
-- (id)newComputeVariantWithCompilerOutput:(id)a3 pipelineStatisticsOutput:(id)a4;
-- (id)newDagStringWithGraphs:(id)a3;
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count;
+- (id)newComputePipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newComputePipelineStateWithFunction:(id)function error:(id *)error;
+- (id)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newComputePipelineWithDescriptor:(id)descriptor variant:(id)variant errorMessage:(id *)message;
+- (id)newComputeVariantWithCompilerOutput:(id)output pipelineStatisticsOutput:(id)statisticsOutput;
+- (id)newDagStringWithGraphs:(id)graphs;
 - (id)newDefaultLibrary;
-- (id)newDefaultLibraryWithBundle:(id)a3 error:(id *)a4;
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5;
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryError:(unint64_t)a3 message:(id)a4;
-- (id)newDynamicLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newEventWithOptions:(int64_t)a3;
-- (id)newFragmentVariantWithCompilerOutput:(id)a3 pipelineStatisticsOutput:(id)a4;
-- (id)newFunctionWithGLIR:(void *)a3 functionType:(unint64_t)a4;
-- (id)newFunctionWithGLIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5;
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newIOFileHandleWithURL:(id)a3 compressionMethod:(int64_t)a4 error:(id *)a5;
-- (id)newIOFileHandleWithURL:(id)a3 error:(id *)a4;
-- (id)newLibraryWithDAG:(id)a3 functions:(id)a4 error:(id *)a5;
-- (id)newLibraryWithData:(id)a3 error:(id *)a4;
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4;
-- (id)newLibraryWithFunctionArray:(id)a3 error:(id *)a4;
-- (id)newLibraryWithMPSGraphPackageURL:(id)a3 name:(id)a4 error:(id *)a5;
-- (id)newLibraryWithMetalPackageURL:(id)a3 error:(id *)a4;
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 compilerTask:(id)a5 error:(id *)a6;
-- (id)newLibraryWithStitchedDescriptor:(id)a3 destinationBinaryArchive:(id)a4 error:(id *)a5;
-- (id)newLibraryWithStitchedDescriptor:(id)a3 error:(id *)a4;
-- (id)newLibraryWithURL:(id)a3 error:(id *)a4;
-- (id)newLogStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newMeshRenderPipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4;
-- (id)newPerformanceStateAssertion:(int64_t)a3 error:(id *)a4;
-- (id)newPipelineDataSetSerializerWithDescriptor:(id)a3;
-- (id)newRasterizationRateMapWithDescriptor:(id)a3;
-- (id)newRenderPipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newResidencySetWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newSharedEventWithHandle:(id)a3;
-- (id)newSharedEventWithOptions:(int64_t)a3;
-- (id)newSharedTextureWithDescriptor:(id)a3;
-- (id)newSharedTextureWithHandle:(id)a3;
-- (id)newSharedTextureWithHandle:(id)a3 withResourceIndex:(unint64_t)a4;
-- (id)newStructTypeWithSerializedData:(id)a3;
-- (id)newTileRenderPipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4;
-- (id)newUncachedIOFileHandleWithURL:(id)a3 compressionMethod:(int64_t)a4 error:(id *)a5;
-- (id)newUncachedIOFileHandleWithURL:(id)a3 error:(id *)a4;
-- (id)newVertexVariantWithCompilerOutput:(id)a3 pipelineStatisticsOutput:(id)a4;
-- (id)serializeComputePipelineDescriptor:(id)a3;
-- (id)serializeMeshRenderPipelineDescriptor:(id)a3;
-- (id)serializeRenderPipelineDescriptor:(id)a3;
-- (id)serializeStructType:(id)a3 version:(unsigned int)a4;
-- (id)serializeTileRenderPipelineDescriptor:(id)a3;
+- (id)newDefaultLibraryWithBundle:(id)bundle error:(id *)error;
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error;
+- (id)newDynamicLibrary:(id)library error:(id *)error;
+- (id)newDynamicLibraryError:(unint64_t)error message:(id)message;
+- (id)newDynamicLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)newEventWithOptions:(int64_t)options;
+- (id)newFragmentVariantWithCompilerOutput:(id)output pipelineStatisticsOutput:(id)statisticsOutput;
+- (id)newFunctionWithGLIR:(void *)r functionType:(unint64_t)type;
+- (id)newFunctionWithGLIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type;
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newIOFileHandleWithURL:(id)l compressionMethod:(int64_t)method error:(id *)error;
+- (id)newIOFileHandleWithURL:(id)l error:(id *)error;
+- (id)newLibraryWithDAG:(id)g functions:(id)functions error:(id *)error;
+- (id)newLibraryWithData:(id)data error:(id *)error;
+- (id)newLibraryWithFile:(id)file error:(id *)error;
+- (id)newLibraryWithFunctionArray:(id)array error:(id *)error;
+- (id)newLibraryWithMPSGraphPackageURL:(id)l name:(id)name error:(id *)error;
+- (id)newLibraryWithMetalPackageURL:(id)l error:(id *)error;
+- (id)newLibraryWithSource:(id)source options:(id)options compilerTask:(id)task error:(id *)error;
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor destinationBinaryArchive:(id)archive error:(id *)error;
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor error:(id *)error;
+- (id)newLibraryWithURL:(id)l error:(id *)error;
+- (id)newLogStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newMeshRenderPipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context;
+- (id)newPerformanceStateAssertion:(int64_t)assertion error:(id *)error;
+- (id)newPipelineDataSetSerializerWithDescriptor:(id)descriptor;
+- (id)newRasterizationRateMapWithDescriptor:(id)descriptor;
+- (id)newRenderPipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newResidencySetWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newSharedEventWithHandle:(id)handle;
+- (id)newSharedEventWithOptions:(int64_t)options;
+- (id)newSharedTextureWithDescriptor:(id)descriptor;
+- (id)newSharedTextureWithHandle:(id)handle;
+- (id)newSharedTextureWithHandle:(id)handle withResourceIndex:(unint64_t)index;
+- (id)newStructTypeWithSerializedData:(id)data;
+- (id)newTileRenderPipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context;
+- (id)newUncachedIOFileHandleWithURL:(id)l compressionMethod:(int64_t)method error:(id *)error;
+- (id)newUncachedIOFileHandleWithURL:(id)l error:(id *)error;
+- (id)newVertexVariantWithCompilerOutput:(id)output pipelineStatisticsOutput:(id)statisticsOutput;
+- (id)serializeComputePipelineDescriptor:(id)descriptor;
+- (id)serializeMeshRenderPipelineDescriptor:(id)descriptor;
+- (id)serializeRenderPipelineDescriptor:(id)descriptor;
+- (id)serializeStructType:(id)type version:(unsigned int)version;
+- (id)serializeTileRenderPipelineDescriptor:(id)descriptor;
 - (int)defaultCompilerProcessesCount;
 - (int)maximumCompilerProcessesCount;
 - (int)threadsPerCompilerProcess;
@@ -110,40 +110,40 @@
 - (unint64_t)latestSupportedGenericBVHVersion;
 - (unint64_t)maxAccelerationStructureTraversalDepth;
 - (unint64_t)maximumConcurrentCompilationTaskCount;
-- (unint64_t)minLinearTextureAlignmentForPixelFormat:(unint64_t)a3;
-- (unint64_t)minimumLinearTextureAlignmentForPixelFormat:(unint64_t)a3;
+- (unint64_t)minLinearTextureAlignmentForPixelFormat:(unint64_t)format;
+- (unint64_t)minimumLinearTextureAlignmentForPixelFormat:(unint64_t)format;
 - (unint64_t)optionsForPipelineLibrarySerialization;
 - (unint64_t)readWriteTextureSupport;
 - (unint64_t)sparseTexturesSupport;
-- (unint64_t)sparseTileSizeInBytesForSparsePageSize:(int64_t)a3;
+- (unint64_t)sparseTileSizeInBytesForSparsePageSize:(int64_t)size;
 - (void)_decrementAcquireCount;
-- (void)addToLogBufferResidencySet:(id)a3;
+- (void)addToLogBufferResidencySet:(id)set;
 - (void)allowLibrariesFromOtherPlatforms;
-- (void)convertSparsePixelRegions:(id *)a3 toTileRegions:(id *)a4 withTileSize:(id *)a5 alignmentMode:(unint64_t)a6 numRegions:(unint64_t)a7;
-- (void)convertSparseTileRegions:(id *)a3 toPixelRegions:(id *)a4 withTileSize:(id *)a5 numRegions:(unint64_t)a6;
+- (void)convertSparsePixelRegions:(id *)regions toTileRegions:(id *)tileRegions withTileSize:(id *)size alignmentMode:(unint64_t)mode numRegions:(unint64_t)numRegions;
+- (void)convertSparseTileRegions:(id *)regions toPixelRegions:(id *)pixelRegions withTileSize:(id *)size numRegions:(unint64_t)numRegions;
 - (void)dealloc;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 fromBytes:(const void *)a4 primitiveAccelerationStructures:(id)a5 withDescriptor:(id)a6;
-- (void)deserializeInstanceAccelerationStructureFromBytes:(const void *)a3 toBuffer:(id)a4 primitiveAccelerationStructures:(id)a5 forAccelerationStructure:(id)a6;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBytes:(const void *)a4 withDescriptor:(id)a5;
-- (void)deserializePrimitiveAccelerationStructureFromBytes:(const void *)a3 toBuffer:(id)a4 forAccelerationStructure:(id)a5;
+- (void)deserializeInstanceAccelerationStructure:(id)structure fromBytes:(const void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor;
+- (void)deserializeInstanceAccelerationStructureFromBytes:(const void *)bytes toBuffer:(id)buffer primitiveAccelerationStructures:(id)structures forAccelerationStructure:(id)structure;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBytes:(const void *)bytes withDescriptor:(id)descriptor;
+- (void)deserializePrimitiveAccelerationStructureFromBytes:(const void *)bytes toBuffer:(id)buffer forAccelerationStructure:(id)structure;
 - (void)dumpPipelineDescriptorsIfRequested;
-- (void)freeMeshFunctionDriverData:(void *)a3 meshFunctionDriverDataSize:(unint64_t)a4;
-- (void)freeObjectFunctionDriverData:(void *)a3 objectFunctionDriverDataSize:(unint64_t)a4;
-- (void)freeVertexFunctionDriverData:(void *)a3 vertexFunctionDriverDataSize:(unint64_t)a4;
-- (void)getCompilerConnectionManager:(int)a3;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forComputeVariant:(id)a6;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forObjectVariant:(id)a6 meshVariant:(id)a7 fragmentVariant:(id)a8;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forTileVariant:(id)a6;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forVertexVariant:(id)a6 fragmentVariant:(id)a7;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forComputeVariant:(id)a7;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forObjectVariant:(id)a7 meshVariant:(id)a8 fragmentVariant:(id)a9;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forTileVariant:(id)a7;
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forVertexVariant:(id)a7 fragmentVariant:(id)a8;
-- (void)getDefaultSamplePositions:(id *)a3 count:(unint64_t)a4;
-- (void)getMeshFunctionDriverData:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 nextStageVariant:(id)a6 driverDataSize:(unint64_t *)a7;
-- (void)getObjectFunctionDriverData:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 nextStageVariant:(id)a6 driverDataSize:(unint64_t *)a7;
+- (void)freeMeshFunctionDriverData:(void *)data meshFunctionDriverDataSize:(unint64_t)size;
+- (void)freeObjectFunctionDriverData:(void *)data objectFunctionDriverDataSize:(unint64_t)size;
+- (void)freeVertexFunctionDriverData:(void *)data vertexFunctionDriverDataSize:(unint64_t)size;
+- (void)getCompilerConnectionManager:(int)manager;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forComputeVariant:(id)variant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forObjectVariant:(id)variant meshVariant:(id)meshVariant fragmentVariant:(id)fragmentVariant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forTileVariant:(id)variant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forVertexVariant:(id)variant fragmentVariant:(id)fragmentVariant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forComputeVariant:(id)variant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forObjectVariant:(id)variant meshVariant:(id)meshVariant fragmentVariant:(id)fragmentVariant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forTileVariant:(id)variant;
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forVertexVariant:(id)variant fragmentVariant:(id)fragmentVariant;
+- (void)getDefaultSamplePositions:(id *)positions count:(unint64_t)count;
+- (void)getMeshFunctionDriverData:(const void *)data function:(id)function compilerOptions:(char *)options nextStageVariant:(id)variant driverDataSize:(unint64_t *)size;
+- (void)getObjectFunctionDriverData:(const void *)data function:(id)function compilerOptions:(char *)options nextStageVariant:(id)variant driverDataSize:(unint64_t *)size;
 - (void)getShaderCacheKeys;
-- (void)getVertexFunctionDriverData:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 nextStageVariant:(id)a6 driverDataSize:(unint64_t *)a7;
+- (void)getVertexFunctionDriverData:(const void *)data function:(id)function compilerOptions:(char *)options nextStageVariant:(id)variant driverDataSize:(unint64_t *)size;
 - (void)initDefaultLogState;
 - (void)initFeatureQueries;
 - (void)initGPUFamilySupport;
@@ -151,28 +151,28 @@
 - (void)initLogBufferResidencySet;
 - (void)initProgressTracking;
 - (void)initSerializationPaths;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 compilerTask:(id)a5 completionHandler:(id)a6;
-- (void)newLibraryWithStitchedDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)recordBinaryArchiveUsage:(id)a3;
-- (void)registerComputePipelineDescriptor:(id)a3;
-- (void)registerMeshRenderPipelineDescriptor:(id)a3;
-- (void)registerRenderPipelineDescriptor:(id)a3;
-- (void)registerTileRenderPipelineDescriptor:(id)a3;
-- (void)removeLogBufferFromResidencySet:(id)a3;
-- (void)setPluginData:(id)a3;
-- (void)setRawBVHBuilderPtr:(id)a3;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler;
+- (void)newLibraryWithSource:(id)source options:(id)options compilerTask:(id)task completionHandler:(id)handler;
+- (void)newLibraryWithStitchedDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)recordBinaryArchiveUsage:(id)usage;
+- (void)registerComputePipelineDescriptor:(id)descriptor;
+- (void)registerMeshRenderPipelineDescriptor:(id)descriptor;
+- (void)registerRenderPipelineDescriptor:(id)descriptor;
+- (void)registerTileRenderPipelineDescriptor:(id)descriptor;
+- (void)removeLogBufferFromResidencySet:(id)set;
+- (void)setPluginData:(id)data;
+- (void)setRawBVHBuilderPtr:(id)ptr;
 - (void)startCollectingPipelineDescriptors;
-- (void)startCollectingPipelineDescriptorsFromLibrary:(id)a3 filePath:(id)a4;
-- (void)startCollectingPipelineDescriptorsUsingPrefixForNames:(id)a3;
+- (void)startCollectingPipelineDescriptorsFromLibrary:(id)library filePath:(id)path;
+- (void)startCollectingPipelineDescriptorsUsingPrefixForNames:(id)names;
 - (void)unloadShaderCaches;
 @end
 
@@ -339,10 +339,10 @@ LABEL_14:
 
 - (void)initLimits
 {
-  v3 = [(_MTLDevice *)self featureProfile];
-  v4 = v3 == 1;
-  v5 = vdupq_n_s64(v3);
-  if (v3 == 1)
+  featureProfile = [(_MTLDevice *)self featureProfile];
+  v4 = featureProfile == 1;
+  v5 = vdupq_n_s64(featureProfile);
+  if (featureProfile == 1)
   {
     v6 = 31;
   }
@@ -353,7 +353,7 @@ LABEL_14:
   }
 
   v298 = v6;
-  if (v3 == 1)
+  if (featureProfile == 1)
   {
     v7 = 60;
   }
@@ -364,7 +364,7 @@ LABEL_14:
   }
 
   v337 = v7;
-  if (v3 == 1)
+  if (featureProfile == 1)
   {
     v8 = 65528;
   }
@@ -376,7 +376,7 @@ LABEL_14:
 
   v313 = v8;
   v9 = vmovn_s64(vceqq_s64(v5, xmmword_185DE1A90));
-  if (v3 == 1)
+  if (featureProfile == 1)
   {
     v10 = 96;
   }
@@ -387,7 +387,7 @@ LABEL_14:
   }
 
   v335 = v10;
-  if (v3 == 1)
+  if (featureProfile == 1)
   {
     v11 = -1;
   }
@@ -398,10 +398,10 @@ LABEL_14:
   }
 
   v339 = v11;
-  v12 = v3 == 9;
+  v12 = featureProfile == 9;
   v13 = vmovn_s64(vceqq_s64(v5, xmmword_185DE1A70));
-  v14 = v3 & 0xFFFFFFFFFFFFFFFELL;
-  if (v3 == 9)
+  v14 = featureProfile & 0xFFFFFFFFFFFFFFFELL;
+  if (featureProfile == 9)
   {
     v15 = 31;
   }
@@ -412,7 +412,7 @@ LABEL_14:
   }
 
   v329 = v15;
-  if (v3 == 9)
+  if (featureProfile == 9)
   {
     v16 = 124;
   }
@@ -424,7 +424,7 @@ LABEL_14:
 
   v330 = v16;
   v17 = vceqq_s64(v5, xmmword_185DE1A80);
-  if (v3 == 9)
+  if (featureProfile == 9)
   {
     v18 = 262136;
   }
@@ -436,7 +436,7 @@ LABEL_14:
 
   v309 = v18;
   v19 = vmovn_s64(v17);
-  if (v3 == 9)
+  if (featureProfile == 9)
   {
     v20 = 96;
   }
@@ -447,7 +447,7 @@ LABEL_14:
   }
 
   v332 = v20;
-  if (v3 == 9)
+  if (featureProfile == 9)
   {
     v21 = 6;
   }
@@ -458,7 +458,7 @@ LABEL_14:
   }
 
   v334 = v21;
-  v250 = v3 & 0xFFFFFFFFFFFFFFFELL;
+  v250 = featureProfile & 0xFFFFFFFFFFFFFFFELL;
   v22 = v14 == 10;
   v23 = v14 == 10;
   if (v14 == 10)
@@ -516,9 +516,9 @@ LABEL_14:
   }
 
   v333 = v28;
-  v251 = v3;
-  v29 = v3 == 12;
-  if (v3 == 12)
+  v251 = featureProfile;
+  v29 = featureProfile == 12;
+  if (featureProfile == 12)
   {
     v30 = 31;
   }
@@ -530,7 +530,7 @@ LABEL_14:
 
   v326 = v30;
   v31 = vuzp1_s16(v13, v9);
-  if (v3 == 12)
+  if (featureProfile == 12)
   {
     v32 = 1073741697;
   }
@@ -541,7 +541,7 @@ LABEL_14:
   }
 
   v322 = v32;
-  if (v3 == 12)
+  if (featureProfile == 12)
   {
     v33 = 124;
   }
@@ -552,7 +552,7 @@ LABEL_14:
   }
 
   v308 = v33;
-  if (v3 == 12)
+  if (featureProfile == 12)
   {
     v34 = 262136;
   }
@@ -563,7 +563,7 @@ LABEL_14:
   }
 
   v281 = v34;
-  if (v3 == 12)
+  if (featureProfile == 12)
   {
     v35 = 96;
   }
@@ -574,7 +574,7 @@ LABEL_14:
   }
 
   v324 = v35;
-  if (v3 == 12)
+  if (featureProfile == 12)
   {
     v36 = 6;
   }
@@ -1739,16 +1739,16 @@ LABEL_14:
 
   v199 = v142.i32[0];
   v336 = v132 + v335 + v323 + v320 + v289;
-  v200 = [(_MTLDevice *)self argumentBuffersSupport];
+  argumentBuffersSupport = [(_MTLDevice *)self argumentBuffersSupport];
   v208 = v198;
-  if (v200)
+  if (argumentBuffersSupport)
   {
-    v200 = [(_MTLDevice *)self argumentBuffersSupport];
-    if (v200 != 1)
+    argumentBuffersSupport = [(_MTLDevice *)self argumentBuffersSupport];
+    if (argumentBuffersSupport != 1)
     {
       self->_limits.maxIndirectBuffers = 0;
 LABEL_414:
-      [(_MTLDevice *)v200 initLimits:v201];
+      [(_MTLDevice *)argumentBuffersSupport initLimits:v201];
     }
 
     if (v338)
@@ -1810,15 +1810,15 @@ LABEL_414:
     goto LABEL_414;
   }
 
-  v214 = [(_MTLDevice *)self argumentBuffersSupport];
-  if (v214)
+  argumentBuffersSupport2 = [(_MTLDevice *)self argumentBuffersSupport];
+  if (argumentBuffersSupport2)
   {
-    v214 = [(_MTLDevice *)self argumentBuffersSupport];
-    if (v214 != 1)
+    argumentBuffersSupport2 = [(_MTLDevice *)self argumentBuffersSupport];
+    if (argumentBuffersSupport2 != 1)
     {
       self->_limits.maxIndirectTextures = 0;
 LABEL_416:
-      [(_MTLDevice *)v214 initLimits:v215];
+      [(_MTLDevice *)argumentBuffersSupport2 initLimits:v215];
     }
 
     if (v338)
@@ -1880,15 +1880,15 @@ LABEL_416:
     goto LABEL_416;
   }
 
-  v227 = [(_MTLDevice *)self argumentBuffersSupport];
-  if (v227)
+  argumentBuffersSupport3 = [(_MTLDevice *)self argumentBuffersSupport];
+  if (argumentBuffersSupport3)
   {
-    v227 = [(_MTLDevice *)self argumentBuffersSupport];
-    if (v227 != 1)
+    argumentBuffersSupport3 = [(_MTLDevice *)self argumentBuffersSupport];
+    if (argumentBuffersSupport3 != 1)
     {
       self->_limits.maxIndirectSamplers = 0;
 LABEL_418:
-      [(_MTLDevice *)v227 initLimits:v228];
+      [(_MTLDevice *)argumentBuffersSupport3 initLimits:v228];
     }
 
     if (v338)
@@ -1950,15 +1950,15 @@ LABEL_418:
     goto LABEL_418;
   }
 
-  v240 = [(_MTLDevice *)self argumentBuffersSupport];
-  if (v240)
+  argumentBuffersSupport4 = [(_MTLDevice *)self argumentBuffersSupport];
+  if (argumentBuffersSupport4)
   {
-    v240 = [(_MTLDevice *)self argumentBuffersSupport];
-    if (v240 != 1)
+    argumentBuffersSupport4 = [(_MTLDevice *)self argumentBuffersSupport];
+    if (argumentBuffersSupport4 != 1)
     {
       self->_limits.maxIndirectSamplersPerDevice = 0;
 LABEL_420:
-      [(_MTLDevice *)v240 initLimits:v241];
+      [(_MTLDevice *)argumentBuffersSupport4 initLimits:v241];
     }
 
     if (v250 == 10)
@@ -2012,19 +2012,19 @@ LABEL_420:
   }
 
   supportedGPUFamilies[1] = *supportedGPUFamilies;
-  v3 = [(_MTLDevice *)self featureProfile];
-  if (v3 <= 9999)
+  featureProfile = [(_MTLDevice *)self featureProfile];
+  if (featureProfile <= 9999)
   {
-    if (v3 <= 6)
+    if (featureProfile <= 6)
     {
-      if (v3 <= 3)
+      if (featureProfile <= 3)
       {
-        if (!v3)
+        if (!featureProfile)
         {
           goto LABEL_59;
         }
 
-        if (v3 != 1)
+        if (featureProfile != 1)
         {
           return;
         }
@@ -2032,12 +2032,12 @@ LABEL_420:
         goto LABEL_57;
       }
 
-      if (v3 == 4)
+      if (featureProfile == 4)
       {
         goto LABEL_56;
       }
 
-      if (v3 == 5)
+      if (featureProfile == 5)
       {
         goto LABEL_55;
       }
@@ -2045,13 +2045,13 @@ LABEL_420:
       goto LABEL_54;
     }
 
-    if (v3 > 9)
+    if (featureProfile > 9)
     {
-      if (v3 != 10)
+      if (featureProfile != 10)
       {
-        if (v3 != 11)
+        if (featureProfile != 11)
         {
-          if (v3 != 12)
+          if (featureProfile != 12)
           {
             return;
           }
@@ -2069,7 +2069,7 @@ LABEL_420:
 
     else
     {
-      if (v3 == 7)
+      if (featureProfile == 7)
       {
 LABEL_50:
         if ((dyld_program_sdk_at_least() & 1) == 0)
@@ -2082,7 +2082,7 @@ LABEL_50:
         goto LABEL_53;
       }
 
-      if (v3 == 8)
+      if (featureProfile == 8)
       {
 LABEL_47:
         if (dyld_program_sdk_at_least())
@@ -2104,18 +2104,18 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (v3 > 29999)
+  if (featureProfile > 29999)
   {
-    if (v3 <= 30003)
+    if (featureProfile <= 30003)
     {
-      if (v3 == 30000)
+      if (featureProfile == 30000)
       {
 LABEL_57:
         v5 = 1002;
         goto LABEL_58;
       }
 
-      if (v3 == 30001)
+      if (featureProfile == 30001)
       {
 LABEL_56:
         v7 = 1003;
@@ -2125,7 +2125,7 @@ LABEL_56:
         goto LABEL_57;
       }
 
-      if (v3 != 30002)
+      if (featureProfile != 30002)
       {
         return;
       }
@@ -2133,11 +2133,11 @@ LABEL_56:
       goto LABEL_54;
     }
 
-    if (v3 != 30004)
+    if (featureProfile != 30004)
     {
-      if (v3 != 30005)
+      if (featureProfile != 30005)
       {
-        if (v3 != 30006)
+        if (featureProfile != 30006)
         {
           return;
         }
@@ -2172,9 +2172,9 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if (v3 > 19999)
+  if (featureProfile > 19999)
   {
-    if (v3 == 20000)
+    if (featureProfile == 20000)
     {
 LABEL_59:
       v7 = 1001;
@@ -2183,9 +2183,9 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    if (v3 != 20001)
+    if (featureProfile != 20001)
     {
-      if (v3 != 20002)
+      if (featureProfile != 20002)
       {
         return;
       }
@@ -2219,11 +2219,11 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  if (v3 != 10000)
+  if (featureProfile != 10000)
   {
-    if (v3 != 10001)
+    if (featureProfile != 10001)
     {
-      if (v3 != 10002)
+      if (featureProfile != 10002)
       {
         return;
       }
@@ -2260,9 +2260,9 @@ LABEL_60:
 
 - (NSString)name
 {
-  v3 = [(_MTLDevice *)self vendorName];
-  v4 = [(_MTLDevice *)self familyName];
-  v5 = [(_MTLDevice *)self productName];
+  vendorName = [(_MTLDevice *)self vendorName];
+  familyName = [(_MTLDevice *)self familyName];
+  productName = [(_MTLDevice *)self productName];
   v6 = CFPreferencesCopyAppValue(@"forceDeviceName", @"com.apple.Metal");
   if (v6)
   {
@@ -2276,35 +2276,35 @@ LABEL_60:
     v9 = getenv("METAL_FORCE_DEVICE_VENDOR_NAME");
     if (v9)
     {
-      v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
+      vendorName = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
     }
 
     v10 = getenv("METAL_FORCE_DEVICE_FAMILY_NAME");
     if (v10)
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];
+      familyName = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];
     }
 
     v11 = getenv("METAL_FORCE_DEVICE_PRODUCT_NAME");
     if (v11)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v11];
+      productName = [MEMORY[0x1E696AEC0] stringWithUTF8String:v11];
     }
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v3 && ([v3 isEqualToString:&stru_1EF478240] & 1) == 0)
+    if (vendorName && ([vendorName isEqualToString:&stru_1EF478240] & 1) == 0)
     {
-      [v12 addObject:{objc_msgSend(objc_msgSend(v3, "componentsSeparatedByCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), "componentsJoinedByString:", &stru_1EF478240)}];
+      [v12 addObject:{objc_msgSend(objc_msgSend(vendorName, "componentsSeparatedByCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), "componentsJoinedByString:", &stru_1EF478240)}];
     }
 
-    if (v4 && ([v4 isEqualToString:&stru_1EF478240] & 1) == 0)
+    if (familyName && ([familyName isEqualToString:&stru_1EF478240] & 1) == 0)
     {
-      [v12 addObject:v4];
+      [v12 addObject:familyName];
     }
 
-    if (v5 && ([v5 isEqualToString:&stru_1EF478240] & 1) == 0)
+    if (productName && ([productName isEqualToString:&stru_1EF478240] & 1) == 0)
     {
-      [v12 addObject:v5];
+      [v12 addObject:productName];
     }
 
     [v12 addObject:@"GPU"];
@@ -2355,9 +2355,9 @@ LABEL_60:
 - (void)initDefaultLogState
 {
   v4 = 0;
-  v5 = self;
+  selfCopy = self;
   p_initDefaultLogState = &self->_initDefaultLogState;
-  v3[0] = &v5;
+  v3[0] = &selfCopy;
   v3[1] = &v4;
   if (atomic_load_explicit(p_initDefaultLogState, memory_order_acquire) != -1)
   {
@@ -2380,24 +2380,24 @@ LABEL_60:
   }
 }
 
-- (void)addToLogBufferResidencySet:(id)a3
+- (void)addToLogBufferResidencySet:(id)set
 {
   if (self->_internalLogBufferResidencySet)
   {
     os_unfair_lock_lock(&self->_logBufferResidencyLock);
-    [(MTLResidencySet *)self->_internalLogBufferResidencySet addAllocation:a3];
+    [(MTLResidencySet *)self->_internalLogBufferResidencySet addAllocation:set];
     [(MTLResidencySet *)self->_internalLogBufferResidencySet commit];
 
     os_unfair_lock_unlock(&self->_logBufferResidencyLock);
   }
 }
 
-- (void)removeLogBufferFromResidencySet:(id)a3
+- (void)removeLogBufferFromResidencySet:(id)set
 {
   if (self->_internalLogBufferResidencySet)
   {
     os_unfair_lock_lock(&self->_logBufferResidencyLock);
-    [(MTLResidencySet *)self->_internalLogBufferResidencySet removeAllocation:a3];
+    [(MTLResidencySet *)self->_internalLogBufferResidencySet removeAllocation:set];
     [(MTLResidencySet *)self->_internalLogBufferResidencySet commit];
 
     os_unfair_lock_unlock(&self->_logBufferResidencyLock);
@@ -2406,9 +2406,9 @@ LABEL_60:
 
 - (void)initProgressTracking
 {
-  v4 = self;
+  selfCopy = self;
   p_initProgressTrackingOnceToken = &self->_initProgressTrackingOnceToken;
-  v3 = &v4;
+  v3 = &selfCopy;
   if (atomic_load_explicit(p_initProgressTrackingOnceToken, memory_order_acquire) != -1)
   {
     v6 = &v3;
@@ -2495,14 +2495,14 @@ LABEL_60:
   }
 }
 
-- (BOOL)supportsFamily:(int64_t)a3
+- (BOOL)supportsFamily:(int64_t)family
 {
   supportedGPUFamilies = self->_supportedGPUFamilies;
   v4 = *supportedGPUFamilies;
   v5 = supportedGPUFamilies[1];
   if (v4 != v5)
   {
-    while (*v4 != a3)
+    while (*v4 != family)
     {
       if (++v4 == v5)
       {
@@ -2515,29 +2515,29 @@ LABEL_60:
   return v4 != v5;
 }
 
-- (id)loadDynamicLibrariesForComputeDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)loadDynamicLibrariesForComputeDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v9 = [a3 computeFunction];
-  v10 = [a3 preloadedLibraries];
+  computeFunction = [descriptor computeFunction];
+  preloadedLibraries = [descriptor preloadedLibraries];
 
-  return [(_MTLDevice *)self loadDynamicLibrariesForFunction:v9 insertLibraries:v10 options:a4 error:a5];
+  return [(_MTLDevice *)self loadDynamicLibrariesForFunction:computeFunction insertLibraries:preloadedLibraries options:options error:error];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = _MTLDevice;
   v6 = [(_MTLDevice *)&v11 description];
   v12[0] = v4;
   v12[1] = @"name =";
-  v7 = [(_MTLDevice *)self name];
+  name = [(_MTLDevice *)self name];
   v8 = @"<none>";
-  if (v7)
+  if (name)
   {
-    v8 = v7;
+    v8 = name;
   }
 
   v12[2] = v8;
@@ -2546,52 +2546,52 @@ LABEL_60:
   return result;
 }
 
-- (id)newFunctionWithGLIR:(void *)a3 functionType:(unint64_t)a4
+- (id)newFunctionWithGLIR:(void *)r functionType:(unint64_t)type
 {
-  v4 = a4;
-  v6 = self;
+  typeCopy = type;
+  selfCopy = self;
   dyld_get_active_platform();
 
-  newFunctionWithGLIR(v6, v4, a3);
+  newFunctionWithGLIR(selfCopy, typeCopy, r);
 }
 
-- (id)newFunctionWithGLIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5
+- (id)newFunctionWithGLIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type
 {
-  v5 = a5;
-  v7 = self;
+  typeCopy = type;
+  selfCopy = self;
   dyld_get_active_platform();
 
-  newFunctionWithGLIR(v7, v5, a3);
+  newFunctionWithGLIR(selfCopy, typeCopy, r);
 }
 
 - (void)getShaderCacheKeys
 {
-  v2 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v2 getShaderCacheKeys];
+  return [(MTLCompiler *)compiler getShaderCacheKeys];
 }
 
-- (void)setRawBVHBuilderPtr:(id)a3
+- (void)setRawBVHBuilderPtr:(id)ptr
 {
   GPUBVHBuilder = self->_GPUBVHBuilder;
-  if (GPUBVHBuilder != a3)
+  if (GPUBVHBuilder != ptr)
   {
 
-    self->_GPUBVHBuilder = a3;
+    self->_GPUBVHBuilder = ptr;
   }
 }
 
 - (void)allowLibrariesFromOtherPlatforms
 {
   *(self->_libraryBuilder + 40) = 0;
-  v2 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  [(MTLCompiler *)v2 allowLibrariesFromOtherPlatforms];
+  [(MTLCompiler *)compiler allowLibrariesFromOtherPlatforms];
 }
 
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4
+- (id)newLibraryWithFile:(id)file error:(id *)error
 {
-  v9 = MTLLibraryBuilder::newLibraryWithFile(self->_libraryBuilder, self, a3, a4, v4, v5, v6, v7);
+  v9 = MTLLibraryBuilder::newLibraryWithFile(self->_libraryBuilder, self, file, error, v4, v5, v6, v7);
   if ([(_MTLDevice *)self isCollectingLibraries]&& v9)
   {
     MTLPipelineCollection::addLibrary(self->_pipelineCollection, v9);
@@ -2600,13 +2600,13 @@ LABEL_60:
   return v9;
 }
 
-- (id)newLibraryWithMetalPackageURL:(id)a3 error:(id *)a4
+- (id)newLibraryWithMetalPackageURL:(id)l error:(id *)error
 {
-  v7 = [a3 URLByAppendingPathComponent:@"manifest.json"];
+  v7 = [l URLByAppendingPathComponent:@"manifest.json"];
   v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7];
   if (!v8)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -2615,10 +2615,10 @@ LABEL_60:
     goto LABEL_16;
   }
 
-  v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:a4];
+  v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:error];
   if (!v9 || (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -2630,26 +2630,26 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  SubDictionary = getSubDictionary(v10, &cfstr_Mtlpackage.isa, a4);
+  SubDictionary = getSubDictionary(v10, &cfstr_Mtlpackage.isa, error);
   if (!SubDictionary)
   {
     return 0;
   }
 
   v12 = SubDictionary;
-  v13 = getSubDictionary(SubDictionary, &cfstr_Version.isa, a4);
+  v13 = getSubDictionary(SubDictionary, &cfstr_Version.isa, error);
   if (!v13)
   {
     return 0;
   }
 
   v14 = v13;
-  VersionValue = getVersionValue(v13, &cfstr_Major.isa, a4);
-  v16 = getVersionValue(v14, &cfstr_Minor.isa, a4);
-  v17 = getVersionValue(v14, &cfstr_Patch.isa, a4);
-  if (a4)
+  VersionValue = getVersionValue(v13, &cfstr_Major.isa, error);
+  v16 = getVersionValue(v14, &cfstr_Minor.isa, error);
+  v17 = getVersionValue(v14, &cfstr_Patch.isa, error);
+  if (error)
   {
-    if (*a4)
+    if (*error)
     {
       return 0;
     }
@@ -2661,7 +2661,7 @@ LABEL_16:
       v20 = @"Unsupported metal package version";
 LABEL_17:
       v21 = [v18 dictionaryWithObject:v20 forKey:v19];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:1 userInfo:v21];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:1 userInfo:v21];
       return 0;
     }
   }
@@ -2671,7 +2671,7 @@ LABEL_17:
     return 0;
   }
 
-  v23 = getSubDictionary(v12, &cfstr_Content.isa, a4);
+  v23 = getSubDictionary(v12, &cfstr_Content.isa, error);
   if (!v23)
   {
     return 0;
@@ -2680,41 +2680,41 @@ LABEL_17:
   v24 = v23;
   if (([getStringInDictionary(v12 &cfstr_Pkgtype.isa] & 1) == 0)
   {
-    generateNSError(a4, &cfstr_Mtllibraryerro.isa, MTLLibraryErrorUnsupported, &cfstr_MetalPackageDo.isa);
+    generateNSError(error, &cfstr_Mtllibraryerro.isa, MTLLibraryErrorUnsupported, &cfstr_MetalPackageDo.isa);
     return 0;
   }
 
-  StringInDictionary = getStringInDictionary(v24, &cfstr_Mpspkgname.isa, a4);
+  StringInDictionary = getStringInDictionary(v24, &cfstr_Mpspkgname.isa, error);
   if (!StringInDictionary)
   {
     return 0;
   }
 
-  v26 = [a3 URLByAppendingPathComponent:StringInDictionary];
+  v26 = [l URLByAppendingPathComponent:StringInDictionary];
 
-  return [(_MTLDevice *)self newLibraryWithMPSGraphPackageURL:v26 name:@"library" error:a4];
+  return [(_MTLDevice *)self newLibraryWithMPSGraphPackageURL:v26 name:@"library" error:error];
 }
 
-- (id)newLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newLibraryWithURL:(id)l error:(id *)error
 {
-  if (!a3)
+  if (!l)
   {
-    [(_MTLDevice *)self newLibraryWithURL:a2 error:0, a4, v4, v5, v6, v7, v21];
+    [(_MTLDevice *)self newLibraryWithURL:a2 error:0, error, v4, v5, v6, v7, v21];
   }
 
-  v11 = [a3 fileSystemRepresentation];
-  if (v11)
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v11];
+    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:fileSystemRepresentation];
     v22 = 0;
-    if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] && v22 == 1 && objc_msgSend(objc_msgSend(a3, "pathExtension"), "isEqualToString:", @"mtlpackage"))
+    if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] && v22 == 1 && objc_msgSend(objc_msgSend(l, "pathExtension"), "isEqualToString:", @"mtlpackage"))
     {
-      v17 = [(_MTLDevice *)self newLibraryWithMetalPackageURL:a3 error:a4];
+      v17 = [(_MTLDevice *)self newLibraryWithMetalPackageURL:l error:error];
     }
 
     else
     {
-      v17 = MTLLibraryBuilder::newLibraryWithFile(self->_libraryBuilder, self, v12, a4, v13, v14, v15, v16);
+      v17 = MTLLibraryBuilder::newLibraryWithFile(self->_libraryBuilder, self, v12, error, v13, v14, v15, v16);
     }
 
     v18 = v17;
@@ -2727,10 +2727,10 @@ LABEL_17:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"Invalid file url" forKey:*MEMORY[0x1E696A578]];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:6 userInfo:v19];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:6 userInfo:v19];
     }
 
     [(_MTLDevice *)self isCollectingLibraries];
@@ -2740,49 +2740,49 @@ LABEL_17:
   return v18;
 }
 
-- (id)newSharedTextureWithDescriptor:(id)a3
+- (id)newSharedTextureWithDescriptor:(id)descriptor
 {
   v5 = [(_MTLDevice *)self copyIOSurfaceSharedTextureProperties:?];
   if ([(MTLSharedTextureHandle *)v5 objectForKey:*MEMORY[0x1E696CE30]])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_MTLDevice registryID](self, "registryID")}];
     [(MTLSharedTextureHandle *)v5 setObject:v6 forKeyedSubscript:kMetalRegistryID];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "textureType")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "textureType")}];
     [(MTLSharedTextureHandle *)v5 setObject:v7 forKeyedSubscript:kMetalTextureType];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "pixelFormat")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "pixelFormat")}];
     [(MTLSharedTextureHandle *)v5 setObject:v8 forKeyedSubscript:kMetalTexturePixelFormat];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "width")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "width")}];
     [(MTLSharedTextureHandle *)v5 setObject:v9 forKeyedSubscript:kMetalTextureWidth];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "height")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "height")}];
     [(MTLSharedTextureHandle *)v5 setObject:v10 forKeyedSubscript:kMetalTextureHeight];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "depth")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "depth")}];
     [(MTLSharedTextureHandle *)v5 setObject:v11 forKeyedSubscript:kMetalTextureDepth];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "mipmapLevelCount")}];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "mipmapLevelCount")}];
     [(MTLSharedTextureHandle *)v5 setObject:v12 forKeyedSubscript:kMetalTextureMipmapLevelCount];
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "sampleCount")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "sampleCount")}];
     [(MTLSharedTextureHandle *)v5 setObject:v13 forKeyedSubscript:kMetalTextureSampleCount];
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "arrayLength")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "arrayLength")}];
     [(MTLSharedTextureHandle *)v5 setObject:v14 forKeyedSubscript:kMetalTextureArrayLength];
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "resourceOptions")}];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "resourceOptions")}];
     [(MTLSharedTextureHandle *)v5 setObject:v15 forKeyedSubscript:kMetalTextureResourceOptions];
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "usage")}];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "usage")}];
     [(MTLSharedTextureHandle *)v5 setObject:v16 forKeyedSubscript:kMetalTextureUsage];
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "sparseSurfaceDefaultValue")}];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "sparseSurfaceDefaultValue")}];
     [(MTLSharedTextureHandle *)v5 setObject:v17 forKeyedSubscript:kMetalTextureSparseValue];
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "allowGPUOptimizedContents")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(descriptor, "allowGPUOptimizedContents")}];
     [(MTLSharedTextureHandle *)v5 setObject:v18 forKeyedSubscript:kMetalTextureGPUOptimization];
-    -[MTLSharedTextureHandle setObject:forKeyedSubscript:](v5, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{MTLTextureSwizzleChannelsToKey(objc_msgSend(a3, "swizzle"))}], kMetalTextureSwizzleKey);
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "rotation")}];
+    -[MTLSharedTextureHandle setObject:forKeyedSubscript:](v5, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{MTLTextureSwizzleChannelsToKey(objc_msgSend(descriptor, "swizzle"))}], kMetalTextureSwizzleKey);
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "rotation")}];
     [(MTLSharedTextureHandle *)v5 setObject:v19 forKeyedSubscript:kMetalTextureRotation];
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "compressionFootprint")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "compressionFootprint")}];
     [(MTLSharedTextureHandle *)v5 setObject:v20 forKeyedSubscript:kMetalTextureFootprint];
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "resourceIndex")}];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(descriptor, "resourceIndex")}];
     [(MTLSharedTextureHandle *)v5 setObject:v21 forKeyedSubscript:kMetalTextureResourceIndex];
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "colorSpaceConversionMatrix")}];
+    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptor, "colorSpaceConversionMatrix")}];
     [(MTLSharedTextureHandle *)v5 setObject:v22 forKeyedSubscript:kMetalTextureCSCMatrix];
-    v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "writeAccessPattern")}];
+    v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(descriptor, "writeAccessPattern")}];
     [(MTLSharedTextureHandle *)v5 setObject:v23 forKeyedSubscript:kMetalTextureWriteAccessPattern];
-    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "protectionOptions")}];
+    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(descriptor, "protectionOptions")}];
     [(MTLSharedTextureHandle *)v5 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696D0F0]];
     v25 = IOSurfaceCreate(v5);
 
@@ -2804,9 +2804,9 @@ LABEL_17:
   return v26;
 }
 
-- (id)_newDescriptorForSharedTexture:(__IOSurface *)a3
+- (id)_newDescriptorForSharedTexture:(__IOSurface *)texture
 {
-  v4 = IOSurfaceCopyValue(a3, *MEMORY[0x1E696CEF8]);
+  v4 = IOSurfaceCopyValue(texture, *MEMORY[0x1E696CEF8]);
   if ([v4 objectForKeyedSubscript:kMetalRegistryID] && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureType) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTexturePixelFormat) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureWidth) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureHeight) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureDepth) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureMipmapLevelCount) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureSampleCount) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureArrayLength) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureSparseValue) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureSwizzleKey) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureRotation) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureFootprint) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureResourceIndex) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureCSCMatrix) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureGPUOptimization) && objc_msgSend(v4, "objectForKeyedSubscript:", kMetalTextureWriteAccessPattern) && (v5 = objc_msgSend(objc_msgSend(v4, "objectForKeyedSubscript:", kMetalRegistryID), "unsignedLongLongValue"), -[_MTLDevice registryID](self, "registryID") == v5))
   {
     v6 = objc_alloc_init(MTLTextureDescriptor);
@@ -2839,24 +2839,24 @@ LABEL_17:
   return v6;
 }
 
-- (id)newSharedTextureWithHandle:(id)a3
+- (id)newSharedTextureWithHandle:(id)handle
 {
-  v5 = [a3 ioSurface];
-  v6 = [(_MTLDevice *)self _newDescriptorForSharedTexture:v5];
-  v7 = [(_MTLDevice *)self newTextureWithDescriptor:v6 iosurface:v5 plane:0];
+  ioSurface = [handle ioSurface];
+  v6 = [(_MTLDevice *)self _newDescriptorForSharedTexture:ioSurface];
+  v7 = [(_MTLDevice *)self newTextureWithDescriptor:v6 iosurface:ioSurface plane:0];
 
-  [v7 setLabel:{objc_msgSend(a3, "label")}];
+  [v7 setLabel:{objc_msgSend(handle, "label")}];
   return v7;
 }
 
-- (id)newSharedTextureWithHandle:(id)a3 withResourceIndex:(unint64_t)a4
+- (id)newSharedTextureWithHandle:(id)handle withResourceIndex:(unint64_t)index
 {
-  v7 = [a3 ioSurface];
-  v8 = [(_MTLDevice *)self _newDescriptorForSharedTexture:v7];
-  [v8 setResourceIndex:a4];
-  v9 = [(_MTLDevice *)self newTextureWithDescriptor:v8 iosurface:v7 plane:0];
+  ioSurface = [handle ioSurface];
+  v8 = [(_MTLDevice *)self _newDescriptorForSharedTexture:ioSurface];
+  [v8 setResourceIndex:index];
+  v9 = [(_MTLDevice *)self newTextureWithDescriptor:v8 iosurface:ioSurface plane:0];
 
-  [v9 setLabel:{objc_msgSend(a3, "label")}];
+  [v9 setLabel:{objc_msgSend(handle, "label")}];
   return v9;
 }
 
@@ -2873,7 +2873,7 @@ LABEL_17:
   }
 }
 
-- (id)serializeRenderPipelineDescriptor:(id)a3
+- (id)serializeRenderPipelineDescriptor:(id)descriptor
 {
   v7 = 0;
   v8 = &v7;
@@ -2886,7 +2886,7 @@ LABEL_17:
   v6[1] = 3221225472;
   v6[2] = __48___MTLDevice_serializeRenderPipelineDescriptor___block_invoke;
   v6[3] = &unk_1E6EEB430;
-  v6[4] = a3;
+  v6[4] = descriptor;
   v6[5] = &v7;
   dispatch_sync(pipelineSerializationQueue, v6);
   v4 = v8[5];
@@ -2894,15 +2894,15 @@ LABEL_17:
   return v4;
 }
 
-- (id)newRenderPipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4
+- (id)newRenderPipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context
 {
-  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, a4);
-  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newRenderPipelineDescriptor(v7, a3);
+  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, context);
+  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newRenderPipelineDescriptor(v7, data);
   MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::~PipelineDescriptorDeserializer(v7);
   return v5;
 }
 
-- (id)serializeComputePipelineDescriptor:(id)a3
+- (id)serializeComputePipelineDescriptor:(id)descriptor
 {
   v7 = 0;
   v8 = &v7;
@@ -2915,7 +2915,7 @@ LABEL_17:
   v6[1] = 3221225472;
   v6[2] = __49___MTLDevice_serializeComputePipelineDescriptor___block_invoke;
   v6[3] = &unk_1E6EEB430;
-  v6[4] = a3;
+  v6[4] = descriptor;
   v6[5] = &v7;
   dispatch_sync(pipelineSerializationQueue, v6);
   v4 = v8[5];
@@ -2923,15 +2923,15 @@ LABEL_17:
   return v4;
 }
 
-- (id)newComputePipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4
+- (id)newComputePipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context
 {
-  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, a4);
-  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newComputePipelineDescriptor(v7, a3);
+  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, context);
+  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newComputePipelineDescriptor(v7, data);
   MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::~PipelineDescriptorDeserializer(v7);
   return v5;
 }
 
-- (id)serializeTileRenderPipelineDescriptor:(id)a3
+- (id)serializeTileRenderPipelineDescriptor:(id)descriptor
 {
   v7 = 0;
   v8 = &v7;
@@ -2944,7 +2944,7 @@ LABEL_17:
   v6[1] = 3221225472;
   v6[2] = __52___MTLDevice_serializeTileRenderPipelineDescriptor___block_invoke;
   v6[3] = &unk_1E6EEB430;
-  v6[4] = a3;
+  v6[4] = descriptor;
   v6[5] = &v7;
   dispatch_sync(pipelineSerializationQueue, v6);
   v4 = v8[5];
@@ -2952,15 +2952,15 @@ LABEL_17:
   return v4;
 }
 
-- (id)newTileRenderPipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4
+- (id)newTileRenderPipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context
 {
-  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, a4);
-  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newTileRenderPipelineDescriptor(v7, a3);
+  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, context);
+  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newTileRenderPipelineDescriptor(v7, data);
   MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::~PipelineDescriptorDeserializer(v7);
   return v5;
 }
 
-- (id)serializeMeshRenderPipelineDescriptor:(id)a3
+- (id)serializeMeshRenderPipelineDescriptor:(id)descriptor
 {
   v7 = 0;
   v8 = &v7;
@@ -2973,7 +2973,7 @@ LABEL_17:
   v6[1] = 3221225472;
   v6[2] = __52___MTLDevice_serializeMeshRenderPipelineDescriptor___block_invoke;
   v6[3] = &unk_1E6EEB430;
-  v6[4] = a3;
+  v6[4] = descriptor;
   v6[5] = &v7;
   dispatch_sync(pipelineSerializationQueue, v6);
   v4 = v8[5];
@@ -2981,27 +2981,27 @@ LABEL_17:
   return v4;
 }
 
-- (id)newMeshRenderPipelineDescriptorWithSerializedData:(id)a3 deserializationContext:(id)a4
+- (id)newMeshRenderPipelineDescriptorWithSerializedData:(id)data deserializationContext:(id)context
 {
-  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, a4);
-  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newMeshRenderPipelineDescriptor(v7, a3);
+  MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::PipelineDescriptorDeserializer(v7, context);
+  v5 = MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::newMeshRenderPipelineDescriptor(v7, data);
   MTLPipelineLibrarySerializer::PipelineDescriptorDeserializer::~PipelineDescriptorDeserializer(v7);
   return v5;
 }
 
-- (id)serializeStructType:(id)a3 version:(unsigned int)a4
+- (id)serializeStructType:(id)type version:(unsigned int)version
 {
   v6 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
   buffer = v6;
   *size = xmmword_185DE1A60;
-  if (a4 >= 2)
+  if (version >= 2)
   {
     *v6 = 0x4E494253504C544DLL;
-    v6[2] = a4;
+    v6[2] = version;
     size[1] = 12;
   }
 
-  serializeStructType(a3, &buffer, a4);
+  serializeStructType(type, &buffer, version);
   v7 = buffer;
   v8 = size[1];
   size[0] = 0;
@@ -3012,11 +3012,11 @@ LABEL_17:
   return v9;
 }
 
-- (id)newStructTypeWithSerializedData:(id)a3
+- (id)newStructTypeWithSerializedData:(id)data
 {
   size_ptr = 0;
   buffer_ptr = 0;
-  v4 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v4 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   v8[0] = buffer_ptr;
   v8[1] = size_ptr;
   v9 = 0;
@@ -3049,44 +3049,44 @@ LABEL_17:
   MTLLibraryBuilder::deleteLibraryCache(libraryBuilder);
 }
 
-- (BOOL)copyShaderCacheToPath:(id)a3
+- (BOOL)copyShaderCacheToPath:(id)path
 {
-  v4 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v4 copyShaderCacheToPath:a3];
+  return [(MTLCompiler *)compiler copyShaderCacheToPath:path];
 }
 
 - ($85CD2974BE96D4886BB301820D1C36C2)libraryCacheStats
 {
-  v2 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v2 libraryCacheStats];
+  return [(MTLCompiler *)compiler libraryCacheStats];
 }
 
 - ($85CD2974BE96D4886BB301820D1C36C2)pipelineCacheStats
 {
-  v2 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v2 pipelineCacheStats];
+  return [(MTLCompiler *)compiler pipelineCacheStats];
 }
 
-- (id)newDefaultLibraryWithBundle:(id)a3 error:(id *)a4
+- (id)newDefaultLibraryWithBundle:(id)bundle error:(id *)error
 {
-  v6 = [a3 pathForResource:@"default" ofType:@"metallib"];
+  v6 = [bundle pathForResource:@"default" ofType:@"metallib"];
   if (v6)
   {
-    v11 = MTLLibraryBuilder::newLibraryWithFile(self->_libraryBuilder, self, v6, a4, v7, v8, v9, v10);
+    v11 = MTLLibraryBuilder::newLibraryWithFile(self->_libraryBuilder, self, v6, error, v7, v8, v9, v10);
     if ([(_MTLDevice *)self isCollectingLibraries]&& v11)
     {
       MTLPipelineCollection::addLibrary(self->_pipelineCollection, v11);
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"no default library was found" forKey:*MEMORY[0x1E696A578]];
     v11 = 0;
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:6 userInfo:v12];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:6 userInfo:v12];
   }
 
   else
@@ -3097,9 +3097,9 @@ LABEL_17:
   return v11;
 }
 
-- (id)newLibraryWithData:(id)a3 error:(id *)a4
+- (id)newLibraryWithData:(id)data error:(id *)error
 {
-  v9 = MTLLibraryBuilder::newLibraryWithData(self->_libraryBuilder, self, a3, a4, v4, v5, v6, v7);
+  v9 = MTLLibraryBuilder::newLibraryWithData(self->_libraryBuilder, self, data, error, v4, v5, v6, v7);
   if ([(_MTLDevice *)self isCollectingLibraries]&& v9 && self->_librariesOutputDirectory)
   {
     MTLPipelineCollection::addLibrary(self->_pipelineCollection, v9);
@@ -3108,7 +3108,7 @@ LABEL_17:
   return v9;
 }
 
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 compilerTask:(id)a5 error:(id *)a6
+- (id)newLibraryWithSource:(id)source options:(id)options compilerTask:(id)task error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -3130,7 +3130,7 @@ LABEL_17:
   v14[5] = &v21;
   v14[6] = &v15;
   v14[4] = self;
-  MTLLibraryBuilder::newLibraryWithSource(libraryBuilder, self, a3, a4, 1, a5, v14, v6);
+  MTLLibraryBuilder::newLibraryWithSource(libraryBuilder, self, source, options, 1, task, v14, v6);
   if (v22[5])
   {
     v10 = v16[5];
@@ -3143,9 +3143,9 @@ LABEL_17:
   }
 
   v11 = v16[5];
-  if (a6)
+  if (error)
   {
-    *a6 = v11;
+    *error = v11;
   }
 
   else
@@ -3158,24 +3158,24 @@ LABEL_17:
   return v12;
 }
 
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 compilerTask:(id)a5 completionHandler:(id)a6
+- (void)newLibraryWithSource:(id)source options:(id)options compilerTask:(id)task completionHandler:(id)handler
 {
   libraryBuilder = self->_libraryBuilder;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74___MTLDevice_newLibraryWithSource_options_compilerTask_completionHandler___block_invoke;
   v9[3] = &unk_1E6EEB480;
-  v9[4] = a6;
-  MTLLibraryBuilder::newLibraryWithSource(libraryBuilder, self, a3, a4, 0, a5, v9, v6);
+  v9[4] = handler;
+  MTLLibraryBuilder::newLibraryWithSource(libraryBuilder, self, source, options, 0, task, v9, v6);
 }
 
-- (void)registerRenderPipelineDescriptor:(id)a3
+- (void)registerRenderPipelineDescriptor:(id)descriptor
 {
-  if (![a3 meshFunction])
+  if (![descriptor meshFunction])
   {
     if ([(_MTLDevice *)self isCollectingPipelines])
     {
-      MTLPipelineCollection::addRenderPipeline(self->_pipelineCollection, a3);
+      MTLPipelineCollection::addRenderPipeline(self->_pipelineCollection, descriptor);
       if ((_dumpAtExit & 1) == 0)
       {
 
@@ -3185,11 +3185,11 @@ LABEL_17:
   }
 }
 
-- (void)registerComputePipelineDescriptor:(id)a3
+- (void)registerComputePipelineDescriptor:(id)descriptor
 {
   if ([(_MTLDevice *)self isCollectingPipelines])
   {
-    MTLPipelineCollection::addComputePipeline(self->_pipelineCollection, a3);
+    MTLPipelineCollection::addComputePipeline(self->_pipelineCollection, descriptor);
     if ((_dumpAtExit & 1) == 0)
     {
 
@@ -3198,11 +3198,11 @@ LABEL_17:
   }
 }
 
-- (void)registerTileRenderPipelineDescriptor:(id)a3
+- (void)registerTileRenderPipelineDescriptor:(id)descriptor
 {
   if ([(_MTLDevice *)self isCollectingPipelines])
   {
-    MTLPipelineCollection::addTileRenderPipeline(self->_pipelineCollection, a3);
+    MTLPipelineCollection::addTileRenderPipeline(self->_pipelineCollection, descriptor);
     if ((_dumpAtExit & 1) == 0)
     {
 
@@ -3211,11 +3211,11 @@ LABEL_17:
   }
 }
 
-- (void)registerMeshRenderPipelineDescriptor:(id)a3
+- (void)registerMeshRenderPipelineDescriptor:(id)descriptor
 {
   if ([(_MTLDevice *)self isCollectingPipelines])
   {
-    MTLPipelineCollection::addMeshRenderPipeline(self->_pipelineCollection, a3);
+    MTLPipelineCollection::addMeshRenderPipeline(self->_pipelineCollection, descriptor);
     if ((_dumpAtExit & 1) == 0)
     {
 
@@ -3258,9 +3258,9 @@ LABEL_17:
   self->_collectAllLibraries = 1;
 }
 
-- (void)startCollectingPipelineDescriptorsUsingPrefixForNames:(id)a3
+- (void)startCollectingPipelineDescriptorsUsingPrefixForNames:(id)names
 {
-  if (!a3)
+  if (!names)
   {
     [(_MTLDevice *)self startCollectingPipelineDescriptorsUsingPrefixForNames:a2, 0, v3, v4, v5, v6, v7, v12];
   }
@@ -3272,12 +3272,12 @@ LABEL_17:
     pipelineCollection = self->_pipelineCollection;
   }
 
-  v11 = [a3 UTF8String];
+  uTF8String = [names UTF8String];
 
-  MTLPipelineCollection::setNamePrefix(pipelineCollection, v11);
+  MTLPipelineCollection::setNamePrefix(pipelineCollection, uTF8String);
 }
 
-- (void)startCollectingPipelineDescriptorsFromLibrary:(id)a3 filePath:(id)a4
+- (void)startCollectingPipelineDescriptorsFromLibrary:(id)library filePath:(id)path
 {
   pipelineCollection = self->_pipelineCollection;
   if (!pipelineCollection)
@@ -3287,7 +3287,7 @@ LABEL_17:
 
   v5 = self->_pipelineCollection;
 
-  MTLPipelineCollection::addLibrary(pipelineCollection, a3);
+  MTLPipelineCollection::addLibrary(pipelineCollection, library);
 }
 
 - (id)endCollectingPipelineDescriptors
@@ -3332,57 +3332,57 @@ LABEL_17:
   }
 }
 
-- (id)newBinaryLibraryWithOptions:(unint64_t)a3 url:(id)a4 error:(id *)a5
+- (id)newBinaryLibraryWithOptions:(unint64_t)options url:(id)url error:(id *)error
 {
   v9 = objc_opt_new();
-  [v9 setOptions:a3];
-  [v9 setUrl:a4];
-  v10 = [(_MTLDevice *)self newBinaryArchiveWithDescriptor:v9 error:a5];
+  [v9 setOptions:options];
+  [v9 setUrl:url];
+  v10 = [(_MTLDevice *)self newBinaryArchiveWithDescriptor:v9 error:error];
 
   return v10;
 }
 
-- (id)newBinaryArchiveWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryArchiveWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = [_MTLBinaryArchive alloc];
 
-  return [(_MTLBinaryArchive *)v7 initWithDevice:self descriptor:a3 error:a4];
+  return [(_MTLBinaryArchive *)v7 initWithDevice:self descriptor:descriptor error:error];
 }
 
-- (id)newDynamicLibraryError:(unint64_t)a3 message:(id)a4
+- (id)newDynamicLibraryError:(unint64_t)error message:(id)message
 {
-  v5 = [MEMORY[0x1E695DF20] dictionaryWithObject:a4 forKey:*MEMORY[0x1E696A578]];
+  v5 = [MEMORY[0x1E695DF20] dictionaryWithObject:message forKey:*MEMORY[0x1E696A578]];
   v6 = objc_alloc(MEMORY[0x1E696ABC0]);
 
-  return [v6 initWithDomain:@"MTLBinaryArchiveDomain" code:a3 userInfo:v5];
+  return [v6 initWithDomain:@"MTLBinaryArchiveDomain" code:error userInfo:v5];
 }
 
-- (BOOL)validateDynamicLibraryURL:(id)a3 error:(id *)a4
+- (BOOL)validateDynamicLibraryURL:(id)l error:(id *)error
 {
   if ([(_MTLDevice *)self supportsDynamicLibraries]|| [(_MTLDevice *)self supportsStatefulDynamicLibraries])
   {
-    if (a3)
+    if (l)
     {
       return 1;
     }
 
-    if (a4)
+    if (error)
     {
       v8 = @"URL for dynamic library is nil";
-      v9 = self;
+      selfCopy2 = self;
       v10 = 1;
 LABEL_9:
-      v11 = [(_MTLDevice *)v9 newDynamicLibraryError:v10 message:v8];
+      v11 = [(_MTLDevice *)selfCopy2 newDynamicLibraryError:v10 message:v8];
       result = 0;
-      *a4 = v11;
+      *error = v11;
       return result;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = @"Device does not support dynamic libraries.";
-    v9 = self;
+    selfCopy2 = self;
     v10 = 5;
     goto LABEL_9;
   }
@@ -3390,19 +3390,19 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)validateDynamicLibrary:(id)a3 state:(BOOL)a4 error:(id *)a5
+- (BOOL)validateDynamicLibrary:(id)library state:(BOOL)state error:(id *)error
 {
-  v7 = self;
-  if (a4)
+  selfCopy = self;
+  if (state)
   {
     if ([(_MTLDevice *)self supportsStatefulDynamicLibraries])
     {
 LABEL_5:
-      v8 = [a3 type];
-      result = v8 == 1;
-      if (a5 && v8 != 1)
+      type = [library type];
+      result = type == 1;
+      if (error && type != 1)
       {
-        if (v8)
+        if (type)
         {
           v10 = 0;
         }
@@ -3412,7 +3412,7 @@ LABEL_5:
           v10 = @"MTLLibraryTypeExecutable";
         }
 
-        if (a3)
+        if (library)
         {
           v10 = @"null";
         }
@@ -3424,7 +3424,7 @@ LABEL_5:
       return result;
     }
 
-    self = v7;
+    self = selfCopy;
   }
 
   if ([(_MTLDevice *)self supportsDynamicLibraries])
@@ -3432,35 +3432,35 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = @"Device does not support dynamic libraries.";
 LABEL_15:
-    v12 = [(_MTLDevice *)v7 newDynamicLibraryError:5 message:v11];
+    v12 = [(_MTLDevice *)selfCopy newDynamicLibraryError:5 message:v11];
     result = 0;
-    *a5 = v12;
+    *error = v12;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)validateDynamicLibraryDescriptor:(id)a3 error:(id *)a4
+- (BOOL)validateDynamicLibraryDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = [a3 url] != 0;
-  if ((v7 ^ ([a3 library] != 0)))
+  v7 = [descriptor url] != 0;
+  if ((v7 ^ ([descriptor library] != 0)))
   {
-    if ((![a3 library] || (v8 = -[_MTLDevice validateDynamicLibrary:state:error:](self, "validateDynamicLibrary:state:error:", objc_msgSend(a3, "library"), 0, a4))) && (!objc_msgSend(a3, "url") || (v8 = -[_MTLDevice validateDynamicLibraryURL:error:](self, "validateDynamicLibraryURL:error:", objc_msgSend(a3, "url"), a4))))
+    if ((![descriptor library] || (v8 = -[_MTLDevice validateDynamicLibrary:state:error:](self, "validateDynamicLibrary:state:error:", objc_msgSend(descriptor, "library"), 0, error))) && (!objc_msgSend(descriptor, "url") || (v8 = -[_MTLDevice validateDynamicLibraryURL:error:](self, "validateDynamicLibraryURL:error:", objc_msgSend(descriptor, "url"), error))))
     {
       LOBYTE(v8) = 1;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = [(_MTLDevice *)self newDynamicLibraryError:5 message:@"Invalid descriptor. Dynamic library must be created from a URL or a MTLLibrary"];
     LOBYTE(v8) = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -3471,17 +3471,17 @@ LABEL_15:
   return v8;
 }
 
-- (id)newDynamicLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
   if (![_MTLDevice validateDynamicLibraryDescriptor:"validateDynamicLibraryDescriptor:error:" error:?])
   {
     return 0;
   }
 
-  return [(_MTLDevice *)self _newDynamicLibraryWithDescriptor:a3 computeDescriptor:0 error:a4];
+  return [(_MTLDevice *)self _newDynamicLibraryWithDescriptor:descriptor computeDescriptor:0 error:error];
 }
 
-- (id)_newDynamicLibraryWithDescriptor:(id)a3 computeDescriptor:(id)a4 error:(id *)a5
+- (id)_newDynamicLibraryWithDescriptor:(id)descriptor computeDescriptor:(id)computeDescriptor error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -3495,21 +3495,21 @@ LABEL_15:
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
   v19 = 0;
-  v9 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71___MTLDevice__newDynamicLibraryWithDescriptor_computeDescriptor_error___block_invoke;
   v13[3] = &unk_1E6EEB4A8;
   v13[6] = &v14;
   v13[7] = &v20;
-  v13[4] = a3;
+  v13[4] = descriptor;
   v13[5] = self;
-  v13[8] = a5;
-  [(MTLCompiler *)v9 compileDynamicLibraryWithDescriptor:a3 computePipelineDescriptor:a4 completionHandler:v13];
+  v13[8] = error;
+  [(MTLCompiler *)compiler compileDynamicLibraryWithDescriptor:descriptor computePipelineDescriptor:computeDescriptor completionHandler:v13];
   v10 = v15[5];
-  if (a5)
+  if (error)
   {
-    *a5 = v15[5];
+    *error = v15[5];
   }
 
   v11 = v21[5];
@@ -3518,56 +3518,56 @@ LABEL_15:
   return v11;
 }
 
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4
+- (id)newDynamicLibrary:(id)library error:(id *)error
 {
-  if (![(_MTLDevice *)self validateDynamicLibrary:a3 state:0 error:a4])
+  if (![(_MTLDevice *)self validateDynamicLibrary:library state:0 error:error])
   {
     return 0;
   }
 
   v7 = objc_opt_new();
-  [v7 setLibrary:a3];
-  v8 = [(_MTLDevice *)self _newDynamicLibraryWithDescriptor:v7 computeDescriptor:0 error:a4];
+  [v7 setLibrary:library];
+  v8 = [(_MTLDevice *)self _newDynamicLibraryWithDescriptor:v7 computeDescriptor:0 error:error];
 
   return v8;
 }
 
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error
 {
-  if (![(_MTLDevice *)self validateDynamicLibrary:a3 state:1 error:?])
+  if (![(_MTLDevice *)self validateDynamicLibrary:library state:1 error:?])
   {
     return 0;
   }
 
   v9 = objc_opt_new();
-  [v9 setLibrary:a3];
-  v10 = [(_MTLDevice *)self _newDynamicLibraryWithDescriptor:v9 computeDescriptor:a4 error:a5];
+  [v9 setLibrary:library];
+  v10 = [(_MTLDevice *)self _newDynamicLibraryWithDescriptor:v9 computeDescriptor:descriptor error:error];
 
   return v10;
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newDynamicLibraryWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if (![(_MTLDevice *)self validateDynamicLibraryURL:a3 error:a5])
+  if (![(_MTLDevice *)self validateDynamicLibraryURL:l error:error])
   {
     return 0;
   }
 
   v9 = [_MTLDynamicLibrary alloc];
 
-  return [(_MTLDynamicLibrary *)v9 initWithURL:a3 device:self options:a4 error:a5];
+  return [(_MTLDynamicLibrary *)v9 initWithURL:l device:self options:options error:error];
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithFunction:(id)function error:(id *)error
 {
   v7 = objc_alloc_init(MTLComputePipelineDescriptor);
-  [(MTLComputePipelineDescriptor *)v7 setComputeFunction:a3];
-  v8 = [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v7 error:a4];
+  [(MTLComputePipelineDescriptor *)v7 setComputeFunction:function];
+  v8 = [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v7 error:error];
 
   return v8;
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler
 {
   v9 = 0;
   v10 = &v9;
@@ -3575,28 +3575,28 @@ LABEL_15:
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = objc_alloc_init(MTLComputePipelineDescriptor);
-  [v10[5] setComputeFunction:a3];
+  [v10[5] setComputeFunction:function];
   v7 = v10[5];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68___MTLDevice_newComputePipelineStateWithFunction_completionHandler___block_invoke;
   v8[3] = &unk_1E6EEB4D0;
-  v8[4] = a4;
+  v8[4] = handler;
   v8[5] = &v9;
   [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v7 completionHandler:v8];
   _Block_object_dispose(&v9, 8);
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   v11 = objc_alloc_init(MTLComputePipelineDescriptor);
-  [(MTLComputePipelineDescriptor *)v11 setComputeFunction:a3];
-  v12 = [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v11 options:a4 reflection:a5 error:a6];
+  [(MTLComputePipelineDescriptor *)v11 setComputeFunction:function];
+  v12 = [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v11 options:options reflection:reflection error:error];
 
   return v12;
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler
 {
   v11 = 0;
   v12 = &v11;
@@ -3604,26 +3604,26 @@ LABEL_15:
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
   v16 = objc_alloc_init(MTLComputePipelineDescriptor);
-  [v12[5] setComputeFunction:a3];
+  [v12[5] setComputeFunction:function];
   v9 = v12[5];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76___MTLDevice_newComputePipelineStateWithFunction_options_completionHandler___block_invoke;
   v10[3] = &unk_1E6EEB4F8;
-  v10[4] = a5;
+  v10[4] = handler;
   v10[5] = &v11;
-  [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v9 options:a4 completionHandler:v10];
+  [(_MTLDevice *)self newComputePipelineStateWithDescriptor:v9 options:options completionHandler:v10];
   _Block_object_dispose(&v11, 8);
 }
 
-- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error
 {
-  result = MTLLibraryBuilder::newLibraryWithCIFilters(self->_libraryBuilder, a3, a4, 0, a5);
+  result = MTLLibraryBuilder::newLibraryWithCIFilters(self->_libraryBuilder, i, info, 0, error);
   if (result)
   {
     v8 = result;
     v9 = [result newFunctionWithName:@"ciKernelMain"];
-    v10 = [(_MTLDevice *)self newComputePipelineStateWithFunction:v9 error:a5];
+    v10 = [(_MTLDevice *)self newComputePipelineStateWithFunction:v9 error:error];
 
     return v10;
   }
@@ -3631,35 +3631,35 @@ LABEL_15:
   return result;
 }
 
-- (id)newLibraryWithDAG:(id)a3 functions:(id)a4 error:(id *)a5
+- (id)newLibraryWithDAG:(id)g functions:(id)functions error:(id *)error
 {
   libraryBuilder = self->_libraryBuilder;
   v7[0] = 0;
   v7[1] = 0;
-  MTLLibraryBuilder::newLibraryWithDAG(libraryBuilder, a3, a4, a5, v7, 0, 0);
+  MTLLibraryBuilder::newLibraryWithDAG(libraryBuilder, g, functions, error, v7, 0, 0);
 }
 
-- (id)newLibraryWithStitchedDescriptor:(id)a3 error:(id *)a4
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor error:(id *)error
 {
   v17 = 0;
   memset(v16, 0, sizeof(v16));
   _MTLMessageContextBegin_(v16, "[_MTLDevice newLibraryWithStitchedDescriptor:error:]", 4122, self, 24, "Stitched Library with Descriptor Validation");
-  if (validateMTLStitchedLibraryDescriptor(a3, v16, v6, v7, v8, v9, v10, v11))
+  if (validateMTLStitchedLibraryDescriptor(descriptor, v16, v6, v7, v8, v9, v10, v11))
   {
-    v12 = newDAGStringFromFunctionGraphs([a3 functionGraphs], objc_msgSend(a3, "options"), v16);
+    v12 = newDAGStringFromFunctionGraphs([descriptor functionGraphs], objc_msgSend(descriptor, "options"), v16);
     if (([v12 isEqualToString:&stru_1EF478240] & 1) == 0)
     {
-      _MTLCreateStitchingScriptFromStichedLibraryDescriptor(a3);
+      _MTLCreateStitchingScriptFromStichedLibraryDescriptor(descriptor);
     }
   }
 
   if (*&v16[0])
   {
     v13 = errorMessageFromContext(v16);
-    if (a4)
+    if (error)
     {
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObject:v13 forKey:*MEMORY[0x1E696A578]];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:2 userInfo:v14];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:2 userInfo:v14];
     }
   }
 
@@ -3667,14 +3667,14 @@ LABEL_15:
   return 0;
 }
 
-- (void)newLibraryWithStitchedDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newLibraryWithStitchedDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v14 = 0;
   memset(v13, 0, sizeof(v13));
   _MTLMessageContextBegin_(v13, "[_MTLDevice newLibraryWithStitchedDescriptor:completionHandler:]", 4152, self, 24, "Stitched Library with Descriptor Validation");
-  if (validateMTLStitchedLibraryDescriptor(a3, v13, v6, v7, v8, v9, v10, v11) && ([newDAGStringFromFunctionGraphs(objc_msgSend(a3 "functionGraphs")] & 1) == 0)
+  if (validateMTLStitchedLibraryDescriptor(descriptor, v13, v6, v7, v8, v9, v10, v11) && ([newDAGStringFromFunctionGraphs(objc_msgSend(descriptor "functionGraphs")] & 1) == 0)
   {
-    _MTLCreateStitchingScriptFromStichedLibraryDescriptor(a3);
+    _MTLCreateStitchingScriptFromStichedLibraryDescriptor(descriptor);
   }
 
   if (*&v13[0])
@@ -3688,30 +3688,30 @@ LABEL_15:
   }
 
   _MTLMessageContextEnd(v13);
-  (*(a4 + 2))(a4, 0, v12);
+  (*(handler + 2))(handler, 0, v12);
 }
 
-- (id)newLibraryWithStitchedDescriptor:(id)a3 destinationBinaryArchive:(id)a4 error:(id *)a5
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor destinationBinaryArchive:(id)archive error:(id *)error
 {
   v18 = 0;
   memset(v17, 0, sizeof(v17));
   _MTLMessageContextBegin_(v17, "[_MTLDevice newLibraryWithStitchedDescriptor:destinationBinaryArchive:error:]", 4193, self, 24, "Stitched Library with Descriptor SPI Validation");
-  if (validateMTLStitchedLibraryDescriptor(a3, v17, v7, v8, v9, v10, v11, v12))
+  if (validateMTLStitchedLibraryDescriptor(descriptor, v17, v7, v8, v9, v10, v11, v12))
   {
-    v13 = newDAGStringFromFunctionGraphs([a3 functionGraphs], objc_msgSend(a3, "options"), v17);
+    v13 = newDAGStringFromFunctionGraphs([descriptor functionGraphs], objc_msgSend(descriptor, "options"), v17);
     if (([v13 isEqualToString:&stru_1EF478240] & 1) == 0)
     {
-      _MTLCreateStitchingScriptFromStichedLibraryDescriptor(a3);
+      _MTLCreateStitchingScriptFromStichedLibraryDescriptor(descriptor);
     }
   }
 
   if (*&v17[0])
   {
     v14 = errorMessageFromContext(v17);
-    if (a5)
+    if (error)
     {
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObject:v14 forKey:*MEMORY[0x1E696A578]];
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:2 userInfo:v15];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:2 userInfo:v15];
     }
   }
 
@@ -3719,19 +3719,19 @@ LABEL_15:
   return 0;
 }
 
-- (id)newDagStringWithGraphs:(id)a3
+- (id)newDagStringWithGraphs:(id)graphs
 {
   v7 = 0;
   memset(v6, 0, sizeof(v6));
   _MTLMessageContextBegin_(v6, "[_MTLDevice newDagStringWithGraphs:]", 4258, self, 24, "New Dag String With Graphs Validation");
-  v4 = newDAGStringFromFunctionGraphs(a3, 0, v6);
+  v4 = newDAGStringFromFunctionGraphs(graphs, 0, v6);
   _MTLMessageContextEnd(v6);
   return v4;
 }
 
-+ (BOOL)featureProfile:(unint64_t)a3 supportsFeatureSet:(unint64_t)a4
++ (BOOL)featureProfile:(unint64_t)profile supportsFeatureSet:(unint64_t)set
 {
-  switch(a4)
+  switch(set)
   {
     case 0uLL:
     case 2uLL:
@@ -3779,112 +3779,112 @@ LABEL_15:
       break;
   }
 
-  return v4 <= a3 && v5;
+  return v4 <= profile && v5;
 }
 
-- (BOOL)deviceOrFeatureProfileSupportsFeatureSet:(unint64_t)a3
+- (BOOL)deviceOrFeatureProfileSupportsFeatureSet:(unint64_t)set
 {
   if ([(_MTLDevice *)self deviceSupportsFeatureSet:?])
   {
     return 1;
   }
 
-  v6 = MTLGetGPUFamilyFromFeatureSet(a3);
+  v6 = MTLGetGPUFamilyFromFeatureSet(set);
 
   return [(_MTLDevice *)self supportsFamily:v6];
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v6 newRenderPipelineStateWithDescriptor:a3 options:0 reflection:0 error:a4 completionHandler:0];
+  return [(MTLCompiler *)compiler newRenderPipelineStateWithDescriptor:descriptor options:0 reflection:0 error:error completionHandler:0];
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v10 newRenderPipelineStateWithDescriptor:a3 options:a4 reflection:a5 error:a6 completionHandler:0];
+  return [(MTLCompiler *)compiler newRenderPipelineStateWithDescriptor:descriptor options:options reflection:reflection error:error completionHandler:0];
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69___MTLDevice_newRenderPipelineStateWithDescriptor_completionHandler___block_invoke;
   v7[3] = &unk_1E6EEB548;
-  v7[4] = a4;
-  [(MTLCompiler *)v6 newRenderPipelineStateWithDescriptor:a3 options:0 reflection:0 error:0 completionHandler:v7];
+  v7[4] = handler;
+  [(MTLCompiler *)compiler newRenderPipelineStateWithDescriptor:descriptor options:0 reflection:0 error:0 completionHandler:v7];
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  [(MTLCompiler *)v8 newRenderPipelineStateWithDescriptor:a3 options:a4 reflection:0 error:0 completionHandler:a5];
+  [(MTLCompiler *)compiler newRenderPipelineStateWithDescriptor:descriptor options:options reflection:0 error:0 completionHandler:handler];
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v6 newComputePipelineStateWithDescriptor:a3 options:0 reflection:0 error:a4 completionHandler:0];
+  return [(MTLCompiler *)compiler newComputePipelineStateWithDescriptor:descriptor options:0 reflection:0 error:error completionHandler:0];
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  return [(MTLCompiler *)v10 newComputePipelineStateWithDescriptor:a3 options:a4 reflection:a5 error:a6 completionHandler:0];
+  return [(MTLCompiler *)compiler newComputePipelineStateWithDescriptor:descriptor options:options reflection:reflection error:error completionHandler:0];
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70___MTLDevice_newComputePipelineStateWithDescriptor_completionHandler___block_invoke;
   v7[3] = &unk_1E6EEB570;
-  v7[4] = a4;
-  [(MTLCompiler *)v6 newComputePipelineStateWithDescriptor:a3 options:0 reflection:0 error:0 completionHandler:v7];
+  v7[4] = handler;
+  [(MTLCompiler *)compiler newComputePipelineStateWithDescriptor:descriptor options:0 reflection:0 error:0 completionHandler:v7];
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [(_MTLDevice *)self compiler];
+  compiler = [(_MTLDevice *)self compiler];
 
-  [(MTLCompiler *)v8 newComputePipelineStateWithDescriptor:a3 options:a4 reflection:0 error:0 completionHandler:a5];
+  [(MTLCompiler *)compiler newComputePipelineStateWithDescriptor:descriptor options:options reflection:0 error:0 completionHandler:handler];
 }
 
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    v7 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"Tile render pipelines are not supported on this device" forKey:{*MEMORY[0x1E696A578], a5}];
-    *a6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:1 userInfo:v7];
+    v7 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"Tile render pipelines are not supported on this device" forKey:{*MEMORY[0x1E696A578], reflection}];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:1 userInfo:v7];
   }
 
   return 0;
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"Tile render pipelines are not supported on this device" forKey:*MEMORY[0x1E696A578]];
   v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:1 userInfo:v6];
-  v8 = *(a5 + 2);
+  v8 = *(handler + 2);
 
-  v8(a5, 0, 0, v7);
+  v8(handler, 0, 0, v7);
 }
 
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor error:(id *)error
 {
-  result = [a3 newRenderPipelineDescriptorWithDevice:self error:?];
+  result = [descriptor newRenderPipelineDescriptorWithDevice:self error:?];
   if (result)
   {
     v7 = result;
-    v8 = [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:result error:a4];
+    v8 = [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:result error:error];
 
     return v8;
   }
@@ -3892,13 +3892,13 @@ LABEL_15:
   return result;
 }
 
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  result = [a3 newRenderPipelineDescriptorWithDevice:self error:a6];
+  result = [descriptor newRenderPipelineDescriptorWithDevice:self error:error];
   if (result)
   {
     v11 = result;
-    v12 = [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:result options:a4 reflection:a5 error:a6];
+    v12 = [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:result options:options reflection:reflection error:error];
 
     return v12;
   }
@@ -3906,46 +3906,46 @@ LABEL_15:
   return result;
 }
 
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v8 = 0;
-  v6 = [a3 newRenderPipelineDescriptorWithDevice:self error:&v8];
+  v6 = [descriptor newRenderPipelineDescriptorWithDevice:self error:&v8];
   if (v6)
   {
     v7 = v6;
-    [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:v6 completionHandler:a4];
+    [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:v6 completionHandler:handler];
   }
 
   else
   {
-    (*(a4 + 2))(a4, 0, v8);
+    (*(handler + 2))(handler, 0, v8);
   }
 }
 
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v10 = 0;
-  v8 = [a3 newRenderPipelineDescriptorWithDevice:self error:&v10];
+  v8 = [descriptor newRenderPipelineDescriptorWithDevice:self error:&v10];
   if (v8)
   {
     v9 = v8;
-    [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:v8 options:a4 completionHandler:a5];
+    [(_MTLDevice *)self newRenderPipelineStateWithDescriptor:v8 options:options completionHandler:handler];
   }
 
   else
   {
-    (*(a5 + 2))(a5, 0, 0, v10);
+    (*(handler + 2))(handler, 0, 0, v10);
   }
 }
 
-- (char)getComputeFunctionId:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 compilerOptionsSize:(unint64_t)a6
+- (char)getComputeFunctionId:(const void *)id function:(id)function compilerOptions:(char *)options compilerOptionsSize:(unint64_t)size
 {
-  v8 = [(_MTLDevice *)self getComputeFunctionId:a3 compilerOptions:a5 compilerOptionsSize:a6];
+  v8 = [(_MTLDevice *)self getComputeFunctionId:id compilerOptions:options compilerOptionsSize:size];
   if (([(MTLCompiler *)[(_MTLDevice *)self compiler] compilerFlags]& 0x40) == 0)
   {
     v12 = 0;
     v13 = 0;
-    _MTLGetSerializedVertexFormat(a3, &v13, &v12, 0);
+    _MTLGetSerializedVertexFormat(id, &v13, &v12, 0);
     if (v12)
     {
       v9 = malloc_type_malloc(0x20uLL, 0x1000040E0EAB150uLL);
@@ -3962,26 +3962,26 @@ LABEL_15:
   return v8;
 }
 
-- (char)getVertexFunctionId:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 compilerOptionsSize:(unint64_t)a6 compiledFragmentVariant:(id)a7
+- (char)getVertexFunctionId:(const void *)id function:(id)function compilerOptions:(char *)options compilerOptionsSize:(unint64_t)size compiledFragmentVariant:(id)variant
 {
-  v11 = [(_MTLDevice *)self getVertexFunctionId:a3 compilerOptions:a5 compilerOptionsSize:a6 compiledFragmentVariant:a7];
-  v12 = [(MTLCompiler *)[(_MTLDevice *)self compiler] compilerFlags];
-  v13 = [a4 patchType];
+  v11 = [(_MTLDevice *)self getVertexFunctionId:id compilerOptions:options compilerOptionsSize:size compiledFragmentVariant:variant];
+  compilerFlags = [(MTLCompiler *)[(_MTLDevice *)self compiler] compilerFlags];
+  patchType = [function patchType];
   v14 = 24;
-  if (!v13)
+  if (!patchType)
   {
     v14 = 4;
   }
 
   *(&v20 + 1) = 0;
   v21 = 0;
-  if ((v14 & v12) != 0)
+  if ((v14 & compilerFlags) != 0)
   {
-    _MTLGetSerializedVertexFormat(a3, &v21, &v20 + 1, 0);
+    _MTLGetSerializedVertexFormat(id, &v21, &v20 + 1, 0);
   }
 
   *&v20 = 0;
-  v15 = [a7 inputInfoAndSize:&v20];
+  v15 = [variant inputInfoAndSize:&v20];
   if (v20 == 0)
   {
     return v11;
@@ -4011,176 +4011,176 @@ LABEL_15:
   return v16;
 }
 
-- (void)getVertexFunctionDriverData:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 nextStageVariant:(id)a6 driverDataSize:(unint64_t *)a7
+- (void)getVertexFunctionDriverData:(const void *)data function:(id)function compilerOptions:(char *)options nextStageVariant:(id)variant driverDataSize:(unint64_t *)size
 {
-  if (a7)
+  if (size)
   {
-    *a7 = 0;
+    *size = 0;
   }
 
   return 0;
 }
 
-- (void)getObjectFunctionDriverData:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 nextStageVariant:(id)a6 driverDataSize:(unint64_t *)a7
+- (void)getObjectFunctionDriverData:(const void *)data function:(id)function compilerOptions:(char *)options nextStageVariant:(id)variant driverDataSize:(unint64_t *)size
 {
-  if (a7)
+  if (size)
   {
-    *a7 = 0;
+    *size = 0;
   }
 
   return 0;
 }
 
-- (void)getMeshFunctionDriverData:(const void *)a3 function:(id)a4 compilerOptions:(char *)a5 nextStageVariant:(id)a6 driverDataSize:(unint64_t *)a7
+- (void)getMeshFunctionDriverData:(const void *)data function:(id)function compilerOptions:(char *)options nextStageVariant:(id)variant driverDataSize:(unint64_t *)size
 {
-  if (a7)
+  if (size)
   {
-    *a7 = 0;
+    *size = 0;
   }
 
   return 0;
 }
 
-- (void)freeVertexFunctionDriverData:(void *)a3 vertexFunctionDriverDataSize:(unint64_t)a4
+- (void)freeVertexFunctionDriverData:(void *)data vertexFunctionDriverDataSize:(unint64_t)size
 {
-  if (a3)
+  if (data)
   {
-    free(a3);
+    free(data);
   }
 }
 
-- (void)freeObjectFunctionDriverData:(void *)a3 objectFunctionDriverDataSize:(unint64_t)a4
+- (void)freeObjectFunctionDriverData:(void *)data objectFunctionDriverDataSize:(unint64_t)size
 {
-  if (a3)
+  if (data)
   {
-    free(a3);
+    free(data);
   }
 }
 
-- (void)freeMeshFunctionDriverData:(void *)a3 meshFunctionDriverDataSize:(unint64_t)a4
+- (void)freeMeshFunctionDriverData:(void *)data meshFunctionDriverDataSize:(unint64_t)size
 {
-  if (a3)
+  if (data)
   {
-    free(a3);
+    free(data);
   }
 }
 
-- (id)newComputeVariantWithCompilerOutput:(id)a3 pipelineStatisticsOutput:(id)a4
+- (id)newComputeVariantWithCompilerOutput:(id)output pipelineStatisticsOutput:(id)statisticsOutput
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [(_MTLDevice *)self computeVariantWithCompilerOutput:a3 pipelineStatisticsOutput:a4];
+  v8 = [(_MTLDevice *)self computeVariantWithCompilerOutput:output pipelineStatisticsOutput:statisticsOutput];
   objc_autoreleasePoolPop(v7);
   return v8;
 }
 
-- (id)newFragmentVariantWithCompilerOutput:(id)a3 pipelineStatisticsOutput:(id)a4
+- (id)newFragmentVariantWithCompilerOutput:(id)output pipelineStatisticsOutput:(id)statisticsOutput
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [(_MTLDevice *)self fragmentVariantWithCompilerOutput:a3 pipelineStatisticsOutput:a4];
+  v8 = [(_MTLDevice *)self fragmentVariantWithCompilerOutput:output pipelineStatisticsOutput:statisticsOutput];
   objc_autoreleasePoolPop(v7);
   return v8;
 }
 
-- (id)newVertexVariantWithCompilerOutput:(id)a3 pipelineStatisticsOutput:(id)a4
+- (id)newVertexVariantWithCompilerOutput:(id)output pipelineStatisticsOutput:(id)statisticsOutput
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [(_MTLDevice *)self vertexVariantWithCompilerOutput:a3 pipelineStatisticsOutput:a4];
+  v8 = [(_MTLDevice *)self vertexVariantWithCompilerOutput:output pipelineStatisticsOutput:statisticsOutput];
   objc_autoreleasePoolPop(v7);
   return v8;
 }
 
-- (id)newComputePipelineWithDescriptor:(id)a3 variant:(id)a4 errorMessage:(id *)a5
+- (id)newComputePipelineWithDescriptor:(id)descriptor variant:(id)variant errorMessage:(id *)message
 {
-  if (a5)
+  if (message)
   {
-    *a5 = 0;
-    result = [(_MTLDevice *)self newComputePipelineWithDescriptor:a3 variant:a4];
+    *message = 0;
+    result = [(_MTLDevice *)self newComputePipelineWithDescriptor:descriptor variant:variant];
     if (!result)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error creating compute variant"];
       result = 0;
-      *a5 = v8;
+      *message = v8;
     }
   }
 
   else
   {
 
-    return [(_MTLDevice *)self newComputePipelineWithDescriptor:a3 variant:a4];
+    return [(_MTLDevice *)self newComputePipelineWithDescriptor:descriptor variant:variant];
   }
 
   return result;
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forTileVariant:(id)a6
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forTileVariant:(id)variant
 {
-  *a5 = 0;
-  *a4 = 0;
-  *a3 = 0;
+  *count = 0;
+  *identifiers = 0;
+  *bitmasks = 0;
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forTileVariant:(id)a7
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forTileVariant:(id)variant
 {
-  *a6 = 8;
-  *a5 = 0;
-  *a3 = 0;
-  *a4 = 0;
+  *stride = 8;
+  *count = 0;
+  *bitmasks = 0;
+  *identifiers = 0;
   [_MTLDevice getConstantSamplersBitmasks:"getConstantSamplersBitmasks:uniqueIdentifiers:constantSamplerCount:forTileVariant:" uniqueIdentifiers:? constantSamplerCount:? forTileVariant:?];
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forVertexVariant:(id)a6 fragmentVariant:(id)a7
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forVertexVariant:(id)variant fragmentVariant:(id)fragmentVariant
 {
-  *a5 = 0;
-  *a4 = 0;
-  *a3 = 0;
+  *count = 0;
+  *identifiers = 0;
+  *bitmasks = 0;
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forVertexVariant:(id)a7 fragmentVariant:(id)a8
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forVertexVariant:(id)variant fragmentVariant:(id)fragmentVariant
 {
-  *a6 = 8;
-  *a5 = 0;
-  *a3 = 0;
-  *a4 = 0;
+  *stride = 8;
+  *count = 0;
+  *bitmasks = 0;
+  *identifiers = 0;
   [_MTLDevice getConstantSamplersBitmasks:"getConstantSamplersBitmasks:uniqueIdentifiers:constantSamplerCount:forVertexVariant:fragmentVariant:" uniqueIdentifiers:? constantSamplerCount:? forVertexVariant:? fragmentVariant:?];
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forComputeVariant:(id)a6
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forComputeVariant:(id)variant
 {
-  *a5 = 0;
-  *a4 = 0;
-  *a3 = 0;
+  *count = 0;
+  *identifiers = 0;
+  *bitmasks = 0;
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forComputeVariant:(id)a7
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forComputeVariant:(id)variant
 {
-  *a6 = 8;
-  *a5 = 0;
-  *a3 = 0;
-  *a4 = 0;
+  *stride = 8;
+  *count = 0;
+  *bitmasks = 0;
+  *identifiers = 0;
   [_MTLDevice getConstantSamplersBitmasks:"getConstantSamplersBitmasks:uniqueIdentifiers:constantSamplerCount:forComputeVariant:" uniqueIdentifiers:? constantSamplerCount:? forComputeVariant:?];
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 forObjectVariant:(id)a6 meshVariant:(id)a7 fragmentVariant:(id)a8
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count forObjectVariant:(id)variant meshVariant:(id)meshVariant fragmentVariant:(id)fragmentVariant
 {
-  *a5 = 0;
-  *a4 = 0;
-  *a3 = 0;
+  *count = 0;
+  *identifiers = 0;
+  *bitmasks = 0;
 }
 
-- (void)getConstantSamplersBitmasks:(unint64_t *)a3 uniqueIdentifiers:(unint64_t *)a4 constantSamplerCount:(unint64_t *)a5 stride:(unsigned int *)a6 forObjectVariant:(id)a7 meshVariant:(id)a8 fragmentVariant:(id)a9
+- (void)getConstantSamplersBitmasks:(unint64_t *)bitmasks uniqueIdentifiers:(unint64_t *)identifiers constantSamplerCount:(unint64_t *)count stride:(unsigned int *)stride forObjectVariant:(id)variant meshVariant:(id)meshVariant fragmentVariant:(id)fragmentVariant
 {
-  *a6 = 8;
-  *a5 = 0;
-  *a3 = 0;
-  *a4 = 0;
+  *stride = 8;
+  *count = 0;
+  *bitmasks = 0;
+  *identifiers = 0;
   [_MTLDevice getConstantSamplersBitmasks:"getConstantSamplersBitmasks:uniqueIdentifiers:constantSamplerCount:forObjectVariant:meshVariant:fragmentVariant:" uniqueIdentifiers:? constantSamplerCount:? forObjectVariant:? meshVariant:? fragmentVariant:?];
 }
 
-- (unint64_t)minimumLinearTextureAlignmentForPixelFormat:(unint64_t)a3
+- (unint64_t)minimumLinearTextureAlignmentForPixelFormat:(unint64_t)format
 {
   v15 = 0;
   memset(v14, 0, sizeof(v14));
-  MTLPixelFormatGetInfoForDevice(self, a3, v14);
+  MTLPixelFormatGetInfoForDevice(self, format, v14);
   v3 = dyld_program_sdk_at_least();
   v11 = BYTE8(v14[0]);
   if (v3 && (BYTE8(v14[0]) & 1) == 0)
@@ -4209,11 +4209,11 @@ LABEL_4:
   return 64;
 }
 
-- (unint64_t)minLinearTextureAlignmentForPixelFormat:(unint64_t)a3
+- (unint64_t)minLinearTextureAlignmentForPixelFormat:(unint64_t)format
 {
   v13 = 0;
   memset(v12, 0, sizeof(v12));
-  MTLPixelFormatGetInfoForDevice(self, a3, v12);
+  MTLPixelFormatGetInfoForDevice(self, format, v12);
   if (dyld_program_sdk_at_least() && (BYTE8(v12[0]) & 1) == 0)
   {
     [(_MTLDevice *)v12 minLinearTextureAlignmentForPixelFormat:v4, v5, v6, v7, v8, v9, v10];
@@ -4222,11 +4222,11 @@ LABEL_4:
   return [(_MTLDevice *)self deviceLinearTextureAlignmentBytes];
 }
 
-- (id)newLogStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newLogStateWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = [_MTLLogState alloc];
 
-  return [(_MTLLogState *)v7 initWithDevice:self descriptor:a3 error:a4];
+  return [(_MTLLogState *)v7 initWithDevice:self descriptor:descriptor error:error];
 }
 
 - (id)newCommandQueue
@@ -4236,10 +4236,10 @@ LABEL_4:
   return [(_MTLDevice *)self newCommandQueueWithDescriptor:v3];
 }
 
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count
 {
   v5 = objc_alloc_init(MTLCommandQueueDescriptor);
-  [(MTLCommandQueueDescriptor *)v5 setMaxCommandBufferCount:a3];
+  [(MTLCommandQueueDescriptor *)v5 setMaxCommandBufferCount:count];
 
   return [(_MTLDevice *)self newCommandQueueWithDescriptor:v5];
 }
@@ -4253,13 +4253,13 @@ LABEL_4:
   }
 }
 
-- (void)getDefaultSamplePositions:(id *)a3 count:(unint64_t)a4
+- (void)getDefaultSamplePositions:(id *)positions count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = [(_MTLDevice *)self supportsTextureSampleCount:a4];
+  countCopy = count;
+  v6 = [(_MTLDevice *)self supportsTextureSampleCount:count];
   if (v6)
   {
-    if (a3)
+    if (positions)
     {
       goto LABEL_3;
     }
@@ -4267,8 +4267,8 @@ LABEL_4:
 
   else
   {
-    [(_MTLDevice *)v4 getDefaultSamplePositions:v7 count:v8, v9, v10, v11, v12, v13];
-    if (a3)
+    [(_MTLDevice *)countCopy getDefaultSamplePositions:v7 count:v8, v9, v10, v11, v12, v13];
+    if (positions)
     {
       goto LABEL_3;
     }
@@ -4276,16 +4276,16 @@ LABEL_4:
 
   [(_MTLDevice *)v6 getDefaultSamplePositions:v7 count:v8, v9, v10, v11, v12, v13, v16];
 LABEL_3:
-  if (v4 <= 3)
+  if (countCopy <= 3)
   {
-    if (v4 == 1)
+    if (countCopy == 1)
     {
       v14 = &_defaultSamplePositions_1;
     }
 
     else
     {
-      if (v4 != 2)
+      if (countCopy != 2)
       {
         return;
       }
@@ -4296,7 +4296,7 @@ LABEL_3:
 
   else
   {
-    switch(v4)
+    switch(countCopy)
     {
       case 4:
         v14 = &_defaultSamplePositions_4;
@@ -4315,18 +4315,18 @@ LABEL_3:
   do
   {
     v15 = *v14++;
-    *a3++ = v15;
-    --v4;
+    *positions++ = v15;
+    --countCopy;
   }
 
-  while (v4);
+  while (countCopy);
 }
 
-- (id)newArgumentEncoderWithArguments:(id)a3 structType:(id *)a4
+- (id)newArgumentEncoderWithArguments:(id)arguments structType:(id *)type
 {
-  if ([a3 count])
+  if ([arguments count])
   {
-    if (!a3)
+    if (!arguments)
     {
       return 0;
     }
@@ -4335,23 +4335,23 @@ LABEL_3:
   else
   {
     [(_MTLDevice *)0 newArgumentEncoderWithArguments:v7 structType:v8, v9, v10, v11, v12, v13, v18];
-    if (!a3)
+    if (!arguments)
     {
       return 0;
     }
   }
 
-  if (![a3 count])
+  if (![arguments count])
   {
     return 0;
   }
 
-  v14 = MTLCreateStructTypeFromArgumentDescriptors(a3);
+  v14 = MTLCreateStructTypeFromArgumentDescriptors(arguments);
   v15 = [(_MTLDevice *)self newIndirectArgumentBufferLayoutWithStructType:v14];
   [v15 setStructType:v14 withDevice:self];
-  if (a4)
+  if (type)
   {
-    *a4 = v14;
+    *type = v14;
   }
 
   else
@@ -4363,18 +4363,18 @@ LABEL_3:
   return v16;
 }
 
-- (id)newArgumentEncoderWithBufferBinding:(id)a3
+- (id)newArgumentEncoderWithBufferBinding:(id)binding
 {
-  v5 = -[_MTLDevice newIndirectArgumentBufferLayoutWithStructType:](self, "newIndirectArgumentBufferLayoutWithStructType:", [a3 bufferStructType]);
-  [v5 setStructType:objc_msgSend(a3 withDevice:{"bufferStructType"), self}];
+  v5 = -[_MTLDevice newIndirectArgumentBufferLayoutWithStructType:](self, "newIndirectArgumentBufferLayoutWithStructType:", [binding bufferStructType]);
+  [v5 setStructType:objc_msgSend(binding withDevice:{"bufferStructType"), self}];
   v6 = [(_MTLDevice *)self newArgumentEncoderWithLayout:v5];
 
   return v6;
 }
 
-- (id)newEventWithOptions:(int64_t)a3
+- (id)newEventWithOptions:(int64_t)options
 {
-  if (a3)
+  if (options)
   {
     return [(_MTLDevice *)self newSharedEventWithOptions:?];
   }
@@ -4385,145 +4385,145 @@ LABEL_3:
   }
 }
 
-- (id)newSharedEventWithOptions:(int64_t)a3
+- (id)newSharedEventWithOptions:(int64_t)options
 {
   v4 = [_MTLSharedEvent alloc];
 
-  return [(_MTLSharedEvent *)v4 initWithOptions:a3];
+  return [(_MTLSharedEvent *)v4 initWithOptions:options];
 }
 
-- (id)newSharedEventWithHandle:(id)a3
+- (id)newSharedEventWithHandle:(id)handle
 {
   v4 = [_MTLSharedEvent alloc];
 
-  return [(_MTLSharedEvent *)v4 initWithSharedEventHandle:a3];
+  return [(_MTLSharedEvent *)v4 initWithSharedEventHandle:handle];
 }
 
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error
 {
   v6 = [_MTLIOCommandQueue alloc];
 
-  return [(_MTLIOCommandQueue *)v6 initWithDevice:self descriptor:a3];
+  return [(_MTLIOCommandQueue *)v6 initWithDevice:self descriptor:descriptor];
 }
 
-- (id)newIOFileHandleWithURL:(id)a3 error:(id *)a4
+- (id)newIOFileHandleWithURL:(id)l error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a4])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v7 = [_MTLIOHandleRaw alloc];
-  v8 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(_MTLIOHandleRaw *)v7 initWithDevice:self path:v8 error:a4 uncached:0];
+  return [(_MTLIOHandleRaw *)v7 initWithDevice:self path:fileSystemRepresentation error:error uncached:0];
 }
 
-- (id)newIOFileHandleWithURL:(id)a3 compressionMethod:(int64_t)a4 error:(id *)a5
+- (id)newIOFileHandleWithURL:(id)l compressionMethod:(int64_t)method error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a5])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v9 = [_MTLIOHandleCompressed alloc];
-  v10 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(_MTLIOHandleCompressed *)v9 initWithDevice:self path:v10 compressionType:a4 error:a5 uncached:0];
+  return [(_MTLIOHandleCompressed *)v9 initWithDevice:self path:fileSystemRepresentation compressionType:method error:error uncached:0];
 }
 
-- (id)newUncachedIOFileHandleWithURL:(id)a3 error:(id *)a4
+- (id)newUncachedIOFileHandleWithURL:(id)l error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v10];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a4])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v7 = [_MTLIOHandleRaw alloc];
-  v8 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(_MTLIOHandleRaw *)v7 initWithDevice:self path:v8 error:a4 uncached:1];
+  return [(_MTLIOHandleRaw *)v7 initWithDevice:self path:fileSystemRepresentation error:error uncached:1];
 }
 
-- (id)newUncachedIOFileHandleWithURL:(id)a3 compressionMethod:(int64_t)a4 error:(id *)a5
+- (id)newUncachedIOFileHandleWithURL:(id)l compressionMethod:(int64_t)method error:(id *)error
 {
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLIOError" code:1 userInfo:v12];
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a5])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v9 = [_MTLIOHandleCompressed alloc];
-  v10 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(_MTLIOHandleCompressed *)v9 initWithDevice:self path:v10 compressionType:a4 error:a5 uncached:1];
+  return [(_MTLIOHandleCompressed *)v9 initWithDevice:self path:fileSystemRepresentation compressionType:method error:error uncached:1];
 }
 
-- (unint64_t)sparseTileSizeInBytesForSparsePageSize:(int64_t)a3
+- (unint64_t)sparseTileSizeInBytesForSparsePageSize:(int64_t)size
 {
-  if ((a3 - 101) > 2)
+  if ((size - 101) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_185DE1C88[a3 - 101];
+    return qword_185DE1C88[size - 101];
   }
 }
 
-- (id)newRasterizationRateMapWithDescriptor:(id)a3
+- (id)newRasterizationRateMapWithDescriptor:(id)descriptor
 {
   v11 = 0;
-  v5 = [a3 layerPointer:&v11];
+  v5 = [descriptor layerPointer:&v11];
   v9 = 0uLL;
   v10 = 0;
-  if (a3)
+  if (descriptor)
   {
-    [a3 screenSize];
+    [descriptor screenSize];
   }
 
   v7 = v9;
@@ -4541,11 +4541,11 @@ LABEL_3:
   return [(_MTLDevice *)self supportsFamily:2002];
 }
 
-- (void)convertSparsePixelRegions:(id *)a3 toTileRegions:(id *)a4 withTileSize:(id *)a5 alignmentMode:(unint64_t)a6 numRegions:(unint64_t)a7
+- (void)convertSparsePixelRegions:(id *)regions toTileRegions:(id *)tileRegions withTileSize:(id *)size alignmentMode:(unint64_t)mode numRegions:(unint64_t)numRegions
 {
-  if (a5->var1 * a5->var0 * a5->var2)
+  if (size->var1 * size->var0 * size->var2)
   {
-    v7 = a7 == 0;
+    v7 = numRegions == 0;
   }
 
   else
@@ -4555,19 +4555,19 @@ LABEL_3:
 
   if (!v7)
   {
-    p_var1 = &a3->var1;
-    v9 = &a4->var1;
-    while (a6 != 1)
+    p_var1 = &regions->var1;
+    v9 = &tileRegions->var1;
+    while (mode != 1)
     {
-      if (!a6)
+      if (!mode)
       {
-        var0 = a5->var0;
-        var1 = a5->var1;
+        var0 = size->var0;
+        var1 = size->var1;
         v12 = p_var1[-1].var1 / var1;
-        v9[-1].var0 = p_var1[-1].var0 / a5->var0;
+        v9[-1].var0 = p_var1[-1].var0 / size->var0;
         v9[-1].var1 = v12;
         v13 = p_var1[-1].var1;
-        var2 = a5->var2;
+        var2 = size->var2;
         v15 = (var0 + p_var1->var0 + p_var1[-1].var0 % var0 - 1) / var0;
         v9[-1].var2 = p_var1[-1].var2 / var2;
         v9->var0 = v15;
@@ -4580,19 +4580,19 @@ LABEL_10:
 
       p_var1 += 2;
       v9 += 2;
-      if (!--a7)
+      if (!--numRegions)
       {
         return;
       }
     }
 
-    v18 = a5->var0;
-    v19 = a5->var1;
-    v20 = (p_var1[-1].var0 + a5->var0 - 1) / a5->var0;
+    v18 = size->var0;
+    v19 = size->var1;
+    v20 = (p_var1[-1].var0 + size->var0 - 1) / size->var0;
     v21 = (p_var1[-1].var1 + v19 - 1) / v19;
     v9[-1].var0 = v20;
     v9[-1].var1 = v21;
-    v22 = a5->var2;
+    v22 = size->var2;
     v23 = p_var1[-1].var1;
     v24 = (p_var1[-1].var2 + v22 - 1) / v22;
     v25 = (p_var1[-1].var0 - v20 * v18 + p_var1->var0) / v18;
@@ -4605,21 +4605,21 @@ LABEL_10:
   }
 }
 
-- (void)convertSparseTileRegions:(id *)a3 toPixelRegions:(id *)a4 withTileSize:(id *)a5 numRegions:(unint64_t)a6
+- (void)convertSparseTileRegions:(id *)regions toPixelRegions:(id *)pixelRegions withTileSize:(id *)size numRegions:(unint64_t)numRegions
 {
-  if (a6)
+  if (numRegions)
   {
-    p_var1 = &a3->var1;
-    v7 = &a4->var1;
+    p_var1 = &regions->var1;
+    v7 = &pixelRegions->var1;
     do
     {
-      var0 = a5->var0;
-      var1 = a5->var1;
+      var0 = size->var0;
+      var1 = size->var1;
       v10 = var1 * p_var1[-1].var1;
-      v7[-1].var0 = a5->var0 * p_var1[-1].var0;
+      v7[-1].var0 = size->var0 * p_var1[-1].var0;
       v7[-1].var1 = v10;
       v11 = p_var1->var0 * var0;
-      var2 = a5->var2;
+      var2 = size->var2;
       v7[-1].var2 = var2 * p_var1[-1].var2;
       v7->var0 = v11;
       v13 = p_var1->var2 * var2;
@@ -4627,10 +4627,10 @@ LABEL_10:
       v7->var2 = v13;
       p_var1 += 2;
       v7 += 2;
-      --a6;
+      --numRegions;
     }
 
-    while (a6);
+    while (numRegions);
   }
 }
 
@@ -4675,7 +4675,7 @@ LABEL_10:
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)descriptor
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
@@ -4699,16 +4699,16 @@ LABEL_10:
       v12 = objc_opt_class();
       if ([v12 isSubclassOfClass:objc_opt_class()])
       {
-        v13 = [a4 instanceDescriptorType];
-        v14 = [a4 maxInstanceCount];
-        if (v13 == 4)
+        instanceDescriptorType = [a4 instanceDescriptorType];
+        maxInstanceCount = [a4 maxInstanceCount];
+        if (instanceDescriptorType == 4)
         {
-          v10 = 56 * v14;
+          v10 = 56 * maxInstanceCount;
         }
 
         else
         {
-          v10 = 24 * v14;
+          v10 = 24 * maxInstanceCount;
         }
       }
 
@@ -4719,12 +4719,12 @@ LABEL_10:
     }
 
     v15 = MTLBVHDescriptorForMTLAccelerationStructureDescriptor(a4);
-    v16 = [(_MTLDevice *)self GPUBVHBuilder];
-    v17 = [(MTLGPUBVHBuilder *)v16 getGenericBVHSizeForDescriptor:v15];
-    v18 = [(MTLGPUBVHBuilder *)v16 getBuildScratchBufferSizeForDescriptor:v15]+ 256;
-    v19 = [(MTLGPUBVHBuilder *)v16 getMTLSWBVHSizeForDescriptor:a4 bvhDescriptor:v15]+ 256;
-    v20 = [(MTLGPUBVHBuilder *)v16 getEncodeMTLSWBVHScratchBufferSizeForDescriptor:a4 bvhDescriptor:v15]+ 256;
-    v21 = [(MTLGPUBVHBuilder *)v16 getRefitScratchBufferSizeForDescriptor:a4 bvhDescriptor:v15];
+    gPUBVHBuilder = [(_MTLDevice *)self GPUBVHBuilder];
+    v17 = [(MTLGPUBVHBuilder *)gPUBVHBuilder getGenericBVHSizeForDescriptor:v15];
+    v18 = [(MTLGPUBVHBuilder *)gPUBVHBuilder getBuildScratchBufferSizeForDescriptor:v15]+ 256;
+    v19 = [(MTLGPUBVHBuilder *)gPUBVHBuilder getMTLSWBVHSizeForDescriptor:a4 bvhDescriptor:v15]+ 256;
+    v20 = [(MTLGPUBVHBuilder *)gPUBVHBuilder getEncodeMTLSWBVHScratchBufferSizeForDescriptor:a4 bvhDescriptor:v15]+ 256;
+    v21 = [(MTLGPUBVHBuilder *)gPUBVHBuilder getRefitScratchBufferSizeForDescriptor:a4 bvhDescriptor:v15];
     if (v18 <= v20)
     {
       v22 = v20;
@@ -4750,7 +4750,7 @@ LABEL_10:
 
   else
   {
-    result = [(_MTLDevice *)self doesNotRecognizeSelector:a3];
+    result = [(_MTLDevice *)self doesNotRecognizeSelector:descriptor];
     retstr->var0 = 0;
     retstr->var1 = 0;
     retstr->var2 = 0;
@@ -4759,23 +4759,23 @@ LABEL_10:
   return result;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
   if (self)
   {
-    [(_MTLDevice *)self accelerationStructureSizesWithDescriptor:a3];
+    [(_MTLDevice *)self accelerationStructureSizesWithDescriptor:descriptor];
   }
 
   return [(_MTLDevice *)self newAccelerationStructureWithSize:0];
 }
 
-- (BOOL)isCompatibleWithAccelerationStructure:(id)a3
+- (BOOL)isCompatibleWithAccelerationStructure:(id)structure
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    v6 = [(_MTLDevice *)self GPUBVHBuilder];
+    gPUBVHBuilder = [(_MTLDevice *)self GPUBVHBuilder];
 
-    return [(MTLGPUBVHBuilder *)v6 isCompatibleWithAccelerationStructure:a3];
+    return [(MTLGPUBVHBuilder *)gPUBVHBuilder isCompatibleWithAccelerationStructure:structure];
   }
 
   else
@@ -4785,33 +4785,33 @@ LABEL_10:
   }
 }
 
-- (void)deserializePrimitiveAccelerationStructureFromBytes:(const void *)a3 toBuffer:(id)a4 forAccelerationStructure:(id)a5
+- (void)deserializePrimitiveAccelerationStructureFromBytes:(const void *)bytes toBuffer:(id)buffer forAccelerationStructure:(id)structure
 {
-  v7 = [a4 contents];
-  memcpy(v7, a3 + 24, *(a3 + 2));
-  v7[16] = [a5 accelerationStructureUniqueIdentifier];
+  contents = [buffer contents];
+  memcpy(contents, bytes + 24, *(bytes + 2));
+  contents[16] = [structure accelerationStructureUniqueIdentifier];
 }
 
-- (void)deserializeInstanceAccelerationStructureFromBytes:(const void *)a3 toBuffer:(id)a4 primitiveAccelerationStructures:(id)a5 forAccelerationStructure:(id)a6
+- (void)deserializeInstanceAccelerationStructureFromBytes:(const void *)bytes toBuffer:(id)buffer primitiveAccelerationStructures:(id)structures forAccelerationStructure:(id)structure
 {
-  v9 = [a4 contents];
-  v10 = a3 + 24;
-  memcpy(v9, a3 + 24, *(a3 + 2));
-  v11 = *(a3 + 14);
-  v12 = *(a3 + 16);
-  v13 = *(a3 + 52);
-  v24 = *(a3 + 27);
-  v14 = [a4 contents];
+  contents = [buffer contents];
+  v10 = bytes + 24;
+  memcpy(contents, bytes + 24, *(bytes + 2));
+  v11 = *(bytes + 14);
+  v12 = *(bytes + 16);
+  v13 = *(bytes + 52);
+  v24 = *(bytes + 27);
+  contents2 = [buffer contents];
   if (v11)
   {
-    v15 = (v14 + v9[13]);
+    v15 = (contents2 + contents[13]);
     v16 = &v10[v12];
     do
     {
       v17 = *v16;
       v16 += 4;
-      v18 = [objc_msgSend(a5 objectAtIndexedSubscript:{v17), "buffer"}];
-      v19 = [objc_msgSend(a5 objectAtIndexedSubscript:{v17), "bufferOffset"}];
+      v18 = [objc_msgSend(structures objectAtIndexedSubscript:{v17), "buffer"}];
+      v19 = [objc_msgSend(structures objectAtIndexedSubscript:{v17), "bufferOffset"}];
       *v15++ = [v18 gpuAddress] + v19;
       --v11;
     }
@@ -4819,34 +4819,34 @@ LABEL_10:
     while (v11);
   }
 
-  v20 = [a4 contents];
+  contents3 = [buffer contents];
   if (v13)
   {
     v21 = &v10[v24];
-    v22 = (v20 + v9[24]);
+    v22 = (contents3 + contents[24]);
     do
     {
       v23 = *v21;
       v21 += 4;
-      *v22++ = [objc_msgSend(a5 objectAtIndexedSubscript:{v23), "gpuResourceID"}];
+      *v22++ = [objc_msgSend(structures objectAtIndexedSubscript:{v23), "gpuResourceID"}];
       --v13;
     }
 
     while (v13);
   }
 
-  v9[16] = [a6 accelerationStructureUniqueIdentifier];
+  contents[16] = [structure accelerationStructureUniqueIdentifier];
 }
 
-- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)a3 withDescriptor:(id)a4
+- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)bytes withDescriptor:(id)descriptor
 {
-  if (![(_MTLDevice *)self requiresRaytracingEmulation:a3])
+  if (![(_MTLDevice *)self requiresRaytracingEmulation:bytes])
   {
     [(_MTLDevice *)self doesNotRecognizeSelector:a2];
     return 0;
   }
 
-  v7 = [(_MTLDevice *)self newBufferWithLength:*(a3 + 2) options:0];
+  v7 = [(_MTLDevice *)self newBufferWithLength:*(bytes + 2) options:0];
   if (!v7)
   {
     return 0;
@@ -4854,20 +4854,20 @@ LABEL_10:
 
   v8 = v7;
   v9 = [(_MTLDevice *)self newAccelerationStructureWithBuffer:v7 offset:0];
-  [(_MTLDevice *)self deserializePrimitiveAccelerationStructureFromBytes:a3 toBuffer:v8 forAccelerationStructure:v9];
+  [(_MTLDevice *)self deserializePrimitiveAccelerationStructureFromBytes:bytes toBuffer:v8 forAccelerationStructure:v9];
 
   return v9;
 }
 
-- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)a3 primitiveAccelerationStructures:(id)a4 withDescriptor:(id)a5
+- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor
 {
-  if (![(_MTLDevice *)self requiresRaytracingEmulation:a3])
+  if (![(_MTLDevice *)self requiresRaytracingEmulation:bytes])
   {
     [(_MTLDevice *)self doesNotRecognizeSelector:a2];
     return 0;
   }
 
-  v9 = [(_MTLDevice *)self newBufferWithLength:*(a3 + 2) options:0];
+  v9 = [(_MTLDevice *)self newBufferWithLength:*(bytes + 2) options:0];
   if (!v9)
   {
     return 0;
@@ -4876,17 +4876,17 @@ LABEL_10:
   v10 = v9;
   v11 = [(_MTLDevice *)self newAccelerationStructureWithBuffer:v9 offset:0];
 
-  [(_MTLDevice *)self deserializeInstanceAccelerationStructureFromBytes:a3 toBuffer:v10 primitiveAccelerationStructures:a4 forAccelerationStructure:v11];
+  [(_MTLDevice *)self deserializeInstanceAccelerationStructureFromBytes:bytes toBuffer:v10 primitiveAccelerationStructures:structures forAccelerationStructure:v11];
   return v11;
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBytes:(const void *)a4 withDescriptor:(id)a5
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBytes:(const void *)bytes withDescriptor:(id)descriptor
 {
-  if ([(_MTLDevice *)self requiresRaytracingEmulation:a3])
+  if ([(_MTLDevice *)self requiresRaytracingEmulation:structure])
   {
-    v9 = [a3 buffer];
+    buffer = [structure buffer];
 
-    [(_MTLDevice *)self deserializePrimitiveAccelerationStructureFromBytes:a4 toBuffer:v9 forAccelerationStructure:a3];
+    [(_MTLDevice *)self deserializePrimitiveAccelerationStructureFromBytes:bytes toBuffer:buffer forAccelerationStructure:structure];
   }
 
   else
@@ -4896,13 +4896,13 @@ LABEL_10:
   }
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 fromBytes:(const void *)a4 primitiveAccelerationStructures:(id)a5 withDescriptor:(id)a6
+- (void)deserializeInstanceAccelerationStructure:(id)structure fromBytes:(const void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor
 {
-  if ([(_MTLDevice *)self requiresRaytracingEmulation:a3])
+  if ([(_MTLDevice *)self requiresRaytracingEmulation:structure])
   {
-    v11 = [a3 buffer];
+    buffer = [structure buffer];
 
-    [(_MTLDevice *)self deserializeInstanceAccelerationStructureFromBytes:a4 toBuffer:v11 primitiveAccelerationStructures:a5 forAccelerationStructure:a3];
+    [(_MTLDevice *)self deserializeInstanceAccelerationStructureFromBytes:bytes toBuffer:buffer primitiveAccelerationStructures:structures forAccelerationStructure:structure];
   }
 
   else
@@ -4912,21 +4912,21 @@ LABEL_10:
   }
 }
 
-- (void)setPluginData:(id)a3
+- (void)setPluginData:(id)data
 {
   pluginData = self->_pluginData;
-  if (pluginData != a3)
+  if (pluginData != data)
   {
 
-    self->_pluginData = [a3 copy];
+    self->_pluginData = [data copy];
   }
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)size
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    v6 = [(_MTLDevice *)self heapBufferSizeAndAlignWithLength:a3 options:32];
+    v6 = [(_MTLDevice *)self heapBufferSizeAndAlignWithLength:size options:32];
   }
 
   else
@@ -4941,11 +4941,11 @@ LABEL_10:
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)descriptor
 {
   if (self)
   {
-    [(_MTLDevice *)self accelerationStructureSizesWithDescriptor:a3];
+    [(_MTLDevice *)self accelerationStructureSizesWithDescriptor:descriptor];
   }
 
   v4 = [(_MTLDevice *)self heapAccelerationStructureSizeAndAlignWithSize:0];
@@ -4954,22 +4954,22 @@ LABEL_10:
   return result;
 }
 
-- (id)newPerformanceStateAssertion:(int64_t)a3 error:(id *)a4
+- (id)newPerformanceStateAssertion:(int64_t)assertion error:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E696A578];
   v9[0] = @"Device does not support performance state assertion feature";
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:1 userInfo:v5];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:1 userInfo:v5];
   }
 
   v6 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (id)lookupRecompiledBinaryArchive:(id)a3
+- (id)lookupRecompiledBinaryArchive:(id)archive
 {
   if (self->_isFirstParty || !self->_enableAssetUpgraderDaemon || self->_isPlugin)
   {
@@ -4991,16 +4991,16 @@ LABEL_10:
     return 0;
   }
 
-  v5 = [(_MTLDevice *)self targetDeviceArchitecture];
-  v6 = MTLResolveFileURL(a3);
+  targetDeviceArchitecture = [(_MTLDevice *)self targetDeviceArchitecture];
+  v6 = MTLResolveFileURL(archive);
   v7 = v6;
   v8 = 0;
-  if (v6 && v5)
+  if (v6 && targetDeviceArchitecture)
   {
     recompiledBinaryArchiveMap = self->_recompiledBinaryArchiveMap;
     std::string::basic_string[abi:ne200100]<0>(__p, [v6 fileSystemRepresentation]);
-    [(MTLTargetDeviceArchitecture *)v5 cpuType];
-    [(MTLTargetDeviceArchitecture *)v5 subType];
+    [(MTLTargetDeviceArchitecture *)targetDeviceArchitecture cpuType];
+    [(MTLTargetDeviceArchitecture *)targetDeviceArchitecture subType];
     MTLArchiveMapDB::read(recompiledBinaryArchiveMap, __p, v17);
     if (v16 < 0)
     {
@@ -5045,7 +5045,7 @@ LABEL_10:
   return v8;
 }
 
-- (void)recordBinaryArchiveUsage:(id)a3
+- (void)recordBinaryArchiveUsage:(id)usage
 {
   if (!self->_isFirstParty && self->_enableAssetUpgraderDaemon && !self->_isPlugin)
   {
@@ -5061,14 +5061,14 @@ LABEL_10:
 
     if (self->_binaryArchiveUsage)
     {
-      v5 = [(_MTLDevice *)self targetDeviceArchitecture];
-      v6 = MTLResolveFileURL(a3);
+      targetDeviceArchitecture = [(_MTLDevice *)self targetDeviceArchitecture];
+      v6 = MTLResolveFileURL(usage);
       v7 = v6;
-      if (a3 && v5)
+      if (usage && targetDeviceArchitecture)
       {
         binaryArchiveUsage = self->_binaryArchiveUsage;
         std::string::basic_string[abi:ne200100]<0>(__p, [v6 fileSystemRepresentation]);
-        MTLArchiveUsageDB::store(binaryArchiveUsage, __p, [(MTLTargetDeviceArchitecture *)v5 cpuType], [(MTLTargetDeviceArchitecture *)v5 subType], 0);
+        MTLArchiveUsageDB::store(binaryArchiveUsage, __p, [(MTLTargetDeviceArchitecture *)targetDeviceArchitecture cpuType], [(MTLTargetDeviceArchitecture *)targetDeviceArchitecture subType], 0);
         if (v10 < 0)
         {
           operator delete(__p[0]);
@@ -5096,22 +5096,22 @@ LABEL_10:
   return result;
 }
 
-- (id)getMostCompatibleArchitecture:(id)a3
+- (id)getMostCompatibleArchitecture:(id)architecture
 {
   v3 = [[MTLArchitecture alloc] initWithCPUType:0 cpuSubtype:0];
 
   return v3;
 }
 
-- (void)getCompilerConnectionManager:(int)a3
+- (void)getCompilerConnectionManager:(int)manager
 {
-  v9 = self;
-  v8 = a3;
-  if (a3 == 32024)
+  selfCopy = self;
+  managerCopy = manager;
+  if (manager == 32024)
   {
     p_initConnectionOnceToken = &self->_initConnectionOnceToken;
-    v6 = &v9;
-    v7 = &v8;
+    v6 = &selfCopy;
+    v7 = &managerCopy;
     if (atomic_load_explicit(p_initConnectionOnceToken, memory_order_acquire) != -1)
     {
       v11 = &v6;
@@ -5123,14 +5123,14 @@ LABEL_10:
 
   else
   {
-    if (a3 != 32023)
+    if (manager != 32023)
     {
       abort();
     }
 
     p_initConnectionOnceToken = &self->_initConnectionOnceToken;
-    v6 = &v9;
-    v7 = &v8;
+    v6 = &selfCopy;
+    v7 = &managerCopy;
     if (atomic_load_explicit(p_initConnectionOnceToken, memory_order_acquire) != -1)
     {
       v11 = &v6;
@@ -5141,7 +5141,7 @@ LABEL_7:
     }
   }
 
-  return v9->_compilerConnectionManager;
+  return selfCopy->_compilerConnectionManager;
 }
 
 - (unint64_t)maximumConcurrentCompilationTaskCount
@@ -5185,17 +5185,17 @@ LABEL_7:
   return [MTLGPUBVHBuilder getMaxAccelerationStructureTraversalDepth:maxAccelerationStructureLevels];
 }
 
-- (id)newResidencySetWithDescriptor:(id)a3 error:(id *)a4
+- (id)newResidencySetWithDescriptor:(id)descriptor error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v6 = [(_MTLDevice *)self allocResidencySet];
-  if ([v6 initWithDevice:self descriptor:a3])
+  allocResidencySet = [(_MTLDevice *)self allocResidencySet];
+  if ([allocResidencySet initWithDevice:self descriptor:descriptor])
   {
-    return v6;
+    return allocResidencySet;
   }
 
   else
@@ -5204,10 +5204,10 @@ LABEL_7:
   }
 }
 
-- (id)newArchiveWithURL:(id)a3 error:(id *)a4
+- (id)newArchiveWithURL:(id)l error:(id *)error
 {
   v6 = [[_MTL4Archive alloc] initWithDevice:self];
-  if (![(_MTL4Archive *)v6 loadFromURL:a3 error:a4])
+  if (![(_MTL4Archive *)v6 loadFromURL:l error:error])
   {
 
     return 0;
@@ -5216,29 +5216,29 @@ LABEL_7:
   return v6;
 }
 
-- (id)newPipelineDataSetSerializerWithDescriptor:(id)a3
+- (id)newPipelineDataSetSerializerWithDescriptor:(id)descriptor
 {
   v5 = [_MTL4PipelineDataSetSerializer alloc];
 
-  return [(_MTL4PipelineDataSetSerializer *)v5 initWithDevice:self descriptor:a3];
+  return [(_MTL4PipelineDataSetSerializer *)v5 initWithDevice:self descriptor:descriptor];
 }
 
-- (id)newLibraryWithMPSGraphPackageURL:(id)a3 name:(id)a4 error:(id *)a5
+- (id)newLibraryWithMPSGraphPackageURL:(id)l name:(id)name error:(id *)error
 {
   MPSGraphClassByName = getMPSGraphClassByName("MPSGraphExecutable");
   v9 = getMPSGraphClassByName("MPSGraphExecutableReflection");
   v10 = _MTLNewMPSGraphCompilationDescriptor(0);
-  v11 = [[MPSGraphClassByName alloc] initWithMPSGraphPackageAtURL:a3 compilationDescriptor:v10];
+  v11 = [[MPSGraphClassByName alloc] initWithMPSGraphPackageAtURL:l compilationDescriptor:v10];
 
   if (v9)
   {
     v15 = 0;
-    v9 = [[v9 alloc] initWithMPSGraphPackage:a3 error:&v15];
+    v9 = [[v9 alloc] initWithMPSGraphPackage:l error:&v15];
   }
 
   if (v11)
   {
-    v12 = [[_MTLMLLibrary alloc] initWithDevice:self executable:v11 url:a3 reflection:v9];
+    v12 = [[_MTLMLLibrary alloc] initWithDevice:self executable:v11 url:l reflection:v9];
     if (v9)
     {
     }
@@ -5248,27 +5248,27 @@ LABEL_7:
   {
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"failed to open MPSGraph package" forKey:*MEMORY[0x1E696A578]];
     v12 = 0;
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MTLLibraryErrorDomain" code:6 userInfo:v13];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"MTLLibraryErrorDomain" code:6 userInfo:v13];
   }
 
   return v12;
 }
 
-- (BOOL)loadLibrariesRecursive:(id)a3 dylibs:(id *)a4 insertLibraries:(id)a5 options:(unint64_t)a6 error:(id *)a7
+- (BOOL)loadLibrariesRecursive:(id)recursive dylibs:(id *)dylibs insertLibraries:(id)libraries options:(unint64_t)options error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [objc_msgSend(a3 "library")];
+    v13 = [objc_msgSend(recursive "library")];
     if (v13)
     {
       v14 = v13;
-      v15 = [(_MTLDevice *)self loadDynamicLibrariesForFunction:v13 insertLibraries:a5 options:a6 error:a7];
+      v15 = [(_MTLDevice *)self loadDynamicLibrariesForFunction:v13 insertLibraries:libraries options:options error:error];
 
       if (v15)
       {
-        [*a4 addObjectsFromArray:v15];
+        [*dylibs addObjectsFromArray:v15];
 
 LABEL_5:
         LOBYTE(v16) = 1;
@@ -5280,13 +5280,13 @@ LABEL_23:
 
     else
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Function %@ was not found in library", objc_msgSend(a3, "name")];
-      if (a7)
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Function %@ was not found in library", objc_msgSend(recursive, "name")];
+      if (error)
       {
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObject:v24 forKey:*MEMORY[0x1E696A578]];
         v26 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"DylibLoading" code:5 userInfo:v25];
         LOBYTE(v16) = 0;
-        *a7 = v26;
+        *error = v26;
         goto LABEL_23;
       }
     }
@@ -5300,13 +5300,13 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 functionGraph];
+      [recursive functionGraph];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v19 = [a3 functionDescriptors];
-      v20 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      functionDescriptors = [recursive functionDescriptors];
+      v20 = [functionDescriptors countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v20)
       {
         v21 = v20;
@@ -5317,10 +5317,10 @@ LABEL_13:
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(functionDescriptors);
           }
 
-          v16 = [(_MTLDevice *)self loadLibrariesRecursive:*(*(&v29 + 1) + 8 * v23) dylibs:a4 insertLibraries:a5 options:a6 error:a7];
+          v16 = [(_MTLDevice *)self loadLibrariesRecursive:*(*(&v29 + 1) + 8 * v23) dylibs:dylibs insertLibraries:libraries options:options error:error];
           if (!v16)
           {
             goto LABEL_23;
@@ -5328,7 +5328,7 @@ LABEL_13:
 
           if (v21 == ++v23)
           {
-            v21 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            v21 = [functionDescriptors countByEnumeratingWithState:&v29 objects:v33 count:16];
             LOBYTE(v16) = 1;
             if (v21)
             {
@@ -5348,17 +5348,17 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v17 = [a3 functionDescriptor];
+  functionDescriptor = [recursive functionDescriptor];
   v18 = *MEMORY[0x1E69E9840];
 
-  LOBYTE(v16) = [(_MTLDevice *)self loadLibrariesRecursive:v17 dylibs:a4 insertLibraries:a5 options:a6 error:a7];
+  LOBYTE(v16) = [(_MTLDevice *)self loadLibrariesRecursive:functionDescriptor dylibs:dylibs insertLibraries:libraries options:options error:error];
   return v16;
 }
 
-- (id)loadDynamicLibrariesForFunctionDescriptor:(id)a3 insertLibraries:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)loadDynamicLibrariesForFunctionDescriptor:(id)descriptor insertLibraries:(id)libraries options:(unint64_t)options error:(id *)error
 {
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (![(_MTLDevice *)self loadLibrariesRecursive:a3 dylibs:&v14 insertLibraries:a4 options:a5 error:a6])
+  if (![(_MTLDevice *)self loadLibrariesRecursive:descriptor dylibs:&v14 insertLibraries:libraries options:options error:error])
   {
     return 0;
   }
@@ -5414,16 +5414,16 @@ LABEL_22:
   return [_MTLDevice threadsPerCompilerProcess]::ret;
 }
 
-- (id)newLibraryWithFunctionArray:(id)a3 error:(id *)a4
+- (id)newLibraryWithFunctionArray:(id)array error:(id *)error
 {
-  if (!a3)
+  if (!array)
   {
-    [(_MTLDevice(MTLDeviceInternal) *)self newLibraryWithFunctionArray:a2 error:0, a4, v4, v5, v6, v7, v25];
+    [(_MTLDevice(MTLDeviceInternal) *)self newLibraryWithFunctionArray:a2 error:0, error, v4, v5, v6, v7, v25];
   }
 
-  if ([a3 count])
+  if ([array count])
   {
-    if (!a3)
+    if (!array)
     {
       goto LABEL_10;
     }
@@ -5432,30 +5432,30 @@ LABEL_22:
   else
   {
     [(_MTLDevice(MTLDeviceInternal) *)0 newLibraryWithFunctionArray:v11 error:v12, v13, v14, v15, v16, v17, v25];
-    if (!a3)
+    if (!array)
     {
       goto LABEL_10;
     }
   }
 
-  if ([a3 count])
+  if ([array count])
   {
     libraryBuilder = self->_libraryBuilder;
 
-    return MTLLibraryBuilder::newLibraryWithFunctionArray(libraryBuilder, self, a3, a4, v18, v19, v20, v21);
+    return MTLLibraryBuilder::newLibraryWithFunctionArray(libraryBuilder, self, array, error, v18, v19, v20, v21);
   }
 
 LABEL_10:
-  if (a4)
+  if (error)
   {
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"Array cannot be nil or emty" forKey:*MEMORY[0x1E696A578]];
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:2 userInfo:v24];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:2 userInfo:v24];
   }
 
   return 0;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)descriptor
 {
   [(_MTLDevice *)self doesNotRecognizeSelector:a2];
   v3 = 0;

@@ -1,7 +1,7 @@
 @interface ATXHeuristicCacheTimeExpirer
-- (ATXHeuristicCacheTimeExpirer)initWithCoder:(id)a3;
-- (ATXHeuristicCacheTimeExpirer)initWithFireDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXHeuristicCacheTimeExpirer)initWithCoder:(id)coder;
+- (ATXHeuristicCacheTimeExpirer)initWithFireDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)_start;
 - (void)_stop;
@@ -18,10 +18,10 @@
   }
 }
 
-- (ATXHeuristicCacheTimeExpirer)initWithFireDate:(id)a3
+- (ATXHeuristicCacheTimeExpirer)initWithFireDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     [ATXHeuristicCacheTimeExpirer initWithFireDate:];
   }
@@ -32,7 +32,7 @@
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v8 = [v6 initWithTimeIntervalSinceReferenceDate:floor(v7)];
     fireDate = v5->_fireDate;
     v5->_fireDate = v8;
@@ -78,10 +78,10 @@ void __38__ATXHeuristicCacheTimeExpirer__start__block_invoke(uint64_t a1)
   [WeakRetained expire];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -93,7 +93,7 @@ void __38__ATXHeuristicCacheTimeExpirer__start__block_invoke(uint64_t a1)
     {
       v5 = self->_fireDate;
       v6 = v5;
-      if (v5 == v4->_fireDate)
+      if (v5 == equalCopy->_fireDate)
       {
         v7 = 1;
       }
@@ -113,15 +113,15 @@ void __38__ATXHeuristicCacheTimeExpirer__start__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (ATXHeuristicCacheTimeExpirer)initWithCoder:(id)a3
+- (ATXHeuristicCacheTimeExpirer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ATXHeuristicCacheTimeExpirer;
-  v5 = [(ATXHeuristicCacheExpirer *)&v9 initWithCoder:v4];
+  v5 = [(ATXHeuristicCacheExpirer *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fireDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fireDate"];
     fireDate = v5->_fireDate;
     v5->_fireDate = v6;
   }

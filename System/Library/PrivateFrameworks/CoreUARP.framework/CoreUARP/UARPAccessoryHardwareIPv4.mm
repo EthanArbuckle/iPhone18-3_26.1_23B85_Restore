@@ -1,20 +1,20 @@
 @interface UARPAccessoryHardwareIPv4
-- (BOOL)isEqual:(id)a3;
-- (UARPAccessoryHardwareIPv4)initWithAppleModelNumber:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UARPAccessoryHardwareIPv4)initWithAppleModelNumber:(id)number;
 - (id)description;
 @end
 
 @implementation UARPAccessoryHardwareIPv4
 
-- (UARPAccessoryHardwareIPv4)initWithAppleModelNumber:(id)a3
+- (UARPAccessoryHardwareIPv4)initWithAppleModelNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v9.receiver = self;
   v9.super_class = UARPAccessoryHardwareIPv4;
   v5 = [(UARPAccessoryHardwareID *)&v9 initWithTransport:4];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [numberCopy copy];
     appleModelNumber = v5->_appleModelNumber;
     v5->_appleModelNumber = v6;
   }
@@ -22,10 +22,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -35,13 +35,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UARPAccessoryHardwareID *)self transport];
-      if (v6 == [(UARPAccessoryHardwareID *)v5 transport])
+      v5 = equalCopy;
+      transport = [(UARPAccessoryHardwareID *)self transport];
+      if (transport == [(UARPAccessoryHardwareID *)v5 transport])
       {
-        v7 = [(UARPAccessoryHardwareIPv4 *)self appleModelNumber];
-        v8 = [(UARPAccessoryHardwareIPv4 *)v5 appleModelNumber];
-        v9 = [v7 isEqualToString:v8];
+        appleModelNumber = [(UARPAccessoryHardwareIPv4 *)self appleModelNumber];
+        appleModelNumber2 = [(UARPAccessoryHardwareIPv4 *)v5 appleModelNumber];
+        v9 = [appleModelNumber isEqualToString:appleModelNumber2];
       }
 
       else
@@ -62,8 +62,8 @@
 - (id)description
 {
   v3 = objc_opt_new();
-  v4 = [(UARPAccessoryHardwareIPv4 *)self appleModelNumber];
-  [v3 appendFormat:@"IPv4, <AMN = %@>", v4];
+  appleModelNumber = [(UARPAccessoryHardwareIPv4 *)self appleModelNumber];
+  [v3 appendFormat:@"IPv4, <AMN = %@>", appleModelNumber];
 
   v5 = [MEMORY[0x277CCACA8] stringWithString:v3];
 

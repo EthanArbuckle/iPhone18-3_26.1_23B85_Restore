@@ -1,51 +1,51 @@
 @interface NMAPISearchRequest
-- (NMAPISearchRequest)initWithSearchString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4;
+- (NMAPISearchRequest)initWithSearchString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error;
 @end
 
 @implementation NMAPISearchRequest
 
-- (NMAPISearchRequest)initWithSearchString:(id)a3
+- (NMAPISearchRequest)initWithSearchString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = NMAPISearchRequest;
   v5 = [(MPStoreModelRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Catalog Search (%@)", v4];
-    [(NMAPISearchRequest *)v5 setLabel:v6];
+    stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Catalog Search (%@)", stringCopy];
+    [(NMAPISearchRequest *)v5 setLabel:stringCopy];
 
-    [(NMAPISearchRequest *)v5 setSearchString:v4];
+    [(NMAPISearchRequest *)v5 setSearchString:stringCopy];
   }
 
   return v5;
 }
 
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  bagCopy = bag;
+  v7 = bagCopy;
   if (self->_searchString)
   {
-    v8 = MusicURLPathStorefrontWithURLBag(v6);
+    v8 = MusicURLPathStorefrontWithURLBag(bagCopy);
     if (v8)
     {
       v35.receiver = self;
       v35.super_class = NMAPISearchRequest;
       v34 = v7;
-      v9 = [(NMAPIRequest *)&v35 urlComponentsWithStoreURLBag:v7 error:a4];
+      v9 = [(NMAPIRequest *)&v35 urlComponentsWithStoreURLBag:v7 error:error];
       if (self->_resultsPerSection)
       {
         v10 = MEMORY[0x277CCAD18];
         v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-        v12 = [v11 stringValue];
-        v13 = [v10 queryItemWithName:@"limit" value:v12];
+        stringValue = [v11 stringValue];
+        v13 = [v10 queryItemWithName:@"limit" value:stringValue];
 
-        v14 = [v9 queryItems];
-        v15 = [v14 arrayByAddingObject:v13];
+        queryItems = [v9 queryItems];
+        v15 = [queryItems arrayByAddingObject:v13];
         [v9 setQueryItems:v15];
       }
 
@@ -57,7 +57,7 @@
       v18 = [v16 pathWithComponents:v17];
       [v9 setPath:v18];
 
-      v19 = [v9 queryItems];
+      queryItems2 = [v9 queryItems];
       v20 = [MEMORY[0x277CCAD18] queryItemWithName:@"term" value:self->_searchString];
       v36[0] = v20;
       v21 = MEMORY[0x277CCAD18];
@@ -70,7 +70,7 @@
       v27 = [v25 queryItemWithName:@"with" value:v26];
       v36[2] = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
-      v29 = [v19 arrayByAddingObjectsFromArray:v28];
+      v29 = [queryItems2 arrayByAddingObjectsFromArray:v28];
       [v9 setQueryItems:v29];
 
       v8 = v22;
@@ -85,10 +85,10 @@
         [NMAPIRadioRequest urlComponentsWithStoreURLBag:v31 error:?];
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-        *a4 = v9 = 0;
+        *error = v9 = 0;
       }
 
       else
@@ -106,10 +106,10 @@
       [NMAPISearchRequest urlComponentsWithStoreURLBag:v30 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7101 userInfo:0];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -123,11 +123,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NMAPISearchRequest;
-  v4 = [(NMAPIRequest *)&v7 copyWithZone:a3];
+  v4 = [(NMAPIRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

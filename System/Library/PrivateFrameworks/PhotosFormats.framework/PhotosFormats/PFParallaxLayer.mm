@@ -9,15 +9,15 @@
 - (BOOL)isSettlingEffect;
 - (BOOL)isSpatialPhotoBackground;
 - (BOOL)isSpatialPhotoForeground;
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
+- (BOOL)saveToURL:(id)l error:(id *)error;
 - (CGRect)frame;
 - (CGSize)pixelSize;
 - (NSString)fileExtension;
-- (PFParallaxLayer)initWithFrame:(CGRect)a3 zPosition:(double)a4 identifier:(id)a5;
+- (PFParallaxLayer)initWithFrame:(CGRect)frame zPosition:(double)position identifier:(id)identifier;
 - (id)debugDescription;
 - (id)description;
-- (id)layerByUpdatingFrame:(CGRect)a3;
-- (id)makeUniqueFileNameWithFileNames:(id)a3 orientation:(int64_t)a4;
+- (id)layerByUpdatingFrame:(CGRect)frame;
+- (id)makeUniqueFileNameWithFileNames:(id)names orientation:(int64_t)orientation;
 @end
 
 @implementation PFParallaxLayer
@@ -31,9 +31,9 @@
   return [(PFParallaxLayer *)v3 saveToURL:v4 error:v5, v6];
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
   NSStringFromClass(v5);
   objc_claimAutoreleasedReturnValue();
@@ -41,17 +41,17 @@
   return [(PFParallaxLayer *)v6 makeUniqueFileNameWithFileNames:v7 orientation:v8, v9];
 }
 
-- (id)makeUniqueFileNameWithFileNames:(id)a3 orientation:(int64_t)a4
+- (id)makeUniqueFileNameWithFileNames:(id)names orientation:(int64_t)orientation
 {
-  v6 = a3;
-  if (a4 == 1)
+  namesCopy = names;
+  if (orientation == 1)
   {
     v7 = @"portrait";
   }
 
   else
   {
-    if (a4 != 2)
+    if (orientation != 2)
     {
       v18 = _PFAssertFailHandler();
       return [(PFParallaxImageLayer *)v18 fileExtension];
@@ -61,17 +61,17 @@
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(PFParallaxLayer *)self identifier];
-  v10 = [(PFParallaxLayer *)self fileExtension];
-  v11 = [v8 stringWithFormat:@"%@-layer_%@.%@", v7, v9, v10];
+  identifier = [(PFParallaxLayer *)self identifier];
+  fileExtension = [(PFParallaxLayer *)self fileExtension];
+  v11 = [v8 stringWithFormat:@"%@-layer_%@.%@", v7, identifier, fileExtension];
 
-  if ([v6 containsObject:v11])
+  if ([namesCopy containsObject:v11])
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(PFParallaxLayer *)self identifier];
-    v14 = [v6 count];
-    v15 = [(PFParallaxLayer *)self fileExtension];
-    v16 = [v12 stringWithFormat:@"%@-layer_%@_%ld.%@", v7, v13, v14, v15];
+    identifier2 = [(PFParallaxLayer *)self identifier];
+    v14 = [namesCopy count];
+    fileExtension2 = [(PFParallaxLayer *)self fileExtension];
+    v16 = [v12 stringWithFormat:@"%@-layer_%@_%ld.%@", v7, identifier2, v14, fileExtension2];
 
     v11 = v16;
   }
@@ -101,8 +101,8 @@
   v5 = [v3 initWithString:v4];
 
   [v5 appendString:@"\n"];
-  v6 = [(PFParallaxLayer *)self identifier];
-  [v5 appendFormat:@"identifier: %@\n", v6];
+  identifier = [(PFParallaxLayer *)self identifier];
+  [v5 appendFormat:@"identifier: %@\n", identifier];
 
   [(PFParallaxLayer *)self pixelSize];
   v8 = v7;
@@ -124,7 +124,7 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PFParallaxLayer *)self identifier];
+  identifier = [(PFParallaxLayer *)self identifier];
   [(PFParallaxLayer *)self pixelSize];
   v7 = v6;
   [(PFParallaxLayer *)self pixelSize];
@@ -138,87 +138,87 @@
   [(PFParallaxLayer *)self frame];
   v17 = v16;
   [(PFParallaxLayer *)self zPosition];
-  v19 = [v3 stringWithFormat:@"<%@:%p id:%@ size=%0.fx%0.f frame=(%0.f, %0.f)(%0.fx%0.f) zPos=%0.1f>", v4, self, v5, v7, v9, v11, v13, v15, v17, v18];
+  v19 = [v3 stringWithFormat:@"<%@:%p id:%@ size=%0.fx%0.f frame=(%0.f, %0.f)(%0.fx%0.f) zPos=%0.1f>", v4, self, identifier, v7, v9, v11, v13, v15, v17, v18];
 
   return v19;
 }
 
 - (BOOL)isSpatialPhotoForeground
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"spatial-photo-foreground"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"spatial-photo-foreground"];
 
   return v3;
 }
 
 - (BOOL)isSpatialPhotoBackground
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"spatial-photo-background"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"spatial-photo-background"];
 
   return v3;
 }
 
 - (BOOL)isSettlingEffect
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"settling-video"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"settling-video"];
 
   return v3;
 }
 
 - (BOOL)isDebug
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 hasPrefix:@"debug"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier hasPrefix:@"debug"];
 
   return v3;
 }
 
 - (BOOL)isInactive
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 hasPrefix:@"inactive"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier hasPrefix:@"inactive"];
 
   return v3;
 }
 
 - (BOOL)isBackfill
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 hasSuffix:@"backfill"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier hasSuffix:@"backfill"];
 
   return v3;
 }
 
 - (BOOL)isBackgroundLandscape
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"background-landscape"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"background-landscape"];
 
   return v3;
 }
 
 - (BOOL)isForegroundLandscape
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"foreground-landscape"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"foreground-landscape"];
 
   return v3;
 }
 
 - (BOOL)isBackground
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"background"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"background"];
 
   return v3;
 }
 
 - (BOOL)isForeground
 {
-  v2 = [(PFParallaxLayer *)self identifier];
-  v3 = [v2 isEqualToString:@"foreground"];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v3 = [identifier isEqualToString:@"foreground"];
 
   return v3;
 }
@@ -235,7 +235,7 @@
   return result;
 }
 
-- (id)layerByUpdatingFrame:(CGRect)a3
+- (id)layerByUpdatingFrame:(CGRect)frame
 {
   v3 = objc_opt_class();
   NSStringFromClass(v3);
@@ -244,13 +244,13 @@
   return [(PFParallaxLayer *)v4 initWithFrame:v5 zPosition:v9 identifier:v7, v6];
 }
 
-- (PFParallaxLayer)initWithFrame:(CGRect)a3 zPosition:(double)a4 identifier:(id)a5
+- (PFParallaxLayer)initWithFrame:(CGRect)frame zPosition:(double)position identifier:(id)identifier
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = PFParallaxLayer;
   v12 = [(PFParallaxLayer *)&v15 init];
@@ -258,9 +258,9 @@
   v12->_frame.origin.y = y;
   v12->_frame.size.width = width;
   v12->_frame.size.height = height;
-  v12->_zPosition = a4;
+  v12->_zPosition = position;
   identifier = v12->_identifier;
-  v12->_identifier = v11;
+  v12->_identifier = identifierCopy;
 
   return v12;
 }

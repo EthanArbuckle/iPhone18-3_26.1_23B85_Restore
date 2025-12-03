@@ -1,20 +1,20 @@
 @interface FedStatsCategoricalType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
-- (FedStatsCategoricalType)initWithCategories:(id)a3;
-- (FedStatsCategoricalType)initWithCategoryFile:(id)a3;
-- (FedStatsCategoricalType)initWithCategoryMap:(id)a3 categories:(id)a4;
-- (FedStatsCategoricalType)initWithPrefixSize:(id)a3 fragmentSize:(id)a4 prefixTree:(id)a5 filters:(id)a6 tokenizer:(id)a7 preEncoder:(id)a8;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)sampleForIndex:(unint64_t)a3;
-- (void)setVersion:(unint64_t)a3;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
+- (FedStatsCategoricalType)initWithCategories:(id)categories;
+- (FedStatsCategoricalType)initWithCategoryFile:(id)file;
+- (FedStatsCategoricalType)initWithCategoryMap:(id)map categories:(id)categories;
+- (FedStatsCategoricalType)initWithPrefixSize:(id)size fragmentSize:(id)fragmentSize prefixTree:(id)tree filters:(id)filters tokenizer:(id)tokenizer preEncoder:(id)encoder;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)sampleForIndex:(unint64_t)index;
+- (void)setVersion:(unint64_t)version;
 @end
 
 @implementation FedStatsCategoricalType
 
-- (void)setVersion:(unint64_t)a3
+- (void)setVersion:(unint64_t)version
 {
-  self->_version = a3;
+  self->_version = version;
   categories = self->_categories;
   self->_categories = 0;
 
@@ -37,103 +37,103 @@
   self->_fragmentSize = 0;
 }
 
-- (FedStatsCategoricalType)initWithCategories:(id)a3
+- (FedStatsCategoricalType)initWithCategories:(id)categories
 {
-  v5 = a3;
+  categoriesCopy = categories;
   v9.receiver = self;
   v9.super_class = FedStatsCategoricalType;
-  v6 = -[FedStatsBoundedULongType initWithBound:](&v9, sel_initWithBound_, [v5 count]);
+  v6 = -[FedStatsBoundedULongType initWithBound:](&v9, sel_initWithBound_, [categoriesCopy count]);
   v7 = v6;
   if (v6)
   {
     [(FedStatsCategoricalType *)v6 setVersion:1];
-    objc_storeStrong(&v7->_categories, a3);
+    objc_storeStrong(&v7->_categories, categories);
   }
 
   return v7;
 }
 
-- (FedStatsCategoricalType)initWithCategoryMap:(id)a3 categories:(id)a4
+- (FedStatsCategoricalType)initWithCategoryMap:(id)map categories:(id)categories
 {
-  v7 = a3;
-  v8 = a4;
+  mapCopy = map;
+  categoriesCopy = categories;
   v12.receiver = self;
   v12.super_class = FedStatsCategoricalType;
-  v9 = -[FedStatsBoundedULongType initWithBound:](&v12, sel_initWithBound_, [v8 count]);
+  v9 = -[FedStatsBoundedULongType initWithBound:](&v12, sel_initWithBound_, [categoriesCopy count]);
   v10 = v9;
   if (v9)
   {
     [(FedStatsCategoricalType *)v9 setVersion:2];
-    objc_storeStrong(&v10->_categoryMap, a3);
-    objc_storeStrong(&v10->_categories, a4);
+    objc_storeStrong(&v10->_categoryMap, map);
+    objc_storeStrong(&v10->_categories, categories);
   }
 
   return v10;
 }
 
-- (FedStatsCategoricalType)initWithCategoryFile:(id)a3
+- (FedStatsCategoricalType)initWithCategoryFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v9.receiver = self;
   v9.super_class = FedStatsCategoricalType;
-  v6 = -[FedStatsBoundedULongType initWithBound:](&v9, sel_initWithBound_, [v5 dimensionality]);
+  v6 = -[FedStatsBoundedULongType initWithBound:](&v9, sel_initWithBound_, [fileCopy dimensionality]);
   v7 = v6;
   if (v6)
   {
     [(FedStatsCategoricalType *)v6 setVersion:3];
-    objc_storeStrong(&v7->_categoryFile, a3);
+    objc_storeStrong(&v7->_categoryFile, file);
   }
 
   return v7;
 }
 
-- (FedStatsCategoricalType)initWithPrefixSize:(id)a3 fragmentSize:(id)a4 prefixTree:(id)a5 filters:(id)a6 tokenizer:(id)a7 preEncoder:(id)a8
+- (FedStatsCategoricalType)initWithPrefixSize:(id)size fragmentSize:(id)fragmentSize prefixTree:(id)tree filters:(id)filters tokenizer:(id)tokenizer preEncoder:(id)encoder
 {
-  v25 = a3;
-  v15 = a4;
-  v16 = a5;
-  v24 = a6;
-  v23 = a7;
-  v21 = a8;
-  if (v16)
+  sizeCopy = size;
+  fragmentSizeCopy = fragmentSize;
+  treeCopy = tree;
+  filtersCopy = filters;
+  tokenizerCopy = tokenizer;
+  encoderCopy = encoder;
+  if (treeCopy)
   {
-    v17 = [v16 dimensionality];
+    dimensionality = [treeCopy dimensionality];
   }
 
   else
   {
-    v17 = 1;
+    dimensionality = 1;
   }
 
   v26.receiver = self;
   v26.super_class = FedStatsCategoricalType;
-  v18 = -[FedStatsBoundedULongType initWithBound:](&v26, sel_initWithBound_, (v17 << [v15 unsignedIntegerValue]) + 1);
+  v18 = -[FedStatsBoundedULongType initWithBound:](&v26, sel_initWithBound_, (dimensionality << [fragmentSizeCopy unsignedIntegerValue]) + 1);
   v19 = v18;
   if (v18)
   {
     [(FedStatsCategoricalType *)v18 setVersion:4];
-    objc_storeStrong(&v19->_categoryFile, a5);
-    objc_storeStrong(&v19->_prefixSize, a3);
-    objc_storeStrong(&v19->_fragmentSize, a4);
-    objc_storeStrong(&v19->_filters, a6);
-    objc_storeStrong(&v19->_tokenizer, a7);
-    objc_storeStrong(&v19->_preEncoder, a8);
+    objc_storeStrong(&v19->_categoryFile, tree);
+    objc_storeStrong(&v19->_prefixSize, size);
+    objc_storeStrong(&v19->_fragmentSize, fragmentSize);
+    objc_storeStrong(&v19->_filters, filters);
+    objc_storeStrong(&v19->_tokenizer, tokenizer);
+    objc_storeStrong(&v19->_preEncoder, encoder);
   }
 
   return v19;
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
   v149[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKey:@"categories"];
+  dictCopy = dict;
+  v6 = [dictCopy objectForKey:@"categories"];
 
-  v7 = [v5 objectForKey:@"categoryMap"];
+  v7 = [dictCopy objectForKey:@"categoryMap"];
 
-  v8 = [v5 objectForKey:@"categoryFile"];
+  v8 = [dictCopy objectForKey:@"categoryFile"];
 
-  v9 = [v5 objectForKey:@"prefixSize"];
+  v9 = [dictCopy objectForKey:@"prefixSize"];
 
   if (v7)
   {
@@ -157,9 +157,9 @@
 
   if (v10 != 1)
   {
-    if (a4)
+    if (error)
     {
-      v23 = a4;
+      errorCopy = error;
       v149[0] = @"categories";
       v149[1] = @"categoryMap";
       v149[2] = @"categoryFile";
@@ -168,7 +168,7 @@
       v24 = MEMORY[0x277CCACA8];
       v25 = [v11 componentsJoinedByString:{@", "}];
       v26 = [v24 stringWithFormat:@"You're allowed to have exactly one of {%@} as key in parameters", v25];
-      *v23 = [FedStatsError errorWithCode:301 description:v26];
+      *errorCopy = [FedStatsError errorWithCode:301 description:v26];
 
       goto LABEL_23;
     }
@@ -178,10 +178,10 @@ LABEL_81:
     goto LABEL_102;
   }
 
-  v117 = a4;
+  errorCopy2 = error;
   if (v6)
   {
-    v11 = [v5 objectForKey:@"categories"];
+    v11 = [dictCopy objectForKey:@"categories"];
     v12 = objc_claimAutoreleasedReturnValue();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -209,9 +209,9 @@ LABEL_81:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (v117)
+              if (errorCopy2)
               {
-                *v117 = [FedStatsError errorWithCode:302 description:v12];
+                *errorCopy2 = [FedStatsError errorWithCode:302 description:v12];
               }
 
               goto LABEL_58;
@@ -234,61 +234,61 @@ LABEL_81:
 
       if (v20 == v21)
       {
-        v22 = [[a1 alloc] initWithCategories:v13];
+        v22 = [[self alloc] initWithCategories:v13];
         goto LABEL_59;
       }
     }
 
-    v51 = v117;
+    errorCopy3 = errorCopy2;
     goto LABEL_53;
   }
 
   if (!v7)
   {
-    v51 = a4;
+    errorCopy3 = error;
     if (v8)
     {
-      v11 = [v5 objectForKey:@"categoryFile"];
+      v11 = [dictCopy objectForKey:@"categoryFile"];
       v12 = objc_claimAutoreleasedReturnValue();
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v52 = [v5 objectForKey:@"minIndex"];
+        v52 = [dictCopy objectForKey:@"minIndex"];
         v53 = v52;
         if (v52)
         {
-          v54 = [v52 unsignedIntegerValue];
+          unsignedIntegerValue = [v52 unsignedIntegerValue];
         }
 
         else
         {
-          v54 = 0x7FFFFFFFFFFFFFFFLL;
+          unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        v63 = [v5 objectForKey:@"maxIndex"];
+        v63 = [dictCopy objectForKey:@"maxIndex"];
         v64 = v63;
         if (v63)
         {
-          v65 = [v63 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v63 unsignedIntegerValue];
         }
 
         else
         {
-          v65 = 0x7FFFFFFFFFFFFFFFLL;
+          unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         v127 = 0;
-        v66 = [FedStatsSQLiteCategoryDatabase databaseWithFileURL:v11 minIndex:v54 maxIndex:v65 checkForPrimaryKey:1 error:&v127];
+        v66 = [FedStatsSQLiteCategoryDatabase databaseWithFileURL:v11 minIndex:unsignedIntegerValue maxIndex:unsignedIntegerValue2 checkForPrimaryKey:1 error:&v127];
         v67 = v127;
         if (v66)
         {
-          v22 = [[a1 alloc] initWithCategoryFile:v66];
+          v22 = [[self alloc] initWithCategoryFile:v66];
         }
 
-        else if (v117)
+        else if (errorCopy2)
         {
           [FedStatsError errorWithCode:302 underlyingError:v67 description:@"Cannot create database from the provided URL"];
-          *v117 = v22 = 0;
+          *errorCopy2 = v22 = 0;
         }
 
         else
@@ -300,10 +300,10 @@ LABEL_81:
       }
 
 LABEL_53:
-      if (v51)
+      if (errorCopy3)
       {
         [FedStatsError errorWithCode:302 description:v12];
-        *v51 = v22 = 0;
+        *errorCopy3 = v22 = 0;
         goto LABEL_59;
       }
 
@@ -314,17 +314,17 @@ LABEL_58:
 
     if (v9)
     {
-      v55 = [v5 objectForKey:@"prefixSize"];
+      v55 = [dictCopy objectForKey:@"prefixSize"];
       v11 = v55;
       if (v55 && ([v55 integerValue] & 0x8000000000000000) == 0)
       {
-        v56 = [v5 objectForKey:@"fragmentSize"];
+        v56 = [dictCopy objectForKey:@"fragmentSize"];
         v12 = v56;
         if (!v56 || [v56 integerValue] <= 0)
         {
-          if (v117)
+          if (errorCopy2)
             v72 = {;
-            *v117 = [FedStatsError errorWithCode:101 description:v72];
+            *errorCopy2 = [FedStatsError errorWithCode:101 description:v72];
           }
 
           goto LABEL_58;
@@ -332,13 +332,13 @@ LABEL_58:
 
         if ([v11 unsignedIntegerValue])
         {
-          v57 = [v5 objectForKey:@"prefixTreeParameters"];
+          v57 = [dictCopy objectForKey:@"prefixTreeParameters"];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v117)
+            if (errorCopy2)
               v90 = {;
-              *v117 = [FedStatsError errorWithCode:302 description:v90];
+              *errorCopy2 = [FedStatsError errorWithCode:302 description:v90];
             }
 
             goto LABEL_147;
@@ -348,7 +348,7 @@ LABEL_58:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v117)
+            if (!errorCopy2)
             {
 LABEL_146:
 
@@ -356,7 +356,7 @@ LABEL_147:
               goto LABEL_58;
             }
             v61 = ;
-            *v117 = [FedStatsError errorWithCode:302 description:v61];
+            *errorCopy2 = [FedStatsError errorWithCode:302 description:v61];
 LABEL_145:
 
             goto LABEL_146;
@@ -366,9 +366,9 @@ LABEL_145:
           v59 = [FedStatsSQLiteCategoryDatabase databaseWithFileURL:v58 minIndex:0 maxIndex:0x7FFFFFFFFFFFFFFFLL checkForPrimaryKey:0 error:&v126];
           v60 = v126;
           v61 = v60;
-          if (v117 && !v59)
+          if (errorCopy2 && !v59)
           {
-            *v117 = [FedStatsError errorWithCode:302 underlyingError:v60 description:@"Cannot load prefix tree as database"];
+            *errorCopy2 = [FedStatsError errorWithCode:302 underlyingError:v60 description:@"Cannot load prefix tree as database"];
             goto LABEL_145;
           }
 
@@ -383,16 +383,16 @@ LABEL_145:
           v59 = 0;
         }
 
-        v73 = [v5 objectForKey:@"filters"];
+        v73 = [dictCopy objectForKey:@"filters"];
         if (v73)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v117)
+            if (errorCopy2)
               v116 = {;
               [FedStatsError errorWithCode:101 description:?];
-              *v117 = v22 = 0;
+              *errorCopy2 = v22 = 0;
             }
 
             else
@@ -404,7 +404,7 @@ LABEL_145:
           }
         }
 
-        v115 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v107 = v11;
         if (v73)
         {
@@ -433,9 +433,9 @@ LABEL_145:
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
                   v73 = obja;
-                  if (v117)
+                  if (errorCopy2)
                     v79 = {;
-                    *v117 = [FedStatsError errorWithCode:101 description:v79];
+                    *errorCopy2 = [FedStatsError errorWithCode:101 description:v79];
                     goto LABEL_184;
                   }
 
@@ -448,9 +448,9 @@ LABEL_145:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    if (v117)
+                    if (errorCopy2)
                       v81 = {;
-                      *v117 = [FedStatsError errorWithCode:101 description:v81];
+                      *errorCopy2 = [FedStatsError errorWithCode:101 description:v81];
                       goto LABEL_183;
                     }
 
@@ -472,7 +472,7 @@ LABEL_145:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    if (v117)
+                    if (errorCopy2)
                       v83 = {;
                       v99 = [FedStatsError errorWithCode:101 description:v83];
                       goto LABEL_181;
@@ -499,17 +499,17 @@ LABEL_59:
                   v83 = v121;
                   if (!v82)
                   {
-                    if (v117)
+                    if (errorCopy2)
                     {
                       v99 = [FedStatsError errorWithCode:101 underlyingError:v83 description:@"Cannot create filter with given parameters"];
 LABEL_181:
-                      *v117 = v99;
+                      *errorCopy2 = v99;
                     }
 
                     goto LABEL_183;
                   }
 
-                  [v115 addObject:v82];
+                  [array addObject:v82];
                 }
               }
 
@@ -519,20 +519,20 @@ LABEL_181:
             while (v75);
           }
 
-          v51 = v117;
+          errorCopy3 = errorCopy2;
           v73 = obja;
         }
 
-        v84 = [v5 objectForKey:@"tokenizerVariant"];
+        v84 = [dictCopy objectForKey:@"tokenizerVariant"];
         if (v84)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v51)
+            if (errorCopy3)
               v87 = {;
               [FedStatsError errorWithCode:101 description:v87];
-              *v51 = v22 = 0;
+              *errorCopy3 = v22 = 0;
 LABEL_195:
 
               goto LABEL_196;
@@ -545,7 +545,7 @@ LABEL_196:
             goto LABEL_197;
           }
 
-          v85 = [v5 objectForKey:@"tokenizerParameters"];
+          v85 = [dictCopy objectForKey:@"tokenizerParameters"];
           if (v85)
           {
             v86 = v85;
@@ -559,7 +559,7 @@ LABEL_196:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v51)
+            if (!errorCopy3)
             {
 LABEL_172:
               v22 = 0;
@@ -567,7 +567,7 @@ LABEL_172:
               goto LABEL_195;
             }
             v89 = ;
-            *v117 = [FedStatsError errorWithCode:101 description:v89];
+            *errorCopy2 = [FedStatsError errorWithCode:101 description:v89];
 LABEL_171:
 
             goto LABEL_172;
@@ -577,9 +577,9 @@ LABEL_171:
           v87 = [FedStatsCategoricalTypeTokenizerFactory tokenizerForVariant:v84 parameters:v86 error:&v120];
           v88 = v120;
           v89 = v88;
-          if (v51 && !v87)
+          if (errorCopy3 && !v87)
           {
-            *v51 = [FedStatsError errorWithCode:101 underlyingError:v88 description:@"Cannot create tokenizer with given parameters"];
+            *errorCopy3 = [FedStatsError errorWithCode:101 underlyingError:v88 description:@"Cannot create tokenizer with given parameters"];
             goto LABEL_171;
           }
 
@@ -596,21 +596,21 @@ LABEL_171:
         }
 
         objb = v73;
-        v91 = [v5 objectForKey:@"preEncodingVariant"];
+        v91 = [dictCopy objectForKey:@"preEncodingVariant"];
         if (v91)
         {
           objc_opt_class();
           v92 = v91;
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v51)
+            if (!errorCopy3)
             {
               v22 = 0;
               goto LABEL_194;
             }
             v94 = ;
             [FedStatsError errorWithCode:101 description:v94];
-            *v117 = v22 = 0;
+            *errorCopy2 = v22 = 0;
 LABEL_193:
 
 LABEL_194:
@@ -619,7 +619,7 @@ LABEL_194:
             goto LABEL_195;
           }
 
-          v93 = [v5 objectForKey:@"preEncodingParameters"];
+          v93 = [dictCopy objectForKey:@"preEncodingParameters"];
           if (v93)
           {
             v94 = v93;
@@ -633,7 +633,7 @@ LABEL_194:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v117)
+            if (!errorCopy2)
             {
 LABEL_192:
               v22 = 0;
@@ -642,7 +642,7 @@ LABEL_192:
             v97 = ;
             v98 = [FedStatsError errorWithCode:101 description:v97];
 LABEL_191:
-            *v117 = v98;
+            *errorCopy2 = v98;
 
             goto LABEL_192;
           }
@@ -651,7 +651,7 @@ LABEL_191:
           v95 = [FedStatsCategoricalTypePreEncoderFactory preEncoderForVariant:v92 parameters:v94 error:&v119];
           v96 = v119;
           v97 = v96;
-          if (v117 && !v95)
+          if (errorCopy2 && !v95)
           {
             v98 = [FedStatsError errorWithCode:101 underlyingError:v96 description:@"Cannot create pre-encoder with given parameters"];
             goto LABEL_191;
@@ -670,14 +670,14 @@ LABEL_191:
           v95 = 0;
         }
 
-        v22 = [[a1 alloc] initWithPrefixSize:v107 fragmentSize:v12 prefixTree:v59 filters:v115 tokenizer:v87 preEncoder:v95];
+        v22 = [[self alloc] initWithPrefixSize:v107 fragmentSize:v12 prefixTree:v59 filters:array tokenizer:v87 preEncoder:v95];
         v94 = v95;
         goto LABEL_193;
       }
 
-      if (v117)
+      if (errorCopy2)
         v62 = {;
-        *v117 = [FedStatsError errorWithCode:101 description:v62];
+        *errorCopy2 = [FedStatsError errorWithCode:101 description:v62];
       }
 
 LABEL_23:
@@ -688,15 +688,15 @@ LABEL_23:
     goto LABEL_81;
   }
 
-  v11 = [v5 objectForKey:@"categoryMap"];
+  v11 = [dictCopy objectForKey:@"categoryMap"];
   v27 = objc_claimAutoreleasedReturnValue();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v117)
+    if (errorCopy2)
     {
       [FedStatsError errorWithCode:302 description:v27];
-      *v117 = v22 = 0;
+      *errorCopy2 = v22 = 0;
       goto LABEL_100;
     }
 
@@ -729,9 +729,9 @@ LABEL_23:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v117)
+        if (errorCopy2)
         {
-          *v117 = [FedStatsError errorWithCode:302 description:v27];
+          *errorCopy2 = [FedStatsError errorWithCode:302 description:v27];
         }
 
 LABEL_69:
@@ -746,10 +746,10 @@ LABEL_69:
   while (v30);
 LABEL_34:
 
-  v34 = [v28 allKeys];
-  v35 = [v34 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v28 allKeys];
+  v35 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v108 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
@@ -767,7 +767,7 @@ LABEL_34:
   v106 = v11;
 LABEL_36:
   v39 = 0;
-  v40 = v117;
+  v40 = errorCopy2;
   v101 = v37;
 LABEL_37:
   if (*v133 != v38)
@@ -813,17 +813,17 @@ LABEL_42:
         break;
       }
 
-      v47 = [v108 allKeys];
-      v48 = [v47 containsObject:v46];
+      allKeys2 = [dictionary allKeys];
+      v48 = [allKeys2 containsObject:v46];
 
       if (v48)
       {
         v36 = v105;
         v11 = v106;
-        v68 = v117;
+        v68 = errorCopy2;
         v27 = v103;
         v41 = v104;
-        if (v117)
+        if (errorCopy2)
         {
           v69 = @"Subcategories must be distinct";
 LABEL_96:
@@ -834,12 +834,12 @@ LABEL_96:
       }
 
       v49 = [FedStatsCategoricalTypeSubcategory categoryWithSuperCategory:v112 index:v114];
-      [v108 setObject:v49 forKey:v46];
+      [dictionary setObject:v49 forKey:v46];
 
       if (v43 == ++v45)
       {
         v43 = [obj countByEnumeratingWithState:&v128 objects:v145 count:16];
-        v40 = v117;
+        v40 = errorCopy2;
         v27 = v103;
         v38 = v100;
         if (v43)
@@ -860,8 +860,8 @@ LABEL_49:
           {
 LABEL_51:
 
-            v50 = v108;
-            v22 = [[a1 alloc] initWithCategoryMap:v108 categories:v36];
+            v50 = dictionary;
+            v22 = [[self alloc] initWithCategoryMap:dictionary categories:v36];
             goto LABEL_99;
           }
 
@@ -874,10 +874,10 @@ LABEL_51:
 
     v36 = v105;
     v11 = v106;
-    v68 = v117;
+    v68 = errorCopy2;
     v27 = v103;
     v41 = v104;
-    if (v117)
+    if (errorCopy2)
     {
       v69 = v103;
       goto LABEL_96;
@@ -896,7 +896,7 @@ LABEL_97:
 LABEL_98:
 
   v22 = 0;
-  v50 = v108;
+  v50 = dictionary;
 LABEL_99:
 
 LABEL_100:
@@ -908,26 +908,26 @@ LABEL_102:
   return v22;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB68] null];
-  v8 = [v6 isEqual:v7];
+  indexCopy = index;
+  null = [MEMORY[0x277CBEB68] null];
+  v8 = [indexCopy isEqual:null];
 
   if (v8)
   {
     goto LABEL_2;
   }
 
-  v12 = [(FedStatsCategoricalType *)self version];
-  if (v12 > 2)
+  version = [(FedStatsCategoricalType *)self version];
+  if (version > 2)
   {
-    if (v12 == 3)
+    if (version == 3)
     {
-      v29 = [(FedStatsCategoricalType *)self categoryFile];
+      categoryFile = [(FedStatsCategoricalType *)self categoryFile];
       v59 = 0;
-      v9 = [v29 encode:v6 error:&v59];
+      v9 = [categoryFile encode:indexCopy error:&v59];
       v30 = v59;
 
       if (v9)
@@ -935,21 +935,21 @@ LABEL_102:
         v31 = v9;
       }
 
-      else if (a4)
+      else if (error)
       {
-        *a4 = [FedStatsError errorWithCode:401 underlyingError:v30 description:@"Error when encoding categorical type over database"];
+        *error = [FedStatsError errorWithCode:401 underlyingError:v30 description:@"Error when encoding categorical type over database"];
       }
 
       goto LABEL_3;
     }
 
-    if (v12 != 4)
+    if (version != 4)
     {
 LABEL_23:
-      if (a4)
+      if (error)
       {
         [FedStatsError errorWithCode:900 description:@"The categorical type version is not supported"];
-        *a4 = v9 = 0;
+        *error = v9 = 0;
       }
 
       else
@@ -960,14 +960,14 @@ LABEL_23:
       goto LABEL_3;
     }
 
-    v53 = a4;
-    v15 = v6;
+    errorCopy = error;
+    v15 = indexCopy;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v16 = [(FedStatsCategoricalType *)self filters];
-    v17 = [v16 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    filters = [(FedStatsCategoricalType *)self filters];
+    v17 = [filters countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v17)
     {
       v18 = v17;
@@ -982,7 +982,7 @@ LABEL_15:
       {
         if (*v56 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(filters);
         }
 
         v15 = [*(*(&v55 + 1) + 8 * v21) filter:v23];
@@ -997,7 +997,7 @@ LABEL_15:
         v23 = v15;
         if (v18 == v21)
         {
-          v18 = [v16 countByEnumeratingWithState:&v55 objects:v61 count:16];
+          v18 = [filters countByEnumeratingWithState:&v55 objects:v61 count:16];
           if (v18)
           {
             goto LABEL_15;
@@ -1007,11 +1007,11 @@ LABEL_15:
         }
       }
 
-      if (v53)
+      if (errorCopy)
       {
         v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Data point filtered out at Stage %lu (not necessarily an error)", v22];
         [FedStatsError errorWithCode:401 description:v26];
-        *v53 = v9 = 0;
+        *errorCopy = v9 = 0;
         goto LABEL_67;
       }
 
@@ -1021,11 +1021,11 @@ LABEL_15:
 
 LABEL_21:
 
-    v24 = [(FedStatsCategoricalType *)self tokenizer];
-    if (v24)
+    tokenizer = [(FedStatsCategoricalType *)self tokenizer];
+    if (tokenizer)
     {
-      v25 = [(FedStatsCategoricalType *)self tokenizer];
-      v26 = [v25 tokenize:v15];
+      tokenizer2 = [(FedStatsCategoricalType *)self tokenizer];
+      v26 = [tokenizer2 tokenize:v15];
     }
 
     else
@@ -1034,24 +1034,24 @@ LABEL_21:
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
     }
 
-    v32 = [(FedStatsCategoricalType *)self preEncoder];
-    if (v32)
+    preEncoder = [(FedStatsCategoricalType *)self preEncoder];
+    if (preEncoder)
     {
-      v33 = [(FedStatsCategoricalType *)self preEncoder];
-      v34 = [v33 preEncode:v26];
+      preEncoder2 = [(FedStatsCategoricalType *)self preEncoder];
+      firstObject = [preEncoder2 preEncode:v26];
     }
 
     else
     {
-      v34 = [v26 firstObject];
+      firstObject = [v26 firstObject];
     }
 
-    if (!v34)
+    if (!firstObject)
     {
-      if (v53)
+      if (errorCopy)
       {
         [FedStatsError errorWithCode:401 description:@"Data point cannot be tokenized and pre-encoded (not necessarily an error)"];
-        *v53 = v9 = 0;
+        *errorCopy = v9 = 0;
       }
 
       else
@@ -1061,26 +1061,26 @@ LABEL_21:
 
 LABEL_66:
 
-      v16 = v15;
+      filters = v15;
 LABEL_67:
 
 LABEL_68:
       goto LABEL_3;
     }
 
-    v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v34];
-    v36 = [(FedStatsCategoricalType *)self prefixSize];
-    v37 = [v36 unsignedIntegerValue];
+    v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", firstObject];
+    prefixSize = [(FedStatsCategoricalType *)self prefixSize];
+    unsignedIntegerValue = [prefixSize unsignedIntegerValue];
 
-    v38 = [(FedStatsCategoricalType *)self fragmentSize];
-    v39 = [v38 unsignedIntegerValue];
+    fragmentSize = [(FedStatsCategoricalType *)self fragmentSize];
+    unsignedIntegerValue2 = [fragmentSize unsignedIntegerValue];
 
-    if ([v35 length] <= v37)
+    if ([v35 length] <= unsignedIntegerValue)
     {
-      if (v53)
+      if (errorCopy)
       {
         [FedStatsError errorWithCode:401 description:@"Pre-encoded data length shorter than prefix (not necessarily an error)"];
-        *v53 = v9 = 0;
+        *errorCopy = v9 = 0;
       }
 
       else
@@ -1091,15 +1091,15 @@ LABEL_68:
       goto LABEL_65;
     }
 
-    v40 = [v35 stringByPaddingToLength:v39 + v37 withString:@"0" startingAtIndex:0];
+    v40 = [v35 stringByPaddingToLength:unsignedIntegerValue2 + unsignedIntegerValue withString:@"0" startingAtIndex:0];
 
     v52 = v40;
-    if (v37)
+    if (unsignedIntegerValue)
     {
-      v41 = [v40 substringToIndex:v37];
-      v42 = [(FedStatsCategoricalType *)self categoryFile];
+      v41 = [v40 substringToIndex:unsignedIntegerValue];
+      categoryFile2 = [(FedStatsCategoricalType *)self categoryFile];
       v54 = 0;
-      v43 = [v42 encode:v41 error:&v54];
+      v43 = [categoryFile2 encode:v41 error:&v54];
       v51 = v54;
 
       if (v43)
@@ -1113,8 +1113,8 @@ LABEL_68:
           goto LABEL_54;
         }
 
-        v48 = v53;
-        if (!v53)
+        v48 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_62;
         }
@@ -1125,8 +1125,8 @@ LABEL_68:
 
       else
       {
-        v48 = v53;
-        if (!v53)
+        v48 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_62;
         }
@@ -1148,14 +1148,14 @@ LABEL_65:
     v51 = 0;
     v43 = &unk_285E12CE0;
 LABEL_54:
-    v45 = [v40 substringWithRange:{v37, v39}];
+    v45 = [v40 substringWithRange:{unsignedIntegerValue, unsignedIntegerValue2}];
     v41 = [FedStatsUtils bitStringToInt:v45];
 
     if (v41)
     {
-      v46 = [v43 unsignedIntegerValue] << v39;
-      v47 = [v41 unsignedIntegerValue];
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v47 + v46 + 1];
+      v46 = [v43 unsignedIntegerValue] << unsignedIntegerValue2;
+      unsignedIntegerValue3 = [v41 unsignedIntegerValue];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue3 + v46 + 1];
 LABEL_63:
       v49 = v51;
       goto LABEL_64;
@@ -1166,12 +1166,12 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  if (v12 != 1)
+  if (version != 1)
   {
-    if (v12 == 2)
+    if (version == 2)
     {
-      v13 = [(FedStatsCategoricalType *)self categoryMap];
-      v14 = [v13 objectForKey:v6];
+      categoryMap = [(FedStatsCategoricalType *)self categoryMap];
+      v14 = [categoryMap objectForKey:indexCopy];
 
       if (v14)
       {
@@ -1189,8 +1189,8 @@ LABEL_62:
     goto LABEL_23;
   }
 
-  v27 = [(FedStatsCategoricalType *)self categories];
-  v28 = [v27 indexOfObject:v6];
+  categories = [(FedStatsCategoricalType *)self categories];
+  v28 = [categories indexOfObject:indexCopy];
 
   if (v28 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1207,18 +1207,18 @@ LABEL_3:
   return v9;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  indexCopy = index;
+  if (!indexCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a4)
+    if (error)
     {
       v10 = @"The decoder can only work with a non-null number type";
       v11 = 500;
 LABEL_8:
       [FedStatsError errorWithCode:v11 description:v10];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_16;
     }
 
@@ -1227,13 +1227,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [(FedStatsCategoricalType *)self version];
-  if (v7 - 1 < 2)
+  version = [(FedStatsCategoricalType *)self version];
+  if (version - 1 < 2)
   {
-    if ([v6 unsignedLongValue])
+    if ([indexCopy unsignedLongValue])
     {
-      v8 = [(FedStatsCategoricalType *)self categories];
-      v9 = [v8 objectAtIndex:{objc_msgSend(v6, "unsignedLongValue") - 1}];
+      categories = [(FedStatsCategoricalType *)self categories];
+      v9 = [categories objectAtIndex:{objc_msgSend(indexCopy, "unsignedLongValue") - 1}];
     }
 
     else
@@ -1244,9 +1244,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v7 != 3)
+  if (version != 3)
   {
-    if (a4)
+    if (error)
     {
       v10 = @"The categorical type version is not supported";
       v11 = 900;
@@ -1256,9 +1256,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [(FedStatsCategoricalType *)self categoryFile];
+  categoryFile = [(FedStatsCategoricalType *)self categoryFile];
   v15 = 0;
-  v9 = [v12 decode:objc_msgSend(v6 error:{"unsignedLongValue"), &v15}];
+  v9 = [categoryFile decode:objc_msgSend(indexCopy error:{"unsignedLongValue"), &v15}];
 
   if (v9)
   {
@@ -1270,28 +1270,28 @@ LABEL_16:
   return v9;
 }
 
-- (id)sampleForIndex:(unint64_t)a3
+- (id)sampleForIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
 LABEL_6:
     v7 = +[FedStatsCategoricalType kOutOfCategories];
     goto LABEL_8;
   }
 
-  v5 = [(FedStatsCategoricalType *)self version];
-  if (v5 == 3)
+  version = [(FedStatsCategoricalType *)self version];
+  if (version == 3)
   {
 LABEL_5:
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:index];
     v7 = [(FedStatsCategoricalType *)self decodeFromIndex:v6 possibleError:0];
 
     goto LABEL_8;
   }
 
-  if (v5 != 2)
+  if (version != 2)
   {
-    if (v5 == 1)
+    if (version == 1)
     {
       goto LABEL_5;
     }
@@ -1304,15 +1304,15 @@ LABEL_5:
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
-  v16 = [MEMORY[0x277CBEB18] array];
-  v8 = [(FedStatsCategoricalType *)self categoryMap];
+  array = [MEMORY[0x277CBEB18] array];
+  categoryMap = [(FedStatsCategoricalType *)self categoryMap];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __42__FedStatsCategoricalType_sampleForIndex___block_invoke;
   v10[3] = &unk_278FF6218;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v8 enumerateKeysAndObjectsUsingBlock:v10];
+  v10[5] = index;
+  [categoryMap enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = [v12[5] objectAtIndex:{arc4random_uniform(objc_msgSend(v12[5], "count"))}];
   _Block_object_dispose(&v11, 8);

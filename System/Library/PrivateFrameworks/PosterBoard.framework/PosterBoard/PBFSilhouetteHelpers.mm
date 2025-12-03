@@ -1,15 +1,15 @@
 @interface PBFSilhouetteHelpers
-+ (id)makeHomeScreenSilhouetteViewWithLayout:(id)a3 includeDock:(BOOL)a4 displayContext:(id)a5 viewScreenSizeScale:(double)a6;
++ (id)makeHomeScreenSilhouetteViewWithLayout:(id)layout includeDock:(BOOL)dock displayContext:(id)context viewScreenSizeScale:(double)scale;
 - (PBFSilhouetteHelpers)init;
 @end
 
 @implementation PBFSilhouetteHelpers
 
-+ (id)makeHomeScreenSilhouetteViewWithLayout:(id)a3 includeDock:(BOOL)a4 displayContext:(id)a5 viewScreenSizeScale:(double)a6
++ (id)makeHomeScreenSilhouetteViewWithLayout:(id)layout includeDock:(BOOL)dock displayContext:(id)context viewScreenSizeScale:(double)scale
 {
-  v9 = a3;
+  layoutCopy = layout;
   swift_unknownObjectRetain();
-  v10 = _s11PosterBoard17SilhouetteHelpersC014makeHomeScreenC4View6layout11includeDock14displayContext04viewG9SizeScaleSo6UIViewCSgSo07SBSHomegC6LayoutC_SbSo010PBFDisplayM0_pSg12CoreGraphics7CGFloatVtFZ_0(v9, a4, a5, a6);
+  v10 = _s11PosterBoard17SilhouetteHelpersC014makeHomeScreenC4View6layout11includeDock14displayContext04viewG9SizeScaleSo6UIViewCSgSo07SBSHomegC6LayoutC_SbSo010PBFDisplayM0_pSg12CoreGraphics7CGFloatVtFZ_0(layoutCopy, dock, context, scale);
 
   swift_unknownObjectRelease();
 

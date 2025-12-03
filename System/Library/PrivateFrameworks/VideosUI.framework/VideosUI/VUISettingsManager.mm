@@ -1,7 +1,7 @@
 @interface VUISettingsManager
-+ (BOOL)isPostPlayAutoPlayEnabledForType:(unint64_t)a3;
++ (BOOL)isPostPlayAutoPlayEnabledForType:(unint64_t)type;
 + (id)sharedInstance;
-+ (unint64_t)_wlkTypeFromVUIPostPlayType:(unint64_t)a3;
++ (unint64_t)_wlkTypeFromVUIPostPlayType:(unint64_t)type;
 - (BOOL)_automaticDownloadsEnabled;
 - (BOOL)_hasAppAppearanceSettingChanged;
 - (BOOL)_hasAutomaticDownloadsSettingChanged;
@@ -11,7 +11,7 @@
 - (BOOL)_hasUpNextLockupsUseCoverArtChanged;
 - (BOOL)_upNextLockupsUseCoverArt;
 - (VUISettingsManager)init;
-- (id)_formatStringForVideoFormat:(unint64_t)a3;
+- (id)_formatStringForVideoFormat:(unint64_t)format;
 - (id)_init;
 - (id)_isRTL;
 - (id)_restrictionsMaximumEffectiveAppRanking;
@@ -20,15 +20,15 @@
 - (id)preferencesJSONData;
 - (int64_t)_appAppearance;
 - (unint64_t)_preferredVideoFormat;
-- (void)_handlePreferencesChange:(id)a3;
-- (void)_sendSettingsValuesToJS:(id)a3;
+- (void)_handlePreferencesChange:(id)change;
+- (void)_sendSettingsValuesToJS:(id)s;
 - (void)_setupNotificationObservers;
 - (void)_teardownNotificationObservers;
 - (void)checkAndUpdateSettings;
 - (void)createSettingsStore;
 - (void)dealloc;
-- (void)isAppInstallationAllowedForRating:(id)a3 completion:(id)a4;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)isAppInstallationAllowedForRating:(id)rating completion:(id)completion;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation VUISettingsManager
@@ -60,25 +60,25 @@ void __36__VUISettingsManager_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [(VUISettingsManager *)v2 _restrictionsMaximumEffectiveMovieRanking];
+    _restrictionsMaximumEffectiveMovieRanking = [(VUISettingsManager *)v2 _restrictionsMaximumEffectiveMovieRanking];
     maxMovieRank = v3->_maxMovieRank;
-    v3->_maxMovieRank = v4;
+    v3->_maxMovieRank = _restrictionsMaximumEffectiveMovieRanking;
 
-    v6 = [(VUISettingsManager *)v3 _restrictionsMaximumEffectiveTVShowRanking];
+    _restrictionsMaximumEffectiveTVShowRanking = [(VUISettingsManager *)v3 _restrictionsMaximumEffectiveTVShowRanking];
     maxTVShowRank = v3->_maxTVShowRank;
-    v3->_maxTVShowRank = v6;
+    v3->_maxTVShowRank = _restrictionsMaximumEffectiveTVShowRanking;
 
-    v8 = [(VUISettingsManager *)v3 _restrictionsMaximumEffectiveAppRanking];
+    _restrictionsMaximumEffectiveAppRanking = [(VUISettingsManager *)v3 _restrictionsMaximumEffectiveAppRanking];
     maxAppRank = v3->_maxAppRank;
-    v3->_maxAppRank = v8;
+    v3->_maxAppRank = _restrictionsMaximumEffectiveAppRanking;
 
     v10 = [(VUISettingsManager *)v3 _formatStringForVideoFormat:[(VUISettingsManager *)v3 _preferredVideoFormat]];
     preferredVideoFormat = v3->_preferredVideoFormat;
     v3->_preferredVideoFormat = v10;
 
-    v12 = [(VUISettingsManager *)v3 _isRTL];
+    _isRTL = [(VUISettingsManager *)v3 _isRTL];
     isRTL = v3->_isRTL;
-    v3->_isRTL = v12;
+    v3->_isRTL = _isRTL;
 
     v3->_appAppearance = [(VUISettingsManager *)v3 _appAppearance];
     [(VUISettingsManager *)v3 createSettingsStore];
@@ -148,12 +148,12 @@ void __36__VUISettingsManager_sharedInstance__block_invoke()
 
 - (id)_isRTL
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
   v4 = MEMORY[0x1E696AD98];
 
-  return [v4 numberWithBool:v3 == 1];
+  return [v4 numberWithBool:userInterfaceLayoutDirection == 1];
 }
 
 - (void)createSettingsStore
@@ -164,10 +164,10 @@ void __36__VUISettingsManager_sharedInstance__block_invoke()
   aBlock[3] = &unk_1E872F4E0;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [MEMORY[0x1E69E15F0] isSystemPreferencesStoreInitializing];
+  isSystemPreferencesStoreInitializing = [MEMORY[0x1E69E15F0] isSystemPreferencesStoreInitializing];
   v5 = VUIDefaultLogObject();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isSystemPreferencesStoreInitializing)
   {
     if (v6)
     {
@@ -197,9 +197,9 @@ void __36__VUISettingsManager_sharedInstance__block_invoke()
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "VUISettingsManager - checkAndUpdateSettings - WLKSystemPreferencesStore already initialized", &buf, 2u);
     }
 
-    v8 = [MEMORY[0x1E69E15F0] sharedPreferences];
+    mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
     preferencesStore = self->_preferencesStore;
-    self->_preferencesStore = v8;
+    self->_preferencesStore = mEMORY[0x1E69E15F0];
 
     (*(v3 + 2))(v3, self);
   }
@@ -216,18 +216,18 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke(uint64_t a1, voi
 
 - (BOOL)_upNextLockupsUseCoverArt
 {
-  v2 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v3 = [v2 upNextLockupsUseCoverArt];
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  upNextLockupsUseCoverArt = [mEMORY[0x1E69E15F0] upNextLockupsUseCoverArt];
 
-  return v3;
+  return upNextLockupsUseCoverArt;
 }
 
 - (BOOL)_automaticDownloadsEnabled
 {
-  v2 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v3 = [v2 useAutomaticDownloads];
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  useAutomaticDownloads = [mEMORY[0x1E69E15F0] useAutomaticDownloads];
 
-  return v3;
+  return useAutomaticDownloads;
 }
 
 - (void)checkAndUpdateSettings
@@ -241,23 +241,23 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke(uint64_t a1, voi
       _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_INFO, "VUISettingsManager - checkAndUpdateSettings", buf, 2u);
     }
 
-    v4 = [(VUISettingsManager *)self _hasRestrictionsChanged];
-    v5 = [(VUISettingsManager *)self _hasPreferredVideoFormatChanged];
-    v6 = [(VUISettingsManager *)self _hasUpNextLockupsUseCoverArtChanged];
-    v7 = [(VUISettingsManager *)self _hasRTLChanged];
-    v8 = [(VUISettingsManager *)self _hasAppAppearanceSettingChanged];
-    v9 = v4 || v5 || v6 || v7;
+    _hasRestrictionsChanged = [(VUISettingsManager *)self _hasRestrictionsChanged];
+    _hasPreferredVideoFormatChanged = [(VUISettingsManager *)self _hasPreferredVideoFormatChanged];
+    _hasUpNextLockupsUseCoverArtChanged = [(VUISettingsManager *)self _hasUpNextLockupsUseCoverArtChanged];
+    _hasRTLChanged = [(VUISettingsManager *)self _hasRTLChanged];
+    _hasAppAppearanceSettingChanged = [(VUISettingsManager *)self _hasAppAppearanceSettingChanged];
+    v9 = _hasRestrictionsChanged || _hasPreferredVideoFormatChanged || _hasUpNextLockupsUseCoverArtChanged || _hasRTLChanged;
     if ([(VUISettingsManager *)self _hasAutomaticDownloadsSettingChanged])
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 postNotificationName:@"VUIAutomaticDownloadsSwitchDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"VUIAutomaticDownloadsSwitchDidChangeNotification" object:0];
     }
 
-    v11 = v9 || v8;
-    if (v8)
+    v11 = v9 || _hasAppAppearanceSettingChanged;
+    if (_hasAppAppearanceSettingChanged)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 postNotificationName:@"VUIAppAppearanceSettingDidChangeNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"VUIAppAppearanceSettingDidChangeNotification" object:0];
     }
 
     if (v11)
@@ -266,7 +266,7 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke(uint64_t a1, voi
       v14[1] = 3221225472;
       v14[2] = __44__VUISettingsManager_checkAndUpdateSettings__block_invoke;
       v14[3] = &__block_descriptor_33_e8_v12__0B8l;
-      v15 = v6;
+      v15 = _hasUpNextLockupsUseCoverArtChanged;
       [(VUISettingsManager *)self _sendSettingsValuesToJS:v14];
     }
 
@@ -284,14 +284,14 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke(uint64_t a1, voi
 
 - (BOOL)_hasRestrictionsChanged
 {
-  v3 = [(VUISettingsManager *)self _restrictionsMaximumEffectiveMovieRanking];
-  v4 = [(VUISettingsManager *)self _restrictionsMaximumEffectiveTVShowRanking];
-  v5 = [(VUISettingsManager *)self _restrictionsMaximumEffectiveAppRanking];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", v3, v4, v5];
-  v7 = [(VUISettingsManager *)self restrictions];
+  _restrictionsMaximumEffectiveMovieRanking = [(VUISettingsManager *)self _restrictionsMaximumEffectiveMovieRanking];
+  _restrictionsMaximumEffectiveTVShowRanking = [(VUISettingsManager *)self _restrictionsMaximumEffectiveTVShowRanking];
+  _restrictionsMaximumEffectiveAppRanking = [(VUISettingsManager *)self _restrictionsMaximumEffectiveAppRanking];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", _restrictionsMaximumEffectiveMovieRanking, _restrictionsMaximumEffectiveTVShowRanking, _restrictionsMaximumEffectiveAppRanking];
+  restrictions = [(VUISettingsManager *)self restrictions];
   v8 = v6;
   v9 = v8;
-  if (v7 == v8)
+  if (restrictions == v8)
   {
 
 LABEL_10:
@@ -301,7 +301,7 @@ LABEL_10:
 
   if (v8)
   {
-    v10 = v7 == 0;
+    v10 = restrictions == 0;
   }
 
   else
@@ -315,7 +315,7 @@ LABEL_10:
 
   else
   {
-    v11 = [v7 isEqual:v8];
+    v11 = [restrictions isEqual:v8];
 
     if (v11)
     {
@@ -332,15 +332,15 @@ LABEL_10:
 
   v12 = 1;
 LABEL_14:
-  v14 = [v3 copy];
+  v14 = [_restrictionsMaximumEffectiveMovieRanking copy];
   maxMovieRank = self->_maxMovieRank;
   self->_maxMovieRank = v14;
 
-  v16 = [v4 copy];
+  v16 = [_restrictionsMaximumEffectiveTVShowRanking copy];
   maxTVShowRank = self->_maxTVShowRank;
   self->_maxTVShowRank = v16;
 
-  v18 = [v5 copy];
+  v18 = [_restrictionsMaximumEffectiveAppRanking copy];
   maxAppRank = self->_maxAppRank;
   self->_maxAppRank = v18;
 
@@ -396,18 +396,18 @@ LABEL_10:
 - (BOOL)_hasUpNextLockupsUseCoverArtChanged
 {
   upNextLockupsUseCoverArt = self->_upNextLockupsUseCoverArt;
-  v4 = [(VUISettingsManager *)self _upNextLockupsUseCoverArt];
-  self->_upNextLockupsUseCoverArt = v4;
-  return upNextLockupsUseCoverArt != v4;
+  _upNextLockupsUseCoverArt = [(VUISettingsManager *)self _upNextLockupsUseCoverArt];
+  self->_upNextLockupsUseCoverArt = _upNextLockupsUseCoverArt;
+  return upNextLockupsUseCoverArt != _upNextLockupsUseCoverArt;
 }
 
 - (BOOL)_hasRTLChanged
 {
   v3 = self->_isRTL;
-  v4 = [(VUISettingsManager *)self _isRTL];
+  _isRTL = [(VUISettingsManager *)self _isRTL];
   isRTL = self->_isRTL;
-  self->_isRTL = v4;
-  v6 = v4;
+  self->_isRTL = _isRTL;
+  v6 = _isRTL;
 
   return v3 != v6;
 }
@@ -415,18 +415,18 @@ LABEL_10:
 - (BOOL)_hasAutomaticDownloadsSettingChanged
 {
   automaticDownloadsEnabled = self->_automaticDownloadsEnabled;
-  v4 = [(VUISettingsManager *)self _automaticDownloadsEnabled];
-  self->_automaticDownloadsEnabled = v4;
-  return automaticDownloadsEnabled != v4;
+  _automaticDownloadsEnabled = [(VUISettingsManager *)self _automaticDownloadsEnabled];
+  self->_automaticDownloadsEnabled = _automaticDownloadsEnabled;
+  return automaticDownloadsEnabled != _automaticDownloadsEnabled;
 }
 
 - (void)_setupNotificationObservers
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  [v3 registerObserver:self];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  [mEMORY[0x1E69ADFB8] registerObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__handlePreferencesChange_ name:*MEMORY[0x1E69E1728] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handlePreferencesChange_ name:*MEMORY[0x1E69E1728] object:0];
 }
 
 - (VUISettingsManager)init
@@ -470,22 +470,22 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke_2(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)isPostPlayAutoPlayEnabledForType:(unint64_t)a3
++ (BOOL)isPostPlayAutoPlayEnabledForType:(unint64_t)type
 {
   if (_os_feature_enabled_impl())
   {
-    v5 = [a1 _wlkTypeFromVUIPostPlayType:a3];
-    v6 = [MEMORY[0x1E69E1598] defaultManager];
-    v7 = [v6 isEnabledForType:v5];
+    v5 = [self _wlkTypeFromVUIPostPlayType:type];
+    defaultManager = [MEMORY[0x1E69E1598] defaultManager];
+    postPlayAutoPlayNextVideo = [defaultManager isEnabledForType:v5];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69E15F0] sharedPreferences];
-    v7 = [v6 postPlayAutoPlayNextVideo];
+    defaultManager = [MEMORY[0x1E69E15F0] sharedPreferences];
+    postPlayAutoPlayNextVideo = [defaultManager postPlayAutoPlayNextVideo];
   }
 
-  v8 = v7;
+  v8 = postPlayAutoPlayNextVideo;
 
   return v8;
 }
@@ -493,50 +493,50 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke_2(uint64_t a1)
 - (id)preferencesJSONData
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-  v4 = [(VUISettingsManager *)self maxMovieRank];
-  if (v4)
+  maxMovieRank = [(VUISettingsManager *)self maxMovieRank];
+  if (maxMovieRank)
   {
-    [v3 setObject:v4 forKey:@"maxMovieRank"];
+    [v3 setObject:maxMovieRank forKey:@"maxMovieRank"];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [v3 setObject:v5 forKey:@"maxMovieRank"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v3 setObject:null forKey:@"maxMovieRank"];
   }
 
-  v6 = [(VUISettingsManager *)self maxTVShowRank];
-  if (v6)
+  maxTVShowRank = [(VUISettingsManager *)self maxTVShowRank];
+  if (maxTVShowRank)
   {
-    [v3 setObject:v6 forKey:@"maxTVShowRank"];
+    [v3 setObject:maxTVShowRank forKey:@"maxTVShowRank"];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
-    [v3 setObject:v7 forKey:@"maxTVShowRank"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v3 setObject:null2 forKey:@"maxTVShowRank"];
   }
 
-  v8 = [(VUISettingsManager *)self preferredVideoFormat];
-  [v3 vui_setObjectIfNotNil:v8 forKey:@"preferredVideoFormat"];
+  preferredVideoFormat = [(VUISettingsManager *)self preferredVideoFormat];
+  [v3 vui_setObjectIfNotNil:preferredVideoFormat forKey:@"preferredVideoFormat"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[VUISettingsManager upNextLockupsUseCoverArt](self, "upNextLockupsUseCoverArt")}];
   [v3 setObject:v9 forKey:@"upNextLockupsUseCoverArt"];
 
-  v10 = [(VUISettingsManager *)self isRTL];
-  [v3 setObject:v10 forKey:@"isRTL"];
+  isRTL = [(VUISettingsManager *)self isRTL];
+  [v3 setObject:isRTL forKey:@"isRTL"];
 
   return v3;
 }
 
-- (void)isAppInstallationAllowedForRating:(id)a3 completion:(id)a4
+- (void)isAppInstallationAllowedForRating:(id)rating completion:(id)completion
 {
   v4 = MEMORY[0x1E69ADFB8];
-  v7 = a4;
-  v5 = [v4 sharedConnection];
-  v6 = [v5 isUIAppInstallationAllowed];
+  completionCopy = completion;
+  sharedConnection = [v4 sharedConnection];
+  isUIAppInstallationAllowed = [sharedConnection isUIAppInstallationAllowed];
 
-  v7[2](v7, v6);
+  completionCopy[2](completionCopy, isUIAppInstallationAllowed);
 }
 
 - (void)dealloc
@@ -547,11 +547,11 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke_2(uint64_t a1)
   [(VUISettingsManager *)&v3 dealloc];
 }
 
-+ (unint64_t)_wlkTypeFromVUIPostPlayType:(unint64_t)a3
++ (unint64_t)_wlkTypeFromVUIPostPlayType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    return 2 * (a3 == 1);
+    return 2 * (type == 1);
   }
 
   else
@@ -562,34 +562,34 @@ void __41__VUISettingsManager_createSettingsStore__block_invoke_2(uint64_t a1)
 
 - (void)_teardownNotificationObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  [v4 unregisterObserver:self];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  [mEMORY[0x1E69ADFB8] unregisterObserver:self];
 }
 
-- (void)_sendSettingsValuesToJS:(id)a3
+- (void)_sendSettingsValuesToJS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v5 = +[VUITVAppLauncher sharedInstance];
-  v6 = [v5 appController];
+  appController = [v5 appController];
 
-  v7 = [v6 appContext];
-  v8 = [(VUISettingsManager *)self preferencesJSONData];
+  appContext = [appController appContext];
+  preferencesJSONData = [(VUISettingsManager *)self preferencesJSONData];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__VUISettingsManager__sendSettingsValuesToJS___block_invoke;
   v13[3] = &unk_1E872F508;
-  v14 = v8;
+  v14 = preferencesJSONData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__VUISettingsManager__sendSettingsValuesToJS___block_invoke_56;
   v11[3] = &unk_1E872D790;
-  v12 = v4;
-  v9 = v4;
-  v10 = v8;
-  [v7 evaluate:v13 completionBlock:v11 completionQueue:MEMORY[0x1E69E96A0]];
+  v12 = sCopy;
+  v9 = sCopy;
+  v10 = preferencesJSONData;
+  [appContext evaluate:v13 completionBlock:v11 completionQueue:MEMORY[0x1E69E96A0]];
 }
 
 void __46__VUISettingsManager__sendSettingsValuesToJS___block_invoke(uint64_t a1, void *a2)
@@ -622,7 +622,7 @@ void __46__VUISettingsManager__sendSettingsValuesToJS___block_invoke(uint64_t a1
   }
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -646,15 +646,15 @@ void __53__VUISettingsManager__hasPreferredVideoFormatChanged__block_invoke()
   [v0 postNotificationName:@"VUIPreferredVideoFormatDidChangeNotification" object:0];
 }
 
-- (id)_formatStringForVideoFormat:(unint64_t)a3
+- (id)_formatStringForVideoFormat:(unint64_t)format
 {
   v3 = @"SD";
-  if (a3 != 1)
+  if (format != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (format)
   {
     return v3;
   }
@@ -668,22 +668,22 @@ void __53__VUISettingsManager__hasPreferredVideoFormatChanged__block_invoke()
 - (BOOL)_hasAppAppearanceSettingChanged
 {
   appAppearance = self->_appAppearance;
-  v4 = [(VUISettingsManager *)self _appAppearance];
-  self->_appAppearance = v4;
-  return appAppearance != v4;
+  _appAppearance = [(VUISettingsManager *)self _appAppearance];
+  self->_appAppearance = _appAppearance;
+  return appAppearance != _appAppearance;
 }
 
 - (int64_t)_appAppearance
 {
-  v2 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v3 = [v2 appAppearance];
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  appAppearance = [mEMORY[0x1E69E15F0] appAppearance];
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69E1630]])
+  if ([appAppearance isEqualToString:*MEMORY[0x1E69E1630]])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69E1638]])
+  else if ([appAppearance isEqualToString:*MEMORY[0x1E69E1638]])
   {
     v4 = 1;
   }
@@ -721,7 +721,7 @@ void __53__VUISettingsManager__hasPreferredVideoFormatChanged__block_invoke()
   return v2;
 }
 
-- (void)_handlePreferencesChange:(id)a3
+- (void)_handlePreferencesChange:(id)change
 {
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

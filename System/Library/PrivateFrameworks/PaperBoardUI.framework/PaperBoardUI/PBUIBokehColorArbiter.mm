@@ -1,15 +1,15 @@
 @interface PBUIBokehColorArbiter
-+ (id)colorSwatchForBokehColor:(uint64_t)a1;
-+ (id)gradientColorsForBokehColor:(uint64_t)a1;
-+ (id)legibilityColorForBokehColor:(uint64_t)a1;
-+ (uint64_t)averageColorForBokehColor:(uint64_t)a1;
-+ (uint64_t)bokehColorForVariant:(uint64_t)a1;
-+ (uint64_t)randomCircleColorForBokehColor:(uint64_t)a1;
++ (id)colorSwatchForBokehColor:(uint64_t)color;
++ (id)gradientColorsForBokehColor:(uint64_t)color;
++ (id)legibilityColorForBokehColor:(uint64_t)color;
++ (uint64_t)averageColorForBokehColor:(uint64_t)color;
++ (uint64_t)bokehColorForVariant:(uint64_t)variant;
++ (uint64_t)randomCircleColorForBokehColor:(uint64_t)color;
 @end
 
 @implementation PBUIBokehColorArbiter
 
-+ (uint64_t)bokehColorForVariant:(uint64_t)a1
++ (uint64_t)bokehColorForVariant:(uint64_t)variant
 {
   v2 = a2;
   objc_opt_self();
@@ -98,7 +98,7 @@
   return v3;
 }
 
-+ (id)gradientColorsForBokehColor:(uint64_t)a1
++ (id)gradientColorsForBokehColor:(uint64_t)color
 {
   objc_opt_self();
   v3 = *(&allGradientColors + a2 + 2);
@@ -124,7 +124,7 @@
   return v4;
 }
 
-+ (uint64_t)randomCircleColorForBokehColor:(uint64_t)a1
++ (uint64_t)randomCircleColorForBokehColor:(uint64_t)color
 {
   objc_opt_self();
   v3 = *(&allCircleColors + a2 + 2);
@@ -151,7 +151,7 @@
   return [v9 colorWithRed:v10 green:v11 blue:v13 alpha:(v14 / 255.0)];
 }
 
-+ (uint64_t)averageColorForBokehColor:(uint64_t)a1
++ (uint64_t)averageColorForBokehColor:(uint64_t)color
 {
   objc_opt_self();
   v3 = &allAverageColors + 4 * a2;
@@ -165,7 +165,7 @@
   return [v4 colorWithRed:v6 green:v8 blue:(v9 / 255.0) alpha:1.0];
 }
 
-+ (id)legibilityColorForBokehColor:(uint64_t)a1
++ (id)legibilityColorForBokehColor:(uint64_t)color
 {
   v3 = objc_opt_self();
   if (a2 == 8)
@@ -182,7 +182,7 @@
   return v4;
 }
 
-+ (id)colorSwatchForBokehColor:(uint64_t)a1
++ (id)colorSwatchForBokehColor:(uint64_t)color
 {
   v3 = objc_opt_self();
   v4 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{10.0, 10.0}];

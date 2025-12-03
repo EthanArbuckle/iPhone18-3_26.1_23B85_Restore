@@ -1,55 +1,55 @@
 @interface BRCSharingCopyParticipantTokenOperation
-- (BRCSharingCopyParticipantTokenOperation)initWithItem:(id)a3 sessionContext:(id)a4;
+- (BRCSharingCopyParticipantTokenOperation)initWithItem:(id)item sessionContext:(id)context;
 - (id)createActivity;
-- (void)_completeWithResult:(id)a3 participantKey:(id)a4;
-- (void)_fetchBaseTokenWithCompletion:(id)a3;
-- (void)_fetchParticipantDocumentTokenWithCompletion:(id)a3;
-- (void)_fetchParticipantKeyWithCompletion:(id)a3;
+- (void)_completeWithResult:(id)result participantKey:(id)key;
+- (void)_fetchBaseTokenWithCompletion:(id)completion;
+- (void)_fetchParticipantDocumentTokenWithCompletion:(id)completion;
+- (void)_fetchParticipantKeyWithCompletion:(id)completion;
 - (void)main;
 @end
 
 @implementation BRCSharingCopyParticipantTokenOperation
 
-- (BRCSharingCopyParticipantTokenOperation)initWithItem:(id)a3 sessionContext:(id)a4
+- (BRCSharingCopyParticipantTokenOperation)initWithItem:(id)item sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemID];
-  v9 = [v8 debugItemIDString];
-  v10 = [@"sharing/copyParticipantToken" stringByAppendingPathComponent:v9];
+  itemCopy = item;
+  contextCopy = context;
+  itemID = [itemCopy itemID];
+  debugItemIDString = [itemID debugItemIDString];
+  v10 = [@"sharing/copyParticipantToken" stringByAppendingPathComponent:debugItemIDString];
 
-  v11 = [v6 serverZone];
-  v12 = [v11 metadataSyncContext];
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v21.receiver = self;
   v21.super_class = BRCSharingCopyParticipantTokenOperation;
-  v13 = [(_BRCOperation *)&v21 initWithName:v10 syncContext:v12 sessionContext:v7];
+  v13 = [(_BRCOperation *)&v21 initWithName:v10 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v13)
   {
-    v14 = [v6 st];
+    v14 = [itemCopy st];
     v13->_iWorkShareable = [v14 iWorkShareable];
 
-    v15 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:v6];
+    v15 = [MEMORY[0x277CBC5D0] brc_fetchShareIDWithSharedItem:itemCopy];
     shareID = v13->_shareID;
     v13->_shareID = v15;
 
     if (!v13->_shareID)
     {
-      [BRCSharingCopyParticipantTokenOperation initWithItem:v6 sessionContext:?];
+      [BRCSharingCopyParticipantTokenOperation initWithItem:itemCopy sessionContext:?];
     }
 
-    v17 = [v6 documentRecordID];
+    documentRecordID = [itemCopy documentRecordID];
     contentRecordID = v13->_contentRecordID;
-    v13->_contentRecordID = v17;
+    v13->_contentRecordID = documentRecordID;
 
-    if (([v6 sharingOptions] & 4) == 0 && (objc_msgSend(v6, "sharingOptions") & 0x48) != 0)
+    if (([itemCopy sharingOptions] & 4) == 0 && (objc_msgSend(itemCopy, "sharingOptions") & 0x48) != 0)
     {
       v13->_isChildOfShare = 1;
     }
 
     [(_BRCOperation *)v13 setNonDiscretionary:1];
-    v19 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v13 setGroup:v19];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v13 setGroup:br_sharingMisc];
   }
 
   return v13;
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (void)_fetchBaseTokenWithCompletion:(id)a3
+- (void)_fetchBaseTokenWithCompletion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_iWorkShareable && !self->_isChildOfShare)
   {
     v6 = objc_alloc(MEMORY[0x277CBC3E0]);
@@ -91,7 +91,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -125,10 +125,10 @@ void __73__BRCSharingCopyParticipantTokenOperation__fetchBaseTokenWithCompletion
   (*(v9 + 16))(v9, v8, v10);
 }
 
-- (void)_fetchParticipantKeyWithCompletion:(id)a3
+- (void)_fetchParticipantKeyWithCompletion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x277CBC408]);
   v21[0] = self->_shareID;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
@@ -163,8 +163,8 @@ void __73__BRCSharingCopyParticipantTokenOperation__fetchBaseTokenWithCompletion
   v14[2] = __78__BRCSharingCopyParticipantTokenOperation__fetchParticipantKeyWithCompletion___block_invoke_2;
   v14[3] = &unk_2785014D0;
   v14[4] = self;
-  v15 = v4;
-  v12 = v4;
+  v15 = completionCopy;
+  v12 = completionCopy;
   [v7 setShareParticipantKeyCompletionBlock:v14];
   [(_BRCOperation *)self addSubOperation:v7];
 
@@ -224,14 +224,14 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v6);
 }
 
-- (void)_fetchParticipantDocumentTokenWithCompletion:(id)a3
+- (void)_fetchParticipantDocumentTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"participantKey", self->_participantKey];
   v6 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:@"FetchParticipantDocumentToken" predicate:v5];
   v7 = [objc_alloc(MEMORY[0x277CBC590]) initWithQuery:v6];
-  v8 = [(CKRecordID *)self->_shareID zoneID];
-  [v7 setZoneID:v8];
+  zoneID = [(CKRecordID *)self->_shareID zoneID];
+  [v7 setZoneID:zoneID];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -243,10 +243,10 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __88__BRCSharingCopyParticipantTokenOperation__fetchParticipantDocumentTokenWithCompletion___block_invoke_2;
   v10[3] = &unk_2785069B0;
-  v11 = v4;
+  v11 = completionCopy;
   v12 = v7;
   v10[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   [v7 setQueryCompletionBlock:v10];
   [(_BRCOperation *)self addSubOperation:v7];
 }
@@ -347,20 +347,20 @@ void __88__BRCSharingCopyParticipantTokenOperation__fetchParticipantDocumentToke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeWithResult:(id)a3 participantKey:(id)a4
+- (void)_completeWithResult:(id)result participantKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  resultCopy = result;
+  keyCopy = key;
   v7 = objc_opt_new();
   v8 = v7;
-  if (v6)
+  if (keyCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"participantKey"];
+    [v7 setObject:keyCopy forKeyedSubscript:@"participantKey"];
   }
 
-  if (v9)
+  if (resultCopy)
   {
-    [v8 setObject:v9 forKeyedSubscript:@"baseToken"];
+    [v8 setObject:resultCopy forKeyedSubscript:@"baseToken"];
   }
 
   [(_BRCOperation *)self completedWithResult:v8 error:0];

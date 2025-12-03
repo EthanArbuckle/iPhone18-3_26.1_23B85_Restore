@@ -13,7 +13,7 @@
     [UIControl(advertising) adPrivacyData];
   }
 
-  v2 = objc_getAssociatedObject(a1, sel_adPrivacyData);
+  v2 = objc_getAssociatedObject(self, sel_adPrivacyData);
 
   return v2;
 }
@@ -26,16 +26,16 @@
     [UIControl(advertising) setAdPrivacyData:];
   }
 
-  v5 = [a1 adPrivacyData];
-  if (v5)
+  adPrivacyData = [self adPrivacyData];
+  if (adPrivacyData)
   {
-    [a1 removeTarget:0 action:sel_skuiadvertising_adTransparencyButtonTapped_ forControlEvents:64];
+    [self removeTarget:0 action:sel_skuiadvertising_adTransparencyButtonTapped_ forControlEvents:64];
   }
 
-  objc_setAssociatedObject(a1, sel_adPrivacyData, v4, 3);
+  objc_setAssociatedObject(self, sel_adPrivacyData, v4, 3);
   if (v4)
   {
-    [a1 addTarget:0 action:sel_skuiadvertising_adTransparencyButtonTapped_ forControlEvents:64];
+    [self addTarget:0 action:sel_skuiadvertising_adTransparencyButtonTapped_ forControlEvents:64];
   }
 }
 

@@ -6,10 +6,10 @@
 
 - (NSString)accountDSID
 {
-  v2 = [(ACAccount *)self ic_DSID];
-  v3 = [v2 stringValue];
+  ic_DSID = [(ACAccount *)self ic_DSID];
+  stringValue = [ic_DSID stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 @end

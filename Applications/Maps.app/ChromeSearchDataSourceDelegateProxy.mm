@@ -1,23 +1,23 @@
 @interface ChromeSearchDataSourceDelegateProxy
 + (id)protocols;
-- (ChromeSearchDataSourceDelegateProxy)initWithChromeViewController:(id)a3;
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4;
+- (ChromeSearchDataSourceDelegateProxy)initWithChromeViewController:(id)controller;
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol;
 @end
 
 @implementation ChromeSearchDataSourceDelegateProxy
 
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol
 {
-  v6 = a4;
-  v7 = [(ChromeDelegateProxy *)self chromeViewController];
+  protocolCopy = protocol;
+  chromeViewController = [(ChromeDelegateProxy *)self chromeViewController];
 
-  if (&OBJC_PROTOCOL___GEOLogContextDelegate == v6)
+  if (&OBJC_PROTOCOL___GEOLogContextDelegate == protocolCopy)
   {
-    v11 = [v7 searchDataSourceLogDelegate];
-    v9 = v11;
-    if (v11)
+    searchDataSourceLogDelegate = [chromeViewController searchDataSourceLogDelegate];
+    v9 = searchDataSourceLogDelegate;
+    if (searchDataSourceLogDelegate)
     {
-      v15 = v11;
+      v15 = searchDataSourceLogDelegate;
       v10 = &v15;
       goto LABEL_6;
     }
@@ -25,7 +25,7 @@
 
   else
   {
-    v8 = [v7 searchDataSourceDelegateForSelector:a3];
+    v8 = [chromeViewController searchDataSourceDelegateForSelector:selector];
     v9 = v8;
     if (v8)
     {
@@ -43,24 +43,24 @@ LABEL_8:
   return v12;
 }
 
-- (ChromeSearchDataSourceDelegateProxy)initWithChromeViewController:(id)a3
+- (ChromeSearchDataSourceDelegateProxy)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = ChromeSearchDataSourceDelegateProxy;
-    self = [(ChromeDelegateProxy *)&v7 initWithChromeViewController:v4];
-    v5 = self;
+    self = [(ChromeDelegateProxy *)&v7 initWithChromeViewController:controllerCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (id)protocols

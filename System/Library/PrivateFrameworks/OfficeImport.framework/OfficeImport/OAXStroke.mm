@@ -6,10 +6,10 @@
 + (id)lineEndWidthEnumMap;
 + (id)penAlignmentEnumMap;
 + (id)presetDashEnumMap;
-+ (id)readCustomDashFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readLineEndFromXmlNode:(_xmlNode *)a3;
-+ (id)readPresetDashFromXmlNode:(_xmlNode *)a3;
-+ (id)readStrokeFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5;
++ (id)readCustomDashFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readLineEndFromXmlNode:(_xmlNode *)node;
++ (id)readPresetDashFromXmlNode:(_xmlNode *)node;
++ (id)readStrokeFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state;
 @end
 
 @implementation OAXStroke
@@ -98,55 +98,55 @@
   return v3;
 }
 
-+ (id)readStrokeFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5
++ (id)readStrokeFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  partCopy = part;
+  stateCopy = state;
   v10 = objc_alloc_init(OADStroke);
   v28 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "w", &v28))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "w", &v28))
   {
     v11 = v28 / 12700.0;
     *&v11 = v11;
     [(OADStroke *)v10 setWidth:v11];
   }
 
-  v12 = CXDefaultStringAttribute(a3, CXNoNamespace, "cap", 0);
+  v12 = CXDefaultStringAttribute(node, CXNoNamespace, "cap", 0);
   v25 = v12;
   if (v12)
   {
-    v13 = [a1 lineCapEnumMap];
-    v14 = [v13 valueForString:v12];
+    lineCapEnumMap = [self lineCapEnumMap];
+    v14 = [lineCapEnumMap valueForString:v12];
 
     [(OADStroke *)v10 setCap:v14];
   }
 
-  v26 = CXDefaultStringAttribute(a3, CXNoNamespace, "cmpd", 0);
+  v26 = CXDefaultStringAttribute(node, CXNoNamespace, "cmpd", 0);
   if (v26)
   {
-    v15 = [a1 compoundLineEnumMap];
-    v16 = [v15 valueForString:v26];
+    compoundLineEnumMap = [self compoundLineEnumMap];
+    v16 = [compoundLineEnumMap valueForString:v26];
 
     [(OADStroke *)v10 setCompoundType:v16];
   }
 
-  v17 = CXDefaultStringAttribute(a3, CXNoNamespace, "algn", 0);
+  v17 = CXDefaultStringAttribute(node, CXNoNamespace, "algn", 0);
   if (v17)
   {
-    v18 = [a1 penAlignmentEnumMap];
-    v19 = [v18 valueForString:v17];
+    penAlignmentEnumMap = [self penAlignmentEnumMap];
+    v19 = [penAlignmentEnumMap valueForString:v17];
 
     [(OADStroke *)v10 setPenAlignment:v19];
   }
 
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type != XML_ELEMENT_NODE)
     {
       continue;
     }
 
-    v21 = [OAXFill readFillFromXmlNode:i packagePart:v8 drawingState:v9];
+    v21 = [OAXFill readFillFromXmlNode:i packagePart:partCopy drawingState:stateCopy];
     if (v21)
     {
       [(OADStroke *)v10 setFill:v21];
@@ -156,7 +156,7 @@
     {
       if (xmlStrEqual(i->name, "prstDash"))
       {
-        v22 = [a1 readPresetDashFromXmlNode:i];
+        v22 = [self readPresetDashFromXmlNode:i];
         [(OADStroke *)v10 setDash:v22];
 LABEL_30:
 
@@ -165,7 +165,7 @@ LABEL_30:
 
       if (xmlStrEqual(i->name, "custDash"))
       {
-        v22 = [a1 readCustomDashFromXmlNode:i drawingState:v9];
+        v22 = [self readCustomDashFromXmlNode:i drawingState:stateCopy];
         [(OADStroke *)v10 setDash:v22];
         goto LABEL_30;
       }
@@ -201,14 +201,14 @@ LABEL_30:
 
       if (xmlStrEqual(i->name, "headEnd"))
       {
-        v22 = [a1 readLineEndFromXmlNode:i];
+        v22 = [self readLineEndFromXmlNode:i];
         [(OADStroke *)v10 setTail:v22];
         goto LABEL_30;
       }
 
       if (xmlStrEqual(i->name, "tailEnd"))
       {
-        v22 = [a1 readLineEndFromXmlNode:i];
+        v22 = [self readLineEndFromXmlNode:i];
         [(OADStroke *)v10 setHead:v22];
         goto LABEL_30;
       }
@@ -304,14 +304,14 @@ void __39__OAXStroke_Private__presetDashEnumMap__block_invoke()
   +[OAXStroke(Private) presetDashEnumMap]::presetDashEnumMap = v0;
 }
 
-+ (id)readLineEndFromXmlNode:(_xmlNode *)a3
++ (id)readLineEndFromXmlNode:(_xmlNode *)node
 {
   v5 = objc_alloc_init(OADLineEnd);
-  v6 = CXDefaultStringAttribute(a3, CXNoNamespace, "type", 0);
+  v6 = CXDefaultStringAttribute(node, CXNoNamespace, "type", 0);
   if (v6)
   {
-    v7 = [a1 lineEndTypeEnumMap];
-    v8 = [v7 valueForString:v6];
+    lineEndTypeEnumMap = [self lineEndTypeEnumMap];
+    v8 = [lineEndTypeEnumMap valueForString:v6];
 
     v9 = 0;
     if (v8 < 0x100)
@@ -322,11 +322,11 @@ void __39__OAXStroke_Private__presetDashEnumMap__block_invoke()
     [(OADLineEnd *)v5 setType:v9];
   }
 
-  v10 = CXDefaultStringAttribute(a3, CXNoNamespace, "w", 0);
+  v10 = CXDefaultStringAttribute(node, CXNoNamespace, "w", 0);
   if (v10)
   {
-    v11 = [a1 lineEndWidthEnumMap];
-    v12 = [v11 valueForString:v10];
+    lineEndWidthEnumMap = [self lineEndWidthEnumMap];
+    v12 = [lineEndWidthEnumMap valueForString:v10];
 
     v13 = 0;
     if (v12 < 0x100)
@@ -337,11 +337,11 @@ void __39__OAXStroke_Private__presetDashEnumMap__block_invoke()
     [(OADLineEnd *)v5 setWidth:v13];
   }
 
-  v14 = CXDefaultStringAttribute(a3, CXNoNamespace, "len", 0);
+  v14 = CXDefaultStringAttribute(node, CXNoNamespace, "len", 0);
   if (v14)
   {
-    v15 = [a1 lineEndLengthEnumMap];
-    v16 = [v15 valueForString:v14];
+    lineEndLengthEnumMap = [self lineEndLengthEnumMap];
+    v16 = [lineEndLengthEnumMap valueForString:v14];
 
     v17 = 0;
     if (v16 < 0x100)
@@ -355,14 +355,14 @@ void __39__OAXStroke_Private__presetDashEnumMap__block_invoke()
   return v5;
 }
 
-+ (id)readPresetDashFromXmlNode:(_xmlNode *)a3
++ (id)readPresetDashFromXmlNode:(_xmlNode *)node
 {
   v5 = objc_alloc_init(OADPresetDash);
-  v6 = CXDefaultStringAttribute(a3, CXNoNamespace, "val", 0);
+  v6 = CXDefaultStringAttribute(node, CXNoNamespace, "val", 0);
   if (v6)
   {
-    v7 = [a1 presetDashEnumMap];
-    v8 = [v7 valueForString:v6];
+    presetDashEnumMap = [self presetDashEnumMap];
+    v8 = [presetDashEnumMap valueForString:v6];
 
     [(OADPresetDash *)v5 setType:v8];
   }
@@ -370,13 +370,13 @@ void __39__OAXStroke_Private__presetDashEnumMap__block_invoke()
   return v5;
 }
 
-+ (id)readCustomDashFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readCustomDashFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(OADCustomDash);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [v5 OAXMainNamespace];
-  Child = OCXFindChild(a3, v8, "ds");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  Child = OCXFindChild(node, oAXMainNamespace, "ds");
 
   while (Child)
   {
@@ -386,8 +386,8 @@ void __39__OAXStroke_Private__presetDashEnumMap__block_invoke()
     LODWORD(v13) = v12;
     LODWORD(v14) = v11;
     [OADDashStop addStopWithDash:v7 space:v14 toArray:v13];
-    v15 = [v5 OAXMainNamespace];
-    Child = OCXFindNextChild(Child, v15, "ds");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindNextChild(Child, oAXMainNamespace2, "ds");
   }
 
   [(OADCustomDash *)v6 setStops:v7];

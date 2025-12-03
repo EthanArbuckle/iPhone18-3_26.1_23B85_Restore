@@ -1,68 +1,68 @@
 @interface EKUIFacetimeManager
-+ (BOOL)canFaceTime:(unint64_t)a3 withContacts:(id)a4;
-+ (BOOL)canFaceTime:(unint64_t)a3 withParticipants:(id)a4;
-+ (BOOL)faceTimeAvailable:(unint64_t)a3;
-+ (id)faceTimeURLForType:(unint64_t)a3 andHandle:(id)a4;
-+ (id)faceTimeURLForType:(unint64_t)a3 withContacts:(id)a4;
-+ (id)faceTimeURLForType:(unint64_t)a3 withHandles:(id)a4;
-+ (id)faceTimeURLForType:(unint64_t)a3 withParticipants:(id)a4;
-+ (id)handlesForContacts:(id)a3;
-+ (id)handlesForParticipants:(id)a3;
-+ (id)preferredHandleForContact:(id)a3 withDefaultPhoneNumber:(id)a4 emailAddress:(id)a5;
-+ (void)startFaceTime:(unint64_t)a3 withContacts:(id)a4;
-+ (void)startFaceTime:(unint64_t)a3 withParticipants:(id)a4;
++ (BOOL)canFaceTime:(unint64_t)time withContacts:(id)contacts;
++ (BOOL)canFaceTime:(unint64_t)time withParticipants:(id)participants;
++ (BOOL)faceTimeAvailable:(unint64_t)available;
++ (id)faceTimeURLForType:(unint64_t)type andHandle:(id)handle;
++ (id)faceTimeURLForType:(unint64_t)type withContacts:(id)contacts;
++ (id)faceTimeURLForType:(unint64_t)type withHandles:(id)handles;
++ (id)faceTimeURLForType:(unint64_t)type withParticipants:(id)participants;
++ (id)handlesForContacts:(id)contacts;
++ (id)handlesForParticipants:(id)participants;
++ (id)preferredHandleForContact:(id)contact withDefaultPhoneNumber:(id)number emailAddress:(id)address;
++ (void)startFaceTime:(unint64_t)time withContacts:(id)contacts;
++ (void)startFaceTime:(unint64_t)time withParticipants:(id)participants;
 @end
 
 @implementation EKUIFacetimeManager
 
-+ (id)preferredHandleForContact:(id)a3 withDefaultPhoneNumber:(id)a4 emailAddress:(id)a5
++ (id)preferredHandleForContact:(id)contact withDefaultPhoneNumber:(id)number emailAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contactCopy = contact;
+  numberCopy = number;
+  addressCopy = address;
   v10 = EKWeakLinkClass();
-  v11 = v8;
-  v12 = v9;
-  v13 = [v7 phoneNumbers];
-  v14 = [v13 count];
+  v11 = numberCopy;
+  v12 = addressCopy;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v14 = [phoneNumbers count];
 
-  v15 = v11;
+  stringValue = v11;
   if (v14)
   {
-    v16 = [v7 phoneNumbers];
-    v17 = [v16 objectAtIndexedSubscript:0];
+    phoneNumbers2 = [contactCopy phoneNumbers];
+    v17 = [phoneNumbers2 objectAtIndexedSubscript:0];
 
-    v18 = [v17 value];
-    v15 = [v18 stringValue];
+    value = [v17 value];
+    stringValue = [value stringValue];
   }
 
-  v19 = [v7 emailAddresses];
-  v20 = [v19 count];
+  emailAddresses = [contactCopy emailAddresses];
+  v20 = [emailAddresses count];
 
-  v21 = v12;
+  value2 = v12;
   if (v20)
   {
-    v22 = [v7 emailAddresses];
-    v23 = [v22 objectAtIndexedSubscript:0];
+    emailAddresses2 = [contactCopy emailAddresses];
+    v23 = [emailAddresses2 objectAtIndexedSubscript:0];
 
-    v21 = [v23 value];
+    value2 = [v23 value];
   }
 
-  if (v15)
+  if (stringValue)
   {
     v24 = [v10 alloc];
     v25 = 2;
-    v26 = v15;
+    v26 = stringValue;
 LABEL_9:
     v27 = [v24 initWithType:v25 value:v26];
     goto LABEL_10;
   }
 
-  if (v21)
+  if (value2)
   {
     v24 = [v10 alloc];
     v25 = 3;
-    v26 = v21;
+    v26 = value2;
     goto LABEL_9;
   }
 
@@ -72,13 +72,13 @@ LABEL_10:
   return v27;
 }
 
-+ (id)handlesForParticipants:(id)a3
++ (id)handlesForParticipants:(id)participants
 {
-  v3 = a3;
+  participantsCopy = participants;
   EKWeakLinkClass();
   [MEMORY[0x1E695DF70] array];
-  v8 = v7 = v3;
-  v4 = v3;
+  v8 = v7 = participantsCopy;
+  v4 = participantsCopy;
   CalendarFoundationPerformBlockOnSharedContactStore();
   v5 = v8;
 
@@ -194,16 +194,16 @@ LABEL_17:
   }
 }
 
-+ (id)handlesForContacts:(id)a3
++ (id)handlesForContacts:(id)contacts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  contactsCopy = contacts;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = contactsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -218,10 +218,10 @@ LABEL_17:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 preferredHandleForContact:*(*(&v13 + 1) + 8 * i) withDefaultPhoneNumber:0 emailAddress:{0, v13}];
+        v11 = [self preferredHandleForContact:*(*(&v13 + 1) + 8 * i) withDefaultPhoneNumber:0 emailAddress:{0, v13}];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -231,26 +231,26 @@ LABEL_17:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-+ (BOOL)faceTimeAvailable:(unint64_t)a3
++ (BOOL)faceTimeAvailable:(unint64_t)available
 {
-  v4 = [EKWeakLinkClass() defaultCapabilitiesManager];
-  v5 = v4;
-  if (a3)
+  defaultCapabilitiesManager = [EKWeakLinkClass() defaultCapabilitiesManager];
+  v5 = defaultCapabilitiesManager;
+  if (available)
   {
-    v6 = 1;
+    isFaceTimeAudioAvailable = 1;
   }
 
   else
   {
-    v6 = [v4 isFaceTimeAudioAvailable];
+    isFaceTimeAudioAvailable = [defaultCapabilitiesManager isFaceTimeAudioAvailable];
   }
 
   if ([v5 isFaceTimeAppAvailable])
   {
-    v7 = [v5 isConferencingAvailable] & v6;
+    v7 = [v5 isConferencingAvailable] & isFaceTimeAudioAvailable;
   }
 
   else
@@ -261,14 +261,14 @@ LABEL_17:
   return v7;
 }
 
-+ (BOOL)canFaceTime:(unint64_t)a3 withParticipants:(id)a4
++ (BOOL)canFaceTime:(unint64_t)time withParticipants:(id)participants
 {
-  v6 = a4;
-  if ([a1 faceTimeAvailable:a3])
+  participantsCopy = participants;
+  if ([self faceTimeAvailable:time])
   {
-    v7 = [a1 handlesForParticipants:v6];
+    v7 = [self handlesForParticipants:participantsCopy];
     v8 = [v7 count];
-    v9 = v8 == [v6 count];
+    v9 = v8 == [participantsCopy count];
   }
 
   else
@@ -279,14 +279,14 @@ LABEL_17:
   return v9;
 }
 
-+ (BOOL)canFaceTime:(unint64_t)a3 withContacts:(id)a4
++ (BOOL)canFaceTime:(unint64_t)time withContacts:(id)contacts
 {
-  v6 = a4;
-  if ([a1 faceTimeAvailable:a3])
+  contactsCopy = contacts;
+  if ([self faceTimeAvailable:time])
   {
-    v7 = [a1 handlesForContacts:v6];
+    v7 = [self handlesForContacts:contactsCopy];
     v8 = [v7 count];
-    v9 = v8 == [v6 count];
+    v9 = v8 == [contactsCopy count];
   }
 
   else
@@ -297,32 +297,32 @@ LABEL_17:
   return v9;
 }
 
-+ (id)faceTimeURLForType:(unint64_t)a3 andHandle:(id)a4
++ (id)faceTimeURLForType:(unint64_t)type andHandle:(id)handle
 {
-  v5 = a4;
+  handleCopy = handle;
   v6 = EKWeakLinkClass();
   v7 = EKWeakLinkClass();
   v8 = objc_alloc_init(v6);
-  v9 = [v8 faceTimeProvider];
-  v10 = [[v7 alloc] initWithProvider:v9];
-  [v10 setHandle:v5];
+  faceTimeProvider = [v8 faceTimeProvider];
+  v10 = [[v7 alloc] initWithProvider:faceTimeProvider];
+  [v10 setHandle:handleCopy];
 
-  [v10 setVideo:a3 == 1];
+  [v10 setVideo:type == 1];
   v11 = [v10 URL];
 
   return v11;
 }
 
-+ (id)faceTimeURLForType:(unint64_t)a3 withHandles:(id)a4
++ (id)faceTimeURLForType:(unint64_t)type withHandles:(id)handles
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlesCopy = handles;
   v7 = EKWeakLinkClass();
   v8 = EKWeakLinkClass();
-  if ([v6 count] == 1)
+  if ([handlesCopy count] == 1)
   {
-    v9 = [v6 firstObject];
-    v10 = [a1 faceTimeURLForType:a3 andHandle:v9];
+    firstObject = [handlesCopy firstObject];
+    v10 = [self faceTimeURLForType:type andHandle:firstObject];
 
     goto LABEL_16;
   }
@@ -333,7 +333,7 @@ LABEL_17:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v6;
+  v12 = handlesCopy;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v13)
   {
@@ -386,31 +386,31 @@ LABEL_16:
   return v10;
 }
 
-+ (id)faceTimeURLForType:(unint64_t)a3 withParticipants:(id)a4
++ (id)faceTimeURLForType:(unint64_t)type withParticipants:(id)participants
 {
-  v6 = a4;
-  v7 = [objc_opt_class() handlesForParticipants:v6];
+  participantsCopy = participants;
+  v7 = [objc_opt_class() handlesForParticipants:participantsCopy];
 
-  v8 = [a1 faceTimeURLForType:a3 withHandles:v7];
+  v8 = [self faceTimeURLForType:type withHandles:v7];
 
   return v8;
 }
 
-+ (id)faceTimeURLForType:(unint64_t)a3 withContacts:(id)a4
++ (id)faceTimeURLForType:(unint64_t)type withContacts:(id)contacts
 {
-  v6 = a4;
-  v7 = [objc_opt_class() handlesForContacts:v6];
+  contactsCopy = contacts;
+  v7 = [objc_opt_class() handlesForContacts:contactsCopy];
 
-  v8 = [a1 faceTimeURLForType:a3 withHandles:v7];
+  v8 = [self faceTimeURLForType:type withHandles:v7];
 
   return v8;
 }
 
-+ (void)startFaceTime:(unint64_t)a3 withParticipants:(id)a4
++ (void)startFaceTime:(unint64_t)time withParticipants:(id)participants
 {
-  v5 = [a1 faceTimeURLForType:a3 withParticipants:a4];
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v4 openURL:v5 configuration:0 completionHandler:&__block_literal_global_62];
+  v5 = [self faceTimeURLForType:time withParticipants:participants];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openURL:v5 configuration:0 completionHandler:&__block_literal_global_62];
 }
 
 void __54__EKUIFacetimeManager_startFaceTime_withParticipants___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -430,11 +430,11 @@ void __54__EKUIFacetimeManager_startFaceTime_withParticipants___block_invoke(uin
   }
 }
 
-+ (void)startFaceTime:(unint64_t)a3 withContacts:(id)a4
++ (void)startFaceTime:(unint64_t)time withContacts:(id)contacts
 {
-  v5 = [a1 faceTimeURLForType:a3 withContacts:a4];
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v4 openURL:v5 configuration:0 completionHandler:&__block_literal_global_36];
+  v5 = [self faceTimeURLForType:time withContacts:contacts];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openURL:v5 configuration:0 completionHandler:&__block_literal_global_36];
 }
 
 void __50__EKUIFacetimeManager_startFaceTime_withContacts___block_invoke(uint64_t a1, void *a2, void *a3)

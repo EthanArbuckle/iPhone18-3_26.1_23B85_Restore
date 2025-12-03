@@ -1,7 +1,7 @@
 @interface _SFSiteMetadataManager
 + (id)sharedSiteMetadataManager;
-- (_SFSiteMetadataManager)initWithInjectedBundleURL:(id)a3 imageCacheDirectoryURL:(id)a4 cacheIsReadOnly:(BOOL)a5 metadataType:(unint64_t)a6;
-- (void)scheduleLowPriorityRequestForBookmarks:(id)a3;
+- (_SFSiteMetadataManager)initWithInjectedBundleURL:(id)l imageCacheDirectoryURL:(id)rL cacheIsReadOnly:(BOOL)only metadataType:(unint64_t)type;
+- (void)scheduleLowPriorityRequestForBookmarks:(id)bookmarks;
 @end
 
 @implementation _SFSiteMetadataManager
@@ -13,9 +13,9 @@
   {
     WeakRetained = objc_loadWeakRetained(&sharedSiteMetadataManagerProvider);
     objc_storeWeak(&sharedSiteMetadataManagerProvider, 0);
-    v4 = [WeakRetained newSharedSiteMetadataManager];
+    newSharedSiteMetadataManager = [WeakRetained newSharedSiteMetadataManager];
     v5 = sharedSiteMetadataManager;
-    sharedSiteMetadataManager = v4;
+    sharedSiteMetadataManager = newSharedSiteMetadataManager;
 
     v2 = sharedSiteMetadataManager;
   }
@@ -23,24 +23,24 @@
   return v2;
 }
 
-- (_SFSiteMetadataManager)initWithInjectedBundleURL:(id)a3 imageCacheDirectoryURL:(id)a4 cacheIsReadOnly:(BOOL)a5 metadataType:(unint64_t)a6
+- (_SFSiteMetadataManager)initWithInjectedBundleURL:(id)l imageCacheDirectoryURL:(id)rL cacheIsReadOnly:(BOOL)only metadataType:(unint64_t)type
 {
-  v6 = a6;
-  v7 = a5;
+  typeCopy = type;
+  onlyCopy = only;
   v65[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  rLCopy = rL;
   v62.receiver = self;
   v62.super_class = _SFSiteMetadataManager;
-  v11 = [(WBSSiteMetadataManager *)&v62 initWithInjectedBundleURL:a3];
+  v11 = [(WBSSiteMetadataManager *)&v62 initWithInjectedBundleURL:l];
   if (v11)
   {
-    if (v6)
+    if (typeCopy)
     {
       v12 = objc_alloc_init(_SFBookmarkFolderTouchIconProvider);
       [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v12];
     }
 
-    if ((v6 & 0x40) != 0)
+    if ((typeCopy & 0x40) != 0)
     {
       v13 = objc_alloc_init(MEMORY[0x1E69C9878]);
       tabGroupIconProvider = v11->_tabGroupIconProvider;
@@ -50,7 +50,7 @@
       [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v15];
     }
 
-    v16 = v10;
+    v16 = rLCopy;
     v17 = dispatch_get_global_queue(17, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -59,19 +59,19 @@
     v64 = v16;
     dispatch_async(v17, block);
 
-    if ((v6 & 2) != 0)
+    if ((typeCopy & 2) != 0)
     {
       v26 = [_SFTouchIconCache alloc];
       v27 = [v16 URLByAppendingPathComponent:@"Touch Icons" isDirectory:1];
-      v28 = [(WBSTouchIconCache *)v26 initWithCacheDirectoryURL:v27 isReadOnly:v7];
+      v28 = [(WBSTouchIconCache *)v26 initWithCacheDirectoryURL:v27 isReadOnly:onlyCopy];
       touchIconCache = v11->_touchIconCache;
       v11->_touchIconCache = v28;
 
       [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v11->_touchIconCache];
-      if ((v6 & 0x10) == 0)
+      if ((typeCopy & 0x10) == 0)
       {
 LABEL_8:
-        if ((v6 & 0x20) == 0)
+        if ((typeCopy & 0x20) == 0)
         {
           goto LABEL_9;
         }
@@ -80,7 +80,7 @@ LABEL_8:
       }
     }
 
-    else if ((v6 & 0x10) == 0)
+    else if ((typeCopy & 0x10) == 0)
     {
       goto LABEL_8;
     }
@@ -92,10 +92,10 @@ LABEL_8:
     v11->_leadImageCache = v32;
 
     [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v11->_leadImageCache];
-    if ((v6 & 0x20) == 0)
+    if ((typeCopy & 0x20) == 0)
     {
 LABEL_9:
-      if ((v6 & 4) == 0)
+      if ((typeCopy & 4) == 0)
       {
         goto LABEL_10;
       }
@@ -111,10 +111,10 @@ LABEL_17:
     v11->_linkPresentationIconCache = v36;
 
     [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v11->_linkPresentationIconCache];
-    if ((v6 & 4) == 0)
+    if ((typeCopy & 4) == 0)
     {
 LABEL_10:
-      if ((v6 & 8) == 0)
+      if ((typeCopy & 8) == 0)
       {
         goto LABEL_11;
       }
@@ -130,10 +130,10 @@ LABEL_18:
     v11->_savedAccountTouchIconCache = v40;
 
     [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v11->_savedAccountTouchIconCache];
-    if ((v6 & 8) == 0)
+    if ((typeCopy & 8) == 0)
     {
 LABEL_11:
-      if ((v6 & 0x100) == 0)
+      if ((typeCopy & 0x100) == 0)
       {
 LABEL_13:
         v24 = v11;
@@ -155,8 +155,8 @@ LABEL_12:
 
 LABEL_19:
     v42 = [v16 URLByAppendingPathComponent:@"Favicons" isDirectory:1];
-    v43 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v43 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v45 = v44;
 
     v46 = [_SFFaviconProvider alloc];
@@ -172,7 +172,7 @@ LABEL_19:
     v60 = &unk_1E721E858;
     v61 = v42;
     v53 = v42;
-    v54 = [(_SFFaviconProvider *)v46 initWithPersistenceBaseURL:v53 persistenceName:@"Favicons" preferredIconSize:v52 atScale:v7 allScales:&v57 isReadOnly:v48 shouldCheckIntegrityWhenOpeningDatabaseBlock:v50, v45];
+    v54 = [(_SFFaviconProvider *)v46 initWithPersistenceBaseURL:v53 persistenceName:@"Favicons" preferredIconSize:v52 atScale:onlyCopy allScales:&v57 isReadOnly:v48 shouldCheckIntegrityWhenOpeningDatabaseBlock:v50, v45];
     faviconProvider = v11->_faviconProvider;
     v11->_faviconProvider = v54;
 
@@ -181,7 +181,7 @@ LABEL_19:
     v56 = objc_alloc_init(MEMORY[0x1E69C9800]);
     [(WBSSiteMetadataManager *)v11 registerSiteMetadataProvider:v56];
 
-    if ((v6 & 0x100) == 0)
+    if ((typeCopy & 0x100) == 0)
     {
       goto LABEL_13;
     }
@@ -194,9 +194,9 @@ LABEL_14:
   return v11;
 }
 
-- (void)scheduleLowPriorityRequestForBookmarks:(id)a3
+- (void)scheduleLowPriorityRequestForBookmarks:(id)bookmarks
 {
-  v4 = [a3 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_48];
+  v4 = [bookmarks safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_48];
   if ([v4 count])
   {
     [(WBSSiteMetadataManager *)self preloadRequests:v4 withPriority:0 responseHandler:0];

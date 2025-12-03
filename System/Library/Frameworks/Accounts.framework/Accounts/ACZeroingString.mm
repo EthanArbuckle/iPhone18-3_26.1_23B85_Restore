@@ -1,17 +1,17 @@
 @interface ACZeroingString
 + (id)_emptyString;
-- (ACZeroingString)initWithBytes:(const void *)a3 length:(unint64_t)a4 encoding:(unint64_t)a5;
-- (ACZeroingString)initWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
-- (ACZeroingString)initWithCoder:(id)a3;
-- (ACZeroingString)initWithString:(id)a3;
-- (ACZeroingString)initWithUTF8String:(const char *)a3;
+- (ACZeroingString)initWithBytes:(const void *)bytes length:(unint64_t)length encoding:(unint64_t)encoding;
+- (ACZeroingString)initWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
+- (ACZeroingString)initWithCoder:(id)coder;
+- (ACZeroingString)initWithString:(id)string;
+- (ACZeroingString)initWithUTF8String:(const char *)string;
 - (id)_compatibleCopy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)replacementObjectForCoder:(id)a3;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)replacementObjectForCoder:(id)coder;
+- (unsigned)characterAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation ACZeroingString
@@ -27,15 +27,15 @@
 
 + (id)_emptyString
 {
-  v2 = [[a1 alloc] initWithString:&stru_1F210E1C8];
+  v2 = [[self alloc] initWithString:&stru_1F210E1C8];
 
   return v2;
 }
 
-- (ACZeroingString)initWithString:(id)a3
+- (ACZeroingString)initWithString:(id)string
 {
-  v4 = a3;
-  if (!v4)
+  stringCopy = string;
+  if (!stringCopy)
   {
     [ACZeroingString initWithString:];
   }
@@ -45,7 +45,7 @@
   v5 = [(ACZeroingString *)&v10 init];
   if (v5)
   {
-    v6 = [v4 length];
+    v6 = [stringCopy length];
     v5->_length = v6;
     if (v6 < 0)
     {
@@ -55,17 +55,17 @@
 
     v7 = malloc_type_malloc(2 * v6, 0x895188DDuLL);
     v5->_characters = v7;
-    [v4 getCharacters:v7 range:{0, v5->_length}];
+    [stringCopy getCharacters:v7 range:{0, v5->_length}];
   }
 
   return v5;
 }
 
-- (ACZeroingString)initWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
+- (ACZeroingString)initWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
-    if (!a3)
+    if (!characters)
     {
       [ACZeroingString initWithCharacters:length:];
     }
@@ -76,44 +76,44 @@
     v8 = v7;
     if (v7)
     {
-      v7->_length = a4;
-      if ((a4 & 0x8000000000000000) != 0)
+      v7->_length = length;
+      if ((length & 0x8000000000000000) != 0)
       {
         v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Failed to allocate backing character buffer" userInfo:0];
         objc_exception_throw(v14);
       }
 
-      v9 = 2 * a4;
+      v9 = 2 * length;
       v10 = malloc_type_malloc(v9, 0xA10ED575uLL);
       v8->_characters = v10;
-      memcpy(v10, a3, v9);
+      memcpy(v10, characters, v9);
     }
 
-    v11 = v8;
-    self = v11;
+    _emptyString = v8;
+    self = _emptyString;
   }
 
   else
   {
-    v11 = [objc_opt_class() _emptyString];
+    _emptyString = [objc_opt_class() _emptyString];
   }
 
-  v12 = v11;
+  v12 = _emptyString;
 
   return v12;
 }
 
-- (ACZeroingString)initWithBytes:(const void *)a3 length:(unint64_t)a4 encoding:(unint64_t)a5
+- (ACZeroingString)initWithBytes:(const void *)bytes length:(unint64_t)length encoding:(unint64_t)encoding
 {
-  if (!a4)
+  if (!length)
   {
-    v20 = [objc_opt_class() _emptyString];
+    _emptyString = [objc_opt_class() _emptyString];
     goto LABEL_21;
   }
 
-  if (a3)
+  if (bytes)
   {
-    if (a5)
+    if (encoding)
     {
       goto LABEL_4;
     }
@@ -122,7 +122,7 @@
   else
   {
     [ACZeroingString initWithBytes:length:encoding:];
-    if (a5)
+    if (encoding)
     {
       goto LABEL_4;
     }
@@ -135,10 +135,10 @@ LABEL_4:
   v9 = [(ACZeroingString *)&v23 init];
   if (v9)
   {
-    v10 = CFStringConvertNSStringEncodingToEncoding(a5);
+    v10 = CFStringConvertNSStringEncodingToEncoding(encoding);
     if (CFStringIsEncodingAvailable(v10))
     {
-      v11 = CFStringCreateWithBytesNoCopy(0, a3, a4, v10, 1u, *MEMORY[0x1E695E498]);
+      v11 = CFStringCreateWithBytesNoCopy(0, bytes, length, v10, 1u, *MEMORY[0x1E695E498]);
       if (v11)
       {
         v12 = v11;
@@ -185,29 +185,29 @@ LABEL_4:
   }
 
 LABEL_19:
-  v20 = v9;
-  self = v20;
+  _emptyString = v9;
+  self = _emptyString;
 LABEL_21:
-  v21 = v20;
+  v21 = _emptyString;
 
   return v21;
 }
 
-- (ACZeroingString)initWithUTF8String:(const char *)a3
+- (ACZeroingString)initWithUTF8String:(const char *)string
 {
-  if (!a3)
+  if (!string)
   {
     [ACZeroingString initWithUTF8String:];
   }
 
-  v5 = strlen(a3);
+  v5 = strlen(string);
 
-  return [(ACZeroingString *)self initWithBytes:a3 length:v5 encoding:4];
+  return [(ACZeroingString *)self initWithBytes:string length:v5 encoding:4];
 }
 
-- (ACZeroingString)initWithCoder:(id)a3
+- (ACZeroingString)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ACZeroingString;
   v5 = [(ACZeroingString *)&v16 init];
@@ -216,8 +216,8 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AC.bytes"];
-      v7 = [v4 decodeIntegerForKey:@"AC.length"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AC.bytes"];
+      v7 = [coderCopy decodeIntegerForKey:@"AC.length"];
       if (v7 < 0)
       {
         v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Failed to allocate backing character buffer" userInfo:0];
@@ -262,7 +262,7 @@ LABEL_16:
       v11 = _ACLogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(ACZeroingString *)v4 initWithCoder:v11];
+        [(ACZeroingString *)coderCopy initWithCoder:v11];
       }
 
       v6 = v5;
@@ -277,9 +277,9 @@ LABEL_17:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   length = self->_length;
   if ((length & 0x8000000000000000) != 0)
   {
@@ -287,7 +287,7 @@ LABEL_17:
     objc_exception_throw(v14);
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   v7 = 2 * length;
   v8 = ACAllocateMemoryPages(2 * length);
   v9 = v8;
@@ -344,9 +344,9 @@ uint64_t __35__ACZeroingString_encodeWithCoder___block_invoke(uint64_t a1)
   return ACDeallocateMemoryPages(v2, v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   length = self->_length;
   if ((length & 0x8000000000000000) != 0)
   {
@@ -363,47 +363,47 @@ uint64_t __35__ACZeroingString_encodeWithCoder___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(ACZeroingString *)self _compatibleCopy];
+    selfCopy = [(ACZeroingString *)self _compatibleCopy];
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  if (self->_length <= a3)
+  if (self->_length <= index)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:@"Index out of bounds" userInfo:{0, v3, v4}];
     objc_exception_throw(v6);
   }
 
-  return self->_characters[a3];
+  return self->_characters[index];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  if (self->_length < a4.location + a4.length)
+  if (self->_length < range.location + range.length)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:@"Range out of bounds" userInfo:{0, v4, v5}];
     objc_exception_throw(v7);
   }
 
-  v6 = &self->_characters[a4.location];
+  v6 = &self->_characters[range.location];
 
-  memcpy(a3, v6, 2 * a4.length);
+  memcpy(characters, v6, 2 * range.length);
 }
 
 - (id)_compatibleCopy

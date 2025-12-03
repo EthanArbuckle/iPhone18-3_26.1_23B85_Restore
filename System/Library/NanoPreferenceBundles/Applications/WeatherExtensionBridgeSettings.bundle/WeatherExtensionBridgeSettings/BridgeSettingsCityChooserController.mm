@@ -2,7 +2,7 @@
 - (WeatherPrefsMonitor)weatherPrefsMonitor;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation BridgeSettingsCityChooserController
@@ -26,12 +26,12 @@
 
   else
   {
-    v5 = self;
-    v6 = [(BridgeSettingsCityChooserController *)self weatherPrefsMonitor];
-    v7 = [v6 cities];
+    selfCopy = self;
+    weatherPrefsMonitor = [(BridgeSettingsCityChooserController *)self weatherPrefsMonitor];
+    cities = [weatherPrefsMonitor cities];
 
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
-    if ([v7 count])
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cities count]);
+    if ([cities count])
     {
       v30 = v2;
       v9 = v8;
@@ -47,16 +47,16 @@
       [v12 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
       v32 = v12;
       [v8 addObject:v12];
-      v31 = v5;
-      v15 = [(BridgeSettingsCityChooserController *)v5 weatherPrefsMonitor];
-      v16 = [v15 selectedCity];
+      v31 = selfCopy;
+      weatherPrefsMonitor2 = [(BridgeSettingsCityChooserController *)selfCopy weatherPrefsMonitor];
+      selectedCity = [weatherPrefsMonitor2 selectedCity];
 
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v29 = v7;
-      obj = v7;
+      v29 = cities;
+      obj = cities;
       v17 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v17)
       {
@@ -74,11 +74,11 @@
             }
 
             v23 = *(*(&v34 + 1) + 8 * i);
-            v24 = [v23 name];
-            v25 = [PSSpecifier preferenceSpecifierNamed:v24 target:0 set:0 get:0 detail:0 cell:3 edit:0];
+            name = [v23 name];
+            v25 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
             [v25 setProperty:v23 forKey:v20];
-            if ([v16 isEqual:v23])
+            if ([selectedCity isEqual:v23])
             {
               [v32 setProperty:v25 forKey:v21];
             }
@@ -94,43 +94,43 @@
       }
 
       v2 = v30;
-      v5 = v31;
-      v7 = v29;
+      selfCopy = v31;
+      cities = v29;
     }
 
     v26 = [NSArray arrayWithArray:v8];
-    v27 = *&v5->PSListController_opaque[v2];
-    *&v5->PSListController_opaque[v2] = v26;
+    v27 = *&selfCopy->PSListController_opaque[v2];
+    *&selfCopy->PSListController_opaque[v2] = v26;
 
-    v4 = *&v5->PSListController_opaque[v2];
+    v4 = *&selfCopy->PSListController_opaque[v2];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = BridgeSettingsCityChooserController;
-  v6 = a4;
-  [(BridgeSettingsCityChooserController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(BridgeSettingsCityChooserController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(BridgeSettingsCityChooserController *)self specifierAtIndex:[(BridgeSettingsCityChooserController *)self indexOfGroup:v7]];
+  v8 = [(BridgeSettingsCityChooserController *)self specifierAtIndex:[(BridgeSettingsCityChooserController *)self indexOfGroup:section]];
   v9 = [v8 propertyForKey:PSIsRadioGroupKey];
-  LODWORD(v6) = [v9 BOOLValue];
+  LODWORD(pathCopy) = [v9 BOOLValue];
 
-  if (v6)
+  if (pathCopy)
   {
     v10 = [v8 propertyForKey:PSRadioGroupCheckedSpecifierKey];
     v11 = [v10 propertyForKey:PSValueKey];
-    v12 = [(BridgeSettingsCityChooserController *)self weatherPrefsMonitor];
-    v13 = [v12 selectedCity];
+    weatherPrefsMonitor = [(BridgeSettingsCityChooserController *)self weatherPrefsMonitor];
+    selectedCity = [weatherPrefsMonitor selectedCity];
 
-    v14 = [(BridgeSettingsCityChooserController *)self weatherPrefsMonitor];
-    [v14 setSelectedCity:v11];
+    weatherPrefsMonitor2 = [(BridgeSettingsCityChooserController *)self weatherPrefsMonitor];
+    [weatherPrefsMonitor2 setSelectedCity:v11];
 
-    if (([v11 isEqual:v13] & 1) == 0)
+    if (([v11 isEqual:selectedCity] & 1) == 0)
     {
       [(BridgeSettingsCityChooserController *)self setPreferenceValue:v11 specifier:v10];
     }

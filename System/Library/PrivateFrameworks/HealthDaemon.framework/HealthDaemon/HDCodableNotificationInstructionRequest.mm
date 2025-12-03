@@ -1,11 +1,11 @@
 @interface HDCodableNotificationInstructionRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableNotificationInstructionRequest
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = HDCodableNotificationInstructionRequest;
   v4 = [(HDCodableNotificationInstructionRequest *)&v8 description];
-  v5 = [(HDCodableNotificationInstructionRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableNotificationInstructionRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestIdentifier = self->_requestIdentifier;
   if (requestIdentifier)
   {
-    [v3 setObject:requestIdentifier forKey:@"requestIdentifier"];
+    [dictionary setObject:requestIdentifier forKey:@"requestIdentifier"];
   }
 
   notificationInstruction = self->_notificationInstruction;
   if (notificationInstruction)
   {
-    v7 = [(HDCodableNotificationInstructionMessage *)notificationInstruction dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"notificationInstruction"];
+    dictionaryRepresentation = [(HDCodableNotificationInstructionMessage *)notificationInstruction dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"notificationInstruction"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notificationInstruction)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestIdentifier)
   {
-    [v4 setRequestIdentifier:?];
-    v4 = v5;
+    [toCopy setRequestIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_notificationInstruction)
   {
     [v5 setNotificationInstruction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestIdentifier copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(HDCodableNotificationInstructionMessage *)self->_notificationInstruction copyWithZone:a3];
+  v8 = [(HDCodableNotificationInstructionMessage *)self->_notificationInstruction copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestIdentifier = self->_requestIdentifier, !(requestIdentifier | v4[2])) || -[NSString isEqual:](requestIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestIdentifier = self->_requestIdentifier, !(requestIdentifier | equalCopy[2])) || -[NSString isEqual:](requestIdentifier, "isEqual:")))
   {
     notificationInstruction = self->_notificationInstruction;
-    if (notificationInstruction | v4[1])
+    if (notificationInstruction | equalCopy[1])
     {
       v7 = [(HDCodableNotificationInstructionMessage *)notificationInstruction isEqual:?];
     }
@@ -115,18 +115,18 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[2])
   {
     [(HDCodableNotificationInstructionRequest *)self setRequestIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   notificationInstruction = self->_notificationInstruction;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (notificationInstruction)
   {
     if (v6)

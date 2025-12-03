@@ -9,7 +9,7 @@
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  if ([a1 constraints] & 4) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if ([self constraints] & 4) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     if (a4)
     {
@@ -37,7 +37,7 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  if (([a1 constraints] & 3) == 0)
+  if (([self constraints] & 3) == 0)
   {
     goto LABEL_16;
   }
@@ -81,7 +81,7 @@
     LOBYTE(v11) = 0;
   }
 
-  if (([a1 constraints] & 1) != 0 && (v10 & 1) == 0)
+  if (([self constraints] & 1) != 0 && (v10 & 1) == 0)
   {
     v14 = v23;
     if (v23)
@@ -104,7 +104,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((([a1 constraints] & 2) == 0) | v11 & 1)
+  if ((([self constraints] & 2) == 0) | v11 & 1)
   {
 LABEL_16:
     v14 = 1;

@@ -1,32 +1,32 @@
 @interface AXBrailleTranslationResult
-- (AXBrailleTranslationResult)initWithCoder:(id)a3;
-- (AXBrailleTranslationResult)initWithInputString:(id)a3 ResultString:(id)a4 locationMap:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AXBrailleTranslationResult)initWithCoder:(id)coder;
+- (AXBrailleTranslationResult)initWithInputString:(id)string ResultString:(id)resultString locationMap:(id)map;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXBrailleTranslationResult
 
-- (AXBrailleTranslationResult)initWithInputString:(id)a3 ResultString:(id)a4 locationMap:(id)a5
+- (AXBrailleTranslationResult)initWithInputString:(id)string ResultString:(id)resultString locationMap:(id)map
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stringCopy = string;
+  resultStringCopy = resultString;
+  mapCopy = map;
   v15.receiver = self;
   v15.super_class = AXBrailleTranslationResult;
   v12 = [(AXBrailleTranslationResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_inputString, a3);
-    objc_storeStrong(&v13->_resultString, a4);
-    objc_storeStrong(&v13->_locationMap, a5);
+    objc_storeStrong(&v12->_inputString, string);
+    objc_storeStrong(&v13->_resultString, resultString);
+    objc_storeStrong(&v13->_locationMap, map);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AXBrailleTranslationResult alloc];
   v5 = [(NSString *)self->_inputString copy];
@@ -37,26 +37,26 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXBrailleTranslationResult *)self resultString];
-  [v4 encodeObject:v5 forKey:@"resultString"];
+  coderCopy = coder;
+  resultString = [(AXBrailleTranslationResult *)self resultString];
+  [coderCopy encodeObject:resultString forKey:@"resultString"];
 
-  v6 = [(AXBrailleTranslationResult *)self locationMap];
-  [v4 encodeObject:v6 forKey:@"locationMap"];
+  locationMap = [(AXBrailleTranslationResult *)self locationMap];
+  [coderCopy encodeObject:locationMap forKey:@"locationMap"];
 }
 
-- (AXBrailleTranslationResult)initWithCoder:(id)a3
+- (AXBrailleTranslationResult)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = AXBrailleTranslationResult;
   v5 = [(AXBrailleTranslationResult *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resultString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resultString"];
     resultString = v5->_resultString;
     v5->_resultString = v6;
 
@@ -65,7 +65,7 @@
     v16[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"locationMap"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"locationMap"];
     locationMap = v5->_locationMap;
     v5->_locationMap = v11;
   }

@@ -1,16 +1,16 @@
 @interface JSPrivacyLinkViewController
-- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)systemLayoutFittingSizeDidChangeForChildViewController:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)systemLayoutFittingSizeDidChangeForChildViewController:(id)controller;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation JSPrivacyLinkViewController
 
-- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSPrivacyLinkViewController_privacyLinkViewController) = 0;
   result = sub_ABAFD0();
@@ -20,25 +20,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSPrivacyLinkViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   JSPrivacyLinkViewController.viewDidLayoutSubviews()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = swift_getObjectType();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(JSPrivacyLinkViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(JSPrivacyLinkViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_456240;
@@ -50,32 +50,32 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:v9 completion:0];
+  [coordinator animateAlongsideTransition:v9 completion:0];
   _Block_release(v9);
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   JSPrivacyLinkViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildViewController:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  controllerCopy = controller;
   v5 = v6.receiver;
-  [(JSPrivacyLinkViewController *)&v6 systemLayoutFittingSizeDidChangeForChildViewController:v4];
+  [(JSPrivacyLinkViewController *)&v6 systemLayoutFittingSizeDidChangeForChildViewController:controllerCopy];
   sub_45592C();
 }
 
-- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication27JSPrivacyLinkViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

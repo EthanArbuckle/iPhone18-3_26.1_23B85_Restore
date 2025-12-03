@@ -1,21 +1,21 @@
 @interface PTPDeviceInfoDataset
 - (NSMutableData)content;
 - (PTPDeviceInfoDataset)init;
-- (PTPDeviceInfoDataset)initWithData:(id)a3;
-- (PTPDeviceInfoDataset)initWithMutableData:(id)a3;
+- (PTPDeviceInfoDataset)initWithData:(id)data;
+- (PTPDeviceInfoDataset)initWithMutableData:(id)data;
 - (id)canonicalManufacturer;
 - (id)description;
-- (void)setCaptureFormats:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setDevicePropertiesSupported:(id)a3;
-- (void)setDeviceVersion:(id)a3;
-- (void)setEventsSupported:(id)a3;
-- (void)setImageFormats:(id)a3;
-- (void)setManufacturer:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setOperationsSupported:(id)a3;
-- (void)setSerialNumber:(id)a3;
-- (void)setVendorExtensionDescription:(id)a3;
+- (void)setCaptureFormats:(id)formats;
+- (void)setContent:(id)content;
+- (void)setDevicePropertiesSupported:(id)supported;
+- (void)setDeviceVersion:(id)version;
+- (void)setEventsSupported:(id)supported;
+- (void)setImageFormats:(id)formats;
+- (void)setManufacturer:(id)manufacturer;
+- (void)setModel:(id)model;
+- (void)setOperationsSupported:(id)supported;
+- (void)setSerialNumber:(id)number;
+- (void)setVendorExtensionDescription:(id)description;
 - (void)updateContent;
 @end
 
@@ -38,67 +38,67 @@
   return v2;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  objc_storeStrong(&self->_content, a3);
-  v5 = a3;
-  v6 = [(NSMutableData *)self->_content bytes];
+  objc_storeStrong(&self->_content, content);
+  contentCopy = content;
+  bytes = [(NSMutableData *)self->_content bytes];
   v7 = [(NSMutableData *)self->_content length];
-  v28 = v6;
-  self->_standardVersion = ReadUInt16MaxSize(&v28, v6 + v7);
-  self->_vendorExtensionID = ReadUInt32MaxSize(&v28, v6 + v7);
-  self->_vendorExtensionVersion = ReadUInt16MaxSize(&v28, v6 + v7);
-  v8 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, v6 + v7);
+  v28 = bytes;
+  self->_standardVersion = ReadUInt16MaxSize(&v28, bytes + v7);
+  self->_vendorExtensionID = ReadUInt32MaxSize(&v28, bytes + v7);
+  self->_vendorExtensionVersion = ReadUInt16MaxSize(&v28, bytes + v7);
+  v8 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, bytes + v7);
   vendorExtensionDescription = self->_vendorExtensionDescription;
   self->_vendorExtensionDescription = v8;
 
-  self->_functionalMode = ReadUInt16MaxSize(&v28, v6 + v7);
-  v10 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, v6 + v7);
+  self->_functionalMode = ReadUInt16MaxSize(&v28, bytes + v7);
+  v10 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, bytes + v7);
   operationsSupported = self->_operationsSupported;
   self->_operationsSupported = v10;
 
-  v12 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, v6 + v7);
+  v12 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, bytes + v7);
   eventsSupported = self->_eventsSupported;
   self->_eventsSupported = v12;
 
-  v14 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, v6 + v7);
+  v14 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, bytes + v7);
   devicePropertiesSupported = self->_devicePropertiesSupported;
   self->_devicePropertiesSupported = v14;
 
-  v16 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, v6 + v7);
+  v16 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, bytes + v7);
   captureFormats = self->_captureFormats;
   self->_captureFormats = v16;
 
-  v18 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, v6 + v7);
+  v18 = CopyArrayOfUnsignedShortsFromBufferMaxSize(&v28, bytes + v7);
   imageFormats = self->_imageFormats;
   self->_imageFormats = v18;
 
-  v20 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, v6 + v7);
+  v20 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, bytes + v7);
   manufacturer = self->_manufacturer;
   self->_manufacturer = v20;
 
-  v22 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, v6 + v7);
+  v22 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, bytes + v7);
   model = self->_model;
   self->_model = v22;
 
-  v24 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, v6 + v7);
+  v24 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, bytes + v7);
   deviceVersion = self->_deviceVersion;
   self->_deviceVersion = v24;
 
-  v26 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, v6 + v7);
+  v26 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v28, bytes + v7);
   serialNumber = self->_serialNumber;
   self->_serialNumber = v26;
 }
 
-- (PTPDeviceInfoDataset)initWithData:(id)a3
+- (PTPDeviceInfoDataset)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = PTPDeviceInfoDataset;
   v5 = [(PTPDeviceInfoDataset *)&v8 init];
   if (v5)
   {
-    if ([v4 length] < 0x23)
+    if ([dataCopy length] < 0x23)
     {
 
       v5 = 0;
@@ -106,7 +106,7 @@
 
     else
     {
-      v6 = [v4 mutableCopy];
+      v6 = [dataCopy mutableCopy];
       [(PTPDeviceInfoDataset *)v5 setContent:v6];
 
       v5->_readOnlyObject = 1;
@@ -116,15 +116,15 @@
   return v5;
 }
 
-- (PTPDeviceInfoDataset)initWithMutableData:(id)a3
+- (PTPDeviceInfoDataset)initWithMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = PTPDeviceInfoDataset;
   v5 = [(PTPDeviceInfoDataset *)&v7 init];
   if (v5)
   {
-    if ([v4 length] < 0x23)
+    if ([dataCopy length] < 0x23)
     {
 
       v5 = 0;
@@ -132,7 +132,7 @@
 
     else
     {
-      [(PTPDeviceInfoDataset *)v5 setContent:v4];
+      [(PTPDeviceInfoDataset *)v5 setContent:dataCopy];
       v5->_readOnlyObject = 0;
     }
   }
@@ -232,102 +232,102 @@
 - (id)description
 {
   v3 = [MEMORY[0x29EDBA050] stringWithFormat:@"<PTPDeviceInfoDataset %p>{\n  _standardVersion:            %d\n  _vendorExtensionID:          %lu\n  _vendorExtensionVersion:     %d\n  _vendorExtensionDescription: %@\n  _functionalMode:             %d\n  _operationsSupported:\n    {\n", self, self->_standardVersion, self->_vendorExtensionID, self->_vendorExtensionVersion, self->_vendorExtensionDescription, self->_functionalMode];
-  v4 = [(NSArray *)self->_operationsSupported objectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  objectEnumerator = [(NSArray *)self->_operationsSupported objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
       v7 = stringForOperationCode([v6 unsignedShortValue]);
       [v3 appendFormat:@"      %@\n", v7];
 
-      v8 = [v4 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v6 = v8;
+      v6 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
   [v3 appendString:@"    }\n  _eventsSupported:\n    {\n"];
-  v9 = [(NSArray *)self->_eventsSupported objectEnumerator];
+  objectEnumerator2 = [(NSArray *)self->_eventsSupported objectEnumerator];
 
-  v10 = [v9 nextObject];
-  if (v10)
+  nextObject3 = [objectEnumerator2 nextObject];
+  if (nextObject3)
   {
-    v11 = v10;
+    v11 = nextObject3;
     do
     {
       v12 = stringForEventCode([v11 unsignedShortValue]);
       [v3 appendFormat:@"      %@\n", v12];
 
-      v13 = [v9 nextObject];
+      nextObject4 = [objectEnumerator2 nextObject];
 
-      v11 = v13;
+      v11 = nextObject4;
     }
 
-    while (v13);
+    while (nextObject4);
   }
 
   [v3 appendString:@"    }\n  _devicePropertiesSupported:\n    {\n"];
-  v14 = [(NSArray *)self->_devicePropertiesSupported objectEnumerator];
+  objectEnumerator3 = [(NSArray *)self->_devicePropertiesSupported objectEnumerator];
 
-  v15 = [v14 nextObject];
-  if (v15)
+  nextObject5 = [objectEnumerator3 nextObject];
+  if (nextObject5)
   {
-    v16 = v15;
+    v16 = nextObject5;
     do
     {
       v17 = stringForDevicePropCode([v16 unsignedShortValue]);
       [v3 appendFormat:@"      %@\n", v17];
 
-      v18 = [v14 nextObject];
+      nextObject6 = [objectEnumerator3 nextObject];
 
-      v16 = v18;
+      v16 = nextObject6;
     }
 
-    while (v18);
+    while (nextObject6);
   }
 
   [v3 appendString:@"    }\n  _captureFormats:\n    {\n"];
-  v19 = [(NSArray *)self->_captureFormats objectEnumerator];
+  objectEnumerator4 = [(NSArray *)self->_captureFormats objectEnumerator];
 
-  v20 = [v19 nextObject];
-  if (v20)
+  nextObject7 = [objectEnumerator4 nextObject];
+  if (nextObject7)
   {
-    v21 = v20;
+    v21 = nextObject7;
     do
     {
       v22 = stringForObjectFormatCode([v21 unsignedShortValue]);
       [v3 appendFormat:@"      %@\n", v22];
 
-      v23 = [v19 nextObject];
+      nextObject8 = [objectEnumerator4 nextObject];
 
-      v21 = v23;
+      v21 = nextObject8;
     }
 
-    while (v23);
+    while (nextObject8);
   }
 
   [v3 appendString:@"    }\n  _imageFormats:\n    {\n"];
-  v24 = [(NSArray *)self->_imageFormats objectEnumerator];
+  objectEnumerator5 = [(NSArray *)self->_imageFormats objectEnumerator];
 
-  v25 = [v24 nextObject];
-  if (v25)
+  nextObject9 = [objectEnumerator5 nextObject];
+  if (nextObject9)
   {
-    v26 = v25;
+    v26 = nextObject9;
     do
     {
       v27 = stringForObjectFormatCode([v26 unsignedShortValue]);
       [v3 appendFormat:@"      %@\n", v27];
 
-      v28 = [v24 nextObject];
+      nextObject10 = [objectEnumerator5 nextObject];
 
-      v26 = v28;
+      v26 = nextObject10;
     }
 
-    while (v28);
+    while (nextObject10);
   }
 
   [v3 appendFormat:@"    }\n  _manufacturer:  %@\n  _model:         %@\n  _deviceVersion: %@\n  _serialNumber:  %@\n}", self->_manufacturer, self->_model, self->_deviceVersion, self->_serialNumber];
@@ -335,28 +335,28 @@
   return v3;
 }
 
-- (void)setVendorExtensionDescription:(id)a3
+- (void)setVendorExtensionDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   p_vendorExtensionDescription = &self->_vendorExtensionDescription;
-  if (self->_vendorExtensionDescription != v5)
+  if (self->_vendorExtensionDescription != descriptionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_vendorExtensionDescription, a3);
-    v5 = v7;
+    v7 = descriptionCopy;
+    objc_storeStrong(p_vendorExtensionDescription, description);
+    descriptionCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_vendorExtensionDescription, v5);
+  MEMORY[0x2A1C71028](p_vendorExtensionDescription, descriptionCopy);
 }
 
-- (void)setOperationsSupported:(id)a3
+- (void)setOperationsSupported:(id)supported
 {
-  if (self->_operationsSupported != a3)
+  if (self->_operationsSupported != supported)
   {
     v4 = MEMORY[0x29EDB8DE8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5];
+    supportedCopy = supported;
+    v6 = [[v4 alloc] initWithArray:supportedCopy];
 
     operationsSupported = self->_operationsSupported;
     self->_operationsSupported = v6;
@@ -365,13 +365,13 @@
   }
 }
 
-- (void)setEventsSupported:(id)a3
+- (void)setEventsSupported:(id)supported
 {
-  if (self->_eventsSupported != a3)
+  if (self->_eventsSupported != supported)
   {
     v4 = MEMORY[0x29EDB8DE8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5];
+    supportedCopy = supported;
+    v6 = [[v4 alloc] initWithArray:supportedCopy];
 
     eventsSupported = self->_eventsSupported;
     self->_eventsSupported = v6;
@@ -380,13 +380,13 @@
   }
 }
 
-- (void)setDevicePropertiesSupported:(id)a3
+- (void)setDevicePropertiesSupported:(id)supported
 {
-  if (self->_devicePropertiesSupported != a3)
+  if (self->_devicePropertiesSupported != supported)
   {
     v4 = MEMORY[0x29EDB8DE8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5];
+    supportedCopy = supported;
+    v6 = [[v4 alloc] initWithArray:supportedCopy];
 
     devicePropertiesSupported = self->_devicePropertiesSupported;
     self->_devicePropertiesSupported = v6;
@@ -395,13 +395,13 @@
   }
 }
 
-- (void)setCaptureFormats:(id)a3
+- (void)setCaptureFormats:(id)formats
 {
-  if (self->_captureFormats != a3)
+  if (self->_captureFormats != formats)
   {
     v4 = MEMORY[0x29EDB8DE8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5];
+    formatsCopy = formats;
+    v6 = [[v4 alloc] initWithArray:formatsCopy];
 
     captureFormats = self->_captureFormats;
     self->_captureFormats = v6;
@@ -410,13 +410,13 @@
   }
 }
 
-- (void)setImageFormats:(id)a3
+- (void)setImageFormats:(id)formats
 {
-  if (self->_imageFormats != a3)
+  if (self->_imageFormats != formats)
   {
     v4 = MEMORY[0x29EDB8DE8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5];
+    formatsCopy = formats;
+    v6 = [[v4 alloc] initWithArray:formatsCopy];
 
     imageFormats = self->_imageFormats;
     self->_imageFormats = v6;
@@ -425,94 +425,94 @@
   }
 }
 
-- (void)setManufacturer:(id)a3
+- (void)setManufacturer:(id)manufacturer
 {
-  v5 = a3;
+  manufacturerCopy = manufacturer;
   p_manufacturer = &self->_manufacturer;
-  if (self->_manufacturer != v5)
+  if (self->_manufacturer != manufacturerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_manufacturer, a3);
-    v5 = v7;
+    v7 = manufacturerCopy;
+    objc_storeStrong(p_manufacturer, manufacturer);
+    manufacturerCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_manufacturer, v5);
+  MEMORY[0x2A1C71028](p_manufacturer, manufacturerCopy);
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   p_model = &self->_model;
-  if (self->_model != v5)
+  if (self->_model != modelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_model, a3);
-    v5 = v7;
+    v7 = modelCopy;
+    objc_storeStrong(p_model, model);
+    modelCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_model, v5);
+  MEMORY[0x2A1C71028](p_model, modelCopy);
 }
 
-- (void)setDeviceVersion:(id)a3
+- (void)setDeviceVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   p_deviceVersion = &self->_deviceVersion;
-  if (self->_deviceVersion != v5)
+  if (self->_deviceVersion != versionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_deviceVersion, a3);
-    v5 = v7;
+    v7 = versionCopy;
+    objc_storeStrong(p_deviceVersion, version);
+    versionCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_deviceVersion, v5);
+  MEMORY[0x2A1C71028](p_deviceVersion, versionCopy);
 }
 
-- (void)setSerialNumber:(id)a3
+- (void)setSerialNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
   p_serialNumber = &self->_serialNumber;
-  if (self->_serialNumber != v5)
+  if (self->_serialNumber != numberCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_serialNumber, a3);
-    v5 = v7;
+    v7 = numberCopy;
+    objc_storeStrong(p_serialNumber, number);
+    numberCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_serialNumber, v5);
+  MEMORY[0x2A1C71028](p_serialNumber, numberCopy);
 }
 
 - (id)canonicalManufacturer
 {
   v3 = [(NSString *)self->_manufacturer componentsSeparatedByString:@" "];
-  v4 = [v3 objectEnumerator];
-  v5 = 0;
+  objectEnumerator = [v3 objectEnumerator];
+  nextObject = 0;
   v6 = @"NIKON";
   while (1)
   {
-    v7 = v5;
-    v5 = [v4 nextObject];
+    v7 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v5)
+    if (!nextObject)
     {
       v6 = self->_manufacturer;
       goto LABEL_9;
     }
 
-    if (![v5 caseInsensitiveCompare:@"NIKON"])
+    if (![nextObject caseInsensitiveCompare:@"NIKON"])
     {
       goto LABEL_9;
     }
 
-    if (![v5 caseInsensitiveCompare:@"CANON"])
+    if (![nextObject caseInsensitiveCompare:@"CANON"])
     {
       break;
     }
 
-    if (![v5 caseInsensitiveCompare:@"KODAK"])
+    if (![nextObject caseInsensitiveCompare:@"KODAK"])
     {
       v6 = @"KODAK";
       goto LABEL_9;

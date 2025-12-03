@@ -1,52 +1,52 @@
 @interface AMSUIWebCameraReaderPageModel
-- (AMSUIWebCameraReaderPageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebCameraReaderPageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
 - (NSString)description;
 - (UIViewController)presentedViewController;
-- (id)createViewControllerForContainer:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
 @end
 
 @implementation AMSUIWebCameraReaderPageModel
 
-- (AMSUIWebCameraReaderPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebCameraReaderPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v45.receiver = self;
   v45.super_class = AMSUIWebCameraReaderPageModel;
   v8 = [(AMSUIWebCameraReaderPageModel *)&v45 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a4);
-    v10 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+    objc_storeStrong(&v8->_context, context);
+    v10 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
     backgroundColor = v9->_backgroundColor;
     v9->_backgroundColor = v10;
 
-    v12 = [AMSUIWebModel impressionEventFromPageModel:v6 context:v7];
+    v12 = [AMSUIWebModel impressionEventFromPageModel:objectCopy context:contextCopy];
     impressionEvent = v9->_impressionEvent;
     v9->_impressionEvent = v12;
 
-    v14 = [AMSUIWebModel navigationBarFromPageModel:v6 context:v7];
+    v14 = [AMSUIWebModel navigationBarFromPageModel:objectCopy context:contextCopy];
     navigationBar = v9->_navigationBar;
     v9->_navigationBar = v14;
 
-    [AMSUIWebModel windowSizeFromPageModel:v6];
+    [AMSUIWebModel windowSizeFromPageModel:objectCopy];
     v9->_windowSize.width = v16;
     v9->_windowSize.height = v17;
-    v18 = [v6 objectForKeyedSubscript:@"pageType"];
+    v18 = [objectCopy objectForKeyedSubscript:@"pageType"];
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v18 integerValue];
+      integerValue = [v18 integerValue];
     }
 
     else
     {
-      v19 = 0;
+      integerValue = 0;
     }
 
-    v9->_pageType = v19;
-    v20 = [v6 objectForKeyedSubscript:@"bottomLinkLabel"];
+    v9->_pageType = integerValue;
+    v20 = [objectCopy objectForKeyedSubscript:@"bottomLinkLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
     bottomLinkLabel = v9->_bottomLinkLabel;
     v9->_bottomLinkLabel = v21;
 
-    v23 = [v6 objectForKeyedSubscript:@"bottomLinkAction"];
+    v23 = [objectCopy objectForKeyedSubscript:@"bottomLinkAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,11 +73,11 @@
       v24 = 0;
     }
 
-    v25 = [AMSUIWebActionMapper actionFromJSObject:v24 context:v7];
+    v25 = [AMSUIWebActionMapper actionFromJSObject:v24 context:contextCopy];
     bottomLinkAction = v9->_bottomLinkAction;
     v9->_bottomLinkAction = v25;
 
-    v27 = [v6 objectForKeyedSubscript:@"primaryLabel"];
+    v27 = [objectCopy objectForKeyedSubscript:@"primaryLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
     primaryLabel = v9->_primaryLabel;
     v9->_primaryLabel = v28;
 
-    v30 = [v6 objectForKeyedSubscript:@"secondaryLabel"];
+    v30 = [objectCopy objectForKeyedSubscript:@"secondaryLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,10 +107,10 @@
     secondaryLabel = v9->_secondaryLabel;
     v9->_secondaryLabel = v31;
 
-    v33 = [v6 objectForKeyedSubscript:@"fullScreen"];
+    v33 = [objectCopy objectForKeyedSubscript:@"fullScreen"];
     if (objc_opt_respondsToSelector())
     {
-      v34 = [v6 objectForKeyedSubscript:@"fullScreen"];
+      v34 = [objectCopy objectForKeyedSubscript:@"fullScreen"];
       v9->_fullScreen = [v34 BOOLValue];
     }
 
@@ -119,10 +119,10 @@
       v9->_fullScreen = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"allowsCameraToggle"];
+    v35 = [objectCopy objectForKeyedSubscript:@"allowsCameraToggle"];
     if (objc_opt_respondsToSelector())
     {
-      v36 = [v6 objectForKeyedSubscript:@"allowsCameraToggle"];
+      v36 = [objectCopy objectForKeyedSubscript:@"allowsCameraToggle"];
       v9->_allowsCameraToggle = [v36 BOOLValue];
     }
 
@@ -131,10 +131,10 @@
       v9->_allowsCameraToggle = 0;
     }
 
-    v37 = [v6 objectForKeyedSubscript:@"allowsTextEntry"];
+    v37 = [objectCopy objectForKeyedSubscript:@"allowsTextEntry"];
     if (objc_opt_respondsToSelector())
     {
-      v38 = [v6 objectForKeyedSubscript:@"allowsTextEntry"];
+      v38 = [objectCopy objectForKeyedSubscript:@"allowsTextEntry"];
       v9->_allowsTextEntry = [v38 BOOLValue];
     }
 
@@ -143,10 +143,10 @@
       v9->_allowsTextEntry = 0;
     }
 
-    v39 = [v6 objectForKeyedSubscript:@"prefersSessionTeardown"];
+    v39 = [objectCopy objectForKeyedSubscript:@"prefersSessionTeardown"];
     if (objc_opt_respondsToSelector())
     {
-      v40 = [v6 objectForKeyedSubscript:@"prefersSessionTeardown"];
+      v40 = [objectCopy objectForKeyedSubscript:@"prefersSessionTeardown"];
       v9->_prefersSessionTeardown = [v40 BOOLValue];
     }
 
@@ -155,7 +155,7 @@
       v9->_prefersSessionTeardown = 0;
     }
 
-    v41 = [v6 objectForKeyedSubscript:@"textFieldPlaceholder"];
+    v41 = [objectCopy objectForKeyedSubscript:@"textFieldPlaceholder"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,11 +174,11 @@
   return v9;
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
   v4 = [AMSUIWebCameraReaderViewController alloc];
-  v5 = [(AMSUIWebCameraReaderPageModel *)self context];
-  v6 = [(AMSUIWebCameraReaderViewController *)v4 initWithContext:v5];
+  context = [(AMSUIWebCameraReaderPageModel *)self context];
+  v6 = [(AMSUIWebCameraReaderViewController *)v4 initWithContext:context];
 
   return v6;
 }
@@ -256,68 +256,68 @@
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:7];
   v11 = [v10 mutableCopy];
 
-  v12 = [(AMSUIWebCameraReaderPageModel *)self bottomLinkLabel];
+  bottomLinkLabel = [(AMSUIWebCameraReaderPageModel *)self bottomLinkLabel];
 
-  if (v12)
+  if (bottomLinkLabel)
   {
-    v13 = [(AMSUIWebCameraReaderPageModel *)self bottomLinkLabel];
-    [v11 setObject:v13 forKey:@"bottomLinkLabel"];
+    bottomLinkLabel2 = [(AMSUIWebCameraReaderPageModel *)self bottomLinkLabel];
+    [v11 setObject:bottomLinkLabel2 forKey:@"bottomLinkLabel"];
   }
 
-  v14 = [(AMSUIWebCameraReaderPageModel *)self bottomLinkAction];
+  bottomLinkAction = [(AMSUIWebCameraReaderPageModel *)self bottomLinkAction];
 
-  if (v14)
+  if (bottomLinkAction)
   {
-    v15 = [(AMSUIWebCameraReaderPageModel *)self bottomLinkAction];
-    [v11 setObject:v15 forKey:@"bottomLinkAction"];
+    bottomLinkAction2 = [(AMSUIWebCameraReaderPageModel *)self bottomLinkAction];
+    [v11 setObject:bottomLinkAction2 forKey:@"bottomLinkAction"];
   }
 
-  v16 = [(AMSUIWebCameraReaderPageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebCameraReaderPageModel *)self backgroundColor];
 
-  if (v16)
+  if (backgroundColor)
   {
-    v17 = [(AMSUIWebCameraReaderPageModel *)self backgroundColor];
-    [v11 setObject:v17 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebCameraReaderPageModel *)self backgroundColor];
+    [v11 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v18 = [(AMSUIWebCameraReaderPageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebCameraReaderPageModel *)self impressionEvent];
 
-  if (v18)
+  if (impressionEvent)
   {
-    v19 = [(AMSUIWebCameraReaderPageModel *)self impressionEvent];
-    [v11 setObject:v19 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebCameraReaderPageModel *)self impressionEvent];
+    [v11 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v20 = [(AMSUIWebCameraReaderPageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebCameraReaderPageModel *)self navigationBar];
 
-  if (v20)
+  if (navigationBar)
   {
-    v21 = [(AMSUIWebCameraReaderPageModel *)self navigationBar];
-    [v11 setObject:v21 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebCameraReaderPageModel *)self navigationBar];
+    [v11 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
-  v22 = [(AMSUIWebCameraReaderPageModel *)self primaryLabel];
+  primaryLabel = [(AMSUIWebCameraReaderPageModel *)self primaryLabel];
 
-  if (v22)
+  if (primaryLabel)
   {
-    v23 = [(AMSUIWebCameraReaderPageModel *)self primaryLabel];
-    [v11 setObject:v23 forKey:@"primaryLabel"];
+    primaryLabel2 = [(AMSUIWebCameraReaderPageModel *)self primaryLabel];
+    [v11 setObject:primaryLabel2 forKey:@"primaryLabel"];
   }
 
-  v24 = [(AMSUIWebCameraReaderPageModel *)self secondaryLabel];
+  secondaryLabel = [(AMSUIWebCameraReaderPageModel *)self secondaryLabel];
 
-  if (v24)
+  if (secondaryLabel)
   {
-    v25 = [(AMSUIWebCameraReaderPageModel *)self secondaryLabel];
-    [v11 setObject:v25 forKey:@"secondaryLabel"];
+    secondaryLabel2 = [(AMSUIWebCameraReaderPageModel *)self secondaryLabel];
+    [v11 setObject:secondaryLabel2 forKey:@"secondaryLabel"];
   }
 
-  v26 = [(AMSUIWebCameraReaderPageModel *)self textFieldPlaceholder];
+  textFieldPlaceholder = [(AMSUIWebCameraReaderPageModel *)self textFieldPlaceholder];
 
-  if (v26)
+  if (textFieldPlaceholder)
   {
-    v27 = [(AMSUIWebCameraReaderPageModel *)self textFieldPlaceholder];
-    [v11 setObject:v27 forKey:@"textFieldPlaceholder"];
+    textFieldPlaceholder2 = [(AMSUIWebCameraReaderPageModel *)self textFieldPlaceholder];
+    [v11 setObject:textFieldPlaceholder2 forKey:@"textFieldPlaceholder"];
   }
 
   v28 = [v11 description];

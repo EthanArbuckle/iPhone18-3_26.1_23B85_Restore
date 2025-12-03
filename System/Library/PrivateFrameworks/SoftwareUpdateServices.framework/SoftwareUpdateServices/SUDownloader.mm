@@ -1,68 +1,68 @@
 @interface SUDownloader
-+ (id)purgeOptionsForDescriptor:(id)a3 downloadOptions:(id)a4 completionQueue:(id)a5;
-- (BOOL)_isWithinAutoDownloadWindowForPolicy:(id)a3 descriptor:(id)a4;
-- (BOOL)_reapplyExistingDownloadPolicyIfDownloadable:(BOOL)a3;
++ (id)purgeOptionsForDescriptor:(id)descriptor downloadOptions:(id)options completionQueue:(id)queue;
+- (BOOL)_isWithinAutoDownloadWindowForPolicy:(id)policy descriptor:(id)descriptor;
+- (BOOL)_reapplyExistingDownloadPolicyIfDownloadable:(BOOL)downloadable;
 - (BOOL)_shouldSendUpdatedProgressToDelegate;
 - (BOOL)isClearingSpace;
 - (BOOL)isDownloadHalted;
 - (BOOL)isDownloading;
 - (BOOL)isForeground;
-- (BOOL)isReadyForDownload:(id)a3 ignoreExistingDownload:(BOOL)a4 error:(id *)a5;
+- (BOOL)isReadyForDownload:(id)download ignoreExistingDownload:(BOOL)existingDownload error:(id *)error;
 - (BOOL)isSplatDownload;
 - (BOOL)isUpdateDownloaded;
-- (BOOL)needToWaitForUnlockForLoadingBrainForDescriptor:(id)a3;
-- (BOOL)updateDownloadOptions:(id)a3 error:(id *)a4;
+- (BOOL)needToWaitForUnlockForLoadingBrainForDescriptor:(id)descriptor;
+- (BOOL)updateDownloadOptions:(id)options error:(id *)error;
 - (MAAsset)downloadAsset;
 - (SUDownload)download;
-- (SUDownloader)initWithCore:(id)a3;
+- (SUDownloader)initWithCore:(id)core;
 - (SUManagerCore)core;
 - (id)slaVersion;
-- (int)_orderForPhase:(id)a3;
-- (void)_changeDownloadPhase:(id)a3 progress:(float)a4 timeRemaining:(double)a5;
-- (void)_downloadFailedWithError:(id)a3;
-- (void)_downloadFinished:(BOOL)a3;
-- (void)_downloadInvalidatedWithUpdates:(id)a3;
+- (int)_orderForPhase:(id)phase;
+- (void)_changeDownloadPhase:(id)phase progress:(float)progress timeRemaining:(double)remaining;
+- (void)_downloadFailedWithError:(id)error;
+- (void)_downloadFinished:(BOOL)finished;
+- (void)_downloadInvalidatedWithUpdates:(id)updates;
 - (void)_loadBrainOnUnlockCallback;
-- (void)_notePhaseCompleted:(id)a3;
-- (void)_setDownloadDiscretionary:(BOOL)a3;
+- (void)_notePhaseCompleted:(id)completed;
+- (void)_setDownloadDiscretionary:(BOOL)discretionary;
 - (void)_snapshotProgress;
-- (void)_updateLastSavedDownloadsOptions:(id)a3;
+- (void)_updateLastSavedDownloadsOptions:(id)options;
 - (void)_updateNormalizedDownloadProgress;
 - (void)_updateNormalizedDownloadProgressAndNotifyDelegate;
-- (void)autoUpdateFound:(id)a3 downloadNow:(BOOL)a4;
-- (void)cleanupPreviousDownloadState:(BOOL)a3;
+- (void)autoUpdateFound:(id)found downloadNow:(BOOL)now;
+- (void)cleanupPreviousDownloadState:(BOOL)state;
 - (void)dealloc;
 - (void)deviceIsUpToDate;
-- (void)downloadProgress:(id)a3;
+- (void)downloadProgress:(id)progress;
 - (void)endAutoDownloadTasksAndResetState;
-- (void)ensureSSOTokenIfNeededForDownload:(id)a3;
-- (void)loadBrainOnUnlockForDescriptor:(id)a3;
-- (void)noteAutoDownloadFailedToStart:(id)a3 withError:(id)a4;
-- (void)noteAutoDownloadFailedToStartWithError:(id)a3;
-- (void)notifyClientOfClearingSpace:(BOOL)a3;
+- (void)ensureSSOTokenIfNeededForDownload:(id)download;
+- (void)loadBrainOnUnlockForDescriptor:(id)descriptor;
+- (void)noteAutoDownloadFailedToStart:(id)start withError:(id)error;
+- (void)noteAutoDownloadFailedToStartWithError:(id)error;
+- (void)notifyClientOfClearingSpace:(BOOL)space;
 - (void)operatorBundleChanged;
 - (void)resetDownloadStateOnStartup;
-- (void)setClearingSpace:(BOOL)a3;
-- (void)setDownload:(id)a3;
-- (void)setDownloadAsset:(id)a3;
-- (void)setDownloading:(BOOL)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4;
+- (void)setClearingSpace:(BOOL)space;
+- (void)setDownload:(id)download;
+- (void)setDownloadAsset:(id)asset;
+- (void)setDownloading:(BOOL)downloading;
+- (void)setForeground:(BOOL)foreground;
+- (void)startDownloadWithOptions:(id)options withResult:(id)result;
 - (void)tryAutoDownload;
 @end
 
 @implementation SUDownloader
 
-- (SUDownloader)initWithCore:(id)a3
+- (SUDownloader)initWithCore:(id)core
 {
-  v4 = a3;
+  coreCopy = core;
   v15.receiver = self;
   v15.super_class = SUDownloader;
   v5 = [(SUDownloader *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_core, v4);
+    objc_storeWeak(&v5->_core, coreCopy);
     *&v6->_foreground = 0;
     downloadAsset = v6->_downloadAsset;
     v6->_downloadAsset = 0;
@@ -95,8 +95,8 @@
   v3 = +[SUNetworkMonitor sharedInstance];
   [v3 removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SUDownloader;
@@ -105,24 +105,24 @@
 
 - (BOOL)isDownloading
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_downloading;
 }
 
-- (void)setDownloading:(BOOL)a3
+- (void)setDownloading:(BOOL)downloading
 {
-  v3 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  downloadingCopy = downloading;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (self->_downloading != v3)
+  if (self->_downloading != downloadingCopy)
   {
-    self->_downloading = v3;
-    if (v3)
+    self->_downloading = downloadingCopy;
+    if (downloadingCopy)
     {
       v7 = +[SUTransactionManager sharedInstance];
       [v7 beginTransaction:@"downloading" keepAlive:1];
@@ -139,25 +139,25 @@
 
 - (BOOL)isForeground
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_foreground;
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  v3 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  foregroundCopy = foreground;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (self->_foreground != v3)
+  if (self->_foreground != foregroundCopy)
   {
-    self->_foreground = v3;
+    self->_foreground = foregroundCopy;
     v14 = @"No";
-    if (v3)
+    if (foregroundCopy)
     {
       v14 = @"Yes";
     }
@@ -174,25 +174,25 @@
 
 - (BOOL)isClearingSpace
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_clearingSpace;
 }
 
-- (void)setClearingSpace:(BOOL)a3
+- (void)setClearingSpace:(BOOL)space
 {
-  v3 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  spaceCopy = space;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (self->_clearingSpace != v3)
+  if (self->_clearingSpace != spaceCopy)
   {
-    self->_clearingSpace = v3;
+    self->_clearingSpace = spaceCopy;
     v14 = @"No";
-    if (v3)
+    if (spaceCopy)
     {
       v14 = @"Yes";
     }
@@ -206,47 +206,47 @@
 
 - (MAAsset)downloadAsset
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   downloadAsset = self->_downloadAsset;
 
   return downloadAsset;
 }
 
-- (void)setDownloadAsset:(id)a3
+- (void)setDownloadAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  assetCopy = asset;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   downloadAsset = self->_downloadAsset;
-  self->_downloadAsset = v4;
+  self->_downloadAsset = assetCopy;
 }
 
 - (SUDownload)download
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   download = self->_download;
 
   return download;
 }
 
-- (void)setDownload:(id)a3
+- (void)setDownload:(id)download
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  downloadCopy = download;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   download = self->_download;
-  self->_download = v4;
-  v8 = v4;
+  self->_download = downloadCopy;
+  v8 = downloadCopy;
 
   LODWORD(download) = [(SUDownload *)v8 isPromoted];
   if (download)
@@ -256,35 +256,35 @@
   }
 }
 
-- (void)_setDownloadDiscretionary:(BOOL)a3
+- (void)_setDownloadDiscretionary:(BOOL)discretionary
 {
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!a3)
+  if (!discretionary)
   {
-    v7 = [(SUDownloader *)self download];
+    download = [(SUDownloader *)self download];
 
-    if (v7)
+    if (download)
     {
-      v8 = [(SUDownloader *)self download];
-      [v8 setPromoted:1];
+      download2 = [(SUDownloader *)self download];
+      [download2 setPromoted:1];
 
-      v9 = [(SUDownloader *)self core];
-      v10 = [v9 state];
-      v11 = [v10 lastDownload];
+      core2 = [(SUDownloader *)self core];
+      state = [core2 state];
+      lastDownload = [state lastDownload];
 
-      if (v11)
+      if (lastDownload)
       {
-        [v11 setPromoted:1];
-        v12 = [(SUDownloader *)self core];
-        v13 = [v12 state];
-        [v13 setLastDownload:v11];
+        [lastDownload setPromoted:1];
+        core3 = [(SUDownloader *)self core];
+        state2 = [core3 state];
+        [state2 setLastDownload:lastDownload];
 
-        v14 = [(SUDownloader *)self core];
-        v15 = [v14 state];
-        [v15 save];
+        core4 = [(SUDownloader *)self core];
+        state3 = [core4 state];
+        [state3 save];
       }
     }
   }
@@ -295,9 +295,9 @@
   block[1] = 3221225472;
   block[2] = __42__SUDownloader__setDownloadDiscretionary___block_invoke;
   block[3] = &unk_279CAAE40;
-  v22 = a3;
+  discretionaryCopy = discretionary;
   v20 = v16;
-  v21 = self;
+  selfCopy = self;
   v18 = v16;
   dispatch_async(v17, block);
 }
@@ -355,9 +355,9 @@ uint64_t __42__SUDownloader__setDownloadDiscretionary___block_invoke_2(uint64_t 
 
 - (void)resetDownloadStateOnStartup
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (self->_downloadStateResetSinceStartup)
   {
@@ -367,53 +367,53 @@ uint64_t __42__SUDownloader__setDownloadDiscretionary___block_invoke_2(uint64_t 
 
   else
   {
-    v12 = [(SUDownloader *)self core];
-    v13 = [v12 state];
-    [v13 setLastDownload:0];
+    core2 = [(SUDownloader *)self core];
+    state = [core2 state];
+    [state setLastDownload:0];
 
     [(SUDownloader *)self setDownload:0];
     [(SUDownloader *)self setDownloading:0];
     [(SUDownloader *)self setDownloadAsset:0];
     [(SUDownloader *)self setGoNonDiscretionaryOnDownload:0];
-    v14 = [(SUDownloader *)self core];
-    [v14 clearUnlockCallbacks];
+    core3 = [(SUDownloader *)self core];
+    [core3 clearUnlockCallbacks];
   }
 }
 
-- (void)autoUpdateFound:(id)a3 downloadNow:(BOOL)a4
+- (void)autoUpdateFound:(id)found downloadNow:(BOOL)now
 {
-  v51 = a3;
-  v6 = [(SUDownloader *)self core];
-  v7 = [v6 workQueue];
-  dispatch_assert_queue_V2(v7);
+  foundCopy = found;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [v51 humanReadableUpdateName];
-  SULogInfo(@"Auto scan found update available: %@", v9, v10, v11, v12, v13, v14, v15, v8);
+  humanReadableUpdateName = [foundCopy humanReadableUpdateName];
+  SULogInfo(@"Auto scan found update available: %@", v9, v10, v11, v12, v13, v14, v15, humanReadableUpdateName);
 
-  if ([v51 isSplatOnly])
+  if ([foundCopy isSplatOnly])
   {
     SULogInfo(@"Auto scan found a Splat update; download it now", v16, v17, v18, v19, v20, v21, v22, v50);
-    a4 = 1;
+    now = 1;
   }
 
-  v23 = [(SUDownloader *)self download];
-  if (!v23)
+  download = [(SUDownloader *)self download];
+  if (!download)
   {
     goto LABEL_18;
   }
 
-  v24 = v23;
-  v25 = [(SUDownloader *)self download];
-  v26 = [v25 downloadOptions];
-  v27 = [v26 isAutoDownload];
+  v24 = download;
+  download2 = [(SUDownloader *)self download];
+  downloadOptions = [download2 downloadOptions];
+  isAutoDownload = [downloadOptions isAutoDownload];
 
-  if ((v27 & 1) == 0)
+  if ((isAutoDownload & 1) == 0)
   {
-    v31 = [(SUDownloader *)self download];
-    v32 = [v31 progress];
-    v33 = [v32 isDone];
+    download3 = [(SUDownloader *)self download];
+    progress = [download3 progress];
+    isDone = [progress isDone];
     v41 = @"ing";
-    if (v33)
+    if (isDone)
     {
       v41 = @"ed";
     }
@@ -427,7 +427,7 @@ uint64_t __42__SUDownloader__setDownloadDiscretionary___block_invoke_2(uint64_t 
   else
   {
 LABEL_18:
-    if (a4 || (+[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 disableAutoDownloadJitter], v28, (v29 & 1) != 0))
+    if (now || (+[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 disableAutoDownloadJitter], v28, (v29 & 1) != 0))
     {
       v30 = 0;
     }
@@ -441,58 +441,58 @@ LABEL_18:
     v49 = +[SUScheduler sharedInstance];
     [v49 scheduleAutoDownloadWithDate:v30 requirePower:0 minimumPowerRquirement:0];
 
-    [(SUDownloader *)self loadBrainOnUnlockForDescriptor:v51];
+    [(SUDownloader *)self loadBrainOnUnlockForDescriptor:foundCopy];
   }
 }
 
-- (BOOL)isReadyForDownload:(id)a3 ignoreExistingDownload:(BOOL)a4 error:(id *)a5
+- (BOOL)isReadyForDownload:(id)download ignoreExistingDownload:(BOOL)existingDownload error:(id *)error
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(SUDownloader *)self core];
-  v10 = [v9 workQueue];
-  dispatch_assert_queue_V2(v10);
+  downloadCopy = download;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!a4 && [(SUDownloader *)self isDownloading])
+  if (!existingDownload && [(SUDownloader *)self isDownloading])
   {
     goto LABEL_5;
   }
 
   if (![(SUDownloader *)self isClearingSpace])
   {
-    v20 = [(SUDownloader *)self core];
-    v21 = [v20 isInstalling];
+    core2 = [(SUDownloader *)self core];
+    isInstalling = [core2 isInstalling];
 
-    if (v21)
+    if (isInstalling)
     {
-      v18 = a5;
+      errorCopy6 = error;
       v19 = 14;
       goto LABEL_18;
     }
 
-    v22 = [(SUDownloader *)self core];
-    v23 = [v22 preferredLastScannedDescriptor];
+    core3 = [(SUDownloader *)self core];
+    preferredLastScannedDescriptor = [core3 preferredLastScannedDescriptor];
 
-    if (!v23)
+    if (!preferredLastScannedDescriptor)
     {
-      v18 = a5;
+      errorCopy6 = error;
       v19 = 3;
       goto LABEL_18;
     }
 
-    v24 = [v8 descriptor];
-    if (!a4)
+    descriptor = [downloadCopy descriptor];
+    if (!existingDownload)
     {
-      v25 = [(SUDownload *)self->_download descriptor];
-      v26 = [v25 isEqual:v24];
+      descriptor2 = [(SUDownload *)self->_download descriptor];
+      v26 = [descriptor2 isEqual:descriptor];
 
       if (v26)
       {
         SULogInfo(@"Attempted to download update that's already on disk and downloaded.", v27, v28, v29, v30, v31, v32, v33, v65);
-        v34 = a5;
+        errorCopy5 = error;
         v35 = 41;
 LABEL_26:
-        [SUUtility assignError:v34 withCode:v35];
+        [SUUtility assignError:errorCopy5 withCode:v35];
 LABEL_27:
         v53 = 0;
 LABEL_29:
@@ -501,16 +501,16 @@ LABEL_29:
       }
     }
 
-    v36 = [(SUDownloader *)self core];
-    v37 = [v36 state];
-    v38 = [v37 failedPatchBuildVersions];
-    v39 = [v24 productBuildVersion];
-    v40 = [v38 containsObject:v39];
+    core4 = [(SUDownloader *)self core];
+    state = [core4 state];
+    failedPatchBuildVersions = [state failedPatchBuildVersions];
+    productBuildVersion = [descriptor productBuildVersion];
+    v40 = [failedPatchBuildVersions containsObject:productBuildVersion];
 
-    if ([v8 isAutoDownload])
+    if ([downloadCopy isAutoDownload])
     {
-      v41 = [v24 prerequisiteBuild];
-      v42 = (v41 != 0) & v40;
+      prerequisiteBuild = [descriptor prerequisiteBuild];
+      v42 = (prerequisiteBuild != 0) & v40;
 
       if (v42 == 1)
       {
@@ -518,13 +518,13 @@ LABEL_29:
         v65 = 0;
         [SUUtility assignError:&v65 withCode:53];
         v50 = v65;
-        if (a5)
+        if (error)
         {
           v66 = @"SUAutoDownloadWillRetry";
           v51 = [MEMORY[0x277CCABB0] numberWithBool:1];
           v67[0] = v51;
           v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-          *a5 = [SUUtility translateError:v50 withAddedUserInfo:v52];
+          *error = [SUUtility translateError:v50 withAddedUserInfo:v52];
         }
 
         goto LABEL_27;
@@ -534,11 +534,11 @@ LABEL_29:
     v56 = +[SUNetworkMonitor sharedInstance];
     if ([v56 isCurrentNetworkTypeCellular])
     {
-      v57 = [v8 isEnabledForCellular];
+      isEnabledForCellular = [downloadCopy isEnabledForCellular];
 
-      if ((v57 & 1) == 0)
+      if ((isEnabledForCellular & 1) == 0)
       {
-        v34 = a5;
+        errorCopy5 = error;
         v35 = 81;
         goto LABEL_26;
       }
@@ -555,17 +555,17 @@ LABEL_29:
     }
 
     SULogInfo(@"Not allowing download to start in RRTS mode", v58, v59, v60, v61, v62, v63, v64, v65);
-    v34 = a5;
+    errorCopy5 = error;
     v35 = 31;
     goto LABEL_26;
   }
 
   SULogInfo(@"Another download is already clearing space for download", v11, v12, v13, v14, v15, v16, v17, v65);
 LABEL_5:
-  v18 = a5;
+  errorCopy6 = error;
   v19 = 11;
 LABEL_18:
-  [SUUtility assignError:v18 withCode:v19];
+  [SUUtility assignError:errorCopy6 withCode:v19];
   v53 = 0;
 LABEL_19:
 
@@ -573,39 +573,39 @@ LABEL_19:
   return v53;
 }
 
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)startDownloadWithOptions:(id)options withResult:(id)result
 {
   v151 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUDownloader *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v148[0] = MEMORY[0x277D85DD0];
   v148[1] = 3221225472;
   v148[2] = __52__SUDownloader_startDownloadWithOptions_withResult___block_invoke;
   v148[3] = &unk_279CAAE18;
   v148[4] = self;
-  v10 = v7;
+  v10 = resultCopy;
   v149 = v10;
   v130 = MEMORY[0x26D668B30](v148);
-  SULogInfo(@"Got download request with download options: %@", v11, v12, v13, v14, v15, v16, v17, v6);
-  v18 = [(SUDownloadOptions *)v6 descriptor];
-  v19 = [v18 productBuildVersion];
+  SULogInfo(@"Got download request with download options: %@", v11, v12, v13, v14, v15, v16, v17, optionsCopy);
+  descriptor = [(SUDownloadOptions *)optionsCopy descriptor];
+  productBuildVersion = [descriptor productBuildVersion];
 
-  if (v19)
+  if (productBuildVersion)
   {
-    v27 = self;
-    v28 = [(SUDownloader *)self core];
-    v29 = [(SUDownloadOptions *)v6 descriptor];
-    v30 = [v29 productBuildVersion];
-    v31 = [(SUDownloadOptions *)v6 descriptor];
-    v32 = [v31 productVersionExtra];
-    v33 = [(SUDownloadOptions *)v6 descriptor];
-    v34 = [v28 coreDescriptorForBuildVersion:v30 versionExtra:v32 isSplombo:{objc_msgSend(v33, "isSplombo")}];
+    selfCopy2 = self;
+    core2 = [(SUDownloader *)self core];
+    descriptor2 = [(SUDownloadOptions *)optionsCopy descriptor];
+    productBuildVersion2 = [descriptor2 productBuildVersion];
+    descriptor3 = [(SUDownloadOptions *)optionsCopy descriptor];
+    productVersionExtra = [descriptor3 productVersionExtra];
+    descriptor4 = [(SUDownloadOptions *)optionsCopy descriptor];
+    v34 = [core2 coreDescriptorForBuildVersion:productBuildVersion2 versionExtra:productVersionExtra isSplombo:{objc_msgSend(descriptor4, "isSplombo")}];
 
-    if (v6)
+    if (optionsCopy)
     {
       goto LABEL_4;
     }
@@ -613,15 +613,15 @@ LABEL_19:
     goto LABEL_3;
   }
 
-  v27 = self;
+  selfCopy2 = self;
   v34 = 0;
-  if (!v6)
+  if (!optionsCopy)
   {
 LABEL_3:
-    v35 = [(SUDownloader *)v27 core];
-    v36 = [v35 preferredLastScannedDescriptor];
+    core3 = [(SUDownloader *)selfCopy2 core];
+    preferredLastScannedDescriptor = [core3 preferredLastScannedDescriptor];
 
-    v34 = v36;
+    v34 = preferredLastScannedDescriptor;
   }
 
 LABEL_4:
@@ -645,33 +645,33 @@ LABEL_13:
   }
 
   v40 = v39;
-  v41 = [v34 getMASoftwareUpdateAsset];
-  if (v41)
+  getMASoftwareUpdateAsset = [v34 getMASoftwareUpdateAsset];
+  if (getMASoftwareUpdateAsset)
   {
-    v49 = v41;
-    if (v6)
+    v49 = getMASoftwareUpdateAsset;
+    if (optionsCopy)
     {
-      [(SUDownloadOptions *)v6 setDescriptor:v40];
+      [(SUDownloadOptions *)optionsCopy setDescriptor:v40];
     }
 
     else
     {
-      v6 = [[SUDownloadOptions alloc] initWithDescriptor:v40];
+      optionsCopy = [[SUDownloadOptions alloc] initWithDescriptor:v40];
     }
 
-    v59 = v27;
-    if ([(SUDownloadOptions *)v6 _clientIsLivabilityd])
+    v59 = selfCopy2;
+    if ([(SUDownloadOptions *)optionsCopy _clientIsLivabilityd])
     {
-      [(SUDownloadOptions *)v6 setDownloadOnly:1];
+      [(SUDownloadOptions *)optionsCopy setDownloadOnly:1];
     }
 
     v147 = 0;
-    v60 = [(SUDownloader *)v27 isReadyForDownload:v6 ignoreExistingDownload:0 error:&v147];
+    v60 = [(SUDownloader *)selfCopy2 isReadyForDownload:optionsCopy ignoreExistingDownload:0 error:&v147];
     v61 = v147;
     if (v60)
     {
       v62 = v34;
-      [(SUDownloader *)v59 ensureSSOTokenIfNeededForDownload:v6];
+      [(SUDownloader *)v59 ensureSSOTokenIfNeededForDownload:optionsCopy];
       [(SUDownloader *)v59 cleanupPreviousDownloadState:0];
       [(SUDownloader *)v59 setDownloading:1];
       v63 = objc_alloc_init(SUDownload);
@@ -682,8 +682,8 @@ LABEL_13:
       [(SUDownload *)v63 setProgress:v64];
       [(SUDownload *)v63 setDescriptor:v40];
       v131 = v63;
-      [(SUDownload *)v63 setDownloadOptions:v6];
-      if (v59->_foreground && [(SUDownloadOptions *)v6 isAutoDownload])
+      [(SUDownload *)v63 setDownloadOptions:optionsCopy];
+      if (v59->_foreground && [(SUDownloadOptions *)optionsCopy isAutoDownload])
       {
         SULogInfo(@"Starting auto download while client in foreground, go non discretionary once download start", v65, v66, v67, v68, v69, v70, v71, v121);
         [(SUDownloader *)v59 setGoNonDiscretionaryOnDownload:1];
@@ -697,34 +697,34 @@ LABEL_13:
 
       v125 = v61;
       v127 = v38;
-      v128 = v6;
+      v128 = optionsCopy;
       [(SUDownloader *)v59 setDownload:v63];
       v126 = v49;
       [(SUDownloader *)v59 setDownloadAsset:v49];
-      v72 = [(SUDownloader *)v59 core];
-      v73 = [v72 state];
-      [v73 setLastDownload:v131];
+      core4 = [(SUDownloader *)v59 core];
+      state = [core4 state];
+      [state setLastDownload:v131];
 
-      v74 = [(SUDownloader *)v59 core];
-      v75 = [v74 state];
-      [v75 save];
+      core5 = [(SUDownloader *)v59 core];
+      state2 = [core5 state];
+      [state2 save];
 
       (*(v130 + 16))(v130, 1, 0);
-      v76 = [(SUDownloader *)v59 core];
-      v77 = [v76 delegate];
+      core6 = [(SUDownloader *)v59 core];
+      delegate = [core6 delegate];
       v78 = objc_opt_respondsToSelector();
 
       if (v78)
       {
-        v79 = [(SUDownloader *)v59 core];
-        v80 = [v79 externWorkQueue];
+        core7 = [(SUDownloader *)v59 core];
+        externWorkQueue = [core7 externWorkQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __52__SUDownloader_startDownloadWithOptions_withResult___block_invoke_2;
         block[3] = &unk_279CAA7C0;
         block[4] = v59;
         v146 = v131;
-        dispatch_async(v80, block);
+        dispatch_async(externWorkQueue, block);
       }
 
       v129 = v62;
@@ -733,11 +733,11 @@ LABEL_13:
       v141 = 0u;
       v142 = 0u;
       v81 = v59;
-      v82 = [(SUDownloader *)v59 core];
-      v83 = [v82 observers];
-      v84 = [v83 allObjects];
+      core8 = [(SUDownloader *)v59 core];
+      observers = [core8 observers];
+      allObjects = [observers allObjects];
 
-      v85 = [v84 countByEnumeratingWithState:&v141 objects:v150 count:16];
+      v85 = [allObjects countByEnumeratingWithState:&v141 objects:v150 count:16];
       if (v85)
       {
         v86 = v85;
@@ -748,53 +748,53 @@ LABEL_13:
           {
             if (*v142 != v87)
             {
-              objc_enumerationMutation(v84);
+              objc_enumerationMutation(allObjects);
             }
 
             v89 = *(*(&v141 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v90 = [(SUDownloader *)v81 core];
-              v91 = [v90 externWorkQueue];
+              core9 = [(SUDownloader *)v81 core];
+              externWorkQueue2 = [core9 externWorkQueue];
               v139[0] = MEMORY[0x277D85DD0];
               v139[1] = 3221225472;
               v139[2] = __52__SUDownloader_startDownloadWithOptions_withResult___block_invoke_3;
               v139[3] = &unk_279CAA7C0;
               v139[4] = v89;
               v140 = v131;
-              dispatch_async(v91, v139);
+              dispatch_async(externWorkQueue2, v139);
             }
           }
 
-          v86 = [v84 countByEnumeratingWithState:&v141 objects:v150 count:16];
+          v86 = [allObjects countByEnumeratingWithState:&v141 objects:v150 count:16];
         }
 
         while (v86);
       }
 
-      v6 = v128;
-      v123 = [(SUDownloadOptions *)v128 activeDownloadPolicy];
+      optionsCopy = v128;
+      activeDownloadPolicy = [(SUDownloadOptions *)v128 activeDownloadPolicy];
       v92 = objc_opt_class();
       SULogInfo(@"Active download policy class: %@", v93, v94, v95, v96, v97, v98, v99, v92);
       v100 = v81;
       [(SUDownloader *)v81 setClearingSpace:1];
-      v101 = [(SUDownloader *)v81 core];
-      v102 = [v101 workQueue];
-      v103 = [SUDownloader purgeOptionsForDescriptor:v40 downloadOptions:v128 completionQueue:v102];
+      core10 = [(SUDownloader *)v81 core];
+      workQueue2 = [core10 workQueue];
+      v103 = [SUDownloader purgeOptionsForDescriptor:v40 downloadOptions:v128 completionQueue:workQueue2];
 
       v104 = +[SUPreferences sharedInstance];
-      LOBYTE(v101) = [v104 skipDownload];
+      LOBYTE(core10) = [v104 skipDownload];
 
       v61 = v125;
-      if ((v101 & 1) == 0)
+      if ((core10 & 1) == 0)
       {
-        v105 = [v103 neededBytes];
-        v106 = [v129 bundleAttributes];
-        v107 = [v106 objectForKeyedSubscript:@"AssetFormat"];
+        neededBytes = [v103 neededBytes];
+        bundleAttributes = [v129 bundleAttributes];
+        v107 = [bundleAttributes objectForKeyedSubscript:@"AssetFormat"];
 
-        if ((!v107 || [v107 isEqualToString:@"StreamingZip"]) && v105 >= objc_msgSend(v40, "_unarchiveSize"))
+        if ((!v107 || [v107 isEqualToString:@"StreamingZip"]) && neededBytes >= objc_msgSend(v40, "_unarchiveSize"))
         {
-          v105 -= [v40 _unarchiveSize];
+          neededBytes -= [v40 _unarchiveSize];
         }
 
         [v103 neededBytes];
@@ -802,7 +802,7 @@ LABEL_13:
         [v40 unentitledReserveAmount];
         SULogInfo(@"[Space] %s Setting entitled space to %llu (%llu MB) and unentitled to %llu (%llu MB)", v108, v109, v110, v111, v112, v113, v114, "[SUDownloader startDownloadWithOptions:withResult:]");
         v115 = MEMORY[0x277D641E8];
-        v116 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v105];
+        v116 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:neededBytes];
         v117 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v40, "unentitledReserveAmount")}];
         [v115 cacheDeletePauseReserveSpace:v116 unentitledSpace:v117 withPurpose:@"SUSController-startDownloadWithOptions"];
       }
@@ -1060,26 +1060,26 @@ void __52__SUDownloader_startDownloadWithOptions_withResult___block_invoke_9(uin
   }
 }
 
-- (void)notifyClientOfClearingSpace:(BOOL)a3
+- (void)notifyClientOfClearingSpace:(BOOL)space
 {
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 delegate];
+  core = [(SUDownloader *)self core];
+  delegate = [core delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = self->_download;
-    v9 = [(SUDownloader *)self core];
-    v10 = [v9 externWorkQueue];
+    core2 = [(SUDownloader *)self core];
+    externWorkQueue = [core2 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__SUDownloader_notifyClientOfClearingSpace___block_invoke;
     block[3] = &unk_279CAAE40;
     block[4] = self;
     v13 = v8;
-    v14 = a3;
+    spaceCopy = space;
     v11 = v8;
-    dispatch_async(v10, block);
+    dispatch_async(externWorkQueue, block);
   }
 }
 
@@ -1090,96 +1090,96 @@ void __44__SUDownloader_notifyClientOfClearingSpace___block_invoke(uint64_t a1)
   [v2 clearingSpaceForDownload:*(a1 + 40) clearing:*(a1 + 48)];
 }
 
-- (BOOL)_reapplyExistingDownloadPolicyIfDownloadable:(BOOL)a3
+- (BOOL)_reapplyExistingDownloadPolicyIfDownloadable:(BOOL)downloadable
 {
-  v3 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  downloadableCopy = downloadable;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUDownload *)self->_download downloadOptions];
-  v8 = [v7 activeDownloadPolicy];
-  v9 = [v8 isDownloadable];
-  if (v9)
+  downloadOptions = [(SUDownload *)self->_download downloadOptions];
+  activeDownloadPolicy = [downloadOptions activeDownloadPolicy];
+  isDownloadable = [activeDownloadPolicy isDownloadable];
+  if (isDownloadable)
   {
-    [v7 setActiveDownloadPolicy:v8];
-    if (v3)
+    [downloadOptions setActiveDownloadPolicy:activeDownloadPolicy];
+    if (downloadableCopy)
     {
       [(SUDownloader *)self _setDownloadDiscretionary:0];
     }
 
-    [(SUDownloader *)self _updateLastSavedDownloadsOptions:v7];
+    [(SUDownloader *)self _updateLastSavedDownloadsOptions:downloadOptions];
   }
 
-  return v9;
+  return isDownloadable;
 }
 
-- (void)_updateLastSavedDownloadsOptions:(id)a3
+- (void)_updateLastSavedDownloadsOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  optionsCopy = options;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUDownloader *)self core];
-  v8 = [v7 state];
-  v13 = [v8 lastDownload];
+  core2 = [(SUDownloader *)self core];
+  state = [core2 state];
+  lastDownload = [state lastDownload];
 
-  [v13 setDownloadOptions:v4];
-  v9 = [(SUDownloader *)self core];
-  v10 = [v9 state];
-  [v10 setLastDownload:v13];
+  [lastDownload setDownloadOptions:optionsCopy];
+  core3 = [(SUDownloader *)self core];
+  state2 = [core3 state];
+  [state2 setLastDownload:lastDownload];
 
-  v11 = [(SUDownloader *)self core];
-  v12 = [v11 state];
-  [v12 save];
+  core4 = [(SUDownloader *)self core];
+  state3 = [core4 state];
+  [state3 save];
 }
 
 - (void)_loadBrainOnUnlockCallback
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUDownloader *)self core];
-  [v5 removeUnlockCallback:@"unlockCallbackLoadBrain"];
+  core2 = [(SUDownloader *)self core];
+  [core2 removeUnlockCallback:@"unlockCallbackLoadBrain"];
 
-  v13 = [(SUDownloader *)self loadBrainForDescriptor];
-  if (!v13)
+  loadBrainForDescriptor = [(SUDownloader *)self loadBrainForDescriptor];
+  if (!loadBrainForDescriptor)
   {
     SULogInfo(@"%s: No descriptor, skip preloading brain on unlock", v6, v7, v8, v9, v10, v11, v12, "[SUDownloader _loadBrainOnUnlockCallback]");
     goto LABEL_12;
   }
 
   v14 = +[SUPreferences sharedInstance];
-  v15 = [v14 autoInstallSecurityResponse];
+  autoInstallSecurityResponse = [v14 autoInstallSecurityResponse];
 
   v16 = +[SUPreferences sharedInstance];
-  v17 = [v16 isAutoDownloadDisabled];
+  isAutoDownloadDisabled = [v16 isAutoDownloadDisabled];
 
-  if ([v13 isSplatOnly])
+  if ([loadBrainForDescriptor isSplatOnly])
   {
-    if ((v15 & 1) == 0)
+    if ((autoInstallSecurityResponse & 1) == 0)
     {
       SULogInfo(@"%s: Auto install security response disabled. No need to preload brain", v18, v19, v20, v21, v22, v23, v24, "[SUDownloader _loadBrainOnUnlockCallback]");
       goto LABEL_12;
     }
   }
 
-  else if (v17)
+  else if (isAutoDownloadDisabled)
   {
     SULogInfo(@"%s: Auto download disabled via preferences. No need to preload brain", v18, v19, v20, v21, v22, v23, v24, "[SUDownloader _loadBrainOnUnlockCallback]");
     goto LABEL_12;
   }
 
-  v25 = [(SUDownloader *)self download];
+  download = [(SUDownloader *)self download];
 
-  if (v25)
+  if (download)
   {
     SULogInfo(@"%s: Found existing download, skip preloading brain", v26, v27, v28, v29, v30, v31, v32, "[SUDownloader _loadBrainOnUnlockCallback]");
   }
 
-  else if ([v13 rampEnabled])
+  else if ([loadBrainForDescriptor rampEnabled])
   {
     SULogInfo(@"%s: Ramp is enabled for asset, skip preloading brain", v33, v34, v35, v36, v37, v38, v39, "[SUDownloader _loadBrainOnUnlockCallback]");
   }
@@ -1187,59 +1187,59 @@ void __44__SUDownloader_notifyClientOfClearingSpace___block_invoke(uint64_t a1)
   else
   {
     v40 = +[SUNetworkMonitor sharedInstance];
-    v41 = [v40 currentNetworkType];
+    currentNetworkType = [v40 currentNetworkType];
 
-    if (v41 == 1)
+    if (currentNetworkType == 1)
     {
-      v49 = [(SUDownloader *)self core];
-      v50 = [v49 coreDescriptorForSUDescriptor:v13];
+      core3 = [(SUDownloader *)self core];
+      v50 = [core3 coreDescriptorForSUDescriptor:loadBrainForDescriptor];
 
       v51 = objc_opt_new();
       [v51 setDiscretionary:0];
       [v51 setAllowsCellularAccess:0];
-      v52 = [(SUDownloader *)self core];
-      v53 = [v52 isManaged];
+      core4 = [(SUDownloader *)self core];
+      isManaged = [core4 isManaged];
 
-      if (v53)
+      if (isManaged)
       {
         [v51 setSupervised:1];
-        v54 = [v50 productVersion];
-        [v51 setRequestedProductVersion:v54];
+        productVersion = [v50 productVersion];
+        [v51 setRequestedProductVersion:productVersion];
       }
 
-      v55 = [v50 assetAudienceUUID];
+      assetAudienceUUID = [v50 assetAudienceUUID];
 
-      if (v55)
+      if (assetAudienceUUID)
       {
-        v56 = [v50 assetAudienceUUID];
-        v57 = [v56 copy];
+        assetAudienceUUID2 = [v50 assetAudienceUUID];
+        v57 = [assetAudienceUUID2 copy];
         [v51 setLiveAssetAudienceUUID:v57];
       }
 
-      v58 = [v50 getMASoftwareUpdateAsset];
-      if (!v58)
+      getMASoftwareUpdateAsset = [v50 getMASoftwareUpdateAsset];
+      if (!getMASoftwareUpdateAsset)
       {
-        v59 = [(SUDownloader *)self core];
-        v58 = [v59 preferredAssetToDownloadFromLastScan];
+        core5 = [(SUDownloader *)self core];
+        getMASoftwareUpdateAsset = [core5 preferredAssetToDownloadFromLastScan];
       }
 
-      v60 = [objc_alloc(MEMORY[0x277D292C0]) initWithUpdateAsset:v58];
+      v60 = [objc_alloc(MEMORY[0x277D292C0]) initWithUpdateAsset:getMASoftwareUpdateAsset];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __42__SUDownloader__loadBrainOnUnlockCallback__block_invoke;
       v63[3] = &unk_279CACF40;
       v63[4] = self;
-      v64 = v58;
-      v65 = v13;
-      v61 = v58;
+      v64 = getMASoftwareUpdateAsset;
+      v65 = loadBrainForDescriptor;
+      v61 = getMASoftwareUpdateAsset;
       [v60 loadUpdateBrainWithMAOptions:v51 progressHandler:v63];
     }
 
     else
     {
       SULogInfo(@"%s: Skip brain preload when not on wifi", v42, v43, v44, v45, v46, v47, v48, "[SUDownloader _loadBrainOnUnlockCallback]");
-      v62 = [(SUDownloader *)self core];
-      [v62 addUnlockCallback:sel__loadBrainOnUnlockCallback forKey:@"unlockCallbackLoadBrain"];
+      core6 = [(SUDownloader *)self core];
+      [core6 addUnlockCallback:sel__loadBrainOnUnlockCallback forKey:@"unlockCallbackLoadBrain"];
     }
   }
 
@@ -1300,17 +1300,17 @@ void __42__SUDownloader__loadBrainOnUnlockCallback__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)loadBrainOnUnlockForDescriptor:(id)a3
+- (void)loadBrainOnUnlockForDescriptor:(id)descriptor
 {
-  v22 = a3;
-  v4 = [(SUDownloader *)self core];
-  v5 = [v4 workQueue];
-  dispatch_assert_queue_V2(v5);
+  descriptorCopy = descriptor;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v22)
+  if (descriptorCopy)
   {
-    v13 = [(SUDownloader *)self brainLoadedForDescriptor];
-    v14 = [v13 isEqual:v22];
+    brainLoadedForDescriptor = [(SUDownloader *)self brainLoadedForDescriptor];
+    v14 = [brainLoadedForDescriptor isEqual:descriptorCopy];
 
     if (v14)
     {
@@ -1319,7 +1319,7 @@ void __42__SUDownloader__loadBrainOnUnlockCallback__block_invoke_2(uint64_t a1)
 
     else
     {
-      [(SUDownloader *)self setLoadBrainForDescriptor:v22];
+      [(SUDownloader *)self setLoadBrainForDescriptor:descriptorCopy];
       [(SUDownloader *)self setBrainLoadAttemptsForDescriptor:0];
       [(SUDownloader *)self _loadBrainOnUnlockCallback];
     }
@@ -1331,43 +1331,43 @@ void __42__SUDownloader__loadBrainOnUnlockCallback__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)needToWaitForUnlockForLoadingBrainForDescriptor:(id)a3
+- (BOOL)needToWaitForUnlockForLoadingBrainForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  descriptorCopy = descriptor;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!v4)
+  if (!descriptorCopy)
   {
     SULogInfo(@"%s: No descriptor, skip loading brain", v7, v8, v9, v10, v11, v12, v13, "[SUDownloader needToWaitForUnlockForLoadingBrainForDescriptor:]");
     goto LABEL_5;
   }
 
-  v14 = [(SUDownloader *)self brainLoadedForDescriptor];
-  v15 = [v14 isEqual:v4];
+  brainLoadedForDescriptor = [(SUDownloader *)self brainLoadedForDescriptor];
+  v15 = [brainLoadedForDescriptor isEqual:descriptorCopy];
 
   if (!v15)
   {
-    v24 = [(SUDownloader *)self core];
-    v25 = [v24 coreDescriptorForSUDescriptor:v4];
-    v26 = [v25 getMASoftwareUpdateAsset];
+    core2 = [(SUDownloader *)self core];
+    v25 = [core2 coreDescriptorForSUDescriptor:descriptorCopy];
+    getMASoftwareUpdateAsset = [v25 getMASoftwareUpdateAsset];
 
-    if (!v26)
+    if (!getMASoftwareUpdateAsset)
     {
-      v27 = [(SUDownloader *)self core];
-      v26 = [v27 preferredAssetToDownloadFromLastScan];
+      core3 = [(SUDownloader *)self core];
+      getMASoftwareUpdateAsset = [core3 preferredAssetToDownloadFromLastScan];
     }
 
-    v28 = [v26 attributes];
+    attributes = [getMASoftwareUpdateAsset attributes];
     v29 = SUCoreBorder_MSUBrainIsLoadable();
 
     if (v29)
     {
       v37 = +[SUKeybagInterface sharedInstance];
-      v38 = [v37 isPasscodeLocked];
+      isPasscodeLocked = [v37 isPasscodeLocked];
 
-      if (v38)
+      if (isPasscodeLocked)
       {
         v23 = 1;
 LABEL_14:
@@ -1398,32 +1398,32 @@ LABEL_15:
 
 - (void)tryAutoDownload
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 updateToAutoDownload];
+  core2 = [(SUDownloader *)self core];
+  updateToAutoDownload = [core2 updateToAutoDownload];
 
-  if (!v6)
+  if (!updateToAutoDownload)
   {
     v16 = @"Unable to autodownload with nil download descriptor";
     goto LABEL_5;
   }
 
-  v14 = [(SUDownloader *)self core];
-  v15 = [v14 isInstallTonightScheduled];
+  core3 = [(SUDownloader *)self core];
+  isInstallTonightScheduled = [core3 isInstallTonightScheduled];
 
-  if (!v15)
+  if (!isInstallTonightScheduled)
   {
-    v17 = [v6 isSplatOnly];
+    isSplatOnly = [updateToAutoDownload isSplatOnly];
     v18 = +[SUPreferences sharedInstance];
     v19 = v18;
-    if (v17)
+    if (isSplatOnly)
     {
-      v20 = [v18 autoInstallSecurityResponse];
+      autoInstallSecurityResponse = [v18 autoInstallSecurityResponse];
 
-      if ((v20 & 1) == 0)
+      if ((autoInstallSecurityResponse & 1) == 0)
       {
         v16 = @"Auto install security response disabled. Skipping auto download attempt";
         goto LABEL_5;
@@ -1432,9 +1432,9 @@ LABEL_15:
 
     else
     {
-      v21 = [v18 isAutoDownloadDisabled];
+      isAutoDownloadDisabled = [v18 isAutoDownloadDisabled];
 
-      if (v21)
+      if (isAutoDownloadDisabled)
       {
         v16 = @"Auto download disabled via preferences. Skipping auto download attempt";
         goto LABEL_5;
@@ -1442,24 +1442,24 @@ LABEL_15:
     }
 
     v22 = +[SUNetworkMonitor sharedInstance];
-    v23 = [v22 currentNetworkType];
+    currentNetworkType = [v22 currentNetworkType];
 
-    if (v23 != 1)
+    if (currentNetworkType != 1)
     {
       v16 = @"Auto download only allowed over wifi";
       goto LABEL_5;
     }
 
-    v24 = [v6 assetID];
-    v25 = [(SUDownloader *)self core];
-    v26 = [v25 state];
-    v27 = [v26 lastDeletedSUAssetID];
-    if ([v24 isEqualToString:v27])
+    assetID = [updateToAutoDownload assetID];
+    core4 = [(SUDownloader *)self core];
+    state = [core4 state];
+    lastDeletedSUAssetID = [state lastDeletedSUAssetID];
+    if ([assetID isEqualToString:lastDeletedSUAssetID])
     {
       v28 = +[SUPreferences sharedInstance];
-      v29 = [v28 autoDownloadDeletedBuild];
+      autoDownloadDeletedBuild = [v28 autoDownloadDeletedBuild];
 
-      if ((v29 & 1) == 0)
+      if ((autoDownloadDeletedBuild & 1) == 0)
       {
         v16 = @"Attempting to auto-download previously deleted update. Skipping auto downlaod attempt";
         goto LABEL_5;
@@ -1470,37 +1470,37 @@ LABEL_15:
     {
     }
 
-    if ([v6 rampEnabled])
+    if ([updateToAutoDownload rampEnabled])
     {
       v16 = @"Ramp is enabled for asset. Skipping auto downlaod attempt";
       goto LABEL_5;
     }
 
-    v30 = [[SUAutoDownloadPolicy alloc] initWithDescriptor:v6];
+    v30 = [[SUAutoDownloadPolicy alloc] initWithDescriptor:updateToAutoDownload];
     if (![(SUDefaultDownloadPolicy *)v30 isDownloadable])
     {
       SULogInfo(@"SUAutoDownloadPolicy prevents SU asset download: %@", v31, v32, v33, v34, v35, v36, v37, v30);
       v54 = [SUUtility errorWithCode:31];
-      [(SUDownloader *)self noteAutoDownloadFailedToStart:v6 withError:v54];
+      [(SUDownloader *)self noteAutoDownloadFailedToStart:updateToAutoDownload withError:v54];
 LABEL_25:
 
 LABEL_36:
       goto LABEL_6;
     }
 
-    v38 = [(SUDownloader *)self core];
-    v39 = [v38 download];
-    v40 = [v39 descriptor];
-    v41 = [v6 isEqual:v40];
+    core5 = [(SUDownloader *)self core];
+    download = [core5 download];
+    descriptor = [download descriptor];
+    v41 = [updateToAutoDownload isEqual:descriptor];
 
     if (v41)
     {
-      v42 = [(SUDownloader *)self core];
-      v43 = [v42 download];
-      v44 = [v43 progress];
-      v45 = [v44 isDone];
+      core6 = [(SUDownloader *)self core];
+      download2 = [core6 download];
+      progress = [download2 progress];
+      isDone = [progress isDone];
 
-      if (v45)
+      if (isDone)
       {
         v53 = @"Background scan found build already downloaded; Skipping auto downlaod attempt";
 LABEL_35:
@@ -1509,15 +1509,15 @@ LABEL_35:
       }
     }
 
-    v55 = [(SUDownloader *)self _isWithinAutoDownloadWindowForPolicy:v30 descriptor:v6];
+    v55 = [(SUDownloader *)self _isWithinAutoDownloadWindowForPolicy:v30 descriptor:updateToAutoDownload];
     if (v55)
     {
       SULogInfo(@"%s: Scheduling a new auto download in 4 hours in case this one fails", v46, v47, v48, v49, v50, v51, v52, "[SUDownloader tryAutoDownload]");
       v56 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:14400.0];
       v57 = +[SUPreferences sharedInstance];
-      v58 = [v57 disableAutoDownloadJitter];
+      disableAutoDownloadJitter = [v57 disableAutoDownloadJitter];
 
-      if ((v58 & 1) == 0)
+      if ((disableAutoDownloadJitter & 1) == 0)
       {
         v59 = [v56 dateByAddingTimeInterval:{+[SUUtility randomIntWithMinVal:maxVal:](SUUtility, "randomIntWithMinVal:maxVal:", 0, 1800)}];
 
@@ -1543,15 +1543,15 @@ LABEL_35:
       goto LABEL_35;
     }
 
-    v70 = [(SUDownloader *)self core];
-    v71 = [v6 productBuildVersion];
-    v54 = [v70 fullyUnrampedDateForBuildVersion:v71];
+    core7 = [(SUDownloader *)self core];
+    productBuildVersion = [updateToAutoDownload productBuildVersion];
+    v54 = [core7 fullyUnrampedDateForBuildVersion:productBuildVersion];
 
-    if (SUHasEnoughBatteryForAutoDownloadForDescriptor(v6, v54))
+    if (SUHasEnoughBatteryForAutoDownloadForDescriptor(updateToAutoDownload, v54))
     {
       if (v55)
       {
-        if ([(SUDownloader *)self needToWaitForUnlockForLoadingBrainForDescriptor:v6])
+        if ([(SUDownloader *)self needToWaitForUnlockForLoadingBrainForDescriptor:updateToAutoDownload])
         {
           v79 = @"We can't load the brain now, skipping auto download attempt";
 LABEL_42:
@@ -1562,12 +1562,12 @@ LABEL_42:
         v81 = +[SUTransactionManager sharedInstance];
         [v81 beginTransaction:@"auto-tryDownload"];
         SULogInfo(@"Attempting to autodownload...", v82, v83, v84, v85, v86, v87, v88, v92);
-        v80 = [[SUDownloadOptions alloc] initWithDescriptor:v6];
+        v80 = [[SUDownloadOptions alloc] initWithDescriptor:updateToAutoDownload];
         [(SUDownloadOptions *)v80 setAutoDownload:1];
         [(SUDownloadOptions *)v80 setActiveDownloadPolicyType:1];
         v89 = +[SUState currentState];
-        v90 = [MEMORY[0x277CBEAA8] date];
-        [v89 setLastAutoDownloadDate:v90];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v89 setLastAutoDownloadDate:date];
 
         [(SUDownloadOptions *)v80 setClientName:@"com.apple.softwareupdateservicesd.autodownload"];
         v94[0] = MEMORY[0x277D85DD0];
@@ -1575,7 +1575,7 @@ LABEL_42:
         v94[2] = __31__SUDownloader_tryAutoDownload__block_invoke;
         v94[3] = &unk_279CACF68;
         v94[4] = self;
-        v95 = v6;
+        v95 = updateToAutoDownload;
         v96 = v81;
         v91 = v81;
         [(SUDownloader *)self startDownloadWithOptions:v80 withResult:v94];
@@ -1585,7 +1585,7 @@ LABEL_42:
       {
         SULogInfo(@"No longer in auto download window. No longer attempting auto download for this update", v72, v73, v74, v75, v76, v77, v78, v92);
         v80 = [SUUtility autoDownloadExpiredError:0];
-        [(SUDownloader *)self noteAutoDownloadFailedToStart:v6 withError:v80];
+        [(SUDownloader *)self noteAutoDownloadFailedToStart:updateToAutoDownload withError:v80];
       }
 
       goto LABEL_25;
@@ -1646,60 +1646,60 @@ void __31__SUDownloader_tryAutoDownload__block_invoke_2(uint64_t a1)
 
 - (void)endAutoDownloadTasksAndResetState
 {
-  v2 = [(SUDownloader *)self core];
-  v3 = [v2 workQueue];
-  dispatch_assert_queue_V2(v3);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   SULogInfo(@"Ending/clearing any oustanding autodownload tasks and state", v4, v5, v6, v7, v8, v9, v10, v11);
   v12 = +[SUScheduler sharedInstance];
   [v12 cancelAllAutoDownloadTasks];
 }
 
-- (BOOL)updateDownloadOptions:(id)a3 error:(id *)a4
+- (BOOL)updateDownloadOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SUDownloader *)self core];
-  v8 = [v7 workQueue];
-  dispatch_assert_queue_V2(v8);
+  optionsCopy = options;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (!self->_downloadAsset || (download = self->_download) == 0)
   {
-    v26 = a4;
+    errorCopy2 = error;
     v27 = 3;
 LABEL_14:
-    [SUUtility assignError:v26 withCode:v27];
+    [SUUtility assignError:errorCopy2 withCode:v27];
     v25 = 0;
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
-    v26 = a4;
+    errorCopy2 = error;
     v27 = 22;
     goto LABEL_14;
   }
 
-  v10 = [(SUDownload *)download downloadOptions];
-  if ([v10 isAutoDownload] && objc_msgSend(v6, "activeDownloadPolicyType") != 1 || objc_msgSend(v10, "isAutoDownload") && (objc_msgSend(v6, "isAutoDownload") & 1) == 0)
+  downloadOptions = [(SUDownload *)download downloadOptions];
+  if ([downloadOptions isAutoDownload] && objc_msgSend(optionsCopy, "activeDownloadPolicyType") != 1 || objc_msgSend(downloadOptions, "isAutoDownload") && (objc_msgSend(optionsCopy, "isAutoDownload") & 1) == 0)
   {
     [(SUDownloader *)self endAutoDownloadTasksAndResetState];
-    if (([v10 isEqual:v6] & 1) == 0)
+    if (([downloadOptions isEqual:optionsCopy] & 1) == 0)
     {
       [(SUDownloader *)self _setDownloadDiscretionary:0];
     }
   }
 
-  [(SUDownload *)self->_download setDownloadOptions:v6];
-  SULogInfo(@"Download options changed from: %@ \nto:\n %@", v11, v12, v13, v14, v15, v16, v17, v10);
-  v18 = [(SUDownloader *)self core];
-  v19 = [v18 delegate];
+  [(SUDownload *)self->_download setDownloadOptions:optionsCopy];
+  SULogInfo(@"Download options changed from: %@ \nto:\n %@", v11, v12, v13, v14, v15, v16, v17, downloadOptions);
+  core2 = [(SUDownloader *)self core];
+  delegate = [core2 delegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
     v21 = self->_download;
-    v22 = [(SUDownloader *)self core];
-    v23 = [v22 externWorkQueue];
+    core3 = [(SUDownloader *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__SUDownloader_updateDownloadOptions_error___block_invoke;
@@ -1707,10 +1707,10 @@ LABEL_14:
     block[4] = self;
     v30 = v21;
     v24 = v21;
-    dispatch_async(v23, block);
+    dispatch_async(externWorkQueue, block);
   }
 
-  [(SUDownloader *)self _updateLastSavedDownloadsOptions:v6];
+  [(SUDownloader *)self _updateLastSavedDownloadsOptions:optionsCopy];
 
   v25 = 1;
 LABEL_15:
@@ -1725,32 +1725,32 @@ void __44__SUDownloader_updateDownloadOptions_error___block_invoke(uint64_t a1)
   [v2 downloadProgressDidChange:*(a1 + 40)];
 }
 
-- (void)noteAutoDownloadFailedToStart:(id)a3 withError:(id)a4
+- (void)noteAutoDownloadFailedToStart:(id)start withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUDownloader *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  startCopy = start;
+  errorCopy = error;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(SUDownloader *)self endAutoDownloadTasksAndResetState];
   SULogInfo(@"Sending autodownload did fail to start notification to clients.", v10, v11, v12, v13, v14, v15, v16, v22);
-  v17 = [(SUDownloader *)self core];
-  v18 = [v17 delegate];
+  core2 = [(SUDownloader *)self core];
+  delegate = [core2 delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(SUDownloader *)self core];
-    v21 = [v20 externWorkQueue];
+    core3 = [(SUDownloader *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__SUDownloader_noteAutoDownloadFailedToStart_withError___block_invoke;
     block[3] = &unk_279CAA798;
     block[4] = self;
-    v24 = v6;
-    v25 = v7;
-    dispatch_async(v21, block);
+    v24 = startCopy;
+    v25 = errorCopy;
+    dispatch_async(externWorkQueue, block);
   }
 }
 
@@ -1761,22 +1761,22 @@ void __56__SUDownloader_noteAutoDownloadFailedToStart_withError___block_invoke(u
   [v2 automaticDownloadDidFailToStartForNewUpdateAvailable:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (void)noteAutoDownloadFailedToStartWithError:(id)a3
+- (void)noteAutoDownloadFailedToStartWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUDownload *)self->_download descriptor];
-  [(SUDownloader *)self noteAutoDownloadFailedToStart:v7 withError:v4];
+  descriptor = [(SUDownload *)self->_download descriptor];
+  [(SUDownloader *)self noteAutoDownloadFailedToStart:descriptor withError:errorCopy];
 }
 
 - (void)deviceIsUpToDate
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = +[SUScheduler sharedInstance];
   [v5 cancelAllAutoDownloadTasks];
@@ -1785,12 +1785,12 @@ void __56__SUDownloader_noteAutoDownloadFailedToStart_withError___block_invoke(u
   if (downloadAsset && (![(MAAsset *)downloadAsset refreshState]|| [(MAAsset *)self->_downloadAsset state]== 3 || [(MAAsset *)self->_downloadAsset isDownloading]))
   {
     SULogInfo(@"Purging SU asset because server says device is up to date", v7, v8, v9, v10, v11, v12, v13, v17);
-    v14 = [(SUDownloader *)self core];
-    [v14 clearKeybagStash];
+    core2 = [(SUDownloader *)self core];
+    [core2 clearKeybagStash];
 
-    v15 = [(SUDownloader *)self core];
-    v16 = [v15 engine];
-    [v16 removeUpdateKeepingDocAssets:0];
+    core3 = [(SUDownloader *)self core];
+    engine = [core3 engine];
+    [engine removeUpdateKeepingDocAssets:0];
 
     [(SUDownloader *)self cleanupPreviousDownloadState:1];
   }
@@ -1798,27 +1798,27 @@ void __56__SUDownloader_noteAutoDownloadFailedToStart_withError___block_invoke(u
 
 - (BOOL)isDownloadHalted
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (![(SUDownloader *)self isDownloading])
   {
     return 0;
   }
 
-  v5 = [(SUDownload *)self->_download progress];
-  v6 = [v5 phase];
-  if (SUDownloadPhaseIsHalted(v6))
+  progress = [(SUDownload *)self->_download progress];
+  phase = [progress phase];
+  if (SUDownloadPhaseIsHalted(phase))
   {
     IsStalled = 1;
   }
 
   else
   {
-    v8 = [(SUDownload *)self->_download progress];
-    v9 = [v8 phase];
-    IsStalled = SUDownloadPhaseIsStalled(v9);
+    progress2 = [(SUDownload *)self->_download progress];
+    phase2 = [progress2 phase];
+    IsStalled = SUDownloadPhaseIsStalled(phase2);
   }
 
   return IsStalled;
@@ -1826,55 +1826,55 @@ void __56__SUDownloader_noteAutoDownloadFailedToStart_withError___block_invoke(u
 
 - (BOOL)isUpdateDownloaded
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUDownload *)self->_download progress];
-  v6 = [v5 phase];
-  if ([v6 isEqualToString:@"SUDownloadPhasePreparingForInstallation"])
+  progress = [(SUDownload *)self->_download progress];
+  phase = [progress phase];
+  if ([phase isEqualToString:@"SUDownloadPhasePreparingForInstallation"])
   {
-    v7 = [(SUDownload *)self->_download progress];
-    v8 = [v7 isDone];
+    progress2 = [(SUDownload *)self->_download progress];
+    isDone = [progress2 isDone];
   }
 
   else
   {
-    v8 = 0;
+    isDone = 0;
   }
 
-  return v8;
+  return isDone;
 }
 
 - (BOOL)isSplatDownload
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUDownloader *)self download];
-  v6 = [v5 descriptor];
-  LOBYTE(v4) = [v6 updateType] == 4;
+  download = [(SUDownloader *)self download];
+  descriptor = [download descriptor];
+  LOBYTE(workQueue) = [descriptor updateType] == 4;
 
-  return v4;
+  return workQueue;
 }
 
-- (BOOL)_isWithinAutoDownloadWindowForPolicy:(id)a3 descriptor:(id)a4
+- (BOOL)_isWithinAutoDownloadWindowForPolicy:(id)policy descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [(SUDownloader *)self core];
-    v10 = [v7 productBuildVersion];
-    v11 = [v9 discoveryDateForBuildVersion:v10];
-    v12 = [v6 computAutoDownloadEndDateFromDate:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    core = [(SUDownloader *)self core];
+    productBuildVersion = [descriptorCopy productBuildVersion];
+    v11 = [core discoveryDateForBuildVersion:productBuildVersion];
+    v12 = [policyCopy computAutoDownloadEndDateFromDate:v11];
 
     if (v12)
     {
-      v13 = [v12 laterDate:v8];
+      v13 = [v12 laterDate:date];
       v14 = v13 == v12;
     }
 
@@ -1887,61 +1887,61 @@ void __56__SUDownloader_noteAutoDownloadFailedToStart_withError___block_invoke(u
   else
   {
     v14 = 0;
-    v8 = 0;
+    date = 0;
   }
 
   return v14;
 }
 
-- (void)_changeDownloadPhase:(id)a3 progress:(float)a4 timeRemaining:(double)a5
+- (void)_changeDownloadPhase:(id)phase progress:(float)progress timeRemaining:(double)remaining
 {
-  v36 = a3;
-  v8 = [(SUDownloader *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  phaseCopy = phase;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v36 && [(SUDownloader *)self isDownloading])
+  if (phaseCopy && [(SUDownloader *)self isDownloading])
   {
-    v10 = [(SUDownload *)self->_download progress];
-    v11 = [v10 phase];
-    if (([v11 isEqualToString:v36] & 1) == 0)
+    progress = [(SUDownload *)self->_download progress];
+    phase = [progress phase];
+    if (([phase isEqualToString:phaseCopy] & 1) == 0)
     {
-      SULogInfo(@"Software update download phase changed from %@ to %@.", v12, v13, v14, v15, v16, v17, v18, v11);
-      [v10 setPercentComplete:0.0];
-      [v10 setPhase:v36];
+      SULogInfo(@"Software update download phase changed from %@ to %@.", v12, v13, v14, v15, v16, v17, v18, phase);
+      [progress setPercentComplete:0.0];
+      [progress setPhase:phaseCopy];
     }
 
-    if (a4 > 0.001 || (SUDownloadPhaseIsFetchingAnything(v36, 1) & 1) == 0)
+    if (progress > 0.001 || (SUDownloadPhaseIsFetchingAnything(phaseCopy, 1) & 1) == 0)
     {
-      [v10 setPercentComplete:{COERCE_DOUBLE(COERCE_UNSIGNED_INT(fminf(fmaxf(a4, 0.0), 1.0)))}];
+      [progress setPercentComplete:{COERCE_DOUBLE(COERCE_UNSIGNED_INT(fminf(fmaxf(progress, 0.0), 1.0)))}];
     }
 
-    v19 = -1.0;
-    if (a5 != 0.0)
+    remainingCopy = -1.0;
+    if (remaining != 0.0)
     {
-      v19 = a5;
+      remainingCopy = remaining;
     }
 
-    [v10 setTimeRemaining:v19];
-    v20 = [(SUDownload *)self->_download downloadOptions];
-    if ([v20 isAutoDownload])
+    [progress setTimeRemaining:remainingCopy];
+    downloadOptions = [(SUDownload *)self->_download downloadOptions];
+    if ([downloadOptions isAutoDownload])
     {
-      v21 = [(SUDownload *)self->_download downloadOptions];
-      if ([v21 activeDownloadPolicyType] == 1 && -[SUDownloader isDownloadHalted](self, "isDownloadHalted"))
+      downloadOptions2 = [(SUDownload *)self->_download downloadOptions];
+      if ([downloadOptions2 activeDownloadPolicyType] == 1 && -[SUDownloader isDownloadHalted](self, "isDownloadHalted"))
       {
-        v22 = [(SUDownload *)self->_download downloadOptions];
-        v23 = [v22 activeDownloadPolicy];
-        v24 = [(SUDownload *)self->_download descriptor];
-        v25 = [(SUDownloader *)self _isWithinAutoDownloadWindowForPolicy:v23 descriptor:v24];
+        downloadOptions3 = [(SUDownload *)self->_download downloadOptions];
+        activeDownloadPolicy = [downloadOptions3 activeDownloadPolicy];
+        descriptor = [(SUDownload *)self->_download descriptor];
+        v25 = [(SUDownloader *)self _isWithinAutoDownloadWindowForPolicy:activeDownloadPolicy descriptor:descriptor];
 
         if (!v25)
         {
           SULogDebug(@"Download halted after wifi window; attempting to cancel download silently.", v26, v27, v28, v29, v30, v31, v32, v35);
           if ([(SUDownloader *)self cancelDownload:0 userRequested:0 keepDocAssets:1 error:0])
           {
-            v33 = [(SUDownload *)self->_download descriptor];
+            descriptor2 = [(SUDownload *)self->_download descriptor];
             v34 = [SUUtility autoDownloadExpiredError:0];
-            [(SUDownloader *)self noteAutoDownloadFailedToStart:v33 withError:v34];
+            [(SUDownloader *)self noteAutoDownloadFailedToStart:descriptor2 withError:v34];
 
 LABEL_19:
             goto LABEL_20;
@@ -1960,59 +1960,59 @@ LABEL_18:
 LABEL_20:
 }
 
-- (void)_notePhaseCompleted:(id)a3
+- (void)_notePhaseCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  completedCopy = completed;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v20 = [(SUDownload *)self->_download progress];
-  [v20 setPhase:v4];
+  progress = [(SUDownload *)self->_download progress];
+  [progress setPhase:completedCopy];
   LODWORD(v7) = 1.0;
-  [v20 setPercentComplete:v7];
-  [v20 setTimeRemaining:0.0];
-  LODWORD(v5) = [v4 isEqualToString:@"SUDownloadPhasePreparingForInstallation"];
+  [progress setPercentComplete:v7];
+  [progress setTimeRemaining:0.0];
+  LODWORD(core) = [completedCopy isEqualToString:@"SUDownloadPhasePreparingForInstallation"];
 
-  if (v5)
+  if (core)
   {
-    [v20 setIsDone:1];
+    [progress setIsDone:1];
   }
 
   [(SUDownloader *)self _updateNormalizedDownloadProgress];
-  v8 = [(SUDownloader *)self core];
-  v9 = [v8 state];
-  [v9 setLastDownload:self->_download];
+  core2 = [(SUDownloader *)self core];
+  state = [core2 state];
+  [state setLastDownload:self->_download];
 
-  v10 = [(SUDownloader *)self core];
-  v11 = [v10 state];
-  [v11 save];
+  core3 = [(SUDownloader *)self core];
+  state2 = [core3 state];
+  [state2 save];
 
-  v12 = [v20 phase];
-  SULogInfo(@"Download %@ phase completed.", v13, v14, v15, v16, v17, v18, v19, v12);
+  phase = [progress phase];
+  SULogInfo(@"Download %@ phase completed.", v13, v14, v15, v16, v17, v18, v19, phase);
 }
 
 - (void)_updateNormalizedDownloadProgressAndNotifyDelegate
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (self->_download)
   {
     [(SUDownloader *)self _updateNormalizedDownloadProgress];
-    v11 = [(SUDownloader *)self core];
-    v5 = [v11 delegate];
+    core2 = [(SUDownloader *)self core];
+    delegate = [core2 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(SUDownloader *)self _shouldSendUpdatedProgressToDelegate];
+      _shouldSendUpdatedProgressToDelegate = [(SUDownloader *)self _shouldSendUpdatedProgressToDelegate];
 
-      if (v6)
+      if (_shouldSendUpdatedProgressToDelegate)
       {
         [(SUDownloader *)self _snapshotProgress];
         v7 = self->_download;
-        v8 = [(SUDownloader *)self core];
-        v9 = [v8 externWorkQueue];
+        core3 = [(SUDownloader *)self core];
+        externWorkQueue = [core3 externWorkQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __66__SUDownloader__updateNormalizedDownloadProgressAndNotifyDelegate__block_invoke;
@@ -2020,7 +2020,7 @@ LABEL_20:
         block[4] = self;
         v13 = v7;
         v10 = v7;
-        dispatch_async(v9, block);
+        dispatch_async(externWorkQueue, block);
       }
     }
 
@@ -2039,21 +2039,21 @@ void __66__SUDownloader__updateNormalizedDownloadProgressAndNotifyDelegate__bloc
 
 - (BOOL)_shouldSendUpdatedProgressToDelegate
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = self->_downloadProgressSnapshot;
-  v6 = [(SUDownload *)self->_download progress];
-  [v6 normalizedPercentComplete];
+  progress = [(SUDownload *)self->_download progress];
+  [progress normalizedPercentComplete];
   if (v7 >= 1.0)
   {
     goto LABEL_8;
   }
 
-  v8 = [(SUOperationProgress *)v5 phase];
-  v9 = [v6 phase];
-  v10 = [v8 isEqualToString:v9];
+  phase = [(SUOperationProgress *)v5 phase];
+  phase2 = [progress phase];
+  v10 = [phase isEqualToString:phase2];
 
   if (!v10)
   {
@@ -2062,7 +2062,7 @@ void __66__SUDownloader__updateNormalizedDownloadProgressAndNotifyDelegate__bloc
 
   [(SUOperationProgress *)v5 percentComplete];
   v12 = v11;
-  [v6 percentComplete];
+  [progress percentComplete];
   if ((v13 - v12) < 0.01)
   {
     if ([(SUDownloader *)self isForeground])
@@ -2091,20 +2091,20 @@ LABEL_8:
 
 - (void)_updateNormalizedDownloadProgress
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v31 = [(SUDownload *)self->_download progress];
-  v5 = [v31 phase];
-  v6 = [(SUDownloader *)self _orderForPhase:v5];
-  v7 = [(SUDownload *)self->_download descriptor];
-  v8 = [v7 _isStreamingZipCapable];
+  progress = [(SUDownload *)self->_download progress];
+  phase = [progress phase];
+  v6 = [(SUDownloader *)self _orderForPhase:phase];
+  descriptor = [(SUDownload *)self->_download descriptor];
+  _isStreamingZipCapable = [descriptor _isStreamingZipCapable];
 
-  if (v31 && v6 - 1 <= 6)
+  if (progress && v6 - 1 <= 6)
   {
     v9 = &_SUDownloadPhaseOrderWeightsNonStreamable;
-    if (v8)
+    if (_isStreamingZipCapable)
     {
       v9 = &_SUDownloadPhaseOrderWeightsStreamable;
     }
@@ -2120,48 +2120,48 @@ LABEL_8:
     }
 
     while (v10);
-    [v31 percentComplete];
+    [progress percentComplete];
     *&v15 = v12 + fminf(v11 * v14, v11);
-    [v31 setNormalizedPercentComplete:v15];
+    [progress setNormalizedPercentComplete:v15];
     v16 = MEMORY[0x277CCABB8];
     v17 = MEMORY[0x277CCABB0];
-    [v31 percentComplete];
+    [progress percentComplete];
     v18 = [v17 numberWithFloat:?];
     v19 = [v16 localizedStringFromNumber:v18 numberStyle:3];
     v20 = MEMORY[0x277CCABB8];
     v21 = MEMORY[0x277CCABB0];
-    [v31 normalizedPercentComplete];
+    [progress normalizedPercentComplete];
     v22 = [v21 numberWithFloat:?];
     v30 = [v20 localizedStringFromNumber:v22 numberStyle:3];
-    SULogDebug(@"Download Phase: %@, Phase Progress: %@, Overall Progress: %@", v23, v24, v25, v26, v27, v28, v29, v5);
+    SULogDebug(@"Download Phase: %@, Phase Progress: %@, Overall Progress: %@", v23, v24, v25, v26, v27, v28, v29, phase);
   }
 }
 
-- (int)_orderForPhase:(id)a3
+- (int)_orderForPhase:(id)phase
 {
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  phaseCopy = phase;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (_orderForPhase____onceToken != -1)
   {
     [SUDownloader _orderForPhase:];
   }
 
-  v7 = [_orderForPhase____downloadPhaseOrderMap objectForKey:v4];
+  v7 = [_orderForPhase____downloadPhaseOrderMap objectForKey:phaseCopy];
 
   if (v7)
   {
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = -1;
+    intValue = -1;
   }
 
-  return v8;
+  return intValue;
 }
 
 void __31__SUDownloader__orderForPhase___block_invoke()
@@ -2203,35 +2203,35 @@ void __31__SUDownloader__orderForPhase___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadProgress:(id)a3
+- (void)downloadProgress:(id)progress
 {
-  v29 = a3;
-  v4 = [(SUDownloader *)self core];
-  v5 = [v4 workQueue];
-  dispatch_assert_queue_V2(v5);
+  progressCopy = progress;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v29 phase];
-  LODWORD(v5) = [v6 isEqualToString:@"SUDownloadPhaseStarting"];
+  phase = [progressCopy phase];
+  LODWORD(workQueue) = [phase isEqualToString:@"SUDownloadPhaseStarting"];
 
-  if (v5)
+  if (workQueue)
   {
     notify_post([*MEMORY[0x277D64250] UTF8String]);
   }
 
-  v7 = [v29 phase];
-  [v29 percentComplete];
+  phase2 = [progressCopy phase];
+  [progressCopy percentComplete];
   v9 = v8;
-  [v29 timeRemaining];
+  [progressCopy timeRemaining];
   v11 = v10;
   LODWORD(v10) = v9;
-  [(SUDownloader *)self _changeDownloadPhase:v7 progress:v10 timeRemaining:v11];
+  [(SUDownloader *)self _changeDownloadPhase:phase2 progress:v10 timeRemaining:v11];
 
   if ([(SUDownloader *)self goNonDiscretionaryOnDownload])
   {
     if ([(SUDownloader *)self isDownloading])
     {
-      v12 = [v29 phase];
-      IsUpdateDownloading = SUDownloadPhaseIsUpdateDownloading(v12);
+      phase3 = [progressCopy phase];
+      IsUpdateDownloading = SUDownloadPhaseIsUpdateDownloading(phase3);
 
       if (IsUpdateDownloading)
       {
@@ -2242,26 +2242,26 @@ void __31__SUDownloader__orderForPhase___block_invoke()
     }
   }
 
-  if ([v29 isDone])
+  if ([progressCopy isDone])
   {
-    v21 = [v29 phase];
-    v22 = [v21 isEqualToString:@"SUDownloadPhasePreparingForInstallation"];
+    phase4 = [progressCopy phase];
+    v22 = [phase4 isEqualToString:@"SUDownloadPhasePreparingForInstallation"];
 
     if ((v22 & 1) == 0)
     {
-      v23 = [v29 phase];
-      [(SUDownloader *)self _notePhaseCompleted:v23];
+      phase5 = [progressCopy phase];
+      [(SUDownloader *)self _notePhaseCompleted:phase5];
     }
 
-    v24 = [v29 phase];
-    if ([v24 isEqualToString:@"SUDownloadPhaseBrainExtracting"])
+    phase6 = [progressCopy phase];
+    if ([phase6 isEqualToString:@"SUDownloadPhaseBrainExtracting"])
     {
     }
 
     else
     {
-      v25 = [v29 phase];
-      v26 = [v25 isEqualToString:@"SUDownloadPhaseFetching"];
+      phase7 = [progressCopy phase];
+      v26 = [phase7 isEqualToString:@"SUDownloadPhaseFetching"];
 
       if (!v26)
       {
@@ -2269,46 +2269,46 @@ void __31__SUDownloader__orderForPhase___block_invoke()
       }
     }
 
-    v27 = [(SUDownloader *)self core];
-    [v27 reporterFlushEvent];
+    core2 = [(SUDownloader *)self core];
+    [core2 reporterFlushEvent];
   }
 
 LABEL_14:
 }
 
-- (void)_downloadFinished:(BOOL)a3
+- (void)_downloadFinished:(BOOL)finished
 {
-  v3 = a3;
-  v4 = self;
+  finishedCopy = finished;
+  selfCopy = self;
   v86 = *MEMORY[0x277D85DE8];
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUDownloader *)v4 core];
-  v8 = [v7 passcodePolicy];
-  if (v8)
+  core2 = [(SUDownloader *)selfCopy core];
+  passcodePolicy = [core2 passcodePolicy];
+  if (passcodePolicy)
   {
-    v9 = v8;
-    v10 = [(SUDownloader *)v4 core];
-    if ([v10 isAutoUpdateEnabled])
+    v9 = passcodePolicy;
+    core3 = [(SUDownloader *)selfCopy core];
+    if ([core3 isAutoUpdateEnabled])
     {
-      v11 = [(SUDownload *)v4->_download downloadOptions];
-      v12 = [v11 isAutoDownload];
+      downloadOptions = [(SUDownload *)selfCopy->_download downloadOptions];
+      isAutoDownload = [downloadOptions isAutoDownload];
 
-      if (!v12)
+      if (!isAutoDownload)
       {
         goto LABEL_11;
       }
 
-      v13 = [(SUDownloader *)v4 download];
-      v14 = [v13 descriptor];
-      v15 = [v14 updateType];
+      download = [(SUDownloader *)selfCopy download];
+      descriptor = [download descriptor];
+      updateType = [descriptor updateType];
 
-      v7 = [(SUDownloader *)v4 core];
-      v16 = [v7 passcodePolicy];
-      v9 = v16;
-      if (v15 == 4)
+      core2 = [(SUDownloader *)selfCopy core];
+      passcodePolicy2 = [core2 passcodePolicy];
+      v9 = passcodePolicy2;
+      if (updateType == 4)
       {
         v17 = 2;
       }
@@ -2318,7 +2318,7 @@ LABEL_14:
         v17 = 1;
       }
 
-      [v16 setCurrentPolicyType:v17];
+      [passcodePolicy2 setCurrentPolicyType:v17];
     }
 
     else
@@ -2327,67 +2327,67 @@ LABEL_14:
   }
 
 LABEL_11:
-  v18 = [(SUDownloader *)v4 core];
-  v19 = [(SUDownload *)v4->_download descriptor];
-  v20 = [v18 coreDescriptorForSUDescriptor:v19];
+  core4 = [(SUDownloader *)selfCopy core];
+  descriptor2 = [(SUDownload *)selfCopy->_download descriptor];
+  v20 = [core4 coreDescriptorForSUDescriptor:descriptor2];
 
   SULogInfo(@"%s: Found SUCoreDescriptor: %@", v21, v22, v23, v24, v25, v26, v27, "[SUDownloader _downloadFinished:]");
   if (v20)
   {
-    v35 = [(SUDownload *)v4->_download descriptor];
-    [v35 installationSize];
+    descriptor3 = [(SUDownload *)selfCopy->_download descriptor];
+    [descriptor3 installationSize];
     SULogInfo(@"%s: Old installationSize: %llu", v36, v37, v38, v39, v40, v41, v42, "[SUDownloader _downloadFinished:]");
 
     [v20 refreshInstallationSize];
-    v43 = [(SUDownload *)v4->_download descriptor];
-    [v43 setInstallationSize:{objc_msgSend(v20, "installationSize")}];
+    descriptor4 = [(SUDownload *)selfCopy->_download descriptor];
+    [descriptor4 setInstallationSize:{objc_msgSend(v20, "installationSize")}];
 
-    v44 = [(SUDownload *)v4->_download descriptor];
-    [v44 installationSize];
+    descriptor5 = [(SUDownload *)selfCopy->_download descriptor];
+    [descriptor5 installationSize];
     SULogInfo(@"%s: Refreshed installationSize: %llu", v45, v46, v47, v48, v49, v50, v51, "[SUDownloader _downloadFinished:]");
   }
 
   SULogInfo(@"%s: Download finished, cancel the recommended notification UI", v28, v29, v30, v31, v32, v33, v34, "[SUDownloader _downloadFinished:]");
-  v52 = [(SUDownloader *)v4 core];
-  [v52 unscheduleRecommendedUpdateNotification];
+  core5 = [(SUDownloader *)selfCopy core];
+  [core5 unscheduleRecommendedUpdateNotification];
 
-  v53 = [(SUDownloader *)v4 core];
-  [v53 donateSuccessToBiomeFor:@"Download"];
+  core6 = [(SUDownloader *)selfCopy core];
+  [core6 donateSuccessToBiomeFor:@"Download"];
 
-  if (v3)
+  if (finishedCopy)
   {
     v72 = v20;
-    v54 = [(SUDownloader *)v4 core];
-    v74 = [v54 installPolicy];
+    core7 = [(SUDownloader *)selfCopy core];
+    installPolicy = [core7 installPolicy];
 
-    v73 = v4->_download;
-    v55 = [(SUDownloader *)v4 core];
-    v56 = [v55 delegate];
+    v73 = selfCopy->_download;
+    core8 = [(SUDownloader *)selfCopy core];
+    delegate = [core8 delegate];
     v57 = objc_opt_respondsToSelector();
 
     if (v57)
     {
-      v58 = [(SUDownloader *)v4 core];
-      v59 = [v58 externWorkQueue];
+      core9 = [(SUDownloader *)selfCopy core];
+      externWorkQueue = [core9 externWorkQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __34__SUDownloader__downloadFinished___block_invoke;
       block[3] = &unk_279CAA798;
-      block[4] = v4;
+      block[4] = selfCopy;
       v83 = v73;
-      v84 = v74;
-      dispatch_async(v59, block);
+      v84 = installPolicy;
+      dispatch_async(externWorkQueue, block);
     }
 
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v60 = [(SUDownloader *)v4 core];
-    v61 = [v60 observers];
-    v62 = [v61 allObjects];
+    core10 = [(SUDownloader *)selfCopy core];
+    observers = [core10 observers];
+    allObjects = [observers allObjects];
 
-    v63 = [v62 countByEnumeratingWithState:&v78 objects:v85 count:16];
+    v63 = [allObjects countByEnumeratingWithState:&v78 objects:v85 count:16];
     if (v63)
     {
       v64 = v63;
@@ -2398,29 +2398,29 @@ LABEL_11:
         {
           if (*v79 != v65)
           {
-            objc_enumerationMutation(v62);
+            objc_enumerationMutation(allObjects);
           }
 
           v67 = *(*(&v78 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v68 = [(SUDownloader *)v4 core];
-            [v68 externWorkQueue];
-            v70 = v69 = v4;
+            core11 = [(SUDownloader *)selfCopy core];
+            [core11 externWorkQueue];
+            v70 = v69 = selfCopy;
             v75[0] = MEMORY[0x277D85DD0];
             v75[1] = 3221225472;
             v75[2] = __34__SUDownloader__downloadFinished___block_invoke_2;
             v75[3] = &unk_279CAA798;
             v75[4] = v67;
             v76 = v73;
-            v77 = v74;
+            v77 = installPolicy;
             dispatch_async(v70, v75);
 
-            v4 = v69;
+            selfCopy = v69;
           }
         }
 
-        v64 = [v62 countByEnumeratingWithState:&v78 objects:v85 count:16];
+        v64 = [allObjects countByEnumeratingWithState:&v78 objects:v85 count:16];
       }
 
       while (v64);
@@ -2429,9 +2429,9 @@ LABEL_11:
     v20 = v72;
   }
 
-  [(SUDownloader *)v4 endAutoDownloadTasksAndResetState];
+  [(SUDownloader *)selfCopy endAutoDownloadTasksAndResetState];
   [SUUtility setCacheable:1];
-  [(SUDownloader *)v4 setDownloading:0];
+  [(SUDownloader *)selfCopy setDownloading:0];
 
   v71 = *MEMORY[0x277D85DE8];
 }
@@ -2443,38 +2443,38 @@ void __34__SUDownloader__downloadFinished___block_invoke(uint64_t a1)
   [v2 downloadDidFinish:*(a1 + 40) withInstallPolicy:*(a1 + 48)];
 }
 
-- (void)_downloadFailedWithError:(id)a3
+- (void)_downloadFailedWithError:(id)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  SULogInfo(@"Download failed with error: %@", v7, v8, v9, v10, v11, v12, v13, v4);
+  SULogInfo(@"Download failed with error: %@", v7, v8, v9, v10, v11, v12, v13, errorCopy);
   +[SUSpace mobileAssetResumeFromSuspension];
-  v14 = [(SUDownloader *)self core];
-  [v14 resumeOrDisableReserveSpace];
+  core2 = [(SUDownloader *)self core];
+  [core2 resumeOrDisableReserveSpace];
 
   v22 = 0x279CA9000uLL;
   if (self->_download)
   {
-    if (!v4)
+    if (!errorCopy)
     {
-      v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:-1 userInfo:0];
+      errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:-1 userInfo:0];
     }
 
-    v46 = v4;
-    v48 = [SUUtility translateError:v4];
+    v46 = errorCopy;
+    v48 = [SUUtility translateError:errorCopy];
     v47 = self->_download;
-    v23 = [(SUDownloader *)self core];
-    v24 = [v23 delegate];
+    core3 = [(SUDownloader *)self core];
+    delegate = [core3 delegate];
     v25 = objc_opt_respondsToSelector();
 
     if (v25)
     {
-      v26 = [(SUDownloader *)self core];
-      v27 = [v26 externWorkQueue];
+      core4 = [(SUDownloader *)self core];
+      externWorkQueue = [core4 externWorkQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __41__SUDownloader__downloadFailedWithError___block_invoke;
@@ -2482,18 +2482,18 @@ void __34__SUDownloader__downloadFinished___block_invoke(uint64_t a1)
       block[4] = self;
       v57 = v47;
       v58 = v48;
-      dispatch_async(v27, block);
+      dispatch_async(externWorkQueue, block);
     }
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v28 = [(SUDownloader *)self core];
-    v29 = [v28 observers];
-    v30 = [v29 allObjects];
+    core5 = [(SUDownloader *)self core];
+    observers = [core5 observers];
+    allObjects = [observers allObjects];
 
-    v31 = [v30 countByEnumeratingWithState:&v52 objects:v59 count:16];
+    v31 = [allObjects countByEnumeratingWithState:&v52 objects:v59 count:16];
     if (v31)
     {
       v32 = v31;
@@ -2504,14 +2504,14 @@ void __34__SUDownloader__downloadFinished___block_invoke(uint64_t a1)
         {
           if (*v53 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(allObjects);
           }
 
           v35 = *(*(&v52 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v36 = [(SUDownloader *)self core];
-            [v36 externWorkQueue];
+            core6 = [(SUDownloader *)self core];
+            [core6 externWorkQueue];
             v38 = v37 = self;
             v49[0] = MEMORY[0x277D85DD0];
             v49[1] = 3221225472;
@@ -2526,13 +2526,13 @@ void __34__SUDownloader__downloadFinished___block_invoke(uint64_t a1)
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v52 objects:v59 count:16];
+        v32 = [allObjects countByEnumeratingWithState:&v52 objects:v59 count:16];
       }
 
       while (v32);
     }
 
-    v4 = v46;
+    errorCopy = v46;
     v22 = 0x279CA9000;
   }
 
@@ -2541,22 +2541,22 @@ void __34__SUDownloader__downloadFinished___block_invoke(uint64_t a1)
     SULogError(@"[ANOMALY] Download faild but the download object is nil", v15, v16, v17, v18, v19, v20, v21, v45);
   }
 
-  v39 = [(SUDownloader *)self core];
-  [v39 donateSUErrorToBiome:v4];
+  core7 = [(SUDownloader *)self core];
+  [core7 donateSUErrorToBiome:errorCopy];
 
-  v40 = [(SUDownloader *)self core];
-  [v40 reportOTAAbandonedEventWithError:v4];
+  core8 = [(SUDownloader *)self core];
+  [core8 reportOTAAbandonedEventWithError:errorCopy];
 
-  v41 = [(SUDownloader *)self core];
-  [v41 reportCoreAnalyticsOTAAbandonedEvent:v4];
+  core9 = [(SUDownloader *)self core];
+  [core9 reportCoreAnalyticsOTAAbandonedEvent:errorCopy];
 
-  v42 = [(SUDownloader *)self core];
-  [v42 clearUnlockCallbacks];
+  core10 = [(SUDownloader *)self core];
+  [core10 clearUnlockCallbacks];
 
   [*(v22 + 3176) setCacheable:1];
   [(SUDownloader *)self cleanupPreviousDownloadState:1];
-  v43 = [(SUDownloader *)self core];
-  [v43 clearKeybagStash];
+  core11 = [(SUDownloader *)self core];
+  [core11 clearKeybagStash];
 
   [(SUDownloader *)self setDownloading:0];
   v44 = *MEMORY[0x277D85DE8];
@@ -2569,44 +2569,44 @@ void __41__SUDownloader__downloadFailedWithError___block_invoke(uint64_t a1)
   [v2 downloadDidFail:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (void)_downloadInvalidatedWithUpdates:(id)a3
+- (void)_downloadInvalidatedWithUpdates:(id)updates
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   +[SUSpace mobileAssetResumeFromSuspension];
-  v5 = [(SUDownloader *)self core];
-  [v5 resumeOrDisableReserveSpace];
+  core = [(SUDownloader *)self core];
+  [core resumeOrDisableReserveSpace];
 
-  if (!v4)
+  if (!updatesCopy)
   {
     v6 = [SUCoreScanResults alloc];
-    v7 = [(SUDownloader *)self core];
-    v8 = [v7 preferredLastScannedDescriptor];
-    v9 = [(SUDownloader *)self core];
-    v10 = [v9 alternateLastScannedDescriptor];
-    v4 = [(SUCoreScanResults *)v6 initWithPreferredDescriptor:v8 alternateDescriptor:v10];
+    core2 = [(SUDownloader *)self core];
+    preferredLastScannedDescriptor = [core2 preferredLastScannedDescriptor];
+    core3 = [(SUDownloader *)self core];
+    alternateLastScannedDescriptor = [core3 alternateLastScannedDescriptor];
+    updatesCopy = [(SUCoreScanResults *)v6 initWithPreferredDescriptor:preferredLastScannedDescriptor alternateDescriptor:alternateLastScannedDescriptor];
   }
 
-  v11 = [(SUDownloader *)self core];
-  v12 = [v11 delegate];
-  if (v12)
+  core4 = [(SUDownloader *)self core];
+  delegate = [core4 delegate];
+  if (delegate)
   {
-    v13 = v12;
-    v14 = [(SUDownloader *)self core];
-    v15 = [v14 delegate];
+    v13 = delegate;
+    core5 = [(SUDownloader *)self core];
+    delegate2 = [core5 delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(SUDownloader *)self core];
-      v18 = [v17 externWorkQueue];
+      core6 = [(SUDownloader *)self core];
+      externWorkQueue = [core6 externWorkQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __48__SUDownloader__downloadInvalidatedWithUpdates___block_invoke;
       block[3] = &unk_279CAA7C0;
       block[4] = self;
-      v40 = v4;
-      dispatch_async(v18, block);
+      v40 = updatesCopy;
+      dispatch_async(externWorkQueue, block);
     }
   }
 
@@ -2614,17 +2614,17 @@ void __41__SUDownloader__downloadFailedWithError___block_invoke(uint64_t a1)
   {
   }
 
-  v31 = v4;
+  v31 = updatesCopy;
   v32 = self->_download;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v19 = [(SUDownloader *)self core];
-  v20 = [v19 observers];
-  v21 = [v20 allObjects];
+  core7 = [(SUDownloader *)self core];
+  observers = [core7 observers];
+  allObjects = [observers allObjects];
 
-  v22 = [v21 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v22 = [allObjects countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v22)
   {
     v23 = v22;
@@ -2636,7 +2636,7 @@ void __41__SUDownloader__downloadFailedWithError___block_invoke(uint64_t a1)
       {
         if (*v36 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allObjects);
         }
 
         v26 = *(*(&v35 + 1) + 8 * v25);
@@ -2644,14 +2644,14 @@ void __41__SUDownloader__downloadFailedWithError___block_invoke(uint64_t a1)
         {
           [(SUDownloader *)self core];
           v28 = v27 = self;
-          v29 = [v28 externWorkQueue];
+          externWorkQueue2 = [v28 externWorkQueue];
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
           v33[2] = __48__SUDownloader__downloadInvalidatedWithUpdates___block_invoke_2;
           v33[3] = &unk_279CAA7C0;
           v33[4] = v26;
           v34 = v32;
-          dispatch_async(v29, v33);
+          dispatch_async(externWorkQueue2, v33);
 
           self = v27;
         }
@@ -2660,7 +2660,7 @@ void __41__SUDownloader__downloadFailedWithError___block_invoke(uint64_t a1)
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v23 = [allObjects countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v23);
@@ -2679,45 +2679,45 @@ void __48__SUDownloader__downloadInvalidatedWithUpdates___block_invoke(uint64_t 
   [v2 downloadWasInvalidatedForNewUpdatesAvailable:*(a1 + 40)];
 }
 
-- (void)cleanupPreviousDownloadState:(BOOL)a3
+- (void)cleanupPreviousDownloadState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(SUDownloader *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  stateCopy = state;
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   SULogInfo(@"Cleaning up previous download state", v7, v8, v9, v10, v11, v12, v13, v19);
   [(SUDownloader *)self setDownloadAsset:0];
-  v14 = [(SUDownloader *)self core];
-  [v14 clearBadgeAndBanner];
+  core2 = [(SUDownloader *)self core];
+  [core2 clearBadgeAndBanner];
 
   [(SUDownloader *)self setGoNonDiscretionaryOnDownload:0];
   [(SUDownloader *)self setDownloading:0];
   [(SUDownloader *)self setDownload:0];
   [(SUDownloader *)self _snapshotProgress];
-  v15 = [(SUDownloader *)self core];
-  v16 = [v15 state];
-  [v16 setLastDownload:0];
+  core3 = [(SUDownloader *)self core];
+  state = [core3 state];
+  [state setLastDownload:0];
 
-  v17 = [(SUDownloader *)self core];
-  [v17 removeUnlockCallback:@"unlockCallbackRecordDataForBrain"];
+  core4 = [(SUDownloader *)self core];
+  [core4 removeUnlockCallback:@"unlockCallbackRecordDataForBrain"];
 
-  if (v3)
+  if (stateCopy)
   {
-    v20 = [(SUDownloader *)self core];
-    v18 = [v20 state];
-    [v18 save];
+    core5 = [(SUDownloader *)self core];
+    state2 = [core5 state];
+    [state2 save];
   }
 }
 
 - (void)_snapshotProgress
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUDownload *)self->_download progress];
-  v6 = [v5 copy];
+  progress = [(SUDownload *)self->_download progress];
+  v6 = [progress copy];
   downloadProgressSnapshot = self->_downloadProgressSnapshot;
   self->_downloadProgressSnapshot = v6;
 
@@ -2730,14 +2730,14 @@ void __48__SUDownloader__downloadInvalidatedWithUpdates___block_invoke(uint64_t 
 
 - (void)operatorBundleChanged
 {
-  v3 = [(SUDownloader *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUDownloader *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__SUDownloader_operatorBundleChanged__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __37__SUDownloader_operatorBundleChanged__block_invoke(uint64_t a1)
@@ -2816,68 +2816,68 @@ LABEL_3:
 
 - (id)slaVersion
 {
-  v3 = [(SUDownloader *)self download];
-  if (!v3)
+  download = [(SUDownloader *)self download];
+  if (!download)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(SUDownloader *)self download];
-  v6 = [v5 descriptor];
-  if (!v6)
+  download4 = download;
+  download2 = [(SUDownloader *)self download];
+  descriptor = [download2 descriptor];
+  if (!descriptor)
   {
-    v12 = 0;
+    slaVersion = 0;
     goto LABEL_7;
   }
 
-  v7 = v6;
-  v8 = [(SUDownloader *)self download];
-  v9 = [v8 descriptor];
-  v10 = [v9 documentation];
+  v7 = descriptor;
+  download3 = [(SUDownloader *)self download];
+  descriptor2 = [download3 descriptor];
+  documentation = [descriptor2 documentation];
 
-  if (!v10)
+  if (!documentation)
   {
 LABEL_5:
-    v12 = 0;
+    slaVersion = 0;
     goto LABEL_8;
   }
 
-  v4 = [(SUDownloader *)self download];
-  v5 = [v4 descriptor];
-  v11 = [v5 documentation];
-  v12 = [v11 slaVersion];
+  download4 = [(SUDownloader *)self download];
+  download2 = [download4 descriptor];
+  documentation2 = [download2 documentation];
+  slaVersion = [documentation2 slaVersion];
 
 LABEL_7:
 LABEL_8:
 
-  return v12;
+  return slaVersion;
 }
 
-- (void)ensureSSOTokenIfNeededForDownload:(id)a3
+- (void)ensureSSOTokenIfNeededForDownload:(id)download
 {
-  v29 = a3;
+  downloadCopy = download;
   if (+[SUUtility currentReleaseTypeIsInternal])
   {
     v3 = +[SUPreferences sharedInstance];
-    v4 = [v3 suppressSSOTokenInDownload];
+    suppressSSOTokenInDownload = [v3 suppressSSOTokenInDownload];
 
-    if (v4)
+    if (suppressSSOTokenInDownload)
     {
       SULogInfo(@"%s: Suppressing SSO Token in download.", v5, v6, v7, v8, v9, v10, v11, "[SUDownloader ensureSSOTokenIfNeededForDownload:]");
     }
 
-    else if ([v29 isAutoDownload])
+    else if ([downloadCopy isAutoDownload])
     {
       SULogInfo(@"%s: Autodownload operation - not getting SSO Token.", v12, v13, v14, v15, v16, v17, v18, "[SUDownloader ensureSSOTokenIfNeededForDownload:]");
     }
 
     else
     {
-      v19 = [v29 descriptor];
-      v20 = [v19 upgradeType];
+      descriptor = [downloadCopy descriptor];
+      upgradeType = [descriptor upgradeType];
 
-      if (v20 == 2)
+      if (upgradeType == 2)
       {
         SULogInfo(@"%s: Software update is major upgrade, getting SSO token.", v21, v22, v23, v24, v25, v26, v27, "[SUDownloader ensureSSOTokenIfNeededForDownload:]");
         v28 = +[SUAuthSSO sharedInstance];
@@ -2892,41 +2892,41 @@ LABEL_8:
   }
 }
 
-+ (id)purgeOptionsForDescriptor:(id)a3 downloadOptions:(id)a4 completionQueue:(id)a5
++ (id)purgeOptionsForDescriptor:(id)descriptor downloadOptions:(id)options completionQueue:(id)queue
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  optionsCopy = options;
+  queueCopy = queue;
+  descriptorCopy = descriptor;
   v10 = objc_alloc_init(SUSpacePurgeOptions);
-  v11 = [SUUtility totalDiskSpaceForUpdate:v9];
+  v11 = [SUUtility totalDiskSpaceForUpdate:descriptorCopy];
 
   [(SUSpacePurgeOptions *)v10 setNeededBytes:v11];
   [(SUSpacePurgeOptions *)v10 setEnableCacheDelete:1];
-  if ([v7 isAutoDownload])
+  if ([optionsCopy isAutoDownload])
   {
-    v12 = 0;
+    isAppOffloadEnabled = 0;
   }
 
   else
   {
-    v12 = [v7 isAppOffloadEnabled];
+    isAppOffloadEnabled = [optionsCopy isAppOffloadEnabled];
   }
 
-  [(SUSpacePurgeOptions *)v10 setEnableAppOffload:v12];
-  if ([v7 isAutoDownload])
+  [(SUSpacePurgeOptions *)v10 setEnableAppOffload:isAppOffloadEnabled];
+  if ([optionsCopy isAutoDownload])
   {
-    v13 = 0;
+    isMASuspensionEnabled = 0;
   }
 
   else
   {
-    v13 = [v7 isMASuspensionEnabled];
+    isMASuspensionEnabled = [optionsCopy isMASuspensionEnabled];
   }
 
-  [(SUSpacePurgeOptions *)v10 setEnableMobileAssetSuspend:v13];
+  [(SUSpacePurgeOptions *)v10 setEnableMobileAssetSuspend:isMASuspensionEnabled];
   [(SUSpacePurgeOptions *)v10 setCacheDeleteUrgency:4];
   [(SUSpacePurgeOptions *)v10 setAppOffloadUrgency:4];
-  [(SUSpacePurgeOptions *)v10 setCompletionQueue:v8];
+  [(SUSpacePurgeOptions *)v10 setCompletionQueue:queueCopy];
 
   return v10;
 }
